@@ -25,6 +25,7 @@ class Test_Optimize extends TestCase {
 				'embed',
 			],
         ];
+		$this->unregisterAllCallbacksExcept('rocket_buffer', 'process', 1001 );
 	}
 
 	public function tear_down() {
@@ -32,7 +33,7 @@ class Test_Optimize extends TestCase {
 		remove_filter( 'rocket_combined_google_fonts_display', [ $this, 'set_display_value' ] );
 
 		unset( $this->filter_value );
-
+		$this->restoreWpHook('rocket_buffer');
 		parent::tear_down();
 	}
 

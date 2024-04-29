@@ -2,19 +2,14 @@
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
-use WP_Rocket\Engine\Common\Queue\QueueInterface;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\Filesystem;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS as UsedCSS_Query;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Row\UsedCSS as UsedCSS_Row;
-use WP_Rocket\Engine\Optimization\RUCSS\Frontend\APIClient;
-use WP_Rocket\Engine\Optimization\RUCSS\Strategy\Factory\StrategyFactory;
-use WP_Rocket\Engine\Common\Clock\WPRClock;
-use WP_Rocket\Logger\Logger;
-use WP_Rocket\Tests\Unit\HasLoggerTrait;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\DataManager;
+use WP_Rocket\Tests\Fixtures\inc\Engine\Common\JobManager\Manager;
 
 /**
  * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS::treeshake
@@ -22,15 +17,13 @@ use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\DataManager;
  * @group  RUCSS
  */
 class Test_Treeshake extends TestCase {
-	use HasLoggerTrait;
 	protected $options;
 	protected $usedCssQuery;
-	protected $api;
 	protected $queue;
-	protected $usedCss;
 	protected $data_manager;
 	protected $filesystem;
 	protected $context;
+	protected $manager;
 
 	/**
 	 * @var StrategyFactory
@@ -42,37 +35,27 @@ class Test_Treeshake extends TestCase {
 	 */
 	protected $wpr_clock;
 
-	protected $optimisedContext;
 	protected function setUp(): void
 	{
 		parent::setUp();
 		$this->options = Mockery::mock(Options_Data::class);
 		$this->usedCssQuery = $this->createMock(UsedCSS_Query::class);
-		$this->api = Mockery::mock(APIClient::class);
-		$this->queue = Mockery::mock(QueueInterface::class);
 		$this->data_manager = Mockery::mock( DataManager::class );
 		$this->filesystem = Mockery::mock( Filesystem::class );
 		$this->context = Mockery::mock(ContextInterface::class);
-		$this->optimisedContext = Mockery::mock(ContextInterface::class);
-		$this->strategy_factory = Mockery::mock(StrategyFactory::class);
-		$this->wpr_clock = Mockery::mock(WPRClock::class);
+		$this->manager = Mockery::mock(Manager::class);
 
 		$this->usedCss = Mockery::mock(
 			UsedCSS::class . '[is_allowed,update_last_accessed]',
 			[
-				$this->options, $this->usedCssQuery,
-				$this->api,
-				$this->queue,
+				$this->options,
+				$this->usedCssQuery,
 				$this->data_manager,
 				$this->filesystem,
 				$this->context,
-				$this->optimisedContext,
-				$this->strategy_factory,
-				$this->wpr_clock,
+				$this->manager
 			]
 		);
-
-		$this->set_logger($this->usedCss);
 	}
 
 	protected function tearDown(): void
@@ -175,7 +158,8 @@ class Test_Treeshake extends TestCase {
 			return;
 		}
 
-		$this->usedCssQuery->expects(self::once())->method('create_new_job')->with($config['home_url'], $config['create_new_job']['response']['contents']['jobId'], $config['create_new_job']['response']['contents']['queueName'], $config['is_mobile']['is_mobile'] );
+		$this->manager->shouldReceive( 'add_url_to_the_queue' )
+                    ->withArgs([$config['home_url'], $config['is_mobile']['is_mobile']]);
 	}
 
 	protected function configValidUsedCss($config) {

@@ -4,24 +4,16 @@ declare( strict_types=1 );
 namespace WP_Rocket\Engine\Optimization\RUCSS\Controller;
 
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\Common\Clock\WPRClock;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
-use WP_Rocket\Engine\Common\Queue\QueueInterface;
 use WP_Rocket\Engine\Optimization\CSSTrait;
 use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\DataManager;
 use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS as UsedCSS_Query;
-use WP_Rocket\Engine\Optimization\RUCSS\Frontend\APIClient;
-use WP_Admin_Bar;
-use WP_Rocket\Engine\Optimization\RUCSS\Strategy\Factory\StrategyFactory;
-use WP_Rocket\Logger\LoggerAware;
-use WP_Rocket\Logger\LoggerAwareInterface;
+use WP_Rocket\Engine\Common\JobManager\Managers\ManagerInterface;
 
-
-class UsedCSS implements LoggerAwareInterface {
+class UsedCSS {
 	use RegexTrait;
 	use CSSTrait;
-	use LoggerAware;
 
 	/**
 	 * UsedCss Query instance.
@@ -36,20 +28,6 @@ class UsedCSS implements LoggerAwareInterface {
 	 * @var Options_Data
 	 */
 	protected $options;
-
-	/**
-	 * APIClient instance
-	 *
-	 * @var APIClient
-	 */
-	private $api;
-
-	/**
-	 * Queue instance.
-	 *
-	 * @var QueueInterface
-	 */
-	private $queue;
 
 	/**
 	 * DataManager instance
@@ -73,13 +51,6 @@ class UsedCSS implements LoggerAwareInterface {
 	protected $context;
 
 	/**
-	 * RUCSS optimize url context.
-	 *
-	 * @var ContextInterface
-	 */
-	protected $optimize_url_context;
-
-	/**
 	 * External exclusions list, can be urls or attributes.
 	 *
 	 * @var array
@@ -101,55 +72,36 @@ class UsedCSS implements LoggerAwareInterface {
 	private $inline_content_exclusions = [];
 
 	/**
-	 * Retry Strategy Factory
+	 * Above the fold Job Manager.
 	 *
-	 * @var StrategyFactory
+	 * @var ManagerInterface
 	 */
-	protected $strategy_factory;
-
-	/**
-	 * Clock instance.
-	 *
-	 * @var WPRClock
-	 */
-	protected $wpr_clock;
+	private $manager;
 
 	/**
 	 * Instantiate the class.
 	 *
 	 * @param Options_Data     $options Options instance.
 	 * @param UsedCSS_Query    $used_css_query Usedcss Query instance.
-	 * @param APIClient        $api APIClient instance.
-	 * @param QueueInterface   $queue Queue instance.
 	 * @param DataManager      $data_manager DataManager instance.
 	 * @param Filesystem       $filesystem Filesystem instance.
 	 * @param ContextInterface $context RUCSS context.
-	 * @param ContextInterface $optimize_url_context RUCSS optimize url context.
-	 * @param StrategyFactory  $strategy_factory Strategy Factory used for RUCSS retry process.
-	 * @param WPRClock         $clock Clock object instance.
+	 * @param ManagerInterface $manager RUCSS manager.
 	 */
 	public function __construct(
 		Options_Data $options,
 		UsedCSS_Query $used_css_query,
-		APIClient $api,
-		QueueInterface $queue,
 		DataManager $data_manager,
 		Filesystem $filesystem,
 		ContextInterface $context,
-		ContextInterface $optimize_url_context,
-		StrategyFactory $strategy_factory,
-		WPRClock $clock
+		ManagerInterface $manager
 	) {
-		$this->options              = $options;
-		$this->used_css_query       = $used_css_query;
-		$this->api                  = $api;
-		$this->queue                = $queue;
-		$this->data_manager         = $data_manager;
-		$this->filesystem           = $filesystem;
-		$this->context              = $context;
-		$this->optimize_url_context = $optimize_url_context;
-		$this->strategy_factory     = $strategy_factory;
-		$this->wpr_clock            = $clock;
+		$this->options        = $options;
+		$this->used_css_query = $used_css_query;
+		$this->data_manager   = $data_manager;
+		$this->filesystem     = $filesystem;
+		$this->context        = $context;
+		$this->manager        = $manager;
 	}
 
 	/**
@@ -189,7 +141,7 @@ class UsedCSS implements LoggerAwareInterface {
 		$used_css  = $this->used_css_query->get_row( $url, $is_mobile );
 
 		if ( empty( $used_css ) ) {
-			$this->add_url_to_the_queue( $url, $is_mobile );
+			$this->manager->add_url_to_the_queue( $url, $is_mobile );
 			return $html;
 		}
 
@@ -213,22 +165,6 @@ class UsedCSS implements LoggerAwareInterface {
 		return $html;
 	}
 
-	/**
-	 * Send the request to add url into the queue.
-	 *
-	 * @param string $url page URL.
-	 * @param bool   $is_mobile page is for mobile.
-	 *
-	 * @return void
-	 */
-	public function add_url_to_the_queue( string $url, bool $is_mobile ) {
-		$used_css_row = $this->used_css_query->get_row( $url, $is_mobile );
-		if ( empty( $used_css_row ) ) {
-			$this->used_css_query->create_new_job( $url, '', '', $is_mobile );
-			return;
-		}
-		$this->used_css_query->reset_job( (int) $used_css_row->id );
-	}
 	/**
 	 * Delete used css based on URL.
 	 *
@@ -471,235 +407,6 @@ class UsedCSS implements LoggerAwareInterface {
 	}
 
 	/**
-	 * Check if current page is the home page.
-	 *
-	 * @param string $url Current page url.
-	 *
-	 * @return bool
-	 */
-	private function is_home( string $url ): bool {
-		/**
-		 * Filters the home url.
-		 *
-		 * @since 3.11.4
-		 *
-		 * @param string  $home_url home url.
-		 * @param string  $url url of current page.
-		 */
-		$home_url = apply_filters( 'rocket_rucss_is_home_url', home_url(), $url );
-		return untrailingslashit( $url ) === untrailingslashit( $home_url );
-	}
-
-	/**
-	 * Process pending jobs inside cron iteration.
-	 *
-	 * @return void
-	 */
-	public function process_pending_jobs() {
-		/**
-		 * Fires at the start of the process pending jobs.
-		 *
-		 * @param string $current_time Current time.
-		 */
-
-		do_action( 'rocket_rucss_process_pending_jobs_start', $this->wpr_clock->current_time( 'mysql', true ) );
-		$this->logger::debug( 'RUCSS: Start processing pending jobs inside cron.' );
-
-		if ( ! $this->is_enabled() ) {
-			$this->logger::debug( 'RUCSS: Stop processing cron iteration because option is disabled.' );
-
-			return;
-		}
-
-		// Get some items from the DB with status=pending & job_id isn't empty.
-
-		/**
-		 * Filters the pending jobs count.
-		 *
-		 * @since 3.11
-		 *
-		 * @param int $rows Number of rows to grab with each CRON iteration.
-		 */
-		$rows = apply_filters( 'rocket_rucss_pending_jobs_cron_rows_count', 100 );
-
-		$this->logger::debug( "RUCSS: Start getting number of {$rows} pending jobs." );
-
-		$pending_jobs = $this->used_css_query->get_pending_jobs( $rows );
-		if ( ! $pending_jobs ) {
-			$this->logger::debug( 'RUCSS: No pending jobs are there.' );
-
-			return;
-		}
-
-		foreach ( $pending_jobs as $used_css_row ) {
-			$current_time = $this->wpr_clock->current_time( 'timestamp', true );
-			if ( strtotime( $used_css_row->next_retry_time ) < $current_time ) {
-				$this->logger::debug( "RUCSS: Send the job for url {$used_css_row->url} to Async task to check its job status." );
-
-				// Change status to in-progress.
-				$this->used_css_query->make_status_inprogress( (int) $used_css_row->id );
-				$this->queue->add_job_status_check_async( (int) $used_css_row->id );
-			}
-		}
-
-		/**
-		 * Fires at the end of the process pending jobs.
-		 *
-		 * @param string $current_time Current time.
-		 */
-		do_action( 'rocket_rucss_process_pending_jobs_end', $this->wpr_clock->current_time( 'mysql', true ) );
-	}
-
-	/**
-	 * Check job status by DB row ID.
-	 *
-	 * @param int $id DB Row ID.
-	 *
-	 * @return void
-	 */
-	public function check_job_status( int $id ) {
-		$this->logger::debug( 'RUCSS: Start checking job status for row ID: ' . $id );
-
-		$row_details = $this->used_css_query->get_item( $id );
-		if ( ! $row_details ) {
-			$this->logger::debug( 'RUCSS: Row ID not found ', compact( 'id' ) );
-
-			// Nothing in DB, bailout.
-			return;
-		}
-
-		// Send the request to get the job status from SaaS.
-		$job_details = $this->api->get_queue_job_status( $row_details->job_id, $row_details->queue_name, $this->is_home( $row_details->url ) );
-
-		/**
-		 * Filters the rocket min rucss css result size.
-		 *
-		 * @since 3.13.3
-		 *
-		 * @param int min size.
-		 */
-		$min_rucss_size = apply_filters( 'rocket_min_rucss_size', 150 );
-		if ( ! is_numeric( $min_rucss_size ) ) {
-			$min_rucss_size = 150;
-		}
-
-		if ( isset( $job_details['contents']['shakedCSS_size'] ) && intval( $job_details['contents']['shakedCSS_size'] ) < $min_rucss_size ) {
-			$message = 'RUCSS: shakedCSS size is less than ' . $min_rucss_size;
-			$this->logger::error( $message );
-			$this->used_css_query->make_status_failed( $id, '500', $message );
-			return;
-		}
-
-		if (
-			200 !== (int) $job_details['code']
-		) {
-			$this->logger::debug( 'RUCSS: Job status failed for url: ' . $row_details->url, $job_details );
-			$this->strategy_factory->manage( $row_details, $job_details );
-
-			return;
-		}
-		/**
-		 * Unlock preload URL.
-		 *
-		 * @param string $url URL to unlock
-		 */
-		do_action( 'rocket_preload_unlock_url', $row_details->url );
-
-		$css = $this->apply_font_display_swap( $job_details['contents']['shakedCSS'] );
-
-		/**
-		 * RUCSS hash.
-		 *
-		 * @param string $hash RUCSS hash.
-		 * @param string $css RUCSS content.
-		 * @param UsedCSSRow $row_details Job details.
-		 */
-		$hash = (string) apply_filters( 'rocket_rucss_hash',  md5( $css ), $css, $row_details );
-
-		if ( ! $this->filesystem->write_used_css( $hash, $css ) ) {
-			$message = 'RUCSS: Could not write used CSS to the filesystem: ' . $row_details->url;
-			$this->logger::error( $message );
-			$this->used_css_query->make_status_failed( $id, '', $message );
-
-			return;
-		}
-
-		// Everything is fine, save the usedcss into DB, change status to completed and reset queue_name and job_id.
-		$this->logger::debug( 'RUCSS: Save used CSS for url: ' . $row_details->url );
-
-		$this->used_css_query->make_status_completed( $id, $hash );
-
-		/**
-		 * Fires after successfully saving the used CSS for an URL
-		 *
-		 * @param string $current_time Current time.
-		 */
-		do_action( 'rocket_rucss_check_job_status_end', $this->wpr_clock->current_time( 'mysql', true ) );
-
-		/**
-		 * Fires after successfully saving the used CSS for an URL
-		 *
-		 * @param string $url URL used to generated the used CSS.
-		 * @param array  $job_details Result of the request to get the job status from SaaS.
-		 */
-		do_action( 'rocket_rucss_complete_job_status', $row_details->url, $job_details );
-	}
-
-	/**
-	 * Add clear UsedCSS adminbar item.
-	 *
-	 * @param WP_Admin_Bar $wp_admin_bar Adminbar object.
-	 *
-	 * @return void
-	 */
-	public function add_clear_usedcss_bar_item( WP_Admin_Bar $wp_admin_bar ) {
-		global $post;
-
-		if ( ! $this->optimize_url_context->is_allowed() ) {
-			return;
-		}
-
-		/**
-		 * Filters the rocket `clear used css of this url` option on admin bar menu.
-		 *
-		 * @since 3.12.1
-		 *
-		 * @param bool  $should_skip Should skip adding `clear used css of this url` option in admin bar.
-		 * @param type  $post Post object.
-		 */
-		if ( apply_filters( 'rocket_skip_admin_bar_clear_used_css_option', false, $post ) ) {
-			return;
-		}
-
-		$referer = '';
-		$action  = 'rocket_clear_usedcss_url';
-
-		if ( ! empty( $_SERVER['REQUEST_URI'] ) ) {
-			$referer_url = filter_var( wp_unslash( $_SERVER['REQUEST_URI'] ), FILTER_SANITIZE_URL );
-
-			/**
-			 * Filters to act on the referer url for the admin bar.
-			 *
-			 * @param string $uri Current uri
-			 */
-			$referer = (string) apply_filters( 'rocket_admin_bar_referer', esc_url( $referer_url ) );
-			$referer = '&_wp_http_referer=' . rawurlencode( remove_query_arg( 'fl_builder', $referer ) );
-		}
-
-		/**
-		 * Clear usedCSS for this URL (frontend).
-		 */
-		$wp_admin_bar->add_menu(
-			[
-				'parent' => 'wp-rocket',
-				'id'     => 'clear-usedcss-url',
-				'title'  => __( 'Clear Used CSS of this URL', 'rocket' ),
-				'href'   => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . $referer ), $action ),
-			]
-		);
-	}
-
-	/**
 	 * Clear specific url.
 	 *
 	 * @param string $url Page url.
@@ -726,59 +433,6 @@ class UsedCSS implements LoggerAwareInterface {
 	 */
 	public function get_not_completed_count() {
 		return $this->used_css_query->get_not_completed_count();
-	}
-
-	/**
-	 * Clear failed urls.
-	 *
-	 * @return void
-	 */
-	public function clear_failed_urls() {
-		/**
-		 * Delay before failed rucss jobs are deleted.
-		 *
-		 * @param string $delay delay before failed rucss jobs are deleted.
-		 */
-		$delay = (string) apply_filters( 'rocket_delay_remove_rucss_failed_jobs', '3 days' );
-
-		if ( '' === $delay || '0' === $delay ) {
-			$delay = '3 days';
-		}
-		$parts = explode( ' ', $delay );
-
-		$value = 3;
-		$unit  = 'days';
-
-		if ( count( $parts ) === 2 && $parts[0] >= 0 ) {
-			$value = (float) $parts[0];
-			$unit  = $parts[1];
-		}
-		$rows = $this->used_css_query->get_failed_rows( $value, $unit );
-
-		if ( empty( $rows ) ) {
-			return;
-		}
-
-		$failed_urls = [];
-
-		foreach ( $rows as  $row ) {
-			$failed_urls[] = $row->url;
-
-			$id = (int) $row->id;
-
-			if ( empty( $id ) ) {
-				continue;
-			}
-
-			$this->add_url_to_the_queue( $row->url, (bool) $row->is_mobile );
-		}
-
-		/**
-		 * Fires after clearing failed urls.
-		 *
-		 * @param array $urls Failed urls.
-		 */
-		do_action( 'rocket_rucss_after_clearing_failed_url', $failed_urls );
 	}
 
 	/**
@@ -1034,122 +688,5 @@ class UsedCSS implements LoggerAwareInterface {
 	 */
 	public function has_one_completed_row_at_least() {
 		return $this->used_css_query->get_completed_count() > 0;
-	}
-
-	/**
-	 * Process on submit jobs.
-	 *
-	 * @return void
-	 */
-	public function process_on_submit_jobs() {
-		/**
-		 * Fires at the start of the process on submit jobs.
-		 *
-		 * @param string $current_time Current time.
-		 */
-		do_action( 'rocket_rucss_process_on_submit_jobs_start', $this->wpr_clock->current_time( 'mysql', true ) );
-		if ( ! $this->is_enabled() ) {
-			$this->logger::debug( 'RUCSS: Stop processing cron iteration because option is disabled.' );
-
-			return;
-		}
-
-		/**
-		 * Pending rows cont.
-		 *
-		 * @param int $count Number of rows.
-		 */
-		$pending_job = (int) apply_filters( 'rocket_rucss_pending_jobs_cron_rows_count', 100 );
-
-		/**
-		 * Maximum processing rows.
-		 *
-		 * @param int $max Max processing rows.
-		 */
-		$max_pending_rows = (int) apply_filters( 'rocket_rucss_max_pending_jobs', 3 * $pending_job, $pending_job );
-		$rows             = $this->used_css_query->get_on_submit_jobs( $max_pending_rows );
-
-		foreach ( $rows as $row ) {
-			$response = $this->send_api( $row->url, (bool) $row->is_mobile );
-			if ( false === $response || ! isset( $response['contents'], $response['contents']['jobId'], $response['contents']['queueName'] ) ) {
-
-				$this->used_css_query->make_status_failed( (int) $row->id, '',  '' );
-				continue;
-			}
-
-			/**
-			 * Lock preload URL.
-			 *
-			 * @param string $url URL to lock
-			 */
-			do_action( 'rocket_preload_lock_url', $row->url );
-
-			$this->used_css_query->make_status_pending(
-				(int) $row->id,
-				$response['contents']['jobId'],
-				$response['contents']['queueName'],
-				(bool) $row->is_mobile
-			);
-		}
-
-		/**
-		 * Fires at the end of the process on submit jobs.
-		 *
-		 * @param string $current_time Current time.
-		 */
-		do_action( 'rocket_rucss_process_on_submit_jobs_end', $this->wpr_clock->current_time( 'mysql', true ) );
-	}
-
-	/**
-	 * Send the job to the API.
-	 *
-	 * @param string $url URL to work on.
-	 * @param bool   $is_mobile Is the page for mobile.
-	 * @return array|false
-	 */
-	protected function send_api( string $url, bool $is_mobile ) {
-		/**
-		 * Filters the RUCSS safelist
-		 *
-		 * @since 3.11
-		 *
-		 * @param array $safelist Array of safelist values.
-		 */
-		$safelist = apply_filters( 'rocket_rucss_safelist', $this->options->get( 'remove_unused_css_safelist', [] ) );
-
-		/**
-		 * Filters the styles attributes to be skipped (blocked) by RUCSS.
-		 *
-		 * @since 3.14
-		 *
-		 * @param array $skipped_attr Array of safelist values.
-		 */
-		$skipped_attr = apply_filters( 'rocket_rucss_skip_styles_with_attr', [] );
-		$skipped_attr = ( is_array( $skipped_attr ) ) ? $skipped_attr : [];
-
-		$config = [
-			'treeshake'      => 1,
-			'rucss_safelist' => $safelist,
-			'skip_attr'      => $skipped_attr,
-			'is_mobile'      => $is_mobile,
-			'is_home'        => $this->is_home( $url ),
-		];
-
-		$add_to_queue_response = $this->api->add_to_queue( $url, $config );
-		if ( 200 !== $add_to_queue_response['code'] ) {
-			$this->logger::error(
-				'Error when contacting the RUCSS API.',
-				[
-					'rucss error',
-					'url'     => $url,
-					'code'    => $add_to_queue_response['code'],
-					'message' => $add_to_queue_response['message'],
-				]
-			);
-
-			return false;
-		}
-
-		return $add_to_queue_response;
 	}
 }

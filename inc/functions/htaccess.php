@@ -52,7 +52,7 @@ function flush_rocket_htaccess( $remove_rules = false ) { // phpcs:ignore WordPr
 		if ( $perms ) {
 			chmod( $filename, $perms | 0644 ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_chmod
 		}
-	} elseif ( ! is_writable( $filename ) ) { // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_is_writable
+	} elseif ( ! is_writable( $filename ) ) {  // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_is_writable
 		return false;
 	}
 

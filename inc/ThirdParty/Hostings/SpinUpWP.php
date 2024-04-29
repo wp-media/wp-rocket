@@ -30,7 +30,7 @@ class SpinUpWP extends NullSubscriber implements Subscriber_Interface {
 			'wp_rocket_loaded'                    => 'remove_actions',
 			'after_rocket_clean_file'             => 'purge_url',
 			'rocket_rucss_after_clearing_usedcss' => 'purge_url',
-			'rocket_rucss_complete_job_status'    => 'purge_url',
+			'rocket_saas_complete_job_status'     => 'purge_url',
 			'after_rocket_clean_term'             => [ 'purge_term_urls', 10, 2 ],
 			'rocket_after_clean_terms'            => 'purge_urls',
 		];

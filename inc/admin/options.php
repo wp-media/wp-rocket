@@ -168,13 +168,17 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 	}
 
 	// Clear WP Rocket database optimize cron if the setting has been modified.
-	if ( ( isset( $newvalue['schedule_automatic_cleanup'], $oldvalue['schedule_automatic_cleanup'] ) && $newvalue['schedule_automatic_cleanup'] !== $oldvalue['schedule_automatic_cleanup'] ) || ( ( isset( $newvalue['automatic_cleanup_frequency'], $oldvalue['automatic_cleanup_frequency'] ) && $newvalue['automatic_cleanup_frequency'] !== $oldvalue['automatic_cleanup_frequency'] ) ) ) {
+	if (
+		( ( isset( $newvalue['schedule_automatic_cleanup'], $oldvalue['schedule_automatic_cleanup'] ) && $newvalue['schedule_automatic_cleanup'] !== $oldvalue['schedule_automatic_cleanup'] ) )
+		|| ( ( isset( $newvalue['automatic_cleanup_frequency'], $oldvalue['automatic_cleanup_frequency'] ) && $newvalue['automatic_cleanup_frequency'] !== $oldvalue['automatic_cleanup_frequency'] ) )
+	) {
 		if ( wp_next_scheduled( 'rocket_database_optimization_time_event' ) ) {
 			wp_clear_scheduled_hook( 'rocket_database_optimization_time_event' );
 		}
 	}
 
 	// Regenerate the minify key if JS files have been modified.
+	// phpcs:ignore Universal.Operators.StrictComparisons.LooseNotEqual
 	if (
 		( isset( $newvalue['minify_js'], $oldvalue['minify_js'] ) && $newvalue['minify_js'] != $oldvalue['minify_js'] ) // phpcs:ignore Universal.Operators.StrictComparisons.LooseNotEqual
 		||

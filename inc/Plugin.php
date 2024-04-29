@@ -7,6 +7,7 @@ use WP_Rocket\Dependencies\League\Container\Container;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Engine\Admin\API\ServiceProvider as APIServiceProvider;
 use WP_Rocket\Engine\Common\ExtractCSS\ServiceProvider as CommmonExtractCSSServiceProvider;
+use WP_Rocket\Engine\Common\JobManager\ServiceProvider as JobManagerServiceProvider;
 use WP_Rocket\Engine\Media\Lazyload\CSS\ServiceProvider as LazyloadCSSServiceProvider;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Admin\ServiceProvider as AdminLazyloadCSSServiceProvider;
 use WP_Rocket\Event_Management\Event_Manager;
@@ -29,6 +30,7 @@ use WP_Rocket\Engine\HealthCheck\ServiceProvider as HealthCheckServiceProvider;
 use WP_Rocket\Engine\Heartbeat\ServiceProvider as HeartbeatServiceProvider;
 use WP_Rocket\Engine\License\ServiceProvider as LicenseServiceProvider;
 use WP_Rocket\Engine\Media\ServiceProvider as MediaServiceProvider;
+use WP_Rocket\Engine\Media\AboveTheFold\ServiceProvider as ATFServiceProvider;
 use WP_Rocket\Engine\Optimization\AdminServiceProvider as OptimizationAdminServiceProvider;
 use WP_Rocket\Engine\Optimization\DeferJS\ServiceProvider as DeferJSServiceProvider;
 use WP_Rocket\Engine\Optimization\DelayJS\ServiceProvider as DelayJSServiceProvider;
@@ -38,6 +40,7 @@ use WP_Rocket\Engine\Optimization\ServiceProvider as OptimizationServiceProvider
 use WP_Rocket\Engine\Plugin\ServiceProvider as PluginServiceProvider;
 use WP_Rocket\Engine\Preload\Links\ServiceProvider as PreloadLinksServiceProvider;
 use WP_Rocket\Engine\Preload\ServiceProvider as PreloadServiceProvider;
+use WP_Rocket\Engine\Saas\ServiceProvider as SaasAdminServiceProvider;
 use WP_Rocket\Engine\Support\ServiceProvider as SupportServiceProvider;
 use WP_Rocket\ServiceProvider\Common_Subscribers;
 use WP_Rocket\ServiceProvider\Options as OptionsServiceProvider;
@@ -298,6 +301,9 @@ class Plugin {
 		$this->container->addServiceProvider( new CommmonExtractCSSServiceProvider() );
 		$this->container->addServiceProvider( new LazyloadCSSServiceProvider() );
 		$this->container->addServiceProvider( new DebugServiceProvider() );
+		$this->container->addServiceProvider( new ATFServiceProvider() );
+		$this->container->addServiceProvider( new JobManagerServiceProvider() );
+		$this->container->addServiceProvider( new SaasAdminServiceProvider() );
 
 		$common_subscribers = [
 			'license_subscriber',
@@ -334,7 +340,6 @@ class Plugin {
 			'rucss_admin_subscriber',
 			'rucss_option_subscriber',
 			'rucss_frontend_subscriber',
-			'rucss_cron_subscriber',
 			'preload_subscriber',
 			'preload_front_subscriber',
 			'preload_links_admin_subscriber',
@@ -379,8 +384,16 @@ class Plugin {
 			'wpgeotargeting',
 			'lazyload_css_subscriber',
 			'weglot',
+			'atf_subscriber',
+			'cron_subscriber',
+			'atf_admin_subscriber',
+			'atf_ajax_subscriber',
 			'contactform7',
 			'debug_subscriber',
+			'rucss_cron_subscriber',
+			'atf_cron_subscriber',
+			'saas_admin_subscriber',
+			'warmup_subscriber',
 		];
 
 		$host_type = HostResolver::get_host_service();

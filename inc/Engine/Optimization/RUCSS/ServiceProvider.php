@@ -3,23 +3,18 @@ namespace WP_Rocket\Engine\Optimization\RUCSS;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\{Database, OptionSubscriber, Settings};
-use WP_Rocket\Engine\Common\Clock\WPRClock;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber as AdminSubscriber;
 use WP_Rocket\Engine\Optimization\RUCSS\Context\RUCSSContext;
 use WP_Rocket\Engine\Optimization\RUCSS\Context\RUCSSOptimizeContext;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\Filesystem;
-use WP_Rocket\Engine\Optimization\RUCSS\Controller\Queue;
+use WP_Rocket\Engine\Common\JobManager\Queue\Queue;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS as UsedCSSController;
-use WP_Rocket\Engine\Optimization\RUCSS\Cron\Subscriber as CronSubscriber;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS as UsedCSSQuery;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS as UsedCSSTable;
-use WP_Rocket\Engine\Optimization\RUCSS\Frontend\APIClient;
 use WP_Rocket\Engine\Optimization\RUCSS\Frontend\Subscriber as FrontendSubscriber;
-use WP_Rocket\Engine\Optimization\RUCSS\Strategy\Context\RetryContext;
-use WP_Rocket\Engine\Optimization\RUCSS\Strategy\Factory\StrategyFactory;
-use WP_Rocket\Engine\Optimization\RUCSS\Strategy\Strategies\DefaultProcess;
-use WP_Rocket\Engine\Optimization\RUCSS\Strategy\Strategies\JobSetFail;
-use WP_Rocket\Engine\Optimization\RUCSS\Strategy\Strategies\ResetRetryProcess;
+use WP_Rocket\Engine\Optimization\RUCSS\Jobs\{Manager, Factory};
+use WP_Rocket\Engine\Optimization\RUCSS\Context\RUCSSContextSaas;
+use WP_Rocket\Engine\Optimization\RUCSS\Cron\Subscriber as CronSubscriber;
 
 /**
  * Service provider for the WP Rocket RUCSS
@@ -35,19 +30,18 @@ class ServiceProvider extends AbstractServiceProvider {
 		'rucss_database',
 		'rucss_option_subscriber',
 		'rucss_admin_subscriber',
-		'rucss_frontend_api_client',
 		'rucss_used_css',
 		'rucss_used_css_query',
 		'rucss_frontend_subscriber',
 		'rucss_queue',
 		'rucss_filesystem',
-		'rucss_cron_subscriber',
 		'rucss_used_css_controller',
-		'rucss_retry_strategy_factory',
-		'rucss_retry_strategy_job_found_no_result',
-		'rucss_retry_strategy_job_not_found',
-		'rucss_retry_strategy_reset_retry',
-		'rucss_retry_strategy_context',
+		'rucss_manager',
+		'rucss_context_saas',
+		'rucss_factory',
+		'rucss_cron_subscriber',
+		'rucss_context',
+		'rucss_optimize_context',
 	];
 
 	/**
@@ -78,8 +72,6 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'rucss_usedcss_table' ) );
 
 		$this->getContainer()->add( 'rucss_used_css_query', UsedCSSQuery::class );
-		$this->getContainer()->add( 'rucss_frontend_api_client', APIClient::class )
-			->addArgument( $this->getContainer()->get( 'options' ) );
 		$this->getContainer()->add( 'rucss_queue', Queue::class );
 		$this->getContainer()->add( 'rucss_filesystem', Filesystem::class )
 			->addArgument( rocket_get_constant( 'WP_ROCKET_USED_CSS_PATH' ) )
@@ -92,34 +84,34 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'rucss_optimize_context', RUCSSOptimizeContext::class )
 			->addArgument( $this->getContainer()->get( 'options' ) );
 
-		$this->getContainer()->add( 'wpr_clock', WPRClock::class );
+		$this->getContainer()->add( 'rucss_context_saas', RUCSSContextSaas::class )
+			->addArgument( $this->getContainer()->get( 'options' ) );
 
-		$this->getContainer()->add( 'rucss_retry_strategy_factory', StrategyFactory::class )
-			->addArgument( $this->getContainer()->get( 'rucss_used_css_query' ) )
-			->addArgument( $this->getContainer()->get( 'wpr_clock' ) );
+		$this->getContainer()->add( 'rucss_manager', Manager::class )
+			->addArguments(
+				[
+					$this->getContainer()->get( 'rucss_used_css_query' ),
+					$this->getContainer()->get( 'rucss_filesystem' ),
+					$this->getContainer()->get( 'rucss_context_saas' ),
+					$this->getContainer()->get( 'options' ),
+				]
+				);
+
+		$this->getContainer()->addShared( 'rucss_factory', Factory::class )
+			->addArguments(
+				[
+					$this->getContainer()->get( 'rucss_manager' ),
+					$this->getContainer()->get( 'rucss_usedcss_table' ),
+				]
+				);
 
 		$this->getContainer()->add( 'rucss_used_css_controller', UsedCSSController::class )
 			->addArgument( $this->getContainer()->get( 'options' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_used_css_query' ) )
-			->addArgument( $this->getContainer()->get( 'rucss_frontend_api_client' ) )
-			->addArgument( $this->getContainer()->get( 'rucss_queue' ) )
 			->addArgument( $this->getContainer()->get( 'dynamic_lists_defaultlists_data_manager' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_filesystem' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_context' ) )
-			->addArgument( $this->getContainer()->get( 'rucss_optimize_context' ) )
-			->addArgument( $this->getContainer()->get( 'rucss_retry_strategy_factory' ) )
-			->addArgument( $this->getContainer()->get( 'wpr_clock' ) );
-
-		$this->getContainer()->add( 'rucss_retry_strategy_default_process', DefaultProcess::class )
-			->addArgument( $this->getContainer()->get( 'rucss_used_css_query' ) );
-
-		$this->getContainer()->add( 'rucss_retry_strategy_job_set_fail', JobSetFail::class )
-			->addArgument( $this->getContainer()->get( 'rucss_used_css_query' ) );
-
-		$this->getContainer()->add( 'rucss_retry_strategy_reset_retry', ResetRetryProcess::class )
-			->addArgument( $this->getContainer()->get( 'rucss_used_css_query' ) );
-
-		$this->getContainer()->add( 'rucss_retry_strategy_context', RetryContext::class );
+			->addArgument( $this->getContainer()->get( 'rucss_manager' ) );
 
 		$this->getContainer()->addShared( 'rucss_option_subscriber', OptionSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'rucss_settings' ) );
@@ -131,8 +123,9 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->addShared( 'rucss_frontend_subscriber', FrontendSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'rucss_used_css_controller' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_context' ) );
+
 		$this->getContainer()->addShared( 'rucss_cron_subscriber', CronSubscriber::class )
-			->addArgument( $this->getContainer()->get( 'rucss_used_css_controller' ) )
-			->addArgument( $this->getContainer()->get( 'rucss_database' ) );
+			->addArgument( $this->getContainer()->get( 'job_processor' ) )
+			->addArgument( $this->getContainer()->get( 'rucss_used_css_query' ) );
 	}
 }

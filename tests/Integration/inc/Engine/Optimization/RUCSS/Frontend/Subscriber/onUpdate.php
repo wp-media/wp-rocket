@@ -6,6 +6,8 @@ use WP_Rocket\Tests\Integration\TestCase;
 
 /**
  * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Frontend\Subscriber::on_update
+ * 
+ * @group RUCSS
  */
 class Test_onUpdate extends TestCase {
 
