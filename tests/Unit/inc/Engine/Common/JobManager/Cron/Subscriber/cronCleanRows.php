@@ -31,7 +31,7 @@ class Test_CronCleanRows extends TestCase {
 		$this->factories = [
 			Mockery::mock( RUCSSFactory::class ),
 		];
-		
+
 		$this->subscriber = new Subscriber( Mockery::mock( JobProcessor::class ), $this->factories );
 	}
 
@@ -51,7 +51,7 @@ class Test_CronCleanRows extends TestCase {
 				$factory->expects()
 					->manager()
 					->andReturn( $manager );
-					
+
 				if ( $config['is_allowed'] ) {
 					$table = $this->getMockBuilder( AbstractTable::class )
 						->disableOriginalConstructor()
@@ -68,7 +68,7 @@ class Test_CronCleanRows extends TestCase {
 		} else {
 			foreach ( $this->factories as $factory ) {
 				$factory->expects()->manager()->never();
-				$factory->expects()->table()->never();	
+				$factory->expects()->table()->never();
 			}
 		}
 

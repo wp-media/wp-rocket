@@ -127,6 +127,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 				[ 'add_cache_reject_uri_to_excluded' ],
 			],
 			'rocket_rucss_after_clearing_failed_url' => [ 'clean_urls', 20 ],
+			'rocket_atf_after_clearing_failed_url'   => [ 'clean_urls', 20 ],
 			'transition_post_status'                 => [ 'remove_private_post', 10, 3 ],
 			'rocket_preload_exclude'                 => [ 'exclude_private_url', 10, 2 ],
 		];
