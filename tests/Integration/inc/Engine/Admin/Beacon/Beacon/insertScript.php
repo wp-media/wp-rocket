@@ -7,7 +7,7 @@ use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Admin\Beacon\Beacon::insert_script
+ * Test class covering \WP_Rocket\Engine\Admin\Beacon\Beacon::insert_script
  *
  * @group  Beacon
  * @group  AdminOnly

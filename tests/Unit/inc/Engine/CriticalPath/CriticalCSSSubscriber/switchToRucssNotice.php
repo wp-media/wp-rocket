@@ -15,7 +15,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 use Brain\Monkey\Filters;
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::switch_to_rucss_notice
+ * Test class covering \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::switch_to_rucss_notice
  */
 class Test_switchToRucssNotice extends TestCase {
 

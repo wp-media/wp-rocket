@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Media\AboveTheFold\Frontend\Subscriber::lcp
+ * Test class covering \WP_Rocket\Engine\Media\AboveTheFold\Frontend\Subscriber::lcp
  *
  * @group AboveTheFold
  */

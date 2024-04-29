@@ -7,7 +7,7 @@ use WP_Rocket\Engine\Cache\AdminSubscriber;
 use WP_Rocket\Tests\Integration\AdminTestCase;
 
 /**
- * @covers WP_Rocket\Engine\Cache\AdminSubscriber::add_purge_term_link
+ * Test class covering WP_Rocket\Engine\Cache\AdminSubscriber::add_purge_term_link
  *
  * @group  AdminOnly
  * @group  Cache

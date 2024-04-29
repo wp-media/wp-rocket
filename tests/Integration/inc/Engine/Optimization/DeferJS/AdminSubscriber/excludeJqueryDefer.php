@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\DeferJS\AdminSubsc
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\DeferJS\AdminSubscriber::exclude_jquery_defer
+ * Test class covering \WP_Rocket\Engine\Optimization\DeferJS\AdminSubscriber::exclude_jquery_defer
  *
  * @group  DeferJS
  * @group  AdminOnly

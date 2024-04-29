@@ -5,7 +5,7 @@ use WP_Rocket\Tests\Integration\WPThemeTestcase;
 use WP_Rocket\ThirdParty\Themes\Divi;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Divi::disable_divi_jquery_body
+ * Test class covering \WP_Rocket\ThirdParty\Divi::disable_divi_jquery_body
  *
  * @group Themes
  */

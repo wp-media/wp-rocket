@@ -106,23 +106,13 @@ class AdminBar extends Abstract_Render {
 	 * @return void
 	 */
 	public function add_clean_url_menu_item( WP_Admin_Bar $wp_admin_bar ) {
-		global $pagenow, $post;
+		global $post;
 
 		if ( 'local' === wp_get_environment_type() ) {
 			return;
 		}
 
-		if (
-			is_admin()
-			&&
-			(
-				! $post
-				||
-				'post.php' !== $pagenow
-				||
-				! isset( $_GET['action'], $_GET['post'] )  // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-			)
-		) {
+		if ( is_admin() ) {
 			return;
 		}
 
@@ -170,13 +160,13 @@ class AdminBar extends Abstract_Render {
 		$title = __( 'Clear Critical Images of this URL', 'rocket' );
 
 		if ( $this->rucss_url_context->is_allowed() ) {
-			$title = __( 'Clean Used CSS of this URL', 'rocket' );
+			$title = __( 'Clear Used CSS of this URL', 'rocket' );
 		}
 
 		$wp_admin_bar->add_menu(
 			[
 				'parent' => 'wp-rocket',
-				'id'     => 'clear-saaas-url',
+				'id'     => 'clear-saas-url',
 				'title'  => $title,
 				'href'   => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . $referer ), $action ),
 			]
@@ -201,7 +191,7 @@ class AdminBar extends Abstract_Render {
 		}
 
 		$title = __( 'Critical Images Cache', 'rocket' );
-		$label = esc_html__( 'Clean Critical Images', 'rocket' );
+		$label = esc_html__( 'Clear Critical Images', 'rocket' );
 
 		if ( $this->rucss_url_context->is_allowed() ) {
 			$title = __( 'Remove Used CSS Cache', 'rocket' );

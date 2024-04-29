@@ -3,10 +3,12 @@
 namespace WP_Rocket\Engine\Media\Lazyload\CSS\Front;
 
 use WP_Rocket\Engine\Optimization\RegexTrait;
+use WP_Rocket\Engine\Optimization\UrlTrait;
 
 class Extractor {
 
 	use RegexTrait;
+	use UrlTrait;
 
 	/**
 	 * Comment mapping.
@@ -341,15 +343,5 @@ class Extractor {
 		$home_host = wp_parse_url( rocket_get_home_url(), PHP_URL_HOST );
 
 		return $host !== $home_host;
-	}
-
-	/**
-	 * Check if the URL is relative.
-	 *
-	 * @param string $url URL to check.
-	 * @return bool
-	 */
-	protected function is_relative( string $url ): bool {
-		return preg_match( '/^\./', $url );
 	}
 }

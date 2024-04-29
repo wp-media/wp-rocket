@@ -10,7 +10,7 @@ use WP_Rocket\Engine\Media\AboveTheFold\AJAX\Controller;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers WP_Rocket\Engine\Media\AboveTheFold\AJAX\Controller::add_lcp_data
+ * Test class covering WP_Rocket\Engine\Media\AboveTheFold\AJAX\Controller::add_lcp_data
  *
  * @group AboveTheFold
  */
@@ -18,6 +18,8 @@ class Test_AddLcpData extends TestCase {
 	private $query;
 	private $controller;
 	private $context;
+
+	private $temp_post = [];
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -27,10 +29,12 @@ class Test_AddLcpData extends TestCase {
 		$this->query      = $this->createPartialMock( AboveTheFold::class, [ 'add_item' ] );
 		$this->context    = Mockery::mock( Context::class );
 		$this->controller = new Controller( $this->query, $this->context );
+		$this->temp_post = $_POST;
 	}
 
 	protected function tearDown(): void {
 		unset( $_POST );
+		$_POST = $this->temp_post;
 
 		parent::tearDown();
 	}
@@ -39,10 +43,12 @@ class Test_AddLcpData extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
+		$this->stubEscapeFunctions();
+
 		$_POST = [
-			'url'       => $config['url'],
-			'is_mobile' => $config['is_mobile'],
-			'images'    => $config['images'],
+			'url'       => addslashes( $config['url'] ),
+			'is_mobile' => addslashes( $config['is_mobile'] ),
+			'images'    => addslashes( $config['images'] ),
 		];
 
 		Functions\expect( 'check_ajax_referer' )
@@ -55,11 +61,17 @@ class Test_AddLcpData extends TestCase {
 			->once()
 			->andReturn( $config['filter'] );
 
-		Functions\when( 'wp_unslash' )
-			->returnArg();
+		Functions\when( 'wp_unslash' )->alias(
+			function ( $value ) {
+				return is_string( $value ) ? stripslashes( $value ) : $value;
+			}
+		);
 
-		Functions\when( 'sanitize_text_field' )
-			->returnArg();
+		Functions\when( 'sanitize_text_field' )->alias(
+			function ( $value ) {
+				return is_string( $value ) ? strip_tags( $value ) : $value;
+			}
+		);
 
 		Functions\when( 'current_time' )
 			->justReturn( $expected['item']['last_accessed'] );

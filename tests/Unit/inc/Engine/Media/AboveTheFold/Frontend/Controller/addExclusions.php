@@ -13,7 +13,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Tests\Fixtures\inc\Engine\Common\JobManager\Manager;
 
 /**
- * @covers \WP_Rocket\Engine\Media\AboveTheFold\Frontend\Controller::add_exclusions
+ * Test class covering \WP_Rocket\Engine\Media\AboveTheFold\Frontend\Controller::add_exclusions
  *
  * @group Media
  * @group AboveTheFold
@@ -46,6 +46,8 @@ class Test_addExclusions extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $exclusions, $expected ) {
+		$this->stubEscapeFunctions();
+
 		$this->context->shouldReceive( 'is_allowed' )
 			->atMost()
 			->once()

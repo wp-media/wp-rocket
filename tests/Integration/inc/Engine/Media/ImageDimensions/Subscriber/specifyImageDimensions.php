@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Media\ImageDimensions\Subscribe
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Media\ImageDimensions\Subscriber::specify_image_dimensions
+ * Test class covering \WP_Rocket\Engine\Media\ImageDimensions\Subscriber::specify_image_dimensions
  * @group  ImageDimensions
  * @group  Media
  */

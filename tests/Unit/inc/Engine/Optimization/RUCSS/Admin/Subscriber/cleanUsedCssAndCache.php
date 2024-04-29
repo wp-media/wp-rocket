@@ -13,7 +13,7 @@ use WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::clean_used_css_and_cache
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::clean_used_css_and_cache
  *
  * @uses   ::rocket_clean_domain
  *
@@ -58,14 +58,14 @@ class Test_CleanUsedCssAndCache extends FilesystemTestCase {
 			Functions\expect( 'set_transient' )
 				->once()
 				->with(
-					'rocket_rucss_processing',
+					'rocket_saas_processing',
 					Mockery::type( 'int' ),
 					90
 				);
 
 			Functions\expect( 'rocket_renew_box' )
 				->once()
-				->with( 'rucss_success_notice' );
+				->with( 'saas_success_notice' );
 		} else {
 			$this->database
 				->shouldReceive( 'truncate_used_css_table' )

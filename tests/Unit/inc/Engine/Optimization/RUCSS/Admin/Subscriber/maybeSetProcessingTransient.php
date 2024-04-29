@@ -14,7 +14,7 @@ use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 use WPDieException;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::maybe_set_processing_transient
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::maybe_set_processing_transient
  *
  * @group  RUCSS
  */
@@ -35,14 +35,14 @@ class Test_MaybeSetProcessingTransient extends TestCase {
 			Functions\expect( 'set_transient' )
 				->once()
 				->with(
-					'rocket_rucss_processing',
+					'rocket_saas_processing',
 					Mockery::type( 'int' ),
 					90
 				);
 
 			Functions\expect( 'rocket_renew_box' )
 				->once()
-				->with( 'rucss_success_notice' );
+				->with( 'saas_success_notice' );
 		} else {
 			Functions\expect( 'set_transient' )->never();
 			Functions\expect( 'rocket_renew_box' )->never();

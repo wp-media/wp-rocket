@@ -11,7 +11,7 @@ use WP_Rocket\Engine\License\Renewal;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\License\Renewal::dismiss_renewal_expired_banner
+ * Test class covering \WP_Rocket\Engine\License\Renewal::dismiss_renewal_expired_banner
  *
  * @group License
  */

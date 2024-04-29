@@ -238,6 +238,8 @@ class JobProcessor implements LoggerAwareInterface {
 	 * @return void
 	 */
 	public function process_on_submit_jobs() {
+		$this->logger::debug( 'Start processing on submit jobs for adding jobs to queue.' );
+
 		/**
 		 * Fires at the start of the process on submit jobs.
 		 *
@@ -312,6 +314,7 @@ class JobProcessor implements LoggerAwareInterface {
 			);
 		}
 
+		$this->logger::debug( 'End processing on submit jobs for adding jobs to queue.' );
 		/**
 		 * Fires at the end of the process pending jobs.
 		 *
@@ -335,7 +338,6 @@ class JobProcessor implements LoggerAwareInterface {
 	 */
 	protected function send_api( string $url, bool $is_mobile, string $optimization_type ) {
 		$config = [
-			'treeshake' => 1,
 			'is_mobile' => $is_mobile,
 			'is_home'   => Utils::is_home( $url ),
 		];

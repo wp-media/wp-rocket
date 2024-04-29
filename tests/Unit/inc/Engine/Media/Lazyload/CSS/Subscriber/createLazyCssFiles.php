@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\Engine\Media\Lazyload\CSS\Subscriber::create_lazy_css_files
+ * Test class covering \WP_Rocket\Engine\Media\Lazyload\CSS\Subscriber::create_lazy_css_files
  */
 class Test_createLazyCssFiles extends TestCase {
 

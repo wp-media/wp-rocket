@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Integration\IsolateHookTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::maybe_delete_transient
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::maybe_delete_transient
  */
 class Test_maybeDeleteTransient extends TestCase {
 

@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Common\JobManager\Cron\Subscriber::cron_remove_failed_jobs
+ * Test class covering \WP_Rocket\Engine\Common\JobManager\Cron\Subscriber::cron_remove_failed_jobs
  *
  * @group  JobManager
  */

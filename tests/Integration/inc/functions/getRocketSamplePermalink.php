@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Integration\DBTrait;
 use WPMedia\PHPUnit\Integration\TestCase;
 
 /**
- * @covers ::get_rocket_sample_permalink
+ * Test class covering ::get_rocket_sample_permalink
  * @group Functions
  * @group Posts
  */

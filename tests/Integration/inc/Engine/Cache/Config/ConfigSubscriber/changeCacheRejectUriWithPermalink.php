@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Cache\Config\ConfigSubscriber;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Cache\Config\ConfigSubscriber::change_cache_reject_uri_with_permalink
+ * Test class covering \WP_Rocket\Engine\Cache\Config\ConfigSubscriber::change_cache_reject_uri_with_permalink
  */
 class Test_ChangeCacheRejectUriWithPermalink extends TestCase {
 	/**

@@ -6,7 +6,7 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Cache\PurgeActionsSubscriber:purge_cache_reject_uri_partially
+ * Test class covering \WP_Rocket\Engine\Cache\PurgeActionsSubscriber:purge_cache_reject_uri_partially
  */
 class Test_PurgeCacheRejectUriPartially extends FilesystemTestCase {
     protected $path_to_test_data = '/inc/Engine/Cache/Purge/purgeCacheRejectUriPartially.php';

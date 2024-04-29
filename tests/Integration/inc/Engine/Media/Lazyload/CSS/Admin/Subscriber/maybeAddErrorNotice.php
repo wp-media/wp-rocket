@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Media\Lazyload\CSS\Admin\Subscr
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Media\Lazyload\CSS\Admin\Subscriber::maybe_add_error_notice
+ * Test class covering \WP_Rocket\Engine\Media\Lazyload\CSS\Admin\Subscriber::maybe_add_error_notice
  * @group AdminOnly
  */
 class Test_maybeAddErrorNotice extends FilesystemTestCase {

@@ -8,7 +8,7 @@ use Mockery;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\Ecommerce\WooCommerceSubscriber::show_notempty_product_gallery_with_delayJS
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\Ecommerce\WooCommerceSubscriber::show_notempty_product_gallery_with_delayJS
  * @group WooCommerce
  * @group ThirdParty
  */

@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Integration\IsolateHookTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\SEO\RankMathSEO::rocket_sitemap
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\SEO\RankMathSEO::rocket_sitemap
  *
  * @group  RankMathSEO
  * @group  ThirdParty

@@ -12,7 +12,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\Engine\Saas\Admin\Notices::display_saas_error_notice
+ * Test class covering \WP_Rocket\Engine\Saas\Admin\Notices::display_saas_error_notice
  * 
  * @group Saas
  */

@@ -5,17 +5,10 @@ use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvi
 
 /**
  * Service provider for the WP Rocket optimizations
- *
- * @since 3.5.3
  */
 class AdminServiceProvider extends AbstractServiceProvider {
-
 	/**
-	 * The provides array is a way to let the container
-	 * know that a service is provided by this service
-	 * provider. Every service that is registered via
-	 * this service provider must have an alias added
-	 * to this array or it will be ignored.
+	 * Array of services provided by this service provider
 	 *
 	 * @var array
 	 */
@@ -27,21 +20,32 @@ class AdminServiceProvider extends AbstractServiceProvider {
 	];
 
 	/**
+	 * Check if the service provider provides a specific service.
+	 *
+	 * @param string $id The id of the service.
+	 *
+	 * @return bool
+	 */
+	public function provides( string $id ): bool {
+		return in_array( $id, $this->provides, true );
+	}
+
+	/**
 	 * Registers items with the container
 	 *
 	 * @return void
 	 */
-	public function register() {
-		$this->getContainer()->share( 'minify_css_admin_subscriber', 'WP_Rocket\Engine\Optimization\Minify\CSS\AdminSubscriber' )
+	public function register(): void {
+		$this->getContainer()->addShared( 'minify_css_admin_subscriber', 'WP_Rocket\Engine\Optimization\Minify\CSS\AdminSubscriber' )
 			->addTag( 'admin_subscriber' );
 		$this->getContainer()->add( 'google_fonts_settings', 'WP_Rocket\Engine\Optimization\GoogleFonts\Admin\Settings' )
 			->addArgument( $this->getContainer()->get( 'options' ) )
 			->addArgument( $this->getContainer()->get( 'beacon' ) )
 			->addArgument( $this->getContainer()->get( 'template_path' ) );
-		$this->getContainer()->share( 'google_fonts_admin_subscriber', 'WP_Rocket\Engine\Optimization\GoogleFonts\Admin\Subscriber' )
+		$this->getContainer()->addShared( 'google_fonts_admin_subscriber', 'WP_Rocket\Engine\Optimization\GoogleFonts\Admin\Subscriber' )
 			->addArgument( $this->getContainer()->get( 'google_fonts_settings' ) )
 			->addTag( 'admin_subscriber' );
-		$this->getContainer()->share( 'minify_admin_subscriber', 'WP_Rocket\Engine\Optimization\Minify\AdminSubscriber' )
+		$this->getContainer()->addShared( 'minify_admin_subscriber', 'WP_Rocket\Engine\Optimization\Minify\AdminSubscriber' )
 			->addTag( 'admin_subscriber' )
 			->addArgument( $this->getContainer()->get( 'options' ) );
 	}

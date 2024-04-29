@@ -7,7 +7,7 @@ use Brain\Monkey\Functions;
 use WP_Rocket\ThirdParty\Themes\Shoptimizer;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Themes\Shoptimizer::exclude_jquery_deferjs_with_cart_drawer
+ * Test class covering \WP_Rocket\ThirdParty\Themes\Shoptimizer::exclude_jquery_deferjs_with_cart_drawer
  *
  * @group Themes
  */

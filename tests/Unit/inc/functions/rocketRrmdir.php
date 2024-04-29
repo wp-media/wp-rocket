@@ -6,7 +6,7 @@ use Brain\Monkey\Actions;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers ::rocket_rrmdir
+ * Test class covering ::rocket_rrmdir
  * @uses  ::rocket_direct_filesystem
  *
  * @group Functions

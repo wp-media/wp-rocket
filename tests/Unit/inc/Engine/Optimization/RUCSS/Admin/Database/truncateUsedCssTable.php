@@ -8,7 +8,7 @@ use WP_Rocket\Engine\Optimization\RUCSS\Admin\Database;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Admin\Database::truncate_used_css_table
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Admin\Database::truncate_used_css_table
  *
  * @group  RUCSS
  */

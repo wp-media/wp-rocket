@@ -11,7 +11,7 @@ use WP_Rocket\Engine\Saas\Admin\Notices;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Saas\Admin\Notices::add_localize_script_data
+ * Test class covering \WP_Rocket\Engine\Saas\Admin\Notices::add_localize_script_data
  *
  * @group  Saas
  */

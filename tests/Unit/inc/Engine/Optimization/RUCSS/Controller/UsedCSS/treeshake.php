@@ -12,7 +12,7 @@ use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\DataManager;
 use WP_Rocket\Tests\Fixtures\inc\Engine\Common\JobManager\Manager;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS::treeshake
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS::treeshake
  *
  * @group  RUCSS
  */
@@ -23,6 +23,7 @@ class Test_Treeshake extends TestCase {
 	protected $data_manager;
 	protected $filesystem;
 	protected $context;
+	protected $usedCss;
 	protected $manager;
 
 	/**
@@ -48,7 +49,7 @@ class Test_Treeshake extends TestCase {
 		$this->usedCss = Mockery::mock(
 			UsedCSS::class . '[is_allowed,update_last_accessed]',
 			[
-				$this->options, 
+				$this->options,
 				$this->usedCssQuery,
 				$this->data_manager,
 				$this->filesystem,

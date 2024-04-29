@@ -7,7 +7,6 @@ return [
 				'html'    => 'some html',
 				'url'     => 'http://example.com/path/to/style.css',
 				'options' => [
-					'treeshake'      => 1,
 					'wpr_email'      => 'rocketeer@wp-rocket.me',
 					'wpr_key'        => 'SuperSecretRocketeerKey',
 					'rucss_safelist' => [ 'http://example.com/my/safe/css.css' ],
@@ -52,7 +51,6 @@ return [
 				'html'    => 'some html',
 				'url'     => 'http://example.com/path/to/style.css',
 				'options' => [
-					'treeshake'      => 1,
 					'wpr_email'      => 'rocketeer@wp-rocket.me',
 					'wpr_key'        => 'SuperSecretRocketeerKey',
 					'rucss_safelist' => [ 'http://example.com/my/safe/css.css' ],
@@ -93,7 +91,6 @@ HTML
 				'html'    => 'some html',
 				'url'     => 'http://example.com/path/to/style.css',
 				'options' => [
-					'treeshake'      => 1,
 					'wpr_email'      => 'rocketeer@wp-rocket.me',
 					'wpr_key'        => 'SuperSecretRocketeerKey',
 					'rucss_safelist' => [ 'http://example.com/my/safe/css.css' ],

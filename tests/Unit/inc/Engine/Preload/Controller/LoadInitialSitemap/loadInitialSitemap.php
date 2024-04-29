@@ -14,7 +14,7 @@ use WP_Sitemaps;
 use WP_Sitemaps_Index;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\Controller\LoadInitialSitemap::load_initial_sitemap
+ * Test class covering \WP_Rocket\Engine\Preload\Controller\LoadInitialSitemap::load_initial_sitemap
  * @group  Preload
  */
 class Test_LoadInitialSitemap extends TestCase {

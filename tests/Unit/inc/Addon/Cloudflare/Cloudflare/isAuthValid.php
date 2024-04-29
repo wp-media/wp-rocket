@@ -11,7 +11,7 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers WP_Rocket\Addon\Cloudflare\Cloudflare::is_auth_valid
+ * Test class covering WP_Rocket\Addon\Cloudflare\Cloudflare::is_auth_valid
  *
  * @group Cloudflare
  */

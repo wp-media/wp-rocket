@@ -9,7 +9,7 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
 use WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\AdminTrait;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\Admin\Post::cpcss_actions
+ * Test class covering \WP_Rocket\Engine\CriticalPath\Admin\Post::cpcss_actions
  * @uses   ::rocket_direct_filesystem
  *
  * @group  CriticalPath
