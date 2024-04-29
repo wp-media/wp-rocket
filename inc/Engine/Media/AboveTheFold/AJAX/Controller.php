@@ -5,8 +5,11 @@ namespace WP_Rocket\Engine\Media\AboveTheFold\AJAX;
 
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Queries\AboveTheFold as ATFQuery;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
+use WP_Rocket\Engine\Optimization\UrlTrait;
 
 class Controller {
+	use UrlTrait;
+
 	/**
 	 * ATFQuery instance
 	 *
@@ -47,19 +50,38 @@ class Controller {
 
 		$url       = isset( $_POST['url'] ) ? untrailingslashit( esc_url_raw( wp_unslash( $_POST['url'] ) ) ) : '';
 		$is_mobile = isset( $_POST['is_mobile'] ) ? filter_var( wp_unslash( $_POST['is_mobile'] ), FILTER_VALIDATE_BOOLEAN ) : false;
-		$images    = isset( $_POST['images'] ) ? json_decode( sanitize_text_field( wp_unslash( $_POST['images'] ) ) ) : '';
+		$images    = isset( $_POST['images'] ) ? json_decode( sanitize_text_field( wp_unslash( $_POST['images'] ) ) ) : [];
 		$lcp       = 'not found';
 		$viewport  = [];
 
+		/**
+		 * Filters the maximum number of ATF images being saved into the database.
+		 *
+		 * @param int $max_number Maximum number to allow.
+		 * @param string $url Current page url.
+		 * @param string[]|array $images Current list of ATF images.
+		 */
+		$max_atf_images_number = (int) apply_filters( 'rocket_atf_images_number', 20, $url, $images );
+		if ( 0 >= $max_atf_images_number ) {
+			$max_atf_images_number = 1;
+		}
+
 		$keys = [ 'bg_set', 'src' ];
 
-		foreach ( $images as $image ) {
+		foreach ( (array) $images as $image ) {
 			if ( isset( $image->type ) ) {
-				$object = $this->create_object( $image, $keys );
-				if ( 'lcp' === $image->label && null !== $object ) {
-					$lcp = $object;
-				} elseif ( 'above-the-fold' === $image->label && null !== $object ) {
-					$viewport[] = $object;
+				$image_object = $this->create_object( $image, $keys );
+
+				if ( 'lcp' === $image->label && null !== $image_object ) {
+					$lcp = $image_object;
+				} elseif ( 'above-the-fold' === $image->label && null !== $image_object ) {
+					if ( 0 === $max_atf_images_number ) {
+						continue;
+					}
+
+					$viewport[] = $image_object;
+
+					--$max_atf_images_number;
 				}
 			}
 		}
@@ -100,17 +122,17 @@ class Controller {
 	 */
 	private function create_object( $image, $keys ) {
 		$object       = new \stdClass();
-		$object->type = $image->type;
+		$object->type = $image->type ?? 'img';
 
-		switch ( $image->type ) {
+		switch ( $object->type ) {
 			case 'img-srcset':
 				// If the type is 'img-srcset', add all the required parameters to the object.
-				$object->src    = $image->src;
+				$object->src    = $this->is_relative( $image->src ) ? sanitize_text_field( $image->src ) : esc_url_raw( $image->src );
 				$object->srcset = $image->srcset;
 				$object->sizes  = $image->sizes;
 				break;
 			case 'picture':
-				$object->src     = $image->src;
+				$object->src     = $this->is_relative( $image->src ) ? sanitize_text_field( $image->src ) : esc_url_raw( $image->src );
 				$object->sources = $image->sources;
 				break;
 			default:
