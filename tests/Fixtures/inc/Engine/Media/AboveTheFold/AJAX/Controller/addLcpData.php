@@ -16,6 +16,7 @@ $long_array_2 = [
 for ( $i = 1; $i <= 50; $i++ ) {
 	$long_array[] = (object) [
 		'label' => 'above-the-fold',
+		'type'  => 'img',
 		'src'   => 'http://example.org/above-the-fold-' . $i . '.jpg',
 	];
 	$long_array_2[] = (object) [
@@ -219,10 +220,12 @@ return [
 				[
 					(object) [
 						'label' => 'lcp',
+						'type'  => 'img',
 						'src'   => 'http://example.org/lcp.jpg<script>alert("Test XSS");</script>',
 					],
 					(object) [
 						'label' => 'above-the-fold',
+						'type'  => 'img',
 						'src'   => 'http://example.org/above-the-fold.jpg<script>alert("Test XSS");</script>',
 					],
 				]
@@ -309,7 +312,7 @@ return [
 				'url'           => 'http://example.org',
 				'is_mobile'     => false,
 				'status'        => 'completed',
-				'lcp'           => '"not found"',
+				'lcp'           => 'not found',
 				'viewport'      => '[]',
 				'last_accessed' => '2024-01-01 00:00:00',
 			],
@@ -318,7 +321,7 @@ return [
 				'url'           => 'http://example.org',
 				'is_mobile'     => false,
 				'status'        => 'completed',
-				'lcp'           => '"not found"',
+				'lcp'           => 'not found',
 				'viewport'      => '[]',
 				'last_accessed' => '2024-01-01 00:00:00',
 			],
