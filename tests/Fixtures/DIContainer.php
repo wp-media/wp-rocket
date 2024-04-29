@@ -4,9 +4,11 @@ namespace WP_Rocket\Tests\Fixtures;
 
 use ArrayAccess;
 use WP_Rocket\Engine\Cache\AdvancedCache;
+use WP_Rocket\Buffer\Config;
 
 class DIContainer implements ArrayAccess {
 	private $container = [];
+	protected $arguments = [];
 
 	public function setUp() {
 		add_filter( 'rocket_container', [ $this, 'getContainer' ] );
@@ -60,5 +62,6 @@ class DIContainer implements ArrayAccess {
 
 	public function addAdvancedCache( $template_path, $filesystem = null ) {
 		$this->container['advanced_cache'] = new AdvancedCache( $template_path, $filesystem );
+		$this->container['config'] = new Config( [ 'config_dir_path' => 'wp-content/wp-rocket/config' ] );
 	}
 }

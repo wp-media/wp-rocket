@@ -51,7 +51,9 @@ class Subscriber implements Subscriber_Interface {
 			],
 			'script_loader_tag'                    => [ 'async_wistia_script', 10, 2 ],
 			'rocket_after_settings_radio_options'  => [ 'display_radio_options_sub_fields', 11 ],
-
+			'rocket_settings_tools_content'        => 'display_mobile_cache_option',
+			'wp_ajax_rocket_enable_mobile_cache'   => 'enable_mobile_cache',
+			'wp_rocket_upgrade'                    => [ 'enable_separate_cache_files_mobile', 9, 2 ],
 		];
 	}
 
@@ -230,5 +232,38 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 		$this->page->display_radio_options_sub_fields( $option_data['sub_fields'] );
+	}
+
+	/**
+	 * Render mobile cache option.
+	 *
+	 * @return void
+	 */
+	public function display_mobile_cache_option(): void {
+		$this->page->display_mobile_cache_option();
+	}
+
+	/**
+	 * Callback method for the AJAX request to mobile cache.
+	 *
+	 * @return void
+	 */
+	public function enable_mobile_cache(): void {
+		$this->page->enable_mobile_cache();
+	}
+
+	/**
+	 * Enable Separate cache files for mobile devices on upgrade.
+	 *
+	 * @param string $new_version New plugin version.
+	 * @param string $old_version Previous plugin version.
+	 * @return void
+	 */
+	public function enable_separate_cache_files_mobile( $new_version, $old_version ): void {
+		if ( version_compare( $old_version, '3.16', '>' ) ) {
+			return;
+		}
+
+		$this->page->enable_separate_cache_files_mobile();
 	}
 }
