@@ -70,6 +70,7 @@ class Activation {
 		require WP_ROCKET_FUNCTIONS_PATH . 'i18n.php';
 		require WP_ROCKET_FUNCTIONS_PATH . 'htaccess.php';
 		require WP_ROCKET_FUNCTIONS_PATH . 'api.php';
+		require WP_ROCKET_FUNCTIONS_PATH . 'admin.php';
 
 		/**
 		 * WP Rocket activation.
