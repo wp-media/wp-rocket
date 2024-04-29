@@ -127,4 +127,14 @@ trait UrlTrait {
 		}
 		return rocket_direct_filesystem()->get_contents( $file );
 	}
+
+	/**
+	 * Check if the URL is relative.
+	 *
+	 * @param string $url URL to check.
+	 * @return bool
+	 */
+	protected function is_relative( string $url ): bool {
+		return ! empty( preg_match( '/^\./', $url ) ) || empty( wp_parse_url( $url, PHP_URL_HOST ) );
+	}
 }

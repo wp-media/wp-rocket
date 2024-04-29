@@ -46,6 +46,8 @@ class Test_addExclusions extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $exclusions, $expected ) {
+		$this->stubEscapeFunctions();
+
 		$this->context->shouldReceive( 'is_allowed' )
 			->atMost()
 			->once()

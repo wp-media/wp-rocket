@@ -7,6 +7,8 @@ use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Engine\Optimization\DelayJS\Admin\SiteList;
 use WP_Rocket\Interfaces\Render_Interface;
 use WP_Rocket\Engine\Optimization\DelayJS\Admin\Settings as DelayJSSettings;
+use WP_Rocket\Abstract_Render;
+use WP_Rocket\Admin\Options_Data;
 
 /**
  * Registers the admin page and WP Rocket settings.
@@ -14,7 +16,7 @@ use WP_Rocket\Engine\Optimization\DelayJS\Admin\Settings as DelayJSSettings;
  * @since 3.5.5 Moves into the new architecture.
  * @since 3.0
  */
-class Page {
+class Page extends Abstract_Render {
 	/**
 	 * Plugin slug.
 	 *
@@ -93,6 +95,13 @@ class Page {
 	protected $delayjs_sitelist;
 
 	/**
+	 * WP Rocket options instance
+	 *
+	 * @var Options_Data
+	 */
+	private $options;
+
+	/**
 	 * Creates an instance of the Page object.
 	 *
 	 * @since 3.0
@@ -104,8 +113,21 @@ class Page {
 	 * @param Optimization     $optimize    Database optimization instance.
 	 * @param UserClient       $user_client User client instance.
 	 * @param SiteList         $delayjs_sitelist User client instance.
+	 * @param string           $template_path Path to views.
+	 * @param Options_Data     $options       WP Rocket options instance.
 	 */
-	public function __construct( array $args, Settings $settings, Render_Interface $render, Beacon $beacon, Optimization $optimize, UserClient $user_client, SiteList $delayjs_sitelist ) {
+	public function __construct(
+		array $args,
+		Settings $settings,
+		Render_Interface $render,
+		Beacon $beacon,
+		Optimization $optimize,
+		UserClient $user_client,
+		SiteList $delayjs_sitelist,
+		$template_path,
+		Options_Data $options
+	) {
+		parent::__construct( $template_path );
 		$args = array_merge(
 			[
 				'slug'       => 'wprocket',
@@ -124,6 +146,7 @@ class Page {
 		$this->optimize         = $optimize;
 		$this->user_client      = $user_client;
 		$this->delayjs_sitelist = $delayjs_sitelist;
+		$this->options          = $options;
 	}
 
 	/**
@@ -177,7 +200,6 @@ class Page {
 		$rocket_valid_key = rocket_valid_key();
 		if ( $rocket_valid_key ) {
 			$this->dashboard_section();
-			$this->cache_section();
 			$this->assets_section();
 			$this->media_section();
 			$this->preload_section();
@@ -290,6 +312,7 @@ class Page {
 			'sucury_waf_cache_sync'       => 1,
 			'sucury_waf_api_key'          => 1,
 			'cache_webp'                  => 1,
+			'cache_logged_user'           => 1,
 		];
 
 		if ( ! isset( $_POST['option']['name'] ) || ! isset( $allowed[ $_POST['option']['name'] ] ) ) {
@@ -416,124 +439,6 @@ class Page {
 					'page'              => 'dashboard',
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
-				],
-			]
-		);
-	}
-
-	/**
-	 * Registers Cache section.
-	 *
-	 * @since 3.0
-	 */
-	private function cache_section() {
-		$mobile_cache_beacon = $this->beacon->get_suggest( 'mobile_cache' );
-		$user_cache_beacon   = $this->beacon->get_suggest( 'user_cache' );
-		$nonce_beacon        = $this->beacon->get_suggest( 'nonce' );
-		$cache_life_beacon   = $this->beacon->get_suggest( 'cache_lifespan' );
-
-		$this->settings->add_page_section(
-			'cache',
-			[
-				'title'            => __( 'Cache', 'rocket' ),
-				'menu_description' => __( 'Basic cache options', 'rocket' ),
-			]
-		);
-
-		$this->settings->add_settings_sections(
-			[
-				'mobile_cache_section' => [
-					'title'       => __( 'Mobile Cache', 'rocket' ),
-					'type'        => 'fields_container',
-					'description' => __( 'Speed up your site for mobile visitors.', 'rocket' ),
-					'help'        => [
-						'url' => $mobile_cache_beacon['url'],
-						'id'  => $this->beacon->get_suggest( 'mobile_cache_section' ),
-					],
-					'helper'      => rocket_is_mobile_plugin_active() ? __( 'We detected you use a plugin that requires a separate cache for mobile, and automatically enabled this option for compatibility.', 'rocket' ) : '',
-					'page'        => 'cache',
-				],
-				'user_cache_section'   => [
-					'title'       => __( 'User Cache', 'rocket' ),
-					'type'        => 'fields_container',
-					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description' => sprintf( __( '%1$sUser cache%2$s is great when you have user-specific or restricted content on your website.', 'rocket' ), '<a href="' . esc_url( $user_cache_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $user_cache_beacon['id'] ) . '" target="_blank">', '</a>' ),
-					'help'        => [
-						'url' => $user_cache_beacon['url'],
-						'id'  => $this->beacon->get_suggest( 'user_cache_section' ),
-					],
-					'page'        => 'cache',
-				],
-				'cache_lifespan'       => [
-					'title'       => __( 'Cache Lifespan', 'rocket' ),
-					'type'        => 'fields_container',
-					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description' => sprintf( __( 'Cache files older than the specified lifespan will be deleted.<br>Enable %1$spreloading%2$s for the cache to be rebuilt automatically after lifespan expiration.', 'rocket' ), '<a href="#preload">', '</a>' ),
-					'help'        => [
-						'url' => $cache_life_beacon['url'],
-						'id'  => $this->beacon->get_suggest( 'cache_lifespan_section' ),
-					],
-					'page'        => 'cache',
-				],
-			]
-		);
-
-		$this->settings->add_settings_fields(
-			[
-				'cache_logged_user'       => [
-					'type'              => 'checkbox',
-					'label'             => __( 'Enable caching for logged-in WordPress users', 'rocket' ),
-					'section'           => 'user_cache_section',
-					'page'              => 'cache',
-					'default'           => 0,
-					'sanitize_callback' => 'sanitize_checkbox',
-				],
-				'cache_mobile'            => [
-					'type'              => 'checkbox',
-					'label'             => __( 'Enable caching for mobile devices', 'rocket' ),
-					'container_class'   => [
-						rocket_is_mobile_plugin_active() ? 'wpr-isDisabled' : '',
-						'wpr-isParent',
-					],
-					'section'           => 'mobile_cache_section',
-					'page'              => 'cache',
-					'default'           => 1,
-					'sanitize_callback' => 'sanitize_checkbox',
-					'input_attr'        => [
-						'disabled' => rocket_is_mobile_plugin_active() ? 1 : 0,
-					],
-				],
-				'do_caching_mobile_files' => [
-					'type'              => 'checkbox',
-					'label'             => __( 'Separate cache files for mobile devices', 'rocket' ),
-					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description'       => sprintf( __( 'Most modern themes are responsive and should work without a separate cache. Enable this only if you have a dedicated mobile theme or plugin. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $mobile_cache_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $mobile_cache_beacon['id'] ) . '" target="_blank">', '</a>' ),
-					'container_class'   => [
-						rocket_is_mobile_plugin_active() ? 'wpr-isDisabled' : '',
-						'wpr-field--children',
-					],
-					'parent'            => 'cache_mobile',
-					'section'           => 'mobile_cache_section',
-					'page'              => 'cache',
-					'default'           => 0,
-					'sanitize_callback' => 'sanitize_checkbox',
-					'input_attr'        => [
-						'disabled' => rocket_is_mobile_plugin_active() ? 1 : 0,
-					],
-				],
-				'purge_cron_interval'     => [
-					'type'              => 'cache_lifespan',
-					'label'             => __( 'Specify time after which the global cache is cleared<br>(0 = unlimited )', 'rocket' ),
-					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description'       => sprintf( __( 'Reduce lifespan to 10 hours or less if you notice issues that seem to appear periodically. %1$sWhy?%2$s', 'rocket' ), '<a href="' . esc_url( $nonce_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $nonce_beacon['id'] ) . '" target="_blank">', '</a>' ),
-					'section'           => 'cache_lifespan',
-					'page'              => 'cache',
-					'default'           => 10,
-					'sanitize_callback' => 'sanitize_cache_lifespan',
-					'choices'           => [
-						'HOUR_IN_SECONDS' => __( 'Hours', 'rocket' ),
-						'DAY_IN_SECONDS'  => __( 'Days', 'rocket' ),
-					],
 				],
 			]
 		);
@@ -1279,6 +1184,8 @@ class Page {
 		$never_cache_cookie_beacon  = $this->beacon->get_suggest( 'exclude_cookie' );
 		$exclude_user_agent_beacon  = $this->beacon->get_suggest( 'exclude_user_agent' );
 		$always_purge_beacon        = $this->beacon->get_suggest( 'always_purge' );
+		$cache_life_beacon          = $this->beacon->get_suggest( 'cache_lifespan' );
+		$nonce_beacon               = $this->beacon->get_suggest( 'nonce' );
 
 		$ecommerce_plugin = '';
 		$reject_uri_desc  = __( 'Sensitive pages like custom login/logout URLs should be excluded from cache.', 'rocket' );
@@ -1307,6 +1214,17 @@ class Page {
 
 		$this->settings->add_settings_sections(
 			[
+				'cache_lifespan'               => [
+					'title'       => __( 'Cache Lifespan', 'rocket' ),
+					'type'        => 'fields_container',
+					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+					'description' => sprintf( __( 'Cache files older than the specified lifespan will be deleted.<br>Enable %1$spreloading%2$s for the cache to be rebuilt automatically after lifespan expiration.', 'rocket' ), '<a href="#preload">', '</a>' ),
+					'help'        => [
+						'url' => $cache_life_beacon['url'],
+						'id'  => $this->beacon->get_suggest( 'cache_lifespan_section' ),
+					],
+					'page'        => 'advanced_cache',
+				],
 				'cache_reject_uri_section'     => [
 					'title'       => __( 'Never Cache URL(s)', 'rocket' ),
 					'type'        => 'fields_container',
@@ -1346,6 +1264,20 @@ class Page {
 
 		$this->settings->add_settings_fields(
 			[
+				'purge_cron_interval'  => [
+					'type'              => 'cache_lifespan',
+					'label'             => __( 'Specify time after which the global cache is cleared<br>(0 = unlimited )', 'rocket' ),
+					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+					'description'       => sprintf( __( 'Reduce lifespan to 10 hours or less if you notice issues that seem to appear periodically. %1$sWhy?%2$s', 'rocket' ), '<a href="' . esc_url( $nonce_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $nonce_beacon['id'] ) . '" target="_blank">', '</a>' ),
+					'section'           => 'cache_lifespan',
+					'page'              => 'advanced_cache',
+					'default'           => 10,
+					'sanitize_callback' => 'sanitize_cache_lifespan',
+					'choices'           => [
+						'HOUR_IN_SECONDS' => __( 'Hours', 'rocket' ),
+						'DAY_IN_SECONDS'  => __( 'Days', 'rocket' ),
+					],
+				],
 				'cache_reject_uri'     => [
 					'type'              => 'textarea',
 					'description'       => __( 'Specify URLs of pages or posts that should never be cached (one per line)', 'rocket' ),
@@ -1768,7 +1700,9 @@ class Page {
 	 * @since 3.0
 	 */
 	private function addons_section() {
-		$webp_beacon = $this->beacon->get_suggest( 'webp' );
+		$webp_beacon       = $this->beacon->get_suggest( 'webp' );
+		$user_cache_beacon = $this->beacon->get_suggest( 'user_cache' );
+
 		$this->settings->add_page_section(
 			'addons',
 			[
@@ -1795,6 +1729,28 @@ class Page {
 					'description' => __( 'Rocket Add-ons are complementary features extending available options.', 'rocket' ),
 					'type'        => 'addons_container',
 					'page'        => 'addons',
+				],
+			]
+		);
+
+		$this->settings->add_settings_fields(
+			[
+				'cache_logged_user' => [
+					'type'              => 'one_click_addon',
+					'label'             => __( 'User Cache', 'rocket' ),
+					'logo'              => [
+						'url'    => WP_ROCKET_ASSETS_IMG_URL . 'icon-user-cache.svg',
+						'width'  => 152,
+						'height' => 135,
+					],
+					'title'             => __( 'If you need to create a dedicated set of cache files for each logged-in WordPress user, you must activate this add-on.', 'rocket' ),
+					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+					'description'       => sprintf( __( 'User cache is great when you have user-specific or restricted content on your website.<br>%1$sLearn more%2$s', 'rocket' ), '<a href="' . esc_url( $user_cache_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $user_cache_beacon['id'] ) . '" target="_blank">', '</a>' ),
+					'section'           => 'one_click',
+					'page'              => 'addons',
+					'settings_page'     => 'user_cache',
+					'default'           => 0,
+					'sanitize_callback' => 'sanitize_checkbox',
 				],
 			]
 		);
@@ -2146,6 +2102,8 @@ class Page {
 			'emoji',
 			'remove_unused_css',
 			'async_css',
+			'cache_mobile',
+			'do_caching_mobile_files',
 			'minify_concatenate_css',
 			'cloudflare_api_key',
 			'cloudflare_zone_id',
@@ -2238,5 +2196,57 @@ class Page {
 	public function display_radio_options_sub_fields( $sub_fields ) {
 		$sub_fields = $this->settings->set_radio_buttons_sub_fields_value( $sub_fields );
 		$this->render->render_fields( $sub_fields );
+	}
+
+	/**
+	 * Render mobile cache option.
+	 *
+	 * @return void
+	 */
+	public function display_mobile_cache_option(): void {
+		if ( (bool) $this->options->get( 'cache_mobile', 0 ) ) {
+			return;
+		}
+
+		$data = $this->beacon->get_suggest( 'mobile_cache' );
+		echo $this->generate( 'settings/mobile-cache', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+	}
+
+	/**
+	 * Callback method for the AJAX request to mobile cache.
+	 *
+	 * @return void
+	 */
+	public function enable_mobile_cache(): void {
+		check_ajax_referer( 'rocket-ajax', 'nonce', true );
+
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			wp_send_json_error();
+			return;
+		}
+
+		$this->options->set( 'cache_mobile', 1 );
+		$this->options->set( 'do_caching_mobile_files', 1 );
+		update_option( rocket_get_constant( 'WP_ROCKET_SLUG', 'wp_rocket_settings' ), $this->options->get_options() );
+
+		wp_send_json_success();
+	}
+
+	/**
+	 * Enable Separate cache files option on upgrade.
+	 *
+	 * @return void
+	 */
+	public function enable_separate_cache_files_mobile(): void {
+		if ( ! (bool) $this->options->get( 'cache_mobile', 0 ) ) {
+			return;
+		}
+
+		if ( (bool) $this->options->get( 'do_caching_mobile_files', 0 ) ) {
+			return;
+		}
+
+		$this->options->set( 'do_caching_mobile_files', 1 );
+		update_option( rocket_get_constant( 'WP_ROCKET_SLUG', 'wp_rocket_settings' ), $this->options->get_options() );
 	}
 }
