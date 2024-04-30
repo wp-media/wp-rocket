@@ -4,6 +4,7 @@ class RocketLcpBeacon {
 		this.performanceImages = [];
 		this.errorCode         = '';
 		this.scriptTimer       = new Date();
+		this.done              = false;
 	}
 
 	init() {
@@ -11,6 +12,10 @@ class RocketLcpBeacon {
 			this._finalize();
 			return;
 		}
+
+		setTimeout( () => {
+			this._handleInfiniteLoop();
+		}, 10000 );
 
 		try {
 			// Use _generateLcpCandidates method to get all the elements in the viewport.
@@ -294,9 +299,17 @@ class RocketLcpBeacon {
 			});
 	}
 
+	_handleInfiniteLoop() {
+		if ( this.done ) {
+			return;
+		}
+		this._saveFinalResultIntoDB();
+	}
+
 	_finalize() {
 		const beaconscript = document.querySelector('[data-name="wpr-lcp-beacon"]');
 		beaconscript.setAttribute('beacon-completed', 'true');
+		this.done = true;
 	}
 
 	_logMessage( msg ) {
