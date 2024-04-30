@@ -2,6 +2,9 @@ class RocketLcpBeacon {
 	constructor( config ) {
 		this.config            = config;
 		this.performanceImages = [];
+		this.errorCode         = '';
+		this.scriptTimer       = new Date();
+		this.infiniteLoopId    = null;
 	}
 
 	init() {
@@ -10,11 +13,20 @@ class RocketLcpBeacon {
 			return;
 		}
 
-		// Use _generateLcpCandidates method to get all the elements in the viewport.
-		const above_the_fold_images = this._generateLcpCandidates( Infinity );
-		if ( above_the_fold_images ) {
-			this._initWithFirstElementWithInfo( above_the_fold_images );
-			this._fillATFWithoutDuplications( above_the_fold_images );
+		this.infiniteLoopId = setTimeout( () => {
+			this._handleInfiniteLoop();
+		}, 10000 );
+
+		try {
+			// Use _generateLcpCandidates method to get all the elements in the viewport.
+			const above_the_fold_images = this._generateLcpCandidates( Infinity );
+			if ( above_the_fold_images ) {
+				this._initWithFirstElementWithInfo( above_the_fold_images );
+				this._fillATFWithoutDuplications( above_the_fold_images );
+			}
+		} catch ( err ) {
+			this.errorCode = 'script_error';
+			this._logMessage( 'Script Error: ' + err );
 		}
 
 		this._saveFinalResultIntoDB();
@@ -245,20 +257,29 @@ class RocketLcpBeacon {
 			this.performanceImages.some(item => item.src === elementInfo.src);
 	}
 
-	_saveFinalResultIntoDB() {
-		if ( ! this.performanceImages ) {
-			return;
+	_getFinalStatus() {
+		if ( '' !== this.errorCode ) {
+			return this.errorCode;
 		}
 
+		const scriptTime = ( new Date() - this.scriptTimer ) / 1000;
+		if ( 10 <= scriptTime ) {
+			return 'timeout';
+		}
+
+		return 'success';
+	}
+
+	_saveFinalResultIntoDB() {
 		const data = new FormData();
 		data.append('action', 'rocket_lcp');
 		data.append('rocket_lcp_nonce', this.config.nonce);
 		data.append('url', this.config.url);
 		data.append('is_mobile', this.config.is_mobile);
 		data.append('images', JSON.stringify(this.performanceImages));
-		data.append('status', 'success');
+		data.append('status', this._getFinalStatus());
 
-		fetch(rocket_lcp_data.ajax_url, {
+		fetch(this.config.ajax_url, {
 			method: "POST",
 			credentials: 'same-origin',
 			body: data,
@@ -278,9 +299,14 @@ class RocketLcpBeacon {
 			});
 	}
 
+	_handleInfiniteLoop() {
+		this._saveFinalResultIntoDB();
+	}
+
 	_finalize() {
 		const beaconscript = document.querySelector('[data-name="wpr-lcp-beacon"]');
 		beaconscript.setAttribute('beacon-completed', 'true');
+		clearTimeout( this.infiniteLoopId );
 	}
 
 	_logMessage( msg ) {
