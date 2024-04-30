@@ -130,9 +130,6 @@ class Controller {
 			case 'script_error':
 				$status_message = esc_html__( 'Script error', 'rocket' );
 				break;
-			case 'no_images':
-				$status_message = esc_html__( 'No images found', 'rocket' );
-				break;
 			case 'timeout':
 				$status_message = esc_html__( 'Script timeout', 'rocket' );
 				break;

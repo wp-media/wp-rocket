@@ -253,10 +253,6 @@ class RocketLcpBeacon {
 	}
 
 	_getFinalStatus() {
-		if ( ! this.performanceImages ) {
-			return 'no_images';
-		}
-
 		if ( '' !== this.errorCode ) {
 			return this.errorCode;
 		}
