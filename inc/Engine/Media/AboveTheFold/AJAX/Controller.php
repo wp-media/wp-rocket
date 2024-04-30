@@ -93,10 +93,14 @@ class Controller {
 			return;
 		}
 
+		$status                               = isset( $_POST['status'] ) ? sanitize_text_field( wp_unslash( $_POST['status'] ) ) : '';
+		list( $status_code, $status_message ) = $this->get_status_code_message( $status );
+
 		$item = [
 			'url'           => $url,
 			'is_mobile'     => $is_mobile,
-			'status'        => 'completed',
+			'status'        => $status_code,
+			'error_message' => $status_message,
 			'lcp'           => ( is_array( $lcp ) || is_object( $lcp ) ) ? wp_json_encode( $lcp ) : $lcp,
 			'viewport'      => wp_json_encode( $viewport ),
 			'last_accessed' => current_time( 'mysql', true ),
@@ -110,6 +114,34 @@ class Controller {
 		}
 
 		wp_send_json_success( $item );
+	}
+
+	/**
+	 * Get status code and message to be saved into the database
+	 *
+	 * @param string $status Current status code from $_POST.
+	 * @return array
+	 */
+	private function get_status_code_message( $status ) {
+		$status_code    = 'success' !== $status ? 'failed' : $status;
+		$status_message = '';
+
+		switch ( $status ) {
+			case 'script_error':
+				$status_message = esc_html__( 'Script error', 'rocket' );
+				break;
+			case 'no_images':
+				$status_message = esc_html__( 'No images found', 'rocket' );
+				break;
+			case 'timeout':
+				$status_message = esc_html__( 'Script timeout', 'rocket' );
+				break;
+		}
+
+		return [
+			$status_code,
+			$status_message,
+		];
 	}
 
 	/**
