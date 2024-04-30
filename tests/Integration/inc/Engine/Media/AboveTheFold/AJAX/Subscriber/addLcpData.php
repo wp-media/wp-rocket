@@ -41,7 +41,7 @@ class Test_AddLcpData extends AjaxTestCase {
 		$_POST['url']              = $config['url'];
 		$_POST['is_mobile']        = $config['is_mobile'];
 		$_POST['images']           = $config['images'];
-		$_POST['status']           = $config['status'];
+		$_POST['status']           = $config['status'] ?? 'success';
 
 		$this->allowed = $config['filter'];
 
