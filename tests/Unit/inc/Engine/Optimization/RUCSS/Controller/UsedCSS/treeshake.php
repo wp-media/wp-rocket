@@ -23,6 +23,7 @@ class Test_Treeshake extends TestCase {
 	protected $data_manager;
 	protected $filesystem;
 	protected $context;
+	protected $usedCss;
 	protected $manager;
 
 	/**
