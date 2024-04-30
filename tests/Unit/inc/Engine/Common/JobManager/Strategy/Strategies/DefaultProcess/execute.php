@@ -45,14 +45,14 @@ class Test_Execute extends TestCase {
 		$this->manager->shouldReceive( 'increment_retries' )
 			->withArgs([$config['row_details']->url, $config['row_details']->is_mobile, strval($config['job_details']['code']), $config['job_details']['message']]);
 
-		Filters\expectApplied( 'rocket_rucss_retry_duration' )->andReturn( $config['duration_retry'] );
+		Filters\expectApplied( 'rocket_saas_retry_duration' )->andReturn( $config['duration_retry'] );
 
 		$this->wpr_clock->expects( 'current_time' )->with( 'timestamp', true )->andReturn( 0 );
 		// update the `next_retry_time` column.
 
 		$this->manager->shouldReceive( 'update_message' )
 			->withArgs([$config['row_details']->url, $config['row_details']->is_mobile, $config['job_details']['code'], $config['job_details']['message'], $config['row_details']->error_message]);
-		
+
 		$this->manager->shouldReceive( 'update_next_retry_time' )
 			->withArgs([$config['row_details']->url, $config['row_details']->is_mobile, $config['duration_retry']]);
 

@@ -166,7 +166,12 @@ class AbstractQuery extends Query {
 		 * @param mixed $is_success New job status: ID of inserted row if successfully added; false otherwise.
 		 * @param string $timestamp Current timestamp.
 		 */
-		do_action( 'rocket_last_rucss_job_added_time', $result, current_time( 'mysql', true ) );
+		rocket_do_action_and_deprecated(
+			'rocket_last_saas_job_added_time',
+			[ $result, current_time( 'mysql', true ) ],
+			'3.16',
+			'rocket_last_rucss_job_added_time'
+		);
 
 		return $result;
 	}

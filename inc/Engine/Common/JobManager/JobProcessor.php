@@ -101,7 +101,12 @@ class JobProcessor implements LoggerAwareInterface {
 		 *
 		 * @param string $current_time Current time.
 		 */
-		do_action( 'rocket_rucss_process_pending_jobs_start', $this->wpr_clock->current_time( 'mysql', true ) );
+		rocket_do_action_and_deprecated(
+			'rocket_saas_process_pending_jobs_start',
+			[ $this->wpr_clock->current_time( 'mysql', true ) ],
+			'3.16',
+			'rocket_rucss_process_pending_jobs_start'
+		);
 		$this->logger::debug( 'RUCSS: Start processing pending jobs inside cron.' );
 
 		if ( ! $this->is_allowed() ) {
@@ -121,7 +126,12 @@ class JobProcessor implements LoggerAwareInterface {
 		 *
 		 * @param int $rows Number of rows to grab with each CRON iteration.
 		 */
-		$rows = apply_filters( 'rocket_saas_pending_jobs_cron_rows_count', 100 );
+		$rows = rocket_apply_filter_and_deprecated(
+			'rocket_saas_pending_jobs_cron_rows_count',
+			[ 100 ],
+			'3.16',
+			'rocket_rucss_pending_jobs_cron_rows_count'
+		);
 
 		$pending_jobs = $this->get_jobs( $rows, 'pending' );
 
@@ -144,7 +154,12 @@ class JobProcessor implements LoggerAwareInterface {
 		 *
 		 * @param string $current_time Current time.
 		 */
-		do_action( 'rocket_rucss_process_pending_jobs_end', $this->wpr_clock->current_time( 'mysql', true ) );
+		rocket_do_action_and_deprecated(
+			'rocket_saas_process_pending_jobs_end',
+			[ $this->wpr_clock->current_time( 'mysql', true ) ],
+			'3.16',
+			'rocket_rucss_process_pending_jobs_end'
+		);
 	}
 
 	/**
@@ -192,12 +207,29 @@ class JobProcessor implements LoggerAwareInterface {
 		}
 
 		/**
+		 * Fires after successfully Processing the SaaS jobs.
+		 *
+		 * @param string $current_time Current time.
+		 */
+		rocket_do_action_and_deprecated(
+			'rocket_saas_check_job_status_end',
+			[ $this->wpr_clock->current_time( 'mysql', true ) ],
+			'3.16',
+			'rocket_rucss_check_job_status_end'
+		);
+
+		/**
 		 * Fires after successfully processing the SaaS jobs.
 		 *
 		 * @param string $url Optimized Url.
 		 * @param array  $job_details Result of the request to get the job status from SaaS.
 		 */
-		do_action( 'rocket_saas_complete_job_status', $row_details->url, $job_details );
+		rocket_do_action_and_deprecated(
+			'rocket_saas_complete_job_status',
+			[ $row_details->url, $job_details ],
+			'3.16',
+			'rocket_rucss_complete_job_status'
+		);
 	}
 
 	/**
@@ -213,7 +245,12 @@ class JobProcessor implements LoggerAwareInterface {
 		 *
 		 * @param string $current_time Current time.
 		 */
-		do_action( 'rocket_rucss_process_on_submit_jobs_start', $this->wpr_clock->current_time( 'mysql', true ) );
+		rocket_do_action_and_deprecated(
+			'rocket_saas_process_on_submit_jobs_start',
+			[ $this->wpr_clock->current_time( 'mysql', true ) ],
+			'3.16',
+			'rocket_rucss_process_on_submit_jobs_start'
+		);
 
 		if ( ! $this->is_allowed() ) {
 			$this->logger::debug( 'Stop processing cron iteration for to-submit jobs.' );
@@ -226,15 +263,26 @@ class JobProcessor implements LoggerAwareInterface {
 		 *
 		 * @param int $count Number of rows.
 		 */
-		$pending_job = (int) apply_filters( 'rocket_saas_pending_jobs_cron_rows_count', 100 );
+		$pending_job = rocket_apply_filter_and_deprecated(
+			'rocket_saas_pending_jobs_cron_rows_count',
+			[ 100 ],
+			'3.16',
+			'rocket_rucss_pending_jobs_cron_rows_count'
+		);
 
 		/**
 		 * Maximum processing rows.
 		 *
 		 * @param int $max Max processing rows.
 		 */
-		$max_pending_rows = (int) apply_filters( 'rocket_saas_max_pending_jobs', 3 * $pending_job, $pending_job );
-		$rows             = $this->get_jobs( $max_pending_rows, 'submit' );
+		$max_pending_rows = (int) rocket_apply_filter_and_deprecated(
+			'rocket_saas_max_pending_jobs',
+			[ 3 * $pending_job, $pending_job ],
+			'3.16',
+			'rocket_rucss_max_pending_jobs'
+		);
+
+		$rows = $this->get_jobs( $max_pending_rows, 'submit' );
 
 		if ( ! $rows ) {
 			return;
@@ -272,7 +320,12 @@ class JobProcessor implements LoggerAwareInterface {
 		 *
 		 * @param string $current_time Current time.
 		 */
-		do_action( 'rocket_rucss_process_pending_jobs_end', $this->wpr_clock->current_time( 'mysql', true ) );
+		rocket_do_action_and_deprecated(
+			'rocket_saas_process_on_submit_jobs_end',
+			[ $this->wpr_clock->current_time( 'mysql', true ) ],
+			'3.16',
+			'rocket_rucss_process_on_submit_jobs_end'
+		);
 	}
 
 	/**
@@ -351,7 +404,12 @@ class JobProcessor implements LoggerAwareInterface {
 		 *
 		 * @param string $delay delay before failed saas jobs are deleted.
 		 */
-		$delay = (string) apply_filters( 'rocket_delay_remove_saas_failed_jobs', '3 days' );
+		$delay = (string) rocket_apply_filter_and_deprecated(
+			'rocket_delay_remove_saas_failed_jobs',
+			[ '3 days' ],
+			'3.16',
+			'rocket_delay_remove_rucss_failed_jobs'
+		);
 
 		if ( '' === $delay || '0' === $delay ) {
 			$delay = '3 days';
