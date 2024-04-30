@@ -463,11 +463,11 @@ class Subscriber implements Subscriber_Interface {
 
 		$this->queue->cancel_pending_jobs_cron();
 
-		if ( ! wp_next_scheduled( 'rocket_rucss_clean_rows_time_event' ) ) {
+		if ( ! wp_next_scheduled( 'rocket_saas_clean_rows_time_event' ) ) {
 			return;
 		}
 
-		wp_clear_scheduled_hook( 'rocket_rucss_clean_rows_time_event' );
+		wp_clear_scheduled_hook( 'rocket_saas_clean_rows_time_event' );
 	}
 
 	/**
