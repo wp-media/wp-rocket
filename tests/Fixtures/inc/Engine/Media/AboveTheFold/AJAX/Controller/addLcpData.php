@@ -338,4 +338,65 @@ return [
 			],
 		],
 	],
+
+	'testShouldAddItemToDBWhenScriptError' => [
+		'config'   => [
+			'filter'    => true,
+			'url'       => 'http://example.org',
+			'is_mobile' => false,
+			'images'    => '',
+			'status'    => 'script_error',
+		],
+		'expected' => [
+			'item'    => [
+				'url'           => 'http://example.org',
+				'is_mobile'     => false,
+				'status'        => 'failed',
+				'lcp'           => 'not found',
+				'viewport'      => '[]',
+				'last_accessed' => '2024-01-01 00:00:00',
+				'error_message' => 'Script error',
+			],
+			'result'  => true,
+			'message' => [
+				'url'           => 'http://example.org',
+				'is_mobile'     => false,
+				'status'        => 'failed',
+				'lcp'           => 'not found',
+				'viewport'      => '[]',
+				'last_accessed' => '2024-01-01 00:00:00',
+				'error_message' => 'Script error',
+			],
+		],
+	],
+	'testShouldAddItemToDBWhenScriptTimeout' => [
+		'config'   => [
+			'filter'    => true,
+			'url'       => 'http://example.org',
+			'is_mobile' => false,
+			'images'    => '',
+			'status'    => 'timeout',
+		],
+		'expected' => [
+			'item'    => [
+				'url'           => 'http://example.org',
+				'is_mobile'     => false,
+				'status'        => 'failed',
+				'lcp'           => 'not found',
+				'viewport'      => '[]',
+				'last_accessed' => '2024-01-01 00:00:00',
+				'error_message' => 'Script timeout',
+			],
+			'result'  => true,
+			'message' => [
+				'url'           => 'http://example.org',
+				'is_mobile'     => false,
+				'status'        => 'failed',
+				'lcp'           => 'not found',
+				'viewport'      => '[]',
+				'last_accessed' => '2024-01-01 00:00:00',
+				'error_message' => 'Script timeout',
+			],
+		],
+	],
 ];

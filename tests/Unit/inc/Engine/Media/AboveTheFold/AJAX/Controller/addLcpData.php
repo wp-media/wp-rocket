@@ -44,6 +44,7 @@ class Test_AddLcpData extends TestCase {
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
 		$this->stubEscapeFunctions();
+		$this->stubTranslationFunctions();
 
 		$_POST = [
 			'url'       => addslashes( $config['url'] ),
