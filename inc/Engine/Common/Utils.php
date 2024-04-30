@@ -20,7 +20,12 @@ class Utils {
 		 * @param string  $home_url home url.
 		 * @param string  $url url of current page.
 		 */
-		$home_url = apply_filters( 'rocket_saas_is_home_url', home_url(), $url );
+		$home_url = rocket_apply_filter_and_deprecated(
+			'rocket_saas_is_home_url',
+			[ home_url(), $url ],
+			'3.16',
+			'rocket_rucss_is_home_url'
+		);
 		return untrailingslashit( $url ) === untrailingslashit( $home_url );
 	}
 }

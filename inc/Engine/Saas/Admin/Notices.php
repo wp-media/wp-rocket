@@ -150,8 +150,18 @@ class Notices {
 				'rocket'
 				),
 			'<strong>WP Rocket</strong>',
-			apply_filters( 'rocket_rucss_pending_jobs_cron_rows_count', 100 ),
-			apply_filters( 'rocket_rucss_pending_jobs_cron_interval', MINUTE_IN_SECONDS )
+			rocket_apply_filter_and_deprecated(
+				'rocket_saas_pending_jobs_cron_rows_count',
+				[ 100 ],
+				'3.16',
+				'rocket_rucss_pending_jobs_cron_rows_count'
+			),
+			rocket_apply_filter_and_deprecated(
+				'rocket_saas_pending_jobs_cron_interval',
+				[ MINUTE_IN_SECONDS ],
+				'3.16',
+				'rocket_rucss_pending_jobs_cron_interval'
+			)
 		);
 
 		if ( ! $this->options->get( 'manual_preload', 0 ) ) {
