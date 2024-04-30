@@ -123,7 +123,7 @@ class Controller {
 	 * @return array
 	 */
 	private function get_status_code_message( $status ) {
-		$status_code    = 'success' !== $status ? 'failed' : $status;
+		$status_code    = 'success' !== $status ? 'failed' : 'completed';
 		$status_message = '';
 
 		switch ( $status ) {

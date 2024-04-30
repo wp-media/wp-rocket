@@ -49,6 +49,7 @@ class Test_AddLcpData extends TestCase {
 			'url'       => addslashes( $config['url'] ),
 			'is_mobile' => addslashes( $config['is_mobile'] ),
 			'images'    => addslashes( $config['images'] ),
+			'status'    => addslashes( $config['status'] ?? 'success' ),
 		];
 
 		Functions\expect( 'check_ajax_referer' )
