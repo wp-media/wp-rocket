@@ -75,16 +75,16 @@ class Controller {
 
 			$image_object = $this->create_object( $image, $keys );
 
-			if ( ! $this->validate_image( $image_object->src ) ) {
+			if ( ! $image_object || ! $this->validate_image( $image_object->src ) ) {
 				continue;
 			}
 
-			if ( 'lcp' === $image->label && null !== $image_object ) {
+			if ( 'lcp' === $image->label ) {
 				$lcp = $image_object;
 				continue;
 			}
 
-			if ( 'above-the-fold' === $image->label && null !== $image_object && 0 < $max_atf_images_number ) {
+			if ( 'above-the-fold' === $image->label && 0 < $max_atf_images_number ) {
 				$viewport[] = $image_object;
 
 				--$max_atf_images_number;
@@ -229,7 +229,13 @@ class Controller {
 			return false;
 		}
 
-		list( $extension ) = wp_check_filetype( $image_src );
-		return ! empty( $extension ) && str_starts_with( 'image/', $extension );
+		// Here we get the url PATH part only to strip all query strings.
+		$image_src_path = wp_parse_url( $image_src, PHP_URL_PATH );
+		if ( empty( $image_src_path ) ) {
+			return false;
+		}
+
+		$image_src_filetype_array = wp_check_filetype( $image_src_path );
+		return ! empty( $image_src_filetype_array['type'] ) && str_starts_with( $image_src_filetype_array['type'], 'image/' );
 	}
 }
