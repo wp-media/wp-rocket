@@ -14,6 +14,7 @@ return [
 	'shouldReturnEmptyWhenLicenseExpired' => [
 		'config' => [
 			'license_expired' => true,
+			'device' => 'desktop',
 			'headers' => [
 				'user-agent' => 'WP Rocket/Pre-fetch Home Links',
 				'timeout'    => 60,
@@ -29,6 +30,7 @@ return [
 	'shouldReturnEmptyWhenNot200' => [
 		'config' => [
 			'license_expired' => false,
+			'device' => 'desktop',
 			'headers' => [
 				'user-agent' => 'WP Rocket/Pre-fetch Home Links',
 				'timeout'    => 60,
@@ -44,6 +46,7 @@ return [
 	'shouldReturnEmptyWhenNoFoundLinks' => [
 		'config' => [
 			'license_expired' => false,
+			'device' => 'desktop',
 			'headers' => [
 				'user-agent' => 'WP Rocket/Pre-fetch Home Links',
 				'timeout'    => 60,
@@ -61,6 +64,7 @@ return [
 	'shouldReturnOnlyHomeWithNoValidLinks' => [
 		'config' => [
 			'license_expired' => false,
+			'device' => 'desktop',
 			'headers' => [
 				'user-agent' => 'WP Rocket/Pre-fetch Home Links',
 				'timeout'    => 60,
@@ -80,6 +84,7 @@ return [
 	'shouldReturnValidLinksAmongInvalidLinks' => [
 		'config' => [
 			'license_expired' => false,
+			'device' => 'desktop',
 			'headers' => [
 				'user-agent' => 'WP Rocket/Pre-fetch Home Links',
 				'timeout'    => 60,
@@ -102,6 +107,7 @@ return [
 	'shouldReturnOnlyHomeWithExternalLinks' => [
 		'config' => [
 			'license_expired' => false,
+			'device' => 'desktop',
 			'headers' => [
 				'user-agent' => 'WP Rocket/Pre-fetch Home Links',
 				'timeout'    => 60,
@@ -121,6 +127,7 @@ return [
 	'shouldReturnValidLinksAmongExternalLinks' => [
 		'config' => [
 			'license_expired' => false,
+			'device' => 'desktop',
 			'headers' => [
 				'user-agent' => 'WP Rocket/Pre-fetch Home Links',
 				'timeout'    => 60,
@@ -143,6 +150,7 @@ return [
 	'shouldReturnLinksWithoutDuplicate' => [
 		'config' => [
 			'license_expired' => false,
+			'device' => 'desktop',
 			'headers' => [
 				'user-agent' => 'WP Rocket/Pre-fetch Home Links',
 				'timeout'    => 60,
@@ -166,6 +174,7 @@ return [
 	'shouldReturnLinksWithRelativeUrl' => [
 		'config' => [
 			'license_expired' => false,
+			'device' => 'desktop',
 			'headers' => [
 				'user-agent' => 'WP Rocket/Pre-fetch Home Links',
 				'timeout'    => 60,
@@ -189,6 +198,7 @@ return [
 	'shouldReturnTenLinksPlusHome' => [
 		'config' => [
 			'license_expired' => false,
+			'device' => 'desktop',
 			'headers' => [
 				'user-agent' => 'WP Rocket/Pre-fetch Home Links',
 				'timeout'    => 60,
@@ -218,6 +228,7 @@ return [
 	'shouldReturnTenLinksWithExternalLinksBeforeInternal' => [
 		'config' => [
 			'license_expired' => false,
+			'device' => 'desktop',
 			'headers' => [
 				'user-agent' => 'WP Rocket/Pre-fetch Home Links',
 				'timeout'    => 60,
@@ -247,6 +258,7 @@ return [
 	'shouldReturnLinksWithoutRSSAndRestAPILink' => [
 		'config' => [
 			'license_expired' => false,
+			'device' => 'desktop',
 			'headers' => [
 				'user-agent' => 'WP Rocket/Pre-fetch Home Links',
 				'timeout'    => 60,
@@ -269,6 +281,29 @@ return [
 			'https://example.org/rich-dad-poor-dad',
 			'https://example.org/rebecca-brown-he-came-to-set-the-captives-free',
 			'https://example.org',
+		],
+		'shouldReturnLinksWithMobileHeader' => [
+			'config' => [
+				'license_expired' => false,
+				'device' => 'mobile',
+				'headers' => [
+					'user-agent' => 'WP Rocket/Pre-fetch Home Links Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1',
+					'timeout'    => 60,
+				],
+				'found_link' => true,
+				'response' => [
+					'body'    => $html_valid_links_among_invalid_links,
+					'response' => [
+						'code'    => 200,
+					],
+				],
+			],
+			'expected' => [
+				'https://example.org/hello-world',
+				'https://example.org/another-day',
+				'https://example.org/rich-dad-poor-dad',
+				'https://example.org',
+			],
 		],
 	],
 ];

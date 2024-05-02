@@ -4,11 +4,10 @@ namespace WP_Rocket\Tests\Unit\Inc\Engine\Media\AboveTheFold\WarmUp\Controller;
 
 use Brain\Monkey\{Filters, Functions};
 use Mockery;
-use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\Media\AboveTheFold\WarmUp\APIClient;
+use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Engine\License\API\User;
-use WP_Rocket\Engine\Media\AboveTheFold\WarmUp\Controller;
+use WP_Rocket\Engine\Media\AboveTheFold\WarmUp\{APIClient, Controller};
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
@@ -24,10 +23,10 @@ class Test_FetchLinks extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$context    = Mockery::mock( ContextInterface::class );
-		$options    = Mockery::mock( Options_Data::class );
-		$api_client = Mockery::mock( APIClient::class );
-		$this->user = Mockery::mock( User::class );
+		$context          = Mockery::mock( ContextInterface::class );
+		$options          = Mockery::mock( Options_Data::class );
+		$api_client       = Mockery::mock( APIClient::class );
+		$this->user       = Mockery::mock( User::class );
 		$this->controller = new Controller( $context, $options, $api_client, $this->user );
 	}
 
@@ -43,9 +42,11 @@ class Test_FetchLinks extends TestCase {
 			->once()
 			->andReturn( $config['license_expired'] );
 
-		Functions\when( 'home_url' )->alias( function( $link = '' ) {
-			return '' === $link ? 'https://example.org' : 'https://example.org' . $link;
-		} );
+		Functions\when( 'home_url' )->alias(
+			function ( $link = '' ) {
+				return '' === $link ? 'https://example.org' : 'https://example.org' . $link;
+			}
+		);
 
 		Functions\expect( 'wp_remote_get' )
 			->atMost()
@@ -67,12 +68,13 @@ class Test_FetchLinks extends TestCase {
 		}
 
 		if ( isset( $config['found_link'] ) && $config['found_link'] ) {
-
 			$this->stubWpParseUrl();
 
-			Functions\when( 'wp_http_validate_url' )->alias( function( $link ) {
-				return false !== strpos( $link, 'https' ) ? $link : false;
-			} );
+			Functions\when( 'wp_http_validate_url' )->alias(
+				function ( $link ) {
+					return false !== strpos( $link, 'https' ) ? $link : false;
+				}
+			);
 
 			Filters\expectApplied( 'rocket_atf_warmup_links_number' )
 				->once()
@@ -81,7 +83,7 @@ class Test_FetchLinks extends TestCase {
 
 		$this->assertSame(
 			$expected,
-			$this->controller->fetch_links()
+			$this->controller->fetch_links( $config['device'] )
 		);
 	}
 }
