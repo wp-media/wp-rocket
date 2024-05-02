@@ -55,6 +55,13 @@ class Controller {
 		$viewport  = [];
 
 		/**
+		 * Filters List of sent images.
+		 *
+		 * @param string[]|array $images Current list of ATF images.
+		 */
+		$images = $this->validate_images( apply_filters( 'rocket_lcp_ajax_images', $images ) );
+
+		/**
 		 * Filters the maximum number of ATF images being saved into the database.
 		 *
 		 * @param int $max_number Maximum number to allow.
@@ -211,5 +218,15 @@ class Controller {
 		}
 
 		wp_send_json_error( 'data does not exist' );
+	}
+
+	private function validate_images( $images ) {
+		if ( empty( $images ) ) {
+			return [];
+		}
+
+		return array_filter( $images, static function ( $image ) {
+			return ! empty( $image->src ) && ! empty( wp_get_image_mime( $image->src ) );
+		} );
 	}
 }
