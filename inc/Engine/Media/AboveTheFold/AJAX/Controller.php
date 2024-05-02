@@ -55,13 +55,6 @@ class Controller {
 		$viewport  = [];
 
 		/**
-		 * Filters List of sent images.
-		 *
-		 * @param string[]|array $images Current list of ATF images.
-		 */
-		$images = $this->validate_images( apply_filters( 'rocket_lcp_ajax_images', $images ) );
-
-		/**
 		 * Filters the maximum number of ATF images being saved into the database.
 		 *
 		 * @param int $max_number Maximum number to allow.
@@ -76,20 +69,25 @@ class Controller {
 		$keys = [ 'bg_set', 'src' ];
 
 		foreach ( (array) $images as $image ) {
-			if ( isset( $image->type ) ) {
-				$image_object = $this->create_object( $image, $keys );
+			if ( empty( $image->type ) ) {
+				continue;
+			}
 
-				if ( 'lcp' === $image->label && null !== $image_object ) {
-					$lcp = $image_object;
-				} elseif ( 'above-the-fold' === $image->label && null !== $image_object ) {
-					if ( 0 === $max_atf_images_number ) {
-						continue;
-					}
+			$image_object = $this->create_object( $image, $keys );
 
-					$viewport[] = $image_object;
+			if ( ! $this->validate_image( $image_object->src ) ) {
+				continue;
+			}
 
-					--$max_atf_images_number;
-				}
+			if ( 'lcp' === $image->label && null !== $image_object ) {
+				$lcp = $image_object;
+				continue;
+			}
+
+			if ( 'above-the-fold' === $image->label && null !== $image_object && 0 < $max_atf_images_number ) {
+				$viewport[] = $image_object;
+
+				--$max_atf_images_number;
 			}
 		}
 
@@ -220,13 +218,18 @@ class Controller {
 		wp_send_json_error( 'data does not exist' );
 	}
 
-	private function validate_images( $images ) {
-		if ( empty( $images ) ) {
-			return [];
+	/**
+	 * Make sure that this url is valid image without loading the image itself.
+	 *
+	 * @param string $image_src Image src url.
+	 * @return bool
+	 */
+	private function validate_image( $image_src ) {
+		if ( empty( $image_src ) ) {
+			return false;
 		}
 
-		return array_filter( $images, static function ( $image ) {
-			return ! empty( $image->src ) && ! empty( wp_get_image_mime( $image->src ) );
-		} );
+		list( $extension ) = wp_check_filetype( $image_src );
+		return ! empty( $extension ) && str_starts_with( 'image/', $extension );
 	}
 }
