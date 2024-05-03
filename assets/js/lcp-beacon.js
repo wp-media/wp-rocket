@@ -328,9 +328,9 @@ class RocketLcpBeacon {
 	}
 
 	_logMessage( msg ) {
-		// if ( ! this.config.debug ) {
-		// 	return;
-		// }
+		if ( ! this.config.debug ) {
+			return;
+		}
 		console.log( msg );
 	}
 
