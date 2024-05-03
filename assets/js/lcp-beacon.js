@@ -60,22 +60,18 @@ class RocketLcpBeacon {
 
 	async _isGeneratedBefore() {
 		// AJAX call to check if there are any records for the current URL.
-		let lcp_data_response;
 		let data_check = new FormData();
 		data_check.append('action', 'rocket_check_lcp');
 		data_check.append('rocket_lcp_nonce', this.config.nonce);
 		data_check.append('url', this.config.url);
 		data_check.append('is_mobile', this.config.is_mobile);
 
-		await fetch(this.config.ajax_url, {
-			method: "POST",
-			credentials: 'same-origin',
-			body: data_check
-		})
-		.then(data => {
-			lcp_data_response = data
-		});
-
+		const lcp_data_response = await fetch(this.config.ajax_url, {
+				method: "POST",
+				credentials: 'same-origin',
+				body: data_check
+			})
+			.then(data => data.json());
 		return lcp_data_response.success;
 	}
 
