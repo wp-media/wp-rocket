@@ -39,19 +39,16 @@ class RocketLcpBeacon {
 			return false;
 		}
 
-		if ( this._isPageCached() ) {
-			if ( this._isGeneratedBefore() ) {
-				this._logMessage('Bailing out because data is already available');
-				return false;
-			}
+		if ( this._isPageCached() && this._isGeneratedBefore() ) {
+			this._logMessage('Bailing out because data is already available');
+			return false;
 		}
 
 		return true;
 	}
 
 	_isPageCached() {
-		let signature = '';
-		let status = false;
+		let signature = '', status = false;
 		if (document.documentElement.nextSibling)  {
 			signature = document.documentElement.nextSibling.data;
 		}
