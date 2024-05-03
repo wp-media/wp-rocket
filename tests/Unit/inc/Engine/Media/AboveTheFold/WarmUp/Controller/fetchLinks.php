@@ -83,7 +83,7 @@ class Test_FetchLinks extends TestCase {
 
 		$this->assertSame(
 			$expected,
-			$this->controller->fetch_links( $config['device'] )
+			$this->controller->fetch_links()
 		);
 	}
 }
