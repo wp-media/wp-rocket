@@ -47,16 +47,21 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 		 */
 		$url = apply_filters( 'rocket_saas_api_queued_url', $url );
 
-		$blocking = $options['blocking'];
+		$blocking = true;
 
-		unset( $options['blocking'] );
+		if ( isset( $options['blocking'] ) ) {
+			$blocking = $options['blocking'];
+
+			unset( $options['blocking'] );
+		}
 
 		$args = [
 			'body'    => [
 				'url'    => $url,
 				'config' => $options,
 			],
-			'timeout' => 5,
+			'timeout'  => 5,
+			'blocking' => true,
 		];
 
 		if ( ! $blocking ) {
