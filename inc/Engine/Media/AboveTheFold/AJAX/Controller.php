@@ -75,7 +75,7 @@ class Controller {
 
 			$image_object = $this->create_object( $image, $keys );
 
-			if ( ! $image_object || ! $this->validate_image( $image_object->src ) ) {
+			if ( ! $image_object || ! $this->validate_image( $image_object ) ) {
 				continue;
 			}
 
@@ -219,12 +219,29 @@ class Controller {
 	}
 
 	/**
+	 * Validate image object.
+	 *
+	 * @param object $image_object Image full object.
+	 * @return bool
+	 */
+	private function validate_image( $image_object ) {
+		/**
+		 * Filters If the image src is a valid image or not.
+		 *
+		 * @param bool   $valid_image Valid image or not.
+		 * @param string $image_src_url Image src url.
+		 * @param object $image_object Image object with full details.
+		 */
+		return (bool) apply_filters( 'rocket_atf_valid_image', $this->validate_image_src( $image_object->src ?? '' ), $image_object->src, $image_object );
+	}
+
+	/**
 	 * Make sure that this url is valid image without loading the image itself.
 	 *
 	 * @param string $image_src Image src url.
 	 * @return bool
 	 */
-	private function validate_image( $image_src ) {
+	private function validate_image_src( $image_src ) {
 		if ( empty( $image_src ) ) {
 			return false;
 		}
