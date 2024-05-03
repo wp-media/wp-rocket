@@ -30,6 +30,7 @@ class APIClient extends BaseAPIClient {
 			'optimization_list' => '',
 			'is_home'           => $is_home,
 			'is_mobile'         => 'mobile' === $device,
+			'blocking'          => rocket_get_constant( 'WP_ROCKET_DEBUG' ),
 		];
 
 		return $this->add_to_queue( $url, $config );
