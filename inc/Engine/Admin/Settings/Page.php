@@ -2096,6 +2096,7 @@ class Page extends Abstract_Render {
 			'minify_css_key',
 			'minify_js_key',
 			'version',
+			'previous_version',
 			'cloudflare_old_settings',
 			'cache_ssl',
 			'minify_google_fonts',
@@ -2267,6 +2268,18 @@ class Page extends Abstract_Render {
 		$boxes = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
 
 		if ( in_array( 'rocket_update_notice', (array) $boxes, true ) ) {
+			return;
+		}
+
+		$previous_version = $this->options->get( 'previous_version' );
+
+		// Bail-out for fresh install.
+		if ( empty( $previous_version ) ) {
+			return;
+		}
+
+		// Bail-out if previous version is greater than 3.16.
+		if ( $previous_version > '3.16' ) {
 			return;
 		}
 
