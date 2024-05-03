@@ -39,26 +39,44 @@ class RocketLcpBeacon {
 			return false;
 		}
 
-		if ( this._isGeneratedBefore() ) {
-			this._logMessage('Bailing out because data is already available');
-			return false;
+		if ( this._isPageCached() ) {
+			if ( this._isGeneratedBefore() ) {
+				this._logMessage('Bailing out because data is already available');
+				return false;
+			}
 		}
 
 		return true;
 	}
 
-	_isGeneratedBefore() {
+	_isPageCached() {
+		let signature = '';
+		let status = false;
+		if (document.documentElement.nextSibling)  {
+			signature = document.documentElement.nextSibling.data;
+		}
+		if ( signature && signature.includes( 'Debug: cached' ) ) {
+			return true;
+		}
+		return false;
+	}
+
+	async _isGeneratedBefore() {
 		// AJAX call to check if there are any records for the current URL.
+		let lcp_data_response;
 		let data_check = new FormData();
 		data_check.append('action', 'rocket_check_lcp');
 		data_check.append('rocket_lcp_nonce', this.config.nonce);
 		data_check.append('url', this.config.url);
 		data_check.append('is_mobile', this.config.is_mobile);
 
-		const lcp_data_response = fetch(this.config.ajax_url, {
+		await fetch(this.config.ajax_url, {
 			method: "POST",
 			credentials: 'same-origin',
 			body: data_check
+		})
+		.then(data => {
+			lcp_data_response = data
 		});
 
 		return lcp_data_response.success;
@@ -310,9 +328,9 @@ class RocketLcpBeacon {
 	}
 
 	_logMessage( msg ) {
-		if ( ! this.config.debug ) {
-			return;
-		}
+		// if ( ! this.config.debug ) {
+		// 	return;
+		// }
 		console.log( msg );
 	}
 
