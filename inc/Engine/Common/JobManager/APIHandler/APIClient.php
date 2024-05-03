@@ -56,7 +56,7 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 		}
 
 		$args = [
-			'body'    => [
+			'body'     => [
 				'url'    => $url,
 				'config' => $options,
 			],
