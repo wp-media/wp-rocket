@@ -3400,7 +3400,7 @@ msgstr "WP Rocket preload terugdraaien vastgelopen mislukte taken"
 #: inc/Engine/Saas/Admin/AdminBar.php:73
 #: inc/Engine/Saas/Admin/AdminBar.php:194
 msgid "Clear Critical Images"
-msgstr "Kritieke afbeeldingen wissen"
+msgstr "Kritieke afbeeldingen legen"
 
 #: inc/Engine/Saas/Admin/AdminBar.php:160
 msgid "Clear Critical Images of this URL"
