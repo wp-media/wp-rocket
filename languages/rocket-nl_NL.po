@@ -2911,7 +2911,7 @@ msgid ""
 "completed. (Refresh this page to view progress)"
 msgstr ""
 "Genereren kritieke CSS draait momenteel: %1$d van %2$d paginatypes voltooid."
-" (Ververs deze pagina om voortgang te bekijken)"
+" (Vernieuw deze pagina om voortgang te bekijken)"
 
 #. Translators: %1$d = number of critical CSS generated, %2$d = total number
 #. of critical CSS to generate.
