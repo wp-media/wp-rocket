@@ -2542,7 +2542,7 @@ msgid ""
 "Sucuri Add-on: The API key for the Sucuri firewall must be in format "
 "<code>{32 characters}/{32 characters}</code>."
 msgstr ""
-"Sucuri Add-on: de API-sleutel voor de Sucuri firewall moet het formaat "
+"Sucuri add-on: de API-sleutel voor de Sucuri firewall moet het formaat "
 "<code>{32 tekens}/{32 tekens}</code> hebben."
 
 #: inc/Engine/Admin/Settings/Settings.php:667
