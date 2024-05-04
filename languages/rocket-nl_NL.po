@@ -3537,7 +3537,7 @@ msgstr "Geanonimiseerde WP Rocket-instellingen:"
 
 #: inc/functions/admin.php:427
 msgid "Which WP Rocket settings are active"
-msgstr "Welke WP Rocket instellingen zijn actief"
+msgstr "Welke WP Rocket instellingen actief zijn"
 
 #: inc/functions/admin.php:433
 msgid "WP Rocket license type"
