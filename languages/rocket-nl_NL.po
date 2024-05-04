@@ -841,7 +841,7 @@ msgstr "Kies een domein uit de lijst"
 
 #: inc/deprecated/3.4.php:31
 msgid "No domain available in your Cloudflare account"
-msgstr "Geen domein beschikbaar in je Cloudflare-account"
+msgstr "Geen domein beschikbaar in je Cloudflare account"
 
 #: inc/deprecated/3.5.php:71 inc/deprecated/3.5.php:195
 msgid ""
