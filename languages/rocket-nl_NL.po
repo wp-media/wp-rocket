@@ -849,7 +849,7 @@ msgid ""
 "required for the Cloudflare Add-on to work correctly."
 msgstr ""
 "Curl is uitgeschakeld op je server. Vraag je host om het in te schakelen. "
-"Dit is nodig om de Cloudflare Add-on correct te laten werken."
+"Dit is nodig om de Cloudflare add-on correct te laten werken."
 
 #. translators: %1$s = opening link; %2$s = closing link
 #: inc/deprecated/3.5.php:79
