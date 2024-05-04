@@ -2657,7 +2657,7 @@ msgstr "RocketCDN cache legen mislukt: gebruikerstoken mist."
 msgid ""
 "RocketCDN cache purge failed: The API returned an unexpected response code."
 msgstr ""
-"RocketCDN-cache legen mislukt: de API heeft een onverwachte responscode "
+"RocketCDN cache legen mislukt: de API heeft een onverwachte responscode "
 "geretourneerd."
 
 #: inc/Engine/CDN/RocketCDN/APIClient.php:221
