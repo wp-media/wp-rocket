@@ -4264,7 +4264,7 @@ msgstr "Mijn account"
 
 #: views/settings/page-sections/dashboard.php:68
 msgid "Refresh info"
-msgstr "Ververs inforamtie"
+msgstr "Informatie vernieuwen"
 
 #: views/settings/page-sections/dashboard.php:86
 msgid "with"
