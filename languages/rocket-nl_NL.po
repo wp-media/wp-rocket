@@ -1018,7 +1018,7 @@ msgstr "Bestand uploaden en instellingen importeren"
 
 #: inc/deprecated/deprecated.php:1385
 msgid "Your Cloudflare credentials are valid."
-msgstr "Je Cloudflare-gegevens zijn geldig."
+msgstr "Je Cloudflare gegevens zijn geldig."
 
 #: inc/deprecated/deprecated.php:1389
 msgid "Your Cloudflare credentials are invalid!"
