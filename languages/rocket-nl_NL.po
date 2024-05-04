@@ -3404,7 +3404,7 @@ msgstr "Kritieke afbeeldingen wissen"
 
 #: inc/Engine/Saas/Admin/AdminBar.php:160
 msgid "Clear Critical Images of this URL"
-msgstr "Kritieke afbeeldingen wissen van deze URL"
+msgstr "Kritieke afbeeldingen legen van deze URL"
 
 #: inc/Engine/Saas/Admin/AdminBar.php:163
 msgid "Clear Used CSS of this URL"
