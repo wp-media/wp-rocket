@@ -2651,7 +2651,7 @@ msgstr "RocketCDN cache legen mislukt: identificatie parameter mist."
 
 #: inc/Engine/CDN/RocketCDN/APIClient.php:186
 msgid "RocketCDN cache purge failed: Missing user token."
-msgstr "RocketCDN-cache legen mislukt: gebruikerstoken mist."
+msgstr "RocketCDN cache legen mislukt: gebruikerstoken mist."
 
 #: inc/Engine/CDN/RocketCDN/APIClient.php:212
 msgid ""
