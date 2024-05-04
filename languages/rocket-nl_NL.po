@@ -2322,7 +2322,7 @@ msgstr "Meer functies toevoegen"
 
 #: inc/Engine/Admin/Settings/Page.php:1717
 msgid "One-click Rocket Add-ons"
-msgstr "One-click Rocket Add-ons"
+msgstr "One-click Rocket add-ons"
 
 #: inc/Engine/Admin/Settings/Page.php:1718
 msgid ""
