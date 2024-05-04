@@ -1022,7 +1022,7 @@ msgstr "Je Cloudflare gegevens zijn geldig."
 
 #: inc/deprecated/deprecated.php:1389
 msgid "Your Cloudflare credentials are invalid!"
-msgstr "Je Cloudflare-gegevens zijn ongeldig!"
+msgstr "Je Cloudflare gegevens zijn ongeldig!"
 
 #: inc/deprecated/deprecated.php:1453
 msgid "Save and optimize"
