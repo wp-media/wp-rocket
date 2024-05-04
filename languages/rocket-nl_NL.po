@@ -820,8 +820,8 @@ msgid ""
 "Sitemap preload: %d uncached pages have now been preloaded. (refresh to see "
 "progress)"
 msgstr ""
-"Preloaden sitemap: %d niet-gecachete pagina's zijn nu gepreload. (Ververs om"
-" voortgang te bekijken)"
+"Preloaden sitemap: %d niet-gecachete pagina's zijn nu gepreload. (Vernieuw "
+"om voortgang te bekijken)"
 
 #. translators: %s is an URL.
 #: inc/deprecated/3.3.php:761 inc/deprecated/3.3.php:770
