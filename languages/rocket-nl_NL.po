@@ -10,9 +10,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.15.10-alpha1\n"
-"Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2024-03-14T17:10:16+02:00\n"
+"Project-Id-Version: WP Rocket 3.16-alpha1\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-rocket\n"
+"POT-Creation-Date: 2024-04-29T20:40:45+00:00\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Toine <toinerademacher@hotmail.com>, 2024\n"
 "Language-Team: Dutch (Netherlands) (https://app.transifex.com/wp-media/teams/18133/nl_NL/)\n"
@@ -22,7 +22,7 @@ msgstr ""
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Domain: rocket\n"
-"X-Generator: WP-CLI 2.7.1\n"
+"X-Generator: WP-CLI 2.4.0\n"
 
 #. Plugin Name of the plugin
 msgid "WP Rocket"
@@ -229,7 +229,7 @@ msgstr ""
 "%1$sWP Rocket:%2$s optimale instellingen uitgeschakeld voor Cloudflare, "
 "teruggezet naar vorige instellingen:"
 
-#: inc/Addon/Cloudflare/Subscriber.php:661 inc/admin/options.php:147
+#: inc/Addon/Cloudflare/Subscriber.php:661 inc/admin/options.php:165
 #: inc/classes/subscriber/Tools/class-detect-missing-tags-subscriber.php:148
 msgid "WP Rocket: "
 msgstr "WP Rocket: "
@@ -376,7 +376,7 @@ msgid "Settings"
 msgstr "Instellingen"
 
 #: inc/admin/admin.php:96 inc/admin/admin.php:117 inc/deprecated/3.5.php:898
-#: inc/Engine/Cache/AdminSubscriber.php:133
+#: inc/Engine/Cache/AdminSubscriber.php:134
 msgid "Clear this cache"
 msgstr "Deze cache legen"
 
@@ -406,60 +406,60 @@ msgid "Settings import failed: unexpected file content."
 msgstr ""
 "Importeren van instellingen mislukt: inhoud van het bestand is onjuist."
 
-#: inc/admin/admin.php:477
+#: inc/admin/admin.php:492
 msgid "Settings imported and saved."
 msgstr "Instellingen geïmporteerd en opgeslagen."
 
-#: inc/admin/options.php:84 inc/Engine/Admin/Settings/Page.php:666
+#: inc/admin/options.php:102 inc/Engine/Admin/Settings/Page.php:571
 msgid "Excluded CSS Files"
 msgstr "Uitgesloten CSS-bestanden"
 
-#: inc/admin/options.php:85 inc/Engine/Admin/Settings/Page.php:820
+#: inc/admin/options.php:103 inc/Engine/Admin/Settings/Page.php:725
 msgid "Excluded Inline JavaScript"
 msgstr "Uitgesloten inline JavaScript"
 
-#: inc/admin/options.php:86 inc/Engine/Admin/Settings/Page.php:838
-#: inc/Engine/Admin/Settings/Page.php:871
-#: inc/Engine/Admin/Settings/Page.php:918
+#: inc/admin/options.php:104 inc/Engine/Admin/Settings/Page.php:743
+#: inc/Engine/Admin/Settings/Page.php:776
+#: inc/Engine/Admin/Settings/Page.php:823
 msgid "Excluded JavaScript Files"
 msgstr "Uitgesloten JavaScript-bestanden"
 
-#: inc/admin/options.php:87
+#: inc/admin/options.php:105
 msgid "Defer JavaScript Files"
 msgstr "JavaScript-bestanden uitstellen"
 
-#: inc/admin/options.php:88
+#: inc/admin/options.php:106
 msgid "Excluded Delay JavaScript Files"
 msgstr "Uitgesloten JavaScript-bestanden uitstellen"
 
-#: inc/admin/options.php:89 inc/Engine/Admin/Settings/Page.php:1311
+#: inc/admin/options.php:107 inc/Engine/Admin/Settings/Page.php:1229
 msgid "Never Cache URL(s)"
 msgstr "Nooit URL(s) cachen"
 
-#: inc/admin/options.php:90 inc/Engine/Admin/Settings/Page.php:1325
+#: inc/admin/options.php:108 inc/Engine/Admin/Settings/Page.php:1243
 msgid "Never Cache User Agent(s)"
 msgstr "Nooit user agent(s) cachen"
 
-#: inc/admin/options.php:91 inc/Engine/Admin/Settings/Page.php:1331
+#: inc/admin/options.php:109 inc/Engine/Admin/Settings/Page.php:1249
 msgid "Always Purge URL(s)"
 msgstr "Altijd URL(s) legen"
 
-#: inc/admin/options.php:92 inc/Engine/Admin/Settings/Page.php:1598
+#: inc/admin/options.php:110 inc/Engine/Admin/Settings/Page.php:1530
 msgid "Exclude files from CDN"
 msgstr "Sluit bestanden uit van CDN"
 
 #. translators: 1 and 2 can be anything.
-#: inc/admin/options.php:113
+#: inc/admin/options.php:131
 msgid "%1$s: <em>%2$s</em>"
 msgstr "%1$s: <em>%2$s</em>"
 
-#: inc/admin/options.php:123
+#: inc/admin/options.php:141
 msgid "The following pattern is invalid and has been removed:"
 msgid_plural "The following patterns are invalid and have been removed:"
 msgstr[0] "Het volgende patroon is ongeldig en is verwijderd:"
 msgstr[1] "De volgende patronen zijn ongeldig en zijn verwijderd:"
 
-#: inc/admin/options.php:139
+#: inc/admin/options.php:157
 msgid "More info"
 msgstr "Meer informatie"
 
@@ -654,9 +654,8 @@ msgstr "%s: gebruikerscache geleegd."
 msgid "Dismiss this notice"
 msgstr "Negeer deze melding"
 
-#: inc/admin/ui/notices.php:682
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:131
-#: views/settings/page-sections/dashboard.php:188
+#: inc/admin/ui/notices.php:682 inc/Engine/Saas/Admin/AdminBar.php:80
+#: inc/Engine/Saas/Admin/AdminBar.php:198
 msgid "Clear Used CSS"
 msgstr "Gebruikte CSS legen"
 
@@ -1096,8 +1095,8 @@ msgstr "Basis"
 msgid "Static Files"
 msgstr "Statische bestanden"
 
-#: inc/deprecated/deprecated.php:1773 inc/Engine/Admin/Settings/Page.php:1568
-#: inc/Engine/Admin/Settings/Page.php:1579
+#: inc/deprecated/deprecated.php:1773 inc/Engine/Admin/Settings/Page.php:1500
+#: inc/Engine/Admin/Settings/Page.php:1511
 #: inc/Engine/CDN/Admin/Subscriber.php:28
 msgid "CDN"
 msgstr "CDN"
@@ -1106,21 +1105,21 @@ msgstr "CDN"
 msgid "Advanced"
 msgstr "Geavanceerd"
 
-#: inc/deprecated/deprecated.php:1775 inc/Engine/Admin/Settings/Page.php:1413
+#: inc/deprecated/deprecated.php:1775 inc/Engine/Admin/Settings/Page.php:1345
 msgid "Database"
 msgstr "Database"
 
-#: inc/deprecated/deprecated.php:1776 inc/Engine/Admin/Settings/Page.php:1146
+#: inc/deprecated/deprecated.php:1776 inc/Engine/Admin/Settings/Page.php:1051
 msgid "Preload"
 msgstr "Preloaden"
 
 #: inc/deprecated/deprecated.php:1786
-#: inc/Engine/Admin/Settings/Subscriber.php:168
+#: inc/Engine/Admin/Settings/Subscriber.php:170
 #: views/settings/page-sections/tools.php:33
 msgid "Tools"
 msgstr "Tools"
 
-#: inc/deprecated/deprecated.php:1789 inc/Engine/Admin/Settings/Page.php:334
+#: inc/deprecated/deprecated.php:1789 inc/Engine/Admin/Settings/Page.php:357
 #: views/settings/page-sections/dashboard.php:80
 msgid "License"
 msgstr "Licentie"
@@ -1163,27 +1162,27 @@ msgid "weekly"
 msgstr "wekelijks"
 
 #: inc/Engine/Admin/Database/Optimization.php:30
-#: inc/Engine/Admin/Settings/Page.php:1457
+#: inc/Engine/Admin/Settings/Page.php:1389
 msgid "Revisions"
 msgstr "Revisies"
 
 #: inc/Engine/Admin/Database/Optimization.php:31
-#: inc/Engine/Admin/Settings/Page.php:1467
+#: inc/Engine/Admin/Settings/Page.php:1399
 msgid "Auto Drafts"
 msgstr "Automatische concepten"
 
 #: inc/Engine/Admin/Database/Optimization.php:32
-#: inc/Engine/Admin/Settings/Page.php:1477
+#: inc/Engine/Admin/Settings/Page.php:1409
 msgid "Trashed Posts"
 msgstr "Verwijderde berichten"
 
 #: inc/Engine/Admin/Database/Optimization.php:33
-#: inc/Engine/Admin/Settings/Page.php:1487
+#: inc/Engine/Admin/Settings/Page.php:1419
 msgid "Spam Comments"
 msgstr "Spam reacties"
 
 #: inc/Engine/Admin/Database/Optimization.php:34
-#: inc/Engine/Admin/Settings/Page.php:1497
+#: inc/Engine/Admin/Settings/Page.php:1429
 msgid "Trashed Comments"
 msgstr "Verwijderde reacties"
 
@@ -1238,45 +1237,45 @@ msgstr ""
 msgid "Regenerate WP Rocket configuration files now"
 msgstr "WP Rocket configuratiebestanden nu opnieuw genereren"
 
-#: inc/Engine/Admin/Settings/Page.php:201
+#: inc/Engine/Admin/Settings/Page.php:223
 msgid "Save Changes"
 msgstr "Wijzigingen opslaan"
 
-#: inc/Engine/Admin/Settings/Page.php:201
+#: inc/Engine/Admin/Settings/Page.php:223
 msgid "Validate License"
 msgstr "Valideer licentie"
 
-#: inc/Engine/Admin/Settings/Page.php:257
-#: inc/Engine/Admin/Settings/Page.php:258 inc/functions/admin.php:550
+#: inc/Engine/Admin/Settings/Page.php:279
+#: inc/Engine/Admin/Settings/Page.php:280 inc/functions/admin.php:550
 msgid "Unavailable"
 msgstr "Niet beschikbaar"
 
-#: inc/Engine/Admin/Settings/Page.php:351
+#: inc/Engine/Admin/Settings/Page.php:374
 msgid "API key"
 msgstr "API-sleutel"
 
-#: inc/Engine/Admin/Settings/Page.php:366
+#: inc/Engine/Admin/Settings/Page.php:389
 msgid "Email address"
 msgstr "E-mailadres"
 
-#: inc/Engine/Admin/Settings/Page.php:392
+#: inc/Engine/Admin/Settings/Page.php:415
 msgid "Dashboard"
 msgstr "Dashboard"
 
-#: inc/Engine/Admin/Settings/Page.php:393
+#: inc/Engine/Admin/Settings/Page.php:416
 msgid "Get help, account info"
 msgstr "Krijg hulp, accountinformatie"
 
-#: inc/Engine/Admin/Settings/Page.php:402
+#: inc/Engine/Admin/Settings/Page.php:425
 msgid "My Status"
 msgstr "Mijn status"
 
-#: inc/Engine/Admin/Settings/Page.php:412 views/settings/page.php:75
+#: inc/Engine/Admin/Settings/Page.php:435 views/settings/page.php:75
 msgid "Rocket Analytics"
 msgstr "Rocket Analytics"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:414
+#: inc/Engine/Admin/Settings/Page.php:437
 msgid ""
 "I agree to share anonymous data with the development team to help improve WP"
 " Rocket. %1$sWhat info will we collect?%2$s"
@@ -1285,121 +1284,17 @@ msgstr ""
 "deelt ter verbetering van de plug-in. %1$sWelke informatie verzamelt de "
 "plug-in? %2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:438 inc/Engine/Cache/WPCache.php:354
-msgid "Cache"
-msgstr "Cache"
-
-#: inc/Engine/Admin/Settings/Page.php:439
-msgid "Basic cache options"
-msgstr "Basis cache-instellingen"
-
-#: inc/Engine/Admin/Settings/Page.php:446
-msgid "Mobile Cache"
-msgstr "Mobiele cache"
-
-#: inc/Engine/Admin/Settings/Page.php:448
-msgid "Speed up your site for mobile visitors."
-msgstr "Versnel je site voor mobiele bezoekers."
-
-#: inc/Engine/Admin/Settings/Page.php:453
-msgid ""
-"We detected you use a plugin that requires a separate cache for mobile, and "
-"automatically enabled this option for compatibility."
-msgstr ""
-"We hebben gedetecteerd dat je een plugin gebruikt die een aparte cache voor "
-"mobiel vereist, en hebben deze optie automatisch ingeschakeld voor "
-"compatibiliteit."
-
-#: inc/Engine/Admin/Settings/Page.php:457
-msgid "User Cache"
-msgstr "Gebruikerscache"
-
-#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:460
-msgid ""
-"%1$sUser cache%2$s is great when you have user-specific or restricted "
-"content on your website."
-msgstr ""
-"%1$sGebruikerscache%2$s is geweldig als je gebruikersspecifieke of "
-"beveiligde inhoud hebt op je site."
-
-#: inc/Engine/Admin/Settings/Page.php:468
-msgid "Cache Lifespan"
-msgstr "Cache levensduur"
-
-#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:471
-msgid ""
-"Cache files older than the specified lifespan will be deleted.<br>Enable "
-"%1$spreloading%2$s for the cache to be rebuilt automatically after lifespan "
-"expiration."
-msgstr ""
-"Cache-bestanden die ouder zijn dan de opgegeven levensduur worden "
-"verwijderd.<br>Schakel %1$spreloaden in%2$s zodat de cache automatisch wordt"
-" herbouwd na het verlopen van de levensduur."
-
-#: inc/Engine/Admin/Settings/Page.php:485
-msgid "Enable caching for logged-in WordPress users"
-msgstr "Caching voor ingelogde WordPress-gebruikers inschakelen"
-
-#: inc/Engine/Admin/Settings/Page.php:493
-msgid "Enable caching for mobile devices"
-msgstr "Caching voor mobiele apparaten inschakelen"
-
-#: inc/Engine/Admin/Settings/Page.php:508
-msgid "Separate cache files for mobile devices"
-msgstr "Cache-bestanden voor mobiele apparaten scheiden"
-
-#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:510
-msgid ""
-"Most modern themes are responsive and should work without a separate cache. "
-"Enable this only if you have a dedicated mobile theme or plugin. %1$sMore "
-"info%2$s"
-msgstr ""
-"De meeste moderne thema's zijn responsive en zouden zonder aparte cache "
-"moeten werken. Schakel dit alleen in als je een speciaal mobiel thema of "
-"plugin hebt. %1$sMeer info%2$s"
-
-#: inc/Engine/Admin/Settings/Page.php:526
-msgid ""
-"Specify time after which the global cache is cleared<br>(0 = unlimited )"
-msgstr ""
-"Specificeer de tijd waarna de volledige cache automatisch wordt geleegd <br>"
-" (0 = onbeperkt, niet legen)"
-
-#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:528
-msgid ""
-"Reduce lifespan to 10 hours or less if you notice issues that seem to appear"
-" periodically. %1$sWhy?%2$s"
-msgstr ""
-"Verlaag de levensduur naar 10 uur of minder als je problemen ondervindt die "
-"soms voorkomen. %1$sWaarom?%2$s"
-
-#: inc/Engine/Admin/Settings/Page.php:534
-#: inc/Engine/License/views/promo-banner.php:30
-#: inc/Engine/License/views/renewal-soon-banner.php:13
-msgid "Hours"
-msgstr "Uren"
-
-#: inc/Engine/Admin/Settings/Page.php:535
-#: inc/Engine/License/views/promo-banner.php:29
-#: inc/Engine/License/views/renewal-soon-banner.php:12
-msgid "Days"
-msgstr "Dagen"
-
-#: inc/Engine/Admin/Settings/Page.php:584
+#: inc/Engine/Admin/Settings/Page.php:489
 msgid "File Optimization"
 msgstr "Bestandsoptimalisatie"
 
-#: inc/Engine/Admin/Settings/Page.php:585
+#: inc/Engine/Admin/Settings/Page.php:490
 msgid "Optimize CSS & JS"
 msgstr "CSS & JS optimaliseren"
 
 #. translators: %1$s = type of minification (HTML, CSS or JS), %2$s = “WP
 #. Rocket”.
-#: inc/Engine/Admin/Settings/Page.php:593
+#: inc/Engine/Admin/Settings/Page.php:498
 msgid ""
 "%1$s Minification is currently activated in <strong>Autoptimize</strong>. If"
 " you want to use %2$s’s minification, disable this option in Autoptimize."
@@ -1408,17 +1303,17 @@ msgstr ""
 "Als je %2$s's verkleinen wilt gebruiken, schakel deze optie dan uit in "
 "Autoptimaliseren."
 
-#: inc/Engine/Admin/Settings/Page.php:603
+#: inc/Engine/Admin/Settings/Page.php:508
 msgid "CSS Files"
 msgstr "CSS-bestanden"
 
-#: inc/Engine/Admin/Settings/Page.php:612
+#: inc/Engine/Admin/Settings/Page.php:517
 msgid "JavaScript Files"
 msgstr "JavaScript-bestanden"
 
 #. translators: %1$s = type of minification (HTML, CSS or JS), %2$s = “WP
 #. Rocket”.
-#: inc/Engine/Admin/Settings/Page.php:619
+#: inc/Engine/Admin/Settings/Page.php:524
 msgid ""
 "%1$s Minification is currently activated in <strong>Autoptimize</strong>. If"
 " you want to use %2$s’s minification, disable those options in Autoptimize."
@@ -1427,7 +1322,7 @@ msgstr ""
 "Als je %2$s's verkleinen wilt gebruiken, schakel deze opties dan uit in "
 "Autoptimaliseren."
 
-#: inc/Engine/Admin/Settings/Page.php:624
+#: inc/Engine/Admin/Settings/Page.php:529
 msgid ""
 "If you have problems after activating this option, copy and paste the "
 "default exclusions to quickly resolve issues:"
@@ -1436,7 +1331,7 @@ msgstr ""
 " dan de standaard uitsluitingen om problemen snel op te lossen:"
 
 #. translators: %1$s = opening </a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:628
+#: inc/Engine/Admin/Settings/Page.php:533
 msgid ""
 "Also, please check our %1$sdocumentation%2$s for a list of compatibility "
 "exclusions."
@@ -1444,7 +1339,7 @@ msgstr ""
 "Raadpleeg ook onze %1$sdocumentatie%2$s voor een lijst met "
 "compatibiliteitsuitsluitingen."
 
-#: inc/Engine/Admin/Settings/Page.php:633
+#: inc/Engine/Admin/Settings/Page.php:538
 msgid ""
 "Internal scripts are excluded by default to prevent issues. Remove them to "
 "take full advantage of this option."
@@ -1453,34 +1348,34 @@ msgstr ""
 "Verwijder ze om deze optie volledig te benutten."
 
 #. translators: %1$s = opening </a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:636
+#: inc/Engine/Admin/Settings/Page.php:541
 msgid ""
 "If this causes trouble, restore the default exclusions, found %1$shere%2$s"
 msgstr ""
 "Als dit problemen veroorzaakt, herstel dan de standaard uitsluitingen, te "
 "vinden %1$shier%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:645
+#: inc/Engine/Admin/Settings/Page.php:550
 msgid "Minify CSS files"
 msgstr "CSS-bestanden verkleinen"
 
-#: inc/Engine/Admin/Settings/Page.php:646
+#: inc/Engine/Admin/Settings/Page.php:551
 msgid "Minify CSS removes whitespace and comments to reduce the file size."
 msgstr ""
 "CSS verkleinen verwijdert witruimte en reacties om de bestandsgrootte te "
 "verminderen."
 
-#: inc/Engine/Admin/Settings/Page.php:659
-#: inc/Engine/Admin/Settings/Page.php:723
-#: inc/Engine/Admin/Settings/Page.php:789
-#: inc/Engine/Admin/Settings/Page.php:813
+#: inc/Engine/Admin/Settings/Page.php:564
+#: inc/Engine/Admin/Settings/Page.php:628
+#: inc/Engine/Admin/Settings/Page.php:694
+#: inc/Engine/Admin/Settings/Page.php:718
 msgid "This could break things!"
 msgstr "Dit kan dingen breken!"
 
-#: inc/Engine/Admin/Settings/Page.php:660
-#: inc/Engine/Admin/Settings/Page.php:724
-#: inc/Engine/Admin/Settings/Page.php:790
-#: inc/Engine/Admin/Settings/Page.php:814
+#: inc/Engine/Admin/Settings/Page.php:565
+#: inc/Engine/Admin/Settings/Page.php:629
+#: inc/Engine/Admin/Settings/Page.php:695
+#: inc/Engine/Admin/Settings/Page.php:719
 msgid ""
 "If you notice any errors on your website after having activated this "
 "setting, just deactivate it again, and your site will be back to normal."
@@ -1488,18 +1383,18 @@ msgstr ""
 "Als je fouten op je website opmerkt na het activeren van deze instelling, "
 "deactiveer het dan gewoon en je site zal weer als normaal zijn."
 
-#: inc/Engine/Admin/Settings/Page.php:661
+#: inc/Engine/Admin/Settings/Page.php:566
 msgid "Activate minify CSS"
 msgstr "CSS verkleinen activeren"
 
-#: inc/Engine/Admin/Settings/Page.php:667
+#: inc/Engine/Admin/Settings/Page.php:572
 msgid ""
 "Specify URLs of CSS files to be excluded from minification (one per line)."
 msgstr ""
 "Geef URL's op van CSS-bestanden die moeten worden uitgesloten van verkleinen"
 " (één per regel)."
 
-#: inc/Engine/Admin/Settings/Page.php:668
+#: inc/Engine/Admin/Settings/Page.php:573
 msgid ""
 "<strong>Internal:</strong> The domain part of the URL will be stripped "
 "automatically. Use (.*).css wildcards to exclude all CSS files located at a "
@@ -1510,7 +1405,7 @@ msgstr ""
 "pad uit te sluiten."
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:670
+#: inc/Engine/Admin/Settings/Page.php:575
 msgid ""
 "<strong>3rd Party:</strong> Use either the full URL path or only the domain "
 "name, to exclude external CSS. %1$sMore info%2$s"
@@ -1518,12 +1413,12 @@ msgstr ""
 "<strong>3e partij:</strong> gebruik het volledige URL-pad of alleen de "
 "domeinnaam om externe CSS uit te sluiten. %1$sMeer informatie%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:683
-#: inc/Engine/Admin/Settings/Page.php:705
+#: inc/Engine/Admin/Settings/Page.php:588
+#: inc/Engine/Admin/Settings/Page.php:610
 msgid "Optimize CSS delivery"
 msgstr "CSS-levering optimaliseren"
 
-#: inc/Engine/Admin/Settings/Page.php:688
+#: inc/Engine/Admin/Settings/Page.php:593
 msgid ""
 "Optimize CSS delivery eliminates render-blocking CSS on your website. Only "
 "one method can be selected. Remove Unused CSS is recommended for optimal "
@@ -1534,7 +1429,7 @@ msgstr ""
 "aanbevolen voor optimale prestaties, maar is beperkt tot gebruikers met een "
 "actieve licentie."
 
-#: inc/Engine/Admin/Settings/Page.php:688
+#: inc/Engine/Admin/Settings/Page.php:593
 msgid ""
 "Optimize CSS delivery eliminates render-blocking CSS on your website. Only "
 "one method can be selected. Remove Unused CSS is recommended for optimal "
@@ -1545,7 +1440,7 @@ msgstr ""
 "aanbevolen voor optimale prestaties."
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:698
+#: inc/Engine/Admin/Settings/Page.php:603
 msgid ""
 "Optimize CSS Delivery features are disabled on local environments. %1$sLearn"
 " more%2$s"
@@ -1553,13 +1448,13 @@ msgstr ""
 "CSS-leverfuncties optimaliseren zijn uitgeschakeld op lokale omgevingen. "
 "%1$sLeer meer%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:718
+#: inc/Engine/Admin/Settings/Page.php:623
 #: inc/Engine/Optimization/RUCSS/Admin/OptionSubscriber.php:74
 msgid "Remove Unused CSS"
 msgstr "Ongebruikte CSS verwijderen"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:721
+#: inc/Engine/Admin/Settings/Page.php:626
 msgid ""
 "Removes unused CSS per page and helps to reduce page size and HTTP requests."
 " Recommended for best performance. Test thoroughly! %1$sMore info%2$s"
@@ -1568,15 +1463,15 @@ msgstr ""
 "verzoeken te verminderen. Aanbevolen voor de beste prestaties. Test grondig!"
 " %1$sMeer informatie%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:725
+#: inc/Engine/Admin/Settings/Page.php:630
 msgid "Activate Remove Unused CSS"
 msgstr "Verwijder ongebruikte CSS activeren"
 
-#: inc/Engine/Admin/Settings/Page.php:731
+#: inc/Engine/Admin/Settings/Page.php:636
 msgid "CSS safelist"
 msgstr "CSS veilge lijst"
 
-#: inc/Engine/Admin/Settings/Page.php:732
+#: inc/Engine/Admin/Settings/Page.php:637
 msgid ""
 "Specify CSS filenames, IDs or classes that should not be removed (one per "
 "line)."
@@ -1584,13 +1479,13 @@ msgstr ""
 "Geef CSS-bestandsnamen, ID's of klassen op die niet verwijderd mogen worden "
 "(één per regel)."
 
-#: inc/Engine/Admin/Settings/Page.php:747
+#: inc/Engine/Admin/Settings/Page.php:652
 #: inc/Engine/CriticalPath/Admin/Subscriber.php:200
 msgid "Load CSS asynchronously"
 msgstr "CSS asynchroon laden"
 
 #. translators: %1$s = plugin name.
-#: inc/Engine/Admin/Settings/Page.php:750
+#: inc/Engine/Admin/Settings/Page.php:655
 msgctxt "WP Critical CSS compatibility"
 msgid ""
 "Load CSS asynchronously is currently handled by the %1$s plugin. If you want"
@@ -1601,17 +1496,17 @@ msgstr ""
 "%1$s plugin uit."
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:752
+#: inc/Engine/Admin/Settings/Page.php:657
 msgid ""
 "Generates critical path CSS and loads CSS asynchronously. %1$sMore info%2$s"
 msgstr "Genereert kritieke pad CSS en laadt CSS asynchroon. %1$sMeer info%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:758
+#: inc/Engine/Admin/Settings/Page.php:663
 msgid "Fallback critical CSS"
 msgstr "Terugvallen op kritieke CSS"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:760
+#: inc/Engine/Admin/Settings/Page.php:665
 msgid ""
 "Provides a fallback if auto-generated critical path CSS is incomplete. "
 "%1$sMore info%2$s"
@@ -1619,22 +1514,22 @@ msgstr ""
 "Biedt een vangnet als auto-gegenereerde kritieke pad CSS incompleet is. "
 "%1$sMeer info%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:775
+#: inc/Engine/Admin/Settings/Page.php:680
 msgid "Minify JavaScript files"
 msgstr "JavaScript-bestanden verkleinen"
 
-#: inc/Engine/Admin/Settings/Page.php:776
+#: inc/Engine/Admin/Settings/Page.php:681
 msgid ""
 "Minify JavaScript removes whitespace and comments to reduce the file size."
 msgstr ""
 "JavaScript verkleinen verwijderd witruimte en reacties om zo de "
 "bestandsgrootte te verlagen."
 
-#: inc/Engine/Admin/Settings/Page.php:791
+#: inc/Engine/Admin/Settings/Page.php:696
 msgid "Activate minify JavaScript"
 msgstr "Activeer het verkleinen van JavaScript"
 
-#: inc/Engine/Admin/Settings/Page.php:796
+#: inc/Engine/Admin/Settings/Page.php:701
 msgid ""
 "Combine JavaScript files <em>(Enable Minify JavaScript files to select)</em>"
 msgstr ""
@@ -1642,7 +1537,7 @@ msgstr ""
 "selecteren)</em>"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:798
+#: inc/Engine/Admin/Settings/Page.php:703
 msgid ""
 "Combine JavaScript files combines your site’s internal, 3rd party and inline"
 " JS reducing HTTP requests. Not recommended if your site uses HTTP/2. "
@@ -1653,7 +1548,7 @@ msgstr ""
 "als je site HTTP/2 gebruikt. %1$sMeer info%2$s"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:799
+#: inc/Engine/Admin/Settings/Page.php:704
 msgid ""
 "For compatibility and best results, this option is disabled when delay "
 "javascript execution is enabled."
@@ -1661,12 +1556,12 @@ msgstr ""
 "Voor compatibiliteit en de beste resultaten, wordt deze optie uitgeschakeld "
 "wanneer JavaScript-uitvoering uitstellen is ingeschakeld."
 
-#: inc/Engine/Admin/Settings/Page.php:815
+#: inc/Engine/Admin/Settings/Page.php:720
 msgid "Activate combine JavaScript"
 msgstr "Activeer het combineren van JavaScript"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:822
+#: inc/Engine/Admin/Settings/Page.php:727
 msgid ""
 "Specify patterns of inline JavaScript to be excluded from concatenation (one"
 " per line). %1$sMore info%2$s"
@@ -1674,7 +1569,7 @@ msgstr ""
 "Specificeer patronen of inline JavaScript de uitgesloten moet worden van "
 "aaneenschakeling (één per regel). %1$sMeer info%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:839
+#: inc/Engine/Admin/Settings/Page.php:744
 msgid ""
 "Specify URLs of JavaScript files to be excluded from minification and "
 "concatenation (one per line)."
@@ -1682,7 +1577,7 @@ msgstr ""
 "Specificeer URL's of JavaScript-bestanden die uitgesloten moeten worden van "
 "verkleinen en aaneenschakeling (één per regel)."
 
-#: inc/Engine/Admin/Settings/Page.php:840
+#: inc/Engine/Admin/Settings/Page.php:745
 msgid ""
 "<strong>Internal:</strong> The domain part of the URL will be stripped "
 "automatically. Use (.*).js wildcards to exclude all JS files located at a "
@@ -1693,7 +1588,7 @@ msgstr ""
 "pad uit te sluiten."
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:842
+#: inc/Engine/Admin/Settings/Page.php:747
 msgid ""
 "<strong>3rd Party:</strong> Use either the full URL path or only the domain "
 "name, to exclude external JS. %1$sMore info%2$s"
@@ -1701,13 +1596,13 @@ msgstr ""
 "<strong>3e partij:</strong> gebruik het volledige URL-pad of alleen de "
 "domeinnaam om externe JS uit te sluiten. %1$sMeer informatie%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:858
+#: inc/Engine/Admin/Settings/Page.php:763
 #: inc/Engine/Optimization/DeferJS/AdminSubscriber.php:76
 msgid "Load JavaScript deferred"
 msgstr "JavaScript uitgesteld laden"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:860
+#: inc/Engine/Admin/Settings/Page.php:765
 msgid ""
 "Load JavaScript deferred eliminates render-blocking JS on your site and can "
 "improve load time. %1$sMore info%2$s"
@@ -1716,7 +1611,7 @@ msgstr ""
 "de laadtijd verbeteren. %1$sMeer info%2$s"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:873
+#: inc/Engine/Admin/Settings/Page.php:778
 msgid ""
 "Specify URLs or keywords of JavaScript files to be excluded from defer (one "
 "per line). %1$sMore info%2$s"
@@ -1724,13 +1619,13 @@ msgstr ""
 "Geef URL's of trefwoorden op van JavaScript-bestanden die moeten worden "
 "uitgesloten van uitstellen (één per regel). %1$sMeer info%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:889
+#: inc/Engine/Admin/Settings/Page.php:794
 #: inc/Engine/Optimization/DelayJS/Admin/Subscriber.php:210
 msgid "Delay JavaScript execution"
 msgstr "JavaScript-uitvoering uitstellen"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:891
+#: inc/Engine/Admin/Settings/Page.php:796
 msgid ""
 "Improves performance by delaying the loading of JavaScript files until user "
 "interaction (e.g. scroll, click). %1$sMore info%2$s"
@@ -1739,11 +1634,11 @@ msgstr ""
 "stellen tot interactie van de gebruiker (bijv. scrollen, klikken). %1$sMeer "
 "info%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:900
+#: inc/Engine/Admin/Settings/Page.php:805
 msgid "One-click exclusions"
 msgstr "Uitsluitingen met één klik"
 
-#: inc/Engine/Admin/Settings/Page.php:901
+#: inc/Engine/Admin/Settings/Page.php:806
 msgid ""
 "When using the Delay JavaScript Execution, you might experience delay "
 "loading elements located in the viewport that need to appear immediately - "
@@ -1753,7 +1648,7 @@ msgstr ""
 "bij het laden van elementen in de viewport die onmiddellijk moeten "
 "verschijnen, zoals een schuifbalk, header of menu."
 
-#: inc/Engine/Admin/Settings/Page.php:902
+#: inc/Engine/Admin/Settings/Page.php:807
 msgid ""
 "If you need instant visibility, click below on files that should NOT be "
 "delayed. This selection will help users interact with the elements straight "
@@ -1763,7 +1658,7 @@ msgstr ""
 "bestanden die NIET mogen worden uitgesteld. Met deze selectie kunnen "
 "gebruikers meteen met de elementen werken."
 
-#: inc/Engine/Admin/Settings/Page.php:919
+#: inc/Engine/Admin/Settings/Page.php:824
 msgid ""
 "Specify URLs or keywords that can identify inline or JavaScript files to be "
 "excluded from delaying execution (one per line)."
@@ -1772,24 +1667,24 @@ msgstr ""
 "identificeren die moeten worden uitgesloten van uitvoering uitstellen (één "
 "per regel)."
 
-#: inc/Engine/Admin/Settings/Page.php:951
+#: inc/Engine/Admin/Settings/Page.php:856
 msgid "Media"
 msgstr "Media"
 
-#: inc/Engine/Admin/Settings/Page.php:952
+#: inc/Engine/Admin/Settings/Page.php:857
 msgid "LazyLoad, image dimensions"
 msgstr "LazyLoad, afbeeldingsafmetingen"
 
-#: inc/Engine/Admin/Settings/Page.php:961
+#: inc/Engine/Admin/Settings/Page.php:866
 msgid "Autoptimize"
 msgstr "Autoptimize"
 
-#: inc/Engine/Admin/Settings/Page.php:1015
+#: inc/Engine/Admin/Settings/Page.php:920
 msgid "LazyLoad"
 msgstr "LazyLoad"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:1018
+#: inc/Engine/Admin/Settings/Page.php:923
 msgid ""
 "It can improve actual and perceived loading time as images, iframes, and "
 "videos will be loaded only as they enter (or about to enter) the viewport "
@@ -1801,7 +1696,7 @@ msgstr ""
 "info%2$s"
 
 #. translators: %1$s = “WP Rocket”, %2$s = a list of plugin names.
-#: inc/Engine/Admin/Settings/Page.php:1025
+#: inc/Engine/Admin/Settings/Page.php:930
 msgid ""
 "LazyLoad is currently activated in %2$s. If you want to use WP Rocket’s "
 "LazyLoad, disable this option in %2$s."
@@ -1809,12 +1704,12 @@ msgstr ""
 "LazyLoad is op dit moment geactiveerd in %2$s. Als je WP Rocket’s LazyLoad "
 "wilt gebruiken, schakel deze optie uit in %2$s."
 
-#: inc/Engine/Admin/Settings/Page.php:1028
+#: inc/Engine/Admin/Settings/Page.php:933
 msgid "Image Dimensions"
 msgstr "Afbeelding afmetingen"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:1031
+#: inc/Engine/Admin/Settings/Page.php:936
 msgid ""
 "Add missing width and height attributes to images. Helps prevent layout "
 "shifts and improve the reading experience for your visitors. %1$sMore "
@@ -1824,12 +1719,12 @@ msgstr ""
 "verschuivingen in de lay-out te voorkomen en de leeservaring voor je "
 "bezoekers te verbeteren. %1$sMeer info%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:1050
+#: inc/Engine/Admin/Settings/Page.php:955
 msgid "Enable for images"
 msgstr "Voor afbeeldingen inschakelen"
 
 #. translators: %1$s = “WP Rocket”, %2$s = a list of plugin names.
-#: inc/Engine/Admin/Settings/Page.php:1062
+#: inc/Engine/Admin/Settings/Page.php:967
 msgid ""
 "LazyLoad for images is currently activated in %2$s. If you want to use "
 "%1$s’s LazyLoad, disable this option in %2$s."
@@ -1837,27 +1732,27 @@ msgstr ""
 "LazyLoad voor afbeeldingen is op dit moment geactiveerd in %2$s. Als je "
 "%1$s’s LazyLoad wilt gebruiken, schakel deze optie uit in %2$s."
 
-#: inc/Engine/Admin/Settings/Page.php:1070
+#: inc/Engine/Admin/Settings/Page.php:975
 msgid "Enable for CSS background images"
 msgstr "Inschakelen voor CSS achtergrondafbeeldingen"
 
-#: inc/Engine/Admin/Settings/Page.php:1085
+#: inc/Engine/Admin/Settings/Page.php:990
 msgid "Enable for iframes and videos"
 msgstr "Voor iframes en video's inschakelen"
 
-#: inc/Engine/Admin/Settings/Page.php:1100
+#: inc/Engine/Admin/Settings/Page.php:1005
 msgid "Replace YouTube iframe with preview image"
 msgstr "YouTube iframe met voorbeeldafbeelding vervangen"
 
 #. translators: %1$s = “WP Rocket”, %2$s = a list of plugin or themes names.
-#: inc/Engine/Admin/Settings/Page.php:1102
+#: inc/Engine/Admin/Settings/Page.php:1007
 msgid "Replace YouTube iframe with preview image is not compatible with %2$s."
 msgstr ""
 "Vervang YouTube iframe met een voorbeeldafbeelding is niet compatibel met "
 "%2$s."
 
 #. translators: %1$s = “WP Rocket”, %2$s = a list of plugin or themes names.
-#: inc/Engine/Admin/Settings/Page.php:1102
+#: inc/Engine/Admin/Settings/Page.php:1007
 msgid ""
 "This can significantly improve your loading time if you have a lot of "
 "YouTube videos on a page."
@@ -1865,12 +1760,12 @@ msgstr ""
 "Dit kan je laadtijd aanzienlijk verbeteren als je veel YouTube-video's op "
 "een pagina hebt."
 
-#: inc/Engine/Admin/Settings/Page.php:1117
+#: inc/Engine/Admin/Settings/Page.php:1022
 msgid "Excluded images or iframes"
 msgstr "Uitgesloten afbeeldingen of iframes"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:1119
+#: inc/Engine/Admin/Settings/Page.php:1024
 msgid ""
 "Specify keywords (e.g. image filename, CSS filename, CSS class, domain) from"
 " the image or iframe code to be excluded (one per line). %1$sMore info%2$s"
@@ -1879,20 +1774,20 @@ msgstr ""
 "CSS-klasse, domein) van de uit te sluiten code van de afbeelding of het "
 "iframe (één per regel). %1$sMeer info%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:1127
+#: inc/Engine/Admin/Settings/Page.php:1032
 msgid "Add missing image dimensions"
 msgstr "Voeg missende afbeelding afmetingen toe"
 
-#: inc/Engine/Admin/Settings/Page.php:1147
+#: inc/Engine/Admin/Settings/Page.php:1052
 msgid "Generate cache files, preload fonts"
 msgstr "Genereer cache-bestanden, lettertypes preloaden"
 
-#: inc/Engine/Admin/Settings/Page.php:1159
+#: inc/Engine/Admin/Settings/Page.php:1064
 msgid "Preload Cache"
 msgstr "Cache preloaden"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:1162
+#: inc/Engine/Admin/Settings/Page.php:1067
 msgid ""
 "When you enable preloading WP Rocket will automatically detect your sitemaps"
 " and save all URLs to the database. The plugin will make sure that your "
@@ -1902,12 +1797,12 @@ msgstr ""
 "detecteren en alle URL's opslaan in de database. De plugin zorgt ervoor dat "
 "je cache altijd wordt gepreload."
 
-#: inc/Engine/Admin/Settings/Page.php:1170
+#: inc/Engine/Admin/Settings/Page.php:1075
 msgid "Preload Links"
 msgstr "Links preloaden"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:1173
+#: inc/Engine/Admin/Settings/Page.php:1078
 msgid ""
 "Link preloading improves the perceived load time by downloading a page when "
 "a user hovers over the link. %1$sMore info%2$s"
@@ -1915,11 +1810,11 @@ msgstr ""
 "Link preloaden verbeterd de beleving van laadtijden door een pagina te "
 "downloaden wanneer een gebruiker over een de link hovert. %1$sMeer info%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:1181
+#: inc/Engine/Admin/Settings/Page.php:1086
 msgid "Prefetch DNS Requests"
 msgstr "DNS verzoeken prefetchen"
 
-#: inc/Engine/Admin/Settings/Page.php:1183
+#: inc/Engine/Admin/Settings/Page.php:1088
 msgid ""
 "DNS prefetching can make external files load faster, especially on mobile "
 "networks"
@@ -1927,12 +1822,12 @@ msgstr ""
 "DNS prefetchen kan zorgen voor het sneller inladen van externe bestanden, "
 "vooral op mobiele netwerken"
 
-#: inc/Engine/Admin/Settings/Page.php:1188
+#: inc/Engine/Admin/Settings/Page.php:1093
 msgid "Preload Fonts"
 msgstr "Lettertypes preloaden"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:1191
+#: inc/Engine/Admin/Settings/Page.php:1096
 msgid ""
 "Improves performance by helping browsers discover fonts in CSS files. "
 "%1$sMore info%2$s"
@@ -1940,16 +1835,16 @@ msgstr ""
 "Verbeterd prestaties door browser te helpen bij het ontdekken van "
 "lettertypes in CSS bestanden. %1$sMeer informatie%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:1205
+#: inc/Engine/Admin/Settings/Page.php:1110
 msgid "Activate Preloading"
 msgstr "Activeer preloaden"
 
-#: inc/Engine/Admin/Settings/Page.php:1216
+#: inc/Engine/Admin/Settings/Page.php:1121
 msgid "Exclude URLs"
 msgstr "URL’s uitsluiten"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:1221
+#: inc/Engine/Admin/Settings/Page.php:1126
 msgid ""
 "Specify URLs to be excluded from the preload feature (one per line). "
 "%1$sMore info%2$s"
@@ -1957,11 +1852,11 @@ msgstr ""
 "Geef URL's op die moeten worden uitgesloten van de preload functie (één per "
 "regel). %1$sMeer informatie%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:1232
+#: inc/Engine/Admin/Settings/Page.php:1137
 msgid "URLs to prefetch"
 msgstr "URL’s om te prefetchen"
 
-#: inc/Engine/Admin/Settings/Page.php:1233
+#: inc/Engine/Admin/Settings/Page.php:1138
 msgid ""
 "Specify external hosts to be prefetched (no <code>http:</code>, one per "
 "line)"
@@ -1969,11 +1864,11 @@ msgstr ""
 "Specificeer externe hosts die geprefetched moeten worden (geen "
 "<code>http:</code>, één per regel)"
 
-#: inc/Engine/Admin/Settings/Page.php:1242
+#: inc/Engine/Admin/Settings/Page.php:1147
 msgid "Fonts to preload"
 msgstr "Lettertypes om te preloaden"
 
-#: inc/Engine/Admin/Settings/Page.php:1243
+#: inc/Engine/Admin/Settings/Page.php:1148
 msgid ""
 "Specify urls of the font files to be preloaded (one per line). Fonts must be"
 " hosted on your own domain, or the domain you have specified on the CDN tab."
@@ -1982,7 +1877,7 @@ msgstr ""
 "(één per regel). Lettertypes moeten gehost worden op je eigen domein of het "
 "domein dat je hebt ingesteld op het CDN tabblad."
 
-#: inc/Engine/Admin/Settings/Page.php:1244
+#: inc/Engine/Admin/Settings/Page.php:1149
 msgid ""
 "The domain part of the URL will be stripped automatically.<br/>Allowed font "
 "extensions: otf, ttf, svg, woff, woff2."
@@ -1990,53 +1885,53 @@ msgstr ""
 "Het domein deel van de URL wordt automatisch verwijderd. <br/>Toegestane "
 "lettertype extensies: otf, ttf, svg, woff, woff2."
 
-#: inc/Engine/Admin/Settings/Page.php:1253
+#: inc/Engine/Admin/Settings/Page.php:1158
 msgid "Enable link preloading"
 msgstr "Link preloaden activeren"
 
-#: inc/Engine/Admin/Settings/Page.php:1272
+#: inc/Engine/Admin/Settings/Page.php:1177
 msgid "Advanced Rules"
 msgstr "Geavanceerde regels"
 
-#: inc/Engine/Admin/Settings/Page.php:1273
+#: inc/Engine/Admin/Settings/Page.php:1178
 msgid "Fine-tune cache rules"
 msgstr "Cache-regels verfijnen"
 
-#: inc/Engine/Admin/Settings/Page.php:1284
+#: inc/Engine/Admin/Settings/Page.php:1191
 msgid ""
 "Sensitive pages like custom login/logout URLs should be excluded from cache."
 msgstr ""
 "Gevoelige pagina's zoals gepersonaliseerde login/logout URL's moet "
 "uitgesloten worden van de cache."
 
-#: inc/Engine/Admin/Settings/Page.php:1287
+#: inc/Engine/Admin/Settings/Page.php:1194
 msgctxt "plugin name"
 msgid "WooCommerce"
 msgstr "WooCommerce"
 
-#: inc/Engine/Admin/Settings/Page.php:1289
+#: inc/Engine/Admin/Settings/Page.php:1196
 msgctxt "plugin name"
 msgid "Easy Digital Downloads"
 msgstr "Easy Digital Downloads"
 
-#: inc/Engine/Admin/Settings/Page.php:1291
+#: inc/Engine/Admin/Settings/Page.php:1198
 msgctxt "plugin name"
 msgid "iThemes Exchange"
 msgstr "iThemes Exchange"
 
-#: inc/Engine/Admin/Settings/Page.php:1293
+#: inc/Engine/Admin/Settings/Page.php:1200
 msgctxt "plugin name"
 msgid "Jigoshop"
 msgstr "Jigoshop"
 
-#: inc/Engine/Admin/Settings/Page.php:1295
+#: inc/Engine/Admin/Settings/Page.php:1202
 msgctxt "plugin name"
 msgid "WP-Shop"
 msgstr "WP-Shop"
 
 #. translators: %1$s = opening <a> tag, %2$s = plugin name, %3$s closing </a>
 #. tag.
-#: inc/Engine/Admin/Settings/Page.php:1301
+#: inc/Engine/Admin/Settings/Page.php:1208
 msgid ""
 "<br>Cart, checkout and \"my account\" pages set in "
 "<strong>%1$s%2$s%3$s</strong> will be detected and never cached by default."
@@ -2045,16 +1940,31 @@ msgstr ""
 "ingesteld in <strong>%1$s%2$s%3$s</strong> worden standaard gedetecteerd en "
 "nooit in de cache opgeslagen."
 
-#: inc/Engine/Admin/Settings/Page.php:1319
+#: inc/Engine/Admin/Settings/Page.php:1218
+msgid "Cache Lifespan"
+msgstr "Cache levensduur"
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:1221
+msgid ""
+"Cache files older than the specified lifespan will be deleted.<br>Enable "
+"%1$spreloading%2$s for the cache to be rebuilt automatically after lifespan "
+"expiration."
+msgstr ""
+"Cache-bestanden die ouder zijn dan de opgegeven levensduur worden "
+"verwijderd.<br>Schakel %1$spreloaden in%2$s zodat de cache automatisch wordt"
+" herbouwd na het verlopen van de levensduur."
+
+#: inc/Engine/Admin/Settings/Page.php:1237
 msgid "Never Cache Cookies"
 msgstr "Nooit cookies cachen"
 
-#: inc/Engine/Admin/Settings/Page.php:1337
+#: inc/Engine/Admin/Settings/Page.php:1255
 msgid "Cache Query String(s)"
 msgstr "Query string(s) cachen"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:1340
+#: inc/Engine/Admin/Settings/Page.php:1258
 msgid ""
 "%1$sCache for query strings%2$s enables you to force caching for specific "
 "GET parameters."
@@ -2062,15 +1972,43 @@ msgstr ""
 "%1$sCache voor query strings%2$s stelt je in staat om caching te forceren "
 "voor specifieke GET parameters."
 
-#: inc/Engine/Admin/Settings/Page.php:1351
+#: inc/Engine/Admin/Settings/Page.php:1269
+msgid ""
+"Specify time after which the global cache is cleared<br>(0 = unlimited )"
+msgstr ""
+"Specificeer de tijd waarna de volledige cache automatisch wordt geleegd <br>"
+" (0 = onbeperkt, niet legen)"
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:1271
+msgid ""
+"Reduce lifespan to 10 hours or less if you notice issues that seem to appear"
+" periodically. %1$sWhy?%2$s"
+msgstr ""
+"Verlaag de levensduur naar 10 uur of minder als je problemen ondervindt die "
+"soms voorkomen. %1$sWaarom?%2$s"
+
+#: inc/Engine/Admin/Settings/Page.php:1277
+#: inc/Engine/License/views/promo-banner.php:30
+#: inc/Engine/License/views/renewal-soon-banner.php:13
+msgid "Hours"
+msgstr "Uren"
+
+#: inc/Engine/Admin/Settings/Page.php:1278
+#: inc/Engine/License/views/promo-banner.php:29
+#: inc/Engine/License/views/renewal-soon-banner.php:12
+msgid "Days"
+msgstr "Dagen"
+
+#: inc/Engine/Admin/Settings/Page.php:1283
 msgid ""
 "Specify URLs of pages or posts that should never be cached (one per line)"
 msgstr ""
 "Specificeer URL's of pagina's or berichten die nooit gecachet mogen worden "
 "(één per regel)"
 
-#: inc/Engine/Admin/Settings/Page.php:1352
-#: inc/Engine/Admin/Settings/Page.php:1380
+#: inc/Engine/Admin/Settings/Page.php:1284
+#: inc/Engine/Admin/Settings/Page.php:1312
 msgid ""
 "The domain part of the URL will be stripped automatically.<br>Use (.*) "
 "wildcards to address multiple URLs under a given path."
@@ -2078,7 +2016,7 @@ msgstr ""
 "Het domein deel van de URL wordt automatisch verwijderd.<br>Gebruik (.*) "
 "wildcards om meerdere URL's onder een bepaald pad te adresseren."
 
-#: inc/Engine/Admin/Settings/Page.php:1361
+#: inc/Engine/Admin/Settings/Page.php:1293
 msgid ""
 "Specify full or partial IDs of cookies that, when set in the visitor's "
 "browser, should prevent a page from getting cached (one per line)"
@@ -2087,18 +2025,18 @@ msgstr ""
 "browser van de bezoeker zijn ingesteld, moeten voorkomen dat een pagina in "
 "de cache wordt opgeslagen (één per regel)"
 
-#: inc/Engine/Admin/Settings/Page.php:1369
+#: inc/Engine/Admin/Settings/Page.php:1301
 msgid ""
 "Specify user agent strings that should never see cached pages (one per line)"
 msgstr ""
 "Specificeer user agent-strings die nooit gecachete pagina's moeten zien (één"
 " per regel)"
 
-#: inc/Engine/Admin/Settings/Page.php:1370
+#: inc/Engine/Admin/Settings/Page.php:1302
 msgid "Use (.*) wildcards to detect parts of UA strings."
 msgstr "Gebruikt (.*)-wildcards om delen van UA-strings te detecteren."
 
-#: inc/Engine/Admin/Settings/Page.php:1379
+#: inc/Engine/Admin/Settings/Page.php:1311
 msgid ""
 "Specify URLs you always want purged from cache whenever you update any post "
 "or page (one per line)"
@@ -2106,19 +2044,19 @@ msgstr ""
 "Specificeer URL's die je altijd uit de cache wilt legen als je een bericht "
 "of pagina updatet (één per regel)"
 
-#: inc/Engine/Admin/Settings/Page.php:1388
+#: inc/Engine/Admin/Settings/Page.php:1320
 msgid "Specify query strings for caching (one per line)"
 msgstr "Specificeer query strings voor caching (één per regel)"
 
-#: inc/Engine/Admin/Settings/Page.php:1414
+#: inc/Engine/Admin/Settings/Page.php:1346
 msgid "Optimize, reduce bloat"
 msgstr "Optimaliseer, verminder bloat"
 
-#: inc/Engine/Admin/Settings/Page.php:1421
+#: inc/Engine/Admin/Settings/Page.php:1353
 msgid "Post Cleanup"
 msgstr "Berichten opschonen"
 
-#: inc/Engine/Admin/Settings/Page.php:1423
+#: inc/Engine/Admin/Settings/Page.php:1355
 msgid ""
 "Post revisions and drafts will be permanently deleted. Do not use this "
 "option if you need to retain revisions or drafts."
@@ -2126,19 +2064,19 @@ msgstr ""
 "Bericht revisies en concepten worden definitief verwijderd. Gebruik deze "
 "optie niet als je revisies of concepten wilt behouden."
 
-#: inc/Engine/Admin/Settings/Page.php:1428
+#: inc/Engine/Admin/Settings/Page.php:1360
 msgid "Comments Cleanup"
 msgstr "Reacties opschonen"
 
-#: inc/Engine/Admin/Settings/Page.php:1430
+#: inc/Engine/Admin/Settings/Page.php:1362
 msgid "Spam and trashed comments will be permanently deleted."
 msgstr "Spam en verwijderde reacties worden definitief verwijderd."
 
-#: inc/Engine/Admin/Settings/Page.php:1434
+#: inc/Engine/Admin/Settings/Page.php:1366
 msgid "Transients Cleanup"
 msgstr "Transients opschonen"
 
-#: inc/Engine/Admin/Settings/Page.php:1436
+#: inc/Engine/Admin/Settings/Page.php:1368
 msgid ""
 "Transients are temporary options; they are safe to remove. They will be "
 "automatically regenerated as your plugins require them."
@@ -2146,21 +2084,21 @@ msgstr ""
 "Transients zijn tijdelijke opties; ze zijn veilig om te verwijderen. Ze "
 "worden opnieuw gegenereerd op het moment dat je plugins deze nodig hebben."
 
-#: inc/Engine/Admin/Settings/Page.php:1440
+#: inc/Engine/Admin/Settings/Page.php:1372
 msgid "Database Cleanup"
 msgstr "Database opschonen"
 
-#: inc/Engine/Admin/Settings/Page.php:1442
+#: inc/Engine/Admin/Settings/Page.php:1374
 msgid "Reduces overhead of database tables"
 msgstr "Verminder de overhead binnen je database tabellen"
 
-#: inc/Engine/Admin/Settings/Page.php:1446
+#: inc/Engine/Admin/Settings/Page.php:1378
 msgid "Automatic Cleanup"
 msgstr "Automatisch opruimen"
 
 #. translators: %s is the number of revisions found in the database. It's a
 #. formatted number, don't use %d.
-#: inc/Engine/Admin/Settings/Page.php:1459
+#: inc/Engine/Admin/Settings/Page.php:1391
 msgid "%s revision in your database."
 msgid_plural "%s revisions in your database."
 msgstr[0] "%s revisie in je database."
@@ -2168,7 +2106,7 @@ msgstr[1] "%s revisies in je database."
 
 #. translators: %s is the number of revisions found in the database. It's a
 #. formatted number, don't use %d.
-#: inc/Engine/Admin/Settings/Page.php:1469
+#: inc/Engine/Admin/Settings/Page.php:1401
 msgid "%s draft in your database."
 msgid_plural "%s drafts in your database."
 msgstr[0] "%s concept in je database."
@@ -2176,7 +2114,7 @@ msgstr[1] "%s concepten in je database."
 
 #. translators: %s is the number of revisions found in the database. It's a
 #. formatted number, don't use %d.
-#: inc/Engine/Admin/Settings/Page.php:1479
+#: inc/Engine/Admin/Settings/Page.php:1411
 msgid "%s trashed post in your database."
 msgid_plural "%s trashed posts in your database."
 msgstr[0] "%s verwijderd bericht in je database."
@@ -2184,7 +2122,7 @@ msgstr[1] "%s verwijderde berichten in je database."
 
 #. translators: %s is the number of revisions found in the database. It's a
 #. formatted number, don't use %d.
-#: inc/Engine/Admin/Settings/Page.php:1489
+#: inc/Engine/Admin/Settings/Page.php:1421
 msgid "%s spam comment in your database."
 msgid_plural "%s spam comments in your database."
 msgstr[0] "%s spam reactie in je database."
@@ -2192,61 +2130,61 @@ msgstr[1] "%s spam reacties in je database."
 
 #. translators: %s is the number of revisions found in the database. It's a
 #. formatted number, don't use %d.
-#: inc/Engine/Admin/Settings/Page.php:1499
+#: inc/Engine/Admin/Settings/Page.php:1431
 msgid "%s trashed comment in your database."
 msgid_plural "%s trashed comments in your database."
 msgstr[0] "%s verwijderde reactie in je database."
 msgstr[1] "%s verwijderde reacties in je database."
 
-#: inc/Engine/Admin/Settings/Page.php:1507
+#: inc/Engine/Admin/Settings/Page.php:1439
 msgid "All transients"
 msgstr "Alle transients"
 
 #. translators: %s is the number of revisions found in the database. It's a
 #. formatted number, don't use %d.
-#: inc/Engine/Admin/Settings/Page.php:1509
+#: inc/Engine/Admin/Settings/Page.php:1441
 msgid "%s transient in your database."
 msgid_plural "%s transients in your database."
 msgstr[0] "%s transient in je database."
 msgstr[1] "%s transients in je database."
 
-#: inc/Engine/Admin/Settings/Page.php:1517
+#: inc/Engine/Admin/Settings/Page.php:1449
 msgid "Optimize Tables"
 msgstr "Tabellen optimaliseren"
 
 #. translators: %s is the number of revisions found in the database. It's a
 #. formatted number, don't use %d.
-#: inc/Engine/Admin/Settings/Page.php:1519
+#: inc/Engine/Admin/Settings/Page.php:1451
 msgid "%s table to optimize in your database."
 msgid_plural "%s tables to optimize in your database."
 msgstr[0] "%s te optimaliseren tabel in je database."
 msgstr[1] "%s te optimaliseren tabellen in je database."
 
-#: inc/Engine/Admin/Settings/Page.php:1530
+#: inc/Engine/Admin/Settings/Page.php:1462
 msgid "Schedule Automatic Cleanup"
 msgstr "Automatisch opruimen plannen"
 
-#: inc/Engine/Admin/Settings/Page.php:1542
+#: inc/Engine/Admin/Settings/Page.php:1474
 msgid "Frequency"
 msgstr "Frequentie"
 
-#: inc/Engine/Admin/Settings/Page.php:1550
+#: inc/Engine/Admin/Settings/Page.php:1482
 msgid "Daily"
 msgstr "Dagelijks"
 
-#: inc/Engine/Admin/Settings/Page.php:1551
+#: inc/Engine/Admin/Settings/Page.php:1483
 msgid "Weekly"
 msgstr "Wekelijks"
 
-#: inc/Engine/Admin/Settings/Page.php:1552
+#: inc/Engine/Admin/Settings/Page.php:1484
 msgid "Monthly"
 msgstr "Maandelijks"
 
-#: inc/Engine/Admin/Settings/Page.php:1569
+#: inc/Engine/Admin/Settings/Page.php:1501
 msgid "Integrate your CDN"
 msgstr "Integreer je CDN"
 
-#: inc/Engine/Admin/Settings/Page.php:1581
+#: inc/Engine/Admin/Settings/Page.php:1513
 msgid ""
 "All URLs of static files (CSS, JS, images) will be rewritten to the CNAME(s)"
 " you provide."
@@ -2255,7 +2193,7 @@ msgstr ""
 "overschreven met de CNAME(s) die je invoert."
 
 #. translators: %1$s = opening link tag, %2$s = closing link tag.
-#: inc/Engine/Admin/Settings/Page.php:1583
+#: inc/Engine/Admin/Settings/Page.php:1515
 msgid ""
 "Not required for services like Cloudflare and Sucuri. Please see our "
 "available %1$sAdd-ons%2$s."
@@ -2265,7 +2203,7 @@ msgstr ""
 
 #. translators: %1$s = opening em tag, %2$l = list of add-on name(s), %3$s =
 #. closing em tag.
-#: inc/Engine/Admin/Settings/Page.php:1629
+#: inc/Engine/Admin/Settings/Page.php:1561
 msgid ""
 "%1$s%2$l Add-on%3$s is currently enabled. Configuration of the CDN settings "
 "is not required for %2$l to work on your site."
@@ -2279,28 +2217,28 @@ msgstr[1] ""
 "%1$s%2$l Add-ons%3$s zijn momenteel ingeschakeld. Configuratie van de CDN-"
 "instellingen is niet vereist om %2$l op je site te laten werken."
 
-#: inc/Engine/Admin/Settings/Page.php:1655
+#: inc/Engine/Admin/Settings/Page.php:1587
 msgid "Enable Content Delivery Network"
 msgstr "Content Delivery Network inschakelen"
 
-#: inc/Engine/Admin/Settings/Page.php:1664
+#: inc/Engine/Admin/Settings/Page.php:1596
 #: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:159
 msgid "CDN CNAME(s)"
 msgstr "CDN CNAME(s)"
 
-#: inc/Engine/Admin/Settings/Page.php:1665
+#: inc/Engine/Admin/Settings/Page.php:1597
 #: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:160
 msgid "Specify the CNAME(s) below"
 msgstr "Specificeer de CNAME(s) hieronder"
 
-#: inc/Engine/Admin/Settings/Page.php:1672
+#: inc/Engine/Admin/Settings/Page.php:1604
 msgid ""
 "Specify URL(s) of files that should not get served via CDN (one per line)."
 msgstr ""
 "Specificeer URL(s) van de bestanden die niet via de CDN mogen worden "
 "geleverd (één URL per regel)"
 
-#: inc/Engine/Admin/Settings/Page.php:1673
+#: inc/Engine/Admin/Settings/Page.php:1605
 msgid ""
 "The domain part of the URL will be stripped automatically.<br>Use (.*) "
 "wildcards to exclude all files of a given file type located at a specific "
@@ -2309,16 +2247,16 @@ msgstr ""
 "Het domein gedeelte van de URL wordt automatisch gestript.  <br>Gebruik (.*)"
 " wildcards om alle bestanden van het gedeelte van de url uit te sluiten."
 
-#: inc/Engine/Admin/Settings/Page.php:1696
-#: inc/Engine/Admin/Settings/Page.php:1704
+#: inc/Engine/Admin/Settings/Page.php:1628
+#: inc/Engine/Admin/Settings/Page.php:1636
 msgid "Heartbeat"
 msgstr "Heartbeat"
 
-#: inc/Engine/Admin/Settings/Page.php:1697
+#: inc/Engine/Admin/Settings/Page.php:1629
 msgid "Control WordPress Heartbeat API"
 msgstr "Beheer WordPress Heartbeat API"
 
-#: inc/Engine/Admin/Settings/Page.php:1705
+#: inc/Engine/Admin/Settings/Page.php:1637
 msgid ""
 "Reducing or disabling the Heartbeat API’s activity can help save some of "
 "your server’s resources."
@@ -2326,11 +2264,11 @@ msgstr ""
 "Verminderen of uitschakelen van de Heartbeat API kan helpen bij het besparen"
 " van je server's resources."
 
-#: inc/Engine/Admin/Settings/Page.php:1711
+#: inc/Engine/Admin/Settings/Page.php:1643
 msgid "Reduce or disable Heartbeat activity"
 msgstr "Verminder of schakel Heartbeat activiteit uit"
 
-#: inc/Engine/Admin/Settings/Page.php:1712
+#: inc/Engine/Admin/Settings/Page.php:1644
 msgid ""
 "Reducing activity will change Heartbeat frequency from one hit each minute "
 "to one hit every 2 minutes."
@@ -2338,55 +2276,55 @@ msgstr ""
 "Verminderen van de Heartbeat frequentie zal ervoor zorgen dat de API van één"
 " keer per minuut, naar één keer per 2 minuten uitvoeren wordt ingesteld."
 
-#: inc/Engine/Admin/Settings/Page.php:1712
+#: inc/Engine/Admin/Settings/Page.php:1644
 msgid ""
 "Disabling Heartbeat entirely may break plugins and themes using this API."
 msgstr ""
 "Volledig uitschakelen van Heartbeat kan problemen geven met plugins en "
 "thema's die gebruik maken van deze API."
 
-#: inc/Engine/Admin/Settings/Page.php:1726
+#: inc/Engine/Admin/Settings/Page.php:1658
 msgid "Do not limit"
 msgstr "Stel geen limiet in"
 
-#: inc/Engine/Admin/Settings/Page.php:1727
+#: inc/Engine/Admin/Settings/Page.php:1659
 msgid "Reduce activity"
 msgstr "Verminder activiteit"
 
-#: inc/Engine/Admin/Settings/Page.php:1728
+#: inc/Engine/Admin/Settings/Page.php:1660
 msgid "Disable"
 msgstr "Uitschakelen"
 
-#: inc/Engine/Admin/Settings/Page.php:1736
+#: inc/Engine/Admin/Settings/Page.php:1668
 msgid "Control Heartbeat"
 msgstr "Beheer Heartbeat"
 
-#: inc/Engine/Admin/Settings/Page.php:1745
+#: inc/Engine/Admin/Settings/Page.php:1677
 msgid "Behavior in backend"
 msgstr "Gedrag in de backend"
 
-#: inc/Engine/Admin/Settings/Page.php:1752
+#: inc/Engine/Admin/Settings/Page.php:1684
 msgid "Behavior in post editor"
 msgstr "Gedrag in de berichten editor"
 
-#: inc/Engine/Admin/Settings/Page.php:1758
+#: inc/Engine/Admin/Settings/Page.php:1690
 msgid "Behavior in frontend"
 msgstr "Gedrag in de frontend"
 
-#: inc/Engine/Admin/Settings/Page.php:1775
+#: inc/Engine/Admin/Settings/Page.php:1709
 #: views/settings/page-sections/tutorials.php:39
 msgid "Add-ons"
 msgstr "Add-ons"
 
-#: inc/Engine/Admin/Settings/Page.php:1776
+#: inc/Engine/Admin/Settings/Page.php:1710
 msgid "Add more features"
 msgstr "Meer functies toevoegen"
 
-#: inc/Engine/Admin/Settings/Page.php:1783
+#: inc/Engine/Admin/Settings/Page.php:1717
 msgid "One-click Rocket Add-ons"
 msgstr "One-click Rocket Add-ons"
 
-#: inc/Engine/Admin/Settings/Page.php:1784
+#: inc/Engine/Admin/Settings/Page.php:1718
 msgid ""
 "One-Click Add-ons are features extending available options without "
 "configuration needed. Switch the option \"on\" to enable from this screen."
@@ -2395,25 +2333,46 @@ msgstr ""
 " configuratie nodig is. Schakel de optie naar \"aan\" om deze in te "
 "schakelen vanuit dit scherm."
 
-#: inc/Engine/Admin/Settings/Page.php:1794
+#: inc/Engine/Admin/Settings/Page.php:1728
 msgid "Rocket Add-ons"
 msgstr "Rocket add-ons"
 
-#: inc/Engine/Admin/Settings/Page.php:1795
+#: inc/Engine/Admin/Settings/Page.php:1729
 msgid "Rocket Add-ons are complementary features extending available options."
 msgstr ""
 "Rocket add-ons zijn aanvullende functies die beschikbare opties uitbreiden."
 
-#: inc/Engine/Admin/Settings/Page.php:1805
-#: inc/Engine/Admin/Settings/Page.php:1974
+#: inc/Engine/Admin/Settings/Page.php:1740
+msgid "User Cache"
+msgstr "Gebruikerscache"
+
+#: inc/Engine/Admin/Settings/Page.php:1746
+msgid ""
+"If you need to create a dedicated set of cache files for each logged-in "
+"WordPress user, you must activate this add-on."
+msgstr ""
+"Als je voor elke ingelogde WordPress gebruiker een eigen set cache-bestanden"
+" moet maken, dan moet je deze add-on activeren."
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:1748
+msgid ""
+"User cache is great when you have user-specific or restricted content on "
+"your website.<br>%1$sLearn more%2$s"
+msgstr ""
+"Gebruikerscache is ideaal als je gebruikersspecifieke of afgeschermde inhoud"
+" op je website hebt.<br>%1$sLeer meer%2$s"
+
+#: inc/Engine/Admin/Settings/Page.php:1761
+#: inc/Engine/Admin/Settings/Page.php:1930
 msgid "Cloudflare"
 msgstr "Cloudflare"
 
-#: inc/Engine/Admin/Settings/Page.php:1811
+#: inc/Engine/Admin/Settings/Page.php:1767
 msgid "Integrate your Cloudflare account with this add-on."
 msgstr "Integreer je Cloudflare account met deze add-on."
 
-#: inc/Engine/Admin/Settings/Page.php:1812
+#: inc/Engine/Admin/Settings/Page.php:1768
 msgid ""
 "Provide your account email, global API key, and domain to use options such "
 "as clearing the Cloudflare cache and enabling optimal settings with WP "
@@ -2424,7 +2383,7 @@ msgstr ""
 "optimale instellingen met WP Rocket."
 
 #. translators: %1$s = opening span tag, %2$s = closing span tag.
-#: inc/Engine/Admin/Settings/Page.php:1815
+#: inc/Engine/Admin/Settings/Page.php:1771
 msgid ""
 "%1$sPlanning on using Automatic Platform Optimization (APO)?%2$s Just "
 "activate the official Cloudflare plugin and configure it. WP Rocket will "
@@ -2434,16 +2393,16 @@ msgstr ""
 "Activeer gewoon de officiële Cloudflare plugin en configureer deze. WP "
 "Rocket zal de compatibiliteit automatisch inschakelen."
 
-#: inc/Engine/Admin/Settings/Page.php:1863
+#: inc/Engine/Admin/Settings/Page.php:1819
 msgid "Varnish"
 msgstr "Varnish"
 
-#: inc/Engine/Admin/Settings/Page.php:1869
+#: inc/Engine/Admin/Settings/Page.php:1825
 msgid "If Varnish runs on your server, you must activate this add-on."
 msgstr "Als Varnish op je server draait, moet je deze add-on activeren."
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:1871
+#: inc/Engine/Admin/Settings/Page.php:1827
 msgid ""
 "Varnish cache will be purged each time WP Rocket clears its cache to ensure "
 "content is always up-to-date.<br>%1$sLearn more%2$s"
@@ -2451,16 +2410,16 @@ msgstr ""
 "Varnish cache wordt elke keer geleegd als WP Rocket zijn cache leegt, zodat "
 "de inhoud altijd up-to-date is.<br>%1$sLeer meer%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:1906
+#: inc/Engine/Admin/Settings/Page.php:1862
 msgid "WebP Compatibility"
 msgstr "WebP compatibiliteit"
 
-#: inc/Engine/Admin/Settings/Page.php:1912
+#: inc/Engine/Admin/Settings/Page.php:1868
 msgid "Improve browser compatibility for WebP images."
 msgstr "Verbeterde browsercompatibiliteit voor WebP-afbeeldingen."
 
 #. translators: %1$s and %3$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:1916
+#: inc/Engine/Admin/Settings/Page.php:1872
 msgid ""
 "Enable this option if you would like WP Rocket to serve WebP images to "
 "compatible browsers. Please note that WP Rocket cannot create WebP images "
@@ -2472,11 +2431,11 @@ msgstr ""
 "je maken. Voor het maken van WebP-afbeeldingen raden we %1$sImagify%2$s aan."
 " %3$sMeer info%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:1936
+#: inc/Engine/Admin/Settings/Page.php:1892
 msgid "Clear the Sucuri cache when WP Rocket’s cache is cleared."
 msgstr "Sucuri-cache legen wanneer WP Rocket's cache is geleegd."
 
-#: inc/Engine/Admin/Settings/Page.php:1939
+#: inc/Engine/Admin/Settings/Page.php:1895
 msgid ""
 "Provide your API key to clear the Sucuri cache when WP Rocket’s cache is "
 "cleared."
@@ -2484,49 +2443,49 @@ msgstr ""
 "Voer je API-sleutel in om de Sucuri-cache te legen op het moment dat WP "
 "Rocket’s cache wordt geleegd."
 
-#: inc/Engine/Admin/Settings/Page.php:1947
-#: inc/Engine/Admin/Settings/Page.php:2091
+#: inc/Engine/Admin/Settings/Page.php:1903
+#: inc/Engine/Admin/Settings/Page.php:2047
 msgid "Sucuri"
 msgstr "Sucuri"
 
-#: inc/Engine/Admin/Settings/Page.php:1953
+#: inc/Engine/Admin/Settings/Page.php:1909
 msgid "Synchronize Sucuri cache with this add-on."
 msgstr "Synchroniseer Sucuri-cache met deze add-on."
 
-#: inc/Engine/Admin/Settings/Page.php:1991
+#: inc/Engine/Admin/Settings/Page.php:1947
 msgid "Cloudflare credentials"
 msgstr "Cloudflare inloggegevens"
 
-#: inc/Engine/Admin/Settings/Page.php:2000
+#: inc/Engine/Admin/Settings/Page.php:1956
 msgid "Cloudflare settings"
 msgstr "Cloudflare-instellingen"
 
-#: inc/Engine/Admin/Settings/Page.php:2014
+#: inc/Engine/Admin/Settings/Page.php:1970
 msgctxt "Cloudflare"
 msgid "Global API key:"
 msgstr "Globale API-sleutel:"
 
-#: inc/Engine/Admin/Settings/Page.php:2015
+#: inc/Engine/Admin/Settings/Page.php:1971
 msgctxt "Cloudflare"
 msgid "Find your API key"
 msgstr "Vind je API-code"
 
-#: inc/Engine/Admin/Settings/Page.php:2027
+#: inc/Engine/Admin/Settings/Page.php:1983
 msgctxt "Cloudflare"
 msgid "Account email"
 msgstr "Account e-mail"
 
-#: inc/Engine/Admin/Settings/Page.php:2036
+#: inc/Engine/Admin/Settings/Page.php:1992
 msgctxt "Cloudflare"
 msgid "Zone ID"
 msgstr "Zone ID"
 
-#: inc/Engine/Admin/Settings/Page.php:2046
+#: inc/Engine/Admin/Settings/Page.php:2002
 msgid "Development mode"
 msgstr "Development modus"
 
 #. translators: %1$s = link opening tag, %2$s = link closing tag.
-#: inc/Engine/Admin/Settings/Page.php:2048
+#: inc/Engine/Admin/Settings/Page.php:2004
 msgid ""
 "Temporarily activate development mode on your website. This setting will "
 "automatically turn off after 3 hours. %1$sLearn more%2$s"
@@ -2534,11 +2493,11 @@ msgstr ""
 "Activeer tijdelijk de ontwikkelmodus op je site. Deze instelling wordt na 3 "
 "uur automatisch uitgeschakeld. %1$sLeer meer%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:2056
+#: inc/Engine/Admin/Settings/Page.php:2012
 msgid "Optimal settings"
 msgstr "Optimale instellingen"
 
-#: inc/Engine/Admin/Settings/Page.php:2057
+#: inc/Engine/Admin/Settings/Page.php:2013
 msgid ""
 "Automatically enhances your Cloudflare configuration for speed, performance "
 "grade and compatibility."
@@ -2546,11 +2505,11 @@ msgstr ""
 "Verbetert automatisch je Cloudflare configuratie voor snelheid, "
 "prestatiegraad en compatibiliteit."
 
-#: inc/Engine/Admin/Settings/Page.php:2065
+#: inc/Engine/Admin/Settings/Page.php:2021
 msgid "Relative protocol"
 msgstr "Relatief protocol"
 
-#: inc/Engine/Admin/Settings/Page.php:2066
+#: inc/Engine/Admin/Settings/Page.php:2022
 msgid ""
 "Should only be used with Cloudflare's flexible SSL feature. URLs of static "
 "files (CSS, JS, images) will be rewritten to use // instead of http:// or "
@@ -2560,11 +2519,11 @@ msgstr ""
 "URL's van statische bestanden (CSS, JS, afbeeldingen) worden herschreven en "
 "gebruiken nu // in plaats van http:// of https://."
 
-#: inc/Engine/Admin/Settings/Page.php:2104
+#: inc/Engine/Admin/Settings/Page.php:2060
 msgid "Sucuri credentials"
 msgstr "Sucuri gegevens"
 
-#: inc/Engine/Admin/Settings/Page.php:2117
+#: inc/Engine/Admin/Settings/Page.php:2073
 msgctxt "Sucuri"
 msgid ""
 "Firewall API key (for plugin), must be in format {32 characters}/{32 "
@@ -2573,7 +2532,7 @@ msgstr ""
 "Firewall API-sleutel (voor plugin), moet het formaat {32 tekens}/{32 tekens}"
 " hebben:"
 
-#: inc/Engine/Admin/Settings/Page.php:2118
+#: inc/Engine/Admin/Settings/Page.php:2074
 msgctxt "Sucuri"
 msgid "Find your API key"
 msgstr "Vind je API-code"
@@ -2595,25 +2554,25 @@ msgstr ""
 "is niet opgeslagen omdat het caching en optimalisaties uitschakelt voor elke"
 " pagina op je site."
 
-#: inc/Engine/Admin/Settings/Subscriber.php:169
+#: inc/Engine/Admin/Settings/Subscriber.php:171
 msgid "Import, Export, Rollback"
 msgstr "Importeren, exporteren, terugzetten"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:194
+#: inc/Engine/Admin/Settings/Subscriber.php:196
 #: views/settings/page-sections/imagify.php:14
 msgid "Image Optimization"
 msgstr "Afbeeldingsoptimalisatie"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:195
+#: inc/Engine/Admin/Settings/Subscriber.php:197
 msgid "Compress your images"
 msgstr "Optimaliseer je afbeeldingen"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:212
+#: inc/Engine/Admin/Settings/Subscriber.php:214
 #: views/settings/page-sections/tutorials.php:48
 msgid "Tutorials"
 msgstr "Tutorials"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:213
+#: inc/Engine/Admin/Settings/Subscriber.php:215
 msgid "Getting started and how to videos"
 msgstr "Aan de slag en how-to videos"
 
@@ -2624,6 +2583,10 @@ msgstr "WP Rocket verlopen cacheinterval"
 #: inc/Engine/Cache/WPCache.php:337
 msgid "WP_CACHE value"
 msgstr "WP_CACHE waarde"
+
+#: inc/Engine/Cache/WPCache.php:354
+msgid "Cache"
+msgstr "Cache"
 
 #: inc/Engine/Cache/WPCache.php:358
 msgid ""
@@ -2817,6 +2780,18 @@ msgid ""
 "Speed up your website with RocketCDN, WP Rocket’s Content Delivery Network!"
 msgstr ""
 "Versnel je site met RocketCDN, het Content Delivery Network van WP Rocket!"
+
+#: inc/Engine/Common/JobManager/Cron/Subscriber.php:180
+msgid "WP Rocket process pending jobs"
+msgstr "WP Rocket afwachtende taken verwerken"
+
+#: inc/Engine/Common/JobManager/Cron/Subscriber.php:194
+msgid "WP Rocket clear failed jobs"
+msgstr "WP Rocket mislukte taken wissen"
+
+#: inc/Engine/Common/JobManager/Cron/Subscriber.php:206
+msgid "WP Rocket process on submit jobs"
+msgstr "WP Rocket verwerken bij indienen van taken"
 
 #: inc/Engine/Common/Queue/RUCSSQueueRunner.php:265
 msgid "Every minute"
@@ -3313,6 +3288,11 @@ msgstr ""
 "Je kunt WP Rocket op meer sites gebruiken door je licentie te upgraden (je "
 "betaalt dan alleen het prijsverschil tussen je huidige en nieuwe licentie)."
 
+#. translators: %1$s = plugin name.
+#: inc/Engine/Media/AboveTheFold/Admin/Controller.php:143
+msgid "%1$s: Critical images cleared!"
+msgstr "%1$s: Kritieke afbeeldingen gewist!"
+
 #: inc/Engine/Media/Lazyload/AdminSubscriber.php:62
 msgid "LazyLoad for images"
 msgstr "LazyLoad voor afbeeldingen"
@@ -3361,15 +3341,15 @@ msgstr "Kan lijsten niet updaten."
 msgid "Lists are successfully updated."
 msgstr "Lijsten zijn succesvol bijgewerkt."
 
-#: inc/Engine/Optimization/DynamicLists/ServiceProvider.php:60
+#: inc/Engine/Optimization/DynamicLists/ServiceProvider.php:72
 msgid "Default Lists"
 msgstr "Standaard lijsten"
 
-#: inc/Engine/Optimization/DynamicLists/ServiceProvider.php:66
+#: inc/Engine/Optimization/DynamicLists/ServiceProvider.php:78
 msgid "Delay JavaScript Execution Exclusion Lists"
 msgstr "JavaScript-uitvoering uitstellen Uitsluitingslijsten"
 
-#: inc/Engine/Optimization/DynamicLists/ServiceProvider.php:72
+#: inc/Engine/Optimization/DynamicLists/ServiceProvider.php:84
 msgid "Incompatible plugins Lists"
 msgstr "Incompatibele plugins Lijsten"
 
@@ -3381,77 +3361,9 @@ msgstr "JavaScript verkleinen/combineren"
 msgid "Minify CSS"
 msgstr "CSS verkleinen"
 
-#. translators: %1$s = plugin name, %2$s = number of seconds.
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:224
-msgid ""
-"%1$s: Please wait %2$s seconds. The Remove Unused CSS service is processing "
-"your pages."
-msgstr ""
-"%1$s: wacht %2$s seconden. De service Verwijder ongebruikte CSS is je "
-"pagina's aan het verwerken."
-
-#. translators: %1$s = plugin name, %2$s = number of URLs, %3$s = number of
-#. seconds.
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:274
-msgid ""
-"%1$s: The Used CSS of your homepage has been processed. WP Rocket will "
-"continue to generate Used CSS for up to %2$s URLs per %3$s second(s)."
-msgstr ""
-"%1$s: de Gebruikte CSS van je homepage is verwerkt. WP Rocket gaat door met "
-"het genereren van Gebruikte CSS voor maximaal %2$s URL's per %3$s "
-"seconde(s)."
-
-#. translators: %1$s = opening link tag, %2$s = closing link tag.
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:283
-msgid "We suggest enabling %1$sPreload%2$s for the fastest results."
-msgstr ""
-"We raden aan om %1$sPreloaden%2$s in te schakelen voor de snelste "
-"resultaten."
-
-#. translators: %1$s = opening link tag, %2$s = closing link tag.
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:293
-msgid "To learn more about the process check our %1$sdocumentation%2$s."
-msgstr "Om meer te leren over het process, bekijk onze %1$sdocumentatie%2$s."
-
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:444
-msgid ""
-"We couldn't generate the used CSS because you're using a nulled version of "
-"WP Rocket. You need an active license to use the Remove Unused CSS feature "
-"and further improve your website's performance."
-msgstr ""
-"We konden de gebruikte CSS niet genereren omdat je een nulled versie van WP "
-"Rocket gebruikt. Je hebt een actieve licentie nodig om de functie Verwijder "
-"ongebruikte CSS te gebruiken en de prestaties van je site verder te "
-"verbeteren."
-
-#. translators: %1$s = promo percentage.
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:447
-msgid "Click here to get a WP Rocket single license at %1$s off!"
-msgstr "Klik hier voor een WP Rocket enkele licentie met %1$s korting!"
-
-#. translators: %1$s = <a> open tag, %2$s = </a> closing tag.
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:500
-msgid ""
-"It seems a security plugin or the server's firewall prevents WP Rocket from "
-"accessing the Remove Unused CSS generator. IPs listed %1$shere in our "
-"documentation%2$s should be added to your allowlists:"
-msgstr ""
-"Het lijkt erop dat een beveiligingsplugin of de firewall van de server "
-"voorkomt dat WP Rocket toegang krijgt tot de Verwijder ongebruikte CSS "
-"generator. IP's die %1$shier in onze documentatie%2$s worden genoemd, moeten"
-" worden toegevoegd aan je toestemmingslijsten:"
-
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:505
-msgid "- In the security plugin, if you are using one"
-msgstr "- In de beveiligingsplugin, als je er een gebruikt"
-
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:506
-msgid "- In the server's firewall. Your host can help you with this"
-msgstr "- In de firewall van de server. Je host kan je hiermee helpen"
-
 #. translators: %1$s = plugin name, %2$s = table name, %3$s = <a> open tag,
 #. %4$s = </a> closing tag.
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:546
+#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:253
 msgid ""
 "%1$s: Could not create the %2$s table in the database which is necessary for"
 " the Remove Unused CSS feature to work. Please reach out to %3$sour "
@@ -3462,30 +3374,9 @@ msgstr ""
 "support%4$s."
 
 #. translators: %1$s = plugin name.
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:284
-msgid "%1$s: Used CSS option is not enabled!"
-msgstr "%1$s: Gebruikte CSS-optie is niet ingeschakeld!"
-
-#. translators: %1$s = plugin name.
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:306
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:274
 msgid "%1$s: Used CSS cache cleared!"
 msgstr "%1$s: Gebruikte CSS-cache geleegd!"
-
-#: inc/Engine/Optimization/RUCSS/Controller/UsedCSS.php:694
-msgid "Clear Used CSS of this URL"
-msgstr "Gebruikte CSS van deze URL legen"
-
-#: inc/Engine/Optimization/RUCSS/Cron/Subscriber.php:171
-msgid "WP Rocket Remove Unused CSS pending jobs"
-msgstr "WP Rocket Verwijder ongebruikte CSS-wachtende taken"
-
-#: inc/Engine/Optimization/RUCSS/Cron/Subscriber.php:185
-msgid "WP Rocket clear Remove Unused CSS failed jobs"
-msgstr "WP Rocket Ongebruikte CSS verwijderen-mislukte taken legen"
-
-#: inc/Engine/Optimization/RUCSS/Cron/Subscriber.php:197
-msgid "WP Rocket procees on submit jobs"
-msgstr "WP Rocket processen voor indienen taken"
 
 #. translators: %1$s = plugin name.
 #: inc/Engine/Preload/Admin/Settings.php:57
@@ -3505,6 +3396,94 @@ msgstr "WP Rocket preload wachtende taken"
 #: inc/Engine/Preload/Cron/Subscriber.php:166
 msgid "WP Rocket Preload revert stuck failed jobs"
 msgstr "WP Rocket preload terugdraaien vastgelopen mislukte taken"
+
+#: inc/Engine/Saas/Admin/AdminBar.php:73
+#: inc/Engine/Saas/Admin/AdminBar.php:194
+msgid "Clear Critical Images"
+msgstr "Kritieke afbeeldingen wissen"
+
+#: inc/Engine/Saas/Admin/AdminBar.php:160
+msgid "Clear Critical Images of this URL"
+msgstr "Kritieke afbeeldingen wissen van deze URL"
+
+#: inc/Engine/Saas/Admin/AdminBar.php:163
+msgid "Clear Used CSS of this URL"
+msgstr "Gebruikte CSS van deze URL legen"
+
+#: inc/Engine/Saas/Admin/AdminBar.php:193
+msgid "Critical Images Cache"
+msgstr "Kritieke afbeeldingen-cache"
+
+#: inc/Engine/Saas/Admin/AdminBar.php:197
+msgid "Remove Used CSS Cache"
+msgstr "Gebruikte CSS-cache verwijderen"
+
+#. translators: %1$s = plugin name, %2$s = number of seconds.
+#: inc/Engine/Saas/Admin/Notices.php:104
+msgid ""
+"%1$s: Please wait %2$s seconds. The Remove Unused CSS service is processing "
+"your pages, the plugin is optimizing LCP and the images above the fold."
+msgstr ""
+"%1$s: Wacht %2$s seconden. De Verwijder ongebruikte CSS service verwerkt je "
+"pagina's, de plugin optimaliseert LCP en de afbeeldingen boven de fold."
+
+#. translators: %1$s = plugin name, %2$s = number of URLs, %3$s = number of
+#. seconds.
+#: inc/Engine/Saas/Admin/Notices.php:147
+msgid ""
+"%1$s: The LCP element has been optimized, and the images above the fold were excluded from lazyload. The Used CSS of your homepage has been processed.\n"
+"\t\t\t WP Rocket will continue to generate Used CSS for up to %2$s URLs per %3$s second(s)."
+msgstr ""
+"%1$s: Het LCP-element is geoptimaliseerd en de afbeeldingen boven de vouw zijn uitgesloten van lazyload. De Used CSS van je homepage is verwerkt.\n"
+"WP Rocket zal Gebruikte CSS blijven genereren voor maximaal %2$s URL's per %3$s seconde(n)."
+
+#. translators: %1$s = opening link tag, %2$s = closing link tag.
+#: inc/Engine/Saas/Admin/Notices.php:160
+msgid "We suggest enabling %1$sPreload%2$s for the fastest results."
+msgstr ""
+"We raden aan om %1$sPreloaden%2$s in te schakelen voor de snelste "
+"resultaten."
+
+#. translators: %1$s = opening link tag, %2$s = closing link tag.
+#: inc/Engine/Saas/Admin/Notices.php:170
+msgid "To learn more about the process check our %1$sdocumentation%2$s."
+msgstr "Om meer te leren over het process, bekijk onze %1$sdocumentatie%2$s."
+
+#: inc/Engine/Saas/Admin/Notices.php:236
+msgid ""
+"We couldn't generate the used CSS because you're using a nulled version of "
+"WP Rocket. You need an active license to use the Remove Unused CSS feature "
+"and further improve your website's performance."
+msgstr ""
+"We konden de gebruikte CSS niet genereren omdat je een nulled versie van WP "
+"Rocket gebruikt. Je hebt een actieve licentie nodig om de functie Verwijder "
+"ongebruikte CSS te gebruiken en de prestaties van je site verder te "
+"verbeteren."
+
+#. translators: %1$s = promo percentage.
+#: inc/Engine/Saas/Admin/Notices.php:239
+msgid "Click here to get a WP Rocket single license at %1$s off!"
+msgstr "Klik hier voor een WP Rocket enkele licentie met %1$s korting!"
+
+#. translators: %1$s = <a> open tag, %2$s = </a> closing tag.
+#: inc/Engine/Saas/Admin/Notices.php:292
+msgid ""
+"It seems a security plugin or the server's firewall prevents WP Rocket from "
+"accessing the SaaS features. IPs listed %1$shere in our documentation%2$s "
+"should be added to your allowlists:"
+msgstr ""
+"Het lijkt erop dat een beveiligingsplugin of de firewall van de server "
+"voorkomt dat WP Rocket toegang krijgt tot de SaaS-functies. IP's vermeld "
+"%1$shier in onze documentatie%2$s moet worden toegevoegd aan je "
+"toestemmingslijsten:"
+
+#: inc/Engine/Saas/Admin/Notices.php:297
+msgid "- In the security plugin, if you are using one"
+msgstr "- In de beveiligingsplugin, als je er een gebruikt"
+
+#: inc/Engine/Saas/Admin/Notices.php:298
+msgid "- In the server's firewall. Your host can help you with this"
+msgstr "- In de firewall van de server. Je host kan je hiermee helpen"
 
 #: inc/functions/admin.php:21
 msgid ""
@@ -3998,6 +3977,7 @@ msgstr ""
 #. translators: %1$s = opening link tag, %2$s = closing link tag.
 #: views/cpcss/activate-cpcss-mobile.php:20
 #: views/settings/enable-google-fonts.php:19
+#: views/settings/mobile-cache.php:20
 msgid ""
 "This is a one-time action and this button will be removed afterwards. "
 "%1$sMore info%2$s"
@@ -4213,6 +4193,22 @@ msgstr "Meer weten"
 msgid "Clear all RocketCDN cache files"
 msgstr "Alle RocketCDN cache-bestanden legen"
 
+#: views/settings/mobile-cache.php:11
+msgid "Mobile Cache"
+msgstr "Mobiele cache"
+
+#: views/settings/mobile-cache.php:14
+msgid "Speed your site for mobile visitors."
+msgstr "Versnel je site voor mobiele bezoekers."
+
+#: views/settings/mobile-cache.php:28
+msgid "Mobile Cache is now enabled for your site."
+msgstr "Mobiele cache is nu ingeschakeld voor je site."
+
+#: views/settings/mobile-cache.php:34
+msgid "Enable Mobile Cache"
+msgstr "Mobiele cache inschakelen"
+
 #: views/settings/page-sections/cloudflare.php:27
 msgid "Cloudflare Cache"
 msgstr "Cloudflare-cache"
@@ -4295,26 +4291,22 @@ msgstr "Alle gecachete bestanden verwijderen"
 msgid "Regenerate Critical CSS"
 msgstr "Kritieke CSS opnieuw genereren"
 
-#: views/settings/page-sections/dashboard.php:182
-msgid "Remove Used CSS Cache"
-msgstr "Gebruikte CSS-cache verwijderen"
-
-#: views/settings/page-sections/dashboard.php:205
+#: views/settings/page-sections/dashboard.php:196
 msgid "Frequently Asked Questions"
 msgstr "Veelgestelde vragen"
 
-#: views/settings/page-sections/dashboard.php:219
+#: views/settings/page-sections/dashboard.php:210
 msgid "Still cannot find a solution?"
 msgstr "Geen oplossing gevonden?"
 
-#: views/settings/page-sections/dashboard.php:220
+#: views/settings/page-sections/dashboard.php:211
 msgid ""
 "Submit a ticket and get help from our friendly and knowledgeable Rocketeers."
 msgstr ""
 "Dien een ticket in en krijg hulp van onze vriendelijke en deskundige "
 "Rocketeers."
 
-#: views/settings/page-sections/dashboard.php:228
+#: views/settings/page-sections/dashboard.php:219
 msgid "Ask support"
 msgstr "Vraag het de support"
 
