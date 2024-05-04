@@ -3434,9 +3434,8 @@ msgid ""
 "%1$s: The LCP element has been optimized, and the images above the fold were excluded from lazyload. The Used CSS of your homepage has been processed.\n"
 "\t\t\t WP Rocket will continue to generate Used CSS for up to %2$s URLs per %3$s second(s)."
 msgstr ""
-"%1$s: Het LCP-element is geoptimaliseerd en de afbeeldingen boven de vouw zijn uitgesloten van lazyload. De Used CSS van je homepage is verwerkt.\n"
-"\n"
-"WP Rocket zal Gebruikte CSS blijven genereren voor maximaal %2$s URL's per %3$s seconde(n)."
+"%1$s: het LCP-element is geoptimaliseerd en de afbeeldingen boven de fold zijn uitgesloten van lazy-loaden. De Gebruikte CSS van je homepage is verwerkt.\n"
+"\t\t\tWP Rocket zal Gebruikte CSS blijven genereren voor maximaal %2$s URL's per %3$s seconde(n)."
 
 #. translators: %1$s = opening link tag, %2$s = closing link tag.
 #: inc/Engine/Saas/Admin/Notices.php:160
