@@ -3376,7 +3376,7 @@ msgstr ""
 #. translators: %1$s = plugin name.
 #: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:274
 msgid "%1$s: Used CSS cache cleared!"
-msgstr "%1$s: Gebruikte CSS-cache geleegd!"
+msgstr "%1$s: gebruikte CSS-cache geleegd!"
 
 #. translators: %1$s = plugin name.
 #: inc/Engine/Preload/Admin/Settings.php:57
