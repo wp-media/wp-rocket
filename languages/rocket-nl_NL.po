@@ -3537,7 +3537,7 @@ msgstr "Geanonimiseerde WP Rocket-instellingen:"
 
 #: inc/functions/admin.php:427
 msgid "Which WP Rocket settings are active"
-msgstr "Welke WP Rocket-instellingen zijn actief"
+msgstr "Welke WP Rocket instellingen zijn actief"
 
 #: inc/functions/admin.php:433
 msgid "WP Rocket license type"
@@ -3590,7 +3590,7 @@ msgstr "Meld je aan bij je WP Rocket %1$saccount%2$s"
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
 #: inc/functions/options.php:507 inc/functions/options.php:549
 msgid "Download the zip file"
-msgstr "Download het zip-bestand"
+msgstr "Download het ZIP-bestand"
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
 #: inc/functions/options.php:507 inc/functions/options.php:549
