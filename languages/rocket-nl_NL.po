@@ -748,7 +748,7 @@ msgid_plural ""
 msgstr[0] ""
 "De volgende vereiste in je thema is niet gedetecteerd: sluiten %1$s."
 msgstr[1] ""
-"De volgende vereisten in je thema zijn niet gedetecteerd: closing %1$s."
+"De volgende vereisten in je thema zijn niet gedetecteerd: sluiting %1$s."
 
 #. translators: Documentation exists in EN, FR; use localized URL if
 #. applicable.
