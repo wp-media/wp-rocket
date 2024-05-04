@@ -4518,7 +4518,7 @@ msgstr "Hoe externe inhoud je site vertraagt"
 
 #: views/settings/page-sections/tutorials.php:41
 msgid "Set Up the Cloudflare Add-on"
-msgstr "Stel de Cloudflare Add-on in"
+msgstr "Stel de Cloudflare add-on in"
 
 #: views/settings/page.php:16
 msgid "WP Rocket Settings"
