@@ -173,7 +173,7 @@ msgstr "Cloudflare ontwikkelmodus %s"
 #. translators: %s is the message returned by the CloudFlare API.
 #: inc/Addon/Cloudflare/Subscriber.php:337
 msgid "Cloudflare cache level error: %s"
-msgstr "Fout bij Cloudflare cache-level: %s"
+msgstr "Fout bij Cloudflare cache-niveau: %s"
 
 #: inc/Addon/Cloudflare/Subscriber.php:344
 msgctxt "Cloudflare caching level"
@@ -183,7 +183,7 @@ msgstr "standaard"
 #. translators: %s is the caching level returned by the CloudFlare API.
 #: inc/Addon/Cloudflare/Subscriber.php:350
 msgid "Cloudflare cache level set to %s"
-msgstr "Cache-level van Cloudflare ingesteld op %s"
+msgstr "Cache-niveau van Cloudflare ingesteld op %s"
 
 #. translators: %s is the message returned by the CloudFlare API.
 #: inc/Addon/Cloudflare/Subscriber.php:368
