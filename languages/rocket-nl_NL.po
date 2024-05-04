@@ -3533,7 +3533,7 @@ msgstr "Pluginnamen van alle actieve plugins"
 
 #: inc/functions/admin.php:424
 msgid "Anonymized WP Rocket settings:"
-msgstr "Geanonimiseerde WP Rocket-instellingen:"
+msgstr "Geanonimiseerde WP Rocket instellingen:"
 
 #: inc/functions/admin.php:427
 msgid "Which WP Rocket settings are active"
