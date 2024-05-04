@@ -3435,6 +3435,7 @@ msgid ""
 "\t\t\t WP Rocket will continue to generate Used CSS for up to %2$s URLs per %3$s second(s)."
 msgstr ""
 "%1$s: Het LCP-element is geoptimaliseerd en de afbeeldingen boven de vouw zijn uitgesloten van lazyload. De Used CSS van je homepage is verwerkt.\n"
+"\n"
 "WP Rocket zal Gebruikte CSS blijven genereren voor maximaal %2$s URL's per %3$s seconde(n)."
 
 #. translators: %1$s = opening link tag, %2$s = closing link tag.
