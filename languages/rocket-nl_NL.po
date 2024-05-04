@@ -2787,7 +2787,7 @@ msgstr "WP Rocket afwachtende taken verwerken"
 
 #: inc/Engine/Common/JobManager/Cron/Subscriber.php:194
 msgid "WP Rocket clear failed jobs"
-msgstr "WP Rocket mislukte taken wissen"
+msgstr "WP Rocket mislukte taken legen"
 
 #: inc/Engine/Common/JobManager/Cron/Subscriber.php:206
 msgid "WP Rocket process on submit jobs"
