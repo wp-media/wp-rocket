@@ -2379,7 +2379,7 @@ msgid ""
 "Rocket."
 msgstr ""
 "Geef je account e-mail, globale API-sleutel en domein op om opties te "
-"gebruiken zoals het legen van de Cloudflare-cache en het inschakelen van "
+"gebruiken zoals het legen van de Cloudflare cache en het inschakelen van "
 "optimale instellingen met WP Rocket."
 
 #. translators: %1$s = opening span tag, %2$s = closing span tag.
@@ -2647,7 +2647,7 @@ msgstr "RocketCDN is momenteel niet beschikbaar. Probeer het later nog eens."
 
 #: inc/Engine/CDN/RocketCDN/APIClient.php:177
 msgid "RocketCDN cache purge failed: Missing identifier parameter."
-msgstr "RocketCDN-cache legen mislukt: identificatie parameter mist."
+msgstr "RocketCDN cache legen mislukt: identificatie parameter mist."
 
 #: inc/Engine/CDN/RocketCDN/APIClient.php:186
 msgid "RocketCDN cache purge failed: Missing user token."
