@@ -1757,7 +1757,7 @@ msgid ""
 "This can significantly improve your loading time if you have a lot of "
 "YouTube videos on a page."
 msgstr ""
-"Dit kan je laadtijd aanzienlijk verbeteren als je veel YouTube-video's op "
+"Dit kan je laadtijd aanzienlijk verbeteren als je veel YouTube video's op "
 "een pagina hebt."
 
 #: inc/Engine/Admin/Settings/Page.php:1022
