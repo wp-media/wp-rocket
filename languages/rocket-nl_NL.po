@@ -3291,7 +3291,7 @@ msgstr ""
 #. translators: %1$s = plugin name.
 #: inc/Engine/Media/AboveTheFold/Admin/Controller.php:143
 msgid "%1$s: Critical images cleared!"
-msgstr "%1$s: kritieke afbeeldingen gewist!"
+msgstr "%1$s: kritieke afbeeldingen geleegd!"
 
 #: inc/Engine/Media/Lazyload/AdminSubscriber.php:62
 msgid "LazyLoad for images"
