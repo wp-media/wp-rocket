@@ -983,7 +983,7 @@ msgid ""
 "%1$sNote:%2$s None of these options will be applied if this post has been "
 "excluded from cache in the global cache settings."
 msgstr ""
-"%1$sOpmerking:%2$s Geen van deze opties worden toegepast op het moment dat "
+"%1$sOpmerking:%2$s geen van deze opties worden toegepast op het moment dat "
 "dit bericht is uitgesloten van caching in de globale instellingen."
 
 #: inc/deprecated/deprecated.php:240
