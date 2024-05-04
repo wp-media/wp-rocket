@@ -4522,7 +4522,7 @@ msgstr "Stel de Cloudflare Add-on in"
 
 #: views/settings/page.php:16
 msgid "WP Rocket Settings"
-msgstr "WP Rocket-instellingen"
+msgstr "WP Rocket instellingen"
 
 #. translators: %s = Plugin version number.
 #: views/settings/page.php:30
