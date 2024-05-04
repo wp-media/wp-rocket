@@ -34,7 +34,7 @@ msgstr "https://wp-rocket.me"
 
 #. Description of the plugin
 msgid "The best WordPress performance plugin."
-msgstr "De beste WordPress-prestatieplugin."
+msgstr "De beste WordPress prestatieplugin."
 
 #. Author of the plugin
 msgid "WP Media"
