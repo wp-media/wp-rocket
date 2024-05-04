@@ -3749,7 +3749,7 @@ msgid ""
 "Cloudflare cache will be purged each time WP Rocket clears its cache to "
 "ensure content is always up-to-date."
 msgstr ""
-"Cloudflare-cache wordt elke keer geleegd als WP Rocket zijn cache leegt, "
+"Cloudflare cache wordt elke keer geleegd als WP Rocket zijn cache leegt, "
 "zodat de inhoud altijd up-to-date is."
 
 #. Translators: %1$s = strong opening tag, %2$s = strong closing tag.
@@ -4211,7 +4211,7 @@ msgstr "Mobiele cache inschakelen"
 
 #: views/settings/page-sections/cloudflare.php:27
 msgid "Cloudflare Cache"
-msgstr "Cloudflare-cache"
+msgstr "Cloudflare cache"
 
 #. translators: %s is a "Learn more" link.
 #: views/settings/page-sections/cloudflare.php:35
