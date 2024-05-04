@@ -2450,7 +2450,7 @@ msgstr "Sucuri"
 
 #: inc/Engine/Admin/Settings/Page.php:1909
 msgid "Synchronize Sucuri cache with this add-on."
-msgstr "Synchroniseer Sucuri-cache met deze add-on."
+msgstr "Synchroniseer Sucuri cache met deze add-on."
 
 #: inc/Engine/Admin/Settings/Page.php:1947
 msgid "Cloudflare credentials"
