@@ -2427,9 +2427,9 @@ msgid ""
 "info%2$s"
 msgstr ""
 "Schakel deze optie in als je wilt dat WP Rocket WebP-afbeeldingen serveert "
-"aan compatibele browsers. Let op: WP Rocket kan geen WebP-afbeeldingen voor "
-"je maken. Voor het maken van WebP-afbeeldingen raden we %1$sImagify%2$s aan."
-" %3$sMeer info%2$s"
+"aan compatibele browsers. Let er op dat WP Rocket geen WebP-afbeeldingen "
+"voor je kan maken. Voor het maken van WebP-afbeeldingen raden we "
+"%1$sImagify%2$s aan. %3$sMeer info%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:1892
 msgid "Clear the Sucuri cache when WP Rocket’s cache is cleared."
