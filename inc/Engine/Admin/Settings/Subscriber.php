@@ -54,6 +54,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_settings_tools_content'        => 'display_mobile_cache_option',
 			'wp_ajax_rocket_enable_mobile_cache'   => 'enable_mobile_cache',
 			'wp_rocket_upgrade'                    => [ 'enable_separate_cache_files_mobile', 9, 2 ],
+			'admin_notices'                        => 'display_update_notice',
 		];
 	}
 
@@ -265,5 +266,14 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		$this->page->enable_separate_cache_files_mobile();
+	}
+
+	/**
+	 * Display the update notice.
+	 *
+	 * @return void
+	 */
+	public function display_update_notice() {
+		$this->page->display_update_notice();
 	}
 }

@@ -2096,6 +2096,7 @@ class Page extends Abstract_Render {
 			'minify_css_key',
 			'minify_js_key',
 			'version',
+			'previous_version',
 			'cloudflare_old_settings',
 			'cache_ssl',
 			'minify_google_fonts',
@@ -2248,5 +2249,58 @@ class Page extends Abstract_Render {
 
 		$this->options->set( 'do_caching_mobile_files', 1 );
 		update_option( rocket_get_constant( 'WP_ROCKET_SLUG', 'wp_rocket_settings' ), $this->options->get_options() );
+	}
+
+	/**
+	 * Display an update notice when the plugin is updated.
+	 *
+	 * @return void
+	 */
+	public function display_update_notice() {
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			return;
+		}
+
+		if ( 'settings_page_wprocket' !== get_current_screen()->id ) {
+			return false;
+		}
+
+		$boxes = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
+
+		if ( in_array( 'rocket_update_notice', (array) $boxes, true ) ) {
+			return;
+		}
+
+		$previous_version = $this->options->get( 'previous_version' );
+
+		// Bail-out for fresh install.
+		if ( empty( $previous_version ) ) {
+			return;
+		}
+
+		// Bail-out if previous version is greater than 3.16.
+		if ( $previous_version > '3.16' ) {
+			return;
+		}
+
+		$critical_images_beacon = $this->beacon->get_suggest( 'optimize_critical_images' );
+		$remove_cache_tab       = $this->beacon->get_suggest( 'remove_cache_tab' );
+
+		rocket_notice_html(
+			[
+				'status'         => 'info',
+				'dismissible'    => '',
+				'message'        => sprintf(
+					// translators: %1$s: opening strong tag, %2$s: closing strong tag, %3$s: opening a tag, %4$s: option a tag, %5$s: opening a tag.
+					__( '%1$sWP Rocket:%2$s the plugin has been updated to the 3.16 version. Our brand new feature %3$sOptimize critical images%5$s is automatically activated now! Also, the Cache tab was removed but the existing features will remain working, %4$ssee more here%5$s.', 'rocket' ),
+					'<strong>',
+					'</strong>',
+					'<a href="' . esc_url( $critical_images_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $critical_images_beacon['id'] ) . '" target="_blank" rel="noopener noreferrer">',
+					'<a href="' . esc_url( $remove_cache_tab['url'] ) . '" data-beacon-article="' . esc_attr( $remove_cache_tab['id'] ) . '" target="_blank" rel="noopener noreferrer">',
+					'</a>'
+				),
+				'dismiss_button' => 'rocket_update_notice',
+			]
+		);
 	}
 }
