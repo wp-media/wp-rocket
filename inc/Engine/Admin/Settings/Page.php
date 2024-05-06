@@ -1541,11 +1541,9 @@ class Page extends Abstract_Render {
 		$maybe_display_cdn_helper = '';
 
 		/**
-		 * Name from addons requiring the helper message.
+		 * Filters the addons names requiring the helper message.
 		 *
-		 * @param string[] addons.
-		 *
-		 * @return string []
+		 * @param array Array of addons.
 		 */
 		$addons = apply_filters( 'rocket_cdn_helper_addons', [] );
 

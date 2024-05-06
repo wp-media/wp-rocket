@@ -82,7 +82,7 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 			 *
 			 * @since 3.1
 			 *
-			 * @param bool true to activate, false to deactivate.
+			 * @param bool $cache_cart true to activate, false to deactivate.
 			 */
 			if ( apply_filters( 'rocket_cache_wc_empty_cart', true ) ) {
 				$events['init']              = [ 'serve_cache_empty_cart', 11 ];
@@ -329,7 +329,7 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 		 *
 		 * @since 2.6.5
 		 *
-		 * @param bool false will force to cache the WooCommerce REST API
+		 * @param bool $cache_wc_rest_api false will force to cache the WooCommerce REST API
 		 */
 		if ( apply_filters( 'rocket_cache_reject_wc_rest_api', true ) ) {
 			$urls[] = rocket_clean_exclude_file( $this->get_wc_api_endpoint() );

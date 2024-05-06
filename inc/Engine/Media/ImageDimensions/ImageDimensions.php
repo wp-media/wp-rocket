@@ -95,7 +95,7 @@ class ImageDimensions {
 		 *
 		 * @since  3.8
 		 *
-		 * @param bool Do or not. Default is True, so it will skip all img tags that are inside picture tag.
+		 * @param bool $skip_pictures Do or not. Default is True, so it will skip all img tags that are inside picture tag.
 		 */
 		if ( apply_filters( 'rocket_specify_dimension_skip_pictures', true ) ) {
 			$images_regex = '<\s*picture[^>]*>.*<\s*\/\s*picture\s*>(*SKIP)(*FAIL)|' . $images_regex;
@@ -118,7 +118,7 @@ class ImageDimensions {
 		 *
 		 * @since  3.8
 		 *
-		 * @param array Page images.
+		 * @param array $images Page images.
 		 */
 		$images = apply_filters( 'rocket_specify_dimension_images', $images_match[0] );
 
@@ -259,7 +259,7 @@ class ImageDimensions {
 		 *
 		 * @since 3.8
 		 *
-		 * @param bool Specify image dimensions for external images or not.
+		 * @param bool $specify_dimensions_external Specify image dimensions for external images or not.
 		 */
 		return ini_get( 'allow_url_fopen' ) && apply_filters( 'rocket_specify_image_dimensions_for_distant', false );
 	}
@@ -372,7 +372,7 @@ class ImageDimensions {
 		 *
 		 * @since 2.2
 		 *
-		 * @param bool Do the job or not.
+		 * @param bool $specify_dimensions Do the job or not.
 		 */
 		return apply_filters( 'rocket_specify_image_dimensions', false )
 			||

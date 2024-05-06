@@ -67,7 +67,8 @@ class RUCSSQueueRunner extends ActionScheduler_Abstract_QueueRunner {
 			 *
 			 * @since 3.11.0.5
 			 *
-			 * @param int $batch_size Batch size.
+			 * @param int    $batch_size Batch size.
+			 * @param string $group The group name.
 			 *
 			 * @return int
 			 */
