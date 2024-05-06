@@ -173,7 +173,12 @@ class Subscriber implements Subscriber_Interface {
 		 *
 		 * @param int $interval Interval in seconds.
 		 */
-		$interval = apply_filters( 'rocket_saas_pending_jobs_cron_interval', 1 * rocket_get_constant( 'MINUTE_IN_SECONDS', 60 ) );
+		$interval = rocket_apply_filter_and_deprecated(
+			'rocket_saas_pending_jobs_cron_interval',
+			[ 1 * rocket_get_constant( 'MINUTE_IN_SECONDS', 60 ) ],
+			'3.16',
+			'rocket_rucss_pending_jobs_cron_interval'
+		);
 
 		$schedules['rocket_saas_pending_jobs'] = [
 			'interval' => $interval,
@@ -186,7 +191,12 @@ class Subscriber implements Subscriber_Interface {
 		 *
 		 * @param int $interval Interval in seconds.
 		 */
-		$interval = apply_filters( 'rocket_remove_saas_failed_jobs_cron_interval', $default_interval );
+		$interval = rocket_apply_filter_and_deprecated(
+			'rocket_remove_saas_failed_jobs_cron_interval',
+			[ $default_interval ],
+			'3.16',
+			'rocket_remove_rucss_failed_jobs_cron_interval'
+		);
 		$interval = (bool) $interval ? $interval : $default_interval;
 
 		$schedules['rocket_remove_saas_failed_jobs'] = [
@@ -199,7 +209,12 @@ class Subscriber implements Subscriber_Interface {
 		 *
 		 * @param int $interval Interval in seconds.
 		 */
-		$interval = (int) apply_filters( 'rocket_remove_saas_on_submit_jobs_cron_interval', 1 * rocket_get_constant( 'MINUTE_IN_SECONDS', 60 ) );
+		$interval = (int) rocket_apply_filter_and_deprecated(
+			'rocket_remove_saas_on_submit_jobs_cron_interval',
+			[ 1 * rocket_get_constant( 'MINUTE_IN_SECONDS', 60 ) ],
+			'3.16',
+			'rocket_remove_rucss_on_submit_jobs_cron_interval'
+		);
 
 		$schedules['rocket_saas_on_submit_jobs'] = [
 			'interval' => $interval,
@@ -312,7 +327,12 @@ class Subscriber implements Subscriber_Interface {
 		 *
 		 * @param bool $delete_saas_jobs True to enable deletion, false otherwise.
 		 */
-		return (bool) apply_filters( 'rocket_saas_deletion_enabled', true );
+		return (bool) rocket_apply_filter_and_deprecated(
+			'rocket_saas_deletion_enabled',
+			[ true ],
+			'3.16',
+			'rocket_rucss_deletion_enabled'
+		);
 	}
 
 	/**

@@ -463,11 +463,11 @@ class Subscriber implements Subscriber_Interface {
 
 		$this->queue->cancel_pending_jobs_cron();
 
-		if ( ! wp_next_scheduled( 'rocket_rucss_clean_rows_time_event' ) ) {
+		if ( ! wp_next_scheduled( 'rocket_saas_clean_rows_time_event' ) ) {
 			return;
 		}
 
-		wp_clear_scheduled_hook( 'rocket_rucss_clean_rows_time_event' );
+		wp_clear_scheduled_hook( 'rocket_saas_clean_rows_time_event' );
 	}
 
 	/**
@@ -582,6 +582,11 @@ class Subscriber implements Subscriber_Interface {
 		 *
 		 * @param bool $delete_saas_jobs True to enable deletion, false otherwise.
 		 */
-		return (bool) apply_filters( 'rocket_saas_deletion_enabled', true );
+		return (bool) rocket_apply_filter_and_deprecated(
+			'rocket_saas_deletion_enabled',
+			[ true ],
+			'3.16',
+			'rocket_rucss_deletion_enabled'
+		);
 	}
 }
