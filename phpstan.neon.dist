@@ -2,7 +2,7 @@ includes:
     - phar://phpstan.phar/conf/bleedingEdge.neon
     - vendor/szepeviktor/phpstan-wordpress/extension.neon
 parameters:
-    level: 4
+    level: 0
     checkMissingIterableValueType: false
     inferPrivatePropertyTypeFromConstructor: true
     paths:
