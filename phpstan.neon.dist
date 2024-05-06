@@ -11,7 +11,6 @@ parameters:
         - %currentWorkingDirectory%/inc/Addon/
         - %currentWorkingDirectory%/inc/ThirdParty/
     bootstrapFiles:
-        - %currentWorkingDirectory%/tests/phpstan/bootstrap.php
         # Must be first
         - %currentWorkingDirectory%/inc/functions/options.php
         # Procedural code
@@ -29,6 +28,8 @@ parameters:
         # Composer autoloader "exclude-from-classmap"
         - %currentWorkingDirectory%/inc/classes/class-wp-rocket-requirements-check.php
         - %currentWorkingDirectory%/inc/vendors/classes/class-rocket-mobile-detect.php
+    scanDirectories:
+        - %currentWorkingDirectory%/inc/Dependencies/ActionScheduler
     excludePaths:
          - %currentWorkingDirectory%/inc/vendors/
          # These need plugin stubs!
