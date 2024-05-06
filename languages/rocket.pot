@@ -2,16 +2,16 @@
 # This file is distributed under the same license as the WP Rocket plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.16-alpha1\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-rocket\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Project-Id-Version: WP Rocket 3.16-alpha2\n"
+"Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
+"Last-Translator: WP Media (http://wp-rocket.me/)\n"
+"Language-Team: WP Media (http://www.transifex.com/projects/p/wp-media/) <contact@wp-media.me>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-04-29T20:40:45+00:00\n"
+"POT-Creation-Date: 2024-05-06T13:26:02+03:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.4.0\n"
+"X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: rocket\n"
 
 #. Plugin Name of the plugin
@@ -973,7 +973,7 @@ msgid "Preload"
 msgstr ""
 
 #: inc/deprecated/deprecated.php:1786
-#: inc/Engine/Admin/Settings/Subscriber.php:170
+#: inc/Engine/Admin/Settings/Subscriber.php:171
 #: views/settings/page-sections/tools.php:33
 msgid "Tools"
 msgstr ""
@@ -1996,6 +1996,11 @@ msgctxt "Sucuri"
 msgid "Find your API key"
 msgstr ""
 
+#. translators: %1$s: opening strong tag, %2$s: closing strong tag, %3$s: opening a tag, %4$s: option a tag, %5$s: opening a tag.
+#: inc/Engine/Admin/Settings/Page.php:2295
+msgid "%1$sWP Rocket:%2$s the plugin has been updated to the 3.16 version. Our brand new feature %3$sOptimize critical images%5$s is automatically activated now! Also, the Cache tab was removed but the existing features will remain working, %4$ssee more here%5$s."
+msgstr ""
+
 #: inc/Engine/Admin/Settings/Settings.php:361
 msgid "Sucuri Add-on: The API key for the Sucuri firewall must be in format <code>{32 characters}/{32 characters}</code>."
 msgstr ""
@@ -2004,25 +2009,25 @@ msgstr ""
 msgid "Sorry! Adding /(.*) in Advanced Rules > Never Cache URL(s) was not saved because it disables caching and optimizations for every page on your site."
 msgstr ""
 
-#: inc/Engine/Admin/Settings/Subscriber.php:171
+#: inc/Engine/Admin/Settings/Subscriber.php:172
 msgid "Import, Export, Rollback"
 msgstr ""
 
-#: inc/Engine/Admin/Settings/Subscriber.php:196
+#: inc/Engine/Admin/Settings/Subscriber.php:197
 #: views/settings/page-sections/imagify.php:14
 msgid "Image Optimization"
 msgstr ""
 
-#: inc/Engine/Admin/Settings/Subscriber.php:197
+#: inc/Engine/Admin/Settings/Subscriber.php:198
 msgid "Compress your images"
 msgstr ""
 
-#: inc/Engine/Admin/Settings/Subscriber.php:214
+#: inc/Engine/Admin/Settings/Subscriber.php:215
 #: views/settings/page-sections/tutorials.php:48
 msgid "Tutorials"
 msgstr ""
 
-#: inc/Engine/Admin/Settings/Subscriber.php:215
+#: inc/Engine/Admin/Settings/Subscriber.php:216
 msgid "Getting started and how to videos"
 msgstr ""
 
@@ -2197,15 +2202,15 @@ msgstr ""
 msgid "Speed up your website with RocketCDN, WP Rocket’s Content Delivery Network!"
 msgstr ""
 
-#: inc/Engine/Common/JobManager/Cron/Subscriber.php:180
+#: inc/Engine/Common/JobManager/Cron/Subscriber.php:185
 msgid "WP Rocket process pending jobs"
 msgstr ""
 
-#: inc/Engine/Common/JobManager/Cron/Subscriber.php:194
+#: inc/Engine/Common/JobManager/Cron/Subscriber.php:204
 msgid "WP Rocket clear failed jobs"
 msgstr ""
 
-#: inc/Engine/Common/JobManager/Cron/Subscriber.php:206
+#: inc/Engine/Common/JobManager/Cron/Subscriber.php:221
 msgid "WP Rocket process on submit jobs"
 msgstr ""
 
@@ -2598,6 +2603,14 @@ msgstr ""
 msgid "%1$s: Critical images cleared!"
 msgstr ""
 
+#: inc/Engine/Media/AboveTheFold/AJAX/Controller.php:131
+msgid "Script error"
+msgstr ""
+
+#: inc/Engine/Media/AboveTheFold/AJAX/Controller.php:134
+msgid "Script timeout"
+msgstr ""
+
 #: inc/Engine/Media/Lazyload/AdminSubscriber.php:62
 msgid "LazyLoad for images"
 msgstr ""
@@ -2719,34 +2732,34 @@ msgid ""
 msgstr ""
 
 #. translators: %1$s = opening link tag, %2$s = closing link tag.
-#: inc/Engine/Saas/Admin/Notices.php:160
+#: inc/Engine/Saas/Admin/Notices.php:170
 msgid "We suggest enabling %1$sPreload%2$s for the fastest results."
 msgstr ""
 
 #. translators: %1$s = opening link tag, %2$s = closing link tag.
-#: inc/Engine/Saas/Admin/Notices.php:170
+#: inc/Engine/Saas/Admin/Notices.php:180
 msgid "To learn more about the process check our %1$sdocumentation%2$s."
 msgstr ""
 
-#: inc/Engine/Saas/Admin/Notices.php:236
+#: inc/Engine/Saas/Admin/Notices.php:246
 msgid "We couldn't generate the used CSS because you're using a nulled version of WP Rocket. You need an active license to use the Remove Unused CSS feature and further improve your website's performance."
 msgstr ""
 
 #. translators: %1$s = promo percentage.
-#: inc/Engine/Saas/Admin/Notices.php:239
+#: inc/Engine/Saas/Admin/Notices.php:249
 msgid "Click here to get a WP Rocket single license at %1$s off!"
 msgstr ""
 
 #. translators: %1$s = <a> open tag, %2$s = </a> closing tag.
-#: inc/Engine/Saas/Admin/Notices.php:292
+#: inc/Engine/Saas/Admin/Notices.php:302
 msgid "It seems a security plugin or the server's firewall prevents WP Rocket from accessing the SaaS features. IPs listed %1$shere in our documentation%2$s should be added to your allowlists:"
 msgstr ""
 
-#: inc/Engine/Saas/Admin/Notices.php:297
+#: inc/Engine/Saas/Admin/Notices.php:307
 msgid "- In the security plugin, if you are using one"
 msgstr ""
 
-#: inc/Engine/Saas/Admin/Notices.php:298
+#: inc/Engine/Saas/Admin/Notices.php:308
 msgid "- In the server's firewall. Your host can help you with this"
 msgstr ""
 
