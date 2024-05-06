@@ -43,6 +43,8 @@ class Test_AddCleanSaasMenuItem extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoExpected( $config, $expected ) {
+		Functions\when( 'rocket_valid_key' )
+			->justReturn( $config['rocket_valid_key'] );
 		Functions\when( 'wp_get_environment_type' )
 			->justReturn( $config['environment'] );
 		Functions\when( 'is_admin' )

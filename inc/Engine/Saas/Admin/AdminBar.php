@@ -54,6 +54,10 @@ class AdminBar extends Abstract_Render {
 	 * @return void
 	 */
 	public function add_clean_saas_menu_item( $wp_admin_bar ) {
+		if ( ! rocket_valid_key() ) {
+			return;
+		}
+
 		if ( 'local' === wp_get_environment_type() ) {
 			return;
 		}
