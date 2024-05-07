@@ -9,7 +9,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\Engine\Media\Lazyload\CSS\Front\FileResolver::resolve
+ * Test class covering \WP_Rocket\Engine\Media\Lazyload\CSS\Front\FileResolver::resolve
  */
 class Test_resolve extends TestCase {
 

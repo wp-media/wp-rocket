@@ -6,8 +6,8 @@ use WP_Rocket\Tests\Integration\ContentTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers   \WP_Rocket\Engine\Optimization\RUCSS\Frontend\Subscriber::maybe_disable_preload_fonts
- * @covers   \WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS::is_allowed()
+ * Test class covering   \WP_Rocket\Engine\Optimization\RUCSS\Frontend\Subscriber::maybe_disable_preload_fonts
+ * Test class covering   \WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS::is_allowed()
  *
  * @group    RUCSS
  */

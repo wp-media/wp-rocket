@@ -8,7 +8,7 @@ use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\Frontend\Subscriber::parse_sitemap
+ * Test class covering \WP_Rocket\Engine\Preload\Frontend\Subscriber::parse_sitemap
  * @group  Preload
  */
 class Test_ParseSitemap extends TestCase {

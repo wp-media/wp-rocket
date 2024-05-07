@@ -7,7 +7,7 @@ use WP_Rocket\Engine\Cache\AdvancedCache;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Cache\AdvancedCache::update_advanced_cache
+ * Test class covering \WP_Rocket\Engine\Cache\AdvancedCache::update_advanced_cache
  * @uses   ::rocket_get_filesystem_perms
  *
  * @group  AdvancedCache

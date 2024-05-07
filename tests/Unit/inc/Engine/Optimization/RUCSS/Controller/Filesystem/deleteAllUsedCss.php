@@ -7,7 +7,7 @@ use WP_Rocket\Engine\Optimization\RUCSS\Controller\Filesystem;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Controller\Filesystem::delete_all_used_css
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Controller\Filesystem::delete_all_used_css
  *
  * @group RUCSS
  */

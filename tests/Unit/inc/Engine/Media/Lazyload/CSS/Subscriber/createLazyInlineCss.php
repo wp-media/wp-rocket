@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\Engine\Media\Lazyload\CSS\Subscriber::create_lazy_inline_css
+ * Test class covering \WP_Rocket\Engine\Media\Lazyload\CSS\Subscriber::create_lazy_inline_css
  */
 class Test_createLazyInlineCss extends TestCase {
 

@@ -6,7 +6,7 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare::display_server_pushing_mode_notice
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare::display_server_pushing_mode_notice
  *
  * @group AdminOnly
  * @group ThirdParty

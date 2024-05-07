@@ -6,7 +6,7 @@ use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\DataManager;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\DynamicLists\DataManager::get_lists_hash
+ * Test class covering \WP_Rocket\Engine\Optimization\DynamicLists\DataManager::get_lists_hash
  *
  * @group DynamicLists
  */

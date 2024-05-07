@@ -10,7 +10,7 @@ use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\DataManager;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\DeferJS\DeferJS::exclude_jquery_upgrade
+ * Test class covering \WP_Rocket\Engine\Optimization\DeferJS\DeferJS::exclude_jquery_upgrade
  *
  * @group  DeferJS
  */

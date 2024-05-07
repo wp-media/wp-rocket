@@ -7,7 +7,7 @@ use WP_Rocket\Engine\CriticalPath\APIClient;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\APIClient::send_generation_request
+ * Test class covering \WP_Rocket\Engine\CriticalPath\APIClient::send_generation_request
  * @group CriticalPath
  */
 class Test_SendGenerationRequest extends TestCase {

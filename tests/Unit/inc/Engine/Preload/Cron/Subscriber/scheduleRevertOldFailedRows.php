@@ -12,7 +12,7 @@ use Mockery;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\Cron\Subscriber::schedule_revert_old_in_progress_rows
+ * Test class covering \WP_Rocket\Engine\Preload\Cron\Subscriber::schedule_revert_old_in_progress_rows
  *
  * @group Cron
  * @group Preload

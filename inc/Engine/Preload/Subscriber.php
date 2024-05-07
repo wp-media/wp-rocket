@@ -12,9 +12,12 @@ use WP_Rocket\Engine\Preload\Controller\Queue;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket_Mobile_Detect;
+use WP_Rocket\Logger\LoggerAware;
+use WP_Rocket\Logger\LoggerAwareInterface;
 
-class Subscriber implements Subscriber_Interface {
+class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 
+	use LoggerAware;
 	use CheckExcludedTrait;
 
 	/**
@@ -104,7 +107,7 @@ class Subscriber implements Subscriber_Interface {
 			'permalink_structure_changed'            => 'on_permalink_changed',
 			'rocket_domain_changed'                  => 'on_permalink_changed',
 			'wp_rocket_upgrade'                      => [ 'on_update', 16, 2 ],
-			'rocket_rucss_complete_job_status'       => 'clean_url',
+			'rocket_saas_complete_job_status'        => 'clean_url',
 			'rocket_rucss_after_clearing_usedcss'    => [ 'clean_url', 20 ],
 			'rocket_after_automatic_cache_purge'     => 'preload_after_automatic_cache_purge',
 			'after_rocket_clean_post'                => [ 'clean_partial_cache', 10, 3 ],
@@ -124,6 +127,7 @@ class Subscriber implements Subscriber_Interface {
 				[ 'add_cache_reject_uri_to_excluded' ],
 			],
 			'rocket_rucss_after_clearing_failed_url' => [ 'clean_urls', 20 ],
+			'rocket_atf_after_clearing_failed_url'   => [ 'clean_urls', 20 ],
 			'transition_post_status'                 => [ 'remove_private_post', 10, 3 ],
 			'rocket_preload_exclude'                 => [ 'exclude_private_url', 10, 2 ],
 		];
@@ -549,6 +553,17 @@ class Subscriber implements Subscriber_Interface {
 			return true;
 		}
 
-		return ! empty( rocket_url_to_postid( $url, [ 'private' ] ) );
+		$is_private = ! empty( rocket_url_to_postid( $url, [ 'private' ] ) );
+
+		if ( $is_private ) {
+			$this->logger::debug(
+				"Private URL excluded from preload: {$url}",
+				[
+					'method' => __METHOD__,
+				]
+			);
+		}
+
+		return $is_private;
 	}
 }

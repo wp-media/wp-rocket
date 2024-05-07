@@ -11,7 +11,7 @@ use Brain\Monkey\Actions;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Admin\DomainChange\Subscriber::regenerate_configuration
+ * Test class covering \WP_Rocket\Engine\Admin\DomainChange\Subscriber::regenerate_configuration
  */
 class Test_regenerateConfiguration extends TestCase {
 

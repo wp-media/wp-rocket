@@ -7,8 +7,9 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Frontend\Subscriber::treeshake
+ * 
  * @group RUCSS
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Frontend\Subscriber::treeshake
  */
 class Test_treeshake extends FilesystemTestCase
 {
@@ -34,6 +35,7 @@ class Test_treeshake extends FilesystemTestCase
 	public function set_up()
 	{
 		parent::set_up();
+		$this->unregisterAllCallbacksExcept('rocket_buffer', 'treeshake', 1000 );
 		add_filter('pre_get_rocket_option_remove_unused_css', [$this, 'rucss']);
 		add_filter('rocket_exclude_rucss_fonts_preload', [$this, 'exclude_fonts_preload']);
 		add_filter('rocket_used_css_dir_level', [$this, 'used_css_dir_level']);
@@ -45,6 +47,7 @@ class Test_treeshake extends FilesystemTestCase
 		remove_filter('rocket_exclude_rucss_fonts_preload', [$this, 'exclude_fonts_preload']);
 		remove_filter('rocket_used_css_dir_level', [$this, 'used_css_dir_level']);
 
+		$this->restoreWpHook('rocket_buffer');
 		parent::tear_down();
 	}
 

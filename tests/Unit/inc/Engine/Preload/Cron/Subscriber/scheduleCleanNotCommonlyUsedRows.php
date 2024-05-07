@@ -12,7 +12,7 @@ use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\Cron\Subscriber::schedule_clean_not_commonly_used_rows
+ * Test class covering \WP_Rocket\Engine\Preload\Cron\Subscriber::schedule_clean_not_commonly_used_rows
  *
  * @group Cron
  * @group Preload

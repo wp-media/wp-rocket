@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\AdminTrait;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\Admin\Settings::add_async_css_mobile_option
+ * Test class covering \WP_Rocket\Engine\CriticalPath\Admin\Settings::add_async_css_mobile_option
  *
  * @group  CriticalPath
  * @group  CriticalPathSettings

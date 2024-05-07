@@ -791,6 +791,26 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 					'url' => 'https://fr.docs.wp-rocket.me/article/1577-supprimer-les-ressources-css-inutilisees?utm_source=wp_plugin&utm_medium=wp_rocket#basic-requirements',
 				],
 			],
+			'optimize_critical_images'   => [
+				'en' => [
+					'id'  => '662c1a144c3ddc1d4e7a1d25',
+					'url' => 'https://docs.wp-rocket.me/article/1816-optimize-critical-images?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+				'fr' => [
+					'id'  => '6634e9fe0cfcb4508af6b290',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1819-optimiser-images-essentielle?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+			],
+			'remove_cache_tab'           => [
+				'en' => [
+					'id'  => '6633b5df1009cb439ac6a432',
+					'url' => 'https://docs.wp-rocket.me/article/1817-removal-of-the-cache-tab?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+				'fr' => [
+					'id'  => '6634e9b21009cb439ac6a6fb',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1818-suppression-onglet-cache?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+			],
 		];
 
 		return isset( $suggest[ $doc_id ][ $this->get_user_locale() ] )

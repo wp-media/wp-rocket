@@ -1,10 +1,12 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace WP_Rocket\Dependencies\League\Container\ServiceProvider;
 
 use Generator;
-use WP_Rocket\Dependencies\League\Container\{ContainerAwareInterface, ContainerAwareTrait};
 use WP_Rocket\Dependencies\League\Container\Exception\ContainerException;
+use WP_Rocket\Dependencies\League\Container\{ContainerAwareInterface, ContainerAwareTrait};
 
 class ServiceProviderAggregate implements ServiceProviderAggregateInterface
 {
@@ -20,45 +22,23 @@ class ServiceProviderAggregate implements ServiceProviderAggregateInterface
      */
     protected $registered = [];
 
-    /**
-     * {@inheritdoc}
-     */
-    public function add($provider) : ServiceProviderAggregateInterface
+    public function add(ServiceProviderInterface $provider): ServiceProviderAggregateInterface
     {
-        if (is_string($provider) && $this->getContainer()->has($provider)) {
-            $provider = $this->getContainer()->get($provider);
-        } elseif (is_string($provider) && class_exists($provider)) {
-            $provider = new $provider;
-        }
-
         if (in_array($provider, $this->providers, true)) {
             return $this;
         }
 
-        if ($provider instanceof ContainerAwareInterface) {
-            $provider->setLeagueContainer($this->getLeagueContainer());
-        }
+        $provider->setContainer($this->getContainer());
 
         if ($provider instanceof BootableServiceProviderInterface) {
             $provider->boot();
         }
 
-        if ($provider instanceof ServiceProviderInterface) {
-            $this->providers[] = $provider;
-
-            return $this;
-        }
-
-        throw new ContainerException(
-            'A service provider must be a fully qualified class name or instance ' .
-            'of (\WP_Rocket\Dependencies\League\Container\ServiceProvider\ServiceProviderInterface)'
-        );
+        $this->providers[] = $provider;
+        return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function provides(string $service) : bool
+    public function provides(string $service): bool
     {
         foreach ($this->getIterator() as $provider) {
             if ($provider->provides($service)) {
@@ -69,22 +49,12 @@ class ServiceProviderAggregate implements ServiceProviderAggregateInterface
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getIterator() : Generator
+    public function getIterator(): Generator
     {
-        $count = count($this->providers);
-
-        for ($i = 0; $i < $count; $i++) {
-            yield $this->providers[$i];
-        }
+        yield from $this->providers;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function register(string $service)
+    public function register(string $service): void
     {
         if (false === $this->provides($service)) {
             throw new ContainerException(
@@ -98,8 +68,8 @@ class ServiceProviderAggregate implements ServiceProviderAggregateInterface
             }
 
             if ($provider->provides($service)) {
-                $this->registered[] = $provider->getIdentifier();
                 $provider->register();
+                $this->registered[] = $provider->getIdentifier();
             }
         }
     }

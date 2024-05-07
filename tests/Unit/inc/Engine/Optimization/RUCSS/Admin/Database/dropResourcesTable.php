@@ -10,7 +10,7 @@ use WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Admin\Database::drop_resources_table
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Admin\Database::drop_resources_table
  *
  * @group  RUCSS
  */

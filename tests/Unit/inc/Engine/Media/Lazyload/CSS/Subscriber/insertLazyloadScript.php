@@ -8,7 +8,7 @@ use Brain\Monkey\Filters;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Media\Lazyload\CSS\Subscriber::insert_lazyload_script
+ * Test class covering \WP_Rocket\Engine\Media\Lazyload\CSS\Subscriber::insert_lazyload_script
  */
 class Test_insertLazyloadScript extends TestCase {
 

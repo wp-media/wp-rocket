@@ -9,7 +9,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\Engine\Common\Ajax\AjaxHandler::redirect
+ * Test class covering \WP_Rocket\Engine\Common\Ajax\AjaxHandler::redirect
  */
 class Test_redirect extends TestCase {
 

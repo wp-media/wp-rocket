@@ -10,7 +10,7 @@ use WP_Theme;
 use Brain\Monkey\Filters;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Themes\Divi::disable_divi_jquery_body
+ * Test class covering \WP_Rocket\ThirdParty\Themes\Divi::disable_divi_jquery_body
  * @uses   \WP_Rocket\ThirdParty\Themes\Divi::is_divi
  *
  * @group  ThirdParty

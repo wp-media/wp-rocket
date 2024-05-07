@@ -6,7 +6,7 @@ use WPRocketUninstall;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers WPRocketUninstall::uninstall
+ * Test class covering WPRocketUninstall::uninstall
  *
  * @group  AdminOnly
  * @group  Uninstall
@@ -119,8 +119,9 @@ class Test_Uninstall extends FilesystemTestCase {
 		$container             = apply_filters( 'rocket_container', null );
 		$rucss_usedcss_table   = $container->get( 'rucss_usedcss_table' );
 		$preload_table         = $container->get( 'preload_caches_table' );
+		$atf_table             = $container->get( 'atf_table' );
 
-		$uninstall = new WPRocketUninstall( $cache_path, $config_path, $rucss_usedcss_table, $preload_table );
+		$uninstall = new WPRocketUninstall( $cache_path, $config_path, $rucss_usedcss_table, $preload_table, $atf_table );
 
 		$uninstall->uninstall();
 

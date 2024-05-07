@@ -9,7 +9,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Hostings\Kinsta;
 use Brain\Monkey\Functions;
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\Kinsta::clean_kinsta_cache_url
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\Kinsta::clean_kinsta_cache_url
  *
  * @group  Kinsta
  * @group  ThirdParty
