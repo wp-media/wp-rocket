@@ -186,7 +186,7 @@ return [
 			'https://example.org',
 		],
 	],
-	'shouldReturnTenLinksPlusHome' => [
+	'shouldReturnFiveLinksPlusHome' => [
 		'config' => [
 			'license_expired' => false,
 			'headers' => [
@@ -207,15 +207,10 @@ return [
 			'https://example.org/hello-world-4',
 			'https://example.org/hello-world-5',
 			'https://example.org/hello-world-6',
-			'https://example.org/hello-world-7',
-			'https://example.org/hello-world-8',
-			'https://example.org/hello-world-9',
-			'https://example.org/rich-dad-poor-dad',
-			'https://example.org/rebecca-brown-he-came-to-set-the-captives-free',
 			'https://example.org',
 		],
 	],
-	'shouldReturnTenLinksWithExternalLinksBeforeInternal' => [
+	'shouldReturnFiveLinksWithExternalLinksBeforeInternal' => [
 		'config' => [
 			'license_expired' => false,
 			'headers' => [
@@ -236,11 +231,6 @@ return [
 			'https://example.org/cover-galleries',
 			'https://example.org/countdown-timer',
 			'https://example.org/cover-galleries-2',
-			'https://example.org/cover-galleries-3',
-			'https://example.org/cover-galleries-4',
-			'https://example.org/cover-galleries-5',
-			'https://example.org/cover-galleries-6',
-			'https://example.org/cover-galleries-7',
 			'https://example.org',
 		],
 	],
@@ -265,9 +255,6 @@ return [
 			'https://example.org/hello-world-6',
 			'https://example.org/hello-world-7',
 			'https://example.org/hello-world-8',
-			'https://example.org/hello-world-9',
-			'https://example.org/rich-dad-poor-dad',
-			'https://example.org/rebecca-brown-he-came-to-set-the-captives-free',
 			'https://example.org',
 		],
 	],
