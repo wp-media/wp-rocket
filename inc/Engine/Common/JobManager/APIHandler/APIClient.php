@@ -48,12 +48,11 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 		$url = apply_filters( 'rocket_saas_api_queued_url', $url );
 
 		$args = [
-			'body'     => [
+			'body'    => [
 				'url'    => $url,
 				'config' => $options,
 			],
-			'timeout'  => 5,
-			'blocking' => true,
+			'timeout' => 5,
 		];
 
 		$this->logger::debug(
