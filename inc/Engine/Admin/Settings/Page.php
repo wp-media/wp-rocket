@@ -1543,7 +1543,7 @@ class Page extends Abstract_Render {
 		/**
 		 * Filters the addons names requiring the helper message.
 		 *
-		 * @param array Array of addons.
+		 * @param array $addons Array of addons.
 		 */
 		$addons = apply_filters( 'rocket_cdn_helper_addons', [] );
 
