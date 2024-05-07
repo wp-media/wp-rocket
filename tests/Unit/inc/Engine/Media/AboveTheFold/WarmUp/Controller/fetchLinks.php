@@ -30,10 +30,6 @@ class Test_FetchLinks extends TestCase {
 		$this->controller = new Controller( $context, $options, $api_client, $this->user );
 	}
 
-	protected function tearDown(): void {
-		parent::tearDown();
-	}
-
 	/**
 	 * @dataProvider configTestData
 	 */
@@ -78,7 +74,7 @@ class Test_FetchLinks extends TestCase {
 
 			Filters\expectApplied( 'rocket_atf_warmup_links_number' )
 				->once()
-				->with( 10 );
+				->with( 5 );
 		}
 
 		$this->assertSame(

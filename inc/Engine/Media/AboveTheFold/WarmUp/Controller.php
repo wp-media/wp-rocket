@@ -147,7 +147,7 @@ class Controller {
 		// Remove duplicate links.
 		$links = array_unique( $links );
 
-		$default_limit = 10;
+		$default_limit = 5;
 
 		/**
 		 * Filters the number of links to return from the homepage.
