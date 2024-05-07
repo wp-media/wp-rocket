@@ -57,6 +57,7 @@ class WordFenceCompatibility implements Subscriber_Interface {
 		}
 
 		// Update whitelist.
+
 		// @phpstan-ignore-next-line
 		wfConfig::set( 'whitelisted', implode( ',', $whitelist ) );
 	}
@@ -75,6 +76,7 @@ class WordFenceCompatibility implements Subscriber_Interface {
 		}
 
 		// Update whitelist.
+
 		// @phpstan-ignore-next-line
 		wfConfig::set( 'whitelisted', implode( ',', $whitelist ) );
 	}
@@ -87,6 +89,7 @@ class WordFenceCompatibility implements Subscriber_Interface {
 	 */
 	private function can_pop_ip( string $ip ) {
 		// Get all whitelists.
+
 		// @phpstan-ignore-next-line
 		$whitelists = wfConfig::get( 'whitelisted', '' );
 
