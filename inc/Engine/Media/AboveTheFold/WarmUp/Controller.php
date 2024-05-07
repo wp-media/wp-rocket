@@ -67,30 +67,20 @@ class Controller {
 			return;
 		}
 
-		if ( $this->is_mobile() ) {
-			$this->send_to_saas( $this->fetch_links( 'mobile' ), 'mobile' );
-		}
-
 		$this->send_to_saas( $this->fetch_links() );
 	}
 
 	/**
 	 * Fetch links from homepage.
 	 *
-	 * @param string $device Device type.
-	 *
 	 * @return array
 	 */
-	public function fetch_links( $device = 'desktop' ): array {
+	public function fetch_links(): array {
 		if ( $this->user->is_license_expired_grace_period() ) {
 			return [];
 		}
 
-		$user_agent = 'WP Rocket/Pre-fetch Home Links';
-
-		if ( 'mobile' === $device ) {
-			$user_agent = 'WP Rocket/Pre-fetch Home Links Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1';
-		}
+		$user_agent = 'WP Rocket/Pre-fetch Home Links Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1';
 
 		$home_url = home_url();
 		$args     = [
@@ -180,14 +170,19 @@ class Controller {
 	/**
 	 * Send fetched links to SaaS to do the warmup.
 	 *
-	 * @param array  $links Array of links to be sent.
-	 * @param string $device Device type.
+	 * @param array $links Array of links to be sent.
 	 *
 	 * @return void
 	 */
-	private function send_to_saas( $links, $device = 'desktop' ) {
+	private function send_to_saas( $links ) {
 		if ( empty( $links ) ) {
 			return;
+		}
+
+		$default_delay = 5000;
+
+		if ( rocket_get_constant( 'WP_ROCKET_DEBUG' ) ) {
+			$default_delay = 500000;
 		}
 
 		/**
@@ -197,10 +192,18 @@ class Controller {
 		 *
 		 * @returns int
 		 */
-		$delay_between = (int) apply_filters( 'rocket_delay_between_requests', 500000 );
+		$delay_between = (int) apply_filters( 'rocket_lcp_warmup_delay_between_requests', $default_delay );
+
+		if ( ! is_int( $delay_between ) || $delay_between < 0 ) {
+			$delay_between = $default_delay;
+		}
 
 		foreach ( $links as $link ) {
-			$this->api_client->add_to_atf_queue( $link, $device );
+			$this->api_client->add_to_atf_queue( $link );
+
+			if ( $this->is_mobile() ) {
+				$this->api_client->add_to_atf_queue( $link, 'mobile' );
+			}
 
 			usleep( $delay_between );
 		}
