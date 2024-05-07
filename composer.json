@@ -26,7 +26,8 @@
 		"allow-plugins": {
 			"composer/installers": true,
 			"mnsami/composer-custom-directory-installer": true,
-			"dealerdirect/phpcodesniffer-composer-installer": true
+			"dealerdirect/phpcodesniffer-composer-installer": true,
+			"phpstan/extension-installer": true
 		}
 	},
 	"support": {
