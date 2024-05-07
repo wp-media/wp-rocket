@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-05-06T13:26:02+03:00\n"
+"POT-Creation-Date: 2024-05-06T13:28:35+03:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: rocket\n"
@@ -550,8 +550,8 @@ msgid "Dismiss this notice"
 msgstr ""
 
 #: inc/admin/ui/notices.php:682
-#: inc/Engine/Saas/Admin/AdminBar.php:80
-#: inc/Engine/Saas/Admin/AdminBar.php:198
+#: inc/Engine/Saas/Admin/AdminBar.php:84
+#: inc/Engine/Saas/Admin/AdminBar.php:202
 msgid "Clear Used CSS"
 msgstr ""
 
@@ -2698,24 +2698,24 @@ msgstr ""
 msgid "WP Rocket Preload revert stuck failed jobs"
 msgstr ""
 
-#: inc/Engine/Saas/Admin/AdminBar.php:73
-#: inc/Engine/Saas/Admin/AdminBar.php:194
+#: inc/Engine/Saas/Admin/AdminBar.php:77
+#: inc/Engine/Saas/Admin/AdminBar.php:198
 msgid "Clear Critical Images"
 msgstr ""
 
-#: inc/Engine/Saas/Admin/AdminBar.php:160
+#: inc/Engine/Saas/Admin/AdminBar.php:164
 msgid "Clear Critical Images of this URL"
 msgstr ""
 
-#: inc/Engine/Saas/Admin/AdminBar.php:163
+#: inc/Engine/Saas/Admin/AdminBar.php:167
 msgid "Clear Used CSS of this URL"
 msgstr ""
 
-#: inc/Engine/Saas/Admin/AdminBar.php:193
+#: inc/Engine/Saas/Admin/AdminBar.php:197
 msgid "Critical Images Cache"
 msgstr ""
 
-#: inc/Engine/Saas/Admin/AdminBar.php:197
+#: inc/Engine/Saas/Admin/AdminBar.php:201
 msgid "Remove Used CSS Cache"
 msgstr ""
 

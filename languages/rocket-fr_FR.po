@@ -6,9 +6,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.16-alpha1\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-rocket\n"
-"POT-Creation-Date: 2024-04-29T20:40:45+00:00\n"
+"Project-Id-Version: WP Rocket 3.16-alpha2\n"
+"Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
+"POT-Creation-Date: 2024-05-06T13:28:35+03:00\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Romain • WP Rocket <contact@wp-rocket.me>, 2024\n"
 "Language-Team: French (France) (https://app.transifex.com/wp-media/teams/18133/fr_FR/)\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 "X-Domain: rocket\n"
-"X-Generator: WP-CLI 2.4.0\n"
+"X-Generator: WP-CLI 2.7.1\n"
 
 #. Plugin Name of the plugin
 msgid "WP Rocket"
@@ -665,8 +665,8 @@ msgstr "%s : Cache Utilisateur vidé."
 msgid "Dismiss this notice"
 msgstr "Ne pas tenir compte de cet avertissement."
 
-#: inc/admin/ui/notices.php:682 inc/Engine/Saas/Admin/AdminBar.php:80
-#: inc/Engine/Saas/Admin/AdminBar.php:198
+#: inc/admin/ui/notices.php:682 inc/Engine/Saas/Admin/AdminBar.php:84
+#: inc/Engine/Saas/Admin/AdminBar.php:202
 msgid "Clear Used CSS"
 msgstr "Purger le CSS utilisé"
 
@@ -1139,7 +1139,7 @@ msgid "Preload"
 msgstr "Préchargement"
 
 #: inc/deprecated/deprecated.php:1786
-#: inc/Engine/Admin/Settings/Subscriber.php:170
+#: inc/Engine/Admin/Settings/Subscriber.php:171
 #: views/settings/page-sections/tools.php:33
 msgid "Tools"
 msgstr "Outils"
@@ -2585,6 +2585,20 @@ msgctxt "Sucuri"
 msgid "Find your API key"
 msgstr "Trouver votre clé API"
 
+#. translators: %1$s: opening strong tag, %2$s: closing strong tag, %3$s:
+#. opening a tag, %4$s: option a tag, %5$s: opening a tag.
+#: inc/Engine/Admin/Settings/Page.php:2295
+msgid ""
+"%1$sWP Rocket:%2$s the plugin has been updated to the 3.16 version. Our "
+"brand new feature %3$sOptimize critical images%5$s is automatically "
+"activated now! Also, the Cache tab was removed but the existing features "
+"will remain working, %4$ssee more here%5$s."
+msgstr ""
+"%1$sWP Rocket :%2$s le plugin a été mis à jour vers la version 3.16. Notre "
+"nouvelle fonctionnalité %3$sOptimiser les images essentielles%5$s est "
+"automatiquement activée ! L'onglet Cache a également été supprimé, mais les "
+"fonctionnalités habituelles sont toujours présentes, %4$sen savoir plus%5$s."
+
 #: inc/Engine/Admin/Settings/Settings.php:361
 msgid ""
 "Sucuri Add-on: The API key for the Sucuri firewall must be in format "
@@ -2602,25 +2616,25 @@ msgstr ""
 "ces URL(s) n'a pas été sauvegardé car cette valeur désactive le cache et les"
 " optimisations sur toutes les pages du site."
 
-#: inc/Engine/Admin/Settings/Subscriber.php:171
+#: inc/Engine/Admin/Settings/Subscriber.php:172
 msgid "Import, Export, Rollback"
 msgstr "Importez, exportez, restaurez"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:196
+#: inc/Engine/Admin/Settings/Subscriber.php:197
 #: views/settings/page-sections/imagify.php:14
 msgid "Image Optimization"
 msgstr "Optimisation des images"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:197
+#: inc/Engine/Admin/Settings/Subscriber.php:198
 msgid "Compress your images"
 msgstr "Compressez vos images"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:214
+#: inc/Engine/Admin/Settings/Subscriber.php:215
 #: views/settings/page-sections/tutorials.php:48
 msgid "Tutorials"
 msgstr "Tutoriels"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:215
+#: inc/Engine/Admin/Settings/Subscriber.php:216
 msgid "Getting started and how to videos"
 msgstr "Prise en main et tutos vidéos"
 
@@ -2831,15 +2845,15 @@ msgid ""
 "Speed up your website with RocketCDN, WP Rocket’s Content Delivery Network!"
 msgstr "Accélérez votre site web grâce à RocketCDN, le CDN de WP Rocket."
 
-#: inc/Engine/Common/JobManager/Cron/Subscriber.php:180
+#: inc/Engine/Common/JobManager/Cron/Subscriber.php:185
 msgid "WP Rocket process pending jobs"
 msgstr "WP Rocket traite les tâches en attente"
 
-#: inc/Engine/Common/JobManager/Cron/Subscriber.php:194
+#: inc/Engine/Common/JobManager/Cron/Subscriber.php:204
 msgid "WP Rocket clear failed jobs"
 msgstr "WP Rocket efface les tâches qui ont échoué"
 
-#: inc/Engine/Common/JobManager/Cron/Subscriber.php:206
+#: inc/Engine/Common/JobManager/Cron/Subscriber.php:221
 msgid "WP Rocket process on submit jobs"
 msgstr "WP Rocket traite les tâches en cours"
 
@@ -3355,6 +3369,14 @@ msgstr ""
 msgid "%1$s: Critical images cleared!"
 msgstr "%1$s : Images Critiques effacées !"
 
+#: inc/Engine/Media/AboveTheFold/AJAX/Controller.php:131
+msgid "Script error"
+msgstr "Erreur du script"
+
+#: inc/Engine/Media/AboveTheFold/AJAX/Controller.php:134
+msgid "Script timeout"
+msgstr "Timeout du script"
+
 #: inc/Engine/Media/Lazyload/AdminSubscriber.php:62
 msgid "LazyLoad for images"
 msgstr "LazyLoad sur les images"
@@ -3460,24 +3482,24 @@ msgid "WP Rocket Preload revert stuck failed jobs"
 msgstr ""
 "Le Prechargement de WP Rocket rétablit les tâches bloquées qui ont échoué"
 
-#: inc/Engine/Saas/Admin/AdminBar.php:73
-#: inc/Engine/Saas/Admin/AdminBar.php:194
+#: inc/Engine/Saas/Admin/AdminBar.php:77
+#: inc/Engine/Saas/Admin/AdminBar.php:198
 msgid "Clear Critical Images"
 msgstr "Effacer les images critiques"
 
-#: inc/Engine/Saas/Admin/AdminBar.php:160
+#: inc/Engine/Saas/Admin/AdminBar.php:164
 msgid "Clear Critical Images of this URL"
 msgstr "Effacer les images critiques pour cette URL"
 
-#: inc/Engine/Saas/Admin/AdminBar.php:163
+#: inc/Engine/Saas/Admin/AdminBar.php:167
 msgid "Clear Used CSS of this URL"
 msgstr "Nettoyer le CSS utilisé pour cet URL"
 
-#: inc/Engine/Saas/Admin/AdminBar.php:193
+#: inc/Engine/Saas/Admin/AdminBar.php:197
 msgid "Critical Images Cache"
 msgstr "Cache des images essentielles"
 
-#: inc/Engine/Saas/Admin/AdminBar.php:197
+#: inc/Engine/Saas/Admin/AdminBar.php:201
 msgid "Remove Used CSS Cache"
 msgstr "Supprimer le cache du CSS utilisé"
 
@@ -3502,19 +3524,19 @@ msgstr ""
 "\t\t\tWP Rocket continuera à générer les CSS utilisés pour un maximum de %2$s URL par %3$s seconde(s)."
 
 #. translators: %1$s = opening link tag, %2$s = closing link tag.
-#: inc/Engine/Saas/Admin/Notices.php:160
+#: inc/Engine/Saas/Admin/Notices.php:170
 msgid "We suggest enabling %1$sPreload%2$s for the fastest results."
 msgstr ""
 "Nous vous suggérons d'activer le %1$sPréchargement%2$s pour obtenir des "
 "résultats plus rapides."
 
 #. translators: %1$s = opening link tag, %2$s = closing link tag.
-#: inc/Engine/Saas/Admin/Notices.php:170
+#: inc/Engine/Saas/Admin/Notices.php:180
 msgid "To learn more about the process check our %1$sdocumentation%2$s."
 msgstr ""
 "Pour en savoir plus sur le processus, consultez notre %1$sdocumentation%2$s."
 
-#: inc/Engine/Saas/Admin/Notices.php:236
+#: inc/Engine/Saas/Admin/Notices.php:246
 msgid ""
 "We couldn't generate the used CSS because you're using a nulled version of "
 "WP Rocket. You need an active license to use the Remove Unused CSS feature "
@@ -3526,13 +3548,13 @@ msgstr ""
 "performances de votre site Web."
 
 #. translators: %1$s = promo percentage.
-#: inc/Engine/Saas/Admin/Notices.php:239
+#: inc/Engine/Saas/Admin/Notices.php:249
 msgid "Click here to get a WP Rocket single license at %1$s off!"
 msgstr ""
 "Cliquez ici pour obtenir une licence Single de WP Rocket à moins %1$s !"
 
 #. translators: %1$s = <a> open tag, %2$s = </a> closing tag.
-#: inc/Engine/Saas/Admin/Notices.php:292
+#: inc/Engine/Saas/Admin/Notices.php:302
 msgid ""
 "It seems a security plugin or the server's firewall prevents WP Rocket from "
 "accessing the SaaS features. IPs listed %1$shere in our documentation%2$s "
@@ -3542,11 +3564,11 @@ msgstr ""
 "Rocket d'accéder aux options SaaS. Les IP répertoriées %1$sdans notre "
 "documentation%2$s doivent être autorisées :"
 
-#: inc/Engine/Saas/Admin/Notices.php:297
+#: inc/Engine/Saas/Admin/Notices.php:307
 msgid "- In the security plugin, if you are using one"
 msgstr "- Dans le plugin de sécurité, si vous en utilisez un"
 
-#: inc/Engine/Saas/Admin/Notices.php:298
+#: inc/Engine/Saas/Admin/Notices.php:308
 msgid "- In the server's firewall. Your host can help you with this"
 msgstr ""
 "- Dans le pare-feu du serveur. Votre hébergeur peut vous aider à le faire"

@@ -8,9 +8,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.16-alpha1\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-rocket\n"
-"POT-Creation-Date: 2024-04-29T20:40:45+00:00\n"
+"Project-Id-Version: WP Rocket 3.16-alpha2\n"
+"Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
+"POT-Creation-Date: 2024-05-06T13:28:35+03:00\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: BouRock, 2024\n"
 "Language-Team: Turkish (Turkey) (https://app.transifex.com/wp-media/teams/18133/tr_TR/)\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Language: tr_TR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Domain: rocket\n"
-"X-Generator: WP-CLI 2.4.0\n"
+"X-Generator: WP-CLI 2.7.1\n"
 
 #. Plugin Name of the plugin
 msgid "WP Rocket"
@@ -659,8 +659,8 @@ msgstr "%s: Kullanıcı önbelleği temizlendi."
 msgid "Dismiss this notice"
 msgstr "Bu bildirimi anımsatma"
 
-#: inc/admin/ui/notices.php:682 inc/Engine/Saas/Admin/AdminBar.php:80
-#: inc/Engine/Saas/Admin/AdminBar.php:198
+#: inc/admin/ui/notices.php:682 inc/Engine/Saas/Admin/AdminBar.php:84
+#: inc/Engine/Saas/Admin/AdminBar.php:202
 msgid "Clear Used CSS"
 msgstr "Kullanılan CSS’yi Temizle"
 
@@ -1125,7 +1125,7 @@ msgid "Preload"
 msgstr "Önyükleme"
 
 #: inc/deprecated/deprecated.php:1786
-#: inc/Engine/Admin/Settings/Subscriber.php:170
+#: inc/Engine/Admin/Settings/Subscriber.php:171
 #: views/settings/page-sections/tools.php:33
 msgid "Tools"
 msgstr "Araçlar"
@@ -2555,6 +2555,20 @@ msgctxt "Sucuri"
 msgid "Find your API key"
 msgstr "API anahtarınızı bulun"
 
+#. translators: %1$s: opening strong tag, %2$s: closing strong tag, %3$s:
+#. opening a tag, %4$s: option a tag, %5$s: opening a tag.
+#: inc/Engine/Admin/Settings/Page.php:2295
+msgid ""
+"%1$sWP Rocket:%2$s the plugin has been updated to the 3.16 version. Our "
+"brand new feature %3$sOptimize critical images%5$s is automatically "
+"activated now! Also, the Cache tab was removed but the existing features "
+"will remain working, %4$ssee more here%5$s."
+msgstr ""
+"%1$sWP Rocket:%2$s eklenti 3.16 sürümüne güncellendi. Yepyeni özelliğimiz "
+"%3$sÖnemli resimleri iyileştir%5$s artık otomatik olarak etkinleştirildi! "
+"Ayrıca, Önbellek sekmesi kaldırıldı ancak varolan özellikler çalışmaya devam"
+" edecek, %4$sdaha fazlasına buradan bakın%5$s."
+
 #: inc/Engine/Admin/Settings/Settings.php:361
 msgid ""
 "Sucuri Add-on: The API key for the Sucuri firewall must be in format "
@@ -2572,25 +2586,25 @@ msgstr ""
 "eklemek, sitenizdeki her sayfa için önbelleğe almayı ve iyileştirmeleri "
 "etkisizleştirdiğinden kaydedilmedi."
 
-#: inc/Engine/Admin/Settings/Subscriber.php:171
+#: inc/Engine/Admin/Settings/Subscriber.php:172
 msgid "Import, Export, Rollback"
 msgstr "İçe aktarın, Dışa aktarın, Geri alın"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:196
+#: inc/Engine/Admin/Settings/Subscriber.php:197
 #: views/settings/page-sections/imagify.php:14
 msgid "Image Optimization"
 msgstr "Resim İyileştirme"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:197
+#: inc/Engine/Admin/Settings/Subscriber.php:198
 msgid "Compress your images"
 msgstr "Resimlerinizi sıkıştırın"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:214
+#: inc/Engine/Admin/Settings/Subscriber.php:215
 #: views/settings/page-sections/tutorials.php:48
 msgid "Tutorials"
 msgstr "Eğitimler"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:215
+#: inc/Engine/Admin/Settings/Subscriber.php:216
 msgid "Getting started and how to videos"
 msgstr "Başlarken ve nasıl yapılır videoları"
 
@@ -2803,15 +2817,15 @@ msgid ""
 msgstr ""
 "RocketCDN, WP Rocket’in İçerik Dağıtım Ağı ile web sitenizi hızlandırın!"
 
-#: inc/Engine/Common/JobManager/Cron/Subscriber.php:180
+#: inc/Engine/Common/JobManager/Cron/Subscriber.php:185
 msgid "WP Rocket process pending jobs"
 msgstr "WP Rocket işlemi bekleyen işler"
 
-#: inc/Engine/Common/JobManager/Cron/Subscriber.php:194
+#: inc/Engine/Common/JobManager/Cron/Subscriber.php:204
 msgid "WP Rocket clear failed jobs"
 msgstr "WP Rocket başarısız işleri temizledi"
 
-#: inc/Engine/Common/JobManager/Cron/Subscriber.php:206
+#: inc/Engine/Common/JobManager/Cron/Subscriber.php:221
 msgid "WP Rocket process on submit jobs"
 msgstr "Gönderme işlerinde WP Roket süreci"
 
@@ -3315,6 +3329,14 @@ msgstr ""
 msgid "%1$s: Critical images cleared!"
 msgstr "%1$s: Önemli resimler temizlendi!"
 
+#: inc/Engine/Media/AboveTheFold/AJAX/Controller.php:131
+msgid "Script error"
+msgstr "Komut kodu hatası"
+
+#: inc/Engine/Media/AboveTheFold/AJAX/Controller.php:134
+msgid "Script timeout"
+msgstr "Komut kodu zaman aşımı"
+
 #: inc/Engine/Media/Lazyload/AdminSubscriber.php:62
 msgid "LazyLoad for images"
 msgstr "Resimler için LazyLoad"
@@ -3419,24 +3441,24 @@ msgstr "WP Rocket Önyükleme bekleyen işler"
 msgid "WP Rocket Preload revert stuck failed jobs"
 msgstr "WP Rocket Önyükleme, sıkışmış başarısız işleri geri alır"
 
-#: inc/Engine/Saas/Admin/AdminBar.php:73
-#: inc/Engine/Saas/Admin/AdminBar.php:194
+#: inc/Engine/Saas/Admin/AdminBar.php:77
+#: inc/Engine/Saas/Admin/AdminBar.php:198
 msgid "Clear Critical Images"
 msgstr "Önemli Resimleri Temizle"
 
-#: inc/Engine/Saas/Admin/AdminBar.php:160
+#: inc/Engine/Saas/Admin/AdminBar.php:164
 msgid "Clear Critical Images of this URL"
 msgstr "Bu URL'nin Önemli Resimlerini Temizle"
 
-#: inc/Engine/Saas/Admin/AdminBar.php:163
+#: inc/Engine/Saas/Admin/AdminBar.php:167
 msgid "Clear Used CSS of this URL"
 msgstr "Bu URL’nin Kullanılan CSS’sini Temizle"
 
-#: inc/Engine/Saas/Admin/AdminBar.php:193
+#: inc/Engine/Saas/Admin/AdminBar.php:197
 msgid "Critical Images Cache"
 msgstr "Önemli Resimler Önbelleği"
 
-#: inc/Engine/Saas/Admin/AdminBar.php:197
+#: inc/Engine/Saas/Admin/AdminBar.php:201
 msgid "Remove Used CSS Cache"
 msgstr "Kullanılan CSS Önbelleğini Kaldır"
 
@@ -3461,19 +3483,19 @@ msgstr ""
 "\t\t\t WP Rocket, %3$s saniyede %2$s URL’ye kadar Kullanılan CSS oluşturmaya devam edecek."
 
 #. translators: %1$s = opening link tag, %2$s = closing link tag.
-#: inc/Engine/Saas/Admin/Notices.php:160
+#: inc/Engine/Saas/Admin/Notices.php:170
 msgid "We suggest enabling %1$sPreload%2$s for the fastest results."
 msgstr ""
 "En hızlı sonuçlar için %1$sÖnyükleme%2$s’nin etkinleştirilmesini öneririz."
 
 #. translators: %1$s = opening link tag, %2$s = closing link tag.
-#: inc/Engine/Saas/Admin/Notices.php:170
+#: inc/Engine/Saas/Admin/Notices.php:180
 msgid "To learn more about the process check our %1$sdocumentation%2$s."
 msgstr ""
 "İşlem hakkında daha fazla bilgi edinmek için %1$sbelgelerimizi%2$s gözden "
 "geçirin."
 
-#: inc/Engine/Saas/Admin/Notices.php:236
+#: inc/Engine/Saas/Admin/Notices.php:246
 msgid ""
 "We couldn't generate the used CSS because you're using a nulled version of "
 "WP Rocket. You need an active license to use the Remove Unused CSS feature "
@@ -3485,12 +3507,12 @@ msgstr ""
 "ihtiyacınız var."
 
 #. translators: %1$s = promo percentage.
-#: inc/Engine/Saas/Admin/Notices.php:239
+#: inc/Engine/Saas/Admin/Notices.php:249
 msgid "Click here to get a WP Rocket single license at %1$s off!"
 msgstr "%1$s indirimle WP Rocket tekli lisansı almak için burayı tıklayın!"
 
 #. translators: %1$s = <a> open tag, %2$s = </a> closing tag.
-#: inc/Engine/Saas/Admin/Notices.php:292
+#: inc/Engine/Saas/Admin/Notices.php:302
 msgid ""
 "It seems a security plugin or the server's firewall prevents WP Rocket from "
 "accessing the SaaS features. IPs listed %1$shere in our documentation%2$s "
@@ -3500,11 +3522,11 @@ msgstr ""
 "özelliklerinin WP Rocket’a erişmesini önlüyor. %1$sBurada belgelerimizde%2$s"
 " listelenen IP’ler, izinli listelerinize eklenmelidir:"
 
-#: inc/Engine/Saas/Admin/Notices.php:297
+#: inc/Engine/Saas/Admin/Notices.php:307
 msgid "- In the security plugin, if you are using one"
 msgstr "- Güvenlik eklentisinde, eğer bir eklenti kullanıyorsanız"
 
-#: inc/Engine/Saas/Admin/Notices.php:298
+#: inc/Engine/Saas/Admin/Notices.php:308
 msgid "- In the server's firewall. Your host can help you with this"
 msgstr ""
 "- Sunucunun güvenlik duvarında. Barındırıcınız bu konuda size yardımcı "
