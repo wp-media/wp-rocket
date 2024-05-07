@@ -66,6 +66,7 @@ class TheSEOFramework implements Subscriber_Interface {
 		// The autoloader in TSF doesn't check for file_exists(). So, use version compare instead to prevent fatal errors.
 		if ( version_compare( rocket_get_constant( 'THE_SEO_FRAMEWORK_VERSION', false ), '4.0', '>=' ) ) {
 			// TSF 4.0+. Expect the class to exist indefinitely.
+			// @phpstan-ignore-next-line
 			$sitemap_bridge = Sitemap::get_instance();
 
 			foreach ( $sitemap_bridge->get_sitemap_endpoint_list() as $id => $data ) {
@@ -78,6 +79,7 @@ class TheSEOFramework implements Subscriber_Interface {
 			}
 		} else {
 			// Deprecated. TSF <4.0.
+			// @phpstan-ignore-next-line
 			$sitemaps[] = the_seo_framework()->get_sitemap_xml_url();
 		}
 

@@ -313,6 +313,8 @@ class ImageDimensions {
 
 			return 'width="' . $initial_width['width'] . '" height="' . (int) round( $sizes[1] * $ratio ) . '"';
 		}
+
+		return false;
 	}
 
 	/**
