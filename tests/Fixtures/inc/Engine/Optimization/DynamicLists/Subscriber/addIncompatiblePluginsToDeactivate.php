@@ -3,7 +3,7 @@
 return [
 	'shouldReturnUpdatedArrayWhenEmptyOriginal' => [
 		'original' => [],
-		'list' => [
+		'list'     => [
 			'wp-optimize' => 'wp-optimize/wp-optimize.php',
 		],
 		'expected' => [
@@ -14,12 +14,12 @@ return [
 		'original' => [
 			'wp-asset-clean-up' => 'wp-asset-clean-up/wpacu.php',
 		],
-		'list' =>[
+		'list'     => [
 			'wp-optimize' => 'wp-optimize/wp-optimize.php',
 		],
 		'expected' => [
 			'wp-asset-clean-up' => 'wp-asset-clean-up/wpacu.php',
-			'wp-optimize' => 'wp-optimize/wp-optimize.php',
+			'wp-optimize'       => 'wp-optimize/wp-optimize.php',
 		],
 	],
 ];
