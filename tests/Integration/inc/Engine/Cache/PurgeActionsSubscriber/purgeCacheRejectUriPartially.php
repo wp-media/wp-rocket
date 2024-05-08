@@ -3,41 +3,58 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\Cache\PurgeActionsSubscriber;
 
 use Brain\Monkey\Functions;
+use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
  * Test class covering \WP_Rocket\Engine\Cache\PurgeActionsSubscriber:purge_cache_reject_uri_partially
  */
 class Test_PurgeCacheRejectUriPartially extends FilesystemTestCase {
-    protected $path_to_test_data = '/inc/Engine/Cache/Purge/purgeCacheRejectUriPartially.php';
+	use DBTrait;
 
-    public function set_up() {
-        
+	protected $path_to_test_data = '/inc/Engine/Cache/Purge/purgeCacheRejectUriPartially.php';
+
+	public static function set_up_before_class()
+	{
+		parent::set_up_before_class();
+		self::installFresh();
+	}
+
+	public static function tear_down_after_class()
+	{
+		self::uninstallAll();
+		parent::tear_down_after_class();
+	}
+
+	public function set_up() {
+
 		parent::set_up();
 
 		$this->set_permalink_structure( '/%postname%/' );
 	}
 
-    /**
+	/**
 	 * @dataProvider providerTestData
 	 */
-    public function testShouldPurgePartiallyWhenCacheRejectUriOptionIsChanged( $config, $expected ) {
-        if ( ! isset( $expected['cleaned'] ) ) {
-            Functions\expect( 'home_url' )->never();
-            Functions\expect( 'rocket_clean_files' )->never();
-        }
-        else {
-            $this->factory->post->create( [
-                'post_name'  => 'hello-world',
-                'post_title' => 'hello world',
-            ] );
+	public function testShouldPurgePartiallyWhenCacheRejectUriOptionIsChanged( $config, $expected ) {
+		if ( ! isset( $expected['cleaned'] ) ) {
+			Functions\expect( 'home_url' )->never();
+			Functions\expect( 'rocket_clean_files' )->never();
+		}
+		else {
+			$this->factory->post->create(
+				[
+					'post_name'  => 'hello-world',
+					'post_title' => 'hello world',
+				]
+			);
 
-            $this->generateEntriesShouldExistAfter( $expected['cleaned'] );
+			$this->generateEntriesShouldExistAfter( $expected['cleaned'] );
 
-            do_action('update_option_' . WP_ROCKET_SLUG , $config['old_value'], $config['value']);
+			do_action( 'update_option_' . WP_ROCKET_SLUG, $config['old_value'], $config['value'] );
 
-            $this->checkEntriesDeleted( $expected['cleaned'] );
-            $this->checkShouldNotDeleteEntries();
-        }
-    }
+			$this->checkEntriesDeleted( $expected['cleaned'] );
+			$this->checkShouldNotDeleteEntries();
+		}
+	}
 }
