@@ -616,6 +616,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 				 * Lazyload CSS hash.
 				 *
 				 * @param string $hash Lazyload CSS hash.
+				 * @param mixed  $url_tag URL tag.
 				 */
 				$url_tag['hash'] = apply_filters( 'rocket_lazyload_css_hash',  wp_generate_uuid4(), $url_tag );
 				return $url_tag;
