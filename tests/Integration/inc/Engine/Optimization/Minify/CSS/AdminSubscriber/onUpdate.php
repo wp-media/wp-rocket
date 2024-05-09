@@ -7,6 +7,8 @@ use Brain\Monkey\Functions;
 
 /**
  * Test class covering \WP_Rocket\Engine\Optimization\Minify\CSS\AdminSubscriber::on_update
+ *
+ * @group AdminOnly
  */
 class Test_OnUpdate extends TestCase {
 
