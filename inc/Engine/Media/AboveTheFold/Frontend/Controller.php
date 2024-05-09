@@ -146,13 +146,14 @@ class Controller {
 			return $html;
 		}
 
-		$url  = preg_quote( $lcp->src, '/' );
-		if( ! $this->is_external_file( $lcp->src ) ) {
+		$url = preg_quote( $lcp->src, '/' );
+		if ( ! $this->is_relative( $url ) && ! $this->is_external_file( $lcp->src ) ) {
 			$url = preg_quote(
 				preg_replace( '#^(://|[^/])+#', '', $lcp->src ),
 				'/'
 			);
 		}
+
 		$html = preg_replace_callback(
 			'#<img(?:[^>]*?\s+)?src=["\']' . $url . '["\'](?:\s+[^>]*?)?>#',
 			function ( $matches ) {

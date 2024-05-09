@@ -10,6 +10,7 @@ $html_input_with_picture_img_lcp = file_get_contents(__DIR__ . '/HTML/input_w_pi
 $html_output_with_picture_img_lcp = file_get_contents(__DIR__ . '/HTML/output_w_picture_img_lcp.html');
 $html_input_with_img_lcp = file_get_contents(__DIR__ . '/HTML/input_w_img_lcp.html');
 $html_output_with_img_lcp = file_get_contents(__DIR__ . '/HTML/output_w_img_lcp.html');
+$html_input_with_relative_img_lcp = file_get_contents(__DIR__ . '/HTML/input_with_relative_img_lcp.html');
 
 return [
 	'test_data' => [
@@ -253,4 +254,19 @@ return [
 		],
 		'expected' => $html_output,
 	],
+	/*'shouldReturnRelativeImage' => [
+		'config' => [
+			'html' => file_get_contents($html_input_with_relative_img_lcp),
+			'row' => [
+				'status' => 'completed',
+				'url' => 'http://example.org',
+				'lcp'      => json_encode( (object) [
+					'type' => 'img',
+					'src'  => 'http://example.org/wp-content/uploads/sample_relative_image.jpg',
+				] ),
+				'viewport' => json_encode ( [] ),
+			],
+		],
+		'expected' => file_get_contents(__DIR__ . '/HTML/output_with_relative_img_lcp.php'),
+	],*/
 ];
