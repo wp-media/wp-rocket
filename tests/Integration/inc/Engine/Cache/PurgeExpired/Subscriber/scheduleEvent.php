@@ -10,7 +10,7 @@ use WP_Rocket\Engine\Cache\PurgeExpired\Subscriber;
 
 /**
  * Test class covering Subscriber::schedule_event
- * @uses   Subscriber::get_cache_lifespan
+ *
  * @uses   \WP_Rocket\Admin\Options
  * @uses   \WP_Rocket\Admin\Options_Data
  * @uses   PurgeExpiredCache

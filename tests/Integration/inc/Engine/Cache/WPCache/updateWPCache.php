@@ -7,8 +7,6 @@ use WP_Rocket\Tests\Unit\TestCase;
 
 /**
  * Test class covering \WP_Rocket\Engine\Cache\WPCache::update_wp_cache
- * @uses   rocket_valid_key()
- * @uses   ::set_wp_cache_constant
  *
  * @group  WPCache
  */
