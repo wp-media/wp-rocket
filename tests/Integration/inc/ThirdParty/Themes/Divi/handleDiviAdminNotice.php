@@ -3,19 +3,17 @@ namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Themes\Divi;
 
 use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\CapTrait;
-use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\WPThemeTestcase;
 use WP_Rocket\ThirdParty\Themes\Divi;
 
 /**
- * Test class covering \WP_Rocket\ThirdParty\Themes\Divi::handle_save_template
+ * Test class covering \WP_Rocket\ThirdParty\Themes\Divi::handle_divi_admin_notice
  *
  * @group Themes
  * @group AdminOnly
  */
 class Test_HandleDiviAdminNotice extends WPThemeTestcase {
 	use CapTrait;
-	use DBTrait;
 
 	private $container;
 	private $event;
@@ -30,7 +28,6 @@ class Test_HandleDiviAdminNotice extends WPThemeTestcase {
 		parent::set_up_before_class();
 
 		self::hasAdminCapBeforeClass();
-		self::installFresh();
 
 		self::setAdminCap();
 		self::$user_with_permission    = static::factory()->user->create( [ 'role' => 'administrator' ] );
@@ -39,7 +36,6 @@ class Test_HandleDiviAdminNotice extends WPThemeTestcase {
 
 	public static function tear_down_after_class() {
 		self::resetAdminCap();
-		self::uninstallAll();
 
 		parent::tear_down_after_class();
 	}
@@ -52,6 +48,8 @@ class Test_HandleDiviAdminNotice extends WPThemeTestcase {
 		add_filter( 'pre_option_stylesheet', [ $this, 'set_stylesheet' ] );
 		$this->container = apply_filters( 'rocket_container', '' );
 		$this->event = $this->container->get( 'event_manager' );
+
+		$this->unregisterAllCallbacksExcept( 'admin_notices', 'handle_divi_admin_notice' );
 	}
 
 	public function tear_down() {
@@ -60,6 +58,8 @@ class Test_HandleDiviAdminNotice extends WPThemeTestcase {
 		$this->event->remove_subscriber( $this->subscriber );
 
 		remove_filter( 'pre_option_stylesheet', [ $this, 'set_stylesheet' ] );
+
+		$this->restoreWpHook( 'admin_notices' );
 
 		parent::tear_down();
 	}
