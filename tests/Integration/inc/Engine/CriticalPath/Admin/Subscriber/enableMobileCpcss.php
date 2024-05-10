@@ -3,8 +3,8 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\Admin\Subscriber;
 
 use WP_Rocket\Tests\Integration\AjaxTestCase;
-use WP_Rocket\Tests\Integration\CapTrait;
 use WP_Rocket\Tests\Integration\DBTrait;
+use Yoast\PHPUnitPolyfills\Polyfills\AssertObjectProperty;
 
 /**
  * Test class covering \WP_Rocket\Engine\CriticalPath\Admin\Subscriber::enable_mobile_cpcss
@@ -15,7 +15,10 @@ use WP_Rocket\Tests\Integration\DBTrait;
  * @group  CriticalPathAdminSubscriber
  */
 class Test_EnableMobileCpcss extends AjaxTestCase {
-	use ProviderTrait, DBTrait;
+	use ProviderTrait;
+	use DBTrait;
+	use AssertObjectProperty;
+
 	protected static $provider_class = 'Settings';
 
 	protected static $use_settings_trait = true;
