@@ -2,7 +2,6 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\WPRocketUninstall;
 
-use WP_Rocket\Tests\Integration\DBTrait;
 use WPRocketUninstall;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
@@ -10,12 +9,10 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * Test class covering WPRocketUninstall::uninstall
  *
  * @group  AdminOnly
- * @group  Uninstall
- * @group  vfs
+ * @group Uninstall
+ * @group vfs
  */
 class Test_Uninstall extends FilesystemTestCase {
-	use DBTrait;
-
 	protected $path_to_test_data = '/inc/Engine/WPRocketUninstall/uninstall.php';
 
 	private static $options = [
@@ -58,8 +55,6 @@ class Test_Uninstall extends FilesystemTestCase {
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
 
-		self::installFresh();
-
 		require_once WP_ROCKET_PLUGIN_ROOT . '/inc/Engine/WPRocketUninstall.php';
 
 		foreach ( self::getOptionNames() as $option_name ) {
@@ -68,8 +63,6 @@ class Test_Uninstall extends FilesystemTestCase {
 	}
 
 	public static function tear_down_after_class() {
-		self::uninstallAll();
-
 		foreach ( self::$options as $option_name => $value ) {
 			if ( ! empty( $value ) ) {
 				update_option( $option_name, $value );
