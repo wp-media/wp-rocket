@@ -79,6 +79,8 @@ class Test_HandleDiviAdminNotice extends WPThemeTestcase {
 
 		$this->set_theme( 'divi', 'Divi' );
 
+		$this->go_to( admin_url( 'options-general.php' ) );
+
 		if ( isset( $config['rucss_option'] ) ) {
 			add_filter( 'pre_get_rocket_option_remove_unused_css', $config['rucss_option'] ? '__return_true' : '__return_false' );
 		}
