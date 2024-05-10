@@ -147,7 +147,7 @@ class Controller {
 		}
 
 		$url = preg_quote( $lcp->src, '/' );
-		if ( ! $this->is_relative( $url ) && ! $this->is_external_file( $lcp->src ) ) {
+		if ( wp_http_validate_url( $lcp->src ) && ! $this->is_external_file( $lcp->src ) ) {
 			$url = preg_quote(
 				preg_replace( '#^(://|[^/])+#', '', $lcp->src ),
 				'/'
