@@ -43,8 +43,6 @@ class Test_HandleDiviAdminNotice extends WPThemeTestcase {
 	public function set_up() {
 		parent::set_up();
 
-		$this->go_to( admin_url( 'options-general.php' ) );
-
 		add_filter( 'pre_option_stylesheet', [ $this, 'set_stylesheet' ] );
 		$this->container = apply_filters( 'rocket_container', '' );
 		$this->event = $this->container->get( 'event_manager' );
