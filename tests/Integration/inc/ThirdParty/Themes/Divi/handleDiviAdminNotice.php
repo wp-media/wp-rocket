@@ -15,7 +15,7 @@ use WP_Rocket\ThirdParty\Themes\Divi;
  */
 class Test_HandleDiviAdminNotice extends WPThemeTestcase {
 	use CapTrait;
-	use DBTrait
+	use DBTrait;
 
 	private $container;
 	private $event;
