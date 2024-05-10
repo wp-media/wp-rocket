@@ -3,6 +3,7 @@ namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Themes\Divi;
 
 use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\CapTrait;
+use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\WPThemeTestcase;
 use WP_Rocket\ThirdParty\Themes\Divi;
 
@@ -14,6 +15,7 @@ use WP_Rocket\ThirdParty\Themes\Divi;
  */
 class Test_HandleDiviAdminNotice extends WPThemeTestcase {
 	use CapTrait;
+	use DBTrait
 
 	private $container;
 	private $event;
@@ -28,6 +30,7 @@ class Test_HandleDiviAdminNotice extends WPThemeTestcase {
 		parent::set_up_before_class();
 
 		self::hasAdminCapBeforeClass();
+		self::installFresh();
 
 		self::setAdminCap();
 		self::$user_with_permission    = static::factory()->user->create( [ 'role' => 'administrator' ] );
@@ -35,9 +38,10 @@ class Test_HandleDiviAdminNotice extends WPThemeTestcase {
 	}
 
 	public static function tear_down_after_class() {
-		parent::tear_down_after_class();
-
 		self::resetAdminCap();
+		self::uninstallAll();
+
+		parent::tear_down_after_class();
 	}
 
 	public function set_up() {

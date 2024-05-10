@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\WPRocketUninstall;
 
+use WP_Rocket\Tests\Integration\DBTrait;
 use WPRocketUninstall;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
@@ -13,6 +14,7 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group  vfs
  */
 class Test_Uninstall extends FilesystemTestCase {
+	use DBTrait;
 
 	protected $path_to_test_data = '/inc/Engine/WPRocketUninstall/uninstall.php';
 
@@ -56,6 +58,8 @@ class Test_Uninstall extends FilesystemTestCase {
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
 
+		self::installFresh();
+
 		require_once WP_ROCKET_PLUGIN_ROOT . '/inc/Engine/WPRocketUninstall.php';
 
 		foreach ( self::getOptionNames() as $option_name ) {
@@ -64,7 +68,7 @@ class Test_Uninstall extends FilesystemTestCase {
 	}
 
 	public static function tear_down_after_class() {
-		parent::set_up_before_class();
+		self::uninstallAll();
 
 		foreach ( self::$options as $option_name => $value ) {
 			if ( ! empty( $value ) ) {
@@ -73,6 +77,8 @@ class Test_Uninstall extends FilesystemTestCase {
 				delete_option( $option_name );
 			}
 		}
+
+		parent::tear_down_after_class();
 	}
 
 	private static function getOptionNames() {
@@ -114,7 +120,7 @@ class Test_Uninstall extends FilesystemTestCase {
 	}
 
 	public function testShouldDeleteAll() {
-    $cache_path            = 'vfs://public/wp-content/cache/';
+		$cache_path            = 'vfs://public/wp-content/cache/';
 		$config_path           = 'vfs://public/wp-content/wp-rocket-config/';
 		$container             = apply_filters( 'rocket_container', null );
 		$rucss_usedcss_table   = $container->get( 'rucss_usedcss_table' );
