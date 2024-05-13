@@ -1,30 +1,28 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\Inc\admin;
+namespace WP_Rocket\Tests\Integration\inc\admin;
 
 use Brain\Monkey\Functions;
-use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
  * Test class covering ::rocket_new_upgrade
+ *
  * @group admin
  * @group upgrade
  * @group AdminOnly
  */
 class Test_RocketNewUpgrade extends TestCase {
-	use DBTrait;
+	public function set_up() {
+		parent::set_up();
 
-	public static function set_up_before_class()
-	{
-		parent::set_up_before_class();
-		self::installFresh();
+		$this->unregisterAllCallbacksExcept( 'wp_rocket_upgrade', 'rocket_new_upgrade' );
 	}
 
-	public static function tear_down_after_class()
-	{
-		self::uninstallAll();
-		parent::tear_down_after_class();
+	public function tear_down() {
+		parent::tear_down();
+
+		$this->restoreWpHook( 'wp_rocket_upgrade' );
 	}
 
 	public function testShouldRegenerateAdvancedCacheFile() {
