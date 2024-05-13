@@ -5,9 +5,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.16-alpha1\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-rocket\n"
-"POT-Creation-Date: 2024-04-29T20:40:45+00:00\n"
+"Project-Id-Version: WP Rocket 3.16-alpha2\n"
+"Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
+"POT-Creation-Date: 2024-05-06T13:28:35+03:00\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Mohammad Yousefzadeh <regedit2007@yahoo.com>, 2024\n"
 "Language-Team: Persian (Iran) (https://app.transifex.com/wp-media/teams/18133/fa_IR/)\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Language: fa_IR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Domain: rocket\n"
-"X-Generator: WP-CLI 2.4.0\n"
+"X-Generator: WP-CLI 2.7.1\n"
 
 #. Plugin Name of the plugin
 msgid "WP Rocket"
@@ -640,8 +640,8 @@ msgstr "%s: کش کاربر پاک شد."
 msgid "Dismiss this notice"
 msgstr "نادیده گرفتن این پیام."
 
-#: inc/admin/ui/notices.php:682 inc/Engine/Saas/Admin/AdminBar.php:80
-#: inc/Engine/Saas/Admin/AdminBar.php:198
+#: inc/admin/ui/notices.php:682 inc/Engine/Saas/Admin/AdminBar.php:84
+#: inc/Engine/Saas/Admin/AdminBar.php:202
 msgid "Clear Used CSS"
 msgstr "پاکسازی CSSهای استفاده شده"
 
@@ -1095,7 +1095,7 @@ msgid "Preload"
 msgstr "پیش بارگذاری"
 
 #: inc/deprecated/deprecated.php:1786
-#: inc/Engine/Admin/Settings/Subscriber.php:170
+#: inc/Engine/Admin/Settings/Subscriber.php:171
 #: views/settings/page-sections/tools.php:33
 msgid "Tools"
 msgstr "ابزارها"
@@ -2499,6 +2499,19 @@ msgctxt "Sucuri"
 msgid "Find your API key"
 msgstr "پیدا کردن کلید API شما"
 
+#. translators: %1$s: opening strong tag, %2$s: closing strong tag, %3$s:
+#. opening a tag, %4$s: option a tag, %5$s: opening a tag.
+#: inc/Engine/Admin/Settings/Page.php:2295
+msgid ""
+"%1$sWP Rocket:%2$s the plugin has been updated to the 3.16 version. Our "
+"brand new feature %3$sOptimize critical images%5$s is automatically "
+"activated now! Also, the Cache tab was removed but the existing features "
+"will remain working, %4$ssee more here%5$s."
+msgstr ""
+"%1$sراکت وردپرس:%2$sافزونه به نسخه 3.16 بروزرسانی شد. ویژگی جدید ما%3$sبهینه"
+" سازی تصاویر بحرانی است.%5$sکه به صورت خودکار فعال می باشد! همچنین تب کش حذف"
+" شده اما همچنان عملکردش باقی مانده است%4$sاطلاعات بیشتر%5$s."
+
 #: inc/Engine/Admin/Settings/Settings.php:361
 msgid ""
 "Sucuri Add-on: The API key for the Sucuri firewall must be in format "
@@ -2515,25 +2528,25 @@ msgstr ""
 "متاسفیم! افزودن/(.*) در قوانین پیشرفته > هرگز کش نکن URL(s) ذخیره نشد به "
 "دلیل اینکه کش و بهینه سازی برای هر برگه در سایت شما غیرفعال است."
 
-#: inc/Engine/Admin/Settings/Subscriber.php:171
+#: inc/Engine/Admin/Settings/Subscriber.php:172
 msgid "Import, Export, Rollback"
 msgstr "درون‌ریزی، برون‌ریزی، عقب‌گرد"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:196
+#: inc/Engine/Admin/Settings/Subscriber.php:197
 #: views/settings/page-sections/imagify.php:14
 msgid "Image Optimization"
 msgstr "بهینه‌سازی تصویر"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:197
+#: inc/Engine/Admin/Settings/Subscriber.php:198
 msgid "Compress your images"
 msgstr "تصاویر خود را فشرده کنید"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:214
+#: inc/Engine/Admin/Settings/Subscriber.php:215
 #: views/settings/page-sections/tutorials.php:48
 msgid "Tutorials"
 msgstr "آموزش‌ها"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:215
+#: inc/Engine/Admin/Settings/Subscriber.php:216
 msgid "Getting started and how to videos"
 msgstr "شروع به کار و نحوه فیلمبرداری"
 
@@ -2733,15 +2746,15 @@ msgid ""
 msgstr ""
 "با RocketCDN، شبکه تحویل محتوای WP Rocket سرعت سایت خود را افزایش دهید!"
 
-#: inc/Engine/Common/JobManager/Cron/Subscriber.php:180
+#: inc/Engine/Common/JobManager/Cron/Subscriber.php:185
 msgid "WP Rocket process pending jobs"
 msgstr "WP Rocket کارهای معلق را پردازش می کند"
 
-#: inc/Engine/Common/JobManager/Cron/Subscriber.php:194
+#: inc/Engine/Common/JobManager/Cron/Subscriber.php:204
 msgid "WP Rocket clear failed jobs"
 msgstr "WP Rocket کارهای ناموفق را پاک کرد"
 
-#: inc/Engine/Common/JobManager/Cron/Subscriber.php:206
+#: inc/Engine/Common/JobManager/Cron/Subscriber.php:221
 msgid "WP Rocket process on submit jobs"
 msgstr "فرآیند WP Rocket در ارسال کارها"
 
@@ -3229,6 +3242,14 @@ msgstr ""
 msgid "%1$s: Critical images cleared!"
 msgstr "%1$s:تصاویر بحرانی حذف شدند!"
 
+#: inc/Engine/Media/AboveTheFold/AJAX/Controller.php:131
+msgid "Script error"
+msgstr "خطای اسکریپت"
+
+#: inc/Engine/Media/AboveTheFold/AJAX/Controller.php:134
+msgid "Script timeout"
+msgstr "وقفه اسکریپت"
+
 #: inc/Engine/Media/Lazyload/AdminSubscriber.php:62
 msgid "LazyLoad for images"
 msgstr "باگذاری با تاخیر تصاویر"
@@ -3332,24 +3353,24 @@ msgstr "کارهای معلق پیش بارگذاری"
 msgid "WP Rocket Preload revert stuck failed jobs"
 msgstr "پیش بارگذاری برگرداندن کارهای ناموفق گیر کرده است"
 
-#: inc/Engine/Saas/Admin/AdminBar.php:73
-#: inc/Engine/Saas/Admin/AdminBar.php:194
+#: inc/Engine/Saas/Admin/AdminBar.php:77
+#: inc/Engine/Saas/Admin/AdminBar.php:198
 msgid "Clear Critical Images"
 msgstr "پاکسازی تصاویر بحرانی"
 
-#: inc/Engine/Saas/Admin/AdminBar.php:160
+#: inc/Engine/Saas/Admin/AdminBar.php:164
 msgid "Clear Critical Images of this URL"
 msgstr "پاکسازی تصاویر این url"
 
-#: inc/Engine/Saas/Admin/AdminBar.php:163
+#: inc/Engine/Saas/Admin/AdminBar.php:167
 msgid "Clear Used CSS of this URL"
 msgstr "پاکسازی CSS استفاده شده برای این URL"
 
-#: inc/Engine/Saas/Admin/AdminBar.php:193
+#: inc/Engine/Saas/Admin/AdminBar.php:197
 msgid "Critical Images Cache"
 msgstr "کش تصاویر بحرانی"
 
-#: inc/Engine/Saas/Admin/AdminBar.php:197
+#: inc/Engine/Saas/Admin/AdminBar.php:201
 msgid "Remove Used CSS Cache"
 msgstr "حذف کش CSS استفاده شده"
 
@@ -3373,16 +3394,16 @@ msgstr ""
 "\t\t\tWP Rocket به تولید CSS استفاده شده تا حداکثر ادامه خواهد داد%2$surlها هر%3$sثانیه()."
 
 #. translators: %1$s = opening link tag, %2$s = closing link tag.
-#: inc/Engine/Saas/Admin/Notices.php:160
+#: inc/Engine/Saas/Admin/Notices.php:170
 msgid "We suggest enabling %1$sPreload%2$s for the fastest results."
 msgstr "ما پیشنهاد می کنیم %1$sپیش بارگذاری%2$s برای نتایج سریعتر فعال کنید."
 
 #. translators: %1$s = opening link tag, %2$s = closing link tag.
-#: inc/Engine/Saas/Admin/Notices.php:170
+#: inc/Engine/Saas/Admin/Notices.php:180
 msgid "To learn more about the process check our %1$sdocumentation%2$s."
 msgstr "برای یادگیری پروسه %1$sمستندات%2$s مارا بخوانید."
 
-#: inc/Engine/Saas/Admin/Notices.php:236
+#: inc/Engine/Saas/Admin/Notices.php:246
 msgid ""
 "We couldn't generate the used CSS because you're using a nulled version of "
 "WP Rocket. You need an active license to use the Remove Unused CSS feature "
@@ -3393,12 +3414,12 @@ msgstr ""
 "بیشتر عملکرد وب سایت خود، به یک مجوز فعال نیاز دارید."
 
 #. translators: %1$s = promo percentage.
-#: inc/Engine/Saas/Admin/Notices.php:239
+#: inc/Engine/Saas/Admin/Notices.php:249
 msgid "Click here to get a WP Rocket single license at %1$s off!"
 msgstr "برای دریافت لایسنس %1$sتخفیفی اینجا کلیک کنید!"
 
 #. translators: %1$s = <a> open tag, %2$s = </a> closing tag.
-#: inc/Engine/Saas/Admin/Notices.php:292
+#: inc/Engine/Saas/Admin/Notices.php:302
 msgid ""
 "It seems a security plugin or the server's firewall prevents WP Rocket from "
 "accessing the SaaS features. IPs listed %1$shere in our documentation%2$s "
@@ -3408,11 +3429,11 @@ msgstr ""
 "های SaaS جلوگیری می کند. لیست آیپی ها%1$sمستندات اینجا%2$sباید به لیست "
 "مجازتان اضافله شود:"
 
-#: inc/Engine/Saas/Admin/Notices.php:297
+#: inc/Engine/Saas/Admin/Notices.php:307
 msgid "- In the security plugin, if you are using one"
 msgstr "- در افزونه امنیت، اگر شما از یکی از آن ها استفاده کنید"
 
-#: inc/Engine/Saas/Admin/Notices.php:298
+#: inc/Engine/Saas/Admin/Notices.php:308
 msgid "- In the server's firewall. Your host can help you with this"
 msgstr "- در فایروال سرور. شرکت هاست شما کمکتان می کند"
 
