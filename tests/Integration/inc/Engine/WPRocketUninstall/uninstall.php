@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\WPRocketUninstall;
 
 use WPRocketUninstall;
+use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
@@ -13,6 +14,8 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group vfs
  */
 class Test_Uninstall extends FilesystemTestCase {
+	use DBTrait;
+
 	protected $path_to_test_data = '/inc/Engine/WPRocketUninstall/uninstall.php';
 
 	private static $options = [
@@ -20,6 +23,11 @@ class Test_Uninstall extends FilesystemTestCase {
 		'rocket_analytics_notice_displayed' => null,
 		'rocketcdn_user_token'              => null,
 		'rocketcdn_process'                 => null,
+		'wp_rocket_hide_deactivation_form'  => null,
+		'wp_rocket_last_base_url'           => null,
+		'wp_rocket_no_licence'              => null,
+		'wp_rocket_last_option_hash'        => null,
+		'wp_rocket_debug'                   => null,
 	];
 
 	protected static $transients = [
@@ -42,6 +50,21 @@ class Test_Uninstall extends FilesystemTestCase {
 		'rocket_preload_errors'                           => null,
 		'rocket_database_optimization_process'            => null,
 		'rocket_database_optimization_process_complete'   => null,
+		'rocket_hide_deactivation_form'                   => null,
+		'wpr_preload_running'                             => null,
+		'rocket_preload_as_tables_count'                  => null,
+		'wpr_dynamic_lists'                               => null,
+		'wpr_dynamic_lists_delayjs'                       => null,
+		'rocket_domain_changed'                           => null,
+		'wp_rocket_rucss_errors_count'                    => null,
+		'wpr_dynamic_lists_incompatible_plugins'          => null,
+		'rocket_divi_notice'                              => null,
+		'rocket_saas_processing'                          => null,
+		'rocket_mod_pagespeed_enabled'                    => null,
+		'wp_rocket_pricing'                               => null,
+		'wp_rocket_pricing_timeout'                       => null,
+		'wp_rocket_pricing_timeout_active'                => null,
+		'rocket_get_refreshed_fragments_cache'            => null,
 	];
 
 	private $events = [
@@ -60,6 +83,8 @@ class Test_Uninstall extends FilesystemTestCase {
 		foreach ( self::getOptionNames() as $option_name ) {
 			self::$options[ $option_name ] = get_option( $option_name );
 		}
+
+		self::installFresh();
 	}
 
 	public static function tear_down_after_class() {
@@ -70,6 +95,8 @@ class Test_Uninstall extends FilesystemTestCase {
 				delete_option( $option_name );
 			}
 		}
+
+		self::uninstallAll();
 
 		parent::tear_down_after_class();
 	}
@@ -122,6 +149,10 @@ class Test_Uninstall extends FilesystemTestCase {
 
 		$uninstall = new WPRocketUninstall( $cache_path, $config_path, $rucss_usedcss_table, $preload_table, $atf_table );
 
+		$this->assertTrue( $rucss_usedcss_table->exists(), 'RUCSS table existence' );
+		$this->assertTrue( $preload_table->exists(), 'Preload table existence' );
+		$this->assertTrue( $atf_table->exists(), 'ATF table existence' );
+
 		$uninstall->uninstall();
 
 		foreach ( self::getOptionNames() as $option_name ) {
@@ -139,6 +170,8 @@ class Test_Uninstall extends FilesystemTestCase {
 		$this->assertEmpty( $this->filesystem->getListing( $cache_path ) );
 		$this->assertFalse( $this->filesystem->exists( $config_path ) );
 
-		$this->assertFalse( $rucss_usedcss_table->exists() );
+		$this->assertFalse( $rucss_usedcss_table->exists(), 'RUCSS table existence' );
+		$this->assertFalse( $preload_table->exists(), 'Preload table existence' );
+		$this->assertFalse( $atf_table->exists(), 'ATF table existence' );
 	}
 }
