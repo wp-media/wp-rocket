@@ -146,18 +146,16 @@ class Controller {
 			return $html;
 		}
 
-		$url     = preg_quote( $lcp->src, '/' );
-		$pattern = '#<img(?:[^>]*?\s+)?src=["\']' . $url . '["\'](?:\s+[^>]*?)?>#';
-
+		$url = preg_quote( $lcp->src, '/' );
 		if ( wp_http_validate_url( $lcp->src ) && ! $this->is_external_file( $lcp->src ) ) {
-			$url = get_rocket_parse_url( $lcp->src );
-			$url = preg_quote( $url['path'], '/' );
-
-			$pattern = '#<img(?:[^>]*?\s+)?src=["\'](?:https?:)?(?:\/\/(?:[^\/]+)\/?)?\/?' . $url . '["\'](?:\s+[^>]*?)?>#';
+			$url = preg_quote(
+				preg_replace( '#^(://|[^/])+#', '', $lcp->src ),
+				'/'
+			);
 		}
 
 		$html = preg_replace_callback(
-			$pattern,
+			'#<img(?:[^>]*?\s+)?src=["\']' . $url . '["\'](?:\s+[^>]*?)?>#',
 			function ( $matches ) {
 				// Check if the fetchpriority attribute already exists.
 				if ( preg_match( '/fetchpriority\s*=\s*[\'"]([^\'"]+)[\'"]/i', $matches[0] ) ) {
