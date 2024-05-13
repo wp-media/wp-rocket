@@ -175,21 +175,21 @@ return [
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_with_absolute_img_lcp.php'),
 		],
-		/*'shouldApplyFetchPriorityToImageWithDomain' => [
+		'shouldApplyFetchPriorityToImageWithDomain' => [
 			'config' => [
 				'html' => $html_input_with_domain_img_lcp,
 				'row' => [
 					'status' => 'completed',
-					'url' => 'http://example.com',
+					'url' => 'http://example.org',
 					'lcp'      => json_encode( (object) [
 						'type' => 'img',
-						'src'  => 'http://example.com/wp-content/uploads/sample_url_image.png',
+						'src'  => 'http://example.org/wp-content/uploads/sample_url_image.png',
 					] ),
 					'viewport' => json_encode ( [] ),
 				],
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_image.php'),
-		],*/
+		],
 	],
 	'shouldPreloadPictureTag' => [
 		'config' => [
