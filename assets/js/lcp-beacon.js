@@ -66,8 +66,8 @@ class RocketLcpBeacon {
 
 	_isNotValidScreensize() {
 		// Check screen size
-		const screenWidth = window.innerWidth || document.documentElement.clientWidth;
-		const screenHeight= window.innerHeight || document.documentElement.clientHeight;
+		const screenWidth = this._getCurrentScrrenWidth();
+		const screenHeight= this._getCurrentScrrenHeight();
 
 		const isNotValidForMobile = this.config.is_mobile &&
 			( screenWidth > this.config.width_threshold || screenHeight > this.config.height_threshold );
@@ -75,6 +75,14 @@ class RocketLcpBeacon {
 			( screenWidth < this.config.width_threshold || screenHeight < this.config.height_threshold );
 
 		return isNotValidForMobile || isNotValidForDesktop;
+	}
+
+	_getCurrentScrrenWidth() {
+		return ( window.innerWidth || document.documentElement.clientWidth ) / ( document.devicePixelRatio || 1 );
+	}
+
+	_getCurrentScrrenHeight() {
+		return ( window.innerHeight || document.documentElement.clientHeight ) / ( document.devicePixelRatio || 1 );
 	}
 
 	_generateLcpCandidates( count ) {
@@ -118,14 +126,14 @@ class RocketLcpBeacon {
 		return (
 			rect.bottom >= 0 &&
 			rect.right >= 0 &&
-			rect.top <= (window.innerHeight || document.documentElement.clientHeight) &&
-			rect.left <= (window.innerWidth || document.documentElement.clientWidth)
+			rect.top <= this._getCurrentScrrenHeight() &&
+			rect.left <= this._getCurrentScrrenWidth()
 		);
 	}
 
 	_getElementArea(rect) {
-		const visibleWidth = Math.min(rect.width, (window.innerWidth || document.documentElement.clientWidth) - rect.left);
-		const visibleHeight = Math.min(rect.height, (window.innerHeight || document.documentElement.clientHeight) - rect.top);
+		const visibleWidth = Math.min(rect.width, this._getCurrentScrrenWidth() - rect.left);
+		const visibleHeight = Math.min(rect.height, this._getCurrentScrrenHeight() - rect.top);
 
 		return visibleWidth * visibleHeight;
 	}
