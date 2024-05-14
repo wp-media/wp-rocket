@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\RUCSS\Admin\Subscriber;
 
-use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
@@ -12,21 +11,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group  RUCSS
  */
 class Test_TruncateUsedCss extends TestCase{
-	use DBTrait;
-
 	private $input;
-
-	public static function set_up_before_class() {
-		self::installFresh();
-
-		parent::set_up_before_class();
-	}
-
-	public static function tear_down_after_class() {
-		parent::tear_down_after_class();
-
-		self::uninstallAll();
-	}
 
 	public function tear_down() : void {
 		remove_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );

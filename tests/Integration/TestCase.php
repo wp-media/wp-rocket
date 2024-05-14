@@ -22,8 +22,6 @@ abstract class TestCase extends BaseTestCase {
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
 
-		self::installFresh();
-
 		self::hasAdminCapBeforeClass();
 
 		if ( static::$use_settings_trait ) {
@@ -39,8 +37,6 @@ abstract class TestCase extends BaseTestCase {
 
 	public static function tear_down_after_class() {
 		parent::tear_down_after_class();
-
-		self::uninstallAll();
 
 		self::resetAdminCap();
 

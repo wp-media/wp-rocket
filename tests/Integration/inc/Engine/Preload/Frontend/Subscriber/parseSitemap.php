@@ -4,7 +4,6 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Preload\Frontend\Subscriber;
 
 use WP_Error;
 use WP_Rocket\Tests\Integration\ASTrait;
-use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
@@ -12,22 +11,9 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group  Preload
  */
 class Test_ParseSitemap extends TestCase {
-
-	use ASTrait, DBTrait;
+	use ASTrait;
 
 	protected $config;
-
-	public static function set_up_before_class()
-	{
-		parent::set_up_before_class();
-		self::installFresh();
-	}
-
-	public static function tear_down_after_class()
-	{
-		self::uninstallAll();
-		parent::tear_down_after_class();
-	}
 
 	/**
 	 * @dataProvider providerTestData

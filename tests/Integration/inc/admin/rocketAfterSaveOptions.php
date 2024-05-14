@@ -5,7 +5,6 @@ namespace WP_Rocket\Tests\Integration\inc\admin;
 use Brain\Monkey\Functions;
 use WP_Rocket\Engine\Cache\AdvancedCache;
 use WP_Rocket\Tests\Fixtures\DIContainer;
-use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
@@ -24,8 +23,6 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group SaveOptions
  */
 class Test_RocketAfterSaveOptions extends FilesystemTestCase {
-	use DBTrait;
-
 	protected $path_to_test_data = '/inc/admin/rocketAfterSaveOptions.php';
 
 	protected static $use_settings_trait = true;
@@ -41,18 +38,6 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 	private $rocketCleanDomainShouldNotClean;
 	private $rocketCleanMinifyShouldNotClean;
 	private $dicontainer;
-
-	public static function set_up_before_class() {
-		parent::set_up_before_class();
-
-		self::installFresh();
-	}
-
-	public static function tear_down_after_class() {
-		self::uninstallAll();
-
-		parent::tear_down_after_class();
-	}
 
 	public function set_up() {
 		// Unhook to avoid triggering when storing the configured settings.

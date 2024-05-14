@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\RUCSS\Admin\Subscriber;
 
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS;
-use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
@@ -13,22 +12,8 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group  RUCSS
  */
 class Test_DeleteTermUsedCss extends TestCase {
-	use DBTrait;
-
 	private $rucss_option;
 	protected $rucss_enabled;
-
-	public static function set_up_before_class() {
-		self::installFresh();
-
-		parent::set_up_before_class();
-	}
-
-	public static function tear_down_after_class() {
-		parent::tear_down_after_class();
-
-		self::uninstallAll();
-	}
 
 	public function set_up() {
 		parent::set_up();

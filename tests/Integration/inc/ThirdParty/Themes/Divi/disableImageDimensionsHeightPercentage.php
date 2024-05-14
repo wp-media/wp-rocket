@@ -1,7 +1,6 @@
 <?php
 namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Themes\Divi;
 
-use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\WPThemeTestcase;
 use WP_Rocket\ThirdParty\Themes\Divi;
 
@@ -11,24 +10,11 @@ use WP_Rocket\ThirdParty\Themes\Divi;
  * @group Themes
  */
 class Test_DisableImageDimensionsHeightPercentage extends WPThemeTestcase {
-	use DBTrait;
-
 	protected $path_to_test_data = '/inc/ThirdParty/Themes/Divi/Integration/disableImageDimensionsHeightPercentage.php';
 
 	private $container;
 	private $event;
 	private $subscriber;
-
-	public static function set_up_before_class() {
-		parent::set_up_before_class();
-		self::installFresh();
-	}
-
-	public static function tear_down_after_class() {
-		self::uninstallAll();
-
-		parent::tear_down_after_class();
-	}
 
 	public function set_up() {
 		parent::set_up();

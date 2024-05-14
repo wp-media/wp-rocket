@@ -3,31 +3,18 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\Common\JobManager\Cron\Subscriber;
 
 use WP_Rocket\Tests\HTTPCallTrait;
-use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
  * Test class covering \WP_Rocket\Engine\Common\JobManager\Cron\Subscriber::process_on_submit_jobs
- * 
+ *
  * @group JobManager
  */
 class Test_processOnSubmitJobs extends TestCase {
 
-	use DBTrait, HTTPCallTrait;
+	use HTTPCallTrait;
 
 	protected $config;
-
-	public static function set_up_before_class()
-	{
-		parent::set_up_before_class();
-		self::installFresh();
-	}
-
-	public static function tear_down_after_class()
-	{
-		self::uninstallAll();
-		parent::tear_down_after_class();
-	}
 
 	public function set_up()
 	{

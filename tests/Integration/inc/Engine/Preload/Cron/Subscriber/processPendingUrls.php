@@ -3,23 +3,13 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\Preload\Cron\Subscriber;
 
 use WP_Rocket\Engine\Preload\Controller\Queue;
-use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
  * Test class covering \WP_Rocket\Engine\Preload\Cron\Subscriber::process_pending_urls
  */
 class Test_processPendingUrls extends TestCase {
-
-	use DBTrait;
-
 	protected $config;
-
-	public static function set_up_before_class()
-	{
-		parent::set_up_before_class();
-		self::installFresh();
-	}
 
 	public static function tear_down_after_class()
 	{
@@ -39,7 +29,6 @@ class Test_processPendingUrls extends TestCase {
 
 		$queue->cancel_all('rocket_preload_job_preload_url');
 
-		self::uninstallAll();
 		parent::tear_down_after_class();
 	}
 

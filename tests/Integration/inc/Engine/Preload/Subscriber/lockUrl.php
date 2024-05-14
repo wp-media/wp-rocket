@@ -6,18 +6,6 @@ use WP_Rocket\Tests\Integration\AdminTestCase;
 
 class Test_LockUrl extends AdminTestCase
 {
-	public static function set_up_before_class()
-	{
-		parent::set_up_before_class();
-		self::installFresh();
-	}
-
-	public static function tear_down_after_class()
-	{
-		self::uninstallAll();
-		parent::tear_down_after_class();
-	}
-
 	/**
 	 * @dataProvider configTestData
 	 */

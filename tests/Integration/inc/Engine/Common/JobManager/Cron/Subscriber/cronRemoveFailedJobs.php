@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Common\JobManager\Cron\Subscriber;
 
-use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
@@ -12,19 +11,8 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group  JobManager
  */
 class Test_CronRemoveFailedJobs extends TestCase {
-	use DBTrait;
-
 	private $add_to_queue_response;
-	public static function set_up_before_class() {
-		self::installFresh();
 
-		parent::set_up_before_class();
-	}
-	public static function tear_down_after_class() {
-		parent::tear_down_after_class();
-
-		self::uninstallAll();
-	}
 	public function set_up() {
 		parent::set_up();
 		add_filter('pre_http_request', [$this, 'edit_http_request'], 10, 3);

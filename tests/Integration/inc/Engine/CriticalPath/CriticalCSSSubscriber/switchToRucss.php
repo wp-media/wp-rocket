@@ -23,18 +23,17 @@ class Test_switchToRucss extends TestCase {
 	public static function set_up_before_class()
 	{
 		parent::set_up_before_class();
+
 		$container     = apply_filters( 'rocket_container', null );
 		self::$options = $container->get('options');
 		self::$original_options = self::$options->get_options();
 		self::$options_api = $container->get('options_api');
-		self::installFresh();
 	}
 
 	public static function tear_down_after_class() {
-		parent::tear_down_after_class();
 		self::$options_api->set( 'settings', self::$original_options );
 
-		self::uninstallAll();
+		parent::tear_down_after_class();
 	}
 
 	public function set_up() {

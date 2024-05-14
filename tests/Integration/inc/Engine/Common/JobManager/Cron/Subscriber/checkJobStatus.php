@@ -2,12 +2,11 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Common\JobManager\Cron\Subscriber;
 
-use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
  * Test class covering \WP_Rocket\Engine\Common\JobManager\Cron\Subscriber::check_job_status
- * 
+ *
  * @group JobManager
  */
 class Test_checkJobStatus extends FilesystemTestCase {
@@ -15,14 +14,6 @@ class Test_checkJobStatus extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/Common/JobManager/Cron/Subscriber/checkJobStatus.php';
 
 	protected $config;
-
-	use DBTrait;
-
-	public static function set_up_before_class()
-	{
-		parent::set_up_before_class();
-		self::installFresh();
-	}
 
 	public function set_up()
 	{
@@ -37,12 +28,6 @@ class Test_checkJobStatus extends FilesystemTestCase {
 		remove_filter('pre_http_request', [$this, 'mock_http']);
 		remove_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
 		parent::tear_down();
-	}
-
-	public static function tear_down_after_class()
-	{
-		self::uninstallAll();
-		parent::tear_down_after_class();
 	}
 
 	/**

@@ -3,7 +3,6 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\CriticalCSS;
 
 use WP_Rocket\Tests\Integration\ContentTrait;
-use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
@@ -15,7 +14,7 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group  vfs
  */
 class Test_GetCriticalCssContent extends FilesystemTestCase {
-	use ContentTrait, DBTrait;
+	use ContentTrait;
 
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/CriticalCSS/getCriticalCssContent.php';
 
@@ -30,7 +29,6 @@ class Test_GetCriticalCssContent extends FilesystemTestCase {
 
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
-		self::installFresh();
 
 		$container          = apply_filters( 'rocket_container', null );
 		self::$critical_css = $container->get( 'critical_css' );
@@ -41,12 +39,6 @@ class Test_GetCriticalCssContent extends FilesystemTestCase {
 				'user_nicename' => 'rocket_tester',
 			]
 		);
-	}
-
-	public static function tear_down_after_class()
-	{
-		self::uninstallAll();
-		parent::tear_down_after_class();
 	}
 
 	public function set_up() {

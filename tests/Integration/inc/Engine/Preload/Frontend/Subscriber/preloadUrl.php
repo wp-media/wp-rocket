@@ -19,31 +19,19 @@ class Test_PreloadUrl extends AdminTestCase
 
 	protected $config;
 
-	public static function set_up_before_class()
+	public function set_up()
 	{
-		parent::set_up_before_class();
-		self::installFresh();
-
-	}
-
-	public static function tear_down_after_class()
-	{
-		self::uninstallAll();
-		parent::tear_down_after_class();
-	}
-
-	public function setUp(): void
-	{
-		parent::setUp();
+		parent::set_up();
 		add_filter('pre_get_rocket_option_do_caching_mobile_files', [$this, 'mobile_cache']);
 		add_filter('pre_http_request', [$this, 'request']);
 	}
 
-	public function tearDown(): void
+	public function tear_down()
 	{
-		parent::tearDown();
 		remove_filter('pre_http_request', [$this, 'request']);
 		remove_filter('pre_get_rocket_option_do_caching_mobile_files', [$this, 'mobile_cache']);
+
+		parent::tear_down();
 	}
 
 	/**

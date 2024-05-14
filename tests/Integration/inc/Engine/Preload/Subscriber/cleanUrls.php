@@ -11,20 +11,6 @@ class Test_CleanUrls extends AdminTestCase
 {
 	protected $manual_preload;
 
-
-	public static function set_up_before_class()
-	{
-		parent::set_up_before_class();
-		self::installFresh();
-
-	}
-
-	public static function tear_down_after_class()
-	{
-		self::uninstallAll();
-		parent::tear_down_after_class();
-	}
-
 	public function setUp(): void
 	{
 		parent::setUp();

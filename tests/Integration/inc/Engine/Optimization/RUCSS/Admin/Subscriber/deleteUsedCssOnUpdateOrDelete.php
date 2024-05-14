@@ -4,34 +4,18 @@ declare(strict_types=1);
 namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\RUCSS\Admin\Subscriber;
 
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS;
-use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
  * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::delete_used_css_on_update_or_delete
- * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS::delete_used_css
  *
  * @group  RUCSS
  */
 class Test_DeleteUsedCssOnUpdateOrDelete extends FilesystemTestCase{
-	use DBTrait;
-
 	protected $path_to_test_data = '/inc/Engine/Optimization/RUCSS/Admin/Subscriber/deleteUsedCssOnUpdateOrDelete.php';
 
 	private $posts;
 	private $input;
-
-	public static function set_up_before_class() {
-		self::installFresh();
-
-		parent::set_up_before_class();
-	}
-
-	public static function tear_down_after_class() {
-		parent::tear_down_after_class();
-
-		self::uninstallAll();
-	}
 
 	public function set_up() {
 		parent::set_up();

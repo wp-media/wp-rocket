@@ -14,22 +14,9 @@ class Test_CleanPartialCache extends AdminTestCase
 
 	protected $manual_preload;
 
-
-	public static function set_up_before_class()
+	public function set_up()
 	{
-		parent::set_up_before_class();
-		self::installFresh();
-	}
-
-	public static function tear_down_after_class()
-	{
-		self::uninstallAll();
-		parent::tear_down_after_class();
-	}
-
-	public function setUp(): void
-	{
-		parent::setUp();
+		parent::set_up();
 		add_filter('pre_get_rocket_option_manual_preload', [$this, 'manual_preload']);
 		$this->unregisterAllCallbacksExcept('after_rocket_clean_post', 'clean_partial_cache');
 	}

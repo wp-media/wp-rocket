@@ -8,24 +8,23 @@ WP Rocket</strong>
 </div>
 Notice;
 
-
 return [
 	'tableExistsShouldDisplayNotice' => [
 		'config' => [
-			'remove_unused_css' => true
+			'remove_unused_css' => true,
 		],
 		'expected' => [
 			'contains' => true,
-			'content' => $content
-		]
+			'content' => $content,
+		],
 	],
 	'disableShouldDoNothing' => [
 		'config' => [
-			'remove_unused_css' => false
+			'remove_unused_css' => false,
 		],
 		'expected' => [
 			'contains' => false,
-			'content' => $content
-		]
+			'content' => $content,
+		],
 	],
 ];

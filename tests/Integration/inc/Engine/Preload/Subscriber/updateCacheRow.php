@@ -12,23 +12,11 @@ class Test_UpdateCacheRow extends AdminTestCase
 {
 	protected $config;
 
-	public static function set_up_before_class()
-	{
-		parent::set_up_before_class();
-		self::installFresh();
-	}
-
 	public function set_up()
 	{
 		parent::set_up();
 		add_filter('rocket_preload_exclude_urls', [$this, 'excluded']);
 		add_filter('pre_get_rocket_option_manual_preload', [$this, 'manual_preload']);
-	}
-
-	public static function tear_down_after_class()
-	{
-		parent::tear_down_after_class();
-		self::uninstallAll();
 	}
 
 	public function tear_down()

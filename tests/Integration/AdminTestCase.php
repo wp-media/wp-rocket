@@ -2,28 +2,23 @@
 
 namespace WP_Rocket\Tests\Integration;
 
-use WP_Rocket\Tests\StubTrait;
 use WP_Rocket\Tests\Integration\TestCase as BaseTestCase;
 
 abstract class AdminTestCase extends BaseTestCase {
-	use StubTrait;
-	use DBTrait;
-
 	protected $error_level;
 	protected $user_id = 0;
 
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
+
 		remove_action( 'admin_init', '_maybe_update_core' );
 		remove_action( 'admin_init', '_maybe_update_plugins' );
 		remove_action( 'admin_init', '_maybe_update_themes' );
-		remove_action( 'admin_init', array( 'WP_Privacy_Policy_Content', 'add_suggested_content' ), 1 );
+		remove_action( 'admin_init', [ 'WP_Privacy_Policy_Content', 'add_suggested_content' ], 1 );
 	}
 
 	public function set_up() {
 		parent::set_up();
-
-		self::removeDBHooks();
 
 		$this->stubRocketGetConstant();
 

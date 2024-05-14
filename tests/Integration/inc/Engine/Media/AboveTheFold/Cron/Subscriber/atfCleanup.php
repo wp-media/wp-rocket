@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Media\AboveTheFold\Cron\Subscriber;
 
-use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
@@ -12,30 +11,12 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group AboveTheFold
  */
 class Test_AtfCleanup extends TestCase {
-	use DBTrait;
-
 	protected $path_to_test_data = '/inc/Engine/Media/AboveTheFold/Cron/Subscriber/atfCleanup.php';
 
 	/**
 	 * @var array
 	 */
 	protected $config;
-
-	/**
-	 * Set up before class.
-	 */
-	public static function set_up_before_class() {
-		parent::set_up_before_class();
-		self::installFresh();
-	}
-
-	/**
-	 * Tear down after class.
-	 */
-	public static function tear_down_after_class() {
-		self::uninstallAll();
-		parent::tear_down_after_class();
-	}
 
 	/**
 	 * Test should do expected.

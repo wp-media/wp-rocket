@@ -3,7 +3,6 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\Admin\Subscriber;
 
 use WP_Rocket\Tests\Integration\AjaxTestCase;
-use WP_Rocket\Tests\Integration\DBTrait;
 use Yoast\PHPUnitPolyfills\Polyfills\AssertObjectProperty;
 
 /**
@@ -16,7 +15,6 @@ use Yoast\PHPUnitPolyfills\Polyfills\AssertObjectProperty;
  */
 class Test_EnableMobileCpcss extends AjaxTestCase {
 	use ProviderTrait;
-	use DBTrait;
 	use AssertObjectProperty;
 
 	protected static $provider_class = 'Settings';
@@ -29,20 +27,12 @@ class Test_EnableMobileCpcss extends AjaxTestCase {
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
 
-		self::installFresh();
-
 		self::setAdminCap();
 
 		//create an editor user that has the capability
 		self::$admin_user_id = static::factory()->user->create( [ 'role' => 'administrator' ] );
 		//create an editor user that has no capability
 		self::$editor_user_id = static::factory()->user->create( [ 'role' => 'editor' ] );
-	}
-
-	public static function tear_down_after_class()
-	{
-		parent::tear_down_after_class();
-		self::uninstallAll();
 	}
 
 	public function set_up() {

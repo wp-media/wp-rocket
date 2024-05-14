@@ -3,7 +3,6 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\RESTWPPost;
 
 use Brain\Monkey\Functions;
-use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\RESTVfsTestCase;
 
 /**
@@ -12,19 +11,6 @@ use WP_Rocket\Tests\Integration\RESTVfsTestCase;
  * @group  vfs
  */
 class Test_Generate extends RESTVfsTestCase {
-	use DBTrait;
-
-	public static function set_up_before_class()
-	{
-		parent::set_up_before_class();
-		self::installFresh();
-	}
-
-	public static function tear_down_after_class()
-	{
-		self::uninstallAll();
-		parent::tear_down_after_class();
-	}
 	/**
 	 * Prepares the test environment before each test.
 	 */

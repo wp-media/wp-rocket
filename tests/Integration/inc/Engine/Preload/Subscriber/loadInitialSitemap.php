@@ -15,18 +15,6 @@ class Test_LoadInitialSitemap extends AdminTestCase
 
 	protected $sitemaps;
 
-	public static function set_up_before_class()
-	{
-		parent::set_up_before_class();
-		self::installFresh();
-	}
-
-	public static function tear_down_after_class()
-	{
-		parent::tear_down_after_class();
-		self::uninstallAll();
-	}
-
 	public function setUp(): void
 	{
 		parent::setUp();

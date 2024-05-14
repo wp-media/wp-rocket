@@ -12,13 +12,11 @@ abstract class ApiTestCase extends WPMediaRESTfulTestCase {
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
 
-		self::installFresh();
 		self::pathToApiCredentialsConfigFile( WP_ROCKET_TESTS_DIR . '/../env/local/' );
 	}
 
 	public static function tear_down_after_class()
 	{
-		self::uninstallAll();
 		parent::tear_down_after_class();
 	}
 

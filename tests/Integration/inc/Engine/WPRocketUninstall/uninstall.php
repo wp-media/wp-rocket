@@ -3,7 +3,6 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\WPRocketUninstall;
 
 use WPRocketUninstall;
-use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
@@ -14,8 +13,6 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group vfs
  */
 class Test_Uninstall extends FilesystemTestCase {
-	use DBTrait;
-
 	protected $path_to_test_data = '/inc/Engine/WPRocketUninstall/uninstall.php';
 
 	private static $options = [
@@ -108,8 +105,6 @@ class Test_Uninstall extends FilesystemTestCase {
 	public function set_up() {
 		parent::set_up();
 
-		self::installFresh();
-
 		foreach ( self::getOptionNames() as $option_name ) {
 			add_option( $option_name, 'test' );
 		}
@@ -124,7 +119,6 @@ class Test_Uninstall extends FilesystemTestCase {
 	}
 
 	public function tear_down() {
-		self::uninstallAll();
 
 		foreach ( self::getOptionNames() as $option_name ) {
 			delete_option( $option_name );
@@ -148,6 +142,10 @@ class Test_Uninstall extends FilesystemTestCase {
 		$atf_table           = $container->get( 'atf_table' );
 
 		$uninstall = new WPRocketUninstall( $cache_path, $config_path, $rucss_usedcss_table, $preload_table, $atf_table );
+
+		var_export( get_option( 'wpr_rucss_used_css_version', false ) );
+		var_export( get_option( 'wpr_rocket_cache_version', false ) );
+		var_export( get_option( 'wpr_above_the_fold_version', false ) );
 
 		$uninstall->uninstall();
 

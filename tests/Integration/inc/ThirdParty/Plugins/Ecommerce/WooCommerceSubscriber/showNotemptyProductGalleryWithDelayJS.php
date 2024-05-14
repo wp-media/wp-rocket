@@ -1,7 +1,6 @@
 <?php
 namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\Ecommerce\WooCommerceSubscriber;
 
-use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
@@ -11,25 +10,12 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group WithWoo
  */
 class Test_ShowNotEmptyProductGalleryWithDelayJS extends TestCase {
-	use WooTrait, DBTrait;
+	use WooTrait;
 
 	private $delay_js_option;
 	private $product_with_gallery;
 	private $product_without_gallery;
 	private $wp_version;
-
-	public static function set_up_before_class()
-	{
-		parent::set_up_before_class();
-		self::installFresh();
-
-	}
-
-	public static function tear_down_after_class()
-	{
-		self::uninstallAll();
-		parent::tear_down_after_class();
-	}
 
 	public function set_up() {
 		global $wp_version;

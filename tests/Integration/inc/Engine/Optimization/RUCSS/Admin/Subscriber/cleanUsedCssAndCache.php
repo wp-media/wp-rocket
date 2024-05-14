@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\RUCSS\Admin\Subscriber;
 
-use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
@@ -12,30 +11,12 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group  RUCSS
  */
 class Test_CleanUsedCssAndCache extends TestCase {
-	use DBTrait;
-
-	private $input;
-
-	public static function set_up_before_class() {
-		self::installFresh();
-
-		parent::set_up_before_class();
-	}
-
-	public static function tear_down_after_class() {
-		parent::tear_down_after_class();
-
-		self::uninstallAll();
-	}
-
 	/**
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoExpected( $input ) {
 		$container              = apply_filters( 'rocket_container', null );
 		$rucss_usedcss_query   = $container->get( 'rucss_used_css_query' );
-
-		$this->input = $input;
 
 		foreach ( $input['items'] as $item ) {
 			$rucss_usedcss_query->add_item( $item );

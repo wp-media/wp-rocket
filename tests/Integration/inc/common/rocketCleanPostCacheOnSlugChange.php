@@ -3,7 +3,6 @@
 namespace WP_Rocket\Tests\Integration\inc\common;
 
 use Brain\Monkey\Functions;
-use WP_Rocket\Tests\Integration\DBTrait;
 use WPMedia\PHPUnit\Integration\TestCase;
 
 /**
@@ -12,8 +11,6 @@ use WPMedia\PHPUnit\Integration\TestCase;
  * @group Purge
  */
 class TestRocketCleanPostCacheOnSlugChange extends TestCase {
-	use DBTrait;
-
 	/**
 	 * User's ID.
 	 * @var int
@@ -24,18 +21,6 @@ class TestRocketCleanPostCacheOnSlugChange extends TestCase {
 	 * @var WP_Post
 	 */
 	private $original_post;
-
-	public static function set_up_before_class()
-	{
-		parent::set_up_before_class();
-		self::installFresh();
-	}
-
-	public static function tear_down_after_class()
-	{
-		self::uninstallAll();
-		parent::tear_down_after_class();
-	}
 
 	/**
 	 * Set up the User ID before tests start.

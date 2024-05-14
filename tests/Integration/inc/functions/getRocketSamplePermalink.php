@@ -2,7 +2,6 @@
 
 namespace WP_Rocket\Tests\Integration\inc\functions;
 
-use WP_Rocket\Tests\Integration\DBTrait;
 use WPMedia\PHPUnit\Integration\TestCase;
 
 /**
@@ -11,21 +10,7 @@ use WPMedia\PHPUnit\Integration\TestCase;
  * @group Posts
  */
 class Test_GetRocketSamePermalink extends TestCase {
-	use DBTrait;
-
 	private $did_filter;
-
-	public static function set_up_before_class()
-	{
-		parent::set_up_before_class();
-		self::installFresh();
-	}
-
-	public static function tear_down_after_class()
-	{
-		self::uninstallAll();
-		parent::tear_down_after_class();
-	}
 
 	public function set_up() {
 		parent::set_up();
