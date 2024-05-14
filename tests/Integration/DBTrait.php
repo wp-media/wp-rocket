@@ -35,7 +35,7 @@ trait DBTrait {
 		$container           = apply_filters( 'rocket_container', null );
 		$rucss_usedcss_table = $container->get( 'rucss_usedcss_table' );
 
-		if ( $rucss_usedcss_table->exists() ){
+		if ( $rucss_usedcss_table->exists() ) {
 			$rucss_usedcss_table->truncate();
 		}
 	}
@@ -52,15 +52,19 @@ trait DBTrait {
 	}
 
 	public static function installFresh() {
-		$container             = apply_filters( 'rocket_container', null );
+		$container = apply_filters( 'rocket_container', null );
 
 		self::uninstallAll();
 
-		$rucss_usedcss_table   = $container->get( 'rucss_usedcss_table' );
+		$rucss_usedcss_table = $container->get( 'rucss_usedcss_table' );
 		$rucss_usedcss_table->install();
 		$container->get( 'rucss_used_css_query' )::$table_exists = true;
+
 		$preload_cache_table = $container->get( 'preload_caches_table' );
 		$preload_cache_table->install();
+
+		$atf_table = $container->get( 'atf_table' );
+		$atf_table->install();
 	}
 
 	public static function uninstallAll() {
@@ -75,17 +79,25 @@ trait DBTrait {
 		if ( $preload_cache_table->exists() ) {
 			$preload_cache_table->uninstall();
 		}
+
+		$atf_table = $container->get( 'atf_table' );
+		if ( $atf_table->exists() ) {
+			$atf_table->uninstall();
+		}
 	}
 
 	public static function removeDBHooks() {
 		$container           = apply_filters( 'rocket_container', null );
 		$rucss_usedcss_table = $container->get( 'rucss_usedcss_table' );
 		$preload_table       = $container->get( 'preload_caches_table' );
+		$atf_table           = $container->get( 'atf_table' );
 
 		self::forceRemoveTableAdminInitHooks( 'admin_init', get_class( $rucss_usedcss_table ), 'maybe_upgrade', 10 );
 		self::forceRemoveTableAdminInitHooks( 'switch_blog', get_class( $rucss_usedcss_table ), 'switch_blog', 10 );
 		self::forceRemoveTableAdminInitHooks( 'admin_init', get_class( $preload_table ), 'maybe_upgrade', 10 );
 		self::forceRemoveTableAdminInitHooks( 'switch_blog', get_class( $preload_table ), 'switch_blog', 10 );
+		self::forceRemoveTableAdminInitHooks( 'admin_init', get_class( $atf_table ), 'maybe_upgrade', 10 );
+		self::forceRemoveTableAdminInitHooks( 'switch_blog', get_class( $atf_table ), 'switch_blog', 10 );
 	}
 
 	public static function forceRemoveTableAdminInitHooks( $hook_name = '', $class_name = '', $method_name = '', $priority = 0 ) {
