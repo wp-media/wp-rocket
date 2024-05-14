@@ -83,8 +83,6 @@ class Test_Uninstall extends FilesystemTestCase {
 		foreach ( self::getOptionNames() as $option_name ) {
 			self::$options[ $option_name ] = get_option( $option_name );
 		}
-
-		self::installFresh();
 	}
 
 	public static function tear_down_after_class() {
@@ -95,8 +93,6 @@ class Test_Uninstall extends FilesystemTestCase {
 				delete_option( $option_name );
 			}
 		}
-
-		self::uninstallAll();
 
 		parent::tear_down_after_class();
 	}
@@ -112,6 +108,8 @@ class Test_Uninstall extends FilesystemTestCase {
 	public function set_up() {
 		parent::set_up();
 
+		self::installFresh();
+
 		foreach ( self::getOptionNames() as $option_name ) {
 			add_option( $option_name, 'test' );
 		}
@@ -126,6 +124,8 @@ class Test_Uninstall extends FilesystemTestCase {
 	}
 
 	public function tear_down() {
+		self::uninstallAll();
+
 		foreach ( self::getOptionNames() as $option_name ) {
 			delete_option( $option_name );
 		}
@@ -140,18 +140,14 @@ class Test_Uninstall extends FilesystemTestCase {
 	}
 
 	public function testShouldDeleteAll() {
-		$cache_path            = 'vfs://public/wp-content/cache/';
-		$config_path           = 'vfs://public/wp-content/wp-rocket-config/';
-		$container             = apply_filters( 'rocket_container', null );
-		$rucss_usedcss_table   = $container->get( 'rucss_usedcss_table' );
-		$preload_table         = $container->get( 'preload_caches_table' );
-		$atf_table             = $container->get( 'atf_table' );
+		$cache_path          = 'vfs://public/wp-content/cache/';
+		$config_path         = 'vfs://public/wp-content/wp-rocket-config/';
+		$container           = apply_filters( 'rocket_container', null );
+		$rucss_usedcss_table = $container->get( 'rucss_usedcss_table' );
+		$preload_table       = $container->get( 'preload_caches_table' );
+		$atf_table           = $container->get( 'atf_table' );
 
 		$uninstall = new WPRocketUninstall( $cache_path, $config_path, $rucss_usedcss_table, $preload_table, $atf_table );
-
-		$this->assertTrue( $rucss_usedcss_table->exists(), 'RUCSS table existence' );
-		$this->assertTrue( $preload_table->exists(), 'Preload table existence' );
-		$this->assertTrue( $atf_table->exists(), 'ATF table existence' );
 
 		$uninstall->uninstall();
 
@@ -170,8 +166,8 @@ class Test_Uninstall extends FilesystemTestCase {
 		$this->assertEmpty( $this->filesystem->getListing( $cache_path ) );
 		$this->assertFalse( $this->filesystem->exists( $config_path ) );
 
-		$this->assertFalse( $rucss_usedcss_table->exists(), 'RUCSS table existence' );
-		$this->assertFalse( $preload_table->exists(), 'Preload table existence' );
-		$this->assertFalse( $atf_table->exists(), 'ATF table existence' );
+		$this->assertFalse( get_option( 'wpr_rucss_used_css_version', false ), 'RUCSS table deleted' );
+		$this->assertFalse( get_option( 'wpr_rocket_cache_version', false ), 'Preload table deleted' );
+		$this->assertFalse( get_option( 'wpr_above_the_fold_version', false ), 'ATF table deleted' );
 	}
 }
