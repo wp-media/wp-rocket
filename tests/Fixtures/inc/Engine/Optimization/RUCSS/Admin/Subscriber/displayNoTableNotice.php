@@ -9,21 +9,33 @@ WP Rocket</strong>
 Notice;
 
 return [
-	'tableExistsShouldDisplayNotice' => [
-		'config' => [
-			'remove_unused_css' => true,
-		],
-		'expected' => [
-			'contains' => true,
-			'content' => $content,
-		],
-	],
-	'disableShouldDoNothing' => [
+	'testShouldDoNothingWhenRucssDisabled' => [
 		'config' => [
 			'remove_unused_css' => false,
+			'table_exists'      => true,
 		],
 		'expected' => [
 			'contains' => false,
+			'content' => $content,
+		],
+	],
+	'testShouldDoNothingWhenTableExists' => [
+		'config' => [
+			'remove_unused_css' => true,
+			'table_exists'      => true,
+		],
+		'expected' => [
+			'contains' => false,
+			'content' => $content,
+		],
+	],
+	'testShouldDisplayNoticeWhenTableNotExists' => [
+		'config' => [
+			'remove_unused_css' => true,
+			'table_exists'      => false,
+		],
+		'expected' => [
+			'contains' => true,
 			'content' => $content,
 		],
 	],

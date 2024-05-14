@@ -6,6 +6,7 @@ use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Tests\Fixtures\WP_Filesystem_Direct;
 use WP_Rocket\Tests\Integration\AdminTestCase;
+use WP_Rocket\Tests\Integration\DBTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::display_no_table_notice
@@ -14,6 +15,8 @@ use WP_Rocket\Tests\Integration\AdminTestCase;
  * @group AdminOnly
  */
 class Test_DisplayNoTableNotice extends AdminTestCase {
+	use DBTrait;
+
 	protected $rucss;
 
 	public function set_up() {
@@ -38,6 +41,10 @@ class Test_DisplayNoTableNotice extends AdminTestCase {
 	 */
 	public function testShouldDoAsExpected( $config, $expected ) {
 		$this->rucss = $config['remove_unused_css'];
+
+		if ( ! $config['table_exists'] ) {
+			self::uninstallAll();
+		}
 
 		add_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'rucss' ] );
 
