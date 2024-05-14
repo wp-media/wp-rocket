@@ -78,11 +78,11 @@ class RocketLcpBeacon {
 	}
 
 	_getCurrentScrrenWidth() {
-		return ( window.innerWidth || document.documentElement.clientWidth ) / ( window.devicePixelRatio || 1 );
+		return window.screen.width;
 	}
 
 	_getCurrentScrrenHeight() {
-		return ( window.innerHeight || document.documentElement.clientHeight ) / ( window.devicePixelRatio || 1 );
+		return window.screen.height;
 	}
 
 	_generateLcpCandidates( count ) {
