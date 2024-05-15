@@ -120,5 +120,4 @@ class Test_HandleDiviAdminNotice extends WPThemeTestcase {
 
 		return $this->format_the_html( ob_get_clean() );
 	}
-
 }
