@@ -3485,7 +3485,7 @@ msgstr ""
 #: inc/Engine/Saas/Admin/AdminBar.php:77
 #: inc/Engine/Saas/Admin/AdminBar.php:198
 msgid "Clear Critical Images"
-msgstr "Effacer les images critiques"
+msgstr "Réinitialiser les images critiques"
 
 #: inc/Engine/Saas/Admin/AdminBar.php:164
 msgid "Clear Critical Images of this URL"
