@@ -6,13 +6,14 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
  * Test class covering \WP_Rocket\Engine\Optimization\Minify\AdminSubscriber::clean_minify_all
- * @uses   ::rocket_clean_minify
- * @uses   ::rocket_direct_filesystem
  *
- * @group  Optimize
- * @group  Minify
- * @group  AdminSubscriber
- * @group  AdminOnly
+ * @uses ::rocket_clean_minify
+ * @uses ::rocket_direct_filesystem
+ *
+ * @group Optimize
+ * @group Minify
+ * @group AdminSubscriber
+ * @group AdminOnly
  */
 class Test_CleanMinifyAll extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/Optimization/Minify/AdminSubscriber/cleanMinifyAll.php';
@@ -20,9 +21,17 @@ class Test_CleanMinifyAll extends FilesystemTestCase {
 	private $minify_js;
 	private $minify_css;
 
+	public function set_up() {
+		parent::set_up();
+
+		$this->unregisterAllCallbacksExcept( 'switch_theme', 'clean_minify_all' );
+	}
+
 	public function tear_down() {
 		remove_filter( 'pre_get_rocket_option_minify_js', [ $this, 'set_minify_js' ] );
 		remove_filter( 'pre_get_rocket_option_minify_css', [ $this, 'set_minify_css' ] );
+
+		$this->restoreWpHook( 'switch_theme' );
 
 		parent::tear_down();
 	}
