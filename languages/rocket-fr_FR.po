@@ -3497,7 +3497,7 @@ msgstr "Nettoyer le CSS utilisé pour cet URL"
 
 #: inc/Engine/Saas/Admin/AdminBar.php:197
 msgid "Critical Images Cache"
-msgstr "Cache des images essentielles"
+msgstr "Cache des images citiques"
 
 #: inc/Engine/Saas/Admin/AdminBar.php:201
 msgid "Remove Used CSS Cache"
