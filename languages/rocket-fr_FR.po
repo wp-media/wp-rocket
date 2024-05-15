@@ -3489,7 +3489,7 @@ msgstr "Réinitialiser les images critiques"
 
 #: inc/Engine/Saas/Admin/AdminBar.php:164
 msgid "Clear Critical Images of this URL"
-msgstr "Effacer les images critiques pour cette URL"
+msgstr "Réinitialiser les images critiques pour cette URL"
 
 #: inc/Engine/Saas/Admin/AdminBar.php:167
 msgid "Clear Used CSS of this URL"
