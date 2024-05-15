@@ -67,6 +67,33 @@ trait DBTrait {
 		$atf_table->install();
 	}
 
+	public static function installUsedCssTable() {
+		$container           = apply_filters( 'rocket_container', null );
+		$rucss_usedcss_table = $container->get( 'rucss_usedcss_table' );
+
+		if ( ! $rucss_usedcss_table->exists() ) {
+			$rucss_usedcss_table->install();
+		}
+	}
+
+	public static function installPreloadCacheTable() {
+		$container           = apply_filters( 'rocket_container', null );
+		$preload_cache_table = $container->get( 'preload_caches_table' );
+
+		if ( ! $preload_cache_table->exists() ) {
+			$preload_cache_table->install();
+		}
+	}
+
+	public static function installAtfTable() {
+		$container = apply_filters( 'rocket_container', null );
+		$atf_table = $container->get( 'atf_table' );
+
+		if ( ! $atf_table->exists() ) {
+			$atf_table->install();
+		}
+	}
+
 	public static function uninstallAll() {
 		$container           = apply_filters( 'rocket_container', null );
 		$rucss_usedcss_table = $container->get( 'rucss_usedcss_table' );
@@ -84,6 +111,27 @@ trait DBTrait {
 		if ( $atf_table->exists() ) {
 			$atf_table->uninstall();
 		}
+	}
+
+	public static function uninstallUsedCssTable() {
+		$container           = apply_filters( 'rocket_container', null );
+		$rucss_usedcss_table = $container->get( 'rucss_usedcss_table' );
+
+		$rucss_usedcss_table->uninstall();
+	}
+
+	public static function uninstallPreloadCacheTable() {
+		$container           = apply_filters( 'rocket_container', null );
+		$preload_cache_table = $container->get( 'preload_caches_table' );
+
+		$preload_cache_table->uninstall();
+	}
+
+	public static function uninstallAtfTable() {
+		$container = apply_filters( 'rocket_container', null );
+		$atf_table = $container->get( 'atf_table' );
+
+		$atf_table->uninstall();
 	}
 
 	public static function removeDBHooks() {
