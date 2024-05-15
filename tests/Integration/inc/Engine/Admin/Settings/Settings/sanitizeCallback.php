@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\Settings\Settings;
 
-use WPMedia\PHPUnit\Integration\AdminTestCase;
+use WP_Rocket\Tests\Integration\AdminTestCase;
 
 /**
  * Test class covering \WP_Rocket\Engine\Admin\Settings\Settings::sanitize_callback
@@ -12,6 +12,13 @@ use WPMedia\PHPUnit\Integration\AdminTestCase;
  * @group  Settings
  */
 class Test_SanitizeCallback extends AdminTestCase {
+	public function set_up() {
+		parent::set_up();
+
+		self::removeDBHooks();
+		$this->fireAdminInit();
+	}
+
 	/**
 	 * @dataProvider addDNSPrefetchProvider
 	 */
