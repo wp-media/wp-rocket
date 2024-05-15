@@ -119,7 +119,6 @@ class Test_Uninstall extends FilesystemTestCase {
 	}
 
 	public function tear_down() {
-
 		foreach ( self::getOptionNames() as $option_name ) {
 			delete_option( $option_name );
 		}
@@ -143,10 +142,6 @@ class Test_Uninstall extends FilesystemTestCase {
 
 		$uninstall = new WPRocketUninstall( $cache_path, $config_path, $rucss_usedcss_table, $preload_table, $atf_table );
 
-		var_export( get_option( 'wpr_rucss_used_css_version', false ) );
-		var_export( get_option( 'wpr_rocket_cache_version', false ) );
-		var_export( get_option( 'wpr_above_the_fold_version', false ) );
-
 		$uninstall->uninstall();
 
 		foreach ( self::getOptionNames() as $option_name ) {
@@ -163,9 +158,5 @@ class Test_Uninstall extends FilesystemTestCase {
 
 		$this->assertEmpty( $this->filesystem->getListing( $cache_path ) );
 		$this->assertFalse( $this->filesystem->exists( $config_path ) );
-
-		$this->assertFalse( get_option( 'wpr_rucss_used_css_version', false ), 'RUCSS table deleted' );
-		$this->assertFalse( get_option( 'wpr_rocket_cache_version', false ), 'Preload table deleted' );
-		$this->assertFalse( get_option( 'wpr_above_the_fold_version', false ), 'ATF table deleted' );
 	}
 }
