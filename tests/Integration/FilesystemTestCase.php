@@ -32,6 +32,8 @@ abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
 			}
 		}
 
+		self::uninstallAll();
+
 		// Clean out the cached dirs before we run these tests.
 		_rocket_get_cache_dirs( '', '', true );
 	}

@@ -12,6 +12,8 @@ abstract class ApiTestCase extends WPMediaRESTfulTestCase {
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
 
+		self::uninstallAll();
+
 		self::pathToApiCredentialsConfigFile( WP_ROCKET_TESTS_DIR . '/../env/local/' );
 	}
 
