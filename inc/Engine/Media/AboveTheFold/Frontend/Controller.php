@@ -149,8 +149,10 @@ class Controller {
 		$url     = preg_quote( $lcp->src, '/' );
 		$pattern = '#<img(?:[^>]*?\s+)?src=["\']' . $url . '["\'](?:\s+[^>]*?)?>#';
 		if ( wp_http_validate_url( $lcp->src ) && ! $this->is_external_file( $lcp->src ) ) {
-			$url = wp_parse_url( $lcp->src, PHP_URL_PATH );
-			$url = preg_quote( $url, '/' );
+			$url = preg_quote(
+				wp_parse_url( $lcp->src, PHP_URL_PATH ),
+			'/'
+				);
 
 			$pattern = '#<img(?:[^>]*?\s+)?src=["\'](?:https?:)?(?:\/\/(?:[^\/]+)\/?)?\/?' . $url . '["\'](?:\s+[^>]*?)?>#';
 		}
