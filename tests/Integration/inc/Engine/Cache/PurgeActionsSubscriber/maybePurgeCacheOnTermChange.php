@@ -6,10 +6,11 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
  * Test class covering \WP_Rocket\Engine\Cache\PurgeActionsSubscriber:maybe_purge_cache_on_term_change
- * @uses   ::rocket_clean_domain
  *
- * @group  purge_actions
- * @group  vfs
+ * @uses ::rocket_clean_domain
+ *
+ * @group PurgeActions
+ * @group vfs
  */
 class Test_MaybePurgeCacheOnTermChange extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/Cache/PurgeActionsSubscriber/maybePurgeCacheOnTermChange.php';
@@ -25,14 +26,20 @@ class Test_MaybePurgeCacheOnTermChange extends FilesystemTestCase {
 				'publicly_queryable' => false,
 			]
 		);
+
+		// Disable ATF optimization to prevent DB request (unrelated to the test).
+		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
 	}
 
 	public function tear_down() {
-		parent::tear_down();
+		// Re-enable ATF optimization.
+		remove_filter( 'rocket_above_the_fold_optimization', '__return_false' );
 
 		unregister_taxonomy( 'not_public' );
 		unset( $GLOBALS['sitepress'], $GLOBALS['q_config'], $GLOBALS['polylang'] );
 		unset( $GLOBALS['debug_fs'] );
+
+		parent::tear_down();
 	}
 
 	/**
