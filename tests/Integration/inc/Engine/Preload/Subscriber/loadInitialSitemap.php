@@ -18,10 +18,16 @@ class Test_LoadInitialSitemap extends AdminTestCase {
 	public function set_up() {
 		parent::set_up();
 
+		// Install the preload cache table.
+		self::installPreloadCacheTable();
+
 		add_filter( 'rocket_sitemap_preload_list', [ $this, 'return_sitemaps' ] );
 	}
 
 	public function tear_down() {
+		// Uninstall the preload cache table.
+		self::uninstallPreloadCacheTable();
+
 		remove_filter( 'rocket_sitemap_preload_list', [ $this, 'return_sitemaps' ] );
 
 		parent::tear_down();
