@@ -13,7 +13,23 @@ use WP_Rocket\Tests\Integration\TestCase;
 class Test_CronCleanRows extends TestCase {
 	private $input;
 
+	public function set_up() {
+		parent::set_up();
+
+		self::installUsedCssTable();
+		self::installPreloadCacheTable();
+
+		// Disable ATF optimization to prevent DB request (unrelated to the test).
+		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
+	}
+
 	public function tear_down() {
+		self::uninstallUsedCssTable();
+		self::uninstallPreloadCacheTable();
+
+		// Re-enable ATF optimization.
+		remove_filter( 'rocket_above_the_fold_optimization', '__return_false' );
+
 		remove_filter( 'rocket_saas_delete_interval', [ $this, 'set_rucss_delay' ] );
 		remove_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
 
@@ -39,7 +55,7 @@ class Test_CronCleanRows extends TestCase {
 		$count_remain_used_css = 0;
 
 		foreach ( $input['used_css'] as $used_css ) {
-			if ( $old_date <  strtotime( $used_css['last_accessed'] ) ) {
+			if ( $old_date < strtotime( $used_css['last_accessed'] ) ) {
 				++$count_remain_used_css;
 			}
 			$rucss_usedcss_query->add_item( $used_css );
@@ -52,7 +68,6 @@ class Test_CronCleanRows extends TestCase {
 
 		$rucss_usedcss_query     = $container->get( 'rucss_used_css_query' );
 		$resultUsedCssAfterClean = $rucss_usedcss_query->query();
-
 
 		if ( $this->input['delay'] ) {
 			$this->assertCount( $count_remain_used_css, $resultUsedCssAfterClean );

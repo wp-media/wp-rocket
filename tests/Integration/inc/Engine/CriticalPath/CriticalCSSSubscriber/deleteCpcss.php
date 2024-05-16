@@ -28,15 +28,21 @@ class Test_DeleteCpcss extends FilesystemTestCase {
 	public function set_up() {
 		parent::set_up();
 
+		// Disable ATF optimization to prevent DB request (unrelated to the test).
+		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
+
 		add_filter( 'pre_get_rocket_option_async_css', [ $this, 'async_css' ] );
 		add_filter( 'pre_get_rocket_option_async_css_mobile', [ $this, 'async_css_mobile' ] );
 	}
 
 	public function tear_down() {
-		parent::tear_down();
+		// Re-enable ATF optimization.
+		remove_filter( 'rocket_above_the_fold_optimization', '__return_false' );
 
 		remove_filter( 'pre_get_rocket_option_async_css', [ $this, 'async_css' ] );
 		remove_filter( 'pre_get_rocket_option_async_css_mobile', [ $this, 'async_css_mobile' ] );
+
+		parent::tear_down();
 	}
 
 	/**
