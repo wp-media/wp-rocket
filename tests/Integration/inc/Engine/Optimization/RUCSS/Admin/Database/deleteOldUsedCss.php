@@ -8,23 +8,31 @@ use WP_Rocket\Tests\Integration\TestCase;
 /**
  * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Admin\Database::delete_old_used_css
  *
- * @group  RUCSS
+ * @group RUCSS
  */
-class Test_DeleteOldUsedCss extends TestCase{
+class Test_DeleteOldUsedCss extends TestCase {
+	public function set_up() {
+		parent::set_up();
+
+		self::installUsedCssTable();
+	}
+
 	public function tear_down() {
+		self::uninstallUsedCssTable();
+
 		remove_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
 
 		parent::tear_down();
 	}
 
-	public function testShouldTruncateTableWhenOptionIsEnabled(){
+	public function testShouldTruncateTableWhenOptionIsEnabled() {
 		$container           = apply_filters( 'rocket_container', null );
 		$rucss_usedcss_table = $container->get( 'rucss_usedcss_table' );
 		$rucss_usedcss_query = $container->get( 'rucss_used_css_query' );
 
 		add_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
 		$current_date = current_time( 'mysql', true );
-		$old_date     = date('Y-m-d H:i:s', strtotime( $current_date. ' - 32 days' ) );
+		$old_date     = date( 'Y-m-d H:i:s', strtotime( $current_date . ' - 32 days' ) );
 
 		$rucss_usedcss_query->add_item(
 			[

@@ -8,9 +8,21 @@ use WP_Rocket\Tests\Integration\TestCase;
 /**
  * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::clean_used_css_and_cache
  *
- * @group  RUCSS
+ * @group RUCSS
  */
 class Test_CleanUsedCssAndCache extends TestCase {
+	public function set_up() {
+		parent::set_up();
+
+		self::installUsedCssTable();
+	}
+
+	public function tear_down() {
+		self::uninstallUsedCssTable();
+
+		parent::tear_down();
+	}
+
 	/**
 	 * @dataProvider configTestData
 	 */

@@ -19,7 +19,13 @@ class Test_Generate extends RESTVfsTestCase {
 	private $do_caching_mobile_files;
 
 	public static function wpSetUpBeforeClass( $factory ) {
+		// Disable ATF optimization to prevent DB request (unrelated to the test).
+		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
+
 		self::$post_id = $factory->post->create();
+
+		// Re-enable ATF optimization.
+		remove_filter( 'rocket_above_the_fold_optimization', '__return_false' );
 	}
 
 	public function set_up() {

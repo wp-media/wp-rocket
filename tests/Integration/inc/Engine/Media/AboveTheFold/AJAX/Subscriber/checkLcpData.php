@@ -15,6 +15,8 @@ class Test_CheckLcpData extends AjaxTestCase {
 	public function set_up() {
 		parent::set_up();
 
+		self::installAtfTable();
+
 		$this->action = 'rocket_check_lcp';
 	}
 
@@ -24,6 +26,8 @@ class Test_CheckLcpData extends AjaxTestCase {
 	 * @return void
 	 */
 	public function tear_down() {
+		self::uninstallAtfTable();
+
 		remove_filter( 'rocket_above_the_fold_optimization', [ $this, 'set_allowed' ] );
 
 		parent::tear_down();
