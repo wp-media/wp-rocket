@@ -35,10 +35,22 @@ class gulpCss {
 		return this._compileSaas( 'rtl', 'wpr-admin-rtl', true );
 	}
 
-	compileAdminFullSaas() {
+	compileAdminFullSaasUnmin() {
 		return gulp.parallel(
-			() => this.compileAdminSaas()
+			() => this.compileAdminSaas(),
+			() => this.compileAdminRtlSaas()
 		);
+	}
+
+	compileAdminFullSaasMin() {
+		return gulp.parallel(
+			() => this.compileAdminSaasMin(),
+			() => this.compileAdminRtlSaasMin()
+		);
+	}
+
+	watch() {
+		return gulp.watch('./src/scss/**/*.scss', gulp.series( 'sass_all', 'sass_all_unmin' ));
 	}
 }
 
@@ -51,6 +63,9 @@ css_tasks.forEach( css_task => {
 	gulp.task( css_task.task, (cb) => {
 		const method = css_task['method'];
 		const current_task = gulpCssObject[method]();
+		if ( 'function' !== typeof current_task ) {
+			return;
+		}
 		current_task(cb);
 	} );
 })

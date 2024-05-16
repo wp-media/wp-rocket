@@ -2,16 +2,18 @@ module.exports = {
 	tasks: {
 		css: [
 			{
-				task: 'build:admin:css:unmin',
-				method: 'compileAdminSaas',
+				task: 'build:saas',
+				method: 'compileAdminFullSaasMin',
 			},
 			{
-				task: 'build:admin:css:min',
-				method: 'compileAdminSaasMin',
+				task: 'sass:watch',
+				method: 'watch',
 			},
+		],
+		js: [
 			{
-				task: 'sass_all_unmin',
-				method: 'compileAdminFullSaas',
+				task: 'build:js',
+				method: 'compile',
 			},
 		],
 	},
