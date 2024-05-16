@@ -5,6 +5,7 @@ use WP_Rocket\Tests\Integration\TestCase;
 
 /**
  * Test class covering \WP_Rocket\ThirdParty\Plugins\Ecommerce\WooCommerceSubscriber::show_empty_product_gallery_with_delayJS
+ *
  * @group WooCommerce
  * @group ThirdParty
  * @group WithWoo
@@ -19,16 +20,22 @@ class Test_ShowEmptyProductGalleryWithDelayJS extends TestCase {
 	public function set_up() {
 		parent::set_up();
 
+		// Disable ATF optimization to prevent DB request (unrelated to the test).
+		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
+
 		$this->product_without_gallery = $this->create_product();
 		$this->product_with_gallery = $this->create_product( [1, 2, 3] );
 	}
 
-	public function tear_down() : void {
-		parent::tear_down();
+	public function tear_down() {
+		// Re-enable ATF optimization.
+		remove_filter( 'rocket_above_the_fold_optimization', '__return_false' );
 
 		remove_filter( 'pre_get_rocket_option_delay_js', [ $this, 'set_delay_js' ] );
 
 		$this->restoreWpHook( 'wp_head' );
+
+		parent::tear_down();
 	}
 
 	/**
