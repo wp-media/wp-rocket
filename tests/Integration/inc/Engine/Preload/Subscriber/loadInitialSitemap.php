@@ -24,7 +24,7 @@ class Test_LoadInitialSitemap extends AdminTestCase {
 	public function tear_down() {
 		remove_filter( 'rocket_sitemap_preload_list', [ $this, 'return_sitemaps' ] );
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	/**
