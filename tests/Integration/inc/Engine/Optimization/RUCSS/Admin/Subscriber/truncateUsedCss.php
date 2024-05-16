@@ -17,10 +17,16 @@ class Test_TruncateUsedCss extends TestCase {
 		parent::set_up();
 
 		self::installUsedCssTable();
+
+		// Disable ATF optimization to prevent DB request (unrelated to the test).
+		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
 	}
 
 	public function tear_down() {
 		self::uninstallUsedCssTable();
+
+		// Re-enable ATF optimization.
+		remove_filter( 'rocket_above_the_fold_optimization', '__return_false' );
 
 		remove_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
 

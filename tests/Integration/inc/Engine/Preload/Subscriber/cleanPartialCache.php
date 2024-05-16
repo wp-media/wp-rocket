@@ -3,26 +3,27 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\Preload\Subscriber;
 
 use WP_Rocket\Tests\Integration\AdminTestCase;
-use WP_Rocket\Tests\Integration\IsolateHookTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\Preload\Subscriber::clean_partial_cache
+ *
+ * @group Preload
  */
-class Test_CleanPartialCache extends AdminTestCase
-{
-	use IsolateHookTrait;
-
+class Test_CleanPartialCache extends AdminTestCase {
 	protected $manual_preload;
 
-	public function set_up()
-	{
+	public function set_up() {
 		parent::set_up();
+
+		self::installPreloadCacheTable();
+
 		add_filter('pre_get_rocket_option_manual_preload', [$this, 'manual_preload']);
 		$this->unregisterAllCallbacksExcept('after_rocket_clean_post', 'clean_partial_cache');
 	}
 
-	public function tear_down()
-	{
+	public function tear_down() {
+		self::uninstallPreloadCacheTable();
+
 		$this->restoreWpHook('after_rocket_clean_post');
 		remove_filter('pre_get_rocket_option_manual_preload', [$this, 'manual_preload']);
 		parent::tear_down();

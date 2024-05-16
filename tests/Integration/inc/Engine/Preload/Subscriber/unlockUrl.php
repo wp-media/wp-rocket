@@ -4,8 +4,24 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Preload\Subscriber;
 
 use WP_Rocket\Tests\Integration\AdminTestCase;
 
-class Test_UnlockUrl extends AdminTestCase
-{
+/**
+ * Test class covering \WP_Rocket\Engine\Preload\Subscriber::unlock_url
+ *
+ * @group Preload
+ */
+class Test_UnlockUrl extends AdminTestCase {
+	public function set_up() {
+		parent::set_up();
+
+		self::installPreloadCacheTable();
+	}
+
+	public function tear_down() {
+		self::uninstallPreloadCacheTable();
+
+		parent::tear_down();
+	}
+
 	/**
 	 * @dataProvider configTestData
 	 */

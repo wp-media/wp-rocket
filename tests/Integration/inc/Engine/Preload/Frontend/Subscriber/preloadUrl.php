@@ -5,29 +5,31 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Preload\Frontend\Subscriber;
 use WP_Error;
 use WP_Rocket\Tests\Integration\AdminTestCase;
 use WP_Rocket\Tests\Integration\ASTrait;
-use Brain\Monkey\Functions;
 
 /**
  * Test class covering \WP_Rocket\Engine\Preload\Frontend\Subscriber::preload_url
- * @group  Preload
+ *
+ * @group Preload
  */
-class Test_PreloadUrl extends AdminTestCase
-{
+class Test_PreloadUrl extends AdminTestCase {
 	use ASTrait;
 
 	protected $mobile_cache;
 
 	protected $config;
 
-	public function set_up()
-	{
+	public function set_up() {
 		parent::set_up();
+
+		self::installPreloadCacheTable();
+
 		add_filter('pre_get_rocket_option_do_caching_mobile_files', [$this, 'mobile_cache']);
 		add_filter('pre_http_request', [$this, 'request']);
 	}
 
-	public function tear_down()
-	{
+	public function tear_down() {
+		self::uninstallPreloadCacheTable();
+
 		remove_filter('pre_http_request', [$this, 'request']);
 		remove_filter('pre_get_rocket_option_do_caching_mobile_files', [$this, 'mobile_cache']);
 
