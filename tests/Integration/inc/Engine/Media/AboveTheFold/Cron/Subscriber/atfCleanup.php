@@ -18,6 +18,18 @@ class Test_AtfCleanup extends TestCase {
 	 */
 	protected $config;
 
+	public function set_up() {
+		parent::set_up();
+
+		parent::installAtfTable();
+	}
+
+	public function tear_down() {
+		parent::uninstallAtfTable();
+
+		parent::tear_down();
+	}
+
 	/**
 	 * Test should do expected.
 	 *

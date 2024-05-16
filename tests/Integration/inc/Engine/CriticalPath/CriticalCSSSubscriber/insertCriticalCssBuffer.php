@@ -7,13 +7,14 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
  * Test class covering \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::insert_critical_css_buffer
- * @uses   ::rocket_get_constant
- * @uses   ::is_rocket_post_excluded_option
- * @uses   \WP_Rocket\Engine\CriticalPath\CriticalCss::get_critical_css_content
- * @uses   \WP_Rocket\Admin\Options_Data::get
  *
- * @group  CriticalPath
- * @group  vfs
+ * @uses ::rocket_get_constant
+ * @uses ::is_rocket_post_excluded_option
+ * @uses \WP_Rocket\Engine\CriticalPath\CriticalCss::get_critical_css_content
+ * @uses \WP_Rocket\Admin\Options_Data::get
+ *
+ * @group CriticalPath
+ * @group vfs
  */
 class Test_InsertCriticalCssBuffer extends FilesystemTestCase {
 	use ContentTrait;
@@ -37,13 +38,17 @@ class Test_InsertCriticalCssBuffer extends FilesystemTestCase {
 	public function set_up() {
 		parent::set_up();
 
+		// Disable ATF optimization to prevent DB request (unrelated to the test).
+		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
+
 		add_filter( 'pre_get_rocket_option_async_css', [ $this, 'return_1' ] );
 		wp_set_current_user( self::$user_id );
 		set_current_screen( 'front' );
 	}
 
 	public function tear_down() {
-		parent::tear_down();
+		// Re-enable ATF optimization.
+		remove_filter( 'rocket_above_the_fold_optimization', '__return_false' );
 
 		$this->reset_post_types();
 		$this->reset_taxonomies();
@@ -51,6 +56,8 @@ class Test_InsertCriticalCssBuffer extends FilesystemTestCase {
 		remove_filter( 'pre_get_rocket_option_async_css', [ $this, 'return_1' ] );
 		remove_filter( 'pre_get_rocket_option_critical_css', [ $this, 'getFallbackCss' ] );
 		update_option( 'show_on_front', 'posts' );
+
+		parent::tear_down();
 	}
 
 	/**

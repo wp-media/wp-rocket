@@ -6,12 +6,13 @@ use WP_Rocket\Tests\Integration\RESTVfsTestCase;
 
 /**
  * Test class covering \WP_Rocket\Engine\CriticalPath\RESTWPPost::delete
- * @uses   \WP_Rocket\Engine\CriticalPath\ProcessorService::process_delete
- * @uses   \WP_Rocket\Engine\CriticalPath\DataManager::delete_cpcss
- * @uses   \WP_Rocket\Admin\Options_Data::get
  *
- * @group  CriticalPath
- * @group  vfs
+ * @uses \WP_Rocket\Engine\CriticalPath\ProcessorService::process_delete
+ * @uses \WP_Rocket\Engine\CriticalPath\DataManager::delete_cpcss
+ * @uses \WP_Rocket\Admin\Options_Data::get
+ *
+ * @group CriticalPath
+ * @group CriticalRest
  */
 class Test_Delete extends RESTVfsTestCase {
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/RESTWPPost/delete.php';
@@ -41,12 +42,23 @@ class Test_Delete extends RESTVfsTestCase {
 		parent::tear_down_after_class();
 	}
 
+	public function set_up() {
+		parent::set_up();
+
+		// Disable ATF optimization to prevent DB request (unrelated to the test).
+		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
+	}
+
 	public function tear_down() {
+		// Re-enable ATF optimization.
+		remove_filter( 'rocket_above_the_fold_optimization', '__return_false' );
+
 		remove_filter( 'pre_get_rocket_option_async_css_mobile', [ $this, 'async_css_mobile_cb' ] );
 
-		parent::tear_down();
 		$admin = get_role( 'administrator' );
 		$admin->remove_cap( 'rocket_regenerate_critical_css' );
+
+		parent::tear_down();
 	}
 
 	/**

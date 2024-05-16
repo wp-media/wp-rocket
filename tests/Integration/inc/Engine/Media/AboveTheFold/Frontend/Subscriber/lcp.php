@@ -18,10 +18,15 @@ class Test_lcp extends FilesystemTestCase {
 
 	public function set_up() {
 		parent::set_up();
+
+		self::installAtfTable();
+
 		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'lcp', 17 );
 	}
 
 	public function tear_down() {
+		self::uninstallAtfTable();
+
 		$this->restoreWpHook( 'rocket_buffer' );
 		parent::tear_down();
 	}
