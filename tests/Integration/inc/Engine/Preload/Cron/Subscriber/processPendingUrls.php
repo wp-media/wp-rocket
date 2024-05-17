@@ -13,16 +13,19 @@ class Test_ProcessPendingUrls extends TestCase {
 	protected $config;
 
 	public function set_up() {
+		parent::set_up();
+
 		self::installPreloadCacheTable();
 
 		add_filter('pre_get_rocket_option_manual_preload', [$this, 'manual_preload']);
 		add_filter('rocket_preload_outdated', [$this, 'rocket_preload_outdated']);
 		add_filter('rocket_preload_cache_pending_jobs_cron_rows_count', [$this, 'rocket_preload_cache_pending_jobs_cron_rows_count']);
 
-		parent::set_up();
 	}
 
 	public function tear_down() {
+		self::uninstallPreloadCacheTable();
+
 		remove_filter('pre_get_rocket_option_manual_preload', [$this, 'manual_preload']);
 		remove_filter('rocket_preload_outdated', [$this, 'rocket_preload_outdated']);
 		remove_filter('rocket_preload_cache_pending_jobs_cron_rows_count', [$this, 'rocket_preload_cache_pending_jobs_cron_rows_count']);
