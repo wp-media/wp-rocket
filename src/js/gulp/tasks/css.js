@@ -50,7 +50,7 @@ class gulpCss {
 	}
 
 	watch() {
-		return gulp.watch('./src/scss/**/*.scss', gulp.series( 'sass_all', 'sass_all_unmin' ));
+		return gulp.watch('./src/scss/**/*.scss', gulp.series( 'build:saas:unmin', 'build:saas:min' ));
 	}
 }
 

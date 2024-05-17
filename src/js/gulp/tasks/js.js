@@ -1,6 +1,12 @@
 const gulp = require("gulp");
+const browserify = require('browserify');
+const babel = require('babelify');
+const source = require('vinyl-source-stream');
+const buffer = require('vinyl-buffer');
+const sourcemaps = require('gulp-sourcemaps');
+const uglify = require('gulp-uglify');
+const watchify = require('watchify');
 const rename = require("gulp-rename");
-const sass = require('gulp-sass')(require('sass'));
 const js_tasks = require('../gulpconfig').tasks.js;
 
 class gulpJs {
@@ -8,9 +14,43 @@ class gulpJs {
 		this.options = options;
 	}
 
-	compile() {
+	_compile( filepath, finalname, minify = false, load_sourcemaps = false ) {
+		let bundle = browserify({
+			entries: filepath,
+			debug: true
+		}).transform(babel);
 
+		let stream =  bundle.bundle()
+			.pipe(source(finalname + '.js'))
+			.pipe(buffer());
 
+		let rename_options = {  };
+		if ( minify ) {
+			stream = stream.pipe(uglify());
+			rename_options.suffix = '.min';
+		}
+
+		if ( load_sourcemaps ) {
+			stream = stream.pipe(sourcemaps.init({loadMaps: false}))
+				.pipe(sourcemaps.write('./'));
+		}
+
+		stream = stream.pipe( rename( rename_options ) )
+			.pipe(gulp.dest('assets/js'));
+
+		return stream;
+	}
+
+	buildAppUnmin() {
+		return this._compile( './src/js/global/app.js', 'wpr-admin', false, false );
+	}
+
+	buildAppMin() {
+		return this._compile( './src/js/global/app.js', 'wpr-admin', true, true );
+	}
+
+	watch() {
+		return gulp.watch('./src/js/global/*.js', gulp.series( 'build:js:unmin', 'build:js:min' ));
 	}
 }
 
@@ -24,6 +64,7 @@ js_tasks.forEach( js_task => {
 		const method = js_task['method'];
 		const current_task = gulpJsObject[method]();
 		if ( 'function' !== typeof current_task ) {
+			cb();
 			return;
 		}
 		current_task(cb);
