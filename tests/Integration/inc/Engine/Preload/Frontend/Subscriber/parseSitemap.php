@@ -4,49 +4,56 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Preload\Frontend\Subscriber;
 
 use WP_Error;
 use WP_Rocket\Tests\Integration\ASTrait;
-use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
  * Test class covering \WP_Rocket\Engine\Preload\Frontend\Subscriber::parse_sitemap
- * @group  Preload
+ *
+ * @group Preload
  */
 class Test_ParseSitemap extends TestCase {
-
-	use ASTrait, DBTrait;
+	use ASTrait;
 
 	protected $config;
 
-	public static function set_up_before_class()
-	{
-		parent::set_up_before_class();
-		self::installFresh();
+	public function set_up() {
+		parent::set_up();
+
+		// Install the preload cache table.
+		self::installPreloadCacheTable();
 	}
 
-	public static function tear_down_after_class()
-	{
-		self::uninstallAll();
-		parent::tear_down_after_class();
+	public function tear_down() {
+		// Uninstall the preload cache table.
+		self::uninstallPreloadCacheTable();
+
+		parent::tear_down();
 	}
 
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldReturnAsExpected($config, $expected) {
+	public function testShouldReturnAsExpected( $config, $expected ) {
 
 		$this->config = $config;
 
-		add_filter('pre_http_request', [$this, 'requestResult']);
+		add_filter( 'pre_http_request', [ $this, 'requestResult' ] );
 
-		do_action('rocket_preload_job_parse_sitemap', $config['sitemap_url']);
+		do_action( 'rocket_preload_job_parse_sitemap', $config['sitemap_url'] );
 
-		foreach ($expected['children'] as $child) {
-			$this->assertEquals($expected['children_exists'], self::taskExist('rocket_preload_job_parse_sitemap', [$child]));
+		foreach ( $expected['children'] as $child ) {
+			$this->assertEquals(
+				$expected['children_exists'],
+				self::taskExist( 'rocket_preload_job_parse_sitemap', [ $child ] )
+			);
 		}
 
-		foreach ($expected['links'] as $link) {
-			$exists = $expected['links_exists'] ? "" :"n't";
-			$this->assertEquals($expected['links_exists'], self::cacheFound(['url' => $link]), "Link {$link} should$exists exist");
+		foreach ( $expected['links'] as $link ) {
+			$exists = $expected['links_exists'] ? '' : "n't";
+			$this->assertEquals(
+				$expected['links_exists'],
+				self::cacheFound( [ 'url' => $link ] ), "Link {$link} should$exists exist"
+			);
 		}
 	}
 
@@ -55,7 +62,7 @@ class Test_ParseSitemap extends TestCase {
 			return new WP_Error( 'error', 'error_data' );
 		} else {
 			$message = $this->config['process_generate']['response'];
-			return [ 'body' => $message, 'response' => ['code' => 200 ]];
+			return [ 'body' => $message, 'response' => [ 'code' => 200 ] ];
 		}
 	}
 

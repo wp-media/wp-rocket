@@ -2,33 +2,19 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Cache\PurgeActionsSubscriber;
 
-use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
  * Test class covering \WP_Rocket\Engine\Cache\PurgeActionsSubscriber:purge_post_terms_urls
- * @uses   ::get_rocket_parse_url
  *
- * @group  purge_actions
- * @group  vfs
+ * @uses ::get_rocket_parse_url
+ *
+ * @group PurgeActions
+ * @group vfs
  */
-class Test_GetRocketPostTermsUrls extends FilesystemTestCase {
+class Test_PurgePostTermsUrls extends FilesystemTestCase {
 	private static $user_id      = 0;
 	protected $path_to_test_data = '/inc/Engine/Cache/Purge/purgePostTermsUrls.php';
-
-	use DBTrait;
-
-	public static function set_up_before_class()
-	{
-		parent::set_up_before_class();
-		self::installFresh();
-	}
-
-	public static function tear_down_after_class()
-	{
-		self::uninstallAll();
-		parent::tear_down_after_class();
-	}
 
 	public static function wpSetUpBeforeClass( $factory ) {
 		self::$user_id = $factory->user->create(
@@ -42,8 +28,24 @@ class Test_GetRocketPostTermsUrls extends FilesystemTestCase {
 	public function set_up() {
 		parent::set_up();
 
+		// Install the preload cache table to prevent DB error caused by permalink changed.
+		self::installPreloadCacheTable();
+
+		// Disable ATF optimization to prevent DB request (unrelated to the test).
+		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
+
 		wp_set_current_user( self::$user_id );
 		$this->set_permalink_structure( "/%postname%/" );
+	}
+
+	public function tear_down() {
+		// Uninstall the preload cache table.
+		self::uninstallPreloadCacheTable();
+
+		// Re-enable ATF optimization.
+		remove_filter( 'rocket_above_the_fold_optimization', '__return_false' );
+
+		parent::tear_down();
 	}
 
 	/**

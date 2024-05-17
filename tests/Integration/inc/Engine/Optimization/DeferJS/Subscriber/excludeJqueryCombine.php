@@ -9,7 +9,7 @@ use WP_Rocket\Tests\Integration\TestCase;
 /**
  * Test class covering \WP_Rocket\Engine\Optimization\DeferJS\Subscriber::exclude_jquery_combine
  *
- * @group  DeferJS
+ * @group DeferJS
  */
 class Test_ExcludeJqueryCombine extends TestCase {
 	use ContentTrait, DynamicListsTrait;
@@ -20,11 +20,17 @@ class Test_ExcludeJqueryCombine extends TestCase {
 	public function set_up() {
 		parent::set_up();
 
+		// Disable ATF optimization to prevent DB request (unrelated to the test).
+		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
+
 		set_current_screen( 'front' );
 		$this->setup_lists();
 	}
 
 	public function tear_down() {
+		// Re-enable ATF optimization.
+		remove_filter( 'rocket_above_the_fold_optimization', '__return_false' );
+
 		remove_filter( 'pre_get_rocket_option_defer_all_js', [ $this, 'set_defer_js' ] );
 		remove_filter( 'pre_get_rocket_option_minify_concatenate_js', [ $this, 'set_minify_concatenate_js' ] );
 		delete_post_meta( 100, '_rocket_exclude_defer_all_js' );

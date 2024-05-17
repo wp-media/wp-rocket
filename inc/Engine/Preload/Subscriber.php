@@ -296,6 +296,10 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return void
 	 */
 	public function clean_full_cache() {
+		if ( ! $this->options->get( 'manual_preload', 0 ) ) {
+			return;
+		}
+
 		set_transient( 'wpr_preload_running', true );
 		$this->queue->add_job_preload_job_check_finished_async();
 		$this->clear_cache->full_clean();
