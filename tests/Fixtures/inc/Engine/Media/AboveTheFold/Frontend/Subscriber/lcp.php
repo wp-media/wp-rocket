@@ -190,6 +190,21 @@ return [
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_image.php'),
 		],
+		'shouldNotApplyFetchPriorityToImageWithFetchpriority' => [
+			'config' => [
+				'html' => file_get_contents(__DIR__ . '/HTML/input_lcp_with_fetchpriority.html'),
+				'row' => [
+					'status' => 'completed',
+					'url' => 'http://example.org',
+					'lcp'      => json_encode( (object) [
+						'type' => 'img',
+						'src'  => 'http://example.org/wp-content/uploads/sample_relative_image.jpg',
+					] ),
+					'viewport' => json_encode ( [] ),
+				],
+			],
+			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_with_fetchpriority.html'),
+		],
 	],
 	'shouldPreloadPictureTag' => [
 		'config' => [
