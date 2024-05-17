@@ -38,8 +38,6 @@ abstract class TestCase extends BaseTestCase {
 	}
 
 	public static function tear_down_after_class() {
-		parent::tear_down_after_class();
-
 		self::resetAdminCap();
 
 		if ( static::$use_settings_trait ) {
@@ -53,6 +51,8 @@ abstract class TestCase extends BaseTestCase {
 				delete_transient( $transient );
 			}
 		}
+
+		parent::tear_down_after_class();
 	}
 
 	public function set_up() {
