@@ -10,9 +10,9 @@ abstract class TestCase extends FilesystemTestCase {
 	protected        $zones;
 
 	public function set_up() {
-		parent::set_up();
-
 		$this->default_vfs_structure = '/vfs-structure/optimizeMinify.php';
+
+		parent::set_up();
 	}
 
 	protected function setSettings() {

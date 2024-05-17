@@ -16,7 +16,7 @@ class Test_SchedulePendingJobs extends TestCase {
 	public function set_up() {
 		parent::set_up();
 
-		$this->unregisterAllCallbacksExcept( 'init', 'schedule_on_submit_jobs' );
+		$this->unregisterAllCallbacksExcept( 'init', 'schedule_pending_jobs' );
 	}
 
 	public function tear_down() {

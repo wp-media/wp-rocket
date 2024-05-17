@@ -16,16 +16,18 @@ class Test_TruncateAtfAdmin extends TestCase {
 	protected $path_to_test_data = '/inc/Engine/Media/AboveTheFold/Admin/Controller/truncateAtfAdmin.php';
 
 	protected $config;
-	public function set_up() {
-		parent::set_up();
 
-		parent::installAtfTable();
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
+
+		// Install in set_up_before_class because of exists() requiring not temporary table.
+		self::installAtfTable();
 	}
 
-	public function tear_down() {
-		parent::uninstallAtfTable();
+	public static function tear_down_after_class() {
+		self::installAtfTable();
 
-		parent::tear_down();
+		parent::tear_down_after_class();
 	}
 
 	/**

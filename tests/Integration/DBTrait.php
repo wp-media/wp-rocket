@@ -3,7 +3,7 @@
 namespace WP_Rocket\Tests\Integration;
 
 trait DBTrait {
-	public static function resourceFound( array $resource ) : bool {
+	public static function resourceFound( array $resource ): bool {
 		$container = apply_filters( 'rocket_container', null );
 		$resource_query = $container->get( 'rucss_used_css_query' );
 		return count($resource_query->query( $resource )) > 0;
@@ -140,10 +140,13 @@ trait DBTrait {
 		$preload_table       = $container->get( 'preload_caches_table' );
 		$atf_table           = $container->get( 'atf_table' );
 
+		self::forceRemoveTableAdminInitHooks( 'init', get_class( $rucss_usedcss_table ), 'maybe_upgrade', 10 );
 		self::forceRemoveTableAdminInitHooks( 'admin_init', get_class( $rucss_usedcss_table ), 'maybe_upgrade', 10 );
 		self::forceRemoveTableAdminInitHooks( 'switch_blog', get_class( $rucss_usedcss_table ), 'switch_blog', 10 );
+		self::forceRemoveTableAdminInitHooks( 'init', get_class( $preload_table ), 'maybe_upgrade', 10 );
 		self::forceRemoveTableAdminInitHooks( 'admin_init', get_class( $preload_table ), 'maybe_upgrade', 10 );
 		self::forceRemoveTableAdminInitHooks( 'switch_blog', get_class( $preload_table ), 'switch_blog', 10 );
+		self::forceRemoveTableAdminInitHooks( 'init', get_class( $atf_table ), 'maybe_upgrade', 10 );
 		self::forceRemoveTableAdminInitHooks( 'admin_init', get_class( $atf_table ), 'maybe_upgrade', 10 );
 		self::forceRemoveTableAdminInitHooks( 'switch_blog', get_class( $atf_table ), 'switch_blog', 10 );
 	}

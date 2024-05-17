@@ -11,16 +11,17 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group RUCSS
  */
 class Test_CleanUsedCssAndCache extends TestCase {
-	public function set_up() {
-		parent::set_up();
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
 
+		// Install in set_up_before_class because of exists() requiring not temporary table.
 		self::installUsedCssTable();
 	}
 
-	public function tear_down() {
+	public static function tear_down_after_class() {
 		self::uninstallUsedCssTable();
 
-		parent::tear_down();
+		parent::tear_down_after_class();
 	}
 
 	/**

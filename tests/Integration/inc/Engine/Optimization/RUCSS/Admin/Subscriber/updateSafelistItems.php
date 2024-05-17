@@ -28,13 +28,13 @@ class Test_UpdateSafelistItems extends TestCase {
 	}
 
 	public function tear_down() {
-		parent::tear_down();
-
 		// Delete the table after the test run.
 		self::uninstallUsedCssTable();
 
 		$this->tearDownSettings();
 		$this->restoreWpHook( 'wp_rocket_upgrade' );
+
+		parent::tear_down();
 	}
 
 	/**

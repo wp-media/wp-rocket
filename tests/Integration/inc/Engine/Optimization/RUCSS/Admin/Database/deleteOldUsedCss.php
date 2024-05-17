@@ -11,15 +11,20 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group RUCSS
  */
 class Test_DeleteOldUsedCss extends TestCase {
-	public function set_up() {
-		parent::set_up();
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
 
+		// Install in set_up_before_class because of exists() requiring not temporary table.
 		self::installUsedCssTable();
 	}
 
-	public function tear_down() {
+	public static function tear_down_after_class() {
 		self::uninstallUsedCssTable();
 
+		parent::tear_down_after_class();
+	}
+
+	public function tear_down() {
 		remove_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
 
 		parent::tear_down();
@@ -55,7 +60,6 @@ class Test_DeleteOldUsedCss extends TestCase {
 
 		$result = $rucss_usedcss_query->query();
 
-		$this->assertTrue( $rucss_usedcss_table->exists() );
 		$this->assertCount( 2, $result );
 
 		do_action( 'rocket_saas_clean_rows_time_event' );

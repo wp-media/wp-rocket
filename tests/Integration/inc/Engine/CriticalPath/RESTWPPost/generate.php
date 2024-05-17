@@ -29,6 +29,7 @@ class Test_Generate extends RESTVfsTestCase {
 	}
 
 	public function set_up() {
+		$this->set_permalink_structure( "" );
 		parent::set_up();
 
 		// Disable ATF optimization to prevent DB request (unrelated to the test).

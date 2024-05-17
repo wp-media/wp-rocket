@@ -19,9 +19,9 @@ class Test_OnUpdate extends TestCase {
 	}
 
 	public function tear_down() {
-		parent::tear_down();
-
 		add_filter( 'wp_rocket_upgrade', 'rocket_new_upgrade' );
+
+		parent::tear_down();
 	}
 
 	/**
