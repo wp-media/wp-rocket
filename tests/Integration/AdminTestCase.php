@@ -21,6 +21,7 @@ abstract class AdminTestCase extends BaseTestCase {
 		parent::set_up();
 
 		$this->stubRocketGetConstant();
+		add_action( 'clear_auth_cookie', [ $this, 'clear_cookies_and_user' ] );
 
 		// Suppress warnings from "Cannot modify header information - headers already sent by".
 		$this->error_level = error_reporting();
@@ -33,6 +34,8 @@ abstract class AdminTestCase extends BaseTestCase {
 		unset( $GLOBALS['post'], $GLOBALS['comment'] );
 
 		$this->resetStubProperties();
+
+		remove_action( 'clear_auth_cookie', [ $this, 'clear_cookies_and_user' ] );
 
 		error_reporting( $this->error_level );
 		set_current_screen( 'front' );
@@ -80,5 +83,13 @@ abstract class AdminTestCase extends BaseTestCase {
 
 	protected function setEditTagsAsCurrentScreen( $tax = 'category' ) {
 		set_current_screen( "edit-tags.php?taxonomy={$tax}" );
+	}
+
+	public function clear_cookies_and_user() {
+		unset( $GLOBALS['current_user'] );
+
+		foreach ( [ AUTH_COOKIE, SECURE_AUTH_COOKIE, LOGGED_IN_COOKIE, USER_COOKIE, PASS_COOKIE ] as $cookie ) {
+			unset( $_COOKIE[ $cookie ] );
+		}
 	}
 }
