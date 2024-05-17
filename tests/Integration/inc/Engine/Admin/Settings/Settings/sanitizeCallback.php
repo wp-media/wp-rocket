@@ -12,6 +12,11 @@ use WP_Rocket\Tests\Integration\AdminTestCase;
  * @group  Settings
  */
 class Test_SanitizeCallback extends AdminTestCase {
+	public function set_up() {
+		parent::set_up();
+
+		set_current_screen( 'settings_page_wprocket' );
+	}
 	/**
 	 * @dataProvider addDNSPrefetchProvider
 	 */
