@@ -12,17 +12,13 @@ use WP_Rocket\Tests\Integration\AdminTestCase;
  * @group  Settings
  */
 class Test_SanitizeCallback extends AdminTestCase {
-	public function set_up() {
-		parent::set_up();
-
-		self::removeDBHooks();
-		$this->fireAdminInit();
-	}
-
 	/**
 	 * @dataProvider addDNSPrefetchProvider
 	 */
 	public function testShouldSanitizeDNSPrefetchEntries( $input, $expected ) {
+		self::removeDBHooks();
+		$this->fireAdminInit();
+
 		$output = apply_filters( 'sanitize_option_wp_rocket_settings', $input );
 
 		$this->assertArrayHasKey( 'dns_prefetch', $output );
@@ -36,6 +32,9 @@ class Test_SanitizeCallback extends AdminTestCase {
 	 * @dataProvider addFontPreloadProvider
 	 */
 	public function testShouldSanitizeFontPreloadEntries( $input, $expected ) {
+		self::removeDBHooks();
+		$this->fireAdminInit();
+
 		$output = apply_filters( 'sanitize_option_wp_rocket_settings', $input );
 
 		$this->assertArrayHasKey( 'preload_fonts', $output );
@@ -49,6 +48,9 @@ class Test_SanitizeCallback extends AdminTestCase {
 	 * @dataProvider addCriticalCSSProvider
 	 */
 	public function testShouldSanitizeCriticalCss( $original, $sanitized ) {
+		self::removeDBHooks();
+		$this->fireAdminInit();
+
 		$actual = apply_filters( 'sanitize_option_wp_rocket_settings', $original );
 		$this->assertSame(
 			$sanitized['critical_css'],
@@ -60,6 +62,9 @@ class Test_SanitizeCallback extends AdminTestCase {
 	 * @dataProvider addExcludeCSSProvider
 	 */
 	public function testShouldSanitizeExcludeCSS( $original, $sanitized ) {
+		self::removeDBHooks();
+		$this->fireAdminInit();
+
 		$actual = apply_filters( 'sanitize_option_wp_rocket_settings', $original );
 		$this->assertSame(
 			array_values( $sanitized['exclude_css'] ),
