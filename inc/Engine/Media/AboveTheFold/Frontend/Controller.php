@@ -154,14 +154,14 @@ class Controller {
 			'/'
 				);
 
-			$pattern = '#<img(?:[^>]*?\s+)?src=["\'](?:https?:)?(?:\/\/(?:[^\/]+)\/?)?\/?' . $url . '["\'](?:\s+[^>]*?)?>#';
+			$pattern = '#<img(?:[^>]*?\s+)?src\s*=\s*["\'](?:https?:)?(?:\/\/(?:[^\/]+)\/?)?\/?' . $url . '["\'](?:\s+[^>]*?)?>#i';
 		}
 
 		$html = preg_replace_callback(
 			$pattern,
 			function ( $matches ) {
 				// Check if the fetchpriority attribute already exists.
-				if ( preg_match( '/fetchpriority\s*=\s*[\'"]([^\'"]+)[\'"]/i', $matches[0] ) ) {
+				if ( preg_match( '/<img[^>]*\sfetchpriority\s*=\s*["\'][^"\']*["\'][^>]*>/i', $matches[0] ) ) {
 					// If it exists, don't modify the tag.
 					return $matches[0];
 				}
