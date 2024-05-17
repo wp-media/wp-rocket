@@ -20,7 +20,7 @@ class Test_RocketCleanCacheThemeUpdate extends FilesystemTestCase {
 	public function set_up() {
 		parent::set_up();
 
-		$this->unregisterAllCallbacksExcept( 'upgrader_process_complete', 'rocket_clean_cache_theme_update');
+		$this->unregisterAllCallbacksExcept( 'upgrader_process_complete', 'rocket_clean_cache_theme_update' );
 	}
 
 	public function tear_down() {
