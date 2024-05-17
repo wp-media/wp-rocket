@@ -15,11 +15,17 @@ use WP_Rocket\Tests\Integration\DBTrait;
 class Test_SanitizeCallback extends AdminTestCase {
 	use DBTrait;
 
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
+
+		self::uninstallAll();
+	}
+
 	public function set_up() {
 		parent::set_up();
 
 		self::removeDBHooks();
-		$this->fireAdminInit();
+		do_action( 'admin_init' );
 	}
 
 	/**
