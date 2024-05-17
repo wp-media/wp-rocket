@@ -1,7 +1,7 @@
 includes:
     - phar://phpstan.phar/conf/bleedingEdge.neon
 parameters:
-    level: 0
+    level: 1
     checkMissingIterableValueType: false
     inferPrivatePropertyTypeFromConstructor: true
     paths:
