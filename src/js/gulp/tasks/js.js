@@ -49,8 +49,18 @@ class gulpJs {
 		return this._compile( './src/js/global/app.js', 'wpr-admin', true, true );
 	}
 
+	buildLazyloadCssMin() {
+		return this._compile( './src/js/custom/lazyload-css.js', 'lazyload-css', true, true );
+	}
+
+	buildLcpBeaconMin() {
+		return this._compile( './assets/js/lcp-beacon.js', 'lcp-beacon', true, true );
+	}
+
 	watch() {
-		return gulp.watch('./src/js/global/*.js', gulp.series( 'build:js:unmin', 'build:js:min' ));
+		gulp.watch('./src/js/global/*.js', gulp.series( 'build:js:app:unmin', 'build:js:app:min' ));
+		gulp.watch( './src/js/custom/lazyload-css.js', gulp.series( 'build:js:lazyloadcss:min' ) );
+		gulp.watch( './assets/js/lcp-beacon.js', gulp.series( 'build:js:lcp:min' ) );
 	}
 }
 
