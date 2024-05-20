@@ -4,20 +4,22 @@ namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Themes\Divi;
 use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\CapTrait;
 use WP_Rocket\Tests\Integration\WPThemeTestcase;
+use WP_Rocket\ThirdParty\Themes\Divi;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Themes\Divi::handle_save_template
+ * Test class covering \WP_Rocket\ThirdParty\Themes\Divi::handle_divi_admin_notice
  *
- * @group  ThirdParty
- * @group  Divi
- * @group  AdminOnly
+ * @group Themes
+ * @group AdminOnly
  */
 class Test_HandleDiviAdminNotice extends WPThemeTestcase {
 	use CapTrait;
 
-	protected $path_to_test_data = '/inc/ThirdParty/Themes/Divi/handleDiviAdminNotice.php';
+	private $container;
+	private $event;
+	private $subscriber;
 
-	private static $container;
+	protected $path_to_test_data = '/inc/ThirdParty/Themes/Divi/handleDiviAdminNotice.php';
 
 	private static $user_without_permission;
 	private static $user_with_permission;
@@ -30,33 +32,28 @@ class Test_HandleDiviAdminNotice extends WPThemeTestcase {
 		self::setAdminCap();
 		self::$user_with_permission    = static::factory()->user->create( [ 'role' => 'administrator' ] );
 		self::$user_without_permission = static::factory()->user->create( [ 'role' => 'editor' ] );
-
-		self::$container = apply_filters( 'rocket_container', '' );
 	}
 
 	public static function tear_down_after_class() {
-		parent::tear_down_after_class();
-
 		self::resetAdminCap();
 
-		self::$container->get( 'event_manager' )->remove_subscriber( self::$container->get( 'divi' ) );
-
+		parent::tear_down_after_class();
 	}
 
 	public function set_up() {
 		parent::set_up();
 
-		$this->go_to( admin_url( 'options-general.php' ) );
-
 		add_filter( 'pre_option_stylesheet', [ $this, 'set_stylesheet' ] );
-
-		self::$container->get( 'event_manager' )->add_subscriber( self::$container->get( 'divi' ) );
-		$this->unregisterAllCallbacksExcept( 'admin_notices', 'handle_divi_admin_notice' );
+		$this->container = apply_filters( 'rocket_container', '' );
+		$this->event = $this->container->get( 'event_manager' );
 	}
 
-	public function tear_down() : void {
-		remove_filter( 'pre_option_stylesheet', [ $this, 'set_stylesheet' ] );
+	public function tear_down() {
 		$this->restoreWpHook( 'admin_notices' );
+
+		$this->event->remove_subscriber( $this->subscriber );
+
+		remove_filter( 'pre_option_stylesheet', [ $this, 'set_stylesheet' ] );
 
 		parent::tear_down();
 	}
@@ -69,7 +66,20 @@ class Test_HandleDiviAdminNotice extends WPThemeTestcase {
 	 * @dataProvider ProviderTestData
 	 */
 	public function testAdminNotice( $config, $expected ) {
+		$options     = $this->container->get( 'options' );
+		$options_api = $this->container->get( 'options_api' );
+		$delayjs_html = $this->container->get( 'delay_js_html' );
+		$used_css = $this->container->get( 'rucss_used_css_controller' );
+		$options_api->set( 'settings', [] );
+		$this->subscriber = new Divi( $options_api, $options, $delayjs_html, $used_css );
+
+		$this->event->add_subscriber( $this->subscriber );
+
+		$this->unregisterAllCallbacksExcept( 'admin_notices', 'handle_divi_admin_notice' );
+
 		$this->set_theme( 'divi', 'Divi' );
+
+		$this->go_to( admin_url( 'options-general.php' ) );
 
 		if ( isset( $config['rucss_option'] ) ) {
 			add_filter( 'pre_get_rocket_option_remove_unused_css', $config['rucss_option'] ? '__return_true' : '__return_false' );
@@ -110,5 +120,4 @@ class Test_HandleDiviAdminNotice extends WPThemeTestcase {
 
 		return $this->format_the_html( ob_get_clean() );
 	}
-
 }

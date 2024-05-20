@@ -5,7 +5,9 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\RUCSS\Frontend\Sub
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Frontend\Subscriber::on_update
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Frontend\Subscriber::on_update
+ * 
+ * @group RUCSS
  */
 class Test_onUpdate extends TestCase {
 

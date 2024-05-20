@@ -12,8 +12,7 @@ use WP_Rocket\ThirdParty\Themes\Divi;
 use WP_Theme;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Themes\Divi::disable_image_dimensions_height_percentage
- * @uses   \WP_Rocket\ThirdParty\Themes\Divi::is_divi
+ * Test class covering \WP_Rocket\ThirdParty\Themes\Divi::disable_image_dimensions_height_percentage
  *
  * @group  ThirdParty
  */

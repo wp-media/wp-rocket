@@ -5,13 +5,14 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\Admin\Subscriber;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\Admin\Subscriber::cpcss_section
- * @uses   ::rocket_direct_filesystem
- * @uses   ::is_rocket_post_excluded_option
+ * Test class covering \WP_Rocket\Engine\CriticalPath\Admin\Subscriber::cpcss_section
  *
- * @group  AdminOnly
- * @group  CriticalPath
- * @group  CriticalPathAdminSubscriber
+ * @uses ::rocket_direct_filesystem
+ * @uses ::is_rocket_post_excluded_option
+ *
+ * @group AdminOnly
+ * @group CriticalPath
+ * @group CriticalPathAdminSubscriber
  */
 class Test_CpcssSection extends TestCase {
 	use ProviderTrait;
@@ -32,10 +33,8 @@ class Test_CpcssSection extends TestCase {
 	public function set_up() {
 		parent::set_up();
 
-		$this->set_permalink_structure( '/%postname%/' );
 		add_filter( 'pre_get_rocket_option_async_css', [ $this, 'setCPCSSOption' ] );
 		add_filter( 'pre_get_rocket_option_async_css_mobile', [ $this, 'setCPCSSMobileOption' ] );
-
 
 		set_current_screen( 'edit-post' );
 	}
@@ -43,11 +42,11 @@ class Test_CpcssSection extends TestCase {
 	public function tear_down() {
 		unset( $GLOBALS['post'] );
 
-		parent::tear_down();
-
 		remove_filter( 'pre_get_rocket_option_async_css', [ $this, 'setCPCSSOption' ] );
 		remove_filter( 'pre_get_rocket_option_async_css_mobile', [ $this, 'setCPCSSMobileOption' ] );
 		delete_post_meta( $this->post_id, '_rocket_exclude_async_css' );
+
+		parent::tear_down();
 	}
 
 	/**
@@ -65,16 +64,9 @@ class Test_CpcssSection extends TestCase {
 			add_post_meta( $this->post_id, '_rocket_exclude_async_css', $config['is_option_excluded'], true );
 		}
 
-		ob_start();
-		do_action( 'rocket_after_options_metabox' );
-		$actual = ob_get_clean();
-		if ( ! empty( $actual ) ) {
-			$actual = $this->format_the_html( $actual );
-		}
-
 		$this->assertSame(
 			$this->format_the_html( $expected['html'] ),
-			$actual
+			$this->get_actual_html()
 		);
 	}
 
@@ -84,5 +76,12 @@ class Test_CpcssSection extends TestCase {
 
 	public function setCPCSSOption() {
 		return $this->async_css;
+	}
+
+	private function get_actual_html() {
+		ob_start();
+		do_action( 'rocket_after_options_metabox' );
+
+		return $this->format_the_html( ob_get_clean() );
 	}
 }

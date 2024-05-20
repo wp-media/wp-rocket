@@ -3,28 +3,18 @@
 namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Themes\Uncode;
 
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
+use WP_Rocket\ThirdParty\Themes\Uncode;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Uncode::exclude_delay_js
+ * Test class covering \WP_Rocket\ThirdParty\Themes\Uncode::exclude_delay_js
  *
- * @group  Uncode
- * @group  ThirdParty
+ * @group Uncode
+ * @group Themes
  */
 class Test_ExcludeDelayJs extends FilesystemTestCase {
-	private static $container;
-	protected      $path_to_test_data = '/inc/ThirdParty/Themes/Uncode/excludeDelayJs.php';
-
-	public static function set_up_before_class() {
-		parent::set_up_before_class();
-
-		self::$container = apply_filters( 'rocket_container', '' );
-	}
-
-	public static function tear_down_after_class() {
-		parent::tear_down_after_class();
-
-		self::$container->get( 'event_manager' )->remove_subscriber( self::$container->get( 'uncode' ) );
-	}
+	private $event;
+	private $subscriber;
+	protected $path_to_test_data = '/inc/ThirdParty/Themes/Uncode/excludeDelayJs.php';
 
 	public function set_up() {
 		parent::set_up();
@@ -33,7 +23,8 @@ class Test_ExcludeDelayJs extends FilesystemTestCase {
 		add_filter( 'pre_option_stylesheet_root', [ $this, 'set_stylesheet_root' ] );
 		add_filter( 'template_directory_uri', [ $this, 'set_template_uri' ] );
 
-		self::$container->get( 'event_manager' )->add_subscriber( self::$container->get( 'uncode' ) );
+		$container = apply_filters( 'rocket_container', '' );
+		$this->event = $container->get( 'event_manager' );
 	}
 
 	public function tear_down() {
@@ -43,6 +34,9 @@ class Test_ExcludeDelayJs extends FilesystemTestCase {
 		remove_filter( 'template_directory_uri', [ $this, 'set_template_uri' ] );
 		remove_filter( 'pre_option_stylesheet', [ $this, 'set_stylesheet' ] );
 		remove_filter( 'pre_option_stylesheet_root', [ $this, 'set_stylesheet_root' ] );
+
+		$this->event->remove_subscriber( $this->subscriber );
+
 		parent::tear_down();
 	}
 
@@ -66,6 +60,10 @@ class Test_ExcludeDelayJs extends FilesystemTestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
+		$this->subscriber = new Uncode();
+
+		$this->event->add_subscriber( $this->subscriber );
+
 		$this->assertSame(
 			$expected,
 			apply_filters( 'rocket_delay_js_exclusions', $config['exclusions'] )

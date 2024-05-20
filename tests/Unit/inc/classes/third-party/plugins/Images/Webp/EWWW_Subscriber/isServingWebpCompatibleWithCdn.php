@@ -9,7 +9,7 @@ use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber;
 use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber::is_serving_webp_compatible_with_cdn
+ * Test class covering \WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber::is_serving_webp_compatible_with_cdn
  * @group  ThirdParty
  */
 class Test_IsServingWebpCompatibleWithCdn extends TestCase {

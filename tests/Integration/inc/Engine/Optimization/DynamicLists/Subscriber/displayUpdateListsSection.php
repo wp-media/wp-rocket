@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\DynamicLists\Subsc
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\DynamicLists\Subscriber::display_update_lists_section
+ * Test class covering \WP_Rocket\Engine\Optimization\DynamicLists\Subscriber::display_update_lists_section
  *
  * @group  DynamicLists
  * @group  AdminOnly

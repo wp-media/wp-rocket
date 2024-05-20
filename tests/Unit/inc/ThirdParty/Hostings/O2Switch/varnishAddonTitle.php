@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Hostings\O2Switch;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\O2Switch::varnish_addon_title
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\O2Switch::varnish_addon_title
  *
  * @group  O2Switch
  * @group  ThirdParty

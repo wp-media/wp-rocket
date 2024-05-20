@@ -28,7 +28,6 @@ return [
 				'safelist' => [],
 				'skipped_attr' => [],
 				'config' => [
-					'treeshake' => 1,
 					'rucss_safelist' => [],
 					'skip_attr' => [],
 					'is_mobile' => false,

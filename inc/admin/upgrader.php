@@ -10,7 +10,7 @@ defined( 'ABSPATH' ) || exit;
  */
 function rocket_upgrader() {
 	// Grab some infos.
-	$actual_version = (string) get_rocket_option( 'version' );
+	$actual_version = (string) get_rocket_option( 'version', '' );
 	// You can hook the upgrader to trigger any action when WP Rocket is upgraded.
 	// first install.
 	if ( ! $actual_version ) {
@@ -25,8 +25,10 @@ function rocket_upgrader() {
 	if ( did_action( 'wp_rocket_first_install' ) || did_action( 'wp_rocket_upgrade' ) ) {
 		flush_rocket_htaccess();
 
-		$options            = get_option( WP_ROCKET_SLUG ); // do not use get_rocket_option() here.
-		$options['version'] = WP_ROCKET_VERSION;
+		$options = get_option( WP_ROCKET_SLUG ); // do not use get_rocket_option() here.
+
+		$options['version']          = WP_ROCKET_VERSION;
+		$options['previous_version'] = $actual_version;
 
 		$keys = rocket_check_key();
 		if ( is_array( $keys ) ) {
@@ -81,7 +83,7 @@ function rocket_first_install() {
 			[
 				'secret_cache_key'            => $secret_cache_key,
 				'cache_mobile'                => 1,
-				'do_caching_mobile_files'     => 0,
+				'do_caching_mobile_files'     => 1,
 				'cache_webp'                  => 0,
 				'cache_logged_user'           => 0,
 				'cache_ssl'                   => 1,

@@ -10,7 +10,7 @@ use WP_Rocket\ThirdParty\Plugins\SEO\TheSEOFramework;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\SEO\TheSEOFramework::add_tsf_sitemap_to_preload
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\SEO\TheSEOFramework::add_tsf_sitemap_to_preload
  *
  * @group  TheSEOFramework
  * @group  ThirdParty

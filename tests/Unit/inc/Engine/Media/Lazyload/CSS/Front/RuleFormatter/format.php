@@ -8,7 +8,7 @@ use WP_Rocket\Engine\Media\Lazyload\CSS\Front\RuleFormatter;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Media\Lazyload\CSS\Front\RuleFormatter::format
+ * Test class covering \WP_Rocket\Engine\Media\Lazyload\CSS\Front\RuleFormatter::format
  */
 class Test_format extends TestCase {
 

@@ -5,16 +5,39 @@ use WP_Rocket\Tests\Integration\TestCase;
 use WP_Rocket\ThirdParty\Themes\Xstore;
 
 /**
- * @covers  \WP_Rocket\ThirdParty\Themes\Xstore::exclude_inline_content
+ * Test class covering \WP_Rocket\ThirdParty\Themes\Xstore::exclude_inline_content
+ *
+ * @group Themes
  */
 class Test_ExcludeInlineContent extends TestCase {
+	private $event;
+	private $subscriber;
+
+	public function set_up() {
+		parent::set_up();
+
+		$container = apply_filters( 'rocket_container', '' );
+
+		$this->event = $container->get( 'event_manager' );
+	}
+
+	public function tear_down() {
+		$this->event->remove_subscriber( $this->subscriber );
+
+		parent::tear_down();
+	}
 
 	/**
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
-        $xstore = new Xstore();
-		$this->assertSame( $expected, $xstore->exclude_inline_content($config['excluded'] ) );
-	}
+		$this->subscriber = new Xstore();
 
+		$this->event->add_subscriber( $this->subscriber );
+
+		$this->assertSame(
+			$expected,
+			apply_filters( 'rocket_rucss_inline_content_exclusions', $config['excluded'] )
+		);
+	}
 }

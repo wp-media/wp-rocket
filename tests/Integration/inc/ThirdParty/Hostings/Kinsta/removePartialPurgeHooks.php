@@ -8,7 +8,7 @@ use WP_Rocket\Tests\Fixtures\Kinsta\Kinsta_Cache;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\Kinsta::remove_partial_purge_hooks
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\Kinsta::remove_partial_purge_hooks
  *
  * @group  Kinsta
  * @group  ThirdParty
