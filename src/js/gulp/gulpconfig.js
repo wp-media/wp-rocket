@@ -10,6 +10,10 @@ module.exports = {
 				method: 'compileAdminFullSaasMin',
 			},
 			{
+				task: 'build:sass:all',
+				method: 'buildAll',
+			},
+			{
 				task: 'sass:watch',
 				method: 'watch',
 			},
@@ -32,6 +36,11 @@ module.exports = {
 			{
 				task: 'build:js:lcp:min',
 				method: 'buildLcpBeaconMin',
+			},
+
+			{
+				task: 'build:js:all',
+				method: 'buildAll',
 			},
 
 			{

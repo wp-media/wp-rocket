@@ -49,6 +49,13 @@ class gulpCss {
 		);
 	}
 
+	buildAll() {
+		return gulp.series(
+			() => this.compileAdminFullSaasUnmin(),
+			() => this.compileAdminFullSaasMin()
+		);
+	}
+
 	watch() {
 		return gulp.watch('./src/scss/**/*.scss', gulp.series( 'build:saas:unmin', 'build:saas:min' ));
 	}

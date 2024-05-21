@@ -57,6 +57,15 @@ class gulpJs {
 		return this._compile( './assets/js/lcp-beacon.js', 'lcp-beacon', true, true );
 	}
 
+	buildAll() {
+		return gulp.series(
+			() => this.buildAppUnmin(),
+			() => this.buildAppMin(),
+			() => this.buildLazyloadCssMin(),
+			() => this.buildLcpBeaconMin()
+		);
+	}
+
 	watch() {
 		gulp.watch('./src/js/global/*.js', gulp.series( 'build:js:app:unmin', 'build:js:app:min' ));
 		gulp.watch( './src/js/custom/lazyload-css.js', gulp.series( 'build:js:lazyloadcss:min' ) );
