@@ -146,6 +146,7 @@ class Controller {
 			return $html;
 		}
 
+		$html    = $this->replace_html_comments( $html );
 		$url     = preg_quote( $lcp->src, '/' );
 		$pattern = '#<img(?:[^>]*?\s+)?src=["\']' . $url . '["\'](?:\s+[^>]*?)?>#';
 		if ( wp_http_validate_url( $lcp->src ) && ! $this->is_external_file( $lcp->src ) ) {
@@ -173,7 +174,7 @@ class Controller {
 			1
 		);
 
-		return $html;
+		return $this->restore_html_comments( $html );
 	}
 
 	/**
