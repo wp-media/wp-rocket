@@ -7,8 +7,8 @@ class RocketLcpBeacon {
 		this.infiniteLoopId    = null;
 	}
 
-	init() {
-		if ( ! this._isValidPreconditions() ) {
+	async init() {
+		if ( ! await this._isValidPreconditions() ) {
 			this._finalize();
 			return;
 		}
@@ -32,14 +32,14 @@ class RocketLcpBeacon {
 		this._saveFinalResultIntoDB();
 	}
 
-	_isValidPreconditions() {
+	async _isValidPreconditions() {
 		// Check the screensize first because starting any logic.
 		if ( this._isNotValidScreensize() ) {
 			this._logMessage('Bailing out because screen size is not acceptable');
 			return false;
 		}
 
-		if ( this._isPageCached() && this._isGeneratedBefore() ) {
+		if ( this._isPageCached() && await this._isGeneratedBefore() ) {
 			this._logMessage('Bailing out because data is already available');
 			return false;
 		}
