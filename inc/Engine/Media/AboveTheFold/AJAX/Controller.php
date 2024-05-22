@@ -50,7 +50,7 @@ class Controller {
 
 		$url       = isset( $_POST['url'] ) ? untrailingslashit( esc_url_raw( wp_unslash( $_POST['url'] ) ) ) : '';
 		$is_mobile = isset( $_POST['is_mobile'] ) ? filter_var( wp_unslash( $_POST['is_mobile'] ), FILTER_VALIDATE_BOOLEAN ) : false;
-		$images    = isset( $_POST['images'] ) ? json_decode( sanitize_text_field( wp_unslash( $_POST['images'] ) ) ) : [];
+		$images    = isset( $_POST['images'] ) ? json_decode( wp_unslash( $_POST['images'] ) ) : [];
 		$lcp       = 'not found';
 		$viewport  = [];
 
@@ -152,16 +152,15 @@ class Controller {
 	private function create_object( $image, $keys ) {
 		$object       = new \stdClass();
 		$object->type = $image->type ?? 'img';
-
 		switch ( $object->type ) {
 			case 'img-srcset':
 				// If the type is 'img-srcset', add all the required parameters to the object.
-				$object->src    = $this->is_relative( $image->src ) ? sanitize_text_field( $image->src ) : esc_url_raw( $image->src );
+				$object->src    = $this->sanitize_image_url( $image->src );
 				$object->srcset = $image->srcset;
 				$object->sizes  = $image->sizes;
 				break;
 			case 'picture':
-				$object->src     = $this->is_relative( $image->src ) ? sanitize_text_field( $image->src ) : esc_url_raw( $image->src );
+				$object->src     = $this->sanitize_image_url( $image->src );
 				$object->sources = $image->sources;
 				break;
 			default:
@@ -181,6 +180,16 @@ class Controller {
 		}
 
 		return $object;
+	}
+
+	private function sanitize_image_url( string $url ) {
+		$sanitize_url = esc_url_raw( $url );
+		if ( $this->is_relative( $url ) &&  strpos( $url, '/' ) !== 0 ) {
+			$sanitize_url = esc_url_raw( '/' .  $url );
+			$sanitize_url = substr( $sanitize_url, 1 );
+		}
+
+		return $sanitize_url;
 	}
 
 	/**
