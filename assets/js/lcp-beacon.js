@@ -48,7 +48,7 @@ class RocketLcpBeacon {
 	}
 
 	_isPageCached() {
-		const signature = document.documentElement.nextSibling.data ? document.documentElement.nextSibling.data : '';
+		const signature = document.documentElement.nextSibling && document.documentElement.nextSibling.data ? document.documentElement.nextSibling.data : '';
 
 		return signature && signature.includes( 'Debug: cached' );
 	}
