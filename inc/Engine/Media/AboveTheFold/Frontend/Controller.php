@@ -473,6 +473,7 @@ class Controller {
 			'div',
 			'li',
 			'svg',
+			'section',
 		];
 
 		$default_elements = $elements;
