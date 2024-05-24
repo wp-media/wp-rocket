@@ -195,7 +195,9 @@ class RocketLcpBeacon {
 			element_info.src = img ? img.src : "";
 			element_info.sources = Array.from(element.querySelectorAll('source')).map(source => ({
 				srcset: source.srcset || '',
-				media: source.media || ''
+				media: source.media || '',
+				type: source.type || '',
+				sizes: source.sizes || ''
 			}));
 		} else {
 			const computed_style = window.getComputedStyle(element, null);
