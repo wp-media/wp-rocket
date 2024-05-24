@@ -45,7 +45,7 @@ class Test_AddLcpData extends TestCase {
 	public function testShouldReturnExpected( $config, $expected ) {
 		$this->stubEscapeFunctions();
 		$this->stubTranslationFunctions();
-
+		$images_valid_sources = $expected['images_valid_sources'];
 
 		$_POST = [
 			'url'       => addslashes( $config['url'] ),
@@ -72,16 +72,17 @@ class Test_AddLcpData extends TestCase {
 
 		Functions\when('wp_parse_url')->justReturn('example.org');
 
-		Functions\when( 'sanitize_text_field' )->alias(
-			function ( $value ) {
-				return is_string( $value ) ? strip_tags( $value ) : $value;
+		Functions\when( 'sanitize_url' )->alias(
+			function( $url ) use ( $images_valid_sources ) {
+				return $images_valid_sources[$url] ?? $url;
 			}
 		);
 
-		$images_valid_sources = $expected['images_valid_sources'];
-		Functions\when('esc_url_raw')->alias( function( $url ) use ( $images_valid_sources ) {
-			return $images_valid_sources[$url] ?? $url;
-		} );
+		Functions\when('esc_url_raw')->alias(
+			function( $url ) use ( $images_valid_sources ) {
+				return $images_valid_sources[$url] ?? $url;
+			}
+		);
 
 		Functions\when( 'current_time' )
 			->justReturn( $expected['item']['last_accessed'] );
