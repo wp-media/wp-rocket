@@ -7,7 +7,7 @@ use Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Engine\License\API\User;
-use WP_Rocket\Engine\Media\AboveTheFold\WarmUp\{APIClient, Controller};
+use WP_Rocket\Engine\Media\AboveTheFold\WarmUp\{APIClient, Controller, Queue};
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
@@ -19,6 +19,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 class Test_FetchLinks extends TestCase {
 	private $user;
 	private $controller;
+	private $queue;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -27,7 +28,8 @@ class Test_FetchLinks extends TestCase {
 		$options          = Mockery::mock( Options_Data::class );
 		$api_client       = Mockery::mock( APIClient::class );
 		$this->user       = Mockery::mock( User::class );
-		$this->controller = new Controller( $context, $options, $api_client, $this->user );
+		$this->queue      = Mockery::mock( Queue::class );
+		$this->controller = new Controller( $context, $options, $api_client, $this->user, $this->queue );
 	}
 
 	/**
@@ -44,7 +46,7 @@ class Test_FetchLinks extends TestCase {
 			}
 		);
 
-		Functions\expect( 'wp_remote_get' )
+		Functions\expect( 'wp_safe_remote_get' )
 			->atMost()
 			->once()
 			->with( 'https://example.org', $config['headers'] )
@@ -74,7 +76,7 @@ class Test_FetchLinks extends TestCase {
 
 			Filters\expectApplied( 'rocket_atf_warmup_links_number' )
 				->once()
-				->with( 5 );
+				->with( 10 );
 		}
 
 		$this->assertSame(
