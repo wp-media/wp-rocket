@@ -439,17 +439,17 @@ class Controller {
 			$sources[] = $source->srcset;
 
 			if ( ! empty( $source->sizes ) ) {
-				$sizes = 'imagesizes="'.$source->sizes.'"';
+				$sizes = 'imagesizes="' . $source->sizes . '"';
 			}
 
 			// Check if the media attribute is empty and the type attribute is not.
-			if ( empty($media) && !empty($source->type) ) {
+			if ( empty( $media ) && ! empty( $source->type ) ) {
 				// Generate the link tag.
-				$tag .= $start_tag . 'href="' . $source->srcset . '" ' . ($sizes ?? '') . $end_tag ;
+				$tag .= $start_tag . 'href="' . $source->srcset . '" ' . ( $sizes ?? '' ) . $end_tag;
 				break;
 			} else {
 				// Append the source and media query to the tag string.
-				$tag .= $start_tag . 'href="' . $source->srcset . '" media="' . $media . '" '. ($sizes ?? '') . $end_tag;
+				$tag .= $start_tag . 'href="' . $source->srcset . '" media="' . $media . '" ' . ( $sizes ?? '' ) . $end_tag;
 
 				// If a max-width is found in the source's media attribute, update the previous max-width.
 				if ( preg_match( '/\(max-width: (\d+(\.\d+)?)px\)/', $source->media, $matches ) ) {
