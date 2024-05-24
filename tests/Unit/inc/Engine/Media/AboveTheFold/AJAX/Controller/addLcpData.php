@@ -91,6 +91,13 @@ class Test_AddLcpData extends TestCase {
 				->once()
 				->with( $expected['message'] );
 		}
+		Functions\when('wp_parse_url')->alias(function ($url, $component = -1) {
+			return parse_url($url, $component);
+		});
+
+		if ( ! empty( $config['filetype'] ) ) {
+			Functions\when('wp_check_filetype')->justReturn( $config['filetype'] );
+		}
 
 		$this->controller->add_lcp_data();
 	}

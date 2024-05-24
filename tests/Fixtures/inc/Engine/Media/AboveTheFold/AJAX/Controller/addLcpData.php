@@ -65,6 +65,10 @@ return [
 					],
 				]
 			),
+			'filetype' => [
+				'ext' => 'jpg',
+				'type' => 'image/jpeg',
+			],
 		],
 		'expected' => [
 			'item'    => [
@@ -109,6 +113,10 @@ return [
 					],
 				]
 			),
+			'filetype' => [
+				'ext' => 'jpg',
+				'type' => 'image/jpeg',
+			],
 		],
 		'expected' => [
 			'item'    => [
@@ -171,6 +179,10 @@ return [
 					],
 				]
 			),
+			'filetype' => [
+				'ext' => 'jpg',
+				'type' => 'image/jpeg',
+			],
 		],
 		'expected' => [
 			'item'    => [
@@ -235,6 +247,10 @@ return [
 					],
 				]
 			),
+			'filetype' => [
+				'ext' => 'jpg',
+				'type' => 'image/jpeg',
+			],
 		],
 		'expected' => [
 			'item'    => [
@@ -286,6 +302,10 @@ return [
 			'images'    => json_encode(
 				$long_array
 			),
+			'filetype' => [
+				'ext' => 'jpg',
+				'type' => 'image/jpeg',
+			],
 		],
 		'expected' => [
 			'item'    => [
@@ -396,6 +416,212 @@ return [
 				'viewport'      => '[]',
 				'last_accessed' => '2024-01-01 00:00:00',
 				'error_message' => 'Script timeout',
+			],
+		],
+	],
+
+	'testShouldBailoutWithNotValidImages1' => [
+		'config'   => [
+			'filter'    => true,
+			'url'       => 'http://example.org',
+			'is_mobile' => false,
+			'images'    => json_encode(
+				[
+					(object) [
+						'label' => 'lcp',
+						'type'  => 'img',
+						'src'   => 'http://example.org/file.php?url=img.jpg',
+					],
+				]
+			),
+			'filetype' => [
+				'ext' => 'php',
+				'type' => false,
+			],
+		],
+		'expected' => [
+			'item'    => [
+				'url'           => 'http://example.org',
+				'is_mobile'     => false,
+				'status'        => 'completed',
+				'lcp'           => 'not found',
+				'viewport'      => '[]',
+				'last_accessed' => '2024-01-01 00:00:00',
+				'error_message' => '',
+			],
+			'result'  => true,
+			'message' => [
+				'url'           => 'http://example.org',
+				'is_mobile'     => false,
+				'status'        => 'completed',
+				'lcp'           => 'not found',
+				'viewport'      => '[]',
+				'last_accessed' => '2024-01-01 00:00:00',
+				'error_message' => '',
+			],
+		],
+	],
+	'testShouldBailoutWithNotValidImages2' => [
+		'config'   => [
+			'filter'    => true,
+			'url'       => 'http://example.org',
+			'is_mobile' => false,
+			'images'    => json_encode(
+				[
+					(object) [
+						'label' => 'lcp',
+						'type'  => 'img',
+						'src'   => 'http://example.org/file.js?url=img.jpg',
+					],
+				]
+			),
+			'filetype' => [
+				'ext' => 'js',
+				'type' => 'application/javascript',
+			],
+		],
+		'expected' => [
+			'item'    => [
+				'url'           => 'http://example.org',
+				'is_mobile'     => false,
+				'status'        => 'completed',
+				'lcp'           => 'not found',
+				'viewport'      => '[]',
+				'last_accessed' => '2024-01-01 00:00:00',
+				'error_message' => '',
+			],
+			'result'  => true,
+			'message' => [
+				'url'           => 'http://example.org',
+				'is_mobile'     => false,
+				'status'        => 'completed',
+				'lcp'           => 'not found',
+				'viewport'      => '[]',
+				'last_accessed' => '2024-01-01 00:00:00',
+				'error_message' => '',
+			],
+		],
+	],
+	'testShouldBailoutWithNotValidImages3' => [
+		'config'   => [
+			'filter'    => true,
+			'url'       => 'http://example.org',
+			'is_mobile' => false,
+			'images'    => json_encode(
+				[
+					(object) [
+						'label' => 'lcp',
+						'type'  => 'img',
+						'src'   => 'http://example.org/file.php#url=img.jpg',
+					],
+				]
+			),
+			'filetype' => [
+				'ext' => 'php',
+				'type' => 'application/php',
+			],
+		],
+		'expected' => [
+			'item'    => [
+				'url'           => 'http://example.org',
+				'is_mobile'     => false,
+				'status'        => 'completed',
+				'lcp'           => 'not found',
+				'viewport'      => '[]',
+				'last_accessed' => '2024-01-01 00:00:00',
+				'error_message' => '',
+			],
+			'result'  => true,
+			'message' => [
+				'url'           => 'http://example.org',
+				'is_mobile'     => false,
+				'status'        => 'completed',
+				'lcp'           => 'not found',
+				'viewport'      => '[]',
+				'last_accessed' => '2024-01-01 00:00:00',
+				'error_message' => '',
+			],
+		],
+	],
+	'testShouldBailoutWithNotValidImages4' => [
+		'config'   => [
+			'filter'    => true,
+			'url'       => 'http://example.org',
+			'is_mobile' => false,
+			'images'    => json_encode(
+				[
+					(object) [
+						'label' => 'lcp',
+						'type'  => 'img',
+						'src'   => 'chrome-extension://extension-hash/path/to/image/x.svg',
+					],
+				]
+			),
+			'filetype' => [
+				'ext' => false,
+				'type' => false,
+			],
+		],
+		'expected' => [
+			'item'    => [
+				'url'           => 'http://example.org',
+				'is_mobile'     => false,
+				'status'        => 'completed',
+				'lcp'           => 'not found',
+				'viewport'      => '[]',
+				'last_accessed' => '2024-01-01 00:00:00',
+				'error_message' => '',
+			],
+			'result'  => true,
+			'message' => [
+				'url'           => 'http://example.org',
+				'is_mobile'     => false,
+				'status'        => 'completed',
+				'lcp'           => 'not found',
+				'viewport'      => '[]',
+				'last_accessed' => '2024-01-01 00:00:00',
+				'error_message' => '',
+			],
+		],
+	],
+	'testShouldBailoutWithNotValidImages5' => [
+		'config'   => [
+			'filter'    => true,
+			'url'       => 'http://example.org',
+			'is_mobile' => false,
+			'images'    => json_encode(
+				[
+					(object) [
+						'label' => 'lcp',
+						'type'  => 'bg-img',
+						'src'   => 'linear-gradient(160deg, rgb(255, 255, 255) 0%, rgb(248, 246, 243) 100%)',
+					],
+				]
+			),
+			'filetype' => [
+				'ext' => false,
+				'type' => false,
+			],
+		],
+		'expected' => [
+			'item'    => [
+				'url'           => 'http://example.org',
+				'is_mobile'     => false,
+				'status'        => 'completed',
+				'lcp'           => 'not found',
+				'viewport'      => '[]',
+				'last_accessed' => '2024-01-01 00:00:00',
+				'error_message' => '',
+			],
+			'result'  => true,
+			'message' => [
+				'url'           => 'http://example.org',
+				'is_mobile'     => false,
+				'status'        => 'completed',
+				'lcp'           => 'not found',
+				'viewport'      => '[]',
+				'last_accessed' => '2024-01-01 00:00:00',
+				'error_message' => '',
 			],
 		],
 	],
