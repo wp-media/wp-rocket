@@ -50,7 +50,7 @@ class Controller {
 
 		$url       = isset( $_POST['url'] ) ? untrailingslashit( esc_url_raw( wp_unslash( $_POST['url'] ) ) ) : '';
 		$is_mobile = isset( $_POST['is_mobile'] ) ? filter_var( wp_unslash( $_POST['is_mobile'] ), FILTER_VALIDATE_BOOLEAN ) : false;
-		$images    = isset( $_POST['images'] ) ? json_decode( sanitize_url( wp_unslash( $_POST['images'] ) ) ) : [];
+		$images    = isset( $_POST['images'] ) ? json_decode( wp_unslash( $_POST['images'] ) ) : []; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		$lcp       = 'not found';
 		$viewport  = [];
 
@@ -152,22 +152,21 @@ class Controller {
 	private function create_object( $image, $keys ) {
 		$object       = new \stdClass();
 		$object->type = $image->type ?? 'img';
+		$object->src  = $this->sanitize_image_url( $image->src );
 		switch ( $object->type ) {
 			case 'img-srcset':
 				// If the type is 'img-srcset', add all the required parameters to the object.
-				$object->src    = $this->sanitize_image_url( $image->src );
 				$object->srcset = $image->srcset;
 				$object->sizes  = $image->sizes;
 				break;
 			case 'picture':
-				$object->src     = $this->sanitize_image_url( $image->src );
 				$object->sources = $image->sources;
 				break;
 			default:
 				// For other types, add the first non-empty key to the object.
 				foreach ( $keys as $key ) {
 					if ( isset( $image->$key ) && ! empty( $image->$key ) ) {
-						$object->$key = $image->$key;
+						$object->$key = $this->sanitize_image_url( $image->$key );
 						break;
 					}
 				}

@@ -243,7 +243,7 @@ return [
 		'expected' => [
 			'images_valid_sources' => [
 				'http://example.org/lcp.jpg<script>alert("Test XSS");</script>' => 'http://example.org/lcp.jpgscriptalert(Test%20XSS);/script',
-				'http://example.org/above-the-fold.jpg<script>alert("Test XSS");</script>' => 'http://example.org/lcp.jpgscriptalert(Test%20XSS);/script'
+				'http://example.org/above-the-fold.jpg<script>alert("Test XSS");</script>' => 'http://example.org/above-the-fold.jpgscriptalert(Test%20XSS);/script'
 			],
 			'item'    => [
 				'url'           => 'http://example.org',
@@ -258,7 +258,7 @@ return [
 				'viewport'      => json_encode( [
 					(object) [
 						'type' => 'img',
-						'src'  => 'http://example.org/lcp.jpgscriptalert(Test%20XSS);/script',
+						'src'  => 'http://example.org/above-the-fold.jpgscriptalert(Test%20XSS);/script',
 					],
 				] ),
 				'last_accessed' => '2024-01-01 00:00:00',
@@ -278,7 +278,7 @@ return [
 				'viewport'      => json_encode( [
 					(object) [
 						'type' => 'img',
-						'src'  => 'http://example.org/lcp.jpgscriptalert(Test%20XSS);/script',
+						'src'  => 'http://example.org/above-the-fold.jpgscriptalert(Test%20XSS);/script',
 					],
 				] ),
 				'last_accessed' => '2024-01-01 00:00:00',
