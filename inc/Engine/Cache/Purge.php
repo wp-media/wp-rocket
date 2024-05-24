@@ -187,7 +187,7 @@ class Purge {
 		/**
 		 * Action to preload urls after cleaning cache.
 		 *
-		 * @param array urls to preload.
+		 * @param array $urls urls to preload.
 		 */
 		do_action( 'rocket_after_clean_terms', $urls );
 	}

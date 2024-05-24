@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Integration\WPThemeTestcase;
 use WP_Rocket\ThirdParty\Themes\Divi;
 
 /**
- * Test class covering \WP_Rocket\ThirdParty\Themes\Divi::handle_save_template
+ * Test class covering \WP_Rocket\ThirdParty\Themes\Divi::handle_divi_admin_notice
  *
  * @group Themes
  * @group AdminOnly
@@ -35,15 +35,13 @@ class Test_HandleDiviAdminNotice extends WPThemeTestcase {
 	}
 
 	public static function tear_down_after_class() {
-		parent::tear_down_after_class();
-
 		self::resetAdminCap();
+
+		parent::tear_down_after_class();
 	}
 
 	public function set_up() {
 		parent::set_up();
-
-		$this->go_to( admin_url( 'options-general.php' ) );
 
 		add_filter( 'pre_option_stylesheet', [ $this, 'set_stylesheet' ] );
 		$this->container = apply_filters( 'rocket_container', '' );
@@ -80,6 +78,8 @@ class Test_HandleDiviAdminNotice extends WPThemeTestcase {
 		$this->unregisterAllCallbacksExcept( 'admin_notices', 'handle_divi_admin_notice' );
 
 		$this->set_theme( 'divi', 'Divi' );
+
+		$this->go_to( admin_url( 'options-general.php' ) );
 
 		if ( isset( $config['rucss_option'] ) ) {
 			add_filter( 'pre_get_rocket_option_remove_unused_css', $config['rucss_option'] ? '__return_true' : '__return_false' );
@@ -120,5 +120,4 @@ class Test_HandleDiviAdminNotice extends WPThemeTestcase {
 
 		return $this->format_the_html( ob_get_clean() );
 	}
-
 }

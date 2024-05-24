@@ -6,8 +6,6 @@ use Brain\Monkey\Functions;
 use WP_Error;
 use WP_Rocket\Engine\CriticalPath\APIClient;
 use WP_Rocket\Tests\Integration\AjaxTestCase;
-use WP_Rocket\Tests\Integration\CapTrait;
-use WP_Rocket\Tests\Integration\DBTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\CriticalPath\Admin\Subscriber::cpcss_heartbeat
@@ -26,7 +24,7 @@ use WP_Rocket\Tests\Integration\DBTrait;
  * @group  CriticalPathAdminSubscriber
  */
 class Test_CpcssHeartbeat extends AjaxTestCase {
-	use ProviderTrait, DBTrait;
+	use ProviderTrait;
 	protected static $provider_class = 'Admin';
 
 	private static   $admin_user_id      = 0;
@@ -43,15 +41,9 @@ class Test_CpcssHeartbeat extends AjaxTestCase {
 		parent::set_up_before_class();
 
 		self::setAdminCap();
-		self::installFresh();
+
 		//create an editor user that has the capability
 		self::$admin_user_id = static::factory()->user->create( [ 'role' => 'administrator' ] );
-	}
-
-	public static function tear_down_after_class()
-	{
-		parent::tear_down_after_class();
-		self::uninstallAll();
 	}
 
 	public function set_up() {

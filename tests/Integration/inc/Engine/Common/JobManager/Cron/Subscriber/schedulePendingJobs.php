@@ -13,7 +13,15 @@ use WP_Rocket\Tests\Integration\TestCase;
 class Test_SchedulePendingJobs extends TestCase {
 	private $rucss;
 
+	public function set_up() {
+		parent::set_up();
+
+		$this->unregisterAllCallbacksExcept( 'init', 'schedule_pending_jobs' );
+	}
+
 	public function tear_down() {
+		$this->restoreWpHook( 'init' );
+
 		remove_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
 
 		wp_clear_scheduled_hook( 'rocket_saas_pending_jobs' );

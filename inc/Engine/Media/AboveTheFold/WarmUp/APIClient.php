@@ -12,9 +12,11 @@ class APIClient extends BaseAPIClient {
 	 * Send the link to Above the fold SaaS.
 	 *
 	 * @param string $url Url to be sent.
+	 * @param string $device Device type.
+	 *
 	 * @return array
 	 */
-	public function add_to_atf_queue( string $url ): array {
+	public function add_to_atf_queue( string $url, $device = 'desktop' ): array {
 		$is_home = Utils::is_home( $url );
 
 		$url = add_query_arg(
@@ -27,6 +29,7 @@ class APIClient extends BaseAPIClient {
 		$config = [
 			'optimization_list' => '',
 			'is_home'           => $is_home,
+			'is_mobile'         => 'mobile' === $device,
 		];
 
 		return $this->add_to_queue( $url, $config );

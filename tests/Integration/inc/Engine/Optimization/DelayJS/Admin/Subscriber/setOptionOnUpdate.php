@@ -10,7 +10,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group  DelayJS
  * @group  AdminOnly
  */
-class Test_SetOptionOnUpdate extends TestCase{
+class Test_SetOptionOnUpdate extends TestCase {
 	public function set_up() {
 		parent::set_up();
 
@@ -19,10 +19,10 @@ class Test_SetOptionOnUpdate extends TestCase{
 	}
 
 	public function tear_down() {
-		parent::tear_down();
-
 		$this->tearDownSettings();
 		$this->restoreWpHook( 'wp_rocket_upgrade' );
+
+		parent::tear_down();
 	}
 
 	/**

@@ -6,33 +6,23 @@ use WP_Rocket\Tests\Integration\AdminTestCase;
 
 /**
  * Test class covering \WP_Rocket\Engine\Preload\Subscriber::clean_urls
+ *
+ * @group Preload
  */
-class Test_CleanUrls extends AdminTestCase
-{
+class Test_CleanUrls extends AdminTestCase {
 	protected $manual_preload;
 
+	public function set_up() {
+		parent::set_up();
 
-	public static function set_up_before_class()
-	{
-		parent::set_up_before_class();
-		self::installFresh();
+		self::installPreloadCacheTable();
 
-	}
-
-	public static function tear_down_after_class()
-	{
-		self::uninstallAll();
-		parent::tear_down_after_class();
-	}
-
-	public function setUp(): void
-	{
-		parent::setUp();
 		add_filter('pre_get_rocket_option_manual_preload', [$this, 'manual_preload']);
 	}
 
-	public function tear_down()
-	{
+	public function tear_down() {
+		self::uninstallPreloadCacheTable();
+
 		remove_filter('pre_get_rocket_option_manual_preload', [$this, 'manual_preload']);
 		parent::tear_down();
 	}

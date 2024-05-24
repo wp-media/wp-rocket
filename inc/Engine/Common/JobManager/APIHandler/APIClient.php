@@ -86,7 +86,7 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 		$result  = json_decode( $this->response_body, true );
 
 		$this->logger::debug(
-			'Add to queue response body',
+			$url . ' - Add to queue response body',
 			$result
 		);
 

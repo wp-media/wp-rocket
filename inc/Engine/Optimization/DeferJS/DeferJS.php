@@ -272,7 +272,7 @@ class DeferJS {
 		 *
 		 * @param array $inline_exclusions_list Array of inline JS that should not be deferred.
 		 */
-		$additional_inline_exclusions_list = apply_filters( 'rocket_defer_inline_exclusions', null );
+		$additional_inline_exclusions_list = apply_filters( 'rocket_defer_inline_exclusions', [] );
 
 		$inline_exclusions = '';
 

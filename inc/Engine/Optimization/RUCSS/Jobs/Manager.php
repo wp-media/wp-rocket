@@ -118,7 +118,7 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 		 *
 		 * @since 3.13.3
 		 *
-		 * @param int min size.
+		 * @param int $min_rucss_size min size.
 		 */
 		$min_rucss_size = apply_filters( 'rocket_min_rucss_size', 150 );
 		if ( ! is_numeric( $min_rucss_size ) ) {

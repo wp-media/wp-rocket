@@ -80,9 +80,11 @@ class Controller {
 			return [];
 		}
 
+		$user_agent = 'WP Rocket/Pre-fetch Home Links Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1';
+
 		$home_url = home_url();
 		$args     = [
-			'user-agent' => 'WP Rocket/Pre-fetch Home Links',
+			'user-agent' => $user_agent,
 			'timeout'    => 60,
 		];
 
@@ -145,7 +147,7 @@ class Controller {
 		// Remove duplicate links.
 		$links = array_unique( $links );
 
-		$default_limit = 10;
+		$default_limit = 5;
 
 		/**
 		 * Filters the number of links to return from the homepage.
@@ -169,11 +171,18 @@ class Controller {
 	 * Send fetched links to SaaS to do the warmup.
 	 *
 	 * @param array $links Array of links to be sent.
+	 *
 	 * @return void
 	 */
 	private function send_to_saas( $links ) {
 		if ( empty( $links ) ) {
 			return;
+		}
+
+		$default_delay = 5000;
+
+		if ( rocket_get_constant( 'WP_ROCKET_DEBUG' ) ) {
+			$default_delay = 500000;
 		}
 
 		/**
@@ -183,10 +192,18 @@ class Controller {
 		 *
 		 * @returns int
 		 */
-		$delay_between = (int) apply_filters( 'rocket_delay_between_requests', 500000 );
+		$delay_between = (int) apply_filters( 'rocket_lcp_warmup_delay_between_requests', $default_delay );
+
+		if ( ! is_int( $delay_between ) || $delay_between < 0 ) {
+			$delay_between = $default_delay;
+		}
 
 		foreach ( $links as $link ) {
 			$this->api_client->add_to_atf_queue( $link );
+
+			if ( $this->is_mobile() ) {
+				$this->api_client->add_to_atf_queue( $link, 'mobile' );
+			}
 
 			usleep( $delay_between );
 		}
@@ -210,5 +227,14 @@ class Controller {
 			],
 			$url
 		);
+	}
+
+	/**
+	 * Check if the current request is for mobile.
+	 *
+	 * @return bool
+	 */
+	private function is_mobile(): bool {
+		return $this->options->get( 'cache_mobile', 0 ) && $this->options->get( 'do_caching_mobile_files', 0 );
 	}
 }
