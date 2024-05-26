@@ -225,6 +225,8 @@ class Controller {
 	 * @return bool
 	 */
 	private function validate_image( $image_object ) {
+		$valid_image = $this->validate_image_src( $image_object->src ?? '' );
+
 		/**
 		 * Filters If the image src is a valid image or not.
 		 *
@@ -232,7 +234,7 @@ class Controller {
 		 * @param string $image_src_url Image src url.
 		 * @param object $image_object Image object with full details.
 		 */
-		return (bool) apply_filters( 'rocket_atf_valid_image', $this->validate_image_src( $image_object->src ?? '' ), $image_object->src, $image_object );
+		return (bool) apply_filters( 'rocket_atf_valid_image', $valid_image, $image_object->src, $image_object );
 	}
 
 	/**
