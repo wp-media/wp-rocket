@@ -148,7 +148,7 @@ class RocketLcpBeacon {
 			current_src: ""
 		};
 
-		const css_bg_url_rgx = /url\(\s*?['"]?\s*?(\S+?)\s*?["']?\s*?\)\s*?([a-zA-Z0-9\s]*[x|dpcm|dpi|dppx]?)/ig;
+		const css_bg_url_rgx = /url\(\s*?['"]?\s*?(.+?)\s*?["']?\s*?\)/ig;
 
 		if (nodeName === "img" && element.srcset) {
 			element_info.type = "img-srcset";
