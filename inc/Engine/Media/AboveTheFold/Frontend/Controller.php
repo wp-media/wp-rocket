@@ -447,14 +447,14 @@ class Controller {
 				// Generate the link tag.
 				$tag .= $start_tag . 'href="' . $source->srcset . '" ' . ( $sizes ?? '' ) . $end_tag;
 				break;
-			} else {
-				// Append the source and media query to the tag string.
-				$tag .= $start_tag . 'href="' . $source->srcset . '" media="' . $media . '" ' . ( $sizes ?? '' ) . $end_tag;
+			}
 
-				// If a max-width is found in the source's media attribute, update the previous max-width.
-				if ( preg_match( '/\(max-width: (\d+(\.\d+)?)px\)/', $source->media, $matches ) ) {
-					$prev_max_width = floatval( $matches[1] );
-				}
+			// Append the source and media query to the tag string.
+			$tag .= $start_tag . 'href="' . $source->srcset . '" media="' . $media . '" ' . ( $sizes ?? '' ) . $end_tag;
+
+			// If a max-width is found in the source's media attribute, update the previous max-width.
+			if ( preg_match( '/\(max-width: (\d+(\.\d+)?)px\)/', $source->media, $matches ) ) {
+				$prev_max_width = floatval( $matches[1] );
 			}
 		}
 		// If a previous max-width is found, update the media query and add the LCP source to the sources array and the tag string.
