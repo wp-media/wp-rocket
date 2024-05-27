@@ -191,7 +191,7 @@ class RocketLcpBeacon {
 			}
 		} else if (nodeName === "picture") {
 			element_info.type = "picture";
-			const img = element.querySelector('img:not(picture>img)');
+			const img = element.querySelector('img');
 			element_info.src = img ? img.src : "";
 			element_info.sources = Array.from(element.querySelectorAll('source')).map(source => ({
 				srcset: source.srcset || '',
