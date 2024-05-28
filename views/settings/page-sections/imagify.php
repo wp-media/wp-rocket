@@ -70,7 +70,7 @@ defined( 'ABSPATH' ) || exit;
 
 		</div>
 		<div class="wpr-imagify-screenshot">
-			<img src="<?php echo WP_ROCKET_ASSETS_IMG_URL; ?>imagify-score.png" alt="" width="613" height="394">
+			<img src="<?php echo esc_attr( WP_ROCKET_ASSETS_IMG_URL . 'imagify-score.png' ); ?>" alt="" width="613" height="394">
 		</div>
 	</div>
 	<?php if ( $data ) : ?>
@@ -93,10 +93,10 @@ defined( 'ABSPATH' ) || exit;
 							]
 							);
 					?>
-					<div class="num-ratings" aria-hidden="true">(<?php echo number_format_i18n( $data->num_ratings ); ?>)</div>					
+					<div class="num-ratings" aria-hidden="true">(<?php echo esc_html( number_format_i18n( $data->num_ratings ) ); ?>)</div>					
 				</div>
 				<div class="wpr-fs-sm">
-				<?php echo number_format_i18n( $data->active_installs ); ?>+ Active installations
+				<?php echo esc_html( number_format_i18n( $data->active_installs ) ); ?>+ Active installations
 				</div>
 			</div>
 			<?php
@@ -105,10 +105,10 @@ defined( 'ABSPATH' ) || exit;
 
 				if ( \Imagify_Partner::is_imagify_installed() ) {
 					$button_text = __( 'Activate Imagify', 'rocket' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
-					$button_icon = 'wpr-icon-chevron-down';
+					$button_icon = 'wpr-icon-chevron-down'; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 				} else {
 					$button_text = __( 'Install Imagify', 'rocket' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
-					$button_icon = 'wpr-imagify-install';
+					$button_icon = 'wpr-imagify-install'; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 				}
 
 				echo '<a class="wpr-button ' . esc_attr( $button_icon ) . '" href="' . esc_url( $imagify->get_post_install_url() ) . '">' . esc_html( $button_text ) . '</a>';
