@@ -433,9 +433,9 @@ class Controller {
 			$media = $source->media;
 			// If a previous max-width is found, update the media query.
 			if ( null !== $prev_max_width ) {
-				// Check if $media already contains 'min-width'
-				if (strpos($media, 'min-width') === false) {
-					$media = '(min-width: ' . ($prev_max_width + 0.1) . 'px) and ' . $media;
+				// Check if $media already contains 'min-width'.
+				if ( strpos( $media, 'min-width' ) === false ) {
+					$media = '(min-width: ' . ( $prev_max_width + 0.1 ) . 'px) and ' . $media;
 				}
 			}
 
