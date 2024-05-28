@@ -51,8 +51,10 @@ class gulpCss {
 
 	buildAll() {
 		return gulp.series(
-			() => this.compileAdminFullSaasUnmin(),
-			() => this.compileAdminFullSaasMin()
+			() => this.compileAdminSaas(),
+			() => this.compileAdminRtlSaas(),
+			() => this.compileAdminSaasMin(),
+			() => this.compileAdminRtlSaasMin(),
 		);
 	}
 
