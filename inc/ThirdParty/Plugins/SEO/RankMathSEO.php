@@ -30,6 +30,7 @@ class RankMathSEO implements Subscriber_Interface {
 	 * Subscribed events.
 	 */
 	public static function get_subscribed_events() {
+		// @phpstan-ignore-next-line
 		if ( ! defined( 'RANK_MATH_FILE' ) || ! Helper::is_module_active( 'sitemap' ) ) {
 			return [];
 		}
@@ -45,8 +46,9 @@ class RankMathSEO implements Subscriber_Interface {
 	 * @param array $sitemaps Sitemaps to preload.
 	 * @return array Updated Sitemaps to preload
 	 */
-	public function rocket_sitemap( $sitemaps ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+	public function rocket_sitemap( $sitemaps ) {
 
+		// @phpstan-ignore-next-line
 		$sitemaps[] = Router::get_base_url( 'sitemap_index.xml' );
 
 		return $sitemaps;

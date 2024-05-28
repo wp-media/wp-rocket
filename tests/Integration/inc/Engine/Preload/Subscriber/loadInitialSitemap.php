@@ -7,47 +7,45 @@ use WP_Rocket\Tests\Integration\ASTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\Preload\Subscriber::maybe_load_initial_sitemap
- * @group  Preload
+ *
+ * @group Preload
  */
-class Test_LoadInitialSitemap extends AdminTestCase
-{
+class Test_LoadInitialSitemap extends AdminTestCase {
 	use ASTrait;
 
 	protected $sitemaps;
 
-	public static function set_up_before_class()
-	{
-		parent::set_up_before_class();
-		self::installFresh();
+	public function set_up() {
+		parent::set_up();
+
+		// Install the preload cache table.
+		self::installPreloadCacheTable();
+
+		add_filter( 'rocket_sitemap_preload_list', [ $this, 'return_sitemaps' ] );
 	}
 
-	public static function tear_down_after_class()
-	{
-		parent::tear_down_after_class();
-		self::uninstallAll();
-	}
+	public function tear_down() {
+		// Uninstall the preload cache table.
+		self::uninstallPreloadCacheTable();
 
-	public function setUp(): void
-	{
-		parent::setUp();
-		add_filter('rocket_sitemap_preload_list', [$this, 'return_sitemaps']);
-	}
+		remove_filter( 'rocket_sitemap_preload_list', [ $this, 'return_sitemaps' ] );
 
-	public function tearDown(): void
-	{
-		remove_filter('rocket_sitemap_preload_list', [$this, 'return_sitemaps']);
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldReturnAsExpected($config, $expected) {
+	public function testShouldReturnAsExpected( $config, $expected ) {
 		$this->sitemaps = $config['return_sitemaps'];
-		do_action('update_option_' . WP_ROCKET_SLUG , $config['old_values'], $config['values']);
 
-		foreach ($expected['sitemaps'] as $sitemap) {
-			$this->assertEquals($expected['exist'], self::taskExist('rocket_preload_job_parse_sitemap', [$sitemap]));
+		do_action( 'update_option_wp_rocket_settings', $config['old_values'], $config['values'] );
+
+		foreach ( $expected['sitemaps'] as $sitemap ) {
+			$this->assertEquals(
+				$expected['exist'],
+				self::taskExist( 'rocket_preload_job_parse_sitemap', [ $sitemap ] )
+			);
 		}
 	}
 

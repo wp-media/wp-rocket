@@ -2,7 +2,6 @@
 
 namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Themes\Divi;
 
-use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\WPThemeTestcase;
 use WP_Rocket\ThirdParty\Themes\Divi;
 
@@ -12,33 +11,26 @@ use WP_Rocket\ThirdParty\Themes\Divi;
  * @group Themes
  */
 class Test_RemoveAssetsGenerated extends WPThemeTestcase {
-	use DBTrait;
-
 	private $container;
 	private $event;
 	private $subscriber;
 
 	protected $path_to_test_data = '/inc/ThirdParty/Themes/Divi/removeAssetsGenerated.php';
 
-	public static function set_up_before_class() {
-		parent::set_up_before_class();
-		self::installFresh();
-	}
-
-	public static function tear_down_after_class() {
-		self::uninstallAll();
-
-		parent::tear_down_after_class();
-	}
-
 	public function set_up() {
 		parent::set_up();
+
+		// Disable ATF optimization to prevent DB request (unrelated to the test).
+		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
 
 		$this->container = apply_filters( 'rocket_container', '' );
 		$this->event = $this->container->get( 'event_manager' );
 	}
 
 	public function tear_down() {
+		// Re-enable ATF optimization.
+		remove_filter( 'rocket_above_the_fold_optimization', '__return_false' );
+
 		$this->event->remove_subscriber( $this->subscriber );
 
 		parent::tear_down();

@@ -6,15 +6,16 @@ use WP_Rocket\Tests\Integration\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase {
 	protected $cdn_names;
-	protected $home_url = 'http://myexample.org';
+	protected $home_url = 'http://example.org';
 
 	protected static $transients = [
 		'rocketcdn_status' => null,
 	];
 
 	public static function set_up_before_class() {
-		static::$use_settings_trait = true;
 		parent::set_up_before_class();
+
+		static::$use_settings_trait = true;
 	}
 
 	public function set_up() {

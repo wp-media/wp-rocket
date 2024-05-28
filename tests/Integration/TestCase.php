@@ -22,8 +22,6 @@ abstract class TestCase extends BaseTestCase {
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
 
-		self::installFresh();
-
 		self::hasAdminCapBeforeClass();
 
 		if ( static::$use_settings_trait ) {
@@ -35,13 +33,11 @@ abstract class TestCase extends BaseTestCase {
 				self::$transients[ $transient ] = get_transient( $transient );
 			}
 		}
+
+		self::uninstallAll();
 	}
 
 	public static function tear_down_after_class() {
-		parent::tear_down_after_class();
-
-		self::uninstallAll();
-
 		self::resetAdminCap();
 
 		if ( static::$use_settings_trait ) {
@@ -55,6 +51,8 @@ abstract class TestCase extends BaseTestCase {
 				delete_transient( $transient );
 			}
 		}
+
+		parent::tear_down_after_class();
 	}
 
 	public function set_up() {

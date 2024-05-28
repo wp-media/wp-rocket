@@ -19,6 +19,7 @@ class CloudflareFacade {
 	 * @return void
 	 */
 	private function set_hooks() {
+		// @phpstan-ignore-next-line
 		$this->hooks = new Hooks();
 	}
 

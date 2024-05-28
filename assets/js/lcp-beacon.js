@@ -7,8 +7,8 @@ class RocketLcpBeacon {
 		this.infiniteLoopId    = null;
 	}
 
-	init() {
-		if ( ! this._isValidPreconditions() ) {
+	async init() {
+		if ( ! await this._isValidPreconditions() ) {
 			this._finalize();
 			return;
 		}
@@ -32,14 +32,14 @@ class RocketLcpBeacon {
 		this._saveFinalResultIntoDB();
 	}
 
-	_isValidPreconditions() {
+	async _isValidPreconditions() {
 		// Check the screensize first because starting any logic.
 		if ( this._isNotValidScreensize() ) {
 			this._logMessage('Bailing out because screen size is not acceptable');
 			return false;
 		}
 
-		if ( this._isGeneratedBefore() ) {
+		if ( this._isPageCached() && await this._isGeneratedBefore() ) {
 			this._logMessage('Bailing out because data is already available');
 			return false;
 		}
@@ -47,7 +47,13 @@ class RocketLcpBeacon {
 		return true;
 	}
 
-	_isGeneratedBefore() {
+	_isPageCached() {
+		const signature = document.documentElement.nextSibling && document.documentElement.nextSibling.data ? document.documentElement.nextSibling.data : '';
+
+		return signature && signature.includes( 'Debug: cached' );
+	}
+
+	async _isGeneratedBefore() {
 		// AJAX call to check if there are any records for the current URL.
 		let data_check = new FormData();
 		data_check.append('action', 'rocket_check_lcp');
@@ -55,12 +61,12 @@ class RocketLcpBeacon {
 		data_check.append('url', this.config.url);
 		data_check.append('is_mobile', this.config.is_mobile);
 
-		const lcp_data_response = fetch(this.config.ajax_url, {
-			method: "POST",
-			credentials: 'same-origin',
-			body: data_check
-		});
-
+		const lcp_data_response = await fetch(this.config.ajax_url, {
+				method: "POST",
+				credentials: 'same-origin',
+				body: data_check
+			})
+			.then(data => data.json());
 		return lcp_data_response.success;
 	}
 

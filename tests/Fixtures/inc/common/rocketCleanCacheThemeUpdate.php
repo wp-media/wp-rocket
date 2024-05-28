@@ -55,7 +55,11 @@ return [
 				'themes' => [ 'default' ],
 			],
 			'expected'   => [
-				'cleaned'      => [],
+				'cleaned'      => [
+					'vfs://public/wp-content/cache/wp-rocket/example.org/'                => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org-wpmedia-123456/' => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org-tester-987654/'  => null,
+				],
 				'wp_get_theme' => true,
 			],
 		],

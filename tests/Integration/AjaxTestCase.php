@@ -25,8 +25,6 @@ abstract class AjaxTestCase extends WPMediaAjaxTestCase {
 
 		self::hasAdminCapBeforeClass();
 
-		self::installFresh();
-
 		if ( static::$use_settings_trait ) {
 			self::getOriginalSettings();
 		}
@@ -40,8 +38,6 @@ abstract class AjaxTestCase extends WPMediaAjaxTestCase {
 
 	public static function tear_down_after_class() {
 		self::resetAdminCap();
-
-		self::uninstallAll();
 
 		if ( static::$use_settings_trait ) {
 			self::resetOriginalSettings();
