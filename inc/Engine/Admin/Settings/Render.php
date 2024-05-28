@@ -130,7 +130,53 @@ class Render extends Abstract_render {
 	 * @since 3.2
 	 */
 	public function render_imagify_section() {
-		echo $this->generate( 'page-sections/imagify' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+
+		require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
+
+		$plugin_data = get_transient( 'imagify_plugin_data' );
+
+		if ( ! $plugin_data ) {
+
+			$query_args = [
+				'slug'   => 'imagify',
+				'fields' => [
+					'icons'             => true,
+					'active_installs'   => true,
+					'rating' => true,
+					'ratings' => true,
+					'short_description' => false,
+					'sections' => false,
+					'last_updated'      => false,
+					'added'             => false,
+					'tags'              => false,
+					'homepage'          => false,
+					'donate_link'       => false,
+					'screenshots' => false,
+					'versions' => false,
+					'banners' => false,
+					'contributors' => false,
+					'requires' => false,
+					'tested' => false,
+					'requires_php' => false,
+					'support_url' => false,
+					'upgrade_notice' => false,
+					'business_model' => false,
+					'repository_url' => false,
+					'commercial_support_url' => false,
+					'preview_link' => false,
+				],
+			];
+	
+			$plugin_data = plugins_api( 'plugin_information', $query_args );
+	
+			if ( is_wp_error( $plugin_data ) ) {
+				$plugin_data = [];
+			}
+
+			set_transient( 'imagify_plugin_data', $plugin_data, WEEK_IN_SECONDS );
+		}
+
+		echo $this->generate( 'page-sections/imagify', $plugin_data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 
 	/**
