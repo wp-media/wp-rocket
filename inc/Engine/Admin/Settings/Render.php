@@ -140,35 +140,35 @@ class Render extends Abstract_render {
 			$query_args = [
 				'slug'   => 'imagify',
 				'fields' => [
-					'icons'             => true,
-					'active_installs'   => true,
-					'rating' => true,
-					'ratings' => true,
-					'short_description' => false,
-					'sections' => false,
-					'last_updated'      => false,
-					'added'             => false,
-					'tags'              => false,
-					'homepage'          => false,
-					'donate_link'       => false,
-					'screenshots' => false,
-					'versions' => false,
-					'banners' => false,
-					'contributors' => false,
-					'requires' => false,
-					'tested' => false,
-					'requires_php' => false,
-					'support_url' => false,
-					'upgrade_notice' => false,
-					'business_model' => false,
-					'repository_url' => false,
+					'icons'                  => true,
+					'active_installs'        => true,
+					'rating'                 => true,
+					'ratings'                => true,
+					'short_description'      => false,
+					'sections'               => false,
+					'last_updated'           => false,
+					'added'                  => false,
+					'tags'                   => false,
+					'homepage'               => false,
+					'donate_link'            => false,
+					'screenshots'            => false,
+					'versions'               => false,
+					'banners'                => false,
+					'contributors'           => false,
+					'requires'               => false,
+					'tested'                 => false,
+					'requires_php'           => false,
+					'support_url'            => false,
+					'upgrade_notice'         => false,
+					'business_model'         => false,
+					'repository_url'         => false,
 					'commercial_support_url' => false,
-					'preview_link' => false,
+					'preview_link'           => false,
 				],
 			];
-	
+
 			$plugin_data = plugins_api( 'plugin_information', $query_args );
-	
+
 			if ( is_wp_error( $plugin_data ) ) {
 				$plugin_data = [];
 			}
