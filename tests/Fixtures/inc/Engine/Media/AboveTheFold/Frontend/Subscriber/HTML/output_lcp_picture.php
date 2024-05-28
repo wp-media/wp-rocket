@@ -8,7 +8,7 @@
 <html>
 <head>
 	<?php wp_head() ?>
-	<title>lcp_responsive_bg</title><link rel="preload" href="small_cat.jpg" as="image" media="(max-width: 400px)" fetchpriority="high"><link rel="preload" href="medium_cat.jpg" as="image" media="(min-width: 400.1px) and (max-width: 800px)" fetchpriority="high"><link rel="preload" href="large_cat.jpg" as="image" media="(min-width: 800.1px)" fetchpriority="high">
+	<title>lcp_responsive_bg</title><link rel="preload" rocket-preload href="small_cat.jpg" as="image" media="(max-width: 400px)" fetchpriority="high"><link rel="preload" href="medium_cat.jpg" as="image" media="(min-width: 400.1px) and (max-width: 800px)" fetchpriority="high"><link rel="preload" href="large_cat.jpg" as="image" media="(min-width: 800.1px)" fetchpriority="high">
 </head>
 <body>
 
