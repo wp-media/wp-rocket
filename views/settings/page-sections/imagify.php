@@ -2,7 +2,7 @@
 /**
  * Imagify section template.
  *
- * @since 3.2ƒ
+ * @since 3.2
  */
 
 defined( 'ABSPATH' ) || exit;
