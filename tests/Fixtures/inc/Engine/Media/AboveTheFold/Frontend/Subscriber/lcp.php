@@ -26,7 +26,7 @@ return [
 		'shouldAddBeaconToPageWithDefaultDelayWhenBadCustomDelay' => [
 			'config' => [
 				'html' => $html_input,
-				'filter_delay' => null,
+				'filter_delay' => 'string',
 				'row' => null,
 			],
 			'expected' => $html_output_with_beacon,
