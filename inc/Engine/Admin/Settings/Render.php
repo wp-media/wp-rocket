@@ -133,7 +133,7 @@ class Render extends Abstract_render {
 
 		require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
 
-		$plugin_data = get_transient( 'imagify_plugin_data' );
+		$plugin_data = get_transient( 'rocket_imagify_plugin_data' );
 
 		if ( ! $plugin_data ) {
 
@@ -173,7 +173,7 @@ class Render extends Abstract_render {
 				$plugin_data = [];
 			}
 
-			set_transient( 'imagify_plugin_data', $plugin_data, WEEK_IN_SECONDS );
+			set_transient( 'rocket_imagify_plugin_data', $plugin_data, WEEK_IN_SECONDS );
 		}
 
 		echo $this->generate( 'page-sections/imagify', $plugin_data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
