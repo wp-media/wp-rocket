@@ -23,6 +23,14 @@ return [
 			],
 			'expected' => $html_output_with_beacon,
 		],
+		'shouldAddBeaconToPageWithDefaultDelayWhenBadCustomDelay' => [
+			'config' => [
+				'html' => $html_input,
+				'filter_delay' => null,
+				'row' => null,
+			],
+			'expected' => $html_output_with_beacon,
+		],
 		'shouldNotAddBeaconToPage' => [
 			'config' => [
 				'html' => $html_input,
