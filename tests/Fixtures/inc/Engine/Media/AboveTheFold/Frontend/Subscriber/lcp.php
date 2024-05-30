@@ -10,6 +10,9 @@ $html_input_with_picture_img_lcp = file_get_contents(__DIR__ . '/HTML/input_w_pi
 $html_output_with_picture_img_lcp = file_get_contents(__DIR__ . '/HTML/output_w_picture_img_lcp.html');
 $html_input_with_img_lcp = file_get_contents(__DIR__ . '/HTML/input_w_img_lcp.html');
 $html_output_with_img_lcp = file_get_contents(__DIR__ . '/HTML/output_w_img_lcp.html');
+$html_input_with_relative_img_lcp = file_get_contents(__DIR__ . '/HTML/input_with_relative_img_lcp.html');
+$html_input_with_absolute_img_lcp = file_get_contents(__DIR__ . '/HTML/input_with_absolute_img_lcp.html');
+$html_input_with_domain_img_lcp = file_get_contents(__DIR__ . '/HTML/input_lcp_image.html');
 
 return [
 	'test_data' => [
@@ -142,6 +145,191 @@ return [
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_responsive.php'),
 		],
+		'shouldApplyFetchPriorityToReturnRelativeImage' => [
+			'config' => [
+				'html' => $html_input_with_relative_img_lcp,
+				'row' => [
+					'status' => 'completed',
+					'url' => 'http://example.org',
+					'lcp'      => json_encode( (object) [
+						'type' => 'img',
+						'src'  => 'http://example.org/wp-content/uploads/sample_relative_image.jpg',
+					] ),
+					'viewport' => json_encode ( [] ),
+				],
+			],
+			'expected' => file_get_contents(__DIR__ . '/HTML/output_with_relative_img_lcp.php'),
+		],
+		'shouldApplyFetchPriorityToAbsoluteImage' => [
+			'config' => [
+				'html' => $html_input_with_absolute_img_lcp,
+				'row' => [
+					'status' => 'completed',
+					'url' => 'http://example.org',
+					'lcp'      => json_encode( (object) [
+						'type' => 'img',
+						'src'  => 'http://example.com/wp-content/uploads/sample_absolute_image.jpg',
+					] ),
+					'viewport' => json_encode ( [] ),
+				],
+			],
+			'expected' => file_get_contents(__DIR__ . '/HTML/output_with_absolute_img_lcp.php'),
+		],
+		'shouldApplyFetchPriorityToImageWithDomain' => [
+			'config' => [
+				'html' => $html_input_with_domain_img_lcp,
+				'row' => [
+					'status' => 'completed',
+					'url' => 'http://example.org',
+					'lcp'      => json_encode( (object) [
+						'type' => 'img',
+						'src'  => 'http://example.org/wp-content/uploads/sample_url_image.png',
+					] ),
+					'viewport' => json_encode ( [] ),
+				],
+			],
+			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_image.php'),
+		],
+		'shouldNotApplyFetchPriorityToImageWithFetchpriority' => [
+			'config' => [
+				'html' => file_get_contents(__DIR__ . '/HTML/input_lcp_with_fetchpriority.html'),
+				'row' => [
+					'status' => 'completed',
+					'url' => 'http://example.org',
+					'lcp'      => json_encode( (object) [
+						'type' => 'img',
+						'src'  => 'http://example.org/wp-content/uploads/sample_relative_image.jpg',
+					] ),
+					'viewport' => json_encode ( [] ),
+				],
+			],
+			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_with_fetchpriority.html'),
+		],
+		'shouldNotApplyFetchPriorityToImageWithDuplicateMarkup' => [
+			'config' => [
+				'html' => file_get_contents(__DIR__ . '/HTML/input_lcp_with_markup_comment.html'),
+				'row' => [
+					'status' => 'completed',
+					'url' => 'http://example.org',
+					'lcp'      => json_encode( (object) [
+						'type' => 'img',
+						'src'  => 'http://example.org/wp-content/uploads/sample_relative_image.jpg',
+					] ),
+					'viewport' => json_encode ( [] ),
+				],
+			],
+			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_with_markup_comment.html'),
+		],
+		'shouldPreloadPictureTag' => [
+			'config' => [
+				'html' => file_get_contents(__DIR__ . '/HTML/input_lcp_picture.php'),
+				'row' => [
+					'status' => 'completed',
+					'url' => 'http://example.org',
+					'lcp' => json_encode( (object) [
+						'type' => 'picture',
+						'src' => 'large_cat.jpg',
+						'sources' => [
+							[
+								'srcset' => 'small_cat.jpg',
+								'media' => '(max-width: 400px)'
+							],
+							[
+								'srcset' => 'medium_cat.jpg',
+								'media' => '(max-width: 800px)'
+							]
+						]
+					]),
+					'viewport' => json_encode ( [] ),
+				],
+			],
+			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_picture.php'),
+		],
+		'shouldNotApplyFetchPriorityToTheWrongElement' => [
+			'config' => [
+				'html' => $html_input_with_bg_image_lcp,
+				'row' => [
+					'status' => 'completed',
+					'url' => 'http://example.org',
+					'lcp'      => json_encode( (object) [
+						'type' => 'img',
+						'src'  => 'http://example.org/wp-content/uploads/image.jpg',
+					] ),
+					'viewport' => json_encode( [
+						0 => (object) [
+							'type' => 'img',
+							'src'  => 'http://example.org/wp-content/uploads/image2.jpg',
+						],
+						1 => (object) [
+							'type' => 'img',
+							'src'  => 'http://example.org/wp-content/uploads/image3.jpg',
+						],
+					] ),
+				],
+			],
+			'expected' => $html_output_with_bg_image_lcp,
+		],
+		'shouldApplyFetchPriorityToTheImgTagWithPictureElement' => [
+			'config' => [
+				'html' => $html_input_with_picture_img_lcp,
+				'row' => [
+					'status' => 'completed',
+					'url' => 'http://example.org',
+					'lcp'      => json_encode( (object) [
+						'type' => 'img',
+						'src'  => 'http://example.org/wp-content/uploads/image.jpg',
+					] ),
+					'viewport' => json_encode( [
+						0 => (object) [
+							'type' => 'img',
+							'src'  => 'http://example.org/wp-content/uploads/image2.jpg',
+						],
+						1 => (object) [
+							'type' => 'img',
+							'src'  => 'http://example.org/wp-content/uploads/image3.jpg',
+						],
+					] ),
+				],
+			],
+			'expected' => $html_output_with_picture_img_lcp,
+		],
+		'shouldApplyFetchPriorityToTheImgElement' => [
+			'config' => [
+				'html' => $html_input_with_img_lcp,
+				'row' => [
+					'status' => 'completed',
+					'url' => 'http://example.org',
+					'lcp'      => json_encode( (object) [
+						'type' => 'img',
+						'src'  => 'http://example.org/wp-content/uploads/image.jpg',
+					] ),
+					'viewport' => json_encode( [
+						0 => (object) [
+							'type' => 'img',
+							'src'  => 'http://example.org/wp-content/uploads/image2.jpg',
+						],
+						1 => (object) [
+							'type' => 'img',
+							'src'  => 'http://example.org/wp-content/uploads/image3.jpg',
+						],
+					] ),
+				],
+			],
+			'expected' => $html_output_with_img_lcp,
+		],
+		'shouldNotDoAnythingIfNoLcp' => [
+			'config' => [
+				'html' => $html_input,
+				'row' => [
+					'status' => 'completed',
+					'url' => 'http://example.org',
+					'lcp'      => 'not found',
+					'viewport' => json_encode( [
+					] ),
+				],
+			],
+			'expected' => $html_output,
+		],
 		'shouldPreloadPictureTag' => [
 			'config' => [
 				'html' => file_get_contents(__DIR__ . '/HTML/input_lcp_picture.php'),
@@ -228,91 +416,6 @@ return [
 				],
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_picture_3.php'),
-		],
-		'shouldNotApplyFetchPriorityToTheWrongElement' => [
-			'config' => [
-				'html' => $html_input_with_bg_image_lcp,
-				'row' => [
-					'status' => 'completed',
-					'url' => 'http://example.org',
-					'lcp'      => json_encode( (object) [
-						'type' => 'img',
-						'src'  => 'http://example.org/wp-content/uploads/image.jpg',
-					] ),
-					'viewport' => json_encode( [
-						0 => (object) [
-							'type' => 'img',
-							'src'  => 'http://example.org/wp-content/uploads/image2.jpg',
-						],
-						1 => (object) [
-							'type' => 'img',
-							'src'  => 'http://example.org/wp-content/uploads/image3.jpg',
-						],
-					] ),
-				],
-			],
-			'expected' => $html_output_with_bg_image_lcp,
-		],
-		'shouldApplyFetchPriorityToTheImgTagWithPictureElement' => [
-			'config' => [
-				'html' => $html_input_with_picture_img_lcp,
-				'row' => [
-					'status' => 'completed',
-					'url' => 'http://example.org',
-					'lcp'      => json_encode( (object) [
-						'type' => 'img',
-						'src'  => 'http://example.org/wp-content/uploads/image.jpg',
-					] ),
-					'viewport' => json_encode( [
-						0 => (object) [
-							'type' => 'img',
-							'src'  => 'http://example.org/wp-content/uploads/image2.jpg',
-						],
-						1 => (object) [
-							'type' => 'img',
-							'src'  => 'http://example.org/wp-content/uploads/image3.jpg',
-						],
-					] ),
-				],
-			],
-			'expected' => $html_output_with_picture_img_lcp,
-		],
-		'shouldApplyFetchPriorityToTheImgElement' => [
-			'config' => [
-				'html' => $html_input_with_img_lcp,
-				'row' => [
-					'status' => 'completed',
-					'url' => 'http://example.org',
-					'lcp'      => json_encode( (object) [
-						'type' => 'img',
-						'src'  => 'http://example.org/wp-content/uploads/image.jpg',
-					] ),
-					'viewport' => json_encode( [
-						0 => (object) [
-							'type' => 'img',
-							'src'  => 'http://example.org/wp-content/uploads/image2.jpg',
-						],
-						1 => (object) [
-							'type' => 'img',
-							'src'  => 'http://example.org/wp-content/uploads/image3.jpg',
-						],
-					] ),
-				],
-			],
-			'expected' => $html_output_with_img_lcp,
-		],
-		'shouldNotDoAnythingIfNoLcp' => [
-			'config' => [
-				'html' => $html_input,
-				'row' => [
-					'status' => 'completed',
-					'url' => 'http://example.org',
-					'lcp'      => 'not found',
-					'viewport' => json_encode( [
-					] ),
-				],
-			],
-			'expected' => $html_output,
 		],
 	],
 ];
