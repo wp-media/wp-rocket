@@ -30,13 +30,14 @@ class gulpJs {
 			rename_options.suffix = '.min';
 		}
 
-		if ( load_sourcemaps ) {
+		stream = stream.pipe( rename( rename_options ) );
+
+		if ( minify && load_sourcemaps ) {
 			stream = stream.pipe(sourcemaps.init({loadMaps: false}))
 				.pipe(sourcemaps.write('./'));
 		}
 
-		stream = stream.pipe( rename( rename_options ) )
-			.pipe(gulp.dest('assets/js'));
+		stream = stream.pipe(gulp.dest('assets/js'));
 
 		return stream;
 	}
