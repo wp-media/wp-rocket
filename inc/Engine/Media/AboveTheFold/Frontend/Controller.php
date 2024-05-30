@@ -449,7 +449,7 @@ class Controller {
 			// Check if the media attribute is empty and the type attribute is not.
 			if ( empty( $media ) && ! empty( $source->type ) ) {
 				// Generate the link tag.
-				$tag .= $start_tag . 'href="' . $source->srcset . '" ' . ( $sizes ?? '' ) . $end_tag;
+				$tag .= $start_tag . 'imagesrcset="' . $source->srcset . '" ' . ( $sizes ?? '' ) . $end_tag;
 				break;
 			}
 

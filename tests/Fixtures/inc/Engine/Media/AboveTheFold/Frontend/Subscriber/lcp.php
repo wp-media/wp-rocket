@@ -142,177 +142,177 @@ return [
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_responsive.php'),
 		],
-	],
-	'shouldPreloadPictureTag' => [
-		'config' => [
-			'html' => file_get_contents(__DIR__ . '/HTML/input_lcp_picture.php'),
-			'row' => [
-				'status' => 'completed',
-				'url' => 'http://example.org',
-				'lcp' => json_encode( (object) [
-					'type' => 'picture',
-					'src' => 'large_cat.jpg',
-					'sources' => [
-						[
-							'srcset' => 'small_cat.jpg',
-							'media' => '(max-width: 400px)',
-							'type'  => '',
-							'sizes' => '',
-						],
-						[
-							'srcset' => 'medium_cat.jpg',
-							'media' => '(max-width: 800px)',
-							'type'  => '',
-							'sizes' => '',
+		'shouldPreloadPictureTag' => [
+			'config' => [
+				'html' => file_get_contents(__DIR__ . '/HTML/input_lcp_picture.php'),
+				'row' => [
+					'status' => 'completed',
+					'url' => 'http://example.org',
+					'lcp' => json_encode( (object) [
+						'type' => 'picture',
+						'src' => 'large_cat.jpg',
+						'sources' => [
+							[
+								'srcset' => 'small_cat.jpg',
+								'media' => '(max-width: 400px)',
+								'type'  => '',
+								'sizes' => '',
+							],
+							[
+								'srcset' => 'medium_cat.jpg',
+								'media' => '(max-width: 800px)',
+								'type'  => '',
+								'sizes' => '',
+							]
 						]
-					]
-				]),
-				'viewport' => json_encode ( [] ),
+					]),
+					'viewport' => json_encode ( [] ),
+				],
 			],
+			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_picture.php'),
 		],
-		'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_picture.php'),
-	],
-	'shouldPreloadPictureTag2' => [
-		'config' => [
-			'html' => file_get_contents(__DIR__ . '/HTML/input_lcp_picture_2.php'),
-			'row' => [
-				'status' => 'completed',
-				'url' => 'http://example.org',
-				'lcp' => json_encode( (object) [
-					'type' => 'picture',
-					'src' => '',
-					'sources' => [
-						[
-							'srcset' => 'https://imagify.rocketlabsqa.ovh/wp-content/uploads/2024/05/home-new-bg-free-img-—-kopia-1024x576.jpg.avif 1024w, https://imagify.rocketlabsqa.ovh/wp-content/uploads/2024/05/home-new-bg-free-img-—-kopia-300x169.jpg.avif 300w, https://imagify.rocketlabsqa.ovh/wp-content/uploads/2024/05/home-new-bg-free-img-—-kopia-768x432.jpg.avif 768w, https://imagify.rocketlabsqa.ovh/wp-content/uploads/2024/05/home-new-bg-free-img-—-kopia-1536x864.jpg.avif 1536w, https://imagify.rocketlabsqa.ovh/wp-content/uploads/2024/05/home-new-bg-free-img-—-kopia-1200x675.jpg.avif 1200w, https://imagify.rocketlabsqa.ovh/wp-content/uploads/2024/05/home-new-bg-free-img-—-kopia-600x338.jpg.avif 600w, https://imagify.rocketlabsqa.ovh/wp-content/uploads/2024/05/home-new-bg-free-img-—-kopia.jpg.avif 1920w',
-							'media' => '',
-							'type' => 'image/avif',
-							'sizes' => '(max-width: 1024px) 100vw, 1024px'
-						],
-						[
-							'srcset' => 'https://imagify.rocketlabsqa.ovh/wp-content/uploads/2024/05/home-new-bg-free-img-—-kopia-1024x576.jpg.webp 1024w, https://imagify.rocketlabsqa.ovh/wp-content/uploads/2024/05/home-new-bg-free-img-—-kopia-300x169.jpg.webp 300w, https://imagify.rocketlabsqa.ovh/wp-content/uploads/2024/05/home-new-bg-free-img-—-kopia-768x432.jpg.webp 768w, https://imagify.rocketlabsqa.ovh/wp-content/uploads/2024/05/home-new-bg-free-img-—-kopia-1536x864.jpg.webp 1536w, https://imagify.rocketlabsqa.ovh/wp-content/uploads/2024/05/home-new-bg-free-img-—-kopia-1200x675.jpg.webp 1200w, https://imagify.rocketlabsqa.ovh/wp-content/uploads/2024/05/home-new-bg-free-img-—-kopia-600x338.jpg.webp 600w',
-							'media' => '',
-							'type' => 'image/webp',
-							'sizes' => '(max-width: 1024px) 100vw, 1024px'
+		'shouldPreloadPictureTag2' => [
+			'config' => [
+				'html' => file_get_contents(__DIR__ . '/HTML/input_lcp_picture_2.php'),
+				'row' => [
+					'status' => 'completed',
+					'url' => 'http://example.org',
+					'lcp' => json_encode( (object) [
+						'type' => 'picture',
+						'src' => '',
+						'sources' => [
+							[
+								'srcset' => 'https://imagify.rocketlabsqa.ovh/wp-content/uploads/2024/05/home-new-bg-free-img-—-kopia-1024x576.jpg.avif 1024w, https://imagify.rocketlabsqa.ovh/wp-content/uploads/2024/05/home-new-bg-free-img-—-kopia-300x169.jpg.avif 300w, https://imagify.rocketlabsqa.ovh/wp-content/uploads/2024/05/home-new-bg-free-img-—-kopia-768x432.jpg.avif 768w, https://imagify.rocketlabsqa.ovh/wp-content/uploads/2024/05/home-new-bg-free-img-—-kopia-1536x864.jpg.avif 1536w, https://imagify.rocketlabsqa.ovh/wp-content/uploads/2024/05/home-new-bg-free-img-—-kopia-1200x675.jpg.avif 1200w, https://imagify.rocketlabsqa.ovh/wp-content/uploads/2024/05/home-new-bg-free-img-—-kopia-600x338.jpg.avif 600w, https://imagify.rocketlabsqa.ovh/wp-content/uploads/2024/05/home-new-bg-free-img-—-kopia.jpg.avif 1920w',
+								'media' => '',
+								'type' => 'image/avif',
+								'sizes' => '(max-width: 1024px) 100vw, 1024px'
+							],
+							[
+								'srcset' => 'https://imagify.rocketlabsqa.ovh/wp-content/uploads/2024/05/home-new-bg-free-img-—-kopia-1024x576.jpg.webp 1024w, https://imagify.rocketlabsqa.ovh/wp-content/uploads/2024/05/home-new-bg-free-img-—-kopia-300x169.jpg.webp 300w, https://imagify.rocketlabsqa.ovh/wp-content/uploads/2024/05/home-new-bg-free-img-—-kopia-768x432.jpg.webp 768w, https://imagify.rocketlabsqa.ovh/wp-content/uploads/2024/05/home-new-bg-free-img-—-kopia-1536x864.jpg.webp 1536w, https://imagify.rocketlabsqa.ovh/wp-content/uploads/2024/05/home-new-bg-free-img-—-kopia-1200x675.jpg.webp 1200w, https://imagify.rocketlabsqa.ovh/wp-content/uploads/2024/05/home-new-bg-free-img-—-kopia-600x338.jpg.webp 600w',
+								'media' => '',
+								'type' => 'image/webp',
+								'sizes' => '(max-width: 1024px) 100vw, 1024px'
+							]
 						]
-					]
-				]),
-				'viewport' => json_encode ( [] ),
+					]),
+					'viewport' => json_encode ( [] ),
+				],
 			],
+			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_picture_2.php'),
 		],
-		'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_picture_2.php'),
-	],
-	'shouldPreloadPictureTag3' => [
-		'config' => [
-			'html' => file_get_contents(__DIR__ . '/HTML/input_lcp_picture_3.php'),
-			'row' => [
-				'status' => 'completed',
-				'url' => 'http://example.org',
-				'lcp' => json_encode( (object) [
-					'type' => 'picture',
-					'src' => '',
-					'sources' => [
-						[
-							'srcset' => 'https://imagify.rocketlabsqa.ovh/wp-content/uploads/2024/05/home-new-bg-free-img-—-kopia-1024x576.jpg.avif',
-							'media' => '',
-							'type' => 'image/avif',
-							'sizes' => ''
-						],
-						[
-							'srcset' => 'https://imagify.rocketlabsqa.ovh/wp-content/uploads/2024/05/home-new-bg-free-img-—-kopia-1024x576.jpg.webp',
-							'media' => '',
-							'type' => 'image/webp',
-							'sizes' => ''
+		'shouldPreloadPictureTag3' => [
+			'config' => [
+				'html' => file_get_contents(__DIR__ . '/HTML/input_lcp_picture_3.php'),
+				'row' => [
+					'status' => 'completed',
+					'url' => 'http://example.org',
+					'lcp' => json_encode( (object) [
+						'type' => 'picture',
+						'src' => 'https://imagify.rocketlabsqa.ovh/wp-content/uploads/2024/05/home-new-bg-free-img--kopia-1024x576.jpg',
+						'sources' => [
+							[
+								'srcset' => 'https://imagify.rocketlabsqa.ovh/wp-content/uploads/2024/05/home-new-bg-free-img-—-kopia-1024x576.jpg.avif 1024w, https://imagify.rocketlabsqa.ovh/wp-content/uploads/2024/05/home-new-bg-free-img-—-kopia-300x169.jpg.avif 300w, https://imagify.rocketlabsqa.ovh/wp-content/uploads/2024/05/home-new-bg-free-img-—-kopia-768x432.jpg.avif 768w, https://imagify.rocketlabsqa.ovh/wp-content/uploads/2024/05/home-new-bg-free-img-—-kopia-1536x864.jpg.avif 1536w, https://imagify.rocketlabsqa.ovh/wp-content/uploads/2024/05/home-new-bg-free-img-—-kopia-1200x675.jpg.avif 1200w, https://imagify.rocketlabsqa.ovh/wp-content/uploads/2024/05/home-new-bg-free-img-—-kopia-600x338.jpg.avif 600w, https://imagify.rocketlabsqa.ovh/wp-content/uploads/2024/05/home-new-bg-free-img-—-kopia.jpg.avif 1920w',
+								'media' => '',
+								'type' => 'image/avif',
+								'sizes' => '(max-width: 1024px) 100vw, 1024px'
+							],
+							[
+								'srcset' => 'https://imagify.rocketlabsqa.ovh/wp-content/uploads/2024/05/home-new-bg-free-img-—-kopia-1024x576.jpg.webp 1024w, https://imagify.rocketlabsqa.ovh/wp-content/uploads/2024/05/home-new-bg-free-img-—-kopia-300x169.jpg.webp 300w, https://imagify.rocketlabsqa.ovh/wp-content/uploads/2024/05/home-new-bg-free-img-—-kopia-768x432.jpg.webp 768w, https://imagify.rocketlabsqa.ovh/wp-content/uploads/2024/05/home-new-bg-free-img-—-kopia-1536x864.jpg.webp 1536w, https://imagify.rocketlabsqa.ovh/wp-content/uploads/2024/05/home-new-bg-free-img-—-kopia-1200x675.jpg.webp 1200w, https://imagify.rocketlabsqa.ovh/wp-content/uploads/2024/05/home-new-bg-free-img-—-kopia-600x338.jpg.webp 600w',
+								'media' => '',
+								'type' => 'image/webp',
+								'sizes' => '(max-width: 1024px) 100vw, 1024px'
+							]
 						]
-					]
-				]),
-				'viewport' => json_encode ( [] ),
+					]),
+					'viewport' => json_encode ( [] ),
+				],
 			],
+			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_picture_3.php'),
 		],
-		'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_picture_3.php'),
-	],
-	'shouldNotApplyFetchPriorityToTheWrongElement' => [
-		'config' => [
-			'html' => $html_input_with_bg_image_lcp,
-			'row' => [
-				'status' => 'completed',
-				'url' => 'http://example.org',
-				'lcp'      => json_encode( (object) [
-					'type' => 'img',
-					'src'  => 'http://example.org/wp-content/uploads/image.jpg',
-				] ),
-				'viewport' => json_encode( [
-					0 => (object) [
+		'shouldNotApplyFetchPriorityToTheWrongElement' => [
+			'config' => [
+				'html' => $html_input_with_bg_image_lcp,
+				'row' => [
+					'status' => 'completed',
+					'url' => 'http://example.org',
+					'lcp'      => json_encode( (object) [
 						'type' => 'img',
-						'src'  => 'http://example.org/wp-content/uploads/image2.jpg',
-					],
-					1 => (object) [
-						'type' => 'img',
-						'src'  => 'http://example.org/wp-content/uploads/image3.jpg',
-					],
-				] ),
+						'src'  => 'http://example.org/wp-content/uploads/image.jpg',
+					] ),
+					'viewport' => json_encode( [
+						0 => (object) [
+							'type' => 'img',
+							'src'  => 'http://example.org/wp-content/uploads/image2.jpg',
+						],
+						1 => (object) [
+							'type' => 'img',
+							'src'  => 'http://example.org/wp-content/uploads/image3.jpg',
+						],
+					] ),
+				],
 			],
+			'expected' => $html_output_with_bg_image_lcp,
 		],
-		'expected' => $html_output_with_bg_image_lcp,
-	],
-	'shouldApplyFetchPriorityToTheImgTagWithPictureElement' => [
-		'config' => [
-			'html' => $html_input_with_picture_img_lcp,
-			'row' => [
-				'status' => 'completed',
-				'url' => 'http://example.org',
-				'lcp'      => json_encode( (object) [
-					'type' => 'img',
-					'src'  => 'http://example.org/wp-content/uploads/image.jpg',
-				] ),
-				'viewport' => json_encode( [
-					0 => (object) [
+		'shouldApplyFetchPriorityToTheImgTagWithPictureElement' => [
+			'config' => [
+				'html' => $html_input_with_picture_img_lcp,
+				'row' => [
+					'status' => 'completed',
+					'url' => 'http://example.org',
+					'lcp'      => json_encode( (object) [
 						'type' => 'img',
-						'src'  => 'http://example.org/wp-content/uploads/image2.jpg',
-					],
-					1 => (object) [
-						'type' => 'img',
-						'src'  => 'http://example.org/wp-content/uploads/image3.jpg',
-					],
-				] ),
+						'src'  => 'http://example.org/wp-content/uploads/image.jpg',
+					] ),
+					'viewport' => json_encode( [
+						0 => (object) [
+							'type' => 'img',
+							'src'  => 'http://example.org/wp-content/uploads/image2.jpg',
+						],
+						1 => (object) [
+							'type' => 'img',
+							'src'  => 'http://example.org/wp-content/uploads/image3.jpg',
+						],
+					] ),
+				],
 			],
+			'expected' => $html_output_with_picture_img_lcp,
 		],
-		'expected' => $html_output_with_picture_img_lcp,
-	],
-	'shouldApplyFetchPriorityToTheImgElement' => [
-		'config' => [
-			'html' => $html_input_with_img_lcp,
-			'row' => [
-				'status' => 'completed',
-				'url' => 'http://example.org',
-				'lcp'      => json_encode( (object) [
-					'type' => 'img',
-					'src'  => 'http://example.org/wp-content/uploads/image.jpg',
-				] ),
-				'viewport' => json_encode( [
-					0 => (object) [
+		'shouldApplyFetchPriorityToTheImgElement' => [
+			'config' => [
+				'html' => $html_input_with_img_lcp,
+				'row' => [
+					'status' => 'completed',
+					'url' => 'http://example.org',
+					'lcp'      => json_encode( (object) [
 						'type' => 'img',
-						'src'  => 'http://example.org/wp-content/uploads/image2.jpg',
-					],
-					1 => (object) [
-						'type' => 'img',
-						'src'  => 'http://example.org/wp-content/uploads/image3.jpg',
-					],
-				] ),
+						'src'  => 'http://example.org/wp-content/uploads/image.jpg',
+					] ),
+					'viewport' => json_encode( [
+						0 => (object) [
+							'type' => 'img',
+							'src'  => 'http://example.org/wp-content/uploads/image2.jpg',
+						],
+						1 => (object) [
+							'type' => 'img',
+							'src'  => 'http://example.org/wp-content/uploads/image3.jpg',
+						],
+					] ),
+				],
 			],
+			'expected' => $html_output_with_img_lcp,
 		],
-		'expected' => $html_output_with_img_lcp,
-	],
-	'shouldNotDoAnythingIfNoLcp' => [
-		'config' => [
-			'html' => $html_input,
-			'row' => [
-				'status' => 'completed',
-				'url' => 'http://example.org',
-				'lcp'      => 'not found',
-				'viewport' => json_encode( [
-				] ),
+		'shouldNotDoAnythingIfNoLcp' => [
+			'config' => [
+				'html' => $html_input,
+				'row' => [
+					'status' => 'completed',
+					'url' => 'http://example.org',
+					'lcp'      => 'not found',
+					'viewport' => json_encode( [
+					] ),
+				],
 			],
+			'expected' => $html_output,
 		],
-		'expected' => $html_output,
 	],
 ];
