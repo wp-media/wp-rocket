@@ -193,7 +193,7 @@ class RocketLcpBeacon {
 			if (full_bg_prop.includes("image-set(")) {
 				element_info.type = "bg-img-set";
 			}
-			if (!full_bg_prop || full_bg_prop === "") {
+			if (!full_bg_prop || full_bg_prop === "" || full_bg_prop.includes( 'data:image' ) ) {
 				return null;
 			}
 
