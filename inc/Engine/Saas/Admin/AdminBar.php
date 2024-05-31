@@ -58,7 +58,11 @@ class AdminBar extends Abstract_Render {
 			return;
 		}
 
-		if ( 'local' === wp_get_environment_type() ) {
+		if (
+			'local' === wp_get_environment_type()
+			&&
+			(bool) $this->options->get( 'remove_unused_css', 0 )
+		) {
 			return;
 		}
 
@@ -112,7 +116,11 @@ class AdminBar extends Abstract_Render {
 	public function add_clean_url_menu_item( WP_Admin_Bar $wp_admin_bar ) {
 		global $post;
 
-		if ( 'local' === wp_get_environment_type() ) {
+		if (
+			'local' === wp_get_environment_type()
+			&&
+			$this->rucss_url_context->is_allowed()
+		) {
 			return;
 		}
 
@@ -183,7 +191,11 @@ class AdminBar extends Abstract_Render {
 	 * @return void
 	 */
 	public function display_dashboard_button() {
-		if ( 'local' === wp_get_environment_type() ) {
+		if (
+			'local' === wp_get_environment_type()
+			&&
+			$this->rucss_url_context->is_allowed()
+		) {
 			return;
 		}
 
