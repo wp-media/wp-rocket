@@ -502,6 +502,7 @@ class Controller {
 			'li',
 			'svg',
 			'section',
+			'header',
 		];
 
 		$default_elements = $elements;
