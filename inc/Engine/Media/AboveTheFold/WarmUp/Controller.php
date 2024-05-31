@@ -59,6 +59,10 @@ class Controller {
 	 * @return void
 	 */
 	public function warm_up(): void {
+		if ( 'local' === wp_get_environment_type() ) {
+			return;
+		}
+
 		if ( (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
 			return;
 		}

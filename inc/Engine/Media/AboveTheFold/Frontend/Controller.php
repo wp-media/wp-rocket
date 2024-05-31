@@ -146,12 +146,23 @@ class Controller {
 			return $html;
 		}
 
-		$url  = preg_quote( $lcp->src, '/' );
+		$html    = $this->replace_html_comments( $html );
+		$url     = preg_quote( $lcp->src, '/' );
+		$pattern = '#<img(?:[^>]*?\s+)?src=["\']' . $url . '["\'](?:\s+[^>]*?)?>#';
+		if ( wp_http_validate_url( $lcp->src ) && ! $this->is_external_file( $lcp->src ) ) {
+			$url = preg_quote(
+				wp_parse_url( $lcp->src, PHP_URL_PATH ),
+			'/'
+				);
+
+			$pattern = '#<img(?:[^>]*?\s+)?src\s*=\s*["\'](?:https?:)?(?:\/\/(?:[^\/]+)\/?)?\/?' . $url . '["\'](?:\s+[^>]*?)?>#i';
+		}
+
 		$html = preg_replace_callback(
-			'#<img(?:[^>]*?\s+)?src=["\']' . $url . '["\'](?:\s+[^>]*?)?>#',
+			$pattern,
 			function ( $matches ) {
 				// Check if the fetchpriority attribute already exists.
-				if ( preg_match( '/fetchpriority\s*=\s*[\'"]([^\'"]+)[\'"]/i', $matches[0] ) ) {
+				if ( preg_match( '/<img[^>]*\sfetchpriority(?:\s*=\s*["\'][^"\']*["\'])?[^>]*>/i', $matches[0] ) ) {
 					// If it exists, don't modify the tag.
 					return $matches[0];
 				}
@@ -163,7 +174,7 @@ class Controller {
 			1
 		);
 
-		return $html;
+		return $this->restore_html_comments( $html );
 	}
 
 	/**
@@ -474,6 +485,7 @@ class Controller {
 			'li',
 			'svg',
 			'section',
+			'header',
 		];
 
 		$default_elements = $elements;

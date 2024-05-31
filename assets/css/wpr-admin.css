@@ -92,6 +92,18 @@ a:focus, button:focus {
   justify-content: center;
 }
 
+.wpr-mt-2 {
+  margin-top: 20px;
+}
+
+.wpr-fs-sm {
+  font-size: 0.9em;
+}
+
+.wpr-fs-md {
+  font-size: 1em;
+}
+
 /*-----------------------------------------------*\
 
 	Icons in a font-icon with icomoon (https://icomoon.io/app)
@@ -277,6 +289,14 @@ a:focus, button:focus {
 
 .wpr-icon-tutorial-alt:before {
   content: url("../img/play-alt.svg");
+}
+
+.wpr-imagify-info:before {
+  content: url("../img/imagify-info.svg");
+}
+
+.wpr-imagify-install:before {
+  content: url("../img/imagify-install.svg");
 }
 
 .wpr-title1 {
@@ -2356,7 +2376,7 @@ div.wpr-upgrade-websites {
   margin-top: 30px;
 }
 .wpr-imagify-description {
-  width: 33.3333333333%;
+  width: 40%;
   padding-right: 60px;
 }
 @media (max-width: 1239px) {
@@ -2366,7 +2386,7 @@ div.wpr-upgrade-websites {
   }
 }
 .wpr-imagify-screenshot {
-  width: 66.6666666667%;
+  width: 60%;
 }
 @media (max-width: 1239px) {
   .wpr-imagify-screenshot {
@@ -2396,12 +2416,22 @@ div.wpr-upgrade-websites {
   margin-top: 0;
 }
 .wpr-imagify ul {
-  margin-top: 0;
-  margin-left: 40px;
-  list-style-type: ">";
+  margin-top: 40px;
 }
 .wpr-imagify li {
-  padding-left: 7px;
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 35px;
+}
+.wpr-imagify li:before {
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+.wpr-imagify li .text {
+  flex-grow: 1;
+  display: inline-block;
 }
 .wpr-imagify a {
   text-decoration: none;
@@ -2421,6 +2451,41 @@ div.wpr-upgrade-websites {
   padding: 20px 45px;
   text-shadow: none;
   text-transform: uppercase;
+}
+
+.wpr-imagify-plugin-tile {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 20px;
+  background-color: #f9fafb;
+  margin-top: 20px;
+  border: 1px solid #ebe9e9;
+}
+.wpr-imagify-plugin-tile-info {
+  margin-left: 20px;
+}
+.wpr-imagify-plugin-tile-info .wpr-star-rating {
+  display: flex;
+  align-items: center;
+}
+.wpr-imagify-plugin-tile-info .star-rating .star {
+  font-size: 16px;
+  width: 16px;
+  height: 13px;
+}
+.wpr-imagify-plugin-tile-info .num-ratings {
+  font-size: 13px;
+  margin-left: 10px;
+}
+.wpr-imagify-plugin-tile-title {
+  margin-bottom: 5px;
+}
+.wpr-imagify-plugin-tile .wpr-button {
+  margin-left: auto;
+}
+.wpr-imagify-plugin-tile .wpr-button:before {
+  margin-right: 5px;
 }
 
 .wpr-tutorials-section {
