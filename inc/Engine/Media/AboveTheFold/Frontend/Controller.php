@@ -394,6 +394,19 @@ class Controller {
 			$height_threshold = $default_height_threshold;
 		}
 
+		$default_delay = 500;
+
+		/**
+		 * Filters the delay before the LCP beacon is triggered.
+		 *
+		 * @param int $delay The delay in milliseconds. Default is 500.
+		 */
+		$delay = apply_filters( 'rocket_lcp_delay', $default_delay );
+
+		if ( ! is_int( $delay ) ) {
+			$delay = $default_delay;
+		}
+
 		$data = [
 			'ajax_url'         => admin_url( 'admin-ajax.php' ),
 			'nonce'            => wp_create_nonce( 'rocket_lcp' ),
@@ -402,6 +415,7 @@ class Controller {
 			'elements'         => $this->lcp_atf_elements(),
 			'width_threshold'  => $width_threshold,
 			'height_threshold' => $height_threshold,
+			'delay'            => $delay,
 			'debug'            => rocket_get_constant( 'WP_ROCKET_DEBUG' ),
 		];
 
@@ -485,6 +499,7 @@ class Controller {
 			'li',
 			'svg',
 			'section',
+			'header',
 		];
 
 		$default_elements = $elements;
