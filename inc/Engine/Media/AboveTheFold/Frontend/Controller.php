@@ -457,8 +457,8 @@ class Controller {
 				$sizes = 'imagesizes="' . $source->sizes . '"';
 			}
 
-			// Check if the media attribute is empty and the type attribute is not.
-			if ( empty( $media ) && ! empty( $source->type ) ) {
+			// Check if the media attribute is empty and the type attribute is not and if there are multiple URL in the srcset attribute.
+			if ( empty( $media ) && ! empty( $source->type ) && substr_count( $source->srcset, ',' ) > 0 ) {
 				// Generate the link tag.
 				$tag .= $start_tag . 'imagesrcset="' . $source->srcset . '" ' . ( $sizes ?? '' ) . $end_tag;
 				break;
