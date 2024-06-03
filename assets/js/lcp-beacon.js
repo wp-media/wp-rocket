@@ -351,14 +351,14 @@ class RocketLcpBeacon {
 		if (document.readyState !== 'loading') {
 			setTimeout(() => {
 				instance.init();
-			}, 500);
+			}, window.rocket_lcp_data.delay);
 			return;
 		}
 
 		document.addEventListener("DOMContentLoaded", () => {
 			setTimeout(() => {
 				instance.init();
-			}, 500);
+			}, window.rocket_lcp_data.delay);
 		});
 	}
 }
