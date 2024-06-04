@@ -51,6 +51,15 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
+	 * Preload the homepage
+	 *
+	 * @return void
+	 */
+	public function preload_homepage() {
+		$this->settings->preload_homepage();
+	}
+
+	/**
 	 * Clear the cache table and preload
 	 *
 	 * @return void

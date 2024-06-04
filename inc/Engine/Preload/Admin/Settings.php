@@ -121,6 +121,19 @@ class Settings {
 	}
 
 	/**
+	 * Preload the homepage.
+	 *
+	 * @return void
+	 */
+	public function preload_homepage() {
+		if ( ! $this->is_enabled() ) {
+			return;
+		}
+
+		$this->preload_url->preload_url( home_url() );
+	}
+
+	/**
 	 * Clear cache table and preload.
 	 *
 	 * @return void
