@@ -166,7 +166,22 @@ class Controller {
 				// For other types, add the first non-empty key to the object.
 				foreach ( $keys as $key ) {
 					if ( isset( $image->$key ) && ! empty( $image->$key ) ) {
-						$object->$key = $this->sanitize_image_url( $image->$key );
+						if ( is_array( $image->$key ) ) {
+							$sanitized_array = array_map(
+								function ( $item ) {
+									if ( ! empty( $item->src ) ) {
+										$item->src = $this->sanitize_image_url( $item->src );
+									}
+									return $item;
+								},
+								$image->$key
+							);
+
+							$object->$key = $sanitized_array;
+
+						} else {
+							$object->$key = $this->sanitize_image_url( $image->$key );
+						}
 						break;
 					}
 				}
