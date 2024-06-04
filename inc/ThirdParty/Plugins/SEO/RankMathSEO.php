@@ -18,7 +18,6 @@ class RankMathSEO implements Subscriber_Interface {
 			return [];
 		}
 
-		// @phpstan-ignore-next-line
 		if ( ! defined( 'RANK_MATH_FILE' ) || ! Helper::is_module_active( 'sitemap' ) ) {
 			return [];
 		}
@@ -40,7 +39,6 @@ class RankMathSEO implements Subscriber_Interface {
 			return $sitemaps;
 		}
 
-		// @phpstan-ignore-next-line
 		$sitemaps[] = Router::get_base_url( 'sitemap_index.xml' );
 
 		return $sitemaps;
