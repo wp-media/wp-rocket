@@ -286,6 +286,94 @@ return [
 			],
 		],
 	],
+	'testShouldSanitizeArrayLCPAndATF' => [
+		'config'   => [
+			'filter'    => true,
+			'url'       => 'http://example.org',
+			'is_mobile' => false,
+			'images'    => json_encode(
+				[
+					(object) [
+						'label' => 'lcp',
+						'type'  => 'bg-img',
+						'src'   => 'http://example.org/lcp.jpg',
+						'bg_set' => [
+							[
+								'src' => 'http://example.org/anotherlcp.jpg'
+							],
+							[
+								'src' => 'http://example.org/anotherlcp2.jpg'
+							]
+						]
+					],
+					(object) [
+						'label' => 'above-the-fold',
+						'type'  => 'img',
+						'src'   => 'http://example.org/above-the-fold.jpg',
+					],
+				]
+			),
+		],
+		'expected' => [
+			'images_valid_sources' => [
+			],
+			'item'    => [
+				'url'           => 'http://example.org',
+				'is_mobile'     => false,
+				'status'        => 'completed',
+				'lcp'           => json_encode(
+					(object) [
+						'type' => 'bg-img',
+						'src'  => 'http://example.org/lcp.jpg',
+						'bg_set' => [
+							[
+								'src'  => 'http://example.org/anotherlcp.jpg'
+							],
+							[
+								'src'  => 'http://example.org/anotherlcp2.jpg'
+							],
+						]
+					],
+				),
+				'viewport'      => json_encode( [
+					(object) [
+						'type' => 'img',
+						'src'  => 'http://example.org/above-the-fold.jpg',
+					],
+				] ),
+				'last_accessed' => '2024-01-01 00:00:00',
+				'error_message' => '',
+			],
+			'result'  => true,
+			'message' => [
+				'url'           => 'http://example.org',
+				'is_mobile'     => false,
+				'status'        => 'completed',
+				'lcp'           => json_encode(
+					(object) [
+						'type' => 'bg-img',
+						'src'  => 'http://example.org/lcp.jpg',
+						'bg_set' => [
+							[
+							'src'  => 'http://example.org/anotherlcp.jpg'
+							],
+							[
+								'src'  => 'http://example.org/anotherlcp2.jpg'
+							],
+						]
+					],
+				),
+				'viewport'      => json_encode( [
+					(object) [
+						'type' => 'img',
+						'src'  => 'http://example.org/above-the-fold.jpg',
+					],
+				] ),
+				'last_accessed' => '2024-01-01 00:00:00',
+				'error_message' => '',
+			],
+		],
+	],
 	'testShouldAddLongItemToDB' => [
 		'config'   => [
 			'filter'    => true,
