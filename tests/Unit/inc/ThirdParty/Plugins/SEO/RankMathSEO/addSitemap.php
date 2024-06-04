@@ -31,7 +31,7 @@ class Test_RocketSitemap extends TestCase {
 
 		$this->assertSame(
 			$expected,
-			$this->subscriber->rocket_sitemap( $config['sitemaps'] )
+			$this->subscriber->add_sitemap( $config['sitemaps'] )
 		);
 	}
 }
