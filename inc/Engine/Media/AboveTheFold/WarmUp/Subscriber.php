@@ -29,9 +29,10 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'wp_rocket_upgrade'          => [ 'warm_up_on_update', 10, 2 ],
-			'rocket_after_clear_atf'     => 'warm_up',
-			'rocket_saas_api_queued_url' => 'add_wpr_imagedimensions_query_arg',
+			'wp_rocket_upgrade'             => [ 'warm_up_on_update', 10, 2 ],
+			'rocket_after_clear_atf'        => 'warm_up',
+			'rocket_saas_api_queued_url'    => 'add_wpr_imagedimensions_query_arg',
+			'rocket_domain_options_changed' => 'warm_up',
 		];
 	}
 
