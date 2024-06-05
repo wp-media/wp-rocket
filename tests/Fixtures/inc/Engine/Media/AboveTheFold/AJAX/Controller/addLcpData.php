@@ -544,6 +544,50 @@ return [
 			],
 		],
 	],
+	'testShouldReturnNotFound' => [
+		'config'   => [
+			'filter'    => true,
+			'url'       => 'http://example.org',
+			'is_mobile' => false,
+			'images'    => json_encode(
+				[
+					(object) [
+						'label' => 'lcp',
+						'src'   => "",
+						'bg_set' => [],
+						'type' => ''
+					],
+					(object) [
+						'label' => 'above-the-fold',
+						'type'  => '',
+						'src'   => '',
+					],
+				]
+			),
+		],
+		'expected' => [
+			'images_valid_sources' => [],
+			'item'    => [
+				'url'           => 'http://example.org',
+				'is_mobile'     => false,
+				'status'        => 'completed',
+				'lcp'           => 'not found',
+				'viewport'      => '[]',
+				'last_accessed' => '2024-01-01 00:00:00',
+				'error_message' => '',
+			],
+			'result'  => true,
+			'message' => [
+				'url'           => 'http://example.org',
+				'is_mobile'     => false,
+				'status'        => 'completed',
+				'lcp'           => 'not found',
+				'viewport'      => '[]',
+				'last_accessed' => '2024-01-01 00:00:00',
+				'error_message' => '',
+			],
+		],
+	],
 
 	'testShouldAddItemToDBWhenScriptError' => [
 		'config'   => [
