@@ -63,7 +63,7 @@ class Test_WarmUp extends TestCase {
 				->andReturn($config['remove_unused_css']);
 		}
 
-		$api_client->shouldReceive('add_to_atf_queue')
+		$queue->shouldReceive('add_job_warmup_url')
 			->times($expected);
 
 		$controller->warm_up();
