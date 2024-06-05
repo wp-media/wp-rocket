@@ -379,7 +379,7 @@ return [
 					'url' => 'http://example.org',
 					'lcp' => json_encode( (object) [
 						'type' => 'picture',
-						'src' => 'https://imagify.rocketlabsqa.ovh/wp-content/uploads/2024/05/home-new-bg-free-img--kopia-1024x576.jpg',
+						'src' => 'https://imagify.rocketlabsqa.ovh/wp-content/uploads/2024/05/home-new-bg-free-img-%E2%80%94-kopia-1024x576.jpg',
 						'sources' => [
 							[
 								'srcset' => 'https://imagify.rocketlabsqa.ovh/wp-content/uploads/2024/05/home-new-bg-free-img-—-kopia-1024x576.jpg.avif 1024w, https://imagify.rocketlabsqa.ovh/wp-content/uploads/2024/05/home-new-bg-free-img-—-kopia-300x169.jpg.avif 300w, https://imagify.rocketlabsqa.ovh/wp-content/uploads/2024/05/home-new-bg-free-img-—-kopia-768x432.jpg.avif 768w, https://imagify.rocketlabsqa.ovh/wp-content/uploads/2024/05/home-new-bg-free-img-—-kopia-1536x864.jpg.avif 1536w, https://imagify.rocketlabsqa.ovh/wp-content/uploads/2024/05/home-new-bg-free-img-—-kopia-1200x675.jpg.avif 1200w, https://imagify.rocketlabsqa.ovh/wp-content/uploads/2024/05/home-new-bg-free-img-—-kopia-600x338.jpg.avif 600w, https://imagify.rocketlabsqa.ovh/wp-content/uploads/2024/05/home-new-bg-free-img-—-kopia.jpg.avif 1920w',

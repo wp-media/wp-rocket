@@ -16,7 +16,7 @@
 	<picture decoding="async">
 		<source type="image/avif" srcset="https://imagify.rocketlabsqa.ovh/wp-content/uploads/2024/05/home-new-bg-free-img-—-kopia-1024x576.jpg.avif">
 		<source type="image/webp" srcset="https://imagify.rocketlabsqa.ovh/wp-content/uploads/2024/05/home-new-bg-free-img-—-kopia-1024x576.jpg.webp">
-		<img decoding="async" src="https://imagify.rocketlabsqa.ovh/wp-content/uploads/2024/05/home-new-bg-free-img-—-kopia-1024x576.jpg">
+		<img fetchpriority="high" decoding="async" src="https://imagify.rocketlabsqa.ovh/wp-content/uploads/2024/05/home-new-bg-free-img-—-kopia-1024x576.jpg">
 	</picture>
 </div>
 
