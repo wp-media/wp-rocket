@@ -111,6 +111,11 @@ class Controller {
 		$preload .= $this->preload_tag( $lcp );
 
 		$replace = preg_replace( '#' . $title . '#', $preload, $html, 1 );
+
+		if ( null === $replace ) {
+			return $html;
+		}
+
 		$replace = $this->set_fetchpriority( $lcp, $replace );
 
 		return $replace;
@@ -168,7 +173,13 @@ class Controller {
 				}
 
 				// If it doesn't exist, add the fetchpriority attribute.
-				return preg_replace( '/<img/', '<img fetchpriority="high"', $matches[0] );
+				$replace = preg_replace( '/<img/', '<img fetchpriority="high"', $matches[0] );
+
+				if ( null === $replace ) {
+					return $matches[0];
+				}
+
+				return $replace;
 			},
 			$html,
 			1

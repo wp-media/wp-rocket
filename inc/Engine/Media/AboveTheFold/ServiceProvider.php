@@ -14,7 +14,8 @@ use WP_Rocket\Engine\Media\AboveTheFold\Cron\{Controller as CronController, Subs
 use WP_Rocket\Engine\Media\AboveTheFold\WarmUp\{
 	APIClient,
 	Controller as WarmUpController,
-	Subscriber as WarmUpSubscriber
+	Subscriber as WarmUpSubscriber,
+	Queue
 };
 
 class ServiceProvider extends AbstractServiceProvider {
@@ -42,6 +43,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'warmup_controller',
 		'warmup_subscriber',
 		'warmup_apiclient',
+		'warmup_queue',
 	];
 
 	/**
@@ -103,6 +105,9 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		$this->getContainer()->add( 'warmup_apiclient', APIClient::class )
 			->addArgument( $this->getContainer()->get( 'options' ) );
+
+		$this->getContainer()->add( 'warmup_queue', Queue::class );
+
 		$this->getContainer()->add( 'warmup_controller', WarmUpController::class )
 			->addArguments(
 				[
@@ -110,6 +115,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					$this->getContainer()->get( 'options' ),
 					$this->getContainer()->get( 'warmup_apiclient' ),
 					$this->getContainer()->get( 'user' ),
+					$this->getContainer()->get( 'warmup_queue' ),
 				]
 			);
 		$this->getContainer()->addShared( 'warmup_subscriber', WarmUpSubscriber::class )

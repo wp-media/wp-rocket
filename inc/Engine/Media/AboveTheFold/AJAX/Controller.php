@@ -152,7 +152,23 @@ class Controller {
 	private function create_object( $image, $keys ) {
 		$object       = new \stdClass();
 		$object->type = $image->type ?? 'img';
-		$object->src  = $this->sanitize_image_url( $image->src );
+
+		if ( is_array( $image->src ) ) {
+			$sanitized_object_array = array_map(
+				function ( $item ) {
+					if ( ! empty( $item->src ) ) {
+						$item->src = $this->sanitize_image_url( $item->src );
+					}
+					return $item;
+				},
+				$image->src
+			);
+
+			$object->src = $sanitized_object_array;
+		} elseif ( ! empty( $image->src ) ) {
+			$object->src = $this->sanitize_image_url( $image->src );
+		}
+
 		switch ( $object->type ) {
 			case 'img-srcset':
 				// If the type is 'img-srcset', add all the required parameters to the object.
@@ -166,7 +182,22 @@ class Controller {
 				// For other types, add the first non-empty key to the object.
 				foreach ( $keys as $key ) {
 					if ( isset( $image->$key ) && ! empty( $image->$key ) ) {
-						$object->$key = $this->sanitize_image_url( $image->$key );
+						if ( is_array( $image->$key ) ) {
+							$sanitized_array = array_map(
+								function ( $item ) {
+									if ( ! empty( $item->src ) ) {
+										$item->src = $this->sanitize_image_url( $item->src );
+									}
+									return $item;
+								},
+								$image->$key
+							);
+
+							$object->$key = $sanitized_array;
+
+						} else {
+							$object->$key = $this->sanitize_image_url( $image->$key );
+						}
 						break;
 					}
 				}
