@@ -228,31 +228,6 @@ return [
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_with_markup_comment.html'),
 		],
-		'shouldPreloadPictureTag' => [
-			'config' => [
-				'html' => file_get_contents(__DIR__ . '/HTML/input_lcp_picture.php'),
-				'row' => [
-					'status' => 'completed',
-					'url' => 'http://example.org',
-					'lcp' => json_encode( (object) [
-						'type' => 'picture',
-						'src' => 'large_cat.jpg',
-						'sources' => [
-							[
-								'srcset' => 'small_cat.jpg',
-								'media' => '(max-width: 400px)'
-							],
-							[
-								'srcset' => 'medium_cat.jpg',
-								'media' => '(max-width: 800px)'
-							]
-						]
-					]),
-					'viewport' => json_encode ( [] ),
-				],
-			],
-			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_picture.php'),
-		],
 		'shouldNotApplyFetchPriorityToTheWrongElement' => [
 			'config' => [
 				'html' => $html_input_with_bg_image_lcp,
@@ -338,7 +313,7 @@ return [
 			],
 			'expected' => $html_output,
 		],
-		'shouldPreloadPictureTag' => [
+		'shouldPreloadPictureTag1' => [
 			'config' => [
 				'html' => file_get_contents(__DIR__ . '/HTML/input_lcp_picture.php'),
 				'row' => [

@@ -1,6 +1,6 @@
 <?php
 /**
- * Template Name: lcp_picture
+ * Template Name: lcp_picture_2
  * Template Description: test template that loads bg image
  */ ?>
 

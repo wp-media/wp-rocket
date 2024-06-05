@@ -147,7 +147,7 @@ class Controller {
 		}
 
 		$html    = $this->replace_html_comments( $html );
-		$url     = preg_quote( $lcp->src, '/' );
+		$url     = urldecode( preg_quote( $lcp->src, '/' ) );
 		$pattern = '#<img(?:[^>]*?\s+)?src=["\']' . $url . '["\'](?:\s+[^>]*?)?>#';
 		if ( wp_http_validate_url( $lcp->src ) && ! $this->is_external_file( $lcp->src ) ) {
 			$url = preg_quote(
@@ -446,51 +446,48 @@ class Controller {
 	 * @return array An associative array containing the sources array and the tag string.
 	 */
 	private function generate_source_tags( $lcp, $start_tag, $end_tag ) {
-		// Initialize the previous max-width to null.
 		$prev_max_width = null;
-		// Initialize the sources array and the tag string.
-		$sources = [];
-		$tag     = '';
+		$sources        = [];
+		$tag            = '';
 
 		// Iterate over the sources in the LCP object.
-		foreach ( $lcp->sources as $source ) {
-			// Get the media attribute of the source.
-			$media = $source->media;
+		foreach ( $lcp->sources as $i => $source ) {
+			$media = ! empty( $source->media ) ? $source->media : '';
+
 			// If a previous max-width is found, update the media query.
-			if ( null !== $prev_max_width ) {
-				// Check if $media already contains 'min-width'.
-				if ( strpos( $media, 'min-width' ) === false ) {
-					$media = '(min-width: ' . ( $prev_max_width + 0.1 ) . 'px) and ' . $media;
-				}
+			if ( null !== $prev_max_width && false === strpos( $media, 'min-width' ) ) {
+				$media = '(min-width: ' . ( $prev_max_width + 0.1 ) . 'px) and ' . $media;
 			}
 
-			// Add the source to the sources array.
+			// Add the media attribute to the media string.
+
+			$media = ! empty( $media ) ? ' media="' . $media . '"' : '';
+
 			$sources[] = $source->srcset;
+			// Get the sizes attribute of the source, if it exists.
+			$sizes = ! empty( $source->sizes ) ? ' imagesizes="' . $source->sizes . '"' : '';
 
-			if ( ! empty( $source->sizes ) ) {
-				$sizes = 'imagesizes="' . $source->sizes . '"';
-			}
-
-			// Check if the media attribute is empty and the type attribute is not and if there are multiple URL in the srcset attribute.
-			if ( empty( $media ) && ! empty( $source->type ) && substr_count( $source->srcset, ',' ) > 0 ) {
-				// Generate the link tag.
-				$tag .= $start_tag . 'imagesrcset="' . $source->srcset . '" ' . ( $sizes ?? '' ) . $end_tag;
-				break;
-			}
+			// Determine whether to use 'href' or 'imagesrcset' based on the srcset attribute.
+			$link_attribute = ( substr_count( $source->srcset, ',' ) > 0 ) ? 'imagesrcset' : 'href';
 
 			// Append the source and media query to the tag string.
-			$tag .= $start_tag . 'href="' . $source->srcset . '" media="' . $media . '" ' . ( $sizes ?? '' ) . $end_tag;
+			$tag .= $start_tag . $link_attribute . '="' . $source->srcset . '"' . ( $media ?? '' ) . $sizes . $end_tag;
 
 			// If a max-width is found in the source's media attribute, update the previous max-width.
 			if ( preg_match( '/\(max-width: (\d+(\.\d+)?)px\)/', $source->media, $matches ) ) {
 				$prev_max_width = floatval( $matches[1] );
 			}
+
+			if ( ! empty( $source->type ) ) {
+				break;
+			}
 		}
+
 		// If a previous max-width is found, update the media query and add the LCP source to the sources array and the tag string.
 		if ( null !== $prev_max_width ) {
-			$media     = '(min-width: ' . ( $prev_max_width + 0.1 ) . 'px)';
+			$media     = ' media="(min-width: ' . ( $prev_max_width + 0.1 ) . 'px)"';
 			$sources[] = $lcp->src;
-			$tag      .= $start_tag . 'href="' . $lcp->src . '" media="' . $media . '"' . $end_tag;
+			$tag      .= $start_tag . 'href="' . $lcp->src . '"' . $media . $end_tag;
 		}
 
 		// Return an associative array containing the sources array and the tag string.
