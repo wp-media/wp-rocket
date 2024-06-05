@@ -194,8 +194,8 @@ class Controller {
 		}
 
 		// Returned objects must always have a src.
-		// It is used when applying the front-end optimization
-		if ( ! isset ( $object->src ) ) {
+		// It is used when applying the front-end optimization.
+		if ( ! isset( $object->src ) ) {
 			$object->src = '';
 		}
 
