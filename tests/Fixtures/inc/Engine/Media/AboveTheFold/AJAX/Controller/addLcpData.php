@@ -329,6 +329,10 @@ return [
 					],
 				]
 			),
+			'filetype' => [
+				'ext' => 'jpg',
+				'type' => 'image/jpeg',
+			],
 		],
 		'expected' => [
 			'images_valid_sources' => [

@@ -77,7 +77,7 @@ class Test_AddLcpData extends TestCase {
 			}
 		);
 
-		$images_valid_sources = $expected['images_valid_sources'];
+		$images_valid_sources = $expected['images_valid_sources'] ?? [];
 
 		Functions\when( 'sanitize_url' )->alias(
 			function( $url ) use ( $images_valid_sources ) {
