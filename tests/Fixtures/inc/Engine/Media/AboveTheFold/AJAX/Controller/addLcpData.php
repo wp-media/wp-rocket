@@ -324,7 +324,7 @@ return [
 				'lcp'           => json_encode(
 					(object) [
 						'type' => 'bg-img',
-						'src'  => 'http://example.org/lcp.jpg',
+						'src'  => '',
 						'bg_set' => [
 							[
 								'src'  => 'http://example.org/anotherlcp.jpg'
@@ -418,14 +418,7 @@ return [
 				'lcp'           => json_encode(
 					(object) [
 						'type' => 'bg-img-set',
-						'src'   => [
-							[
-								'src' => 'http://example.org/lcp.jpg'
-							],
-							[
-								'src' => 'http://example.org/random.jpg'
-							]
-						],
+						'src'   => '',
 						'bg_set' => [
 							[
 								'src'  => 'http://example.org/anotherlcp.jpg'
