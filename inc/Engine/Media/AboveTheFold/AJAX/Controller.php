@@ -153,22 +153,6 @@ class Controller {
 		$object       = new \stdClass();
 		$object->type = $image->type ?? 'img';
 
-		if ( is_array( $image->src ) ) {
-			$sanitized_object_array = array_map(
-				function ( $item ) {
-					if ( ! empty( $item->src ) ) {
-						$item->src = $this->sanitize_image_url( $item->src );
-					}
-					return $item;
-				},
-				$image->src
-			);
-
-			$object->src = $sanitized_object_array;
-		} elseif ( ! empty( $image->src ) ) {
-			$object->src = $this->sanitize_image_url( $image->src );
-		}
-
 		switch ( $object->type ) {
 			case 'img-srcset':
 				// If the type is 'img-srcset', add all the required parameters to the object.
@@ -207,6 +191,12 @@ class Controller {
 		// If none of the keys exist in the image object, return null.
 		if ( count( (array) $object ) <= 1 ) {
 			return null;
+		}
+
+		// Returned objects must always have a src.
+		// It is used when applying the front-end optimization
+		if ( ! isset ( $object->src ) ) {
+			$object->src = '';
 		}
 
 		return $object;
