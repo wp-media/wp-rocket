@@ -7,11 +7,11 @@ use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvi
 use WP_Rocket\Engine\Media\AboveTheFold\Context\Context;
 use WP_Rocket\Engine\Media\AboveTheFold\WarmUp\{
 	APIClient,
-	Controller as WarmUpController
+	Controller as WarmUpController,
+	Queue
 };
 
 class ServiceProvider extends AbstractServiceProvider {
-
 	/**
 	 * The provides array is a way to let the container
 	 * know that a service is provided by this service
@@ -26,6 +26,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'warmup_apiclient',
 		'warmup_controller',
 		'atf_activation',
+		'warmup_queue',
 	];
 
 	/**
@@ -50,6 +51,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'warmup_apiclient', APIClient::class )
 			->addArgument( $this->getContainer()->get( 'options' ) );
 
+		$this->getContainer()->add( 'warmup_queue', Queue::class );
+
 		$this->getContainer()->add( 'warmup_controller', WarmUpController::class )
 			->addArguments(
 				[
@@ -57,6 +60,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					$this->getContainer()->get( 'options' ),
 					$this->getContainer()->get( 'warmup_apiclient' ),
 					$this->getContainer()->get( 'user' ),
+					$this->getContainer()->get( 'warmup_queue' ),
 				]
 			);
 
