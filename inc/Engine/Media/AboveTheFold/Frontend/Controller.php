@@ -111,6 +111,11 @@ class Controller {
 		$preload .= $this->preload_tag( $lcp );
 
 		$replace = preg_replace( '#' . $title . '#', $preload, $html, 1 );
+
+		if ( null === $replace ) {
+			return $html;
+		}
+
 		$replace = $this->set_fetchpriority( $lcp, $replace );
 
 		return $replace;
@@ -146,24 +151,41 @@ class Controller {
 			return $html;
 		}
 
-		$url  = preg_quote( $lcp->src, '/' );
+		$html    = $this->replace_html_comments( $html );
+		$url     = preg_quote( $lcp->src, '/' );
+		$pattern = '#<img(?:[^>]*?\s+)?src=["\']' . $url . '["\'](?:\s+[^>]*?)?>#';
+		if ( wp_http_validate_url( $lcp->src ) && ! $this->is_external_file( $lcp->src ) ) {
+			$url = preg_quote(
+				wp_parse_url( $lcp->src, PHP_URL_PATH ),
+			'/'
+				);
+
+			$pattern = '#<img(?:[^>]*?\s+)?src\s*=\s*["\'](?:https?:)?(?:\/\/(?:[^\/]+)\/?)?\/?' . $url . '["\'](?:\s+[^>]*?)?>#i';
+		}
+
 		$html = preg_replace_callback(
-			'#<img(?:[^>]*?\s+)?src=["\']' . $url . '["\'](?:\s+[^>]*?)?>#',
+			$pattern,
 			function ( $matches ) {
 				// Check if the fetchpriority attribute already exists.
-				if ( preg_match( '/fetchpriority\s*=\s*[\'"]([^\'"]+)[\'"]/i', $matches[0] ) ) {
+				if ( preg_match( '/<img[^>]*\sfetchpriority(?:\s*=\s*["\'][^"\']*["\'])?[^>]*>/i', $matches[0] ) ) {
 					// If it exists, don't modify the tag.
 					return $matches[0];
 				}
 
 				// If it doesn't exist, add the fetchpriority attribute.
-				return preg_replace( '/<img/', '<img fetchpriority="high"', $matches[0] );
+				$replace = preg_replace( '/<img/', '<img fetchpriority="high"', $matches[0] );
+
+				if ( null === $replace ) {
+					return $matches[0];
+				}
+
+				return $replace;
 			},
 			$html,
 			1
 		);
 
-		return $html;
+		return $this->restore_html_comments( $html );
 	}
 
 	/**
@@ -383,6 +405,19 @@ class Controller {
 			$height_threshold = $default_height_threshold;
 		}
 
+		$default_delay = 500;
+
+		/**
+		 * Filters the delay before the LCP beacon is triggered.
+		 *
+		 * @param int $delay The delay in milliseconds. Default is 500.
+		 */
+		$delay = apply_filters( 'rocket_lcp_delay', $default_delay );
+
+		if ( ! is_int( $delay ) ) {
+			$delay = $default_delay;
+		}
+
 		$data = [
 			'ajax_url'         => admin_url( 'admin-ajax.php' ),
 			'nonce'            => wp_create_nonce( 'rocket_lcp' ),
@@ -391,6 +426,7 @@ class Controller {
 			'elements'         => $this->lcp_atf_elements(),
 			'width_threshold'  => $width_threshold,
 			'height_threshold' => $height_threshold,
+			'delay'            => $delay,
 			'debug'            => rocket_get_constant( 'WP_ROCKET_DEBUG' ),
 		];
 
@@ -473,6 +509,8 @@ class Controller {
 			'div',
 			'li',
 			'svg',
+			'section',
+			'header',
 		];
 
 		$default_elements = $elements;

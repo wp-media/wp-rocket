@@ -10,12 +10,23 @@ $html_input_with_picture_img_lcp = file_get_contents(__DIR__ . '/HTML/input_w_pi
 $html_output_with_picture_img_lcp = file_get_contents(__DIR__ . '/HTML/output_w_picture_img_lcp.html');
 $html_input_with_img_lcp = file_get_contents(__DIR__ . '/HTML/input_w_img_lcp.html');
 $html_output_with_img_lcp = file_get_contents(__DIR__ . '/HTML/output_w_img_lcp.html');
+$html_input_with_relative_img_lcp = file_get_contents(__DIR__ . '/HTML/input_with_relative_img_lcp.html');
+$html_input_with_absolute_img_lcp = file_get_contents(__DIR__ . '/HTML/input_with_absolute_img_lcp.html');
+$html_input_with_domain_img_lcp = file_get_contents(__DIR__ . '/HTML/input_lcp_image.html');
 
 return [
 	'test_data' => [
 		'shouldAddBeaconToPage' => [
 			'config' => [
 				'html' => $html_input,
+				'row' => null,
+			],
+			'expected' => $html_output_with_beacon,
+		],
+		'shouldAddBeaconToPageWithDefaultDelayWhenBadCustomDelay' => [
+			'config' => [
+				'html' => $html_input,
+				'filter_delay' => 'string',
 				'row' => null,
 			],
 			'expected' => $html_output_with_beacon,
@@ -141,6 +152,81 @@ return [
 				],
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_responsive.php'),
+		],
+		'shouldApplyFetchPriorityToReturnRelativeImage' => [
+			'config' => [
+				'html' => $html_input_with_relative_img_lcp,
+				'row' => [
+					'status' => 'completed',
+					'url' => 'http://example.org',
+					'lcp'      => json_encode( (object) [
+						'type' => 'img',
+						'src'  => 'http://example.org/wp-content/uploads/sample_relative_image.jpg',
+					] ),
+					'viewport' => json_encode ( [] ),
+				],
+			],
+			'expected' => file_get_contents(__DIR__ . '/HTML/output_with_relative_img_lcp.php'),
+		],
+		'shouldApplyFetchPriorityToAbsoluteImage' => [
+			'config' => [
+				'html' => $html_input_with_absolute_img_lcp,
+				'row' => [
+					'status' => 'completed',
+					'url' => 'http://example.org',
+					'lcp'      => json_encode( (object) [
+						'type' => 'img',
+						'src'  => 'http://example.com/wp-content/uploads/sample_absolute_image.jpg',
+					] ),
+					'viewport' => json_encode ( [] ),
+				],
+			],
+			'expected' => file_get_contents(__DIR__ . '/HTML/output_with_absolute_img_lcp.php'),
+		],
+		'shouldApplyFetchPriorityToImageWithDomain' => [
+			'config' => [
+				'html' => $html_input_with_domain_img_lcp,
+				'row' => [
+					'status' => 'completed',
+					'url' => 'http://example.org',
+					'lcp'      => json_encode( (object) [
+						'type' => 'img',
+						'src'  => 'http://example.org/wp-content/uploads/sample_url_image.png',
+					] ),
+					'viewport' => json_encode ( [] ),
+				],
+			],
+			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_image.php'),
+		],
+		'shouldNotApplyFetchPriorityToImageWithFetchpriority' => [
+			'config' => [
+				'html' => file_get_contents(__DIR__ . '/HTML/input_lcp_with_fetchpriority.html'),
+				'row' => [
+					'status' => 'completed',
+					'url' => 'http://example.org',
+					'lcp'      => json_encode( (object) [
+						'type' => 'img',
+						'src'  => 'http://example.org/wp-content/uploads/sample_relative_image.jpg',
+					] ),
+					'viewport' => json_encode ( [] ),
+				],
+			],
+			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_with_fetchpriority.html'),
+		],
+		'shouldNotApplyFetchPriorityToImageWithDuplicateMarkup' => [
+			'config' => [
+				'html' => file_get_contents(__DIR__ . '/HTML/input_lcp_with_markup_comment.html'),
+				'row' => [
+					'status' => 'completed',
+					'url' => 'http://example.org',
+					'lcp'      => json_encode( (object) [
+						'type' => 'img',
+						'src'  => 'http://example.org/wp-content/uploads/sample_relative_image.jpg',
+					] ),
+					'viewport' => json_encode ( [] ),
+				],
+			],
+			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_with_markup_comment.html'),
 		],
 	],
 	'shouldPreloadPictureTag' => [
