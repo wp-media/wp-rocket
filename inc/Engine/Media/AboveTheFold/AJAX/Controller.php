@@ -165,7 +165,7 @@ class Controller {
 			);
 
 			$object->src = $sanitized_object_array;
-		} elseif( ! empty( $image->src ) ) {
+		} elseif ( ! empty( $image->src ) ) {
 			$object->src = $this->sanitize_image_url( $image->src );
 		}
 
