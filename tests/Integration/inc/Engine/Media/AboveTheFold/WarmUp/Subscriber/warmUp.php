@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Media\AboveTheFold\WarmUp\Subscriber;
 
+use WP_Rocket\Engine\Media\AboveTheFold\WarmUp\Queue;
 use WP_Rocket\Tests\Integration\TestCase;
 use Brain\Monkey\Functions;
 use WP_Rocket\Engine\License\API\User;
@@ -39,7 +40,9 @@ class Test_WarmUp extends TestCase {
 		$options = Mockery::mock(Options_Data::class);
 		$api_client = Mockery::mock(APIClient::class);
 		$user = Mockery::mock(User::class);
-		$controller = Mockery::mock(Controller::class, [$context, $options, $api_client, $user])->makePartial();
+		$queue = Mockery::mock(Queue::class);
+
+		$controller = Mockery::mock(Controller::class, [$context, $options, $api_client, $user, $queue])->makePartial();
 
 		$options->shouldReceive('get')
 			->with('cache_mobile', 0)
@@ -60,7 +63,7 @@ class Test_WarmUp extends TestCase {
 				->andReturn($config['remove_unused_css']);
 		}
 
-		$api_client->shouldReceive('add_to_atf_queue')
+		$queue->shouldReceive('add_job_warmup_url')
 			->times($expected);
 
 		$controller->warm_up();
