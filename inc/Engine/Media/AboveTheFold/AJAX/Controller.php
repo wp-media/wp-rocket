@@ -193,7 +193,7 @@ class Controller {
 			return null;
 		}
 
-		// Returned objects must always have a src for front-end optimization. 
+		// Returned objects must always have a src for front-end optimization.
 		// Except bg-img and bg-img-set for which we use bg_set only.
 		// To keep it simple and safe for now, we enforce src for all, pending a refactor.
 		if ( ! isset( $object->src ) ) {
