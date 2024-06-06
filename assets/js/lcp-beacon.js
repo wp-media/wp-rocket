@@ -165,7 +165,7 @@ class RocketLcpBeacon {
 			current_src: ""
 		};
 
-		const css_bg_url_rgx = /url\(\s*?['"]?\s*?(\S+?)\s*?["']?\s*?\)\s*?([a-zA-Z0-9\s]*[x|dpcm|dpi|dppx]?)/ig;
+		const css_bg_url_rgx = /url\(\s*?['"]?\s*?(.+?)\s*?["']?\s*?\)/ig;
 
 		if (nodeName === "img" && element.srcset) {
 			element_info.type = "img-srcset";
@@ -205,9 +205,12 @@ class RocketLcpBeacon {
 				computed_style.getPropertyValue("background-image"),
 				getComputedStyle(element, ":after").getPropertyValue("background-image"),
 				getComputedStyle(element, ":before").getPropertyValue("background-image")
-			];
+			].filter(prop => prop !== "none");
 
-			const full_bg_prop = bg_props.filter(prop => prop !== "none").join("");
+			if (bg_props.length === 0) {
+				return null;
+			}
+			const full_bg_prop = bg_props[0];
 			element_info.type = "bg-img";
 			if (full_bg_prop.includes("image-set(")) {
 				element_info.type = "bg-img-set";
