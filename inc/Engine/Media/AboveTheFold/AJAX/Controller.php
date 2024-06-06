@@ -261,7 +261,7 @@ class Controller {
 	 * @return bool
 	 */
 	private function validate_image( $image_object ) {
-		$valid_image = $this->validate_image_src( $image_object->src ?? '' );
+		$valid_image = ! empty( $image_object->src ) ? $this->validate_image_src( $image_object->src ?? '' ) : true;
 
 		/**
 		 * Filters If the image src is a valid image or not.

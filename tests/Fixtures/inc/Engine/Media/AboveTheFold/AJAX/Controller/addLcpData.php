@@ -312,7 +312,7 @@ return [
 					(object) [
 						'label' => 'lcp',
 						'type'  => 'bg-img',
-						'src'   => 'http://example.org/lcp.jpg',
+						'src'   => '',
 						'bg_set' => [
 							[
 								'src' => 'http://example.org/anotherlcp.jpg'
@@ -428,6 +428,10 @@ return [
 					],
 				]
 			),
+			'filetype' => [
+				'ext' => 'jpg',
+				'type' => 'image/jpeg',
+			],
 		],
 		'expected' => [
 			'images_valid_sources' => [],
