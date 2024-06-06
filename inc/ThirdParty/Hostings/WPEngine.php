@@ -57,12 +57,10 @@ class WPEngine extends AbstractNoCacheHost {
 	 */
 	public function clean_wpengine() {
 		if ( method_exists( 'WpeCommon', 'purge_memcached' ) ) {
-			// @phpstan-ignore-next-line
 			WpeCommon::purge_memcached();
 		}
 
 		if ( method_exists( 'WpeCommon', 'purge_varnish_cache' ) ) {
-			// @phpstan-ignore-next-line
 			WpeCommon::purge_varnish_cache();
 		}
 	}
