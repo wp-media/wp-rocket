@@ -31,7 +31,7 @@ class Test_DropResourcesTable extends TestCase {
 			return;
 		}
 
-		$GLOBALS['wpdb'] = new wpdb();
+		$GLOBALS['wpdb'] = new wpdb( 'dbuser', 'dbpassword', 'dbname', 'dbhost' );
 
 		$this->usedCSS  = $this->getMockBuilder( UsedCSS::class )
 			->disableOriginalConstructor()
