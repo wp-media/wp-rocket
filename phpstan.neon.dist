@@ -2,7 +2,6 @@ includes:
 	- phar://phpstan.phar/conf/bleedingEdge.neon
 parameters:
 	level: 0
-	checkMissingIterableValueType: false
 	inferPrivatePropertyTypeFromConstructor: true
 	paths:
 		# Test only the new architecture for now.
@@ -33,7 +32,13 @@ parameters:
 	scanDirectories:
 		- %currentWorkingDirectory%/inc/Dependencies/ActionScheduler
 		- %currentWorkingDirectory%/tests/Fixtures/
+		- %currentWorkingDirectory%/vendor/antecedent/patchwork/
+		- %currentWorkingDirectory%/vendor/wpackagist-plugin/amp/
+		- %currentWorkingDirectory%/vendor/wpackagist-plugin/the-events-calendar/
+		- %currentWorkingDirectory%/vendor/wpackagist-plugin/woocommerce/
 	scanFiles:
+		- %currentWorkingDirectory%/inc/admin/upgrader.php
+		- %currentWorkingDirectory%/inc/admin/options.php
 		- %currentWorkingDirectory%/vendor/php-stubs/wordpress-stubs/wordpress-stubs.php
 		- %currentWorkingDirectory%/vendor/php-stubs/wordpress-tests-stubs/wordpress-tests-stubs.php
 	excludePaths:
