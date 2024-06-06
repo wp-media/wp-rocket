@@ -400,5 +400,32 @@ return [
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_picture_3.php'),
 		],
+		'shouldPreloadPictureTag4' => [
+			'config' => [
+				'html' => file_get_contents(__DIR__ . '/HTML/input_lcp_picture_4.php'),
+				'row' => [
+					'status' => 'completed',
+					'url' => 'http://example.org',
+					'lcp' => json_encode( (object) [
+						'type' => 'picture',
+						'src' => 'https://variance.pl/wp-content/uploads/2024/05/Kwiatowy-Ksiezyc-1348x900.webp',
+						'sources' => [
+							[
+								'srcset' => 'https://variance.pl/wp-content/uploads/2024/05/Kwiatowy-Ksiezyc-400x600.webp',
+								'media' => '(max-width: 500px)',
+								'type' => 'image/webp',
+							],
+							[
+								'srcset' => 'https://variance.pl/wp-content/uploads/2024/05/Kwiatowy-Ksiezyc-768x513.webp',
+								'media' => '(min-width: 501px) and (max-width: 768px)',
+								'type' => 'image/webp',
+							]
+						]
+					]),
+					'viewport' => json_encode ( [] ),
+				],
+			],
+			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_picture_4.php'),
+		],
 	],
 ];

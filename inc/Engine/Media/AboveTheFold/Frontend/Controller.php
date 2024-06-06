@@ -460,9 +460,15 @@ class Controller {
 		$prev_max_width = null;
 		$sources        = [];
 		$tag            = '';
+		$prev_type      = null;
 
 		// Iterate over the sources in the LCP object.
 		foreach ( $lcp->sources as $i => $source ) {
+			// If the type of the previous source is not equal to the type of the current source, break the loop.
+			if ( ! empty( $source->type ) && $prev_type !== $source->type && null !== $prev_type ) {
+				break;
+			}
+
 			$media = ! empty( $source->media ) ? $source->media : '';
 
 			// If a previous max-width is found, update the media query.
@@ -489,9 +495,7 @@ class Controller {
 				$prev_max_width = floatval( $matches[1] );
 			}
 
-			if ( ! empty( $source->type ) ) {
-				break;
-			}
+			$prev_type = $source->type;
 		}
 
 		// If a previous max-width is found, update the media query and add the LCP source to the sources array and the tag string.
