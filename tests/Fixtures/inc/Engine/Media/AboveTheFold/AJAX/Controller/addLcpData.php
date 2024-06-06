@@ -324,7 +324,6 @@ return [
 				'lcp'           => json_encode(
 					(object) [
 						'type' => 'bg-img',
-						'src'  => 'http://example.org/lcp.jpg',
 						'bg_set' => [
 							[
 								'src'  => 'http://example.org/anotherlcp.jpg'
@@ -332,7 +331,8 @@ return [
 							[
 								'src'  => 'http://example.org/anotherlcp2.jpg'
 							],
-						]
+						],
+						'src'  => ''
 					],
 				),
 				'viewport'      => json_encode( [
@@ -352,15 +352,15 @@ return [
 				'lcp'           => json_encode(
 					(object) [
 						'type' => 'bg-img',
-						'src'  => 'http://example.org/lcp.jpg',
 						'bg_set' => [
 							[
-							'src'  => 'http://example.org/anotherlcp.jpg'
+								'src'  => 'http://example.org/anotherlcp.jpg'
 							],
 							[
 								'src'  => 'http://example.org/anotherlcp2.jpg'
 							],
-						]
+						],
+						'src'  => ''
 					],
 				),
 				'viewport'      => json_encode( [
@@ -418,14 +418,6 @@ return [
 				'lcp'           => json_encode(
 					(object) [
 						'type' => 'bg-img-set',
-						'src'   => [
-							[
-								'src' => 'http://example.org/lcp.jpg'
-							],
-							[
-								'src' => 'http://example.org/random.jpg'
-							]
-						],
 						'bg_set' => [
 							[
 								'src'  => 'http://example.org/anotherlcp.jpg'
@@ -433,7 +425,8 @@ return [
 							[
 								'src'  => 'http://example.org/anotherlcp2.jpg'
 							],
-						]
+						],
+						'src'   => ''
 					],
 				),
 				'viewport'      => json_encode( [
@@ -453,14 +446,6 @@ return [
 				'lcp'           => json_encode(
 					(object) [
 						'type' => 'bg-img-set',
-						'src'   => [
-							[
-								'src' => 'http://example.org/lcp.jpg'
-							],
-							[
-								'src' => 'http://example.org/random.jpg'
-							]
-						],
 						'bg_set' => [
 							[
 								'src'  => 'http://example.org/anotherlcp.jpg'
@@ -468,7 +453,8 @@ return [
 							[
 								'src'  => 'http://example.org/anotherlcp2.jpg'
 							],
-						]
+						],
+						'src'   => ''
 					],
 				),
 				'viewport'      => json_encode( [
