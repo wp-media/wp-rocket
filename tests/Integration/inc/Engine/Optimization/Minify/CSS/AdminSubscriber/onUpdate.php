@@ -2,8 +2,8 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\Minify\CSS\AdminSubscriber;
 
-use WP_Rocket\Tests\Integration\TestCase;
 use Brain\Monkey\Functions;
+use WP_Rocket\Tests\Integration\TestCase;
 
 /**
  * Test class covering \WP_Rocket\Engine\Optimization\Minify\CSS\AdminSubscriber::on_update
@@ -11,7 +11,7 @@ use Brain\Monkey\Functions;
  * @group AdminOnly
  * @group MinifyAdmin
  */
-class Test_OnUpdate extends TestCase {
+class TestOnUpdate extends TestCase {
 	public function set_up() {
 		parent::set_up();
 
@@ -19,7 +19,7 @@ class Test_OnUpdate extends TestCase {
 	}
 
 	public function tear_down() {
-		add_filter( 'wp_rocket_upgrade', 'rocket_new_upgrade' );
+		add_filter( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );
 
 		parent::tear_down();
 	}
