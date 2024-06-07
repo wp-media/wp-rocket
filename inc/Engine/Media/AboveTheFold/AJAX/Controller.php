@@ -156,15 +156,15 @@ class Controller {
 		switch ( $object->type ) {
 			case 'img-srcset':
 				// If the type is 'img-srcset', add all the required parameters to the object.
-				if ( isset( $image->src ) && ! empty( $image->src ) && is_string( $image->src )){
-					$object->src     =  $this->sanitize_image_url( $image->src );
+				if ( isset( $image->src ) && ! empty( $image->src ) && is_string( $image->src ) ) {
+					$object->src = $this->sanitize_image_url( $image->src );
 				}
 				$object->srcset = $image->srcset;
 				$object->sizes  = $image->sizes;
 				break;
 			case 'picture':
-				if ( isset( $image->src ) && ! empty( $image->src ) && is_string( $image->src )){
-					$object->src     =  $this->sanitize_image_url( $image->src );
+				if ( isset( $image->src ) && ! empty( $image->src ) && is_string( $image->src ) ) {
+					$object->src = $this->sanitize_image_url( $image->src );
 				}
 				$object->sources = $image->sources;
 				break;
