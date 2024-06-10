@@ -8,7 +8,7 @@
 <html>
 <head>
 	<?php wp_head() ?>
-	<title>lcp_single_bg</title><link rel="preload" rocket-preload as="image" href="http://example.org/wp-content/rocket-test-data/images/lcp/testavif.avif" fetchpriority="high">
+	<title>lcp_single_bg</title><link rel="preload" data-rocket-preload as="image" href="http://example.org/wp-content/rocket-test-data/images/lcp/testavif.avif" fetchpriority="high">
 	<style>
 		.img-single-css-background-image{
 			width: 100%;

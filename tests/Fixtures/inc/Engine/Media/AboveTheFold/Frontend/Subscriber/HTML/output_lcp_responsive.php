@@ -8,7 +8,7 @@
 <html>
 <head>
 	<?php wp_head() ?>
-	<title>lcp_responsive_bg</title><link rel="preload" rocket-preload as="image" href="wolf.jpg" imagesrcset="wolf_400px.jpg 400w, wolf_800px.jpg 800w, wolf_1600px.jpg 1600w" imagesizes="50vw" fetchpriority="high">
+	<title>lcp_responsive_bg</title><link rel="preload" data-rocket-preload as="image" href="wolf.jpg" imagesrcset="wolf_400px.jpg 400w, wolf_800px.jpg 800w, wolf_1600px.jpg 1600w" imagesizes="50vw" fetchpriority="high">
 </head>
 <body>
 
