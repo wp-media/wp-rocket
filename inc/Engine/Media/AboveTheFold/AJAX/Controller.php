@@ -284,13 +284,32 @@ class Controller {
 			return false;
 		}
 
+		if ( preg_match( '/^chrome-[^:]+:\/\/[a-zA-Z0-9\-_]+\/?/', $image_src ) ) {
+			return false;
+		}
+
 		// Here we get the url PATH part only to strip all query strings.
 		$image_src_path = wp_parse_url( $image_src, PHP_URL_PATH );
 		if ( empty( $image_src_path ) ) {
 			return false;
 		}
+		
+		// Add svg to allowed mime types.
+		add_filter( 'mime_types', [ $this, 'add_svg_to_mime' ] );
 
 		$image_src_filetype_array = wp_check_filetype( $image_src_path );
 		return ! empty( $image_src_filetype_array['type'] ) && str_starts_with( $image_src_filetype_array['type'], 'image/' );
+	}
+
+	/**
+	 * Adds svg to allowed mime types.
+	 *
+	 * @param array $mime_types Array of allowed mime types.
+	 * @return array
+	 */
+	public function add_svg_to_mime( array $mime_types ): array {
+		$mime_types['svg'] = 'image/svg+xml';
+
+		return $mime_types;
 	}
 }
