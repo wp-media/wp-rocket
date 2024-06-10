@@ -45,7 +45,7 @@ class TestClearAndPreload extends TestCase {
 		Functions\when( 'home_url' )->justReturn( 'http://example.org/' );
 
 		$this->cache->expects( $this->once() )
-			->method( 'truncate' );
+			->method( 'truncate_cache_table' );
 
 		$this->options->shouldReceive( 'get' )
 			->with( 'manual_preload', 0 )
