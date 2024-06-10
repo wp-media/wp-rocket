@@ -615,7 +615,7 @@ class UsedCSS {
 		$links = '';
 
 		foreach ( $urls as $url ) {
-			$links .= '<link rel="preload" rocket-preload as="font" href="' . esc_url( $url ) . '" crossorigin>';
+			$links .= '<link rel="preload" data-rocket-preload as="font" href="' . esc_url( $url ) . '" crossorigin>';
 		}
 
 		return $links;
