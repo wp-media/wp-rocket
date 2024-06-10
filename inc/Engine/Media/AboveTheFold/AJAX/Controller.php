@@ -293,7 +293,7 @@ class Controller {
 		if ( empty( $image_src_path ) ) {
 			return false;
 		}
-		
+
 		// Add svg to allowed mime types.
 		add_filter( 'mime_types', [ $this, 'add_svg_to_mime' ] );
 
