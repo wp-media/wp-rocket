@@ -804,8 +804,8 @@ return [
 				]
 			),
 			'filetype' => [
-				'ext' => false,
-				'type' => false,
+				'ext' => 'svg',
+				'type' => 'image/svg+xml',
 			],
 		],
 		'expected' => [
@@ -866,6 +866,58 @@ return [
 				'status'        => 'completed',
 				'lcp'           => 'not found',
 				'viewport'      => '[]',
+				'last_accessed' => '2024-01-01 00:00:00',
+				'error_message' => '',
+			],
+		],
+	],
+	'testShouldAddItemToDBWhenSvgWithHttpProtocol' => [
+		'config'   => [
+			'filter'    => true,
+			'url'       => 'http://example.org',
+			'is_mobile' => false,
+			'images'    => json_encode(
+				[
+					(object) [
+						'label' => 'lcp',
+						'type'  => 'img',
+						'src'   => 'http://example.org/path/to/images/image.svg',
+					],
+				]
+			),
+			'filetype' => [
+				'ext' => 'svg',
+				'type' => 'image/svg+xml',
+			],
+		],
+		'expected' => [
+			'images_valid_sources' => [],
+			'item'    => [
+				'url'           => 'http://example.org',
+				'is_mobile'     => false,
+				'status'        => 'completed',
+				'lcp'           => json_encode(
+					(object) [
+						'type' => 'img',
+						'src'  => 'http://example.org/path/to/images/image.svg',
+					],
+				),
+				'viewport' 		=> '[]',
+				'last_accessed' => '2024-01-01 00:00:00',
+				'error_message' => '',
+			],
+			'result'  => true,
+			'message' => [
+				'url'           => 'http://example.org',
+				'is_mobile'     => false,
+				'status'        => 'completed',
+				'lcp'           => json_encode(
+					(object) [
+						'type' => 'img',
+						'src'  => 'http://example.org/path/to/images/image.svg',
+					],
+				),
+				'viewport' 		=> '[]',
 				'last_accessed' => '2024-01-01 00:00:00',
 				'error_message' => '',
 			],
