@@ -34,7 +34,7 @@ class Subscriber implements Subscriber_Interface {
 	public function lazyload_content( string $buffer ): string {
 		$start = hrtime( true );
 
-		$this->processor->set_processor( 'regex' );
+		$this->processor->set_processor( 'simple_html_dom' );
 
 		$buffer = $this->processor->get_processor()->add_locations_hash_to_html( $buffer );
 

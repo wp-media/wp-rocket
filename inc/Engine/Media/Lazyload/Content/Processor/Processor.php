@@ -11,6 +11,8 @@ class Processor {
 			$this->processor = new Dom();
 		} elseif ( 'regex' === $processor ) {
 			$this->processor = new Regex();
+		} elseif ( 'simple_html_dom' === $processor ) {
+			$this->processor = new SimpleHtmlDom();
 		}
 	}
 
