@@ -44,7 +44,7 @@ class Settings {
 	 * @param LoadInitialSitemap $load_initial_sitemap LoadInitialSitemap instance.
 	 * @param CacheTable         $cache_table CacheTable instance.
 	 */
-	public function __construct( Options_Data $options, PreloadUrl $preload_url, $load_initial_sitemap, $cache_table ) {
+	public function __construct( Options_Data $options, PreloadUrl $preload_url, LoadInitialSitemap $load_initial_sitemap, CacheTable $cache_table ) {
 		$this->options              = $options;
 		$this->preload_url          = $preload_url;
 		$this->load_initial_sitemap = $load_initial_sitemap;
@@ -139,7 +139,7 @@ class Settings {
 	 * @return void
 	 */
 	public function clear_and_preload() {
-		$this->cache_table->truncate();
+		$this->cache_table->truncate_cache_table();
 
 		if ( ! $this->is_enabled() ) {
 			return;
