@@ -312,9 +312,9 @@ class Controller {
 		}
 
 		// Add svg to allowed mime types.
-		$allowed_mime_types = get_allowed_mime_types();
+		$allowed_mime_types        = get_allowed_mime_types();
 		$allowed_mime_types['svg'] = 'image/svg+xml';
-		$image_src_filetype_array = wp_check_filetype( $image_src_path, $allowed_mime_types );
+		$image_src_filetype_array  = wp_check_filetype( $image_src_path, $allowed_mime_types );
 
 		return ! empty( $image_src_filetype_array['type'] ) && str_starts_with( $image_src_filetype_array['type'], 'image/' );
 	}
