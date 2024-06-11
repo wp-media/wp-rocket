@@ -5,12 +5,11 @@ namespace WP_Rocket\tests\Integration\inc\Engine\Optimization\DynamicLists\Subsc
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * Test class covering \WP_Rocket\Engine\Optimization\DynamicLists\Subscriber::add_incompatible_plugins_to_deactivate()
+ * Test class covering \WP_Rocket\Engine\Optimization\DynamicLists\Subscriber::add_incompatible_plugins_to_deactivate
  *
- * @group  DynamicLists
+ * @group DynamicLists
  */
 class Test_AddIncompatiblePluginsToDeactivate extends TestCase {
-
 	public function set_up() {
 		parent::set_up();
 
@@ -28,8 +27,8 @@ class Test_AddIncompatiblePluginsToDeactivate extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldReturnExpected( $original, $list, $expected ) {
-		set_transient( 'wpr_dynamic_lists_incompatible_plugins', $list, HOUR_IN_SECONDS );
+	public function testShouldReturnExpected( $original, $plugins_list, $expected ) {
+		set_transient( 'wpr_dynamic_lists_incompatible_plugins', $plugins_list, HOUR_IN_SECONDS );
 
 		$this->assertSame(
 			$expected,

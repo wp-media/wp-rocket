@@ -3,13 +3,12 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Media\AboveTheFold\WarmUp;
 
-use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\License\API\User;
+use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Engine\Common\Utils;
+use WP_Rocket\Engine\License\API\User;
 
 class Controller {
-
 	/**
 	 * ATF context.
 	 *
@@ -39,26 +38,35 @@ class Controller {
 	private $user;
 
 	/**
+	 * Queue instance.
+	 *
+	 * @var Queue
+	 */
+	private $queue;
+
+	/**
 	 * Constructor
 	 *
 	 * @param ContextInterface $context ATF Context.
 	 * @param Options_Data     $options Options instance.
 	 * @param APIClient        $api_client APIClient instance.
 	 * @param User             $user User instance.
+	 * @param Queue            $queue Queue instance.
 	 */
-	public function __construct( ContextInterface $context, Options_Data $options, APIClient $api_client, User $user ) {
+	public function __construct( ContextInterface $context, Options_Data $options, APIClient $api_client, User $user, Queue $queue ) {
 		$this->context    = $context;
 		$this->options    = $options;
 		$this->api_client = $api_client;
 		$this->user       = $user;
+		$this->queue      = $queue;
 	}
 
 	/**
-	 * Send links for warm up.
+	 * Send home URL for warm up.
 	 *
 	 * @return void
 	 */
-	public function warm_up(): void {
+	public function warm_up_home(): void {
 		if ( (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
 			return;
 		}
@@ -67,7 +75,33 @@ class Controller {
 			return;
 		}
 
-		$this->send_to_saas( $this->fetch_links() );
+		$this->send_to_saas( home_url() );
+		$this->queue->add_job_warmup();
+	}
+
+	/**
+	 * Fetch links and send them to SaaS for warm up.
+	 *
+	 * @return void
+	 */
+	public function warm_up(): void {
+		if ( 'local' === wp_get_environment_type() ) {
+			return;
+		}
+
+		if ( (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
+			return;
+		}
+
+		if ( ! $this->context->is_allowed() ) {
+			return;
+		}
+
+		$links = $this->fetch_links();
+
+		foreach ( $links as $link ) {
+			$this->queue->add_job_warmup_url( $link );
+		}
 	}
 
 	/**
@@ -88,7 +122,7 @@ class Controller {
 			'timeout'    => 60,
 		];
 
-		$response = wp_remote_get( $home_url, $args );
+		$response = wp_safe_remote_get( $home_url, $args );
 
 		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
 			return [];
@@ -147,7 +181,7 @@ class Controller {
 		// Remove duplicate links.
 		$links = array_unique( $links );
 
-		$default_limit = 5;
+		$default_limit = 10;
 
 		/**
 		 * Filters the number of links to return from the homepage.
@@ -161,51 +195,22 @@ class Controller {
 		}
 
 		$links = array_slice( $links, 0, $links_limit );
-		// Add home url to the list of links.
-		$links[] = home_url();
 
 		return $links;
 	}
 
 	/**
-	 * Send fetched links to SaaS to do the warmup.
+	 * Send link to SaaS to do the warmup.
 	 *
-	 * @param array $links Array of links to be sent.
+	 * @param string $url Url to send.
 	 *
 	 * @return void
 	 */
-	private function send_to_saas( $links ) {
-		if ( empty( $links ) ) {
-			return;
-		}
+	public function send_to_saas( string $url ) {
+		$this->api_client->add_to_atf_queue( $url );
 
-		$default_delay = 5000;
-
-		if ( rocket_get_constant( 'WP_ROCKET_DEBUG' ) ) {
-			$default_delay = 500000;
-		}
-
-		/**
-		 * Filter the delay between each request.
-		 *
-		 * @param int $delay_between the defined delay.
-		 *
-		 * @returns int
-		 */
-		$delay_between = (int) apply_filters( 'rocket_lcp_warmup_delay_between_requests', $default_delay );
-
-		if ( ! is_int( $delay_between ) || $delay_between < 0 ) {
-			$delay_between = $default_delay;
-		}
-
-		foreach ( $links as $link ) {
-			$this->api_client->add_to_atf_queue( $link );
-
-			if ( $this->is_mobile() ) {
-				$this->api_client->add_to_atf_queue( $link, 'mobile' );
-			}
-
-			usleep( $delay_between );
+		if ( $this->is_mobile() ) {
+			$this->api_client->add_to_atf_queue( $url, 'mobile' );
 		}
 	}
 

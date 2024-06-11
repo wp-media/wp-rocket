@@ -3,7 +3,6 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\Media\AboveTheFold\Frontend\Subscriber;
 
 use Brain\Monkey\Functions;
-use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
@@ -12,29 +11,23 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group AboveTheFold
  */
 class Test_lcp extends FilesystemTestCase {
-
-	use DBTrait;
-
 	protected $path_to_test_data = '/inc/Engine/Media/AboveTheFold/Frontend/Subscriber/lcp.php';
 
 	protected $config;
 
-	public static function set_up_before_class() {
-		parent::set_up_before_class();
-		self::installFresh();
-	}
-
-	public static function tear_down_after_class() {
-		self::uninstallAll();
-		parent::tear_down_after_class();
-	}
-
 	public function set_up() {
 		parent::set_up();
+
+		self::installAtfTable();
+
 		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'lcp', 17 );
 	}
 
 	public function tear_down() {
+		self::uninstallAtfTable();
+
+		remove_filter( 'rocket_lcp_delay', [ $this, 'add_delay' ] );
+
 		$this->restoreWpHook( 'rocket_buffer' );
 		parent::tear_down();
 	}
@@ -44,8 +37,13 @@ class Test_lcp extends FilesystemTestCase {
 	 */
 	public function testShouldReturnAsExpected( $config, $expected ) {
 		$this->config = $config;
+
 		if ( ! empty( $config['row'] ) ) {
 			self::addLcp( $config['row'] );
+		}
+
+		if ( isset( $config['filter_delay'] ) ) {
+			add_filter( 'rocket_lcp_delay', [ $this, 'add_delay' ] );
 		}
 
 		Functions\when( 'wp_create_nonce' )->justReturn( '96ac96b69e' );
@@ -54,5 +52,9 @@ class Test_lcp extends FilesystemTestCase {
 			$expected,
 			apply_filters( 'rocket_buffer', $config['html'] )
 		);
+	}
+
+	public function add_delay() {
+		return $this->config['filter_delay'];
 	}
 }

@@ -20,7 +20,7 @@ class Activation implements ActivationInterface {
 	 *
 	 * @var ContextInterface
 	 */
-	protected $context;
+	private $context;
 
 	/**
 	 * Instantiate class.
@@ -50,6 +50,6 @@ class Activation implements ActivationInterface {
 			return;
 		}
 
-		$this->controller->warm_up();
+		$this->controller->warm_up_home();
 	}
 }

@@ -3,19 +3,19 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\CriticalCSS;
 
 use WP_Rocket\Tests\Integration\ContentTrait;
-use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
  * Test class covering \WP_Rocket\Engine\CriticalPath\CriticalCSS::get_critical_css_content
- * @uses   ::rocket_get_constant
- * @uses   \WP_Rocket\Admin\Options_Data::get
  *
- * @group  CriticalPath
- * @group  vfs
+ * @uses ::rocket_get_constant
+ * @uses \WP_Rocket\Admin\Options_Data::get
+ *
+ * @group CriticalPath
+ * @group CriticalCSS
  */
 class Test_GetCriticalCssContent extends FilesystemTestCase {
-	use ContentTrait, DBTrait;
+	use ContentTrait;
 
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/CriticalCSS/getCriticalCssContent.php';
 
@@ -30,7 +30,6 @@ class Test_GetCriticalCssContent extends FilesystemTestCase {
 
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
-		self::installFresh();
 
 		$container          = apply_filters( 'rocket_container', null );
 		self::$critical_css = $container->get( 'critical_css' );
@@ -43,14 +42,11 @@ class Test_GetCriticalCssContent extends FilesystemTestCase {
 		);
 	}
 
-	public static function tear_down_after_class()
-	{
-		self::uninstallAll();
-		parent::tear_down_after_class();
-	}
-
 	public function set_up() {
 		parent::set_up();
+
+		// Disable ATF optimization to prevent DB request (unrelated to the test).
+		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
 
 		add_filter( 'wp_is_mobile', [ $this, 'is_mobile' ] );
 		add_filter( 'pre_get_rocket_option_do_caching_mobile_files', [ $this, 'cache_mobile' ] );
@@ -62,6 +58,9 @@ class Test_GetCriticalCssContent extends FilesystemTestCase {
 	}
 
 	public function tear_down() {
+		// Re-enable ATF optimization.
+		remove_filter( 'rocket_above_the_fold_optimization', '__return_false' );
+
 		remove_filter( 'wp_is_mobile', [ $this, 'is_mobile' ] );
 		remove_filter( 'pre_get_rocket_option_do_caching_mobile_files', [ $this, 'cache_mobile' ] );
 		remove_filter( 'pre_get_rocket_option_async_css_mobile', [ $this, 'async_css_mobile' ] );

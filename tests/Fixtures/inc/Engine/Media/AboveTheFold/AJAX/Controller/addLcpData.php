@@ -34,6 +34,7 @@ return [
 			'images'    => json_encode( [] ),
 		],
 		'expected' => [
+			'images_valid_sources' => [],
 			'item'    => [
 				'url'           => 'http://example.org',
 				'is_mobile'     => false,
@@ -67,6 +68,7 @@ return [
 			),
 		],
 		'expected' => [
+			'images_valid_sources' => [],
 			'item'    => [
 				'url'           => 'http://example.org',
 				'is_mobile'     => false,
@@ -111,6 +113,7 @@ return [
 			),
 		],
 		'expected' => [
+			'images_valid_sources' => [],
 			'item'    => [
 				'url'           => 'http://example.org',
 				'is_mobile'     => false,
@@ -173,6 +176,7 @@ return [
 			),
 		],
 		'expected' => [
+			'images_valid_sources' => [],
 			'item'    => [
 				'url'           => 'http://example.org',
 				'is_mobile'     => true,
@@ -237,6 +241,10 @@ return [
 			),
 		],
 		'expected' => [
+			'images_valid_sources' => [
+				'http://example.org/lcp.jpg<script>alert("Test XSS");</script>' => 'http://example.org/lcp.jpgscriptalert(Test%20XSS);/script',
+				'http://example.org/above-the-fold.jpg<script>alert("Test XSS");</script>' => 'http://example.org/above-the-fold.jpgscriptalert(Test%20XSS);/script'
+			],
 			'item'    => [
 				'url'           => 'http://example.org',
 				'is_mobile'     => false,
@@ -244,13 +252,13 @@ return [
 				'lcp'           => json_encode(
 					(object) [
 						'type' => 'img',
-						'src'  => 'http://example.org/lcp.jpgalert("Test XSS");',
+						'src'  => 'http://example.org/lcp.jpgscriptalert(Test%20XSS);/script',
 					],
 				),
 				'viewport'      => json_encode( [
 					(object) [
 						'type' => 'img',
-						'src'  => 'http://example.org/above-the-fold.jpgalert("Test XSS");',
+						'src'  => 'http://example.org/above-the-fold.jpgscriptalert(Test%20XSS);/script',
 					],
 				] ),
 				'last_accessed' => '2024-01-01 00:00:00',
@@ -264,13 +272,195 @@ return [
 				'lcp'           => json_encode(
 					(object) [
 						'type' => 'img',
-						'src'  => 'http://example.org/lcp.jpgalert("Test XSS");',
+						'src'  => 'http://example.org/lcp.jpgscriptalert(Test%20XSS);/script',
 					],
 				),
 				'viewport'      => json_encode( [
 					(object) [
 						'type' => 'img',
-						'src'  => 'http://example.org/above-the-fold.jpgalert("Test XSS");',
+						'src'  => 'http://example.org/above-the-fold.jpgscriptalert(Test%20XSS);/script',
+					],
+				] ),
+				'last_accessed' => '2024-01-01 00:00:00',
+				'error_message' => '',
+			],
+		],
+	],
+	'testShouldSanitizeArrayLCPAndATF' => [
+		'config'   => [
+			'filter'    => true,
+			'url'       => 'http://example.org',
+			'is_mobile' => false,
+			'images'    => json_encode(
+				[
+					(object) [
+						'label' => 'lcp',
+						'type'  => 'bg-img',
+						'src'   => 'http://example.org/lcp.jpg',
+						'bg_set' => [
+							[
+								'src' => 'http://example.org/anotherlcp.jpg'
+							],
+							[
+								'src' => 'http://example.org/anotherlcp2.jpg'
+							]
+						]
+					],
+					(object) [
+						'label' => 'above-the-fold',
+						'type'  => 'img',
+						'src'   => 'http://example.org/above-the-fold.jpg',
+					],
+				]
+			),
+		],
+		'expected' => [
+			'images_valid_sources' => [
+			],
+			'item'    => [
+				'url'           => 'http://example.org',
+				'is_mobile'     => false,
+				'status'        => 'completed',
+				'lcp'           => json_encode(
+					(object) [
+						'type' => 'bg-img',
+						'bg_set' => [
+							[
+								'src'  => 'http://example.org/anotherlcp.jpg'
+							],
+							[
+								'src'  => 'http://example.org/anotherlcp2.jpg'
+							],
+						],
+						'src'  => ''
+					],
+				),
+				'viewport'      => json_encode( [
+					(object) [
+						'type' => 'img',
+						'src'  => 'http://example.org/above-the-fold.jpg',
+					],
+				] ),
+				'last_accessed' => '2024-01-01 00:00:00',
+				'error_message' => '',
+			],
+			'result'  => true,
+			'message' => [
+				'url'           => 'http://example.org',
+				'is_mobile'     => false,
+				'status'        => 'completed',
+				'lcp'           => json_encode(
+					(object) [
+						'type' => 'bg-img',
+						'bg_set' => [
+							[
+								'src'  => 'http://example.org/anotherlcp.jpg'
+							],
+							[
+								'src'  => 'http://example.org/anotherlcp2.jpg'
+							],
+						],
+						'src'  => ''
+					],
+				),
+				'viewport'      => json_encode( [
+					(object) [
+						'type' => 'img',
+						'src'  => 'http://example.org/above-the-fold.jpg',
+					],
+				] ),
+				'last_accessed' => '2024-01-01 00:00:00',
+				'error_message' => '',
+			],
+		],
+	],
+	'testShouldSanitizeImageSrcWithLCPAndATFArray' => [
+		'config'   => [
+			'filter'    => true,
+			'url'       => 'http://example.org',
+			'is_mobile' => false,
+			'images'    => json_encode(
+				[
+					(object) [
+						'label' => 'lcp',
+						'type'  => 'bg-img-set',
+						'src'   => [
+							[
+								'src' => 'http://example.org/lcp.jpg'
+							],
+							[
+								'src' => 'http://example.org/random.jpg'
+							]
+						],
+						'bg_set' => [
+							[
+								'src' => 'http://example.org/anotherlcp.jpg'
+							],
+							[
+								'src' => 'http://example.org/anotherlcp2.jpg'
+							]
+						]
+					],
+					(object) [
+						'label' => 'above-the-fold',
+						'type'  => 'img',
+						'src'   => 'http://example.org/above-the-fold.jpg',
+					],
+				]
+			),
+		],
+		'expected' => [
+			'images_valid_sources' => [],
+			'item'    => [
+				'url'           => 'http://example.org',
+				'is_mobile'     => false,
+				'status'        => 'completed',
+				'lcp'           => json_encode(
+					(object) [
+						'type' => 'bg-img-set',
+						'bg_set' => [
+							[
+								'src'  => 'http://example.org/anotherlcp.jpg'
+							],
+							[
+								'src'  => 'http://example.org/anotherlcp2.jpg'
+							],
+						],
+						'src'   => ''
+					],
+				),
+				'viewport'      => json_encode( [
+					(object) [
+						'type' => 'img',
+						'src'  => 'http://example.org/above-the-fold.jpg',
+					],
+				] ),
+				'last_accessed' => '2024-01-01 00:00:00',
+				'error_message' => '',
+			],
+			'result'  => true,
+			'message' => [
+				'url'           => 'http://example.org',
+				'is_mobile'     => false,
+				'status'        => 'completed',
+				'lcp'           => json_encode(
+					(object) [
+						'type' => 'bg-img-set',
+						'bg_set' => [
+							[
+								'src'  => 'http://example.org/anotherlcp.jpg'
+							],
+							[
+								'src'  => 'http://example.org/anotherlcp2.jpg'
+							],
+						],
+						'src'   => ''
+					],
+				),
+				'viewport'      => json_encode( [
+					(object) [
+						'type' => 'img',
+						'src'  => 'http://example.org/above-the-fold.jpg',
 					],
 				] ),
 				'last_accessed' => '2024-01-01 00:00:00',
@@ -288,6 +478,7 @@ return [
 			),
 		],
 		'expected' => [
+			'images_valid_sources' => [],
 			'item'    => [
 				'url'           => 'http://example.org',
 				'is_mobile'     => false,
@@ -317,6 +508,51 @@ return [
 			'images'    => '',
 		],
 		'expected' => [
+			'images_valid_sources' => [],
+			'item'    => [
+				'url'           => 'http://example.org',
+				'is_mobile'     => false,
+				'status'        => 'completed',
+				'lcp'           => 'not found',
+				'viewport'      => '[]',
+				'last_accessed' => '2024-01-01 00:00:00',
+				'error_message' => '',
+			],
+			'result'  => true,
+			'message' => [
+				'url'           => 'http://example.org',
+				'is_mobile'     => false,
+				'status'        => 'completed',
+				'lcp'           => 'not found',
+				'viewport'      => '[]',
+				'last_accessed' => '2024-01-01 00:00:00',
+				'error_message' => '',
+			],
+		],
+	],
+	'testShouldReturnNotFound' => [
+		'config'   => [
+			'filter'    => true,
+			'url'       => 'http://example.org',
+			'is_mobile' => false,
+			'images'    => json_encode(
+				[
+					(object) [
+						'label' => 'lcp',
+						'src'   => "",
+						'bg_set' => [],
+						'type' => ''
+					],
+					(object) [
+						'label' => 'above-the-fold',
+						'type'  => '',
+						'src'   => '',
+					],
+				]
+			),
+		],
+		'expected' => [
+			'images_valid_sources' => [],
 			'item'    => [
 				'url'           => 'http://example.org',
 				'is_mobile'     => false,
@@ -348,6 +584,7 @@ return [
 			'status'    => 'script_error',
 		],
 		'expected' => [
+			'images_valid_sources' => [],
 			'item'    => [
 				'url'           => 'http://example.org',
 				'is_mobile'     => false,
@@ -378,6 +615,7 @@ return [
 			'status'    => 'timeout',
 		],
 		'expected' => [
+			'images_valid_sources' => [],
 			'item'    => [
 				'url'           => 'http://example.org',
 				'is_mobile'     => false,

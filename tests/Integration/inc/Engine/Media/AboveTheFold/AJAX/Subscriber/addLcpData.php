@@ -15,9 +15,9 @@ class Test_AddLcpData extends AjaxTestCase {
 	public function set_up() {
 		parent::set_up();
 
-		$this->action = 'rocket_lcp';
+		self::installAtfTable();
 
-		$this->clean_table();
+		$this->action = 'rocket_lcp';
 	}
 
 	/**
@@ -26,8 +26,9 @@ class Test_AddLcpData extends AjaxTestCase {
 	 * @return void
 	 */
 	public function tear_down() {
+		self::uninstallAtfTable();
+
 		remove_filter( 'rocket_above_the_fold_optimization', [ $this, 'set_allowed' ] );
-		$this->clean_table();
 
 		parent::tear_down();
 	}
@@ -54,14 +55,5 @@ class Test_AddLcpData extends AjaxTestCase {
 
 	public function set_allowed() {
 		return $this->allowed;
-	}
-
-	private function clean_table() {
-		$container = apply_filters( 'rocket_container', null );
-		$atf_table = $container->get( 'atf_table' );
-
-		$result = $atf_table->truncate();
-
-		$this->assertTrue( $result );
 	}
 }

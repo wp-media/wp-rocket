@@ -52,7 +52,8 @@ class Cleaner extends \ActionScheduler_QueueCleaner {
 		 *
 		 * @since 3.11.0.5
 		 *
-		 * @param int $lifespan Lifespan in seconds.
+		 * @param int    $lifespan Lifespan in seconds.
+		 * @param string $group The group name.
 		 *
 		 * @return int
 		 */

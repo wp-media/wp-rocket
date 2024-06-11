@@ -489,7 +489,7 @@ class UsedCSS {
 			 *
 			 * @since 3.11.4
 			 *
-			 * @param type  $url url to be rewritten.
+			 * @param string $url url to be rewritten.
 			 */
 			$font_url = apply_filters( 'rocket_font_url', $font_url );
 

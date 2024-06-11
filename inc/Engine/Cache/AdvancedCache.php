@@ -77,7 +77,7 @@ class AdvancedCache implements ActivationInterface, DeactivationInterface {
 		 *
 		 * @since 3.6.3
 		 *
-		 * @param bool True (default) to go ahead with advanced cache file generation; false to stop generation.
+		 * @param bool $generate True (default) to go ahead with advanced cache file generation; false to stop generation.
 		 */
 		if ( ! (bool) apply_filters( 'rocket_generate_advanced_cache_file', true ) ) {
 			return;

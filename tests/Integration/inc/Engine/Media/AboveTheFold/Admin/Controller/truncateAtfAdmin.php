@@ -2,7 +2,6 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Media\AboveTheFold\Admin\Controller;
 
-use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 use Brain\Monkey\Functions;
 use Mockery;
@@ -14,13 +13,21 @@ use WP_Rocket\Engine\Media\AboveTheFold\WarmUp\Controller;
  * @group AboveTheFold
  */
 class Test_TruncateAtfAdmin extends TestCase {
-	use DBTrait;
-
 	protected $path_to_test_data = '/inc/Engine/Media/AboveTheFold/Admin/Controller/truncateAtfAdmin.php';
 
 	protected $config;
-	public function set_up() {
-		parent::set_up();
+
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
+
+		// Install in set_up_before_class because of exists() requiring not temporary table.
+		self::installAtfTable();
+	}
+
+	public static function tear_down_after_class() {
+		self::installAtfTable();
+
+		parent::tear_down_after_class();
 	}
 
 	/**

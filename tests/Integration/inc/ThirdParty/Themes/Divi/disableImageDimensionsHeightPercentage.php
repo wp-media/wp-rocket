@@ -1,37 +1,26 @@
 <?php
 namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Themes\Divi;
 
-use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\WPThemeTestcase;
 use WP_Rocket\ThirdParty\Themes\Divi;
 
 /**
- * Test class covering \WP_Rocket\ThirdParty\Themes\Divi::disable_image_dimensions_height_percentage()
+ * Test class covering \WP_Rocket\ThirdParty\Themes\Divi::disable_image_dimensions_height_percentage
  *
  * @group Themes
  */
 class Test_DisableImageDimensionsHeightPercentage extends WPThemeTestcase {
-	use DBTrait;
-
 	protected $path_to_test_data = '/inc/ThirdParty/Themes/Divi/Integration/disableImageDimensionsHeightPercentage.php';
 
 	private $container;
 	private $event;
 	private $subscriber;
 
-	public static function set_up_before_class() {
-		parent::set_up_before_class();
-		self::installFresh();
-	}
-
-	public static function tear_down_after_class() {
-		self::uninstallAll();
-
-		parent::tear_down_after_class();
-	}
-
 	public function set_up() {
 		parent::set_up();
+
+		// Disable ATF optimization to prevent DB request (unrelated to the test).
+		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
 
 		$this->container = apply_filters( 'rocket_container', '' );
 		$this->event = $this->container->get( 'event_manager' );
@@ -42,6 +31,9 @@ class Test_DisableImageDimensionsHeightPercentage extends WPThemeTestcase {
 	}
 
 	public function tear_down() {
+		// Re-enable ATF optimization.
+		remove_filter( 'rocket_above_the_fold_optimization', '__return_false' );
+
 		$this->event->remove_subscriber( $this->subscriber );
 
 		$this->restoreWpHook( 'rocket_buffer' );

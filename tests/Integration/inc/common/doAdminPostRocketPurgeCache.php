@@ -3,7 +3,6 @@
 namespace WP_Rocket\Tests\Integration\Inc\Common;
 
 use Brain\Monkey\Functions;
-use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
@@ -27,7 +26,6 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group AdminOnly
  */
 class Test_DoAdminPostRocketPurgeCache extends FilesystemTestCase {
-	use DBTrait;
 	protected $path_to_test_data = '/inc/common/doAdminPostRocketPurgeCache.php';
 	protected static $original_transients = [];
 	protected static $user_id;
@@ -46,32 +44,26 @@ class Test_DoAdminPostRocketPurgeCache extends FilesystemTestCase {
 		self::$user_id = $factory->user->create( [ 'role' => 'administrator' ] );
 	}
 
-	public static function set_up_before_class()
-	{
-		parent::set_up_before_class();
-		self::installFresh();
-	}
-
 	public static function tear_down_after_class() {
 		parent::tear_down_after_class();
 
 		foreach ( self::$original_transients as $transient => $value ) {
 			set_transient( $transient, $value, HOUR_IN_SECONDS );
 		}
-
-		self::uninstallAll();
 	}
 
 	public function set_up() {
 		parent::set_up();
 
-		$this->set_permalink_structure( '/%postname%/' );
+		// Disable ATF optimization to prevent DB request (unrelated to the test).
+		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
 	}
 
 	public function tear_down() {
 		parent::tear_down();
 
-		unset( $GLOBALS['tonya'] );
+		// Re-enable ATF optimization.
+		remove_filter( 'rocket_above_the_fold_optimization', '__return_false' );
 
 		foreach ( array_keys( self::$original_transients ) as $transient ) {
 			delete_transient( $transient );
@@ -94,8 +86,6 @@ class Test_DoAdminPostRocketPurgeCache extends FilesystemTestCase {
 			$_GET[ $key ] = $value;
 		}
 
-		$GLOBALS['tonya'] = true;
-
 		$_GET['_wpnonce'] = wp_create_nonce( 'purge_cache_' . $_get['_wpnonce'] );
 		Functions\expect( 'wp_nonce_ays' )->never();
 
@@ -113,7 +103,7 @@ class Test_DoAdminPostRocketPurgeCache extends FilesystemTestCase {
 	/**
 	 * @dataProvider wontPurgeTestData
 	 */
-	public function testShouldWontPurge( $_get, array $config ) {
+	public function testShouldNotPurge( $_get, array $config ) {
 		foreach ( $_get as $key => $value ) {
 			$_GET[ $key ] = $value;
 		}
