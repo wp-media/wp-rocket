@@ -25,6 +25,15 @@ class Controller {
 	protected $context;
 
 	/**
+	 * An array of unsupported atf schemes.
+	 *
+	 * @var array
+	 */
+	private $invalid_schemes = [
+		'chrome-[^:]+://',
+	];
+
+	/**
 	 * Constructor
 	 *
 	 * @param ATFQuery         $query ATFQuery instance.
@@ -284,7 +293,15 @@ class Controller {
 			return false;
 		}
 
-		if ( preg_match( '/^chrome-[^:]+:\/\/[a-zA-Z0-9\-_]+\/?/', $image_src ) ) {
+		/**
+		 * Filters the supported schemes of LCP/ATF images.
+		 *
+		 * @param array  $invalid_schemes Array of invalid schemes.
+		 */
+		$invalid_schemes = apply_filters( 'rocket_atf_invalid_schemes', $this->invalid_schemes );
+		$invalid_schemes = implode( '|', $invalid_schemes );
+
+		if ( preg_match( '#^' . $invalid_schemes . '#', $image_src ) ) {
 			return false;
 		}
 
@@ -295,21 +312,10 @@ class Controller {
 		}
 
 		// Add svg to allowed mime types.
-		add_filter( 'mime_types', [ $this, 'add_svg_to_mime' ] );
+		$allowed_mime_types = get_allowed_mime_types();
+		$allowed_mime_types['svg'] = 'image/svg+xml';
+		$image_src_filetype_array = wp_check_filetype( $image_src_path, $allowed_mime_types );
 
-		$image_src_filetype_array = wp_check_filetype( $image_src_path );
 		return ! empty( $image_src_filetype_array['type'] ) && str_starts_with( $image_src_filetype_array['type'], 'image/' );
-	}
-
-	/**
-	 * Adds svg to allowed mime types.
-	 *
-	 * @param array $mime_types Array of allowed mime types.
-	 * @return array
-	 */
-	public function add_svg_to_mime( array $mime_types ): array {
-		$mime_types['svg'] = 'image/svg+xml';
-
-		return $mime_types;
 	}
 }
