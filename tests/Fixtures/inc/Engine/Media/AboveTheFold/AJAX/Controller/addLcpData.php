@@ -70,6 +70,17 @@ return [
 				'ext' => 'jpg',
 				'type' => 'image/jpeg',
 			],
+			'allowed_mime_types' => [
+				'jpg|jpeg|jpe'                 => 'image/jpeg',
+				'gif'                          => 'image/gif',
+				'png'                          => 'image/png',
+				'bmp'                          => 'image/bmp',
+				'tiff|tif'                     => 'image/tiff',
+				'webp'                         => 'image/webp',
+				'avif'                         => 'image/avif',
+				'ico'                          => 'image/x-icon',
+				'heic'                         => 'image/heic',
+			],
 		],
 		'expected' => [
 			'images_valid_sources' => [],
@@ -118,6 +129,17 @@ return [
 			'filetype' => [
 				'ext' => 'jpg',
 				'type' => 'image/jpeg',
+			],
+			'allowed_mime_types' => [
+				'jpg|jpeg|jpe'                 => 'image/jpeg',
+				'gif'                          => 'image/gif',
+				'png'                          => 'image/png',
+				'bmp'                          => 'image/bmp',
+				'tiff|tif'                     => 'image/tiff',
+				'webp'                         => 'image/webp',
+				'avif'                         => 'image/avif',
+				'ico'                          => 'image/x-icon',
+				'heic'                         => 'image/heic',
 			],
 		],
 		'expected' => [
@@ -185,6 +207,17 @@ return [
 			'filetype' => [
 				'ext' => 'jpg',
 				'type' => 'image/jpeg',
+			],
+			'allowed_mime_types' => [
+				'jpg|jpeg|jpe'                 => 'image/jpeg',
+				'gif'                          => 'image/gif',
+				'png'                          => 'image/png',
+				'bmp'                          => 'image/bmp',
+				'tiff|tif'                     => 'image/tiff',
+				'webp'                         => 'image/webp',
+				'avif'                         => 'image/avif',
+				'ico'                          => 'image/x-icon',
+				'heic'                         => 'image/heic',
 			],
 		],
 		'expected' => [
@@ -254,6 +287,17 @@ return [
 			'filetype' => [
 				'ext' => 'jpg',
 				'type' => 'image/jpeg',
+			],
+			'allowed_mime_types' => [
+				'jpg|jpeg|jpe'                 => 'image/jpeg',
+				'gif'                          => 'image/gif',
+				'png'                          => 'image/png',
+				'bmp'                          => 'image/bmp',
+				'tiff|tif'                     => 'image/tiff',
+				'webp'                         => 'image/webp',
+				'avif'                         => 'image/avif',
+				'ico'                          => 'image/x-icon',
+				'heic'                         => 'image/heic',
 			],
 		],
 		'expected' => [
@@ -332,6 +376,17 @@ return [
 			'filetype' => [
 				'ext' => 'jpg',
 				'type' => 'image/jpeg',
+			],
+			'allowed_mime_types' => [
+				'jpg|jpeg|jpe'                 => 'image/jpeg',
+				'gif'                          => 'image/gif',
+				'png'                          => 'image/png',
+				'bmp'                          => 'image/bmp',
+				'tiff|tif'                     => 'image/tiff',
+				'webp'                         => 'image/webp',
+				'avif'                         => 'image/avif',
+				'ico'                          => 'image/x-icon',
+				'heic'                         => 'image/heic',
 			],
 		],
 		'expected' => [
@@ -432,6 +487,17 @@ return [
 				'ext' => 'jpg',
 				'type' => 'image/jpeg',
 			],
+			'allowed_mime_types' => [
+				'jpg|jpeg|jpe'                 => 'image/jpeg',
+				'gif'                          => 'image/gif',
+				'png'                          => 'image/png',
+				'bmp'                          => 'image/bmp',
+				'tiff|tif'                     => 'image/tiff',
+				'webp'                         => 'image/webp',
+				'avif'                         => 'image/avif',
+				'ico'                          => 'image/x-icon',
+				'heic'                         => 'image/heic',
+			],
 		],
 		'expected' => [
 			'images_valid_sources' => [],
@@ -503,6 +569,17 @@ return [
 			'filetype' => [
 				'ext' => 'jpg',
 				'type' => 'image/jpeg',
+			],
+			'allowed_mime_types' => [
+				'jpg|jpeg|jpe'                 => 'image/jpeg',
+				'gif'                          => 'image/gif',
+				'png'                          => 'image/png',
+				'bmp'                          => 'image/bmp',
+				'tiff|tif'                     => 'image/tiff',
+				'webp'                         => 'image/webp',
+				'avif'                         => 'image/avif',
+				'ico'                          => 'image/x-icon',
+				'heic'                         => 'image/heic',
 			],
 		],
 		'expected' => [
@@ -684,6 +761,17 @@ return [
 				'ext' => 'php',
 				'type' => false,
 			],
+			'allowed_mime_types' => [
+				'jpg|jpeg|jpe'                 => 'image/jpeg',
+				'gif'                          => 'image/gif',
+				'png'                          => 'image/png',
+				'bmp'                          => 'image/bmp',
+				'tiff|tif'                     => 'image/tiff',
+				'webp'                         => 'image/webp',
+				'avif'                         => 'image/avif',
+				'ico'                          => 'image/x-icon',
+				'heic'                         => 'image/heic',
+			],
 		],
 		'expected' => [
 			'item'    => [
@@ -724,6 +812,17 @@ return [
 			'filetype' => [
 				'ext' => 'js',
 				'type' => 'application/javascript',
+			],
+			'allowed_mime_types' => [
+				'jpg|jpeg|jpe'                 => 'image/jpeg',
+				'gif'                          => 'image/gif',
+				'png'                          => 'image/png',
+				'bmp'                          => 'image/bmp',
+				'tiff|tif'                     => 'image/tiff',
+				'webp'                         => 'image/webp',
+				'avif'                         => 'image/avif',
+				'ico'                          => 'image/x-icon',
+				'heic'                         => 'image/heic',
 			],
 		],
 		'expected' => [
@@ -766,6 +865,17 @@ return [
 				'ext' => 'php',
 				'type' => 'application/php',
 			],
+			'allowed_mime_types' => [
+				'jpg|jpeg|jpe'                 => 'image/jpeg',
+				'gif'                          => 'image/gif',
+				'png'                          => 'image/png',
+				'bmp'                          => 'image/bmp',
+				'tiff|tif'                     => 'image/tiff',
+				'webp'                         => 'image/webp',
+				'avif'                         => 'image/avif',
+				'ico'                          => 'image/x-icon',
+				'heic'                         => 'image/heic',
+			],
 		],
 		'expected' => [
 			'item'    => [
@@ -806,6 +916,17 @@ return [
 			'filetype' => [
 				'ext' => 'svg',
 				'type' => 'image/svg+xml',
+			],
+			'allowed_mime_types' => [
+				'jpg|jpeg|jpe'                 => 'image/jpeg',
+				'gif'                          => 'image/gif',
+				'png'                          => 'image/png',
+				'bmp'                          => 'image/bmp',
+				'tiff|tif'                     => 'image/tiff',
+				'webp'                         => 'image/webp',
+				'avif'                         => 'image/avif',
+				'ico'                          => 'image/x-icon',
+				'heic'                         => 'image/heic',
 			],
 		],
 		'expected' => [
@@ -848,6 +969,17 @@ return [
 				'ext' => false,
 				'type' => false,
 			],
+			'allowed_mime_types' => [
+				'jpg|jpeg|jpe'                 => 'image/jpeg',
+				'gif'                          => 'image/gif',
+				'png'                          => 'image/png',
+				'bmp'                          => 'image/bmp',
+				'tiff|tif'                     => 'image/tiff',
+				'webp'                         => 'image/webp',
+				'avif'                         => 'image/avif',
+				'ico'                          => 'image/x-icon',
+				'heic'                         => 'image/heic',
+			],
 		],
 		'expected' => [
 			'item'    => [
@@ -888,6 +1020,17 @@ return [
 			'filetype' => [
 				'ext' => 'svg',
 				'type' => 'image/svg+xml',
+			],
+			'allowed_mime_types' => [
+				'jpg|jpeg|jpe'                 => 'image/jpeg',
+				'gif'                          => 'image/gif',
+				'png'                          => 'image/png',
+				'bmp'                          => 'image/bmp',
+				'tiff|tif'                     => 'image/tiff',
+				'webp'                         => 'image/webp',
+				'avif'                         => 'image/avif',
+				'ico'                          => 'image/x-icon',
+				'heic'                         => 'image/heic',
 			],
 		],
 		'expected' => [
