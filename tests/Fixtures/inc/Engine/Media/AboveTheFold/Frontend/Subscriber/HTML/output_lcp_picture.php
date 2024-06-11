@@ -16,7 +16,7 @@
 	<picture>
 		<source srcset="small_cat.jpg" media="(max-width: 400px)">
 		<source srcset="medium_cat.jpg" media="(max-width: 800px)">
-		<img src="large_cat.jpg">
+		<img fetchpriority="high" src="large_cat.jpg">
 	</picture>
 </div>
 
