@@ -299,6 +299,11 @@ class Controller {
 		 * @param array  $invalid_schemes Array of invalid schemes.
 		 */
 		$invalid_schemes = apply_filters( 'rocket_atf_invalid_schemes', $this->invalid_schemes );
+
+		if ( ! is_array( $invalid_schemes ) ) {
+			$invalid_schemes = $this->invalid_schemes;
+		}
+
 		$invalid_schemes = implode( '|', $invalid_schemes );
 
 		if ( preg_match( '#^' . $invalid_schemes . '#', $image_src ) ) {
