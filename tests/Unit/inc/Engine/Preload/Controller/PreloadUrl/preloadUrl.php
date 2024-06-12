@@ -44,7 +44,7 @@ class Test_PreloadUrl extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoAsExpected( $config ) {
-		Functions\expects( 'get_transient' )
+		Functions\expect( 'get_transient' )
 			->once()
 			->with( 'rocket_preload_check_duration' )
 			->andReturn( $config['transient_check_duration'] );
