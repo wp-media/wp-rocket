@@ -17,7 +17,7 @@ defined( 'ABSPATH' ) || exit;
 				<?php
 				printf(
 					// translators: %1$s = <strong>, %2$s = </strong>.
-					esc_html__( 'You need an %1$sactive license%2$s to keep optimizing your CSS delivery, which addresses a PageSpeed Insights recommendation and improves your page performance.', 'rocket' ),
+					esc_html__( 'You need an %1$sactive license%2$s to keep optimizing your CSS delivery, which addresses a PageSpeed Insights recommendation and improves your website performance.', 'rocket' ),
 					'<strong>',
 					'</strong>'
 				);
