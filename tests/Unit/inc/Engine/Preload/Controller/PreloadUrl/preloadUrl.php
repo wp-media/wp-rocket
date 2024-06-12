@@ -57,14 +57,19 @@ class Test_PreloadUrl extends TestCase {
 			->andReturn( $config['cache_mobile'] );
 		$this->controller->expects()->is_already_cached( $config['url'] )
 			->andReturn( $config['cache_exists'] );
-		$this->configureRequest( $config );
-		$this->configureMobileRequest( $config );
+
+		$this->expectDesktopRequest( $config );
+		$this->expectMobileRequest( $config );
 
 		$this->controller->preload_url( $config['url'] );
 	}
 
-	protected function configureRequest( $config ) {
+	protected function expectDesktopRequest( $config ) {
 		if ( $config['cache_exists'] ) {
+			Functions\expect( 'wp_safe_remote_get' )
+			->with( $config['url'] . '/', $config['request']['config'] )
+			->never();
+
 			return;
 		}
 
@@ -72,12 +77,16 @@ class Test_PreloadUrl extends TestCase {
 			->with( $config['url'] . '/', $config['request']['config'] );
 	}
 
-	protected function configureMobileRequest( $config ) {
-		if ( $config['cache_exists'] ) {
-			return;
-		}
+	protected function expectMobileRequest( $config ) {
+		if (
+			$config['cache_exists']
+			||
+			! $config['cache_mobile']
+		) {
+			Functions\expect( 'wp_safe_remote_get' )
+			->with( $config['url'] . '/', $config['request_mobile']['config'] )
+			->never();
 
-		if ( ! $config['cache_mobile'] ) {
 			return;
 		}
 
