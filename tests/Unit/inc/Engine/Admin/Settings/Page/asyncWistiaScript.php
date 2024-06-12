@@ -10,9 +10,10 @@ use WP_Rocket\Engine\Admin\Settings\Settings;
 use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Engine\Optimization\DelayJS\Admin\SiteList;
 use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\Admin\Options_Data;
 
 /**
- * @covers \WP_Rocket\Engine\Admin\Settings\Page::async_wistia_script
+ * Test class covering \WP_Rocket\Engine\Admin\Settings\Page::async_wistia_script
  * @group  Admin
  * @group  SettingsPage
  */
@@ -27,6 +28,8 @@ class Test_AsyncWistiaScript extends TestCase {
 			'capability' => 'rocket_manage_options',
 		];
 
+		$template_path = 'vfs://public/wp-content/plugins/wp-rocket/views';
+
 		$page = new Page(
 			$config,
 			Mockery::mock( Settings::class ),
@@ -34,7 +37,9 @@ class Test_AsyncWistiaScript extends TestCase {
 			Mockery::mock( Beacon::class),
 			Mockery::mock( Optimization::class ),
 			Mockery::mock( UserClient::class ),
-			Mockery::mock( SiteList::class )
+			Mockery::mock( SiteList::class ),
+			$template_path,
+			Mockery::mock( Options_Data::class )
 		);
 
         $this->assertSame(

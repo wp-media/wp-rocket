@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Integration\CapTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\Admin\Subscriber::enqueue_admin_edit_script
+ * Test class covering \WP_Rocket\Engine\CriticalPath\Admin\Subscriber::enqueue_admin_edit_script
  * @uses   ::rocket_get_constant
  *
  * @group  AdminOnly

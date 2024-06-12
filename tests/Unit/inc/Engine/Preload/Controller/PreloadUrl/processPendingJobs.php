@@ -14,7 +14,7 @@ use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\Controller\PreloadUrl::process_pending_jobs
+ * Test class covering \WP_Rocket\Engine\Preload\Controller\PreloadUrl::process_pending_jobs
  * @group  Preload
  */
 class Test_processPendingJobs extends TestCase

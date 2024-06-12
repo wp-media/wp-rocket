@@ -67,7 +67,8 @@ class RUCSSQueueRunner extends ActionScheduler_Abstract_QueueRunner {
 			 *
 			 * @since 3.11.0.5
 			 *
-			 * @param int $batch_size Batch size.
+			 * @param int    $batch_size Batch size.
+			 * @param string $group The group name.
 			 *
 			 * @return int
 			 */
@@ -161,7 +162,8 @@ class RUCSSQueueRunner extends ActionScheduler_Abstract_QueueRunner {
 	 *
 	 * @param string $context Optional identifer for the context in which this action is being processed, e.g. 'WP CLI' or 'WP Cron'
 	 *        Generally, this should be capitalised and not localised as it's a proper noun.
-	 * @return int The number of actions processed.
+	 *
+	 * @return void
 	 */
 	public function run( $context = 'WP Cron' ) {
 		\ActionScheduler_Compatibility::raise_memory_limit();
@@ -178,7 +180,6 @@ class RUCSSQueueRunner extends ActionScheduler_Abstract_QueueRunner {
 		}
 
 		do_action( 'action_scheduler_after_process_queue' );// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
-		return $processed_actions;
 	}
 
 	/**

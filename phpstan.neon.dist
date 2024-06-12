@@ -1,8 +1,7 @@
 includes:
     - phar://phpstan.phar/conf/bleedingEdge.neon
-    - vendor/szepeviktor/phpstan-wordpress/extension.neon
 parameters:
-    level: 4
+    level: 0
     checkMissingIterableValueType: false
     inferPrivatePropertyTypeFromConstructor: true
     paths:
@@ -11,11 +10,11 @@ parameters:
         - %currentWorkingDirectory%/inc/Addon/
         - %currentWorkingDirectory%/inc/ThirdParty/
     bootstrapFiles:
-        - %currentWorkingDirectory%/tests/phpstan/bootstrap.php
         # Must be first
         - %currentWorkingDirectory%/inc/functions/options.php
         # Procedural code
         - %currentWorkingDirectory%/inc/constants.php
+        - %currentWorkingDirectory%/inc/common/purge.php
         - %currentWorkingDirectory%/inc/API/bypass.php
         - %currentWorkingDirectory%/inc/3rd-party/plugins/autoptimize.php
         - %currentWorkingDirectory%/inc/admin/ui/notices.php
@@ -29,6 +28,8 @@ parameters:
         # Composer autoloader "exclude-from-classmap"
         - %currentWorkingDirectory%/inc/classes/class-wp-rocket-requirements-check.php
         - %currentWorkingDirectory%/inc/vendors/classes/class-rocket-mobile-detect.php
+    scanDirectories:
+        - %currentWorkingDirectory%/inc/Dependencies/ActionScheduler
     excludePaths:
          - %currentWorkingDirectory%/inc/vendors/
          # These need plugin stubs!

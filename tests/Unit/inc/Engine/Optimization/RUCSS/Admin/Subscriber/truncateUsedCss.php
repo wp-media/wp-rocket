@@ -4,11 +4,12 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\RUCSS\Admin\Subscriber;
 use Brain\Monkey\{Actions,Functions};
 use Mockery;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\{Database,Settings,Subscriber};
-use WP_Rocket\Engine\Optimization\RUCSS\Controller\{Queue,UsedCSS};
+use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
+use WP_Rocket\Engine\Common\JobManager\Queue\Queue;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::truncate_used_css
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::truncate_used_css
  *
  * @group RUCSS
  */
@@ -46,7 +47,9 @@ class Test_TruncateUsedCss extends TestCase {
 		if(! array_key_exists('is_disabled', $config)) {
 			return;
 		}
-		Functions\expect('apply_filters')->with( 'rocket_rucss_deletion_activated' )->andReturn($config['is_disabled']);
+		Functions\expect( 'rocket_apply_filter_and_deprecated' )
+			->with( 'rocket_saas_deletion_enabled', [ true ], '3.16', 'rocket_rucss_deletion_enabled' )
+			->andReturn( $config['is_disabled'] );
 	}
 
 	protected function configureDeleteUsedCssRow($config) {
@@ -63,8 +66,8 @@ class Test_TruncateUsedCss extends TestCase {
 		}
 		Actions\expectDone('rocket_after_clean_used_css');
 
-		Functions\expect('set_transient')->with('rocket_rucss_processing', time() + 90, 1.5 * MINUTE_IN_SECONDS);
+		Functions\expect('set_transient')->with('rocket_saas_processing', time() + 90, 1.5 * MINUTE_IN_SECONDS);
 
-		Functions\expect('rocket_renew_box')->with('rucss_success_notice');
+		Functions\expect('rocket_renew_box')->with('saas_success_notice');
 	}
 }

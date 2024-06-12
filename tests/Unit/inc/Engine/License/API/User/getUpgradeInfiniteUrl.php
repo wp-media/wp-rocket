@@ -6,7 +6,7 @@ use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\License\API\User::get_upgrade_infinite_url
+ * Test class covering \WP_Rocket\Engine\License\API\User::get_upgrade_infinite_url
  *
  * @group License
  */

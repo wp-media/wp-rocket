@@ -6,7 +6,7 @@ use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\Database\Queries\Cache::is_preloaded
+ * Test class covering \WP_Rocket\Engine\Preload\Database\Queries\Cache::is_preloaded
  *
  * @group Database
  * @group Preload

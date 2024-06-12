@@ -8,7 +8,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use wpdb;
 
 /**
- * @covers \WP_Rocket\Engine\HealthCheck\ActionSchedulerCheck::check_on_update_options
+ * Test class covering \WP_Rocket\Engine\HealthCheck\ActionSchedulerCheck::check_on_update_options
  * @group  HealthCheck
  */
 class Test_CheckOnUpdateOptions extends TestCase {

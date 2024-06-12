@@ -82,7 +82,7 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 			 *
 			 * @since 3.1
 			 *
-			 * @param bool true to activate, false to deactivate.
+			 * @param bool $cache_cart true to activate, false to deactivate.
 			 */
 			if ( apply_filters( 'rocket_cache_wc_empty_cart', true ) ) {
 				$events['init']              = [ 'serve_cache_empty_cart', 11 ];
@@ -329,7 +329,7 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 		 *
 		 * @since 2.6.5
 		 *
-		 * @param bool false will force to cache the WooCommerce REST API
+		 * @param bool $cache_wc_rest_api false will force to cache the WooCommerce REST API
 		 */
 		if ( apply_filters( 'rocket_cache_reject_wc_rest_api', true ) ) {
 			$urls[] = rocket_clean_exclude_file( $this->get_wc_api_endpoint() );
@@ -512,6 +512,7 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 	 * @return bool
 	 */
 	private function product_has_gallery_images() {
+		// @phpstan-ignore-next-line
 		$product = wc_get_product( get_the_ID() );
 		if ( empty( $product ) ) {
 			return false;
@@ -529,6 +530,7 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 			return;
 		}
 
+		// @phpstan-ignore-next-line
 		if ( ! is_product() ) {
 			return;
 		}
@@ -560,6 +562,7 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 			return $exclusions;
 		}
 
+		// @phpstan-ignore-next-line
 		if ( ! is_product() ) {
 			return $exclusions;
 		}
@@ -612,13 +615,15 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 	 * @return void
 	 */
 	public function allow_rocket_clean_post( int $product_id ): void {
-		$urls          = [];
+		$urls = [];
+		// @phpstan-ignore-next-line
 		$category_list = wc_get_product_category_list( $product_id );
 
 		if ( preg_match_all( '/<a\s+(?:[^>]*?\s+)?href=(["\'])(?<urls>.*?)\1/i', $category_list, $matches ) ) {
 			$urls = $matches['urls'];
 		}
 
+		// @phpstan-ignore-next-line
 		$shop_page = get_permalink( wc_get_page_id( 'shop' ) );
 
 		if ( empty( $shop_page ) ) {

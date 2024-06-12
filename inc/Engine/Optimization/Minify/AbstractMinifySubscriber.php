@@ -130,4 +130,15 @@ abstract class AbstractMinifySubscriber implements Subscriber_Interface {
 
 		return preg_replace( '/' . preg_quote( $url_host, '/' ) . '/', sanitize_text_field( $_SERVER['HTTP_HOST'] ), $url, 1 ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 	}
+
+	/**
+	 * Returns an array of CDN zones for CSS files.
+	 *
+	 * @since 3.1
+	 *
+	 * @return array
+	 */
+	public function get_zones() {
+		return [];
+	}
 }

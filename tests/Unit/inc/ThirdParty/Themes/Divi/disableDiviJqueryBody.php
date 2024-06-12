@@ -7,11 +7,9 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 use WP_Rocket\ThirdParty\Themes\Divi;
 use WP_Theme;
-use Brain\Monkey\Filters;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Themes\Divi::disable_divi_jquery_body
- * @uses   \WP_Rocket\ThirdParty\Themes\Divi::is_divi
+ * Test class covering \WP_Rocket\ThirdParty\Themes\Divi::disable_divi_jquery_body
  *
  * @group  ThirdParty
  */

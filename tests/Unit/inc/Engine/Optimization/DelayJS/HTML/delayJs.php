@@ -11,7 +11,7 @@ use WP_Rocket\Logger\Logger;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\DelayJS\HTML::delay_js
+ * Test class covering \WP_Rocket\Engine\Optimization\DelayJS\HTML::delay_js
  * @group  Optimize
  * @group  DelayJS
  *

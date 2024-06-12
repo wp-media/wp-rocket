@@ -6,10 +6,9 @@ use WP_Rocket\Tests\Integration\ContentTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers   \WP_Rocket\Engine\Optimization\RUCSS\Frontend\Subscriber::maybe_disable_preload_fonts
- * @covers   \WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS::is_allowed()
+ * Test class covering   \WP_Rocket\Engine\Optimization\RUCSS\Frontend\Subscriber::maybe_disable_preload_fonts
  *
- * @group    RUCSS
+ * @group RUCSS
  */
 class Test_MaybeDisablePreloadFonts extends TestCase {
 	use ContentTrait;
@@ -17,7 +16,17 @@ class Test_MaybeDisablePreloadFonts extends TestCase {
 	private $rucss;
 	private $post;
 
+	public function set_up() {
+		parent::set_up();
+
+		// Disable ATF optimization to prevent DB request (unrelated to the test).
+		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
+	}
+
 	public function tear_down() {
+		// Re-enable ATF optimization.
+		remove_filter( 'rocket_above_the_fold_optimization', '__return_false' );
+
 		remove_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'rucss' ] );
 
 		if ( isset( $this->post->ID ) ) {
@@ -37,7 +46,7 @@ class Test_MaybeDisablePreloadFonts extends TestCase {
 
 		$this->donotrocketoptimize = $config['DONOTROCKETOPTIMIZE'];
 
-		$this->rucss     = $config['options']['remove_unused_css'];
+		$this->rucss = $config['options']['remove_unused_css'];
 
 		add_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'rucss' ] );
 
@@ -62,7 +71,7 @@ class Test_MaybeDisablePreloadFonts extends TestCase {
 
 	public function return_prewarmup_stats( $option_value ) {
 		return [
-			'allow_optimization' => true
+			'allow_optimization' => true,
 		];
 	}
 }

@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\Optimization\AMP;
 use AMP_Theme_Support;;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\Optimization\AMP::disable_options_on_amp
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\Optimization\AMP::disable_options_on_amp
  * @group WithAmpAndCloudflare
  */
 class Test_DisableOptionsOnAmpWithCloudflare extends TestCase {

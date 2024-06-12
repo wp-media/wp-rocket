@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Fixtures\i18n\i18nTrait;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers ::get_rocket_i18n_home_url
+ * Test class covering ::get_rocket_i18n_home_url
  * @uses  ::rocket_has_i18n
  *
  * @group Functions

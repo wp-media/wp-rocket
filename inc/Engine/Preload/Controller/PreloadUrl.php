@@ -116,11 +116,6 @@ class PreloadUrl {
 				[
 					'blocking'  => false,
 					'timeout'   => 0.01,
-					/**
-					 * Filter to activate the verification of SSl.
-					 *
-					 * @param string $activate is the verification activated.
-					 */
 					'sslverify' => apply_filters( 'https_local_ssl_verify', false ), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 				]
 			);

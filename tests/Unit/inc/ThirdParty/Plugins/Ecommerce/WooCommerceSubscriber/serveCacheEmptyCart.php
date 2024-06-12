@@ -8,7 +8,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Mockery;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\Ecommerce\WooCommerceSubscriber::serve_cache_empty_cart
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\Ecommerce\WooCommerceSubscriber::serve_cache_empty_cart
  * @group WooCommerce
  * @group ThirdParty
  */

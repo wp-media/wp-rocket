@@ -14,7 +14,7 @@ use Brain\Monkey\Functions;
 use Brain\Monkey\Filters;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\Controller\PreloadUrl::preload_url
+ * Test class covering \WP_Rocket\Engine\Preload\Controller\PreloadUrl::preload_url
  * @group  Preload
  */
 class Test_PreloadUrl extends TestCase

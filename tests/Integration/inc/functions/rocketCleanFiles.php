@@ -2,11 +2,10 @@
 
 namespace WP_Rocket\Tests\Integration\inc\functions;
 
-use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers ::rocket_clean_files
+ * Test class covering ::rocket_clean_files
  * @uses  ::rocket_rrmdir
  * @uses  ::_rocket_get_cache_dirs
  *
@@ -16,21 +15,7 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group Clean
  */
 class Test_RocketCleanFiles extends FilesystemTestCase {
-	use DBTrait;
-
 	protected $path_to_test_data = '/inc/functions/rocketCleanFiles.php';
-
-	public static function set_up_before_class() {
-		parent::set_up_before_class();
-
-		self::installFresh();
-	}
-
-	public static function tear_down_after_class() {
-		self::uninstallAll();
-
-		parent::tear_down_after_class();
-	}
 
 	/**
 	 * @dataProvider providerTestData

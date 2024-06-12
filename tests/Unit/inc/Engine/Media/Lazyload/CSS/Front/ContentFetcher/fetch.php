@@ -9,7 +9,7 @@ use WP_Filesystem_Direct;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 /**
- * @covers \WP_Rocket\Engine\Media\Lazyload\CSS\Front\ContentFetcher::fetch
+ * Test class covering \WP_Rocket\Engine\Media\Lazyload\CSS\Front\ContentFetcher::fetch
  */
 class Test_fetch extends TestCase {
 

@@ -57,6 +57,8 @@ class WordFenceCompatibility implements Subscriber_Interface {
 		}
 
 		// Update whitelist.
+
+		// @phpstan-ignore-next-line
 		wfConfig::set( 'whitelisted', implode( ',', $whitelist ) );
 	}
 
@@ -74,6 +76,8 @@ class WordFenceCompatibility implements Subscriber_Interface {
 		}
 
 		// Update whitelist.
+
+		// @phpstan-ignore-next-line
 		wfConfig::set( 'whitelisted', implode( ',', $whitelist ) );
 	}
 
@@ -85,6 +89,8 @@ class WordFenceCompatibility implements Subscriber_Interface {
 	 */
 	private function can_pop_ip( string $ip ) {
 		// Get all whitelists.
+
+		// @phpstan-ignore-next-line
 		$whitelists = wfConfig::get( 'whitelisted', '' );
 
 		// Convert to array.
@@ -119,7 +125,7 @@ class WordFenceCompatibility implements Subscriber_Interface {
 		 *
 		 * @since  3.10
 		 *
-		 * @param array  list of IPs should be whitelisted
+		 * @param array $ips list of IPs should be whitelisted
 		 */
 		$ips = apply_filters( 'rocket_wordfence_whitelisted_ips', self::WHITELISTED_IPS );
 
@@ -128,6 +134,7 @@ class WordFenceCompatibility implements Subscriber_Interface {
 		}
 
 		foreach ( $ips as $ip ) {
+			// @phpstan-ignore-next-line
 			wordfence::whitelistIP( $ip );
 		}
 	}

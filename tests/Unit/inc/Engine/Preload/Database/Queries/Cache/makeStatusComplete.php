@@ -7,8 +7,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\Database\Queries\Cache::make_status_complete
- * @uses \WP_Rocket\Engine\Preload\Database\Queries\CacheRow
+ * Test class covering \WP_Rocket\Engine\Preload\Database\Queries\Cache::make_status_complete
  *
  * @group Database
  * @group Preload

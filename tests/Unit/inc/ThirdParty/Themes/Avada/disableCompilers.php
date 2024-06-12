@@ -6,7 +6,7 @@ use WP_Rocket\ThirdParty\Themes\Avada;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Avada::disable_compilers
+ * Test class covering \WP_Rocket\ThirdParty\Avada::disable_compilers
  *
  * @group  AvadaTheme
  * @group  ThirdParty

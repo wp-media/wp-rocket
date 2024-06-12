@@ -75,20 +75,21 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'wp_footer'                                => [
+			'wp_footer'                                 => [
 				[ 'insert_lazyload_script', PHP_INT_MAX ],
 				[ 'insert_youtube_thumbnail_script', PHP_INT_MAX ],
 			],
-			'wp_head'                                  => [ 'insert_nojs_style', PHP_INT_MAX ],
-			'wp_enqueue_scripts'                       => [ 'insert_youtube_thumbnail_style', PHP_INT_MAX ],
-			'rocket_buffer'                            => [ 'lazyload', 18 ],
-			'rocket_lazyload_html'                     => 'lazyload_responsive',
-			'init'                                     => 'lazyload_smilies',
-			'wp'                                       => 'deactivate_lazyload_on_specific_posts',
-			'wp_lazy_loading_enabled'                  => [ 'maybe_disable_core_lazyload', 10, 2 ],
-			'rocket_lazyload_excluded_attributes'      => 'add_exclusions',
-			'rocket_lazyload_excluded_src'             => 'add_exclusions',
-			'rocket_lazyload_iframe_excluded_patterns' => 'add_exclusions',
+			'wp_head'                                   => [ 'insert_nojs_style', PHP_INT_MAX ],
+			'wp_enqueue_scripts'                        => [ 'insert_youtube_thumbnail_style', PHP_INT_MAX ],
+			'rocket_buffer'                             => [ 'lazyload', 18 ],
+			'rocket_lazyload_html'                      => 'lazyload_responsive',
+			'init'                                      => 'lazyload_smilies',
+			'wp'                                        => 'deactivate_lazyload_on_specific_posts',
+			'wp_lazy_loading_enabled'                   => [ 'maybe_disable_core_lazyload', 10, 2 ],
+			'rocket_lazyload_excluded_attributes'       => 'add_exclusions',
+			'rocket_lazyload_excluded_src'              => 'add_exclusions',
+			'rocket_lazyload_iframe_excluded_patterns'  => 'add_exclusions',
+			'rocket_lazyload_exclude_youtube_thumbnail' => 'add_exclusions',
 		];
 	}
 
@@ -455,7 +456,11 @@ class Subscriber implements Subscriber_Interface {
 	 * @param array $exclusions Array of excluded patterns.
 	 * @return array
 	 */
-	public function add_exclusions( array $exclusions ): array {
+	public function add_exclusions( $exclusions ): array {
+		if ( ! is_array( $exclusions ) ) {
+			$exclusions = [];
+		}
+
 		$exclude_lazyload = $this->options->get( 'exclude_lazyload', [] );
 
 		if ( empty( $exclude_lazyload ) ) {

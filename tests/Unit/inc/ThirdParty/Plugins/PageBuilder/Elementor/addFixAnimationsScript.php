@@ -8,7 +8,7 @@ use WP_Rocket\ThirdParty\Plugins\PageBuilder\Elementor;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\PageBuilder\Elementor::add_fix_animation_script
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\PageBuilder\Elementor::add_fix_animation_script
  * @group Elementor
  * @group ThirdParty
  */

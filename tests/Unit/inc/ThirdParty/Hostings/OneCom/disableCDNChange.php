@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\OneCom::disable_cdn_change
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\OneCom::disable_cdn_change
  * @group OneCom
  * @group ThirdParty
  */

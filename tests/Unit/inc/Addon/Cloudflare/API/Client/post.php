@@ -11,7 +11,7 @@ use WP_Rocket\Addon\Cloudflare\Auth\AuthInterface;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers WP_Rocket\Addon\Cloudflare\API\Client::post
+ * Test class covering WP_Rocket\Addon\Cloudflare\API\Client::post
  *
  * @group Cloudflare
  */

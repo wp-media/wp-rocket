@@ -4,18 +4,22 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Preload\Subscriber;
 
 use WP_Rocket\Tests\Integration\AdminTestCase;
 
-class Test_LockUrl extends AdminTestCase
-{
-	public static function set_up_before_class()
-	{
-		parent::set_up_before_class();
-		self::installFresh();
+/**
+ * Test class covering \WP_Rocket\Engine\Preload\Subscriber::lock_url
+ *
+ * @group Preload
+ */
+class Test_LockUrl extends AdminTestCase {
+	public function set_up() {
+		parent::set_up();
+
+		self::installPreloadCacheTable();
 	}
 
-	public static function tear_down_after_class()
-	{
-		self::uninstallAll();
-		parent::tear_down_after_class();
+	public function tear_down() {
+		self::uninstallPreloadCacheTable();
+
+		parent::tear_down();
 	}
 
 	/**

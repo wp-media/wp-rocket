@@ -3,77 +3,65 @@ declare(strict_types=1);
 
 namespace WP_Rocket\ThirdParty\Themes;
 
-use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Dependencies\League\Container\ServiceProvider\{AbstractServiceProvider, BootableServiceProviderInterface};
 
-class ServiceProvider extends AbstractServiceProvider {
+class ServiceProvider extends AbstractServiceProvider implements BootableServiceProviderInterface {
 	/**
-	 * The provides array is a way to let the container
-	 * know that a service is provided by this service
-	 * provider. Every service that is registered via
-	 * this service provider must have an alias added
-	 * to this array or it will be ignored.
+	 * Array of services provided by this service provider
 	 *
 	 * @var array
 	 */
-	protected $provides = [
-		'avada_subscriber',
-		'bridge_subscriber',
-		'divi',
-		'flatsome',
-		'jevelin',
-		'minimalist_blogger',
-		'polygon',
-		'uncode',
-		'xstore',
-		'themify',
-		'shoptimizer',
-	];
+	protected $provides = [];
+
+	/**
+	 * Check if the service provider provides a specific service.
+	 *
+	 * @param string $id The id of the service.
+	 *
+	 * @return bool
+	 */
+	public function provides( string $id ): bool {
+		return in_array( $id, $this->provides, true );
+	}
+
+	/**
+	 * Register the service in the provider array
+	 *
+	 * @return void
+	 */
+	public function boot(): void {
+		$theme = ThemeResolver::get_current_theme();
+
+		if ( ! empty( $theme ) ) {
+			$this->provides[] = $theme;
+		}
+	}
 
 	/**
 	 * Registers the subscribers in the container
 	 *
 	 * @return void
 	 */
-	public function register() {
-		$options = $this->getContainer()->get( 'options' );
+	public function register(): void {
+		$theme = ThemeResolver::get_current_theme();
 
-		$this->getContainer()
-			->share( 'avada_subscriber', Avada::class )
-			->addArgument( $options )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'bridge_subscriber', Bridge::class )
-			->addArgument( $options )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'divi', Divi::class )
-			->addArgument( $this->getContainer()->get( 'options_api' ) )
-			->addArgument( $options )
-			->addArgument( $this->getContainer()->get( 'delay_js_html' ) )
-			->addArgument( $this->getContainer()->get( 'rucss_used_css_controller' ) )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'flatsome', Flatsome::class )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'jevelin', Jevelin::class )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'minimalist_blogger', MinimalistBlogger::class )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'polygon', Polygon::class )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'uncode', Uncode::class )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'xstore', Xstore::class )
-			->addTag( 'common_subscriber' );
+		if ( ! empty( $theme ) ) {
+			$factory = new SubscriberFactory();
 
-		$this->getContainer()->share( 'themify', Themify::class )
-			->addArgument( $options );
+			$theme_data = $factory->get_subscriber();
+			$arguments  = [];
 
-		$this->getContainer()->share( 'shoptimizer', Shoptimizer::class );
+			if ( empty( $theme_data ) ) {
+				return;
+			}
+
+			foreach ( $theme_data['arguments'] as $arg ) {
+				$arguments[] = $this->getContainer()->get( $arg );
+			}
+
+			$this->getContainer()
+				->addShared( $theme, $theme_data['class'] )
+				->addArguments( $arguments );
+		}
 	}
 }

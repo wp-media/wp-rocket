@@ -7,7 +7,7 @@ use WP_Rocket\Engine\CriticalPath\DataManager;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\DataManager::get_cache_job_id
+ * Test class covering \WP_Rocket\Engine\CriticalPath\DataManager::get_cache_job_id
  *
  * @group  CriticalPath
  */
