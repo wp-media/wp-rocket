@@ -2,6 +2,7 @@
 return [
 	'alreadyPresentShouldDoNothing' => [
 		'config' => [
+			'transient_check_duration' => false,
 			'url' => 'url',
 			'cache_exists' => true,
 			'cache_mobile' => false,
@@ -19,6 +20,7 @@ return [
 	],
 	'mobileNotActivatedShouldPreloadOnlyOnce' => [
 		'config' => [
+			'transient_check_duration' => false,
 			'url' => 'url',
 			'cache_exists' => false,
 			'cache_mobile' => false,
@@ -36,6 +38,7 @@ return [
 	],
 	'mobileActivatedShouldPreloadTwice' => [
 		'config' => [
+			'transient_check_duration' => false,
 			'url' => 'url',
 			'cache_exists' => false,
 			'cache_mobile' => true,
