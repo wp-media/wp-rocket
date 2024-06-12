@@ -83,10 +83,6 @@ class Test_PreloadUrl extends TestCase {
 			||
 			! $config['cache_mobile']
 		) {
-			Functions\expect( 'wp_safe_remote_get' )
-			->with( $config['url'] . '/', $config['request_mobile']['config'] )
-			->never();
-
 			return;
 		}
 

@@ -1,6 +1,6 @@
 <?php
 return [
-	'alreadyPresentShouldDoNothing' => [
+	'shouldDoNothingWhenAlreadyCached' => [
 		'config' => [
 			'transient_check_duration' => false,
 			'url' => 'url',
@@ -15,10 +15,9 @@ return [
 					'sslverify' => false,
 				]
 			],
-			'transient' => 0,
 		]
 	],
-	'mobileNotActivatedShouldPreloadOnlyOnce' => [
+	'shouldPreloadOnlyOnceWhenMobileCacheDisabled' => [
 		'config' => [
 			'transient_check_duration' => false,
 			'url' => 'url',
@@ -33,10 +32,9 @@ return [
 					'sslverify' => false,
 				]
 			],
-			'transient' => 1,
 		],
 	],
-	'mobileActivatedShouldPreloadTwice' => [
+	'ShouldPreloadTwiceWhenMobileCacheEnabled' => [
 		'config' => [
 			'transient_check_duration' => false,
 			'url' => 'url',
@@ -59,7 +57,6 @@ return [
 					'sslverify' => false,
 				]
 			],
-			'transient' => 0,
 		]
 	]
 ];
