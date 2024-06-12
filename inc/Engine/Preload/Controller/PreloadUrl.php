@@ -158,11 +158,11 @@ class PreloadUrl {
 			 * Filter the delay between each preload request.
 			 *
 			 * @param float $delay_between the defined delay.
-			 * @returns float
 			 */
 			$delay_between = apply_filters( 'rocket_preload_delay_between_requests', 500000 );
 
 			usleep( $delay_between );
+
 			if ( ! $check_duration ) {
 				continue;
 			}
