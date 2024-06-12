@@ -59,4 +59,21 @@ return [
 			],
 		],
 	],
+	'shouldPreloadOnlyOnceWhenMobileCacheDisabledAndCheckDuration' => [
+		'config' => [
+			'transient_check_duration' => false,
+			'url' => 'url',
+			'cache_exists' => false,
+			'cache_mobile' => false,
+			'user_agent' => 'user_agent',
+			'request' => [
+				'config' => [
+					'blocking' => true,
+					'timeout'  => 20,
+					'user-agent' => 'WP Rocket/Preload',
+					'sslverify' => false,
+				],
+			],
+		],
+	],
 ];
