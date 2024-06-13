@@ -41,35 +41,35 @@ return [
 	'shouldPassJobsInPending' => [
 		'config' => [
 			'outdated_jobs' => [
-				$outdated_row
+				$outdated_row,
 			],
 			'excluded' => [
-			false,
-			false,
-			true,
+				false,
+				false,
+				true,
 			],
 			'rows' => 5,
 			'jobs' => [
 				$row1,
 				$row2,
-				$row3
+				$row3,
 			],
 			'transient' => 0,
 		],
 		'expected' => [
 			'outdated_jobs_id' => [
-				[14]
+				[ 14 ],
 			],
 			'job_ids' => [
-				[10],
-				[11],
+				[ 10 ],
+				[ 11 ],
 			],
 			'job_urls' => [
 				'http://example1',
 				'http://example2',
 			],
 			'job_deleted' =>
-				['http://example3'],
-		]
+				[ 'http://example3' ],
+		],
 	],
 ];
