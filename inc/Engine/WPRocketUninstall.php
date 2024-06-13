@@ -80,7 +80,7 @@ class WPRocketUninstall {
 		'wp_rocket_pricing_timeout',
 		'wp_rocket_pricing_timeout_active',
 		'rocket_get_refreshed_fragments_cache',
-		'rocket_preload_previous_request_durations',
+		'rocket_preload_previous_requests_durations',
 		'rocket_preload_check_duration',
 	];
 
