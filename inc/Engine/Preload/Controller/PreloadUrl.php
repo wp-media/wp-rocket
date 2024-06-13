@@ -225,13 +225,13 @@ class PreloadUrl {
 		 */
 		$min_batch_size = ( (int) apply_filters( 'rocket_preload_cache_min_in_progress_jobs_count', 5 ) );
 
-		$preload_request_duration = get_transient( 'rocket_preload_previous_requests_durations' );
+		$average_duration = get_transient( 'rocket_preload_previous_requests_durations' );
 
 		/**
 		 * Estimate batch size based on request duration.
 		 * In case no estimation or there is an issue with the value use $min_batch_size.
 		*/
-		$next_batch_size = ! $preload_request_duration ? $min_batch_size : round( -5 * $preload_request_duration + 55 );
+		$next_batch_size = ! $average_duration ? $min_batch_size : round( -5 * $average_duration + 55 );
 
 		// Limit next_batch_size.
 		$next_batch_size = max( $next_batch_size, $min_batch_size ); // Not lower than 5.
