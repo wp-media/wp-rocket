@@ -394,6 +394,7 @@ class Plugin {
 			'atf_cron_subscriber',
 			'saas_admin_subscriber',
 			'warmup_subscriber',
+			'health_check_page_cache',
 		];
 
 		$host_type = HostResolver::get_host_service();
