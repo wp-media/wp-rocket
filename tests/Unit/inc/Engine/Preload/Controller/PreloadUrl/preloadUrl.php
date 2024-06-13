@@ -50,9 +50,6 @@ class Test_PreloadUrl extends TestCase {
 			->with( 'rocket_preload_check_duration' )
 			->andReturn( $config['transient_check_duration'] );
 
-		Functions\when( 'set_transient' )
-			->justReturn();
-
 		$this->options->expects()->get( 'do_caching_mobile_files', false )
 			->andReturn( $config['cache_mobile'] );
 		$this->controller->expects()->is_already_cached( $config['url'] )
@@ -60,6 +57,24 @@ class Test_PreloadUrl extends TestCase {
 
 		$this->expectDesktopRequest( $config );
 		$this->expectMobileRequest( $config );
+
+		if ( false === $config['transient_check_duration'] ) {
+			Functions\expect( 'get_transient' )
+				->atMost()
+				->once()
+				->with( 'rocket_preload_previous_requests_durations' )
+				->andReturn( false );
+
+			Functions\expect( 'set_transient' )
+				->atMost()
+				->once()
+				->with( 'rocket_preload_previous_requests_durations', Mockery::type( 'int' ), 300 );
+
+			Functions\expect( 'set_transient' )
+				->atMost()
+				->once()
+				->with( 'rocket_preload_check_duration', Mockery::type( 'int' ), 60 );
+		}
 
 		$this->controller->preload_url( $config['url'] );
 	}
