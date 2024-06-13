@@ -167,11 +167,13 @@ class PreloadUrl {
 				continue;
 			}
 
-			// Update average duration.
-			$previous_request_durations = get_transient( 'rocket_preload_previous_request_durations' ) ?? 0;
-			$previous_request_durations = ( $previous_request_durations <= 0 ) ? $duration : ( $previous_request_durations * 0.7 + $duration * 0.3 );
+			$duration_transient = get_transient( 'rocket_preload_previous_requests_durations' );
+			$average_duration   = ( false !== $duration_transient ) ? $duration_transient : 0;
 
-			set_transient( 'rocket_preload_previous_request_durations', $previous_request_durations, 5 * MINUTE_IN_SECONDS );
+			// Update average duration.
+			$average_duration = ( $average_duration <= 0 ) ? $duration : ( $average_duration * 0.7 + $duration * 0.3 );
+
+			set_transient( 'rocket_preload_previous_requests_durations', $average_duration, 5 * MINUTE_IN_SECONDS );
 
 			set_transient( 'rocket_preload_check_duration', $duration, MINUTE_IN_SECONDS ); // Don't check request duration for 1 minute.
 			$check_duration = false;
@@ -223,7 +225,7 @@ class PreloadUrl {
 		 */
 		$min_batch_size = ( (int) apply_filters( 'rocket_preload_cache_min_in_progress_jobs_count', 5 ) );
 
-		$preload_request_duration = get_transient( 'rocket_preload_previous_request_durations' );
+		$preload_request_duration = get_transient( 'rocket_preload_previous_requests_durations' );
 
 		/**
 		 * Estimate batch size based on request duration.
