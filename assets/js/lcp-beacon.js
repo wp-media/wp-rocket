@@ -93,18 +93,35 @@ class RocketLcpBeacon {
 		const potentialCandidates = Array.from( lcpElements );
 
 		const topCandidates = potentialCandidates.map(element => {
-			const rect = element.getBoundingClientRect();
+			// Skip if the element is an img and its parent is a picture
+			if ('img' === element.nodeName.toLowerCase() && 'picture' === element.parentElement.nodeName.toLowerCase() ) {
+				return null;
+			}
+			let rect;
+			if ('picture' === element.nodeName.toLowerCase()) {
+				const imgElement = element.querySelector('img');
+				if (imgElement) {
+					rect = imgElement.getBoundingClientRect();
+				} else {
+					return null;
+				}
+			} else {
+				rect = element.getBoundingClientRect();
+			}
+
 			return {
 				element: element,
 				rect: rect,
 			};
-		}).filter(item => {
-			return (
-				item.rect.width > 0 &&
-				item.rect.height > 0 &&
-				this._isIntersecting(item.rect)
-			);
 		})
+			.filter(item => item !== null) // Filter out null values here
+			.filter(item => {
+				return (
+					item.rect.width > 0 &&
+					item.rect.height > 0 &&
+					this._isIntersecting(item.rect)
+				);
+			})
 			.map(item => ({
 				item,
 				area: this._getElementArea(item.rect),
@@ -174,11 +191,13 @@ class RocketLcpBeacon {
 			}
 		} else if (nodeName === "picture") {
 			element_info.type = "picture";
-			const img = element.querySelector('img:not(picture>img)');
+			const img = element.querySelector('img');
 			element_info.src = img ? img.src : "";
 			element_info.sources = Array.from(element.querySelectorAll('source')).map(source => ({
 				srcset: source.srcset || '',
-				media: source.media || ''
+				media: source.media || '',
+				type: source.type || '',
+				sizes: source.sizes || ''
 			}));
 		} else {
 			const computed_style = window.getComputedStyle(element, null);
