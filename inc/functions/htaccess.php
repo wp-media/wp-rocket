@@ -150,7 +150,7 @@ function flush_rocket_htaccess( $remove_rules = false ) { // phpcs:ignore WordPr
 	fseek( $pointer, 0 );
 	$bytes = fwrite( $pointer, $new_file_data ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fwrite
 
-	if ( $bytes !== false ) {
+	if ( false !== $bytes ) {
 		ftruncate( $pointer, ftell( $pointer ) );
 	}
 
