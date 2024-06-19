@@ -40,7 +40,7 @@ class Subscriber implements Subscriber_Interface {
 			'pre_delete_term'               => 'delete_term_atf',
 			'rocket_saas_clean_all'         => 'truncate_atf_admin',
 			'rocket_saas_clean_url'         => 'clean_url',
-			'wp_rocket_upgrade'             => 'truncate_on_update',
+			'wp_rocket_upgrade'             => [ 'truncate_on_update', 10, 2 ],
 		];
 	}
 
