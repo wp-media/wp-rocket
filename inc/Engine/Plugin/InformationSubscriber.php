@@ -9,19 +9,14 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
 class InformationSubscriber implements Subscriber_Interface {
 	use UpdaterApiTools;
 
+	const INFORMATION_ENDPOINT = 'https://api.wp-rocket.me/plugin_information.php';
+
 	/**
 	 * Plugin slug.
 	 *
 	 * @var string
 	 */
 	private $plugin_slug;
-
-	/**
-	 * URL to contact to get plugin info.
-	 *
-	 * @var string
-	 */
-	private $api_url;
 
 	/**
 	 * An ID to use when a API request fails.
@@ -37,15 +32,11 @@ class InformationSubscriber implements Subscriber_Interface {
 	 *     Required arguments to populate the class properties.
 	 *
 	 *     @type string $plugin_file Full path to the plugin.
-	 *     @type string $api_url     URL to contact to get update info.
 	 * }
 	 */
 	public function __construct( $args ) {
 		if ( isset( $args['plugin_file'] ) ) {
 			$this->plugin_slug = $this->get_plugin_slug( $args['plugin_file'] );
-		}
-		if ( isset( $args['api_url'] ) ) {
-			$this->api_url = $args['api_url'];
 		}
 	}
 
@@ -128,7 +119,7 @@ class InformationSubscriber implements Subscriber_Interface {
 	 * @return object|\WP_Error
 	 */
 	private function get_plugin_information() {
-		$response = wp_remote_get( $this->api_url );
+		$response = wp_remote_get( self::INFORMATION_ENDPOINT );
 
 		if ( is_wp_error( $response ) ) {
 			return $this->get_request_error( $response->get_error_message() );
