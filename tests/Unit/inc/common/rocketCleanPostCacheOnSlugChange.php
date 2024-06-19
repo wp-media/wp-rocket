@@ -97,4 +97,8 @@ class Test_RocketCleanPostCacheOnSlugChange extends TestCase {
 
 		$this->assertNull( rocket_clean_post_cache_on_slug_change( $post_id, [ 'post_name' => $post_name ] ) );
 	}
+
+	public function testShouldNotFireRocketCleanFilesWhenExistingPostStatusIsCorrect(){
+
+	}
 }

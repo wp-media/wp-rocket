@@ -304,7 +304,7 @@ function rocket_clean_post_cache_on_status_change( $post_id, $post_data ) {
 	$post       = get_post( $post_id );
 	$post_type  = get_post_type_object( $post->post_type );
 
-	// Return if $post is not an object.
+	// Return if $post is not an object or $post_type is not public.
 	if ( ! is_object( $post ) || true !== $post_type->public ) {
 		return;
 	}
