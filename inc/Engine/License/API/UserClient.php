@@ -5,7 +5,7 @@ namespace WP_Rocket\Engine\License\API;
 use WP_Rocket\Admin\Options_Data;
 
 class UserClient {
-	const USER_ENDPOINT = 'https://wp-rocket.me/stat/1.0/wp-rocket/user.php';
+	const USER_ENDPOINT = 'https://api.wp-rocket.me/stat/1.0/wp-rocket/user.php';
 
 	/**
 	 * WP Rocket options instance
