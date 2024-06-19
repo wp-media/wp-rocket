@@ -238,7 +238,6 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->addShared( 'rank_math_seo', RankMathSEO::class )
-			->addArgument( $options )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->addShared( 'all_in_one_seo_pack', AllInOneSEOPack::class )
