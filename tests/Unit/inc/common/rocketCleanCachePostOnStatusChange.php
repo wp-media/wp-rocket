@@ -12,11 +12,11 @@ use Brain\Monkey\Functions;
  * @group  Common
  * @group  Purge
  */
-class Test_RocketCleanCachePostOnStatusChange extends TestCase {
-	protected $path_to_test_data = 'rocketCleanCacheOnStatusChange.php';
+class TestRocketCleanCachePostOnStatusChange extends TestCase {
+	protected $path_to_test_data = 'rocketCleanCachePostOnStatusChange.php';
 
 	/**
-	 * @dataProvider providerTestData
+	 * @dataProvider configTestData
 	 */
 	public function testShouldBailOutWhenPublicTypeIsFalse( $config, $expected ) {
 		$post             = (object) $config['post_data'] ?? [];
