@@ -153,29 +153,19 @@ class Controller {
 		$object       = new \stdClass();
 		$object->type = $image->type ?? 'img';
 
-		if ( is_array( $image->src ) ) {
-			$sanitized_object_array = array_map(
-				function ( $item ) {
-					if ( ! empty( $item->src ) ) {
-						$item->src = $this->sanitize_image_url( $item->src );
-					}
-					return $item;
-				},
-				$image->src
-			);
-
-			$object->src = $sanitized_object_array;
-		} elseif ( ! empty( $image->src ) ) {
-			$object->src = $this->sanitize_image_url( $image->src );
-		}
-
 		switch ( $object->type ) {
 			case 'img-srcset':
 				// If the type is 'img-srcset', add all the required parameters to the object.
+				if ( isset( $image->src ) && ! empty( $image->src ) && is_string( $image->src ) ) {
+					$object->src = $this->sanitize_image_url( $image->src );
+				}
 				$object->srcset = $image->srcset;
 				$object->sizes  = $image->sizes;
 				break;
 			case 'picture':
+				if ( isset( $image->src ) && ! empty( $image->src ) && is_string( $image->src ) ) {
+					$object->src = $this->sanitize_image_url( $image->src );
+				}
 				$object->sources = $image->sources;
 				break;
 			default:
@@ -207,6 +197,13 @@ class Controller {
 		// If none of the keys exist in the image object, return null.
 		if ( count( (array) $object ) <= 1 ) {
 			return null;
+		}
+
+		// Returned objects must always have a src for front-end optimization.
+		// Except bg-img and bg-img-set for which we use bg_set only.
+		// To keep it simple and safe for now, we enforce src for all, pending a refactor.
+		if ( ! isset( $object->src ) ) {
+			$object->src = '';
 		}
 
 		return $object;

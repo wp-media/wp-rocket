@@ -8,7 +8,7 @@
 <html>
 <head>
 	<?php wp_head() ?>
-	<title>lcp_bg_responsive_template</title><link rel="preload" as="image" imagesrcset="http://example.org/wp-content/rocket-test-data/images/lcp/testavif.avif 1dppx,http://example.org/wp-content/rocket-test-data/images/lcp/testwebp.webp 2dppx" fetchpriority="high">
+	<title>lcp_bg_responsive_template</title><link rel="preload" data-rocket-preload as="image" imagesrcset="http://example.org/wp-content/rocket-test-data/images/lcp/testavif.avif 1dppx,http://example.org/wp-content/rocket-test-data/images/lcp/testwebp.webp 2dppx" fetchpriority="high">
 	<style>
 		.imgset-css-background-images{
 			width: 100%;
