@@ -165,4 +165,20 @@ class Controller {
 
 		$this->query->delete_by_url( untrailingslashit( $url ) );
 	}
+
+	/**
+	 * Truncate ATF table on update to 3.16.1.1 and higher
+	 *
+	 * @param string $new_version New plugin version.
+	 * @param string $old_version Old plugin version.
+	 *
+	 * @return void
+	 */
+	public function truncate_on_update( $new_version, $old_version ) {
+		if ( version_compare( $old_version, '3.16.1', '>=' ) ) {
+			return;
+		}
+
+		$this->truncate_atf();
+	}
 }
