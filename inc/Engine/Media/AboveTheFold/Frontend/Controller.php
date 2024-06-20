@@ -266,7 +266,7 @@ class Controller {
 		}
 
 		$tag       = '';
-		$start_tag = '<link rel="preload" as="image" ';
+		$start_tag = '<link rel="preload" data-rocket-preload as="image" ';
 		$end_tag   = ' fetchpriority="high">';
 
 		$sources = [];
