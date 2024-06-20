@@ -11,9 +11,9 @@ use WP_Rocket\Tests\Unit\TestCase;
  *
  * @group  Common
  * @group  Purge
+ *
  */
-class Test_RocketCleanCachePostOnStatusChange extends TestCase {
-	protected $path_to_test_data = 'rocketCleanCachePostOnStatusChange.php';
+class Test_RocketCleanPostCacheOnStatusChange extends TestCase {
 
 	public function setUp() : void {
 		parent::setUp();
