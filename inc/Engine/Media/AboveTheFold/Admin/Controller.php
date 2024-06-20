@@ -167,7 +167,7 @@ class Controller {
 	}
 
 	/**
-	 * Truncate ATF table on update to 3.16.1 and higher
+	 * Truncate ATF table on update to 3.16.1.1 and higher
 	 *
 	 * @param string $new_version New plugin version.
 	 * @param string $old_version Old plugin version.
