@@ -40,6 +40,7 @@ class Subscriber implements Subscriber_Interface {
 			'pre_delete_term'               => 'delete_term_atf',
 			'rocket_saas_clean_all'         => 'truncate_atf_admin',
 			'rocket_saas_clean_url'         => 'clean_url',
+			'wp_rocket_upgrade'             => [ 'truncate_on_update', 10, 2 ],
 		];
 	}
 
@@ -92,5 +93,17 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function clean_url() {
 		$this->controller->clean_url();
+	}
+
+	/**
+	 * Truncate ATF table on update to 3.16.1 and higher
+	 *
+	 * @param string $new_version New plugin version.
+	 * @param string $old_version Old plugin version.
+	 *
+	 * @return void
+	 */
+	public function truncate_on_update( $new_version, $old_version ) {
+		$this->controller->truncate_on_update( $new_version, $old_version );
 	}
 }
