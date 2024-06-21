@@ -39,7 +39,6 @@ class Test_ChangeCacheRejectUriWithPermalink extends TestCase {
 			$return_values[] = $config['value']['cache_reject_uri'][0] . $maybe_trailing_slash;
 
 			if ( false !== strpos( $config['value']['cache_reject_uri'][1], 'index.php' ) || '/' === $config['value']['cache_reject_uri'][1] ) {
-				unset( $return_values[0] );
 				$times = 1;
 			} else {
 				$return_values[] = $config['value']['cache_reject_uri'][1] . $maybe_trailing_slash;
