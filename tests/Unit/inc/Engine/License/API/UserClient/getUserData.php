@@ -22,13 +22,15 @@ class GetPricingData extends TestCase {
 	private $client;
 	private $options;
 
-	public static function setUpBeforeClass() : void {
+	public static function setUpBeforeClass(): void {
 		parent::setUpBeforeClass();
 
 		self::pathToApiCredentialsConfigFile( WP_ROCKET_TESTS_DIR . '/../env/local/' );
 	}
 
 	public function setUp(): void {
+		parent::setUp();
+
 		$this->options = Mockery::mock( Options_Data::class );
 		$this->client  = new UserClient( $this->options );
 	}
