@@ -10,13 +10,15 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Preload\Controller\{PreloadUrl, Queue};
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Rocket\Tests\Unit\TestCase;
-
+use WP_Rocket\Tests\Unit\HasLoggerTrait;
 /**
  * Test class covering \WP_Rocket\Engine\Preload\Controller\PreloadUrl::preload_url
  *
  * @group Preload
  */
 class Test_PreloadUrl extends TestCase {
+	use HasLoggerTrait;
+
 	protected $queue;
 	protected $query;
 	protected $options;
@@ -38,6 +40,7 @@ class Test_PreloadUrl extends TestCase {
 				$this->file_system,
 			]
 		)->shouldAllowMockingProtectedMethods();
+		$this->set_logger($this->controller);
 	}
 
 	/**
