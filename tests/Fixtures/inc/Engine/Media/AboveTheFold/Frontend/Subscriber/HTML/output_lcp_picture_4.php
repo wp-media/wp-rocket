@@ -8,7 +8,7 @@
 <html>
 <head>
 	<?php wp_head() ?>
-	<title>lcp_responsive_bg</title><link rel="preload" as="image" href="https://variance.pl/wp-content/uploads/2024/05/Kwiatowy-Ksiezyc-400x600.webp" media="(max-width: 500px)" fetchpriority="high"><link rel="preload" as="image" href="https://variance.pl/wp-content/uploads/2024/05/Kwiatowy-Ksiezyc-768x513.webp" media="(min-width: 501px) and (max-width: 768px)" fetchpriority="high"><link rel="preload" as="image" href="https://variance.pl/wp-content/uploads/2024/05/Kwiatowy-Ksiezyc-1348x900.webp" media="(min-width: 768.1px)" fetchpriority="high">
+	<title>lcp_responsive_bg</title><link rel="preload" data-rocket-preload as="image" href="https://variance.pl/wp-content/uploads/2024/05/Kwiatowy-Ksiezyc-400x600.webp" media="(max-width: 500px)" fetchpriority="high"><link rel="preload" data-rocket-preload as="image" href="https://variance.pl/wp-content/uploads/2024/05/Kwiatowy-Ksiezyc-768x513.webp" media="(min-width: 501px) and (max-width: 768px)" fetchpriority="high"><link rel="preload" data-rocket-preload as="image" href="https://variance.pl/wp-content/uploads/2024/05/Kwiatowy-Ksiezyc-1348x900.webp" media="(min-width: 768.1px)" fetchpriority="high">
 </head>
 <body>
 

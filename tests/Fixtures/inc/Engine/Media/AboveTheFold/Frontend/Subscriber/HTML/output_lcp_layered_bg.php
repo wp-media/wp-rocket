@@ -8,7 +8,7 @@
 <html>
 <head>
 	<?php wp_head() ?>
-	<title>lcp_layered_bg</title><link rel="preload" as="image" href="https://fastly.picsum.photos/id/976/200/300.jpg?hmac=s1Uz9fgJv32r8elfaIYn7pLpQXps7X9oYNwC5XirhO8" fetchpriority="high"><link rel="preload" as="image" href="https://rocketlabsqa.ovh/wp-content/rocket-test-data/images/fixtheissue.jpg" fetchpriority="high">
+	<title>lcp_layered_bg</title><link rel="preload" data-rocket-preload as="image" href="https://fastly.picsum.photos/id/976/200/300.jpg?hmac=s1Uz9fgJv32r8elfaIYn7pLpQXps7X9oYNwC5XirhO8" fetchpriority="high"><link rel="preload" data-rocket-preload as="image" href="https://rocketlabsqa.ovh/wp-content/rocket-test-data/images/fixtheissue.jpg" fetchpriority="high">
 	<style>
 		.bg-layared-css-background-images{
 			width: 100%;
