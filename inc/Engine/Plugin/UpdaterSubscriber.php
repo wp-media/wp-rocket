@@ -306,10 +306,10 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 * }
 	 */
 	public function get_latest_version_data() {
-		$client = new PluginUpdateClient();
-		$response = $client->send_get_request([]);
+		$client   = new PluginUpdateClient();
+		$response = $client->send_get_request( [] );
 
-		if (is_wp_error($response)) {
+		if ( is_wp_error( $response ) ) {
 			return $this->get_request_error(
 				[
 					'error_code' => $response->get_error_code(),

@@ -89,10 +89,10 @@ class ServiceProvider extends AbstractServiceProvider {
 					$factories,
 				]
 				);
-		$this->getContainer()->add('plugin_information_client', PluginInformationClient::class)
-			->addArgument( $this->getContainer()->get('options') );
+		$this->getContainer()->add( 'plugin_information_client', PluginInformationClient::class )
+			->addArgument( $this->getContainer()->get( 'options' ) );
 
-		$this->getContainer()->add('plugin_update_client', PluginUpdateClient::class)
-			->addArgument( $this->getContainer()->get('options') );
+		$this->getContainer()->add( 'plugin_update_client', PluginUpdateClient::class )
+			->addArgument( $this->getContainer()->get( 'options' ) );
 	}
 }
