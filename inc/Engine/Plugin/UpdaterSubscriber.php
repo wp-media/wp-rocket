@@ -5,6 +5,7 @@ use Plugin_Upgrader;
 use Plugin_Upgrader_Skin;
 use WP_Error;
 use WP_Rocket\Event_Management\{Event_Manager, Event_Manager_Aware_Subscriber_Interface};
+use WP_Rocket\Engine\Common\JobManager\APIHandler\PluginUpdateClient;
 
 /**
  * Manages the plugin updates.
@@ -305,24 +306,20 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 * }
 	 */
 	public function get_latest_version_data() {
-		$request = wp_remote_get(
-			$this->api_url,
-			[
-				'timeout' => 30,
-			]
-		);
+		$client = new PluginUpdateClient();
+		$response = $client->send_get_request([]);
 
-		if ( is_wp_error( $request ) ) {
+		if (is_wp_error($response)) {
 			return $this->get_request_error(
 				[
-					'error_code' => $request->get_error_code(),
-					'response'   => $request->get_error_message(),
+					'error_code' => $response->get_error_code(),
+					'response'   => $response->get_error_message(),
 				]
 			);
 		}
 
-		$res  = trim( wp_remote_retrieve_body( $request ) );
-		$code = wp_remote_retrieve_response_code( $request );
+		$res  = trim( wp_remote_retrieve_body( $response ) );
+		$code = wp_remote_retrieve_response_code( $response );
 
 		if ( 200 !== $code ) {
 			/**

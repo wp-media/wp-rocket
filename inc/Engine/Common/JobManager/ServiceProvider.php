@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Common\JobManager;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Engine\Common\JobManager\APIHandler\PluginInformationClient;
+use WP_Rocket\Engine\Common\JobManager\APIHandler\PluginUpdateClient;
 use WP_Rocket\Engine\Common\JobManager\Strategy\Context\RetryContext;
 use WP_Rocket\Engine\Common\JobManager\Strategy\Factory\StrategyFactory;
 use WP_Rocket\Engine\Common\JobManager\Strategy\Strategies\DefaultProcess;
@@ -87,5 +89,10 @@ class ServiceProvider extends AbstractServiceProvider {
 					$factories,
 				]
 				);
+		$this->getContainer()->add('plugin_information_client', PluginInformationClient::class)
+			->addArgument( $this->getContainer()->get('options') );
+
+		$this->getContainer()->add('plugin_update_client', PluginUpdateClient::class)
+			->addArgument( $this->getContainer()->get('options') );
 	}
 }

@@ -2,6 +2,7 @@
 namespace WP_Rocket\Engine\Plugin;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use  WP_Rocket\Engine\Common\JobManager\APIHandler\PluginInformationClient;
 
 /**
  * Manages the plugin information.
@@ -128,7 +129,9 @@ class InformationSubscriber implements Subscriber_Interface {
 	 * @return object|\WP_Error
 	 */
 	private function get_plugin_information() {
-		$response = wp_remote_get( $this->api_url );
+		$client = new PluginInformationClient();
+		$response = $client->send_get_request([]);
+
 
 		if ( is_wp_error( $response ) ) {
 			return $this->get_request_error( $response->get_error_message() );
