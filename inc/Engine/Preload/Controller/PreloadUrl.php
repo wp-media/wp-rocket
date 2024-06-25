@@ -248,7 +248,7 @@ class PreloadUrl implements LoggerAwareInterface {
 		$next_batch_size = max( $next_batch_size, 0 ); // Not lower than 0.
 
 		$this->logger::debug(
-			"Average request duration is {$average_duration}s. Next batch size will be {$next_batch_size}.",
+			"Average request duration is {$average_duration}s. Next batch size will be {$next_batch_size}s",
 			[
 				'method' => __METHOD__,
 			]
