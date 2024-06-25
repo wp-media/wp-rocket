@@ -5,10 +5,13 @@ namespace WP_Rocket\Engine\Preload\Controller;
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
+use WP_Rocket\Logger\LoggerAware;
+use WP_Rocket\Logger\LoggerAwareInterface;
 use WP_Filesystem_Direct;
 
-class PreloadUrl {
+class PreloadUrl implements LoggerAwareInterface {
 	use CheckExcludedTrait;
+	use LoggerAware;
 
 	/**
 	 * Preload queue.
@@ -176,6 +179,12 @@ class PreloadUrl {
 			set_transient( 'rocket_preload_previous_requests_durations', $average_duration, 5 * MINUTE_IN_SECONDS );
 
 			set_transient( 'rocket_preload_check_duration', $duration, MINUTE_IN_SECONDS ); // Don't check request duration for 1 minute.
+			$this->logger::debug(
+				"Preload request duration:  {$duration}s. New average duration is {$average_duration}s.",
+				[
+					'method' => __METHOD__,
+				]
+			);
 			$check_duration = false;
 		}
 	}
@@ -237,6 +246,13 @@ class PreloadUrl {
 		$next_batch_size = max( $next_batch_size, $min_batch_size ); // Not lower than 5.
 		$next_batch_size = min( $next_batch_size, $max_batch_size ); // Not higher than 45.
 		$next_batch_size = max( $next_batch_size, 0 ); // Not lower than 0.
+
+		$this->logger::debug(
+			"Average request duration is {$average_duration}s. Next batch size will be {$next_batch_size}s",
+			[
+				'method' => __METHOD__,
+			]
+		);
 
 		// Get all in-progress jobs with request sent and no results.
 		/**
