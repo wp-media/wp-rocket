@@ -56,10 +56,9 @@ abstract class AbstractSafeAPIClient {
 	 * @return mixed The response from the API, or WP_Error if a timeout is active.
 	 */
 	private function send_request( $method, $params ) {
-		$transient_key = $this->get_transient_key();
 		$api_url       = $this->get_api_url();
 
-		if ( true === get_transient( $transient_key . '_timeout_active' ) ) {
+		if ( true === get_transient( $this->get_transient_key() . '_timeout_active' ) ) {
 			return new WP_Error( 429, __( 'Too many requests.', 'wp-rocket' ) );
 		}
 
@@ -71,22 +70,21 @@ abstract class AbstractSafeAPIClient {
 		$response         = wp_remote_request( $api_url, $params );
 
 		if ( is_wp_error( $response ) ) {
-			$this->set_timeout_transients( $transient_key );
+			$this->set_timeout_transients();
 			return $response;
 		}
 
-		delete_transient( $transient_key . '_timeout_active' );
-		delete_transient( $transient_key . '_timeout' );
+		$this->delete_timeout_transients();
 
 		return $response;
 	}
 
 	/**
 	 * Set the timeout transients.
-	 *
-	 * @param string $transient_key The transient key.
 	 */
-	private function set_timeout_transients( $transient_key ) {
+	protected function set_timeout_transients() {
+		$transient_key = $this->get_transient_key();
+
 		$timeout = (int) get_transient( $transient_key . '_timeout' );
 		$timeout = ( 0 === $timeout )
 			? 300
@@ -97,5 +95,11 @@ abstract class AbstractSafeAPIClient {
 
 		set_transient( $transient_key . '_timeout', $timeout, WEEK_IN_SECONDS );
 		set_transient( $transient_key . '_timeout_active', true, $timeout );
+	}
+
+	protected function delete_timeout_transients() {
+		$transient_key = $this->get_transient_key();
+		delete_transient( $transient_key . '_timeout_active' );
+		delete_transient( $transient_key . '_timeout' );
 	}
 }
