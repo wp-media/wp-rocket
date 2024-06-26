@@ -18,6 +18,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'plugin_information_subscriber',
 		'plugin_updater_subscriber',
 		'plugin_information_api_client',
+		'plugin_updater_api_client',
 	];
 
 	/**
@@ -68,6 +69,8 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'plugin_information_api_client' ) )
 			->addTag( 'common_subscriber' );
 
+		$this->getContainer()->add( 'plugin_updater_api_client', UpdaterAPIClient::class );
+
 		$this->getContainer()->addShared( 'plugin_updater_subscriber', UpdaterSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'plugin_renewal_notice' ) )
 			->addArgument(
@@ -82,6 +85,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					],
 				]
 			)
+			->addArgument( $this->getContainer()->get( 'plugin_updater_api_client' ) )
 			->addTag( 'common_subscriber' );
 	}
 }
