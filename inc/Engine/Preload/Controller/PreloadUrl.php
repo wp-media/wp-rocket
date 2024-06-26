@@ -231,7 +231,7 @@ class PreloadUrl {
 		 * Estimate batch size based on request duration.
 		 * In case no estimation or there is an issue with the value use $min_batch_size.
 		*/
-		$next_batch_size = (int) (! $average_duration ? $min_batch_size : round( -5 * $average_duration + 55 ));
+		$next_batch_size = (int) ( ! $average_duration ? $min_batch_size : round( -5 * $average_duration + 55 ) );
 
 		// Limit next_batch_size.
 		$next_batch_size = max( $next_batch_size, $min_batch_size ); // Not lower than 5.
