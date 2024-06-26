@@ -3,14 +3,14 @@
 namespace WP_Rocket\Engine\Common\JobManager\APIHandler;
 
 /**
- * Class PluginUpdateClient
+ * Class PluginPricingClient
  *
  * This class extends the AbstractSafeAPIClient class and provides methods for
  * getting the transient key and API URL specific to plugin updates.
  *
  * @package WP_Rocket\Engine\Common\JobManager\APIHandler
  */
-class PluginUpdateClient extends AbstractSafeAPIClient {
+class PluginPricingClient extends AbstractSafeAPIClient {
 
 	/**
 	 * Get the transient key for plugin updates.
@@ -20,7 +20,7 @@ class PluginUpdateClient extends AbstractSafeAPIClient {
 	 * @return string The transient key for plugin updates.
 	 */
 	protected function get_transient_key() {
-		return 'wp_rocket_plugin_update';
+		return 'wp_rocket_pricing';
 	}
 
 	/**
@@ -31,6 +31,6 @@ class PluginUpdateClient extends AbstractSafeAPIClient {
 	 * @return string The API URL for plugin updates.
 	 */
 	protected function get_api_url() {
-		return 'https://wp-rocket.me/check_update.php';
+		return 'https://wp-rocket.me/stat/1.0/wp-rocket/pricing-2023.php';
 	}
 }

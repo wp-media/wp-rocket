@@ -2,6 +2,8 @@
 
 namespace WP_Rocket\Engine\License\API;
 
+use WP_Rocket\Engine\Common\JobManager\APIHandler\PluginPricingClient;
+
 class PricingClient {
 	const PRICING_ENDPOINT = 'https://wp-rocket.me/stat/1.0/wp-rocket/pricing-2023.php';
 
@@ -44,13 +46,10 @@ class PricingClient {
 			return false;
 		}
 
-		$response = wp_safe_remote_get(
-			self::PRICING_ENDPOINT
-		);
+		$client = new PluginPricingClient( );
+		$response = $client->send_get_request();
 
-		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
-			$this->set_timeout_transients();
-
+		if ( false === $response ) {
 			return false;
 		}
 

@@ -20,7 +20,7 @@ class PluginInformationClient extends AbstractSafeAPIClient {
 	 * @return string The transient key for plugin information.
 	 */
 	protected function get_transient_key() {
-		return 'plugin_information';
+		return 'wp_rocket_plugin_information';
 	}
 
 	/**
