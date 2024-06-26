@@ -75,7 +75,7 @@ class Controller {
 			return;
 		}
 
-		$this->send_to_saas( home_url() );
+		$this->send_to_saas( home_url(), true );
 		$this->queue->add_job_warmup();
 	}
 
@@ -203,13 +203,14 @@ class Controller {
 	 * Send link to SaaS to do the warmup.
 	 *
 	 * @param string $url Url to send.
+	 * @param bool   $is_warm_up set to false by default, should be true if request is warm up.
 	 *
 	 * @return void
 	 */
-	public function send_to_saas( string $url ) {
+	public function send_to_saas( string $url, bool $is_warm_up = false ) {
 		$this->api_client->add_to_atf_queue( $url );
 
-		if ( $this->is_mobile() ) {
+		if ( $this->is_mobile( $is_warm_up ) ) {
 			$this->api_client->add_to_atf_queue( $url, 'mobile' );
 		}
 	}
@@ -237,9 +238,15 @@ class Controller {
 	/**
 	 * Check if the current request is for mobile.
 	 *
+	 * @param bool $is_warm_up if check is for warm up or not.
+	 *
 	 * @return bool
 	 */
-	private function is_mobile(): bool {
+	private function is_mobile( bool $is_warm_up = false ): bool {
+		if ( $is_warm_up ) {
+			return true;
+		}
+
 		return $this->options->get( 'cache_mobile', 0 ) && $this->options->get( 'do_caching_mobile_files', 0 );
 	}
 }
