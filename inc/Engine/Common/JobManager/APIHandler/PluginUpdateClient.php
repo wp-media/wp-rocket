@@ -31,6 +31,6 @@ class PluginUpdateClient extends AbstractSafeAPIClient {
 	 * @return string The API URL for plugin updates.
 	 */
 	protected function get_api_url() {
-		return 'https://wp-rocket.me';
+		return 'https://wp-rocket.me/check_update.php';
 	}
 }

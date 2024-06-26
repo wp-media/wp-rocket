@@ -31,6 +31,6 @@ class PluginInformationClient extends AbstractSafeAPIClient {
 	 * @return string The API URL for plugin information.
 	 */
 	protected function get_api_url() {
-		return 'https://wp-rocket.me';
+		return 'https://wp-rocket.me/plugin_information.php';
 	}
 }
