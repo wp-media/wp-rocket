@@ -9,7 +9,6 @@ use WP_Rocket\Engine\Common\JobManager\APIHandler\AbstractSafeAPIClient;
  *
  * This class extends the AbstractSafeAPIClient class and provides methods for
  * getting the transient key and API URL specific to plugin information.
- *
  */
 class LicenseValidationClient extends AbstractSafeAPIClient {
 
