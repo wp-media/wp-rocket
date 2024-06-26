@@ -53,7 +53,7 @@ abstract class AbstractSafeAPIClient {
 	 *
 	 * @param string $method The HTTP method (GET or POST).
 	 * @param array  $params The request parameters.
-	 * @return mixed The response from the API, or false if a timeout is active.
+	 * @return mixed The response from the API, or WP_Error if a timeout is active.
 	 */
 	private function send_request( $method, $params ) {
 		$transient_key = $this->get_transient_key();
