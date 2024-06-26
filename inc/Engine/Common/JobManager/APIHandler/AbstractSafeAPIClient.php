@@ -56,10 +56,10 @@ abstract class AbstractSafeAPIClient {
 	 * @return mixed The response from the API, or WP_Error if a timeout is active.
 	 */
 	private function send_request( $method, $params ) {
-		$api_url       = $this->get_api_url();
+		$api_url = $this->get_api_url();
 
 		if ( true === get_transient( $this->get_transient_key() . '_timeout_active' ) ) {
-			return new WP_Error( 429, __( 'Too many requests.', 'wp-rocket' ) );
+			return new WP_Error( 429, __( 'Too many requests.', 'rocket' ) );
 		}
 
 		if ( empty( $params['body'] ) ) {
@@ -97,6 +97,16 @@ abstract class AbstractSafeAPIClient {
 		set_transient( $transient_key . '_timeout_active', true, $timeout );
 	}
 
+	/**
+	 * Delete the timeout transients.
+	 *
+	 * This method deletes the timeout transients for the API requests. It uses the transient key obtained from the `get_transient_key` method.
+	 * The transients deleted are:
+	 * - `{transient_key}_timeout_active`: This transient indicates if a timeout is currently active.
+	 * - `{transient_key}_timeout`: This transient stores the timeout duration.
+	 *
+	 * @return void
+	 */
 	protected function delete_timeout_transients() {
 		$transient_key = $this->get_transient_key();
 		delete_transient( $transient_key . '_timeout_active' );

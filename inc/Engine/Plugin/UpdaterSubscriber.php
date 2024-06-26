@@ -80,15 +80,20 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 */
 	private $renewal_notice;
 
+	/**
+	 * An instance of the UpdaterAPIClient class. This client is used to send API requests for plugin updates & other related tasks.
+	 *
+	 * @var UpdaterAPIClient $client
+	 */
+
 	private $client;
 
 	/**
 	 * Constructor
 	 *
-	 * @param RenewalNotice $renewal_notice RenewalNotice instance.
-	 * @param array         $args {
-	 *     Required arguments to populate the class properties.
+	 * @param RenewalNotice    $renewal_notice RenewalNotice instance.
 	 *
+	 * @param array            $args { Required arguments to populate the class properties.
 	 *     @type string $plugin_file    Full path to the plugin.
 	 *     @type string $plugin_version Current version of the plugin.
 	 *     @type string $vendor_url     URL to the plugin provider.
@@ -104,7 +109,7 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 		}
 
 		$this->renewal_notice = $renewal_notice;
-		$this->client = $client;
+		$this->client         = $client;
 	}
 
 	/**

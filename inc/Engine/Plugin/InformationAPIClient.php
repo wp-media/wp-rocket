@@ -14,6 +14,7 @@ use WP_Rocket\Engine\Common\JobManager\APIHandler\AbstractSafeAPIClient;
  */
 class InformationAPIClient extends AbstractSafeAPIClient {
 
+	const CLIENT_INFO_ENDPOINT = 'https://wp-rocket.me/plugin_information.php';
 	/**
 	 * Get the transient key for plugin information.
 	 *
@@ -33,6 +34,6 @@ class InformationAPIClient extends AbstractSafeAPIClient {
 	 * @return string The API URL for plugin information.
 	 */
 	protected function get_api_url() {
-		return 'https://wp-rocket.me/plugin_information.php';
+		return self::CLIENT_INFO_ENDPOINT;
 	}
 }

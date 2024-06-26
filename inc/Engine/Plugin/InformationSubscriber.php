@@ -31,19 +31,22 @@ class InformationSubscriber implements Subscriber_Interface {
 	 */
 	protected $request_error_id = 'plugins_api_failed';
 
+	/**
+	 * An instance of the InformationAPIClient class. This client is used to send API requests
+	 * for plugin information and other related tasks.
+	 *
+	 * @var InformationAPIClient API Client.
+	 */
 	private $client;
 
 	/**
 	 * Constructor
 	 *
-	 * @param array $args {
-	 *     Required arguments to populate the class properties.
-	 *
+	 * @param array                $args { Required arguments to populate the class properties.
 	 *     @type string $plugin_file Full path to the plugin.
 	 *     @type string $api_url     URL to contact to get update info.
 	 * }
-	 * @param $client InformationAPIClient API Client.
-	 *
+	 * @param InformationAPIClient $client API Client.
 	 */
 	public function __construct( $args, $client ) {
 		if ( isset( $args['plugin_file'] ) ) {
@@ -89,8 +92,8 @@ class InformationSubscriber implements Subscriber_Interface {
 	 * Insert WP Rocket plugin info.
 	 *
 	 * @param  object|WP_Error $res    Response object or WP_Error.
-	 * @param  string           $action The type of information being requested from the Plugin Install API.
-	 * @param  object           $args   Plugin API arguments.
+	 * @param  string          $action The type of information being requested from the Plugin Install API.
+	 * @param  object          $args   Plugin API arguments.
 	 * @return object|WP_Error         Updated response object or WP_Error.
 	 */
 	public function add_rocket_info( $res, $action, $args ) {
