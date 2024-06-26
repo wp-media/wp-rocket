@@ -61,7 +61,7 @@ abstract class AbstractSafeAPIClient {
 	 * @param array $params The request parameters.
 	 * @return mixed The response from the API.
 	 */
-	protected function send_post_request( $params ) {
+	public function send_post_request( $params ) {
 		return $this->send_request( 'POST', $params );
 	}
 

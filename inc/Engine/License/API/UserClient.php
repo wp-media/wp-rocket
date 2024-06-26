@@ -3,6 +3,7 @@
 namespace WP_Rocket\Engine\License\API;
 
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Common\JobManager\APIHandler\UserInformationClient;
 
 class UserClient {
 	const USER_ENDPOINT = 'https://wp-rocket.me/stat/1.0/wp-rocket/user.php';
@@ -65,14 +66,15 @@ class UserClient {
 			? $this->options->get( 'consumer_email', '' )
 			: rocket_get_constant( 'WP_ROCKET_EMAIL', '' );
 
-		$response = wp_safe_remote_post(
-			self::USER_ENDPOINT,
+		$client = new UserInformationClient( $this->options );
+		$response = $client->send_post_request(
 			[
 				'body' => 'user_id=' . rawurlencode( $customer_email ) . '&consumer_key=' . sanitize_key( $customer_key ),
 			]
 		);
 
-		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
+
+		if ( false === $response ) {
 			return false;
 		}
 
