@@ -2,6 +2,7 @@
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Logger\Logger;
+use WP_Rocket\Engine\Plugin\LicenseValidationClient;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -460,8 +461,9 @@ function rocket_check_key() {
 
 	Logger::info( 'LICENSE VALIDATION PROCESS STARTED.', [ 'license validation process' ] );
 
-	$response = wp_remote_get(
-		rocket_get_constant( 'WP_ROCKET_WEB_VALID' ),
+	$api_client = new LicenseValidationClient();
+
+	$response = $api_client->send_get_request(
 		[
 			'timeout' => 30,
 		]
