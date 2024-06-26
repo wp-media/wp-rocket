@@ -5,7 +5,6 @@ use Plugin_Upgrader;
 use Plugin_Upgrader_Skin;
 use WP_Error;
 use WP_Rocket\Event_Management\{Event_Manager, Event_Manager_Aware_Subscriber_Interface};
-use WP_Rocket\Engine\Common\JobManager\APIHandler\PluginUpdateClient;
 
 /**
  * Manages the plugin updates.
@@ -81,6 +80,8 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 */
 	private $renewal_notice;
 
+	private $client;
+
 	/**
 	 * Constructor
 	 *
@@ -93,8 +94,9 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 *     @type string $vendor_url     URL to the plugin provider.
 	 *     @type string $api_url        URL to contact to get update info.
 	 * }
+	 * @param UpdaterAPIClient $client API Client.
 	 */
-	public function __construct( RenewalNotice $renewal_notice, $args ) {
+	public function __construct( RenewalNotice $renewal_notice, $args, UpdaterAPIClient $client ) {
 		foreach ( [ 'plugin_file', 'plugin_version', 'vendor_url', 'api_url', 'icons' ] as $setting ) {
 			if ( isset( $args[ $setting ] ) ) {
 				$this->$setting = $args[ $setting ];
@@ -102,6 +104,7 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 		}
 
 		$this->renewal_notice = $renewal_notice;
+		$this->client = $client;
 	}
 
 	/**
@@ -306,8 +309,7 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 * }
 	 */
 	public function get_latest_version_data() {
-		$client   = new PluginUpdateClient();
-		$response = $client->send_get_request( [] );
+		$response = $this->client->send_get_request();
 
 		if ( is_wp_error( $response ) ) {
 			return $this->get_request_error(

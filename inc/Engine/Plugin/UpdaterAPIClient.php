@@ -1,6 +1,8 @@
 <?php
 
-namespace WP_Rocket\Engine\Common\JobManager\APIHandler;
+namespace WP_Rocket\Engine\Plugin;
+
+use WP_Rocket\Engine\Common\JobManager\APIHandler\AbstractSafeAPIClient;
 
 /**
  * Class PluginUpdateClient
@@ -10,7 +12,7 @@ namespace WP_Rocket\Engine\Common\JobManager\APIHandler;
  *
  * @package WP_Rocket\Engine\Common\JobManager\APIHandler
  */
-class PluginUpdateClient extends AbstractSafeAPIClient {
+class UpdaterAPIClient extends AbstractSafeAPIClient {
 
 	/**
 	 * Get the transient key for plugin updates.
@@ -31,6 +33,6 @@ class PluginUpdateClient extends AbstractSafeAPIClient {
 	 * @return string The API URL for plugin updates.
 	 */
 	protected function get_api_url() {
-		return 'https://wp-rocket.me/check_update.php';
+		return rocket_get_constant( 'WP_ROCKET_WEB_CHECK', 'https://wp-rocket.me/check_update.php' );
 	}
 }

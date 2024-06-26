@@ -6,12 +6,12 @@ namespace WP_Rocket\Engine\Common\JobManager;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Engine\Common\Clock\WPRClock;
 use WP_Rocket\Engine\Common\JobManager\APIHandler\APIClient;
-use WP_Rocket\Engine\Common\JobManager\APIHandler\PluginUpdateClient;
 use WP_Rocket\Engine\Common\JobManager\Cron\Subscriber as CronSubscriber;
 use WP_Rocket\Engine\Common\JobManager\Queue\Queue;
 use WP_Rocket\Engine\Common\JobManager\Strategy\Context\RetryContext;
 use WP_Rocket\Engine\Common\JobManager\Strategy\Factory\StrategyFactory;
 use WP_Rocket\Engine\Plugin\PluginInformationClient;
+use WP_Rocket\Engine\Plugin\PluginUpdateClient;
 
 
 class ServiceProvider extends AbstractServiceProvider {
