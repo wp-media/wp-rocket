@@ -1,6 +1,8 @@
 <?php
 
-namespace WP_Rocket\Engine\Common\JobManager\APIHandler;
+namespace WP_Rocket\Engine\Plugin;
+
+use WP_Rocket\Engine\Common\JobManager\APIHandler\AbstractSafeAPIClient;
 
 /**
  * Class PluginInformationClient
@@ -10,7 +12,7 @@ namespace WP_Rocket\Engine\Common\JobManager\APIHandler;
  *
  * @package WP_Rocket\Engine\Common\JobManager\APIHandler
  */
-class PluginInformationClient extends AbstractSafeAPIClient {
+class InformationAPIClient extends AbstractSafeAPIClient {
 
 	/**
 	 * Get the transient key for plugin information.

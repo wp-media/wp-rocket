@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Engine\Common\JobManager\APIHandler;
 
-use WP_Rocket\Admin\Options_Data;
+use WP_Error;
 
 /**
  * Class AbstractSafeAPIClient
@@ -34,7 +34,7 @@ abstract class AbstractSafeAPIClient {
 	 * @param array $params The request parameters.
 	 * @return mixed The response from the API.
 	 */
-	public function send_get_request( $params ) {
+	public function send_get_request( $params = [] ) {
 		return $this->send_request( 'GET', $params );
 	}
 
@@ -59,8 +59,8 @@ abstract class AbstractSafeAPIClient {
 		$transient_key = $this->get_transient_key();
 		$api_url       = $this->get_api_url();
 
-		if ( get_transient( $transient_key . '_timeout_active' ) === true ) {
-			return false;
+		if ( true === get_transient( $transient_key . '_timeout_active' ) ) {
+			return new WP_Error( 429, __( 'Too many requests.', 'wp-rocket' ) );
 		}
 
 		if ( empty( $params['body'] ) ) {
@@ -72,7 +72,7 @@ abstract class AbstractSafeAPIClient {
 
 		if ( is_wp_error( $response ) ) {
 			$this->set_timeout_transients( $transient_key );
-			return false;
+			return $response;
 		}
 
 		delete_transient( $transient_key . '_timeout_active' );

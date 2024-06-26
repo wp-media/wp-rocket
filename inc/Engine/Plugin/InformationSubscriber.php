@@ -2,7 +2,7 @@
 namespace WP_Rocket\Engine\Plugin;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
-use WP_Rocket\Engine\Common\JobManager\APIHandler\PluginInformationClient;
+use WP_Error;
 
 /**
  * Manages the plugin information.
@@ -31,6 +31,8 @@ class InformationSubscriber implements Subscriber_Interface {
 	 */
 	protected $request_error_id = 'plugins_api_failed';
 
+	private $client;
+
 	/**
 	 * Constructor
 	 *
@@ -40,14 +42,18 @@ class InformationSubscriber implements Subscriber_Interface {
 	 *     @type string $plugin_file Full path to the plugin.
 	 *     @type string $api_url     URL to contact to get update info.
 	 * }
+	 * @param $client InformationAPIClient API Client.
+	 *
 	 */
-	public function __construct( $args ) {
+	public function __construct( $args, $client ) {
 		if ( isset( $args['plugin_file'] ) ) {
 			$this->plugin_slug = $this->get_plugin_slug( $args['plugin_file'] );
 		}
 		if ( isset( $args['api_url'] ) ) {
 			$this->api_url = $args['api_url'];
 		}
+
+		$this->client = $client;
 	}
 
 	/**
@@ -80,12 +86,12 @@ class InformationSubscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Insert WP Rocket plugin info.
+	 * Insert WP Rocket plugin info.
 	 *
-	 * @param  object|\WP_Error $res    Response object or WP_Error.
+	 * @param  object|WP_Error $res    Response object or WP_Error.
 	 * @param  string           $action The type of information being requested from the Plugin Install API.
 	 * @param  object           $args   Plugin API arguments.
-	 * @return object|\WP_Error         Updated response object or WP_Error.
+	 * @return object|WP_Error         Updated response object or WP_Error.
 	 */
 	public function add_rocket_info( $res, $action, $args ) {
 		if ( ! $this->is_requesting_rocket_info( $action, $args ) || empty( $res->external ) ) {
@@ -113,7 +119,7 @@ class InformationSubscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Tell if requesting WP Rocket plugin info.
+	 * Tell if requesting WP Rocket plugin info.
 	 *
 	 * @param  string $action The type of information being requested from the Plugin Install API.
 	 * @param  object $args   Plugin API arguments.
@@ -126,11 +132,10 @@ class InformationSubscriber implements Subscriber_Interface {
 	/**
 	 * Gets the plugin information data
 	 *
-	 * @return object|\WP_Error
+	 * @return object|WP_Error
 	 */
 	private function get_plugin_information() {
-		$client   = new PluginInformationClient();
-		$response = $client->send_get_request( [] );
+		$response = $this->client->send_get_request();
 
 		if ( is_wp_error( $response ) ) {
 			return $this->get_request_error( $response->get_error_message() );
