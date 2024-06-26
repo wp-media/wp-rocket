@@ -17,6 +17,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'plugin_updater_common_subscriber',
 		'plugin_information_subscriber',
 		'plugin_updater_subscriber',
+		'plugin_information_api_client',
 	];
 
 	/**
@@ -55,6 +56,8 @@ class ServiceProvider extends AbstractServiceProvider {
 				]
 			)
 			->addTag( 'common_subscriber' );
+		$this->getContainer()->add( 'plugin_information_api_client', InformationAPIClient::class );
+
 		$this->getContainer()->addShared( 'plugin_information_subscriber', InformationSubscriber::class )
 			->addArgument(
 				[
@@ -62,7 +65,9 @@ class ServiceProvider extends AbstractServiceProvider {
 					'api_url'     => WP_ROCKET_WEB_INFO,
 				]
 			)
+			->addArgument( $this->getContainer()->get( 'plugin_information_api_client' ) )
 			->addTag( 'common_subscriber' );
+
 		$this->getContainer()->addShared( 'plugin_updater_subscriber', UpdaterSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'plugin_renewal_notice' ) )
 			->addArgument(
