@@ -46,7 +46,7 @@ class PricingClient {
 			return false;
 		}
 
-		$client = new PluginPricingClient( );
+		$client   = new PluginPricingClient();
 		$response = $client->send_get_request();
 
 		if ( false === $response ) {

@@ -66,13 +66,12 @@ class UserClient {
 			? $this->options->get( 'consumer_email', '' )
 			: rocket_get_constant( 'WP_ROCKET_EMAIL', '' );
 
-		$client = new UserInformationClient( $this->options );
+		$client   = new UserInformationClient( $this->options );
 		$response = $client->send_post_request(
 			[
 				'body' => 'user_id=' . rawurlencode( $customer_email ) . '&consumer_key=' . sanitize_key( $customer_key ),
 			]
 		);
-
 
 		if ( false === $response ) {
 			return false;
