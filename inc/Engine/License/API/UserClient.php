@@ -4,7 +4,6 @@ namespace WP_Rocket\Engine\License\API;
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Common\JobManager\APIHandler\AbstractSafeAPIClient;
-use WP_Rocket\Engine\Common\JobManager\APIHandler\UserInformationClient;
 
 class UserClient extends AbstractSafeAPIClient {
 	const USER_ENDPOINT = 'https://wp-rocket.me/stat/1.0/wp-rocket/user.php';
