@@ -14,23 +14,6 @@ use WP_Rocket\Admin\Options_Data;
  */
 abstract class AbstractSafeAPIClient {
 
-
-	/**
-	 * Options data.
-	 *
-	 * @var Options_Data $options WP Rocket options data.
-	 */
-	private $options;
-
-	/**
-	 * AbstractSafeAPIClient constructor.
-	 *
-	 * @param Options_Data $options WP Rocket options data.
-	 */
-	public function __construct( Options_Data $options ) {
-		$this->options = $options;
-	}
-
 	/**
 	 * Get the transient key.
 	 *
@@ -83,11 +66,6 @@ abstract class AbstractSafeAPIClient {
 		if ( empty( $params['body'] ) ) {
 			$params['body'] = [];
 		}
-
-		$params['body']['credentials'] = [
-			'wpr_email' => $this->options->get( 'consumer_email', '' ),
-			'wpr_key'   => $this->options->get( 'consumer_key', '' ),
-		];
 
 		$params['method'] = strtoupper( $method );
 		$response         = wp_remote_request( $api_url, $params );
