@@ -34,8 +34,8 @@ abstract class AbstractSafeAPIClient {
 	 * @param array $params The request parameters.
 	 * @return mixed The response from the API.
 	 */
-	public function send_get_request( $params = [] ) {
-		return $this->send_request( 'GET', $params );
+	public function send_get_request( $params = [], $safe = false ) {
+		return $this->send_request( 'GET', $params, $safe );
 	}
 
 	/**
@@ -44,8 +44,8 @@ abstract class AbstractSafeAPIClient {
 	 * @param array $params The request parameters.
 	 * @return mixed The response from the API.
 	 */
-	public function send_post_request( $params ) {
-		return $this->send_request( 'POST', $params );
+	public function send_post_request( $params = [], $safe = false ) {
+		return $this->send_request( 'POST', $params, $safe );
 	}
 
 	/**
@@ -55,19 +55,16 @@ abstract class AbstractSafeAPIClient {
 	 * @param array  $params The request parameters.
 	 * @return mixed The response from the API, or WP_Error if a timeout is active.
 	 */
-	private function send_request( $method, $params ) {
+	private function send_request( $method, $params = [], $safe = false ) {
 		$api_url = $this->get_api_url();
 
 		if ( true === get_transient( $this->get_transient_key() . '_timeout_active' ) ) {
 			return new WP_Error( 429, __( 'Too many requests.', 'rocket' ) );
 		}
 
-		if ( empty( $params['body'] ) ) {
-			$params['body'] = [];
-		}
-
 		$params['method'] = strtoupper( $method );
-		$response         = wp_remote_request( $api_url, $params );
+
+		$response = $this->send_remote_request( $api_url, $method, $params, $safe );
 
 		if ( is_wp_error( $response ) || ( is_array( $response ) && 200 !== $response['response']['code'] ) ) {
 			$this->set_timeout_transients();
@@ -111,5 +108,22 @@ abstract class AbstractSafeAPIClient {
 		$transient_key = $this->get_transient_key();
 		delete_transient( $transient_key . '_timeout_active' );
 		delete_transient( $transient_key . '_timeout' );
+	}
+
+	private function send_remote_request( $api_url, $method, $params, $safe ) {
+		if ( ! $safe ) {
+			return wp_remote_request( $api_url, $params );
+		}
+
+		unset( $params['method'] );
+
+		switch ( $method ) {
+			case 'GET':
+				return wp_safe_remote_get( $api_url, $params );
+			case 'POST':
+				return wp_safe_remote_post( $api_url, $params );
+		}
+
+		new WP_Error( 400, __( 'Not valid request type.', 'rocket' ) );
 	}
 }
