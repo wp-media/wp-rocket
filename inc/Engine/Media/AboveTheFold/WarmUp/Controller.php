@@ -75,7 +75,7 @@ class Controller {
 			return;
 		}
 
-		$this->send_to_saas( home_url(), true );
+		$this->send_to_saas( home_url() );
 		$this->queue->add_job_warmup();
 	}
 
