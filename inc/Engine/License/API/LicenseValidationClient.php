@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Engine\Plugin;
+namespace WP_Rocket\Engine\License\API;
 
 use WP_Rocket\Engine\Common\JobManager\APIHandler\AbstractSafeAPIClient;
 

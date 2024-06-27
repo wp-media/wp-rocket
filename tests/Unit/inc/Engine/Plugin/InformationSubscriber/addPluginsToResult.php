@@ -3,8 +3,10 @@
 namespace WP_Rocket\Tests\Unit\Inc\Plugin\InformationSubscriber;
 
 use Brain\Monkey\Functions;
+use WP_Rocket\Engine\Plugin\InformationAPIClient;
 use WP_Rocket\Engine\Plugin\InformationSubscriber;
 use WP_Rocket\Tests\Unit\TestCase;
+use Mockery;
 
 /**
  * Test class covering WP_Rocket\Engine\Plugin\InformationSubscriber::add_plugins_to_result
@@ -21,7 +23,8 @@ class TestAddPluginsToResult extends TestCase {
 			[
 				'plugin_file' => 'wp-rocket/wp-rocket.php',
 				'api_url'     => 'https://wp-rocket.me',
-			]
+			],
+			Mockery::mock( InformationAPIClient::class )
 		);
 	}
 

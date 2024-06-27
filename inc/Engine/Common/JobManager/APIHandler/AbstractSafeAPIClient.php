@@ -66,15 +66,15 @@ abstract class AbstractSafeAPIClient {
 
 		$response = $this->send_remote_request( $api_url, $method, $params, $safe );
 
-		$body = wp_remote_retrieve_body( $response );
-		if ( empty( $body ) ) {
-			$this->set_timeout_transients();
-			return new WP_Error( 500, __( 'Not valid response body.', 'rocket' ) );
-		}
-
-		if ( is_wp_error( $response ) || ( is_array( $response ) && 200 !== $response['response']['code'] ) ) {
+		if ( is_wp_error( $response ) ) {
 			$this->set_timeout_transients();
 			return $response;
+		}
+
+		$body = wp_remote_retrieve_body( $response );
+		if ( empty( $body ) || ( is_array( $response ) && !empty( $response['response']['code'] ) && 200 !== $response['response']['code'] ) ) {
+			$this->set_timeout_transients();
+			return new WP_Error( 500, __( 'Not valid response.', 'rocket' ) );
 		}
 
 		$this->delete_timeout_transients();
@@ -85,7 +85,7 @@ abstract class AbstractSafeAPIClient {
 	/**
 	 * Set the timeout transients.
 	 */
-	protected function set_timeout_transients() {
+	private function set_timeout_transients() {
 		$transient_key = $this->get_transient_key();
 
 		$timeout = (int) get_transient( $transient_key . '_timeout' );
@@ -110,7 +110,7 @@ abstract class AbstractSafeAPIClient {
 	 *
 	 * @return void
 	 */
-	protected function delete_timeout_transients() {
+	private function delete_timeout_transients() {
 		$transient_key = $this->get_transient_key();
 		delete_transient( $transient_key . '_timeout_active' );
 		delete_transient( $transient_key . '_timeout' );
