@@ -144,6 +144,6 @@ abstract class AbstractSafeAPIClient {
 				return wp_safe_remote_post( $api_url, $params );
 		}
 
-		new WP_Error( 400, __( 'Not valid request type.', 'rocket' ) );
+		return new WP_Error( 400, __( 'Not valid request type.', 'rocket' ) );
 	}
 }
