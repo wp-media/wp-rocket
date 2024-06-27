@@ -71,7 +71,7 @@ abstract class AbstractSafeAPIClient {
 
 		if ( is_wp_error( $response ) || ( is_array( $response ) && 200 !== $response['response']['code'] ) ) {
 			$this->set_timeout_transients();
-			return $response;
+			return false;
 		}
 
 		$this->delete_timeout_transients();
