@@ -32,6 +32,8 @@ abstract class AbstractSafeAPIClient {
 	 * Send a GET request.
 	 *
 	 * @param array $params The request parameters.
+	 * @param bool  $safe Send safe request WP functions or not, default to not.
+	 *
 	 * @return mixed The response from the API.
 	 */
 	public function send_get_request( $params = [], $safe = false ) {
@@ -42,6 +44,8 @@ abstract class AbstractSafeAPIClient {
 	 * Send a POST request.
 	 *
 	 * @param array $params The request parameters.
+	 * @param bool  $safe Send safe request WP functions or not, default to not.
+	 *
 	 * @return mixed The response from the API.
 	 */
 	public function send_post_request( $params = [], $safe = false ) {
@@ -53,6 +57,7 @@ abstract class AbstractSafeAPIClient {
 	 *
 	 * @param string $method The HTTP method (GET or POST).
 	 * @param array  $params The request parameters.
+	 * @param bool   $safe Send safe request WP functions or not, default to not.
 	 * @return mixed The response from the API, or WP_Error if a timeout is active.
 	 */
 	private function send_request( $method, $params = [], $safe = false ) {
@@ -72,7 +77,7 @@ abstract class AbstractSafeAPIClient {
 		}
 
 		$body = wp_remote_retrieve_body( $response );
-		if ( empty( $body ) || ( is_array( $response ) && !empty( $response['response']['code'] ) && 200 !== $response['response']['code'] ) ) {
+		if ( empty( $body ) || ( is_array( $response ) && ! empty( $response['response']['code'] ) && 200 !== $response['response']['code'] ) ) {
 			$this->set_timeout_transients();
 			return new WP_Error( 500, __( 'Not valid response.', 'rocket' ) );
 		}
@@ -116,6 +121,15 @@ abstract class AbstractSafeAPIClient {
 		delete_transient( $transient_key . '_timeout' );
 	}
 
+	/**
+	 * Decide which WP core function will be used to send the request based on the params.
+	 *
+	 * @param string $api_url API Url.
+	 * @param string $method Request method (GET or POST).
+	 * @param array  $params Parameters being sent with the request.
+	 * @param bool   $safe Send safe request WP functions or not, default to not.
+	 * @return array|WP_Error
+	 */
 	private function send_remote_request( $api_url, $method, $params, $safe ) {
 		if ( ! $safe ) {
 			return wp_remote_request( $api_url, $params );
