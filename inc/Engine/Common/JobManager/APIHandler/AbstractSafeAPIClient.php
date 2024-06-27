@@ -63,7 +63,7 @@ abstract class AbstractSafeAPIClient {
 	private function send_request( $method, $params = [], $safe = false ) {
 		$api_url = $this->get_api_url();
 
-		if ( true === get_transient( $this->get_transient_key() . '_timeout_active' ) ) {
+		if ( get_transient( $this->get_transient_key() . '_timeout_active' ) ) {
 			return new WP_Error( 429, __( 'Too many requests.', 'rocket' ) );
 		}
 

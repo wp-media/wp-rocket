@@ -81,14 +81,6 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	private $renewal_notice;
 
 	/**
-	 * An instance of the UpdaterAPIClient class. This client is used to send API requests for plugin updates & other related tasks.
-	 *
-	 * @var UpdaterAPIClient $client
-	 */
-
-	private $client;
-
-	/**
 	 * Constructor
 	 *
 	 * @param RenewalNotice    $renewal_notice RenewalNotice instance.
@@ -99,9 +91,8 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 *     @type string $vendor_url     URL to the plugin provider.
 	 *     @type string $api_url        URL to contact to get update info.
 	 * }
-	 * @param UpdaterAPIClient $client API Client.
 	 */
-	public function __construct( RenewalNotice $renewal_notice, $args, UpdaterAPIClient $client ) {
+	public function __construct( RenewalNotice $renewal_notice, $args ) {
 		foreach ( [ 'plugin_file', 'plugin_version', 'vendor_url', 'api_url', 'icons' ] as $setting ) {
 			if ( isset( $args[ $setting ] ) ) {
 				$this->$setting = $args[ $setting ];
@@ -109,7 +100,6 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 		}
 
 		$this->renewal_notice = $renewal_notice;
-		$this->client         = $client;
 	}
 
 	/**
@@ -314,19 +304,24 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 * }
 	 */
 	public function get_latest_version_data() {
-		$response = $this->client->send_get_request();
+		$request = wp_remote_get(
+			$this->api_url,
+			[
+				'timeout' => 30,
+			]
+		);
 
-		if ( is_wp_error( $response ) ) {
+		if ( is_wp_error( $request ) ) {
 			return $this->get_request_error(
 				[
-					'error_code' => $response->get_error_code(),
-					'response'   => $response->get_error_message(),
+					'error_code' => $request->get_error_code(),
+					'response'   => $request->get_error_message(),
 				]
 			);
 		}
 
-		$res  = trim( wp_remote_retrieve_body( $response ) );
-		$code = wp_remote_retrieve_response_code( $response );
+		$res  = trim( wp_remote_retrieve_body( $request ) );
+		$code = wp_remote_retrieve_response_code( $request );
 
 		if ( 200 !== $code ) {
 			/**

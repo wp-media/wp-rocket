@@ -32,31 +32,20 @@ class InformationSubscriber implements Subscriber_Interface {
 	protected $request_error_id = 'plugins_api_failed';
 
 	/**
-	 * An instance of the InformationAPIClient class. This client is used to send API requests
-	 * for plugin information and other related tasks.
-	 *
-	 * @var InformationAPIClient API Client.
-	 */
-	private $client;
-
-	/**
 	 * Constructor
 	 *
 	 * @param array                $args { Required arguments to populate the class properties.
 	 *     @type string $plugin_file Full path to the plugin.
 	 *     @type string $api_url     URL to contact to get update info.
 	 * }
-	 * @param InformationAPIClient $client API Client.
 	 */
-	public function __construct( $args, $client ) {
+	public function __construct( $args ) {
 		if ( isset( $args['plugin_file'] ) ) {
 			$this->plugin_slug = $this->get_plugin_slug( $args['plugin_file'] );
 		}
 		if ( isset( $args['api_url'] ) ) {
 			$this->api_url = $args['api_url'];
 		}
-
-		$this->client = $client;
 	}
 
 	/**
@@ -138,7 +127,7 @@ class InformationSubscriber implements Subscriber_Interface {
 	 * @return object|WP_Error
 	 */
 	private function get_plugin_information() {
-		$response = $this->client->send_get_request();
+		$response = wp_remote_get( $this->api_url );
 
 		if ( is_wp_error( $response ) ) {
 			return $this->get_request_error( $response->get_error_message() );

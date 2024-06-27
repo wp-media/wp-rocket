@@ -461,9 +461,8 @@ function rocket_check_key() {
 
 	Logger::info( 'LICENSE VALIDATION PROCESS STARTED.', [ 'license validation process' ] );
 
-	$api_client = new LicenseValidationClient();
-
-	$response = $api_client->send_get_request(
+	$response = wp_remote_get(
+		rocket_get_constant( 'WP_ROCKET_WEB_VALID' ),
 		[
 			'timeout' => 30,
 		]
