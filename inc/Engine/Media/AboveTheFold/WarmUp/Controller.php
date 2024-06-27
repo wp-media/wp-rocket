@@ -203,14 +203,13 @@ class Controller {
 	 * Send link to SaaS to do the warmup.
 	 *
 	 * @param string $url Url to send.
-	 * @param bool   $is_warm_up set to false by default, should be true if request is warm up.
 	 *
 	 * @return void
 	 */
-	public function send_to_saas( string $url, bool $is_warm_up = false ) {
+	public function send_to_saas( string $url ) {
 		$this->api_client->add_to_atf_queue( $url );
 
-		if ( $this->is_mobile( $is_warm_up ) ) {
+		if ( $this->is_mobile() ) {
 			$this->api_client->add_to_atf_queue( $url, 'mobile' );
 		}
 	}
@@ -236,14 +235,13 @@ class Controller {
 	}
 
 	/**
-	 * Check if the current request is for mobile.
-	 *
-	 * @param bool $is_warm_up if check is for warm up or not.
+	 * Check if the mobile cache is set.
 	 *
 	 * @return bool
 	 */
-	private function is_mobile( bool $is_warm_up = false ): bool {
-		if ( $is_warm_up ) {
+	private function is_mobile(): bool {
+		$plugin_version = (string) get_rocket_option( 'version', '' );
+		if ( ! $plugin_version ) { # We are warming up a fresh installation. Options are not set yet.
 			return true;
 		}
 
