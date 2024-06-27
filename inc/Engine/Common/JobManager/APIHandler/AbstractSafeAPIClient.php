@@ -69,7 +69,7 @@ abstract class AbstractSafeAPIClient {
 		$params['method'] = strtoupper( $method );
 		$response         = wp_remote_request( $api_url, $params );
 
-		if ( is_wp_error( $response ) ) {
+		if ( is_wp_error( $response ) || ( is_array($response) && $response['response']['code'] !== 200 ) ) {
 			$this->set_timeout_transients();
 			return $response;
 		}
