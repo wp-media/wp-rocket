@@ -86,11 +86,16 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function start_image_dimensions_buffer() {
+		global $wp;
+		$url       = untrailingslashit( home_url( add_query_arg( [], $wp->request ) ) );
+		error_log("Entering start_image_dimensions_buffer for " . $url);
 		if ( empty( $_GET['wpr_imagedimensions'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			error_log("No imagedimentions for start_image_dimensions_buffer for " . $url);
 			return;
 		}
 
 		if ( ! $this->buffer_tests->can_process_any_buffer() ) {
+			error_log("Can't process buffer start_image_dimensions_buffer for " . $url);
 			return;
 		}
 
