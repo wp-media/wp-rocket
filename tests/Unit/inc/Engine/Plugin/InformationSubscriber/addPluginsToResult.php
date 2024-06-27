@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Unit\Inc\Plugin\InformationSubscriber;
 
 use Brain\Monkey\Functions;
+use WP_Rocket\Engine\Plugin\InformationAPIClient;
 use WP_Rocket\Engine\Plugin\InformationSubscriber;
 use WP_Rocket\Tests\Unit\TestCase;
 
@@ -21,7 +22,8 @@ class TestAddPluginsToResult extends TestCase {
 			[
 				'plugin_file' => 'wp-rocket/wp-rocket.php',
 				'api_url'     => 'https://wp-rocket.me',
-			]
+			],
+			new InformationAPIClient()
 		);
 	}
 
