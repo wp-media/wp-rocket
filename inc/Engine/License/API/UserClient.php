@@ -91,7 +91,8 @@ class UserClient extends AbstractSafeAPIClient {
 		$response = $this->send_post_request(
 			[
 				'body' => 'user_id=' . rawurlencode( $customer_email ) . '&consumer_key=' . sanitize_key( $customer_key ),
-			]
+			],
+			true
 		);
 
 		if ( is_wp_error( $response ) ) {
