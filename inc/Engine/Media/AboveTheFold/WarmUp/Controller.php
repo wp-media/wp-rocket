@@ -241,7 +241,7 @@ class Controller {
 	 */
 	private function is_mobile(): bool {
 		$plugin_version = (string) get_rocket_option( 'version', '' );
-		if ( ! $plugin_version ) { # We are warming up a fresh installation. Options are not set yet.
+		if ( ! $plugin_version ) { // We are warming up a fresh installation. Options are not set yet.
 			return true;
 		}
 
