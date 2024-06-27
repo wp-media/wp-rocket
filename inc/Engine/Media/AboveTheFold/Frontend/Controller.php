@@ -65,9 +65,7 @@ class Controller {
 	 * @return string
 	 */
 	public function lcp( $html ): string {
-		error_log('Entering lcp... ');
 		if ( ! $this->context->is_allowed() ) {
-			error_log('Not allowed context for lcp... ');
 			return $html;
 		}
 
@@ -77,12 +75,13 @@ class Controller {
 		$is_mobile = $this->is_mobile();
 		$row       = $this->query->get_row( $url, $is_mobile );
 
-		error_log('Attempt to insert beacon into '. $url . ' on mobile? ' . $is_mobile . ' device' );
+
 		if ( empty( $row ) ) {
-			error_log('Injecting beacon into '. $url . ' on mobile?' . $is_mobile . ' device' );
+			$device = $_GET['device'] ?? 'null';
+			error_log('Attempt to insert beacon into '. $url . ' on ' . $device . ' device' );
 			return $this->inject_beacon( $html, $url, $is_mobile );
 		}
-		error_log('Not inserting beacon into '. $url . ' on mobile? ' . $is_mobile . ' device' );
+
 		if ( ! $row->has_lcp() ) {
 			return $html;
 		}
