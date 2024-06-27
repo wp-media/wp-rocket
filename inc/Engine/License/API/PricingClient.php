@@ -66,7 +66,7 @@ class PricingClient extends AbstractSafeAPIClient {
 	private function get_raw_pricing_data() {
 		$response = $this->send_get_request();
 
-		if ( is_wp_error( $response ) || ( is_array( $response ) && $response['response']['code'] !== 200 ) ) {
+		if ( is_wp_error( $response ) || ( is_array( $response ) && 200 !== $response['response']['code'] ) ) {
 			return false;
 		}
 
