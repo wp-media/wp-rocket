@@ -103,6 +103,9 @@ class Activation {
 			]
 		);
 
+		// Signify to rocket_upgrader that we are on a fresh activation.
+		set_transient('rocket_fresh_activation', true, MINUTE_IN_SECONDS);
+
 		/**
 		 * Fires after WP Rocket is activated
 		 */

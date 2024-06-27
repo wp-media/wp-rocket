@@ -37,7 +37,7 @@ class Activation implements ActivationInterface {
 	 * Add actions on activation.
 	 */
 	public function activate() {
-		add_action( 'rocket_after_activation', [ $this, 'warm_up' ] );
+		add_action( 'rocket_after_activation_and_setup', [ $this, 'warm_up' ] );
 	}
 
 	/**
