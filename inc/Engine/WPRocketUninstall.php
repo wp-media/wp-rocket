@@ -80,7 +80,6 @@ class WPRocketUninstall {
 		'wp_rocket_pricing_timeout',
 		'wp_rocket_pricing_timeout_active',
 		'rocket_get_refreshed_fragments_cache',
-
 		'user_information_timeout_active',
 		'user_information_timeout',
 	];
