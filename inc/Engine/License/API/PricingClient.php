@@ -70,16 +70,6 @@ class PricingClient extends AbstractSafeAPIClient {
 			return false;
 		}
 
-		$body = wp_remote_retrieve_body( $response );
-
-		if ( empty( $body ) ) {
-			$this->set_timeout_transients();
-
-			return false;
-		}
-
-		$this->delete_timeout_transients();
-
-		return json_decode( $body );
+		return json_decode( wp_remote_retrieve_body( $response ) );
 	}
 }

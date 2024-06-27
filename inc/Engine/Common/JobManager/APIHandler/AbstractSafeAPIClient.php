@@ -66,6 +66,12 @@ abstract class AbstractSafeAPIClient {
 
 		$response = $this->send_remote_request( $api_url, $method, $params, $safe );
 
+		$body = wp_remote_retrieve_body( $response );
+		if ( empty( $body ) ) {
+			$this->set_timeout_transients();
+			return new WP_Error( 500, __( 'Not valid response body.', 'rocket' ) );
+		}
+
 		if ( is_wp_error( $response ) || ( is_array( $response ) && 200 !== $response['response']['code'] ) ) {
 			$this->set_timeout_transients();
 			return $response;
