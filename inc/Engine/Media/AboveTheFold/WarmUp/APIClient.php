@@ -22,7 +22,6 @@ class APIClient extends BaseAPIClient {
 		$url = add_query_arg(
 			[
 				'wpr_imagedimensions' => 1,
-				'device' => $device
 			],
 			$url
 		);

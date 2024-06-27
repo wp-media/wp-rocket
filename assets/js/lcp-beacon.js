@@ -60,7 +60,6 @@ class RocketLcpBeacon {
 		data_check.append('rocket_lcp_nonce', this.config.nonce);
 		data_check.append('url', this.config.url);
 		data_check.append('is_mobile', this.config.is_mobile);
-		data_check.append('current_url', document.location.href);
 
 		const lcp_data_response = await fetch(this.config.ajax_url, {
 				method: "POST",
@@ -307,7 +306,6 @@ class RocketLcpBeacon {
 		data.append('is_mobile', this.config.is_mobile);
 		data.append('images', JSON.stringify(this.performanceImages));
 		data.append('status', this._getFinalStatus());
-		data.append('current_url', document.location.href);
 
 		fetch(this.config.ajax_url, {
 			method: "POST",

@@ -75,10 +75,7 @@ class Controller {
 		$is_mobile = $this->is_mobile();
 		$row       = $this->query->get_row( $url, $is_mobile );
 
-
 		if ( empty( $row ) ) {
-			$device = $_GET['device'] ?? 'null';
-			error_log('Attempt to insert beacon into '. $url . ' on ' . $device . ' device' );
 			return $this->inject_beacon( $html, $url, $is_mobile );
 		}
 
@@ -375,9 +372,6 @@ class Controller {
 		if ( ! $this->filesystem->exists( rocket_get_constant( 'WP_ROCKET_ASSETS_JS_PATH' ) . 'lcp-beacon' . $min . '.js' ) ) {
 			return $html;
 		}
-
-		//This section is for testing purpose
-		error_log( 'Beacon script inserted for ' . $url . ' for device -- ' . $is_mobile );
 
 		$default_width_threshold  = $is_mobile ? 393 : 1600;
 		$default_height_threshold = $is_mobile ? 830 : 700;

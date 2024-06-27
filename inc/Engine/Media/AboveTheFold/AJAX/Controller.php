@@ -54,9 +54,6 @@ class Controller {
 		$lcp       = 'not found';
 		$viewport  = [];
 
-		//Testing purpose, will be removed.
-		$fullUrl = $_POST['current_url'] ?? '';
-		error_log( $fullUrl . ' -- add lcp data for device ' . $is_mobile );
 		/**
 		 * Filters the maximum number of ATF images being saved into the database.
 		 *
@@ -92,9 +89,6 @@ class Controller {
 		$row = $this->query->get_row( $url, $is_mobile );
 
 		if ( ! empty( $row ) ) {
-			error_log(
-			$fullUrl . ' -- already exist in db'
-			);
 			wp_send_json_error( 'item already in the database' );
 			return;
 		}
@@ -118,9 +112,6 @@ class Controller {
 			wp_send_json_error( 'error when adding the entry to the database' );
 			return;
 		}
-		error_log(
-			$fullUrl . ' -- added to db'
-		);
 
 		wp_send_json_success( $item );
 	}
@@ -254,17 +245,12 @@ class Controller {
 		$url       = isset( $_POST['url'] ) ? untrailingslashit( esc_url_raw( wp_unslash( $_POST['url'] ) ) ) : '';
 		$is_mobile = isset( $_POST['is_mobile'] ) ? filter_var( wp_unslash( $_POST['is_mobile'] ), FILTER_VALIDATE_BOOLEAN ) : false;
 
-		$current_url = $_POST['current_url'] ?? '';
-
 		$row = $this->query->get_row( $url, $is_mobile );
 
 		if ( ! empty( $row ) ) {
-			error_log( 'lcp data exist for -- ' . $current_url  . ' on device ' . $is_mobile );
 			wp_send_json_success( 'data already exists' );
 			return;
 		}
-
-		error_log( 'No lcp data for -- ' . $current_url  . ' on device ' . $is_mobile );
 
 		wp_send_json_error( 'data does not exist' );
 	}
