@@ -23,8 +23,7 @@ class TestAddPluginsToResult extends TestCase {
 			[
 				'plugin_file' => 'wp-rocket/wp-rocket.php',
 				'api_url'     => 'https://wp-rocket.me',
-			],
-			Mockery::mock( InformationAPIClient::class )
+			]
 		);
 	}
 

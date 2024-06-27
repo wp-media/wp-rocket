@@ -45,13 +45,13 @@ class Test_RocketCheckKey extends TestCase {
 			->andReturn( 'wp_rocket_settings' );
 		Functions\expect( 'rocket_valid_key' )->once()->andReturn( false );
 		Functions\expect( 'rocket_delete_licence_data_file' )->never();
-		Functions\expect( 'wp_remote_request' )
+		Functions\expect( 'wp_remote_get' )
 			->once()
-			->with( 'https://wp-rocket.me/valid_key.php', [ 'method' => 'GET', 'timeout' => 30 ] )
+			->with( 'https://wp-rocket.me/valid_key.php', [ 'timeout' => 30 ] )
 			->andReturn( [] );
-		Functions\expect( 'is_wp_error' )->twice()->andReturn( false );
+		Functions\expect( 'is_wp_error' )->once()->andReturn( false );
 		Functions\expect( 'wp_remote_retrieve_body' )
-			->twice()
+			->once()
 			->with( [] )
 			->andReturn( '{"success": true, "data":{"consumer_key":"ABCDEF","consumer_email":"example@example.org","secret_key":"secret"}}' );
 		Functions\expect( 'get_rocket_option' )->once()->with( 'license' )->andReturn( true );
@@ -80,11 +80,6 @@ class Test_RocketCheckKey extends TestCase {
 			'secret_key'     => 'secret',
 		];
 
-		Functions\expect( 'get_transient' )
-			->once()
-			->with( 'wp_rocket_license_validation_timeout_active' )
-			->andReturn( false );
-
 		$this->assertSame( $expected, rocket_check_key() );
 	}
 
@@ -94,7 +89,7 @@ class Test_RocketCheckKey extends TestCase {
 			->with( 'WP_ROCKET_WEB_VALID' )
 			->andReturn( 'https://wp-rocket.me/valid_key.php' );
 		Functions\when( 'rocket_valid_key' )->justReturn( false );
-		Functions\when( 'wp_remote_request' )->alias( function() {
+		Functions\when( 'wp_remote_get' )->alias( function() {
 			$wp_error = \Mockery::mock( \WP_Error::class )->makePartial();
 			$wp_error->shouldReceive( 'get_error_messages' )
 			         ->withNoArgs()
@@ -109,11 +104,6 @@ class Test_RocketCheckKey extends TestCase {
 		Functions\expect('update_option')
 			->never();
 
-		Functions\expect( 'get_transient' )
-			->once()
-			->with( 'wp_rocket_license_validation_timeout_active' )
-			->andReturn( false );
-
 		$this->assertFalse( rocket_check_key() );
 	}
 
@@ -123,18 +113,13 @@ class Test_RocketCheckKey extends TestCase {
 			->with( 'WP_ROCKET_WEB_VALID' )
 			->andReturn( 'https://wp-rocket.me/valid_key.php' );
 		Functions\when( 'rocket_valid_key' )->justReturn( false );
-		Functions\when( 'wp_remote_request' )->justReturn( [] );
+		Functions\when( 'wp_remote_get' )->justReturn( [] );
 		Functions\when( 'is_wp_error' )->justReturn( false );
 		Functions\when( 'wp_remote_retrieve_body' )->justReturn( '' );
 		Functions\when( 'set_transient' )->justReturn( true );
 		Functions\expect( 'rocket_delete_licence_data_file' )->never();
 		Functions\expect('update_option')
 			->never();
-
-		Functions\expect( 'get_transient' )
-			->once()
-			->with( 'wp_rocket_license_validation_timeout_active' )
-			->andReturn( false );
 
 		$this->assertFalse( rocket_check_key() );
 	}
@@ -149,7 +134,7 @@ class Test_RocketCheckKey extends TestCase {
 			->with( 'WP_ROCKET_SLUG' )
 			->andReturn( 'wp_rocket_settings' );
 		Functions\when( 'rocket_valid_key' )->justReturn( false );
-		Functions\when( 'wp_remote_request' )->justReturn( [] );
+		Functions\when( 'wp_remote_get' )->justReturn( [] );
 		Functions\when( 'is_wp_error' )->justReturn( false );
 		Functions\when( 'wp_remote_retrieve_body' )->justReturn( '{"success": false, "data":{"consumer_key":"ABCDEF","consumer_email":"example@example.org","reason":"BAD_KEY"}}' );
 		Functions\when( 'set_transient' )->justReturn( true );
@@ -157,19 +142,11 @@ class Test_RocketCheckKey extends TestCase {
 		Functions\expect('update_option')
 			->never();
 
-		Functions\expect( 'get_transient' )
-			->once()
-			->with( 'wp_rocket_license_validation_timeout_active' )
-			->andReturn( false );
-
 		$expected = [
 			'consumer_key'   => 'ABCDEF',
 			'consumer_email' => 'example@example.org',
 			'secret_key'     => '',
 		];
-
-		Functions\expect( 'delete_transient' )->with( 'wp_rocket_license_validation_timeout' )->andReturn(null);
-		Functions\expect( 'delete_transient' )->with( 'wp_rocket_license_validation_timeout_active' )->andReturn(null);
 
 		$this->assertSame( $expected, rocket_check_key() );
 	}
