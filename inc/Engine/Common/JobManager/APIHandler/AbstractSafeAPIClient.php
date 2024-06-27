@@ -131,6 +131,7 @@ abstract class AbstractSafeAPIClient {
 	 * @return array|WP_Error
 	 */
 	private function send_remote_request( $api_url, $method, $params, $safe ) {
+		error_log( 'seding request to: ' . $api_url );
 		if ( ! $safe ) {
 			return wp_remote_request( $api_url, $params );
 		}
