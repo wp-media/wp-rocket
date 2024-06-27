@@ -34,7 +34,7 @@ class InformationSubscriber implements Subscriber_Interface {
 	/**
 	 * Constructor
 	 *
-	 * @param array                $args { Required arguments to populate the class properties.
+	 * @param array $args { Required arguments to populate the class properties.
 	 *     @type string $plugin_file Full path to the plugin.
 	 *     @type string $api_url     URL to contact to get update info.
 	 * }
