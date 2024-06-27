@@ -38,12 +38,6 @@ function rocket_upgrader() {
 		update_option( WP_ROCKET_SLUG, $options );
 	}
 
-	// If we just completed an activation
-	if ( get_transient('rocket_fresh_activation') ) {
-		delete_transient('rocket_fresh_activation');
-		do_action('rocket_after_activation_and_setup');
-	}
-
 	$page = isset( $_GET['page'] ) ? sanitize_key( $_GET['page'] ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 	if (

@@ -43,7 +43,6 @@ class Subscriber implements Subscriber_Interface {
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
-		error_log("Registering events for start_image_dimensions_buffer");
 		return [
 			'rocket_buffer'                           => [ 'specify_image_dimensions', 17 ],
 			'template_redirect'                       => [ 'start_image_dimensions_buffer', 3 ],
