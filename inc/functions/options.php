@@ -2,7 +2,6 @@
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Logger\Logger;
-use WP_Rocket\Engine\License\API\LicenseValidationClient;
 
 defined( 'ABSPATH' ) || exit;
 
