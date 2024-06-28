@@ -6,7 +6,7 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Common\JobManager\APIHandler\AbstractSafeAPIClient;
 
 class UserClient extends AbstractSafeAPIClient {
-	const USER_ENDPOINT = 'http://httpstat.us/408?sleep=15003';
+	const USER_ENDPOINT = 'https://wp-rocket.me/stat/1.0/wp-rocket/user.php';
 
 	/**
 	 * WP Rocket options instance
