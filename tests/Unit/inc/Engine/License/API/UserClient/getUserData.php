@@ -14,7 +14,7 @@ use WP_Rocket\Tests\Unit\TestCase;
  *
  * @group License
  */
-class GetPricingData extends TestCase {
+class GetUserData extends TestCase {
 	use ApiTrait;
 
 	protected static $api_credentials_config_file = 'license.php';

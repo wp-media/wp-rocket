@@ -88,6 +88,11 @@ class UserClient extends AbstractSafeAPIClient {
 			? $this->options->get( 'consumer_email', '' )
 			: rocket_get_constant( 'WP_ROCKET_EMAIL', '' );
 
+		// Bail out if customer_key & email are empty.
+		if ( empty( $customer_key ) || empty( $customer_email ) ) {
+			return false;
+		}
+
 		$response = $this->send_post_request(
 			[
 				'body' => 'user_id=' . rawurlencode( $customer_email ) . '&consumer_key=' . sanitize_key( $customer_key ),
