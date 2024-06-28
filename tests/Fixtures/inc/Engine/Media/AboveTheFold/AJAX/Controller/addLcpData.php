@@ -66,6 +66,21 @@ return [
 					],
 				]
 			),
+			'filetype' => [
+				'ext' => 'jpg',
+				'type' => 'image/jpeg',
+			],
+			'allowed_mime_types' => [
+				'jpg|jpeg|jpe'                 => 'image/jpeg',
+				'gif'                          => 'image/gif',
+				'png'                          => 'image/png',
+				'bmp'                          => 'image/bmp',
+				'tiff|tif'                     => 'image/tiff',
+				'webp'                         => 'image/webp',
+				'avif'                         => 'image/avif',
+				'ico'                          => 'image/x-icon',
+				'heic'                         => 'image/heic',
+			],
 		],
 		'expected' => [
 			'images_valid_sources' => [],
@@ -111,6 +126,21 @@ return [
 					],
 				]
 			),
+			'filetype' => [
+				'ext' => 'jpg',
+				'type' => 'image/jpeg',
+			],
+			'allowed_mime_types' => [
+				'jpg|jpeg|jpe'                 => 'image/jpeg',
+				'gif'                          => 'image/gif',
+				'png'                          => 'image/png',
+				'bmp'                          => 'image/bmp',
+				'tiff|tif'                     => 'image/tiff',
+				'webp'                         => 'image/webp',
+				'avif'                         => 'image/avif',
+				'ico'                          => 'image/x-icon',
+				'heic'                         => 'image/heic',
+			],
 		],
 		'expected' => [
 			'images_valid_sources' => [],
@@ -174,6 +204,21 @@ return [
 					],
 				]
 			),
+			'filetype' => [
+				'ext' => 'jpg',
+				'type' => 'image/jpeg',
+			],
+			'allowed_mime_types' => [
+				'jpg|jpeg|jpe'                 => 'image/jpeg',
+				'gif'                          => 'image/gif',
+				'png'                          => 'image/png',
+				'bmp'                          => 'image/bmp',
+				'tiff|tif'                     => 'image/tiff',
+				'webp'                         => 'image/webp',
+				'avif'                         => 'image/avif',
+				'ico'                          => 'image/x-icon',
+				'heic'                         => 'image/heic',
+			],
 		],
 		'expected' => [
 			'images_valid_sources' => [],
@@ -239,6 +284,21 @@ return [
 					],
 				]
 			),
+			'filetype' => [
+				'ext' => 'jpg',
+				'type' => 'image/jpeg',
+			],
+			'allowed_mime_types' => [
+				'jpg|jpeg|jpe'                 => 'image/jpeg',
+				'gif'                          => 'image/gif',
+				'png'                          => 'image/png',
+				'bmp'                          => 'image/bmp',
+				'tiff|tif'                     => 'image/tiff',
+				'webp'                         => 'image/webp',
+				'avif'                         => 'image/avif',
+				'ico'                          => 'image/x-icon',
+				'heic'                         => 'image/heic',
+			],
 		],
 		'expected' => [
 			'images_valid_sources' => [
@@ -296,7 +356,7 @@ return [
 					(object) [
 						'label' => 'lcp',
 						'type'  => 'bg-img',
-						'src'   => 'http://example.org/lcp.jpg',
+						'src'   => '',
 						'bg_set' => [
 							[
 								'src' => 'http://example.org/anotherlcp.jpg'
@@ -313,6 +373,21 @@ return [
 					],
 				]
 			),
+			'filetype' => [
+				'ext' => 'jpg',
+				'type' => 'image/jpeg',
+			],
+			'allowed_mime_types' => [
+				'jpg|jpeg|jpe'                 => 'image/jpeg',
+				'gif'                          => 'image/gif',
+				'png'                          => 'image/png',
+				'bmp'                          => 'image/bmp',
+				'tiff|tif'                     => 'image/tiff',
+				'webp'                         => 'image/webp',
+				'avif'                         => 'image/avif',
+				'ico'                          => 'image/x-icon',
+				'heic'                         => 'image/heic',
+			],
 		],
 		'expected' => [
 			'images_valid_sources' => [
@@ -408,6 +483,21 @@ return [
 					],
 				]
 			),
+			'filetype' => [
+				'ext' => 'jpg',
+				'type' => 'image/jpeg',
+			],
+			'allowed_mime_types' => [
+				'jpg|jpeg|jpe'                 => 'image/jpeg',
+				'gif'                          => 'image/gif',
+				'png'                          => 'image/png',
+				'bmp'                          => 'image/bmp',
+				'tiff|tif'                     => 'image/tiff',
+				'webp'                         => 'image/webp',
+				'avif'                         => 'image/avif',
+				'ico'                          => 'image/x-icon',
+				'heic'                         => 'image/heic',
+			],
 		],
 		'expected' => [
 			'images_valid_sources' => [],
@@ -476,6 +566,21 @@ return [
 			'images'    => json_encode(
 				$long_array
 			),
+			'filetype' => [
+				'ext' => 'jpg',
+				'type' => 'image/jpeg',
+			],
+			'allowed_mime_types' => [
+				'jpg|jpeg|jpe'                 => 'image/jpeg',
+				'gif'                          => 'image/gif',
+				'png'                          => 'image/png',
+				'bmp'                          => 'image/bmp',
+				'tiff|tif'                     => 'image/tiff',
+				'webp'                         => 'image/webp',
+				'avif'                         => 'image/avif',
+				'ico'                          => 'image/x-icon',
+				'heic'                         => 'image/heic',
+			],
 		],
 		'expected' => [
 			'images_valid_sources' => [],
@@ -634,6 +739,330 @@ return [
 				'viewport'      => '[]',
 				'last_accessed' => '2024-01-01 00:00:00',
 				'error_message' => 'Script timeout',
+			],
+		],
+	],
+
+	'testShouldBailoutWithNotValidImages1' => [
+		'config'   => [
+			'filter'    => true,
+			'url'       => 'http://example.org',
+			'is_mobile' => false,
+			'images'    => json_encode(
+				[
+					(object) [
+						'label' => 'lcp',
+						'type'  => 'img',
+						'src'   => 'http://example.org/file.php?url=img.jpg',
+					],
+				]
+			),
+			'filetype' => [
+				'ext' => 'php',
+				'type' => false,
+			],
+			'allowed_mime_types' => [
+				'jpg|jpeg|jpe'                 => 'image/jpeg',
+				'gif'                          => 'image/gif',
+				'png'                          => 'image/png',
+				'bmp'                          => 'image/bmp',
+				'tiff|tif'                     => 'image/tiff',
+				'webp'                         => 'image/webp',
+				'avif'                         => 'image/avif',
+				'ico'                          => 'image/x-icon',
+				'heic'                         => 'image/heic',
+			],
+		],
+		'expected' => [
+			'item'    => [
+				'url'           => 'http://example.org',
+				'is_mobile'     => false,
+				'status'        => 'completed',
+				'lcp'           => 'not found',
+				'viewport'      => '[]',
+				'last_accessed' => '2024-01-01 00:00:00',
+				'error_message' => '',
+			],
+			'result'  => true,
+			'message' => [
+				'url'           => 'http://example.org',
+				'is_mobile'     => false,
+				'status'        => 'completed',
+				'lcp'           => 'not found',
+				'viewport'      => '[]',
+				'last_accessed' => '2024-01-01 00:00:00',
+				'error_message' => '',
+			],
+		],
+	],
+	'testShouldBailoutWithNotValidImages2' => [
+		'config'   => [
+			'filter'    => true,
+			'url'       => 'http://example.org',
+			'is_mobile' => false,
+			'images'    => json_encode(
+				[
+					(object) [
+						'label' => 'lcp',
+						'type'  => 'img',
+						'src'   => 'http://example.org/file.js?url=img.jpg',
+					],
+				]
+			),
+			'filetype' => [
+				'ext' => 'js',
+				'type' => 'application/javascript',
+			],
+			'allowed_mime_types' => [
+				'jpg|jpeg|jpe'                 => 'image/jpeg',
+				'gif'                          => 'image/gif',
+				'png'                          => 'image/png',
+				'bmp'                          => 'image/bmp',
+				'tiff|tif'                     => 'image/tiff',
+				'webp'                         => 'image/webp',
+				'avif'                         => 'image/avif',
+				'ico'                          => 'image/x-icon',
+				'heic'                         => 'image/heic',
+			],
+		],
+		'expected' => [
+			'item'    => [
+				'url'           => 'http://example.org',
+				'is_mobile'     => false,
+				'status'        => 'completed',
+				'lcp'           => 'not found',
+				'viewport'      => '[]',
+				'last_accessed' => '2024-01-01 00:00:00',
+				'error_message' => '',
+			],
+			'result'  => true,
+			'message' => [
+				'url'           => 'http://example.org',
+				'is_mobile'     => false,
+				'status'        => 'completed',
+				'lcp'           => 'not found',
+				'viewport'      => '[]',
+				'last_accessed' => '2024-01-01 00:00:00',
+				'error_message' => '',
+			],
+		],
+	],
+	'testShouldBailoutWithNotValidImages3' => [
+		'config'   => [
+			'filter'    => true,
+			'url'       => 'http://example.org',
+			'is_mobile' => false,
+			'images'    => json_encode(
+				[
+					(object) [
+						'label' => 'lcp',
+						'type'  => 'img',
+						'src'   => 'http://example.org/file.php#url=img.jpg',
+					],
+				]
+			),
+			'filetype' => [
+				'ext' => 'php',
+				'type' => 'application/php',
+			],
+			'allowed_mime_types' => [
+				'jpg|jpeg|jpe'                 => 'image/jpeg',
+				'gif'                          => 'image/gif',
+				'png'                          => 'image/png',
+				'bmp'                          => 'image/bmp',
+				'tiff|tif'                     => 'image/tiff',
+				'webp'                         => 'image/webp',
+				'avif'                         => 'image/avif',
+				'ico'                          => 'image/x-icon',
+				'heic'                         => 'image/heic',
+			],
+		],
+		'expected' => [
+			'item'    => [
+				'url'           => 'http://example.org',
+				'is_mobile'     => false,
+				'status'        => 'completed',
+				'lcp'           => 'not found',
+				'viewport'      => '[]',
+				'last_accessed' => '2024-01-01 00:00:00',
+				'error_message' => '',
+			],
+			'result'  => true,
+			'message' => [
+				'url'           => 'http://example.org',
+				'is_mobile'     => false,
+				'status'        => 'completed',
+				'lcp'           => 'not found',
+				'viewport'      => '[]',
+				'last_accessed' => '2024-01-01 00:00:00',
+				'error_message' => '',
+			],
+		],
+	],
+	'testShouldBailoutWithNotValidImages4' => [
+		'config'   => [
+			'filter'    => true,
+			'url'       => 'http://example.org',
+			'is_mobile' => false,
+			'images'    => json_encode(
+				[
+					(object) [
+						'label' => 'lcp',
+						'type'  => 'img',
+						'src'   => 'chrome-extension://extension-hash/path/to/image/x.svg',
+					],
+				]
+			),
+			'filetype' => [
+				'ext' => 'svg',
+				'type' => 'image/svg+xml',
+			],
+			'allowed_mime_types' => [
+				'jpg|jpeg|jpe'                 => 'image/jpeg',
+				'gif'                          => 'image/gif',
+				'png'                          => 'image/png',
+				'bmp'                          => 'image/bmp',
+				'tiff|tif'                     => 'image/tiff',
+				'webp'                         => 'image/webp',
+				'avif'                         => 'image/avif',
+				'ico'                          => 'image/x-icon',
+				'heic'                         => 'image/heic',
+			],
+		],
+		'expected' => [
+			'item'    => [
+				'url'           => 'http://example.org',
+				'is_mobile'     => false,
+				'status'        => 'completed',
+				'lcp'           => 'not found',
+				'viewport'      => '[]',
+				'last_accessed' => '2024-01-01 00:00:00',
+				'error_message' => '',
+			],
+			'result'  => true,
+			'message' => [
+				'url'           => 'http://example.org',
+				'is_mobile'     => false,
+				'status'        => 'completed',
+				'lcp'           => 'not found',
+				'viewport'      => '[]',
+				'last_accessed' => '2024-01-01 00:00:00',
+				'error_message' => '',
+			],
+		],
+	],
+	'testShouldBailoutWithNotValidImages5' => [
+		'config'   => [
+			'filter'    => true,
+			'url'       => 'http://example.org',
+			'is_mobile' => false,
+			'images'    => json_encode(
+				[
+					(object) [
+						'label' => 'lcp',
+						'type'  => 'bg-img',
+						'src'   => 'linear-gradient(160deg, rgb(255, 255, 255) 0%, rgb(248, 246, 243) 100%)',
+					],
+				]
+			),
+			'filetype' => [
+				'ext' => false,
+				'type' => false,
+			],
+			'allowed_mime_types' => [
+				'jpg|jpeg|jpe'                 => 'image/jpeg',
+				'gif'                          => 'image/gif',
+				'png'                          => 'image/png',
+				'bmp'                          => 'image/bmp',
+				'tiff|tif'                     => 'image/tiff',
+				'webp'                         => 'image/webp',
+				'avif'                         => 'image/avif',
+				'ico'                          => 'image/x-icon',
+				'heic'                         => 'image/heic',
+			],
+		],
+		'expected' => [
+			'item'    => [
+				'url'           => 'http://example.org',
+				'is_mobile'     => false,
+				'status'        => 'completed',
+				'lcp'           => 'not found',
+				'viewport'      => '[]',
+				'last_accessed' => '2024-01-01 00:00:00',
+				'error_message' => '',
+			],
+			'result'  => true,
+			'message' => [
+				'url'           => 'http://example.org',
+				'is_mobile'     => false,
+				'status'        => 'completed',
+				'lcp'           => 'not found',
+				'viewport'      => '[]',
+				'last_accessed' => '2024-01-01 00:00:00',
+				'error_message' => '',
+			],
+		],
+	],
+	'testShouldAddItemToDBWhenSvgWithHttpProtocol' => [
+		'config'   => [
+			'filter'    => true,
+			'url'       => 'http://example.org',
+			'is_mobile' => false,
+			'images'    => json_encode(
+				[
+					(object) [
+						'label' => 'lcp',
+						'type'  => 'img',
+						'src'   => 'http://example.org/path/to/images/image.svg',
+					],
+				]
+			),
+			'filetype' => [
+				'ext' => 'svg',
+				'type' => 'image/svg+xml',
+			],
+			'allowed_mime_types' => [
+				'jpg|jpeg|jpe'                 => 'image/jpeg',
+				'gif'                          => 'image/gif',
+				'png'                          => 'image/png',
+				'bmp'                          => 'image/bmp',
+				'tiff|tif'                     => 'image/tiff',
+				'webp'                         => 'image/webp',
+				'avif'                         => 'image/avif',
+				'ico'                          => 'image/x-icon',
+				'heic'                         => 'image/heic',
+			],
+		],
+		'expected' => [
+			'images_valid_sources' => [],
+			'item'    => [
+				'url'           => 'http://example.org',
+				'is_mobile'     => false,
+				'status'        => 'completed',
+				'lcp'           => json_encode(
+					(object) [
+						'type' => 'img',
+						'src'  => 'http://example.org/path/to/images/image.svg',
+					],
+				),
+				'viewport' 		=> '[]',
+				'last_accessed' => '2024-01-01 00:00:00',
+				'error_message' => '',
+			],
+			'result'  => true,
+			'message' => [
+				'url'           => 'http://example.org',
+				'is_mobile'     => false,
+				'status'        => 'completed',
+				'lcp'           => json_encode(
+					(object) [
+						'type' => 'img',
+						'src'  => 'http://example.org/path/to/images/image.svg',
+					],
+				),
+				'viewport' 		=> '[]',
+				'last_accessed' => '2024-01-01 00:00:00',
+				'error_message' => '',
 			],
 		],
 	],
