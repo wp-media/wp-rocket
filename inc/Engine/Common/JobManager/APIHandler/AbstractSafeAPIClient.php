@@ -2,6 +2,8 @@
 
 namespace WP_Rocket\Engine\Common\JobManager\APIHandler;
 
+use WP_Rocket\Logger\LoggerAware;
+use WP_Rocket\Logger\LoggerAwareInterface;
 use WP_Error;
 
 /**
@@ -12,7 +14,9 @@ use WP_Error;
  *
  * @package WP_Rocket\Engine\Common\JobManager\APIHandler
  */
-abstract class AbstractSafeAPIClient {
+abstract class AbstractSafeAPIClient implements LoggerAwareInterface {
+
+	use LoggerAware;
 
 	/**
 	 * Get the transient key.
@@ -63,7 +67,14 @@ abstract class AbstractSafeAPIClient {
 	private function send_request( $method, $params = [], $safe = false ) {
 		$api_url = $this->get_api_url();
 
-		if ( get_transient( $this->get_transient_key() . '_timeout_active' ) ) {
+		$timeout_transient_name = $this->get_transient_key() . '_timeout_active';
+		if ( get_transient( $timeout_transient_name ) ) {
+			$this->logger::debug(
+				"Request to {$api_url} avoided: {$timeout_transient_name} is set.",
+				[
+					'method' => __METHOD__,
+				]
+			);
 			return new WP_Error( 429, __( 'Too many requests.', 'rocket' ) );
 		}
 
@@ -79,6 +90,12 @@ abstract class AbstractSafeAPIClient {
 		$body = wp_remote_retrieve_body( $response );
 		if ( empty( $body ) || ( is_array( $response ) && ! empty( $response['response']['code'] ) && 200 !== $response['response']['code'] ) ) {
 			$this->set_timeout_transients();
+			$this->logger::debug(
+				"Request to {$api_url} failed: {$this->get_transient_key()}'_timeout_active is set.",
+				[
+					'method' => __METHOD__,
+				]
+			);
 			return new WP_Error( 500, __( 'Not valid response.', 'rocket' ) );
 		}
 
@@ -143,7 +160,12 @@ abstract class AbstractSafeAPIClient {
 			case 'POST':
 				return wp_safe_remote_post( $api_url, $params );
 		}
-
+		$this->logger::debug(
+			"Request to {$api_url} failed: {$method} is not a supported method.",
+			[
+				'method' => __METHOD__,
+			]
+		);
 		return new WP_Error( 400, __( 'Not valid request type.', 'rocket' ) );
 	}
 }
