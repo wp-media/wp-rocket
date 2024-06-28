@@ -67,7 +67,7 @@ abstract class AbstractSafeAPIClient {
 		if ( get_transient( $transient_key . '_timeout_active' ) ) {
 			return new WP_Error( 429, __( 'Too many requests.', 'rocket' ) );
 		}
-		# Get previous_expiration early to avoid multiple parallel requests increasing the expiration multiple times
+		// Get previous_expiration early to avoid multiple parallel requests increasing the expiration multiple times.
 		$previous_expiration = (int) get_transient( $transient_key . '_timeout' );
 
 		$params['method'] = strtoupper( $method );
@@ -75,13 +75,13 @@ abstract class AbstractSafeAPIClient {
 		$response = $this->send_remote_request( $api_url, $method, $params, $safe );
 
 		if ( is_wp_error( $response ) ) {
-			$this->set_timeout_transients($previous_expiration);
+			$this->set_timeout_transients( $previous_expiration );
 			return $response;
 		}
 
 		$body = wp_remote_retrieve_body( $response );
 		if ( empty( $body ) || ( is_array( $response ) && ! empty( $response['response']['code'] ) && 200 !== $response['response']['code'] ) ) {
-			$this->set_timeout_transients($previous_expiration);
+			$this->set_timeout_transients( $previous_expiration );
 			return new WP_Error( 500, __( 'Not valid response.', 'rocket' ) );
 		}
 
@@ -92,10 +92,10 @@ abstract class AbstractSafeAPIClient {
 
 	/**
 	 * Set the timeout transients.
-	 * 
-	 * @param string $previous_expiration The previous value of _timeout_active transient
+	 *
+	 * @param string $previous_expiration The previous value of _timeout_active transient.
 	 */
-	private function set_timeout_transients($previous_expiration) {
+	private function set_timeout_transients( $previous_expiration ) {
 		$transient_key = $this->get_transient_key();
 
 		$expiration = ( 0 === $previous_expiration )
