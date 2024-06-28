@@ -99,11 +99,11 @@ class GetPricingData extends TestCase {
 		}
 
 		if ( ! $expected ) {
-			Functions\expect( 'set_transient' )->with( 'user_information_timeout' )->andReturn(null);
-			Functions\expect( 'set_transient' )->with( 'user_information_timeout_active' )->andReturn(null);
+			Functions\expect( 'set_transient' )->with( 'wpr_user_information_timeout' )->andReturn(null);
+			Functions\expect( 'set_transient' )->with( 'wpr_user_information_timeout_active' )->andReturn(null);
 		} else {
-			Functions\expect( 'delete_transient' )->with( 'user_information_timeout' )->andReturn(null);
-			Functions\expect( 'delete_transient' )->with( 'user_information_timeout_active' )->andReturn(null);
+			Functions\expect( 'delete_transient' )->with( 'wpr_user_information_timeout' )->andReturn(null);
+			Functions\expect( 'delete_transient' )->with( 'wpr_user_information_timeout_active' )->andReturn(null);
 		}
 
 		$this->assertEquals(

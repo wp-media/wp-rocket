@@ -144,8 +144,8 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		delete_transient( 'wp_rocket_customer_data' );
-		delete_transient( 'user_information_timeout_active' );
-		delete_transient( 'user_information_timeout' );
+		delete_transient( 'wpr_user_information_timeout_active' );
+		delete_transient( 'wpr_user_information_timeout' );
 
 		return wp_send_json_success( $this->page->customer_data() );
 	}

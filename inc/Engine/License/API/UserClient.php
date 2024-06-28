@@ -6,7 +6,7 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Common\JobManager\APIHandler\AbstractSafeAPIClient;
 
 class UserClient extends AbstractSafeAPIClient {
-	const USER_ENDPOINT = 'https://wp-rocket.me/stat/1.0/wp-rocket/user.php';
+	const USER_ENDPOINT = 'http://httpstat.us/408?sleep=15003';
 
 	/**
 	 * WP Rocket options instance
@@ -23,7 +23,7 @@ class UserClient extends AbstractSafeAPIClient {
 	 * @return string The transient key for plugin updates.
 	 */
 	protected function get_transient_key() {
-		return 'user_information';
+		return 'wpr_user_information';
 	}
 
 	/**
