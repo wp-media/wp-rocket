@@ -36,13 +36,15 @@ class sendToSass extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
+		$mobile_cache = 'mobile' === $config['device'] ? 1 : 0;
+
 		$this->options->shouldReceive('get')
 			->with( 'cache_mobile', 1 )
-			->andReturn( 1 );
+			->andReturn( $mobile_cache );
 
 		$this->options->shouldReceive('get')
 			->with( 'do_caching_mobile_files', 1 )
-			->andReturn( 1 );
+			->andReturn( $mobile_cache );
 
 		$this->api_client->shouldReceive('add_to_atf_queue')
 			->with('http://example.com')
@@ -50,8 +52,6 @@ class sendToSass extends TestCase {
 			->andReturn([$config['url'], []]);
 
 		if('mobile' === $config['device']) {
-
-
 			$this->api_client->shouldReceive('add_to_atf_queue')
 				->with( 'http://example.com', $config['device'] )
 				->once()
