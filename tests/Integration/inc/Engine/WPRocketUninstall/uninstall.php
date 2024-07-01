@@ -45,6 +45,8 @@ class Test_Uninstall extends FilesystemTestCase {
 		'rocket_preload_complete'                         => null,
 		'rocket_preload_complete_time'                    => null,
 		'rocket_preload_errors'                           => null,
+		'rocket_preload_previous_requests_durations'      => null,
+		'rocket_preload_check_duration'                   => null,
 		'rocket_database_optimization_process'            => null,
 		'rocket_database_optimization_process_complete'   => null,
 		'rocket_hide_deactivation_form'                   => null,
