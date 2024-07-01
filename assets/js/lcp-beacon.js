@@ -255,7 +255,7 @@ class RocketLcpBeacon {
 
 	_fillATFWithoutDuplications(elements) {
 		elements.forEach(({ element, elementInfo }) => {
-			if ( this._isDuplicateImage(element) ) {
+			if ( this._isDuplicateImage(element) || !elementInfo ) {
 				return;
 			}
 

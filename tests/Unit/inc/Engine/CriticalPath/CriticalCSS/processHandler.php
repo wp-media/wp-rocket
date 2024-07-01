@@ -14,10 +14,10 @@ use wpdb;
 /**
  * Test class covering \WP_Rocket\Engine\CriticalPath\CriticalCSS::process_handler
  *
- * @group  CriticalCss
- * @group  CriticalPath
+ * @group CriticalCss
+ * @group CriticalPath
  */
-class Test_ProcessHandler extends FilesystemTestCase {
+class TestProcessHandler extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/CriticalCSS/processHandler.php';
 
 	private $critical_css;
@@ -45,7 +45,9 @@ class Test_ProcessHandler extends FilesystemTestCase {
 		Functions\when( 'home_url' )->justReturn( 'http://example.org/' );
 		Functions\when( 'get_current_blog_id' )->justReturn( 1 );
 
-		$GLOBALS['wpdb'] = $this->wpdb = new wpdb();
+		$this->wpdb = new wpdb( 'dbuser', 'dbpassword', 'dbname', 'dbhost' );
+
+		$GLOBALS['wpdb'] = $this->wpdb;
 	}
 
 	protected function tearDown(): void {

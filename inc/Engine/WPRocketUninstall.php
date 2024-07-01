@@ -82,6 +82,8 @@ class WPRocketUninstall {
 		'rocket_get_refreshed_fragments_cache',
 		'rocket_preload_previous_requests_durations',
 		'rocket_preload_check_duration',
+		'wpr_user_information_timeout_active',
+		'wpr_user_information_timeout',
 	];
 
 	/**
