@@ -62,6 +62,8 @@ class Test_Uninstall extends FilesystemTestCase {
 		'wp_rocket_pricing_timeout'                       => null,
 		'wp_rocket_pricing_timeout_active'                => null,
 		'rocket_get_refreshed_fragments_cache'            => null,
+		'wpr_user_information_timeout_active'             => null,
+		'wpr_user_information_timeout'                    => null,
 	];
 
 	private $events = [

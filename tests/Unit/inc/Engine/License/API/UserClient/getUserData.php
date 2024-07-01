@@ -14,7 +14,7 @@ use WP_Rocket\Tests\Unit\TestCase;
  *
  * @group License
  */
-class GetPricingData extends TestCase {
+class GetUserData extends TestCase {
 	use ApiTrait;
 
 	protected static $api_credentials_config_file = 'license.php';
@@ -39,6 +39,8 @@ class GetPricingData extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
+		$this->stubTranslationFunctions();
+
 		Functions\expect( 'get_transient' )
 			->atLeast()->once()
 			->with( 'wp_rocket_customer_data' )
@@ -94,6 +96,14 @@ class GetPricingData extends TestCase {
 				->with( 'wp_rocket_customer_data', Mockery::type( 'object' ), DAY_IN_SECONDS );
 		} else {
 			Functions\expect( 'set_transient' )->never();
+		}
+
+		if ( ! $expected ) {
+			Functions\expect( 'set_transient' )->with( 'wpr_user_information_timeout' )->andReturn(null);
+			Functions\expect( 'set_transient' )->with( 'wpr_user_information_timeout_active' )->andReturn(null);
+		} else {
+			Functions\expect( 'delete_transient' )->with( 'wpr_user_information_timeout' )->andReturn(null);
+			Functions\expect( 'delete_transient' )->with( 'wpr_user_information_timeout_active' )->andReturn(null);
 		}
 
 		$this->assertEquals(
