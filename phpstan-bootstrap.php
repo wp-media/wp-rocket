@@ -7,3 +7,4 @@
 	define('PASS_COOKIE', 'default_pass_cookie');
 	define('SECURE_AUTH_COOKIE', 'default_secure_auth_cookie');
 	define('USER_COOKIE', 'default_user_cookie');
+	define('WP_STACK_CDN_DOMAIN', '');
