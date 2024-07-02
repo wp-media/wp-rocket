@@ -36,16 +36,15 @@ class sendToSass extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
-		$this->options->shouldReceive('get')
-			->with('cache_mobile', 0)
-			->andReturn(0);
+		$mobile_cache = 'mobile' === $config['device'] ? 1 : 0;
 
-		if('desktop' === $config['device']) {
-			Functions\expect( 'get_rocket_option' )
-				->once()
-				->with( 'version', '' )
-				->andReturn( true );
-		}
+		$this->options->shouldReceive('get')
+			->with( 'cache_mobile', 1 )
+			->andReturn( $mobile_cache );
+
+		$this->options->shouldReceive('get')
+			->with( 'do_caching_mobile_files', 1 )
+			->andReturn( $mobile_cache );
 
 		$this->api_client->shouldReceive('add_to_atf_queue')
 			->with('http://example.com')
@@ -53,15 +52,10 @@ class sendToSass extends TestCase {
 			->andReturn([$config['url'], []]);
 
 		if('mobile' === $config['device']) {
-			Functions\expect( 'get_rocket_option' )
-				->once()
-				->with( 'version', '' )
-				->andReturn( '' );
-
 			$this->api_client->shouldReceive('add_to_atf_queue')
-				->with('http://example.com', $config['device'])
+				->with( 'http://example.com', $config['device'] )
 				->once()
-				->andReturn([$config['url'], []]);
+				->andReturn( [$config['url'], []] );
 		}
 
 		$this->controller->send_to_saas($config['url']);
