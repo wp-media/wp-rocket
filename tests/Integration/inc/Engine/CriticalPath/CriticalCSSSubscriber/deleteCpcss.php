@@ -67,6 +67,8 @@ class Test_DeleteCpcss extends FilesystemTestCase {
 		$this->filesystem->put_contents( $item_path, '.cpcss { color: red; }');
 		$this->assertTrue( $this->filesystem->exists( $item_path ) );
 
+		$mobile_item_path = '';
+
 		if ( $this->async_css_mobile ) {
 			$mobile_item_path = 'wp-content/cache/critical-css/1/posts' . DIRECTORY_SEPARATOR . "{$post_type}-" . self::$post_id . "-mobile.css";
 			$this->filesystem->put_contents( $mobile_item_path, '.cpcss-mobile { color: red; }');

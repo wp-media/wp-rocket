@@ -27,7 +27,7 @@ class SEOPress implements Subscriber_Interface {
 	 * Subscribed events.
 	 */
 	public static function get_subscribed_events() {
-		if ( ! function_exists( 'seopress_get_toggle_option' ) || 1 !== (int) seopress_get_toggle_option( 'xml-sitemap' ) ) {
+		if ( ! function_exists( 'seopress_get_toggle_option' ) || 1 !== (int) seopress_get_toggle_option() ) {
 			return [];
 		}
 

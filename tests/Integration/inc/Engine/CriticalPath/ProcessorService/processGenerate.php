@@ -138,7 +138,7 @@ class Test_ProcessGenerate extends FilesystemTestCase {
 			}
 		}
 
-		if ( isset( $save_cpcss ) && is_wp_error( $save_cpcss ) ) {
+		if ( is_wp_error( $save_cpcss ) ) {
 			$this->filesystem->chmod( 'wp-content/cache/critical-css/1/', 0444 );
 		}
 

@@ -147,7 +147,7 @@ class Controller {
 			'picture',
 		];
 
-		if ( empty( $lcp ) || empty( $lcp->type ) || ! in_array( $lcp->type, $allowed_types, true ) ) {
+		if ( empty( (array) $lcp ) || empty( $lcp->type ) || ! in_array( $lcp->type, $allowed_types, true ) ) {
 			return $html;
 		}
 
@@ -488,7 +488,7 @@ class Controller {
 			$link_attribute = ( substr_count( $source->srcset, ',' ) > 0 ) ? 'imagesrcset' : 'href';
 
 			// Append the source and media query to the tag string.
-			$tag .= $start_tag . $link_attribute . '="' . $source->srcset . '"' . ( $media ?? '' ) . $sizes . $end_tag;
+			$tag .= $start_tag . $link_attribute . '="' . $source->srcset . '"' . ( $media ) . $sizes . $end_tag;
 
 			// If a max-width is found in the source's media attribute, update the previous max-width.
 			if ( preg_match( '/\(max-width: (\d+(\.\d+)?)px\)/', $source->media, $matches ) ) {

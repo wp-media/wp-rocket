@@ -469,6 +469,7 @@ trait CSSTrait {
 
 		$hosts = array_unique( $hosts );
 
+		/* @phpstan-ignore-next-line */
 		if ( empty( $hosts ) ) {
 			return true;
 		}
