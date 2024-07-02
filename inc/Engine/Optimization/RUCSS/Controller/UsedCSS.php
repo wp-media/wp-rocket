@@ -511,7 +511,7 @@ class UsedCSS {
 				);
 
 				// Check if the font URL matches any part of the exclude_fonts_preload array.
-				// @phpstan-ignore-next-line
+				// @phpstan-ignore-next-line .
 				if ( ! empty( $exclude_fonts_preload_pattern ) && preg_match( '/' . $exclude_fonts_preload_pattern . '/i', $font_url ) ) {
 					continue; // Skip this iteration as the font URL is in the exclusion list.
 				}
