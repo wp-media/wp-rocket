@@ -55,6 +55,7 @@ class ServiceProvider extends AbstractServiceProvider {
 				]
 			)
 			->addTag( 'common_subscriber' );
+
 		$this->getContainer()->addShared( 'plugin_information_subscriber', InformationSubscriber::class )
 			->addArgument(
 				[
@@ -63,6 +64,7 @@ class ServiceProvider extends AbstractServiceProvider {
 				]
 			)
 			->addTag( 'common_subscriber' );
+
 		$this->getContainer()->addShared( 'plugin_updater_subscriber', UpdaterSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'plugin_renewal_notice' ) )
 			->addArgument(

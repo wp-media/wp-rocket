@@ -235,11 +235,16 @@ class Controller {
 	}
 
 	/**
-	 * Check if the current request is for mobile.
+	 * Check if the mobile cache is set.
 	 *
 	 * @return bool
 	 */
 	private function is_mobile(): bool {
+		$plugin_version = (string) get_rocket_option( 'version', '' );
+		if ( ! $plugin_version ) { // We are warming up a fresh installation. Options are not set yet.
+			return true;
+		}
+
 		return $this->options->get( 'cache_mobile', 0 ) && $this->options->get( 'do_caching_mobile_files', 0 );
 	}
 }
