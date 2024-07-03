@@ -10,7 +10,7 @@ use WP_Rocket\ThirdParty\Themes\Divi;
  *
  * @group Themes
  */
-class Test_RemoveAssetsGenerated extends WPThemeTestcase {
+class TestRemoveAssetsGenerated extends WPThemeTestcase {
 	private $container;
 	private $event;
 	private $subscriber;
@@ -49,8 +49,9 @@ class Test_RemoveAssetsGenerated extends WPThemeTestcase {
 
 		$this->event->add_subscriber( $this->subscriber );
 
-		add_action( 'et_dynamic_late_assets_generated', '__return_true' );
-		$this->assertTrue( has_action( 'et_dynamic_late_assets_generated' ) );
+		add_filter( 'et_dynamic_late_assets_generated', '__return_true' );
+
+		$this->assertTrue( has_filter( 'et_dynamic_late_assets_generated' ) );
 
 		switch_theme( $config['stylesheet'] );
 

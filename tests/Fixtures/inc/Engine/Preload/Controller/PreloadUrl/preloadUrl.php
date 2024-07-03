@@ -1,7 +1,8 @@
 <?php
 return [
-	'alreadyPresentShouldDoNothing' => [
+	'shouldDoNothingWhenAlreadyCached' => [
 		'config' => [
+			'transient_check_duration' => 500,
 			'url' => 'url',
 			'cache_exists' => true,
 			'cache_mobile' => false,
@@ -12,12 +13,13 @@ return [
 					'timeout'  => 0.01,
 					'user-agent' => 'WP Rocket/Preload',
 					'sslverify' => false,
-				]
+				],
 			],
-		]
+		],
 	],
-	'mobileNotActivatedShouldPreloadOnlyOnce' => [
+	'shouldPreloadOnlyOnceWhenMobileCacheDisabled' => [
 		'config' => [
+			'transient_check_duration' => 500,
 			'url' => 'url',
 			'cache_exists' => false,
 			'cache_mobile' => false,
@@ -28,12 +30,13 @@ return [
 					'timeout'  => 0.01,
 					'user-agent' => 'WP Rocket/Preload',
 					'sslverify' => false,
-				]
+				],
 			],
-		]
+		],
 	],
-	'mobileActivatedShouldPreloadTwice' => [
+	'ShouldPreloadTwiceWhenMobileCacheEnabled' => [
 		'config' => [
+			'transient_check_duration' => 500,
 			'url' => 'url',
 			'cache_exists' => false,
 			'cache_mobile' => true,
@@ -44,7 +47,7 @@ return [
 					'timeout'  => 0.01,
 					'user-agent' => 'WP Rocket/Preload',
 					'sslverify' => false,
-				]
+				],
 			],
 			'request_mobile' => [
 				'config' => [
@@ -52,8 +55,25 @@ return [
 					'timeout'  => 0.01,
 					'user-agent' => 'user_agent',
 					'sslverify' => false,
-				]
+				],
 			],
-		]
-	]
+		],
+	],
+	'shouldPreloadOnlyOnceWhenMobileCacheDisabledAndCheckDuration' => [
+		'config' => [
+			'transient_check_duration' => false,
+			'url' => 'url',
+			'cache_exists' => false,
+			'cache_mobile' => false,
+			'user_agent' => 'user_agent',
+			'request' => [
+				'config' => [
+					'blocking' => true,
+					'timeout'  => 20,
+					'user-agent' => 'WP Rocket/Preload',
+					'sslverify' => false,
+				],
+			],
+		],
+	],
 ];

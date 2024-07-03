@@ -235,11 +235,11 @@ class Controller {
 	}
 
 	/**
-	 * Check if the current request is for mobile.
+	 * Check if the mobile cache is set.
 	 *
 	 * @return bool
 	 */
 	private function is_mobile(): bool {
-		return $this->options->get( 'cache_mobile', 0 ) && $this->options->get( 'do_caching_mobile_files', 0 );
+		return $this->options->get( 'cache_mobile', 1 ) && $this->options->get( 'do_caching_mobile_files', 1 );
 	}
 }

@@ -2,11 +2,11 @@
 return [
 	'shouldAddSitemap' => [
 		'config' => [
-			'sitemap' => 'sitemap',
-			'sitemaps' => []
+			'sitemap'  => 'sitemap',
+			'sitemaps' => [],
 		],
 		'expected' => [
 			'sitemap',
-		]
-	]
+		],
+	],
 ];
