@@ -1,7 +1,7 @@
 includes:
 	- phar://phpstan.phar/conf/bleedingEdge.neon
 parameters:
-	level: 1
+	level: 2
 	inferPrivatePropertyTypeFromConstructor: true
 	paths:
 		# Test only the new architecture for now.
