@@ -148,6 +148,6 @@ class LiteSpeed implements Subscriber_Interface {
 			return;
 		}
 		$this->headers[] = $header;
-		@header( $header ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+		@header( $header, $replace ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 	}
 }
