@@ -1,6 +1,6 @@
 <?php
 if(! function_exists('seopress_get_toggle_option')) {
-	function seopress_get_toggle_option() {
+	function seopress_get_toggle_option( $name ) {
 		return '1';
 	}
 }
