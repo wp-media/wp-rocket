@@ -43,6 +43,7 @@ class Subscriber implements Subscriber_Interface {
 		// Calculate the execution time.
 		$execution_time = ( $end - $start ) / 1e9; // Convert to seconds.
 
+		error_log( 'Page URL: ' . $_SERVER['REQUEST_URI'] );
 		error_log( 'Execution time: ' . $execution_time );
 		return $buffer;
 	}
