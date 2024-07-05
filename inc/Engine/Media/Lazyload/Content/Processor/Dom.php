@@ -39,6 +39,8 @@ class Dom {
 			'HEADER',
 		];
 
+		static $count = 0;
+
 		foreach ( $element->childNodes as $child ) {
 			if (
 				XML_ELEMENT_NODE !== $child->nodeType
@@ -52,7 +54,9 @@ class Dom {
 			$child_html       = $child->ownerDocument->saveHTML( $child );
 			$opening_tag_html = strstr( $child_html, '>', true ) . '>';
 
-			$hash = md5( $opening_tag_html );
+			$hash = md5( $opening_tag_html . $count );
+
+			++$count;
 
 			// Add the data-rocket-location-hash attribute.
 			$child->setAttribute( 'data-rocket-location-hash', $hash );

@@ -35,6 +35,8 @@ class SimpleHtmlDom {
 			'HEADER',
 		];
 
+		static $count = 0;
+
 		foreach ( $element->childNodes() as $child ) {
 			if ( ! in_array( strtoupper( $child->getTag() ), $skip_tags, true ) ) {
 				continue;
@@ -44,7 +46,9 @@ class SimpleHtmlDom {
 			$child_html       = $child->html();
 			$opening_tag_html = strstr( $child_html, '>', true ) . '>';
 
-			$hash = md5( $opening_tag_html );
+			$hash = md5( $opening_tag_html . $count );
+
+			++$count;
 
 			// Add the data-rocket-location-hash attribute.
 			$child->setAttribute( 'data-rocket-location-hash', $hash );

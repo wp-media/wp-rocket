@@ -34,11 +34,15 @@ class Regex {
 			return $html;
 		}
 
+		$count = 0;
+
 		foreach ( $matches as $child ) {
 			// Calculate the hash of the opening tag.
 			$opening_tag_html = strstr( $child[0], '>', true ) . '>';
 
-			$hash = md5( $opening_tag_html );
+			$hash = md5( $opening_tag_html . $count );
+
+			++$count;
 
 			// Add the data-rocket-location-hash attribute.
 			$replace = preg_replace( '/' . $child[1] . '/is', '$0 data-rocket-location-hash="' . $hash . '"', $child[0], 1 );
