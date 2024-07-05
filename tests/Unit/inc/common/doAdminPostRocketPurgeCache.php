@@ -75,7 +75,7 @@ class Test_DoAdminPostRocketPurgeCache extends FilesystemTestCase {
 				break;
 		}
 
-		Actions\expectDone( 'rocket_purge_cache' )->once()->withAnyArgs( $config['type'] );
+		Actions\expectDone( 'rocket_purge_cache' )->once()->withAnyArgs( );
 
 		Functions\expect( 'wp_get_referer' )->once()->andReturn( 'http://example.org' );
 		Functions\expect( 'esc_url_raw' )->once()->with( 'http://example.org' )->andReturnFirstArg();

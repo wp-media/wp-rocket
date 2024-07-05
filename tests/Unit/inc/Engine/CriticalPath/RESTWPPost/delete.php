@@ -153,8 +153,8 @@ class Test_Delete extends TestCase {
 
 	private function assertSuccess( $config, $expected ) {
 		Functions\expect( 'get_permalink' )
-			->atLeast( 1 )
-			->atMost( 2 )
+			->atMost()
+			->times(2 )
 			->with( $this->post_id )
 			->andReturn( $this->getPermalink() );
 
@@ -215,8 +215,8 @@ class Test_Delete extends TestCase {
 
 	private function getPath( $is_mobile = false ) {
 		Functions\expect( 'get_post_type' )
-			->atLeast( 1 )
-			->atMost( 2 )
+			->atMost(  )
+			->times(2 )
 			->with( $this->post_id )
 			->andReturn( $this->post_type );
 

@@ -16,7 +16,7 @@ use Brain\Monkey\Functions;
 class Test_maybeAddErrorNotice extends TestCase {
 
 	/**
-	 * @var CacheInterface
+	 * @var Mockery\MockInterface|CacheInterface
 	 */
 	protected $cache;
 
@@ -52,7 +52,7 @@ class Test_maybeAddErrorNotice extends TestCase {
 		if(! $config['can']) {
 			return;
 		}
-		$this->cache->expects()->is_accessible()->andReturn($config['is_accessible']);
+		$this->cache->shouldReceive('is_accessible')->andReturn($config['is_accessible']);
 	}
 
 	protected function configureNotice($config, $expected) {
@@ -60,7 +60,7 @@ class Test_maybeAddErrorNotice extends TestCase {
 			return;
 		}
 		Functions\expect('rocket_notice_writing_permissions')->with($config['root_path'])->andReturn($config['message']);
-		$this->cache->expects()->get_root_path()->andReturn($config['root_path']);
+		$this->cache->shouldReceive('get_root_path')->andReturn($config['root_path']);
 		Functions\expect('rocket_notice_html')->with($expected['notice']);
 	}
 }

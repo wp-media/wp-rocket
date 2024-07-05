@@ -30,7 +30,7 @@ class Test_switchToRucssNotice extends TestCase {
     protected $cpcss_service;
 
     /**
-     * @var Options_Data
+     * @var Mockery\MockInterface|Options_Data
      */
     protected $options;
 
@@ -40,7 +40,7 @@ class Test_switchToRucssNotice extends TestCase {
     protected $options_api;
 
     /**
-     * @var User
+     * @var Mockery\MockInterface|User
      */
     protected $user;
 
@@ -83,14 +83,14 @@ class Test_switchToRucssNotice extends TestCase {
 		if( $config['in_boxes'] ) {
 			return;
 		}
-		$this->options->expects()->get('async_css', 0)->andReturn($config['async_css']);
+		$this->options->shouldReceive('get')->with('async_css', 0)->andReturn($config['async_css']);
 	}
 
 	protected function configure_licence( $config, $expected ) {
 		if( $config['in_boxes'] || ! $config['async_css'] ) {
 			return;
 		}
-		$this->user->expects()->is_license_expired()->andReturn($config['expired_license']);
+		$this->user->shouldReceive('is_license_expired')->andReturn($config['expired_license']);
 	}
 
 	protected function configure_current_screen( $config, $expected ) {

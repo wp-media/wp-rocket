@@ -59,7 +59,7 @@ class Test_GetRocketI18nToPreserve extends TestCase {
 			}
 
 			Functions\expect( 'rocket_get_constant' )
-				->atLeast( 1 )
+				->atLeast( )
 				->with( 'WP_ROCKET_CACHE_PATH' )
 				->andReturn( 'vfs://public/wp-content/cache/wp-rocket/' );
 

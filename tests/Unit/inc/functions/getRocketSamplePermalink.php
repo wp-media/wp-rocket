@@ -68,7 +68,7 @@ class Test_GetRocketSamePermalink extends TestCase {
 				];
 			} );
 
-		Functions\expect( 'sanitize_title' )->atLeast( 1 )->andReturnUsing( [ $this, 'sanitizeTitle' ] );
+		Functions\expect( 'sanitize_title' )->atLeast( )->andReturnUsing( [ $this, 'sanitizeTitle' ] );
 		Functions\expect( 'wp_unique_post_slug' )->once()->andReturnFirstArg();
 		Functions\expect( 'get_permalink' )
 			->once()

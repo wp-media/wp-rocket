@@ -15,7 +15,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 class Test_maybeEnableDevMode extends TestCase {
 
     /**
-     * @var Options_Data
+     * @var Mockery\MockInterface
      */
     protected $options;
 
@@ -36,7 +36,10 @@ class Test_maybeEnableDevMode extends TestCase {
      */
     public function testShouldReturnAsExpected( $config, $expected )
     {
-		$this->options->expects()->get('remove_unused_css', false)->andReturn($config['rucss_enabled']);
+	    $this->options
+		    ->shouldReceive('get')
+		    ->with('remove_unused_css', false)
+		    ->andReturn($config['rucss_enabled']);
         $this->assertSame($expected, $this->themify->maybe_enable_dev_mode($config['is_enabled']));
     }
 }

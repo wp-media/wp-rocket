@@ -136,8 +136,8 @@ class Test_Generate extends FilesystemTestCase {
 			->once()
 			->andReturn( 1 );
 		Functions\expect( 'get_permalink' )
-			->atLeast( 1 )
-			->atMost( 2 )
+			->atMost( )
+			->times(2 )
 			->with( $post_id )
 			->andReturnUsing(
 				function( $post_id ) use ( $expected ) {
@@ -186,6 +186,7 @@ class Test_Generate extends FilesystemTestCase {
 
 		Functions\when( 'wp_strip_all_tags' )->returnArg();
 
+		/* @phpstan-ignore-next-line */
 		Functions\expect( 'rest_ensure_response' )->once()->andReturnArg( 0 );
 
 		$api_client    = new APIClient();

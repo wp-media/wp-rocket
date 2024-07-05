@@ -30,12 +30,12 @@ class Test_switchToRucss extends TestCase {
     protected $cpcss_service;
 
     /**
-     * @var Options_Data
+     * @var Mockery\MockInterface|Options_Data
      */
     protected $options;
 
     /**
-     * @var Options
+     * @var Mockery\MockInterface|Options
      */
     protected $options_api;
 
@@ -90,10 +90,10 @@ class Test_switchToRucss extends TestCase {
 		if(! $config['user_can']) {
 			return;
 		}
-		$this->options->expects()->set('async_css', false);
-		$this->options->expects()->set('remove_unused_css', true);
-		$this->options->expects()->get_options()->andReturn($config['options']);
-		$this->options_api->expects()->set('settings', $expected['options']);
+		$this->options->shouldReceive('set')->with('async_css', false);
+		$this->options->shouldReceive('set')->with('remove_unused_css', true);
+		$this->options->shouldReceive('get_options')->andReturn($config['options']);
+		$this->options_api->shouldReceive('set')->with('settings', $expected['options']);
 
 	}
 

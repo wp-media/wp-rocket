@@ -19,7 +19,7 @@ use WP_Rocket\ThirdParty\Plugins\CDN\{Cloudflare,CloudflareFacade};
 class Test_displayApoCacheNotice extends TestCase {
 
     /**
-     * @var Options_Data
+     * @var Mockery\MockInterface of Options_Data
      */
     protected $options;
 
@@ -29,7 +29,7 @@ class Test_displayApoCacheNotice extends TestCase {
     protected $option_api;
 
 	/**
-	 * @var Beacon
+	 * @var Mockery\MockInterface of Beacon
 	 */
 	protected $beacon;
 
@@ -119,7 +119,9 @@ class Test_displayApoCacheNotice extends TestCase {
 		if(! $config['mobile_cache'] !== $config['cloudflare_mobile_cache']['value']) {
 			return;
 		}
-		$this->beacon->expects()->get_suggest('cloudflare_apo')->andReturn($config['beacon_response']);
+		$this->beacon->shouldReceive('get_suggest')
+			->with('cloudflare_apo')
+			->andReturn($config['beacon_response']);
 	}
 
 	protected function configure_cloudflare($config, $expected) {
@@ -133,7 +135,9 @@ class Test_displayApoCacheNotice extends TestCase {
 		if(! $config['is_plugin_activated'] || ! $config['can'] || ! $config['has_apo'] || ! $config['right_screen'] ) {
 			return;
 		}
-		$this->options->expects()->get('do_caching_mobile_files', 0)->andReturn($config['mobile_cache']);
+		$this->options->shouldReceive('get')
+			->with('do_caching_mobile_files', 0)
+			->andReturn($config['mobile_cache']);
 	}
 
 	protected function configure_notice($config, $expected) {

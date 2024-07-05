@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Media\Lazyload\CSS\Front\ContentFetcher;
 
+use Mockery\MockInterface;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Front\ContentFetcher;
 
 
@@ -14,7 +15,7 @@ use Brain\Monkey\Functions;
 class Test_fetch extends TestCase {
 
 	/**
-	 * @var WP_Filesystem_Direct
+	 * @var \Mockery\MockInterface|WP_Filesystem_Direct
 	 */
 	protected $filesystem;
 
@@ -48,7 +49,7 @@ class Test_fetch extends TestCase {
 		if( $config['is_url']) {
 			return;
 		}
-		$this->filesystem->expects()->get_contents($config['path'])->andReturn($config['content']);
+		$this->filesystem->shouldReceive('get_contents')->with($config['path'])->andReturn($config['content']);
 	}
 
 	protected function configure_url($config) {

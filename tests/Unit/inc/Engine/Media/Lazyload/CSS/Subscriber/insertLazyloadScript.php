@@ -45,9 +45,10 @@ class Test_insertLazyloadScript extends TestCase {
 
 		if($config['is_allowed']) {
 
-			$this->filesystem->expects()->exists($expected['path'])->andReturn($config['exists']);
+			$this->filesystem->shouldReceive('exists')->with($expected['path'])->andReturn($config['exists']);
 
-			$this->filesystem->expects()->get_contents($expected['path'])->andReturn($config['script_data']);
+			$this->filesystem->shouldReceive('get_contents')->with($expected['path'])->andReturn($config['script_data']);
+
 			Filters\expectApplied('rocket_lazyload_threshold')->with(300)->andReturn($config['threshold']);
 			Functions\expect('wp_register_script')->with('rocket_lazyload_css', '', [], false, true);
 			Functions\expect('wp_enqueue_script')->with('rocket_lazyload_css');

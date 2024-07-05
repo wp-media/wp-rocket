@@ -1,7 +1,9 @@
 <?php
 
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Common\Clock\WPRClock;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
+use WP_Rocket\Engine\Common\JobManager\Strategy\Factory\StrategyFactory;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\Filesystem;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS as UsedCSS_Query;
@@ -146,10 +148,12 @@ class Test_Treeshake extends TestCase {
 		$this->usedCssQuery->expects(self::atLeastOnce())->method('get_row')->with($config['home_url'], $config['is_mobile']['is_mobile'])->willReturn($usedCssRow);
 
 		if ( ! empty( $config['get_existing_used_css']['used_css']->hash ) ) {
+
 			$this->filesystem->shouldReceive( 'get_used_css' )
 				->atMost()
 				->once()
 				->with( $config['get_existing_used_css']['used_css']->hash )
+				/* @phpstan-ignore-next-line */
 				->andReturn( $config['get_existing_used_css']['used_css']->css );
 		}
 	}

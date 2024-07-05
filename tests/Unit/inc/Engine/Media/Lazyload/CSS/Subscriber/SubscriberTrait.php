@@ -22,47 +22,47 @@ trait SubscriberTrait
 	use HasLoggerTrait;
 
 	/**
-	 * @var Extractor
+	 * @var Mockery\MockInterface|Extractor
 	 */
 	protected $extractor;
 
 	/**
-	 * @var RuleFormatter
+	 * @var Mockery\MockInterface|RuleFormatter
 	 */
 	protected $rule_formatter;
 
 	/**
-	 * @var FileResolver
+	 * @var Mockery\MockInterface|FileResolver
 	 */
 	protected $file_resolver;
 
 	/**
-	 * @var FilesystemCache
+	 * @var Mockery\MockInterface|FilesystemCache
 	 */
 	protected $filesystem_cache;
 
 	/**
-	 * @var MappingFormatter
+	 * @var Mockery\MockInterface|MappingFormatter
 	 */
 	protected $json_formatter;
 
 	/**
-	 * @var TagGenerator
+	 * @var Mockery\MockInterface|TagGenerator
 	 */
 	protected $tag_generator;
 
 	/**
-	 * @var ContentFetcher
+	 * @var Mockery\MockInterface|ContentFetcher
 	 */
 	protected $fetcher;
 
 	/**
-	 * @var ContextInterface
+	 * @var Mockery\MockInterface|ContextInterface
 	 */
 	protected $context;
 
 	/**
-	 * @var Options_Data
+	 * @var Mockery\MockInterface|Options_Data
 	 */
 	protected $options;
 
@@ -72,12 +72,12 @@ trait SubscriberTrait
 	protected $lazyload_content_factory;
 
 	/**
-	 * @var Subscriber
+	 * @var Mockery\MockInterface|Subscriber
 	 */
 	protected $subscriber;
 
 	/**
-	 * @var WP_Filesystem_Direct
+	 * @var Mockery\MockInterface|WP_Filesystem_Direct
 	 */
 	protected $filesystem;
 

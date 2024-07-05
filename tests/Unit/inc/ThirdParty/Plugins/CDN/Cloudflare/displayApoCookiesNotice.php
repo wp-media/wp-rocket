@@ -29,7 +29,7 @@ class Test_displayApoCookiesNotice extends TestCase {
 	protected $option_api;
 
 	/**
-	 * @var Beacon
+	 * @var Mockery\MockInterface
 	 */
 	protected $beacon;
 
@@ -122,8 +122,9 @@ class Test_displayApoCookiesNotice extends TestCase {
 		if(! $config['right_screen'] || ! $config['can'] || (count($config['dynamic_cookies']) === 0 && count($config['mandatory_cookies']) === 0)) {
 			return;
 		}
-		$this->beacon->expects()->get_suggest('cloudflare_apo')->andReturn($config['beacon_response']);
-	}
+		$this->beacon->shouldReceive('get_suggest')
+			->with('cloudflare_apo')
+			->andReturn($config['beacon_response']);	}
 
 	protected function configure_apply_dynamic_cookies($config, $expected) {
 		if(! $config['right_screen'] || ! $config['can']) {

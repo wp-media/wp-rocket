@@ -25,12 +25,9 @@ class Test_DisableImageDimensionsHeightPercentage extends TestCase {
 		$options     = Mockery::mock( Options_Data::class );
 		$delayjs_html     = Mockery::mock( 'WP_Rocket\Engine\Optimization\DelayJS\HTML' );
 		$used_css     = Mockery::mock( UsedCSS::class );
-		$theme       = new WP_Theme( $config['theme-name'], 'wp-content/themes/' );
-		$theme->set_name( $config['theme-name'] );
-
-		if ( $config['theme-template'] ) {
-			$theme->set_template( $config['theme-template'] );
-		}
+		$theme = Mockery::mock('WP_Theme');
+		$theme->shouldReceive('get_template')->andReturn($config['theme-template']);
+		$theme->shouldReceive('get_stylesheet')->andReturn($config['theme-name']);
 
 		Functions\when( 'wp_get_theme' )->justReturn( $theme );
 

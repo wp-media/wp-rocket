@@ -31,10 +31,10 @@ class Test_DisableDiviJqueryBody extends TestCase {
 		$delayjs_html     = Mockery::mock( 'WP_Rocket\Engine\Optimization\DelayJS\HTML' );
 		$used_css     = Mockery::mock( UsedCSS::class );
 
-		$theme       = new WP_Theme( 'Divi', 'wp-content/themes/' );
-		$theme->set_name( 'Divi' );
+		$theme = Mockery::mock('WP_Theme');
+		$theme->shouldReceive('get_stylesheet')->andReturn('Divi');
 
-		Functions\when( 'wp_get_theme' )->justReturn( $theme );
+		Functions\when('wp_get_theme')->justReturn($theme);
 
 		$divi = new Divi( $options_api, $options , $delayjs_html, $used_css );
 		$delayjs_html->shouldReceive( 'is_allowed' )->once()->andReturn( true );

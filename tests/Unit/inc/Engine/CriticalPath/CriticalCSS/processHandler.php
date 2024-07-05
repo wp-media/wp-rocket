@@ -72,6 +72,7 @@ class TestProcessHandler extends FilesystemTestCase {
 				->andReturn( $process_running );
 		}
 
+		/* @var \Mockery\MockInterface $process */
 		$process            = Mockery::mock( CriticalCSSGeneration::class );
 		$this->critical_css = new CriticalCSS(
 			$process,
@@ -87,8 +88,10 @@ class TestProcessHandler extends FilesystemTestCase {
 			Functions\expect( 'set_transient' )->once()->andReturn( null );
 			$number_items = count( $this->expected_items );
 			$process
-				->shouldReceive( 'push_to_queue' )->times( $number_items )->andReturn( null )
-				->shouldReceive( 'save' )->once()->andReturn( $process )
+				->shouldReceive( 'push_to_queue' )->times( $number_items )->andReturn( null );
+			$process
+				->shouldReceive( 'save' )->once()->andReturn( $process );
+			$process
 				->shouldReceive( 'dispatch' )->once()->andReturn( null );
 
 		}

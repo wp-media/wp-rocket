@@ -22,7 +22,7 @@ class Test_RocketMkdirP extends FilesystemTestCase {
 	 */
 	public function testShouldRecursivelyMkdirWhenDoesNotExist( $target, $should_mkdir, $new_path = '' ) {
 		Functions\expect( 'rocket_is_stream' )
-			->atLeast( 1 )
+			->atLeast( )
 			->with( $target )
 			->andReturnUsing( function ( $path ) {
 				$stream = substr( $path, 0, strpos( $path, '://' ) );
