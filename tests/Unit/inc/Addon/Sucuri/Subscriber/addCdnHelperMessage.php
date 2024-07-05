@@ -15,7 +15,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 class Test_addCdnHelperMessage extends TestCase {
 
     /**
-     * @var Options_Data
+     * @var Options_Data|Mockery\MockInterface
      */
     protected $options;
 
@@ -36,7 +36,7 @@ class Test_addCdnHelperMessage extends TestCase {
      */
     public function testShouldReturnAsExpected( $config, $expected )
     {
-		$this->options->expects()->get('sucury_waf_cache_sync', false)->andReturn($config['is_enabled']);
+		$this->options->shouldReceive('get')->with('sucury_waf_cache_sync', false)->andReturn($config['is_enabled']);
         $this->assertSame($expected, $this->subscriber->add_cdn_helper_message($config['addons']));
     }
 }

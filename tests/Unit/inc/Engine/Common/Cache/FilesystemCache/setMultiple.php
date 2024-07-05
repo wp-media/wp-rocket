@@ -20,7 +20,7 @@ class Test_setMultiple extends TestCase {
     protected $root_folder;
 
     /**
-     * @var WP_Filesystem_Direct
+     * @var Mockery\MockInterface|WP_Filesystem_Direct
      */
     protected $filesystem;
 
@@ -56,7 +56,7 @@ class Test_setMultiple extends TestCase {
 		Functions\when('rocket_get_constant')->justReturn($config['root']);
 
 		foreach ($config['saved'] as $path => $saved) {
-			$this->filesystem->expects()->put_contents($path, $saved['content'], $config['rights'])->andReturn($saved['output']);
+			$this->filesystem->shouldReceive('put_contents')->with($path, $saved['content'], $config['rights'])->andReturn($saved['output']);
 		}
 
         $this->assertSame($expected['output'], $this->filesystemcache->setMultiple($config['values'], $config['ttl']));

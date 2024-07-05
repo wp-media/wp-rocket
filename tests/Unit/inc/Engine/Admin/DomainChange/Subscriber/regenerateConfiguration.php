@@ -16,7 +16,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 class Test_regenerateConfiguration extends TestCase {
 
     /**
-     * @var AjaxHandler
+     * @var Mockery\MockInterface|AjaxHandler
      */
     protected $ajax_handler;
 
@@ -46,7 +46,7 @@ class Test_regenerateConfiguration extends TestCase {
 	    Functions\expect('get_option')->with('home')->andReturn($config['home_url']);
 		Functions\when('trailingslashit')->returnArg();
 
-		$this->ajax_handler->expects()->validate_referer('rocket_regenerate_configuration', 'rocket_manage_options')->andReturn($config['is_validated']);
+		$this->ajax_handler->shouldReceive('validate_referer')->with('rocket_regenerate_configuration', 'rocket_manage_options')->andReturn($config['is_validated']);
 
 		if( $config['is_validated']) {
 			Functions\expect("get_transient")->with('rocket_domain_changed')->andReturn($config['transient']);
@@ -55,9 +55,12 @@ class Test_regenerateConfiguration extends TestCase {
 		if($config['is_validated'] && $config['transient']) {
 			Actions\expectDone('rocket_domain_changed')->with($config['home_url'], $config['last_base_url']);
 			Functions\expect('delete_transient')->with('rocket_domain_changed');
-			$this->ajax_handler->expects()->redirect();
+			$this->ajax_handler->shouldReceive('redirect');
+		} else {
+			$this->expectNotToPerformAssertions();
 		}
 
         $this->subscriber->regenerate_configuration();
+
     }
 }

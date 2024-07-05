@@ -21,7 +21,7 @@ class Test_clear extends TestCase {
     protected $root_folder;
 
     /**
-     * @var WP_Filesystem_Direct
+     * @var Mockery\MockInterface|WP_Filesystem_Direct
      */
     protected $filesystem;
 
@@ -44,7 +44,7 @@ class Test_clear extends TestCase {
     public function testShouldReturnAsExpected( $config, $expected )
     {
 		Functions\when('rocket_get_constant')->justReturn($config['root']);
-		$this->filesystem->expects()->exists($expected['path'])->andReturn($config['exists']);
+		$this->filesystem->shouldReceive('exists')->with($expected['path'])->andReturn($config['exists']);
 		$this->configureDirDelete($config, $expected);
 		$this->assertSame($expected['output'], $this->filesystemcache->clear());
     }

@@ -20,7 +20,7 @@ class Test_deleteMultiple extends TestCase {
     protected $root_folder;
 
     /**
-     * @var WP_Filesystem_Direct
+     * @var Mockery\MockInterface|WP_Filesystem_Direct
      */
     protected $filesystem;
 
@@ -59,18 +59,18 @@ class Test_deleteMultiple extends TestCase {
 
 	protected function configureIsDir($config, $expected) {
 		foreach ($config['is_dir'] as $path => $out) {
-			$this->filesystem->expects()->is_dir($path)->andReturn($out);
+			$this->filesystem->shouldReceive('is_dir')->with($path)->andReturn($out);
 			if($out)  {
 				Functions\expect('rocket_rrmdir')->andReturn($path, [], $this->filesystem);
 			} else {
-				$this->filesystem->expects()->delete($path)->andReturn(true);
+				$this->filesystem->shouldReceive('delete')->with($path)->andReturn(true);
 			}
 		}
 	}
 
 	protected function configureExists($config, $expected) {
 		foreach ($config['exists'] as $path => $out) {
-			$this->filesystem->expects()->exists($path)->andReturn($out);
+			$this->filesystem->shouldReceive('exists')->with($path)->andReturn($out);
 		}
 	}
 }

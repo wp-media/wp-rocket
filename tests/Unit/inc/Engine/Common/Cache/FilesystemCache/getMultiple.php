@@ -21,7 +21,7 @@ class Test_getMultiple extends TestCase {
     protected $root_folder;
 
     /**
-     * @var WP_Filesystem_Direct
+     * @var Mockery\MockInterface|WP_Filesystem_Direct
      */
     protected $filesystem;
 
@@ -54,11 +54,11 @@ class Test_getMultiple extends TestCase {
 		Functions\when('rocket_get_constant')->justReturn($config['root']);
 
 		foreach ($config['exists'] as $path => $exist) {
-			$this->filesystem->expects()->exists($path)->andReturn($exist);
+			$this->filesystem->shouldReceive('exists')->with($path)->andReturn($exist);
 		}
 
 		foreach ($config['content'] as $path => $content) {
-			$this->filesystem->expects()->get_contents($path)->andReturn($content);
+			$this->filesystem->shouldReceive('get_contents')->with($path)->andReturn($content);
 		}
 
         $this->assertSame($expected['output'], $this->filesystemcache->getMultiple($config['keys'], $config['default']));

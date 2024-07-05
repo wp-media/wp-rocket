@@ -21,7 +21,7 @@ class Test_isAccessible extends TestCase {
     protected $root_folder;
 
     /**
-     * @var WP_Filesystem_Direct
+     * @var Mockery\MockInterface|WP_Filesystem_Direct
      */
     protected $filesystem;
 
@@ -45,11 +45,11 @@ class Test_isAccessible extends TestCase {
     {
 		Functions\when('rocket_get_constant')->justReturn($config['root']);
 
-		$this->filesystem->expects()->exists($expected['path'])->andReturn($config['exists']);
+		$this->filesystem->shouldReceive('exists')->with($expected['path'])->andReturn($config['exists']);
 		if( ! $config['exists']) {
 			Functions\expect('rocket_mkdir_p')->with($expected['path'], $this->filesystem);
 		}
-		$this->filesystem->expects()->is_writable($expected['path'])->andReturn($config['is_writable']);
+		$this->filesystem->shouldReceive('is_writable')->with($expected['path'])->andReturn($config['is_writable']);
 
 		$this->assertSame($expected['output'], $this->filesystemcache->is_accessible());
     }

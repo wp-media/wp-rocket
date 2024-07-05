@@ -20,7 +20,7 @@ class Test_delete extends TestCase {
     protected $root_folder;
 
     /**
-     * @var WP_Filesystem_Direct
+     * @var Mockery\MockInterface|WP_Filesystem_Direct
      */
     protected $filesystem;
 
@@ -46,7 +46,7 @@ class Test_delete extends TestCase {
 		Functions\when('rocket_get_constant')->justReturn($config['root']);
 		Functions\expect('get_rocket_parse_url')->with($config['key'])->andReturn($config['parsed_url']);
 		Functions\when('home_url')->justReturn($config['home_url']);
-		$this->filesystem->expects()->exists($expected['path'])->andReturn($config['exists']);
+		$this->filesystem->shouldReceive('exists')->with($expected['path'])->andReturn($config['exists']);
 		$this->configureIsDir($config, $expected);
 		$this->configureDirDelete($config, $expected);
 		$this->configureFileDelete($config, $expected);
@@ -57,14 +57,14 @@ class Test_delete extends TestCase {
 		if(! $config['exists']) {
 			return;
 		}
-		$this->filesystem->expects()->is_dir($expected['path'])->andReturn($config['is_dir']);
+		$this->filesystem->shouldReceive('is_dir')->with($expected['path'])->andReturn($config['is_dir']);
 	}
 
 	protected function configureFileDelete($config, $expected) {
 		if(! $config['exists'] || $config['is_dir']) {
 			return;
 		}
-		$this->filesystem->expects()->delete($expected['path'])->andReturn(true);
+		$this->filesystem->shouldReceive('delete')->with($expected['path'])->andReturn(true);
 	}
 
 	protected function configureDirDelete($config, $expected) {

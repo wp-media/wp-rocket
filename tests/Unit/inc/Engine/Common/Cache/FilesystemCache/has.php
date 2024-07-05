@@ -20,7 +20,7 @@ class Test_has extends TestCase {
     protected $root_folder;
 
     /**
-     * @var WP_Filesystem_Direct
+     * @var Mockery\MockInterface|WP_Filesystem_Direct
      */
     protected $filesystem;
 
@@ -46,7 +46,7 @@ class Test_has extends TestCase {
 		Functions\when('rocket_get_constant')->justReturn($config['root']);
 		Functions\when('home_url')->justReturn($config['home_url']);
 
-		$this->filesystem->expects()->exists($expected['path'])->andReturn($config['exists']);
+		$this->filesystem->shouldReceive('exists')->with($expected['path'])->andReturn($config['exists']);
 
         $this->assertSame($expected['output'], $this->filesystemcache->has($config['key']));
     }

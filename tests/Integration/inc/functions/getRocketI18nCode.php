@@ -50,7 +50,7 @@ class Test_GetRocketI18nCode extends TestCase {
 				break;
 			case 'polylang':
 				$GLOBALS['polylang'] = 'polylang';
-				Functions\expect( 'pll_languages_list' )->atLeast( 1 )->andReturn( $codes );
+				Functions\expect( 'pll_languages_list' )->atLeast( )->times(1 )->andReturn( $codes );
 		}
 	}
 

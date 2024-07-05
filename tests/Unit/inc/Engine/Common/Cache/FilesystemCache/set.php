@@ -20,7 +20,7 @@ class Test_set extends TestCase {
     protected $root_folder;
 
     /**
-     * @var WP_Filesystem_Direct
+     * @var Mockery\MockInterface|WP_Filesystem_Direct
      */
     protected $filesystem;
 
@@ -48,7 +48,7 @@ class Test_set extends TestCase {
 		Functions\expect('rocket_mkdir_p')->with( dirname($expected['path']), $this->filesystem );
 		Functions\when('home_url')->justReturn($config['home_url']);
 
-		$this->filesystem->expects()->put_contents($expected['path'], $expected['content'], $config['rights'])->andReturn($config['saved']);
+		$this->filesystem->shouldReceive('put_contents')->with($expected['path'], $expected['content'], $config['rights'])->andReturn($config['saved']);
 
 		$this->assertSame($expected['output'], $this->filesystemcache->set($config['key'], $config['value'], $config['ttl']));
 
