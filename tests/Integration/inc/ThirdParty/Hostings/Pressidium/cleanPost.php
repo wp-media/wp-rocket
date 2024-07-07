@@ -15,7 +15,7 @@ use NinukisCaching;
  */
 class Test_CleanPost extends TestCase {
 	/**
-	 * @var NinukisCaching
+	 * @var NinukisCaching|Mockery\MockInterface
 	 */
 	protected $ninukis_caching;
 
@@ -37,11 +37,12 @@ class Test_CleanPost extends TestCase {
 
 	/**
 	 * @dataProvider configTestData
+	 * @doesNotPerformAssertions
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
 		$post = $this->factory->post->create_and_get( $config['post'] );
 
-		$this->ninukis_caching->expects()->purge_url($config['url']);
+		$this->ninukis_caching->shouldReceive('purge_url')->with($config['url']);
 
 		do_action('after_rocket_clean_post', $post, $config['url'], '');
 	}

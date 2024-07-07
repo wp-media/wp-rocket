@@ -347,7 +347,7 @@ class Cache extends Query {
 			false
 		);
 
-		if ( $total <= 0 || $inprogress_count >= $total ) {
+		if ( $total <= 0 || (int) $inprogress_count >= $total ) {
 			return [];
 		}
 

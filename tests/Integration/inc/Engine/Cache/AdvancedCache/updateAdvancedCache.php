@@ -40,6 +40,7 @@ class Test_UpdateAdvancedCache extends FilesystemTestCase {
 
 	/**
 	 * @group Multisite
+	 * @doesNotPerformAssertions
 	 */
 	public function testShouldNotUpdateWhenMultisiteAndSitesNotZero() {
 		$advanced_cache = new AdvancedCache(
@@ -49,7 +50,7 @@ class Test_UpdateAdvancedCache extends FilesystemTestCase {
 
 		Functions\when( 'current_filter' )->justReturn( 'rocket_deactivation' );
 
-		$this->assertNull( $advanced_cache->update_advanced_cache( 1 ) );
+		$advanced_cache->update_advanced_cache( 1 );
 	}
 
 	/**

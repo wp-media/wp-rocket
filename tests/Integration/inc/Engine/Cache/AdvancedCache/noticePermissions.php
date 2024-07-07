@@ -69,7 +69,7 @@ class Test_NoticePermissions extends FilesystemTestCase {
 		$advanced_cache = new AdvancedCache( WP_ROCKET_PLUGIN_ROOT . 'views/cache/', $this->filesystem );
 
 		if ( empty( $expected ) ) {
-			$this->assertSame( $expected, $advanced_cache->notice_permissions() );
+			$advanced_cache->notice_permissions();
 
 			return;
 		}

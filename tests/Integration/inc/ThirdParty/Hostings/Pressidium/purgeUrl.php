@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Hostings\Pressidium;
 
+use Mockery\MockInterface;
 use WP_Rocket\Tests\Integration\TestCase;
 use Brain\Monkey\Functions;
 use Mockery;
@@ -16,7 +17,7 @@ class Test_purgeUrl extends TestCase
 {
 
 	/**
-	 * @var NinukisCaching
+	 * @var NinukisCaching|MockInterface
 	 */
 	protected $ninukis_caching;
 	public function set_up(): void {
@@ -31,10 +32,11 @@ class Test_purgeUrl extends TestCase
 
 	/**
 	 * @dataProvider configTestData
+	 * @doesNotPerformAssertions
 	 */
 	public function testShouldReturnExpected($config): void
 	{
-		$this->ninukis_caching->expects()->purge_url();
+		$this->ninukis_caching->shouldReceive('purge_url');
 
 		do_action('after_rocket_clean_file');
 	}

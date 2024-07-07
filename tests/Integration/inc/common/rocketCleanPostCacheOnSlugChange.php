@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Integration\inc\common;
 
 use Brain\Monkey\Functions;
+use WP_Post;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**

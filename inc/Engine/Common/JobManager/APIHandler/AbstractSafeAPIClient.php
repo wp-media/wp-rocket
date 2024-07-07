@@ -100,7 +100,7 @@ abstract class AbstractSafeAPIClient {
 
 		$expiration = ( 0 === $previous_expiration )
 			? 300
-			: ( 2 * $previous_expiration <= DAY_IN_SECONDS
+			: ( 2 * (int) $previous_expiration <= DAY_IN_SECONDS
 				? 2 * $previous_expiration
 				: DAY_IN_SECONDS
 			);
