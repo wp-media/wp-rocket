@@ -120,7 +120,7 @@ class Test_PurgePostTermsUrls extends FilesystemTestCase {
 				}
 			}
 		}
-		Filters\expectApplied( 'rocket_post_terms_urls', $expected )->once();
+		Filters\expectApplied( 'rocket_post_terms_urls' )->once();
 
 		$this->stubWpParseUrl();
 

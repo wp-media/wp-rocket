@@ -34,6 +34,10 @@ class Test_JobSetFail_Execute extends TestCase {
 		} else {
 			$row_details = null;
 		}
+		$job_details = [
+			'code' => '',
+			'message' => '',
+		];
 		if ( isset( $config['job_details'] ) ) {
 			$job_details = $config['job_details'];
 		}

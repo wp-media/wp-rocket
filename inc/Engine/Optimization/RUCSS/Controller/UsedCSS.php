@@ -499,6 +499,8 @@ class UsedCSS {
 
 			// Making sure the excluded fonts array isn't empty to avoid excluding all fonts.
 			if ( ! empty( $exclude_fonts_preload ) ) {
+				$exclude_fonts_preload = array_filter( $exclude_fonts_preload );
+
 				// Combine the array elements into a single string with | as a separator and returning a pattern.
 				$exclude_fonts_preload_pattern = implode(
 					'|',

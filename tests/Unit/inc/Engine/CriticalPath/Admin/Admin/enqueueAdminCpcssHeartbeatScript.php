@@ -44,7 +44,7 @@ class TestEnqueueAdminCpcssHeartbeatScript extends TestCase {
 				->andReturn( $config['options']['async_css'] );
 
 		if ( $expected ) {
-			$this->assertExpected( $config );
+			$this->assertExpected();
 		} else {
 			$this->assertNotExpected();
 		}

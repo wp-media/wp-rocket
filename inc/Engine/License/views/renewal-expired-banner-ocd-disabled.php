@@ -6,6 +6,8 @@
  */
 
 defined( 'ABSPATH' ) || exit;
+
+$data = isset( $data ) ? $data : []; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 ?>
 <section class="rocket-renewal-expired-banner" id="rocket-renewal-banner">
 	<h3 class="rocket-expired-title"><?php esc_html_e( 'The Optimize CSS Delivery feature is disabled.', 'rocket' ); ?></h3>

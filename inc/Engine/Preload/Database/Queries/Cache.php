@@ -303,7 +303,7 @@ class Cache extends Query {
 		$db = $this->get_db();
 
 		// Bail if no database interface is available.
-		if ( empty( $db ) ) {
+		if ( ! $db ) {
 			return [];
 		}
 
@@ -473,7 +473,7 @@ class Cache extends Query {
 		$db = $this->get_db();
 
 		// Bail if no database interface is available.
-		if ( empty( $db ) ) {
+		if ( ! $db ) {
 			return false;
 		}
 
@@ -489,7 +489,7 @@ class Cache extends Query {
 		$db = $this->get_db();
 
 		// Bail if no database interface is available.
-		if ( empty( $db ) ) {
+		if ( ! $db ) {
 			return false;
 		}
 
@@ -505,7 +505,7 @@ class Cache extends Query {
 		$db = $this->get_db();
 
 		// Bail if no database interface is available.
-		if ( empty( $db ) ) {
+		if ( ! $db ) {
 			return false;
 		}
 
@@ -568,7 +568,7 @@ class Cache extends Query {
 		$db = $this->get_db();
 
 		// Bail if no database interface is available.
-		if ( empty( $db ) ) {
+		if ( ! $db ) {
 			return false;
 		}
 
@@ -603,7 +603,7 @@ class Cache extends Query {
 		$db = $this->get_db();
 
 		// Bail if no database interface is available.
-		if ( empty( $db ) ) {
+		if ( ! $db ) {
 			return false;
 		}
 

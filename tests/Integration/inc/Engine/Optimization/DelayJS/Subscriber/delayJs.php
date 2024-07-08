@@ -40,7 +40,7 @@ class Test_DelayJs extends TestCase {
 		delete_transient( 'wpr_dynamic_lists' );
 
 		if ( isset( $this->post->ID ) ) {
-			delete_post_meta( $this->post->ID, '_rocket_exclude_delay_js', 1, true );
+			delete_post_meta( $this->post->ID, '_rocket_exclude_delay_js', 1 );
 		}
 
 		$this->restoreWpHook( 'rocket_buffer' );

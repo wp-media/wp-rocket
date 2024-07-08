@@ -208,10 +208,6 @@ class ImageDimensions {
 
 		$hosts = array_unique( $hosts );
 
-		if ( empty( $hosts ) ) {
-			return true;
-		}
-
 		// URL has domain and domain is part of the internal domains.
 		if ( ! empty( $file['host'] ) ) {
 			foreach ( $hosts as $host ) {

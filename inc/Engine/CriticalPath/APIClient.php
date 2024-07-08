@@ -108,7 +108,11 @@ class APIClient {
 		return (
 			200 === $response_code
 			&&
-			! empty( $response_data )
+			(
+				$response_data instanceof stdClass
+				&&
+				! empty( (array) $response_data )
+			)
 			&&
 			(
 				(
