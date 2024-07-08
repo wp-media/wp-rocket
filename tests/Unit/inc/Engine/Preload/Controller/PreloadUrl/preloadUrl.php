@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Controller\PreloadUrl;
 
 use Brain\Monkey\Functions;
+use Brain\Monkey\Filters;
 use Mockery;
 use WP_Filesystem_Direct;
 use WP_Rocket\Admin\Options_Data;
@@ -88,7 +89,7 @@ class Test_PreloadUrl extends TestCase {
 				$delay_value = $config['rocket_preload_delay_between_requests'];
 			}
 
-			Functions\expect('apply_filters')->with( 'rocket_preload_delay_between_requests', $delay_value )->andReturn( $delay_value );
+			Functions\expect('apply_filters')->with( 'rocket_preload_delay_between_requests', 500000 )->andReturn( $delay_value );
 
 			Functions\expect( 'wp_safe_remote_get' )
 			->with( $config['url'] . '/', $config['request']['config'] )
