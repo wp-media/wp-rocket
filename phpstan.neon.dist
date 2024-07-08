@@ -14,7 +14,7 @@ parameters:
 		# Must be first
 		- %currentWorkingDirectory%/inc/functions/options.php
 		# PHPStan bootstrap
-		- %currentWorkingDirectory%/phpstan-bootstrap.php
+		- %currentWorkingDirectory%/tests/phpstan/phpstan-bootstrap.php
 		# Procedural code
 		- %currentWorkingDirectory%/inc/constants.php
 		- %currentWorkingDirectory%/inc/common/purge.php
