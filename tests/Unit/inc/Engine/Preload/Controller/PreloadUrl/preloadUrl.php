@@ -83,13 +83,6 @@ class Test_PreloadUrl extends TestCase {
 
 	protected function expectDesktopRequest( $config ) {
 		if ( $config['cache_exists'] ) {
-			$delay_value = 500000;
-
-			if ( isset( $config['rocket_preload_delay_between_requests'] ) ) {
-				$delay_value = $config['rocket_preload_delay_between_requests'];
-			}
-
-			Functions\expect('apply_filters')->with( 'rocket_preload_delay_between_requests', 500000 )->andReturn( $delay_value );
 
 			Functions\expect( 'wp_safe_remote_get' )
 			->with( $config['url'] . '/', $config['request']['config'] )
@@ -100,6 +93,14 @@ class Test_PreloadUrl extends TestCase {
 
 		Functions\expect( 'wp_safe_remote_get' )
 			->with( $config['url'] . '/', $config['request']['config'] );
+
+		$delay_value = 500000;
+
+		if ( isset( $config['rocket_preload_delay_between_requests'] ) ) {
+			$delay_value = $config['rocket_preload_delay_between_requests'];
+		}
+
+		Filters\expectApplied( 'rocket_preload_delay_between_requests' )->with( 500000 )->andReturn( $delay_value );
 	}
 
 	protected function expectMobileRequest( $config ) {
