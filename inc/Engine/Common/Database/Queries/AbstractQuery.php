@@ -58,6 +58,10 @@ class AbstractQuery extends Query {
 			]
 		);
 
+		if( is_array( $query ) ) {
+			$query = array_pop( $query );
+		}
+
 		if ( empty( $query ) ) {
 			return false;
 		}
