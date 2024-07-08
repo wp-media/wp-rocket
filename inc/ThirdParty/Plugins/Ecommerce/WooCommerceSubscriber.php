@@ -18,7 +18,7 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 	/**
 	 * The WordPress Event Manager
 	 *
-	 * @var Event_Manager;
+	 * @var Event_Manager
 	 */
 	protected $event_manager;
 
