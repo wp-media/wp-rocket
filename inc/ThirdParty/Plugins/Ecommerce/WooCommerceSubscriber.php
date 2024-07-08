@@ -1,10 +1,10 @@
 <?php
 namespace WP_Rocket\ThirdParty\Plugins\Ecommerce;
 
+use WP_Post;
 use WP_Rocket\Engine\Optimization\DelayJS\HTML;
 use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\Event_Management\Event_Manager_Aware_Subscriber_Interface;
-use WP_Rocket\Logger\Logger;
 use WP_Rocket\Traits\Config_Updater;
 
 /**

@@ -5,7 +5,6 @@ namespace WP_Rocket\Engine\Optimization\DelayJS\Admin;
 
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\Optimization\DynamicLists\DelayJSLists\DataManager;
 use WP_Rocket\Engine\Optimization\DynamicLists\DynamicLists;
 use WP_Theme;
 
@@ -13,7 +12,7 @@ class SiteList {
 	/**
 	 * Delay JS data manager.
 	 *
-	 * @var DataManager
+	 * @var DynamicLists
 	 */
 	protected $dynamic_lists;
 

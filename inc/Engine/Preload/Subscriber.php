@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Preload;
 
+use WP_Post;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Preload\Activation\Activation;
 use WP_Rocket\Engine\Preload\Controller\CheckExcludedTrait;
