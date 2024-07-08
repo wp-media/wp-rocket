@@ -76,4 +76,40 @@ return [
 			],
 		],
 	],
+	'shouldStillPreloadOnlyOnceWhenRocketPreloadDelayBetweenRequestsIsAStringAndMobileCacheDisabledAndCheckDuration' => [
+		'config' => [
+			'transient_check_duration' => false,
+			'url' => 'url',
+			'cache_exists' => false,
+			'cache_mobile' => false,
+			'user_agent' => 'user_agent',
+			'rocket_preload_delay_between_requests' => "hello",
+			'request' => [
+				'config' => [
+					'blocking' => true,
+					'timeout'  => 20,
+					'user-agent' => 'WP Rocket/Preload',
+					'sslverify' => false,
+				],
+			],
+		],
+	],
+	'shouldStillPreloadOnlyOnceWhenRocketPreloadDelayBetweenRequestsIsAFloatAndMobileCacheDisabledAndCheckDuration' => [
+		'config' => [
+			'transient_check_duration' => false,
+			'url' => 'url',
+			'cache_exists' => false,
+			'cache_mobile' => false,
+			'user_agent' => 'user_agent',
+			'rocket_preload_delay_between_requests' => 5.2,
+			'request' => [
+				'config' => [
+					'blocking' => true,
+					'timeout'  => 20,
+					'user-agent' => 'WP Rocket/Preload',
+					'sslverify' => false,
+				],
+			],
+		],
+	],
 ];

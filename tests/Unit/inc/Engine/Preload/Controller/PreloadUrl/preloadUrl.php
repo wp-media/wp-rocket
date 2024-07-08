@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Controller\PreloadUrl;
 
 use Brain\Monkey\Functions;
+use Brain\Monkey\Filters;
 use Mockery;
 use WP_Filesystem_Direct;
 use WP_Rocket\Admin\Options_Data;
@@ -44,6 +45,7 @@ class Test_PreloadUrl extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoAsExpected( $config ) {
+
 		Functions\expect( 'get_transient' )
 			->atMost()
 			->once()
@@ -81,6 +83,7 @@ class Test_PreloadUrl extends TestCase {
 
 	protected function expectDesktopRequest( $config ) {
 		if ( $config['cache_exists'] ) {
+
 			Functions\expect( 'wp_safe_remote_get' )
 			->with( $config['url'] . '/', $config['request']['config'] )
 			->never();
@@ -90,6 +93,14 @@ class Test_PreloadUrl extends TestCase {
 
 		Functions\expect( 'wp_safe_remote_get' )
 			->with( $config['url'] . '/', $config['request']['config'] );
+
+		$delay_value = 500000;
+
+		if ( isset( $config['rocket_preload_delay_between_requests'] ) ) {
+			$delay_value = $config['rocket_preload_delay_between_requests'];
+		}
+
+		Filters\expectApplied( 'rocket_preload_delay_between_requests' )->with( 500000 )->andReturn( $delay_value );
 	}
 
 	protected function expectMobileRequest( $config ) {
