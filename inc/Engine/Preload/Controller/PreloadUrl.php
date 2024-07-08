@@ -161,9 +161,9 @@ class PreloadUrl {
 			 *
 			 * @param int $delay_between the defined delay.
 			 */
-			$delay_between = apply_filters( 'rocket_preload_delay_between_requests', $default_delay_between );
+			$delay_between = (int) apply_filters( 'rocket_preload_delay_between_requests', $default_delay_between );
 
-			if ( ! is_int( $delay_between ) ) {
+			if ( empty( $delay_between ) ) {
 				$delay_between = $default_delay_between;
 			}
 
