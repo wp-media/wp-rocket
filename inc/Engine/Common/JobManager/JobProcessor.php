@@ -174,7 +174,7 @@ class JobProcessor implements LoggerAwareInterface {
 	public function check_job_status( string $url, bool $is_mobile, string $optimization_type ) {
 
 		$row_details = $this->get_single_job( $url, $is_mobile, $optimization_type );
-		if ( ! $row_details ) {
+		if ( ! is_object( $row_details ) ) {
 			$this->logger::debug( 'Url - ' . $url . ' not found for is_mobile -  ' . (int) $is_mobile );
 			// Nothing in DB, bailout.
 			return;
