@@ -70,6 +70,7 @@
 		"wp-media/phpunit": "^3",
 		"wp-media/rocket-lazyload-common": "^3.0.11",
 		"wp-media/wp-imagify-partner": "^1.0",
+		"wpackagist-plugin/cloudflare":"4.12.7",
 		"wpackagist-plugin/amp": "^1.1.4",
 		"wpackagist-plugin/hummingbird-performance": "2.0.1",
 		"wpackagist-plugin/jetpack": "9.3.2",
