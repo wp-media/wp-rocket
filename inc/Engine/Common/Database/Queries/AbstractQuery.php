@@ -101,13 +101,13 @@ class AbstractQuery extends Query {
 			return [];
 		}
 
-		$in_progress_count = $this->query(
+		$in_progress_count = (int) $this->query(
 			[
 				'count'  => true,
 				'status' => [ 'in-progress' ],
 			]
 		);
-		$pending_count     = $this->query(
+		$pending_count     = (int) $this->query(
 			[
 				'count'  => true,
 				'status' => [ 'pending' ],
@@ -188,7 +188,7 @@ class AbstractQuery extends Query {
 			return [];
 		}
 
-		$inprogress_count = $this->query(
+		$inprogress_count = (int) $this->query(
 			[
 				'count'  => true,
 				'status' => 'in-progress',
