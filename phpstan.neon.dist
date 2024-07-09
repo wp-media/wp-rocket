@@ -35,7 +35,9 @@ parameters:
 		- %currentWorkingDirectory%/inc/Dependencies/ActionScheduler
 		- %currentWorkingDirectory%/tests/Fixtures/
 		- %currentWorkingDirectory%/vendor/antecedent/patchwork/
+		- %currentWorkingDirectory%/vendor/wpackagist-plugin/cloudflare/
 		- %currentWorkingDirectory%/vendor/wpackagist-plugin/amp/
+		- %currentWorkingDirectory%/vendor/wpackagist-plugin/hummingbird-performance/
 		- %currentWorkingDirectory%/vendor/wpackagist-plugin/the-events-calendar/
 		- %currentWorkingDirectory%/vendor/wpackagist-plugin/woocommerce/
 		- %currentWorkingDirectory%/vendor/mockery/mockery/
