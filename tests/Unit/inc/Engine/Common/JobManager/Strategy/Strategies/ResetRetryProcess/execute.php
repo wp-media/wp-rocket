@@ -1,7 +1,10 @@
 <?php
 
+namespace WP_Rocket\Tests\Unit\inc\Engine\Common\JobManager\Strategy\Strategies\ResetRetryProcess;
+
+use Mockery;
 use WP_Rocket\Engine\Common\JobManager\Strategy\Strategies\ResetRetryProcess;
-use WP_Rocket\Tests\Fixtures\inc\Engine\Common\JobManager\Manager;
+use WP_Rocket\Engine\Optimization\RUCSS\Jobs\Manager;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
@@ -9,11 +12,11 @@ use WP_Rocket\Tests\Unit\TestCase;
  *
  * @group Strategy
  */
-class TestResetRetryProcess_Execute extends TestCase {
+class TestExecute extends TestCase {
 	private $manager;
 	private $strategy;
 
-	public function setUp():void {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->manager  = Mockery::mock( Manager::class );
