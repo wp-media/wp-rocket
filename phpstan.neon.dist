@@ -40,7 +40,6 @@ parameters:
 		- %currentWorkingDirectory%/vendor/wpackagist-plugin/hummingbird-performance/
 		- %currentWorkingDirectory%/vendor/wpackagist-plugin/the-events-calendar/
 		- %currentWorkingDirectory%/vendor/wpackagist-plugin/woocommerce/
-		- %currentWorkingDirectory%/vendor/mockery/mockery/
 	scanFiles:
 		- %currentWorkingDirectory%/inc/admin/upgrader.php
 		- %currentWorkingDirectory%/inc/admin/options.php
