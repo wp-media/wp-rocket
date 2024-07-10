@@ -245,14 +245,15 @@ class SiteList {
 
 		return $full_list;
 	}
+
 	/**
 	 * Fetch the icon.
 	 *
-	 * @param array $item item from the list.
+	 * @param object $item item from the list.
 	 * @return string
 	 */
 	private function get_icon( $item ) {
-		if ( empty( $item ) || empty( $item->icon_url ) ) {
+		if ( empty( $item->icon_url ) ) {
 			return '';
 		}
 
