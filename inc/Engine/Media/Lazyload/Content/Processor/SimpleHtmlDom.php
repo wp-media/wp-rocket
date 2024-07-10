@@ -13,6 +13,7 @@ class SimpleHtmlDom {
 		$body = $dom->getElementByTagName( 'body' );
 
 		if ( $body instanceof SimpleHtmlDomBlank ) {
+			error_log( 'Page URL: ' . $_SERVER['REQUEST_URI'] . ' SimpleDom processor bailed out: no body found.' );
 			return $html;
 		}
 

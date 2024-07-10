@@ -8,6 +8,7 @@ class Regex {
 		$result = preg_match( '/(?><body[^>]*>)(?>.*?<\/body>)/is', $html, $matches );
 
 		if ( ! $result ) {
+			error_log( 'Page URL: ' . $_SERVER['REQUEST_URI'] . ' Regex processor bailed out: no body found.' );
 			return $html;
 		}
 
@@ -31,6 +32,7 @@ class Regex {
 		$result = preg_match_all( '/(?><(' . implode( '|', $skip_tags ) . ')[^>]*>)/is', $element, $matches, PREG_SET_ORDER );
 
 		if ( ! $result ) {
+			error_log( 'Page URL: ' . $_SERVER['REQUEST_URI'] . ' Regex processor bailed out: no matchings tags found.' );
 			return $html;
 		}
 

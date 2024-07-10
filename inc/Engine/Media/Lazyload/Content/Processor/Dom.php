@@ -16,6 +16,7 @@ class Dom {
 		$body = $dom->getElementsByTagName( 'body' )->item( 0 );
 
 		if ( ! $body ) {
+			error_log( 'Page URL: ' . $_SERVER['REQUEST_URI'] . ' Dom processor bailed out: no body found.' );
 			return $html;
 		}
 
