@@ -1,22 +1,22 @@
 <?php
 
+use Brain\Monkey\Functions;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Common\Clock\WPRClock;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Engine\Common\JobManager\Strategy\Factory\StrategyFactory;
+use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\DataManager;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\Filesystem;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS as UsedCSS_Query;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Row\UsedCSS as UsedCSS_Row;
+use WP_Rocket\Engine\Optimization\RUCSS\Jobs\Manager;
 use WP_Rocket\Tests\Unit\TestCase;
-use Brain\Monkey\Functions;
-use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\DataManager;
-use WP_Rocket\Tests\Fixtures\inc\Engine\Common\JobManager\Manager;
 
 /**
  * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS::treeshake
  *
- * @group  RUCSS
+ * @group RUCSS
  */
 class Test_Treeshake extends TestCase {
 	protected $options;
