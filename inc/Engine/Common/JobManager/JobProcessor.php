@@ -4,7 +4,7 @@ namespace WP_Rocket\Engine\Common\JobManager;
 
 use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
-use WP_Rocket\Engine\Common\Queue\QueueInterface;
+use WP_Rocket\Engine\Common\JobManager\Queue\Queue;
 use WP_Rocket\Engine\Common\JobManager\Strategy\Factory\StrategyFactory;
 use WP_Rocket\Engine\Common\JobManager\APIHandler\APIClient;
 use WP_Rocket\Engine\Common\Clock\WPRClock;
@@ -23,7 +23,7 @@ class JobProcessor implements LoggerAwareInterface {
 	/**
 	 * Queue instance.
 	 *
-	 * @var QueueInterface
+	 * @var Queue
 	 */
 	private $queue;
 
@@ -52,14 +52,14 @@ class JobProcessor implements LoggerAwareInterface {
 	 * Instantiate the class.
 	 *
 	 * @param array           $factories Array of factories.
-	 * @param QueueInterface  $queue Queue instance.
+	 * @param Queue           $queue Queue instance.
 	 * @param StrategyFactory $strategy_factory Strategy Factory.
 	 * @param APIClient       $api APIClient instance.
 	 * @param WPRClock        $clock Clock object instance.
 	 */
 	public function __construct(
 		array $factories,
-		QueueInterface $queue,
+		Queue $queue,
 		StrategyFactory $strategy_factory,
 		APIClient $api,
 		WPRClock $clock
