@@ -8,12 +8,12 @@ use WPMedia\PHPUnit\Integration\TestCase;
 
 /**
  * Test class covering ::get_rocket_i18n_code
- * @uses  ::rocket_has_i18n
+ *
+ * @uses ::rocket_has_i18n
  * @group Functions
  * @group i18n
  */
 class Test_GetRocketI18nCode extends TestCase {
-
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
 
@@ -21,9 +21,9 @@ class Test_GetRocketI18nCode extends TestCase {
 	}
 
 	public function tear_down() {
-		parent::tear_down();
-
 		unset( $GLOBALS['sitepress'], $GLOBALS['q_config'], $GLOBALS['polylang'] );
+
+		parent::tear_down();
 	}
 
 	/**
@@ -50,7 +50,9 @@ class Test_GetRocketI18nCode extends TestCase {
 				break;
 			case 'polylang':
 				$GLOBALS['polylang'] = 'polylang';
-				Functions\expect( 'pll_languages_list' )->atLeast( )->times(1 )->andReturn( $codes );
+				Functions\expect( 'pll_languages_list' )
+					->atLeast()
+					->andReturn( $codes );
 		}
 	}
 
