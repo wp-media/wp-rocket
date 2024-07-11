@@ -11,21 +11,12 @@ use WP_Rocket\Tests\Unit\TestCase;
 
 /**
  * Test class covering \WP_Rocket\Engine\Admin\DomainChange\Subscriber::regenerate_configuration
+ *
+ * @group DomainChange
  */
 class Test_RegenerateConfiguration extends TestCase {
-	/**
-	 * @var Mockery\MockInterface|AjaxHandler
-	 */
 	protected $ajax_handler;
-
-	/**
-	 * @var Beacon
-	 */
 	protected $beacon;
-
-	/**
-	 * @var Subscriber
-	 */
 	protected $subscriber;
 
 	public function set_up() {
@@ -53,6 +44,9 @@ class Test_RegenerateConfiguration extends TestCase {
 			Functions\expect( 'get_transient' )
 				->with( 'rocket_domain_changed' )
 				->andReturn( $config['transient'] );
+		} else {
+			Functions\expect( 'get_transient' )
+				->never();
 		}
 
 		if ( $config['is_validated'] && $config['transient'] ) {
@@ -63,6 +57,8 @@ class Test_RegenerateConfiguration extends TestCase {
 				->with( 'rocket_domain_changed' );
 
 			$this->ajax_handler->shouldReceive( 'redirect' );
+		} else {
+			Functions\expect( 'delete_transient' )->never();
 		}
 
 		$this->subscriber->regenerate_configuration();
