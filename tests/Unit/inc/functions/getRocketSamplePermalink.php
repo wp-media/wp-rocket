@@ -7,6 +7,7 @@ use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
  * Test class covering ::get_rocket_sample_permalink
+ *
  * @group Functions
  * @group Posts
  */
@@ -61,14 +62,18 @@ class Test_GetRocketSamePermalink extends TestCase {
 		Functions\expect( 'get_post_type_object' )
 			->once()
 			->with( $post->post_type )
-			->andReturnUsing( function () use ( $post ) {
-				return (object) [
-					'name'         => $post->post_type,
-					'hierarchical' => $post->post_parent > 0,
-				];
-			} );
+			->andReturnUsing(
+				function () use ( $post ) {
+					return (object) [
+						'name'         => $post->post_type,
+						'hierarchical' => $post->post_parent > 0,
+					];
+				}
+			);
 
-		Functions\expect( 'sanitize_title' )->atLeast( )->andReturnUsing( [ $this, 'sanitizeTitle' ] );
+		Functions\expect( 'sanitize_title' )
+			->atLeast()
+			->andReturnUsing( [ $this, 'sanitizeTitle' ] );
 		Functions\expect( 'wp_unique_post_slug' )->once()->andReturnFirstArg();
 		Functions\expect( 'get_permalink' )
 			->once()
@@ -79,9 +84,11 @@ class Test_GetRocketSamePermalink extends TestCase {
 			Functions\expect( 'get_page_uri' )
 				->once()
 				->with( $post )
-				->andReturnUsing( function () use ( $expected ) {
-					return str_replace( 'http://example.org/', '', $expected[0] );
-				} );
+				->andReturnUsing(
+					function () use ( $expected ) {
+						return str_replace( 'http://example.org/', '', $expected[0] );
+					}
+				);
 		}
 
 		$actual = get_rocket_sample_permalink( $post_id, $config['override_post_title'], $config['override_post_name'] );
