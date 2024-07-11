@@ -11,10 +11,6 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @group  WPCache
  */
 class Test_UpdateWPCache extends TestCase {
-
-	/**
-	 * @doesNotPerformAssertions
-	 */
 	public function testShouldBailOutWhenNotRockedValidKey() {
 		$wp_cache = new WPCache( null );
 
