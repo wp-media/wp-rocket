@@ -8,16 +8,19 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
  * Test class covering ::do_admin_post_rocket_purge_cache
+ *
  * @group Common
  * @group vfs
  */
 class Test_DoAdminPostRocketPurgeCache extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/common/doAdminPostRocketPurgeCache.php';
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 
-		Functions\expect( 'get_option' )->with( 'stylesheet' )->andReturn( 'twentytwelve' );
+		Functions\expect( 'get_option' )
+			->with( 'stylesheet' )
+			->andReturn( 'twentytwelve' );
 
 		// Load the file once.
 		if ( ! function_exists( 'do_admin_post_rocket_purge_cache' ) ) {
@@ -60,7 +63,10 @@ class Test_DoAdminPostRocketPurgeCache extends FilesystemTestCase {
 		}
 
 		Functions\when( 'wp_verify_nonce' )->justReturn( true );
-		Functions\expect( 'current_user_can' )->once()->with( 'rocket_purge_cache' )->andReturn( true );
+		Functions\expect( 'current_user_can' )
+			->once()
+			->with( 'rocket_purge_cache' )
+			->andReturn( true );
 
 		switch ( $config['type'] ) {
 			case 'all':
@@ -75,7 +81,9 @@ class Test_DoAdminPostRocketPurgeCache extends FilesystemTestCase {
 				break;
 		}
 
-		Actions\expectDone( 'rocket_purge_cache' )->once()->withAnyArgs( );
+		Actions\expectDone( 'rocket_purge_cache' )
+			->once()
+			->withAnyArgs();
 
 		Functions\expect( 'wp_get_referer' )->once()->andReturn( 'http://example.org' );
 		Functions\expect( 'esc_url_raw' )->once()->with( 'http://example.org' )->andReturnFirstArg();
