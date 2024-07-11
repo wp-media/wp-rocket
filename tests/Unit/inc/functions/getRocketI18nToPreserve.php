@@ -8,6 +8,7 @@ use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
  * Test class covering ::get_rocket_i18n_to_preserve
+ *
  * @uses  ::rocket_has_i18n
  * @uses  ::get_rocket_i18n_code
  * @uses  ::get_rocket_i18n_home_url
@@ -18,7 +19,7 @@ use WPMedia\PHPUnit\Unit\TestCase;
  */
 class Test_GetRocketI18nToPreserve extends TestCase {
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		Functions\when( 'home_url' )->justReturn( 'http://example.org' );
@@ -44,14 +45,14 @@ class Test_GetRocketI18nToPreserve extends TestCase {
 			Functions\expect( 'get_rocket_i18n_home_url' )->never();
 			Functions\expect( 'get_rocket_parse_url' )->never();
 		} else {
-			foreach( $mocks['get_rocket_i18n_home_url'] as $mock_lang => $i18n_home_url ) {
+			foreach ( $mocks['get_rocket_i18n_home_url'] as $mock_lang => $i18n_home_url ) {
 				Functions\expect( 'get_rocket_i18n_home_url' )
 					->once()
 					->with( $mock_lang )
 					->andReturn( $i18n_home_url );
 			}
 
-			foreach( $mocks['get_rocket_parse_url'] as $i18n_home_url => $parse_url ) {
+			foreach ( $mocks['get_rocket_parse_url'] as $i18n_home_url => $parse_url ) {
 				Functions\expect( 'get_rocket_parse_url' )
 					->once()
 					->with( $i18n_home_url )
@@ -59,7 +60,7 @@ class Test_GetRocketI18nToPreserve extends TestCase {
 			}
 
 			Functions\expect( 'rocket_get_constant' )
-				->atLeast( )
+				->atLeast()
 				->with( 'WP_ROCKET_CACHE_PATH' )
 				->andReturn( 'vfs://public/wp-content/cache/wp-rocket/' );
 
