@@ -7,8 +7,9 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
  * Test class covering ::rocket_mkdir_p
- * @uses  ::rocket_is_stream
- * @uses  ::rocket_direct_filesystem
+ *
+ * @uses ::rocket_is_stream
+ * @uses ::rocket_direct_filesystem
  *
  * @group Functions
  * @group Files
@@ -22,14 +23,15 @@ class Test_RocketMkdirP extends FilesystemTestCase {
 	 */
 	public function testShouldRecursivelyMkdirWhenDoesNotExist( $target, $should_mkdir, $new_path = '' ) {
 		Functions\expect( 'rocket_is_stream' )
-			->atLeast( )
+			->atLeast()
 			->with( $target )
-			->andReturnUsing( function ( $path ) {
-				$stream = substr( $path, 0, strpos( $path, '://' ) );
+			->andReturnUsing(
+				function ( $path ) {
+					$stream = substr( $path, 0, strpos( $path, '://' ) );
 
-				return in_array( $stream, stream_get_wrappers(), true );
-
-			} );
+					return in_array( $stream, stream_get_wrappers(), true );
+				}
+			);
 
 		if ( ! empty( $new_path ) ) {
 			$this->assertFalse( $this->filesystem->exists( $new_path ) );
