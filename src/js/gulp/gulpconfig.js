@@ -34,13 +34,8 @@ module.exports = {
 			},
 
 			{
-				task: 'build:js:lcp:min',
-				method: 'buildLcpBeaconMin',
-			},
-
-			{
-				task: 'build:js:lcp:unmin',
-				method: 'buildLcpBeaconUnMin',
+				task: 'build:js:lcp',
+				method: 'buildLcpBeacon',
 			},
 
 			{

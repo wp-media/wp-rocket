@@ -54,12 +54,9 @@ class gulpJs {
 		return this._compile( './src/js/custom/lazyload-css.js', 'lazyload-css', true, true );
 	}
 
-	buildLcpBeaconUnMin() {
-		return this._compile( './src/js/custom/lcp-beacon.js', 'lcp-beacon', false, false );
-	}
-
-	buildLcpBeaconMin() {
-		return this._compile( './src/js/custom/lcp-beacon.js', 'lcp-beacon', true, true );
+	buildLcpBeacon() {
+		return gulp.src(['./node_modules/rocket-scripts/dist/lcp-beacon*'])
+			.pipe(gulp.dest('./assets/js'));
 	}
 
 	buildAll() {
