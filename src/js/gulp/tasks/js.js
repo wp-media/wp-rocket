@@ -55,7 +55,7 @@ class gulpJs {
 	}
 
 	buildLcpBeacon() {
-		return gulp.src(['./node_modules/rocket-scripts/dist/lcp-beacon*'])
+		return gulp.src(['./node_modules/wp-rocket-scripts/dist/lcp-beacon*'])
 			.pipe(gulp.dest('./assets/js'));
 	}
 
