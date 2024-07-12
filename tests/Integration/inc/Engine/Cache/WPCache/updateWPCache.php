@@ -34,7 +34,6 @@ class Test_UpdateWPCache extends TestCase {
 
 	/**
 	 * @group Multisite
-	 * @doesNotPerformAssertions
 	 */
 	public function testShouldNotUpdateWhenMultisiteAndSitesNotZero() {
 		$wp_cache = new WPCache( null );

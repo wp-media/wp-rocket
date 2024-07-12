@@ -40,7 +40,6 @@ class Test_UpdateAdvancedCache extends FilesystemTestCase {
 
 	/**
 	 * @group Multisite
-	 * @doesNotPerformAssertions
 	 */
 	public function testShouldNotUpdateWhenMultisiteAndSitesNotZero() {
 		$advanced_cache = new AdvancedCache(
