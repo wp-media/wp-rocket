@@ -2,14 +2,13 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Media\Lazyload\CSS\Subscriber;
 
-use Engine\Media\Lazyload\CSS\Subscriber\SubscriberTrait;
-use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
+use WP_Rocket\Tests\Unit\TestCase;
 
 /**
  * Test class covering \WP_Rocket\Engine\Media\Lazyload\CSS\Subscriber::create_lazy_css_files
  */
-class Test_createLazyCssFiles extends TestCase {
+class TestCreateLazyCssFiles extends TestCase {
 
 	use SubscriberTrait;
 
@@ -17,11 +16,10 @@ class Test_createLazyCssFiles extends TestCase {
 		$this->init_subscriber();
 	}
 
-    /**
-     * @dataProvider configTestData
-     */
-    public function testShouldReturnAsExpected( $config, $expected )
-    {
+	/**
+	 * @dataProvider configTestData
+	 */
+	public function testShouldReturnAsExpected( $config, $expected ) {
 
 		Functions\when('wp_generate_uuid4')->justReturn('hash');
 		Functions\when('current_time')->justReturn('time');
@@ -70,7 +68,6 @@ class Test_createLazyCssFiles extends TestCase {
 		}
 
 		foreach ($config['generate_url'] as $conf) {
-			/* @phpstan-ignore-next-line */
 			$this->filesystem_cache->expects()->generate_url($conf['url'])->atLeast(1)->atMost(2)->andReturn($conf['output']);
 		}
 
@@ -78,6 +75,6 @@ class Test_createLazyCssFiles extends TestCase {
 			$this->filesystem_cache->shouldReceive('generate_path')->with($url)->andReturn($path);
 		}
 
-        $this->assertSame($expected, $this->subscriber->create_lazy_css_files($config['data']));
-    }
+		$this->assertSame($expected, $this->subscriber->create_lazy_css_files($config['data']));
+	}
 }

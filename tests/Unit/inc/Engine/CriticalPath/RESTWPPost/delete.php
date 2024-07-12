@@ -15,8 +15,9 @@ use Mockery;
 
 /**
  * Test class covering \WP_Rocket\Engine\CriticalPath\RESTWPPost::delete
- * @uses   \WP_Rocket\Engine\CriticalPath\ProcessorService::process_delete
- * @uses   \WP_Rocket\Admin\Options_Data::get
+ *
+ * @uses \WP_Rocket\Engine\CriticalPath\ProcessorService::process_delete
+ * @uses \WP_Rocket\Admin\Options_Data::get
  *
  * @group  CriticalPath
  */
@@ -30,14 +31,14 @@ class Test_Delete extends TestCase {
 	protected $request;
 	protected $restwppost;
 
-	public static function setUpBeforeClass() : void {
+	public static function setUpBeforeClass(): void {
 		parent::setUpBeforeClass();
 
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/WP_REST_Request.php';
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/WP_Error.php';
 	}
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 
 		Functions\stubTranslationFunctions();
@@ -53,7 +54,7 @@ class Test_Delete extends TestCase {
 		$this->setUpTest( $config );
 
 		switch ( $expected['code'] ) {
-			case 'rest_forbidden' :
+			case 'rest_forbidden':
 				// Skip as it's not valid for the unit test.
 				$this->assertTrue( true );
 
@@ -154,7 +155,7 @@ class Test_Delete extends TestCase {
 	private function assertSuccess( $config, $expected ) {
 		Functions\expect( 'get_permalink' )
 			->atMost()
-			->times(2 )
+			->times( 2 )
 			->with( $this->post_id )
 			->andReturn( $this->getPermalink() );
 
@@ -215,8 +216,8 @@ class Test_Delete extends TestCase {
 
 	private function getPath( $is_mobile = false ) {
 		Functions\expect( 'get_post_type' )
-			->atMost(  )
-			->times(2 )
+			->atMost()
+			->times( 2 )
 			->with( $this->post_id )
 			->andReturn( $this->post_type );
 
@@ -226,5 +227,4 @@ class Test_Delete extends TestCase {
 
 		return "posts/{$this->post_type}-{$this->post_id}.css";
 	}
-
 }

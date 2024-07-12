@@ -2,82 +2,55 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\CriticalCSSSubscriber;
 
+use Brain\Monkey\Functions;
+use Brain\Monkey\Filters;
 use Mockery;
+use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Admin\Options;
 use WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber;
 use WP_Rocket\Engine\CriticalPath\CriticalCSS;
 use WP_Rocket\Engine\CriticalPath\ProcessorService;
-use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Admin\Options;
 use WP_Rocket\Engine\License\API\User;
-
-
 use WP_Rocket\Tests\Unit\TestCase;
-use Brain\Monkey\Functions;
-use Brain\Monkey\Filters;
+
 /**
  * Test class covering \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::switch_to_rucss_notice
  */
-class Test_switchToRucssNotice extends TestCase {
+class Test_SwitchToRucssNotice extends TestCase {
+	protected $critical_css;
+	protected $cpcss_service;
+	protected $options;
+	protected $options_api;
+	protected $user;
+	protected $filesystem;
+	protected $criticalcsssubscriber;
 
-    /**
-     * @var CriticalCSS
-     */
-    protected $critical_css;
+	public function set_up() {
+		parent::set_up();
+		$this->critical_css = Mockery::mock(CriticalCSS::class);
+		$this->cpcss_service = Mockery::mock(ProcessorService::class);
+		$this->options = Mockery::mock(Options_Data::class);
+		$this->options_api = Mockery::mock(Options::class);
+		$this->user = Mockery::mock(User::class);
+		$this->filesystem = null;
 
-    /**
-     * @var ProcessorService
-     */
-    protected $cpcss_service;
+		$this->criticalcsssubscriber = new CriticalCSSSubscriber($this->critical_css, $this->cpcss_service, $this->options, $this->options_api, $this->user, $this->filesystem);
+	}
 
-    /**
-     * @var Mockery\MockInterface|Options_Data
-     */
-    protected $options;
-
-    /**
-     * @var Options
-     */
-    protected $options_api;
-
-    /**
-     * @var Mockery\MockInterface|User
-     */
-    protected $user;
-
-    protected $filesystem;
-
-    /**
-     * @var CriticalCSSSubscriber
-     */
-    protected $criticalcsssubscriber;
-
-    public function set_up() {
-        parent::set_up();
-        $this->critical_css = Mockery::mock(CriticalCSS::class);
-        $this->cpcss_service = Mockery::mock(ProcessorService::class);
-        $this->options = Mockery::mock(Options_Data::class);
-        $this->options_api = Mockery::mock(Options::class);
-        $this->user = Mockery::mock(User::class);
-        $this->filesystem = null;
-
-        $this->criticalcsssubscriber = new CriticalCSSSubscriber($this->critical_css, $this->cpcss_service, $this->options, $this->options_api, $this->user, $this->filesystem);
-    }
-
-    /**
-     * @dataProvider configTestData
-     */
-    public function testShouldDoAsExpected( $config, $expected )
-    {
+	/**
+	 * @dataProvider configTestData
+	 */
+	public function testShouldDoAsExpected( $config, $expected ) {
 		$this->stubTranslationFunctions();
 		Functions\expect('get_current_user_id')->andReturn($config['user_id']);
 		Functions\expect('get_user_meta')->with($expected['user_id'], 'rocket_boxes', true)->andReturn($config['boxes']);
-        $this->configure_async_css_activated($config, $expected);
+		$this->configure_async_css_activated($config, $expected);
 		$this->configure_licence($config, $expected);
 		$this->configure_current_screen($config, $expected);
 		$this->configure_rucss_status($config, $expected);
 		$this->configure_display_notice($config, $expected);
 		$this->criticalcsssubscriber->switch_to_rucss_notice();
-    }
+	}
 
 	protected function configure_async_css_activated($config, $expected) {
 		if( $config['in_boxes'] ) {

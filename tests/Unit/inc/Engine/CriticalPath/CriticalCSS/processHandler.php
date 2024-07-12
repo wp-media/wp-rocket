@@ -2,8 +2,7 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\CriticalCSS;
 
-use Brain\Monkey\Functions;
-use Brain\Monkey\Filters;
+use Brain\Monkey\{Filters, Functions};
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CriticalPath\CriticalCSS;
@@ -72,7 +71,6 @@ class TestProcessHandler extends FilesystemTestCase {
 				->andReturn( $process_running );
 		}
 
-		/* @var \Mockery\MockInterface $process */
 		$process            = Mockery::mock( CriticalCSSGeneration::class );
 		$this->critical_css = new CriticalCSS(
 			$process,

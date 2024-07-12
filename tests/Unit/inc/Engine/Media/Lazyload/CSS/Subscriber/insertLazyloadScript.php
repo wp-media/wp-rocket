@@ -2,7 +2,6 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Media\Lazyload\CSS\Subscriber;
 
-use Engine\Media\Lazyload\CSS\Subscriber\SubscriberTrait;
 use Brain\Monkey\Functions;
 use Brain\Monkey\Filters;
 use WP_Rocket\Tests\Unit\TestCase;
@@ -10,19 +9,17 @@ use WP_Rocket\Tests\Unit\TestCase;
 /**
  * Test class covering \WP_Rocket\Engine\Media\Lazyload\CSS\Subscriber::insert_lazyload_script
  */
-class Test_insertLazyloadScript extends TestCase {
-
+class TestInsertLazyloadScript extends TestCase {
 	use SubscriberTrait;
 
 	public function set_up() {
 		$this->init_subscriber();
 	}
 
-    /**
-     * @dataProvider configTestData
-     */
-    public function testShouldDoAsExpected( $config, $expected )
-    {
+	/**
+	 * @dataProvider configTestData
+	 */
+	public function testShouldDoAsExpected( $config, $expected ) {
 		Functions\when('rocket_get_constant')->alias(function ($name) use ($config) {
 			if('WP_ROCKET_VERSION' === $name) {
 				return $config['WP_ROCKET_VERSION'];
@@ -37,9 +34,6 @@ class Test_insertLazyloadScript extends TestCase {
 
 			return null;
 		});
-
-
-
 
 		$this->context->expects()->is_allowed()->andReturn($config['is_allowed']);
 
@@ -57,5 +51,5 @@ class Test_insertLazyloadScript extends TestCase {
 		}
 
 		$this->subscriber->insert_lazyload_script();
-    }
+	}
 }

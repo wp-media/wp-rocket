@@ -4,11 +4,10 @@ namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\CDN\Cloudflare;
 
 use Brain\Monkey\Functions;
 use Mockery;
-use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Admin\Options;
+use WP_Rocket\Admin\{Options, Options_Data};
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Tests\Unit\TestCase;
-use WP_Rocket\ThirdParty\Plugins\CDN\{Cloudflare,CloudflareFacade};
+use WP_Rocket\ThirdParty\Plugins\CDN\{Cloudflare, CloudflareFacade};
 
 /**
  * Test class covering \WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare::display_apo_cache_notice
@@ -16,45 +15,28 @@ use WP_Rocket\ThirdParty\Plugins\CDN\{Cloudflare,CloudflareFacade};
  * @group ThirdParty
  * @group CloudflarePlugin
  */
-class Test_displayApoCacheNotice extends TestCase {
-
-    /**
-     * @var Mockery\MockInterface of Options_Data
-     */
-    protected $options;
-
-    /**
-     * @var Options
-     */
-    protected $option_api;
-
-	/**
-	 * @var Mockery\MockInterface of Beacon
-	 */
+class TestDisplayApoCacheNotice extends TestCase {
+	protected $options;
+	protected $option_api;
 	protected $beacon;
+	protected $cloudflare;
 
-    /**
-     * @var Cloudflare
-     */
-    protected $cloudflare;
-
-    protected function setUp(): void {
-        parent::setUp();
+	protected function setUp(): void {
+		parent::setUp();
 
 		$this->stubTranslationFunctions();
 		$this->stubEscapeFunctions();
 
-        $this->options = Mockery::mock(Options_Data::class);
-        $this->option_api = Mockery::mock(Options::class);
-		$this->beacon = Mockery::mock(Beacon::class);
+		$this->options    = Mockery::mock( Options_Data::class );
+		$this->option_api = Mockery::mock( Options::class );
+		$this->beacon     = Mockery::mock( Beacon::class );
+		$this->cloudflare = new Cloudflare( $this->options, $this->option_api, $this->beacon, Mockery::mock(  CloudflareFacade::class ) );
+	}
 
-        $this->cloudflare = new Cloudflare($this->options, $this->option_api, $this->beacon, Mockery::mock( CloudflareFacade::class) );
-    }
-
-    /**
-     * @dataProvider configTestData
-     */
-    public function testShouldDoAsExpected( $config, $expected ) {
+	/**
+	 * @dataProvider configTestData
+	 */
+	public function testShouldDoAsExpected( $config, $expected ) {
 		Functions\when('get_current_user_id')->justReturn( $config['user_id'] );
 		Functions\when('get_user_meta')->justReturn($config['boxes']);
 		Functions\when('home_url')->justReturn($config['home_url']);
@@ -90,8 +72,8 @@ class Test_displayApoCacheNotice extends TestCase {
 		$this->configure_check_screen($config, $expected);
 		$this->configure_check_mobile_cache($config, $expected);
 		$this->configure_notice($config, $expected);
-        $this->cloudflare->display_apo_cache_notice();
-    }
+		$this->cloudflare->display_apo_cache_notice();
+	}
 
 	protected function configure_user_can($config, $expected) {
 		Functions\expect('current_user_can')->with('rocket_manage_options')->andReturn($config['can']);
