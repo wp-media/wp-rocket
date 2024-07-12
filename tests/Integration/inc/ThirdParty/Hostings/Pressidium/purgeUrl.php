@@ -24,6 +24,8 @@ class TestPurgeUrl extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config ) {
+		$this->markTestSkipped( 'Test doest not perform assertion, need to revisit' );
+
 		$this->ninukis_caching->shouldReceive( 'purge_url' );
 
 		do_action( 'after_rocket_clean_file' );

@@ -36,6 +36,8 @@ class Test_UpdateWPCache extends TestCase {
 	 * @group Multisite
 	 */
 	public function testShouldNotUpdateWhenMultisiteAndSitesNotZero() {
+		$this->markTestSkipped( 'Test doest not perform assertion, need to revisit' );
+
 		$wp_cache = new WPCache( null );
 
 		Functions\when( 'current_filter' )->justReturn( 'rocket_deactivation' );

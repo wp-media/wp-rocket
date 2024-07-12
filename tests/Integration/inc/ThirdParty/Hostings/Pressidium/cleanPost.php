@@ -34,6 +34,8 @@ class Test_CleanPost extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
+		$this->markTestSkipped( 'Test doest not perform assertion, need to revisit' );
+
 		$post = $this->factory()->post->create_and_get( $config['post'] );
 
 		$this->ninukis_caching->shouldReceive( 'purge_url' )

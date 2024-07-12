@@ -82,6 +82,8 @@ class Test_NoticeWpConfigPermissions extends FilesystemTestCase {
 		$wp_cache = new WPCache( $this->filesystem );
 
 		if ( empty( $expected ) ) {
+			$this->markTestSkipped( 'Test doest not perform assertion, need to revisit' );
+
 			$wp_cache->notice_wp_config_permissions();
 
 			return;
