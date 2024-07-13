@@ -202,7 +202,7 @@ function rocket_htaccess_rules_test( $rules_name ) {
 }
 
 /**
- * Return the markers for htacces rules
+ * Return the markers for htaccess rules
  *
  * @since 1.0
  *

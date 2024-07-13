@@ -129,7 +129,7 @@ class Subscriber extends AbstractWebp implements Subscriber_Interface {
 				// This is a srcset attribute, with probably multiple URLs.
 				$new_value = $this->srcset_to_webp( $attribute['value'], $extensions );
 			} else {
-				// A single URL attibute.
+				// A single URL attribute.
 				$new_value = $this->url_to_webp( $attribute['value'], $extensions );
 			}
 

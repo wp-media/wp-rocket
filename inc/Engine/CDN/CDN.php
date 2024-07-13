@@ -48,7 +48,7 @@ class CDN {
 		$buffer = $html;
 
 		/**
-		 * Filters the exclusion of CDN rewritting inside inline scripts
+		 * Filters the exclusion of CDN rewriting inside inline scripts
 		 *
 		 * @since 3.10.5
 		 *

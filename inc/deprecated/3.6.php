@@ -27,7 +27,7 @@ class_alias( '\WP_Rocket\Engine\Capabilities\Subscriber', '\WP_Rocket\Subscriber
  * @since 2.1   Add filter rocket_advanced_cache_file.
  * @since 2.0.3
  *
- * @return  string  $buffer The content of avanced-cache.php file
+ * @return  string  $buffer The content of advanced-cache.php file
  */
 function get_rocket_advanced_cache_file() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
     _deprecated_function( __FUNCTION__ . '()', '3.6', '\WP_Rocket\Engine\Cache\AdvancedCache::get_advanced_cache_content()' );

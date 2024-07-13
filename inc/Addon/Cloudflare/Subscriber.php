@@ -593,7 +593,7 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Change the authentification.
+	 * Change the authentication.
 	 *
 	 * @param array $value     An array of previous values for the settings.
 	 * @param array $old_value An array of submitted values for the settings.

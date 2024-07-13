@@ -466,7 +466,7 @@ class Cache extends Query {
 	/**
 	 * Revert old in-progress rows
 	 *
-	 * @depecated
+	 * @deprecated
 	 */
 	public function revert_old_in_progress() {
 		// Get the database interface.

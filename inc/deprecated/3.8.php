@@ -203,7 +203,7 @@ function get_rocket_exclude_defer_js() { // phpcs:ignore WordPress.NamingConvent
  * @since 2.2.2 This feature is enabled by a hook
  * @since 1.3.0 This process is called via the new filter rocket_buffer
  * @since 1.3.0 It's possible to not specify dimensions of an image with data-no-image-dimensions attribute
- * @since 1.1.2 Fix Bug : No conflit with Photon Plugin (Jetpack)
+ * @since 1.1.2 Fix Bug : No conflict with Photon Plugin (Jetpack)
  * @since 1.1.0
  *
  * @param string $buffer HTML content.
@@ -227,7 +227,7 @@ function rocket_specify_image_dimensions( $buffer ) {
 
 	foreach ( $images_match[0] as $image ) {
 
-		// Don't touch lazy-load file (no conflit with Photon (Jetpack)).
+		// Don't touch lazy-load file (no conflict with Photon (Jetpack)).
 		if ( strpos( $image, 'data-lazy-original' ) || strpos( $image, 'data-no-image-dimensions' ) ) {
 			continue;
 		}
