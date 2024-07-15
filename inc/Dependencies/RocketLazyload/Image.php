@@ -373,6 +373,8 @@ class Image {
 			$excluded_values = (array) $excluded_values;
 		}
 
+		$excluded_values = array_filter( $excluded_values );
+
 		if ( empty( $excluded_values ) ) {
 			return false;
 		}
