@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\GoogleFonts;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\GoogleFonts::optimize
+ * Test class covering \WP_Rocket\Engine\Optimization\GoogleFonts::optimize
  *
  * @uses   \WP_Rocket\Logger\Logger
  *
@@ -25,6 +25,7 @@ class Test_Optimize extends TestCase {
 				'embed',
 			],
         ];
+		$this->unregisterAllCallbacksExcept('rocket_buffer', 'process', 1001 );
 	}
 
 	public function tear_down() {
@@ -32,7 +33,7 @@ class Test_Optimize extends TestCase {
 		remove_filter( 'rocket_combined_google_fonts_display', [ $this, 'set_display_value' ] );
 
 		unset( $this->filter_value );
-
+		$this->restoreWpHook('rocket_buffer');
 		parent::tear_down();
 	}
 

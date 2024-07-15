@@ -303,7 +303,7 @@ class Cache extends Query {
 		$db = $this->get_db();
 
 		// Bail if no database interface is available.
-		if ( empty( $db ) ) {
+		if ( ! $db ) {
 			return [];
 		}
 
@@ -338,8 +338,16 @@ class Cache extends Query {
 	 * @return array
 	 */
 	public function get_pending_jobs( int $total = 45 ) {
+		$inprogress_count = $this->query(
+			[
+				'count'     => true,
+				'status'    => 'in-progress',
+				'is_locked' => false,
+			],
+			false
+		);
 
-		if ( $total <= 0 ) {
+		if ( $total <= 0 || $inprogress_count >= $total ) {
 			return [];
 		}
 
@@ -358,7 +366,7 @@ class Cache extends Query {
 
 		return $this->query(
 			[
-				'number'         => $total,
+				'number'         => ( $total - $inprogress_count ),
 				'status'         => 'pending',
 				'fields'         => [
 					'id',
@@ -465,7 +473,7 @@ class Cache extends Query {
 		$db = $this->get_db();
 
 		// Bail if no database interface is available.
-		if ( empty( $db ) ) {
+		if ( ! $db ) {
 			return false;
 		}
 
@@ -481,7 +489,7 @@ class Cache extends Query {
 		$db = $this->get_db();
 
 		// Bail if no database interface is available.
-		if ( empty( $db ) ) {
+		if ( ! $db ) {
 			return false;
 		}
 
@@ -497,7 +505,7 @@ class Cache extends Query {
 		$db = $this->get_db();
 
 		// Bail if no database interface is available.
-		if ( empty( $db ) ) {
+		if ( ! $db ) {
 			return false;
 		}
 
@@ -560,7 +568,7 @@ class Cache extends Query {
 		$db = $this->get_db();
 
 		// Bail if no database interface is available.
-		if ( empty( $db ) ) {
+		if ( ! $db ) {
 			return false;
 		}
 
@@ -595,7 +603,7 @@ class Cache extends Query {
 		$db = $this->get_db();
 
 		// Bail if no database interface is available.
-		if ( empty( $db ) ) {
+		if ( ! $db ) {
 			return false;
 		}
 

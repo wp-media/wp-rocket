@@ -11,7 +11,7 @@ use WP_Rocket\Engine\Preload\Fonts;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\Fonts::preload_fonts
+ * Test class covering \WP_Rocket\Engine\Preload\Fonts::preload_fonts
  * @group  Preload
  * @group  PreloadFonts
  */

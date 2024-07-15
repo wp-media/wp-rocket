@@ -32,19 +32,4 @@ return [
 			'Divi',
 		],
 	],
-
-	'shouldNotAddWhenNotDivi' => [
-		'config'   => [
-			'theme-name'     => 'TwentyTwenty',
-			'theme-template' => 'TwentyTwenty',
-			'disabled-items' => [
-				'Thing 1',
-				'Thing 2',
-			],
-		],
-		'expected' => [
-			'Thing 1',
-			'Thing 2',
-		],
-	],
 ];

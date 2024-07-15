@@ -19,7 +19,7 @@ class TranslatePress implements Subscriber_Interface {
 		}
 
 		return [
-			'rocket_rucss_is_home_url'                     => [ 'detect_homepage', 10, 2 ],
+			'rocket_saas_is_home_url'                      => [ 'detect_homepage', 10, 2 ],
 			'rocket_has_i18n'                              => 'is_translatepress',
 			'rocket_i18n_admin_bar_menu'                   => 'add_langs_to_admin_bar',
 			'rocket_i18n_current_language'                 => 'set_current_language',
@@ -41,6 +41,7 @@ class TranslatePress implements Subscriber_Interface {
 	 * @return string
 	 */
 	public function detect_homepage( $home_url, $url ) {
+
 		$translatepress = TRP_Translate_Press::get_trp_instance();
 		$converter      = $translatepress->get_component( 'url_converter' );
 

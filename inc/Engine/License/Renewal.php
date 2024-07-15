@@ -68,7 +68,7 @@ class Renewal extends Abstract_Render {
 
 		$data              = $this->get_banner_data();
 		$data['countdown'] = $this->get_countdown_data();
-		$discount          = esc_html( '$' . number_format_i18n( $this->get_discount_percent(), 2 ) );
+		$discount          = esc_html( $this->get_discount_percent() . '%' );
 		$price             = esc_html( '$' . number_format_i18n( $this->get_price(), 2 ) );
 
 				$data['message'] = sprintf(
@@ -152,7 +152,7 @@ class Renewal extends Abstract_Render {
 				esc_html__( 'Renew your license for 1 year now and get %1$s%3$s OFF%2$s immediately: you will only pay %1$s%4$s%2$s!', 'rocket' ),
 				'<strong>',
 				'</strong>',
-				esc_html( '$' . number_format_i18n( $this->get_discount_percent(), 2 ) ),
+				esc_html( $this->get_discount_percent() . '%' ),
 				$price
 			);
 		}
@@ -325,11 +325,7 @@ class Renewal extends Abstract_Render {
 		$prices = $prices->prices;
 
 		if ( $renewals['is_grandfather'] ) {
-			return isset( $prices->renewal->is_grandfather, $prices->renewal->not_grandfather ) ? $prices->renewal->not_grandfather - $prices->renewal->is_grandfather : 0;
-		}
-
-		if ( $renewals['is_grandmother'] ) {
-			return isset( $prices->renewal->is_grandmother, $prices->renewal->not_grandfather ) ? $prices->renewal->not_grandfather - $prices->renewal->is_grandmother : 0;
+			return $renewals['discount_percent']->is_grandfather;
 		}
 
 		return 0;

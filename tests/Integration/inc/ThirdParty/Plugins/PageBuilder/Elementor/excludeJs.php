@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\PageBuilder\Element
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\PageBuilder\Elementor::exclude_js
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\PageBuilder\Elementor::exclude_js
  *
  * @group Elementor
  * @group ThirdParty

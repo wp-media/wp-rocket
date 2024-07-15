@@ -5,15 +5,27 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\Minify\CSS\AdminSu
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\Minify\CSS\AdminSubscriber::regenerate_minify_css_key
- * @uses   ::create_rocket_uniqid
+ * Test class covering \WP_Rocket\Engine\Optimization\Minify\CSS\AdminSubscriber::regenerate_minify_css_key
  *
- * @group  Optimize
- * @group  Minify
- * @group  AdminSubscriber
- * @group  AdminOnly
+ * @uses ::create_rocket_uniqid
+ *
+ * @group Optimize
+ * @group Minify
+ * @group AdminSubscriber
+ * @group AdminOnly
  */
 class Test_RegenerateMinifyCssKey extends TestCase {
+	public function set_up() {
+		parent::set_up();
+
+		$this->unregisterAllCallbacksExcept( 'pre_update_option_wp_rocket_settings', 'regenerate_minify_css_key' );
+	}
+
+	public function tear_down() {
+		$this->restoreWpHook( 'pre_update_option_wp_rocket_settings' );
+
+		parent::tear_down();
+	}
 
 	/**
 	 * @dataProvider configTestData

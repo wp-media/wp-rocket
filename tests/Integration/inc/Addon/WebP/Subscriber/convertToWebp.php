@@ -6,7 +6,7 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Addon\WebP\Subscriber::convert_to_webp
+ * Test class covering \WP_Rocket\Addon\WebP\Subscriber::convert_to_webp
  * @group WebP
  */
 class Test_ConvertToWebp extends FilesystemTestCase {

@@ -12,7 +12,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Engine\Media\Lazyload\Subscriber;
 
 /**
- * @covers \WP_Rocket\Engine\Media\Lazyload\Subscriber::lazyload_responsive
+ * Test class covering \WP_Rocket\Engine\Media\Lazyload\Subscriber::lazyload_responsive
  *
  * @group Media
  * @group Lazyload

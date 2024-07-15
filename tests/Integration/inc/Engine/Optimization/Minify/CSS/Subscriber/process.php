@@ -3,11 +3,10 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\Minify\CSS\Subscriber;
 
 use WP_Rocket\Tests\Integration\inc\Engine\Optimization\TestCase;
-use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\Minify\CSS\Subscriber::process
- * @uses   \WP_Rocket\Engine\Optimization\Minify\CSS\Combine::optimize
+ * Test class covering \WP_Rocket\Engine\Optimization\Minify\CSS\Subscriber::process
+ *
  * @uses   \WP_Rocket\Engine\Optimization\Minify\CSS\Minify::optimize
  * @uses   ::get_rocket_parse_url
  * @uses   ::get_rocket_i18n_uri
@@ -26,12 +25,16 @@ class Test_Process extends TestCase {
 	public function set_up() {
 		parent::set_up();
 
+		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'process', 16 );
+
 		add_filter( 'pre_get_rocket_option_minify_css', [ $this, 'return_true' ] );
 		add_filter( 'pre_get_rocket_option_minify_css_key', [ $this, 'return_key' ] );
 	}
 
 	public function tear_down() {
 		parent::tear_down();
+
+		$this->restoreWpHook( 'rocket_buffer' );
 
 		remove_filter( 'pre_get_rocket_option_minify_css', [ $this, 'return_true' ] );
 		remove_filter( 'pre_get_rocket_option_minify_css_key', [ $this, 'return_key' ] );

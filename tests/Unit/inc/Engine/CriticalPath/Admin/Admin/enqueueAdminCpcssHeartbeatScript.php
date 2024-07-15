@@ -4,22 +4,25 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\Admin;
 
 use Brain\Monkey\Functions;
 use Mockery;
-use WP_Rocket\Engine\CriticalPath\ProcessorService;
 use WP_Rocket\Engine\CriticalPath\Admin\Admin;
-use WP_Rocket\Tests\Unit\TestCase;
+use WP_Rocket\Engine\CriticalPath\ProcessorService;
 use WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\AdminTrait;
+use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\Admin\Admin::enqueue_admin_cpcss_heartbeat_script
- * @uses   ::rocket_get_constant
+ * Test class covering \WP_Rocket\Engine\CriticalPath\Admin\Admin::enqueue_admin_cpcss_heartbeat_script
  *
- * @group  CriticalPath
- * @group  CriticalPathAdmin
+ * @uses :rocket_get_constant
+ *
+ * @group CriticalPath
+ * @group CriticalPathAdmin
  */
-class Test_EnqueueAdminCpcssHeartbeatScript extends TestCase {
+class TestEnqueueAdminCpcssHeartbeatScript extends TestCase {
 	use AdminTrait;
 
-	public function setUp() : void {
+	private $admin;
+
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->setUpMocks();
@@ -41,7 +44,7 @@ class Test_EnqueueAdminCpcssHeartbeatScript extends TestCase {
 				->andReturn( $config['options']['async_css'] );
 
 		if ( $expected ) {
-			$this->assertExpected( $config );
+			$this->assertExpected();
 		} else {
 			$this->assertNotExpected();
 		}

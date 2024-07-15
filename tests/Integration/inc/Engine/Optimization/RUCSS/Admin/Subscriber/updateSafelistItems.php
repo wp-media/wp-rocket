@@ -2,42 +2,39 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\RUCSS\Admin\Subscriber;
 
-use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::update_safelist_items
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::update_safelist_items
  *
- * @group  RUCSS
- * @group  AdminOnly
+ * @group RUCSS
+ * @group AdminOnly
  */
 class Test_UpdateSafelistItems extends TestCase {
-	use DBTrait;
-
-	public static function set_up_before_class() {
-		self::installFresh();
-
-		parent::set_up_before_class();
-	}
-
-	public static function tear_down_after_class() {
-		parent::tear_down_after_class();
-
-		self::uninstallAll();
-	}
-
 	public function set_up() {
 		parent::set_up();
+
+		/**
+		 * Temporarily install Used CSS table to avoid error in test run
+		 *
+		 * Updating remove_unused_css_safelist causes another callback to be executed,
+		 * which requires the table to be installed:
+		 * update_option_wp_rocket_settings => clean_used_css_and_cache()
+		 */
+		self::installUsedCssTable();
 
 		$this->setUpSettings();
 		$this->unregisterAllCallbacksExcept( 'wp_rocket_upgrade', 'update_safelist_items', 15 );
 	}
 
 	public function tear_down() {
-		parent::tear_down();
+		// Delete the table after the test run.
+		self::uninstallUsedCssTable();
 
 		$this->tearDownSettings();
 		$this->restoreWpHook( 'wp_rocket_upgrade' );
+
+		parent::tear_down();
 	}
 
 	/**

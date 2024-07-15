@@ -1,6 +1,7 @@
 <?php
 namespace WP_Rocket\Engine\Cache;
 
+use WP_Post;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Logger\Logger;
@@ -52,7 +53,7 @@ class PurgeActionsSubscriber implements Subscriber_Interface {
 				[ 'purge_dates_archives' ],
 				[ 'purge_post_terms_urls' ],
 			],
-			'rocket_rucss_complete_job_status'    => [ 'purge_url_cache', 100 ],
+			'rocket_saas_complete_job_status'     => [ 'purge_url_cache', 100 ],
 			'rocket_rucss_after_clearing_usedcss' => 'purge_url_cache',
 			'rocket_after_save_dynamic_lists'     => 'purge_cache_after_saving_dynamic_lists',
 			'update_option_' . $slug              => [ 'purge_cache_reject_uri_partially', 10, 2 ],
@@ -88,6 +89,10 @@ class PurgeActionsSubscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function maybe_purge_cache_on_term_change( $term_id, $tt_id, $taxonomy ) {
+		if ( rocket_is_importing() ) {
+			return;
+		}
+
 		if ( ! $this->is_taxonomy_public( $taxonomy ) ) {
 			return;
 		}

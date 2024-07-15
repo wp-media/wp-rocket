@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\Engine\Media\Lazyload\CSS\Subscriber::create_lazy_inline_css
+ * Test class covering \WP_Rocket\Engine\Media\Lazyload\CSS\Subscriber::create_lazy_inline_css
  */
 class Test_createLazyInlineCss extends TestCase {
 
@@ -24,8 +24,8 @@ class Test_createLazyInlineCss extends TestCase {
     {
 		Functions\when('wp_generate_uuid4')->justReturn('hash');
 
-		foreach ($config['extract'] as $content => $urls) {
-			$this->extractor->expects()->extract($content)->andReturn($urls);
+		foreach ($config['extract'] as $content => $conf) {
+			$this->extractor->expects()->extract($content, $conf['css_file'])->andReturn($conf['results']);
 		}
 
 		foreach ($config['rule_format'] as $url_tag) {

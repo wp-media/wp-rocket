@@ -38,7 +38,7 @@ $pricing = json_decode( json_encode( [
 	'renewals' => [
 		'extra_days'=> 90,
 		'grandfather_date'=> 1567296000,
-		'grandmother_date'=> 1672389000,
+		'grandmother_date'=> 315532800,
 		'discount_percent'=> [
 			'is_grandfather' => 20,
 			'not_grandfather'=> 0,
@@ -103,7 +103,7 @@ return [
 			<p>
 				Your <strong>WP Rocket license is about to expire</strong>: you will soon lose access to product updates and support.
 			</p>
-			<p>Renew with a<strong>$9.80 discount</strong>before it is too late, you will only pay<strong>$24.50</strong>!</p>
+			<p>Renew before it is too late, you will only pay <strong>$34.30</strong>!</p>
 		</div>
 		<div class="rocket-renew-cta-container">
 			<a href="https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/" class="rocket-renew-cta" target="_blank" rel="noopener noreferrer">Renew now</a>
@@ -133,7 +133,7 @@ return [
 				Your <strong>WP Rocket license is about to expire</strong>: you will soon lose access to product updates and support.
 			</p>
 			<p>
-			Renew with a <strong>$9.80 discount</strong> before it is too late, you will only pay <strong>$24.50</strong>!
+			Renew with a <strong>20% discount</strong> before it is too late, you will only pay <strong>$24.50</strong>!
 			</p>
 		</div>
 		<div class="rocket-renew-cta-container">
@@ -163,7 +163,7 @@ return [
 			<p>
 				Your <strong>WP Rocket license is about to expire</strong>: you will soon lose access to product updates and support.
 			</p>
-			<p>Renew with a<strong>$19.80 discount</strong>before it is too late, you will only pay<strong>$49.50</strong>!</p>
+			<p>Renew before it is too late, you will only pay <strong>$69.30</strong>!</p>
 		</div>
 		<div class="rocket-renew-cta-container">
 			<a href="https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/" class="rocket-renew-cta" target="_blank" rel="noopener noreferrer">Renew now</a>
@@ -193,7 +193,7 @@ return [
 				Your <strong>WP Rocket license is about to expire</strong>: you will soon lose access to product updates and support.
 			</p>
 			<p>
-			Renew with a <strong>$19.80 discount</strong> before it is too late, you will only pay <strong>$49.50</strong>!
+			Renew with a <strong>20% discount</strong> before it is too late, you will only pay <strong>$49.50</strong>!
 			</p>
 		</div>
 		<div class="rocket-renew-cta-container">
@@ -224,7 +224,7 @@ return [
 				Your <strong>WP Rocket license is about to expire</strong>: you will soon lose access to product updates and support.
 			</p>
 			<p>
-			Renew with a<strong>$49.80 discount</strong>before it is too late, you will only pay<strong>$124.50</strong>!</p>
+			Renew before it is too late, you will only pay <strong>$174.30</strong>!</p>
 		</div>
 		<div class="rocket-renew-cta-container">
 			<a href="https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/" class="rocket-renew-cta" target="_blank" rel="noopener noreferrer">Renew now</a>
@@ -254,7 +254,7 @@ return [
 				Your <strong>WP Rocket license is about to expire</strong>: you will soon lose access to product updates and support.
 			</p>
 			<p>
-			Renew with a <strong>$49.80 discount</strong> before it is too late, you will only pay <strong>$124.50</strong>!
+			Renew with a <strong>20% discount</strong> before it is too late, you will only pay <strong>$124.50</strong>!
 			</p>
 		</div>
 		<div class="rocket-renew-cta-container">

@@ -8,7 +8,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use wpdb;
 
 /**
- * @covers \WP_Rocket\Engine\HealthCheck\ActionSchedulerCheck::maybe_recreate_as_tables
+ * Test class covering \WP_Rocket\Engine\HealthCheck\ActionSchedulerCheck::maybe_recreate_as_tables
  * @group  HealthCheck
  */
 class Test_MaybeRecreateAsTables extends TestCase {
@@ -28,7 +28,7 @@ class Test_MaybeRecreateAsTables extends TestCase {
 
 		$this->as_check = new ActionSchedulerCheck();
 
-		$GLOBALS['wpdb'] = $this->wpdb = new wpdb();
+		$GLOBALS['wpdb'] = $this->wpdb = new wpdb( 'dbuser', 'dbpassword', 'dbname', 'dbhost' );
 	}
 
 	protected function tearDown(): void {

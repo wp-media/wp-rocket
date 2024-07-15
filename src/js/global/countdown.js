@@ -48,8 +48,8 @@ function initializeClock(id, endtime) {
 
 function rucssTimer(id, endtime) {
 	const timer = document.getElementById(id);
-	const notice = document.getElementById('rocket-notice-rucss-processing');
-	const success = document.getElementById('rocket-notice-rucss-success');
+	const notice = document.getElementById('rocket-notice-saas-processing');
+	const success = document.getElementById('rocket-notice-saas-success');
 
 	if (timer === null) {
 		return;
@@ -68,6 +68,10 @@ function rucssTimer(id, endtime) {
 
 			if (success !== null) {
 				success.classList.remove('hidden');
+			}
+
+			if ( rocket_ajax_data.cron_disabled ) {
+				return;
 			}
 
 			const data = new FormData();

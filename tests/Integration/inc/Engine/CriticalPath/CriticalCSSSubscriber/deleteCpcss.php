@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
 use WP_Rocket\Tests\Integration\ContentTrait;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::delete_cpcss
+ * Test class covering \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::delete_cpcss
  * @uses   \WP_Rocket\Admin\Options_Data::get
  *
  * @group  CriticalPath
@@ -22,21 +22,33 @@ class Test_DeleteCpcss extends FilesystemTestCase {
 	private static $post_id;
 
 	public static function wpSetUpBeforeClass( $factory ) {
+		// Disable ATF optimization to prevent DB request (unrelated to the test).
+		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
+
 		self::$post_id = $factory->post->create();
+
+		// Re-enable ATF optimization.
+		remove_filter( 'rocket_above_the_fold_optimization', '__return_false' );
 	}
 
 	public function set_up() {
 		parent::set_up();
+
+		// Disable ATF optimization to prevent DB request (unrelated to the test).
+		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
 
 		add_filter( 'pre_get_rocket_option_async_css', [ $this, 'async_css' ] );
 		add_filter( 'pre_get_rocket_option_async_css_mobile', [ $this, 'async_css_mobile' ] );
 	}
 
 	public function tear_down() {
-		parent::tear_down();
+		// Re-enable ATF optimization.
+		remove_filter( 'rocket_above_the_fold_optimization', '__return_false' );
 
 		remove_filter( 'pre_get_rocket_option_async_css', [ $this, 'async_css' ] );
 		remove_filter( 'pre_get_rocket_option_async_css_mobile', [ $this, 'async_css_mobile' ] );
+
+		parent::tear_down();
 	}
 
 	/**
@@ -55,13 +67,15 @@ class Test_DeleteCpcss extends FilesystemTestCase {
 		$this->filesystem->put_contents( $item_path, '.cpcss { color: red; }');
 		$this->assertTrue( $this->filesystem->exists( $item_path ) );
 
+		$mobile_item_path = '';
+
 		if ( $this->async_css_mobile ) {
 			$mobile_item_path = 'wp-content/cache/critical-css/1/posts' . DIRECTORY_SEPARATOR . "{$post_type}-" . self::$post_id . "-mobile.css";
 			$this->filesystem->put_contents( $mobile_item_path, '.cpcss-mobile { color: red; }');
 			$this->assertTrue( $this->filesystem->exists( $mobile_item_path ) );
 		}
 
-		do_action( 'before_delete_post', self::$post_id );
+		do_action( 'before_delete_post', self::$post_id, self::factory()->post->get_object_by_id( self::$post_id ) );
 
 		if ( ! $config['current_user_can'] || ! $config['async_css'] ) {
 			// should bail out & files will exist.

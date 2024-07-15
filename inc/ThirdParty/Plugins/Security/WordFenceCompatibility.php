@@ -119,7 +119,7 @@ class WordFenceCompatibility implements Subscriber_Interface {
 		 *
 		 * @since  3.10
 		 *
-		 * @param array  list of IPs should be whitelisted
+		 * @param array $ips list of IPs should be whitelisted
 		 */
 		$ips = apply_filters( 'rocket_wordfence_whitelisted_ips', self::WHITELISTED_IPS );
 

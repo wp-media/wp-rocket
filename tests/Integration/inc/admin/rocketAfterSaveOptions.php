@@ -3,13 +3,12 @@
 namespace WP_Rocket\Tests\Integration\inc\admin;
 
 use Brain\Monkey\Functions;
-use WP_Rocket\Engine\Cache\AdvancedCache;
 use WP_Rocket\Tests\Fixtures\DIContainer;
-use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers ::rocket_after_save_options
+ * Test class covering ::rocket_after_save_options
+ *
  * @uses  ::rocket_clean_domain
  * @uses  ::rocket_clean_minify
  * @uses  ::rocket_generate_advanced_cache_file
@@ -24,8 +23,6 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group SaveOptions
  */
 class Test_RocketAfterSaveOptions extends FilesystemTestCase {
-	use DBTrait;
-
 	protected $path_to_test_data = '/inc/admin/rocketAfterSaveOptions.php';
 
 	protected static $use_settings_trait = true;
@@ -42,23 +39,11 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 	private $rocketCleanMinifyShouldNotClean;
 	private $dicontainer;
 
-	public static function set_up_before_class() {
-		parent::set_up_before_class();
-
-		self::installFresh();
-	}
-
-	public static function tear_down_after_class() {
-		self::uninstallAll();
-
-		parent::tear_down_after_class();
-	}
-
 	public function set_up() {
+		parent::set_up();
+
 		// Unhook to avoid triggering when storing the configured settings.
 		remove_action( 'update_option_wp_rocket_settings', 'rocket_after_save_options' );
-
-		parent::set_up();
 
 		// Save the original global state.
 		$this->is_apache = isset( $GLOBALS['is_apache'] ) ? $GLOBALS['is_apache'] : null;
@@ -240,32 +225,6 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 			$this->assertEquals( '1', get_transient( 'rocket_analytics_optin' ) );
 		} else {
 			Functions\expect( 'set_transient' )->with( 'rocket_analytics_optin', 1 )->never();
-		}
-	}
-
-	private function silently_update_option( $new_value ) {
-		global $wp_filter;
-
-		$hooks = [
-			'pre_update_option_wp_rocket_settings',
-			'pre_update_option',
-			'default_option_wp_rocket_settings',
-			'update_option',
-			'update_option_wp_rocket_settings',
-			'updated_option',
-		];
-
-		foreach ( $hooks as $hook ) {
-			if ( ! empty( $wp_filter[ $hook ] ) ) {
-				$this->hooks[ $hook ] = $wp_filter[ $hook ];
-				unset( $wp_filter[ $hook ] );
-			}
-		}
-
-		update_option( $this->option_name, $new_value );
-
-		if ( $this->hooks ) {
-			$wp_filter = array_merge( $wp_filter, $this->hooks );
 		}
 	}
 }

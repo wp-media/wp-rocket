@@ -51,10 +51,6 @@ trait UrlTrait {
 
 		$hosts = array_unique( $hosts );
 
-		if ( empty( $hosts ) ) {
-			return true;
-		}
-
 		// URL has domain and domain is part of the internal domains.
 		if ( ! empty( $file['host'] ) ) {
 			foreach ( $hosts as $host ) {
@@ -126,5 +122,15 @@ trait UrlTrait {
 			return false;
 		}
 		return rocket_direct_filesystem()->get_contents( $file );
+	}
+
+	/**
+	 * Check if the URL is relative.
+	 *
+	 * @param string $url URL to check.
+	 * @return bool
+	 */
+	protected function is_relative( string $url ): bool {
+		return ! empty( preg_match( '/^\./', $url ) ) || empty( wp_parse_url( $url, PHP_URL_HOST ) );
 	}
 }

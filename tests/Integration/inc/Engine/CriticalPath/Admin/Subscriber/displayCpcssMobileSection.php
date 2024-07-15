@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Integration\CapTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\Admin\Subscriber::display_cpcss_mobile_section
+ * Test class covering \WP_Rocket\Engine\CriticalPath\Admin\Subscriber::display_cpcss_mobile_section
  *
  * @group  AdminOnly
  * @group  CriticalPath

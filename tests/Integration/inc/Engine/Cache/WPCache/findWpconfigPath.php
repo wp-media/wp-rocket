@@ -6,7 +6,7 @@ use ReflectionMethod;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Cache\WPCache::find_wp_config_path
+ * Test class covering \WP_Rocket\Engine\Cache\WPCache::find_wp_config_path
  *
  * @group  WPCache
  */

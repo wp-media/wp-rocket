@@ -6,13 +6,15 @@
  */
 
 defined( 'ABSPATH' ) || exit;
+
+$data = isset( $data ) ? $data : []; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 ?>
 <section class="rocket-renewal-expired-banner" id="rocket-renewal-banner">
-	<h3 class="rocket-expired-title"><?php esc_html_e( 'You will soon lose access to some features', 'rocket' ); ?></h3>
+	<h3 class="rocket-expired-title"><?php esc_html_e( 'You will soon lose access to some features.', 'rocket' ); ?></h3>
 	<div class="rocket-renewal-expired-banner-container">
 		<div class="rocket-expired-message">
 			<p>
-			<?php
+				<?php
 				printf(
 					// translators: %1$s = <strong>, %2$s = </strong>.
 					esc_html__( 'You need an %1$sactive license to continue optimizing your CSS delivery%2$s.', 'rocket' ),
@@ -26,7 +28,7 @@ defined( 'ABSPATH' ) || exit;
 				<?php
 				printf(
 					// translators: %1$s = <strong>, %2$s = </strong>, %3$s = date.
-					esc_html__( 'They will be %1$sautomatically disabled on %3$s%2$s.', 'rocket' ),
+					esc_html__( 'These features will be %1$sautomatically disabled on %3$s%2$s.', 'rocket' ),
 					'<strong>',
 					'</strong>',
 					esc_html( $data['disabled_date'] )

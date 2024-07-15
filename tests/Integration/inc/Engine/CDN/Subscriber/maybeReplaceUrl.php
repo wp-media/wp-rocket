@@ -3,7 +3,7 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\Subscriber;
 
 /**
- * @covers \WP_Rocket\Engine\CDN\Subscriber::maybe_replace_url
+ * Test class covering \WP_Rocket\Engine\CDN\Subscriber::maybe_replace_url
  * @uses   \WP_Rocket\Engine\CDN\CDN::get_cdn_urls
  * @group  CDN
  */

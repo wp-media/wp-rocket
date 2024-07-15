@@ -10,7 +10,7 @@ use WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Admin\Database::drop_resources_table
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Admin\Database::drop_resources_table
  *
  * @group  RUCSS
  */
@@ -31,7 +31,7 @@ class Test_DropResourcesTable extends TestCase {
 			return;
 		}
 
-		$GLOBALS['wpdb'] = new wpdb();
+		$GLOBALS['wpdb'] = new wpdb( 'dbuser', 'dbpassword', 'dbname', 'dbhost' );
 
 		$this->usedCSS  = $this->getMockBuilder( UsedCSS::class )
 			->disableOriginalConstructor()

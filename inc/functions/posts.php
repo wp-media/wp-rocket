@@ -76,10 +76,11 @@ if ( ! function_exists( 'rocket_url_to_postid' ) ) {
 	/**
 	 * Get the post ID from the URL.
 	 *
-	 * @param string $url URL of the page.
+	 * @param string         $url URL of the page.
+	 * @param array|string[] $search_in_post_statuses Post statuses to search in.
 	 * @return float|int Post ID.
 	 */
-	function rocket_url_to_postid( string $url ) {
+	function rocket_url_to_postid( string $url, array $search_in_post_statuses = [ 'publish', 'private' ] ) {
 		global $wp_rewrite;
 
 		/**
@@ -117,6 +118,9 @@ if ( ! function_exists( 'rocket_url_to_postid' ) ) {
 		if ( preg_match( '#[?&](p|page_id|attachment_id)=(\d+)#', $url, $values ) ) {
 			$id = absint( $values[2] );
 			if ( $id ) {
+				if ( empty( $search_in_post_statuses ) || ! in_array( get_post_status( $id ), $search_in_post_statuses, true ) ) {
+					return 0;
+				}
 				return $id;
 			}
 		}
@@ -147,6 +151,9 @@ if ( ! function_exists( 'rocket_url_to_postid' ) ) {
 			$page_on_front = get_option( 'page_on_front' );
 
 			if ( $page_on_front && get_post( $page_on_front ) instanceof WP_Post ) {
+				if ( empty( $search_in_post_statuses ) || ! in_array( get_post_status( (int) $page_on_front ), $search_in_post_statuses, true ) ) {
+					return 0;
+				}
 				return (int) $page_on_front;
 			}
 		}
@@ -239,10 +246,25 @@ if ( ! function_exists( 'rocket_url_to_postid' ) ) {
 				// Resolve conflicts between posts with numeric slugs and date archive queries.
 				$query = wp_resolve_numeric_slug_conflicts( $query );
 
-				$query['post_status'] = [ 'publish', 'private' ];
+				if ( ! empty( $search_in_post_statuses ) ) {
+					$query['post_status'] = $search_in_post_statuses;
+				}
+
+				/**
+				 * Filters WP_Query class passed args.
+				 *
+				 * @param array $query WP_Query passed args.
+				 * @param string $url The URL to derive the post ID from.
+				 */
+				$query = (array) apply_filters( 'rocket_url_to_postid_query_args', $query, $url );
+
+				$query['no_found_rows']          = true;
+				$query['update_post_term_cache'] = false;
+				$query['update_post_meta_cache'] = false;
 
 				// Do the query.
 				$query = new WP_Query( $query );
+
 				if ( ! empty( $query->posts ) && $query->is_singular ) {
 					return $query->post->ID;
 				} else {

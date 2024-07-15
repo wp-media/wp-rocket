@@ -1,8 +1,8 @@
 <?php
 
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS;
-
 use WP_Rocket\Engine\Preload\Database\Tables\Cache;
+use WP_Rocket\Engine\Media\AboveTheFold\Database\Tables\AboveTheFold;
 
 /**
  * Manages the deletion of WP Rocket data and files on uninstall.
@@ -37,6 +37,7 @@ class WPRocketUninstall {
 		'wp_rocket_last_base_url',
 		'wp_rocket_no_licence',
 		'wp_rocket_last_option_hash',
+		'wp_rocket_debug',
 	];
 
 	/**
@@ -73,6 +74,16 @@ class WPRocketUninstall {
 		'wp_rocket_rucss_errors_count',
 		'wpr_dynamic_lists_incompatible_plugins',
 		'rocket_divi_notice',
+		'rocket_saas_processing',
+		'rocket_mod_pagespeed_enabled',
+		'wp_rocket_pricing',
+		'wp_rocket_pricing_timeout',
+		'wp_rocket_pricing_timeout_active',
+		'rocket_get_refreshed_fragments_cache',
+		'rocket_preload_previous_requests_durations',
+		'rocket_preload_check_duration',
+		'wpr_user_information_timeout_active',
+		'wpr_user_information_timeout',
 	];
 
 	/**
@@ -120,39 +131,35 @@ class WPRocketUninstall {
 	];
 
 	/**
-	 * Instance of RUCSS used_css table.
+	 * Tables instances
 	 *
-	 * @var WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS
+	 * @var array
 	 */
-	private $rucss_usedcss_table;
-
-	/**
-	 * Instance of Preload rocket_cache table.
-	 *
-	 * @var Cache
-	 */
-	private $rocket_cache;
+	private $tables;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param string  $cache_path            Path to the cache folder.
-	 * @param string  $config_path           Path to the config folder.
-	 * @param UsedCSS $rucss_usedcss_table   RUCSS used_css table.
-	 * @param Cache   $rocket_cache   Preload rocket_cache table.
+	 * @param string       $cache_path            Path to the cache folder.
+	 * @param string       $config_path           Path to the config folder.
+	 * @param UsedCSS      $rucss_usedcss_table   RUCSS used_css table.
+	 * @param Cache        $rocket_cache          Preload rocket_cache table.
+	 * @param AboveTheFold $atf_table             Above the fold table.
 	 */
-	public function __construct( $cache_path, $config_path, $rucss_usedcss_table, $rocket_cache ) {
-		$this->cache_path          = trailingslashit( $cache_path );
-		$this->config_path         = $config_path;
-		$this->rucss_usedcss_table = $rucss_usedcss_table;
-		$this->rocket_cache        = $rocket_cache;
+	public function __construct( $cache_path, $config_path, $rucss_usedcss_table, $rocket_cache, $atf_table ) {
+		$this->cache_path  = trailingslashit( $cache_path );
+		$this->config_path = $config_path;
+		$this->tables      = [
+			$rucss_usedcss_table,
+			$rocket_cache,
+			$atf_table,
+		];
 	}
 
 	/**
 	 * Deletes all plugin data and files on uninstall.
 	 *
 	 * @since 3.5.2
-	 * @author Remy Perona
 	 *
 	 * @return void
 	 */
@@ -160,18 +167,23 @@ class WPRocketUninstall {
 		$this->delete_plugin_data();
 		$this->delete_cache_files();
 		$this->delete_config_files();
-		$this->drop_rucss_database_tables();
-		$this->delete_preload_table();
+
+		foreach ( $this->tables as $table ) {
+			$this->delete_table( $table );
+		}
 	}
 
 	/**
-	 * Drop RUCSS database tables.
+	 * Deletes a table
+	 *
+	 * @param Table $table Table instance.
 	 *
 	 * @return void
 	 */
-	private function drop_rucss_database_tables() {
-		// If the table exist, then drop the table.
-		$this->drop_rucss_current_site_tables();
+	private function delete_table( $table ) {
+		if ( $table->exists() ) {
+			$table->uninstall();
+		}
 
 		if ( ! is_multisite() ) {
 			return;
@@ -180,18 +192,11 @@ class WPRocketUninstall {
 		foreach ( get_sites( [ 'fields' => 'ids' ] ) as $site_id ) {
 			switch_to_blog( $site_id );
 
-			$this->drop_rucss_current_site_tables();
+			if ( $table->exists() ) {
+				$table->uninstall();
+			}
 
 			restore_current_blog();
-		}
-	}
-
-	/**
-	 * Drop RUCSS tables for current active site.
-	 */
-	private function drop_rucss_current_site_tables() {
-		if ( $this->rucss_usedcss_table->exists() ) {
-			$this->rucss_usedcss_table->uninstall();
 		}
 	}
 
@@ -199,7 +204,6 @@ class WPRocketUninstall {
 	 * Deletes WP Rocket options, transients and events.
 	 *
 	 * @since 3.5.2
-	 * @author Remy Perona
 	 *
 	 * @return void
 	 */
@@ -226,7 +230,6 @@ class WPRocketUninstall {
 	 * Deletes all WP Rocket cache files.
 	 *
 	 * @since 3.5.2
-	 * @author Remy Perona
 	 *
 	 * @return void
 	 */
@@ -240,7 +243,6 @@ class WPRocketUninstall {
 	 * Deletes all WP Rocket config files.
 	 *
 	 * @since 3.5.2
-	 * @author Remy Perona
 	 *
 	 * @return void
 	 */
@@ -249,35 +251,9 @@ class WPRocketUninstall {
 	}
 
 	/**
-	 * Drop preload tables.
-	 */
-	private function delete_preload_table() {
-		// If the table exist, then drop the table.
-
-		if ( $this->rocket_cache->exists() ) {
-			$this->rocket_cache->uninstall();
-		}
-
-		if ( ! is_multisite() ) {
-			return;
-		}
-
-		foreach ( get_sites( [ 'fields' => 'ids' ] ) as $site_id ) {
-			switch_to_blog( $site_id );
-
-			if ( $this->rocket_cache->exists() ) {
-				$this->rocket_cache->uninstall();
-			}
-
-			restore_current_blog();
-		}
-	}
-
-	/**
 	 * Recursively deletes files and directories.
 	 *
 	 * @since 3.5.2
-	 * @author Remy Perona
 	 *
 	 * @param string $file Path to file or directory.
 	 */

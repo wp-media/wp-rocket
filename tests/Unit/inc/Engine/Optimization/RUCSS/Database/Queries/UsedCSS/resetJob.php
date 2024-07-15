@@ -9,7 +9,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS::reset_job
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS::reset_job
  */
 class Test_resetJob extends TestCase {
 

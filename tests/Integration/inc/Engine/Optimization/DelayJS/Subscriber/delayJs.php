@@ -6,11 +6,12 @@ use WP_Rocket\Tests\Integration\ContentTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\DelayJS\Subscriber::delay_js
- * @group  Optimize
- * @group  DelayJS
+ * Test class covering \WP_Rocket\Engine\Optimization\DelayJS\Subscriber::delay_js
  *
- * @uses   rocket_get_constant()
+ * @group Optimize
+ * @group DelayJS
+ *
+ * @uses rocket_get_constant()
  */
 class Test_DelayJs extends TestCase {
 	use ContentTrait;
@@ -22,19 +23,25 @@ class Test_DelayJs extends TestCase {
 	public function set_up() {
 		parent::set_up();
 
+		// Disable ATF optimization to prevent DB request (unrelated to the test).
+		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
+
 		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'delay_js', 26 );
 	}
 
 	public function tear_down() {
 		unset( $_GET['nowprocket'] );
 
+		// Re-enable ATF optimization.
+		remove_filter( 'rocket_above_the_fold_optimization', '__return_false' );
+
 		remove_filter( 'pre_get_rocket_option_delay_js', [ $this, 'set_delay_js' ] );
 		remove_filter( 'pre_get_rocket_option_delay_js_exclusions', [ $this, 'set_delay_js_exclusions' ] );
 		delete_transient( 'wpr_dynamic_lists' );
 
 		if ( isset( $this->post->ID ) ) {
-            delete_post_meta( $this->post->ID, '_rocket_exclude_delay_js', 1, true );
-        }
+			delete_post_meta( $this->post->ID, '_rocket_exclude_delay_js', 1 );
+		}
 
 		$this->restoreWpHook( 'rocket_buffer' );
 
@@ -51,11 +58,11 @@ class Test_DelayJs extends TestCase {
 		$this->post = $this->goToContentType( $config );
 
 		if ( $config['post-excluded'] ) {
-            add_post_meta( $this->post->ID, '_rocket_exclude_delay_js', 1, true );
-        }
+			add_post_meta( $this->post->ID, '_rocket_exclude_delay_js', 1, true );
+		}
 
-		add_filter( 'pre_get_rocket_option_delay_js'         , [ $this, 'set_delay_js' ] );
-		add_filter( 'pre_get_rocket_option_delay_js_exclusions' , [ $this, 'set_delay_js_exclusions' ] );
+		add_filter( 'pre_get_rocket_option_delay_js', [ $this, 'set_delay_js' ] );
+		add_filter( 'pre_get_rocket_option_delay_js_exclusions', [ $this, 'set_delay_js_exclusions' ] );
 
 		set_transient( 'wpr_dynamic_lists', $config['exclusions'], HOUR_IN_SECONDS );
 

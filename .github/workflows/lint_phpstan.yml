@@ -1,0 +1,39 @@
+name: PHP Stan lint
+
+on:
+  pull_request:
+    branches:
+      - trunk
+      - develop
+      - branch-*
+      - feature/*
+      - enhancement/*
+
+jobs:
+  run:
+    runs-on: ${{ matrix.operating-system }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        operating-system: [ubuntu-latest]
+        php-versions: ['8.2']
+
+    name: WPRocket lint with PHP Stan. PHP ${{ matrix.php-versions }} on ${{ matrix.operating-system }}.
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php-versions }}
+        coverage: none  # XDebug can be enabled here 'coverage: xdebug'
+        tools: composer:v2
+
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-interaction --no-scripts
+
+    - name: Lint with PHP Stan
+      run: composer run-stan -- --error-format=github
+

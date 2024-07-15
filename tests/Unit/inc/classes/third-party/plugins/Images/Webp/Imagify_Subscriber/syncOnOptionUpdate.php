@@ -9,7 +9,7 @@ use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Imagify_Subscriber;
 use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Imagify_Subscriber::sync_on_option_update
+ * Test class covering \WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Imagify_Subscriber::sync_on_option_update
  * @group  ThirdParty
  * @group  Webp
  */
@@ -21,23 +21,23 @@ class Test_SyncOnOptionUpdate extends TestCase {
 
 		Actions\expectDone( 'rocket_third_party_webp_change' )->times( 4 );
 
-		$old_value = [ 'display_webp' => 1, 'display_webp_method' => 'a' ];
-		$new_value = [ 'display_webp' => 0, 'display_webp_method' => 'a' ];
+		$old_value = [ 'display_nextgen' => 1, 'display_nextgen_method' => 'a' ];
+		$new_value = [ 'display_nextgen' => 0, 'display_nextgen_method' => 'a' ];
 
 		$subscriber->sync_on_option_update( $old_value, $new_value );
 
-		$old_value = [ 'display_webp' => 0, 'display_webp_method' => 'a' ];
-		$new_value = [ 'display_webp' => 1, 'display_webp_method' => 'a' ];
+		$old_value = [ 'display_nextgen' => 0, 'display_nextgen_method' => 'a' ];
+		$new_value = [ 'display_nextgen' => 1, 'display_nextgen_method' => 'a' ];
 
 		$subscriber->sync_on_option_update( $old_value, $new_value );
 
-		$old_value = [ 'display_webp' => 0, 'display_webp_method' => 'a' ];
-		$new_value = [ 'display_webp' => 0, 'display_webp_method' => 'b' ];
+		$old_value = [ 'display_nextgen' => 0, 'display_nextgen_method' => 'a' ];
+		$new_value = [ 'display_nextgen' => 0, 'display_nextgen_method' => 'b' ];
 
 		$subscriber->sync_on_option_update( $old_value, $new_value );
 
-		$old_value = [ 'display_webp' => 1, 'display_webp_method' => 'a' ];
-		$new_value = [ 'display_webp' => 1, 'display_webp_method' => 'b' ];
+		$old_value = [ 'display_nextgen' => 1, 'display_nextgen_method' => 'a' ];
+		$new_value = [ 'display_nextgen' => 1, 'display_nextgen_method' => 'b' ];
 
 		$subscriber->sync_on_option_update( $old_value, $new_value );
 	}
@@ -48,8 +48,8 @@ class Test_SyncOnOptionUpdate extends TestCase {
 
 		Actions\expectDone( 'rocket_third_party_webp_change' )->never();
 
-		$old_value = [ 'display_webp' => 1, 'display_webp_method' => 'a' ];
-		$new_value = [ 'display_webp' => 1, 'display_webp_method' => 'a' ];
+		$old_value = [ 'display_nextgen' => 1, 'display_nextgen_method' => 'a' ];
+		$new_value = [ 'display_nextgen' => 1, 'display_nextgen_method' => 'a' ];
 
 		$subscriber->sync_on_option_update( $old_value, $new_value );
 		$subscriber->sync_on_option_update( $old_value, $new_value );

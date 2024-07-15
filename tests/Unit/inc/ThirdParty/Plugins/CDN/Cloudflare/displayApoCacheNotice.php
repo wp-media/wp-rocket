@@ -11,7 +11,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Plugins\CDN\{Cloudflare,CloudflareFacade};
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare::display_apo_cache_notice
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare::display_apo_cache_notice
  *
  * @group ThirdParty
  * @group CloudflarePlugin

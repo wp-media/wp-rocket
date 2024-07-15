@@ -57,7 +57,11 @@ class ContentFetcher {
 	 */
 	protected function fetch_content( string $path ) {
 		if ( ! wp_http_validate_url( $path ) ) {
-			return $this->filesystem->get_contents( $path );
+			$file_extension = pathinfo( $path, PATHINFO_EXTENSION );
+
+			if ( strtolower( $file_extension ) !== 'php' ) {
+				return $this->filesystem->get_contents( $path );
+			}
 		}
 		return wp_remote_retrieve_body( wp_remote_get( $path ) );
 	}

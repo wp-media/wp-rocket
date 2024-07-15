@@ -7,7 +7,7 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers ::rocket_first_install
+ * Test class covering ::rocket_first_install
  * @group admin
  * @group upgrade
  * @group AdminOnly

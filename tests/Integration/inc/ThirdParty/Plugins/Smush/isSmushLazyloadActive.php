@@ -3,10 +3,11 @@
 namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\Smush;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\Smush::is_smush_lazyload_active
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\Smush::is_smush_lazyload_active
  * @group ThirdParty
  * @group Smush
  * @group WithSmush
+ * @requires PHP >= 7.4
  */
 class Test_IsSmushLazyloadActive extends SmushSubscriberTestCase {
 	/**

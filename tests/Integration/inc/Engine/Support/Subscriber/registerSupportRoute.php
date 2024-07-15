@@ -2,20 +2,18 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Support\Subscriber;
 
-use WP_Rocket\Tests\Integration\DBTrait;
 use WPMedia\PHPUnit\Integration\ApiTrait;
 use WPMedia\PHPUnit\Integration\RESTfulTestCase as WPMediaRESTfulTestCase;
 use WP_Rocket\Tests\StubTrait;
 
 /**
- * @covers \WP_Rocket\Engine\Support\Subscriber::register_support_route
+ * Test class covering \WP_Rocket\Engine\Support\Subscriber::register_support_route
  *
  * @group Support
  */
 class Test_RegisterSupportRoute extends WPMediaRESTfulTestCase {
 	use ApiTrait;
 	use StubTrait;
-	use DBTrait;
 
 	protected static $api_credentials_config_file = 'license.php';
 	protected $config;
@@ -25,15 +23,8 @@ class Test_RegisterSupportRoute extends WPMediaRESTfulTestCase {
 
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
-		self::installFresh();
 
 		self::pathToApiCredentialsConfigFile( WP_ROCKET_TESTS_DIR . '/../env/local/' );
-	}
-
-	public static function tear_down_after_class() {
-		self::uninstallAll();
-
-		parent::tear_down_after_class();
 	}
 
 	public function set_up() {

@@ -84,9 +84,8 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 * Constructor
 	 *
 	 * @param RenewalNotice $renewal_notice RenewalNotice instance.
-	 * @param array         $args {
-	 *     Required arguments to populate the class properties.
 	 *
+	 * @param array         $args { Required arguments to populate the class properties.
 	 *     @type string $plugin_file    Full path to the plugin.
 	 *     @type string $plugin_version Current version of the plugin.
 	 *     @type string $vendor_url     URL to the plugin provider.

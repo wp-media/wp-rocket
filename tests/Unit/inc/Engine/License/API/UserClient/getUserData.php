@@ -10,11 +10,11 @@ use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\License\API\UserClient::get_user_data
+ * Test class covering \WP_Rocket\Engine\License\API\UserClient::get_user_data
  *
  * @group License
  */
-class GetPricingData extends TestCase {
+class GetUserData extends TestCase {
 	use ApiTrait;
 
 	protected static $api_credentials_config_file = 'license.php';
@@ -22,13 +22,15 @@ class GetPricingData extends TestCase {
 	private $client;
 	private $options;
 
-	public static function setUpBeforeClass() : void {
+	public static function setUpBeforeClass(): void {
 		parent::setUpBeforeClass();
 
 		self::pathToApiCredentialsConfigFile( WP_ROCKET_TESTS_DIR . '/../env/local/' );
 	}
 
 	public function setUp(): void {
+		parent::setUp();
+
 		$this->options = Mockery::mock( Options_Data::class );
 		$this->client  = new UserClient( $this->options );
 	}
@@ -37,6 +39,8 @@ class GetPricingData extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
+		$this->stubTranslationFunctions();
+
 		Functions\expect( 'get_transient' )
 			->atLeast()->once()
 			->with( 'wp_rocket_customer_data' )
@@ -92,6 +96,14 @@ class GetPricingData extends TestCase {
 				->with( 'wp_rocket_customer_data', Mockery::type( 'object' ), DAY_IN_SECONDS );
 		} else {
 			Functions\expect( 'set_transient' )->never();
+		}
+
+		if ( ! $expected ) {
+			Functions\expect( 'set_transient' )->with( 'wpr_user_information_timeout' )->andReturn(null);
+			Functions\expect( 'set_transient' )->with( 'wpr_user_information_timeout_active' )->andReturn(null);
+		} else {
+			Functions\expect( 'delete_transient' )->with( 'wpr_user_information_timeout' )->andReturn(null);
+			Functions\expect( 'delete_transient' )->with( 'wpr_user_information_timeout_active' )->andReturn(null);
 		}
 
 		$this->assertEquals(

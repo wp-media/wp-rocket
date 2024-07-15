@@ -803,10 +803,17 @@ function rocket_clean_home_feeds() {
  * @param WP_Filesystem_Direct|null $filesystem Optional. Instance of filesystem handler.
  */
 function rocket_clean_domain( $lang = '', $filesystem = null ) {
+	if ( did_action( 'rocket_after_clean_domain' ) ) {
+		return;
+	}
+
+	if ( rocket_is_importing() ) {
+		return;
+	}
+
 	$urls = ( ! $lang || is_object( $lang ) || is_array( $lang ) || is_int( $lang ) )
 		? (array) get_rocket_i18n_uri()
 		: (array) get_rocket_i18n_home_url( $lang );
-
 	/**
 	 * Filter URLs to delete all caching files from a domain.
 	 *

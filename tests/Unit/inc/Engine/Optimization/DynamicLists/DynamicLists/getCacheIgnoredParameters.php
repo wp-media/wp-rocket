@@ -11,7 +11,7 @@ use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\DynamicLists::get_cache_ignored_parameters
+ * Test class covering \WP_Rocket\Engine\Optimization\DynamicLists::get_cache_ignored_parameters
  *
  * @group  DynamicLists
  */

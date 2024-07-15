@@ -7,7 +7,7 @@ use WP_Rocket\Engine\Plugin\InformationSubscriber;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers WP_Rocket\Engine\Plugin\InformationSubscriber::add_plugins_to_result
+ * Test class covering WP_Rocket\Engine\Plugin\InformationSubscriber::add_plugins_to_result
  *
  * @group PluginUpdate
  */
@@ -15,6 +15,8 @@ class TestAddPluginsToResult extends TestCase {
 	private $subscriber;
 
 	protected function setUp(): void {
+		parent::setUp();
+
 		$this->subscriber = new InformationSubscriber(
 			[
 				'plugin_file' => 'wp-rocket/wp-rocket.php',
