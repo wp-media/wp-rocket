@@ -44,6 +44,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'warmup_subscriber',
 		'warmup_apiclient',
 		'warmup_queue',
+		'atf_factory',
 	];
 
 	/**
@@ -120,5 +121,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			);
 		$this->getContainer()->addShared( 'warmup_subscriber', WarmUpSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'warmup_controller' ) );
+
+		$this->getContainer()->addShared( 'atf_factory', Factory::class );
 	}
 }
