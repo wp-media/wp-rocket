@@ -443,10 +443,6 @@ class Subscriber implements Subscriber_Interface {
 		$cf_cache_level = isset( $cf_old_settings[0] ) && 0 === $auto_settings ? $cf_old_settings[0] : 'aggressive';
 		$result[]       = $this->save_cache_level( $cf_cache_level );
 
-		// Active Minification for HTML, CSS & JS.
-		$cf_minify = isset( $cf_old_settings[1] ) && 0 === $auto_settings ? $cf_old_settings[1] : 'on';
-		$result[]  = $this->save_minify( $cf_minify );
-
 		// Deactivate Rocket Loader to prevent conflicts.
 		$cf_rocket_loader = isset( $cf_old_settings[2] ) && 0 === $auto_settings ? $cf_old_settings[2] : 'off';
 		$result[]         = $this->save_rocket_loader( $cf_rocket_loader );
