@@ -352,31 +352,6 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Save Cloudflare minify admin option.
-	 *
-	 * @param string $value New value for Cloudflare minify.
-	 *
-	 * @return string[]
-	 */
-	private function save_minify( $value ) {
-		$result = $this->cloudflare->set_minify( $value );
-
-		if ( is_wp_error( $result ) ) {
-			return [
-				'result'  => 'error',
-				// translators: %s is the message returned by the CloudFlare API.
-				'message' => sprintf( __( 'Cloudflare minification error: %s', 'rocket' ), $result->get_error_message() ),
-			];
-		}
-
-		return [
-			'result'  => 'success',
-			// translators: %s is the message returned by the CloudFlare API.
-			'message' => sprintf( __( 'Cloudflare minification %s', 'rocket' ), $result ),
-		];
-	}
-
-	/**
 	 * Save Cloudflare rocket loader admin option.
 	 *
 	 * @param string $value New value for Cloudflare rocket loader.
