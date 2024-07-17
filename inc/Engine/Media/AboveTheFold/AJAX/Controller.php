@@ -59,7 +59,7 @@ class Controller {
 
 		$url       = isset( $_POST['url'] ) ? untrailingslashit( esc_url_raw( wp_unslash( $_POST['url'] ) ) ) : '';
 		$is_mobile = isset( $_POST['is_mobile'] ) ? filter_var( wp_unslash( $_POST['is_mobile'] ), FILTER_VALIDATE_BOOLEAN ) : false;
-		$images    = isset( $_POST['images'] ) ? json_decode( wp_unslash( $_POST['images'] ) ) : []; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$images    = isset( $_POST['lcp_images'] ) ? json_decode( wp_unslash( $_POST['lcp_images'] ) ) : []; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		$lcp       = 'not found';
 		$viewport  = [];
 

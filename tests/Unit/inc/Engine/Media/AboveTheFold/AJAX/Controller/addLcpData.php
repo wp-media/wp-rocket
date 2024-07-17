@@ -50,7 +50,7 @@ class Test_AddLcpData extends TestCase {
 		$_POST = [
 			'url'       => addslashes( $config['url'] ),
 			'is_mobile' => addslashes( $config['is_mobile'] ),
-			'images'    => addslashes( $config['images'] ),
+			'lcp_images'    => addslashes( $config['lcp_images'] ),
 			'status'    => addslashes( $config['status'] ?? 'success' ),
 		];
 
