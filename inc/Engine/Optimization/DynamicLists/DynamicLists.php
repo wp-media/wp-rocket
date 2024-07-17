@@ -297,7 +297,7 @@ class DynamicLists extends Abstract_Render {
 	 *
 	 * @return array
 	 */
-	public function get_js_exclude_templates(): array {
+	public function get_exclude_js_templates(): array {
 		$lists = $this->providers['defaultlists']->data_manager->get_lists();
 
 		return $lists->exclude_js_template ?? [];

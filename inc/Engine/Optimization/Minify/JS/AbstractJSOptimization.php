@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\Optimization\Minify\JS;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\AbstractOptimization;
 use WP_Rocket\Engine\Optimization\AssetsLocalCache;
+use WP_Rocket\Engine\Optimization\DynamicLists\DynamicLists;
 
 /**
  * Abstract class for JS optimization
@@ -24,18 +25,27 @@ abstract class AbstractJSOptimization extends AbstractOptimization {
 	protected $local_cache;
 
 	/**
+	 * DynamicLists instance
+	 *
+	 * @var DynamicLists
+	 */
+	private $dynamic_lists;
+
+	/**
 	 * Creates an instance of inheriting class.
 	 *
 	 * @since  3.1
 	 *
 	 * @param Options_Data     $options            Options instance.
 	 * @param AssetsLocalCache $local_cache Assets local cache instance.
+	 * @param DynamicLists     $dynamic_lists DynamicLists instance.
 	 */
-	public function __construct( Options_Data $options, AssetsLocalCache $local_cache ) {
+	public function __construct( Options_Data $options, AssetsLocalCache $local_cache, DynamicLists $dynamic_lists ) {
 		$this->options        = $options;
 		$this->local_cache    = $local_cache;
 		$this->minify_key     = $this->options->get( 'minify_js_key', create_rocket_uniqid() );
 		$this->excluded_files = $this->get_excluded_files();
+		$this->dynamic_lists  = $dynamic_lists;
 		$this->init_base_path_and_url();
 	}
 
@@ -92,6 +102,16 @@ abstract class AbstractJSOptimization extends AbstractOptimization {
 	 */
 	protected function is_minify_excluded_file( array $tag ) {
 		if ( ! isset( $tag[0], $tag['url'] ) ) {
+			return true;
+		}
+		$exclude_js_template = $this->dynamic_lists->get_exclude_js_templates();
+
+		// File should not be minified.
+		if (
+			in_array( 'data-minify=', $exclude_js_template, true )
+			||
+			in_array( 'data-no-minify=', $exclude_js_template, true )
+		) {
 			return true;
 		}
 
