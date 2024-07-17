@@ -43,8 +43,8 @@ To be able to validate your license and use the plugin, you will also have to ma
 | `gulp build:js:app:unmin`       |                       Builds admin app js file, the unminified version (wpr-admin.js)                        |
 | `gulp build:js:app:min`         |                      Builds admin app js file, the minified version (wpr-admin.min.js)                       |
 | `gulp build:js:lazyloadcss:min` |                   Builds lazyload CSS js file, the minified version (lazyload-css.min.js)                    |
-| `gulp build:js:lcp:min`         |                      Builds lcp beacon script, the minified version (lcp-beacon.min.js)                      |
-| `gulp build:js:all`             | Builds all js files mentioned above (wpr-admin.js, wpr-admin.min.js, lazyload-css.min.js, lcp-beacon.min.js) |
+| `gulp build:js:lcp:min`         |                      Builds lcp beacon script, the minified version (wpr-beacon.min.js)                      |
+| `gulp build:js:all`             | Builds all js files mentioned above (wpr-admin.js, wpr-admin.min.js, lazyload-css.min.js, wpr-beacon.min.js) |
 | `gulp js:watch`                 |                      Watches all js files changes and build them again with any change.                      |
 
 
