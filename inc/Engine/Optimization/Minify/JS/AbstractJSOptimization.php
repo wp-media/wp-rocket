@@ -95,15 +95,6 @@ abstract class AbstractJSOptimization extends AbstractOptimization {
 			return true;
 		}
 
-		// File should not be minified.
-		if (
-			false !== strpos( $tag[0], 'data-minify=' )
-			||
-			false !== strpos( $tag[0], 'data-no-minify=' )
-		) {
-			return true;
-		}
-
 		$file_path = wp_parse_url( $tag['url'], PHP_URL_PATH );
 
 		// File extension is not js.
