@@ -148,7 +148,7 @@ class InformationSubscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Filter plugin fetching API results to inject Imagify
+	 * Filter plugin fetching API results to inject our plugins
 	 *
 	 * @param object|WP_Error $result Response object or WP_Error.
 	 * @param string          $action The type of information being requested from the Plugin Install API.
@@ -162,8 +162,10 @@ class InformationSubscriber implements Subscriber_Interface {
 		}
 
 		$plugins = [
-			'seo-by-rank-math' => 'seo-by-rank-math/rank-math.php',
-			'imagify'          => 'imagify/imagify.php',
+			'uk-cookie-consent' => 'uk-cookie-consent/uk-cookie-consent.php',
+			'backwpup'          => 'backwpup/backwpup.php',
+			'seo-by-rank-math'  => 'seo-by-rank-math/rank-math.php',
+			'imagify'           => 'imagify/imagify.php',
 		];
 
 		// grab all slugs from the api results.
