@@ -118,6 +118,6 @@ class Test_AddLcpData extends TestCase {
 			Functions\when('wp_check_filetype')->justReturn( $config['filetype'] );
 		}
 
-		$this->controller->add_lcp_data();
+		$this->controller->add_data();
 	}
 }
