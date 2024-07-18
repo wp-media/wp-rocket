@@ -9,15 +9,17 @@ use WP_Rocket\Engine\Common\PerformanceHints\AJAX\ControllerInterface as AjaxCon
 
 class Factory implements FactoryInterface {
 
-    /**
-     * Ajax Controller.
-     * 
-     * @var AjaxControllerInterface
-     */
-    protected $ajax_controller;
+	/**
+	 * Ajax Controller.
+	 *
+	 * @var AjaxControllerInterface
+	 */
+	protected $ajax_controller;
 
 	/**
 	 * Instatiate the class.
+	 *
+	 * @param AjaxControllerInterface $ajax_controller ATF AJAX Controller.
 	 */
 	public function __construct( AjaxControllerInterface $ajax_controller ) {
 		$this->ajax_controller = $ajax_controller;
@@ -25,8 +27,8 @@ class Factory implements FactoryInterface {
 
 	/**
 	 * Provides an Ajax controller object.
-     * 
-     * @return AjaxControllerInterface
+	 *
+	 * @return AjaxControllerInterface
 	 */
 	public function ajax(): AjaxControllerInterface {
 		return $this->ajax_controller;

@@ -8,7 +8,7 @@ use WP_Rocket\Engine\Common\PerformanceHints\AJAX\ControllerInterface as AjaxCon
 interface FactoryInterface {
 	/**
 	 * Provides an Ajax interface.
-	 * 
+	 *
 	 * @return AjaxControllerInterface
 	 */
 	public function ajax(): AjaxControllerInterface; // To return Ajax interface when created.

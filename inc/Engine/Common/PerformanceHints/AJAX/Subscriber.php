@@ -8,7 +8,7 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
 
 class Subscriber implements Subscriber_Interface {
 
-    /**
+	/**
 	 * Array of Factories.
 	 *
 	 * @var array
@@ -17,11 +17,11 @@ class Subscriber implements Subscriber_Interface {
 
 	/**
 	 * Instantiate the class
-     * 
-     * @param array $factories Array of factories.
+	 *
+	 * @param array $factories Array of factories.
 	 */
 	public function __construct( array $factories ) {
-        $this->factories = $factories;
+		$this->factories = $factories;
 	}
 
 	/**
@@ -38,15 +38,15 @@ class Subscriber implements Subscriber_Interface {
 		];
 	}
 
-    /**
+	/**
 	 * Callback for data received from beacon script
 	 *
 	 * @return void
 	 */
 	public function add_data() {
-        foreach ( $this->factories as $factory ) {
-            $factory->ajax()->add_data();
-        }
+		foreach ( $this->factories as $factory ) {
+			$factory->ajax()->add_data();
+		}
 	}
 
 	/**
@@ -55,8 +55,8 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function check_data() {
-        foreach ( $this->factories as $factory ) {
-            $factory->ajax()->check_data();
-        }
+		foreach ( $this->factories as $factory ) {
+			$factory->ajax()->check_data();
+		}
 	}
 }

@@ -17,7 +17,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @var array
 	 */
 	protected $provides = [
-        'performance_hints_ajax_subscriber',
+		'performance_hints_ajax_subscriber',
 	];
 
 	/**
