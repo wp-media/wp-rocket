@@ -45,7 +45,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function add_data() {
 		foreach ( $this->factories as $factory ) {
-			$factory->ajax()->add_data();
+			$factory->get_ajax_controller()->add_data();
 		}
 	}
 
@@ -56,7 +56,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function check_data() {
 		foreach ( $this->factories as $factory ) {
-			$factory->ajax()->check_data();
+			$factory->get_ajax_controller()->check_data();
 		}
 	}
 }
