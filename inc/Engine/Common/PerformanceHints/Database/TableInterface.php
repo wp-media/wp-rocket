@@ -5,7 +5,7 @@
  */
 namespace WP_Rocket\Engine\Common\PerformanceHints\Database;
 
-interface Table {
+interface TableInterface {
 
 	/**
 	 * Truncates the database table.

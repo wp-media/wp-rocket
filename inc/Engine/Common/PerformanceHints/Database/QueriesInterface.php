@@ -5,7 +5,7 @@
  */
 namespace WP_Rocket\Engine\Common\PerformanceHints\Database;
 
-interface Queries {
+interface QueriesInterface {
 
 	/**
 	 * Marks a job as completed.
