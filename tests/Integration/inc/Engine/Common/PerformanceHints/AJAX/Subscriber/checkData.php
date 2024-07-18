@@ -1,15 +1,15 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\Inc\Engine\Media\AboveTheFold\AJAX\Subscriber;
+namespace WP_Rocket\Tests\Integration\Inc\Engine\Common\Performance\AJAX\Subscriber;
 
 use WP_Rocket\Tests\Integration\AjaxTestCase;
 
 /**
- * @covers WP_Rocket\Engine\Media\AboveTheFold\AJAX\Subscriber::check_lcp_data
+ * @covers WP_Rocket\Engine\Common\PerformanceHints\AJAX\Subscriber::check_data
  *
- * @group AboveTheFold
+ * @group PerformanceHints
  */
-class Test_CheckLcpData extends AjaxTestCase {
+class Test_CheckData extends AjaxTestCase {
 	private $allowed;
 
 	public function set_up() {
