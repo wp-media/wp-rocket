@@ -48,7 +48,7 @@ class TestTruncateOnUpdate extends TestCase {
 				->willReturn( $config['not_completed'] );
 
 			$this->table->expects( $this->once() )
-				->method( 'truncate_atf_table' );
+				->method( 'truncate_table' );
 		}
 
 		$this->controller->truncate_on_update( $config['new_version'], $config['old_version'] );
