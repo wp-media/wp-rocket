@@ -543,6 +543,8 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			$excluded_values = (array) $excluded_values;
 		}
 
+		$excluded_values = array_filter( $excluded_values );
+
 		if ( empty( $excluded_values ) ) {
 			return false;
 		}
@@ -586,6 +588,8 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		if ( ! is_array( $excluded_values ) ) {
 			$excluded_values = (array) $excluded_values;
 		}
+
+		$excluded_values = array_filter( $excluded_values );
 
 		if ( empty( $excluded_values ) ) {
 			return $excluded;
