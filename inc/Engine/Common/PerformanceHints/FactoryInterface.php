@@ -3,6 +3,9 @@ declare( strict_types=1 );
 
 namespace WP_Rocket\Engine\Common\PerformanceHints;
 
+use WP_Rocket\Engine\Common\PerformanceHints\Database\Queries;
+use WP_Rocket\Engine\Common\PerformanceHints\Database\Table;
+
 interface AbstractFactory {
 	/**
 	 * Provides an Ajax interface.
@@ -16,11 +19,15 @@ interface AbstractFactory {
 
 	/**
 	 * Provides a Table interface.
+	 *
+	 * @return Table
 	 */
-	public function table(); // To return Table interface when created.
+	public function table() : Table;
 
 	/**
 	 * Provides a Queries interface.
+	 *
+	 * @return Queries
 	 */
-	public function queries(); // To return Queries interface when created.
+	public function queries() : Queries;
 }
