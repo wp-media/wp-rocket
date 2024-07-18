@@ -3,11 +3,15 @@ declare( strict_types=1 );
 
 namespace WP_Rocket\Engine\Common\PerformanceHints;
 
-interface AbstractFactory {
+use WP_Rocket\Engine\Common\PerformanceHints\AJAX\ControllerInterface as AjaxControllerInterface;
+
+interface FactoryInterface {
 	/**
 	 * Provides an Ajax interface.
+	 * 
+	 * @return AjaxControllerInterface
 	 */
-	public function ajax(); // To return Ajax interface when created.
+	public function ajax(): AjaxControllerInterface; // To return Ajax interface when created.
 
 	/**
 	 * Provides a Frontend interface.
