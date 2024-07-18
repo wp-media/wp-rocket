@@ -11,12 +11,12 @@ interface FactoryInterface {
 	 *
 	 * @return AjaxControllerInterface
 	 */
-	public function ajax(): AjaxControllerInterface; // To return Ajax interface when created.
+	public function get_ajax_controller(): AjaxControllerInterface; // To return Ajax interface when created.
 
 	/**
 	 * Provides a Frontend interface.
 	 */
-	public function frontend(); // To return Frontend interface when created.
+	public function get_frontend_controller(); // To return Frontend interface when created.
 
 	/**
 	 * Provides a Table interface.

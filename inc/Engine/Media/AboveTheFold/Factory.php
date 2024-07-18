@@ -30,14 +30,14 @@ class Factory implements FactoryInterface {
 	 *
 	 * @return AjaxControllerInterface
 	 */
-	public function ajax(): AjaxControllerInterface {
+	public function get_ajax_controller(): AjaxControllerInterface {
 		return $this->ajax_controller;
 	}
 
 	/**
 	 * Provides a Frontend object.
 	 */
-	public function frontend() {
+	public function get_frontend_controller() {
 		// Return Fontend object.
 	}
 
