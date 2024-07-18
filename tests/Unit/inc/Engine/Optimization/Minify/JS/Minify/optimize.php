@@ -98,7 +98,7 @@ class Test_Optimize extends TestCase {
 			} );
 
 		$this->dynamic_lists->shouldReceive('get_exclude_js_templates')
-			->andReturn([]);
+			->andReturn(['data-minify', 'data-no-minify']);
 
 		Functions\expect( 'add_query_arg' )->andReturnUsing( function ( $key, $value, $url ) {
 			return $url . '?' . $key . '=' . $value;

@@ -54,7 +54,7 @@ EXPECTED_HTML
 				'site_url'          => 'http://example.org',
 				'defer_all_js'      => false,
 				'exclude_defer_js'  => [],
-				'exclude_js_templates' => [],
+				'exclude_js_templates' => ['data-minify='],
 			],
 		],
 
@@ -110,7 +110,7 @@ EXPECTED_HTML
 				'exclude_defer_js'  => [
 					'/wp-includes/js/jquery/jquery.js',
 				],
-				'exclude_js_templates' => [],
+				'exclude_js_templates' => ['data-minify=', 'data-no-minify'],
 			],
 		],
 
@@ -163,7 +163,7 @@ EXPECTED_HTML
 				'site_url'          => 'http://example.org',
 				'defer_all_js'      => false,
 				'exclude_defer_js'  => [],
-				'exclude_js_templates' => [],
+				'exclude_js_templates' => ['data-minify=', 'data-no-minify'],
 			],
 		],
 
@@ -219,7 +219,7 @@ EXPECTED_HTML
 				'site_url'          => 'http://example.org',
 				'defer_all_js'      => false,
 				'exclude_defer_js'  => [],
-				'exclude_js_templates' => [],
+				'exclude_js_templates' => ['data-minify=', 'data-no-minify'],
 			],
 		],
 
@@ -272,7 +272,7 @@ EXPECTED_HTML
 				'site_url' => 'http://example.org',
 				'defer_all_js'      => false,
 				'exclude_defer_js'  => [],
-				'exclude_js_templates' => [],
+				'exclude_js_templates' => ['data-minify=', 'data-no-minify'],
 			],
 		],
 
@@ -324,7 +324,7 @@ EXPECTED_HTML
 				'site_url' => 'http://example.org',
 				'defer_all_js'      => false,
 				'exclude_defer_js'  => [],
-				'exclude_js_templates' => [],
+				'exclude_js_templates' => ['data-minify=', 'data-no-minify'],
 			],
 		],
 
@@ -376,7 +376,7 @@ EXPECTED_HTML
 				'site_url' => 'http://example.org',
 				'defer_all_js'      => false,
 				'exclude_defer_js'  => [],
-				'exclude_js_templates' => [],
+				'exclude_js_templates' => ['data-minify=', 'data-no-minify'],
 			],
 		],
 	],
