@@ -22,12 +22,12 @@ interface AbstractFactory {
 	 *
 	 * @return Table
 	 */
-	public function table() : Table;
+	public function table(): Table;
 
 	/**
 	 * Provides a Queries interface.
 	 *
 	 * @return Queries
 	 */
-	public function queries() : Queries;
+	public function queries(): Queries;
 }
