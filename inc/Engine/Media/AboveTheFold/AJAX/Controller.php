@@ -6,8 +6,9 @@ namespace WP_Rocket\Engine\Media\AboveTheFold\AJAX;
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Queries\AboveTheFold as ATFQuery;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Engine\Optimization\UrlTrait;
+use WP_Rocket\Engine\Common\PerformanceHints\AJAX\ControllerInterface;
 
-class Controller {
+class Controller implements ControllerInterface {
 	use UrlTrait;
 
 	/**
@@ -47,9 +48,9 @@ class Controller {
 	/**
 	 * Add LCP data to the database
 	 *
-	 * @return bool
+	 * @return void
 	 */
-	public function add_lcp_data() {
+	public function add_data(): void {
 		check_ajax_referer( 'rocket_lcp', 'rocket_lcp_nonce' );
 
 		if ( ! $this->context->is_allowed() ) {
@@ -248,7 +249,7 @@ class Controller {
 	 *
 	 * @return void
 	 */
-	public function check_lcp_data() {
+	public function check_data(): void {
 		check_ajax_referer( 'rocket_lcp', 'rocket_lcp_nonce' );
 
 		if ( ! $this->context->is_allowed() ) {
