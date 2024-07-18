@@ -2,7 +2,6 @@
 
 /**
  * The Table interface defines the contract for database table operations.
- *
  */
 namespace WP_Rocket\Engine\Common\PerformanceHints\Database;
 
@@ -15,6 +14,5 @@ interface Table {
 	 *
 	 * @return bool Returns a boolean value indicating the success or failure of the operation.
 	 */
-	public function truncate_table() : bool;
-
+	public function truncate_table(): bool;
 }
