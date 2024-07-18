@@ -104,14 +104,17 @@ abstract class AbstractJSOptimization extends AbstractOptimization {
 		if ( ! isset( $tag[0], $tag['url'] ) ) {
 			return true;
 		}
-		$exclude_js_template = $this->dynamic_lists->get_exclude_js_templates();
+		$exclude_js_template       = $this->dynamic_lists->get_exclude_js_templates();
+		$escaped_js_template_array = array_map(
+			function ( $item ) {
+				return preg_quote( $item, '/' );
+			},
+			$exclude_js_template
+		);
+		$js_template_pattern       = '/' . implode( '|', $escaped_js_template_array ) . '/';
 
 		// File should not be minified.
-		if (
-			in_array( 'data-minify=', $exclude_js_template, true )
-			||
-			in_array( 'data-no-minify=', $exclude_js_template, true )
-		) {
+		if ( preg_match( $js_template_pattern, $tag[0] ) ) {
 			return true;
 		}
 
