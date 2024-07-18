@@ -104,12 +104,18 @@ abstract class AbstractJSOptimization extends AbstractOptimization {
 		if ( ! isset( $tag[0], $tag['url'] ) ) {
 			return true;
 		}
-		$exclude_js_template       = $this->dynamic_lists->get_exclude_js_templates();
+
+		// Type casting to array, cause json can be bummer sometimes.
+		$exclude_js_templates = array_filter( (array) $this->dynamic_lists->get_exclude_js_templates() );
+		if ( empty( $exclude_js_templates ) ) {
+			return false;
+		}
+
 		$escaped_js_template_array = array_map(
 			function ( $item ) {
 				return preg_quote( $item, '/' );
 			},
-			$exclude_js_template
+			$exclude_js_templates
 		);
 		$js_template_pattern       = '/' . implode( '|', $escaped_js_template_array ) . '/';
 
