@@ -53,7 +53,7 @@ class Test_CpcssSection extends TestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldDisplayCPCSSSection( $config, $expected ) {
-		wp_set_current_user( static::$user_id );
+		wp_set_current_user( self::getUserId() );
 
 		$this->async_css_mobile = $config['options']['async_css_mobile'];
 		$this->async_css        = $config['options']['async_css'];
@@ -83,5 +83,9 @@ class Test_CpcssSection extends TestCase {
 		do_action( 'rocket_after_options_metabox' );
 
 		return $this->format_the_html( ob_get_clean() );
+	}
+
+	public static function getUserId() {
+		return self::$user_id;
 	}
 }

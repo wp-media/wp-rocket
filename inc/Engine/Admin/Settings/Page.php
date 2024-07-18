@@ -284,6 +284,10 @@ class Page extends Abstract_Render {
 
 		$data['license_type'] = rocket_get_license_type( $user );
 
+		if ( ! is_object( $user ) ) {
+			return $data;
+		}
+
 		if ( ! empty( $user->licence_expiration ) ) {
 			$data['license_class'] = time() < $user->licence_expiration ? 'wpr-isValid' : 'wpr-isInvalid';
 		}

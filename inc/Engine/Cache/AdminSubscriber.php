@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\Cache;
 use WP_Filesystem_Direct;
 use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\Event_Management\Event_Manager_Aware_Subscriber_Interface;
+use WP_Term;
 
 /**
  * Subscriber for the cache admin events
@@ -15,7 +16,7 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	/**
 	 * Event Manager instance
 	 *
-	 * @var Event_Manager;
+	 * @var Event_Manager
 	 */
 	protected $event_manager;
 

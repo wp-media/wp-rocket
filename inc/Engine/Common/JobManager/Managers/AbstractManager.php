@@ -127,7 +127,7 @@ trait AbstractManager {
 	 * @param integer $num_rows Number of rows to grab with each CRON iteration.
 	 * @return array|int
 	 */
-	public function get_on_submit_jobs( int $num_rows ): array {
+	public function get_on_submit_jobs( int $num_rows ) {
 		return $this->query->get_on_submit_jobs( $num_rows );
 	}
 

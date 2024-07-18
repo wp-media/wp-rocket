@@ -253,7 +253,7 @@ class DynamicLists extends Abstract_Render {
 	/**
 	 * Get Delay JS dynamic list.
 	 *
-	 * @return array
+	 * @return object
 	 */
 	public function get_delayjs_list() {
 		return $this->providers['delayjslists']->data_manager->get_lists();
