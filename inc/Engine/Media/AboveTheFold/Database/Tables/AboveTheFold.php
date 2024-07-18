@@ -4,8 +4,9 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Media\AboveTheFold\Database\Tables;
 
 use WP_Rocket\Engine\Common\Database\Tables\AbstractTable;
+use WP_Rocket\Engine\Common\PerformanceHints\Database\Table;
 
-class AboveTheFold extends AbstractTable {
+class AboveTheFold extends AbstractTable implements Table {
 	/**
 	 * Table name
 	 *
@@ -61,7 +62,7 @@ class AboveTheFold extends AbstractTable {
 	 *
 	 * @return bool
 	 */
-	public function truncate_atf_table(): bool {
+	public function truncate_table(): bool {
 		if ( ! $this->exists() ) {
 			return false;
 		}
