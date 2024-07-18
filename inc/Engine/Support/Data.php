@@ -40,7 +40,7 @@ class Data {
 		'cdn'                     => 'CDN Enabled',
 		'do_cloudflare'           => 'Cloudflare Enabled',
 		'varnish_auto_purge'      => 'Varnish Purge Enabled',
-		'control_heartbeat'       => 'Hearbeat Control',
+		'control_heartbeat'       => 'Heartbeat Control',
 		'sucury_waf_cache_sync'   => 'Sucuri Add-on',
 	];
 

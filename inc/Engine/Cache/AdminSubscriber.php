@@ -269,7 +269,7 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	}
 
 	/**
-	 * Regenerate config files after importing settings when do_caching_mobile_files is disabled and cach_mobile is enabled.
+	 * Regenerate config files after importing settings when do_caching_mobile_files is disabled and cache_mobile is enabled.
 	 *
 	 * @param boolean $regenerate_configs Returns whether to regenerate config.
 	 * @return void

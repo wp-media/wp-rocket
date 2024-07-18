@@ -29,7 +29,7 @@ use WP_Rocket\Dependencies\PathConverter\Converter;
 class CSS extends Minify
 {
 	/**
-	 * @var int maximum inport size in kB
+	 * @var int maximum import size in kB
 	 */
 	protected $maxImportSize = 5;
 

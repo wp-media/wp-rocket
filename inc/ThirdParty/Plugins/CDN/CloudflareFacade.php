@@ -14,7 +14,7 @@ class CloudflareFacade {
 	private $hooks;
 
 	/**
-	 * Instanciate the hooks class
+	 * Instantiate the hooks class
 	 *
 	 * @return void
 	 */
