@@ -96,8 +96,12 @@ class Cleaner extends \ActionScheduler_QueueCleaner {
 					 * @param int $count_of_actions_to_delete The number of old actions being deleted in this batch
 					 */
 					do_action( 'action_scheduler_failed_old_action_deletion', $action_id, $e, $lifespan, count( $actions_to_delete ) );// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+
+					return [];
 				}
 			}
 		}
+
+		return [];
 	}
 }
