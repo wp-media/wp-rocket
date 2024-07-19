@@ -5,11 +5,11 @@ namespace WP_Rocket\Tests\Integration\Inc\Engine\Media\AboveTheFold\AJAX\Subscri
 use WP_Rocket\Tests\Integration\AjaxTestCase;
 
 /**
- * @covers WP_Rocket\Engine\Media\AboveTheFold\AJAX\Subscriber::check_lcp_data
+ * @covers WP_Rocket\Engine\Media\AboveTheFold\AJAX\Subscriber::check_beacon_data
  *
  * @group AboveTheFold
  */
-class Test_CheckLcpData extends AjaxTestCase {
+class Test_CheckBeaconData extends AjaxTestCase {
 	private $allowed;
 
 	public function set_up() {
@@ -17,7 +17,7 @@ class Test_CheckLcpData extends AjaxTestCase {
 
 		self::installAtfTable();
 
-		$this->action = 'rocket_check_lcp';
+		$this->action = 'rocket_check_beacon';
 	}
 
 	/**

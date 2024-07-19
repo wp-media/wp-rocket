@@ -412,7 +412,7 @@ class Controller {
 		 *
 		 * @param int $delay The delay in milliseconds. Default is 500.
 		 */
-		$delay = apply_filters( 'rocket_lcp_delay', $default_delay );
+		$delay = apply_filters( 'rocket_beacon_delay', $default_delay );
 
 		if ( ! is_int( $delay ) ) {
 			$delay = $default_delay;
@@ -420,7 +420,7 @@ class Controller {
 
 		$data = [
 			'ajax_url'         => admin_url( 'admin-ajax.php' ),
-			'nonce'            => wp_create_nonce( 'rocket_lcp' ),
+			'nonce'            => wp_create_nonce( 'rocket_beacon' ),
 			'url'              => $url,
 			'is_mobile'        => $is_mobile,
 			'elements'         => $this->lcp_atf_elements(),
@@ -430,7 +430,7 @@ class Controller {
 			'debug'            => rocket_get_constant( 'WP_ROCKET_DEBUG' ),
 		];
 
-		$inline_script = '<script>var rocket_lcp_data = ' . wp_json_encode( $data ) . '</script>';
+		$inline_script = '<script>var rocket_beacon_data = ' . wp_json_encode( $data ) . '</script>';
 
 		// Get the URL of the script.
 		$script_url = rocket_get_constant( 'WP_ROCKET_ASSETS_JS_URL' ) . 'wpr-beacon' . $min . '.js';

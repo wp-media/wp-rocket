@@ -48,8 +48,8 @@ class RocketBeacon {
 
 	async _isGeneratedBefore() {
 		let data_check = new FormData();
-		data_check.append('action', 'rocket_check_lcp');
-		data_check.append('rocket_lcp_nonce', this.config.nonce);
+		data_check.append('action', 'rocket_check_beacon');
+		data_check.append('rocket_beacon_nonce', this.config.nonce);
 		data_check.append('url', this.config.url);
 		data_check.append('is_mobile', this.config.is_mobile);
 
@@ -87,8 +87,8 @@ class RocketBeacon {
 		const lcpResults = this.lcpBeacon ? this.lcpBeacon.getResults() : null;
 
 		const data = new FormData();
-		data.append('action', 'rocket_lcp');
-		data.append('rocket_lcp_nonce', this.config.nonce);
+		data.append('action', 'rocket_beacon');
+		data.append('rocket_beacon_nonce', this.config.nonce);
 		data.append('url', this.config.url);
 		data.append('is_mobile', this.config.is_mobile);
 		data.append('status', this._getFinalStatus());
@@ -145,23 +145,23 @@ class RocketBeacon {
 	}
 
 	static run() {
-		if (!window.rocket_lcp_data) {
+		if (!window.rocket_beacon_data) {
 			return;
 		}
 
-		const instance = new RocketBeacon(window.rocket_lcp_data);
+		const instance = new RocketBeacon(window.rocket_beacon_data);
 
 		if (document.readyState !== 'loading') {
 			setTimeout(() => {
 				instance.init();
-			}, window.rocket_lcp_data.delay);
+			}, window.rocket_beacon_data.delay);
 			return;
 		}
 
 		document.addEventListener("DOMContentLoaded", () => {
 			setTimeout(() => {
 				instance.init();
-			}, window.rocket_lcp_data.delay);
+			}, window.rocket_beacon_data.delay);
 		});
 	}
 }

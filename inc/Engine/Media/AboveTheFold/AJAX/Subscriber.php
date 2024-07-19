@@ -29,28 +29,28 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'wp_ajax_rocket_lcp'              => 'add_lcp_data',
-			'wp_ajax_nopriv_rocket_lcp'       => 'add_lcp_data',
-			'wp_ajax_rocket_check_lcp'        => 'check_lcp_data',
-			'wp_ajax_nopriv_rocket_check_lcp' => 'check_lcp_data',
+			'wp_ajax_rocket_beacon'              => 'add_beacon_data',
+			'wp_ajax_nopriv_rocket_beacon'       => 'add_beacon_data',
+			'wp_ajax_rocket_check_beacon'        => 'check_beacon_data',
+			'wp_ajax_nopriv_rocket_check_beacon' => 'check_beacon_data',
 		];
 	}
 
 	/**
-	 * Callback for data received from lcp script
+	 * Callback for data received from beacon script
 	 *
 	 * @return void
 	 */
-	public function add_lcp_data() {
-		$this->controller->add_lcp_data();
+	public function add_beacon_data() {
+		$this->controller->add_beacon_data();
 	}
 
 	/**
-	 * Callback for checking lcp data
+	 * Callback for checking datas from beacon
 	 *
 	 * @return void
 	 */
-	public function check_lcp_data() {
-		$this->controller->check_lcp_data();
+	public function check_beacon_data() {
+		$this->controller->check_beacon_data();
 	}
 }

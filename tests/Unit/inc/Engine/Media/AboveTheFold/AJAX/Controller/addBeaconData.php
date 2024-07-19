@@ -11,11 +11,11 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Filters;
 
 /**
- * Test class covering WP_Rocket\Engine\Media\AboveTheFold\AJAX\Controller::add_lcp_data
+ * Test class covering WP_Rocket\Engine\Media\AboveTheFold\AJAX\Controller::add_beacon_data
  *
  * @group AboveTheFold
  */
-class Test_AddLcpData extends TestCase {
+class Test_AddBeaconData extends TestCase {
 	private $query;
 	private $controller;
 	private $context;
@@ -56,7 +56,7 @@ class Test_AddLcpData extends TestCase {
 
 		Functions\expect( 'check_ajax_referer' )
 			->once()
-			->with( 'rocket_lcp', 'rocket_lcp_nonce' )
+			->with( 'rocket_beacon', 'rocket_beacon_nonce' )
 			->andReturn( true );
 
 		$this->context->shouldReceive( 'is_allowed' )
@@ -118,6 +118,6 @@ class Test_AddLcpData extends TestCase {
 			Functions\when('wp_check_filetype')->justReturn( $config['filetype'] );
 		}
 
-		$this->controller->add_lcp_data();
+		$this->controller->add_beacon_data();
 	}
 }

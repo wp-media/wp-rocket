@@ -5,11 +5,11 @@ namespace WP_Rocket\Tests\Integration\Inc\Engine\Media\AboveTheFold\AJAX\Subscri
 use WP_Rocket\Tests\Integration\AjaxTestCase;
 
 /**
- * Test class covering WP_Rocket\Engine\Media\AboveTheFold\AJAX\Subscriber::add_lcp_data
+ * Test class covering WP_Rocket\Engine\Media\AboveTheFold\AJAX\Subscriber::add_beacon_data
  *
  * @group AboveTheFold
  */
-class Test_AddLcpData extends AjaxTestCase {
+class Test_AddBeaconData extends AjaxTestCase {
 	private $allowed;
 
 	public function set_up() {
@@ -17,7 +17,7 @@ class Test_AddLcpData extends AjaxTestCase {
 
 		self::installAtfTable();
 
-		$this->action = 'rocket_lcp';
+		$this->action = 'rocket_beacon';
 	}
 
 	/**
@@ -37,8 +37,8 @@ class Test_AddLcpData extends AjaxTestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
-		$_POST['rocket_lcp_nonce'] = wp_create_nonce( 'rocket_lcp' );
-		$_POST['action']           = 'rocket_lcp';
+		$_POST['rocket_beacon_nonce'] = wp_create_nonce( 'rocket_beacon' );
+		$_POST['action']           = 'rocket_beacon';
 		$_POST['url']              = $config['url'];
 		$_POST['is_mobile']        = $config['is_mobile'];
 		$_POST['images']           = $config['images'];

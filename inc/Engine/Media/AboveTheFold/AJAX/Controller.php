@@ -49,8 +49,8 @@ class Controller {
 	 *
 	 * @return bool
 	 */
-	public function add_lcp_data() {
-		check_ajax_referer( 'rocket_lcp', 'rocket_lcp_nonce' );
+	public function add_beacon_data() {
+		check_ajax_referer( 'rocket_beacon', 'rocket_beacon_nonce' );
 
 		if ( ! $this->context->is_allowed() ) {
 			wp_send_json_error( 'not allowed' );
@@ -240,7 +240,7 @@ class Controller {
 	}
 
 	/**
-	 * Checks if there is existing LCP data for the current URL and device type.
+	 * Checks if there is existing data for the current URL and device type from the beacon script.
 	 *
 	 * This method is called via AJAX. It checks if there is existing LCP data for the current URL and device type.
 	 * If the data exists, it returns a JSON success response with true. If the data does not exist, it returns a JSON success response with false.
@@ -248,8 +248,8 @@ class Controller {
 	 *
 	 * @return void
 	 */
-	public function check_lcp_data() {
-		check_ajax_referer( 'rocket_lcp', 'rocket_lcp_nonce' );
+	public function check_beacon_data(): void {
+		check_ajax_referer( 'rocket_beacon', 'rocket_beacon_nonce' );
 
 		if ( ! $this->context->is_allowed() ) {
 			wp_send_json_error( false );
@@ -275,8 +275,8 @@ class Controller {
 	 * @param object $image_object Image full object.
 	 * @return bool
 	 */
-	private function validate_image( $image_object ) {
-		$valid_image = ! empty( $image_object->src ) ? $this->validate_image_src( $image_object->src ?? '' ) : true;
+	private function validate_image( object $image_object ): bool {
+		$valid_image = empty( $image_object->src ) || $this->validate_image_src( $image_object->src ?? '' );
 
 		/**
 		 * Filters If the image src is a valid image or not.
@@ -294,7 +294,7 @@ class Controller {
 	 * @param string $image_src Image src url.
 	 * @return bool
 	 */
-	private function validate_image_src( $image_src ) {
+	private function validate_image_src( string $image_src ): bool {
 		if ( empty( $image_src ) ) {
 			return false;
 		}
