@@ -1,6 +1,7 @@
 <?php
+declare(strict_types=1);
 
-namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\RUCSS\Admin\Settings;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Saas\Admin\Notices;
 
 use Brain\Monkey\Functions;
 use Mockery;
@@ -8,16 +9,14 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Engine\Saas\Admin\Notices;
-use WP_Rocket\Tests\Unit\FilesystemTestCase;
+use WP_Rocket\Tests\Unit\TestCase;
 
 /**
  * Test class covering \WP_Rocket\Engine\Saas\Admin\Notices::display_success_notice
  *
- * @group  RUCSS
+ * @group SaaS
  */
-class Test_DisplaySuccessNotice extends FilesystemTestCase {
-	protected $path_to_test_data = '/inc/Engine/Saas/Admin/Notices/displaySuccessNotice.php';
-
+class Test_DisplaySuccessNotice extends TestCase {
 	private $options;
 	private $beacon;
 	private $notices;
@@ -26,17 +25,17 @@ class Test_DisplaySuccessNotice extends FilesystemTestCase {
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->options = Mockery::mock( Options_Data::class );
-		$this->beacon =  Mockery::mock( Beacon::class );
-		$this->atf_context  = Mockery::mock( ContextInterface::class );
-		$this->notices = new Notices( $this->options, $this->beacon, $this->atf_context );
+		$this->options     = Mockery::mock( Options_Data::class );
+		$this->beacon      = Mockery::mock( Beacon::class );
+		$this->atf_context = Mockery::mock( ContextInterface::class );
+		$this->notices     = new Notices( $this->options, $this->beacon, $this->atf_context );
 
 		$this->stubTranslationFunctions();
 		$this->stubEscapeFunctions();
 	}
 
 	/**
-	 * @dataProvider providerTestData
+	 * @dataProvider configTestData
 	 */
 	public function testShouldDoExpected( $config, $expected ) {
 		Functions\when( 'get_current_screen' )->justReturn( $config['current_screen'] );
@@ -60,8 +59,6 @@ class Test_DisplaySuccessNotice extends FilesystemTestCase {
 		} else {
 			Functions\expect( 'rocket_notice_html' )->never();
 		}
-
-		$this->assertTrue( $this->filesystem->is_writable( rocket_get_constant( 'WP_ROCKET_USED_CSS_PATH' ) ) );
 
 		$this->notices->display_success_notice();
 	}
