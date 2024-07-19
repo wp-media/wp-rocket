@@ -11,7 +11,7 @@ defined( 'ABSPATH' ) || exit;
  * @since 1.0
  *
  * @param string $file URL we want to parse.
- * @return bool\string false if $file is empty or false, relative path otherwise
+ * @return bool|string false if $file is empty or false, relative path otherwise
  */
 function rocket_clean_exclude_file( $file ) {
 	if ( ! $file ) {
