@@ -1,15 +1,15 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\Inc\Engine\Media\AboveTheFold\AJAX\Subscriber;
+namespace WP_Rocket\Tests\Integration\Inc\Engine\Common\Performance\AJAX\Subscriber;
 
 use WP_Rocket\Tests\Integration\AjaxTestCase;
 
 /**
- * @covers WP_Rocket\Engine\Media\AboveTheFold\AJAX\Subscriber::check_lcp_data
+ * Test class covering WP_Rocket\Engine\Common\PerformanceHints\AJAX\Subscriber::add_data
  *
- * @group AboveTheFold
+ * @group PerformanceHints
  */
-class Test_CheckLcpData extends AjaxTestCase {
+class Test_AddData extends AjaxTestCase {
 	private $allowed;
 
 	public function set_up() {
@@ -17,7 +17,7 @@ class Test_CheckLcpData extends AjaxTestCase {
 
 		self::installAtfTable();
 
-		$this->action = 'rocket_check_lcp';
+		$this->action = 'rocket_lcp';
 	}
 
 	/**
@@ -37,20 +37,22 @@ class Test_CheckLcpData extends AjaxTestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
-		$_POST = $config['post'];
+		$_POST['rocket_lcp_nonce'] = wp_create_nonce( 'rocket_lcp' );
+		$_POST['action']           = 'rocket_lcp';
+		$_POST['url']              = $config['url'];
+		$_POST['is_mobile']        = $config['is_mobile'];
+		$_POST['images']           = $config['images'];
+		$_POST['status']           = $config['status'] ?? 'success';
 
 		$this->allowed = $config['filter'];
 
 		add_filter( 'rocket_above_the_fold_optimization', [ $this, 'set_allowed' ] );
 
-		if ( ! empty( $config['row'] ) ) {
-			self::addLcp( $config['row'] );
-		}
-
 		$result = $this->callAjaxAction();
 
 		$this->assertSame( $expected['result'], $result->success );
 	}
+
 	public function set_allowed() {
 		return $this->allowed;
 	}

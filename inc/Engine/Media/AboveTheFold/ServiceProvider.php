@@ -101,9 +101,6 @@ class ServiceProvider extends AbstractServiceProvider {
 			]
 		);
 
-		$this->getContainer()->addShared( 'atf_ajax_subscriber', AJAXSubscriber::class )
-			->addArgument( $this->getContainer()->get( 'atf_ajax_controller' ) );
-
 		$this->getContainer()->add( 'warmup_apiclient', APIClient::class )
 			->addArgument( $this->getContainer()->get( 'options' ) );
 
@@ -122,6 +119,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->addShared( 'warmup_subscriber', WarmUpSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'warmup_controller' ) );
 
-		$this->getContainer()->addShared( 'atf_factory', Factory::class );
+		$this->getContainer()->addShared( 'atf_factory', Factory::class )
+			->addArgument( $this->getContainer()->get( 'atf_ajax_controller' ) );
 	}
 }

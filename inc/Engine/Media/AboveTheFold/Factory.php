@@ -4,28 +4,40 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Media\AboveTheFold;
 
-use WP_Rocket\Engine\Common\PerformanceHints\AbstractFactory;
+use WP_Rocket\Engine\Common\PerformanceHints\FactoryInterface;
+use WP_Rocket\Engine\Common\PerformanceHints\AJAX\ControllerInterface as AjaxControllerInterface;
 
-class Factory implements AbstractFactory {
+class Factory implements FactoryInterface {
+
+	/**
+	 * Ajax Controller.
+	 *
+	 * @var AjaxControllerInterface
+	 */
+	protected $ajax_controller;
 
 	/**
 	 * Instatiate the class.
+	 *
+	 * @param AjaxControllerInterface $ajax_controller ATF AJAX Controller.
 	 */
-	public function __construct() {
-		// Assign objects to their properties.
+	public function __construct( AjaxControllerInterface $ajax_controller ) {
+		$this->ajax_controller = $ajax_controller;
 	}
 
 	/**
-	 * Provides an Ajax object.
+	 * Provides an Ajax controller object.
+	 *
+	 * @return AjaxControllerInterface
 	 */
-	public function ajax() {
-		// Return Ajax object.
+	public function get_ajax_controller(): AjaxControllerInterface {
+		return $this->ajax_controller;
 	}
 
 	/**
 	 * Provides a Frontend object.
 	 */
-	public function frontend() {
+	public function get_frontend_controller() {
 		// Return Fontend object.
 	}
 

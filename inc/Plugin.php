@@ -51,6 +51,7 @@ use WP_Rocket\Engine\Admin\DomainChange\ServiceProvider as DomainChangeServicePr
 use WP_Rocket\ThirdParty\Themes\ThemeResolver;
 use WP_Rocket\Engine\Debug\Resolver as DebugResolver;
 use WP_Rocket\Engine\Debug\ServiceProvider as DebugServiceProvider;
+use WP_Rocket\Engine\Common\PerformanceHints\ServiceProvider as PerformanceHintsServiceProvider;
 
 /**
  * Plugin Manager.
@@ -304,6 +305,7 @@ class Plugin {
 		$this->container->addServiceProvider( new ATFServiceProvider() );
 		$this->container->addServiceProvider( new JobManagerServiceProvider() );
 		$this->container->addServiceProvider( new SaasAdminServiceProvider() );
+		$this->container->addServiceProvider( new PerformanceHintsServiceProvider() );
 
 		$common_subscribers = [
 			'license_subscriber',
@@ -387,13 +389,13 @@ class Plugin {
 			'atf_subscriber',
 			'cron_subscriber',
 			'atf_admin_subscriber',
-			'atf_ajax_subscriber',
 			'contactform7',
 			'debug_subscriber',
 			'rucss_cron_subscriber',
 			'atf_cron_subscriber',
 			'saas_admin_subscriber',
 			'warmup_subscriber',
+			'performance_hints_ajax_subscriber',
 		];
 
 		$host_type = HostResolver::get_host_service();
