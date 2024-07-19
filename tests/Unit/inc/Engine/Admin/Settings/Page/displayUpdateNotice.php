@@ -1,16 +1,17 @@
 <?php
+declare(strict_types=1);
+
 namespace WP_Rocket\Tests\Unit\inc\Engine\Admin\Settings\Page;
 
-use Mockery;
 use Brain\Monkey\Functions;
-use WP_Rocket\Engine\Admin\Database\Optimization;
+use Mockery;
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
-use WP_Rocket\Engine\Admin\Settings\Page;
-use WP_Rocket\Engine\Admin\Settings\Settings;
+use WP_Rocket\Engine\Admin\Database\Optimization;
+use WP_Rocket\Engine\Admin\Settings\{Page, Render, Settings};
 use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Engine\Optimization\DelayJS\Admin\SiteList;
 use WP_Rocket\Tests\Unit\TestCase;
-use WP_Rocket\Admin\Options_Data;
 
 /**
  * Test class covering \WP_Rocket\Engine\Admin\Settings\Page::display_update_notice
@@ -18,7 +19,7 @@ use WP_Rocket\Admin\Options_Data;
  * @group Admin
  * @group SettingsPage
  */
-class Test_DisplayUpdateNotice extends TestCase {
+class TestDisplayUpdateNotice extends TestCase {
 	private $page;
 	private $beacon;
 	private $options;
@@ -26,8 +27,8 @@ class Test_DisplayUpdateNotice extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->beacon       = Mockery::mock( Beacon::class );
-		$this->options      = Mockery::mock( Options_Data::class );
+		$this->beacon  = Mockery::mock( Beacon::class );
+		$this->options = Mockery::mock( Options_Data::class );
 		$config = [
 			'slug'       => 'wprocket',
 			'title'      => 'WP Rocket',
@@ -39,7 +40,7 @@ class Test_DisplayUpdateNotice extends TestCase {
 		$this->page = new Page(
 			$config,
 			Mockery::mock( Settings::class ),
-			Mockery::mock( 'WP_Rocket\Interfaces\Render_Interface' ),
+			Mockery::mock( Render::class ),
 			$this->beacon,
 			Mockery::mock( Optimization::class ),
 			Mockery::mock( UserClient::class ),
