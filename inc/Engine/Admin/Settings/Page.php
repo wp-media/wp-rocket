@@ -105,15 +105,15 @@ class Page extends Abstract_Render {
 	 *
 	 * @since 3.0
 	 *
-	 * @param array            $args        Array of required arguments to add the admin page.
-	 * @param Settings         $settings    Instance of Settings class.
-	 * @param Render           $render      Render instance.
-	 * @param Beacon           $beacon      Beacon instance.
-	 * @param Optimization     $optimize    Database optimization instance.
-	 * @param UserClient       $user_client User client instance.
-	 * @param SiteList         $delayjs_sitelist User client instance.
-	 * @param string           $template_path Path to views.
-	 * @param Options_Data     $options       WP Rocket options instance.
+	 * @param array        $args        Array of required arguments to add the admin page.
+	 * @param Settings     $settings    Instance of Settings class.
+	 * @param Render       $render      Render instance.
+	 * @param Beacon       $beacon      Beacon instance.
+	 * @param Optimization $optimize    Database optimization instance.
+	 * @param UserClient   $user_client User client instance.
+	 * @param SiteList     $delayjs_sitelist User client instance.
+	 * @param string       $template_path Path to views.
+	 * @param Options_Data $options       WP Rocket options instance.
 	 */
 	public function __construct(
 		array $args,
