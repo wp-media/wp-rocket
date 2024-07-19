@@ -429,30 +429,6 @@ class Page extends Abstract_Render {
 				'customer_data'    => $this->customer_data(),
 			]
 		);
-
-		$this->settings->add_settings_sections(
-			[
-				'status' => [
-					'title' => __( 'My Status', 'rocket' ),
-					'page'  => 'dashboard',
-				],
-			]
-		);
-
-		$this->settings->add_settings_fields(
-			[
-				'analytics_enabled' => [
-					'type'              => 'sliding_checkbox',
-					'label'             => __( 'Rocket Analytics', 'rocket' ),
-					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description'       => sprintf( __( 'I agree to share anonymous data with the development team to help improve WP Rocket. %1$sWhat info will we collect?%2$s', 'rocket' ), '<button class="wpr-js-popin">', '</button>' ),
-					'section'           => 'status',
-					'page'              => 'dashboard',
-					'default'           => 0,
-					'sanitize_callback' => 'sanitize_checkbox',
-				],
-			]
-		);
 	}
 
 	/**
