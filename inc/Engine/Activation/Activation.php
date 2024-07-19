@@ -4,7 +4,7 @@ namespace WP_Rocket\Engine\Activation;
 
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Dependencies\League\Container\Container;
-use WP_Rocket\Engine\Common\PerformanceHints\Activation\ServiceProvider as AboveTheFoldActivationServiceProvider;
+use WP_Rocket\Engine\Common\PerformanceHints\Activation\ServiceProvider as PerformanceHintsActivationServiceProvider;
 use WP_Rocket\Engine\License\ServiceProvider as LicenseServiceProvider;
 use WP_Rocket\Engine\Preload\Activation\ServiceProvider as PreloadActivationServiceProvider;
 use WP_Rocket\Logger\ServiceProvider as LoggerServiceProvider;
@@ -50,7 +50,7 @@ class Activation {
 		$container->addServiceProvider( new LicenseServiceProvider() );
 		$container->addServiceProvider( new LoggerServiceProvider() );
 		$container->get( 'logger' );
-		$container->addServiceProvider( new AboveTheFoldActivationServiceProvider() );
+		$container->addServiceProvider( new PerformanceHintsActivationServiceProvider() );
 
 		$host_type = HostResolver::get_host_service();
 
