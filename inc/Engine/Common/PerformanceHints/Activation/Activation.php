@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace WP_Rocket\Engine\Media\AboveTheFold\Activation;
+namespace WP_Rocket\Engine\Common\PerformanceHints\Activation;
 
 use WP_Rocket\Engine\Activation\ActivationInterface;
-use WP_Rocket\Engine\Media\AboveTheFold\WarmUp\Controller;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
+use WP_Rocket\Engine\Media\AboveTheFold\WarmUp\Controller;
 
 class Activation implements ActivationInterface {
 	/**

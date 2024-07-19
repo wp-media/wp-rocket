@@ -4,11 +4,11 @@ namespace WP_Rocket\Engine\Activation;
 
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Dependencies\League\Container\Container;
-use WP_Rocket\ServiceProvider\Options as OptionsServiceProvider;
-use WP_Rocket\Engine\Preload\Activation\ServiceProvider as PreloadActivationServiceProvider;
+use WP_Rocket\Engine\Common\PerformanceHints\Activation\ServiceProvider as AboveTheFoldActivationServiceProvider;
 use WP_Rocket\Engine\License\ServiceProvider as LicenseServiceProvider;
+use WP_Rocket\Engine\Preload\Activation\ServiceProvider as PreloadActivationServiceProvider;
 use WP_Rocket\Logger\ServiceProvider as LoggerServiceProvider;
-use WP_Rocket\Engine\Media\AboveTheFold\Activation\ServiceProvider as AboveTheFoldActivationServiceProvider;
+use WP_Rocket\ServiceProvider\Options as OptionsServiceProvider;
 use WP_Rocket\ThirdParty\Hostings\HostResolver;
 use WP_Rocket\ThirdParty\Hostings\ServiceProvider as HostingsServiceProvider;
 

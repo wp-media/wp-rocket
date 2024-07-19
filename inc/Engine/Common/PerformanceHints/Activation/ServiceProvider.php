@@ -1,15 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace WP_Rocket\Engine\Media\AboveTheFold\Activation;
+namespace WP_Rocket\Engine\Common\PerformanceHints\Activation;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Engine\Media\AboveTheFold\Context\Context;
-use WP_Rocket\Engine\Media\AboveTheFold\WarmUp\{
-	APIClient,
-	Controller as WarmUpController,
-	Queue
-};
+use WP_Rocket\Engine\Media\AboveTheFold\WarmUp\{APIClient, Controller as WarmUpController, Queue};
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
