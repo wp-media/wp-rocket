@@ -79,6 +79,7 @@ class Processor {
 		// The DB row check above will need to be updated during the database refactor to something below.
 
         // phpcs:disable Squiz.Commenting.InlineComment.InvalidEndChar
+		// $html_optimized = null;
 		// foreach ( $this->factories as $factory ) {
 		// $row = $factory->queries()->get_row( $url, $is_mobile );
 		// if ( empty( $row ) ) {
@@ -185,6 +186,7 @@ class Processor {
 			'debug'            => rocket_get_constant( 'WP_ROCKET_DEBUG' ),
 		];
 
+		$data_modified = null;
 		foreach ( $this->factories as $factory ) {
 			$data          = $data_modified ?? $data;
 			$data_modified = $factory->get_frontend_controller()->target_elements( $data );
