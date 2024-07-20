@@ -1,17 +1,17 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\Media\AboveTheFold\Frontend\Subscriber;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Common\PerformanceHints\Frontend\Subscriber;
 
 use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * Test class covering \WP_Rocket\Engine\Media\AboveTheFold\Frontend\Subscriber::lcp
+ * Test class covering \WP_Rocket\Engine\Common\PerformanceHints\Frontend\Subscriber::maybe_apply_optimizations
  *
- * @group AboveTheFold
+ * @group PerformanceHints
  */
-class Test_lcp extends FilesystemTestCase {
-	protected $path_to_test_data = '/inc/Engine/Media/AboveTheFold/Frontend/Subscriber/lcp.php';
+class Test_maybe_apply_optimizations extends FilesystemTestCase {
+	protected $path_to_test_data = '/inc/Engine/Common/PerformanceHints/Frontend/Subscriber/maybe_apply_optimizations.php';
 
 	protected $config;
 
@@ -20,7 +20,7 @@ class Test_lcp extends FilesystemTestCase {
 
 		self::installAtfTable();
 
-		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'lcp', 17 );
+		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'maybe_apply_optimizations', 17 );
 	}
 
 	public function tear_down() {
