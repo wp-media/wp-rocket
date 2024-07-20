@@ -151,6 +151,10 @@ class Controller {
 			return $html;
 		}
 
+		if ( empty( $lcp->src ) ) {
+			return $html;
+		}
+
 		$html    = $this->replace_html_comments( $html );
 		$url     = urldecode( preg_quote( $lcp->src, '/' ) );
 		$pattern = '#<img(?:[^>]*?\s+)?src=["\']' . $url . '["\'](?:\s+[^>]*?)?>#';

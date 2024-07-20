@@ -89,12 +89,12 @@ class Controller implements ControllerInterface {
 				continue;
 			}
 
-			if ( 'lcp' === $image->label ) {
+			if ( isset( $image->label ) && 'lcp' === $image->label ) {
 				$lcp = $image_object;
 				continue;
 			}
 
-			if ( 'above-the-fold' === $image->label && 0 < $max_atf_images_number ) {
+			if ( isset( $image->label ) && 'above-the-fold' === $image->label && 0 < $max_atf_images_number ) {
 				$viewport[] = $image_object;
 
 				--$max_atf_images_number;

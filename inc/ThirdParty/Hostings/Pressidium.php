@@ -3,6 +3,7 @@
 namespace WP_Rocket\ThirdParty\Hostings;
 
 use NinukisCaching;
+use WP_Post;
 use WP_Rocket\ThirdParty\ReturnTypesTrait;
 
 class Pressidium extends AbstractNoCacheHost {
