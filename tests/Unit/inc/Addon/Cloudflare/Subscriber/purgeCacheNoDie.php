@@ -45,7 +45,7 @@ class TestPurgeCacheNoDie extends TestCase {
 		Functions\expect( 'is_wp_error' )
 			->atMost()
 			->once()
-			->AndReturn( $config['connection'] )
+			->andReturn( $config['connection'] )
 			->andAlsoExpectIt()
 			->atMost()
 			->once()

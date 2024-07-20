@@ -9,7 +9,7 @@ use WP_Rocket\Engine\Optimization\CSSTrait;
 use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\DataManager;
 use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS as UsedCSS_Query;
-use WP_Rocket\Engine\Common\JobManager\Managers\ManagerInterface;
+use WP_Rocket\Engine\Optimization\RUCSS\Jobs\Manager;
 
 class UsedCSS {
 	use RegexTrait;
@@ -74,7 +74,7 @@ class UsedCSS {
 	/**
 	 * Above the fold Job Manager.
 	 *
-	 * @var ManagerInterface
+	 * @var Manager
 	 */
 	private $manager;
 
@@ -86,7 +86,7 @@ class UsedCSS {
 	 * @param DataManager      $data_manager DataManager instance.
 	 * @param Filesystem       $filesystem Filesystem instance.
 	 * @param ContextInterface $context RUCSS context.
-	 * @param ManagerInterface $manager RUCSS manager.
+	 * @param Manager          $manager RUCSS manager.
 	 */
 	public function __construct(
 		Options_Data $options,
@@ -94,7 +94,7 @@ class UsedCSS {
 		DataManager $data_manager,
 		Filesystem $filesystem,
 		ContextInterface $context,
-		ManagerInterface $manager
+		Manager $manager
 	) {
 		$this->options        = $options;
 		$this->used_css_query = $used_css_query;
@@ -140,7 +140,7 @@ class UsedCSS {
 		$is_mobile = $this->is_mobile();
 		$used_css  = $this->used_css_query->get_row( $url, $is_mobile );
 
-		if ( empty( $used_css ) ) {
+		if ( ! is_object( $used_css ) ) {
 			$this->manager->add_url_to_the_queue( $url, $is_mobile );
 			return $html;
 		}
@@ -160,7 +160,10 @@ class UsedCSS {
 		$html = $this->add_used_css_to_html( $html, $used_css_content );
 		$html = $this->add_used_fonts_preload( $html, $used_css_content );
 		$html = $this->remove_google_font_preconnect( $html );
-		$this->used_css_query->update_last_accessed( (int) $used_css->id );
+
+		if ( ! empty( $used_css->id ) ) {
+			$this->used_css_query->update_last_accessed( (int) $used_css->id );
+		}
 
 		return $html;
 	}
@@ -182,16 +185,18 @@ class UsedCSS {
 		$deleted = true;
 
 		foreach ( $used_css_arr as $used_css ) {
-			if ( empty( $used_css->id ) ) {
+			if ( ! is_object( $used_css ) || empty( $used_css->id ) ) {
 				continue;
 			}
 
 			$deleted = $deleted && $this->used_css_query->delete_item( $used_css->id );
 
-			$count = $this->used_css_query->count_rows_by_hash( $used_css->hash );
+			if ( ! empty( $used_css->hash ) ) {
+				$count = $this->used_css_query->count_rows_by_hash( $used_css->hash );
 
-			if ( 0 === $count ) {
-				$this->filesystem->delete_used_css( $used_css->hash );
+				if ( 0 === $count ) {
+					$this->filesystem->delete_used_css( $used_css->hash );
+				}
 			}
 		}
 

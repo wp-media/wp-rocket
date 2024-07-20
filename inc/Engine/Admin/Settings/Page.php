@@ -284,6 +284,10 @@ class Page extends Abstract_Render {
 
 		$data['license_type'] = rocket_get_license_type( $user );
 
+		if ( ! is_object( $user ) ) {
+			return $data;
+		}
+
 		if ( ! empty( $user->licence_expiration ) ) {
 			$data['license_class'] = time() < $user->licence_expiration ? 'wpr-isValid' : 'wpr-isInvalid';
 		}
@@ -424,30 +428,6 @@ class Page extends Abstract_Render {
 				'menu_description' => __( 'Get help, account info', 'rocket' ),
 				'faq'              => $this->beacon->get_suggest( 'faq' ),
 				'customer_data'    => $this->customer_data(),
-			]
-		);
-
-		$this->settings->add_settings_sections(
-			[
-				'status' => [
-					'title' => __( 'My Status', 'rocket' ),
-					'page'  => 'dashboard',
-				],
-			]
-		);
-
-		$this->settings->add_settings_fields(
-			[
-				'analytics_enabled' => [
-					'type'              => 'sliding_checkbox',
-					'label'             => __( 'Rocket Analytics', 'rocket' ),
-					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description'       => sprintf( __( 'I agree to share anonymous data with the development team to help improve WP Rocket. %1$sWhat info will we collect?%2$s', 'rocket' ), '<button class="wpr-js-popin">', '</button>' ),
-					'section'           => 'status',
-					'page'              => 'dashboard',
-					'default'           => 0,
-					'sanitize_callback' => 'sanitize_checkbox',
-				],
 			]
 		);
 	}

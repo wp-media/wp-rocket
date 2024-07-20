@@ -93,22 +93,22 @@ class Test_PurgePostTermsUrls extends FilesystemTestCase {
 				if ( isset( $taxonomy->is_taxonomy_hierarchical ) && isset( $term->parent ) ) {
 					Functions\expect( 'is_taxonomy_hierarchical' )
 						->once()
-						->with( $taxonomy->name )
+						->with( property_exists($taxonomy, 'name') ? $taxonomy->name : '' )
 						->andReturn( $taxonomy->is_taxonomy_hierarchical );
 					Functions\expect( 'get_ancestors' )
 						->once()
-						->with( $term->term_id, $taxonomy->name )
+						->with( property_exists($term, 'term_id') ? $term->term_id : null, property_exists($taxonomy, 'name') ? $taxonomy->name : '' )
 						->andReturn( [ $term->parent ] );
 
 					$term_mocked->slug = $term->parent;
 
 					Functions\expect( 'get_term' )
 						->once()
-						->with( $term->parent, $taxonomy->name )
+						->with( $term->parent, property_exists($taxonomy, 'name') ? $taxonomy->name : '' )
 						->andReturn( $term_mocked );
 					Functions\expect( 'get_term_link' )
 						->once()
-						->with( $term->parent , $taxonomy->name )
+						->with( $term->parent , property_exists($taxonomy, 'name') ? $taxonomy->name : '' )
 						->andReturn( 'https://example.org/' . $term->parent );
 					$index++;
 					$urls[] = 'https://example.org/' . $term->parent ;
