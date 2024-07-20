@@ -26,7 +26,7 @@ class Test_maybe_apply_optimizations extends FilesystemTestCase {
 	public function tear_down() {
 		self::uninstallAtfTable();
 
-		remove_filter( 'rocket_lcp_delay', [ $this, 'add_delay' ] );
+		remove_filter( 'rocket_performance_hints_optimization_delay', [ $this, 'add_delay' ] );
 
 		$this->restoreWpHook( 'rocket_buffer' );
 		parent::tear_down();
@@ -43,7 +43,7 @@ class Test_maybe_apply_optimizations extends FilesystemTestCase {
 		}
 
 		if ( isset( $config['filter_delay'] ) ) {
-			add_filter( 'rocket_lcp_delay', [ $this, 'add_delay' ] );
+			add_filter( 'rocket_performance_hints_optimization_delay', [ $this, 'add_delay' ] );
 		}
 
 		Functions\when( 'wp_create_nonce' )->justReturn( '96ac96b69e' );
