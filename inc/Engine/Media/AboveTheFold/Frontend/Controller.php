@@ -3,14 +3,14 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Media\AboveTheFold\Frontend;
 
-use WP_Filesystem_Direct;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Queries\AboveTheFold as ATFQuery;
 use WP_Rocket\Engine\Media\AboveTheFold\Context\Context;
 use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Engine\Optimization\UrlTrait;
+use WP_Rocket\Engine\Common\PerformanceHints\Frontend\ControllerInterface;
 
-class Controller {
+class Controller implements ControllerInterface {
 	use RegexTrait;
 	use UrlTrait;
 
@@ -36,49 +36,27 @@ class Controller {
 	private $context;
 
 	/**
-	 * WordPress filesystem.
-	 *
-	 * @var WP_Filesystem_Direct
-	 */
-	protected $filesystem;
-
-	/**
 	 * Constructor
 	 *
-	 * @param Options_Data              $options Options instance.
-	 * @param ATFQuery                  $query Queries instance.
-	 * @param Context                   $context Context instance.
-	 * @param WP_Filesystem_Direct|null $filesystem WordPress filesystem.
+	 * @param Options_Data $options Options instance.
+	 * @param ATFQuery     $query Queries instance.
+	 * @param Context      $context Context instance.
 	 */
-	public function __construct( Options_Data $options, ATFQuery $query, Context $context, WP_Filesystem_Direct $filesystem = null ) {
-		$this->options    = $options;
-		$this->query      = $query;
-		$this->context    = $context;
-		$this->filesystem = $filesystem ?: rocket_direct_filesystem();
+	public function __construct( Options_Data $options, ATFQuery $query, Context $context ) {
+		$this->options = $options;
+		$this->query   = $query;
+		$this->context = $context;
 	}
 
 	/**
 	 * Optimize the LCP image
 	 *
 	 * @param string $html HTML content.
+	 * @param object $row Database Row.
 	 *
 	 * @return string
 	 */
-	public function lcp( $html ): string {
-		if ( ! $this->context->is_allowed() ) {
-			return $html;
-		}
-
-		global $wp;
-
-		$url       = untrailingslashit( home_url( add_query_arg( [], $wp->request ) ) );
-		$is_mobile = $this->is_mobile();
-		$row       = $this->query->get_row( $url, $is_mobile );
-
-		if ( empty( $row ) ) {
-			return $this->inject_beacon( $html, $url, $is_mobile );
-		}
-
+	public function optimize( string $html, $row ): string {
 		if ( ! $row->has_lcp() ) {
 			return $html;
 		}
@@ -358,91 +336,6 @@ class Controller {
 	}
 
 	/**
-	 * The `inject_beacon` function is used to inject a JavaScript beacon into the HTML content.
-	 *
-	 * @param string $html The HTML content where the beacon will be injected.
-	 * @param string $url The current URL.
-	 * @param bool   $is_mobile True for mobile device, false otherwise.
-	 *
-	 * @return string The modified HTML content with the beacon script injected just before the closing body tag.
-	 */
-	public function inject_beacon( $html, $url, $is_mobile ): string {
-		$min = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
-
-		if ( ! $this->filesystem->exists( rocket_get_constant( 'WP_ROCKET_ASSETS_JS_PATH' ) . 'lcp-beacon' . $min . '.js' ) ) {
-			return $html;
-		}
-
-		$default_width_threshold  = $is_mobile ? 393 : 1600;
-		$default_height_threshold = $is_mobile ? 830 : 700;
-		/**
-		 * Filters the width threshold for the LCP beacon.
-		 *
-		 * @param int    $width_threshold The width threshold. Default is 393 for mobile and 1920 for others.
-		 * @param bool   $is_mobile       True if the current device is mobile, false otherwise.
-		 * @param string $url             The current URL.
-		 *
-		 * @return int The filtered width threshold.
-		 */
-		$width_threshold = apply_filters( 'rocket_lcp_width_threshold', $default_width_threshold, $is_mobile, $url );
-
-		/**
-		 * Filters the height threshold for the LCP beacon.
-		 *
-		 * @param int    $height_threshold The height threshold. Default is 830 for mobile and 1080 for others.
-		 * @param bool   $is_mobile        True if the current device is mobile, false otherwise.
-		 * @param string $url              The current URL.
-		 *
-		 * @return int The filtered height threshold.
-		 */
-		$height_threshold = apply_filters( 'rocket_lcp_height_threshold', $default_height_threshold, $is_mobile, $url );
-
-		if ( ! is_int( $width_threshold ) ) {
-			$width_threshold = $default_width_threshold;
-		}
-
-		if ( ! is_int( $height_threshold ) ) {
-			$height_threshold = $default_height_threshold;
-		}
-
-		$default_delay = 500;
-
-		/**
-		 * Filters the delay before the LCP beacon is triggered.
-		 *
-		 * @param int $delay The delay in milliseconds. Default is 500.
-		 */
-		$delay = apply_filters( 'rocket_lcp_delay', $default_delay );
-
-		if ( ! is_int( $delay ) ) {
-			$delay = $default_delay;
-		}
-
-		$data = [
-			'ajax_url'         => admin_url( 'admin-ajax.php' ),
-			'nonce'            => wp_create_nonce( 'rocket_lcp' ),
-			'url'              => $url,
-			'is_mobile'        => $is_mobile,
-			'elements'         => $this->lcp_atf_elements(),
-			'width_threshold'  => $width_threshold,
-			'height_threshold' => $height_threshold,
-			'delay'            => $delay,
-			'debug'            => rocket_get_constant( 'WP_ROCKET_DEBUG' ),
-		];
-
-		$inline_script = '<script>var rocket_lcp_data = ' . wp_json_encode( $data ) . '</script>';
-
-		// Get the URL of the script.
-		$script_url = rocket_get_constant( 'WP_ROCKET_ASSETS_JS_URL' ) . 'lcp-beacon' . $min . '.js';
-
-		// Create the script tag.
-		$script_tag = "<script data-name=\"wpr-lcp-beacon\" src='{$script_url}' async></script>"; // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript
-
-		// Append the script tag just before the closing body tag.
-		return str_replace( '</body>', $inline_script . $script_tag . '</body>', $html );
-	}
-
-	/**
 	 * Generates the source tags for the given LCP object.
 	 *
 	 * This method is used to generate the source tags for the given LCP object. It iterates over the sources of the LCP object,
@@ -515,9 +408,11 @@ class Controller {
 	/**
 	 * Returns a comma-separated list of elements to be considered for the lcp/above-the-fold optimization.
 	 *
-	 * @return string
+	 * @param array $data Array of data passed in beacon.
+	 *
+	 * @return array
 	 */
-	private function lcp_atf_elements(): string {
+	public function target_elements( array $data ): array {
 		$elements = [
 			'img',
 			'video',
@@ -548,6 +443,8 @@ class Controller {
 
 		$elements = array_filter( $elements, 'is_string' );
 
-		return implode( ', ', $elements );
+		$data['elements'] = implode( ', ', $elements );
+
+		return $data;
 	}
 }
