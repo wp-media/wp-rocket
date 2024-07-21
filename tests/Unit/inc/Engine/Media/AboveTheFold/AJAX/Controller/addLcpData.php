@@ -8,6 +8,7 @@ use WP_Rocket\Engine\Media\AboveTheFold\Context\Context;
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Queries\AboveTheFold;
 use WP_Rocket\Engine\Media\AboveTheFold\AJAX\Controller;
 use WP_Rocket\Tests\Unit\TestCase;
+use Brain\Monkey\Filters;
 
 /**
  * Test class covering WP_Rocket\Engine\Media\AboveTheFold\AJAX\Controller::add_lcp_data
@@ -77,7 +78,7 @@ class Test_AddLcpData extends TestCase {
 			}
 		);
 
-		$images_valid_sources = $expected['images_valid_sources'];
+		$images_valid_sources = $expected['images_valid_sources'] ?? [];
 
 		Functions\when( 'sanitize_url' )->alias(
 			function( $url ) use ( $images_valid_sources ) {
@@ -106,6 +107,15 @@ class Test_AddLcpData extends TestCase {
 			Functions\expect( 'wp_send_json_success' )
 				->once()
 				->with( $expected['message'] );
+		}
+
+		$this->stubWpParseUrl();
+
+		Filters\expectApplied('rocket_atf_invalid_schemes')->with([ 'chrome-[^:]+://' ])->andReturn([ 'chrome-[^:]+://' ]);
+
+		if ( ! empty( $config['filetype'] ) ) {
+			Functions\when('get_allowed_mime_types')->justReturn( $config['allowed_mime_types'] );
+			Functions\when('wp_check_filetype')->justReturn( $config['filetype'] );
 		}
 
 		$this->controller->add_lcp_data();

@@ -6,10 +6,10 @@ Method : SUITCSS (modified)
 
 .ComponentName => Name of component (Ex : .SiteHeader)
 .ComponentName--modifierName => Modifier of component (.SiteHeader--white, .SiteHeader--fixed)
-.ComponentName-descendantName => Children of componant (.SiteHeader-logo, .SiteHeader-menu)
+.ComponentName-descendantName => Children of component (.SiteHeader-logo, .SiteHeader-menu)
 .ComponentName.isState => State of component (.isActive, .isOpen)
 
-More informations here : https://suitcss.github.io/ or http://www.alsacreations.com/article/lire/1641-bonnes-pratiques-en-css-bem-et-oocss.html (french)
+More information here : https://suitcss.github.io/ or http://www.alsacreations.com/article/lire/1641-bonnes-pratiques-en-css-bem-et-oocss.html (french)
 
 --- EVERY CLASS are prefixed with "wpr-"
 

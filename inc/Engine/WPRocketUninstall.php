@@ -1,5 +1,6 @@
 <?php
 
+use WP_Rocket\Dependencies\Database\Table;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS;
 use WP_Rocket\Engine\Preload\Database\Tables\Cache;
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Tables\AboveTheFold;
@@ -80,6 +81,10 @@ class WPRocketUninstall {
 		'wp_rocket_pricing_timeout',
 		'wp_rocket_pricing_timeout_active',
 		'rocket_get_refreshed_fragments_cache',
+		'rocket_preload_previous_requests_durations',
+		'rocket_preload_check_duration',
+		'wpr_user_information_timeout_active',
+		'wpr_user_information_timeout',
 	];
 
 	/**

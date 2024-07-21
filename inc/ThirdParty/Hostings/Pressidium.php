@@ -3,6 +3,7 @@
 namespace WP_Rocket\ThirdParty\Hostings;
 
 use NinukisCaching;
+use WP_Post;
 use WP_Rocket\ThirdParty\ReturnTypesTrait;
 
 class Pressidium extends AbstractNoCacheHost {
@@ -73,7 +74,6 @@ class Pressidium extends AbstractNoCacheHost {
 	 * @return void
 	 */
 	public function clean_pressidium() {
-		// @phpstan-ignore-next-line
 		$plugin = NinukisCaching::get_instance();
 		$plugin->purgeAllCaches();
 	}
@@ -107,7 +107,6 @@ class Pressidium extends AbstractNoCacheHost {
 	 * @return void
 	 */
 	private function purge_cache( $paths ) {
-		// @phpstan-ignore-next-line
 		NinukisCaching::get_instance()->purge_cache( $paths );
 	}
 

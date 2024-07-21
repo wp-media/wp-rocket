@@ -1,18 +1,19 @@
 <?php
+declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Preload\Admin;
 
-use WP_Rocket\Engine\Preload\Controller\PreloadUrl;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Preload\Controller\{LoadInitialSitemap, PreloadUrl};
+use WP_Rocket\Engine\Preload\Database\Tables\Cache as CacheTable;
 
 class Settings {
-
 	/**
 	 * Instance of options handler.
 	 *
 	 * @var Options_Data
 	 */
-	protected $options;
+	private $options;
 
 	/**
 	 * PreloadUrl instance
@@ -22,14 +23,32 @@ class Settings {
 	private $preload_url;
 
 	/**
+	 * LoadInitialSitemap instance
+	 *
+	 * @var LoadInitialSitemap
+	 */
+	private $load_initial_sitemap;
+
+	/**
+	 * CacheTable instance
+	 *
+	 * @var CacheTable
+	 */
+	private $cache_table;
+
+	/**
 	 * Instantiate the class
 	 *
-	 * @param Options_Data $options Instance of options handler.
-	 * @param PreloadUrl   $preload_url PreloadUrl instance.
+	 * @param Options_Data       $options Instance of options handler.
+	 * @param PreloadUrl         $preload_url PreloadUrl instance.
+	 * @param LoadInitialSitemap $load_initial_sitemap LoadInitialSitemap instance.
+	 * @param CacheTable         $cache_table CacheTable instance.
 	 */
-	public function __construct( Options_Data $options, PreloadUrl $preload_url ) {
-		$this->options     = $options;
-		$this->preload_url = $preload_url;
+	public function __construct( Options_Data $options, PreloadUrl $preload_url, LoadInitialSitemap $load_initial_sitemap, CacheTable $cache_table ) {
+		$this->options              = $options;
+		$this->preload_url          = $preload_url;
+		$this->load_initial_sitemap = $load_initial_sitemap;
+		$this->cache_table          = $cache_table;
 	}
 
 	/**
@@ -102,11 +121,31 @@ class Settings {
 	}
 
 	/**
-	 * Preload the homepage
+	 * Preload the homepage.
 	 *
 	 * @return void
 	 */
 	public function preload_homepage() {
+		if ( ! $this->is_enabled() ) {
+			return;
+		}
+
+		$this->preload_url->preload_url( home_url() );
+	}
+
+	/**
+	 * Clear cache table and preload.
+	 *
+	 * @return void
+	 */
+	public function clear_and_preload() {
+		$this->cache_table->truncate_cache_table();
+
+		if ( ! $this->is_enabled() ) {
+			return;
+		}
+
+		$this->load_initial_sitemap->load_initial_sitemap();
 		$this->preload_url->preload_url( home_url() );
 	}
 }

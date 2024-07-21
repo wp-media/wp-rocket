@@ -25,6 +25,15 @@ class Controller {
 	protected $context;
 
 	/**
+	 * An array of unsupported atf schemes.
+	 *
+	 * @var array
+	 */
+	private $invalid_schemes = [
+		'chrome-[^:]+://',
+	];
+
+	/**
 	 * Constructor
 	 *
 	 * @param ATFQuery         $query ATFQuery instance.
@@ -69,20 +78,25 @@ class Controller {
 		$keys = [ 'bg_set', 'src' ];
 
 		foreach ( (array) $images as $image ) {
-			if ( isset( $image->type ) ) {
-				$image_object = $this->create_object( $image, $keys );
+			if ( empty( $image->type ) ) {
+				continue;
+			}
 
-				if ( 'lcp' === $image->label && null !== $image_object ) {
-					$lcp = $image_object;
-				} elseif ( 'above-the-fold' === $image->label && null !== $image_object ) {
-					if ( 0 === $max_atf_images_number ) {
-						continue;
-					}
+			$image_object = $this->create_object( $image, $keys );
 
-					$viewport[] = $image_object;
+			if ( ! $image_object || ! $this->validate_image( $image_object ) ) {
+				continue;
+			}
 
-					--$max_atf_images_number;
-				}
+			if ( isset( $image->label ) && 'lcp' === $image->label ) {
+				$lcp = $image_object;
+				continue;
+			}
+
+			if ( isset( $image->label ) && 'above-the-fold' === $image->label && 0 < $max_atf_images_number ) {
+				$viewport[] = $image_object;
+
+				--$max_atf_images_number;
 			}
 		}
 
@@ -253,5 +267,66 @@ class Controller {
 		}
 
 		wp_send_json_error( 'data does not exist' );
+	}
+
+	/**
+	 * Validate image object.
+	 *
+	 * @param object $image_object Image full object.
+	 * @return bool
+	 */
+	private function validate_image( $image_object ) {
+		$valid_image = ! empty( $image_object->src ) ? $this->validate_image_src( $image_object->src ?? '' ) : true;
+
+		/**
+		 * Filters If the image src is a valid image or not.
+		 *
+		 * @param bool   $valid_image Valid image or not.
+		 * @param string $image_src_url Image src url.
+		 * @param object $image_object Image object with full details.
+		 */
+		return (bool) apply_filters( 'rocket_atf_valid_image', $valid_image, $image_object->src, $image_object );
+	}
+
+	/**
+	 * Make sure that this url is valid image without loading the image itself.
+	 *
+	 * @param string $image_src Image src url.
+	 * @return bool
+	 */
+	private function validate_image_src( $image_src ) {
+		if ( empty( $image_src ) ) {
+			return false;
+		}
+
+		/**
+		 * Filters the supported schemes of LCP/ATF images.
+		 *
+		 * @param array  $invalid_schemes Array of invalid schemes.
+		 */
+		$invalid_schemes = apply_filters( 'rocket_atf_invalid_schemes', $this->invalid_schemes );
+
+		if ( ! is_array( $invalid_schemes ) ) {
+			$invalid_schemes = $this->invalid_schemes;
+		}
+
+		$invalid_schemes = implode( '|', $invalid_schemes );
+
+		if ( preg_match( '#^' . $invalid_schemes . '#', $image_src ) ) {
+			return false;
+		}
+
+		// Here we get the url PATH part only to strip all query strings.
+		$image_src_path = wp_parse_url( $image_src, PHP_URL_PATH );
+		if ( empty( $image_src_path ) ) {
+			return false;
+		}
+
+		// Add svg to allowed mime types.
+		$allowed_mime_types        = get_allowed_mime_types();
+		$allowed_mime_types['svg'] = 'image/svg+xml';
+		$image_src_filetype_array  = wp_check_filetype( $image_src_path, $allowed_mime_types );
+
+		return ! empty( $image_src_filetype_array['type'] ) && str_starts_with( $image_src_filetype_array['type'], 'image/' );
 	}
 }

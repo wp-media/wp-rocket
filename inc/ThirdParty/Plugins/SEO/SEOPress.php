@@ -31,7 +31,6 @@ class SEOPress implements Subscriber_Interface {
 			return [];
 		}
 
-		// @phpstan-ignore-next-line
 		if ( ! method_exists( seopress_get_service( 'SitemapOption' ), 'isEnabled' ) || 1 !== (int) seopress_get_service( 'SitemapOption' )->isEnabled() ) {
 			return [];
 		}

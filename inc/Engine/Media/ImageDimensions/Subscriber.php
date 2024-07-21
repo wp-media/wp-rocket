@@ -51,7 +51,7 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Update images that have no width/height with real dimentions.
+	 * Update images that have no width/height with real dimensions.
 	 *
 	 * @param string $buffer Page HTML content.
 	 *
@@ -66,7 +66,7 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Update images that have no width/height with real dimentions for the SaaS
+	 * Update images that have no width/height with real dimensions for the SaaS
 	 *
 	 * @param string $buffer Page HTML content.
 	 *

@@ -1,37 +1,53 @@
 includes:
-    - phar://phpstan.phar/conf/bleedingEdge.neon
+	- phar://phpstan.phar/conf/bleedingEdge.neon
 parameters:
-    level: 0
-    checkMissingIterableValueType: false
-    inferPrivatePropertyTypeFromConstructor: true
-    paths:
-        # Test only the new architecture for now.
-        - %currentWorkingDirectory%/inc/Engine/
-        - %currentWorkingDirectory%/inc/Addon/
-        - %currentWorkingDirectory%/inc/ThirdParty/
-    bootstrapFiles:
-        # Must be first
-        - %currentWorkingDirectory%/inc/functions/options.php
-        # Procedural code
-        - %currentWorkingDirectory%/inc/constants.php
-        - %currentWorkingDirectory%/inc/common/purge.php
-        - %currentWorkingDirectory%/inc/API/bypass.php
-        - %currentWorkingDirectory%/inc/3rd-party/plugins/autoptimize.php
-        - %currentWorkingDirectory%/inc/admin/ui/notices.php
-        - %currentWorkingDirectory%/inc/functions/admin.php
-        - %currentWorkingDirectory%/inc/functions/api.php
-        - %currentWorkingDirectory%/inc/functions/files.php
-        - %currentWorkingDirectory%/inc/functions/formatting.php
-        - %currentWorkingDirectory%/inc/functions/htaccess.php
-        - %currentWorkingDirectory%/inc/functions/i18n.php
-        - %currentWorkingDirectory%/inc/functions/posts.php
-        # Composer autoloader "exclude-from-classmap"
-        - %currentWorkingDirectory%/inc/classes/class-wp-rocket-requirements-check.php
-        - %currentWorkingDirectory%/inc/vendors/classes/class-rocket-mobile-detect.php
-    scanDirectories:
-        - %currentWorkingDirectory%/inc/Dependencies/ActionScheduler
-    excludePaths:
-         - %currentWorkingDirectory%/inc/vendors/
-         # These need plugin stubs!
-         - %currentWorkingDirectory%/inc/classes/subscriber/third-party/
-         - %currentWorkingDirectory%/inc/3rd-party/
+	level: 2
+	inferPrivatePropertyTypeFromConstructor: true
+	paths:
+		# Test only the new architecture for now.
+		- %currentWorkingDirectory%/inc/Engine/
+		- %currentWorkingDirectory%/inc/Addon/
+		- %currentWorkingDirectory%/inc/ThirdParty/
+		- %currentWorkingDirectory%/tests/Integration/
+		- %currentWorkingDirectory%/tests/Unit/
+	bootstrapFiles:
+		# Must be first
+		- %currentWorkingDirectory%/inc/functions/options.php
+		# PHPStan bootstrap
+		- %currentWorkingDirectory%/tests/phpstan/phpstan-bootstrap.php
+		# Procedural code
+		- %currentWorkingDirectory%/inc/constants.php
+		- %currentWorkingDirectory%/inc/common/purge.php
+		- %currentWorkingDirectory%/inc/API/bypass.php
+		- %currentWorkingDirectory%/inc/3rd-party/plugins/autoptimize.php
+		- %currentWorkingDirectory%/inc/admin/ui/notices.php
+		- %currentWorkingDirectory%/inc/functions/admin.php
+		- %currentWorkingDirectory%/inc/functions/api.php
+		- %currentWorkingDirectory%/inc/functions/files.php
+		- %currentWorkingDirectory%/inc/functions/formatting.php
+		- %currentWorkingDirectory%/inc/functions/htaccess.php
+		- %currentWorkingDirectory%/inc/functions/i18n.php
+		- %currentWorkingDirectory%/inc/functions/posts.php
+		# Composer autoloader "exclude-from-classmap"
+		- %currentWorkingDirectory%/inc/classes/class-wp-rocket-requirements-check.php
+		- %currentWorkingDirectory%/inc/vendors/classes/class-rocket-mobile-detect.php
+	scanDirectories:
+		- %currentWorkingDirectory%/inc/Dependencies/ActionScheduler
+		- %currentWorkingDirectory%/tests/Fixtures/
+		- %currentWorkingDirectory%/vendor/antecedent/patchwork/
+		- %currentWorkingDirectory%/vendor/wpackagist-plugin/cloudflare/
+		- %currentWorkingDirectory%/vendor/wpackagist-plugin/amp/
+		- %currentWorkingDirectory%/vendor/wpackagist-plugin/hummingbird-performance/
+		- %currentWorkingDirectory%/vendor/wpackagist-plugin/the-events-calendar/
+		- %currentWorkingDirectory%/vendor/wpackagist-plugin/woocommerce/
+	scanFiles:
+		- %currentWorkingDirectory%/inc/admin/upgrader.php
+		- %currentWorkingDirectory%/inc/admin/options.php
+		- %currentWorkingDirectory%/vendor/php-stubs/wordpress-stubs/wordpress-stubs.php
+		- %currentWorkingDirectory%/vendor/php-stubs/wordpress-tests-stubs/wordpress-tests-stubs.php
+		- %currentWorkingDirectory%/wp-rocket.php
+	excludePaths:
+		 - %currentWorkingDirectory%/inc/vendors/
+		 # These need plugin stubs!
+		 - %currentWorkingDirectory%/inc/classes/subscriber/third-party/
+		 - %currentWorkingDirectory%/inc/3rd-party/

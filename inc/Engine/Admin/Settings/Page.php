@@ -284,9 +284,21 @@ class Page extends Abstract_Render {
 
 		$data['license_type'] = rocket_get_license_type( $user );
 
-		$data['license_class']       = time() < $user->licence_expiration ? 'wpr-isValid' : 'wpr-isInvalid';
-		$data['license_expiration']  = date_i18n( get_option( 'date_format' ), (int) $user->licence_expiration );
-		$data['is_from_one_dot_com'] = (bool) $user->{'has_one-com_account'};
+		if ( ! is_object( $user ) ) {
+			return $data;
+		}
+
+		if ( ! empty( $user->licence_expiration ) ) {
+			$data['license_class'] = time() < $user->licence_expiration ? 'wpr-isValid' : 'wpr-isInvalid';
+		}
+
+		if ( ! empty( $user->licence_expiration ) ) {
+			$data['license_expiration'] = date_i18n( get_option( 'date_format' ), (int) $user->licence_expiration );
+		}
+
+		if ( isset( $user->{'has_one-com_account'} ) ) {
+			$data['is_from_one_dot_com'] = (bool) $user->{'has_one-com_account'};
+		}
 
 		return $data;
 	}
@@ -418,30 +430,6 @@ class Page extends Abstract_Render {
 				'customer_data'    => $this->customer_data(),
 			]
 		);
-
-		$this->settings->add_settings_sections(
-			[
-				'status' => [
-					'title' => __( 'My Status', 'rocket' ),
-					'page'  => 'dashboard',
-				],
-			]
-		);
-
-		$this->settings->add_settings_fields(
-			[
-				'analytics_enabled' => [
-					'type'              => 'sliding_checkbox',
-					'label'             => __( 'Rocket Analytics', 'rocket' ),
-					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description'       => sprintf( __( 'I agree to share anonymous data with the development team to help improve WP Rocket. %1$sWhat info will we collect?%2$s', 'rocket' ), '<button class="wpr-js-popin">', '</button>' ),
-					'section'           => 'status',
-					'page'              => 'dashboard',
-					'default'           => 0,
-					'sanitize_callback' => 'sanitize_checkbox',
-				],
-			]
-		);
 	}
 
 	/**
@@ -464,9 +452,8 @@ class Page extends Abstract_Render {
 		$offline_beacon             = $this->beacon->get_suggest( 'offline' );
 		$fallback_css_beacon        = $this->beacon->get_suggest( 'fallback_css' );
 
-		$disable_combine_js  = $this->disable_combine_js();
-		$disable_combine_css = $this->disable_combine_css();
-		$disable_ocd         = 'local' === wp_get_environment_type();
+		$disable_combine_js = $this->disable_combine_js();
+		$disable_ocd        = 'local' === wp_get_environment_type();
 
 		/**
 		 * Filters the status of the RUCSS option.
@@ -551,7 +538,6 @@ class Page extends Abstract_Render {
 					'description'       => __( 'Minify CSS removes whitespace and comments to reduce the file size.', 'rocket' ),
 					'container_class'   => [
 						rocket_maybe_disable_minify_css() ? 'wpr-isDisabled' : '',
-						'wpr-field--parent',
 					],
 					'section'           => 'css',
 					'page'              => 'file_optimization',
@@ -559,11 +545,6 @@ class Page extends Abstract_Render {
 					'sanitize_callback' => 'sanitize_checkbox',
 					'input_attr'        => [
 						'disabled' => rocket_maybe_disable_minify_css() ? 1 : 0,
-					],
-					'warning'           => [
-						'title'        => __( 'This could break things!', 'rocket' ),
-						'description'  => __( 'If you notice any errors on your website after having activated this setting, just deactivate it again, and your site will be back to normal.', 'rocket' ),
-						'button_label' => __( 'Activate minify CSS', 'rocket' ),
 					],
 				],
 				'exclude_css'                  => [
@@ -681,7 +662,6 @@ class Page extends Abstract_Render {
 					'description'       => __( 'Minify JavaScript removes whitespace and comments to reduce the file size.', 'rocket' ),
 					'container_class'   => [
 						rocket_maybe_disable_minify_js() ? 'wpr-isDisabled' : '',
-						'wpr-field--parent',
 					],
 					'section'           => 'js',
 					'page'              => 'file_optimization',
@@ -690,11 +670,6 @@ class Page extends Abstract_Render {
 						'disabled' => rocket_maybe_disable_minify_js() ? 1 : 0,
 					],
 					'sanitize_callback' => 'sanitize_checkbox',
-					'warning'           => [
-						'title'        => __( 'This could break things!', 'rocket' ),
-						'description'  => __( 'If you notice any errors on your website after having activated this setting, just deactivate it again, and your site will be back to normal.', 'rocket' ),
-						'button_label' => __( 'Activate minify JavaScript', 'rocket' ),
-					],
 				],
 				'minify_concatenate_js'        => [
 					'type'              => 'checkbox',
@@ -2168,21 +2143,6 @@ class Page extends Abstract_Render {
 		}
 
 		return ! (bool) get_rocket_option( 'minify_js', 0 );
-	}
-
-	/**
-	 * Checks if combine CSS option should be disabled
-	 *
-	 * @since 3.11
-	 *
-	 * @return bool
-	 */
-	private function disable_combine_css(): bool {
-		if ( (bool) get_rocket_option( 'remove_unused_css', 0 ) ) {
-			return true;
-		}
-
-		return ! (bool) get_rocket_option( 'minify_css', 0 );
 	}
 
 	/**

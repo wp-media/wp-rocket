@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Preload\Controller;
 
@@ -56,15 +57,22 @@ class PreloadUrl {
 	 * Preload an url.
 	 *
 	 * @param string $url url to preload.
+	 *
 	 * @return void
 	 */
 	public function preload_url( string $url ) {
+		$start    = 0;
+		$duration = 0;
 
 		$is_mobile = $this->options->get( 'do_caching_mobile_files', false );
+
 		if ( $this->is_already_cached( $url ) && ( ! $is_mobile || $this->is_already_cached( $url, true ) ) ) {
 			$this->query->make_status_complete( $url );
 			return;
 		}
+
+		// Should we perform a duration check?
+		$check_duration = ( false === get_transient( 'rocket_preload_check_duration' ) ) ? true : false;
 
 		$requests = [
 			[
@@ -117,6 +125,11 @@ class PreloadUrl {
 				]
 			);
 
+			if ( $check_duration ) {
+				$headers['blocking'] = true;
+				$headers['timeout']  = 20;
+			}
+
 			/**
 			 * Filters the arguments for the preload request.
 			 *
@@ -131,19 +144,49 @@ class PreloadUrl {
 				return;
 			}
 
+			if ( $check_duration ) {
+				$start = microtime( true );
+			}
+
 			wp_safe_remote_get(
 				user_trailingslashit( $request['url'] ),
 				$headers
 			);
+
+			if ( $check_duration ) {
+				$duration = ( microtime( true ) - $start ); // Duration of the request.
+			}
+
+			$default_delay_between = 500000;
+
 			/**
 			 * Filter the delay between each preload request.
 			 *
-			 * @param float $delay_between the defined delay.
-			 * @returns float
+			 * @param int $delay_between the defined delay.
 			 */
-			$delay_between = apply_filters( 'rocket_preload_delay_between_requests', 500000 );
+			$delay_between = apply_filters( 'rocket_preload_delay_between_requests', $default_delay_between );
+			$delay_between = absint( $delay_between );
+
+			if ( empty( $delay_between ) ) {
+				$delay_between = $default_delay_between;
+			}
 
 			usleep( $delay_between );
+
+			if ( ! $check_duration ) {
+				continue;
+			}
+
+			$duration_transient = get_transient( 'rocket_preload_previous_requests_durations' );
+			$average_duration   = ( false !== $duration_transient ) ? $duration_transient : 0;
+
+			// Update average duration.
+			$average_duration = ( $average_duration <= 0 ) ? $duration : ( $average_duration * 0.7 + $duration * 0.3 );
+
+			set_transient( 'rocket_preload_previous_requests_durations', $average_duration, 5 * MINUTE_IN_SECONDS );
+
+			set_transient( 'rocket_preload_check_duration', $duration, MINUTE_IN_SECONDS ); // Don't check request duration for 1 minute.
+			$check_duration = false;
 		}
 	}
 
@@ -175,10 +218,37 @@ class PreloadUrl {
 	 * @return void
 	 */
 	public function process_pending_jobs() {
-
 		$pending_actions = $this->queue->get_pending_preload_actions();
 
-		$count = ( (int) apply_filters( 'rocket_preload_cache_pending_jobs_cron_rows_count', 45 ) ) - count( $pending_actions );
+		// Retrieve batch size limits and request timing estimation.
+		/**
+		 * Get the number of pending cron job
+		 *
+		 * @param int $args Maximum number of job size.
+		 */
+		$max_batch_size = ( (int) apply_filters( 'rocket_preload_cache_pending_jobs_cron_rows_count', 45 ) ) - count( $pending_actions );
+
+		/**
+		 * Get the number of in progress cron job
+		 *
+		 * @param int $args Minimum number of job size.
+		 */
+		$min_batch_size = ( (int) apply_filters( 'rocket_preload_cache_min_in_progress_jobs_count', 5 ) );
+
+		$average_duration = get_transient( 'rocket_preload_previous_requests_durations' );
+
+		/**
+		 * Estimate batch size based on request duration.
+		 * In case no estimation or there is an issue with the value use $min_batch_size.
+		*/
+		$next_batch_size = (int) ( ! $average_duration ? $min_batch_size : round( -5 * $average_duration + 55 ) );
+
+		// Limit next_batch_size.
+		$next_batch_size = max( $next_batch_size, $min_batch_size ); // Not lower than 5.
+		$next_batch_size = min( $next_batch_size, $max_batch_size ); // Not higher than 45.
+		$next_batch_size = max( $next_batch_size, 0 ); // Not lower than 0.
+
+		// Get all in-progress jobs with request sent and no results.
 		/**
 		 * Set the delay before an in-progress row is considered as outdated.
 		 *
@@ -193,11 +263,11 @@ class PreloadUrl {
 			 * @param int $count number of rows in batches.
 			 * @return int
 			 */
-			(int) ( $count / 15 )
+			(int) ( $max_batch_size / 15 )
 		);
-
 		$stuck_rows = $this->query->get_outdated_in_progress_jobs( $delay );
 
+		// Make sure the request has been sent for those jobs.
 		$stuck_rows = array_filter(
 			$stuck_rows,
 			function ( $row ) use ( $pending_actions ) {
@@ -210,10 +280,13 @@ class PreloadUrl {
 			}
 			);
 
+		// Make those hanging jobs failed.
 		foreach ( $stuck_rows as $row ) {
-			$this->query->make_status_failed( $row->id );
+			$this->query->make_status_failed( (int) $row->id );
 		}
-		$rows = $this->query->get_pending_jobs( $count );
+
+		// Add new jobs in progress.
+		$rows = $this->query->get_pending_jobs( $next_batch_size );
 		foreach ( $rows as $row ) {
 
 			if ( $this->is_excluded_by_filter( $row->url ) ) {
@@ -221,7 +294,7 @@ class PreloadUrl {
 				continue;
 			}
 
-			$this->query->make_status_inprogress( $row->id );
+			$this->query->make_status_inprogress( (int) $row->id );
 			$this->queue->add_job_preload_job_preload_url_async( $row->url );
 
 		}
