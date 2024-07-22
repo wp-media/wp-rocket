@@ -120,6 +120,12 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'warmup_controller' ) );
 
 		$this->getContainer()->addShared( 'atf_factory', Factory::class )
-			->addArgument( $this->getContainer()->get( 'atf_ajax_controller' ) );
+			->addArguments(
+				[
+					$this->getContainer()->get( 'atf_ajax_controller' ),
+					$this->getContainer()->get( 'atf_controller' ),
+					$this->getContainer()->get( 'atf_context' ),
+				]
+			);
 	}
 }
