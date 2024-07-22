@@ -291,4 +291,15 @@ class DynamicLists extends Abstract_Render {
 
 		return isset( $lists->staging_domains ) ? $lists->staging_domains : [];
 	}
+
+	/**
+	 * Get the JS minify excluded templates
+	 *
+	 * @return array
+	 */
+	public function get_exclude_js_templates(): array {
+		$lists = $this->providers['defaultlists']->data_manager->get_lists();
+
+		return $lists->exclude_js_template ?? [];
+	}
 }

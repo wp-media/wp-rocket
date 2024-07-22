@@ -5,6 +5,7 @@ use WP_Rocket\Dependencies\Minify\JS as MinifyJS;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\AssetsLocalCache;
 use WP_Rocket\Engine\Optimization\DeferJS\DeferJS;
+use WP_Rocket\Engine\Optimization\DynamicLists\DynamicLists;
 use WP_Rocket\Engine\Optimization\Minify\ProcessorInterface;
 use WP_Rocket\Logger\Logger;
 
@@ -55,13 +56,20 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 	 *
 	 * @since 3.1
 	 *
-	 * @param Options_Data     $options     Plugin options instance.
-	 * @param MinifyJS         $minifier    Minifier instance.
-	 * @param AssetsLocalCache $local_cache Assets local cache instance.
-	 * @param DeferJS          $defer_js    Defer JS instance.
+	 * @param Options_Data     $options       Plugin options instance.
+	 * @param MinifyJS         $minifier      Minifier instance.
+	 * @param AssetsLocalCache $local_cache   Assets local cache instance.
+	 * @param DeferJS          $defer_js      Defer JS instance.
+	 * @param DynamicLists     $dynamic_lists  Dynamic list instance.
 	 */
-	public function __construct( Options_Data $options, MinifyJS $minifier, AssetsLocalCache $local_cache, DeferJS $defer_js ) {
-		parent::__construct( $options, $local_cache );
+	public function __construct(
+		Options_Data $options,
+		MinifyJS $minifier,
+		AssetsLocalCache $local_cache,
+		DeferJS $defer_js,
+		DynamicLists $dynamic_lists
+	) {
+		parent::__construct( $options, $local_cache, $dynamic_lists );
 
 		$this->minifier          = $minifier;
 		$this->excluded_defer_js = implode( '|', $defer_js->get_excluded() );
