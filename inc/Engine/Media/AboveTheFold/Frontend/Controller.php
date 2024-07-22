@@ -407,6 +407,7 @@ class Controller {
 
 		$default_delay = 500;
 
+		$delay = apply_filters_deprecated( 'rocket_lcp_delay', [ $default_delay ], '3.17', 'rocket_beacon_delay' );
 		/**
 		 * Filters the delay before the LCP beacon is triggered.
 		 *
