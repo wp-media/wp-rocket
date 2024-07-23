@@ -8,6 +8,7 @@ use WP_Rocket\Engine\Common\PerformanceHints\AJAX\Subscriber as AjaxSubscriber;
 use WP_Rocket\Engine\Common\PerformanceHints\Frontend\Processor as FrontendProcessor;
 use WP_Rocket\Engine\Common\PerformanceHints\Frontend\Subscriber as FrontendSubscriber;
 use WP_Rocket\Engine\Common\PerformanceHints\Admin\Subscriber as AdminSubscriber;
+use WP_Rocket\Engine\Common\PerformanceHints\Admin\AdminContext;
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
@@ -24,6 +25,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'frontend_processor',
 		'performance_hints_frontend_subscriber',
 		'performance_hints_admin_subscriber',
+		'admin_context',
 	];
 
 	/**
@@ -75,10 +77,20 @@ class ServiceProvider extends AbstractServiceProvider {
 				]
 			);
 
-		$this->getContainer()->addShared( 'performance_hints_admin_subscriber', AdminSubscriber::class )
+		$this->getContainer()->add( 'admin_context', AdminContext::class )
 			->addArguments(
 				[
 					$factories,
+					$this->getContainer()->get( 'table' ),
+					$this->getContainer()->get( 'atf_query' ),
+					$this->getContainer()->get( 'atf_context' ),
+				]
+			);
+
+		$this->getContainer()->addShared( 'performance_hints_admin_subscriber', AdminSubscriber::class )
+			->addArguments(
+				[
+					$this->getContainer()->get( 'admin_context' ),
 				]
 			);
 	}

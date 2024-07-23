@@ -41,8 +41,8 @@ class AdminContext {
 	 *
 	 * @param array    $factories Array of factories.
 	 * @param ATFTable $table ATF Table instance.
-	 * @param ATFQuery $query Queries instance.( Should removed when the database products are returned in the concrete factory ).
-	 * @param Context  $context Context instance..
+	 * @param ATFQuery $query Queries instance.
+	 * @param Context  $context Context instance.
 	 */
 	public function __construct( array $factories, ATFTable $table, ATFQuery $query, Context $context ) {
 		$this->factories = $factories;

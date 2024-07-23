@@ -7,19 +7,19 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
 
 class Subscriber implements Subscriber_Interface {
 	/**
-	 * Array of Factories.
+	 * AdminContext instance.
 	 *
-	 * @var array
+	 * @var AdminContext
 	 */
-	private $factories;
+	private $admin_context;
 
 	/**
 	 * Instantiate the class
 	 *
-	 * @param array $factories Array of factories.
+	 * @param AdminContext $admin_context Admin context instance.
 	 */
-	public function __construct( array $factories ) {
-		$this->factories = $factories;
+	public function __construct( AdminContext $admin_context ) {
+		$this->admin_context = $admin_context;
 	}
 
 	/**
@@ -48,9 +48,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function truncate_performance_table(): void {
-		foreach ( $this->factories as $factory ) {
-			$factory->get_admin_controller()->truncate_performance_table();
-		}
+		$this->admin_context->truncate_performance_table();
 	}
 
 	/**
@@ -61,9 +59,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function delete_post( int $post_id ): void {
-		foreach ( $this->factories as $factory ) {
-			$factory->get_admin_controller()->delete_post( $post_id );
-		}
+		$this->admin_context->delete_post( $post_id );
 	}
 
 	/**
@@ -74,9 +70,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function delete_term( int $term_id ): void {
-		foreach ( $this->factories as $factory ) {
-			$factory->get_admin_controller()->delete_term( $term_id );
-		}
+		$this->admin_context->delete_term( $term_id );
 	}
 
 	/**
@@ -86,10 +80,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return array
 	 */
-	public function truncate_atf_admin( $clean ) {
-		foreach ( $this->factories as $factory ) {
-			$factory->get_admin_controller()->truncate_admin_rows( $clean );
-		}
-		return $this->controller->truncate_admin_rows( $clean );
+	public function truncate_admin_rows( array $clean ): array {
+		return $this->admin_context->truncate_admin_rows( $clean );
 	}
 }
