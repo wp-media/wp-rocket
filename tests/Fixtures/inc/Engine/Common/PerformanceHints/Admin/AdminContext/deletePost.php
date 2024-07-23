@@ -6,6 +6,9 @@ return [
 			'filter' => false,
 			'post_id' => 1,
 			'url' => 'http://example.org',
+			'factories' => [
+				'get_admin_controller'
+			]
 		],
 		'expected' => false,
 	],
