@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace WP_Rocket\Engine\Media\AboveTheFold\WarmUp;
+namespace WP_Rocket\Engine\Common\PerformanceHints\WarmUp;
 
 use WP_Rocket\Engine\Common\Queue\AbstractASQueue;
 
 class Queue extends AbstractASQueue {
 	/**
-	 * ATF queue group
+	 * PerformanceHints queue group
 	 *
 	 * @var string
 	 */
-	protected $group = 'rocket-atf-warmup';
+	protected $group = 'rocket-performance-hints-warmup';
 
 	/**
 	 * Add an async job to warm up home links
