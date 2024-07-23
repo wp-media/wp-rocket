@@ -45,6 +45,7 @@ To be able to validate your license and use the plugin, you will also have to ma
 | `gulp build:js:lazyloadcss:min` |                             Builds lazyload CSS js file, the minified version (lazyload-css.min.js)                              |
 | `gulp build:js:lcp`         |                  Builds lcp beacon script, the minified version (lcp-beacon.min.js, source file, and map file)                   |
 | `gulp build:js:all`            |              Builds all js files mentioned above (wpr-admin.js, wpr-admin.min.js, lazyload-css.min.js, lcp-beacon)               |
+| `gulp build:js:lcp`            |              Builds lcp beacon script, the minified version (wpr-beacon.min.js, source file, and map file)               |
 | `gulp js:watch`                |                                Watches all js files changes and build them again with any change.                                |
 
 
