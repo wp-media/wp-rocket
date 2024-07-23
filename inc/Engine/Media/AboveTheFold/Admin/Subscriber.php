@@ -29,61 +29,9 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'switch_theme'                  => 'truncate_atf',
-			'permalink_structure_changed'   => 'truncate_atf',
-			'rocket_domain_options_changed' => 'truncate_atf',
-			'wp_trash_post'                 => 'delete_post_atf',
-			'delete_post'                   => 'delete_post_atf',
-			'clean_post_cache'              => 'delete_post_atf',
-			'wp_update_comment_count'       => 'delete_post_atf',
-			'edit_term'                     => 'delete_term_atf',
-			'pre_delete_term'               => 'delete_term_atf',
-			'rocket_saas_clean_all'         => 'truncate_atf_admin',
-			'rocket_saas_clean_url'         => 'clean_url',
-			'wp_rocket_upgrade'             => [ 'truncate_on_update', 10, 2 ],
+			'rocket_saas_clean_url' => 'clean_url',
+			'wp_rocket_upgrade'     => [ 'truncate_on_update', 10, 2 ],
 		];
-	}
-
-	/**
-	 * Truncate delete ATF DB table.
-	 *
-	 * @return void
-	 */
-	public function truncate_atf() {
-		$this->controller->truncate_performance_table();
-	}
-
-	/**
-	 * Delete ATF row on update Post or delete post.
-	 *
-	 * @param int $post_id The post ID.
-	 *
-	 * @return void
-	 */
-	public function delete_post_atf( $post_id ) {
-		$this->controller->delete_post( $post_id );
-	}
-
-	/**
-	 * Delete ATF row on update or delete term.
-	 *
-	 * @param int $term_id the term ID.
-	 *
-	 * @return void
-	 */
-	public function delete_term_atf( $term_id ) {
-		$this->controller->delete_term( $term_id );
-	}
-
-	/**
-	 * Deletes rows when triggering clean from admin
-	 *
-	 * @param array $clean An array containing the status and message.
-	 *
-	 * @return array
-	 */
-	public function truncate_atf_admin( $clean ) {
-		return $this->controller->truncate_admin_rows( $clean );
 	}
 
 	/**

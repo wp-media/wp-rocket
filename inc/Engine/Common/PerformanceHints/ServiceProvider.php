@@ -7,6 +7,7 @@ use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvi
 use WP_Rocket\Engine\Common\PerformanceHints\AJAX\Subscriber as AjaxSubscriber;
 use WP_Rocket\Engine\Common\PerformanceHints\Frontend\Processor as FrontendProcessor;
 use WP_Rocket\Engine\Common\PerformanceHints\Frontend\Subscriber as FrontendSubscriber;
+use WP_Rocket\Engine\Common\PerformanceHints\Admin\Subscriber as AdminSubscriber;
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
@@ -22,6 +23,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'performance_hints_ajax_subscriber',
 		'frontend_processor',
 		'performance_hints_frontend_subscriber',
+		'performance_hints_admin_subscriber',
 	];
 
 	/**
@@ -70,6 +72,13 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArguments(
 				[
 					$this->getContainer()->get( 'frontend_processor' ),
+				]
+			);
+
+		$this->getContainer()->addShared( 'performance_hints_admin_subscriber', AdminSubscriber::class )
+			->addArguments(
+				[
+					$factories,
 				]
 			);
 	}

@@ -6,6 +6,7 @@ namespace WP_Rocket\Engine\Media\AboveTheFold;
 
 use WP_Rocket\Engine\Common\PerformanceHints\FactoryInterface;
 use WP_Rocket\Engine\Common\PerformanceHints\AJAX\ControllerInterface as AjaxControllerInterface;
+use WP_Rocket\Engine\Common\PerformanceHints\Admin\ControllerInterface as AdminControllerInterface;
 use WP_Rocket\Engine\Common\PerformanceHints\Frontend\ControllerInterface as FrontendControllerInterface;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
 
@@ -33,16 +34,30 @@ class Factory implements FactoryInterface {
 	protected $context;
 
 	/**
-	 * Instatiate the class.
+	 * Admin controller instance.
+	 *
+	 * @var AdminControllerInterface
+	 */
+	protected $admin_controller;
+
+	/**
+	 * Instantiate the class.
 	 *
 	 * @param AjaxControllerInterface     $ajax_controller ATF AJAX Controller instance.
 	 * @param FrontendControllerInterface $frontend_controller ATF Frontend Controller instance.
 	 * @param ContextInterface            $context ATF Context instance.
+	 * @param AdminControllerInterface    $admin_controller ATF Admin controller instance.
 	 */
-	public function __construct( AjaxControllerInterface $ajax_controller, FrontendControllerInterface $frontend_controller, ContextInterface $context ) {
+	public function __construct(
+		AjaxControllerInterface $ajax_controller,
+		FrontendControllerInterface $frontend_controller,
+		ContextInterface $context,
+		AdminControllerInterface $admin_controller
+	) {
 		$this->ajax_controller     = $ajax_controller;
 		$this->frontend_controller = $frontend_controller;
 		$this->context             = $context;
+		$this->admin_controller    = $admin_controller;
 	}
 
 	/**
@@ -84,5 +99,14 @@ class Factory implements FactoryInterface {
 	 */
 	public function get_context(): ContextInterface {
 		return $this->context;
+	}
+
+	/**
+	 * Provides an Admin object.
+	 *
+	 * @return AdminControllerInterface
+	 */
+	public function get_admin_controller(): AdminControllerInterface {
+		return $this->admin_controller;
 	}
 }

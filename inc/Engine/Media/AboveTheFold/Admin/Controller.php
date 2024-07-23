@@ -152,7 +152,7 @@ class Controller implements ControllerInterface {
 	 *
 	 * @return void
 	 */
-	public function clean_url() {
+	public function clean_url(): void {
 		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			wp_nonce_ays( '' );
 		}
