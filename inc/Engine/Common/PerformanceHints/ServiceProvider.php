@@ -7,6 +7,8 @@ use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvi
 use WP_Rocket\Engine\Common\PerformanceHints\AJAX\Subscriber as AjaxSubscriber;
 use WP_Rocket\Engine\Common\PerformanceHints\Frontend\Processor as FrontendProcessor;
 use WP_Rocket\Engine\Common\PerformanceHints\Frontend\Subscriber as FrontendSubscriber;
+use WP_Rocket\Engine\Common\PerformanceHints\Cron\CronProcessor;
+use WP_Rocket\Engine\Common\PerformanceHints\Cron\Subscriber as CronSubscriber;
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
@@ -22,6 +24,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		'performance_hints_ajax_subscriber',
 		'frontend_processor',
 		'performance_hints_frontend_subscriber',
+		'performance_hints_cron_subscriber',
+		'cron_processor'
 	];
 
 	/**
@@ -70,6 +74,20 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArguments(
 				[
 					$this->getContainer()->get( 'frontend_processor' ),
+				]
+			);
+
+		$this->getContainer()->add( 'cron_processor', CronProcessor::class )
+			->addArguments(
+				[
+					$this->getContainer()->get( 'atf_query' ),
+				]
+			);
+
+		$this->getContainer()->addShared( 'performance_hints_cron_subscriber', CronSubscriber::class )
+			->addArguments(
+				[
+					$this->getContainer()->get( 'cron_processor' ),
 				]
 			);
 	}

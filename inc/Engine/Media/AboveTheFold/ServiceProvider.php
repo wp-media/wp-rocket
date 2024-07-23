@@ -10,7 +10,6 @@ use WP_Rocket\Engine\Media\AboveTheFold\Context\Context;
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Tables\AboveTheFold as ATFTable;
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Queries\AboveTheFold as ATFQuery;
 use WP_Rocket\Engine\Media\AboveTheFold\Frontend\{Controller as FrontController, Subscriber as FrontSubscriber};
-use WP_Rocket\Engine\Media\AboveTheFold\Cron\{Controller as CronController, Subscriber as CronSubscriber};
 use WP_Rocket\Engine\Media\AboveTheFold\WarmUp\{
 	APIClient,
 	Controller as WarmUpController,
@@ -36,8 +35,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		'atf_subscriber',
 		'atf_admin_controller',
 		'atf_admin_subscriber',
-		'atf_cron_controller',
-		'atf_cron_subscriber',
 		'atf_ajax_controller',
 		'atf_ajax_subscriber',
 		'warmup_controller',
@@ -87,11 +84,6 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'atf_context' ) );
 		$this->getContainer()->addShared( 'atf_admin_subscriber', AdminSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'atf_admin_controller' ) );
-
-		$this->getContainer()->add( 'atf_cron_controller', CronController::class )
-			->addArgument( $this->getContainer()->get( 'atf_query' ) );
-		$this->getContainer()->addShared( 'atf_cron_subscriber', CronSubscriber::class )
-			->addArgument( $this->getContainer()->get( 'atf_cron_controller' ) );
 
 		$this->getContainer()->add( 'atf_ajax_controller', AJAXController::class )
 			->addArguments(
