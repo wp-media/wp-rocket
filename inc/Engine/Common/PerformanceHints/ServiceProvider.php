@@ -7,6 +7,12 @@ use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvi
 use WP_Rocket\Engine\Common\PerformanceHints\AJAX\Subscriber as AjaxSubscriber;
 use WP_Rocket\Engine\Common\PerformanceHints\Frontend\Processor as FrontendProcessor;
 use WP_Rocket\Engine\Common\PerformanceHints\Frontend\Subscriber as FrontendSubscriber;
+use WP_Rocket\Engine\Common\PerformanceHints\WarmUp\{
+	APIClient,
+	Controller as WarmUpController,
+	Subscriber as WarmUpSubscriber,
+	Queue
+};
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
@@ -22,6 +28,10 @@ class ServiceProvider extends AbstractServiceProvider {
 		'performance_hints_ajax_subscriber',
 		'frontend_processor',
 		'performance_hints_frontend_subscriber',
+        'performance_hints_warmup_apiclient',
+        'performance_hints_warmup_queue',
+        'performance_hints_warmup_controller',
+        'performance_hints_warmup_subscriber',
 	];
 
 	/**
@@ -72,5 +82,24 @@ class ServiceProvider extends AbstractServiceProvider {
 					$this->getContainer()->get( 'frontend_processor' ),
 				]
 			);
+
+        $this->getContainer()->add( 'performance_hints_warmup_apiclient', APIClient::class )
+			->addArgument( $this->getContainer()->get( 'options' ) );
+
+		$this->getContainer()->add( 'performance_hints_warmup_queue', Queue::class );
+
+		$this->getContainer()->add( 'performance_hints_warmup_controller', WarmUpController::class )
+			->addArguments(
+				[
+					$factories,
+					$this->getContainer()->get( 'options' ),
+					$this->getContainer()->get( 'performance_hints_warmup_apiclient' ),
+					$this->getContainer()->get( 'user' ),
+					$this->getContainer()->get( 'performance_hints_warmup_queue' ),
+				]
+			);
+
+        $this->getContainer()->addShared( 'performance_hints_warmup_subscriber', WarmUpSubscriber::class )
+			->addArgument( $this->getContainer()->get( 'performance_hints_warmup_controller' ) );
 	}
 }
