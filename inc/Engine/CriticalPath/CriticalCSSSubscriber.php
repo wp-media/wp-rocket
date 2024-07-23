@@ -20,7 +20,7 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 	/**
 	 * Instance of Critical CSS.
 	 *
-	 * @var Critical_CSS
+	 * @var CriticalCSS
 	 */
 	protected $critical_css;
 

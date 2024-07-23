@@ -1,15 +1,23 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\Inc\Engine\Media\AboveTheFold\AJAX\Subscriber;
+namespace WP_Rocket\Tests\Integration\Inc\Engine\Common\Performance\AJAX\Subscriber;
 
 use WP_Rocket\Tests\Integration\AjaxTestCase;
 
 /**
+<<<<<<<< HEAD:tests/Integration/inc/Engine/Common/PerformanceHints/AJAX/Subscriber/addBeaconData.php
  * Test class covering WP_Rocket\Engine\Media\AboveTheFold\AJAX\Subscriber::add_beacon_data
+========
+ * Test class covering WP_Rocket\Engine\Common\PerformanceHints\AJAX\Subscriber::add_data
+>>>>>>>> 3.17-atf-refactor:tests/Integration/inc/Engine/Common/PerformanceHints/AJAX/Subscriber/addData.php
  *
- * @group AboveTheFold
+ * @group PerformanceHints
  */
+<<<<<<<< HEAD:tests/Integration/inc/Engine/Common/PerformanceHints/AJAX/Subscriber/addBeaconData.php
 class Test_AddBeaconData extends AjaxTestCase {
+========
+class Test_AddData extends AjaxTestCase {
+>>>>>>>> 3.17-atf-refactor:tests/Integration/inc/Engine/Common/PerformanceHints/AJAX/Subscriber/addData.php
 	private $allowed;
 
 	public function set_up() {

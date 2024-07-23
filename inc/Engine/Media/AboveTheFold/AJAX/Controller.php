@@ -6,8 +6,9 @@ namespace WP_Rocket\Engine\Media\AboveTheFold\AJAX;
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Queries\AboveTheFold as ATFQuery;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Engine\Optimization\UrlTrait;
+use WP_Rocket\Engine\Common\PerformanceHints\AJAX\ControllerInterface;
 
-class Controller {
+class Controller implements ControllerInterface {
 	use UrlTrait;
 
 	/**
@@ -47,9 +48,9 @@ class Controller {
 	/**
 	 * Add LCP data to the database
 	 *
-	 * @return bool
+	 * @return void
 	 */
-	public function add_beacon_data() {
+	public function add_data(): void {
 		check_ajax_referer( 'rocket_beacon', 'rocket_beacon_nonce' );
 
 		if ( ! $this->context->is_allowed() ) {
@@ -88,12 +89,12 @@ class Controller {
 				continue;
 			}
 
-			if ( 'lcp' === $image->label ) {
+			if ( isset( $image->label ) && 'lcp' === $image->label ) {
 				$lcp = $image_object;
 				continue;
 			}
 
-			if ( 'above-the-fold' === $image->label && 0 < $max_atf_images_number ) {
+			if ( isset( $image->label ) && 'above-the-fold' === $image->label && 0 < $max_atf_images_number ) {
 				$viewport[] = $image_object;
 
 				--$max_atf_images_number;
@@ -248,7 +249,7 @@ class Controller {
 	 *
 	 * @return void
 	 */
-	public function check_beacon_data(): void {
+	public function check_data(): void {
 		check_ajax_referer( 'rocket_beacon', 'rocket_beacon_nonce' );
 
 		if ( ! $this->context->is_allowed() ) {
@@ -275,8 +276,8 @@ class Controller {
 	 * @param object $image_object Image full object.
 	 * @return bool
 	 */
-	private function validate_image( object $image_object ): bool {
-		$valid_image = empty( $image_object->src ) || $this->validate_image_src( $image_object->src ?? '' );
+	private function validate_image( $image_object ): bool {
+		$valid_image = ! empty( $image_object->src ) ? $this->validate_image_src( $image_object->src ?? '' ) : true;
 
 		/**
 		 * Filters If the image src is a valid image or not.
