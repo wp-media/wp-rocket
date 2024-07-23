@@ -1,6 +1,6 @@
 # Welcome to the WP Rocket GitHub Repository
 
-[![Build Status](https://travis-ci.com/wp-media/wp-rocket.svg?branch=master)](https://travis-ci.com/wp-media/wp-rocket)
+[![Unit/Integration tests](https://github.com/wp-media/wp-rocket/actions/workflows/test_wprocket_php8.yml/badge.svg)](https://github.com/wp-media/wp-rocket/actions/workflows/test_wprocket_php8.yml)
 
 Feel free to browse the source and keep track of our plugin's progress. You can stay informed of our latest versions via our [blog](https://wp-rocket.me/blog/?utm_source=github&utm_medium=wp_rocket_profile) or via Twitter [@wp_rocket](https://twitter.com/wp_rocket).
 
