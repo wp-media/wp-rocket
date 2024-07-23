@@ -81,7 +81,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArguments(
 				[
 					$factories,
-					$this->getContainer()->get( 'table' ),
+					$this->getContainer()->get( 'atf_table' ),
 					$this->getContainer()->get( 'atf_query' ),
 					$this->getContainer()->get( 'atf_context' ),
 				]
