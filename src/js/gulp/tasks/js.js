@@ -64,8 +64,7 @@ class gulpJs {
 			() => this.buildAppUnmin(),
 			() => this.buildAppMin(),
 			() => this.buildLazyloadCssMin(),
-			() => this.buildLcpBeaconUnMin(),
-			() => this.buildLcpBeaconMin()
+			() => this.buildLcpBeacon()
 		);
 	}
 
