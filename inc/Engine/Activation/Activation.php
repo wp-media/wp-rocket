@@ -18,6 +18,8 @@ use WP_Rocket\ThirdParty\Hostings\ServiceProvider as HostingsServiceProvider;
  * @since 3.6.3
  */
 class Activation {
+	const ACTIVATION_ENDPOINT = 'https://api.wp-rocket.me/api/wp-rocket/activate-licence.php';
+
 	/**
 	 * Aliases in the container for each class that needs to call its activate method
 	 *
@@ -97,7 +99,7 @@ class Activation {
 
 		// Update customer key & licence.
 		wp_remote_get(
-			WP_ROCKET_WEB_API . 'activate-licence.php',
+			self::ACTIVATION_ENDPOINT,
 			[
 				'blocking' => false,
 			]
