@@ -31,10 +31,10 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'wp_ajax_rocket_lcp'              => 'add_data',
-			'wp_ajax_nopriv_rocket_lcp'       => 'add_data',
-			'wp_ajax_rocket_check_lcp'        => 'check_data',
-			'wp_ajax_nopriv_rocket_check_lcp' => 'check_data',
+			'wp_ajax_rocket_beacon'              => 'add_data',
+			'wp_ajax_nopriv_rocket_beacon'       => 'add_data',
+			'wp_ajax_rocket_check_beacon'        => 'check_data',
+			'wp_ajax_nopriv_rocket_check_beacon' => 'check_data',
 		];
 	}
 
