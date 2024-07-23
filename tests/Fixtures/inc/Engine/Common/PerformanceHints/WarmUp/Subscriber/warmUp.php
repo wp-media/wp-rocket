@@ -4,7 +4,7 @@ return [
 		'config'   => [
 			'wp_env' => 'production',
 			'remove_unused_css' => 0,
-			'is_allowed' => true,
+			'is_allowed' => [1],
 			'links' => [
 				'http://example.com/link1',
 				'http://example.com/link2',
@@ -16,7 +16,7 @@ return [
 		'config'   => [
 			'wp_env' => 'local',
 			'remove_unused_css' => 0,
-			'is_allowed' => true,
+			'is_allowed' => [1],
 			'links' => [
 			],
 		],
@@ -26,7 +26,7 @@ return [
 		'config'   => [
 			'wp_env' => 'production',
 			'remove_unused_css' => 1,
-			'is_allowed' => true,
+			'is_allowed' => [1],
 			'links' => [
 			],
 		],
@@ -36,7 +36,7 @@ return [
 		'config'   => [
 			'wp_env' => 'production',
 			'remove_unused_css' => 0,
-			'is_allowed' => false,
+			'is_allowed' => [],
 			'links' => [
 			],
 		],
