@@ -5,19 +5,11 @@ namespace WP_Rocket\Tests\Integration\Inc\Engine\Common\Performance\AJAX\Subscri
 use WP_Rocket\Tests\Integration\AjaxTestCase;
 
 /**
-<<<<<<<< HEAD:tests/Integration/inc/Engine/Common/PerformanceHints/AJAX/Subscriber/checkBeaconData.php
- * @covers WP_Rocket\Engine\Media\AboveTheFold\AJAX\Subscriber::check_beacon_data
-========
  * @covers WP_Rocket\Engine\Common\PerformanceHints\AJAX\Subscriber::check_data
->>>>>>>> 3.17-atf-refactor:tests/Integration/inc/Engine/Common/PerformanceHints/AJAX/Subscriber/checkData.php
  *
  * @group PerformanceHints
  */
-<<<<<<<< HEAD:tests/Integration/inc/Engine/Common/PerformanceHints/AJAX/Subscriber/checkBeaconData.php
-class Test_CheckBeaconData extends AjaxTestCase {
-========
 class Test_CheckData extends AjaxTestCase {
->>>>>>>> 3.17-atf-refactor:tests/Integration/inc/Engine/Common/PerformanceHints/AJAX/Subscriber/checkData.php
 	private $allowed;
 
 	public function set_up() {
