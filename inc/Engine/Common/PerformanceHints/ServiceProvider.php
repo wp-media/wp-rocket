@@ -5,6 +5,8 @@ namespace WP_Rocket\Engine\Common\PerformanceHints;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Engine\Common\PerformanceHints\AJAX\Subscriber as AjaxSubscriber;
+use WP_Rocket\Engine\Common\PerformanceHints\Frontend\Processor as FrontendProcessor;
+use WP_Rocket\Engine\Common\PerformanceHints\Frontend\Subscriber as FrontendSubscriber;
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
@@ -18,6 +20,8 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	protected $provides = [
 		'performance_hints_ajax_subscriber',
+		'frontend_processor',
+		'performance_hints_frontend_subscriber',
 	];
 
 	/**
@@ -38,14 +42,34 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	public function register(): void {
 
-		$factories = [
-			$this->getContainer()->get( 'atf_factory' ),
-		];
+		$factories = [];
+
+		$atf_factory = $this->getContainer()->get( 'atf_factory' );
+
+		if ( $atf_factory->get_context()->is_allowed() ) {
+			$factories[] = $atf_factory;
+		}
 
 		$this->getContainer()->addShared( 'performance_hints_ajax_subscriber', AjaxSubscriber::class )
 			->addArguments(
 				[
 					$factories,
+				]
+			);
+
+		$this->getContainer()->add( 'frontend_processor', FrontendProcessor::class )
+			->addArguments(
+				[
+					$factories,
+					$this->getContainer()->get( 'options' ),
+					$this->getContainer()->get( 'atf_query' ),
+				]
+			);
+
+		$this->getContainer()->addShared( 'performance_hints_frontend_subscriber', FrontendSubscriber::class )
+			->addArguments(
+				[
+					$this->getContainer()->get( 'frontend_processor' ),
 				]
 			);
 	}
