@@ -25,7 +25,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'frontend_processor',
 		'performance_hints_frontend_subscriber',
 		'performance_hints_cron_subscriber',
-		'cron_processor'
+		'cron_processor',
 	];
 
 	/**
