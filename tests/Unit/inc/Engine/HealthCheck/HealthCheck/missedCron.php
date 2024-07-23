@@ -44,7 +44,7 @@ class Test_MissedCron extends TestCase {
 		Functions\expect( 'wp_next_scheduled' )
 			->atMost()
 			->times( 5 )
-			->andReturnValues( $config['events'] );
+			->andReturnValues( array_values( $config['events'] ) );
 
 		Functions\when( 'rocket_notice_html' )->alias(
 			function ( $args ) {
@@ -74,7 +74,7 @@ class Test_MissedCron extends TestCase {
 		$this->options->shouldReceive( 'get' )
 		        ->atMost()
 		        ->times( 4 )
-		        ->andReturnValues( $config['options'] );
+		        ->andReturnValues( array_values( $config['options'] ));
 	}
 
 	private function getActualHtml() {

@@ -31,7 +31,7 @@ class Test_RocketFirstInstall extends TestCase {
 
 		Functions\expect( 'create_rocket_uniqid' )
 			->times( 3 )
-			->andReturnValues( $uniqids );
+			->andReturnValues( array_values( $uniqids ) );
 		Functions\expect( 'rocket_get_constant' )
 			->with( 'WP_ROCKET_SLUG' )
 			->andReturn( 'wp_rocket_settings' );
