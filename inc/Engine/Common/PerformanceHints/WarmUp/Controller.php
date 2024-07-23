@@ -46,11 +46,11 @@ class Controller {
 	/**
 	 * Constructor
 	 *
-	 * @param array            $context Array of factories.
-	 * @param Options_Data     $options Options instance.
-	 * @param APIClient        $api_client APIClient instance.
-	 * @param User             $user User instance.
-	 * @param Queue            $queue Queue instance.
+	 * @param array        $factories Array of factories.
+	 * @param Options_Data $options Options instance.
+	 * @param APIClient    $api_client APIClient instance.
+	 * @param User         $user User instance.
+	 * @param Queue        $queue Queue instance.
 	 */
 	public function __construct( array $factories, Options_Data $options, APIClient $api_client, User $user, Queue $queue ) {
 		$this->factories  = $factories;
@@ -70,7 +70,7 @@ class Controller {
 			return;
 		}
 
-        if ( empty( $this->factories ) ) {
+		if ( empty( $this->factories ) ) {
 			return;
 		}
 
