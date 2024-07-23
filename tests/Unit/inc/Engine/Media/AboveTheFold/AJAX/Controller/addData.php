@@ -11,7 +11,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Filters;
 
 /**
- * Test class covering WP_Rocket\Engine\Media\AboveTheFold\AJAX\Controller::add_beacon_data
+ * Test class covering WP_Rocket\Engine\Media\AboveTheFold\AJAX\Controller::add_data
  *
  * @group AboveTheFold
  */
@@ -118,10 +118,6 @@ class Test_AddBeaconData extends TestCase {
 			Functions\when('wp_check_filetype')->justReturn( $config['filetype'] );
 		}
 
-<<<<<<<< HEAD:tests/Unit/inc/Engine/Media/AboveTheFold/AJAX/Controller/addBeaconData.php
-		$this->controller->add_beacon_data();
-========
 		$this->controller->add_data();
->>>>>>>> 3.17-atf-refactor:tests/Unit/inc/Engine/Media/AboveTheFold/AJAX/Controller/addData.php
 	}
 }
