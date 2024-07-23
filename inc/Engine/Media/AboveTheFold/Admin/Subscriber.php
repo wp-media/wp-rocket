@@ -50,7 +50,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function truncate_atf() {
-		$this->controller->truncate_atf();
+		$this->controller->truncate_performance_table();
 	}
 
 	/**
@@ -61,7 +61,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function delete_post_atf( $post_id ) {
-		$this->controller->delete_post_atf( $post_id );
+		$this->controller->delete_post( $post_id );
 	}
 
 	/**
@@ -72,7 +72,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function delete_term_atf( $term_id ) {
-		$this->controller->delete_term_atf( $term_id );
+		$this->controller->delete_term( $term_id );
 	}
 
 	/**
@@ -83,7 +83,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return array
 	 */
 	public function truncate_atf_admin( $clean ) {
-		return $this->controller->truncate_atf_admin( $clean );
+		return $this->controller->truncate_admin_rows( $clean );
 	}
 
 	/**

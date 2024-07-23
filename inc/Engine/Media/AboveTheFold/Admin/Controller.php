@@ -3,11 +3,12 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Media\AboveTheFold\Admin;
 
+use WP_Rocket\Engine\Common\PerformanceHints\Admin\ControllerInterface;
 use WP_Rocket\Engine\Media\AboveTheFold\Context\Context;
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Tables\AboveTheFold as ATFTable;
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Queries\AboveTheFold as ATFQuery;
 
-class Controller {
+class Controller implements ControllerInterface {
 	/**
 	 * ATF Table instance
 	 *
@@ -47,7 +48,7 @@ class Controller {
 	 *
 	 * @return void
 	 */
-	public function truncate_atf() {
+	public function truncate_performance_table(): void {
 		if ( ! $this->context->is_allowed() ) {
 			return;
 		}
@@ -81,7 +82,7 @@ class Controller {
 	 *
 	 * @return void
 	 */
-	public function delete_post_atf( $post_id ) {
+	public function delete_post( int $post_id ): void {
 		if ( ! $this->context->is_allowed() ) {
 			return;
 		}
@@ -102,7 +103,7 @@ class Controller {
 	 *
 	 * @return void
 	 */
-	public function delete_term_atf( $term_id ) {
+	public function delete_term( int $term_id ): void {
 		if ( ! $this->context->is_allowed() ) {
 			return;
 		}
@@ -123,7 +124,7 @@ class Controller {
 	 *
 	 * @return array
 	 */
-	public function truncate_atf_admin( $clean ) {
+	public function truncate_admin_rows( array $clean ): array {
 		if ( ! $this->context->is_allowed() ) {
 			return $clean;
 		}
@@ -179,6 +180,6 @@ class Controller {
 			return;
 		}
 
-		$this->truncate_atf();
+		$this->truncate_performance_table();
 	}
 }

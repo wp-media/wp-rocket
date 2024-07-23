@@ -10,7 +10,7 @@ use WP_Rocket\Engine\Media\AboveTheFold\Admin\Controller;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * Test class covering WP_Rocket\Engine\Media\AboveTheFold\Admin\Controller::truncate_atf
+ * Test class covering WP_Rocket\Engine\Media\AboveTheFold\Admin\Controller::truncate_performance_table
  *
  * @group ATF
  */
@@ -55,6 +55,6 @@ class Test_TruncateAtf extends TestCase {
 			}
 		}
 
-		$this->controller->truncate_atf();
+		$this->controller->truncate_performance_table();
 	}
 }

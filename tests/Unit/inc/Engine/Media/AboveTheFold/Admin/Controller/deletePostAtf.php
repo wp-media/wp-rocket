@@ -11,7 +11,7 @@ use WP_Rocket\Engine\Media\AboveTheFold\Admin\Controller;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * Test class covering WP_Rocket\Engine\Media\AboveTheFold\Admin\Controller::delete_post_atf
+ * Test class covering WP_Rocket\Engine\Media\AboveTheFold\Admin\Controller::delete_post
  *
  * @group ATF
  */
@@ -50,6 +50,6 @@ class Test_DeletePostAtf extends TestCase {
 				->method( 'delete_by_url' );
 		}
 
-		$this->controller->delete_post_atf( $config['post_id'] );
+		$this->controller->delete_post( $config['post_id'] );
 	}
 }

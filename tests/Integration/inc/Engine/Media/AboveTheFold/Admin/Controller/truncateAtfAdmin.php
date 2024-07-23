@@ -8,7 +8,7 @@ use Mockery;
 use WP_Rocket\Engine\Media\AboveTheFold\WarmUp\Controller;
 
 /**
- * Test class covering \WP_Rocket\Engine\Media\AboveTheFold\Admin\Controller::truncate_atf_admin
+ * Test class covering \WP_Rocket\Engine\Media\AboveTheFold\Admin\Controller::truncate_admin_rows
  *
  * @group AboveTheFold
  */

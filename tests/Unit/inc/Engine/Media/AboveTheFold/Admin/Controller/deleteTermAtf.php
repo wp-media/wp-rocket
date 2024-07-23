@@ -11,7 +11,7 @@ use WP_Rocket\Engine\Media\AboveTheFold\Admin\Controller;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * Test class covering WP_Rocket\Engine\Media\AboveTheFold\Admin\Controller::delete_term_atf
+ * Test class covering WP_Rocket\Engine\Media\AboveTheFold\Admin\Controller::delete_term
  *
  * @group ATF
  */
@@ -51,6 +51,6 @@ class Test_DeleteTermAtf extends TestCase {
 				->method( 'delete_by_url' );
 		}
 
-		$this->controller->delete_term_atf( $config['term_id'] );
+		$this->controller->delete_term( $config['term_id'] );
 	}
 }
