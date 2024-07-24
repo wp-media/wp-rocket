@@ -33,6 +33,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_after_clear_atf' => 'warm_up_home',
 			'rocket_job_warmup'      => 'warm_up',
 			'rocket_job_warmup_url'  => 'send_to_saas',
+            'rocket_saas_api_queued_url' => 'add_wpr_imagedimensions_query_arg',
 		];
 	}
 
@@ -78,5 +79,16 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 		$this->controller->warm_up();
+	}
+
+    /**
+	 * Add image dimensions query parameter to URL.
+	 *
+	 * @param string $url URL to be sent.
+	 *
+	 * @return string
+	 */
+	public function add_wpr_imagedimensions_query_arg( string $url ): string {
+		return $this->controller->add_wpr_imagedimensions_query_arg( $url );
 	}
 }

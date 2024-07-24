@@ -226,4 +226,24 @@ class Controller {
 	private function is_mobile(): bool {
 		return $this->options->get( 'cache_mobile', 1 ) && $this->options->get( 'do_caching_mobile_files', 1 );
 	}
+
+    /**
+	 * Add wpr_imagedimensions to URL query.
+	 *
+	 * @param string $url URL to be sent.
+	 *
+	 * @return string
+	 */
+	public function add_wpr_imagedimensions_query_arg( string $url ): string {
+        if ( empty( $this->factories ) ) {
+			return $url;
+		}
+
+		return add_query_arg(
+			[
+				'wpr_imagedimensions' => 1,
+			],
+			$url
+		);
+	}
 }

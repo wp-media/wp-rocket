@@ -12,14 +12,12 @@ use WP_Rocket\Engine\Common\PerformanceHints\WarmUp\{APIClient, Controller, Queu
 use Mockery;
 
 /**
- * Test class covering \WP_Rocket\Tests\Integration\inc\Engine\Common\PerformanceHints\WarmUp\Subscriber::warm_up
+ * Test class covering \WP_Rocket\Engine\Common\PerformanceHints\WarmUp\Subscriber::warm_up
  *
  * @group PerformanceHints
  * @group WarmUp
  */
 class Test_WarmUp extends TestCase {
-	protected $path_to_test_data = '/inc/Engine/Common/PerformanceHints/WarmUp/Subscriber/warmUp.php';
-
 	/**
 	 * Test should do expected.
 	 *

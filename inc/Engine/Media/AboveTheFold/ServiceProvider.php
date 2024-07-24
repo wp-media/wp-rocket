@@ -11,7 +11,6 @@ use WP_Rocket\Engine\Media\AboveTheFold\Database\Tables\AboveTheFold as ATFTable
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Queries\AboveTheFold as ATFQuery;
 use WP_Rocket\Engine\Media\AboveTheFold\Frontend\{Controller as FrontController, Subscriber as FrontSubscriber};
 use WP_Rocket\Engine\Media\AboveTheFold\Cron\{Controller as CronController, Subscriber as CronSubscriber};
-use WP_Rocket\Engine\Media\AboveTheFold\WarmUp\Subscriber as WarmUpSubscriber;
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
@@ -35,7 +34,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		'atf_cron_subscriber',
 		'atf_ajax_controller',
 		'atf_ajax_subscriber',
-		'warmup_subscriber',
 		'atf_factory',
 	];
 
@@ -92,9 +90,6 @@ class ServiceProvider extends AbstractServiceProvider {
 				$this->getContainer()->get( 'atf_context' ),
 			]
 		);
-
-		$this->getContainer()->addShared( 'warmup_subscriber', WarmUpSubscriber::class )
-			->addArgument( $this->getContainer()->get( 'atf_context' ) );
 
 		$this->getContainer()->addShared( 'atf_factory', Factory::class )
 			->addArguments(
