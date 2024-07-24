@@ -29,7 +29,7 @@ class Activation {
 		'wp_cache',
 		'action_scheduler_check',
 		'preload_activation',
-		'atf_activation',
+		'performance_hints_activation',
 	];
 
 	/**
