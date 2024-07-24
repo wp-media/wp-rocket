@@ -29,11 +29,11 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'wp_rocket_upgrade'      => [ 'warm_up_on_update', 10, 2 ],
-			'rocket_after_clear_atf' => 'warm_up_home',
-			'rocket_job_warmup'      => 'warm_up',
-			'rocket_job_warmup_url'  => 'send_to_saas',
-            'rocket_saas_api_queued_url' => 'add_wpr_imagedimensions_query_arg',
+			'wp_rocket_upgrade'          => [ 'warm_up_on_update', 10, 2 ],
+			'rocket_after_clear_atf'     => 'warm_up_home',
+			'rocket_job_warmup'          => 'warm_up',
+			'rocket_job_warmup_url'      => 'send_to_saas',
+			'rocket_saas_api_queued_url' => 'add_wpr_imagedimensions_query_arg',
 		];
 	}
 
@@ -81,7 +81,7 @@ class Subscriber implements Subscriber_Interface {
 		$this->controller->warm_up();
 	}
 
-    /**
+	/**
 	 * Add image dimensions query parameter to URL.
 	 *
 	 * @param string $url URL to be sent.
