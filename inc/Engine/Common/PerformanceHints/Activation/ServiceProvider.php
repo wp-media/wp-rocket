@@ -4,8 +4,9 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Common\PerformanceHints\Activation;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
-use WP_Rocket\Engine\Media\AboveTheFold\Context\Context;
-use WP_Rocket\Engine\Media\AboveTheFold\WarmUp\{APIClient, Controller as WarmUpController, Queue};
+use WP_Rocket\Engine\Common\PerformanceHints\WarmUp\{APIClient, Controller as WarmUpController, Queue};
+use WP_Rocket\Engine\Media\AboveTheFold\Context\Context as ATFContext;
+use WP_Rocket\Engine\Media\AboveTheFold\Activation\ActivationFactory as ATFActivationFactory;
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
@@ -18,11 +19,12 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @var array
 	 */
 	protected $provides = [
+		'performance_hints_warmup_apiclient',
+		'performance_hints_warmup_queue',
+		'performance_hints_warmup_controller',
+		'performance_hints_activation',
 		'atf_context',
-		'warmup_apiclient',
-		'warmup_controller',
-		'atf_activation',
-		'warmup_queue',
+		'atf_activation_factory',
 	];
 
 	/**
@@ -42,29 +44,45 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register(): void {
-		$this->getContainer()->add( 'atf_context', Context::class );
 
-		$this->getContainer()->add( 'warmup_apiclient', APIClient::class )
-			->addArgument( $this->getContainer()->get( 'options' ) );
+		$this->getContainer()->add( 'atf_context', ATFContext::class );
 
-		$this->getContainer()->add( 'warmup_queue', Queue::class );
-
-		$this->getContainer()->add( 'warmup_controller', WarmUpController::class )
+		$this->getContainer()->addShared( 'atf_activation_factory', ATFActivationFactory::class )
 			->addArguments(
 				[
 					$this->getContainer()->get( 'atf_context' ),
-					$this->getContainer()->get( 'options' ),
-					$this->getContainer()->get( 'warmup_apiclient' ),
-					$this->getContainer()->get( 'user' ),
-					$this->getContainer()->get( 'warmup_queue' ),
 				]
 			);
 
-		$this->getContainer()->add( 'atf_activation', Activation::class )
+		$factories = [];
+
+		$atf_activation_factory = $this->getContainer()->get( 'atf_activation_factory' );
+
+		if ( $atf_activation_factory->get_context()->is_allowed() ) {
+			$factories[] = $atf_activation_factory;
+		}
+
+		$this->getContainer()->add( 'performance_hints_warmup_apiclient', APIClient::class )
+			->addArgument( $this->getContainer()->get( 'options' ) );
+
+		$this->getContainer()->add( 'performance_hints_warmup_queue', Queue::class );
+
+		$this->getContainer()->add( 'performance_hints_warmup_controller', WarmUpController::class )
 			->addArguments(
 				[
-					$this->getContainer()->get( 'warmup_controller' ),
-					$this->getContainer()->get( 'atf_context' ),
+					$factories,
+					$this->getContainer()->get( 'options' ),
+					$this->getContainer()->get( 'performance_hints_warmup_apiclient' ),
+					$this->getContainer()->get( 'user' ),
+					$this->getContainer()->get( 'performance_hints_warmup_queue' ),
+				]
+			);
+
+		$this->getContainer()->add( 'performance_hints_activation', Activation::class )
+			->addArguments(
+				[
+					$this->getContainer()->get( 'performance_hints_warmup_controller' ),
+					$factories,
 				]
 			);
 	}

@@ -4,8 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Common\PerformanceHints\Activation;
 
 use WP_Rocket\Engine\Activation\ActivationInterface;
-use WP_Rocket\Engine\Common\Context\ContextInterface;
-use WP_Rocket\Engine\Media\AboveTheFold\WarmUp\Controller;
+use WP_Rocket\Engine\Common\PerformanceHints\WarmUp\Controller;
 
 class Activation implements ActivationInterface {
 	/**
@@ -16,21 +15,21 @@ class Activation implements ActivationInterface {
 	private $controller;
 
 	/**
-	 * ATF context.
+	 * Array of factories.
 	 *
-	 * @var ContextInterface
+	 * @var array
 	 */
-	private $context;
+	private $factories;
 
 	/**
 	 * Instantiate class.
 	 *
-	 * @param Controller       $controller Controller instance.
-	 * @param ContextInterface $context ATF Context.
+	 * @param Controller $controller Controller instance.
+	 * @param array      $factories Array of factories.
 	 */
-	public function __construct( Controller $controller, ContextInterface $context ) {
+	public function __construct( Controller $controller, array $factories ) {
 		$this->controller = $controller;
-		$this->context    = $context;
+		$this->factories  = $factories;
 	}
 
 	/**
@@ -46,7 +45,7 @@ class Activation implements ActivationInterface {
 	 * @return void
 	 */
 	public function warm_up() {
-		if ( ! $this->context->is_allowed() ) {
+		if ( empty( $this->factories ) ) {
 			return;
 		}
 
