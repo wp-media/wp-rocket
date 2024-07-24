@@ -10,7 +10,7 @@ use WP_Rocket\Engine\Common\PerformanceHints\WarmUp\{APIClient, Controller, Queu
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * Test class covering \WP_Rocket\Tests\Unit\Inc\Engine\Common\PerformanceHints\WarmUp\Controller::fetch_links
+ * Test class covering \WP_Rocket\Engine\Common\PerformanceHints\WarmUp\Controller::fetch_links
  *
  * @group PerformanceHints
  */
