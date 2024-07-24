@@ -15,6 +15,7 @@ use Mockery;
  * Test class covering \WP_Rocket\Tests\Integration\inc\Engine\Common\PerformanceHints\WarmUp\Subscriber::warm_up
  *
  * @group PerformanceHints
+ * @group WarmUp
  */
 class Test_WarmUp extends TestCase {
 	protected $path_to_test_data = '/inc/Engine/Common/PerformanceHints/WarmUp/Subscriber/warmUp.php';
@@ -29,17 +30,12 @@ class Test_WarmUp extends TestCase {
 		$api_client = Mockery::mock(APIClient::class);
 		$user = Mockery::mock(User::class);
 		$queue = Mockery::mock(Queue::class);
-
 		$controller = Mockery::mock(Controller::class, [$config['is_allowed'], $options, $api_client, $user, $queue])->makePartial();
-
-		$options->shouldReceive('get')
-			->with('cache_mobile', 0)
-			->andReturn(0);
 
 		$controller->shouldReceive('fetch_links')
 			->andReturn($config['links']);
 
-		Functions\expect( 'wp_get_environment_type' )->once()->andReturn($config['wp_env']);
+		Functions\expect( 'wp_get_environment_type' )->andReturn($config['wp_env']);
 
 		if ( 'local' !== $config['wp_env'] ) {
 			$options->shouldReceive('get')
@@ -50,6 +46,11 @@ class Test_WarmUp extends TestCase {
 		$queue->shouldReceive('add_job_warmup_url')
 			->times($expected);
 
-		do_action('rocket_job_warmup');
+
+        add_action('rocket_job_warmup', [$controller, 'warm_up']);
+
+        do_action('rocket_job_warmup');
+		
+		remove_action('rocket_job_warmup', [$controller, 'warm_up']);
 	}
 }
