@@ -19,13 +19,6 @@ class APIClient extends BaseAPIClient {
 	public function add_to_performance_hints_queue( string $url, $device = 'desktop' ): array {
 		$is_home = Utils::is_home( $url );
 
-		$url = add_query_arg(
-			[
-				'wpr_imagedimensions' => 1,
-			],
-			$url
-		);
-
 		$config = [
 			'optimization_list' => '',
 			'is_home'           => $is_home,
