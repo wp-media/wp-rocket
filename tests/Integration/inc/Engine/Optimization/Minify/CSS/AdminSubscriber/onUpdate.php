@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\Minify\CSS\AdminSubscriber;
 
@@ -16,10 +17,13 @@ class TestOnUpdate extends TestCase {
 		parent::set_up();
 
 		remove_filter( 'wp_rocket_upgrade', 'rocket_new_upgrade' );
+		// Disable ATF optimization to prevent DB request (unrelated to the test).
+		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
 	}
 
 	public function tear_down() {
 		add_filter( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );
+		remove_filter( 'rocket_above_the_fold_optimization', '__return_false' );
 
 		parent::tear_down();
 	}

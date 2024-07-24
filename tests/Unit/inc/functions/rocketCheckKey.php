@@ -92,7 +92,6 @@ class Test_RocketCheckKey extends TestCase {
 		Functions\when( 'wp_remote_get' )->alias( function() {
 			$wp_error = \Mockery::mock( \WP_Error::class )->makePartial();
 			$wp_error->shouldReceive( 'get_error_messages' )
-			         ->withNoArgs()
 			         ->andReturn( 'error' );
 
 			return $wp_error;

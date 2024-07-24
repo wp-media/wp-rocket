@@ -373,6 +373,8 @@ class Image {
 			$excluded_values = (array) $excluded_values;
 		}
 
+		$excluded_values = array_filter( $excluded_values );
+
 		if ( empty( $excluded_values ) ) {
 			return false;
 		}
@@ -551,7 +553,7 @@ class Image {
 		$textarr = preg_split( '/(<.*>)/U', $text, -1, PREG_SPLIT_DELIM_CAPTURE ); // capture the tags as well as in between.
 		$stop    = count( $textarr );// loop stuff.
 
-		// Ignore proessing of specific tags.
+		// Ignore processing of specific tags.
 		$tags_to_ignore       = 'code|pre|style|script|textarea';
 		$ignore_block_element = '';
 

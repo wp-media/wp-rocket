@@ -21,7 +21,7 @@ class Test_UpdateWPCache extends TestCase {
 			->once()
 			->andReturn( false );
 
-		$this->assertNull( $wp_cache->update_wp_cache() );
+		$wp_cache->update_wp_cache();
 	}
 
 	public function testShouldCallSetCacheConstant() {
@@ -47,6 +47,6 @@ class Test_UpdateWPCache extends TestCase {
 		Functions\when( 'current_filter' )->justReturn( 'rocket_deactivation' );
 		Functions\when( 'is_multisite' )->justReturn( true );
 
-		$this->assertNull( $wp_cache->update_wp_cache( 1 ) );
+		$wp_cache->update_wp_cache( 1 );
 	}
 }

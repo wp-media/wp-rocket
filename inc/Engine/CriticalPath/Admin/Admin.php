@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Engine\CriticalPath\Admin;
 
+use WP_Admin_Bar;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CriticalPath\ProcessorService;
 use WP_Rocket\Engine\CriticalPath\TransientTrait;

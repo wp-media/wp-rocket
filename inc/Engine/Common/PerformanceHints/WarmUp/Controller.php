@@ -1,20 +1,19 @@
 <?php
 declare(strict_types=1);
 
-namespace WP_Rocket\Engine\Media\AboveTheFold\WarmUp;
+namespace WP_Rocket\Engine\Common\PerformanceHints\WarmUp;
 
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Engine\Common\Utils;
 use WP_Rocket\Engine\License\API\User;
 
 class Controller {
 	/**
-	 * ATF context.
+	 * Array of Factories.
 	 *
-	 * @var ContextInterface
+	 * @var array
 	 */
-	protected $context;
+	private $factories;
 
 	/**
 	 * Plugin options instance.
@@ -47,14 +46,14 @@ class Controller {
 	/**
 	 * Constructor
 	 *
-	 * @param ContextInterface $context ATF Context.
-	 * @param Options_Data     $options Options instance.
-	 * @param APIClient        $api_client APIClient instance.
-	 * @param User             $user User instance.
-	 * @param Queue            $queue Queue instance.
+	 * @param array        $factories Array of factories.
+	 * @param Options_Data $options Options instance.
+	 * @param APIClient    $api_client APIClient instance.
+	 * @param User         $user User instance.
+	 * @param Queue        $queue Queue instance.
 	 */
-	public function __construct( ContextInterface $context, Options_Data $options, APIClient $api_client, User $user, Queue $queue ) {
-		$this->context    = $context;
+	public function __construct( array $factories, Options_Data $options, APIClient $api_client, User $user, Queue $queue ) {
+		$this->factories  = $factories;
 		$this->options    = $options;
 		$this->api_client = $api_client;
 		$this->user       = $user;
@@ -71,7 +70,7 @@ class Controller {
 			return;
 		}
 
-		if ( ! $this->context->is_allowed() ) {
+		if ( empty( $this->factories ) ) {
 			return;
 		}
 
@@ -93,7 +92,7 @@ class Controller {
 			return;
 		}
 
-		if ( ! $this->context->is_allowed() ) {
+		if ( empty( $this->factories ) ) {
 			return;
 		}
 
@@ -188,7 +187,12 @@ class Controller {
 		 *
 		 * @param int $links_limit number of links to return.
 		 */
-		$links_limit = apply_filters( 'rocket_atf_warmup_links_number', $default_limit );
+		$links_limit = rocket_apply_filter_and_deprecated(
+			'rocket_performance_hints_warmup_links_number',
+			[ $default_limit ],
+			'3.16',
+			'rocket_atf_warmup_links_number'
+		);
 
 		if ( ! is_int( $links_limit ) || $links_limit < 1 ) {
 			$links_limit = $default_limit;
@@ -207,31 +211,11 @@ class Controller {
 	 * @return void
 	 */
 	public function send_to_saas( string $url ) {
-		$this->api_client->add_to_atf_queue( $url );
+		$this->api_client->add_to_performance_hints_queue( $url );
 
 		if ( $this->is_mobile() ) {
-			$this->api_client->add_to_atf_queue( $url, 'mobile' );
+			$this->api_client->add_to_performance_hints_queue( $url, 'mobile' );
 		}
-	}
-
-	/**
-	 * Add wpr_imagedimensions to URL query.
-	 *
-	 * @param string $url URL to be sent.
-	 *
-	 * @return string
-	 */
-	public function add_wpr_imagedimensions_query_arg( string $url ): string {
-		if ( ! $this->context->is_allowed() ) {
-			return $url;
-		}
-
-		return add_query_arg(
-			[
-				'wpr_imagedimensions' => 1,
-			],
-			$url
-		);
 	}
 
 	/**

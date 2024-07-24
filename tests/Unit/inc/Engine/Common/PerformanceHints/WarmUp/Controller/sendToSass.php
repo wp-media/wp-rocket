@@ -1,13 +1,10 @@
 <?php
 
-namespace WP_Rocket\tests\Unit\inc\Engine\Media\AboveTheFold\WarmUp\Controller;
+namespace WP_Rocket\Tests\Unit\Inc\Engine\Common\PerformanceHints\WarmUp\Controller;
 
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Engine\License\API\User;
-use WP_Rocket\Engine\Media\AboveTheFold\WarmUp\APIClient;
-use WP_Rocket\Engine\Media\AboveTheFold\WarmUp\Controller;
-use WP_Rocket\Engine\Media\AboveTheFold\WarmUp\Queue;
+use WP_Rocket\Engine\Common\PerformanceHints\WarmUp\{APIClient, Controller, Queue};
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 use Mockery;
@@ -15,7 +12,6 @@ use Mockery;
 class sendToSass extends TestCase {
 	private $user;
 	private $controller;
-	private $context;
 	private $queue;
 	private $options;
 
@@ -24,12 +20,11 @@ class sendToSass extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->context    = Mockery::mock( ContextInterface::class );
 		$this->options    = Mockery::mock( Options_Data::class );
 		$this->api_client = Mockery::mock( APIClient::class );
 		$this->user       = Mockery::mock( User::class );
 		$this->queue      = Mockery::mock( Queue::class );
-		$this->controller = new Controller( $this->context, $this->options, $this->api_client, $this->user, $this->queue );
+		$this->controller = new Controller( [1], $this->options, $this->api_client, $this->user, $this->queue );
 	}
 
 	/**
@@ -46,13 +41,13 @@ class sendToSass extends TestCase {
 			->with( 'do_caching_mobile_files', 1 )
 			->andReturn( $mobile_cache );
 
-		$this->api_client->shouldReceive('add_to_atf_queue')
+		$this->api_client->shouldReceive('add_to_performance_hints_queue')
 			->with('http://example.com')
 			->once()
 			->andReturn([$config['url'], []]);
 
 		if('mobile' === $config['device']) {
-			$this->api_client->shouldReceive('add_to_atf_queue')
+			$this->api_client->shouldReceive('add_to_performance_hints_queue')
 				->with( 'http://example.com', $config['device'] )
 				->once()
 				->andReturn( [$config['url'], []] );

@@ -149,7 +149,7 @@ class Hummingbird implements Subscriber_Interface {
 		if (
 			$this->options->get( 'emoji' )
 			&&
-			// @phpstan-ignore-next-line
+
 			WP_Hummingbird_Settings::get_setting( 'emoji', 'advanced' )
 		) {
 			// Translators: %1$s = Plugin name, %2$s = <em>, %3$s = </em>.
@@ -173,10 +173,8 @@ class Hummingbird implements Subscriber_Interface {
 			return false;
 		}
 
-		// @phpstan-ignore-next-line
 		$gzip = WP_Hummingbird_Utils::get_module( 'gzip' );
 
-		// @phpstan-ignore-next-line
 		if ( ! $gzip instanceof \WP_Hummingbird_Module_GZip ) {
 			return false;
 		}
@@ -211,10 +209,8 @@ class Hummingbird implements Subscriber_Interface {
 			return false;
 		}
 
-		// @phpstan-ignore-next-line
 		$caching = WP_Hummingbird_Utils::get_module( 'caching' );
 
-		// @phpstan-ignore-next-line
 		if ( ! $caching instanceof \WP_Hummingbird_Module_Caching ) {
 			return false;
 		}
@@ -249,10 +245,8 @@ class Hummingbird implements Subscriber_Interface {
 			return false;
 		}
 
-		// @phpstan-ignore-next-line
 		$cache = WP_Hummingbird_Utils::get_module( 'page_cache' );
 
-		// @phpstan-ignore-next-line
 		if ( ! $cache instanceof \WP_Hummingbird_Module_Page_Cache ) {
 			return false;
 		}
@@ -285,10 +279,8 @@ class Hummingbird implements Subscriber_Interface {
 			return false;
 		}
 
-		// @phpstan-ignore-next-line
 		$minify = WP_Hummingbird_Utils::get_module( 'minify' );
 
-		// @phpstan-ignore-next-line
 		if ( ! $minify instanceof \WP_Hummingbird_Module_Minify ) {
 			return false;
 		}

@@ -5,18 +5,13 @@ namespace WP_Rocket\Engine\Media\AboveTheFold;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Engine\Media\AboveTheFold\Admin\{Controller as AdminController, Subscriber as AdminSubscriber};
-use WP_Rocket\Engine\Media\AboveTheFold\AJAX\{Controller as AJAXController, Subscriber as AJAXSubscriber};
+use WP_Rocket\Engine\Media\AboveTheFold\AJAX\Controller as AJAXController;
 use WP_Rocket\Engine\Media\AboveTheFold\Context\Context;
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Tables\AboveTheFold as ATFTable;
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Queries\AboveTheFold as ATFQuery;
 use WP_Rocket\Engine\Media\AboveTheFold\Frontend\{Controller as FrontController, Subscriber as FrontSubscriber};
 use WP_Rocket\Engine\Media\AboveTheFold\Cron\{Controller as CronController, Subscriber as CronSubscriber};
-use WP_Rocket\Engine\Media\AboveTheFold\WarmUp\{
-	APIClient,
-	Controller as WarmUpController,
-	Subscriber as WarmUpSubscriber,
-	Queue
-};
+use WP_Rocket\Engine\Media\AboveTheFold\WarmUp\Subscriber as WarmUpSubscriber;
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
@@ -40,10 +35,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'atf_cron_subscriber',
 		'atf_ajax_controller',
 		'atf_ajax_subscriber',
-		'warmup_controller',
 		'warmup_subscriber',
-		'warmup_apiclient',
-		'warmup_queue',
 		'atf_factory',
 	];
 
@@ -101,25 +93,16 @@ class ServiceProvider extends AbstractServiceProvider {
 			]
 		);
 
-		$this->getContainer()->add( 'warmup_apiclient', APIClient::class )
-			->addArgument( $this->getContainer()->get( 'options' ) );
-
-		$this->getContainer()->add( 'warmup_queue', Queue::class );
-
-		$this->getContainer()->add( 'warmup_controller', WarmUpController::class )
-			->addArguments(
-				[
-					$this->getContainer()->get( 'atf_context' ),
-					$this->getContainer()->get( 'options' ),
-					$this->getContainer()->get( 'warmup_apiclient' ),
-					$this->getContainer()->get( 'user' ),
-					$this->getContainer()->get( 'warmup_queue' ),
-				]
-			);
 		$this->getContainer()->addShared( 'warmup_subscriber', WarmUpSubscriber::class )
-			->addArgument( $this->getContainer()->get( 'warmup_controller' ) );
+			->addArgument( $this->getContainer()->get( 'atf_context' ) );
 
 		$this->getContainer()->addShared( 'atf_factory', Factory::class )
-			->addArgument( $this->getContainer()->get( 'atf_ajax_controller' ) );
+			->addArguments(
+				[
+					$this->getContainer()->get( 'atf_ajax_controller' ),
+					$this->getContainer()->get( 'atf_controller' ),
+					$this->getContainer()->get( 'atf_context' ),
+				]
+			);
 	}
 }

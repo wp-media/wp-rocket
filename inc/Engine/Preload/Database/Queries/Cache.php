@@ -347,7 +347,7 @@ class Cache extends Query {
 			false
 		);
 
-		if ( $total <= 0 || $inprogress_count >= $total ) {
+		if ( $total <= 0 || (int) $inprogress_count >= $total ) {
 			return [];
 		}
 
@@ -466,7 +466,7 @@ class Cache extends Query {
 	/**
 	 * Revert old in-progress rows
 	 *
-	 * @depecated
+	 * @deprecated
 	 */
 	public function revert_old_in_progress() {
 		// Get the database interface.
