@@ -157,19 +157,13 @@ class PreloadUrl {
 				$duration = ( microtime( true ) - $start ); // Duration of the request.
 			}
 
-			$default_delay_between = 500000;
-
 			/**
 			 * Filter the delay between each preload request.
 			 *
 			 * @param int $delay_between the defined delay.
 			 */
-			$delay_between = apply_filters( 'rocket_preload_delay_between_requests', $default_delay_between );
+			$delay_between = wpm_apply_filters_typed( 'integer', 'rocket_preload_delay_between_requests', 500000 );
 			$delay_between = absint( $delay_between );
-
-			if ( empty( $delay_between ) ) {
-				$delay_between = $default_delay_between;
-			}
 
 			usleep( $delay_between );
 

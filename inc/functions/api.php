@@ -115,18 +115,12 @@ function rocket_is_live_site() {
 		}
 	}
 
-	$default_staging = [];
-
 	/**
 	 * Get the list of staging domains from SaaS
 	 *
-	 * @param array $default_staging default result in case there isn't.
+	 * @param array $staging Array of staging domains.
 	 */
-	$staging = apply_filters( 'rocket_staging_list', $default_staging );
-
-	if ( ! is_array( $staging ) ) {
-		$staging = $default_staging;
-	}
+	$staging = wpm_apply_filters_typed( 'array', 'rocket_staging_list', [] );
 
 	foreach ( $staging as $partial_host ) {
 		if ( strpos( $host, $partial_host ) ) {
