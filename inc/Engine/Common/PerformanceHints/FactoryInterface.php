@@ -6,8 +6,8 @@ namespace WP_Rocket\Engine\Common\PerformanceHints;
 use WP_Rocket\Engine\Common\PerformanceHints\AJAX\ControllerInterface as AjaxControllerInterface;
 use WP_Rocket\Engine\Common\PerformanceHints\Frontend\ControllerInterface as FrontendControllerInterface;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
-use WP_Rocket\Engine\Common\PerformanceHints\Database\QueriesInterface;
-use WP_Rocket\Engine\Common\PerformanceHints\Database\TableInterface;
+use WP_Rocket\Engine\Common\PerformanceHints\Database\Queries\QueriesInterface;
+use WP_Rocket\Engine\Common\PerformanceHints\Database\Table\TableInterface;
 
 interface FactoryInterface {
 	/**
