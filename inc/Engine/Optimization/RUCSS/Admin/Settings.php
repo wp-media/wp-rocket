@@ -257,7 +257,7 @@ class Settings {
 			$main_message,
 			'<strong>WP Rocket</strong>',
 			$this->used_css->get_name(),
-			'<a href="' . $this->get_support_url() . '" target="_blank" rel="noopener">',
+			'<a href="' . esc_url( __( 'https://docs.wp-rocket.me/article/1828-could-not-create-the-rucss-usedcss-table/?utm_source=wp_plugin&utm_medium=wp_rocket', 'rocket' ) ) . '" target="_blank" rel="noopener">',
 			'</a>'
 		);
 
@@ -267,21 +267,6 @@ class Settings {
 				'dismissible' => '',
 				'message'     => $message,
 				'id'          => 'rocket-notice-rucss-missing-table',
-			]
-		);
-	}
-
-	/**
-	 * Get support URL.
-	 *
-	 * @return string
-	 */
-	protected function get_support_url() {
-		return rocket_get_external_url(
-			'support',
-			[
-				'utm_source' => 'wp_plugin',
-				'utm_medium' => 'wp_rocket',
 			]
 		);
 	}
