@@ -11,7 +11,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group PerformanceHints
  */
 class Test_Cleanup extends TestCase {
-	protected $path_to_test_data = '/inc/Engine/Media/AboveTheFold/Cron/Subscriber/atfCleanup.php';
+	protected $path_to_test_data = '/inc/Engine/Common/PerformanceHints/Cron/Subscriber/cleanup.php';
 
 	/**
 	 * @var array

@@ -10,7 +10,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  *
  * @group PerformanceHints
  */
-class scheduleCleanup extends TestCase {
+class Test_ScheduleCleanup extends TestCase {
 	public function set_up() {
 		parent::set_up();
 
