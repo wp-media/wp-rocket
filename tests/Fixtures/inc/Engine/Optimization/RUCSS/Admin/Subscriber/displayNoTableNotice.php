@@ -4,7 +4,7 @@ $content = <<<Notice
 <p>
 <strong>
 WP Rocket</strong>
-: Could not create the wpr_table table in the database which is necessary for the Remove Unused CSS feature to work. Please reach out to <a href="https://wp-rocket.me/support/?utm_source=wp_plugin&utm_medium=wp_rocket" target="_blank" rel="noopener">our support</a>.</p>
+: Could not create the wpr_table table in the database which is necessary for the Remove Unused CSS feature to work. Please reach out to <a href="https://docs.wp-rocket.me/article/1828-could-not-create-the-rucss-usedcss-table/?utm_source=wp_plugin&utm_medium=wp_rocket" target="_blank" rel="noopener">our support</a>.</p>
 </div>
 Notice;
 
