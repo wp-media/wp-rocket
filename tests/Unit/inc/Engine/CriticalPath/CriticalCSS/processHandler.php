@@ -2,8 +2,7 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\CriticalCSS;
 
-use Brain\Monkey\Functions;
-use Brain\Monkey\Filters;
+use Brain\Monkey\{Filters, Functions};
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CriticalPath\CriticalCSS;
@@ -87,8 +86,10 @@ class TestProcessHandler extends FilesystemTestCase {
 			Functions\expect( 'set_transient' )->once()->andReturn( null );
 			$number_items = count( $this->expected_items );
 			$process
-				->shouldReceive( 'push_to_queue' )->times( $number_items )->andReturn( null )
-				->shouldReceive( 'save' )->once()->andReturn( $process )
+				->shouldReceive( 'push_to_queue' )->times( $number_items )->andReturn( null );
+			$process
+				->shouldReceive( 'save' )->once()->andReturn( $process );
+			$process
 				->shouldReceive( 'dispatch' )->once()->andReturn( null );
 
 		}

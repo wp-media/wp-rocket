@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\RUCSS\Controller;
 
+use WP_Filesystem_Direct;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 

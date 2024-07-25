@@ -1,0 +1,217 @@
+<?php
+declare(strict_types=1);
+
+namespace WP_Rocket\Engine\Common\PerformanceHints\Frontend;
+
+use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Media\AboveTheFold\Database\Queries\AboveTheFold as ATFQuery;
+use WP_Filesystem_Direct;
+
+class Processor {
+
+	/**
+	 * Array of Factories.
+	 *
+	 * @var array
+	 */
+	private $factories;
+
+	/**
+	 * Options instance
+	 *
+	 * @var Options_Data
+	 */
+	private $options;
+
+	/**
+	 * This property would no longer be needed once the database products(table, queries) are returned in the concrete factory.
+	 * Right now we try to keep things Black Box as much as we can.
+	 *
+	 * Queries instance
+	 *
+	 * @var ATFQuery
+	 */
+	private $query;
+
+	/**
+	 * WordPress filesystem.
+	 *
+	 * @var WP_Filesystem_Direct
+	 */
+	protected $filesystem;
+
+	/**
+	 * Instantiate the class
+	 *
+	 * @param array                     $factories Array of factories.
+	 * @param Options_Data              $options Options instance.
+	 * @param ATFQuery                  $query Queries instance.( Should removed when the database products are returned in the concrete factory ).
+	 * @param WP_Filesystem_Direct|null $filesystem WordPress filesystem.
+	 */
+	public function __construct( array $factories, Options_Data $options, ATFQuery $query, WP_Filesystem_Direct $filesystem = null ) {
+		$this->factories  = $factories;
+		$this->options    = $options;
+		$this->query      = $query; // Should removed when the database products are returned in the concrete factory.
+		$this->filesystem = $filesystem ?: rocket_direct_filesystem();
+	}
+
+	/**
+	 * Apply Performance Hints Optimizations.
+	 *
+	 * @param string $html HTML content.
+	 * @return string
+	 */
+	public function maybe_apply_optimizations( string $html ): string {
+		if ( empty( $this->factories ) ) {
+			return $html;
+		}
+
+		global $wp;
+
+		$url       = untrailingslashit( home_url( add_query_arg( [], $wp->request ) ) );
+		$is_mobile = $this->is_mobile();
+
+		$row = $this->query->get_row( $url, $is_mobile );
+		if ( empty( $row ) ) {
+			return $this->inject_beacon( $html, $url, $is_mobile );
+		}
+
+		// The DB row check above will need to be updated during the database refactor to something below.
+
+        // phpcs:disable Squiz.Commenting.InlineComment.InvalidEndChar
+		// $html_optimized = null;
+		// foreach ( $this->factories as $factory ) {
+		// $row = $factory->queries()->get_row( $url, $is_mobile );
+		// if ( empty( $row ) ) {
+		// return $this->inject_beacon( $html, $url, $is_mobile );
+		// }
+
+		// $html = $html_optimized ?? $html;
+		// $html_optimized = $factory->get_frontend_controller()->optimize( $html, $row );
+		// }
+
+        // phpcs:enable Squiz.Commenting.InlineComment.InvalidEndChar
+		foreach ( $this->factories as $factory ) {
+			$html           = $html_optimized ?? $html;
+			$html_optimized = $factory->get_frontend_controller()->optimize( $html, $row );
+		}
+
+		return $html_optimized;
+	}
+
+	/**
+	 * The `inject_beacon` function is used to inject a JavaScript beacon into the HTML content
+	 *
+	 * @param string $html The HTML content where the beacon will be injected.
+	 * @param string $url The current URL.
+	 * @param bool   $is_mobile True for mobile device, false otherwise.
+	 *
+	 * @return string The modified HTML content with the beacon script injected just before the closing body tag.
+	 */
+	private function inject_beacon( $html, $url, $is_mobile ): string {
+		$min = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+
+		if ( ! $this->filesystem->exists( rocket_get_constant( 'WP_ROCKET_ASSETS_JS_PATH' ) . 'wpr-beacon' . $min . '.js' ) ) {
+			return $html;
+		}
+
+		$default_width_threshold  = $is_mobile ? 393 : 1600;
+		$default_height_threshold = $is_mobile ? 830 : 700;
+		/**
+		 * Filters the width threshold for the LCP beacon.
+		 *
+		 * @param int    $width_threshold The width threshold. Default is 393 for mobile and 1920 for others.
+		 * @param bool   $is_mobile       True if the current device is mobile, false otherwise.
+		 * @param string $url             The current URL.
+		 *
+		 * @return int The filtered width threshold.
+		 */
+		$width_threshold = rocket_apply_filter_and_deprecated(
+			'rocket_performance_hints_optimization_width_threshold',
+			[ $default_width_threshold, $is_mobile, $url ],
+			'3.17',
+			'rocket_lcp_width_threshold'
+		);
+
+		/**
+		 * Filters the height threshold for the LCP beacon.
+		 *
+		 * @param int    $height_threshold The height threshold. Default is 830 for mobile and 1080 for others.
+		 * @param bool   $is_mobile        True if the current device is mobile, false otherwise.
+		 * @param string $url              The current URL.
+		 *
+		 * @return int The filtered height threshold.
+		 */
+		$height_threshold = rocket_apply_filter_and_deprecated(
+			'rocket_performance_hints_optimization_height_threshold',
+			[ $default_height_threshold, $is_mobile, $url ],
+			'3.17',
+			'rocket_lcp_height_threshold'
+		);
+
+		if ( ! is_int( $width_threshold ) ) {
+			$width_threshold = $default_width_threshold;
+		}
+
+		if ( ! is_int( $height_threshold ) ) {
+			$height_threshold = $default_height_threshold;
+		}
+
+		$default_delay = 500;
+
+		/**
+		 * Filters the delay before the LCP beacon is triggered.
+		 *
+		 * @param int $delay The delay in milliseconds. Default is 500.
+		 */
+		$delay = rocket_apply_filter_and_deprecated(
+			'rocket_performance_hints_optimization_delay',
+			[ $default_delay ],
+			'3.17',
+			'rocket_lcp_delay'
+		);
+
+		if ( ! is_int( $delay ) ) {
+			$delay = $default_delay;
+		}
+
+		$data = [
+			'ajax_url'         => admin_url( 'admin-ajax.php' ),
+			'nonce'            => wp_create_nonce( 'rocket_lcp' ),
+			'url'              => $url,
+			'is_mobile'        => $is_mobile,
+			'width_threshold'  => $width_threshold,
+			'height_threshold' => $height_threshold,
+			'delay'            => $delay,
+			'debug'            => rocket_get_constant( 'WP_ROCKET_DEBUG' ),
+		];
+
+		$data_modified = null;
+		foreach ( $this->factories as $factory ) {
+			$data          = $data_modified ?? $data;
+			$data_modified = $factory->get_frontend_controller()->target_elements( $data );
+		}
+
+		$inline_script = '<script>var rocket_lcp_data = ' . wp_json_encode( $data_modified ) . '</script>';
+
+		// Get the URL of the script.
+		$script_url = rocket_get_constant( 'WP_ROCKET_ASSETS_JS_URL' ) . 'lcp-beacon' . $min . '.js';
+
+		// Create the script tag.
+		$script_tag = "<script data-name=\"wpr-lcp-beacon\" src='{$script_url}' async></script>"; // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript
+
+		// Append the script tag just before the closing body tag.
+		return str_replace( '</body>', $inline_script . $script_tag . '</body>', $html );
+	}
+
+	/**
+	 * Determines if the page is mobile and separate cache for mobile files is enabled.
+	 *
+	 * @return bool
+	 */
+	private function is_mobile(): bool {
+		return $this->options->get( 'cache_mobile', 0 )
+			&& $this->options->get( 'do_caching_mobile_files', 0 )
+			&& wp_is_mobile();
+	}
+}

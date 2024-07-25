@@ -1,5 +1,6 @@
 <?php
 
+use WP_Rocket\Dependencies\Database\Table;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS;
 use WP_Rocket\Engine\Preload\Database\Tables\Cache;
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Tables\AboveTheFold;

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Preload;
 
+use WP_Post;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Preload\Activation\Activation;
 use WP_Rocket\Engine\Preload\Controller\CheckExcludedTrait;
@@ -308,9 +309,9 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	/**
 	 * Preload after clearing some cache.
 	 *
-	 * @param stdClass $object object modified.
-	 * @param array    $urls urls cleaned.
-	 * @param string   $lang lang from the website.
+	 * @param object $object object modified.
+	 * @param array  $urls urls cleaned.
+	 * @param string $lang lang from the website.
 	 * @return void
 	 */
 	public function clean_partial_cache( $object, array $urls, $lang ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.objectFound
@@ -469,7 +470,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * Add the excluded uri from the preload to the filter.
 	 *
 	 * @param array $regexes regexes containing excluded uris.
-	 * @return array|false
+	 * @return array
 	 */
 	public function add_preload_excluded_uri( $regexes ): array {
 		$preload_excluded_uri = (array) $this->options->get( 'preload_excluded_uri', [] );

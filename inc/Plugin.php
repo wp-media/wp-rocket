@@ -6,7 +6,7 @@ use Imagify_Partner;
 use WP_Rocket\Dependencies\League\Container\Container;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Engine\Admin\API\ServiceProvider as APIServiceProvider;
-use WP_Rocket\Engine\Common\ExtractCSS\ServiceProvider as CommmonExtractCSSServiceProvider;
+use WP_Rocket\Engine\Common\ExtractCSS\ServiceProvider as CommonExtractCSSServiceProvider;
 use WP_Rocket\Engine\Common\JobManager\ServiceProvider as JobManagerServiceProvider;
 use WP_Rocket\Engine\Media\Lazyload\CSS\ServiceProvider as LazyloadCSSServiceProvider;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Admin\ServiceProvider as AdminLazyloadCSSServiceProvider;
@@ -51,6 +51,7 @@ use WP_Rocket\Engine\Admin\DomainChange\ServiceProvider as DomainChangeServicePr
 use WP_Rocket\ThirdParty\Themes\ThemeResolver;
 use WP_Rocket\Engine\Debug\Resolver as DebugResolver;
 use WP_Rocket\Engine\Debug\ServiceProvider as DebugServiceProvider;
+use WP_Rocket\Engine\Common\PerformanceHints\ServiceProvider as PerformanceHintsServiceProvider;
 
 /**
  * Plugin Manager.
@@ -298,12 +299,13 @@ class Plugin {
 		$this->container->addServiceProvider( new LicenseServiceProvider() );
 		$this->container->addServiceProvider( new ThemesServiceProvider() );
 		$this->container->addServiceProvider( new APIServiceProvider() );
-		$this->container->addServiceProvider( new CommmonExtractCSSServiceProvider() );
+		$this->container->addServiceProvider( new CommonExtractCSSServiceProvider() );
 		$this->container->addServiceProvider( new LazyloadCSSServiceProvider() );
 		$this->container->addServiceProvider( new DebugServiceProvider() );
 		$this->container->addServiceProvider( new ATFServiceProvider() );
 		$this->container->addServiceProvider( new JobManagerServiceProvider() );
 		$this->container->addServiceProvider( new SaasAdminServiceProvider() );
+		$this->container->addServiceProvider( new PerformanceHintsServiceProvider() );
 
 		$common_subscribers = [
 			'license_subscriber',
@@ -387,13 +389,14 @@ class Plugin {
 			'atf_subscriber',
 			'cron_subscriber',
 			'atf_admin_subscriber',
-			'atf_ajax_subscriber',
 			'contactform7',
 			'debug_subscriber',
 			'rucss_cron_subscriber',
 			'atf_cron_subscriber',
 			'saas_admin_subscriber',
-			'warmup_subscriber',
+			'performance_hints_ajax_subscriber',
+			'performance_hints_frontend_subscriber',
+			'performance_hints_warmup_subscriber',
 		];
 
 		$host_type = HostResolver::get_host_service();

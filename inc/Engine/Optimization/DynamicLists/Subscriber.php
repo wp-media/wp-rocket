@@ -105,7 +105,7 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Add the cached ignored parameters to the array
 	 *
-	 * @param string $params Array of ignored parameters.
+	 * @param array $params Array of ignored parameters.
 	 *
 	 * @return array
 	 */
@@ -120,7 +120,7 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Add the excluded external JS patterns to the array
 	 *
-	 * @param string $excluded Array of excluded patterns.
+	 * @param array $excluded Array of excluded patterns.
 	 *
 	 * @return array
 	 */
@@ -135,7 +135,7 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Add the JS patterns to move after the combine JS file to the array
 	 *
-	 * @param string $excluded Array of patterns to move.
+	 * @param array $excluded Array of patterns to move.
 	 *
 	 * @return array
 	 */
@@ -150,7 +150,7 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Add the excluded inline JS patterns to the array
 	 *
-	 * @param string $excluded Array of excluded patterns.
+	 * @param array $excluded Array of excluded patterns.
 	 *
 	 * @return array
 	 */

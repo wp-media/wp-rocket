@@ -12,8 +12,6 @@ use WP_Rocket\Tests\Unit\TestCase;
 /**
  * Test class covering \WP_Rocket\Engine\CriticalPath\Admin\Admin::enqueue_admin_cpcss_heartbeat_script
  *
- * @uses :rocket_get_constant
- *
  * @group CriticalPath
  * @group CriticalPathAdmin
  */
