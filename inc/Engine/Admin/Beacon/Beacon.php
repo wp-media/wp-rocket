@@ -814,7 +814,7 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 			'rucss_database'             => [
 				'en' => [
 					'id'  => '668f1284f0fdf93e4cf10825',
-					'url' => 'https://docs.wp-rocket.me/article/1828-could-not-create-the-rucss-usedcss-table?utm_source=wp_plugin&utm_medium=wp_rocket',
+					'url' => 'https://docs.wp-rocket.me/article/1828-could-not-create-the-rucss-usedcss-table/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 		];
