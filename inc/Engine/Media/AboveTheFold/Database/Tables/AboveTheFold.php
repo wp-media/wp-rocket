@@ -3,10 +3,9 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Media\AboveTheFold\Database\Tables;
 
-use WP_Rocket\Engine\Common\Database\Tables\AbstractTable;
-use WP_Rocket\Engine\Common\PerformanceHints\Database\TableInterface;
+use WP_Rocket\Engine\Common\PerformanceHints\Database\Table\AbstractTable;
 
-class AboveTheFold extends AbstractTable implements TableInterface {
+class AboveTheFold extends AbstractTable {
 	/**
 	 * Table name
 	 *
@@ -56,19 +55,6 @@ class AboveTheFold extends AbstractTable implements TableInterface {
 			KEY modified (modified),
 			KEY last_accessed (last_accessed),
 			INDEX `status_index` (`status`(191))";
-
-	/**
-	 * Truncate DB table.
-	 *
-	 * @return bool
-	 */
-	public function truncate_table(): bool {
-		if ( ! $this->exists() ) {
-			return false;
-		}
-
-		return $this->truncate();
-	}
 
 	/**
 	 * This function is responsible for deleting old columns from the 'wpr_above_the_fold' table.
