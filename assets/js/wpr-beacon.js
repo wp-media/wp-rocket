@@ -1,21 +1,12 @@
 (() => {
-  // src/LcpBeacon.js
-  var LcpBeacon = class {
+  // src/RocketLcpBeacon.js
+  var RocketLcpBeacon = class {
     constructor(config) {
       this.config = config;
       this.performanceImages = [];
       this.errorCode = "";
-      this.scriptTimer = /* @__PURE__ */ new Date();
-      this.infiniteLoopId = null;
     }
-    async init() {
-      if (!await this._isValidPreconditions()) {
-        this._finalize();
-        return;
-      }
-      this.infiniteLoopId = setTimeout(() => {
-        this._handleInfiniteLoop();
-      }, 1e4);
+    async run() {
       try {
         const above_the_fold_images = this._generateLcpCandidates(Infinity);
         if (above_the_fold_images) {
@@ -26,42 +17,6 @@
         this.errorCode = "script_error";
         this._logMessage("Script Error: " + err);
       }
-      this._saveFinalResultIntoDB();
-    }
-    async _isValidPreconditions() {
-      if (this._isNotValidScreensize()) {
-        this._logMessage("Bailing out because screen size is not acceptable");
-        return false;
-      }
-      if (this._isPageCached() && await this._isGeneratedBefore()) {
-        this._logMessage("Bailing out because data is already available");
-        return false;
-      }
-      return true;
-    }
-    _isPageCached() {
-      const signature = document.documentElement.nextSibling && document.documentElement.nextSibling.data ? document.documentElement.nextSibling.data : "";
-      return signature && signature.includes("Debug: cached");
-    }
-    async _isGeneratedBefore() {
-      let data_check = new FormData();
-      data_check.append("action", "rocket_check_lcp");
-      data_check.append("rocket_lcp_nonce", this.config.nonce);
-      data_check.append("url", this.config.url);
-      data_check.append("is_mobile", this.config.is_mobile);
-      const lcp_data_response = await fetch(this.config.ajax_url, {
-        method: "POST",
-        credentials: "same-origin",
-        body: data_check
-      }).then((data) => data.json());
-      return lcp_data_response.success;
-    }
-    _isNotValidScreensize() {
-      const screenWidth = window.innerWidth || document.documentElement.clientWidth;
-      const screenHeight = window.innerHeight || document.documentElement.clientHeight;
-      const isNotValidForMobile = this.config.is_mobile && (screenWidth > this.config.width_threshold || screenHeight > this.config.height_threshold);
-      const isNotValidForDesktop = !this.config.is_mobile && (screenWidth < this.config.width_threshold || screenHeight < this.config.height_threshold);
-      return isNotValidForMobile || isNotValidForDesktop;
     }
     _generateLcpCandidates(count) {
       const lcpElements = document.querySelectorAll(this.config.elements);
@@ -89,7 +44,7 @@
           rect
         };
       }).filter((item) => item !== null).filter((item) => {
-        return item.rect.width > 0 && item.rect.height > 0 && this._isIntersecting(item.rect);
+        return item.rect.width > 0 && item.rect.height > 0 && RocketBeacon._isIntersecting(item.rect);
       }).map((item) => ({
         item,
         area: this._getElementArea(item.rect),
@@ -99,9 +54,6 @@
         element: candidate.item.element,
         elementInfo: candidate.elementInfo
       }));
-    }
-    _isIntersecting(rect) {
-      return rect.bottom >= 0 && rect.right >= 0 && rect.top <= (window.innerHeight || document.documentElement.clientHeight) && rect.left <= (window.innerWidth || document.documentElement.clientWidth);
     }
     _getElementArea(rect) {
       const visibleWidth = Math.min(rect.width, (window.innerWidth || document.documentElement.clientWidth) - rect.left);
@@ -213,24 +165,89 @@
       const isBgImageOrPicture = elementInfo.type === "bg-img" || elementInfo.type === "bg-img-set" || elementInfo.type === "picture";
       return (isImageOrVideo || isBgImageOrPicture) && this.performanceImages.some((item) => item.src === elementInfo.src);
     }
-    _getFinalStatus() {
-      if ("" !== this.errorCode) {
-        return this.errorCode;
+    _logMessage(msg) {
+      if (!this.config.debug) {
+        return;
       }
-      const scriptTime = (/* @__PURE__ */ new Date() - this.scriptTimer) / 1e3;
-      if (10 <= scriptTime) {
-        return "timeout";
+      console.log(msg);
+    }
+    getResults() {
+      return this.performanceImages;
+    }
+  };
+  var RocketLcpBeacon_default = RocketLcpBeacon;
+
+  // src/RocketBeacon.js
+  var RocketBeacon2 = class {
+    constructor(config) {
+      this.config = config;
+      this.lcpBeacon = null;
+      this.infiniteLoopId = null;
+      this.scriptTimer = /* @__PURE__ */ new Date();
+      this.errorCode = "";
+    }
+    async init() {
+      if (!await this._isValidPreconditions()) {
+        this._finalize();
+        return;
       }
-      return "success";
+      this.infiniteLoopId = setTimeout(() => {
+        this._handleInfiniteLoop();
+      }, 1e4);
+      const isGeneratedBefore = await this._isGeneratedBefore();
+      if (!isGeneratedBefore.lcp) {
+        this.lcpBeacon = new RocketLcpBeacon_default(this.config);
+        await this.lcpBeacon.run();
+      }
+      this._saveFinalResultIntoDB();
+    }
+    async _isValidPreconditions() {
+      if (this._isNotValidScreensize()) {
+        this._logMessage("Bailing out because screen size is not acceptable");
+        return false;
+      }
+      if (this._isPageCached() && await this._isGeneratedBefore()) {
+        this._logMessage("Bailing out because data is already available");
+        return false;
+      }
+      return true;
+    }
+    _isPageCached() {
+      const signature = document.documentElement.nextSibling && document.documentElement.nextSibling.data ? document.documentElement.nextSibling.data : "";
+      return signature && signature.includes("Debug: cached");
+    }
+    async _isGeneratedBefore() {
+      let data_check = new FormData();
+      data_check.append("action", "rocket_check_beacon");
+      data_check.append("rocket_beacon_nonce", this.config.nonce);
+      data_check.append("url", this.config.url);
+      data_check.append("is_mobile", this.config.is_mobile);
+      const beacon_data_response = await fetch(this.config.ajax_url, {
+        method: "POST",
+        credentials: "same-origin",
+        body: data_check
+      }).then((data) => data.json());
+      return beacon_data_response.data;
+    }
+    _isNotValidScreensize() {
+      const screenWidth = window.innerWidth || document.documentElement.clientWidth;
+      const screenHeight = window.innerHeight || document.documentElement.clientHeight;
+      const isNotValidForMobile = this.config.is_mobile && (screenWidth > this.config.width_threshold || screenHeight > this.config.height_threshold);
+      const isNotValidForDesktop = !this.config.is_mobile && (screenWidth < this.config.width_threshold || screenHeight < this.config.height_threshold);
+      return isNotValidForMobile || isNotValidForDesktop;
+    }
+    static _isIntersecting(rect) {
+      return rect.bottom >= 0 && rect.right >= 0 && rect.top <= (window.innerHeight || document.documentElement.clientHeight) && rect.left <= (window.innerWidth || document.documentElement.clientWidth);
     }
     _saveFinalResultIntoDB() {
+      const lcpResults = this.lcpBeacon ? this.lcpBeacon.getResults() : null;
       const data = new FormData();
-      data.append("action", "rocket_lcp");
-      data.append("rocket_lcp_nonce", this.config.nonce);
+      data.append("action", "rocket_beacon");
+      data.append("rocket_beacon_nonce", this.config.nonce);
       data.append("url", this.config.url);
       data.append("is_mobile", this.config.is_mobile);
-      data.append("images", JSON.stringify(this.performanceImages));
       data.append("status", this._getFinalStatus());
+      data.append("lcp_images", JSON.stringify(lcpResults));
       fetch(this.config.ajax_url, {
         method: "POST",
         credentials: "same-origin",
@@ -246,11 +263,21 @@
         this._finalize();
       });
     }
+    _getFinalStatus() {
+      if ("" !== this.errorCode) {
+        return this.errorCode;
+      }
+      const scriptTime = (/* @__PURE__ */ new Date() - this.scriptTimer) / 1e3;
+      if (10 <= scriptTime) {
+        return "timeout";
+      }
+      return "success";
+    }
     _handleInfiniteLoop() {
       this._saveFinalResultIntoDB();
     }
     _finalize() {
-      const beaconscript = document.querySelector('[data-name="wpr-lcp-beacon"]');
+      const beaconscript = document.querySelector('[data-name="wpr-wpr-beacon"]');
       beaconscript.setAttribute("beacon-completed", "true");
       clearTimeout(this.infiniteLoopId);
     }
@@ -261,24 +288,24 @@
       console.log(msg);
     }
   };
-  var LcpBeacon_default = LcpBeacon;
+  var RocketBeacon_default = RocketBeacon2;
 
-  // src/rocketLcpBeacon.js
-  ((rocket_lcp_data) => {
-    if (!rocket_lcp_data) {
+  // src/RocketFinalBeacon.js
+  ((rocket_beacon_data) => {
+    if (!rocket_beacon_data) {
       return;
     }
-    const instance = new LcpBeacon_default(rocket_lcp_data);
+    const instance = new RocketBeacon_default(rocket_beacon_data);
     if (document.readyState !== "loading") {
       setTimeout(() => {
         instance.init();
-      }, rocket_lcp_data.delay);
+      }, rocket_beacon_data.delay);
       return;
     }
     document.addEventListener("DOMContentLoaded", () => {
       setTimeout(() => {
         instance.init();
-      }, rocket_lcp_data.delay);
+      }, rocket_beacon_data.delay);
     });
-  })(window.rocket_lcp_data);
+  })(window.rocket_beacon_data);
 })();

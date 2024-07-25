@@ -55,7 +55,7 @@ class gulpJs {
 	}
 
 	buildLcpBeacon() {
-		return gulp.src(['./node_modules/wp-rocket-scripts/dist/lcp-beacon*'])
+		return gulp.src(['./node_modules/wp-rocket-scripts/dist/wpr-beacon*'])
 			.pipe(gulp.dest('./assets/js'));
 	}
 
@@ -64,15 +64,14 @@ class gulpJs {
 			() => this.buildAppUnmin(),
 			() => this.buildAppMin(),
 			() => this.buildLazyloadCssMin(),
-			() => this.buildLcpBeaconUnMin(),
-			() => this.buildLcpBeaconMin()
+			() => this.buildLcpBeacon()
 		);
 	}
 
 	watch() {
 		gulp.watch('./src/js/global/*.js', gulp.series( 'build:js:app:unmin', 'build:js:app:min' ));
 		gulp.watch( './src/js/custom/lazyload-css.js', gulp.series( 'build:js:lazyloadcss:min' ) );
-		gulp.watch( './assets/js/lcp-beacon.js', gulp.series( 'build:js:lcp:min' ) );
+		gulp.watch( './assets/js/wpr-beacon.js', gulp.series( 'build:js:lcp:min' ) );
 	}
 }
 

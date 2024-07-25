@@ -31,7 +31,7 @@ return [
 			'filter'    => false,
 			'url'       => 'http://example.org',
 			'is_mobile' => false,
-			'images'    => json_encode( [] ),
+			'lcp_images'    => json_encode( [] ),
 		],
 		'expected' => [
 			'images_valid_sources' => [],
@@ -52,7 +52,7 @@ return [
 			'filter'    => true,
 			'url'       => 'http://example.org',
 			'is_mobile' => false,
-			'images'    => json_encode(
+			'lcp_images'    => json_encode(
 				[
 					(object) [
 						'type'  => 'img',
@@ -112,7 +112,7 @@ return [
 			'filter'    => true,
 			'url'       => 'http://example.org',
 			'is_mobile' => false,
-			'images'    => json_encode(
+			'lcp_images'    => json_encode(
 				[
 					(object) [
 						'label' => 'lcp',
@@ -190,7 +190,7 @@ return [
 			'filter'    => true,
 			'url'       => 'http://example.org',
 			'is_mobile' => true,
-			'images'    => json_encode(
+			'lcp_images'    => json_encode(
 				[
 					(object) [
 						'label' => 'lcp',
@@ -270,7 +270,7 @@ return [
 			'filter'    => true,
 			'url'       => 'http://example.org',
 			'is_mobile' => false,
-			'images'    => json_encode(
+			'lcp_images'    => json_encode(
 				[
 					(object) [
 						'label' => 'lcp',
@@ -351,7 +351,7 @@ return [
 			'filter'    => true,
 			'url'       => 'http://example.org',
 			'is_mobile' => false,
-			'images'    => json_encode(
+			'lcp_images'    => json_encode(
 				[
 					(object) [
 						'label' => 'lcp',
@@ -454,7 +454,7 @@ return [
 			'filter'    => true,
 			'url'       => 'http://example.org',
 			'is_mobile' => false,
-			'images'    => json_encode(
+			'lcp_images'    => json_encode(
 				[
 					(object) [
 						'label' => 'lcp',
@@ -563,7 +563,7 @@ return [
 			'filter'    => true,
 			'url'       => 'http://example.org',
 			'is_mobile' => false,
-			'images'    => json_encode(
+			'lcp_images'    => json_encode(
 				$long_array
 			),
 			'filetype' => [
@@ -610,7 +610,7 @@ return [
 			'filter'    => true,
 			'url'       => 'http://example.org',
 			'is_mobile' => false,
-			'images'    => '',
+			'lcp_images'    => '',
 		],
 		'expected' => [
 			'images_valid_sources' => [],
@@ -640,7 +640,7 @@ return [
 			'filter'    => true,
 			'url'       => 'http://example.org',
 			'is_mobile' => false,
-			'images'    => json_encode(
+			'lcp_images'    => json_encode(
 				[
 					(object) [
 						'label' => 'lcp',
@@ -685,7 +685,7 @@ return [
 			'filter'    => true,
 			'url'       => 'http://example.org',
 			'is_mobile' => false,
-			'images'    => '',
+			'lcp_images'    => '',
 			'status'    => 'script_error',
 		],
 		'expected' => [
@@ -716,7 +716,7 @@ return [
 			'filter'    => true,
 			'url'       => 'http://example.org',
 			'is_mobile' => false,
-			'images'    => '',
+			'lcp_images'    => '',
 			'status'    => 'timeout',
 		],
 		'expected' => [
@@ -748,7 +748,7 @@ return [
 			'filter'    => true,
 			'url'       => 'http://example.org',
 			'is_mobile' => false,
-			'images'    => json_encode(
+			'lcp_images'    => json_encode(
 				[
 					(object) [
 						'label' => 'lcp',
@@ -800,7 +800,7 @@ return [
 			'filter'    => true,
 			'url'       => 'http://example.org',
 			'is_mobile' => false,
-			'images'    => json_encode(
+			'lcp_images'    => json_encode(
 				[
 					(object) [
 						'label' => 'lcp',
@@ -852,7 +852,7 @@ return [
 			'filter'    => true,
 			'url'       => 'http://example.org',
 			'is_mobile' => false,
-			'images'    => json_encode(
+			'lcp_images'    => json_encode(
 				[
 					(object) [
 						'label' => 'lcp',
@@ -904,7 +904,7 @@ return [
 			'filter'    => true,
 			'url'       => 'http://example.org',
 			'is_mobile' => false,
-			'images'    => json_encode(
+			'lcp_images'    => json_encode(
 				[
 					(object) [
 						'label' => 'lcp',
@@ -956,7 +956,7 @@ return [
 			'filter'    => true,
 			'url'       => 'http://example.org',
 			'is_mobile' => false,
-			'images'    => json_encode(
+			'lcp_images'    => json_encode(
 				[
 					(object) [
 						'label' => 'lcp',
@@ -1008,7 +1008,7 @@ return [
 			'filter'    => true,
 			'url'       => 'http://example.org',
 			'is_mobile' => false,
-			'images'    => json_encode(
+			'lcp_images'    => json_encode(
 				[
 					(object) [
 						'label' => 'lcp',

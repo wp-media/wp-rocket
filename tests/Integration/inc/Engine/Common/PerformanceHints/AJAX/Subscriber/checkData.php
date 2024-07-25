@@ -17,7 +17,7 @@ class Test_CheckData extends AjaxTestCase {
 
 		self::installAtfTable();
 
-		$this->action = 'rocket_check_lcp';
+		$this->action = 'rocket_check_beacon';
 	}
 
 	/**
