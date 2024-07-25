@@ -3,7 +3,7 @@
 /**
  * The Queries interface defines the contract for database query operations.
  */
-namespace WP_Rocket\Engine\Common\PerformanceHints\Database\Query;
+namespace WP_Rocket\Engine\Common\PerformanceHints\Database\Queries;
 
 interface QueriesInterface {
 	/**
