@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace WP_Rocket\Engine\Media\AboveTheFold\WarmUp;
+namespace WP_Rocket\Engine\Common\PerformanceHints\WarmUp;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
@@ -16,7 +16,7 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Constructor
 	 *
-	 * @param Controller $controller ATF WarmUp controller instance.
+	 * @param Controller $controller WarmUp controller instance.
 	 */
 	public function __construct( Controller $controller ) {
 		$this->controller = $controller;
@@ -31,9 +31,9 @@ class Subscriber implements Subscriber_Interface {
 		return [
 			'wp_rocket_upgrade'          => [ 'warm_up_on_update', 10, 2 ],
 			'rocket_after_clear_atf'     => 'warm_up_home',
-			'rocket_saas_api_queued_url' => 'add_wpr_imagedimensions_query_arg',
 			'rocket_job_warmup'          => 'warm_up',
 			'rocket_job_warmup_url'      => 'send_to_saas',
+			'rocket_saas_api_queued_url' => 'add_wpr_imagedimensions_query_arg',
 		];
 	}
 
