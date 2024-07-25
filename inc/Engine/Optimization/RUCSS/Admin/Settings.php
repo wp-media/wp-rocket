@@ -250,14 +250,15 @@ class Settings {
 		}
 
 		// translators: %1$s = plugin name, %2$s = table name, %3$s = <a> open tag, %4$s = </a> closing tag.
-		$main_message = esc_html__( '%1$s: Could not create the %2$s table in the database which is necessary for the Remove Unused CSS feature to work. Please reach out to %3$sour support%4$s.', 'rocket' );
+		$main_message   = esc_html__( '%1$s: Could not create the %2$s table in the database which is necessary for the Remove Unused CSS feature to work. Please reach out to %3$sour support%4$s.', 'rocket' );
+		$rucss_database = $this->beacon->get_suggest( 'rucss_database' );
 
 		$message = sprintf(
 		// translators: %1$s = plugin name, %2$s = table name, %3$s = <a> open tag, %4$s = </a> closing tag.
 			$main_message,
 			'<strong>WP Rocket</strong>',
 			$this->used_css->get_name(),
-			'<a href="' . esc_url( __( 'https://docs.wp-rocket.me/article/1828-could-not-create-the-rucss-usedcss-table/?utm_source=wp_plugin&utm_medium=wp_rocket', 'rocket' ) ) . '" target="_blank" rel="noopener">',
+			'<a href="' . esc_url( $rucss_database['url'] ) . '" data-beacon-article="' . esc_attr( $rucss_database['id'] ) . '" target="_blank" rel="noopener">',
 			'</a>'
 		);
 
