@@ -7,8 +7,7 @@ use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvi
 use WP_Rocket\Engine\Common\PerformanceHints\AJAX\Subscriber as AjaxSubscriber;
 use WP_Rocket\Engine\Common\PerformanceHints\Frontend\Processor as FrontendProcessor;
 use WP_Rocket\Engine\Common\PerformanceHints\Frontend\Subscriber as FrontendSubscriber;
-use WP_Rocket\Engine\Common\PerformanceHints\Cron\CronProcessor;
-use WP_Rocket\Engine\Common\PerformanceHints\Cron\Subscriber as CronSubscriber;
+use WP_Rocket\Engine\Common\PerformanceHints\Cron\{Controller as CronController, Subscriber as CronSubscriber};
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
@@ -25,7 +24,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'frontend_processor',
 		'performance_hints_frontend_subscriber',
 		'performance_hints_cron_subscriber',
-		'cron_processor',
+		'cron_controller',
 	];
 
 	/**
@@ -77,7 +76,7 @@ class ServiceProvider extends AbstractServiceProvider {
 				]
 			);
 
-		$this->getContainer()->add( 'cron_processor', CronProcessor::class )
+		$this->getContainer()->add( 'cron_controller', CronController::class )
 			->addArguments(
 				[
 					$this->getContainer()->get( 'atf_query' ),
@@ -87,7 +86,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->addShared( 'performance_hints_cron_subscriber', CronSubscriber::class )
 			->addArguments(
 				[
-					$this->getContainer()->get( 'cron_processor' ),
+					$this->getContainer()->get( 'cron_controller' ),
 				]
 			);
 	}

@@ -66,7 +66,7 @@ class Test_Cleanup extends TestCase {
 			}
 		}
 
-		do_action( 'rocket_atf_cleanup' );
+		do_action( 'rocket_performance_hints_cleanup' );
 
 		$atf_query              = $container->get( 'atf_query' );
 		$result_atf_after_clean = $atf_query->query();

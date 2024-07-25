@@ -8,20 +8,20 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
 class Subscriber implements Subscriber_Interface {
 
 	/**
-	 * Cron Instance.
+	 * Cron Controller Instance.
 	 *
-	 * @var CronProcessor
+	 * @var Controller
 	 */
-	private $cron_processor;
+	private $controller;
 
 
 	/**
-	 * Instantiate the cron processor class
+	 * Instantiate the cron controller class
 	 *
-	 * @param CronProcessor $cron_processor Cron processor instance.
+	 * @param Controller $controller Cron controller instance.
 	 */
-	public function __construct( CronProcessor $cron_processor ) {
-		$this->cron_processor = $cron_processor;
+	public function __construct( Controller $controller ) {
+		$this->controller = $controller;
 	}
 
 	/**
@@ -31,36 +31,36 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'rocket_atf_cleanup'  => 'cleanup',
-			'init'                => 'schedule_cleanup',
-			'rocket_deactivation' => 'unscheduled_cleanup',
+			'rocket_performance_hints_cleanup' => 'cleanup',
+			'init'                             => 'schedule_cleanup',
+			'rocket_deactivation'              => 'unscheduled_cleanup',
 		];
 	}
 
 	/**
-	 * Executes the 'above the fold' cleanup.
+	 * Executes the performance hints cleanup.
 	 *
 	 * @return void
 	 */
 	public function cleanup() {
-		$this->cron_processor->cleanup();
+		$this->controller->cleanup();
 	}
 
 	/**
-	 * Schedules the 'above the fold' cleanup to run at a later time.
+	 * Schedules the performance hints cleanup to run at a later time.
 	 *
 	 * @return void
 	 */
-	public function schedule_atf_cleanup() {
-		$this->cron_processor->schedule_cleanup();
+	public function schedule_cleanup() {
+		$this->controller->schedule_cleanup();
 	}
 
 	/**
-	 * Unscheduled the 'above the fold' cleanup, preventing it from running at the previously scheduled time.
+	 * Unscheduled the performance hints cleanup, preventing it from running at the previously scheduled time.
 	 *
 	 * @return void
 	 */
 	public function unscheduled_cleanup() {
-		$this->cron_processor->unscheduled_cleanup();
+		$this->controller->unscheduled_cleanup();
 	}
 }
