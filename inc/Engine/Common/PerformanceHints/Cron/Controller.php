@@ -3,22 +3,14 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Common\PerformanceHints\Cron;
 
-use WP_Rocket\Engine\Media\AboveTheFold\Database\Queries\AboveTheFold as ATFQuery;
-use WP_Rocket\Engine\Optimization\RegexTrait;
-
 /**
  * The Controller Class is responsible for scheduling, executing, and unschedulin performance hints optimization cleanup.
- *
- * It uses the RegexTrait for regular expression related methods.
- * It has private properties for ATFQuery
  */
 class Controller {
-	use RegexTrait;
-
 	/**
-	 * Instance of the ATFQuery class.
+	 * Array of factories.
 	 *
-	 * @var ATFQuery
+	 * @var array
 	 */
 	private $query;
 
@@ -26,10 +18,10 @@ class Controller {
 	 * Constructor method.
 	 * Initializes a new instance of the Controller class.
 	 *
-	 * @param ATFQuery $query An instance of the ATFQuery class.
+	 * @param array $factories Array of factories.
 	 */
-	public function __construct( ATFQuery $query ) {
-		$this->query = $query;
+	public function __construct( array $factories ) {
+		$this->factories = $factories;
 	}
 
 	/**
@@ -48,7 +40,9 @@ class Controller {
 	 */
 	public function cleanup() {
 		// Delete the rows with failed status or not accessed.
-		$this->query->delete_old_rows();
+		foreach ( $this->factories as $factory ) {
+			$factory->queries()->delete_old_rows();
+		}
 	}
 
 	/**

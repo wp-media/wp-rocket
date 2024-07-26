@@ -86,18 +86,13 @@ class ServiceProvider extends AbstractServiceProvider {
 			);
 
 		$this->getContainer()->add( 'cron_controller', CronController::class )
-			->addArguments(
-				[
-					$this->getContainer()->get( 'atf_query' ),
-				]
-			);
+            ->addArgument( [
+                $atf_factory,
+            ] );
 
 		$this->getContainer()->addShared( 'performance_hints_cron_subscriber', CronSubscriber::class )
-			->addArguments(
-				[
-					$this->getContainer()->get( 'cron_controller' ),
-				]
-			);
+            ->addArgument( $this->getContainer()->get( 'cron_controller' ) );
+
 		$this->getContainer()->add( 'performance_hints_warmup_apiclient', APIClient::class )
 			->addArgument( $this->getContainer()->get( 'options' ) );
 
