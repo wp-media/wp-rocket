@@ -150,7 +150,7 @@ class Processor {
 
 		$data = [
 			'ajax_url'         => admin_url( 'admin-ajax.php' ),
-			'nonce'            => wp_create_nonce( 'rocket_lcp' ),
+			'nonce'            => wp_create_nonce( 'rocket_beacon' ),
 			'url'              => $url,
 			'is_mobile'        => $is_mobile,
 			'width_threshold'  => $width_threshold,
