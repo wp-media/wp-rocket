@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\Media\AboveTheFold\Cron\Subscriber;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Common\PerformanceHints\Cron\Subscriber;
 
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * Test class covering \WP_Rocket\Engine\Media\AboveTheFold\Cron\Subscriber::atf_cleanup
+ * Test class covering \WP_Rocket\Engine\Common\PerformanceHints\Cron\Subscriber::cleanup
  *
- * @group AboveTheFold
+ * @group PerformanceHints
  */
-class Test_AtfCleanup extends TestCase {
-	protected $path_to_test_data = '/inc/Engine/Media/AboveTheFold/Cron/Subscriber/atfCleanup.php';
+class Test_Cleanup extends TestCase {
+	protected $path_to_test_data = '/inc/Engine/Common/PerformanceHints/Cron/Subscriber/cleanup.php';
 
 	/**
 	 * @var array
@@ -66,7 +66,7 @@ class Test_AtfCleanup extends TestCase {
 			}
 		}
 
-		do_action( 'rocket_atf_cleanup' );
+		do_action( 'rocket_performance_hints_cleanup' );
 
 		$atf_query              = $container->get( 'atf_query' );
 		$result_atf_after_clean = $atf_query->query();

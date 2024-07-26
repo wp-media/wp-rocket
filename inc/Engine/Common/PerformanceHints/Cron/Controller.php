@@ -1,17 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace WP_Rocket\Engine\Media\AboveTheFold\Cron;
+namespace WP_Rocket\Engine\Common\PerformanceHints\Cron;
 
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Queries\AboveTheFold as ATFQuery;
 use WP_Rocket\Engine\Optimization\RegexTrait;
 
-
 /**
- * The Controller class is responsible for scheduling, executing, and unscheduling the 'above the fold' cleanup.
+ * The Controller Class is responsible for scheduling, executing, and unschedulin performance hints optimization cleanup.
  *
  * It uses the RegexTrait for regular expression related methods.
- * It has private properties for ATFTable, ATFQuery, and Context instances.
+ * It has private properties for ATFQuery
  */
 class Controller {
 	use RegexTrait;
@@ -22,7 +21,6 @@ class Controller {
 	 * @var ATFQuery
 	 */
 	private $query;
-
 
 	/**
 	 * Constructor method.
@@ -35,31 +33,31 @@ class Controller {
 	}
 
 	/**
-	 * Schedules the 'above the fold' cleanup to run daily if it's not already scheduled.
+	 * Schedules the performance cleanup to run daily if it's not already scheduled.
 	 */
-	public function schedule_atf_cleanup() {
-		if ( ! wp_next_scheduled( 'rocket_atf_cleanup' ) ) {
-			wp_schedule_event( time(), 'daily', 'rocket_atf_cleanup' );
+	public function schedule_cleanup() {
+		if ( ! wp_next_scheduled( 'rocket_performance_hints_cleanup' ) ) {
+			wp_schedule_event( time(), 'daily', 'rocket_performance_hints_cleanup' );
 		}
 	}
 
 	/**
-	 * Executes the 'above the fold' cleanup.
+	 * Executes the performance hints cleanup.
 	 * It gets the current date and subtracts the interval (default to 1 month) from it.
 	 * Then it deletes the rows with 'failed' status or not accessed since the interval.
 	 */
-	public function atf_cleanup() {
+	public function cleanup() {
 		// Delete the rows with failed status or not accessed.
 		$this->query->delete_old_rows();
 	}
 
 	/**
-	 * Unschedules the 'above the fold' cleanup, preventing it from running at the previously scheduled time.
+	 * Unscheduled the performance hints cleanup, preventing it from running at the previously scheduled time.
 	 */
-	public function unschedule_atf_cleanup() {
-		$timestamp = wp_next_scheduled( 'rocket_atf_cleanup' );
+	public function unscheduled_cleanup() {
+		$timestamp = wp_next_scheduled( 'rocket_performance_hints_cleanup' );
 		if ( $timestamp ) {
-			wp_unschedule_event( $timestamp, 'rocket_atf_cleanup' );
+			wp_unschedule_event( $timestamp, 'rocket_performance_hints_cleanup' );
 		}
 	}
 }
