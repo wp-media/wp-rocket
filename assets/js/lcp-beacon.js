@@ -218,7 +218,8 @@
         return this.errorCode;
       }
       const scriptTime = (/* @__PURE__ */ new Date() - this.scriptTimer) / 1e3;
-      if (10 <= scriptTime) {
+	  const delay = this.config.delay + 10;
+      if (delay <= scriptTime) {
         return "timeout";
       }
       return "success";
