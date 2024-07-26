@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Common\PerformanceHints\Frontend;
 
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\Media\AboveTheFold\Database\Queries\AboveTheFold as ATFQuery;
 use WP_Filesystem_Direct;
 
 class Processor {
@@ -24,16 +23,6 @@ class Processor {
 	private $options;
 
 	/**
-	 * This property would no longer be needed once the database products(table, queries) are returned in the concrete factory.
-	 * Right now we try to keep things Black Box as much as we can.
-	 *
-	 * Queries instance
-	 *
-	 * @var ATFQuery
-	 */
-	private $query;
-
-	/**
 	 * WordPress filesystem.
 	 *
 	 * @var WP_Filesystem_Direct
@@ -45,13 +34,11 @@ class Processor {
 	 *
 	 * @param array                     $factories Array of factories.
 	 * @param Options_Data              $options Options instance.
-	 * @param ATFQuery                  $query Queries instance.( Should removed when the database products are returned in the concrete factory ).
 	 * @param WP_Filesystem_Direct|null $filesystem WordPress filesystem.
 	 */
-	public function __construct( array $factories, Options_Data $options, ATFQuery $query, WP_Filesystem_Direct $filesystem = null ) {
+	public function __construct( array $factories, Options_Data $options, WP_Filesystem_Direct $filesystem = null ) {
 		$this->factories  = $factories;
 		$this->options    = $options;
-		$this->query      = $query; // Should removed when the database products are returned in the concrete factory.
 		$this->filesystem = $filesystem ?: rocket_direct_filesystem();
 	}
 
@@ -71,27 +58,13 @@ class Processor {
 		$url       = untrailingslashit( home_url( add_query_arg( [], $wp->request ) ) );
 		$is_mobile = $this->is_mobile();
 
-		$row = $this->query->get_row( $url, $is_mobile );
-		if ( empty( $row ) ) {
-			return $this->inject_beacon( $html, $url, $is_mobile );
-		}
-
-		// The DB row check above will need to be updated during the database refactor to something below.
-
-        // phpcs:disable Squiz.Commenting.InlineComment.InvalidEndChar
-		// $html_optimized = null;
-		// foreach ( $this->factories as $factory ) {
-		// $row = $factory->queries()->get_row( $url, $is_mobile );
-		// if ( empty( $row ) ) {
-		// return $this->inject_beacon( $html, $url, $is_mobile );
-		// }
-
-		// $html = $html_optimized ?? $html;
-		// $html_optimized = $factory->get_frontend_controller()->optimize( $html, $row );
-		// }
-
-        // phpcs:enable Squiz.Commenting.InlineComment.InvalidEndChar
+		$html_optimized = null;
 		foreach ( $this->factories as $factory ) {
+			$row = $factory->queries()->get_row( $url, $is_mobile );
+			if ( empty( $row ) ) {
+				return $this->inject_beacon( $html, $url, $is_mobile );
+			}
+
 			$html           = $html_optimized ?? $html;
 			$html_optimized = $factory->get_frontend_controller()->optimize( $html, $row );
 		}
@@ -177,7 +150,7 @@ class Processor {
 
 		$data = [
 			'ajax_url'         => admin_url( 'admin-ajax.php' ),
-			'nonce'            => wp_create_nonce( 'rocket_lcp' ),
+			'nonce'            => wp_create_nonce( 'rocket_beacon' ),
 			'url'              => $url,
 			'is_mobile'        => $is_mobile,
 			'width_threshold'  => $width_threshold,
@@ -192,13 +165,13 @@ class Processor {
 			$data_modified = $factory->get_frontend_controller()->target_elements( $data );
 		}
 
-		$inline_script = '<script>var rocket_lcp_data = ' . wp_json_encode( $data_modified ) . '</script>';
+		$inline_script = '<script>var rocket_beacon_data = ' . wp_json_encode( $data_modified ) . '</script>';
 
 		// Get the URL of the script.
-		$script_url = rocket_get_constant( 'WP_ROCKET_ASSETS_JS_URL' ) . 'lcp-beacon' . $min . '.js';
+		$script_url = rocket_get_constant( 'WP_ROCKET_ASSETS_JS_URL' ) . 'wpr-beacon' . $min . '.js';
 
 		// Create the script tag.
-		$script_tag = "<script data-name=\"wpr-lcp-beacon\" src='{$script_url}' async></script>"; // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript
+		$script_tag = "<script data-name=\"wpr-wpr-beacon\" src='{$script_url}' async></script>"; // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript
 
 		// Append the script tag just before the closing body tag.
 		return str_replace( '</body>', $inline_script . $script_tag . '</body>', $html );

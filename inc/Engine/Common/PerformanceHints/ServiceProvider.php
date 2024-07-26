@@ -75,7 +75,6 @@ class ServiceProvider extends AbstractServiceProvider {
 				[
 					$factories,
 					$this->getContainer()->get( 'options' ),
-					$this->getContainer()->get( 'atf_query' ),
 				]
 			);
 

@@ -88,6 +88,8 @@ class ServiceProvider extends AbstractServiceProvider {
 				[
 					$this->getContainer()->get( 'atf_ajax_controller' ),
 					$this->getContainer()->get( 'atf_controller' ),
+					$this->getContainer()->get( 'atf_table' ),
+					$this->getContainer()->get( 'atf_query' ),
 					$this->getContainer()->get( 'atf_context' ),
 				]
 			);
