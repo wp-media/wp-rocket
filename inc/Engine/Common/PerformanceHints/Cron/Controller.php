@@ -12,7 +12,7 @@ class Controller {
 	 *
 	 * @var array
 	 */
-	private $query;
+	private $factories;
 
 	/**
 	 * Constructor method.
