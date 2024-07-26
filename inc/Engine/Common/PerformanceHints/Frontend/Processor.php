@@ -60,13 +60,13 @@ class Processor {
 
 		$html_optimized = null;
 		foreach ( $this->factories as $factory ) {
-            $row = $factory->queries()->get_row( $url, $is_mobile );
-            if ( empty( $row ) ) {
-                return $this->inject_beacon( $html, $url, $is_mobile );
-            }
+			$row = $factory->queries()->get_row( $url, $is_mobile );
+			if ( empty( $row ) ) {
+				return $this->inject_beacon( $html, $url, $is_mobile );
+			}
 
-            $html = $html_optimized ?? $html;
-            $html_optimized = $factory->get_frontend_controller()->optimize( $html, $row );
+			$html           = $html_optimized ?? $html;
+			$html_optimized = $factory->get_frontend_controller()->optimize( $html, $row );
 		}
 
 		return $html_optimized;

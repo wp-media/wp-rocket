@@ -56,7 +56,7 @@ class AbstractTable extends Table implements TableInterface {
 		return $db->query( "DELETE FROM `$prefixed_table_name` WHERE status IN ( 'failed', 'completed' )" );
 	}
 
-    /**
+	/**
 	 * Truncate DB table.
 	 *
 	 * @return bool

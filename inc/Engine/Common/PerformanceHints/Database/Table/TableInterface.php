@@ -1,8 +1,8 @@
 <?php
-
 /**
  * The Table interface defines the contract for database table operations.
  */
+
 namespace WP_Rocket\Engine\Common\PerformanceHints\Database\Table;
 
 interface TableInterface {
