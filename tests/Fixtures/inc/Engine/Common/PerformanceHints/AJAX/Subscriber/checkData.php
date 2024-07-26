@@ -7,8 +7,8 @@ return [
 			'url'       => 'http://example.org',
 			'is_mobile' => false,
 			'post'      => [
-				'rocket_lcp_nonce' => wp_create_nonce( 'rocket_lcp' ),
-				'action'           => 'rocket_check_lcp',
+				'rocket_beacon_nonce' => wp_create_nonce( 'rocket_beacon' ),
+				'action'           => 'rocket_check_beacon',
 				'url'              => 'http://example.org',
 				'is_mobile'        => false,
 			],
@@ -24,8 +24,8 @@ return [
 			'url'       => 'http://example.org',
 			'is_mobile' => false,
 			'post'      => [
-				'rocket_lcp_nonce' => wp_create_nonce( 'rocket_lcp' ),
-				'action'           => 'rocket_check_lcp',
+				'rocket_beacon_nonce' => wp_create_nonce( 'rocket_beacon' ),
+				'action'           => 'rocket_check_beacon',
 				'url'              => 'http://example.org',
 				'is_mobile'        => false,
 			],
@@ -55,8 +55,8 @@ return [
 			'url'       => 'http://example.org',
 			'is_mobile' => false,
 			'post'      => [
-				'rocket_lcp_nonce' => wp_create_nonce( 'rocket_lcp' ),
-				'action'           => 'rocket_check_lcp',
+				'rocket_beacon_nonce' => wp_create_nonce( 'rocket_beacon' ),
+				'action'           => 'rocket_check_beacon',
 				'url'              => 'http://example.org',
 				'is_mobile'        => false,
 			],

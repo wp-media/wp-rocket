@@ -111,7 +111,7 @@ class Processor {
 	private function inject_beacon( $html, $url, $is_mobile ): string {
 		$min = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
-		if ( ! $this->filesystem->exists( rocket_get_constant( 'WP_ROCKET_ASSETS_JS_PATH' ) . 'lcp-beacon' . $min . '.js' ) ) {
+		if ( ! $this->filesystem->exists( rocket_get_constant( 'WP_ROCKET_ASSETS_JS_PATH' ) . 'wpr-beacon' . $min . '.js' ) ) {
 			return $html;
 		}
 

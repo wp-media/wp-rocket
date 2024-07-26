@@ -17,7 +17,7 @@ class Test_AddData extends AjaxTestCase {
 
 		self::installAtfTable();
 
-		$this->action = 'rocket_lcp';
+		$this->action = 'rocket_beacon';
 	}
 
 	/**
@@ -37,8 +37,8 @@ class Test_AddData extends AjaxTestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
-		$_POST['rocket_lcp_nonce'] = wp_create_nonce( 'rocket_lcp' );
-		$_POST['action']           = 'rocket_lcp';
+		$_POST['rocket_beacon_nonce'] = wp_create_nonce( 'rocket_beacon' );
+		$_POST['action']           = 'rocket_beacon';
 		$_POST['url']              = $config['url'];
 		$_POST['is_mobile']        = $config['is_mobile'];
 		$_POST['images']           = $config['images'];
