@@ -5,7 +5,7 @@ namespace WP_Rocket\Engine\License\API;
 use WP_Rocket\Engine\Common\JobManager\APIHandler\AbstractSafeAPIClient;
 
 class PricingClient extends AbstractSafeAPIClient {
-	const PRICING_ENDPOINT = 'https://wp-rocket.me/stat/1.0/wp-rocket/pricing-2023.php';
+	const PRICING_ENDPOINT = 'https://api.wp-rocket.me/stat/1.0/wp-rocket/pricing-2023.php';
 
 	/**
 	 * Get the transient key for plugin updates.
