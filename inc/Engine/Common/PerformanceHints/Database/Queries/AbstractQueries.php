@@ -135,4 +135,29 @@ class AbstractQueries extends Query {
 
 		return $exists;
 	}
+
+	/**
+	 * Get all rows with the same url (desktop and mobile versions).
+	 *
+	 * @param string $url Page url.
+	 *
+	 * @return array|false
+	 */
+	public function get_rows_by_url( string $url ) {
+		if ( ! self::$table_exists && ! $this->table_exists() ) {
+			return false;
+		}
+
+		$query = $this->query(
+			[
+				'url' => untrailingslashit( $url ),
+			]
+		);
+
+		if ( empty( $query ) ) {
+			return false;
+		}
+
+		return $query;
+	}
 }
