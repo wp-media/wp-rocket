@@ -217,7 +217,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 				'website'  => home_url(),
 				'callback' => rest_url( 'wp-rocket/v1/rocketcdn/' ),
 			],
-			rocket_get_constant( 'WP_ROCKET_WEB_MAIN' ) . 'cdn/iframe'
+			'https://api.wp-rocket.me/cdn/iframe'
 		);
 		?>
 		<div class="wpr-rocketcdn-modal" id="wpr-rocketcdn-modal" aria-hidden="true">
