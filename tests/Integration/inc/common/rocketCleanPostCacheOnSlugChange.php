@@ -40,9 +40,6 @@ class TestRocketCleanPostCacheOnSlugChange extends TestCase {
 		// Install the preload cache table to prevent DB error caused by permalink changed.
 		self::installPreloadCacheTable();
 
-		// Disable ATF optimization to prevent DB request (unrelated to the test).
-		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
-
 		wp_set_current_user( self::$user_id );
 		$this->original_post = self::factory()->post->create_and_get(
 			[
@@ -58,9 +55,6 @@ class TestRocketCleanPostCacheOnSlugChange extends TestCase {
 	public function tear_down() {
 		// Uninstall the preload cache table.
 		self::uninstallPreloadCacheTable();
-
-		// Re-enable ATF optimization.
-		remove_filter( 'rocket_above_the_fold_optimization', '__return_false' );
 
 		parent::tear_down();
 	}

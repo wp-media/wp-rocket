@@ -15,14 +15,10 @@ class Test_EnableSeparateCacheFilesMobile extends TestCase {
 		parent::set_up();
 
 		$this->unregisterAllCallbacksExcept( 'wp_rocket_upgrade', 'enable_separate_cache_files_mobile', 10 );
-		// Disable ATF optimization to prevent DB request (unrelated to the test).
-		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
 	}
 
 	public function tear_down() {
 		parent::tear_down();
-
-		remove_filter( 'rocket_above_the_fold_optimization', '__return_false' );
 		$this->restoreWpHook( 'wp_rocket_upgrade' );
 	}
 

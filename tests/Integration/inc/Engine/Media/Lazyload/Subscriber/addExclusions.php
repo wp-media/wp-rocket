@@ -15,15 +15,9 @@ class Test_AddExclusions extends TestCase {
 
 	public function set_up() {
 		parent::set_up();
-
-		// Disable ATF optimization to prevent DB request (unrelated to the test).
-		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
 	}
 
 	public function tear_down() {
-		// Re-enable ATF optimization.
-		remove_filter( 'rocket_above_the_fold_optimization', '__return_false' );
-
 		remove_filter( 'pre_get_rocket_option_exclude_lazyload', [ $this, 'set_option_exclusions' ] );
 
 		parent::tear_down();
