@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Media\AboveTheFold;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
-use WP_Rocket\Engine\Media\AboveTheFold\Admin\{Controller as AdminController, Subscriber as AdminSubscriber};
 use WP_Rocket\Engine\Media\AboveTheFold\AJAX\Controller as AJAXController;
 use WP_Rocket\Engine\Media\AboveTheFold\Context\Context;
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Tables\AboveTheFold as ATFTable;
@@ -27,8 +26,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		'atf_context',
 		'atf_controller',
 		'atf_subscriber',
-		'atf_admin_controller',
-		'atf_admin_subscriber',
 		'atf_ajax_controller',
 		'atf_ajax_subscriber',
 		'atf_factory',
@@ -68,12 +65,6 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		$this->getContainer()->addShared( 'atf_subscriber', FrontSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'atf_controller' ) );
-		$this->getContainer()->add( 'atf_admin_controller', AdminController::class )
-			->addArgument( $this->getContainer()->get( 'atf_table' ) )
-			->addArgument( $this->getContainer()->get( 'atf_query' ) )
-			->addArgument( $this->getContainer()->get( 'atf_context' ) );
-		$this->getContainer()->addShared( 'atf_admin_subscriber', AdminSubscriber::class )
-			->addArgument( $this->getContainer()->get( 'atf_admin_controller' ) );
 
 		$this->getContainer()->add( 'atf_ajax_controller', AJAXController::class )
 			->addArguments(
@@ -91,7 +82,6 @@ class ServiceProvider extends AbstractServiceProvider {
 					$this->getContainer()->get( 'atf_table' ),
 					$this->getContainer()->get( 'atf_query' ),
 					$this->getContainer()->get( 'atf_context' ),
-					$this->getContainer()->get( 'atf_admin_controller' ),
 				]
 			);
 	}
