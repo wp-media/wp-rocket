@@ -131,7 +131,9 @@ trait DBTrait {
 		$container = apply_filters( 'rocket_container', null );
 		$atf_table = $container->get( 'atf_table' );
 
-		$atf_table->uninstall();
+		if ( $atf_table->exists() ) {
+			$atf_table->uninstall();
+		}
 	}
 
 	public static function removeDBHooks() {
