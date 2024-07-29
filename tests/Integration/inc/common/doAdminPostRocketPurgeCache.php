@@ -53,9 +53,12 @@ class Test_DoAdminPostRocketPurgeCache extends FilesystemTestCase {
 	}
 
 	public function set_up() {
+		parent::set_up();
 	}
 
 	public function tear_down() {
+		parent::tear_down();
+
 		foreach ( array_keys( self::$original_transients ) as $transient ) {
 			delete_transient( $transient );
 		}
