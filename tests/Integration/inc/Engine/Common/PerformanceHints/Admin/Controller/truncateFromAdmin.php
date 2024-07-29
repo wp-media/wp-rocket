@@ -10,7 +10,6 @@ use Mockery;
  * Test class covering \WP_Rocket\Engine\Common\PerformanceHints\Admin\Controller::truncate_from_admin
  *
  * @group PerformanceHints
- * @group newtest
  */
 class Test_TruncateFromAdmin extends TestCase {
 	protected $config;
@@ -38,7 +37,7 @@ class Test_TruncateFromAdmin extends TestCase {
 			self::addLcp( $row );
 		}
 		Functions\expect( 'current_user_can' )->once()->with('rocket_manage_options')->andReturn($config['rocket_manage_options']);
-		do_action( 'rocket_saas_clean_all' );
+		do_action( 'rocket_saas_clean_all', [] );
 
 		$atf_query              = $container->get( 'atf_query' );
 		$result_atf_after_clean = $atf_query->query();
@@ -47,6 +46,5 @@ class Test_TruncateFromAdmin extends TestCase {
 		if ( ! $expected ) {
 			$this->assertSame( 1, did_action( 'rocket_after_clear_performance_hints_data' ) );
 		}
-
 	}
 }
