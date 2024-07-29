@@ -77,7 +77,7 @@ class ImageDimensions {
 	 *
 	 * @param string $html Buffer Page HTML contents.
 	 *
-	 * @return string Buffer Page HTML contents after inserting dimentions into images.
+	 * @return string Buffer Page HTML contents after inserting dimensions into images.
 	 */
 	public function specify_image_dimensions( $html ) {
 		Logger::debug( 'Start Specify Image Dimensions.' );
@@ -207,10 +207,6 @@ class ImageDimensions {
 		}
 
 		$hosts = array_unique( $hosts );
-
-		if ( empty( $hosts ) ) {
-			return true;
-		}
 
 		// URL has domain and domain is part of the internal domains.
 		if ( ! empty( $file['host'] ) ) {

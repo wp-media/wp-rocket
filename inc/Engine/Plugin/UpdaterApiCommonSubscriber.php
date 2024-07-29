@@ -7,13 +7,7 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  * Manages common hooks for the plugin updater.
  */
 class UpdaterApiCommonSubscriber implements Subscriber_Interface {
-
-	/**
-	 * API’s URL domain.
-	 *
-	 * @var string
-	 */
-	private $api_host;
+	const API_HOST = 'api.wp-rocket.me';
 
 	/**
 	 * URL to the site’s home.
@@ -56,7 +50,6 @@ class UpdaterApiCommonSubscriber implements Subscriber_Interface {
 	 * @param array $args {
 	 *     Required arguments to populate the class properties.
 	 *
-	 *     @type string  $api_host           API’s URL domain.
 	 *     @type string  $site_url           URL to the site’s home.
 	 *     @type string  $plugin_version     Current version of the plugin.
 	 *     @type string  $settings_slug      Key slug used when submitting new settings (POST).
@@ -65,7 +58,7 @@ class UpdaterApiCommonSubscriber implements Subscriber_Interface {
 	 * }
 	 */
 	public function __construct( $args ) {
-		foreach ( [ 'api_host', 'site_url', 'plugin_version', 'settings_slug', 'settings_nonce_key', 'plugin_options' ] as $setting ) {
+		foreach ( [ 'site_url', 'plugin_version', 'settings_slug', 'settings_nonce_key', 'plugin_options' ] as $setting ) {
 			if ( isset( $args[ $setting ] ) ) {
 				$this->$setting = $args[ $setting ];
 			}
@@ -93,7 +86,7 @@ class UpdaterApiCommonSubscriber implements Subscriber_Interface {
 			return $request;
 		}
 
-		if ( $this->api_host && strpos( $url, $this->api_host ) !== false ) {
+		if ( strpos( $url, self::API_HOST ) !== false ) {
 			$request['user-agent'] = sprintf( '%s;%s', $request['user-agent'], $this->get_rocket_user_agent() );
 		}
 

@@ -58,7 +58,7 @@ class Test_DisableOptionsOnAmp extends TestCase {
 			// Check the hooks before invoking the method.
 			$this->assertSame(
 				10,
-				has_filter( 'wp_resource_hints', 'rocket_dns_prefetch', 10, 2 )
+				has_filter( 'wp_resource_hints', 'rocket_dns_prefetch' )
 			);
 			$this->assertFalse( has_filter( 'do_rocket_lazyload', '__return_false' ) );
 			$this->assertFalse( has_filter( 'do_rocket_lazyload_iframes', '__return_false' ) );
@@ -70,7 +70,7 @@ class Test_DisableOptionsOnAmp extends TestCase {
 
 			$this->assertSame(
 				PHP_INT_MAX,
-				has_filter( 'wp_calculate_image_srcset', 'rocket_protocol_rewrite_srcset', PHP_INT_MAX )
+				has_filter( 'wp_calculate_image_srcset', 'rocket_protocol_rewrite_srcset' )
 			);
 			$this->assertFalse( has_filter( 'rocket_buffer', [ $this->cdn_subscriber, 'rewrite' ] ) );
 			$this->assertFalse( has_filter( 'rocket_buffer', [ $this->cdn_subscriber, 'rewrite_srcset' ] ) );
@@ -85,7 +85,7 @@ class Test_DisableOptionsOnAmp extends TestCase {
 
 		if ( ! $expected[ 'bailout' ] ) {
 			// Check the hooks after invoking the method.
-			$this->assertFalse( has_filter( 'wp_resource_hints', 'rocket_dns_prefetch', 10, 2 ) );
+			$this->assertFalse( has_filter( 'wp_resource_hints', 'rocket_dns_prefetch' ) );
 			$this->assertSame(
 				10,
 				has_filter( 'do_rocket_lazyload', '__return_false' )

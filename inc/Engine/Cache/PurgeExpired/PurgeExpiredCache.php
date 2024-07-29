@@ -330,7 +330,7 @@ class PurgeExpiredCache {
 				}
 
 				/**
-				 * A page can have mutiple cache files:
+				 * A page can have multiple cache files:
 				 * index(-mobile)(-https)(-dynamic-cookie-key){0,*}.html(_gzip).
 				 */
 				$dir_path = dirname( $file_path );

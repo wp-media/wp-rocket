@@ -22,14 +22,15 @@ use Mockery;
 class Test_Generate extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/RESTWPPost/generate.php';
 
-	public static function setUpBeforeClass() : void {
+	public static function setUpBeforeClass(): void {
 		parent::setUpBeforeClass();
 
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/WP_REST_Request.php';
 	}
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
+
 		Functions\stubTranslationFunctions();
 	}
 
@@ -83,7 +84,7 @@ class Test_Generate extends FilesystemTestCase {
 			? $config['no_fontface']
 			: false;
 		$file                         = $this->config['vfs_dir'] . "cache/critical-css/1/posts/{$post_type}-{$post_id}" . ( $is_mobile ? '-mobile' : '' ). ".css";
-		$post_url = ('post_not_exists' === $expected['code'])
+		$post_url = ( 'post_not_exists' === $expected['code'] )
 			? null
 			: "http://example.org/?p={$post_id}";
 		$async_css_mobile             = isset( $config['async_css_mobile'] )
@@ -102,7 +103,7 @@ class Test_Generate extends FilesystemTestCase {
 				return $error_object instanceof WP_Error;
 			}  );
 
-		if( ! ( $is_mobile && ( !$async_css_mobile || ! $do_caching_mobile_files ) ) ) {
+		if ( ! ( $is_mobile && ( ! $async_css_mobile || ! $do_caching_mobile_files ) ) ) {
 			Functions\expect( 'get_post_status' )
 				->once()
 				->andReturn( $post_status );
@@ -121,11 +122,11 @@ class Test_Generate extends FilesystemTestCase {
 		}
 
 		if ( in_array( (int) $get_request_response_code, [ 400, 404 ], true )
-		     || ( 200 === $get_request_response_code && 'complete' === $get_request_response_state )
-		     || $request_timeout ) {
+			|| ( 200 === $get_request_response_code && 'complete' === $get_request_response_state )
+			|| $request_timeout ) {
 			Functions\expect( 'delete_transient' )
 				->once()
-				->with( 'rocket_specific_cpcss_job_' . md5($post_url) . ( $is_mobile ? '_mobile' : '' ) );
+				->with( 'rocket_specific_cpcss_job_' . md5( $post_url ) . ( $is_mobile ? '_mobile' : '' ) );
 		}
 		Functions\expect( 'get_post_type' )
 			->atMost()
@@ -136,11 +137,11 @@ class Test_Generate extends FilesystemTestCase {
 			->once()
 			->andReturn( 1 );
 		Functions\expect( 'get_permalink' )
-			->atLeast( 1 )
-			->atMost( 2 )
+			->atMost()
+			->times( 2 )
 			->with( $post_id )
 			->andReturnUsing(
-				function( $post_id ) use ( $expected ) {
+				function ( $post_id ) use ( $expected ) {
 					return 'post_not_exists' === $expected['code']
 						? false
 						: "http://example.org/?p={$post_id}";
@@ -186,20 +187,21 @@ class Test_Generate extends FilesystemTestCase {
 
 		Functions\when( 'wp_strip_all_tags' )->returnArg();
 
+		/* @phpstan-ignore-next-line */
 		Functions\expect( 'rest_ensure_response' )->once()->andReturnArg( 0 );
 
 		$api_client    = new APIClient();
-		$data_manager  = new DataManager('wp-content/cache/critical-css/', $this->filesystem);
+		$data_manager  = new DataManager( 'wp-content/cache/critical-css/', $this->filesystem );
 		$cpcss_service = new ProcessorService( $data_manager, $api_client );
 		$options       = Mockery::mock( Options_Data::class );
 
-		if( $is_mobile ) {
+		if ( $is_mobile ) {
 			$options->shouldReceive( 'get' )
 				->with( 'async_css_mobile', 0 )
 				->once()
 				->andReturn( $async_css_mobile );
 
-			if($async_css_mobile){
+			if ( $async_css_mobile ) {
 				$options->shouldReceive( 'get' )
 					->with( 'do_caching_mobile_files', 0 )
 					->once()

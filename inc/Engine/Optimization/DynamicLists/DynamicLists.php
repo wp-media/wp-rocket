@@ -253,7 +253,7 @@ class DynamicLists extends Abstract_Render {
 	/**
 	 * Get Delay JS dynamic list.
 	 *
-	 * @return array
+	 * @return object
 	 */
 	public function get_delayjs_list() {
 		return $this->providers['delayjslists']->data_manager->get_lists();
@@ -290,5 +290,16 @@ class DynamicLists extends Abstract_Render {
 		$lists = $this->providers['defaultlists']->data_manager->get_lists();
 
 		return isset( $lists->staging_domains ) ? $lists->staging_domains : [];
+	}
+
+	/**
+	 * Get the JS minify excluded templates
+	 *
+	 * @return array
+	 */
+	public function get_exclude_js_templates(): array {
+		$lists = $this->providers['defaultlists']->data_manager->get_lists();
+
+		return $lists->exclude_js_template ?? [];
 	}
 }

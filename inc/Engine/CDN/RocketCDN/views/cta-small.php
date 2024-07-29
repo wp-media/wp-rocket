@@ -10,6 +10,8 @@
  */
 
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+
+$data = isset( $data ) && is_array( $data ) ? $data : []; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 ?>
 <div class="wpr-rocketcdn-cta-small notice-alt notice-warning <?php echo esc_attr( $data['container_class'] ); ?>" id="wpr-rocketcdn-cta-small">
 	<div class="wpr-flex">

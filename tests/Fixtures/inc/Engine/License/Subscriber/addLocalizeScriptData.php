@@ -17,7 +17,7 @@ return [
 		],
 		'data'    => [
 			'nonce'      => 12345,
-			'origin_url' => 'https://wp-rocket.me',
+			'origin_url' => 'https://api.wp-rocket.me',
 		],
 		'expected' => [],
 	],
@@ -37,7 +37,7 @@ return [
 		],
 		'data'    => [
 			'nonce'      => 12345,
-			'origin_url' => 'https://wp-rocket.me',
+			'origin_url' => 'https://api.wp-rocket.me',
 		],
 		'expected' => [],
 	],
@@ -57,7 +57,7 @@ return [
 		],
 		'data'    => [
 			'nonce'      => 12345,
-			'origin_url' => 'https://wp-rocket.me',
+			'origin_url' => 'https://api.wp-rocket.me',
 		],
 		'expected' => [],
 	],
@@ -77,7 +77,7 @@ return [
 		],
 		'data'    => [
 			'nonce'      => 12345,
-			'origin_url' => 'https://wp-rocket.me',
+			'origin_url' => 'https://api.wp-rocket.me',
 		],
 		'expected' => [],
 	],
@@ -97,7 +97,7 @@ return [
 		],
 		'data'    => [
 			'nonce'      => 12345,
-			'origin_url' => 'https://wp-rocket.me',
+			'origin_url' => 'https://api.wp-rocket.me',
 		],
 		'expected' => [
 			'license_expiration' => strtotime( 'next week' ),
@@ -119,7 +119,7 @@ return [
 		],
 		'data'    => [
 			'nonce'      => 12345,
-			'origin_url' => 'https://wp-rocket.me',
+			'origin_url' => 'https://api.wp-rocket.me',
 		],
 		'expected' => [
 			'promo_end'  => strtotime( 'next week' ),

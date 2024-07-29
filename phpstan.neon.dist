@@ -1,7 +1,7 @@
 includes:
 	- phar://phpstan.phar/conf/bleedingEdge.neon
 parameters:
-	level: 0
+	level: 2
 	inferPrivatePropertyTypeFromConstructor: true
 	paths:
 		# Test only the new architecture for now.
@@ -13,6 +13,8 @@ parameters:
 	bootstrapFiles:
 		# Must be first
 		- %currentWorkingDirectory%/inc/functions/options.php
+		# PHPStan bootstrap
+		- %currentWorkingDirectory%/tests/phpstan/phpstan-bootstrap.php
 		# Procedural code
 		- %currentWorkingDirectory%/inc/constants.php
 		- %currentWorkingDirectory%/inc/common/purge.php
@@ -33,7 +35,9 @@ parameters:
 		- %currentWorkingDirectory%/inc/Dependencies/ActionScheduler
 		- %currentWorkingDirectory%/tests/Fixtures/
 		- %currentWorkingDirectory%/vendor/antecedent/patchwork/
+		- %currentWorkingDirectory%/vendor/wpackagist-plugin/cloudflare/
 		- %currentWorkingDirectory%/vendor/wpackagist-plugin/amp/
+		- %currentWorkingDirectory%/vendor/wpackagist-plugin/hummingbird-performance/
 		- %currentWorkingDirectory%/vendor/wpackagist-plugin/the-events-calendar/
 		- %currentWorkingDirectory%/vendor/wpackagist-plugin/woocommerce/
 	scanFiles:
@@ -41,6 +45,7 @@ parameters:
 		- %currentWorkingDirectory%/inc/admin/options.php
 		- %currentWorkingDirectory%/vendor/php-stubs/wordpress-stubs/wordpress-stubs.php
 		- %currentWorkingDirectory%/vendor/php-stubs/wordpress-tests-stubs/wordpress-tests-stubs.php
+		- %currentWorkingDirectory%/wp-rocket.php
 	excludePaths:
 		 - %currentWorkingDirectory%/inc/vendors/
 		 # These need plugin stubs!

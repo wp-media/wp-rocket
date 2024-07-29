@@ -20,7 +20,7 @@ class APIClient {
 	 * @param string $url    The URL to send a CPCSS generation request for.
 	 * @param array  $params Optional. Parameters needed to be sent in the body. Default: [].
 	 * @param string $item_type Optional. Type for this item if it's custom or specific type. Default: custom.
-	 * @return array|WP_Error
+	 * @return object|array|WP_Error
 	 */
 	public function send_generation_request( $url, $params = [], $item_type = 'custom' ) {
 		$params['url'] = $url;
@@ -108,7 +108,11 @@ class APIClient {
 		return (
 			200 === $response_code
 			&&
-			! empty( $response_data )
+			(
+				$response_data instanceof stdClass
+				&&
+				! empty( (array) $response_data )
+			)
 			&&
 			(
 				(
