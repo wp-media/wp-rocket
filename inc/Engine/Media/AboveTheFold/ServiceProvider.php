@@ -27,7 +27,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		'atf_controller',
 		'atf_subscriber',
 		'atf_ajax_controller',
-		'atf_ajax_subscriber',
 		'atf_factory',
 	];
 
