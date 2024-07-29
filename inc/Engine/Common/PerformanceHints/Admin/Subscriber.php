@@ -7,19 +7,19 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
 
 class Subscriber implements Subscriber_Interface {
 	/**
-	 * AdminContext instance.
+	 * Controller instance.
 	 *
-	 * @var AdminContext
+	 * @var Controller
 	 */
-	private $admin_context;
+	private $controller;
 
 	/**
 	 * Instantiate the class
 	 *
-	 * @param AdminContext $admin_context Admin context instance.
+	 * @param AdminContext $controller Controller instance.
 	 */
-	public function __construct( AdminContext $admin_context ) {
-		$this->admin_context = $admin_context;
+	public function __construct( Controller $controller ) {
+		$this->controller = $controller;
 	}
 
 	/**
@@ -29,27 +29,28 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'switch_theme'                  => 'truncate_performance_table',
-			'permalink_structure_changed'   => 'truncate_performance_table',
-			'rocket_domain_options_changed' => 'truncate_performance_table',
+			'switch_theme'                  => 'truncate_tables',
+			'permalink_structure_changed'   => 'truncate_tables',
+			'rocket_domain_options_changed' => 'truncate_tables',
 			'wp_trash_post'                 => 'delete_post',
 			'delete_post'                   => 'delete_post',
 			'clean_post_cache'              => 'delete_post',
 			'wp_update_comment_count'       => 'delete_post',
 			'edit_term'                     => 'delete_term',
 			'pre_delete_term'               => 'delete_term',
-			'rocket_saas_clean_all'         => 'truncate_admin_rows',
+			'rocket_saas_clean_all'         => 'truncate_from_admin',
+			'rocket_saas_clean_url'         => 'clean_url',
 			'wp_rocket_upgrade'             => [ 'truncate_on_update', 10, 2 ],
 		];
 	}
 
 	/**
-	 * Callback for truncating performance table
+	 * Callback for truncating performance hints tables
 	 *
 	 * @return void
 	 */
-	public function truncate_performance_table(): void {
-		$this->admin_context->truncate_performance_table();
+	public function truncate_tables(): void {
+		$this->controller->truncate_tables();
 	}
 
 	/**
@@ -60,18 +61,18 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function delete_post( int $post_id ): void {
-		$this->admin_context->delete_post( $post_id );
+		$this->controller->delete_post( $post_id );
 	}
 
 	/**
-	 * Callback for Delete ATF row on update or delete term.
+	 * Callback for Deleting Performance hints optimization row on update or delete term.
 	 *
 	 * @param int $term_id The term ID.
 	 *
 	 * @return void
 	 */
 	public function delete_term( int $term_id ): void {
-		$this->admin_context->delete_term( $term_id );
+		$this->controller->delete_term( $term_id );
 	}
 
 	/**
@@ -81,12 +82,21 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return array
 	 */
-	public function truncate_admin_rows( array $clean ): array {
-		return $this->admin_context->truncate_admin_rows( $clean );
+	public function truncate_from_admin( array $clean ): array {
+		return $this->controller->truncate_from_admin( $clean );
 	}
 
 	/**
-	 * Truncate ATF table on update to 3.16.1 and higher
+	 * Cleans rows for the current URL.
+	 *
+	 * @return void
+	 */
+	public function clean_url() {
+		$this->controller->clean_url();
+	}
+
+	/**
+	 * Truncate Performance hints optimization tables on update to 3.16.1 and higher
 	 *
 	 * @param string $new_version New plugin version.
 	 * @param string $old_version Old plugin version.
@@ -94,6 +104,6 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function truncate_on_update( $new_version, $old_version ) {
-		$this->admin_context->truncate_on_update( $new_version, $old_version );
+		$this->controller->truncate_on_update( $new_version, $old_version );
 	}
 }

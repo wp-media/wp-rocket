@@ -4,7 +4,6 @@ declare( strict_types=1 );
 namespace WP_Rocket\Engine\Common\PerformanceHints;
 
 use WP_Rocket\Engine\Common\PerformanceHints\AJAX\ControllerInterface as AjaxControllerInterface;
-use WP_Rocket\Engine\Common\PerformanceHints\Admin\ControllerInterface as AdminControllerInterface;
 use WP_Rocket\Engine\Common\PerformanceHints\Frontend\ControllerInterface as FrontendControllerInterface;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Engine\Common\PerformanceHints\Database\Queries\QueriesInterface;
@@ -45,9 +44,4 @@ interface FactoryInterface {
 	 * @return ContextInterface
 	 */
 	public function get_context(): ContextInterface;
-
-	/**
-	 * Provides an Admin interface
-	 */
-	public function get_admin_controller(): AdminControllerInterface;
 }
