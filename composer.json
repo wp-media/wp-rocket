@@ -123,8 +123,9 @@
 	},
 	"scripts": {
 		"test-unit": "\"vendor/bin/phpunit\" --testsuite unit --colors=always --configuration tests/Unit/phpunit.xml.dist --coverage-php tests/report/unit.cov",
-		"test-integration": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --exclude-group AdminOnly,BeaverBuilder,Elementor,Hummingbird,WithSmush,WithWoo,WithAmp,WithAmpAndCloudflare,WithSCCSS,Cloudways,Dreampress,Cloudflare,CloudflareAdmin,Multisite,WPEngine,SpinUpWP,WordPressCom,O2Switch,PDFEmbedder,PDFEmbedderPremium,PDFEmbedderSecure,Godaddy,LiteSpeed,RevolutionSlider,WordFence,ConvertPlug,Kinsta,Jetpack,RankMathSEO,AllInOneSeoPack,SEOPress,TheSEOFramework,OneCom,RocketLazyLoad,WPXCloud,TheEventsCalendar,Perfmatters,RapidLoad,ProIsp,TranslatePress,WPGeotargeting,Weglot,Pressidium --coverage-php tests/report/integration.cov",
+		"test-integration": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --exclude-group AdminOnly,BeaverBuilder,Elementor,Hummingbird,WithSmush,WithWoo,WithAmp,WithAmpAndCloudflare,WithSCCSS,Cloudways,Dreampress,Cloudflare,CloudflareAdmin,Multisite,WPEngine,SpinUpWP,WordPressCom,O2Switch,PDFEmbedder,PDFEmbedderPremium,PDFEmbedderSecure,Godaddy,LiteSpeed,RevolutionSlider,WordFence,ConvertPlug,Kinsta,Jetpack,RankMathSEO,AllInOneSeoPack,SEOPress,TheSEOFramework,OneCom,RocketLazyLoad,WPXCloud,TheEventsCalendar,Perfmatters,RapidLoad,ProIsp,TranslatePress,WPGeotargeting,Weglot,Pressidium,PerformanceHints --coverage-php tests/report/integration.cov",
 		"test-integration-adminonly": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group AdminOnly",
+		"test-integration-performancehints": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group PerformanceHints",
 		"test-integration-bb": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group BeaverBuilder",
 		"test-integration-cloudflare": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group Cloudflare",
 		"test-integration-cloudflareadmin": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group CloudflareAdmin",
@@ -177,6 +178,7 @@
 		],
 		"run-tests-integration-specific": [
 			"@test-integration-adminonly",
+			"@test-integration-performancehints",
 			"@test-integration-cloudflare",
 			"@test-integration-cloudflareadmin",
 			"@test-integration-bb",
