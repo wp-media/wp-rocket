@@ -7,6 +7,8 @@ use WP_Rocket\Engine\Common\PerformanceHints\AJAX\ControllerInterface as AjaxCon
 use WP_Rocket\Engine\Common\PerformanceHints\Admin\ControllerInterface as AdminControllerInterface;
 use WP_Rocket\Engine\Common\PerformanceHints\Frontend\ControllerInterface as FrontendControllerInterface;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
+use WP_Rocket\Engine\Common\PerformanceHints\Database\Queries\QueriesInterface;
+use WP_Rocket\Engine\Common\PerformanceHints\Database\Table\TableInterface;
 
 interface FactoryInterface {
 	/**
@@ -25,13 +27,17 @@ interface FactoryInterface {
 
 	/**
 	 * Provides a Table interface.
+	 *
+	 * @return TableInterface
 	 */
-	public function table(); // To return Table interface when created.
+	public function table(): TableInterface;
 
 	/**
 	 * Provides a Queries interface.
+	 *
+	 * @return QueriesInterface
 	 */
-	public function queries(); // To return Queries interface when created.
+	public function queries(): QueriesInterface;
 
 	/**
 	 * Provides a Context interface

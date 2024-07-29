@@ -4,11 +4,11 @@ namespace WP_Rocket\Engine\Activation;
 
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Dependencies\League\Container\Container;
-use WP_Rocket\ServiceProvider\Options as OptionsServiceProvider;
-use WP_Rocket\Engine\Preload\Activation\ServiceProvider as PreloadActivationServiceProvider;
+use WP_Rocket\Engine\Common\PerformanceHints\Activation\ServiceProvider as PerformanceHintsActivationServiceProvider;
 use WP_Rocket\Engine\License\ServiceProvider as LicenseServiceProvider;
+use WP_Rocket\Engine\Preload\Activation\ServiceProvider as PreloadActivationServiceProvider;
 use WP_Rocket\Logger\ServiceProvider as LoggerServiceProvider;
-use WP_Rocket\Engine\Media\AboveTheFold\Activation\ServiceProvider as AboveTheFoldActivationServiceProvider;
+use WP_Rocket\ServiceProvider\Options as OptionsServiceProvider;
 use WP_Rocket\ThirdParty\Hostings\HostResolver;
 use WP_Rocket\ThirdParty\Hostings\ServiceProvider as HostingsServiceProvider;
 
@@ -18,6 +18,8 @@ use WP_Rocket\ThirdParty\Hostings\ServiceProvider as HostingsServiceProvider;
  * @since 3.6.3
  */
 class Activation {
+	const ACTIVATION_ENDPOINT = 'https://api.wp-rocket.me/api/wp-rocket/activate-licence.php';
+
 	/**
 	 * Aliases in the container for each class that needs to call its activate method
 	 *
@@ -29,7 +31,7 @@ class Activation {
 		'wp_cache',
 		'action_scheduler_check',
 		'preload_activation',
-		'atf_activation',
+		'performance_hints_activation',
 	];
 
 	/**
@@ -50,7 +52,7 @@ class Activation {
 		$container->addServiceProvider( new LicenseServiceProvider() );
 		$container->addServiceProvider( new LoggerServiceProvider() );
 		$container->get( 'logger' );
-		$container->addServiceProvider( new AboveTheFoldActivationServiceProvider() );
+		$container->addServiceProvider( new PerformanceHintsActivationServiceProvider() );
 
 		$host_type = HostResolver::get_host_service();
 
@@ -97,7 +99,7 @@ class Activation {
 
 		// Update customer key & licence.
 		wp_remote_get(
-			WP_ROCKET_WEB_API . 'activate-licence.php',
+			self::ACTIVATION_ENDPOINT,
 			[
 				'blocking' => false,
 			]

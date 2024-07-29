@@ -5,7 +5,6 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Media\AboveTheFold\Admin\Contro
 use WP_Rocket\Tests\Integration\TestCase;
 use Brain\Monkey\Functions;
 use Mockery;
-use WP_Rocket\Engine\Media\AboveTheFold\WarmUp\Controller;
 
 /**
  * Test class covering \WP_Rocket\Engine\Media\AboveTheFold\Admin\Controller::truncate_admin_rows
@@ -36,7 +35,6 @@ class Test_TruncateAtfAdmin extends TestCase {
 	public function testShouldDoAsExpected( $config, $expected ) {
 		$this->config = $config;
 		$container    = apply_filters( 'rocket_container', null );
-		$warm_up_controller = Mockery::mock( Controller::class );
 		foreach ( $this->config['rows'] as $row ) {
 			self::addLcp( $row );
 		}

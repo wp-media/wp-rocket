@@ -43,6 +43,112 @@ class Controller implements ControllerInterface {
 		$this->context = $context;
 	}
 
+<<<<<<< HEAD
+=======
+	/**
+	 * Truncate delete ATF DB table.
+	 *
+	 * @return void
+	 */
+	public function truncate_atf() {
+		if ( ! $this->context->is_allowed() ) {
+			return;
+		}
+
+		$this->delete_rows();
+	}
+
+	/**
+	 * Deletes the rows from the table
+	 *
+	 * @return void
+	 */
+	private function delete_rows() {
+		if ( 0 < $this->query->get_not_completed_count() ) {
+			$this->table->remove_all_completed_rows();
+			return;
+		}
+
+		$this->table->truncate_table();
+
+		/**
+		 * Fires after clearing lcp & atf data.
+		 */
+		do_action( 'rocket_after_clear_atf' );
+	}
+
+	/**
+	 * Delete ATF row on update Post or delete post.
+	 *
+	 * @param int $post_id The post ID.
+	 *
+	 * @return void
+	 */
+	public function delete_post_atf( $post_id ) {
+		if ( ! $this->context->is_allowed() ) {
+			return;
+		}
+
+		$url = get_permalink( $post_id );
+
+		if ( false === $url ) {
+			return;
+		}
+
+		$this->query->delete_by_url( untrailingslashit( $url ) );
+	}
+
+	/**
+	 * Deletes the ATF when updating a term
+	 *
+	 * @param int $term_id the term ID.
+	 *
+	 * @return void
+	 */
+	public function delete_term_atf( $term_id ) {
+		if ( ! $this->context->is_allowed() ) {
+			return;
+		}
+
+		$url = get_term_link( (int) $term_id );
+
+		if ( is_wp_error( $url ) ) {
+			return;
+		}
+
+		$this->query->delete_by_url( untrailingslashit( $url ) );
+	}
+
+	/**
+	 * Deletes rows when triggering clean from admin
+	 *
+	 * @param array $clean An array containing the status and message.
+	 *
+	 * @return array
+	 */
+	public function truncate_atf_admin( $clean ) {
+		if ( ! $this->context->is_allowed() ) {
+			return $clean;
+		}
+
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			return [
+				'status' => 'die',
+			];
+		}
+
+		$this->delete_rows();
+
+		return [
+			'status'  => 'success',
+			'message' => sprintf(
+				// translators: %1$s = plugin name.
+				__( '%1$s: Critical images cleared!', 'rocket' ),
+				'<strong>WP Rocket</strong>'
+			),
+		];
+	}
+>>>>>>> enhancement/6779-atf-db-refactor
 
 	/**
 	 * Cleans rows for the current URL.

@@ -11,11 +11,11 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Filters;
 
 /**
- * Test class covering WP_Rocket\Engine\Media\AboveTheFold\AJAX\Controller::add_lcp_data
+ * Test class covering WP_Rocket\Engine\Media\AboveTheFold\AJAX\Controller::add_data
  *
  * @group AboveTheFold
  */
-class Test_AddLcpData extends TestCase {
+class Test_AddBeaconData extends TestCase {
 	private $query;
 	private $controller;
 	private $context;
@@ -50,13 +50,13 @@ class Test_AddLcpData extends TestCase {
 		$_POST = [
 			'url'       => addslashes( $config['url'] ),
 			'is_mobile' => addslashes( $config['is_mobile'] ),
-			'images'    => addslashes( $config['images'] ),
+			'lcp_images'    => addslashes( $config['lcp_images'] ),
 			'status'    => addslashes( $config['status'] ?? 'success' ),
 		];
 
 		Functions\expect( 'check_ajax_referer' )
 			->once()
-			->with( 'rocket_lcp', 'rocket_lcp_nonce' )
+			->with( 'rocket_beacon', 'rocket_beacon_nonce' )
 			->andReturn( true );
 
 		$this->context->shouldReceive( 'is_allowed' )
