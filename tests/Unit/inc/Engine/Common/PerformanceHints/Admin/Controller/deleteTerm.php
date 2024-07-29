@@ -5,7 +5,6 @@ namespace WP_Rocket\tests\Unit\inc\Engine\Common\PerformanceHints\Admin\Controll
 use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Tests\Unit\TestCase;
-use function Brain\Monkey\Functions;
 use WP_Rocket\Engine\Common\PerformanceHints\Admin\Controller;
 use WP_Rocket\Engine\Media\AboveTheFold\Factory as ATFFactory;
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Queries\AboveTheFold;

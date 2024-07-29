@@ -18,7 +18,7 @@ class Controller {
 	 * @param array $factories Array of factories.
 	 */
 	public function __construct( array $factories ) {
-		$this->factories   = $factories;
+		$this->factories = $factories;
 	}
 
 	/**
@@ -58,7 +58,6 @@ class Controller {
 			'3.16.4',
 			'rocket_after_clear_atf'
 		);
-
 	}
 
 	/**
@@ -96,7 +95,7 @@ class Controller {
 
 		$url = get_term_link( (int) $term_id );
 
-		if ( is_wp_error( $url ) ) {   
+		if ( is_wp_error( $url ) ) {
 			return;
 		}
 
@@ -106,11 +105,9 @@ class Controller {
 	/**
 	 * Deletes rows when triggering clean from admin
 	 *
-	 * @param array $clean An array containing the status and message.
-	 *
 	 * @return array
 	 */
-	public function truncate_from_admin( $clean ) {
+	public function truncate_from_admin() {
 		if ( empty( $this->factories ) ) {
 			return;
 		}

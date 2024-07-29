@@ -16,7 +16,7 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Instantiate the class
 	 *
-	 * @param AdminContext $controller Controller instance.
+	 * @param Controller $controller Controller instance.
 	 */
 	public function __construct( Controller $controller ) {
 		$this->controller = $controller;
@@ -78,12 +78,10 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Deletes rows when triggering clean from admin
 	 *
-	 * @param array $clean An array containing the status and message.
-	 *
 	 * @return array
 	 */
-	public function truncate_from_admin( array $clean ): array {
-		return $this->controller->truncate_from_admin( $clean );
+	public function truncate_from_admin(): array {
+		return $this->controller->truncate_from_admin();
 	}
 
 	/**
