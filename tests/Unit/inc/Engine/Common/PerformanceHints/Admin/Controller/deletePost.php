@@ -1,61 +1,53 @@
 <?php
 
-namespace WP_Rocket\tests\Unit\inc\Engine\Common\PerformanceHints\Admin\AdminContext;
+namespace WP_Rocket\tests\Unit\inc\Engine\Common\PerformanceHints\Admin\Controller;
 
 use Brain\Monkey\Functions;
 use Mockery;
-use WP_Rocket\Engine\Common\PerformanceHints\Admin\AdminContext;
-use WP_Rocket\Engine\Media\AboveTheFold\Context\Context;
-use WP_Rocket\Engine\Media\AboveTheFold\Database\Queries\AboveTheFold as ATFQuery;
-use WP_Rocket\Engine\Media\AboveTheFold\Database\Tables\AboveTheFold as ATFTable;
 use WP_Rocket\Tests\Unit\TestCase;
 use function Brain\Monkey\Functions;
+use WP_Rocket\Engine\Common\PerformanceHints\Admin\Controller;
+use WP_Rocket\Engine\Media\AboveTheFold\Factory as ATFFactory;
+use WP_Rocket\Engine\Media\AboveTheFold\Database\Queries\AboveTheFold;
 
 /**
- * Test class covering WP_Rocket\Engine\Common\PerformanceHints\Admin\AdminContext::delete_post
+ * Test class covering WP_Rocket\Engine\Common\PerformanceHints\Admin\Controller::delete_post
  *
- * @group ATF
+ * @group PerformanceHints
  */
 class Test_DeletePost extends TestCase {
-	private $query;
-	private $table;
-	private $context;
 	private $factories;
-	private $admin_context;
+	private $queries;
 
 	protected function setUp(): void {
 		parent::setUp();
-		$factories = [
-			'get_admin_controller'
-		];
 
-		$this->factories = $factories;
-		$this->query = $this->createMock( ATFQuery::class );
-		$this->table = $this->createMock( ATFTable::class );
-		$this->context = Mockery::mock( Context::class );
-		$this->admin_context = new AdminContext( $this->factories, $this->table, $this->query, $this->context );
+		$this->queries = $this->createMock(AboveTheFold::class);
+		$atf_factory = $this->createMock(ATFFactory::class);
+		$atf_factory->method('queries')->willReturn($this->queries);
+
+		$this->factories = [
+			$atf_factory,
+		];
 	}
 
 	/**
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoExpected( $config, $expected ) {
-		$this->context->shouldReceive( 'is_allowed' )
-			->atMost()
-			->once()
-			->andReturn( $config['filter'] );
+		$controller = new Controller( ! $config['filter'] ? [] : $this->factories );
 
 		Functions\when( 'get_permalink' )->justReturn( $config['url'] );
 
 		if ( $expected ) {
-			$this->query->expects( $this->once() )
+			$this->queries->expects( $this->once() )
 				->method( 'delete_by_url' )
 				->with( $config['url'] );
 		} else {
-			$this->query->expects( $this->never() )
+			$this->queries->expects( $this->never() )
 				->method( 'delete_by_url' );
 		}
 
-		$this->admin_context->delete_post( $config['post_id'] );
+		$controller->delete_post( $config['post_id'] );
 	}
 }

@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 
 namespace WP_Rocket\tests\Unit\inc\Engine\Common\PerformanceHints\Admin\Controller;
 
@@ -11,11 +10,11 @@ use WP_Rocket\Engine\Media\AboveTheFold\Database\Queries\AboveTheFold;
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Tables\AboveTheFold as ATFTable;
 
 /**
- * Test class covering WP_Rocket\Engine\Common\PerformanceHints\Admin\Controller::truncate_on_update
+ * Test class covering WP_Rocket\Engine\Common\PerformanceHints\Admin\Controller::truncate_tables
  *
  * @group PerformanceHints
  */
-class TestTruncateOnUpdate extends TestCase {
+class Test_TruncateTables extends TestCase {
 	private $factories;
 	private $queries;
 	private $table;
@@ -48,10 +47,15 @@ class TestTruncateOnUpdate extends TestCase {
 				->method( 'get_not_completed_count' )
 				->willReturn( $config['not_completed'] );
 
-			$this->table->expects( $this->once() )
-				->method( 'truncate_table' );
+			if ( 'partial' === $expected ) {
+				$this->table->expects( $this->once() )
+					->method( 'remove_all_completed_rows' );
+			} elseif ( 'truncate' === $expected ) {
+				$this->table->expects( $this->once() )
+					->method( 'truncate_table' );
+			}
 		}
 
-		$controller->truncate_on_update( $config['new_version'], $config['old_version'] );
+		$controller->truncate_tables();
 	}
 }
