@@ -542,15 +542,15 @@ class Image {
 	/**
 	 * Checks if the noscript tag is enabled
 	 *
-	 * @return bool
+	 * @return mixed
 	 */
-	private function noscriptEnabled(): bool {
+	private function noscriptEnabled() {
 		/**
 		 * Filter to enable or disable noscript tag
 		 *
 		 * @param bool $enable_noscript Enable or disable noscript tag.
 		 */
-		return apply_filters( 'rocket_lazyload_noscript', true );
+		return wpm_apply_filters_typed( 'boolean', 'rocket_lazyload_noscript', true );
 	}
 
 	/**
@@ -614,7 +614,7 @@ class Image {
 
 		$stop = count( $textarr );// loop stuff.
 
-		// Ignore proessing of specific tags.
+		// Ignore processing of specific tags.
 		$tags_to_ignore       = 'code|pre|style|script|textarea';
 		$ignore_block_element = '';
 
