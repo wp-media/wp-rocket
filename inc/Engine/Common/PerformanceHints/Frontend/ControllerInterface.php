@@ -15,11 +15,11 @@ interface ControllerInterface {
 	public function optimize( string $html, $row ): string;
 
 	/**
-	 * List of elements to be considered for optimization.
+	 * Add custom data like the List of elements to be considered for optimization.
 	 *
 	 * @param array $data Array of data passed in beacon.
 	 *
 	 * @return array
 	 */
-	public function target_elements( array $data ): array;
+	public function add_custom_data( array $data ): array;
 }
