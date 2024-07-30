@@ -10,7 +10,7 @@ interface QueueInterface {
 	 *
 	 * @param string $hook The hook to trigger.
 	 * @param array  $args Arguments to pass when the hook triggers.
-	 * @return string The action ID
+	 * @return int The action ID
 	 */
 	public function add_async( $hook, $args = [] );
 
@@ -20,7 +20,7 @@ interface QueueInterface {
 	 * @param int    $timestamp When the job will run.
 	 * @param string $hook The hook to trigger.
 	 * @param array  $args Arguments to pass when the hook triggers.
-	 * @return string The action ID
+	 * @return int The action ID
 	 */
 	public function schedule_single( $timestamp, $hook, $args = [] );
 
@@ -31,7 +31,7 @@ interface QueueInterface {
 	 * @param int    $interval_in_seconds How long to wait between runs.
 	 * @param string $hook The hook to trigger.
 	 * @param array  $args Arguments to pass when the hook triggers.
-	 * @return string The action ID
+	 * @return int The action ID
 	 */
 	public function schedule_recurring( $timestamp, $interval_in_seconds, $hook, $args = [] );
 
@@ -62,7 +62,7 @@ interface QueueInterface {
 	 *   +------------------------- min (0 - 59)
 	 * @param string $hook The hook to trigger.
 	 * @param array  $args Arguments to pass when the hook triggers.
-	 * @return string The action ID
+	 * @return int The action ID
 	 */
 	public function schedule_cron( $timestamp, $cron_schedule, $hook, $args = [] );
 

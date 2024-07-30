@@ -81,6 +81,7 @@ class WordFenceCompatibility implements Subscriber_Interface {
 	 * Check if ip can be removed.
 	 *
 	 * @param string $ip IP.
+	 *
 	 * @return array
 	 */
 	private function can_pop_ip( string $ip ) {
@@ -94,7 +95,7 @@ class WordFenceCompatibility implements Subscriber_Interface {
 		$ip = array_search( $ip, $whitelist_array, true );
 
 		if ( false === $ip ) {
-			return false;
+			return [];
 		}
 
 		// Remove ip from whitelist.
