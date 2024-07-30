@@ -15,17 +15,26 @@ class Test_maybe_apply_optimizations extends FilesystemTestCase {
 
 	protected $config;
 
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
+
+		// Install in set_up_before_class because of exists().
+		self::installAtfTable();
+	}
+
+	public static function tear_down_after_class() {
+		self::uninstallAtfTable();
+
+		parent::tear_down_after_class();
+	}
+
 	public function set_up() {
 		parent::set_up();
-
-		self::installAtfTable();
 
 		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'maybe_apply_optimizations', 17 );
 	}
 
 	public function tear_down() {
-		self::uninstallAtfTable();
-
 		remove_filter( 'rocket_performance_hints_optimization_delay', [ $this, 'add_delay' ] );
 
 		$this->restoreWpHook( 'rocket_buffer' );

@@ -12,10 +12,21 @@ use WP_Rocket\Tests\Integration\AjaxTestCase;
 class Test_AddData extends AjaxTestCase {
 	private $allowed;
 
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
+
+		// Install in set_up_before_class because of exists().
+		self::installAtfTable();
+	}
+
+	public static function tear_down_after_class() {
+		self::uninstallAtfTable();
+
+		parent::tear_down_after_class();
+	}
+
 	public function set_up() {
 		parent::set_up();
-
-		self::installAtfTable();
 
 		$this->action = 'rocket_beacon';
 	}
@@ -26,8 +37,6 @@ class Test_AddData extends AjaxTestCase {
 	 * @return void
 	 */
 	public function tear_down() {
-		self::uninstallAtfTable();
-
 		remove_filter( 'rocket_above_the_fold_optimization', [ $this, 'set_allowed' ] );
 
 		parent::tear_down();

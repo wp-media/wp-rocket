@@ -1,19 +1,17 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\Media\AboveTheFold\Admin\Controller;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Common\PerformanceHints\Admin\Controller;
 
 use WP_Rocket\Tests\Integration\TestCase;
 use Brain\Monkey\Functions;
 use Mockery;
 
 /**
- * Test class covering \WP_Rocket\Engine\Media\AboveTheFold\Admin\Controller::truncate_atf_admin
+ * Test class covering \WP_Rocket\Engine\Common\PerformanceHints\Admin\Controller::truncate_from_admin
  *
- * @group AboveTheFold
+ * @group PerformanceHints
  */
-class Test_TruncateAtfAdmin extends TestCase {
-	protected $path_to_test_data = '/inc/Engine/Media/AboveTheFold/Admin/Controller/truncateAtfAdmin.php';
-
+class Test_TruncateFromAdmin extends TestCase {
 	protected $config;
 
 	public static function set_up_before_class() {
@@ -39,15 +37,14 @@ class Test_TruncateAtfAdmin extends TestCase {
 			self::addLcp( $row );
 		}
 		Functions\expect( 'current_user_can' )->once()->with('rocket_manage_options')->andReturn($config['rocket_manage_options']);
-		do_action( 'rocket_saas_clean_all' );
+		do_action( 'rocket_saas_clean_all', [] );
 
 		$atf_query              = $container->get( 'atf_query' );
 		$result_atf_after_clean = $atf_query->query();
 
 		$this->assertCount( $expected, $result_atf_after_clean );
 		if ( ! $expected ) {
-			$this->assertSame( 1, did_action( 'rocket_after_clear_atf' ) );
+			$this->assertSame( 1, did_action( 'rocket_after_clear_performance_hints_data' ) );
 		}
-
 	}
 }

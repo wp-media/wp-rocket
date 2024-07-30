@@ -7,6 +7,7 @@ use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvi
 use WP_Rocket\Engine\Common\PerformanceHints\AJAX\Subscriber as AjaxSubscriber;
 use WP_Rocket\Engine\Common\PerformanceHints\Frontend\Processor as FrontendProcessor;
 use WP_Rocket\Engine\Common\PerformanceHints\Frontend\Subscriber as FrontendSubscriber;
+use WP_Rocket\Engine\Common\PerformanceHints\Admin\{Controller as AdminController, Subscriber as AdminSubscriber};
 use WP_Rocket\Engine\Common\PerformanceHints\Cron\{Controller as CronController, Subscriber as CronSubscriber};
 use WP_Rocket\Engine\Common\PerformanceHints\WarmUp\{
 	APIClient,
@@ -29,6 +30,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		'performance_hints_ajax_subscriber',
 		'frontend_processor',
 		'performance_hints_frontend_subscriber',
+		'performance_hints_admin_subscriber',
+		'performance_hints_admin_controller',
 		'performance_hints_cron_subscriber',
 		'cron_controller',
 		'performance_hints_warmup_apiclient',
@@ -85,6 +88,19 @@ class ServiceProvider extends AbstractServiceProvider {
 				]
 			);
 
+		$this->getContainer()->add( 'performance_hints_admin_controller', AdminController::class )
+			->addArguments(
+				[
+					$factories,
+				]
+			);
+
+		$this->getContainer()->addShared( 'performance_hints_admin_subscriber', AdminSubscriber::class )
+			->addArguments(
+				[
+					$this->getContainer()->get( 'performance_hints_admin_controller' ),
+				]
+			);
 		$this->getContainer()->add( 'cron_controller', CronController::class )
 			->addArgument(
 				[

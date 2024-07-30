@@ -49,7 +49,7 @@ class Factory implements FactoryInterface {
 	protected $context;
 
 	/**
-	 * Instatiate the class.
+	 * Instantiate the class.
 	 *
 	 * @param AjaxControllerInterface     $ajax_controller ATF AJAX Controller instance.
 	 * @param FrontendControllerInterface $frontend_controller ATF Frontend Controller instance.

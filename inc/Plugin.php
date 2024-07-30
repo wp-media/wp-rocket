@@ -386,9 +386,7 @@ class Plugin {
 			'wpgeotargeting',
 			'lazyload_css_subscriber',
 			'weglot',
-			'atf_subscriber',
 			'cron_subscriber',
-			'atf_admin_subscriber',
 			'contactform7',
 			'debug_subscriber',
 			'rucss_cron_subscriber',
@@ -397,6 +395,7 @@ class Plugin {
 			'performance_hints_frontend_subscriber',
 			'performance_hints_cron_subscriber',
 			'performance_hints_warmup_subscriber',
+			'performance_hints_admin_subscriber',
 		];
 
 		$host_type = HostResolver::get_host_service();
