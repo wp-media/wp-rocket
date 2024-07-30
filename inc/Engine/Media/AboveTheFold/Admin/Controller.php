@@ -66,7 +66,7 @@ class Controller {
 			return;
 		}
 
-		$this->table->truncate_atf_table();
+		$this->table->truncate_table();
 
 		/**
 		 * Fires after clearing lcp & atf data.
