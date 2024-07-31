@@ -181,13 +181,16 @@ class Controller {
 					$object->src = $this->sanitize_image_url( $image->src );
 				}
 				$object->sources = array_map(
-					function( $object ) {
-						return (object) wp_parse_args( $object, [
-							'media'  => '',
-							'sizes'  => '',
-							'srcset' => '',
-							'type'   => '',
-						] );
+					function ( $source ) {
+						return (object) wp_parse_args(
+							$source,
+							[
+								'media'  => '',
+								'sizes'  => '',
+								'srcset' => '',
+								'type'   => '',
+							]
+						);
 					},
 					$image->sources
 				);
