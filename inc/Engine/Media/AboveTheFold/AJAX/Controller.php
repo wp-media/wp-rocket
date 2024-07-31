@@ -180,7 +180,17 @@ class Controller {
 				if ( isset( $image->src ) && ! empty( $image->src ) && is_string( $image->src ) ) {
 					$object->src = $this->sanitize_image_url( $image->src );
 				}
-				$object->sources = $image->sources;
+				$object->sources = array_map(
+					function( $object ) {
+						return (object) wp_parse_args( $object, [
+							'media'  => '',
+							'sizes'  => '',
+							'srcset' => '',
+							'type'   => '',
+						] );
+					},
+					$image->sources
+				);
 				break;
 			default:
 				// For other types, add the first non-empty key to the object.
