@@ -250,7 +250,7 @@ class Settings {
 		}
 
 		// translators: %1$s = plugin name, %2$s = table name, %3$s = <a> open tag, %4$s = </a> closing tag.
-		$main_message   = esc_html__( '%1$s: Could not create the %2$s table in the database which is necessary for the Remove Unused CSS feature to work. Please reach out to %3$sour support%4$s.', 'rocket' );
+		$main_message   = esc_html__( '%1$s: Could not create the %2$s table in the database which is necessary for the Remove Unused CSS feature to work. Please check our %3$sdocumentation%4$s.', 'rocket' );
 		$rucss_database = $this->beacon->get_suggest( 'rucss_database' );
 
 		$message = sprintf(
