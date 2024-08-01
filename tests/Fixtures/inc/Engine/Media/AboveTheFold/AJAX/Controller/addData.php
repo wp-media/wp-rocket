@@ -32,6 +32,11 @@ return [
 			'url'       => 'http://example.org',
 			'is_mobile' => false,
 			'lcp_images'    => json_encode( [] ),
+			'results' => json_encode(
+				[
+					'lcp' => []
+				],
+			),
 		],
 		'expected' => [
 			'images_valid_sources' => [],
@@ -65,6 +70,22 @@ return [
 						'src'   => 'http://example.org/above-the-fold.jpg',
 					],
 				]
+			),
+			'results' => json_encode(
+				[
+					'lcp' => [
+						(object) [
+							'type'  => 'img',
+							'label' => 'lcp',
+							'src'   => 'http://example.org/lcp.jpg',
+						],
+						(object) [
+							'type'  => 'img',
+							'label' => 'above-the-fold',
+							'src'   => 'http://example.org/above-the-fold.jpg',
+						],
+					]
+				],
 			),
 			'filetype' => [
 				'ext' => 'jpg',
@@ -125,6 +146,22 @@ return [
 						'src'   => 'http://example.org/above-the-fold.jpg',
 					],
 				]
+			),
+			'results' => json_encode(
+				[
+					'lcp' => [
+						(object) [
+							'label' => 'lcp',
+							'type'  => 'img',
+							'src'   => 'http://example.org/lcp.jpg',
+						],
+						(object) [
+							'label' => 'above-the-fold',
+							'type'  => 'img',
+							'src'   => 'http://example.org/above-the-fold.jpg',
+						],
+					]
+				],
 			),
 			'filetype' => [
 				'ext' => 'jpg',
@@ -203,6 +240,22 @@ return [
 						'src'   => 'http://example.org/above-the-fold.jpg',
 					],
 				]
+			),
+			'results' => json_encode(
+				[
+					'lcp' => [
+						(object) [
+							'label' => 'lcp',
+							'type'  => 'img',
+							'src'   => 'http://example.org/lcp.jpg',
+						],
+						(object) [
+							'label' => 'above-the-fold',
+							'type'  => 'img',
+							'src'   => 'http://example.org/above-the-fold.jpg',
+						],
+					]
+				],
 			),
 			'filetype' => [
 				'ext' => 'jpg',
@@ -283,6 +336,22 @@ return [
 						'src'   => 'http://example.org/above-the-fold.jpg<script>alert("Test XSS");</script>',
 					],
 				]
+			),
+			'results' => json_encode(
+				[
+					'lcp' => [
+						(object) [
+							'label' => 'lcp',
+							'type'  => 'img',
+							'src'   => 'http://example.org/lcp.jpg<script>alert("Test XSS");</script>',
+						],
+						(object) [
+							'label' => 'above-the-fold',
+							'type'  => 'img',
+							'src'   => 'http://example.org/above-the-fold.jpg<script>alert("Test XSS");</script>',
+						],
+					]
+				],
 			),
 			'filetype' => [
 				'ext' => 'jpg',
@@ -372,6 +441,30 @@ return [
 						'src'   => 'http://example.org/above-the-fold.jpg',
 					],
 				]
+			),
+			'results' => json_encode(
+				[
+					'lcp' => [
+						(object) [
+							'label' => 'lcp',
+							'type'  => 'bg-img',
+							'src'   => '',
+							'bg_set' => [
+								[
+									'src' => 'http://example.org/anotherlcp.jpg'
+								],
+								[
+									'src' => 'http://example.org/anotherlcp2.jpg'
+								]
+							]
+						],
+						(object) [
+							'label' => 'above-the-fold',
+							'type'  => 'img',
+							'src'   => 'http://example.org/above-the-fold.jpg',
+						],
+					]
+				],
 			),
 			'filetype' => [
 				'ext' => 'jpg',
@@ -483,6 +576,37 @@ return [
 					],
 				]
 			),
+			'results' => json_encode(
+				[
+					'lcp' => [
+						(object) [
+							'label' => 'lcp',
+							'type'  => 'bg-img-set',
+							'src'   => [
+								[
+									'src' => 'http://example.org/lcp.jpg'
+								],
+								[
+									'src' => 'http://example.org/random.jpg'
+								]
+							],
+							'bg_set' => [
+								[
+									'src' => 'http://example.org/anotherlcp.jpg'
+								],
+								[
+									'src' => 'http://example.org/anotherlcp2.jpg'
+								]
+							]
+						],
+						(object) [
+							'label' => 'above-the-fold',
+							'type'  => 'img',
+							'src'   => 'http://example.org/above-the-fold.jpg',
+						],
+					]
+				],
+			),
 			'filetype' => [
 				'ext' => 'jpg',
 				'type' => 'image/jpeg',
@@ -566,6 +690,11 @@ return [
 			'lcp_images'    => json_encode(
 				$long_array
 			),
+			'results' => json_encode(
+				[
+					'lcp' => $long_array,
+				],
+			),
 			'filetype' => [
 				'ext' => 'jpg',
 				'type' => 'image/jpeg',
@@ -611,6 +740,11 @@ return [
 			'url'       => 'http://example.org',
 			'is_mobile' => false,
 			'lcp_images'    => '',
+			'results' => json_encode(
+				[
+					'lcp' => []
+				],
+			),
 		],
 		'expected' => [
 			'images_valid_sources' => [],
@@ -655,6 +789,23 @@ return [
 					],
 				]
 			),
+			'results' => json_encode(
+				[
+					'lcp' => [
+						(object) [
+							'label' => 'lcp',
+							'src'   => "",
+							'bg_set' => [],
+							'type' => ''
+						],
+						(object) [
+							'label' => 'above-the-fold',
+							'type'  => '',
+							'src'   => '',
+						],
+					]
+				],
+			),
 		],
 		'expected' => [
 			'images_valid_sources' => [],
@@ -686,6 +837,11 @@ return [
 			'url'       => 'http://example.org',
 			'is_mobile' => false,
 			'lcp_images'    => '',
+			'results' => json_encode(
+				[
+					'lcp' => []
+				],
+			),
 			'status'    => 'script_error',
 		],
 		'expected' => [
@@ -717,6 +873,11 @@ return [
 			'url'       => 'http://example.org',
 			'is_mobile' => false,
 			'lcp_images'    => '',
+			'results' => json_encode(
+				[
+					'lcp' => []
+				],
+			),
 			'status'    => 'timeout',
 		],
 		'expected' => [
@@ -756,6 +917,17 @@ return [
 						'src'   => 'http://example.org/file.php?url=img.jpg',
 					],
 				]
+			),
+			'results' => json_encode(
+				[
+					'lcp' => [
+						(object) [
+							'label' => 'lcp',
+							'type'  => 'img',
+							'src'   => 'http://example.org/file.php?url=img.jpg',
+						],
+					]
+				],
 			),
 			'filetype' => [
 				'ext' => 'php',
@@ -809,6 +981,17 @@ return [
 					],
 				]
 			),
+			'results' => json_encode(
+				[
+					'lcp' => [
+						(object) [
+							'label' => 'lcp',
+							'type'  => 'img',
+							'src'   => 'http://example.org/file.js?url=img.jpg',
+						],
+					]
+				],
+			),
 			'filetype' => [
 				'ext' => 'js',
 				'type' => 'application/javascript',
@@ -860,6 +1043,17 @@ return [
 						'src'   => 'http://example.org/file.php#url=img.jpg',
 					],
 				]
+			),
+			'results' => json_encode(
+				[
+					'lcp' => [
+						(object) [
+							'label' => 'lcp',
+							'type'  => 'img',
+							'src'   => 'http://example.org/file.php#url=img.jpg',
+						],
+					]
+				],
 			),
 			'filetype' => [
 				'ext' => 'php',
@@ -913,6 +1107,17 @@ return [
 					],
 				]
 			),
+			'results' => json_encode(
+				[
+					'lcp' => [
+						(object) [
+							'label' => 'lcp',
+							'type'  => 'img',
+							'src'   => 'chrome-extension://extension-hash/path/to/image/x.svg',
+						],
+					]
+				],
+			),
 			'filetype' => [
 				'ext' => 'svg',
 				'type' => 'image/svg+xml',
@@ -965,6 +1170,17 @@ return [
 					],
 				]
 			),
+			'results' => json_encode(
+				[
+					'lcp' => [
+						(object) [
+							'label' => 'lcp',
+							'type'  => 'bg-img',
+							'src'   => 'linear-gradient(160deg, rgb(255, 255, 255) 0%, rgb(248, 246, 243) 100%)',
+						],
+					]
+				],
+			),
 			'filetype' => [
 				'ext' => false,
 				'type' => false,
@@ -1016,6 +1232,17 @@ return [
 						'src'   => 'http://example.org/path/to/images/image.svg',
 					],
 				]
+			),
+			'results' => json_encode(
+				[
+					'lcp' => [
+						(object) [
+							'label' => 'lcp',
+							'type'  => 'img',
+							'src'   => 'http://example.org/path/to/images/image.svg',
+						],
+					]
+				],
 			),
 			'filetype' => [
 				'ext' => 'svg',

@@ -50,7 +50,7 @@ class Test_AddBeaconData extends TestCase {
 		$_POST = [
 			'url'       => addslashes( $config['url'] ),
 			'is_mobile' => addslashes( $config['is_mobile'] ),
-			'lcp_images'    => addslashes( $config['lcp_images'] ),
+			'results'   => addslashes( $config['results'] ),
 			'status'    => addslashes( $config['status'] ?? 'success' ),
 		];
 
