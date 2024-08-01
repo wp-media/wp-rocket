@@ -104,7 +104,7 @@
 	},
 	"extra": {
 		"installer-paths": {
-		    "./inc/Dependencies/ActionScheduler/": ["woocommerce/action-scheduler"],
+		    "./ActionScheduler/": ["woocommerce/action-scheduler"],
 			  "vendor/{$vendor}/{$name}/": ["type:wordpress-plugin"]
 		},
 		"mozart": {
