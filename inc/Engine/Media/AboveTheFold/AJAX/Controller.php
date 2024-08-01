@@ -6,6 +6,7 @@ namespace WP_Rocket\Engine\Media\AboveTheFold\AJAX;
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Queries\AboveTheFold as ATFQuery;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Engine\Optimization\UrlTrait;
+use WP_Rocket\Logger\Logger;
 
 class Controller {
 	use UrlTrait;
@@ -182,6 +183,10 @@ class Controller {
 				}
 				$object->sources = array_map(
 					function ( $source ) {
+						if ( empty( $source->type ) ) {
+							Logger::notice( 'The source type is missing in the image object.', [ 'source' => $source ] );
+						}
+
 						return (object) wp_parse_args(
 							$source,
 							[
