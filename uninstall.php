@@ -26,6 +26,8 @@ require_once __DIR__ . '/inc/Engine/Common/Database/TableInterface.php';
 require_once __DIR__ . '/inc/Engine/Common/Database/Tables/AbstractTable.php';
 require_once __DIR__ . '/inc/Engine/Optimization/RUCSS/Database/Tables/UsedCSS.php';
 require_once __DIR__ . '/inc/Engine/Preload/Database/Tables/Cache.php';
+require_once __DIR__ . '/inc/Engine/Common/PerformanceHints/Database/Table/TableInterface.php';
+require_once __DIR__ . '/inc/Engine/Common/PerformanceHints/Database/Table/AbstractTable.php';
 require_once __DIR__ . '/inc/Engine/Media/AboveTheFold/Database/Tables/AboveTheFold.php';
 
 $rocket_rucss_usedcss_table = new WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS();
