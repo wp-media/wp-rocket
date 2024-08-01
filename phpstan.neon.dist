@@ -32,7 +32,7 @@ parameters:
 		- %currentWorkingDirectory%/inc/classes/class-wp-rocket-requirements-check.php
 		- %currentWorkingDirectory%/inc/vendors/classes/class-rocket-mobile-detect.php
 	scanDirectories:
-		- %currentWorkingDirectory%/inc/Dependencies/ActionScheduler
+		- %currentWorkingDirectory%/ActionScheduler
 		- %currentWorkingDirectory%/tests/Fixtures/
 		- %currentWorkingDirectory%/vendor/antecedent/patchwork/
 		- %currentWorkingDirectory%/vendor/wpackagist-plugin/cloudflare/
