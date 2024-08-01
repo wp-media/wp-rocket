@@ -59,8 +59,8 @@ class Avada implements Subscriber_Interface {
 	 *
 	 * @since 3.3.4
 	 *
-	 * @param string $old_value Previous Avada option value.
-	 * @param string $value     New Avada option value.
+	 * @param array $old_value Previous Avada option value.
+	 * @param array $value     New Avada option value.
 	 * @return void
 	 */
 	public function maybe_deactivate_lazyload( $old_value, $value ) {

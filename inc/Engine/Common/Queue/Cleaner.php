@@ -42,7 +42,7 @@ class Cleaner extends \ActionScheduler_QueueCleaner {
 	/**
 	 * Overrides the base method of action scheduler to do the clean process for our actions only.
 	 *
-	 * @return void
+	 * @return array
 	 */
 	public function delete_old_actions() {
 		$lifespan = (int) apply_filters( 'action_scheduler_retention_period', $this->hour_in_seconds );// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
@@ -96,8 +96,12 @@ class Cleaner extends \ActionScheduler_QueueCleaner {
 					 * @param int $count_of_actions_to_delete The number of old actions being deleted in this batch
 					 */
 					do_action( 'action_scheduler_failed_old_action_deletion', $action_id, $e, $lifespan, count( $actions_to_delete ) );// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+
+					return [];
 				}
 			}
 		}
+
+		return [];
 	}
 }

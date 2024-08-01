@@ -77,7 +77,7 @@ abstract class AbstractASQueue implements QueueInterface {
 
 			if ( 1 < count( $pending_actions ) ) {
 				$this->cancel_all( $hook, $args );
-				return '';
+				return 0;
 			}
 
 			$running_actions = $this->search(
@@ -89,7 +89,7 @@ abstract class AbstractASQueue implements QueueInterface {
 			);
 
 			if ( 1 === count( $pending_actions ) + count( $running_actions ) ) {
-				return '';
+				return 0;
 			}
 
 			$this->cancel_all( $hook, $args );
@@ -147,7 +147,7 @@ abstract class AbstractASQueue implements QueueInterface {
 	 */
 	public function schedule_cron( $timestamp, $cron_schedule, $hook, $args = [] ) {
 		if ( $this->is_scheduled( $hook, $args ) ) {
-			return '';
+			return 0;
 		}
 
 		try {

@@ -115,12 +115,14 @@ trait UrlTrait {
 	 * Gets content of a file
 	 *
 	 * @param string $file File path.
+	 *
 	 * @return string
 	 */
 	protected function get_file_content( $file ) {
 		if ( empty( $file ) ) {
-			return false;
+			return '';
 		}
+
 		return rocket_direct_filesystem()->get_contents( $file );
 	}
 

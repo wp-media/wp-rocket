@@ -95,7 +95,7 @@ class Test_Delete extends TestCase {
 		$this->options       = Mockery::mock( Options_Data::class );
 		$this->restwppost    = new RESTWPPost( $this->cpcss_service, $this->options );
 		$this->request       = new WP_REST_Request();
-		$this->request['id'] = $this->post_id;
+		$this->request->set_param( 'id', $this->post_id );
 	}
 
 	private function assertPostNotExists( $expected ) {

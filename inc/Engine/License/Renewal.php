@@ -403,7 +403,7 @@ class Renewal extends Abstract_Render {
 		$renewals = $this->pricing->get_renewals_data();
 
 		if ( ! isset( $renewals->extra_days, $renewals->grandfather_date, $renewals->discount_percent, $renewals->grandmother_date ) ) {
-			return false;
+			return [];
 		}
 
 		return [

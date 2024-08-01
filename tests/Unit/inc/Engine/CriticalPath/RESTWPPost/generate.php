@@ -219,11 +219,11 @@ class Test_Generate extends FilesystemTestCase {
 
 		$instance             = new RESTWPPost( $cpcss_service, $options );
 		$request              = new WP_REST_Request();
-		$request['id']        = $post_id;
-		$request['is_mobile'] = $is_mobile;
+		$request->set_param( 'id', $post_id );
+		$request->set_param('is_mobile', $is_mobile );
 
 		if ( $request_timeout ) {
-			$request['timeout'] = $request_timeout;
+			$request->set_param('timeout', $request_timeout );
 		}
 
 		$this->assertSame( $expected, $instance->generate( $request ) );
