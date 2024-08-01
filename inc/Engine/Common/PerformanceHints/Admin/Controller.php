@@ -105,7 +105,7 @@ class Controller {
 	/**
 	 * Deletes rows when triggering clean from admin
 	 *
-	 * @return array
+	 * @return array|void
 	 */
 	public function truncate_from_admin() {
 		if ( empty( $this->factories ) ) {
