@@ -157,12 +157,13 @@ class Processor {
 			'height_threshold' => $height_threshold,
 			'delay'            => $delay,
 			'debug'            => rocket_get_constant( 'WP_ROCKET_DEBUG' ),
+			'status'           => [],
 		];
 
 		$data_modified = null;
 		foreach ( $this->factories as $factory ) {
 			$data          = $data_modified ?? $data;
-			$data_modified = $factory->get_frontend_controller()->target_elements( $data );
+			$data_modified = $factory->get_frontend_controller()->add_custom_data( $data );
 		}
 
 		$inline_script = '<script>var rocket_beacon_data = ' . wp_json_encode( $data_modified ) . '</script>';

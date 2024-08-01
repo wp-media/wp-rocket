@@ -410,13 +410,14 @@ class Controller implements ControllerInterface {
 	}
 
 	/**
-	 * Returns a comma-separated list of elements to be considered for the lcp/above-the-fold optimization.
+	 * Add custom data like the comma-separated list of elements
+	 * to be considered for the lcp/above-the-fold optimization.
 	 *
 	 * @param array $data Array of data passed in beacon.
 	 *
 	 * @return array
 	 */
-	public function target_elements( array $data ): array {
+	public function add_custom_data( array $data ): array {
 		$elements = [
 			'img',
 			'video',
@@ -447,7 +448,8 @@ class Controller implements ControllerInterface {
 
 		$elements = array_filter( $elements, 'is_string' );
 
-		$data['elements'] = implode( ', ', $elements );
+		$data['elements']      = implode( ', ', $elements );
+		$data['status']['atf'] = $this->context->is_allowed();
 
 		return $data;
 	}
