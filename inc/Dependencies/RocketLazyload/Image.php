@@ -551,6 +551,10 @@ class Image {
 		$output = '';
 		// HTML loop taken from texturize function, could possible be consolidated.
 		$textarr = preg_split( '/(<.*>)/U', $text, -1, PREG_SPLIT_DELIM_CAPTURE ); // capture the tags as well as in between.
+		if ( ! is_countable( $textarr ) ) {
+			// For unknown reasons, preg_split failed, return the content unaltered.
+			return $text;
+		}
 		$stop    = count( $textarr );// loop stuff.
 
 		// Ignore processing of specific tags.
