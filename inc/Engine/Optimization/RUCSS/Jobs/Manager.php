@@ -109,7 +109,7 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 	 * @return void
 	 */
 	public function validate_and_fail( array $job_details, $row_details, string $optimization_type ): void {
-		if ( 'all' !== $optimization_type || $this->optimization_type !== $optimization_type ) {
+		if ( 'all' !== $optimization_type && $this->optimization_type !== $optimization_type ) {
 			return;
 		}
 
