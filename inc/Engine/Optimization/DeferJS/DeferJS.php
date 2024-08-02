@@ -82,7 +82,7 @@ class DeferJS {
 				continue;
 			}
 
-			$deferred_tag = str_replace( '>', ' defer>', $tag[0] );
+			$deferred_tag = str_replace( '>', ' data-rocket-defer defer>', $tag[0] );
 			$html         = str_replace( $tag[0], $deferred_tag, $html );
 		}
 
