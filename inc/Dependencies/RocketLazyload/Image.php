@@ -287,7 +287,9 @@ class Image {
 				if ( ! preg_match( '#<img(?<atts>\s.+)\s?/?>#iUs', $picture[0], $img ) ) {
 					continue;
 				}
-
+				error_log(print_r($picture[0], true));
+				error_log(print_r($img, true));
+				error_log(print_r($this->getExcludedSrc(), true));
 				$img = $this->canLazyload( $img );
 
 				if ( ! $img ) {
@@ -370,17 +372,21 @@ class Image {
 		}
 
 		// Given the previous regex pattern, $image['atts'] starts with a whitespace character.
-		if ( ! preg_match( '@\ssrc\s*=\s*(\'|")(?<src>.*)\1@iUs', $image['atts'], $atts ) ) {
+		if ( ! preg_match_all( '@\s(src|srcset)\s*=\s*(\'|")(?<value>.*)\2@iUs', $image['atts'], $atts, PREG_SET_ORDER ) ) {
 			return false;
 		}
 
-		$image['src'] = trim( $atts['src'] );
+		$image['src']    = trim( $atts['src'] ?? '' );
+		$image['srcset'] = trim ( $atts['srcset'] ?? '' );
 
 		if ( '' === $image['src'] ) {
 			return false;
 		}
 
-		if ( $this->isExcluded( $image['src'], $this->getExcludedSrc() ) ) {
+		if (
+			$this->isExcluded( $image['src'], $this->getExcludedSrc() )
+			|| $this->isExcluded( $image['srcset'], $this->getExcludedSrc() )
+		) {
 			return false;
 		}
 
