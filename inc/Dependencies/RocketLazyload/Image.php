@@ -287,9 +287,7 @@ class Image {
 				if ( ! preg_match( '#<img(?<atts>\s.+)\s?/?>#iUs', $picture[0], $img ) ) {
 					continue;
 				}
-				error_log(print_r($picture[0], true));
-				error_log(print_r($img, true));
-				error_log(print_r($this->getExcludedSrc(), true));
+
 				$img = $this->canLazyload( $img );
 
 				if ( ! $img ) {
