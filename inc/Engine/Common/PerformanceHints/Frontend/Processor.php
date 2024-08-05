@@ -102,7 +102,7 @@ class Processor {
 		$width_threshold = rocket_apply_filter_and_deprecated(
 			'rocket_performance_hints_optimization_width_threshold',
 			[ $default_width_threshold, $is_mobile, $url ],
-			'3.17',
+			'3.16.4',
 			'rocket_lcp_width_threshold'
 		);
 
@@ -118,7 +118,7 @@ class Processor {
 		$height_threshold = rocket_apply_filter_and_deprecated(
 			'rocket_performance_hints_optimization_height_threshold',
 			[ $default_height_threshold, $is_mobile, $url ],
-			'3.17',
+			'3.16.4',
 			'rocket_lcp_height_threshold'
 		);
 
@@ -140,7 +140,7 @@ class Processor {
 		$delay = rocket_apply_filter_and_deprecated(
 			'rocket_performance_hints_optimization_delay',
 			[ $default_delay ],
-			'3.17',
+			'3.16.4',
 			'rocket_lcp_delay'
 		);
 
