@@ -7,6 +7,7 @@ use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvi
 use WP_Rocket\Engine\Common\PerformanceHints\WarmUp\{APIClient, Controller as WarmUpController, Queue};
 use WP_Rocket\Engine\Media\AboveTheFold\Context\Context as ATFContext;
 use WP_Rocket\Engine\Media\AboveTheFold\Activation\ActivationFactory as ATFActivationFactory;
+use WP_Rocket\Engine\Optimization\LazyRenderContent\Activation\ActivationFactory as LCRActivationFactory;
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
@@ -25,6 +26,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'performance_hints_activation',
 		'atf_context',
 		'atf_activation_factory',
+		'lcr_activation_factory',
 	];
 
 	/**
@@ -53,6 +55,12 @@ class ServiceProvider extends AbstractServiceProvider {
 					$this->getContainer()->get( 'atf_context' ),
 				]
 			);
+		$this->getContainer()->addShared( 'lcr_activation_factory', LCRActivationFactory::class )
+			->addArguments(
+				[
+					$this->getContainer()->get( 'lcr_context' ),
+				]
+			);
 
 		$factories = [];
 
@@ -60,6 +68,12 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		if ( $atf_activation_factory->get_context()->is_allowed() ) {
 			$factories[] = $atf_activation_factory;
+		}
+
+		$lcr_activation_factory = $this->getContainer()->get( 'lcr_activation_factory' );
+
+		if ( $lcr_activation_factory->get_context()->is_allowed() ) {
+			$factories[] = $lcr_activation_factory;
 		}
 
 		$this->getContainer()->add( 'performance_hints_warmup_apiclient', APIClient::class )
