@@ -14,12 +14,14 @@ use WP_Rocket\Tests\Integration\TestCase;
 class Test_Lazyload extends TestCase {
 	private $lazyload;
 	private $iframes;
+	protected $config;
 
 	public function set_up() {
 		parent::set_up();
 
 		// Disable ATF optimization to prevent DB request (unrelated to the test).
 		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
+		add_filter('rocket_lazyload_excluded_src', [ $this, 'exclude_lazyload' ] );
 
 		$this->lazyload = null;
 		$this->iframes  = null;
@@ -35,6 +37,7 @@ class Test_Lazyload extends TestCase {
 		remove_filter( 'pre_get_rocket_option_lazyload_iframes', [ $this, 'setIframes' ] );
 		remove_filter( 'rocket_use_native_lazyload_images', [ $this, 'return_false' ] );
 		remove_filter( 'rocket_use_native_lazyload_images', [ $this, 'return_true' ] );
+		remove_filter( 'rocket_lazyload_excluded_src', [ $this, 'exclude_lazyload' ] );
 
 		global $wp_query;
 		$wp_query->is_feed    = false;
@@ -50,6 +53,7 @@ class Test_Lazyload extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoExpected( $config, $html, $expected ) {
+		$this->config = $config;
 		$this->lazyload = $config['options']['lazyload'];
 		$this->iframes  = $config['options']['lazyload_iframes'];
 
@@ -86,5 +90,9 @@ class Test_Lazyload extends TestCase {
 
 	public function setIframes() {
 		return $this->iframes;
+	}
+
+	public function exclude_lazyload() {
+		return $this->config['exclude_src'];
 	}
 }

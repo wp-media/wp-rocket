@@ -29,6 +29,7 @@ return [
 			'is_not_lazy_load' => false,
 			'is_rocket_optimize' => false,
 			'is_native' => true,
+			'exclude_src' => [],
 			'options'  => [
 				'lazyload'         => 1,
 				'lazyload_iframes' => 0,
@@ -49,6 +50,7 @@ return [
 			'is_not_lazy_load' => false,
 			'is_rocket_optimize' => false,
 			'is_native' => true,
+			'exclude_src' => [],
 			'options'  => [
 				'lazyload'         => 1,
 				'lazyload_iframes' => 0,
@@ -69,6 +71,7 @@ return [
 			'is_not_lazy_load' => false,
 			'is_rocket_optimize' => false,
 			'is_native' => true,
+			'exclude_src' => [],
 			'options'  => [
 				'lazyload'         => 1,
 				'lazyload_iframes' => 0,
@@ -89,6 +92,7 @@ return [
 			'is_not_lazy_load' => false,
 			'is_rocket_optimize' => false,
 			'is_native' => true,
+			'exclude_src' => [],
 			'options'  => [
 				'lazyload'         => 1,
 				'lazyload_iframes' => 0,
@@ -109,6 +113,7 @@ return [
 			'is_not_lazy_load' => false,
 			'is_rocket_optimize' => false,
 			'is_native' => true,
+			'exclude_src' => [],
 			'options'  => [
 				'lazyload'         => 1,
 				'lazyload_iframes' => 0,
@@ -129,6 +134,7 @@ return [
 			'is_not_lazy_load' => true,
 			'is_rocket_optimize' => false,
 			'is_native' => true,
+			'exclude_src' => [],
 			'options'  => [
 				'lazyload'         => 1,
 				'lazyload_iframes' => 0,
@@ -149,26 +155,7 @@ return [
 			'is_not_lazy_load' => false,
 			'is_rocket_optimize' => true,
 			'is_native' => true,
-			'options'  => [
-				'lazyload'         => 1,
-				'lazyload_iframes' => 0,
-			],
-		],
-		'html' => [
-			'original' => $original_images,
-		],
-		'expected' => $original_images,
-	],
-	'shouldReturnSameWhenIsDoNotRocketOptimize' => [
-		'config' => [
-			'is_admin' => false,
-			'is_feed' => false,
-			'is_preview' => false,
-			'is_search' => false,
-			'is_rest_request' => false,
-			'is_not_lazy_load' => false,
-			'is_rocket_optimize' => true,
-			'is_native' => true,
+			'exclude_src' => [],
 			'options'  => [
 				'lazyload'         => 1,
 				'lazyload_iframes' => 0,
@@ -189,6 +176,7 @@ return [
 			'is_not_lazy_load' => false,
 			'is_rocket_optimize' => true,
 			'is_native' => true,
+			'exclude_src' => [],
 			'options'  => [
 				'lazyload'         => 1,
 				'lazyload_iframes' => 0,
@@ -198,6 +186,30 @@ return [
 			'original' => $background_image_base64,
 		],
 		'expected' => $background_image_base64,
+	],
+	'shouldReturnWithoutLazyLoadWhenExcluded' => [
+		'config' => [
+			'is_admin' => false,
+			'is_feed' => false,
+			'is_preview' => false,
+			'is_search' => false,
+			'is_rest_request' => false,
+			'is_not_lazy_load' => false,
+			'is_rocket_optimize' => false,
+			'is_native' => true,
+			'options'  => [
+				'lazyload'         => 1,
+				'lazyload_iframes' => 0,
+			],
+			'exclude_src' => [
+				'http://example.org/wp-content/uploads/2019/05/beanie-300x300.jpg 300w, http://example.org/wp-content/uploads/2019/05/beanie-100x100.jpg 100w, http://example.org/wp-content/uploads/2019/05/beanie-600x600.jpg 600w, http://example.org/wp-content/uploads/2019/05/beanie-150x150.jpg 150w, http://example.org/wp-content/uploads/2019/05/beanie-768x768.jpg 768w, http://example.org/wp-content/uploads/2019/05/beanie.jpg 801'
+			],
+			'exclude' => true
+		],
+		'html' => [
+			'original' => $original_images ,
+		],
+		'expected' => $original_images,
 	],
 	'shouldReturnUpdatedWhenNativeLazyloadImagesOnly' => [
 		'config' => [
@@ -209,6 +221,8 @@ return [
 			'is_not_lazy_load' => false,
 			'is_rocket_optimize' => false,
 			'is_native' => true,
+			'exclude' => false,
+			'exclude_src' => [],
 			'options'  => [
 				'lazyload'         => 1,
 				'lazyload_iframes' => 0,
@@ -229,6 +243,7 @@ return [
 			'is_not_lazy_load' => false,
 			'is_rocket_optimize' => false,
 			'is_native' => false,
+			'exclude_src' => [],
 			'options'  => [
 				'lazyload'         => 1,
 				'lazyload_iframes' => 0,
