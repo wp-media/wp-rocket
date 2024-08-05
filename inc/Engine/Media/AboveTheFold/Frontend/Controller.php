@@ -533,6 +533,7 @@ class Controller {
 			'svg',
 			'section',
 			'header',
+			'span',
 		];
 
 		$default_elements = $elements;
