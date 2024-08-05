@@ -91,7 +91,7 @@ class Processor {
 		$default_width_threshold  = $is_mobile ? 393 : 1600;
 		$default_height_threshold = $is_mobile ? 830 : 700;
 		/**
-		 * Filters the width threshold for the LCP beacon.
+		 * Filters the width threshold for the beacon.
 		 *
 		 * @param int    $width_threshold The width threshold. Default is 393 for mobile and 1920 for others.
 		 * @param bool   $is_mobile       True if the current device is mobile, false otherwise.
@@ -107,7 +107,7 @@ class Processor {
 		);
 
 		/**
-		 * Filters the height threshold for the LCP beacon.
+		 * Filters the height threshold for the beacon.
 		 *
 		 * @param int    $height_threshold The height threshold. Default is 830 for mobile and 1080 for others.
 		 * @param bool   $is_mobile        True if the current device is mobile, false otherwise.
@@ -133,7 +133,7 @@ class Processor {
 		$default_delay = 500;
 
 		/**
-		 * Filters the delay before the LCP beacon is triggered.
+		 * Filters the delay before the beacon is triggered.
 		 *
 		 * @param int $delay The delay in milliseconds. Default is 500.
 		 */
