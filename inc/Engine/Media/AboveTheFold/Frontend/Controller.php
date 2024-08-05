@@ -429,6 +429,7 @@ class Controller implements ControllerInterface {
 			'svg',
 			'section',
 			'header',
+			'span',
 		];
 
 		$default_elements = $elements;
