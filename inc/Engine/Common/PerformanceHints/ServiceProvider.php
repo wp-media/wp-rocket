@@ -4,9 +4,8 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Common\PerformanceHints;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
-use WP_Rocket\Engine\Common\PerformanceHints\AJAX\Subscriber as AjaxSubscriber;
-use WP_Rocket\Engine\Common\PerformanceHints\Frontend\Processor as FrontendProcessor;
-use WP_Rocket\Engine\Common\PerformanceHints\Frontend\Subscriber as FrontendSubscriber;
+use WP_Rocket\Engine\Common\PerformanceHints\AJAX\{Processor as AjaxProcessor, Subscriber as AjaxSubscriber};
+use WP_Rocket\Engine\Common\PerformanceHints\Frontend\{Processor as FrontendProcessor, Subscriber as FrontendSubscriber };
 use WP_Rocket\Engine\Common\PerformanceHints\Admin\{Controller as AdminController, Subscriber as AdminSubscriber};
 use WP_Rocket\Engine\Common\PerformanceHints\Cron\{Controller as CronController, Subscriber as CronSubscriber};
 use WP_Rocket\Engine\Common\PerformanceHints\WarmUp\{
@@ -27,6 +26,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @var array
 	 */
 	protected $provides = [
+        'ajax_processor',
 		'performance_hints_ajax_subscriber',
 		'frontend_processor',
 		'performance_hints_frontend_subscriber',
@@ -66,12 +66,15 @@ class ServiceProvider extends AbstractServiceProvider {
 			$factories[] = $atf_factory;
 		}
 
-		$this->getContainer()->addShared( 'performance_hints_ajax_subscriber', AjaxSubscriber::class )
+		$this->getContainer()->addShared( 'ajax_processor', AjaxProcessor::class )
 			->addArguments(
 				[
 					$factories,
 				]
 			);
+
+		$this->getContainer()->addShared( 'performance_hints_ajax_subscriber', AjaxSubscriber::class )
+            ->addArgument( $this->getContainer()->get( 'ajax_processor' ) );
 
 		$this->getContainer()->add( 'frontend_processor', FrontendProcessor::class )
 			->addArguments(
