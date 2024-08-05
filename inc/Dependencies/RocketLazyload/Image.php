@@ -370,8 +370,13 @@ class Image {
 		}
 
 		// Given the previous regex pattern, $image['atts'] starts with a whitespace character.
-		if ( ! preg_match_all( '@\s(src|srcset)\s*=\s*(\'|")(?<value>.*)\2@iUs', $image['atts'], $atts, PREG_SET_ORDER ) ) {
+		if ( ! preg_match_all( '@\s(src|srcset)\s*=\s*(\'|")(?<src>.*)\2@iUs', $image['atts'], $atts, PREG_SET_ORDER ) ) {
 			return false;
+		}
+
+		if( isset( $atts[0] ) ) {
+			$atts['src'] = $atts[0]['src'];
+			$atts['srcset'] = $atts[0]['srcset'] ?? '';
 		}
 
 		$image['src']    = trim( $atts['src'] ?? '' );
