@@ -71,22 +71,12 @@ class AdminBar extends Abstract_Render {
 		}
 
 		if (
-			! $this->atf_context->is_allowed()
-			&&
 			! (bool) $this->options->get( 'remove_unused_css', 0 )
 		) {
 			return;
 		}
 
-		$title = __( 'Clear Critical Images', 'rocket' );
-
-		if (
-			(bool) $this->options->get( 'remove_unused_css', 0 )
-			&&
-			current_user_can( 'rocket_remove_unused_css' )
-		) {
-			$title = __( 'Clear Used CSS', 'rocket' );
-		}
+		$title = __( 'Clear RUCSS optimizations', 'rocket' );
 
 		$referer = '';
 		$action  = 'rocket_clean_saas';
@@ -136,10 +126,7 @@ class AdminBar extends Abstract_Render {
 			return;
 		}
 
-		if ( ! $this->atf_context->is_allowed()
-			&&
-			! $this->rucss_url_context->is_allowed()
-		) {
+		if ( ! $this->rucss_url_context->is_allowed() ) {
 			return;
 		}
 
@@ -169,11 +156,8 @@ class AdminBar extends Abstract_Render {
 			$referer = (string) apply_filters( 'rocket_admin_bar_referer', esc_url( $referer_url ) );
 			$referer = '&_wp_http_referer=' . rawurlencode( remove_query_arg( 'fl_builder', $referer ) );
 		}
-		$title = __( 'Clear Critical Images of this URL', 'rocket' );
 
-		if ( $this->rucss_url_context->is_allowed() ) {
-			$title = __( 'Clear Used CSS of this URL', 'rocket' );
-		}
+		$title = __( 'Clear RUCSS optimizations of this URL', 'rocket' );
 
 		$wp_admin_bar->add_menu(
 			[
@@ -199,20 +183,12 @@ class AdminBar extends Abstract_Render {
 			return;
 		}
 
-		if ( ! $this->atf_context->is_allowed()
-			&&
-			! $this->rucss_url_context->is_allowed()
-		) {
+		if ( ! $this->rucss_url_context->is_allowed() ) {
 			return;
 		}
 
-		$title = __( 'Critical Images Cache', 'rocket' );
-		$label = esc_html__( 'Clear Critical Images', 'rocket' );
-
-		if ( $this->rucss_url_context->is_allowed() ) {
-			$title = __( 'Remove Used CSS Cache', 'rocket' );
-			$label = esc_html__( 'Clear Used CSS', 'rocket' );
-		}
+		$title = __( 'Remove Unused CSS', 'rocket' );
+		$label = esc_html__( 'Clear RUCSS optimizations', 'rocket' );
 
 		$data = [
 			'action' => 'rocket_clean_saas',
