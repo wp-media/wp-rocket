@@ -52,6 +52,7 @@ use WP_Rocket\ThirdParty\Themes\ThemeResolver;
 use WP_Rocket\Engine\Debug\Resolver as DebugResolver;
 use WP_Rocket\Engine\Debug\ServiceProvider as DebugServiceProvider;
 use WP_Rocket\Engine\Common\PerformanceHints\ServiceProvider as PerformanceHintsServiceProvider;
+use WP_Rocket\Engine\Optimization\LazyRenderContent\ServiceProvider as LazyRenderContentServiceProvider;
 
 /**
  * Plugin Manager.
@@ -306,6 +307,7 @@ class Plugin {
 		$this->container->addServiceProvider( new JobManagerServiceProvider() );
 		$this->container->addServiceProvider( new SaasAdminServiceProvider() );
 		$this->container->addServiceProvider( new PerformanceHintsServiceProvider() );
+		$this->container->addServiceProvider( new LazyRenderContentServiceProvider() );
 
 		$common_subscribers = [
 			'license_subscriber',
@@ -396,6 +398,7 @@ class Plugin {
 			'performance_hints_cron_subscriber',
 			'performance_hints_warmup_subscriber',
 			'performance_hints_admin_subscriber',
+			'lrc_frontend_subscriber',
 		];
 
 		$host_type = HostResolver::get_host_service();
