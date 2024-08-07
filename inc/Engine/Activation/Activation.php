@@ -41,7 +41,7 @@ class Activation {
 	 * @return void
 	 */
 	public static function activate_plugin() {
-		$container = new Container();
+		$container     = new Container();
 		$event_manager = new Event_Manager();
 
 		$container->add( 'template_path', WP_ROCKET_PATH . 'views' );
