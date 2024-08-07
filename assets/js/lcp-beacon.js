@@ -5,10 +5,10 @@
       this.config = config;
       this.performanceImages = [];
       this.errorCode = "";
-      this.scriptTimer = /* @__PURE__ */ new Date();
       this.infiniteLoopId = null;
     }
     async init() {
+      this.scriptTimer = /* @__PURE__ */ new Date();
       if (!await this._isValidPreconditions()) {
         this._finalize();
         return;
