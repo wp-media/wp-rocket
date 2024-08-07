@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Common\PerformanceHints\Activation;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
-use WP_Rocket\Engine\Common\PerformanceHints\WarmUp\{APIClient, Controller as WarmUpController, Queue};
+use WP_Rocket\Engine\Common\PerformanceHints\WarmUp\{APIClient, Controller as WarmUpController, Subscriber as WarmUpSubscriber, Queue};
 use WP_Rocket\Engine\Media\AboveTheFold\Context\Context as ATFContext;
 use WP_Rocket\Engine\Media\AboveTheFold\Activation\ActivationFactory as ATFActivationFactory;
 
@@ -23,6 +23,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'performance_hints_warmup_queue',
 		'performance_hints_warmup_controller',
 		'performance_hints_activation',
+		'performance_hints_warmup_subscriber',
 		'atf_context',
 		'atf_activation_factory',
 	];
@@ -77,6 +78,9 @@ class ServiceProvider extends AbstractServiceProvider {
 					$this->getContainer()->get( 'performance_hints_warmup_queue' ),
 				]
 			);
+
+		$this->getContainer()->add( 'performance_hints_warmup_subscriber', WarmUpSubscriber::class )
+			->addArgument( $this->getContainer()->get( 'performance_hints_warmup_controller' ) );
 
 		$this->getContainer()->add( 'performance_hints_activation', Activation::class )
 			->addArguments(
