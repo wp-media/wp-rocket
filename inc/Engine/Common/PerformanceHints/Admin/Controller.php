@@ -104,12 +104,14 @@ class Controller {
 
 	/**
 	 * Deletes rows when triggering clean from admin
+	 * 
+	 * @param array $clean An array containing the status and message.
 	 *
-	 * @return array|void
+	 * @return array
 	 */
-	public function truncate_from_admin() {
+	public function truncate_from_admin( $clean ) {
 		if ( empty( $this->factories ) ) {
-			return;
+			return $clean;
 		}
 
 		if ( ! current_user_can( 'rocket_manage_options' ) ) {
