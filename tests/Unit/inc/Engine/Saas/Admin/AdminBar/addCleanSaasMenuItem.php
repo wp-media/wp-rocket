@@ -33,7 +33,7 @@ class Test_AddCleanSaasMenuItem extends TestCase {
 		$this->options           = Mockery::mock( Options_Data::class );
 		$this->atf_context       = Mockery::mock( ContextInterface::class );
 		$this->rucss_url_context = Mockery::mock( ContextInterface::class );
-		$this->admin_bar         = new AdminBar( $this->options, $this->atf_context, $this->rucss_url_context, '' );
+		$this->admin_bar         = new AdminBar( $this->options, $this->rucss_url_context, '' );
 		$this->wp_admin_bar      = new WP_Admin_Bar();
 
 		$this->stubTranslationFunctions();

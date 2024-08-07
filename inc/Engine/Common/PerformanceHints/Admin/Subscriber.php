@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Common\PerformanceHints\Admin;
 
+use WP_Admin_Bar;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 class Subscriber implements Subscriber_Interface {
@@ -14,12 +15,20 @@ class Subscriber implements Subscriber_Interface {
 	private $controller;
 
 	/**
+	 * AdminBar instance.
+	 *
+	 * @var AdminBar
+	 */
+	private $admin_bar;
+
+	/**
 	 * Instantiate the class
 	 *
 	 * @param Controller $controller Controller instance.
 	 */
-	public function __construct( Controller $controller ) {
+	public function __construct( Controller $controller, AdminBar $admin_bar ) {
 		$this->controller = $controller;
+		$this->admin_bar  = $admin_bar;
 	}
 
 	/**
@@ -41,6 +50,9 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_saas_clean_all'         => 'truncate_from_admin',
 			'rocket_saas_clean_url'         => 'clean_url',
 			'wp_rocket_upgrade'             => [ 'truncate_on_update', 10, 2 ],
+			'rocket_admin_bar_items'        => [
+				[ 'add_clean_performance_hints_item' ],
+			],
 		];
 	}
 
@@ -103,5 +115,11 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function truncate_on_update( $new_version, $old_version ) {
 		$this->controller->truncate_on_update( $new_version, $old_version );
+	}
+
+	/**
+	 */
+	public function add_clean_performance_hints_item( WP_Admin_Bar $wp_admin_bar ) {
+		$this->admin_bar->add_menu_item( $wp_admin_bar );
 	}
 }

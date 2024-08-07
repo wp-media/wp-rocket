@@ -17,13 +17,6 @@ class AdminBar extends Abstract_Render {
 	private $options;
 
 	/**
-	 * ATF context.
-	 *
-	 * @var ContextInterface
-	 */
-	private $atf_context;
-
-	/**
 	 * RUCSS optimize url context.
 	 *
 	 * @var ContextInterface
@@ -34,15 +27,13 @@ class AdminBar extends Abstract_Render {
 	 * Constructor
 	 *
 	 * @param Options_Data     $options Options data instance.
-	 * @param ContextInterface $atf_context ATF context.
 	 * @param ContextInterface $rucss_url_context RUCSS optimize url context.
 	 * @param string           $template_path Template path.
 	 */
-	public function __construct( Options_Data $options, ContextInterface $atf_context, ContextInterface $rucss_url_context, $template_path ) {
+	public function __construct( Options_Data $options, ContextInterface $rucss_url_context, $template_path ) {
 		parent::__construct( $template_path );
 
 		$this->options           = $options;
-		$this->atf_context       = $atf_context;
 		$this->rucss_url_context = $rucss_url_context;
 	}
 

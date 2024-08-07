@@ -5,9 +5,14 @@ namespace WP_Rocket\Engine\Common\PerformanceHints;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Engine\Common\PerformanceHints\AJAX\Subscriber as AjaxSubscriber;
+use WP_Rocket\Engine\Common\PerformanceHints\Context\Context;
 use WP_Rocket\Engine\Common\PerformanceHints\Frontend\Processor as FrontendProcessor;
 use WP_Rocket\Engine\Common\PerformanceHints\Frontend\Subscriber as FrontendSubscriber;
-use WP_Rocket\Engine\Common\PerformanceHints\Admin\{Controller as AdminController, Subscriber as AdminSubscriber};
+use WP_Rocket\Engine\Common\PerformanceHints\Admin\{
+	Controller as AdminController,
+	Subscriber as AdminSubscriber,
+	AdminBar
+};
 use WP_Rocket\Engine\Common\PerformanceHints\Cron\{Controller as CronController, Subscriber as CronSubscriber};
 use WP_Rocket\Engine\Common\PerformanceHints\WarmUp\{
 	APIClient,
@@ -38,6 +43,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		'performance_hints_warmup_queue',
 		'performance_hints_warmup_controller',
 		'performance_hints_warmup_subscriber',
+		'performance_hints_admin_bar',
+		'performance_hints_context',
 	];
 
 	/**
@@ -95,10 +102,18 @@ class ServiceProvider extends AbstractServiceProvider {
 				]
 			);
 
+		$this->getContainer()->add( 'performance_hints_context', Context::class );
+
+		$this->getContainer()->add( 'performance_hints_admin_bar', Adminbar::class )
+			->addArgument( $this->getContainer()->get( 'options' ) )
+			->addArgument( $this->getContainer()->get( 'performance_hints_context' ) )
+			->addArgument( $this->getContainer()->get( 'template_path' ) . '/settings' );
+
 		$this->getContainer()->addShared( 'performance_hints_admin_subscriber', AdminSubscriber::class )
 			->addArguments(
 				[
 					$this->getContainer()->get( 'performance_hints_admin_controller' ),
+					$this->getContainer()->get( 'performance_hints_admin_bar' ),
 				]
 			);
 		$this->getContainer()->add( 'cron_controller', CronController::class )
