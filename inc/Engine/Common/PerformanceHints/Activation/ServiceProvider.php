@@ -79,7 +79,7 @@ class ServiceProvider extends AbstractServiceProvider {
 				]
 			);
 
-		$this->getContainer()->add( 'performance_hints_warmup_subscriber', WarmUpSubscriber::class )
+		$this->getContainer()->addShared( 'performance_hints_warmup_subscriber', WarmUpSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'performance_hints_warmup_controller' ) );
 
 		$this->getContainer()->add( 'performance_hints_activation', Activation::class )
