@@ -104,7 +104,7 @@ class Controller {
 
 	/**
 	 * Deletes rows when triggering clean from admin
-	 * 
+	 *
 	 * @param array $clean An array containing the status and message.
 	 *
 	 * @return array
