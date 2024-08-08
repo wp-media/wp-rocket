@@ -43,6 +43,6 @@ class Controller {
 	public function add_hashes( $html ) {
 		$this->processor->set_processor( 'dom' );
 
-		return $this->processor->add_hashes( $html );
+		return $this->processor->get_processor()->add_hashes( $html );
 	}
 }
