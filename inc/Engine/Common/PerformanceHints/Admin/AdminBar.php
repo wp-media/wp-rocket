@@ -49,7 +49,7 @@ class AdminBar extends Abstract_Render {
 	 * @return void
 	 */
 	public function add_clear_performance_menu_item( WP_Admin_Bar $wp_admin_bar ): void {
-		// TODO:Add lrc context check here
+		// TODO:Add lrc context check here.
 		if ( ! $this->atf_context->is_allowed() ) {
 			return;
 		}

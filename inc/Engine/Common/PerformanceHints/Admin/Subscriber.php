@@ -32,6 +32,8 @@ class Subscriber implements Subscriber_Interface {
 	 * Instantiate the class
 	 *
 	 * @param Controller $controller Controller instance.
+	 * @param AdminBar   $admin_bar Admin bar instance.
+	 * @param Clean      $clean Clean instance.
 	 */
 	public function __construct( Controller $controller, AdminBar $admin_bar, Clean $clean ) {
 		$this->controller = $controller;
@@ -169,6 +171,11 @@ class Subscriber implements Subscriber_Interface {
 		$this->clean->clean_performance_hints();
 	}
 
+	/**
+	 * Truncate performance hints the current URL.
+	 *
+	 * @return void;
+	 */
 	public function clean_url_performance_hints(): void {
 		$this->clean->clean_url_performance_hints();
 	}

@@ -4,8 +4,11 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Saas\Admin;
 
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Admin\Settings\DataClearingTrait;
 
 class Clean {
+	use DataClearingTrait;
+
 	/**
 	 * Truncate SaaS tables when clicking on the dashboard button
 	 *
@@ -25,31 +28,7 @@ class Clean {
 		 */
 		$clean = apply_filters( 'rocket_saas_clean_all', [] );
 
-		if (
-			empty( $clean )
-			||
-			'die' === $clean['status']
-		) {
-			wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
-			rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
-		}
-
-		if ( 'error' === $clean['status'] ) {
-			wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
-			rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
-		}
-
-		rocket_clean_domain();
-
-		rocket_dismiss_box( 'rocket_warning_plugin_modification' );
-
-		set_transient(
-			'rocket_saas_clean_message',
-			$clean
-		);
-
-		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
-		rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
+		$this->clean_data( $clean, 'rocket_saas_clean_message' );
 	}
 
 	/**

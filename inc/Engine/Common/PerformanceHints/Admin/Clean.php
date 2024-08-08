@@ -13,7 +13,7 @@ class Clean {
 	 *
 	 * @return void
 	 */
-	public function clean_performance_hints() {
+	public function clean_performance_hints(): void {
 		if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_key( $_GET['_wpnonce'] ), 'rocket_clean_performance_hints' ) ) {
 			wp_nonce_ays( '' );
 		}
@@ -30,13 +30,18 @@ class Clean {
 		$this->clean_data( $clean, 'rocket_performance_hints_clear_message' );
 	}
 
-	public function clean_url_performance_hints() {
+	/**
+	 * Clean performance hints data for current url.
+	 *
+	 * @return void
+	 */
+	public function clean_url_performance_hints(): void {
 		check_admin_referer( 'rocket_clean_performance_hints_url' );
 
 		/**
-		 * Fires when cleaning a single URL for the Saas
+		 * Fires when cleaning a single URL for the performance hints data
 		 *
-		 * @since 3.16
+		 * @since 3.17
 		 */
 		do_action( 'rocket_performance_hints_clean_url' );
 

@@ -2248,7 +2248,7 @@ class Page extends Abstract_Render {
 				'dismissible'    => '',
 				'message'        => sprintf(
 					// translators: %1$s: opening strong tag, %2$s: closing strong tag, %3$s: opening a tag, %4$s: option a tag, %5$s: opening a tag.
-					__( '%1$sWP Rocket:%2$s the plugin has been updated to the 3.17 version. Our brand new feature %3$sLazy Render Content.%4$s Check out our sdocumentation to learn more about it.', 'rocket' ),
+					__( '%1$sWP Rocket:%2$s the plugin has been updated to the 3.17 version. Our brand new feature %3$sLazy Render Content.%4$s Check out our documentation to learn more about it.', 'rocket' ),
 					'<strong>',
 					'</strong>',
 					'<a href="' . esc_url( $lazy_render_content['url'] ) . '" data-beacon-article="' . esc_attr( $lazy_render_content['id'] ) . '" target="_blank" rel="noopener noreferrer">',

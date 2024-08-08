@@ -49,7 +49,15 @@ trait AdminBarMenuTrait {
 	}
 
 	/**
+	 * Admin menu to WP Rocket admin bar menu
 	 *
+	 * @param WP_Admin_Bar $wp_admin_bar WP_Admin_Bar instance.
+	 * @param string       $id The menu id.
+	 * @param string       $title The menu title.
+	 * @param string       $action Menu action.
+	 * @param bool         $context Context.
+	 *
+	 * @return void
 	 */
 	protected function add_url_menu_item_to_admin_bar(
 		WP_Admin_Bar $wp_admin_bar,
@@ -103,7 +111,17 @@ trait AdminBarMenuTrait {
 		);
 	}
 
-	public function dashboard_button( bool $context, string $title, string $label, string $action ) {
+	/**
+	 * Add button to dashboard
+	 *
+	 * @param bool   $context The feature context.
+	 * @param string $title The button title.
+	 * @param string $label Button label.
+	 * @param string $action Button action.
+	 *
+	 * @return void
+	 */
+	public function dashboard_button( bool $context, string $title, string $label, string $action ): void {
 		if (
 			'local' === wp_get_environment_type()
 			&&
@@ -116,13 +134,12 @@ trait AdminBarMenuTrait {
 			return;
 		}
 
-		echo $this->generate(
-			'sections/clean-section',
-			[
-				'action' => $action,
-				'title'  => $title,
-				'label'  => $label,
-			]
-			); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		$data = [
+			'action' => $action,
+			'title'  => $title,
+			'label'  => $label,
+		];
+
+		echo $this->generate( 'sections/clean-section', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 }
