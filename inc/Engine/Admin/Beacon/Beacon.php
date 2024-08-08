@@ -821,6 +821,16 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 					'url' => 'https://fr.docs.wp-rocket.me/article/1833-impossible-creer-table-rucssusedcss/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
+			'lazy_render_content'        => [
+				'en' => [
+					'id'  => '',
+					'url' => '',
+				],
+				'fr' => [
+					'id'  => '',
+					'url' => '',
+				],
+			],
 		];
 
 		return isset( $suggest[ $doc_id ][ $this->get_user_locale() ] )

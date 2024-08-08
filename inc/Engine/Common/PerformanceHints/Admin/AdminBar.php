@@ -6,9 +6,8 @@ namespace WP_Rocket\Engine\Common\PerformanceHints\Admin;
 use WP_Admin_Bar;
 use WP_Rocket\Abstract_Render;
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\Admin\Menu\AdminBarMenuTrait;
+use WP_Rocket\Engine\Admin\Settings\AdminBarMenuTrait;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
-
 
 class AdminBar extends Abstract_Render {
 	use AdminBarMenuTrait;
@@ -50,13 +49,13 @@ class AdminBar extends Abstract_Render {
 	 * @return void
 	 */
 	public function add_clear_performance_menu_item( WP_Admin_Bar $wp_admin_bar ): void {
-		//TODO:Add lrc context check here
+		// TODO:Add lrc context check here
 		if ( ! $this->atf_context->is_allowed() ) {
 			return;
 		}
 
 		$title  = __( 'Clear Performance Hints data', 'rocket' );
-		$action = 'rocket_clear_performance_hints';
+		$action = 'rocket_clean_performance_hints';
 
 		$this->add_menu_to_admin_bar(
 			$wp_admin_bar,
@@ -101,19 +100,18 @@ class AdminBar extends Abstract_Render {
 		}
 
 		/**
-		 * Filters the rocket `clear used css of this url` option on admin bar menu.
+		 * Filters the rocket `clear performance hints data of this url` option on admin bar menu.
 		 *
-		 * @since 3.12.1
+		 * @since 3.17
 		 *
 		 * @param bool  $should_skip Should skip adding `clear performance hints of this url` option in admin bar.
 		 * @param type  $post Post object.
 		 */
-		if ( apply_filters( 'rocket_skip_admin_bar_clear_performance_hints_option', false, $post ) ) {
+		if ( apply_filters( 'rocket_skip_admin_bar_clean_performance_hints_option', false, $post ) ) {
 			return;
 		}
 
-
-		$action  = 'rocket_clean_performance_hints_url';
+		$action = 'rocket_clean_performance_hints_url';
 
 		$title = __( 'Clear performance hints data of this URL', 'rocket' );
 
@@ -136,7 +134,7 @@ class AdminBar extends Abstract_Render {
 			$this->atf_context->is_allowed(),
 			__( 'Performance Hints', 'rocket' ),
 			esc_html__( 'Clear', 'rocket' ),
-			'rocket_clear_performance_hints'
+			'rocket_clean_performance_hints'
 		);
 	}
 }

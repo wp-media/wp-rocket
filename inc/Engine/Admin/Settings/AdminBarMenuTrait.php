@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace WP_Rocket\Engine\Admin\Menu;
+namespace WP_Rocket\Engine\Admin\Settings;
 
 use WP_Admin_Bar;
 
@@ -50,7 +50,7 @@ trait AdminBarMenuTrait {
 
 	/**
 	 *
-	*/
+	 */
 	protected function add_url_menu_item_to_admin_bar(
 		WP_Admin_Bar $wp_admin_bar,
 		string $id,
@@ -103,7 +103,7 @@ trait AdminBarMenuTrait {
 		);
 	}
 
-	public function dashboard_button( bool $context, string $title, string $label, string $action ){
+	public function dashboard_button( bool $context, string $title, string $label, string $action ) {
 		if (
 			'local' === wp_get_environment_type()
 			&&
@@ -116,10 +116,13 @@ trait AdminBarMenuTrait {
 			return;
 		}
 
-		echo $this->generate( 'sections/clean-section', [
-			'action' => $action,
-			'title'  => $title,
-			'label'  => $label,
-		] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo $this->generate(
+			'sections/clean-section',
+			[
+				'action' => $action,
+				'title'  => $title,
+				'label'  => $label,
+			]
+			); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 }

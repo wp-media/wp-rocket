@@ -22,13 +22,21 @@ class Subscriber implements Subscriber_Interface {
 	private $admin_bar;
 
 	/**
+	 * Clean Instance.
+	 *
+	 * @var Clean
+	 */
+	private $clean;
+
+	/**
 	 * Instantiate the class
 	 *
 	 * @param Controller $controller Controller instance.
 	 */
-	public function __construct( Controller $controller, AdminBar $admin_bar ) {
+	public function __construct( Controller $controller, AdminBar $admin_bar, Clean $clean ) {
 		$this->controller = $controller;
 		$this->admin_bar  = $admin_bar;
+		$this->clean      = $clean;
 	}
 
 	/**
@@ -38,23 +46,25 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'switch_theme'                  => 'truncate_tables',
-			'permalink_structure_changed'   => 'truncate_tables',
-			'rocket_domain_options_changed' => 'truncate_tables',
-			'wp_trash_post'                 => 'delete_post',
-			'delete_post'                   => 'delete_post',
-			'clean_post_cache'              => 'delete_post',
-			'wp_update_comment_count'       => 'delete_post',
-			'edit_term'                     => 'delete_term',
-			'pre_delete_term'               => 'delete_term',
-			'rocket_saas_clean_all'         => 'truncate_from_admin',
-			'rocket_saas_clean_url'         => 'clean_url',
-			'wp_rocket_upgrade'             => [ 'truncate_on_update', 10, 2 ],
-			'rocket_admin_bar_items'        => [
+			'switch_theme'                              => 'truncate_tables',
+			'permalink_structure_changed'               => 'truncate_tables',
+			'rocket_domain_options_changed'             => 'truncate_tables',
+			'wp_trash_post'                             => 'delete_post',
+			'delete_post'                               => 'delete_post',
+			'clean_post_cache'                          => 'delete_post',
+			'wp_update_comment_count'                   => 'delete_post',
+			'edit_term'                                 => 'delete_term',
+			'pre_delete_term'                           => 'delete_term',
+			'rocket_performance_hints_clean_all'        => 'truncate_from_admin',
+			'rocket_performance_hints_clean_url'        => 'clean_url',
+			'wp_rocket_upgrade'                         => [ 'truncate_on_update', 10, 2 ],
+			'rocket_admin_bar_items'                    => [
 				[ 'add_clear_performance_hints_menu_item' ],
-				[ 'add_clear_url_performance_hints_menu_item' ]
+				[ 'add_clear_url_performance_hints_menu_item' ],
 			],
-			'rocket_dashboard_actions'      => 'display_dashboard_button',
+			'rocket_dashboard_actions'                  => 'display_dashboard_button',
+			'admin_post_rocket_clean_performance_hints' => 'clean_performance_hints',
+			'admin_post_rocket_clean_performance_hints_url' => 'clean_url_performance_hints',
 		];
 	}
 
@@ -132,11 +142,12 @@ class Subscriber implements Subscriber_Interface {
 
 	/**
 	 * Add clear performance data hints for current url to WP Rocket admin bar menu
+	 *
 	 * @param WP_Admin_Bar $wp_admin_bar WP_Admin_Bar instance, passed by reference.
 	 *
 	 * @return void
-	*/
-	public function add_clear_url_performance_hints_menu_item( WP_Admin_Bar $wp_admin_bar ): void{
+	 */
+	public function add_clear_url_performance_hints_menu_item( WP_Admin_Bar $wp_admin_bar ): void {
 		$this->admin_bar->add_clear_url_performance_hints_menu_item( $wp_admin_bar );
 	}
 
@@ -145,7 +156,20 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return void
 	 */
-	public function  display_dashboard_button(){
+	public function display_dashboard_button() {
 		$this->admin_bar->display_dashboard_button();
+	}
+
+	/**
+	 * Truncate Performance Hints tables when clicking on the dashboard button/menu
+	 *
+	 * @return void
+	 */
+	public function clean_performance_hints(): void {
+		$this->clean->clean_performance_hints();
+	}
+
+	public function clean_url_performance_hints(): void {
+		$this->clean->clean_url_performance_hints();
 	}
 }

@@ -2235,13 +2235,12 @@ class Page extends Abstract_Render {
 			return;
 		}
 
-		// Bail-out if previous version is greater than 3.16.
-		if ( $previous_version > '3.16' ) {
+		// Bail-out if previous version is greater than 3.17.
+		if ( $previous_version > '3.17' ) {
 			return;
 		}
 
-		$critical_images_beacon = $this->beacon->get_suggest( 'optimize_critical_images' );
-		$remove_cache_tab       = $this->beacon->get_suggest( 'remove_cache_tab' );
+		$lazy_render_content = $this->beacon->get_suggest( 'lazy_render_content' );
 
 		rocket_notice_html(
 			[
@@ -2249,11 +2248,10 @@ class Page extends Abstract_Render {
 				'dismissible'    => '',
 				'message'        => sprintf(
 					// translators: %1$s: opening strong tag, %2$s: closing strong tag, %3$s: opening a tag, %4$s: option a tag, %5$s: opening a tag.
-					__( '%1$sWP Rocket:%2$s the plugin has been updated to the 3.16 version. Our brand new feature %3$sOptimize critical images%5$s is automatically activated now! Also, the Cache tab was removed but the existing features will remain working, %4$ssee more here%5$s.', 'rocket' ),
+					__( '%1$sWP Rocket:%2$s the plugin has been updated to the 3.17 version. Our brand new feature %3$sLazy Render Content.%4$s Check out our sdocumentation to learn more about it.', 'rocket' ),
 					'<strong>',
 					'</strong>',
-					'<a href="' . esc_url( $critical_images_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $critical_images_beacon['id'] ) . '" target="_blank" rel="noopener noreferrer">',
-					'<a href="' . esc_url( $remove_cache_tab['url'] ) . '" data-beacon-article="' . esc_attr( $remove_cache_tab['id'] ) . '" target="_blank" rel="noopener noreferrer">',
+					'<a href="' . esc_url( $lazy_render_content['url'] ) . '" data-beacon-article="' . esc_attr( $lazy_render_content['id'] ) . '" target="_blank" rel="noopener noreferrer">',
 					'</a>'
 				),
 				'dismiss_button' => 'rocket_update_notice',

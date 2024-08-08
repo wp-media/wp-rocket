@@ -6,7 +6,7 @@ namespace WP_Rocket\Engine\Saas\Admin;
 use WP_Admin_Bar;
 use WP_Rocket\Abstract_Render;
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\Admin\Menu\AdminBarMenuTrait;
+use WP_Rocket\Engine\Admin\Settings\AdminBarMenuTrait;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
 
 class AdminBar extends Abstract_Render {
