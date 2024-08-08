@@ -44,7 +44,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'performance_hints_warmup_controller',
 		'performance_hints_warmup_subscriber',
 		'performance_hints_admin_bar',
-		'performance_hints_context',
+		'atf_context',
 	];
 
 	/**
@@ -102,11 +102,9 @@ class ServiceProvider extends AbstractServiceProvider {
 				]
 			);
 
-		$this->getContainer()->add( 'performance_hints_context', Context::class );
-
 		$this->getContainer()->add( 'performance_hints_admin_bar', Adminbar::class )
 			->addArgument( $this->getContainer()->get( 'options' ) )
-			->addArgument( $this->getContainer()->get( 'performance_hints_context' ) )
+			->addArgument( $this->getContainer()->get( 'atf_context' ) )
 			->addArgument( $this->getContainer()->get( 'template_path' ) . '/settings' );
 
 		$this->getContainer()->addShared( 'performance_hints_admin_subscriber', AdminSubscriber::class )

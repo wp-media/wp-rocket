@@ -6,9 +6,12 @@ namespace WP_Rocket\Engine\Saas\Admin;
 use WP_Admin_Bar;
 use WP_Rocket\Abstract_Render;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Admin\Menu\AdminBarMenuTrait;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
 
 class AdminBar extends Abstract_Render {
+	use AdminBarMenuTrait;
+
 	/**
 	 * Options data instance.
 	 *
@@ -45,9 +48,8 @@ class AdminBar extends Abstract_Render {
 	 * @return void
 	 */
 	public function add_clean_saas_menu_item( $wp_admin_bar ) {
-		if ( ! rocket_valid_key() ) {
-			return;
-		}
+		$title  = __( 'Clear RUCSS optimizations', 'rocket' );
+		$action = 'rocket_clean_saas';
 
 		if (
 			'local' === wp_get_environment_type()
@@ -57,33 +59,15 @@ class AdminBar extends Abstract_Render {
 			return;
 		}
 
-		if ( ! is_admin() ) {
+		if ( ! (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
 			return;
 		}
 
-		if (
-			! (bool) $this->options->get( 'remove_unused_css', 0 )
-		) {
-			return;
-		}
-
-		$title = __( 'Clear RUCSS optimizations', 'rocket' );
-
-		$referer = '';
-		$action  = 'rocket_clean_saas';
-
-		if ( ! empty( $_SERVER['REQUEST_URI'] ) ) {
-			$referer_url = filter_var( wp_unslash( $_SERVER['REQUEST_URI'] ), FILTER_SANITIZE_URL );
-			$referer     = '&_wp_http_referer=' . rawurlencode( remove_query_arg( 'fl_builder', $referer_url ) );
-		}
-
-		$wp_admin_bar->add_menu(
-			[
-				'parent' => 'wp-rocket',
-				'id'     => 'clean-saas',
-				'title'  => $title,
-				'href'   => wp_nonce_url( admin_url( "admin-post.php?action={$action}{$referer}" ), $action ),
-			]
+		$this->add_menu_to_admin_bar(
+			$wp_admin_bar,
+			'clean-saas',
+			$title,
+			$action
 		);
 	}
 

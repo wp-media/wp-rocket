@@ -51,8 +51,10 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_saas_clean_url'         => 'clean_url',
 			'wp_rocket_upgrade'             => [ 'truncate_on_update', 10, 2 ],
 			'rocket_admin_bar_items'        => [
-				[ 'add_clean_performance_hints_item' ],
+				[ 'add_clear_performance_hints_menu_item' ],
+				[ 'add_clear_url_performance_hints_menu_item' ]
 			],
+			'rocket_dashboard_actions'      => 'display_dashboard_button',
 		];
 	}
 
@@ -118,8 +120,32 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
+	 * Add clear performance hints data to WP Rocket admin bar menu
+	 *
+	 * @param WP_Admin_Bar $wp_admin_bar WP_Admin_Bar instance, passed by reference.
+	 *
+	 * @return void
 	 */
-	public function add_clean_performance_hints_item( WP_Admin_Bar $wp_admin_bar ) {
-		$this->admin_bar->add_menu_item( $wp_admin_bar );
+	public function add_clear_performance_hints_menu_item( WP_Admin_Bar $wp_admin_bar ): void {
+		$this->admin_bar->add_clear_performance_menu_item( $wp_admin_bar );
+	}
+
+	/**
+	 * Add clear performance data hints for current url to WP Rocket admin bar menu
+	 * @param WP_Admin_Bar $wp_admin_bar WP_Admin_Bar instance, passed by reference.
+	 *
+	 * @return void
+	*/
+	public function add_clear_url_performance_hints_menu_item( WP_Admin_Bar $wp_admin_bar ): void{
+		$this->admin_bar->add_clear_url_performance_hints_menu_item( $wp_admin_bar );
+	}
+
+	/**
+	 * Display the dashboard button to clear performance data hints features
+	 *
+	 * @return void
+	 */
+	public function  display_dashboard_button(){
+		$this->admin_bar->display_dashboard_button();
 	}
 }
