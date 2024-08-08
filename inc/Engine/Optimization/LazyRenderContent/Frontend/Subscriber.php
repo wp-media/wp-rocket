@@ -22,6 +22,11 @@ class Subscriber implements Subscriber_Interface {
 		$this->controller = $controller;
 	}
 
+	/**
+	 * Returns an array of events that this subscriber wants to listen to.
+	 *
+	 * @return array
+	 */
 	public static function get_subscribed_events(): array {
 		return [
 			'rocket_buffer' => [ 'add_hashes', 16 ],
