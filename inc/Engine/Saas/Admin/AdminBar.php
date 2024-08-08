@@ -150,27 +150,11 @@ class AdminBar extends Abstract_Render {
 	 * @return void
 	 */
 	public function display_dashboard_button() {
-		if (
-			'local' === wp_get_environment_type()
-			&&
-			$this->rucss_url_context->is_allowed()
-		) {
-			return;
-		}
-
-		if ( ! $this->rucss_url_context->is_allowed() ) {
-			return;
-		}
-
-		$title = __( 'Remove Unused CSS', 'rocket' );
-		$label = esc_html__( 'Clear RUCSS optimizations', 'rocket' );
-
-		$data = [
-			'action' => 'rocket_clean_saas',
-			'title'  => $title,
-			'label'  => $label,
-		];
-
-		echo $this->generate( 'sections/clean-section', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		$this->dashboard_button(
+			$this->rucss_url_context->is_allowed(),
+			__( 'Remove Unused CSS', 'rocket' ),
+			esc_html__( 'Clear RUCSS optimizations', 'rocket' ),
+			'rocket_clean_saas'
+		);
 	}
 }

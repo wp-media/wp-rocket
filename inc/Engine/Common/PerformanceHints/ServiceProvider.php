@@ -11,7 +11,8 @@ use WP_Rocket\Engine\Common\PerformanceHints\Frontend\Subscriber as FrontendSubs
 use WP_Rocket\Engine\Common\PerformanceHints\Admin\{
 	Controller as AdminController,
 	Subscriber as AdminSubscriber,
-	AdminBar
+	AdminBar,
+	Clean
 };
 use WP_Rocket\Engine\Common\PerformanceHints\Cron\{Controller as CronController, Subscriber as CronSubscriber};
 use WP_Rocket\Engine\Common\PerformanceHints\WarmUp\{
@@ -44,6 +45,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'performance_hints_warmup_controller',
 		'performance_hints_warmup_subscriber',
 		'performance_hints_admin_bar',
+		'performance_hints_clean',
 		'atf_context',
 	];
 
@@ -107,11 +109,14 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'atf_context' ) )
 			->addArgument( $this->getContainer()->get( 'template_path' ) . '/settings' );
 
+		$this->getContainer()->add( 'performance_hints_clean', Clean::class );
+
 		$this->getContainer()->addShared( 'performance_hints_admin_subscriber', AdminSubscriber::class )
 			->addArguments(
 				[
 					$this->getContainer()->get( 'performance_hints_admin_controller' ),
 					$this->getContainer()->get( 'performance_hints_admin_bar' ),
+					$this->getContainer()->get( 'performance_hints_clean' ),
 				]
 			);
 		$this->getContainer()->add( 'cron_controller', CronController::class )
