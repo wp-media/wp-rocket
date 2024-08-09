@@ -139,7 +139,7 @@ trait AdminBarMenuTrait {
 			'action'     => $action,
 			'title'      => $title,
 			'label'      => $label,
-			'hover_text' => $hover_text
+			'hover_text' => $hover_text,
 		];
 
 		echo $this->generate( 'sections/clean-section', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
