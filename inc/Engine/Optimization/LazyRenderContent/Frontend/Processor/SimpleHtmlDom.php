@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\Optimization\LazyRenderContent\Frontend\Processor;
 
 use voku\helper\HtmlDomParser;
 use voku\helper\SimpleHtmlDomBlank;
+use voku\helper\SimpleHtmlDomInterface;
 use WP_Rocket\Logger\Logger;
 
 class SimpleHtmlDom implements ProcessorInterface {
@@ -34,8 +35,8 @@ class SimpleHtmlDom implements ProcessorInterface {
 	/**
 	 * Add a hash to the element and its children.
 	 *
-	 * @param SimpleHtmlDomBlank $element The element to add the hash to.
-	 * @param int                $depth   The depth of the recursion.
+	 * @param SimpleHtmlDomInterface $element The element to add the hash to.
+	 * @param int                    $depth   The depth of the recursion.
 	 */
 	private function add_hash_to_element( $element, $depth ) {
 		if ( $depth < 0 ) {
