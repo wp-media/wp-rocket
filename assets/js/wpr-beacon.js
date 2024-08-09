@@ -222,13 +222,10 @@
       this.infiniteLoopId = setTimeout(() => {
         this._handleInfiniteLoop();
       }, 1e4);
-      const isGeneratedBefore = await this._getGeneratedBefore();
-      const shouldGenerateLcp = this.config.status.atf && isGeneratedBefore === false;
-      if (shouldGenerateLcp) {
+      const isGeneratedBefore = await this._isGeneratedBefore();
+      if (!isGeneratedBefore.lcp) {
         this.lcpBeacon = new BeaconLcp_default(this.config, this.logger);
         await this.lcpBeacon.run();
-      } else {
-        this.logger.logMessage("Not running BeaconLcp because data is already available");
       }
       this._saveFinalResultIntoDB();
     }
@@ -241,12 +238,14 @@
         this.logger.logMessage("Bailing out because screen size is not acceptable");
         return false;
       }
-      return true;
-    }
-    async _getGeneratedBefore() {
-      if (!Utils_default.isPageCached()) {
+      const generated_before = await this._isGeneratedBefore();
+      if (Utils_default.isPageCached() && (this.config.status.atf && generated_before.lcp)) {
+        this.logger.logMessage("Bailing out because data is already available");
         return false;
       }
+      return true;
+    }
+    async _isGeneratedBefore() {
       let data_check = new FormData();
       data_check.append("action", "rocket_check_beacon");
       data_check.append("rocket_beacon_nonce", this.config.nonce);
@@ -257,7 +256,7 @@
         credentials: "same-origin",
         body: data_check
       }).then((data) => data.json());
-      return beacon_data_response.success;
+      return beacon_data_response.data;
     }
     _saveFinalResultIntoDB() {
       const results = {
