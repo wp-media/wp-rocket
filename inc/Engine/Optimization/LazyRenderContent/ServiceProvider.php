@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\Optimization\LazyRenderContent;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Engine\Optimization\LazyRenderContent\Frontend\{Controller as FrontController, Subscriber as FrontSubscriber};
+use WP_Rocket\Engine\Optimization\LazyRenderContent\Frontend\Processor\Processor;
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
@@ -17,6 +18,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @var array
 	 */
 	protected $provides = [
+		'lrc_frontend_processor',
 		'lrc_frontend_controller',
 		'lrc_frontend_subscriber',
 	];
@@ -38,7 +40,13 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register(): void {
-		$this->getContainer()->add( 'lrc_frontend_controller', FrontController::class );
+		$this->getContainer()->add( 'lrc_frontend_processor', Processor::class );
+		$this->getContainer()->add( 'lrc_frontend_controller', FrontController::class )
+			->addArguments(
+				[
+					$this->getContainer()->get( 'lrc_frontend_processor' ),
+				]
+			);
 		$this->getContainer()->addShared( 'lrc_frontend_subscriber', FrontSubscriber::class )
 			->addArguments(
 				[
