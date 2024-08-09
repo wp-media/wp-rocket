@@ -49,8 +49,8 @@ class Dom implements ProcessorInterface {
 	/**
 	 * Add a hash to the element and its children.
 	 *
-	 * @param \DOMNode $element The element to add the hash to.
-	 * @param int      $depth   The depth of the recursion.
+	 * @param \DOMElement $element The element to add the hash to.
+	 * @param int         $depth   The depth of the recursion.
 	 */
 	private function add_hash_to_element( $element, $depth ) {
 		if ( $depth < 0 ) {
@@ -69,6 +69,10 @@ class Dom implements ProcessorInterface {
 		static $count = 0;
 
 		foreach ( $element->childNodes as $child ) {
+			if ( ! $child instanceof \DOMElement ) {
+				continue;
+			}
+
 			if (
 				XML_ELEMENT_NODE !== $child->nodeType
 				||
