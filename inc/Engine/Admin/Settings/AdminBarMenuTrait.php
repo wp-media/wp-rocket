@@ -118,10 +118,11 @@ trait AdminBarMenuTrait {
 	 * @param string $title The button title.
 	 * @param string $label Button label.
 	 * @param string $action Button action.
+	 * @param string $hover_text Button Hover text.
 	 *
 	 * @return void
 	 */
-	public function dashboard_button( bool $context, string $title, string $label, string $action ): void {
+	public function dashboard_button( bool $context, string $title, string $label, string $action, string $hover_text = '' ): void {
 		if (
 			'local' === wp_get_environment_type()
 			&&
@@ -135,9 +136,10 @@ trait AdminBarMenuTrait {
 		}
 
 		$data = [
-			'action' => $action,
-			'title'  => $title,
-			'label'  => $label,
+			'action'     => $action,
+			'title'      => $title,
+			'label'      => $label,
+			'hover_text' => $hover_text
 		];
 
 		echo $this->generate( 'sections/clean-section', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped

@@ -125,7 +125,8 @@ class AdminBar extends Abstract_Render {
 			$this->atf_context->is_allowed(),
 			__( 'Performance Hints', 'rocket' ),
 			esc_html__( 'Clear', 'rocket' ),
-			'rocket_clean_performance_hints'
+			'rocket_clean_performance_hints',
+			__( 'This action will clear data for Optimize Critical Images and Lazy Render Content.', 'rocket' )
 		);
 	}
 }
