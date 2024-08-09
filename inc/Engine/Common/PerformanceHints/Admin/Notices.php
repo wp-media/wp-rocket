@@ -29,7 +29,7 @@ class Notices {
 	 *
 	 * @return void
 	 */
-	public function clean_saas_result() {
+	public function clean_performance_hint_result() {
 		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			return;
 		}

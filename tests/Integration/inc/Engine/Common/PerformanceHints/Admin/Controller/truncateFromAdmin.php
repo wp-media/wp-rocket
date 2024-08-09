@@ -38,14 +38,11 @@ class Test_TruncateFromAdmin extends TestCase {
 	public function testShouldDoAsExpected( $config, $expected ) {
 		$this->config = $config;
 		$container    = apply_filters( 'rocket_container', null );
-		$atf_factory  = $container->get( 'atf_factory' );
 
-		$controller = Mockery::mock( Controller::class, [ [ $atf_factory ] ] )->makePartial();
 		foreach ( $this->config['rows'] as $row ) {
 			self::addLcp( $row );
 		}
 		Functions\expect( 'current_user_can' )->once()->with('rocket_manage_options')->andReturn($config['rocket_manage_options']);
-		add_action('rocket_performance_hints_clean_all', [$controller, 'truncate_from_admin']);
 		do_action( 'rocket_performance_hints_clean_all', [] );
 
 		$atf_query              = $container->get( 'atf_query' );
@@ -55,6 +52,5 @@ class Test_TruncateFromAdmin extends TestCase {
 		if ( ! $expected ) {
 			$this->assertSame( 1, did_action( 'rocket_after_clear_performance_hints_data' ) );
 		}
-		remove_action('rocket_performance_hints_clean_all', [$controller, 'truncate_from_admin']);
 	}
 }

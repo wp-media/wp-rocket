@@ -5,7 +5,6 @@ namespace WP_Rocket\Engine\Common\PerformanceHints;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Engine\Common\PerformanceHints\AJAX\Subscriber as AjaxSubscriber;
-use WP_Rocket\Engine\Common\PerformanceHints\Context\Context;
 use WP_Rocket\Engine\Common\PerformanceHints\Frontend\Processor as FrontendProcessor;
 use WP_Rocket\Engine\Common\PerformanceHints\Frontend\Subscriber as FrontendSubscriber;
 use WP_Rocket\Engine\Common\PerformanceHints\Admin\{

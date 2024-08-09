@@ -74,7 +74,7 @@ class Subscriber implements Subscriber_Interface {
 				[ 'add_clear_url_performance_hints_menu_item' ],
 			],
 			'admin_notices'                             => [
-				[ 'clea_performance_hint_result' ],
+				[ 'clean_performance_hint_result' ],
 			],
 			'rocket_dashboard_actions'                  => 'display_dashboard_button',
 			'admin_post_rocket_clean_performance_hints' => 'clean_performance_hints',
@@ -199,7 +199,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return void
 	 */
-	public function clea_performance_hint_result(): void {
-		$this->notices->clean_saas_result();
+	public function clean_performance_hint_result(): void {
+		$this->notices->clean_performance_hint_result();
 	}
 }
