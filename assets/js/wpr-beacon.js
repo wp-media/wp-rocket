@@ -210,11 +210,11 @@
       this.config = config;
       this.lcpBeacon = null;
       this.infiniteLoopId = null;
-      this.scriptTimer = /* @__PURE__ */ new Date();
       this.errorCode = "";
       this.logger = new Logger_default(this.config.debug);
     }
     async init() {
+      this.scriptTimer = /* @__PURE__ */ new Date();
       if (!await this._isValidPreconditions()) {
         this._finalize();
         return;
