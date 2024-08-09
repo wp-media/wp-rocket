@@ -6,6 +6,7 @@ namespace WP_Rocket\Engine\Media\AboveTheFold\AJAX;
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Queries\AboveTheFold as ATFQuery;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Engine\Optimization\UrlTrait;
+use WP_Rocket\Logger\Logger;
 use WP_Rocket\Engine\Common\PerformanceHints\AJAX\ControllerInterface;
 
 class Controller implements ControllerInterface {
@@ -182,7 +183,24 @@ class Controller implements ControllerInterface {
 				if ( isset( $image->src ) && ! empty( $image->src ) && is_string( $image->src ) ) {
 					$object->src = $this->sanitize_image_url( $image->src );
 				}
-				$object->sources = $image->sources;
+				$object->sources = array_map(
+					function ( $source ) {
+						if ( empty( $source->type ) ) {
+							Logger::notice( 'The source type is missing in the image object.', [ 'source' => $source ] );
+						}
+
+						return (object) wp_parse_args(
+							$source,
+							[
+								'media'  => '',
+								'sizes'  => '',
+								'srcset' => '',
+								'type'   => '',
+							]
+						);
+					},
+					$image->sources
+				);
 				break;
 			default:
 				// For other types, add the first non-empty key to the object.
