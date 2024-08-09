@@ -31,8 +31,6 @@ class Test_ProcessHandler extends FilesystemTestCase {
 	public function set_up() {
 		parent::set_up();
 
-		self::installAtfTable();
-
 		$this->to_be_removed  = [
 			'filters'    => [],
 			'transients' => [],
@@ -52,7 +50,6 @@ class Test_ProcessHandler extends FilesystemTestCase {
 	}
 
 	public function tear_down() {
-		self::uninstallAtfTable();
 
 		foreach ( $this->to_be_removed as $item_name => $item ) {
 			switch ( $item_name ) {

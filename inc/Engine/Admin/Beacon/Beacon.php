@@ -811,6 +811,16 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 					'url' => 'https://fr.docs.wp-rocket.me/article/1818-suppression-onglet-cache?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
+			'rucss_database'             => [
+				'en' => [
+					'id'  => '668f1284f0fdf93e4cf10825',
+					'url' => 'https://docs.wp-rocket.me/article/1828-could-not-create-the-rucss-usedcss-table/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+				'fr' => [
+					'id'  => '66a32d970d7d86166241eff1',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1833-impossible-creer-table-rucssusedcss/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+			],
 		];
 
 		return isset( $suggest[ $doc_id ][ $this->get_user_locale() ] )
