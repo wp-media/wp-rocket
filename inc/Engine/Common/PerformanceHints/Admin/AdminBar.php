@@ -13,13 +13,6 @@ class AdminBar extends Abstract_Render {
 	use AdminBarMenuTrait;
 
 	/**
-	 * Options data instance.
-	 *
-	 * @var Options_data
-	 */
-	private $options;
-
-	/**
 	 * ATF context.
 	 *
 	 * @var ContextInterface
@@ -30,14 +23,12 @@ class AdminBar extends Abstract_Render {
 	/**
 	 * Constructor
 	 *
-	 * @param Options_Data     $options Options data instance.
 	 * @param ContextInterface $atf_context ATF context.
 	 * @param string           $template_path Template path.
 	 */
-	public function __construct( Options_Data $options, ContextInterface $atf_context, $template_path ) {
+	public function __construct( ContextInterface $atf_context, $template_path ) {
 		parent::__construct( $template_path );
 
-		$this->options     = $options;
 		$this->atf_context = $atf_context;
 	}
 

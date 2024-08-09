@@ -105,7 +105,6 @@ class ServiceProvider extends AbstractServiceProvider {
 			);
 
 		$this->getContainer()->add( 'performance_hints_admin_bar', Adminbar::class )
-			->addArgument( $this->getContainer()->get( 'options' ) )
 			->addArgument( $this->getContainer()->get( 'atf_context' ) )
 			->addArgument( $this->getContainer()->get( 'template_path' ) . '/settings' );
 
