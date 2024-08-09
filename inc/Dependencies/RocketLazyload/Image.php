@@ -30,9 +30,18 @@ class Image {
 		$images = array_unique( $images, SORT_REGULAR );
 
 		foreach ( $images as $image ) {
-			$image = $this->canLazyload( $image );
+			$original_image = $image;
+			$image          = $this->canLazyload( $image );
 
 			if ( ! $image ) {
+				$image_no_lazy = preg_replace( '/loading=["\']lazy["\']/i', '', $original_image );
+
+				if ( null === $image_no_lazy ) {
+					continue;
+				}
+
+				$html = str_replace( $original_image, $image_no_lazy, $html );
+
 				continue;
 			}
 
