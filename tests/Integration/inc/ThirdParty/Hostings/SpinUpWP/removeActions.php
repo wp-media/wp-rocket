@@ -11,20 +11,6 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group ThirdParty
  */
 class Test_RemoveActions extends TestCase {
-	public function set_up() {
-		parent::set_up();
-
-		// Disable ATF optimization to prevent DB request (unrelated to the test).
-		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
-	}
-
-	public function tear_down() {
-		// Re-enable ATF optimization.
-		remove_filter( 'rocket_above_the_fold_optimization', '__return_false' );
-
-		parent::tear_down();
-	}
-
 	public function testShouldRemoveRocketRegisteredActions() {
 
 		Functions\expect( 'rocket_clean_domain' )->never();

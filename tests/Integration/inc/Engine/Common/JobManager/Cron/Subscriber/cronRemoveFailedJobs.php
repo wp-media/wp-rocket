@@ -19,17 +19,11 @@ class Test_CronRemoveFailedJobs extends TestCase {
 		self::installUsedCssTable();
 		self::installPreloadCacheTable();
 
-		// Disable ATF optimization to prevent DB request (unrelated to the test).
-		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
-
 		add_filter( 'pre_http_request', [ $this, 'edit_http_request' ], 10, 3 );
 	}
 	public function tear_down() {
 		self::uninstallUsedCssTable();
 		self::uninstallPreloadCacheTable();
-
-		// Re-enable ATF optimization.
-		remove_filter( 'rocket_above_the_fold_optimization', '__return_false' );
 
 		remove_filter( 'pre_http_request',  [$this, 'edit_http_request' ] );
 		remove_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );

@@ -1,26 +1,27 @@
 <?php
+declare(strict_types=1);
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Admin\Settings\Page;
 
-use Mockery;
 use Brain\Monkey\Functions;
+use Mockery;
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Database\Optimization;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
-use WP_Rocket\Engine\Admin\Settings\Page;
-use WP_Rocket\Engine\Admin\Settings\Settings;
+use WP_Rocket\Engine\Admin\Settings\{Page, Render, Settings};
 use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Engine\Optimization\DelayJS\Admin\SiteList;
-use WPMedia\PHPUnit\Unit\TestCase;
-use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Tests\Unit\TestCase;
 
 /**
  * Test class covering \WP_Rocket\Engine\Admin\Settings\Page::enqueue_rocket_scripts
- * @group  Admin
- * @group  SettingsPage
+ *
+ * @group Admin
+ * @group SettingsPage
  */
-class Test_EnqueueRocketScripts extends TestCase {
+class TestEnqueueRocketScripts extends TestCase {
 	/**
-	 * @dataProvider providerTestData
+	 * @dataProvider configTestData
 	 */
 	public function testShouldMaybeEnqueueScript( $hook, $expected ) {
 		$config = [
@@ -34,7 +35,7 @@ class Test_EnqueueRocketScripts extends TestCase {
 		$page = new Page(
 			$config,
 			Mockery::mock( Settings::class ),
-			Mockery::mock( 'WP_Rocket\Interfaces\Render_Interface'),
+			Mockery::mock( Render::class ),
 			Mockery::mock( Beacon::class),
 			Mockery::mock( Optimization::class ),
 			Mockery::mock( UserClient::class ),

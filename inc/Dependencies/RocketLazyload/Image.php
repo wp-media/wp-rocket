@@ -30,15 +30,24 @@ class Image {
 		$images = array_unique( $images, SORT_REGULAR );
 
 		foreach ( $images as $image ) {
-			$image = $this->canLazyload( $image );
+			$original_image = $image;
+			$image          = $this->canLazyload( $image );
 
 			if ( ! $image ) {
+				$image_no_lazy = preg_replace( '/loading=["\']lazy["\']/i', '', $original_image );
+
+				if ( null === $image_no_lazy ) {
+					continue;
+				}
+
+				$html = str_replace( $original_image, $image_no_lazy, $html );
+
 				continue;
 			}
 
 			$image_lazyload = $this->replaceImage( $image, $use_native );
 
-			if ( ! $use_native ) {
+			if ( ! $use_native && $this->noscriptEnabled() ) {
 				$image_lazyload .= $this->noscript( $image[0] );
 			}
 
@@ -121,8 +130,15 @@ class Image {
 	 */
 	private function addLazyClass( $element ) {
 		$class = $this->getClasses( $element );
-		if ( empty( $class ) ) {
-			return preg_replace( '#<(img|div|figure|section|li|span|a)([^>]*)>#is', '<\1 class="rocket-lazyload"\2>', $element );
+
+		if ( ! $class ) {
+			$result = preg_replace( '#<(img|div|figure|section|li|span|a)([^>]*)>#is', '<\1 class="rocket-lazyload"\2>', $element );
+
+			if ( ! $result ) {
+				return $element;
+			}
+
+			return $result;
 		}
 
 		if ( empty( $class['attribute'] ) || empty( $class['classes'] ) ) {
@@ -150,7 +166,7 @@ class Image {
 	 *
 	 * @param string $attribute_value The target attribute's value.
 	 *
-	 * @return bool|string quotation character; else false when no quotation mark.
+	 * @return false|string quotation character; else false when no quotation mark.
 	 */
 	private function getAttributeQuotes( $attribute_value ) {
 		$attribute_value = trim( $attribute_value );
@@ -168,7 +184,7 @@ class Image {
 	 *
 	 * @param string $element Given HTML element to extract classes from.
 	 *
-	 * @return bool|string[] {
+	 * @return false|string[] {
 	 *      @type string $attribute Class attribute and value, e.g. class="value"
 	 *      @type string $classes   String of class attribute's value(s)
 	 * }; else, false when no class attribute exists.
@@ -178,11 +194,7 @@ class Image {
 			return false;
 		}
 
-		if ( empty( $class ) ) {
-			return false;
-		}
-
-		if ( ! isset( $class['classes'] ) ) {
+		if ( empty( $class['classes'] ) ) {
 			return false;
 		}
 
@@ -195,13 +207,14 @@ class Image {
 	/**
 	 * Removes outer single or double quotations.
 	 *
-	 * @param string $string String to strip quotes from.
-	 * @param string $quotes The outer quotes to remove.
+	 * @param string       $string String to strip quotes from.
+	 * @param false|string $quotes The outer quotes to remove.
 	 *
 	 * @return string string without quotes.
 	 */
 	private function trimOuterQuotes( $string, $quotes ) {
 		$string = trim( $string );
+
 		if ( empty( $string ) ) {
 			return '';
 		}
@@ -241,10 +254,10 @@ class Image {
 	 *  1. Removes empties.
 	 *  2. Trims each string.
 	 *
-	 * @param string $string    The target string to convert.
-	 * @param string $delimiter Optional. Default: ' ' empty string.
+	 * @param string           $string    The target string to convert.
+	 * @param non-empty-string $delimiter Optional. Default: ' ' (one space).
 	 *
-	 * @return array An array of trimmed strings.
+	 * @return array<string> An array of trimmed strings.
 	 */
 	private function stringToArray( $string, $delimiter = ' ' ) {
 		if ( empty( $string ) ) {
@@ -252,6 +265,11 @@ class Image {
 		}
 
 		$array = explode( $delimiter, $string );
+
+		if ( ! $array ) {
+			return [];
+		}
+
 		$array = array_map( 'trim', $array );
 
 		// Remove empties.
@@ -298,7 +316,12 @@ class Image {
 
 				foreach ( $sources as $source ) {
 					$lazyload_srcset = preg_replace( '/([\s"\'])srcset/i', '\1data-lazy-srcset', $source[0] );
-					$lazy_picture    = str_replace( $source[0], $lazyload_srcset, $lazy_picture );
+
+					if ( ! $lazyload_srcset ) {
+						continue;
+					}
+
+					$lazy_picture = str_replace( $source[0], $lazyload_srcset, $lazy_picture );
 
 					unset( $lazyload_srcset );
 					$lazy_sources++;
@@ -321,10 +344,21 @@ class Image {
 				continue;
 			}
 
-			$img_lazy  = $this->replaceImage( $img, false );
-			$img_lazy .= $this->noscript( $img[0] );
-			$safe_img  = str_replace( '/', '\/', preg_quote( $img[0], '#' ) );
-			$html      = preg_replace( '#<noscript[^>]*>.*' . $safe_img . '.*<\/noscript>(*SKIP)(*FAIL)|' . $safe_img . '#i', $img_lazy, $html );
+			$img_lazy = $this->replaceImage( $img, false );
+
+			if ( $this->noscriptEnabled() ) {
+				$img_lazy .= $this->noscript( $img[0] );
+			}
+
+			$safe_img = str_replace( '/', '\/', preg_quote( $img[0], '#' ) );
+
+			$new_html = preg_replace( '#<noscript[^>]*>.*' . $safe_img . '.*<\/noscript>(*SKIP)(*FAIL)|' . $safe_img . '#i', $img_lazy, $html );
+
+			if ( ! $new_html ) {
+				continue;
+			}
+
+			$html = $new_html;
 
 			unset( $img_lazy );
 		}
@@ -335,8 +369,9 @@ class Image {
 	/**
 	 * Checks if the image can be lazyloaded
 	 *
-	 * @param Array $image Array of image data coming from Regex.
-	 * @return bool|Array
+	 * @param array<string> $image Array of image data coming from Regex.
+	 *
+	 * @return false|array<string>
 	 */
 	private function canLazyload( $image ) {
 		if ( $this->isExcluded( $image['atts'], $this->getExcludedAttributes() ) ) {
@@ -364,9 +399,10 @@ class Image {
 	/**
 	 * Checks if the provided string matches with the provided excluded patterns
 	 *
-	 * @param string $string          String to check.
-	 * @param array  $excluded_values Patterns to match against.
-	 * @return boolean
+	 * @param string        $string          String to check.
+	 * @param array<string> $excluded_values Patterns to match against.
+	 *
+	 * @return bool
 	 */
 	public function isExcluded( $string, $excluded_values ) {
 		if ( ! is_array( $excluded_values ) ) {
@@ -391,7 +427,7 @@ class Image {
 	/**
 	 * Returns the list of excluded attributes
 	 *
-	 * @return array
+	 * @return array<string>
 	 */
 	public function getExcludedAttributes() {
 		/**
@@ -433,7 +469,7 @@ class Image {
 	/**
 	 * Returns the list of excluded src
 	 *
-	 * @return array
+	 * @return array<string>
 	 */
 	public function getExcludedSrc() {
 		/**
@@ -456,8 +492,8 @@ class Image {
 	/**
 	 * Replaces the original image by the lazyload one
 	 *
-	 * @param array $image Array of matches elements.
-	 * @param bool  $use_native Use native lazyload.
+	 * @param array<string> $image      Array of matches elements.
+	 * @param bool          $use_native Use native lazyload.
 	 *
 	 * @return string
 	 */
@@ -492,7 +528,11 @@ class Image {
 			$image_lazyload = str_replace( $image['atts'], $placeholder_atts . ' data-lazy-src="' . $image['src'] . '"', $image_lazyload );
 
 			if ( preg_match( $native_pattern, $image_lazyload ) ) {
-				$image_lazyload = preg_replace( $native_pattern, '', $image_lazyload );
+				$result = preg_replace( $native_pattern, '', $image_lazyload );
+
+				if ( is_string( $result ) ) {
+					$image_lazyload = $result;
+				}
 			}
 		}
 
@@ -506,6 +546,20 @@ class Image {
 		$image_lazyload = apply_filters( 'rocket_lazyload_html', $image_lazyload );
 
 		return $image_lazyload;
+	}
+
+	/**
+	 * Checks if the noscript tag is enabled
+	 *
+	 * @return mixed
+	 */
+	private function noscriptEnabled() {
+		/**
+		 * Filter to enable or disable noscript tag
+		 *
+		 * @param bool $enable_noscript Enable or disable noscript tag.
+		 */
+		return wpm_apply_filters_typed( 'boolean', 'rocket_lazyload_noscript', true );
 	}
 
 	/**
@@ -525,10 +579,21 @@ class Image {
 	 * @return string
 	 */
 	public function lazyloadResponsiveAttributes( $html ) {
-		$html = preg_replace( '/[\s|"|\'](srcset)\s*=\s*("|\')([^"|\']+)\2/i', ' data-lazy-$1=$2$3$2', $html );
-		$html = preg_replace( '/[\s|"|\'](sizes)\s*=\s*("|\')([^"|\']+)\2/i', ' data-lazy-$1=$2$3$2', $html );
+		$data_srcset = preg_replace( '/[\s|"|\'](srcset)\s*=\s*("|\')([^"|\']+)\2/i', ' data-lazy-$1=$2$3$2', $html );
 
-		return $html;
+		if ( ! $data_srcset ) {
+			return $html;
+		}
+
+		$html = $data_srcset;
+
+		$lazy_responsive = preg_replace( '/[\s|"|\'](sizes)\s*=\s*("|\')([^"|\']+)\2/i', ' data-lazy-$1=$2$3$2', $html );
+
+		if ( ! $lazy_responsive ) {
+			return $html;
+		}
+
+		return $lazy_responsive;
 	}
 
 	/**
@@ -551,7 +616,12 @@ class Image {
 		$output = '';
 		// HTML loop taken from texturize function, could possible be consolidated.
 		$textarr = preg_split( '/(<.*>)/U', $text, -1, PREG_SPLIT_DELIM_CAPTURE ); // capture the tags as well as in between.
-		$stop    = count( $textarr );// loop stuff.
+
+		if ( ! $textarr ) {
+			return $text;
+		}
+
+		$stop = count( $textarr );// loop stuff.
 
 		// Ignore processing of specific tags.
 		$tags_to_ignore       = 'code|pre|style|script|textarea';
@@ -584,7 +654,8 @@ class Image {
 	/**
 	 * Replace matches by smiley image, lazyloaded
 	 *
-	 * @param array $matches Array of matches.
+	 * @param array<string> $matches Array of matches.
+	 *
 	 * @return string
 	 */
 	private function translateSmiley( $matches ) {
