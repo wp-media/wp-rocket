@@ -91,7 +91,7 @@ class Processor {
 		$default_width_threshold  = $is_mobile ? 393 : 1600;
 		$default_height_threshold = $is_mobile ? 830 : 700;
 		/**
-		 * Filters the width threshold for the LCP beacon.
+		 * Filters the width threshold for the beacon.
 		 *
 		 * @param int    $width_threshold The width threshold. Default is 393 for mobile and 1920 for others.
 		 * @param bool   $is_mobile       True if the current device is mobile, false otherwise.
@@ -102,12 +102,12 @@ class Processor {
 		$width_threshold = rocket_apply_filter_and_deprecated(
 			'rocket_performance_hints_optimization_width_threshold',
 			[ $default_width_threshold, $is_mobile, $url ],
-			'3.17',
+			'3.16.4',
 			'rocket_lcp_width_threshold'
 		);
 
 		/**
-		 * Filters the height threshold for the LCP beacon.
+		 * Filters the height threshold for the beacon.
 		 *
 		 * @param int    $height_threshold The height threshold. Default is 830 for mobile and 1080 for others.
 		 * @param bool   $is_mobile        True if the current device is mobile, false otherwise.
@@ -118,7 +118,7 @@ class Processor {
 		$height_threshold = rocket_apply_filter_and_deprecated(
 			'rocket_performance_hints_optimization_height_threshold',
 			[ $default_height_threshold, $is_mobile, $url ],
-			'3.17',
+			'3.16.4',
 			'rocket_lcp_height_threshold'
 		);
 
@@ -133,14 +133,14 @@ class Processor {
 		$default_delay = 500;
 
 		/**
-		 * Filters the delay before the LCP beacon is triggered.
+		 * Filters the delay before the beacon is triggered.
 		 *
 		 * @param int $delay The delay in milliseconds. Default is 500.
 		 */
 		$delay = rocket_apply_filter_and_deprecated(
 			'rocket_performance_hints_optimization_delay',
 			[ $default_delay ],
-			'3.17',
+			'3.16.4',
 			'rocket_lcp_delay'
 		);
 

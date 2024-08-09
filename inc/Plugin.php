@@ -391,6 +391,7 @@ class Plugin {
 			'debug_subscriber',
 			'rucss_cron_subscriber',
 			'saas_admin_subscriber',
+			'atf_subscriber',
 			'performance_hints_ajax_subscriber',
 			'performance_hints_frontend_subscriber',
 			'performance_hints_cron_subscriber',

@@ -190,7 +190,7 @@ class Controller {
 		$links_limit = rocket_apply_filter_and_deprecated(
 			'rocket_performance_hints_warmup_links_number',
 			[ $default_limit ],
-			'3.16',
+			'3.16.4',
 			'rocket_atf_warmup_links_number'
 		);
 
