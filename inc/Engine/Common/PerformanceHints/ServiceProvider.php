@@ -12,7 +12,8 @@ use WP_Rocket\Engine\Common\PerformanceHints\Admin\{
 	Controller as AdminController,
 	Subscriber as AdminSubscriber,
 	AdminBar,
-	Clean
+	Clean,
+	Notices
 };
 use WP_Rocket\Engine\Common\PerformanceHints\Cron\{Controller as CronController, Subscriber as CronSubscriber};
 use WP_Rocket\Engine\Common\PerformanceHints\WarmUp\{
@@ -46,6 +47,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'performance_hints_warmup_subscriber',
 		'performance_hints_admin_bar',
 		'performance_hints_clean',
+		'performance_hints_notices',
 		'atf_context',
 	];
 
@@ -104,6 +106,9 @@ class ServiceProvider extends AbstractServiceProvider {
 				]
 			);
 
+		$this->getContainer()->add( 'performance_hints_notices', Notices::class )
+			->addArgument( $this->getContainer()->get( 'atf_context' ) );
+
 		$this->getContainer()->add( 'performance_hints_admin_bar', Adminbar::class )
 			->addArgument( $this->getContainer()->get( 'atf_context' ) )
 			->addArgument( $this->getContainer()->get( 'template_path' ) . '/settings' );
@@ -116,6 +121,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					$this->getContainer()->get( 'performance_hints_admin_controller' ),
 					$this->getContainer()->get( 'performance_hints_admin_bar' ),
 					$this->getContainer()->get( 'performance_hints_clean' ),
+					$this->getContainer()->get( 'performance_hints_notices' ),
 				]
 			);
 		$this->getContainer()->add( 'cron_controller', CronController::class )

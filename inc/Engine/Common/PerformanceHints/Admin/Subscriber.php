@@ -29,16 +29,25 @@ class Subscriber implements Subscriber_Interface {
 	private $clean;
 
 	/**
+	 * Notices Instance.
+	 *
+	 * @var Notices
+	 */
+	private $notices;
+
+	/**
 	 * Instantiate the class
 	 *
 	 * @param Controller $controller Controller instance.
 	 * @param AdminBar   $admin_bar Admin bar instance.
 	 * @param Clean      $clean Clean instance.
+	 * @param Notices    $notices Notices instance.
 	 */
-	public function __construct( Controller $controller, AdminBar $admin_bar, Clean $clean ) {
+	public function __construct( Controller $controller, AdminBar $admin_bar, Clean $clean, Notices $notices ) {
 		$this->controller = $controller;
 		$this->admin_bar  = $admin_bar;
 		$this->clean      = $clean;
+		$this->notices    = $notices;
 	}
 
 	/**
@@ -63,6 +72,9 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_admin_bar_items'                    => [
 				[ 'add_clear_performance_hints_menu_item' ],
 				[ 'add_clear_url_performance_hints_menu_item' ],
+			],
+			'admin_notices'                             => [
+				[ 'clea_performance_hint_result' ],
 			],
 			'rocket_dashboard_actions'                  => 'display_dashboard_button',
 			'admin_post_rocket_clean_performance_hints' => 'clean_performance_hints',
@@ -178,5 +190,14 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function clean_url_performance_hints(): void {
 		$this->clean->clean_url_performance_hints();
+	}
+
+	/**
+	 * Show admin notice after clearing Performance Hints tables.
+	 *
+	 * @return void
+	 */
+	public function clea_performance_hint_result(): void {
+		$this->notices->clean_saas_result();
 	}
 }
