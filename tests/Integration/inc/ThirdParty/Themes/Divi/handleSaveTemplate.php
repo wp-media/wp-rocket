@@ -41,9 +41,6 @@ class Test_handleSaveTemplate extends WPThemeTestcase {
 	public function set_up() {
 		parent::set_up();
 
-		// Disable ATF optimization to prevent DB request (unrelated to the test).
-		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
-
 		$this->container = apply_filters( 'rocket_container', '' );
 		$this->event = $this->container->get( 'event_manager' );
 
@@ -51,9 +48,6 @@ class Test_handleSaveTemplate extends WPThemeTestcase {
 	}
 
 	public function tear_down() {
-		// Re-enable ATF optimization.
-		remove_filter( 'rocket_above_the_fold_optimization', '__return_false' );
-
 		$this->event->remove_subscriber( $this->subscriber );
 
 		remove_filter( 'pre_option_stylesheet', [ $this, 'set_stylesheet' ] );

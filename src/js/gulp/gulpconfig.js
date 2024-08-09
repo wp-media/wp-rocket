@@ -34,7 +34,7 @@ module.exports = {
 			},
 
 			{
-				task: 'build:js:lcp',
+				task: 'build:js:beacon',
 				method: 'buildLcpBeacon',
 			},
 

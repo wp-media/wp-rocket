@@ -17,8 +17,8 @@ requireDir('./src/js/gulp/tasks', { recurse: true });
 * gulp build:js:app:unmin       => Builds admin app js file, the unminified version (wpr-admin.js)
 * gulp build:js:app:min         => Builds admin app js file, the minified version (wpr-admin.min.js)
 * gulp build:js:lazyloadcss:min => Builds lazyload CSS js file, the minified version (lazyload-css.min.js)
-* gulp build:js:lcp             => Builds lcp beacon script, the minified version (lcp-beacon.min.js, source file, and map file)
-* gulp build:js:all             => Builds all js files mentioned above (wpr-admin.js, wpr-admin.min.js, lazyload-css.min.js, lcp-beacon)
+* gulp build:js:all             => Builds all js files mentioned above (wpr-admin.js, wpr-admin.min.js, lazyload-css.min.js, wpr-beacon.min.js)
+* gulp build:js:beacon          => Builds lcp beacon script, the minified version (wpr-beacon.min.js, source file, and map file)
 * gulp js:watch                 => Watches all js files changes and build them again with any change.
 *
  */
