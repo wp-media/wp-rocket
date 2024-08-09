@@ -8,6 +8,9 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Engine\Common\PerformanceHints\Admin\Notices;
 
+/**
+ * Test class covering \WP_Rocket\Engine\Common\PerformanceHints\Admin\Notices::clean_performance_hint_result
+ */
 class Test_DisplayCleanPerformanceHintsResultNotice extends TestCase {
 	protected $atf_context;
 	private $notices;

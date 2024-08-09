@@ -188,7 +188,7 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Truncate performance hints the current URL.
 	 *
-	 * @return void;
+	 * @return void
 	 */
 	public function clean_url_performance_hints(): void {
 		$this->clean->clean_url_performance_hints();
