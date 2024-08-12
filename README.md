@@ -66,7 +66,7 @@ You can report any security bugs found in the source code of the site-reviews pl
 
 ## Contributions
 
-Feel free to check out our [public roadmap](https://trello.com/b/CrUcz6Jy/wp-rocket-roadmap) if you would like to request a feature. We always look forward to feedback and suggestions from the community to help us improve our plugins!
+Feel free to check out our [GitHub issues](https://github.com/wp-media/wp-rocket/issues) if you would like to request a feature. We always look forward to feedback and suggestions from the community to help us improve our plugins!
 
 ## Want to know more about our WordPress plugins? 
 
