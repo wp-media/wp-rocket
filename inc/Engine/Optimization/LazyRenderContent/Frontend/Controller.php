@@ -41,7 +41,16 @@ class Controller {
 	 * @return string
 	 */
 	public function add_hashes( $html ) {
-		$this->processor->set_processor( 'dom' );
+		/**
+		 * Filters the Lazy Render Content processor to use.
+		 *
+		 * @since 3.17
+		 *
+		 * @param string $processor The processor to use.
+		 */
+		$processor = wpm_apply_filters_typed( 'string', 'rocket_lrc_processor', 'dom' );
+
+		$this->processor->set_processor( $processor );
 
 		return $this->processor->get_processor()->add_hashes( $html );
 	}
