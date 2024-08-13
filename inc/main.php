@@ -15,7 +15,7 @@ require_once WP_ROCKET_FUNCTIONS_PATH . 'files.php';
 
 Cloudflare::fix_cf_flexible_ssl();
 
-require_once WP_ROCKET_PATH . 'dependencies/ActionScheduler' . DIRECTORY_SEPARATOR . 'action-scheduler.php';
+require_once WP_ROCKET_INC_PATH . 'Dependencies' . DIRECTORY_SEPARATOR . 'ActionScheduler' . DIRECTORY_SEPARATOR . 'action-scheduler.php';
 
 /**
  * Tell WP what to do when plugin is loaded.
