@@ -8,6 +8,7 @@ use WP_Rocket\Engine\Common\PerformanceHints\WarmUp\{APIClient, Controller as Wa
 use WP_Rocket\Engine\Media\AboveTheFold\Context\Context as ATFContext;
 use WP_Rocket\Engine\Media\AboveTheFold\Activation\ActivationFactory as ATFActivationFactory;
 use WP_Rocket\Engine\Optimization\LazyRenderContent\Activation\ActivationFactory as LCRActivationFactory;
+use WP_Rocket\Engine\Optimization\LazyRenderContent\Context\Context as LRCContext;
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
@@ -27,6 +28,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'performance_hints_warmup_subscriber',
 		'atf_context',
 		'atf_activation_factory',
+		'lrc_context',
 		'lcr_activation_factory',
 	];
 
@@ -56,10 +58,13 @@ class ServiceProvider extends AbstractServiceProvider {
 					$this->getContainer()->get( 'atf_context' ),
 				]
 			);
+
+		$this->getContainer()->add( 'lrc_context', LRCContext::class );
+		
 		$this->getContainer()->addShared( 'lcr_activation_factory', LCRActivationFactory::class )
 			->addArguments(
 				[
-					$this->getContainer()->get( 'lcr_context' ),
+					$this->getContainer()->get( 'lrc_context' ),
 				]
 			);
 
