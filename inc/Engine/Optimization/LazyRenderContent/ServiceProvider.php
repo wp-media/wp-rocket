@@ -6,6 +6,8 @@ namespace WP_Rocket\Engine\Optimization\LazyRenderContent;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Engine\Optimization\LazyRenderContent\Database\Table\LazyRenderContent as LRCTable;
 use WP_Rocket\Engine\Optimization\LazyRenderContent\Database\Queries\LazyRenderContent as LRCQuery;
+use WP_Rocket\Engine\Optimization\LazyRenderContent\AJAX\Controller as AJAXController;
+
 /**
  * Service provider for LazyRenderContent
  */
@@ -18,6 +20,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	protected $provides = [
 		'lrc_table',
 		'lrc_query',
+		'lrc_controller',
 	];
 
 	/**
@@ -39,5 +42,11 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function register(): void {
 		$this->getContainer()->addShared( 'lrc_table', LRCTable::class );
 		$this->getContainer()->add( 'lrc_query', LRCQuery::class );
+		$this->getContainer()->add( 'atf_ajax_controller', AJAXController::class )
+			->addArguments(
+				[
+					$this->getContainer()->get( 'lrc_query' ),
+				]
+			);
 	}
 }
