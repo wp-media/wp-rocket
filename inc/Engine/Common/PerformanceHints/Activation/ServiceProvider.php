@@ -60,7 +60,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			);
 
 		$this->getContainer()->add( 'lrc_context', LRCContext::class );
-		
+
 		$this->getContainer()->addShared( 'lcr_activation_factory', LCRActivationFactory::class )
 			->addArguments(
 				[
