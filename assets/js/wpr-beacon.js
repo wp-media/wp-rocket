@@ -223,14 +223,21 @@
         this._handleInfiniteLoop();
       }, 1e4);
       const isGeneratedBefore = await this._getGeneratedBefore();
-      const shouldGenerateLcp = this.config.status.atf && isGeneratedBefore === false;
+      let shouldSaveResultsIntoDB = false;
+      const shouldGenerateLcp = this.config.status.atf && (isGeneratedBefore === false || isGeneratedBefore.lcp === false);
       if (shouldGenerateLcp) {
         this.lcpBeacon = new BeaconLcp_default(this.config, this.logger);
         await this.lcpBeacon.run();
+        shouldSaveResultsIntoDB = true;
       } else {
         this.logger.logMessage("Not running BeaconLcp because data is already available");
       }
-      this._saveFinalResultIntoDB();
+      if (shouldSaveResultsIntoDB) {
+        this._saveFinalResultIntoDB();
+      } else {
+        this.logger.logMessage("Not saving results into DB as no beacon features ran.");
+        this._finalize();
+      }
     }
     async _isValidPreconditions() {
       const threshold = {
@@ -257,7 +264,7 @@
         credentials: "same-origin",
         body: data_check
       }).then((data) => data.json());
-      return beacon_data_response.success;
+      return beacon_data_response.data;
     }
     _saveFinalResultIntoDB() {
       const results = {
@@ -278,7 +285,7 @@
           "wpr-saas-no-intercept": true
         }
       }).then((response) => response.json()).then((data2) => {
-        this.logger.logMessage(data2);
+        this.logger.logMessage(data2.data.lcp);
       }).catch((error) => {
         this.logger.logMessage(error);
       }).finally(() => {
