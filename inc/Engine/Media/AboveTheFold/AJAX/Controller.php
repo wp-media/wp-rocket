@@ -112,7 +112,7 @@ class Controller implements ControllerInterface {
 
 		if ( ! empty( $row ) ) {
 			$payload['lcp'] = 'item already in the database';
-			
+
 			return $payload;
 		}
 
@@ -133,7 +133,7 @@ class Controller implements ControllerInterface {
 
 		if ( ! $result ) {
 			$payload['lcp'] = 'error when adding the entry to the database';
-			
+
 			return $payload;
 		}
 

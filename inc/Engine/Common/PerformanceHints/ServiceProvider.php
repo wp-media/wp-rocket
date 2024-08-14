@@ -26,7 +26,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @var array
 	 */
 	protected $provides = [
-        'ajax_processor',
+		'ajax_processor',
 		'performance_hints_ajax_subscriber',
 		'frontend_processor',
 		'performance_hints_frontend_subscriber',
@@ -74,7 +74,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			);
 
 		$this->getContainer()->addShared( 'performance_hints_ajax_subscriber', AjaxSubscriber::class )
-            ->addArgument( $this->getContainer()->get( 'ajax_processor' ) );
+			->addArgument( $this->getContainer()->get( 'ajax_processor' ) );
 
 		$this->getContainer()->add( 'frontend_processor', FrontendProcessor::class )
 			->addArguments(

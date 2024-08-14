@@ -11,7 +11,7 @@ class Processor {
 	 */
 	private $factories;
 
-    /**
+	/**
 	 * Instantiate the class
 	 *
 	 * @param array $factories Array of factories.
@@ -20,40 +20,40 @@ class Processor {
 		$this->factories = $factories;
 	}
 
-    /**
+	/**
 	 * Checks existing data for various performance hints feature using their factories,
-     * then encodes the result in a single instance.
+	 * then encodes the result in a single instance.
 	 *
 	 * @return void
 	 */
-    public function check_data(): void {
+	public function check_data(): void {
 		$payload = $this->get_payload( $this->factories, 'check_data' );
 		wp_send_json_success( $payload );
-    }
+	}
 
-    /**
+	/**
 	 * Adds performance hints data to DB.
 	 *
 	 * @return void
 	 */
-    public function add_data() {
+	public function add_data() {
 		$payload = $this->get_payload( $this->factories, 'add_data' );
 		wp_send_json_success( $payload );
-    }
+	}
 
 	/**
-	 * Gets the response for ajax request;
+	 * Gets the response for ajax request.
 	 *
-	 * @param array $factories
-	 * @param string $method
+	 * @param array  $factories Array of factories.
+	 * @param string $method Ajax product method name.
 	 * @return array
 	 */
 	private function get_payload( array $factories, string $method ): array {
 		$payload = [];
 
-		foreach( $factories as $factory ) {
-            $payload = array_merge( $payload, $factory->get_ajax_controller()->$method() );
-        }
+		foreach ( $factories as $factory ) {
+			$payload = array_merge( $payload, $factory->get_ajax_controller()->$method() );
+		}
 
 		return $payload;
 	}
