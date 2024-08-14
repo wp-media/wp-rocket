@@ -223,14 +223,21 @@
         this._handleInfiniteLoop();
       }, 1e4);
       const isGeneratedBefore = await this._getGeneratedBefore();
+      let shouldSaveResultsIntoDB = false;
       const shouldGenerateLcp = this.config.status.atf && isGeneratedBefore === false;
       if (shouldGenerateLcp) {
         this.lcpBeacon = new BeaconLcp_default(this.config, this.logger);
         await this.lcpBeacon.run();
+        shouldSaveResultsIntoDB = true;
       } else {
         this.logger.logMessage("Not running BeaconLcp because data is already available");
       }
-      this._saveFinalResultIntoDB();
+      if (shouldSaveResultsIntoDB) {
+        this._saveFinalResultIntoDB();
+      } else {
+        this.logger.logMessage("Not saving results into DB as no beacon features ran.");
+        this._finalize();
+      }
     }
     async _isValidPreconditions() {
       const threshold = {
