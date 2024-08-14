@@ -362,7 +362,7 @@ class PurgeExpiredCache {
 			$iterator = new \DirectoryIterator( $dir_path );
 		}
 		catch ( \Exception $e ) {
-			return [];
+			return true;
 		}
 
 		foreach ( $iterator as $item ) {

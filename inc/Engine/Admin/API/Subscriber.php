@@ -11,7 +11,7 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Return an array of events that this subscriber wants to listen to.
 	 *
-	 * @return string[]
+	 * @return array
 	 */
 	public static function get_subscribed_events() {
 		return [

@@ -32,20 +32,20 @@ To be able to validate your license and use the plugin, you will also have to ma
 
 ## Gulp Tasks
 
-| Command                        |                                                           Description                                                            |
-|--------------------------------|:--------------------------------------------------------------------------------------------------------------------------------:|
-| **CSS Tasks**                  |                                                                                                                                  |
-| `gulp build:saas:unmin`        |                                  Builds Full admin CSS, the unminified version (wpr-admin.css)                                   |
-| `gulp build:saas:min`          |                                 Builds Full admin CSS, the minified version (wpr-admin.min.css)                                  |
-| `gulp build:sass:all`          |             Builds all admin CSS files (wpr-admin.css, wpr-admin.min.css, wpr-admin-rtl.css, wpr-admin-rtl.min.css)              |
-| `gulp sass:watch`              |                        Watches all admin CSS files mentioned above and builds them again with any change.                        |
-| **JS Tasks**                   |                                                                                                                                  |
-| `gulp build:js:app:unmin`      |                                 Builds admin app js file, the unminified version (wpr-admin.js)                                  |
-| `gulp build:js:app:min`        |                                Builds admin app js file, the minified version (wpr-admin.min.js)                                 |
-| `gulp build:js:lazyloadcss:min` |                             Builds lazyload CSS js file, the minified version (lazyload-css.min.js)                              |
-| `gulp build:js:lcp`         |                  Builds lcp beacon script, the minified version (lcp-beacon.min.js, source file, and map file)                   |
-| `gulp build:js:all`            |              Builds all js files mentioned above (wpr-admin.js, wpr-admin.min.js, lazyload-css.min.js, lcp-beacon)               |
-| `gulp js:watch`                |                                Watches all js files changes and build them again with any change.                                |
+| Command                         |                                               Description                                               |
+|---------------------------------|:-------------------------------------------------------------------------------------------------------:|
+| **CSS Tasks**                   |                                                                                                         |
+| `gulp build:saas:unmin`         |                      Builds Full admin CSS, the unminified version (wpr-admin.css)                      |
+| `gulp build:saas:min`           |                     Builds Full admin CSS, the minified version (wpr-admin.min.css)                     |
+| `gulp build:sass:all`           | Builds all admin CSS files (wpr-admin.css, wpr-admin.min.css, wpr-admin-rtl.css, wpr-admin-rtl.min.css) |
+| `gulp sass:watch`               |           Watches all admin CSS files mentioned above and builds them again with any change.            |
+| **JS Tasks**                    |                                                                                                         |
+| `gulp build:js:app:unmin`       |                     Builds admin app js file, the unminified version (wpr-admin.js)                     |
+| `gulp build:js:app:min`         |                    Builds admin app js file, the minified version (wpr-admin.min.js)                    |
+| `gulp build:js:lazyloadcss:min` |                 Builds lazyload CSS js file, the minified version (lazyload-css.min.js)                 |
+| `gulp build:js:all`             |  Builds all js files mentioned above (wpr-admin.js, wpr-admin.min.js, lazyload-css.min.js, wpr-beacon)  |
+| `gulp build:js:beacon`          |                   Builds beacon script (wpr-beacon.min.js, source file, and map file)                   |
+| `gulp js:watch`                 |                   Watches all js files changes and build them again with any change.                    |
 
 
 ## Support
@@ -66,7 +66,7 @@ You can report any security bugs found in the source code of the site-reviews pl
 
 ## Contributions
 
-Feel free to check out our [public roadmap](https://trello.com/b/CrUcz6Jy/wp-rocket-roadmap) if you would like to request a feature. We always look forward to feedback and suggestions from the community to help us improve our plugins!
+Feel free to check out our [GitHub issues](https://github.com/wp-media/wp-rocket/issues) if you would like to request a feature. We always look forward to feedback and suggestions from the community to help us improve our plugins!
 
 ## Want to know more about our WordPress plugins? 
 

@@ -5,7 +5,6 @@ use WP_Rocket\Engine\Admin\Database\Optimization;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Engine\Optimization\DelayJS\Admin\SiteList;
-use WP_Rocket\Interfaces\Render_Interface;
 use WP_Rocket\Engine\Optimization\DelayJS\Admin\Settings as DelayJSSettings;
 use WP_Rocket\Abstract_Render;
 use WP_Rocket\Admin\Options_Data;
@@ -106,20 +105,20 @@ class Page extends Abstract_Render {
 	 *
 	 * @since 3.0
 	 *
-	 * @param array            $args        Array of required arguments to add the admin page.
-	 * @param Settings         $settings    Instance of Settings class.
-	 * @param Render_Interface $render      Implementation of Render interface.
-	 * @param Beacon           $beacon      Beacon instance.
-	 * @param Optimization     $optimize    Database optimization instance.
-	 * @param UserClient       $user_client User client instance.
-	 * @param SiteList         $delayjs_sitelist User client instance.
-	 * @param string           $template_path Path to views.
-	 * @param Options_Data     $options       WP Rocket options instance.
+	 * @param array        $args        Array of required arguments to add the admin page.
+	 * @param Settings     $settings    Instance of Settings class.
+	 * @param Render       $render      Render instance.
+	 * @param Beacon       $beacon      Beacon instance.
+	 * @param Optimization $optimize    Database optimization instance.
+	 * @param UserClient   $user_client User client instance.
+	 * @param SiteList     $delayjs_sitelist User client instance.
+	 * @param string       $template_path Path to views.
+	 * @param Options_Data $options       WP Rocket options instance.
 	 */
 	public function __construct(
 		array $args,
 		Settings $settings,
-		Render_Interface $render,
+		Render $render,
 		Beacon $beacon,
 		Optimization $optimize,
 		UserClient $user_client,
@@ -271,7 +270,7 @@ class Page extends Abstract_Render {
 	 * @since 3.7.3 Update to use the user client class to get the data
 	 * @since 3.0
 	 *
-	 * @return object
+	 * @return array
 	 */
 	public function customer_data() {
 		$user = $this->user_client->get_user_data();
@@ -2220,7 +2219,7 @@ class Page extends Abstract_Render {
 		}
 
 		if ( 'settings_page_wprocket' !== get_current_screen()->id ) {
-			return false;
+			return;
 		}
 
 		$boxes = get_user_meta( get_current_user_id(), 'rocket_boxes', true );

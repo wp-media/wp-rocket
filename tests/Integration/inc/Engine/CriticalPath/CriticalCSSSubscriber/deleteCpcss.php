@@ -22,9 +22,6 @@ class Test_DeleteCpcss extends FilesystemTestCase {
 	private static $post_id;
 
 	public static function wpSetUpBeforeClass( $factory ) {
-		// Disable ATF optimization to prevent DB request (unrelated to the test).
-		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
-
 		self::$post_id = $factory->post->create();
 
 		// Re-enable ATF optimization.
@@ -33,9 +30,6 @@ class Test_DeleteCpcss extends FilesystemTestCase {
 
 	public function set_up() {
 		parent::set_up();
-
-		// Disable ATF optimization to prevent DB request (unrelated to the test).
-		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
 
 		add_filter( 'pre_get_rocket_option_async_css', [ $this, 'async_css' ] );
 		add_filter( 'pre_get_rocket_option_async_css_mobile', [ $this, 'async_css_mobile' ] );
