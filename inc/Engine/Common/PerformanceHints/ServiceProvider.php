@@ -21,6 +21,7 @@ use WP_Rocket\Engine\Common\PerformanceHints\WarmUp\{
 	Subscriber as WarmUpSubscriber,
 	Queue
 };
+use WP_Rocket\Engine\Optimization\LazyRenderContent\Context\Context as LRCContext;
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
@@ -69,6 +70,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		$factories = [];
 
 		$atf_factory = $this->getContainer()->get( 'atf_factory' );
+		$this->getContainer()->add( 'lrc_context', LRCContext::class );
 
 		if ( $atf_factory->get_context()->is_allowed() ) {
 			$factories[] = $atf_factory;
