@@ -18,7 +18,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	protected $provides = [
 		'lrc_context',
-        'lrc_factory'
+		'lrc_factory',
 	];
 
 	/**
