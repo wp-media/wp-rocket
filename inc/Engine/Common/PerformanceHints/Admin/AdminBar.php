@@ -77,30 +77,6 @@ class AdminBar extends Abstract_Render {
 	public function add_clear_url_performance_hints_menu_item( WP_Admin_Bar $wp_admin_bar ) {
 		global $post;
 
-		if (
-			'local' === wp_get_environment_type()
-			&&
-			( $this->atf_context->is_allowed() || $this->lrc_context->is_allowed() )
-		) {
-			return;
-		}
-
-		if ( is_admin() ) {
-			return;
-		}
-
-		if (
-			$post
-			&&
-			! rocket_can_display_options()
-		) {
-			return;
-		}
-
-		if ( ! $this->atf_context->is_allowed() && ! $this->lrc_context->is_allowed() ) {
-			return;
-		}
-
 		/**
 		 * Filters the rocket `clear performance hints data of this url` option on admin bar menu.
 		 *
@@ -109,7 +85,7 @@ class AdminBar extends Abstract_Render {
 		 * @param bool  $should_skip Should skip adding `clear performance hints of this url` option in admin bar.
 		 * @param type  $post Post object.
 		 */
-		if ( apply_filters( 'rocket_skip_admin_bar_clean_performance_hints_option', false, $post ) ) {
+		if ( wpm_apply_filters_typed( 'boolean', 'rocket_skip_admin_bar_clean_performance_hints_option', true, $post ) ) {
 			return;
 		}
 

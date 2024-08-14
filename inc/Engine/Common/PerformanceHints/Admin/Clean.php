@@ -25,7 +25,7 @@ class Clean {
 		 *
 		 * @param array $clean An array containing the status and message.
 		 */
-		$clean = apply_filters( 'rocket_performance_hints_clean_all', [] );
+		$clean = wpm_apply_filters_typed( 'array', 'rocket_performance_hints_clean_all', [] );
 
 		$this->clean_data( $clean, 'rocket_performance_hints_clear_message' );
 	}
