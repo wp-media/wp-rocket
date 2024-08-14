@@ -25,12 +25,12 @@ class Notices {
 	/**
 	 * Constructor
 	 *
-	 * @param Options_Data     $options Options_Data instance.
-	 * @param Beacon           $beacon Beacon instance.
+	 * @param Options_Data $options Options_Data instance.
+	 * @param Beacon       $beacon Beacon instance.
 	 */
 	public function __construct( Options_Data $options, Beacon $beacon ) {
-		$this->options     = $options;
-		$this->beacon      = $beacon;
+		$this->options = $options;
+		$this->beacon  = $beacon;
 	}
 
 	/**
