@@ -93,8 +93,7 @@ class AdminBar extends Abstract_Render {
 			return;
 		}
 
-		$action  = 'rocket_clean_saas_url';
-
+		$action = 'rocket_clean_saas_url';
 
 		$title = __( 'Clear RUCSS optimizations of this URL', 'rocket' );
 
