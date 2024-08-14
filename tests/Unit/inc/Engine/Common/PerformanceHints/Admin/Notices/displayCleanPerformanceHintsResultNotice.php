@@ -13,13 +13,15 @@ use WP_Rocket\Engine\Common\PerformanceHints\Admin\Notices;
  */
 class Test_DisplayCleanPerformanceHintsResultNotice extends TestCase {
 	protected $atf_context;
+	protected $lrc_context;
 	private $notices;
 
 	public function setUp(): void {
 		parent::setUp();
 
 		$this->atf_context = Mockery::mock( ContextInterface::class );
-		$this->notices     = new Notices( $this->atf_context );
+		$this->lrc_context = Mockery::mock( ContextInterface::class );
+		$this->notices     = new Notices( $this->atf_context, $this->lrc_context );
 
 		$this->stubTranslationFunctions();
 	}

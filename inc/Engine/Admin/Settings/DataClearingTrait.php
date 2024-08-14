@@ -13,6 +13,10 @@ trait DataClearingTrait {
 	 * @return void
 	 */
 	protected function clean_data( $data, string $transient ): void {
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			return;
+		}
+
 		if (
 			empty( $data )
 			||

@@ -19,17 +19,26 @@ class AdminBar extends Abstract_Render {
 	 */
 	private $atf_context;
 
+	/**
+	 * LRC context.
+	 *
+	 * @var ContextInterface
+	 */
+	private $lrc_context;
+
 
 	/**
 	 * Constructor
 	 *
 	 * @param ContextInterface $atf_context ATF context.
+	 * @param ContextInterface $lrc_context LRC context.
 	 * @param string           $template_path Template path.
 	 */
-	public function __construct( ContextInterface $atf_context, $template_path ) {
+	public function __construct( ContextInterface $atf_context, ContextInterface $lrc_context, $template_path ) {
 		parent::__construct( $template_path );
 
 		$this->atf_context = $atf_context;
+		$this->lrc_context = $lrc_context;
 	}
 
 	/**
@@ -40,8 +49,10 @@ class AdminBar extends Abstract_Render {
 	 * @return void
 	 */
 	public function add_clear_performance_menu_item( WP_Admin_Bar $wp_admin_bar ): void {
-		// TODO:Add lrc context check here.
-		if ( ! $this->atf_context->is_allowed() ) {
+		if (
+			! $this->atf_context->is_allowed()
+			&& ! $this->lrc_context->is_allowed()
+		) {
 			return;
 		}
 
@@ -69,7 +80,7 @@ class AdminBar extends Abstract_Render {
 		if (
 			'local' === wp_get_environment_type()
 			&&
-			$this->atf_context->is_allowed()
+			( $this->atf_context->is_allowed() || $this->lrc_context->is_allowed() )
 		) {
 			return;
 		}
@@ -86,7 +97,7 @@ class AdminBar extends Abstract_Render {
 			return;
 		}
 
-		if ( ! $this->atf_context->is_allowed() ) {
+		if ( ! $this->atf_context->is_allowed() && ! $this->lrc_context->is_allowed() ) {
 			return;
 		}
 
@@ -111,7 +122,7 @@ class AdminBar extends Abstract_Render {
 			'clear-performance-hints-data-url',
 			$title,
 			$action,
-			$this->atf_context->is_allowed()
+			$this->atf_context->is_allowed() || $this->lrc_context->is_allowed()
 		);
 	}
 
@@ -121,8 +132,10 @@ class AdminBar extends Abstract_Render {
 	 * @return void
 	 */
 	public function display_dashboard_button() {
+		$context = $this->lrc_context->is_allowed() || $this->atf_context->is_allowed();
+
 		$this->dashboard_button(
-			$this->atf_context->is_allowed(),
+			$context,
 			__( 'Performance Hints', 'rocket' ),
 			esc_html__( 'Clear', 'rocket' ),
 			'rocket_clean_performance_hints',

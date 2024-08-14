@@ -25,7 +25,7 @@ class Test_AddLocalizeScriptData extends TestCase {
 
 		$this->options  = Mockery::mock( Options_Data::class );
 		$this->atf_context  = Mockery::mock( ContextInterface::class );
-		$this->notices = new Notices( $this->options, Mockery::mock( Beacon::class ), $this->atf_context );
+		$this->notices = new Notices( $this->options, Mockery::mock( Beacon::class ) );
 	}
 
 	/**

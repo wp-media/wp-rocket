@@ -36,6 +36,10 @@ class Clean {
 	 * @return void
 	 */
 	public function clean_url_performance_hints(): void {
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			return;
+		}
+
 		check_admin_referer( 'rocket_clean_performance_hints_url' );
 
 		/**

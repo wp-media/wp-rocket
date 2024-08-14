@@ -16,12 +16,21 @@ class Notices {
 	private $atf_context;
 
 	/**
+	 * Context instance
+	 *
+	 * @var ContextInterface
+	 */
+	private $lrc_context;
+
+	/**
 	 * Constructor
 	 *
 	 * @param ContextInterface $atf_context ATF context instance.
+	 * @param ContextInterface $lrc_context LRC context instance.
 	 */
-	public function __construct( ContextInterface $atf_context ) {
+	public function __construct( ContextInterface $atf_context, ContextInterface $lrc_context ) {
 		$this->atf_context = $atf_context;
+		$this->lrc_context = $lrc_context;
 	}
 
 	/**
@@ -34,7 +43,7 @@ class Notices {
 			return;
 		}
 
-		if ( ! $this->atf_context->is_allowed() ) {
+		if ( ! $this->atf_context->is_allowed() && ! $this->lrc_context->is_allowed() ) {
 			return;
 		}
 

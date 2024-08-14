@@ -23,23 +23,14 @@ class Notices {
 	private $beacon;
 
 	/**
-	 * Context instance
-	 *
-	 * @var ContextInterface
-	 */
-	private $atf_context;
-
-	/**
 	 * Constructor
 	 *
 	 * @param Options_Data     $options Options_Data instance.
 	 * @param Beacon           $beacon Beacon instance.
-	 * @param ContextInterface $atf_context ATF context instance.
 	 */
-	public function __construct( Options_Data $options, Beacon $beacon, ContextInterface $atf_context ) {
+	public function __construct( Options_Data $options, Beacon $beacon ) {
 		$this->options     = $options;
 		$this->beacon      = $beacon;
-		$this->atf_context = $atf_context;
 	}
 
 	/**
@@ -52,11 +43,7 @@ class Notices {
 			return;
 		}
 
-		if (
-			! $this->options->get( 'remove_unused_css', 0 )
-			&&
-			! $this->atf_context->is_allowed()
-		) {
+		if ( ! $this->options->get( 'remove_unused_css', 0 ) ) {
 			return;
 		}
 
@@ -207,11 +194,7 @@ class Notices {
 			$data = (array) $data;
 		}
 
-		if (
-			! $this->options->get( 'remove_unused_css', 0 )
-			&&
-			! $this->atf_context->is_allowed()
-		) {
+		if ( ! $this->options->get( 'remove_unused_css', 0 ) ) {
 			return $data;
 		}
 
