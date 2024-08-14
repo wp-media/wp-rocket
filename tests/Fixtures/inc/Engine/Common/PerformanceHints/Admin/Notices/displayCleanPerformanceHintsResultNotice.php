@@ -6,6 +6,7 @@ return [
 			'config' => [
 				'capability'                  => false,
 				'atf_context'                 => 1,
+				'lrc_context'                 => 1,
 				'transient'                   => false,
 				'performance_hints_transient' => false,
 			],
@@ -14,7 +15,8 @@ return [
 		'shouldDoNothingWhenATFDisabled' => [
 			'config' => [
 				'capability'                  => true,
-				'atf_context'                 => 0,
+				'atf_context'                 => false,
+				'lrc_context'                 => false,
 				'transient'                   => false,
 				'performance_hints_transient' => false,
 			],
@@ -23,7 +25,8 @@ return [
 		'shouldDoNothingWhenTransientTimeLessThanCurrentTime' => [
 			'config' => [
 				'capability'                  => true,
-				'atf_context'                 => 0,
+				'atf_context'                 => false,
+				'lrc_context'                 => false,
 				'transient'                   => time() - 30,
 				'performance_hints_transient' => false,
 			],
@@ -32,7 +35,8 @@ return [
 		'shouldDoNothingWhenNoTransient' => [
 			'config' => [
 				'capability'                  => true,
-				'atf_context'                 => 1,
+				'atf_context'                 => true,
+				'lrc_context'                 => true,
 				'transient'                   => false,
 				'performance_hints_transient' => false,
 			],
@@ -41,7 +45,8 @@ return [
 		'shouldShowNoticeWhenTransient' => [
 			'config' => [
 				'capability'                  => true,
-				'atf_context'                 => 1,
+				'atf_context'                 => true,
+				'lrc_context'                 => true,
 				'transient'                   => time() + 3600,
 				'performance_hints_transient' => false,
 			],

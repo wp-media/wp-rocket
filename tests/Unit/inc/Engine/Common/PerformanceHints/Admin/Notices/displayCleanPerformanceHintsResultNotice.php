@@ -42,6 +42,9 @@ class Test_DisplayCleanPerformanceHintsResultNotice extends TestCase {
 		$this->atf_context->shouldReceive( 'is_allowed' )
 			->andReturn( $config['atf_context'] );
 
+		$this->lrc_context->shouldReceive( 'is_allowed' )
+			->andReturn( $config['lrc_context'] );
+
 		if ( $expected ) {
 			Functions\expect( 'rocket_notice_html' )
 				->once();

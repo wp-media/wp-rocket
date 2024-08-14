@@ -60,6 +60,9 @@ class Test_AddCleanPerformanceHintsItem extends TestCase {
 		$this->atf_context->shouldReceive( 'is_allowed' )
 			->andReturn( $config['atf_context'] );
 
+		$this->lrc_context->shouldReceive( 'is_allowed' )
+			->andReturn( $config['lrc_context'] );
+
 		Functions\when( 'admin_url' )->alias(
 			function ( $path ) {
 				return "http://example.org/wp-admin/{$path}";

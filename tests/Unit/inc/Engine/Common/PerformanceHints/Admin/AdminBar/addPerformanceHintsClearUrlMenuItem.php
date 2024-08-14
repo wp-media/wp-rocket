@@ -60,6 +60,9 @@ class Test_AddPerformanceHintsClearUrlMenuItem extends TestCase {
 		$this->atf_context->shouldReceive( 'is_allowed' )
 			->andReturn( $config['atf_context'] );
 
+		$this->lrc_context->shouldReceive( 'is_allowed' )
+			->andReturn( $config['lrc_context'] );
+
 		Functions\when( 'wp_nonce_url' )->alias(
 			function ( $url ) {
 				return str_replace( '&', '&amp;', "{$url}&_wpnonce=123456" );
