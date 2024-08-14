@@ -26,10 +26,9 @@ class Processor {
 	 *
 	 * @return void
 	 */
-    public function check_data() {
-        foreach( $this->factories as $factory ) {
-            $factory->get_ajax_controller()->check_data();
-        }
+    public function check_data(): void {
+		$payload = $this->get_payload( $this->factories, 'check_data' );
+		wp_send_json_success( $payload );
     }
 
     /**
@@ -38,8 +37,24 @@ class Processor {
 	 * @return void
 	 */
     public function add_data() {
-        foreach( $this->factories as $factory ) {
-            $factory->get_ajax_controller()->add_data();
-        }
+		$payload = $this->get_payload( $this->factories, 'add_data' );
+		wp_send_json_success( $payload );
     }
+
+	/**
+	 * Gets the response for ajax request;
+	 *
+	 * @param array $factories
+	 * @param string $method
+	 * @return array
+	 */
+	private function get_payload( array $factories, string $method ): array {
+		$payload = [];
+
+		foreach( $factories as $factory ) {
+            $payload = array_merge( $payload, $factory->get_ajax_controller()->$method() );
+        }
+
+		return $payload;
+	}
 }
