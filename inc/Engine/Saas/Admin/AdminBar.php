@@ -81,30 +81,6 @@ class AdminBar extends Abstract_Render {
 	public function add_clean_url_menu_item( WP_Admin_Bar $wp_admin_bar ) {
 		global $post;
 
-		if (
-			'local' === wp_get_environment_type()
-			&&
-			$this->rucss_url_context->is_allowed()
-		) {
-			return;
-		}
-
-		if ( is_admin() ) {
-			return;
-		}
-
-		if (
-			$post
-			&&
-			! rocket_can_display_options()
-		) {
-			return;
-		}
-
-		if ( ! $this->rucss_url_context->is_allowed() ) {
-			return;
-		}
-
 		/**
 		 * Filters the rocket `clear used css of this url` option on admin bar menu.
 		 *
@@ -113,34 +89,21 @@ class AdminBar extends Abstract_Render {
 		 * @param bool  $should_skip Should skip adding `clear used css of this url` option in admin bar.
 		 * @param type  $post Post object.
 		 */
-		if ( apply_filters( 'rocket_skip_admin_bar_clear_used_css_option', false, $post ) ) {
+		if ( wpm_apply_filters_typed( 'boolean', 'rocket_skip_admin_bar_clear_used_css_option', false, $post ) ) {
 			return;
 		}
 
-		$referer = '';
 		$action  = 'rocket_clean_saas_url';
 
-		if ( ! empty( $_SERVER['REQUEST_URI'] ) ) {
-			$referer_url = filter_var( wp_unslash( $_SERVER['REQUEST_URI'] ), FILTER_SANITIZE_URL );
-
-			/**
-			 * Filters to act on the referer url for the admin bar.
-			 *
-			 * @param string $uri Current uri.
-			 */
-			$referer = (string) apply_filters( 'rocket_admin_bar_referer', esc_url( $referer_url ) );
-			$referer = '&_wp_http_referer=' . rawurlencode( remove_query_arg( 'fl_builder', $referer ) );
-		}
 
 		$title = __( 'Clear RUCSS optimizations of this URL', 'rocket' );
 
-		$wp_admin_bar->add_menu(
-			[
-				'parent' => 'wp-rocket',
-				'id'     => 'clear-saas-url',
-				'title'  => $title,
-				'href'   => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . $referer ), $action ),
-			]
+		$this->add_url_menu_item_to_admin_bar(
+			$wp_admin_bar,
+			'clear-saas-url',
+			$title,
+			$action,
+			$this->rucss_url_context->is_allowed()
 		);
 	}
 
