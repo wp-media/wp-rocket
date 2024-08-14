@@ -17,6 +17,7 @@ use WP_Rocket\Engine\Common\Context\ContextInterface;
 class Test_AddPerformanceHintsClearUrlMenuItem extends TestCase {
 	private $admin_bar;
 	private $atf_context;
+	private $lrc_context;
 	private $wp_admin_bar;
 
 	public static function setUpBeforeClass(): void {
@@ -29,7 +30,8 @@ class Test_AddPerformanceHintsClearUrlMenuItem extends TestCase {
 		parent::setUp();
 
 		$this->atf_context       = Mockery::mock( ContextInterface::class );
-		$this->admin_bar         = new AdminBar( $this->atf_context, '' );
+		$this->lrc_context       = Mockery::mock( ContextInterface::class );
+		$this->admin_bar         = new AdminBar( $this->atf_context,  $this->lrc_context, '' );
 		$this->wp_admin_bar      = new WP_Admin_Bar();
 
 		$this->stubTranslationFunctions();

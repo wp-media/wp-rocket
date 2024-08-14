@@ -16,6 +16,7 @@ use WP_Rocket\Engine\Common\PerformanceHints\Admin\AdminBar;
 class Test_AddCleanPerformanceHintsItem extends TestCase {
 	private $admin_bar;
 	private $atf_context;
+	private $lrc_context;
 
 	private $wp_admin_bar;
 
@@ -29,7 +30,8 @@ class Test_AddCleanPerformanceHintsItem extends TestCase {
 		parent::setUp();
 
 		$this->atf_context  = Mockery::mock( ContextInterface::class );
-		$this->admin_bar    = new AdminBar( $this->atf_context, '' );
+		$this->lrc_context  = Mockery::mock( ContextInterface::class );
+		$this->admin_bar    = new AdminBar( $this->atf_context, $this->lrc_context,'' );
 		$this->wp_admin_bar = new WP_Admin_Bar();
 
 		$this->stubTranslationFunctions();
