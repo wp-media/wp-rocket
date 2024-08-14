@@ -85,7 +85,7 @@ class AdminBar extends Abstract_Render {
 		 * @param bool  $should_skip Should skip adding `clear performance hints of this url` option in admin bar.
 		 * @param type  $post Post object.
 		 */
-		if ( wpm_apply_filters_typed( 'boolean', 'rocket_skip_admin_bar_clean_performance_hints_option', true, $post ) ) {
+		if ( wpm_apply_filters_typed( 'boolean', 'rocket_skip_admin_bar_clean_performance_hints_option', false, $post ) ) {
 			return;
 		}
 
