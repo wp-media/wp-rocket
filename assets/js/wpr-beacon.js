@@ -210,11 +210,11 @@
       this.config = config;
       this.lcpBeacon = null;
       this.infiniteLoopId = null;
-      this.scriptTimer = /* @__PURE__ */ new Date();
       this.errorCode = "";
       this.logger = new Logger_default(this.config.debug);
     }
     async init() {
+      this.scriptTimer = /* @__PURE__ */ new Date();
       if (!await this._isValidPreconditions()) {
         this._finalize();
         return;
@@ -222,12 +222,22 @@
       this.infiniteLoopId = setTimeout(() => {
         this._handleInfiniteLoop();
       }, 1e4);
-      const isGeneratedBefore = await this._isGeneratedBefore();
-      if (!isGeneratedBefore.lcp) {
+      const isGeneratedBefore = await this._getGeneratedBefore();
+      let shouldSaveResultsIntoDB = false;
+      const shouldGenerateLcp = this.config.status.atf && isGeneratedBefore === false;
+      if (shouldGenerateLcp) {
         this.lcpBeacon = new BeaconLcp_default(this.config, this.logger);
         await this.lcpBeacon.run();
+        shouldSaveResultsIntoDB = true;
+      } else {
+        this.logger.logMessage("Not running BeaconLcp because data is already available");
       }
-      this._saveFinalResultIntoDB();
+      if (shouldSaveResultsIntoDB) {
+        this._saveFinalResultIntoDB();
+      } else {
+        this.logger.logMessage("Not saving results into DB as no beacon features ran.");
+        this._finalize();
+      }
     }
     async _isValidPreconditions() {
       const threshold = {
@@ -238,14 +248,12 @@
         this.logger.logMessage("Bailing out because screen size is not acceptable");
         return false;
       }
-      const generated_before = await this._isGeneratedBefore();
-      if (Utils_default.isPageCached() && (this.config.status.atf && generated_before.lcp)) {
-        this.logger.logMessage("Bailing out because data is already available");
-        return false;
-      }
       return true;
     }
-    async _isGeneratedBefore() {
+    async _getGeneratedBefore() {
+      if (!Utils_default.isPageCached()) {
+        return false;
+      }
       let data_check = new FormData();
       data_check.append("action", "rocket_check_beacon");
       data_check.append("rocket_beacon_nonce", this.config.nonce);
@@ -256,7 +264,7 @@
         credentials: "same-origin",
         body: data_check
       }).then((data) => data.json());
-      return beacon_data_response.data;
+      return beacon_data_response.success;
     }
     _saveFinalResultIntoDB() {
       const results = {
