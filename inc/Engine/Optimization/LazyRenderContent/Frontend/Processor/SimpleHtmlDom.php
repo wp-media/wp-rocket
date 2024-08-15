@@ -51,6 +51,7 @@ class SimpleHtmlDom implements ProcessorInterface {
 			'ARTICLE',
 			'HEADER',
 		];
+
 		static $count = 0;
 
 		foreach ( $element->childNodes() as $child ) {

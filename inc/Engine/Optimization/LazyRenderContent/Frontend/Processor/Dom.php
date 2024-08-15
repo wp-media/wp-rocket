@@ -68,21 +68,21 @@ class Dom implements ProcessorInterface {
 
 		static $count = 0;
 
-		foreach ( $element->childNodes as $child ) {
+		foreach ( $element->childNodes as $child ) { // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 			if ( ! $child instanceof \DOMElement ) {
 				continue;
 			}
 
 			if (
-				XML_ELEMENT_NODE !== $child->nodeType
+				XML_ELEMENT_NODE !== $child->nodeType // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 				||
-				! in_array( strtoupper( $child->tagName ), $skip_tags, true )
+				! in_array( strtoupper( $child->tagName ), $skip_tags, true ) // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 			) {
 				continue;
 			}
 
 			// Calculate the hash of the opening tag.
-			$child_html       = $child->ownerDocument->saveHTML( $child );
+			$child_html       = $child->ownerDocument->saveHTML( $child ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 			$opening_tag_html = strstr( $child_html, '>', true ) . '>';
 
 			$hash = md5( $opening_tag_html . $count );
