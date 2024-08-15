@@ -7,6 +7,11 @@ use WP_Rocket\Engine\Admin\Settings\AdminBarMenuTrait;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
+/**
+ * Test class covering \WP_Rocket\Engine\Admin\Settings\AdminBarMenuTrait::add_menu_to_admin_bar
+ * @group  Admin
+ * @group  Settings
+ */
 class Test_AddMenuToAdminBar extends TestCase {
 
 	protected $admin_bar;

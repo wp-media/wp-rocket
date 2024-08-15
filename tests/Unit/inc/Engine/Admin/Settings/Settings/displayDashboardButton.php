@@ -2,16 +2,18 @@
 
 namespace WP_Rocket\tests\Unit\inc\Engine\Admin\Settings\Settings;
 
-use WP_Admin_Bar;
 use Brain\Monkey\Functions;
-use WP_Rocket\Abstract_Render;
 use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Engine\Admin\Settings\AdminBarMenuTrait;
 
+/**
+ * Test class covering \WP_Rocket\Engine\Admin\Settings\AdminBarMenuTrait::dashboard_button
+ * @group  Admin
+ * @group  Settings
+ */
 class Test_DisplayDashboardButton extends TestCase {
-	private $admin_bar;
 
-	private $wp_admin_bar;
+	private $mocked_class;
 
 	public static function setUpBeforeClass(): void {
 		parent::setUpBeforeClass();
