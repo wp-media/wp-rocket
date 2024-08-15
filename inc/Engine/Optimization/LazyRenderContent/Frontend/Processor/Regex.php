@@ -22,7 +22,7 @@ class Regex implements ProcessorInterface {
 			return $html;
 		}
 
-		return $this->add_hash_to_element( $html, $matches[0], 2 );
+		return $this->add_hash_to_element( $html, $matches[0] );
 	}
 
 	/**
@@ -30,15 +30,10 @@ class Regex implements ProcessorInterface {
 	 *
 	 * @param string $html   The HTML content.
 	 * @param string $element The element to add the hash to.
-	 * @param int    $depth   The depth of the recursion.
 	 *
 	 * @return string
 	 */
-	private function add_hash_to_element( $html, $element, $depth ) {
-		if ( $depth < 0 ) {
-			return $html;
-		}
-
+	private function add_hash_to_element( $html, $element ) {
 		$skip_tags = [
 			'div',
 			'main',
