@@ -29,7 +29,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'rocket_buffer' => [ 'add_hashes', 16 ],
+			'rocket_buffer' => [ 'optimize', 16 ],
 		];
 	}
 
@@ -40,7 +40,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return string
 	 */
-	public function add_hashes( $html ) {
-		return $this->controller->add_hashes( $html );
+	public function optimize( $html ) {
+		return $this->controller->optimize( $html );
 	}
 }
