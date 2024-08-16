@@ -5,6 +5,8 @@ namespace WP_Rocket\Engine\Optimization\LazyRenderContent;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Engine\Optimization\LazyRenderContent\Context\Context;
+use WP_Rocket\Engine\Optimization\LazyRenderContent\Database\Table\LazyRenderContent as LRCTable;
+use WP_Rocket\Engine\Optimization\LazyRenderContent\Database\Queries\LazyRenderContent as LRCQuery;
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
@@ -19,6 +21,8 @@ class ServiceProvider extends AbstractServiceProvider {
 	protected $provides = [
 		'lrc_context',
 		'lrc_factory',
+		'lrc_table',
+		'lrc_query',
 	];
 
 	/**
@@ -46,5 +50,9 @@ class ServiceProvider extends AbstractServiceProvider {
 					$this->getContainer()->get( 'lrc_context' ),
 				]
 			);
+
+		$this->getContainer()->addShared( 'lrc_table', LRCTable::class );
+
+		$this->getContainer()->add( 'lrc_query', LRCQuery::class );
 	}
 }
