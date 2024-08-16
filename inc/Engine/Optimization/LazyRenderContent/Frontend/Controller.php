@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\LazyRenderContent\Frontend;
 
+use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Engine\Optimization\LazyRenderContent\Frontend\Processor\Processor;
 
 class Controller {
@@ -14,12 +15,21 @@ class Controller {
 	private $processor;
 
 	/**
+	 * Context instance
+	 *
+	 * @var ContextInterface
+	 */
+	private $context;
+
+	/**
 	 * Constructor
 	 *
-	 * @param Processor $processor Processor instance.
+	 * @param Processor        $processor Processor instance.
+	 * @param ContextInterface $context Context instance.
 	 */
-	public function __construct( Processor $processor ) {
+	public function __construct( Processor $processor, ContextInterface $context ) {
 		$this->processor = $processor;
+		$this->context   = $context;
 	}
 
 	/**
@@ -30,7 +40,7 @@ class Controller {
 	 * @return string
 	 */
 	public function optimize( $html ) {
-		return $html;
+		return $this->add_hashes( $html );
 	}
 
 	/**
@@ -40,7 +50,11 @@ class Controller {
 	 *
 	 * @return string
 	 */
-	public function add_hashes( $html ) {
+	private function add_hashes( $html ) {
+		if ( ! $this->context->is_allowed() ) {
+			return $html;
+		}
+
 		/**
 		 * Filters the Lazy Render Content processor to use.
 		 *
