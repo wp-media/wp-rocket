@@ -56,6 +56,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArguments(
 				[
 					$this->getContainer()->get( 'lrc_frontend_processor' ),
+					$this->getContainer()->get( 'lrc_context' ),
 				]
 			);
 		$this->getContainer()->addShared( 'lrc_frontend_subscriber', FrontSubscriber::class )
