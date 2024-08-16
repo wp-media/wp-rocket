@@ -54,7 +54,7 @@ class Controller extends AbstractAJAXController implements ControllerInterface {
 		}
 
 		foreach ( (array) $hashes as $hash ) {
-			$below_the_fold[] = $hash;
+			$below_the_fold[] = sanitize_text_field( $hash );
 			--$max_lrc_hashes_number;
 		}
 
