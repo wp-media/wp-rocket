@@ -5,6 +5,8 @@ namespace WP_Rocket\tests\Unit\inc\Engine\Common\PerformanceHints\Admin\AdminBar
 use Mockery;
 use WP_Admin_Bar;
 use Brain\Monkey\Functions;
+use WP_Rocket\Engine\Media\AboveTheFold\Factory as ATFFactory;
+use WP_Rocket\Engine\Optimization\LazyRenderContent\Factory;
 use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Engine\Common\PerformanceHints\Admin\AdminBar;
@@ -19,6 +21,7 @@ class Test_AddCleanPerformanceHintsItem extends TestCase {
 	private $lrc_context;
 
 	private $wp_admin_bar;
+	private $factories;
 
 	public static function setUpBeforeClass(): void {
 		parent::setUpBeforeClass();
@@ -29,10 +32,15 @@ class Test_AddCleanPerformanceHintsItem extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->atf_context  = Mockery::mock( ContextInterface::class );
-		$this->lrc_context  = Mockery::mock( ContextInterface::class );
-		$this->admin_bar    = new AdminBar( $this->atf_context, $this->lrc_context,'' );
+		$atf_factory        = $this->createMock(ATFFactory::class);
+		$lrc_factory        = $this->createMock(Factory::class);
 		$this->wp_admin_bar = new WP_Admin_Bar();
+
+		$this->factories = [
+			$atf_factory,
+			$lrc_factory
+		];
+		$this->admin_bar = new AdminBar( $this->factories,'' );
 
 		$this->stubTranslationFunctions();
 	}
@@ -56,12 +64,6 @@ class Test_AddCleanPerformanceHintsItem extends TestCase {
 				return str_replace( '&', '&amp;', "{$url}&_wpnonce=123456" );
 			}
 		);
-
-		$this->atf_context->shouldReceive( 'is_allowed' )
-			->andReturn( $config['atf_context'] );
-
-		$this->lrc_context->shouldReceive( 'is_allowed' )
-			->andReturn( $config['lrc_context'] );
 
 		Functions\when( 'admin_url' )->alias(
 			function ( $path ) {

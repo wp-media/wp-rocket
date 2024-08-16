@@ -5,40 +5,28 @@ namespace WP_Rocket\Engine\Common\PerformanceHints\Admin;
 
 use WP_Admin_Bar;
 use WP_Rocket\Abstract_Render;
-use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Settings\AdminBarMenuTrait;
-use WP_Rocket\Engine\Common\Context\ContextInterface;
 
 class AdminBar extends Abstract_Render {
 	use AdminBarMenuTrait;
 
 	/**
-	 * ATF context.
+	 * Array of factories
 	 *
-	 * @var ContextInterface
+	 * @var array
 	 */
-	private $atf_context;
-
-	/**
-	 * LRC context.
-	 *
-	 * @var ContextInterface
-	 */
-	private $lrc_context;
-
+	private $factories;
 
 	/**
 	 * Constructor
 	 *
-	 * @param ContextInterface $atf_context ATF context.
-	 * @param ContextInterface $lrc_context LRC context.
-	 * @param string           $template_path Template path.
+	 * @param array  $factories Array of factories.
+	 * @param string $template_path Template path.
 	 */
-	public function __construct( ContextInterface $atf_context, ContextInterface $lrc_context, $template_path ) {
+	public function __construct( array $factories, $template_path ) {
 		parent::__construct( $template_path );
 
-		$this->atf_context = $atf_context;
-		$this->lrc_context = $lrc_context;
+		$this->factories = $factories;
 	}
 
 	/**
@@ -49,10 +37,7 @@ class AdminBar extends Abstract_Render {
 	 * @return void
 	 */
 	public function add_clear_performance_menu_item( WP_Admin_Bar $wp_admin_bar ): void {
-		if (
-			! $this->atf_context->is_allowed()
-			&& ! $this->lrc_context->is_allowed()
-		) {
+		if ( empty( $this->factories ) ) {
 			return;
 		}
 
@@ -98,7 +83,7 @@ class AdminBar extends Abstract_Render {
 			'clear-performance-hints-data-url',
 			$title,
 			$action,
-			$this->atf_context->is_allowed() || $this->lrc_context->is_allowed()
+			! empty( $this->factories )
 		);
 	}
 
@@ -108,7 +93,7 @@ class AdminBar extends Abstract_Render {
 	 * @return void
 	 */
 	public function display_dashboard_button() {
-		$context = $this->lrc_context->is_allowed() || $this->atf_context->is_allowed();
+		$context = ! empty( $this->factories );
 
 		$this->dashboard_button(
 			$context,

@@ -9,28 +9,19 @@ use WP_Rocket\Engine\Common\Context\ContextInterface;
 
 class Notices {
 	/**
-	 * Context instance
+	 * Array of factories
 	 *
-	 * @var ContextInterface
+	 * @var array
 	 */
-	private $atf_context;
-
-	/**
-	 * Context instance
-	 *
-	 * @var ContextInterface
-	 */
-	private $lrc_context;
+	private $factories;
 
 	/**
 	 * Constructor
 	 *
-	 * @param ContextInterface $atf_context ATF context instance.
-	 * @param ContextInterface $lrc_context LRC context instance.
+	 * @param array $factories Array of factories.
 	 */
-	public function __construct( ContextInterface $atf_context, ContextInterface $lrc_context ) {
-		$this->atf_context = $atf_context;
-		$this->lrc_context = $lrc_context;
+	public function __construct( array $factories ) {
+		$this->factories = $factories;
 	}
 
 	/**
@@ -43,7 +34,7 @@ class Notices {
 			return;
 		}
 
-		if ( ! $this->atf_context->is_allowed() && ! $this->lrc_context->is_allowed() ) {
+		if ( empty( $this->factories ) ) {
 			return;
 		}
 

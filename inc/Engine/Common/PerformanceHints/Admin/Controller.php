@@ -126,7 +126,7 @@ class Controller {
 			'status'  => 'success',
 			'message' => sprintf(
 				// translators: %1$s = plugin name.
-				__( '%1$s: WP Rocket: Critical images and Lazy Render data was cleared!', 'rocket' ),
+				__( '%1$s: Critical images and Lazy Render data was cleared!', 'rocket' ),
 				'<strong>WP Rocket</strong>'
 			),
 		];

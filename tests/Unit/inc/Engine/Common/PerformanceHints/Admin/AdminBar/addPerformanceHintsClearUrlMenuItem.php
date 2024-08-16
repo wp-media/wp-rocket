@@ -7,6 +7,8 @@ use WP_Admin_Bar;
 use Brain\Monkey\Functions;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Common\PerformanceHints\Admin\AdminBar;
+use WP_Rocket\Engine\Media\AboveTheFold\Factory as ATFFactory;
+use WP_Rocket\Engine\Optimization\LazyRenderContent\Factory;
 use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
 
@@ -15,9 +17,7 @@ use WP_Rocket\Engine\Common\Context\ContextInterface;
  * @group  PerformanceHints
  */
 class Test_AddPerformanceHintsClearUrlMenuItem extends TestCase {
-	private $admin_bar;
-	private $atf_context;
-	private $lrc_context;
+	private $factories;
 	private $wp_admin_bar;
 
 	public static function setUpBeforeClass(): void {
@@ -29,10 +29,14 @@ class Test_AddPerformanceHintsClearUrlMenuItem extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->atf_context       = Mockery::mock( ContextInterface::class );
-		$this->lrc_context       = Mockery::mock( ContextInterface::class );
-		$this->admin_bar         = new AdminBar( $this->atf_context,  $this->lrc_context, '' );
-		$this->wp_admin_bar      = new WP_Admin_Bar();
+		$atf_factory        = $this->createMock(ATFFactory::class);
+		$lrc_factory        = $this->createMock(Factory::class);
+		$this->wp_admin_bar = new WP_Admin_Bar();
+
+		$this->factories = [
+			$atf_factory,
+			$lrc_factory
+		];
 
 		$this->stubTranslationFunctions();
 	}
@@ -47,6 +51,8 @@ class Test_AddPerformanceHintsClearUrlMenuItem extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoExpected( $config, $expected ) {
+		$admin_bar = new AdminBar( $config['factories'] ? $this->factories : [], '' );
+
 		Functions\when( 'wp_get_environment_type' )
 			->justReturn( $config['environment'] );
 		Functions\when( 'is_admin' )
@@ -56,12 +62,6 @@ class Test_AddPerformanceHintsClearUrlMenuItem extends TestCase {
 
 		Functions\when( 'rocket_can_display_options' )
 			->justReturn( $config['can_display_options'] );
-
-		$this->atf_context->shouldReceive( 'is_allowed' )
-			->andReturn( $config['atf_context'] );
-
-		$this->lrc_context->shouldReceive( 'is_allowed' )
-			->andReturn( $config['lrc_context'] );
 
 		Functions\when( 'wp_nonce_url' )->alias(
 			function ( $url ) {
@@ -75,7 +75,7 @@ class Test_AddPerformanceHintsClearUrlMenuItem extends TestCase {
 			}
 		);
 
-		$this->admin_bar->add_clear_url_performance_hints_menu_item( $this->wp_admin_bar );
+		$admin_bar->add_clear_url_performance_hints_menu_item( $this->wp_admin_bar );
 
 		$node = $this->wp_admin_bar->get_node( 'clear-performance-hints-data-url' );
 

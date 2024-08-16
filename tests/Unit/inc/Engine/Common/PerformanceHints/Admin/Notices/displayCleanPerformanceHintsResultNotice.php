@@ -4,6 +4,8 @@ namespace WP_Rocket\tests\Unit\inc\Engine\Common\PerformanceHints\Admin\Notices;
 
 use Mockery;
 use Brain\Monkey\Functions;
+use WP_Rocket\Engine\Media\AboveTheFold\Factory as ATFFactory;
+use WP_Rocket\Engine\Optimization\LazyRenderContent\Factory;
 use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Engine\Common\PerformanceHints\Admin\Notices;
@@ -12,16 +14,17 @@ use WP_Rocket\Engine\Common\PerformanceHints\Admin\Notices;
  * Test class covering \WP_Rocket\Engine\Common\PerformanceHints\Admin\Notices::clean_performance_hint_result
  */
 class Test_DisplayCleanPerformanceHintsResultNotice extends TestCase {
-	protected $atf_context;
-	protected $lrc_context;
-	private $notices;
+	private $factories;
 
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->atf_context = Mockery::mock( ContextInterface::class );
-		$this->lrc_context = Mockery::mock( ContextInterface::class );
-		$this->notices     = new Notices( $this->atf_context, $this->lrc_context );
+		$atf_factory = $this->createMock(ATFFactory::class);
+		$lrc_factory = $this->createMock(Factory::class);
+		$this->factories   = [
+			$atf_factory,
+			$lrc_factory
+		];
 
 		$this->stubTranslationFunctions();
 	}
@@ -30,6 +33,8 @@ class Test_DisplayCleanPerformanceHintsResultNotice extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoExpected( $config, $expected ) {
+		$notices = new Notices( $config['factories'] ? $this->factories : [] );
+
 		Functions\expect( 'current_user_can' )
 			->once()
 			->with( 'rocket_manage_options' )
@@ -39,12 +44,6 @@ class Test_DisplayCleanPerformanceHintsResultNotice extends TestCase {
 			return $config['transient'];
 		});
 
-		$this->atf_context->shouldReceive( 'is_allowed' )
-			->andReturn( $config['atf_context'] );
-
-		$this->lrc_context->shouldReceive( 'is_allowed' )
-			->andReturn( $config['lrc_context'] );
-
 		if ( $expected ) {
 			Functions\expect( 'rocket_notice_html' )
 				->once();
@@ -53,6 +52,6 @@ class Test_DisplayCleanPerformanceHintsResultNotice extends TestCase {
 			Functions\expect( 'rocket_notice_html' )->never();
 		}
 
-		$this->notices->clean_performance_hint_result();
+		$notices->clean_performance_hint_result();
 	}
 }
