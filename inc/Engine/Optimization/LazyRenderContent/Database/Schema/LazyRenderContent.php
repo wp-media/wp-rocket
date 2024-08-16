@@ -5,7 +5,7 @@ namespace WP_Rocket\Engine\Optimization\LazyRenderContent\Database\Schema;
 
 use WP_Rocket\Dependencies\Database\Schema;
 
-class LazyRenderContent  extends Schema {
+class LazyRenderContent extends Schema {
 	/**
 	 * Array of database column objects
 	 *

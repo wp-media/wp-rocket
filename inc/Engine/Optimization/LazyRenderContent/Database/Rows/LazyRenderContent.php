@@ -23,7 +23,7 @@ class LazyRenderContent extends Row {
 	/**
 	 * Is for mobile
 	 *
-	 * @var string
+	 * @var bool
 	 */
 	public $is_mobile;
 

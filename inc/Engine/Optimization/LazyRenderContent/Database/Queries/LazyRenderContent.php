@@ -8,7 +8,7 @@ use WP_Rocket\Engine\Common\PerformanceHints\Database\Queries\QueriesInterface;
 use WP_Rocket\Engine\Optimization\LazyRenderContent\Database\Schema\LazyRenderContent as LRCSchema;
 use WP_Rocket\Engine\Optimization\LazyRenderContent\Database\Rows\LazyRenderContent as LRCRow;
 
-class LazyRenderContent extends AbstractQueries implements QueriesInterface{
+class LazyRenderContent extends AbstractQueries implements QueriesInterface {
 	/**
 	 * Name of the database table to query.
 	 *
