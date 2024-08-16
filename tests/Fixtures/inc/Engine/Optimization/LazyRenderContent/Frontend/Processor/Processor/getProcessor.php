@@ -10,4 +10,7 @@ return [
 	'testShouldReturnRegexProcessor' => [
 		'processor' => 'regex',
 	],
+	'testShouldReturnDomProcessorWhenIncorrectValue' => [
+		'processor' => 'incorrect',
+	],
 ];
