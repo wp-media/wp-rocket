@@ -59,6 +59,21 @@ class Factory implements FactoryInterface {
 		$this->context = $context;
 		$this->table   = $table;
 		$this->queries = $queries;
+        // Remove Anonymous class when ajax controller is created.
+        $this->ajax_controller = new class implements AjaxControllerInterface{
+            public function add_data(): void {}
+            public function check_data(): void {}
+        };
+        // Remove Anonymous class when frontend controller is created.
+        $this->frontend_controller = new class implements FrontendControllerInterface {
+            public function optimize( string $html, $row ): string {
+                return '';
+            }
+
+            public function add_custom_data( array $data ): array {
+                return [];
+            }
+        };
 	}
 
 	/**
@@ -76,7 +91,7 @@ class Factory implements FactoryInterface {
 	 * @return FrontendControllerInterface
 	 */
 	public function get_frontend_controller(): FrontendControllerInterface {
-		return $this->frontend_controller;
+        return $this->frontend_controller;
 	}
 
 	/**
