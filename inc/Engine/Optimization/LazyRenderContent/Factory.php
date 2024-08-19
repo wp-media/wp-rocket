@@ -59,45 +59,6 @@ class Factory implements FactoryInterface {
 		$this->context = $context;
 		$this->table   = $table;
 		$this->queries = $queries;
-		// Remove Anonymous class when ajax controller is created.
-		$this->ajax_controller = new class() implements AjaxControllerInterface{
-			/**
-			 * Initiates the addition of data.
-			 *
-			 * @return void
-			 */
-			public function add_data(): void {}
-			/**
-			 * Initiates the checking of data.
-			 *
-			 * @return void
-			 */
-			public function check_data(): void {}
-		};
-		// Remove Anonymous class when frontend controller is created.
-		$this->frontend_controller = new class() implements FrontendControllerInterface {
-			/**
-			 * Applies optimization.
-			 *
-			 * @param string $html HTML content.
-			 * @param object $row Database Row.
-			 *
-			 * @return string
-			 */
-			public function optimize( string $html, $row ): string {
-				return $html;
-			}
-			/**
-			 * Add custom data like the List of elements to be considered for optimization.
-			 *
-			 * @param array $data Array of data passed in beacon.
-			 *
-			 * @return array
-			 */
-			public function add_custom_data( array $data ): array {
-				return $data;
-			}
-		};
 	}
 
 	/**

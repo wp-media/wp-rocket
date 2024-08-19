@@ -62,7 +62,6 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		$factory_array = [
 			$this->getContainer()->get( 'atf_factory' ),
-			$this->getContainer()->get( 'lrc_factory' ),
 		];
 
 		foreach ( $factory_array as $factory ) {
