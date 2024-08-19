@@ -70,6 +70,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		$factories = [];
 
 		$atf_factory = $this->getContainer()->get( 'atf_factory' );
+
 		$this->getContainer()->add( 'lrc_context', LRCContext::class );
 
 		if ( $atf_factory->get_context()->is_allowed() ) {
@@ -116,7 +117,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArguments(
 				[
 					$factories,
-					$this->getContainer()->get( 'template_path' ) . '/settings'
+					$this->getContainer()->get( 'template_path' ) . '/settings',
 				]
 			);
 
