@@ -54,7 +54,7 @@ class Test_CheckData extends TestCase {
 			->andReturn( true );
 
 		Functions\when('esc_url_raw')->alias(
-			function( $url ) use ($config) {
+			function( $url ){
 				return $url;
 			}
 		);
