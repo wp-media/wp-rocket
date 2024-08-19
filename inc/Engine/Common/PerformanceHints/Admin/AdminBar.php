@@ -76,7 +76,7 @@ class AdminBar extends Abstract_Render {
 
 		$action = 'rocket_clean_performance_hints_url';
 
-		$title = __( 'Clear performance hints data of this URL', 'rocket' );
+		$title = __( 'Clear Performance Hints data of this URL', 'rocket' );
 
 		$this->add_url_menu_item_to_admin_bar(
 			$wp_admin_bar,

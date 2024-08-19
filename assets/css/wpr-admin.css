@@ -1630,6 +1630,9 @@ div.wpr-upgrade-websites {
   padding-right: 40px;
   text-align: left;
 }
+.wpr-button--no-min-width{
+	min-width: auto;
+}
 .wpr-button--icon:before {
   position: absolute;
   right: 8px;

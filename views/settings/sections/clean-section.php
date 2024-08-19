@@ -22,7 +22,7 @@ defined( 'ABSPATH' ) || exit;
 			[
 				'label'      => $data['label'],
 				'attributes' => [
-					'class' => 'wpr-button wpr-button--icon wpr-button--small wpr-icon-trash',
+					'class' => 'wpr-button wpr-button--icon wpr-button--no-min-width wpr-button--small wpr-icon-trash',
 					'title' => $data['hover_text'],
 				],
 			]
