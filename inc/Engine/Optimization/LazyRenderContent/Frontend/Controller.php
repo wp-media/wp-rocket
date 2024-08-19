@@ -33,24 +33,13 @@ class Controller {
 	}
 
 	/**
-	 * Optimize the HTML content
-	 *
-	 * @param string $html The HTML content.
-	 *
-	 * @return string
-	 */
-	public function optimize( $html ) {
-		return $this->add_hashes( $html );
-	}
-
-	/**
 	 * Add hashes to the HTML elements
 	 *
 	 * @param string $html The HTML content.
 	 *
 	 * @return string
 	 */
-	private function add_hashes( $html ) {
+	public function add_hashes( $html ) {
 		if ( ! $this->context->is_allowed() ) {
 			return $html;
 		}
