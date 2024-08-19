@@ -85,7 +85,7 @@ class Factory implements FactoryInterface {
 			 * @return string
 			 */
 			public function optimize( string $html, $row ): string {
-				return '';
+				return $html;
 			}
 			/**
 			 * Add custom data like the List of elements to be considered for optimization.
@@ -95,7 +95,7 @@ class Factory implements FactoryInterface {
 			 * @return array
 			 */
 			public function add_custom_data( array $data ): array {
-				return [];
+				return $data;
 			}
 		};
 	}
