@@ -109,7 +109,7 @@ class ServiceProvider extends AbstractServiceProvider {
 				]
 			);
 		$this->getContainer()->add( 'cron_controller', CronController::class )
-			->addArgument($factory_array);
+			->addArgument( $factory_array );
 
 		$this->getContainer()->addShared( 'performance_hints_cron_subscriber', CronSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'cron_controller' ) );
