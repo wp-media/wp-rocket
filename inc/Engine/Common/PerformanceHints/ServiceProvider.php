@@ -60,10 +60,16 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		$factories = [];
 
-		$atf_factory = $this->getContainer()->get( 'atf_factory' );
+		$factory_array = [
+			$this->getContainer()->get( 'atf_factory' ),
+		];
 
-		if ( $atf_factory->get_context()->is_allowed() ) {
-			$factories[] = $atf_factory;
+		foreach ( $factory_array as $factory ) {
+			if ( ! $factory->get_context()->is_allowed() ) {
+				continue;
+			}
+
+			$factories[] = $factory;
 		}
 
 		$this->getContainer()->addShared( 'performance_hints_ajax_subscriber', AjaxSubscriber::class )
@@ -102,11 +108,7 @@ class ServiceProvider extends AbstractServiceProvider {
 				]
 			);
 		$this->getContainer()->add( 'cron_controller', CronController::class )
-			->addArgument(
-				[
-					$atf_factory,
-				]
-				);
+			->addArgument( $factory_array );
 
 		$this->getContainer()->addShared( 'performance_hints_cron_subscriber', CronSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'cron_controller' ) );
