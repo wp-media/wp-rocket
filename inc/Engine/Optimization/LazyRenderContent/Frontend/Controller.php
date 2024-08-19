@@ -5,10 +5,11 @@ namespace WP_Rocket\Engine\Optimization\LazyRenderContent\Frontend;
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
+use WP_Rocket\Engine\Common\PerformanceHints\Frontend\ControllerInterface;
 use WP_Rocket\Engine\Optimization\LazyRenderContent\Database\Queries\LazyRenderContent as LRCQuery;
 use WP_Rocket\Engine\Optimization\LazyRenderContent\Frontend\Processor\Processor;
 
-class Controller {
+class Controller implements ControllerInterface {
 	/**
 	 * Processor instance
 	 *
@@ -53,6 +54,64 @@ class Controller {
 	}
 
 	/**
+	 * Applies optimization.
+	 *
+	 * @param string $html HTML content.
+	 * @param object $row Database Row.
+	 *
+	 * @return string
+	 */
+	public function optimize( string $html, $row ): string {
+		if ( ! $row->has_lrc() ) {
+			return $html;
+		}
+
+		$hashes = json_decode( $row->below_the_fold );
+
+		$html = $this->remove_hashes( $html );
+
+		return $this->add_css( $html );
+	}
+
+	/**
+	 * Remove hashes from the HTML content.
+	 *
+	 * @param string $html The HTML content.
+	 *
+	 * @return string
+	 */
+	private function remove_hashes( $html ) {
+		$result = preg_replace( '/data-rocket-location-hash="(?:.*)"/i', '', $html );
+
+		if ( null === $result ) {
+			return $html;
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Add CSS to the HTML content.
+	 *
+	 * @param string $html The HTML content.
+	 *
+	 * @return string
+	 */
+	private function add_css( $html ) {
+		$css = '<style>[data-wpr-lazyrender] {
+  content-visibility: auto;
+}</style>';
+
+		$result = preg_replace( '/<\/head>/i', $css . '</head>', $html, 1 );
+
+		if ( null === $result ) {
+			return $html;
+		}
+
+		return $result;
+	}
+
+	/**
 	 * Add hashes to the HTML elements
 	 *
 	 * @param string $html The HTML content.
@@ -85,6 +144,38 @@ class Controller {
 		$this->processor->set_processor( $processor );
 
 		return $this->processor->get_processor()->add_hashes( $html );
+	}
+
+	/**
+	 * Add custom data like the List of elements to be considered for optimization.
+	 *
+	 * @param array $data Array of data passed in beacon.
+	 *
+	 * @return array
+	 */
+	public function add_custom_data( array $data ): array {
+		$elements = [
+			'div',
+			'main',
+			'footer',
+			'section',
+			'article',
+			'header',
+		];
+
+		/**
+		 * Filters the array of elements
+		 *
+		 * @since 3.17
+		 *
+		 * @param array $formats Array of elements
+		 */
+		$elements = wpm_apply_filters_typed( 'string', 'rocket_lrc_elements', $elements );
+
+		$data['lrc_elements']  = implode( ', ', $elements );
+		$data['status']['lrc'] = $this->context->is_allowed();
+
+		return $data;
 	}
 
 	/**
