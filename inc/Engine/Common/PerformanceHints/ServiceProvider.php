@@ -106,19 +106,19 @@ class ServiceProvider extends AbstractServiceProvider {
 			);
 
 		$this->getContainer()->add( 'performance_hints_notices', Notices::class )
-			->addArgument(
+			->addArguments(
 				[
 					$factories,
 				]
 			);
 
 		$this->getContainer()->add( 'performance_hints_admin_bar', Adminbar::class )
-			->addArgument(
+			->addArguments(
 				[
 					$factories,
+					$this->getContainer()->get( 'template_path' ) . '/settings'
 				]
-			)
-			->addArgument( $this->getContainer()->get( 'template_path' ) . '/settings' );
+			);
 
 		$this->getContainer()->add( 'performance_hints_clean', Clean::class );
 
