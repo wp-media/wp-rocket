@@ -823,12 +823,12 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 			],
 			'lazy_render_content'        => [
 				'en' => [
-					'id'  => '',
-					'url' => '',
+					'id'  => '66b11e26a62a7505fcf339e7',
+					'url' => 'https://docs.wp-rocket.me/article/1835-lazy-render-content/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 				'fr' => [
-					'id'  => '',
-					'url' => '',
+					'id'  => '66ba0e8e082392452a0773ea',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1836-rendu-differe-automatique/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 		];
