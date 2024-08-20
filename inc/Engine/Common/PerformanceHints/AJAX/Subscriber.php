@@ -5,23 +5,22 @@ namespace WP_Rocket\Engine\Common\PerformanceHints\AJAX;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
-
 class Subscriber implements Subscriber_Interface {
 
 	/**
-	 * Array of Factories.
+	 * Processor Instance.
 	 *
-	 * @var array
+	 * @var Processor
 	 */
-	private $factories;
+	private $processor;
 
 	/**
 	 * Instantiate the class
 	 *
-	 * @param array $factories Array of factories.
+	 * @param Processor $processor Processor Instance.
 	 */
-	public function __construct( array $factories ) {
-		$this->factories = $factories;
+	public function __construct( Processor $processor ) {
+		$this->processor = $processor;
 	}
 
 	/**
@@ -44,9 +43,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function add_data() {
-		foreach ( $this->factories as $factory ) {
-			$factory->get_ajax_controller()->add_data();
-		}
+		$this->processor->add_data();
 	}
 
 	/**
@@ -55,8 +52,6 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function check_data() {
-		foreach ( $this->factories as $factory ) {
-			$factory->get_ajax_controller()->check_data();
-		}
+		$this->processor->check_data();
 	}
 }

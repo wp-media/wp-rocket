@@ -7,14 +7,14 @@ interface ControllerInterface {
 	/**
 	 * Initiates the addition of data.
 	 *
-	 * @return void
+	 * @return array
 	 */
-	public function add_data(): void;
+	public function add_data(): array;
 
 	/**
 	 * Initiates the checking of data.
 	 *
-	 * @return void
+	 * @return array
 	 */
-	public function check_data(): void;
+	public function check_data(): array;
 }
