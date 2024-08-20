@@ -65,13 +65,15 @@ class Processor {
 		foreach ( $this->factories as $factory ) {
 			$row = $factory->queries()->get_row( $url, $is_mobile );
 
-			if ( ! empty( $row ) ) {
-				$html_optimized = $factory->get_frontend_controller()->optimize( $html, $row );
-				// Update html for the next iteration.
-				$html = $html_optimized;
-				// Set flag as true since optimization has been applied.
-				$optimization_applied = true;
+			if ( empty( $row ) ) {
+				continue;
 			}
+
+			$html_optimized = $factory->get_frontend_controller()->optimize( $html, $row );
+			// Update html for the next iteration.
+			$html = $html_optimized;
+			// Set flag as true since optimization has been applied.
+			$optimization_applied = true;
 		}
 
 		// Check if any optimizations were applied, if not, inject beacon.
