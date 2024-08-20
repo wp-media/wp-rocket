@@ -59,17 +59,27 @@ class Processor {
 		$is_mobile = $this->is_mobile();
 
 		$html_optimized = null;
+		// Flag to check if any optimization has been applied.
+		$optimization_applied = false;
+
 		foreach ( $this->factories as $factory ) {
 			$row = $factory->queries()->get_row( $url, $is_mobile );
-			if ( empty( $row ) ) {
-				return $this->inject_beacon( $html, $url, $is_mobile );
-			}
 
-			$html           = $html_optimized ?? $html;
-			$html_optimized = $factory->get_frontend_controller()->optimize( $html, $row );
+			if ( ! empty( $row ) ) {
+				$html_optimized = $factory->get_frontend_controller()->optimize( $html, $row );
+				// Update html for the next iteration.
+				$html = $html_optimized;
+				// Set flag as true since optimization has been applied.
+				$optimization_applied = true;
+			}
 		}
 
-		return $html_optimized;
+		// Check if any optimizations were applied, if not, inject beacon.
+		if ( ! $optimization_applied ) {
+			$html = $this->inject_beacon( $html, $url, $is_mobile );
+		}
+
+		return $html_optimized ?? $html;
 	}
 
 	/**
