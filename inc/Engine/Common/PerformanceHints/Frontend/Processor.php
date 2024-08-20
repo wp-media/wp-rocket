@@ -63,7 +63,7 @@ class Processor {
 
 			if ( empty( $row ) ) {
 				// Flag false if optimization has not been applied.
-   				$optimization_applied = false;
+				$optimization_applied = false;
 				continue;
 			}
 
