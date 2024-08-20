@@ -38,6 +38,9 @@
         letter-spacing: -0.08px;
         @include font-size(11,20);
     }
+	&--no-min-width{
+		min-width: auto !important;
+	}
 
     &--icon{
         min-width: 160px;

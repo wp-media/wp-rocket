@@ -1624,14 +1624,14 @@ div.wpr-upgrade-websites {
   font-size: 0.6875rem;
   line-height: 1.8181818182;
 }
+.wpr-button--no-min-width {
+  min-width: auto !important;
+}
 .wpr-button--icon {
   min-width: 160px;
   padding-left: 8px;
   padding-right: 40px;
   text-align: left;
-}
-.wpr-button--no-min-width{
-	min-width: auto;
 }
 .wpr-button--icon:before {
   position: absolute;
@@ -2018,7 +2018,6 @@ div.wpr-upgrade-websites {
   .wpr-radio-buttons {
     padding-left: 24px;
   }
-
   .wpr-fieldWarning.wpr-radio-warning {
     margin-left: -24px;
     padding-left: 30px;
