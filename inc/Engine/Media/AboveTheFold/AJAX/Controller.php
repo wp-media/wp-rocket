@@ -3,15 +3,16 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Media\AboveTheFold\AJAX;
 
-use WP_Rocket\Engine\Common\PerformanceHints\AJAX\AbstractAJAXController;
+use WP_Rocket\Engine\Common\PerformanceHints\AJAX\AbstractAJAXControllerTrait;
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Queries\AboveTheFold as ATFQuery;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Engine\Optimization\UrlTrait;
 use WP_Rocket\Logger\Logger;
 use WP_Rocket\Engine\Common\PerformanceHints\AJAX\ControllerInterface;
 
-class Controller extends AbstractAJAXController implements ControllerInterface {
+class Controller implements ControllerInterface {
 	use UrlTrait;
+	use AbstractAJAXControllerTrait;
 
 	/**
 	 * ATFQuery instance
