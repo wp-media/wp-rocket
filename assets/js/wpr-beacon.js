@@ -332,13 +332,8 @@
         this._handleInfiniteLoop();
       }, 1e4);
       const isGeneratedBefore = await this._getGeneratedBefore();
-<<<<<<< HEAD
       const shouldGenerateLcp = this.config.status.atf && (isGeneratedBefore === false || isGeneratedBefore.lcp === false);
       const shouldGeneratelrc = this.config.status.lrc && (isGeneratedBefore === false || isGeneratedBefore.lrc === false);
-=======
-      let shouldSaveResultsIntoDB = false;
-      const shouldGenerateLcp = this.config.status.atf && (isGeneratedBefore === false || isGeneratedBefore.lcp === false);
->>>>>>> feature/lrc
       if (shouldGenerateLcp) {
         this.lcpBeacon = new BeaconLcp_default(this.config, this.logger);
         await this.lcpBeacon.run();
