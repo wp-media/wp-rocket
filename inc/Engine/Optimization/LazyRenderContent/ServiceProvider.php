@@ -7,6 +7,8 @@ use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvi
 use WP_Rocket\Engine\Optimization\LazyRenderContent\Context\Context;
 use WP_Rocket\Engine\Optimization\LazyRenderContent\Database\Table\LazyRenderContent as LRCTable;
 use WP_Rocket\Engine\Optimization\LazyRenderContent\Database\Queries\LazyRenderContent as LRCQuery;
+use WP_Rocket\Engine\Optimization\LazyRenderContent\Frontend\{Controller as FrontController, Subscriber as FrontSubscriber};
+use WP_Rocket\Engine\Optimization\LazyRenderContent\Frontend\Processor\Processor;
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
@@ -23,6 +25,9 @@ class ServiceProvider extends AbstractServiceProvider {
 		'lrc_factory',
 		'lrc_table',
 		'lrc_query',
+		'lrc_frontend_processor',
+		'lrc_frontend_controller',
+		'lrc_frontend_subscriber',
 	];
 
 	/**
@@ -54,6 +59,22 @@ class ServiceProvider extends AbstractServiceProvider {
 					$this->getContainer()->get( 'lrc_context' ),
 					$this->getContainer()->get( 'lrc_table' ),
 					$this->getContainer()->get( 'lrc_query' ),
+				]
+			);
+		$this->getContainer()->add( 'lrc_frontend_processor', Processor::class );
+		$this->getContainer()->add( 'lrc_frontend_controller', FrontController::class )
+			->addArguments(
+				[
+					$this->getContainer()->get( 'lrc_frontend_processor' ),
+					$this->getContainer()->get( 'lrc_context' ),
+					$this->getContainer()->get( 'lrc_query' ),
+					$this->getContainer()->get( 'options' ),
+				]
+			);
+		$this->getContainer()->addShared( 'lrc_frontend_subscriber', FrontSubscriber::class )
+			->addArguments(
+				[
+					$this->getContainer()->get( 'lrc_frontend_controller' ),
 				]
 			);
 	}
