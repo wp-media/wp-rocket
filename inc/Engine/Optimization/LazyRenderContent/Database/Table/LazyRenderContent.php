@@ -34,7 +34,6 @@ class LazyRenderContent extends AbstractTable {
 	 */
 	protected $upgrades = [];
 
-
 	/**
 	 * Table schema data.
 	 *

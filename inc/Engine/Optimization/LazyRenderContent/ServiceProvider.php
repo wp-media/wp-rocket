@@ -26,7 +26,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'lrc_factory',
 		'lrc_table',
 		'lrc_query',
-		'lrc_controller',
+		'lrc_ajax_controller',
 		'lrc_frontend_processor',
 		'lrc_frontend_controller',
 		'lrc_frontend_subscriber',
@@ -55,20 +55,11 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		$this->getContainer()->add( 'lrc_query', LRCQuery::class );
 
-		$this->getContainer()->addShared( 'lrc_factory', Factory::class )
-			->addArguments(
-				[
-					$this->getContainer()->get( 'lrc_context' ),
-					$this->getContainer()->get( 'lrc_table' ),
-					$this->getContainer()->get( 'lrc_query' ),
-				]
-			);
-
 		$this->getContainer()->addShared( 'lrc_table', LRCTable::class );
 
 		$this->getContainer()->add( 'lrc_query', LRCQuery::class );
 
-		$this->getContainer()->add( 'atf_ajax_controller', AJAXController::class )
+		$this->getContainer()->add( 'lrc_ajax_controller', AJAXController::class )
 			->addArguments(
 				[
 					$this->getContainer()->get( 'lrc_query' ),
@@ -89,6 +80,16 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArguments(
 				[
 					$this->getContainer()->get( 'lrc_frontend_controller' ),
+				]
+			);
+
+		$this->getContainer()->addShared( 'lrc_factory', Factory::class )
+			->addArguments(
+				[
+					$this->getContainer()->get( 'lrc_context' ),
+					$this->getContainer()->get( 'lrc_table' ),
+					$this->getContainer()->get( 'lrc_query' ),
+					$this->getContainer()->get( 'lrc_ajax_controller' ),
 				]
 			);
 	}
