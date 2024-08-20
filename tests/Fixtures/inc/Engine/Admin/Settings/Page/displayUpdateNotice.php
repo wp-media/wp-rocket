@@ -91,7 +91,7 @@ return [
 		'expected' => [
 			'status'         => 'info',
 			'dismissible'    => '',
-			'message'        => '<strong>WP Rocket:</strong> the plugin has been updated to the 3.17 version. Our brand new feature <a href="http://example.org" data-beacon-article="123" target="_blank" rel="noopener noreferrer">Lazy Render Content</a>. Check out our documentation to learn more about it.',
+			'message'        => '<strong>WP Rocket:</strong> the plugin has been updated to the 3.17 version. New feature: <a href="http://example.org" data-beacon-article="123" target="_blank" rel="noopener noreferrer">Lazy Render Content</a>. Check out our documentation to learn more about it.',
 			'dismiss_button' => 'rocket_update_notice',
 		],
 	],
