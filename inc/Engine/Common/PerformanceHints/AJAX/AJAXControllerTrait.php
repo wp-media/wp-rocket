@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Common\PerformanceHints\AJAX;
 
-trait AbstractAJAXControllerTrait {
+trait AJAXControllerTrait {
 	/**
 	 * Get status code and message to be saved into the database
 	 *
