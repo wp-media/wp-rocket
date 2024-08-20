@@ -68,6 +68,17 @@ class Controller implements ControllerInterface {
 
 		$hashes = json_decode( $row->below_the_fold );
 
+		if ( null === $hashes || ! is_array( $hashes ) ) {
+			return $html;
+		}
+
+		$result = preg_replace( '/data-rocket-location-hash="(?:"' . implode( '|', $hashes ) . ')"/i', 'data-wpr-lazyrender="1"', $html );
+
+		if ( null === $result ) {
+			return $html;
+		}
+
+		$html = $result;
 		$html = $this->remove_hashes( $html );
 
 		return $this->add_css( $html );
@@ -128,7 +139,7 @@ class Controller implements ControllerInterface {
 		$url       = untrailingslashit( home_url( add_query_arg( [], $wp->request ) ) );
 		$is_mobile = $this->is_mobile();
 
-		if ( ! $this->query->get_row( $url, $is_mobile ) ) {
+		if ( $this->query->get_row( $url, $is_mobile ) ) {
 			return $html;
 		}
 
