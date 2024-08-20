@@ -25,7 +25,7 @@ class LazyRenderContent extends AbstractQueries implements QueriesInterface {
 	 *
 	 * @var   string
 	 */
-	protected $table_alias = 'wpr_lcr';
+	protected $table_alias = 'wpr_lrc';
 
 	/**
 	 * Name of class used to setup the database schema.

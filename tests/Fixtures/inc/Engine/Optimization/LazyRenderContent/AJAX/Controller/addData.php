@@ -1,9 +1,44 @@
 <?php
 
 return [
-	'testShouldBailoutWhenDBError' => [
+	'testShouldBailoutWhenNotAllowed' => [
 		'config'   => [
 			'filter'    => false,
+			'url'       => 'http://example.org',
+			'is_mobile' => false,
+			'results' => json_encode(
+				[
+					'lrc' => [
+						(object) [
+							'db47c7d69edcf4565baa182deb470091',
+							'db47c7d69edcf4565baa182deb470092',
+						],
+					]
+				],
+			),
+		],
+		'expected' => [
+			'item'    => [
+				'url'            => 'http://example.org',
+				'is_mobile'      => false,
+				'status'         => 'completed',
+				'below_the_fold' => json_encode( [
+					(object) [
+						'db47c7d69edcf4565baa182deb470091',
+						'db47c7d69edcf4565baa182deb470092',
+					],
+				] ),
+				'last_accessed'  => '2024-01-01 00:00:00',
+				'created_at'     => '2024-01-01 00:00:00',
+				'error_message'  => ''
+			],
+			'result'  => false,
+			'message' => 'not allowed',
+		],
+	],
+	'testShouldBailoutWhenDBError' => [
+		'config'   => [
+			'filter'    => true,
 			'url'       => 'http://example.org',
 			'is_mobile' => false,
 			'results' => json_encode(

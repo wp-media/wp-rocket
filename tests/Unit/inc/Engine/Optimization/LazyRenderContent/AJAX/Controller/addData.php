@@ -24,8 +24,8 @@ class Test_AddData extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 		$this->query      = $this->createPartialMock( LazyRenderContent::class, [ 'add_item' ] );
-		$this->controller = new Controller( $this->query );
 		$this->context    = Mockery::mock( Context::class );
+		$this->controller = new Controller( $this->query, $this->context );
 		$this->temp_post  = $_POST;
 
 
@@ -57,6 +57,11 @@ class Test_AddData extends TestCase {
 			->once()
 			->with( 'rocket_beacon', 'rocket_beacon_nonce' )
 			->andReturn( true );
+
+		$this->context->shouldReceive( 'is_allowed' )
+			->atMost()
+			->once()
+			->andReturn( $config['filter'] );
 
 		$valid_source = $expected['valid_source'] ?? [];
 
@@ -95,19 +100,8 @@ class Test_AddData extends TestCase {
 			}
 		);
 
-		if ( ! $expected['result'] ) {
-			Functions\expect( 'wp_send_json_error' )
-				->once()
-				->with( $expected['message'] );
-		} elseif ( $expected['result'] ) {
-			Functions\expect( 'wp_send_json_success' )
-				->once()
-				->with( $expected['message'] );
-		}
-
 		$this->stubWpParseUrl();
 
-
-		$this->controller->add_data();
+		$this->assertSame( [ 'lrc' => $expected['message'] ], $this->controller->add_data() );
 	}
 }

@@ -50,14 +50,19 @@ class Controller extends AbstractAJAXController implements ControllerInterface {
 	/**
 	 * Add LCP data to the database
 	 *
-	 * @return void
+	 * @return array
 	 */
-	public function add_data(): void {
+	public function add_data(): array {
+		$payload = [
+			'lcp' => '',
+		];
+
 		check_ajax_referer( 'rocket_beacon', 'rocket_beacon_nonce' );
 
 		if ( ! $this->context->is_allowed() ) {
-			wp_send_json_error( 'not allowed' );
-			return;
+			$payload['lcp'] = 'not allowed';
+
+			return $payload;
 		}
 
 		$url       = isset( $_POST['url'] ) ? untrailingslashit( esc_url_raw( wp_unslash( $_POST['url'] ) ) ) : '';
@@ -107,8 +112,9 @@ class Controller extends AbstractAJAXController implements ControllerInterface {
 		$row = $this->query->get_row( $url, $is_mobile );
 
 		if ( ! empty( $row ) ) {
-			wp_send_json_error( 'item already in the database' );
-			return;
+			$payload['lcp'] = 'item already in the database';
+
+			return $payload;
 		}
 
 		$status                               = isset( $_POST['status'] ) ? sanitize_text_field( wp_unslash( $_POST['status'] ) ) : '';
@@ -127,11 +133,13 @@ class Controller extends AbstractAJAXController implements ControllerInterface {
 		$result = $this->query->add_item( $item );
 
 		if ( ! $result ) {
-			wp_send_json_error( 'error when adding the entry to the database' );
-			return;
+			$payload['lcp'] = 'error when adding the entry to the database';
+
+			return $payload;
 		}
 
-		wp_send_json_success( $item );
+		$payload['lcp'] = $item;
+		return $payload;
 	}
 
 	/**
@@ -242,14 +250,18 @@ class Controller extends AbstractAJAXController implements ControllerInterface {
 	 * If the data exists, it returns a JSON success response with true. If the data does not exist, it returns a JSON success response with false.
 	 * If the context is not allowed, it returns a JSON error response with false.
 	 *
-	 * @return void
+	 * @return array
 	 */
-	public function check_data(): void {
+	public function check_data(): array {
+		$payload = [
+			'lcp' => false,
+		];
+
 		check_ajax_referer( 'rocket_beacon', 'rocket_beacon_nonce' );
 
 		if ( ! $this->context->is_allowed() ) {
-			wp_send_json_error( false );
-			return;
+			$payload['lcp'] = true;
+			return $payload;
 		}
 
 		$url       = isset( $_POST['url'] ) ? untrailingslashit( esc_url_raw( wp_unslash( $_POST['url'] ) ) ) : '';
@@ -258,11 +270,11 @@ class Controller extends AbstractAJAXController implements ControllerInterface {
 		$row = $this->query->get_row( $url, $is_mobile );
 
 		if ( ! empty( $row ) ) {
-			wp_send_json_success( 'data already exists' );
-			return;
+			$payload['lcp'] = true;
+			return $payload;
 		}
 
-		wp_send_json_error( 'data does not exist' );
+		return $payload;
 	}
 
 	/**

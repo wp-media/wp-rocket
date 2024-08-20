@@ -99,16 +99,6 @@ class Test_AddBeaconData extends TestCase {
 			->with( $expected['item'] )
 			->willReturn( $expected['result'] );
 
-		if ( ! $expected['result'] ) {
-			Functions\expect( 'wp_send_json_error' )
-				->once()
-				->with( $expected['message'] );
-		} elseif ( $expected['result'] ) {
-			Functions\expect( 'wp_send_json_success' )
-				->once()
-				->with( $expected['message'] );
-		}
-
 		$this->stubWpParseUrl();
 
 		Filters\expectApplied('rocket_atf_invalid_schemes')->with([ 'chrome-[^:]+://' ])->andReturn([ 'chrome-[^:]+://' ]);
@@ -118,6 +108,6 @@ class Test_AddBeaconData extends TestCase {
 			Functions\when('wp_check_filetype')->justReturn( $config['filetype'] );
 		}
 
-		$this->controller->add_data();
+		$this->assertSame( [ 'lcp' => $expected['message'] ], $this->controller->add_data() );
 	}
 }

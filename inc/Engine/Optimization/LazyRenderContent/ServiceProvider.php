@@ -46,10 +46,16 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function register(): void {
 		$this->getContainer()->add( 'lrc_context', Context::class );
 
+		$this->getContainer()->addShared( 'lrc_table', LRCTable::class );
+
+		$this->getContainer()->add( 'lrc_query', LRCQuery::class );
+
 		$this->getContainer()->addShared( 'lrc_factory', Factory::class )
 			->addArguments(
 				[
 					$this->getContainer()->get( 'lrc_context' ),
+					$this->getContainer()->get( 'lrc_table' ),
+					$this->getContainer()->get( 'lrc_query' ),
 				]
 			);
 
@@ -61,6 +67,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArguments(
 				[
 					$this->getContainer()->get( 'lrc_query' ),
+					$this->getContainer()->get( 'lrc_context' ),
 				]
 			);
 	}

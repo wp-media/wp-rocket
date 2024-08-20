@@ -32,9 +32,8 @@ class LazyRenderContent extends AbstractTable {
 	 *
 	 * @var array
 	 */
-	protected $upgrades = [
-		20240812 => '',
-	];
+	protected $upgrades = [];
+
 
 	/**
 	 * Table schema data.

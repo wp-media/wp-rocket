@@ -1,9 +1,10 @@
 <?php
 return [
-	'testShouldReturnSuccess' => [
+	'testShouldBailOutWhenNotAllowed' => [
 		'config'   => [
 			'url'       => 'http://example.org',
 			'is_mobile' => false,
+			'filter'    => false,
 			'row'       => (object) [
 				'below_the_fold' => json_encode( [
 					(object) [
@@ -15,7 +16,26 @@ return [
 		],
 		'expected' => [
 			'result' => true,
-			'message' => 'data already exists'
+			'message' => true
+		],
+	],
+	'testShouldReturnSuccess' => [
+		'config'   => [
+			'url'       => 'http://example.org',
+			'is_mobile' => false,
+			'filter'    => true,
+			'row'       => (object) [
+				'below_the_fold' => json_encode( [
+					(object) [
+						'db47c7d69edcf4565baa182deb470091',
+						'db47c7d69edcf4565baa182deb470092',
+					],
+				] ),
+			],
+		],
+		'expected' => [
+			'result' => true,
+			'message' => true
 		],
 	],
 	'testShouldReturnError' => [
@@ -23,10 +43,11 @@ return [
 			'url'       => 'http://example.org',
 			'is_mobile' => false,
 			'row'       => false,
+			'filter'    => true,
 		],
 		'expected' => [
 			'result' => false,
-			'message' => 'data does not exist'
+			'message' => false
 		],
 	],
 ];

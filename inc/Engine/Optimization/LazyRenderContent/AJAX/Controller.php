@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\LazyRenderContent\AJAX;
 
+use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Engine\Common\PerformanceHints\AJAX\AbstractAJAXController;
 use WP_Rocket\Engine\Optimization\UrlTrait;
 use WP_Rocket\Engine\Common\PerformanceHints\AJAX\ControllerInterface;
@@ -19,21 +20,37 @@ class Controller extends AbstractAJAXController implements ControllerInterface {
 	private $query;
 
 	/**
+	 * LRC Context.
+	 *
+	 * @var ContextInterface
+	 */
+	protected $context;
+
+	/**
 	 * Constructor
 	 *
-	 * @param LRCQuery $query LRCQuery instance.
+	 * @param LRCQuery         $query LRCQuery instance.
+	 * @param ContextInterface $context Context interface.
 	 */
-	public function __construct( LRCQuery $query ) {
-		$this->query = $query;
+	public function __construct( LRCQuery $query, ContextInterface $context ) {
+		$this->query   = $query;
+		$this->context = $context;
 	}
 
 	/**
 	 * Add LRC data to the database
 	 *
-	 * @return void
+	 * @return array
 	 */
-	public function add_data(): void {
+	public function add_data(): array {
+		$payload = [];
 		check_ajax_referer( 'rocket_beacon', 'rocket_beacon_nonce' );
+
+		if ( ! $this->context->is_allowed() ) {
+			$payload['lrc'] = 'not allowed';
+
+			return $payload;
+		}
 
 		$url            = isset( $_POST['url'] ) ? untrailingslashit( esc_url_raw( wp_unslash( $_POST['url'] ) ) ) : '';
 		$is_mobile      = isset( $_POST['is_mobile'] ) ? filter_var( wp_unslash( $_POST['is_mobile'] ), FILTER_VALIDATE_BOOLEAN ) : false;
@@ -60,8 +77,9 @@ class Controller extends AbstractAJAXController implements ControllerInterface {
 
 		$row = $this->query->get_row( $url, $is_mobile );
 		if ( ! empty( $row ) ) {
-			wp_send_json_error( 'item already in the database' );
-			return;
+			$payload['lrc'] = 'item already in the database';
+
+			return $payload;
 		}
 
 		$status                               = isset( $_POST['status'] ) ? sanitize_text_field( wp_unslash( $_POST['status'] ) ) : '';
@@ -77,14 +95,14 @@ class Controller extends AbstractAJAXController implements ControllerInterface {
 			'created_at'     => current_time( 'mysql', true ),
 		];
 
-		$result = $this->query->add_item( $item );
+		$result         = $this->query->add_item( $item );
+		$payload['lrc'] = $item;
 
 		if ( ! $result ) {
-			wp_send_json_error( 'error when adding the entry to the database' );
-			return;
+			$payload['lrc'] = 'error when adding the entry to the database';
 		}
 
-		wp_send_json_success( $item );
+		return $payload;
 	}
 
 	/**
@@ -94,10 +112,18 @@ class Controller extends AbstractAJAXController implements ControllerInterface {
 	 * If the data exists, it returns a JSON success response with true. If the data does not exist, it returns a JSON success response with false.
 	 * If the context is not allowed, it returns a JSON error response with false.
 	 *
-	 * @return void
+	 * @return array
 	 */
-	public function check_data(): void {
+	public function check_data(): array {
+		$payload = [
+			'lrc' => false,
+		];
 		check_ajax_referer( 'rocket_beacon', 'rocket_beacon_nonce' );
+
+		if ( ! $this->context->is_allowed() ) {
+			$payload['lrc'] = true;
+			return $payload;
+		}
 
 		$url       = isset( $_POST['url'] ) ? untrailingslashit( esc_url_raw( wp_unslash( $_POST['url'] ) ) ) : '';
 		$is_mobile = isset( $_POST['is_mobile'] ) ? filter_var( wp_unslash( $_POST['is_mobile'] ), FILTER_VALIDATE_BOOLEAN ) : false;
@@ -105,10 +131,9 @@ class Controller extends AbstractAJAXController implements ControllerInterface {
 		$row = $this->query->get_row( $url, $is_mobile );
 
 		if ( ! empty( $row ) ) {
-			wp_send_json_success( 'data already exists' );
-			return;
+			$payload['lrc'] = true;
 		}
 
-		wp_send_json_error( 'data does not exist' );
+		return $payload;
 	}
 }

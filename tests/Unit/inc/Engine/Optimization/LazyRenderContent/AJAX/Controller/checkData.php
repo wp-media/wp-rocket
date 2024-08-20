@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\tests\Unit\inc\Engine\Optimization\LazyRenderContent\AJAX\Controller;
 
+use WP_Rocket\Engine\Media\AboveTheFold\Context\Context;
 use WP_Rocket\Engine\Optimization\LazyRenderContent\AJAX\Controller;
 use WP_Rocket\Engine\Optimization\LazyRenderContent\Database\Queries\LazyRenderContent;
 use WP_Rocket\Tests\Unit\TestCase;
@@ -19,10 +20,13 @@ class Test_CheckData extends TestCase {
 
 	private $temp_post = [];
 
+	private $context;
+
 	protected function setUp(): void {
 		parent::setUp();
 		$this->query      = $this->createPartialMock( LazyRenderContent::class, [ 'get_row' ] );
-		$this->controller = new Controller( $this->query );
+		$this->context    = Mockery::mock( Context::class );
+		$this->controller = new Controller( $this->query, $this->context );
 		$this->temp_post  = $_POST;
 
 
@@ -48,6 +52,11 @@ class Test_CheckData extends TestCase {
 			'is_mobile' => addslashes( $config['is_mobile'] ),
 		];
 
+		$this->context->shouldReceive( 'is_allowed' )
+			->atMost()
+			->once()
+			->andReturn( $config['filter'] );
+
 		Functions\expect( 'check_ajax_referer' )
 			->once()
 			->with( 'rocket_beacon', 'rocket_beacon_nonce' )
@@ -69,16 +78,6 @@ class Test_CheckData extends TestCase {
 			->with( $config['url'], $config['is_mobile'] )
 			->willReturn( $config['row'] );
 
-		if ( ! $expected['result'] ) {
-			Functions\expect( 'wp_send_json_error' )
-				->once()
-				->with( $expected['message'] );
-		} else {
-			Functions\expect( 'wp_send_json_success' )
-				->once()
-				->with( $expected['message'] );
-		}
-
-		$this->controller->check_data();
+		$this->assertSame( [ 'lrc' => $expected['message'] ], $this->controller->check_data() );
 	}
 }
