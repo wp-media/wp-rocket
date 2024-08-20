@@ -58,7 +58,7 @@ class Test_CheckData extends AjaxTestCase {
 
 		$result = $this->callAjaxAction();
 
-		$this->assertSame( $expected['result'], $result->success );
+		$this->assertSame( $expected['result'], $result->data->lcp );
 	}
 	public function set_allowed() {
 		return $this->allowed;
