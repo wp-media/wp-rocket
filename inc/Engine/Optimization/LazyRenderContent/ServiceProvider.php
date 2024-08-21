@@ -7,6 +7,7 @@ use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvi
 use WP_Rocket\Engine\Optimization\LazyRenderContent\Context\Context;
 use WP_Rocket\Engine\Optimization\LazyRenderContent\Database\Table\LazyRenderContent as LRCTable;
 use WP_Rocket\Engine\Optimization\LazyRenderContent\Database\Queries\LazyRenderContent as LRCQuery;
+use WP_Rocket\Engine\Optimization\LazyRenderContent\AJAX\Controller as AJAXController;
 use WP_Rocket\Engine\Optimization\LazyRenderContent\Frontend\{Controller as FrontController, Subscriber as FrontSubscriber};
 use WP_Rocket\Engine\Optimization\LazyRenderContent\Frontend\Processor\Processor;
 
@@ -25,6 +26,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'lrc_factory',
 		'lrc_table',
 		'lrc_query',
+		'lrc_ajax_controller',
 		'lrc_frontend_processor',
 		'lrc_frontend_controller',
 		'lrc_frontend_subscriber',
@@ -48,10 +50,32 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	public function register(): void {
 		$this->getContainer()->add( 'lrc_context', Context::class );
-
 		$this->getContainer()->addShared( 'lrc_table', LRCTable::class );
-
 		$this->getContainer()->add( 'lrc_query', LRCQuery::class );
+
+		$this->getContainer()->add( 'lrc_ajax_controller', AJAXController::class )
+			->addArguments(
+				[
+					$this->getContainer()->get( 'lrc_query' ),
+					$this->getContainer()->get( 'lrc_context' ),
+				]
+			);
+		$this->getContainer()->add( 'lrc_frontend_processor', Processor::class );
+		$this->getContainer()->add( 'lrc_frontend_controller', FrontController::class )
+			->addArguments(
+				[
+					$this->getContainer()->get( 'lrc_frontend_processor' ),
+					$this->getContainer()->get( 'lrc_context' ),
+					$this->getContainer()->get( 'lrc_query' ),
+					$this->getContainer()->get( 'options' ),
+				]
+			);
+		$this->getContainer()->addShared( 'lrc_frontend_subscriber', FrontSubscriber::class )
+			->addArguments(
+				[
+					$this->getContainer()->get( 'lrc_frontend_controller' ),
+				]
+			);
 
 		$this->getContainer()->addShared( 'lrc_factory', Factory::class )
 			->addArguments(
@@ -59,38 +83,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					$this->getContainer()->get( 'lrc_context' ),
 					$this->getContainer()->get( 'lrc_table' ),
 					$this->getContainer()->get( 'lrc_query' ),
-					$this->getContainer()->get( 'lrc_frontend_controller' ),
-				]
-			);
-		$this->getContainer()->add( 'lrc_frontend_processor', Processor::class );
-		$this->getContainer()->add( 'lrc_frontend_controller', FrontController::class )
-			->addArguments(
-				[
-					$this->getContainer()->get( 'lrc_frontend_processor' ),
-					$this->getContainer()->get( 'lrc_context' ),
-					$this->getContainer()->get( 'lrc_query' ),
-					$this->getContainer()->get( 'options' ),
-				]
-			);
-		$this->getContainer()->addShared( 'lrc_frontend_subscriber', FrontSubscriber::class )
-			->addArguments(
-				[
-					$this->getContainer()->get( 'lrc_frontend_controller' ),
-				]
-			);
-		$this->getContainer()->add( 'lrc_frontend_processor', Processor::class );
-		$this->getContainer()->add( 'lrc_frontend_controller', FrontController::class )
-			->addArguments(
-				[
-					$this->getContainer()->get( 'lrc_frontend_processor' ),
-					$this->getContainer()->get( 'lrc_context' ),
-					$this->getContainer()->get( 'lrc_query' ),
-					$this->getContainer()->get( 'options' ),
-				]
-			);
-		$this->getContainer()->addShared( 'lrc_frontend_subscriber', FrontSubscriber::class )
-			->addArguments(
-				[
+					$this->getContainer()->get( 'lrc_ajax_controller' ),
 					$this->getContainer()->get( 'lrc_frontend_controller' ),
 				]
 			);
