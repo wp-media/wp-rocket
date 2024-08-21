@@ -3,10 +3,8 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\LazyRenderContent\Frontend;
 
-use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Engine\Common\PerformanceHints\Frontend\ControllerInterface;
-use WP_Rocket\Engine\Optimization\LazyRenderContent\Database\Queries\LazyRenderContent as LRCQuery;
 use WP_Rocket\Engine\Optimization\LazyRenderContent\Frontend\Processor\Processor;
 
 class Controller implements ControllerInterface {
@@ -25,32 +23,14 @@ class Controller implements ControllerInterface {
 	private $context;
 
 	/**
-	 * LRCQuery instance
-	 *
-	 * @var LRCQuery
-	 */
-	private $query;
-
-	/**
-	 * Options instance
-	 *
-	 * @var Options_Data
-	 */
-	private $options;
-
-	/**
 	 * Constructor
 	 *
 	 * @param Processor        $processor Processor instance.
 	 * @param ContextInterface $context Context instance.
-	 * @param LRCQuery         $query Query instance.
-	 * @param Options_Data     $options Options instance.
 	 */
-	public function __construct( Processor $processor, ContextInterface $context, LRCQuery $query, Options_Data $options ) {
+	public function __construct( Processor $processor, ContextInterface $context ) {
 		$this->processor = $processor;
 		$this->context   = $context;
-		$this->query     = $query;
-		$this->options   = $options;
 	}
 
 	/**
@@ -130,16 +110,7 @@ class Controller implements ControllerInterface {
 	 * @return string
 	 */
 	public function add_hashes( $html ) {
-		global $wp;
-
 		if ( ! $this->context->is_allowed() ) {
-			return $html;
-		}
-
-		$url       = untrailingslashit( home_url( add_query_arg( [], $wp->request ) ) );
-		$is_mobile = $this->is_mobile();
-
-		if ( $this->query->get_row( $url, $is_mobile ) ) {
 			return $html;
 		}
 
@@ -187,16 +158,5 @@ class Controller implements ControllerInterface {
 		$data['status']['lrc'] = $this->context->is_allowed();
 
 		return $data;
-	}
-
-	/**
-	 * Determines if the page is mobile and separate cache for mobile files is enabled.
-	 *
-	 * @return bool
-	 */
-	private function is_mobile(): bool {
-		return $this->options->get( 'cache_mobile', 0 )
-			&& $this->options->get( 'do_caching_mobile_files', 0 )
-			&& wp_is_mobile();
 	}
 }
