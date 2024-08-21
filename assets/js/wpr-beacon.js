@@ -217,7 +217,8 @@
       return validElements.map((element) => ({
         element,
         depth: this._getElementDepth(element),
-        distance: this._getElementDistance(element)
+        distance: this._getElementDistance(element),
+        hash: this._getLocationHash(element)
       }));
     }
     _getElementDepth(element) {
@@ -251,17 +252,18 @@
       return false;
     }
     _processElements(elements) {
-      elements.forEach(({ element, depth, distance }) => {
+      elements.forEach(({ element, depth, distance, hash }) => {
         if (this._shouldSkipElement(element, this.config.exclusions || [])) {
           return;
         }
-        this.lazyRenderElements.push({ element, depth, distance });
+        if ("No hash detected" !== hash) {
+          this.lazyRenderElements.push(hash);
+        }
         const style = distance > 1800 ? "color: green;" : distance === 0 ? "color: red;" : "";
         console.log(`%c${"	".repeat(depth)}${element.tagName} (Depth: ${depth}, Distance from viewport top: ${distance}px)`, style);
         const xpath = this._getXPath(element);
         console.log(`%c${"	".repeat(depth)}Xpath: ${xpath}`, style);
-        const locationhash = this._getLocationHash(element);
-        console.log(`%c${"	".repeat(depth)}Location hash: ${locationhash}`, style);
+        console.log(`%c${"	".repeat(depth)}Location hash: ${hash}`, style);
         console.log(`%c${"	".repeat(depth)}Dimensions Client Height: ${element.clientHeight}`, style);
       });
     }
@@ -446,4 +448,5 @@
       }, rocket_beacon_data.delay);
     });
   })(window.rocket_beacon_data);
+  var BeaconEntryPoint_default = BeaconManager_default;
 })();
