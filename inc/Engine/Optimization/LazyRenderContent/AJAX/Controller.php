@@ -66,7 +66,7 @@ class Controller implements ControllerInterface {
 		 * @param string $url Current page url.
 		 * @param string[]|array $hashes Current list of LRC hashes.
 		 */
-		$max_lrc_hashes_number = (int) apply_filters( 'rocket_lrc_hashes_number', 20, $url, $hashes );
+		$max_lrc_hashes_number = wpm_apply_filters_typed( 'integer', 'rocket_lrc_hashes_number', 20, $url, $hashes );
 		if ( 0 >= $max_lrc_hashes_number ) {
 			$max_lrc_hashes_number = 1;
 		}
