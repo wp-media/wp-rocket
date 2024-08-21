@@ -51,14 +51,16 @@ class Factory implements FactoryInterface {
 	/**
 	 * Instantiate the class.
 	 *
-	 * @param ContextInterface $context LRC Context instance.
-	 * @param TableInterface   $table LRC Table instance.
-	 * @param QueriesInterface $queries LRC Queries instance.
+	 * @param ContextInterface        $context LRC Context instance.
+	 * @param TableInterface          $table LRC Table instance.
+	 * @param QueriesInterface        $queries LRC Queries instance.
+	 * @param AjaxControllerInterface $ajax_controller LRC AJAX Controller instance.
 	 */
-	public function __construct( ContextInterface $context, TableInterface $table, QueriesInterface $queries ) {
-		$this->context = $context;
-		$this->table   = $table;
-		$this->queries = $queries;
+	public function __construct( ContextInterface $context, TableInterface $table, QueriesInterface $queries, AjaxControllerInterface $ajax_controller ) {
+		$this->context         = $context;
+		$this->table           = $table;
+		$this->queries         = $queries;
+		$this->ajax_controller = $ajax_controller;
 	}
 
 	/**
