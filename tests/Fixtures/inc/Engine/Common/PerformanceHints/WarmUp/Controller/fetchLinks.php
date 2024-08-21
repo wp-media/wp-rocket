@@ -11,21 +11,6 @@ $html_with_external_links_before_internal = '<!DOCTYPE html><html class="no-js" 
 $html_with_rss_feed_rest_api = '<!DOCTYPE html><html class="no-js" lang="en-US"><head><title></title><link href="https://fonts.gstatic.com" crossorigin="preconnect"><link rel="stylesheet" id="wp-block-library-css" href="https://example.org/wp-includes/css/dist/block-library/style.min.css?ver=6.4.3" media="all"></head><body><button data-link="https://example.org/hello-world">Click Here</button><a href="https://example.org/feed">RSS Feed</a><a href="https://example.org/wp-json/wp/v2/users">Rest API</a><a href="https://example.org/hello-world-4">Hello World 4</a><a href="https://example.org/hello-world-5">Hello World 5</a><a href="https://example.org/hello-world-6">Hello World 6</a><a href="https://example.org/hello-world-7">Hello World 7</a><a href="https://example.org/hello-world-8">Hello World 8</a><a href="https://example.org/hello-world-9">Hello World 9</a><a href="https://example.org/rich-dad-poor-dad">Rich Dad Poor Dad</a><a href="https://example.org/rebecca-brown-he-came-to-set-the-captives-free">Buy (He came to set the captives free) - Rebecca Brown</a><a href="https://example.org">Home</a></body></html>';
 
 return [
-	'shouldReturnEmptyWhenLicenseExpired' => [
-		'config' => [
-			'license_expired' => true,
-			'headers' => [
-				'user-agent' => 'WP Rocket/Pre-fetch Home Links Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1',
-				'timeout'    => 60,
-			],
-			'response' => [
-				'response' => [
-					'code'    => 500,
-				],
-			],
-		],
-		'expected' => [],
-	],
 	'shouldReturnEmptyWhenNot200' => [
 		'config' => [
 			'license_expired' => false,

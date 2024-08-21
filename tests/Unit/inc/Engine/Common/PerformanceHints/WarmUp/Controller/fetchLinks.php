@@ -33,9 +33,6 @@ class Test_FetchLinks extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
-		$this->user->shouldReceive( 'is_license_expired_grace_period' )
-			->once()
-			->andReturn( $config['license_expired'] );
 
 		Functions\when( 'home_url' )->alias(
 			function ( $link = '' ) {

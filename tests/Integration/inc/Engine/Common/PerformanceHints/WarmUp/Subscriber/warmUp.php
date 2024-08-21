@@ -39,16 +39,19 @@ class Test_WarmUp extends TestCase {
 			$options->shouldReceive('get')
 				->with('remove_unused_css', 0)
 				->andReturn($config['remove_unused_css']);
+
+			$user->shouldReceive( 'is_license_expired_grace_period' )
+				->once()
+				->andReturn( $config['license_expired'] );
 		}
 
 		$queue->shouldReceive('add_job_warmup_url')
 			->times($expected);
 
-
         add_action('rocket_job_warmup', [$controller, 'warm_up']);
 
         do_action('rocket_job_warmup');
-		
+
 		remove_action('rocket_job_warmup', [$controller, 'warm_up']);
 	}
 }
