@@ -69,7 +69,7 @@ class Controller {
 		$url       = untrailingslashit( home_url( add_query_arg( [], $wp->request ) ) );
 		$is_mobile = $this->is_mobile();
 
-		if ( ! $this->query->get_row( $url, $is_mobile ) ) {
+		if ( $this->query->get_row( $url, $is_mobile ) ) {
 			return $html;
 		}
 
