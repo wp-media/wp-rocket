@@ -52,7 +52,7 @@ class Controller implements ControllerInterface {
 			return $html;
 		}
 
-		$result = preg_replace( '/data-rocket-location-hash="(?:"' . implode( '|', $hashes ) . ')"/i', 'data-wpr-lazyrender="1"', $html );
+		$result = preg_replace( '/data-rocket-location-hash="(?:' . implode( '|', $hashes ) . ')"/i', 'data-wpr-lazyrender="1"', $html );
 
 		if ( null === $result ) {
 			return $html;
@@ -89,9 +89,7 @@ class Controller implements ControllerInterface {
 	 * @return string
 	 */
 	private function add_css( $html ) {
-		$css = '<style>[data-wpr-lazyrender] {
-  content-visibility: auto;
-}</style>';
+		$css = '<style>[data-wpr-lazyrender] {content-visibility: auto;}</style>';
 
 		$result = preg_replace( '/<\/head>/i', $css . '</head>', $html, 1 );
 
