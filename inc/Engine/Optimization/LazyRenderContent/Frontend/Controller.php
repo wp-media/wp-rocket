@@ -7,8 +7,9 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Engine\Optimization\LazyRenderContent\Database\Queries\LazyRenderContent as LRCQuery;
 use WP_Rocket\Engine\Optimization\LazyRenderContent\Frontend\Processor\Processor;
+use WP_Rocket\Engine\Common\PerformanceHints\Frontend\ControllerInterface;
 
-class Controller {
+class Controller implements ControllerInterface {
 	/**
 	 * Processor instance
 	 *
@@ -85,6 +86,31 @@ class Controller {
 		$this->processor->set_processor( $processor );
 
 		return $this->processor->get_processor()->add_hashes( $html );
+	}
+
+	/**
+	 * Apply LRC Optimzation to content.
+	 *
+	 * @param string $html HTML content.
+	 * @param object $row Database Row.
+	 *
+	 * @return string
+	 */
+	public function optimize( string $html, $row ): string {
+		return $html;
+	}
+
+	/**
+	 * Add custom data for the LRC optimization.
+	 *
+	 * @param array $data Array of data passed in beacon.
+	 *
+	 * @return array
+	 */
+	public function add_custom_data( array $data ): array {
+		$data['status']['lrc'] = $this->context->is_allowed();
+
+		return $data;
 	}
 
 	/**
