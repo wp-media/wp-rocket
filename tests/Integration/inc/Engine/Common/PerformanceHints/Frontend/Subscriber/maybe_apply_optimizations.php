@@ -49,12 +49,11 @@ class Test_maybe_apply_optimizations extends FilesystemTestCase {
 	public function testShouldReturnAsExpected( $config, $expected ) {
 		$this->config = $config;
 
-		if ( ! empty( $config['oci_row'] ) ) {
-			self::addLcp( $config['oci_row'] );
+		if ( ! empty( $config['atf']['row'] ) ) {
+			self::addLcp( $config['atf']['row'] );
 		}
-
-		if ( ! empty( $config['lrc_row'] ) ) {
-			self::addLrc( $config['lrc_row'] );
+		if ( ! empty( $config['lrc']['row'] ) ) {
+			self::addLrc( $config['lrc']['row'] );
 		}
 
 		if ( isset( $config['filter_delay'] ) ) {
