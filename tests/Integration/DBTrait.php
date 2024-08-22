@@ -73,6 +73,9 @@ trait DBTrait {
 
 		$atf_table = $container->get( 'atf_table' );
 		$atf_table->install();
+
+		$lrc_table = $container->get( 'lrc_table' );
+		$lrc_table->install();
 	}
 
 	public static function installUsedCssTable() {
@@ -127,6 +130,11 @@ trait DBTrait {
 		$atf_table = $container->get( 'atf_table' );
 		if ( $atf_table->exists() ) {
 			$atf_table->uninstall();
+		}
+
+		$lrc_table = $container->get( 'lrc_table' );
+		if ( $lrc_table->exists() ) {
+			$lrc_table->uninstall();
 		}
 	}
 
