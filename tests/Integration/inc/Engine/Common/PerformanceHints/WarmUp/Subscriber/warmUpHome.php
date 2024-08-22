@@ -14,6 +14,8 @@ use WP_Rocket\Tests\Integration\TestCase;
 /**
  * Test class covering \WP_Rocket\Engine\Common\PerformanceHints\WarmUp\Subscriber::warm_up_home
  *
+ * @group PerformanceHints
+ * @group WarmUp
  */
 class Test_WarmUpHome extends TestCase {
 	/**
