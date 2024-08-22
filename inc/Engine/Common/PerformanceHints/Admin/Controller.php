@@ -152,7 +152,6 @@ class Controller {
 		/**
 		 * Fires after clearing performance hints data for specific url.
 		 *
-		 *
 		 * @param string $url Current page URL.
 		 */
 		do_action( 'rocket_performance_hints_data_after_clearing', $url );
