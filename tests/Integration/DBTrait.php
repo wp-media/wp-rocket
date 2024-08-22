@@ -45,10 +45,17 @@ trait DBTrait {
 		$cache_query = $container->get( 'preload_caches_query' );
 		return $cache_query->create_or_update( $resource );
 	}
+
 	public static function addLcp( array $resource ) {
 		$container = apply_filters( 'rocket_container', null );
 		$lcp_query = $container->get( 'atf_query' );
 		return $lcp_query->add_item( $resource );
+	}
+
+	public static function addLrc( array $resource ) {
+		$container = apply_filters( 'rocket_container', null );
+		$lrc_query = $container->get( 'lrc_query' );
+		return $lrc_query->add_item( $resource );
 	}
 
 	public static function installFresh() {
@@ -94,6 +101,15 @@ trait DBTrait {
 		}
 	}
 
+	public static function installLrcTable() {
+		$container = apply_filters( 'rocket_container', null );
+		$lrc_table = $container->get( 'lrc_table' );
+
+		if ( ! $lrc_table->exists() ) {
+			$lrc_table->install();
+		}
+	}
+
 	public static function uninstallAll() {
 		$container           = apply_filters( 'rocket_container', null );
 		$rucss_usedcss_table = $container->get( 'rucss_usedcss_table' );
@@ -133,6 +149,15 @@ trait DBTrait {
 
 		if ( $atf_table->exists() ) {
 			$atf_table->uninstall();
+		}
+	}
+
+	public static function uninstallLrcTable() {
+		$container = apply_filters( 'rocket_container', null );
+		$lrc_table = $container->get( 'lrc_table' );
+
+		if ( $lrc_table->exists() ) {
+			$lrc_table->uninstall();
 		}
 	}
 
