@@ -52,9 +52,13 @@ class Controller implements ControllerInterface {
 			return $html;
 		}
 
-		$result = preg_replace( '/data-rocket-location-hash="(?:' . implode( '|', $hashes ) . ')"/i', 'data-wpr-lazyrender="1"', $html );
+		$result = preg_replace( '/data-rocket-location-hash="(?:' . implode( '|', $hashes ) . ')"/i', 'data-wpr-lazyrender="1"', $html, -1, $count );
 
-		if ( null === $result ) {
+		if (
+			null === $result
+			||
+			0 === $count
+		) {
 			return $html;
 		}
 
