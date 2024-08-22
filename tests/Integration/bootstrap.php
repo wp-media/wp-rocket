@@ -17,8 +17,9 @@ tests_add_filter(
 	'muplugins_loaded',
 	function() {
 
-		// Disable ATF optimization to prevent DB request (unrelated to other tests).
+		// Disable ATF & LRC optimizations to prevent DB requests (unrelated to other tests).
 		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
+		add_filter( 'rocket_lazy_render_content_optimization', '__return_false' );
 
         if ( BootstrapManager::isGroup( 'TranslatePress' ) ) {
 			require WP_ROCKET_TESTS_FIXTURES_DIR . '/classes/TRP_Translate_Press.php';
@@ -264,6 +265,7 @@ tests_add_filter(
 
 		if ( BootstrapManager::isGroup( 'PerformanceHints' ) ) {
 			add_filter( 'rocket_above_the_fold_optimization', '__return_true' );
+			add_filter( 'rocket_lazy_render_content_optimization', '__return_true' );
 		}
 
 		// Load the plugin.

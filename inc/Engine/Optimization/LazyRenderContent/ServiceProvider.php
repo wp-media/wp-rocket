@@ -90,6 +90,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					$this->getContainer()->get( 'lrc_table' ),
 					$this->getContainer()->get( 'lrc_query' ),
 					$this->getContainer()->get( 'lrc_ajax_controller' ),
+					$this->getContainer()->get( 'lrc_frontend_controller' ),
 				]
 			);
 	}
