@@ -61,20 +61,25 @@ class Controller {
 	}
 
 	/**
+	 * Should terminate early if true.
+	 *
+	 * @return bool
+	 */
+	private function should_terminate_early(): bool {
+		return (
+			'local' === wp_get_environment_type() ||
+			$this->user->is_license_expired_grace_period() ||
+			(bool) $this->options->get( 'remove_unused_css', 0 )
+		);
+	}
+
+	/**
 	 * Send home URL for warm up.
 	 *
 	 * @return void
 	 */
 	public function warm_up_home(): void {
-		if ( 'local' === wp_get_environment_type() ) {
-			return;
-		}
-
-		if ( $this->user->is_license_expired_grace_period() ) {
-			return;
-		}
-
-		if ( (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
+		if ( $this->should_terminate_early() ) {
 			return;
 		}
 
@@ -92,15 +97,7 @@ class Controller {
 	 * @return void
 	 */
 	public function warm_up(): void {
-		if ( 'local' === wp_get_environment_type() ) {
-			return;
-		}
-
-		if ( $this->user->is_license_expired_grace_period() ) {
-			return;
-		}
-
-		if ( (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
+		if ( $this->should_terminate_early() ) {
 			return;
 		}
 
