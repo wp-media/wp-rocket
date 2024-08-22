@@ -19,7 +19,8 @@ return [
 		'shouldAddBeaconToPage' => [
 			'config' => [
 				'html' => $html_input,
-				'row' => null,
+				'oci_row' => null,
+				'lrc_row' => null,
 			],
 			'expected' => $html_output_with_beacon,
 		],
@@ -27,14 +28,15 @@ return [
 			'config' => [
 				'html' => $html_input,
 				'filter_delay' => 'string',
-				'row' => null,
+				'oci_row' => null,
+				'lrc_row' => null,
 			],
 			'expected' => $html_output_with_beacon,
 		],
 		'shouldNotAddBeaconToPage' => [
 			'config' => [
 				'html' => $html_input,
-				'row' => [
+				'oci_row' => [
 					'status' => 'completed',
 					'url' => 'http://example.org',
 					'lcp'      => json_encode( (object) [
@@ -48,13 +50,14 @@ return [
 						],
 					] ),
 				],
+				'lrc_row' => null,
 			],
 			'expected' => $html_output_with_preload,
 		],
 		'shouldNotAddBeaconToPageWhenLcpFailed' => [
 			'config' => [
 				'html' => $html_input,
-				'row' => [
+				'oci_row' => [
 					'status' => 'failed',
 					'url' => 'http://example.org',
 					'lcp'      => json_encode( (object) [
@@ -62,13 +65,14 @@ return [
 					'viewport' => json_encode( [
 					] ),
 				],
+				'lrc_row' => null,
 			],
 			'expected' => $html_output,
 		],
 		'shouldPreloadLcpResponsiveImgset' => [
 			'config' => [
 				'html' => file_get_contents(__DIR__ . '/HTML/input_lcp_bg_responsive_imgset_template.php'),
-				'row' => [
+				'oci_row' => [
 					'status' => 'completed',
 					'url' => 'http://example.org',
 					'lcp' => json_encode( (object) [
@@ -80,13 +84,14 @@ return [
 					]),
 					'viewport' => json_encode ( [] ),
 				],
+				'lrc_row' => null,
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_bg_responsive_imgset_template.php'),
 		],
 		'shouldPreloadLcpResponsiveWebkit' => [
 			'config' => [
 				'html' => file_get_contents(__DIR__ . '/HTML/input_lcp_bg_responsive_webkit_template.php'),
-				'row' => [
+				'oci_row' => [
 					'status' => 'completed',
 					'url' => 'http://example.org',
 					'lcp' => json_encode( (object) [
@@ -98,13 +103,14 @@ return [
 					]),
 					'viewport' => json_encode ( [] ),
 				],
+				'lrc_row' => null,
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_bg_responsive_webkit_template.php'),
 		],
 		'shouldPreloadLcpLayeredBackground' => [
 			'config' => [
 				'html' => file_get_contents(__DIR__ . '/HTML/input_lcp_layered_bg.php'),
-				'row' => [
+				'oci_row' => [
 					'status' => 'completed',
 					'url' => 'http://example.org',
 					'lcp' => json_encode( (object) [
@@ -116,13 +122,14 @@ return [
 					]),
 					'viewport' => json_encode ( [] ),
 				],
+				'lrc_row' => null,
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_layered_bg.php'),
 		],
 		'shouldPreloadLcpSingleBackground' => [
 			'config' => [
 				'html' => file_get_contents(__DIR__ . '/HTML/input_lcp_single_bg.php'),
-				'row' => [
+				'oci_row' => [
 					'status' => 'completed',
 					'url' => 'http://example.org',
 					'lcp' => json_encode( (object) [
@@ -133,13 +140,14 @@ return [
 					]),
 					'viewport' => json_encode ( [] ),
 				],
+				'lrc_row' => null,
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_single_bg.php'),
 		],
 		'shouldPreloadLcpResponsiveImage' => [
 			'config' => [
 				'html' => file_get_contents(__DIR__ . '/HTML/input_lcp_responsive.php'),
-				'row' => [
+				'oci_row' => [
 					'status' => 'completed',
 					'url' => 'http://example.org',
 					'lcp' => json_encode( (object) [
@@ -150,13 +158,14 @@ return [
 					]),
 					'viewport' => json_encode ( [] ),
 				],
+				'lrc_row' => null,
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_responsive.php'),
 		],
 		'shouldApplyFetchPriorityToReturnRelativeImage' => [
 			'config' => [
 				'html' => $html_input_with_relative_img_lcp,
-				'row' => [
+				'oci_row' => [
 					'status' => 'completed',
 					'url' => 'http://example.org',
 					'lcp'      => json_encode( (object) [
@@ -165,13 +174,14 @@ return [
 					] ),
 					'viewport' => json_encode ( [] ),
 				],
+				'lrc_row' => null,
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_with_relative_img_lcp.php'),
 		],
 		'shouldApplyFetchPriorityToAbsoluteImage' => [
 			'config' => [
 				'html' => $html_input_with_absolute_img_lcp,
-				'row' => [
+				'oci_row' => [
 					'status' => 'completed',
 					'url' => 'http://example.org',
 					'lcp'      => json_encode( (object) [
@@ -180,13 +190,14 @@ return [
 					] ),
 					'viewport' => json_encode ( [] ),
 				],
+				'lrc_row' => null,
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_with_absolute_img_lcp.php'),
 		],
 		'shouldApplyFetchPriorityToImageWithDomain' => [
 			'config' => [
 				'html' => $html_input_with_domain_img_lcp,
-				'row' => [
+				'oci_row' => [
 					'status' => 'completed',
 					'url' => 'http://example.org',
 					'lcp'      => json_encode( (object) [
@@ -195,13 +206,14 @@ return [
 					] ),
 					'viewport' => json_encode ( [] ),
 				],
+				'lrc_row' => null,
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_image.php'),
 		],
 		'shouldNotApplyFetchPriorityToImageWithFetchpriority' => [
 			'config' => [
 				'html' => file_get_contents(__DIR__ . '/HTML/input_lcp_with_fetchpriority.html'),
-				'row' => [
+				'oci_row' => [
 					'status' => 'completed',
 					'url' => 'http://example.org',
 					'lcp'      => json_encode( (object) [
@@ -210,13 +222,14 @@ return [
 					] ),
 					'viewport' => json_encode ( [] ),
 				],
+				'lrc_row' => null,
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_with_fetchpriority.html'),
 		],
 		'shouldNotApplyFetchPriorityToImageWithDuplicateMarkup' => [
 			'config' => [
 				'html' => file_get_contents(__DIR__ . '/HTML/input_lcp_with_markup_comment.html'),
-				'row' => [
+				'oci_row' => [
 					'status' => 'completed',
 					'url' => 'http://example.org',
 					'lcp'      => json_encode( (object) [
@@ -225,13 +238,14 @@ return [
 					] ),
 					'viewport' => json_encode ( [] ),
 				],
+				'lrc_row' => null,
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_with_markup_comment.html'),
 		],
 		'shouldNotApplyFetchPriorityToTheWrongElement' => [
 			'config' => [
 				'html' => $html_input_with_bg_image_lcp,
-				'row' => [
+				'oci_row' => [
 					'status' => 'completed',
 					'url' => 'http://example.org',
 					'lcp'      => json_encode( (object) [
@@ -249,13 +263,14 @@ return [
 						],
 					] ),
 				],
+				'lrc_row' => null,
 			],
 			'expected' => $html_output_with_bg_image_lcp,
 		],
 		'shouldApplyFetchPriorityToTheImgTagWithPictureElement' => [
 			'config' => [
 				'html' => $html_input_with_picture_img_lcp,
-				'row' => [
+				'oci_row' => [
 					'status' => 'completed',
 					'url' => 'http://example.org',
 					'lcp'      => json_encode( (object) [
@@ -273,13 +288,14 @@ return [
 						],
 					] ),
 				],
+				'lrc_row' => null,
 			],
 			'expected' => $html_output_with_picture_img_lcp,
 		],
 		'shouldApplyFetchPriorityToTheImgElement' => [
 			'config' => [
 				'html' => $html_input_with_img_lcp,
-				'row' => [
+				'oci_row' => [
 					'status' => 'completed',
 					'url' => 'http://example.org',
 					'lcp'      => json_encode( (object) [
@@ -297,26 +313,28 @@ return [
 						],
 					] ),
 				],
+				'lrc_row' => null,
 			],
 			'expected' => $html_output_with_img_lcp,
 		],
 		'shouldNotDoAnythingIfNoLcp' => [
 			'config' => [
 				'html' => $html_input,
-				'row' => [
+				'oci_row' => [
 					'status' => 'completed',
 					'url' => 'http://example.org',
 					'lcp'      => 'not found',
 					'viewport' => json_encode( [
 					] ),
 				],
+				'lrc_row' => null,
 			],
 			'expected' => $html_output,
 		],
 		'shouldPreloadPictureTag1' => [
 			'config' => [
 				'html' => file_get_contents(__DIR__ . '/HTML/input_lcp_picture.php'),
-				'row' => [
+				'oci_row' => [
 					'status' => 'completed',
 					'url' => 'http://example.org',
 					'lcp' => json_encode( (object) [
@@ -339,13 +357,14 @@ return [
 					]),
 					'viewport' => json_encode ( [] ),
 				],
+				'lrc_row' => null,
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_picture.php'),
 		],
 		'shouldPreloadPictureTag2' => [
 			'config' => [
 				'html' => file_get_contents(__DIR__ . '/HTML/input_lcp_picture_2.php'),
-				'row' => [
+				'oci_row' => [
 					'status' => 'completed',
 					'url' => 'http://example.org',
 					'lcp' => json_encode( (object) [
@@ -368,13 +387,14 @@ return [
 					]),
 					'viewport' => json_encode ( [] ),
 				],
+				'lrc_row' => null,
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_picture_2.php'),
 		],
 		'shouldPreloadPictureTag3' => [
 			'config' => [
 				'html' => file_get_contents(__DIR__ . '/HTML/input_lcp_picture_3.php'),
-				'row' => [
+				'oci_row' => [
 					'status' => 'completed',
 					'url' => 'http://example.org',
 					'lcp' => json_encode( (object) [
@@ -397,13 +417,14 @@ return [
 					]),
 					'viewport' => json_encode ( [] ),
 				],
+				'lrc_row' => null,
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_picture_3.php'),
 		],
 		'shouldPreloadPictureTag4' => [
 			'config' => [
 				'html' => file_get_contents(__DIR__ . '/HTML/input_lcp_picture_4.php'),
-				'row' => [
+				'oci_row' => [
 					'status' => 'completed',
 					'url' => 'http://example.org',
 					'lcp' => json_encode( (object) [
@@ -424,6 +445,7 @@ return [
 					]),
 					'viewport' => json_encode ( [] ),
 				],
+				'lrc_row' => null,
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_picture_4.php'),
 		],
