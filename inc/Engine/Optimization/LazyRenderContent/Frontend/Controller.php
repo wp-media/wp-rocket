@@ -150,7 +150,7 @@ class Controller implements ControllerInterface {
 		 *
 		 * @param array $formats Array of elements
 		 */
-		$elements = wpm_apply_filters_typed( 'string', 'rocket_lrc_elements', $elements );
+		$elements = wpm_apply_filters_typed( 'array', 'rocket_lrc_elements', $elements );
 
 		$data['lrc_elements']  = implode( ', ', $elements );
 		$data['status']['lrc'] = $this->context->is_allowed();
