@@ -28,7 +28,7 @@ class Test_DisplaySuccessNotice extends TestCase {
 		$this->options     = Mockery::mock( Options_Data::class );
 		$this->beacon      = Mockery::mock( Beacon::class );
 		$this->atf_context = Mockery::mock( ContextInterface::class );
-		$this->notices     = new Notices( $this->options, $this->beacon, $this->atf_context );
+		$this->notices     = new Notices( $this->options, $this->beacon );
 
 		$this->stubTranslationFunctions();
 		$this->stubEscapeFunctions();
