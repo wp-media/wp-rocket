@@ -209,7 +209,7 @@
       }
     }
     _getLazyRenderElements() {
-      const elements = document.querySelectorAll(this.config.elements);
+      const elements = document.querySelectorAll(this.config.lrc_elements);
       if (elements.length <= 0) {
         return [];
       }
@@ -233,7 +233,7 @@
     _getElementDistance(element) {
       const rect = element.getBoundingClientRect();
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      return rect.top + scrollTop - (window.innerHeight || document.documentElement.clientHeight);
+      return Math.max(0, rect.top + scrollTop - (window.innerHeight || document.documentElement.clientHeight));
     }
     _skipElement(element) {
       const skipStrings = this.config.skipStrings || ["memex"];
@@ -256,15 +256,22 @@
         if (this._shouldSkipElement(element, this.config.exclusions || [])) {
           return;
         }
-        if ("No hash detected" !== hash) {
-          this.lazyRenderElements.push(hash);
+        if ("No hash detected" === hash) {
+          return;
         }
-        const style = distance > 1800 ? "color: green;" : distance === 0 ? "color: red;" : "";
-        console.log(`%c${"	".repeat(depth)}${element.tagName} (Depth: ${depth}, Distance from viewport top: ${distance}px)`, style);
-        const xpath = this._getXPath(element);
-        console.log(`%c${"	".repeat(depth)}Xpath: ${xpath}`, style);
-        console.log(`%c${"	".repeat(depth)}Location hash: ${hash}`, style);
-        console.log(`%c${"	".repeat(depth)}Dimensions Client Height: ${element.clientHeight}`, style);
+        const color = depth === 2 && distance >= this.config.lrc_threshold || element.parentElement && this._getElementDistance(element.parentElement) === 0 && distance >= this.config.lrc_threshold ? "green" : distance === 0 ? "red" : "";
+        this.logger.logColoredMessage(`${"	".repeat(depth)}${element.tagName} (Depth: ${depth}, Distance from viewport top: ${distance}px)`, color);
+        this.logger.logColoredMessage(`${"	".repeat(depth)}Location hash: ${hash}`, color);
+        this.logger.logColoredMessage(`${"	".repeat(depth)}Dimensions Client Height: ${element.clientHeight}`, color);
+        if (depth === 2 && distance >= this.config.lrc_threshold) {
+          this.lazyRenderElements.push(hash);
+          this.logger.logMessage(`Parent element at depth 2 with distance >= this.config.lrc_threshold pushed with hash: ${hash}`);
+          return;
+        }
+        if (element.parentElement && this._getElementDistance(element.parentElement) === 0 && distance >= this.config.lrc_threshold) {
+          this.lazyRenderElements.push(hash);
+          this.logger.logMessage(`Child element pushed with hash: ${hash}`);
+        }
       });
     }
     _getXPath(element) {
@@ -310,6 +317,12 @@
         return;
       }
       console.log(msg);
+    }
+    logColoredMessage(msg, color = "green") {
+      if (!this.enabled) {
+        return;
+      }
+      console.log(`%c${msg}`, `color: ${color};`);
     }
   };
   var Logger_default = Logger;
