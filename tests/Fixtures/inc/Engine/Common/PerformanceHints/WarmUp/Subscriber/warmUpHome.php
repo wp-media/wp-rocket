@@ -4,25 +4,19 @@ return [
 		'config'   => [
 			'wp_env' => 'production',
 			'remove_unused_css' => 0,
-			'is_allowed' => [1],
+			'factories' => [1],
 			'license_expired' => false,
-			'links' => [
-				'http://example.com/link1',
-				'http://example.com/link2',
-			],
+			'home_url' =>  'http://example.com/',
 		],
-		'expected' => 2,
+		'expected' => 1,
 	],
 	'testShouldNotCallSendToSaasWhenLicenseExpired' => [
 		'config'   => [
 			'wp_env' => 'production',
 			'remove_unused_css' => 0,
-			'is_allowed' => [1],
+			'factories' => [1],
 			'license_expired' => true,
-			'links' => [
-				'http://example.com/link1',
-				'http://example.com/link2',
-			],
+			'home_url' =>  'http://example.com/',
 		],
 		'expected' => 0,
 	],
@@ -30,12 +24,9 @@ return [
 		'config'   => [
 			'wp_env' => 'local',
 			'remove_unused_css' => 0,
-			'is_allowed' => [1],
+			'factories' => [1],
 			'license_expired' => false,
-			'links' => [
-				'http://example.com/link1',
-				'http://example.com/link2',
-			],
+			'home_url' =>  'http://example.com/',
 		],
 		'expected' => 0,
 	],
@@ -44,24 +35,18 @@ return [
 			'wp_env' => 'production',
 			'remove_unused_css' => 1,
 			'license_expired' => false,
-			'is_allowed' => [1],
-			'links' => [
-				'http://example.com/link1',
-				'http://example.com/link2',
-			],
+			'factories' => [1],
+			'home_url' =>  'http://example.com/',
 		],
 		'expected' => 0,
 	],
-	'testShouldNotCallSendToSaasWhenNotAllowed' => [
+	'testShouldNotCallSendToSaasWhenFactoriesAreEmpty' => [
 		'config'   => [
 			'wp_env' => 'production',
 			'remove_unused_css' => 0,
 			'license_expired' => false,
-			'is_allowed' => [],
-			'links' => [
-				'http://example.com/link1',
-				'http://example.com/link2',
-			],
+			'factories' => [],
+			'home_url' =>  'http://example.com/',
 		],
 		'expected' => 0,
 	],
