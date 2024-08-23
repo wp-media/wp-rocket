@@ -24,10 +24,12 @@ class Test_TruncateFromAdmin extends TestCase {
 
 		// Install in set_up_before_class because of exists() requiring not temporary table.
 		self::installAtfTable();
+		self::installLrcTable();
 	}
 
 	public static function tear_down_after_class() {
-		self::installAtfTable();
+		self::uninstallAtfTable();
+		self::uninstallLrcTable();
 
 		parent::tear_down_after_class();
 	}
