@@ -1,4 +1,4 @@
-name: Unit/Integration General tests Latest version
+name: Unit/Integration General tests Latest version with coverage
 
 on:
   pull_request:
@@ -81,7 +81,7 @@ jobs:
       run: sudo mysql -u root -proot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';"
 
     - name: Test
-      run: composer run-tests-general
+      run: composer run-tests-coverage
 
     - name: Code Coverage Report
       run: composer report-code-coverage
