@@ -24,10 +24,6 @@ trait AdminBarMenuTrait {
 			return;
 		}
 
-		if ( 'local' === wp_get_environment_type() ) {
-			return;
-		}
-
 		if ( ! is_admin() ) {
 			return;
 		}
@@ -67,9 +63,6 @@ trait AdminBarMenuTrait {
 		bool $context
 	) {
 		global $post;
-		if ( 'local' === wp_get_environment_type() && $context ) {
-			return;
-		}
 
 		if ( is_admin() ) {
 			return;
@@ -123,14 +116,6 @@ trait AdminBarMenuTrait {
 	 * @return void
 	 */
 	public function dashboard_button( bool $context, string $title, string $label, string $action, string $hover_text = '' ): void {
-		if (
-			'local' === wp_get_environment_type()
-			&&
-			$context
-		) {
-			return;
-		}
-
 		if ( ! $context ) {
 			return;
 		}

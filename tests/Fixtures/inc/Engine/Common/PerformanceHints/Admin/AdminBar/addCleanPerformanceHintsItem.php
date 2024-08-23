@@ -54,17 +54,6 @@ return [
 			'title' => 'Clear Performance Hints data',
 		],
 	],
-	'testShouldReturnNullWhenLocalEnvironment' => [
-		'config'   => [
-			'rocket_valid_key' 	=> true,
-			'environment'       => 'local',
-			'is_admin'          => false,
-			'atf_context'       => false,
-			'lrc_context'       => false,
-			'current_user_can'  => true,
-		],
-		'expected' => null,
-	],
 	'testShouldReturnNullWhenNotAdmin' => [
 		'config'   => [
 			'rocket_valid_key' 	=> true,
