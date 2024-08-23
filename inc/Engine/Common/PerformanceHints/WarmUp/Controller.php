@@ -66,7 +66,7 @@ class Controller {
 	 * @return bool
 	 */
 	private function is_allowed(): bool {
-		return (
+		return !(
 			'local' === wp_get_environment_type() ||
 			$this->user->is_license_expired_grace_period() ||
 			(bool) $this->options->get( 'remove_unused_css', 0 )
@@ -79,7 +79,7 @@ class Controller {
 	 * @return void
 	 */
 	public function warm_up_home(): void {
-		if ( $this->is_allowed() ) {
+		if ( ! $this->is_allowed() ) {
 			return;
 		}
 
@@ -97,7 +97,7 @@ class Controller {
 	 * @return void
 	 */
 	public function warm_up(): void {
-		if ( $this->is_allowed() ) {
+		if ( ! $this->is_allowed() ) {
 			return;
 		}
 
