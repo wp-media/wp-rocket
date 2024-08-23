@@ -10,7 +10,8 @@
     "watch:js": "gulp js:watch",
     "build:css": "gulp build:sass:all",
     "build:js": "gulp build:js:all",
-    "makepot": "wp i18n make-pot . languages/rocket.pot --headers='{\"Report-Msgid-Bugs-To\":\"http://wp-rocket.me/\",\"Last-Translator\": \"WP Media (http://wp-rocket.me/)\", \"Language-Team\": \"WP Media (http://www.transifex.com/projects/p/wp-media/) <contact@wp-media.me>\"}'"
+    "makepot": "wp i18n make-pot . languages/rocket.pot --headers='{\"Report-Msgid-Bugs-To\":\"http://wp-rocket.me/\",\"Last-Translator\": \"WP Media (http://wp-rocket.me/)\", \"Language-Team\": \"WP Media (http://www.transifex.com/projects/p/wp-media/) <contact@wp-media.me>\"}'",
+    "postinstall": "test -d node_modules/wp-rocket-scripts/dist || (cd node_modules/wp-rocket-scripts && npm install && npm run build)"
   },
   "author": "",
   "license": "ISC",
