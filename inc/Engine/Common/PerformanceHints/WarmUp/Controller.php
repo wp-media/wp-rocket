@@ -65,7 +65,7 @@ class Controller {
 	 *
 	 * @return bool
 	 */
-	private function should_terminate_early(): bool {
+	private function is_allowed(): bool {
 		return (
 			'local' === wp_get_environment_type() ||
 			$this->user->is_license_expired_grace_period() ||
@@ -79,7 +79,7 @@ class Controller {
 	 * @return void
 	 */
 	public function warm_up_home(): void {
-		if ( $this->should_terminate_early() ) {
+		if ( $this->is_allowed() ) {
 			return;
 		}
 
@@ -97,7 +97,7 @@ class Controller {
 	 * @return void
 	 */
 	public function warm_up(): void {
-		if ( $this->should_terminate_early() ) {
+		if ( $this->is_allowed() ) {
 			return;
 		}
 
