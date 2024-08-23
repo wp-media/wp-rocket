@@ -1,24 +1,23 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\Engine\Saas\Admin\AdminBar;
+namespace WP_Rocket\tests\Unit\inc\Engine\Common\PerformanceHints\Admin\AdminBar;
 
 use Mockery;
-use Brain\Monkey\Functions;
 use WP_Admin_Bar;
+use Brain\Monkey\Functions;
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\Common\Context\ContextInterface;
-use WP_Rocket\Engine\Saas\Admin\AdminBar;
+use WP_Rocket\Engine\Common\PerformanceHints\Admin\AdminBar;
+use WP_Rocket\Engine\Media\AboveTheFold\Factory as ATFFactory;
+use WP_Rocket\Engine\Optimization\LazyRenderContent\Factory;
 use WP_Rocket\Tests\Unit\TestCase;
+use WP_Rocket\Engine\Common\Context\ContextInterface;
 
 /**
- * @covers \WP_Rocket\Engine\Saas\Admin\AdminBar::add_clean_url_menu_item
- * @group  Saas
+ * @covers \WP_Rocket\Engine\Common\PerformanceHints\Admin\AdminBar::add_clear_url_performance_hints_menu_item
+ * @group  PerformanceHints
  */
-class Test_AddCleanUrlMenuItem extends TestCase {
-	private $admin_bar;
-	private $options;
-	private $atf_context;
-	private $rucss_url_context;
+class Test_AddPerformanceHintsClearUrlMenuItem extends TestCase {
+	private $factories;
 	private $wp_admin_bar;
 
 	public static function setUpBeforeClass(): void {
@@ -30,11 +29,14 @@ class Test_AddCleanUrlMenuItem extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->options           = Mockery::mock( Options_Data::class );
-		$this->atf_context       = Mockery::mock( ContextInterface::class );
-		$this->rucss_url_context = Mockery::mock( ContextInterface::class );
-		$this->admin_bar         = new AdminBar( $this->options, $this->rucss_url_context, '' );
-		$this->wp_admin_bar      = new WP_Admin_Bar();
+		$atf_factory        = $this->createMock(ATFFactory::class);
+		$lrc_factory        = $this->createMock(Factory::class);
+		$this->wp_admin_bar = new WP_Admin_Bar();
+
+		$this->factories = [
+			$atf_factory,
+			$lrc_factory
+		];
 
 		$this->stubTranslationFunctions();
 	}
@@ -49,6 +51,8 @@ class Test_AddCleanUrlMenuItem extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoExpected( $config, $expected ) {
+		$admin_bar = new AdminBar( $config['factories'] ? $this->factories : [], '' );
+
 		Functions\when( 'wp_get_environment_type' )
 			->justReturn( $config['environment'] );
 		Functions\when( 'is_admin' )
@@ -58,12 +62,6 @@ class Test_AddCleanUrlMenuItem extends TestCase {
 
 		Functions\when( 'rocket_can_display_options' )
 			->justReturn( $config['can_display_options'] );
-
-		$this->atf_context->shouldReceive( 'is_allowed' )
-			->andReturn( $config['atf_context'] );
-
-		$this->rucss_url_context->shouldReceive( 'is_allowed' )
-			->andReturn( $config['rucss_context'] );
 
 		Functions\when( 'wp_nonce_url' )->alias(
 			function ( $url ) {
@@ -77,9 +75,9 @@ class Test_AddCleanUrlMenuItem extends TestCase {
 			}
 		);
 
-		$this->admin_bar->add_clean_url_menu_item( $this->wp_admin_bar );
+		$admin_bar->add_clear_url_performance_hints_menu_item( $this->wp_admin_bar );
 
-		$node = $this->wp_admin_bar->get_node( 'clear-saas-url' );
+		$node = $this->wp_admin_bar->get_node( 'clear-performance-hints-data-url' );
 
 		if ( null === $expected ) {
 			$this->assertNull( $node );

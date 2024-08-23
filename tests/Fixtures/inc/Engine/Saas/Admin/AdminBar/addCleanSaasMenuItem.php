@@ -34,20 +34,6 @@ return [
 		],
 		'expected' => null,
 	],
-	'testShouldAddItemWithDefaultTitle' => [
-		'config'   => [
-			'rocket_valid_key' 	=> true,
-			'environment'       => 'production',
-			'is_admin'          => true,
-			'atf_context'       => true,
-			'remove_unused_css' => 0,
-			'current_user_can'  => true,
-		],
-		'expected' => [
-			'id'    => 'clean-saas',
-			'title' => 'Clear Critical Images',
-		],
-	],
 	'testShouldAddItemWithRUCSSTitle' => [
 		'config'   => [
 			'rocket_valid_key' 	=> true,
@@ -59,7 +45,7 @@ return [
 		],
 		'expected' => [
 			'id'    => 'clean-saas',
-			'title' => 'Clear Used CSS',
+			'title' => 'Clear RUCSS optimizations',
 		],
 	],
 ];
