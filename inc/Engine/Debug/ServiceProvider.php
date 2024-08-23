@@ -44,6 +44,11 @@ class ServiceProvider extends AbstractServiceProvider implements BootableService
 	public function boot(): void {
 		$this->services = $this->getContainer()->get( 'debug_resolver' )->get_services();
 
+		if ( ! $this->getContainer()->has('options_debug') ) {
+			$this->container->add( 'options_debug', Options_Data::class )
+				->addArgument( $this->container->get( 'options_api' )->get( 'debug', [] ) );
+		}
+
 		if ( empty( $this->services ) ) {
 			return;
 		}
@@ -65,8 +70,7 @@ class ServiceProvider extends AbstractServiceProvider implements BootableService
 			return;
 		}
 
-		$this->container->add( 'options_debug', Options_Data::class )
-			->addArgument( $this->container->get( 'options_api' )->get( 'debug', [] ) );
+
 
 		foreach ( $this->services as $service ) {
 			$this->getContainer()->add( $service['service'], $service['class'] )
