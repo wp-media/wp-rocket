@@ -209,7 +209,7 @@
       }
     }
     _getLazyRenderElements() {
-      const elements = document.querySelectorAll(this.config.elements);
+      const elements = document.querySelectorAll(this.config.lrc_elements);
       if (elements.length <= 0) {
         return [];
       }
@@ -259,16 +259,16 @@
         if ("No hash detected" === hash) {
           return;
         }
-        const color = depth === 2 && distance >= 1800 || element.parentElement && this._getElementDistance(element.parentElement) === 0 && distance >= 1800 ? "green" : distance === 0 ? "red" : "";
+        const color = depth === 2 && distance >= this.config.lrc_threshold || element.parentElement && this._getElementDistance(element.parentElement) === 0 && distance >= this.config.lrc_threshold ? "green" : distance === 0 ? "red" : "";
         this.logger.logColoredMessage(`${"	".repeat(depth)}${element.tagName} (Depth: ${depth}, Distance from viewport top: ${distance}px)`, color);
         this.logger.logColoredMessage(`${"	".repeat(depth)}Location hash: ${hash}`, color);
         this.logger.logColoredMessage(`${"	".repeat(depth)}Dimensions Client Height: ${element.clientHeight}`, color);
-        if (depth === 2 && distance >= 1800) {
+        if (depth === 2 && distance >= this.config.lrc_threshold) {
           this.lazyRenderElements.push(hash);
-          this.logger.logMessage(`Parent element at depth 2 with distance >= 1800 pushed with hash: ${hash}`);
+          this.logger.logMessage(`Parent element at depth 2 with distance >= this.config.lrc_threshold pushed with hash: ${hash}`);
           return;
         }
-        if (element.parentElement && this._getElementDistance(element.parentElement) === 0 && distance >= 1800) {
+        if (element.parentElement && this._getElementDistance(element.parentElement) === 0 && distance >= this.config.lrc_threshold) {
           this.lazyRenderElements.push(hash);
           this.logger.logMessage(`Child element pushed with hash: ${hash}`);
         }
