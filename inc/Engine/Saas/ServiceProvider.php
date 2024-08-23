@@ -42,14 +42,12 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function register(): void {
 		$this->getContainer()->add( 'sass_admin_bar', Adminbar::class )
 			->addArgument( $this->getContainer()->get( 'options' ) )
-			->addArgument( $this->getContainer()->get( 'atf_context' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_optimize_context' ) )
 			->addArgument( $this->getContainer()->get( 'template_path' ) . '/settings' );
 		$this->getContainer()->add( 'sass_clean', Clean::class );
 		$this->getContainer()->add( 'sass_notices', Notices::class )
 			->addArgument( $this->getContainer()->get( 'options' ) )
-			->addArgument( $this->getContainer()->get( 'beacon' ) )
-			->addArgument( $this->getContainer()->get( 'atf_context' ) );
+			->addArgument( $this->getContainer()->get( 'beacon' ) );
 		$this->getContainer()->addShared( 'saas_admin_subscriber', Subscriber::class )
 			->addArgument( $this->getContainer()->get( 'sass_admin_bar' ) )
 			->addArgument( $this->getContainer()->get( 'sass_clean' ) )

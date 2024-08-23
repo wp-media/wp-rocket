@@ -190,6 +190,116 @@
   };
   var BeaconLcp_default = BeaconLcp;
 
+  // src/BeaconLrc.js
+  var BeaconLrc = class {
+    constructor(config, logger) {
+      this.config = config;
+      this.logger = logger;
+      this.lazyRenderElements = [];
+    }
+    async run() {
+      try {
+        const elementsInView = this._getLazyRenderElements();
+        if (elementsInView) {
+          this._processElements(elementsInView);
+        }
+      } catch (err) {
+        this.errorCode = "script_error";
+        this.logger.logMessage("Script Error: " + err);
+      }
+    }
+    _getLazyRenderElements() {
+      const elements = document.querySelectorAll(this.config.elements);
+      if (elements.length <= 0) {
+        return [];
+      }
+      const validElements = Array.from(elements).filter((element) => !this._skipElement(element));
+      return validElements.map((element) => ({
+        element,
+        depth: this._getElementDepth(element),
+        distance: this._getElementDistance(element),
+        hash: this._getLocationHash(element)
+      }));
+    }
+    _getElementDepth(element) {
+      let depth = 0;
+      let parent = element.parentElement;
+      while (parent) {
+        depth++;
+        parent = parent.parentElement;
+      }
+      return depth;
+    }
+    _getElementDistance(element) {
+      const rect = element.getBoundingClientRect();
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      return rect.top + scrollTop - (window.innerHeight || document.documentElement.clientHeight);
+    }
+    _skipElement(element) {
+      const skipStrings = this.config.skipStrings || ["memex"];
+      if (!element || !element.id) return false;
+      return skipStrings.some((str) => element.id.toLowerCase().includes(str));
+    }
+    _shouldSkipElement(element, exclusions) {
+      if (!element) return false;
+      for (let i = 0; i < exclusions.length; i++) {
+        const [attribute, pattern] = exclusions[i];
+        const attributeValue = element.getAttribute(attribute);
+        if (attributeValue && new RegExp(pattern, "i").test(attributeValue)) {
+          return true;
+        }
+      }
+      return false;
+    }
+    _processElements(elements) {
+      elements.forEach(({ element, depth, distance, hash }) => {
+        if (this._shouldSkipElement(element, this.config.exclusions || [])) {
+          return;
+        }
+        if ("No hash detected" !== hash) {
+          this.lazyRenderElements.push(hash);
+        }
+        const style = distance > 1800 ? "color: green;" : distance === 0 ? "color: red;" : "";
+        console.log(`%c${"	".repeat(depth)}${element.tagName} (Depth: ${depth}, Distance from viewport top: ${distance}px)`, style);
+        const xpath = this._getXPath(element);
+        console.log(`%c${"	".repeat(depth)}Xpath: ${xpath}`, style);
+        console.log(`%c${"	".repeat(depth)}Location hash: ${hash}`, style);
+        console.log(`%c${"	".repeat(depth)}Dimensions Client Height: ${element.clientHeight}`, style);
+      });
+    }
+    _getXPath(element) {
+      if (element.id !== "") {
+        return `//*[@id="${element.id}"]`;
+      }
+      return this._getElementXPath(element);
+    }
+    _getElementXPath(element) {
+      if (element === document.body) {
+        return "/html/body";
+      }
+      const position = this._getElementPosition(element);
+      return `${this._getElementXPath(element.parentNode)}/${element.nodeName.toLowerCase()}[${position}]`;
+    }
+    _getElementPosition(element) {
+      let pos = 1;
+      let sibling = element.previousElementSibling;
+      while (sibling) {
+        if (sibling.nodeName === element.nodeName) {
+          pos++;
+        }
+        sibling = sibling.previousElementSibling;
+      }
+      return pos;
+    }
+    _getLocationHash(element) {
+      return element.hasAttribute("data-rocket-location-hash") ? element.getAttribute("data-rocket-location-hash") : "No hash detected";
+    }
+    getResults() {
+      return this.lazyRenderElements;
+    }
+  };
+  var BeaconLrc_default = BeaconLrc;
+
   // src/Logger.js
   var Logger = class {
     constructor(enabled) {
@@ -209,6 +319,7 @@
     constructor(config) {
       this.config = config;
       this.lcpBeacon = null;
+      this.lrcBeacon = null;
       this.infiniteLoopId = null;
       this.errorCode = "";
       this.logger = new Logger_default(this.config.debug);
@@ -223,16 +334,21 @@
         this._handleInfiniteLoop();
       }, 1e4);
       const isGeneratedBefore = await this._getGeneratedBefore();
-      let shouldSaveResultsIntoDB = false;
       const shouldGenerateLcp = this.config.status.atf && (isGeneratedBefore === false || isGeneratedBefore.lcp === false);
+      const shouldGeneratelrc = this.config.status.lrc && (isGeneratedBefore === false || isGeneratedBefore.lrc === false);
       if (shouldGenerateLcp) {
         this.lcpBeacon = new BeaconLcp_default(this.config, this.logger);
         await this.lcpBeacon.run();
-        shouldSaveResultsIntoDB = true;
       } else {
-        this.logger.logMessage("Not running BeaconLcp because data is already available");
+        this.logger.logMessage("Not running BeaconLcp because data is already available or feature is disabled");
       }
-      if (shouldSaveResultsIntoDB) {
+      if (shouldGeneratelrc) {
+        this.lrcBeacon = new BeaconLrc_default(this.config, this.logger);
+        await this.lrcBeacon.run();
+      } else {
+        this.logger.logMessage("Not running BeaconLrc because data is already available or feature is disabled");
+      }
+      if (shouldGenerateLcp || shouldGeneratelrc) {
         this._saveFinalResultIntoDB();
       } else {
         this.logger.logMessage("Not saving results into DB as no beacon features ran.");
@@ -268,7 +384,8 @@
     }
     _saveFinalResultIntoDB() {
       const results = {
-        lcp: this.lcpBeacon ? this.lcpBeacon.getResults() : null
+        lcp: this.lcpBeacon ? this.lcpBeacon.getResults() : null,
+        lrc: this.lrcBeacon ? this.lrcBeacon.getResults() : null
       };
       const data = new FormData();
       data.append("action", "rocket_beacon");
@@ -331,4 +448,5 @@
       }, rocket_beacon_data.delay);
     });
   })(window.rocket_beacon_data);
+  var BeaconEntryPoint_default = BeaconManager_default;
 })();

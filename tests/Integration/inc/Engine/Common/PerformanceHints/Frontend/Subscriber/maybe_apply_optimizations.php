@@ -20,10 +20,12 @@ class Test_maybe_apply_optimizations extends FilesystemTestCase {
 
 		// Install in set_up_before_class because of exists().
 		self::installAtfTable();
+		self::installLrcTable();
 	}
 
 	public static function tear_down_after_class() {
 		self::uninstallAtfTable();
+		self::uninstallLrcTable();
 
 		parent::tear_down_after_class();
 	}
@@ -47,8 +49,11 @@ class Test_maybe_apply_optimizations extends FilesystemTestCase {
 	public function testShouldReturnAsExpected( $config, $expected ) {
 		$this->config = $config;
 
-		if ( ! empty( $config['row'] ) ) {
-			self::addLcp( $config['row'] );
+		if ( ! empty( $config['atf']['row'] ) ) {
+			self::addLcp( $config['atf']['row'] );
+		}
+		if ( ! empty( $config['lrc']['row'] ) ) {
+			self::addLrc( $config['lrc']['row'] );
 		}
 
 		if ( isset( $config['filter_delay'] ) ) {

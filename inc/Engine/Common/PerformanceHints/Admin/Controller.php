@@ -126,7 +126,7 @@ class Controller {
 			'status'  => 'success',
 			'message' => sprintf(
 				// translators: %1$s = plugin name.
-				__( '%1$s: Critical images cleared!', 'rocket' ),
+				__( '%1$s: Critical images and Lazy Render data was cleared!', 'rocket' ),
 				'<strong>WP Rocket</strong>'
 			),
 		];
@@ -148,6 +148,13 @@ class Controller {
 			$parse_url = get_rocket_parse_url( untrailingslashit( home_url() ) );
 			$url       = $parse_url['scheme'] . '://' . $parse_url['host'] . $url;
 		}
+
+		/**
+		 * Fires after clearing performance hints data for specific url.
+		 *
+		 * @param string $url Current page URL.
+		 */
+		do_action( 'rocket_performance_hints_data_after_clearing', $url );
 
 		$this->delete_by_url( $url );
 	}

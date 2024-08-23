@@ -4,9 +4,15 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Common\PerformanceHints;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Engine\Common\PerformanceHints\Admin\{
+	Controller as AdminController,
+	Subscriber as AdminSubscriber,
+	AdminBar,
+	Clean,
+	Notices
+};
 use WP_Rocket\Engine\Common\PerformanceHints\AJAX\{Processor as AjaxProcessor, Subscriber as AjaxSubscriber};
 use WP_Rocket\Engine\Common\PerformanceHints\Frontend\{Processor as FrontendProcessor, Subscriber as FrontendSubscriber };
-use WP_Rocket\Engine\Common\PerformanceHints\Admin\{Controller as AdminController, Subscriber as AdminSubscriber};
 use WP_Rocket\Engine\Common\PerformanceHints\Cron\{Controller as CronController, Subscriber as CronSubscriber};
 use WP_Rocket\Engine\Common\PerformanceHints\WarmUp\{
 	APIClient,
@@ -14,6 +20,7 @@ use WP_Rocket\Engine\Common\PerformanceHints\WarmUp\{
 	Subscriber as WarmUpSubscriber,
 	Queue
 };
+use WP_Rocket\Engine\Optimization\LazyRenderContent\Context\Context as LRCContext;
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
@@ -38,6 +45,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		'performance_hints_warmup_queue',
 		'performance_hints_warmup_controller',
 		'performance_hints_warmup_subscriber',
+		'performance_hints_admin_bar',
+		'performance_hints_clean',
 	];
 
 	/**
@@ -62,6 +71,7 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		$factory_array = [
 			$this->getContainer()->get( 'atf_factory' ),
+			$this->getContainer()->get( 'lrc_factory' ),
 		];
 
 		foreach ( $factory_array as $factory ) {
@@ -104,10 +114,30 @@ class ServiceProvider extends AbstractServiceProvider {
 				]
 			);
 
+		$this->getContainer()->add( 'performance_hints_notices', Notices::class )
+			->addArguments(
+				[
+					$factories,
+				]
+			);
+
+		$this->getContainer()->add( 'performance_hints_admin_bar', Adminbar::class )
+			->addArguments(
+				[
+					$factories,
+					$this->getContainer()->get( 'template_path' ) . '/settings',
+				]
+			);
+
+		$this->getContainer()->add( 'performance_hints_clean', Clean::class );
+
 		$this->getContainer()->addShared( 'performance_hints_admin_subscriber', AdminSubscriber::class )
 			->addArguments(
 				[
 					$this->getContainer()->get( 'performance_hints_admin_controller' ),
+					$this->getContainer()->get( 'performance_hints_admin_bar' ),
+					$this->getContainer()->get( 'performance_hints_clean' ),
+					$this->getContainer()->get( 'performance_hints_notices' ),
 				]
 			);
 		$this->getContainer()->add( 'cron_controller', CronController::class )

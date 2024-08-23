@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Media\AboveTheFold\AJAX;
 
+use WP_Rocket\Engine\Common\PerformanceHints\AJAX\AJAXControllerTrait;
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Queries\AboveTheFold as ATFQuery;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Engine\Optimization\UrlTrait;
@@ -11,6 +12,7 @@ use WP_Rocket\Engine\Common\PerformanceHints\AJAX\ControllerInterface;
 
 class Controller implements ControllerInterface {
 	use UrlTrait;
+	use AJAXControllerTrait;
 
 	/**
 	 * ATFQuery instance
@@ -139,31 +141,6 @@ class Controller implements ControllerInterface {
 
 		$payload['lcp'] = $item;
 		return $payload;
-	}
-
-	/**
-	 * Get status code and message to be saved into the database
-	 *
-	 * @param string $status Current status code from $_POST.
-	 * @return array
-	 */
-	private function get_status_code_message( $status ) {
-		$status_code    = 'success' !== $status ? 'failed' : 'completed';
-		$status_message = '';
-
-		switch ( $status ) {
-			case 'script_error':
-				$status_message = esc_html__( 'Script error', 'rocket' );
-				break;
-			case 'timeout':
-				$status_message = esc_html__( 'Script timeout', 'rocket' );
-				break;
-		}
-
-		return [
-			$status_code,
-			$status_message,
-		];
 	}
 
 	/**
