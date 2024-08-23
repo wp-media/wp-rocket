@@ -1,7 +1,7 @@
 <?php
 
 return [
-	'testShouldReturnNullWhenLocalEnvironment' => [
+	'testShouldReturnMenuWhenLocalEnvironment' => [
 		'config'   => [
 			'environment'       => 'local',
 			'is_admin'          => false,
@@ -12,7 +12,10 @@ return [
 			'can_display_options' => true,
 			'factories'         => true,
 		],
-		'expected' => null,
+		'expected' => [
+			'id'    => 'clear-performance-hints-data-url',
+			'title' => 'Clear Performance Hints data of this URL',
+		],
 	],
 	'testShouldReturnNullWhenAdmin' => [
 		'config'   => [

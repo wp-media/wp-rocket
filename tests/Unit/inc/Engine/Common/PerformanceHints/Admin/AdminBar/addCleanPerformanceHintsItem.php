@@ -51,8 +51,6 @@ class Test_AddCleanPerformanceHintsItem extends TestCase {
 	public function testShouldDoExpected( $config, $expected ) {
 		Functions\when( 'rocket_valid_key' )
 			->justReturn( $config['rocket_valid_key'] );
-		Functions\when( 'wp_get_environment_type' )
-			->justReturn( $config['environment'] );
 		Functions\when( 'is_admin' )
 			->justReturn( $config['is_admin'] );
 

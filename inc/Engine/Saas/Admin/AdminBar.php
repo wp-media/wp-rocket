@@ -51,6 +51,10 @@ class AdminBar extends Abstract_Render {
 		$title  = __( 'Clear RUCSS optimizations', 'rocket' );
 		$action = 'rocket_clean_saas';
 
+		if ( 'local' === wp_get_environment_type() ) {
+			return;
+		}
+
 		if (
 			'local' === wp_get_environment_type()
 			&&
@@ -79,6 +83,10 @@ class AdminBar extends Abstract_Render {
 	 * @return void
 	 */
 	public function add_clean_url_menu_item( WP_Admin_Bar $wp_admin_bar ) {
+		if ( 'local' === wp_get_environment_type() && $this->rucss_url_context->is_allowed() ) {
+			return;
+		}
+
 		global $post;
 
 		/**
@@ -112,6 +120,14 @@ class AdminBar extends Abstract_Render {
 	 * @return void
 	 */
 	public function display_dashboard_button() {
+		if (
+			'local' === wp_get_environment_type()
+			&&
+			$this->rucss_url_context->is_allowed()
+		) {
+			return;
+		}
+
 		$this->dashboard_button(
 			$this->rucss_url_context->is_allowed(),
 			__( 'Remove Unused CSS', 'rocket' ),
