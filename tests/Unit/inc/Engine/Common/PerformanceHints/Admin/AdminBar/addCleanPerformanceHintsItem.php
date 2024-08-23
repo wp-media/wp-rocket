@@ -1,25 +1,27 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\Engine\Saas\Admin\AdminBar;
+namespace WP_Rocket\tests\Unit\inc\Engine\Common\PerformanceHints\Admin\AdminBar;
 
 use Mockery;
-use Brain\Monkey\Functions;
 use WP_Admin_Bar;
-use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\Common\Context\ContextInterface;
-use WP_Rocket\Engine\Saas\Admin\AdminBar;
+use Brain\Monkey\Functions;
+use WP_Rocket\Engine\Media\AboveTheFold\Factory as ATFFactory;
+use WP_Rocket\Engine\Optimization\LazyRenderContent\Factory;
 use WP_Rocket\Tests\Unit\TestCase;
+use WP_Rocket\Engine\Common\Context\ContextInterface;
+use WP_Rocket\Engine\Common\PerformanceHints\Admin\AdminBar;
 
 /**
- * @covers \WP_Rocket\Engine\Saas\Admin\AdminBar::add_clean_saas_menu_item
- * @group  Saas
+ * @covers \WP_Rocket\Engine\Common\PerformanceHints\Admin\AdminBar::add_clear_performance_menu_item
+ * @group  PerformanceHints
  */
-class Test_AddCleanSaasMenuItem extends TestCase {
+class Test_AddCleanPerformanceHintsItem extends TestCase {
 	private $admin_bar;
-	private $options;
 	private $atf_context;
-	private $rucss_url_context;
+	private $lrc_context;
+
 	private $wp_admin_bar;
+	private $factories;
 
 	public static function setUpBeforeClass(): void {
 		parent::setUpBeforeClass();
@@ -30,10 +32,15 @@ class Test_AddCleanSaasMenuItem extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->options           = Mockery::mock( Options_Data::class );
-		$this->rucss_url_context = Mockery::mock( ContextInterface::class );
-		$this->admin_bar         = new AdminBar( $this->options, $this->rucss_url_context, '' );
-		$this->wp_admin_bar      = new WP_Admin_Bar();
+		$atf_factory        = $this->createMock(ATFFactory::class);
+		$lrc_factory        = $this->createMock(Factory::class);
+		$this->wp_admin_bar = new WP_Admin_Bar();
+
+		$this->factories = [
+			$atf_factory,
+			$lrc_factory
+		];
+		$this->admin_bar = new AdminBar( $this->factories,'' );
 
 		$this->stubTranslationFunctions();
 	}
@@ -48,10 +55,6 @@ class Test_AddCleanSaasMenuItem extends TestCase {
 			->justReturn( $config['environment'] );
 		Functions\when( 'is_admin' )
 			->justReturn( $config['is_admin'] );
-
-		$this->options->shouldReceive( 'get' )
-			->with( 'remove_unused_css', 0 )
-			->andReturn( $config['remove_unused_css'] );
 
 		Functions\when( 'current_user_can' )
 			->justReturn( $config['current_user_can'] );
@@ -68,9 +71,9 @@ class Test_AddCleanSaasMenuItem extends TestCase {
 			}
 		);
 
-		$this->admin_bar->add_clean_saas_menu_item( $this->wp_admin_bar );
+		$this->admin_bar->add_clear_performance_menu_item( $this->wp_admin_bar );
 
-		$node = $this->wp_admin_bar->get_node( 'clean-saas' );
+		$node = $this->wp_admin_bar->get_node( 'clear-performance-hints' );
 
 		if ( null === $expected ) {
 			$this->assertNull( $node );

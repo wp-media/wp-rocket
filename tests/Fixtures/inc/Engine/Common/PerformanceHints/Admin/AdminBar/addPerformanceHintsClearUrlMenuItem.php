@@ -10,8 +10,7 @@ return [
 				'post_status' => 'publish',
 			],
 			'can_display_options' => true,
-			'atf_context'       => true,
-			'rucss_context' => true,
+			'factories'         => true,
 		],
 		'expected' => null,
 	],
@@ -24,8 +23,7 @@ return [
 				'post_status' => 'publish',
 			],
 			'can_display_options' => true,
-			'atf_context'       => true,
-			'rucss_context' => true,
+			'factories'         => true,
 		],
 		'expected' => null,
 	],
@@ -38,12 +36,11 @@ return [
 				'post_status' => 'draft',
 			],
 			'can_display_options' => false,
-			'atf_context'       => true,
-			'rucss_context' => true,
+			'factories'         => true,
 		],
 		'expected' => null,
 	],
-	'testShouldReturnNullWhenNotAllowed' => [
+	'testShouldReturnNullWhenFactoriesIsEmpty' => [
 		'config'   => [
 			'environment'       => 'production',
 			'is_admin'          => false,
@@ -52,12 +49,11 @@ return [
 				'post_status' => 'publish',
 			],
 			'can_display_options' => true,
-			'atf_context'       => false,
-			'rucss_context' => false,
+			'factories'         => false,
 		],
 		'expected' => null,
 	],
-	'testShouldAddItemWithRUCSSTitle' => [
+	'testShouldAddItemWithPerformanceHintsTitle' => [
 		'config'   => [
 			'environment'       => 'production',
 			'is_admin'          => false,
@@ -66,12 +62,11 @@ return [
 				'post_status' => 'publish',
 			],
 			'can_display_options' => true,
-			'atf_context'       => true,
-			'rucss_context' => true,
+			'factories'          => true,
 		],
 		'expected' => [
-			'id'    => 'clear-saas-url',
-			'title' => 'Clear RUCSS optimizations of this URL',
+			'id'    => 'clear-performance-hints-data-url',
+			'title' => 'Clear Performance Hints data of this URL',
 		],
 	],
 ];
