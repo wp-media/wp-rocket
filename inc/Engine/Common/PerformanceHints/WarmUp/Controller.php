@@ -66,7 +66,7 @@ class Controller {
 	 * @return bool
 	 */
 	private function is_allowed(): bool {
-		return !(
+		return ! (
 			'local' === wp_get_environment_type() ||
 			$this->user->is_license_expired_grace_period() ||
 			(bool) $this->options->get( 'remove_unused_css', 0 )
