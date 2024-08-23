@@ -159,6 +159,15 @@ class Controller implements ControllerInterface {
 		$data['lrc_elements']  = implode( ', ', $elements );
 		$data['status']['lrc'] = $this->context->is_allowed();
 
+		/**
+		 * Filters the LRC threshold
+		 *
+		 * @since 3.17
+		 *
+		 * @param int $threshold The LRC threshold value.
+		 */
+		$data['lrc_threshold'] = wpm_apply_filters_typed( 'integer', 'rocket_lrc_threshold', 1800 );
+
 		return $data;
 	}
 }

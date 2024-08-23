@@ -11,6 +11,7 @@ return [
 			'status'   => [
 				'lrc' => true,
 			],
+			'lrc_threshold' => 1800
 		],
 	],
 	'testShouldReturnDataWithNotAllowed' => [
@@ -23,6 +24,7 @@ return [
 			'status'   => [
 				'lrc' => false,
 			],
+			'lrc_threshold' => 1800,
 		],
 	],
 ];
