@@ -2,6 +2,8 @@
 
 $hashed = file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Optimization/LazyRenderContent/Frontend/Controller/hashed.html' );
 $expected = file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Optimization/LazyRenderContent/Frontend/Controller/expected.html' );
+$single_line_hashed = file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Optimization/LazyRenderContent/Frontend/Controller/single-line-hashed.html' );
+$single_line_expected = file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Optimization/LazyRenderContent/Frontend/Controller/expected-single-line.html' );
 
 return [
 	'testShouldReturnEarlyWhenNoDbEntry' => [
@@ -35,5 +37,13 @@ return [
 		],
 		'html'     => $hashed,
 		'expected' => $expected,
+	],
+	'testShouldReturnUpdatedHtmlForSingleLine' => [
+		'config'   => [
+			'has_lrc' => true,
+			'below_the_fold' => json_encode( [ '7b16eca0652d4703f83ba63e304f2030', '30c5235261141d2450dc033e5c78bbcc', 'b42afa69f728fcc707157eb61efa53cc' ] ),
+		],
+		'html'     => $single_line_hashed,
+		'expected' => $single_line_expected,
 	],
 ];

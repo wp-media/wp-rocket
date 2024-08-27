@@ -13,7 +13,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 /**
  * @group LRC
  */
-class TestOptimize extends TestCase {
+class Test_Optimize extends TestCase {
 	private $controller;
 
 	public function set_up() {
