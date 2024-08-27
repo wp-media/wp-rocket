@@ -30,14 +30,17 @@ trait HelperTrait {
 		 *
 		 * @param array|string[] $tags Tags to be processed.
 		 */
-		return wpm_apply_filters_typed( 'array', 'rocket_lazy_render_content_processed_tags', [
-			'DIV',
-			'MAIN',
-			'FOOTER',
-			'SECTION',
-			'ARTICLE',
-			'HEADER',
-		] );
+		return wpm_apply_filters_typed(
+			'array',
+			'rocket_lazy_render_content_processed_tags',
+			[
+				'DIV',
+				'MAIN',
+				'FOOTER',
+				'SECTION',
+				'ARTICLE',
+				'HEADER',
+			]
+		);
 	}
-
 }
