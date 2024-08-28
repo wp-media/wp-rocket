@@ -75,7 +75,7 @@ class Controller implements ControllerInterface {
 	 *
 	 * @return string
 	 */
-	private function remove_hashes( $html ) {
+	public function remove_hashes( $html ) {
 		$result = preg_replace( '/data-rocket-location-hash="[^"]*"/i', '', $html );
 
 		if ( null === $result ) {
