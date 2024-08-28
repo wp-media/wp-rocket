@@ -29,7 +29,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'rocket_buffer' => [ 'add_hashes', 16 ],
+			'rocket_buffer'                           => [ 'add_hashes', 16 ],
 			'rocket_critical_image_saas_visit_buffer' => [ 'add_hashes', 16 ],
 		];
 	}
