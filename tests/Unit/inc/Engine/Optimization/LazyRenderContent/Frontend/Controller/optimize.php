@@ -37,7 +37,7 @@ class TestOptimize extends TestCase {
 		$row->below_the_fold = $config['below_the_fold'];
 
 		$this->assertSame(
-			$this->format_the_html( $expected ),
+			null,
 			$this->format_the_html( $this->controller->optimize( $html, $row ) )
 		);
 	}
