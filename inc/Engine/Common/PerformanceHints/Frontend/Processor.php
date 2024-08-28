@@ -73,7 +73,7 @@ class Processor {
 			$html = $factory->get_frontend_controller()->optimize( $html, $row );
 		}
 
-		// Check if any optimizations were applied, if not, inject beacon.
+		// Check if all optimizations were applied: if not, inject beacon.
 		if ( ! $optimization_applied ) {
 			$html = $this->inject_beacon( $html, $url, $is_mobile );
 		}
