@@ -89,6 +89,7 @@ class Controller {
 	 * @return void
 	 */
 	public function delete_term( $term_id ) {
+
 		if ( empty( $this->factories ) ) {
 			return;
 		}
