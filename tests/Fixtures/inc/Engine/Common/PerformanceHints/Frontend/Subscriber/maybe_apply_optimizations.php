@@ -14,6 +14,8 @@ $html_input_with_relative_img_lcp = file_get_contents(__DIR__ . '/HTML/input_wit
 $html_input_with_absolute_img_lcp = file_get_contents(__DIR__ . '/HTML/input_with_absolute_img_lcp.html');
 $html_input_with_domain_img_lcp = file_get_contents(__DIR__ . '/HTML/input_lcp_image.html');
 $html_output_with_beacon_and_lcp_opt = file_get_contents(__DIR__ . '/HTML/output_with_beacon_and_atf_opt.html');
+$html_input_with_only_lrc_opt = file_get_contents(__DIR__ . '/HTML/input_with_only_lrc_opt.html');
+$html_output_with_beacon_and_only_lrc_opt = file_get_contents(__DIR__ . '/HTML/output_with_beacon_and_only_lrc_opt.html');
 
 $lrc = [
 	'row' => [
@@ -508,7 +510,7 @@ return [
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_picture_4.php'),
 		],
-		'ShouldAddBeaconToPageWhenOnlyOnePerformanceHintsFeatureIsNotInDB' => [
+		'ShouldAddBeaconToPageWhenOnlyLcpIsInDb' => [
 			'config' => [
 				'html' => $html_input_with_domain_img_lcp,
 				'atf' => [
@@ -527,6 +529,16 @@ return [
 				],
 			],
 			'expected' => $html_output_with_beacon_and_lcp_opt,
+		],
+		'ShouldAddBeaconToPageWhenOnlyLrcIsInDb' => [
+			'config' => [
+				'html' => $html_input_with_only_lrc_opt,
+				'atf' => [
+					'row' => null,
+				],
+				'lrc' => $lrc,
+			],
+			'expected' => $html_output_with_beacon_and_only_lrc_opt,
 		],
 	],
 ];
