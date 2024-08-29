@@ -91,6 +91,24 @@ class Controller {
 	}
 
 	/**
+	 * Should allow early if true.
+	 *
+	 * @return bool
+	 */
+	private function is_allowed(): bool {
+		$allowed = false;
+
+		foreach ( $this->factories as $factory ) {
+			if ( $factory->get_context()->is_allowed() ) {
+				$allowed = true;
+				break;
+			}
+		}
+
+		return $allowed;
+	}
+
+	/**
 	 * Deletes rows when triggering clean from admin
 	 *
 	 * @param array $clean An array containing the status and message.
@@ -98,7 +116,7 @@ class Controller {
 	 * @return array
 	 */
 	public function truncate_from_admin( $clean ) {
-		if ( empty( $this->factories ) ) {
+		if ( ! $this->is_allowed() ) {
 			return $clean;
 		}
 
@@ -160,7 +178,7 @@ class Controller {
 			return;
 		}
 
-		if ( empty( $this->factories ) ) {
+		if ( ! $this->is_allowed() ) {
 			return;
 		}
 

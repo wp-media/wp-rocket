@@ -110,7 +110,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'performance_hints_admin_controller', AdminController::class )
 			->addArguments(
 				[
-					$factories,
+					$factory_array,
 				]
 			);
 
