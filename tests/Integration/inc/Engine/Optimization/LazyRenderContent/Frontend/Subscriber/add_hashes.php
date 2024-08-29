@@ -2,18 +2,15 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\LazyRenderContent\Frontend\Subscriber;
 
-use WP_Rocket\Tests\Integration\inc\Engine\Optimization\TestCase;
+use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * Test class covering \WP_Rocket\Engine\CDN\Subscriber::rewrite
+ * Test class covering \WP_Rocket\Engine\Optimization\LazyRenderContent\Frontend\Subscriber::add_hashes()
  *
- * @uses \WP_Rocket\Engine\Optimization\LazyRenderContent\Frontend\Subscriber::add_hashes()
  * @group PerformanceHints
  */
 class Test_add_hashes extends TestCase
 {
-	protected $path_to_test_data = '/inc/Engine/Optimization/LazyRenderContent/Frontend/Subscriber/add_hashes.php';
-
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
 
@@ -42,7 +39,7 @@ class Test_add_hashes extends TestCase
 	}
 
 	/**
-	 * @dataProvider providerTestData
+	 * @dataProvider configTestData
 	 */
 	public function testShouldWorkAsExpected( $config, $expected ) {
 		self::addLrc($config['row']);
