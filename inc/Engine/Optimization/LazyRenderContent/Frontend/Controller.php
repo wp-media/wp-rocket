@@ -76,7 +76,7 @@ class Controller implements ControllerInterface {
 	 * @return string
 	 */
 	private function remove_hashes( $html ) {
-		$result = preg_replace( '/data-rocket-location-hash="(?:.*)"/i', '', $html );
+		$result = preg_replace( '/data-rocket-location-hash="[^"]*"/i', '', $html );
 
 		if ( null === $result ) {
 			return $html;
@@ -93,7 +93,7 @@ class Controller implements ControllerInterface {
 	 * @return string
 	 */
 	private function add_css( $html ) {
-		$css = '<style>[data-wpr-lazyrender] {content-visibility: auto;}</style>';
+		$css = '<style id="rocket-lazyrender-inline-css">[data-wpr-lazyrender] {content-visibility: auto;}</style>';
 
 		$result = preg_replace( '/<\/head>/i', $css . '</head>', $html, 1 );
 
