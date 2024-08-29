@@ -27,10 +27,6 @@ class Controller {
 	 * @return void
 	 */
 	public function truncate_tables() {
-		if ( empty( $this->factories ) ) {
-			return;
-		}
-
 		$this->delete_rows();
 	}
 
@@ -68,10 +64,6 @@ class Controller {
 	 * @return void
 	 */
 	public function delete_post( $post_id ) {
-		if ( empty( $this->factories ) ) {
-			return;
-		}
-
 		$url = get_permalink( $post_id );
 
 		if ( false === $url ) {
@@ -89,10 +81,6 @@ class Controller {
 	 * @return void
 	 */
 	public function delete_term( $term_id ) {
-		if ( empty( $this->factories ) ) {
-			return;
-		}
-
 		$url = get_term_link( (int) $term_id );
 
 		if ( is_wp_error( $url ) ) {
@@ -169,6 +157,10 @@ class Controller {
 	 */
 	public function truncate_on_update( $new_version, $old_version ) {
 		if ( version_compare( $old_version, '3.16.1', '>=' ) ) {
+			return;
+		}
+
+		if ( empty( $this->factories ) ) {
 			return;
 		}
 
