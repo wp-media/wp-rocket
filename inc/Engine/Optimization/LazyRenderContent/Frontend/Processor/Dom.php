@@ -7,6 +7,9 @@ use DOMDocument;
 use WP_Rocket\Logger\Logger;
 
 class Dom implements ProcessorInterface {
+
+	use HelperTrait;
+
 	/**
 	 * Add hashes to the HTML elements
 	 *
@@ -41,7 +44,7 @@ class Dom implements ProcessorInterface {
 			return $html;
 		}
 
-		$this->add_hash_to_element( $body, 2 );
+		$this->add_hash_to_element( $body, $this->get_depth() );
 
 		return $dom->saveHTML();
 	}
@@ -57,14 +60,7 @@ class Dom implements ProcessorInterface {
 			return;
 		}
 
-		$skip_tags = [
-			'DIV',
-			'MAIN',
-			'FOOTER',
-			'SECTION',
-			'ARTICLE',
-			'HEADER',
-		];
+		$processed_tags = $this->get_processed_tags();
 
 		static $count = 0;
 
@@ -76,7 +72,7 @@ class Dom implements ProcessorInterface {
 			if (
 				XML_ELEMENT_NODE !== $child->nodeType // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 				||
-				! in_array( strtoupper( $child->tagName ), $skip_tags, true ) // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+				! in_array( strtoupper( $child->tagName ), $processed_tags, true ) // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 			) {
 				continue;
 			}
