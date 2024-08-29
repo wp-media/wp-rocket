@@ -5,9 +5,13 @@ namespace WP_Rocket\Engine\Optimization\LazyRenderContent\Frontend;
 
 use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Engine\Common\PerformanceHints\Frontend\ControllerInterface;
+use WP_Rocket\Engine\Optimization\LazyRenderContent\Frontend\Processor\HelperTrait;
 use WP_Rocket\Engine\Optimization\LazyRenderContent\Frontend\Processor\Processor;
 
 class Controller implements ControllerInterface {
+
+	use HelperTrait;
+
 	/**
 	 * Processor instance
 	 *
@@ -138,25 +142,9 @@ class Controller implements ControllerInterface {
 	 * @return array
 	 */
 	public function add_custom_data( array $data ): array {
-		$elements = [
-			'div',
-			'main',
-			'footer',
-			'section',
-			'article',
-			'header',
-		];
+		$elements = $this->get_processed_tags();
 
-		/**
-		 * Filters the array of elements
-		 *
-		 * @since 3.17
-		 *
-		 * @param array $formats Array of elements
-		 */
-		$elements = wpm_apply_filters_typed( 'array', 'rocket_lrc_elements', $elements );
-
-		$data['lrc_elements']  = implode( ', ', $elements );
+		$data['lrc_elements']  = ! empty( $elements ) ? implode( ', ', $elements ) : '';
 		$data['status']['lrc'] = $this->context->is_allowed();
 
 		/**
