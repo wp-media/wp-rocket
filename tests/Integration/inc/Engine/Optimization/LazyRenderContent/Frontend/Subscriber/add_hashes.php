@@ -8,7 +8,7 @@ use WP_Rocket\Tests\Integration\inc\Engine\Optimization\TestCase;
  * Test class covering \WP_Rocket\Engine\CDN\Subscriber::rewrite
  *
  * @uses \WP_Rocket\Engine\Optimization\LazyRenderContent\Frontend\Subscriber::add_hashes()
- * @group LazyRenderContent
+ * @group PerformanceHints
  */
 class Test_add_hashes extends TestCase
 {
