@@ -209,7 +209,7 @@
       }
     }
     _getLazyRenderElements() {
-      const elements = document.querySelectorAll(this.config.lrc_elements);
+      const elements = document.querySelectorAll("[data-rocket-location-hash]");
       if (elements.length <= 0) {
         return [];
       }
@@ -233,7 +233,7 @@
     _getElementDistance(element) {
       const rect = element.getBoundingClientRect();
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      return Math.max(0, rect.top + scrollTop - (window.innerHeight || document.documentElement.clientHeight));
+      return Math.max(0, rect.top + scrollTop);
     }
     _skipElement(element) {
       const skipStrings = this.config.skipStrings || ["memex"];
@@ -259,18 +259,14 @@
         if ("No hash detected" === hash) {
           return;
         }
-        const color = depth === 2 && distance >= this.config.lrc_threshold || element.parentElement && this._getElementDistance(element.parentElement) === 0 && distance >= this.config.lrc_threshold ? "green" : distance === 0 ? "red" : "";
+        const can_push_hash = element.parentElement && this._getElementDistance(element.parentElement) < this.config.lrc_threshold && distance > this.config.lrc_threshold;
+        const color = can_push_hash ? "green" : distance === 0 ? "red" : "";
         this.logger.logColoredMessage(`${"	".repeat(depth)}${element.tagName} (Depth: ${depth}, Distance from viewport top: ${distance}px)`, color);
         this.logger.logColoredMessage(`${"	".repeat(depth)}Location hash: ${hash}`, color);
         this.logger.logColoredMessage(`${"	".repeat(depth)}Dimensions Client Height: ${element.clientHeight}`, color);
-        if (depth === 2 && distance >= this.config.lrc_threshold) {
+        if (can_push_hash) {
           this.lazyRenderElements.push(hash);
-          this.logger.logMessage(`Parent element at depth 2 with distance >= this.config.lrc_threshold pushed with hash: ${hash}`);
-          return;
-        }
-        if (element.parentElement && this._getElementDistance(element.parentElement) === 0 && distance >= this.config.lrc_threshold) {
-          this.lazyRenderElements.push(hash);
-          this.logger.logMessage(`Child element pushed with hash: ${hash}`);
+          this.logger.logMessage(`Element pushed with hash: ${hash}`);
         }
       });
     }

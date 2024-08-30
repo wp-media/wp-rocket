@@ -6,6 +6,9 @@ namespace WP_Rocket\Engine\Optimization\LazyRenderContent\Frontend\Processor;
 use WP_Rocket\Logger\Logger;
 
 class Regex implements ProcessorInterface {
+
+	use HelperTrait;
+
 	/**
 	 * Add hashes to the HTML elements
 	 *
@@ -34,16 +37,9 @@ class Regex implements ProcessorInterface {
 	 * @return string
 	 */
 	private function add_hash_to_element( $html, $element ) {
-		$skip_tags = [
-			'div',
-			'main',
-			'footer',
-			'section',
-			'article',
-			'header',
-		];
+		$processed_tags = $this->get_processed_tags();
 
-		$result = preg_match_all( '/(?><(' . implode( '|', $skip_tags ) . ')[^>]*>)/is', $element, $matches, PREG_SET_ORDER );
+		$result = preg_match_all( '/(?><(' . implode( '|', $processed_tags ) . ')[^>]*>)/is', $element, $matches, PREG_SET_ORDER );
 
 		if ( ! $result ) {
 			Logger::error( 'No elements found in the HTML content.', [ 'LazyRenderContent' ] );
