@@ -13,8 +13,7 @@ trait HelperTrait {
 	protected function get_depth() {
 		/**
 		 * Filter the depth integer value.
-		 * The actual applied depth in the source is the default + 1 after the body
-                 * or rocket_lazy_render_content_depth+1 after the body if the filter is set
+		 * The actual applied depth in the source is the default + 1 after the body or rocket_lazy_render_content_depth+1 after the body if the filter is set
 		 *
 		 * @param int $depth Depth value.
 		 */
