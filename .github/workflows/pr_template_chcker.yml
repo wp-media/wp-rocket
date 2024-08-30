@@ -1,0 +1,12 @@
+name: 'PR Template Checker'
+on: 
+  pull_request:
+    types: [edited, opened, synchronize, reopened]
+
+jobs:
+  task-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: wp-media/pr-checklist-action@master
+        with:
+          repo-token: "${{ secrets.PR_TEMPLATE_TOKEN }}"
