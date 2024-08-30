@@ -273,6 +273,23 @@ tests_add_filter(
 	}
 );
 
+tests_add_filter(
+	'wp_loaded',
+	function() {
+
+		if ( BootstrapManager::isGroup( 'PerformanceHints' ) ) {
+			return;
+		}
+		global $wpdb;
+
+		$table_name = $wpdb->prefix . 'wpr_above_the_fold';
+		$wpdb->query( "DROP TABLE IF EXISTS {$table_name}" );
+
+		$table_name = $wpdb->prefix . 'wpr_lazy_render_content';
+		$wpdb->query( "DROP TABLE IF EXISTS {$table_name}" );
+	}
+);
+
 // install WC.
 tests_add_filter(
 	'setup_theme',
