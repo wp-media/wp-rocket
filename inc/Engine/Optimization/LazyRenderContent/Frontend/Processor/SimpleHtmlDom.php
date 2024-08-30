@@ -9,6 +9,9 @@ use voku\helper\SimpleHtmlDomInterface;
 use WP_Rocket\Logger\Logger;
 
 class SimpleHtmlDom implements ProcessorInterface {
+
+	use HelperTrait;
+
 	/**
 	 * Add hashes to the HTML elements
 	 *
@@ -27,7 +30,7 @@ class SimpleHtmlDom implements ProcessorInterface {
 			return $html;
 		}
 
-		$this->add_hash_to_element( $body, 2 );
+		$this->add_hash_to_element( $body, $this->get_depth() );
 
 		return $dom->save();
 	}
@@ -43,19 +46,12 @@ class SimpleHtmlDom implements ProcessorInterface {
 			return;
 		}
 
-		$skip_tags = [
-			'DIV',
-			'MAIN',
-			'FOOTER',
-			'SECTION',
-			'ARTICLE',
-			'HEADER',
-		];
+		$processed_tags = $this->get_processed_tags();
 
 		static $count = 0;
 
 		foreach ( $element->childNodes() as $child ) {
-			if ( ! in_array( strtoupper( $child->getTag() ), $skip_tags, true ) ) {
+			if ( ! in_array( strtoupper( $child->getTag() ), $processed_tags, true ) ) {
 				continue;
 			}
 

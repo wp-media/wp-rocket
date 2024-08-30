@@ -7,7 +7,6 @@ return [
 		],
 		'data'     => [],
 		'expected' => [
-			'lrc_elements' => 'div, main, footer, section, article, header',
 			'status'   => [
 				'lrc' => true,
 			],
@@ -20,7 +19,6 @@ return [
 		],
 		'data'     => [],
 		'expected' => [
-			'lrc_elements' => 'div, main, footer, section, article, header',
 			'status'   => [
 				'lrc' => false,
 			],

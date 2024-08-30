@@ -76,7 +76,7 @@ class Controller implements ControllerInterface {
 	 * @return string
 	 */
 	private function remove_hashes( $html ) {
-		$result = preg_replace( '/data-rocket-location-hash="(?:.*)"/i', '', $html );
+		$result = preg_replace( '/data-rocket-location-hash="[^"]*"/i', '', $html );
 
 		if ( null === $result ) {
 			return $html;
@@ -93,7 +93,7 @@ class Controller implements ControllerInterface {
 	 * @return string
 	 */
 	private function add_css( $html ) {
-		$css = '<style>[data-wpr-lazyrender] {content-visibility: auto;}</style>';
+		$css = '<style id="rocket-lazyrender-inline-css">[data-wpr-lazyrender] {content-visibility: auto;}</style>';
 
 		$result = preg_replace( '/<\/head>/i', $css . '</head>', $html, 1 );
 
@@ -138,25 +138,6 @@ class Controller implements ControllerInterface {
 	 * @return array
 	 */
 	public function add_custom_data( array $data ): array {
-		$elements = [
-			'div',
-			'main',
-			'footer',
-			'section',
-			'article',
-			'header',
-		];
-
-		/**
-		 * Filters the array of elements
-		 *
-		 * @since 3.17
-		 *
-		 * @param array $formats Array of elements
-		 */
-		$elements = wpm_apply_filters_typed( 'array', 'rocket_lrc_elements', $elements );
-
-		$data['lrc_elements']  = implode( ', ', $elements );
 		$data['status']['lrc'] = $this->context->is_allowed();
 
 		/**
