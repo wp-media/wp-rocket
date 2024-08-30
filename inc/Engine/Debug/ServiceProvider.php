@@ -15,7 +15,6 @@ class ServiceProvider extends AbstractServiceProvider implements BootableService
 	 */
 	protected $provides = [
 		'debug_subscriber',
-		'options_debug',
 	];
 
 	/**
