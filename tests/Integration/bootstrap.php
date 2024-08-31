@@ -280,13 +280,12 @@ tests_add_filter(
 		if ( BootstrapManager::isGroup( 'PerformanceHints' ) ) {
 			return;
 		}
-		global $wpdb;
+		$container = apply_filters( 'rocket_container', null );
+		$atf_table = $container->get( 'atf_table' );
+		$atf_table->uninstall();
 
-		$table_name = $wpdb->prefix . 'wpr_above_the_fold';
-		$wpdb->query( "DROP TABLE IF EXISTS {$table_name}" );
-
-		$table_name = $wpdb->prefix . 'wpr_lazy_render_content';
-		$wpdb->query( "DROP TABLE IF EXISTS {$table_name}" );
+		$lrc_table = $container->get( 'lrc_table' );
+		$lrc_table->uninstall();
 	}
 );
 
