@@ -92,7 +92,7 @@ class LazyRenderContent extends Row {
 	/**
 	 * Checks if the object has a valid LRC (Lazy Render Content) value.
 	 *
-	 * @return bool Returns true if the object's status is 'completed' and the Below the fold value is not empty or 'not found', false otherwise.
+	 * @return bool Returns true if the object's status is 'completed' and the Below the fold value is not empty or '[]', false otherwise.
 	 */
 	public function has_lrc() {
 		if ( 'completed' !== $this->status ) {
@@ -103,7 +103,7 @@ class LazyRenderContent extends Row {
 			return false;
 		}
 
-		if ( 'not found' === $this->below_the_fold ) {
+		if ( '[]' === $this->below_the_fold ) {
 			return false;
 		}
 

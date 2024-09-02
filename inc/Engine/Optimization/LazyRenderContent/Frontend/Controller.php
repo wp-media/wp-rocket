@@ -42,14 +42,15 @@ class Controller implements ControllerInterface {
 	 * @return string
 	 */
 	public function optimize( string $html, $row ): string {
+		$html_without_hashes = $this->remove_hashes( $html );
 		if ( ! $row->has_lrc() ) {
-			return $html;
+			return $html_without_hashes;
 		}
 
 		$hashes = json_decode( $row->below_the_fold );
 
 		if ( null === $hashes || ! is_array( $hashes ) ) {
-			return $html;
+			return $html_without_hashes;
 		}
 
 		$result = preg_replace( '/data-rocket-location-hash="(?:' . implode( '|', $hashes ) . ')"/i', 'data-wpr-lazyrender="1"', $html, -1, $count );
@@ -59,7 +60,7 @@ class Controller implements ControllerInterface {
 			||
 			0 === $count
 		) {
-			return $html;
+			return $html_without_hashes;
 		}
 
 		$html = $result;
