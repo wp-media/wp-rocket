@@ -273,6 +273,22 @@ tests_add_filter(
 	}
 );
 
+tests_add_filter(
+	'wp_loaded',
+	function() {
+
+		if ( BootstrapManager::isGroup( 'PerformanceHints' ) ) {
+			return;
+		}
+		$container = apply_filters( 'rocket_container', null );
+		$atf_table = $container->get( 'atf_table' );
+		$atf_table->uninstall();
+
+		$lrc_table = $container->get( 'lrc_table' );
+		$lrc_table->uninstall();
+	}
+);
+
 // install WC.
 tests_add_filter(
 	'setup_theme',
