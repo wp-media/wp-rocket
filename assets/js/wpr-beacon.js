@@ -1,9 +1,15 @@
 (() => {
   // src/Utils.js
   var BeaconUtils = class {
+    static getScreenWidth() {
+      return window.innerWidth || document.documentElement.clientWidth;
+    }
+    static getScreenHeight() {
+      return window.innerHeight || document.documentElement.clientHeight;
+    }
     static isNotValidScreensize(is_mobile, threshold) {
-      const screenWidth = window.innerWidth || document.documentElement.clientWidth;
-      const screenHeight = window.innerHeight || document.documentElement.clientHeight;
+      const screenWidth = this.getScreenWidth();
+      const screenHeight = this.getScreenHeight();
       const isNotValidForMobile = is_mobile && (screenWidth > threshold.width || screenHeight > threshold.height);
       const isNotValidForDesktop = !is_mobile && (screenWidth < threshold.width || screenHeight < threshold.height);
       return isNotValidForMobile || isNotValidForDesktop;
@@ -233,7 +239,7 @@
     _getElementDistance(element) {
       const rect = element.getBoundingClientRect();
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      return Math.max(0, rect.top + scrollTop);
+      return Math.max(0, rect.top + scrollTop - Utils_default.getScreenHeight());
     }
     _skipElement(element) {
       const skipStrings = this.config.skipStrings || ["memex"];
