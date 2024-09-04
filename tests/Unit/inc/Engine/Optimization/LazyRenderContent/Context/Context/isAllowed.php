@@ -24,7 +24,7 @@ class TestIsAllowed extends TestCase {
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
 		Functions\when( 'get_option' )->justReturn( $config['licence'] );
-		Filters\expectApplied( 'rocket_lazy_render_content_optimization' )
+		Filters\expectApplied( 'rocket_lrc_optimization' )
 			->andReturn( $config['filter'] );
 
 		$this->assertSame(
