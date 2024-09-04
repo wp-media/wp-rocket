@@ -265,9 +265,9 @@
         if ("No hash detected" === hash) {
           return;
         }
-        const can_push_hash = element.parentElement && this._getElementDistance(element.parentElement) < this.config.lrc_threshold && distance > this.config.lrc_threshold;
+        const can_push_hash = element.parentElement && this._getElementDistance(element.parentElement) < this.config.lrc_threshold && distance >= this.config.lrc_threshold;
         const color = can_push_hash ? "green" : distance === 0 ? "red" : "";
-        this.logger.logColoredMessage(`${"	".repeat(depth)}${element.tagName} (Depth: ${depth}, Distance from viewport top: ${distance}px)`, color);
+        this.logger.logColoredMessage(`${"	".repeat(depth)}${element.tagName} (Depth: ${depth}, Distance from viewport bottom: ${distance}px)`, color);
         this.logger.logColoredMessage(`${"	".repeat(depth)}Location hash: ${hash}`, color);
         this.logger.logColoredMessage(`${"	".repeat(depth)}Dimensions Client Height: ${element.clientHeight}`, color);
         if (can_push_hash) {
