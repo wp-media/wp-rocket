@@ -117,6 +117,7 @@ class Dom implements ProcessorInterface {
 			}
 			// Replace the opening tag in the HTML by the manipulated one
 			// If DOMDocument automatically modified the original element, we might not find it in the HTML.
+			// Known issue: if there is an element with the exact same opening tag before in the HTML that did not receive a hash, it will replaced instead of the correct element in the HTML.
 			$element_replacements = 0;
 			$modified_html        = preg_replace( '/' . preg_quote( $opening_tag_html, '/' ) . '/', $replace, $html, 1, $element_replacements );
 			if ( $element_replacements < 1 ) {
