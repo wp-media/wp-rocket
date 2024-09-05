@@ -1,9 +1,15 @@
 (() => {
   // src/Utils.js
   var BeaconUtils = class {
+    static getScreenWidth() {
+      return window.innerWidth || document.documentElement.clientWidth;
+    }
+    static getScreenHeight() {
+      return window.innerHeight || document.documentElement.clientHeight;
+    }
     static isNotValidScreensize(is_mobile, threshold) {
-      const screenWidth = window.innerWidth || document.documentElement.clientWidth;
-      const screenHeight = window.innerHeight || document.documentElement.clientHeight;
+      const screenWidth = this.getScreenWidth();
+      const screenHeight = this.getScreenHeight();
       const isNotValidForMobile = is_mobile && (screenWidth > threshold.width || screenHeight > threshold.height);
       const isNotValidForDesktop = !is_mobile && (screenWidth < threshold.width || screenHeight < threshold.height);
       return isNotValidForMobile || isNotValidForDesktop;
@@ -233,7 +239,7 @@
     _getElementDistance(element) {
       const rect = element.getBoundingClientRect();
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      return Math.max(0, rect.top + scrollTop);
+      return Math.max(0, rect.top + scrollTop - Utils_default.getScreenHeight());
     }
     _skipElement(element) {
       const skipStrings = this.config.skipStrings || ["memex"];
@@ -259,9 +265,9 @@
         if ("No hash detected" === hash) {
           return;
         }
-        const can_push_hash = element.parentElement && this._getElementDistance(element.parentElement) < this.config.lrc_threshold && distance > this.config.lrc_threshold;
+        const can_push_hash = element.parentElement && this._getElementDistance(element.parentElement) < this.config.lrc_threshold && distance >= this.config.lrc_threshold;
         const color = can_push_hash ? "green" : distance === 0 ? "red" : "";
-        this.logger.logColoredMessage(`${"	".repeat(depth)}${element.tagName} (Depth: ${depth}, Distance from viewport top: ${distance}px)`, color);
+        this.logger.logColoredMessage(`${"	".repeat(depth)}${element.tagName} (Depth: ${depth}, Distance from viewport bottom: ${distance}px)`, color);
         this.logger.logColoredMessage(`${"	".repeat(depth)}Location hash: ${hash}`, color);
         this.logger.logColoredMessage(`${"	".repeat(depth)}Dimensions Client Height: ${element.clientHeight}`, color);
         if (can_push_hash) {
