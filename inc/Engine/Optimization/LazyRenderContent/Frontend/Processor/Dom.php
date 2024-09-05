@@ -44,9 +44,8 @@ class Dom implements ProcessorInterface {
 			return $html;
 		}
 
-		$this->add_hash_to_element( $body, $this->get_depth() );
 
-		return $dom->saveHTML();
+		return $this->add_hash_to_element( $body, $this->get_depth(), $html );
 	}
 
 	/**
@@ -54,10 +53,12 @@ class Dom implements ProcessorInterface {
 	 *
 	 * @param \DOMElement $element The element to add the hash to.
 	 * @param int         $depth   The depth of the recursion.
+	 * 
+	 * @return string
 	 */
-	private function add_hash_to_element( $element, $depth ) {
+	private function add_hash_to_element( $element, $depth, $html ) {
 		if ( $depth < 0 ) {
-			return;
+			return $html;
 		}
 
 		$processed_tags = $this->get_processed_tags();
@@ -85,11 +86,23 @@ class Dom implements ProcessorInterface {
 
 			++$count;
 
-			// Add the data-rocket-location-hash attribute.
-			$child->setAttribute( 'data-rocket-location-hash', $hash );
+			// Inject the hash as an attribute in the opening tag
+			$replace = preg_replace( '/' . $child->tagName . '/is', '$0 data-rocket-location-hash="' . $hash . '"', $opening_tag_html, 1 );
+			if ( is_null( $replace ) ) {
+				continue;
+			}
+			// Replace the opening tag in the HTML by the manipulated one
+			// If DOMDocument automatically modified the original element, we might not find it in the HTML.
+			$modified_html = preg_replace( '/' . preg_quote( $opening_tag_html, '/' ) . '/', $replace, $html, 1 );
+			if ( is_null( $modified_html ) ) {
+				continue;
+			}
+			$html = $modified_html;
 
 			// Recursively process child elements.
-			$this->add_hash_to_element( $child, $depth - 1 );
+			$html = $this->add_hash_to_element( $child, $depth - 1, $html );
 		}
+
+		return $html;
 	}
 }
