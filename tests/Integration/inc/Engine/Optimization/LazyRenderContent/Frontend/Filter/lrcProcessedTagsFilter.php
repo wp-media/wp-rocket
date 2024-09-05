@@ -14,7 +14,7 @@ use ReflectionClass;
 class Test_lrcProcessedTagsFilter extends TestCase
 {
 	public function testShouldReturnAsExpected() {
-		add_filter( 'rocket_lazy_render_content_processed_tags', function( $tags ) {
+		add_filter( 'rocket_lrc_processed_tags', function( $tags ) {
 			$tags[]= 'h2';
 			$tags[]= 'h1';
 			$tags[]= 'li';

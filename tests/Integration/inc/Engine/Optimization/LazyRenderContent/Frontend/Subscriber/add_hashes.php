@@ -33,7 +33,7 @@ class Test_add_hashes extends TestCase
 	public function tear_down()
 	{
 		$this->restoreWpHook('rocket_critical_image_saas_visit_buffer');
-		remove_filter( 'rocket_lazy_render_content_optimization', '__return_false' );
+		remove_filter( 'rocket_lrc_optimization', '__return_false' );
 
 		parent::tear_down();
 	}
@@ -44,7 +44,7 @@ class Test_add_hashes extends TestCase
 	public function testShouldWorkAsExpected( $config, $expected ) {
 		self::addLrc($config['row']);
 
-		add_filter( 'rocket_lazy_render_content_optimization', '__return_true' );
+		add_filter( 'rocket_lrc_optimization', '__return_true' );
 
 		$this->assertSame(
 			$expected['html'],
