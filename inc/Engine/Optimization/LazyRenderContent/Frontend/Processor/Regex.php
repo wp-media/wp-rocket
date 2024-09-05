@@ -44,7 +44,7 @@ class Regex implements ProcessorInterface {
 		}
 
 		$this->max_hashes = $this->get_max_tags();
-		$this->count = 0;
+		$this->count      = 0;
 
 		return $this->add_hash_to_element( $html, $matches[0] );
 	}

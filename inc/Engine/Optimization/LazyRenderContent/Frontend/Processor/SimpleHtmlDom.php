@@ -49,7 +49,7 @@ class SimpleHtmlDom implements ProcessorInterface {
 		}
 
 		$this->max_hashes = $this->get_max_tags();
-		$this->count = 0;
+		$this->count      = 0;
 
 		$this->add_hash_to_element( $body, $this->get_depth() );
 
@@ -70,7 +70,7 @@ class SimpleHtmlDom implements ProcessorInterface {
 		$processed_tags = $this->get_processed_tags();
 
 		foreach ( $element->childNodes() as $child ) {
-			
+
 			if ( $this->count >= $this->max_hashes ) {
 				return;
 			}
