@@ -21,6 +21,21 @@ trait HelperTrait {
 	}
 
 	/**
+	 * Get filtered element maximum count.
+	 *
+	 * @return int
+	 */
+	protected function get_max_tags() {
+		/**
+		 * Filter the maximal number of processed tags.
+		 * High values allow to process more elements but expose to a risk of performance issue because of the regex replacement process.
+		 *
+		 * @param int $depth Depth value.
+		 */
+		return wpm_apply_filters_typed( 'integer', 'rocket_lrc_max_hashes', 200 );
+	}
+
+	/**
 	 * Get processed tags.
 	 *
 	 * @return array|string[]

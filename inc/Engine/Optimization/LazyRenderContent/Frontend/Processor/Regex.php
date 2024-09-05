@@ -10,6 +10,24 @@ class Regex implements ProcessorInterface {
 	use HelperTrait;
 
 	/**
+	 * Number of injects hashes.
+	 *
+	 * @since 3.6
+	 *
+	 * @var int
+	 */
+	private $count;
+
+	/**
+	 * Maximum number of hashes to inject.
+	 *
+	 * @since 3.6
+	 *
+	 * @var int
+	 */
+	private $max_hashes;
+
+	/**
 	 * Add hashes to the HTML elements
 	 *
 	 * @param string $html The HTML content.
@@ -24,6 +42,9 @@ class Regex implements ProcessorInterface {
 
 			return $html;
 		}
+
+		$this->max_hashes = $this->get_max_tags();
+		$this->count = 0;
 
 		return $this->add_hash_to_element( $html, $matches[0] );
 	}
@@ -47,15 +68,18 @@ class Regex implements ProcessorInterface {
 			return $html;
 		}
 
-		$count = 0;
-
 		foreach ( $matches as $child ) {
+
+			if ( $this->count >= $this->max_hashes ) {
+				return $html;
+			}
+
 			// Calculate the hash of the opening tag.
 			$opening_tag_html = strstr( $child[0], '>', true ) . '>';
 
-			$hash = md5( $opening_tag_html . $count );
+			$hash = md5( $opening_tag_html . $this->count );
 
-			++$count;
+			++$this->count;
 
 			// Add the data-rocket-location-hash attribute.
 			$replace = preg_replace( '/' . $child[1] . '/is', '$0 data-rocket-location-hash="' . $hash . '"', $child[0], 1 );

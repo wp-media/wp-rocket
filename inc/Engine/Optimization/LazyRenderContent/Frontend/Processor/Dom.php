@@ -11,6 +11,24 @@ class Dom implements ProcessorInterface {
 	use HelperTrait;
 
 	/**
+	 * Number of injects hashes.
+	 *
+	 * @since 3.6
+	 *
+	 * @var int
+	 */
+	private $count;
+
+	/**
+	 * Maximum number of hashes to inject.
+	 *
+	 * @since 3.6
+	 *
+	 * @var int
+	 */
+	private $max_hashes;
+
+	/**
 	 * Add hashes to the HTML elements
 	 *
 	 * @param string $html The HTML content.
@@ -44,6 +62,8 @@ class Dom implements ProcessorInterface {
 			return $html;
 		}
 
+		$this->max_hashes = $this->get_max_tags();
+		$this->count = 0;
 
 		return $this->add_hash_to_element( $body, $this->get_depth(), $html );
 	}
@@ -63,9 +83,12 @@ class Dom implements ProcessorInterface {
 
 		$processed_tags = $this->get_processed_tags();
 
-		static $count = 0;
-
 		foreach ( $element->childNodes as $child ) { // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+			
+			if ( $this->count >= $this->max_hashes ) {
+				return $html;
+			}
+
 			if ( ! $child instanceof \DOMElement ) {
 				continue;
 			}
@@ -82,9 +105,9 @@ class Dom implements ProcessorInterface {
 			$child_html       = $child->ownerDocument->saveHTML( $child ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 			$opening_tag_html = strstr( $child_html, '>', true ) . '>';
 
-			$hash = md5( $opening_tag_html . $count );
+			$hash = md5( $opening_tag_html . $this->count );
 
-			++$count;
+			++$this->count;
 
 			// Inject the hash as an attribute in the opening tag
 			$replace = preg_replace( '/' . $child->tagName . '/is', '$0 data-rocket-location-hash="' . $hash . '"', $opening_tag_html, 1 );

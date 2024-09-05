@@ -13,6 +13,24 @@ class SimpleHtmlDom implements ProcessorInterface {
 	use HelperTrait;
 
 	/**
+	 * Number of injects hashes.
+	 *
+	 * @since 3.6
+	 *
+	 * @var int
+	 */
+	private $count;
+
+	/**
+	 * Maximum number of hashes to inject.
+	 *
+	 * @since 3.6
+	 *
+	 * @var int
+	 */
+	private $max_hashes;
+
+	/**
 	 * Add hashes to the HTML elements
 	 *
 	 * @param string $html The HTML content.
@@ -29,6 +47,9 @@ class SimpleHtmlDom implements ProcessorInterface {
 
 			return $html;
 		}
+
+		$this->max_hashes = $this->get_max_tags();
+		$this->count = 0;
 
 		$this->add_hash_to_element( $body, $this->get_depth() );
 
@@ -48,9 +69,12 @@ class SimpleHtmlDom implements ProcessorInterface {
 
 		$processed_tags = $this->get_processed_tags();
 
-		static $count = 0;
-
 		foreach ( $element->childNodes() as $child ) {
+			
+			if ( $this->count >= $this->max_hashes ) {
+				return;
+			}
+
 			if ( ! in_array( strtoupper( $child->getTag() ), $processed_tags, true ) ) {
 				continue;
 			}
@@ -59,9 +83,9 @@ class SimpleHtmlDom implements ProcessorInterface {
 			$child_html       = $child->html();
 			$opening_tag_html = strstr( $child_html, '>', true ) . '>';
 
-			$hash = md5( $opening_tag_html . $count );
+			$hash = md5( $opening_tag_html . $this->count );
 
-			++$count;
+			++$this->count;
 
 			// Add the data-rocket-location-hash attribute.
 			$child->setAttribute( 'data-rocket-location-hash', $hash );
