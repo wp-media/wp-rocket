@@ -32,7 +32,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_buffer'                   => [ 'add_hashes', 16 ],
 			'rocket_performance_hints_buffer' => [
 				[ 'add_hashes', 16 ],
-				[ 'add_hashes_query_string', 16 ],
+				[ 'add_hashes_query_string', 17 ],
 			],
 		];
 	}
