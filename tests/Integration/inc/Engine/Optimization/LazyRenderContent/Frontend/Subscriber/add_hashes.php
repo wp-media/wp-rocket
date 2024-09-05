@@ -11,6 +11,8 @@ use WP_Rocket\Tests\Integration\TestCase;
  */
 class Test_add_hashes extends TestCase
 {
+	private $max_hashes;
+
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
 
@@ -28,12 +30,15 @@ class Test_add_hashes extends TestCase
 		parent::set_up();
 
 		$this->unregisterAllCallbacksExcept('rocket_critical_image_saas_visit_buffer', 'add_hashes', 16);
+
+		$this->max_hashes = null;
 	}
 
 	public function tear_down()
 	{
 		$this->restoreWpHook('rocket_critical_image_saas_visit_buffer');
 		remove_filter( 'rocket_lazy_render_content_optimization', '__return_false' );
+		remove_filter( 'rocket_lrc_max_hashes', [ $this, 'set_lrc_max_hashes' ] );
 
 		parent::tear_down();
 	}
@@ -46,9 +51,19 @@ class Test_add_hashes extends TestCase
 
 		add_filter( 'rocket_lazy_render_content_optimization', '__return_true' );
 
+		if ( isset( $config['max_hashes'] ) ) {
+			$this->max_hashes = $config['max_hashes'];
+			add_filter( 'rocket_lrc_max_hashes', [ $this, 'set_lrc_max_hashes' ] );
+		}
+		
+
 		$this->assertSame(
 			$expected['html'],
 			apply_filters( 'rocket_critical_image_saas_visit_buffer', $config['html'] )
 		);
+	}
+
+	public function set_lrc_max_hashes() {
+		return $this->max_hashes;
 	}
 }
