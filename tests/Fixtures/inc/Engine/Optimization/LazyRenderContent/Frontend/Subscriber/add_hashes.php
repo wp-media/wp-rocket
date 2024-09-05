@@ -22,6 +22,22 @@ return [
 			'expected' => [
 				'html' => file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Optimization/LazyRenderContent/Frontend/Subscriber/html/expected.php' ),
 			]
+		],
+		'shouldStopAt200Hashes' => [
+			'config' => [
+				'row' => [
+					'url' => 'http://example.org/',
+					'is_mobile' => 0,
+					'below_the_fold' => json_encode(
+						[]
+					),
+					'status' => 'completed'
+				],
+				'html' => file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Optimization/LazyRenderContent/Frontend/Subscriber/html/long_original.php' ),
+			],
+			'expected' => [
+				'html' => file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Optimization/LazyRenderContent/Frontend/Subscriber/html/long_expected_200_hashes.php' ),
+			]
 		]
 	]
 ];
