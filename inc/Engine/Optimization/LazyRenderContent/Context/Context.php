@@ -22,6 +22,6 @@ class Context implements ContextInterface {
 		 *
 		 * @param bool $allow True to allow, false otherwise.
 		 */
-		return wpm_apply_filters_typed( 'boolean', 'rocket_lazy_render_content_optimization', true );
+		return wpm_apply_filters_typed( 'boolean', 'rocket_lrc_optimization', true );
 	}
 }

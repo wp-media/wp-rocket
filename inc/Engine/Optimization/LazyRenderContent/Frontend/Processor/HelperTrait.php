@@ -13,11 +13,11 @@ trait HelperTrait {
 	protected function get_depth() {
 		/**
 		 * Filter the depth integer value.
-		 * The actual applied depth in the source is the default + 1 after the body or rocket_lazy_render_content_depth+1 after the body if the filter is set
+		 * The actual applied depth in the source is the default + 1 after the body or rocket_lrc_depth+1 after the body if the filter is set
 		 *
 		 * @param int $depth Depth value.
 		 */
-		return wpm_apply_filters_typed( 'integer', 'rocket_lazy_render_content_depth', 2 );
+		return wpm_apply_filters_typed( 'integer', 'rocket_lrc_depth', 2 );
 	}
 
 	/**
@@ -46,9 +46,9 @@ trait HelperTrait {
 		 *
 		 * @param array|string[] $tags Tags to be processed.
 		 */
-		return wpm_apply_filters_typed(
+		$tags = wpm_apply_filters_typed(
 			'array',
-			'rocket_lazy_render_content_processed_tags',
+			'rocket_lrc_processed_tags',
 			[
 				'DIV',
 				'MAIN',
@@ -58,5 +58,10 @@ trait HelperTrait {
 				'HEADER',
 			]
 		);
+
+		/**
+		 * Convert tags to upper case here before
+		 */
+		return array_map( 'strtoupper', $tags );
 	}
 }
