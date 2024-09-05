@@ -71,6 +71,7 @@ class Regex implements ProcessorInterface {
 		foreach ( $matches as $child ) {
 
 			if ( $this->count >= $this->max_hashes ) {
+				Logger::warning( 'Stopping LRC hash injection as max_hashes is reached.', [ 'LazyRenderContent' ] );
 				return $html;
 			}
 

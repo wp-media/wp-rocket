@@ -87,6 +87,7 @@ class Dom implements ProcessorInterface {
 		foreach ( $element->childNodes as $child ) { // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 
 			if ( $this->count >= $this->max_hashes ) {
+				Logger::warning( 'Stopping LRC hash injection as max_hashes is reached.', [ 'LazyRenderContent' ] );
 				return $html;
 			}
 
