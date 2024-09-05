@@ -31,7 +31,7 @@ trait HelperTrait {
 		 *
 		 * @param array|string[] $tags Tags to be processed.
 		 */
-		return wpm_apply_filters_typed(
+		$tags = wpm_apply_filters_typed(
 			'array',
 			'rocket_lazy_render_content_processed_tags',
 			[
@@ -43,5 +43,10 @@ trait HelperTrait {
 				'HEADER',
 			]
 		);
+
+		/**
+		 * Convert tags to upper case here before
+		 */
+		return array_map( 'strtoupper', $tags );
 	}
 }
