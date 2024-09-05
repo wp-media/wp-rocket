@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Common\PerformanceHints\WarmUp;
 
+use WP_Rocket\Buffer\Tests;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 class Subscriber implements Subscriber_Interface {
@@ -14,12 +15,21 @@ class Subscriber implements Subscriber_Interface {
 	private $controller;
 
 	/**
+	 * Buffer tests to run against current page, to decide if we can start the buffer or not.
+	 *
+	 * @var Tests
+	 */
+	private $buffer_tests;
+
+	/**
 	 * Constructor
 	 *
 	 * @param Controller $controller WarmUp controller instance.
+	 * @param Tests      $buffer_tests Buffer tests instance.
 	 */
-	public function __construct( Controller $controller ) {
-		$this->controller = $controller;
+	public function __construct( Controller $controller, Tests $buffer_tests ) {
+		$this->controller   = $controller;
+		$this->buffer_tests = $buffer_tests;
 	}
 
 	/**
@@ -34,6 +44,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_job_warmup'                         => 'warm_up',
 			'rocket_job_warmup_url'                     => 'send_to_saas',
 			'rocket_saas_api_queued_url'                => 'add_wpr_imagedimensions_query_arg',
+			'template_redirect'                         => [ 'start_performance_hints_buffer', 3 ],
 		];
 	}
 
@@ -90,5 +101,36 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function add_wpr_imagedimensions_query_arg( string $url ): string {
 		return $this->controller->add_wpr_imagedimensions_query_arg( $url );
+	}
+
+	/**
+	 * Start performance hints buffer
+	 *
+	 * @return void
+	 */
+	public function start_performance_hints_buffer() {
+		if ( ! $this->buffer_tests->can_process_any_buffer() ) {
+			return;
+		}
+
+		ob_start( [ $this, 'performance_hints_buffer' ] );
+	}
+
+	/**
+	 * Update images that have no width/height with real dimensions for the SaaS
+	 *
+	 * @param string $buffer Page HTML content.
+	 *
+	 * @return string Page HTML content after update.
+	 */
+	public function performance_hints_buffer( $buffer ) {
+		/**
+		 * Filters the buffer content for performance hints.
+		 *
+		 * @since 3.17
+		 *
+		 * @param $buffer Page HTML content.
+		 */
+		return wpm_apply_filters_typed( 'string', 'rocket_performance_hints_buffer', $buffer );
 	}
 }
