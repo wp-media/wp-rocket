@@ -93,7 +93,11 @@ class Dom implements ProcessorInterface {
 			}
 			// Replace the opening tag in the HTML by the manipulated one
 			// If DOMDocument automatically modified the original element, we might not find it in the HTML.
-			$modified_html = preg_replace( '/' . preg_quote( $opening_tag_html, '/' ) . '/', $replace, $html, 1 );
+			$element_replacements = 0;
+			$modified_html = preg_replace( '/' . preg_quote( $opening_tag_html, '/' ) . '/', $replace, $html, 1, $element_replacements );
+			if ( $element_replacements < 1 ) {
+				Logger::warning( 'Opening tag from DOMDocument not found in original HTML.', [ 'LazyRenderContent' ] );
+			}
 			if ( is_null( $modified_html ) ) {
 				continue;
 			}
