@@ -45,7 +45,7 @@ class Test_DisplayDashboardButton extends TestCase {
 			'title' => $config['title'],
 			'action' => $config['action'],
 			'label' => $config['label'],
-			'hover_text' => $config['title_attr_text']
+			'description' => $config['description']
 		];
 
 		if ( null !== $expected ) {
@@ -61,7 +61,7 @@ class Test_DisplayDashboardButton extends TestCase {
 			$config['title'],
 			$config['label'],
 			$config['action'],
-			$config['title_attr_text']
+			$config['description']
 		);
 		$output = ob_get_clean();
 

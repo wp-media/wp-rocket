@@ -1,9 +1,9 @@
 <?php
 
 return [
-	'shouldOutputLinkButton' => [
+	'shouldOutputLinkButtonWithDescription' => [
 		'config'   => [
-			'title_attr_text' => 'Title text',
+			'description'     => 'Short description for button',
 			'environment'     => 'production',
 			'label'           => 'Button label',
 			'action'          => 'menu-action',
@@ -13,40 +13,41 @@ return [
 		'expected' => <<<HTML
 <div class="wpr-field">
 	<h4 class="wpr-title3">Button label</h4>
-	<a href="" class="wpr-button wpr-button--icon wpr-button--small wpr-icon-trash" title="Title text">Menu title</a>
+	<p>Short description for button</p>
+	<a href="" class="wpr-button wpr-button--icon wpr-button--small wpr-icon-trash">Menu title</a>
 </div>
 HTML
 	],
 	'shouldOutputEmptyWhenContextIsFalse' => [
 		'config'   => [
-			'title_attr_text' => 'Title text',
-			'environment'     => 'production',
-			'label'           => 'Button label',
-			'action'          => 'menu-action',
-			'title'           => 'Menu title',
-			'context'         => false,
+			'description' => 'Title text',
+			'environment' => 'production',
+			'label'       => 'Button label',
+			'action'      => 'menu-action',
+			'title'       => 'Menu title',
+			'context'     => false,
 		],
 		'expected' => null
 	],
 	'shouldOutputEmptyWhenEnvironmentIsLocal' => [
 		'config'   => [
-			'title_attr_text' => 'Title text',
-			'environment'     => 'local',
-			'label'           => 'Button label',
-			'action'          => 'menu-action',
-			'title'           => 'Menu title',
-			'context'         => false,
+			'description' => 'Title text',
+			'environment' => 'local',
+			'label'       => 'Button label',
+			'action'      => 'menu-action',
+			'title'       => 'Menu title',
+			'context'     => false,
 		],
 		'expected' => null
 	],
-	'shouldOutputLinkButtonWithoutLinkTitleAttribute' => [
+	'shouldOutputLinkButtonWithoutLinkDescription' => [
 		'config'   => [
-			'title_attr_text' => '',
-			'environment'     => 'production',
-			'label'           => 'label',
-			'action'          => 'menu-action',
-			'title'           => 'Title',
-			'context'         => true,
+			'description' => '',
+			'environment' => 'production',
+			'label'       => 'label',
+			'action'      => 'menu-action',
+			'title'       => 'Title',
+			'context'     => true,
 		],
 		'expected' => <<<HTML
 <div class="wpr-field">
