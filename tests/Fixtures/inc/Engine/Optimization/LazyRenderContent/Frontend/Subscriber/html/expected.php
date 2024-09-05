@@ -47,7 +47,7 @@
 <div data-rocket-location-hash="7b16eca0652d4703f83ba63e304f2030">
 	<div data-rocket-location-hash="1d3bac2039255355f77f171c50019b44" class="margin-top-2">
 		<div data-rocket-location-hash="57f84b25dc0def2056eb68ae21a02316">
-			<div>
+			<div attribute-added-to-bypass-dom-processor-known-issue="1">
 				This is a class with margin-top set to 3000px
 			</div>
 		</div>
