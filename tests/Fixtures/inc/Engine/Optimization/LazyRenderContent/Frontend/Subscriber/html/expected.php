@@ -1,5 +1,5 @@
-<!DOCTYPE html>
-<?php /**
+<?php
+/**
  * Template Name: LRC Template
  * Template Post Type: post, page
  *
@@ -7,7 +7,9 @@
  * @subpackage Twenty_Twenty
  * @since Twenty Twenty 1.0
  */
-?><html lang="en">
+?>
+<!DOCTYPE html>
+<html lang="en">
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
