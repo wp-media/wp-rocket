@@ -27,12 +27,12 @@ class Test_add_hashes extends TestCase
 	{
 		parent::set_up();
 
-		$this->unregisterAllCallbacksExcept('rocket_critical_image_saas_visit_buffer', 'add_hashes', 16);
+		$this->unregisterAllCallbacksExcept('rocket_performance_hints_buffer', 'add_hashes', 16);
 	}
 
 	public function tear_down()
 	{
-		$this->restoreWpHook('rocket_critical_image_saas_visit_buffer');
+		$this->restoreWpHook('rocket_performance_hints_buffer');
 		remove_filter( 'rocket_lrc_optimization', '__return_false' );
 
 		parent::tear_down();
@@ -48,7 +48,7 @@ class Test_add_hashes extends TestCase
 
 		$this->assertSame(
 			$expected['html'],
-			apply_filters( 'rocket_critical_image_saas_visit_buffer', $config['html'] )
+			apply_filters( 'rocket_performance_hints_buffer', $config['html'] )
 		);
 	}
 }
