@@ -43,13 +43,13 @@ class Controller implements ControllerInterface {
 	 */
 	public function optimize( string $html, $row ): string {
 		if ( ! $row->has_lrc() ) {
-			return $html;
+			return $this->remove_hashes( $html );
 		}
 
 		$hashes = json_decode( $row->below_the_fold );
 
-		if ( null === $hashes || ! is_array( $hashes ) ) {
-			return $html;
+		if ( ! is_array( $hashes ) ) {
+			return $this->remove_hashes( $html );
 		}
 
 		$result = preg_replace( '/data-rocket-location-hash="(?:' . implode( '|', $hashes ) . ')"/i', 'data-wpr-lazyrender="1"', $html, -1, $count );
@@ -59,7 +59,7 @@ class Controller implements ControllerInterface {
 			||
 			0 === $count
 		) {
-			return $html;
+			return $this->remove_hashes( $html );
 		}
 
 		$html = $result;
