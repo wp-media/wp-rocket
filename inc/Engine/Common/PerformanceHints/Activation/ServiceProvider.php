@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Common\PerformanceHints\Activation;
 
+use WP_Rocket\Buffer\{Config, Tests};
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Engine\Common\PerformanceHints\WarmUp\{APIClient, Controller as WarmUpController, Subscriber as WarmUpSubscriber, Queue};
 use WP_Rocket\Engine\Media\AboveTheFold\Context\Context as ATFContext;
@@ -98,8 +99,18 @@ class ServiceProvider extends AbstractServiceProvider {
 				]
 			);
 
+		$this->getContainer()->add( 'config', Config::class )
+			->addArgument( [ 'config_dir_path' => rocket_get_constant( 'WP_ROCKET_CONFIG_PATH' ) ] );
+		$this->getContainer()->add( 'tests', Tests::class )
+			->addArgument( $this->getContainer()->get( 'config' ) );
+
 		$this->getContainer()->addShared( 'performance_hints_warmup_subscriber', WarmUpSubscriber::class )
-			->addArgument( $this->getContainer()->get( 'performance_hints_warmup_controller' ) );
+			->addArguments(
+				[
+					$this->getContainer()->get( 'performance_hints_warmup_controller' ),
+					$this->getContainer()->get( 'tests' ),
+				]
+			);
 
 		$this->getContainer()->add( 'performance_hints_activation', Activation::class )
 			->addArguments(

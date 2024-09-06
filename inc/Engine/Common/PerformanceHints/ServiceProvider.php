@@ -3,8 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Common\PerformanceHints;
 
-use WP_Rocket\Buffer\Config;
-use WP_Rocket\Buffer\Tests;
+use WP_Rocket\Buffer\{Config, Tests};
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Engine\Common\PerformanceHints\Admin\{
 	Controller as AdminController,
