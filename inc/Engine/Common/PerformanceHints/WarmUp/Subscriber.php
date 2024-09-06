@@ -109,6 +109,11 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function start_performance_hints_buffer() {
+		// SaaS visits will be priority.
+		if ( isset( $_GET['wpr_imagedimensions'] ) || ! isset( $_GET['wpr_lazyrendercontent'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			return;
+		}
+
 		if ( ! $this->buffer_tests->can_process_any_buffer() ) {
 			return;
 		}
