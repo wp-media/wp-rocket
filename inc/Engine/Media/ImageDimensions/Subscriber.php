@@ -33,7 +33,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @param Tests           $buffer_tests Buffer tests instance.
 	 */
 	public function __construct( ImageDimensions $dimensions, Tests $buffer_tests ) {
-		$this->dimensions = $dimensions;
+		$this->dimensions   = $dimensions;
 		$this->buffer_tests = $buffer_tests;
 	}
 
