@@ -46,4 +46,12 @@ return [
 		'html'     => $single_line_hashed,
 		'expected' => $single_line_expected,
 	],
+	'testShouldReturnEarlyWhenDBHasEmptyArray' => [
+		'config'   => [
+			'has_lrc' => true,
+			'below_the_fold' => '[]',
+		],
+		'html'     => '<html><head></head><body><div data-rocket-location-hash="adc285f638b63c4110da1d803b711c40">hello here</div></body></html>',
+		'expected' => '<html><head></head><body><div >hello here</div></body></html>',
+	],
 ];
