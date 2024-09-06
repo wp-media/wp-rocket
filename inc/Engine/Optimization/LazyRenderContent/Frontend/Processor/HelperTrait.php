@@ -8,6 +8,8 @@ trait HelperTrait {
 	/**
 	 * Get filtered elements depth.
 	 *
+	 * @since 3.17
+	 *
 	 * @return int
 	 */
 	protected function get_depth() {
@@ -22,6 +24,8 @@ trait HelperTrait {
 
 	/**
 	 * Get filtered element maximum count.
+	 *
+	 * @since 3.17
 	 *
 	 * @return int
 	 */
@@ -43,6 +47,8 @@ trait HelperTrait {
 	protected function get_processed_tags() {
 		/**
 		 * Filter the processed element tags.
+		 *
+		 * @since 3.17
 		 *
 		 * @param array|string[] $tags Tags to be processed.
 		 */

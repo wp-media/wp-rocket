@@ -12,7 +12,7 @@ class Regex implements ProcessorInterface {
 	/**
 	 * Number of injects hashes.
 	 *
-	 * @since 3.6
+	 * @since 3.17
 	 *
 	 * @var int
 	 */
@@ -21,7 +21,7 @@ class Regex implements ProcessorInterface {
 	/**
 	 * Maximum number of hashes to inject.
 	 *
-	 * @since 3.6
+	 * @since 3.17
 	 *
 	 * @var int
 	 */
