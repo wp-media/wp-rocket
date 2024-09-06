@@ -29,11 +29,9 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'rocket_buffer'                   => [ 'add_hashes', 16 ],
-			'rocket_performance_hints_buffer' => [
-				[ 'add_hashes', 16 ],
-				[ 'add_hashes_query_string', 17 ],
-			],
+			'rocket_buffer'                           => [ 'add_hashes', 16 ],
+			'rocket_critical_image_saas_visit_buffer' => [ 'add_hashes', 16 ],
+			'rocket_performance_hints_buffer'         => [ 'add_hashes', 16 ],
 		];
 	}
 
@@ -46,20 +44,5 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function add_hashes( $html ) {
 		return $this->controller->add_hashes( $html );
-	}
-
-	/**
-	 * Add hashes to the HTML elements
-	 *
-	 * @param string $buffer The HTML content.
-	 *
-	 * @return string
-	 */
-	public function add_hashes_query_string( $buffer ) {
-		if ( empty( $_GET['wpr_lazyrendercontent'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-			return $buffer;
-		}
-
-		return $this->controller->add_hashes( $buffer );
 	}
 }
