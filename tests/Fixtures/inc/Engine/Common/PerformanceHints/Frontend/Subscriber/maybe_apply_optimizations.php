@@ -31,6 +31,19 @@ $lrc = [
 
 return [
 	'test_data' => [
+		'shouldReturnOriginalWhenQueryString' => [
+			'config' => [
+				'query_string' => 'wpr_lazyrendercontent',
+				'html' => $html_input,
+				'atf' => [
+					'row' => null,
+				],
+				'lrc' => [
+					'row' => null,
+				],
+			],
+			'expected' => $html_input,
+		],
 		'shouldAddBeaconToPage' => [
 			'config' => [
 				'html' => $html_input,
