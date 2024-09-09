@@ -131,6 +131,7 @@ class Render extends Abstract_render {
 	 */
 	public function render_imagify_section() {
 
+		// @phpstan-ignore-next-line
 		require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
 
 		$plugin_data = get_transient( 'rocket_imagify_plugin_data' );
