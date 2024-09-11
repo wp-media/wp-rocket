@@ -127,6 +127,14 @@ class Controller implements ControllerInterface {
 	 * @return string
 	 */
 	public function add_hashes( $html ) {
+		if ( ! $this->context->is_allowed() ) {
+			return $html;
+		}
+
+		if ( empty( $html ) ) {
+			return $html;
+		}
+
 		/**
 		 * Filters the Lazy Render Content processor to use.
 		 *

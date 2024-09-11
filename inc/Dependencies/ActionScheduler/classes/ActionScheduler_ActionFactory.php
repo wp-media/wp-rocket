@@ -13,10 +13,15 @@ class ActionScheduler_ActionFactory {
 	 * @param array                    $args Args to pass to callbacks when the hook is triggered.
 	 * @param ActionScheduler_Schedule $schedule The action's schedule.
 	 * @param string                   $group A group to put the action in.
+	 * phpcs:ignore Squiz.Commenting.FunctionComment.ExtraParamComment
+	 * @param int                      $priority The action priority.
 	 *
 	 * @return ActionScheduler_Action An instance of the stored action.
 	 */
 	public function get_stored_action( $status, $hook, array $args = array(), ActionScheduler_Schedule $schedule = null, $group = '' ) {
+		// The 6th parameter ($priority) is not formally declared in the method signature to maintain compatibility with
+		// third-party subclasses created before this param was added.
+		$priority = func_num_args() >= 6 ? (int) func_get_arg( 5 ) : 10;
 
 		switch ( $status ) {
 			case ActionScheduler_Store::STATUS_PENDING:
@@ -36,17 +41,19 @@ class ActionScheduler_ActionFactory {
 		$action_class = apply_filters( 'action_scheduler_stored_action_class', $action_class, $status, $hook, $args, $schedule, $group );
 
 		$action = new $action_class( $hook, $args, $schedule, $group );
+		$action->set_priority( $priority );
 
 		/**
 		 * Allow 3rd party code to change the instantiated action for a given hook, args, schedule and group.
 		 *
-		 * @param ActionScheduler_Action $action The instantiated action.
-		 * @param string $hook The instantiated action's hook.
-		 * @param array $args The instantiated action's args.
+		 * @param ActionScheduler_Action   $action The instantiated action.
+		 * @param string                   $hook The instantiated action's hook.
+		 * @param array                    $args The instantiated action's args.
 		 * @param ActionScheduler_Schedule $schedule The instantiated action's schedule.
-		 * @param string $group The instantiated action's group.
+		 * @param string                   $group The instantiated action's group.
+		 * @param int                      $priority The action priority.
 		 */
-		return apply_filters( 'action_scheduler_stored_action_instance', $action, $hook, $args, $schedule, $group );
+		return apply_filters( 'action_scheduler_stored_action_instance', $action, $hook, $args, $schedule, $group, $priority );
 	}
 
 	/**
@@ -229,7 +236,98 @@ class ActionScheduler_ActionFactory {
 		$schedule_class = get_class( $schedule );
 		$new_schedule   = new $schedule( $next, $schedule->get_recurrence(), $schedule->get_first_date() );
 		$new_action     = new ActionScheduler_Action( $action->get_hook(), $action->get_args(), $new_schedule, $action->get_group() );
+		$new_action->set_priority( $action->get_priority() );
 		return $this->store( $new_action );
+	}
+
+	/**
+	 * Creates a scheduled action.
+	 *
+	 * This general purpose method can be used in place of specific methods such as async(),
+	 * async_unique(), single() or single_unique(), etc.
+	 *
+	 * @internal Not intended for public use, should not be overridden by subclasses.
+	 *
+	 * @param array $options {
+	 *     Describes the action we wish to schedule.
+	 *
+	 *     @type string     $type      Must be one of 'async', 'cron', 'recurring', or 'single'.
+	 *     @type string     $hook      The hook to be executed.
+	 *     @type array      $arguments Arguments to be passed to the callback.
+	 *     @type string     $group     The action group.
+	 *     @type bool       $unique    If the action should be unique.
+	 *     @type int        $when      Timestamp. Indicates when the action, or first instance of the action in the case
+	 *                                 of recurring or cron actions, becomes due.
+	 *     @type int|string $pattern   Recurrence pattern. This is either an interval in seconds for recurring actions
+	 *                                 or a cron expression for cron actions.
+	 *     @type int        $priority  Lower values means higher priority. Should be in the range 0-255.
+	 * }
+	 *
+	 * @return int The action ID. Zero if there was an error scheduling the action.
+	 */
+	public function create( array $options = array() ) {
+		$defaults = array(
+			'type'      => 'single',
+			'hook'      => '',
+			'arguments' => array(),
+			'group'     => '',
+			'unique'    => false,
+			'when'      => time(),
+			'pattern'   => null,
+			'priority'  => 10,
+		);
+
+		$options = array_merge( $defaults, $options );
+
+		// Cron/recurring actions without a pattern are treated as single actions (this gives calling code the ability
+		// to use functions like as_schedule_recurring_action() to schedule recurring as well as single actions).
+		if ( ( 'cron' === $options['type'] || 'recurring' === $options['type'] ) && empty( $options['pattern'] ) ) {
+			$options['type'] = 'single';
+		}
+
+		switch ( $options['type'] ) {
+			case 'async':
+				$schedule = new ActionScheduler_NullSchedule();
+				break;
+
+			case 'cron':
+				$date     = as_get_datetime_object( $options['when'] );
+				$cron     = CronExpression::factory( $options['pattern'] );
+				$schedule = new ActionScheduler_CronSchedule( $date, $cron );
+				break;
+
+			case 'recurring':
+				$date     = as_get_datetime_object( $options['when'] );
+				$schedule = new ActionScheduler_IntervalSchedule( $date, $options['pattern'] );
+				break;
+
+			case 'single':
+				$date     = as_get_datetime_object( $options['when'] );
+				$schedule = new ActionScheduler_SimpleSchedule( $date );
+				break;
+
+			default:
+				error_log( "Unknown action type '{$options['type']}' specified when trying to create an action for '{$options['hook']}'." );
+				return 0;
+		}
+
+		$action = new ActionScheduler_Action( $options['hook'], $options['arguments'], $schedule, $options['group'] );
+		$action->set_priority( $options['priority'] );
+
+		$action_id = 0;
+		try {
+			$action_id = $options['unique'] ? $this->store_unique_action( $action ) : $this->store( $action );
+		} catch ( Exception $e ) {
+			error_log(
+				sprintf(
+					/* translators: %1$s is the name of the hook to be enqueued, %2$s is the exception message. */
+					__( 'Caught exception while enqueuing action "%1$s": %2$s', 'action-scheduler' ),
+					$options['hook'],
+					$e->getMessage()
+				)
+			);
+		}
+		return $action_id;
 	}
 
 	/**
@@ -253,7 +351,26 @@ class ActionScheduler_ActionFactory {
 	 */
 	protected function store_unique_action( ActionScheduler_Action $action ) {
 		$store = ActionScheduler_Store::instance();
-		return method_exists( $store, 'save_unique_action' ) ?
-			$store->save_unique_action( $action ) : $store->save_action( $action );
+		if ( method_exists( $store, 'save_unique_action' ) ) {
+			return $store->save_unique_action( $action );
+		} else {
+			/**
+			 * Fallback to non-unique action if the store doesn't support unique actions.
+			 * We try to save the action as unique, accepting that there might be a race condition.
+			 * This is likely still better than giving up on unique actions entirely.
+			 */
+			$existing_action_id = (int) $store->find_action(
+				$action->get_hook(),
+				array(
+					'args'   => $action->get_args(),
+					'status' => ActionScheduler_Store::STATUS_PENDING,
+					'group'  => $action->get_group(),
+				)
+			);
+			if ( $existing_action_id > 0 ) {
+				return 0;
+			}
+			return $store->save_action( $action );
+		}
 	}
 }
