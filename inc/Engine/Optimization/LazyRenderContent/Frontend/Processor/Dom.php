@@ -11,6 +11,24 @@ class Dom implements ProcessorInterface {
 	use HelperTrait;
 
 	/**
+	 * Number of injects hashes.
+	 *
+	 * @since 3.17
+	 *
+	 * @var int
+	 */
+	private $count;
+
+	/**
+	 * Maximum number of hashes to inject.
+	 *
+	 * @since 3.17
+	 *
+	 * @var int
+	 */
+	private $max_hashes;
+
+	/**
 	 * Add hashes to the HTML elements
 	 *
 	 * @param string $html The HTML content.
@@ -44,9 +62,10 @@ class Dom implements ProcessorInterface {
 			return $html;
 		}
 
-		$this->add_hash_to_element( $body, $this->get_depth() );
+		$this->max_hashes = $this->get_max_tags();
+		$this->count      = 0;
 
-		return $dom->saveHTML();
+		return $this->add_hash_to_element( $body, $this->get_depth(), $html );
 	}
 
 	/**
@@ -54,17 +73,24 @@ class Dom implements ProcessorInterface {
 	 *
 	 * @param \DOMElement $element The element to add the hash to.
 	 * @param int         $depth   The depth of the recursion.
+	 * @param string      $html    The HTML content.
+	 *
+	 * @return string
 	 */
-	private function add_hash_to_element( $element, $depth ) {
+	private function add_hash_to_element( $element, $depth, $html ) {
 		if ( $depth < 0 ) {
-			return;
+			return $html;
 		}
 
 		$processed_tags = $this->get_processed_tags();
 
-		static $count = 0;
-
 		foreach ( $element->childNodes as $child ) { // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+
+			if ( $this->count >= $this->max_hashes ) {
+				Logger::warning( 'Stopping LRC hash injection as max_hashes is reached.', [ 'LazyRenderContent' ] );
+				return $html;
+			}
+
 			if ( ! $child instanceof \DOMElement ) {
 				continue;
 			}
@@ -81,15 +107,32 @@ class Dom implements ProcessorInterface {
 			$child_html       = $child->ownerDocument->saveHTML( $child ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 			$opening_tag_html = strstr( $child_html, '>', true ) . '>';
 
-			$hash = md5( $opening_tag_html . $count );
+			$hash = md5( $opening_tag_html . $this->count );
 
-			++$count;
+			++$this->count;
 
-			// Add the data-rocket-location-hash attribute.
-			$child->setAttribute( 'data-rocket-location-hash', $hash );
+			// Inject the hash as an attribute in the opening tag.
+			$replace = preg_replace( '/' . $child->tagName . '/is', '$0 data-rocket-location-hash="' . $hash . '"', $opening_tag_html, 1 ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+			if ( is_null( $replace ) ) {
+				continue;
+			}
+			// Replace the opening tag in the HTML by the manipulated one
+			// If DOMDocument automatically modified the original element, we might not find it in the HTML.
+			// Known issue: if there is an element with the exact same opening tag before in the HTML that did not receive a hash, it will replaced instead of the correct element in the HTML.
+			$element_replacements = 0;
+			$modified_html        = preg_replace( '/' . preg_quote( $opening_tag_html, '/' ) . '/', $replace, $html, 1, $element_replacements );
+			if ( $element_replacements < 1 ) {
+				Logger::warning( 'Opening tag from DOMDocument not found in original HTML.', [ 'LazyRenderContent' ] );
+			}
+			if ( is_null( $modified_html ) ) {
+				continue;
+			}
+			$html = $modified_html;
 
 			// Recursively process child elements.
-			$this->add_hash_to_element( $child, $depth - 1 );
+			$html = $this->add_hash_to_element( $child, $depth - 1, $html );
 		}
+
+		return $html;
 	}
 }

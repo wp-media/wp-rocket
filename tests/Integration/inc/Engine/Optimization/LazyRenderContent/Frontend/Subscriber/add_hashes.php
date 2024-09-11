@@ -10,6 +10,8 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group PerformanceHints
  */
 class Test_AddHashes extends TestCase {
+  private $max_hashes;
+
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
 
@@ -26,12 +28,14 @@ class Test_AddHashes extends TestCase {
 	public function set_up() {
 		parent::set_up();
 
+		$this->max_hashes = null;
 		$this->unregisterAllCallbacksExcept( 'rocket_performance_hints_buffer', 'add_hashes', 16 );
 	}
 
 	public function tear_down() {
 		$this->restoreWpHook( 'rocket_performance_hints_buffer' );
 		remove_filter( 'rocket_lrc_optimization', '__return_false' );
+		remove_filter( 'rocket_lrc_max_hashes', [ $this, 'set_lrc_max_hashes' ] );
 
 		parent::tear_down();
 	}
@@ -44,9 +48,19 @@ class Test_AddHashes extends TestCase {
 
 		add_filter( 'rocket_lrc_optimization', '__return_true' );
 
+		if ( isset( $config['max_hashes'] ) ) {
+			$this->max_hashes = $config['max_hashes'];
+			add_filter( 'rocket_lrc_max_hashes', [ $this, 'set_lrc_max_hashes' ] );
+		}
+		
+
 		$this->assertSame(
 			$expected['html'],
 			apply_filters( 'rocket_performance_hints_buffer', $config['html'] )
 		);
+	}
+
+	public function set_lrc_max_hashes() {
+		return $this->max_hashes;
 	}
 }

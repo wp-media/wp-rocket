@@ -45,7 +45,7 @@
 <div>
 	<div class="margin-top-2">
 		<div>
-			<div>
+			<div attribute-added-to-bypass-dom-processor-known-issue="1">
 				This is a class with margin-top set to 3000px
 			</div>
 		</div>
