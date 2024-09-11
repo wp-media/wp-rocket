@@ -82,7 +82,7 @@ class ActionScheduler_DBLogger extends ActionScheduler_Logger {
 	}
 
 	/**
-	 * Retrieve the an action's log entries from the database.
+	 * Retrieve an action's log entries from the database.
 	 *
 	 * @param int $action_id Action ID.
 	 *

@@ -4,7 +4,6 @@
  * Class ActionScheduler_Compatibility
  */
 class ActionScheduler_Compatibility {
-
 	/**
 	 * Converts a shorthand byte value to an integer byte value.
 	 *
@@ -89,21 +88,18 @@ class ActionScheduler_Compatibility {
 		$limit = (int) $limit;
 		$max_execution_time = (int) ini_get( 'max_execution_time' );
 
-		/*
-		 * If the max execution time is already unlimited (zero), or if it exceeds or is equal to the proposed
-		 * limit, there is no reason for us to make further changes (we never want to lower it).
-		 */
-		if (
-			0 === $max_execution_time
-			|| ( $max_execution_time >= $limit && $limit !== 0 )
-		) {
+		// If the max execution time is already set to zero (unlimited), there is no reason to make a further change.
+		if ( 0 === $max_execution_time ) {
 			return;
 		}
 
+		// Whichever of $max_execution_time or $limit is higher is the amount by which we raise the time limit.
+		$raise_by = 0 === $limit || $limit > $max_execution_time ? $limit : $max_execution_time;
+
 		if ( function_exists( 'wc_set_time_limit' ) ) {
-			wc_set_time_limit( $limit );
+			wc_set_time_limit( $raise_by );
 		} elseif ( function_exists( 'set_time_limit' ) && false === strpos( ini_get( 'disable_functions' ), 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) { // phpcs:ignore PHPCompatibility.IniDirectives.RemovedIniDirectives.safe_modeDeprecatedRemoved
-			@set_time_limit( $limit ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+			@set_time_limit( $raise_by ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 		}
 	}
 }
