@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Common\PerformanceHints;
 
+use WP_Rocket\Buffer\{Config, Tests};
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Engine\Common\PerformanceHints\Admin\{
 	Controller as AdminController,
@@ -20,7 +21,6 @@ use WP_Rocket\Engine\Common\PerformanceHints\WarmUp\{
 	Subscriber as WarmUpSubscriber,
 	Queue
 };
-use WP_Rocket\Engine\Optimization\LazyRenderContent\Context\Context as LRCContext;
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
@@ -33,6 +33,8 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @var array
 	 */
 	protected $provides = [
+		'config',
+		'tests',
 		'ajax_processor',
 		'performance_hints_ajax_subscriber',
 		'frontend_processor',
@@ -100,10 +102,17 @@ class ServiceProvider extends AbstractServiceProvider {
 				]
 			);
 
+		$this->getContainer()->add( 'config', Config::class )
+			->addArgument( [ 'config_dir_path' => rocket_get_constant( 'WP_ROCKET_CONFIG_PATH' ) ] );
+
+		$this->getContainer()->add( 'tests', Tests::class )
+			->addArgument( $this->getContainer()->get( 'config' ) );
+
 		$this->getContainer()->addShared( 'performance_hints_frontend_subscriber', FrontendSubscriber::class )
 			->addArguments(
 				[
 					$this->getContainer()->get( 'frontend_processor' ),
+					$this->getContainer()->get( 'tests' ),
 				]
 			);
 
