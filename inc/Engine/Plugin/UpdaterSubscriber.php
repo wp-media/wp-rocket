@@ -470,6 +470,7 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 
 		set_site_transient( 'update_plugins', $plugin_transient );
 
+		// @phpstan-ignore-next-line
 		require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
 
 		// translators: %s is the plugin name.
