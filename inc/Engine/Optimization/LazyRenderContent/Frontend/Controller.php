@@ -105,6 +105,21 @@ class Controller implements ControllerInterface {
 	}
 
 	/**
+	 * Add hashes to the HTML elements if allowed
+	 *
+	 * @param string $html The HTML content.
+	 *
+	 * @return string
+	 */
+	public function add_hashes_when_allowed( $html ) {
+		if ( ! $this->context->is_allowed() ) {
+			return $html;
+		}
+
+		return $this->add_hashes( $html );
+	}
+
+	/**
 	 * Add hashes to the HTML elements
 	 *
 	 * @param string $html The HTML content.
@@ -113,6 +128,10 @@ class Controller implements ControllerInterface {
 	 */
 	public function add_hashes( $html ) {
 		if ( ! $this->context->is_allowed() ) {
+			return $html;
+		}
+
+		if ( empty( $html ) ) {
 			return $html;
 		}
 

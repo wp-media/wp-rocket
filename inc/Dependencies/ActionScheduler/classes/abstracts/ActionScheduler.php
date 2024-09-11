@@ -153,11 +153,41 @@ abstract class ActionScheduler {
 			add_action( 'init', array( $store, 'init' ), 1, 0 );
 			add_action( 'init', array( $logger, 'init' ), 1, 0 );
 			add_action( 'init', array( $runner, 'init' ), 1, 0 );
+
+			add_action(
+				'init',
+				/**
+				 * Runs after the active store's init() method has been called.
+				 *
+				 * It would probably be preferable to have $store->init() (or it's parent method) set this itself,
+				 * once it has initialized, however that would cause problems in cases where a custom data store is in
+				 * use and it has not yet been updated to follow that same logic.
+				 */
+				function () {
+					self::$data_store_initialized = true;
+
+					/**
+					 * Fires when Action Scheduler is ready: it is safe to use the procedural API after this point.
+					 *
+					 * @since 3.5.5
+					 */
+					do_action( 'action_scheduler_init' );
+				},
+				1
+			);
 		} else {
 			$admin_view->init();
 			$store->init();
 			$logger->init();
 			$runner->init();
+			self::$data_store_initialized = true;
+
+			/**
+			 * Fires when Action Scheduler is ready: it is safe to use the procedural API after this point.
+			 *
+			 * @since 3.5.5
+			 */
+			do_action( 'action_scheduler_init' );
 		}
 
 		if ( apply_filters( 'action_scheduler_load_deprecated_functions', true ) ) {
@@ -166,13 +196,12 @@ abstract class ActionScheduler {
 
 		if ( defined( 'WP_CLI' ) && WP_CLI ) {
 			WP_CLI::add_command( 'action-scheduler', 'ActionScheduler_WPCLI_Scheduler_command' );
+			WP_CLI::add_command( 'action-scheduler', 'ActionScheduler_WPCLI_Clean_Command' );
 			if ( ! ActionScheduler_DataController::is_migration_complete() && Controller::instance()->allow_migration() ) {
 				$command = new Migration_Command();
 				$command->register();
 			}
 		}
-
-		self::$data_store_initialized = true;
 
 		/**
 		 * Handle WP comment cleanup after migration.
@@ -192,8 +221,12 @@ abstract class ActionScheduler {
 	 */
 	public static function is_initialized( $function_name = null ) {
 		if ( ! self::$data_store_initialized && ! empty( $function_name ) ) {
-			$message = sprintf( __( '%s() was called before the Action Scheduler data store was initialized', 'action-scheduler' ), esc_attr( $function_name ) );
-			error_log( $message, E_WARNING );
+			$message = sprintf(
+				/* translators: %s function name. */
+				__( '%s() was called before the Action Scheduler data store was initialized', 'action-scheduler' ),
+				esc_attr( $function_name )
+			);
+			_doing_it_wrong( $function_name, $message, '3.1.6' );
 		}
 
 		return self::$data_store_initialized;

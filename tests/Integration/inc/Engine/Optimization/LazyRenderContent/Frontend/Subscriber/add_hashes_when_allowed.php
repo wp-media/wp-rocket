@@ -5,12 +5,12 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\LazyRenderContent\
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * Test class covering \WP_Rocket\Engine\Optimization\LazyRenderContent\Frontend\Subscriber::add_hashes
+ * Test class covering \WP_Rocket\Engine\Optimization\LazyRenderContent\Frontend\Subscriber::add_hashes_when_allowed
  *
  * @group PerformanceHints
  */
-class Test_AddHashes extends TestCase {
-  private $max_hashes;
+class Test_AddHashesWhenAllowed extends TestCase {
+	private $filter;
 
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
@@ -28,14 +28,12 @@ class Test_AddHashes extends TestCase {
 	public function set_up() {
 		parent::set_up();
 
-		$this->max_hashes = null;
-		$this->unregisterAllCallbacksExcept( 'rocket_performance_hints_buffer', 'add_hashes', 16 );
+		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'add_hashes_when_allowed', 16 );
 	}
 
 	public function tear_down() {
-		$this->restoreWpHook( 'rocket_performance_hints_buffer' );
+		$this->restoreWpHook( 'rocket_buffer' );
 		remove_filter( 'rocket_lrc_optimization', '__return_false' );
-		remove_filter( 'rocket_lrc_max_hashes', [ $this, 'set_lrc_max_hashes' ] );
 
 		parent::tear_down();
 	}
@@ -43,24 +41,22 @@ class Test_AddHashes extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldWorkAsExpected( $config, $expected ) {
+	public function testShouldReturnExpected( $config, $expected ) {
+		$this->filter = $config['filter'];
+
+		add_filter( 'rocket_lrc_optimization', [ $this, 'returnFilter' ] );
+
 		self::addLrc( $config['row'] );
 
 		add_filter( 'rocket_lrc_optimization', '__return_true' );
 
-		if ( isset( $config['max_hashes'] ) ) {
-			$this->max_hashes = $config['max_hashes'];
-			add_filter( 'rocket_lrc_max_hashes', [ $this, 'set_lrc_max_hashes' ] );
-		}
-		
-
 		$this->assertSame(
 			$expected['html'],
-			apply_filters( 'rocket_performance_hints_buffer', $config['html'] )
+			apply_filters( 'rocket_buffer', $config['html'] )
 		);
 	}
 
-	public function set_lrc_max_hashes() {
-		return $this->max_hashes;
+	public function returnFilter() {
+		return $this->filter;
 	}
 }
