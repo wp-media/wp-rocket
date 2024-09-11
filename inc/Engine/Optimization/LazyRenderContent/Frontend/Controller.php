@@ -116,6 +116,10 @@ class Controller implements ControllerInterface {
 			return $html;
 		}
 
+		if ( empty( $html ) ) {
+			return $html;
+		}
+
 		/**
 		 * Filters the Lazy Render Content processor to use.
 		 *
