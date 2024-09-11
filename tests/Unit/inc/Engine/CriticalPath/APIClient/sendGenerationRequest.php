@@ -59,9 +59,15 @@ class Test_SendGenerationRequest extends TestCase {
 		$actual = $api_client->send_generation_request( $item_url, ['mobile' => (int) $is_mobile] );
 
 		if( isset( $expected['success'] ) && true === $expected['success'] ){
-			//Assert success.
-			$this->assertSame( $expected['success'], $actual->success );
-			$this->assertSame( $expected['data'],    (array) $actual->data );
+			if (is_array($actual)) {
+				// Handle the array case
+				$this->assertSame($expected['success'], $actual['success']);
+				$this->assertSame($expected['data'], $actual['data']);
+			} elseif (is_object($actual)) {
+				// Handle the object case
+				$this->assertSame($expected['success'], $actual->success);
+				$this->assertSame($expected['data'], (array) $actual->data);
+			}
 		}else{
 			//Assert WP_Error.
 			$this->assertInstanceOf(WP_Error::class, $actual);

@@ -28,6 +28,7 @@ class Test_ScheduleCleanNotCommonlyUsedRows extends TestCase {
 
 		add_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
 
+		self::removeDBHooks();
 		do_action( 'init' );
 
 		if ( $this->input['remove_unused_css'] ) {

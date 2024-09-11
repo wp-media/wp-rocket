@@ -7,17 +7,14 @@ use WP_Rocket\Tests\Integration\TestCase;
 /**
  * Test class covering \WP_Rocket\ThirdParty\Hostings\SpinUpWP::remove_actions
  *
- * @group  SpinUpWP
- * @group  ThirdParty
+ * @group SpinUpWP
+ * @group ThirdParty
  */
 class Test_RemoveActions extends TestCase {
-
 	public function testShouldRemoveRocketRegisteredActions() {
 
 		Functions\expect( 'rocket_clean_domain' )->never();
 
-		switch_theme('twentynineteen/style.css');
-
+		switch_theme( 'twentynineteen/style.css' );
 	}
-
 }

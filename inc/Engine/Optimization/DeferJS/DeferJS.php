@@ -82,7 +82,7 @@ class DeferJS {
 				continue;
 			}
 
-			$deferred_tag = str_replace( '>', ' defer>', $tag[0] );
+			$deferred_tag = str_replace( '>', ' data-rocket-defer defer>', $tag[0] );
 			$html         = str_replace( $tag[0], $deferred_tag, $html );
 		}
 
@@ -272,7 +272,7 @@ class DeferJS {
 		 *
 		 * @param array $inline_exclusions_list Array of inline JS that should not be deferred.
 		 */
-		$additional_inline_exclusions_list = apply_filters( 'rocket_defer_inline_exclusions', null );
+		$additional_inline_exclusions_list = apply_filters( 'rocket_defer_inline_exclusions', [] );
 
 		$inline_exclusions = '';
 

@@ -186,7 +186,7 @@ class WP_Rocket_Requirements_Check {
 		$plugin_transient = get_site_transient( 'update_plugins' );
 		$plugin_folder    = plugin_basename( dirname( $this->plugin_file ) );
 		$plugin_file      = basename( $this->plugin_file );
-		$url              = sprintf( 'https://wp-rocket.me/%s/wp-rocket_%s.zip', $consumer_key, $this->plugin_last_version );
+		$url              = sprintf( 'https://api.wp-rocket.me/%s/wp-rocket_%s.zip', $consumer_key, $this->plugin_last_version );
 		$temp_array       = [
 			'slug'        => $plugin_folder,
 			'new_version' => $this->plugin_last_version,

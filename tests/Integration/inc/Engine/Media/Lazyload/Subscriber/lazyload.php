@@ -6,9 +6,10 @@ use WP_Rocket\Tests\Integration\TestCase;
 
 /**
  * Test class covering \WP_Rocket\Engine\Media\Lazyload\Subscriber::lazyload
- * @uses   ::rocket_get_constant
  *
- * @group  Lazyload
+ * @uses ::rocket_get_constant
+ *
+ * @group Lazyload
  */
 class Test_Lazyload extends TestCase {
 	private $lazyload;
@@ -17,8 +18,8 @@ class Test_Lazyload extends TestCase {
 	public function set_up() {
 		parent::set_up();
 
-		$this->lazyload  = null;
-		$this->iframes   = null;
+		$this->lazyload = null;
+		$this->iframes  = null;
 
 		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'lazyload', 18 );
 	}

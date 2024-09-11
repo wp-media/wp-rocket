@@ -31,9 +31,8 @@ class Test_addExclusions extends TestCase {
 		$this->options = Mockery::mock( Options_Data::class );
 		$this->query   = $this->createPartialMock( AboveTheFold::class, [ 'get_row' ] );
 		$this->context = Mockery::mock( Context::class );
-		$this->filesystem = Mockery::mock( WP_Filesystem_Direct::class );
 
-		$this->controller = new Controller( $this->options, $this->query, $this->context, $this->filesystem );
+		$this->controller = new Controller( $this->options, $this->query, $this->context );
 	}
 
 	protected function tearDown(): void {

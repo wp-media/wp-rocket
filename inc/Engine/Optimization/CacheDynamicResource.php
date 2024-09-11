@@ -79,15 +79,15 @@ class CacheDynamicResource extends AbstractOptimization implements Subscriber_In
 		 *
 		 * @param array $excluded_files An array of filepath to exclude.
 		 */
-		$this->excluded_files   = (array) apply_filters( 'rocket_exclude_static_dynamic_resources', [] );
-		$this->excluded_files[] = '/wp-admin/admin-ajax.php';
+		$excluded_files   = (array) apply_filters( 'rocket_exclude_static_dynamic_resources', [] );
+		$excluded_files[] = '/wp-admin/admin-ajax.php';
 
-		foreach ( $this->excluded_files as $i => $excluded_file ) {
+		foreach ( $excluded_files as $i => $excluded_file ) {
 			// Escape character for future use in regex pattern.
-			$this->excluded_files[ $i ] = str_replace( '#', '\#', $excluded_file );
+			$excluded_files[ $i ] = str_replace( '#', '\#', $excluded_file );
 		}
 
-		$this->excluded_files = implode( '|', $this->excluded_files );
+		$this->excluded_files = implode( '|', $excluded_files );
 	}
 
 	/**

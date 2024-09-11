@@ -37,8 +37,8 @@ abstract class TestCase extends FilesystemTestCase {
 	public function set_stylesheet_root() {
 		global $wp_theme_directories;
 
-		$wp_theme_directories['virtual'] = $this->filesystem->getUrl( 'wp-content/themes/' );
+		$wp_theme_directories['virtual'] = $this->filesystem->getUrl( 'wp-content/themes' );
 
-		return $this->filesystem->getUrl( 'wp-content/themes/' );
+		return $this->filesystem->getUrl( 'wp-content/themes' );
 	}
 }

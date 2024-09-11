@@ -17,7 +17,7 @@ class Assets {
 	/**
 	 * Inserts the lazyload script in the HTML
 	 *
-	 * @param array $args Array of arguments to populate the lazyload script tag.
+	 * @param array<string> $args Array of arguments to populate the lazyload script tag.
 	 * @return void
 	 */
 	public function insertLazyloadScript( $args = [] ) {
@@ -27,7 +27,7 @@ class Assets {
 	/**
 	 * Gets the inline lazyload script configuration
 	 *
-	 * @param array $args Array of arguments to populate the lazyload script options.
+	 * @param array<string, int> $args Array of arguments to populate the lazyload script options.
 	 * @return string
 	 */
 	public function getInlineLazyloadScript( $args = [] ) {
@@ -177,7 +177,7 @@ class Assets {
 	/**
 	 * Returns the lazyload inline script
 	 *
-	 * @param array $args Array of arguments to populate the lazyload script options.
+	 * @param array<string> $args Array of arguments to populate the lazyload script options.
 	 * @return string
 	 */
 	public function getLazyloadScript( $args = [] ) {
@@ -194,7 +194,7 @@ class Assets {
 		 *
 		 * @since 2.2.6
 		 *
-		 * @param $script_tag HTML tag for the lazyload script.
+		 * @param string $script_tag HTML tag for the lazyload script.
 		 */
 		return apply_filters( 'rocket_lazyload_script_tag', '<script data-no-minify="1" async src="' . $args['base_url'] . $args['version'] . '/lazyload' . $min . '.js"></script>' ); // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript
 	}
@@ -202,7 +202,7 @@ class Assets {
 	/**
 	 * Inserts in the HTML the script to replace the Youtube thumbnail by the iframe.
 	 *
-	 * @param array $args Array of arguments to populate the script options.
+	 * @param array<string, bool> $args Array of arguments to populate the script options.
 	 * @return void
 	 */
 	public function insertYoutubeThumbnailScript( $args = [] ) {
@@ -212,7 +212,7 @@ class Assets {
 	/**
 	 * Returns the Youtube Thumbnail inline script
 	 *
-	 * @param array $args Array of arguments to populate the script options.
+	 * @param array<string, bool> $args Array of arguments to populate the script options.
 	 * @return string
 	 */
 	public function getYoutubeThumbnailScript( $args = [] ) {
@@ -286,7 +286,7 @@ class Assets {
 	/**
 	 * Inserts the CSS to style the Youtube thumbnail container
 	 *
-	 * @param array $args Array of arguments to populate the CSS.
+	 * @param array<string, bool> $args Array of arguments to populate the CSS.
 	 * @return void
 	 */
 	public function insertYoutubeThumbnailCSS( $args = [] ) {
@@ -298,7 +298,7 @@ class Assets {
 	/**
 	 * Returns the CSS for the Youtube Thumbnail
 	 *
-	 * @param array $args Array of arguments to populate the CSS.
+	 * @param array<string, bool> $args Array of arguments to populate the CSS.
 	 * @return string
 	 */
 	public function getYoutubeThumbnailCSS( $args = [] ) {
@@ -320,6 +320,8 @@ class Assets {
 
 	/**
 	 * Inserts the CSS needed when Javascript is not enabled to keep the display correct
+	 *
+	 * @return void
 	 */
 	public function insertNoJSCSS() {
 		echo $this->getNoJSCSS(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped

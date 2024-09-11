@@ -23,6 +23,9 @@ class Test_DeleteCpcss extends FilesystemTestCase {
 
 	public static function wpSetUpBeforeClass( $factory ) {
 		self::$post_id = $factory->post->create();
+
+		// Re-enable ATF optimization.
+		remove_filter( 'rocket_above_the_fold_optimization', '__return_false' );
 	}
 
 	public function set_up() {
@@ -33,10 +36,13 @@ class Test_DeleteCpcss extends FilesystemTestCase {
 	}
 
 	public function tear_down() {
-		parent::tear_down();
+		// Re-enable ATF optimization.
+		remove_filter( 'rocket_above_the_fold_optimization', '__return_false' );
 
 		remove_filter( 'pre_get_rocket_option_async_css', [ $this, 'async_css' ] );
 		remove_filter( 'pre_get_rocket_option_async_css_mobile', [ $this, 'async_css_mobile' ] );
+
+		parent::tear_down();
 	}
 
 	/**
@@ -54,6 +60,8 @@ class Test_DeleteCpcss extends FilesystemTestCase {
 		$item_path              = 'wp-content/cache/critical-css/1/posts' . DIRECTORY_SEPARATOR . "{$post_type}-" . self::$post_id . ".css";
 		$this->filesystem->put_contents( $item_path, '.cpcss { color: red; }');
 		$this->assertTrue( $this->filesystem->exists( $item_path ) );
+
+		$mobile_item_path = '';
 
 		if ( $this->async_css_mobile ) {
 			$mobile_item_path = 'wp-content/cache/critical-css/1/posts' . DIRECTORY_SEPARATOR . "{$post_type}-" . self::$post_id . "-mobile.css";

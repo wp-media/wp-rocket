@@ -146,7 +146,12 @@ class Hummingbird implements Subscriber_Interface {
 			return false;
 		}
 
-		if ( $this->options->get( 'emoji' ) && WP_Hummingbird_Settings::get_setting( 'emoji', 'advanced' ) ) {
+		if (
+			$this->options->get( 'emoji' )
+			&&
+
+			WP_Hummingbird_Settings::get_setting( 'emoji', 'advanced' )
+		) {
 			// Translators: %1$s = Plugin name, %2$s = <em>, %3$s = </em>.
 			$this->errors[] = sprintf( _x( '%1$s %2$sdisable emoji%3$s conflicts with WP Rockets %2$sdisable emoji%3$s', 'Hummingbird notice', 'rocket' ), 'Hummingbird', '<em>', '</em>' );
 			return true;

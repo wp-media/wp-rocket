@@ -3,17 +3,16 @@
 namespace WP_Rocket\Tests\Integration\inc\common;
 
 use Brain\Monkey\Functions;
-use WP_Rocket\Tests\Integration\DBTrait;
-use WPMedia\PHPUnit\Integration\TestCase;
+use WP_Post;
+use WP_Rocket\Tests\Integration\TestCase;
 
 /**
  * Test class covering ::rocket_clean_post_cache_on_slug_change
- * @uses  ::rocket_clean_files
+ *
+ * @uses ::rocket_clean_files
  * @group Purge
  */
 class TestRocketCleanPostCacheOnSlugChange extends TestCase {
-	use DBTrait;
-
 	/**
 	 * User's ID.
 	 * @var int
@@ -24,18 +23,6 @@ class TestRocketCleanPostCacheOnSlugChange extends TestCase {
 	 * @var WP_Post
 	 */
 	private $original_post;
-
-	public static function set_up_before_class()
-	{
-		parent::set_up_before_class();
-		self::installFresh();
-	}
-
-	public static function tear_down_after_class()
-	{
-		self::uninstallAll();
-		parent::tear_down_after_class();
-	}
 
 	/**
 	 * Set up the User ID before tests start.
@@ -50,6 +37,9 @@ class TestRocketCleanPostCacheOnSlugChange extends TestCase {
 	public function set_up() {
 		parent::set_up();
 
+		// Install the preload cache table to prevent DB error caused by permalink changed.
+		self::installPreloadCacheTable();
+
 		wp_set_current_user( self::$user_id );
 		$this->original_post = self::factory()->post->create_and_get(
 			[
@@ -60,6 +50,13 @@ class TestRocketCleanPostCacheOnSlugChange extends TestCase {
 		);
 		$this->set_permalink_structure( "/%postname%/" );
 		set_current_screen( 'edit.php' );
+	}
+
+	public function tear_down() {
+		// Uninstall the preload cache table.
+		self::uninstallPreloadCacheTable();
+
+		parent::tear_down();
 	}
 
 	/**

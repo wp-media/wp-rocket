@@ -2,13 +2,12 @@
 
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\CDN\Cloudflare;
 
-use Mockery;
-use WP_Rocket\Engine\Admin\Beacon\Beacon;
-use WP_Rocket\ThirdParty\Plugins\CDN\{Cloudflare,CloudflareFacade};
-use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Admin\Options;
-use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
+use Mockery;
+use WP_Rocket\Admin\{Options, Options_Data};
+use WP_Rocket\Engine\Admin\Beacon\Beacon;
+use WP_Rocket\Tests\Unit\TestCase;
+use WP_Rocket\ThirdParty\Plugins\CDN\{Cloudflare, CloudflareFacade};
 
 /**
  * Test class covering \WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare::display_apo_cookies_notice
@@ -16,26 +15,10 @@ use Brain\Monkey\Functions;
  * @group ThirdParty
  * @group CloudflarePlugin
  */
-class Test_displayApoCookiesNotice extends TestCase {
-
-	/**
-	 * @var Options_Data
-	 */
+class TestDisplayApoCookiesNotice extends TestCase {
 	protected $options;
-
-	/**
-	 * @var Options
-	 */
 	protected $option_api;
-
-	/**
-	 * @var Beacon
-	 */
 	protected $beacon;
-
-	/**
-	 * @var Cloudflare
-	 */
 	protected $cloudflare;
 
 	public function set_up() {
@@ -44,18 +27,16 @@ class Test_displayApoCookiesNotice extends TestCase {
 		$this->stubEscapeFunctions();
 		$this->stubTranslationFunctions();
 
-		$this->options = Mockery::mock(Options_Data::class);
-		$this->option_api = Mockery::mock(Options::class);
-		$this->beacon = Mockery::mock(Beacon::class);
-
-		$this->cloudflare = new Cloudflare($this->options, $this->option_api, $this->beacon, Mockery::mock( CloudflareFacade::class) );
+		$this->options    = Mockery::mock( Options_Data::class );
+		$this->option_api = Mockery::mock( Options::class );
+		$this->beacon     = Mockery::mock( Beacon::class );
+		$this->cloudflare = new Cloudflare( $this->options, $this->option_api, $this->beacon, Mockery::mock(  CloudflareFacade::class ) );
 	}
 
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldDoAsExpected( $config, $expected )
-	{
+	public function testShouldDoAsExpected( $config, $expected ) {
 		Functions\when('home_url')->justReturn($config['home_url']);
 		Functions\when('get_option')->alias(function ($name) use ($config) {
 			if('cloudflare_api_email' === $name) {
@@ -122,8 +103,9 @@ class Test_displayApoCookiesNotice extends TestCase {
 		if(! $config['right_screen'] || ! $config['can'] || (count($config['dynamic_cookies']) === 0 && count($config['mandatory_cookies']) === 0)) {
 			return;
 		}
-		$this->beacon->expects()->get_suggest('cloudflare_apo')->andReturn($config['beacon_response']);
-	}
+		$this->beacon->shouldReceive('get_suggest')
+			->with('cloudflare_apo')
+			->andReturn($config['beacon_response']);	}
 
 	protected function configure_apply_dynamic_cookies($config, $expected) {
 		if(! $config['right_screen'] || ! $config['can']) {

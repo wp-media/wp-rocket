@@ -2,8 +2,7 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\CriticalCSS;
 
-use Brain\Monkey\Functions;
-use Brain\Monkey\Filters;
+use Brain\Monkey\{Filters, Functions};
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CriticalPath\CriticalCSS;
@@ -14,10 +13,10 @@ use wpdb;
 /**
  * Test class covering \WP_Rocket\Engine\CriticalPath\CriticalCSS::process_handler
  *
- * @group  CriticalCss
- * @group  CriticalPath
+ * @group CriticalCss
+ * @group CriticalPath
  */
-class Test_ProcessHandler extends FilesystemTestCase {
+class TestProcessHandler extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/CriticalCSS/processHandler.php';
 
 	private $critical_css;
@@ -45,7 +44,9 @@ class Test_ProcessHandler extends FilesystemTestCase {
 		Functions\when( 'home_url' )->justReturn( 'http://example.org/' );
 		Functions\when( 'get_current_blog_id' )->justReturn( 1 );
 
-		$GLOBALS['wpdb'] = $this->wpdb = new wpdb();
+		$this->wpdb = new wpdb( 'dbuser', 'dbpassword', 'dbname', 'dbhost' );
+
+		$GLOBALS['wpdb'] = $this->wpdb;
 	}
 
 	protected function tearDown(): void {
@@ -85,8 +86,10 @@ class Test_ProcessHandler extends FilesystemTestCase {
 			Functions\expect( 'set_transient' )->once()->andReturn( null );
 			$number_items = count( $this->expected_items );
 			$process
-				->shouldReceive( 'push_to_queue' )->times( $number_items )->andReturn( null )
-				->shouldReceive( 'save' )->once()->andReturn( $process )
+				->shouldReceive( 'push_to_queue' )->times( $number_items )->andReturn( null );
+			$process
+				->shouldReceive( 'save' )->once()->andReturn( $process );
+			$process
 				->shouldReceive( 'dispatch' )->once()->andReturn( null );
 
 		}

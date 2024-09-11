@@ -2,7 +2,6 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Cron\Subscriber;
 
-use WP_Rocket\Engine\Common\Queue\PreloadQueueRunner;
 use WP_Rocket\Engine\Preload\Admin\Settings;
 use WP_Rocket\Engine\Preload\Controller\PreloadUrl;
 use WP_Rocket\Engine\Preload\Cron\Subscriber;

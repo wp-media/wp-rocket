@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Engine\Support;
 
+use WP_REST_Response;
 use WP_Rocket\Admin\Options_Data;
 
 class Rest {

@@ -87,7 +87,7 @@ class ProcessorService {
 		$generated_job = $this->api_client->send_generation_request( $item_url, $params, $item_type );
 
 		// validate generate response.
-		if ( is_wp_error( $generated_job ) ) {
+		if ( is_wp_error( $generated_job ) || ! is_object( $generated_job ) ) {
 			// Failed so return back the data.
 			return $generated_job;
 		}
@@ -163,6 +163,8 @@ class ProcessorService {
 		) {
 			return $this->on_job_success( $item_path, $item_url, $job_details->data->critical_path, $is_mobile, $item_type );
 		}
+
+		return $this->on_job_error( $job_details, $item_url, $is_mobile, $item_type );
 	}
 
 	/**
@@ -170,7 +172,7 @@ class ProcessorService {
 	 *
 	 * @since 3.6
 	 *
-	 * @param array  $job_details Job details array.
+	 * @param object $job_details Job details object.
 	 * @param string $item_url    Url for web page to be processed, used for error messages.
 	 * @param bool   $is_mobile   Bool identifier for is_mobile CPCSS generation.
 	 * @param string $item_type Optional. Type for this item if it's custom or specific type. Default: custom.

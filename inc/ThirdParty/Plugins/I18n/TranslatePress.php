@@ -41,6 +41,7 @@ class TranslatePress implements Subscriber_Interface {
 	 * @return string
 	 */
 	public function detect_homepage( $home_url, $url ) {
+
 		$translatepress = TRP_Translate_Press::get_trp_instance();
 		$converter      = $translatepress->get_component( 'url_converter' );
 

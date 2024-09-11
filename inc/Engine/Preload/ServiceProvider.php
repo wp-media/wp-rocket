@@ -116,7 +116,9 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		$this->getContainer()->add( 'preload_settings', Settings::class )
 			->addArgument( $options )
-			->addArgument( $preload_url_controller );
+			->addArgument( $preload_url_controller )
+			->addArgument( $this->getContainer()->get( 'load_initial_sitemap_controller' ) )
+			->addArgument( $this->getContainer()->get( 'preload_caches_table' ) );
 
 		$preload_settings = $this->getContainer()->get( 'preload_settings' );
 
@@ -161,7 +163,6 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addTag( 'common_subscriber' );
 
 		$this->getContainer()->add( 'preload_admin_subscriber', AdminSubscriber::class )
-			->addArgument( $options )
 			->addArgument( $preload_settings )
 			->addTag( 'common_subscriber' );
 	}

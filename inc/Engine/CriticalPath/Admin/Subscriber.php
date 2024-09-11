@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\CriticalPath\Admin;
 
+use WP_Admin_Bar;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 class Subscriber implements Subscriber_Interface {

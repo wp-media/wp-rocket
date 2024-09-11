@@ -28,7 +28,7 @@ class Test_SpecifyImageDimensions extends FilesystemTestCase {
 			remove_filter( 'rocket_specify_image_dimensions', [$this, 'filter_rocket_specify_image_dimensions'] );
 		}
 
-		if ( isset( $config['rocket_specify_dimension_skip_pictures_filter'] ) ){
+		if ( isset( $this->config_data['rocket_specify_dimension_skip_pictures_filter'] ) ){
 			remove_filter( 'rocket_specify_dimension_skip_pictures', [$this, 'filter_rocket_specify_dimension_skip_pictures'] );
 		}
 

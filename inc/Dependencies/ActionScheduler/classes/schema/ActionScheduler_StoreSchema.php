@@ -16,7 +16,7 @@ class ActionScheduler_StoreSchema extends ActionScheduler_Abstract_Schema {
 	/**
 	 * @var int Increment this value to trigger a schema update.
 	 */
-	protected $schema_version = 6;
+	protected $schema_version = 7;
 
 	public function __construct() {
 		$this->tables = [
@@ -38,6 +38,7 @@ class ActionScheduler_StoreSchema extends ActionScheduler_Abstract_Schema {
 		$table_name       = $wpdb->$table;
 		$charset_collate  = $wpdb->get_charset_collate();
 		$max_index_length = 191; // @see wp_get_db_schema()
+		$hook_status_scheduled_date_gmt_max_index_length = $max_index_length - 20 - 8; // - status, - scheduled_date_gmt
 		$default_date     = self::DEFAULT_DATE;
 		switch ( $table ) {
 
@@ -49,6 +50,7 @@ class ActionScheduler_StoreSchema extends ActionScheduler_Abstract_Schema {
 				        status varchar(20) NOT NULL,
 				        scheduled_date_gmt datetime NULL default '{$default_date}',
 				        scheduled_date_local datetime NULL default '{$default_date}',
+				        priority tinyint unsigned NOT NULL default '10',
 				        args varchar($max_index_length),
 				        schedule longtext,
 				        group_id bigint(20) unsigned NOT NULL default '0',
@@ -58,8 +60,8 @@ class ActionScheduler_StoreSchema extends ActionScheduler_Abstract_Schema {
 				        claim_id bigint(20) unsigned NOT NULL default '0',
 				        extended_args varchar(8000) DEFAULT NULL,
 				        PRIMARY KEY  (action_id),
-				        KEY hook (hook($max_index_length)),
-				        KEY status (status),
+				        KEY hook_status_scheduled_date_gmt (hook($hook_status_scheduled_date_gmt_max_index_length), status, scheduled_date_gmt),
+				        KEY status_scheduled_date_gmt (status, scheduled_date_gmt),
 				        KEY scheduled_date_gmt (scheduled_date_gmt),
 				        KEY args (args($max_index_length)),
 				        KEY group_id (group_id),

@@ -90,6 +90,11 @@ class Test_Process extends TestCase {
 				'/artale/modules/kirki/assets/webfont.js',
 				'/api/scripts/lb_cs.js',
 			],
+			'exclude_js_template' => [
+				'data-no-minify=',
+				'data-minify=',
+				'type="module"'
+			],
 		], HOUR_IN_SECONDS );
 
 		$this->defer_all_js = $settings['defer_all_js'];

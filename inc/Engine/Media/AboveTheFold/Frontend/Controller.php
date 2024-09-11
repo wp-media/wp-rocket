@@ -3,14 +3,14 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Media\AboveTheFold\Frontend;
 
-use WP_Filesystem_Direct;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Queries\AboveTheFold as ATFQuery;
 use WP_Rocket\Engine\Media\AboveTheFold\Context\Context;
 use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Engine\Optimization\UrlTrait;
+use WP_Rocket\Engine\Common\PerformanceHints\Frontend\ControllerInterface;
 
-class Controller {
+class Controller implements ControllerInterface {
 	use RegexTrait;
 	use UrlTrait;
 
@@ -36,49 +36,27 @@ class Controller {
 	private $context;
 
 	/**
-	 * WordPress filesystem.
-	 *
-	 * @var WP_Filesystem_Direct
-	 */
-	protected $filesystem;
-
-	/**
 	 * Constructor
 	 *
-	 * @param Options_Data              $options Options instance.
-	 * @param ATFQuery                  $query Queries instance.
-	 * @param Context                   $context Context instance.
-	 * @param WP_Filesystem_Direct|null $filesystem WordPress filesystem.
+	 * @param Options_Data $options Options instance.
+	 * @param ATFQuery     $query Queries instance.
+	 * @param Context      $context Context instance.
 	 */
-	public function __construct( Options_Data $options, ATFQuery $query, Context $context, WP_Filesystem_Direct $filesystem = null ) {
-		$this->options    = $options;
-		$this->query      = $query;
-		$this->context    = $context;
-		$this->filesystem = $filesystem ?: rocket_direct_filesystem();
+	public function __construct( Options_Data $options, ATFQuery $query, Context $context ) {
+		$this->options = $options;
+		$this->query   = $query;
+		$this->context = $context;
 	}
 
 	/**
 	 * Optimize the LCP image
 	 *
 	 * @param string $html HTML content.
+	 * @param object $row Database Row.
 	 *
 	 * @return string
 	 */
-	public function lcp( $html ): string {
-		if ( ! $this->context->is_allowed() ) {
-			return $html;
-		}
-
-		global $wp;
-
-		$url       = untrailingslashit( home_url( add_query_arg( [], $wp->request ) ) );
-		$is_mobile = $this->is_mobile();
-		$row       = $this->query->get_row( $url, $is_mobile );
-
-		if ( empty( $row ) ) {
-			return $this->inject_beacon( $html, $url, $is_mobile );
-		}
-
+	public function optimize( string $html, $row ): string {
 		if ( ! $row->has_lcp() ) {
 			return $html;
 		}
@@ -111,6 +89,11 @@ class Controller {
 		$preload .= $this->preload_tag( $lcp );
 
 		$replace = preg_replace( '#' . $title . '#', $preload, $html, 1 );
+
+		if ( null === $replace ) {
+			return $html;
+		}
+
 		$replace = $this->set_fetchpriority( $lcp, $replace );
 
 		return $replace;
@@ -142,28 +125,49 @@ class Controller {
 			'picture',
 		];
 
-		if ( empty( $lcp ) || empty( $lcp->type ) || ! in_array( $lcp->type, $allowed_types, true ) ) {
+		if ( empty( (array) $lcp ) || empty( $lcp->type ) || ! in_array( $lcp->type, $allowed_types, true ) ) {
 			return $html;
 		}
 
-		$url  = preg_quote( $lcp->src, '/' );
+		if ( empty( $lcp->src ) ) {
+			return $html;
+		}
+
+		$html    = $this->replace_html_comments( $html );
+		$url     = urldecode( preg_quote( $lcp->src, '/' ) );
+		$pattern = '#<img(?:[^>]*?\s+)?src=["\']' . $url . '["\'](?:\s+[^>]*?)?>#';
+		if ( wp_http_validate_url( $lcp->src ) && ! $this->is_external_file( $lcp->src ) ) {
+			$url = preg_quote(
+				wp_parse_url( $lcp->src, PHP_URL_PATH ),
+			'/'
+				);
+
+			$pattern = '#<img(?:[^>]*?\s+)?src\s*=\s*["\'](?:https?:)?(?:\/\/(?:[^\/]+)\/?)?\/?' . $url . '["\'](?:\s+[^>]*?)?>#i';
+		}
+
 		$html = preg_replace_callback(
-			'#<img(?:[^>]*?\s+)?src=["\']' . $url . '["\'](?:\s+[^>]*?)?>#',
+			$pattern,
 			function ( $matches ) {
 				// Check if the fetchpriority attribute already exists.
-				if ( preg_match( '/fetchpriority\s*=\s*[\'"]([^\'"]+)[\'"]/i', $matches[0] ) ) {
+				if ( preg_match( '/<img[^>]*\sfetchpriority(?:\s*=\s*["\'][^"\']*["\'])?[^>]*>/i', $matches[0] ) ) {
 					// If it exists, don't modify the tag.
 					return $matches[0];
 				}
 
 				// If it doesn't exist, add the fetchpriority attribute.
-				return preg_replace( '/<img/', '<img fetchpriority="high"', $matches[0] );
+				$replace = preg_replace( '/<img/', '<img fetchpriority="high"', $matches[0] );
+
+				if ( null === $replace ) {
+					return $matches[0];
+				}
+
+				return $replace;
 			},
 			$html,
 			1
 		);
 
-		return $html;
+		return $this->restore_html_comments( $html );
 	}
 
 	/**
@@ -244,7 +248,7 @@ class Controller {
 		}
 
 		$tag       = '';
-		$start_tag = '<link rel="preload" as="image" ';
+		$start_tag = '<link rel="preload" data-rocket-preload as="image" ';
 		$end_tag   = ' fetchpriority="high">';
 
 		$sources = [];
@@ -336,77 +340,6 @@ class Controller {
 	}
 
 	/**
-	 * The `inject_beacon` function is used to inject a JavaScript beacon into the HTML content.
-	 *
-	 * @param string $html The HTML content where the beacon will be injected.
-	 * @param string $url The current URL.
-	 * @param bool   $is_mobile True for mobile device, false otherwise.
-	 *
-	 * @return string The modified HTML content with the beacon script injected just before the closing body tag.
-	 */
-	public function inject_beacon( $html, $url, $is_mobile ): string {
-		$min = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
-
-		if ( ! $this->filesystem->exists( rocket_get_constant( 'WP_ROCKET_ASSETS_JS_PATH' ) . 'lcp-beacon' . $min . '.js' ) ) {
-			return $html;
-		}
-
-		$default_width_threshold  = $is_mobile ? 393 : 1600;
-		$default_height_threshold = $is_mobile ? 830 : 700;
-		/**
-		 * Filters the width threshold for the LCP beacon.
-		 *
-		 * @param int    $width_threshold The width threshold. Default is 393 for mobile and 1920 for others.
-		 * @param bool   $is_mobile       True if the current device is mobile, false otherwise.
-		 * @param string $url             The current URL.
-		 *
-		 * @return int The filtered width threshold.
-		 */
-		$width_threshold = apply_filters( 'rocket_lcp_width_threshold', $default_width_threshold, $is_mobile, $url );
-
-		/**
-		 * Filters the height threshold for the LCP beacon.
-		 *
-		 * @param int    $height_threshold The height threshold. Default is 830 for mobile and 1080 for others.
-		 * @param bool   $is_mobile        True if the current device is mobile, false otherwise.
-		 * @param string $url              The current URL.
-		 *
-		 * @return int The filtered height threshold.
-		 */
-		$height_threshold = apply_filters( 'rocket_lcp_height_threshold', $default_height_threshold, $is_mobile, $url );
-
-		if ( ! is_int( $width_threshold ) ) {
-			$width_threshold = $default_width_threshold;
-		}
-
-		if ( ! is_int( $height_threshold ) ) {
-			$height_threshold = $default_height_threshold;
-		}
-
-		$data = [
-			'ajax_url'         => admin_url( 'admin-ajax.php' ),
-			'nonce'            => wp_create_nonce( 'rocket_lcp' ),
-			'url'              => $url,
-			'is_mobile'        => $is_mobile,
-			'elements'         => $this->lcp_atf_elements(),
-			'width_threshold'  => $width_threshold,
-			'height_threshold' => $height_threshold,
-			'debug'            => rocket_get_constant( 'WP_ROCKET_DEBUG' ),
-		];
-
-		$inline_script = '<script>var rocket_lcp_data = ' . wp_json_encode( $data ) . '</script>';
-
-		// Get the URL of the script.
-		$script_url = rocket_get_constant( 'WP_ROCKET_ASSETS_JS_URL' ) . 'lcp-beacon' . $min . '.js';
-
-		// Create the script tag.
-		$script_tag = "<script data-name=\"wpr-lcp-beacon\" src='{$script_url}' async></script>"; // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript
-
-		// Append the script tag just before the closing body tag.
-		return str_replace( '</body>', $inline_script . $script_tag . '</body>', $html );
-	}
-
-	/**
 	 * Generates the source tags for the given LCP object.
 	 *
 	 * This method is used to generate the source tags for the given LCP object. It iterates over the sources of the LCP object,
@@ -421,34 +354,52 @@ class Controller {
 	 * @return array An associative array containing the sources array and the tag string.
 	 */
 	private function generate_source_tags( $lcp, $start_tag, $end_tag ) {
-		// Initialize the previous max-width to null.
 		$prev_max_width = null;
-		// Initialize the sources array and the tag string.
-		$sources = [];
-		$tag     = '';
+		$sources        = [];
+		$tag            = '';
+		$prev_type      = null;
 
 		// Iterate over the sources in the LCP object.
-		foreach ( $lcp->sources as $source ) {
-			// Get the media attribute of the source.
-			$media = $source->media;
+		foreach ( $lcp->sources as $i => $source ) {
+			// If the type of the previous source is not equal to the type of the current source, break the loop.
+			if ( ! empty( $source->type ) && $prev_type !== $source->type && null !== $prev_type ) {
+				break;
+			}
+
+			$media = ! empty( $source->media ) ? $source->media : '';
+
 			// If a previous max-width is found, update the media query.
-			if ( null !== $prev_max_width ) {
+			if ( null !== $prev_max_width && false === strpos( $media, 'min-width' ) ) {
 				$media = '(min-width: ' . ( $prev_max_width + 0.1 ) . 'px) and ' . $media;
 			}
-			// Add the source to the sources array.
+
+			// Add the media attribute to the media string.
+
+			$media = ! empty( $media ) ? ' media="' . $media . '"' : '';
+
 			$sources[] = $source->srcset;
+			// Get the sizes attribute of the source, if it exists.
+			$sizes = ! empty( $source->sizes ) ? ' imagesizes="' . $source->sizes . '"' : '';
+
+			// Determine whether to use 'href' or 'imagesrcset' based on the srcset attribute.
+			$link_attribute = ( substr_count( $source->srcset, ',' ) > 0 ) ? 'imagesrcset' : 'href';
+
 			// Append the source and media query to the tag string.
-			$tag .= $start_tag . 'href="' . $source->srcset . '" media="' . $media . '"' . $end_tag;
+			$tag .= $start_tag . $link_attribute . '="' . $source->srcset . '"' . ( $media ) . $sizes . $end_tag;
+
 			// If a max-width is found in the source's media attribute, update the previous max-width.
 			if ( preg_match( '/\(max-width: (\d+(\.\d+)?)px\)/', $source->media, $matches ) ) {
 				$prev_max_width = floatval( $matches[1] );
 			}
+
+			$prev_type = $source->type;
 		}
+
 		// If a previous max-width is found, update the media query and add the LCP source to the sources array and the tag string.
 		if ( null !== $prev_max_width ) {
-			$media     = '(min-width: ' . ( $prev_max_width + 0.1 ) . 'px)';
+			$media     = ' media="(min-width: ' . ( $prev_max_width + 0.1 ) . 'px)"';
 			$sources[] = $lcp->src;
-			$tag      .= $start_tag . 'href="' . $lcp->src . '" media="' . $media . '"' . $end_tag;
+			$tag      .= $start_tag . 'href="' . $lcp->src . '"' . $media . $end_tag;
 		}
 
 		// Return an associative array containing the sources array and the tag string.
@@ -459,11 +410,14 @@ class Controller {
 	}
 
 	/**
-	 * Returns a comma-separated list of elements to be considered for the lcp/above-the-fold optimization.
+	 * Add custom data like the comma-separated list of elements
+	 * to be considered for the lcp/above-the-fold optimization.
 	 *
-	 * @return string
+	 * @param array $data Array of data passed in beacon.
+	 *
+	 * @return array
 	 */
-	private function lcp_atf_elements(): string {
+	public function add_custom_data( array $data ): array {
 		$elements = [
 			'img',
 			'video',
@@ -473,6 +427,9 @@ class Controller {
 			'div',
 			'li',
 			'svg',
+			'section',
+			'header',
+			'span',
 		];
 
 		$default_elements = $elements;
@@ -492,6 +449,9 @@ class Controller {
 
 		$elements = array_filter( $elements, 'is_string' );
 
-		return implode( ', ', $elements );
+		$data['elements']      = implode( ', ', $elements );
+		$data['status']['atf'] = $this->context->is_allowed();
+
+		return $data;
 	}
 }

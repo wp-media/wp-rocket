@@ -110,7 +110,7 @@ class Subscriber implements Subscriber_Interface {
 		 *
 		 * @since 2.6
 		 *
-		 * @param bool true to apply CDN to properties, false otherwise
+		 * @param bool $do_rewrite true to apply CDN to properties, false otherwise.
 		 */
 		$do_rewrite = apply_filters( 'do_rocket_cdn_css_properties', true ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 

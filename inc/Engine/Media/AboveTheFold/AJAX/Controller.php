@@ -3,12 +3,16 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Media\AboveTheFold\AJAX;
 
+use WP_Rocket\Engine\Common\PerformanceHints\AJAX\AJAXControllerTrait;
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Queries\AboveTheFold as ATFQuery;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Engine\Optimization\UrlTrait;
+use WP_Rocket\Logger\Logger;
+use WP_Rocket\Engine\Common\PerformanceHints\AJAX\ControllerInterface;
 
-class Controller {
+class Controller implements ControllerInterface {
 	use UrlTrait;
+	use AJAXControllerTrait;
 
 	/**
 	 * ATFQuery instance
@@ -25,6 +29,15 @@ class Controller {
 	protected $context;
 
 	/**
+	 * An array of unsupported atf schemes.
+	 *
+	 * @var array
+	 */
+	private $invalid_schemes = [
+		'chrome-[^:]+://',
+	];
+
+	/**
 	 * Constructor
 	 *
 	 * @param ATFQuery         $query ATFQuery instance.
@@ -38,19 +51,25 @@ class Controller {
 	/**
 	 * Add LCP data to the database
 	 *
-	 * @return bool
+	 * @return array
 	 */
-	public function add_lcp_data() {
-		check_ajax_referer( 'rocket_lcp', 'rocket_lcp_nonce' );
+	public function add_data(): array {
+		$payload = [
+			'lcp' => '',
+		];
+
+		check_ajax_referer( 'rocket_beacon', 'rocket_beacon_nonce' );
 
 		if ( ! $this->context->is_allowed() ) {
-			wp_send_json_error( 'not allowed' );
-			return;
+			$payload['lcp'] = 'not allowed';
+
+			return $payload;
 		}
 
 		$url       = isset( $_POST['url'] ) ? untrailingslashit( esc_url_raw( wp_unslash( $_POST['url'] ) ) ) : '';
 		$is_mobile = isset( $_POST['is_mobile'] ) ? filter_var( wp_unslash( $_POST['is_mobile'] ), FILTER_VALIDATE_BOOLEAN ) : false;
-		$images    = isset( $_POST['images'] ) ? json_decode( sanitize_text_field( wp_unslash( $_POST['images'] ) ) ) : [];
+		$results   = isset( $_POST['results'] ) ? json_decode( wp_unslash( $_POST['results'] ) ) : (object) [ 'lcp' => [] ]; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$images    = $results->lcp ?? [];
 		$lcp       = 'not found';
 		$viewport  = [];
 
@@ -69,28 +88,34 @@ class Controller {
 		$keys = [ 'bg_set', 'src' ];
 
 		foreach ( (array) $images as $image ) {
-			if ( isset( $image->type ) ) {
-				$image_object = $this->create_object( $image, $keys );
+			if ( empty( $image->type ) ) {
+				continue;
+			}
 
-				if ( 'lcp' === $image->label && null !== $image_object ) {
-					$lcp = $image_object;
-				} elseif ( 'above-the-fold' === $image->label && null !== $image_object ) {
-					if ( 0 === $max_atf_images_number ) {
-						continue;
-					}
+			$image_object = $this->create_object( $image, $keys );
 
-					$viewport[] = $image_object;
+			if ( ! $image_object || ! $this->validate_image( $image_object ) ) {
+				continue;
+			}
 
-					--$max_atf_images_number;
-				}
+			if ( isset( $image->label ) && 'lcp' === $image->label ) {
+				$lcp = $image_object;
+				continue;
+			}
+
+			if ( isset( $image->label ) && 'above-the-fold' === $image->label && 0 < $max_atf_images_number ) {
+				$viewport[] = $image_object;
+
+				--$max_atf_images_number;
 			}
 		}
 
 		$row = $this->query->get_row( $url, $is_mobile );
 
 		if ( ! empty( $row ) ) {
-			wp_send_json_error( 'item already in the database' );
-			return;
+			$payload['lcp'] = 'item already in the database';
+
+			return $payload;
 		}
 
 		$status                               = isset( $_POST['status'] ) ? sanitize_text_field( wp_unslash( $_POST['status'] ) ) : '';
@@ -109,36 +134,13 @@ class Controller {
 		$result = $this->query->add_item( $item );
 
 		if ( ! $result ) {
-			wp_send_json_error( 'error when adding the entry to the database' );
-			return;
+			$payload['lcp'] = 'error when adding the entry to the database';
+
+			return $payload;
 		}
 
-		wp_send_json_success( $item );
-	}
-
-	/**
-	 * Get status code and message to be saved into the database
-	 *
-	 * @param string $status Current status code from $_POST.
-	 * @return array
-	 */
-	private function get_status_code_message( $status ) {
-		$status_code    = 'success' !== $status ? 'failed' : 'completed';
-		$status_message = '';
-
-		switch ( $status ) {
-			case 'script_error':
-				$status_message = esc_html__( 'Script error', 'rocket' );
-				break;
-			case 'timeout':
-				$status_message = esc_html__( 'Script timeout', 'rocket' );
-				break;
-		}
-
-		return [
-			$status_code,
-			$status_message,
-		];
+		$payload['lcp'] = $item;
+		return $payload;
 	}
 
 	/**
@@ -156,19 +158,55 @@ class Controller {
 		switch ( $object->type ) {
 			case 'img-srcset':
 				// If the type is 'img-srcset', add all the required parameters to the object.
-				$object->src    = $this->is_relative( $image->src ) ? sanitize_text_field( $image->src ) : esc_url_raw( $image->src );
+				if ( isset( $image->src ) && ! empty( $image->src ) && is_string( $image->src ) ) {
+					$object->src = $this->sanitize_image_url( $image->src );
+				}
 				$object->srcset = $image->srcset;
 				$object->sizes  = $image->sizes;
 				break;
 			case 'picture':
-				$object->src     = $this->is_relative( $image->src ) ? sanitize_text_field( $image->src ) : esc_url_raw( $image->src );
-				$object->sources = $image->sources;
+				if ( isset( $image->src ) && ! empty( $image->src ) && is_string( $image->src ) ) {
+					$object->src = $this->sanitize_image_url( $image->src );
+				}
+				$object->sources = array_map(
+					function ( $source ) {
+						if ( empty( $source->type ) ) {
+							Logger::notice( 'The source type is missing in the image object.', [ 'source' => $source ] );
+						}
+
+						return (object) wp_parse_args(
+							$source,
+							[
+								'media'  => '',
+								'sizes'  => '',
+								'srcset' => '',
+								'type'   => '',
+							]
+						);
+					},
+					$image->sources
+				);
 				break;
 			default:
 				// For other types, add the first non-empty key to the object.
 				foreach ( $keys as $key ) {
 					if ( isset( $image->$key ) && ! empty( $image->$key ) ) {
-						$object->$key = $image->$key;
+						if ( is_array( $image->$key ) ) {
+							$sanitized_array = array_map(
+								function ( $item ) {
+									if ( ! empty( $item->src ) ) {
+										$item->src = $this->sanitize_image_url( $item->src );
+									}
+									return $item;
+								},
+								$image->$key
+							);
+
+							$object->$key = $sanitized_array;
+
+						} else {
+							$object->$key = $this->sanitize_image_url( $image->$key );
+						}
 						break;
 					}
 				}
@@ -180,24 +218,51 @@ class Controller {
 			return null;
 		}
 
+		// Returned objects must always have a src for front-end optimization.
+		// Except bg-img and bg-img-set for which we use bg_set only.
+		// To keep it simple and safe for now, we enforce src for all, pending a refactor.
+		if ( ! isset( $object->src ) ) {
+			$object->src = '';
+		}
+
 		return $object;
 	}
 
 	/**
-	 * Checks if there is existing LCP data for the current URL and device type.
+	 * Sanitize image url before saving them into database.
+	 *
+	 * @param string $url The image url.
+	 * @return string
+	 */
+	private function sanitize_image_url( string $url ) {
+		$sanitize_url = esc_url_raw( $url );
+		if ( $this->is_relative( $url ) && strpos( $url, '/' ) !== 0 ) {
+			$sanitize_url = esc_url_raw( '/' . $url );
+			$sanitize_url = substr( $sanitize_url, 1 );
+		}
+
+		return $sanitize_url;
+	}
+
+	/**
+	 * Checks if there is existing data for the current URL and device type from the beacon script.
 	 *
 	 * This method is called via AJAX. It checks if there is existing LCP data for the current URL and device type.
 	 * If the data exists, it returns a JSON success response with true. If the data does not exist, it returns a JSON success response with false.
 	 * If the context is not allowed, it returns a JSON error response with false.
 	 *
-	 * @return void
+	 * @return array
 	 */
-	public function check_lcp_data() {
-		check_ajax_referer( 'rocket_lcp', 'rocket_lcp_nonce' );
+	public function check_data(): array {
+		$payload = [
+			'lcp' => false,
+		];
+
+		check_ajax_referer( 'rocket_beacon', 'rocket_beacon_nonce' );
 
 		if ( ! $this->context->is_allowed() ) {
-			wp_send_json_error( false );
-			return;
+			$payload['lcp'] = true;
+			return $payload;
 		}
 
 		$url       = isset( $_POST['url'] ) ? untrailingslashit( esc_url_raw( wp_unslash( $_POST['url'] ) ) ) : '';
@@ -206,10 +271,71 @@ class Controller {
 		$row = $this->query->get_row( $url, $is_mobile );
 
 		if ( ! empty( $row ) ) {
-			wp_send_json_success( 'data already exists' );
-			return;
+			$payload['lcp'] = true;
+			return $payload;
 		}
 
-		wp_send_json_error( 'data does not exist' );
+		return $payload;
+	}
+
+	/**
+	 * Validate image object.
+	 *
+	 * @param object $image_object Image full object.
+	 * @return bool
+	 */
+	private function validate_image( $image_object ): bool {
+		$valid_image = ! empty( $image_object->src ) ? $this->validate_image_src( $image_object->src ?? '' ) : true;
+
+		/**
+		 * Filters If the image src is a valid image or not.
+		 *
+		 * @param bool   $valid_image Valid image or not.
+		 * @param string $image_src_url Image src url.
+		 * @param object $image_object Image object with full details.
+		 */
+		return (bool) apply_filters( 'rocket_atf_valid_image', $valid_image, $image_object->src, $image_object );
+	}
+
+	/**
+	 * Make sure that this url is valid image without loading the image itself.
+	 *
+	 * @param string $image_src Image src url.
+	 * @return bool
+	 */
+	private function validate_image_src( string $image_src ): bool {
+		if ( empty( $image_src ) ) {
+			return false;
+		}
+
+		/**
+		 * Filters the supported schemes of LCP/ATF images.
+		 *
+		 * @param array  $invalid_schemes Array of invalid schemes.
+		 */
+		$invalid_schemes = apply_filters( 'rocket_atf_invalid_schemes', $this->invalid_schemes );
+
+		if ( ! is_array( $invalid_schemes ) ) {
+			$invalid_schemes = $this->invalid_schemes;
+		}
+
+		$invalid_schemes = implode( '|', $invalid_schemes );
+
+		if ( preg_match( '#^' . $invalid_schemes . '#', $image_src ) ) {
+			return false;
+		}
+
+		// Here we get the url PATH part only to strip all query strings.
+		$image_src_path = wp_parse_url( $image_src, PHP_URL_PATH );
+		if ( empty( $image_src_path ) ) {
+			return false;
+		}
+
+		// Add svg to allowed mime types.
+		$allowed_mime_types        = get_allowed_mime_types();
+		$allowed_mime_types['svg'] = 'image/svg+xml';
+		$image_src_filetype_array  = wp_check_filetype( $image_src_path, $allowed_mime_types );
+
+		return ! empty( $image_src_filetype_array['type'] ) && str_starts_with( $image_src_filetype_array['type'], 'image/' );
 	}
 }

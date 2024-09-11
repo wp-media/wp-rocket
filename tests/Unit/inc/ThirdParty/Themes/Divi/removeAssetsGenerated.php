@@ -14,7 +14,6 @@ use Brain\Monkey\Functions;
 
 /**
  * Test class covering \WP_Rocket\ThirdParty\Themes\Divi::remove_assets_generated
- * @uses   \WP_Rocket\ThirdParty\Themes\Divi::is_divi
  *
  * @group  ThirdParty
  */

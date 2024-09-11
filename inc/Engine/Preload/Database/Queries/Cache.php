@@ -303,7 +303,7 @@ class Cache extends Query {
 		$db = $this->get_db();
 
 		// Bail if no database interface is available.
-		if ( empty( $db ) ) {
+		if ( ! $db ) {
 			return [];
 		}
 
@@ -347,7 +347,7 @@ class Cache extends Query {
 			false
 		);
 
-		if ( $total <= 0 || $inprogress_count >= $total ) {
+		if ( $total <= 0 || (int) $inprogress_count >= $total ) {
 			return [];
 		}
 
@@ -466,14 +466,14 @@ class Cache extends Query {
 	/**
 	 * Revert old in-progress rows
 	 *
-	 * @depecated
+	 * @deprecated
 	 */
 	public function revert_old_in_progress() {
 		// Get the database interface.
 		$db = $this->get_db();
 
 		// Bail if no database interface is available.
-		if ( empty( $db ) ) {
+		if ( ! $db ) {
 			return false;
 		}
 
@@ -489,7 +489,7 @@ class Cache extends Query {
 		$db = $this->get_db();
 
 		// Bail if no database interface is available.
-		if ( empty( $db ) ) {
+		if ( ! $db ) {
 			return false;
 		}
 
@@ -505,7 +505,7 @@ class Cache extends Query {
 		$db = $this->get_db();
 
 		// Bail if no database interface is available.
-		if ( empty( $db ) ) {
+		if ( ! $db ) {
 			return false;
 		}
 
@@ -568,7 +568,7 @@ class Cache extends Query {
 		$db = $this->get_db();
 
 		// Bail if no database interface is available.
-		if ( empty( $db ) ) {
+		if ( ! $db ) {
 			return false;
 		}
 
@@ -603,7 +603,7 @@ class Cache extends Query {
 		$db = $this->get_db();
 
 		// Bail if no database interface is available.
-		if ( empty( $db ) ) {
+		if ( ! $db ) {
 			return false;
 		}
 

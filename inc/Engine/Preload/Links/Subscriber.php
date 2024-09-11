@@ -128,7 +128,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @since 3.7
 	 *
-	 * @return string[] Preload Links script configuration parameters.
+	 * @return array Preload Links script configuration parameters.
 	 */
 	private function get_preload_links_config() {
 		$use_trailing_slash = $this->use_trailing_slash();
@@ -152,7 +152,7 @@ class Subscriber implements Subscriber_Interface {
 		 *
 		 * @since 3.7
 		 *
-		 * @param string[] $config Preload Links script configuration parameters.
+		 * @param array $config Preload Links script configuration parameters.
 		 */
 		$filtered_config = apply_filters( 'rocket_preload_links_config', $config );
 

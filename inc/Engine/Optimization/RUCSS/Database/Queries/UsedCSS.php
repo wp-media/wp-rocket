@@ -87,7 +87,7 @@ class UsedCSS extends AbstractQuery {
 		$db = $this->get_db();
 
 		// Bail if no database interface is available.
-		if ( empty( $db ) ) {
+		if ( ! $db ) {
 			return false;
 		}
 

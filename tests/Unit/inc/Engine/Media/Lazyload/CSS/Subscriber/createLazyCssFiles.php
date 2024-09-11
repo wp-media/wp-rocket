@@ -2,14 +2,13 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Media\Lazyload\CSS\Subscriber;
 
-use Engine\Media\Lazyload\CSS\Subscriber\SubscriberTrait;
-use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
+use WP_Rocket\Tests\Unit\TestCase;
 
 /**
  * Test class covering \WP_Rocket\Engine\Media\Lazyload\CSS\Subscriber::create_lazy_css_files
  */
-class Test_createLazyCssFiles extends TestCase {
+class TestCreateLazyCssFiles extends TestCase {
 
 	use SubscriberTrait;
 
@@ -17,11 +16,10 @@ class Test_createLazyCssFiles extends TestCase {
 		$this->init_subscriber();
 	}
 
-    /**
-     * @dataProvider configTestData
-     */
-    public function testShouldReturnAsExpected( $config, $expected )
-    {
+	/**
+	 * @dataProvider configTestData
+	 */
+	public function testShouldReturnAsExpected( $config, $expected ) {
 
 		Functions\when('wp_generate_uuid4')->justReturn('hash');
 		Functions\when('current_time')->justReturn('time');
@@ -37,36 +35,36 @@ class Test_createLazyCssFiles extends TestCase {
 		}
 
 		foreach ($config['has'] as $url => $output) {
-			$this->filesystem_cache->expects()->has($url)->andReturn($output);
+			$this->filesystem_cache->shouldReceive('has')->with($url)->andReturn($output);
 		}
 
 		foreach ($config['resolve'] as $url => $path) {
-			$this->file_resolver->expects()->resolve($url)->andReturn($path);
+			$this->file_resolver->shouldReceive('resolve')->with($url)->andReturn($path);
 		}
 
 		foreach ($config['content'] as $path => $data) {
-			$this->fetcher->expects()->fetch($path, $data['path'])->andReturn($data['content']);
+			$this->fetcher->shouldReceive('fetch')->with($path, $data['path'])->andReturn($data['content']);
 		}
 
 		foreach ($config['extract'] as $content => $conf) {
-			$this->extractor->expects()->extract($content, $conf['css_file'])->andReturn($conf['results']);
+			$this->extractor->shouldReceive('extract')->with($content, $conf['css_file'])->andReturn($conf['results']);
 		}
 
 		foreach ($config['rule_format'] as $url_tag) {
-			$this->rule_formatter->expects()->format($url_tag['content'], $url_tag['tag'])->andReturn($url_tag['new_content']);
-			$this->json_formatter->expects()->format($url_tag['tag'])->andReturn($url_tag['formatted_urls']);
+			$this->rule_formatter->shouldReceive('format')->with($url_tag['content'], $url_tag['tag'])->andReturn($url_tag['new_content']);
+			$this->json_formatter->shouldReceive('format')->with($url_tag['tag'])->andReturn($url_tag['formatted_urls']);
 		}
 
 		foreach ($config['cache_set'] as $url => $data) {
-			$this->filesystem_cache->expects()->set($url, $data['content'])->andReturn($data['output']);
+			$this->filesystem_cache->shouldReceive('set')->with($url, $data['content'])->andReturn($data['output']);
 		}
 
 		foreach ($config['cache_get'] as $url => $content) {
-			$this->filesystem_cache->expects()->get($url)->andReturn($content);
+			$this->filesystem_cache->shouldReceive('get')->with($url)->andReturn($content);
 		}
 
 		foreach ($config['json_set'] as $url => $content) {
-			$this->filesystem_cache->expects()->set($url, $content);
+			$this->filesystem_cache->shouldReceive('set')->with($url, $content);
 		}
 
 		foreach ($config['generate_url'] as $conf) {
@@ -74,9 +72,9 @@ class Test_createLazyCssFiles extends TestCase {
 		}
 
 		foreach ($config['generate_path'] as $url => $path) {
-			$this->filesystem_cache->expects()->generate_path($url)->andReturn($path);
+			$this->filesystem_cache->shouldReceive('generate_path')->with($url)->andReturn($path);
 		}
 
-        $this->assertSame($expected, $this->subscriber->create_lazy_css_files($config['data']));
-    }
+		$this->assertSame($expected, $this->subscriber->create_lazy_css_files($config['data']));
+	}
 }

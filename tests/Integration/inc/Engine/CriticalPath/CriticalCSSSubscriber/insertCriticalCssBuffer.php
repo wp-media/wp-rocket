@@ -3,33 +3,22 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\CriticalCSSSubscriber;
 
 use WP_Rocket\Tests\Integration\ContentTrait;
-use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
  * Test class covering \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::insert_critical_css_buffer
- * @uses   ::rocket_get_constant
- * @uses   ::is_rocket_post_excluded_option
- * @uses   \WP_Rocket\Engine\CriticalPath\CriticalCss::get_critical_css_content
- * @uses   \WP_Rocket\Admin\Options_Data::get
  *
- * @group  CriticalPath
- * @group  vfs
+ * @uses ::rocket_get_constant
+ * @uses ::is_rocket_post_excluded_option
+ * @uses \WP_Rocket\Engine\CriticalPath\CriticalCss::get_critical_css_content
+ * @uses \WP_Rocket\Admin\Options_Data::get
+ *
+ * @group CriticalPath
+ * @group vfs
  */
 class Test_InsertCriticalCssBuffer extends FilesystemTestCase {
-	use ContentTrait, DBTrait;
+	use ContentTrait;
 
-	public static function set_up_before_class()
-	{
-		parent::set_up_before_class();
-		self::installFresh();
-	}
-
-	public static function tear_down_after_class()
-	{
-		self::uninstallAll();
-		parent::tear_down_after_class();
-	}
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/CriticalCSSSubscriber/insertCriticalCssBuffer.php';
 
 	protected static $use_settings_trait = true;
@@ -55,14 +44,14 @@ class Test_InsertCriticalCssBuffer extends FilesystemTestCase {
 	}
 
 	public function tear_down() {
-		parent::tear_down();
-
 		$this->reset_post_types();
 		$this->reset_taxonomies();
 
 		remove_filter( 'pre_get_rocket_option_async_css', [ $this, 'return_1' ] );
 		remove_filter( 'pre_get_rocket_option_critical_css', [ $this, 'getFallbackCss' ] );
 		update_option( 'show_on_front', 'posts' );
+
+		parent::tear_down();
 	}
 
 	/**

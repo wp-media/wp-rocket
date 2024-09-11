@@ -2,41 +2,32 @@
 
 namespace WP_Rocket\Tests\Integration\inc\functions;
 
-use WP_Rocket\Tests\Integration\DBTrait;
-use WPMedia\PHPUnit\Integration\TestCase;
+use WP_Rocket\Tests\Integration\TestCase;
 
 /**
  * Test class covering ::get_rocket_sample_permalink
+ *
  * @group Functions
  * @group Posts
  */
 class Test_GetRocketSamePermalink extends TestCase {
-	use DBTrait;
-
 	private $did_filter;
-
-	public static function set_up_before_class()
-	{
-		parent::set_up_before_class();
-		self::installFresh();
-	}
-
-	public static function tear_down_after_class()
-	{
-		self::uninstallAll();
-		parent::tear_down_after_class();
-	}
 
 	public function set_up() {
 		parent::set_up();
+
+		// Install the preload cache table to prevent DB error caused by permalink changed.
+		self::installPreloadCacheTable();
 
 		$this->did_filter = [ 'editable_slug' => 0 ];
 	}
 
 	public function tear_down() {
-		parent::tear_down();
-
+		// Uninstall the preload cache table.
+		self::uninstallPreloadCacheTable();
 		remove_filter( 'editable_slug', [ $this, 'editable_slug_cb' ] );
+
+		parent::tear_down();
 	}
 
 	public function testShouldBailOutWhenPostDoesNotExist() {
@@ -54,7 +45,7 @@ class Test_GetRocketSamePermalink extends TestCase {
 	}
 
 	/**
-	 * @dataProvider providerTestData
+	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnSamplePermalink( $config, $post_data, $expected ) {
 		$this->set_permalink_structure( $config['structure'] );
@@ -71,10 +62,6 @@ class Test_GetRocketSamePermalink extends TestCase {
 
 		$did_filter_expected = isset( $config['parent_post'] ) ? 2 : 1;
 		$this->assertEquals( $did_filter_expected, $this->did_filter['editable_slug'] );
-	}
-
-	public function providerTestData() {
-		return $this->getTestData( __DIR__, 'getRocketSamplePermalink' );
 	}
 
 	public function editable_slug_cb( $slug ) {

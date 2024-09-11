@@ -250,14 +250,15 @@ class Settings {
 		}
 
 		// translators: %1$s = plugin name, %2$s = table name, %3$s = <a> open tag, %4$s = </a> closing tag.
-		$main_message = esc_html__( '%1$s: Could not create the %2$s table in the database which is necessary for the Remove Unused CSS feature to work. Please reach out to %3$sour support%4$s.', 'rocket' );
+		$main_message   = esc_html__( '%1$s: Could not create the %2$s table in the database which is necessary for the Remove Unused CSS feature to work. Please check our %3$sdocumentation%4$s.', 'rocket' );
+		$rucss_database = $this->beacon->get_suggest( 'rucss_database' );
 
 		$message = sprintf(
 		// translators: %1$s = plugin name, %2$s = table name, %3$s = <a> open tag, %4$s = </a> closing tag.
 			$main_message,
 			'<strong>WP Rocket</strong>',
 			$this->used_css->get_name(),
-			'<a href="' . $this->get_support_url() . '" target="_blank" rel="noopener">',
+			'<a href="' . esc_url( $rucss_database['url'] ) . '" data-beacon-article="' . esc_attr( $rucss_database['id'] ) . '" target="_blank" rel="noopener">',
 			'</a>'
 		);
 
@@ -267,21 +268,6 @@ class Settings {
 				'dismissible' => '',
 				'message'     => $message,
 				'id'          => 'rocket-notice-rucss-missing-table',
-			]
-		);
-	}
-
-	/**
-	 * Get support URL.
-	 *
-	 * @return string
-	 */
-	protected function get_support_url() {
-		return rocket_get_external_url(
-			'support',
-			[
-				'utm_source' => 'wp_plugin',
-				'utm_medium' => 'wp_rocket',
 			]
 		);
 	}

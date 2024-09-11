@@ -42,7 +42,6 @@ class Test_RocketGetPurgeUrls extends FilesystemTestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldReturnUrls( $config, $expected ) {
-		$this->markTestSkipped('Error with require');
 		$post_id = isset( $config['post_data']['ID'] ) ? $config['post_data']['ID'] : 0;
 		$post    = isset( $config['post_data'] ) ? (object) $config['post_data'] : null;
 		$options = isset( $config['options'] ) ? $config['options'] : [];

@@ -3,7 +3,7 @@
 namespace WP_Rocket\Tests\Unit\inc\Engine\Media\Lazyload\Subscriber;
 
 use Mockery;
-use Brain\Monkey\Filters;
+use Brain\Monkey\{Filters, Functions};
 use WP_Rocket\Dependencies\RocketLazyload\Assets;
 use WP_Rocket\Dependencies\RocketLazyload\Image;
 use WP_Rocket\Dependencies\RocketLazyload\Iframe;
@@ -38,6 +38,8 @@ class Test_MaybeDisableCoreLazyload extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
+		Functions\when( 'rocket_bypass' )->justReturn( false );
+
 		$this->options->shouldReceive( 'get' )
 			->atMost()
 			->once()

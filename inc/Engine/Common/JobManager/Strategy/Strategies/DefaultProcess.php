@@ -3,7 +3,7 @@
 namespace WP_Rocket\Engine\Common\JobManager\Strategy\Strategies;
 
 use WP_Rocket\Engine\Common\Clock\WPRClock;
-use WP_Rocket\Engine\Common\JobManager\Managers\ManagerInterface;
+use WP_Rocket\Engine\Optimization\RUCSS\Jobs\Manager;
 
 /**
  * Class managing the default error for retry process
@@ -13,7 +13,7 @@ class DefaultProcess implements StrategyInterface {
 	/**
 	 * Job Manager.
 	 *
-	 * @var ManagerInterface
+	 * @var Manager
 	 */
 	private $manager;
 
@@ -48,10 +48,10 @@ class DefaultProcess implements StrategyInterface {
 	/**
 	 * Strategy Constructor.
 	 *
-	 * @param ManagerInterface $manager Job Manager.
-	 * @param WPRClock         $clock Clock object.
+	 * @param Manager  $manager Job Manager.
+	 * @param WPRClock $clock Clock object.
 	 */
-	public function __construct( ManagerInterface $manager, WPRClock $clock ) {
+	public function __construct( Manager $manager, WPRClock $clock ) {
 		$this->manager = $manager;
 		$this->clock   = $clock;
 

@@ -58,6 +58,10 @@ class AbstractQuery extends Query {
 			]
 		);
 
+		if ( is_array( $query ) ) {
+			$query = array_pop( $query );
+		}
+
 		if ( empty( $query ) ) {
 			return false;
 		}
@@ -101,13 +105,13 @@ class AbstractQuery extends Query {
 			return [];
 		}
 
-		$in_progress_count = $this->query(
+		$in_progress_count = (int) $this->query(
 			[
 				'count'  => true,
 				'status' => [ 'in-progress' ],
 			]
 		);
-		$pending_count     = $this->query(
+		$pending_count     = (int) $this->query(
 			[
 				'count'  => true,
 				'status' => [ 'pending' ],
@@ -188,7 +192,7 @@ class AbstractQuery extends Query {
 			return [];
 		}
 
-		$inprogress_count = $this->query(
+		$inprogress_count = (int) $this->query(
 			[
 				'count'  => true,
 				'status' => 'in-progress',
@@ -511,7 +515,7 @@ class AbstractQuery extends Query {
 		$db = $this->get_db();
 
 		// Bail if no database interface is available.
-		if ( empty( $db ) ) {
+		if ( ! $db ) {
 			return false;
 		}
 

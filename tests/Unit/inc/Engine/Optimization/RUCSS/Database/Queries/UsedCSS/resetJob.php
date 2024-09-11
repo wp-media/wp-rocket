@@ -33,6 +33,7 @@ class Test_resetJob extends TestCase {
 
 		$this->usedcss::$table_exists = true;
 
+		/* @phpstan-ignore-next-line */
 		$this->usedcss->expects(self::once())->method('update_item')->with($expected['id'], $expected['data'])->willReturn($config['updated']);
 
         $this->assertSame($expected['result'], $this->usedcss->reset_job($config['id'], $config['job_id']));

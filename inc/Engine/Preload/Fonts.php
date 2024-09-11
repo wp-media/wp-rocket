@@ -37,7 +37,7 @@ class Fonts implements Subscriber_Interface {
 	 * @since 3.6
 	 * @see   $this->sanitize_font()
 	 *
-	 * @var string|bool
+	 * @var array
 	 */
 	private $font_formats = [
 		'otf',

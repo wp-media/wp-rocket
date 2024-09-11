@@ -28,7 +28,7 @@ class Test_HandleSaveTemplate extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$GLOBALS['wpdb'] = $this->wpdb = new wpdb();
+		$GLOBALS['wpdb'] = $this->wpdb = new wpdb( 'dbuser', 'dbpassword', 'dbname', 'dbhost' );
 	}
 
 	protected function tearDown(): void {

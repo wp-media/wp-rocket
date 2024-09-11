@@ -2,7 +2,6 @@
 
 namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Themes\Divi;
 
-use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\WPThemeTestcase;
 use WP_Rocket\ThirdParty\Themes\Divi;
 
@@ -11,25 +10,12 @@ use WP_Rocket\ThirdParty\Themes\Divi;
  *
  * @group Themes
  */
-class Test_RemoveAssetsGenerated extends WPThemeTestcase {
-	use DBTrait;
-
+class TestRemoveAssetsGenerated extends WPThemeTestcase {
 	private $container;
 	private $event;
 	private $subscriber;
 
 	protected $path_to_test_data = '/inc/ThirdParty/Themes/Divi/removeAssetsGenerated.php';
-
-	public static function set_up_before_class() {
-		parent::set_up_before_class();
-		self::installFresh();
-	}
-
-	public static function tear_down_after_class() {
-		self::uninstallAll();
-
-		parent::tear_down_after_class();
-	}
 
 	public function set_up() {
 		parent::set_up();
@@ -57,8 +43,9 @@ class Test_RemoveAssetsGenerated extends WPThemeTestcase {
 
 		$this->event->add_subscriber( $this->subscriber );
 
-		add_action( 'et_dynamic_late_assets_generated', '__return_true' );
-		$this->assertTrue( has_action( 'et_dynamic_late_assets_generated' ) );
+		add_filter( 'et_dynamic_late_assets_generated', '__return_true' );
+
+		$this->assertTrue( has_filter( 'et_dynamic_late_assets_generated' ) );
 
 		switch_theme( $config['stylesheet'] );
 

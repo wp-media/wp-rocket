@@ -7,7 +7,7 @@ defined( 'ABSPATH' ) || exit;
  *
  * @since 1.0
  *
- * When the settins menu is hidden, redirect on the main settings page to avoid the same thing
+ * When the settings menu is hidden, redirect on the main settings page to avoid the same thing
  * (Only when a form is sent from our options page )
  *
  * @since 2.1

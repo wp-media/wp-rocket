@@ -51,7 +51,7 @@ class Queue extends AbstractASQueue {
 	 *
 	 * @param int $interval Cron interval in seconds.
 	 *
-	 * @return string
+	 * @return int
 	 */
 	public function schedule_pending_jobs_cron( int $interval ) {
 		return $this->schedule_recurring( time(), $interval, $this->pending_job_cron );

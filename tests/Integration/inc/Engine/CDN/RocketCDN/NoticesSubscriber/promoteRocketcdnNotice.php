@@ -6,22 +6,25 @@ use WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\TestCase;
 
 /**
  * Test class covering \WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber::promote_rocketcdn_notice
- * @uses   ::rocket_is_live_site
- * @uses   \WP_Rocket\Abstract_Render::generate
- * @uses   ::rocket_direct_filesystem
  *
- * @group  AdminOnly
- * @group  RocketCDN
+ * @uses ::rocket_is_live_site
+ * @uses \WP_Rocket\Abstract_Render::generate
+ * @uses ::rocket_direct_filesystem
+ *
+ * @group AdminOnly
+ * @group RocketCDN
  */
 class Test_PromoteRocketcdnNotice extends TestCase {
-	private $notice;
-
 	public function set_up() {
 		parent::set_up();
 
-		if ( empty( $this->notice ) ) {
-			$this->notice = $this->format_the_html( $this->config['notice'] );
-		}
+		$this->unregisterAllCallbacksExcept( 'admin_notices', 'promote_rocketcdn_notice' );
+	}
+
+	public function tear_down() {
+		parent::tear_down();
+
+		$this->restoreWpHook( 'admin_notices' );
 	}
 
 	/**
@@ -51,17 +54,16 @@ class Test_PromoteRocketcdnNotice extends TestCase {
 			add_user_meta( get_current_user_id(), 'rocketcdn_dismiss_notice', $config['user_meta'] );
 		}
 
-		ob_start();
-		do_action( 'admin_notices' );
-		$actual = ob_get_clean();
-		if ( ! empty( $actual ) ) {
-			$actual = $this->format_the_html( $actual );
-		}
-
 		if ( $expected['should_display'] ) {
-			$this->assertContains( $this->notice, $actual );
+			$this->assertStringContainsStringIgnoringCase(
+				$this->format_the_html( $this->config['notice'] ),
+				$this->get_actual_html()
+			);
 		} else {
-			$this->assertStringNotContainsString( $this->notice, $actual );
+			$this->assertStringNotContainsStringIgnoringCase(
+				$this->format_the_html( $this->config['notice'] ),
+				$this->get_actual_html()
+			);
 		}
 	}
 
@@ -74,5 +76,12 @@ class Test_PromoteRocketcdnNotice extends TestCase {
 
 		$user_id = $this->factory->user->create( [ 'role' => $role ] );
 		wp_set_current_user( $user_id );
+	}
+
+	private function get_actual_html() {
+		ob_start();
+		do_action( 'admin_notices' );
+
+		return $this->format_the_html( ob_get_clean() );
 	}
 }

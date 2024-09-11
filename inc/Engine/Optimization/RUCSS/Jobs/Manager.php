@@ -109,7 +109,7 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 	 * @return void
 	 */
 	public function validate_and_fail( array $job_details, $row_details, string $optimization_type ): void {
-		if ( 'all' !== $optimization_type || $this->optimization_type !== $optimization_type ) {
+		if ( 'all' !== $optimization_type && $this->optimization_type !== $optimization_type ) {
 			return;
 		}
 
@@ -118,7 +118,7 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 		 *
 		 * @since 3.13.3
 		 *
-		 * @param int min size.
+		 * @param int $min_rucss_size min size.
 		 */
 		$min_rucss_size = apply_filters( 'rocket_min_rucss_size', 150 );
 		if ( ! is_numeric( $min_rucss_size ) ) {

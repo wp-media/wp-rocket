@@ -6,7 +6,6 @@ use WP_Rocket\Engine\Cache\WPCache;
 
 /**
  * Test class covering \WP_Rocket\Engine\Cache\WPCache::maybe_prevent_deactivation
- * @uses   ::find_wp_config_path
  *
  * @group  WPCache
  */

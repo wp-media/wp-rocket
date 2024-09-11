@@ -56,7 +56,7 @@ class MappingFormatter {
 		/**
 		 * Pseudo elements to remove from lazyload CSS selector.
 		 *
-		 * @param string[] Pseudo elements to remove.
+		 * @param string[] $original_pseudo_elements Pseudo elements to remove.
 		 */
 		$pseudo_elements_to_remove = apply_filters( 'rocket_lazyload_css_ignored_pseudo_elements', $original_pseudo_elements );
 

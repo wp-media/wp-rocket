@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Engine\Cache;
 
+use WP_Filesystem_Direct;
 use WP_Rocket\Engine\Activation\ActivationInterface;
 use WP_Rocket\Engine\Deactivation\DeactivationInterface;
 

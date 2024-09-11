@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\Cache;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use DirectoryIterator;
 use Exception;
+use WP_Filesystem_Direct;
 use WP_Term;
 use WP_Post;
 
@@ -187,7 +188,7 @@ class Purge {
 		/**
 		 * Action to preload urls after cleaning cache.
 		 *
-		 * @param array urls to preload.
+		 * @param array $urls urls to preload.
 		 */
 		do_action( 'rocket_after_clean_terms', $urls );
 	}

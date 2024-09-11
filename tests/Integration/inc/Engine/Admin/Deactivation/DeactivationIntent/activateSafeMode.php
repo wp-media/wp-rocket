@@ -27,7 +27,7 @@ class Test_ActivateSafeMode extends TestCase {
 
 		foreach ( $expected as $key => $value ) {
 			$this->assertArrayHasKey( $key, $options );
-			$this->assertSame( $value, $options[$key] );
+			$this->assertSame( $value, $options[ $key ] );
 		}
 	}
 }

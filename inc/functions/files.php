@@ -1162,7 +1162,7 @@ function rocket_rrmdir( $dir, array $dirs_to_preserve = [], $filesystem = null )
 }
 
 /**
- * Instanciate the filesystem class
+ * Instantiate the filesystem class
  *
  * @since 2.10
  *

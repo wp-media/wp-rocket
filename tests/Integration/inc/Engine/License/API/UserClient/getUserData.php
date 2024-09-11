@@ -30,13 +30,17 @@ class Test_GetUserData extends TestCase {
 
 	public function set_up() {
 		parent::set_up();
-
+		delete_transient( 'wp_rocket_customer_data' );
+		delete_transient( 'wpr_user_information_timeout_active' );
+		delete_transient( 'wpr_user_information_timeout' );
 		add_filter( 'pre_get_rocket_option_consumer_email', [ $this, 'set_consumer_email' ] );
 		add_filter( 'pre_get_rocket_option_consumer_key', [ $this, 'set_consumer_key' ] );
 	}
 
 	public function tear_down() {
 		delete_transient( 'wp_rocket_customer_data' );
+		delete_transient( 'wpr_user_information_timeout_active' );
+		delete_transient( 'wpr_user_information_timeout' );
 		remove_filter( 'pre_get_rocket_option_consumer_email', [ $this, 'set_consumer_email' ] );
 		remove_filter( 'pre_get_rocket_option_consumer_key', [ $this, 'set_consumer_key' ] );
 		remove_filter( 'pre_http_request', [ $this, 'set_response' ] );

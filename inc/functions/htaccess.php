@@ -150,7 +150,7 @@ function flush_rocket_htaccess( $remove_rules = false ) { // phpcs:ignore WordPr
 	fseek( $pointer, 0 );
 	$bytes = fwrite( $pointer, $new_file_data ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fwrite
 
-	if ( $bytes ) {
+	if ( false !== $bytes ) {
 		ftruncate( $pointer, ftell( $pointer ) );
 	}
 
@@ -202,7 +202,7 @@ function rocket_htaccess_rules_test( $rules_name ) {
 }
 
 /**
- * Return the markers for htacces rules
+ * Return the markers for htaccess rules
  *
  * @since 1.0
  *

@@ -33,9 +33,9 @@ class Test_handleSaveTemplate extends WPThemeTestcase {
 	}
 
 	public static function tear_down_after_class() {
-		parent::tear_down_after_class();
-
 		self::resetAdminCap();
+
+		parent::tear_down_after_class();
 	}
 
 	public function set_up() {

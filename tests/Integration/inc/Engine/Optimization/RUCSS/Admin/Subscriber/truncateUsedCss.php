@@ -3,32 +3,40 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\RUCSS\Admin\Subscriber;
 
-use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
  * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::truncate_used_css
  *
- * @group  RUCSS
+ * @group RUCSS
  */
-class Test_TruncateUsedCss extends TestCase{
-	use DBTrait;
-
+class Test_TruncateUsedCss extends TestCase {
 	private $input;
 
 	public static function set_up_before_class() {
-		self::installFresh();
-
 		parent::set_up_before_class();
+
+		// Install in set_up_before_class because of exists() requiring not temporary table.
+		self::installUsedCssTable();
 	}
 
 	public static function tear_down_after_class() {
-		parent::tear_down_after_class();
+		self::uninstallUsedCssTable();
 
-		self::uninstallAll();
+		parent::tear_down_after_class();
 	}
 
-	public function tear_down() : void {
+	public function set_up() {
+		parent::set_up();
+
+		// Disable ATF optimization to prevent DB request (unrelated to the test).
+		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
+	}
+
+	public function tear_down() {
+		// Re-enable ATF optimization.
+		remove_filter( 'rocket_above_the_fold_optimization', '__return_false' );
+
 		remove_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
 
 		parent::tear_down();
@@ -37,7 +45,7 @@ class Test_TruncateUsedCss extends TestCase{
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldTruncateTableWhenOptionIsEnabled( $input ){
+	public function testShouldTruncateTableWhenOptionIsEnabled( $input ) {
 		$container           = apply_filters( 'rocket_container', null );
 		$rucss_usedcss_query = $container->get( 'rucss_used_css_query' );
 

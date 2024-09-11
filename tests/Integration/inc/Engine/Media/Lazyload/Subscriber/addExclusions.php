@@ -13,8 +13,12 @@ use WP_Rocket\Tests\Integration\TestCase;
 class Test_AddExclusions extends TestCase {
 	private $options;
 
+	public function set_up() {
+		parent::set_up();
+	}
+
 	public function tear_down() {
-		remove_filter( 'pre_get_rocket_option_exclude_lazyload', [ $this, 'set_option_exclusions'] );
+		remove_filter( 'pre_get_rocket_option_exclude_lazyload', [ $this, 'set_option_exclusions' ] );
 
 		parent::tear_down();
 	}
@@ -25,7 +29,7 @@ class Test_AddExclusions extends TestCase {
 	public function testShouldReturnExpected( $config, $expected ) {
 		$this->options = $config['option'];
 
-		add_filter( 'pre_get_rocket_option_exclude_lazyload', [ $this, 'set_option_exclusions'] );
+		add_filter( 'pre_get_rocket_option_exclude_lazyload', [ $this, 'set_option_exclusions' ] );
 
 		$this->assertSame(
 			array_values( $expected ),

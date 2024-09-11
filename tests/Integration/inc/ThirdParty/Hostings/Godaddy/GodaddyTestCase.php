@@ -1,5 +1,5 @@
 <?php
-namespace WP_Rocket\Tests\integration\inc\ThirdParty\Hostings\Godaddy;
+namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Hostings\Godaddy;
 
 use WP_Rocket\Tests\Integration\TestCase;
 

@@ -305,7 +305,7 @@ class Facebook_Pickles {
 	}
 
 	/**
-	 * Tell if the replacement was sucessful or not.
+	 * Tell if the replacement was successful or not.
 	 *
 	 * @since  3.2
 	 * @access public

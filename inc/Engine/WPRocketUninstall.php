@@ -1,8 +1,10 @@
 <?php
 
+use WP_Rocket\Dependencies\Database\Table;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS;
 use WP_Rocket\Engine\Preload\Database\Tables\Cache;
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Tables\AboveTheFold;
+use WP_Rocket\Engine\Optimization\LazyRenderContent\Database\Table\LazyRenderContent;
 
 /**
  * Manages the deletion of WP Rocket data and files on uninstall.
@@ -80,6 +82,10 @@ class WPRocketUninstall {
 		'wp_rocket_pricing_timeout',
 		'wp_rocket_pricing_timeout_active',
 		'rocket_get_refreshed_fragments_cache',
+		'rocket_preload_previous_requests_durations',
+		'rocket_preload_check_duration',
+		'wpr_user_information_timeout_active',
+		'wpr_user_information_timeout',
 	];
 
 	/**
@@ -136,19 +142,28 @@ class WPRocketUninstall {
 	/**
 	 * Constructor.
 	 *
-	 * @param string       $cache_path            Path to the cache folder.
-	 * @param string       $config_path           Path to the config folder.
-	 * @param UsedCSS      $rucss_usedcss_table   RUCSS used_css table.
-	 * @param Cache        $rocket_cache          Preload rocket_cache table.
-	 * @param AboveTheFold $atf_table             Above the fold table.
+	 * @param string            $cache_path            Path to the cache folder.
+	 * @param string            $config_path           Path to the config folder.
+	 * @param UsedCSS           $rucss_usedcss_table   RUCSS used_css table.
+	 * @param Cache             $rocket_cache          Preload rocket_cache table.
+	 * @param AboveTheFold      $atf_table             Above the fold table.
+	 * @param LazyRenderContent $lrc_table Lazy Render content table.
 	 */
-	public function __construct( $cache_path, $config_path, $rucss_usedcss_table, $rocket_cache, $atf_table ) {
+	public function __construct(
+		$cache_path,
+		$config_path,
+		$rucss_usedcss_table,
+		$rocket_cache,
+		$atf_table,
+		$lrc_table
+	) {
 		$this->cache_path  = trailingslashit( $cache_path );
 		$this->config_path = $config_path;
 		$this->tables      = [
 			$rucss_usedcss_table,
 			$rocket_cache,
 			$atf_table,
+			$lrc_table,
 		];
 	}
 

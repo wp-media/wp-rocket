@@ -1,8 +1,6 @@
 <?php
 
 return [
-	'vfs_dir' => 'wp-content/',
-
 	'test_data' => [
 		'shouldDoNothingWhenNotWPRSettingsPage' => [
 			'config' => [

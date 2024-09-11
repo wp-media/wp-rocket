@@ -144,7 +144,7 @@ $(document).ready(function(){
 	maskField($('#cloudflare_api_key_mask'), $('#cloudflare_api_key'));
 	maskField($('#cloudflare_zone_id_mask'), $('#cloudflare_zone_id'));
 
-	// Display/Hide childern fields on checkbox change.
+	// Display/Hide children fields on checkbox change.
     $( '.wpr-isParent input[type=checkbox]' ).on('change', function() {
         wprShowChildren($(this));
     });

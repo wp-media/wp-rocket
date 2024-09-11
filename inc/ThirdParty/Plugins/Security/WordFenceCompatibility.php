@@ -81,6 +81,7 @@ class WordFenceCompatibility implements Subscriber_Interface {
 	 * Check if ip can be removed.
 	 *
 	 * @param string $ip IP.
+	 *
 	 * @return array
 	 */
 	private function can_pop_ip( string $ip ) {
@@ -94,7 +95,7 @@ class WordFenceCompatibility implements Subscriber_Interface {
 		$ip = array_search( $ip, $whitelist_array, true );
 
 		if ( false === $ip ) {
-			return false;
+			return [];
 		}
 
 		// Remove ip from whitelist.
@@ -119,7 +120,7 @@ class WordFenceCompatibility implements Subscriber_Interface {
 		 *
 		 * @since  3.10
 		 *
-		 * @param array  list of IPs should be whitelisted
+		 * @param array $ips list of IPs should be whitelisted
 		 */
 		$ips = apply_filters( 'rocket_wordfence_whitelisted_ips', self::WHITELISTED_IPS );
 

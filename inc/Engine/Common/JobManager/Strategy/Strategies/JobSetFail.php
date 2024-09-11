@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Engine\Common\JobManager\Strategy\Strategies;
 
-use WP_Rocket\Engine\Common\JobManager\Managers\ManagerInterface;
+use WP_Rocket\Engine\Optimization\RUCSS\Jobs\Manager;
 
 /**
  * Class managing the retry process whenever a job isn't found in the SaaS.
@@ -11,16 +11,16 @@ class JobSetFail implements StrategyInterface {
 	/**
 	 * Job Manager.
 	 *
-	 * @var ManagerInterface
+	 * @var Manager
 	 */
 	private $manager;
 
 	/**
 	 * Strategy Constructor.
 	 *
-	 * @param ManagerInterface $manager Job Manager.
+	 * @param Manager $manager Job Manager.
 	 */
-	public function __construct( ManagerInterface $manager ) {
+	public function __construct( Manager $manager ) {
 		$this->manager = $manager;
 	}
 

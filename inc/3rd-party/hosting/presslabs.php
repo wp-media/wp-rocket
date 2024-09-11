@@ -18,7 +18,7 @@ add_action( 'wp_rocket_loaded', 'rocket_pl_remove_partial_purge_hooks' );
  *
  * @since 3.3
  *
- * @param object $post The Post object itself for which the action occured.
+ * @param object $post The Post object itself for which the action occurred.
  * @param array  $permalink A list of permalinks to be flushed from cache.
  *
  * @return void

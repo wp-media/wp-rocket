@@ -7,7 +7,7 @@
  * @param array $data {
  *     Field arguments.
  *
- *     @type string $id    Field indentifier.
+ *     @type string $id    Field identifier.
  *     @type mixed  $value Field value.
  * }
  */

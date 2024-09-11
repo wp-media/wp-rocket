@@ -352,31 +352,6 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Save Cloudflare minify admin option.
-	 *
-	 * @param string $value New value for Cloudflare minify.
-	 *
-	 * @return string[]
-	 */
-	private function save_minify( $value ) {
-		$result = $this->cloudflare->set_minify( $value );
-
-		if ( is_wp_error( $result ) ) {
-			return [
-				'result'  => 'error',
-				// translators: %s is the message returned by the CloudFlare API.
-				'message' => sprintf( __( 'Cloudflare minification error: %s', 'rocket' ), $result->get_error_message() ),
-			];
-		}
-
-		return [
-			'result'  => 'success',
-			// translators: %s is the message returned by the CloudFlare API.
-			'message' => sprintf( __( 'Cloudflare minification %s', 'rocket' ), $result ),
-		];
-	}
-
-	/**
 	 * Save Cloudflare rocket loader admin option.
 	 *
 	 * @param string $value New value for Cloudflare rocket loader.
@@ -442,10 +417,6 @@ class Subscriber implements Subscriber_Interface {
 		// Set Cache Level to Aggressive.
 		$cf_cache_level = isset( $cf_old_settings[0] ) && 0 === $auto_settings ? $cf_old_settings[0] : 'aggressive';
 		$result[]       = $this->save_cache_level( $cf_cache_level );
-
-		// Active Minification for HTML, CSS & JS.
-		$cf_minify = isset( $cf_old_settings[1] ) && 0 === $auto_settings ? $cf_old_settings[1] : 'on';
-		$result[]  = $this->save_minify( $cf_minify );
 
 		// Deactivate Rocket Loader to prevent conflicts.
 		$cf_rocket_loader = isset( $cf_old_settings[2] ) && 0 === $auto_settings ? $cf_old_settings[2] : 'off';
@@ -593,7 +564,7 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Change the authentification.
+	 * Change the authentication.
 	 *
 	 * @param array $value     An array of previous values for the settings.
 	 * @param array $old_value An array of submitted values for the settings.

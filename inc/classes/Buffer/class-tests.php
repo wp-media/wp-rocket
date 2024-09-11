@@ -327,7 +327,7 @@ class Tests {
 
 		if ( strlen( $buffer ) <= 255 ) {
 			// Buffer length must be > 255 (IE does not read pages under 255 c).
-			$this->set_error( 'Buffer content under 255 caracters.' );
+			$this->set_error( 'Buffer content under 255 characters.' );
 			return false;
 		}
 

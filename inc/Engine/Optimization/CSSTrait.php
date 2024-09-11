@@ -322,9 +322,9 @@ trait CSSTrait {
 			 *
 			 * @since 3.8.6
 			 *
-			 * @param bool Skipped or not (Default not skipped).
+			 * @param bool   $skip_import Skipped or not (Default not skipped).
 			 * @param string $file_path Matched import path.
-			 * @param string $import_match Full import match.
+			 * @param array  $import_match Full import match.
 			 */
 			if ( apply_filters( 'rocket_skip_import_replacement', false, $match['path'], $match ) ) {
 				continue;
@@ -468,10 +468,6 @@ trait CSSTrait {
 		}
 
 		$hosts = array_unique( $hosts );
-
-		if ( empty( $hosts ) ) {
-			return true;
-		}
 
 		// URL has domain and domain is part of the internal domains.
 		if ( ! empty( $file['host'] ) ) {

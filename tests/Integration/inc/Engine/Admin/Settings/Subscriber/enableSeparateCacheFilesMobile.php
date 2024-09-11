@@ -1,13 +1,16 @@
 <?php
+declare(strict_types=1);
+
 namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\Settings\Subscriber;
 
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\Admin\Settings\Subscriber::enable_separate_cache_files_mobile
+ *
+ * @group Settings
  */
-class Test_EnableSeparateCAcheFilesMobile extends TestCase {
-
+class Test_EnableSeparateCacheFilesMobile extends TestCase {
 	public function set_up() {
 		parent::set_up();
 
@@ -16,12 +19,11 @@ class Test_EnableSeparateCAcheFilesMobile extends TestCase {
 
 	public function tear_down() {
 		parent::tear_down();
-
 		$this->restoreWpHook( 'wp_rocket_upgrade' );
 	}
 
 	/**
-	 * @dataProvider provideTestData
+	 * @dataProvider configTestData
 	 */
 	public function testShouldEnableSeparateCacheFilesMobile( $config ) {
 		$options = get_option( 'wp_rocket_settings', [] );
@@ -39,9 +41,5 @@ class Test_EnableSeparateCAcheFilesMobile extends TestCase {
 		} else {
 			$this->assertEquals( 0, $do_caching_mobile_files );
 		}
-	}
-
-	public function provideTestData() {
-		return $this->getTestData( __DIR__, 'enableSeparateCacheFilesMobile' );
 	}
 }

@@ -126,7 +126,7 @@ class AMP implements Subscriber_Interface {
 
 		global $wp_filter;
 
-		remove_filter( 'wp_resource_hints', 'rocket_dns_prefetch', 10, 2 );
+		remove_filter( 'wp_resource_hints', 'rocket_dns_prefetch', 10 );
 		add_filter( 'do_rocket_lazyload', '__return_false' );
 		add_filter( 'do_rocket_lazyload_iframes', '__return_false' );
 		add_filter( 'pre_get_rocket_option_async_css', '__return_false' );

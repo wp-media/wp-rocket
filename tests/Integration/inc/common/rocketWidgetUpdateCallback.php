@@ -2,7 +2,6 @@
 
 namespace WP_Rocket\Tests\Integration\inc\common;
 
-use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Widget_Text;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
@@ -15,21 +14,7 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group  vfs
  */
 class Test_RocketWidgetUpdateCallback extends FilesystemTestCase {
-	use DBTrait;
-
 	protected $path_to_test_data = '/inc/common/rocketWidgetUpdateCallback.php';
-
-	public static function set_up_before_class()
-	{
-		parent::set_up_before_class();
-		self::installFresh();
-	}
-
-	public static function tear_down_after_class()
-	{
-		self::uninstallAll();
-		parent::tear_down_after_class();
-	}
 
 	public static function wpSetUpBeforeClass( $factory ) {
 		wp_set_current_user( $factory->user->create( [ 'role' => 'administrator' ] ) );

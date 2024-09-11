@@ -13,8 +13,7 @@ use Brain\Monkey\Functions;
  * @group ThirdParty
  * @group CloudflarePlugin
  */
-class Test_disableCloudflareOption extends TestCase {
-
+class TestDisableCloudflareOption extends TestCase {
 	/**
 	 * @var Options_Data
 	 */
@@ -25,23 +24,26 @@ class Test_disableCloudflareOption extends TestCase {
 	 */
 	protected $options_api;
 
-	public function set_up()
-	{
+	public function set_up() {
 		parent::set_up();
-		$container = apply_filters('rocket_container', null);
-		$this->options = $container->get('options');
-		$this->options_api = $container->get('options_api');
+
+		$container         = apply_filters( 'rocket_container', null );
+		$this->options     = $container->get( 'options' );
+		$this->options_api = $container->get( 'options_api' );
 	}
 
 	/**
-     * @dataProvider configTestData
-     */
-    public function testShouldDoAsExpected( $config )
-    {
-		Functions\expect('is_plugin_active')->with('')->andReturn($config['plugin_active']);
-        do_action('enable_cloudflare/cloudflare.php');
-		$settings = $this->options_api->get('settings');
-		$this->options->set_values($settings);
-		$this->assertSame(false, $this->options->get('do_cloudflare', false));
-    }
+	 * @dataProvider configTestData
+	 */
+	public function testShouldDoAsExpected( $config ) {
+		Functions\expect( 'is_plugin_active' )->andReturn( $config['plugin_active'] );
+
+		do_action( 'enable_cloudflare/cloudflare.php' );
+
+		$settings = $this->options_api->get( 'settings' );
+
+		$this->options->set_values( $settings );
+
+		$this->assertFalse( $this->options->get( 'do_cloudflare', false ) );
+	}
 }
