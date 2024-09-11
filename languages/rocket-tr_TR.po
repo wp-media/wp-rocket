@@ -4423,7 +4423,7 @@ msgstr "%1$sÜcretsiz plan%2$s 20MB/ay içerir (yaklaşık 200 resim)"
 #: views/settings/page-sections/imagify.php:83
 msgid "%1$sInstall Imagify, the Easiest WordPress Image Optimizer%2$s"
 msgstr ""
-"%1$sEn Kolay WordPress Resim İyileştiricisi olan Imagify’ı yükleyin%2$s"
+"%1$sEn Kolay WordPress Resim İyileştiricisi olan Imagify’ı Yükleyin%2$s"
 
 #: views/settings/page-sections/imagify.php:110
 msgid "Install Imagify"
