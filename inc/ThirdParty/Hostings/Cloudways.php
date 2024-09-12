@@ -99,12 +99,16 @@ class Cloudways extends NullSubscriber implements Subscriber_Interface {
 	 *
 	 * @since 3.5.5
 	 *
-	 * @param array $varnish_ip Varnish IP.
+	 * @param mixed $varnish_ip Varnish IP.
 	 * @return array
 	 */
-	public function varnish_ip( array $varnish_ip ) {
+	public function varnish_ip( mixed $varnish_ip ) {
 		if ( ! self::is_varnish_running() ) {
 			return $varnish_ip;
+		}
+
+		if ( ! is_array( $varnish_ip ) ) {
+			$varnish_ip = (array) $varnish_ip;
 		}
 
 		$varnish_ip[] = '127.0.0.1:8080';

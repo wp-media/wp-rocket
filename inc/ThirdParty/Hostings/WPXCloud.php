@@ -26,10 +26,14 @@ class WPXCloud extends AbstractNoCacheHost {
 	/**
 	 * Adds WPX Cloud Varnish IP to varnish IPs array
 	 *
-	 * @param array $varnish_ip Varnish IP.
+	 * @param mixed $varnish_ip Varnish IP.
 	 * @return array
 	 */
-	public function varnish_ip( array $varnish_ip ): array {
+	public function varnish_ip( mixed $varnish_ip ): array {
+		if ( ! is_array( $varnish_ip ) ) {
+			$varnish_ip = (array) $varnish_ip;
+		}
+
 		$varnish_ip[] = '127.0.0.1:6081';
 
 		return $varnish_ip;
