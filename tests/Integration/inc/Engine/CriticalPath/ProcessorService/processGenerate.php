@@ -17,7 +17,7 @@ class Test_ProcessGenerate extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/ProcessorService/processGenerate.php';
 
 	private static $container;
-	private static $user_id;
+	private static $user_id; // @phpstan-ignore-line
 	private $api_client;
 	private $processor;
 

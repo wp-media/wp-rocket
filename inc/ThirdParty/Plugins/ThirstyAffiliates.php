@@ -22,8 +22,8 @@ class ThirstyAffiliates implements Subscriber_Interface {
 	 *
 	 * @since 3.10.8
 	 *
-	 * @param string[] $excluded Array of excluded patterns.
-	 * @param string[] $default Array of default excluded patterns.
+	 * @param string[]|object $excluded Array of excluded patterns.
+	 * @param string[]        $default Array of default excluded patterns.
 	 *
 	 * @return array
 	 */

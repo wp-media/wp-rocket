@@ -113,7 +113,7 @@ class Cleaner extends ActionScheduler_QueueCleaner {
 	 */
 	public function clean_actions( array $statuses_to_purge, \DateTime $cutoff_date, $batch_size = null, $context = 'old' ) {
 		$batch_size = null !== $batch_size ? $batch_size : $this->batch_size;
-		$cutoff     = null !== $cutoff_date ? $cutoff_date : as_get_datetime_object( $this->hour_in_seconds . ' seconds ago' );
+		$cutoff     = $cutoff_date;
 		$lifespan   = time() - $cutoff->getTimestamp();
 
 		if ( empty( $statuses_to_purge ) ) {

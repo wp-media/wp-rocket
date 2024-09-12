@@ -106,10 +106,6 @@ class Render extends Abstract_render {
 	 * @since 3.0
 	 */
 	public function render_form_sections() {
-		if ( ! isset( $this->settings ) ) {
-			return;
-		}
-
 		foreach ( $this->settings as $id => $args ) {
 			$default = [
 				'title'            => '',
@@ -131,7 +127,6 @@ class Render extends Abstract_render {
 	 */
 	public function render_imagify_section() {
 
-		// @phpstan-ignore-next-line
 		require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
 
 		$plugin_data = get_transient( 'rocket_imagify_plugin_data' );

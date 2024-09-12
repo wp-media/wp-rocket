@@ -506,6 +506,8 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * Get all private urls for public post types.
 	 *
 	 * @return array
+	 *
+	 * @phpstan-ignore-next-line
 	 */
 	private function get_all_private_urls() {
 		static $private_urls;

@@ -26,7 +26,7 @@ class AMP implements Subscriber_Interface {
 	 *
 	 * @var Options_Data
 	 */
-	private $options;
+	private $options; // @phpstan-ignore-line - Options is written but not read.
 
 	/**
 	 * Constructor

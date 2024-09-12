@@ -12,7 +12,7 @@ class Yoast implements Subscriber_Interface {
 	 *
 	 * @var Options_Data
 	 */
-	private $options;
+	private $options; // @phpstan-ignore-line - Properties not used in here.
 
 	/**
 	 * Constructor
@@ -43,11 +43,7 @@ class Yoast implements Subscriber_Interface {
 	 *
 	 * @return array
 	 */
-	public function add_sitemap( $sitemaps ): array {
-		if ( ! is_array( $sitemaps ) ) {
-			$sitemaps = (array) $sitemaps;
-		}
-
+	public function add_sitemap( array $sitemaps ): array {
 		if ( ! $this->is_sitemap_enabled() ) {
 			return $sitemaps;
 		}

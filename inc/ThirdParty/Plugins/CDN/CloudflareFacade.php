@@ -28,7 +28,7 @@ class CloudflareFacade {
 	 * @return void
 	 */
 	public function purge_everything() {
-		if ( is_null( $this->hooks ) ) {
+		if ( is_null( $this->hooks ) ) { // @phpstan-ignore-line
 			$this->set_hooks();
 		}
 
@@ -43,7 +43,7 @@ class CloudflareFacade {
 	 * @return void
 	 */
 	public function purge_urls( $post_ids ) {
-		if ( is_null( $this->hooks ) ) {
+		if ( is_null( $this->hooks ) ) { // @phpstan-ignore-line
 			$this->set_hooks();
 		}
 

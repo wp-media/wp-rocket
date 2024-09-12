@@ -30,17 +30,10 @@ class Subscriber implements Subscriber_Interface {
 	 * Options Data instance
 	 *
 	 * @var Options_Data
+	 *
+	 * @phpstan-ignore-next-line
 	 */
 	private $options;
-
-	/**
-	 * Script enqueued status.
-	 *
-	 * @since 3.7
-	 *
-	 * @var bool
-	 */
-	private $is_enqueued = false;
 
 	/**
 	 * Subscriber constructor.

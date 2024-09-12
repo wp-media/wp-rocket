@@ -271,12 +271,15 @@ class DeferJS {
 		 * @since 3.8
 		 *
 		 * @param array $inline_exclusions_list Array of inline JS that should not be deferred.
+		 *
+		 * @return mixed Array or string of inline JS that should not be deferred.
 		 */
 		$additional_inline_exclusions_list = apply_filters( 'rocket_defer_inline_exclusions', [] );
 
 		$inline_exclusions = '';
 
 		// Check if filter return is string so convert it to array for backward compatibility.
+		// @phpstan-ignore-next-line
 		if ( is_string( $additional_inline_exclusions_list ) ) {
 			$additional_inline_exclusions_list = explode( '|', $additional_inline_exclusions_list );
 		}

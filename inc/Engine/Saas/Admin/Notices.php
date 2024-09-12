@@ -198,7 +198,7 @@ class Notices {
 	 *
 	 * @since 3.11
 	 *
-	 * @param array $data Localize script data.
+	 * @param object|array $data Localize script data.
 	 *
 	 * @return array
 	 */

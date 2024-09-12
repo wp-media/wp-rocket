@@ -101,11 +101,7 @@ class PreloadUrl {
 		 *
 		 * @param array $requests Requests that will be done.
 		 */
-		$requests = apply_filters( 'rocket_preload_before_preload_url', $requests );
-
-		if ( ! is_array( $requests ) ) {
-			return;
-		}
+		$requests = wpm_apply_filters_typed( 'array', 'rocket_preload_before_preload_url', $requests );
 
 		$requests = array_filter( $requests );
 
@@ -140,7 +136,7 @@ class PreloadUrl {
 				$headers
 			);
 
-			if ( ! is_array( $headers ) ) {
+			if ( ! is_array( $headers ) ) { // @phpstan-ignore-line
 				return;
 			}
 
@@ -205,7 +201,7 @@ class PreloadUrl {
 		 */
 		$new_prefix = apply_filters( 'rocket_mobile_preload_user_agent_prefix', $prefix );
 
-		if ( empty( $new_prefix ) || ! is_string( $new_prefix ) ) {
+		if ( empty( $new_prefix ) || ! is_string( $new_prefix ) ) { // @phpstan-ignore-line
 			return $prefix;
 		}
 

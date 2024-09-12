@@ -121,11 +121,7 @@ class TranslatePress implements Subscriber_Interface {
 	 *
 	 * @return array
 	 */
-	public function get_active_languages_uri( $urls ) {
-		if ( ! is_array( $urls ) ) {
-			$urls = (array) $urls;
-		}
-
+	public function get_active_languages_uri( array $urls ): array {
 		$home_url = home_url();
 
 		$translatepress = TRP_Translate_Press::get_trp_instance();
@@ -148,7 +144,7 @@ class TranslatePress implements Subscriber_Interface {
 	/**
 	 * Gets the active languages slugs
 	 *
-	 * @param Array $codes Array of languages codes.
+	 * @param object|array $codes Array of languages codes.
 	 *
 	 * @return array
 	 */
@@ -212,10 +208,10 @@ class TranslatePress implements Subscriber_Interface {
 	/**
 	 * Gets all translations URLs for a post
 	 *
-	 * @param array  $urls Array of translated URLs.
-	 * @param string $url URL to use.
-	 * @param string $post_type Post type.
-	 * @param string $regex Pattern to include at the end.
+	 * @param object|array $urls Array of translated URLs.
+	 * @param string       $url URL to use.
+	 * @param string       $post_type Post type.
+	 * @param string       $regex Pattern to include at the end.
 	 *
 	 * @return array
 	 */

@@ -13,7 +13,7 @@ class WPXCloud extends AbstractNoCacheHost {
 	 *
 	 * @return array
 	 */
-	public static function get_subscribed_events() {
+	public static function get_subscribed_events(): array {
 		return [
 			'rocket_varnish_ip'                       => 'varnish_ip',
 			'rocket_display_input_varnish_auto_purge' => 'return_false',
@@ -29,11 +29,7 @@ class WPXCloud extends AbstractNoCacheHost {
 	 * @param array $varnish_ip Varnish IP.
 	 * @return array
 	 */
-	public function varnish_ip( $varnish_ip ) {
-		if ( ! is_array( $varnish_ip ) ) {
-			$varnish_ip = (array) $varnish_ip;
-		}
-
+	public function varnish_ip( array $varnish_ip ): array {
 		$varnish_ip[] = '127.0.0.1:6081';
 
 		return $varnish_ip;
@@ -45,7 +41,7 @@ class WPXCloud extends AbstractNoCacheHost {
 	 * @param array $settings Array of settings for Varnish.
 	 * @return array
 	 */
-	public function varnish_addon_title( array $settings ) {
+	public function varnish_addon_title( array $settings ): array {
 		$settings['varnish_auto_purge']['title'] = sprintf(
 			// Translators: %s = Hosting name.
 			__( 'Your site is hosted on %s, we have enabled Varnish auto-purge for compatibility.', 'rocket' ),
@@ -73,7 +69,7 @@ class WPXCloud extends AbstractNoCacheHost {
 	 *
 	 * @return void
 	 */
-	public function activate() {
+	public function activate(): void {
 		parent::activate();
 
 		add_action( 'rocket_activation', [ $this, 'append_cache_control_header_on_activation' ] );
@@ -84,7 +80,7 @@ class WPXCloud extends AbstractNoCacheHost {
 	 *
 	 * @return void
 	 */
-	public function append_cache_control_header_on_activation() {
+	public function append_cache_control_header_on_activation(): void {
 		add_filter( 'after_rocket_htaccess_rules', [ $this, 'append_cache_control_header' ] );
 	}
 }

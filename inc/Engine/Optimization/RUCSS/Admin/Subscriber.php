@@ -441,7 +441,7 @@ class Subscriber implements Subscriber_Interface {
 
 		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			wp_send_json_error();
-			return;
+			return; // @phpstan-ignore-line - Needed to prevent further execution.
 		}
 
 		spawn_cron();

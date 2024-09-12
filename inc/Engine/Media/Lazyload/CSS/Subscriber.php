@@ -175,15 +175,18 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		 * Generate lazyload CSS for the page.
 		 *
 		 * @param array $data Data passed to generate the lazyload CSS.
+		 *
+		 * @return array
 		 */
-		$output = apply_filters(
+		$output = wpm_apply_filters_typed(
+			'array',
 			'rocket_generate_lazyloaded_css',
 			[
 				'html' => $html,
 			]
-			);
+		);
 
-		if ( ! is_array( $output ) || ! key_exists( 'html', $output ) ) {
+		if ( ! key_exists( 'html', $output ) ) {
 			$this->logger::debug(
 				'Lazyload bailed out',
 				$this->generate_log_context(
@@ -536,12 +539,10 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		 * Filters the src used to prevent lazy load from being applied.
 		 *
 		 * @param array $excluded_src An array of excluded src.
+		 *
+		 * @return array
 		 */
-		$excluded_values = apply_filters( 'rocket_lazyload_excluded_src', [] );
-
-		if ( ! is_array( $excluded_values ) ) {
-			$excluded_values = (array) $excluded_values;
-		}
+		$excluded_values = wpm_apply_filters_typed( 'array', 'rocket_lazyload_excluded_src', [] );
 
 		$excluded_values = array_filter( $excluded_values );
 
@@ -582,12 +583,10 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		 * Filters the src used to prevent lazy load from being applied.
 		 *
 		 * @param array $excluded_src An array of excluded src.
+		 *
+		 * @return array
 		 */
-		$excluded_values = apply_filters( 'rocket_lazyload_excluded_src', [] );
-
-		if ( ! is_array( $excluded_values ) ) {
-			$excluded_values = (array) $excluded_values;
-		}
+		$excluded_values = wpm_apply_filters_typed( 'array', 'rocket_lazyload_excluded_src', [] );
 
 		$excluded_values = array_filter( $excluded_values );
 

@@ -31,7 +31,6 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 	];
 
 	private $is_apache;
-	private $hooks = [];
 	private $expected;
 	private $rocketCleanDomainEntriesBefore;
 	private $rocketCleanMinifyEntriesBefore;
@@ -84,7 +83,7 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 	public function testShouldTriggerCleaningsWhenOptionsChange( $settings, $expected ) {
 		// Skip the "not an array" test as it fails in other hooked callbacks that are not checking for array.
 		if ( ! is_array( $settings ) ) {
-			$this->assertTrue( true );
+			$this->assertTrue( true ); // @phpstan-ignore-line
 
 			return;
 		}

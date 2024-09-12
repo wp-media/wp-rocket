@@ -17,7 +17,6 @@ use WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\TestCase;
 class Test_PreserveAuthorizationToken extends TestCase {
 	use ApiTrait;
 
-	private          $client;
 	protected static $api_credentials_config_file = 'rocketcdn.php';
 
 	public static function set_up_before_class() {

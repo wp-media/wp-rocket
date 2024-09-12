@@ -9,7 +9,7 @@ class ThemeResolver {
 	 *
 	 * @var string
 	 */
-	private static $theme_name = '';
+	private static $theme_name = ''; // @phpstan-ignore-line
 
 	/**
 	 * Array of themes names with compatibility classes
@@ -37,7 +37,7 @@ class ThemeResolver {
 	 */
 	public static function get_current_theme(): string {
 		$theme    = wp_get_theme();
-		$template = $theme->get_template() ?? '';
+		$template = $theme->get_template();
 
 		if ( empty( $template ) ) {
 			return '';

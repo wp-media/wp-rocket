@@ -102,7 +102,7 @@ class Test_DisableOptionsOnAmp extends TestCase {
 				10,
 				has_filter( 'do_rocket_protocol_rewrite', '__return_false' )
 			);
-			$this->assertEmpty( $wp_filter );
+			$this->assertEmpty( $wp_filter ); // @phpstan-ignore-line
 
 			if ( in_array( $config[ 'amp_options' ][ 'theme_support' ], [ 'transitional', 'reader' ], true ) ) {
 				$this->assertSame(

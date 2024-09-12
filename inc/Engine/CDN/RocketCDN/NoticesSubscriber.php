@@ -168,7 +168,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			wp_send_json_error( 'no permissions' );
 
-			return;
+			return; // @phpstan-ignore-line
 		}
 
 		update_user_meta( get_current_user_id(), 'rocketcdn_dismiss_notice', true );
@@ -285,13 +285,13 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			wp_send_json_error( 'no permissions' );
 
-			return;
+			return; // @phpstan-ignore-line
 		}
 
 		if ( ! isset( $_POST['status'] ) ) {
 			wp_send_json_error( 'missing status' );
 
-			return;
+			return; // @phpstan-ignore-line
 		}
 
 		if ( 'big' === $_POST['status'] ) {

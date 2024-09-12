@@ -47,16 +47,16 @@ class Test_UpdateAdvancedCache extends FilesystemTestCase {
 	public function testShouldNotUpdateWhenMultisiteAndSitesNotZero() {
 		$this->markTestSkipped( 'Test doest not perform assertion, need to revisit' );
 
-		$advanced_cache = new AdvancedCache(
-			$this->filesystem->getUrl( $this->config['vfs_dir'] ),
-			$this->filesystem
-		);
-
-		Functions\when( 'is_rocket_generate_caching_mobile_files' )->justReturn( false );
-		Functions\when( 'current_filter' )->justReturn( 'rocket_deactivation' );
-		Functions\when( 'is_multisite' )->justReturn( true );
-
-		$advanced_cache->update_advanced_cache( 1 );
+//		$advanced_cache = new AdvancedCache(
+//			$this->filesystem->getUrl( $this->config['vfs_dir'] ),
+//			$this->filesystem
+//		);
+//
+//		Functions\when( 'is_rocket_generate_caching_mobile_files' )->justReturn( false );
+//		Functions\when( 'current_filter' )->justReturn( 'rocket_deactivation' );
+//		Functions\when( 'is_multisite' )->justReturn( true );
+//
+//		$advanced_cache->update_advanced_cache( 1 );
 	}
 
 	/**

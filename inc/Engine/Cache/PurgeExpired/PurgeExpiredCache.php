@@ -59,8 +59,10 @@ class PurgeExpiredCache {
 		 *
 		 * @param array $urls           URLs that will be searched for old cache files.
 		 * @param int   $file_age_limit Timestamp of the maximum age files must have.
+		 *
+		 * @return array
 		 */
-		$urls = apply_filters( 'rocket_automatic_cache_purge_urls', $urls, $file_age_limit );
+		$urls = wpm_apply_filters_typed( 'array', 'rocket_automatic_cache_purge_urls', $urls, $file_age_limit );
 
 		if ( ! is_array( $urls ) ) {
 			// I saw what you did ಠ_ಠ.
@@ -76,7 +78,7 @@ class PurgeExpiredCache {
 
 		$urls = array_unique( $urls );
 
-		if ( empty( $this->filesystem ) ) {
+		if ( empty( $this->filesystem ) ) { // @phpstan-ignore-line
 			$this->filesystem = rocket_direct_filesystem();
 		}
 
@@ -380,8 +382,8 @@ class PurgeExpiredCache {
 	 *
 	 * @since 3.8
 	 *
-	 * @param int $old_lifespan      Old value in minutes.
-	 * @param int $old_lifespan_unit Old value of unit.
+	 * @param int    $old_lifespan      Old value in minutes.
+	 * @param string $old_lifespan_unit Old value of unit.
 	 *
 	 * @return void
 	 */

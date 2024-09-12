@@ -111,7 +111,7 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 	 * @return string
 	 */
 	private function get_user_locale() {
-		if ( ! isset( $this->locale ) ) {
+		if ( empty( $this->locale ) ) {
 			$this->locale = current( array_slice( explode( '_', get_user_locale() ), 0, 1 ) );
 		}
 
@@ -121,8 +121,10 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 		 * @since 3.6
 		 *
 		 * @param string $locale The locale ID.
+		 *
+		 * @return string
 		 */
-		return apply_filters( 'rocket_beacon_locale', $this->locale );
+		return wpm_apply_filters_typed( 'string', 'rocket_beacon_locale', $this->locale );
 	}
 
 	/**

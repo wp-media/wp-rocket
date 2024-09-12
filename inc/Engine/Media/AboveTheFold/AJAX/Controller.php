@@ -56,7 +56,7 @@ class Controller implements ControllerInterface {
 
 		if ( ! $this->context->is_allowed() ) {
 			wp_send_json_error( 'not allowed' );
-			return;
+			return; // @phpstan-ignore-line - Needed to prevent further execution.
 		}
 
 		$url       = isset( $_POST['url'] ) ? untrailingslashit( esc_url_raw( wp_unslash( $_POST['url'] ) ) ) : '';
@@ -107,7 +107,7 @@ class Controller implements ControllerInterface {
 
 		if ( ! empty( $row ) ) {
 			wp_send_json_error( 'item already in the database' );
-			return;
+			return; // @phpstan-ignore-line - Needed to prevent further execution.
 		}
 
 		$status                               = isset( $_POST['status'] ) ? sanitize_text_field( wp_unslash( $_POST['status'] ) ) : '';
@@ -118,7 +118,7 @@ class Controller implements ControllerInterface {
 			'is_mobile'     => $is_mobile,
 			'status'        => $status_code,
 			'error_message' => $status_message,
-			'lcp'           => ( is_array( $lcp ) || is_object( $lcp ) ) ? wp_json_encode( $lcp ) : $lcp,
+			'lcp'           => ( is_array( $lcp ) || is_object( $lcp ) ) ? wp_json_encode( $lcp ) : $lcp, // @phpstan-ignore-line
 			'viewport'      => wp_json_encode( $viewport ),
 			'last_accessed' => current_time( 'mysql', true ),
 		];
@@ -127,7 +127,7 @@ class Controller implements ControllerInterface {
 
 		if ( ! $result ) {
 			wp_send_json_error( 'error when adding the entry to the database' );
-			return;
+			return; // @phpstan-ignore-line - Needed to prevent further execution.
 		}
 
 		wp_send_json_success( $item );
@@ -273,7 +273,7 @@ class Controller implements ControllerInterface {
 
 		if ( ! $this->context->is_allowed() ) {
 			wp_send_json_error( false );
-			return;
+			return; // @phpstan-ignore-line - Needed to prevent further execution.
 		}
 
 		$url       = isset( $_POST['url'] ) ? untrailingslashit( esc_url_raw( wp_unslash( $_POST['url'] ) ) ) : '';
@@ -283,7 +283,7 @@ class Controller implements ControllerInterface {
 
 		if ( ! empty( $row ) ) {
 			wp_send_json_success( 'data already exists' );
-			return;
+			return; // @phpstan-ignore-line - Needed to prevent further execution.
 		}
 
 		wp_send_json_error( 'data does not exist' );
@@ -323,12 +323,10 @@ class Controller implements ControllerInterface {
 		 * Filters the supported schemes of LCP/ATF images.
 		 *
 		 * @param array  $invalid_schemes Array of invalid schemes.
+		 *
+		 * @return array
 		 */
-		$invalid_schemes = apply_filters( 'rocket_atf_invalid_schemes', $this->invalid_schemes );
-
-		if ( ! is_array( $invalid_schemes ) ) {
-			$invalid_schemes = $this->invalid_schemes;
-		}
+		$invalid_schemes = wpm_apply_filters_typed( 'array', 'rocket_atf_invalid_schemes', $this->invalid_schemes );
 
 		$invalid_schemes = implode( '|', $invalid_schemes );
 

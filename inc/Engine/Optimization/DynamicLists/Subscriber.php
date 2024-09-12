@@ -109,11 +109,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return array
 	 */
-	public function add_cache_ignored_parameters( $params = [] ): array {
-		if ( ! is_array( $params ) ) {
-			$params = (array) $params;
-		}
-
+	public function add_cache_ignored_parameters( array $params = [] ): array {
 		return array_merge( $params, $this->dynamic_lists->get_cache_ignored_parameters() );
 	}
 
@@ -124,11 +120,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return array
 	 */
-	public function add_minify_excluded_external_js( $excluded = [] ): array {
-		if ( ! is_array( $excluded ) ) {
-			$excluded = (array) $excluded;
-		}
-
+	public function add_minify_excluded_external_js( array $excluded = [] ): array {
 		return array_merge( $excluded, $this->dynamic_lists->get_js_minify_excluded_external() );
 	}
 
@@ -139,11 +131,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return array
 	 */
-	public function add_move_after_combine_js( $excluded = [] ): array {
-		if ( ! is_array( $excluded ) ) {
-			$excluded = (array) $excluded;
-		}
-
+	public function add_move_after_combine_js( array $excluded = [] ): array {
 		return array_merge( $excluded, $this->dynamic_lists->get_js_move_after_combine() );
 	}
 
@@ -154,10 +142,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return array
 	 */
-	public function add_combine_js_excluded_inline( $excluded = [] ): array {
-		if ( ! is_array( $excluded ) ) {
-			$excluded = (array) $excluded;
-		}
+	public function add_combine_js_excluded_inline( array $excluded = [] ): array {
 
 		return array_merge( $excluded, $this->dynamic_lists->get_combine_js_excluded_inline() );
 	}
@@ -169,11 +154,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return array
 	 */
-	public function add_preload_exclusions( $excluded = [] ): array {
-		if ( ! is_array( $excluded ) ) {
-			$excluded = (array) $excluded;
-		}
-
+	public function add_preload_exclusions( array $excluded = [] ): array {
 		return array_merge( $excluded, $this->dynamic_lists->get_preload_exclusions() );
 	}
 
@@ -184,11 +165,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return array
 	 */
-	public function add_js_exclude_files( $js_files = [] ): array {
-		if ( ! is_array( $js_files ) ) {
-			$js_files = (array) $js_files;
-		}
-
+	public function add_js_exclude_files( array $js_files = [] ): array {
 		return array_merge( $js_files, $this->dynamic_lists->get_js_exclude_files() );
 	}
 
