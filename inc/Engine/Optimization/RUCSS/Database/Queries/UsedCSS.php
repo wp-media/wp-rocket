@@ -84,7 +84,7 @@ class UsedCSS extends AbstractQuery {
 		}
 
 		// Get the database interface.
-		/** @var \wpdb|bool $db */
+		/** @var \wpdb|bool $db  db interface. */
 		$db = $this->get_db();
 
 		// Bail if no database interface is available.

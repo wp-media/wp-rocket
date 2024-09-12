@@ -73,7 +73,7 @@ abstract class AbstractSafeAPIClient {
 		$params['method'] = strtoupper( $method );
 
 		/**
-		 * @var WP_Error|array $response
+		 * @var WP_Error|array $response response from the request.
 		 */
 		$response = $this->send_remote_request( $api_url, $method, $params, $safe );
 
