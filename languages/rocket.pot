@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the WP Rocket plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.17-alpha3\n"
+"Project-Id-Version: WP Rocket 3.17-alpha4\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-rocket\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-09-11T13:45:18+00:00\n"
+"POT-Creation-Date: 2024-09-13T17:57:31+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.4.0\n"
 "X-Domain: rocket\n"
@@ -403,9 +403,6 @@ msgstr ""
 
 #: inc/admin/ui/meta-boxes.php:37
 #: inc/admin/ui/notices.php:671
-#: inc/common/admin-bar.php:91
-#: inc/common/admin-bar.php:154
-#: views/settings/page-sections/dashboard.php:167
 msgid "Clear cache"
 msgstr ""
 
@@ -535,11 +532,12 @@ msgstr ""
 #: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:34
 #: inc/Engine/License/views/renewal-expired-banner-ocd.php:44
 #: inc/Engine/License/views/renewal-expired-banner.php:32
-#: views/settings/page-sections/dashboard.php:46
+#: views/settings/page-sections/dashboard.php:47
 msgid "Dismiss this notice"
 msgstr ""
 
 #: inc/admin/ui/notices.php:682
+#: inc/Engine/Saas/Admin/AdminBar.php:51
 msgid "Clear Used CSS"
 msgstr ""
 
@@ -626,8 +624,12 @@ msgstr ""
 
 #: inc/common/admin-bar.php:91
 #: inc/common/admin-bar.php:154
-#: views/settings/page-sections/dashboard.php:167
-msgid "Clear and preload cache"
+msgid "Clear and Preload Cache"
+msgstr ""
+
+#: inc/common/admin-bar.php:91
+#: inc/common/admin-bar.php:154
+msgid "Clear Cache"
 msgstr ""
 
 #: inc/common/admin-bar.php:131
@@ -968,7 +970,7 @@ msgstr ""
 
 #: inc/deprecated/deprecated.php:1789
 #: inc/Engine/Admin/Settings/Page.php:368
-#: views/settings/page-sections/dashboard.php:80
+#: views/settings/page-sections/dashboard.php:81
 msgid "License"
 msgstr ""
 
@@ -2187,23 +2189,25 @@ msgid "WP Rocket process on submit jobs"
 msgstr ""
 
 #: inc/Engine/Common/PerformanceHints/Admin/AdminBar.php:44
-msgid "Clear Performance Hints data"
+msgid "Clear Priority Elements"
 msgstr ""
 
 #: inc/Engine/Common/PerformanceHints/Admin/AdminBar.php:79
-msgid "Clear Performance Hints data of this URL"
+msgid "Clear Priority Elements of this URL"
 msgstr ""
 
 #: inc/Engine/Common/PerformanceHints/Admin/AdminBar.php:100
-msgid "Performance Hints"
+msgid "Priority Elements"
 msgstr ""
 
 #: inc/Engine/Common/PerformanceHints/Admin/AdminBar.php:101
+#: inc/Engine/Saas/Admin/AdminBar.php:134
+#: views/settings/page-sections/dashboard.php:169
 msgid "Clear"
 msgstr ""
 
 #: inc/Engine/Common/PerformanceHints/Admin/AdminBar.php:103
-msgid "This action will clear data for Optimize Critical Images and Lazy Render Content."
+msgid "This action will clear the Critical Images and Lazily Rendered Content."
 msgstr ""
 
 #. translators: %1$s = plugin name.
@@ -2672,7 +2676,6 @@ msgid "Minify CSS"
 msgstr ""
 
 #: inc/Engine/Optimization/RUCSS/Admin/OptionSubscriber.php:74
-#: inc/Engine/Saas/Admin/AdminBar.php:133
 msgid "Remove Unused CSS"
 msgstr ""
 
@@ -2699,13 +2702,16 @@ msgstr ""
 msgid "WP Rocket Preload revert stuck failed jobs"
 msgstr ""
 
-#: inc/Engine/Saas/Admin/AdminBar.php:51
-#: inc/Engine/Saas/Admin/AdminBar.php:134
-msgid "Clear RUCSS optimizations"
+#: inc/Engine/Saas/Admin/AdminBar.php:106
+msgid "Clear Used CSS of this URL"
 msgstr ""
 
-#: inc/Engine/Saas/Admin/AdminBar.php:106
-msgid "Clear RUCSS optimizations of this URL"
+#: inc/Engine/Saas/Admin/AdminBar.php:133
+msgid "Used CSS"
+msgstr ""
+
+#: inc/Engine/Saas/Admin/AdminBar.php:136
+msgid "This action will clear the used CSS files."
 msgstr ""
 
 #. translators: %1$s = plugin name, %2$s = number of seconds.
@@ -3286,86 +3292,98 @@ msgstr ""
 msgid "Clear all Cloudflare cache files"
 msgstr ""
 
-#: views/settings/page-sections/dashboard.php:38
+#: views/settings/page-sections/dashboard.php:39
 msgid "Congratulations!"
 msgstr ""
 
-#: views/settings/page-sections/dashboard.php:40
+#: views/settings/page-sections/dashboard.php:41
 msgid "WP Rocket is now activated and already working for you."
 msgstr ""
 
-#: views/settings/page-sections/dashboard.php:42
+#: views/settings/page-sections/dashboard.php:43
 msgid "Your website should be loading faster now!"
 msgstr ""
 
-#: views/settings/page-sections/dashboard.php:44
+#: views/settings/page-sections/dashboard.php:45
 msgid "To guarantee fast websites, WP Rocket automatically applies 80% of web performance best practices."
 msgstr ""
 
-#: views/settings/page-sections/dashboard.php:44
+#: views/settings/page-sections/dashboard.php:45
 msgid "We also enable options that provide immediate benefits to your website."
 msgstr ""
 
-#: views/settings/page-sections/dashboard.php:45
+#: views/settings/page-sections/dashboard.php:46
 msgid "Continue to the options to further optimize your site!"
 msgstr ""
 
-#: views/settings/page-sections/dashboard.php:62
+#: views/settings/page-sections/dashboard.php:63
 msgid "My Account"
 msgstr ""
 
-#: views/settings/page-sections/dashboard.php:68
+#: views/settings/page-sections/dashboard.php:69
 msgid "Refresh info"
 msgstr ""
 
-#: views/settings/page-sections/dashboard.php:86
+#: views/settings/page-sections/dashboard.php:87
 msgid "with"
 msgstr ""
 
-#: views/settings/page-sections/dashboard.php:100
+#: views/settings/page-sections/dashboard.php:101
 msgid "Expiration Date"
 msgstr ""
 
-#: views/settings/page-sections/dashboard.php:110
+#: views/settings/page-sections/dashboard.php:111
 msgid "View my account"
 msgstr ""
 
-#: views/settings/page-sections/dashboard.php:130
+#: views/settings/page-sections/dashboard.php:131
 #: views/settings/page.php:75
 msgid "Rocket Analytics"
 msgstr ""
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: views/settings/page-sections/dashboard.php:136
+#: views/settings/page-sections/dashboard.php:137
 msgid "I agree to share anonymous data with the development team to help improve WP Rocket. %1$sWhat info will we collect?%2$s"
 msgstr ""
 
-#: views/settings/page-sections/dashboard.php:154
+#: views/settings/page-sections/dashboard.php:155
 msgid "Quick Actions"
 msgstr ""
 
-#: views/settings/page-sections/dashboard.php:161
-msgid "Remove all cached files"
+#: views/settings/page-sections/dashboard.php:162
+msgid "Cache files"
 msgstr ""
 
-#: views/settings/page-sections/dashboard.php:181
-#: views/settings/page-sections/dashboard.php:187
+#: views/settings/page-sections/dashboard.php:163
+msgid "This action will clear and preload all the cache files."
+msgstr ""
+
+#: views/settings/page-sections/dashboard.php:163
+msgid "This action will clear all the cache files."
+msgstr ""
+
+#: views/settings/page-sections/dashboard.php:169
+msgid "Clear and preload"
+msgstr ""
+
+#: views/settings/page-sections/dashboard.php:183
+#: views/settings/page-sections/dashboard.php:189
 msgid "Regenerate Critical CSS"
 msgstr ""
 
-#: views/settings/page-sections/dashboard.php:213
+#: views/settings/page-sections/dashboard.php:215
 msgid "Frequently Asked Questions"
 msgstr ""
 
-#: views/settings/page-sections/dashboard.php:227
+#: views/settings/page-sections/dashboard.php:229
 msgid "Still cannot find a solution?"
 msgstr ""
 
-#: views/settings/page-sections/dashboard.php:228
+#: views/settings/page-sections/dashboard.php:230
 msgid "Submit a ticket and get help from our friendly and knowledgeable Rocketeers."
 msgstr ""
 
-#: views/settings/page-sections/dashboard.php:236
+#: views/settings/page-sections/dashboard.php:238
 msgid "Ask support"
 msgstr ""
 

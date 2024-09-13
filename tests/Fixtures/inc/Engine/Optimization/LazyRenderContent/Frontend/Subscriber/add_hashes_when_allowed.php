@@ -43,7 +43,7 @@ return [
 				'html' => file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Optimization/LazyRenderContent/Frontend/Subscriber/html/original.php' ),
 			],
 			'expected' => [
-				'html' => file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Optimization/LazyRenderContent/Frontend/Subscriber/html/expected_allowed.php' ),
+				'html' => file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Optimization/LazyRenderContent/Frontend/Subscriber/html/expected.php' ),
 			],
 		],
 	],
