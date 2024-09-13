@@ -48,7 +48,7 @@ class AdminBar extends Abstract_Render {
 	 * @return void
 	 */
 	public function add_clean_saas_menu_item( $wp_admin_bar ) {
-		$title  = __( 'Clear RUCSS optimizations', 'rocket' );
+		$title  = __( 'Clear Used CSS', 'rocket' );
 		$action = 'rocket_clean_saas';
 
 		if ( 'local' === wp_get_environment_type() ) {
@@ -103,7 +103,7 @@ class AdminBar extends Abstract_Render {
 
 		$action = 'rocket_clean_saas_url';
 
-		$title = __( 'Clear RUCSS optimizations of this URL', 'rocket' );
+		$title = __( 'Clear Used CSS of this URL', 'rocket' );
 
 		$this->add_url_menu_item_to_admin_bar(
 			$wp_admin_bar,
@@ -130,9 +130,10 @@ class AdminBar extends Abstract_Render {
 
 		$this->dashboard_button(
 			$this->rucss_url_context->is_allowed(),
-			__( 'Remove Unused CSS', 'rocket' ),
-			esc_html__( 'Clear RUCSS optimizations', 'rocket' ),
-			'rocket_clean_saas'
+			__( 'Used CSS', 'rocket' ),
+			esc_html__( 'Clear', 'rocket' ),
+			'rocket_clean_saas',
+			esc_html__( 'This action will clear the used CSS files.', 'rocket' )
 		);
 	}
 }

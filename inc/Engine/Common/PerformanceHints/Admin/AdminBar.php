@@ -41,7 +41,7 @@ class AdminBar extends Abstract_Render {
 			return;
 		}
 
-		$title  = __( 'Clear Performance Hints data', 'rocket' );
+		$title  = __( 'Clear Priority Elements', 'rocket' );
 		$action = 'rocket_clean_performance_hints';
 
 		$this->add_menu_to_admin_bar(
@@ -76,7 +76,7 @@ class AdminBar extends Abstract_Render {
 
 		$action = 'rocket_clean_performance_hints_url';
 
-		$title = __( 'Clear Performance Hints data of this URL', 'rocket' );
+		$title = __( 'Clear Priority Elements of this URL', 'rocket' );
 
 		$this->add_url_menu_item_to_admin_bar(
 			$wp_admin_bar,
@@ -97,10 +97,10 @@ class AdminBar extends Abstract_Render {
 
 		$this->dashboard_button(
 			$context,
-			__( 'Performance Hints', 'rocket' ),
+			__( 'Priority Elements', 'rocket' ),
 			esc_html__( 'Clear', 'rocket' ),
 			'rocket_clean_performance_hints',
-			__( 'This action will clear data for Optimize Critical Images and Lazy Render Content.', 'rocket' )
+			__( 'This action will clear the Critical Images and Lazily Rendered Content.', 'rocket' )
 		);
 	}
 }
