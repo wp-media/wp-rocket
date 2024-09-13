@@ -84,7 +84,7 @@ class UsedCSS extends AbstractQuery {
 		}
 
 		// Get the database interface.
-		/** @var \wpdb|bool $db  db interface. */
+		/** @var \wpdb|bool $db Database interface instance or boolean. */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 		$db = $this->get_db();
 
 		// Bail if no database interface is available.

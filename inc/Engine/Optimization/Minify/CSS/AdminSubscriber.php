@@ -48,11 +48,12 @@ class AdminSubscriber implements Subscriber_Interface {
 	 * @since  3.5.4
 	 *
 	 * @param array $new An array of submitted settings.
-	 * @param array $old An array of previous settings.
+	 * @param mixed $old An array of previous settings or false.
 	 *
 	 * @return array Updates 'minify_css_key' setting when regenerated; else, original submitted settings.
 	 */
-	public function regenerate_minify_css_key( array $new, array $old ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.newFound
+	public function regenerate_minify_css_key( array $new, $old ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.newFound
+		$old = is_array( $old ) ? $old : [];
 		if ( ! $this->maybe_minify_regenerate( $new, $old ) ) {
 			return $new;
 		}

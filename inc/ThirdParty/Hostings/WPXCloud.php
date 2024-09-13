@@ -29,7 +29,7 @@ class WPXCloud extends AbstractNoCacheHost {
 	 * @param mixed $varnish_ip Varnish IP.
 	 * @return array
 	 */
-	public function varnish_ip( mixed $varnish_ip ): array {
+	public function varnish_ip( $varnish_ip ): array {
 		if ( ! is_array( $varnish_ip ) ) {
 			$varnish_ip = (array) $varnish_ip;
 		}

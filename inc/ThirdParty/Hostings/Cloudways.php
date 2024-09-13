@@ -102,7 +102,7 @@ class Cloudways extends NullSubscriber implements Subscriber_Interface {
 	 * @param mixed $varnish_ip Varnish IP.
 	 * @return array
 	 */
-	public function varnish_ip( mixed $varnish_ip ) {
+	public function varnish_ip( $varnish_ip ) {
 		if ( ! self::is_varnish_running() ) {
 			return $varnish_ip;
 		}
