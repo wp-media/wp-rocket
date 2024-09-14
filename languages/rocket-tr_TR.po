@@ -8,9 +8,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.17-alpha3\n"
+"Project-Id-Version: WP Rocket 3.17-alpha4\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-rocket\n"
-"POT-Creation-Date: 2024-09-11T13:45:18+00:00\n"
+"POT-Creation-Date: 2024-09-13T17:57:31+00:00\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: BouRock, 2024\n"
 "Language-Team: Turkish (Turkey) (https://app.transifex.com/wp-media/teams/18133/tr_TR/)\n"
@@ -457,8 +457,6 @@ msgid "More info"
 msgstr "Daha fazla bilgi"
 
 #: inc/admin/ui/meta-boxes.php:37 inc/admin/ui/notices.php:671
-#: inc/common/admin-bar.php:91 inc/common/admin-bar.php:154
-#: views/settings/page-sections/dashboard.php:167
 msgid "Clear cache"
 msgstr "Önbelleği temizle"
 
@@ -645,11 +643,11 @@ msgstr "%s: Kullanıcı önbelleği temizlendi."
 #: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:34
 #: inc/Engine/License/views/renewal-expired-banner-ocd.php:44
 #: inc/Engine/License/views/renewal-expired-banner.php:32
-#: views/settings/page-sections/dashboard.php:46
+#: views/settings/page-sections/dashboard.php:47
 msgid "Dismiss this notice"
 msgstr "Bu bildirimi anımsatma"
 
-#: inc/admin/ui/notices.php:682
+#: inc/admin/ui/notices.php:682 inc/Engine/Saas/Admin/AdminBar.php:51
 msgid "Clear Used CSS"
 msgstr "Kullanılan CSS’yi Temizle"
 
@@ -757,9 +755,12 @@ msgstr ""
 "working/?utm_source=wp_plugin&utm_medium=wp_rocket#theme"
 
 #: inc/common/admin-bar.php:91 inc/common/admin-bar.php:154
-#: views/settings/page-sections/dashboard.php:167
-msgid "Clear and preload cache"
-msgstr "Önbelleği temizle ve önyükle"
+msgid "Clear and Preload Cache"
+msgstr "Önbelleği Temizle ve Önyükle"
+
+#: inc/common/admin-bar.php:91 inc/common/admin-bar.php:154
+msgid "Clear Cache"
+msgstr "Önbelleği Temizle"
 
 #: inc/common/admin-bar.php:131 inc/functions/i18n.php:20
 msgid "All languages"
@@ -1120,7 +1121,7 @@ msgid "Tools"
 msgstr "Araçlar"
 
 #: inc/deprecated/deprecated.php:1789 inc/Engine/Admin/Settings/Page.php:368
-#: views/settings/page-sections/dashboard.php:80
+#: views/settings/page-sections/dashboard.php:81
 msgid "License"
 msgstr "Lisans"
 
@@ -2798,28 +2799,27 @@ msgid "WP Rocket process on submit jobs"
 msgstr "Gönderme işlerinde WP Roket süreci"
 
 #: inc/Engine/Common/PerformanceHints/Admin/AdminBar.php:44
-msgid "Clear Performance Hints data"
-msgstr "Performans İpuçları verilerini temizle"
+msgid "Clear Priority Elements"
+msgstr "Öncelikli Öğeleri Temizle"
 
 #: inc/Engine/Common/PerformanceHints/Admin/AdminBar.php:79
-msgid "Clear Performance Hints data of this URL"
-msgstr "Bu URL’nin Performans İpuçları verilerini temizle"
+msgid "Clear Priority Elements of this URL"
+msgstr "Bu URL'nin Öncelikli Öğelerini Temizle"
 
 #: inc/Engine/Common/PerformanceHints/Admin/AdminBar.php:100
-msgid "Performance Hints"
-msgstr "Performans İpuçları"
+msgid "Priority Elements"
+msgstr "Öncelikli Öğeler"
 
 #: inc/Engine/Common/PerformanceHints/Admin/AdminBar.php:101
+#: inc/Engine/Saas/Admin/AdminBar.php:134
+#: views/settings/page-sections/dashboard.php:169
 msgid "Clear"
 msgstr "Temizle"
 
 #: inc/Engine/Common/PerformanceHints/Admin/AdminBar.php:103
 msgid ""
-"This action will clear data for Optimize Critical Images and Lazy Render "
-"Content."
-msgstr ""
-"Bu eylem, Önemli Resimleri İyileştirmeye ve Lazy Render İçeriğine ilişkin "
-"verileri temizleyecek."
+"This action will clear the Critical Images and Lazily Rendered Content."
+msgstr "Bu eylem, Önemli Resimleri ve Geç İşlenmiş İçeriği temizleyecek."
 
 #. translators: %1$s = plugin name.
 #: inc/Engine/Common/PerformanceHints/Admin/Controller.php:135
@@ -3402,7 +3402,6 @@ msgid "Minify CSS"
 msgstr "CSS’yi küçült"
 
 #: inc/Engine/Optimization/RUCSS/Admin/OptionSubscriber.php:74
-#: inc/Engine/Saas/Admin/AdminBar.php:133
 msgid "Remove Unused CSS"
 msgstr "Kullanılmayan CSS’yi Kaldır"
 
@@ -3442,14 +3441,17 @@ msgstr "WP Rocket Önyükleme bekleyen işler"
 msgid "WP Rocket Preload revert stuck failed jobs"
 msgstr "WP Rocket Önyükleme, sıkışmış başarısız işleri geri alır"
 
-#: inc/Engine/Saas/Admin/AdminBar.php:51
-#: inc/Engine/Saas/Admin/AdminBar.php:134
-msgid "Clear RUCSS optimizations"
-msgstr "RUCSS iyileştirmelerini temizle"
-
 #: inc/Engine/Saas/Admin/AdminBar.php:106
-msgid "Clear RUCSS optimizations of this URL"
-msgstr "Bu URL’nin RUCSS iyileştirmelerini temizle"
+msgid "Clear Used CSS of this URL"
+msgstr "Bu URL’nin Kullanılan CSS’sini Temizle"
+
+#: inc/Engine/Saas/Admin/AdminBar.php:133
+msgid "Used CSS"
+msgstr "Kullanılan CSS"
+
+#: inc/Engine/Saas/Admin/AdminBar.php:136
+msgid "This action will clear the used CSS files."
+msgstr "Bu eylem, kullanılan CSS dosyalarını temizleyecek."
 
 #. translators: %1$s = plugin name, %2$s = number of seconds.
 #: inc/Engine/Saas/Admin/Notices.php:91
@@ -4265,19 +4267,19 @@ msgstr "https://support.cloudflare.com/hc/en-us/articles/200169246"
 msgid "Clear all Cloudflare cache files"
 msgstr "Tüm Cloudflare önbellek dosyalarını temizle"
 
-#: views/settings/page-sections/dashboard.php:38
+#: views/settings/page-sections/dashboard.php:39
 msgid "Congratulations!"
 msgstr "Tebrikler!"
 
-#: views/settings/page-sections/dashboard.php:40
+#: views/settings/page-sections/dashboard.php:41
 msgid "WP Rocket is now activated and already working for you."
 msgstr "WP Rocket şu an aktif edildi ve halen sizin için çalışıyor."
 
-#: views/settings/page-sections/dashboard.php:42
+#: views/settings/page-sections/dashboard.php:43
 msgid "Your website should be loading faster now!"
 msgstr "Web siteniz artık daha hızlı yüklenmelidir!"
 
-#: views/settings/page-sections/dashboard.php:44
+#: views/settings/page-sections/dashboard.php:45
 msgid ""
 "To guarantee fast websites, WP Rocket automatically applies 80% of web "
 "performance best practices."
@@ -4285,42 +4287,42 @@ msgstr ""
 "Hızlı web sitelerini garantilemek için en iyi WP Rocket web performans "
 "uygulamalarının %80’ini otomatik olarak uygular."
 
-#: views/settings/page-sections/dashboard.php:44
+#: views/settings/page-sections/dashboard.php:45
 msgid ""
 "We also enable options that provide immediate benefits to your website."
 msgstr ""
 "Ayrıca web sitenize anında fayda sağlayan seçenekleri etkinleştiriyoruz."
 
-#: views/settings/page-sections/dashboard.php:45
+#: views/settings/page-sections/dashboard.php:46
 msgid "Continue to the options to further optimize your site!"
 msgstr "Sitenizi daha da iyileştirmek için seçeneklere devam edin!"
 
-#: views/settings/page-sections/dashboard.php:62
+#: views/settings/page-sections/dashboard.php:63
 msgid "My Account"
 msgstr "Hesabım"
 
-#: views/settings/page-sections/dashboard.php:68
+#: views/settings/page-sections/dashboard.php:69
 msgid "Refresh info"
 msgstr "Bilgiyi yenile"
 
-#: views/settings/page-sections/dashboard.php:86
+#: views/settings/page-sections/dashboard.php:87
 msgid "with"
 msgstr "birlikte"
 
-#: views/settings/page-sections/dashboard.php:100
+#: views/settings/page-sections/dashboard.php:101
 msgid "Expiration Date"
 msgstr "Bitiş Tarihi"
 
-#: views/settings/page-sections/dashboard.php:110
+#: views/settings/page-sections/dashboard.php:111
 msgid "View my account"
 msgstr "Hesabımı göster"
 
-#: views/settings/page-sections/dashboard.php:130 views/settings/page.php:75
+#: views/settings/page-sections/dashboard.php:131 views/settings/page.php:75
 msgid "Rocket Analytics"
 msgstr "Rocket Çözümsel"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: views/settings/page-sections/dashboard.php:136
+#: views/settings/page-sections/dashboard.php:137
 msgid ""
 "I agree to share anonymous data with the development team to help improve WP"
 " Rocket. %1$sWhat info will we collect?%2$s"
@@ -4328,35 +4330,47 @@ msgstr ""
 "WP Rocket’i iyileştirmeye yardımcı olmak için geliştirme ekibiyle isimsiz "
 "verileri paylaşmayı kabul ediyorum. %1$sNe tür bilgi toplayacağız?%2$s"
 
-#: views/settings/page-sections/dashboard.php:154
+#: views/settings/page-sections/dashboard.php:155
 msgid "Quick Actions"
 msgstr "Hızlı Eylemler"
 
-#: views/settings/page-sections/dashboard.php:161
-msgid "Remove all cached files"
-msgstr "Tüm önbelleklenen dosyaları kaldırın"
+#: views/settings/page-sections/dashboard.php:162
+msgid "Cache files"
+msgstr "Önbellek dosyaları"
 
-#: views/settings/page-sections/dashboard.php:181
-#: views/settings/page-sections/dashboard.php:187
+#: views/settings/page-sections/dashboard.php:163
+msgid "This action will clear and preload all the cache files."
+msgstr "Bu eylem tüm önbellek dosyalarını temizleyecek ve önyükleme yapacak."
+
+#: views/settings/page-sections/dashboard.php:163
+msgid "This action will clear all the cache files."
+msgstr "Bu eylem tüm önbellek dosyalarını temizleyecek."
+
+#: views/settings/page-sections/dashboard.php:169
+msgid "Clear and preload"
+msgstr "Temizle ve önyükle"
+
+#: views/settings/page-sections/dashboard.php:183
+#: views/settings/page-sections/dashboard.php:189
 msgid "Regenerate Critical CSS"
 msgstr "Önemli CSS’yi yeniden oluştur"
 
-#: views/settings/page-sections/dashboard.php:213
+#: views/settings/page-sections/dashboard.php:215
 msgid "Frequently Asked Questions"
 msgstr "Sıkça Sorulan Sorular"
 
-#: views/settings/page-sections/dashboard.php:227
+#: views/settings/page-sections/dashboard.php:229
 msgid "Still cannot find a solution?"
 msgstr "Hala bir çözüm bulamadınız mı?"
 
-#: views/settings/page-sections/dashboard.php:228
+#: views/settings/page-sections/dashboard.php:230
 msgid ""
 "Submit a ticket and get help from our friendly and knowledgeable Rocketeers."
 msgstr ""
 "Bir çağrı gönderin ve arkadaş yanlısı ve bilgili Roketçilerimizden yardım "
 "alın."
 
-#: views/settings/page-sections/dashboard.php:236
+#: views/settings/page-sections/dashboard.php:238
 msgid "Ask support"
 msgstr "Destek iste"
 
