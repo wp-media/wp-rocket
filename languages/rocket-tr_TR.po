@@ -3451,7 +3451,7 @@ msgstr "Kullanılan CSS"
 
 #: inc/Engine/Saas/Admin/AdminBar.php:136
 msgid "This action will clear the used CSS files."
-msgstr "Bu eylem, kullanılan CSS dosyalarını temizleyecek."
+msgstr "Bu eylem kullanılan CSS dosyalarını temizleyecek."
 
 #. translators: %1$s = plugin name, %2$s = number of seconds.
 #: inc/Engine/Saas/Admin/Notices.php:91
