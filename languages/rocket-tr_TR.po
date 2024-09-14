@@ -2819,7 +2819,7 @@ msgstr "Temizle"
 #: inc/Engine/Common/PerformanceHints/Admin/AdminBar.php:103
 msgid ""
 "This action will clear the Critical Images and Lazily Rendered Content."
-msgstr "Bu eylem, Önemli Resimleri ve Geç İşlenmiş İçeriği temizleyecek."
+msgstr "Bu eylem Önemli Resimleri ve Geç İşlenmiş İçeriği temizleyecek."
 
 #. translators: %1$s = plugin name.
 #: inc/Engine/Common/PerformanceHints/Admin/Controller.php:135
