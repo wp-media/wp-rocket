@@ -191,7 +191,7 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 		 *
 		 * @param array $skipped_attr Array of safelist values.
 		 */
-		$skipped_attr = wpm_apply_filters_typed('array', 'rocket_rucss_skip_styles_with_attr', [] );
+		$skipped_attr = wpm_apply_filters_typed( 'array', 'rocket_rucss_skip_styles_with_attr', [] );
 
 		return [
 			'rucss_safelist'    => $safelist,

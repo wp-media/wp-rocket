@@ -196,7 +196,7 @@ class PreloadUrl {
 		 *
 		 * @param string $prefix The prefix.
 		 */
-		$new_prefix = wpm_apply_filters_typed('string', 'rocket_mobile_preload_user_agent_prefix', $prefix );
+		$new_prefix = wpm_apply_filters_typed( 'string', 'rocket_mobile_preload_user_agent_prefix', $prefix );
 
 		if ( empty( $new_prefix ) ) {
 			return $prefix;

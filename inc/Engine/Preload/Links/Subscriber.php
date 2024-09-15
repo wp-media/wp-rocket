@@ -190,7 +190,7 @@ class Subscriber implements Subscriber_Interface {
 		 * @param string[] $excluded Array of excluded patterns.
 		 * @param string[] $default  Array of default excluded patterns.
 		 */
-		$excluded = wpm_apply_filters_typed('array', 'rocket_preload_links_exclusions', $excluded, $default );
+		$excluded = wpm_apply_filters_typed( 'array', 'rocket_preload_links_exclusions', $excluded, $default );
 
 		$excluded = array_filter( $excluded );
 
