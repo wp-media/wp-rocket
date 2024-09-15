@@ -175,8 +175,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		 * Generate lazyload CSS for the page.
 		 *
 		 * @param array $data Data passed to generate the lazyload CSS.
-		 *
-		 * @return array
 		 */
 		$output = wpm_apply_filters_typed(
 			'array',
@@ -539,8 +537,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		 * Filters the src used to prevent lazy load from being applied.
 		 *
 		 * @param array $excluded_src An array of excluded src.
-		 *
-		 * @return array
 		 */
 		$excluded_values = wpm_apply_filters_typed( 'array', 'rocket_lazyload_excluded_src', [] );
 
@@ -583,8 +579,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		 * Filters the src used to prevent lazy load from being applied.
 		 *
 		 * @param array $excluded_src An array of excluded src.
-		 *
-		 * @return array
 		 */
 		$excluded_values = wpm_apply_filters_typed( 'array', 'rocket_lazyload_excluded_src', [] );
 

@@ -1518,8 +1518,6 @@ class Page extends Abstract_Render {
 		 * Filters the addons names requiring the helper message.
 		 *
 		 * @param array $addons Array of addons.
-		 *
-		 * @return array
 		 */
 		$addons = wpm_apply_filters_typed( 'array', 'rocket_cdn_helper_addons', [] );
 

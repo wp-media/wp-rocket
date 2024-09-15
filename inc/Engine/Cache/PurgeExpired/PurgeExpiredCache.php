@@ -59,8 +59,6 @@ class PurgeExpiredCache {
 		 *
 		 * @param array $urls           URLs that will be searched for old cache files.
 		 * @param int   $file_age_limit Timestamp of the maximum age files must have.
-		 *
-		 * @return array
 		 */
 		$urls = wpm_apply_filters_typed( 'array', 'rocket_automatic_cache_purge_urls', $urls, $file_age_limit );
 

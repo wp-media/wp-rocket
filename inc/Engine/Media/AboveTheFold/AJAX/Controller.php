@@ -323,8 +323,6 @@ class Controller implements ControllerInterface {
 		 * Filters the supported schemes of LCP/ATF images.
 		 *
 		 * @param array  $invalid_schemes Array of invalid schemes.
-		 *
-		 * @return array
 		 */
 		$invalid_schemes = wpm_apply_filters_typed( 'array', 'rocket_atf_invalid_schemes', $this->invalid_schemes );
 

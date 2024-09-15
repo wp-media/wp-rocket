@@ -60,7 +60,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->addShared( 'delay_js_subscriber', Subscriber::class )
 			->addArgument( $this->getContainer()->get( 'delay_js_html' ) )
 			->addArgument( rocket_direct_filesystem() )
-			->addArgument( $this->getContainer()->get( 'options' ) )
 			->addTag( 'front_subscriber' );
 	}
 }

@@ -388,7 +388,7 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 	 * @since 3.1
 	 * @author Remy Perona
 	 *
-	 * @return mixed|string
+	 * @return mixed
 	 */
 	private function get_cache_empty_cart() {
 		$lang = rocket_get_current_language();

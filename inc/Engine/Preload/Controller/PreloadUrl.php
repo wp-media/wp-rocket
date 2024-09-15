@@ -131,14 +131,11 @@ class PreloadUrl {
 			 *
 			 * @param array $headers Request arguments.
 			 */
-			$headers = apply_filters(
+			$headers = wpm_apply_filters_typed(
+				'array',
 				'rocket_preload_url_request_args',
 				$headers
 			);
-
-			if ( ! is_array( $headers ) ) { // @phpstan-ignore-line
-				return;
-			}
 
 			if ( $check_duration ) {
 				$start = microtime( true );
@@ -199,9 +196,9 @@ class PreloadUrl {
 		 *
 		 * @param string $prefix The prefix.
 		 */
-		$new_prefix = apply_filters( 'rocket_mobile_preload_user_agent_prefix', $prefix );
+		$new_prefix = wpm_apply_filters_typed('string', 'rocket_mobile_preload_user_agent_prefix', $prefix );
 
-		if ( empty( $new_prefix ) || ! is_string( $new_prefix ) ) { // @phpstan-ignore-line
+		if ( empty( $new_prefix ) ) {
 			return $prefix;
 		}
 

@@ -103,8 +103,6 @@ class PostEditOptionsSubscriber extends Abstract_Render implements Subscriber_In
 		 * WP Rocket Metabox fields on post edit page.
 		 *
 		 * @param string[] $original_fields Metaboxes fields.
-		 *
-		 * @return array
 		 */
 		$fields = wpm_apply_filters_typed( 'array', 'rocket_meta_boxes_fields', $original_fields );
 
@@ -176,8 +174,6 @@ class PostEditOptionsSubscriber extends Abstract_Render implements Subscriber_In
 		 * Metaboxes fields.
 		 *
 		 * @param string[] $original_fields Metaboxes fields.
-		 *
-		 * @return array
 		 */
 		$fields = wpm_apply_filters_typed( 'array', 'rocket_meta_boxes_fields', $original_fields );
 

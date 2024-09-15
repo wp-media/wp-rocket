@@ -22,8 +22,6 @@ class Context implements ContextInterface {
 		 * Filters to manage above the fold optimization
 		 *
 		 * @param bool $allow True to allow, false otherwise.
-		 *
-		 * @return bool
 		 */
 		return wpm_apply_filters_typed( 'boolean', 'rocket_above_the_fold_optimization', true );
 	}

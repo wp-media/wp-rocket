@@ -432,8 +432,6 @@ class Controller implements ControllerInterface {
 		 * @since 3.16
 		 *
 		 * @param array $formats Array of elements
-		 *
-		 * @return array
 		 */
 		$elements = wpm_apply_filters_typed( 'array', 'rocket_atf_elements', $default_elements );
 

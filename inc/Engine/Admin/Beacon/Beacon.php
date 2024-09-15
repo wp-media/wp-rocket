@@ -121,8 +121,6 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 		 * @since 3.6
 		 *
 		 * @param string $locale The locale ID.
-		 *
-		 * @return string
 		 */
 		return wpm_apply_filters_typed( 'string', 'rocket_beacon_locale', $this->locale );
 	}

@@ -95,8 +95,6 @@ abstract class AbstractGFOptimization {
 		 * @since  3.3.5
 		 *
 		 * @param string $display Display value. Can be either auto, block, swap, fallback or optional.
-		 *
-		 * @return string
 		 */
 		$display = wpm_apply_filters_typed( 'string', 'rocket_combined_google_fonts_display', 'swap' );
 

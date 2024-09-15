@@ -168,7 +168,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->addShared( 'amp_subscriber', AMP::class )
-			->addArgument( $options )->addArgument( $this->getContainer()->get( 'cdn_subscriber' ) )
+			->addArgument( $this->getContainer()->get( 'cdn_subscriber' ) )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->addShared( 'simple_custom_css', SimpleCustomCss::class )
@@ -207,7 +207,6 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->addShared( 'yoast_seo', Yoast::class )
-			->addArgument( $options )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->addShared( 'convertplug', ConvertPlug::class )

@@ -818,8 +818,6 @@ JS;
 		 * Filters the status of the RUCSS option.
 		 *
 		 * @param array $should_disable will return array with disable status and text.
-		 *
-		 * @return array
 		 */
 		$rucss_status = wpm_apply_filters_typed(
 			'array',
