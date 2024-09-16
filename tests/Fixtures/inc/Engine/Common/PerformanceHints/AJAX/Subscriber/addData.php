@@ -42,6 +42,7 @@ return [
 				'last_accessed' => '2024-01-01 00:00:00',
 			],
 			'result'  => false,
+			'message' => 'not allowed',
 		],
 	],
 	'testShouldAddItemToDB' => [

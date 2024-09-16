@@ -15,7 +15,7 @@ return [
 			'row' => [],
 		],
 		'expected' => [
-			'result'  => false,
+			'result'  => true,
 		],
 	],
 	'testShouldReturnExists' => [

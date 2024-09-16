@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Media\AboveTheFold\AJAX;
 
+use WP_Rocket\Engine\Common\PerformanceHints\AJAX\AJAXControllerTrait;
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Queries\AboveTheFold as ATFQuery;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Engine\Optimization\UrlTrait;
@@ -11,6 +12,7 @@ use WP_Rocket\Engine\Common\PerformanceHints\AJAX\ControllerInterface;
 
 class Controller implements ControllerInterface {
 	use UrlTrait;
+	use AJAXControllerTrait;
 
 	/**
 	 * ATFQuery instance
@@ -49,14 +51,19 @@ class Controller implements ControllerInterface {
 	/**
 	 * Add LCP data to the database
 	 *
-	 * @return void
+	 * @return array
 	 */
-	public function add_data(): void {
+	public function add_data(): array {
+		$payload = [
+			'lcp' => '',
+		];
+
 		check_ajax_referer( 'rocket_beacon', 'rocket_beacon_nonce' );
 
 		if ( ! $this->context->is_allowed() ) {
-			wp_send_json_error( 'not allowed' );
-			return;
+			$payload['lcp'] = 'not allowed';
+
+			return $payload;
 		}
 
 		$url       = isset( $_POST['url'] ) ? untrailingslashit( esc_url_raw( wp_unslash( $_POST['url'] ) ) ) : '';
@@ -106,8 +113,9 @@ class Controller implements ControllerInterface {
 		$row = $this->query->get_row( $url, $is_mobile );
 
 		if ( ! empty( $row ) ) {
-			wp_send_json_error( 'item already in the database' );
-			return;
+			$payload['lcp'] = 'item already in the database';
+
+			return $payload;
 		}
 
 		$status                               = isset( $_POST['status'] ) ? sanitize_text_field( wp_unslash( $_POST['status'] ) ) : '';
@@ -126,36 +134,13 @@ class Controller implements ControllerInterface {
 		$result = $this->query->add_item( $item );
 
 		if ( ! $result ) {
-			wp_send_json_error( 'error when adding the entry to the database' );
-			return;
+			$payload['lcp'] = 'error when adding the entry to the database';
+
+			return $payload;
 		}
 
-		wp_send_json_success( $item );
-	}
-
-	/**
-	 * Get status code and message to be saved into the database
-	 *
-	 * @param string $status Current status code from $_POST.
-	 * @return array
-	 */
-	private function get_status_code_message( $status ) {
-		$status_code    = 'success' !== $status ? 'failed' : 'completed';
-		$status_message = '';
-
-		switch ( $status ) {
-			case 'script_error':
-				$status_message = esc_html__( 'Script error', 'rocket' );
-				break;
-			case 'timeout':
-				$status_message = esc_html__( 'Script timeout', 'rocket' );
-				break;
-		}
-
-		return [
-			$status_code,
-			$status_message,
-		];
+		$payload['lcp'] = $item;
+		return $payload;
 	}
 
 	/**
@@ -266,14 +251,18 @@ class Controller implements ControllerInterface {
 	 * If the data exists, it returns a JSON success response with true. If the data does not exist, it returns a JSON success response with false.
 	 * If the context is not allowed, it returns a JSON error response with false.
 	 *
-	 * @return void
+	 * @return array
 	 */
-	public function check_data(): void {
+	public function check_data(): array {
+		$payload = [
+			'lcp' => false,
+		];
+
 		check_ajax_referer( 'rocket_beacon', 'rocket_beacon_nonce' );
 
 		if ( ! $this->context->is_allowed() ) {
-			wp_send_json_error( false );
-			return;
+			$payload['lcp'] = true;
+			return $payload;
 		}
 
 		$url       = isset( $_POST['url'] ) ? untrailingslashit( esc_url_raw( wp_unslash( $_POST['url'] ) ) ) : '';
@@ -282,11 +271,11 @@ class Controller implements ControllerInterface {
 		$row = $this->query->get_row( $url, $is_mobile );
 
 		if ( ! empty( $row ) ) {
-			wp_send_json_success( 'data already exists' );
-			return;
+			$payload['lcp'] = true;
+			return $payload;
 		}
 
-		wp_send_json_error( 'data does not exist' );
+		return $payload;
 	}
 
 	/**
