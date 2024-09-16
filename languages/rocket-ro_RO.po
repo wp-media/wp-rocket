@@ -7,9 +7,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.16-alpha1\n"
+"Project-Id-Version: WP Rocket 3.17-alpha4\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-rocket\n"
-"POT-Creation-Date: 2024-04-29T20:40:45+00:00\n"
+"POT-Creation-Date: 2024-09-13T17:57:31+00:00\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Dan Caragea <dan_caragea@yahoo.com>, 2024\n"
 "Language-Team: Romanian (Romania) (https://app.transifex.com/wp-media/teams/18133/ro_RO/)\n"
@@ -50,9 +50,9 @@ msgstr "https://wp-media.me"
 #: inc/ThirdParty/Hostings/Godaddy.php:63
 #: inc/ThirdParty/Hostings/O2Switch.php:49
 #: inc/ThirdParty/Hostings/OneCom.php:137
-#: inc/ThirdParty/Hostings/Pressidium.php:49
+#: inc/ThirdParty/Hostings/Pressidium.php:50
 #: inc/ThirdParty/Hostings/ProIsp.php:51 inc/ThirdParty/Hostings/Savvii.php:50
-#: inc/ThirdParty/Hostings/WPEngine.php:47
+#: inc/ThirdParty/Hostings/WPEngine.php:46
 #: inc/ThirdParty/Hostings/WPXCloud.php:51
 msgid ""
 "Your site is hosted on %s, we have enabled Varnish auto-purge for "
@@ -183,41 +183,31 @@ msgstr "Nivel de cache Cloudflare setat la %s"
 
 #. translators: %s is the message returned by the CloudFlare API.
 #: inc/Addon/Cloudflare/Subscriber.php:368
-msgid "Cloudflare minification error: %s"
-msgstr "Eroare de minificare Cloudflare: %s"
-
-#. translators: %s is the message returned by the CloudFlare API.
-#: inc/Addon/Cloudflare/Subscriber.php:375
-msgid "Cloudflare minification %s"
-msgstr "Minificare Cloudflare %s"
-
-#. translators: %s is the message returned by the CloudFlare API.
-#: inc/Addon/Cloudflare/Subscriber.php:393
 msgid "Cloudflare rocket loader error: %s"
 msgstr "Eroare rocket loader Cloudflare: %s"
 
 #. translators: %s is the message returned by the CloudFlare API.
-#: inc/Addon/Cloudflare/Subscriber.php:400
+#: inc/Addon/Cloudflare/Subscriber.php:375
 msgid "Cloudflare rocket loader %s"
 msgstr "Rocket loader Cloudflare %s"
 
 #. translators: %s is the message returned by the CloudFlare API.
-#: inc/Addon/Cloudflare/Subscriber.php:418
+#: inc/Addon/Cloudflare/Subscriber.php:393
 msgid "Cloudflare browser cache error: %s"
 msgstr "Eroare cache navigator Cloudflare: %s"
 
 #. translators: %s is the message returned by the CloudFlare API.
-#: inc/Addon/Cloudflare/Subscriber.php:425
+#: inc/Addon/Cloudflare/Subscriber.php:400
 msgid "Cloudflare browser cache set to %s"
 msgstr "Cache-ul navigatorului Cloudflare este setat la %s"
 
 #. translators: %1$s = strong opening tag, %2$s = strong closing tag.
-#: inc/Addon/Cloudflare/Subscriber.php:536
+#: inc/Addon/Cloudflare/Subscriber.php:507
 msgid "%1$sWP Rocket:%2$s Optimal settings activated for Cloudflare:"
 msgstr "%1$sWP Rocket:%2$s setările optime sunt activate pentru Cloudflare:"
 
 #. translators: %1$s = strong opening tag, %2$s = strong closing tag.
-#: inc/Addon/Cloudflare/Subscriber.php:545
+#: inc/Addon/Cloudflare/Subscriber.php:516
 msgid ""
 "%1$sWP Rocket:%2$s Optimal settings deactivated for Cloudflare, reverted to "
 "previous settings:"
@@ -225,7 +215,7 @@ msgstr ""
 "%1$sWP Rocket:%2$s setările optime sunt dezactivate pentru Cloudflare, am "
 "revenit la setările anterioare:"
 
-#: inc/Addon/Cloudflare/Subscriber.php:661 inc/admin/options.php:165
+#: inc/Addon/Cloudflare/Subscriber.php:632 inc/admin/options.php:165
 #: inc/classes/subscriber/Tools/class-detect-missing-tags-subscriber.php:148
 msgid "WP Rocket: "
 msgstr "WP Rocket: "
@@ -391,7 +381,7 @@ msgid "Settings"
 msgstr "Setări"
 
 #: inc/admin/admin.php:96 inc/admin/admin.php:117 inc/deprecated/3.5.php:898
-#: inc/Engine/Cache/AdminSubscriber.php:134
+#: inc/Engine/Cache/AdminSubscriber.php:135
 msgid "Clear this cache"
 msgstr "Șterge acest cache"
 
@@ -423,17 +413,17 @@ msgstr "Importul setărilor a eșuat: conținut neașteptat pentru fișier."
 msgid "Settings imported and saved."
 msgstr "Setările au fost importate și salvate."
 
-#: inc/admin/options.php:102 inc/Engine/Admin/Settings/Page.php:571
+#: inc/admin/options.php:102 inc/Engine/Admin/Settings/Page.php:551
 msgid "Excluded CSS Files"
 msgstr "Fișiere CSS excluse"
 
-#: inc/admin/options.php:103 inc/Engine/Admin/Settings/Page.php:725
+#: inc/admin/options.php:103 inc/Engine/Admin/Settings/Page.php:699
 msgid "Excluded Inline JavaScript"
 msgstr "JavaScript în-linie exclus"
 
-#: inc/admin/options.php:104 inc/Engine/Admin/Settings/Page.php:743
-#: inc/Engine/Admin/Settings/Page.php:776
-#: inc/Engine/Admin/Settings/Page.php:823
+#: inc/admin/options.php:104 inc/Engine/Admin/Settings/Page.php:717
+#: inc/Engine/Admin/Settings/Page.php:750
+#: inc/Engine/Admin/Settings/Page.php:797
 msgid "Excluded JavaScript Files"
 msgstr "Fișiere JavaScript excluse"
 
@@ -445,19 +435,19 @@ msgstr "Fișiere Întârzie JavaScript"
 msgid "Excluded Delay JavaScript Files"
 msgstr "Fișiere Întârzie JavaScript excluse"
 
-#: inc/admin/options.php:107 inc/Engine/Admin/Settings/Page.php:1229
+#: inc/admin/options.php:107 inc/Engine/Admin/Settings/Page.php:1203
 msgid "Never Cache URL(s)"
 msgstr "Nu memora niciodată în cache URL-uri"
 
-#: inc/admin/options.php:108 inc/Engine/Admin/Settings/Page.php:1243
+#: inc/admin/options.php:108 inc/Engine/Admin/Settings/Page.php:1217
 msgid "Never Cache User Agent(s)"
 msgstr "Nu memora niciodată în cache agentul (agenții) utilizator"
 
-#: inc/admin/options.php:109 inc/Engine/Admin/Settings/Page.php:1249
+#: inc/admin/options.php:109 inc/Engine/Admin/Settings/Page.php:1223
 msgid "Always Purge URL(s)"
 msgstr "Curăță întotdeauna URL-ul (URL-urile)"
 
-#: inc/admin/options.php:110 inc/Engine/Admin/Settings/Page.php:1530
+#: inc/admin/options.php:110 inc/Engine/Admin/Settings/Page.php:1504
 msgid "Exclude files from CDN"
 msgstr "Exclude fișiere din CDN"
 
@@ -478,8 +468,6 @@ msgid "More info"
 msgstr "Mai multe informații"
 
 #: inc/admin/ui/meta-boxes.php:37 inc/admin/ui/notices.php:671
-#: inc/common/admin-bar.php:91 inc/common/admin-bar.php:154
-#: views/settings/page-sections/dashboard.php:150
 msgid "Clear cache"
 msgstr "Șterge cache"
 
@@ -663,16 +651,15 @@ msgstr "%s: cache termen șters."
 msgid "%s: User cache cleared."
 msgstr "%s: cache utilizator șters."
 
-#: inc/admin/ui/notices.php:662 inc/Engine/License/views/promo-banner.php:36
-#: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:32
-#: inc/Engine/License/views/renewal-expired-banner-ocd.php:42
-#: inc/Engine/License/views/renewal-expired-banner.php:30
-#: views/settings/page-sections/dashboard.php:46
+#: inc/admin/ui/notices.php:662 inc/Engine/License/views/promo-banner.php:38
+#: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:34
+#: inc/Engine/License/views/renewal-expired-banner-ocd.php:44
+#: inc/Engine/License/views/renewal-expired-banner.php:32
+#: views/settings/page-sections/dashboard.php:47
 msgid "Dismiss this notice"
 msgstr "Respinge această notificare"
 
-#: inc/admin/ui/notices.php:682 inc/Engine/Saas/Admin/AdminBar.php:80
-#: inc/Engine/Saas/Admin/AdminBar.php:198
+#: inc/admin/ui/notices.php:682 inc/Engine/Saas/Admin/AdminBar.php:51
 msgid "Clear Used CSS"
 msgstr "Șterge CSS-ul utilizat"
 
@@ -752,8 +739,8 @@ msgstr "Reinstalează versiunea %s"
 #: inc/classes/class-wp-rocket-requirements-check.php:203
 #: inc/classes/class-wp-rocket-requirements-check.php:214
 #: inc/deprecated/3.11.php:236 inc/deprecated/3.11.php:251
-#: inc/Engine/Plugin/UpdaterSubscriber.php:483
-#: inc/Engine/Plugin/UpdaterSubscriber.php:497
+#: inc/Engine/Plugin/UpdaterSubscriber.php:477
+#: inc/Engine/Plugin/UpdaterSubscriber.php:491
 msgid "%s Update Rollback"
 msgstr "Actualizează restaurarea %s"
 
@@ -778,9 +765,12 @@ msgstr ""
 "working/?utm_source=wp_plugin&utm_medium=wp_rocket#theme"
 
 #: inc/common/admin-bar.php:91 inc/common/admin-bar.php:154
-#: views/settings/page-sections/dashboard.php:150
-msgid "Clear and preload cache"
+msgid "Clear and Preload Cache"
 msgstr "Șterge și pre-încarcă cache-ul"
+
+#: inc/common/admin-bar.php:91 inc/common/admin-bar.php:154
+msgid "Clear Cache"
+msgstr "Șterge cache"
 
 #: inc/common/admin-bar.php:131 inc/functions/i18n.php:20
 msgid "All languages"
@@ -806,7 +796,7 @@ msgstr "Șterge cache-ul RocketCDN"
 msgid "Documentation"
 msgstr "Documentație"
 
-#: inc/deprecated/3.2.php:52 views/settings/page-sections/imagify.php:36
+#: inc/deprecated/3.2.php:52 views/settings/page-sections/imagify.php:107
 msgid "Activate Imagify"
 msgstr "Activează Imagify"
 
@@ -954,7 +944,7 @@ msgstr ""
 "de a le pre-încărca."
 
 #. translators: 1 and 3 are link openings, 2 is a link closing.
-#: inc/deprecated/3.11.php:279 inc/Engine/Plugin/UpdaterSubscriber.php:520
+#: inc/deprecated/3.11.php:279 inc/Engine/Plugin/UpdaterSubscriber.php:514
 msgid "%1$sReturn to WP Rocket%2$s or %3$sgo to Plugins page%2$s"
 msgstr "%1$sÎntoarce-te la WP Rocket%2$s sau %3$smergi la pagina Module%2$s"
 
@@ -1036,7 +1026,7 @@ msgstr ""
 msgid "Choose a file from your computer (maximum size: %s)"
 msgstr "Alege un fișier din computer (dimensiune maximă: %s)"
 
-#: inc/deprecated/deprecated.php:1294 inc/Engine/Admin/Settings/Render.php:422
+#: inc/deprecated/deprecated.php:1294 inc/Engine/Admin/Settings/Render.php:469
 msgid "Upload file and import settings"
 msgstr "Încarcă fișierul și importă setările"
 
@@ -1119,8 +1109,8 @@ msgstr "De bază"
 msgid "Static Files"
 msgstr "Fișiere statice"
 
-#: inc/deprecated/deprecated.php:1773 inc/Engine/Admin/Settings/Page.php:1500
-#: inc/Engine/Admin/Settings/Page.php:1511
+#: inc/deprecated/deprecated.php:1773 inc/Engine/Admin/Settings/Page.php:1474
+#: inc/Engine/Admin/Settings/Page.php:1485
 #: inc/Engine/CDN/Admin/Subscriber.php:28
 msgid "CDN"
 msgstr "CDN"
@@ -1129,22 +1119,22 @@ msgstr "CDN"
 msgid "Advanced"
 msgstr "Avansat"
 
-#: inc/deprecated/deprecated.php:1775 inc/Engine/Admin/Settings/Page.php:1345
+#: inc/deprecated/deprecated.php:1775 inc/Engine/Admin/Settings/Page.php:1319
 msgid "Database"
 msgstr "Bază de date"
 
-#: inc/deprecated/deprecated.php:1776 inc/Engine/Admin/Settings/Page.php:1051
+#: inc/deprecated/deprecated.php:1776 inc/Engine/Admin/Settings/Page.php:1025
 msgid "Preload"
 msgstr "Pre-încărcare"
 
 #: inc/deprecated/deprecated.php:1786
-#: inc/Engine/Admin/Settings/Subscriber.php:170
+#: inc/Engine/Admin/Settings/Subscriber.php:173
 #: views/settings/page-sections/tools.php:33
 msgid "Tools"
 msgstr "Unelte"
 
-#: inc/deprecated/deprecated.php:1789 inc/Engine/Admin/Settings/Page.php:357
-#: views/settings/page-sections/dashboard.php:80
+#: inc/deprecated/deprecated.php:1789 inc/Engine/Admin/Settings/Page.php:368
+#: views/settings/page-sections/dashboard.php:81
 msgid "License"
 msgstr "Licență"
 
@@ -1188,27 +1178,27 @@ msgid "weekly"
 msgstr "săptămânal"
 
 #: inc/Engine/Admin/Database/Optimization.php:30
-#: inc/Engine/Admin/Settings/Page.php:1389
+#: inc/Engine/Admin/Settings/Page.php:1363
 msgid "Revisions"
 msgstr "Revizii"
 
 #: inc/Engine/Admin/Database/Optimization.php:31
-#: inc/Engine/Admin/Settings/Page.php:1399
+#: inc/Engine/Admin/Settings/Page.php:1373
 msgid "Auto Drafts"
 msgstr "Ciorne automate"
 
 #: inc/Engine/Admin/Database/Optimization.php:32
-#: inc/Engine/Admin/Settings/Page.php:1409
+#: inc/Engine/Admin/Settings/Page.php:1383
 msgid "Trashed Posts"
 msgstr "Articole aruncate la gunoi"
 
 #: inc/Engine/Admin/Database/Optimization.php:33
-#: inc/Engine/Admin/Settings/Page.php:1419
+#: inc/Engine/Admin/Settings/Page.php:1393
 msgid "Spam Comments"
 msgstr "Comentarii spam"
 
 #: inc/Engine/Admin/Database/Optimization.php:34
-#: inc/Engine/Admin/Settings/Page.php:1429
+#: inc/Engine/Admin/Settings/Page.php:1403
 msgid "Trashed Comments"
 msgstr "Comentarii aruncate la gunoi"
 
@@ -1263,63 +1253,46 @@ msgstr ""
 msgid "Regenerate WP Rocket configuration files now"
 msgstr "Regenerează acum fișierele de configurare WP Rocket"
 
-#: inc/Engine/Admin/Settings/Page.php:223
+#: inc/Engine/Admin/Settings/Page.php:222
 msgid "Save Changes"
 msgstr "Salvează modificările"
 
-#: inc/Engine/Admin/Settings/Page.php:223
+#: inc/Engine/Admin/Settings/Page.php:222
 msgid "Validate License"
 msgstr "Validează licența"
 
-#: inc/Engine/Admin/Settings/Page.php:279
-#: inc/Engine/Admin/Settings/Page.php:280 inc/functions/admin.php:550
+#: inc/Engine/Admin/Settings/Page.php:278
+#: inc/Engine/Admin/Settings/Page.php:279 inc/functions/admin.php:550
 msgid "Unavailable"
 msgstr "Indisponibilă"
 
-#: inc/Engine/Admin/Settings/Page.php:374
+#: inc/Engine/Admin/Settings/Page.php:385
 msgid "API key"
 msgstr "Cheie API"
 
-#: inc/Engine/Admin/Settings/Page.php:389
+#: inc/Engine/Admin/Settings/Page.php:400
 msgid "Email address"
 msgstr "Adresă email"
 
-#: inc/Engine/Admin/Settings/Page.php:415
+#: inc/Engine/Admin/Settings/Page.php:426
 msgid "Dashboard"
 msgstr "Panou control"
 
-#: inc/Engine/Admin/Settings/Page.php:416
+#: inc/Engine/Admin/Settings/Page.php:427
 msgid "Get help, account info"
 msgstr "Primești ajutor, informații despre cont"
 
-#: inc/Engine/Admin/Settings/Page.php:425
-msgid "My Status"
-msgstr "Starea mea"
-
-#: inc/Engine/Admin/Settings/Page.php:435 views/settings/page.php:75
-msgid "Rocket Analytics"
-msgstr "Analitice Rocket"
-
-#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:437
-msgid ""
-"I agree to share anonymous data with the development team to help improve WP"
-" Rocket. %1$sWhat info will we collect?%2$s"
-msgstr ""
-"Sunt de acord să partajez date anonime cu echipa de dezvoltare pentru a "
-"ajuta la îmbunătățirea WP Rocket. %1$sCe informații vom colecta?%2$s"
-
-#: inc/Engine/Admin/Settings/Page.php:489
+#: inc/Engine/Admin/Settings/Page.php:475
 msgid "File Optimization"
 msgstr "Optimizare fișiere"
 
-#: inc/Engine/Admin/Settings/Page.php:490
+#: inc/Engine/Admin/Settings/Page.php:476
 msgid "Optimize CSS & JS"
 msgstr "Optimizează CSS și JS"
 
 #. translators: %1$s = type of minification (HTML, CSS or JS), %2$s = “WP
 #. Rocket”.
-#: inc/Engine/Admin/Settings/Page.php:498
+#: inc/Engine/Admin/Settings/Page.php:484
 msgid ""
 "%1$s Minification is currently activated in <strong>Autoptimize</strong>. If"
 " you want to use %2$s’s minification, disable this option in Autoptimize."
@@ -1328,17 +1301,17 @@ msgstr ""
 "Dacă vrei să folosești minificarea oferită de  %2$s, dezactivează această "
 "opțiune în Autoptimize."
 
-#: inc/Engine/Admin/Settings/Page.php:508
+#: inc/Engine/Admin/Settings/Page.php:494
 msgid "CSS Files"
 msgstr "Fișiere CSS"
 
-#: inc/Engine/Admin/Settings/Page.php:517
+#: inc/Engine/Admin/Settings/Page.php:503
 msgid "JavaScript Files"
 msgstr "Fișiere JavaScript"
 
 #. translators: %1$s = type of minification (HTML, CSS or JS), %2$s = “WP
 #. Rocket”.
-#: inc/Engine/Admin/Settings/Page.php:524
+#: inc/Engine/Admin/Settings/Page.php:510
 msgid ""
 "%1$s Minification is currently activated in <strong>Autoptimize</strong>. If"
 " you want to use %2$s’s minification, disable those options in Autoptimize."
@@ -1347,7 +1320,7 @@ msgstr ""
 "vrei să folosești minificarea %2$s, dezactivează acele opțiuni în "
 "Autoptimize."
 
-#: inc/Engine/Admin/Settings/Page.php:529
+#: inc/Engine/Admin/Settings/Page.php:515
 msgid ""
 "If you have problems after activating this option, copy and paste the "
 "default exclusions to quickly resolve issues:"
@@ -1356,7 +1329,7 @@ msgstr ""
 "excluderile implicite pentru a rezolva rapid problemele:"
 
 #. translators: %1$s = opening </a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:533
+#: inc/Engine/Admin/Settings/Page.php:519
 msgid ""
 "Also, please check our %1$sdocumentation%2$s for a list of compatibility "
 "exclusions."
@@ -1364,7 +1337,7 @@ msgstr ""
 "De asemenea, te rog să consulți %1$sdocumentația%2$s noastră pentru a vedea "
 "o listă cu excluderile la compatibilitate."
 
-#: inc/Engine/Admin/Settings/Page.php:538
+#: inc/Engine/Admin/Settings/Page.php:524
 msgid ""
 "Internal scripts are excluded by default to prevent issues. Remove them to "
 "take full advantage of this option."
@@ -1373,53 +1346,31 @@ msgstr ""
 "probleme. Înlătură-le ca să beneficiezi din plin de această opțiune."
 
 #. translators: %1$s = opening </a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:541
+#: inc/Engine/Admin/Settings/Page.php:527
 msgid ""
 "If this causes trouble, restore the default exclusions, found %1$shere%2$s"
 msgstr ""
 "Dacă apar probleme, restaurează excluderile implicite, le găsești "
 "%1$saici%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:550
+#: inc/Engine/Admin/Settings/Page.php:536
 msgid "Minify CSS files"
 msgstr "Minifică fișierele CSS"
 
-#: inc/Engine/Admin/Settings/Page.php:551
+#: inc/Engine/Admin/Settings/Page.php:537
 msgid "Minify CSS removes whitespace and comments to reduce the file size."
 msgstr ""
 "Minifică CSS înlătură spațiile goale și comentariile pentru a reduce "
 "dimensiunea fișierului."
 
-#: inc/Engine/Admin/Settings/Page.php:564
-#: inc/Engine/Admin/Settings/Page.php:628
-#: inc/Engine/Admin/Settings/Page.php:694
-#: inc/Engine/Admin/Settings/Page.php:718
-msgid "This could break things!"
-msgstr "Asta ar putea strica unele lucruri!"
-
-#: inc/Engine/Admin/Settings/Page.php:565
-#: inc/Engine/Admin/Settings/Page.php:629
-#: inc/Engine/Admin/Settings/Page.php:695
-#: inc/Engine/Admin/Settings/Page.php:719
-msgid ""
-"If you notice any errors on your website after having activated this "
-"setting, just deactivate it again, and your site will be back to normal."
-msgstr ""
-"Dacă după activarea acestei setări observi erori pe site-ul tău, trebuie "
-"doar s-o dezactivezi și site-ul va reveni la normal."
-
-#: inc/Engine/Admin/Settings/Page.php:566
-msgid "Activate minify CSS"
-msgstr "Activează minifică CSS"
-
-#: inc/Engine/Admin/Settings/Page.php:572
+#: inc/Engine/Admin/Settings/Page.php:552
 msgid ""
 "Specify URLs of CSS files to be excluded from minification (one per line)."
 msgstr ""
 "Specifică URL-urile fișierelor CSS care vor fi excluse din minificare (câte "
 "unul pe un rând)."
 
-#: inc/Engine/Admin/Settings/Page.php:573
+#: inc/Engine/Admin/Settings/Page.php:553
 msgid ""
 "<strong>Internal:</strong> The domain part of the URL will be stripped "
 "automatically. Use (.*).css wildcards to exclude all CSS files located at a "
@@ -1430,7 +1381,7 @@ msgstr ""
 " fișierele CSS localizate pe o anumită cale."
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:575
+#: inc/Engine/Admin/Settings/Page.php:555
 msgid ""
 "<strong>3rd Party:</strong> Use either the full URL path or only the domain "
 "name, to exclude external CSS. %1$sMore info%2$s"
@@ -1439,12 +1390,12 @@ msgstr ""
 "calea completă a URL-ului sau doar numele de domeniu. %1$sMai multe "
 "informații%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:588
-#: inc/Engine/Admin/Settings/Page.php:610
+#: inc/Engine/Admin/Settings/Page.php:568
+#: inc/Engine/Admin/Settings/Page.php:590
 msgid "Optimize CSS delivery"
 msgstr "Optimizează livrarea CSS"
 
-#: inc/Engine/Admin/Settings/Page.php:593
+#: inc/Engine/Admin/Settings/Page.php:573
 msgid ""
 "Optimize CSS delivery eliminates render-blocking CSS on your website. Only "
 "one method can be selected. Remove Unused CSS is recommended for optimal "
@@ -1455,7 +1406,7 @@ msgstr ""
 " este recomandată Înlătură CSS-ul neutilizat, dar este disponibilă numai "
 "pentru utilizatorii care au o licență activă."
 
-#: inc/Engine/Admin/Settings/Page.php:593
+#: inc/Engine/Admin/Settings/Page.php:573
 msgid ""
 "Optimize CSS delivery eliminates render-blocking CSS on your website. Only "
 "one method can be selected. Remove Unused CSS is recommended for optimal "
@@ -1466,7 +1417,7 @@ msgstr ""
 "CSS-ul neutilizat pentru o performanță optimă."
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:603
+#: inc/Engine/Admin/Settings/Page.php:583
 msgid ""
 "Optimize CSS Delivery features are disabled on local environments. %1$sLearn"
 " more%2$s"
@@ -1474,13 +1425,12 @@ msgstr ""
 "Funcționalitățile pentru Optimizează livrarea CSS sunt dezactivate în "
 "mediile locale. %1$sAflă mai multe%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:623
-#: inc/Engine/Optimization/RUCSS/Admin/OptionSubscriber.php:74
-msgid "Remove Unused CSS"
-msgstr "Înlătură CSS-ul neutilizat"
+#: inc/Engine/Admin/Settings/Page.php:603
+msgid "Remove Unused CSS (RUCSS)"
+msgstr "Înlătură CSS-ul neutilizat (RUCSS)"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:626
+#: inc/Engine/Admin/Settings/Page.php:606
 msgid ""
 "Removes unused CSS per page and helps to reduce page size and HTTP requests."
 " Recommended for best performance. Test thoroughly! %1$sMore info%2$s"
@@ -1489,15 +1439,29 @@ msgstr ""
 "paginilor și cererile HTTP. Este recomandat pentru o performanță mai bună. "
 "Testează în mod aprofundat! %1$sMai multe informații%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:630
+#: inc/Engine/Admin/Settings/Page.php:608
+#: inc/Engine/Admin/Settings/Page.php:692
+msgid "This could break things!"
+msgstr "Asta ar putea strica unele lucruri!"
+
+#: inc/Engine/Admin/Settings/Page.php:609
+#: inc/Engine/Admin/Settings/Page.php:693
+msgid ""
+"If you notice any errors on your website after having activated this "
+"setting, just deactivate it again, and your site will be back to normal."
+msgstr ""
+"Dacă după activarea acestei setări observi erori pe site-ul tău, trebuie "
+"doar s-o dezactivezi și site-ul va reveni la normal."
+
+#: inc/Engine/Admin/Settings/Page.php:610
 msgid "Activate Remove Unused CSS"
 msgstr "Activează Înlătură CSS-ul neutilizat"
 
-#: inc/Engine/Admin/Settings/Page.php:636
+#: inc/Engine/Admin/Settings/Page.php:616
 msgid "CSS safelist"
 msgstr "Listă sigură CSS"
 
-#: inc/Engine/Admin/Settings/Page.php:637
+#: inc/Engine/Admin/Settings/Page.php:617
 msgid ""
 "Specify CSS filenames, IDs or classes that should not be removed (one per "
 "line)."
@@ -1505,13 +1469,13 @@ msgstr ""
 "Specifică numele fișierelor CSS, ID-urile sau clasele care nu ar trebui "
 "înlăturate (câte unul per linie)."
 
-#: inc/Engine/Admin/Settings/Page.php:652
-#: inc/Engine/CriticalPath/Admin/Subscriber.php:200
+#: inc/Engine/Admin/Settings/Page.php:632
+#: inc/Engine/CriticalPath/Admin/Subscriber.php:201
 msgid "Load CSS asynchronously"
 msgstr "Încarcă fișierele CSS asincron"
 
 #. translators: %1$s = plugin name.
-#: inc/Engine/Admin/Settings/Page.php:655
+#: inc/Engine/Admin/Settings/Page.php:635
 msgctxt "WP Critical CSS compatibility"
 msgid ""
 "Load CSS asynchronously is currently handled by the %1$s plugin. If you want"
@@ -1522,19 +1486,19 @@ msgstr ""
 "dezactivează modulul %1$s."
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:657
+#: inc/Engine/Admin/Settings/Page.php:637
 msgid ""
 "Generates critical path CSS and loads CSS asynchronously. %1$sMore info%2$s"
 msgstr ""
 "Generează CSS pe cale critică și încarcă fișierele CSS asincron. %1$sMai "
 "multe informații%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:663
+#: inc/Engine/Admin/Settings/Page.php:643
 msgid "Fallback critical CSS"
 msgstr "CSS critic de rezervă"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:665
+#: inc/Engine/Admin/Settings/Page.php:645
 msgid ""
 "Provides a fallback if auto-generated critical path CSS is incomplete. "
 "%1$sMore info%2$s"
@@ -1542,22 +1506,18 @@ msgstr ""
 "Oferă o alternativă dacă CSS-ul de cale critic generat automat este "
 "incomplet. %1$sMai multe informații%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:680
+#: inc/Engine/Admin/Settings/Page.php:660
 msgid "Minify JavaScript files"
 msgstr "Minifică fișierele JavaScript"
 
-#: inc/Engine/Admin/Settings/Page.php:681
+#: inc/Engine/Admin/Settings/Page.php:661
 msgid ""
 "Minify JavaScript removes whitespace and comments to reduce the file size."
 msgstr ""
 "Minifică JavaScript înlătură spațiile goale și comentariile pentru a reduce "
 "dimensiunea fișierului."
 
-#: inc/Engine/Admin/Settings/Page.php:696
-msgid "Activate minify JavaScript"
-msgstr "Activează minifică JavaScript"
-
-#: inc/Engine/Admin/Settings/Page.php:701
+#: inc/Engine/Admin/Settings/Page.php:675
 msgid ""
 "Combine JavaScript files <em>(Enable Minify JavaScript files to select)</em>"
 msgstr ""
@@ -1565,7 +1525,7 @@ msgstr ""
 "pentru a selecta)</em>"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:703
+#: inc/Engine/Admin/Settings/Page.php:677
 msgid ""
 "Combine JavaScript files combines your site’s internal, 3rd party and inline"
 " JS reducing HTTP requests. Not recommended if your site uses HTTP/2. "
@@ -1575,8 +1535,7 @@ msgstr ""
 "resursele terțe și JS-ul în-line, reducând cererile HTTP. Nu este recomandat"
 " dacă site-ul tău folosește HTTP/2. %1$sMai multe informații%2$s"
 
-#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:704
+#: inc/Engine/Admin/Settings/Page.php:678
 msgid ""
 "For compatibility and best results, this option is disabled when delay "
 "javascript execution is enabled."
@@ -1584,12 +1543,12 @@ msgstr ""
 "Pentru compatibilitate și rezultate foarte bune, această opțiune este "
 "dezactivată când este activată opțiunea întârzie executarea javascript."
 
-#: inc/Engine/Admin/Settings/Page.php:720
+#: inc/Engine/Admin/Settings/Page.php:694
 msgid "Activate combine JavaScript"
 msgstr "Activează combină JavaScript"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:727
+#: inc/Engine/Admin/Settings/Page.php:701
 msgid ""
 "Specify patterns of inline JavaScript to be excluded from concatenation (one"
 " per line). %1$sMore info%2$s"
@@ -1597,7 +1556,7 @@ msgstr ""
 "Specifică structurile JavaScript în-line care să fie excluse din concatenare"
 " (câte una pe un rând). %1$sMai multe informații%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:744
+#: inc/Engine/Admin/Settings/Page.php:718
 msgid ""
 "Specify URLs of JavaScript files to be excluded from minification and "
 "concatenation (one per line)."
@@ -1605,7 +1564,7 @@ msgstr ""
 "Specifică URL-urile fișierelor JavaScript care să fie excluse din minificare"
 " și concatenare (câte unul pe un rând)."
 
-#: inc/Engine/Admin/Settings/Page.php:745
+#: inc/Engine/Admin/Settings/Page.php:719
 msgid ""
 "<strong>Internal:</strong> The domain part of the URL will be stripped "
 "automatically. Use (.*).js wildcards to exclude all JS files located at a "
@@ -1616,7 +1575,7 @@ msgstr ""
 "fișierele JS localizate pe o anumită cale."
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:747
+#: inc/Engine/Admin/Settings/Page.php:721
 msgid ""
 "<strong>3rd Party:</strong> Use either the full URL path or only the domain "
 "name, to exclude external JS. %1$sMore info%2$s"
@@ -1625,13 +1584,13 @@ msgstr ""
 "calea completă a URL-ului ori fie numai numele de domeniu. %1$sMai multe "
 "informații%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:763
+#: inc/Engine/Admin/Settings/Page.php:737
 #: inc/Engine/Optimization/DeferJS/AdminSubscriber.php:76
 msgid "Load JavaScript deferred"
 msgstr "Încarcă JavaScript întârziat"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:765
+#: inc/Engine/Admin/Settings/Page.php:739
 msgid ""
 "Load JavaScript deferred eliminates render-blocking JS on your site and can "
 "improve load time. %1$sMore info%2$s"
@@ -1640,7 +1599,7 @@ msgstr ""
 "ul tău și poate îmbunătăți timpul de încărcare. %1$sMai multe informații%2$s"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:778
+#: inc/Engine/Admin/Settings/Page.php:752
 msgid ""
 "Specify URLs or keywords of JavaScript files to be excluded from defer (one "
 "per line). %1$sMore info%2$s"
@@ -1649,13 +1608,13 @@ msgstr ""
 "fie excluse de la amânare (câte unul pe fiecare linie). %1$sMai multe "
 "informații%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:794
+#: inc/Engine/Admin/Settings/Page.php:768
 #: inc/Engine/Optimization/DelayJS/Admin/Subscriber.php:210
 msgid "Delay JavaScript execution"
 msgstr "Întârzie executarea JavaScript"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:796
+#: inc/Engine/Admin/Settings/Page.php:770
 msgid ""
 "Improves performance by delaying the loading of JavaScript files until user "
 "interaction (e.g. scroll, click). %1$sMore info%2$s"
@@ -1664,11 +1623,11 @@ msgstr ""
 "până la interacțiunea cu utilizatorul (de exemplu: derulează, dă clic). "
 "%1$sMai multe informații%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:805
+#: inc/Engine/Admin/Settings/Page.php:779
 msgid "One-click exclusions"
 msgstr "Excluderi cu un singur clic"
 
-#: inc/Engine/Admin/Settings/Page.php:806
+#: inc/Engine/Admin/Settings/Page.php:780
 msgid ""
 "When using the Delay JavaScript Execution, you might experience delay "
 "loading elements located in the viewport that need to appear immediately - "
@@ -1678,7 +1637,7 @@ msgstr ""
 "întârziere la încărcarea elementelor situate în spațiul vizibil care ar "
 "trebui să apară imediat - de exemplu, carusel, antet, meniu."
 
-#: inc/Engine/Admin/Settings/Page.php:807
+#: inc/Engine/Admin/Settings/Page.php:781
 msgid ""
 "If you need instant visibility, click below on files that should NOT be "
 "delayed. This selection will help users interact with the elements straight "
@@ -1688,7 +1647,7 @@ msgstr ""
 "care NU vrei să fie întârziate. Această selectare va ajuta utilizatorii să "
 "interacționeze imediat cu aceste elemente."
 
-#: inc/Engine/Admin/Settings/Page.php:824
+#: inc/Engine/Admin/Settings/Page.php:798
 msgid ""
 "Specify URLs or keywords that can identify inline or JavaScript files to be "
 "excluded from delaying execution (one per line)."
@@ -1697,24 +1656,24 @@ msgstr ""
 "line sau JavaScript care să fie excluse din întârzierea executării (câte "
 "unul pe o linie)."
 
-#: inc/Engine/Admin/Settings/Page.php:856
+#: inc/Engine/Admin/Settings/Page.php:830
 msgid "Media"
 msgstr "Media"
 
-#: inc/Engine/Admin/Settings/Page.php:857
+#: inc/Engine/Admin/Settings/Page.php:831
 msgid "LazyLoad, image dimensions"
 msgstr "Încărcare lentă, dimensiuni imagini"
 
-#: inc/Engine/Admin/Settings/Page.php:866
+#: inc/Engine/Admin/Settings/Page.php:840
 msgid "Autoptimize"
 msgstr "Autoptimize"
 
-#: inc/Engine/Admin/Settings/Page.php:920
+#: inc/Engine/Admin/Settings/Page.php:894
 msgid "LazyLoad"
 msgstr "Încărcare lentă"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:923
+#: inc/Engine/Admin/Settings/Page.php:897
 msgid ""
 "It can improve actual and perceived loading time as images, iframes, and "
 "videos will be loaded only as they enter (or about to enter) the viewport "
@@ -1726,7 +1685,7 @@ msgstr ""
 "reduce numărul de cereri HTTP. %1$sMai multe informații%2$s"
 
 #. translators: %1$s = “WP Rocket”, %2$s = a list of plugin names.
-#: inc/Engine/Admin/Settings/Page.php:930
+#: inc/Engine/Admin/Settings/Page.php:904
 msgid ""
 "LazyLoad is currently activated in %2$s. If you want to use WP Rocket’s "
 "LazyLoad, disable this option in %2$s."
@@ -1735,12 +1694,12 @@ msgstr ""
 "încărcarea lentă a imaginilor de la WP Rocket, dezactivează această opțiune "
 "în %2$s."
 
-#: inc/Engine/Admin/Settings/Page.php:933
+#: inc/Engine/Admin/Settings/Page.php:907
 msgid "Image Dimensions"
 msgstr "Dimensiuni imagini"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:936
+#: inc/Engine/Admin/Settings/Page.php:910
 msgid ""
 "Add missing width and height attributes to images. Helps prevent layout "
 "shifts and improve the reading experience for your visitors. %1$sMore "
@@ -1750,12 +1709,12 @@ msgstr ""
 "Împiedică schimbările la aranjamente și îmbunătățește experiența de "
 "vizualizare a vizitatorilor tăi. %1$sMai multe informații%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:955
+#: inc/Engine/Admin/Settings/Page.php:929
 msgid "Enable for images"
 msgstr "Activează pentru imagini"
 
 #. translators: %1$s = “WP Rocket”, %2$s = a list of plugin names.
-#: inc/Engine/Admin/Settings/Page.php:967
+#: inc/Engine/Admin/Settings/Page.php:941
 msgid ""
 "LazyLoad for images is currently activated in %2$s. If you want to use "
 "%1$s’s LazyLoad, disable this option in %2$s."
@@ -1764,27 +1723,27 @@ msgstr ""
 "folosești încărcarea lentă a imaginilor de la %1$s, dezactivează această "
 "opțiune în %2$s."
 
-#: inc/Engine/Admin/Settings/Page.php:975
+#: inc/Engine/Admin/Settings/Page.php:949
 msgid "Enable for CSS background images"
 msgstr "Activează pentru imagini de fundal CSS"
 
-#: inc/Engine/Admin/Settings/Page.php:990
+#: inc/Engine/Admin/Settings/Page.php:964
 msgid "Enable for iframes and videos"
 msgstr "Activează pentru iframe-uri și videouri"
 
-#: inc/Engine/Admin/Settings/Page.php:1005
+#: inc/Engine/Admin/Settings/Page.php:979
 msgid "Replace YouTube iframe with preview image"
 msgstr "Înlocuiește iframe-ul YouTube cu imaginea de previzualizare"
 
 #. translators: %1$s = “WP Rocket”, %2$s = a list of plugin or themes names.
-#: inc/Engine/Admin/Settings/Page.php:1007
+#: inc/Engine/Admin/Settings/Page.php:981
 msgid "Replace YouTube iframe with preview image is not compatible with %2$s."
 msgstr ""
 "Înlocuiește iframe-ul YouTube cu imaginea de previzualizare nu este o "
 "acțiune compatibilă cu %2$s."
 
 #. translators: %1$s = “WP Rocket”, %2$s = a list of plugin or themes names.
-#: inc/Engine/Admin/Settings/Page.php:1007
+#: inc/Engine/Admin/Settings/Page.php:981
 msgid ""
 "This can significantly improve your loading time if you have a lot of "
 "YouTube videos on a page."
@@ -1792,12 +1751,12 @@ msgstr ""
 "Îți poate îmbunătăți semnificativ timpul de încărcare dacă ai o mulțime de "
 "videouri YouTube pe o pagină."
 
-#: inc/Engine/Admin/Settings/Page.php:1022
+#: inc/Engine/Admin/Settings/Page.php:996
 msgid "Excluded images or iframes"
 msgstr "Imagini sau iframe-uri excluse"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:1024
+#: inc/Engine/Admin/Settings/Page.php:998
 msgid ""
 "Specify keywords (e.g. image filename, CSS filename, CSS class, domain) from"
 " the image or iframe code to be excluded (one per line). %1$sMore info%2$s"
@@ -1806,20 +1765,20 @@ msgstr ""
 " clasă CSS, domeniu) din imagine sau codurile iframe care trebuie excluse "
 "(câte unul pe un rând). %1$sMai multe informații%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:1032
+#: inc/Engine/Admin/Settings/Page.php:1006
 msgid "Add missing image dimensions"
 msgstr "Adaugă dimensiunile care lipsesc pentru imagini"
 
-#: inc/Engine/Admin/Settings/Page.php:1052
+#: inc/Engine/Admin/Settings/Page.php:1026
 msgid "Generate cache files, preload fonts"
 msgstr "Generează fișiere cache, pre-încarcă fonturi"
 
-#: inc/Engine/Admin/Settings/Page.php:1064
+#: inc/Engine/Admin/Settings/Page.php:1038
 msgid "Preload Cache"
 msgstr "Pre-încarcă cache"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:1067
+#: inc/Engine/Admin/Settings/Page.php:1041
 msgid ""
 "When you enable preloading WP Rocket will automatically detect your sitemaps"
 " and save all URLs to the database. The plugin will make sure that your "
@@ -1829,12 +1788,12 @@ msgstr ""
 " salva toate URL-urile în baza de date. Modulul asigură că cache-ul este "
 "mereu preîncărcat."
 
-#: inc/Engine/Admin/Settings/Page.php:1075
+#: inc/Engine/Admin/Settings/Page.php:1049
 msgid "Preload Links"
 msgstr "Pre-încarcă legături"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:1078
+#: inc/Engine/Admin/Settings/Page.php:1052
 msgid ""
 "Link preloading improves the perceived load time by downloading a page when "
 "a user hovers over the link. %1$sMore info%2$s"
@@ -1843,11 +1802,11 @@ msgstr ""
 "descărcarea unei pagini atunci când un utilizator trece peste legătură. "
 "%1$sMai multe informații%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:1086
+#: inc/Engine/Admin/Settings/Page.php:1060
 msgid "Prefetch DNS Requests"
 msgstr "Pre-aduce cereri DNS"
 
-#: inc/Engine/Admin/Settings/Page.php:1088
+#: inc/Engine/Admin/Settings/Page.php:1062
 msgid ""
 "DNS prefetching can make external files load faster, especially on mobile "
 "networks"
@@ -1855,12 +1814,12 @@ msgstr ""
 "Pre-aducerea DNS poate face ca fișierele externe să se încarce mai rapid, în"
 " special în rețelele pentru mobil"
 
-#: inc/Engine/Admin/Settings/Page.php:1093
+#: inc/Engine/Admin/Settings/Page.php:1067
 msgid "Preload Fonts"
 msgstr "Pre-încarcă fonturi"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:1096
+#: inc/Engine/Admin/Settings/Page.php:1070
 msgid ""
 "Improves performance by helping browsers discover fonts in CSS files. "
 "%1$sMore info%2$s"
@@ -1868,16 +1827,16 @@ msgstr ""
 "Îmbunătățește performanța ajutând navigatoarele să descopere fonturi în "
 "fișierele CSS. %1$sMai multe informații%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:1110
+#: inc/Engine/Admin/Settings/Page.php:1084
 msgid "Activate Preloading"
 msgstr "Activează pre-încărcarea"
 
-#: inc/Engine/Admin/Settings/Page.php:1121
+#: inc/Engine/Admin/Settings/Page.php:1095
 msgid "Exclude URLs"
 msgstr "Exclude URL-urile"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:1126
+#: inc/Engine/Admin/Settings/Page.php:1100
 msgid ""
 "Specify URLs to be excluded from the preload feature (one per line). "
 "%1$sMore info%2$s"
@@ -1885,11 +1844,11 @@ msgstr ""
 "Specifică URL-urile care să fie excluse din funcționalitatea preîncărcare "
 "(câte unul pe un rând). %1$sMai multe informații%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:1137
+#: inc/Engine/Admin/Settings/Page.php:1111
 msgid "URLs to prefetch"
 msgstr "URL-uri de pre-adus"
 
-#: inc/Engine/Admin/Settings/Page.php:1138
+#: inc/Engine/Admin/Settings/Page.php:1112
 msgid ""
 "Specify external hosts to be prefetched (no <code>http:</code>, one per "
 "line)"
@@ -1897,11 +1856,11 @@ msgstr ""
 "Specifică gazdele externe care să fie pre-aduse (fără <code>http:</code>, "
 "una pe linie)"
 
-#: inc/Engine/Admin/Settings/Page.php:1147
+#: inc/Engine/Admin/Settings/Page.php:1121
 msgid "Fonts to preload"
 msgstr "Fonturi pentru pre-încărcat"
 
-#: inc/Engine/Admin/Settings/Page.php:1148
+#: inc/Engine/Admin/Settings/Page.php:1122
 msgid ""
 "Specify urls of the font files to be preloaded (one per line). Fonts must be"
 " hosted on your own domain, or the domain you have specified on the CDN tab."
@@ -1910,7 +1869,7 @@ msgstr ""
 "unul pe o linie). Fonturile trebuie să fie găzduite pe propriu domeniu sau "
 "pe domeniul specificat în fila CDN."
 
-#: inc/Engine/Admin/Settings/Page.php:1149
+#: inc/Engine/Admin/Settings/Page.php:1123
 msgid ""
 "The domain part of the URL will be stripped automatically.<br/>Allowed font "
 "extensions: otf, ttf, svg, woff, woff2."
@@ -1918,53 +1877,53 @@ msgstr ""
 "Partea din URL care conține domeniul va fi eliminată automat.<br/>Extensii "
 "de font permise: otf, ttf, svg, woff, woff2."
 
-#: inc/Engine/Admin/Settings/Page.php:1158
+#: inc/Engine/Admin/Settings/Page.php:1132
 msgid "Enable link preloading"
 msgstr "Activează pre-încărcarea legăturilor"
 
-#: inc/Engine/Admin/Settings/Page.php:1177
+#: inc/Engine/Admin/Settings/Page.php:1151
 msgid "Advanced Rules"
 msgstr "Reguli avansate"
 
-#: inc/Engine/Admin/Settings/Page.php:1178
+#: inc/Engine/Admin/Settings/Page.php:1152
 msgid "Fine-tune cache rules"
 msgstr "Ajustează fin regulile cache"
 
-#: inc/Engine/Admin/Settings/Page.php:1191
+#: inc/Engine/Admin/Settings/Page.php:1165
 msgid ""
 "Sensitive pages like custom login/logout URLs should be excluded from cache."
 msgstr ""
 "Paginile sensibile, cum ar fi URL-urile personalizate de "
 "autentificare/dezautentificare, ar trebui să fie excluse din cache."
 
-#: inc/Engine/Admin/Settings/Page.php:1194
+#: inc/Engine/Admin/Settings/Page.php:1168
 msgctxt "plugin name"
 msgid "WooCommerce"
 msgstr "WooCommerce"
 
-#: inc/Engine/Admin/Settings/Page.php:1196
+#: inc/Engine/Admin/Settings/Page.php:1170
 msgctxt "plugin name"
 msgid "Easy Digital Downloads"
 msgstr "Easy Digital Downloads"
 
-#: inc/Engine/Admin/Settings/Page.php:1198
+#: inc/Engine/Admin/Settings/Page.php:1172
 msgctxt "plugin name"
 msgid "iThemes Exchange"
 msgstr "iThemes Exchange"
 
-#: inc/Engine/Admin/Settings/Page.php:1200
+#: inc/Engine/Admin/Settings/Page.php:1174
 msgctxt "plugin name"
 msgid "Jigoshop"
 msgstr "Jigoshop"
 
-#: inc/Engine/Admin/Settings/Page.php:1202
+#: inc/Engine/Admin/Settings/Page.php:1176
 msgctxt "plugin name"
 msgid "WP-Shop"
 msgstr "WP-Shop"
 
 #. translators: %1$s = opening <a> tag, %2$s = plugin name, %3$s closing </a>
 #. tag.
-#: inc/Engine/Admin/Settings/Page.php:1208
+#: inc/Engine/Admin/Settings/Page.php:1182
 msgid ""
 "<br>Cart, checkout and \"my account\" pages set in "
 "<strong>%1$s%2$s%3$s</strong> will be detected and never cached by default."
@@ -1973,12 +1932,12 @@ msgstr ""
 "în <strong>%1$s%2$s%3$s</strong> vor fi detectate și implicit nu sunt "
 "memorate niciodată în cache."
 
-#: inc/Engine/Admin/Settings/Page.php:1218
+#: inc/Engine/Admin/Settings/Page.php:1192
 msgid "Cache Lifespan"
 msgstr "Durată de viață cache"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:1221
+#: inc/Engine/Admin/Settings/Page.php:1195
 msgid ""
 "Cache files older than the specified lifespan will be deleted.<br>Enable "
 "%1$spreloading%2$s for the cache to be rebuilt automatically after lifespan "
@@ -1988,16 +1947,16 @@ msgstr ""
 "<br>Activează %1$spre-încărcarea%2$s pentru cache-ul care să fie reconstruit"
 " automat după expirarea duratei de viață."
 
-#: inc/Engine/Admin/Settings/Page.php:1237
+#: inc/Engine/Admin/Settings/Page.php:1211
 msgid "Never Cache Cookies"
 msgstr "Nu memora niciodată în cache cookie-uri"
 
-#: inc/Engine/Admin/Settings/Page.php:1255
+#: inc/Engine/Admin/Settings/Page.php:1229
 msgid "Cache Query String(s)"
 msgstr "Memorează în cache șirul (șirurile) de interogare"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:1258
+#: inc/Engine/Admin/Settings/Page.php:1232
 msgid ""
 "%1$sCache for query strings%2$s enables you to force caching for specific "
 "GET parameters."
@@ -2005,14 +1964,14 @@ msgstr ""
 "%1$sCache pentru șiruri de interogare%2$s îți permite să forțezi cache-ul "
 "pentru parametrii GET specifici."
 
-#: inc/Engine/Admin/Settings/Page.php:1269
+#: inc/Engine/Admin/Settings/Page.php:1243
 msgid ""
 "Specify time after which the global cache is cleared<br>(0 = unlimited )"
 msgstr ""
 "Specifică timpul după care cache-ul global este șters<br>(0 = nelimitat)"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:1271
+#: inc/Engine/Admin/Settings/Page.php:1245
 msgid ""
 "Reduce lifespan to 10 hours or less if you notice issues that seem to appear"
 " periodically. %1$sWhy?%2$s"
@@ -2020,27 +1979,27 @@ msgstr ""
 "Reduci durata de viață la 10 ore sau mai puțin dacă remarci probleme care "
 "par să apară periodic. %1$sDe ce?%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:1277
-#: inc/Engine/License/views/promo-banner.php:30
-#: inc/Engine/License/views/renewal-soon-banner.php:13
+#: inc/Engine/Admin/Settings/Page.php:1251
+#: inc/Engine/License/views/promo-banner.php:32
+#: inc/Engine/License/views/renewal-soon-banner.php:15
 msgid "Hours"
 msgstr "Ore"
 
-#: inc/Engine/Admin/Settings/Page.php:1278
-#: inc/Engine/License/views/promo-banner.php:29
-#: inc/Engine/License/views/renewal-soon-banner.php:12
+#: inc/Engine/Admin/Settings/Page.php:1252
+#: inc/Engine/License/views/promo-banner.php:31
+#: inc/Engine/License/views/renewal-soon-banner.php:14
 msgid "Days"
 msgstr "Zile"
 
-#: inc/Engine/Admin/Settings/Page.php:1283
+#: inc/Engine/Admin/Settings/Page.php:1257
 msgid ""
 "Specify URLs of pages or posts that should never be cached (one per line)"
 msgstr ""
 "Specifică URL-urile paginilor sau articolelor care nu ar trebui să fie "
 "niciodată memorate în cache (unul pe linie)"
 
-#: inc/Engine/Admin/Settings/Page.php:1284
-#: inc/Engine/Admin/Settings/Page.php:1312
+#: inc/Engine/Admin/Settings/Page.php:1258
+#: inc/Engine/Admin/Settings/Page.php:1286
 msgid ""
 "The domain part of the URL will be stripped automatically.<br>Use (.*) "
 "wildcards to address multiple URLs under a given path."
@@ -2049,7 +2008,7 @@ msgstr ""
 "metacaracterele (.*) pentru a scrie adresa mai multor URL-uri pentru o cale "
 "dată."
 
-#: inc/Engine/Admin/Settings/Page.php:1293
+#: inc/Engine/Admin/Settings/Page.php:1267
 msgid ""
 "Specify full or partial IDs of cookies that, when set in the visitor's "
 "browser, should prevent a page from getting cached (one per line)"
@@ -2058,18 +2017,18 @@ msgstr ""
 " sunt setate în navigatorul vizitatorilor, ar trebui să împiedice păstrarea "
 "în memoria cache a unei pagini (câte unul pe o linie)"
 
-#: inc/Engine/Admin/Settings/Page.php:1301
+#: inc/Engine/Admin/Settings/Page.php:1275
 msgid ""
 "Specify user agent strings that should never see cached pages (one per line)"
 msgstr ""
 "Specifică șirurile de agenți utilizator care nu ar trebui să vadă niciodată "
 "pagini memorate în cache (unul pe linie)"
 
-#: inc/Engine/Admin/Settings/Page.php:1302
+#: inc/Engine/Admin/Settings/Page.php:1276
 msgid "Use (.*) wildcards to detect parts of UA strings."
 msgstr "Folosește metacaractere (.*) pentru a detecta părți din șirurile UA."
 
-#: inc/Engine/Admin/Settings/Page.php:1311
+#: inc/Engine/Admin/Settings/Page.php:1285
 msgid ""
 "Specify URLs you always want purged from cache whenever you update any post "
 "or page (one per line)"
@@ -2077,20 +2036,20 @@ msgstr ""
 "Specifică URL-urile care vrei să fie curățate întotdeauna din cache ori de "
 "câte ori actualizezi un articol sau o pagină (unul pe linie)"
 
-#: inc/Engine/Admin/Settings/Page.php:1320
+#: inc/Engine/Admin/Settings/Page.php:1294
 msgid "Specify query strings for caching (one per line)"
 msgstr ""
 "Specifică șirurile de interogare pentru memorare în cache (unul pe linie)"
 
-#: inc/Engine/Admin/Settings/Page.php:1346
+#: inc/Engine/Admin/Settings/Page.php:1320
 msgid "Optimize, reduce bloat"
 msgstr "Optimizează, reduce dimensiunea"
 
-#: inc/Engine/Admin/Settings/Page.php:1353
+#: inc/Engine/Admin/Settings/Page.php:1327
 msgid "Post Cleanup"
 msgstr "Curățare articole"
 
-#: inc/Engine/Admin/Settings/Page.php:1355
+#: inc/Engine/Admin/Settings/Page.php:1329
 msgid ""
 "Post revisions and drafts will be permanently deleted. Do not use this "
 "option if you need to retain revisions or drafts."
@@ -2098,20 +2057,20 @@ msgstr ""
 "Reviziile și ciornele articolelor vor fi șterse definitiv. Nu folosi această"
 " opțiune dacă trebuie să păstrezi reviziile sau ciornele."
 
-#: inc/Engine/Admin/Settings/Page.php:1360
+#: inc/Engine/Admin/Settings/Page.php:1334
 msgid "Comments Cleanup"
 msgstr "Curățare comentarii"
 
-#: inc/Engine/Admin/Settings/Page.php:1362
+#: inc/Engine/Admin/Settings/Page.php:1336
 msgid "Spam and trashed comments will be permanently deleted."
 msgstr ""
 "Comentariile spam și comentariile aruncate la gunoi vor fi șterse definitiv."
 
-#: inc/Engine/Admin/Settings/Page.php:1366
+#: inc/Engine/Admin/Settings/Page.php:1340
 msgid "Transients Cleanup"
 msgstr "Curățare tranzienți"
 
-#: inc/Engine/Admin/Settings/Page.php:1368
+#: inc/Engine/Admin/Settings/Page.php:1342
 msgid ""
 "Transients are temporary options; they are safe to remove. They will be "
 "automatically regenerated as your plugins require them."
@@ -2119,21 +2078,21 @@ msgstr ""
 "Tranzienții sunt opțiuni temporare; pot fi înlăturați fără probleme. Vor fi "
 "regenerați automat pe măsură ce modulele tale îi cer."
 
-#: inc/Engine/Admin/Settings/Page.php:1372
+#: inc/Engine/Admin/Settings/Page.php:1346
 msgid "Database Cleanup"
 msgstr "Curățare bază de date"
 
-#: inc/Engine/Admin/Settings/Page.php:1374
+#: inc/Engine/Admin/Settings/Page.php:1348
 msgid "Reduces overhead of database tables"
 msgstr "Reduce costul de funcționare a tabelelor din baza de date"
 
-#: inc/Engine/Admin/Settings/Page.php:1378
+#: inc/Engine/Admin/Settings/Page.php:1352
 msgid "Automatic Cleanup"
 msgstr "Ștergere automată"
 
 #. translators: %s is the number of revisions found in the database. It's a
 #. formatted number, don't use %d.
-#: inc/Engine/Admin/Settings/Page.php:1391
+#: inc/Engine/Admin/Settings/Page.php:1365
 msgid "%s revision in your database."
 msgid_plural "%s revisions in your database."
 msgstr[0] "%s revizie în baza ta de date."
@@ -2142,7 +2101,7 @@ msgstr[2] "%s de revizii în baza ta de date."
 
 #. translators: %s is the number of revisions found in the database. It's a
 #. formatted number, don't use %d.
-#: inc/Engine/Admin/Settings/Page.php:1401
+#: inc/Engine/Admin/Settings/Page.php:1375
 msgid "%s draft in your database."
 msgid_plural "%s drafts in your database."
 msgstr[0] "%s ciornă în baza ta de date."
@@ -2151,7 +2110,7 @@ msgstr[2] "%s de ciorne în baza ta de date."
 
 #. translators: %s is the number of revisions found in the database. It's a
 #. formatted number, don't use %d.
-#: inc/Engine/Admin/Settings/Page.php:1411
+#: inc/Engine/Admin/Settings/Page.php:1385
 msgid "%s trashed post in your database."
 msgid_plural "%s trashed posts in your database."
 msgstr[0] "%s articol aruncat la gunoi în baza ta de date."
@@ -2160,7 +2119,7 @@ msgstr[2] "%s de articole aruncate la gunoi în baza ta de date."
 
 #. translators: %s is the number of revisions found in the database. It's a
 #. formatted number, don't use %d.
-#: inc/Engine/Admin/Settings/Page.php:1421
+#: inc/Engine/Admin/Settings/Page.php:1395
 msgid "%s spam comment in your database."
 msgid_plural "%s spam comments in your database."
 msgstr[0] "%s comentariu spam în baza ta de date."
@@ -2169,64 +2128,64 @@ msgstr[2] "%s de comentarii spam în baza ta de date."
 
 #. translators: %s is the number of revisions found in the database. It's a
 #. formatted number, don't use %d.
-#: inc/Engine/Admin/Settings/Page.php:1431
+#: inc/Engine/Admin/Settings/Page.php:1405
 msgid "%s trashed comment in your database."
 msgid_plural "%s trashed comments in your database."
 msgstr[0] "%s comentariu aruncat la gunoi în baza ta de date."
 msgstr[1] "%s comentarii aruncate la gunoi în baza ta de date."
 msgstr[2] "%s de comentarii aruncate la gunoi în baza ta de date."
 
-#: inc/Engine/Admin/Settings/Page.php:1439
+#: inc/Engine/Admin/Settings/Page.php:1413
 msgid "All transients"
 msgstr "Toți tranzienții"
 
 #. translators: %s is the number of revisions found in the database. It's a
 #. formatted number, don't use %d.
-#: inc/Engine/Admin/Settings/Page.php:1441
+#: inc/Engine/Admin/Settings/Page.php:1415
 msgid "%s transient in your database."
 msgid_plural "%s transients in your database."
 msgstr[0] "%s tranzient în baza ta de date."
 msgstr[1] "%s tranzienți în baza ta de date."
 msgstr[2] "%s de tranzienți în baza ta de date."
 
-#: inc/Engine/Admin/Settings/Page.php:1449
+#: inc/Engine/Admin/Settings/Page.php:1423
 msgid "Optimize Tables"
 msgstr "Optimizează tabelele"
 
 #. translators: %s is the number of revisions found in the database. It's a
 #. formatted number, don't use %d.
-#: inc/Engine/Admin/Settings/Page.php:1451
+#: inc/Engine/Admin/Settings/Page.php:1425
 msgid "%s table to optimize in your database."
 msgid_plural "%s tables to optimize in your database."
 msgstr[0] "%s tabel de optimizat în baza ta de date."
 msgstr[1] "%s tabele de optimizat în baza ta de date."
 msgstr[2] "%s de tabele de optimizat în baza ta de date."
 
-#: inc/Engine/Admin/Settings/Page.php:1462
+#: inc/Engine/Admin/Settings/Page.php:1436
 msgid "Schedule Automatic Cleanup"
 msgstr "Programează ștergerea automată"
 
-#: inc/Engine/Admin/Settings/Page.php:1474
+#: inc/Engine/Admin/Settings/Page.php:1448
 msgid "Frequency"
 msgstr "Frecvență"
 
-#: inc/Engine/Admin/Settings/Page.php:1482
+#: inc/Engine/Admin/Settings/Page.php:1456
 msgid "Daily"
 msgstr "Zilnic"
 
-#: inc/Engine/Admin/Settings/Page.php:1483
+#: inc/Engine/Admin/Settings/Page.php:1457
 msgid "Weekly"
 msgstr "Săptămânal"
 
-#: inc/Engine/Admin/Settings/Page.php:1484
+#: inc/Engine/Admin/Settings/Page.php:1458
 msgid "Monthly"
 msgstr "Lunar"
 
-#: inc/Engine/Admin/Settings/Page.php:1501
+#: inc/Engine/Admin/Settings/Page.php:1475
 msgid "Integrate your CDN"
 msgstr "Integrează-ți CDN-ul"
 
-#: inc/Engine/Admin/Settings/Page.php:1513
+#: inc/Engine/Admin/Settings/Page.php:1487
 msgid ""
 "All URLs of static files (CSS, JS, images) will be rewritten to the CNAME(s)"
 " you provide."
@@ -2235,7 +2194,7 @@ msgstr ""
 "CNAME-ul furnizat (CNAME-urile furnizate)."
 
 #. translators: %1$s = opening link tag, %2$s = closing link tag.
-#: inc/Engine/Admin/Settings/Page.php:1515
+#: inc/Engine/Admin/Settings/Page.php:1489
 msgid ""
 "Not required for services like Cloudflare and Sucuri. Please see our "
 "available %1$sAdd-ons%2$s."
@@ -2245,7 +2204,7 @@ msgstr ""
 
 #. translators: %1$s = opening em tag, %2$l = list of add-on name(s), %3$s =
 #. closing em tag.
-#: inc/Engine/Admin/Settings/Page.php:1561
+#: inc/Engine/Admin/Settings/Page.php:1533
 msgid ""
 "%1$s%2$l Add-on%3$s is currently enabled. Configuration of the CDN settings "
 "is not required for %2$l to work on your site."
@@ -2262,28 +2221,28 @@ msgstr[2] ""
 "În prezent, sunt activate %1$s%2$l de suplimente%3$s. Configurarea setărilor"
 " CDN nu este necesară pentru ca %2$l să funcționeze pe site-ul tău."
 
-#: inc/Engine/Admin/Settings/Page.php:1587
+#: inc/Engine/Admin/Settings/Page.php:1559
 msgid "Enable Content Delivery Network"
 msgstr "Activează rețeaua de livrare a conținutului"
 
-#: inc/Engine/Admin/Settings/Page.php:1596
-#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:159
+#: inc/Engine/Admin/Settings/Page.php:1568
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:162
 msgid "CDN CNAME(s)"
 msgstr "CNAME (CNAME-uri) CDN"
 
-#: inc/Engine/Admin/Settings/Page.php:1597
-#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:160
+#: inc/Engine/Admin/Settings/Page.php:1569
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:163
 msgid "Specify the CNAME(s) below"
 msgstr "Specifică CNAME-ul (CNAME-urile) mai jos"
 
-#: inc/Engine/Admin/Settings/Page.php:1604
+#: inc/Engine/Admin/Settings/Page.php:1576
 msgid ""
 "Specify URL(s) of files that should not get served via CDN (one per line)."
 msgstr ""
 "Specifică URL-urile fișierelor care nu ar trebui să fie servite prin CDN "
 "(unul pe linie)."
 
-#: inc/Engine/Admin/Settings/Page.php:1605
+#: inc/Engine/Admin/Settings/Page.php:1577
 msgid ""
 "The domain part of the URL will be stripped automatically.<br>Use (.*) "
 "wildcards to exclude all files of a given file type located at a specific "
@@ -2293,16 +2252,16 @@ msgstr ""
 "metacaracterele (.*) pentru a exclude toate fișierele unui tip de fișier dat"
 " localizate pe o anumită cale."
 
-#: inc/Engine/Admin/Settings/Page.php:1628
-#: inc/Engine/Admin/Settings/Page.php:1636
+#: inc/Engine/Admin/Settings/Page.php:1600
+#: inc/Engine/Admin/Settings/Page.php:1608
 msgid "Heartbeat"
 msgstr "Heartbeat"
 
-#: inc/Engine/Admin/Settings/Page.php:1629
+#: inc/Engine/Admin/Settings/Page.php:1601
 msgid "Control WordPress Heartbeat API"
 msgstr "Controlează WordPress Heartbeat API"
 
-#: inc/Engine/Admin/Settings/Page.php:1637
+#: inc/Engine/Admin/Settings/Page.php:1609
 msgid ""
 "Reducing or disabling the Heartbeat API’s activity can help save some of "
 "your server’s resources."
@@ -2310,11 +2269,11 @@ msgstr ""
 "Reducând sau dezactivând activitățile API-ului Heartbeat te poate ajuta să "
 "nu mai folosești o parte din resursele serverului tău."
 
-#: inc/Engine/Admin/Settings/Page.php:1643
+#: inc/Engine/Admin/Settings/Page.php:1615
 msgid "Reduce or disable Heartbeat activity"
 msgstr "Reduce sau dezactivează activitățile Heartbeat"
 
-#: inc/Engine/Admin/Settings/Page.php:1644
+#: inc/Engine/Admin/Settings/Page.php:1616
 msgid ""
 "Reducing activity will change Heartbeat frequency from one hit each minute "
 "to one hit every 2 minutes."
@@ -2322,55 +2281,55 @@ msgstr ""
 "Reducerea activității va modifica frecvența Heartbeat de la o vizită în "
 "fiecare minut la o vizită la fiecare 2 minute."
 
-#: inc/Engine/Admin/Settings/Page.php:1644
+#: inc/Engine/Admin/Settings/Page.php:1616
 msgid ""
 "Disabling Heartbeat entirely may break plugins and themes using this API."
 msgstr ""
 "Dezactivarea completă a Heartbeat poate întrerupe funcționarea modulelor și "
 "temelor când de folosește acest API."
 
-#: inc/Engine/Admin/Settings/Page.php:1658
+#: inc/Engine/Admin/Settings/Page.php:1630
 msgid "Do not limit"
 msgstr "Nu limita"
 
-#: inc/Engine/Admin/Settings/Page.php:1659
+#: inc/Engine/Admin/Settings/Page.php:1631
 msgid "Reduce activity"
 msgstr "Reduce activitatea"
 
-#: inc/Engine/Admin/Settings/Page.php:1660
+#: inc/Engine/Admin/Settings/Page.php:1632
 msgid "Disable"
 msgstr "Dezactivează"
 
-#: inc/Engine/Admin/Settings/Page.php:1668
+#: inc/Engine/Admin/Settings/Page.php:1640
 msgid "Control Heartbeat"
 msgstr "Controlează Heartbeat"
 
-#: inc/Engine/Admin/Settings/Page.php:1677
+#: inc/Engine/Admin/Settings/Page.php:1649
 msgid "Behavior in backend"
 msgstr "Comportament în partea administrativă a sitului"
 
-#: inc/Engine/Admin/Settings/Page.php:1684
+#: inc/Engine/Admin/Settings/Page.php:1656
 msgid "Behavior in post editor"
 msgstr "Comportament în editor de articole"
 
-#: inc/Engine/Admin/Settings/Page.php:1690
+#: inc/Engine/Admin/Settings/Page.php:1662
 msgid "Behavior in frontend"
 msgstr "Comportament în partea din față a sitului"
 
-#: inc/Engine/Admin/Settings/Page.php:1709
+#: inc/Engine/Admin/Settings/Page.php:1681
 #: views/settings/page-sections/tutorials.php:39
 msgid "Add-ons"
 msgstr "Suplimente"
 
-#: inc/Engine/Admin/Settings/Page.php:1710
+#: inc/Engine/Admin/Settings/Page.php:1682
 msgid "Add more features"
 msgstr "Adaugă mai multe funcționalități"
 
-#: inc/Engine/Admin/Settings/Page.php:1717
+#: inc/Engine/Admin/Settings/Page.php:1689
 msgid "One-click Rocket Add-ons"
 msgstr "Suplimente Rocket cu un singur clic"
 
-#: inc/Engine/Admin/Settings/Page.php:1718
+#: inc/Engine/Admin/Settings/Page.php:1690
 msgid ""
 "One-Click Add-ons are features extending available options without "
 "configuration needed. Switch the option \"on\" to enable from this screen."
@@ -2379,21 +2338,21 @@ msgstr ""
 "disponibile fără a fi necesară o configurare. Comută opțiunea pe „pornit” "
 "pentru a le activa din acest ecran."
 
-#: inc/Engine/Admin/Settings/Page.php:1728
+#: inc/Engine/Admin/Settings/Page.php:1700
 msgid "Rocket Add-ons"
 msgstr "Suplimente Rocket"
 
-#: inc/Engine/Admin/Settings/Page.php:1729
+#: inc/Engine/Admin/Settings/Page.php:1701
 msgid "Rocket Add-ons are complementary features extending available options."
 msgstr ""
 "Suplimentele Rocket sunt funcționalități complementare care extind opțiunile"
 " disponibile."
 
-#: inc/Engine/Admin/Settings/Page.php:1740
+#: inc/Engine/Admin/Settings/Page.php:1712
 msgid "User Cache"
 msgstr "Cache utilizatori"
 
-#: inc/Engine/Admin/Settings/Page.php:1746
+#: inc/Engine/Admin/Settings/Page.php:1718
 msgid ""
 "If you need to create a dedicated set of cache files for each logged-in "
 "WordPress user, you must activate this add-on."
@@ -2402,7 +2361,7 @@ msgstr ""
 "utilizator WordPress autentificat, trebuie să activezi acest supliment."
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:1748
+#: inc/Engine/Admin/Settings/Page.php:1720
 msgid ""
 "User cache is great when you have user-specific or restricted content on "
 "your website.<br>%1$sLearn more%2$s"
@@ -2411,16 +2370,16 @@ msgstr ""
 "pentru utilizatori sau un conținut restricționat pe site.<br>%1$sÎnvață mai "
 "mult%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:1761
-#: inc/Engine/Admin/Settings/Page.php:1930
+#: inc/Engine/Admin/Settings/Page.php:1733
+#: inc/Engine/Admin/Settings/Page.php:1902
 msgid "Cloudflare"
 msgstr "Cloudflare"
 
-#: inc/Engine/Admin/Settings/Page.php:1767
+#: inc/Engine/Admin/Settings/Page.php:1739
 msgid "Integrate your Cloudflare account with this add-on."
 msgstr "Integrează-ți contul Cloudflare cu acest supliment."
 
-#: inc/Engine/Admin/Settings/Page.php:1768
+#: inc/Engine/Admin/Settings/Page.php:1740
 msgid ""
 "Provide your account email, global API key, and domain to use options such "
 "as clearing the Cloudflare cache and enabling optimal settings with WP "
@@ -2431,7 +2390,7 @@ msgstr ""
 "setărilor optime cu WP Rocket."
 
 #. translators: %1$s = opening span tag, %2$s = closing span tag.
-#: inc/Engine/Admin/Settings/Page.php:1771
+#: inc/Engine/Admin/Settings/Page.php:1743
 msgid ""
 "%1$sPlanning on using Automatic Platform Optimization (APO)?%2$s Just "
 "activate the official Cloudflare plugin and configure it. WP Rocket will "
@@ -2441,17 +2400,17 @@ msgstr ""
 "activează modulul oficial Cloudflare și configurează-l. WP Rocket va activa "
 "automat compatibilitatea."
 
-#: inc/Engine/Admin/Settings/Page.php:1819
+#: inc/Engine/Admin/Settings/Page.php:1791
 msgid "Varnish"
 msgstr "Varnish"
 
-#: inc/Engine/Admin/Settings/Page.php:1825
+#: inc/Engine/Admin/Settings/Page.php:1797
 msgid "If Varnish runs on your server, you must activate this add-on."
 msgstr ""
 "Dacă Varnish rulează pe serverul tău, trebuie să activezi acest supliment."
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:1827
+#: inc/Engine/Admin/Settings/Page.php:1799
 msgid ""
 "Varnish cache will be purged each time WP Rocket clears its cache to ensure "
 "content is always up-to-date.<br>%1$sLearn more%2$s"
@@ -2460,16 +2419,16 @@ msgstr ""
 "cache-ul, astfel conținutul este întotdeauna actualizat.<br>%1$sAflă mai "
 "mult%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:1862
+#: inc/Engine/Admin/Settings/Page.php:1834
 msgid "WebP Compatibility"
 msgstr "Compatibilitate cu WebP"
 
-#: inc/Engine/Admin/Settings/Page.php:1868
+#: inc/Engine/Admin/Settings/Page.php:1840
 msgid "Improve browser compatibility for WebP images."
 msgstr "Îmbunătățește compatibilitatea navigatoarelor cu imaginile WebP."
 
 #. translators: %1$s and %3$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:1872
+#: inc/Engine/Admin/Settings/Page.php:1844
 msgid ""
 "Enable this option if you would like WP Rocket to serve WebP images to "
 "compatible browsers. Please note that WP Rocket cannot create WebP images "
@@ -2481,11 +2440,11 @@ msgstr ""
 " pentru tine. Pentru a crea imagini WebP recomandăm %1$sImagify%2$s. %3$sMai"
 " multe informații%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:1892
+#: inc/Engine/Admin/Settings/Page.php:1864
 msgid "Clear the Sucuri cache when WP Rocket’s cache is cleared."
 msgstr "Șterge cache-ul Sucuri când cache-ul WP Rocket este șters."
 
-#: inc/Engine/Admin/Settings/Page.php:1895
+#: inc/Engine/Admin/Settings/Page.php:1867
 msgid ""
 "Provide your API key to clear the Sucuri cache when WP Rocket’s cache is "
 "cleared."
@@ -2493,49 +2452,49 @@ msgstr ""
 "Furnizează cheia ta API pentru a șterge cache-ul Sucuri când cache-ul WP "
 "Rocket este șters."
 
-#: inc/Engine/Admin/Settings/Page.php:1903
-#: inc/Engine/Admin/Settings/Page.php:2047
+#: inc/Engine/Admin/Settings/Page.php:1875
+#: inc/Engine/Admin/Settings/Page.php:2019
 msgid "Sucuri"
 msgstr "Sucuri"
 
-#: inc/Engine/Admin/Settings/Page.php:1909
+#: inc/Engine/Admin/Settings/Page.php:1881
 msgid "Synchronize Sucuri cache with this add-on."
 msgstr "Sincronizează cache-ul Sucuri cu acest supliment."
 
-#: inc/Engine/Admin/Settings/Page.php:1947
+#: inc/Engine/Admin/Settings/Page.php:1919
 msgid "Cloudflare credentials"
 msgstr "Date de conectare Cloudflare"
 
-#: inc/Engine/Admin/Settings/Page.php:1956
+#: inc/Engine/Admin/Settings/Page.php:1928
 msgid "Cloudflare settings"
 msgstr "Setări Cloudflare"
 
-#: inc/Engine/Admin/Settings/Page.php:1970
+#: inc/Engine/Admin/Settings/Page.php:1942
 msgctxt "Cloudflare"
 msgid "Global API key:"
 msgstr "Cheie API globală:"
 
-#: inc/Engine/Admin/Settings/Page.php:1971
+#: inc/Engine/Admin/Settings/Page.php:1943
 msgctxt "Cloudflare"
 msgid "Find your API key"
 msgstr "Găsește-ți cheia API"
 
-#: inc/Engine/Admin/Settings/Page.php:1983
+#: inc/Engine/Admin/Settings/Page.php:1955
 msgctxt "Cloudflare"
 msgid "Account email"
 msgstr "Email cont"
 
-#: inc/Engine/Admin/Settings/Page.php:1992
+#: inc/Engine/Admin/Settings/Page.php:1964
 msgctxt "Cloudflare"
 msgid "Zone ID"
 msgstr "ID zonă"
 
-#: inc/Engine/Admin/Settings/Page.php:2002
+#: inc/Engine/Admin/Settings/Page.php:1974
 msgid "Development mode"
 msgstr "Mod dezvoltare"
 
 #. translators: %1$s = link opening tag, %2$s = link closing tag.
-#: inc/Engine/Admin/Settings/Page.php:2004
+#: inc/Engine/Admin/Settings/Page.php:1976
 msgid ""
 "Temporarily activate development mode on your website. This setting will "
 "automatically turn off after 3 hours. %1$sLearn more%2$s"
@@ -2543,11 +2502,11 @@ msgstr ""
 "Activează temporar modul dezvoltare pe site-ul tău web. Această setare va fi"
 " oprită automat după 3 ore. %1$sAflă mai mult%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:2012
+#: inc/Engine/Admin/Settings/Page.php:1984
 msgid "Optimal settings"
 msgstr "Setări optime"
 
-#: inc/Engine/Admin/Settings/Page.php:2013
+#: inc/Engine/Admin/Settings/Page.php:1985
 msgid ""
 "Automatically enhances your Cloudflare configuration for speed, performance "
 "grade and compatibility."
@@ -2555,11 +2514,11 @@ msgstr ""
 "Îți îmbunătățește automat configurarea Cloudflare pentru viteză, grad de "
 "performanță și compatibilitate."
 
-#: inc/Engine/Admin/Settings/Page.php:2021
+#: inc/Engine/Admin/Settings/Page.php:1993
 msgid "Relative protocol"
 msgstr "Protocol relativ"
 
-#: inc/Engine/Admin/Settings/Page.php:2022
+#: inc/Engine/Admin/Settings/Page.php:1994
 msgid ""
 "Should only be used with Cloudflare's flexible SSL feature. URLs of static "
 "files (CSS, JS, images) will be rewritten to use // instead of http:// or "
@@ -2569,11 +2528,11 @@ msgstr ""
 "Cloudflare. URL-urile fișierelor statice (CSS, JS, imagini) vor fi rescrise "
 "pentru a folosi // în loc de http:// sau https://."
 
-#: inc/Engine/Admin/Settings/Page.php:2060
+#: inc/Engine/Admin/Settings/Page.php:2032
 msgid "Sucuri credentials"
 msgstr "Date de conectare Sucuri"
 
-#: inc/Engine/Admin/Settings/Page.php:2073
+#: inc/Engine/Admin/Settings/Page.php:2045
 msgctxt "Sucuri"
 msgid ""
 "Firewall API key (for plugin), must be in format {32 characters}/{32 "
@@ -2582,10 +2541,22 @@ msgstr ""
 "Cheia API pentru firewall (a modulului) trebuie să aibă formatul {32 de "
 "caractere}/{32 de caractere}:"
 
-#: inc/Engine/Admin/Settings/Page.php:2074
+#: inc/Engine/Admin/Settings/Page.php:2046
 msgctxt "Sucuri"
 msgid "Find your API key"
 msgstr "Găsește-ți cheia API"
+
+#. translators: %1$s: opening strong tag, %2$s: closing strong tag, %3$s:
+#. opening a tag, %4$s: opening a tag.
+#: inc/Engine/Admin/Settings/Page.php:2251
+msgid ""
+"%1$sWP Rocket:%2$s the plugin has been updated to the 3.17 version. New "
+"feature: %3$sLazy Render Content%4$s. Check out our documentation to learn "
+"more about it."
+msgstr ""
+"%1$sWP Rocket:%2$s modulul a fost actualizat la versiunea 3.17. "
+"Funcționalitate nouă: %3$sConținut cu randare lentă%4$s. Consultă "
+"documentația noastră pentru a învăța mai multe despre ea."
 
 #: inc/Engine/Admin/Settings/Settings.php:361
 msgid ""
@@ -2604,25 +2575,25 @@ msgstr ""
 "niciodată în cache URL-urile deoarece dezactivează cache-ul și optimizările "
 "pentru fiecare pagină de pe site-ul tău."
 
-#: inc/Engine/Admin/Settings/Subscriber.php:171
+#: inc/Engine/Admin/Settings/Subscriber.php:174
 msgid "Import, Export, Rollback"
 msgstr "Import, export, restaurare"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:196
+#: inc/Engine/Admin/Settings/Subscriber.php:199
 #: views/settings/page-sections/imagify.php:14
 msgid "Image Optimization"
 msgstr "Optimizare imagini"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:197
+#: inc/Engine/Admin/Settings/Subscriber.php:200
 msgid "Compress your images"
 msgstr "Comprimă-ți imaginile"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:214
+#: inc/Engine/Admin/Settings/Subscriber.php:217
 #: views/settings/page-sections/tutorials.php:48
 msgid "Tutorials"
 msgstr "Tutoriale"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:215
+#: inc/Engine/Admin/Settings/Subscriber.php:218
 msgid "Getting started and how to videos"
 msgstr "Noțiuni de bază și cum să vezi videourile"
 
@@ -2630,15 +2601,15 @@ msgstr "Noțiuni de bază și cum să vezi videourile"
 msgid "WP Rocket Expired Cache Interval"
 msgstr "Interval de cache expirat WP Rocket"
 
-#: inc/Engine/Cache/WPCache.php:337
+#: inc/Engine/Cache/WPCache.php:338
 msgid "WP_CACHE value"
 msgstr "Valoare WP_CACHE"
 
-#: inc/Engine/Cache/WPCache.php:354
+#: inc/Engine/Cache/WPCache.php:355
 msgid "Cache"
 msgstr "Cache"
 
-#: inc/Engine/Cache/WPCache.php:358
+#: inc/Engine/Cache/WPCache.php:359
 msgid ""
 "The WP_CACHE constant needs to be set to true for WP Rocket cache to work "
 "properly"
@@ -2646,38 +2617,38 @@ msgstr ""
 "Pentru ca WP Rocket să funcționeze așa cum trebuie, constanta WP_CACHE "
 "trebuie să fie setată la „true”."
 
-#: inc/Engine/Cache/WPCache.php:367
+#: inc/Engine/Cache/WPCache.php:368
 msgid "WP_CACHE is set to true"
 msgstr "WP_CACHE este setată la „true”"
 
-#: inc/Engine/Cache/WPCache.php:375
+#: inc/Engine/Cache/WPCache.php:376
 msgid "WP_CACHE is not set"
 msgstr "WP_CACHE nu este setată"
 
-#: inc/Engine/Cache/WPCache.php:383
+#: inc/Engine/Cache/WPCache.php:384
 msgid "WP_CACHE is set to false"
 msgstr "WP_CACHE este setată la „false”"
 
-#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:90
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:96
 msgid "Next Billing Date"
 msgstr "Următoarea dată de facturare"
 
-#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:99
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:103
 msgid "No Subscription"
 msgstr "Niciun abonament"
 
-#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:135
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:138
 msgid "Your RocketCDN subscription is currently active."
 msgstr "Abonamentul tău RocketCDN este în prezent activ."
 
 #. translators: %1$s = opening <code> tag, %2$s = CDN URL, %3$s = closing
 #. </code> tag.
-#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:141
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:144
 msgid "To use RocketCDN, replace your CNAME with %1$s%2$s%3$s."
 msgstr "Pentru a folosi RocketCDN, înlocuiește CNAME cu %1$s%2$s%3$s."
 
 #. translators: %1$is = opening link tag, %2$s = closing link tag.
-#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:152
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:155
 #: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:230
 #: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:334
 msgid "%1$sMore Info%2$s"
@@ -2747,16 +2718,16 @@ msgstr "RocketCDN dezactivat"
 
 #. Translators: %s = date formatted using date_i18n() and get_option(
 #. 'date_format' ).
-#: inc/Engine/CDN/RocketCDN/views/cta-big.php:27
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:29
 msgid "Valid until %s only!"
 msgstr "Valid numai până la %s!"
 
-#: inc/Engine/CDN/RocketCDN/views/cta-big.php:36
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:38
 msgid "Speed up your website thanks to:"
 msgstr "Accelerează-ți site-ul web cu ajutorul:"
 
 #. translators: %1$s = opening strong tag, %2$s = closing strong tag.
-#: inc/Engine/CDN/RocketCDN/views/cta-big.php:42
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:44
 msgid ""
 "High performance Content Delivery Network (CDN) with %1$sunlimited "
 "bandwidth%2$s"
@@ -2765,7 +2736,7 @@ msgstr ""
 "%1$slățime de bandă nelimitată%2$s"
 
 #. translators: %1$s = opening strong tag, %2$s = closing strong tag.
-#: inc/Engine/CDN/RocketCDN/views/cta-big.php:48
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:50
 msgid ""
 "Easy configuration: the %1$sbest CDN settings%2$s are automatically applied"
 msgstr ""
@@ -2773,7 +2744,7 @@ msgstr ""
 "automat"
 
 #. translators: %1$s = opening strong tag, %2$s = closing strong tag.
-#: inc/Engine/CDN/RocketCDN/views/cta-big.php:54
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:56
 msgid ""
 "WP Rocket integration: the CDN option is %1$sautomatically configured%2$s in"
 " our plugin"
@@ -2781,12 +2752,12 @@ msgstr ""
 "Integrare WP Rocket: opțiunea CDN este %1$sconfigurată automat%2$s în "
 "modulul nostru"
 
-#: inc/Engine/CDN/RocketCDN/views/cta-big.php:58
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:60
 msgid "Learn more about RocketCDN"
 msgstr "Află mai multe despre RocketCDN"
 
 #. translators: %1$s = discounted price, %2$s = regular price.
-#: inc/Engine/CDN/RocketCDN/views/cta-big.php:65
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:67
 msgid ""
 "*$%1$s/month for 12 months then $%2$s/month. You can cancel your "
 "subscription at any time."
@@ -2794,37 +2765,37 @@ msgstr ""
 "*%1$s $/lună în primele 12 luni, apoi %2$s $/lună. Poți anula oricând "
 "abonamentul."
 
-#: inc/Engine/CDN/RocketCDN/views/cta-big.php:86
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:88
 msgid "Billed monthly"
 msgstr "Facturare lunară"
 
-#: inc/Engine/CDN/RocketCDN/views/cta-big.php:87
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:89
 msgid "Get Started"
 msgstr "Începe"
 
-#: inc/Engine/CDN/RocketCDN/views/cta-big.php:92
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:94
 msgid "Reduce this banner"
 msgstr "Micșorează acest banner"
 
-#: inc/Engine/CDN/RocketCDN/views/cta-small.php:17
+#: inc/Engine/CDN/RocketCDN/views/cta-small.php:19
 msgid ""
 "Speed up your website with RocketCDN, WP Rocket’s Content Delivery Network."
 msgstr ""
 "Accelerează-ți site-ul web cu RocketCDN, rețeaua de livrare conținut oferită"
 " de WP Rocket."
 
-#: inc/Engine/CDN/RocketCDN/views/cta-small.php:20
+#: inc/Engine/CDN/RocketCDN/views/cta-small.php:22
 #: inc/Engine/CDN/RocketCDN/views/promote-notice.php:13
 msgid "Learn More"
 msgstr "Află mai mult"
 
-#: inc/Engine/CDN/RocketCDN/views/dashboard-status.php:23
+#: inc/Engine/CDN/RocketCDN/views/dashboard-status.php:24
 msgid "RocketCDN is unavailable on local domains and staging sites."
 msgstr ""
 "RocketCDN nu este disponibil pentru domenii locale și site-uri în pregătire "
 "sau în testare."
 
-#: inc/Engine/CDN/RocketCDN/views/dashboard-status.php:32
+#: inc/Engine/CDN/RocketCDN/views/dashboard-status.php:33
 msgid "Get RocketCDN"
 msgstr "Ia RocketCDN"
 
@@ -2839,23 +2810,77 @@ msgstr ""
 "Accelerează-ți site-ul web cu RocketCDN, rețeaua de livrare conținut oferită"
 " de WP Rocket!"
 
-#: inc/Engine/Common/JobManager/Cron/Subscriber.php:180
+#: inc/Engine/Common/JobManager/APIHandler/AbstractSafeAPIClient.php:68
+msgid "Too many requests."
+msgstr "Prea multe cereri."
+
+#: inc/Engine/Common/JobManager/APIHandler/AbstractSafeAPIClient.php:85
+msgid "Not valid response."
+msgstr "Răspunsul nu este valid."
+
+#: inc/Engine/Common/JobManager/APIHandler/AbstractSafeAPIClient.php:151
+msgid "Not valid request type."
+msgstr "Tipul de răspuns nu este valid."
+
+#: inc/Engine/Common/JobManager/Cron/Subscriber.php:185
 msgid "WP Rocket process pending jobs"
 msgstr "WP Rocket procesează sarcini în așteptare"
 
-#: inc/Engine/Common/JobManager/Cron/Subscriber.php:194
+#: inc/Engine/Common/JobManager/Cron/Subscriber.php:204
 msgid "WP Rocket clear failed jobs"
 msgstr "WP Rocket șterge sarcinile eșuate"
 
-#: inc/Engine/Common/JobManager/Cron/Subscriber.php:206
+#: inc/Engine/Common/JobManager/Cron/Subscriber.php:221
 msgid "WP Rocket process on submit jobs"
 msgstr "WP Rocket procesează trimiterea sarcinilor"
 
-#: inc/Engine/Common/Queue/RUCSSQueueRunner.php:265
+#: inc/Engine/Common/PerformanceHints/Admin/AdminBar.php:44
+msgid "Clear Priority Elements"
+msgstr "Șterge Elemente cu prioritate"
+
+#: inc/Engine/Common/PerformanceHints/Admin/AdminBar.php:79
+msgid "Clear Priority Elements of this URL"
+msgstr "Șterge Elemente cu prioritate pentru acest URL"
+
+#: inc/Engine/Common/PerformanceHints/Admin/AdminBar.php:100
+msgid "Priority Elements"
+msgstr "Elemente cu prioritate"
+
+#: inc/Engine/Common/PerformanceHints/Admin/AdminBar.php:101
+#: inc/Engine/Saas/Admin/AdminBar.php:134
+#: views/settings/page-sections/dashboard.php:169
+msgid "Clear"
+msgstr "Șterge"
+
+#: inc/Engine/Common/PerformanceHints/Admin/AdminBar.php:103
+msgid ""
+"This action will clear the Critical Images and Lazily Rendered Content."
+msgstr ""
+"Această acțiune va șterge imaginile critice și conținutul randat lent."
+
+#. translators: %1$s = plugin name.
+#: inc/Engine/Common/PerformanceHints/Admin/Controller.php:135
+msgid "%1$s: Critical images and Lazy Render data was cleared!"
+msgstr "%1$s: au fost șterse imaginile critice și randarea lentă!"
+
+#: inc/Engine/Common/PerformanceHints/AJAX/AJAXControllerTrait.php:19
+msgid "Script error"
+msgstr "Eroare la script"
+
+#: inc/Engine/Common/PerformanceHints/AJAX/AJAXControllerTrait.php:22
+msgid "Script timeout"
+msgstr "Expirare script"
+
+#. Translators: %s is the exception message.
+#: inc/Engine/Common/Queue/Cleaner.php:87
+msgid "It was not possible to determine a valid cut-off time: %s."
+msgstr "Nu a fost posibil să determin o durată limită validă: %s."
+
+#: inc/Engine/Common/Queue/RUCSSQueueRunner.php:269
 msgid "Every minute"
 msgstr "În fiecare minut"
 
-#: inc/Engine/CriticalPath/Admin/Admin.php:264
+#: inc/Engine/CriticalPath/Admin/Admin.php:265
 msgid "Regenerate Critical Path CSS"
 msgstr "Regenerează CSS-ul de cale critic"
 
@@ -2884,7 +2909,6 @@ msgstr "%l pentru a folosi această funcționalitate."
 msgid "Publish the %s"
 msgstr "Publică %s"
 
-#. translators: %s = post type.
 #: inc/Engine/CriticalPath/Admin/Post.php:223
 msgid "Enable Load CSS asynchronously in WP Rocket settings"
 msgstr "Activează Încarcă fișierele CSS asincron în setările WP Rocket"
@@ -2899,7 +2923,7 @@ msgid "Critical CSS for %1$s not generated. Error: %2$s"
 msgstr "CSS-ul critic pentru %1$s nu a fost generat. Eroare: %2$s"
 
 #. translators: %s = item URL.
-#: inc/Engine/CriticalPath/APIClient.php:170
+#: inc/Engine/CriticalPath/APIClient.php:174
 msgid ""
 "Critical CSS for %1$s on mobile not generated. Error: The API returned an "
 "empty response."
@@ -2908,7 +2932,7 @@ msgstr ""
 "Eroare: API-ul a returnat un răspuns gol."
 
 #. translators: %s = item URL.
-#: inc/Engine/CriticalPath/APIClient.php:173
+#: inc/Engine/CriticalPath/APIClient.php:177
 msgid ""
 "Critical CSS for %1$s not generated. Error: The API returned an empty "
 "response."
@@ -2917,20 +2941,20 @@ msgstr ""
 "răspuns gol."
 
 #. translators: %s = item URL.
-#: inc/Engine/CriticalPath/APIClient.php:185
+#: inc/Engine/CriticalPath/APIClient.php:189
 msgid "Critical CSS for %1$s on mobile not generated."
 msgstr ""
 "CSS-ul critic pentru %1$s nu a fost generat pentru dispozitive mobile."
 
 #. translators: %s = item URL.
 #. translators: %1$s = item URL or item type.
-#: inc/Engine/CriticalPath/APIClient.php:187
-#: inc/Engine/CriticalPath/ProcessorService.php:194
+#: inc/Engine/CriticalPath/APIClient.php:191
+#: inc/Engine/CriticalPath/ProcessorService.php:196
 msgid "Critical CSS for %1$s not generated."
 msgstr "CSS-ul critic pentru %1$s nu a fost generat."
 
 #. translators: %s = URL.
-#: inc/Engine/CriticalPath/APIClient.php:195
+#: inc/Engine/CriticalPath/APIClient.php:199
 msgid ""
 "Critical CSS for %1$s on mobile not generated. Error: The API returned an "
 "invalid response code."
@@ -2939,7 +2963,7 @@ msgstr ""
 "Eroare: API-ul a returnat un cod de răspuns invalid."
 
 #. translators: %s = URL.
-#: inc/Engine/CriticalPath/APIClient.php:197
+#: inc/Engine/CriticalPath/APIClient.php:201
 msgid ""
 "Critical CSS for %1$s not generated. Error: The API returned an invalid "
 "response code."
@@ -2948,8 +2972,8 @@ msgstr ""
 "cod de răspuns invalid."
 
 #. translators: %1$s = error message.
-#: inc/Engine/CriticalPath/APIClient.php:205
-#: inc/Engine/CriticalPath/ProcessorService.php:201
+#: inc/Engine/CriticalPath/APIClient.php:209
+#: inc/Engine/CriticalPath/ProcessorService.php:203
 msgid "Error: %1$s"
 msgstr "Eroare: %1$s"
 
@@ -3037,38 +3061,38 @@ msgid "Critical CSS file cannot be deleted"
 msgstr "Fișierul CSS critic nu poate fi șters"
 
 #. translators: %1$s = item URL or item type.
-#: inc/Engine/CriticalPath/ProcessorService.php:187
+#: inc/Engine/CriticalPath/ProcessorService.php:189
 msgid "Mobile Critical CSS for %1$s not generated."
 msgstr "CSS-ul critic mobil pentru %1$s nu a fost generat."
 
 #. translators: %1$s = Item URL or item type.
-#: inc/Engine/CriticalPath/ProcessorService.php:228
+#: inc/Engine/CriticalPath/ProcessorService.php:230
 msgid "Critical CSS for %s in progress."
 msgstr "CSS-ul critic pentru %s este în desfășurare."
 
 #. translators: %1$s = Item URL or item type.
-#: inc/Engine/CriticalPath/ProcessorService.php:262
+#: inc/Engine/CriticalPath/ProcessorService.php:264
 msgid "Mobile Critical CSS for %s generated."
 msgstr "CSS-ul critic mobil pentru %s a fost generat."
 
 #. translators: %1$s = Item URL or item type.
-#: inc/Engine/CriticalPath/ProcessorService.php:273
+#: inc/Engine/CriticalPath/ProcessorService.php:275
 msgid "Critical CSS for %s generated."
 msgstr "CSS-ul critic pentru %s a fost generat."
 
-#: inc/Engine/CriticalPath/ProcessorService.php:295
+#: inc/Engine/CriticalPath/ProcessorService.php:297
 msgid "Critical CSS file deleted successfully."
 msgstr "Fișierul CSS critic a fost șters cu succes."
 
 #. translators: %1$s = Item URL or item type.
-#: inc/Engine/CriticalPath/ProcessorService.php:317
+#: inc/Engine/CriticalPath/ProcessorService.php:319
 msgid "Mobile Critical CSS for %1$s timeout. Please retry a little later."
 msgstr ""
 "CSS-ul critic mobil pentru %1$s a expirat. Te rog încearcă un pic mai "
 "târziu."
 
 #. translators: %1$s = Item URL or item type.
-#: inc/Engine/CriticalPath/ProcessorService.php:330
+#: inc/Engine/CriticalPath/ProcessorService.php:332
 msgid "Critical CSS for %1$s timeout. Please retry a little later."
 msgstr ""
 "CSS-ul critic pentru %1$s a expirat. Te rog încearcă un pic mai târziu."
@@ -3204,39 +3228,39 @@ msgid "Unlimited"
 msgstr "Nelimitate"
 
 #. translators: %s = promotion discount percentage.
-#: inc/Engine/License/views/promo-banner.php:16
+#: inc/Engine/License/views/promo-banner.php:18
 msgid "%s off"
 msgstr "Reducere de %s"
 
 #. translators: %s = promotion name.
-#: inc/Engine/License/views/promo-banner.php:21
+#: inc/Engine/License/views/promo-banner.php:23
 msgid "%s promotion is live!"
 msgstr "Promoția %s este în desfășurare!"
 
-#: inc/Engine/License/views/promo-banner.php:27
+#: inc/Engine/License/views/promo-banner.php:29
 msgid "Hurry Up! Deal ends in:"
 msgstr "Grăbește-te! Oferta se încheie în:"
 
-#: inc/Engine/License/views/promo-banner.php:31
-#: inc/Engine/License/views/renewal-soon-banner.php:14
+#: inc/Engine/License/views/promo-banner.php:33
+#: inc/Engine/License/views/renewal-soon-banner.php:16
 msgid "Minutes"
 msgstr "Minute"
 
-#: inc/Engine/License/views/promo-banner.php:32
-#: inc/Engine/License/views/renewal-soon-banner.php:15
+#: inc/Engine/License/views/promo-banner.php:34
+#: inc/Engine/License/views/renewal-soon-banner.php:17
 msgid "Seconds"
 msgstr "Secunde"
 
-#: inc/Engine/License/views/promo-banner.php:34
+#: inc/Engine/License/views/promo-banner.php:36
 #: inc/Engine/License/views/upgrade-section.php:11
 msgid "Upgrade now"
 msgstr "Actualizează acum"
 
-#: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:11
+#: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:13
 msgid "The Optimize CSS Delivery feature is disabled."
 msgstr "Funcționalitatea Optimizează livrarea CSS este dezactivată."
 
-#: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:15
+#: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:17
 msgid ""
 "You can no longer use the Remove Unused CSS or Load CSS asynchronously "
 "options."
@@ -3245,7 +3269,7 @@ msgstr ""
 "fișierele CSS asincron."
 
 #. translators: %1$s = <strong>, %2$s = </strong>.
-#: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:20
+#: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:22
 msgid ""
 "You need an %1$sactive license%2$s to keep optimizing your CSS delivery, "
 "which addresses a PageSpeed Insights recommendation and improves your page "
@@ -3255,26 +3279,26 @@ msgstr ""
 "livrarea CSS-ului, o funcționalitate recomandată de PageSpeed Insights care "
 "îmbunătățește performanțele paginilor."
 
-#: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:29
-#: inc/Engine/License/views/renewal-expired-banner-ocd.php:39
-#: inc/Engine/License/views/renewal-expired-banner.php:27
-#: inc/Engine/License/views/renewal-soon-banner.php:31
+#: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:31
+#: inc/Engine/License/views/renewal-expired-banner-ocd.php:41
+#: inc/Engine/License/views/renewal-expired-banner.php:29
+#: inc/Engine/License/views/renewal-soon-banner.php:33
 msgid "Renew now"
 msgstr "Reînnoiește acum"
 
-#: inc/Engine/License/views/renewal-expired-banner-ocd.php:11
+#: inc/Engine/License/views/renewal-expired-banner-ocd.php:13
 msgid "You will soon lose access to some features."
 msgstr "În curând, nu vei mai avea acces la unele funcționalități."
 
 #. translators: %1$s = <strong>, %2$s = </strong>.
-#: inc/Engine/License/views/renewal-expired-banner-ocd.php:18
+#: inc/Engine/License/views/renewal-expired-banner-ocd.php:20
 msgid ""
 "You need an %1$sactive license to continue optimizing your CSS delivery%2$s."
 msgstr ""
 "Ai nevoie de o %1$slicență activă pentru a optimiza în continuare livrarea "
 "CSS-ului%2$s."
 
-#: inc/Engine/License/views/renewal-expired-banner-ocd.php:24
+#: inc/Engine/License/views/renewal-expired-banner-ocd.php:26
 msgid ""
 "The Remove Unused CSS and Load CSS asynchronously features are great options"
 " to address the PageSpeed Insights recommendations and improve your website "
@@ -3285,16 +3309,16 @@ msgstr ""
 "Insights și pentru a îmbunătăți performanța pe site."
 
 #. translators: %1$s = <strong>, %2$s = </strong>, %3$s = date.
-#: inc/Engine/License/views/renewal-expired-banner-ocd.php:29
+#: inc/Engine/License/views/renewal-expired-banner-ocd.php:31
 msgid "These features will be %1$sautomatically disabled on %3$s%2$s."
 msgstr "Aceste funcționalități vor fi %1$sdezactivate automat pe %3$s%2$s."
 
-#: inc/Engine/License/views/renewal-expired-banner.php:11
+#: inc/Engine/License/views/renewal-expired-banner.php:13
 msgid "Your WP Rocket license is expired!"
 msgstr "Licența ta WP Rocket a expirat!"
 
 #. translators: %1$s = <strong>, %2$s = </strong>.
-#: inc/Engine/License/views/renewal-expired-banner.php:18
+#: inc/Engine/License/views/renewal-expired-banner.php:20
 msgid ""
 "Your website could be much faster if it could take advantage of our %1$snew "
 "features and enhancements%2$s. 🚀"
@@ -3303,7 +3327,7 @@ msgstr ""
 " funcționalități și îmbunătățiri%2$s. 🚀"
 
 #. translators: %1$s = <strong>, %2$s = </strong>.
-#: inc/Engine/License/views/renewal-soon-banner.php:22
+#: inc/Engine/License/views/renewal-soon-banner.php:24
 msgid ""
 "Your %1$sWP Rocket license is about to expire%2$s: you will soon lose access"
 " to product updates and support."
@@ -3311,12 +3335,12 @@ msgstr ""
 "%1$sLicența ta WP este aproape de expirare%2$s: în curând nu vei mai avea "
 "acces la actualizări și suport."
 
-#: inc/Engine/License/views/upgrade-popin.php:12
+#: inc/Engine/License/views/upgrade-popin.php:14
 msgid "Speed Up More Websites"
 msgstr "Accelerezi mai multe site-uri web"
 
 #. translators: %1$s = opening strong tag, %2$s = closing strong tag.
-#: inc/Engine/License/views/upgrade-popin.php:19
+#: inc/Engine/License/views/upgrade-popin.php:21
 msgid ""
 "You can use WP Rocket on more websites by upgrading your license. To "
 "upgrade, simply pay the %1$sprice difference%2$s between your current and "
@@ -3327,24 +3351,24 @@ msgstr ""
 "deținută acum și licențele noi, așa cum arătăm mai jos."
 
 #. translators: %1$s = opening strong tag, %2$s = closing strong tag.
-#: inc/Engine/License/views/upgrade-popin.php:25
+#: inc/Engine/License/views/upgrade-popin.php:27
 msgid ""
 "%1$sN.B.%2$s: Upgrading your license does not change your expiration date"
 msgstr ""
 "%1$sAtenție%2$s: actualizarea licenței nu îți va modifica data de expirare"
 
 #. translators: %s = price.
-#: inc/Engine/License/views/upgrade-popin.php:35
+#: inc/Engine/License/views/upgrade-popin.php:37
 msgid "Save $%s"
 msgstr "Economisești %s $"
 
 #. translators: %s = number of websites.
-#: inc/Engine/License/views/upgrade-popin.php:48
+#: inc/Engine/License/views/upgrade-popin.php:50
 msgid "%s websites"
 msgstr "%s site-uri web"
 
 #. translators: %s = license name.
-#: inc/Engine/License/views/upgrade-popin.php:54
+#: inc/Engine/License/views/upgrade-popin.php:56
 msgid "Upgrade to %s"
 msgstr "Actualizează la %s"
 
@@ -3355,11 +3379,6 @@ msgid ""
 msgstr ""
 "Prin actualizarea licenței, poți folosi WP Rocket pe mai multe site-uri web "
 "(vei plăti doar diferența de preț între cea deținută acum și licențele noi)."
-
-#. translators: %1$s = plugin name.
-#: inc/Engine/Media/AboveTheFold/Admin/Controller.php:143
-msgid "%1$s: Critical images cleared!"
-msgstr "%1$s: am șters imaginile critice!"
 
 #: inc/Engine/Media/Lazyload/AdminSubscriber.php:62
 msgid "LazyLoad for images"
@@ -3373,15 +3392,15 @@ msgstr "Încărcare lentă pentru iframe-uri/videouri"
 msgid "LazyLoad CSS backgrounds"
 msgstr "Fundaluri pentru încărcare lentă CSS"
 
-#: inc/Engine/Optimization/DelayJS/Admin/SiteList.php:195
+#: inc/Engine/Optimization/DelayJS/Admin/SiteList.php:194
 msgid "Analytics & Ads"
 msgstr "Analitice și reclame"
 
-#: inc/Engine/Optimization/DelayJS/Admin/SiteList.php:200
+#: inc/Engine/Optimization/DelayJS/Admin/SiteList.php:199
 msgid "Plugins"
 msgstr "Module"
 
-#: inc/Engine/Optimization/DelayJS/Admin/SiteList.php:205
+#: inc/Engine/Optimization/DelayJS/Admin/SiteList.php:204
 msgid "Themes"
 msgstr "Teme"
 
@@ -3429,17 +3448,21 @@ msgstr "Minifică/combină JavaScript"
 msgid "Minify CSS"
 msgstr "Minifică CSS-ul"
 
+#: inc/Engine/Optimization/RUCSS/Admin/OptionSubscriber.php:74
+msgid "Remove Unused CSS"
+msgstr "Înlătură CSS-ul neutilizat"
+
 #. translators: %1$s = plugin name, %2$s = table name, %3$s = <a> open tag,
 #. %4$s = </a> closing tag.
 #: inc/Engine/Optimization/RUCSS/Admin/Settings.php:253
 msgid ""
 "%1$s: Could not create the %2$s table in the database which is necessary for"
-" the Remove Unused CSS feature to work. Please reach out to %3$sour "
-"support%4$s."
+" the Remove Unused CSS feature to work. Please check our "
+"%3$sdocumentation%4$s."
 msgstr ""
-"%1$s: nu am putut să creez tabelul %2$s în baza de date, el este necesar "
-"pentru ca funcționalitatea Înlătură CSS-ul neutilizat să funcționeze. Te rog"
-" să contactezi  %3$ssuportul nostru%4$s."
+"%1$s: Nu am putut să creez tabelul %2$s în baza de date, el este necesar "
+"pentru ca funcționalitatea Înlătură CSS -ul nefolosit să funcționeze. Te rog"
+" să consulți  %3$sdocumentația%4$s."
 
 #. translators: %1$s = plugin name.
 #: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:274
@@ -3447,7 +3470,7 @@ msgid "%1$s: Used CSS cache cleared!"
 msgstr "%1$s: cache-ul pentru CSS-ul utilizat a fost șters!"
 
 #. translators: %1$s = plugin name.
-#: inc/Engine/Preload/Admin/Settings.php:57
+#: inc/Engine/Preload/Admin/Settings.php:76
 msgid ""
 "%1$s: The preload service is now active. After the initial preload it will "
 "continue to cache all your pages whenever they are purged. No further action"
@@ -3465,29 +3488,20 @@ msgstr "Sarcini în așteptare pentru preîncărcare WP Rocket"
 msgid "WP Rocket Preload revert stuck failed jobs"
 msgstr "Preîncărcare WP Rocket revine la sarcinile blocate și eșuate"
 
-#: inc/Engine/Saas/Admin/AdminBar.php:73
-#: inc/Engine/Saas/Admin/AdminBar.php:194
-msgid "Clear Critical Images"
-msgstr "Șterge imaginile critice"
-
-#: inc/Engine/Saas/Admin/AdminBar.php:160
-msgid "Clear Critical Images of this URL"
-msgstr "Șterge imaginile critice pentru acest URL"
-
-#: inc/Engine/Saas/Admin/AdminBar.php:163
+#: inc/Engine/Saas/Admin/AdminBar.php:106
 msgid "Clear Used CSS of this URL"
 msgstr "Șterge CSS-ul folosit pentru acest URL"
 
-#: inc/Engine/Saas/Admin/AdminBar.php:193
-msgid "Critical Images Cache"
-msgstr "Cache imagini critice"
+#: inc/Engine/Saas/Admin/AdminBar.php:133
+msgid "Used CSS"
+msgstr "CSS utilizat"
 
-#: inc/Engine/Saas/Admin/AdminBar.php:197
-msgid "Remove Used CSS Cache"
-msgstr "Cache Înlătură CSS-ul neutilizat"
+#: inc/Engine/Saas/Admin/AdminBar.php:136
+msgid "This action will clear the used CSS files."
+msgstr "Această acțiune va șterge fișierele CSS utilizat."
 
 #. translators: %1$s = plugin name, %2$s = number of seconds.
-#: inc/Engine/Saas/Admin/Notices.php:104
+#: inc/Engine/Saas/Admin/Notices.php:91
 msgid ""
 "%1$s: Please wait %2$s seconds. The Remove Unused CSS service is processing "
 "your pages, the plugin is optimizing LCP and the images above the fold."
@@ -3498,7 +3512,7 @@ msgstr ""
 
 #. translators: %1$s = plugin name, %2$s = number of URLs, %3$s = number of
 #. seconds.
-#: inc/Engine/Saas/Admin/Notices.php:147
+#: inc/Engine/Saas/Admin/Notices.php:134
 msgid ""
 "%1$s: The LCP element has been optimized, and the images above the fold were excluded from lazyload. The Used CSS of your homepage has been processed.\n"
 "\t\t\t WP Rocket will continue to generate Used CSS for up to %2$s URLs per %3$s second(s)."
@@ -3507,19 +3521,19 @@ msgstr ""
 "\t\t\t WP Rocket va continua să genereze CSS-ul folosit pentru până la %2$s URL-uri per %3$s secundă (secunde)."
 
 #. translators: %1$s = opening link tag, %2$s = closing link tag.
-#: inc/Engine/Saas/Admin/Notices.php:160
+#: inc/Engine/Saas/Admin/Notices.php:157
 msgid "We suggest enabling %1$sPreload%2$s for the fastest results."
 msgstr ""
 "Pentru rezultate mult mai rapide, sugerăm să activezi %1$spreîncărcarea%2$s."
 
 #. translators: %1$s = opening link tag, %2$s = closing link tag.
-#: inc/Engine/Saas/Admin/Notices.php:170
+#: inc/Engine/Saas/Admin/Notices.php:167
 msgid "To learn more about the process check our %1$sdocumentation%2$s."
 msgstr ""
 "Pentru a afla mai multe despre acest proces, %1$sconsultă documentația "
 "noastră%2$s."
 
-#: inc/Engine/Saas/Admin/Notices.php:236
+#: inc/Engine/Saas/Admin/Notices.php:229
 msgid ""
 "We couldn't generate the used CSS because you're using a nulled version of "
 "WP Rocket. You need an active license to use the Remove Unused CSS feature "
@@ -3531,14 +3545,14 @@ msgstr ""
 "licență activă."
 
 #. translators: %1$s = promo percentage.
-#: inc/Engine/Saas/Admin/Notices.php:239
+#: inc/Engine/Saas/Admin/Notices.php:232
 msgid "Click here to get a WP Rocket single license at %1$s off!"
 msgstr ""
 "Dă clic aici pentru a obține o singură licență WP Rocket cu o reducere de "
 "%1$s!"
 
 #. translators: %1$s = <a> open tag, %2$s = </a> closing tag.
-#: inc/Engine/Saas/Admin/Notices.php:292
+#: inc/Engine/Saas/Admin/Notices.php:285
 msgid ""
 "It seems a security plugin or the server's firewall prevents WP Rocket from "
 "accessing the SaaS features. IPs listed %1$shere in our documentation%2$s "
@@ -3549,11 +3563,11 @@ msgstr ""
 "%1$saici în documentația noastră%2$s trebuie să fie adăugate la listele tale"
 " cu permisiuni:"
 
-#: inc/Engine/Saas/Admin/Notices.php:297
+#: inc/Engine/Saas/Admin/Notices.php:290
 msgid "- In the security plugin, if you are using one"
 msgstr "- În modulul pentru securitate, dacă folosești unul"
 
-#: inc/Engine/Saas/Admin/Notices.php:298
+#: inc/Engine/Saas/Admin/Notices.php:291
 msgid "- In the server's firewall. Your host can help you with this"
 msgstr ""
 "- În firewall-ul serverului. Serviciul tău de găzduire te poate ajuta cu "
@@ -3941,7 +3955,7 @@ msgstr[2] ""
 "funcționalitățile WP Rocket:"
 
 #. Translators: %1$s = Plugin name, %2$s = <em>, %3$s = </em>.
-#: inc/ThirdParty/Plugins/Optimization/Hummingbird.php:151
+#: inc/ThirdParty/Plugins/Optimization/Hummingbird.php:156
 msgctxt "Hummingbird notice"
 msgid ""
 "%1$s %2$sdisable emoji%3$s conflicts with WP Rockets %2$sdisable emoji%3$s"
@@ -3950,7 +3964,7 @@ msgstr ""
 " emoticoanele%3$s WP Rockets"
 
 #. Translators: %1$s = Plugin name, %2$s = <em>, %3$s = </em>.
-#: inc/ThirdParty/Plugins/Optimization/Hummingbird.php:187
+#: inc/ThirdParty/Plugins/Optimization/Hummingbird.php:192
 msgctxt "Hummingbird notice"
 msgid ""
 "%1$s %2$sGZIP compression%3$s conflicts with WP Rocket %2$sGZIP "
@@ -3960,7 +3974,7 @@ msgstr ""
 "Rocket"
 
 #. Translators: %1$s = Plugin name, %2$s = <em>, %3$s = </em>.
-#: inc/ThirdParty/Plugins/Optimization/Hummingbird.php:223
+#: inc/ThirdParty/Plugins/Optimization/Hummingbird.php:228
 msgctxt "Hummingbird notice"
 msgid ""
 "%1$s %2$sbrowser caching%3$s conflicts with WP Rocket %2$sbrowser "
@@ -3970,7 +3984,7 @@ msgstr ""
 "navigatorului%3$s WP Rocket"
 
 #. Translators: %1$s = Plugin name, %2$s = <em>, %3$s = </em>.
-#: inc/ThirdParty/Plugins/Optimization/Hummingbird.php:255
+#: inc/ThirdParty/Plugins/Optimization/Hummingbird.php:260
 msgctxt "Hummingbird notice"
 msgid ""
 "%1$s %2$spage caching%3$s conflicts with WP Rocket %2$spage caching%3$s"
@@ -3979,7 +3993,7 @@ msgstr ""
 "paginilor%3$s WP Rocket"
 
 #. Translators: %1$s = Plugin name, %2$s = <em>, %3$s = </em>.
-#: inc/ThirdParty/Plugins/Optimization/Hummingbird.php:289
+#: inc/ThirdParty/Plugins/Optimization/Hummingbird.php:294
 msgctxt "Hummingbird notice"
 msgid ""
 "%1$s %2$sasset optimization%3$s conflicts with WP Rocket %2$sfile "
@@ -4264,7 +4278,6 @@ msgid "Purges RocketCDN cached resources for your website. %s"
 msgstr ""
 "Șterge resursele memorate în cache-ul RocketCDN pentru site-ul tău web. %s"
 
-#. translators: %s is a "Learn more" link.
 #: views/settings/fields/rocket-cdn.php:63
 #: views/settings/page-sections/cloudflare.php:36
 #: views/settings/page-sections/sucuri.php:37
@@ -4301,7 +4314,6 @@ msgstr "Cache Cloudflare"
 msgid "Purges cached resources for your website. %s"
 msgstr "Șterge resursele memorate în cache pentru site-ul tău web. %s"
 
-#. translators: %s is a "Learn more" link.
 #: views/settings/page-sections/cloudflare.php:36
 msgid "https://support.cloudflare.com/hc/en-us/articles/200169246"
 msgstr "https://support.cloudflare.com/hc/en-us/articles/200169246"
@@ -4310,19 +4322,19 @@ msgstr "https://support.cloudflare.com/hc/en-us/articles/200169246"
 msgid "Clear all Cloudflare cache files"
 msgstr "Șterge toate fișierele cache Cloudflare"
 
-#: views/settings/page-sections/dashboard.php:38
+#: views/settings/page-sections/dashboard.php:39
 msgid "Congratulations!"
 msgstr "Felicitări!"
 
-#: views/settings/page-sections/dashboard.php:40
+#: views/settings/page-sections/dashboard.php:41
 msgid "WP Rocket is now activated and already working for you."
 msgstr "Acum WP Rocket este activat și deja lucrează pentru tine."
 
-#: views/settings/page-sections/dashboard.php:42
+#: views/settings/page-sections/dashboard.php:43
 msgid "Your website should be loading faster now!"
 msgstr "Site-ul tău web ar trebui să se încarce mai rapid acum!"
 
-#: views/settings/page-sections/dashboard.php:44
+#: views/settings/page-sections/dashboard.php:45
 msgid ""
 "To guarantee fast websites, WP Rocket automatically applies 80% of web "
 "performance best practices."
@@ -4330,66 +4342,91 @@ msgstr ""
 "Pentru a garanta site-uri web rapide, WP Rocket aplică automat 80% din cele "
 "mai bune practici de performanță pe web."
 
-#: views/settings/page-sections/dashboard.php:44
+#: views/settings/page-sections/dashboard.php:45
 msgid ""
 "We also enable options that provide immediate benefits to your website."
 msgstr ""
 "De asemenea, avem opțiuni care oferă avantaje imediate pentru site-ul tău "
 "web."
 
-#: views/settings/page-sections/dashboard.php:45
+#: views/settings/page-sections/dashboard.php:46
 msgid "Continue to the options to further optimize your site!"
 msgstr "Continuă cu opțiunile pentru a-ți optimiza în continuare site-ul!"
 
-#: views/settings/page-sections/dashboard.php:62
+#: views/settings/page-sections/dashboard.php:63
 msgid "My Account"
 msgstr "Contul meu"
 
-#: views/settings/page-sections/dashboard.php:68
+#: views/settings/page-sections/dashboard.php:69
 msgid "Refresh info"
 msgstr "Reîmprospătează informațiile"
 
-#: views/settings/page-sections/dashboard.php:86
+#: views/settings/page-sections/dashboard.php:87
 msgid "with"
 msgstr "cu"
 
-#: views/settings/page-sections/dashboard.php:100
+#: views/settings/page-sections/dashboard.php:101
 msgid "Expiration Date"
 msgstr "Data expirării"
 
-#: views/settings/page-sections/dashboard.php:110
+#: views/settings/page-sections/dashboard.php:111
 msgid "View my account"
 msgstr "Vezi contul meu"
 
+#: views/settings/page-sections/dashboard.php:131 views/settings/page.php:75
+msgid "Rocket Analytics"
+msgstr "Analitice Rocket"
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: views/settings/page-sections/dashboard.php:137
+msgid ""
+"I agree to share anonymous data with the development team to help improve WP"
+" Rocket. %1$sWhat info will we collect?%2$s"
+msgstr ""
+"Sunt de acord să partajez date anonime cu echipa de dezvoltare pentru a "
+"ajuta la îmbunătățirea WP Rocket. %1$sCe informații vom colecta?%2$s"
+
+#: views/settings/page-sections/dashboard.php:155
 msgid "Quick Actions"
 msgstr "Acțiuni rapide"
 
-#: views/settings/page-sections/dashboard.php:144
-msgid "Remove all cached files"
-msgstr "Înlătură toate fișierele cache"
+#: views/settings/page-sections/dashboard.php:162
+msgid "Cache files"
+msgstr "Fișiere cache"
 
-#: views/settings/page-sections/dashboard.php:164
-#: views/settings/page-sections/dashboard.php:170
+#: views/settings/page-sections/dashboard.php:163
+msgid "This action will clear and preload all the cache files."
+msgstr "Această acțiune va șterge și va pre-încărca toate fișierele cache."
+
+#: views/settings/page-sections/dashboard.php:163
+msgid "This action will clear all the cache files."
+msgstr "Această acțiune va șterge toate fișierele cache."
+
+#: views/settings/page-sections/dashboard.php:169
+msgid "Clear and preload"
+msgstr "Șterge și pre-încarcă"
+
+#: views/settings/page-sections/dashboard.php:183
+#: views/settings/page-sections/dashboard.php:189
 msgid "Regenerate Critical CSS"
 msgstr "Regenerează CSS critic"
 
-#: views/settings/page-sections/dashboard.php:196
+#: views/settings/page-sections/dashboard.php:215
 msgid "Frequently Asked Questions"
 msgstr "Întrebări frecvente"
 
-#: views/settings/page-sections/dashboard.php:210
+#: views/settings/page-sections/dashboard.php:229
 msgid "Still cannot find a solution?"
 msgstr "Încă nu poți găsi o soluție?"
 
-#: views/settings/page-sections/dashboard.php:211
+#: views/settings/page-sections/dashboard.php:230
 msgid ""
 "Submit a ticket and get help from our friendly and knowledgeable Rocketeers."
 msgstr ""
 "Trimite un tichet și primești ajutor de la membrii prietenoși și pricepuți "
 "WP Rocket."
 
-#: views/settings/page-sections/dashboard.php:219
+#: views/settings/page-sections/dashboard.php:238
 msgid "Ask support"
 msgstr "Contactează suportul"
 
@@ -4408,41 +4445,58 @@ msgstr ""
 msgid "Save Changes and Optimize"
 msgstr "Salvează modificările și optimizează"
 
-#. Translators: %1$s = <strong>, %2$s = </strong>, %3$s = <span
-#. class="imagify-name">, %4$s = </span>.
-#: views/settings/page-sections/imagify.php:21
+#. Translators: %1$s = <strong>, %2$s = </strong>.
+#: views/settings/page-sections/imagify.php:22
 msgid ""
-"%1$sWP ROCKET%2$s created %3$sIMAGIFY%4$s %1$sfor best-in-class image "
-"optimization.%2$s"
+"%1$sWP Rocket created IMAGIFY to give your website an extra speed boost!%2$s"
 msgstr ""
-"%1$sWP ROCKET%2$s a creat %3$sIMAGIFY%4$s %1$spentru optimizarea de înaltă "
-"clasă a imaginilor.%2$s"
-
-#: views/settings/page-sections/imagify.php:24
-msgid ""
-"Compress image to make your website faster, all while maintaining image "
-"quality."
-msgstr ""
-"Comprimă imaginile pentru a-ți face site-ul mai rapid, menținând calitatea "
-"imaginilor."
-
-#: views/settings/page-sections/imagify.php:25
-msgid "More on Imagify:"
-msgstr "Mai multe despre Imagify:"
-
-#: views/settings/page-sections/imagify.php:27
-msgid "Imagify Plugin Page"
-msgstr "Pagină modul Imagify"
+"%1$sWP Rocket a creat IMAGIFY ca să-i ofere site-ului tău o îmbunătățire la "
+"viteză!%2$s"
 
 #: views/settings/page-sections/imagify.php:28
-msgid "Imagify Website"
-msgstr "Site web Imagify"
+msgid "Images can account for 50% of your loading time!"
+msgstr "Imaginile pot să însumeze 50% din timpul de încărcare!"
 
-#: views/settings/page-sections/imagify.php:29
-msgid "Review of Image Compression Plugins"
-msgstr "Examinează modulele care comprimă imagini"
+#: views/settings/page-sections/imagify.php:31
+msgid ""
+"Imagify automatically optimizes all your images, helping your website gain "
+"precious seconds while saving you time. With just one click, it resizes, "
+"compresses, and converts your images to WebP and AVIF formats without "
+"sacrificing quality."
+msgstr ""
+"Imagify îți optimizează automat toate imaginile, îți ajută site-ul să "
+"câștige secunde prețioase și, totodată, te ajută să economisești timp. Cu un"
+" singur clic, redimensionezi, comprimi și convertești imaginile în formatele"
+" WebP și AVIF, fără să pierzi din calitate."
 
-#: views/settings/page-sections/imagify.php:38
+#. Translators: %1$s = <strong>, %2$s = </strong>.
+#: views/settings/page-sections/imagify.php:41
+msgid "%1$sCompress%2$s all your images in one click"
+msgstr "%1$sComprimi%2$s toate imaginile cu un singur clic"
+
+#. Translators: %1$s = <strong>, %2$s = </strong>.
+#: views/settings/page-sections/imagify.php:49
+msgid "%1$sConvert%2$s images to WebP and Avif"
+msgstr "%1$sConvertești%2$s imaginile în WebP și Avif"
+
+#. Translators: %1$s = <strong>, %2$s = </strong>.
+#: views/settings/page-sections/imagify.php:57
+msgid "%1$sResize%2$s your images on the fly"
+msgstr "%1$sRedimensionezi %2$s imaginile din mers"
+
+#. Translators: %1$s = <strong>, %2$s = </strong>.
+#: views/settings/page-sections/imagify.php:65
+msgid "%1$sFree plan%2$s includes 20MB/month (around 200 images)"
+msgstr ""
+"%1$sPlanul gratuit%2$s include 20 Mo/lună (aproximativ 200 de imagini)"
+
+#. Translators: %1$s = <strong>, %2$s = </strong>.
+#: views/settings/page-sections/imagify.php:83
+msgid "%1$sInstall Imagify, the Easiest WordPress Image Optimizer%2$s"
+msgstr ""
+"%1$sInstalează Imagify, cel mai simplu optimizator de imagini WordPress%2$s"
+
+#: views/settings/page-sections/imagify.php:110
 msgid "Install Imagify"
 msgstr "Instalează Imagify"
 
