@@ -14,7 +14,7 @@ return [
 		],
 		'expected' => [
 			'id'    => 'clear-performance-hints-data-url',
-			'title' => 'Clear Performance Hints data of this URL',
+			'title' => 'Clear Priority Elements of this URL',
 		],
 	],
 	'testShouldReturnNullWhenAdmin' => [
@@ -69,7 +69,7 @@ return [
 		],
 		'expected' => [
 			'id'    => 'clear-performance-hints-data-url',
-			'title' => 'Clear Performance Hints data of this URL',
+			'title' => 'Clear Priority Elements of this URL',
 		],
 	],
 ];
