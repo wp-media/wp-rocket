@@ -4402,7 +4402,7 @@ msgstr "Cette action effacera tous les fichiers du cache."
 
 #: views/settings/page-sections/dashboard.php:169
 msgid "Clear and preload"
-msgstr "Effacer et précharger"
+msgstr "Vider et précharger"
 
 #: views/settings/page-sections/dashboard.php:183
 #: views/settings/page-sections/dashboard.php:189
