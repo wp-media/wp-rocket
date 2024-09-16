@@ -40,7 +40,6 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'db_optimization_process' ) );
 		$this->getContainer()->addShared( 'db_optimization_subscriber', Subscriber::class )
 			->addArgument( $this->getContainer()->get( 'db_optimization' ) )
-			->addArgument( $this->getContainer()->get( 'options' ) )
-			->addTag( 'common_subscriber' );
+			->addArgument( $this->getContainer()->get( 'options' ) );
 	}
 }
