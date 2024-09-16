@@ -58,18 +58,27 @@ class Processor {
 		$url       = untrailingslashit( home_url( add_query_arg( [], $wp->request ) ) );
 		$is_mobile = $this->is_mobile();
 
-		$html_optimized = null;
+		// Set flag as true by default.
+		$optimization_applied = true;
+
 		foreach ( $this->factories as $factory ) {
 			$row = $factory->queries()->get_row( $url, $is_mobile );
+
 			if ( empty( $row ) ) {
-				return $this->inject_beacon( $html, $url, $is_mobile );
+				// Flag false if optimization has not been applied.
+				$optimization_applied = false;
+				continue;
 			}
 
-			$html           = $html_optimized ?? $html;
-			$html_optimized = $factory->get_frontend_controller()->optimize( $html, $row );
+			$html = $factory->get_frontend_controller()->optimize( $html, $row );
 		}
 
-		return $html_optimized;
+		// Check if all optimizations were applied: if not, inject beacon.
+		if ( ! $optimization_applied ) {
+			$html = $this->inject_beacon( $html, $url, $is_mobile );
+		}
+
+		return $html;
 	}
 
 	/**

@@ -27,10 +27,6 @@ class Controller {
 	 * @return void
 	 */
 	public function truncate_tables() {
-		if ( empty( $this->factories ) ) {
-			return;
-		}
-
 		$this->delete_rows();
 	}
 
@@ -68,10 +64,6 @@ class Controller {
 	 * @return void
 	 */
 	public function delete_post( $post_id ) {
-		if ( empty( $this->factories ) ) {
-			return;
-		}
-
 		$url = get_permalink( $post_id );
 
 		if ( false === $url ) {
@@ -89,10 +81,6 @@ class Controller {
 	 * @return void
 	 */
 	public function delete_term( $term_id ) {
-		if ( empty( $this->factories ) ) {
-			return;
-		}
-
 		$url = get_term_link( (int) $term_id );
 
 		if ( is_wp_error( $url ) ) {
@@ -103,6 +91,24 @@ class Controller {
 	}
 
 	/**
+	 * Should allow early if true.
+	 *
+	 * @return bool
+	 */
+	private function is_allowed(): bool {
+		$allowed = false;
+
+		foreach ( $this->factories as $factory ) {
+			if ( $factory->get_context()->is_allowed() ) {
+				$allowed = true;
+				break;
+			}
+		}
+
+		return $allowed;
+	}
+
+	/**
 	 * Deletes rows when triggering clean from admin
 	 *
 	 * @param array $clean An array containing the status and message.
@@ -110,7 +116,7 @@ class Controller {
 	 * @return array
 	 */
 	public function truncate_from_admin( $clean ) {
-		if ( empty( $this->factories ) ) {
+		if ( ! $this->is_allowed() ) {
 			return $clean;
 		}
 
@@ -126,7 +132,7 @@ class Controller {
 			'status'  => 'success',
 			'message' => sprintf(
 				// translators: %1$s = plugin name.
-				__( '%1$s: Critical images cleared!', 'rocket' ),
+				__( '%1$s: Critical images and Lazy Render data was cleared!', 'rocket' ),
 				'<strong>WP Rocket</strong>'
 			),
 		];
@@ -149,6 +155,13 @@ class Controller {
 			$url       = $parse_url['scheme'] . '://' . $parse_url['host'] . $url;
 		}
 
+		/**
+		 * Fires after clearing performance hints data for specific url.
+		 *
+		 * @param string $url Current page URL.
+		 */
+		do_action( 'rocket_performance_hints_data_after_clearing', $url );
+
 		$this->delete_by_url( $url );
 	}
 
@@ -162,6 +175,10 @@ class Controller {
 	 */
 	public function truncate_on_update( $new_version, $old_version ) {
 		if ( version_compare( $old_version, '3.16.1', '>=' ) ) {
+			return;
+		}
+
+		if ( ! $this->is_allowed() ) {
 			return;
 		}
 

@@ -61,12 +61,25 @@ class Controller {
 	}
 
 	/**
+	 * Should terminate early if true.
+	 *
+	 * @return bool
+	 */
+	private function is_allowed(): bool {
+		return ! (
+			'local' === wp_get_environment_type() ||
+			$this->user->is_license_expired_grace_period() ||
+			(bool) $this->options->get( 'remove_unused_css', 0 )
+		);
+	}
+
+	/**
 	 * Send home URL for warm up.
 	 *
 	 * @return void
 	 */
 	public function warm_up_home(): void {
-		if ( (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
+		if ( ! $this->is_allowed() ) {
 			return;
 		}
 
@@ -84,11 +97,7 @@ class Controller {
 	 * @return void
 	 */
 	public function warm_up(): void {
-		if ( 'local' === wp_get_environment_type() ) {
-			return;
-		}
-
-		if ( (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
+		if ( ! $this->is_allowed() ) {
 			return;
 		}
 
@@ -109,10 +118,6 @@ class Controller {
 	 * @return array
 	 */
 	public function fetch_links(): array {
-		if ( $this->user->is_license_expired_grace_period() ) {
-			return [];
-		}
-
 		$user_agent = 'WP Rocket/Pre-fetch Home Links Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1';
 
 		$home_url = home_url();

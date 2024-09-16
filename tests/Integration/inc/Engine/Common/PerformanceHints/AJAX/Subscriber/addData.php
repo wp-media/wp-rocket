@@ -59,7 +59,12 @@ class Test_AddData extends AjaxTestCase {
 
 		$result = $this->callAjaxAction();
 
-		$this->assertSame( $expected['result'], $result->success );
+		if ( ! $expected['result'] ) {
+			$this->assertSame( $expected['message'], $result->data->lcp );
+		}
+		else {
+			$this->assertSame( $expected['result'], $result->success );
+		}
 	}
 
 	public function set_allowed() {

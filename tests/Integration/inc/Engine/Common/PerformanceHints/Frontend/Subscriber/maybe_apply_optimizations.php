@@ -10,7 +10,7 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  *
  * @group PerformanceHints
  */
-class Test_maybe_apply_optimizations extends FilesystemTestCase {
+class Test_MaybeApplyOptimizations extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/Common/PerformanceHints/Frontend/Subscriber/maybe_apply_optimizations.php';
 
 	protected $config;
@@ -20,10 +20,12 @@ class Test_maybe_apply_optimizations extends FilesystemTestCase {
 
 		// Install in set_up_before_class because of exists().
 		self::installAtfTable();
+		self::installLrcTable();
 	}
 
 	public static function tear_down_after_class() {
 		self::uninstallAtfTable();
+		self::uninstallLrcTable();
 
 		parent::tear_down_after_class();
 	}
@@ -35,6 +37,7 @@ class Test_maybe_apply_optimizations extends FilesystemTestCase {
 	}
 
 	public function tear_down() {
+		unset( $_GET );
 		remove_filter( 'rocket_performance_hints_optimization_delay', [ $this, 'add_delay' ] );
 
 		$this->restoreWpHook( 'rocket_buffer' );
@@ -47,8 +50,15 @@ class Test_maybe_apply_optimizations extends FilesystemTestCase {
 	public function testShouldReturnAsExpected( $config, $expected ) {
 		$this->config = $config;
 
-		if ( ! empty( $config['row'] ) ) {
-			self::addLcp( $config['row'] );
+		if ( isset( $config['query_string'] ) ) {
+			$_GET[ $config['query_string'] ] = 1;
+		}
+
+		if ( ! empty( $config['atf']['row'] ) ) {
+			self::addLcp( $config['atf']['row'] );
+		}
+		if ( ! empty( $config['lrc']['row'] ) ) {
+			self::addLrc( $config['lrc']['row'] );
 		}
 
 		if ( isset( $config['filter_delay'] ) ) {
