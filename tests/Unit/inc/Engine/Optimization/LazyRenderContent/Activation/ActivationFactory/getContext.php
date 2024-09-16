@@ -16,7 +16,7 @@ class TestGetContext extends TestCase {
 		$context            = Mockery::mock( ContextInterface::class );
 		$activation_factory = new ActivationFactory( $context );
 
-		$this->assertInstanceOf(
+		$this->assertEquals(
 			ContextInterface::class,
 			$activation_factory->get_context()
 		);
