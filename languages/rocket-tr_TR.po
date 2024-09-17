@@ -2825,7 +2825,7 @@ msgstr "Bu eylem Önemli Resimleri ve Geç İşlenmiş İçeriği temizleyecek."
 #. translators: %1$s = plugin name.
 #: inc/Engine/Common/PerformanceHints/Admin/Controller.php:135
 msgid "%1$s: Critical images and Lazy Render data was cleared!"
-msgstr "%1$s: Önemli resimler ve Lazy Render verileri temizlendi!"
+msgstr "%1$s: Önemli resimler ve Geç İşleme verileri temizlendi!"
 
 #: inc/Engine/Common/PerformanceHints/AJAX/AJAXControllerTrait.php:19
 msgid "Script error"
