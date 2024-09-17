@@ -45,7 +45,7 @@ return [
 		],
 		'expected' => [
 			'id'    => 'clean-saas',
-			'title' => 'Clear Used CSS',
+			'title' => 'Clear RUCSS optimizations',
 		],
 	],
 ];
