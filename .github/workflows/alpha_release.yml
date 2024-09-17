@@ -35,6 +35,12 @@ jobs:
           token: ${{ secrets.GH_WORKFLOW_TOKEN }}
           ref: 'transifex'
 
+      - name: Setup PHP with no coverage driver
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          coverage: none
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
