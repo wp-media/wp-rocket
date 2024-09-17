@@ -16,9 +16,6 @@ use Mockery;
 class Test_TruncateFromAdmin extends TestCase {
 	protected $config;
 
-	private $factories;
-	private $queries;
-
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
 
