@@ -1,0 +1,97 @@
+name: Alpha Release
+
+on:
+  pull_request:
+    types: [ labeled ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    if: ${{ github.event.label.name == 'release-alpha' }}
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: Merge develop into transifex
+        uses: devmasx/merge-branch@master
+        with:
+          type: now
+          from_branch: develop
+          target_branch: transifex
+          github_token: ${{ secrets.GH_WORKFLOW_TOKEN }}
+          message: Merge develop into transifex
+
+      - name: Checkout transifex branch
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GH_WORKFLOW_TOKEN }}
+          ref: 'transifex'
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Install npm Dependencies
+        run: npm ci
+
+      - name: Setup WP-CLI
+        uses: godaddy-wordpress/setup-wp-cli@1
+
+      - name: Update Pot file with new translatable strings
+        run: npm run makepot
+
+      - name: Generate mo files
+        uses: text-adi/build-language-i18n-action@v1
+        env:
+          DIR: languages
+
+      - name: Commit all changes to transifex branch
+        run: |
+          git config --local user.email "bot@wp-media.com"
+          git config --local user.name "WP Media GitHub Actions Bot"
+          git add -A
+          git commit -m "Prepare transifex before alpha release"
+
+      - name: Push all changes
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+          directory: "."
+          github_token: ${{ secrets.GH_WORKFLOW_TOKEN }}
+          branch: "transifex"
+
+      - name: Merge transifex into develop
+        uses: devmasx/merge-branch@master
+        with:
+          type: now
+          from_branch: transifex
+          target_branch: develop
+          github_token: ${{ secrets.GH_WORKFLOW_TOKEN }}
+          message: Merge transifex into develop
+
+      - name: Get Release Version
+        uses: actions-ecosystem/action-regex-match@v2
+        id: release-version
+        with:
+          text: ${{ github.event.pull_request.body }}
+          regex: '^(Release Version:\s*)(.*)$'
+          flags: 'gm'
+
+      - name: Echo extracted version number
+        run: |
+          echo "${{ steps.release-version.outputs.group2 }}"
+
+      - name: Create the tag/release
+        if: ${{ steps.release-version.outputs.group2 != '' }}
+        run: gh release create v${{ steps.release-version.outputs.group2 }} --draft --prerelease --notes "${{ github.event.pull_request.body }}" --title "${{ steps.release-version.outputs.group2 }}" --target "develop"
+        env:
+          GH_TOKEN: ${{ secrets.GH_WORKFLOW_TOKEN }}
