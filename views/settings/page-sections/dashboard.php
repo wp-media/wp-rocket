@@ -22,7 +22,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$manual_preload = (bool) get_rocket_option( 'manual_preload', false );
+$rocket_manual_preload = (bool) get_rocket_option( 'manual_preload', false );
 ?>
 <div id="<?php echo esc_attr( $data['id'] ); ?>" class="wpr-Page">
 	<div class="wpr-sectionHeader">
@@ -160,13 +160,13 @@ $manual_preload = (bool) get_rocket_option( 'manual_preload', false );
 					<?php if ( current_user_can( 'rocket_purge_cache' ) ) : ?>
 					<div class="wpr-field">
 						<h4 class="wpr-title3"><?php esc_html_e( 'Cache files', 'rocket' ); ?></h4>
-						<p><?php echo $manual_preload ? esc_html__( 'This action will clear and preload all the cache files.', 'rocket' ) : esc_html__( 'This action will clear all the cache files.', 'rocket' ); ?></p>
+						<p><?php echo $rocket_manual_preload ? esc_html__( 'This action will clear and preload all the cache files.', 'rocket' ) : esc_html__( 'This action will clear all the cache files.', 'rocket' ); ?></p>
 						<?php
 						$this->render_action_button(
 							'link',
 							'purge_cache',
 							[
-								'label'      => $manual_preload ? __( 'Clear and preload', 'rocket' ) : __( 'Clear', 'rocket' ),
+								'label'      => $rocket_manual_preload ? __( 'Clear and preload', 'rocket' ) : __( 'Clear', 'rocket' ),
 								'parameters' => [
 									'type' => 'all',
 								],

@@ -23,7 +23,7 @@ return [
 		],
 		'expected' => [
 			'id'    => 'clear-performance-hints',
-			'title' => 'Clear Performance Hints data',
+			'title' => 'Clear Priority Elements',
 		],
 	],
 	'testShouldAddItemWithPerformanceHintTitleWhenOnlyATFIsAllowed' => [
@@ -37,7 +37,7 @@ return [
 		],
 		'expected' => [
 			'id'    => 'clear-performance-hints',
-			'title' => 'Clear Performance Hints data',
+			'title' => 'Clear Priority Elements',
 		],
 	],
 	'testShouldAddItemWithPerformanceHintTitleWhenOnlyLRCIsAllowed' => [
@@ -51,7 +51,7 @@ return [
 		],
 		'expected' => [
 			'id'    => 'clear-performance-hints',
-			'title' => 'Clear Performance Hints data',
+			'title' => 'Clear Priority Elements',
 		],
 	],
 	'testShouldReturnNullWhenNotAdmin' => [
