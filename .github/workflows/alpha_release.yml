@@ -42,7 +42,7 @@ jobs:
           cache: npm
 
       - name: Install npm Dependencies
-        run: npm ci
+        run: npm i
 
       - name: Setup WP-CLI
         uses: godaddy-wordpress/setup-wp-cli@1
