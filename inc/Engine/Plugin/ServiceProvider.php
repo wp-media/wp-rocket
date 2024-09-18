@@ -38,8 +38,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function register(): void {
 		$this->getContainer()->add( 'plugin_renewal_notice', RenewalNotice::class )
 			->addArgument( $this->getContainer()->get( 'user' ) )
-			->addArgument( $this->getContainer()->get( 'template_path' ) . '/plugins/' )
-			->addTag( 'common_subscriber' );
+			->addArgument( $this->getContainer()->get( 'template_path' ) . '/plugins/' );
 
 		$this->getContainer()->addShared( 'plugin_updater_common_subscriber', UpdaterApiCommonSubscriber::class )
 			->addArgument(
@@ -50,16 +49,14 @@ class ServiceProvider extends AbstractServiceProvider {
 					'settings_nonce_key' => WP_ROCKET_PLUGIN_SLUG,
 					'plugin_options'     => $this->getContainer()->get( 'options' ),
 				]
-			)
-			->addTag( 'common_subscriber' );
+			);
 
 		$this->getContainer()->addShared( 'plugin_information_subscriber', InformationSubscriber::class )
 			->addArgument(
 				[
 					'plugin_file' => WP_ROCKET_FILE,
 				]
-			)
-			->addTag( 'common_subscriber' );
+			);
 
 		$this->getContainer()->addShared( 'plugin_updater_subscriber', UpdaterSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'plugin_renewal_notice' ) )
@@ -73,7 +70,6 @@ class ServiceProvider extends AbstractServiceProvider {
 						'1x' => WP_ROCKET_ASSETS_IMG_URL . 'icon-128x128.png',
 					],
 				]
-			)
-			->addTag( 'common_subscriber' );
+			);
 	}
 }

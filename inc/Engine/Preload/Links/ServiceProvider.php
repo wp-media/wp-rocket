@@ -37,11 +37,9 @@ class ServiceProvider extends AbstractServiceProvider {
 		$options = $this->getContainer()->get( 'options' );
 
 		$this->getContainer()->addShared( 'preload_links_admin_subscriber', AdminSubscriber::class )
-			->addArgument( $options )
-			->addTag( 'common_subscriber' );
+			->addArgument( $options );
 		$this->getContainer()->addShared( 'preload_links_subscriber', Subscriber::class )
 			->addArgument( $options )
-			->addArgument( rocket_direct_filesystem() )
-			->addTag( 'common_subscriber' );
+			->addArgument( rocket_direct_filesystem() );
 	}
 }

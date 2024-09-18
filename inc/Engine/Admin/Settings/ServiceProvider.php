@@ -51,7 +51,6 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'template_path' ) )
 			->addArgument( $this->getContainer()->get( 'options' ) );
 		$this->getContainer()->addShared( 'settings_page_subscriber', Subscriber::class )
-			->addArgument( $this->getContainer()->get( 'settings_page' ) )
-			->addTag( 'admin_subscriber' );
+			->addArgument( $this->getContainer()->get( 'settings_page' ) );
 	}
 }

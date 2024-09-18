@@ -42,9 +42,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $options );
 		$this->getContainer()->addShared( 'cdn_subscriber', Subscriber::class )
 			->addArgument( $options )
-			->addArgument( $this->getContainer()->get( 'cdn' ) )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()->addShared( 'cdn_admin_subscriber', AdminSubscriber::class )
-		->addTag( 'admin_subscriber' );
+			->addArgument( $this->getContainer()->get( 'cdn' ) );
+		$this->getContainer()->addShared( 'cdn_admin_subscriber', AdminSubscriber::class );
 	}
 }

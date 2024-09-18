@@ -34,7 +34,6 @@ class Common_Subscribers extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register(): void {
-		$this->getContainer()->addShared( 'detect_missing_tags_subscriber', Detect_Missing_Tags_Subscriber::class )
-			->addTag( 'common_subscriber' );
+		$this->getContainer()->addShared( 'detect_missing_tags_subscriber', Detect_Missing_Tags_Subscriber::class );
 	}
 }
