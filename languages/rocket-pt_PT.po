@@ -5,9 +5,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.17-alpha4\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-rocket\n"
-"POT-Creation-Date: 2024-09-13T17:57:31+00:00\n"
+"Project-Id-Version: WP Rocket 3.17.0.1-alpha1\n"
+"Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
+"POT-Creation-Date: 2024-09-17T14:50:58+00:00\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Pedro Mendonça <ped.gaspar@gmail.com>, 2024\n"
 "Language-Team: Portuguese (Portugal) (https://app.transifex.com/wp-media/teams/18133/pt_PT/)\n"
@@ -17,25 +17,30 @@ msgstr ""
 "Language: pt_PT\n"
 "Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 "X-Domain: rocket\n"
-"X-Generator: WP-CLI 2.4.0\n"
+"X-Generator: WP-CLI 2.11.0\n"
 
 #. Plugin Name of the plugin
+#: wp-rocket.php
 msgid "WP Rocket"
 msgstr "WP Rocket"
 
 #. Plugin URI of the plugin
+#: wp-rocket.php
 msgid "https://wp-rocket.me"
 msgstr "https://wp-rocket.me"
 
 #. Description of the plugin
+#: wp-rocket.php
 msgid "The best WordPress performance plugin."
 msgstr "O melhor plugin de desempenho para WordPress."
 
 #. Author of the plugin
+#: wp-rocket.php
 msgid "WP Media"
 msgstr "WP Media"
 
 #. Author URI of the plugin
+#: wp-rocket.php
 msgid "https://wp-media.me"
 msgstr "https://wp-media.me"
 
@@ -2535,11 +2540,11 @@ msgstr "Consulte a sua chave de API"
 #: inc/Engine/Admin/Settings/Page.php:2251
 msgid ""
 "%1$sWP Rocket:%2$s the plugin has been updated to the 3.17 version. New "
-"feature: %3$sLazy Render Content%4$s. Check out our documentation to learn "
-"more about it."
+"feature: %3$sAutomatic Lazy Rendering%4$s. Check out our documentation to "
+"learn more about it."
 msgstr ""
-"%1$sWP Rocket:%2$s o plugin foi actualizado para a versão 3.17. Noca "
-"funcionalidade: %3$sApresentação diferida de conteúdo%4$s. Consulte a nossa "
+"%1$sWP Rocket:%2$s o plugin foi actualizado para a versão 3.17. Nova "
+"funcionalidade: %3$sApresentação diferida automática%4$s. Consulte a nossa "
 "documentação saber mais."
 
 #: inc/Engine/Admin/Settings/Settings.php:361
@@ -2687,14 +2692,10 @@ msgid "RocketCDN cache purge successful."
 msgstr "A cache da RocketCDN foi limpa com sucesso."
 
 #: inc/Engine/CDN/RocketCDN/RESTSubscriber.php:137
-#: tests/Integration/inc/Engine/CDN/RocketCDN/RESTSubscriber/enable.php:72
-#: tests/Integration/inc/Engine/CDN/RocketCDN/RESTSubscriber/registerEnableRoute.php:302
 msgid "RocketCDN enabled"
 msgstr "RocketCDN activada"
 
 #: inc/Engine/CDN/RocketCDN/RESTSubscriber.php:160
-#: tests/Integration/inc/Engine/CDN/RocketCDN/RESTSubscriber/disable.php:31
-#: tests/Integration/inc/Engine/CDN/RocketCDN/RESTSubscriber/registerDisableRoute.php:147
 msgid "RocketCDN disabled"
 msgstr "RocketCDN desactivada"
 
