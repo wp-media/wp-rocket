@@ -40,19 +40,16 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		// Sucuri Addon.
 		$this->getContainer()->addShared( 'sucuri_subscriber', SucuriSubscriber::class )
-			->addArgument( $options )
-			->addTag( 'common_subscriber' );
+			->addArgument( $options );
 
 		$this->getContainer()->addShared( 'webp_admin_subscriber', WebPAdminSubscriber::class )
 			->addArgument( $options )
 			->addArgument( $this->getContainer()->get( 'cdn_subscriber' ) )
-			->addArgument( $this->getContainer()->get( 'beacon' ) )
-			->addTag( 'common_subscriber' );
+			->addArgument( $this->getContainer()->get( 'beacon' ) );
 
 		$this->getContainer()->addShared( 'webp_subscriber', WebPSubscriber::class )
 			->addArgument( $options )
 			->addArgument( $this->getContainer()->get( 'options_api' ) )
-			->addArgument( $this->getContainer()->get( 'cdn_subscriber' ) )
-			->addTag( 'common_subscriber' );
+			->addArgument( $this->getContainer()->get( 'cdn_subscriber' ) );
 	}
 }

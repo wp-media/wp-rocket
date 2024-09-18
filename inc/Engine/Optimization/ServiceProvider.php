@@ -50,29 +50,23 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'buffer_optimization', Optimization::class )
 			->addArgument( $this->getContainer()->get( 'tests' ) );
 		$this->getContainer()->addShared( 'buffer_subscriber', BufferSubscriber::class )
-			->addArgument( $this->getContainer()->get( 'buffer_optimization' ) )
-			->addTag( 'front_subscriber' );
+			->addArgument( $this->getContainer()->get( 'buffer_optimization' ) );
 		$this->getContainer()->addShared( 'cache_dynamic_resource', CacheDynamicResource::class )
 			->addArgument( $options )
 			->addArgument( WP_ROCKET_CACHE_BUSTING_PATH )
-			->addArgument( WP_ROCKET_CACHE_BUSTING_URL )
-			->addTag( 'front_subscriber' );
+			->addArgument( WP_ROCKET_CACHE_BUSTING_URL );
 		$this->getContainer()->add( 'optimize_google_fonts', Combine::class );
 		$this->getContainer()->add( 'optimize_google_fonts_v2', CombineV2::class );
 		$this->getContainer()->addShared( 'combine_google_fonts_subscriber', Subscriber::class )
 			->addArgument( $this->getContainer()->get( 'optimize_google_fonts' ) )
 			->addArgument( $this->getContainer()->get( 'optimize_google_fonts_v2' ) )
-			->addArgument( $options )
-			->addTag( 'front_subscriber' );
+			->addArgument( $options );
 		$this->getContainer()->addShared( 'minify_css_subscriber', Minify\CSS\Subscriber::class )
 			->addArgument( $options )
-			->addArgument( $filesystem )
-			->addTag( 'front_subscriber' );
+			->addArgument( $filesystem );
 		$this->getContainer()->addShared( 'minify_js_subscriber', Minify\JS\Subscriber::class )
 			->addArgument( $options )
-			->addArgument( $filesystem )
-			->addTag( 'front_subscriber' );
-		$this->getContainer()->addShared( 'ie_conditionals_subscriber', IEConditionalSubscriber::class )
-			->addTag( 'front_subscriber' );
+			->addArgument( $filesystem );
+		$this->getContainer()->addShared( 'ie_conditionals_subscriber', IEConditionalSubscriber::class );
 	}
 }
