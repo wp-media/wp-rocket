@@ -2558,7 +2558,7 @@ msgid ""
 "learn more about it."
 msgstr ""
 "%1$sWP Rocket:%2$sle plugin a été mis à jour vers la version 3.17. Nouvelle "
-"fonctionnalité :%3$sRendu automatique différé%4$s. Consultez notre "
+"fonctionnalité :%3$sRendu différé automatique%4$s. Consultez notre "
 "documentation pour en savoir plus."
 
 #: inc/Engine/Admin/Settings/Settings.php:361
