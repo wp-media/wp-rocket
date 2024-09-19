@@ -126,7 +126,7 @@ class Controller implements ControllerInterface {
 			'is_mobile'     => $is_mobile,
 			'status'        => $status_code,
 			'error_message' => $status_message,
-			'lcp'           => ( is_array( $lcp ) || is_object( $lcp ) ) ? wp_json_encode( $lcp ) : $lcp, // @phpstan-ignore-line
+			'lcp'           => is_object( $lcp ) ? wp_json_encode( $lcp ) : $lcp,
 			'viewport'      => wp_json_encode( $viewport ),
 			'last_accessed' => current_time( 'mysql', true ),
 		];
