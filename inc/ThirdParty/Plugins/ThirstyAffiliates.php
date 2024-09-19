@@ -22,13 +22,13 @@ class ThirstyAffiliates implements Subscriber_Interface {
 	 *
 	 * @since 3.10.8
 	 *
-	 * @param string[]|object $excluded Array of excluded patterns.
-	 * @param string[]        $default Array of default excluded patterns.
+	 * @param string[] $excluded Array of excluded patterns.
+	 * @param string[] $default Array of default excluded patterns.
 	 *
 	 * @return array
 	 */
 	public function exclude_link_prefix( $excluded, $default ): array {
-		if ( ! is_array( $excluded ) ) {
+		if ( ! is_array( $excluded ) ) { // @phpstan-ignore-line
 			$excluded = (array) $excluded;
 		}
 
