@@ -72,7 +72,6 @@ abstract class AbstractSafeAPIClient {
 
 		$params['method'] = strtoupper( $method );
 
-		/** @var WP_Error|array $response response from the request. */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 		$response = $this->send_remote_request( $api_url, $method, $params, $safe );
 
 		if ( is_wp_error( $response ) ) {
