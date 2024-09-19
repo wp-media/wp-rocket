@@ -23,7 +23,7 @@ class PurgeExpiredCache {
 	 *
 	 * @since  3.4
 	 *
-	 * @var \WP_Filesystem_Direct
+	 * @var null|\WP_Filesystem_Direct
 	 */
 	private $filesystem;
 
@@ -76,7 +76,7 @@ class PurgeExpiredCache {
 
 		$urls = array_unique( $urls );
 
-		if ( empty( $this->filesystem ) ) { // @phpstan-ignore-line
+		if ( empty( $this->filesystem ) ) {
 			$this->filesystem = rocket_direct_filesystem();
 		}
 
