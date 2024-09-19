@@ -38,7 +38,7 @@ class Subscriber extends AbstractWebp implements Subscriber_Interface {
 	/**
 	 * \WP_Filesystem_Direct instance.
 	 *
-	 * @var \WP_Filesystem_Direct
+	 * @var null|\WP_Filesystem_Direct
 	 */
 	private $filesystem;
 
@@ -118,7 +118,7 @@ class Subscriber extends AbstractWebp implements Subscriber_Interface {
 			return $html . '<!-- Rocket no webp -->';
 		}
 
-		if ( ! isset( $this->filesystem ) ) { // @phpstan-ignore-line
+		if ( ! isset( $this->filesystem ) ) {
 			$this->filesystem = \rocket_direct_filesystem();
 		}
 
