@@ -9,9 +9,9 @@ class CloudflareFacade {
 	/**
 	 * Hooks class instance
 	 *
-	 * @var Hooks
+	 * @var null|Hooks
 	 */
-	private $hooks;
+	private $hooks = null;
 
 	/**
 	 * Instantiate the hooks class
@@ -28,7 +28,7 @@ class CloudflareFacade {
 	 * @return void
 	 */
 	public function purge_everything() {
-		if ( is_null( $this->hooks ) ) { // @phpstan-ignore-line
+		if ( is_null( $this->hooks ) ) {
 			$this->set_hooks();
 		}
 
@@ -43,7 +43,7 @@ class CloudflareFacade {
 	 * @return void
 	 */
 	public function purge_urls( $post_ids ) {
-		if ( is_null( $this->hooks ) ) { // @phpstan-ignore-line
+		if ( is_null( $this->hooks ) ) {
 			$this->set_hooks();
 		}
 
