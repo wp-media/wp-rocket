@@ -135,11 +135,7 @@ class ProcessorService {
 		}
 
 		// For successful job status.
-		if (
-			isset( $job_state, $job_details->data->critical_path )
-			&&
-			'complete' === $job_state // @phpstan-ignore-line
-		) {
+		if ( isset( $job_state, $job_details->data->critical_path ) ) {
 			return $this->on_job_success( $item_path, $item_url, $job_details->data->critical_path, $is_mobile, $item_type );
 		}
 
