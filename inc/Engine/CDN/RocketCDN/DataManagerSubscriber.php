@@ -104,16 +104,12 @@ class DataManagerSubscriber implements Subscriber_Interface {
 			$data['message'] = 'unauthorized_user';
 
 			wp_send_json_error( $data );
-
-			return; // @phpstan-ignore-line
 		}
 
 		if ( empty( $_POST['cdn_url'] ) ) {
 			$data['message'] = 'cdn_url_empty';
 
 			wp_send_json_error( $data );
-
-			return; // @phpstan-ignore-line
 		}
 
 		$cdn_url = filter_var( wp_unslash( $_POST['cdn_url'] ), FILTER_VALIDATE_URL );
@@ -122,8 +118,6 @@ class DataManagerSubscriber implements Subscriber_Interface {
 			$data['message'] = 'cdn_url_invalid_format';
 
 			wp_send_json_error( $data );
-
-			return; // @phpstan-ignore-line
 		}
 
 		$this->cdn_options->enable( esc_url_raw( $cdn_url ) );
@@ -156,8 +150,6 @@ class DataManagerSubscriber implements Subscriber_Interface {
 			$data['message'] = 'unauthorized_user';
 
 			wp_send_json_error( $data );
-
-			return; // @phpstan-ignore-line
 		}
 
 		$this->cdn_options->disable();
@@ -226,14 +218,10 @@ class DataManagerSubscriber implements Subscriber_Interface {
 
 		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			wp_send_json_error();
-
-			return; // @phpstan-ignore-line
 		}
 
 		if ( get_option( 'rocketcdn_process' ) ) {
 			wp_send_json_success();
-
-			return; // @phpstan-ignore-line
 		}
 
 		wp_send_json_error();
@@ -277,13 +265,11 @@ class DataManagerSubscriber implements Subscriber_Interface {
 		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			$data['message'] = 'unauthorized_user';
 			wp_send_json_error( $data );
-			return; // @phpstan-ignore-line
 		}
 
 		if ( empty( $_POST['cdn_url'] ) || empty( $_POST['cdn_token'] ) ) {
 			$data['message'] = 'cdn_values_empty';
 			wp_send_json_error( $data );
-			return; // @phpstan-ignore-line
 		}
 
 		$token   = sanitize_key( $_POST['cdn_token'] );
@@ -292,13 +278,11 @@ class DataManagerSubscriber implements Subscriber_Interface {
 		if ( ! $cdn_url ) {
 			$data['message'] = 'cdn_url_invalid_format';
 			wp_send_json_error( $data );
-			return; // @phpstan-ignore-line
 		}
 
 		if ( 40 !== strlen( $token ) ) {
 			$data['message'] = 'invalid_token_length';
 			wp_send_json_error( $data );
-			return; // @phpstan-ignore-line
 		}
 
 		$current_token = get_option( 'rocketcdn_user_token' );
@@ -307,7 +291,6 @@ class DataManagerSubscriber implements Subscriber_Interface {
 		if ( ! empty( $current_token ) ) {
 			$data['message'] = 'token_already_set';
 			wp_send_json_error( $data );
-			return; // @phpstan-ignore-line
 		}
 
 		update_option( 'rocketcdn_user_token', $token );
