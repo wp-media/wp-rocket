@@ -185,12 +185,12 @@ class Notices {
 	 *
 	 * @since 3.11
 	 *
-	 * @param object|array $data Localize script data.
+	 * @param array $data Localize script data.
 	 *
 	 * @return array
 	 */
 	public function add_localize_script_data( $data ): array {
-		if ( ! is_array( $data ) ) {
+		if ( ! is_array( $data ) ) { // @phpstan-ignore-line
 			$data = (array) $data;
 		}
 
