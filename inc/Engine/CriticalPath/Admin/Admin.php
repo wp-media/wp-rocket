@@ -51,8 +51,6 @@ class Admin {
 			! current_user_can( 'rocket_regenerate_critical_css' )
 		) {
 			wp_send_json_error();
-
-			return; // @phpstan-ignore-line - Needed to prevent further execution.
 		}
 
 		$cpcss_pending = get_transient( 'rocket_cpcss_generation_pending' );
@@ -68,8 +66,6 @@ class Admin {
 		if ( empty( $cpcss_pending ) ) {
 			$this->generation_complete();
 			wp_send_json_success( [ 'status' => 'cpcss_complete' ] );
-
-			return; // @phpstan-ignore-line - Needed to prevent further execution.
 		}
 
 		set_transient( 'rocket_cpcss_generation_pending', $cpcss_pending, HOUR_IN_SECONDS );
