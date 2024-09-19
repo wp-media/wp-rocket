@@ -27,6 +27,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'expired_cache_purge_subscriber',
 		'preload_caches_query',
 		'cache_config',
+		'taxonomy_subscriber',
 	];
 
 	/**
@@ -75,5 +76,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'cache_config', ConfigSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'options' ) )
 			->addArgument( $this->getContainer()->get( 'options_api' ) );
+		$this->getContainer()->addShared( 'taxonomy_subscriber', TaxonomySubscriber::class );
 	}
 }

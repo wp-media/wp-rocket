@@ -400,6 +400,7 @@ class Plugin {
 			'performance_hints_warmup_subscriber',
 			'performance_hints_admin_subscriber',
 			'lrc_frontend_subscriber',
+			'taxonomy_subscriber',
 		];
 
 		$host_type = HostResolver::get_host_service();
