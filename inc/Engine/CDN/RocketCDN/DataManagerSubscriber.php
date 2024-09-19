@@ -63,30 +63,22 @@ class DataManagerSubscriber implements Subscriber_Interface {
 
 		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			wp_send_json_error( 'unauthorized_user' );
-
-			return; // @phpstan-ignore-line
 		}
 
 		if ( empty( $_POST['value'] ) ) {
 			delete_option( 'rocketcdn_user_token' );
 
 			wp_send_json_success( 'user_token_deleted' );
-
-			return; // @phpstan-ignore-line
 		}
 
 		if ( ! is_string( $_POST['value'] ) ) {
 			wp_send_json_error( 'invalid_token' );
-
-			return; // @phpstan-ignore-line
 		}
 
 		$token = sanitize_key( $_POST['value'] );
 
 		if ( 40 !== strlen( $token ) ) {
 			wp_send_json_error( 'invalid_token_length' );
-
-			return; // @phpstan-ignore-line
 		}
 
 		update_option( 'rocketcdn_user_token', $token );
