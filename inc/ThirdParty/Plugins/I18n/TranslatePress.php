@@ -144,12 +144,12 @@ class TranslatePress implements Subscriber_Interface {
 	/**
 	 * Gets the active languages slugs
 	 *
-	 * @param object|array $codes Array of languages codes.
+	 * @param array $codes Array of languages codes.
 	 *
 	 * @return array
 	 */
 	public function get_active_languages_codes( $codes ) {
-		if ( ! is_array( $codes ) ) {
+		if ( ! is_array( $codes ) ) { // @phpstan-ignore-line
 			$codes = (array) $codes;
 		}
 
@@ -208,15 +208,15 @@ class TranslatePress implements Subscriber_Interface {
 	/**
 	 * Gets all translations URLs for a post
 	 *
-	 * @param object|array $urls Array of translated URLs.
-	 * @param string       $url URL to use.
-	 * @param string       $post_type Post type.
-	 * @param string       $regex Pattern to include at the end.
+	 * @param array  $urls Array of translated URLs.
+	 * @param string $url URL to use.
+	 * @param string $post_type Post type.
+	 * @param string $regex Pattern to include at the end.
 	 *
 	 * @return array
 	 */
 	public function get_translated_post_urls( $urls, $url, $post_type, $regex ) {
-		if ( ! is_array( $urls ) ) {
+		if ( ! is_array( $urls ) ) { // @phpstan-ignore-line
 			$urls = (array) $urls;
 		}
 
