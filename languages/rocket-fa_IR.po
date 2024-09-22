@@ -5,9 +5,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.17-alpha4\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-rocket\n"
-"POT-Creation-Date: 2024-09-13T17:57:31+00:00\n"
+"Project-Id-Version: WP Rocket 3.17.0.1-alpha2\n"
+"Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
+"POT-Creation-Date: 2024-09-18T10:10:31+00:00\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Mohammad Yousefzadeh <regedit2007@yahoo.com>, 2024\n"
 "Language-Team: Persian (Iran) (https://app.transifex.com/wp-media/teams/18133/fa_IR/)\n"
@@ -17,25 +17,30 @@ msgstr ""
 "Language: fa_IR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Domain: rocket\n"
-"X-Generator: WP-CLI 2.4.0\n"
+"X-Generator: WP-CLI 2.11.0\n"
 
 #. Plugin Name of the plugin
+#: wp-rocket.php
 msgid "WP Rocket"
 msgstr "راکت وردپرس"
 
 #. Plugin URI of the plugin
+#: wp-rocket.php
 msgid "https://wp-rocket.me"
 msgstr "https://wp-rocket.me"
 
 #. Description of the plugin
+#: wp-rocket.php
 msgid "The best WordPress performance plugin."
 msgstr "بهترین افزونه افزایش سرعت وردپرس"
 
 #. Author of the plugin
+#: wp-rocket.php
 msgid "WP Media"
 msgstr "سرویس WP Media"
 
 #. Author URI of the plugin
+#: wp-rocket.php
 msgid "https://wp-media.me"
 msgstr "https://wp-media.me"
 
@@ -2463,8 +2468,8 @@ msgstr "پیدا کردن کلید API شما"
 #: inc/Engine/Admin/Settings/Page.php:2251
 msgid ""
 "%1$sWP Rocket:%2$s the plugin has been updated to the 3.17 version. New "
-"feature: %3$sLazy Render Content%4$s. Check out our documentation to learn "
-"more about it."
+"feature: %3$sAutomatic Lazy Rendering%4$s. Check out our documentation to "
+"learn more about it."
 msgstr ""
 "%1$sراکت وردپرس:%2$sبه نسخه 3.17 بروزرسانی شد. ویژگی جدید:%3$sرندر تنبل "
 "محتوا%4$s. مستندات ما را برای راهنمایی بیشتر مطالعه کنید."
@@ -2606,14 +2611,10 @@ msgid "RocketCDN cache purge successful."
 msgstr "حذف کش RocketCDN موفق بود."
 
 #: inc/Engine/CDN/RocketCDN/RESTSubscriber.php:137
-#: tests/Integration/inc/Engine/CDN/RocketCDN/RESTSubscriber/enable.php:72
-#: tests/Integration/inc/Engine/CDN/RocketCDN/RESTSubscriber/registerEnableRoute.php:302
 msgid "RocketCDN enabled"
 msgstr "RocketCDN فعال شد"
 
 #: inc/Engine/CDN/RocketCDN/RESTSubscriber.php:160
-#: tests/Integration/inc/Engine/CDN/RocketCDN/RESTSubscriber/disable.php:31
-#: tests/Integration/inc/Engine/CDN/RocketCDN/RESTSubscriber/registerDisableRoute.php:147
 msgid "RocketCDN disabled"
 msgstr "RocketCDN غیرفعال شد"
 
