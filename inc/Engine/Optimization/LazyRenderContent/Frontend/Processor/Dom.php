@@ -60,7 +60,12 @@ class Dom implements ProcessorInterface {
 			return '';
 		}
 
-		$exclusions = array_map( 'preg_quote', $exclusions );
+		$exclusions = array_map(
+			function ( $exclusion ) {
+				return preg_quote( $exclusion, '#' );
+			},
+			$exclusions
+		);
 
 		return implode( '|', $exclusions );
 	}
