@@ -29,6 +29,43 @@ class Dom implements ProcessorInterface {
 	private $max_hashes;
 
 	/**
+	 * Array of patterns to exclude from hash injection.
+	 *
+	 * @since 3.17
+	 *
+	 * @var array
+	 */
+	private $exclusions;
+
+	/**
+	 * Sets the exclusions list
+	 *
+	 * @param string[] $exclusions The list of patterns to exclude from hash injection.
+	 *
+	 * @return void
+	 */
+	public function set_exclusions( $exclusions ): void {
+		$this->exclusions = $exclusions;
+	}
+
+	/**
+	 * Gets the exclusions pattern
+	 *
+	 * @return string
+	 */
+	private function get_exclusions_pattern(): string {
+		$exclusions = $this->exclusions;
+
+		if ( empty( $exclusions ) ) {
+			return '';
+		}
+
+		$exclusions = array_map( 'preg_quote', $exclusions );
+
+		return implode( '|', $exclusions );
+	}
+
+	/**
 	 * Add hashes to the HTML elements
 	 *
 	 * @param string $html The HTML content.
@@ -106,6 +143,10 @@ class Dom implements ProcessorInterface {
 			// Calculate the hash of the opening tag.
 			$child_html       = $child->ownerDocument->saveHTML( $child ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 			$opening_tag_html = strstr( $child_html, '>', true ) . '>';
+
+			if ( preg_match( '/(' . $this->get_exclusions_pattern() . ')/i', $opening_tag_html ) ) {
+				continue;
+			}
 
 			$hash = md5( $opening_tag_html . $this->count );
 
