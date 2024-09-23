@@ -7,7 +7,6 @@ use DOMDocument;
 use WP_Rocket\Logger\Logger;
 
 class Dom implements ProcessorInterface {
-
 	use HelperTrait;
 
 	/**
@@ -35,7 +34,7 @@ class Dom implements ProcessorInterface {
 	 *
 	 * @var array
 	 */
-	private $exclusions;
+	private $exclusions = [];
 
 	/**
 	 * Sets the exclusions list
@@ -54,9 +53,7 @@ class Dom implements ProcessorInterface {
 	 * @return string
 	 */
 	private function get_exclusions_pattern(): string {
-		$exclusions = $this->exclusions;
-
-		if ( empty( $exclusions ) ) {
+		if ( empty( $this->exclusions ) ) {
 			return '';
 		}
 
@@ -64,7 +61,7 @@ class Dom implements ProcessorInterface {
 			function ( $exclusion ) {
 				return preg_quote( $exclusion, '#' );
 			},
-			$exclusions
+			$this->exclusions
 		);
 
 		return implode( '|', $exclusions );
@@ -149,7 +146,13 @@ class Dom implements ProcessorInterface {
 			$child_html       = $child->ownerDocument->saveHTML( $child ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 			$opening_tag_html = strstr( $child_html, '>', true ) . '>';
 
-			if ( preg_match( '/(' . $this->get_exclusions_pattern() . ')/i', $opening_tag_html ) ) {
+			$exclusions_pattern = $this->get_exclusions_pattern();
+
+			if (
+				! empty( $exclusions_pattern )
+				&&
+				preg_match( '/(' . $exclusions_pattern . ')/i', $opening_tag_html )
+			) {
 				continue;
 			}
 
