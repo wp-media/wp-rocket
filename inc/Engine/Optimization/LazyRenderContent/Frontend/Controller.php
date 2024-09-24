@@ -159,11 +159,11 @@ class Controller implements ControllerInterface {
 		/**
 		 * Filters the list of patterns to exclude from hash injection.
 		 *
-		 * @since 3.17
+		 * @since 3.17.0.2
 		 *
 		 * @param string[] $exclusions The list of patterns to exclude from hash injection.
 		 */
-		$exclusions = wpm_apply_filters_typed( 'array', 'rocket_lrc_exclusions', [] );
+		$exclusions = wpm_apply_filters_typed( 'string[]', 'rocket_lrc_exclusions', [] );
 
 		return $exclusions;
 	}
