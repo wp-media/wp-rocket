@@ -30,7 +30,7 @@ class Dom implements ProcessorInterface {
 	/**
 	 * Array of patterns to exclude from hash injection.
 	 *
-	 * @since 3.17
+	 * @since 3.17.0.2
 	 *
 	 * @var array
 	 */
@@ -59,7 +59,7 @@ class Dom implements ProcessorInterface {
 
 		$exclusions = array_map(
 			function ( $exclusion ) {
-				return preg_quote( $exclusion, '#' );
+				return preg_quote( $exclusion, '/' );
 			},
 			$this->exclusions
 		);

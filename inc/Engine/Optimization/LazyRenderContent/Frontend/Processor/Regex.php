@@ -30,7 +30,7 @@ class Regex implements ProcessorInterface {
 	/**
 	 * Array of patterns to exclude from hash injection.
 	 *
-	 * @since 3.17
+	 * @since 3.17.0.2
 	 *
 	 * @var array
 	 */
