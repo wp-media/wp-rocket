@@ -302,4 +302,15 @@ class DynamicLists extends Abstract_Render {
 
 		return $lists->exclude_js_template ?? [];
 	}
+
+	/**
+	 * Get the lazy rendered exclusions.
+	 *
+	 * @return array
+	 */
+	public function get_lrc_exclusions(): array {
+		$lists = $this->providers['defaultlists']->data_manager->get_lists();
+
+		return $lists->lazy_rendering_exclusions ?? [];
+	}
 }

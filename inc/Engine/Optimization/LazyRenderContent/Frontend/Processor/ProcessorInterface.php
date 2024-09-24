@@ -12,4 +12,13 @@ interface ProcessorInterface {
 	 * @return string
 	 */
 	public function add_hashes( $html );
+
+	/**
+	 * Sets the exclusions list
+	 *
+	 * @param string[] $exclusions The list of patterns to exclude from hash injection.
+	 *
+	 * @return void
+	 */
+	public function set_exclusions( array $exclusions ): void;
 }
