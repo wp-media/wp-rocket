@@ -190,7 +190,7 @@ trait AbstractManager {
 	 *
 	 * @param string  $url Url from DB row.
 	 * @param boolean $is_mobile Is mobile from DB row.
-	 * @param int  $error_code error code.
+	 * @param int     $error_code error code.
 	 * @param string  $error_message error message.
 	 * @param string  $previous_message Previous saved message.
 	 *
