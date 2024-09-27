@@ -435,14 +435,20 @@ class Subscriber extends AbstractWebp implements Subscriber_Interface {
 
 		if ( $this->filesystem->exists( $src_path_webp ) ) {
 			// File name: image.jpg => image.webp.
-			return preg_replace( '@\.' . $src_url['extension'] . '$@', '.webp', $src_url['src'] ) . $src_url['query'];
-		}
-
-		if ( $this->filesystem->exists( $src_path . '.webp' ) ) {
+			$src_url_webp = preg_replace( '@\.' . $src_url['extension'] . '$@', '.webp', $src_url['src'] ) . $src_url['query'];
+		} elseif ( $this->filesystem->exists( $src_path_webp = $src_path . '.webp' ) ) { // phpcs:ignore Generic.Sniffs.CodeAnalysis.AssignmentInCondition,Squiz.Sniffs.PHP.DisallowMultipleAssignments
 			// File name: image.jpg => image.jpg.webp.
-			return $src_url['src'] . '.webp' . $src_url['query'];
+			$src_url_webp = $src_url['src'] . '.webp' . $src_url['query'];
+		} else {
+			// No webp exists.
+			return false;
 		}
 
+		if ( $this->filesystem->size( $src_path_webp ) < $this->filesystem->size( $src_path ) ) {
+			return $src_url_webp;
+		}
+
+		// The webp isn't smaller than the original, so don't use it.
 		return false;
 	}
 
