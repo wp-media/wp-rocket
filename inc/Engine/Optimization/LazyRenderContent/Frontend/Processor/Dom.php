@@ -7,7 +7,6 @@ use DOMDocument;
 use WP_Rocket\Logger\Logger;
 
 class Dom implements ProcessorInterface {
-
 	use HelperTrait;
 
 	/**
@@ -27,6 +26,46 @@ class Dom implements ProcessorInterface {
 	 * @var int
 	 */
 	private $max_hashes;
+
+	/**
+	 * Array of patterns to exclude from hash injection.
+	 *
+	 * @since 3.17.0.2
+	 *
+	 * @var array
+	 */
+	private $exclusions = [];
+
+	/**
+	 * Sets the exclusions list
+	 *
+	 * @param string[] $exclusions The list of patterns to exclude from hash injection.
+	 *
+	 * @return void
+	 */
+	public function set_exclusions( $exclusions ): void {
+		$this->exclusions = $exclusions;
+	}
+
+	/**
+	 * Gets the exclusions pattern
+	 *
+	 * @return string
+	 */
+	private function get_exclusions_pattern(): string {
+		if ( empty( $this->exclusions ) ) {
+			return '';
+		}
+
+		$exclusions = array_map(
+			function ( $exclusion ) {
+				return preg_quote( $exclusion, '/' );
+			},
+			$this->exclusions
+		);
+
+		return implode( '|', $exclusions );
+	}
 
 	/**
 	 * Add hashes to the HTML elements
@@ -106,6 +145,16 @@ class Dom implements ProcessorInterface {
 			// Calculate the hash of the opening tag.
 			$child_html       = $child->ownerDocument->saveHTML( $child ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 			$opening_tag_html = strstr( $child_html, '>', true ) . '>';
+
+			$exclusions_pattern = $this->get_exclusions_pattern();
+
+			if (
+				! empty( $exclusions_pattern )
+				&&
+				preg_match( '/(' . $exclusions_pattern . ')/i', $opening_tag_html )
+			) {
+				continue;
+			}
 
 			$hash = md5( $opening_tag_html . $this->count );
 

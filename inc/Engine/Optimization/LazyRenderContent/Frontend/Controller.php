@@ -145,8 +145,27 @@ class Controller implements ControllerInterface {
 		$processor = wpm_apply_filters_typed( 'string', 'rocket_lrc_processor', 'dom' );
 
 		$this->processor->set_processor( $processor );
+		$this->processor->get_processor()->set_exclusions( $this->get_exclusions() );
 
 		return $this->processor->get_processor()->add_hashes( $html );
+	}
+
+	/**
+	 * Get the list of patterns to exclude from hash injection.
+	 *
+	 * @return string[]
+	 */
+	private function get_exclusions(): array {
+		/**
+		 * Filters the list of patterns to exclude from hash injection.
+		 *
+		 * @since 3.17.0.2
+		 *
+		 * @param string[] $exclusions The list of patterns to exclude from hash injection.
+		 */
+		$exclusions = wpm_apply_filters_typed( 'string[]', 'rocket_lrc_exclusions', [] );
+
+		return $exclusions;
 	}
 
 	/**
