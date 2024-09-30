@@ -126,7 +126,7 @@ class Controller implements ControllerInterface {
 			'is_mobile'     => $is_mobile,
 			'status'        => $status_code,
 			'error_message' => $status_message,
-			'lcp'           => ( is_array( $lcp ) || is_object( $lcp ) ) ? wp_json_encode( $lcp ) : $lcp,
+			'lcp'           => is_object( $lcp ) ? wp_json_encode( $lcp ) : $lcp,
 			'viewport'      => wp_json_encode( $viewport ),
 			'last_accessed' => current_time( 'mysql', true ),
 		];
@@ -313,11 +313,7 @@ class Controller implements ControllerInterface {
 		 *
 		 * @param array  $invalid_schemes Array of invalid schemes.
 		 */
-		$invalid_schemes = apply_filters( 'rocket_atf_invalid_schemes', $this->invalid_schemes );
-
-		if ( ! is_array( $invalid_schemes ) ) {
-			$invalid_schemes = $this->invalid_schemes;
-		}
+		$invalid_schemes = wpm_apply_filters_typed( 'array', 'rocket_atf_invalid_schemes', $this->invalid_schemes );
 
 		$invalid_schemes = implode( '|', $invalid_schemes );
 

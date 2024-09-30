@@ -30,7 +30,7 @@ class Test_RocketCleanPostCacheOnStatusChange extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnAsExpected( $config, $expected ) {
-		$post             = (object) $config['post_data'] ?? [];
+		$post             = (object) $config['post_data'];
 		$post_id          = $config['post_data']['ID'] ?? 0;
 		$post_type_public = isset( $config['post_type_public'] ) ? (object) $config['post_type_public'] : null; //post_type_public
 

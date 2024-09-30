@@ -87,7 +87,7 @@ class WPML implements Subscriber_Interface {
 	 * @param string $condition condition used to clean URLS in the database.
 	 * @return string
 	 */
-	public function clean_only_right_domain( $condition ) {
+	public function clean_only_right_domain( $condition ): string {
 		global $sitepress;
 
 		$lang = isset( $_GET['lang'] ) && 'all' !== $_GET['lang'] ? sanitize_key( $_GET['lang'] ) : '';// phpcs:ignore WordPress.Security.NonceVerification.Recommended
@@ -106,7 +106,7 @@ class WPML implements Subscriber_Interface {
 	 * @param array $sitemaps list of sitemaps to be fetched.
 	 * @return array
 	 */
-	public function add_languages_sitemaps( $sitemaps ) {
+	public function add_languages_sitemaps( $sitemaps ): array {
 			global $sitepress;
 
 			$new_sitemaps = [];
@@ -130,13 +130,13 @@ class WPML implements Subscriber_Interface {
 	 *
 	 * @return void
 	 */
-	public function remove_root_cached_files() {
+	public function remove_root_cached_files(): void {
 		$site_url               = home_url();
 		$host_name              = wp_parse_url( $site_url, PHP_URL_HOST );
 		$cache_folder_path      = _rocket_get_wp_rocket_cache_path() . $host_name . '/';
 		$cache_folder_directory = $this->filesystem->dirlist( $cache_folder_path );
 
-		if ( ! is_array( $cache_folder_directory ) || ! is_array( array_keys( $cache_folder_directory ) ) ) {
+		if ( ! is_array( $cache_folder_directory ) ) {
 			return;
 		}
 
@@ -156,11 +156,7 @@ class WPML implements Subscriber_Interface {
 	 *
 	 * @return array
 	 */
-	public function on_change_directory_for_default_language_clean_cache( $new, $old ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.newFound
-		if ( ! is_array( $old ) || ! is_array( $new ) ) {
-			return $new;
-		}
-
+	public function on_change_directory_for_default_language_clean_cache( array $new, array $old ): array { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.newFound
 		if ( ! key_exists( 'urls', $old ) || ! key_exists( 'directory_for_default_language', $old['urls'] ) || ! key_exists( 'urls', $new ) || ! key_exists( 'directory_for_default_language', $new['urls'] ) || $new['urls']['directory_for_default_language'] === $old['urls']['directory_for_default_language'] ) {
 			return $new;
 		}
@@ -179,7 +175,7 @@ class WPML implements Subscriber_Interface {
 	 *
 	 * @return void
 	 */
-	public function maybe_clear_on_disable() {
+	public function maybe_clear_on_disable(): void {
 		$option = get_option( 'icl_sitepress_settings' );
 		if ( ! $option || ! is_array( $option ) || ! key_exists( 'urls', $option ) || ! key_exists( 'directory_for_default_language', $option['urls'] ) || false === $option['urls']['directory_for_default_language'] ) {
 			return;

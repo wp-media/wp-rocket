@@ -475,10 +475,7 @@ class UsedCSS {
 		 *
 		 * @param array $excluded_fonts_preload List of fonts to exclude from preload
 		 */
-		$exclude_fonts_preload = apply_filters( 'rocket_exclude_rucss_fonts_preload', [] );
-		if ( ! is_array( $exclude_fonts_preload ) ) {
-			$exclude_fonts_preload = [];
-		}
+		$exclude_fonts_preload = wpm_apply_filters_typed( 'array', 'rocket_exclude_rucss_fonts_preload', [] );
 
 		$urls = [];
 

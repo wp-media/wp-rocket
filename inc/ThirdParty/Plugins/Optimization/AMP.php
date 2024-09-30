@@ -22,20 +22,11 @@ class AMP implements Subscriber_Interface {
 	private $cdn_subscriber;
 
 	/**
-	 * WP Rocket Options instance
-	 *
-	 * @var Options_Data
-	 */
-	private $options;
-
-	/**
 	 * Constructor
 	 *
-	 * @param Options_Data         $options        WP Rocket Options instance.
 	 * @param Subscriber_Interface $cdn_subscriber WP Rocket CDN Subscriber.
 	 */
-	public function __construct( Options_Data $options, Subscriber_Interface $cdn_subscriber ) {
-		$this->options        = $options;
+	public function __construct( Subscriber_Interface $cdn_subscriber ) {
 		$this->cdn_subscriber = $cdn_subscriber;
 	}
 

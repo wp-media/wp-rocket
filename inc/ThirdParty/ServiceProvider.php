@@ -156,7 +156,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addShared( 'beaverbuilder_subscriber', BeaverBuilder::class );
 		$this->getContainer()
 			->addShared( 'amp_subscriber', AMP::class )
-			->addArgument( $options )->addArgument( $this->getContainer()->get( 'cdn_subscriber' ) );
+			->addArgument( $this->getContainer()->get( 'cdn_subscriber' ) );
 		$this->getContainer()
 			->addShared( 'simple_custom_css', SimpleCustomCss::class )
 			->addArgument( WP_ROCKET_CACHE_BUSTING_PATH )->addArgument( WP_ROCKET_CACHE_BUSTING_URL );
@@ -182,8 +182,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()
 			->addShared( 'pwa', PWA::class );
 		$this->getContainer()
-			->addShared( 'yoast_seo', Yoast::class )
-			->addArgument( $options );
+			->addShared( 'yoast_seo', Yoast::class );
 		$this->getContainer()
 			->addShared( 'convertplug', ConvertPlug::class );
 		$this->getContainer()

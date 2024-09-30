@@ -277,6 +277,7 @@ class DeferJS {
 		$inline_exclusions = '';
 
 		// Check if filter return is string so convert it to array for backward compatibility.
+		// @phpstan-ignore-next-line - Ignoring the safeguard as the result could be mixed.
 		if ( is_string( $additional_inline_exclusions_list ) ) {
 			$additional_inline_exclusions_list = explode( '|', $additional_inline_exclusions_list );
 		}

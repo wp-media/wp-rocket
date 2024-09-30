@@ -45,7 +45,7 @@ class AbstractQuery extends Query {
 	 *
 	 * @param int $row_id DB Row ID.
 	 *
-	 * @return array|false
+	 * @return object|array|false false if no row found, array or object if row found.
 	 */
 	public function get_row_by_id( int $row_id ) {
 		if ( ! self::$table_exists && ! $this->table_exists() ) {

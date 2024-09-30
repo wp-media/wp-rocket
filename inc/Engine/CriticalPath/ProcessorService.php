@@ -100,27 +100,6 @@ class ProcessorService {
 	}
 
 	/**
-	 * Get job details by job_id.
-	 *
-	 * @since 3.6
-	 *
-	 * @param string $job_id   ID for the job to get details.
-	 * @param string $item_url URL for item to be used in error messages.
-	 * @param string $item_type Optional. Type for this item if it's custom or specific type. Default: custom.
-	 *
-	 * @return array|mixed|WP_Error
-	 */
-	private function get_cpcss_job_details( $job_id, $item_url, $item_type = 'custom' ) {
-		$job_details = $this->api_client->get_job_details( $job_id, $item_url, $item_type );
-
-		if ( is_wp_error( $job_details ) ) {
-			return $job_details;
-		}
-
-		return $job_details;
-	}
-
-	/**
 	 * Check status and process the output for a job.
 	 *
 	 * @since 3.6
@@ -156,11 +135,7 @@ class ProcessorService {
 		}
 
 		// For successful job status.
-		if (
-			isset( $job_state, $job_details->data->critical_path )
-			&&
-			'complete' === $job_state
-		) {
+		if ( isset( $job_state, $job_details->data->critical_path ) ) {
 			return $this->on_job_success( $item_path, $item_url, $job_details->data->critical_path, $is_mobile, $item_type );
 		}
 

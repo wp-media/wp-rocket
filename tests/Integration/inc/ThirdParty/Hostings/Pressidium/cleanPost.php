@@ -29,12 +29,12 @@ class Test_CleanPost extends TestCase {
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
 		$this->markTestSkipped( 'Test doest not perform assertion, need to revisit' );
-
-		$post = $this->factory()->post->create_and_get( $config['post'] );
-
-		$this->ninukis_caching->shouldReceive( 'purge_url' )
-			->with( $config['url'] );
-
-		do_action( 'after_rocket_clean_post', $post, $config['url'], '' );
+//
+//		$post = $this->factory()->post->create_and_get( $config['post'] );
+//
+//		$this->ninukis_caching->shouldReceive( 'purge_url' )
+//			->with( $config['url'] );
+//
+//		do_action( 'after_rocket_clean_post', $post, $config['url'], '' );
 	}
 }

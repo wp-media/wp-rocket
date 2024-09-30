@@ -503,49 +503,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	}
 
 	/**
-	 * Get all private urls for public post types.
-	 *
-	 * @return array
-	 */
-	private function get_all_private_urls() {
-		static $private_urls;
-
-		if ( rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ) {
-			$private_urls = null;
-		}
-
-		if ( isset( $private_urls ) ) {
-			return $private_urls;
-		}
-
-		$private_urls = [];
-
-		$public_post_types = get_post_types( [ 'public' => true ] );
-		unset( $public_post_types['attachment'] );
-
-		$arg   = [
-			'post_type'      => $public_post_types,
-			'post_status'    => 'private',
-			'posts_per_page' => -1,
-		];
-		$query = new \WP_Query( $arg );
-
-		if ( ! $query->have_posts() ) {
-			return [];
-		}
-
-		foreach ( $query->posts as $post ) {
-			// Temporarily cast publish status to get pretty url.
-			$post->post_status = 'publish';
-			$private_post_url  = get_permalink( $post );
-
-			$private_urls[ md5( $private_post_url ) ] = $private_post_url;
-		}
-
-		return $private_urls;
-	}
-
-	/**
 	 * Exclude private urls.
 	 *
 	 * @param bool   $excluded In case we want to exclude that url.

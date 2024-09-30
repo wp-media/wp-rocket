@@ -104,13 +104,11 @@ class APIClient {
 	 *
 	 * @return bool success or failed.
 	 */
-	private function get_response_success( $response_code, $response_data ) {
+	private function get_response_success( int $response_code, $response_data ) {
 		return (
 			200 === $response_code
 			&&
 			(
-				$response_data instanceof stdClass
-				&&
 				! empty( (array) $response_data )
 			)
 			&&

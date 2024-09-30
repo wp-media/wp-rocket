@@ -333,7 +333,9 @@ class Settings {
 
 		$input['automatic_cleanup_frequency'] = isset( $input['automatic_cleanup_frequency'], $cleanup_frequencies[ $input['automatic_cleanup_frequency'] ] ) ? $input['automatic_cleanup_frequency'] : $this->options->get( 'automatic_cleanup_frequency' );
 
-		if ( 1 !== $input['schedule_automatic_cleanup'] && ( 'daily' !== $input['automatic_cleanup_frequency'] || 'weekly' !== $input['automatic_cleanup_frequency'] || 'monthly' !== $input['automatic_cleanup_frequency'] ) ) {
+		$allowed_frequencies = [ 'daily', 'weekly', 'monthly' ];
+
+		if ( 1 !== $input['schedule_automatic_cleanup'] && ! in_array( $input['automatic_cleanup_frequency'], $allowed_frequencies, true ) ) {
 			$input['automatic_cleanup_frequency'] = $this->options->get( 'automatic_cleanup_frequency' );
 		}
 
@@ -554,11 +556,7 @@ class Settings {
 	 * @param string $file URL or path to a font file.
 	 * @return string|bool
 	 */
-	private function sanitize_font( $file ) {
-		if ( ! is_string( $file ) ) {
-			return false;
-		}
-
+	private function sanitize_font( string $file ) {
 		$file = trim( $file );
 
 		if ( empty( $file ) ) {
@@ -604,10 +602,6 @@ class Settings {
 	 * @return array
 	 */
 	private function get_hosts() {
-		if ( isset( $this->hosts ) ) {
-			return $this->hosts;
-		}
-
 		$urls   = (array) $this->options->get( 'cdn_cnames', [] );
 		$urls[] = home_url();
 		$urls   = array_map( 'rocket_add_url_protocol', $urls );
