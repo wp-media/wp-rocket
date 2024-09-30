@@ -66,7 +66,8 @@ class Controller {
 	public function delete_post( $post_id ) {
 		$url = get_permalink( $post_id );
 
-		if ( false === $url ) {
+		// get_permalink should return false or string, but some plugins return null.
+		if ( ! is_string( $url ) ) {
 			return;
 		}
 
