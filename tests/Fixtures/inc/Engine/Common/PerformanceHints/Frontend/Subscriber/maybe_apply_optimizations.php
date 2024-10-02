@@ -31,6 +31,30 @@ $lrc = [
 
 return [
 	'test_data' => [
+		'shouldReturnOriginalWhenBypassAndRow' => [
+			'config' => [
+				'query_string' => 'nowprocket',
+				'html' => $html_input,
+				'atf' => [
+					'row' => [
+						'status' => 'completed',
+						'url' => 'http://example.org',
+						'lcp'      => json_encode( (object) [
+							'type' => 'img',
+							'src'  => 'http://example.org/wp-content/uploads/image.jpg',
+						] ),
+						'viewport' => json_encode( [
+							0 => (object) [
+								'type' => 'img',
+								'src'  => 'http://example.org/wp-content/uploads/image2.jpg',
+							],
+						] ),
+					],
+				],
+				'lrc' => $lrc,
+			],
+			'expected' => $html_input,
+		],
 		'shouldReturnOriginalWhenQueryString' => [
 			'config' => [
 				'query_string' => 'wpr_lazyrendercontent',
