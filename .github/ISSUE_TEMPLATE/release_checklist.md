@@ -1,6 +1,6 @@
 ---
 name: Release
-about: Use this template when a new release is planed.
+about: Use this template when a new release is planned.
 title: "New Release"
 labels: New release checklist
 ---
