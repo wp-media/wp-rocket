@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\Common\PerformanceHints\Frontend\Subscriber;
 
 use Brain\Monkey\Functions;
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
@@ -14,6 +15,8 @@ class Test_MaybeApplyOptimizations extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/Common/PerformanceHints/Frontend/Subscriber/maybe_apply_optimizations.php';
 
 	protected $config;
+
+	private $cached_user = false;
 
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
@@ -39,8 +42,9 @@ class Test_MaybeApplyOptimizations extends FilesystemTestCase {
 	public function tear_down() {
 		unset( $_GET );
 		remove_filter( 'rocket_performance_hints_optimization_delay', [ $this, 'add_delay' ] );
-
+		remove_filter( 'pre_get_rocket_option_cache_logged_user', [ $this, 'get_cache_user' ] );
 		$this->restoreWpHook( 'rocket_buffer' );
+
 		parent::tear_down();
 	}
 
@@ -49,6 +53,8 @@ class Test_MaybeApplyOptimizations extends FilesystemTestCase {
 	 */
 	public function testShouldReturnAsExpected( $config, $expected ) {
 		$this->config = $config;
+		$this->cached_user = $config['user_cache_enabled'] ?? false;
+
 
 		if ( isset( $config['query_string'] ) ) {
 			$_GET[ $config['query_string'] ] = 1;
@@ -66,6 +72,10 @@ class Test_MaybeApplyOptimizations extends FilesystemTestCase {
 		}
 
 		Functions\when( 'wp_create_nonce' )->justReturn( '96ac96b69e' );
+		Functions\when( 'is_user_logged_in' )->justReturn( $config['is_logged_in'] ?? false );
+
+		// Override cache_logged_user option for this specific scenario
+		add_filter( 'pre_get_rocket_option_cache_logged_user', [ $this, 'get_cache_user' ] );
 
 		$this->assertSame(
 			$expected,
@@ -75,5 +85,9 @@ class Test_MaybeApplyOptimizations extends FilesystemTestCase {
 
 	public function add_delay() {
 		return $this->config['filter_delay'];
+	}
+
+	public function get_cache_user() {
+		return $this->cached_user;
 	}
 }
