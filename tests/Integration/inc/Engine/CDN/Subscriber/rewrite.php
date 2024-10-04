@@ -12,7 +12,7 @@ class Test_Rewrite extends TestCase {
 	public function set_up() {
 		parent::set_up();
 
-		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'rewrite', 20 );
+		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'rewrite', 2 );
 	}
 
 	public function tear_down() {
