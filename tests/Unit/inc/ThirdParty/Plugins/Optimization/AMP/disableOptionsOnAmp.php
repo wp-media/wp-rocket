@@ -17,15 +17,13 @@ use WP_Rocket\ThirdParty\Plugins\Optimization\AMP;
  */
 class Test_DisableOptionsOnAmp extends TestCase {
 	private $amp;
-	private $options;
 	private $cdn_subscriber;
 
 	public function setUp() : void {
 		parent::setUp();
 
-		$this->options        = Mockery::mock( Options_Data::class );
 		$this->cdn_subscriber = Mockery::mock( Subscriber::class );
-		$this->amp            = new AMP( $this->options, $this->cdn_subscriber );
+		$this->amp            = new AMP( $this->cdn_subscriber );
 	}
 
 	/**
@@ -48,7 +46,6 @@ class Test_DisableOptionsOnAmp extends TestCase {
 
 		if ( $expected[ 'bailout' ] ) {
 			Functions\expect( 'remove_filter' )->never();
-			$this->options->shouldReceive( 'get' )->never();
 		} else {
 			global $wp_filter;
 			add_filter( 'wp_resource_hints', 'rocket_dns_prefetch', 10, 2 );
@@ -102,7 +99,7 @@ class Test_DisableOptionsOnAmp extends TestCase {
 				10,
 				has_filter( 'do_rocket_protocol_rewrite', '__return_false' )
 			);
-			$this->assertEmpty( $wp_filter );
+			$this->assertEmpty( $wp_filter ); // @phpstan-ignore-line
 
 			if ( in_array( $config[ 'amp_options' ][ 'theme_support' ], [ 'transitional', 'reader' ], true ) ) {
 				$this->assertSame(

@@ -51,8 +51,6 @@ class Admin {
 			! current_user_can( 'rocket_regenerate_critical_css' )
 		) {
 			wp_send_json_error();
-
-			return;
 		}
 
 		$cpcss_pending = get_transient( 'rocket_cpcss_generation_pending' );
@@ -68,8 +66,6 @@ class Admin {
 		if ( empty( $cpcss_pending ) ) {
 			$this->generation_complete();
 			wp_send_json_success( [ 'status' => 'cpcss_complete' ] );
-
-			return;
 		}
 
 		set_transient( 'rocket_cpcss_generation_pending', $cpcss_pending, HOUR_IN_SECONDS );

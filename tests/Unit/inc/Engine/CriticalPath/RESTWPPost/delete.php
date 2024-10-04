@@ -56,7 +56,7 @@ class Test_Delete extends TestCase {
 		switch ( $expected['code'] ) {
 			case 'rest_forbidden':
 				// Skip as it's not valid for the unit test.
-				$this->assertTrue( true );
+				$this->assertTrue( true ); // @phpstan-ignore-line
 
 				return;
 

@@ -600,7 +600,7 @@ class Page extends Abstract_Render {
 					'sanitize_callback'       => 'sanitize_checkbox',
 					'options'                 => [
 						'remove_unused_css' => [
-							'label'       => __( 'Remove Unused CSS', 'rocket' ),
+							'label'       => __( 'Remove Unused CSS (RUCSS)', 'rocket' ),
 							'disabled'    => $invalid_license || $rucss_status['disable'] ? 'disabled' : false,
 							// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 							'description' => sprintf( __( 'Removes unused CSS per page and helps to reduce page size and HTTP requests. Recommended for best performance. Test thoroughly! %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $rucss_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $rucss_beacon['id'] ) . '" target="_blank">', '</a>' ),
@@ -1172,7 +1172,7 @@ class Page extends Abstract_Render {
 			$ecommerce_plugin = _x( 'iThemes Exchange', 'plugin name', 'rocket' );
 		} elseif ( defined( 'JIGOSHOP_VERSION' ) && function_exists( 'jigoshop_get_page_id' ) ) {
 			$ecommerce_plugin = _x( 'Jigoshop', 'plugin name', 'rocket' );
-		} elseif ( defined( 'WPSHOP_VERSION' ) && class_exists( 'wpshop_tools' ) && method_exists( 'wpshop_tools', 'get_page_id' ) ) {
+		} elseif ( defined( 'WPSHOP_VERSION' ) && class_exists( 'wpshop_tools' ) && method_exists( 'wpshop_tools', 'get_page_id' ) ) { // @phpstan-ignore-line
 			$ecommerce_plugin = _x( 'WP-Shop', 'plugin name', 'rocket' );
 		}
 
@@ -1519,11 +1519,7 @@ class Page extends Abstract_Render {
 		 *
 		 * @param array $addons Array of addons.
 		 */
-		$addons = apply_filters( 'rocket_cdn_helper_addons', [] );
-
-		if ( ! is_array( $addons ) ) {
-			$addons = [];
-		}
+		$addons = wpm_apply_filters_typed( 'array', 'rocket_cdn_helper_addons', [] );
 
 		$addons = array_unique( $addons );
 
@@ -2107,8 +2103,8 @@ class Page extends Abstract_Render {
 	 * @param  string $tag_name Name of the HTML tag that will wrap each element of the list.
 	 * @return array
 	 */
-	private function sanitize_and_format_list( $list, $tag_name = 'strong' ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.listFound
-		if ( ! is_array( $list ) || empty( $list ) ) {
+	private function sanitize_and_format_list( array $list, $tag_name = 'strong' ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.listFound
+		if ( empty( $list ) ) {
 			return [];
 		}
 
@@ -2180,7 +2176,7 @@ class Page extends Abstract_Render {
 
 		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			wp_send_json_error();
-			return;
+			return; // @phpstan-ignore-line
 		}
 
 		$this->options->set( 'cache_mobile', 1 );
@@ -2235,25 +2231,23 @@ class Page extends Abstract_Render {
 			return;
 		}
 
-		// Bail-out if previous version is greater than 3.16.
-		if ( $previous_version > '3.16' ) {
+		// Bail-out if previous version is greater than 3.17.
+		if ( $previous_version > '3.17' ) {
 			return;
 		}
 
-		$critical_images_beacon = $this->beacon->get_suggest( 'optimize_critical_images' );
-		$remove_cache_tab       = $this->beacon->get_suggest( 'remove_cache_tab' );
+		$lazy_render_content = $this->beacon->get_suggest( 'lazy_render_content' );
 
 		rocket_notice_html(
 			[
 				'status'         => 'info',
 				'dismissible'    => '',
 				'message'        => sprintf(
-					// translators: %1$s: opening strong tag, %2$s: closing strong tag, %3$s: opening a tag, %4$s: option a tag, %5$s: opening a tag.
-					__( '%1$sWP Rocket:%2$s the plugin has been updated to the 3.16 version. Our brand new feature %3$sOptimize critical images%5$s is automatically activated now! Also, the Cache tab was removed but the existing features will remain working, %4$ssee more here%5$s.', 'rocket' ),
+					// translators: %1$s: opening strong tag, %2$s: closing strong tag, %3$s: opening a tag, %4$s: opening a tag.
+					__( '%1$sWP Rocket:%2$s the plugin has been updated to the 3.17 version. New feature: %3$sAutomatic Lazy Rendering%4$s. Check out our documentation to learn more about it.', 'rocket' ),
 					'<strong>',
 					'</strong>',
-					'<a href="' . esc_url( $critical_images_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $critical_images_beacon['id'] ) . '" target="_blank" rel="noopener noreferrer">',
-					'<a href="' . esc_url( $remove_cache_tab['url'] ) . '" data-beacon-article="' . esc_attr( $remove_cache_tab['id'] ) . '" target="_blank" rel="noopener noreferrer">',
+					'<a href="' . esc_url( $lazy_render_content['url'] ) . '" data-beacon-article="' . esc_attr( $lazy_render_content['id'] ) . '" target="_blank" rel="noopener noreferrer">',
 					'</a>'
 				),
 				'dismiss_button' => 'rocket_update_notice',

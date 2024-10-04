@@ -75,7 +75,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function warm_up_on_update( $new_version, $old_version ) {
-		if ( version_compare( $old_version, '3.16', '>=' ) ) {
+		if ( version_compare( $old_version, '3.17', '>=' ) ) {
 			return;
 		}
 		$this->controller->warm_up();

@@ -54,8 +54,7 @@ class ServiceProvider extends AbstractServiceProvider implements BootableService
 
 		if ( ! empty( $hosting_service ) ) {
 			$this->getContainer()
-				->addShared( $hosting_service, ( new HostSubscriberFactory() )->get_subscriber() )
-				->addTag( 'hosting_subscriber' );
+				->addShared( $hosting_service, ( new HostSubscriberFactory() )->get_subscriber() );
 		}
 	}
 }

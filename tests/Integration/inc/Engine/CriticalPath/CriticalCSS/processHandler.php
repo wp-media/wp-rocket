@@ -122,8 +122,6 @@ class Test_ProcessHandler extends FilesystemTestCase {
 		);
 
 		if ( $expected['generated'] ) {
-			$this->assertStopGeneration( $process );
-
 			$this->prepareSetItems( $config );
 		}
 
@@ -148,10 +146,6 @@ class Test_ProcessHandler extends FilesystemTestCase {
 				},
 			];
 		}
-	}
-
-	private function assertStopGeneration( $process ) {
-		//$process->shouldReceive( 'cancel_process' )->once()->andReturn( null );
 	}
 
 	private function prepareSetItems( $config ) {

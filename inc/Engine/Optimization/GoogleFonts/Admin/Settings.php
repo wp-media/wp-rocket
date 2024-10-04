@@ -74,7 +74,6 @@ class Settings extends Abstract_Render {
 
 		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			wp_send_json_error();
-			return;
 		}
 
 		$this->options->set( 'minify_google_fonts', 1 );

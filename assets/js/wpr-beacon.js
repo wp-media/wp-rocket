@@ -1,9 +1,15 @@
 (() => {
   // src/Utils.js
   var BeaconUtils = class {
+    static getScreenWidth() {
+      return window.innerWidth || document.documentElement.clientWidth;
+    }
+    static getScreenHeight() {
+      return window.innerHeight || document.documentElement.clientHeight;
+    }
     static isNotValidScreensize(is_mobile, threshold) {
-      const screenWidth = window.innerWidth || document.documentElement.clientWidth;
-      const screenHeight = window.innerHeight || document.documentElement.clientHeight;
+      const screenWidth = this.getScreenWidth();
+      const screenHeight = this.getScreenHeight();
       const isNotValidForMobile = is_mobile && (screenWidth > threshold.width || screenHeight > threshold.height);
       const isNotValidForDesktop = !is_mobile && (screenWidth < threshold.width || screenHeight < threshold.height);
       return isNotValidForMobile || isNotValidForDesktop;
@@ -190,6 +196,119 @@
   };
   var BeaconLcp_default = BeaconLcp;
 
+  // src/BeaconLrc.js
+  var BeaconLrc = class {
+    constructor(config, logger) {
+      this.config = config;
+      this.logger = logger;
+      this.lazyRenderElements = [];
+    }
+    async run() {
+      try {
+        const elementsInView = this._getLazyRenderElements();
+        if (elementsInView) {
+          this._processElements(elementsInView);
+        }
+      } catch (err) {
+        this.errorCode = "script_error";
+        this.logger.logMessage("Script Error: " + err);
+      }
+    }
+    _getLazyRenderElements() {
+      const elements = document.querySelectorAll("[data-rocket-location-hash]");
+      if (elements.length <= 0) {
+        return [];
+      }
+      const validElements = Array.from(elements).filter((element) => !this._skipElement(element));
+      return validElements.map((element) => ({
+        element,
+        depth: this._getElementDepth(element),
+        distance: this._getElementDistance(element),
+        hash: this._getLocationHash(element)
+      }));
+    }
+    _getElementDepth(element) {
+      let depth = 0;
+      let parent = element.parentElement;
+      while (parent) {
+        depth++;
+        parent = parent.parentElement;
+      }
+      return depth;
+    }
+    _getElementDistance(element) {
+      const rect = element.getBoundingClientRect();
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      return Math.max(0, rect.top + scrollTop - Utils_default.getScreenHeight());
+    }
+    _skipElement(element) {
+      const skipStrings = this.config.skipStrings || ["memex"];
+      if (!element || !element.id) return false;
+      return skipStrings.some((str) => element.id.toLowerCase().includes(str.toLowerCase()));
+    }
+    _shouldSkipElement(element, exclusions) {
+      if (!element) return false;
+      for (let i = 0; i < exclusions.length; i++) {
+        const [attribute, pattern] = exclusions[i];
+        const attributeValue = element.getAttribute(attribute);
+        if (attributeValue && new RegExp(pattern, "i").test(attributeValue)) {
+          return true;
+        }
+      }
+      return false;
+    }
+    _processElements(elements) {
+      elements.forEach(({ element, depth, distance, hash }) => {
+        if (this._shouldSkipElement(element, this.config.exclusions || [])) {
+          return;
+        }
+        if ("No hash detected" === hash) {
+          return;
+        }
+        const can_push_hash = element.parentElement && this._getElementDistance(element.parentElement) < this.config.lrc_threshold && distance >= this.config.lrc_threshold;
+        const color = can_push_hash ? "green" : distance === 0 ? "red" : "";
+        this.logger.logColoredMessage(`${"	".repeat(depth)}${element.tagName} (Depth: ${depth}, Distance from viewport bottom: ${distance}px)`, color);
+        this.logger.logColoredMessage(`${"	".repeat(depth)}Location hash: ${hash}`, color);
+        this.logger.logColoredMessage(`${"	".repeat(depth)}Dimensions Client Height: ${element.clientHeight}`, color);
+        if (can_push_hash) {
+          this.lazyRenderElements.push(hash);
+          this.logger.logMessage(`Element pushed with hash: ${hash}`);
+        }
+      });
+    }
+    _getXPath(element) {
+      if (element && element.id !== "") {
+        return `//*[@id="${element.id}"]`;
+      }
+      return this._getElementXPath(element);
+    }
+    _getElementXPath(element) {
+      if (element === document.body) {
+        return "/html/body";
+      }
+      const position = this._getElementPosition(element);
+      return `${this._getElementXPath(element.parentNode)}/${element.nodeName.toLowerCase()}[${position}]`;
+    }
+    _getElementPosition(element) {
+      let pos = 1;
+      let sibling = element.previousElementSibling;
+      while (sibling) {
+        if (sibling.nodeName === element.nodeName) {
+          pos++;
+        }
+        sibling = sibling.previousElementSibling;
+      }
+      return pos;
+    }
+    _getLocationHash(element) {
+      return element.hasAttribute("data-rocket-location-hash") ? element.getAttribute("data-rocket-location-hash") : "No hash detected";
+    }
+    getResults() {
+      return this.lazyRenderElements;
+    }
+  };
+  var BeaconLrc_default = BeaconLrc;
+
   // src/Logger.js
   var Logger = class {
     constructor(enabled) {
@@ -201,6 +320,12 @@
       }
       console.log(msg);
     }
+    logColoredMessage(msg, color = "green") {
+      if (!this.enabled) {
+        return;
+      }
+      console.log(`%c${msg}`, `color: ${color};`);
+    }
   };
   var Logger_default = Logger;
 
@@ -209,6 +334,7 @@
     constructor(config) {
       this.config = config;
       this.lcpBeacon = null;
+      this.lrcBeacon = null;
       this.infiniteLoopId = null;
       this.errorCode = "";
       this.logger = new Logger_default(this.config.debug);
@@ -223,16 +349,21 @@
         this._handleInfiniteLoop();
       }, 1e4);
       const isGeneratedBefore = await this._getGeneratedBefore();
-      let shouldSaveResultsIntoDB = false;
-      const shouldGenerateLcp = this.config.status.atf && isGeneratedBefore === false;
+      const shouldGenerateLcp = this.config.status.atf && (isGeneratedBefore === false || isGeneratedBefore.lcp === false);
+      const shouldGeneratelrc = this.config.status.lrc && (isGeneratedBefore === false || isGeneratedBefore.lrc === false);
       if (shouldGenerateLcp) {
         this.lcpBeacon = new BeaconLcp_default(this.config, this.logger);
         await this.lcpBeacon.run();
-        shouldSaveResultsIntoDB = true;
       } else {
-        this.logger.logMessage("Not running BeaconLcp because data is already available");
+        this.logger.logMessage("Not running BeaconLcp because data is already available or feature is disabled");
       }
-      if (shouldSaveResultsIntoDB) {
+      if (shouldGeneratelrc) {
+        this.lrcBeacon = new BeaconLrc_default(this.config, this.logger);
+        await this.lrcBeacon.run();
+      } else {
+        this.logger.logMessage("Not running BeaconLrc because data is already available or feature is disabled");
+      }
+      if (shouldGenerateLcp || shouldGeneratelrc) {
         this._saveFinalResultIntoDB();
       } else {
         this.logger.logMessage("Not saving results into DB as no beacon features ran.");
@@ -264,11 +395,12 @@
         credentials: "same-origin",
         body: data_check
       }).then((data) => data.json());
-      return beacon_data_response.success;
+      return beacon_data_response.data;
     }
     _saveFinalResultIntoDB() {
       const results = {
-        lcp: this.lcpBeacon ? this.lcpBeacon.getResults() : null
+        lcp: this.lcpBeacon ? this.lcpBeacon.getResults() : null,
+        lrc: this.lrcBeacon ? this.lrcBeacon.getResults() : null
       };
       const data = new FormData();
       data.append("action", "rocket_beacon");
@@ -285,7 +417,7 @@
           "wpr-saas-no-intercept": true
         }
       }).then((response) => response.json()).then((data2) => {
-        this.logger.logMessage(data2);
+        this.logger.logMessage(data2.data.lcp);
       }).catch((error) => {
         this.logger.logMessage(error);
       }).finally(() => {
@@ -331,4 +463,5 @@
       }, rocket_beacon_data.delay);
     });
   })(window.rocket_beacon_data);
+  var BeaconEntryPoint_default = BeaconManager_default;
 })();

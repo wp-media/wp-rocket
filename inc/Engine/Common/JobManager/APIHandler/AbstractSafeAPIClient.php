@@ -80,7 +80,7 @@ abstract class AbstractSafeAPIClient {
 		}
 
 		$body = wp_remote_retrieve_body( $response );
-		if ( empty( $body ) || ( is_array( $response ) && ! empty( $response['response']['code'] ) && 200 !== $response['response']['code'] ) ) {
+		if ( empty( $body ) || ( ! empty( $response['response']['code'] ) && 200 !== $response['response']['code'] ) ) {
 			$this->set_timeout_transients( $previous_expiration );
 			return new WP_Error( 500, __( 'Not valid response.', 'rocket' ) );
 		}

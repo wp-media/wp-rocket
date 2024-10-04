@@ -34,11 +34,7 @@ class AdminSubscriber implements Subscriber_Interface {
 	 *
 	 * @return void
 	 */
-	public function clean_minify( $old, $new ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.newFound
-		if ( ! is_array( $old ) || ! is_array( $new ) ) {
-			return;
-		}
-
+	public function clean_minify( array $old, array $new ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.newFound
 		if ( ! $this->maybe_minify_regenerate( $new, $old ) ) {
 			return;
 		}
@@ -52,15 +48,12 @@ class AdminSubscriber implements Subscriber_Interface {
 	 * @since  3.5.4
 	 *
 	 * @param array $new An array of submitted settings.
-	 * @param array $old An array of previous settings.
+	 * @param mixed $old An array of previous settings or false.
 	 *
 	 * @return array Updates 'minify_css_key' setting when regenerated; else, original submitted settings.
 	 */
-	public function regenerate_minify_css_key( $new, $old ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.newFound
-		if ( ! is_array( $old ) || ! is_array( $new ) ) {
-			return $new;
-		}
-
+	public function regenerate_minify_css_key( array $new, $old ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.newFound
+		$old = is_array( $old ) ? $old : [];
 		if ( ! $this->maybe_minify_regenerate( $new, $old ) ) {
 			return $new;
 		}

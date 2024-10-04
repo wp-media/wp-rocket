@@ -415,7 +415,7 @@ class Subscriber implements Subscriber_Interface {
 		$result = [];
 
 		// Set Cache Level to Aggressive.
-		$cf_cache_level = isset( $cf_old_settings[0] ) && 0 === $auto_settings ? $cf_old_settings[0] : 'aggressive';
+		$cf_cache_level = 0 === $auto_settings ? $cf_old_settings[0] : 'aggressive';
 		$result[]       = $this->save_cache_level( $cf_cache_level );
 
 		// Deactivate Rocket Loader to prevent conflicts.

@@ -45,10 +45,18 @@ trait DBTrait {
 		$cache_query = $container->get( 'preload_caches_query' );
 		return $cache_query->create_or_update( $resource );
 	}
+
 	public static function addLcp( array $resource ) {
 		$container = apply_filters( 'rocket_container', null );
 		$lcp_query = $container->get( 'atf_query' );
 		return $lcp_query->add_item( $resource );
+	}
+
+	public static function addLrc( array $resource ) {
+		$container = apply_filters( 'rocket_container', null );
+		$lrc_query = $container->get( 'lrc_query' );
+
+		return $lrc_query->add_item( $resource );
 	}
 
 	public static function installFresh() {
@@ -65,6 +73,9 @@ trait DBTrait {
 
 		$atf_table = $container->get( 'atf_table' );
 		$atf_table->install();
+
+		$lrc_table = $container->get( 'lrc_table' );
+		$lrc_table->install();
 	}
 
 	public static function installUsedCssTable() {
@@ -94,6 +105,15 @@ trait DBTrait {
 		}
 	}
 
+	public static function installLrcTable() {
+		$container = apply_filters( 'rocket_container', null );
+		$lrc_table = $container->get( 'lrc_table' );
+
+		if ( ! $lrc_table->exists() ) {
+			$lrc_table->install();
+		}
+	}
+
 	public static function uninstallAll() {
 		$container           = apply_filters( 'rocket_container', null );
 		$rucss_usedcss_table = $container->get( 'rucss_usedcss_table' );
@@ -110,6 +130,11 @@ trait DBTrait {
 		$atf_table = $container->get( 'atf_table' );
 		if ( $atf_table->exists() ) {
 			$atf_table->uninstall();
+		}
+
+		$lrc_table = $container->get( 'lrc_table' );
+		if ( $lrc_table->exists() ) {
+			$lrc_table->uninstall();
 		}
 	}
 
@@ -136,21 +161,30 @@ trait DBTrait {
 		}
 	}
 
+	public static function uninstallLrcTable() {
+		$container = apply_filters( 'rocket_container', null );
+		$lrc_table = $container->get( 'lrc_table' );
+
+		if ( $lrc_table->exists() ) {
+			$lrc_table->uninstall();
+		}
+	}
+
 	public static function removeDBHooks() {
 		$container           = apply_filters( 'rocket_container', null );
-		$rucss_usedcss_table = $container->get( 'rucss_usedcss_table' );
-		$preload_table       = $container->get( 'preload_caches_table' );
-		$atf_table           = $container->get( 'atf_table' );
 
-		self::forceRemoveTableAdminInitHooks( 'init', get_class( $rucss_usedcss_table ), 'maybe_upgrade', 10 );
-		self::forceRemoveTableAdminInitHooks( 'admin_init', get_class( $rucss_usedcss_table ), 'maybe_upgrade', 10 );
-		self::forceRemoveTableAdminInitHooks( 'switch_blog', get_class( $rucss_usedcss_table ), 'switch_blog', 10 );
-		self::forceRemoveTableAdminInitHooks( 'init', get_class( $preload_table ), 'maybe_upgrade', 10 );
-		self::forceRemoveTableAdminInitHooks( 'admin_init', get_class( $preload_table ), 'maybe_upgrade', 10 );
-		self::forceRemoveTableAdminInitHooks( 'switch_blog', get_class( $preload_table ), 'switch_blog', 10 );
-		self::forceRemoveTableAdminInitHooks( 'init', get_class( $atf_table ), 'maybe_upgrade', 10 );
-		self::forceRemoveTableAdminInitHooks( 'admin_init', get_class( $atf_table ), 'maybe_upgrade', 10 );
-		self::forceRemoveTableAdminInitHooks( 'switch_blog', get_class( $atf_table ), 'switch_blog', 10 );
+		$tables = [
+			$container->get( 'rucss_usedcss_table' ),
+			$container->get( 'preload_caches_table' ),
+			$container->get( 'atf_table' ),
+			$container->get( 'lrc_table' ),
+		];
+
+		foreach ( $tables as $table ) {
+			self::forceRemoveTableAdminInitHooks( 'init', get_class( $table ), 'maybe_upgrade', 10 );
+			self::forceRemoveTableAdminInitHooks( 'admin_init', get_class( $table ), 'maybe_upgrade', 10 );
+			self::forceRemoveTableAdminInitHooks( 'switch_blog', get_class( $table ), 'switch_blog', 10 );
+		}
 	}
 
 	public static function forceRemoveTableAdminInitHooks( $hook_name = '', $class_name = '', $method_name = '', $priority = 0 ) {

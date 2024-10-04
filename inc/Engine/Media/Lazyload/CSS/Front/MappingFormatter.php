@@ -58,11 +58,7 @@ class MappingFormatter {
 		 *
 		 * @param string[] $original_pseudo_elements Pseudo elements to remove.
 		 */
-		$pseudo_elements_to_remove = apply_filters( 'rocket_lazyload_css_ignored_pseudo_elements', $original_pseudo_elements );
-
-		if ( ! is_array( $original_pseudo_elements ) ) {
-			$pseudo_elements_to_remove = $original_pseudo_elements;
-		}
+		$pseudo_elements_to_remove = wpm_apply_filters_typed( 'array', 'rocket_lazyload_css_ignored_pseudo_elements', $original_pseudo_elements );
 
 		usort(
 			$pseudo_elements_to_remove,
@@ -116,10 +112,6 @@ class MappingFormatter {
 		$selectors = array_unique( $selectors );
 
 		$selector = implode( ',', $selectors );
-
-		if ( ! $selector ) {
-			return 'body';
-		}
 
 		return (string) $selector;
 	}
