@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\LazyRenderContent\Database\Schema;
 
-use WP_Rocket\Dependencies\Database\Schema;
+use WP_Rocket\Dependencies\BerlinDB\Database\Schema;
 
 class LazyRenderContent extends Schema {
 	/**

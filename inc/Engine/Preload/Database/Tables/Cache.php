@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Preload\Database\Tables;
 
-use WP_Rocket\Dependencies\Database\Table;
+use WP_Rocket\Dependencies\BerlinDB\Database\Table;
 
 class Cache extends Table {
 

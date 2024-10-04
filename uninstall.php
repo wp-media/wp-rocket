@@ -13,15 +13,15 @@ if ( ! defined( 'WP_ROCKET_CONFIG_PATH' ) ) {
 require_once __DIR__ . '/inc/Engine/WPRocketUninstall.php';
 
 // RUCSS Database Engine.
-require_once __DIR__ . '/inc/Dependencies/Database/Base.php';
-require_once __DIR__ . '/inc/Dependencies/Database/Column.php';
-require_once __DIR__ . '/inc/Dependencies/Database/Schema.php';
-require_once __DIR__ . '/inc/Dependencies/Database/Query.php';
-require_once __DIR__ . '/inc/Dependencies/Database/Row.php';
-require_once __DIR__ . '/inc/Dependencies/Database/Table.php';
-require_once __DIR__ . '/inc/Dependencies/Database/Queries/Meta.php';
-require_once __DIR__ . '/inc/Dependencies/Database/Queries/Date.php';
-require_once __DIR__ . '/inc/Dependencies/Database/Queries/Compare.php';
+require_once __DIR__ . '/inc/Dependencies/BerlinDB/Database/Base.php';
+require_once __DIR__ . '/inc/Dependencies/BerlinDB/Database/Column.php';
+require_once __DIR__ . '/inc/Dependencies/BerlinDB/Database/Schema.php';
+require_once __DIR__ . '/inc/Dependencies/BerlinDB/Database/Query.php';
+require_once __DIR__ . '/inc/Dependencies/BerlinDB/Database/Row.php';
+require_once __DIR__ . '/inc/Dependencies/BerlinDB/Database/Table.php';
+require_once __DIR__ . '/inc/Dependencies/BerlinDB/Database/Queries/Meta.php';
+require_once __DIR__ . '/inc/Dependencies/BerlinDB/Database/Queries/Date.php';
+require_once __DIR__ . '/inc/Dependencies/BerlinDB/Database/Queries/Compare.php';
 require_once __DIR__ . '/inc/Engine/Common/Database/TableInterface.php';
 require_once __DIR__ . '/inc/Engine/Common/Database/Tables/AbstractTable.php';
 require_once __DIR__ . '/inc/Engine/Optimization/RUCSS/Database/Tables/UsedCSS.php';

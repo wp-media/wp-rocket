@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Media\AboveTheFold\Database\Rows;
 
-use WP_Rocket\Dependencies\Database\Row;
+use WP_Rocket\Dependencies\BerlinDB\Database\Row;
 
 class AboveTheFold extends Row {
 	/**

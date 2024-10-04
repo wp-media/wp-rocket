@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Common\Database\Queries;
 
-use WP_Rocket\Dependencies\Database\Query;
+use WP_Rocket\Dependencies\BerlinDB\Database\Query;
 
 class AbstractQuery extends Query {
 	/**
