@@ -92,6 +92,16 @@ return [
 			],
 			'expected' => $html_output_with_preload,
 		],
+		'shoudNotAddBeaconToPageWhenLoggedInAndUserCacheEnabled' => [
+			'config' => [
+				'html' => $html_input,
+				'atf' => [],
+				'lrc' => [],
+				'is_logged_in' => true,
+				'user_cache_enabled' => 1,
+			],
+			'expected' => $html_output,
+		],
 		'shouldNotAddBeaconToPageWhenPerformanceHintsFailed' => [
 			'config' => [
 				'html' => $html_input,
