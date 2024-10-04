@@ -1,9 +1,12 @@
 ---
 name: Release
 about: Use this template when a new release is planned.
-title: "New Release"
-labels: New release checklist
+title: New Release
+labels: ''
+assignees: ''
+
 ---
+
 ## Release checklist
 This card identifies all of the tasks that need to be completed for the major release. Each task owner is responsible to communicate in this card about status and check when done and ready.
 These tasks need to be completed *before* we can proceed with the release:
