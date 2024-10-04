@@ -51,7 +51,7 @@ class gulpJs {
 	}
 
 	buildLazyloadCssMin() {
-		return this._compile( './src/js/custom/lazyload-css.js', 'lazyload-css', true, true );
+		return this._compile( './src/js/custom/lazyload-css.js', 'lazyload-css', true, false );
 	}
 
 	buildLcpBeacon() {
