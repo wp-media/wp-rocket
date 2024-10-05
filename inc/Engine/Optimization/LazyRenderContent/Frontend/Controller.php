@@ -42,6 +42,10 @@ class Controller implements ControllerInterface {
 	 * @return string
 	 */
 	public function optimize( string $html, $row ): string {
+		if ( rocket_bypass() && $row->has_lrc() ) {
+			return $this->remove_hashes( $html );
+		}
+
 		if ( ! $row->has_lrc() ) {
 			return $this->remove_hashes( $html );
 		}
@@ -127,10 +131,6 @@ class Controller implements ControllerInterface {
 	 * @return string
 	 */
 	public function add_hashes( $html ) {
-		if ( ! $this->context->is_allowed() ) {
-			return $html;
-		}
-
 		if ( empty( $html ) ) {
 			return $html;
 		}
