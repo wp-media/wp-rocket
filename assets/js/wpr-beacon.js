@@ -345,6 +345,11 @@
         this._finalize();
         return;
       }
+      if (this._isPageScrolled()) {
+        this.logger.logMessage("Bailing out because the page has been scrolled");
+        this._finalize();
+        return;
+      }
       this.infiniteLoopId = setTimeout(() => {
         this._handleInfiniteLoop();
       }, 1e4);
@@ -436,6 +441,9 @@
     }
     _handleInfiniteLoop() {
       this._saveFinalResultIntoDB();
+    }
+    _isPageScrolled() {
+      return window.pageYOffset > 0 || document.documentElement.scrollTop > 0;
     }
     _finalize() {
       const beaconscript = document.querySelector('[data-name="wpr-wpr-beacon"]');
