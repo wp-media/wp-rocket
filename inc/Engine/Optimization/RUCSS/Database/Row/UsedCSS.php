@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Engine\Optimization\RUCSS\Database\Row;
 
-use WP_Rocket\Dependencies\Database\Row;
+use WP_Rocket\Dependencies\BerlinDB\Database\Row;
 
 /**
  * RUCSS UsedCSS Row.

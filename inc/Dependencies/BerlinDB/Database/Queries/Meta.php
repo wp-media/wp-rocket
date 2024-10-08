@@ -8,7 +8,7 @@
  * @license     https://opensource.org/licenses/MIT MIT
  * @since       1.1.0
  */
-namespace WP_Rocket\Dependencies\Database\Queries;
+namespace WP_Rocket\Dependencies\BerlinDB\Database\Queries;
 
 // Exit if accessed directly
 defined( 'ABSPATH' ) || exit;

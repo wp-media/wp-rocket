@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Engine\Common\Database\Tables;
 
-use WP_Rocket\Dependencies\Database\Table;
+use WP_Rocket\Dependencies\BerlinDB\Database\Table;
 use WP_Rocket\Engine\Common\Database\TableInterface;
 
 class AbstractTable extends Table implements TableInterface {
