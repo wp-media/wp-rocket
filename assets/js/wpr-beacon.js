@@ -216,10 +216,20 @@
     }
     _getLazyRenderElements() {
       const elements = document.querySelectorAll("[data-rocket-location-hash]");
+      const svgUseTargets = this._getSvgUseTargets();
       if (elements.length <= 0) {
         return [];
       }
-      const validElements = Array.from(elements).filter((element) => !this._skipElement(element));
+      const validElements = Array.from(elements).filter((element) => {
+        if (this._skipElement(element)) {
+          return false;
+        }
+        if (svgUseTargets.includes(element)) {
+          this.logger.logColoredMessage(`Element skipped because of SVG: ${element.tagName}`, "orange");
+          return false;
+        }
+        return true;
+      });
       return validElements.map((element) => ({
         element,
         depth: this._getElementDepth(element),
@@ -302,6 +312,18 @@
     }
     _getLocationHash(element) {
       return element.hasAttribute("data-rocket-location-hash") ? element.getAttribute("data-rocket-location-hash") : "No hash detected";
+    }
+    _getSvgUseTargets() {
+      const useElements = document.querySelectorAll("use");
+      const targets = /* @__PURE__ */ new Set();
+      useElements.forEach((use) => {
+        let parent = use.parentElement;
+        while (parent && parent !== document.body) {
+          targets.add(parent);
+          parent = parent.parentElement;
+        }
+      });
+      return Array.from(targets);
     }
     getResults() {
       return this.lazyRenderElements;
