@@ -44,6 +44,7 @@ class Subscriber implements Subscriber_Interface {
 				[ 'add_menu_tools_page' ],
 				[ 'add_imagify_page', 9 ],
 				[ 'add_tutorials_page', 11 ],
+                [ 'add_plugins_page' , 12 ]
 			],
 			'admin_enqueue_scripts'                => [
 				[ 'enqueue_rocket_scripts' ],
@@ -278,4 +279,22 @@ class Subscriber implements Subscriber_Interface {
 	public function display_update_notice() {
 		$this->page->display_update_notice();
 	}
+
+    /**
+     * Add Plugins section to navigation.
+     *
+     * @since 3.17.2
+     *
+     * @param array $navigation Array of menu items.
+     * @return array
+     */
+    public function add_plugins_page( $navigation ) {
+        $navigation['plugins'] = [
+            'id'               => 'plugins',
+            'title'            => __( 'Our Plugins', 'rocket' ),
+            'menu_description' => __( 'Build Better, Faster, Safer', 'rocket' ),
+        ];
+
+        return $navigation;
+    }
 }
