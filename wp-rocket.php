@@ -14,7 +14,7 @@
  * Text Domain: rocket
  * Domain Path: languages
  *
- * Copyright 2013-2023 WP Rocket
+ * Copyright 2013-2024 WP Rocket
  */
 
 defined( 'ABSPATH' ) || exit;
