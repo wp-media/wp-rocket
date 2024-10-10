@@ -9,9 +9,9 @@ class CloudflareFacade {
 	/**
 	 * Hooks class instance
 	 *
-	 * @var Hooks
+	 * @var null|Hooks
 	 */
-	private $hooks;
+	private $hooks = null;
 
 	/**
 	 * Instantiate the hooks class

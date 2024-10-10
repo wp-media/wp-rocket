@@ -149,7 +149,7 @@ class Smush implements Subscriber_Interface {
 			return $enabled;
 		}
 
-		if ( ! method_exists( '\Smush\Core\Settings', 'get_instance' ) ) {
+		if ( ! method_exists( '\Smush\Core\Settings', 'get_instance' ) ) { // @phpstan-ignore-line
 			return $enabled;
 		}
 

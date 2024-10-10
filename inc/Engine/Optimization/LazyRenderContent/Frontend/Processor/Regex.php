@@ -34,7 +34,7 @@ class Regex implements ProcessorInterface {
 	 *
 	 * @var array
 	 */
-	private $exclusions;
+	private $exclusions; // @phpstan-ignore-line
 
 	/**
 	 * Sets the exclusions list

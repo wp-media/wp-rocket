@@ -19,7 +19,10 @@ class Test_handleSaveTemplate extends WPThemeTestcase {
 
 	protected $path_to_test_data = '/inc/ThirdParty/Themes/Divi/handleSaveTemplate.php';
 
+	// @phpstan-ignore-next-line
 	private static $user_without_permission;
+
+	// @phpstan-ignore-next-line
 	private static $user_with_permission;
 
 	public static function set_up_before_class() {

@@ -46,6 +46,6 @@ class Test_disablingConcatOnRucss extends TestCase {
 
 		$this->themify->disabling_concat_on_rucss( $config['old_configurations'], $config['new_configurations'] );
 
-		$this->assertTrue(true);
+		$this->assertTrue(true); // @phpstan-ignore-line
     }
 }

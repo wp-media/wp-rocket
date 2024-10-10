@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Common\PerformanceHints\Database\Queries;
 
-use WP_Rocket\Dependencies\Database\Query;
+use WP_Rocket\Dependencies\BerlinDB\Database\Query;
 
 class AbstractQueries extends Query {
 	/**
@@ -121,9 +121,8 @@ class AbstractQueries extends Query {
 		}
 
 		// Query statement.
-		$query    = 'SHOW TABLES LIKE %s';
-		$like     = $db->esc_like( $db->{$this->table_name} );
-		$prepared = $db->prepare( $query, $like );
+		$query    = 'SELECT table_name FROM information_schema.tables WHERE table_name = %s LIMIT 1';
+		$prepared = $db->prepare( $query, $db->{$this->table_name} );
 		$result   = $db->get_var( $prepared );
 
 		// Does the table exist?

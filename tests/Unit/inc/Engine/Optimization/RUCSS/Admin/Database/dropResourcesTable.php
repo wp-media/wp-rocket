@@ -47,7 +47,7 @@ class Test_DropResourcesTable extends TestCase {
 
 	public function testShouldDeleteTableAndOption() {
 		if ( $this->isPHP8() ) {
-			$this->assertTrue(true);
+			$this->assertTrue(true); // @phpstan-ignore-line
 			return;
 		}
 
@@ -67,7 +67,7 @@ class Test_DropResourcesTable extends TestCase {
 	public function isPHP8() {
 		$version = explode('.', PHP_VERSION);
 		if ( $version[0] >= 8 ) {
-			$this->assertTrue(true);
+			$this->assertTrue(true); // @phpstan-ignore-line
 			return true;
 		}
 

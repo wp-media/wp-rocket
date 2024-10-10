@@ -36,7 +36,7 @@ class TestMaybeAddErrorNotice extends TestCase {
 
 		$this->subscriber->maybe_add_error_notice();
 
-		$this->assertTrue( true );
+		$this->assertTrue( true ); // @phpstan-ignore-line
 	}
 
 	protected function configureIsAccessible( $config, $expected ) {

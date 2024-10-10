@@ -8,7 +8,7 @@
  * @license     https://opensource.org/licenses/MIT MIT
  * @since       1.0.0
  */
-namespace WP_Rocket\Dependencies\Database;
+namespace WP_Rocket\Dependencies\BerlinDB\Database;
 
 // Exit if accessed directly
 defined( 'ABSPATH' ) || exit;
@@ -281,7 +281,7 @@ class Base {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return \wpdb Database interface, or False if not set
+	 * @return \wpdb|false Database interface, or False if not set
 	 */
 	protected function get_db() {
 

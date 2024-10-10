@@ -1172,7 +1172,7 @@ class Page extends Abstract_Render {
 			$ecommerce_plugin = _x( 'iThemes Exchange', 'plugin name', 'rocket' );
 		} elseif ( defined( 'JIGOSHOP_VERSION' ) && function_exists( 'jigoshop_get_page_id' ) ) {
 			$ecommerce_plugin = _x( 'Jigoshop', 'plugin name', 'rocket' );
-		} elseif ( defined( 'WPSHOP_VERSION' ) && class_exists( 'wpshop_tools' ) && method_exists( 'wpshop_tools', 'get_page_id' ) ) {
+		} elseif ( defined( 'WPSHOP_VERSION' ) && class_exists( 'wpshop_tools' ) && method_exists( 'wpshop_tools', 'get_page_id' ) ) { // @phpstan-ignore-line
 			$ecommerce_plugin = _x( 'WP-Shop', 'plugin name', 'rocket' );
 		}
 
@@ -1519,11 +1519,7 @@ class Page extends Abstract_Render {
 		 *
 		 * @param array $addons Array of addons.
 		 */
-		$addons = apply_filters( 'rocket_cdn_helper_addons', [] );
-
-		if ( ! is_array( $addons ) ) {
-			$addons = [];
-		}
+		$addons = wpm_apply_filters_typed( 'array', 'rocket_cdn_helper_addons', [] );
 
 		$addons = array_unique( $addons );
 
@@ -2107,8 +2103,8 @@ class Page extends Abstract_Render {
 	 * @param  string $tag_name Name of the HTML tag that will wrap each element of the list.
 	 * @return array
 	 */
-	private function sanitize_and_format_list( $list, $tag_name = 'strong' ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.listFound
-		if ( ! is_array( $list ) || empty( $list ) ) {
+	private function sanitize_and_format_list( array $list, $tag_name = 'strong' ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.listFound
+		if ( empty( $list ) ) {
 			return [];
 		}
 
@@ -2180,7 +2176,7 @@ class Page extends Abstract_Render {
 
 		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			wp_send_json_error();
-			return;
+			return; // @phpstan-ignore-line
 		}
 
 		$this->options->set( 'cache_mobile', 1 );

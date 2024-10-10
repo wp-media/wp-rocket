@@ -150,10 +150,6 @@ class LoadInitialSitemap {
 
 		$sitemaps = wp_sitemaps_get_server();
 
-		if ( ! $sitemaps ) {
-			return false;
-		}
-
 		return $sitemaps->index->get_index_url();
 	}
 

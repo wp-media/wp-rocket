@@ -132,8 +132,10 @@ class Extractor {
 				$block = trim( $block_matches[ $default_index ][ $block_index ] );
 			}
 
-			foreach ( $this->comments_mapping as $id => $comment ) {
-				$block = str_replace( $id, $comment, $block );
+			if ( ! empty( $this->comments_mapping ) ) {
+				foreach ( $this->comments_mapping as $id => $comment ) {
+					$block = str_replace( $id, $comment, $block );
+				}
 			}
 
 			foreach ( $urls as $url ) {

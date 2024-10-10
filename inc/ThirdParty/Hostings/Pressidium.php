@@ -82,7 +82,7 @@ class Pressidium extends AbstractNoCacheHost {
 	 * Returns the path of URLs.
 	 *
 	 * @param array|string $urls Urls we want to get paths.
-	 * @return array|void the path.
+	 * @return array the path.
 	 */
 	private function get_paths( $urls ) {
 		if ( ! is_array( $urls ) ) {

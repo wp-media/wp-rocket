@@ -12,6 +12,14 @@ return [
 		],
 		'expected' => false,
 	],
+	'testShoulDoNothingURLNull' => [
+		'config' => [
+			'filter' => true,
+			'post_id' => 1,
+			'url' => null,
+		],
+		'expected' => false,
+	],
 	'testShoulDoNothingURLFalse' => [
 		'config' => [
 			'filter' => true,

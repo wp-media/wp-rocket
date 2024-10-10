@@ -257,12 +257,51 @@
       }
       return false;
     }
+    _checkLcrConflict(element) {
+      const conflictingElements = [];
+      const computedStyle = window.getComputedStyle(element);
+      const validMargins = ["marginTop", "marginRight", "marginBottom", "marginLeft"];
+      const negativeMargins = validMargins.some((margin) => parseFloat(computedStyle[margin]) < 0);
+      const currentElementConflicts = negativeMargins || computedStyle.contentVisibility === "auto" || computedStyle.contentVisibility === "hidden";
+      if (currentElementConflicts) {
+        conflictingElements.push({
+          element,
+          conflicts: [
+            negativeMargins && "negative margin",
+            computedStyle.contentVisibility === "auto" && "content-visibility:auto",
+            computedStyle.contentVisibility === "hidden" && "content-visibility:hidden"
+          ].filter(Boolean)
+        });
+      }
+      Array.from(element.children).forEach((child) => {
+        const childStyle = window.getComputedStyle(child);
+        const validMargins2 = ["marginTop", "marginRight", "marginBottom", "marginLeft"];
+        const childNegativeMargins = validMargins2.some((margin) => parseFloat(childStyle[margin]) < 0);
+        const childConflicts = childNegativeMargins || childStyle.position === "absolute" || childStyle.position === "fixed";
+        if (childConflicts) {
+          conflictingElements.push({
+            element: child,
+            conflicts: [
+              childNegativeMargins && "negative margin",
+              childStyle.position === "absolute" && "position:absolute",
+              childStyle.position === "fixed" && "position:fixed"
+            ].filter(Boolean)
+          });
+        }
+      });
+      return conflictingElements;
+    }
     _processElements(elements) {
       elements.forEach(({ element, depth, distance, hash }) => {
         if (this._shouldSkipElement(element, this.config.exclusions || [])) {
           return;
         }
         if ("No hash detected" === hash) {
+          return;
+        }
+        const conflicts = this._checkLcrConflict(element);
+        if (conflicts.length > 0) {
+          this.logger.logMessage("Skipping element due to conflicts:", conflicts);
           return;
         }
         const can_push_hash = element.parentElement && this._getElementDistance(element.parentElement) < this.config.lrc_threshold && distance >= this.config.lrc_threshold;

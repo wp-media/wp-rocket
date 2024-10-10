@@ -53,6 +53,10 @@ class Processor {
 			return $html;
 		}
 
+		if ( is_user_logged_in() && $this->options->get( 'cache_logged_user', 0 ) ) {
+			return $html;
+		}
+
 		global $wp;
 
 		$url       = untrailingslashit( home_url( add_query_arg( [], $wp->request ) ) );

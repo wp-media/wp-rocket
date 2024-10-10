@@ -50,7 +50,8 @@ class Test_LoadHooks extends TestCase {
 
 		$subscriber->load_hooks();
 
-		$this->assertTrue( true ); // Prevent "risky" warning.
+		// Prevent "risky" warning.
+		$this->assertTrue( true ); // @phpstan-ignore-line
 	}
 
 	public function testShouldCallCallbacksWhenDidAction() {

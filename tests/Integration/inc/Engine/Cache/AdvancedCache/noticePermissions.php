@@ -71,9 +71,9 @@ class Test_NoticePermissions extends FilesystemTestCase {
 		if ( empty( $expected ) ) {
 			$this->markTestSkipped( 'Test doest not perform assertion, need to revisit' );
 
-			$advanced_cache->notice_permissions();
-
-			return;
+//			$advanced_cache->notice_permissions();
+//
+//			return;
 		}
 
 		ob_start();

@@ -189,11 +189,7 @@ class Notices {
 	 *
 	 * @return array
 	 */
-	public function add_localize_script_data( $data ): array {
-		if ( ! is_array( $data ) ) {
-			$data = (array) $data;
-		}
-
+	public function add_localize_script_data( array $data ): array {
 		if ( ! $this->options->get( 'remove_unused_css', 0 ) ) {
 			return $data;
 		}

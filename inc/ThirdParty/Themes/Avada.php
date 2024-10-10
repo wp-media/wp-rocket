@@ -100,7 +100,7 @@ class Avada implements Subscriber_Interface {
 			return $disable_images_lazyload;
 		}
 
-		if ( ! empty( $avada_options['lazy_load'] && 'avada' !== $avada_options['lazy_load'] ) ) {
+		if ( 'avada' !== $avada_options['lazy_load'] ) {
 			return $disable_images_lazyload;
 		}
 

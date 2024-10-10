@@ -388,7 +388,7 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 	 * @since 3.1
 	 * @author Remy Perona
 	 *
-	 * @return string
+	 * @return mixed
 	 */
 	private function get_cache_empty_cart() {
 		$lang = rocket_get_current_language();
@@ -549,12 +549,8 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 	 *
 	 * @return array
 	 */
-	public function show_notempty_product_gallery_with_delayJS( $exclusions = [] ): array {
+	public function show_notempty_product_gallery_with_delayJS( array $exclusions = [] ): array {
 		global $wp_version;
-
-		if ( ! is_array( $exclusions ) ) {
-			$exclusions = (array) $exclusions;
-		}
 
 		if ( ! $this->delayjs_html->is_allowed() ) {
 			return $exclusions;

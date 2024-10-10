@@ -23,7 +23,7 @@ class PurgeExpiredCache {
 	 *
 	 * @since  3.4
 	 *
-	 * @var \WP_Filesystem_Direct
+	 * @var null|\WP_Filesystem_Direct
 	 */
 	private $filesystem;
 
@@ -60,7 +60,7 @@ class PurgeExpiredCache {
 		 * @param array $urls           URLs that will be searched for old cache files.
 		 * @param int   $file_age_limit Timestamp of the maximum age files must have.
 		 */
-		$urls = apply_filters( 'rocket_automatic_cache_purge_urls', $urls, $file_age_limit );
+		$urls = wpm_apply_filters_typed( 'array', 'rocket_automatic_cache_purge_urls', $urls, $file_age_limit );
 
 		if ( ! is_array( $urls ) ) {
 			// I saw what you did ಠ_ಠ.
@@ -380,8 +380,8 @@ class PurgeExpiredCache {
 	 *
 	 * @since 3.8
 	 *
-	 * @param int $old_lifespan      Old value in minutes.
-	 * @param int $old_lifespan_unit Old value of unit.
+	 * @param int    $old_lifespan      Old value in minutes.
+	 * @param string $old_lifespan_unit Old value of unit.
 	 *
 	 * @return void
 	 */

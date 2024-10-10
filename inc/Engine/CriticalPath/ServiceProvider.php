@@ -67,8 +67,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $processor_service )
 			->addArgument( $options );
 		$this->getContainer()->addShared( 'rest_cpcss_subscriber', RESTCSSSubscriber::class )
-			->addArgument( $this->getContainer()->get( 'rest_cpcss_wp_post' ) )
-			->addTag( 'common_subscriber' );
+			->addArgument( $this->getContainer()->get( 'rest_cpcss_wp_post' ) );
 		// REST CPCSS END.
 
 		$this->getContainer()->add( 'critical_css_generation', CriticalCSSGeneration::class )
@@ -86,8 +85,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $options )
 			->addArgument( $this->getContainer()->get( 'options_api' ) )
 			->addArgument( $this->getContainer()->get( 'user' ) )
-			->addArgument( $filesystem )
-			->addTag( 'common_subscriber' );
+			->addArgument( $filesystem );
 
 		$this->getContainer()->add( 'cpcss_post',  Post::class )
 			->addArgument( $options )
@@ -105,7 +103,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->addShared( 'critical_css_admin_subscriber', Subscriber::class )
 			->addArgument( $this->getContainer()->get( 'cpcss_post' ) )
 			->addArgument( $this->getContainer()->get( 'cpcss_settings' ) )
-			->addArgument( $this->getContainer()->get( 'cpcss_admin' ) )
-			->addTag( 'admin_subscriber' );
+			->addArgument( $this->getContainer()->get( 'cpcss_admin' ) );
 	}
 }

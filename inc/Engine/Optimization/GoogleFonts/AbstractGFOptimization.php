@@ -96,11 +96,7 @@ abstract class AbstractGFOptimization {
 		 *
 		 * @param string $display Display value. Can be either auto, block, swap, fallback or optional.
 		 */
-		$display = apply_filters( 'rocket_combined_google_fonts_display', 'swap' );
-
-		if ( ! is_string( $display ) ) {
-			return 'swap';
-		}
+		$display = wpm_apply_filters_typed( 'string', 'rocket_combined_google_fonts_display', 'swap' );
 
 		return isset( $this->display_values[ $display ] ) ? $display : 'swap';
 	}
