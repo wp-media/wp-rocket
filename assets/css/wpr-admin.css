@@ -299,6 +299,14 @@ a:focus, button:focus {
   content: url("../img/imagify-install.svg");
 }
 
+.wpr-icons-plugins:before, #wpr-nav-plugins:before {
+  content: url("../img/plugins.png");
+}
+
+.wpr-icons-plugins-hover:before, #wpr-nav-plugins.isActive:before, #wpr-nav-plugins:hover:before {
+  content: url("../img/plugins-hover.png");
+}
+
 .wpr-title1 {
   font-size: 1.625rem;
   line-height: 1;

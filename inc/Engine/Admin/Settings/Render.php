@@ -194,6 +194,15 @@ class Render extends Abstract_render {
 		echo $this->generate( 'page-sections/tools' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 
+    /**
+     * Render the plugins page section.
+     *
+     * @since 3.17.2
+     */
+    public function render_plugin_section() {
+        echo $this->generate( 'page-sections/plugins' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+    }
+
 	/**
 	 * Renders the settings sections for a page section.
 	 *
