@@ -17,7 +17,6 @@ use WP_Rocket\Tests\Unit\TestCase;
 class Test_AddCleanSaasMenuItem extends TestCase {
 	private $admin_bar;
 	private $options;
-	private $atf_context;
 	private $rucss_url_context;
 	private $wp_admin_bar;
 

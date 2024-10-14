@@ -56,7 +56,7 @@ class Optimization {
 	 * @param array $options WP Rocket Database options.
 	 */
 	public function process_handler( $options ) {
-		if ( method_exists( $this->process, 'cancel_process' ) ) {
+		if ( method_exists( $this->process, 'cancel_process' ) ) { // @phpstan-ignore-line
 			$this->process->cancel_process();
 		}
 

@@ -17,9 +17,6 @@ use WP_Rocket\Engine\Common\PerformanceHints\Admin\AdminBar;
  */
 class Test_AddCleanPerformanceHintsItem extends TestCase {
 	private $admin_bar;
-	private $atf_context;
-	private $lrc_context;
-
 	private $wp_admin_bar;
 	private $factories;
 

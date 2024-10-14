@@ -38,7 +38,7 @@ class Subscriber extends AbstractWebp implements Subscriber_Interface {
 	/**
 	 * \WP_Filesystem_Direct instance.
 	 *
-	 * @var \WP_Filesystem_Direct
+	 * @var null|\WP_Filesystem_Direct
 	 */
 	private $filesystem;
 
@@ -58,11 +58,11 @@ class Subscriber extends AbstractWebp implements Subscriber_Interface {
 		$this->options_data = $options_data;
 		$this->options_api  = $options_api;
 
-		if ( ! isset( $server ) && ! empty( $_SERVER ) && is_array( $_SERVER ) ) {
+		if ( ! isset( $server ) && ! empty( $_SERVER ) ) {
 			$server = $_SERVER;
 		}
 
-		$this->server = $server && is_array( $server ) ? $server : [];
+		$this->server = $server ?: [];
 	}
 
 	/**
@@ -202,8 +202,8 @@ class Subscriber extends AbstractWebp implements Subscriber_Interface {
 	 * @param array $requests Requests to make.
 	 * @return array
 	 */
-	public function add_accept_header( $requests ) {
-		if ( ! is_array( $requests ) || ! $this->options_data->get( 'cache_webp', 0 ) ) {
+	public function add_accept_header( array $requests ) {
+		if ( ! $this->options_data->get( 'cache_webp', 0 ) ) {
 			return $requests;
 		}
 
@@ -214,7 +214,7 @@ class Subscriber extends AbstractWebp implements Subscriber_Interface {
 				return $request;
 			},
 			$requests
-			);
+		);
 	}
 
 	/**

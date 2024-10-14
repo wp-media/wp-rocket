@@ -31,6 +31,26 @@ class SimpleHtmlDom implements ProcessorInterface {
 	private $max_hashes;
 
 	/**
+	 * Array of patterns to exclude from hash injection.
+	 *
+	 * @since 3.17.0.2
+	 *
+	 * @var array
+	 */
+	private $exclusions; // @phpstan-ignore-line
+
+	/**
+	 * Sets the exclusions list
+	 *
+	 * @param string[] $exclusions The list of patterns to exclude from hash injection.
+	 *
+	 * @return void
+	 */
+	public function set_exclusions( $exclusions ): void {
+		$this->exclusions = $exclusions;
+	}
+
+	/**
 	 * Add hashes to the HTML elements
 	 *
 	 * @param string $html The HTML content.

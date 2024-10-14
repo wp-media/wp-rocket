@@ -26,8 +26,8 @@ class TestPurgeUrl extends TestCase {
 	public function testShouldReturnExpected( $config ) {
 		$this->markTestSkipped( 'Test doest not perform assertion, need to revisit' );
 
-		$this->ninukis_caching->shouldReceive( 'purge_url' );
-
-		do_action( 'after_rocket_clean_file' );
+//		$this->ninukis_caching->shouldReceive( 'purge_url' );
+//
+//		do_action( 'after_rocket_clean_file' );
 	}
 }

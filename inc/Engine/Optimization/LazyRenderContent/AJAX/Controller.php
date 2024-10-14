@@ -91,7 +91,7 @@ class Controller implements ControllerInterface {
 			'is_mobile'      => $is_mobile,
 			'status'         => $status_code,
 			'error_message'  => $status_message,
-			'below_the_fold' => ( is_array( $below_the_fold ) || is_object( $below_the_fold ) ) ? wp_json_encode( $below_the_fold ) : $below_the_fold,
+			'below_the_fold' => wp_json_encode( $below_the_fold ),
 			'last_accessed'  => current_time( 'mysql', true ),
 			'created_at'     => current_time( 'mysql', true ),
 		];

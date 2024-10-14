@@ -14,9 +14,9 @@ class Test_cleanDomain extends GodaddyTestCase {
 	public function testShouldDoBanRequest( ) {
 		$this->markTestSkipped( 'Test doest not perform assertion, need to revisit' );
 
-		Filters\expectApplied( 'pre_http_request' )->andReturn( 'response' );
-
-		do_action( 'before_rocket_clean_domain', '', '', home_url() );
+//		Filters\expectApplied( 'pre_http_request' )->andReturn( 'response' );
+//
+//		do_action( 'before_rocket_clean_domain', '', '', home_url() );
 	}
 
 }

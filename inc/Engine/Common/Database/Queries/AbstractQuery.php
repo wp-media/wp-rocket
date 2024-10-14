@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Common\Database\Queries;
 
-use WP_Rocket\Dependencies\Database\Query;
+use WP_Rocket\Dependencies\BerlinDB\Database\Query;
 
 class AbstractQuery extends Query {
 	/**
@@ -45,7 +45,7 @@ class AbstractQuery extends Query {
 	 *
 	 * @param int $row_id DB Row ID.
 	 *
-	 * @return array|false
+	 * @return object|array|false false if no row found, array or object if row found.
 	 */
 	public function get_row_by_id( int $row_id ) {
 		if ( ! self::$table_exists && ! $this->table_exists() ) {
@@ -520,9 +520,8 @@ class AbstractQuery extends Query {
 		}
 
 		// Query statement.
-		$query    = 'SHOW TABLES LIKE %s';
-		$like     = $db->esc_like( $db->{$this->table_name} );
-		$prepared = $db->prepare( $query, $like );
+		$query    = 'SELECT table_name FROM information_schema.tables WHERE table_name = %s LIMIT 1';
+		$prepared = $db->prepare( $query, $db->{$this->table_name} );
 		$result   = $db->get_var( $prepared );
 
 		// Does the table exist?

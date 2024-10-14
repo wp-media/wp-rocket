@@ -117,7 +117,7 @@ class DefaultProcess implements StrategyInterface {
 		// update the `next_retry_time` column.
 		$next_retry_time = $this->clock->current_time( 'timestamp', true ) + $saas_retry_duration;
 
-		$this->manager->update_message( $row_details->url, $row_details->is_mobile, $job_details['code'], $job_details['message'], $row_details->error_message );
+		$this->manager->update_message( $row_details->url, $row_details->is_mobile, (int) $job_details['code'], $job_details['message'], $row_details->error_message );
 		$this->manager->update_next_retry_time( $row_details->url, $row_details->is_mobile, $next_retry_time );
 	}
 }

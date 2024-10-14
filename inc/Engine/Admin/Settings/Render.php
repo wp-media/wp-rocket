@@ -106,10 +106,6 @@ class Render extends Abstract_render {
 	 * @since 3.0
 	 */
 	public function render_form_sections() {
-		if ( ! isset( $this->settings ) ) {
-			return;
-		}
-
 		foreach ( $this->settings as $id => $args ) {
 			$default = [
 				'title'            => '',

@@ -245,9 +245,9 @@ class Subscriber implements Subscriber_Interface {
 		 * @param string $extension extension from the thumbnail from Youtube video.
 		 * @returns string
 		 */
-		$extension = apply_filters( 'rocket_lazyload_youtube_thumbnail_extension', 'jpg' );
+		$extension = wpm_apply_filters_typed( 'string', 'rocket_lazyload_youtube_thumbnail_extension', 'jpg' );
 
-		if ( ! is_string( $extension ) || ! in_array( $extension, [ 'jpg', 'webp' ], true ) ) {
+		if ( ! in_array( $extension, [ 'jpg', 'webp' ], true ) ) {
 			$extension = 'jpg';
 		}
 
@@ -456,11 +456,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @param array $exclusions Array of excluded patterns.
 	 * @return array
 	 */
-	public function add_exclusions( $exclusions ): array {
-		if ( ! is_array( $exclusions ) ) {
-			$exclusions = [];
-		}
-
+	public function add_exclusions( array $exclusions = [] ): array {
 		$exclude_lazyload = $this->options->get( 'exclude_lazyload', [] );
 
 		if ( empty( $exclude_lazyload ) ) {

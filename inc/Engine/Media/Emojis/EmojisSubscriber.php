@@ -66,18 +66,14 @@ class EmojisSubscriber implements Subscriber_Interface {
 	 *
 	 * @return array
 	 */
-	public function disable_emoji_tinymce( $plugins ) {
+	public function disable_emoji_tinymce( array $plugins ) {
 		_deprecated_function( 'WP_Rocket\Engine\Media\Emojis\EmojisSubscriber::disable_emoji_tinymce', '3.8' );
 
 		if ( ! $this->can_disable_emoji() ) {
 			return $plugins;
 		}
 
-		if ( is_array( $plugins ) ) {
-			return array_diff( $plugins, [ 'wpemoji' ] );
-		}
-
-		return [];
+		return array_diff( $plugins, [ 'wpemoji' ] );
 	}
 
 	/**

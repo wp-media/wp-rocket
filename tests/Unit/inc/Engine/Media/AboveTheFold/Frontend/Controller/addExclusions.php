@@ -8,7 +8,6 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Media\AboveTheFold\Context\Context;
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Queries\AboveTheFold;
 use WP_Rocket\Engine\Media\AboveTheFold\Frontend\Controller;
-use WP_Filesystem_Direct;
 use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Tests\Fixtures\inc\Engine\Common\JobManager\Manager;
 
@@ -23,7 +22,6 @@ class Test_addExclusions extends TestCase {
 	private $query;
 	private $controller;
 	private $context;
-	private $filesystem;
 
 	protected function setUp(): void {
 		parent::setUp();

@@ -125,11 +125,7 @@ class Fonts implements Subscriber_Interface {
 	 * @param  string $file Filepath to sanitize.
 	 * @return string|bool  Sanitized filepath. False if not a font file.
 	 */
-	private function sanitize_font( $file ) {
-		if ( ! is_string( $file ) ) {
-			return false;
-		}
-
+	private function sanitize_font( string $file ) {
 		$file = trim( $file );
 
 		if ( empty( $file ) ) {

@@ -30,6 +30,7 @@ class Test_AddHashes extends TestCase {
 
 		$this->max_hashes = null;
 		$this->unregisterAllCallbacksExcept( 'rocket_performance_hints_buffer', 'add_hashes', 16 );
+
 	}
 
 	public function tear_down() {
@@ -47,12 +48,16 @@ class Test_AddHashes extends TestCase {
 		self::addLrc( $config['row'] );
 
 		add_filter( 'rocket_lrc_optimization', '__return_true' );
+		add_filter( 'rocket_lrc_exclusions', function() use ($config) {
+			return $config['exclusions'] ?? [];
+		});
+
 
 		if ( isset( $config['max_hashes'] ) ) {
 			$this->max_hashes = $config['max_hashes'];
 			add_filter( 'rocket_lrc_max_hashes', [ $this, 'set_lrc_max_hashes' ] );
 		}
-		
+
 
 		$this->assertSame(
 			$expected['html'],

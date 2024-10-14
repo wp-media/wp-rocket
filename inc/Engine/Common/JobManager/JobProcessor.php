@@ -524,7 +524,7 @@ class JobProcessor implements LoggerAwareInterface {
 		list($occurrences, $duplicates) = [ [], [] ];
 
 		foreach ( $rows as $row ) {
-			$key = $row->url . '|' . ( (bool) $row->is_mobile ?? 'null' );
+			$key = $row->url . '|' . ( isset( $row->is_mobile ) ? (bool) $row->is_mobile : 'null' );
 
 			if ( ! isset( $occurrences[ $key ] ) ) {
 				$occurrences[ $key ] = 1;

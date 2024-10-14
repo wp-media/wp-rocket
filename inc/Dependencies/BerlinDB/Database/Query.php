@@ -8,7 +8,7 @@
  * @license     https://opensource.org/licenses/MIT MIT
  * @since       1.0.0
  */
-namespace WP_Rocket\Dependencies\Database;
+namespace WP_Rocket\Dependencies\BerlinDB\Database;
 
 // Exit if accessed directly
 defined( 'ABSPATH' ) || exit;
@@ -77,7 +77,7 @@ class Query extends Base {
 	 * @since 1.0.0
 	 * @var   string
 	 */
-	protected $table_schema = '\\WP_Rocket\\Dependencies\\Database\\Schema';
+	protected $table_schema = '\\WP_Rocket\\Dependencies\\BerlinDB\\Database\\Schema';
 
 	/** Item ******************************************************************/
 
@@ -113,7 +113,7 @@ class Query extends Base {
 	 * @since 1.0.0
 	 * @var   mixed
 	 */
-	protected $item_shape = '\\WP_Rocket\\Dependencies\\Database\\Row';
+	protected $item_shape = '\\WP_Rocket\\Dependencies\\BerlinDB\\Database\\Row';
 
 	/** Cache *****************************************************************/
 
@@ -1452,7 +1452,7 @@ class Query extends Base {
 		$columns   = array_flip( $this->get_column_names() );
 
 		// Get the intersection of allowed column names to groupby columns
-		$intersect = array_intersect( $groupby, $columns );
+		$intersect = array_intersect( $columns, $groupby );
 
 		// Bail if invalid column
 		if ( empty( $intersect ) ) {

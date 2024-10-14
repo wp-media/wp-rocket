@@ -46,7 +46,7 @@ class RUCSSQueueRunner extends ActionScheduler_Abstract_QueueRunner {
 	 * @return RUCSSQueueRunner Instance.
 	 */
 	public static function instance() {
-		if ( empty( self::$runner ) ) {
+		if ( null === self::$runner ) {
 			self::$runner = new RUCSSQueueRunner();
 		}
 		return self::$runner;

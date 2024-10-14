@@ -132,11 +132,7 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 * @param  string $url     The request URL.
 	 * @return array           Updated array of HTTP request arguments.
 	 */
-	public function exclude_rocket_from_wp_updates( $request, $url ) {
-		if ( ! is_string( $url ) ) {
-			return $request;
-		}
-
+	public function exclude_rocket_from_wp_updates( $request, string $url ) {
 		if ( ! preg_match( '@^https?://api.wordpress.org/plugins/update-check(/|\?|$)@', $url ) || empty( $request['body']['plugins'] ) ) {
 			// Not a plugin update request. Stop immediately.
 			return $request;
@@ -204,7 +200,7 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	/**
 	 * Add WPR update data to the "WP update" transient.
 	 *
-	 * @param  \stdClass $transient_value New value of site transient.
+	 * @param  \stdClass|array $transient_value New value of site transient.
 	 * @return \stdClass
 	 */
 	public function maybe_add_rocket_update_data( $transient_value ) {
