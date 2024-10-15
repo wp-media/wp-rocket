@@ -604,7 +604,7 @@ JS;
 			1
 		);
 
-		$buffer =  preg_replace( '#</body>#iU', $this->return_remove_cpcss_script() . '</body>', $buffer, 1 );
+		$buffer = preg_replace( '#</body>#iU', $this->return_remove_cpcss_script() . '</body>', $buffer, 1 );
 
 		return $this->add_meta_comment( 'async_css', $buffer );
 	}

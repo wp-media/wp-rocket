@@ -81,7 +81,7 @@ class Data {
 		$active_options = array_intersect_key( $this->to_send, array_filter( $this->options->get_options() ) );
 
 		// This filter is documented in inc/Engine/Media/AboveTheFold/Context/Context.php.
-		if (  wpm_apply_filters_typed( 'boolean', 'rocket_above_the_fold_optimization', true ) ) {
+		if ( wpm_apply_filters_typed( 'boolean', 'rocket_above_the_fold_optimization', true ) ) {
 			$active_options['optimize_critical_images'] = 'Optimize Critical Images';
 		}
 
