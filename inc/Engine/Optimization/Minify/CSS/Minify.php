@@ -4,6 +4,7 @@ namespace WP_Rocket\Engine\Optimization\Minify\CSS;
 use WP_Rocket\Dependencies\Minify as Minifier;
 use WP_Rocket\Engine\Optimization\CSSTrait;
 use WP_Rocket\Engine\Optimization\Minify\ProcessorInterface;
+use WP_Rocket\Engine\Support\CommentTrait;
 use WP_Rocket\Logger\Logger;
 
 /**
@@ -13,6 +14,7 @@ use WP_Rocket\Logger\Logger;
  */
 class Minify extends AbstractCSSOptimization implements ProcessorInterface {
 	use CSSTrait;
+	use CommentTrait;
 
 	/**
 	 * Minifies CSS files
@@ -77,7 +79,7 @@ class Minify extends AbstractCSSOptimization implements ProcessorInterface {
 			$html = $this->replace_style( $style, $minify_url, $html );
 		}
 
-		return $html;
+		return $this->add_meta_comment( 'minify_css', $html );
 	}
 
 	/**

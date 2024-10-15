@@ -5,8 +5,11 @@ namespace WP_Rocket\Engine\Optimization\DeferJS;
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\DataManager;
+use WP_Rocket\Engine\Support\CommentTrait;
 
 class DeferJS {
+	use CommentTrait;
+
 	/**
 	 * Options instance
 	 *
@@ -86,7 +89,7 @@ class DeferJS {
 			$html         = str_replace( $tag[0], $deferred_tag, $html );
 		}
 
-		return $html;
+		return $this->add_meta_comment( 'defer_js', $html );
 	}
 
 	/**

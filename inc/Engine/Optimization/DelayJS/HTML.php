@@ -6,10 +6,12 @@ namespace WP_Rocket\Engine\Optimization\DelayJS;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\DataManager;
 use WP_Rocket\Engine\Optimization\RegexTrait;
+use WP_Rocket\Engine\Support\CommentTrait;
 use WP_Rocket\Logger\Logger;
 
 class HTML {
 	use RegexTrait;
+	use CommentTrait;
 
 	/**
 	 * Plugin options instance.
@@ -122,7 +124,9 @@ class HTML {
 			$this->excluded
 		);
 
-		return $this->parse( $html );
+		$html = $this->parse( $html );
+
+		return $this->add_meta_comment( 'delay_js', $html );
 	}
 
 	/**
