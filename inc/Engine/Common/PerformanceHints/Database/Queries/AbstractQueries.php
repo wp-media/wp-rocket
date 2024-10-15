@@ -60,11 +60,11 @@ class AbstractQueries extends Query {
 
 		$deleted = true;
 		foreach ( $items as $item ) {
-            if( is_object( $item )  && isset( $item->id ) ) {
-                $deleted = $deleted && $this->delete_item( $item->id );
-            } else {
-                $deleted = false;
-            }
+			if ( is_object( $item ) && isset( $item->id ) ) {
+				$deleted = $deleted && $this->delete_item( $item->id );
+			} else {
+				$deleted = false;
+			}
 		}
 
 		return $deleted;
