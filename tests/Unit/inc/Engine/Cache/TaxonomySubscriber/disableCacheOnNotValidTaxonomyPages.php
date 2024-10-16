@@ -9,6 +9,8 @@ use WP_Rocket\Tests\Unit\TestCase;
 /**
  * Test class covering \WP_Rocket\Engine\Cache\TaxonomySubscriber::disable_cache_on_not_valid_taxonomy_pages
  *
+ * @uses \WP_Rocket\Engine\Cache\TaxonomySubscriber::is_not_valid_taxonomies_page
+ *
  * @group Cache
  */
 class Test_DisableCacheOnNotValidTaxonomyPages extends TestCase {
