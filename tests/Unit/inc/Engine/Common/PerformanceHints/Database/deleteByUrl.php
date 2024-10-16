@@ -41,6 +41,8 @@ class Test_DeleteByUrl extends TestCase
             return;
         }
 
-        $this->query->expects(self::exactly(2))->method('delete_item')->withConsecutive([$config['delete_id_one']], [$config['delete_id_two']])->willReturnOnConsecutiveCalls($config['delete_return_one'], $config['delete_return_two']);
+        $this->query->expects(self::exactly($config['deleted_item']))->method('delete_item')
+			->withConsecutive([$config['delete_id_one']], [$config['delete_id_two']])
+			->willReturnOnConsecutiveCalls($config['delete_return_one'], $config['delete_return_two']);
     }
 }

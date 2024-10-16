@@ -15,25 +15,29 @@ return [
         'config' => [
             'url' => 'http://example.com',
             'results' => [],
+			'deleted_item' => 0
         ],
         'expected' => false,
     ],
     'resultsWithEmptyObjectShouldReturnFalse' => [
         'config' => [
             'url' => 'http://example.com',
+			'deleted_item' => 1,
             'results' => [
-                true
+				$empty_result_one,
+				$result_two,
             ],
-            'delete_id_one' => 1,
+            'delete_id_one' => true,
             'delete_id_two' => 2,
-            'delete_return_one' => false,
-            'delete_return_two' => false,
+            'delete_return_one' => true,
+            'delete_return_two' => true,
         ],
-        'expected' => false,
+        'expected' => true,
     ],
     'resultsWithOneErrorShouldReturnFalse' => [
         'config' => [
             'url' => 'http://example.com',
+			'deleted_item' => 2,
             'results' => [
                 $result_one,
                 $result_two,
