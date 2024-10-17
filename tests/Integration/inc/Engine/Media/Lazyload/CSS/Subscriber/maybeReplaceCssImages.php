@@ -24,6 +24,7 @@ class Test_MaybeReplaceCssImages extends FilesystemTestCase {
 		add_filter('rocket_lazyload_excluded_src', [$this, 'exclude_lazyload']);
 		add_filter('pre_http_request', [$this, 'mock_http'], 10, 3);
 		add_filter('rocket_lazyload_css_hash', [$this, 'rocket_lazyload_css_hash'], 10, 2);
+		add_filter( 'rocket_disable_meta_generator', '__return_true' );
 	}
 
 	public function tear_down() {
@@ -31,6 +32,8 @@ class Test_MaybeReplaceCssImages extends FilesystemTestCase {
 		remove_filter('rocket_lazyload_excluded_src', [$this, 'exclude_lazyload']);
 		remove_filter('pre_get_rocket_option_lazyload_css_bg_img', [$this, 'lazyload_css_bg_img']);
 		remove_filter('rocket_lazyload_css_hash', [$this, 'rocket_lazyload_css_hash']);
+		remove_filter( 'rocket_disable_meta_generator', '__return_true' );
+
 		$this->restoreWpHook('rocket_buffer');
 		parent::tear_down();
 	}

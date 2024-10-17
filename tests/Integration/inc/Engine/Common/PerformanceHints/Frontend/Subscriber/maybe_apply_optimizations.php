@@ -34,6 +34,8 @@ class Test_MaybeApplyOptimizations extends FilesystemTestCase {
 	public function set_up() {
 		parent::set_up();
 
+		add_filter( 'rocket_disable_meta_generator', '__return_true' );
+
 		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'maybe_apply_optimizations', 17 );
 	}
 
@@ -41,6 +43,7 @@ class Test_MaybeApplyOptimizations extends FilesystemTestCase {
 		unset( $_GET );
 		remove_filter( 'rocket_performance_hints_optimization_delay', [ $this, 'add_delay' ] );
 		remove_filter( 'pre_get_rocket_option_cache_logged_user', [ $this, 'get_cache_user' ] );
+		remove_filter( 'rocket_disable_meta_generator', '__return_true' );
 		$this->restoreWpHook( 'rocket_buffer' );
 
 		if ( $this->user_id > 0 ) {
