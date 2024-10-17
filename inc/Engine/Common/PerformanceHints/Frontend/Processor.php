@@ -95,10 +95,6 @@ class Processor {
 	 * @return string The modified HTML content with the beacon script injected just before the closing body tag.
 	 */
 	private function inject_beacon( $html, $url, $is_mobile ): string {
-		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) ) {
-			return $html;
-		}
-
 		$min = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
 		if ( ! $this->filesystem->exists( rocket_get_constant( 'WP_ROCKET_ASSETS_JS_PATH' ) . 'wpr-beacon' . $min . '.js' ) ) {
