@@ -48,7 +48,7 @@ class Meta {
 		}
 
 		if ( rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_FOOTPRINT', false ) ) {
-			return $html;
+			return $this->remove_features_comments( $html );
 		}
 
 		if ( wpm_apply_filters_typed( 'boolean', 'rocket_disable_meta_generator', false ) ) {
@@ -61,19 +61,17 @@ class Meta {
 
 		$meta = $this->get_meta_tag( $comments['feature'] );
 
+		if ( empty( $meta ) ) {
+			return $html;
+		}
+
 		$result = preg_replace( '/<\/head>/i', $meta . '</head>', $html, 1 );
 
 		if ( null === $result ) {
 			return $html;
 		}
 
-		$result = preg_replace( '/<!-- wpr_[^-]* -->/i', '', $result );
-
-		if ( null === $result ) {
-			return $html;
-		}
-
-		return $result;
+		return $this->remove_features_comments( $result );
 	}
 
 	/**
@@ -100,6 +98,10 @@ class Meta {
 			$features[] = 'wpr_preload_links';
 		}
 
+		if ( empty( $features ) ) {
+			return '';
+		}
+
 		$content = '';
 
 		if ( wpm_apply_filters_typed( 'boolean', 'rocket_display_meta_generator_content', true ) ) {
@@ -109,5 +111,22 @@ class Meta {
 		$meta = '<meta name="generator"' . $content . ' data-wpr-features="' . implode( ' ', $features ) . '" />';
 
 		return $meta;
+	}
+
+	/**
+	 * Remove WP Rocket features comments from the HTML
+	 *
+	 * @param string $html The HTML content.
+	 *
+	 * @return string
+	 */
+	private function remove_features_comments( $html ): string {
+		$result = preg_replace( '/<!-- wpr_[^-]* -->/i', '', $html );
+
+		if ( null === $result ) {
+			return $html;
+		}
+
+		return $result;
 	}
 }
