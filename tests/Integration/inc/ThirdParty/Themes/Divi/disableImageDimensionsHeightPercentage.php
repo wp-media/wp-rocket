@@ -25,6 +25,7 @@ class Test_DisableImageDimensionsHeightPercentage extends WPThemeTestcase {
 		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'specify_image_dimensions', 17 );
 
 		add_filter( 'rocket_specify_image_dimensions', '__return_true' );
+		add_filter( 'rocket_disable_meta_generator', '__return_true' );
 	}
 
 	public function tear_down() {
@@ -34,6 +35,7 @@ class Test_DisableImageDimensionsHeightPercentage extends WPThemeTestcase {
 
 		remove_filter( 'rocket_specify_image_dimensions', '__return_true' );
 		unset( $GLOBALS['wp'] );
+		remove_filter( 'rocket_disable_meta_generator', '__return_true' );
 
 		parent::tear_down();
 	}

@@ -52,6 +52,11 @@ class Test_SpecifyImageDimensions extends FilesystemTestCase {
 			return $site_url . ltrim( $path, '/' );
 		} );
 
+		Filters\expectApplied( 'rocket_disable_meta_generator' )
+			->atMost()
+			->once()
+			->andReturn( true );
+
 		if ( isset( $config['rocket_specify_image_dimensions_filter'] ) ){
 			Filters\expectApplied( 'rocket_specify_image_dimensions' )
 				->once()
