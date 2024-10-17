@@ -21,6 +21,9 @@
     static isIntersecting(rect) {
       return rect.bottom >= 0 && rect.right >= 0 && rect.top <= (window.innerHeight || document.documentElement.clientHeight) && rect.left <= (window.innerWidth || document.documentElement.clientWidth);
     }
+    static isPageScrolled() {
+      return window.pageYOffset > 0 || document.documentElement.scrollTop > 0;
+    }
   };
   var Utils_default = BeaconUtils;
 
@@ -152,6 +155,9 @@
         if (element_info.bg_set.every((item) => item.src === "")) {
           element_info.bg_set = matches.map((m) => m[1] ? { src: m[1].trim() } : {});
         }
+        if (element_info.bg_set.length <= 0) {
+          return null;
+        }
         if (element_info.bg_set.length > 0) {
           element_info.src = element_info.bg_set[0].src;
           if (element_info.type === "bg-img-set") {
@@ -162,7 +168,9 @@
       return element_info;
     }
     _initWithFirstElementWithInfo(elements) {
-      const firstElementWithInfo = elements.find((item) => item.elementInfo !== null);
+      const firstElementWithInfo = elements.find((item) => {
+        return item.elementInfo !== null && (item.elementInfo.src || item.elementInfo.srcset);
+      });
       if (!firstElementWithInfo) {
         this.logger.logMessage("No LCP candidate found.");
         this.performanceImages = [];
@@ -216,10 +224,20 @@
     }
     _getLazyRenderElements() {
       const elements = document.querySelectorAll("[data-rocket-location-hash]");
+      const svgUseTargets = this._getSvgUseTargets();
       if (elements.length <= 0) {
         return [];
       }
-      const validElements = Array.from(elements).filter((element) => !this._skipElement(element));
+      const validElements = Array.from(elements).filter((element) => {
+        if (this._skipElement(element)) {
+          return false;
+        }
+        if (svgUseTargets.includes(element)) {
+          this.logger.logColoredMessage(`Element skipped because of SVG: ${element.tagName}`, "orange");
+          return false;
+        }
+        return true;
+      });
       return validElements.map((element) => ({
         element,
         depth: this._getElementDepth(element),
@@ -342,6 +360,18 @@
     _getLocationHash(element) {
       return element.hasAttribute("data-rocket-location-hash") ? element.getAttribute("data-rocket-location-hash") : "No hash detected";
     }
+    _getSvgUseTargets() {
+      const useElements = document.querySelectorAll("use");
+      const targets = /* @__PURE__ */ new Set();
+      useElements.forEach((use) => {
+        let parent = use.parentElement;
+        while (parent && parent !== document.body) {
+          targets.add(parent);
+          parent = parent.parentElement;
+        }
+      });
+      return Array.from(targets);
+    }
     getResults() {
       return this.lazyRenderElements;
     }
@@ -381,6 +411,11 @@
     async init() {
       this.scriptTimer = /* @__PURE__ */ new Date();
       if (!await this._isValidPreconditions()) {
+        this._finalize();
+        return;
+      }
+      if (Utils_default.isPageScrolled()) {
+        this.logger.logMessage("Bailing out because the page has been scrolled");
         this._finalize();
         return;
       }

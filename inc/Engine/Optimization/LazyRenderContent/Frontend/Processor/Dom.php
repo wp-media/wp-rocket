@@ -134,6 +134,11 @@ class Dom implements ProcessorInterface {
 				continue;
 			}
 
+			// Check if the element contains an SVG use element and skip it.
+			if ( $child->getElementsByTagName( 'use' )->length > 0 ) {
+				continue;
+			}
+
 			if (
 				XML_ELEMENT_NODE !== $child->nodeType // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 				||
