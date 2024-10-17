@@ -59,6 +59,7 @@ class Test_MaybeApplyOptimizations extends FilesystemTestCase {
 	public function testShouldReturnAsExpected( $config, $expected ) {
 		$this->config = $config;
 		$this->cached_user = $config['user_cache_enabled'] ?? false;
+		$this->donotrocketoptimize = $config['donotrocketoptimize'] ?? null;
 
 		if ( isset( $config['query_string'] ) ) {
 			$_GET[ $config['query_string'] ] = 1;

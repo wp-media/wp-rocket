@@ -14,7 +14,7 @@ class Test_Rewrite extends TestCase {
 
 		add_filter( 'rocket_disable_meta_generator', '__return_true' );
 
-		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'rewrite', 20 );
+		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'rewrite', 2 );
 	}
 
 	public function tear_down() {
