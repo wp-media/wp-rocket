@@ -51,6 +51,13 @@ class Meta {
 			return $this->remove_features_comments( $html );
 		}
 
+		/**
+		 * Filters whether to disable the WP Rocket meta generator tag.
+		 *
+		 * @since 3.17.2
+		 *
+		 * @param bool $disable True to disable, false otherwise.
+		 */
 		if ( wpm_apply_filters_typed( 'boolean', 'rocket_disable_meta_generator', false ) ) {
 			return $html;
 		}
@@ -82,6 +89,7 @@ class Meta {
 	 * @return string
 	 */
 	private function get_meta_tag( array $features = [] ): string {
+		// This filter is documented in inc/classes/Buffer/class-cache.php.
 		if ( wpm_apply_filters_typed( 'boolean', 'do_rocket_generate_caching_files', true ) ) {
 			$features[] = 'wpr_cached';
 
@@ -104,6 +112,13 @@ class Meta {
 
 		$content = '';
 
+		/**
+		 * Filters the display of the content attribute in the meta generator tag.
+		 *
+		 * @since 3.17.2
+		 *
+		 * @param bool $display True to display, false otherwise.
+		 */
 		if ( wpm_apply_filters_typed( 'boolean', 'rocket_display_meta_generator_content', true ) ) {
 			$content = ' content="WP Rocket ' . rocket_get_constant( 'WP_ROCKET_VERSION', '' ) . '"';
 		}
