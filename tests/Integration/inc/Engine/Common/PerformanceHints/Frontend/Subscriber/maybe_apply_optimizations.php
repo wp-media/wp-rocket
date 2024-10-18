@@ -62,6 +62,10 @@ class Test_MaybeApplyOptimizations extends FilesystemTestCase {
 			$_GET[ $config['query_string'] ] = 1;
 		}
 
+		if ( isset( $config['sass_visit'] ) ) {
+			$_GET[ 'wpr_imagedimensions' ] = $config['sass_visit'];
+		}
+
 		if ( ! empty( $config['atf']['row'] ) ) {
 			self::addLcp( $config['atf']['row'] );
 		}

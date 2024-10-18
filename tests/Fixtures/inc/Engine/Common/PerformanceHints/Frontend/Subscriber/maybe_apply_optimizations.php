@@ -71,6 +71,7 @@ return [
 		'shouldReturnOriginalWhenDonotoptimize' => [
 			'config' => [
 				'donotrocketoptimize' => true,
+				'sass_visit' => false,
 				'html' => $html_input,
 				'atf' => [
 					'row' => null,
@@ -80,6 +81,20 @@ return [
 				],
 			],
 			'expected' => $html_input,
+		],
+		'shouldAddBeaconWhenDonotoptimizeAndSaaSVisit' => [
+			'config' => [
+				'donotrocketoptimize' => true,
+				'sass_visit' => true,
+				'html' => $html_input,
+				'atf' => [
+					'row' => null,
+				],
+				'lrc' => [
+					'row' => null,
+				],
+			],
+			'expected' => $html_output_with_beacon,
 		],
 		'shouldAddBeaconToPage' => [
 			'config' => [
