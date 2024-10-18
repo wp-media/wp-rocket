@@ -21,6 +21,8 @@ class Test_ConvertToWebp extends FilesystemTestCase {
 		parent::set_up();
 
 		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'convert_to_webp', 16 );
+
+		add_filter( 'rocket_disable_meta_generator', '__return_true' );
 	}
 
 	public function tear_down() {
@@ -29,6 +31,7 @@ class Test_ConvertToWebp extends FilesystemTestCase {
 		remove_filter( 'rocket_file_extensions_for_webp', [ $this, 'set_extensions_webp'] );
 		remove_filter( 'rocket_attributes_for_webp', [ $this, 'set_attributes_webp' ] );
 		remove_filter( 'rocket_cdn_cnames', [ $this, 'set_cdn_cnames'] );
+		remove_filter( 'rocket_disable_meta_generator', '__return_true' );
 
 		$this->restoreWpHook( 'rocket_buffer' );
 
