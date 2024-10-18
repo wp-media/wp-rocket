@@ -66,7 +66,7 @@ class CDN {
 		 * @param bool $enable True to enable, false otherwise.
 		 */
 		if ( apply_filters( 'rocket_cdn_relative_paths', true ) ) {
-			$relative_path_pattern = '|\/[^/](?:[^"\')\s>]+\.[[:alnum:]]+)';
+			$relative_path_pattern = '|(\.+\/|\/)[^/](?:[^"\')\s>]+\.[[:alnum:]]+)';
 		}
 
 		$pattern = '#[("\']\s*(?<url>(?:(?:https?:|)' . preg_quote( $this->get_base_url(), '#' ) . ')\/(?:(?:(?:' . $this->get_allowed_paths() . ')[^"\',)]+))' . $relative_path_pattern . ')\s*["\')]#i';

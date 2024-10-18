@@ -29,6 +29,10 @@ return [
 		'url' =>'/wp-includes/jquery.js',
 		'expected' => 'https://cdn.example.org/wp-includes/jquery.js',
 	],
+	'testRelativePathWithDots' => [
+		'url' =>'../wp-content/download.jpeg',
+		'expected' => 'https://cdn.example.org/../wp-content/download.jpeg',
+	],
 	'testNoScheme' => [
 		'url' =>'//example.org/wp-content/uploads/podcast.mp4',
 		'expected' => '//cdn.example.org/wp-content/uploads/podcast.mp4',
