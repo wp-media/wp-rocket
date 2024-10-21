@@ -19,4 +19,10 @@
 		padding: 10px 0 5px;
 		margin-bottom: 15px;
 	}
+	&--meta{
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: 15px;
+	}
 }

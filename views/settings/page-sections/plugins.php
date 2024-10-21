@@ -12,15 +12,17 @@ defined( 'ABSPATH' ) || exit;
 	<div class="wpr-sectionHeader">
 		<h2 class="wpr-title1 wpr-icons-plugins-hover"><?php esc_html_e( 'Our Plugins', 'rocket' ); ?></h2>
 	</div>
-	<div class="wpr-field-description">
-		<?php
-		esc_html_e( 'Beyond WP Rocket, there\'s a whole family of plugins designed to help you build better, faster, and safer websites. Each one is crafted with our unique blend of expertise, simplicity, and outstanding support.', 'rocket' );
-		?>
-		<br><br>
-		<?php
-		esc_html_e( 'Combine our plugins below to build incredible WordPress websites!', 'rocket' );
-		?>
-	</div>
+    <div class="wpr-fieldsContainer">
+        <div class="wpr-field-description">
+            <?php
+            esc_html_e( 'Beyond WP Rocket, there\'s a whole family of plugins designed to help you build better, faster, and safer websites. Each one is crafted with our unique blend of expertise, simplicity, and outstanding support.', 'rocket' );
+            ?>
+            <br><br>
+            <?php
+            esc_html_e( 'Combine our plugins below to build incredible WordPress websites!', 'rocket' );
+            ?>
+        </div>
+    </div>
 		<?php
 		if ( ! empty( $data ) ) :
 			foreach ( $data as $key => $category ) : // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
@@ -42,7 +44,7 @@ defined( 'ABSPATH' ) || exit;
 						<p>
 							<?php echo esc_html( $wpm_plugin['desc'] ); ?>
 						</p>
-						<div class="meta">
+						<div class="wpr-plugins--meta">
 							<a class="wpr-button wpr-button--black" href="<?php echo esc_html( $wpm_plugin['cta']['url'] ); ?>">
 								<?php echo esc_html( $wpm_plugin['cta']['text'] ); ?>
 							</a>
