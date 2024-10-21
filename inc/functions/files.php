@@ -1429,7 +1429,7 @@ function _rocket_get_cache_dirs( $url_host, $cache_path = '', $hard_reset = fals
 
 	$regex = sprintf(
 		'/%1$s%2$s(.*)/i',
-		_rocket_normalize_path( $cache_path, true ),
+		preg_quote( _rocket_normalize_path( $cache_path, true ), '/' ),
 		$url_host
 	);
 
