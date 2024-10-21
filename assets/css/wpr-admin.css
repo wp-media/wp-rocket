@@ -2591,6 +2591,9 @@ div.wpr-tutorial-item {
   align-items: center;
   gap: 15px;
 }
+.wpr-plugins--meta span {
+  color: #00A66B;
+}
 
 /*-----------------------------------------------*\
 

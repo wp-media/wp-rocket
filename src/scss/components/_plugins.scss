@@ -24,5 +24,8 @@
 		flex-direction: row;
 		align-items: center;
 		gap: 15px;
+		span{
+			color: $cGreenDark1;
+		}
 	}
 }

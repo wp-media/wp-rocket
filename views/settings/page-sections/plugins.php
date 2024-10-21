@@ -35,8 +35,8 @@ defined( 'ABSPATH' ) || exit;
 					<div class="wpr-Page-col-half wpr-plugins--box">
 						<div class="wpr-plugins--logo">
 							<img src="<?php echo esc_url( WP_ROCKET_ASSETS_IMG_URL . $wpm_plugin['logo']['file'] ); ?>"
-								alt="<?php echo esc_html( $wpm_plugin['title'] ); ?>"
-								style="width: <?php echo esc_html( $wpm_plugin['logo']['width'] ); ?>" />
+								alt="<?php echo esc_attr( $wpm_plugin['title'] ); ?>"
+								style="width: <?php echo esc_attr( $wpm_plugin['logo']['width'] ); ?>" />
 						</div>
 						<div class="wpr-title3">
 							<?php echo esc_html( $wpm_plugin['title'] ); ?>
@@ -45,6 +45,12 @@ defined( 'ABSPATH' ) || exit;
 							<?php echo esc_html( $wpm_plugin['desc'] ); ?>
 						</p>
 						<div class="wpr-plugins--meta">
+							<?php if ( '#' === $wpm_plugin['cta']['url'] ) : ?>
+								<div>
+									<span><?php echo esc_html( $wpm_plugin['cta']['text'] ); ?></span>
+									<span class="dashicons dashicons-yes"></span>
+								</div>
+							<?php else : ?>
 							<a class="wpr-button wpr-button--black" href="<?php echo esc_html( $wpm_plugin['cta']['url'] ); ?>">
 								<?php echo esc_html( $wpm_plugin['cta']['text'] ); ?>
 							</a>
@@ -52,6 +58,7 @@ defined( 'ABSPATH' ) || exit;
 							<a href="<?php echo esc_html( $wpm_plugin['link'] ); ?>">
 								<?php esc_html_e( 'Learn More', 'rocket' ); ?>
 							</a>
+							<?php endif; ?>
 						</div>
 					</div>
 					<?php endforeach; ?>
