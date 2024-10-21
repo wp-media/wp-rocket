@@ -70,9 +70,7 @@ class Subscriber implements Subscriber_Interface, PluginFamilyInterface {
 			'admin_notices'                        => 'display_update_notice',
 		];
 
-		$events[] = PluginFamily::get_subscribed_events();
-
-		return $events;
+		return array_merge( $events, PluginFamily::get_subscribed_events() );
 	}
 
 	/**
@@ -318,7 +316,7 @@ class Subscriber implements Subscriber_Interface, PluginFamilyInterface {
 	 * Install and activate plugin method for plugin family
 	 *
 	 * @return void
-	*/
+	 */
 	public function install_activate(): void {
 		$this->plugin_family->install_activate();
 	}
@@ -327,7 +325,7 @@ class Subscriber implements Subscriber_Interface, PluginFamilyInterface {
 	 * Display error related to plugin family
 	 *
 	 * @return void;
-	*/
+	 */
 	public function display_error_notice(): void {
 		$this->plugin_family->display_error_notice();
 	}

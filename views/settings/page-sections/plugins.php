@@ -12,17 +12,17 @@ defined( 'ABSPATH' ) || exit;
 	<div class="wpr-sectionHeader">
 		<h2 class="wpr-title1 wpr-icons-plugins-hover"><?php esc_html_e( 'Our Plugins', 'rocket' ); ?></h2>
 	</div>
-    <div class="wpr-fieldsContainer">
-        <div class="wpr-field-description">
-            <?php
-            esc_html_e( 'Beyond WP Rocket, there\'s a whole family of plugins designed to help you build better, faster, and safer websites. Each one is crafted with our unique blend of expertise, simplicity, and outstanding support.', 'rocket' );
-            ?>
-            <br><br>
-            <?php
-            esc_html_e( 'Combine our plugins below to build incredible WordPress websites!', 'rocket' );
-            ?>
-        </div>
-    </div>
+	<div class="wpr-fieldsContainer">
+		<div class="wpr-field-description">
+			<?php
+			esc_html_e( 'Beyond WP Rocket, there\'s a whole family of plugins designed to help you build better, faster, and safer websites. Each one is crafted with our unique blend of expertise, simplicity, and outstanding support.', 'rocket' );
+			?>
+			<br><br>
+			<?php
+			esc_html_e( 'Combine our plugins below to build incredible WordPress websites!', 'rocket' );
+			?>
+		</div>
+	</div>
 		<?php
 		if ( ! empty( $data ) ) :
 			foreach ( $data as $key => $category ) : // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
@@ -34,9 +34,9 @@ defined( 'ABSPATH' ) || exit;
 					<?php foreach ( $category['plugins'] as $index => $wpm_plugin ) : // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound ?>
 					<div class="wpr-Page-col-half wpr-plugins--box">
 						<div class="wpr-plugins--logo">
-							<img src="<?php echo WP_ROCKET_ASSETS_IMG_URL .  $wpm_plugin['logo']['file']; ?>"
-								 alt="<?php echo esc_html( $wpm_plugin['title'] ); ?>"
-								 style="width: <?php echo esc_html( $wpm_plugin['logo']['width'] ); ?>" />
+							<img src="<?php echo esc_url( WP_ROCKET_ASSETS_IMG_URL . $wpm_plugin['logo']['file'] ); ?>"
+								alt="<?php echo esc_html( $wpm_plugin['title'] ); ?>"
+								style="width: <?php echo esc_html( $wpm_plugin['logo']['width'] ); ?>" />
 						</div>
 						<div class="wpr-title3">
 							<?php echo esc_html( $wpm_plugin['title'] ); ?>
