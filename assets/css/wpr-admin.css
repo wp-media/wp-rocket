@@ -517,6 +517,9 @@ a:focus, button:focus {
 .wpr-Page-col {
   flex: 1 1 auto;
 }
+.wpr-Page-col-half {
+  flex: 0 1 50%;
+}
 .wpr-Page-col--fixed {
   margin-left: 24px;
   flex: 0 0 325px;
@@ -1695,7 +1698,10 @@ div.wpr-upgrade-websites {
   outline: none;
   color: #fff !important;
 }
-
+.wpr-button--black {
+  background: #121116;
+  color: #fff;
+}
 /*-----------------------------------------------*\
 
     Field container
@@ -2557,6 +2563,27 @@ div.wpr-tutorial-item {
 }
 .wpr-rocketcdn-modal iframe {
   max-width: 100%;
+}
+
+/*-----------------------------------------------*\
+
+    Plugin Tab style
+
+\*-----------------------------------------------*/
+.wpr-plugins {
+  gap: 25px;
+}
+.wpr-plugins--box {
+  background: #F9FAFB;
+  color: #121116;
+  padding: 10px;
+  border: 1px solid #eff1f3;
+  margin: 20px 0 15px;
+}
+.wpr-plugins--logo {
+  border-bottom: 1px solid #edeff2;
+  padding: 10px 0 5px;
+  margin-bottom: 15px;
 }
 
 /*-----------------------------------------------*\
