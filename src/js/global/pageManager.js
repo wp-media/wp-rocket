@@ -183,4 +183,8 @@ PageManager.prototype.change = function() {
     if (this.pageId == "tutorials") {
         this.$submitButton.style.display = 'none';
     }
+
+	if (this.pageId == "plugins") {
+		this.$submitButton.style.display = 'none';
+	}
 };

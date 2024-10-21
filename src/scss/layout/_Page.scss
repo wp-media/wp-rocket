@@ -22,6 +22,10 @@
         flex: 1 1 auto;
     }
 
+	&-col-half{
+		flex: 0 1 50%;
+	}
+
     &-col--fixed{
         margin-left: $space*3;
         flex: 0 0 325px;

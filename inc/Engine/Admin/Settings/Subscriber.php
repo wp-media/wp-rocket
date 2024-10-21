@@ -11,7 +11,7 @@ use WPMedia\PluginFamily\Controller\{ PluginFamily, PluginFamilyInterface };
  * @since 3.5.5 Moves into the new architecture.
  * @since 3.3
  */
-class Subscriber implements Subscriber_Interface {
+class Subscriber implements Subscriber_Interface, PluginFamilyInterface {
 	/**
 	 * Page instance
 	 *
@@ -312,5 +312,23 @@ class Subscriber implements Subscriber_Interface {
 		];
 
 		return $navigation;
+	}
+
+	/**
+	 * Install and activate plugin method for plugin family
+	 *
+	 * @return void
+	*/
+	public function install_activate(): void {
+		$this->plugin_family->install_activate();
+	}
+
+	/**
+	 * Display error related to plugin family
+	 *
+	 * @return void;
+	*/
+	public function display_error_notice(): void {
+		$this->plugin_family->display_error_notice();
 	}
 }

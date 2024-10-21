@@ -28,17 +28,22 @@ defined( 'ABSPATH' ) || exit;
 				<div class="wpr-optionHeader">
 					<h3 class="wpr-title2"><?php echo esc_html( $category['title'] ); ?></h3>
 				</div>
-				<div class="wpr-Page-row">
+				<div class="wpr-Page-row wpr-plugins">
 					<?php foreach ( $category['plugins'] as $index => $wpm_plugin ) : // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound ?>
-					<div class="wpr-Page-col">
-						<h4 class="wpr-fieldsContainer-description">
+					<div class="wpr-Page-col-half wpr-plugins--box">
+						<div class="wpr-plugins--logo">
+							<img src="<?php echo WP_ROCKET_ASSETS_IMG_URL .  $wpm_plugin['logo']['file']; ?>"
+								 alt="<?php echo esc_html( $wpm_plugin['title'] ); ?>"
+								 style="width: <?php echo esc_html( $wpm_plugin['logo']['width'] ); ?>" />
+						</div>
+						<div class="wpr-title3">
 							<?php echo esc_html( $wpm_plugin['title'] ); ?>
-						</h4>
+						</div>
 						<p>
 							<?php echo esc_html( $wpm_plugin['desc'] ); ?>
 						</p>
 						<div class="meta">
-							<a href="<?php echo esc_html( $wpm_plugin['cta']['url'] ); ?>">
+							<a class="wpr-button wpr-button--black" href="<?php echo esc_html( $wpm_plugin['cta']['url'] ); ?>">
 								<?php echo esc_html( $wpm_plugin['cta']['text'] ); ?>
 							</a>
 
