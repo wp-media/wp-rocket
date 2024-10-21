@@ -3,6 +3,7 @@ namespace WP_Rocket\Engine\Admin\Settings;
 
 use stdClass;
 use WP_Rocket\Abstract_Render;
+use WPMedia\PluginFamily\Model\PluginFamily;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -30,6 +31,26 @@ class Render extends Abstract_render {
 	 * @var array
 	 */
 	private $hidden_settings;
+
+	/**
+	 * Plugin family
+	 *
+	 * @var $plugin_family
+	 *
+	 * @since 3.17.2
+	 */
+	protected $plugin_family;
+
+	/**
+	 * Creates an instance of the object.
+	 *
+	 * @param string       $template_path Template path.
+	 * @param PluginFamily $plugin_family Plugin Family Instance.
+	 */
+	public function __construct( string $template_path, PluginFamily $plugin_family ) {
+		parent::__construct( $template_path );
+		$this->plugin_family = $plugin_family;
+	}
 
 	/**
 	 * Sets the settings value.
@@ -194,14 +215,33 @@ class Render extends Abstract_render {
 		echo $this->generate( 'page-sections/tools' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 
-    /**
-     * Render the plugins page section.
-     *
-     * @since 3.17.2
-     */
-    public function render_plugin_section() {
-        echo $this->generate( 'page-sections/plugins' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
-    }
+	/**
+	 * Render the plugins page section.
+	 *
+	 * @since 3.17.2
+	 */
+	public function render_plugin_section() {
+		$plugin_family = $this->plugin_family->get_filtered_plugins( 'wp-rocket/wp-rocket' );
+
+		$data = $plugin_family['categorized'];
+
+		$order = [
+			'optimize_performance',
+			'boost_traffic',
+			'protect_secure',
+		];
+
+		$reordered_data = [];
+
+		// Re order data.
+		foreach ( $order as $key ) {
+			if ( isset( $data[ $key ] ) ) {
+				$reordered_data[ $key ] = $data[ $key ];
+			}
+		}
+
+		echo $this->generate( 'page-sections/plugins', $reordered_data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+	}
 
 	/**
 	 * Renders the settings sections for a page section.
