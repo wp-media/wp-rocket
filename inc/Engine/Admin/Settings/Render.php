@@ -35,7 +35,7 @@ class Render extends Abstract_render {
 	/**
 	 * Plugin family
 	 *
-	 * @var $plugin_family
+	 * @var PluginFamily
 	 *
 	 * @since 3.17.2
 	 */

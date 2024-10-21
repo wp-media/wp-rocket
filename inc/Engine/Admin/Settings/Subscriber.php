@@ -324,7 +324,7 @@ class Subscriber implements Subscriber_Interface, PluginFamilyInterface {
 	/**
 	 * Display error related to plugin family
 	 *
-	 * @return void;
+	 * @return void
 	 */
 	public function display_error_notice(): void {
 		$this->plugin_family->display_error_notice();
