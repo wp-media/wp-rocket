@@ -47,10 +47,6 @@ class Meta {
 			return $html;
 		}
 
-		if ( rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_FOOTPRINT', false ) ) {
-			return $this->remove_features_comments( $html );
-		}
-
 		/**
 		 * Filters whether to disable the WP Rocket meta generator tag.
 		 *
@@ -60,6 +56,14 @@ class Meta {
 		 */
 		if ( wpm_apply_filters_typed( 'boolean', 'rocket_disable_meta_generator', false ) ) {
 			return $html;
+		}
+
+		if ( rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_FOOTPRINT', false ) ) {
+			return $this->remove_features_comments( $html );
+		}
+
+		if ( is_user_logged_in() ) {
+			return $this->remove_features_comments( $html );
 		}
 
 		if ( false === preg_match_all( '/<!-- (?<feature>wpr_(?:[^-]*)) -->/i', $html, $comments, PREG_PATTERN_ORDER ) ) {
@@ -89,16 +93,25 @@ class Meta {
 	 * @return string
 	 */
 	private function get_meta_tag( array $features = [] ): string {
-		// This filter is documented in inc/classes/Buffer/class-cache.php.
-		if ( wpm_apply_filters_typed( 'boolean', 'do_rocket_generate_caching_files', true ) ) {
-			$features[] = 'wpr_cached';
-
-			if ( $this->options->get( 'do_caching_mobile_files', 0 ) ) {
-				$features[] = $this->mobile_detect->isMobile() ? 'wpr_cached_mobile' : 'wpr_cached_desktop';
-			}
+		if ( $this->options->get( 'do_caching_mobile_files', 0 ) ) {
+			$features[] = $this->mobile_detect->isMobile() ? 'wpr_mobile' : 'wpr_desktop';
 		}
 
-		if ( ! empty( rocket_get_dns_prefetch_domains() ) ) {
+		$dns_prefetch = rocket_get_dns_prefetch_domains();
+
+		if (
+				(
+					! $this->options->get( 'cdn', 0 )
+					&&
+					! empty( $dns_prefetch )
+				)
+				||
+				(
+					$this->options->get( 'cdn', 0 )
+					&&
+					count( $dns_prefetch ) > 1
+				)
+			) {
 			$features[] = 'wpr_dns_prefetch';
 		}
 
