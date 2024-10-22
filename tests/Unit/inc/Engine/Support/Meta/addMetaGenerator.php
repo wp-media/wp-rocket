@@ -46,15 +46,18 @@ class TestAddMetaGenerator extends TestCase {
 				->andReturn( $config['disable_meta'] );
 		}
 
-		if ( isset( $config['cache'] ) ) {
-			Filters\expectApplied( 'do_rocket_generate_caching_files' )
-				->andReturn( $config['cache'] );
-		}
+		Functions\when( 'is_user_logged_in' )->justReturn( $config['is_user_logged_in'] ?? false );
 
 		if ( isset( $config['do_caching_mobile_files'] ) ) {
 			$this->options->shouldReceive( 'get' )
 			->with( 'do_caching_mobile_files', 0 )
 			->andReturn( $config['do_caching_mobile_files'] );
+		}
+
+		if ( isset( $config['cdn'] ) ) {
+			$this->options->shouldReceive( 'get' )
+			->with( 'cdn', 0 )
+			->andReturn( $config['cdn'] );
 		}
 
 		Functions\when( 'rocket_get_dns_prefetch_domains' )->justReturn( [] );
