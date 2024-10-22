@@ -225,22 +225,7 @@ class Render extends Abstract_render {
 
 		$data = $plugin_family['categorized'];
 
-		$order = [
-			'optimize_performance',
-			'boost_traffic',
-			'protect_secure',
-		];
-
-		$reordered_data = [];
-
-		// Re order data.
-		foreach ( $order as $key ) {
-			if ( isset( $data[ $key ] ) ) {
-				$reordered_data[ $key ] = $data[ $key ];
-			}
-		}
-
-		echo $this->generate( 'page-sections/plugins', $reordered_data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+		echo $this->generate( 'page-sections/plugins', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 
 	/**
