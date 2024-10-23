@@ -157,4 +157,13 @@ abstract class AbstractDataManager {
 	private function set_lists_cache( $content ) {
 		set_transient( $this->get_cache_transient_name(), $content, $this->cache_duration );
 	}
+
+	/**
+	 * Removes the lists cache
+	 *
+	 * @return void
+	 */
+	public function remove_lists_cache() {
+		delete_transient( $this->get_cache_transient_name() );
+	}
 }

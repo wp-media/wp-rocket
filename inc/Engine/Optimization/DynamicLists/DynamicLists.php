@@ -313,4 +313,30 @@ class DynamicLists extends Abstract_Render {
 
 		return $lists->lazy_rendering_exclusions ?? [];
 	}
+
+	/**
+	 * Updates the lists from JSON files and clears the transient cache.
+	 *
+	 * @return array
+	 */
+	public function update_lists_from_files() {
+		if ( $this->user->is_license_expired() ) {
+			return [
+				'success' => false,
+				'data'    => '',
+				'message' => __( 'You need an active license to get the latest version of the lists from our server.', 'rocket' ),
+			];
+		}
+
+		foreach ( $this->providers as $provider ) {
+			$provider->data_manager->remove_lists_cache();
+			$provider->data_manager->get_lists();
+		}
+
+		return [
+			'success' => true,
+			'data'    => '',
+			'message' => __( 'Lists are successfully updated from JSON files.', 'rocket' ),
+		];
+	}
 }
