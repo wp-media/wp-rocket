@@ -176,7 +176,13 @@ class Extractor {
 		 *
 		 * @param string[] $urls Ignored URLs.
 		 */
-		$ignored_urls = (array) apply_filters( 'rocket_lazyload_css_ignored_urls', [] );
+		$ignored_urls = (array) apply_filters(
+			'rocket_lazyload_css_ignored_urls',
+			[
+				'trustindex-google-widget.css',
+				'cdn.trustindex.io',
+			]
+		);
 
 		foreach ( $matches as $match ) {
 
