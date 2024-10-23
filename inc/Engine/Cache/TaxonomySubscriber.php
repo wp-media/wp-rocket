@@ -43,30 +43,6 @@ class TaxonomySubscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Get all public taxonomy query vars.
-	 *
-	 * @return array
-	 */
-	private function get_all_taxonomies_query_var() {
-		$atts = [
-			'public'  => true,
-			'show_ui' => true,
-		];
-
-		$taxonomies = get_taxonomies( $atts, 'objects' );
-
-		if ( empty( $taxonomies ) ) {
-			return [];
-		}
-
-		$output = [];
-		foreach ( $taxonomies as $taxonomy ) {
-			$output[] = $taxonomy->query_var;
-		}
-		return $output;
-	}
-
-	/**
 	 * Check if we are on the taxonomy frontend page, but it's not valid url query.
 	 *
 	 * @return bool (True when not valid taxonomy page, False if it's a valid one)
