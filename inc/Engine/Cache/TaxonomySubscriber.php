@@ -79,9 +79,12 @@ class TaxonomySubscriber implements Subscriber_Interface {
 
 		global $wp;
 
-		$term_link    = untrailingslashit( get_term_link( $term_id ) );
-		$current_link = untrailingslashit( home_url( add_query_arg( [], $wp->request ) ) );
+		$term_link = get_term_link( $term_id );
+		if ( is_wp_error( $term_link ) ) {
+			return false;
+		}
+		$current_link = home_url( add_query_arg( [], $wp->request ) );
 
-		return $term_link !== $current_link;
+		return untrailingslashit( $term_link ) !== untrailingslashit( $current_link );
 	}
 }
