@@ -119,6 +119,10 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
+		if ( 'attachment' === get_post_type( $post_id ) ) {
+			return;
+		}
+
 		$url = get_permalink( $post_id );
 
 		if ( false === $url ) {
