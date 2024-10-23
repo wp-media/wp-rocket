@@ -27,6 +27,8 @@ class Test_Process extends TestCase {
 	public function set_up() {
 		parent::set_up();
 
+		add_filter( 'rocket_disable_meta_generator', '__return_true' );
+
 		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'process', 22 );
 	}
 
@@ -40,6 +42,8 @@ class Test_Process extends TestCase {
 		remove_filter( 'pre_get_rocket_option_defer_all_js', [ $this, 'return_defer_all_js' ] );
 		remove_filter( 'rocket_excluded_inline_js_content', [ $this, 'set_excluded_inline'] );
 		remove_filter( 'rocket_minify_excluded_external_js', [ $this, 'set_excluded_external'] );
+		remove_filter( 'rocket_disable_meta_generator', '__return_true' );
+
 		delete_transient( 'wpr_dynamic_lists' );
 
 		$this->unsetSettings();

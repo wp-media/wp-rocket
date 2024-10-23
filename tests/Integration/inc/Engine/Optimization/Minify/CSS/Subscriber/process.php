@@ -29,6 +29,7 @@ class Test_Process extends TestCase {
 
 		add_filter( 'pre_get_rocket_option_minify_css', [ $this, 'return_true' ] );
 		add_filter( 'pre_get_rocket_option_minify_css_key', [ $this, 'return_key' ] );
+		add_filter( 'rocket_disable_meta_generator', '__return_true' );
 	}
 
 	public function tear_down() {
@@ -38,6 +39,7 @@ class Test_Process extends TestCase {
 
 		remove_filter( 'pre_get_rocket_option_minify_css', [ $this, 'return_true' ] );
 		remove_filter( 'pre_get_rocket_option_minify_css_key', [ $this, 'return_key' ] );
+		remove_filter( 'rocket_disable_meta_generator', '__return_true' );
 
 		$this->unsetSettings();
 	}

@@ -37,6 +37,10 @@ class Test_PreloadFonts extends TestCase {
 	public function testShouldAddPreloadTagsWhenValidFonts( $buffer, $bypass, $filter, $rocket_options, $expected ) {
 		Functions\when( 'rocket_bypass' )->justReturn( $bypass );
 		Functions\when( 'home_url' )->justReturn( 'http://example.org' );
+		Filters\expectApplied( 'rocket_disable_meta_generator' )
+			->atMost()
+			->once()
+			->andReturn( true );
 
 		if ( $filter ) {
 			Filters\expectApplied( 'rocket_disable_preload_fonts' )

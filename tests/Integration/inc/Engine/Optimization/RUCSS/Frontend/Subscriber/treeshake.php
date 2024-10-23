@@ -23,6 +23,7 @@ class Test_Treeshake extends FilesystemTestCase {
 		add_filter('pre_get_rocket_option_remove_unused_css', [$this, 'rucss']);
 		add_filter('rocket_exclude_rucss_fonts_preload', [$this, 'exclude_fonts_preload']);
 		add_filter('rocket_used_css_dir_level', [$this, 'used_css_dir_level']);
+		add_filter( 'rocket_disable_meta_generator', '__return_true' );
 	}
 
 	public function tear_down() {
@@ -31,6 +32,7 @@ class Test_Treeshake extends FilesystemTestCase {
 		remove_filter('pre_get_rocket_option_remove_unused_css', [$this, 'rucss']);
 		remove_filter('rocket_exclude_rucss_fonts_preload', [$this, 'exclude_fonts_preload']);
 		remove_filter('rocket_used_css_dir_level', [$this, 'used_css_dir_level']);
+		remove_filter( 'rocket_disable_meta_generator', '__return_true' );
 
 		$this->restoreWpHook('rocket_buffer');
 

@@ -40,6 +40,11 @@ class Test_ConvertToWebp extends FilesystemTestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldReturnExpected( $config, $original, $expected ) {
+		Filters\expectApplied( 'rocket_disable_meta_generator' )
+			->atMost()
+			->once()
+			->andReturn( true );
+
 		$this->options->shouldReceive( 'get' )
 			->with( 'cache_webp', 0 )
 			->andReturn( $config['webp'] );

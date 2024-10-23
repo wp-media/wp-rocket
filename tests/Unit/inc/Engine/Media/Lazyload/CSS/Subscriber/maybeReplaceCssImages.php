@@ -23,6 +23,11 @@ class TestMaybeReplaceCssImages extends TestCase {
 			Filters\expectApplied('rocket_generate_lazyloaded_css')->with($expected['data'])->andReturn($config['data']);
 		}
 
+		Filters\expectApplied( 'rocket_disable_meta_generator' )
+			->atMost()
+			->once()
+			->andReturn( true );
+
 		$this->context->shouldReceive('is_allowed')->andReturn($config['is_allowed']);
 		$this->assertSame($expected['output'], $this->subscriber->maybe_replace_css_images($config['html']));
 	}

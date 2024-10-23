@@ -62,6 +62,11 @@ class Test_Optimize extends TestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldCombineJS( $original, $expected, $config ) {
+		Filters\expectApplied( 'rocket_disable_meta_generator' )
+			->atMost()
+			->once()
+			->andReturn( true );
+
 		$this->options->shouldReceive( 'get' )
 			->with( 'minify_js_key', 'rocket_uniqid' )
 			->andReturn( 'rocket_uniqid' );
