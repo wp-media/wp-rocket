@@ -48,6 +48,10 @@ class TaxonomySubscriber implements Subscriber_Interface {
 	 * @return bool (True when not valid taxonomy page, False if it's a valid one)
 	 */
 	private function is_not_valid_taxonomy_page() {
+		if ( ! is_category() && ! is_tag() && ! is_tax() ) {
+			return false;
+		}
+
 		$term_id = get_queried_object_id();
 		if ( empty( $term_id ) ) {
 			return false;
@@ -59,7 +63,8 @@ class TaxonomySubscriber implements Subscriber_Interface {
 		if ( is_wp_error( $term_link ) ) {
 			return false;
 		}
-		$current_link = home_url( add_query_arg( [], $wp->request ) );
+
+		$current_link = home_url( add_query_arg( [], $wp->request ?? '' ) );
 
 		return untrailingslashit( $term_link ) !== untrailingslashit( $current_link );
 	}

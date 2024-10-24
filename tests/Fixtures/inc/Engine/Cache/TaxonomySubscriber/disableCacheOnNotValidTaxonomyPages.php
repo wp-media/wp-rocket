@@ -23,31 +23,14 @@ return [
 			],
 			'can_cache' => true,
 		],
-		'testEmptyTaxonomies' => [
-			'config' => [
-				'is_category' => true,
-				'is_tag' => false,
-				'is_tax' => false,
-				'taxonomies' => [],
-			],
-			'can_cache' => true,
-		],
 		'testValidTaxonomyPage' => [
 			'config' => [
 				'is_category' => true,
 				'is_tag' => false,
 				'is_tax' => false,
-				'taxonomies' => [
-					(object) [
-						'query_var' => 'category_name',
-					],
-				],
-				'current_query' => [
-					'category_name' => 'category',
-				],
-				'current_query_var' => [
-					'category_name' => 'category',
-				],
+				'current_term_id' => 1,
+				'current_term_link' => 'http://example.com/category/test1',
+				'current_page_url' => 'http://example.com/category/test1',
 			],
 			'can_cache' => true,
 		],
@@ -56,17 +39,9 @@ return [
 				'is_category' => true,
 				'is_tag' => false,
 				'is_tax' => false,
-				'taxonomies' => [
-					(object) [
-						'query_var' => 'category_name',
-					],
-				],
-				'current_query' => [
-					'category_name' => 'category1',
-				],
-				'current_query_var' => [
-					'category_name' => 'nothing',
-				],
+				'current_term_id' => 1,
+				'current_term_link' => 'http://example.com/category/test1',
+				'current_page_url' => 'http://example.com/category/additional-query/test1',
 			],
 			'can_cache' => false,
 		],

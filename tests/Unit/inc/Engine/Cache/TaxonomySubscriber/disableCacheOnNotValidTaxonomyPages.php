@@ -30,15 +30,11 @@ class Test_DisableCacheOnNotValidTaxonomyPages extends TestCase {
 		Functions\expect( 'is_category' )->once()->andReturn( ! empty( $config['is_category'] ) );
 		Functions\when( 'is_tag' )->justReturn( ! empty( $config['is_tag'] ) );
 		Functions\when( 'is_tax' )->justReturn( ! empty( $config['is_tax'] ) );
-		Functions\when( 'get_taxonomies' )->justReturn( $config['taxonomies'] ?? [] );
+		Functions\when( 'get_queried_object_id' )->justReturn( $config['current_term_id'] ?? 0 );
 
-		if ( ! empty( $config['current_query'] ) && ! empty( $config['current_query_var'] ) ) {
-			global $wp_query;
-			$wp_query = (object) [
-				'query_vars' => $config['current_query_var'],
-				'query'      => $config['current_query'],
-			];
-		}
+		Functions\when( 'get_term_link' )->justReturn( $config['current_term_link'] ?? '' );
+		Functions\when( 'add_query_arg' )->justReturn( '' );
+		Functions\when( 'home_url' )->justReturn( $config['current_page_url'] ?? '' );
 
 		$this->assertSame( $can_cache, $this->subscriber->disable_cache_on_not_valid_taxonomy_pages( true ) );
 	}
