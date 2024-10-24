@@ -55,6 +55,9 @@ trait ContentTrait {
 		$category = $this->factory->category->create_and_get( $args );
 		$this->go_to( "/?cat={$category->term_id}" );
 
+		global $wp;
+		$wp->request = "category/{$category->slug}";
+
 		$this->assertTrue( is_category() );
 
 		return $category;
@@ -70,6 +73,9 @@ trait ContentTrait {
 
 		$tag = $this->factory->term->create_and_get( $args );
 		$this->go_to( "/?tag={$tag->slug}" );
+
+		global $wp;
+		$wp->request = "tag/{$tag->slug}";
 
 		$this->assertTrue( is_tag() );
 
@@ -98,6 +104,9 @@ trait ContentTrait {
 		wp_set_object_terms( $post, $term->slug, $taxonomy );
 
 		$this->go_to( "/?{$taxonomy}={$term->slug}" );
+
+		global $wp;
+		$wp->request = "{$taxonomy}/{$term->slug}";
 
 		$this->assertTrue( is_tax() );
 
