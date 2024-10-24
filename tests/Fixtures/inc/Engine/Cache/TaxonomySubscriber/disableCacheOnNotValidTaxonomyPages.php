@@ -34,6 +34,28 @@ return [
 			],
 			'can_cache' => true,
 		],
+		'testEmptyTermId' => [
+			'config' => [
+				'is_category' => true,
+				'is_tag' => false,
+				'is_tax' => false,
+				'current_term_id' => 0,
+				'current_term_link' => '',
+				'current_page_url' => 'http://example.com/category/test1',
+			],
+			'can_cache' => true,
+		],
+		'testNotValidTermLink' => [
+			'config' => [
+				'is_category' => true,
+				'is_tag' => false,
+				'is_tax' => false,
+				'current_term_id' => 0,
+				'current_term_link' => new WP_Error(),
+				'current_page_url' => 'http://example.com/category/test1',
+			],
+			'can_cache' => true,
+		],
 		'testNotValidTaxonomyPage' => [
 			'config' => [
 				'is_category' => true,
