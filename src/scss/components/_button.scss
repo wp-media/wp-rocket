@@ -116,4 +116,12 @@
         outline: none;
         color: #fff !important;
     }
+
+	&--black{
+		background: $cBlack;
+		color: #fff;
+		&:hover{
+
+		}
+	}
 }

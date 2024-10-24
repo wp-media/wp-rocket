@@ -131,6 +131,9 @@
     &-tutorials{ @extend .wpr-icon-tutorial; }
     &-tutorials:hover{ @extend .wpr-icon-tutorial-hover; }
     &-tutorials.isActive{ @extend .wpr-icon-tutorial-hover; }
+    &-plugins{ @extend .wpr-icons-plugins; }
+    &-plugins:hover{ @extend .wpr-icons-plugins-hover; }
+    &-plugins.isActive{ @extend .wpr-icons-plugins-hover; }
 }
 
 .wpr-addonSubMenuItem {
