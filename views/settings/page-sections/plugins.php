@@ -36,6 +36,7 @@ defined( 'ABSPATH' ) || exit;
 						<div class="wpr-plugins--logo">
 							<img src="<?php echo esc_url( WP_ROCKET_ASSETS_IMG_URL . $wpm_plugin['logo']['file'] ); ?>"
 								alt="<?php echo esc_attr( $wpm_plugin['title'] ); ?>"
+								loading="lazy"
 								style="width: <?php echo esc_attr( $wpm_plugin['logo']['width'] ); ?>" />
 						</div>
 						<div class="wpr-title3">
