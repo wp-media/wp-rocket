@@ -313,4 +313,16 @@ class DynamicLists extends Abstract_Render {
 
 		return $lists->lazy_rendering_exclusions ?? [];
 	}
+
+	/**
+	 * Updates the lists from JSON files
+	 *
+	 * @return void
+	 */
+	public function update_lists_from_files() {
+		foreach ( $this->providers as $provider ) {
+			$provider->data_manager->remove_lists_cache();
+			$provider->data_manager->get_lists();
+		}
+	}
 }
