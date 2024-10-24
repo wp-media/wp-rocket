@@ -56,7 +56,7 @@ trait ContentTrait {
 		$this->go_to( "/?cat={$category->term_id}" );
 
 		global $wp;
-		$wp->request = "/?cat={$category->term_id}";
+		$wp->request = "category/{$category->slug}";
 
 		$this->assertTrue( is_category() );
 
@@ -75,7 +75,7 @@ trait ContentTrait {
 		$this->go_to( "/?tag={$tag->slug}" );
 
 		global $wp;
-		$wp->request = "/?tag={$tag->slug}";
+		$wp->request = "tag/{$tag->slug}";
 
 		$this->assertTrue( is_tag() );
 
@@ -106,7 +106,7 @@ trait ContentTrait {
 		$this->go_to( "/?{$taxonomy}={$term->slug}" );
 
 		global $wp;
-		$wp->request = "/?{$taxonomy}={$term->slug}";
+		$wp->request = "{$taxonomy}/{$term->slug}";
 
 		$this->assertTrue( is_tax() );
 
