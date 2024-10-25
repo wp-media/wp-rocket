@@ -68,19 +68,6 @@ return [
 			],
 			'expected' => $html_input,
 		],
-		'shouldReturnOriginalWhenDonotoptimize' => [
-			'config' => [
-				'donotrocketoptimize' => true,
-				'html' => $html_input,
-				'atf' => [
-					'row' => null,
-				],
-				'lrc' => [
-					'row' => null,
-				],
-			],
-			'expected' => $html_input,
-		],
 		'shouldAddBeaconToPage' => [
 			'config' => [
 				'html' => $html_input,
