@@ -35,7 +35,7 @@ class PluginFamily implements PluginFamilyInterface {
 		$allowed_plugin = [
 			'uk-cookie-consent',
 			'backwpup',
-			'imagify-plugin',
+			'imagify',
 			'seo-by-rank-math',
 			'wp-rocket',
 		];

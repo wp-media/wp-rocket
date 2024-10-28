@@ -7,7 +7,7 @@ return [
 	'optimize_performance' => [
 		'title'   => 'Optimize Performance',
 		'plugins' => [
-			'wp-rocket/wp-rocket'    => [
+			'wp-rocket/wp-rocket' => [
 				'logo'  => [
 					'file'  => 'logo-wp-rocket.svg',
 					'width' => '50%',
@@ -16,7 +16,7 @@ return [
 				'desc'  => 'WP Rocket is the easiest way to make your WordPress website faster and boost your Google PageSpeed score. Get more traffic, better engagement, and higher conversions effortlessly.',
 				'link'  => '',
 			],
-			'imagify-plugin/imagify' => [
+			'imagify/imagify'     => [
 				'logo'  => [
 					'file'  => 'logo-imagify.svg',
 					'width' => '50%',
