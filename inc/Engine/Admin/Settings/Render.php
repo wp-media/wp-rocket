@@ -3,7 +3,7 @@ namespace WP_Rocket\Engine\Admin\Settings;
 
 use stdClass;
 use WP_Rocket\Abstract_Render;
-use WPMedia\PluginFamily\Model\PluginFamily;
+use WP_Rocket\Dependencies\WPMedia\PluginFamily\Model\PluginFamily;
 
 defined( 'ABSPATH' ) || exit;
 

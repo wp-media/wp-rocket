@@ -122,7 +122,8 @@
 				"wp-media/wp-imagify-partner",
 				"wp-media/monolog",
 				"league/container",
-				"berlindb/core"
+				"berlindb/core",
+				"wp-media/plugin-family"
 			]
 		}
 	},
