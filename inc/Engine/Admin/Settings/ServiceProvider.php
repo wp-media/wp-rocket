@@ -2,8 +2,8 @@
 namespace WP_Rocket\Engine\Admin\Settings;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
-use WPMedia\PluginFamily\Model\PluginFamily as PluginFamilyModel;
-use WPMedia\PluginFamily\Controller\PluginFamily as PluginFamilyController;
+use WP_Rocket\Dependencies\WPMedia\PluginFamily\Model\PluginFamily as PluginFamilyModel;
+use WP_Rocket\Dependencies\WPMedia\PluginFamily\Controller\PluginFamily as PluginFamilyController;
 
 /**
  * Service provider for the WP Rocket settings.
