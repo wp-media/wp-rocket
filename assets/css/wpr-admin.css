@@ -2579,6 +2579,9 @@ div.wpr-tutorial-item {
   padding: 10px;
   border: 1px solid #eff1f3;
   margin: 20px 0 15px;
+  flex-direction: column;
+  justify-content: space-between;
+  display: flex;
 }
 .wpr-plugins--logo {
   border-bottom: 1px solid #edeff2;
