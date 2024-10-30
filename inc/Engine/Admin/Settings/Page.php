@@ -814,8 +814,7 @@ class Page extends Abstract_Render {
 					'label'                   => __( 'Delay JavaScript Execution safe mode', 'rocket' ),
 					'container_class'         => [
 						'wpr-field--children',
-						'wpr-field--js-execution-safe-mode-delivery',
-						'wpr-field--optimize-css-delivery',
+						'wpr-field--js-execution-safe-mode-delivery'
 					],
 					'buttons_container_class' => '',
 					'parent'                  => 'delay_js_execution_safe_mode',
@@ -827,6 +826,7 @@ class Page extends Abstract_Render {
 						'dje_safe_mode' => [
 							'label'       => __( 'Delay JavaScript Execution safe mode', 'rocket' ),
 							'disabled'    => $invalid_license ? 'disabled' : false,
+							'value'       => 0,
 							'description' => '',
 							// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 							'warning'     => $invalid_license ? [] : [
@@ -2120,6 +2120,7 @@ class Page extends Abstract_Render {
 			'minify_concatenate_css',
 			'cloudflare_api_key',
 			'cloudflare_zone_id',
+			'dje_safe_mode'
 		];
 
 		$this->settings->add_hidden_settings_fields(
