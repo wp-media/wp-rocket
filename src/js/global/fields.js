@@ -352,4 +352,44 @@ $(document).ready(function(){
 			$(checkbox).attr('checked', not_checked <= 0 ? 'checked' : null );
 		});
 	}
+
+
+	/** DJE safemode field **/
+	var dje_safe_mode_active = parseInt($('#dje_safe_mode').val());
+
+	$( "#delay_js_execution_safe_mode_method .wpr-radio-buttons-container button" )
+		.on( "click", function( event, $elm ) {
+			console.log('toggleActiveDjeSafemodeMethod', $(this))
+			toggleActiveDjeSafemodeMethod($(this));
+		});
+
+	$("#delay_js_execution_safe_mode").on("change", function(){
+		console.log('$(this).is(":not(:checked)")', $(this).is(":not(:checked)"));
+		if( $(this).is(":not(:checked)") ){
+			console.log('disableDjeSafeMode');
+			disableDjeSafeMode();
+		}else{
+			var default_radio_button_id = '#'+$('#delay_js_execution_safe_mode_method').data( 'default' );
+			console.log('trigger click on ' + default_radio_button_id);
+			$(default_radio_button_id).trigger('click');
+		}
+	});
+	function toggleActiveDjeSafemodeMethod($elm) {
+		var dje_mode = $elm.data('value');
+		if('dje_safe_mode' === dje_mode){
+			$('#dje_safe_mode').val(1);
+		}else{
+			$('#dje_safe_mode').val(0);
+		}
+	}
+
+	function disableDjeSafeMode() {
+		$('#dje_safe_mode').val(0);
+	}
+
+	$( "#delay_js_execution_safe_mode_method .wpr-radio-buttons-container button" )
+		.on( "before_show_radio_warning", function( event, $elm ) {
+			console.log('before_show_radio_warning', $elm);
+			disable_radio_warning = ('dje_safe_mode' === $elm.data('value') && 1 === dje_safe_mode_active)
+		});
 });
