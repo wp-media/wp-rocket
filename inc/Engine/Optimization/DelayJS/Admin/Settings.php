@@ -46,6 +46,7 @@ class Settings {
 	/**
 	 * Sets the delay_js_exclusions default value for users with delay JS enabled on upgrade
 	 *
+	 * @since 3.18 Keep the custom delay js exclusions if there were before.
 	 * @since 3.9 Sets the delay_js_exclusions default value if delay_js is 1
 	 * @since 3.7
 	 *
@@ -58,9 +59,8 @@ class Settings {
 			return;
 		}
 
-		$options = $this->options_api->get( 'settings', [] );
-
-		$options['delay_js_exclusions'] = [];
+		$options               = $this->options_api->get( 'settings', [] );
+		$old_custom_exclusions = $options['delay_js_exclusions'] ?? [];
 
 		if (
 			isset( $options['delay_js'] )
@@ -77,6 +77,7 @@ class Settings {
 	 * Sanitizes delay JS options when saving the settings
 	 *
 	 * @since 3.9
+	 * @since 3.18 Deletes safe mode exclusions from `delay_js_exclusions`.
 	 *
 	 * @param array         $input    Array of values submitted from the form.
 	 * @param AdminSettings $settings Settings class instance.
