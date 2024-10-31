@@ -529,7 +529,7 @@ class Page extends Abstract_Render {
 
 		$this->settings->add_settings_fields(
 			[
-				'minify_css'                          => [
+				'minify_css'                   => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Minify CSS files', 'rocket' ),
 					'description'       => __( 'Minify CSS removes whitespace and comments to reduce the file size.', 'rocket' ),
@@ -544,7 +544,7 @@ class Page extends Abstract_Render {
 						'disabled' => rocket_maybe_disable_minify_css() ? 1 : 0,
 					],
 				],
-				'exclude_css'                         => [
+				'exclude_css'                  => [
 					'type'              => 'textarea',
 					'label'             => __( 'Excluded CSS Files', 'rocket' ),
 					'description'       => __( 'Specify URLs of CSS files to be excluded from minification (one per line).', 'rocket' ),
@@ -561,7 +561,7 @@ class Page extends Abstract_Render {
 					'default'           => [],
 					'sanitize_callback' => 'sanitize_textarea',
 				],
-				'optimize_css_delivery'               => [
+				'optimize_css_delivery'        => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Optimize CSS delivery', 'rocket' ),
 					'container_class'   => [
@@ -583,7 +583,7 @@ class Page extends Abstract_Render {
 						'</a>'
 					) : '',
 				],
-				'optimize_css_delivery_method'        => [
+				'optimize_css_delivery_method' => [
 					'type'                    => 'radio_buttons',
 					'label'                   => __( 'Optimize CSS delivery', 'rocket' ),
 					'container_class'         => [
@@ -653,7 +653,7 @@ class Page extends Abstract_Render {
 						],
 					],
 				],
-				'minify_js'                           => [
+				'minify_js'                    => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Minify JavaScript files', 'rocket' ),
 					'description'       => __( 'Minify JavaScript removes whitespace and comments to reduce the file size.', 'rocket' ),
@@ -668,7 +668,7 @@ class Page extends Abstract_Render {
 					],
 					'sanitize_callback' => 'sanitize_checkbox',
 				],
-				'minify_concatenate_js'               => [
+				'minify_concatenate_js'        => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Combine JavaScript files <em>(Enable Minify JavaScript files to select)</em>', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
@@ -692,7 +692,7 @@ class Page extends Abstract_Render {
 						'button_label' => __( 'Activate combine JavaScript', 'rocket' ),
 					],
 				],
-				'exclude_inline_js'                   => [
+				'exclude_inline_js'            => [
 					'type'              => 'textarea',
 					'label'             => __( 'Excluded Inline JavaScript', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
@@ -710,7 +710,7 @@ class Page extends Abstract_Render {
 						'disabled' => get_rocket_option( 'minify_concatenate_js' ) ? 0 : 1,
 					],
 				],
-				'exclude_js'                          => [
+				'exclude_js'                   => [
 					'type'              => 'textarea',
 					'label'             => __( 'Excluded JavaScript Files', 'rocket' ),
 					'description'       => __( 'Specify URLs of JavaScript files to be excluded from minification and concatenation (one per line).', 'rocket' ),
@@ -727,7 +727,7 @@ class Page extends Abstract_Render {
 					'default'           => [],
 					'sanitize_callback' => 'sanitize_textarea',
 				],
-				'defer_all_js'                        => [
+				'defer_all_js'                 => [
 					'container_class'   => [
 						'wpr-isParent',
 					],
@@ -740,7 +740,7 @@ class Page extends Abstract_Render {
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
 				],
-				'exclude_defer_js'                    => [
+				'exclude_defer_js'             => [
 					'container_class'   => [
 						'wpr-field--children',
 					],
@@ -755,7 +755,7 @@ class Page extends Abstract_Render {
 					'default'           => [],
 					'sanitize_callback' => 'sanitize_textarea',
 				],
-				'delay_js'                            => apply_filters(
+				'delay_js'                     => apply_filters(
 					'rocket_delay_js_settings_field',
 					[
 						'container_class'   => [
@@ -772,7 +772,7 @@ class Page extends Abstract_Render {
 						'sanitize_callback' => 'sanitize_checkbox',
 					]
 				),
-				'delay_js_exclusions_selected'        => [
+				'delay_js_exclusions_selected' => [
 					'type'              => 'categorized_multiselect',
 					'label'             => __( 'One-click exclusions', 'rocket' ),
 					'description'       => __( 'When using the Delay JavaScript Execution, you might experience delay loading elements located in the viewport that need to appear immediately - e.g. slider, header, menu.', 'rocket' ),
@@ -790,71 +790,50 @@ class Page extends Abstract_Render {
 					],
 					'items'             => $this->delayjs_sitelist->prepare_delayjs_ui_list(),
 				],
-				'delay_js_execution_safe_mode'        => [
+				'delay_js_execution_safe_mode' => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Delay JavaScript Execution safe mode', 'rocket' ),
-					'container_class'   => [
-						'wpr-field--children',
-						'wpr-isParent',
-					],
+					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 					'description'       => $invalid_license ? __( 'Delay JavaScript Execution safe mode temporarily resolves issues with Delay JavaScript execution but may reduce your PageSpeed Scores and performance. Contact support for help excluding problematic scripts to use this feature fully.', 'rocket' ) : '',
+					'helper'            => '',
+					'container_class'   => [
+						'wpr-field--parent',
+						'wpr-NoPaddingBottom',
+						'wpr-field--children',
+					],
 					'section'           => 'js',
-					'parent'            => 'delay_js',
 					'page'              => 'file_optimization',
+					'parent'            => 'delay_js',
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
 					'input_attr'        => [
-						'disabled' => get_rocket_option( 'delay_js_execution_safe_mode' ) ? 1 : 0,
+						'disabled' => 0,
 					],
-					'helper'            => '',
+					'warning'           => $invalid_license ? [] : [
+						'title'        => __( 'This will decrease the effect of Delay JavaScript Execution', 'rocket' ),
+						'description'  => __( 'This mode temporarily resolves issues with Delay JavaScript execution but may reduce your PageSpeed Scores and performance. Contact support for help excluding problematic scripts to use this feature fully.', 'rocket' ),
+						'button_label' => __( 'Activate Safe Mode', 'rocket' ),
+					],
 				],
-
-				'delay_js_execution_safe_mode_method' => [
-					'type'                    => 'radio_buttons',
-					'label'                   => __( 'Delay JavaScript Execution safe mode', 'rocket' ),
-					'container_class'         => [
+				'delay_js_exclusions'          => [
+					'type'              => 'textarea',
+					'container_class'   => [
 						'wpr-field--children',
-						'wpr-field--js-execution-safe-mode-delivery'
 					],
-					'buttons_container_class' => '',
-					'parent'                  => 'delay_js_execution_safe_mode',
-					'section'                 => 'js',
-					'page'                    => 'file_optimization',
-					'default'                 => 'dje_safe_mode',
-					'sanitize_callback'       => 'sanitize_checkbox',
-					'options'                 => [
-						'dje_safe_mode' => [
-							'label'       => __( 'Delay JavaScript Execution safe mode', 'rocket' ),
-							'disabled'    => $invalid_license ? 'disabled' : false,
-							'value'       => 0,
-							'description' => '',
-							// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-							'warning'     => $invalid_license ? [] : [
-								'title'        => __( 'This will decrease the effect of Delay JavaScript Execution', 'rocket' ),
-								'description'  => __( 'This mode temporarily resolves issues with Delay JavaScript execution but may reduce your PageSpeed Scores and performance. Contact support for help excluding problematic scripts to use this feature fully.', 'rocket' ),
-								'button_label' => __( 'Activate Safe Mode', 'rocket' ),
-							],
-							'sub_fields'  => $invalid_license ? [] : [
-								'delay_js_exclusions' => [
-									'type'              => 'textarea',
-									'label'             => __( 'Excluded JavaScript Files', 'rocket' ),
-									'description'       => __( 'Specify URLs or keywords that can identify inline or JavaScript files to be excluded from delaying execution (one per line).', 'rocket' ),
-									'parent'            => '',
-									'section'           => 'js',
-									'page'              => 'file_optimization',
-									'default'           => [],
-									'sanitize_callback' => 'sanitize_textarea',
-									'input_attr'        => [
-										'disabled' => get_rocket_option( 'delay_js_execution_safe_mode' ) ? 0 : 1,
-									],
-									'helper'            => DelayJSSettings::exclusion_list_has_default() ? $delay_js_found_list_helper : $delay_js_list_helper,
-									'placeholder'       => '',
-								],
-							],
-						],
+					'label'             => __( 'Excluded JavaScript Files', 'rocket' ),
+					'description'       => __( 'Specify URLs or keywords that can identify inline or JavaScript files to be excluded from delaying execution (one per line).', 'rocket' ),
+					'parent'            => 'delay_js_execution_safe_mode',
+					'section'           => 'js',
+					'page'              => 'file_optimization',
+					'default'           => [],
+					'sanitize_callback' => 'sanitize_textarea',
+					'input_attr'        => [
+						'disabled' => get_rocket_option( 'delay_js_execution_safe_mode' ) ? 0 : 1,
 					],
+					'helper'            => DelayJSSettings::exclusion_list_has_default() ? $delay_js_found_list_helper : $delay_js_list_helper,
+					'placeholder'       => '',
 				],
-			]
+			],
 		);
 	}
 
@@ -2120,7 +2099,7 @@ class Page extends Abstract_Render {
 			'minify_concatenate_css',
 			'cloudflare_api_key',
 			'cloudflare_zone_id',
-			'dje_safe_mode'
+			'dje_safe_mode',
 		];
 
 		$this->settings->add_hidden_settings_fields(
