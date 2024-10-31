@@ -92,6 +92,11 @@ class Settings {
 				:
 				[];
 
+		$default_exclusions = self::get_safe_mode_exclusions();
+
+		$input['delay_js_exclusions']          = array_diff( $input['delay_js_exclusions'], $default_exclusions );
+		$input['delay_js_execution_safe_mode'] = $settings->sanitize_checkbox( $input, 'delay_js_execution_safe_mode' );
+
 		return $input;
 	}
 
@@ -135,6 +140,26 @@ class Settings {
 		return $value;
 	}
 
+
+	/**
+	 * Get the list of default exclusions for the safe mode.
+	 *
+	 * This method returns an array of regular expressions that match JavaScript files
+	 * and patterns which should be excluded from the delay JavaScript execution feature
+	 * when the safe mode is enabled.
+	 *
+	 * @since 3.18
+	 *
+	 * @return array An array of regular expressions for safe mode exclusions.
+	 */
+	public static function get_safe_mode_exclusions(): array {
+		return [
+			'\/jquery(-migrate)?-?([0-9.]+)?(.min|.slim|.slim.min)?.js(\?(.*))?( |\'|"|>)',
+			'js-(before|after)',
+			'(?:/wp-content/|/wp-includes/)(.*)',
+		];
+	}
+
 	/**
 	 * Get default exclusion list.
 	 *
@@ -144,10 +169,7 @@ class Settings {
 	 */
 	public static function get_delay_js_default_exclusions(): array {
 
-		$exclusions = [
-			'\/jquery(-migrate)?-?([0-9.]+)?(.min|.slim|.slim.min)?.js(\?(.*))?( |\'|"|>)',
-			'js-(before|after)',
-		];
+		$exclusions = self::get_safe_mode_exclusions();
 
 		$wp_content  = wp_parse_url( content_url( '/' ), PHP_URL_PATH );
 		$wp_includes = wp_parse_url( includes_url( '/' ), PHP_URL_PATH );
