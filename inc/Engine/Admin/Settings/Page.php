@@ -2099,7 +2099,6 @@ class Page extends Abstract_Render {
 			'minify_concatenate_css',
 			'cloudflare_api_key',
 			'cloudflare_zone_id',
-			'dje_safe_mode',
 		];
 
 		$this->settings->add_hidden_settings_fields(
