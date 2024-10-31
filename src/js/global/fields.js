@@ -353,13 +353,6 @@ $(document).ready(function(){
 		});
 	}
 
-	$( "#delay_js_execution_safe_mode_method .wpr-radio-buttons-container button" )
-		.on( "before_show_radio_warning", function( event, $elm ) {
-			console.log('before_show_radio_warning', $elm);
-			disable_radio_warning = ('dje_safe_mode' === $elm.data('value') && 1 === dje_safe_mode_active)
-		});
-
-
 	/**
 	 * Delay JS Execution Safe Mode Field
 	 */
