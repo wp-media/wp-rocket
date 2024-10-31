@@ -19,6 +19,7 @@ class Test_DelayJs extends TestCase {
 	private $delay_js = 0;
 	private $delay_js_exclusions = [];
 	private $post;
+	private $delay_js_safemode = false;
 
 	public function set_up() {
 		parent::set_up();
@@ -57,6 +58,7 @@ class Test_DelayJs extends TestCase {
 		$this->donotrocketoptimize = $config['donotoptimize'];
 		$this->delay_js            = $config['delay_js'];
 		$this->delay_js_exclusions = $config['delay_js_exclusions'];
+		$this->delay_js_safemode = $config['delay_js_safemode'] ?? false;
 		$this->post = $this->goToContentType( $config );
 
 		if ( $config['post-excluded'] ) {
@@ -65,6 +67,7 @@ class Test_DelayJs extends TestCase {
 
 		add_filter( 'pre_get_rocket_option_delay_js', [ $this, 'set_delay_js' ] );
 		add_filter( 'pre_get_rocket_option_delay_js_exclusions', [ $this, 'set_delay_js_exclusions' ] );
+		add_filter( 'pre_get_rocket_option_delay_js_execution_safe_mode', [ $this, 'set_delay_js_safe_mode' ] );
 
 		set_transient( 'wpr_dynamic_lists', $config['exclusions'], HOUR_IN_SECONDS );
 
@@ -84,5 +87,9 @@ class Test_DelayJs extends TestCase {
 
 	public function set_delay_js_exclusions() {
 		return $this->delay_js_exclusions;
+	}
+
+	public function set_delay_js_safe_mode() {
+		return $this->delay_js_safemode;
 	}
 }

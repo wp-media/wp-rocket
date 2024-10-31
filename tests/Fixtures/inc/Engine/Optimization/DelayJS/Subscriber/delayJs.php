@@ -579,5 +579,20 @@ return [
 			'html'     => $html,
 			'expected' => $delay_html_upgrade,
 		],
+		'testShouldDelayJSWithSafeMode' => [
+			'config'   => [
+				'type'                 => 'front_page',
+				'bypass'               => false,
+				'donotoptimize'        => false,
+				'post-excluded'        => false,
+				'delay_js'             => 1,
+				'delay_js_safe_mode'    => 1,
+				'delay_js_exclusions'  => [
+				],
+				'exclusions'           => $exclusions_list,
+			],
+			'html'     => $html,
+			'expected' => $delay_html_upgrade,
+		],
 	]
 ];

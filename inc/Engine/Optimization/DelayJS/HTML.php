@@ -105,7 +105,7 @@ class HTML {
 			$this->excluded = array_merge(
 				$this->excluded,
 				[
-					'\/jquery(-migrate)?-?([0-9.]+)?(.min|.slim|.slim.min)?.js(\?(.*))?( |\'|"|>)',
+					'/jquery(-migrate)?-?([0-9.]+)?(.min|.slim|.slim.min)?.js(\?(.*))?( |\'|"|>)',
 					'js-(before|after)',
 					'(?:/wp-content/|/wp-includes/)(.*)',
 				]

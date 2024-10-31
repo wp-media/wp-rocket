@@ -155,7 +155,7 @@ class Settings {
 	 */
 	public static function get_safe_mode_exclusions(): array {
 		return [
-			'\/jquery(-migrate)?-?([0-9.]+)?(.min|.slim|.slim.min)?.js(\?(.*))?( |\'|"|>)',
+			'/jquery(-migrate)?-?([0-9.]+)?(.min|.slim|.slim.min)?.js(\?(.*))?( |\'|"|>)',
 			'js-(before|after)',
 			'(?:/wp-content/|/wp-includes/)(.*)',
 		];
