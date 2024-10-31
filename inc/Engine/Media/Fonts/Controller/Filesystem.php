@@ -40,7 +40,8 @@ class Filesystem {
     */
     public function write_font_css( string $url, string $font_url ): bool {
         $font_provider = $this->get_font_provider_path( $font_url );
-        $file          = $this->get_fonts_full_path( $url, $font_provider );
+        $file          = $this->get_fonts_full_path( $font_provider );
+		$css_file_name = $file . md5( $url ) . '.css';
 
         if ( ! rocket_mkdir_p( dirname( $file ) ) ) {
             return false;
@@ -62,7 +63,7 @@ class Filesystem {
             $local_path = $file . implode('/', $path_parts );
             $local_dir = dirname( $local_path );
 
-            rocket_mkdir_p( dirname( $local_dir ) );
+            rocket_mkdir_p( $local_dir );
 
             if ( ! file_exists( $local_path ) ) {
 				$font_data = wp_remote_get( $font_url );
@@ -74,22 +75,14 @@ class Filesystem {
 
 				$font_content = wp_remote_retrieve_body( $font_data );
 
-				error_log(print_r(
-					$font_content
-					, true )
-				);
-
-				if ( ! $this->filesystem->put_contents( $local_path, 'pododl', true ) ) {
-					// Output error message for debugging
-					error_log( print_r( $this->filesystem->errors, true ) );
-				}
+				$this->filesystem->put_contents( $local_path, $font_content, rocket_get_filesystem_perms( 'file' ) );
             }
 
-			$local_url = content_url('/cache/wp-rocket/fonts/google-fonts/' . implode('/', $path_parts ) );
+			$local_url = content_url($this->path . implode('/', $path_parts ) );
 			$local_css = str_replace( $font_url, $local_url, $local_css );
         }
-return true;
-        //error_log(print_r($css_content, true ));die;
+
+		return $this->filesystem->put_contents( $css_file_name , $local_css, rocket_get_filesystem_perms( 'file' ) );
     }
 
     private function download_font( string $url ) {
@@ -108,12 +101,12 @@ return true;
     /**
      * Get the fonts path for the css file.
      *
-     * @param string $url Url of the page.
+     * @param string $font_provider_path Font provider path.
      *
      * @return string Path for the font file.
      */
-    private function get_fonts_full_path( string $url, string $font_provider_path ) {
-        return $this->path . $font_provider_path . md5( $url ) . '/';
+    private function get_fonts_full_path( string $font_provider_path ): string {
+        return $this->path . $font_provider_path;
     }
 
     /**
