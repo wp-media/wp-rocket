@@ -101,6 +101,17 @@ class HTML {
 		$this->excluded = array_merge( $this->excluded, $this->options->get( 'delay_js_exclusions', [] ) );
 		$this->excluded = array_merge( $this->excluded, $this->options->get( 'delay_js_exclusions_selected_exclusions', [] ) );
 
+		if ( $this->options->get( 'delay_js_execution_safe_mode', 0 ) ) {
+			$this->excluded = array_merge(
+				$this->excluded,
+				[
+					'\/jquery(-migrate)?-?([0-9.]+)?(.min|.slim|.slim.min)?.js(\?(.*))?( |\'|"|>)',
+					'js-(before|after)',
+					'(?:/wp-content/|/wp-includes/)(.*)',
+				]
+				);
+		}
+
 		/**
 		 * Filters the delay JS exclusions array
 		 *
@@ -108,7 +119,7 @@ class HTML {
 		 *
 		 * @param array $excluded Array of excluded patterns.
 		 */
-		$this->excluded = (array) apply_filters( 'rocket_delay_js_exclusions', $this->excluded );
+		$this->excluded = wpm_apply_filters_typed( 'array', 'rocket_delay_js_exclusions', $this->excluded );
 		$this->excluded = array_map(
 			function ( $value ) {
 				if ( ! is_string( $value ) ) {
