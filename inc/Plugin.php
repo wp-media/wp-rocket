@@ -53,6 +53,7 @@ use WP_Rocket\Engine\Debug\Resolver as DebugResolver;
 use WP_Rocket\Engine\Debug\ServiceProvider as DebugServiceProvider;
 use WP_Rocket\Engine\Common\PerformanceHints\ServiceProvider as PerformanceHintsServiceProvider;
 use WP_Rocket\Engine\Optimization\LazyRenderContent\ServiceProvider as LRCServiceProvider;
+use WP_Rocket\Engine\Media\Fonts\ServiceProvider as FontOptimisationServiceProvider;
 
 /**
  * Plugin Manager.
@@ -308,6 +309,7 @@ class Plugin {
 		$this->container->addServiceProvider( new SaasAdminServiceProvider() );
 		$this->container->addServiceProvider( new PerformanceHintsServiceProvider() );
 		$this->container->addServiceProvider( new LRCServiceProvider() );
+		$this->container->addServiceProvider( new FontOptimisationServiceProvider() );
 
 		$common_subscribers = [
 			'license_subscriber',
