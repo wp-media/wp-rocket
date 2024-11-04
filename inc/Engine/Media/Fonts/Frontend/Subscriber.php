@@ -25,11 +25,19 @@ class Subscriber implements Subscriber_Interface {
 
 	public static function get_subscribed_events() {
 		return [
-			'rocket_buffer' => [ 'process', 15 ],
+			'rocket_host_google_fonts' => [ 'process', 15, 3 ],
 		];
 	}
 
-	public function process( $html ): string {
-		return $this->fonts->process( $html );
+    /**
+     * Save Fonts locally
+     * @param string  $font_url The url of the font
+     * @param string  $provider The font provider
+     * @param integer $version  The version of the font
+     *
+     * @return void
+    */
+	public function process( string $font_url, string $provider, int $version): void {
+		$this->fonts->process( $font_url, $provider, $version );
 	}
 }

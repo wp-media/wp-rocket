@@ -30,16 +30,20 @@ class Filesystem {
 		$this->path       = $base_path . get_current_blog_id() . '/';
 	}
 
-	/**
-	 * Write font css to path
-	 *
-	 * @param string $url The url of the page.
-	 * @param string $font_url The font url to save locally.
-	 *
-	 * @return bool
-	 */
-	public function write_font_css( string $url, string $font_url ): bool {
-		$font_provider = $this->get_font_provider_path( $font_url );
+    /**
+     * Write font css to path
+     *
+     * @param string $font_url The font url to save locally.
+     * @param string $provider The url of the page.
+     * @param int $version
+     *
+     * @return bool
+     */
+	public function write_font_css( string $font_url, string $provider, int $version ): bool {
+        global $wp;
+        $url = untrailingslashit( home_url( add_query_arg( [], $wp->request ) ) );
+
+		$font_provider = $this->get_font_provider_path( $provider );
 		$file          = $this->get_fonts_full_path( $font_provider, $url );
 		$css_file_name = $file . md5( $url ) . '.css';
 		$relative_path = $this->get_fonts_relative_path( $font_provider, $url );
@@ -48,7 +52,7 @@ class Filesystem {
 			return false;
 		}
 
-		$css_content = $this->download_font( $font_url );
+		$css_content = $this->download_font( html_entity_decode ( $font_url ) );
 
 		if ( ! $css_content ) {
 			return false;
@@ -67,13 +71,11 @@ class Filesystem {
 			rocket_mkdir_p( $local_dir );
 
 			if ( ! file_exists( $local_path ) ) {
-				$font_data = wp_remote_get( $font_url );
+				$font_content = $this->download_font( $font_url );
 
-				if ( is_wp_error( $font_data ) ) {
+				if ( ! $font_content ) {
 					continue;
 				}
-
-				$font_content = wp_remote_retrieve_body( $font_data );
 
 				$this->filesystem->put_contents( $local_path, $font_content, rocket_get_filesystem_perms( 'file' ) );
 			}
@@ -141,12 +143,14 @@ class Filesystem {
 	/**
 	 * Get the fonts provider path
 	 *
-	 * @param string $font_url The url of the fonts.
+	 * @param string $provider The font provider.
 	 *
 	 * @return string
 	 */
-	private function get_font_provider_path( string $font_url ): string {
-		return 'google-fonts/';
+	private function get_font_provider_path( string $provider ): string {
+		$provider = str_replace( '_', '-', $provider);
+
+        return $provider . '/';
 	}
 
 	/**
