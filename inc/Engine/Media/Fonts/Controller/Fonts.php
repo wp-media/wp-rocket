@@ -51,6 +51,8 @@ class Fonts {
 			return;
 		}
 
-		$this->filesystem->write_font_css( $font_url, $provider, $version );
+		$this->filesystem->set_version( $version );
+
+		$this->filesystem->write_font_css( $font_url, $provider );
 	}
 }

@@ -20,6 +20,13 @@ class Filesystem {
 	private $path;
 
 	/**
+	 * Version of the fonts.
+	 *
+	 * @var int
+	 */
+	private $version;
+
+	/**
 	 * Instantiate the class
 	 *
 	 * @param string               $base_path Base path to the fonts storage.
@@ -31,22 +38,33 @@ class Filesystem {
 	}
 
 	/**
+	 * Hash the url
+	 *
+	 * @param string $url Url of the page to hash.
+	 *
+	 * @return string
+	 */
+	private function hash_url( string $url ): string {
+		return md5( $url );
+	}
+
+	/**
 	 * Write font css to path
 	 *
 	 * @param string $font_url The font url to save locally.
 	 * @param string $provider The url of the page.
-	 * @param int    $version  The version of the provider api.
 	 *
 	 * @return bool
 	 */
-	public function write_font_css( string $font_url, string $provider, int $version ): bool {
+	public function write_font_css( string $font_url, string $provider ): bool {
 		global $wp;
 		$url = untrailingslashit( home_url( add_query_arg( [], $wp->request ) ) );
 
-		$font_provider = $this->get_font_provider_path( $provider );
-		$file          = $this->get_fonts_full_path( $font_provider, $url );
-		$css_file_name = $file . md5( $url ) . '.css';
-		$relative_path = $this->get_fonts_relative_path( $font_provider, $url );
+		$font_provider_path = $this->get_font_provider_path( $provider );
+		$hash_url           = $this->hash_url( $url );
+		$file               = $this->get_fonts_full_path( $font_provider_path, $hash_url );
+		$css_file_name      = $file . $hash_url . '.css';
+		$relative_path      = $this->get_fonts_relative_path( $font_provider_path, $hash_url );
 
 		if ( ! rocket_mkdir_p( dirname( $file ) ) ) {
 			return false;
@@ -115,13 +133,15 @@ class Filesystem {
 	/**
 	 * Get the fonts path for the css file.
 	 *
-	 * @param string $font_provider_path Font provider path.
-	 * @param string $url Url of the page.
+	 * @param string $provider Font provider.
+	 * @param string $hash_url Url of the page.
 	 *
 	 * @return string Path for the font file.
 	 */
-	private function get_fonts_full_path( string $font_provider_path, string $url ): string {
-		return $this->path . $font_provider_path . md5( $url ) . '/';
+	private function get_fonts_full_path( string $provider, string $hash_url ): string {
+		$font_provider_path = $this->get_font_provider_path( $provider );
+
+		return $this->path . $font_provider_path . $hash_url . '/' . $this->get_version() . '/';
 	}
 
 
@@ -129,15 +149,15 @@ class Filesystem {
 	 * Get the fonts relative paths
 	 *
 	 * @param string $font_provider_path Font provider path.
-	 * @param string $url Url of the page.
+	 * @param string $hash_url Url of the page.
 	 *
 	 * @return string
 	 */
-	private function get_fonts_relative_path( string $font_provider_path, string $url ): string {
+	private function get_fonts_relative_path( string $font_provider_path, string $hash_url, ): string {
 		$full_path     = $this->path . $font_provider_path;
 		$relative_path = str_replace( WP_CONTENT_DIR, '', $full_path );
 
-		return $relative_path . md5( $url ) . '/';
+		return $relative_path . $hash_url . '/' . $this->get_version() . '/';
 	}
 
 	/**
@@ -173,5 +193,25 @@ class Filesystem {
 	 */
 	public function delete_all_font_css() {
 		// TODO:create method to recursively delete all locally stored fonts.
+	}
+
+	/**
+	 * Set the version of the fonts
+	 *
+	 * @param int $version The version of the font.
+	 *
+	 * @return void
+	 */
+	public function set_version( int $version ): void {
+		$this->version = $version;
+	}
+
+	/**
+	 * Get the font version
+	 *
+	 * @return int
+	 */
+	public function get_version(): int {
+		return $this->version;
 	}
 }
