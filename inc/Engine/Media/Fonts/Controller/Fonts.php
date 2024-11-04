@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Media\Fonts\Controller;
 
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\RegexTrait;
 
 class Fonts {
@@ -15,24 +16,41 @@ class Fonts {
 	 */
 	private $filesystem;
 
-    private $provider_methods = [
-        'google_font'  => 'google_font_provider',
-        'font_awesome' => 'font_awesome_provider',
-    ];
+	/**
+	 * Instance of options handler.
+	 *
+	 * @var Options_Data
+	 */
+	private $options;
 
-    /**
-     * @param Filesystem $filesystem Filesystem Instance.
-    */
+	/**
+	 * Instantiate the class.
+	 *
+	 * @param Filesystem   $filesystem Filesystem Instance.
+	 * @param Options_Data $options    Options instance.
+	 */
 	public function __construct(
-		Filesystem $filesystem
+		Filesystem $filesystem,
+		Options_Data $options
 	) {
 		$this->filesystem = $filesystem;
+		$this->options    = $options;
 	}
 
 	/**
-	 * Process
+	 * Start the process of downloading font locally
+	 *
+	 * @param string  $font_url URL of the font to be saved locally.
+	 * @param string  $provider Provider of the font.
+	 * @param integer $version  Version.
+	 *
+	 * @return void
 	 */
-	public function process( $font_url, $provider, $version ): void {
-        $this->filesystem->write_font_css( $font_url, $provider, $version );
+	public function process( string $font_url, string $provider, int $version ): void {
+		if ( ! $this->options->get( 'host_google_fonts' ) ) {
+			return;
+		}
+
+		$this->filesystem->write_font_css( $font_url, $provider, $version );
 	}
 }

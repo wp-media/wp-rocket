@@ -40,13 +40,13 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register(): void {
-
 		$this->getContainer()->add( 'fonts_filesystem', Filesystem::class )
 			->addArgument( rocket_get_constant( 'WP_ROCKET_FONT_CSS_PATH' ) )
 			->addArgument( rocket_direct_filesystem() );
 
 		$this->getContainer()->add( 'fonts_controller', FontsController::class )
-			->addArgument( $this->getContainer()->get( 'fonts_filesystem' ) );
+			->addArgument( $this->getContainer()->get( 'fonts_filesystem' ) )
+			->addArgument( $this->getContainer()->get( 'options' ) );
 
 		$this->getContainer()->addShared( 'fonts_frontend_subscriber', FrontendSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'fonts_controller' ) );

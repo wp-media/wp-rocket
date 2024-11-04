@@ -30,18 +30,18 @@ class Filesystem {
 		$this->path       = $base_path . get_current_blog_id() . '/';
 	}
 
-    /**
-     * Write font css to path
-     *
-     * @param string $font_url The font url to save locally.
-     * @param string $provider The url of the page.
-     * @param int $version
-     *
-     * @return bool
-     */
+	/**
+	 * Write font css to path
+	 *
+	 * @param string $font_url The font url to save locally.
+	 * @param string $provider The url of the page.
+	 * @param int    $version  The version of the provider api.
+	 *
+	 * @return bool
+	 */
 	public function write_font_css( string $font_url, string $provider, int $version ): bool {
-        global $wp;
-        $url = untrailingslashit( home_url( add_query_arg( [], $wp->request ) ) );
+		global $wp;
+		$url = untrailingslashit( home_url( add_query_arg( [], $wp->request ) ) );
 
 		$font_provider = $this->get_font_provider_path( $provider );
 		$file          = $this->get_fonts_full_path( $font_provider, $url );
@@ -52,7 +52,7 @@ class Filesystem {
 			return false;
 		}
 
-		$css_content = $this->download_font( html_entity_decode ( $font_url ) );
+		$css_content = $this->download_font( html_entity_decode( $font_url ) );
 
 		if ( ! $css_content ) {
 			return false;
@@ -148,9 +148,9 @@ class Filesystem {
 	 * @return string
 	 */
 	private function get_font_provider_path( string $provider ): string {
-		$provider = str_replace( '_', '-', $provider);
+		$provider = str_replace( '_', '-', $provider );
 
-        return $provider . '/';
+		return $provider . '/';
 	}
 
 	/**
