@@ -403,6 +403,7 @@ class Plugin {
 			'performance_hints_admin_subscriber',
 			'lrc_frontend_subscriber',
 			'taxonomy_subscriber',
+			'fonts_frontend_subscriber',
 		];
 
 		$host_type = HostResolver::get_host_service();
