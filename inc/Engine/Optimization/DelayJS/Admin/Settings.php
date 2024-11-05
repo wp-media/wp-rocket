@@ -27,6 +27,7 @@ class Settings {
 	/**
 	 * Add the delay JS options to the WP Rocket options array
 	 *
+	 * @since 3.18 Added delay_js_execution_safe_mode.
 	 * @since 3.9 Removed delay_js_scripts key, added delay_js_exclusions.
 	 * @since 3.7
 	 *
@@ -37,8 +38,9 @@ class Settings {
 	public function add_options( $options ): array {
 		$options = (array) $options;
 
-		$options['delay_js']            = 0;
-		$options['delay_js_exclusions'] = [];
+		$options['delay_js']                     = 0;
+		$options['delay_js_exclusions']          = [];
+		$options['delay_js_execution_safe_mode'] = 0;
 
 		return $options;
 	}
@@ -86,8 +88,9 @@ class Settings {
 	 * @return array
 	 */
 	public function sanitize_options( $input, $settings ): array {
-		$input['delay_js']            = $settings->sanitize_checkbox( $input, 'delay_js' );
-		$input['delay_js_exclusions'] =
+		$input['delay_js']                     = $settings->sanitize_checkbox( $input, 'delay_js' );
+		$input['delay_js_execution_safe_mode'] = $settings->sanitize_checkbox( $input, 'delay_js_execution_safe_mode' );
+		$input['delay_js_exclusions']          =
 			! empty( $input['delay_js_exclusions'] )
 				?
 				rocket_sanitize_textarea_field( 'delay_js_exclusions', $input['delay_js_exclusions'] )
@@ -96,8 +99,7 @@ class Settings {
 
 		$default_exclusions = self::get_safe_mode_exclusions();
 
-		$input['delay_js_exclusions']          = array_diff( $input['delay_js_exclusions'], $default_exclusions );
-		$input['delay_js_execution_safe_mode'] = $settings->sanitize_checkbox( $input, 'delay_js_execution_safe_mode' );
+		$input['delay_js_exclusions'] = array_diff( $input['delay_js_exclusions'], $default_exclusions );
 
 		return $input;
 	}
