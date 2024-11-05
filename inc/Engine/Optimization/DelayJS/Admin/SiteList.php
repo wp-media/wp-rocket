@@ -71,23 +71,57 @@ class SiteList {
 	 * Check if script is in the list and return it if found.
 	 *
 	 * @param string $item_id Script ID.
+	 * @param string $script_type Script Type.
 	 *
 	 * @return array
 	 */
-	private function get_script_in_list( string $item_id ) {
-		$scripts = $this->get_scripts_from_list();
+	private function get_script_in_list( string $item_id, string $script_type ) {
+		$list = $this->dynamic_lists->get_delayjs_list();
+		$scripts = ! empty( $list->$script_type ) ? (array) $list->$script_type : [];
+
 		return ! empty( $scripts[ $item_id ] ) ? (array) $scripts[ $item_id ] : [];
 	}
 
 	/**
-	 * Get all scripts from the list.
+	 * Get Analytics scripts from the list.
 	 *
 	 * @return array
 	 */
-	private function get_scripts_from_list() {
+	private function get_analytics_from_list() {
 		$list = $this->dynamic_lists->get_delayjs_list();
-		return ! empty( $list->scripts ) ? (array) $list->scripts : [];
+		return ! empty( $list->analytics ) ? (array) $list->analytics : [];
 	}
+
+	/**
+	 * Get Ad Networks from the list.
+	 *
+	 * @return array
+	 */
+	private function get_ad_networks_from_list() {
+		$list = $this->dynamic_lists->get_delayjs_list();
+		return ! empty( $list->ad_networks ) ? (array) $list->ad_networks : [];
+	}
+
+	/**
+	 * Get Payment Processors from the list.
+	 *
+	 * @return array
+	 */
+	private function get_payment_processors_from_list() {
+		$list = $this->dynamic_lists->get_delayjs_list();
+		return ! empty( $list->payment_processors ) ? (array) $list->payment_processors : [];
+	}
+
+	/**
+	 * Get Other Services from the list.
+	 *
+	 * @return array
+	 */
+	private function get_other_services_from_list() {
+		$list = $this->dynamic_lists->get_delayjs_list();
+		return ! empty( $list->other_services ) ? (array) $list->other_services : [];
+	}
+
 
 	/**
 	 * Get all plugins from the list.
@@ -117,7 +151,22 @@ class SiteList {
 	 * @return array
 	 */
 	public function get_delayjs_exclusions_by_id( string $item_id ) {
-		$item = $this->get_script_in_list( $item_id );
+		$item = $this->get_script_in_list( $item_id, 'analytics' );
+		if ( $item ) {
+			return $item['exclusions'];
+		}
+
+		$item = $this->get_script_in_list( $item_id, 'ad_networks' );
+		if ( $item ) {
+			return $item['exclusions'];
+		}
+
+		$item = $this->get_script_in_list( $item_id, 'payment_processors' );
+		if ( $item ) {
+			return $item['exclusions'];
+		}
+
+		$item = $this->get_script_in_list( $item_id, 'other_services' );
 		if ( $item ) {
 			return $item['exclusions'];
 		}
@@ -227,9 +276,36 @@ class SiteList {
 		];
 
 		// Scripts.
-		$scripts = $this->get_scripts_from_list();
+		$scripts = $this->get_analytics_from_list();
 		foreach ( $scripts as $script_key => $script ) {
 			$full_list['third_parties']['analytics']['items'][] = [
+				'id'    => $script_key,
+				'title' => $script->title,
+				'icon'  => $this->get_icon( $script ),
+			];
+		}
+
+		$scripts = $this->get_ad_networks_from_list();
+		foreach ( $scripts as $script_key => $script ) {
+			$full_list['third_parties']['ad_networks']['items'][] = [
+				'id'    => $script_key,
+				'title' => $script->title,
+				'icon'  => $this->get_icon( $script ),
+			];
+		}
+
+		$scripts = $this->get_payment_processors_from_list();
+		foreach ( $scripts as $script_key => $script ) {
+			$full_list['third_parties']['payment_processors']['items'][] = [
+				'id'    => $script_key,
+				'title' => $script->title,
+				'icon'  => $this->get_icon( $script ),
+			];
+		}
+
+		$scripts = $this->get_other_services_from_list();
+		foreach ( $scripts as $script_key => $script ) {
+			$full_list['third_parties']['other_services']['items'][] = [
 				'id'    => $script_key,
 				'title' => $script->title,
 				'icon'  => $this->get_icon( $script ),
