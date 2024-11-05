@@ -113,7 +113,7 @@ defined( 'ABSPATH' ) || exit;
 		<div class="wpr-field-description-label wpr-mt-2"><?php echo esc_html( __( 'Wordpress', 'rocket' ) ) ?></div>
 		<?php
 		foreach ( $data['items']['wordpress'] as $rocket_item_key => $rocket_item ) {
-			if ( ! empty( $rocket_item['items'] ) ) {
+			if ( empty( $rocket_item['items'] ) ) {
 				continue;
 			}
 			?>
