@@ -22,6 +22,7 @@ $default_list = [
             'items'          => [],
             'dashicon-class' => 'analytics',
         ],
+        'has_subcats'        => true,
     ],
     'wordpress' => [
         'themes'  => [
@@ -34,6 +35,7 @@ $default_list = [
             'items'          => [],
             'dashicon-class' => 'admin-plugins',
         ],
+        'has_subcats'        => true,
     ],
 ];
 
@@ -119,6 +121,7 @@ return [
                     ],
                     'dashicon-class' => 'analytics',
                 ],
+                'has_subcats'        => true,
             ],
             'wordpress' => [
                 'themes'  => [
@@ -143,6 +146,7 @@ return [
                     ],
                     'dashicon-class' => 'admin-plugins',
                 ],
+                'has_subcats'        => true,
             ],
         ],
     ],
@@ -227,6 +231,7 @@ return [
                     ],
                     'dashicon-class' => 'analytics',
                 ],
+                'has_subcats'        => true,
             ],
             'wordpress' => [
                 'themes'  => [
@@ -251,6 +256,7 @@ return [
                     ],
                     'dashicon-class' => 'admin-plugins',
                 ],
+                'has_subcats'        => true,
             ],
         ],
     ],
@@ -335,6 +341,7 @@ return [
                     ],
                     'dashicon-class' => 'analytics',
                 ],
+                'has_subcats'        => true,
             ],
             'wordpress' => [
                 'themes'  => [
@@ -359,6 +366,7 @@ return [
                     ],
                     'dashicon-class' => 'admin-plugins',
                 ],
+                'has_subcats'        => true,
             ],
         ],
     ],
@@ -443,6 +451,7 @@ return [
                     'items'          => [],
                     'dashicon-class' => 'analytics',
                 ],
+                'has_subcats'        => true,
             ],
             'wordpress' => [
                 'themes'  => [
@@ -467,6 +476,7 @@ return [
                     ],
                     'dashicon-class' => 'admin-plugins',
                 ],
+                'has_subcats'        => true,
             ],
         ],
     ],
@@ -556,6 +566,7 @@ return [
                     ],
                     'dashicon-class' => 'analytics',
                 ],
+                'has_subcats'        => true,
             ],
             'wordpress' => [
                 'themes'  => [
@@ -574,6 +585,7 @@ return [
                     ],
                     'dashicon-class' => 'admin-plugins',
                 ],
+                'has_subcats'        => true,
             ],
         ],
     ],
@@ -663,6 +675,7 @@ return [
                     ],
                     'dashicon-class' => 'analytics',
                 ],
+                'has_subcats'        => true,
             ],
             'wordpress' => [
                 'themes'  => [
@@ -681,6 +694,7 @@ return [
                     'items'          => [],
                     'dashicon-class' => 'admin-plugins',
                 ],
+                'has_subcats'        => true,
             ],
         ],
     ],
