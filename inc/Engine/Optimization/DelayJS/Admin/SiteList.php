@@ -76,7 +76,7 @@ class SiteList {
 	 * @return array
 	 */
 	private function get_script_in_list( string $item_id, string $script_type ) {
-		$list = $this->dynamic_lists->get_delayjs_list();
+		$list    = $this->dynamic_lists->get_delayjs_list();
 		$scripts = ! empty( $list->$script_type ) ? (array) $list->$script_type : [];
 
 		return ! empty( $scripts[ $item_id ] ) ? (array) $scripts[ $item_id ] : [];
@@ -240,12 +240,12 @@ class SiteList {
 	public function prepare_delayjs_ui_list() {
 		$full_list = [
 			'third_parties' => [
-				'analytics' => [
+				'analytics'          => [
 					'title'          => __( 'Analytics & Trackers', 'rocket' ),
 					'items'          => [],
 					'dashicon-class' => 'analytics',
 				],
-				'ad_networks' => [
+				'ad_networks'        => [
 					'title'          => __( 'Ad Networks', 'rocket' ),
 					'items'          => [],
 					'dashicon-class' => 'analytics',
@@ -255,25 +255,29 @@ class SiteList {
 					'items'          => [],
 					'dashicon-class' => 'analytics',
 				],
-				'other_services' => [
+				'other_services'     => [
 					'title'          => __( 'Other Services', 'rocket' ),
 					'items'          => [],
 					'dashicon-class' => 'analytics',
 				],
+				'has_subcats'        => false,
 			],
-			'wordpress' => [
-				'themes'  => [
+			'wordpress'     => [
+				'themes'      => [
 					'title'          => __( 'Themes', 'rocket' ),
 					'items'          => [],
 					'dashicon-class' => 'admin-appearance',
 				],
-				'plugins' => [
+				'plugins'     => [
 					'title'          => __( 'Plugins', 'rocket' ),
 					'items'          => [],
 					'dashicon-class' => 'admin-plugins',
 				],
+				'has_subcats' => false,
 			],
 		];
+
+		$has_subcats = false;
 
 		// Scripts.
 		$scripts = $this->get_analytics_from_list();
@@ -283,6 +287,8 @@ class SiteList {
 				'title' => $script->title,
 				'icon'  => $this->get_icon( $script ),
 			];
+
+			$has_subcats = ! $has_subcats ? true : $has_subcats;
 		}
 
 		$scripts = $this->get_ad_networks_from_list();
@@ -292,6 +298,8 @@ class SiteList {
 				'title' => $script->title,
 				'icon'  => $this->get_icon( $script ),
 			];
+
+			$has_subcats = ! $has_subcats ? true : $has_subcats;
 		}
 
 		$scripts = $this->get_payment_processors_from_list();
@@ -301,6 +309,8 @@ class SiteList {
 				'title' => $script->title,
 				'icon'  => $this->get_icon( $script ),
 			];
+
+			$has_subcats = ! $has_subcats ? true : $has_subcats;
 		}
 
 		$scripts = $this->get_other_services_from_list();
@@ -310,7 +320,12 @@ class SiteList {
 				'title' => $script->title,
 				'icon'  => $this->get_icon( $script ),
 			];
+
+			$has_subcats = ! $has_subcats ? true : $has_subcats;
 		}
+
+		$full_list['third_parties']['has_subcats'] = $has_subcats;
+		$has_subcats                               = false;
 
 		$active_theme = $this->get_active_theme();
 		foreach ( $this->get_themes_from_list() as $theme_key => $theme ) {
@@ -323,6 +338,8 @@ class SiteList {
 				'title' => $theme->title,
 				'icon'  => $this->get_icon( $theme ),
 			];
+
+			$has_subcats = ! $has_subcats ? true : $has_subcats;
 		}
 
 		$active_plugins = $this->get_active_plugins();
@@ -336,7 +353,12 @@ class SiteList {
 				'title' => $plugin->title,
 				'icon'  => $this->get_icon( $plugin ),
 			];
+
+			$has_subcats = ! $has_subcats ? true : $has_subcats;
 		}
+
+		$full_list['wordpress']['has_subcats'] = $has_subcats;
+		$has_subcats                           = false;
 
 		return $full_list;
 	}
