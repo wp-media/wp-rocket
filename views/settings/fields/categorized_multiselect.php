@@ -50,14 +50,16 @@ defined( 'ABSPATH' ) || exit;
 	</div>
 
 	<div class="wpr-subsection">
-		<div class="wpr-field-description-label wpr-mt-2"><?php echo esc_html( __( '3rd parties', 'rocket' ) ) ?></div>
-		<?php
+		<?php if ( $data['items']['third_parties']['has_subcats'] ) : ?>
+		<div class="wpr-field-description-label wpr-mt-2"><?php echo esc_html( __( '3rd parties', 'rocket' ) ); ?></div>
+			<?php
+		endif;
 		foreach ( $data['items']['third_parties'] as $rocket_item_key => $rocket_item ) {
-			if (  empty( $rocket_item['items'] ) ) {
+			if ( 'has_subcats' === $rocket_item_key || empty( $rocket_item['items'] ) ) {
 				continue;
 			}
 			?>
-			<div class="wpr-list<?php echo 'analytics' === $rocket_item_key ? ' open' : ''; ?>" id="wpr_djs_oneclick_exclusions_<?php echo $rocket_item_key ?>">
+			<div class="wpr-list<?php echo 'analytics' === $rocket_item_key ? ' open' : ''; ?>" id="wpr_djs_oneclick_exclusions_<?php echo esc_attr( $rocket_item_key ); ?>">
 				<div class="wpr-list-header">
 					<div>
 						<?php if ( ! empty( $rocket_item['dashicon-class'] ) ) { ?>
@@ -109,15 +111,17 @@ defined( 'ABSPATH' ) || exit;
 			<?php
 		}
 		unset( $rocket_item_key, $rocket_item, $rocket_oneitem );
-		?>
-		<div class="wpr-field-description-label wpr-mt-2"><?php echo esc_html( __( 'Wordpress', 'rocket' ) ) ?></div>
-		<?php
+		if ( $data['items']['wordpress']['has_subcats'] ) :
+			?>
+		<div class="wpr-field-description-label wpr-mt-2"><?php echo esc_html( __( 'WordPress', 'rocket' ) ); ?></div>
+			<?php
+		endif;
 		foreach ( $data['items']['wordpress'] as $rocket_item_key => $rocket_item ) {
-			if ( empty( $rocket_item['items'] ) ) {
+			if ( 'has_subcats' === $rocket_item_key || empty( $rocket_item['items'] ) ) {
 				continue;
 			}
 			?>
-			<div class="wpr-list" id="wpr_djs_oneclick_exclusions_<?php echo $rocket_item_key ?>">
+			<div class="wpr-list" id="wpr_djs_oneclick_exclusions_<?php echo esc_attr( $rocket_item_key ); ?>">
 				<div class="wpr-list-header">
 					<div>
 						<?php if ( ! empty( $rocket_item['dashicon-class'] ) ) { ?>
