@@ -109,7 +109,7 @@ class HTML {
 					'js-(before|after)',
 					'(?:/wp-content/|/wp-includes/)(.*)',
 				]
-				);
+			);
 		}
 
 		/**

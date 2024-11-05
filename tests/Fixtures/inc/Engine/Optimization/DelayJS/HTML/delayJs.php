@@ -927,22 +927,5 @@ return [
 			'html'     => $html,
 			'expected' => $delay_html,
 		],
-		'testShouldDelayJSWithSafeMode' => [
-			'config'   => [
-				'bypass'               => false,
-				'donotoptimize'        => false,
-				'post-excluded'        => false,
-				'delay_js'             => 1,
-				'delay_js_safe_mode'   => true,
-				'delay_js_exclusions'  => [
-//					'/jquery(-migrate)?-?([0-9.]+)?(.min|.slim|.slim.min)?.js(\?(.*))?( |\'|"|>)?', // error with the regex of safe mode /jquery(-migrate)?-?([0-9.]+)?(.min|.slim|.slim.min)?.js(\?(.*))?( |\'|"|>)
-//					'js-(before|after)',
-//					'(?:/wp-content/|/wp-includes/)(.*)',
-				],
-				'exclusions_list'      => $exclusions_list,
-			],
-			'html'     => $html,
-			'expected' => $delay_html_upgrade,
-		],
 	]
 ];

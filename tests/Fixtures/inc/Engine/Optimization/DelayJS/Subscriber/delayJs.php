@@ -586,9 +586,8 @@ return [
 				'donotoptimize'        => false,
 				'post-excluded'        => false,
 				'delay_js'             => 1,
-				'delay_js_safe_mode'    => 1,
-				'delay_js_exclusions'  => [
-				],
+				'delay_js_safe_mode'    => true,
+				'delay_js_exclusions'  => [],
 				'exclusions'           => $exclusions_list,
 			],
 			'html'     => $html,
