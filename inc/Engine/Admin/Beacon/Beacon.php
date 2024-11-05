@@ -783,12 +783,12 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 			],
 			'rucss_firewall_ips'         => [
 				'en' => [
-					'id'  => '6076083ff8c0ef2d98df1f97',
-					'url' => 'https://docs.wp-rocket.me/article/1529-remove-unused-css?utm_source=wp_plugin&utm_medium=wp_rocket#basic-requirements',
+					'id'  => '60ed8bde00fd0d7c253ff547',
+					'url' => 'https://docs.wp-rocket.me/article/1628-which-ip-do-i-need-to-allow-for-wp-rocket?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 				'fr' => [
-					'id'  => '60d499a705ff892e6bc2a89e',
-					'url' => 'https://fr.docs.wp-rocket.me/article/1577-supprimer-les-ressources-css-inutilisees?utm_source=wp_plugin&utm_medium=wp_rocket#basic-requirements',
+					'id'  => '6246fe1a2ce7ed0fb091c543',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1690-quelles-adresses-ip-url-autoriser-pour-wp-rocket?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 			'optimize_critical_images'   => [

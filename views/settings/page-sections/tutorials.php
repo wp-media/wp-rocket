@@ -23,7 +23,7 @@ $rocket_tutorials = [
 		'title'     => __( 'Passing the Core Web vitals', 'rocket' ),
 		'tutorials' => [
 			'fj7gs031q6' => __( 'How to improve LCP with WP Rocket', 'rocket' ),
-			'krqb7ckugp' => __( 'How to improve FID with WP Rocket', 'rocket' ),
+			's599wdduu1' => __( 'How to improve INP with WP Rocket', 'rocket' ),
 			'5wrdzcmj90' => __( 'How to improve CLS with WP Rocket', 'rocket' ),
 		],
 	],

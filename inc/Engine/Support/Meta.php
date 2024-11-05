@@ -123,20 +123,20 @@ class Meta {
 			return '';
 		}
 
-		$content = '';
+		$version = '';
 
 		/**
-		 * Filters the display of the content attribute in the meta generator tag.
+		 * Filters the display of WP Rocket version in the content attribute of the meta generator tag.
 		 *
 		 * @since 3.17.2
 		 *
 		 * @param bool $display True to display, false otherwise.
 		 */
-		if ( wpm_apply_filters_typed( 'boolean', 'rocket_display_meta_generator_content', true ) ) {
-			$content = ' content="WP Rocket ' . rocket_get_constant( 'WP_ROCKET_VERSION', '' ) . '"';
+		if ( wpm_apply_filters_typed( 'boolean', 'rocket_display_meta_generator_content_version', true ) ) {
+			$version = ' ' . rocket_get_constant( 'WP_ROCKET_VERSION', '' );
 		}
 
-		$meta = '<meta name="generator"' . $content . ' data-wpr-features="' . implode( ' ', $features ) . '" />';
+		$meta = '<meta name="generator" content="WP Rocket' . $version . '" data-wpr-features="' . implode( ' ', $features ) . '" />';
 
 		return $meta;
 	}
