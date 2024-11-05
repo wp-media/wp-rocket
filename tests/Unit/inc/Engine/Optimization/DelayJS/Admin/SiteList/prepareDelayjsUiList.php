@@ -21,6 +21,7 @@ class SiteListTest extends TestCase {
     private $theme_mock;
 
     protected function setUp(): void {
+        parent::setUp();
         $this->dynamic_lists_mock = $this->createMock(DynamicLists::class);
         $this->options_data_mock = $this->createMock(Options_Data::class);
         $this->options_mock = $this->createMock(Options::class);

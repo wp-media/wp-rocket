@@ -612,7 +612,12 @@ class SiteList {
 	public function get_default_exclusions() {
 		$items = [];
 
-		$scripts = $this->get_scripts_from_list();
+		$scripts = array_merge( 
+			$this->get_analytics_from_list(),
+			$this->get_ad_networks_from_list(),
+			$this->get_payment_processors_from_list(),
+			$this->get_other_services_from_list() 
+		);
 		foreach ( $scripts as $script_key => $script ) {
 			if ( ! $script->is_default ) {
 				continue;
