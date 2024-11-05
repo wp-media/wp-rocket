@@ -59,8 +59,9 @@ class Settings {
 			return;
 		}
 
-		$options               = $this->options_api->get( 'settings', [] );
-		$old_custom_exclusions = $options['delay_js_exclusions'] ?? [];
+		$options = $this->options_api->get( 'settings', [] );
+
+		$options['delay_js_exclusions'] = [];
 
 		if (
 			isset( $options['delay_js'] )
