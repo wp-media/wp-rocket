@@ -35,6 +35,8 @@ class Test_DisableCacheOnNotValidTaxonomyPages extends TestCase {
 		Functions\when( 'get_term_link' )->justReturn( $config['current_term_link'] ?? '' );
 		Functions\when( 'add_query_arg' )->justReturn( '' );
 		Functions\when( 'home_url' )->justReturn( $config['current_page_url'] ?? '' );
+		Functions\when( 'is_paged' )->justReturn( ! empty( $config['page'] ) );
+		Functions\when( 'get_query_var' )->justReturn( $config['page'] ?? 0 );
 
 		$this->assertSame( $can_cache, $this->subscriber->disable_cache_on_not_valid_taxonomy_pages( true ) );
 	}
