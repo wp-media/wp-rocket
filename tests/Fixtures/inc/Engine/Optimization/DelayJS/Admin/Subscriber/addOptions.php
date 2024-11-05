@@ -8,6 +8,7 @@ return [
 		'expected' => [
 			'delay_js'            => 0,
 			'delay_js_exclusions' => [],
+			'delay_js_execution_safe_mode' => 0,
 		]
 	],
 	'shouldReturnValidOptionsWithOptionsNotArray' => [
@@ -18,6 +19,7 @@ return [
 			'test_option',
 			'delay_js'            => 0,
 			'delay_js_exclusions' => [],
+			'delay_js_execution_safe_mode' => 0,
 		]
 	],
 	'shouldOverrideOptions' => [
@@ -26,12 +28,14 @@ return [
 				'delay_js'            => 1,
 				'delay_js_exclusions' => [
 					'any value'
-				]
+				],
+				'delay_js_execution_safe_mode' => 1,
 			],
 		],
 		'expected' => [
 			'delay_js'            => 0,
 			'delay_js_exclusions' => [],
+			'delay_js_execution_safe_mode' => 0,
 		]
 	],
 	'shouldNotOverrideOtherOptions' => [
@@ -41,13 +45,15 @@ return [
 				'delay_js'         => 0,
 				'delay_js_exclusions' => [
 					'any value'
-				]
+				],
+				'delay_js_execution_safe_mode' => 0,
 			],
 		],
 		'expected' => [
 			'test_option'         => 1,
 			'delay_js'            => 0,
 			'delay_js_exclusions' => [],
+			'delay_js_execution_safe_mode' => 0,
 		]
 	],
 ];
