@@ -319,7 +319,7 @@ $(document).ready(function(){
 			disable_radio_warning = ('remove_unused_css' === $elm.data('value') && 1 === rucssActive)
 		});
 
-	$( ".wpr-multiple-select .wpr-list-header-arrow" ).click(function (e) {
+	$( ".wpr-multiple-select .wpr-list-header" ).click(function (e) {
 		$(e.target).closest('.wpr-multiple-select .wpr-list').toggleClass('open');
 	});
 
@@ -352,4 +352,18 @@ $(document).ready(function(){
 			$(checkbox).attr('checked', not_checked <= 0 ? 'checked' : null );
 		});
 	}
+
+	let checkedCounts = {};
+	$('.wpr-field--categorizedmultiselect .wpr-list').each(function() {
+		// Get the ID of the current element
+		let id = $(this).attr('id'); 
+
+		if (id) {
+			checkedCounts[id] = $(`#${id} input[type='checkbox']:checked`).length;
+			// Update the counter text
+			$(`#${id} .wpr-badge-counter span`).text(checkedCounts[id]);
+			// Show or hide the counter badge based on the count
+			$(`#${id} .wpr-badge-counter`).toggle(checkedCounts[id] > 0);
+		}
+	});
 });
