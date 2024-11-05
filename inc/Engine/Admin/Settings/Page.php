@@ -794,7 +794,7 @@ class Page extends Abstract_Render {
 					'type'              => 'checkbox',
 					'label'             => __( 'Delay JavaScript Execution safe mode', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description'       => $invalid_license ? __( 'Delay JavaScript Execution safe mode temporarily resolves issues with Delay JavaScript execution but may reduce your PageSpeed Scores and performance. Contact support for help excluding problematic scripts to use this feature fully.', 'rocket' ) : '',
+					'description'       => __( 'Delay JavaScript Execution safe mode temporarily resolves issues with Delay JavaScript execution but may reduce your PageSpeed Scores and performance. Contact support for help excluding problematic scripts to use this feature fully.', 'rocket' ),
 					'helper'            => '',
 					'container_class'   => [
 						'wpr-field--parent',
@@ -809,7 +809,7 @@ class Page extends Abstract_Render {
 					'input_attr'        => [
 						'disabled' => 0,
 					],
-					'warning'           => $invalid_license ? [] : [
+					'warning'           => [
 						'title'        => __( 'This will decrease the effect of Delay JavaScript Execution', 'rocket' ),
 						'description'  => __( 'This mode temporarily resolves issues with Delay JavaScript execution but may reduce your PageSpeed Scores and performance. Contact support for help excluding problematic scripts to use this feature fully.', 'rocket' ),
 						'button_label' => __( 'Activate Safe Mode', 'rocket' ),
