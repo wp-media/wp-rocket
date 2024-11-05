@@ -190,43 +190,49 @@ class SiteList {
 	 */
 	public function prepare_delayjs_ui_list() {
 		$full_list = [
-			'scripts' => [
-				'title'          => __( 'Analytics & Ads', 'rocket' ),
-				'items'          => [],
-				'dashicon-class' => 'analytics',
+			'third_parties' => [
+				'analytics' => [
+					'title'          => __( 'Analytics & Trackers', 'rocket' ),
+					'items'          => [],
+					'dashicon-class' => 'analytics',
+				],
+				'ad_networks' => [
+					'title'          => __( 'Ad Networks', 'rocket' ),
+					'items'          => [],
+					'dashicon-class' => 'analytics',
+				],
+				'payment_processors' => [
+					'title'          => __( 'Payment Processors', 'rocket' ),
+					'items'          => [],
+					'dashicon-class' => 'analytics',
+				],
+				'other_services' => [
+					'title'          => __( 'Other Services', 'rocket' ),
+					'items'          => [],
+					'dashicon-class' => 'analytics',
+				],
 			],
-			'plugins' => [
-				'title'          => __( 'Plugins', 'rocket' ),
-				'items'          => [],
-				'dashicon-class' => 'admin-plugins',
-			],
-			'themes'  => [
-				'title'          => __( 'Themes', 'rocket' ),
-				'items'          => [],
-				'dashicon-class' => 'admin-appearance',
+			'wordpress' => [
+				'themes'  => [
+					'title'          => __( 'Themes', 'rocket' ),
+					'items'          => [],
+					'dashicon-class' => 'admin-appearance',
+				],
+				'plugins' => [
+					'title'          => __( 'Plugins', 'rocket' ),
+					'items'          => [],
+					'dashicon-class' => 'admin-plugins',
+				],
 			],
 		];
 
 		// Scripts.
 		$scripts = $this->get_scripts_from_list();
 		foreach ( $scripts as $script_key => $script ) {
-			$full_list['scripts']['items'][] = [
+			$full_list['third_parties']['analytics']['items'][] = [
 				'id'    => $script_key,
 				'title' => $script->title,
 				'icon'  => $this->get_icon( $script ),
-			];
-		}
-
-		$active_plugins = $this->get_active_plugins();
-		foreach ( $this->get_plugins_from_list() as $plugin_key => $plugin ) {
-			if ( ! in_array( $plugin->condition, $active_plugins, true ) ) {
-				continue;
-			}
-
-			$full_list['plugins']['items'][] = [
-				'id'    => $plugin_key,
-				'title' => $plugin->title,
-				'icon'  => $this->get_icon( $plugin ),
 			];
 		}
 
@@ -236,10 +242,23 @@ class SiteList {
 				continue;
 			}
 
-			$full_list['themes']['items'][] = [
+			$full_list['wordpress']['themes']['items'][] = [
 				'id'    => $theme_key,
 				'title' => $theme->title,
 				'icon'  => $this->get_icon( $theme ),
+			];
+		}
+
+		$active_plugins = $this->get_active_plugins();
+		foreach ( $this->get_plugins_from_list() as $plugin_key => $plugin ) {
+			if ( ! in_array( $plugin->condition, $active_plugins, true ) ) {
+				continue;
+			}
+
+			$full_list['wordpress']['plugins']['items'][] = [
+				'id'    => $plugin_key,
+				'title' => $plugin->title,
+				'icon'  => $this->get_icon( $plugin ),
 			];
 		}
 
