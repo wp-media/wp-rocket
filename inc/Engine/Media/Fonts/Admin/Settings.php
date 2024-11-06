@@ -22,7 +22,7 @@ class Settings {
 	/**
 	 * Sanitizes the option value when saving from the settings page
 	 *
-	 * @param array    $input    Array of sanitized values after being submitted by the form.
+	 * @param array         $input    Array of sanitized values after being submitted by the form.
 	 * @param AdminSettings $settings Settings class instance.
 	 *
 	 * @return array

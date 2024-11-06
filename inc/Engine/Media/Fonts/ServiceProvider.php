@@ -41,6 +41,6 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function register(): void {
 		$this->getContainer()->add( 'media_fonts_settings', Settings::class );
 		$this->getContainer()->addShared( 'media_fonts_admin_subscriber', AdminSubscriber::class )
-			->addArgument( 'media_fonts_settings' );;
+			->addArgument( 'media_fonts_settings' );
 	}
 }

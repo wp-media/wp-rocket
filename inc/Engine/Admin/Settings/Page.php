@@ -891,7 +891,7 @@ class Page extends Abstract_Render {
 
 		$this->settings->add_settings_sections(
 			[
-				'lazyload_section'   => [
+				'lazyload_section'          => [
 					'title'       => __( 'LazyLoad', 'rocket' ),
 					'type'        => 'fields_container',
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
@@ -904,7 +904,7 @@ class Page extends Abstract_Render {
 					// translators: %1$s = “WP Rocket”, %2$s = a list of plugin names.
 					'helper'      => ! empty( $disable_lazyload ) ? sprintf( __( 'LazyLoad is currently activated in %2$s. If you want to use WP Rocket’s LazyLoad, disable this option in %2$s.', 'rocket' ), WP_ROCKET_PLUGIN_NAME, $disable_lazyload ) : '',
 				],
-				'dimensions_section' => [
+				'dimensions_section'        => [
 					'title'       => __( 'Image Dimensions', 'rocket' ),
 					'type'        => 'fields_container',
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
@@ -1018,7 +1018,7 @@ class Page extends Abstract_Render {
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
 				],
-				'host_fonts_locally' => [
+				'host_fonts_locally'  => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Host Google Fonts locally', 'rocket' ),
 					'section'           => 'font_optimization_section',
