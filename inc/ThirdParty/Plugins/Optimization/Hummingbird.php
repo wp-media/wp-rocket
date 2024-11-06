@@ -106,7 +106,7 @@ class Hummingbird implements Subscriber_Interface {
 			return false;
 		}
 
-		if ( ! method_exists( 'WP_Hummingbird_Utils', 'get_module' ) ) {
+		if ( ! method_exists( 'WP_Hummingbird_Utils', 'get_module' ) ) { // @phpstan-ignore-line
 			return false;
 		}
 
@@ -126,7 +126,7 @@ class Hummingbird implements Subscriber_Interface {
 			return false;
 		}
 
-		if ( ! method_exists( 'WP_Hummingbird_Settings', 'get_setting' ) ) {
+		if ( ! method_exists( 'WP_Hummingbird_Settings', 'get_setting' ) ) { // @phpstan-ignore-line
 			return false;
 		}
 
@@ -149,7 +149,7 @@ class Hummingbird implements Subscriber_Interface {
 		if (
 			$this->options->get( 'emoji' )
 			&&
-			// @phpstan-ignore-next-line
+
 			WP_Hummingbird_Settings::get_setting( 'emoji', 'advanced' )
 		) {
 			// Translators: %1$s = Plugin name, %2$s = <em>, %3$s = </em>.
@@ -173,19 +173,17 @@ class Hummingbird implements Subscriber_Interface {
 			return false;
 		}
 
-		// @phpstan-ignore-next-line
 		$gzip = WP_Hummingbird_Utils::get_module( 'gzip' );
 
-		// @phpstan-ignore-next-line
 		if ( ! $gzip instanceof \WP_Hummingbird_Module_GZip ) {
 			return false;
 		}
 
-		if ( ! method_exists( $gzip, 'is_htaccess_written' ) ) {
+		if ( ! method_exists( $gzip, 'is_htaccess_written' ) ) { // @phpstan-ignore-line
 			return false;
 		}
 
-		if ( ! method_exists( $gzip, 'get_server_type' ) ) {
+		if ( ! method_exists( $gzip, 'get_server_type' ) ) { // @phpstan-ignore-line
 			return false;
 		}
 
@@ -211,19 +209,17 @@ class Hummingbird implements Subscriber_Interface {
 			return false;
 		}
 
-		// @phpstan-ignore-next-line
 		$caching = WP_Hummingbird_Utils::get_module( 'caching' );
 
-		// @phpstan-ignore-next-line
 		if ( ! $caching instanceof \WP_Hummingbird_Module_Caching ) {
 			return false;
 		}
 
-		if ( ! method_exists( $caching, 'is_htaccess_written' ) ) {
+		if ( ! method_exists( $caching, 'is_htaccess_written' ) ) { // @phpstan-ignore-line
 			return false;
 		}
 
-		if ( ! method_exists( $caching, 'get_server_type' ) ) {
+		if ( ! method_exists( $caching, 'get_server_type' ) ) { // @phpstan-ignore-line
 			return false;
 		}
 
@@ -249,15 +245,13 @@ class Hummingbird implements Subscriber_Interface {
 			return false;
 		}
 
-		// @phpstan-ignore-next-line
 		$cache = WP_Hummingbird_Utils::get_module( 'page_cache' );
 
-		// @phpstan-ignore-next-line
 		if ( ! $cache instanceof \WP_Hummingbird_Module_Page_Cache ) {
 			return false;
 		}
 
-		if ( ! method_exists( $cache, 'is_active' ) ) {
+		if ( ! method_exists( $cache, 'is_active' ) ) { // @phpstan-ignore-line
 			return false;
 		}
 
@@ -285,15 +279,13 @@ class Hummingbird implements Subscriber_Interface {
 			return false;
 		}
 
-		// @phpstan-ignore-next-line
 		$minify = WP_Hummingbird_Utils::get_module( 'minify' );
 
-		// @phpstan-ignore-next-line
 		if ( ! $minify instanceof \WP_Hummingbird_Module_Minify ) {
 			return false;
 		}
 
-		if ( ! method_exists( $minify, 'is_active' ) ) {
+		if ( ! method_exists( $minify, 'is_active' ) ) { // @phpstan-ignore-line
 			return false;
 		}
 

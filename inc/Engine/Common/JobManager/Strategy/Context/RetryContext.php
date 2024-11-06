@@ -8,7 +8,7 @@ class RetryContext {
 	/**
 	 * Strategy Interface.
 	 *
-	 * @var StrategyInterface;
+	 * @var StrategyInterface
 	 */
 	protected $strategy;
 

@@ -35,9 +35,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	public function register(): void {
 		$this->getContainer()->addShared( 'health_check', HealthCheck::class )
-			->addArgument( $this->getContainer()->get( 'options' ) )
-			->addTag( 'admin_subscriber' );
-		$this->getContainer()->addShared( 'action_scheduler_check', ActionSchedulerCheck::class )
-			->addTag( 'common_subscriber' );
+			->addArgument( $this->getContainer()->get( 'options' ) );
+		$this->getContainer()->addShared( 'action_scheduler_check', ActionSchedulerCheck::class );
 	}
 }

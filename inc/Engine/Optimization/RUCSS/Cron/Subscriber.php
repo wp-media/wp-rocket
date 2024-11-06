@@ -53,7 +53,7 @@ class Subscriber implements Subscriber_Interface {
 	public function check_job_status( int $row_id ): void {
 		$row = $this->used_css_query->get_row_by_id( $row_id );
 
-		if ( ! $row ) {
+		if ( ! is_object( $row ) ) {
 			return;
 		}
 

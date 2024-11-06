@@ -5,6 +5,7 @@ namespace WP_Rocket\ThirdParty\Hostings;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\ThirdParty\{NullSubscriber, ReturnTypesTrait};
+use WP_Term;
 
 /**
  * Compatibility class for SpinUpWP

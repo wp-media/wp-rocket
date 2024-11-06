@@ -271,11 +271,7 @@ class Renewal extends Abstract_Render {
 	 * @param array $data Localize script data.
 	 * @return array
 	 */
-	public function add_localize_script_data( $data ) {
-		if ( ! is_array( $data ) ) {
-			$data = (array) $data;
-		}
-
+	public function add_localize_script_data( array $data ) {
 		if ( $this->user->is_license_expired() ) {
 			return $data;
 		}
@@ -318,7 +314,7 @@ class Renewal extends Abstract_Render {
 
 		$renewals = $this->get_user_renewal_status();
 
-		if ( false === $renewals || ! isset( $prices->prices, $prices->prices->renewal ) ) {
+		if ( ! isset( $prices->prices, $prices->prices->renewal ) ) {
 			return 0;
 		}
 
@@ -339,10 +335,6 @@ class Renewal extends Abstract_Render {
 	private function is_grandfather(): bool {
 		$renewals = $this->get_user_renewal_status();
 
-		if ( ! is_array( $renewals ) ) {
-			return false;
-		}
-
 		return key_exists( 'is_grandfather', $renewals ) && $renewals['is_grandfather'];
 	}
 	/**
@@ -352,10 +344,6 @@ class Renewal extends Abstract_Render {
 	 */
 	private function has_grandmother(): bool {
 		$renewals = $this->get_user_renewal_status();
-
-		if ( ! is_array( $renewals ) ) {
-			return false;
-		}
 
 		return key_exists( 'is_grandmother', $renewals ) && $renewals['is_grandmother'];
 	}
@@ -369,10 +357,6 @@ class Renewal extends Abstract_Render {
 	 */
 	private function get_price() {
 		$renewals = $this->get_user_renewal_status();
-
-		if ( false === $renewals ) {
-			return 0;
-		}
 
 		$license = $this->get_license_pricing_data();
 
@@ -399,11 +383,11 @@ class Renewal extends Abstract_Render {
 	 *
 	 * @return array
 	 */
-	private function get_user_renewal_status() {
+	private function get_user_renewal_status(): array {
 		$renewals = $this->pricing->get_renewals_data();
 
 		if ( ! isset( $renewals->extra_days, $renewals->grandfather_date, $renewals->discount_percent, $renewals->grandmother_date ) ) {
-			return false;
+			return [];
 		}
 
 		return [

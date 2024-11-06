@@ -302,9 +302,10 @@ function rocket_clean_post_cache_on_status_change( $post_id, $post_data ) {
 
 	$purge_urls = [];
 	$post       = get_post( $post_id );
+	$post_type  = get_post_type_object( $post->post_type );
 
-	// Return if $post is not an object.
-	if ( ! is_object( $post ) ) {
+	// Return if $post is not an object or $post_type is not public.
+	if ( ! is_object( $post ) || true !== $post_type->public ) {
 		return;
 	}
 	// Get the post language.

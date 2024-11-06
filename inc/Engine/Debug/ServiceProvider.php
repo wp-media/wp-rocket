@@ -15,7 +15,6 @@ class ServiceProvider extends AbstractServiceProvider implements BootableService
 	 */
 	protected $provides = [
 		'debug_subscriber',
-		'options_debug',
 	];
 
 	/**
@@ -47,6 +46,8 @@ class ServiceProvider extends AbstractServiceProvider implements BootableService
 		if ( empty( $this->services ) ) {
 			return;
 		}
+
+		$this->provides[] = 'options_debug';
 
 		foreach ( $this->services as $service ) {
 			$this->provides[] = $service['service'];

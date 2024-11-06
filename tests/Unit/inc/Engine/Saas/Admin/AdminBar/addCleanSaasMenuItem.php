@@ -17,7 +17,6 @@ use WP_Rocket\Tests\Unit\TestCase;
 class Test_AddCleanSaasMenuItem extends TestCase {
 	private $admin_bar;
 	private $options;
-	private $atf_context;
 	private $rucss_url_context;
 	private $wp_admin_bar;
 
@@ -31,9 +30,8 @@ class Test_AddCleanSaasMenuItem extends TestCase {
 		parent::setUp();
 
 		$this->options           = Mockery::mock( Options_Data::class );
-		$this->atf_context       = Mockery::mock( ContextInterface::class );
 		$this->rucss_url_context = Mockery::mock( ContextInterface::class );
-		$this->admin_bar         = new AdminBar( $this->options, $this->atf_context, $this->rucss_url_context, '' );
+		$this->admin_bar         = new AdminBar( $this->options, $this->rucss_url_context, '' );
 		$this->wp_admin_bar      = new WP_Admin_Bar();
 
 		$this->stubTranslationFunctions();
@@ -49,9 +47,6 @@ class Test_AddCleanSaasMenuItem extends TestCase {
 			->justReturn( $config['environment'] );
 		Functions\when( 'is_admin' )
 			->justReturn( $config['is_admin'] );
-
-		$this->atf_context->shouldReceive( 'is_allowed' )
-			->andReturn( $config['atf_context'] );
 
 		$this->options->shouldReceive( 'get' )
 			->with( 'remove_unused_css', 0 )

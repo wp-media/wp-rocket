@@ -29,21 +29,8 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_buffer'                           => [ 'lcp', 17 ],
-			'rocket_lazyload_excluded_src'            => 'add_exclusions',
-			'rocket_critical_image_saas_visit_buffer' => [ 'lcp', 17 ],
+			'rocket_lazyload_excluded_src' => 'add_exclusions',
 		];
-	}
-
-	/**
-	 * Optimize the LCP image
-	 *
-	 * @param string $html HTML content.
-	 *
-	 * @return string
-	 */
-	public function lcp( $html ): string {
-		return $this->controller->lcp( $html );
 	}
 
 	/**

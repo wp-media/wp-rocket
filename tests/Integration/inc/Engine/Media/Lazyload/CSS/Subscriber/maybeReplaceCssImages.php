@@ -18,25 +18,22 @@ class Test_MaybeReplaceCssImages extends FilesystemTestCase {
 	public function set_up() {
 		parent::set_up();
 
-		// Disable ATF optimization to prevent DB request (unrelated to the test).
-		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
-
 		$this->unregisterAllCallbacksExcept('rocket_buffer', 'maybe_replace_css_images', 1002);
 
 		add_filter('pre_get_rocket_option_lazyload_css_bg_img', [$this, 'lazyload_css_bg_img']);
 		add_filter('rocket_lazyload_excluded_src', [$this, 'exclude_lazyload']);
 		add_filter('pre_http_request', [$this, 'mock_http'], 10, 3);
 		add_filter('rocket_lazyload_css_hash', [$this, 'rocket_lazyload_css_hash'], 10, 2);
+		add_filter( 'rocket_disable_meta_generator', '__return_true' );
 	}
 
 	public function tear_down() {
-		// Re-enable ATF optimization.
-		remove_filter( 'rocket_above_the_fold_optimization', '__return_false' );
-
 		remove_filter('pre_http_request', [$this, 'mock_http']);
 		remove_filter('rocket_lazyload_excluded_src', [$this, 'exclude_lazyload']);
 		remove_filter('pre_get_rocket_option_lazyload_css_bg_img', [$this, 'lazyload_css_bg_img']);
 		remove_filter('rocket_lazyload_css_hash', [$this, 'rocket_lazyload_css_hash']);
+		remove_filter( 'rocket_disable_meta_generator', '__return_true' );
+
 		$this->restoreWpHook('rocket_buffer');
 		parent::tear_down();
 	}

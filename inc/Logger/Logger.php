@@ -436,7 +436,7 @@ class Logger {
 		$content    = $filesystem->get_contents( $file_path );
 
 		if ( false === $content ) {
-			// Cound't get the content of the file.
+			// Couldn't get the content of the file.
 			return;
 		}
 

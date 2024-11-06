@@ -166,11 +166,7 @@ class Upgrade extends Abstract_Render {
 	 * @param array $data Localize script data.
 	 * @return array
 	 */
-	public function add_localize_script_data( $data ) {
-		if ( ! is_array( $data ) ) {
-			$data = (array) $data;
-		}
-
+	public function add_localize_script_data( array $data ) {
 		if ( ! $this->can_use_promo() ) {
 			return $data;
 		}

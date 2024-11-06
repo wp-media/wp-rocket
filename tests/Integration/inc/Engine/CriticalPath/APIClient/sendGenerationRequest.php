@@ -21,7 +21,7 @@ class Test_SendGenerationRequest extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoExpected( $config, $expected ) {
-		$item_url = isset( $config['item_url'] ) ? $config['item_url'] : '';
+		$item_url  = isset( $config['item_url'] ) ? $config['item_url'] : '';
 		$is_mobile = isset( $config['is_mobile'] ) ? $config['is_mobile'] : false;
 
 		$this->response = $config['response'];
@@ -29,15 +29,16 @@ class Test_SendGenerationRequest extends TestCase {
 		add_filter( 'pre_http_request', [ $this, 'bypass_request'] );
 
 		$api_client = new APIClient();
-		$actual = $api_client->send_generation_request( $item_url, ['mobile' => (int) $is_mobile] );
+
+		$actual = (object) $api_client->send_generation_request( $item_url, [ 'mobile' => (int) $is_mobile ] );
 
 		if ( isset( $expected['success'] ) && true === $expected['success'] ) {
-			//Assert success.
+			// Assert success.
 			$this->assertSame( $expected['success'], $actual->success );
 			$this->assertSame( $expected['data'],    (array) $actual->data );
 		} else {
-			//Assert WP_Error.
-			$this->assertInstanceOf(WP_Error::class, $actual);
+			// Assert WP_Error.
+			$this->assertInstanceOf( WP_Error::class, $actual );
 			$this->assertSame( $expected['code'], $actual->get_error_code() );
 			$this->assertSame( $expected['message'], $actual->get_error_message() );
 			$this->assertSame( $expected['data'], $actual->get_error_data() );

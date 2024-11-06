@@ -296,7 +296,7 @@ class EWWW_Subscriber implements Webp_Interface, Subscriber_Interface {
 		$use_rewrite_rules = ! ewww_image_optimizer_webp_rewrite_verify();
 
 		/**
-		 * Filter wether EWW is using rewrite rules for webp.
+		 * Filter whether EWW is using rewrite rules for webp.
 		 *
 		 * @since  3.4
 		 * @author Grégory Viguier

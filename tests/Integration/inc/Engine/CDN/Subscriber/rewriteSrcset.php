@@ -10,19 +10,6 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\Subscriber;
  * @group CDN
  */
 class Test_RewriteSrcset extends TestCase {
-	public function set_up() {
-		parent::set_up();
-
-		// Disable ATF optimization to prevent DB request (unrelated to the test).
-		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
-	}
-
-	public function tear_down() {
-		remove_filter( 'rocket_above_the_fold_optimization', '__return_false' );
-
-		parent::tear_down();
-	}
-
 	/**
 	 * @dataProvider configTestData
 	 */

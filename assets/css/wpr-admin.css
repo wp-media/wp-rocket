@@ -6,10 +6,10 @@ Method : SUITCSS (modified)
 
 .ComponentName => Name of component (Ex : .SiteHeader)
 .ComponentName--modifierName => Modifier of component (.SiteHeader--white, .SiteHeader--fixed)
-.ComponentName-descendantName => Children of componant (.SiteHeader-logo, .SiteHeader-menu)
+.ComponentName-descendantName => Children of component (.SiteHeader-logo, .SiteHeader-menu)
 .ComponentName.isState => State of component (.isActive, .isOpen)
 
-More informations here : https://suitcss.github.io/ or http://www.alsacreations.com/article/lire/1641-bonnes-pratiques-en-css-bem-et-oocss.html (french)
+More information here : https://suitcss.github.io/ or http://www.alsacreations.com/article/lire/1641-bonnes-pratiques-en-css-bem-et-oocss.html (french)
 
 --- EVERY CLASS are prefixed with "wpr-"
 
@@ -90,6 +90,18 @@ a:focus, button:focus {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.wpr-mt-2 {
+  margin-top: 20px;
+}
+
+.wpr-fs-sm {
+  font-size: 0.9em;
+}
+
+.wpr-fs-md {
+  font-size: 1em;
 }
 
 /*-----------------------------------------------*\
@@ -277,6 +289,22 @@ a:focus, button:focus {
 
 .wpr-icon-tutorial-alt:before {
   content: url("../img/play-alt.svg");
+}
+
+.wpr-imagify-info:before {
+  content: url("../img/imagify-info.svg");
+}
+
+.wpr-imagify-install:before {
+  content: url("../img/imagify-install.svg");
+}
+
+.wpr-icons-plugins:before, #wpr-nav-plugins:before {
+  content: url("../img/plugins.png");
+}
+
+.wpr-icons-plugins-hover:before, #wpr-nav-plugins.isActive:before, #wpr-nav-plugins:hover:before {
+  content: url("../img/plugins-hover.png");
 }
 
 .wpr-title1 {
@@ -488,6 +516,9 @@ a:focus, button:focus {
 }
 .wpr-Page-col {
   flex: 1 1 auto;
+}
+.wpr-Page-col-half {
+  flex: 0 1 50%;
 }
 .wpr-Page-col--fixed {
   margin-left: 24px;
@@ -1604,6 +1635,9 @@ div.wpr-upgrade-websites {
   font-size: 0.6875rem;
   line-height: 1.8181818182;
 }
+.wpr-button--no-min-width {
+  min-width: auto !important;
+}
 .wpr-button--icon {
   min-width: 160px;
   padding-left: 8px;
@@ -1664,7 +1698,10 @@ div.wpr-upgrade-websites {
   outline: none;
   color: #fff !important;
 }
-
+.wpr-button--black {
+  background: #121116;
+  color: #fff;
+}
 /*-----------------------------------------------*\
 
     Field container
@@ -1995,7 +2032,6 @@ div.wpr-upgrade-websites {
   .wpr-radio-buttons {
     padding-left: 24px;
   }
-
   .wpr-fieldWarning.wpr-radio-warning {
     margin-left: -24px;
     padding-left: 30px;
@@ -2356,7 +2392,7 @@ div.wpr-upgrade-websites {
   margin-top: 30px;
 }
 .wpr-imagify-description {
-  width: 33.3333333333%;
+  width: 40%;
   padding-right: 60px;
 }
 @media (max-width: 1239px) {
@@ -2366,7 +2402,7 @@ div.wpr-upgrade-websites {
   }
 }
 .wpr-imagify-screenshot {
-  width: 66.6666666667%;
+  width: 60%;
 }
 @media (max-width: 1239px) {
   .wpr-imagify-screenshot {
@@ -2396,12 +2432,22 @@ div.wpr-upgrade-websites {
   margin-top: 0;
 }
 .wpr-imagify ul {
-  margin-top: 0;
-  margin-left: 40px;
-  list-style-type: ">";
+  margin-top: 40px;
 }
 .wpr-imagify li {
-  padding-left: 7px;
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 35px;
+}
+.wpr-imagify li:before {
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+.wpr-imagify li .text {
+  flex-grow: 1;
+  display: inline-block;
 }
 .wpr-imagify a {
   text-decoration: none;
@@ -2421,6 +2467,41 @@ div.wpr-upgrade-websites {
   padding: 20px 45px;
   text-shadow: none;
   text-transform: uppercase;
+}
+
+.wpr-imagify-plugin-tile {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 20px;
+  background-color: #f9fafb;
+  margin-top: 20px;
+  border: 1px solid #ebe9e9;
+}
+.wpr-imagify-plugin-tile-info {
+  margin-left: 20px;
+}
+.wpr-imagify-plugin-tile-info .wpr-star-rating {
+  display: flex;
+  align-items: center;
+}
+.wpr-imagify-plugin-tile-info .star-rating .star {
+  font-size: 16px;
+  width: 16px;
+  height: 13px;
+}
+.wpr-imagify-plugin-tile-info .num-ratings {
+  font-size: 13px;
+  margin-left: 10px;
+}
+.wpr-imagify-plugin-tile-title {
+  margin-bottom: 5px;
+}
+.wpr-imagify-plugin-tile .wpr-button {
+  margin-left: auto;
+}
+.wpr-imagify-plugin-tile .wpr-button:before {
+  margin-right: 5px;
 }
 
 .wpr-tutorials-section {
@@ -2482,6 +2563,38 @@ div.wpr-tutorial-item {
 }
 .wpr-rocketcdn-modal iframe {
   max-width: 100%;
+}
+
+/*-----------------------------------------------*\
+
+    Plugin Tab style
+
+\*-----------------------------------------------*/
+.wpr-plugins {
+  gap: 25px;
+}
+.wpr-plugins--box {
+  background: #F9FAFB;
+  color: #121116;
+  padding: 10px;
+  border: 1px solid #eff1f3;
+  margin: 20px 0 15px;
+  display: grid;
+}
+.wpr-plugins--logo {
+  border-bottom: 1px solid #edeff2;
+  padding: 10px 0 5px;
+  margin-bottom: 15px;
+}
+.wpr-plugins--meta {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 15px;
+  align-self: end;
+}
+.wpr-plugins--meta span {
+  color: #00A66B;
 }
 
 /*-----------------------------------------------*\

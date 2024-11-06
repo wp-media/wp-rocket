@@ -45,6 +45,8 @@ class Test_Uninstall extends FilesystemTestCase {
 		'rocket_preload_complete'                         => null,
 		'rocket_preload_complete_time'                    => null,
 		'rocket_preload_errors'                           => null,
+		'rocket_preload_previous_requests_durations'      => null,
+		'rocket_preload_check_duration'                   => null,
 		'rocket_database_optimization_process'            => null,
 		'rocket_database_optimization_process_complete'   => null,
 		'rocket_hide_deactivation_form'                   => null,
@@ -62,6 +64,8 @@ class Test_Uninstall extends FilesystemTestCase {
 		'wp_rocket_pricing_timeout'                       => null,
 		'wp_rocket_pricing_timeout_active'                => null,
 		'rocket_get_refreshed_fragments_cache'            => null,
+		'wpr_user_information_timeout_active'             => null,
+		'wpr_user_information_timeout'                    => null,
 	];
 
 	private $events = [
@@ -139,8 +143,9 @@ class Test_Uninstall extends FilesystemTestCase {
 		$rucss_usedcss_table = $container->get( 'rucss_usedcss_table' );
 		$preload_table       = $container->get( 'preload_caches_table' );
 		$atf_table           = $container->get( 'atf_table' );
+		$lrc_table           = $container->get( 'lrc_table' );
 
-		$uninstall = new WPRocketUninstall( $cache_path, $config_path, $rucss_usedcss_table, $preload_table, $atf_table );
+		$uninstall = new WPRocketUninstall( $cache_path, $config_path, $rucss_usedcss_table, $preload_table, $atf_table, $lrc_table );
 
 		$uninstall->uninstall();
 

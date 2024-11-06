@@ -16,11 +16,7 @@ class Test_AddPurgeTermLink extends AdminTestCase {
 	private $tag;
 
 	public function tear_down() {
-		// Disable ATF optimization to prevent DB request (unrelated to the test).
-		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
 		wp_delete_term( $this->tag->term_id, 'post_tag' );
-		// Re-enable ATF optimization.
-		remove_filter( 'rocket_above_the_fold_optimization', '__return_false' );
 
 		parent::tear_down();
 	}

@@ -6,6 +6,7 @@ use Brain\Monkey\Functions;
 use Brain\Monkey\Filters;
 use Mockery;
 use WP_Rocket\Engine\Optimization\AssetsLocalCache;
+use WP_Rocket\Engine\Optimization\DynamicLists\DynamicLists;
 use WP_Rocket\Engine\Optimization\Minify\JS\Minify;
 use WP_Rocket\Tests\Unit\inc\Engine\Optimization\TestCase;
 
@@ -20,6 +21,7 @@ class Test_Optimize extends TestCase {
 	protected $path_to_test_data = '/inc/Engine/Optimization/Minify/JS/Minify/optimize.php';
 	protected $minify;
 	private $local_cache;
+	private $dynamic_lists;
 
 	public function setUp() : void {
 		parent::setUp();
@@ -37,13 +39,19 @@ class Test_Optimize extends TestCase {
 			->andReturnArg( 1 );
 
 		$this->local_cache = Mockery::mock( AssetsLocalCache::class );
-		$this->minify = new Minify( $this->options, $this->local_cache );
+		$this->dynamic_lists = Mockery::mock( DynamicLists::class );
+		$this->minify = new Minify( $this->options, $this->local_cache, $this->dynamic_lists );
 	}
 
 	/**
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldMinifyJS( $original, $expected, $cdn_hosts, $cdn_url, $site_url, $external_url, $has_integrity = false, $valid_integrity = true ) {
+		Filters\expectApplied( 'rocket_disable_meta_generator' )
+			->atMost()
+			->once()
+			->andReturn( true );
+
 		Filters\expectApplied( 'rocket_minify_excluded_external_js' )
 			->andReturn( ['cse.google.com/cse.js'] );
 
@@ -93,6 +101,9 @@ class Test_Optimize extends TestCase {
 				}
 				return $asset_match[0];
 			} );
+
+		$this->dynamic_lists->shouldReceive('get_exclude_js_templates')
+			->andReturn(['data-minify', 'data-no-minify']);
 
 		Functions\expect( 'add_query_arg' )->andReturnUsing( function ( $key, $value, $url ) {
 			return $url . '?' . $key . '=' . $value;

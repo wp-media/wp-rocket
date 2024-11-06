@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Media\AboveTheFold\Database\Schemas;
 
-use WP_Rocket\Dependencies\Database\Schema;
+use WP_Rocket\Dependencies\BerlinDB\Database\Schema;
 
 class AboveTheFold extends Schema {
 

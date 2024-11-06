@@ -19,7 +19,10 @@ class Test_handleSaveTemplate extends WPThemeTestcase {
 
 	protected $path_to_test_data = '/inc/ThirdParty/Themes/Divi/handleSaveTemplate.php';
 
+	// @phpstan-ignore-next-line
 	private static $user_without_permission;
+
+	// @phpstan-ignore-next-line
 	private static $user_with_permission;
 
 	public static function set_up_before_class() {
@@ -41,9 +44,6 @@ class Test_handleSaveTemplate extends WPThemeTestcase {
 	public function set_up() {
 		parent::set_up();
 
-		// Disable ATF optimization to prevent DB request (unrelated to the test).
-		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
-
 		$this->container = apply_filters( 'rocket_container', '' );
 		$this->event = $this->container->get( 'event_manager' );
 
@@ -51,9 +51,6 @@ class Test_handleSaveTemplate extends WPThemeTestcase {
 	}
 
 	public function tear_down() {
-		// Re-enable ATF optimization.
-		remove_filter( 'rocket_above_the_fold_optimization', '__return_false' );
-
 		$this->event->remove_subscriber( $this->subscriber );
 
 		remove_filter( 'pre_option_stylesheet', [ $this, 'set_stylesheet' ] );

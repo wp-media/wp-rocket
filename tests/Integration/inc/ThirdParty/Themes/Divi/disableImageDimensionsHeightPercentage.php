@@ -19,27 +19,23 @@ class Test_DisableImageDimensionsHeightPercentage extends WPThemeTestcase {
 	public function set_up() {
 		parent::set_up();
 
-		// Disable ATF optimization to prevent DB request (unrelated to the test).
-		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
-
 		$this->container = apply_filters( 'rocket_container', '' );
 		$this->event = $this->container->get( 'event_manager' );
 
 		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'specify_image_dimensions', 17 );
 
 		add_filter( 'rocket_specify_image_dimensions', '__return_true' );
+		add_filter( 'rocket_disable_meta_generator', '__return_true' );
 	}
 
 	public function tear_down() {
-		// Re-enable ATF optimization.
-		remove_filter( 'rocket_above_the_fold_optimization', '__return_false' );
-
 		$this->event->remove_subscriber( $this->subscriber );
 
 		$this->restoreWpHook( 'rocket_buffer' );
 
 		remove_filter( 'rocket_specify_image_dimensions', '__return_true' );
 		unset( $GLOBALS['wp'] );
+		remove_filter( 'rocket_disable_meta_generator', '__return_true' );
 
 		parent::tear_down();
 	}

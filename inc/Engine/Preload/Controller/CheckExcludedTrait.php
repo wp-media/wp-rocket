@@ -67,7 +67,7 @@ trait CheckExcludedTrait {
 		$regexes = array_unique( $regexes );
 
 		foreach ( $regexes as $regex ) {
-			if ( ! is_string( $regex ) ) {
+			if ( ! is_string( $regex ) ) { // @phpstan-ignore-line
 				continue;
 			}
 

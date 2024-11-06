@@ -3,9 +3,9 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\RUCSS\Admin\Subscriber;
 
 use Brain\Monkey\Functions;
 use Mockery;
-use WP_Rocket\Engine\Optimization\RUCSS\Admin\{Database,Settings,Subscriber};
-use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 use WP_Rocket\Engine\Common\JobManager\Queue\Queue;
+use WP_Rocket\Engine\Optimization\RUCSS\Admin\{Database, Settings, Subscriber};
+use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
@@ -14,10 +14,9 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @group RUCSS
  */
 class Test_SpawnCron extends TestCase {
-
 	private $subscriber;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->subscriber = new Subscriber( Mockery::mock( Settings::class ), Mockery::mock( Database::class ), Mockery::mock( UsedCSS::class ), Mockery::mock( Queue::class ) );
@@ -26,15 +25,20 @@ class Test_SpawnCron extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldReturnAsExpected($config, $expected)
-	{
-		Functions\when('rocket_get_constant')->justReturn($config['rocket_get_constant']);
+	public function testShouldReturnAsExpected( $config, $expected ) {
+		Functions\when( 'rocket_get_constant' )->justReturn( $config['rocket_get_constant'] );
 
-		Functions\when('current_user_can')->justReturn($config['current_user_can']);
-		Functions\expect('wp_send_json_error')->times($expected['wp_send_json_error']);
-		Functions\when('check_ajax_referer')->justReturn(true);
-		Functions\when('wp_send_json_success')->justReturn(true);
-		Functions\expect('spawn_cron')->times($expected['spawnCronCalled']);
+		Functions\when( 'current_user_can' )->justReturn( $config['current_user_can'] );
+		Functions\expect( 'wp_send_json_error' )
+			->times( $expected['wp_send_json_error'] )
+			->andThrow( new \Exception( 'error' ) );
+		Functions\when( 'check_ajax_referer' )->justReturn( true );
+		Functions\when( 'wp_send_json_success' )->justReturn( true );
+		Functions\expect( 'spawn_cron' )->times( $expected['spawnCronCalled'] );
+
+		if ( $expected['wp_send_json_error'] > 0 ) {
+			$this->expectException( \Exception::class );
+		}
 
 		$this->subscriber->spawn_cron();
 	}

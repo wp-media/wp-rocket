@@ -22,9 +22,6 @@ class Test_ProcessOnSubmitJobs extends TestCase {
 		self::installUsedCssTable();
 		self::installPreloadCacheTable();
 
-		// Disable ATF optimization to prevent DB request (unrelated to the test).
-		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
-
 		add_filter( 'rocket_saas_max_pending_jobs', [ $this, 'max_rows' ] );
 		add_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'rucss_enabled' ] );
 		$this->setup_http();
@@ -33,9 +30,6 @@ class Test_ProcessOnSubmitJobs extends TestCase {
 	public function tear_down() {
 		self::uninstallUsedCssTable();
 		self::uninstallPreloadCacheTable();
-
-		// Re-enable ATF optimization.
-		remove_filter( 'rocket_above_the_fold_optimization', '__return_false' );
 
 		$this->tear_down_http();
 

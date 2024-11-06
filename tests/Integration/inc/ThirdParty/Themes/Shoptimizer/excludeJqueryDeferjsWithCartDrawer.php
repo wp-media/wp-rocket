@@ -11,7 +11,7 @@ use WP_Rocket\ThirdParty\Themes\Shoptimizer;
  *
  * @group Themes
  */
-class Test_excludeJqueryDeferjsWithCartDrawer extends TestCase {
+class TestExcludeJqueryDeferjsWithCartDrawer extends TestCase {
 	private $container;
 	private $event;
 	private $subscriber;
@@ -20,7 +20,7 @@ class Test_excludeJqueryDeferjsWithCartDrawer extends TestCase {
 		parent::set_up();
 
 		$this->container = apply_filters( 'rocket_container', '' );
-		$this->event = $this->container->get( 'event_manager' );
+		$this->event     = $this->container->get( 'event_manager' );
 	}
 
 	public function tear_down() {
@@ -33,7 +33,8 @@ class Test_excludeJqueryDeferjsWithCartDrawer extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnAsExpected( $config, $expected ) {
-		$this->subscriber = new Shoptimizer( $this->container->get( 'options' ) );
+		$this->subscriber = new Shoptimizer();
+
 		$this->event->add_subscriber( $this->subscriber );
 
 		Functions\when( 'shoptimizer_get_option' )->justReturn( $config['option'] );

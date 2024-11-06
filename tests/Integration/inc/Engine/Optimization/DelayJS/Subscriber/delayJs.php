@@ -25,6 +25,7 @@ class Test_DelayJs extends TestCase {
 
 		// Disable ATF optimization to prevent DB request (unrelated to the test).
 		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
+		add_filter( 'rocket_disable_meta_generator', '__return_true' );
 
 		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'delay_js', 26 );
 	}
@@ -37,10 +38,11 @@ class Test_DelayJs extends TestCase {
 
 		remove_filter( 'pre_get_rocket_option_delay_js', [ $this, 'set_delay_js' ] );
 		remove_filter( 'pre_get_rocket_option_delay_js_exclusions', [ $this, 'set_delay_js_exclusions' ] );
+		remove_filter( 'rocket_disable_meta_generator', '__return_true' );
 		delete_transient( 'wpr_dynamic_lists' );
 
 		if ( isset( $this->post->ID ) ) {
-			delete_post_meta( $this->post->ID, '_rocket_exclude_delay_js', 1, true );
+			delete_post_meta( $this->post->ID, '_rocket_exclude_delay_js', 1 );
 		}
 
 		$this->restoreWpHook( 'rocket_buffer' );

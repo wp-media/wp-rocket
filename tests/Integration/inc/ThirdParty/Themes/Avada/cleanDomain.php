@@ -20,11 +20,14 @@ class Test_CleanDomain extends TestCase {
 
 		$cache_exists = false;
 
+		// @phpstan-ignore-next-line
 		$this->assertSame( ! $cache_exists, $this->filesystem->exists( 'wp-content/cache/wp-rocket/example.org/index.html' ) );
+		// @phpstan-ignore-next-line
 		$this->assertSame( ! $cache_exists, $this->filesystem->exists( 'wp-content/cache/wp-rocket/example.org/index.html_gzip' ) );
+		// @phpstan-ignore-next-line
 		$this->assertSame( ! $cache_exists, $this->filesystem->exists( 'wp-content/cache/wp-rocket/example.org-wpmedia-594d03f6ae698691165999/about/index.html' ) );
+		// @phpstan-ignore-next-line
 		$this->assertSame( ! $cache_exists, $this->filesystem->exists( 'wp-content/cache/wp-rocket/example.org-wpmedia-594d03f6ae698691165999/about/index.html_gzip' ) );
-
 		apply_filters( 'avada_clear_dynamic_css_cache', [], [] );
 
 		$this->assertSame( $cache_exists, $this->filesystem->exists( 'wp-content/cache/wp-rocket/example.org/index.html' ) );

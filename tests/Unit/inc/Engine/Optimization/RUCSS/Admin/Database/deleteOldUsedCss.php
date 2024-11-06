@@ -34,7 +34,7 @@ class Test_DeleteOldUsedCss extends TestCase{
 	 */
 	public function testShouldDoExpected( $input ){
 		if ( $this->isPHP8() ) {
-			$this->assertTrue(true);
+			$this->assertTrue(true); // @phpstan-ignore-line
 			return;
 		}
 
@@ -58,7 +58,7 @@ class Test_DeleteOldUsedCss extends TestCase{
 	public function isPHP8() {
 		$version = explode('.', PHP_VERSION);
 		if ( $version[0] >= 8 ) {
-			$this->assertTrue(true);
+			$this->assertTrue(true); // @phpstan-ignore-line
 			return true;
 		}
 

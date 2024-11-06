@@ -109,11 +109,19 @@ return [
 					[
 						'slug' => 'seo-by-rank-math',
 					],
+					[
+						'slug' => 'backwup',
+					],
+					[
+						'slug' => 'uk-cookie-consent',
+					],
 				],
 			],
 			'list'   => [
 				'imagify',
 				'seo-by-rank-math',
+				'backwup',
+				'uk-cookie-consent',
 			],
 			'args'   => (object) [
 				'browse' => 'featured',
@@ -133,7 +141,13 @@ return [
 					'slug' => 'seo-by-rank-math',
 				],
 				[
+					'slug' => 'uk-cookie-consent',
+				],
+				[
 					'slug' => 'wordpress-seo',
+				],
+				[
+					'slug' => 'backwup',
 				],
 			],
 		],
@@ -149,6 +163,12 @@ return [
 					[
 						'slug' => 'seo-by-rank-math',
 					],
+					[
+						'slug' => 'backwpup',
+					],
+					[
+						'slug' => 'uk-cookie-consent',
+					],
 				],
 			],
 			'args'   => (object) [
@@ -156,6 +176,8 @@ return [
 			],
 			'list' => [
 				'seo-by-rank-math',
+				'backwpup',
+				'uk-cookie-consent',
 			],
 			'plugin_active' => false,
 			'plugins_api'   => [
@@ -172,6 +194,12 @@ return [
 				],
 				[
 					'slug' => 'seo-by-rank-math',
+				],
+				[
+					'slug' => 'backwpup',
+				],
+				[
+					'slug' => 'uk-cookie-consent',
 				],
 			],
 		],

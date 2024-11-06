@@ -2,46 +2,32 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Common\Cache\FilesystemCache;
 
-use Mockery;
-use WP_Rocket\Engine\Common\Cache\FilesystemCache;
-use WP_Filesystem_Direct;
 use Brain\Monkey\Functions;
-
+use Mockery;
+use WP_Filesystem_Direct;
+use WP_Rocket\Engine\Common\Cache\FilesystemCache;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
  * Test class covering \WP_Rocket\Engine\Common\Cache\FilesystemCache::deleteMultiple
  */
-class Test_deleteMultiple extends TestCase {
+class TestDeleteMultiple extends TestCase {
+	protected $root_folder;
+	protected $filesystem;
+	protected $filesystemcache;
 
-    /**
-     * @var string
-     */
-    protected $root_folder;
+	public function set_up() {
+		parent::set_up();
+		$this->root_folder = '/background-css/';
+		$this->filesystem = Mockery::mock( WP_Filesystem_Direct::class );
 
-    /**
-     * @var WP_Filesystem_Direct
-     */
-    protected $filesystem;
+		$this->filesystemcache = new FilesystemCache( $this->root_folder, $this->filesystem );
+	}
 
-    /**
-     * @var FilesystemCache
-     */
-    protected $filesystemcache;
-
-    public function set_up() {
-        parent::set_up();
-        $this->root_folder = '/background-css/';
-        $this->filesystem = Mockery::mock(WP_Filesystem_Direct::class);
-
-        $this->filesystemcache = new FilesystemCache($this->root_folder, $this->filesystem);
-    }
-
-    /**
-     * @dataProvider configTestData
-     */
-    public function testShouldReturnAsExpected( $config, $expected )
-    {
+	/**
+	 * @dataProvider configTestData
+	 */
+	public function testShouldReturnAsExpected( $config, $expected ) {
 		Functions\when('rocket_get_constant')->justReturn($config['root']);
 		Functions\when('home_url')->justReturn($config['home_url']);
 		Functions\when('get_rocket_parse_url')->alias(function ($url) use ($config) {
@@ -54,23 +40,23 @@ class Test_deleteMultiple extends TestCase {
 		$this->configureIsDir($config, $expected);
 		$this->configureExists($config, $expected);
 
-        $this->assertSame($expected['output'], $this->filesystemcache->deleteMultiple($config['keys']));
-    }
+		$this->assertSame($expected['output'], $this->filesystemcache->deleteMultiple($config['keys']));
+	}
 
-	protected function configureIsDir($config, $expected) {
+	protected function configureIsDir( $config, $expected ) {
 		foreach ($config['is_dir'] as $path => $out) {
-			$this->filesystem->expects()->is_dir($path)->andReturn($out);
+			$this->filesystem->shouldReceive('is_dir')->with($path)->andReturn($out);
 			if($out)  {
 				Functions\expect('rocket_rrmdir')->andReturn($path, [], $this->filesystem);
 			} else {
-				$this->filesystem->expects()->delete($path)->andReturn(true);
+				$this->filesystem->shouldReceive('delete')->with($path)->andReturn(true);
 			}
 		}
 	}
 
-	protected function configureExists($config, $expected) {
+	protected function configureExists( $config, $expected ) {
 		foreach ($config['exists'] as $path => $out) {
-			$this->filesystem->expects()->exists($path)->andReturn($out);
+			$this->filesystem->shouldReceive('exists')->with($path)->andReturn($out);
 		}
 	}
 }

@@ -10,7 +10,7 @@ function headers_sent()
 	return false;
 }
 
-function header($string)
+function header($string, $replace)
 {
 	if (  in_array( $string , HeaderCollector::$headers, true ) ) {
 		return;

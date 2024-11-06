@@ -213,7 +213,7 @@ function get_rocket_cache_reject_uri( $force = false, $show_safe_content = true 
 		foreach ( $uris as $i => $uri ) {
 			/**
 			 * Since these URIs can be regex patterns like `/homeroot(/.+)/`, we can't simply search for the string `/homeroot/` (nor `/homeroot`).
-			 * So this pattern searchs for `/homeroot/` and `/homeroot(/`.
+			 * So this pattern searches for `/homeroot/` and `/homeroot(/`.
 			 */
 			if ( ! preg_match( '/' . $home_root_escaped . '\(?\//', $uri ) ) {
 				// Reject URIs located outside site's folder.
@@ -229,7 +229,7 @@ function get_rocket_cache_reject_uri( $force = false, $show_safe_content = true 
 	// Exclude feeds.
 	$uris[] = '/(?:.+/)?' . $wp_rewrite->feed_base . '(?:/(?:.+/?)?)?$';
 
-	// Exlude embedded URLs.
+	// Exclude embedded URLs.
 	$uris[] = '/(?:.+/)?embed/';
 
 	/**
@@ -461,7 +461,7 @@ function rocket_check_key() {
 	Logger::info( 'LICENSE VALIDATION PROCESS STARTED.', [ 'license validation process' ] );
 
 	$response = wp_remote_get(
-		rocket_get_constant( 'WP_ROCKET_WEB_VALID' ),
+		'https://api.wp-rocket.me/valid_key.php',
 		[
 			'timeout' => 30,
 		]

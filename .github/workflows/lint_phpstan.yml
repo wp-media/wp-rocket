@@ -17,12 +17,12 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ubuntu-latest]
-        php-versions: ['7.4']
+        php-versions: ['8.2']
 
     name: WPRocket lint with PHP Stan. PHP ${{ matrix.php-versions }} on ${{ matrix.operating-system }}.
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Setup PHP
       uses: shivammathur/setup-php@v2

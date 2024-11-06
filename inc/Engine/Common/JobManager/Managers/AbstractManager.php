@@ -127,7 +127,7 @@ trait AbstractManager {
 	 * @param integer $num_rows Number of rows to grab with each CRON iteration.
 	 * @return array|int
 	 */
-	public function get_on_submit_jobs( int $num_rows ): array {
+	public function get_on_submit_jobs( int $num_rows ) {
 		return $this->query->get_on_submit_jobs( $num_rows );
 	}
 
@@ -190,13 +190,13 @@ trait AbstractManager {
 	 *
 	 * @param string  $url Url from DB row.
 	 * @param boolean $is_mobile Is mobile from DB row.
-	 * @param string  $error_code error code.
+	 * @param int     $error_code error code.
 	 * @param string  $error_message error message.
 	 * @param string  $previous_message Previous saved message.
 	 *
 	 * @return void
 	 */
-	public function update_message( string $url, bool $is_mobile, string $error_code, string $error_message, string $previous_message ): void {
+	public function update_message( string $url, bool $is_mobile, int $error_code, string $error_message, string $previous_message ): void {
 		if ( ! $this->is_allowed() ) {
 			return;
 		}

@@ -41,7 +41,7 @@ class TranslatePress implements Subscriber_Interface {
 	 * @return string
 	 */
 	public function detect_homepage( $home_url, $url ) {
-		// @phpstan-ignore-next-line
+
 		$translatepress = TRP_Translate_Press::get_trp_instance();
 		$converter      = $translatepress->get_component( 'url_converter' );
 
@@ -78,7 +78,6 @@ class TranslatePress implements Subscriber_Interface {
 	 * @return array
 	 */
 	public function add_langs_to_admin_bar( $langlinks ) {
-		// @phpstan-ignore-next-line
 		$translatepress = TRP_Translate_Press::get_trp_instance();
 
 		$language_switcher = $translatepress->get_component( 'language_switcher' );
@@ -122,14 +121,9 @@ class TranslatePress implements Subscriber_Interface {
 	 *
 	 * @return array
 	 */
-	public function get_active_languages_uri( $urls ) {
-		if ( ! is_array( $urls ) ) {
-			$urls = (array) $urls;
-		}
-
+	public function get_active_languages_uri( array $urls ): array {
 		$home_url = home_url();
 
-		// @phpstan-ignore-next-line
 		$translatepress = TRP_Translate_Press::get_trp_instance();
 
 		$settings     = $translatepress->get_component( 'settings' );
@@ -150,16 +144,15 @@ class TranslatePress implements Subscriber_Interface {
 	/**
 	 * Gets the active languages slugs
 	 *
-	 * @param Array $codes Array of languages codes.
+	 * @param array $codes Array of languages codes.
 	 *
 	 * @return array
 	 */
 	public function get_active_languages_codes( $codes ) {
-		if ( ! is_array( $codes ) ) {
+		if ( ! is_array( $codes ) ) { // @phpstan-ignore-line
 			$codes = (array) $codes;
 		}
 
-		// @phpstan-ignore-next-line
 		$translatepress = TRP_Translate_Press::get_trp_instance();
 
 		$settings     = $translatepress->get_component( 'settings' );
@@ -189,7 +182,6 @@ class TranslatePress implements Subscriber_Interface {
 			return $home_url;
 		}
 
-		// @phpstan-ignore-next-line
 		$translatepress = TRP_Translate_Press::get_trp_instance();
 		$converter      = $translatepress->get_component( 'url_converter' );
 		$settings       = $translatepress->get_component( 'settings' );
@@ -224,11 +216,10 @@ class TranslatePress implements Subscriber_Interface {
 	 * @return array
 	 */
 	public function get_translated_post_urls( $urls, $url, $post_type, $regex ) {
-		if ( ! is_array( $urls ) ) {
+		if ( ! is_array( $urls ) ) { // @phpstan-ignore-line
 			$urls = (array) $urls;
 		}
 
-		// @phpstan-ignore-next-line
 		$translatepress = TRP_Translate_Press::get_trp_instance();
 
 		$settings     = $translatepress->get_component( 'settings' );
@@ -254,7 +245,6 @@ class TranslatePress implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function clear_post_languages( $post_id ) {
-		// @phpstan-ignore-next-line
 		$translatepress = TRP_Translate_Press::get_trp_instance();
 
 		$converter    = $translatepress->get_component( 'url_converter' );
@@ -293,7 +283,6 @@ class TranslatePress implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function clear_post_after_updating_translation( $update_strings, $settings ) {
-		// @phpstan-ignore-next-line
 		$translatepress = TRP_Translate_Press::get_trp_instance();
 
 		$converter = $translatepress->get_component( 'url_converter' );

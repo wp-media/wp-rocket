@@ -111,7 +111,7 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 	 * @return string
 	 */
 	private function get_user_locale() {
-		if ( ! isset( $this->locale ) ) {
+		if ( empty( $this->locale ) ) {
 			$this->locale = current( array_slice( explode( '_', get_user_locale() ), 0, 1 ) );
 		}
 
@@ -122,7 +122,7 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 		 *
 		 * @param string $locale The locale ID.
 		 */
-		return apply_filters( 'rocket_beacon_locale', $this->locale );
+		return wpm_apply_filters_typed( 'string', 'rocket_beacon_locale', $this->locale );
 	}
 
 	/**
@@ -783,12 +783,12 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 			],
 			'rucss_firewall_ips'         => [
 				'en' => [
-					'id'  => '6076083ff8c0ef2d98df1f97',
-					'url' => 'https://docs.wp-rocket.me/article/1529-remove-unused-css?utm_source=wp_plugin&utm_medium=wp_rocket#basic-requirements',
+					'id'  => '60ed8bde00fd0d7c253ff547',
+					'url' => 'https://docs.wp-rocket.me/article/1628-which-ip-do-i-need-to-allow-for-wp-rocket?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 				'fr' => [
-					'id'  => '60d499a705ff892e6bc2a89e',
-					'url' => 'https://fr.docs.wp-rocket.me/article/1577-supprimer-les-ressources-css-inutilisees?utm_source=wp_plugin&utm_medium=wp_rocket#basic-requirements',
+					'id'  => '6246fe1a2ce7ed0fb091c543',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1690-quelles-adresses-ip-url-autoriser-pour-wp-rocket?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 			'optimize_critical_images'   => [
@@ -809,6 +809,26 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 				'fr' => [
 					'id'  => '6634e9b21009cb439ac6a6fb',
 					'url' => 'https://fr.docs.wp-rocket.me/article/1818-suppression-onglet-cache?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+			],
+			'rucss_database'             => [
+				'en' => [
+					'id'  => '668f1284f0fdf93e4cf10825',
+					'url' => 'https://docs.wp-rocket.me/article/1828-could-not-create-the-rucss-usedcss-table/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+				'fr' => [
+					'id'  => '66a32d970d7d86166241eff1',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1833-impossible-creer-table-rucssusedcss/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+			],
+			'lazy_render_content'        => [
+				'en' => [
+					'id'  => '66b11e26a62a7505fcf339e7',
+					'url' => 'https://docs.wp-rocket.me/article/1835-lazy-render-content/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+				'fr' => [
+					'id'  => '66ba0e8e082392452a0773ea',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1836-rendu-differe-automatique/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 		];

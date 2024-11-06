@@ -56,9 +56,9 @@ class Test_DisplayCpcssMobileSection extends TestCase {
 	 */
 	public function testShouldDisplayCpcssMobileSection( $config, $expected ) {
 		if ( $config['current_user_can'] ) {
-			$user_id = static::$admin_user_id;
+			$user_id = self::$admin_user_id;
 		} else {
-			$user_id = static::$editor_user_id;
+			$user_id = self::$editor_user_id;
 		}
 		wp_set_current_user( $user_id );
 

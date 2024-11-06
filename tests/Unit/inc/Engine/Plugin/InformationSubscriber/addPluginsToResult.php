@@ -15,6 +15,8 @@ class TestAddPluginsToResult extends TestCase {
 	private $subscriber;
 
 	protected function setUp(): void {
+		parent::setUp();
+
 		$this->subscriber = new InformationSubscriber(
 			[
 				'plugin_file' => 'wp-rocket/wp-rocket.php',

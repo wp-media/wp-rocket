@@ -24,7 +24,7 @@ class Factory implements SaasFactory {
 	private $table;
 
 	/**
-	 * Instatiate the class.
+	 * Instantiate the class.
 	 *
 	 * @param ManagerInterface $manager RUCSS Manager.
 	 * @param TableInterface   $table RUCSS Table.

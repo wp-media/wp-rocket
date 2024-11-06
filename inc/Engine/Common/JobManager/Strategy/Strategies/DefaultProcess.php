@@ -3,7 +3,7 @@
 namespace WP_Rocket\Engine\Common\JobManager\Strategy\Strategies;
 
 use WP_Rocket\Engine\Common\Clock\WPRClock;
-use WP_Rocket\Engine\Common\JobManager\Managers\ManagerInterface;
+use WP_Rocket\Engine\Optimization\RUCSS\Jobs\Manager;
 
 /**
  * Class managing the default error for retry process
@@ -13,7 +13,7 @@ class DefaultProcess implements StrategyInterface {
 	/**
 	 * Job Manager.
 	 *
-	 * @var ManagerInterface
+	 * @var Manager
 	 */
 	private $manager;
 
@@ -48,10 +48,10 @@ class DefaultProcess implements StrategyInterface {
 	/**
 	 * Strategy Constructor.
 	 *
-	 * @param ManagerInterface $manager Job Manager.
-	 * @param WPRClock         $clock Clock object.
+	 * @param Manager  $manager Job Manager.
+	 * @param WPRClock $clock Clock object.
 	 */
-	public function __construct( ManagerInterface $manager, WPRClock $clock ) {
+	public function __construct( Manager $manager, WPRClock $clock ) {
 		$this->manager = $manager;
 		$this->clock   = $clock;
 
@@ -117,7 +117,7 @@ class DefaultProcess implements StrategyInterface {
 		// update the `next_retry_time` column.
 		$next_retry_time = $this->clock->current_time( 'timestamp', true ) + $saas_retry_duration;
 
-		$this->manager->update_message( $row_details->url, $row_details->is_mobile, $job_details['code'], $job_details['message'], $row_details->error_message );
+		$this->manager->update_message( $row_details->url, $row_details->is_mobile, (int) $job_details['code'], $job_details['message'], $row_details->error_message );
 		$this->manager->update_next_retry_time( $row_details->url, $row_details->is_mobile, $next_retry_time );
 	}
 }

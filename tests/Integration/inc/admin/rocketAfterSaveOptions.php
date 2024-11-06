@@ -31,7 +31,6 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 	];
 
 	private $is_apache;
-	private $hooks = [];
 	private $expected;
 	private $rocketCleanDomainEntriesBefore;
 	private $rocketCleanMinifyEntriesBefore;
@@ -84,7 +83,7 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 	public function testShouldTriggerCleaningsWhenOptionsChange( $settings, $expected ) {
 		// Skip the "not an array" test as it fails in other hooked callbacks that are not checking for array.
 		if ( ! is_array( $settings ) ) {
-			$this->assertTrue( true );
+			$this->assertTrue( true ); // @phpstan-ignore-line
 
 			return;
 		}
@@ -225,32 +224,6 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 			$this->assertEquals( '1', get_transient( 'rocket_analytics_optin' ) );
 		} else {
 			Functions\expect( 'set_transient' )->with( 'rocket_analytics_optin', 1 )->never();
-		}
-	}
-
-	private function silently_update_option( $new_value ) {
-		global $wp_filter;
-
-		$hooks = [
-			'pre_update_option_wp_rocket_settings',
-			'pre_update_option',
-			'default_option_wp_rocket_settings',
-			'update_option',
-			'update_option_wp_rocket_settings',
-			'updated_option',
-		];
-
-		foreach ( $hooks as $hook ) {
-			if ( ! empty( $wp_filter[ $hook ] ) ) {
-				$this->hooks[ $hook ] = $wp_filter[ $hook ];
-				unset( $wp_filter[ $hook ] );
-			}
-		}
-
-		update_option( $this->option_name, $new_value );
-
-		if ( $this->hooks ) {
-			$wp_filter = array_merge( $wp_filter, $this->hooks );
 		}
 	}
 }

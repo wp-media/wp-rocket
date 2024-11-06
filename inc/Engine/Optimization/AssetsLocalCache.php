@@ -149,10 +149,6 @@ class AssetsLocalCache {
 			return false;
 		}
 
-		if ( ! isset( $integrity_matches['integrityhashmethod'], $integrity_matches['integrityhash'] ) ) {
-			return false;
-		}
-
 		return $integrity_matches;
 	}
 

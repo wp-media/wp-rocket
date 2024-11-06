@@ -30,7 +30,7 @@ class Test_CheckOnUpdateOptions extends TestCase {
 
 		$this->as_check = new ActionSchedulerCheck();
 
-		$GLOBALS['wpdb'] = $this->wpdb = new wpdb();
+		$GLOBALS['wpdb'] = $this->wpdb = new wpdb( 'dbuser', 'dbpassword', 'dbname', 'dbhost' );
 	}
 
 	protected function tearDown(): void {

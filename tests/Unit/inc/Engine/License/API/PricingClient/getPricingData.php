@@ -17,6 +17,7 @@ class GetPricingData extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
+		$this->stubTranslationFunctions();
 		$client = new PricingClient();
 
 		Functions\expect( 'get_transient' )
@@ -48,7 +49,7 @@ class GetPricingData extends TestCase {
 		if ( false !== $config['response'] ) {
 			Functions\expect( 'wp_safe_remote_get' )
 				->once()
-				->with( PricingClient::PRICING_ENDPOINT )
+				->with( PricingClient::PRICING_ENDPOINT, [] )
 				->andReturn( $config['response'] );
 
 			if (

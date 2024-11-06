@@ -8,6 +8,7 @@ use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Filesystem_Direct;
+use WP_Rocket\Engine\Support\CommentTrait;
 
 /**
  * Critical CSS Subscriber.
@@ -16,11 +17,12 @@ use WP_Filesystem_Direct;
  */
 class CriticalCSSSubscriber implements Subscriber_Interface {
 	use RegexTrait;
+	use CommentTrait;
 
 	/**
 	 * Instance of Critical CSS.
 	 *
-	 * @var Critical_CSS
+	 * @var CriticalCSS
 	 */
 	protected $critical_css;
 
@@ -602,7 +604,9 @@ JS;
 			1
 		);
 
-		return preg_replace( '#</body>#iU', $this->return_remove_cpcss_script() . '</body>', $buffer, 1 );
+		$buffer = preg_replace( '#</body>#iU', $this->return_remove_cpcss_script() . '</body>', $buffer, 1 );
+
+		return $this->add_meta_comment( 'async_css', $buffer );
 	}
 
 	/**
@@ -819,7 +823,8 @@ JS;
 		 *
 		 * @param array $should_disable will return array with disable status and text.
 		 */
-		$rucss_status = apply_filters(
+		$rucss_status = wpm_apply_filters_typed(
+			'array',
 			'rocket_disable_rucss_setting',
 			[
 				'disable' => false,
@@ -827,7 +832,7 @@ JS;
 			]
 		);
 
-		if ( is_array( $rucss_status ) && key_exists( 'disable', $rucss_status ) && $rucss_status['disable'] ) {
+		if ( key_exists( 'disable', $rucss_status ) && $rucss_status['disable'] ) {
 			return;
 		}
 
@@ -859,6 +864,7 @@ JS;
 		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			wp_safe_redirect( wp_get_referer() );
 			rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
+			// @phpstan-ignore-next-line
 			return; // phpcs:ignore Squiz.PHP.NonExecutableCode.Unreachable
 		}
 

@@ -63,30 +63,22 @@ class DataManagerSubscriber implements Subscriber_Interface {
 
 		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			wp_send_json_error( 'unauthorized_user' );
-
-			return;
 		}
 
 		if ( empty( $_POST['value'] ) ) {
 			delete_option( 'rocketcdn_user_token' );
 
 			wp_send_json_success( 'user_token_deleted' );
-
-			return;
 		}
 
 		if ( ! is_string( $_POST['value'] ) ) {
 			wp_send_json_error( 'invalid_token' );
-
-			return;
 		}
 
 		$token = sanitize_key( $_POST['value'] );
 
 		if ( 40 !== strlen( $token ) ) {
 			wp_send_json_error( 'invalid_token_length' );
-
-			return;
 		}
 
 		update_option( 'rocketcdn_user_token', $token );
@@ -112,16 +104,12 @@ class DataManagerSubscriber implements Subscriber_Interface {
 			$data['message'] = 'unauthorized_user';
 
 			wp_send_json_error( $data );
-
-			return;
 		}
 
 		if ( empty( $_POST['cdn_url'] ) ) {
 			$data['message'] = 'cdn_url_empty';
 
 			wp_send_json_error( $data );
-
-			return;
 		}
 
 		$cdn_url = filter_var( wp_unslash( $_POST['cdn_url'] ), FILTER_VALIDATE_URL );
@@ -130,8 +118,6 @@ class DataManagerSubscriber implements Subscriber_Interface {
 			$data['message'] = 'cdn_url_invalid_format';
 
 			wp_send_json_error( $data );
-
-			return;
 		}
 
 		$this->cdn_options->enable( esc_url_raw( $cdn_url ) );
@@ -164,8 +150,6 @@ class DataManagerSubscriber implements Subscriber_Interface {
 			$data['message'] = 'unauthorized_user';
 
 			wp_send_json_error( $data );
-
-			return;
 		}
 
 		$this->cdn_options->disable();
@@ -234,14 +218,10 @@ class DataManagerSubscriber implements Subscriber_Interface {
 
 		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			wp_send_json_error();
-
-			return;
 		}
 
 		if ( get_option( 'rocketcdn_process' ) ) {
 			wp_send_json_success();
-
-			return;
 		}
 
 		wp_send_json_error();
@@ -285,13 +265,11 @@ class DataManagerSubscriber implements Subscriber_Interface {
 		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			$data['message'] = 'unauthorized_user';
 			wp_send_json_error( $data );
-			return;
 		}
 
 		if ( empty( $_POST['cdn_url'] ) || empty( $_POST['cdn_token'] ) ) {
 			$data['message'] = 'cdn_values_empty';
 			wp_send_json_error( $data );
-			return;
 		}
 
 		$token   = sanitize_key( $_POST['cdn_token'] );
@@ -300,13 +278,11 @@ class DataManagerSubscriber implements Subscriber_Interface {
 		if ( ! $cdn_url ) {
 			$data['message'] = 'cdn_url_invalid_format';
 			wp_send_json_error( $data );
-			return;
 		}
 
 		if ( 40 !== strlen( $token ) ) {
 			$data['message'] = 'invalid_token_length';
 			wp_send_json_error( $data );
-			return;
 		}
 
 		$current_token = get_option( 'rocketcdn_user_token' );
@@ -315,7 +291,6 @@ class DataManagerSubscriber implements Subscriber_Interface {
 		if ( ! empty( $current_token ) ) {
 			$data['message'] = 'token_already_set';
 			wp_send_json_error( $data );
-			return;
 		}
 
 		update_option( 'rocketcdn_user_token', $token );

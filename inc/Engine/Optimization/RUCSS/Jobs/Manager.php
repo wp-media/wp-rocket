@@ -109,7 +109,7 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 	 * @return void
 	 */
 	public function validate_and_fail( array $job_details, $row_details, string $optimization_type ): void {
-		if ( 'all' !== $optimization_type || $this->optimization_type !== $optimization_type ) {
+		if ( 'all' !== $optimization_type && $this->optimization_type !== $optimization_type ) {
 			return;
 		}
 
@@ -120,10 +120,7 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 		 *
 		 * @param int $min_rucss_size min size.
 		 */
-		$min_rucss_size = apply_filters( 'rocket_min_rucss_size', 150 );
-		if ( ! is_numeric( $min_rucss_size ) ) {
-			$min_rucss_size = 150;
-		}
+		$min_rucss_size = wpm_apply_filters_typed( 'integer', 'rocket_min_rucss_size', 150 );
 
 		if ( isset( $job_details['contents']['shakedCSS_size'] ) && intval( $job_details['contents']['shakedCSS_size'] ) < $min_rucss_size ) {
 			$message = 'RUCSS: shakedCSS size is less than ' . $min_rucss_size;
@@ -194,8 +191,7 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 		 *
 		 * @param array $skipped_attr Array of safelist values.
 		 */
-		$skipped_attr = apply_filters( 'rocket_rucss_skip_styles_with_attr', [] );
-		$skipped_attr = ( is_array( $skipped_attr ) ) ? $skipped_attr : [];
+		$skipped_attr = wpm_apply_filters_typed( 'array', 'rocket_rucss_skip_styles_with_attr', [] );
 
 		return [
 			'rucss_safelist'    => $safelist,

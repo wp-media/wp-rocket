@@ -47,15 +47,12 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'options_api' ) )
 			->addArgument( $options );
 		$this->getContainer()->addShared( 'deactivation_intent_subscriber', Subscriber::class )
-			->addArgument( $this->getContainer()->get( 'deactivation_intent' ) )
-			->addTag( 'admin_subscriber' );
+			->addArgument( $this->getContainer()->get( 'deactivation_intent' ) );
 		$this->getContainer()->addShared( 'hummingbird_subscriber', Hummingbird::class )
-			->addArgument( $options )
-			->addTag( 'admin_subscriber' );
+			->addArgument( $options );
 		$this->getContainer()->addShared( 'actionscheduler_admin_subscriber', ActionSchedulerSubscriber::class );
 		$this->getContainer()->addShared( 'post_edit_options_subscriber', PostEditOptionsSubscriber::class )
 			->addArgument( $options )
-			->addArgument( $this->getContainer()->get( 'template_path' ) . '/metaboxes' )
-			->addTag( 'admin_subscriber' );
+			->addArgument( $this->getContainer()->get( 'template_path' ) . '/metaboxes' );
 	}
 }

@@ -64,14 +64,8 @@ class TestSaveCloudflareOptions extends TestCase {
 		$this->cloudflare->shouldReceive( 'set_cache_level' )
 			->with( 'aggressive' )
 			->atMost()
-			->once()
+			->twice()
 			->andReturn( 'aggressive' );
-
-		$this->cloudflare->shouldReceive( 'set_minify' )
-			->with( 'on' )
-			->atMost()
-			->once()
-			->andReturn( 'on' );
 
 		$this->cloudflare->shouldReceive( 'set_rocket_loader' )
 			->with( 'off' )

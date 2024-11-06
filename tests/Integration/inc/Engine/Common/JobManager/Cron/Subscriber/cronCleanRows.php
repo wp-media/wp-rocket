@@ -30,16 +30,10 @@ class Test_CronCleanRows extends TestCase {
 		parent::set_up();
 
 		self::installPreloadCacheTable();
-
-		// Disable ATF optimization to prevent DB request (unrelated to the test).
-		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
 	}
 
 	public function tear_down() {
 		self::uninstallPreloadCacheTable();
-
-		// Re-enable ATF optimization.
-		remove_filter( 'rocket_above_the_fold_optimization', '__return_false' );
 
 		remove_filter( 'rocket_saas_delete_interval', [ $this, 'set_rucss_delay' ] );
 		remove_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );

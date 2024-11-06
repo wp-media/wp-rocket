@@ -5,8 +5,11 @@ namespace WP_Rocket\Engine\Optimization\DeferJS;
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\DataManager;
+use WP_Rocket\Engine\Support\CommentTrait;
 
 class DeferJS {
+	use CommentTrait;
+
 	/**
 	 * Options instance
 	 *
@@ -82,11 +85,11 @@ class DeferJS {
 				continue;
 			}
 
-			$deferred_tag = str_replace( '>', ' defer>', $tag[0] );
+			$deferred_tag = str_replace( '>', ' data-rocket-defer defer>', $tag[0] );
 			$html         = str_replace( $tag[0], $deferred_tag, $html );
 		}
 
-		return $html;
+		return $this->add_meta_comment( 'defer_js', $html );
 	}
 
 	/**
@@ -277,6 +280,7 @@ class DeferJS {
 		$inline_exclusions = '';
 
 		// Check if filter return is string so convert it to array for backward compatibility.
+		// @phpstan-ignore-next-line - Ignoring the safeguard as the result could be mixed.
 		if ( is_string( $additional_inline_exclusions_list ) ) {
 			$additional_inline_exclusions_list = explode( '|', $additional_inline_exclusions_list );
 		}

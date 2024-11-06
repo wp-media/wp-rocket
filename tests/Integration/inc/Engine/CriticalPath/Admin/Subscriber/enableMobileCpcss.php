@@ -55,9 +55,9 @@ class Test_EnableMobileCpcss extends AjaxTestCase {
 	 */
 	public function testShouldEnableMobileCpcss( $config, $update ) {
 		if ( $config['rocket_manage_options'] ) {
-			$user_id = static::$admin_user_id;
+			$user_id = self::getAdminUserId();
 		} else {
-			$user_id = static::$editor_user_id;
+			$user_id = self::getEditorUserId();
 		}
 
 		if ( ! empty( $config['rocket_regenerate_critical_css'] ) ) {
@@ -96,5 +96,13 @@ class Test_EnableMobileCpcss extends AjaxTestCase {
 		$admin = get_role( 'administrator' );
 		$admin->add_cap( 'rocket_regenerate_critical_css' );
 		$admin->add_cap( 'rocket_manage_options' );
+	}
+
+	public function getAdminUserId() {
+		return self::$admin_user_id;
+	}
+
+	public function getEditorUserId() {
+		return self::$editor_user_id;
 	}
 }

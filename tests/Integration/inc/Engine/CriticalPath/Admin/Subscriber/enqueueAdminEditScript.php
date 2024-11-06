@@ -44,7 +44,7 @@ class Test_EnqueueAdminEditScript extends TestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldEnqueueAdminScript( $config, $expected ) {
-		wp_set_current_user( static::$user_id );
+		wp_set_current_user( self::getUserId() );
 		set_current_screen( $config['page'] );
 
 		Functions\when( 'wp_create_nonce' )->justReturn( 'wp_rest_nonce' );
@@ -84,5 +84,9 @@ class Test_EnqueueAdminEditScript extends TestCase {
 
 	public function setCPCSSMobileOption() {
 		return $this->async_css_mobile;
+	}
+
+	public static function getUserId() {
+		return self::$user_id;
 	}
 }

@@ -17,6 +17,8 @@ class Test_SpecifyImageDimensions extends FilesystemTestCase {
 	public function set_up() {
 		parent::set_up();
 
+		add_filter( 'rocket_disable_meta_generator', '__return_true' );
+
 		$this->unregisterAllCallbacksExcept('rocket_buffer', 'specify_image_dimensions', 17);
 	}
 	public function tear_down() {
@@ -28,7 +30,7 @@ class Test_SpecifyImageDimensions extends FilesystemTestCase {
 			remove_filter( 'rocket_specify_image_dimensions', [$this, 'filter_rocket_specify_image_dimensions'] );
 		}
 
-		if ( isset( $config['rocket_specify_dimension_skip_pictures_filter'] ) ){
+		if ( isset( $this->config_data['rocket_specify_dimension_skip_pictures_filter'] ) ){
 			remove_filter( 'rocket_specify_dimension_skip_pictures', [$this, 'filter_rocket_specify_dimension_skip_pictures'] );
 		}
 
@@ -40,6 +42,7 @@ class Test_SpecifyImageDimensions extends FilesystemTestCase {
 
 		remove_filter( 'site_url', [ $this, 'setSiteUrl' ] );
 		remove_filter( 'home_url', [ $this, 'setHomeUrl' ] );
+		remove_filter( 'rocket_disable_meta_generator', '__return_true' );
 
 		unset( $GLOBALS['wp'] );
 

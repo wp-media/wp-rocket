@@ -2,28 +2,22 @@
 
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Hostings\HostSubscriberFactory;
 
-use Mockery;
-use WP_Rocket\Engine\Cache\AdminSubscriber;
-use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\ThirdParty\Hostings\HostSubscriberFactory;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
  * Test class covering \WP_Rocket\ThirdParty\Hostings\HostSubscriberFactory::get_subscriber
  *
- * @group  Hostings
- * @group  ThirdParty
+ * @group Hostings
+ * @group ThirdParty
  */
-class Test_GetSubscriber extends TestCase {
+class TestGetSubscriber extends TestCase {
 	private $factory;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->factory = new HostSubscriberFactory(
-			Mockery::mock( AdminSubscriber::class ),
-			Mockery::mock( Event_Manager::class )
-		);
+		$this->factory = new HostSubscriberFactory();
 	}
 
 	protected function tearDown(): void {
@@ -55,6 +49,9 @@ class Test_GetSubscriber extends TestCase {
 				break;
 		}
 
-		$this->assertInstanceOf( $expected, $this->factory->get_subscriber());
+		$this->assertInstanceOf(
+			$expected,
+			$this->factory->get_subscriber()
+		);
 	}
 }

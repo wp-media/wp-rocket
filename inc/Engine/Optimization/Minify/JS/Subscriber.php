@@ -4,6 +4,7 @@ namespace WP_Rocket\Engine\Optimization\Minify\JS;
 use WP_Rocket\Dependencies\Minify\JS as MinifyJS;
 use WP_Rocket\Engine\Optimization\AssetsLocalCache;
 use WP_Rocket\Engine\Optimization\DeferJS\DeferJS;
+use WP_Rocket\Engine\Optimization\DynamicLists\DynamicLists;
 use WP_Rocket\Engine\Optimization\Minify\AbstractMinifySubscriber;
 
 /**
@@ -46,11 +47,12 @@ class Subscriber extends AbstractMinifySubscriber {
 
 		$assets_local_cache = new AssetsLocalCache( rocket_get_constant( 'WP_ROCKET_MINIFY_CACHE_PATH' ), $this->filesystem );
 		$container          = apply_filters( 'rocket_container', null );
+		$dynamic_lists      = $container->get( 'dynamic_lists' );
 
 		if ( $this->options->get( 'minify_js' ) && $this->options->get( 'minify_concatenate_js' ) ) {
-			$this->set_processor_type( new Combine( $this->options, new MinifyJS(), $assets_local_cache, $container->get( 'defer_js' ) ) );
+			$this->set_processor_type( new Combine( $this->options, new MinifyJS(), $assets_local_cache, $container->get( 'defer_js' ), $dynamic_lists ) );
 		} elseif ( $this->options->get( 'minify_js' ) && ! $this->options->get( 'minify_concatenate_js' ) ) {
-			$this->set_processor_type( new Minify( $this->options, $assets_local_cache ) );
+			$this->set_processor_type( new Minify( $this->options, $assets_local_cache, $dynamic_lists ) );
 		}
 
 		return $this->processor->optimize( $html );

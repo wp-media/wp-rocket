@@ -1,9 +1,12 @@
 <?php
 
+namespace WP_Rocket\Tests\Unit\inc\Engine\Common\JobManager\Strategy\Strategies\DefaultProcess;
+
 use Brain\Monkey\{Actions, Filters};
+use Mockery;
 use WP_Rocket\Engine\Common\Clock\WPRClock;
 use WP_Rocket\Engine\Common\JobManager\Strategy\Strategies\DefaultProcess;
-use WP_Rocket\Tests\Fixtures\inc\Engine\Common\JobManager\Manager;
+use WP_Rocket\Engine\Optimization\RUCSS\Jobs\Manager;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
@@ -18,10 +21,10 @@ class Test_Execute extends TestCase {
 
 	public function setUp(): void {
 		parent::setUp();
-		$this->wpr_clock = Mockery::mock(WPRClock::class);
+		$this->wpr_clock = Mockery::mock( WPRClock::class );
 		$this->manager = Mockery::mock( Manager::class );
 
-		$this->strategy = new DefaultProcess($this->manager, $this->wpr_clock);
+		$this->strategy = new DefaultProcess( $this->manager, $this->wpr_clock );
 	}
 
 	public function tearDown(): void {
@@ -36,14 +39,14 @@ class Test_Execute extends TestCase {
 			Actions\expectDone( 'rocket_preload_unlock_url' )->with( $config['row_details']->url );
 
 			$this->manager->shouldReceive( 'make_status_failed' )
-				->withArgs([$config['row_details']->url, $config['row_details']->is_mobile, strval($config['job_details']['code']), $config['job_details']['message']]);
+				->withArgs( [ $config['row_details']->url, $config['row_details']->is_mobile, strval( $config['job_details']['code'] ), $config['job_details']['message'] ] );
 
-			$this->strategy->execute($config['row_details'], $config['job_details']);
+			$this->strategy->execute( $config['row_details'], $config['job_details'] );
 			return;
 		}
 
 		$this->manager->shouldReceive( 'increment_retries' )
-			->withArgs([$config['row_details']->url, $config['row_details']->is_mobile, strval($config['job_details']['code']), $config['job_details']['message']]);
+			->withArgs( [ $config['row_details']->url, $config['row_details']->is_mobile, strval( $config['job_details']['code'] ), $config['job_details']['message'] ] );
 
 		Filters\expectApplied( 'rocket_saas_retry_duration' )->andReturn( $config['duration_retry'] );
 
@@ -51,10 +54,10 @@ class Test_Execute extends TestCase {
 		// update the `next_retry_time` column.
 
 		$this->manager->shouldReceive( 'update_message' )
-			->withArgs([$config['row_details']->url, $config['row_details']->is_mobile, $config['job_details']['code'], $config['job_details']['message'], $config['row_details']->error_message]);
+			->withArgs( [ $config['row_details']->url, $config['row_details']->is_mobile, $config['job_details']['code'], $config['job_details']['message'], $config['row_details']->error_message ] );
 
 		$this->manager->shouldReceive( 'update_next_retry_time' )
-			->withArgs([$config['row_details']->url, $config['row_details']->is_mobile, $config['duration_retry']]);
+			->withArgs( [ $config['row_details']->url, $config['row_details']->is_mobile, $config['duration_retry'] ] );
 
 		$this->strategy->execute( $config['row_details'], $config['job_details'] );
 	}

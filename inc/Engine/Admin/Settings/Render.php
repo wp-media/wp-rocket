@@ -3,6 +3,7 @@ namespace WP_Rocket\Engine\Admin\Settings;
 
 use stdClass;
 use WP_Rocket\Abstract_Render;
+use WP_Rocket\Dependencies\WPMedia\PluginFamily\Model\PluginFamily;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -30,6 +31,26 @@ class Render extends Abstract_render {
 	 * @var array
 	 */
 	private $hidden_settings;
+
+	/**
+	 * Plugin family
+	 *
+	 * @var PluginFamily
+	 *
+	 * @since 3.17.2
+	 */
+	protected $plugin_family;
+
+	/**
+	 * Creates an instance of the object.
+	 *
+	 * @param string       $template_path Template path.
+	 * @param PluginFamily $plugin_family Plugin Family Instance.
+	 */
+	public function __construct( string $template_path, PluginFamily $plugin_family ) {
+		parent::__construct( $template_path );
+		$this->plugin_family = $plugin_family;
+	}
 
 	/**
 	 * Sets the settings value.
@@ -106,10 +127,6 @@ class Render extends Abstract_render {
 	 * @since 3.0
 	 */
 	public function render_form_sections() {
-		if ( ! isset( $this->settings ) ) {
-			return;
-		}
-
 		foreach ( $this->settings as $id => $args ) {
 			$default = [
 				'title'            => '',
@@ -130,7 +147,54 @@ class Render extends Abstract_render {
 	 * @since 3.2
 	 */
 	public function render_imagify_section() {
-		echo $this->generate( 'page-sections/imagify' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+
+		// @phpstan-ignore-next-line
+		require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
+
+		$plugin_data = get_transient( 'rocket_imagify_plugin_data' );
+
+		if ( ! $plugin_data ) {
+
+			$query_args = [
+				'slug'   => 'imagify',
+				'fields' => [
+					'icons'                  => true,
+					'active_installs'        => true,
+					'rating'                 => true,
+					'ratings'                => true,
+					'short_description'      => false,
+					'sections'               => false,
+					'last_updated'           => false,
+					'added'                  => false,
+					'tags'                   => false,
+					'homepage'               => false,
+					'donate_link'            => false,
+					'screenshots'            => false,
+					'versions'               => false,
+					'banners'                => false,
+					'contributors'           => false,
+					'requires'               => false,
+					'tested'                 => false,
+					'requires_php'           => false,
+					'support_url'            => false,
+					'upgrade_notice'         => false,
+					'business_model'         => false,
+					'repository_url'         => false,
+					'commercial_support_url' => false,
+					'preview_link'           => false,
+				],
+			];
+
+			$plugin_data = plugins_api( 'plugin_information', $query_args );
+
+			if ( is_wp_error( $plugin_data ) ) {
+				$plugin_data = [];
+			}
+
+			set_transient( 'rocket_imagify_plugin_data', $plugin_data, WEEK_IN_SECONDS );
+		}
+
+		echo $this->generate( 'page-sections/imagify', $plugin_data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 
 	/**
@@ -149,6 +213,19 @@ class Render extends Abstract_render {
 	 */
 	public function render_tools_section() {
 		echo $this->generate( 'page-sections/tools' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+	}
+
+	/**
+	 * Render the plugins page section.
+	 *
+	 * @since 3.17.2
+	 */
+	public function render_plugin_section() {
+		$plugin_family = $this->plugin_family->get_filtered_plugins( 'wp-rocket/wp-rocket' );
+
+		$data = $plugin_family['categorized'];
+
+		echo $this->generate( 'page-sections/plugins', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 
 	/**

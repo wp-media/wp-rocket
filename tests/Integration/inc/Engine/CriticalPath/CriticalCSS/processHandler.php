@@ -31,8 +31,6 @@ class Test_ProcessHandler extends FilesystemTestCase {
 	public function set_up() {
 		parent::set_up();
 
-		self::installAtfTable();
-
 		$this->to_be_removed  = [
 			'filters'    => [],
 			'transients' => [],
@@ -52,7 +50,6 @@ class Test_ProcessHandler extends FilesystemTestCase {
 	}
 
 	public function tear_down() {
-		self::uninstallAtfTable();
 
 		foreach ( $this->to_be_removed as $item_name => $item ) {
 			switch ( $item_name ) {
@@ -125,8 +122,6 @@ class Test_ProcessHandler extends FilesystemTestCase {
 		);
 
 		if ( $expected['generated'] ) {
-			$this->assertStopGeneration( $process );
-
 			$this->prepareSetItems( $config );
 		}
 
@@ -151,10 +146,6 @@ class Test_ProcessHandler extends FilesystemTestCase {
 				},
 			];
 		}
-	}
-
-	private function assertStopGeneration( $process ) {
-		//$process->shouldReceive( 'cancel_process' )->once()->andReturn( null );
 	}
 
 	private function prepareSetItems( $config ) {

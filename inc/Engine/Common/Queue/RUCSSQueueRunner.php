@@ -46,7 +46,7 @@ class RUCSSQueueRunner extends ActionScheduler_Abstract_QueueRunner {
 	 * @return RUCSSQueueRunner Instance.
 	 */
 	public static function instance() {
-		if ( empty( self::$runner ) ) {
+		if ( null === self::$runner ) {
 			self::$runner = new RUCSSQueueRunner();
 		}
 		return self::$runner;
@@ -106,6 +106,7 @@ class RUCSSQueueRunner extends ActionScheduler_Abstract_QueueRunner {
 			wp_schedule_event( time(), $schedule, self::WP_CRON_HOOK, $cron_context );
 		}
 
+		// @phpstan-ignore-next-line Action callback returns int but should not return anything.
 		add_action( self::WP_CRON_HOOK, [ self::instance(), 'run' ] );
 		$this->hook_dispatch_async_request();
 	}
@@ -160,10 +161,10 @@ class RUCSSQueueRunner extends ActionScheduler_Abstract_QueueRunner {
 	 *
 	 * @see ActionScheduler_AsyncRequest_QueueRunner::handle()
 	 *
-	 * @param string $context Optional identifer for the context in which this action is being processed, e.g. 'WP CLI' or 'WP Cron'
+	 * @param string $context Optional identifier for the context in which this action is being processed, e.g. 'WP CLI' or 'WP Cron'
 	 *        Generally, this should be capitalised and not localised as it's a proper noun.
 	 *
-	 * @return void
+	 * @return int
 	 */
 	public function run( $context = 'WP Cron' ) {
 		\ActionScheduler_Compatibility::raise_memory_limit();
@@ -180,6 +181,8 @@ class RUCSSQueueRunner extends ActionScheduler_Abstract_QueueRunner {
 		}
 
 		do_action( 'action_scheduler_after_process_queue' );// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+
+		return $processed_actions;
 	}
 
 	/**
@@ -189,7 +192,7 @@ class RUCSSQueueRunner extends ActionScheduler_Abstract_QueueRunner {
 	 * size is completed, or memory or time limits are reached, defined by @see $this->batch_limits_exceeded().
 	 *
 	 * @param int    $size The maximum number of actions to process in the batch.
-	 * @param string $context Optional identifer for the context in which this action is being processed, e.g. 'WP CLI' or 'WP Cron'
+	 * @param string $context Optional identifier for the context in which this action is being processed, e.g. 'WP CLI' or 'WP Cron'
 	 *        Generally, this should be capitalised and not localised as it's a proper noun.
 	 * @return int The number of actions processed.
 	 */

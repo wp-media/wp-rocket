@@ -11,7 +11,7 @@ $original_html = <<<ORIGINALHTML
 </html>
 ORIGINALHTML;
 
-$nonce = wp_create_nonce( 'rocket_lcp' );
+$nonce = wp_create_nonce( 'rocket_beacon' );
 
 $expected_html = <<<EXPECTEDHTML
 <!doctype>

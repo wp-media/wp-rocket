@@ -110,6 +110,9 @@ trait StubTrait {
 			case 'WP_ROCKET_CRITICAL_CSS_PATH':
 				return "{$this->wp_content_dir}/cache/critical-css/";
 
+			case 'WP_ROCKET_USED_CSS_PATH':
+				return "{$this->wp_content_dir}/cache/used-css/";
+
 			case 'WP_ROCKET_DEBUG':
 				return $this->wp_rocket_debug;
 

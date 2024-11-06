@@ -87,7 +87,7 @@ class ProcessorService {
 		$generated_job = $this->api_client->send_generation_request( $item_url, $params, $item_type );
 
 		// validate generate response.
-		if ( is_wp_error( $generated_job ) ) {
+		if ( is_wp_error( $generated_job ) || ! is_object( $generated_job ) ) {
 			// Failed so return back the data.
 			return $generated_job;
 		}
@@ -97,27 +97,6 @@ class ProcessorService {
 		$this->data_manager->set_cache_job_id( $item_url, $generated_job->data->id, $is_mobile );
 
 		return $this->check_cpcss_job_status( $generated_job->data->id, $item_path, $item_url, $is_mobile, $item_type );
-	}
-
-	/**
-	 * Get job details by job_id.
-	 *
-	 * @since 3.6
-	 *
-	 * @param string $job_id   ID for the job to get details.
-	 * @param string $item_url URL for item to be used in error messages.
-	 * @param string $item_type Optional. Type for this item if it's custom or specific type. Default: custom.
-	 *
-	 * @return array|mixed|WP_Error
-	 */
-	private function get_cpcss_job_details( $job_id, $item_url, $item_type = 'custom' ) {
-		$job_details = $this->api_client->get_job_details( $job_id, $item_url, $item_type );
-
-		if ( is_wp_error( $job_details ) ) {
-			return $job_details;
-		}
-
-		return $job_details;
 	}
 
 	/**
@@ -156,11 +135,7 @@ class ProcessorService {
 		}
 
 		// For successful job status.
-		if (
-			isset( $job_state, $job_details->data->critical_path )
-			&&
-			'complete' === $job_state
-		) {
+		if ( isset( $job_state, $job_details->data->critical_path ) ) {
 			return $this->on_job_success( $item_path, $item_url, $job_details->data->critical_path, $is_mobile, $item_type );
 		}
 
@@ -172,7 +147,7 @@ class ProcessorService {
 	 *
 	 * @since 3.6
 	 *
-	 * @param array  $job_details Job details array.
+	 * @param object $job_details Job details object.
 	 * @param string $item_url    Url for web page to be processed, used for error messages.
 	 * @param bool   $is_mobile   Bool identifier for is_mobile CPCSS generation.
 	 * @param string $item_type Optional. Type for this item if it's custom or specific type. Default: custom.

@@ -28,7 +28,7 @@ class ThirstyAffiliates implements Subscriber_Interface {
 	 * @return array
 	 */
 	public function exclude_link_prefix( $excluded, $default ): array {
-		if ( ! is_array( $excluded ) ) {
+		if ( ! is_array( $excluded ) ) { // @phpstan-ignore-line
 			$excluded = (array) $excluded;
 		}
 

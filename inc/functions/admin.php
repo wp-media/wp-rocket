@@ -270,7 +270,7 @@ function rocket_after_update_array_options( $old_value, $value ) {
  * @since 2.10
  * @author Remy Perona
  *
- * @return true if a mobile plugin in the list is active, false otherwise.
+ * @return bool true if a mobile plugin in the list is active, false otherwise.
  **/
 function rocket_is_mobile_plugin_active() {
 	return \WP_Rocket\Subscriber\Third_Party\Plugins\Mobile_Subscriber::is_mobile_plugin_active();

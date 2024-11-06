@@ -43,6 +43,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_exclude_js'                  => 'add_js_exclude_files',
 			'rocket_plugins_to_deactivate'       => 'add_incompatible_plugins_to_deactivate',
 			'rocket_staging_list'                => 'add_staging_exclusions',
+			'rocket_lrc_exclusions'              => 'add_lrc_exclusions',
 		];
 	}
 
@@ -105,59 +106,44 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Add the cached ignored parameters to the array
 	 *
-	 * @param string $params Array of ignored parameters.
+	 * @param array $params Array of ignored parameters.
 	 *
 	 * @return array
 	 */
-	public function add_cache_ignored_parameters( $params = [] ): array {
-		if ( ! is_array( $params ) ) {
-			$params = (array) $params;
-		}
-
+	public function add_cache_ignored_parameters( array $params = [] ): array {
 		return array_merge( $params, $this->dynamic_lists->get_cache_ignored_parameters() );
 	}
 
 	/**
 	 * Add the excluded external JS patterns to the array
 	 *
-	 * @param string $excluded Array of excluded patterns.
+	 * @param array $excluded Array of excluded patterns.
 	 *
 	 * @return array
 	 */
-	public function add_minify_excluded_external_js( $excluded = [] ): array {
-		if ( ! is_array( $excluded ) ) {
-			$excluded = (array) $excluded;
-		}
-
+	public function add_minify_excluded_external_js( array $excluded = [] ): array {
 		return array_merge( $excluded, $this->dynamic_lists->get_js_minify_excluded_external() );
 	}
 
 	/**
 	 * Add the JS patterns to move after the combine JS file to the array
 	 *
-	 * @param string $excluded Array of patterns to move.
+	 * @param array $excluded Array of patterns to move.
 	 *
 	 * @return array
 	 */
-	public function add_move_after_combine_js( $excluded = [] ): array {
-		if ( ! is_array( $excluded ) ) {
-			$excluded = (array) $excluded;
-		}
-
+	public function add_move_after_combine_js( array $excluded = [] ): array {
 		return array_merge( $excluded, $this->dynamic_lists->get_js_move_after_combine() );
 	}
 
 	/**
 	 * Add the excluded inline JS patterns to the array
 	 *
-	 * @param string $excluded Array of excluded patterns.
+	 * @param array $excluded Array of excluded patterns.
 	 *
 	 * @return array
 	 */
-	public function add_combine_js_excluded_inline( $excluded = [] ): array {
-		if ( ! is_array( $excluded ) ) {
-			$excluded = (array) $excluded;
-		}
+	public function add_combine_js_excluded_inline( array $excluded = [] ): array {
 
 		return array_merge( $excluded, $this->dynamic_lists->get_combine_js_excluded_inline() );
 	}
@@ -169,11 +155,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return array
 	 */
-	public function add_preload_exclusions( $excluded = [] ): array {
-		if ( ! is_array( $excluded ) ) {
-			$excluded = (array) $excluded;
-		}
-
+	public function add_preload_exclusions( array $excluded = [] ): array {
 		return array_merge( $excluded, $this->dynamic_lists->get_preload_exclusions() );
 	}
 
@@ -184,11 +166,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return array
 	 */
-	public function add_js_exclude_files( $js_files = [] ): array {
-		if ( ! is_array( $js_files ) ) {
-			$js_files = (array) $js_files;
-		}
-
+	public function add_js_exclude_files( array $js_files = [] ): array {
 		return array_merge( $js_files, $this->dynamic_lists->get_js_exclude_files() );
 	}
 
@@ -212,5 +190,16 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function add_staging_exclusions( $stagings = [] ): array {
 		return array_merge( (array) $stagings, (array) $this->dynamic_lists->get_stagings() );
+	}
+
+	/**
+	 * Add the LRC exclusions to the array
+	 *
+	 * @param array $exclusions Array of LRC exclusions.
+	 *
+	 * @return array
+	 */
+	public function add_lrc_exclusions( $exclusions ): array {
+		return array_merge( (array) $exclusions, $this->dynamic_lists->get_lrc_exclusions() );
 	}
 }

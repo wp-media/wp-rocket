@@ -17,8 +17,6 @@ class Test_RegisterSupportRoute extends WPMediaRESTfulTestCase {
 
 	protected static $api_credentials_config_file = 'license.php';
 	protected $config;
-	private $consumer_key;
-	private $consumer_email;
 	private $wp_version;
 
 	public static function set_up_before_class() {

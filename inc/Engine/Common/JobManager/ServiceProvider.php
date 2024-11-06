@@ -4,16 +4,12 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Common\JobManager;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
-use WP_Rocket\Engine\Common\JobManager\Strategy\Context\RetryContext;
-use WP_Rocket\Engine\Common\JobManager\Strategy\Factory\StrategyFactory;
-use WP_Rocket\Engine\Common\JobManager\Strategy\Strategies\DefaultProcess;
-use WP_Rocket\Engine\Common\JobManager\Strategy\Strategies\JobSetFail;
-use WP_Rocket\Engine\Common\JobManager\Strategy\Strategies\ResetRetryProcess;
 use WP_Rocket\Engine\Common\Clock\WPRClock;
-use WP_Rocket\Engine\Common\JobManager\Queue\Queue;
 use WP_Rocket\Engine\Common\JobManager\APIHandler\APIClient;
 use WP_Rocket\Engine\Common\JobManager\Cron\Subscriber as CronSubscriber;
-
+use WP_Rocket\Engine\Common\JobManager\Queue\Queue;
+use WP_Rocket\Engine\Common\JobManager\Strategy\Context\RetryContext;
+use WP_Rocket\Engine\Common\JobManager\Strategy\Factory\StrategyFactory;
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**

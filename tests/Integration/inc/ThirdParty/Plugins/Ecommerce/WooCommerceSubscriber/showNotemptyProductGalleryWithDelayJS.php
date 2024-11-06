@@ -22,9 +22,6 @@ class Test_ShowNotEmptyProductGalleryWithDelayJS extends TestCase {
 
 		parent::set_up();
 
-		// Disable ATF optimization to prevent DB request (unrelated to the test).
-		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
-
 		$this->product_without_gallery = $this->create_product();
 		$this->product_with_gallery = $this->create_product( [1, 2, 3] );
 
@@ -33,9 +30,6 @@ class Test_ShowNotEmptyProductGalleryWithDelayJS extends TestCase {
 
 	public function tear_down() {
 		global $wp_version;
-
-		// Re-enable ATF optimization.
-		remove_filter( 'rocket_above_the_fold_optimization', '__return_false' );
 
 		$wp_version = $this->wp_version;
 

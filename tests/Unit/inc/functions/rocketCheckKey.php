@@ -3,51 +3,41 @@
 namespace WP_Rocket\Tests\Unit\inc\functions;
 
 use Brain\Monkey\Functions;
-use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\Tests\Unit\TestCase;
 
 /**
  * Test class covering ::rocket_check_key
+ *
  * @group Functions
  * @group Options
  */
 class Test_RocketCheckKey extends TestCase {
-	public static function setUpBeforeClass() : void {
+	public static function setUpBeforeClass(): void {
 		parent::setUpBeforeClass();
 
 		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/functions/options.php';
 	}
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
+
 		Functions\stubTranslationFunctions();
 	}
 
 	public function testShouldReturnTrueWhenValidKey() {
 		Functions\expect( 'rocket_valid_key' )->once()->andReturn( true );
 		Functions\expect( 'rocket_delete_licence_data_file' )->once();
-
-		Functions\expect( 'rocket_get_constant' )
-			->once()
-			->with( 'WP_ROCKET_WEB_VALID' )
-			->never();
+		Functions\expect( 'wp_remote_get' )->never();
 
 		$this->assertTrue( rocket_check_key() );
 	}
 
 	public function testShouldReturnArrayWhenSuccessfulValidation() {
-		Functions\expect( 'rocket_get_constant' )
-			->once()
-			->with( 'WP_ROCKET_WEB_VALID' )
-			->andReturn( 'https://wp-rocket.me/valid_key.php' );
-		Functions\expect( 'rocket_get_constant' )
-			->once()
-			->with( 'WP_ROCKET_SLUG' )
-			->andReturn( 'wp_rocket_settings' );
 		Functions\expect( 'rocket_valid_key' )->once()->andReturn( false );
 		Functions\expect( 'rocket_delete_licence_data_file' )->never();
 		Functions\expect( 'wp_remote_get' )
 			->once()
-			->with( 'https://wp-rocket.me/valid_key.php', [ 'timeout' => 30 ] )
+			->with( 'https://api.wp-rocket.me/valid_key.php', [ 'timeout' => 30 ] )
 			->andReturn( [] );
 		Functions\expect( 'is_wp_error' )->once()->andReturn( false );
 		Functions\expect( 'wp_remote_retrieve_body' )
@@ -71,8 +61,8 @@ class Test_RocketCheckKey extends TestCase {
 			->with( 'rocket_check_key_errors' )
 			->andReturn( true );
 		Functions\expect( 'rocket_delete_licence_data_file' )->once();
-		Functions\expect('update_option')
-			->with('wp_rocket_no_licence', 0)
+		Functions\expect( 'update_option' )
+			->with( 'wp_rocket_no_licence', 0 )
 			->once();
 		$expected = [
 			'consumer_key'   => 'ABCDEF',
@@ -84,15 +74,10 @@ class Test_RocketCheckKey extends TestCase {
 	}
 
 	public function testShouldReturnFalseWhenIsWPError() {
-		Functions\expect( 'rocket_get_constant' )
-			->once()
-			->with( 'WP_ROCKET_WEB_VALID' )
-			->andReturn( 'https://wp-rocket.me/valid_key.php' );
 		Functions\when( 'rocket_valid_key' )->justReturn( false );
 		Functions\when( 'wp_remote_get' )->alias( function() {
 			$wp_error = \Mockery::mock( \WP_Error::class )->makePartial();
 			$wp_error->shouldReceive( 'get_error_messages' )
-			         ->withNoArgs()
 			         ->andReturn( 'error' );
 
 			return $wp_error;
@@ -101,17 +86,13 @@ class Test_RocketCheckKey extends TestCase {
 		Functions\when( 'set_transient' )->justReturn( true );
 		Functions\expect( 'rocket_delete_licence_data_file' )
 			->never();
-		Functions\expect('update_option')
+		Functions\expect( 'update_option' )
 			->never();
 
 		$this->assertFalse( rocket_check_key() );
 	}
 
 	public function testShouldReturnFalseWhenEmptyResponse() {
-		Functions\expect( 'rocket_get_constant' )
-			->once()
-			->with( 'WP_ROCKET_WEB_VALID' )
-			->andReturn( 'https://wp-rocket.me/valid_key.php' );
 		Functions\when( 'rocket_valid_key' )->justReturn( false );
 		Functions\when( 'wp_remote_get' )->justReturn( [] );
 		Functions\when( 'is_wp_error' )->justReturn( false );
@@ -125,21 +106,13 @@ class Test_RocketCheckKey extends TestCase {
 	}
 
 	public function testShouldReturnArrayWhenSuccessFalse() {
-		Functions\expect( 'rocket_get_constant' )
-			->once()
-			->with( 'WP_ROCKET_WEB_VALID' )
-			->andReturn( 'https://wp-rocket.me/valid_key.php' );
-		Functions\expect( 'rocket_get_constant' )
-			->once()
-			->with( 'WP_ROCKET_SLUG' )
-			->andReturn( 'wp_rocket_settings' );
 		Functions\when( 'rocket_valid_key' )->justReturn( false );
 		Functions\when( 'wp_remote_get' )->justReturn( [] );
 		Functions\when( 'is_wp_error' )->justReturn( false );
 		Functions\when( 'wp_remote_retrieve_body' )->justReturn( '{"success": false, "data":{"consumer_key":"ABCDEF","consumer_email":"example@example.org","reason":"BAD_KEY"}}' );
 		Functions\when( 'set_transient' )->justReturn( true );
 		Functions\expect( 'rocket_delete_licence_data_file' )->never();
-		Functions\expect('update_option')
+		Functions\expect( 'update_option' )
 			->never();
 
 		$expected = [

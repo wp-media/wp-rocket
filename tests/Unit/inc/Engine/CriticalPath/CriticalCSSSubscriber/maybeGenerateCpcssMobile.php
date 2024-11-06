@@ -23,7 +23,6 @@ class Test_MaybeGenerateCpcssMobile extends TestCase {
 
 	private $subscriber;
 	private $critical_css;
-	private $processor_service;
 	protected $user;
 	protected $options_api;
 

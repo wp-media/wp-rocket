@@ -4,7 +4,6 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Cron\Subscriber;
 
 use Brain\Monkey\Functions;
 use Mockery;
-use WP_Rocket\Engine\Common\Queue\PreloadQueueRunner;
 use WP_Rocket\Engine\Preload\Admin\Settings;
 use WP_Rocket\Engine\Preload\Controller\PreloadUrl;
 use WP_Rocket\Engine\Preload\Cron\Subscriber;
@@ -17,28 +16,25 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @group Cron
  * @group Preload
  */
-class Test_ScheduleCleanNotCommonlyUsedRows extends TestCase {
+class TestScheduleCleanNotCommonlyUsedRows extends TestCase {
 	protected $subscriber;
 	protected $query;
 	protected $settings;
 	protected $controller;
-	protected $queue_runner;
 
-	protected function setUp(): void
-	{
+	protected function setUp(): void {
 		parent::setUp();
-		$this->query = $this->createMock(Cache::class);
-		$this->settings = Mockery::mock(Settings::class);
-		$this->controller = Mockery::mock(PreloadUrl::class);
-		$this->queue_runner = Mockery::mock(PreloadQueueRunner::class);
 
-		$this->subscriber = new Subscriber($this->settings, $this->query, $this->controller, $this->queue_runner);
+		$this->query        = $this->createMock( Cache::class );
+		$this->settings     = Mockery::mock( Settings::class );
+		$this->controller   = Mockery::mock( PreloadUrl::class );
+		$this->subscriber   = new Subscriber( $this->settings, $this->query, $this->controller );
 	}
 
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldDoAsExpected($config) {
+	public function testShouldDoAsExpected( $config ) {
 		Functions\expect( 'wp_next_scheduled' )
 			->once()
 			->with( 'rocket_preload_clean_rows_time_event' )
@@ -47,17 +43,17 @@ class Test_ScheduleCleanNotCommonlyUsedRows extends TestCase {
 		$old_time = time() + 10 * MINUTE_IN_SECONDS;
 
 		if ( ! $config['has_next_schedule'] ) {
-			Functions\expect('wp_schedule_event')
+			Functions\expect( 'wp_schedule_event' )
 			->once()
 			->with(
 				Mockery::on(function ($date) use ($old_time) {
-					return $date >= $old_time  && $date <= time() + 10 * MINUTE_IN_SECONDS;
-				}),
+					return $date >= $old_time && $date <= time() + 10 * MINUTE_IN_SECONDS;
+				} ),
 				'weekly',
 				'rocket_preload_clean_rows_time_event'
 			);
 		} else {
-			Functions\expect('wp_schedule_event')->never();
+			Functions\expect( 'wp_schedule_event' )->never();
 		}
 
 		$this->subscriber->schedule_clean_not_commonly_used_rows();

@@ -23,12 +23,6 @@ class Context implements ContextInterface {
 		 *
 		 * @param bool $allow True to allow, false otherwise.
 		 */
-		$is_atf_enabled = apply_filters( 'rocket_above_the_fold_optimization', true );
-
-		if ( ! is_bool( $is_atf_enabled ) ) {
-			return true;
-		}
-
-		return $is_atf_enabled;
+		return wpm_apply_filters_typed( 'boolean', 'rocket_above_the_fold_optimization', true );
 	}
 }

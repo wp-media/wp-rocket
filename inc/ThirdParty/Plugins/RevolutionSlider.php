@@ -22,7 +22,7 @@ class RevolutionSlider implements Subscriber_Interface {
 	 * @inheritDoc
 	 */
 	public static function get_subscribed_events() {
-		if ( ! defined( 'RS_REVISION' ) || version_compare( RS_REVISION, '6.5.5', '<' ) ) {
+		if ( ! defined( 'RS_REVISION' ) || version_compare( RS_REVISION, '6.5.5', '<' ) ) { // @phpstan-ignore-line
 			return [];
 		}
 

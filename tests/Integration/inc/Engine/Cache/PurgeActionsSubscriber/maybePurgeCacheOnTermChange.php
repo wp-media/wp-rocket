@@ -26,15 +26,9 @@ class Test_MaybePurgeCacheOnTermChange extends FilesystemTestCase {
 				'publicly_queryable' => false,
 			]
 		);
-
-		// Disable ATF optimization to prevent DB request (unrelated to the test).
-		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
 	}
 
 	public function tear_down() {
-		// Re-enable ATF optimization.
-		remove_filter( 'rocket_above_the_fold_optimization', '__return_false' );
-
 		unregister_taxonomy( 'not_public' );
 		unset( $GLOBALS['sitepress'], $GLOBALS['q_config'], $GLOBALS['polylang'] );
 		unset( $GLOBALS['debug_fs'] );

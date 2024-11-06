@@ -11,6 +11,8 @@ use WP_Rocket\ThirdParty\Hostings\HostResolver;
 use WP_Rocket\ThirdParty\Hostings\ServiceProvider as HostingsServiceProvider;
 
 class Deactivation {
+	const DEACTIVATION_ENDPOINT = 'https://api.wp-rocket.me/api/wp-rocket/deactivate-licence.php';
+
 	/**
 	 * Aliases in the container for each class that needs to call its deactivate method
 	 *
@@ -89,7 +91,7 @@ class Deactivation {
 
 		// Update customer key & licence.
 		wp_remote_get(
-			WP_ROCKET_WEB_API . 'pause-licence.php',
+			self::DEACTIVATION_ENDPOINT,
 			[
 				'blocking' => false,
 			]

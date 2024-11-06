@@ -13,7 +13,7 @@ use Brain\Monkey\Functions;
 
 /**
  * Test class covering \WP_Rocket\Engine\Saas\Admin\Notices::display_saas_error_notice
- * 
+ *
  * @group Saas
  */
 class Test_DisplaySaasErrorNotice extends FilesystemTestCase
@@ -31,7 +31,7 @@ class Test_DisplaySaasErrorNotice extends FilesystemTestCase
 		$this->options = Mockery::mock(Options_Data::class);
 		$this->beacon = Mockery::mock(Beacon::class);
 		$this->atf_context  = Mockery::mock( ContextInterface::class );
-		$this->notices = new Notices($this->options, $this->beacon, $this->atf_context);
+		$this->notices = new Notices( $this->options, $this->beacon );
 		$this->stubTranslationFunctions();
 	}
 

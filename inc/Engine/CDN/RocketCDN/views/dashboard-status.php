@@ -14,6 +14,7 @@
  * }
  */
 
+$data = isset( $data ) && is_array( $data ) ? $data : []; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 ?>
 <div class="wpr-optionHeader">
 	<h3 class="wpr-title2">RocketCDN</h3>

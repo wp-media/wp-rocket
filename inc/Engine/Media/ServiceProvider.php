@@ -70,21 +70,16 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $options )
 			->addArgument( $this->getContainer()->get( 'lazyload_assets' ) )
 			->addArgument( $this->getContainer()->get( 'lazyload_image' ) )
-			->addArgument( $this->getContainer()->get( 'lazyload_iframe' ) )
-			->addTag( 'lazyload_subscriber' );
-		$this->getContainer()->addShared( 'lazyload_admin_subscriber', LazyloadAdminSubscriber::class )
-			->addTag( 'admin_subscriber' );
+			->addArgument( $this->getContainer()->get( 'lazyload_iframe' ) );
+		$this->getContainer()->addShared( 'lazyload_admin_subscriber', LazyloadAdminSubscriber::class );
 		$this->getContainer()->addShared( 'emojis_subscriber', EmojisSubscriber::class )
-			->addArgument( $options )
-			->addTag( 'front_subscriber' );
+			->addArgument( $options );
 		$this->getContainer()->add( 'image_dimensions', ImageDimensions::class )
 			->addArgument( $options );
 		$this->getContainer()->addShared( 'image_dimensions_subscriber', ImageDimensionsSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'image_dimensions' ) )
-			->addArgument( $this->getContainer()->get( 'tests' ) )
-			->addTag( 'front_subscriber' );
+			->addArgument( $this->getContainer()->get( 'tests' ) );
 		$this->getContainer()->addShared( 'image_dimensions_admin_subscriber', ImageDimensionsAdminSubscriber::class )
-			->addArgument( $this->getContainer()->get( 'image_dimensions' ) )
-			->addTag( 'admin_subscriber' );
+			->addArgument( $this->getContainer()->get( 'image_dimensions' ) );
 	}
 }

@@ -135,8 +135,8 @@ class Smush implements Subscriber_Interface {
 	 * @since 3.5.5
 	 *
 	 * @return array {
-	 *     @var bool $images  True when lazyload is enabled for images. False otherwise.
-	 *     @var bool $iframes True when lazyload is enabled for iframes. False otherwise.
+	 *     bool $images  True when lazyload is enabled for images. False otherwise.
+	 *     bool $iframes True when lazyload is enabled for iframes. False otherwise.
 	 * }
 	 */
 	private function is_smush_lazyload_enabled() {
@@ -149,7 +149,7 @@ class Smush implements Subscriber_Interface {
 			return $enabled;
 		}
 
-		if ( ! method_exists( '\Smush\Core\Settings', 'get_instance' ) ) {
+		if ( ! method_exists( '\Smush\Core\Settings', 'get_instance' ) ) { // @phpstan-ignore-line
 			return $enabled;
 		}
 

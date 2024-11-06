@@ -71,8 +71,9 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Add option to safe mode.
 	 *
-	 * @param string[] $options Safe mode options.
-	 * @return string[]
+	 * @param array $options Safe mode options.
+	 *
+	 * @return array
 	 */
 	public function add_option_safemode( array $options ) {
 		$options['lazyload_css_bg_img'] = 0;

@@ -69,10 +69,6 @@ class Test_updateAddonField extends TestCase {
 				return $config['cloudflare_cached_domain_name'];
 			}
 
-			if('cloudflare_cached_domain_name' === $name) {
-				return $config['cloudflare_cached_domain_name'];
-			}
-
 			return null;
 		});
         $this->assertSame($expected, $this->cloudflare->update_addon_field($config['settings']));

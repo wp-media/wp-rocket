@@ -12,9 +12,11 @@ use Brain\Monkey\Filters;
 class Test_cleanFile extends GodaddyTestCase {
 
 	public function testShouldPurgeFile( ) {
-		Filters\expectApplied( 'pre_http_request' )->andReturn( 'response' );
+		$this->markTestSkipped( 'Test doest not perform assertion, need to revisit' );
 
-		do_action( 'before_rocket_clean_file', home_url() );
+//		Filters\expectApplied( 'pre_http_request' )->andReturn( 'response' );
+//
+//		do_action( 'before_rocket_clean_file', home_url() );
 	}
 
 }

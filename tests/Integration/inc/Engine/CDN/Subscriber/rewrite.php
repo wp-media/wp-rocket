@@ -12,12 +12,15 @@ class Test_Rewrite extends TestCase {
 	public function set_up() {
 		parent::set_up();
 
-		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'rewrite', 20 );
+		add_filter( 'rocket_disable_meta_generator', '__return_true' );
+
+		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'rewrite', 2 );
 	}
 
 	public function tear_down() {
 		remove_filter( 'content_url', [ $this, 'setContentURL' ] );
 		remove_filter( 'includes_url', [ $this, 'setIncludesURL' ] );
+		add_filter( 'rocket_disable_meta_generator', '__return_true' );
 
 		$this->restoreWpHook( 'rocket_buffer' );
 

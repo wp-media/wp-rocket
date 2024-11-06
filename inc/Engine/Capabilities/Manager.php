@@ -4,6 +4,7 @@ namespace WP_Rocket\Engine\Capabilities;
 
 use WP_Rocket\Engine\Activation\ActivationInterface;
 use WP_Rocket\Engine\Deactivation\DeactivationInterface;
+use WP_Role;
 
 class Manager implements ActivationInterface, DeactivationInterface {
 	/**

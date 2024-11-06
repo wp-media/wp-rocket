@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\Post;
 
@@ -12,16 +13,16 @@ use WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\AdminTrait;
  * Test class covering \WP_Rocket\Engine\CriticalPath\Admin\Post::cpcss_actions
  * @uses   ::rocket_direct_filesystem
  *
- * @group  CriticalPath
- * @group  CriticalPathPost
+ * @group CriticalPath
+ * @group CriticalPathPost
  */
-class Test_CpcssActions extends FilesystemTestCase {
+class TestCpcssActions extends FilesystemTestCase {
 	use AdminTrait;
 
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/Admin/Post/cpcssActions.php';
 	private $post;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->setUpMocks();

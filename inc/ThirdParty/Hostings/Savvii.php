@@ -63,18 +63,14 @@ class Savvii implements Subscriber_Interface {
 	public function clear_cache_after_savvii() {
 		if (
 			! (
-				// @phpstan-ignore-next-line
 				isset( $_REQUEST[ CacheFlusherPlugin::NAME_FLUSH_NOW ] )
 				&&
-				// @phpstan-ignore-next-line
 				check_admin_referer( CacheFlusherPlugin::NAME_FLUSH_NOW )
 			)
 			&&
 			! (
-				// @phpstan-ignore-next-line
 				isset( $_REQUEST[ CacheFlusherPlugin::NAME_DOMAINFLUSH_NOW ] )
 				&&
-				// @phpstan-ignore-next-line
 				check_admin_referer( CacheFlusherPlugin::NAME_DOMAINFLUSH_NOW )
 			)
 		) {

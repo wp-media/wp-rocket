@@ -12,11 +12,11 @@ return [
 		],
 		'data'    => [
 			'nonce'      => 12345,
-			'origin_url' => 'https://wp-rocket.me',
+			'origin_url' => 'https://api.wp-rocket.me',
 		],
 		'expected' => [
 			'nonce'      => 12345,
-			'origin_url' => 'https://wp-rocket.me',
+			'origin_url' => 'https://api.wp-rocket.me',
 		],
 	],
 	'testShouldReturnDefaultWhenLicenseIsExpired' => [
@@ -30,11 +30,11 @@ return [
 		],
 		'data'    => [
 			'nonce'      => 12345,
-			'origin_url' => 'https://wp-rocket.me',
+			'origin_url' => 'https://api.wp-rocket.me',
 		],
 		'expected' => [
 			'nonce'      => 12345,
-			'origin_url' => 'https://wp-rocket.me',
+			'origin_url' => 'https://api.wp-rocket.me',
 		],
 	],
 	'testShouldReturnDefaultWhenLicenseIsSoonExpired' => [
@@ -48,11 +48,11 @@ return [
 		],
 		'data'    => [
 			'nonce'      => 12345,
-			'origin_url' => 'https://wp-rocket.me',
+			'origin_url' => 'https://api.wp-rocket.me',
 		],
 		'expected' => [
 			'nonce'      => 12345,
-			'origin_url' => 'https://wp-rocket.me',
+			'origin_url' => 'https://api.wp-rocket.me',
 		],
 	],
 	'testShouldReturnDefaultWhenPromoNotActive' => [
@@ -66,11 +66,11 @@ return [
 		],
 		'data'    => [
 			'nonce'      => 12345,
-			'origin_url' => 'https://wp-rocket.me',
+			'origin_url' => 'https://api.wp-rocket.me',
 		],
 		'expected' => [
 			'nonce'      => 12345,
-			'origin_url' => 'https://wp-rocket.me',
+			'origin_url' => 'https://api.wp-rocket.me',
 		],
 	],
 	'testShouldReturnUpdatedArrayWhenPromoActive' => [
@@ -84,11 +84,11 @@ return [
 		],
 		'data'    => [
 			'nonce'      => 12345,
-			'origin_url' => 'https://wp-rocket.me',
+			'origin_url' => 'https://api.wp-rocket.me',
 		],
 		'expected' => [
 			'nonce'      => 12345,
-			'origin_url' => 'https://wp-rocket.me',
+			'origin_url' => 'https://api.wp-rocket.me',
 			'promo_end'  => strtotime( 'next week' ),
 		],
 	],
@@ -103,11 +103,11 @@ return [
 		],
 		'data'    => [
 			'nonce'      => 12345,
-			'origin_url' => 'https://wp-rocket.me',
+			'origin_url' => 'https://api.wp-rocket.me',
 		],
 		'expected' => [
 			'nonce'      => 12345,
-			'origin_url' => 'https://wp-rocket.me',
+			'origin_url' => 'https://api.wp-rocket.me',
 		],
 	],
 ];

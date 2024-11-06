@@ -13,7 +13,7 @@ class User {
 	/**
 	 * Instantiate the class
 	 *
-	 * @param object $user The user object.
+	 * @param object|false $user The user object.
 	 */
 	public function __construct( $user ) {
 		$this->user = is_object( $user ) ? $user : new \stdClass();

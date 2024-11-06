@@ -1,10 +1,10 @@
 <?php
 namespace WP_Rocket\ThirdParty\Plugins\Ecommerce;
 
+use WP_Post;
 use WP_Rocket\Engine\Optimization\DelayJS\HTML;
 use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\Event_Management\Event_Manager_Aware_Subscriber_Interface;
-use WP_Rocket\Logger\Logger;
 use WP_Rocket\Traits\Config_Updater;
 
 /**
@@ -18,7 +18,7 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 	/**
 	 * The WordPress Event Manager
 	 *
-	 * @var Event_Manager;
+	 * @var Event_Manager
 	 */
 	protected $event_manager;
 
@@ -388,7 +388,7 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 	 * @since 3.1
 	 * @author Remy Perona
 	 *
-	 * @return string
+	 * @return mixed
 	 */
 	private function get_cache_empty_cart() {
 		$lang = rocket_get_current_language();
@@ -512,7 +512,6 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 	 * @return bool
 	 */
 	private function product_has_gallery_images() {
-		// @phpstan-ignore-next-line
 		$product = wc_get_product( get_the_ID() );
 		if ( empty( $product ) ) {
 			return false;
@@ -530,7 +529,6 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 			return;
 		}
 
-		// @phpstan-ignore-next-line
 		if ( ! is_product() ) {
 			return;
 		}
@@ -551,18 +549,13 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 	 *
 	 * @return array
 	 */
-	public function show_notempty_product_gallery_with_delayJS( $exclusions = [] ): array {
+	public function show_notempty_product_gallery_with_delayJS( array $exclusions = [] ): array {
 		global $wp_version;
-
-		if ( ! is_array( $exclusions ) ) {
-			$exclusions = (array) $exclusions;
-		}
 
 		if ( ! $this->delayjs_html->is_allowed() ) {
 			return $exclusions;
 		}
 
-		// @phpstan-ignore-next-line
 		if ( ! is_product() ) {
 			return $exclusions;
 		}
@@ -616,14 +609,13 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 	 */
 	public function allow_rocket_clean_post( int $product_id ): void {
 		$urls = [];
-		// @phpstan-ignore-next-line
+
 		$category_list = wc_get_product_category_list( $product_id );
 
 		if ( preg_match_all( '/<a\s+(?:[^>]*?\s+)?href=(["\'])(?<urls>.*?)\1/i', $category_list, $matches ) ) {
 			$urls = $matches['urls'];
 		}
 
-		// @phpstan-ignore-next-line
 		$shop_page = get_permalink( wc_get_page_id( 'shop' ) );
 
 		if ( empty( $shop_page ) ) {

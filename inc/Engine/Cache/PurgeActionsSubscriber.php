@@ -44,21 +44,22 @@ class PurgeActionsSubscriber implements Subscriber_Interface {
 		$slug = rocket_get_constant( 'WP_ROCKET_SLUG' );
 
 		return [
-			'profile_update'                      => 'purge_user_cache',
-			'delete_user'                         => 'purge_user_cache',
-			'create_term'                         => [ 'maybe_purge_cache_on_term_change', 10, 3 ],
-			'edit_term'                           => [ 'maybe_purge_cache_on_term_change', 10, 3 ],
-			'delete_term'                         => [ 'maybe_purge_cache_on_term_change', 10, 3 ],
-			'after_rocket_clean_post'             => [
+			'profile_update'                               => 'purge_user_cache',
+			'delete_user'                                  => 'purge_user_cache',
+			'create_term'                                  => [ 'maybe_purge_cache_on_term_change', 10, 3 ],
+			'edit_term'                                    => [ 'maybe_purge_cache_on_term_change', 10, 3 ],
+			'delete_term'                                  => [ 'maybe_purge_cache_on_term_change', 10, 3 ],
+			'after_rocket_clean_post'                      => [
 				[ 'purge_dates_archives' ],
 				[ 'purge_post_terms_urls' ],
 			],
-			'rocket_saas_complete_job_status'     => [ 'purge_url_cache', 100 ],
-			'rocket_rucss_after_clearing_usedcss' => 'purge_url_cache',
-			'rocket_after_save_dynamic_lists'     => 'purge_cache_after_saving_dynamic_lists',
-			'update_option_' . $slug              => [ 'purge_cache_reject_uri_partially', 10, 2 ],
-			'update_option_blog_public'           => 'purge_cache',
-			'wp_rocket_upgrade'                   => [ 'on_update', 10, 2 ],
+			'rocket_saas_complete_job_status'              => [ 'purge_url_cache', 100 ],
+			'rocket_rucss_after_clearing_usedcss'          => 'purge_url_cache',
+			'rocket_performance_hints_data_after_clearing' => 'purge_url_cache',
+			'rocket_after_save_dynamic_lists'              => 'purge_cache_after_saving_dynamic_lists',
+			'update_option_' . $slug                       => [ 'purge_cache_reject_uri_partially', 10, 2 ],
+			'update_option_blog_public'                    => 'purge_cache',
+			'wp_rocket_upgrade'                            => [ 'on_update', 10, 2 ],
 		];
 	}
 

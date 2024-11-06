@@ -58,6 +58,6 @@ class Test_maybeCleanCacheDomainChange extends TestCase {
 		}
 
         $this->subscriber->maybe_clean_cache_domain_change();
-		$this->assertTrue(true);
+		$this->assertTrue(true); // @phpstan-ignore-line
     }
 }

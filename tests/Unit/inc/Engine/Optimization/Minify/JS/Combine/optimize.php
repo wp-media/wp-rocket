@@ -8,6 +8,7 @@ use WP_Rocket\Dependencies\Minify;
 use Mockery;
 use WP_Rocket\Engine\Optimization\AssetsLocalCache;
 use WP_Rocket\Engine\Optimization\DeferJS\DeferJS;
+use WP_Rocket\Engine\Optimization\DynamicLists\DynamicLists;
 use WP_Rocket\Engine\Optimization\Minify\JS\Combine;
 use WP_Rocket\Tests\Unit\inc\Engine\Optimization\TestCase;
 
@@ -24,6 +25,8 @@ class Test_Optimize extends TestCase {
 	private   $minify;
 	private   $defer_js;
 
+	private   $dynamic_lists;
+
 	public function setUp(): void {
 		parent::setUp();
 
@@ -32,7 +35,8 @@ class Test_Optimize extends TestCase {
 		$this->minify->shouldReceive( 'minify' )
 					 ->andReturn( 'minified JS' );
 
-		$this->defer_js = Mockery::mock( DeferJS::class );
+		$this->defer_js      = Mockery::mock( DeferJS::class );
+		$this->dynamic_lists = Mockery::mock( DynamicLists::class );
 
 		Functions\stubEscapeFunctions();
 		Functions\when( 'wp_scripts' )->alias( function () {
@@ -58,6 +62,11 @@ class Test_Optimize extends TestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldCombineJS( $original, $expected, $config ) {
+		Filters\expectApplied( 'rocket_disable_meta_generator' )
+			->atMost()
+			->once()
+			->andReturn( true );
+
 		$this->options->shouldReceive( 'get' )
 			->with( 'minify_js_key', 'rocket_uniqid' )
 			->andReturn( 'rocket_uniqid' );
@@ -90,7 +99,16 @@ class Test_Optimize extends TestCase {
 		Filters\expectApplied( 'rocket_excluded_inline_js_content' )
 			->andReturn( ['nonce'] );
 
-		$combine = new Combine( $this->options, $this->minify, Mockery::mock( AssetsLocalCache::class ), $this->defer_js );
+		$this->dynamic_lists->shouldReceive('get_exclude_js_templates')
+				->andReturn($config['exclude_js_templates']);
+
+		$combine = new Combine(
+			$this->options,
+			$this->minify,
+			Mockery::mock( AssetsLocalCache::class ),
+			$this->defer_js,
+			$this->dynamic_lists
+		);
 
 		$this->assertSame(
 			$this->format_the_html( $expected['html'] ),

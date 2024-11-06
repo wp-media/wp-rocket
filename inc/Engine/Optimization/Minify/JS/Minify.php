@@ -3,6 +3,7 @@ namespace WP_Rocket\Engine\Optimization\Minify\JS;
 
 use WP_Rocket\Dependencies\Minify as Minifier;
 use WP_Rocket\Engine\Optimization\Minify\ProcessorInterface;
+use WP_Rocket\Engine\Support\CommentTrait;
 use WP_Rocket\Logger\Logger;
 
 /**
@@ -11,6 +12,8 @@ use WP_Rocket\Logger\Logger;
  * @since 3.1
  */
 class Minify extends AbstractJSOptimization implements ProcessorInterface {
+	use CommentTrait;
+
 	/**
 	 * Minifies JS files
 	 *
@@ -111,7 +114,7 @@ class Minify extends AbstractJSOptimization implements ProcessorInterface {
 			$html = $this->replace_script( $script, $minify_url, $html );
 		}
 
-		return $html;
+		return $this->add_meta_comment( 'minify_js', $html );
 	}
 
 	/**

@@ -5,38 +5,27 @@ namespace WP_Rocket\Tests\Unit\inc\Addon\Sucuri\Subscriber;
 use Mockery;
 use WP_Rocket\Addon\Sucuri\Subscriber;
 use WP_Rocket\Admin\Options_Data;
-
-
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
  * Test class covering \WP_Rocket\Addon\Sucuri\Subscriber::add_cdn_helper_message
  */
-class Test_addCdnHelperMessage extends TestCase {
+class TestAddCdnHelperMessage extends TestCase {
+	protected $options;
+	protected $subscriber;
 
-    /**
-     * @var Options_Data
-     */
-    protected $options;
+	public function set_up() {
+		parent::set_up();
 
-    /**
-     * @var Subscriber
-     */
-    protected $subscriber;
+		$this->options    = Mockery::mock( Options_Data::class );
+		$this->subscriber = new Subscriber( $this->options );
+	}
 
-    public function set_up() {
-        parent::set_up();
-        $this->options = Mockery::mock(Options_Data::class);
-
-        $this->subscriber = new Subscriber($this->options);
-    }
-
-    /**
-     * @dataProvider configTestData
-     */
-    public function testShouldReturnAsExpected( $config, $expected )
-    {
-		$this->options->expects()->get('sucury_waf_cache_sync', false)->andReturn($config['is_enabled']);
-        $this->assertSame($expected, $this->subscriber->add_cdn_helper_message($config['addons']));
-    }
+	/**
+	 * @dataProvider configTestData
+	 */
+	public function testShouldReturnAsExpected( $config, $expected ) {
+		$this->options->shouldReceive('get')->with('sucury_waf_cache_sync', false)->andReturn($config['is_enabled']);
+		$this->assertSame($expected, $this->subscriber->add_cdn_helper_message($config['addons']));
+	}
 }

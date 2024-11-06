@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Engine\Optimization\RUCSS\Database\Schemas;
 
-use WP_Rocket\Dependencies\Database\Schema;
+use WP_Rocket\Dependencies\BerlinDB\Database\Schema;
 
 /**
  * RUCSS UsedCSS Schema.

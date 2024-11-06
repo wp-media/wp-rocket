@@ -54,4 +54,22 @@ return [
 		],
 		'expected' => true,
 	],
+	'testRocketPerformanceHintDataShouldPurgeOnceWhenVarnishEnabled' => [
+		'config' => [
+			'filter' => false,
+			'hook' => 'rocket_performance_hints_data_after_clearing',
+			'arg' => 'http://example.org/about/',
+			'option' => 1,
+		],
+		'expected' => true,
+	],
+	'testRocketPerformanceHintDataShouldPurgeOnceWhenFilterEnabled' => [
+		'config' => [
+			'filter' => true,
+			'hook' => 'rocket_performance_hints_data_after_clearing',
+			'arg' => 'http://example.org/about/',
+			'option' => 0,
+		],
+		'expected' => true,
+	]
 ];

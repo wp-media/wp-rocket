@@ -104,11 +104,7 @@ class PostEditOptionsSubscriber extends Abstract_Render implements Subscriber_In
 		 *
 		 * @param string[] $original_fields Metaboxes fields.
 		 */
-		$fields = apply_filters( 'rocket_meta_boxes_fields', $original_fields );
-
-		if ( ! is_array( $fields ) ) {
-			$fields = $original_fields;
-		}
+		$fields = wpm_apply_filters_typed( 'array', 'rocket_meta_boxes_fields', $original_fields );
 
 		$fields_attributes = [];
 
@@ -179,11 +175,7 @@ class PostEditOptionsSubscriber extends Abstract_Render implements Subscriber_In
 		 *
 		 * @param string[] $original_fields Metaboxes fields.
 		 */
-		$fields = apply_filters( 'rocket_meta_boxes_fields', $original_fields );
-
-		if ( ! is_array( $fields ) ) {
-			$fields = $original_fields;
-		}
+		$fields = wpm_apply_filters_typed( 'array', 'rocket_meta_boxes_fields', $original_fields );
 
 		$fields = array_keys( $fields );
 

@@ -9,12 +9,13 @@ use WP_Rocket\Tests\Integration\AjaxTestCase;
 
 /**
  * Test class covering \WP_Rocket\Engine\CriticalPath\Admin\Subscriber::cpcss_heartbeat
+ *
  * @uses   \WP_Rocket\Admin\Options_Data::get
  * @uses   \WP_Rocket\Engine\CriticalPath\Admin\Admin::cpcss_heartbeat
  * @uses   \WP_Rocket\Engine\CriticalPath\APIClient::send_generation_request
  * @uses   \WP_Rocket\Engine\CriticalPath\DataManager::delete_cache_job_id
  * @uses   \WP_Rocket\Engine\CriticalPath\DataManager::get_cache_job_id
- * @uses   \WP_Rocket\Engine\CriticalPath\DataManager::get_job_details
+ * @uses   \WP_Rocket\Engine\CriticalPath\APIClient::get_job_details
  * @uses   \WP_Rocket\Engine\CriticalPath\DataManager::set_cache_job_id
  * @uses   \WP_Rocket\Engine\CriticalPath\ProcessorService::process_generate
  * @uses   ::rocket_has_constant

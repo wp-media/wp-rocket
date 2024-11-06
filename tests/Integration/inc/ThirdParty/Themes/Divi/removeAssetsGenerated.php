@@ -10,7 +10,7 @@ use WP_Rocket\ThirdParty\Themes\Divi;
  *
  * @group Themes
  */
-class Test_RemoveAssetsGenerated extends WPThemeTestcase {
+class TestRemoveAssetsGenerated extends WPThemeTestcase {
 	private $container;
 	private $event;
 	private $subscriber;
@@ -20,17 +20,11 @@ class Test_RemoveAssetsGenerated extends WPThemeTestcase {
 	public function set_up() {
 		parent::set_up();
 
-		// Disable ATF optimization to prevent DB request (unrelated to the test).
-		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
-
 		$this->container = apply_filters( 'rocket_container', '' );
 		$this->event = $this->container->get( 'event_manager' );
 	}
 
 	public function tear_down() {
-		// Re-enable ATF optimization.
-		remove_filter( 'rocket_above_the_fold_optimization', '__return_false' );
-
 		$this->event->remove_subscriber( $this->subscriber );
 
 		parent::tear_down();
@@ -49,8 +43,9 @@ class Test_RemoveAssetsGenerated extends WPThemeTestcase {
 
 		$this->event->add_subscriber( $this->subscriber );
 
-		add_action( 'et_dynamic_late_assets_generated', '__return_true' );
-		$this->assertTrue( has_action( 'et_dynamic_late_assets_generated' ) );
+		add_filter( 'et_dynamic_late_assets_generated', '__return_true' );
+
+		$this->assertTrue( has_filter( 'et_dynamic_late_assets_generated' ) );
 
 		switch_theme( $config['stylesheet'] );
 
