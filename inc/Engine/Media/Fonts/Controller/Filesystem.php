@@ -142,7 +142,7 @@ class Filesystem extends AbstractFileSystem {
 	private function get_fonts_full_path( string $provider, string $hash_url ): string {
 		$font_provider_path = $this->get_font_provider_path( $provider );
 
-		return $this->path . $font_provider_path . $hash_url . '/' . $this->get_version() . '/';
+		return $this->path . $font_provider_path . $this->get_version() . '/' . $hash_url . '/';
 	}
 
 
@@ -158,7 +158,7 @@ class Filesystem extends AbstractFileSystem {
 		$full_path     = $this->path . $font_provider_path;
 		$relative_path = str_replace( WP_CONTENT_DIR, '', $full_path );
 
-		return $relative_path . $hash_url . '/' . $this->get_version() . '/';
+		return $relative_path . $this->get_version() . '/' . $hash_url . '/';
 	}
 
 	/**

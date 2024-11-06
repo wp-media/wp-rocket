@@ -5,13 +5,22 @@ namespace WP_Rocket\Engine\Common;
 
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
+use WP_Filesystem_Direct;
 
 abstract class AbstractFileSystem {
 	/**
-	 * @var
+	 * WP Filesystem instance.
+	 *
+	 * @var WP_Filesystem_Direct
 	 */
 	protected $filesystem;
 
+	/**
+	 * Constructor method.
+	 * Initializes a new instance of the Controller class.
+	 *
+	 * @param WP_Filesystem_Direct $filesystem Filesystem class.
+	 */
 	public function __construct( $filesystem = null ) {
 		$this->filesystem = $filesystem ?? rocket_direct_filesystem();
 	}
@@ -39,6 +48,13 @@ abstract class AbstractFileSystem {
 		return $this->filesystem->get_contents( $file );
 	}
 
+	/**
+	 * Delete file from a directory
+	 *
+	 * @param string $file_path Path to file that would be deleted.
+	 *
+	 * @return bool
+	 */
 	protected function delete_file( string $file_path ): bool {
 		return $this->filesystem->delete( $file_path, false, 'f' );
 	}
