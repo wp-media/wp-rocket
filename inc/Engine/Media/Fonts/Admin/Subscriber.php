@@ -32,7 +32,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'rocket_first_install_options' => [ 'add_option', 14 ],
+			'rocket_first_install_options' => [ 'add_option', 16 ],
 			'rocket_input_sanitize'        => [ 'sanitize_option', 10, 2 ],
 		];
 	}
