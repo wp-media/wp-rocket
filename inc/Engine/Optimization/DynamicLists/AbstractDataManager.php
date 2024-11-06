@@ -165,5 +165,10 @@ abstract class AbstractDataManager {
 	 */
 	public function remove_lists_cache() {
 		delete_transient( $this->get_cache_transient_name() );
+		$lists_filepath = $this->get_json_filepath();
+		if ( ! $this->filesystem->exists( $lists_filepath ) ) {
+			return;
+		}
+		$this->filesystem->delete( $lists_filepath );
 	}
 }
