@@ -4,14 +4,9 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Media\Fonts\Controller;
 
-class Filesystem {
-	/**
-	 * WP Filesystem instance
-	 *
-	 * @var WP_Filesystem_Direct
-	 */
-	private $filesystem;
+use WP_Rocket\Engine\Common\AbstractFileSystem;
 
+class Filesystem extends AbstractFileSystem {
 	/**
 	 * Path to the fonts storage
 	 *
@@ -33,8 +28,9 @@ class Filesystem {
 	 * @param WP_Filesystem_Direct $filesystem WP Filesystem instance.
 	 */
 	public function __construct( $base_path, $filesystem = null ) {
-		$this->filesystem = is_null( $filesystem ) ? rocket_direct_filesystem() : $filesystem;
-		$this->path       = $base_path . get_current_blog_id() . '/';
+		parent::__construct( is_null( $filesystem ) ? rocket_direct_filesystem() : $filesystem );
+
+		$this->path = $base_path . get_current_blog_id() . '/';
 	}
 
 	/**
@@ -65,7 +61,6 @@ class Filesystem {
 	 * @return bool
 	 */
 	public function write_font_css( string $font_url, string $provider ): bool {
-
 		$font_provider_path = $this->get_font_provider_path( $provider );
 		$hash_url           = $this->hash_url( $provider );
 		$file               = $this->get_fonts_full_path( $font_provider_path, $hash_url );
@@ -101,14 +96,14 @@ class Filesystem {
 					continue;
 				}
 
-				$this->filesystem->put_contents( $local_path, $font_content, rocket_get_filesystem_perms( 'file' ) );
+				$this->write_file( $local_path, $font_content );
 			}
 
 			$local_url = content_url( $relative_path . implode( '/', $path_parts ) );
 			$local_css = str_replace( $font_url, $local_url, $local_css );
 		}
 
-		return $this->filesystem->put_contents( $css_file_name, $local_css, rocket_get_filesystem_perms( 'file' ) );
+		return $this->write_file( $css_file_name, $local_css );
 	}
 
 	/**
@@ -191,7 +186,7 @@ class Filesystem {
 	public function delete_font_css( string $url ): bool {
 		$dir = $this->get_fonts_full_path( $this->get_font_provider_path( $url ), $url );
 
-		return $this->filesystem->delete( $dir, true, 'd' );
+		return $this->delete_file( $dir );
 	}
 
 	/**
