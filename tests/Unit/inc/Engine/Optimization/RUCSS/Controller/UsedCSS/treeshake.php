@@ -1,6 +1,6 @@
 <?php
 
-use Brain\Monkey\Functions;
+use Brain\Monkey\{Filters, Functions};
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Common\Clock\WPRClock;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
@@ -70,7 +70,12 @@ class Test_Treeshake extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldReturnAsExpected($config, $expected) {
+	public function testShouldReturnAsExpected( $config, $expected ) {
+		Filters\expectApplied( 'rocket_disable_meta_generator' )
+			->atMost()
+			->once()
+			->andReturn( true );
+
 		$wp = new WP();
 		$GLOBALS['wp'] = $wp;
 

@@ -7,6 +7,7 @@ use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Engine\CDN\Subscriber as CDNSubscriber;
+use WP_Rocket\Engine\Support\CommentTrait;
 
 /**
  * Subscriber for the WebP support.
@@ -14,6 +15,8 @@ use WP_Rocket\Engine\CDN\Subscriber as CDNSubscriber;
  * @since 3.4
  */
 class Subscriber extends AbstractWebp implements Subscriber_Interface {
+	use CommentTrait;
+
 	/**
 	 * Options_Data instance.
 	 *
@@ -158,6 +161,8 @@ class Subscriber extends AbstractWebp implements Subscriber_Interface {
 		$has_webp = apply_filters( 'rocket_page_has_webp_files', $has_webp, $html );
 
 		if ( $has_webp ) {
+			$html = $this->add_meta_comment( 'cache_webp', $html );
+
 			return $html . '<!-- Rocket has webp -->';
 		}
 

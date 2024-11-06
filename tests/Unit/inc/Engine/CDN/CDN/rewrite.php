@@ -3,7 +3,7 @@
 namespace WP_Rocket\Tests\Unit\inc\Engine\CDN\CDN;
 
 use Mockery;
-use Brain\Monkey\Functions;
+use Brain\Monkey\{Filters, Functions};
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CDN\CDN;
 
@@ -26,6 +26,11 @@ class Test_Rewrite extends TestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldRewriteURLToCDN( $home_url, $original, $expected ) {
+		Filters\expectApplied( 'rocket_disable_meta_generator' )
+			->atMost()
+			->once()
+			->andReturn( true );
+
 		Functions\when( 'content_url' )->justReturn( "{$home_url}/wp-content/" );
 		Functions\when( 'includes_url' )->justReturn( "{$home_url}/wp-includes/" );
 		Functions\when( 'wp_upload_dir' )->justReturn( "{$home_url}/wp-content/uploads/" );

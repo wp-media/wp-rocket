@@ -46,7 +46,8 @@
 		"cloudflare/cf-ip-rewrite": "^1.0",
 		"composer/installers": "^1.0 || ^2.0",
 		"voku/simple_html_dom": "^4.8",
-		"wp-media/apply-filters-typed": "^1.0"
+		"wp-media/apply-filters-typed": "^1.0",
+		"wp-media/plugin-family": "^1.0"
 	},
 	"require-dev": {
 		"php": "^7 || ^8",
@@ -121,7 +122,8 @@
 				"wp-media/wp-imagify-partner",
 				"wp-media/monolog",
 				"league/container",
-				"berlindb/core"
+				"berlindb/core",
+				"wp-media/plugin-family"
 			]
 		}
 	},

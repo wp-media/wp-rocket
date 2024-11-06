@@ -8,6 +8,7 @@ use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Filesystem_Direct;
+use WP_Rocket\Engine\Support\CommentTrait;
 
 /**
  * Critical CSS Subscriber.
@@ -16,6 +17,7 @@ use WP_Filesystem_Direct;
  */
 class CriticalCSSSubscriber implements Subscriber_Interface {
 	use RegexTrait;
+	use CommentTrait;
 
 	/**
 	 * Instance of Critical CSS.
@@ -602,7 +604,9 @@ JS;
 			1
 		);
 
-		return preg_replace( '#</body>#iU', $this->return_remove_cpcss_script() . '</body>', $buffer, 1 );
+		$buffer = preg_replace( '#</body>#iU', $this->return_remove_cpcss_script() . '</body>', $buffer, 1 );
+
+		return $this->add_meta_comment( 'async_css', $buffer );
 	}
 
 	/**

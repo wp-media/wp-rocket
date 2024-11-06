@@ -3,6 +3,7 @@ namespace WP_Rocket\Engine\Admin\Settings;
 
 use Imagify_Partner;
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\Dependencies\WPMedia\PluginFamily\Controller\{ PluginFamily, PluginFamilyInterface };
 
 /**
  * WP Rocket settings page subscriber.
@@ -10,7 +11,7 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  * @since 3.5.5 Moves into the new architecture.
  * @since 3.3
  */
-class Subscriber implements Subscriber_Interface {
+class Subscriber implements Subscriber_Interface, PluginFamilyInterface {
 	/**
 	 * Page instance
 	 *
@@ -19,12 +20,23 @@ class Subscriber implements Subscriber_Interface {
 	private $page;
 
 	/**
+	 * PluginFamily instance
+	 *
+	 * @var PluginFamily
+	 *
+	 * @since 3.17.2
+	 */
+	protected $plugin_family;
+
+	/**
 	 * Creates an instance of the object.
 	 *
-	 * @param Page $page Page instance.
+	 * @param Page         $page Page instance.
+	 * @param PluginFamily $plugin_family Plugin Family Instance.
 	 */
-	public function __construct( Page $page ) {
-			$this->page = $page;
+	public function __construct( Page $page, PluginFamily $plugin_family ) {
+		$this->page          = $page;
+		$this->plugin_family = $plugin_family;
 	}
 
 	/**
@@ -35,7 +47,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
-		return [
+		$events = [
 			'admin_menu'                           => 'add_admin_page',
 			'admin_init'                           => 'configure',
 			'wp_ajax_rocket_refresh_customer_data' => 'refresh_customer_data',
@@ -44,6 +56,7 @@ class Subscriber implements Subscriber_Interface {
 				[ 'add_menu_tools_page' ],
 				[ 'add_imagify_page', 9 ],
 				[ 'add_tutorials_page', 11 ],
+				[ 'add_plugins_page', 12 ],
 			],
 			'admin_enqueue_scripts'                => [
 				[ 'enqueue_rocket_scripts' ],
@@ -56,6 +69,8 @@ class Subscriber implements Subscriber_Interface {
 			'wp_rocket_upgrade'                    => [ 'enable_separate_cache_files_mobile', 9, 2 ],
 			'admin_notices'                        => 'display_update_notice',
 		];
+
+		return array_merge( $events, PluginFamily::get_subscribed_events() );
 	}
 
 	/**
@@ -277,5 +292,41 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function display_update_notice() {
 		$this->page->display_update_notice();
+	}
+
+	/**
+	 * Add Plugins section to navigation.
+	 *
+	 * @since 3.17.2
+	 *
+	 * @param array $navigation Array of menu items.
+	 * @return array
+	 */
+	public function add_plugins_page( $navigation ) {
+		$navigation['plugins'] = [
+			'id'               => 'plugins',
+			'title'            => __( 'Our Plugins', 'rocket' ),
+			'menu_description' => __( 'Build Better, Faster, Safer', 'rocket' ),
+		];
+
+		return $navigation;
+	}
+
+	/**
+	 * Install and activate plugin method for plugin family
+	 *
+	 * @return void
+	 */
+	public function install_activate(): void {
+		$this->plugin_family->install_activate();
+	}
+
+	/**
+	 * Display error related to plugin family
+	 *
+	 * @return void
+	 */
+	public function display_error_notice(): void {
+		$this->plugin_family->display_error_notice();
 	}
 }

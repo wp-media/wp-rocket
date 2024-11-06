@@ -8,10 +8,12 @@ use WP_Filesystem_Direct;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Settings\Settings;
 use WP_Rocket\Engine\Optimization\RegexTrait;
+use WP_Rocket\Engine\Support\CommentTrait;
 use WP_Rocket\Logger\Logger;
 
 class ImageDimensions {
 	use RegexTrait;
+	use CommentTrait;
 
 	/**
 	 * Options_Data instance
@@ -155,7 +157,9 @@ class ImageDimensions {
 			return $html;
 		}
 
-		return str_replace( array_keys( $replaces ), $replaces, $html );
+		$html = str_replace( array_keys( $replaces ), $replaces, $html );
+
+		return $this->add_meta_comment( 'image_dimensions', $html );
 	}
 
 	/**
