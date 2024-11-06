@@ -65,18 +65,8 @@ class CombineV2 extends AbstractGFOptimization {
 		}
 
 		$families     = array_unique( $families );
-		$font_url     = $this->get_combined_url( $families );
-		$combined_tag = $this->get_optimized_markup( $font_url );
+		$combined_tag = $this->get_optimized_markup( $this->get_combined_url( $families ) );
 		$html         = preg_replace( '@<\/title>@i', '$0' . $combined_tag, $html, 1 );
-		$version      = 2;
-		/**
-		 * Filter v2 google fonts that will be stored locally.
-		 *
-		 * @param string $font_url The combined url of the fonts
-		 * @param string $provider The fonts provider
-		 * @param integer $version  The version of Google fonts api
-		*/
-		wpm_apply_filters_typed( 'null', 'rocket_host_google_fonts', $font_url, 'google-font', $version );
 
 		foreach ( $processed_tags as $font ) {
 			$html = str_replace( $font[0], '', $html );
