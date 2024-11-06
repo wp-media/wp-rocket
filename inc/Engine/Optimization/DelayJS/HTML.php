@@ -116,7 +116,7 @@ class HTML {
 		 *
 		 * @param array $excluded Array of excluded patterns.
 		 */
-		$this->excluded = wpm_apply_filters_typed( 'array', 'rocket_delay_js_exclusions', $this->excluded );
+		$this->excluded = wpm_apply_filters_typed( 'string[]', 'rocket_delay_js_exclusions', $this->excluded );
 		$this->excluded = array_map(
 			function ( $value ) {
 				if ( ! is_string( $value ) ) {
