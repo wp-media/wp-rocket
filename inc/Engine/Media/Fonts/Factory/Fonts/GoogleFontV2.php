@@ -29,6 +29,6 @@ class GoogleFontV2 extends GoogleFontVersion {
 	public function get_local_url(): string {
 		// To be replaced when developing the backend.
 		$hash = md5( $this->url );
-		return home_url( "/wp-content/cache/wp-rocket/fonts/google-fonts/2/{$hash}.css" );
+		return rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) . "fonts/google-fonts/2/{$hash}.css";
 	}
 }
