@@ -4,6 +4,7 @@ declare( strict_types=1 );
 namespace WP_Rocket\Engine\Optimization\DelayJS;
 
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Optimization\DelayJS\Admin\Settings;
 use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\DataManager;
 use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Engine\Support\CommentTrait;
@@ -104,11 +105,7 @@ class HTML {
 		if ( $this->options->get( 'delay_js_execution_safe_mode', 0 ) ) {
 			$this->excluded = array_merge(
 				$this->excluded,
-				[
-					'/jquery(-migrate)?-?([0-9.]+)?(.min|.slim|.slim.min)?.js(\?(.*))?( |\'|"|>)',
-					'js-(before|after)',
-					'(?:/wp-content/|/wp-includes/)(.*)',
-				]
+				Settings::get_safe_mode_exclusions()
 			);
 		}
 
