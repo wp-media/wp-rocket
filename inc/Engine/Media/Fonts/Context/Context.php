@@ -1,8 +1,9 @@
 <?php
 
-namespace WP_Rocket\Engine\Media\Fonts;
+namespace WP_Rocket\Engine\Media\Fonts\Context;
 
-use WP_Rocket\Engine\Optimization\ContextInterface;
+use WP_Rocket\Engine\Common\Context\ContextInterface;
+
 
 class Context implements ContextInterface {
 	/**

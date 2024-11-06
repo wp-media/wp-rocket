@@ -1,7 +1,9 @@
 <?php
 
-namespace WP_Rocket\Engine\Media\Fonts;
+namespace WP_Rocket\Engine\Media\Fonts\Factory;
 
+use WP_Rocket\Engine\Media\Fonts\Factory\Fonts\GoogleFontV1;
+use WP_Rocket\Engine\Media\Fonts\Factory\Fonts\GoogleFontV2;
 use WP_Rocket\Logger\Logger;
 
 class GoogleFontFactory {

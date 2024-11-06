@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Engine\Media\Fonts;
+namespace WP_Rocket\Engine\Media\Fonts\Factory;
 
 abstract class GoogleFontVersion {
 	/**
@@ -16,5 +16,4 @@ abstract class GoogleFontVersion {
 	 * @return string
 	 */
 	abstract public function get_local_url(): string;
-
 }
