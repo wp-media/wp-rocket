@@ -48,7 +48,7 @@ class DataManagerSubscriber implements Subscriber_Interface {
 			'wp_ajax_rocketcdn_process_status'       => 'get_process_status',
 			'wp_ajax_rocketcdn_validate_token_cname' => 'validate_token_cname',
 			self::CRON_EVENT                         => 'maybe_disable_cdn',
-			'wp_rocket_upgrade'                      => 'refresh_cdn_cname',
+			'wp_rocket_upgrade'                      => [ 'refresh_cdn_cname', 10, 2 ],
 		];
 	}
 
