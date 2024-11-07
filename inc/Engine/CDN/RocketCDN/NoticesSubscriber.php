@@ -47,6 +47,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 			'admin_notices'                    => [
 				[ 'promote_rocketcdn_notice' ],
 				[ 'purge_cache_notice' ],
+				[ 'change_cname_notice' ],
 			],
 			'rocket_before_cdn_sections'       => 'display_rocketcdn_cta',
 			'wp_ajax_toggle_rocketcdn_cta'     => 'toggle_cta',
@@ -352,5 +353,39 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	 */
 	private function is_white_label_account() {
 		return (bool) rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' );
+	}
+
+	public function change_cname_notice() {
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			return;
+		}
+
+		if ( 'settings_page_wprocket' !== get_current_screen()->id ) {
+			return;
+		}
+
+		$old_cname = get_option( 'rocketcdn_old_url' );
+		if ( empty( $old_cname ) ) {
+			return;
+		}
+
+		$new_subscription = $this->api_client->get_subscription_data();
+		if ( empty( $new_subscription['cdn_url'] ) || $old_cname === $new_subscription['cdn_url'] ) {
+			return;
+		}
+
+		$data = [
+			'old_cname'   => $old_cname,
+			'new_cname'   => $new_subscription['cdn_url'],
+			'support_url' => rocket_get_external_url(
+				'support',
+				[
+					'utm_source' => 'wp_plugin',
+					'utm_medium' => 'wp_rocket',
+				]
+			),
+		];
+
+		echo $this->generate( 'cname-change-notice', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 }
