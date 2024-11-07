@@ -48,6 +48,7 @@ class DataManagerSubscriber implements Subscriber_Interface {
 			'wp_ajax_rocketcdn_process_status'       => 'get_process_status',
 			'wp_ajax_rocketcdn_validate_token_cname' => 'validate_token_cname',
 			self::CRON_EVENT                         => 'maybe_disable_cdn',
+			'wp_rocket_upgrade'                      => 'refresh_cdn_cname',
 		];
 	}
 
@@ -314,5 +315,27 @@ class DataManagerSubscriber implements Subscriber_Interface {
 		if ( ! wp_next_scheduled( self::CRON_EVENT ) ) {
 			wp_schedule_single_event( $timestamp, self::CRON_EVENT );
 		}
+	}
+
+	public function refresh_cdn_cname( $new_version, $old_version ): void {
+		if ( version_compare( $old_version, '3.17.2', '>' ) ) {
+			return;
+		}
+
+		$old_subscription_data = $this->api_client->get_subscription_data();
+
+		if ( ! $old_subscription_data['is_active'] || empty( $old_subscription_data['cdn_url'] ) ) {
+			return;
+		}
+
+		delete_transient('rocketcdn_status');
+
+		$new_subscription_data = $this->api_client->get_subscription_data();
+
+		if ( $old_subscription_data['cdn_url'] === $new_subscription_data['cdn_url'] ) {
+			return;
+		}
+		// Only save the old url when the new url doesn't equal the old one.
+		update_option( 'rocketcdn_old_url', $old_subscription_data['cdn_url'] );
 	}
 }
