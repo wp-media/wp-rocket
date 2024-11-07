@@ -39,7 +39,8 @@ class Controller {
 			$pattern,
 			function ( $matches ) {
 				$google_fonts_url = $matches[1];
-				$font_instance    = GoogleFontFactory::create( $google_fonts_url );
+				$font_factory     = new GoogleFontFactory( $google_fonts_url );
+				$font_instance    = $font_factory->get_font_version();
 
 				if ( ! $font_instance ) {
 					return $matches[0];
