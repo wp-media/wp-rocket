@@ -44,9 +44,13 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function register(): void {
 		$this->getContainer()->add( 'media_fonts_context', Context::class );
 		$this->getContainer()->add( 'media_fonts_frontend_controller', FrontendController::class )
-			->addArgument( 'media_fonts_context' );
+			->addArgument(
+				$this->getContainer()->get('media_fonts_context')
+			);
 		$this->getContainer()->add( 'media_fonts_frontend_subscriber', FrontendSubscriber::class )
-			->addArgument( 'media_fonts_frontend_controller' );
+			->addArgument(
+				$this->getContainer()->get('media_fonts_frontend_controller' )
+			);
 		$this->getContainer()->addShared( 'media_fonts_factory', GoogleFontFactory::class );
 	}
 }
