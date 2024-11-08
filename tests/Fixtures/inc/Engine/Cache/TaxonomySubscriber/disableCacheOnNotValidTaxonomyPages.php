@@ -34,6 +34,18 @@ return [
 			],
 			'can_cache' => true,
 		],
+		'testValidTaxonomyPageWithPagination' => [
+			'config' => [
+				'is_category' => true,
+				'is_tag' => false,
+				'is_tax' => false,
+				'current_term_id' => 1,
+				'current_term_link' => 'http://example.com/category/test1',
+				'current_page_url' => 'http://example.com/category/test1/page/2',
+				'page' => 2,
+			],
+			'can_cache' => true,
+		],
 		'testEmptyTermId' => [
 			'config' => [
 				'is_category' => true,
@@ -64,6 +76,18 @@ return [
 				'current_term_id' => 1,
 				'current_term_link' => 'http://example.com/category/test1',
 				'current_page_url' => 'http://example.com/category/additional-query/test1',
+			],
+			'can_cache' => false,
+		],
+		'testNotValidTaxonomyPageWithPagination' => [
+			'config' => [
+				'is_category' => true,
+				'is_tag' => false,
+				'is_tax' => false,
+				'current_term_id' => 1,
+				'current_term_link' => 'http://example.com/category/test1',
+				'current_page_url' => 'http://example.com/category/additional-query/test1/page/2',
+				'page' => 2,
 			],
 			'can_cache' => false,
 		],
