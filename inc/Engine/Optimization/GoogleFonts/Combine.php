@@ -101,7 +101,7 @@ class Combine extends AbstractGFOptimization {
 	 *
 	 * @return void
 	 */
-	public function parse( array $matches ) {
+	private function parse( array $matches ) {
 		$fonts_array   = [];
 		$subsets_array = [];
 		foreach ( $matches as $match ) {
@@ -138,7 +138,7 @@ class Combine extends AbstractGFOptimization {
 	 *
 	 * @return string
 	 */
-	public function get_combined_url(): string {
+	private function get_combined_url(): string {
 		$display = $this->get_font_display_value();
 
 		return esc_url( "https://fonts.googleapis.com/css?family={$this->fonts}{$this->subsets}&display={$display}" );
