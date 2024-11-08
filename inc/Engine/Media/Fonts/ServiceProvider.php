@@ -6,8 +6,6 @@ use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvi
 use WP_Rocket\Engine\Media\Fonts\Context\Context;
 use WP_Rocket\Engine\Media\Fonts\Frontend\Controller as FrontendController;
 use WP_Rocket\Engine\Media\Fonts\Frontend\Subscriber as FrontendSubscriber;
-use WP_Rocket\Engine\Optimization\GoogleFonts\Combine as GoogleFontCombinerV1;
-use WP_Rocket\Engine\Optimization\GoogleFonts\CombineV2 as GoogleFontCombinerV2;
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
@@ -23,8 +21,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		'media_fonts_context',
 		'media_fonts_frontend_controller',
 		'media_fonts_frontend_subscriber',
-		'google_font_combiner_v1',
-		'google_font_combiner_v2',
 	];
 
 	/**
@@ -45,16 +41,10 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	public function register(): void {
 		$this->getContainer()->add( 'media_fonts_context', Context::class );
-
-		$this->getContainer()->addShared( 'google_font_combiner_v1', GoogleFontCombinerV1::class );
-		$this->getContainer()->addShared( 'google_font_combiner_v2', GoogleFontCombinerV2::class );
-
 		$this->getContainer()->add( 'media_fonts_frontend_controller', FrontendController::class )
 			->addArguments(
 				[
 					$this->getContainer()->get( 'media_fonts_context' ),
-					$this->getContainer()->get( 'google_font_combiner_v1' ),
-					$this->getContainer()->get( 'google_font_combiner_v2' ),
 				]
 			);
 		$this->getContainer()->add( 'media_fonts_frontend_subscriber', FrontendSubscriber::class )
