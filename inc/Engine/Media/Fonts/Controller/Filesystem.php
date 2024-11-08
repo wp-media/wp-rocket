@@ -36,20 +36,12 @@ class Filesystem extends AbstractFileSystem {
 	/**
 	 * Hash the url
 	 *
-	 * @param string $font_provider Font provider.
+	 * @param string $font_url Font url.
 	 *
 	 * @return string
 	 */
-	private function hash_url( string $font_provider ): string {
-		switch ( $font_provider ) {
-			case 'google-font':
-				$url = 'https://fonts.googleapis.com/css';
-				break;
-			default:
-				$url = '';
-		}
-
-		return md5( $url );
+	private function hash_url( string $font_url ): string {
+		return md5( $font_url );
 	}
 
 	/**
@@ -62,7 +54,7 @@ class Filesystem extends AbstractFileSystem {
 	 */
 	public function write_font_css( string $font_url, string $provider ): bool {
 		$font_provider_path = $this->get_font_provider_path( $provider );
-		$hash_url           = $this->hash_url( $provider );
+		$hash_url           = $this->hash_url( $font_url );
 		$file               = $this->get_fonts_full_path( $font_provider_path, $hash_url );
 		$css_file_name      = $file . $hash_url . '.css';
 		$relative_path      = $this->get_fonts_relative_path( $font_provider_path, $hash_url );
