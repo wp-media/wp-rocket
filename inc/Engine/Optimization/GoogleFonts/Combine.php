@@ -101,7 +101,7 @@ class Combine extends AbstractGFOptimization {
 	 *
 	 * @return void
 	 */
-	public function parse(array $matches ) {
+	public function parse( array $matches ) {
 		$fonts_array   = [];
 		$subsets_array = [];
 		foreach ( $matches as $match ) {

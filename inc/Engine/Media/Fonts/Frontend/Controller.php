@@ -10,6 +10,7 @@ use WP_Rocket\Logger\Logger;
 
 class Controller {
 	use RegexTrait;
+
 	/**
 	 * Context instance.
 	 *
@@ -27,7 +28,7 @@ class Controller {
 	 * @param Context $context Context instance.
 	 */
 	public function __construct( Context $context, Combine $combineV1, CombineV2 $combineV2 ) {
-		$this->context = $context;
+		$this->context   = $context;
 		$this->combineV1 = $combineV1;
 		$this->combineV2 = $combineV2;
 	}
@@ -43,11 +44,9 @@ class Controller {
 			return $html;
 		}
 		$html_nocomments = $this->hide_comments( $html );
-		$v1_url = $v2_url = '';
-
+		$v1_url          = $v2_url = '';
 
 		$v1_fonts = $this->find( '<link(?:\s+(?:(?!href\s*=\s*)[^>])+)?(?:\s+href\s*=\s*([\'"])(?<url>(?:https?:)?\/\/fonts\.googleapis\.com\/css[^\d](?:(?!\1).)+)\1)(?:\s+[^>]*)?>', $html_nocomments );
-		;
 		$v2_fonts = $this->find( '<link(?:\s+(?:(?!href\s*=\s*)[^>])+)?(?:\s+href\s*=\s*([\'"])(?<url>(?:https?:)?\/\/fonts\.googleapis\.com\/css2(?:(?!\1).)+)\1)(?:\s+[^>]*)?>', $html_nocomments );
 
 		if ( ! $v1_fonts && ! $v2_fonts ) {
@@ -64,16 +63,13 @@ class Controller {
 			foreach ( $v2_fonts as $tag ) {
 				$parsed_families = $this->combineV2->parse( $tag );
 				if ( ! empty( $parsed_families ) ) {
-					$families         = array_merge( $families, $parsed_families );
+					$families = array_merge( $families, $parsed_families );
 				}
 			}
 
-			$families     = array_unique( $families );
+			$families = array_unique( $families );
 			$this->combineV2->parse( $v2_fonts );
 		}
-
-
-
 
 		$v1_url = $this->combineV1->get_combined_url();
 		if ( ! empty( $families ) ) {
@@ -81,11 +77,10 @@ class Controller {
 		}
 
 		// debug print
-		return print_r($v1_url, true) . ' | '. print_r( md5( $v1_url ), true) . ' ||| ' . print_r($v2_url, true) . ' | '. print_r( md5( $v2_url ), true);
+		return print_r( $v1_url, true ) . ' | ' . print_r( md5( $v1_url ), true ) . ' ||| ' . print_r( $v2_url, true ) . ' | ' . print_r( md5( $v2_url ), true );
 
 		// Need to add check if font file is existing depending on the URL path.
 		// If it exists => change HTML to that path.
-
 
 		return $html;
 	}
