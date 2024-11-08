@@ -1,26 +1,36 @@
 <?php
+declare(strict_types=1);
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Media\Fonts\Context\Context;
 
-use WP_Rocket\Tests\Unit\TestCase;
-use WP_Rocket\Engine\Media\Fonts\Context\Context;
 use Brain\Monkey\Functions;
+use Mockery;
+use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Media\Fonts\Context\Context;
+use WP_Rocket\Tests\Unit\TestCase;
 
-class Test_IsAllowed extends TestCase
-{
-
+/**
+ * @group HostFontsLocally
+ */
+class TestIsAllowed extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldDoExpected($config, $expected)
-	{
-		$context = new Context();
+	public function testShouldDoExpected( $config, $expected ) {
+		$this->donotrocketoptimize = $config['do_not_optimize'];
 
-		Functions\expect('get_option')
-			->once()
-			->with('local_google_fonts')
-			->andReturn($config['local_google_fonts']);
+		$options = Mockery::mock( Options_Data::class );
+		$context = new Context( $options );
 
-		$this->assertSame($expected, $context->is_allowed($config));
+		Functions\when( 'rocket_bypass' )->justReturn( $config['bypass'] );
+
+		$options->shouldReceive( 'get' )
+			->with( 'host_fonts_locally', 0 )
+			->andReturn( $config['option'] );
+
+		$this->assertSame(
+			$expected,
+			$context->is_allowed( $config )
+		);
 	}
 }

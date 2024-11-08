@@ -1,18 +1,36 @@
 <?php
 
 return [
-	'testShouldReturnTrueWhenFeatureEnabled' => [
+	'testShouldReturnFalseWhenBypass' => [
 		'config' => [
-			'local_google_fonts' => false,
-			'rocket_self_host_fonts' => true,
-		],
-		'expected' => true,
-	],
-	'testShouldReturnFalseWhenFeatureDisabled' => [
-		'config' => [
-			'local_google_fonts' => true,
-			'rocket_self_host_fonts' => false,
+			'bypass' => true,
+			'do_not_optimize' => false,
+			'option' => true,
 		],
 		'expected' => false,
+	],
+	'testShouldReturnFalseWhenDoNotOptimize' => [
+		'config' => [
+			'bypass' => false,
+			'do_not_optimize' => true,
+			'option' => true,
+		],
+		'expected' => false,
+	],
+	'testShouldReturnFalseWhenOptionDisabled' => [
+		'config' => [
+			'bypass' => false,
+			'do_not_optimize' => true,
+			'option' => false,
+		],
+		'expected' => false,
+	],
+	'testShouldReturnTrueWhenOptionEnabled' => [
+		'config' => [
+			'bypass' => false,
+			'do_not_optimize' => false,
+			'option' => true,
+		],
+		'expected' => true,
 	],
 ];
