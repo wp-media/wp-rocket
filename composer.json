@@ -178,6 +178,7 @@
         "test-integration-translatepress": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group TranslatePress",
         "test-integration-weglot": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group Weglot",
 		"test-integration-pressidium": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group Pressidium",
+		"test-integration-googlefonthost": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group GoogleFontHost",
 		"run-tests": [
 			"@test-unit",
 			"@test-integration",

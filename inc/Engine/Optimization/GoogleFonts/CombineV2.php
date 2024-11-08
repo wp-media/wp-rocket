@@ -92,7 +92,7 @@ class CombineV2 extends AbstractGFOptimization {
 	 *
 	 * @return array
 	 */
-	private function parse( array $tag ): array {
+	public function parse( array $tag ): array {
 		if ( false !== strpos( $tag['url'], 'text=' ) ) {
 			Logger::debug( 'GOOGLEFONTS V2 COMBINE: ' . $tag['url'] . ' SKIPPED TO PRESERVE "text" ATTRIBUTE.' );
 			return [];
@@ -129,7 +129,7 @@ class CombineV2 extends AbstractGFOptimization {
 	 *
 	 * @return string
 	 */
-	private function get_combined_url( array $families ): string {
+	public function get_combined_url( array $families ): string {
 		$display = $this->get_font_display_value();
 
 		return esc_url( "https://fonts.googleapis.com/css2{$this->get_concatenated_families( $families )}&display={$display}" );
