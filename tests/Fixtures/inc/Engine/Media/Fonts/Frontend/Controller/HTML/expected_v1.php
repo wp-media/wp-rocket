@@ -9,7 +9,8 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Google Font V1 Template</title>
-	<link href="https://example.org/wp-content/cache/wp-rocket/fonts/example.org/70d57d4fc2ebfc2c090d3a76133094d2.css" rel="stylesheet">
+	<link rel="stylesheet" href="http://example.org/wp-content/cache/fonts/1/e/b/c/173c0fc97eef86a6e51ada56c5a9a.css" data-wpr-hosted-gf-parameters="family=Roboto"/>
+	<link rel="stylesheet" href="http://example.org/wp-content/cache/fonts/1/5/9/5/cb6ccb56826a802ed411cef875f0e.css" data-wpr-hosted-gf-parameters="family=Open+Sans"/>
 	<style>
 		.roboto-font {
 			font-family: 'Roboto', sans-serif;
