@@ -9,7 +9,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Google Font V1 Template</title>
-	<link href="https://example.com/wp-content/cache/wp-rocket/fonts/example.com/input_v1/70d57d4fc2ebfc2c090d3a76133094d2.css" rel="stylesheet">
+	<link href="https://example.org/wp-content/cache/wp-rocket/fonts/example.org/70d57d4fc2ebfc2c090d3a76133094d2.css" rel="stylesheet">
 	<style>
 		.roboto-font {
 			font-family: 'Roboto', sans-serif;
