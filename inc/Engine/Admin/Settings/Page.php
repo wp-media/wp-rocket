@@ -823,12 +823,13 @@ class Page extends Abstract_Render {
 		$lazyload_beacon  = $this->beacon->get_suggest( 'lazyload' );
 		$exclude_lazyload = $this->beacon->get_suggest( 'exclude_lazyload' );
 		$dimensions       = $this->beacon->get_suggest( 'image_dimensions' );
+		$fonts            = $this->beacon->get_suggest( 'host_fonts_locally' );
 
 		$this->settings->add_page_section(
 			'media',
 			[
 				'title'            => __( 'Media', 'rocket' ),
-				'menu_description' => __( 'LazyLoad, image dimensions', 'rocket' ),
+				'menu_description' => __( 'LazyLoad, image dimensions, font optimization', 'rocket' ),
 			]
 		);
 
@@ -890,7 +891,7 @@ class Page extends Abstract_Render {
 
 		$this->settings->add_settings_sections(
 			[
-				'lazyload_section'   => [
+				'lazyload_section'          => [
 					'title'       => __( 'LazyLoad', 'rocket' ),
 					'type'        => 'fields_container',
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
@@ -903,12 +904,20 @@ class Page extends Abstract_Render {
 					// translators: %1$s = “WP Rocket”, %2$s = a list of plugin names.
 					'helper'      => ! empty( $disable_lazyload ) ? sprintf( __( 'LazyLoad is currently activated in %2$s. If you want to use WP Rocket’s LazyLoad, disable this option in %2$s.', 'rocket' ), WP_ROCKET_PLUGIN_NAME, $disable_lazyload ) : '',
 				],
-				'dimensions_section' => [
+				'dimensions_section'        => [
 					'title'       => __( 'Image Dimensions', 'rocket' ),
 					'type'        => 'fields_container',
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 					'description' => sprintf( __( 'Add missing width and height attributes to images. Helps prevent layout shifts and improve the reading experience for your visitors. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $dimensions['url'] ) . '" data-beacon-article="' . esc_attr( $dimensions['id'] ) . '" target="_blank" rel="noopener noreferrer">', '</a>' ),
 					'help'        => $dimensions,
+					'page'        => 'media',
+				],
+				'font_optimization_section' => [
+					'title'       => __( 'Fonts', 'rocket' ),
+					'type'        => 'fields_container',
+					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+					'description' => sprintf( __( 'Download and serve fonts directly from your server. Reduces connections to external servers and minimizes font shifts. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $fonts['url'] ) . '" data-beacon-article="' . esc_attr( $fonts['id'] ) . '" target="_blank" rel="noopener noreferrer">', '</a>' ),
+					'help'        => $fonts,
 					'page'        => 'media',
 				],
 			]
@@ -1005,6 +1014,14 @@ class Page extends Abstract_Render {
 					'type'              => 'checkbox',
 					'label'             => __( 'Add missing image dimensions', 'rocket' ),
 					'section'           => 'dimensions_section',
+					'page'              => 'media',
+					'default'           => 0,
+					'sanitize_callback' => 'sanitize_checkbox',
+				],
+				'host_fonts_locally'  => [
+					'type'              => 'checkbox',
+					'label'             => __( 'Host Google Fonts locally', 'rocket' ),
+					'section'           => 'font_optimization_section',
 					'page'              => 'media',
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
