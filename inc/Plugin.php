@@ -309,7 +309,7 @@ class Plugin {
 		$this->container->addServiceProvider( new SaasAdminServiceProvider() );
 		$this->container->addServiceProvider( new PerformanceHintsServiceProvider() );
 		$this->container->addServiceProvider( new LRCServiceProvider() );
-		$this->container->addServiceProvider( new FontsServiceProvider() );
+		$this->container->addServiceProvider( new MediaFontsServiceProvider() );
 
 		$common_subscribers = [
 			'license_subscriber',
