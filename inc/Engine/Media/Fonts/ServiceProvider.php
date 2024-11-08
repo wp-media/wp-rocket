@@ -49,7 +49,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->addShared( 'media_fonts_admin_subscriber', AdminSubscriber::class )
 			->addArgument( 'media_fonts_settings' );
 
-		$this->getContainer()->add( 'media_fonts_context', Context::class );
+		$this->getContainer()->add( 'media_fonts_context', Context::class )
+			->addArgument( $this->getContainer()->get( 'options' ) );
 		$this->getContainer()->add( 'media_fonts_frontend_controller', FrontendController::class )
 			->addArguments(
 				[
