@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Media\Fonts\Controller;
 
 use WP_Rocket\Engine\Common\AbstractFileSystem;
+use WP_Rocket\Logger\Logger;
 
 class Filesystem extends AbstractFileSystem {
 	/**
@@ -63,6 +64,8 @@ class Filesystem extends AbstractFileSystem {
 			return false;
 		}
 
+		$start_time = microtime( true );
+
 		$css_content = $this->download_font( html_entity_decode( $font_url ) );
 
 		if ( ! $css_content ) {
@@ -94,6 +97,12 @@ class Filesystem extends AbstractFileSystem {
 			$local_url = content_url( $relative_path . implode( '/', $path_parts ) );
 			$local_css = str_replace( $font_url, $local_url, $local_css );
 		}
+
+		$end_time = microtime( true );
+		$duration = $end_time - $start_time;
+
+		//Add for test purpose.
+		Logger::debug( "Font download and optimization duration in seconds -- $duration", [ 'Host Fonts Locally' ] );
 
 		return $this->write_file( $css_file_name, $local_css );
 	}
@@ -127,14 +136,16 @@ class Filesystem extends AbstractFileSystem {
 	 * Get the fonts path for the css file.
 	 *
 	 * @param string $provider Font provider.
-	 * @param string $hash_url Url of the page.
+	 * @param string $hash     Url of the page.
 	 *
 	 * @return string Path for the font file.
 	 */
-	private function get_fonts_full_path( string $provider, string $hash_url ): string {
+	private function get_fonts_full_path( string $provider, string $hash ): string {
 		$font_provider_path = $this->get_font_provider_path( $provider );
 
-		return $this->path . $font_provider_path . $this->get_version() . '/' . $hash_url . '/';
+		$this->hash_to_path( $hash );
+
+		return $this->path . $font_provider_path . $this->get_version() . '/' . $this->hash_to_path( $hash );
 	}
 
 
@@ -142,15 +153,15 @@ class Filesystem extends AbstractFileSystem {
 	 * Get the fonts relative paths
 	 *
 	 * @param string $font_provider_path Font provider path.
-	 * @param string $hash_url Url of the page.
+	 * @param string $hash               Hash of the font url.
 	 *
 	 * @return string
 	 */
-	private function get_fonts_relative_path( string $font_provider_path, string $hash_url, ): string {
+	private function get_fonts_relative_path( string $font_provider_path, string $hash ): string {
 		$full_path     = $this->path . $font_provider_path;
 		$relative_path = str_replace( WP_CONTENT_DIR, '', $full_path );
 
-		return $relative_path . $this->get_version() . '/' . $hash_url . '/';
+		return $relative_path . $this->get_version() . '/' . $this->hash_to_path( $hash );
 	}
 
 	/**
@@ -206,5 +217,31 @@ class Filesystem extends AbstractFileSystem {
 	 */
 	public function get_version(): int {
 		return $this->version;
+	}
+
+	/**
+	 * Converts hash to path with filtered number of levels
+	 *
+	 * @param string $hash Hash value.
+	 *
+	 * @return string
+	 */
+	private function hash_to_path( string $hash ): string {
+		/**
+		 * Filters the number of sub-folders level to create for used CSS storage
+		 *
+		 * @since 3.11.4
+		 *
+		 * @param int $levels Number of levels.
+		 */
+		$levels = wpm_apply_filters_typed( 'integer', 'rocket_media_font_dir_level', 3 );
+
+		$base   = substr( $hash, 0, $levels );
+		$remain = substr( $hash, $levels );
+
+		$path_array   = str_split( $base );
+		$path_array[] = $remain;
+
+		return implode( '/', $path_array );
 	}
 }
