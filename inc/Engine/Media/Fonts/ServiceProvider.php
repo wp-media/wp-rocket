@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Media\Fonts;
@@ -8,19 +7,28 @@ use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvi
 use WP_Rocket\Engine\Media\Fonts\Frontend\Subscriber as FrontendSubscriber;
 use WP_Rocket\Engine\Media\Fonts\Controller\Fonts as FontsController;
 use WP_Rocket\Engine\Media\Fonts\Controller\Filesystem;
+use WP_Rocket\Engine\Media\Fonts\Admin\Settings;
+use WP_Rocket\Engine\Media\Fonts\Admin\Subscriber as AdminSubscriber;
 
 /**
  * Service provider for the WP Rocket Font Optimization
  */
 class ServiceProvider extends AbstractServiceProvider {
 	/**
-	 * Array of services provided by this service provider
+	 * The provides array is a way to let the container
+	 * know that a service is provided by this service
+	 * provider. Every service that is registered via
+	 * this service provider must have an alias added
+	 * to this array or it will be ignored.
 	 *
 	 * @var array
 	 */
 	protected $provides = [
-		'fonts_frontend_subscriber',
-		'fonts_filesystem',
+		'media_fonts_frontend_subscriber',
+		'media_fonts_filesystem',
+		'media_fonts_controller',
+		'media_fonts_settings',
+		'media_fonts_admin_subscriber',
 	];
 
 	/**
@@ -40,15 +48,20 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register(): void {
-		$this->getContainer()->add( 'fonts_filesystem', Filesystem::class )
+
+		$this->getContainer()->add( 'media_fonts_filesystem', Filesystem::class )
 			->addArgument( rocket_get_constant( 'WP_ROCKET_FONT_CSS_PATH' ) )
 			->addArgument( rocket_direct_filesystem() );
 
-		$this->getContainer()->add( 'fonts_controller', FontsController::class )
-			->addArgument( $this->getContainer()->get( 'fonts_filesystem' ) )
+		$this->getContainer()->add( 'media_fonts_controller', FontsController::class )
+			->addArgument( $this->getContainer()->get( 'media_fonts_filesystem' ) )
 			->addArgument( $this->getContainer()->get( 'options' ) );
 
-		$this->getContainer()->addShared( 'fonts_frontend_subscriber', FrontendSubscriber::class )
-			->addArgument( $this->getContainer()->get( 'fonts_controller' ) );
+		$this->getContainer()->addShared( 'media_fonts_frontend_subscriber', FrontendSubscriber::class )
+			->addArgument( $this->getContainer()->get( 'media_fonts_controller' ) );
+
+		$this->getContainer()->add( 'media_fonts_settings', Settings::class );
+		$this->getContainer()->addShared( 'media_fonts_admin_subscriber', AdminSubscriber::class )
+			->addArgument( 'media_fonts_settings' );
 	}
 }
