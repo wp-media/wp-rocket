@@ -17,6 +17,11 @@ class Controller {
 	 */
 	private $context;
 
+	/**
+	 * Base url.
+	 *
+	 * @var string
+	 */
 	private $base_url;
 
 	/**
@@ -25,7 +30,7 @@ class Controller {
 	 * @param Context $context Context instance.
 	 */
 	public function __construct( Context $context ) {
-		$this->context   = $context;
+		$this->context  = $context;
 		$this->base_url = rocket_get_constant( 'WP_ROCKET_CACHE_ROOT_URL', '' ) . 'fonts/' . get_current_blog_id() . '/';
 	}
 
@@ -74,7 +79,8 @@ class Controller {
 	 *
 	 * @since 3.18
 	 *
-	 * @param string $url Google Fonts URL.
+	 * @param string $hash Font Url has.
+	 * @param string $original_url Fonts Url.
 	 *
 	 * @return string
 	 */
@@ -87,7 +93,7 @@ class Controller {
 		$path_array[] = $remain;
 
 		$path = implode( '/', $path_array );
-		$url = $this->base_url . $path . '.css';
+		$url  = $this->base_url . $path . '.css';
 
 		$gf_parameters = wp_parse_url( $original_url, PHP_URL_QUERY );
 
