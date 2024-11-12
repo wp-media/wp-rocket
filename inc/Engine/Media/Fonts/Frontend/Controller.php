@@ -56,22 +56,29 @@ class Controller {
 		}
 
 		foreach ( $v1_fonts as $font ) {
-			$hash = md5( $font['url'] );
-
-			$local = $this->get_optimized_markup( $hash, $font['url'] );
-
-			$html = str_replace( $font[0], $local, $html );
+			$html = $this->replace_font( $font, $html );
 		}
 
 		foreach ( $v2_fonts as $font ) {
-			$hash = md5( $font['url'] );
-
-			$local = $this->get_optimized_markup( $hash, $font['url'] );
-
-			$html = str_replace( $font[0], $local, $html );
+			$html = $this->replace_font( $font, $html );
 		}
 
 		return $html;
+	}
+
+	/**
+	 * Replaces the Google Fonts URL with the local one.
+	 *
+	 * @param array  $font Font data.
+	 * @param string $html HTML content.
+	 *
+	 * @return string
+	 */
+	private function replace_font( $font, $html ): string {
+		$hash  = md5( $font['url'] );
+		$local = $this->get_optimized_markup( $hash, $font['url'] );
+
+		return str_replace( $font[0], $local, $html );
 	}
 
 	/**
