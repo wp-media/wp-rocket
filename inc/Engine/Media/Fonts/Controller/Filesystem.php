@@ -101,7 +101,7 @@ class Filesystem extends AbstractFileSystem {
 		$end_time = microtime( true );
 		$duration = $end_time - $start_time;
 
-		//Add for test purpose.
+		// Add for test purpose.
 		Logger::debug( "Font download and optimization duration in seconds -- $duration", [ 'Host Fonts Locally' ] );
 
 		return $this->write_file( $css_file_name, $local_css );
@@ -158,8 +158,9 @@ class Filesystem extends AbstractFileSystem {
 	 * @return string
 	 */
 	private function get_fonts_relative_path( string $font_provider_path, string $hash ): string {
-		$full_path     = $this->path . $font_provider_path;
-		$relative_path = str_replace( WP_CONTENT_DIR, '', $full_path );
+		$full_path      = $this->path . $font_provider_path;
+		$wp_content_dir = rocket_get_constant( 'WP_CONTENT_DIR' );
+		$relative_path  = str_replace( $wp_content_dir, '', $full_path );
 
 		return $relative_path . $this->get_version() . '/' . $this->hash_to_path( $hash );
 	}
