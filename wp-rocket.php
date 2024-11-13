@@ -115,7 +115,7 @@ function rocket_load_textdomain() {
 
 	load_plugin_textdomain( 'rocket', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 }
-add_action( 'plugins_loaded', 'rocket_load_textdomain' );
+add_action( 'init', 'rocket_load_textdomain' );
 
 $wp_rocket_requirement_checks = new WP_Rocket_Requirements_Check(
 	[
