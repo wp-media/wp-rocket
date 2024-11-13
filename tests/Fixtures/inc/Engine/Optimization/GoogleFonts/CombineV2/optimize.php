@@ -3,7 +3,10 @@
 return [
 	'shouldReturnGivenHTMLWhenNoRelevantTags' => [
 		'config' => [
-			'html' =>
+			'swap' => false,
+			'disable_preload' => false,
+		],
+		'html' =>
 				'<!doctype html>
 			<html>
 				<head>
@@ -12,10 +15,7 @@ return [
 				</head>
 				<body>
 				</body>
-			</html>'
-			,
-			'host_local_font'=> false
-		],
+			</html>',
 		'expected' =>
 			'<!doctype html>
 			<html>
@@ -29,7 +29,10 @@ return [
 	],
 	'shouldReturnTagWithFontDisplayWhenSingleTagGiven' => [
 		'config' => [
-			'html' =>
+			'swap' => false,
+			'disable_preload' => false,
+		],
+		'html' =>
 				'<!doctype html>
 			<html>
 				<head>
@@ -38,10 +41,7 @@ return [
 				</head>
 				<body>
 				</body>
-			</html>'
-			,
-			'host_local_font' => false,
-		],
+			</html>',
 		'expected' =>
 			'<!doctype html>
 			<html>
@@ -56,7 +56,10 @@ return [
 	],
 	'shouldNotCombineMultipleTagsWithTextParam' => [
 		'config' => [
-			'html' => '<!doctype html>
+			'swap' => false,
+			'disable_preload' => false,
+		],
+		'html' => '<!doctype html>
 			<html>
 				<head>
 					<title>Sample Page</title>
@@ -65,10 +68,7 @@ return [
 				</head>
 				<body>
 				</body>
-			</html>'
-			,
-			'host_local_font' => false,
-		],
+			</html>',
 		'expected' =>
 			'<!doctype html>
 			<html>
@@ -83,7 +83,10 @@ return [
 	],
 	'shouldCombineMultipleTags' => [
 		'config' => [
-			'html' =>
+			'swap' => false,
+			'disable_preload' => false,
+		],
+		'html' =>
 				'<!doctype html>
 			<html>
 				<head>
@@ -93,10 +96,7 @@ return [
 				</head>
 				<body>
 				</body>
-			</html>'
-			,
-			'host_local_font' => false,
-		],
+			</html>',
 		'expected' =>
 			'<!doctype html>
 			<html>
@@ -110,7 +110,10 @@ return [
 	],
 	'shouldCombineMultipleTagsWithMultipleFamiliesInTag' => [
 		'config' => [
-			'html' =>
+			'swap' => false,
+			'disable_preload' => false,
+		],
+		'html' =>
 				'<!doctype html>
 			<html>
 				<head>
@@ -121,10 +124,7 @@ return [
 				</head>
 				<body>
 				</body>
-			</html>'
-			,
-			'host_local_font' => false,
-		],
+			</html>',
 		'expected' =>
 			'<!doctype html>
 			<html>
@@ -139,7 +139,10 @@ return [
 	],
 	'shouldReplaceAnotherFontDisplayValueWithSwap' => [
 		'config' => [
-			'html' =>
+			'swap' => false,
+			'disable_preload' => false,
+		],
+		'html' =>
 				'<!doctype html>
 			<html>
 			<head>
@@ -150,10 +153,7 @@ return [
 			</head>
 			<body>
 			</body>
-			</html>'
-			,
-			'host_local_font' => false,
-		],
+			</html>',
 		'expected' =>
 			'<!doctype html>
 			<html>
@@ -168,7 +168,10 @@ return [
 	],
 	'shouldReplaceDisplayValueWithFilteredValue' => [
 		'config' => [
-			'html' =>
+			'swap' => 'optional',
+			'disable_preload' => false,
+		],
+		'html' =>
 				'<!doctype html>
 			<html>
 			<head>
@@ -179,10 +182,7 @@ return [
 			</head>
 			<body>
 			</body>
-			</html>'
-			,
-			'host_local_font' => false,
-		],
+			</html>',
 		'expected' =>
 			'<!doctype html>
 			<html>
@@ -195,34 +195,32 @@ return [
 			</body>
 			</html>'
 		,
-		'filtered' => 'optional'
 	],
-	'shoudNotAddPreloadTagWhenHostLocalFontEnabled' => [
+	'shouldCombineMultipleTagsNoPreload' => [
 		'config' => [
-			'html' =>
+			'swap' => false,
+			'disable_preload' => true,
+		],
+		'html' =>
 				'<!doctype html>
 			<html>
 				<head>
 					<title>Sample Page</title>
 					<link rel="stylesheet" id="dt-web-fonts-css" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@450" type="text/css" media="all" />
+					<link rel="stylesheet" id="dt-more-fonts-css" href="https://fonts.googleapis.com/css2?family=Comfortaa" type="text/css" media="all" />
 				</head>
 				<body>
 				</body>
-			</html>'
-			,
-			'host_local_font' => true,
-		],
+			</html>',
 		'expected' =>
 			'<!doctype html>
 			<html>
 				<head>
 					<title>Sample Page</title>
-					<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@450&#038;display=swap" media="print" onload="this.media=\'all\'" />
-					<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@450&#038;display=swap" /></noscript>
+					<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@450&#038;family=Comfortaa&#038;display=swap" />
 				</head>
 				<body>
 				</body>
 			</html>'
 	],
-
 ];

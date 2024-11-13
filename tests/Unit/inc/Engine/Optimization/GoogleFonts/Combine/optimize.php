@@ -1,12 +1,11 @@
 <?php
+declare(strict_types=1);
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\GoogleFonts\Combine;
 
-use Brain\Monkey\Functions;
-use Brain\Monkey\Filters;
+use Brain\Monkey\{Filters, Functions};
 use Mockery;
-use WP_Rocket\Engine\Optimization\GoogleFonts\Combine;
-use WP_Rocket\Engine\Optimization\GoogleFonts\AbstractGFOptimization;
+use WP_Rocket\Engine\Optimization\GoogleFonts\{AbstractGFOptimization, Combine};
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
@@ -25,10 +24,8 @@ class Test_Optimize extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldCombineGoogleFonts( $config, $expected, $filtered = false ) {
-		Functions\when( 'wp_parse_url' )->alias( function( $url, $component ) {
-			return parse_url( $url, $component );
-		} );
+	public function testShouldCombineGoogleFonts( $config, $html, $expected ) {
+		$this->stubWpParseUrl();
 
 		Functions\when( 'wp_parse_args' )->alias( function( $value ) {
 			parse_str( $value, $r );
@@ -40,23 +37,22 @@ class Test_Optimize extends TestCase {
 			return str_replace( [ '&amp;', '&' ], '&#038;', $url );
 		} );
 
-		Functions\expect( 'get_rocket_option' )
-			->once()
-			->with( 'host_fonts_locally', false )
-			->andReturn( $config['host_local_font'] );
-
-		if ( false !== $filtered ) {
-			Filters\expectApplied('rocket_combined_google_fonts_display')
-				->with('swap', Mockery::type(AbstractGFOptimization::class))
-				->andReturn( $filtered );
+		if ( false !== $config['swap'] ) {
+			Filters\expectApplied( 'rocket_combined_google_fonts_display' )
+				->with('swap', Mockery::type( AbstractGFOptimization::class ) )
+				->andReturn( $config['swap'] );
 		}
+
+
+		Filters\expectApplied( 'rocket_disable_google_fonts_preload' )
+			->andReturn( $config['disable_preload'] );
 
 
 		$combine = new Combine();
 
 		$this->assertSame(
 			$this->format_the_html( $expected ),
-			$this->format_the_html( $combine->optimize( $config['html'] ) )
+			$this->format_the_html( $combine->optimize( $html ) )
 		);
 	}
 }
