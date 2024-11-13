@@ -110,4 +110,19 @@ class Controller {
 			$gf_parameters
 		);
 	}
+
+	/**
+	 * Disables the preload of Google Fonts.
+	 *
+	 * @param bool $disable Whether to disable the preload of Google Fonts.
+	 *
+	 * @return bool
+	 */
+	public function disable_google_fonts_preload( $disable ): bool {
+		if ( ! $this->context->is_allowed() ) {
+			return $disable;
+		}
+
+		return true;
+	}
 }
