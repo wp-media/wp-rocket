@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace WP_Rocket\tests\Unit\inc\Engine\Media\Fonts\Frontend\Controller;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Media\Fonts\Frontend\Controller;
 
 use Brain\Monkey\Functions;
 use Mockery;
