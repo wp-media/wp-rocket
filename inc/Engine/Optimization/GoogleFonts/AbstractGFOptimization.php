@@ -120,7 +120,7 @@ abstract class AbstractGFOptimization {
 		 */
 		if ( wpm_apply_filters_typed( 'boolean', 'rocket_disable_google_fonts_preload', false ) ) {
 			return sprintf(
-				'<link rel="stylesheet" href="%1$s" />',
+				'<link rel="stylesheet" href="%1$s" />', // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
 				$url
 			);
 		}

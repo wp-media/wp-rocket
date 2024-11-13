@@ -29,7 +29,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'rocket_buffer' => [ 'rewrite_fonts', 18 ],
+			'rocket_buffer'                       => [ 'rewrite_fonts', 18 ],
 			'rocket_disable_google_fonts_preload' => 'disable_google_fonts_preload',
 		];
 	}
