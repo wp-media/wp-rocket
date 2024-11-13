@@ -111,19 +111,23 @@ abstract class AbstractGFOptimization {
 	 * @return string
 	 */
 	protected function get_optimized_markup( string $url ): string {
-		$markup = sprintf(
-			'<link rel="stylesheet" href="%1$s" media="print" onload="this.media=\'all\'" /><noscript><link rel="stylesheet" href="%1$s" /></noscript>', // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
-			$url
-		);
-
-		if ( ! get_rocket_option( 'host_fonts_locally', false ) ) {
-			$markup = sprintf(
-				'<link rel="preload" data-rocket-preload as="style" href="%1$s" />%2$s',
-				$url,
-				$markup
+		/**
+		 * Filters whether to disable Google Fonts preloading.
+		 *
+		 * @since 3.18
+		 *
+		 * @param bool $disable_google_fonts_preload Whether to disable Google Fonts preloading. Default false.
+		 */
+		if ( wpm_apply_filters_typed( 'boolean', 'rocket_disable_google_fonts_preload', false ) ) {
+			return sprintf(
+				'<link rel="stylesheet" href="%1$s" />',
+				$url
 			);
 		}
 
-		return $markup;
+		return sprintf(
+			'<link rel="preload" data-rocket-preload as="style" href="%1$s" /><link rel="stylesheet" href="%1$s" media="print" onload="this.media=\'all\'" /><noscript><link rel="stylesheet" href="%1$s" /></noscript>', // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
+			$url
+		);
 	}
 }
