@@ -58,7 +58,7 @@ class Filesystem extends AbstractFileSystem {
 		$font_provider_path = $this->get_font_provider_path( $provider );
 		$hash_url           = $this->hash_url( $font_url );
 		$file               = $this->get_fonts_full_path( $font_provider_path, $hash_url );
-		$css_file_name      = $file . $hash_url . '.css';
+		$css_file_name      = $file . '.css';
 		$relative_path      = $this->get_fonts_relative_path( $font_provider_path, $hash_url );
 
 		if ( ! rocket_mkdir_p( dirname( $file ) ) ) {
@@ -80,10 +80,12 @@ class Filesystem extends AbstractFileSystem {
 		foreach ( $font_urls as $font_url ) {
 			$parsed_url = wp_parse_url( $font_url );
 			$path_parts = explode( '/', trim( $parsed_url['path'], '/' ) );
-			$local_path = $file . implode( '/', $path_parts );
+			$local_path = $file . '/' . implode( '/', $path_parts );
 			$local_dir  = dirname( $local_path );
 
-			rocket_mkdir_p( $local_dir );
+			if ( ! rocket_mkdir_p( $local_dir ) ) {
+				continue;
+			}
 
 			if ( ! file_exists( $local_path ) ) {
 				$font_content = $this->download_font( $font_url );
@@ -142,8 +144,6 @@ class Filesystem extends AbstractFileSystem {
 	 * @return string Path for the font file.
 	 */
 	private function get_fonts_full_path( string $font_provider_path, string $hash ): string {
-		$this->hash_to_path( $hash );
-
 		return $this->path . $font_provider_path . $this->get_version() . '/' . $this->hash_to_path( $hash );
 	}
 

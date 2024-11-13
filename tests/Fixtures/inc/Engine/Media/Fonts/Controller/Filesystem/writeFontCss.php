@@ -1,31 +1,32 @@
 <?php
-//public/wp-content/cache/wp-rocket/fonts/1/google-font/1/5/9/5/cb6ccb56826a802ed411cef875f0es/opensans/v18
 return [
-	'vfs_dir'   => 'wp-content/cache/wp-rocket/fonts/',
 	'structure' => [
-		'wp-content' => [
-			'cache' => [
-				'wp-rocket' => [
-					'fonts' => [
-					'1' => [
-						'google-font' => [
+		'public' => [
+			'wp-content' => [
+				'cache' => [
+					'wp-rocket' => [
+						'fonts' => [
 							'1' => [
-								'5' => [
-									'9' => [
+								'google-font' => [
+									'1' => [
 										'5' => [
-											'cb6ccb56826a802ed411cef875f0es' => [
-												'opensans' => [
-													'v18' => 'mem8YaGs126MiZpBA-UFUK0Zdc0.woff2'
+											'9' => [
+												'5' => [
+													'cb6ccb56826a802ed411cef875f0e.css',
+													'cb6ccb56826a802ed411cef875f0es' => [
+														'opensans' => [
+															'v18' => 'mem8YaGs126MiZpBA-UFUK0Zdc0.woff2'
+														]
+													]
 												]
 											]
-										]
-									]
+										],
+									],
 								],
 							],
 						],
-					],
+					]
 				],
-				]
 			],
 		],
 	],
@@ -46,7 +47,7 @@ return [
 				],
 			],
 			'expected' => [
-				'path'    => 'vfs://public/wp-content/cache/font/1/google-font/1/5/9/5/cb6ccb56826a802ed411cef875f0es.css',
+				'path'    => 'vfs://public/wp-content/cache/wp-rocket/font/1/google-font/1/5/9/5/cb6ccb56826a802ed411cef875f0e.css',
 			]
 		],
 	]
