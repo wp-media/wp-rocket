@@ -2,8 +2,9 @@
 
 return [
 	'shouldReturnGivenHTMLWhenNoRelevantTags' => [
-		'given' =>
-			'<!doctype html>
+		'config' => [
+			'html' =>
+				'<!doctype html>
 			<html>
 				<head>
 					<title>Sample Page</title>
@@ -12,7 +13,9 @@ return [
 				<body>
 				</body>
 			</html>'
-		,
+			,
+			'host_local_font'=> false
+		],
 		'expected' =>
 			'<!doctype html>
 			<html>
@@ -25,8 +28,9 @@ return [
 			</html>'
 	],
 	'shouldReturnTagWithFontDisplayWhenSingleTagGiven' => [
-		'given' =>
-			'<!doctype html>
+		'config' => [
+			'html' =>
+				'<!doctype html>
 			<html>
 				<head>
 					<title>Sample Page</title>
@@ -35,7 +39,9 @@ return [
 				<body>
 				</body>
 			</html>'
-		,
+			,
+			'host_local_font' => false,
+		],
 		'expected' =>
 			'<!doctype html>
 			<html>
@@ -49,8 +55,8 @@ return [
 			</html>'
 	],
 	'shouldNotCombineMultipleTagsWithTextParam' => [
-		'given' =>
-			'<!doctype html>
+		'config' => [
+			'html' => '<!doctype html>
 			<html>
 				<head>
 					<title>Sample Page</title>
@@ -60,7 +66,9 @@ return [
 				<body>
 				</body>
 			</html>'
-		,
+			,
+			'host_local_font' => false,
+		],
 		'expected' =>
 			'<!doctype html>
 			<html>
@@ -74,8 +82,9 @@ return [
 			</html>'
 	],
 	'shouldCombineMultipleTags' => [
-		'given' =>
-			'<!doctype html>
+		'config' => [
+			'html' =>
+				'<!doctype html>
 			<html>
 				<head>
 					<title>Sample Page</title>
@@ -85,7 +94,9 @@ return [
 				<body>
 				</body>
 			</html>'
-		,
+			,
+			'host_local_font' => false,
+		],
 		'expected' =>
 			'<!doctype html>
 			<html>
@@ -98,8 +109,9 @@ return [
 			</html>'
 	],
 	'shouldCombineMultipleTagsWithMultipleFamiliesInTag' => [
-		'given' =>
-			'<!doctype html>
+		'config' => [
+			'html' =>
+				'<!doctype html>
 			<html>
 				<head>
 					<title>Sample Page</title>
@@ -110,7 +122,9 @@ return [
 				<body>
 				</body>
 			</html>'
-		,
+			,
+			'host_local_font' => false,
+		],
 		'expected' =>
 			'<!doctype html>
 			<html>
@@ -124,8 +138,9 @@ return [
 			</html>'
 	],
 	'shouldReplaceAnotherFontDisplayValueWithSwap' => [
-		'given' =>
-			'<!doctype html>
+		'config' => [
+			'html' =>
+				'<!doctype html>
 			<html>
 			<head>
 			<title>Sample Page</title>
@@ -136,7 +151,9 @@ return [
 			<body>
 			</body>
 			</html>'
-		,
+			,
+			'host_local_font' => false,
+		],
 		'expected' =>
 			'<!doctype html>
 			<html>
@@ -150,8 +167,9 @@ return [
 			</html>'
 	],
 	'shouldReplaceDisplayValueWithFilteredValue' => [
-		'given' =>
-			'<!doctype html>
+		'config' => [
+			'html' =>
+				'<!doctype html>
 			<html>
 			<head>
 			<title>Sample Page</title>
@@ -162,7 +180,9 @@ return [
 			<body>
 			</body>
 			</html>'
-		,
+			,
+			'host_local_font' => false,
+		],
 		'expected' =>
 			'<!doctype html>
 			<html>
@@ -177,4 +197,32 @@ return [
 		,
 		'filtered' => 'optional'
 	],
+	'shoudNotAddPreloadTagWhenHostLocalFontEnabled' => [
+		'config' => [
+			'html' =>
+				'<!doctype html>
+			<html>
+				<head>
+					<title>Sample Page</title>
+					<link rel="stylesheet" id="dt-web-fonts-css" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@450" type="text/css" media="all" />
+				</head>
+				<body>
+				</body>
+			</html>'
+			,
+			'host_local_font' => true,
+		],
+		'expected' =>
+			'<!doctype html>
+			<html>
+				<head>
+					<title>Sample Page</title>
+					<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@450&#038;display=swap" media="print" onload="this.media=\'all\'" />
+					<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@450&#038;display=swap" /></noscript>
+				</head>
+				<body>
+				</body>
+			</html>'
+	],
+
 ];

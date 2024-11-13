@@ -25,7 +25,7 @@ class Test_OptimizeV2 extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldCombineV2GoogleFonts( $html, $expected, $filtered = false ) {
+	public function testShouldCombineV2GoogleFonts( $config, $expected, $filtered = false ) {
 		Functions\when( 'wp_parse_url' )->alias( function ( $url, $component ) {
 			return parse_url( $url, $component );
 		} );
@@ -39,6 +39,10 @@ class Test_OptimizeV2 extends TestCase {
 			return str_replace( [ '&amp;', '&' ], '&#038;', $url );
 		} );
 
+		Functions\expect( 'get_rocket_option' )
+			->with( 'host_fonts_locally', false )
+			->andReturn( $config['host_local_font'] );
+
 		if ( false !== $filtered ) {
 			Filters\expectApplied('rocket_combined_google_fonts_display')
 				->with('swap', Mockery::type(AbstractGFOptimization::class))
@@ -49,7 +53,7 @@ class Test_OptimizeV2 extends TestCase {
 
 		$this->assertSame(
 			$this->format_the_html( $expected ),
-			$this->format_the_html( $combiner->optimize( $html ) )
+			$this->format_the_html( $combiner->optimize( $config['html'] ) )
 		);
 	}
 }
