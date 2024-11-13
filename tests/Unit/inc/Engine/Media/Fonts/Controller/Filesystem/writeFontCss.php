@@ -24,13 +24,14 @@ class test_WriteFontCss extends FilesystemTestCase {
      * @dataProvider providerTestData
      */
     public function testShouldReturnExpected( $config, $expected ) {
+
         $filesystem = new Filesystem( $this->filesystem->getUrl( 'wp-content/cache/wp-rocket/fonts/' ) );
 		$filesystem->set_version( 1 );
 
 		Functions\when( 'wp_remote_retrieve_body' )
 			->justReturn( $config['css_content'] );
 
-		Functions\when( 'rocket_mkdir_p' )->justReturn( true );
+		Functions\when('rocket_mkdir_p')->alias([$this->filesystem, 'mkdir']);
 
 		Functions\when( 'wp_remote_get' )
 			->justReturn( $config['response'] );
@@ -43,6 +44,6 @@ class test_WriteFontCss extends FilesystemTestCase {
 
 		$this->assertTrue( $filesystem->write_font_css( $config['url'], $config['provider']) );
 
-		//$this->assertTrue( $this->filesystem->exists( $expected['path'] ) );
+		$this->assertTrue( $this->filesystem->exists( $expected['path'] ) );
     }
 }

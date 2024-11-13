@@ -1,5 +1,34 @@
 <?php
+//public/wp-content/cache/wp-rocket/fonts/1/google-font/1/5/9/5/cb6ccb56826a802ed411cef875f0es/opensans/v18
 return [
+	'vfs_dir'   => 'wp-content/cache/wp-rocket/fonts/',
+	'structure' => [
+		'wp-content' => [
+			'cache' => [
+				'wp-rocket' => [
+					'fonts' => [
+					'1' => [
+						'google-font' => [
+							'1' => [
+								'5' => [
+									'9' => [
+										'5' => [
+											'cb6ccb56826a802ed411cef875f0es' => [
+												'opensans' => [
+													'v18' => 'mem8YaGs126MiZpBA-UFUK0Zdc0.woff2'
+												]
+											]
+										]
+									]
+								],
+							],
+						],
+					],
+				],
+				]
+			],
+		],
+	],
 	'test_data' => [
 		'shouldWriteFontCss' => [
 			'config' => [
@@ -17,7 +46,7 @@ return [
 				],
 			],
 			'expected' => [
-				'path'    => 'vfs://public/wp-content/cache/font/1/google-font/1/f/a/2/965d41f1515951de523cecb81f85e.css',
+				'path'    => 'vfs://public/wp-content/cache/font/1/google-font/1/5/9/5/cb6ccb56826a802ed411cef875f0es.css',
 			]
 		],
 	]

@@ -6,6 +6,7 @@ namespace WP_Rocket\Engine\Media\Fonts\Controller;
 
 use WP_Rocket\Engine\Common\AbstractFileSystem;
 use WP_Rocket\Logger\Logger;
+use WP_Filesystem_Direct;
 
 class Filesystem extends AbstractFileSystem {
 	/**
@@ -112,9 +113,9 @@ class Filesystem extends AbstractFileSystem {
 	 *
 	 * @param string $url Url of the file to download.
 	 *
-	 * @return bool|string
+	 * @return mixed
 	 */
-	private function download_font( string $url ): bool|string {
+	private function download_font( string $url ) {
 		$content = wp_remote_retrieve_body(
 			wp_remote_get(
 			$url,
@@ -135,14 +136,12 @@ class Filesystem extends AbstractFileSystem {
 	/**
 	 * Get the fonts path for the css file.
 	 *
-	 * @param string $provider Font provider.
-	 * @param string $hash     Url of the page.
+	 * @param string $font_provider_path Font provider path.
+	 * @param string $hash               Url of the page.
 	 *
 	 * @return string Path for the font file.
 	 */
-	private function get_fonts_full_path( string $provider, string $hash ): string {
-		$font_provider_path = $this->get_font_provider_path( $provider );
-
+	private function get_fonts_full_path( string $font_provider_path, string $hash ): string {
 		$this->hash_to_path( $hash );
 
 		return $this->path . $font_provider_path . $this->get_version() . '/' . $this->hash_to_path( $hash );
