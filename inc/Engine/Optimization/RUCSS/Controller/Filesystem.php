@@ -128,7 +128,7 @@ class Filesystem extends AbstractFileSystem {
 	 * @return bool
 	 */
 	public function is_writable_folder() {
-		return $this->maybe_create_directory( $this->path );
+		return $this->is_folder_writable( $this->path );
 	}
 
 	/**

@@ -66,7 +66,7 @@ abstract class AbstractFileSystem {
 	 *
 	 * @return bool
 	 */
-	protected function maybe_create_directory( string $dir_path ): bool {
+	protected function is_folder_writable( string $dir_path ): bool {
 		if ( ! $this->filesystem->exists( $dir_path ) ) {
 			rocket_mkdir_p( $dir_path );
 		}
