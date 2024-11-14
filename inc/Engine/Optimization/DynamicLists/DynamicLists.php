@@ -105,12 +105,17 @@ class DynamicLists extends Abstract_Render {
 		$response     = [];
 		$success      = false;
 		$should_purge = false;
+		$titles = [
+			'defaultlists'         => __( 'Default Lists', 'rocket' ),
+			'delayjslists'         => __( 'Delay JavaScript Execution Exclusion Lists', 'rocket' ),
+			'incompatible_plugins' => __( 'Incompatible plugins Lists', 'rocket' ),
+ 		];
 
-		foreach ( $this->providers as $provider ) {
+		foreach ( $this->providers as $provider_id => $provider ) {
 			$result = $provider->api_client->get_exclusions_list( $provider->data_manager->get_lists_hash() );
 
 			if ( empty( $result['code'] ) || empty( $result['body'] ) ) {
-				$response[ $provider->title ] = [
+				$response[ $titles[ $provider_id ] ] = [
 					'success' => false,
 					'data'    => '',
 					'message' => __( 'Could not get updated lists from server.', 'rocket' ),
@@ -119,7 +124,7 @@ class DynamicLists extends Abstract_Render {
 			}
 
 			if ( 206 === $result['code'] ) {
-				$response[ $provider->title ] = [
+				$response[ $titles[ $provider_id ] ] = [
 					'success' => true,
 					'data'    => '',
 					'message' => __( 'Lists are up to date.', 'rocket' ),
@@ -128,7 +133,7 @@ class DynamicLists extends Abstract_Render {
 			}
 
 			if ( ! $provider->data_manager->save_dynamic_lists( $result['body'] ) ) {
-				$response[ $provider->title ] = [
+				$response[ $titles[ $provider_id ] ] = [
 					'success' => false,
 					'data'    => '',
 					'message' => __( 'Could not update lists.', 'rocket' ),
@@ -137,7 +142,7 @@ class DynamicLists extends Abstract_Render {
 			}
 
 			$success                      = true;
-			$response[ $provider->title ] = [
+			$response[ $titles[ $provider_id ] ] = [
 				'success' => true,
 				'data'    => '',
 				'message' => __( 'Lists are successfully updated.', 'rocket' ),
