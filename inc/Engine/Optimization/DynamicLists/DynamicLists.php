@@ -109,7 +109,7 @@ class DynamicLists extends Abstract_Render {
 			'defaultlists'         => __( 'Default Lists', 'rocket' ),
 			'delayjslists'         => __( 'Delay JavaScript Execution Exclusion Lists', 'rocket' ),
 			'incompatible_plugins' => __( 'Incompatible plugins Lists', 'rocket' ),
- 		];
+		];
 
 		foreach ( $this->providers as $provider_id => $provider ) {
 			$result = $provider->api_client->get_exclusions_list( $provider->data_manager->get_lists_hash() );
