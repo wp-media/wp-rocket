@@ -110,7 +110,7 @@ class Controller {
 			$gf_parameters
 		);
 	}
-
+  
 	/**
 	 * Disables the preload of Google Fonts.
 	 *

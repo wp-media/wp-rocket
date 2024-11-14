@@ -27,7 +27,7 @@ class Test_Optimize extends TestCase {
 			],
         ];
 
-		$this->unregisterAllCallbacksExcept('rocket_buffer', 'process', 17 );
+    $this->unregisterAllCallbacksExcept('rocket_buffer', 'process', 17 );
 	}
 
 	public function tear_down() {
