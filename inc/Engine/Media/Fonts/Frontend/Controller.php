@@ -6,6 +6,7 @@ namespace WP_Rocket\Engine\Media\Fonts\Frontend;
 use WP_Rocket\Engine\Media\Fonts\Context\Context;
 use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Logger\Logger;
+use WP_Filesystem_Direct;
 
 class Controller {
 	use RegexTrait;
@@ -24,14 +25,27 @@ class Controller {
 	 */
 	private $base_url;
 
+
+	/**
+	 * WordPress filesystem.
+	 *
+	 * @var WP_Filesystem_Direct
+	 */
+	private $filesystem;
+
+	private $base_path;
+
 	/**
 	 * Constructor.
 	 *
-	 * @param Context $context Context instance.
+	 * @param Context              $context Context instance.
+	 * @param WP_Filesystem_Direct $filesystem WordPress filesystem.
 	 */
-	public function __construct( Context $context ) {
-		$this->context  = $context;
-		$this->base_url = rocket_get_constant( 'WP_ROCKET_CACHE_ROOT_URL', '' ) . 'fonts/' . get_current_blog_id() . '/';
+	public function __construct( Context $context, WP_Filesystem_Direct $filesystem ) {
+		$this->context    = $context;
+		$this->base_path  = rocket_get_constant( 'WP_ROCKET_CACHE_ROOT_PATH', '' ) . 'fonts/' . get_current_blog_id() . '/';
+		$this->base_url   = rocket_get_constant( 'WP_ROCKET_CACHE_ROOT_URL', '' ) . 'fonts/' . get_current_blog_id() . '/';
+		$this->filesystem = $filesystem;
 	}
 
 	/**
@@ -104,6 +118,15 @@ class Controller {
 
 		$gf_parameters = wp_parse_url( $original_url, PHP_URL_QUERY );
 
+		$internal_styling = wpm_apply_filters_typed( 'boolean', 'rocket_internal_fonts_styling', false );
+		if ( $internal_styling ) {
+			$raw_path       = $this->base_path . $path . '.css';
+			$internal_style = $this->set_font_internal_style( $gf_parameters, $raw_path );
+			if ( $internal_style ) {
+				return $internal_style;
+			}
+		}
+
 		return sprintf(
 			'<link rel="stylesheet" href="%1$s" data-wpr-hosted-gf-parameters="%2$s"/>', // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
 			$url,
@@ -124,5 +147,28 @@ class Controller {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Sets the font internal style.
+	 *
+	 * @param string $css_path CSS file path.
+	 *
+	 * @return string|bool
+	 */
+	private function set_font_internal_style( string $gf_parameters, string $css_path ) {
+		if ( ! $css_path ) {
+			return false;
+		}
+
+		if ( ! $this->filesystem->exists( $css_path ) ) {
+			return false;
+		}
+
+		return sprintf(
+			'<style data-wpr-hosted-gf-parameters="%1$s">%2$s</style>',
+			$gf_parameters,
+			$this->filesystem->get_contents( $css_path )
+		);
 	}
 }

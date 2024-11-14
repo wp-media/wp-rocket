@@ -9,6 +9,7 @@ use WP_Rocket\Engine\Media\Fonts\Admin\Subscriber as AdminSubscriber;
 use WP_Rocket\Engine\Media\Fonts\Context\Context;
 use WP_Rocket\Engine\Media\Fonts\Frontend\Controller as FrontendController;
 use WP_Rocket\Engine\Media\Fonts\Frontend\Subscriber as FrontendSubscriber;
+use WP_Filesystem_Direct;
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
@@ -46,6 +47,8 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	public function register(): void {
 		$this->getContainer()->add( 'media_fonts_settings', Settings::class );
+		$this->getContainer()->add( 'wp_direct_filesystem', WP_Filesystem_Direct::class )
+			->addArgument( [] );
 		$this->getContainer()->addShared( 'media_fonts_admin_subscriber', AdminSubscriber::class )
 			->addArgument( 'media_fonts_settings' );
 
@@ -55,6 +58,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArguments(
 				[
 					$this->getContainer()->get( 'media_fonts_context' ),
+					$this->getContainer()->get( 'wp_direct_filesystem' ),
 				]
 			);
 		$this->getContainer()->add( 'media_fonts_frontend_subscriber', FrontendSubscriber::class )
