@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Media\Fonts\Frontend;
 
 use WP_Rocket\Engine\Media\Fonts\Context\Context;
+use WP_Rocket\Engine\Media\Fonts\Controller\Fonts;
 use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Logger\Logger;
 
@@ -17,6 +18,14 @@ class Controller {
 	 */
 	private $context;
 
+
+	/**
+	 * Font instance.
+	 *
+	 * @var Fonts
+	 */
+	private $font;
+
 	/**
 	 * Base url.
 	 *
@@ -28,10 +37,13 @@ class Controller {
 	 * Constructor.
 	 *
 	 * @param Context $context Context instance.
+	 * @param Fonts   $font   Font instance.
+	 * @param string  $base_url Media font Base url.
 	 */
-	public function __construct( Context $context ) {
+	public function __construct( Context $context, Fonts $font, string $base_url ) {
 		$this->context  = $context;
-		$this->base_url = rocket_get_constant( 'WP_ROCKET_CACHE_ROOT_URL', '' ) . 'fonts/' . get_current_blog_id() . '/';
+		$this->base_url = $base_url . get_current_blog_id() . '/';
+		$this->font     = $font;
 	}
 
 	/**
@@ -56,11 +68,13 @@ class Controller {
 		}
 
 		foreach ( $v1_fonts as $font ) {
-			$html = $this->replace_font( $font, $html );
+			$this->download_font( $font['url'], 1 );
+			$html = $this->replace_font( $font, $html, 1 );
 		}
 
 		foreach ( $v2_fonts as $font ) {
-			$html = $this->replace_font( $font, $html );
+			$this->download_font( $font['url'], 2 );
+			$html = $this->replace_font( $font, $html, 2 );
 		}
 
 		return $html;
@@ -69,14 +83,16 @@ class Controller {
 	/**
 	 * Replaces the Google Fonts URL with the local one.
 	 *
-	 * @param array  $font Font data.
-	 * @param string $html HTML content.
+	 * @param array  $font    Font data.
+	 * @param string $html    HTML content.
+	 * @param int    $version Provided font version.
+	 * @param string $font_provider Font provider.
 	 *
 	 * @return string
 	 */
-	private function replace_font( $font, $html ): string {
+	private function replace_font( $font, $html, int $version, string $font_provider = 'google-font' ): string {
 		$hash  = md5( $font['url'] );
-		$local = $this->get_optimized_markup( $hash, $font['url'] );
+		$local = $this->get_optimized_markup( $hash, $font['url'], $version, $font_provider );
 
 		return str_replace( $font[0], $local, $html );
 	}
@@ -88,10 +104,17 @@ class Controller {
 	 *
 	 * @param string $hash Font Url has.
 	 * @param string $original_url Fonts Url.
+	 * @param int    $version Fonts version.
+	 * @param string $font_provider Fonts provider.
 	 *
 	 * @return string
 	 */
-	protected function get_optimized_markup( string $hash, string $original_url ): string {
+	protected function get_optimized_markup(
+		string $hash,
+		string $original_url,
+		int $version,
+		string $font_provider
+	): string {
 		$levels = 3;
 		$base   = substr( $hash, 0, $levels );
 		$remain = substr( $hash, $levels );
@@ -99,8 +122,10 @@ class Controller {
 		$path_array   = str_split( $base );
 		$path_array[] = $remain;
 
-		$path = implode( '/', $path_array );
-		$url  = $this->base_url . $path . '.css';
+		$path               = implode( '/', $path_array );
+		$font_provider_path = sprintf( '%s/%d/', $font_provider, $version );
+
+		$url = $this->base_url . $font_provider_path . $path . '.css';
 
 		$gf_parameters = wp_parse_url( $original_url, PHP_URL_QUERY );
 
@@ -124,5 +149,16 @@ class Controller {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Download font
+	 *
+	 * @param string $font_url Font url to be downloaded.
+	 * @param int    $font_version The version of the font
+	 * @param string $provider  The font provider.
+	 */
+	private function download_font( string $font_url, int $font_version, string $provider = 'google-font' ): void {
+		$this->font->process( $font_url, $provider, $font_version );
 	}
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Media\Fonts\Controller;
 
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Media\Fonts\Context\Context;
 use WP_Rocket\Engine\Optimization\RegexTrait;
 
 class Fonts {
@@ -24,17 +25,27 @@ class Fonts {
 	private $options;
 
 	/**
+	 * Context instance.
+	 *
+	 * @var Context
+	 */
+	private $context;
+
+	/**
 	 * Instantiate the class.
 	 *
 	 * @param Filesystem   $filesystem Filesystem Instance.
 	 * @param Options_Data $options    Options instance.
+	 * @param Context      $context Context instance.
 	 */
 	public function __construct(
 		Filesystem $filesystem,
-		Options_Data $options
+		Options_Data $options,
+		Context $context
 	) {
 		$this->filesystem = $filesystem;
 		$this->options    = $options;
+		$this->context    = $context;
 	}
 
 	/**
@@ -47,7 +58,7 @@ class Fonts {
 	 * @return void
 	 */
 	public function process( string $font_url, string $provider, int $version ): void {
-		if ( ! $this->options->get( 'host_google_fonts' ) ) {
+		if ( ! $this->context->is_allowed() ) {
 			return;
 		}
 

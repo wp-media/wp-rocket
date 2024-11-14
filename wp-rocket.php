@@ -68,7 +68,7 @@ define( 'WP_ROCKET_CACHE_BUSTING_PATH', WP_ROCKET_CACHE_ROOT_PATH . 'busting/' )
 define( 'WP_ROCKET_CRITICAL_CSS_PATH',  WP_ROCKET_CACHE_ROOT_PATH . 'critical-css/' );
 
 define( 'WP_ROCKET_USED_CSS_PATH',  WP_ROCKET_CACHE_ROOT_PATH . 'used-css/' );
-define( 'WP_ROCKET_FONT_CSS_PATH',  WP_ROCKET_CACHE_PATH . 'fonts/' );
+define( 'WP_ROCKET_MEDIA_FONT_CSS_PATH',  WP_ROCKET_CACHE_PATH . 'fonts/' );
 
 if ( ! defined( 'WP_ROCKET_CACHE_ROOT_URL' ) ) {
 	define( 'WP_ROCKET_CACHE_ROOT_URL', WP_CONTENT_URL . '/cache/' );
@@ -78,6 +78,7 @@ define( 'WP_ROCKET_MINIFY_CACHE_URL',  WP_ROCKET_CACHE_ROOT_URL . 'min/' );
 define( 'WP_ROCKET_CACHE_BUSTING_URL', WP_ROCKET_CACHE_ROOT_URL . 'busting/' );
 
 define( 'WP_ROCKET_USED_CSS_URL', WP_ROCKET_CACHE_ROOT_URL . 'used-css/' );
+define( 'WP_ROCKET_MEDIA_FONT_CSS_URL', WP_ROCKET_CACHE_ROOT_URL . 'wp-rocket/fonts/' );
 
 if ( ! defined( 'CHMOD_WP_ROCKET_CACHE_DIRS' ) ) {
 	define( 'CHMOD_WP_ROCKET_CACHE_DIRS', 0755 ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
