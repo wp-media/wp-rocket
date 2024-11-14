@@ -22,14 +22,14 @@ class Test_RewriteFonts extends FilesystemTestCase
 
 		$this->unregisterAllCallbacksExcept('rocket_buffer', 'rewrite_fonts', 18);
 		add_filter( 'pre_get_rocket_option_host_fonts_locally', [ $this, 'host_fonts_locally' ] );
-		add_filter( 'rocket_internal_fonts_styling', [ $this, 'internal_fonts_styling' ] );
+		add_filter( 'rocket_host_fonts_locally_inline_css', [ $this, 'locally_inline_css' ] );
 
 
 	}
 
 	public function tear_down() {
 		remove_filter('pre_get_rocket_option_host_fonts_locally', [$this, 'host_fonts_locally']);
-		remove_filter('rocket_internal_fonts_styling', [$this, 'internal_fonts_styling']);
+		remove_filter('rocket_host_fonts_locally_inline_css', [$this, 'locally_inline_css']);
 		$this->restoreWpHook('rocket_buffer');
 		parent::tear_down();
 	}
@@ -55,7 +55,7 @@ class Test_RewriteFonts extends FilesystemTestCase
 		return $this->config['host_fonts_locally'];
 	}
 
-	public function internal_fonts_styling() {
-		return $this->config['internal_fonts_styling'];
+	public function locally_inline_css() {
+		return $this->config['locally_inline_css'];
 	}
 }

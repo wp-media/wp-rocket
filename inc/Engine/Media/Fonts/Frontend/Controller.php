@@ -123,12 +123,19 @@ class Controller {
 
 		$gf_parameters = wp_parse_url( $original_url, PHP_URL_QUERY );
 
-		$internal_styling = wpm_apply_filters_typed( 'boolean', 'rocket_internal_fonts_styling', false );
-		if ( $internal_styling ) {
-			$raw_path       = $this->base_path . $path . '.css';
-			$internal_style = $this->set_font_internal_style( $gf_parameters, $raw_path );
-			if ( $internal_style ) {
-				return $internal_style;
+		/**
+		 * Filters to enable the inline css output.
+		 *
+		 * @since 3.18
+		 *
+		 * @param bool $enable Tells if we are enabling or not the inline css output.
+		 */
+		$inline_fonts_css = wpm_apply_filters_typed( 'boolean', 'rocket_host_fonts_locally_inline_css', false );
+		if ( $inline_fonts_css ) {
+			$raw_path   = $this->base_path . $path . '.css';
+			$inline_css = $this->set_font_internal_style( $gf_parameters, $raw_path );
+			if ( $inline_css ) {
+				return $inline_css;
 			}
 		}
 
