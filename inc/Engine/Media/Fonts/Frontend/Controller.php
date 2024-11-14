@@ -121,9 +121,6 @@ class Controller {
 	 * @return string Modified HTML content without preconnect and prefetch links.
 	 */
 	private function remove_preconnect_and_prefetch( string $html ) {
-		if ( ! $html ) {
-			return $html;
-		}
 		$remove_links = wpm_apply_filters_typed( 'boolean', 'rocket_remove_font_pre_links', true );
 
 		if ( ! $remove_links ) {
