@@ -79,8 +79,8 @@ class Filesystem extends AbstractFileSystem {
 
 		foreach ( $font_urls as $font_url ) {
 			$parsed_url = wp_parse_url( $font_url );
-			$path_parts = explode( '/', trim( $parsed_url['path'], '/' ) );
-			$local_path = $file . '/' . implode( '/', $path_parts );
+			$font_path  = $parsed_url['path'];
+			$local_path = $file . $font_path;
 			$local_dir  = dirname( $local_path );
 
 			if ( ! rocket_mkdir_p( $local_dir ) ) {
@@ -91,13 +91,14 @@ class Filesystem extends AbstractFileSystem {
 				$font_content = $this->download_font( $font_url );
 
 				if ( ! $font_content ) {
+					Logger::debug( 'Font download was not successful', [ 'Host Fonts Locally' ] );
 					continue;
 				}
 
 				$this->write_file( $local_path, $font_content );
 			}
 
-			$local_url = content_url( $relative_path . implode( '/', $path_parts ) );
+			$local_url = content_url( $relative_path . $font_path );
 			$local_css = str_replace( $font_url, $local_url, $local_css );
 		}
 
@@ -180,7 +181,7 @@ class Filesystem extends AbstractFileSystem {
 	/**
 	 * Deletes the locally stored fonts for the corresponding url
 	 *
-	 * @since 3.11.4
+	 * @since 3.18
 	 *
 	 * @param string $url The url of the page to be deleted.
 	 *
@@ -230,7 +231,7 @@ class Filesystem extends AbstractFileSystem {
 		/**
 		 * Filters the number of sub-folders level to create for used CSS storage
 		 *
-		 * @since 3.11.4
+		 * @since 3.18
 		 *
 		 * @param int $levels Number of levels.
 		 */

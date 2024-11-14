@@ -26,7 +26,6 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @var array
 	 */
 	protected $provides = [
-		'media_fonts_frontend_subscriber',
 		'media_fonts_filesystem',
 		'media_fonts_controller',
 		'media_fonts_settings',
