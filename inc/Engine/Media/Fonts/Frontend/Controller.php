@@ -38,15 +38,14 @@ class Controller {
 	/**
 	 * Constructor.
 	 *
-	 * @param Context              $context Context instance.
+	 * @param Context                   $context Context instance.
 	 * @param WP_Filesystem_Direct|null $filesystem WordPress filesystem.
 	 */
-	public function __construct(Context $context, ?WP_Filesystem_Direct $filesystem ) {
+	public function __construct( Context $context, ?WP_Filesystem_Direct $filesystem ) {
 		$this->context    = $context;
 		$this->base_path  = rocket_get_constant( 'WP_ROCKET_CACHE_ROOT_PATH', '' ) . 'fonts/' . get_current_blog_id() . '/';
 		$this->base_url   = rocket_get_constant( 'WP_ROCKET_CACHE_ROOT_URL', '' ) . 'fonts/' . get_current_blog_id() . '/';
-		$this->filesystem     = ! empty( $filesystem ) ? $filesystem : rocket_direct_filesystem();
-
+		$this->filesystem = ! empty( $filesystem ) ? $filesystem : rocket_direct_filesystem();
 	}
 
 	/**
