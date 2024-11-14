@@ -155,7 +155,7 @@ class Controller {
 	 * Download font
 	 *
 	 * @param string $font_url Font url to be downloaded.
-	 * @param int    $font_version The version of the font
+	 * @param int    $font_version The version of the font.
 	 * @param string $provider  The font provider.
 	 */
 	private function download_font( string $font_url, int $font_version, string $provider = 'google-font' ): void {
