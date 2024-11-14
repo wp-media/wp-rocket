@@ -47,7 +47,7 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	 * @param APIClient         $api_client  RocketCDN API Client instance.
 	 * @param CDNOptionsManager $cdn_options CDNOptionsManager instance.
 	 * @param Options_Data      $options Options instance.
-	 * @param Options      $options_api Options API instance.
+	 * @param Options           $options_api Options API instance.
 	 */
 	public function __construct( APIClient $api_client, CDNOptionsManager $cdn_options, Options_Data $options, Options $options_api ) {
 		$this->api_client  = $api_client;
@@ -356,7 +356,7 @@ class DataManagerSubscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$cdn_cnames  = $this->options->get( 'cdn_cnames', [] );
+		$cdn_cnames = $this->options->get( 'cdn_cnames', [] );
 		if ( empty( $cdn_cnames[0] ) || $cdn_cnames[0] === $new_subscription_data['cdn_url'] ) {
 			return;
 		}
