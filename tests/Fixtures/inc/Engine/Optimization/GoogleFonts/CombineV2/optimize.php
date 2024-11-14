@@ -2,12 +2,8 @@
 
 return [
 	'shouldReturnGivenHTMLWhenNoRelevantTags' => [
-		'config' => [
-			'swap' => false,
-			'disable_preload' => false,
-		],
-		'html' =>
-				'<!doctype html>
+		'given' =>
+			'<!doctype html>
 			<html>
 				<head>
 					<title>Sample Page</title>
@@ -15,7 +11,8 @@ return [
 				</head>
 				<body>
 				</body>
-			</html>',
+			</html>'
+		,
 		'expected' =>
 			'<!doctype html>
 			<html>
@@ -28,12 +25,8 @@ return [
 			</html>'
 	],
 	'shouldReturnTagWithFontDisplayWhenSingleTagGiven' => [
-		'config' => [
-			'swap' => false,
-			'disable_preload' => false,
-		],
-		'html' =>
-				'<!doctype html>
+		'given' =>
+			'<!doctype html>
 			<html>
 				<head>
 					<title>Sample Page</title>
@@ -41,7 +34,8 @@ return [
 				</head>
 				<body>
 				</body>
-			</html>',
+			</html>'
+		,
 		'expected' =>
 			'<!doctype html>
 			<html>
@@ -55,11 +49,8 @@ return [
 			</html>'
 	],
 	'shouldNotCombineMultipleTagsWithTextParam' => [
-		'config' => [
-			'swap' => false,
-			'disable_preload' => false,
-		],
-		'html' => '<!doctype html>
+		'given' =>
+			'<!doctype html>
 			<html>
 				<head>
 					<title>Sample Page</title>
@@ -68,7 +59,8 @@ return [
 				</head>
 				<body>
 				</body>
-			</html>',
+			</html>'
+		,
 		'expected' =>
 			'<!doctype html>
 			<html>
@@ -82,12 +74,8 @@ return [
 			</html>'
 	],
 	'shouldCombineMultipleTags' => [
-		'config' => [
-			'swap' => false,
-			'disable_preload' => false,
-		],
-		'html' =>
-				'<!doctype html>
+		'given' =>
+			'<!doctype html>
 			<html>
 				<head>
 					<title>Sample Page</title>
@@ -96,7 +84,8 @@ return [
 				</head>
 				<body>
 				</body>
-			</html>',
+			</html>'
+		,
 		'expected' =>
 			'<!doctype html>
 			<html>
@@ -109,12 +98,8 @@ return [
 			</html>'
 	],
 	'shouldCombineMultipleTagsWithMultipleFamiliesInTag' => [
-		'config' => [
-			'swap' => false,
-			'disable_preload' => false,
-		],
-		'html' =>
-				'<!doctype html>
+		'given' =>
+			'<!doctype html>
 			<html>
 				<head>
 					<title>Sample Page</title>
@@ -124,7 +109,8 @@ return [
 				</head>
 				<body>
 				</body>
-			</html>',
+			</html>'
+		,
 		'expected' =>
 			'<!doctype html>
 			<html>
@@ -138,12 +124,8 @@ return [
 			</html>'
 	],
 	'shouldReplaceAnotherFontDisplayValueWithSwap' => [
-		'config' => [
-			'swap' => false,
-			'disable_preload' => false,
-		],
-		'html' =>
-				'<!doctype html>
+		'given' =>
+			'<!doctype html>
 			<html>
 			<head>
 			<title>Sample Page</title>
@@ -153,7 +135,8 @@ return [
 			</head>
 			<body>
 			</body>
-			</html>',
+			</html>'
+		,
 		'expected' =>
 			'<!doctype html>
 			<html>
@@ -167,12 +150,8 @@ return [
 			</html>'
 	],
 	'shouldReplaceDisplayValueWithFilteredValue' => [
-		'config' => [
-			'swap' => 'optional',
-			'disable_preload' => false,
-		],
-		'html' =>
-				'<!doctype html>
+		'given' =>
+			'<!doctype html>
 			<html>
 			<head>
 			<title>Sample Page</title>
@@ -182,7 +161,8 @@ return [
 			</head>
 			<body>
 			</body>
-			</html>',
+			</html>'
+		,
 		'expected' =>
 			'<!doctype html>
 			<html>
@@ -195,32 +175,6 @@ return [
 			</body>
 			</html>'
 		,
-	],
-	'shouldCombineMultipleTagsNoPreload' => [
-		'config' => [
-			'swap' => false,
-			'disable_preload' => true,
-		],
-		'html' =>
-				'<!doctype html>
-			<html>
-				<head>
-					<title>Sample Page</title>
-					<link rel="stylesheet" id="dt-web-fonts-css" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@450" type="text/css" media="all" />
-					<link rel="stylesheet" id="dt-more-fonts-css" href="https://fonts.googleapis.com/css2?family=Comfortaa" type="text/css" media="all" />
-				</head>
-				<body>
-				</body>
-			</html>',
-		'expected' =>
-			'<!doctype html>
-			<html>
-				<head>
-					<title>Sample Page</title>
-					<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@450&#038;family=Comfortaa&#038;display=swap" />
-				</head>
-				<body>
-				</body>
-			</html>'
+		'filtered' => 'optional'
 	],
 ];
