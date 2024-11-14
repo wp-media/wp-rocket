@@ -33,6 +33,11 @@ class Controller {
 	 */
 	private $filesystem;
 
+	/**
+	 * Base path.
+	 *
+	 * @var string
+	 */
 	private $base_path;
 
 	/**
@@ -152,6 +157,7 @@ class Controller {
 	/**
 	 * Sets the font internal style.
 	 *
+	 * @param string $gf_parameters Google Fonts parameters.
 	 * @param string $css_path CSS file path.
 	 *
 	 * @return string|bool
