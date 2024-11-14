@@ -325,7 +325,7 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function refresh_cdn_cname( $new_version, $old_version ): void {
-		if ( version_compare( $old_version, '3.17.3', '>' ) ) {
+		if ( version_compare( $old_version, '3.17.2', '>' ) ) {
 			return;
 		}
 
