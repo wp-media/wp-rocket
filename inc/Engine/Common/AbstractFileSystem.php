@@ -60,13 +60,13 @@ abstract class AbstractFileSystem {
 	}
 
 	/**
-	 * Checks if the dir path is writable and create if it doesn't exist.
+	 * Checks if the dir path is writable and create dir if it doesn't exist.
 	 *
 	 * @param string $dir_path The directory to check.
 	 *
 	 * @return bool
 	 */
-	protected function create_directory( string $dir_path ): bool {
+	protected function maybe_create_directory( string $dir_path ): bool {
 		if ( ! $this->filesystem->exists( $dir_path ) ) {
 			rocket_mkdir_p( $dir_path );
 		}
