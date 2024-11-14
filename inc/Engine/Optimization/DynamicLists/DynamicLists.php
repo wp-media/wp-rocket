@@ -105,7 +105,7 @@ class DynamicLists extends Abstract_Render {
 		$response     = [];
 		$success      = false;
 		$should_purge = false;
-		$titles = [
+		$titles       = [
 			'defaultlists'         => __( 'Default Lists', 'rocket' ),
 			'delayjslists'         => __( 'Delay JavaScript Execution Exclusion Lists', 'rocket' ),
 			'incompatible_plugins' => __( 'Incompatible plugins Lists', 'rocket' ),
@@ -141,7 +141,8 @@ class DynamicLists extends Abstract_Render {
 				continue;
 			}
 
-			$success                      = true;
+			$success = true;
+
 			$response[ $titles[ $provider_id ] ] = [
 				'success' => true,
 				'data'    => '',
