@@ -133,9 +133,9 @@ class Controller {
 		$html = preg_replace( $pattern, '', $html );
 
 		return $html;
-  }
-   
-    /**
+	}
+
+	/**
 	 * Disables the preload of Google Fonts.
 	 *
 	 * @param bool $disable Whether to disable the preload of Google Fonts.
