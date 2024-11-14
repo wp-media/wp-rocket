@@ -162,7 +162,7 @@ class Controller {
 	}
 
 	/**
-	 * Sets the font internal style.
+	 * Gets the font inline css.
 	 *
 	 * @param string $gf_parameters Google Fonts parameters.
 	 * @param string $css_path CSS file path.
