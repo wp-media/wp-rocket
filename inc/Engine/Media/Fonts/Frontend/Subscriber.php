@@ -3,9 +3,6 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Media\Fonts\Frontend;
 
-
-use WP_Rocket\Engine\Media\Fonts\Controller\Fonts;
-
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 class Subscriber implements Subscriber_Interface {
