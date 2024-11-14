@@ -18,7 +18,7 @@ class TestRewriteFonts extends FilesystemTestCase {
 	private $context;
 	private $controller;
 
-	protected $filesystem;
+	protected $file_system;
 
 	public function set_up() {
 		parent::set_up();
@@ -26,8 +26,8 @@ class TestRewriteFonts extends FilesystemTestCase {
 		Functions\when( 'get_current_blog_id' )->justReturn( 1 );
 
 		$this->context    = Mockery::mock( Context::class );
-		$this->filesystem = Mockery::mock( WP_Filesystem_Direct::class );
-		$this->controller = new Controller( $this->context, $this->filesystem );
+		$this->file_system = Mockery::mock( WP_Filesystem_Direct::class );
+		$this->controller = new Controller( $this->context, $this->file_system );
 
 		$this->stubWpParseUrl();
 	}
