@@ -40,7 +40,6 @@ class WPRocketUninstall {
 		'wp_rocket_no_licence',
 		'wp_rocket_last_option_hash',
 		'wp_rocket_debug',
-		'rocketcdn_old_url',
 	];
 
 	/**
