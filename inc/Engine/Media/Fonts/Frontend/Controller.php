@@ -123,11 +123,11 @@ class Controller {
 	 */
 	private function remove_preconnect_and_prefetch( string $html ) {
 		/**
-		 * Filters the removal of Google preconnect and prefetch links.
+		 * Filters the removal of Google preconnect/prefetch links.
 		 *
 		 * @since 3.18
 		 *
-		 * @param bool $enable_noscript Enable or disable noscript tag.
+		 * @param bool $enable_removal Enable or disable removal of Google preconnect/prefetch links.
 		 */
 		$remove_links = wpm_apply_filters_typed( 'boolean', 'rocket_remove_font_pre_links', true );
 
