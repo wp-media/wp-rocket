@@ -336,6 +336,6 @@ class DataManagerSubscriber implements Subscriber_Interface {
 			return;
 		}
 		// Only save the old url when the new url doesn't equal the old one.
-		update_option( 'rocketcdn_old_url', $old_subscription_data['cdn_url'] );
+		update_option( 'rocketcdn_old_url', $old_subscription_data['cdn_url'], false );
 	}
 }
