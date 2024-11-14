@@ -2,11 +2,7 @@
 
 return [
 	'shouldReturnOptimizedTagWhenSingleTagGiven' => [
-		'config' => [
-			'swap' => false,
-			'disable_preload' => false,
-		],
-		'html' =>
+		'given' =>
 			'<!doctype html>
 			<html>
 				<head>
@@ -33,11 +29,7 @@ return [
 			</html>'
 	],
 	'shouldUseFilteredDisplayValue' => [
-		'config' => [
-			'swap' => 'optional',
-			'disable_preload' => false,
-		],
-		'html' =>
+		'given' =>
 			'<!doctype html>
 			<html>
 				<head>
@@ -63,13 +55,10 @@ return [
 				</body>
 			</html>'
 		,
+		'filtered' => 'optional',
 	],
 	'shouldNotCombineMultipleTagsWithTextParam' => [
-		'config' => [
-			'swap' => false,
-			'disable_preload' => false,
-		],
-		'html' =>
+		'given' =>
 			'<!doctype html>
 			<html>
 				<head>
@@ -98,11 +87,7 @@ return [
 			</html>'
 	],
 	'shouldCombineMultipleTags' => [
-		'config' => [
-			'swap' => false,
-			'disable_preload' => false,
-		],
-		'html' =>
+		'given' =>
 			'<!doctype html>
 			<html>
 				<head>
@@ -130,11 +115,7 @@ return [
 			</html>'
 	],
 	'shouldCombineMultipleTagsWithMultipleFamiliesInTag' => [
-		'config' => [
-			'swap' => false,
-			'disable_preload' => false,
-		],
-		'html' =>
+		'given' =>
 			'<!doctype html>
 			<html>
 				<head>
@@ -164,11 +145,7 @@ return [
 			</html>'
 	],
 	'shouldRemovePreconnectWhenNoGoogleFontsPresentOnPage' => [
-		'config' => [
-			'swap' => false,
-			'disable_preload' => false,
-		],
-		'html' =>
+		'given' =>
 			'<!doctype html>
 			<html>
 				<head>
