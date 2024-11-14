@@ -9,6 +9,8 @@ use WP_Rocket\Engine\Media\Fonts\Controller\Fonts as FontsController;
 use WP_Rocket\Engine\Media\Fonts\Controller\Filesystem;
 use WP_Rocket\Engine\Media\Fonts\Admin\Settings;
 use WP_Rocket\Engine\Media\Fonts\Admin\Subscriber as AdminSubscriber;
+use WP_Rocket\Engine\Media\Fonts\Context\Context;
+use WP_Rocket\Engine\Media\Fonts\Frontend\Controller as FrontendController;
 
 /**
  * Service provider for the WP Rocket Font Optimization
@@ -29,6 +31,9 @@ class ServiceProvider extends AbstractServiceProvider {
 		'media_fonts_controller',
 		'media_fonts_settings',
 		'media_fonts_admin_subscriber',
+		'media_fonts_context',
+		'media_fonts_frontend_controller',
+		'media_fonts_frontend_subscriber',
 	];
 
 	/**
@@ -57,11 +62,21 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'media_fonts_filesystem' ) )
 			->addArgument( $this->getContainer()->get( 'options' ) );
 
-		$this->getContainer()->addShared( 'media_fonts_frontend_subscriber', FrontendSubscriber::class )
-			->addArgument( $this->getContainer()->get( 'media_fonts_controller' ) );
-
 		$this->getContainer()->add( 'media_fonts_settings', Settings::class );
 		$this->getContainer()->addShared( 'media_fonts_admin_subscriber', AdminSubscriber::class )
 			->addArgument( 'media_fonts_settings' );
+
+		$this->getContainer()->add( 'media_fonts_context', Context::class )
+			->addArgument( $this->getContainer()->get( 'options' ) );
+		$this->getContainer()->add( 'media_fonts_frontend_controller', FrontendController::class )
+			->addArguments(
+				[
+					$this->getContainer()->get( 'media_fonts_context' ),
+				]
+			);
+		$this->getContainer()->add( 'media_fonts_frontend_subscriber', FrontendSubscriber::class )
+			->addArgument(
+				$this->getContainer()->get( 'media_fonts_frontend_controller' )
+			);
 	}
 }

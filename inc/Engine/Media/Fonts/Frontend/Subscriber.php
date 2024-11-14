@@ -3,34 +3,60 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Media\Fonts\Frontend;
 
+
 use WP_Rocket\Engine\Media\Fonts\Controller\Fonts;
+
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 class Subscriber implements Subscriber_Interface {
 	/**
-	 * Fonts instance
+	 * Frontend Controller instance.
 	 *
-	 * @var Fonts
+	 * @var Controller
 	 */
-	private $fonts;
+	private $frontend_controller;
 
 	/**
-	 * Instantiate the class
+	 * Constructor.
 	 *
-	 * @param Fonts $fonts Fonts instance.
+	 * @param Controller $frontend_controller Frontend Controller instance.
 	 */
-	public function __construct( Fonts $fonts ) {
-		$this->fonts = $fonts;
+	public function __construct( Controller $frontend_controller ) {
+		$this->frontend_controller = $frontend_controller;
 	}
 
 	/**
-	 * Return an array of events that this subscriber wants to listen to.
+	 * Returns an array of events that this subscriber wants to listen to.
 	 *
 	 * @since  3.18
 	 *
 	 * @return array
 	 */
-	public static function get_subscribed_events() {
-		return [];
+	public static function get_subscribed_events(): array {
+		return [
+			'rocket_buffer'                       => [ 'rewrite_fonts', 18 ],
+			'rocket_disable_google_fonts_preload' => 'disable_google_fonts_preload',
+		];
+	}
+
+	/**
+	 * Rewrites the Google Fonts paths to local ones.
+	 *
+	 * @param string $html HTML content.
+	 * @return string
+	 */
+	public function rewrite_fonts( string $html ): string {
+		return $this->frontend_controller->rewrite_fonts( $html );
+	}
+
+	/**
+	 * Disables the preload of Google Fonts.
+	 *
+	 * @param bool $disable Whether to disable the preload of Google Fonts.
+	 *
+	 * @return bool
+	 */
+	public function disable_google_fonts_preload( $disable ): bool {
+		return $this->frontend_controller->disable_google_fonts_preload( $disable );
 	}
 }
