@@ -375,7 +375,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 			return;
 		}
 
-		$old_cname = get_option( 'rocketcdn_old_url' );
+		$old_cname = get_rocket_option( 'rocketcdn_old_url' );
 		if ( empty( $old_cname ) ) {
 			return;
 		}

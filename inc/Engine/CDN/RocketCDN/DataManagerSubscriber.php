@@ -1,6 +1,8 @@
 <?php
 namespace WP_Rocket\Engine\CDN\RocketCDN;
 
+use WP_Rocket\Admin\Options;
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
@@ -26,14 +28,32 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	private $cdn_options;
 
 	/**
+	 * WP Options API instance
+	 *
+	 * @var Options
+	 */
+	private $options_api;
+
+	/**
+	 * WP Rocket Options instance
+	 *
+	 * @var Options_Data
+	 */
+	private $options;
+
+	/**
 	 * Constructor
 	 *
 	 * @param APIClient         $api_client  RocketCDN API Client instance.
 	 * @param CDNOptionsManager $cdn_options CDNOptionsManager instance.
+	 * @param Options_Data      $options Options instance.
+	 * @param Options      $options_api Options API instance.
 	 */
-	public function __construct( APIClient $api_client, CDNOptionsManager $cdn_options ) {
+	public function __construct( APIClient $api_client, CDNOptionsManager $cdn_options, Options_Data $options, Options $options_api ) {
 		$this->api_client  = $api_client;
 		$this->cdn_options = $cdn_options;
+		$this->options     = $options;
+		$this->options_api = $options_api;
 	}
 
 	/**
@@ -325,24 +345,26 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function refresh_cdn_cname( $new_version, $old_version ): void {
-		if ( version_compare( $old_version, '3.17.2', '>' ) ) {
-			return;
-		}
-
-		$old_subscription_data = $this->api_client->get_subscription_data();
-
-		if ( ! $old_subscription_data['is_active'] || empty( $old_subscription_data['cdn_url'] ) ) {
+		if ( version_compare( $old_version, '3.17.3', '>=' ) ) {
 			return;
 		}
 
 		delete_transient( 'rocketcdn_status' );
 
 		$new_subscription_data = $this->api_client->get_subscription_data();
-
-		if ( $old_subscription_data['cdn_url'] === $new_subscription_data['cdn_url'] ) {
+		if ( ! $new_subscription_data['is_active'] || empty( $new_subscription_data['cdn_url'] ) ) {
 			return;
 		}
-		// Only save the old url when the new url doesn't equal the old one.
-		update_option( 'rocketcdn_old_url', $old_subscription_data['cdn_url'], false );
+
+		$cdn_cnames  = $this->options->get( 'cdn_cnames', [] );
+		if ( empty( $cdn_cnames[0] ) || $cdn_cnames[0] === $new_subscription_data['cdn_url'] ) {
+			return;
+		}
+
+		$this->options->set( 'rocketcdn_old_url', $cdn_cnames[0] );
+		$cdn_cnames[0] = $new_subscription_data['cdn_url'];
+		$this->options->set( 'cdn_cnames', $cdn_cnames );
+
+		$this->options_api->set( 'settings', $this->options->get_options() );
 	}
 }
