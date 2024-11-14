@@ -317,8 +317,15 @@ class DataManagerSubscriber implements Subscriber_Interface {
 		}
 	}
 
+	/**
+	 * Upgrade callback.
+	 *
+	 * @param string $new_version Plugin new version.
+	 * @param string $old_version Plugin old version.
+	 * @return void
+	 */
 	public function refresh_cdn_cname( $new_version, $old_version ): void {
-		if ( version_compare( $old_version, '3.17.2', '>' ) ) {
+		if ( version_compare( $old_version, '3.17.3', '>' ) ) {
 			return;
 		}
 
@@ -328,7 +335,7 @@ class DataManagerSubscriber implements Subscriber_Interface {
 			return;
 		}
 
-		delete_transient('rocketcdn_status');
+		delete_transient( 'rocketcdn_status' );
 
 		$new_subscription_data = $this->api_client->get_subscription_data();
 

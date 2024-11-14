@@ -355,12 +355,23 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 		return (bool) rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' );
 	}
 
+	/**
+	 * Change CName admin notice contents.
+	 *
+	 * @return void
+	 */
 	public function change_cname_notice() {
 		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			return;
 		}
 
 		if ( 'settings_page_wprocket' !== get_current_screen()->id ) {
+			return;
+		}
+
+		$boxes = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
+
+		if ( in_array( 'rocketcdn_change_cname', (array) $boxes, true ) ) {
 			return;
 		}
 
@@ -374,18 +385,29 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 			return;
 		}
 
-		$data = [
-			'old_cname'   => $old_cname,
-			'new_cname'   => $new_subscription['cdn_url'],
-			'support_url' => rocket_get_external_url(
-				'support',
-				[
-					'utm_source' => 'wp_plugin',
-					'utm_medium' => 'wp_rocket',
-				]
-			),
+		$support_url = rocket_get_external_url(
+			'support',
+			[
+				'utm_source' => 'wp_plugin',
+				'utm_medium' => 'wp_rocket',
+			]
+		);
+
+		$message_lines = [
+			// translators: %1$s = Old CName, %2$s = New CName.
+			sprintf( esc_html__( 'We\'ve updated your RocketCDN CNAME from %1$s to %2$s.', 'rocket' ), $old_cname, $new_subscription['cdn_url'] ),
+			// translators: %1$s = New CName.
+			sprintf( esc_html__( 'The change is already applied to the plugin settings. If you were using the CNAME in your code, make sure to update it to: %1$s.', 'rocket' ), $new_subscription['cdn_url'] ),
 		];
 
-		echo $this->generate( 'cname-change-notice', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+		rocket_notice_html(
+			[
+				'status'         => 'info',
+				'message'        => implode( '<br>', $message_lines ),
+				'dismiss_button' => 'rocketcdn_change_cname',
+				'id'             => 'rocketcdn_change_cname_notice',
+				'action'         => sprintf( '<a href="%1$s" target="_blank" rel="noopener" class="wpr-button" id="rocketcdn-change-cname-button">%2$s</a>', $support_url, esc_html__( 'contact support', 'rocket' ) ),
+			]
+		);
 	}
 }
