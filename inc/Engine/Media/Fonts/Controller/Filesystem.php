@@ -193,12 +193,6 @@ class Filesystem extends AbstractFileSystem {
 		return $this->delete_file( $dir );
 	}
 
-	/**
-	 * Deletes all the font CSS files
-	 */
-	public function delete_all_font_css() {
-		// TODO:create method to recursively delete all locally stored fonts.
-	}
 
 	/**
 	 * Set the version of the fonts
