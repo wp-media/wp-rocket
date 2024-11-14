@@ -133,7 +133,7 @@ class Controller {
 		$inline_fonts_css = wpm_apply_filters_typed( 'boolean', 'rocket_host_fonts_locally_inline_css', false );
 		if ( $inline_fonts_css ) {
 			$raw_path   = $this->base_path . $path . '.css';
-			$inline_css = $this->set_font_internal_style( $gf_parameters, $raw_path );
+			$inline_css = $this->get_font_inline_css( $gf_parameters, $raw_path );
 			if ( $inline_css ) {
 				return $inline_css;
 			}
@@ -169,7 +169,7 @@ class Controller {
 	 *
 	 * @return string|bool
 	 */
-	private function set_font_internal_style( string $gf_parameters, string $css_path ) {
+	private function get_font_inline_css( string $gf_parameters, string $css_path ) {
 		if ( ! $css_path ) {
 			return false;
 		}
