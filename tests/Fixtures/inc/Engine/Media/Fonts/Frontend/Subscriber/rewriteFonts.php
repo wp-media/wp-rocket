@@ -9,7 +9,6 @@ return [
 				'locally_inline_css' => false,
 				'css_files' => []
 			],
-
 			'expected' => [
 				'html' => '<html><body></body></html>'
 			],
