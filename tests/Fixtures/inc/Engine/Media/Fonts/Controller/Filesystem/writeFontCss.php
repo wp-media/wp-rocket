@@ -37,6 +37,7 @@ return [
 				'css_content'      => 'url(https://fonts.gstatic.com/s/opensans/v18/mem8YaGs126MiZpBA-UFUK0Zdc0.woff2);',
 				'provider'         => 'google-font',
 				'local_url'        => 'http://example.org/wp-content',
+				'response_code'    => 200,
 				'response' => [
 					'headers' => [],
 					'body' => json_encode( (object) [

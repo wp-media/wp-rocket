@@ -18,13 +18,6 @@ class Fonts {
 	private $filesystem;
 
 	/**
-	 * Instance of options handler.
-	 *
-	 * @var Options_Data
-	 */
-	private $options;
-
-	/**
 	 * Context instance.
 	 *
 	 * @var Context
@@ -34,17 +27,14 @@ class Fonts {
 	/**
 	 * Instantiate the class.
 	 *
-	 * @param Filesystem   $filesystem Filesystem Instance.
-	 * @param Options_Data $options    Options instance.
-	 * @param Context      $context Context instance.
+	 * @param Filesystem $filesystem Filesystem Instance.
+	 * @param Context    $context Context instance.
 	 */
 	public function __construct(
 		Filesystem $filesystem,
-		Options_Data $options,
 		Context $context
 	) {
 		$this->filesystem = $filesystem;
-		$this->options    = $options;
 		$this->context    = $context;
 	}
 

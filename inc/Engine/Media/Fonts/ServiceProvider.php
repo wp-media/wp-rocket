@@ -67,7 +67,6 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArguments(
 				[
 					$this->getContainer()->get( 'media_fonts_filesystem' ),
-					$this->getContainer()->get( 'options' ),
 					$this->getContainer()->get( 'media_fonts_context' ),
 				]
 				);

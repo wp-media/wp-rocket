@@ -39,6 +39,11 @@ class TestRewriteFonts extends FilesystemTestCase {
 			->once()
 			->andReturn( $config['is_allowed'] );
 
+		$this->font->shouldReceive('process')
+			->atLeast()
+			->times( $config['download_font'] )
+			->andReturn( true );
+
 		$this->assertSame(
 			$this->format_the_html( $expected ),
 			$this->format_the_html( $this->controller->rewrite_fonts( $original ) )

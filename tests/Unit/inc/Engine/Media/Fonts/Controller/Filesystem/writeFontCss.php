@@ -41,6 +41,9 @@ class test_WriteFontCss extends FilesystemTestCase {
 		Functions\when( 'wp_safe_remote_get' )
 			->justReturn( $config['response'] );
 
+		Functions\when( 'wp_remote_retrieve_response_code' )
+			->justReturn( $config['response_code'] );
+
 		Functions\when( 'wp_parse_url' )->alias( function( $url, $component = - 1 ) {
 			return parse_url( $url, $component );
 		} );
