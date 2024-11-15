@@ -1,12 +1,11 @@
 <?php
-
 declare(strict_types=1);
 
-namespace WP_Rocket\Engine\Media\Fonts\Controller;
+namespace WP_Rocket\Engine\Media\Fonts;
 
+use WP_Filesystem_Direct;
 use WP_Rocket\Engine\Common\AbstractFileSystem;
 use WP_Rocket\Logger\Logger;
-use WP_Filesystem_Direct;
 
 class Filesystem extends AbstractFileSystem {
 	/**
@@ -35,18 +34,18 @@ class Filesystem extends AbstractFileSystem {
 	}
 
 	/**
-	 * Hash the url
+	 * Hashes the url
 	 *
-	 * @param string $font_url Font url.
+	 * @param string $url URL to get the hash from.
 	 *
 	 * @return string
 	 */
-	private function hash_url( string $font_url ): string {
-		return md5( $font_url );
+	private function hash_url( string $url ): string {
+		return md5( $url );
 	}
 
 	/**
-	 * Write font css to path
+	 * Writes font css to path
 	 *
 	 * @param string $font_url The font url to save locally.
 	 * @param string $provider The url of the page.
@@ -66,7 +65,7 @@ class Filesystem extends AbstractFileSystem {
 
 		$start_time = microtime( true );
 
-		$css_content = $this->download_font( html_entity_decode( $font_url ) );
+		$css_content = $this->get_remote_content( html_entity_decode( $font_url ) );
 
 		if ( ! $css_content ) {
 			return false;
@@ -87,7 +86,7 @@ class Filesystem extends AbstractFileSystem {
 			}
 
 			if ( ! $this->filesystem->exists( $local_path ) ) {
-				$font_content = $this->download_font( $font_url );
+				$font_content = $this->get_remote_content( $font_url );
 
 				if ( ! $font_content ) {
 					Logger::debug( 'Font download was not successful', [ 'Host Fonts Locally' ] );
@@ -111,13 +110,13 @@ class Filesystem extends AbstractFileSystem {
 	}
 
 	/**
-	 * Download font from external url
+	 * Gets the remote content of the URL
 	 *
-	 * @param string $url Url of the file to download.
+	 * @param string $url URL to request content for.
 	 *
-	 * @return mixed
+	 * @return string
 	 */
-	private function download_font( string $url ) {
+	private function get_remote_content( string $url ): string {
 		$response = wp_safe_remote_get(
 			$url,
 			[
@@ -127,16 +126,10 @@ class Filesystem extends AbstractFileSystem {
 		);
 
 		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
-			return [];
+			return '';
 		}
 
-		$content = wp_remote_retrieve_body( $response );
-
-		if ( ! $content ) {
-			return false;
-		}
-
-		return $content;
+		return wp_remote_retrieve_body( $response );
 	}
 
 	/**
@@ -150,7 +143,6 @@ class Filesystem extends AbstractFileSystem {
 	private function get_fonts_full_path( string $font_provider_path, string $hash ): string {
 		return $this->path . $font_provider_path . $this->hash_to_path( $hash );
 	}
-
 
 	/**
 	 * Get the fonts relative paths
@@ -194,31 +186,5 @@ class Filesystem extends AbstractFileSystem {
 		$dir = $this->get_fonts_full_path( $this->get_font_provider_path( $url ), $url );
 
 		return $this->delete_file( $dir );
-	}
-
-	/**
-	 * Converts hash to path with filtered number of levels
-	 *
-	 * @param string $hash Hash value.
-	 *
-	 * @return string
-	 */
-	private function hash_to_path( string $hash ): string {
-		/**
-		 * Filters the number of sub-folders level to create for used CSS storage
-		 *
-		 * @since 3.18
-		 *
-		 * @param int $levels Number of levels.
-		 */
-		$levels = wpm_apply_filters_typed( 'integer', 'rocket_media_font_dir_level', 3 );
-
-		$base   = substr( $hash, 0, $levels );
-		$remain = substr( $hash, $levels );
-
-		$path_array   = str_split( $base );
-		$path_array[] = $remain;
-
-		return implode( '/', $path_array );
 	}
 }
