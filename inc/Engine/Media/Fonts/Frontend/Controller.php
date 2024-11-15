@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Media\Fonts\Frontend;
 
 use WP_Rocket\Engine\Media\Fonts\Context\Context;
+use WP_Rocket\Engine\Media\Fonts\Controller\Filesystem;
 use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Logger\Logger;
 use WP_Filesystem_Direct;
@@ -29,7 +30,7 @@ class Controller {
 	/**
 	 * WordPress filesystem.
 	 *
-	 * @var WP_Filesystem_Direct
+	 * @var WP_Rocket\Engine\Media\Fonts\Controller\Filesystem;
 	 */
 	private $filesystem;
 
@@ -43,10 +44,10 @@ class Controller {
 	/**
 	 * Constructor.
 	 *
-	 * @param Context                   $context Context instance.
-	 * @param WP_Filesystem_Direct|null $filesystem WordPress filesystem.
+	 * @param Context                                                 $context Context instance.
+	 * @param WP_Rocket\Engine\Media\Fonts\Controller\Filesystem|null $filesystem WordPress filesystem.
 	 */
-	public function __construct( Context $context, ?WP_Filesystem_Direct $filesystem ) {
+	public function __construct( Context $context, ?Filesystem $filesystem ) {
 		$this->context    = $context;
 		$this->base_path  = rocket_get_constant( 'WP_ROCKET_CACHE_ROOT_PATH', '' ) . 'fonts/' . get_current_blog_id() . '/';
 		$this->base_url   = rocket_get_constant( 'WP_ROCKET_CACHE_ROOT_URL', '' ) . 'fonts/' . get_current_blog_id() . '/';
@@ -130,7 +131,7 @@ class Controller {
 		 *
 		 * @param bool $enable Tells if we are enabling or not the inline css output.
 		 */
-		$inline_fonts_css = wpm_apply_filters_typed( 'boolean', 'rocket_host_fonts_locally_inline_css', false );
+		$inline_fonts_css = wpm_apply_filters_typed( 'boolean', 'rocket_host_fonts_locally_inline_css', true );
 		if ( $inline_fonts_css ) {
 			$raw_path   = $this->base_path . $path . '.css';
 			$inline_css = $this->get_font_inline_css( $gf_parameters, $raw_path );
