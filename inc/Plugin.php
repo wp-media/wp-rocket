@@ -55,6 +55,7 @@ use WP_Rocket\Engine\Common\PerformanceHints\ServiceProvider as PerformanceHints
 use WP_Rocket\Engine\Optimization\LazyRenderContent\ServiceProvider as LRCServiceProvider;
 use WP_Rocket\Engine\Media\Fonts\ServiceProvider as MediaFontsServiceProvider;
 
+
 /**
  * Plugin Manager.
  */

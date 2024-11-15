@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Media\Fonts\Frontend;
 
 use WP_Rocket\Engine\Media\Fonts\Context\Context;
+use WP_Rocket\Engine\Media\Fonts\Filesystem;
 use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Logger\Logger;
 
@@ -18,6 +19,13 @@ class Controller {
 	private $context;
 
 	/**
+	 * Filesystem instance.
+	 *
+	 * @var Filesystem
+	 */
+	private $filesystem;
+
+	/**
 	 * Base url.
 	 *
 	 * @var string
@@ -25,13 +33,22 @@ class Controller {
 	private $base_url;
 
 	/**
+	 * Error flag.
+	 *
+	 * @var bool
+	 */
+	private $error = false;
+
+	/**
 	 * Constructor.
 	 *
-	 * @param Context $context Context instance.
+	 * @param Context    $context Context instance.
+	 * @param Filesystem $filesystem Filesystem instance.
 	 */
-	public function __construct( Context $context ) {
-		$this->context  = $context;
-		$this->base_url = rocket_get_constant( 'WP_ROCKET_CACHE_ROOT_URL', '' ) . 'fonts/' . get_current_blog_id() . '/';
+	public function __construct( Context $context, Filesystem $filesystem ) {
+		$this->context    = $context;
+		$this->base_url   = rocket_get_constant( 'WP_ROCKET_CACHE_ROOT_URL', '' ) . 'fonts/' . get_current_blog_id() . '/';
+		$this->filesystem = $filesystem;
 	}
 
 	/**
@@ -40,7 +57,7 @@ class Controller {
 	 * @param string $html HTML content.
 	 * @return string
 	 */
-	public function rewrite_fonts( string $html ): string {
+	public function rewrite_fonts( $html ): string {
 		if ( ! $this->context->is_allowed() ) {
 			return $html;
 		}
@@ -63,20 +80,30 @@ class Controller {
 			$html = $this->replace_font( $font, $html );
 		}
 
+		if ( ! $this->error ) {
+			$html = $this->remove_preconnect_and_prefetch( $html );
+		}
+
 		return $html;
 	}
 
 	/**
 	 * Replaces the Google Fonts URL with the local one.
 	 *
-	 * @param array  $font Font data.
-	 * @param string $html HTML content.
+	 * @param array  $font    Font data.
+	 * @param string $html    HTML content.
+	 * @param string $font_provider Font provider.
 	 *
 	 * @return string
 	 */
-	private function replace_font( $font, $html ): string {
-		$hash  = md5( $font['url'] );
-		$local = $this->get_optimized_markup( $hash, $font['url'] );
+	private function replace_font( array $font, string $html, string $font_provider = 'google-font' ): string {
+		if ( ! $this->filesystem->write_font_css( $font['url'], $font_provider ) ) {
+			$this->error = true;
+
+			return $html;
+		}
+
+		$local = $this->get_optimized_markup( md5( $font['url'] ), $font['url'], $font_provider );
 
 		return str_replace( $font[0], $local, $html );
 	}
@@ -88,19 +115,18 @@ class Controller {
 	 *
 	 * @param string $hash Font Url has.
 	 * @param string $original_url Fonts Url.
+	 * @param string $font_provider Fonts provider.
 	 *
 	 * @return string
 	 */
-	protected function get_optimized_markup( string $hash, string $original_url ): string {
-		$levels = 3;
-		$base   = substr( $hash, 0, $levels );
-		$remain = substr( $hash, $levels );
+	private function get_optimized_markup(
+		string $hash,
+		string $original_url,
+		string $font_provider
+	): string {
+		$font_provider_path = sprintf( '%s/', $font_provider );
 
-		$path_array   = str_split( $base );
-		$path_array[] = $remain;
-
-		$path = implode( '/', $path_array );
-		$url  = $this->base_url . $path . '.css';
+		$url = $this->base_url . $font_provider_path . $this->filesystem->hash_to_path( $hash ) . '.css';
 
 		$gf_parameters = wp_parse_url( $original_url, PHP_URL_QUERY );
 
@@ -109,6 +135,35 @@ class Controller {
 			$url,
 			$gf_parameters
 		);
+	}
+
+	/**
+
+	 * Removes preconnect and prefetch links for Google Fonts from the HTML content.
+	 *
+	 * @param string $html HTML content.
+	 *
+	 * @return string Modified HTML content without preconnect and prefetch links.
+	 */
+	private function remove_preconnect_and_prefetch( string $html ) {
+		/**
+		 * Filters the removal of Google preconnect/prefetch links.
+		 *
+		 * @since 3.18
+		 *
+		 * @param bool $enable_removal Enable or disable removal of Google preconnect/prefetch links.
+		 */
+		$remove_links = wpm_apply_filters_typed( 'boolean', 'rocket_remove_font_pre_links', true );
+
+		if ( ! $remove_links ) {
+			return $html;
+		}
+
+		$pattern = '/<link(?:[^>]*)(?:rel=["\'](?:dns-prefetch|preconnect)["\'])(?:[^>]*)(?:href=["\'](?:https?:)?\/\/(?:fonts\.(?:googleapis|gstatic)\.com)["\'])(?:[^>]*)>/i';
+
+		$html = preg_replace( $pattern, '', $html );
+
+		return $html;
 	}
 
 	/**
