@@ -43,23 +43,25 @@ return [
     'shouldReturnAsExpectedIfAnalyticsIsEmpty' => [
         'config' => [
             'dynamic_lists' => (object) [
-                'analytics' => [],
-                'ad_networks' => [
-                    'script1' => (object) [
-                        'title' => 'Script One', 
-                        'icon_url' => 'url_to_icon'
+                'scripts' => (object) [
+                    'analytics' => [],
+                    'ad_networks' => [
+                        'script1' => (object) [
+                            'title' => 'Script One', 
+                            'icon_url' => 'url_to_icon'
+                        ],
                     ],
-                ],
-                'payment_processors' => [
-                    'script1' => (object) [
-                        'title' => 'Script One', 
-                        'icon_url' => 'url_to_icon'
+                    'payment_processors' => [
+                        'script1' => (object) [
+                            'title' => 'Script One', 
+                            'icon_url' => 'url_to_icon'
+                        ],
                     ],
-                ],
-                'other_services' => [
-                    'script1' => (object) [
-                        'title' => 'Script One', 
-                        'icon_url' => 'url_to_icon'
+                    'other_services' => [
+                        'script1' => (object) [
+                            'title' => 'Script One', 
+                            'icon_url' => 'url_to_icon'
+                        ],
                     ],
                 ],
                 'themes' => [
@@ -153,23 +155,25 @@ return [
     'shouldReturnAsExpectedIfAdNetworksIsEmpty' => [
         'config' => [
             'dynamic_lists' => (object) [
-                'analytics' => [
-                    'script1' => (object) [
-                        'title' => 'Script One', 
-                        'icon_url' => 'url_to_icon'
+                'scripts' => (object) [
+                    'analytics' => [
+                        'script1' => (object) [
+                            'title' => 'Script One', 
+                            'icon_url' => 'url_to_icon'
+                        ],
                     ],
-                ],
-                'ad_networks' => [],
-                'payment_processors' => [
-                    'script1' => (object) [
-                        'title' => 'Script One', 
-                        'icon_url' => 'url_to_icon'
+                    'ad_networks' => [],
+                    'payment_processors' => [
+                        'script1' => (object) [
+                            'title' => 'Script One', 
+                            'icon_url' => 'url_to_icon'
+                        ],
                     ],
-                ],
-                'other_services' => [
-                    'script1' => (object) [
-                        'title' => 'Script One', 
-                        'icon_url' => 'url_to_icon'
+                    'other_services' => [
+                        'script1' => (object) [
+                            'title' => 'Script One', 
+                            'icon_url' => 'url_to_icon'
+                        ],
                     ],
                 ],
                 'themes' => [
@@ -263,23 +267,25 @@ return [
     'shouldReturnAsExpectedIfPaymentProcessorsIsEmpty' => [
         'config' => [
             'dynamic_lists' => (object) [
-                'analytics' => [
-                    'script1' => (object) [
-                        'title' => 'Script One', 
-                        'icon_url' => 'url_to_icon'
+                'scripts' => (object) [
+                    'analytics' => [
+                        'script1' => (object) [
+                            'title' => 'Script One', 
+                            'icon_url' => 'url_to_icon'
+                        ],
                     ],
-                ],
-                'ad_networks' => [
-                    'script1' => (object) [
-                        'title' => 'Script One', 
-                        'icon_url' => 'url_to_icon'
+                    'ad_networks' => [
+                        'script1' => (object) [
+                            'title' => 'Script One', 
+                            'icon_url' => 'url_to_icon'
+                        ],
                     ],
-                ],
-                'payment_processors' => [],
-                'other_services' => [
-                    'script1' => (object) [
-                        'title' => 'Script One', 
-                        'icon_url' => 'url_to_icon'
+                    'payment_processors' => [],
+                    'other_services' => [
+                        'script1' => (object) [
+                            'title' => 'Script One', 
+                            'icon_url' => 'url_to_icon'
+                        ],
                     ],
                 ],
                 'themes' => [
@@ -373,25 +379,27 @@ return [
     'shouldReturnAsExpectedIfOtherServicesIsEmpty' => [
        'config' => [
             'dynamic_lists' => (object) [
-                'analytics' => [
-                    'script1' => (object) [
-                        'title' => 'Script One', 
-                        'icon_url' => 'url_to_icon'
+                'scripts' => (object) [
+                    'analytics' => [
+                        'script1' => (object) [
+                            'title' => 'Script One', 
+                            'icon_url' => 'url_to_icon'
+                        ],
                     ],
-                ],
-                'ad_networks' => [
-                    'script1' => (object) [
-                        'title' => 'Script One', 
-                        'icon_url' => 'url_to_icon'
+                    'ad_networks' => [
+                        'script1' => (object) [
+                            'title' => 'Script One', 
+                            'icon_url' => 'url_to_icon'
+                        ],
                     ],
-                ],
-                'payment_processors' => [
-                    'script1' => (object) [
-                        'title' => 'Script One', 
-                        'icon_url' => 'url_to_icon'
+                    'payment_processors' => [
+                        'script1' => (object) [
+                            'title' => 'Script One', 
+                            'icon_url' => 'url_to_icon'
+                        ],
                     ],
+                    'other_services' => [],
                 ],
-                'other_services' => [],
                 'themes' => [
                     'theme1' => (object) [
                         'title' => 'flatsome', 
@@ -483,28 +491,30 @@ return [
     'shouldReturnAsExpectedIfThemesIsEmpty' => [
         'config' => [
             'dynamic_lists' => (object) [
-                'analytics' => [
-                    'script1' => (object) [
-                        'title' => 'Script One', 
-                        'icon_url' => 'url_to_icon'
+                'scripts' => (object) [
+                    'analytics' => [
+                        'script1' => (object) [
+                            'title' => 'Script One', 
+                            'icon_url' => 'url_to_icon'
+                        ],
                     ],
-                ],
-                'ad_networks' => [
-                    'script1' => (object) [
-                        'title' => 'Script One', 
-                        'icon_url' => 'url_to_icon'
+                    'ad_networks' => [
+                        'script1' => (object) [
+                            'title' => 'Script One', 
+                            'icon_url' => 'url_to_icon'
+                        ],
                     ],
-                ],
-                'payment_processors' => [
-                    'script1' => (object) [
-                        'title' => 'Script One', 
-                        'icon_url' => 'url_to_icon'
+                    'payment_processors' => [
+                        'script1' => (object) [
+                            'title' => 'Script One', 
+                            'icon_url' => 'url_to_icon'
+                        ],
                     ],
-                ],
-                'other_services' => [
-                    'script1' => (object) [
-                        'title' => 'Script One', 
-                        'icon_url' => 'url_to_icon'
+                    'other_services' => [
+                        'script1' => (object) [
+                            'title' => 'Script One', 
+                            'icon_url' => 'url_to_icon'
+                        ],
                     ],
                 ],
                 'themes' => [],
@@ -592,28 +602,30 @@ return [
     'shouldReturnAsExpectedIfPluginsIsEmpty' => [
         'config' => [
             'dynamic_lists' => (object) [
-                'analytics' => [
-                    'script1' => (object) [
-                        'title' => 'Script One', 
-                        'icon_url' => 'url_to_icon'
+                'scripts' =>  (object) [
+                    'analytics' => [
+                        'script1' => (object) [
+                            'title' => 'Script One', 
+                            'icon_url' => 'url_to_icon'
+                        ],
                     ],
-                ],
-                'ad_networks' => [
-                    'script1' => (object) [
-                        'title' => 'Script One', 
-                        'icon_url' => 'url_to_icon'
+                    'ad_networks' => [
+                        'script1' => (object) [
+                            'title' => 'Script One', 
+                            'icon_url' => 'url_to_icon'
+                        ],
                     ],
-                ],
-                'payment_processors' => [
-                    'script1' => (object) [
-                        'title' => 'Script One', 
-                        'icon_url' => 'url_to_icon'
+                    'payment_processors' => [
+                        'script1' => (object) [
+                            'title' => 'Script One', 
+                            'icon_url' => 'url_to_icon'
+                        ],
                     ],
-                ],
-                'other_services' => [
-                    'script1' => (object) [
-                        'title' => 'Script One', 
-                        'icon_url' => 'url_to_icon'
+                    'other_services' => [
+                        'script1' => (object) [
+                            'title' => 'Script One', 
+                            'icon_url' => 'url_to_icon'
+                        ],
                     ],
                 ],
                 'themes' => [
