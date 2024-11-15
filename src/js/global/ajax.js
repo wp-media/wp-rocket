@@ -178,6 +178,8 @@ $(document).ready(function(){
 			url: rocket_ajax_data.rest_url,
 			beforeSend: function ( xhr ) {
 				xhr.setRequestHeader( 'X-WP-Nonce', rocket_ajax_data.rest_nonce );
+				xhr.setRequestHeader( 'Accept', 'application/json, */*;q=0.1' );
+				xhr.setRequestHeader( 'Content-Type', 'application/json' );
 			},
 			method: "PUT",
 			success: function(responses) {
