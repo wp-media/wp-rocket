@@ -349,6 +349,11 @@ class DataManagerSubscriber implements Subscriber_Interface {
 			return;
 		}
 
+		$cdn_cnames = $this->options->get( 'cdn_cnames', [] );
+		if ( ! empty( $cdn_cnames[0] ) && ! str_contains( $cdn_cnames[0], '.rocketcdn.me' ) ) {
+			return;
+		}
+
 		delete_transient( 'rocketcdn_status' );
 
 		$new_subscription_data = $this->api_client->get_subscription_data();
@@ -356,8 +361,7 @@ class DataManagerSubscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$cdn_cnames = $this->options->get( 'cdn_cnames', [] );
-		if ( empty( $cdn_cnames[0] ) || $cdn_cnames[0] === $new_subscription_data['cdn_url'] ) {
+		if ( ! empty( $cdn_cnames[0] ) && $cdn_cnames[0] === $new_subscription_data['cdn_url'] ) {
 			return;
 		}
 
