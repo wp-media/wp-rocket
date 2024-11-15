@@ -361,7 +361,7 @@ class DataManagerSubscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$this->options->set( 'rocketcdn_old_url', $cdn_cnames[0] );
+		$this->options_api->set( 'rocketcdn_old_url', $cdn_cnames[0] );
 		$cdn_cnames[0] = $new_subscription_data['cdn_url'];
 		$this->options->set( 'cdn_cnames', $cdn_cnames );
 
