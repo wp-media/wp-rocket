@@ -6,14 +6,15 @@ namespace WP_Rocket\Engine\Optimization\RUCSS\Controller;
 use WP_Filesystem_Direct;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
+use WP_Rocket\Engine\Common\AbstractFileSystem;
 
-class Filesystem {
+class Filesystem extends AbstractFileSystem {
 	/**
 	 * WP Filesystem instance
 	 *
 	 * @var WP_Filesystem_Direct
 	 */
-	private $filesystem;
+	protected $filesystem;
 
 	/**
 	 * Path to the used CSS storage
@@ -29,8 +30,8 @@ class Filesystem {
 	 * @param WP_Filesystem_Direct $filesystem WP Filesystem instance.
 	 */
 	public function __construct( $base_path, $filesystem = null ) {
-		$this->filesystem = is_null( $filesystem ) ? rocket_direct_filesystem() : $filesystem;
-		$this->path       = $base_path . get_current_blog_id() . '/';
+		parent::__construct( is_null( $filesystem ) ? rocket_direct_filesystem() : $filesystem );
+		$this->path = $base_path . get_current_blog_id() . '/';
 	}
 
 	/**
@@ -58,7 +59,7 @@ class Filesystem {
 			return '';
 		}
 
-		$file_contents = $this->filesystem->get_contents( $file );
+		$file_contents = $this->get_file_content( $file );
 		$css           = function_exists( 'gzdecode' ) ? gzdecode( $file_contents ) : $file_contents;
 
 		if ( ! $css ) {
@@ -90,7 +91,7 @@ class Filesystem {
 			return false;
 		}
 
-		return $this->filesystem->put_contents( $file, $css, rocket_get_filesystem_perms( 'file' ) );
+		return $this->write_file( $file, $css );
 	}
 
 	/**
@@ -105,7 +106,7 @@ class Filesystem {
 	public function delete_used_css( string $hash ): bool {
 		$file = $this->get_usedcss_full_path( $hash );
 
-		return $this->filesystem->delete( $file, false, 'f' );
+		return $this->delete_file( $file );
 	}
 
 	/**
@@ -116,17 +117,7 @@ class Filesystem {
 	 * @return void
 	 */
 	public function delete_all_used_css() {
-		try {
-			$dir = new RecursiveDirectoryIterator( $this->path, \FilesystemIterator::SKIP_DOTS );
-
-			$items = new RecursiveIteratorIterator( $dir, RecursiveIteratorIterator::CHILD_FIRST );
-
-			foreach ( $items as $item ) {
-				$this->filesystem->delete( $item );
-			}
-		} catch ( \Exception $e ) {
-			return;
-		}
+		$this->delete_all_files_from_directory( $this->path );
 	}
 
 	/**
@@ -137,38 +128,6 @@ class Filesystem {
 	 * @return bool
 	 */
 	public function is_writable_folder() {
-		if ( ! $this->filesystem->exists( $this->path ) ) {
-			rocket_mkdir_p( $this->path );
-		}
-
-		return $this->filesystem->is_writable( $this->path );
-	}
-
-	/**
-	 * Converts hash to path with filtered number of levels
-	 *
-	 * @since 3.11.4
-	 *
-	 * @param string $hash md5 hash string.
-	 *
-	 * @return string
-	 */
-	private function hash_to_path( string $hash ): string {
-		/**
-		 * Filters the number of sub-folders level to create for used CSS storage
-		 *
-		 * @since 3.11.4
-		 *
-		 * @param int $levels Number of levels.
-		 */
-		$levels = apply_filters( 'rocket_used_css_dir_level', 3 );
-
-		$base   = substr( $hash, 0, $levels );
-		$remain = substr( $hash, $levels );
-
-		$path_array   = str_split( $base );
-		$path_array[] = $remain;
-
-		return implode( '/', $path_array );
+		return $this->is_folder_writable( $this->path );
 	}
 }
