@@ -53,9 +53,9 @@ class Controller {
 	 * @param Filesystem $filesystem Filesystem instance.
 	 */
 	public function __construct( Context $context, Filesystem $filesystem ) {
-		$this->context      = $context;
+		$this->context    = $context;
 		$this->base_path  = rocket_get_constant( 'WP_ROCKET_CACHE_ROOT_PATH', '' ) . 'fonts/' . get_current_blog_id() . '/';
-		$this->base_url     = rocket_get_constant( 'WP_ROCKET_CACHE_ROOT_URL', '' ) . 'fonts/' . get_current_blog_id() . '/';
+		$this->base_url   = rocket_get_constant( 'WP_ROCKET_CACHE_ROOT_URL', '' ) . 'fonts/' . get_current_blog_id() . '/';
 		$this->filesystem = $filesystem;
 	}
 
@@ -143,7 +143,7 @@ class Controller {
 		 * @param bool $enable Tells if we are enabling or not the inline css output.
 		 */
 		if ( wpm_apply_filters_typed( 'boolean', 'rocket_host_fonts_locally_inline_css', false ) ) {
-			$local_css_path = $this->base_path . $font_provider_path  . $this->filesystem->hash_to_path( $hash ) . '.css';
+			$local_css_path = $this->base_path . $font_provider_path . $this->filesystem->hash_to_path( $hash ) . '.css';
 
 			$inline_css = $this->get_font_inline_css( $local_css_path, $gf_parameters );
 
