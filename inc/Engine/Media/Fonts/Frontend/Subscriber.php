@@ -42,7 +42,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @param string $html HTML content.
 	 * @return string
 	 */
-	public function rewrite_fonts( string $html ): string {
+	public function rewrite_fonts( $html ): string {
 		return $this->frontend_controller->rewrite_fonts( $html );
 	}
 
