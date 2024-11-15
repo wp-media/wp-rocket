@@ -41,18 +41,15 @@ class Fonts {
 	/**
 	 * Start the process of downloading font locally
 	 *
-	 * @param string  $font_url URL of the font to be saved locally.
-	 * @param string  $provider Provider of the font.
-	 * @param integer $version  Version.
+	 * @param string $font_url URL of the font to be saved locally.
+	 * @param string $provider Provider of the font.
 	 *
 	 * @return void
 	 */
-	public function process( string $font_url, string $provider, int $version ): void {
+	public function process( string $font_url, string $provider ): void {
 		if ( ! $this->context->is_allowed() ) {
 			return;
 		}
-
-		$this->filesystem->set_version( $version );
 
 		$this->filesystem->write_font_css( $font_url, $provider );
 	}

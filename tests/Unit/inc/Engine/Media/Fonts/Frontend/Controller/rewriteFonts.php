@@ -13,7 +13,7 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
 /**
  * @group HostFontsLocally
  */
-class TestRewriteFonts extends FilesystemTestCase {
+class Test_RewriteFonts extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/Media/Fonts/Frontend/Controller/rewriteFonts.php';
 	private $context;
 	private $controller;
@@ -38,6 +38,11 @@ class TestRewriteFonts extends FilesystemTestCase {
 		$this->context->shouldReceive('is_allowed')
 			->once()
 			->andReturn( $config['is_allowed'] );
+
+		Functions\expect( 'rocket_get_constant' )
+			->with( 'WP_ROCKET_CACHE_URL' )
+			->once()
+			->andReturn( $config['base_url'] );
 
 		$this->font->shouldReceive('process')
 			->atLeast()

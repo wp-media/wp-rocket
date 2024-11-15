@@ -24,13 +24,6 @@ class Filesystem extends AbstractFileSystem {
 	private $path;
 
 	/**
-	 * Version of the fonts.
-	 *
-	 * @var int
-	 */
-	private $version;
-
-	/**
 	 * Instantiate the class
 	 *
 	 * @param WP_Filesystem_Direct $filesystem WP Filesystem instance.
@@ -155,7 +148,7 @@ class Filesystem extends AbstractFileSystem {
 	 * @return string Path for the font file.
 	 */
 	private function get_fonts_full_path( string $font_provider_path, string $hash ): string {
-		return $this->path . $font_provider_path . $this->get_version() . '/' . $this->hash_to_path( $hash );
+		return $this->path . $font_provider_path . $this->hash_to_path( $hash );
 	}
 
 
@@ -172,7 +165,7 @@ class Filesystem extends AbstractFileSystem {
 		$wp_content_dir = rocket_get_constant( 'WP_CONTENT_DIR' );
 		$relative_path  = str_replace( $wp_content_dir, '', $full_path );
 
-		return $relative_path . $this->get_version() . '/' . $this->hash_to_path( $hash );
+		return $relative_path . $this->hash_to_path( $hash );
 	}
 
 	/**
@@ -201,27 +194,6 @@ class Filesystem extends AbstractFileSystem {
 		$dir = $this->get_fonts_full_path( $this->get_font_provider_path( $url ), $url );
 
 		return $this->delete_file( $dir );
-	}
-
-
-	/**
-	 * Set the version of the fonts
-	 *
-	 * @param int $version The version of the font.
-	 *
-	 * @return void
-	 */
-	public function set_version( int $version ): void {
-		$this->version = $version;
-	}
-
-	/**
-	 * Get the font version
-	 *
-	 * @return int
-	 */
-	public function get_version(): int {
-		return $this->version;
 	}
 
 	/**

@@ -9,8 +9,8 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Google Font V1 and V2 Template</title>
-	<link rel="stylesheet" href="http://example.org/wp-content/cache/fonts/1/google-font/1/6/2/4/f2c2b9858423d0688793189f6e6cb.css" data-wpr-hosted-gf-parameters="family=Roboto|Open+Sans"/> <!-- V1 Fonts -->
-	<link rel="stylesheet" href="http://example.org/wp-content/cache/fonts/1/google-font/2/8/d/4/e42f26da0305c49cd3264956d8329.css" data-wpr-hosted-gf-parameters="family=Lato:wght@400;700&family=Montserrat:wght@400;700&display=swap"/> <!-- V2 Fonts -->
+	<link rel="stylesheet" href="http://example.org/wp-content/cache/fonts/1/google-font/6/2/4/f2c2b9858423d0688793189f6e6cb.css" data-wpr-hosted-gf-parameters="family=Roboto|Open+Sans"/> <!-- V1 Fonts -->
+	<link rel="stylesheet" href="http://example.org/wp-content/cache/fonts/1/google-font/8/d/4/e42f26da0305c49cd3264956d8329.css" data-wpr-hosted-gf-parameters="family=Lato:wght@400;700&family=Montserrat:wght@400;700&display=swap"/> <!-- V2 Fonts -->
 	<style>
 		.v1-font-roboto {
 			font-family: 'Roboto', sans-serif;

@@ -5,7 +5,8 @@ return [
 		'testShouldReturnOriginalWhenNotAllowed' => [
 			'config' => [
 				'is_allowed'    => false,
-				'download_font' => 0
+				'download_font' => 0,
+				'base_url'      => 'http://example.org/wp-content/cache'
 			],
 			'original' => '<html><body></body></html>',
 			'expected' => '<html><body></body></html>',
@@ -13,7 +14,8 @@ return [
 		'testShouldReturnOriginalWhenNoGoogleFonts' => [
 		'config' => [
 			'is_allowed'    => true,
-			'download_font' => 0
+			'download_font' => 0,
+			'base_url'      => 'http://example.org/wp-content/cache'
 		],
 		'original' => '<html><body></body></html>',
 		'expected' => '<html><body></body></html>',
@@ -21,7 +23,8 @@ return [
 		'testShouldRewriteV1Font' => [
 			'config' => [
 				'is_allowed'    => true,
-				'download_font' => 1
+				'download_font' => 1,
+				'base_url'      => 'http://example.org/wp-content/cache'
 			],
 			'original' => file_get_contents( __DIR__ . '/HTML/input_v1.php' ),
 			'expected' => file_get_contents( __DIR__ . '/HTML/expected_v1.php' ),
@@ -29,7 +32,8 @@ return [
 		'testShouldRewriteV2' => [
 			'config' => [
 				'is_allowed'    => true,
-				'download_font' => 1
+				'download_font' => 1,
+				'base_url'      => 'http://example.org/wp-content/cache'
 			],
 			'original' => file_get_contents( __DIR__ . '/HTML/input_v2.php' ),
 			'expected' =>  file_get_contents( __DIR__ . '/HTML/expected_v2.php' ),
@@ -37,7 +41,8 @@ return [
 		'testShouldRewriteV1AndV2' => [
 			'config' => [
 				'is_allowed'    => true,
-				'download_font' => 1
+				'download_font' => 1,
+				'base_url'      => 'http://example.org/wp-content/cache'
 			],
 			'original' => file_get_contents( __DIR__ . '/HTML/input_v1_v2.php' ),
 			'expected' => file_get_contents( __DIR__ . '/HTML/expected_v1_v2.php' ),

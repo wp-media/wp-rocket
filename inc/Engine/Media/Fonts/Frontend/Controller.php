@@ -67,13 +67,13 @@ class Controller {
 		}
 
 		foreach ( $v1_fonts as $font ) {
-			$this->download_font( $font['url'], 1 );
-			$html = $this->replace_font( $font, $html, 1 );
+			$this->download_font( $font['url'] );
+			$html = $this->replace_font( $font, $html );
 		}
 
 		foreach ( $v2_fonts as $font ) {
-			$this->download_font( $font['url'], 2 );
-			$html = $this->replace_font( $font, $html, 2 );
+			$this->download_font( $font['url'] );
+			$html = $this->replace_font( $font, $html );
 		}
 
 		return $html;
@@ -84,14 +84,13 @@ class Controller {
 	 *
 	 * @param array  $font    Font data.
 	 * @param string $html    HTML content.
-	 * @param int    $version Provided font version.
 	 * @param string $font_provider Font provider.
 	 *
 	 * @return string
 	 */
-	private function replace_font( array $font, string $html, int $version, string $font_provider = 'google-font' ): string {
+	private function replace_font( array $font, string $html, string $font_provider = 'google-font' ): string {
 		$hash  = md5( $font['url'] );
-		$local = $this->get_optimized_markup( $hash, $font['url'], $version, $font_provider );
+		$local = $this->get_optimized_markup( $hash, $font['url'], $font_provider );
 
 		return str_replace( $font[0], $local, $html );
 	}
@@ -103,7 +102,6 @@ class Controller {
 	 *
 	 * @param string $hash Font Url has.
 	 * @param string $original_url Fonts Url.
-	 * @param int    $version Fonts version.
 	 * @param string $font_provider Fonts provider.
 	 *
 	 * @return string
@@ -111,7 +109,6 @@ class Controller {
 	protected function get_optimized_markup(
 		string $hash,
 		string $original_url,
-		int $version,
 		string $font_provider
 	): string {
 		$levels = 3;
@@ -122,7 +119,7 @@ class Controller {
 		$path_array[] = $remain;
 
 		$path               = implode( '/', $path_array );
-		$font_provider_path = sprintf( '%s/%d/', $font_provider, $version );
+		$font_provider_path = sprintf( '%s/', $font_provider );
 
 		$url = $this->base_url . $font_provider_path . $path . '.css';
 
@@ -154,10 +151,9 @@ class Controller {
 	 * Download font
 	 *
 	 * @param string $font_url Font url to be downloaded.
-	 * @param int    $font_version The version of the font.
 	 * @param string $provider  The font provider.
 	 */
-	private function download_font( string $font_url, int $font_version, string $provider = 'google-font' ): void {
-		$this->font->process( $font_url, $provider, $font_version );
+	private function download_font( string $font_url, string $provider = 'google-font' ): void {
+		$this->font->process( $font_url, $provider );
 	}
 }
