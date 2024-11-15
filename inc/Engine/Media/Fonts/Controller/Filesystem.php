@@ -10,6 +10,13 @@ use WP_Filesystem_Direct;
 
 class Filesystem extends AbstractFileSystem {
 	/**
+	 * WP Filesystem instance
+	 *
+	 * @var WP_Filesystem_Direct
+	 */
+	protected $filesystem;
+
+	/**
 	 * Path to the fonts storage
 	 *
 	 * @var string
@@ -22,13 +29,6 @@ class Filesystem extends AbstractFileSystem {
 	 * @var int
 	 */
 	private $version;
-
-	/**
-	 * WP Filesystem instance
-	 *
-	 * @var WP_Filesystem_Direct
-	 */
-	protected $filesystem;
 
 	/**
 	 * Instantiate the class
