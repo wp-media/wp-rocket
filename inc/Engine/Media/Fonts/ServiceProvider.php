@@ -10,8 +10,6 @@ use WP_Rocket\Engine\Media\Fonts\Admin\Subscriber as AdminSubscriber;
 use WP_Rocket\Engine\Media\Fonts\Context\Context;
 use WP_Rocket\Engine\Media\Fonts\Frontend\Controller as FrontendController;
 use WP_Rocket\Engine\Media\Fonts\Frontend\Subscriber as FrontendSubscriber;
-use WP_Filesystem_Direct;
-use WP_Rocket\Engine\Media\Fonts\Controller\Filesystem;
 
 /**
  * Service provider for the WP Rocket Font Optimization
@@ -33,7 +31,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		'media_fonts_context',
 		'media_fonts_frontend_controller',
 		'media_fonts_frontend_subscriber',
-		'media_fonts_filesystem',
 	];
 
 	/**
@@ -58,15 +55,6 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( rocket_direct_filesystem() );
 
 		$this->getContainer()->add( 'media_fonts_settings', Settings::class );
-		$this->getContainer()->add( 'wp_direct_filesystem', WP_Filesystem_Direct::class )
-			->addArgument( [] );
-		$this->getContainer()->add( 'media_fonts_filesystem', Filesystem::class )
-			->addArguments(
-				[
-					wpm_apply_filters_typed( 'string', 'rocket_host_font_cache_root', 'fonts/' . get_current_blog_id() ),
-					'wp_direct_filesystem',
-				]
-			);
 		$this->getContainer()->addShared( 'media_fonts_admin_subscriber', AdminSubscriber::class )
 			->addArgument( 'media_fonts_settings' );
 
