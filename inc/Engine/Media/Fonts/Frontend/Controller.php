@@ -63,6 +63,8 @@ class Controller {
 			$html = $this->replace_font( $font, $html );
 		}
 
+		$html = $this->remove_preconnect_and_prefetch( $html );
+
 		return $html;
 	}
 
@@ -109,6 +111,35 @@ class Controller {
 			$url,
 			$gf_parameters
 		);
+	}
+
+	/**
+
+	 * Removes preconnect and prefetch links for Google Fonts from the HTML content.
+	 *
+	 * @param string $html HTML content.
+	 *
+	 * @return string Modified HTML content without preconnect and prefetch links.
+	 */
+	private function remove_preconnect_and_prefetch( string $html ) {
+		/**
+		 * Filters the removal of Google preconnect/prefetch links.
+		 *
+		 * @since 3.18
+		 *
+		 * @param bool $enable_removal Enable or disable removal of Google preconnect/prefetch links.
+		 */
+		$remove_links = wpm_apply_filters_typed( 'boolean', 'rocket_remove_font_pre_links', true );
+
+		if ( ! $remove_links ) {
+			return $html;
+		}
+
+		$pattern = '/<link(?:[^>]*)(?:rel=["\'](?:dns-prefetch|preconnect)["\'])(?:[^>]*)(?:href=["\'](?:https?:)?\/\/(?:fonts\.(?:googleapis|gstatic)\.com)["\'])(?:[^>]*)>/i';
+
+		$html = preg_replace( $pattern, '', $html );
+
+		return $html;
 	}
 
 	/**
