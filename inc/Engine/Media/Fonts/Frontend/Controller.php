@@ -131,7 +131,7 @@ class Controller {
 		 *
 		 * @param bool $enable Tells if we are enabling or not the inline css output.
 		 */
-		$inline_fonts_css = wpm_apply_filters_typed( 'boolean', 'rocket_host_fonts_locally_inline_css', true );
+		$inline_fonts_css = wpm_apply_filters_typed( 'boolean', 'rocket_host_fonts_locally_inline_css', false );
 		if ( $inline_fonts_css ) {
 			$raw_path   = $this->base_path . $path . '.css';
 			$inline_css = $this->get_font_inline_css( $gf_parameters, $raw_path );

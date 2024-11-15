@@ -8,7 +8,7 @@ use Mockery;
 use WP_Rocket\Engine\Media\Fonts\Frontend\Controller;
 use WP_Rocket\Engine\Media\Fonts\Context\Context;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
-use WP_Filesystem_Direct;
+use WP_Rocket\Engine\Media\Fonts\Controller\Filesystem;
 
 /**
  * @group HostFontsLocally
@@ -26,7 +26,7 @@ class TestRewriteFonts extends FilesystemTestCase {
 		Functions\when( 'get_current_blog_id' )->justReturn( 1 );
 
 		$this->context    = Mockery::mock( Context::class );
-		$this->file_system = Mockery::mock( WP_Filesystem_Direct::class );
+		$this->file_system = Mockery::mock( Filesystem::class );
 		$this->controller = new Controller( $this->context, $this->file_system );
 
 		$this->stubWpParseUrl();
