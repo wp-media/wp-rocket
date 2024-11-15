@@ -44,7 +44,7 @@ class Controller {
 	/**
 	 * Constructor.
 	 *
-	 * @param Context                                                 $context Context instance.
+	 * @param Context         $context Context instance.
 	 * @param Filesystem|null $filesystem WordPress filesystem.
 	 */
 	public function __construct( Context $context, ?Filesystem $filesystem ) {
