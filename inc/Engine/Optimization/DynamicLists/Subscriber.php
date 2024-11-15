@@ -64,7 +64,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return array
 	 */
 	public function add_dynamic_lists_script( $data ) {
-		$data['rest_url']   = rest_url( 'wp-rocket/v1/dynamic_lists/update/' );
+		$data['rest_url']   = rest_url( 'wp-rocket/v1/dynamic_lists/update/?_locale=user' );
 		$data['rest_nonce'] = wp_create_nonce( 'wp_rest' );
 
 		return $data;
