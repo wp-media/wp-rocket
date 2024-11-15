@@ -77,7 +77,7 @@ class SiteList {
 	 */
 	private function get_script_in_list( string $item_id, string $script_type ) {
 		$list    = $this->dynamic_lists->get_delayjs_list();
-		$scripts = ! empty( $list->$script_type ) ? (array) $list->$script_type : [];
+		$scripts = ! empty( $list->scripts->$script_type ) ? (array) $list->scripts->$script_type : [];
 
 		return ! empty( $scripts[ $item_id ] ) ? (array) $scripts[ $item_id ] : [];
 	}
@@ -89,7 +89,7 @@ class SiteList {
 	 */
 	private function get_analytics_from_list() {
 		$list = $this->dynamic_lists->get_delayjs_list();
-		return ! empty( $list->analytics ) ? (array) $list->analytics : [];
+		return ! empty( $list->scripts->analytics ) ? (array) $list->scripts->analytics : [];
 	}
 
 	/**
@@ -99,7 +99,7 @@ class SiteList {
 	 */
 	private function get_ad_networks_from_list() {
 		$list = $this->dynamic_lists->get_delayjs_list();
-		return ! empty( $list->ad_networks ) ? (array) $list->ad_networks : [];
+		return ! empty( $list->scripts->ad_networks ) ? (array) $list->scripts->ad_networks : [];
 	}
 
 	/**
@@ -109,7 +109,7 @@ class SiteList {
 	 */
 	private function get_payment_processors_from_list() {
 		$list = $this->dynamic_lists->get_delayjs_list();
-		return ! empty( $list->payment_processors ) ? (array) $list->payment_processors : [];
+		return ! empty( $list->scripts->payment_processors ) ? (array) $list->scripts->payment_processors : [];
 	}
 
 	/**
@@ -119,7 +119,7 @@ class SiteList {
 	 */
 	private function get_other_services_from_list() {
 		$list = $this->dynamic_lists->get_delayjs_list();
-		return ! empty( $list->other_services ) ? (array) $list->other_services : [];
+		return ! empty( $list->scripts->other_services ) ? (array) $list->scripts->other_services : [];
 	}
 
 
