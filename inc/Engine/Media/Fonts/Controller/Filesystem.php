@@ -24,15 +24,21 @@ class Filesystem extends AbstractFileSystem {
 	private $version;
 
 	/**
+	 * WP Filesystem instance
+	 *
+	 * @var WP_Filesystem_Direct
+	 */
+	protected $filesystem;
+
+	/**
 	 * Instantiate the class
 	 *
-	 * @param string               $base_path Base path to the fonts storage.
 	 * @param WP_Filesystem_Direct $filesystem WP Filesystem instance.
 	 */
-	public function __construct( $base_path, $filesystem = null ) {
+	public function __construct( $filesystem = null ) {
 		parent::__construct( is_null( $filesystem ) ? rocket_direct_filesystem() : $filesystem );
 
-		$this->path = $base_path . get_current_blog_id() . '/';
+		$this->path = rocket_get_constant( 'WP_ROCKET_CACHE_PATH', '' ) . 'fonts/' . get_current_blog_id() . '/';
 	}
 
 	/**
@@ -87,7 +93,7 @@ class Filesystem extends AbstractFileSystem {
 				continue;
 			}
 
-			if ( ! file_exists( $local_path ) ) {
+			if ( ! $this->filesystem->exists( $local_path ) ) {
 				$font_content = $this->download_font( $font_url );
 
 				if ( ! $font_content ) {
@@ -119,15 +125,19 @@ class Filesystem extends AbstractFileSystem {
 	 * @return mixed
 	 */
 	private function download_font( string $url ) {
-		$content = wp_remote_retrieve_body(
-			wp_remote_get(
+		$response = wp_safe_remote_get(
 			$url,
 			[
 				'user-agent'  => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
 				'httpversion' => '2.0',
 			]
-			)
-			);
+		);
+
+		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
+			return [];
+		}
+
+		$content = wp_remote_retrieve_body( $response );
 
 		if ( ! $content ) {
 			return false;

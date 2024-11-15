@@ -59,7 +59,7 @@ class Filesystem extends AbstractFileSystem {
 			return '';
 		}
 
-		$file_contents = $this->get_file( $file );
+		$file_contents = $this->get_file_content( $file );
 		$css           = function_exists( 'gzdecode' ) ? gzdecode( $file_contents ) : $file_contents;
 
 		if ( ! $css ) {

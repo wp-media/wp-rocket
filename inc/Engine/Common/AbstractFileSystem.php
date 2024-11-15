@@ -44,7 +44,7 @@ abstract class AbstractFileSystem {
 	 *
 	 * @return string
 	 */
-	protected function get_file( string $file ): string {
+	protected function get_file_content( string $file ): string {
 		return $this->filesystem->get_contents( $file );
 	}
 

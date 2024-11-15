@@ -160,9 +160,6 @@ trait StubTrait {
 			case 'WP_ROCKET_SAAS_API_URL':
 				return $this->rucss_api;
 
-			case 'WP_ROCKET_MEDIA_FONT_CSS_PATH':
-				return "{$this->wp_content_dir}/cache/wp-rocket/fonts/";
-
 			default:
 				if ( isset( $this->constants[ $constant_name ] ) ) {
 					return $this->constants[ $constant_name ];

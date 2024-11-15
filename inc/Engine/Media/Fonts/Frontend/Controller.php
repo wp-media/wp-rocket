@@ -38,11 +38,10 @@ class Controller {
 	 *
 	 * @param Context $context Context instance.
 	 * @param Fonts   $font   Font instance.
-	 * @param string  $base_url Media font Base url.
 	 */
-	public function __construct( Context $context, Fonts $font, string $base_url ) {
+	public function __construct( Context $context, Fonts $font ) {
 		$this->context  = $context;
-		$this->base_url = $base_url . get_current_blog_id() . '/';
+		$this->base_url = rocket_get_constant( 'WP_ROCKET_CACHE_ROOT_URL', '' ) . 'fonts/' . get_current_blog_id() . '/';
 		$this->font     = $font;
 	}
 

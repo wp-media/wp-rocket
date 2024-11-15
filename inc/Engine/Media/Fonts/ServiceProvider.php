@@ -54,7 +54,6 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function register(): void {
 
 		$this->getContainer()->add( 'media_fonts_filesystem', Filesystem::class )
-			->addArgument( rocket_get_constant( 'WP_ROCKET_MEDIA_FONT_CSS_PATH' ) )
 			->addArgument( rocket_direct_filesystem() );
 
 		$this->getContainer()->add( 'media_fonts_settings', Settings::class );
@@ -78,7 +77,6 @@ class ServiceProvider extends AbstractServiceProvider {
 				[
 					$this->getContainer()->get( 'media_fonts_context' ),
 					$this->getContainer()->get( 'media_fonts_controller' ),
-					rocket_get_constant( 'WP_ROCKET_MEDIA_FONT_CSS_URL' ),
 				]
 			);
 		$this->getContainer()->add( 'media_fonts_frontend_subscriber', FrontendSubscriber::class )
