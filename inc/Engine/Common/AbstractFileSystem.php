@@ -94,4 +94,32 @@ abstract class AbstractFileSystem {
 			return;
 		}
 	}
+
+	/**
+	 * Converts hash to path with filtered number of levels
+	 *
+	 * @since 3.11.4
+	 *
+	 * @param string $hash md5 hash string.
+	 *
+	 * @return string
+	 */
+	public function hash_to_path( string $hash ): string {
+		/**
+		 * Filters the number of sub-folders level to create for used CSS storage
+		 *
+		 * @since 3.11.4
+		 *
+		 * @param int $levels Number of levels.
+		 */
+		$levels = apply_filters( 'rocket_used_css_dir_level', 3 );
+
+		$base   = substr( $hash, 0, $levels );
+		$remain = substr( $hash, $levels );
+
+		$path_array   = str_split( $base );
+		$path_array[] = $remain;
+
+		return implode( '/', $path_array );
+	}
 }
