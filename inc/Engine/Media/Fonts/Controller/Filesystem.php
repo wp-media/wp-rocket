@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Media\Fonts\Controller;
 
 use WP_Rocket\Engine\Common\AbstractFileSystem;
-use WP_Rocket\Logger\Logger;
 use WP_Filesystem_Direct;
 
 class Filesystem extends AbstractFileSystem {
@@ -16,13 +15,6 @@ class Filesystem extends AbstractFileSystem {
 	 * @var string
 	 */
 	private $path; // @phpstan-ignore-line
-
-	/**
-	 * Version of the fonts.
-	 *
-	 * @var int
-	 */
-	private $version;
 
 	/**
 	 * Instantiate the class

@@ -30,7 +30,7 @@ class Controller {
 	/**
 	 * WordPress filesystem.
 	 *
-	 * @var WP_Rocket\Engine\Media\Fonts\Controller\Filesystem;
+	 * @var Filesystem|WP_Filesystem_Direct
 	 */
 	private $filesystem;
 
@@ -45,7 +45,7 @@ class Controller {
 	 * Constructor.
 	 *
 	 * @param Context                                                 $context Context instance.
-	 * @param WP_Rocket\Engine\Media\Fonts\Controller\Filesystem|null $filesystem WordPress filesystem.
+	 * @param Filesystem|null $filesystem WordPress filesystem.
 	 */
 	public function __construct( Context $context, ?Filesystem $filesystem ) {
 		$this->context    = $context;
