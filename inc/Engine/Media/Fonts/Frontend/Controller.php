@@ -49,8 +49,8 @@ class Controller {
 	 */
 	public function __construct( Context $context, ?Filesystem $filesystem ) {
 		$this->context    = $context;
-		$this->base_path  = rocket_get_constant( 'WP_ROCKET_CACHE_ROOT_PATH', '' ) . 'fonts/' . get_current_blog_id() . '/';
-		$this->base_url   = rocket_get_constant( 'WP_ROCKET_CACHE_ROOT_URL', '' ) . 'fonts/' . get_current_blog_id() . '/';
+		$this->base_path  = rocket_get_constant( 'WP_ROCKET_CACHE_ROOT_PATH', '' ) . 'fonts/google-fonts/' . get_current_blog_id() . '/';
+		$this->base_url   = rocket_get_constant( 'WP_ROCKET_CACHE_ROOT_URL', '' ) . 'fonts/google-fonts/' . get_current_blog_id() . '/';
 		$this->filesystem = ! empty( $filesystem ) ? $filesystem : rocket_direct_filesystem();
 	}
 

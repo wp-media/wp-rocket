@@ -52,8 +52,8 @@ return [
 				'html' => file_get_contents( __DIR__ . '/HTML/input_v1.php' ),
 				'host_fonts_locally' => true,
 				'css_files' => [
-					'wp-content/cache/fonts/1/e/b/c/173c0fc97eef86a6e51ada56c5a9a.css' => 'body { font-family: "Roboto"; }',
-					'wp-content/cache/fonts/1/5/9/5/cb6ccb56826a802ed411cef875f0e.css' => 'body { font-family: "Open-San"; }',
+					'wp-content/cache/fonts/google-fonts/1/e/b/c/173c0fc97eef86a6e51ada56c5a9a.css' => 'body { font-family: "Roboto"; }',
+					'wp-content/cache/fonts/google-fonts/1/5/9/5/cb6ccb56826a802ed411cef875f0e.css' => 'body { font-family: "Open-San"; }',
 				],
 				'locally_inline_css' => true,
 			],
