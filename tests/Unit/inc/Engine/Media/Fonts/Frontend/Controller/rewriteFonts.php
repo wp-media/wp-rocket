@@ -39,11 +39,6 @@ class Test_RewriteFonts extends FilesystemTestCase {
 			->once()
 			->andReturn( $config['is_allowed'] );
 
-		Functions\expect( 'rocket_get_constant' )
-			->with( 'WP_ROCKET_CACHE_URL' )
-			->once()
-			->andReturn( $config['base_url'] );
-
 		$this->font->shouldReceive('process')
 			->atLeast()
 			->times( $config['download_font'] )

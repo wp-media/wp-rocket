@@ -31,7 +31,7 @@ class Filesystem extends AbstractFileSystem {
 	public function __construct( $filesystem = null ) {
 		parent::__construct( is_null( $filesystem ) ? rocket_direct_filesystem() : $filesystem );
 
-		$this->path = rocket_get_constant( 'WP_ROCKET_CACHE_PATH', '' ) . 'fonts/' . get_current_blog_id() . '/';
+		$this->path = rocket_get_constant( 'WP_ROCKET_CACHE_ROOT_PATH', '' ) . 'fonts/' . get_current_blog_id() . '/';
 	}
 
 	/**

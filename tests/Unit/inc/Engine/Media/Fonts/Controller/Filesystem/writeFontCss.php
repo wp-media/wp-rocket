@@ -26,7 +26,6 @@ class test_WriteFontCss extends FilesystemTestCase {
     public function testShouldReturnExpected( $config, $expected ) {
 
         $filesystem = new Filesystem( $this->filesystem->getUrl( 'wp-content/cache/wp-rocket/fonts/' ) );
-		$filesystem->set_version( 1 );
 
 		Functions\when( 'wp_remote_retrieve_body' )
 			->justReturn( $config['css_content'] );
