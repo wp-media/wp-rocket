@@ -6,25 +6,38 @@ return [
 			'config' => [
 				'is_allowed'    => false,
 				'download_font' => 0,
-				'base_url'      => 'http://example.org/wp-content/cache'
+				'base_url'      => 'http://example.org/wp-content/cache',
+				'write'         => false,
 			],
 			'original' => '<html><body></body></html>',
 			'expected' => '<html><body></body></html>',
 		],
 		'testShouldReturnOriginalWhenNoGoogleFonts' => [
-		'config' => [
-			'is_allowed'    => true,
-			'download_font' => 0,
-			'base_url'      => 'http://example.org/wp-content/cache'
+			'config' => [
+				'is_allowed'    => true,
+				'download_font' => 0,
+				'base_url'      => 'http://example.org/wp-content/cache',
+				'write'         => false,
+			],
+			'original' => '<html><body></body></html>',
+			'expected' => '<html><body></body></html>',
 		],
-		'original' => '<html><body></body></html>',
-		'expected' => '<html><body></body></html>',
-	],
+		'testShouldReturnOriginalWhenWriteFailed' => [
+			'config' => [
+				'is_allowed'    => true,
+				'download_font' => 1,
+				'base_url'      => 'http://example.org/wp-content/cache',
+				'write'         => false,
+			],
+			'original' => file_get_contents( __DIR__ . '/HTML/input_v1.php' ),
+			'expected' => file_get_contents( __DIR__ . '/HTML/input_v1.php' ),
+		],
 		'testShouldRewriteV1Font' => [
 			'config' => [
 				'is_allowed'    => true,
 				'download_font' => 1,
-				'base_url'      => 'http://example.org/wp-content/cache'
+				'base_url'      => 'http://example.org/wp-content/cache',
+				'write'         => true,
 			],
 			'original' => file_get_contents( __DIR__ . '/HTML/input_v1.php' ),
 			'expected' => file_get_contents( __DIR__ . '/HTML/expected_v1.php' ),
@@ -33,7 +46,8 @@ return [
 			'config' => [
 				'is_allowed'    => true,
 				'download_font' => 1,
-				'base_url'      => 'http://example.org/wp-content/cache'
+				'base_url'      => 'http://example.org/wp-content/cache',
+				'write'         => true,
 			],
 			'original' => file_get_contents( __DIR__ . '/HTML/input_v2.php' ),
 			'expected' =>  file_get_contents( __DIR__ . '/HTML/expected_v2.php' ),
@@ -42,7 +56,8 @@ return [
 			'config' => [
 				'is_allowed'    => true,
 				'download_font' => 1,
-				'base_url'      => 'http://example.org/wp-content/cache'
+				'base_url'      => 'http://example.org/wp-content/cache',
+				'write'         => true,
 			],
 			'original' => file_get_contents( __DIR__ . '/HTML/input_v1_v2.php' ),
 			'expected' => file_get_contents( __DIR__ . '/HTML/expected_v1_v2.php' ),

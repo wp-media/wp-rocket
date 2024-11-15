@@ -1,24 +1,26 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\Engine\Media\Fonts\Controller\Filesystem;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Media\Fonts\Filesystem;
 
 use Brain\Monkey\Functions;
-use WP_Rocket\Engine\Media\Fonts\Controller\Filesystem;
+use WP_Rocket\Engine\Media\Fonts\Filesystem;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
  * Test class covering \WP_Rocket\Engine\Media\Fonts\Controller\Filesystem::write_font_css
  *
- * @group FontOptimisation
+ * @group HostFontsLocally
  */
 class test_WriteFontCss extends FilesystemTestCase {
-	protected $path_to_test_data = '/inc/Engine/Media/Fonts/Controller/Filesystem/writeFontCss.php';
+	protected $path_to_test_data = '/inc/Engine/Media/Fonts/Filesystem/writeFontCss.php';
+
     protected function setUp(): void {
         parent::setUp();
 
         Functions\when( 'get_current_blog_id' )->justReturn( 1 );
-    }
 
+		$this->stubWpParseUrl();
+    }
 
     /**
      * @dataProvider providerTestData
@@ -42,10 +44,6 @@ class test_WriteFontCss extends FilesystemTestCase {
 
 		Functions\when( 'wp_remote_retrieve_response_code' )
 			->justReturn( $config['response_code'] );
-
-		Functions\when( 'wp_parse_url' )->alias( function( $url, $component = - 1 ) {
-			return parse_url( $url, $component );
-		} );
 
 		Functions\when( 'content_url' )->justReturn( $config['local_url']);
 
