@@ -33,6 +33,13 @@ class Controller {
 	private $base_url;
 
 	/**
+	 * Error flag.
+	 *
+	 * @var bool
+	 */
+	private $error = false;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param Context    $context Context instance.
@@ -73,7 +80,9 @@ class Controller {
 			$html = $this->replace_font( $font, $html );
 		}
 
-		$html = $this->remove_preconnect_and_prefetch( $html );
+		if ( ! $this->error ) {
+			$html = $this->remove_preconnect_and_prefetch( $html );
+		}
 
 		return $html;
 	}
@@ -89,6 +98,8 @@ class Controller {
 	 */
 	private function replace_font( array $font, string $html, string $font_provider = 'google-font' ): string {
 		if ( ! $this->filesystem->write_font_css( $font['url'], $font_provider ) ) {
+			$this->error = true;
+
 			return $html;
 		}
 
