@@ -9,7 +9,6 @@ use WP_Rocket\Engine\Media\Fonts\Filesystem as FontsFilesystem;
 use WP_Rocket\Engine\Media\Fonts\Frontend\Controller;
 use WP_Rocket\Engine\Media\Fonts\Context\Context;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
-use WP_Rocket\Engine\Media\Fonts\Controller\Filesystem;
 
 /**
  * @group HostFontsLocally
