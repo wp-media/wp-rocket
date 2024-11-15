@@ -89,7 +89,7 @@ class Controller {
 	 *
 	 * @return string
 	 */
-	private function replace_font( $font, $html, int $version, string $font_provider = 'google-font' ): string {
+	private function replace_font( array $font, string $html, int $version, string $font_provider = 'google-font' ): string {
 		$hash  = md5( $font['url'] );
 		$local = $this->get_optimized_markup( $hash, $font['url'], $version, $font_provider );
 
