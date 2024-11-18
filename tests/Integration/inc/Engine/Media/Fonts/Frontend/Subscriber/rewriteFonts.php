@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Media\Fonts\Frontend\Subscriber;
 
+use WP_Rocket\Tests\HTTPCallTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
@@ -10,6 +11,8 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group HostFontsLocally
  */
 class Test_RewriteFonts extends FilesystemTestCase {
+	use HttpCallTrait;
+
 	protected $path_to_test_data = '/inc/Engine/Media/Fonts/Frontend/Subscriber/rewriteFonts.php';
 
 	protected $config;
@@ -20,12 +23,16 @@ class Test_RewriteFonts extends FilesystemTestCase {
 		$this->unregisterAllCallbacksExcept('rocket_buffer', 'rewrite_fonts', 18);
 		add_filter( 'pre_get_rocket_option_host_fonts_locally', [ $this, 'host_fonts_locally' ] );
 		add_filter( 'rocket_host_fonts_locally_inline_css', [ $this, 'locally_inline_css' ] );
+		$this->setup_http();
+
 	}
 
 	public function tear_down() {
 		remove_filter('pre_get_rocket_option_host_fonts_locally', [$this, 'host_fonts_locally']);
 		remove_filter('rocket_host_fonts_locally_inline_css', [$this, 'locally_inline_css']);
 		$this->restoreWpHook('rocket_buffer');
+		$this->tear_down_http();
+
 
 		parent::tear_down();
 	}
@@ -36,10 +43,10 @@ class Test_RewriteFonts extends FilesystemTestCase {
 	public function testShouldReturnAsExpected( $config, $expected ) {
 		$this->config = $config;
 
-		foreach ($config['css_files'] as $path => $file) {
-			rocket_mkdir_p(dirname($path), $this->filesystem);
-			$this->filesystem->put_contents($path, $file);
-		}
+//		foreach ($config['css_files'] as $path => $file) {
+//			rocket_mkdir_p(dirname($path), $this->filesystem);
+//			$this->filesystem->put_contents($path, $file);
+//		}
 
 		$this->assertSame(
 			$expected['html'],

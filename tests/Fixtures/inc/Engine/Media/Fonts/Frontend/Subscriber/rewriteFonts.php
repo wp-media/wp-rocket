@@ -7,7 +7,6 @@ return [
 				'html' => '<html><body></body></html>',
 				'host_fonts_locally' => true,
 				'locally_inline_css' => false,
-				'css_files' => []
 			],
 			'expected' => [
 				'html' => '<html><body></body></html>'
@@ -18,7 +17,16 @@ return [
 				'html' => file_get_contents( __DIR__ . '/HTML/input_v1.php' ),
 				'host_fonts_locally' => true,
 				'locally_inline_css' => false,
-				'css_files' => []
+				'http' => [
+					'https://fonts.googleapis.com/css?family=Roboto' => [
+						'body' => 'body { font-family: "Roboto"; }',
+						'response' => ['code' => 200 ]
+					],
+					'https://fonts.googleapis.com/css?family=Open+Sans' => [
+						'body' => 'body { font-family: "Open-San"; }',
+						'response' => ['code' => 200 ]
+					],
+				],
 			],
 			'expected' => [
 				'html' => file_get_contents( __DIR__ . '/HTML/expected_v1.php' ),
@@ -29,7 +37,16 @@ return [
 				'html' => file_get_contents( __DIR__ . '/HTML/input_v2.php' ),
 				'host_fonts_locally' => true,
 				'locally_inline_css' => false,
-				'css_files' => []
+				'http' => [
+					'https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap' => [
+						'body' => 'body { font-family: "Roboto"; }',
+						'response' => ['code' => 200 ]
+					],
+					'https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap' => [
+						'body' => 'body { font-family: "Lato"; }',
+						'response' => ['code' => 200 ]
+					],
+				],
 			],
 			'expected' => [
 				'html' => file_get_contents( __DIR__ . '/HTML/expected_v2.php' ),
@@ -40,8 +57,17 @@ return [
 				'html' => file_get_contents( __DIR__ . '/HTML/input_v1_v2.php' ),
 				'host_fonts_locally' => true,
 				'locally_inline_css' => false,
-				'css_files' => []
+				'http' => [
+					'https://fonts.googleapis.com/css?family=Roboto|Open+Sans' => [
+						'body' => '.roboto { font-family: "Roboto"; } .open-san { font-family: "Open-San"; }',
+						'response' => ['code' => 200 ]
+					],
+					'https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@400;700&display=swap' => [
+						'body' => '.lato { font-family: "Lato"; } .montserrat { font-family: "Montserrat"; }',
+						'response' => ['code' => 200 ]
+					],
 				],
+			],
 			'expected' => [
 				'html' => file_get_contents( __DIR__ . '/HTML/expected_v1_v2.php' ),
 			],
@@ -50,9 +76,15 @@ return [
 			'config' => [
 				'html' => file_get_contents( __DIR__ . '/HTML/input_v1.php' ),
 				'host_fonts_locally' => true,
-				'css_files' => [
-					'wp-content/cache/fonts/google-fonts/1/e/b/c/173c0fc97eef86a6e51ada56c5a9a.css' => 'body { font-family: "Roboto"; }',
-					'wp-content/cache/fonts/google-fonts/1/5/9/5/cb6ccb56826a802ed411cef875f0e.css' => 'body { font-family: "Open-San"; }',
+				'http' => [
+					'https://fonts.googleapis.com/css?family=Roboto' => [
+						'body' => 'body { font-family: "Roboto"; }',
+						'response' => ['code' => 200 ]
+					],
+					'https://fonts.googleapis.com/css?family=Open+Sans' => [
+						'body' => 'body { font-family: "Open-San"; }',
+						'response' => ['code' => 200 ]
+					],
 				],
 				'locally_inline_css' => true,
 			],
@@ -60,6 +92,5 @@ return [
 				'html' => file_get_contents( __DIR__ . '/HTML/expected_v1_style_tag.php' ),
 			],
 		]
-	],
-
+	]
 ];
