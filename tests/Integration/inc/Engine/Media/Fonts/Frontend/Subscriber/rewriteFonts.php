@@ -43,11 +43,6 @@ class Test_RewriteFonts extends FilesystemTestCase {
 	public function testShouldReturnAsExpected( $config, $expected ) {
 		$this->config = $config;
 
-//		foreach ($config['css_files'] as $path => $file) {
-//			rocket_mkdir_p(dirname($path), $this->filesystem);
-//			$this->filesystem->put_contents($path, $file);
-//		}
-
 		$this->assertSame(
 			$expected['html'],
 			apply_filters('rocket_buffer', $config['html'])
