@@ -313,4 +313,15 @@ class DynamicLists extends Abstract_Render {
 
 		return $lists->lazy_rendering_exclusions ?? [];
 	}
+
+	/**
+	 * Get the host fonts excluded templates
+	 *
+	 * @return array
+	 */
+	public function get_exclude_media_fonts() : array {
+		$lists = $this->providers['defaultlists']->data_manager->get_lists();
+
+		return $lists->host_fonts ?? [];
+	}
 }

@@ -180,4 +180,20 @@ class Controller {
 
 		return true;
 	}
+
+	/**
+	 * Get the list of patterns to exclude from media fonts rewrite.
+	 *
+	 * @return string[]
+	 */
+	private function get_exclusions(): array {
+		/**
+		 * Filters the list of patterns to exclude from media font rewrite.
+		 *
+		 * @since 3.18
+		 *
+		 * @param string[] $exclusions The list of patterns to exclude from media fonts.
+		 */
+		return wpm_apply_filters_typed( 'string[]', 'rocket_media_fonts_exclusions', [] );
+	}
 }
