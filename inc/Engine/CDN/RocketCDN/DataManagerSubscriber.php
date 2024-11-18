@@ -3,6 +3,7 @@ namespace WP_Rocket\Engine\CDN\RocketCDN;
 
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
@@ -11,6 +12,8 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  * @since  3.5
  */
 class DataManagerSubscriber implements Subscriber_Interface {
+	use RegexTrait;
+
 	const CRON_EVENT = 'rocketcdn_check_subscription_status_event';
 
 	/**
@@ -350,23 +353,22 @@ class DataManagerSubscriber implements Subscriber_Interface {
 		}
 
 		$cdn_cnames = $this->options->get( 'cdn_cnames', [] );
-		if ( ! empty( $cdn_cnames[0] ) && ! str_contains( $cdn_cnames[0], '.rocketcdn.me' ) ) {
+		if ( empty( $cdn_cnames ) ) {
 			return;
 		}
 
-		delete_transient( 'rocketcdn_status' );
-
-		$new_subscription_data = $this->api_client->get_subscription_data();
-		if ( ! $new_subscription_data['is_active'] || empty( $new_subscription_data['cdn_url'] ) ) {
+		$subscription_data = $this->api_client->get_subscription_data();
+		if ( ! $subscription_data['is_active'] || empty( $subscription_data['cdn_url'] ) ) {
 			return;
 		}
 
-		if ( ! empty( $cdn_cnames[0] ) && $cdn_cnames[0] === $new_subscription_data['cdn_url'] ) {
+		$cdn_matches = $this->find( '(?<cdn_id>[a-zA-Z0-9]{8})\.rocketcdn\.me', $cdn_cnames[0] );
+		if ( empty( $cdn_matches ) || empty( $cdn_matches['cdn_id'] ) ) {
 			return;
 		}
 
 		$this->options_api->set( 'rocketcdn_old_url', $cdn_cnames[0] );
-		$cdn_cnames[0] = $new_subscription_data['cdn_url'];
+		$cdn_cnames[0] = $cdn_matches['cdn_id'] . '.delivery.rocketcdn.me';
 		$this->options->set( 'cdn_cnames', $cdn_cnames );
 
 		$this->options_api->set( 'settings', $this->options->get_options() );
