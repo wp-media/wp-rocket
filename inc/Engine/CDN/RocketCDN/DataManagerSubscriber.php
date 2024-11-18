@@ -363,12 +363,12 @@ class DataManagerSubscriber implements Subscriber_Interface {
 		}
 
 		$cdn_matches = $this->find( '(?<cdn_id>[a-zA-Z0-9]{8})\.rocketcdn\.me', $cdn_cnames[0] );
-		if ( empty( $cdn_matches ) || empty( $cdn_matches['cdn_id'] ) ) {
+		if ( empty( $cdn_matches ) || empty( $cdn_matches[0]['cdn_id'] ) ) {
 			return;
 		}
 
 		$this->options_api->set( 'rocketcdn_old_url', $cdn_cnames[0] );
-		$cdn_cnames[0] = $cdn_matches['cdn_id'] . '.delivery.rocketcdn.me';
+		$cdn_cnames[0] = $cdn_matches[0]['cdn_id'] . '.delivery.rocketcdn.me';
 		$this->options->set( 'cdn_cnames', $cdn_cnames );
 
 		$this->options_api->set( 'settings', $this->options->get_options() );
