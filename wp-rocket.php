@@ -106,16 +106,9 @@ require WP_ROCKET_INC_PATH . 'classes/class-wp-rocket-requirements-check.php';
  * @return void
  */
 function rocket_load_textdomain() {
-	// Load translations from the languages directory.
-	$locale = get_locale();
-
-	// This filter is documented in /wp-includes/l10n.php.
-	$locale = apply_filters( 'plugin_locale', $locale, 'rocket' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
-	load_textdomain( 'rocket', WP_LANG_DIR . '/plugins/wp-rocket-' . $locale . '.mo' );
-
 	load_plugin_textdomain( 'rocket', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 }
-add_action( 'plugins_loaded', 'rocket_load_textdomain' );
+add_action( 'init', 'rocket_load_textdomain' );
 
 $wp_rocket_requirement_checks = new WP_Rocket_Requirements_Check(
 	[
