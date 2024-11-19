@@ -33,6 +33,13 @@ class Controller {
 	private $base_url;
 
 	/**
+	 * Base path.
+	 *
+	 * @var string
+	 */
+	private $base_path;
+
+	/**
 	 * Error flag.
 	 *
 	 * @var bool
@@ -47,6 +54,7 @@ class Controller {
 	 */
 	public function __construct( Context $context, Filesystem $filesystem ) {
 		$this->context    = $context;
+		$this->base_path  = rocket_get_constant( 'WP_ROCKET_CACHE_ROOT_PATH', '' ) . 'fonts/' . get_current_blog_id() . '/';
 		$this->base_url   = rocket_get_constant( 'WP_ROCKET_CACHE_ROOT_URL', '' ) . 'fonts/' . get_current_blog_id() . '/';
 		$this->filesystem = $filesystem;
 	}
@@ -125,10 +133,26 @@ class Controller {
 		string $font_provider
 	): string {
 		$font_provider_path = sprintf( '%s/', $font_provider );
+		$gf_parameters      = wp_parse_url( $original_url, PHP_URL_QUERY );
+
+		/**
+		 * Filters to enable the inline css output.
+		 *
+		 * @since 3.18
+		 *
+		 * @param bool $enable Tells if we are enabling or not the inline css output.
+		 */
+		if ( wpm_apply_filters_typed( 'boolean', 'rocket_host_fonts_locally_inline_css', false ) ) {
+			$local_css_path = $this->base_path . $font_provider_path . $this->filesystem->hash_to_path( $hash ) . '.css';
+
+			$inline_css = $this->get_font_inline_css( $local_css_path, $gf_parameters );
+
+			if ( ! empty( $inline_css ) ) {
+				return $inline_css;
+			}
+		}
 
 		$url = $this->base_url . $font_provider_path . $this->filesystem->hash_to_path( $hash ) . '.css';
-
-		$gf_parameters = wp_parse_url( $original_url, PHP_URL_QUERY );
 
 		return sprintf(
 			'<link rel="stylesheet" href="%1$s" data-wpr-hosted-gf-parameters="%2$s"/>', // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
@@ -179,5 +203,27 @@ class Controller {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Gets the font inline css.
+	 *
+	 * @param string $local_css_path CSS file path.
+	 * @param string $gf_parameters Google Fonts parameters.
+	 *
+	 * @return string
+	 */
+	private function get_font_inline_css( string $local_css_path, string $gf_parameters ): string {
+		$content = $this->filesystem->get_file_content( $local_css_path );
+
+		if ( empty( $content ) ) {
+			return '';
+		}
+
+		return sprintf(
+			'<style data-wpr-hosted-gf-parameters="%1$s">%2$s</style>',
+			$gf_parameters,
+			$content
+		);
 	}
 }
