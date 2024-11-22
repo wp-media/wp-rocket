@@ -54,6 +54,11 @@ class ApplyFiltersTypedDynamicFunctionReturnTypeExtension implements Rule
 
 	public function processNode(Node $node, Scope $scope): array
 	{
+		// Ensure the node is a FuncCall instance.
+		if (! ($node instanceof FuncCall)) {
+			return [];
+		}
+
 		$this->currentNode = $node;
 		$this->currentScope = $scope;
 		$this->errors = [];
