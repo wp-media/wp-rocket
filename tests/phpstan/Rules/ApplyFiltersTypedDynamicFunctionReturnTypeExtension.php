@@ -58,17 +58,19 @@ class ApplyFiltersTypedDynamicFunctionReturnTypeExtension implements Rule
 		$this->currentScope = $scope;
 		$this->errors = [];
 
-		if (! ($node->name instanceof Name)) {
-			return [];
-		}
-
-		if (! in_array($node->name->toString(), self::SUPPORTED_FUNCTIONS, true)) {
+		if (! ($node->name instanceof Name)
+			|| ! in_array($node->name->toString(), self::SUPPORTED_FUNCTIONS, true)
+		) {
 			return [];
 		}
 
 		$resolvedPhpDoc = $this->hookDocBlock->getNullableHookDocBlock($node, $scope);
 
 		if ($resolvedPhpDoc === null) {
+			$this->errors[] = RuleErrorBuilder::message(
+				'Missing docblock for wpm_apply_filters_typed call.'
+			)->identifier('docblock.missing')->build();
+
 			return [];
 		}
 
