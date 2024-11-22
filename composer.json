@@ -234,6 +234,7 @@
 			"@test-integration-pressidium"
 		],
 		"run-stan": "vendor/bin/phpstan analyze --memory-limit=2G --no-progress",
+		"run-stan-reset-baseline": "vendor/bin/phpstan analyze --memory-limit=2G --no-progress --generate-baseline",
 		"install-codestandards": "Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\Plugin::run",
 		"phpcs": "phpcs --basepath=.",
 		"phpcs-changed": "./bin/phpcs-changed.sh",

@@ -10,6 +10,7 @@ parameters:
 		- %currentWorkingDirectory%/inc/ThirdParty/
 		- %currentWorkingDirectory%/tests/Integration/
 		- %currentWorkingDirectory%/tests/Unit/
+		- %currentWorkingDirectory%/tests/phpstan/Rules/
 	bootstrapFiles:
 		# Must be first
 		- %currentWorkingDirectory%/inc/functions/options.php
@@ -51,3 +52,5 @@ parameters:
 		 # These need plugin stubs!
 		 - %currentWorkingDirectory%/inc/classes/subscriber/third-party/
 		 - %currentWorkingDirectory%/inc/3rd-party/
+rules:
+	- WP_Rocket\Tests\phpstan\Rules\ApplyFiltersTypedDynamicFunctionReturnTypeExtension
