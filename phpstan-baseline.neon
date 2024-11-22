@@ -1,0 +1,16 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^One or more @param tags has an invalid name or invalid syntax\\.$#"
+			count: 1
+			path: inc/Engine/Common/PerformanceHints/Frontend/Subscriber.php
+
+		-
+			message: "#^Access to an undefined property PhpParser\\\\Node\\:\\:\\$name\\.$#"
+			count: 1
+			path: tests/phpstan/Rules/ApplyFiltersTypedDynamicFunctionReturnTypeExtension.php
+
+		-
+			message: "#^Property WP_Rocket\\\\Tests\\\\phpstan\\\\Rules\\\\ApplyFiltersTypedDynamicFunctionReturnTypeExtension\\:\\:\\$currentNode \\(PhpParser\\\\Node\\\\Expr\\\\FuncCall\\) does not accept PhpParser\\\\Node\\.$#"
+			count: 1
+			path: tests/phpstan/Rules/ApplyFiltersTypedDynamicFunctionReturnTypeExtension.php

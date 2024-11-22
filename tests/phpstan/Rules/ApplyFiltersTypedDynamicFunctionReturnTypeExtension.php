@@ -12,6 +12,7 @@ use PHPStan\Rules\IdentifierRuleError;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
 use PHPStan\Rules\RuleLevelHelper;
+use PHPStan\Type\FileTypeMapper;
 use PHPStan\Type\VerbosityLevel;
 use SzepeViktor\PHPStan\WordPress\HookDocBlock;
 use PHPStan\PhpDoc\Tag\ParamTag;
@@ -37,6 +38,14 @@ class ApplyFiltersTypedDynamicFunctionReturnTypeExtension implements Rule
 
 	/** @var list<IdentifierRuleError> */
 	private $errors;
+
+	public function __construct(
+		FileTypeMapper $fileTypeMapper,
+		RuleLevelHelper $ruleLevelHelper
+	) {
+		$this->hookDocBlock = new HookDocBlock($fileTypeMapper);
+		$this->ruleLevelHelper = $ruleLevelHelper;
+	}
 
 	public function getNodeType(): string
 	{
