@@ -56,3 +56,4 @@ parameters:
 		 - %currentWorkingDirectory%/inc/3rd-party/
 rules:
 	- WP_Rocket\Tests\phpstan\Rules\DiscourageUpdateOptionUsage
+	- WP_Rocket\Tests\phpstan\Rules\DiscourageApplyFilters
