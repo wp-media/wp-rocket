@@ -136,6 +136,11 @@ parameters:
 			path: inc/Engine/Common/JobManager/APIHandler/APIClient.php
 
 		-
+			message: "#^One or more @param tags has an invalid name or invalid syntax\\.$#"
+			count: 1
+			path: inc/Engine/Common/PerformanceHints/Frontend/Subscriber.php
+
+		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 2
 			path: inc/Engine/Common/Queue/Cleaner.php
