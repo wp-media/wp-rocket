@@ -1,10 +1,10 @@
 includes:
 	- phar://phpstan.phar/conf/bleedingEdge.neon
-#	- phpstan-baseline.neon
+	- phpstan-baseline.neon
 parameters:
 	level: 4
 	inferPrivatePropertyTypeFromConstructor: true
-#	reportUnmatchedIgnoredErrors: false
+	reportUnmatchedIgnoredErrors: false
 	paths:
 		# Test only the new architecture for now.
 		- %currentWorkingDirectory%/inc/Engine/
