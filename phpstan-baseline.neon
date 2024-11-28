@@ -41,6 +41,11 @@ parameters:
 			path: inc/Engine/Admin/Deactivation/DeactivationIntent.php
 
 		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 2
+			path: inc/Engine/Admin/DomainChange/Subscriber.php
+
+		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
 			path: inc/Engine/Admin/Metaboxes/PostEditOptionsSubscriber.php
@@ -48,6 +53,11 @@ parameters:
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 12
+			path: inc/Engine/Admin/Settings/Page.php
+
+		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 2
 			path: inc/Engine/Admin/Settings/Page.php
 
 		-
@@ -81,6 +91,11 @@ parameters:
 			path: inc/Engine/CDN/RocketCDN/DataManagerSubscriber.php
 
 		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 3
+			path: inc/Engine/CDN/RocketCDN/DataManagerSubscriber.php
+
+		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 2
 			path: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php
@@ -111,6 +126,11 @@ parameters:
 			path: inc/Engine/Cache/PurgeExpired/PurgeExpiredCache.php
 
 		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: inc/Engine/Cache/PurgeExpired/PurgeExpiredCache.php
+
+		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 6
 			path: inc/Engine/Cache/WPCache.php
@@ -132,6 +152,11 @@ parameters:
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			count: 1
+			path: inc/Engine/Common/JobManager/APIHandler/APIClient.php
+
+		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: inc/Engine/Common/JobManager/APIHandler/APIClient.php
 
@@ -159,6 +184,11 @@ parameters:
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
 			path: inc/Engine/CriticalPath/Admin/Admin.php
+
+		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 2
+			path: inc/Engine/CriticalPath/Admin/Settings.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
@@ -189,6 +219,11 @@ parameters:
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 3
 			path: inc/Engine/Media/AboveTheFold/AJAX/Controller.php
+
+		-
+			message: "#^Hooks should not be used in ORM classes\\: WP_Rocket\\\\Engine\\\\Media\\\\AboveTheFold\\\\Database\\\\Queries\\\\AboveTheFold\\:\\:apply_filters$#"
+			count: 1
+			path: inc/Engine/Media/AboveTheFold/Database/Queries/AboveTheFold.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
@@ -256,7 +291,17 @@ parameters:
 			path: inc/Engine/Optimization/DeferJS/DeferJS.php
 
 		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: inc/Engine/Optimization/DeferJS/DeferJS.php
+
+		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			count: 1
+			path: inc/Engine/Optimization/DelayJS/Admin/SiteList.php
+
+		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: inc/Engine/Optimization/DelayJS/Admin/SiteList.php
 
@@ -271,9 +316,19 @@ parameters:
 			path: inc/Engine/Optimization/GoogleFonts/Admin/Settings.php
 
 		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: inc/Engine/Optimization/GoogleFonts/Admin/Settings.php
+
+		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
 			path: inc/Engine/Optimization/LazyRenderContent/AJAX/Controller.php
+
+		-
+			message: "#^Hooks should not be used in ORM classes\\: WP_Rocket\\\\Engine\\\\Optimization\\\\LazyRenderContent\\\\Database\\\\Queries\\\\LazyRenderContent\\:\\:apply_filters$#"
+			count: 1
+			path: inc/Engine/Optimization/LazyRenderContent/Database/Queries/LazyRenderContent.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
@@ -316,6 +371,11 @@ parameters:
 			path: inc/Engine/Optimization/Minify/JS/Subscriber.php
 
 		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 2
+			path: inc/Engine/Optimization/RUCSS/Admin/Settings.php
+
+		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 2
 			path: inc/Engine/Optimization/RUCSS/Controller/Filesystem.php
@@ -324,6 +384,11 @@ parameters:
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 13
 			path: inc/Engine/Optimization/RUCSS/Controller/UsedCSS.php
+
+		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 2
+			path: inc/Engine/Optimization/RUCSS/Frontend/Subscriber.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
@@ -361,6 +426,11 @@ parameters:
 			path: inc/Engine/Preload/Cron/Subscriber.php
 
 		-
+			message: "#^Hooks should not be used in ORM classes\\: WP_Rocket\\\\Engine\\\\Preload\\\\Database\\\\Queries\\\\Cache\\:\\:apply_filters$#"
+			count: 4
+			path: inc/Engine/Preload/Database/Queries/Cache.php
+
+		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 4
 			path: inc/Engine/Preload/Database/Queries/Cache.php
@@ -381,6 +451,16 @@ parameters:
 			path: inc/Engine/Preload/Subscriber.php
 
 		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: inc/ThirdParty/Hostings/Godaddy.php
+
+		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: inc/ThirdParty/Plugins/Ads/Adthrive.php
+
+		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
 			path: inc/ThirdParty/Plugins/ContactForm7.php
@@ -394,6 +474,11 @@ parameters:
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
 			path: inc/ThirdParty/Plugins/ModPagespeed.php
+
+		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: inc/ThirdParty/Plugins/Optimization/WPMeteor.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
@@ -412,6 +497,11 @@ parameters:
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			count: 1
+			path: inc/ThirdParty/Plugins/WPGeotargeting.php
+
+		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: inc/ThirdParty/Plugins/WPGeotargeting.php
 
@@ -448,6 +538,11 @@ parameters:
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
+			path: tests/Integration/bootstrap.php
+
+		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 5
 			path: tests/Integration/bootstrap.php
 
 		-
@@ -571,6 +666,21 @@ parameters:
 			path: tests/Integration/inc/Engine/Admin/Settings/Subscriber/asyncWistiaScript.php
 
 		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Admin/Settings/Subscriber/enableMobileCache.php
+
+		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Admin/Settings/Subscriber/enableSeparateCacheFilesMobile.php
+
+		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/CDN/RocketCDN/AdminPageSubscriber/displayRocketcdnStatus.php
+
+		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/CDN/RocketCDN/AdminPageSubscriber/preserveAuthorizationToken.php
@@ -579,6 +689,21 @@ parameters:
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/CDN/RocketCDN/AdminPageSubscriber/rocketcdnField.php
+
+		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/CDN/RocketCDN/CDNOptionsManager/TestCase.php
+
+		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/CDN/RocketCDN/NoticesSubscriber/displayRocketcdnCta.php
+
+		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/CDN/RocketCDN/RESTSubscriber/disable.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
@@ -639,6 +764,21 @@ parameters:
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/Cache/Config/ConfigSubscriber/changeCacheRejectUriWithPermalink.php
+
+		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 2
+			path: tests/Integration/inc/Engine/Cache/PurgeActionsSubscriber/purgeCacheOnPublicSettingChange.php
+
+		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 3
+			path: tests/Integration/inc/Engine/Cache/PurgeExpired/Subscriber/getCacheLifespan.php
+
+		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 2
+			path: tests/Integration/inc/Engine/Cache/PurgeExpired/Subscriber/scheduleEvent.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
@@ -711,9 +851,19 @@ parameters:
 			path: tests/Integration/inc/Engine/CriticalPath/CriticalCSS/getCriticalCssContent.php
 
 		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/CriticalPath/CriticalCSS/getCriticalCssContent.php
+
+		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/CriticalPath/CriticalCSS/getCurrentPageCriticalCss.php
+
+		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/CriticalPath/CriticalCSSSubscriber/deleteCpcss.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
@@ -731,12 +881,22 @@ parameters:
 			path: tests/Integration/inc/Engine/CriticalPath/CriticalCSSSubscriber/insertCriticalCssBuffer.php
 
 		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 2
+			path: tests/Integration/inc/Engine/CriticalPath/CriticalCSSSubscriber/insertCriticalCssBuffer.php
+
+		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/CriticalPath/CriticalCSSSubscriber/maybeGenerateCpcssMobile.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/CriticalPath/CriticalCSSSubscriber/stopCpcssProcess.php
+
+		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/CriticalPath/CriticalCSSSubscriber/stopCpcssProcess.php
 
@@ -891,7 +1051,17 @@ parameters:
 			path: tests/Integration/inc/Engine/Optimization/DeferJS/AdminSubscriber/addDeferJsOption.php
 
 		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Optimization/DeferJS/AdminSubscriber/excludeJqueryDefer.php
+
+		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Optimization/DeferJS/Subscriber/deferInlineJs.php
+
+		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/Optimization/DeferJS/Subscriber/deferInlineJs.php
 
@@ -901,7 +1071,17 @@ parameters:
 			path: tests/Integration/inc/Engine/Optimization/DeferJS/Subscriber/deferJs.php
 
 		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Optimization/DeferJS/Subscriber/deferJs.php
+
+		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Optimization/DeferJS/Subscriber/excludeJqueryCombine.php
+
+		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/Optimization/DeferJS/Subscriber/excludeJqueryCombine.php
 
@@ -927,6 +1107,11 @@ parameters:
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Optimization/DelayJS/Subscriber/delayJs.php
+
+		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/Optimization/DelayJS/Subscriber/delayJs.php
 
@@ -979,6 +1164,11 @@ parameters:
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/Optimization/DynamicLists/Subscriber/updateLists.php
+
+		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Optimization/GoogleFonts/Admin/Subscriber/enableGoogleFonts.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
@@ -1071,6 +1261,11 @@ parameters:
 			path: tests/Integration/inc/Engine/Optimization/RUCSS/Frontend/Subscriber/maybeDisablePreloadFonts.php
 
 		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Optimization/RUCSS/Frontend/Subscriber/maybeDisablePreloadFonts.php
+
+		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/Optimization/RUCSS/Frontend/Subscriber/treeshake.php
@@ -1097,6 +1292,11 @@ parameters:
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/WPRocketUninstall/uninstall.php
+
+		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/WPRocketUninstall/uninstall.php
 
@@ -1281,6 +1481,16 @@ parameters:
 			path: tests/Integration/inc/ThirdParty/Plugins/Optimization/AMP/isAmpCompatibleCallback.php
 
 		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 3
+			path: tests/Integration/inc/ThirdParty/Plugins/Optimization/Autoptimize/warnWhenAggregateInlineCssAndCPCSSActive.php
+
+		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 2
+			path: tests/Integration/inc/ThirdParty/Plugins/Optimization/Autoptimize/warnWhenJsAggregationAndDelayJsActive.php
+
+		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/ThirdParty/Plugins/Optimization/Ezoic/addConflict.php
@@ -1289,6 +1499,11 @@ parameters:
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/ThirdParty/Plugins/Optimization/Ezoic/addExplanations.php
+
+		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/ThirdParty/Plugins/Optimization/Hummingbird/warningNotice.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
@@ -1366,9 +1581,19 @@ parameters:
 			path: tests/Integration/inc/ThirdParty/Plugins/SEO/TheSEOFramework/addTsfSitemapToPreload.php
 
 		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/ThirdParty/Plugins/SimpleCustomCss/updateCacheFile.php
+
+		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/ThirdParty/Plugins/Smush/SmushSubscriberTestCase.php
+
+		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/ThirdParty/Plugins/Smush/maybeDeactivateRocketLazyload.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
@@ -1474,6 +1699,21 @@ parameters:
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 2
 			path: tests/Integration/inc/ThirdParty/Themes/Xstore/excludeInlineContent.php
+
+		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/admin/rocketAfterSaveOptions.php
+
+		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 2
+			path: tests/Integration/inc/admin/rocketFirstInstall.php
+
+		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/functions/rocketIsPluginActive.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
