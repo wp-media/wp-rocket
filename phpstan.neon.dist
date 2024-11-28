@@ -57,3 +57,4 @@ parameters:
 rules:
 	- WP_Rocket\Tests\phpstan\Rules\DiscourageUpdateOptionUsage
 	- WP_Rocket\Tests\phpstan\Rules\DiscourageApplyFilters
+	- WP_Rocket\Tests\phpstan\Rules\EnsureCallbackMethodsExistsInSubscribedEvents
