@@ -146,6 +146,7 @@ class EnsureCallbackMethodsExistsInSubscribedEvents implements Rule {
 		return [
 			RuleErrorBuilder::message( $error_message )
 				->line( $node->getLine() ) // Add the line number.
+				->identifier( 'callbackMethodNotFound' )
 				->build(),
 		];
 	}
