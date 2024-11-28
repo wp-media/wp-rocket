@@ -56,5 +56,7 @@ parameters:
 		 - %currentWorkingDirectory%/inc/3rd-party/
 rules:
 	- WP_Rocket\Tests\phpstan\Rules\ApplyFiltersTypedDynamicFunctionReturnTypeExtension
+	- WP_Rocket\Tests\phpstan\Rules\DiscourageUpdateOptionUsage
 	- WP_Rocket\Tests\phpstan\Rules\DiscourageApplyFilters
-
+	- WP_Rocket\Tests\phpstan\Rules\EnsureCallbackMethodsExistsInSubscribedEvents
+	- WP_Rocket\Tests\phpstan\Rules\NoHooksInORM
