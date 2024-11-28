@@ -186,6 +186,11 @@ parameters:
 			path: inc/Engine/Media/AboveTheFold/AJAX/Controller.php
 
 		-
+			message: "#^Hooks should not be used in ORM classes\\: WP_Rocket\\\\Engine\\\\Media\\\\AboveTheFold\\\\Database\\\\Queries\\\\AboveTheFold\\:\\:apply_filters$#"
+			count: 1
+			path: inc/Engine/Media/AboveTheFold/Database/Queries/AboveTheFold.php
+
+		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
 			path: inc/Engine/Media/AboveTheFold/Database/Queries/AboveTheFold.php
@@ -271,6 +276,11 @@ parameters:
 			path: inc/Engine/Optimization/LazyRenderContent/AJAX/Controller.php
 
 		-
+			message: "#^Hooks should not be used in ORM classes\\: WP_Rocket\\\\Engine\\\\Optimization\\\\LazyRenderContent\\\\Database\\\\Queries\\\\LazyRenderContent\\:\\:apply_filters$#"
+			count: 1
+			path: inc/Engine/Optimization/LazyRenderContent/Database/Queries/LazyRenderContent.php
+
+		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
 			path: inc/Engine/Optimization/LazyRenderContent/Database/Queries/LazyRenderContent.php
@@ -354,6 +364,11 @@ parameters:
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 5
 			path: inc/Engine/Preload/Cron/Subscriber.php
+
+		-
+			message: "#^Hooks should not be used in ORM classes\\: WP_Rocket\\\\Engine\\\\Preload\\\\Database\\\\Queries\\\\Cache\\:\\:apply_filters$#"
+			count: 4
+			path: inc/Engine/Preload/Database/Queries/Cache.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
