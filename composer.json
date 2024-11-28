@@ -235,6 +235,7 @@
 		],
 		"run-stan": "vendor/bin/phpstan analyze --memory-limit=2G --no-progress",
 		"run-stan-reset-baseline": "vendor/bin/phpstan analyze --memory-limit=2G --no-progress --generate-baseline",
+		"run-stan-test": "vendor/bin/phpstan analyze inc/Engine/Common/ExtractCSS/Subscriber.php --memory-limit=2G --no-progress --debug",
 		"install-codestandards": "Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\Plugin::run",
 		"phpcs": "phpcs --basepath=.",
 		"phpcs-changed": "./bin/phpcs-changed.sh",
