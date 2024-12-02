@@ -44,6 +44,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_plugins_to_deactivate'       => 'add_incompatible_plugins_to_deactivate',
 			'rocket_staging_list'                => 'add_staging_exclusions',
 			'rocket_lrc_exclusions'              => 'add_lrc_exclusions',
+			'wp_rocket_upgrade'                  => 'update_lists_from_files',
 		];
 	}
 
@@ -63,7 +64,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return array
 	 */
 	public function add_dynamic_lists_script( $data ) {
-		$data['rest_url']   = rest_url( 'wp-rocket/v1/dynamic_lists/update/' );
+		$data['rest_url']   = rest_url( 'wp-rocket/v1/dynamic_lists/update/?_locale=user' );
 		$data['rest_nonce'] = wp_create_nonce( 'wp_rest' );
 
 		return $data;
@@ -201,5 +202,14 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function add_lrc_exclusions( $exclusions ): array {
 		return array_merge( (array) $exclusions, $this->dynamic_lists->get_lrc_exclusions() );
+	}
+
+	/**
+	 * Update dynamic lists from JSON files.
+	 *
+	 * @return void
+	 */
+	public function update_lists_from_files() {
+		$this->dynamic_lists->update_lists_from_files();
 	}
 }

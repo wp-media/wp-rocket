@@ -65,7 +65,10 @@ class TaxonomySubscriber implements Subscriber_Interface {
 		}
 
 		$current_link = home_url( add_query_arg( [], $wp->request ?? '' ) );
+		if ( is_paged() ) {
+			$term_link = trailingslashit( $term_link ) . 'page/' . get_query_var( 'paged' );
+		}
 
-		return untrailingslashit( $term_link ) !== untrailingslashit( $current_link );
+		return urldecode( untrailingslashit( $term_link ) ) !== urldecode( untrailingslashit( $current_link ) );
 	}
 }

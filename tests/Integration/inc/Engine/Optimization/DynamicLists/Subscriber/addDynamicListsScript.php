@@ -37,6 +37,6 @@ class Test_AddDynamicListsScripts extends TestCase {
 
 		$this->assertArrayHasKey( 'rest_url', $result );
 		$this->assertArrayHasKey( 'rest_nonce', $result );
-		$this->assertContains( 'http://example.org/wp-json/wp-rocket/v1/dynamic_lists/update/', $result );
+		$this->assertContains( 'http://example.org/wp-json/wp-rocket/v1/dynamic_lists/update/?_locale=user', $result );
 	}
 }
