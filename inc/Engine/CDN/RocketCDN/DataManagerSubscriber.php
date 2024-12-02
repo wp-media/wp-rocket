@@ -1,6 +1,9 @@
 <?php
 namespace WP_Rocket\Engine\CDN\RocketCDN;
 
+use WP_Rocket\Admin\Options;
+use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
@@ -9,6 +12,8 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  * @since  3.5
  */
 class DataManagerSubscriber implements Subscriber_Interface {
+	use RegexTrait;
+
 	const CRON_EVENT = 'rocketcdn_check_subscription_status_event';
 
 	/**
@@ -26,14 +31,32 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	private $cdn_options;
 
 	/**
+	 * WP Options API instance
+	 *
+	 * @var Options
+	 */
+	private $options_api;
+
+	/**
+	 * WP Rocket Options instance
+	 *
+	 * @var Options_Data
+	 */
+	private $options;
+
+	/**
 	 * Constructor
 	 *
 	 * @param APIClient         $api_client  RocketCDN API Client instance.
 	 * @param CDNOptionsManager $cdn_options CDNOptionsManager instance.
+	 * @param Options_Data      $options Options instance.
+	 * @param Options           $options_api Options API instance.
 	 */
-	public function __construct( APIClient $api_client, CDNOptionsManager $cdn_options ) {
+	public function __construct( APIClient $api_client, CDNOptionsManager $cdn_options, Options_Data $options, Options $options_api ) {
 		$this->api_client  = $api_client;
 		$this->cdn_options = $cdn_options;
+		$this->options     = $options;
+		$this->options_api = $options_api;
 	}
 
 	/**
@@ -48,6 +71,7 @@ class DataManagerSubscriber implements Subscriber_Interface {
 			'wp_ajax_rocketcdn_process_status'       => 'get_process_status',
 			'wp_ajax_rocketcdn_validate_token_cname' => 'validate_token_cname',
 			self::CRON_EVENT                         => 'maybe_disable_cdn',
+			'wp_rocket_upgrade'                      => [ 'refresh_cdn_cname', 10, 2 ],
 		];
 	}
 
@@ -314,5 +338,39 @@ class DataManagerSubscriber implements Subscriber_Interface {
 		if ( ! wp_next_scheduled( self::CRON_EVENT ) ) {
 			wp_schedule_single_event( $timestamp, self::CRON_EVENT );
 		}
+	}
+
+	/**
+	 * Upgrade callback.
+	 *
+	 * @param string $new_version Plugin new version.
+	 * @param string $old_version Plugin old version.
+	 * @return void
+	 */
+	public function refresh_cdn_cname( $new_version, $old_version ): void {
+		if ( version_compare( $old_version, '3.17.3', '>=' ) ) {
+			return;
+		}
+
+		$cdn_cnames = $this->options->get( 'cdn_cnames', [] );
+		if ( empty( $cdn_cnames ) ) {
+			return;
+		}
+
+		$subscription_data = $this->api_client->get_subscription_data();
+		if ( ! $subscription_data['is_active'] || empty( $subscription_data['cdn_url'] ) ) {
+			return;
+		}
+
+		$cdn_matches = $this->find( 'https:\/\/(?<cdn_id>[a-zA-Z0-9]{8})\.rocketcdn\.me', $cdn_cnames[0] );
+		if ( empty( $cdn_matches ) || empty( $cdn_matches[0]['cdn_id'] ) ) {
+			return;
+		}
+
+		$this->options_api->set( 'rocketcdn_old_url', $cdn_cnames[0] );
+		$cdn_cnames[0] = str_replace( $cdn_matches[0]['cdn_id'], $cdn_matches[0]['cdn_id'] . '.delivery', $cdn_cnames[0] );
+		$this->options->set( 'cdn_cnames', $cdn_cnames );
+
+		$this->options_api->set( 'settings', $this->options->get_options() );
 	}
 }

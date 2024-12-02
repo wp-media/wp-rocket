@@ -90,6 +90,10 @@ class Subscriber extends AbstractWebp implements Subscriber_Interface {
 	 * @return string
 	 */
 	public function convert_to_webp( $html ) {
+		if ( empty( $html ) ) {
+			return $html;
+		}
+
 		if ( ! $this->options_data->get( 'cache_webp', 0 ) ) {
 			return $html;
 		}
