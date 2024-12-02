@@ -810,9 +810,9 @@ class Page extends Abstract_Render {
 				],
 				'delay_js_execution_safe_mode' => [
 					'type'              => 'checkbox',
-					'label'             => __( 'Delay JavaScript Execution safe mode', 'rocket' ),
+					'label'             => __( 'Safe Mode for Delay JavaScript Execution', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description'       => __( 'Delay JavaScript Execution safe mode temporarily resolves issues with Delay JavaScript execution but may reduce your PageSpeed Scores and performance. Contact support for help excluding problematic scripts to use this feature fully.', 'rocket' ),
+					'description'       => __( 'The Safe Mode mode prevents all internal scripts from being delayed.', 'rocket' ),
 					'helper'            => '',
 					'container_class'   => [
 						'wpr-field--parent',
@@ -828,9 +828,9 @@ class Page extends Abstract_Render {
 						'disabled' => 0,
 					],
 					'warning'           => [
-						'title'        => __( 'This will decrease the effect of Delay JavaScript Execution', 'rocket' ),
-						'description'  => __( 'This mode temporarily resolves issues with Delay JavaScript execution but may reduce your PageSpeed Scores and performance. Contact support for help excluding problematic scripts to use this feature fully.', 'rocket' ),
-						'button_label' => __( 'Activate Safe Mode', 'rocket' ),
+						'title'        => __( 'Performance impact', 'rocket' ),
+						'description'  => __( 'By enabling Safe Mode, you significantly reduce your website performance improvements. We recommend using it only as a temporary solution. If you’re experiencing issues with the Delay JavaScript feature, our support team can help you troubleshoot.', 'rocket' ),
+						'button_label' => __( 'ACTIVATE SAFE MODE', 'rocket' ),
 					],
 				],
 			],
