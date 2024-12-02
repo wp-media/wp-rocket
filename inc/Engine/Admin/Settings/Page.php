@@ -790,6 +790,24 @@ class Page extends Abstract_Render {
 					],
 					'items'             => $this->delayjs_sitelist->prepare_delayjs_ui_list(),
 				],
+				'delay_js_exclusions'          => [
+					'type'              => 'textarea',
+					'container_class'   => [
+						'wpr-field--children',
+					],
+					'label'             => __( 'Excluded JavaScript Files', 'rocket' ),
+					'description'       => __( 'Specify URLs or keywords that can identify inline or JavaScript files to be excluded from delaying execution (one per line).', 'rocket' ),
+					'parent'            => 'delay_js',
+					'section'           => 'js',
+					'page'              => 'file_optimization',
+					'default'           => [],
+					'sanitize_callback' => 'sanitize_textarea',
+					'input_attr'        => [
+						'disabled' => get_rocket_option( 'delay_js' ) ? 0 : 1,
+					],
+					'helper'            => DelayJSSettings::exclusion_list_has_default() ? $delay_js_found_list_helper : $delay_js_list_helper,
+					'placeholder'       => '',
+				],
 				'delay_js_execution_safe_mode' => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Delay JavaScript Execution safe mode', 'rocket' ),
@@ -814,24 +832,6 @@ class Page extends Abstract_Render {
 						'description'  => __( 'This mode temporarily resolves issues with Delay JavaScript execution but may reduce your PageSpeed Scores and performance. Contact support for help excluding problematic scripts to use this feature fully.', 'rocket' ),
 						'button_label' => __( 'Activate Safe Mode', 'rocket' ),
 					],
-				],
-				'delay_js_exclusions'          => [
-					'type'              => 'textarea',
-					'container_class'   => [
-						'wpr-field--children',
-					],
-					'label'             => __( 'Excluded JavaScript Files', 'rocket' ),
-					'description'       => __( 'Specify URLs or keywords that can identify inline or JavaScript files to be excluded from delaying execution (one per line).', 'rocket' ),
-					'parent'            => 'delay_js',
-					'section'           => 'js',
-					'page'              => 'file_optimization',
-					'default'           => [],
-					'sanitize_callback' => 'sanitize_textarea',
-					'input_attr'        => [
-						'disabled' => get_rocket_option( 'delay_js' ) ? 0 : 1,
-					],
-					'helper'            => DelayJSSettings::exclusion_list_has_default() ? $delay_js_found_list_helper : $delay_js_list_helper,
-					'placeholder'       => '',
 				],
 			],
 		);
