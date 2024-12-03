@@ -183,7 +183,7 @@ class Controller {
 			return $html;
 		}
 
-		$pattern = '/<link\s+([^>]+[\s"\'])?rel\s*=\s*[\'"]((preconnect)|(dns-prefetch))[\'"]([^>]+)?\/?>/i';
+		$pattern = '/<link[^>]*\bhref\s*=\s*[\'"](?:https?:)?\/\/(?:fonts\.(?:googleapis|gstatic)\.com)[\'"][^>]*\brel\s*=\s*[\'"](?:preconnect|dns-prefetch)[\'"][^>]*>/i';
 
 		$html = preg_replace( $pattern, '', $html );
 
