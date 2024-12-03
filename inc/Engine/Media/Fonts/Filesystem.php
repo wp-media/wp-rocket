@@ -45,6 +45,17 @@ class Filesystem extends AbstractFileSystem {
 	}
 
 	/**
+	 * Checks if the file exists
+	 *
+	 * @param string $file Absolute path to the file.
+	 *
+	 * @return bool
+	 */
+	public function exists( string $file ): bool {
+		return $this->filesystem->exists( $file );
+	}
+
+	/**
 	 * Writes font css to path
 	 *
 	 * @param string $font_url The font url to save locally.
@@ -54,12 +65,10 @@ class Filesystem extends AbstractFileSystem {
 	 */
 	public function write_font_css( string $font_url, string $provider ): bool {
 		$font_provider_path = $this->get_font_provider_path( $provider );
-		$hash_url           = $this->hash_url( $font_url );
-		$file               = $this->get_fonts_full_path( $font_provider_path, $hash_url );
-		$css_file_name      = $file . '.css';
-		$relative_path      = $this->get_fonts_relative_path( $font_provider_path, $hash_url );
+		$css_filepath       = $this->get_absolute_path( $font_provider_path, 'css/' . $this->hash_to_path( $this->hash_url( $font_url ) )  . '.css' );
+		$fonts_basepath     = $this->get_absolute_path( $font_provider_path, 'fonts' );
 
-		if ( ! rocket_mkdir_p( dirname( $file ) ) ) {
+		if ( ! rocket_mkdir_p( dirname( $css_filepath ) ) ) {
 			return false;
 		}
 
@@ -71,14 +80,18 @@ class Filesystem extends AbstractFileSystem {
 			return false;
 		}
 
-		preg_match_all( '/url\((https:\/\/[^)]+)\)/', $css_content, $matches );
+		preg_match_all( '/url\((https:\/\/[^)]+)\)/i', $css_content, $matches );
 		$font_urls = $matches[1];
 		$local_css = $css_content;
 
 		foreach ( $font_urls as $font_url ) {
-			$parsed_url = wp_parse_url( $font_url );
-			$font_path  = $parsed_url['path'];
-			$local_path = $file . $font_path;
+			$font_path = wp_parse_url( $font_url, PHP_URL_PATH );
+
+			if ( ! $font_path ) {
+				continue;
+			}
+
+			$local_path = $fonts_basepath . $font_path;
 			$local_dir  = dirname( $local_path );
 
 			if ( ! rocket_mkdir_p( $local_dir ) ) {
@@ -96,7 +109,7 @@ class Filesystem extends AbstractFileSystem {
 				$this->write_file( $local_path, $font_content );
 			}
 
-			$local_url = content_url( $relative_path . $font_path );
+			$local_url = content_url( $this->get_fonts_relative_path( $font_provider_path, $font_path ) );
 			$local_css = str_replace( $font_url, $local_url, $local_css );
 		}
 
@@ -106,7 +119,7 @@ class Filesystem extends AbstractFileSystem {
 		// Add for test purpose.
 		Logger::debug( "Font download and optimization duration in seconds -- $duration", [ 'Host Fonts Locally' ] );
 
-		return $this->write_file( $css_file_name, $local_css );
+		return $this->write_file( $css_filepath, $local_css );
 	}
 
 	/**
@@ -133,31 +146,31 @@ class Filesystem extends AbstractFileSystem {
 	}
 
 	/**
-	 * Get the fonts path for the css file.
+	 * Get the absolute path for a file
 	 *
 	 * @param string $font_provider_path Font provider path.
-	 * @param string $hash               Url of the page.
+	 * @param string $path               Path to the file.
 	 *
-	 * @return string Path for the font file.
+	 * @return string
 	 */
-	private function get_fonts_full_path( string $font_provider_path, string $hash ): string {
-		return $this->path . $font_provider_path . $this->hash_to_path( $hash );
+	private function get_absolute_path( string $font_provider_path, string $path ): string {
+		return $this->path . $font_provider_path . $path;
 	}
 
 	/**
 	 * Get the fonts relative paths
 	 *
 	 * @param string $font_provider_path Font provider path.
-	 * @param string $hash               Hash of the font url.
+	 * @param string $path               Path to the file.
 	 *
 	 * @return string
 	 */
-	private function get_fonts_relative_path( string $font_provider_path, string $hash ): string {
-		$full_path      = $this->path . $font_provider_path;
-		$wp_content_dir = rocket_get_constant( 'WP_CONTENT_DIR' );
-		$relative_path  = str_replace( $wp_content_dir, '', $full_path );
+	private function get_fonts_relative_path( string $font_provider_path, string $path ): string {
+		$base_path      = $this->path . $font_provider_path . 'fonts';
+		$wp_content_dir = rocket_get_constant( 'WP_CONTENT_DIR', '' );
+		$relative_path  = str_replace( $wp_content_dir, '', $base_path );
 
-		return $relative_path . $this->hash_to_path( $hash );
+		return $relative_path . $path;
 	}
 
 	/**
@@ -183,7 +196,7 @@ class Filesystem extends AbstractFileSystem {
 	 * @return bool
 	 */
 	public function delete_font_css( string $url ): bool {
-		$dir = $this->get_fonts_full_path( $this->get_font_provider_path( $url ), $url );
+		$dir = $this->get_absolute_path( $this->get_font_provider_path( $url ), $url );
 
 		return $this->delete_file( $dir );
 	}
