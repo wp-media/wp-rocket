@@ -65,7 +65,7 @@ class Filesystem extends AbstractFileSystem {
 	 */
 	public function write_font_css( string $font_url, string $provider ): bool {
 		$font_provider_path = $this->get_font_provider_path( $provider );
-		$css_filepath       = $this->get_absolute_path( $font_provider_path, 'css/' . $this->hash_to_path( $this->hash_url( $font_url ) )  . '.css' );
+		$css_filepath       = $this->get_absolute_path( $font_provider_path, 'css/' . $this->hash_to_path( $this->hash_url( $font_url ) ) . '.css' );
 		$fonts_basepath     = $this->get_absolute_path( $font_provider_path, 'fonts' );
 
 		if ( ! rocket_mkdir_p( dirname( $css_filepath ) ) ) {

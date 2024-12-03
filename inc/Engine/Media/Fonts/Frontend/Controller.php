@@ -159,7 +159,7 @@ class Controller {
 			}
 		}
 
-		$url = $this->base_url . $font_provider_path . 'css/' .$this->filesystem->hash_to_path( $hash ) . '.css';
+		$url = $this->base_url . $font_provider_path . 'css/' . $this->filesystem->hash_to_path( $hash ) . '.css';
 
 		return sprintf(
 			'<link rel="stylesheet" href="%1$s" data-wpr-hosted-gf-parameters="%2$s"/>', // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
