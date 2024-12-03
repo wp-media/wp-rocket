@@ -1,6 +1,9 @@
 <?php
+declare(strict_types=1);
+
 namespace WP_Rocket\Engine\Admin\Settings;
 
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Dependencies\WPMedia\PluginFamily\Model\PluginFamily as PluginFamilyModel;
 use WP_Rocket\Dependencies\WPMedia\PluginFamily\Controller\PluginFamily as PluginFamilyController;
@@ -15,10 +18,12 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @var array
 	 */
 	protected $provides = [
-		'settings',
-		'settings_render',
-		'settings_page',
-		'settings_page_subscriber',
+		PluginFamilyModel::class,
+		PluginFamilyController::class,
+		Settings::class,
+		Render::class,
+		Page::class,
+		Subscriber::class,
 	];
 
 	/**
@@ -38,19 +43,19 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register(): void {
-		$this->getContainer()->add( 'plugin_family_model', PluginFamilyModel::class );
-		$this->getContainer()->add( 'plugin_family_controller', PluginFamilyController::class );
+		$this->getContainer()->add( PluginFamilyModel::class );
+		$this->getContainer()->add( PluginFamilyController::class );
 
-		$this->getContainer()->add( 'settings', Settings::class )
-			->addArgument( $this->getContainer()->get( 'options' ) );
-		$this->getContainer()->add( 'settings_render', Render::class )
+		$this->getContainer()->add( Settings::class )
+			->addArgument( Options_Data::class );
+		$this->getContainer()->add( Render::class )
 			->addArguments(
 				[
 					$this->getContainer()->get( 'template_path' ) . '/settings',
-					'plugin_family_model',
+					PluginFamilyModel::class,
 				]
 			);
-		$this->getContainer()->add( 'settings_page', Page::class )
+		$this->getContainer()->add( Page::class )
 			->addArgument( $this->getContainer()->get( 'settings_page_config' ) )
 			->addArgument( $this->getContainer()->get( 'settings' ) )
 			->addArgument( $this->getContainer()->get( 'settings_render' ) )
@@ -60,11 +65,11 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'delay_js_sitelist' ) )
 			->addArgument( $this->getContainer()->get( 'template_path' ) )
 			->addArgument( $this->getContainer()->get( 'options' ) );
-		$this->getContainer()->addShared( 'settings_page_subscriber', Subscriber::class )
+		$this->getContainer()->addShared( Subscriber::class )
 			->addArguments(
 				[
-					$this->getContainer()->get( 'settings_page' ),
-					'plugin_family_controller',
+					Page::class,
+					PluginFamilyController::class,
 				]
 			);
 	}

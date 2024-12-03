@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Admin\API;
 
@@ -11,7 +12,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @var array
 	 */
 	protected $provides = [
-		'admin_api_subscriber',
+		Subscriber::class,
 	];
 
 	/**
@@ -31,6 +32,6 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register(): void {
-		$this->getContainer()->add( 'admin_api_subscriber', Subscriber::class );
+		$this->getContainer()->add( Subscriber::class );
 	}
 }

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace WP_Rocket\Engine\Activation;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
@@ -18,10 +20,10 @@ class ServiceProvider extends AbstractServiceProvider implements BootableService
 	 * @var array
 	 */
 	protected $provides = [
-		'advanced_cache',
-		'capabilities_manager',
-		'wp_cache',
-		'action_scheduler_check',
+		AdvancedCache::class,
+		Manager::class,
+		WPCache::class,
+		ActionSchedulerCheck::class,
 	];
 
 	/**
@@ -52,12 +54,16 @@ class ServiceProvider extends AbstractServiceProvider implements BootableService
 	public function register(): void {
 		$filesystem = rocket_direct_filesystem();
 
-		$this->getContainer()->add( 'advanced_cache', AdvancedCache::class )
-			->addArgument( $this->getContainer()->get( 'template_path' ) . '/cache/' )
+		$this->getContainer()->add( AdvancedCache::class )
+			->addArguments(
+				[
+					$this->getContainer()->get( 'template_path' ) . '/cache/',
+					$filesystem,
+				]
+			);
+		$this->getContainer()->add( Manager::class );
+		$this->getContainer()->add( WPCache::class )
 			->addArgument( $filesystem );
-		$this->getContainer()->add( 'capabilities_manager', Manager::class );
-		$this->getContainer()->add( 'wp_cache', WPCache::class )
-			->addArgument( $filesystem );
-		$this->getContainer()->add( 'action_scheduler_check', ActionSchedulerCheck::class );
+		$this->getContainer()->add( ActionSchedulerCheck::class );
 	}
 }
