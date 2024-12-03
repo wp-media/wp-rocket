@@ -16,9 +16,7 @@ class Context extends AbstractContext {
 	public function is_allowed( array $data = [] ): bool {
 		$is_allowed = $this->run_common_checks(
 			[
-				'do_not_optimize' => false,
-				'bypass'          => false,
-				'option'          => 'host_fonts_locally',
+				'option' => 'host_fonts_locally',
 			]
 		);
 
