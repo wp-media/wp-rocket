@@ -106,9 +106,10 @@ class Controller {
 	 */
 	private function replace_font( array $font, string $html, string $font_provider = 'google-fonts' ): string {
 		$hash  = md5( $font['url'] );
-		$local = $this->get_optimized_markup( $hash, $font['url'], $font_provider );
 
 		if ( $this->filesystem->exists( $this->get_css_path( $hash, $font_provider ) ) ) {
+			$local = $this->get_optimized_markup( $hash, $font['url'], $font_provider );
+
 			return str_replace( $font[0], $local, $html );
 		}
 
@@ -117,6 +118,8 @@ class Controller {
 
 			return $html;
 		}
+
+		$local = $this->get_optimized_markup( $hash, $font['url'], $font_provider );
 
 		return str_replace( $font[0], $local, $html );
 	}
