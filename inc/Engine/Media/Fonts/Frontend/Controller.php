@@ -133,7 +133,9 @@ class Controller {
 		string $font_provider
 	): string {
 		$font_provider_path = sprintf( '%s/', $font_provider );
-		$gf_parameters      = wp_parse_url( $original_url, PHP_URL_QUERY );
+
+		$original_url  = html_entity_decode( $original_url, ENT_QUOTES );
+		$gf_parameters = wp_parse_url( $original_url, PHP_URL_QUERY );
 
 		/**
 		 * Filters to enable the inline css output.
