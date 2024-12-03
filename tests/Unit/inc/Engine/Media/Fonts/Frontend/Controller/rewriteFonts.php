@@ -40,6 +40,9 @@ class Test_RewriteFonts extends FilesystemTestCase {
 			->once()
 			->andReturn( $config['is_allowed'] );
 
+		$this->fonts_filesystem->shouldReceive( 'exists' )
+			->andReturn( false );
+
 		$this->fonts_filesystem->shouldReceive( 'write_font_css' )
 			->andReturn( $config['write'] );
 		$this->fonts_filesystem->shouldReceive( 'hash_to_path' )
