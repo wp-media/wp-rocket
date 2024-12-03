@@ -70,6 +70,9 @@ class Controller {
 			return $html;
 		}
 
+		// For test purposes.
+		$start_time = microtime( true );
+
 		$html_nocomments = $this->hide_comments( $html );
 
 		$v1_fonts = $this->find( '<link(?:\s+(?:(?!href\s*=\s*)[^>])+)?(?:\s+href\s*=\s*([\'"])(?<url>(?:https?:)?\/\/fonts\.googleapis\.com\/css[^\d](?:(?!\1).)+)\1)(?:\s+[^>]*)?>', $html_nocomments );
@@ -91,6 +94,13 @@ class Controller {
 		if ( ! $this->error ) {
 			$html = $this->remove_preconnect_and_prefetch( $html );
 		}
+
+		// End time measurement.
+		$end_time = microtime( true );
+
+		// Log the total execution time.
+		$duration = $end_time - $start_time;
+		Logger::debug( "Total execution time for Host Google Fonts Feature in seconds -- $duration", [ 'Host Fonts Locally' ] );
 
 		return $html;
 	}
