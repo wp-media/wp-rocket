@@ -3158,6 +3158,7 @@ div.wpr-tutorial-item {
 }
 .wpr-field--categorizedmultiselect .wpr-multiple-select-title {
   cursor: pointer;
+  font-weight: bold;
 }
 .wpr-field--categorizedmultiselect .wpr-subsection {
   padding-left: 30px;
