@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Media\Fonts\Clean;
 
+use WP_Rocket\Engine\Media\Fonts\Filesystem;
+
 class Clean {
 	/**
 	 * Filesystem instance
@@ -56,6 +58,11 @@ class Clean {
 
 		$this->clean_css_fonts();
 
-		do_action( 'rocket_fonts_locally_hosted_changed' );
+		/**
+		 * Fires when the option to host fonts locally is changed
+		 *
+		 * @since 3.18
+		 */
+		do_action( 'rocket_host_fonts_locally_changed' );
 	}
 }
