@@ -116,7 +116,7 @@ abstract class AbstractFileSystem {
 		 *
 		 * @param int $levels Number of levels.
 		 */
-		$levels = wpm_apply_filters_typed( 'int', 'rocket_used_css_dir_level', 3 );
+		$levels = wpm_apply_filters_typed( 'integer', 'rocket_used_css_dir_level', 3 );
 
 		$base   = substr( $hash, 0, $levels );
 		$remain = substr( $hash, $levels );
