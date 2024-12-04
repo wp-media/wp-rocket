@@ -337,7 +337,7 @@ class DynamicLists extends Abstract_Render {
 	 *
 	 * @return array
 	 */
-	public function get_exclude_media_fonts() : array {
+	public function get_exclude_media_fonts(): array {
 		$lists = $this->providers['defaultlists']->data_manager->get_lists();
 
 		return $lists->host_fonts ?? [];

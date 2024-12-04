@@ -80,11 +80,19 @@ class Controller {
 			return $html;
 		}
 
+		$exclusions = $this->get_exclusions();
+
 		foreach ( $v1_fonts as $font ) {
+			if ( $this->is_excluded( $font['url'], $exclusions ) ) {
+				continue;
+			}
 			$html = $this->replace_font( $font, $html );
 		}
 
 		foreach ( $v2_fonts as $font ) {
+			if ( $this->is_excluded( $font['url'], $exclusions ) ) {
+				continue;
+			}
 			$html = $this->replace_font( $font, $html );
 		}
 
@@ -220,7 +228,27 @@ class Controller {
 		 *
 		 * @param string[] $exclusions The list of patterns to exclude from media fonts.
 		 */
-		return wpm_apply_filters_typed( 'string[]', 'rocket_media_fonts_exclusions', [] );
+		return wpm_apply_filters_typed( 'string[]', 'rocket_exclude_locally_host_fonts', [] );
+	}
+
+	/**
+	 * Checks if a URL is excluded based on the provided exclusions.
+	 *
+	 * @param string   $url        The URL to check.
+	 * @param string[] $exclusions The list of exclusions.
+	 *
+	 * @return bool True if the URL is excluded, false otherwise.
+	 */
+	private function is_excluded( string $url, array $exclusions ): bool {
+		if ( ! empty( $exclusions ) ) {
+			foreach ( $exclusions as $exclusion ) {
+				if ( preg_match( '/' . $exclusion . '/', $url ) ) {
+					return true;
+				}
+			}
+		}
+
+		return false;
 	}
 
 	/**
