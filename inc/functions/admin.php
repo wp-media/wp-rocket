@@ -550,6 +550,12 @@ function rocket_get_license_type( $customer_data ) {
 		return __( 'Unavailable', 'rocket' );
 	}
 
+	// The licence name directly from User endpoint.
+	if ( ! empty( $customer_data->licence->name ) ) {
+		return esc_html( $customer_data->licence->name );
+	}
+
+	// Fallback to licence account.
 	if ( 1 <= $customer_data->licence_account
 		&&
 		$customer_data->licence_account < 3

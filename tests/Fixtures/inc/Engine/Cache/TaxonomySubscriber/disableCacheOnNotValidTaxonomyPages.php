@@ -91,5 +91,16 @@ return [
 			],
 			'can_cache' => false,
 		],
+		'testValidTaxonomyPageWithNonLatinCharactersInUrl' => [
+			'config' => [
+				'is_category' => true,
+				'is_tag' => false,
+				'is_tax' => false,
+				'current_term_id' => 1,
+				'current_term_link' => 'http://example.com/%D0%BF%D1%80%D0%BE%D0%B4%D1%83%D0%BA%D1%82%D0%BE%D0%B2%D0%B0-%D0%BA%D0%B0%D1%82%D0%B5%D0%B3%D0%BE%D1%80%D0%B8%D1%8F/test1',
+				'current_page_url' => 'http://example.com/продуктова-категория/test1/',
+			],
+			'can_cache' => true,
+		],
 	],
 ];

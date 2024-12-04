@@ -44,7 +44,11 @@ abstract class AbstractFileSystem {
 	 *
 	 * @return string
 	 */
-	protected function get_file_content( string $file ): string {
+	public function get_file_content( string $file ): string {
+		if ( ! $this->filesystem->exists( $file ) ) {
+			return '';
+		}
+
 		return $this->filesystem->get_contents( $file );
 	}
 
