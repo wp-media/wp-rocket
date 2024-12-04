@@ -98,7 +98,7 @@ class Settings {
 				[];
 
 		if ( ! empty( $input['delay_js_execution_safe_mode'] ) ) {
-			$default_exclusions = self::get_safe_mode_exclusions();
+			$default_exclusions           = self::get_safe_mode_exclusions();
 			$input['delay_js_exclusions'] = array_diff( $input['delay_js_exclusions'], $default_exclusions );
 		}
 
