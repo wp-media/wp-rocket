@@ -83,6 +83,11 @@ class Controller {
 			return $html;
 		}
 
+		// Count fonts - for test purposes.
+		$total_v1    = count( $v1_fonts );
+		$total_v2    = count( $v2_fonts );
+		$total_fonts = $total_v1 + $total_v2;
+
 		foreach ( $v1_fonts as $font ) {
 			$html = $this->replace_font( $font, $html );
 		}
@@ -98,9 +103,9 @@ class Controller {
 		// End time measurement.
 		$end_time = microtime( true );
 
-		// Log the total execution time.
+		// Log the total execution time and number of fonts processed, with breakdown.
 		$duration = $end_time - $start_time;
-		Logger::debug( "Total execution time for Host Google Fonts Feature in seconds -- $duration", [ 'Host Fonts Locally' ] );
+		Logger::debug( "Total execution time for Host Google Fonts Feature in seconds -- $duration. Fonts processed: $total_fonts | Total v1: $total_v1 | Total v2: $total_v2", [ 'Host Fonts Locally' ] );
 
 		return $html;
 	}
