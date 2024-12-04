@@ -12,7 +12,7 @@
  * Licence: GPLv2 or later
  *
  * Text Domain: rocket
- * Domain Path: languages
+ * Domain Path: /languages
  *
  * Copyright 2013-2024 WP Rocket
  */
