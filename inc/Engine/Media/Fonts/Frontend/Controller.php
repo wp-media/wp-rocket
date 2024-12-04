@@ -104,14 +104,22 @@ class Controller {
 	 *
 	 * @return string
 	 */
-	private function replace_font( array $font, string $html, string $font_provider = 'google-font' ): string {
+	private function replace_font( array $font, string $html, string $font_provider = 'google-fonts' ): string {
+		$hash = md5( $font['url'] );
+
+		if ( $this->filesystem->exists( $this->get_css_path( $hash, $font_provider ) ) ) {
+			$local = $this->get_optimized_markup( $hash, $font['url'], $font_provider );
+
+			return str_replace( $font[0], $local, $html );
+		}
+
 		if ( ! $this->filesystem->write_font_css( $font['url'], $font_provider ) ) {
 			$this->error = true;
 
 			return $html;
 		}
 
-		$local = $this->get_optimized_markup( md5( $font['url'] ), $font['url'], $font_provider );
+		$local = $this->get_optimized_markup( $hash, $font['url'], $font_provider );
 
 		return str_replace( $font[0], $local, $html );
 	}
@@ -145,7 +153,7 @@ class Controller {
 		 * @param bool $enable Tells if we are enabling or not the inline css output.
 		 */
 		if ( wpm_apply_filters_typed( 'boolean', 'rocket_host_fonts_locally_inline_css', false ) ) {
-			$local_css_path = $this->base_path . $font_provider_path . $this->filesystem->hash_to_path( $hash ) . '.css';
+			$local_css_path = $this->get_css_path( $hash, $font_provider );
 
 			$inline_css = $this->get_font_inline_css( $local_css_path, $gf_parameters );
 
@@ -154,13 +162,27 @@ class Controller {
 			}
 		}
 
-		$url = $this->base_url . $font_provider_path . $this->filesystem->hash_to_path( $hash ) . '.css';
+		$url = $this->base_url . $font_provider_path . 'css/' . $this->filesystem->hash_to_path( $hash ) . '.css';
 
 		return sprintf(
 			'<link rel="stylesheet" href="%1$s" data-wpr-hosted-gf-parameters="%2$s"/>', // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
 			$url,
 			$gf_parameters
 		);
+	}
+
+	/**
+	 * Gets the CSS path for the font.
+	 *
+	 * @param string $hash Font hash.
+	 * @param string $font_provider Font provider.
+	 *
+	 * @return string
+	 */
+	private function get_css_path( string $hash, string $font_provider ): string {
+		$font_provider_path = sprintf( '%s/', $font_provider );
+
+		return $this->base_path . $font_provider_path . 'css/' . $this->filesystem->hash_to_path( $hash ) . '.css';
 	}
 
 	/**
