@@ -36,7 +36,9 @@ class Clean {
 	 * @return void
 	 */
 	public function clean_css_fonts() {
-		$this->filesystem->delete_all_files_from_directory( $this->base_path );
+		$path = $this->base_path . 'google-fonts/';
+
+		$this->filesystem->delete_all_files_from_directory( $path );
 	}
 
 	/**
