@@ -44,7 +44,7 @@ class Test_RewriteFonts extends FilesystemTestCase {
 			->andReturn( $config['write'] );
 		$this->fonts_filesystem->shouldReceive( 'hash_to_path' )
 			->andReturnUsing( function( $hash ) {
-				$levels = apply_filters( 'rocket_used_css_dir_level', 3 );
+				$levels = wpm_apply_filters_typed('int', 'rocket_used_css_dir_level', 3 );
 
 				$base   = substr( $hash, 0, $levels );
 				$remain = substr( $hash, $levels );
