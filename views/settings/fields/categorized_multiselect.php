@@ -80,7 +80,7 @@ defined( 'ABSPATH' ) || exit;
 							<div class="wpr-checkbox wpr-select-all">
 								<input class="wpr-main-checkbox" type="checkbox" />
 								<label>
-									<span class="wpr-multiple-select-title">
+									<span>
 										<?php echo esc_html( __( 'Select all', 'rocket' ) ); ?>
 									</span>
 								</label>
@@ -142,7 +142,7 @@ defined( 'ABSPATH' ) || exit;
 							<div class="wpr-checkbox wpr-select-all">
 								<input class="wpr-main-checkbox" type="checkbox" />
 								<label>
-									<span class="wpr-multiple-select-title">
+									<span>
 										<?php echo esc_html( __( 'Select all', 'rocket' ) ); ?>
 									</span>
 								</label>
