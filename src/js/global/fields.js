@@ -353,17 +353,25 @@ $(document).ready(function(){
 		});
 	}
 
-	let checkedCounts = {};
-	$('.wpr-field--categorizedmultiselect .wpr-list').each(function() {
+	let checkBoxCounter = {
+		checked: {},
+		total: {}
+	};
+	$('.wpr-field--categorizedmultiselect .wpr-list').each(function () {
 		// Get the ID of the current element
-		let id = $(this).attr('id'); 
-
+		let id = $(this).attr('id');
 		if (id) {
-			checkedCounts[id] = $(`#${id} input[type='checkbox']:checked`).length;
+			checkBoxCounter.checked[id] = $(`#${id} input[type='checkbox']:checked`).length;
+			checkBoxCounter.total[id] = $(`#${id} input[type='checkbox']:not(.wpr-main-checkbox)`).length;
 			// Update the counter text
-			$(`#${id} .wpr-badge-counter span`).text(checkedCounts[id]);
+			$(`#${id} .wpr-badge-counter span`).text(checkBoxCounter.checked[id]);
 			// Show or hide the counter badge based on the count
-			$(`#${id} .wpr-badge-counter`).toggle(checkedCounts[id] > 0);
+			$(`#${id} .wpr-badge-counter`).toggle(checkBoxCounter.checked[id] > 0);
+
+			// Check the select all option if all exclusions are checked in a section.
+			if (checkBoxCounter.checked[id] === checkBoxCounter.total[id]) {
+				$(`#${id} .wpr-main-checkbox`).attr('checked', true);
+			}
 		}
 	});
 });
