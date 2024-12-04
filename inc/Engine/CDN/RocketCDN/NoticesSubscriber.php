@@ -47,6 +47,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 			'admin_notices'                    => [
 				[ 'promote_rocketcdn_notice' ],
 				[ 'purge_cache_notice' ],
+				[ 'change_cname_notice' ],
 			],
 			'rocket_before_cdn_sections'       => 'display_rocketcdn_cta',
 			'wp_ajax_toggle_rocketcdn_cta'     => 'toggle_cta',
@@ -352,5 +353,61 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	 */
 	private function is_white_label_account() {
 		return (bool) rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' );
+	}
+
+	/**
+	 * Change CName admin notice contents.
+	 *
+	 * @return void
+	 */
+	public function change_cname_notice() {
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			return;
+		}
+
+		if ( 'settings_page_wprocket' !== get_current_screen()->id ) {
+			return;
+		}
+
+		$boxes = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
+
+		if ( in_array( 'rocketcdn_change_cname', (array) $boxes, true ) ) {
+			return;
+		}
+
+		$old_cname = get_option( 'wp_rocket_rocketcdn_old_url' );
+		if ( empty( $old_cname ) ) {
+			return;
+		}
+
+		$new_subscription = $this->api_client->get_subscription_data();
+		if ( empty( $new_subscription['cdn_url'] ) || $old_cname === $new_subscription['cdn_url'] ) {
+			return;
+		}
+
+		$support_url = rocket_get_external_url(
+			'support',
+			[
+				'utm_source' => 'wp_plugin',
+				'utm_medium' => 'wp_rocket',
+			]
+		);
+
+		$message_lines = [
+			// translators: %1$s = Old CName, %2$s = New CName.
+			sprintf( esc_html__( 'We\'ve updated your RocketCDN CNAME from %1$s to %2$s.', 'rocket' ), $old_cname, $new_subscription['cdn_url'] ),
+			// translators: %1$s = New CName.
+			sprintf( esc_html__( 'The change is already applied to the plugin settings. If you were using the CNAME in your code, make sure to update it to: %1$s.', 'rocket' ), $new_subscription['cdn_url'] ),
+		];
+
+		rocket_notice_html(
+			[
+				'status'         => 'info',
+				'message'        => implode( '<br>', $message_lines ),
+				'dismiss_button' => 'rocketcdn_change_cname',
+				'id'             => 'rocketcdn_change_cname_notice',
+				'action'         => sprintf( '<a href="%1$s" target="_blank" rel="noopener" class="wpr-button" id="rocketcdn-change-cname-button">%2$s</a>', $support_url, esc_html__( 'contact support', 'rocket' ) ),
+			]
+		);
 	}
 }

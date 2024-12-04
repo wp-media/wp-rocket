@@ -44,7 +44,11 @@ abstract class AbstractFileSystem {
 	 *
 	 * @return string
 	 */
-	protected function get_file_content( string $file ): string {
+	public function get_file_content( string $file ): string {
+		if ( ! $this->filesystem->exists( $file ) ) {
+			return '';
+		}
+
 		return $this->filesystem->get_contents( $file );
 	}
 
@@ -112,7 +116,7 @@ abstract class AbstractFileSystem {
 		 *
 		 * @param int $levels Number of levels.
 		 */
-		$levels = apply_filters( 'rocket_used_css_dir_level', 3 );
+		$levels = wpm_apply_filters_typed( 'integer', 'rocket_used_css_dir_level', 3 );
 
 		$base   = substr( $hash, 0, $levels );
 		$remain = substr( $hash, $levels );

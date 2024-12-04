@@ -69,6 +69,6 @@ class TaxonomySubscriber implements Subscriber_Interface {
 			$term_link = trailingslashit( $term_link ) . 'page/' . get_query_var( 'paged' );
 		}
 
-		return untrailingslashit( $term_link ) !== untrailingslashit( $current_link );
+		return urldecode( untrailingslashit( $term_link ) ) !== urldecode( untrailingslashit( $current_link ) );
 	}
 }
