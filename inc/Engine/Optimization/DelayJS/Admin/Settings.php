@@ -97,9 +97,10 @@ class Settings {
 				:
 				[];
 
-		$default_exclusions = self::get_safe_mode_exclusions();
-
-		$input['delay_js_exclusions'] = array_diff( $input['delay_js_exclusions'], $default_exclusions );
+		if ( ! empty( $input['delay_js_execution_safe_mode'] ) ) {
+			$default_exclusions = self::get_safe_mode_exclusions();
+			$input['delay_js_exclusions'] = array_diff( $input['delay_js_exclusions'], $default_exclusions );
+		}
 
 		return $input;
 	}
@@ -158,7 +159,7 @@ class Settings {
 	 */
 	public static function get_safe_mode_exclusions(): array {
 		return [
-			'/jquery(-migrate)?-?([0-9.]+)?(.min|.slim|.slim.min)?.js(\?(.*))?( |\'|"|>)',
+			'\/jquery(-migrate)?-?([0-9.]+)?(.min|.slim|.slim.min)?.js(\?(.*))?( |\'|"|>)',
 			'js-(before|after)',
 			'(?:/wp-content/|/wp-includes/)(.*)',
 		];
