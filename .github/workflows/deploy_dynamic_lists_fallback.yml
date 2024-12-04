@@ -52,7 +52,7 @@ jobs:
         uses: engahmeds3ed/create-json-url@v0.0.1
         with:
           name: "dynamic-lists-delayjs.json"
-          url: "https://b.rucss.wp-rocket.me/api/delay-js-exclusions/list"
+          url: "https://b.rucss.wp-rocket.me/api/v2/delay-js-exclusions/list"
           dir: '/'
 
       - name: Commit All lists JSON files
