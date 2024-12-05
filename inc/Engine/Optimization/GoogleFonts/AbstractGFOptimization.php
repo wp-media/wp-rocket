@@ -130,4 +130,50 @@ abstract class AbstractGFOptimization {
 			$url
 		);
 	}
+
+	/**
+	 * Get the list of patterns to exclude from Google Fonts optimization which will have the be excluded from the combination.
+	 *
+	 * @return string[]
+	 */
+	protected function get_exclusions(): array {
+		/**
+		 * Filters the list of patterns to exclude from media font rewrite.
+		 *
+		 * @since 3.18
+		 *
+		 * @param string[] $exclusions The list of patterns to exclude from media fonts.
+		 */
+		return wpm_apply_filters_typed( 'string[]', 'rocket_exclude_locally_host_fonts', [] );
+	}
+
+		/**
+	 * Checks if a URL is excluded based on the provided exclusions.
+	 *
+	 * @since 3.18
+	 *
+	 * @param string   $url        The URL to check.
+	 * @param string[] $exclusions The list of exclusions.
+	 *
+	 * @return bool True if the URL is excluded, false otherwise.
+	 */
+	protected function is_excluded( string $url, array $exclusions ): bool {
+		if ( empty( $exclusions ) ) {
+			return false;
+		}
+
+		// Escape each exclusion pattern and combine them into a single regex pattern
+		$escaped_exclusions = array_map( function( $exclusion ) {
+			return preg_quote( $exclusion, '#' );
+		}, $exclusions );
+
+		$exclusions_str = implode( '|', $escaped_exclusions );
+
+		// Use a single regex pattern to check for any exclusion
+		if ( preg_match( '#(' . $exclusions_str . ')#', $url ) ) {
+			return true;
+		}
+
+		return false;
+	}
 }

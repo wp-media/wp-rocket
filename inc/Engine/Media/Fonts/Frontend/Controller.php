@@ -240,17 +240,24 @@ class Controller {
 	 * @return bool True if the URL is excluded, false otherwise.
 	 */
 	private function is_excluded( string $url, array $exclusions ): bool {
-		if ( ! empty( $exclusions ) ) {
-			foreach ( $exclusions as $exclusion ) {
-				if ( preg_match( '/' . $exclusion . '/', $url ) ) {
-					return true;
-				}
-			}
+		if ( empty( $exclusions ) ) {
+			return false;
+		}
+
+		// Escape each exclusion pattern and combine them into a single regex pattern
+		$escaped_exclusions = array_map( function( $exclusion ) {
+			return preg_quote( $exclusion, '#' );
+		}, $exclusions );
+
+		$exclusions_str = implode( '|', $escaped_exclusions );
+
+		// Use a single regex pattern to check for any exclusion
+		if ( preg_match( '#(' . $exclusions_str . ')#', $url ) ) {
+			return true;
 		}
 
 		return false;
 	}
-
 	/**
 	 * Gets the font inline css.
 	 *

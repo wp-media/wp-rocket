@@ -16,6 +16,8 @@ class Test_Optimize extends TestCase {
 	private $display;
 	private $disable_preload;
 
+	protected $config;
+
 	public function set_up() {
 		parent::set_up();
 
@@ -27,13 +29,16 @@ class Test_Optimize extends TestCase {
 			],
         ];
 
-    $this->unregisterAllCallbacksExcept('rocket_buffer', 'process', 17 );
+        $this->unregisterAllCallbacksExcept('rocket_buffer', 'process', 17 );
+		add_filter('rocket_exclude_locally_host_fonts', [ $this, 'exclude_locally_host_fonts' ] ); // @phpstan-ignore-line
 	}
 
 	public function tear_down() {
 		remove_filter( 'pre_get_rocket_option_minify_google_fonts', [ $this, 'return_true' ] );
 		remove_filter( 'rocket_combined_google_fonts_display', [ $this, 'set_display_value' ] );
 		remove_filter( 'rocket_disable_google_fonts_preload', [ $this, 'set_disable_preload' ] );
+		remove_filter('rocket_exclude_locally_host_fonts', [ $this, 'exclude_locally_host_fonts' ] );
+
 
 		$this->restoreWpHook('rocket_buffer');
 
@@ -44,6 +49,7 @@ class Test_Optimize extends TestCase {
      * @dataProvider addDataProviderV1
      */
 	public function testShouldCombineGoogleFontsV1( $config, $original, $combined ) {
+		$this->config = $config;
 		$this->doTest( $config, $original, $combined );
 	}
 
@@ -51,6 +57,7 @@ class Test_Optimize extends TestCase {
      * @dataProvider addDataProviderV2
      */
 	public function testShouldCombineGoogleFontsV2( $config, $original, $combined ) {
+		$this->config = $config;
 		$this->doTest( $config, $original, $combined );
 	}
 
@@ -58,6 +65,7 @@ class Test_Optimize extends TestCase {
      * @dataProvider addDataProviderV1V2
      */
 	public function testShouldCombineGoogleFontsV1V2( $config, $original, $combined ) {
+		$this->config = $config;
 		$this->doTest( $config, $original, $combined );
 	}
 
@@ -99,5 +107,9 @@ class Test_Optimize extends TestCase {
 
 	public function set_disable_preload() {
 		return $this->disable_preload;
+	}
+
+	public function exclude_locally_host_fonts() {
+		return $this->config['exclude_locally_host_fonts'] ?? [];
 	}
 }
