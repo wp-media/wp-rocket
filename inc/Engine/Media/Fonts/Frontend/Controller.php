@@ -246,9 +246,12 @@ class Controller {
 		}
 
 		// Escape each exclusion pattern to prevent regex issues.
-		$escaped_exclusions = array_map( function( $exclusion ) {
-			return preg_quote( $exclusion, '#' ); // '#' is used as the delimiter.
-		}, $exclusions );
+		$escaped_exclusions = array_map(
+				function ( $exclusion ) {
+					return preg_quote( $exclusion, '#' ); // '#' is used as the delimiter.
+				},
+			$exclusions
+			);
 
 		// Combine all patterns into a single regex string.
 		$exclusions_str = implode( '|', $escaped_exclusions );

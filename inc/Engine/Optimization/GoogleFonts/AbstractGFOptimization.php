@@ -148,24 +148,27 @@ abstract class AbstractGFOptimization {
 	}
 
 		/**
-	 * Checks if a URL is excluded based on the provided exclusions.
-	 *
-	 * @since 3.18
-	 *
-	 * @param string   $url        The URL to check.
-	 * @param string[] $exclusions The list of exclusions.
-	 *
-	 * @return bool True if the URL is excluded, false otherwise.
-	 */
+		 * Checks if a URL is excluded based on the provided exclusions.
+		 *
+		 * @since 3.18
+		 *
+		 * @param string   $url        The URL to check.
+		 * @param string[] $exclusions The list of exclusions.
+		 *
+		 * @return bool True if the URL is excluded, false otherwise.
+		 */
 	protected function is_excluded( string $url, array $exclusions ): bool {
 		if ( empty( $exclusions ) ) {
 			return false;
 		}
 
 		// Escape each exclusion pattern and combine them into a single regex pattern
-		$escaped_exclusions = array_map( function( $exclusion ) {
-			return preg_quote( $exclusion, '#' );
-		}, $exclusions );
+		$escaped_exclusions = array_map(
+				function ( $exclusion ) {
+					return preg_quote( $exclusion, '#' );
+				},
+			$exclusions
+			);
 
 		$exclusions_str = implode( '|', $escaped_exclusions );
 
