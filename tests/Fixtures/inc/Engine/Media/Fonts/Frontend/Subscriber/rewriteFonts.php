@@ -114,6 +114,25 @@ return [
 			'expected' => [
 				'html' => file_get_contents( __DIR__ . '/HTML/expected_v1_style_tag.php' ),
 			],
-		]
+		],
+		'testShouldExcludeFont' => [
+			'config' => [
+				'html' => file_get_contents( __DIR__ . '/HTML/input_v2_from_combination.php' ),
+				'host_fonts_locally' => true,
+				'locally_inline_css' => false,
+				'http' => [
+					'https://fonts.googleapis.com/css2?family=Goldman:wght@700&#038;family=Roboto:ital,wght@0,100;0,400;0,500;1,500;1,900&#038;family=MontSerra:ital,wght@0,100;0,400;0,500;1,500;1,900&#038;family=Comfortaa&#038;display=optional' => [
+						'body' => '',
+						'response' => ['code' => 200 ]
+					],
+				],
+				'exclude_locally_host_fonts' => [
+					'Lato',
+				]
+			],
+			'expected' => [
+				'html' => file_get_contents( __DIR__ . '/HTML/expected_v2_from_combination.php' ),
+			],
+		],
 	]
 ];
