@@ -10,7 +10,7 @@ abstract class AbstractAPIClient {
 	/**
 	 * API URL.
 	 */
-	const API_URL = 'https://b.rucss.wp-rocket.me/api/';
+	const API_URL = 'https://b.rucss.wp-rocket.me/api/v2/';
 
 	/**
 	 * Response Code.
