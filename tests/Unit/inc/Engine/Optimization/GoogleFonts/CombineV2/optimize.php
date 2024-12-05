@@ -47,6 +47,9 @@ class Test_OptimizeV2 extends TestCase {
 				->andReturn( $config['disable_preload'] );
 		}
 
+		Filters\expectApplied( 'rocket_exclude_locally_host_fonts' )
+			->andReturn( $config['exclude_locally_host_fonts'] ?? [] );
+
 		$combiner = new CombineV2();
 
 		$this->assertSame(

@@ -47,6 +47,9 @@ class Test_Optimize extends TestCase {
 		Filters\expectApplied( 'rocket_disable_google_fonts_preload' )
 			->andReturn( $config['disable_preload'] );
 
+		Filters\expectApplied( 'rocket_exclude_locally_host_fonts' )
+			->andReturn( $config['exclude_locally_host_fonts'] ?? [] );
+
 
 		$combine = new Combine();
 
