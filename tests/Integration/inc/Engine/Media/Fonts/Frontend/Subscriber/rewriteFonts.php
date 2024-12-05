@@ -48,7 +48,7 @@ class Test_RewriteFonts extends FilesystemTestCase {
 
 		$this->assertSame(
 			$expected['html'],
-			apply_filters('rocket_buffer', $config['html']) // @phpstan-ignore-line
+			wpm_apply_filters_typed('string', 'rocket_buffer', $config['html'])
 		);
 	}
 
