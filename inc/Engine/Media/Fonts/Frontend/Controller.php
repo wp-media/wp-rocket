@@ -105,7 +105,7 @@ class Controller {
 
 		// Log the total execution time and number of fonts processed, with breakdown.
 		$duration = $end_time - $start_time;
-		Logger::debug( "Total execution time for Host Google Fonts Feature in seconds -- $duration. Fonts processed: $total_fonts | Total v1: $total_v1 | Total v2: $total_v2", [ 'Host Fonts Locally' ] );
+		Logger::debug( "Total execution time for Host Google Fonts Feature in seconds -- $duration. CSS files processed: $total_fonts | Total v1: $total_v1 | Total v2: $total_v2", [ 'Host Fonts Locally' ] );
 
 		return $html;
 	}
