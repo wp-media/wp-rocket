@@ -88,12 +88,12 @@ class Clean {
 	 * Checks if the given setting's value changed.
 	 *
 	 * @param string $setting The settings's value to check in the old and new values.
-	 * @param mixed $old_value Old option value.
-	 * @param mixed $value     New option value.
+	 * @param mixed  $old_value Old option value.
+	 * @param mixed  $value     New option value.
 	 *
 	 * @return bool
 	 */
-	private function did_setting_change( $setting, array $old_value, array $value ) {
+	private function did_setting_change( $setting, $old_value, $value ) {
 		return (
 			array_key_exists( $setting, $old_value )
 			&&

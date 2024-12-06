@@ -30,8 +30,10 @@ class Subscriber implements Subscriber_Interface {
 	public static function get_subscribed_events(): array {
 		return [
 			'rocket_after_clean_domain'        => 'clean_css_fonts',
-			'update_option_wp_rocket_settings' => [ 'clean_on_option_change', 10, 2 ],
-			'update_option_wp_rocket_settings' => [ 'clean_on_cdn_change', 11, 2 ],
+			'update_option_wp_rocket_settings' => [
+				[ 'clean_on_option_change', 10, 2 ],
+				[ 'clean_on_cdn_change', 11, 2 ]
+			],
 		];
 	}
 
