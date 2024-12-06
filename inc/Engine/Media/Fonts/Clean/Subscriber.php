@@ -31,6 +31,7 @@ class Subscriber implements Subscriber_Interface {
 		return [
 			'rocket_after_clean_domain'        => 'clean_css_fonts',
 			'update_option_wp_rocket_settings' => [ 'clean_on_option_change', 10, 2 ],
+			'update_option_wp_rocket_settings' => [ 'clean_on_cdn_change', 11, 2 ],
 		];
 	}
 
@@ -53,5 +54,17 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function clean_on_option_change( $old_value, $value ) {
 		$this->clean->clean_on_option_change( $old_value, $value );
+	}
+
+	/**
+	 * Clean CSS & fonts files stored locally on CDN change
+	 *
+	 * @param mixed $old_value Old option value.
+	 * @param mixed $value     New option value.
+	 *
+	 * @return void
+	 */
+	public function clean_on_cdn_change( $old_value, $value ) {
+		$this->clean->clean_on_cdn_change( $old_value, $value );
 	}
 }

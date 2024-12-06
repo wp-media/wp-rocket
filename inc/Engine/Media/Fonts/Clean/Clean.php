@@ -50,11 +50,7 @@ class Clean {
 	 * @return void
 	 */
 	public function clean_on_option_change( $old_value, $value ) {
-		if ( ! isset( $old_value['host_fonts_locally'], $value['host_fonts_locally'] ) ) {
-			return;
-		}
-
-		if ( $old_value['host_fonts_locally'] === $value['host_fonts_locally'] ) {
+		if ( ! $this->did_setting_change( 'host_fonts_locally', $old_value, $value ) ) {
 			return;
 		}
 
@@ -66,5 +62,45 @@ class Clean {
 		 * @since 3.18
 		 */
 		do_action( 'rocket_host_fonts_locally_changed' );
+	}
+
+	/**
+	 * Clean CSS & fonts files stored locally on CDN change
+	 *
+	 * @param mixed $old_value Old option value.
+	 * @param mixed $value     New option value.
+	 *
+	 * @return void
+	 */
+	public function clean_on_cdn_change( $old_value, $value ) {
+		if ( ! $this->did_setting_change( 'cdn', $old_value, $value ) ) {
+			return;
+		}
+
+		if ( ! $this->did_setting_change( 'cdn_cnames', $old_value, $value ) ) {
+			return;
+		}
+
+		$this->clean_css_fonts();
+	}
+
+	/**
+	 * Checks if the given setting's value changed.
+	 *
+	 * @param string $setting The settings's value to check in the old and new values.
+	 * @param mixed $old_value Old option value.
+	 * @param mixed $value     New option value.
+	 *
+	 * @return bool
+	 */
+	private function did_setting_change( $setting, array $old_value, array $value ) {
+		return (
+			array_key_exists( $setting, $old_value )
+			&&
+			array_key_exists( $setting, $value )
+			&&
+			// phpcs:ignore Universal.Operators.StrictComparisons.LooseNotEqual
+			$old_value[ $setting ] != $value[ $setting ]
+		);
 	}
 }
