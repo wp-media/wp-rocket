@@ -453,7 +453,7 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 		/**
 		 * Fires before doing the rollback
 		 */
-		do_action( 'rocket_before_rollback' );
+		do_action( 'rocket_before_rollback', WP_ROCKET_LASTVERSION );
 
 		$plugin_transient = get_site_transient( 'update_plugins' );
 		$plugin_folder    = plugin_basename( dirname( WP_ROCKET_FILE ) );
