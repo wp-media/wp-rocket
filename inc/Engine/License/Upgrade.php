@@ -42,7 +42,7 @@ class Upgrade extends Abstract_Render {
 	 */
 	public function display_upgrade_section() {
 		if ( ! $this->can_upgrade() ) {
-			return;
+			//return;
 		}
 
 		echo $this->generate( 'upgrade-section' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
@@ -59,7 +59,7 @@ class Upgrade extends Abstract_Render {
 		}
 
 		if ( ! $this->can_upgrade() ) {
-			return;
+			//return;
 		}
 
 		$data = [
@@ -406,6 +406,22 @@ class Upgrade extends Abstract_Render {
 			$regular_price         = $this->pricing->get_regular_plus_to_infinite_price();
 			$data['saving']        = $regular_price - $price;
 			$data['regular_price'] = $regular_price;
+		}
+
+		return $data;
+	}
+
+	private function get_generic_upgrade_data( $upgrade_item ) {
+		$data  = [
+			'name'        => $upgrade_item->name,
+			'price'       => $upgrade_item->saving,
+			'websites'    => $upgrade_item->websites,
+			'upgrade_url' => $upgrade_item->upgrade_url,
+		];
+
+		if ( $this->pricing->is_promo_active() ) {
+			$data['saving']        = $upgrade_item->regular_price - $upgrade_item->saving;
+			$data['regular_price'] = $upgrade_item->regular_price;
 		}
 
 		return $data;

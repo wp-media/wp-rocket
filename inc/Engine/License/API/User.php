@@ -133,4 +133,11 @@ class User {
 
 		return false;
 	}
+
+	public function get_available_upgrades(){
+		if ( empty( $this->user->license->prices->upgrades ) ) {
+			return [];
+		}
+		return (array) $this->user->license->prices->upgrades;
+	}
 }
