@@ -5,7 +5,7 @@ namespace WP_Rocket\Engine\Media\Fonts\Context;
 
 use WP_Rocket\Engine\Common\Context\AbstractContext;
 
-class Context extends AbstractContext {
+class SaasContext extends AbstractContext {
 	/**
 	 * Checks if the feature is allowed.
 	 *
@@ -14,12 +14,10 @@ class Context extends AbstractContext {
 	 * @return bool
 	 */
 	public function is_allowed( array $data = [] ): bool {
-		$is_allowed = $this->run_common_checks(
-			[
-				'option' => 'host_fonts_locally',
-			]
-		);
+		$checks = [
+			'option' => 'host_fonts_locally',
+		];
 
-		return $is_allowed;
+		return $this->run_common_checks( $checks );
 	}
 }
