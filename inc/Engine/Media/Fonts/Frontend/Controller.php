@@ -177,7 +177,8 @@ class Controller {
 			}
 		}
 
-		$url = $this->base_url . $font_provider_path . 'css/' . $this->filesystem->hash_to_path( $hash ) . '.css';
+		// This filter is documented in inc/classes/optimization/css/class-abstract-css-optimization.php.
+		$url = wpm_apply_filters_typed( 'string', 'rocket_css_url', $this->base_url . $font_provider_path . 'css/' . $this->filesystem->hash_to_path( $hash ) . '.css' );
 
 		return sprintf(
 			'<link rel="stylesheet" href="%1$s" data-wpr-hosted-gf-parameters="%2$s"/>', // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet

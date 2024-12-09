@@ -113,6 +113,9 @@ class Filesystem extends AbstractFileSystem {
 			$local_css = str_replace( $font_url, $local_url, $local_css );
 		}
 
+		// This filter is documented in inc/Engine/Optimization/CSSTrait.php.
+		$local_css = wpm_apply_filters_typed( 'string', 'rocket_css_content', $local_css );
+
 		$end_time = microtime( true );
 		$duration = $end_time - $start_time;
 
