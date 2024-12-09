@@ -241,9 +241,9 @@ class SiteList {
 		$full_list = [
 			'third_parties' => [
 				'analytics'          => [
-					'title'          => __( 'Analytics & Trackers', 'rocket' ),
-					'items'          => [],
-					'svg-icon'		 => 'analytics',
+					'title'    => __( 'Analytics & Trackers', 'rocket' ),
+					'items'    => [],
+					'svg-icon' => 'analytics',
 				],
 				'ad_networks'        => [
 					'title'          => __( 'Ad Networks', 'rocket' ),
@@ -251,27 +251,27 @@ class SiteList {
 					'dashicon-class' => 'analytics',
 				],
 				'payment_processors' => [
-					'title'          => __( 'Payment Processors', 'rocket' ),
-					'items'          => [],
-					'svg-icon'		 => 'payment',
+					'title'    => __( 'Payment Processors', 'rocket' ),
+					'items'    => [],
+					'svg-icon' => 'payment',
 				],
 				'other_services'     => [
-					'title'          => __( 'Other Services', 'rocket' ),
-					'items'          => [],
-					'svg-icon'		 => 'plugins',
+					'title'    => __( 'Other Services', 'rocket' ),
+					'items'    => [],
+					'svg-icon' => 'plugins',
 				],
 				'has_subcats'        => false,
 			],
 			'wordpress'     => [
 				'themes'      => [
-					'title'          => __( 'Themes', 'rocket' ),
-					'items'          => [],
-					'svg-icon'		 => 'themes',
+					'title'    => __( 'Themes', 'rocket' ),
+					'items'    => [],
+					'svg-icon' => 'themes',
 				],
 				'plugins'     => [
-					'title'          => __( 'Plugins', 'rocket' ),
-					'items'          => [],
-					'svg-icon'		 => 'plugins',
+					'title'    => __( 'Plugins', 'rocket' ),
+					'items'    => [],
+					'svg-icon' => 'plugins',
 				],
 				'has_subcats' => false,
 			],

@@ -65,7 +65,7 @@ defined( 'ABSPATH' ) || exit;
 						<?php if ( isset( $rocket_item['dashicon-class'] ) ) : ?>
 							<span class="dashicons dashicons-<?php echo esc_html( $rocket_item['dashicon-class'] ); ?>"></span>
 						<?php else : ?>
-							<span><img src="<?php echo WP_ROCKET_ASSETS_IMG_URL . $rocket_item['svg-icon'] ?>.svg" /></span>
+							<span><img src="<?php echo esc_url( WP_ROCKET_ASSETS_IMG_URL . $rocket_item['svg-icon'] . '.svg' ); ?>" /></span>
 						<?php endif; ?>
 						<span class="wpr-multiple-select-title">
 							<?php echo esc_html( $rocket_item['title'] ); ?>
@@ -129,7 +129,7 @@ defined( 'ABSPATH' ) || exit;
 						<?php if ( isset( $rocket_item['dashicon-class'] ) ) : ?>
 							<span class="dashicons dashicons-<?php echo esc_html( $rocket_item['dashicon-class'] ); ?>"></span>
 						<?php else : ?>
-							<span><img src="<?php echo WP_ROCKET_ASSETS_IMG_URL . $rocket_item['svg-icon'] ?>.svg" /></span>
+							<span><img src="<?php echo esc_url( WP_ROCKET_ASSETS_IMG_URL . $rocket_item['svg-icon'] . '.svg' ); ?>" /></span>
 						<?php endif; ?>
 						<span class="wpr-multiple-select-title">
 							<?php echo esc_html( $rocket_item['title'] ); ?>
