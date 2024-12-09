@@ -69,6 +69,7 @@ $integration[ 'async_css_mobile' ]           					 = 1;
 $integration[ 'exclude_defer_js' ]           					 = [];
 $integration[ 'delay_js' ]                   					 = 0;
 $integration[ 'delay_js_exclusions' ]        					 = [];
+$integration[ 'delay_js_execution_safe_mode' ]                   = 0;
 $integration[ 'delay_js_exclusions_selected' ]        			 = [];
 $integration[ 'delay_js_exclusions_selected_exclusions' ]        = [];
 $integration[ 'remove_unused_css' ]          					 = 0;

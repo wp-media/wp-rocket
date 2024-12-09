@@ -4,6 +4,7 @@ declare( strict_types=1 );
 namespace WP_Rocket\Engine\Optimization\DelayJS;
 
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Optimization\DelayJS\Admin\Settings;
 use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\DataManager;
 use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Engine\Support\CommentTrait;
@@ -101,6 +102,13 @@ class HTML {
 		$this->excluded = array_merge( $this->excluded, $this->options->get( 'delay_js_exclusions', [] ) );
 		$this->excluded = array_merge( $this->excluded, $this->options->get( 'delay_js_exclusions_selected_exclusions', [] ) );
 
+		if ( $this->options->get( 'delay_js_execution_safe_mode', 0 ) ) {
+			$this->excluded = array_merge(
+				$this->excluded,
+				Settings::get_safe_mode_exclusions()
+			);
+		}
+
 		/**
 		 * Filters the delay JS exclusions array
 		 *
@@ -108,7 +116,7 @@ class HTML {
 		 *
 		 * @param array $excluded Array of excluded patterns.
 		 */
-		$this->excluded = (array) apply_filters( 'rocket_delay_js_exclusions', $this->excluded );
+		$this->excluded = wpm_apply_filters_typed( 'string[]', 'rocket_delay_js_exclusions', $this->excluded );
 		$this->excluded = array_map(
 			function ( $value ) {
 				if ( ! is_string( $value ) ) {
