@@ -217,11 +217,10 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Update dynamic lists during rollback to versions < 3.18.
 	 *
-	 * @param string $wpr_rollback_version WP Rocket version to be installed after rollback.
 	 * @return void
 	 */
-	public function maybe_update_lists( string $wpr_rollback_version ): void {
-		if ( version_compare( $wpr_rollback_version, '3.18', '>=' ) ) {
+	public function maybe_update_lists(): void {
+		if ( version_compare( rocket_get_constant( 'WP_ROCKET_LASTVERSION' ), '3.18', '>=' ) ) {
 			return;
 		}
 
