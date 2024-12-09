@@ -76,6 +76,9 @@ class Controller {
 	 * @return string
 	 */
 	private function rewrite_fonts( $html ): string {
+		// For test purposes.
+		$start_time = microtime( true );
+
 		$html_nocomments = $this->hide_comments( $html );
 
 		$v1_fonts = $this->find( '<link(?:\s+(?:(?!href\s*=\s*)[^>])+)?(?:\s+href\s*=\s*([\'"])(?<url>(?:https?:)?\/\/fonts\.googleapis\.com\/css[^\d](?:(?!\1).)+)\1)(?:\s+[^>]*)?>', $html_nocomments );
@@ -85,6 +88,11 @@ class Controller {
 			Logger::debug( 'No Google Fonts found.', [ 'Host Fonts Locally' ] );
 			return $html;
 		}
+
+		// Count fonts - for test purposes.
+		$total_v1    = count( $v1_fonts );
+		$total_v2    = count( $v2_fonts );
+		$total_fonts = $total_v1 + $total_v2;
 
 		foreach ( $v1_fonts as $font ) {
 			$html = $this->replace_font( $font, $html );
@@ -97,6 +105,13 @@ class Controller {
 		if ( ! $this->error ) {
 			$html = $this->remove_preconnect_and_prefetch( $html );
 		}
+
+		// End time measurement.
+		$end_time = microtime( true );
+
+		// Log the total execution time and number of fonts processed, with breakdown.
+		$duration = $end_time - $start_time;
+		Logger::debug( "Total execution time for Host Google Fonts Feature in seconds -- $duration. Fonts processed: $total_fonts | Total v1: $total_v1 | Total v2: $total_v2", [ 'Host Fonts Locally' ] );
 
 		return $html;
 	}
@@ -136,14 +151,22 @@ class Controller {
 	 *
 	 * @return string
 	 */
-	private function replace_font( array $font, string $html, string $font_provider = 'google-font' ): string {
+	private function replace_font( array $font, string $html, string $font_provider = 'google-fonts' ): string {
+		$hash = md5( $font['url'] );
+
+		if ( $this->filesystem->exists( $this->get_css_path( $hash, $font_provider ) ) ) {
+			$local = $this->get_optimized_markup( $hash, $font['url'], $font_provider );
+
+			return str_replace( $font[0], $local, $html );
+		}
+
 		if ( ! $this->filesystem->write_font_css( $font['url'], $font_provider ) ) {
 			$this->error = true;
 
 			return $html;
 		}
 
-		$local = $this->get_optimized_markup( md5( $font['url'] ), $font['url'], $font_provider );
+		$local = $this->get_optimized_markup( $hash, $font['url'], $font_provider );
 
 		return str_replace( $font[0], $local, $html );
 	}
@@ -177,7 +200,7 @@ class Controller {
 		 * @param bool $enable Tells if we are enabling or not the inline css output.
 		 */
 		if ( wpm_apply_filters_typed( 'boolean', 'rocket_host_fonts_locally_inline_css', false ) ) {
-			$local_css_path = $this->base_path . $font_provider_path . $this->filesystem->hash_to_path( $hash ) . '.css';
+			$local_css_path = $this->get_css_path( $hash, $font_provider );
 
 			$inline_css = $this->get_font_inline_css( $local_css_path, $gf_parameters );
 
@@ -186,13 +209,28 @@ class Controller {
 			}
 		}
 
-		$url = $this->base_url . $font_provider_path . $this->filesystem->hash_to_path( $hash ) . '.css';
+		// This filter is documented in inc/classes/optimization/css/class-abstract-css-optimization.php.
+		$url = wpm_apply_filters_typed( 'string', 'rocket_css_url', $this->base_url . $font_provider_path . 'css/' . $this->filesystem->hash_to_path( $hash ) . '.css' );
 
 		return sprintf(
 			'<link rel="stylesheet" href="%1$s" data-wpr-hosted-gf-parameters="%2$s"/>', // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
 			$url,
 			$gf_parameters
 		);
+	}
+
+	/**
+	 * Gets the CSS path for the font.
+	 *
+	 * @param string $hash Font hash.
+	 * @param string $font_provider Font provider.
+	 *
+	 * @return string
+	 */
+	private function get_css_path( string $hash, string $font_provider ): string {
+		$font_provider_path = sprintf( '%s/', $font_provider );
+
+		return $this->base_path . $font_provider_path . 'css/' . $this->filesystem->hash_to_path( $hash ) . '.css';
 	}
 
 	/**
@@ -217,7 +255,7 @@ class Controller {
 			return $html;
 		}
 
-		$pattern = '/<link(?:[^>]*)(?:rel=["\'](?:dns-prefetch|preconnect)["\'])(?:[^>]*)(?:href=["\'](?:https?:)?\/\/(?:fonts\.(?:googleapis|gstatic)\.com)["\'])(?:[^>]*)>/i';
+		$pattern = '/<link[^>]*\b(rel\s*=\s*[\'"](?:preconnect|dns-prefetch)[\'"]|href\s*=\s*[\'"](?:https?:)?\/\/(?:fonts\.(?:googleapis|gstatic)\.com)[\'"])[^>]*\b(rel\s*=\s*[\'"](?:preconnect|dns-prefetch)[\'"]|href\s*=\s*[\'"](?:https?:)?\/\/(?:fonts\.(?:googleapis|gstatic)\.com)[\'"])[^>]*>/i';
 
 		$html = preg_replace( $pattern, '', $html );
 
