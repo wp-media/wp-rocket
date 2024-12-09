@@ -352,4 +352,14 @@ $(document).ready(function(){
 			$(checkbox).attr('checked', not_checked <= 0 ? 'checked' : null );
 		});
 	}
+
+	/**
+	 * Delay JS Execution Safe Mode Field
+	 */
+	var $dje_safe_mode_checkbox = $('#delay_js_execution_safe_mode');
+	$('#delay_js').on('change', function () {
+		if ($(this).is(':not(:checked)') && $dje_safe_mode_checkbox.is(':checked')) {
+			$dje_safe_mode_checkbox.trigger('click');
+		}
+	});
 });
