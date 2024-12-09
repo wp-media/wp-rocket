@@ -95,7 +95,7 @@ abstract class AbstractAPIClient {
 		$use_old_api_url = false;
 
 		// Handle logic to set API Url to old version when rolling back to versions < 3.18.
-		if ( version_compare( WP_ROCKET_LASTVERSION, '3.18', '<' ) && 'rocket_before_rollback' === current_action() ) {
+		if ( version_compare( rocket_get_constant( 'WP_ROCKET_LASTVERSION'), '3.18', '<' ) && 'rocket_before_rollback' === current_action() ) {
 			$use_old_api_url = true;
 		}
 
