@@ -3126,6 +3126,9 @@ div.wpr-tutorial-item {
   line-height: 1.6;
   text-align: center;
 }
+.wpr-field--categorizedmultiselect .wpr-list .wpr-list-header span img {
+  width: 16px;
+}
 .wpr-field--categorizedmultiselect .wpr-list [type=checkbox] + label:before {
   top: 4px;
 }
