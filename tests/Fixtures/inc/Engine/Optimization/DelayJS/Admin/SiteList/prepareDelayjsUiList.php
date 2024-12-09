@@ -5,7 +5,7 @@ $default_list = [
         'analytics' => [
             'title'          => 'Analytics & Trackers',
             'items'          => [],
-            'dashicon-class' => 'analytics',
+            'svg-icon' => 'analytics',
         ],
         'ad_networks' => [
             'title'          => 'Ad Networks',
@@ -15,12 +15,12 @@ $default_list = [
         'payment_processors' => [
             'title'          => 'Payment Processors',
             'items'          => [],
-            'dashicon-class' => 'analytics',
+            'svg-icon'		 => 'payment',
         ],
         'other_services' => [
             'title'          => 'Other Services',
             'items'          => [],
-            'dashicon-class' => 'analytics',
+            'svg-icon'		 => 'plugins',
         ],
         'has_subcats'        => true,
     ],
@@ -28,12 +28,12 @@ $default_list = [
         'themes'  => [
             'title'          => 'Themes',
             'items'          => [],
-            'dashicon-class' => 'admin-appearance',
+            'svg-icon'		 => 'themes',
         ],
         'plugins' => [
             'title'          => 'Plugins',
             'items'          => [],
-            'dashicon-class' => 'admin-plugins',
+            'svg-icon'		 => 'plugins',
         ],
         'has_subcats'        => true,
     ],
@@ -88,7 +88,7 @@ return [
                 'analytics' => [
                     'title'          => 'Analytics & Trackers',
                     'items'          => [],
-                    'dashicon-class' => 'analytics',
+                    'svg-icon' => 'analytics',
                 ],
                 'ad_networks' => [
                     'title'          => 'Ad Networks',
@@ -110,7 +110,7 @@ return [
                             'icon' => 'url_to_icon'
                         ],
                     ],
-                    'dashicon-class' => 'analytics',
+                    'svg-icon'		 => 'payment',
                 ],
                 'other_services' => [
                     'title'          => 'Other Services',
@@ -121,7 +121,7 @@ return [
                             'icon' => 'url_to_icon'
                         ],
                     ],
-                    'dashicon-class' => 'analytics',
+                    'svg-icon'		 => 'plugins',
                 ],
                 'has_subcats'        => true,
             ],
@@ -135,7 +135,7 @@ return [
                             'icon' => 'url_to_icon'
                         ],
                     ],
-                    'dashicon-class' => 'admin-appearance',
+                    'svg-icon'		 => 'themes',
                 ],
                 'plugins' => [
                     'title'          => 'Plugins',
@@ -146,7 +146,7 @@ return [
                             'icon' => 'url_to_icon'
                         ],
                     ],
-                    'dashicon-class' => 'admin-plugins',
+                    'svg-icon'		 => 'plugins',
                 ],
                 'has_subcats'        => true,
             ],
@@ -206,7 +206,7 @@ return [
                             'icon' => 'url_to_icon'
                         ],
                     ],
-                    'dashicon-class' => 'analytics',
+                    'svg-icon'		 => 'analytics',
                 ],
                 'ad_networks' => [
                     'title'          => 'Ad Networks',
@@ -222,7 +222,7 @@ return [
                             'icon' => 'url_to_icon'
                         ],
                     ],
-                    'dashicon-class' => 'analytics',
+                    'svg-icon'		 => 'payment',
                 ],
                 'other_services' => [
                     'title'          => 'Other Services',
@@ -233,7 +233,7 @@ return [
                             'icon' => 'url_to_icon'
                         ],
                     ],
-                    'dashicon-class' => 'analytics',
+                    'svg-icon'		 => 'plugins',
                 ],
                 'has_subcats'        => true,
             ],
@@ -247,7 +247,7 @@ return [
                             'icon' => 'url_to_icon'
                         ],
                     ],
-                    'dashicon-class' => 'admin-appearance',
+                    'svg-icon'		 => 'themes',
                 ],
                 'plugins' => [
                     'title'          => 'Plugins',
@@ -258,7 +258,7 @@ return [
                             'icon' => 'url_to_icon'
                         ],
                     ],
-                    'dashicon-class' => 'admin-plugins',
+                    'svg-icon'		 => 'plugins',
                 ],
                 'has_subcats'        => true,
             ],
@@ -318,7 +318,7 @@ return [
                             'icon' => 'url_to_icon'
                         ],
                     ],
-                    'dashicon-class' => 'analytics',
+                    'svg-icon'		 => 'analytics',
                 ],
                 'ad_networks' => [
                     'title'          => 'Ad Networks',
@@ -334,7 +334,7 @@ return [
                 'payment_processors' => [
                     'title'          => 'Payment Processors',
                     'items'          => [],
-                    'dashicon-class' => 'analytics',
+                    'svg-icon'		 => 'payment',
                 ],
                 'other_services' => [
                     'title'          => 'Other Services',
@@ -345,7 +345,7 @@ return [
                             'icon' => 'url_to_icon'
                         ],
                     ],
-                    'dashicon-class' => 'analytics',
+                    'svg-icon'		 => 'plugins',
                 ],
                 'has_subcats'        => true,
             ],
@@ -359,7 +359,7 @@ return [
                             'icon' => 'url_to_icon'
                         ],
                     ],
-                    'dashicon-class' => 'admin-appearance',
+                    'svg-icon'		 => 'themes',
                 ],
                 'plugins' => [
                     'title'          => 'Plugins',
@@ -370,7 +370,7 @@ return [
                             'icon' => 'url_to_icon'
                         ],
                     ],
-                    'dashicon-class' => 'admin-plugins',
+                    'svg-icon'		 => 'plugins',
                 ],
                 'has_subcats'        => true,
             ],
@@ -430,7 +430,7 @@ return [
                             'icon' => 'url_to_icon'
                         ],
                     ],
-                    'dashicon-class' => 'analytics',
+                    'svg-icon'		 => 'analytics',
                 ],
                 'ad_networks' => [
                     'title'          => 'Ad Networks',
@@ -452,12 +452,12 @@ return [
                             'icon' => 'url_to_icon'
                         ],
                     ],
-                    'dashicon-class' => 'analytics',
+                    'svg-icon'		 => 'payment',
                 ],
                 'other_services' => [
                     'title'          => 'Other Services',
                     'items'          => [],
-                    'dashicon-class' => 'analytics',
+                    'svg-icon'		 => 'plugins',
                 ],
                 'has_subcats'        => true,
             ],
@@ -471,7 +471,7 @@ return [
                             'icon' => 'url_to_icon'
                         ],
                     ],
-                    'dashicon-class' => 'admin-appearance',
+                    'svg-icon'		 => 'themes',
                 ],
                 'plugins' => [
                     'title'          => 'Plugins',
@@ -482,7 +482,7 @@ return [
                             'icon' => 'url_to_icon'
                         ],
                     ],
-                    'dashicon-class' => 'admin-plugins',
+                    'svg-icon'		 => 'plugins',
                 ],
                 'has_subcats'        => true,
             ],
@@ -541,7 +541,7 @@ return [
                             'icon' => 'url_to_icon'
                         ],
                     ],
-                    'dashicon-class' => 'analytics',
+                    'svg-icon'		 => 'analytics',
                 ],
                 'ad_networks' => [
                     'title'          => 'Ad Networks',
@@ -563,7 +563,7 @@ return [
                             'icon' => 'url_to_icon'
                         ],
                     ],
-                    'dashicon-class' => 'analytics',
+                    'svg-icon'		 => 'payment',
                 ],
                 'other_services' => [
                     'title'          => 'Other Services',
@@ -574,7 +574,7 @@ return [
                             'icon' => 'url_to_icon'
                         ],
                     ],
-                    'dashicon-class' => 'analytics',
+                    'svg-icon'		 => 'plugins',
                 ],
                 'has_subcats'        => true,
             ],
@@ -582,7 +582,7 @@ return [
                 'themes'  => [
                     'title'          => 'Themes',
                     'items'          => [],
-                    'dashicon-class' => 'admin-appearance',
+                    'svg-icon'		 => 'themes',
                 ],
                 'plugins' => [
                     'title'          => 'Plugins',
@@ -593,8 +593,8 @@ return [
                             'icon' => 'url_to_icon'
                         ],
                     ],
-                    'dashicon-class' => 'admin-plugins',
-                ],
+                    'svg-icon'		 => 'plugins',
+                ],  
                 'has_subcats'        => true,
             ],
         ],
@@ -652,7 +652,7 @@ return [
                             'icon' => 'url_to_icon'
                         ],
                     ],
-                    'dashicon-class' => 'analytics',
+                    'svg-icon'		 => 'analytics',
                 ],
                 'ad_networks' => [
                     'title'          => 'Ad Networks',
@@ -674,7 +674,7 @@ return [
                             'icon' => 'url_to_icon'
                         ],
                     ],
-                    'dashicon-class' => 'analytics',
+                    'svg-icon'		 => 'payment',
                 ],
                 'other_services' => [
                     'title'          => 'Other Services',
@@ -685,7 +685,7 @@ return [
                             'icon' => 'url_to_icon'
                         ],
                     ],
-                    'dashicon-class' => 'analytics',
+                    'svg-icon'		 => 'plugins',
                 ],
                 'has_subcats'        => true,
             ],
@@ -699,12 +699,12 @@ return [
                             'icon' => 'url_to_icon'
                         ],
                     ],
-                    'dashicon-class' => 'admin-appearance',
+                    'svg-icon'		 => 'themes',
                 ],
                 'plugins' => [
                     'title'          => 'Plugins',
                     'items'          => [],
-                    'dashicon-class' => 'admin-plugins',
+                    'svg-icon'		 => 'plugins',
                 ],
                 'has_subcats'        => true,
             ],
