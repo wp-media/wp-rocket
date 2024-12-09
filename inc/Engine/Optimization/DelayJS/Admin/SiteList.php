@@ -243,7 +243,7 @@ class SiteList {
 				'analytics'          => [
 					'title'          => __( 'Analytics & Trackers', 'rocket' ),
 					'items'          => [],
-					'dashicon-class' => 'analytics',
+					'svg-icon'		 => 'analytics',
 				],
 				'ad_networks'        => [
 					'title'          => __( 'Ad Networks', 'rocket' ),
@@ -253,12 +253,12 @@ class SiteList {
 				'payment_processors' => [
 					'title'          => __( 'Payment Processors', 'rocket' ),
 					'items'          => [],
-					'dashicon-class' => 'analytics',
+					'svg-icon'		 => 'payment',
 				],
 				'other_services'     => [
 					'title'          => __( 'Other Services', 'rocket' ),
 					'items'          => [],
-					'dashicon-class' => 'analytics',
+					'svg-icon'		 => 'plugins',
 				],
 				'has_subcats'        => false,
 			],
@@ -266,12 +266,12 @@ class SiteList {
 				'themes'      => [
 					'title'          => __( 'Themes', 'rocket' ),
 					'items'          => [],
-					'dashicon-class' => 'admin-appearance',
+					'svg-icon'		 => 'themes',
 				],
 				'plugins'     => [
 					'title'          => __( 'Plugins', 'rocket' ),
 					'items'          => [],
-					'dashicon-class' => 'admin-plugins',
+					'svg-icon'		 => 'plugins',
 				],
 				'has_subcats' => false,
 			],
