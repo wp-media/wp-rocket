@@ -42,7 +42,7 @@ class Upgrade extends Abstract_Render {
 	 */
 	public function display_upgrade_section() {
 		if ( ! $this->can_upgrade() ) {
-			//return;
+			return;
 		}
 
 		echo $this->generate( 'upgrade-section' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
@@ -59,7 +59,7 @@ class Upgrade extends Abstract_Render {
 		}
 
 		if ( ! $this->can_upgrade() ) {
-			//return;
+			return;
 		}
 
 		$data = [
@@ -312,7 +312,7 @@ class Upgrade extends Abstract_Render {
 	 */
 	private function can_upgrade() {
 		return (
-			-1 !== $this->user->get_license_type()
+			! empty( $this->user->get_available_upgrades() )
 			&&
 			! $this->user->is_license_expired()
 		);
@@ -325,90 +325,22 @@ class Upgrade extends Abstract_Render {
 	 */
 	private function get_upgrade_choices() {
 		$choices       = [];
-		$license       = $this->user->get_license_type();
-		$plus_websites = $this->pricing->get_plus_websites_count();
 
-		if ( $license === $plus_websites ) {
-			$choices['infinite'] = $this->get_upgrade_from_plus_to_infinite_data();
-		} elseif (
-			$license >= $this->pricing->get_single_websites_count()
-			&&
-			$license < $plus_websites
-			) {
-			$choices['plus']     = $this->get_upgrade_from_single_to_plus_data();
-			$choices['infinite'] = $this->get_upgrade_from_single_to_infinite_data();
+		foreach ( $this->user->get_available_upgrades() as $available_upgrade) {
+			$upgrade_data = $this->get_generic_upgrade_data( $available_upgrade );
+
+			if ( ! empty( $available_upgrade->stack ) ) {
+				if ( ! isset( $choices['stacked'] ) ) {
+					$choices['stacked'] = [];
+				}
+				$choices['stacked'][ $available_upgrade->type ] = $upgrade_data;
+				continue;
+			}
+
+			$choices[ $available_upgrade->type ] = $upgrade_data;
 		}
 
 		return $choices;
-	}
-
-	/**
-	 * Gets the data to upgrade from single to plus
-	 *
-	 * @return array
-	 */
-	private function get_upgrade_from_single_to_plus_data() {
-		$price = $this->pricing->get_single_to_plus_price();
-		$data  = [
-			'name'        => 'Plus',
-			'price'       => $price,
-			'websites'    => $this->pricing->get_plus_websites_count(),
-			'upgrade_url' => $this->user->get_upgrade_plus_url(),
-		];
-
-		if ( $this->pricing->is_promo_active() ) {
-			$regular_price         = $this->pricing->get_regular_single_to_plus_price();
-			$data['saving']        = $regular_price - $price;
-			$data['regular_price'] = $regular_price;
-		}
-
-		return $data;
-	}
-
-	/**
-	 * Gets the data to upgrade from single to infinite
-	 *
-	 * @return array
-	 */
-	private function get_upgrade_from_single_to_infinite_data() {
-		$price = $this->pricing->get_single_to_infinite_price();
-		$data  = [
-			'name'        => 'Infinite',
-			'price'       => $price,
-			'websites'    => __( 'Unlimited', 'rocket' ),
-			'upgrade_url' => $this->user->get_upgrade_infinite_url(),
-		];
-
-		if ( $this->pricing->is_promo_active() ) {
-			$regular_price         = $this->pricing->get_regular_single_to_infinite_price();
-			$data['saving']        = $regular_price - $price;
-			$data['regular_price'] = $regular_price;
-		}
-
-		return $data;
-	}
-
-	/**
-	 * Gets the data to upgrade from plus to infinite
-	 *
-	 * @return array
-	 */
-	private function get_upgrade_from_plus_to_infinite_data() {
-		$price = $this->pricing->get_plus_to_infinite_price();
-		$data  = [
-			'name'        => 'Infinite',
-			'price'       => $price,
-			'websites'    => __( 'Unlimited', 'rocket' ),
-			'upgrade_url' => $this->user->get_upgrade_infinite_url(),
-		];
-
-		if ( $this->pricing->is_promo_active() ) {
-			$regular_price         = $this->pricing->get_regular_plus_to_infinite_price();
-			$data['saving']        = $regular_price - $price;
-			$data['regular_price'] = $regular_price;
-		}
-
-		return $data;
 	}
 
 	private function get_generic_upgrade_data( $upgrade_item ) {
