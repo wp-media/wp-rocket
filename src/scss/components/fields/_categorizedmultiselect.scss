@@ -43,9 +43,15 @@
 		text-align: center;
 	  }
 
-	  span{
+	  .wpr-list-header-data{
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 8px;
+
 		img{
 			width: 16px;
+			height: 16px;
 		}
 	  }
 	}

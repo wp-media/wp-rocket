@@ -3126,8 +3126,15 @@ div.wpr-tutorial-item {
   line-height: 1.6;
   text-align: center;
 }
-.wpr-field--categorizedmultiselect .wpr-list .wpr-list-header span img {
+.wpr-field--categorizedmultiselect .wpr-list .wpr-list-header .wpr-list-header-data {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.wpr-field--categorizedmultiselect .wpr-list .wpr-list-header .wpr-list-header-data img {
   width: 16px;
+  height: 16px;
 }
 .wpr-field--categorizedmultiselect .wpr-list [type=checkbox] + label:before {
   top: 4px;
