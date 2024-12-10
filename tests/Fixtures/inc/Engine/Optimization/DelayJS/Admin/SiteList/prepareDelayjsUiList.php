@@ -10,7 +10,7 @@ $default_list = [
         'ad_networks' => [
             'title'          => 'Ad Networks',
             'items'          => [],
-            'dashicon-class' => 'analytics',
+            'svg-icon'		 => 'ad_network',
         ],
         'payment_processors' => [
             'title'          => 'Payment Processors',
@@ -99,7 +99,7 @@ return [
                             'icon' => 'url_to_icon'
                         ],
                     ],
-                    'dashicon-class' => 'analytics',
+                    'svg-icon'		 => 'ad_network',
                 ],
                 'payment_processors' => [
                     'title'          => 'Payment Processors',
@@ -211,7 +211,7 @@ return [
                 'ad_networks' => [
                     'title'          => 'Ad Networks',
                     'items'          => [],
-                    'dashicon-class' => 'analytics',
+                    'svg-icon'		 => 'ad_network',
                 ],
                 'payment_processors' => [
                     'title'          => 'Payment Processors',
@@ -329,7 +329,7 @@ return [
                             'icon' => 'url_to_icon'
                         ],
                     ],
-                    'dashicon-class' => 'analytics',
+                    'svg-icon'		 => 'ad_network',
                 ],
                 'payment_processors' => [
                     'title'          => 'Payment Processors',
@@ -441,7 +441,7 @@ return [
                             'icon' => 'url_to_icon'
                         ],
                     ],
-                    'dashicon-class' => 'analytics',
+                    'svg-icon'		 => 'ad_network',
                 ],
                 'payment_processors' => [
                     'title'          => 'Payment Processors',
@@ -552,7 +552,7 @@ return [
                             'icon' => 'url_to_icon'
                         ],
                     ],
-                    'dashicon-class' => 'analytics',
+                    'svg-icon'		 => 'ad_network',
                 ],
                 'payment_processors' => [
                     'title'          => 'Payment Processors',
@@ -663,7 +663,7 @@ return [
                             'icon' => 'url_to_icon'
                         ],
                     ],
-                    'dashicon-class' => 'analytics',
+                    'svg-icon'		 => 'ad_network',
                 ],
                 'payment_processors' => [
                     'title'          => 'Payment Processors',
