@@ -61,12 +61,8 @@ defined( 'ABSPATH' ) || exit;
 			?>
 			<div class="wpr-list<?php echo 'analytics' === $rocket_item_key ? ' open' : ''; ?>" id="wpr_djs_oneclick_exclusions_<?php echo esc_attr( $rocket_item_key ); ?>">
 				<div class="wpr-list-header">
-					<div>
-						<?php if ( isset( $rocket_item['dashicon-class'] ) ) : ?>
-							<span class="dashicons dashicons-<?php echo esc_html( $rocket_item['dashicon-class'] ); ?>"></span>
-						<?php else : ?>
-							<span><img src="<?php echo esc_url( WP_ROCKET_ASSETS_IMG_URL . $rocket_item['svg-icon'] . '.svg' ); ?>" /></span>
-						<?php endif; ?>
+					<div class="wpr-list-header-data">
+						<img src="<?php echo esc_url( WP_ROCKET_ASSETS_IMG_URL . $rocket_item['svg-icon'] . '.svg' ); ?>" />
 						<span class="wpr-multiple-select-title">
 							<?php echo esc_html( $rocket_item['title'] ); ?>
 						</span>
@@ -125,12 +121,8 @@ defined( 'ABSPATH' ) || exit;
 			?>
 			<div class="wpr-list" id="wpr_djs_oneclick_exclusions_<?php echo esc_attr( $rocket_item_key ); ?>">
 				<div class="wpr-list-header">
-					<div>
-						<?php if ( isset( $rocket_item['dashicon-class'] ) ) : ?>
-							<span class="dashicons dashicons-<?php echo esc_html( $rocket_item['dashicon-class'] ); ?>"></span>
-						<?php else : ?>
-							<span><img src="<?php echo esc_url( WP_ROCKET_ASSETS_IMG_URL . $rocket_item['svg-icon'] . '.svg' ); ?>" /></span>
-						<?php endif; ?>
+					<div class="wpr-list-header-data">
+						<img src="<?php echo esc_url( WP_ROCKET_ASSETS_IMG_URL . $rocket_item['svg-icon'] . '.svg' ); ?>" />
 						<span class="wpr-multiple-select-title">
 							<?php echo esc_html( $rocket_item['title'] ); ?>
 						</span>
