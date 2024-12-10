@@ -246,8 +246,8 @@ class SiteList {
 					'svg-icon' => 'analytics',
 				],
 				'ad_networks'        => [
-					'title'          => __( 'Ad Networks', 'rocket' ),
-					'items'          => [],
+					'title'    => __( 'Ad Networks', 'rocket' ),
+					'items'    => [],
 					'svg-icon' => 'ad_network',
 				],
 				'payment_processors' => [
