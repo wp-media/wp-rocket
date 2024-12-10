@@ -31,12 +31,23 @@ class Clean {
 	}
 
 	/**
-	 * Clean CSS & fonts files stored locally
+	 * Clean fonts CSS files stored locally
 	 *
 	 * @return void
 	 */
-	public function clean_css_fonts() {
-		$path = $this->base_path . 'google-fonts/';
+	public function clean_fonts_css() {
+		$path = $this->base_path . 'google-fonts/css/';
+
+		$this->filesystem->delete_all_files_from_directory( $path );
+	}
+
+	/**
+	 * Clean fonts files stored locally
+	 *
+	 * @return void
+	 */
+	public function clean_fonts() {
+		$path = $this->base_path . 'google-fonts/fonts/';
 
 		$this->filesystem->delete_all_files_from_directory( $path );
 	}
@@ -54,7 +65,7 @@ class Clean {
 			return;
 		}
 
-		$this->clean_css_fonts();
+		$this->clean_fonts_css();
 
 		/**
 		 * Fires when the option to host fonts locally is changed
@@ -81,7 +92,7 @@ class Clean {
 			return;
 		}
 
-		$this->clean_css_fonts();
+		$this->clean_fonts_css();
 	}
 
 	/**

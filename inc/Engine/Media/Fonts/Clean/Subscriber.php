@@ -29,7 +29,9 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'rocket_after_clean_domain'        => 'clean_css_fonts',
+			'rocket_after_clean_domain'        => 'clean_fonts_css',
+			'switch_theme'                     => 'clean_fonts',
+			'rocket_domain_options_changed'    => 'clean_fonts',
 			'update_option_wp_rocket_settings' => [
 				[ 'clean_on_option_change', 10, 2 ],
 				[ 'clean_on_cdn_change', 11, 2 ],
@@ -38,12 +40,21 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Clean CSS & fonts files stored locally
+	 * Clean fonts CSS files stored locally
 	 *
 	 * @return void
 	 */
-	public function clean_css_fonts() {
-		$this->clean->clean_css_fonts();
+	public function clean_fonts_css() {
+		$this->clean->clean_fonts_css();
+	}
+
+	/**
+	 * Clean fonts files stored locally
+	 *
+	 * @return void
+	 */
+	public function clean_fonts() {
+		$this->clean->clean_fonts();
 	}
 
 	/**
