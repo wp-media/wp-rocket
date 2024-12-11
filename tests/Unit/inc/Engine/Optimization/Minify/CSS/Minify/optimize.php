@@ -34,6 +34,11 @@ class Test_Optimize extends TestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldMinifyCSS( $original, $expected, $cdn_host, $cdn_url, $site_url, $external_url, $excluded_css = [], $has_integrity = false, $valid_integrity = true ) {
+		Filters\expectApplied( 'rocket_disable_meta_generator' )
+			->atMost()
+			->once()
+			->andReturn( true );
+
 		Filters\expectApplied( 'rocket_cdn_hosts' )
 			->zeroOrMoreTimes()
 			->with( [], [ 'all', 'css_and_js', 'css' ] )

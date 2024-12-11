@@ -7,6 +7,7 @@ use WP_Rocket\Engine\Optimization\AssetsLocalCache;
 use WP_Rocket\Engine\Optimization\DeferJS\DeferJS;
 use WP_Rocket\Engine\Optimization\DynamicLists\DynamicLists;
 use WP_Rocket\Engine\Optimization\Minify\ProcessorInterface;
+use WP_Rocket\Engine\Support\CommentTrait;
 use WP_Rocket\Logger\Logger;
 
 /**
@@ -15,6 +16,8 @@ use WP_Rocket\Logger\Logger;
  * @since 3.1
  */
 class Combine extends AbstractJSOptimization implements ProcessorInterface {
+	use CommentTrait;
+
 	/**
 	 * Minifier instance
 	 *
@@ -155,7 +158,7 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			]
 		);
 
-		return $html;
+		return $this->add_meta_comment( 'minify_concatenate_js', $html );
 	}
 
 	/**

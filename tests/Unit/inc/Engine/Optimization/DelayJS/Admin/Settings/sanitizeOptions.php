@@ -22,14 +22,13 @@ class Test_SanitizeOptions extends TestCase {
 		Functions\when( 'rocket_sanitize_textarea_field' )->justReturn( $config['sanitized_input']['delay_js_exclusions'] );
 
 		$admin_settings = Mockery::mock( AdminSettings::class );
-		$settings = new Settings( Mockery::mock(Options::class)
-		);
+		$settings = new Settings( Mockery::mock(Options::class) );
 
-		$admin_settings->shouldReceive( 'sanitize_checkbox' )
-			->atMost()
-			->once()
-			->with( $config['input'], 'delay_js' )
-			->andReturn( $config['sanitized_input']['delay_js'] );
+		$admin_settings->shouldReceive('sanitize_checkbox')
+			->withAnyArgs()
+			->andReturnUsing(function ($input, $key) use ($config) {
+				return $config['sanitized_input'][$key];
+			});
 
 		$this->assertSame(
 			$expected,

@@ -16,6 +16,7 @@ use WP_Rocket\Engine\Media\Lazyload\CSS\Front\{ContentFetcher,
 	TagGenerator};
 use WP_Rocket\Engine\Common\Cache\CacheInterface;
 use WP_Rocket\Engine\Optimization\RegexTrait;
+use WP_Rocket\Engine\Support\CommentTrait;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
@@ -23,6 +24,7 @@ use WP_Rocket\Logger\LoggerAwareInterface;
 class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	use LoggerAware;
 	use RegexTrait;
+	use CommentTrait;
 
 	/**
 	 * Extract background images from CSS.
@@ -205,7 +207,9 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 				)
 			);
 
-		return $output['html'];
+		$html = $this->add_meta_comment( 'lazyload_css_bg_img', $output['html'] );
+
+		return $html;
 	}
 
 	/**

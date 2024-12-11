@@ -9,10 +9,12 @@ use WP_Rocket\Engine\Media\AboveTheFold\Context\Context;
 use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Engine\Optimization\UrlTrait;
 use WP_Rocket\Engine\Common\PerformanceHints\Frontend\ControllerInterface;
+use WP_Rocket\Engine\Support\CommentTrait;
 
 class Controller implements ControllerInterface {
 	use RegexTrait;
 	use UrlTrait;
+	use CommentTrait;
 
 	/**
 	 * Options instance
@@ -61,7 +63,9 @@ class Controller implements ControllerInterface {
 			return $html;
 		}
 
-		return $this->preload_lcp( $html, $row );
+		$html = $this->preload_lcp( $html, $row );
+
+		return $this->add_meta_comment( 'oci', $html );
 	}
 
 	/**

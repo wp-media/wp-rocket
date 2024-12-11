@@ -10,10 +10,12 @@ use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\DataManager;
 use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS as UsedCSS_Query;
 use WP_Rocket\Engine\Optimization\RUCSS\Jobs\Manager;
+use WP_Rocket\Engine\Support\CommentTrait;
 
 class UsedCSS {
 	use RegexTrait;
 	use CSSTrait;
+	use CommentTrait;
 
 	/**
 	 * UsedCss Query instance.
@@ -165,7 +167,7 @@ class UsedCSS {
 			$this->used_css_query->update_last_accessed( (int) $used_css->id );
 		}
 
-		return $html;
+		return $this->add_meta_comment( 'remove_unused_css', $html );
 	}
 
 	/**
