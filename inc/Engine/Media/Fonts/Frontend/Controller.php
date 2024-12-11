@@ -286,7 +286,13 @@ class Controller {
 		// Escape each exclusion pattern to prevent regex issues.
 		$escaped_exclusions = array_map(
 				function ( $exclusion ) {
-					return preg_quote( $exclusion, '#' ); // '#' is used as the delimiter.
+					$query_string = preg_replace( '@(https?:)?(//)?fonts\.googleapis\.com/css2?\?@i', '', $exclusion );
+
+					return str_replace(
+						[ '.', '*', '#' ],
+						[ '\.', '\*', '\#' ],
+						$query_string
+					);
 				},
 			$exclusions
 			);
