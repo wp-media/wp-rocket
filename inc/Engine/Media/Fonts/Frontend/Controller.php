@@ -289,8 +289,8 @@ class Controller {
 					$query_string = preg_replace( '@(https?:)?(//)?fonts\.googleapis\.com/css2?\?@i', '', $exclusion );
 
 					return str_replace(
-						[ '.', '*', '#' ],
-						[ '\.', '\*', '\#' ],
+						[ '.', '*', '#', '+' ],
+						[ '\.', '\*', '\#', '\+' ],
 						$query_string
 					);
 				},
