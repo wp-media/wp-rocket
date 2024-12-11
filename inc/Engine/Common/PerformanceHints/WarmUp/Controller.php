@@ -240,7 +240,7 @@ class Controller {
 	 * @return string
 	 */
 	public function add_wpr_imagedimensions_query_arg( string $url ): string {
-		if ( empty( $this->factories ) ) {
+		if ( empty( $this->factories ) && ! $this->options->get( 'remove_unused_css', 0 ) ) {
 			return $url;
 		}
 
