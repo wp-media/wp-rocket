@@ -106,8 +106,31 @@ function rocket_activate_autoptimize() {
 	}
 }
 add_action( 'activate_autoptimize/autoptimize.php', 'rocket_activate_autoptimize', 11 );
-add_action( 'rocket_first_install_options', 'rocket_activate_autoptimize', 16 );
 
+/**
+ * Disable WP Rocket minification if Autoptimize css /js minification is enabled.
+ *
+ * @param array $options WP Rocket options array.
+ *
+ * @since 3.18
+ *
+ * @return array
+ */
+function rocket_disable_minification( $options ) {
+	if ( 'on' === get_option( 'autoptimize_css' ) ) {
+		update_rocket_option( 'minify_css', 0 );
+		$options['minify_css'] = 0;
+	}
+
+	if ( 'on' === get_option( 'autoptimize_js' ) ) {
+		update_rocket_option( 'minify_js', 0 );
+		$options['minify_js'] = 0;
+	}
+
+	return $options;
+}
+
+add_filter( 'rocket_first_install_options', 'rocket_disable_minification' );
 /**
  * Disable WP Rocket lazyload fields if Autoptimize lazyload is enabled
  *
