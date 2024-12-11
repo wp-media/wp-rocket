@@ -106,6 +106,7 @@ function rocket_activate_autoptimize() {
 	}
 }
 add_action( 'activate_autoptimize/autoptimize.php', 'rocket_activate_autoptimize', 11 );
+add_action( 'rocket_first_install_options', 'rocket_activate_autoptimize', 16 );
 
 /**
  * Disable WP Rocket lazyload fields if Autoptimize lazyload is enabled
