@@ -116,7 +116,7 @@ add_action( 'activate_autoptimize/autoptimize.php', 'rocket_activate_autoptimize
  *
  * @return array
  */
-function rocket_disable_minification( $options ) {
+function rocket_maybe_disable_minification( $options ) {
 	if ( 'on' === get_option( 'autoptimize_css' ) ) {
 		update_rocket_option( 'minify_css', 0 );
 		$options['minify_css'] = 0;
@@ -130,7 +130,8 @@ function rocket_disable_minification( $options ) {
 	return $options;
 }
 
-add_filter( 'rocket_first_install_options', 'rocket_disable_minification' );
+add_filter( 'rocket_first_install_options', 'rocket_maybe_disable_minification' );
+
 /**
  * Disable WP Rocket lazyload fields if Autoptimize lazyload is enabled
  *
