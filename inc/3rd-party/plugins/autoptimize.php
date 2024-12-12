@@ -118,12 +118,10 @@ add_action( 'activate_autoptimize/autoptimize.php', 'rocket_activate_autoptimize
  */
 function rocket_maybe_disable_minification( $options ) {
 	if ( 'on' === get_option( 'autoptimize_css' ) ) {
-		update_rocket_option( 'minify_css', 0 );
 		$options['minify_css'] = 0;
 	}
 
 	if ( 'on' === get_option( 'autoptimize_js' ) ) {
-		update_rocket_option( 'minify_js', 0 );
 		$options['minify_js'] = 0;
 	}
 
