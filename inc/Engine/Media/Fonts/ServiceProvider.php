@@ -60,22 +60,22 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( 'media_fonts_settings' );
 
 		$this->getContainer()->add( 'media_fonts_optimization_context', OptimizationContext::class )
-			->addArgument( $this->getContainer()->get( 'options' ) );
+			->addArgument( 'options' );
 
 		$this->getContainer()->add( 'media_fonts_saas_context', SaasContext::class )
-			->addArgument( $this->getContainer()->get( 'options' ) );
+			->addArgument( 'options' );
 
 		$this->getContainer()->add( 'media_fonts_frontend_controller', FrontendController::class )
 			->addArguments(
 				[
-					$this->getContainer()->get( 'media_fonts_optimization_context' ),
-					$this->getContainer()->get( 'media_fonts_saas_context' ),
-					$this->getContainer()->get( 'media_fonts_filesystem' ),
+					'media_fonts_optimization_context',
+					'media_fonts_saas_context',
+					'media_fonts_filesystem',
 				]
 			);
 		$this->getContainer()->add( 'media_fonts_frontend_subscriber', FrontendSubscriber::class )
 			->addArgument(
-				$this->getContainer()->get( 'media_fonts_frontend_controller' )
+				'media_fonts_frontend_controller'
 			);
 	}
 }
