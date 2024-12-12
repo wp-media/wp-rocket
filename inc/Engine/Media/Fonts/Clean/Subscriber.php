@@ -31,7 +31,10 @@ class Subscriber implements Subscriber_Interface {
 		return [
 			'rocket_after_clean_domain'        => 'clean_fonts_css',
 			'switch_theme'                     => 'clean_fonts',
-			'rocket_domain_options_changed'    => 'clean_fonts',
+			'rocket_domain_options_changed'    => [
+				[ 'clean_fonts_css' ],
+				[ 'clean_fonts' ],
+			],
 			'update_option_wp_rocket_settings' => [
 				[ 'clean_on_option_change', 10, 2 ],
 				[ 'clean_on_cdn_change', 11, 2 ],
