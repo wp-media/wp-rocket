@@ -7,9 +7,11 @@ use WP_Rocket\Engine\Media\Fonts\Context\Context;
 use WP_Rocket\Engine\Media\Fonts\Filesystem;
 use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Logger\Logger;
+use WP_Rocket\Engine\Media\Fonts\FontsTrait;
 
 class Controller {
 	use RegexTrait;
+	use FontsTrait;
 
 	/**
 	 * Context instance.
@@ -253,56 +255,6 @@ class Controller {
 		return true;
 	}
 
-	/**
-	 * Get the list of patterns to exclude from media fonts rewrite.
-	 *
-	 * @return string[]
-	 */
-	private function get_exclusions(): array {
-		/**
-		 * Filters the list of patterns to exclude from media font rewrite.
-		 *
-		 * @since 3.18
-		 *
-		 * @param string[] $exclusions The list of patterns to exclude from media fonts.
-		 */
-		return wpm_apply_filters_typed( 'string[]', 'rocket_exclude_locally_host_fonts', [] );
-	}
-
-	/**
-	 * Checks if a URL is excluded based on the provided exclusions.
-	 *
-	 * @param string   $url        The URL to check.
-	 * @param string[] $exclusions The list of exclusions.
-	 *
-	 * @return bool True if the URL is excluded, false otherwise.
-	 */
-	private function is_excluded( string $url, array $exclusions ): bool {
-		// Bail out early if there are no exclusions.
-		if ( empty( $exclusions ) ) {
-			return false;
-		}
-
-		// Escape each exclusion pattern to prevent regex issues.
-		$escaped_exclusions = array_map(
-				function ( $exclusion ) {
-					$query_string = preg_replace( '@(https?:)?(//)?fonts\.googleapis\.com/css2?\?@i', '', $exclusion );
-
-					return str_replace(
-						[ '#', '+', '=' ],
-						[ '\#', '\+', '\=' ],
-						$query_string
-					);
-				},
-			$exclusions
-			);
-
-		// Combine all patterns into a single regex string.
-		$exclusions_str = implode( '|', $escaped_exclusions );
-
-		// Check the URL against the combined regex pattern.
-		return (bool) preg_match( '#(' . $exclusions_str . ')#', $url );
-	}
 	/**
 	 * Gets the font inline css.
 	 *
