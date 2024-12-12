@@ -6,7 +6,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Media\Fonts\Context\Context;
 use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\Media\Fonts\Context\Context;
+use WP_Rocket\Engine\Media\Fonts\Context\OptimizationContext;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
@@ -20,7 +20,7 @@ class TestIsAllowed extends TestCase {
 		$this->donotrocketoptimize = $config['do_not_optimize'];
 
 		$options = Mockery::mock( Options_Data::class );
-		$context = new Context( $options );
+		$context = new OptimizationContext( $options );
 
 		Functions\when( 'rocket_bypass' )->justReturn( $config['bypass'] );
 
