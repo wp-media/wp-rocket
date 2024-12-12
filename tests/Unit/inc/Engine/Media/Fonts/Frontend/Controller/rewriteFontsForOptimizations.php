@@ -5,18 +5,20 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Media\Fonts\Frontend\Controller;
 
 use Brain\Monkey\Functions;
 use Mockery;
+use WP_Rocket\Engine\Media\Fonts\Context\OptimizationContext;
+use WP_Rocket\Engine\Media\Fonts\Context\SaasContext;
 use WP_Rocket\Engine\Media\Fonts\Filesystem as FontsFilesystem;
 use WP_Rocket\Engine\Media\Fonts\Frontend\Controller;
-use WP_Rocket\Engine\Media\Fonts\Context\Context;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
  * @group HostFontsLocally
  */
-class Test_RewriteFonts extends FilesystemTestCase {
-	protected $path_to_test_data = '/inc/Engine/Media/Fonts/Frontend/Controller/rewriteFonts.php';
+class Test_RewriteFontsForOptimizations extends FilesystemTestCase {
+	protected $path_to_test_data = '/inc/Engine/Media/Fonts/Frontend/Controller/rewriteFontsForOptimizations.php';
 
-	private $context;
+	private $optimization_context;
+	private $saas_context;
 	private $controller;
 	private $fonts_filesystem;
 
@@ -25,9 +27,10 @@ class Test_RewriteFonts extends FilesystemTestCase {
 
 		Functions\when( 'get_current_blog_id' )->justReturn( 1 );
 
-		$this->context          = Mockery::mock( Context::class );
-		$this->fonts_filesystem = Mockery::mock( FontsFilesystem::class );
-		$this->controller       = new Controller( $this->context, $this->fonts_filesystem );
+		$this->optimization_context = Mockery::mock( OptimizationContext::class );
+		$this->saas_context         = Mockery::mock( SaasContext::class );
+		$this->fonts_filesystem     = Mockery::mock( FontsFilesystem::class );
+		$this->controller           = new Controller( $this->optimization_context, $this->saas_context, $this->fonts_filesystem );
 
 		$this->stubWpParseUrl();
 	}
@@ -36,7 +39,7 @@ class Test_RewriteFonts extends FilesystemTestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldDoExpected( $config, $original, $expected ) {
-		$this->context->shouldReceive('is_allowed')
+		$this->optimization_context->shouldReceive('is_allowed')
 			->once()
 			->andReturn( $config['is_allowed'] );
 
@@ -60,7 +63,7 @@ class Test_RewriteFonts extends FilesystemTestCase {
 
 		$this->assertSame(
 			$this->format_the_html( $expected ),
-			$this->format_the_html( $this->controller->rewrite_fonts( $original ) )
+			$this->format_the_html( $this->controller->rewrite_fonts_for_optimizations( $original ) )
 		);
 	}
 }

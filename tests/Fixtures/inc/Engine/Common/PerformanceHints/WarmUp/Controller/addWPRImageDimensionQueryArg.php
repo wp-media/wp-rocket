@@ -15,4 +15,12 @@ return [
 		],
 		'expected' => 'http://example.com/?wpr_imagedimensions=1',
 	],
+	'testShouldAddArgumentWhenNoFactoriesAndRUCSSEnabled' => [
+		'config' => [
+			'filter' => [],
+			'url' => 'http://example.com',
+			'remove_unused_css' => 1,
+		],
+		'expected' => 'http://example.com/?wpr_imagedimensions=1',
+	],
 ];

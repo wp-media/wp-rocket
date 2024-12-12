@@ -10,10 +10,10 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * Test class covering \WP_Rocket\Engine\Media\Fonts\Frontend\Subscriber::rewrite_fonts
  * @group HostFontsLocally
  */
-class Test_RewriteFonts extends FilesystemTestCase {
+class Test_RewriteFontsForOptimizations extends FilesystemTestCase {
 	use HttpCallTrait;
 
-	protected $path_to_test_data = '/inc/Engine/Media/Fonts/Frontend/Subscriber/rewriteFonts.php';
+	protected $path_to_test_data = '/inc/Engine/Media/Fonts/Frontend/Subscriber/rewriteFontsForOptimizations.php';
 
 	protected $config;
 
