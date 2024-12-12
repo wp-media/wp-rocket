@@ -1020,7 +1020,7 @@ class Page extends Abstract_Render {
 				],
 				'host_fonts_locally'  => [
 					'type'              => 'checkbox',
-					'label'             => __( 'Host Google Fonts locally', 'rocket' ),
+					'label'             => __( 'Self-host Google Fonts', 'rocket' ),
 					'section'           => 'font_optimization_section',
 					'page'              => 'media',
 					'default'           => 0,
