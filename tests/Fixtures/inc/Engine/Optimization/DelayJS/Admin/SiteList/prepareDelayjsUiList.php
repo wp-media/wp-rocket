@@ -121,7 +121,7 @@ return [
                             'icon' => 'url_to_icon'
                         ],
                     ],
-                    'svg-icon'		 => 'plugins',
+                    'svg-icon'		 => 'others',
                 ],
                 'has_subcats'        => true,
             ],
@@ -233,7 +233,7 @@ return [
                             'icon' => 'url_to_icon'
                         ],
                     ],
-                    'svg-icon'		 => 'plugins',
+                    'svg-icon'		 => 'others',
                 ],
                 'has_subcats'        => true,
             ],
@@ -345,7 +345,7 @@ return [
                             'icon' => 'url_to_icon'
                         ],
                     ],
-                    'svg-icon'		 => 'plugins',
+                    'svg-icon'		 => 'others',
                 ],
                 'has_subcats'        => true,
             ],
@@ -457,7 +457,7 @@ return [
                 'other_services' => [
                     'title'          => 'Other Services',
                     'items'          => [],
-                    'svg-icon'		 => 'plugins',
+                    'svg-icon'		 => 'others',
                 ],
                 'has_subcats'        => true,
             ],
@@ -574,7 +574,7 @@ return [
                             'icon' => 'url_to_icon'
                         ],
                     ],
-                    'svg-icon'		 => 'plugins',
+                    'svg-icon'		 => 'others',
                 ],
                 'has_subcats'        => true,
             ],
@@ -685,7 +685,7 @@ return [
                             'icon' => 'url_to_icon'
                         ],
                     ],
-                    'svg-icon'		 => 'plugins',
+                    'svg-icon'		 => 'others',
                 ],
                 'has_subcats'        => true,
             ],
