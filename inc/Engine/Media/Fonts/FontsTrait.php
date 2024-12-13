@@ -53,6 +53,6 @@ trait FontsTrait {
 		$exclusions_str = implode( '|', $escaped_exclusions );
 
 		// Check the URL against the combined regex pattern.
-		return (bool) preg_match( '#(' . $exclusions_str . ')#', $url );
+		return (bool) preg_match( '#(' . $exclusions_str . ')#i', $url );
 	}
 }
