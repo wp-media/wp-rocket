@@ -78,6 +78,7 @@ class AdminSubscriber implements Subscriber_Interface {
 			'minify_css',
 			'exclude_css',
 			'cdn',
+			'host_fonts_locally',
 		];
 
 		foreach ( $settings_to_check as $setting ) {

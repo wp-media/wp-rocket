@@ -8,6 +8,8 @@ use WP_Rocket\Engine\Media\Fonts\Context\OptimizationContext;
 use WP_Rocket\Engine\Media\Fonts\Context\SaasContext;
 use WP_Rocket\Engine\Media\Fonts\Admin\Settings;
 use WP_Rocket\Engine\Media\Fonts\Admin\Subscriber as AdminSubscriber;
+use WP_Rocket\Engine\Media\Fonts\Clean\Clean;
+use WP_Rocket\Engine\Media\Fonts\Clean\Subscriber as CleanSubscriber;
 use WP_Rocket\Engine\Media\Fonts\Frontend\Controller as FrontendController;
 use WP_Rocket\Engine\Media\Fonts\Frontend\Subscriber as FrontendSubscriber;
 
@@ -32,6 +34,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		'media_fonts_saas_context',
 		'media_fonts_frontend_controller',
 		'media_fonts_frontend_subscriber',
+		'media_fonts_clean',
+		'media_fonts_clean_subscriber',
 	];
 
 	/**
@@ -59,9 +63,14 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->addShared( 'media_fonts_admin_subscriber', AdminSubscriber::class )
 			->addArgument( 'media_fonts_settings' );
 
+		$this->getContainer()->add( 'media_fonts_clean', Clean::class )
+			->addArgument( 'media_fonts_filesystem' );
+
+		$this->getContainer()->addShared( 'media_fonts_clean_subscriber', CleanSubscriber::class )
+			->addArgument( 'media_fonts_clean' );
+
 		$this->getContainer()->add( 'media_fonts_optimization_context', OptimizationContext::class )
 			->addArgument( 'options' );
-
 		$this->getContainer()->add( 'media_fonts_saas_context', SaasContext::class )
 			->addArgument( 'options' );
 
@@ -73,9 +82,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'media_fonts_filesystem',
 				]
 			);
-		$this->getContainer()->add( 'media_fonts_frontend_subscriber', FrontendSubscriber::class )
-			->addArgument(
-				'media_fonts_frontend_controller'
-			);
+		$this->getContainer()->addShared( 'media_fonts_frontend_subscriber', FrontendSubscriber::class )
+			->addArgument( 'media_fonts_frontend_controller' );
 	}
 }
