@@ -45,6 +45,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_staging_list'                => 'add_staging_exclusions',
 			'rocket_lrc_exclusions'              => 'add_lrc_exclusions',
 			'wp_rocket_upgrade'                  => 'update_lists_from_files',
+			'rocket_media_fonts_exclusions'      => 'add_media_fonts_exclusions',
 		];
 	}
 
@@ -211,5 +212,16 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function update_lists_from_files() {
 		$this->dynamic_lists->update_lists_from_files();
+	}
+
+	/**
+	 * Add the media fonts exclusion to the array
+	 *
+	 * @param array $exclusions Array of Media fonts exclusions.
+	 *
+	 * @return array
+	 */
+	public function add_media_fonts_exclusions( array $exclusions ): array {
+		return array_merge( (array) $exclusions, $this->dynamic_lists->get_exclude_media_fonts() );
 	}
 }

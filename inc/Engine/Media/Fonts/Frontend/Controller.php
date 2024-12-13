@@ -8,9 +8,11 @@ use WP_Rocket\Engine\Media\Fonts\Context\SaasContext;
 use WP_Rocket\Engine\Media\Fonts\Filesystem;
 use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Logger\Logger;
+use WP_Rocket\Engine\Media\Fonts\FontsTrait;
 
 class Controller {
 	use RegexTrait;
+	use FontsTrait;
 
 	/**
 	 * Optimization Context instance.
@@ -89,16 +91,24 @@ class Controller {
 			return $html;
 		}
 
+		$exclusions = $this->get_exclusions();
+
 		// Count fonts - for test purposes.
 		$total_v1    = count( $v1_fonts );
 		$total_v2    = count( $v2_fonts );
 		$total_fonts = $total_v1 + $total_v2;
 
 		foreach ( $v1_fonts as $font ) {
+			if ( $this->is_excluded( $font['url'], $exclusions ) ) {
+				continue;
+			}
 			$html = $this->replace_font( $font, $html );
 		}
 
 		foreach ( $v2_fonts as $font ) {
+			if ( $this->is_excluded( $font['url'], $exclusions ) ) {
+				continue;
+			}
 			$html = $this->replace_font( $font, $html );
 		}
 

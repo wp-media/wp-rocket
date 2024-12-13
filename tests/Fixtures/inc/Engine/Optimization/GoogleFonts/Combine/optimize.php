@@ -329,4 +329,43 @@ return [
 			</body>
 		</html>',
 	],
+	'shouldExcludeFontFromCombine' => [
+		'config' => [
+			'swap' => 'optional',
+			'disable_preload' => false,
+			'exclude_locally_host_fonts' => [
+				'Lato',
+			]
+		],
+		'html' => '<!doctype html>
+			<html>
+			<head>
+			<title>Sample Page</title>
+			<link rel="preconnect" href="https://fonts.gstatic.com">
+			<link href="https://fonts.googleapis.com/css?family=Goldman&family=Roboto&display=auto" rel="stylesheet">
+			<link href="https://fonts.googleapis.com/css?family=Lato&display=auto" rel="stylesheet">
+			<link href="https://fonts.googleapis.com/css?family=MontSerra&display=auto" rel="stylesheet">
+			<link rel="stylesheet" id="dt-more-fonts-css" href="https://fonts.googleapis.com/css?family=Comfortaa" type="text/css" media="all" />
+			</head>
+			<body>
+			</body>
+			</html>',
+		'expected' => '<!doctype html>
+			<html>
+			<head>
+			<title>
+			Sample Page</title>
+			<link rel="preload" data-rocket-preload as="style" href="https://fonts.googleapis.com/css?family=Roboto%7CMontSerra%7CComfortaa&#038;display=optional" />
+			<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto%7CMontSerra%7CComfortaa&#038;display=optional" media="print" onload="this.media=\'all\'" />
+			<noscript>
+			<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto%7CMontSerra%7CComfortaa&#038;display=optional" />
+			</noscript>
+			<link rel="preconnect" href="https://fonts.gstatic.com">
+			<link href="https://fonts.googleapis.com/css?family=Lato&display=auto" rel="stylesheet">
+			</head>
+			<body>
+			</body>
+			</html>
+			',
+	]
 ];

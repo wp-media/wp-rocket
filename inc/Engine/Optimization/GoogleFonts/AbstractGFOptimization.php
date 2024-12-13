@@ -3,12 +3,16 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\GoogleFonts;
 
+use WP_Rocket\Engine\Media\Fonts\FontsTrait;
+
 /**
  * Abstract Optimization Parent Class for Google Fonts Optimizers.
  *
  * @since 3.8
  */
 abstract class AbstractGFOptimization {
+	use FontsTrait;
+
 	/**
 	 * Allowed display values.
 	 *
