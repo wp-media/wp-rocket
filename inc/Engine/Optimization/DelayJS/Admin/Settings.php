@@ -27,6 +27,7 @@ class Settings {
 	/**
 	 * Add the delay JS options to the WP Rocket options array
 	 *
+	 * @since 3.18 Added delay_js_execution_safe_mode.
 	 * @since 3.9 Removed delay_js_scripts key, added delay_js_exclusions.
 	 * @since 3.7
 	 *
@@ -37,8 +38,9 @@ class Settings {
 	public function add_options( $options ): array {
 		$options = (array) $options;
 
-		$options['delay_js']            = 0;
-		$options['delay_js_exclusions'] = [];
+		$options['delay_js']                     = 0;
+		$options['delay_js_exclusions']          = [];
+		$options['delay_js_execution_safe_mode'] = 0;
 
 		return $options;
 	}
@@ -46,6 +48,7 @@ class Settings {
 	/**
 	 * Sets the delay_js_exclusions default value for users with delay JS enabled on upgrade
 	 *
+	 * @since 3.18 Keep the custom delay js exclusions if there were before.
 	 * @since 3.9 Sets the delay_js_exclusions default value if delay_js is 1
 	 * @since 3.7
 	 *
@@ -77,6 +80,7 @@ class Settings {
 	 * Sanitizes delay JS options when saving the settings
 	 *
 	 * @since 3.9
+	 * @since 3.18 Deletes safe mode exclusions from `delay_js_exclusions`.
 	 *
 	 * @param array         $input    Array of values submitted from the form.
 	 * @param AdminSettings $settings Settings class instance.
@@ -84,13 +88,19 @@ class Settings {
 	 * @return array
 	 */
 	public function sanitize_options( $input, $settings ): array {
-		$input['delay_js']            = $settings->sanitize_checkbox( $input, 'delay_js' );
-		$input['delay_js_exclusions'] =
+		$input['delay_js']                     = $settings->sanitize_checkbox( $input, 'delay_js' );
+		$input['delay_js_execution_safe_mode'] = $settings->sanitize_checkbox( $input, 'delay_js_execution_safe_mode' );
+		$input['delay_js_exclusions']          =
 			! empty( $input['delay_js_exclusions'] )
 				?
 				rocket_sanitize_textarea_field( 'delay_js_exclusions', $input['delay_js_exclusions'] )
 				:
 				[];
+
+		if ( ! empty( $input['delay_js_execution_safe_mode'] ) ) {
+			$default_exclusions           = self::get_safe_mode_exclusions();
+			$input['delay_js_exclusions'] = array_diff( $input['delay_js_exclusions'], $default_exclusions );
+		}
 
 		return $input;
 	}
@@ -135,6 +145,26 @@ class Settings {
 		return $value;
 	}
 
+
+	/**
+	 * Get the list of default exclusions for the safe mode.
+	 *
+	 * This method returns an array of regular expressions that match JavaScript files
+	 * and patterns which should be excluded from the delay JavaScript execution feature
+	 * when the safe mode is enabled.
+	 *
+	 * @since 3.18
+	 *
+	 * @return array An array of regular expressions for safe mode exclusions.
+	 */
+	public static function get_safe_mode_exclusions(): array {
+		return [
+			'\/jquery(-migrate)?-?([0-9.]+)?(.min|.slim|.slim.min)?.js(\?(.*))?( |\'|"|>)',
+			'js-(before|after)',
+			'(?:/wp-content/|/wp-includes/)(.*)',
+		];
+	}
+
 	/**
 	 * Get default exclusion list.
 	 *
@@ -144,10 +174,7 @@ class Settings {
 	 */
 	public static function get_delay_js_default_exclusions(): array {
 
-		$exclusions = [
-			'\/jquery(-migrate)?-?([0-9.]+)?(.min|.slim|.slim.min)?.js(\?(.*))?( |\'|"|>)',
-			'js-(before|after)',
-		];
+		$exclusions = self::get_safe_mode_exclusions();
 
 		$wp_content  = wp_parse_url( content_url( '/' ), PHP_URL_PATH );
 		$wp_includes = wp_parse_url( includes_url( '/' ), PHP_URL_PATH );
