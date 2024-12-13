@@ -3104,9 +3104,37 @@ div.wpr-tutorial-item {
 }
 .wpr-field--categorizedmultiselect .wpr-list.open .wpr-list-header {
   max-height: 32px;
+  cursor: pointer;
 }
 .wpr-field--categorizedmultiselect .wpr-list .wpr-list-header {
   max-height: 32px;
+  cursor: pointer;
+}
+.wpr-field--categorizedmultiselect .wpr-list .wpr-list-header .wpr-badge-counter {
+  display: inline-block;
+  vertical-align: top;
+  box-sizing: border-box;
+  margin: 2px 0 0px 2px;
+  padding: 0 7px;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 9px;
+  background-color: #eb714a;
+  color: #fff;
+  font-size: 11px;
+  font-weight: bold;
+  line-height: 1.6;
+  text-align: center;
+}
+.wpr-field--categorizedmultiselect .wpr-list .wpr-list-header .wpr-list-header-data {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.wpr-field--categorizedmultiselect .wpr-list .wpr-list-header .wpr-list-header-data img {
+  width: 16px;
+  height: 16px;
 }
 .wpr-field--categorizedmultiselect .wpr-list [type=checkbox] + label:before {
   top: 4px;
@@ -3139,8 +3167,21 @@ div.wpr-tutorial-item {
   color: #72777c;
 }
 .wpr-field--categorizedmultiselect .wpr-multiple-select-title {
+  cursor: pointer;
   font-weight: bold;
-  margin-left: 5px;
+}
+.wpr-field--categorizedmultiselect .wpr-subsection {
+  padding-left: 30px;
+}
+.wpr-field--categorizedmultiselect .wpr-select-all {
+  border-bottom: 2px solid #e9e9e9;
+  width: 150px;
+  padding-bottom: 10px;
+}
+
+[data-parent=delay_js].wpr-field--children {
+  margin-left: 32px;
+  padding-left: 0;
 }
 
 @media only screen and (min-width: 782px) {

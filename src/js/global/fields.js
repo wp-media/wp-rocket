@@ -319,7 +319,7 @@ $(document).ready(function(){
 			disable_radio_warning = ('remove_unused_css' === $elm.data('value') && 1 === rucssActive)
 		});
 
-	$( ".wpr-multiple-select .wpr-list-header-arrow" ).click(function (e) {
+	$( ".wpr-multiple-select .wpr-list-header" ).click(function (e) {
 		$(e.target).closest('.wpr-multiple-select .wpr-list').toggleClass('open');
 	});
 
@@ -352,6 +352,28 @@ $(document).ready(function(){
 			$(checkbox).attr('checked', not_checked <= 0 ? 'checked' : null );
 		});
 	}
+
+	let checkBoxCounter = {
+		checked: {},
+		total: {}
+	};
+	$('.wpr-field--categorizedmultiselect .wpr-list').each(function () {
+		// Get the ID of the current element
+		let id = $(this).attr('id');
+		if (id) {
+			checkBoxCounter.checked[id] = $(`#${id} input[type='checkbox']:checked`).length;
+			checkBoxCounter.total[id] = $(`#${id} input[type='checkbox']:not(.wpr-main-checkbox)`).length;
+			// Update the counter text
+			$(`#${id} .wpr-badge-counter span`).text(checkBoxCounter.checked[id]);
+			// Show or hide the counter badge based on the count
+			$(`#${id} .wpr-badge-counter`).toggle(checkBoxCounter.checked[id] > 0);
+
+			// Check the select all option if all exclusions are checked in a section.
+			if (checkBoxCounter.checked[id] === checkBoxCounter.total[id]) {
+				$(`#${id} .wpr-main-checkbox`).attr('checked', true);
+			}
+		}
+	});
 
 	/**
 	 * Delay JS Execution Safe Mode Field
