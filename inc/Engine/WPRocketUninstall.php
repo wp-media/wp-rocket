@@ -113,6 +113,8 @@ class WPRocketUninstall {
 		'busting',
 		'critical-css',
 		'used-css',
+		'fonts',
+		'background-css',
 	];
 
 	/**
