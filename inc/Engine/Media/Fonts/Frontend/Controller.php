@@ -3,7 +3,8 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Media\Fonts\Frontend;
 
-use WP_Rocket\Engine\Media\Fonts\Context\Context;
+use WP_Rocket\Engine\Media\Fonts\Context\OptimizationContext;
+use WP_Rocket\Engine\Media\Fonts\Context\SaasContext;
 use WP_Rocket\Engine\Media\Fonts\Filesystem;
 use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Logger\Logger;
@@ -12,11 +13,18 @@ class Controller {
 	use RegexTrait;
 
 	/**
-	 * Context instance.
+	 * Optimization Context instance.
 	 *
-	 * @var Context
+	 * @var OptimizationContext
 	 */
-	private $context;
+	private $optimization_context;
+
+	/**
+	 * SaaS Context instance.
+	 *
+	 * @var SaasContext
+	 */
+	private $saas_context;
 
 	/**
 	 * Filesystem instance.
@@ -49,14 +57,16 @@ class Controller {
 	/**
 	 * Constructor.
 	 *
-	 * @param Context    $context Context instance.
-	 * @param Filesystem $filesystem Filesystem instance.
+	 * @param OptimizationContext $optimization_context Optimization Context instance.
+	 * @param SaasContext         $saas_context SaaS Context instance.
+	 * @param Filesystem          $filesystem Filesystem instance.
 	 */
-	public function __construct( Context $context, Filesystem $filesystem ) {
-		$this->context    = $context;
-		$this->base_path  = rocket_get_constant( 'WP_ROCKET_CACHE_ROOT_PATH', '' ) . 'fonts/' . get_current_blog_id() . '/';
-		$this->base_url   = rocket_get_constant( 'WP_ROCKET_CACHE_ROOT_URL', '' ) . 'fonts/' . get_current_blog_id() . '/';
-		$this->filesystem = $filesystem;
+	public function __construct( OptimizationContext $optimization_context, SaasContext $saas_context, Filesystem $filesystem ) {
+		$this->optimization_context = $optimization_context;
+		$this->saas_context         = $saas_context;
+		$this->base_path            = rocket_get_constant( 'WP_ROCKET_CACHE_ROOT_PATH', '' ) . 'fonts/' . get_current_blog_id() . '/';
+		$this->base_url             = rocket_get_constant( 'WP_ROCKET_CACHE_ROOT_URL', '' ) . 'fonts/' . get_current_blog_id() . '/';
+		$this->filesystem           = $filesystem;
 	}
 
 	/**
@@ -65,11 +75,7 @@ class Controller {
 	 * @param string $html HTML content.
 	 * @return string
 	 */
-	public function rewrite_fonts( $html ): string {
-		if ( ! $this->context->is_allowed() ) {
-			return $html;
-		}
-
+	private function rewrite_fonts( $html ): string {
 		// For test purposes.
 		$start_time = microtime( true );
 
@@ -105,9 +111,35 @@ class Controller {
 
 		// Log the total execution time and number of fonts processed, with breakdown.
 		$duration = $end_time - $start_time;
-		Logger::debug( "Total execution time for Host Google Fonts Feature in seconds -- $duration. Fonts processed: $total_fonts | Total v1: $total_v1 | Total v2: $total_v2", [ 'Host Fonts Locally' ] );
+		Logger::debug( "Total execution time for Host Google Fonts Feature in seconds -- $duration. CSS files processed: $total_fonts | Total v1: $total_v1 | Total v2: $total_v2", [ 'Host Fonts Locally' ] );
 
 		return $html;
+	}
+
+	/**
+	 * Rewrite fonts for normal optimizations.
+	 *
+	 * @param string $html page HTML.
+	 * @return string
+	 */
+	public function rewrite_fonts_for_optimizations( $html ): string {
+		if ( ! $this->optimization_context->is_allowed() ) {
+			return $html;
+		}
+		return $this->rewrite_fonts( $html );
+	}
+
+	/**
+	 * Rewrite fonts for SaaS visits optimizations.
+	 *
+	 * @param string $html page HTML.
+	 * @return string
+	 */
+	public function rewrite_fonts_for_saas( $html ): string {
+		if ( ! $this->saas_context->is_allowed() ) {
+			return $html;
+		}
+		return $this->rewrite_fonts( $html );
 	}
 
 	/**
@@ -238,7 +270,7 @@ class Controller {
 	 * @return bool
 	 */
 	public function disable_google_fonts_preload( $disable ): bool {
-		if ( ! $this->context->is_allowed() ) {
+		if ( ! $this->optimization_context->is_allowed() ) {
 			return $disable;
 		}
 

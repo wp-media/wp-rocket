@@ -56,16 +56,16 @@ class Filesystem extends AbstractFileSystem {
 	}
 
 	/**
-	 * Writes font css to path
+	 * Writes CSS & fonts locally
 	 *
-	 * @param string $font_url The font url to save locally.
-	 * @param string $provider The url of the page.
+	 * @param string $css_url The CSS url to save locally.
+	 * @param string $provider The font provider.
 	 *
 	 * @return bool
 	 */
-	public function write_font_css( string $font_url, string $provider ): bool {
+	public function write_font_css( string $css_url, string $provider ): bool {
 		$font_provider_path = $this->get_font_provider_path( $provider );
-		$css_filepath       = $this->get_absolute_path( $font_provider_path, 'css/' . $this->hash_to_path( $this->hash_url( $font_url ) ) . '.css' );
+		$css_filepath       = $this->get_absolute_path( $font_provider_path, 'css/' . $this->hash_to_path( $this->hash_url( $css_url ) ) . '.css' );
 		$fonts_basepath     = $this->get_absolute_path( $font_provider_path, 'fonts' );
 
 		if ( ! rocket_mkdir_p( dirname( $css_filepath ) ) ) {
@@ -74,7 +74,7 @@ class Filesystem extends AbstractFileSystem {
 
 		$start_time = microtime( true );
 
-		$css_content = $this->get_remote_content( html_entity_decode( $font_url ) );
+		$css_content = $this->get_remote_content( html_entity_decode( $css_url ) );
 
 		if ( ! $css_content ) {
 			return false;
@@ -83,6 +83,9 @@ class Filesystem extends AbstractFileSystem {
 		preg_match_all( '/url\((https:\/\/[^)]+)\)/i', $css_content, $matches );
 		$font_urls = $matches[1];
 		$local_css = $css_content;
+
+		$count_fonts      = 0;
+		$download_average = 0;
 
 		foreach ( $font_urls as $font_url ) {
 			$font_path = wp_parse_url( $font_url, PHP_URL_PATH );
@@ -99,6 +102,8 @@ class Filesystem extends AbstractFileSystem {
 			}
 
 			if ( ! $this->filesystem->exists( $local_path ) ) {
+				$download_start = microtime( true );
+
 				$font_content = $this->get_remote_content( $font_url );
 
 				if ( ! $font_content ) {
@@ -107,6 +112,15 @@ class Filesystem extends AbstractFileSystem {
 				}
 
 				$this->write_file( $local_path, $font_content );
+
+				$download_end  = microtime( true );
+				$download_time = $download_end - $download_start;
+
+				$download_average += $download_time;
+
+				++$count_fonts;
+
+				Logger::debug( "Font $font_url download duration -- $download_time", [ 'Host Fonts Locally' ] );
 			}
 
 			$local_url = content_url( $this->get_fonts_relative_path( $font_provider_path, $font_path ) );
@@ -121,6 +135,8 @@ class Filesystem extends AbstractFileSystem {
 
 		// Add for test purpose.
 		Logger::debug( "Font download and optimization duration in seconds -- $duration", [ 'Host Fonts Locally' ] );
+		Logger::debug( "Number of fonts downloaded for $css_url -- $count_fonts", [ 'Host Fonts Locally' ] );
+		Logger::debug( 'Average download time per font -- ' . ( $count_fonts ? $download_average / $count_fonts : 0 ), [ 'Host Fonts Locally' ] );
 
 		return $this->write_file( $css_filepath, $local_css );
 	}
