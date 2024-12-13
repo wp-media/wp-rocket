@@ -258,7 +258,7 @@ class SiteList {
 				'other_services'     => [
 					'title'    => __( 'Other Services', 'rocket' ),
 					'items'    => [],
-					'svg-icon' => 'plugins',
+					'svg-icon' => 'others',
 				],
 				'has_subcats'        => false,
 			],
