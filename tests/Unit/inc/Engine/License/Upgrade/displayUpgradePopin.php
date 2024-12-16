@@ -52,7 +52,7 @@ class DisplayUpgradePopin extends TestCase {
 
 		$this->user->shouldReceive( 'get_available_upgrades' )
 			->atMost()
-			->once()
+			->twice()
 			->andReturn( $config['upgrades'] ?? [] );
 
 		if ( ! is_null( $expected ) ) {

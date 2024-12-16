@@ -45,23 +45,23 @@ return [
 			'upgrades' => [
 				(object) [
 					'name' => 'Growth',
+					'type' => 'growth',
+					'saving' => "x",
+					'upgrade_url' => "x",
+					'regular_price' => "x",
+					'websites' => "x",
+					'stacked' => false,
 				]
 			],
 		],
 		'expected' => [
 			'is_promo_active' => false,
 			'upgrades' => [
-				'plus' => [
-					'name'        => 'Plus',
-					'price'       => 50,
-					'websites'    => 3,
-					'upgrade_url' => 'https://wp-rocket.me/checkout/upgrade/roger@wp-rocket.me/d89e18ee/plus/',
-				],
-				'infinite' => [
-					'name'        => 'Infinite',
-					'price'       => 200,
-					'websites'    => 'Unlimited',
-					'upgrade_url' => 'https://wp-rocket.me/checkout/upgrade/roger@wp-rocket.me/d89e18ee/infinite/',
+				'growth' => [
+					'name' => 'Growth',
+					'price' => 'x',
+					'websites' => 'x',
+					'upgrade_url' => 'x',
 				],
 			],
 		],
@@ -88,25 +88,28 @@ return [
 				],
 			],
 			'promo_active' => true,
+			'upgrades' => [
+				(object) [
+					'name' => 'Growth',
+					'type' => 'growth',
+					'saving' => "40",
+					'upgrade_url' => "x",
+					'regular_price' => "50",
+					'websites' => "x",
+					'stacked' => false,
+				]
+			],
 		],
 		'expected' => [
 			'is_promo_active' => true,
 			'upgrades' => [
-				'plus' => [
-					'name'        => 'Plus',
-					'price'       => 40,
-					'websites'    => 3,
-					'upgrade_url' => 'https://wp-rocket.me/checkout/upgrade/roger@wp-rocket.me/d89e18ee/plus/',
-					'saving'      => 10,
-					'regular_price' => 50,
-				],
-				'infinite' => [
-					'name'        => 'Infinite',
-					'price'       => 160,
-					'websites'    => 'Unlimited',
-					'upgrade_url' => 'https://wp-rocket.me/checkout/upgrade/roger@wp-rocket.me/d89e18ee/infinite/',
-					'saving'      => 40,
-					'regular_price' => 200,
+				'growth' => [
+					'name' => 'Growth',
+					'price' => '40',
+					'websites' => 'x',
+					'upgrade_url' => 'x',
+					'saving' => '10',
+					'regular_price' => "50",
 				],
 			],
 		],
@@ -133,21 +136,26 @@ return [
 				],
 			],
 			'promo_active' => false,
+			'upgrades' => [
+				(object) [
+					'name' => 'Growth',
+					'type' => 'growth',
+					'saving' => "x",
+					'upgrade_url' => "x",
+					'regular_price' => "x",
+					'websites' => "x",
+					'stacked' => false,
+				]
+			],
 		],
 		'expected' => [
 			'is_promo_active' => false,
 			'upgrades' => [
-				'plus' => [
-					'name'        => 'Plus',
-					'price'       => 50,
-					'websites'    => 3,
-					'upgrade_url' => 'https://wp-rocket.me/checkout/upgrade/roger@wp-rocket.me/d89e18ee/plus/',
-				],
-				'infinite' => [
-					'name'        => 'Infinite',
-					'price'       => 200,
-					'websites'    => 'Unlimited',
-					'upgrade_url' => 'https://wp-rocket.me/checkout/upgrade/roger@wp-rocket.me/d89e18ee/infinite/',
+				'growth' => [
+					'name' => 'Growth',
+					'price' => 'x',
+					'websites' => 'x',
+					'upgrade_url' => 'x',
 				],
 			],
 		],
@@ -174,25 +182,28 @@ return [
 				],
 			],
 			'promo_active' => true,
+			'upgrades' => [
+				(object) [
+					'name' => 'Growth',
+					'type' => 'growth',
+					'saving' => "40",
+					'upgrade_url' => "x",
+					'regular_price' => "50",
+					'websites' => "x",
+					'stacked' => false,
+				]
+			],
 		],
 		'expected' => [
 			'is_promo_active' => true,
 			'upgrades' => [
-				'plus' => [
-					'name'        => 'Plus',
-					'price'       => 40,
-					'websites'    => 3,
-					'upgrade_url' => 'https://wp-rocket.me/checkout/upgrade/roger@wp-rocket.me/d89e18ee/plus/',
-					'saving'      => 10,
-					'regular_price' => 50,
-				],
-				'infinite' => [
-					'name'        => 'Infinite',
-					'price'       => 160,
-					'websites'    => 'Unlimited',
-					'upgrade_url' => 'https://wp-rocket.me/checkout/upgrade/roger@wp-rocket.me/d89e18ee/infinite/',
-					'saving'      => 40,
-					'regular_price' => 200,
+				'growth' => [
+					'name' => 'Growth',
+					'price' => '40',
+					'websites' => 'x',
+					'upgrade_url' => 'x',
+					'saving' => '10',
+					'regular_price' => "50",
 				],
 			],
 		],
@@ -219,15 +230,26 @@ return [
 				],
 			],
 			'promo_active' => false,
+			'upgrades' => [
+				(object) [
+					'name' => 'Growth',
+					'type' => 'growth',
+					'saving' => "x",
+					'upgrade_url' => "x",
+					'regular_price' => "x",
+					'websites' => "x",
+					'stacked' => false,
+				]
+			],
 		],
 		'expected' => [
 			'is_promo_active' => false,
 			'upgrades' => [
-				'infinite' => [
-					'name'        => 'Infinite',
-					'price'       => 150,
-					'websites'    => 'Unlimited',
-					'upgrade_url' => 'https://wp-rocket.me/checkout/upgrade/roger@wp-rocket.me/d89e18ee/infinite/',
+				'growth' => [
+					'name' => 'Growth',
+					'price' => 'x',
+					'websites' => 'x',
+					'upgrade_url' => 'x',
 				],
 			],
 		],
@@ -254,17 +276,28 @@ return [
 				],
 			],
 			'promo_active' => true,
+			'upgrades' => [
+				(object) [
+					'name' => 'Growth',
+					'type' => 'growth',
+					'saving' => "40",
+					'upgrade_url' => "x",
+					'regular_price' => "50",
+					'websites' => "x",
+					'stacked' => false,
+				]
+			],
 		],
 		'expected' => [
 			'is_promo_active' => true,
 			'upgrades' => [
-				'infinite' => [
-					'name'        => 'Infinite',
-					'price'       => 120,
-					'websites'    => 'Unlimited',
-					'upgrade_url' => 'https://wp-rocket.me/checkout/upgrade/roger@wp-rocket.me/d89e18ee/infinite/',
-					'saving'      => 30,
-					'regular_price' => 150,
+				'growth' => [
+					'name' => 'Growth',
+					'price' => '40',
+					'websites' => 'x',
+					'upgrade_url' => 'x',
+					'saving' => '10',
+					'regular_price' => "50",
 				],
 			],
 		],
