@@ -12,6 +12,11 @@ return [
 		'config'   => [
 			'license_account'    => 1,
 			'licence_expiration' => true,
+			'upgrades' => [
+				(object) [
+					"name"=> "Growth",
+				]
+			],
 		],
 		'expected' => null,
 	],
@@ -37,6 +42,11 @@ return [
 				],
 			],
 			'promo_active' => false,
+			'upgrades' => [
+				(object) [
+					'name' => 'Growth',
+				]
+			],
 		],
 		'expected' => [
 			'is_promo_active' => false,

@@ -10,6 +10,7 @@ return [
 			'promo_end'          => strtotime( 'next week' ),
 			'transient'          => false,
 			'date_created'          => strtotime( 'last year' ),
+			'upgrades' => [],
 		],
 		'expected' => null,
 	],
@@ -94,7 +95,12 @@ return [
 					'websites' => 3,
 				],
 			],
-			'message' => 'Take advantage of %1$s to speed up more websites:%2$s get a %3$s%4$s off%5$s for %3$supgrading your license to Plus or Infinite!%5$s'
+			'message' => 'Take advantage of %1$s to speed up more websites:%2$s get a %3$s%4$s off%5$s for %3$supgrading your license to Plus or Infinite!%5$s',
+			'upgrades' => [
+				(object) [
+					"name"=> "Growth",
+				]
+			],
 		],
 		'expected' => [
 			'name' => 'Halloween',
@@ -123,7 +129,12 @@ return [
 					'websites' => 3,
 				],
 			],
-			'message' => 'Take advantage of %1$s to speed up more websites:%2$s get a %3$s%4$s off%5$s for %3$supgrading your license to Plus or Infinite!%5$s'
+			'message' => 'Take advantage of %1$s to speed up more websites:%2$s get a %3$s%4$s off%5$s for %3$supgrading your license to Plus or Infinite!%5$s',
+			'upgrades' => [
+				(object) [
+					"name"=> "Multi",
+				]
+			],
 		],
 		'expected' => [
 			'name' => 'Halloween',
@@ -152,7 +163,12 @@ return [
 					'websites' => 3,
 				],
 			],
-			'message' => 'Take advantage of %1$s to speed up more websites:%2$s get a %3$s%4$s off%5$s for %3$supgrading your license to Infinite!%5$s'
+			'message' => 'Take advantage of %1$s to speed up more websites:%2$s get a %3$s%4$s off%5$s for %3$supgrading your license to Infinite!%5$s',
+			'upgrades' => [
+				(object) [
+					"name"=> "Growth",
+				]
+			],
 		],
 		'expected' => [
 			'name' => 'Halloween',

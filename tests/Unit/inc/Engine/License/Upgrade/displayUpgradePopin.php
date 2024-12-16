@@ -50,6 +50,11 @@ class DisplayUpgradePopin extends TestCase {
 			->once()
 			->andReturn( $config['licence_expiration'] );
 
+		$this->user->shouldReceive( 'get_available_upgrades' )
+			->atMost()
+			->once()
+			->andReturn( $config['upgrades'] ?? [] );
+
 		if ( ! is_null( $expected ) ) {
 			$this->pricing->shouldReceive( 'get_single_websites_count' )
 				->atMost()
@@ -65,7 +70,7 @@ class DisplayUpgradePopin extends TestCase {
 				->atMost()
 				->once()
 				->andReturn( $config['pricing']['plus']['price'] );
-			
+
 			$this->pricing->shouldReceive( 'get_regular_single_to_plus_price' )
 				->atMost()
 				->once()
@@ -80,7 +85,7 @@ class DisplayUpgradePopin extends TestCase {
 				->atMost()
 				->once()
 				->andReturn( $config['pricing']['infinite']['price'] );
-		
+
 			$this->pricing->shouldReceive( 'get_regular_single_to_infinite_price' )
 				->atMost()
 				->once()

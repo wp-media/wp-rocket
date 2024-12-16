@@ -48,6 +48,11 @@ class DisplayPromoBanner extends TestCase {
 			->once()
 			->andReturn( $config['licence_expired'] );
 
+		$this->user->shouldReceive( 'get_available_upgrades' )
+			->atMost()
+			->once()
+			->andReturn( $config['upgrades'] ?? [] );
+
 		$this->user->shouldReceive( 'get_license_expiration' )
 			->atMost()
 			->once()

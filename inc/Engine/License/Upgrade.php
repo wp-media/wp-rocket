@@ -312,9 +312,9 @@ class Upgrade extends Abstract_Render {
 	 */
 	private function can_upgrade() {
 		return (
-			! empty( $this->user->get_available_upgrades() )
-			&&
 			! $this->user->is_license_expired()
+			&&
+			! empty( $this->user->get_available_upgrades() )
 		);
 	}
 
