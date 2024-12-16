@@ -324,9 +324,9 @@ class Upgrade extends Abstract_Render {
 	 * @return array
 	 */
 	private function get_upgrade_choices() {
-		$choices       = [];
+		$choices = [];
 
-		foreach ( $this->user->get_available_upgrades() as $available_upgrade) {
+		foreach ( $this->user->get_available_upgrades() as $available_upgrade ) {
 			$upgrade_data = $this->get_generic_upgrade_data( $available_upgrade );
 
 			if ( ! empty( $available_upgrade->stack ) ) {
@@ -343,8 +343,14 @@ class Upgrade extends Abstract_Render {
 		return $choices;
 	}
 
+	/**
+	 * Prepare the upgrade array based on the upgrade object from the API.
+	 *
+	 * @param object $upgrade_item Upgrade item object from the API.
+	 * @return array
+	 */
 	private function get_generic_upgrade_data( $upgrade_item ) {
-		$data  = [
+		$data = [
 			'name'        => $upgrade_item->name,
 			'price'       => $upgrade_item->saving,
 			'websites'    => $upgrade_item->websites,
