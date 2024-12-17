@@ -99,14 +99,14 @@ class Controller {
 		$total_fonts = $total_v1 + $total_v2;
 
 		foreach ( $v1_fonts as $font ) {
-			if ( $this->is_excluded( $font['url'], $exclusions ) ) {
+			if ( $this->is_excluded( $font[0], $exclusions ) ) {
 				continue;
 			}
 			$html = $this->replace_font( $font, $html );
 		}
 
 		foreach ( $v2_fonts as $font ) {
-			if ( $this->is_excluded( $font['url'], $exclusions ) ) {
+			if ( $this->is_excluded( $font[0], $exclusions ) ) {
 				continue;
 			}
 			$html = $this->replace_font( $font, $html );
