@@ -117,6 +117,11 @@ add_action( 'activate_autoptimize/autoptimize.php', 'rocket_activate_autoptimize
  * @return array
  */
 function rocket_maybe_disable_minification( $options ) {
+	// Bail early if plugin is not active.
+	if ( ! is_plugin_active( 'autoptimize/autoptimize.php' ) ) {
+		return $options;
+	}
+
 	if ( 'on' === get_option( 'autoptimize_css' ) ) {
 		$options['minify_css'] = 0;
 	}
