@@ -23,6 +23,30 @@ return [
 			'licence_expiration'    => strtotime( 'next year' ),
 			'upgrade_plus_url'      => 'https://wp-rocket.me/checkout/upgrade/roger@wp-rocket.me /d89e18ee/plus/',
 			'upgrade_infinite_url' => 'https://wp-rocket.me/checkout/upgrade/roger@wp-rocket.me /d89e18ee/infinite/',
+			'license' => [
+				'prices' => [
+					'upgrades' => [
+						(object) [
+							'name' => 'Growth',
+							'type' => 'growth',
+							'saving' => "50",
+							'upgrade_url' => "https://growthupgradeurl.com/",
+							'regular_price' => "x",
+							'websites' => "3",
+							'stacked' => false,
+						],
+						(object) [
+							'name' => 'Multi',
+							'type' => 'multi10',
+							'saving' => "200",
+							'upgrade_url' => "https://multi10upgradeurl.com/",
+							'regular_price' => "x",
+							'websites' => "Unlimited",
+							'stacked' => true,
+						]
+					],
+				],
+			],
 		] ) ),
 		'pricing' => json_decode( json_encode( [
 			'licenses' => [
@@ -36,7 +60,7 @@ return [
 						],
 					],
 					'websites'    => 3,
-					
+
 				],
 				'infinite' => [
 					'prices'       => [
@@ -71,25 +95,25 @@ return [
 		N.B.</strong>
 		: Upgrading your license does not change your expiration date</p>
 		<div class="wpr-Popin-flex">
-		<div class="wpr-Upgrade-Plus">
+		<div class="wpr-Upgrade-Growth">
 		<h3 class="wpr-upgrade-title">
-		Plus</h3>
+		Growth</h3>
 		<div class="wpr-upgrade-prices">
 		<span class="wpr-upgrade-price-symbol">$</span> 50</div>
 		<div class="wpr-upgrade-websites">
 		3 websites</div>
-		<a href="https://wp-rocket.me/checkout/upgrade/roger@wp-rocket.me%20/d89e18ee/plus/" class="wpr-upgrade-link" target="_blank" rel="noopener noreferrer">
-		Upgrade to Plus</a>
+		<a href="https://growthupgradeurl.com/" class="wpr-upgrade-link" target="_blank" rel="noopener noreferrer">
+		Upgrade to Growth</a>
 		</div>
-		<div class="wpr-Upgrade-Infinite">
+		<div class="wpr-Upgrade-Multi">
 		<h3 class="wpr-upgrade-title">
-		Infinite</h3>
+		Multi</h3>
 		<div class="wpr-upgrade-prices">
 		<span class="wpr-upgrade-price-symbol">$</span> 200
 		</div>
 		<div class="wpr-upgrade-websites">Unlimited websites</div>
-		<a href="https://wp-rocket.me/checkout/upgrade/roger@wp-rocket.me%20/d89e18ee/infinite/" class="wpr-upgrade-link" target="_blank" rel="noopener noreferrer">
-		Upgrade to Infinite</a>
+		<a href="https://multi10upgradeurl.com/" class="wpr-upgrade-link" target="_blank" rel="noopener noreferrer">
+		Upgrade to Multi</a>
 		</div>
 		</div>
 		</div>
@@ -101,6 +125,30 @@ return [
 			'licence_expiration'    => strtotime( 'next year' ),
 			'upgrade_plus_url'      => 'https://wp-rocket.me/checkout/upgrade/roger@wp-rocket.me /d89e18ee/plus/',
 			'upgrade_infinite_url' => 'https://wp-rocket.me/checkout/upgrade/roger@wp-rocket.me /d89e18ee/infinite/',
+			'license' => [
+				'prices' => [
+					'upgrades' => [
+						(object) [
+							'name' => 'Growth',
+							'type' => 'growth',
+							'saving' => "50",
+							'upgrade_url' => "https://growthupgradeurl.com/",
+							'regular_price' => "x",
+							'websites' => "3",
+							'stacked' => false,
+						],
+						(object) [
+							'name' => 'Multi',
+							'type' => 'multi10',
+							'saving' => "200",
+							'upgrade_url' => "https://multi10upgradeurl.com/",
+							'regular_price' => "x",
+							'websites' => "Unlimited",
+							'stacked' => true,
+						]
+					],
+				],
+			],
 		] ) ),
 		'pricing' => json_decode( json_encode( [
 			'licenses' => [
@@ -114,7 +162,7 @@ return [
 						],
 					],
 					'websites'    => 3,
-					
+
 				],
 				'infinite' => [
 					'prices'       => [
@@ -149,25 +197,25 @@ return [
 		N.B.</strong>
 		: Upgrading your license does not change your expiration date</p>
 		<div class="wpr-Popin-flex">
-		<div class="wpr-Upgrade-Plus">
+		<div class="wpr-Upgrade-Growth">
 		<h3 class="wpr-upgrade-title">
-		Plus</h3>
+		Growth</h3>
 		<div class="wpr-upgrade-prices">
 		<span class="wpr-upgrade-price-symbol">$</span> 50</div>
 		<div class="wpr-upgrade-websites">
 		3 websites</div>
-		<a href="https://wp-rocket.me/checkout/upgrade/roger@wp-rocket.me%20/d89e18ee/plus/" class="wpr-upgrade-link" target="_blank" rel="noopener noreferrer">
-		Upgrade to Plus</a>
+		<a href="https://growthupgradeurl.com/" class="wpr-upgrade-link" target="_blank" rel="noopener noreferrer">
+		Upgrade to Growth</a>
 		</div>
-		<div class="wpr-Upgrade-Infinite">
+		<div class="wpr-Upgrade-Multi">
 		<h3 class="wpr-upgrade-title">
-		Infinite</h3>
+		Multi</h3>
 		<div class="wpr-upgrade-prices">
 		<span class="wpr-upgrade-price-symbol">$</span> 200
 		</div>
 		<div class="wpr-upgrade-websites">Unlimited websites</div>
-		<a href="https://wp-rocket.me/checkout/upgrade/roger@wp-rocket.me%20/d89e18ee/infinite/" class="wpr-upgrade-link" target="_blank" rel="noopener noreferrer">
-		Upgrade to Infinite</a>
+		<a href="https://multi10upgradeurl.com/" class="wpr-upgrade-link" target="_blank" rel="noopener noreferrer">
+		Upgrade to Multi</a>
 		</div>
 		</div>
 		</div>
@@ -179,6 +227,21 @@ return [
 			'licence_expiration'    => strtotime( 'next year' ),
 			'upgrade_plus_url'      => 'https://wp-rocket.me/checkout/upgrade/roger@wp-rocket.me /d89e18ee/plus/',
 			'upgrade_infinite_url' => 'https://wp-rocket.me/checkout/upgrade/roger@wp-rocket.me /d89e18ee/infinite/',
+			'license' => [
+				'prices' => [
+					'upgrades' => [
+						(object) [
+							'name' => 'Multi',
+							'type' => 'multi10',
+							'saving' => "200",
+							'upgrade_url' => "https://multi10upgradeurl.com/",
+							'regular_price' => "x",
+							'websites' => "Unlimited",
+							'stacked' => true,
+						]
+					],
+				],
+			],
 		] ) ),
 		'pricing' => json_decode( json_encode( [
 			'licenses' => [
@@ -192,7 +255,7 @@ return [
 						],
 					],
 					'websites'    => 3,
-					
+
 				],
 				'infinite' => [
 					'prices'       => [
@@ -227,15 +290,15 @@ return [
 		N.B.</strong>
 		: Upgrading your license does not change your expiration date</p>
 		<div class="wpr-Popin-flex">
-		<div class="wpr-Upgrade-Infinite">
+		<div class="wpr-Upgrade-Multi">
 		<h3 class="wpr-upgrade-title">
-		Infinite</h3>
+		Multi</h3>
 		<div class="wpr-upgrade-prices">
-		<span class="wpr-upgrade-price-symbol">$</span> 150
+		<span class="wpr-upgrade-price-symbol">$</span> 200
 		</div>
 		<div class="wpr-upgrade-websites">Unlimited websites</div>
-		<a href="https://wp-rocket.me/checkout/upgrade/roger@wp-rocket.me%20/d89e18ee/infinite/" class="wpr-upgrade-link" target="_blank" rel="noopener noreferrer">
-		Upgrade to Infinite</a>
+		<a href="https://multi10upgradeurl.com/" class="wpr-upgrade-link" target="_blank" rel="noopener noreferrer">
+		Upgrade to Multi</a>
 		</div>
 		</div>
 		</div>

@@ -115,6 +115,15 @@ return [
 				'licence_account'    => 1,
 				'licence_expiration' => strtotime( 'next year' ),
 				'date_created'      => strtotime( 'last year' ),
+				'license' => [
+					'prices' => [
+						'upgrades' => [
+							(object) [
+								"name"=> "Growth",
+							]
+						],
+					],
+				],
 			] ) ),
 			'pricing' => json_decode( json_encode( [
 				'promo' => [
