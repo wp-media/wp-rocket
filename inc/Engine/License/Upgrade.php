@@ -329,7 +329,7 @@ class Upgrade extends Abstract_Render {
 		foreach ( $this->user->get_available_upgrades() as $available_upgrade ) {
 			$upgrade_data = $this->get_generic_upgrade_data( $available_upgrade );
 
-			if ( ! empty( $available_upgrade->stack ) ) {
+			if ( ! empty( $available_upgrade->stack ) && ! empty( $available_upgrade->type ) ) {
 				if ( ! isset( $choices['stacked'] ) ) {
 					$choices['stacked'] = [];
 				}
