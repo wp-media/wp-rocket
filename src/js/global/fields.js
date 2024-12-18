@@ -352,4 +352,35 @@ $(document).ready(function(){
 			$(checkbox).attr('checked', not_checked <= 0 ? 'checked' : null );
 		});
 	}
+
+	if ( $( '#rocket_stacked_select' ).length > 0 ) {
+		$( '#rocket_stacked_select' ).change( function() {
+			let selected_option = $('option:selected', this);
+
+			let name = selected_option.data('name');
+			let saving = selected_option.data('saving');
+			let regular_price  = selected_option.data('regular-price');
+			let price  = selected_option.data('price');
+			let url    = selected_option.data('url');
+
+			let parent_item = $(this).parents( '.wpr-upgrade-item' );
+
+			if ( saving ) {
+				parent_item.find( '.wpr-upgrade-saving span' ).html( saving );
+			}
+			if ( name ) {
+				parent_item.find( '.wpr-upgrade-title' ).html( name );
+			}
+			if ( regular_price ) {
+				parent_item.find( '.wpr-upgrade-price-regular span' ).html( regular_price );
+			}
+			if ( price ) {
+				parent_item.find( '.wpr-upgrade-price-value' ).html( price );
+			}
+			if ( url ) {
+				parent_item.find( '.wpr-upgrade-link' ).attr( 'href', url );
+			}
+
+		} );
+	}
 });
