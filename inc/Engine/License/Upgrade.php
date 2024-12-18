@@ -223,7 +223,7 @@ class Upgrade extends Abstract_Render {
 	 * Get upgrade types
 	 *
 	 * @return array
-	*/
+	 */
 	private function get_upgrade_types(): array {
 		$types = [];
 		foreach ( $this->get_upgrade_choices() as $choice_key => $choice ) {
