@@ -50,7 +50,7 @@ class DisplayPromoBanner extends TestCase {
 
 		$this->user->shouldReceive( 'get_available_upgrades' )
 			->atMost()
-			->once()
+			->twice()
 			->andReturn( $config['upgrades'] ?? [] );
 
 		$this->user->shouldReceive( 'get_license_expiration' )
@@ -65,7 +65,7 @@ class DisplayPromoBanner extends TestCase {
 
 		$this->pricing->shouldReceive( 'is_promo_active' )
 			->atMost()
-			->once()
+			->twice()
 			->andReturn( $config['promo_active'] );
 
 		Functions\when( 'get_current_user_id' )->justReturn( 1 );
@@ -91,7 +91,7 @@ class DisplayPromoBanner extends TestCase {
 				->twice()
 				->andReturn( $config['pricing']['plus']['websites'] );
 
-			Functions\when( '_n' )
+			Functions\when( 'esc_html__' )
 				->justReturn( $config['message'] );
 
 			$this->pricing->shouldReceive( 'get_promo_end' )
