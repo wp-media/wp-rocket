@@ -28,13 +28,19 @@ $data = isset( $data ) ? $data : []; // phpcs:ignore WordPress.NamingConventions
 		?>
 		</p>
 		<div class="wpr-Popin-flex">
-			<?php foreach ( $data['upgrades'] as $rocket_upgrade_type => $rocket_upgrade ) {
-				echo $this->generate( 'upgrade-item', [
-					'type' => $rocket_upgrade_type,
-					'item' => $rocket_upgrade,
-					'is_promo_active' => $data['is_promo_active'],
-				] );
-			} ?>
+			<?php
+			foreach ( $data['upgrades'] as $rocket_upgrade_type => $rocket_upgrade ) {
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo $this->generate(
+					'upgrade-item',
+					[
+						'type'            => $rocket_upgrade_type,
+						'item'            => $rocket_upgrade,
+						'is_promo_active' => $data['is_promo_active'],
+					]
+				);
+			}
+			?>
 		</div>
 	</div>
 </div>
