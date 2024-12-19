@@ -1,3 +1,5 @@
+import '../custom/custom-select.js';
+
 var $ = jQuery;
 $(document).ready(function(){
 
@@ -351,5 +353,39 @@ $(document).ready(function(){
 			let not_checked = parent_list.find( '.wpr-list-body input[type=checkbox]:not(:checked)' ).length;
 			$(checkbox).attr('checked', not_checked <= 0 ? 'checked' : null );
 		});
+	}
+
+	let stacked_select = document.getElementById( 'rocket_stacked_select' );
+	if ( stacked_select ) {
+		stacked_select.addEventListener('custom-select-change',function(event){
+			console.log(event.detail.selectedOption);
+			let selected_option = $( event.detail.selectedOption );
+
+			let name = selected_option.data('name');
+			console.log(name);
+			let saving = selected_option.data('saving');
+			let regular_price  = selected_option.data('regular-price');
+			let price  = selected_option.data('price');
+			let url    = selected_option.data('url');
+
+			let parent_item = $(this).parents( '.wpr-upgrade-item' );
+
+			if ( saving ) {
+				parent_item.find( '.wpr-upgrade-saving span' ).html( saving );
+			}
+			if ( name ) {
+				parent_item.find( '.wpr-upgrade-title' ).html( name );
+			}
+			if ( regular_price ) {
+				parent_item.find( '.wpr-upgrade-price-regular span' ).html( regular_price );
+			}
+			if ( price ) {
+				parent_item.find( '.wpr-upgrade-price-value' ).html( price );
+			}
+			if ( url ) {
+				parent_item.find( '.wpr-upgrade-link' ).attr( 'href', url );
+			}
+
+		} );
 	}
 });

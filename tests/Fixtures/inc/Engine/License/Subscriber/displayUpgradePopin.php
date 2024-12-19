@@ -23,26 +23,26 @@ return [
 			'licence_expiration'    => strtotime( 'next year' ),
 			'upgrade_plus_url'      => 'https://wp-rocket.me/checkout/upgrade/roger@wp-rocket.me /d89e18ee/plus/',
 			'upgrade_infinite_url' => 'https://wp-rocket.me/checkout/upgrade/roger@wp-rocket.me /d89e18ee/infinite/',
-			'license' => [
+			'licence' => [
 				'prices' => [
 					'upgrades' => [
 						(object) [
 							'name' => 'Growth',
-							'type' => 'growth',
+							'slug' => 'growth',
 							'saving' => "50",
 							'upgrade_url' => "https://growthupgradeurl.com/",
 							'regular_price' => "x",
 							'websites' => "3",
-							'stacked' => false,
+							'stack' => false,
 						],
 						(object) [
 							'name' => 'Multi',
-							'type' => 'multi10',
+							'slug' => 'multi10',
 							'saving' => "200",
 							'upgrade_url' => "https://multi10upgradeurl.com/",
 							'regular_price' => "x",
 							'websites' => "Unlimited",
-							'stacked' => true,
+							'stack' => true,
 						]
 					],
 				],
@@ -95,23 +95,46 @@ return [
 		N.B.</strong>
 		: Upgrading your license does not change your expiration date</p>
 		<div class="wpr-Popin-flex">
-		<div class="wpr-Upgrade-Growth">
+		<div class="wpr-upgrade-item wpr-Upgrade-Growth">
 		<h3 class="wpr-upgrade-title">
 		Growth</h3>
 		<div class="wpr-upgrade-prices">
-		<span class="wpr-upgrade-price-symbol">$</span> 50</div>
-		<div class="wpr-upgrade-websites">
+		<span class="wpr-upgrade-price-symbol">$</span> <span class="wpr-upgrade-price-value">50</span></div>
+		<div class="wpr-upgrade-websites
+			notstacked">
 		3 websites</div>
 		<a href="https://growthupgradeurl.com/" class="wpr-upgrade-link" target="_blank" rel="noopener noreferrer">
 		Upgrade to Growth</a>
 		</div>
-		<div class="wpr-Upgrade-Multi">
+		<div class="wpr-upgrade-item wpr-Upgrade-Multi">
 		<h3 class="wpr-upgrade-title">
 		Multi</h3>
 		<div class="wpr-upgrade-prices">
-		<span class="wpr-upgrade-price-symbol">$</span> 200
+		<span class="wpr-upgrade-price-symbol">$</span> <span class="wpr-upgrade-price-value">
+200</span>
 		</div>
-		<div class="wpr-upgrade-websites">Unlimited websites</div>
+		<div class="wpr-upgrade-websites
+	">
+<div class="custom-select" id="rocket_stacked_select">
+<button class="select-button" role="combobox" aria-label="select button" aria-haspopup="listbox" aria-expanded="false" aria-controls="select-dropdown">
+<span class="selected-value has-style-bold">
+Unlimited Websites</span>
+<span class="custom-select-arrow">
+</span>
+</button>
+<ul class="select-dropdown" role="listbox" id="select-dropdown">
+<li role="option"
+					data-name="Multi"
+					data-price="200"
+					data-url="https://multi10upgradeurl.com/"
+									>
+<input type="radio" id="plan_multi10" name="multi-plans"/>
+<label for="multi50">
+Unlimited Websites</label>
+</li>
+</ul>
+</div>
+</div>
 		<a href="https://multi10upgradeurl.com/" class="wpr-upgrade-link" target="_blank" rel="noopener noreferrer">
 		Upgrade to Multi</a>
 		</div>
@@ -125,26 +148,26 @@ return [
 			'licence_expiration'    => strtotime( 'next year' ),
 			'upgrade_plus_url'      => 'https://wp-rocket.me/checkout/upgrade/roger@wp-rocket.me /d89e18ee/plus/',
 			'upgrade_infinite_url' => 'https://wp-rocket.me/checkout/upgrade/roger@wp-rocket.me /d89e18ee/infinite/',
-			'license' => [
+			'licence' => [
 				'prices' => [
 					'upgrades' => [
 						(object) [
 							'name' => 'Growth',
-							'type' => 'growth',
+							'slug' => 'growth',
 							'saving' => "50",
 							'upgrade_url' => "https://growthupgradeurl.com/",
 							'regular_price' => "x",
 							'websites' => "3",
-							'stacked' => false,
+							'stack' => false,
 						],
 						(object) [
 							'name' => 'Multi',
-							'type' => 'multi10',
+							'slug' => 'multi10',
 							'saving' => "200",
 							'upgrade_url' => "https://multi10upgradeurl.com/",
 							'regular_price' => "x",
 							'websites' => "Unlimited",
-							'stacked' => true,
+							'stack' => true,
 						]
 					],
 				],
@@ -197,23 +220,46 @@ return [
 		N.B.</strong>
 		: Upgrading your license does not change your expiration date</p>
 		<div class="wpr-Popin-flex">
-		<div class="wpr-Upgrade-Growth">
+		<div class="wpr-upgrade-item wpr-Upgrade-Growth">
 		<h3 class="wpr-upgrade-title">
 		Growth</h3>
 		<div class="wpr-upgrade-prices">
-		<span class="wpr-upgrade-price-symbol">$</span> 50</div>
-		<div class="wpr-upgrade-websites">
+		<span class="wpr-upgrade-price-symbol">$</span> <span class="wpr-upgrade-price-value">50</span></div>
+		<div class="wpr-upgrade-websites
+			notstacked">
 		3 websites</div>
 		<a href="https://growthupgradeurl.com/" class="wpr-upgrade-link" target="_blank" rel="noopener noreferrer">
 		Upgrade to Growth</a>
 		</div>
-		<div class="wpr-Upgrade-Multi">
+		<div class="wpr-upgrade-item wpr-Upgrade-Multi">
 		<h3 class="wpr-upgrade-title">
 		Multi</h3>
 		<div class="wpr-upgrade-prices">
-		<span class="wpr-upgrade-price-symbol">$</span> 200
+		<span class="wpr-upgrade-price-symbol">$</span> <span class="wpr-upgrade-price-value">
+200</span>
 		</div>
-		<div class="wpr-upgrade-websites">Unlimited websites</div>
+		<div class="wpr-upgrade-websites
+	">
+<div class="custom-select" id="rocket_stacked_select">
+<button class="select-button" role="combobox" aria-label="select button" aria-haspopup="listbox" aria-expanded="false" aria-controls="select-dropdown">
+<span class="selected-value has-style-bold">
+Unlimited Websites</span>
+<span class="custom-select-arrow">
+</span>
+</button>
+<ul class="select-dropdown" role="listbox" id="select-dropdown">
+<li role="option"
+					data-name="Multi"
+					data-price="200"
+					data-url="https://multi10upgradeurl.com/"
+									>
+<input type="radio" id="plan_multi10" name="multi-plans"/>
+<label for="multi50">
+Unlimited Websites</label>
+</li>
+</ul>
+</div>
+</div>
 		<a href="https://multi10upgradeurl.com/" class="wpr-upgrade-link" target="_blank" rel="noopener noreferrer">
 		Upgrade to Multi</a>
 		</div>
@@ -227,17 +273,17 @@ return [
 			'licence_expiration'    => strtotime( 'next year' ),
 			'upgrade_plus_url'      => 'https://wp-rocket.me/checkout/upgrade/roger@wp-rocket.me /d89e18ee/plus/',
 			'upgrade_infinite_url' => 'https://wp-rocket.me/checkout/upgrade/roger@wp-rocket.me /d89e18ee/infinite/',
-			'license' => [
+			'licence' => [
 				'prices' => [
 					'upgrades' => [
 						(object) [
 							'name' => 'Multi',
-							'type' => 'multi10',
+							'slug' => 'multi10',
 							'saving' => "200",
 							'upgrade_url' => "https://multi10upgradeurl.com/",
 							'regular_price' => "x",
 							'websites' => "Unlimited",
-							'stacked' => true,
+							'stack' => true,
 						]
 					],
 				],
@@ -290,13 +336,35 @@ return [
 		N.B.</strong>
 		: Upgrading your license does not change your expiration date</p>
 		<div class="wpr-Popin-flex">
-		<div class="wpr-Upgrade-Multi">
+		<div class="wpr-upgrade-item wpr-Upgrade-Multi">
 		<h3 class="wpr-upgrade-title">
 		Multi</h3>
 		<div class="wpr-upgrade-prices">
-		<span class="wpr-upgrade-price-symbol">$</span> 200
+		<span class="wpr-upgrade-price-symbol">$</span> <span class="wpr-upgrade-price-value">
+200</span>
 		</div>
-		<div class="wpr-upgrade-websites">Unlimited websites</div>
+		<div class="wpr-upgrade-websites
+	">
+<div class="custom-select" id="rocket_stacked_select">
+<button class="select-button" role="combobox" aria-label="select button" aria-haspopup="listbox" aria-expanded="false" aria-controls="select-dropdown">
+<span class="selected-value has-style-bold">
+Unlimited Websites</span>
+<span class="custom-select-arrow">
+</span>
+</button>
+<ul class="select-dropdown" role="listbox" id="select-dropdown">
+<li role="option"
+					data-name="Multi"
+					data-price="200"
+					data-url="https://multi10upgradeurl.com/"
+									>
+<input type="radio" id="plan_multi10" name="multi-plans"/>
+<label for="multi50">
+Unlimited Websites</label>
+</li>
+</ul>
+</div>
+</div>
 		<a href="https://multi10upgradeurl.com/" class="wpr-upgrade-link" target="_blank" rel="noopener noreferrer">
 		Upgrade to Multi</a>
 		</div>

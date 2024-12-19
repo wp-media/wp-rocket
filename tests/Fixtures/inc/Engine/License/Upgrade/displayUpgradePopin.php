@@ -28,7 +28,7 @@ return [
 			'upgrades' => [
 				(object) [
 					'name' => 'Growth',
-					'type' => 'growth',
+					'slug' => 'growth',
 					'saving' => "x",
 					'upgrade_url' => "x",
 					'regular_price' => "x",
@@ -57,7 +57,7 @@ return [
 			'upgrades' => [
 				(object) [
 					'name' => 'Growth',
-					'type' => 'growth',
+					'slug' => 'growth',
 					'saving' => "40",
 					'upgrade_url' => "x",
 					'regular_price' => "50",
@@ -88,7 +88,7 @@ return [
 			'upgrades' => [
 				(object) [
 					'name' => 'Growth',
-					'type' => 'growth',
+					'slug' => 'growth',
 					'saving' => "x",
 					'upgrade_url' => "x",
 					'regular_price' => "x",
@@ -117,7 +117,7 @@ return [
 			'upgrades' => [
 				(object) [
 					'name' => 'Growth',
-					'type' => 'growth',
+					'slug' => 'growth',
 					'saving' => "40",
 					'upgrade_url' => "x",
 					'regular_price' => "50",
@@ -148,7 +148,7 @@ return [
 			'upgrades' => [
 				(object) [
 					'name' => 'Growth',
-					'type' => 'growth',
+					'slug' => 'growth',
 					'saving' => "x",
 					'upgrade_url' => "x",
 					'regular_price' => "x",
@@ -177,7 +177,7 @@ return [
 			'upgrades' => [
 				(object) [
 					'name' => 'Growth',
-					'type' => 'growth',
+					'slug' => 'growth',
 					'saving' => "40",
 					'upgrade_url' => "x",
 					'regular_price' => "50",

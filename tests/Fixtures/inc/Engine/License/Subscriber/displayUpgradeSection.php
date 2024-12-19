@@ -19,7 +19,7 @@ return [
 		'data'   => json_decode( json_encode( [
 			'licence_account'    => 1,
 			'licence_expiration' => strtotime( 'next year' ),
-			'license' => [
+			'licence' => [
 				'prices' => [
 					'upgrades' => [
 						(object) [

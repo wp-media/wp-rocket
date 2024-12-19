@@ -140,9 +140,9 @@ class User {
 	 * @return array
 	 */
 	public function get_available_upgrades() {
-		if ( empty( $this->user->license->prices->upgrades ) ) {
+		if ( empty( $this->user->licence->prices->upgrades ) ) {
 			return [];
 		}
-		return (array) $this->user->license->prices->upgrades;
+		return (array) $this->user->licence->prices->upgrades;
 	}
 }
