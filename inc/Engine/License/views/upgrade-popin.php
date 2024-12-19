@@ -34,9 +34,9 @@ $data = isset( $data ) ? $data : []; // phpcs:ignore WordPress.NamingConventions
 				echo $this->generate(
 					'upgrade-item',
 					[
-						'type'            => $rocket_upgrade_type,
-						'item'            => $rocket_upgrade,
-						'is_promo_active' => $data['is_promo_active'],
+						'type'            => $rocket_upgrade_type, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+						'item'            => $rocket_upgrade, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+						'is_promo_active' => $data['is_promo_active'], // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 					]
 				);
 			}
