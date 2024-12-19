@@ -63,7 +63,7 @@ class Data extends AbstractASQueue {
 			return;
 		}
 
-		$fonts = new RecursiveIteratorIterator( new RecursiveDirectoryIterator( $this->base_path ) );
+		$fonts = new RecursiveIteratorIterator( new RecursiveDirectoryIterator( $this->base_path . 'google-fonts/fonts/' ) );
 
 		$allowed_extensions = [
 			'woff',
