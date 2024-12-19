@@ -15,9 +15,7 @@ class Termly implements Subscriber_Interface {
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
-		$termly_version = defined( 'TERMLY_VERSION' );
-
-		if ( ! $termly_version ) {
+		if ( ! defined( 'TERMLY_VERSION' ) ) {
 			return [];
 		}
 
@@ -49,6 +47,10 @@ class Termly implements Subscriber_Interface {
 	 * @return array
 	 */
 	public function exclude_defer_js( array $exclude_delay_js ): array {
+		if ( ! $this->should_exclude() ) {
+			return $exclude_delay_js;
+		}
+
 		$exclude_delay_js[] = 'app.termly.io/resource-blocker/(.*)';
 
 		return $exclude_delay_js;
