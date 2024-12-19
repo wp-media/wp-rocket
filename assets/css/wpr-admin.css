@@ -1031,7 +1031,7 @@ a:focus, button:focus {
   }
 }
 
-.wpr-Upgrade-Plus .wpr-upgrade-title::before {
+.wpr-upgrade-item:first-child .wpr-upgrade-title::before {
   content: url(../img/plus.svg);
   display: block;
   width: 117px;
@@ -1042,7 +1042,7 @@ a:focus, button:focus {
   transform: translateX(-50%);
 }
 
-.wpr-Upgrade-Infinite .wpr-upgrade-title::before {
+.wpr-upgrade-item:nth-child(2) .wpr-upgrade-title::before {
   content: url(../img/infinite.svg);
   display: block;
   width: 48px;
