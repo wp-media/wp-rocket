@@ -43,6 +43,9 @@
 
 .wpr-Popin-Upgrade .wpr-Popin-flex {
 	justify-content: space-between;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-gap: 15px;
 }
 
 .wpr-Popin-Upgrade .wpr-Popin-flex > div {
@@ -51,18 +54,10 @@
 	border-radius: 3 * $space;
 	display: flex;
 	flex-direction: column;
-	margin: 0 2 * $space 0 0;
 	padding: 3 * $space;
 	text-align: center;
 	flex: 0.5;
-
-	&:last-child {
-		margin-right: 0;
-	}
-
-	&:first-child {
-		margin-right: 2 * $space;
-	}
+	margin: 0;
 
 	@include respond-to('xs') {
 		margin: 0;

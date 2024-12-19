@@ -1008,6 +1008,9 @@ a:focus, button:focus {
 
 .wpr-Popin-Upgrade .wpr-Popin-flex {
   justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 15px;
 }
 
 .wpr-Popin-Upgrade .wpr-Popin-flex > div {
@@ -1016,16 +1019,10 @@ a:focus, button:focus {
   border-radius: 24px;
   display: flex;
   flex-direction: column;
-  margin: 0 16px 0 0;
   padding: 24px;
   text-align: center;
   flex: 0.5;
-}
-.wpr-Popin-Upgrade .wpr-Popin-flex > div:last-child {
-  margin-right: 0;
-}
-.wpr-Popin-Upgrade .wpr-Popin-flex > div:first-child {
-  margin-right: 16px;
+  margin: 0;
 }
 @media (max-width: 783px) {
   .wpr-Popin-Upgrade .wpr-Popin-flex > div {
@@ -3194,7 +3191,7 @@ div.wpr-tutorial-item {
   list-style: none;
   width: 100%;
   border: 1px solid #caced1;
-  padding: 10px;
+  padding: 10px 0;
   margin-top: 10px;
   max-height: 200px;
   overflow-y: auto;
