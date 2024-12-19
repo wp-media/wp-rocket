@@ -62,7 +62,7 @@ class Combine extends AbstractGFOptimization {
 		$filtered_fonts = array_filter(
 			$fonts,
 			function ( $font ) use ( $exclusions ) {
-				return ! $this->is_excluded( $font['url'], $exclusions );
+				return ! $this->is_excluded( $font[0], $exclusions );
 			}
 			);
 
