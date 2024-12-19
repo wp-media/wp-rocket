@@ -227,7 +227,7 @@ class Upgrade extends Abstract_Render {
 	private function get_upgrade_types(): array {
 		$types = [];
 		foreach ( $this->get_upgrade_choices() as $choice_key => $choice ) {
-			$types[] = 'stacked' === $choice_key ? $choice[0]['name'] : $choice['name'];
+			$types[] = 'stacked' === $choice_key ? end( $choice )['name'] : $choice['name'];
 		}
 
 		return $types;
