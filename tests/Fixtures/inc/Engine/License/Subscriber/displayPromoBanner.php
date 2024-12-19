@@ -109,7 +109,7 @@ return [
 				'licence_account'    => 1,
 				'licence_expiration' => strtotime( 'next year' ),
 				'date_created'      => strtotime( 'last year' ),
-				'license' => [
+				'licence' => [
 					'prices' => [
 						'upgrades' => [
 							(object) [
@@ -119,7 +119,7 @@ return [
 								'upgrade_url' => "https://growthupgradeurl.com/",
 								'regular_price' => 200,
 								'websites' => "3",
-								'stacked' => false,
+								'stack' => false,
 							]
 						],
 					],
@@ -207,7 +207,7 @@ return [
 				'licence_account'    => 3,
 				'licence_expiration' => strtotime( 'next year' ),
 				'date_created'      => strtotime( 'last year' ),
-				'license' => [
+				'licence' => [
 					'prices' => [
 						'upgrades' => [
 							(object) [
@@ -217,7 +217,7 @@ return [
 								'upgrade_url' => "https://growthupgradeurl.com/",
 								'regular_price' => 200,
 								'websites' => "3",
-								'stacked' => false,
+								'stack' => false,
 							]
 						],
 					],

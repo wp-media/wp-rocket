@@ -109,7 +109,7 @@ return [
 				'licence_account'    => 1,
 				'licence_expiration' => strtotime( 'next year' ),
 				'date_created'      => strtotime( 'last year' ),
-				'license' => [
+				'licence' => [
 					'prices' => [
 						'upgrades' => [
 							(object) [
