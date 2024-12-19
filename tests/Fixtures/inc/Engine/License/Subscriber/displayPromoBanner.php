@@ -114,7 +114,7 @@ return [
 						'upgrades' => [
 							(object) [
 								'name' => 'Growth',
-								'type' => 'growth',
+								'slug' => 'growth',
 								'saving' => 150,
 								'upgrade_url' => "https://growthupgradeurl.com/",
 								'regular_price' => 200,
@@ -212,7 +212,7 @@ return [
 						'upgrades' => [
 							(object) [
 								'name' => 'Multi',
-								'type' => 'multi100',
+								'slug' => 'multi100',
 								'saving' => 150,
 								'upgrade_url' => "https://growthupgradeurl.com/",
 								'regular_price' => 200,

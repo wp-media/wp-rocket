@@ -22,7 +22,7 @@ return [
 			'upgrades' => [
 				(object) [
 					'name' => 'Growth',
-					'type' => 'growth',
+					'slug' => 'growth',
 					'saving' => "40",
 					'upgrade_url' => "x",
 					'regular_price' => "50",

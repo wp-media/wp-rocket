@@ -28,7 +28,7 @@ return [
 					'upgrades' => [
 						(object) [
 							'name' => 'Growth',
-							'type' => 'growth',
+							'slug' => 'growth',
 							'saving' => "50",
 							'upgrade_url' => "https://growthupgradeurl.com/",
 							'regular_price' => "x",
@@ -130,7 +130,7 @@ return [
 					'upgrades' => [
 						(object) [
 							'name' => 'Growth',
-							'type' => 'growth',
+							'slug' => 'growth',
 							'saving' => "50",
 							'upgrade_url' => "https://growthupgradeurl.com/",
 							'regular_price' => "x",
@@ -232,7 +232,7 @@ return [
 					'upgrades' => [
 						(object) [
 							'name' => 'Multi',
-							'type' => 'multi10',
+							'slug' => 'multi10',
 							'saving' => "200",
 							'upgrade_url' => "https://multi10upgradeurl.com/",
 							'regular_price' => "x",
