@@ -47,6 +47,15 @@ class Data extends AbstractASQueue {
 	}
 
 	/**
+	 * Unschedule data collection.
+	 *
+	 * @return void
+	 */
+	public function unschedule_data_collection() {
+		$this->cancel( 'rocket_fonts_data_collection' );
+	}
+
+	/**
 	 * Collect data.
 	 *
 	 * @return void

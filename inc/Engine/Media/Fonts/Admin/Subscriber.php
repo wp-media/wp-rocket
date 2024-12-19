@@ -45,6 +45,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_input_sanitize'        => [ 'sanitize_option', 10, 2 ],
 			'admin_init'                   => 'schedule_data_collection',
 			'rocket_fonts_data_collection' => 'collect_data',
+			'rocket_deactivation'          => 'unschedule_data_collection',
 		];
 	}
 
@@ -78,6 +79,15 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function schedule_data_collection() {
 		$this->data->schedule_data_collection();
+	}
+
+	/**
+	 * Unschedule data collection
+	 *
+	 * @return void
+	 */
+	public function unschedule_data_collection() {
+		$this->data->unschedule_data_collection();
 	}
 
 	/**
