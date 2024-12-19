@@ -151,7 +151,8 @@ return [
 				],
 				'exclude_locally_host_fonts' => [
 					'family=Rob(.*)o',
-					'family(.*)Montserrat(.*)display=swap'
+					'family(.*)Montserrat(.*)display=swap',
+					'astra-google-(.*)-css',
 				]
 			],
 			'expected' => [

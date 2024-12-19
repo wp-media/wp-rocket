@@ -12,6 +12,7 @@
 <link href="https://fonts.googleapis.com/css?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+<link rel='stylesheet' id='astra-google-fonts-css' href='https://fonts.googleapis.com/css?family=Noto+Sans%3A400%2C700%7CMontserrat%3A700&#038;display=fallback&#038;ver=4.7.0' media='all' />
 <style>
 .roboto-font {
 	font-family: 'Roboto', sans-serif;
