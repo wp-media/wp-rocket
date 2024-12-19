@@ -3,11 +3,12 @@
  * Upgrade section template.
  *
  * @since 3.7.3
+ *
+ * @var array $data
+ * @var object $this
  */
 
 defined( 'ABSPATH' ) || exit;
-
-$data = isset( $data ) ? $data : []; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 ?>
 <div class="wpr-Popin wpr-Popin-Upgrade">
 	<div class="wpr-Popin-header">

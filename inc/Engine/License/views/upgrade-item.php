@@ -1,6 +1,8 @@
 <?php
 /**
  * Upgrade item template.
+ *
+ * @var array $data
  */
 
 defined( 'ABSPATH' ) || exit;
