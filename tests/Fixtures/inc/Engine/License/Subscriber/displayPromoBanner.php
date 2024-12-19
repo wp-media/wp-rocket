@@ -113,7 +113,13 @@ return [
 					'prices' => [
 						'upgrades' => [
 							(object) [
-								"name"=> "Growth",
+								'name' => 'Growth',
+								'type' => 'growth',
+								'saving' => 150,
+								'upgrade_url' => "https://growthupgradeurl.com/",
+								'regular_price' => 200,
+								'websites' => "3",
+								'stacked' => false,
 							]
 						],
 					],
@@ -162,7 +168,7 @@ return [
 		get a<strong>
 		20% off</strong>
 		for<strong>
-		upgrading your license to Plus or Infinite!</strong>
+		upgrading your license to Growth!</strong>
 		</p>
 		</div>
 		<div class="rocket-promo-cta-block">
@@ -205,7 +211,13 @@ return [
 					'prices' => [
 						'upgrades' => [
 							(object) [
-								"name"=> "Growth",
+								'name' => 'Multi',
+								'type' => 'multi100',
+								'saving' => 150,
+								'upgrade_url' => "https://growthupgradeurl.com/",
+								'regular_price' => 200,
+								'websites' => "3",
+								'stacked' => false,
 							]
 						],
 					],
@@ -254,7 +266,7 @@ return [
 		get a<strong>
 		20% off</strong>
 		for<strong>
-		upgrading your license to Infinite!</strong>
+		upgrading your license to Multi!</strong>
 		</p>
 		</div>
 		<div class="rocket-promo-cta-block">
