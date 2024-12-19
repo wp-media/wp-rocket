@@ -12,6 +12,7 @@
 <link href="https://fonts.googleapis.com/css?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="http://example.org/wp-content/cache/fonts/1/google-fonts/css/b/4/d/9ffca0114d3acb6ab0b068feaf933.css" data-wpr-hosted-gf-parameters="family=Lato:wght@400;700&display=swap"/>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+<link rel='stylesheet' id='astra-google-fonts-css' href='https://fonts.googleapis.com/css?family=Noto+Sans%3A400%2C700%7CMontserrat%3A700&#038;display=fallback&#038;ver=4.7.0' media='all' />
 <style>
 .roboto-font {
 	font-family: 'Roboto', sans-serif;

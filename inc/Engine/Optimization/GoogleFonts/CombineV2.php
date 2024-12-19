@@ -45,7 +45,7 @@ class CombineV2 extends AbstractGFOptimization {
 		$filtered_tags = array_filter(
 			$font_tags,
 			function ( $tag ) use ( $exclusions ) {
-				return ! $this->is_excluded( $tag['url'], $exclusions );
+				return ! $this->is_excluded( $tag[0], $exclusions );
 			}
 			);
 

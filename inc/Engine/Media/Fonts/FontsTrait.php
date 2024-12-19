@@ -22,14 +22,14 @@ trait FontsTrait {
 	}
 
 	/**
-	 * Checks if a URL is excluded based on the provided exclusions.
+	 * Checks if a font is excluded based on the provided exclusions.
 	 *
-	 * @param string   $url        The URL to check.
+	 * @param string   $subject    The string to check.
 	 * @param string[] $exclusions The list of exclusions.
 	 *
 	 * @return bool True if the URL is excluded, false otherwise.
 	 */
-	protected function is_excluded( string $url, array $exclusions ): bool {
+	protected function is_excluded( string $subject, array $exclusions ): bool {
 		// Bail out early if there are no exclusions.
 		if ( empty( $exclusions ) ) {
 			return false;
@@ -53,6 +53,6 @@ trait FontsTrait {
 		$exclusions_str = implode( '|', $escaped_exclusions );
 
 		// Check the URL against the combined regex pattern.
-		return (bool) preg_match( '#(' . $exclusions_str . ')#i', $url );
+		return (bool) preg_match( '#(' . $exclusions_str . ')#i', $subject );
 	}
 }
