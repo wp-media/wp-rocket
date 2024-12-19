@@ -130,16 +130,6 @@ div.wpr-upgrade-websites {
 	font-weight: bold;
 	margin: 0 0 3 * $space 0;
 	width: 100%;
-	&.notstacked {
-		margin: 10px auto 40px;
-	}
-	select {
-		padding: .4rem;
-		border: 1px solid #caced1;
-		border-radius: 1rem;
-		width: 100%;
-		text-align: center;
-	}
 }
 
 .wpr-upgrade-link {

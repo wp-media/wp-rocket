@@ -1,3 +1,5 @@
+import '../custom/custom-select.js';
+
 var $ = jQuery;
 $(document).ready(function(){
 
@@ -353,11 +355,14 @@ $(document).ready(function(){
 		});
 	}
 
-	if ( $( '#rocket_stacked_select' ).length > 0 ) {
-		$( '#rocket_stacked_select' ).change( function() {
-			let selected_option = $('option:selected', this);
+	let stacked_select = document.getElementById( 'rocket_stacked_select' );
+	if ( stacked_select ) {
+		stacked_select.addEventListener('custom-select-change',function(event){
+			console.log(event.detail.selectedOption);
+			let selected_option = $( event.detail.selectedOption );
 
 			let name = selected_option.data('name');
+			console.log(name);
 			let saving = selected_option.data('saving');
 			let regular_price  = selected_option.data('regular-price');
 			let price  = selected_option.data('price');

@@ -24,9 +24,14 @@ $initial_item = $data['type'] === 'stacked' ? reset($data['item']) : $data['item
 	</div>
 	<div class="wpr-upgrade-websites<?php if ( 'stacked' !== $data['type'] ) { ?> notstacked<?php } ?>">
 	<?php if ( 'stacked' === $data['type'] ) { ?>
-		<select id="rocket_stacked_select">
-			<?php foreach ( $data['item'] as $stacked_item_key => $stacked ) { ?>
-				<option
+		<div class="custom-select" id="rocket_stacked_select">
+			<button class="select-button" role="combobox" aria-label="select button" aria-haspopup="listbox" aria-expanded="false" aria-controls="select-dropdown">
+				<span class="selected-value has-style-bold"><?php echo esc_html( $initial_item['websites'] ) . ' ' . esc_html__( 'Websites', 'rocket' ); ?></span>
+				<span class="custom-select-arrow"></span>
+			</button>
+			<ul class="select-dropdown" role="listbox" id="select-dropdown">
+				<?php foreach ( $data['item'] as $stacked_item_key => $stacked ) { ?>
+				<li role="option"
 					data-name="<?php echo esc_attr( $stacked['name'] )?>"
 					data-price="<?php echo esc_attr( $stacked['price'] )?>"
 					data-url="<?php echo esc_url( $stacked['upgrade_url'] )?>"
@@ -34,10 +39,13 @@ $initial_item = $data['type'] === 'stacked' ? reset($data['item']) : $data['item
 						data-saving="<?php echo esc_attr( $stacked['saving'] )?>"
 						data-regular-price="<?php echo esc_attr( $stacked['regular_price'] )?>"
 					<?php } ?>
-					value="<?php echo esc_attr( $stacked_item_key )?>"
-				><?php echo esc_html( $stacked['websites'] ) . ' ' . esc_html__( 'Websites', 'rocket' ); ?></option>
-			<?php } ?>
-		</select>
+				>
+					<input type="radio" id="plan_<?php echo esc_attr( $stacked_item_key ); ?>" name="multi-plans"/>
+					<label for="multi50"><?php echo esc_html( $stacked['websites'] ) . ' ' . esc_html__( 'Websites', 'rocket' ); ?></label>
+				</li>
+				<?php } ?>
+			</ul>
+		</div>
 	<?php } else { ?>
 			<?php
 			// translators: %s = number of websites.
