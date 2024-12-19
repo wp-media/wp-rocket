@@ -4,9 +4,9 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Media\Fonts\Admin;
 
 use WP_Rocket\Engine\Admin\Settings\Settings;
+use WP_Rocket\Engine\Media\Fonts\Admin\Data;
 use WP_Rocket\Engine\Media\Fonts\Admin\Settings as FontsSettings;
 use WP_Rocket\Event_Management\Subscriber_Interface;
-
 
 class Subscriber implements Subscriber_Interface {
 	/**
@@ -17,12 +17,21 @@ class Subscriber implements Subscriber_Interface {
 	private $settings;
 
 	/**
+	 * Fonts Data instance
+	 *
+	 * @var Data
+	 */
+	private $data;
+
+	/**
 	 * Instantiate the class
 	 *
 	 * @param FontsSettings $settings Fonts Settings instance.
+	 * @param Data          $data     Fonts Data instance.
 	 */
-	public function __construct( FontsSettings $settings ) {
+	public function __construct( FontsSettings $settings, Data $data ) {
 		$this->settings = $settings;
+		$this->data     = $data;
 	}
 
 	/**
@@ -34,6 +43,8 @@ class Subscriber implements Subscriber_Interface {
 		return [
 			'rocket_first_install_options' => [ 'add_option', 16 ],
 			'rocket_input_sanitize'        => [ 'sanitize_option', 10, 2 ],
+			'admin_init'                   => 'schedule_data_collection',
+			'rocket_fonts_data_collection' => 'collect_data',
 		];
 	}
 
@@ -58,5 +69,23 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function sanitize_option( array $input, Settings $settings ): array {
 		return $this->settings->sanitize_option_value( $input, $settings );
+	}
+
+	/**
+	 * Schedule data collection
+	 *
+	 * @return void
+	 */
+	public function schedule_data_collection() {
+		$this->data->schedule_data_collection();
+	}
+
+	/**
+	 * Collect data
+	 *
+	 * @return void
+	 */
+	public function collect_data() {
+		$this->data->collect_data();
 	}
 }
