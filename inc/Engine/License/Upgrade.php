@@ -220,6 +220,20 @@ class Upgrade extends Abstract_Render {
 	}
 
 	/**
+	 * Get upgrade types
+	 *
+	 * @return array
+	 */
+	private function get_upgrade_types(): array {
+		$types = [];
+		foreach ( $this->get_upgrade_choices() as $choice_key => $choice ) {
+			$types[] = 'stacked' === $choice_key ? $choice[0]['name'] : $choice['name'];
+		}
+
+		return $types;
+	}
+
+	/**
 	 * Returns the promotion message to display in the banner
 	 *
 	 * @param string $promo_name     Name of the promotion.
@@ -228,33 +242,20 @@ class Upgrade extends Abstract_Render {
 	 * @return string
 	 */
 	private function get_promo_message( $promo_name = '', $promo_discount = 0 ) {
-		$choices       = 0;
-		$license       = $this->user->get_license_type();
-		$plus_websites = $this->pricing->get_plus_websites_count();
-
-		if ( $license === $plus_websites ) {
-			$choices = 2;
-		} elseif (
-			$license >= $this->pricing->get_single_websites_count()
-			&&
-			$license < $plus_websites
-			) {
-			$choices = 1;
-		}
+		$license_types = $this->get_upgrade_types();
 
 		return sprintf(
-			// translators: %1$s = promotion name, %2$s = <br>, %3$s = <strong>, %4$s = promotion discount percentage, %5$s = </strong>.
-			_n(
-				'Take advantage of %1$s to speed up more websites:%2$s get a %3$s%4$s off%5$s for %3$supgrading your license to Plus or Infinite!%5$s',
-				'Take advantage of %1$s to speed up more websites:%2$s get a %3$s%4$s off%5$s for %3$supgrading your license to Infinite!%5$s',
-				$choices,
+		// translators: %1$s = promotion name, %2$s = <br>, %3$s = <strong>, %4$s = promotion discount percentage, %5$s = </strong>, %6$s = Growth/Multi.
+			esc_html__(
+				'Take advantage of %1$s to speed up more websites:%2$s get a %3$s%4$s off%5$s for %3$supgrading your license to %6$s!%5$s',
 				'rocket'
 			),
 			$promo_name,
 			'<br>',
 			'<strong>',
 			$promo_discount . '%',
-			'</strong>'
+			'</strong>',
+			implode( ', ', $license_types ),
 		);
 	}
 
