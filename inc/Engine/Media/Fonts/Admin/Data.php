@@ -38,13 +38,13 @@ class Data extends AbstractASQueue {
 	 *
 	 * @return void
 	 */
-    public function schedule_data_collection() {
+	public function schedule_data_collection() {
 		if ( ! $this->is_enabled() ) {
 			return;
 		}
 
-        $this->schedule_recurring( time(), WEEK_IN_SECONDS, 'rocket_fonts_data_collection' );
-    }
+		$this->schedule_recurring( time(), WEEK_IN_SECONDS, 'rocket_fonts_data_collection' );
+	}
 
 	/**
 	 * Collect data.
@@ -71,11 +71,12 @@ class Data extends AbstractASQueue {
 			'ttf',
 			'otf',
 		];
+
 		$total_font_count = 0;
 		$total_font_size  = 0;
 
-		foreach( $fonts as $file ) {
-			//check file is not a directory.
+		foreach ( $fonts as $file ) {
+			// check file is not a directory.
 			if ( $file->isDir() ) {
 				continue;
 			}
@@ -83,15 +84,19 @@ class Data extends AbstractASQueue {
 			$extension = strtolower( pathinfo( $file->getFilename(), PATHINFO_EXTENSION ) );
 
 			if ( in_array( $extension, $allowed_extensions, true ) ) {
-				$total_font_count++;
+				++$total_font_count;
 				$total_font_size += $file->getSize();
 			}
 		}
 
-		set_transient( 'rocket_fonts_data_collection', [
-			'fonts_total_number' => $total_font_count,
-			'fonts_total_size'   => size_format( $total_font_size )
-		], WEEK_IN_SECONDS );
+		set_transient(
+			'rocket_fonts_data_collection',
+			[
+				'fonts_total_number' => $total_font_count,
+				'fonts_total_size'   => size_format( $total_font_size ),
+			],
+			WEEK_IN_SECONDS
+		);
 	}
 
 	/**
