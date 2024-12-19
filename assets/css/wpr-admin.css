@@ -1019,10 +1019,13 @@ a:focus, button:focus {
   margin: 0 16px 0 0;
   padding: 24px;
   text-align: center;
-  width: 50%;
+  flex: 0.5;
 }
 .wpr-Popin-Upgrade .wpr-Popin-flex > div:last-child {
   margin-right: 0;
+}
+.wpr-Popin-Upgrade .wpr-Popin-flex > div:first-child {
+  margin-right: 16px;
 }
 @media (max-width: 783px) {
   .wpr-Popin-Upgrade .wpr-Popin-flex > div {
@@ -1100,6 +1103,10 @@ div.wpr-upgrade-websites {
   font-weight: bold;
   margin: 0 0 24px 0;
   width: 100%;
+}
+div.wpr-upgrade-websites.notstacked {
+  padding: 16px 0;
+  margin: 0 0 16px;
 }
 
 .wpr-upgrade-link {
@@ -3198,6 +3205,7 @@ div.wpr-tutorial-item {
   transition: all 0.5s ease;
   transform: translateY(-20px);
   box-shadow: 0px 24px 40px rgba(0, 0, 0, 0.15);
+  font-weight: normal;
 }
 
 .select-dropdown:focus-within {
@@ -3211,6 +3219,9 @@ div.wpr-tutorial-item {
   gap: 1rem;
   align-items: center;
   justify-content: center;
+}
+.select-dropdown li:last-child {
+  margin-bottom: 0;
 }
 
 .select-dropdown li label {

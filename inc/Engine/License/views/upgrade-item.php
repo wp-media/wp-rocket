@@ -22,7 +22,7 @@ $rocket_initial_item = 'stacked' === $data['type'] ? reset( $data['item'] ) : $d
 			<del class="wpr-upgrade-price-regular">$ <span><?php echo esc_html( $rocket_initial_item['regular_price'] ); ?></span></del>
 		<?php } ?>
 	</div>
-	<div class="wpr-upgrade-websites">
+	<div class="wpr-upgrade-websites<?php if ( 'stacked' !== $data['type'] ) { ?> notstacked<?php } ?>">
 	<?php if ( 'stacked' === $data['type'] ) { ?>
 		<div class="custom-select" id="rocket_stacked_select">
 			<button class="select-button" role="combobox" aria-label="select button" aria-haspopup="listbox" aria-expanded="false" aria-controls="select-dropdown">

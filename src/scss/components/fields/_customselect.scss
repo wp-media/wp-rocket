@@ -47,6 +47,7 @@
 	transition: all .5s ease;
 	transform: translateY(-20px);
 	box-shadow: 0px 24px 40px rgba(0, 0, 0, 0.15);
+	font-weight: normal;
 }
 
 .select-dropdown:focus-within {
@@ -60,6 +61,9 @@
 	gap: 1rem;
 	align-items: center;
 	justify-content: center;
+	&:last-child {
+		margin-bottom: 0;
+	}
 }
 
 .select-dropdown li label {
