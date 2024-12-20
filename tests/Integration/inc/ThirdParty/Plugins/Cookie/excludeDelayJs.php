@@ -26,6 +26,6 @@ class Test_ExcludeDelayJs extends TestCase {
 			->once()
 			->andReturn( $config['termly_display_auto_blocker'] );
 
-		$this->assertSame( $expected, $termly->exclude_defer_js( $config['excluded'] ) );
+		$this->assertSame( $expected, $termly->exclude_termly_defer_and_delay_js( $config['excluded'] ) );
 	}
 }
