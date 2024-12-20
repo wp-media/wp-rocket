@@ -26,7 +26,7 @@ class Test_ExcludeDelayJs extends TestCase {
 			define( 'TERMLY_VERSION', '1.0' );
 		}
 
-		$container = wpm_apply_filters_typed( 'string', 'rocket_container', '' );
+		$container = wpm_apply_filters_typed('object', 'rocket_container', '' );
 
 		$this->event = $container->get( 'event_manager' );
 	}
