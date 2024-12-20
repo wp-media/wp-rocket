@@ -29,7 +29,7 @@ $rocket_initial_item = 'stacked' === $data['type'] ? reset( $data['item'] ) : $d
 	if ( 'stacked' !== $data['type'] ) {
 		?>
 		notstacked<?php } ?>">
-	<?php if ( 'stacked' === $data['type'] ) { ?>
+	<?php if ( 'stacked' === $data['type'] && 1 < count( $data['item'] ) ) { ?>
 		<div class="custom-select" id="rocket_stacked_select">
 			<button class="select-button" role="combobox" aria-label="select button" aria-haspopup="listbox" aria-expanded="false" aria-controls="select-dropdown">
 				<span class="selected-value has-style-bold"><?php echo esc_html( $rocket_initial_item['websites'] ) . ' ' . esc_html__( 'Websites', 'rocket' ); ?></span>
