@@ -10,7 +10,7 @@ use WP_Rocket\Engine\Media\Fonts\Admin\Data;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Media\Fonts\Admin\Data::collectData
+ * Test class covering  \WP_Rocket\Engine\Media\Fonts\Admin\Data::collect_data
  * @group  HostFontsLocally
  */
 class Test_CollectData extends FilesystemTestCase {
