@@ -10,7 +10,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group Termly
  */
 class Test_deferJs extends TestCase {
-	use ContentTrait;
+
 
 	private $defer_js;
 	private $exclude_defer_js;
@@ -47,7 +47,7 @@ class Test_deferJs extends TestCase {
 
 		$this->assertSame(
 			$expected,
-			apply_filters( 'rocket_buffer', $html )
+			wpm_apply_filters_typed('string', 'rocket_buffer', $html )
 		);
 	}
 
