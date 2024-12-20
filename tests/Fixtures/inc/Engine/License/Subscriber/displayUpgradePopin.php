@@ -29,21 +29,30 @@ return [
 						(object) [
 							'name' => 'Growth',
 							'slug' => 'growth',
-							'saving' => "50",
+							'saving' => "40",
 							'upgrade_url' => "https://growthupgradeurl.com/",
-							'regular_price' => "x",
+							'regular_price' => "50",
 							'websites' => "3",
 							'stack' => false,
 						],
 						(object) [
 							'name' => 'Multi',
 							'slug' => 'multi10',
-							'saving' => "200",
+							'saving' => "180",
 							'upgrade_url' => "https://multi10upgradeurl.com/",
-							'regular_price' => "x",
+							'regular_price' => "200",
 							'websites' => "Unlimited",
 							'stack' => true,
-						]
+						],
+						(object) [
+							'name' => 'Multi',
+							'slug' => 'multi50',
+							'saving' => "300",
+							'upgrade_url' => "https://multi50upgradeurl.com/",
+							'regular_price' => "350",
+							'websites' => "Unlimited",
+							'stack' => true,
+						],
 					],
 				],
 			],
@@ -129,6 +138,15 @@ Unlimited Websites</span>
 					data-url="https://multi10upgradeurl.com/"
 									>
 <input type="radio" id="plan_multi10" name="multi-plans"/>
+<label for="multi50">
+Unlimited Websites</label>
+</li>
+<li role="option"
+					data-name="Multi"
+					data-price="350"
+					data-url="https://multi50upgradeurl.com/"
+									>
+<input type="radio" id="plan_multi50" name="multi-plans"/>
 <label for="multi50">
 Unlimited Websites</label>
 </li>
@@ -154,21 +172,30 @@ Unlimited Websites</label>
 						(object) [
 							'name' => 'Growth',
 							'slug' => 'growth',
-							'saving' => "50",
+							'saving' => "40",
 							'upgrade_url' => "https://growthupgradeurl.com/",
-							'regular_price' => "x",
+							'regular_price' => "50",
 							'websites' => "3",
 							'stack' => false,
 						],
 						(object) [
 							'name' => 'Multi',
 							'slug' => 'multi10',
-							'saving' => "200",
+							'saving' => "180",
 							'upgrade_url' => "https://multi10upgradeurl.com/",
-							'regular_price' => "x",
+							'regular_price' => "200",
+							'websites' => "30",
+							'stack' => true,
+						],
+						(object) [
+							'name' => 'Multi',
+							'slug' => 'multi50',
+							'saving' => "300",
+							'upgrade_url' => "https://multi10upgradeurl.com/",
+							'regular_price' => "350",
 							'websites' => "Unlimited",
 							'stack' => true,
-						]
+						],
 					],
 				],
 			],
@@ -243,7 +270,7 @@ Unlimited Websites</label>
 <div class="custom-select" id="rocket_stacked_select">
 <button class="select-button" role="combobox" aria-label="select button" aria-haspopup="listbox" aria-expanded="false" aria-controls="select-dropdown">
 <span class="selected-value has-style-bold">
-Unlimited Websites</span>
+30 Websites</span>
 <span class="custom-select-arrow">
 </span>
 </button>
@@ -254,6 +281,15 @@ Unlimited Websites</span>
 					data-url="https://multi10upgradeurl.com/"
 									>
 <input type="radio" id="plan_multi10" name="multi-plans"/>
+<label for="multi50">
+30 Websites</label>
+</li>
+<li role="option"
+					data-name="Multi"
+					data-price="350"
+					data-url="https://multi10upgradeurl.com/"
+									>
+<input type="radio" id="plan_multi50" name="multi-plans"/>
 <label for="multi50">
 Unlimited Websites</label>
 </li>
@@ -279,12 +315,12 @@ Unlimited Websites</label>
 						(object) [
 							'name' => 'Multi',
 							'slug' => 'multi10',
-							'saving' => "200",
+							'saving' => "180",
 							'upgrade_url' => "https://multi10upgradeurl.com/",
-							'regular_price' => "x",
+							'regular_price' => "200",
 							'websites' => "Unlimited",
 							'stack' => true,
-						]
+						],
 					],
 				],
 			],
@@ -345,25 +381,7 @@ Unlimited Websites</label>
 		</div>
 		<div class="wpr-upgrade-websites
 	">
-<div class="custom-select" id="rocket_stacked_select">
-<button class="select-button" role="combobox" aria-label="select button" aria-haspopup="listbox" aria-expanded="false" aria-controls="select-dropdown">
-<span class="selected-value has-style-bold">
-Unlimited Websites</span>
-<span class="custom-select-arrow">
-</span>
-</button>
-<ul class="select-dropdown" role="listbox" id="select-dropdown">
-<li role="option"
-					data-name="Multi"
-					data-price="200"
-					data-url="https://multi10upgradeurl.com/"
-									>
-<input type="radio" id="plan_multi10" name="multi-plans"/>
-<label for="multi50">
-Unlimited Websites</label>
-</li>
-</ul>
-</div>
+Unlimited websites
 </div>
 		<a href="https://multi10upgradeurl.com/" class="wpr-upgrade-link" target="_blank" rel="noopener noreferrer">
 		Upgrade to Multi</a>
