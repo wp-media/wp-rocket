@@ -353,7 +353,7 @@ class Upgrade extends Abstract_Render {
 	private function get_generic_upgrade_data( $upgrade_item ) {
 		$data = [
 			'name'        => $upgrade_item->name,
-			'price'       => $upgrade_item->saving,
+			'price'       => $this->pricing->is_promo_active() ? $upgrade_item->saving : $upgrade_item->regular_price,
 			'websites'    => $upgrade_item->websites,
 			'upgrade_url' => $upgrade_item->upgrade_url,
 		];
