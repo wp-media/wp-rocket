@@ -92,6 +92,7 @@
 }
 
 .select-dropdown li:hover,
+.select-dropdown li.active,
 .select-dropdown input:checked ~ label {
 	background-color: #f2f2f2;
 }

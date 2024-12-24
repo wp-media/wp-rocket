@@ -358,11 +358,11 @@ $(document).ready(function(){
 	let stacked_select = document.getElementById( 'rocket_stacked_select' );
 	if ( stacked_select ) {
 		stacked_select.addEventListener('custom-select-change',function(event){
-			console.log(event.detail.selectedOption);
+
 			let selected_option = $( event.detail.selectedOption );
 
 			let name = selected_option.data('name');
-			console.log(name);
+
 			let saving = selected_option.data('saving');
 			let regular_price  = selected_option.data('regular-price');
 			let price  = selected_option.data('price');

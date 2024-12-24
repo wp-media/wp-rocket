@@ -245,7 +245,7 @@ class Upgrade extends Abstract_Render {
 		$license_types = $this->get_upgrade_types();
 
 		return sprintf(
-		// translators: %1$s = promotion name, %2$s = <br>, %3$s = <strong>, %4$s = promotion discount percentage, %5$s = </strong>, %6$s = Growth/Multi.
+		// translators: %1$s = promotion name, %2$s = <br>, %3$s = <strong>, %4$s = promotion discount percentage, %5$s = </strong>, %6$s = Growth or Multi.
 			esc_html__(
 				'Take advantage of %1$s to speed up more websites:%2$s get a %3$s%4$s off%5$s for %3$supgrading your license to %6$s!%5$s',
 				'rocket'
@@ -255,7 +255,7 @@ class Upgrade extends Abstract_Render {
 			'<strong>',
 			$promo_discount . '%',
 			'</strong>',
-			implode( ', ', $license_types ),
+			implode( ' or ', $license_types ),
 		);
 	}
 

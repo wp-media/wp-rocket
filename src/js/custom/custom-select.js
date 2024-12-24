@@ -22,7 +22,15 @@ document.querySelectorAll(".custom-select").forEach(customSelect => {
 
 	customSelect.addEventListener('click', function(e) {
 		if (e.target.matches('label')) {
-			handler(e.target.closest('li'));
+
+			const allItems = customSelect.querySelectorAll('li');
+			allItems.forEach(item => item.classList.remove('active'));
+			const clickedPlan = e.target.closest('li');
+
+			if (clickedPlan) {
+				clickedPlan.classList.add('active');
+				handler(clickedPlan);
+			}
 		}
 	});
 	document.addEventListener("click", (e) => {
