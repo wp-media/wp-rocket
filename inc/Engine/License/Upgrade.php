@@ -255,7 +255,7 @@ class Upgrade extends Abstract_Render {
 			'<strong>',
 			$promo_discount . '%',
 			'</strong>',
-			implode( ' or ', $license_types ),
+			implode( ' ' . esc_html__( 'or', 'rocket' ) . ' ', $license_types ),
 		);
 	}
 
