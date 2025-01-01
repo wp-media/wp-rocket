@@ -6,9 +6,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.17.3-alpha1\n"
+"Project-Id-Version: WP Rocket 3.17.4-alpha1\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2024-11-19T12:02:50+00:00\n"
+"POT-Creation-Date: 2024-12-30T11:15:50+00:00\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Romain • WP Rocket <contact@wp-rocket.me>, 2024\n"
 "Language-Team: French (France) (https://app.transifex.com/wp-media/teams/18133/fr_FR/)\n"
@@ -803,6 +803,104 @@ msgstr "Purger le cache de RocketCDN"
 #: inc/common/admin-bar.php:249 views/settings/partials/documentation.php:14
 msgid "Documentation"
 msgstr "Documentation"
+
+#: inc/Dependencies/WPMedia/PluginFamily/Model/PluginFamily.php:66
+msgid "Activated"
+msgstr "Activé"
+
+#: inc/Dependencies/WPMedia/PluginFamily/Model/PluginFamily.php:109
+msgid "Install"
+msgstr "Installer"
+
+#: inc/Dependencies/WPMedia/PluginFamily/Model/PluginFamily.php:118
+msgid "Get it Now"
+msgstr "Obtenez-le maintenant"
+
+#: inc/Dependencies/WPMedia/PluginFamily/Model/PluginFamily.php:127
+msgid "Activate"
+msgstr "Activer"
+
+#: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:8
+msgid "Optimize Performance"
+msgstr "Optimiser les performances"
+
+#: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:15
+msgid "Speed Up Your Website, Instantly"
+msgstr "Accélérez votre site web, instantanément."
+
+#: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:16
+msgid ""
+"WP Rocket is the easiest way to make your WordPress website faster and boost"
+" your Google PageSpeed score. Get more traffic, better engagement, and "
+"higher conversions effortlessly."
+msgstr ""
+"WP Rocket est la solution la plus simple pour accélérer votre site WordPress"
+" et améliorer votre score Google PageSpeed. Attirez plus de trafic, "
+"augmentez l’engagement et boostez vos conversions sans effort."
+
+#: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:24
+msgid "Speed Up Your Website With Lighter Images"
+msgstr "Accélérez votre site web avec des images allégées."
+
+#: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:25
+msgid ""
+"Imagify is the easiest WordPress image optimizer. It automatically "
+"compresses images, converts them to WebP and AVIF formats, and lets you "
+"resize and optimize with just one click!"
+msgstr ""
+"Imagify est l'optimiseur d'images WordPress le plus simple. Il compresse "
+"automatiquement les images, les convertit en formats WebP et AVIF, et vous "
+"permet de redimensionner et d'optimiser en un seul clic !"
+
+#: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:31
+msgid "Boost Traffic"
+msgstr "Augmenter le trafic"
+
+#: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:38
+msgid "The Swiss Army Knife of SEO Tools"
+msgstr "Le couteau suisse des outils SEO"
+
+#: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:39
+msgid ""
+"Rank Math SEO is the Best WordPress SEO plugin with the features of many SEO"
+" and AI SEO tools in a single package to help multiply your SEO traffic."
+msgstr ""
+"Rank Math SEO est le plugin SEO WordPress par excellence, combinant les "
+"fonctionnalités de divers outils SEO et d'outils SEO basés sur l'IA dans un "
+"seul package pour booster votre trafic SEO."
+
+#: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:45
+msgid "Protect & Secure"
+msgstr "Protéger & Sécuriser"
+
+#: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:52
+msgid "The Easiest Way to Protect Your Website"
+msgstr "La façon la plus simple de protéger votre site web"
+
+#: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:53
+msgid ""
+"BackWPup is the most comprehensive and user-friendly backup & restore plugin"
+" for WordPress. Easily schedule automatic backups, securely store and "
+"restore with just a few clicks!"
+msgstr ""
+"BackWPup est le plugin de sauvegarde et de restauration le plus complet et "
+"facile à utiliser pour WordPress. Planifiez facilement des sauvegardes "
+"automatiques, stockez et restaurez en toute sécurité en quelques clics "
+"seulement !"
+
+#: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:61
+msgid "GDPR/CCPA Cookie Consent Banner"
+msgstr "Bannière de consentement aux cookies GDPR/CCPA"
+
+#: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:62
+msgid ""
+"One of the easiest, most comprehensive, and popular cookie consent plugins "
+"available. Google Gold Certified Partner to quickly comply with data privacy"
+" laws from around the world."
+msgstr ""
+"L'un des plugins de consentement aux cookies les plus simples, complets et "
+"populaires disponibles. Partenaire certifié Google Gold pour se conformer "
+"rapidement aux lois sur la protection des données du monde entier."
 
 #: inc/deprecated/3.2.php:52 views/settings/page-sections/imagify.php:107
 msgid "Activate Imagify"
@@ -2831,18 +2929,6 @@ msgid ""
 "Speed up your website with RocketCDN, WP Rocket’s Content Delivery Network!"
 msgstr "Accélérez votre site web grâce à RocketCDN, le CDN de WP Rocket."
 
-#: inc/Engine/Common/JobManager/APIHandler/AbstractSafeAPIClient.php:68
-msgid "Too many requests."
-msgstr "Trop de requêtes."
-
-#: inc/Engine/Common/JobManager/APIHandler/AbstractSafeAPIClient.php:85
-msgid "Not valid response."
-msgstr "Réponse non valide."
-
-#: inc/Engine/Common/JobManager/APIHandler/AbstractSafeAPIClient.php:151
-msgid "Not valid request type."
-msgstr "Type de requête non valide."
-
 #: inc/Engine/Common/JobManager/Cron/Subscriber.php:185
 msgid "WP Rocket process pending jobs"
 msgstr "WP Rocket traite les tâches en attente"
@@ -3221,30 +3307,19 @@ msgstr ""
 "d'infos%2$s."
 
 #. translators: %1$s = promotion name, %2$s = <br>, %3$s = <strong>, %4$s =
-#. promotion discount percentage, %5$s = </strong>.
-#: inc/Engine/License/Upgrade.php:247
+#. promotion discount percentage, %5$s = </strong>, %6$s = Growth or Multi.
+#: inc/Engine/License/Upgrade.php:249
 msgid ""
 "Take advantage of %1$s to speed up more websites:%2$s get a %3$s%4$s off%5$s"
-" for %3$supgrading your license to Plus or Infinite!%5$s"
-msgid_plural ""
-"Take advantage of %1$s to speed up more websites:%2$s get a %3$s%4$s off%5$s"
-" for %3$supgrading your license to Infinite!%5$s"
-msgstr[0] ""
-"Profitez de%1$s pour accélérez plus de sites : %2$s bénéficiez de %3$s%4$s "
-"de réduction %5$s sur la %3$s mise à niveau de votre licence vers Plus ou "
-"Infinite ! %5$s"
-msgstr[1] ""
-"Profitez de %1$s pour accélérez plus de sites : %2$s bénéficiez de %3$s%4$s "
-"de réduction %5$s sur la %3$s mise à niveau de votre licence vers Infinite !"
-" %5$s"
-msgstr[2] ""
-"Profitez de %1$s pour accélérez plus de sites : %2$s bénéficiez de %3$s%4$s "
-"de réduction %5$s sur la %3$s mise à niveau de votre licence vers Infinite !"
-" %5$s"
+" for %3$supgrading your license to %6$s!%5$s"
+msgstr ""
+"Profitez de %1$s pour accélérez encore plus de sites web : %2$s bénéficiez "
+"de %3$s%4$s de réduction sur %5$s pour %3$s mettre à niveau de votre licence"
+" vers %6$s ! %5$s"
 
-#: inc/Engine/License/Upgrade.php:378 inc/Engine/License/Upgrade.php:401
-msgid "Unlimited"
-msgstr "Illimité"
+#: inc/Engine/License/Upgrade.php:258
+msgid "or"
+msgstr "ou"
 
 #. translators: %s = promotion discount percentage.
 #: inc/Engine/License/views/promo-banner.php:18
@@ -3355,12 +3430,33 @@ msgstr ""
 "Votre %1$slicence WP Rocket est sur le point d'expirer%2$s : vous perdrez "
 "bientôt l'accès aux mises à jour et au support."
 
-#: inc/Engine/License/views/upgrade-popin.php:14
+#. translators: %1$s = span opening tag, %2$s = price, %3$s = span closing
+#. tag.
+#: inc/Engine/License/views/upgrade-item.php:17
+msgid "Save $%1$s%2$s%3$s"
+msgstr "Économisez $%1$s%2$s%3$s"
+
+#: inc/Engine/License/views/upgrade-item.php:35
+#: inc/Engine/License/views/upgrade-item.php:50
+msgid "Websites"
+msgstr "Sites web"
+
+#. translators: %s = number of websites.
+#: inc/Engine/License/views/upgrade-item.php:58
+msgid "%s websites"
+msgstr "%s sites"
+
+#. translators: %s = license name.
+#: inc/Engine/License/views/upgrade-item.php:66
+msgid "Upgrade to %s"
+msgstr "Mettez à niveau vers %s"
+
+#: inc/Engine/License/views/upgrade-popin.php:15
 msgid "Speed Up More Websites"
 msgstr "Accélérez plus de sites web"
 
 #. translators: %1$s = opening strong tag, %2$s = closing strong tag.
-#: inc/Engine/License/views/upgrade-popin.php:21
+#: inc/Engine/License/views/upgrade-popin.php:22
 msgid ""
 "You can use WP Rocket on more websites by upgrading your license. To "
 "upgrade, simply pay the %1$sprice difference%2$s between your current and "
@@ -3371,27 +3467,12 @@ msgstr ""
 "entre votre licence actuelle et la nouvelle, comme indiqué ci-dessous."
 
 #. translators: %1$s = opening strong tag, %2$s = closing strong tag.
-#: inc/Engine/License/views/upgrade-popin.php:27
+#: inc/Engine/License/views/upgrade-popin.php:28
 msgid ""
 "%1$sN.B.%2$s: Upgrading your license does not change your expiration date"
 msgstr ""
 "%1$sN.B.%2$s: La mise à niveau de votre licence ne modifie pas votre date "
 "d'expiration"
-
-#. translators: %s = price.
-#: inc/Engine/License/views/upgrade-popin.php:37
-msgid "Save $%s"
-msgstr "Économisez %s$"
-
-#. translators: %s = number of websites.
-#: inc/Engine/License/views/upgrade-popin.php:50
-msgid "%s websites"
-msgstr "%s sites"
-
-#. translators: %s = license name.
-#: inc/Engine/License/views/upgrade-popin.php:56
-msgid "Upgrade to %s"
-msgstr "Mettez à niveau vers %s"
 
 #: inc/Engine/License/views/upgrade-section.php:11
 msgid ""
