@@ -6,6 +6,7 @@ namespace WP_Rocket\Engine\Media\Fonts;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Engine\Media\Fonts\Context\OptimizationContext;
 use WP_Rocket\Engine\Media\Fonts\Context\SaasContext;
+use WP_Rocket\Engine\Media\Fonts\Admin\Data;
 use WP_Rocket\Engine\Media\Fonts\Admin\Settings;
 use WP_Rocket\Engine\Media\Fonts\Admin\Subscriber as AdminSubscriber;
 use WP_Rocket\Engine\Media\Fonts\Clean\Clean;
@@ -29,6 +30,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	protected $provides = [
 		'media_fonts_filesystem',
 		'media_fonts_settings',
+		'media_fonts_data',
 		'media_fonts_admin_subscriber',
 		'media_fonts_optimization_context',
 		'media_fonts_saas_context',
@@ -60,8 +62,15 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( rocket_direct_filesystem() );
 
 		$this->getContainer()->add( 'media_fonts_settings', Settings::class );
+		$this->getContainer()->add( 'media_fonts_data', Data::class )
+			->addArgument( 'options' );
 		$this->getContainer()->addShared( 'media_fonts_admin_subscriber', AdminSubscriber::class )
-			->addArgument( 'media_fonts_settings' );
+			->addArguments(
+				[
+					'media_fonts_settings',
+					'media_fonts_data',
+				]
+			);
 
 		$this->getContainer()->add( 'media_fonts_clean', Clean::class )
 			->addArgument( 'media_fonts_filesystem' );
