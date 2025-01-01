@@ -53,6 +53,8 @@ use WP_Rocket\Engine\Debug\Resolver as DebugResolver;
 use WP_Rocket\Engine\Debug\ServiceProvider as DebugServiceProvider;
 use WP_Rocket\Engine\Common\PerformanceHints\ServiceProvider as PerformanceHintsServiceProvider;
 use WP_Rocket\Engine\Optimization\LazyRenderContent\ServiceProvider as LRCServiceProvider;
+use WP_Rocket\Engine\Media\Fonts\ServiceProvider as MediaFontsServiceProvider;
+
 
 /**
  * Plugin Manager.
@@ -308,6 +310,7 @@ class Plugin {
 		$this->container->addServiceProvider( new SaasAdminServiceProvider() );
 		$this->container->addServiceProvider( new PerformanceHintsServiceProvider() );
 		$this->container->addServiceProvider( new LRCServiceProvider() );
+		$this->container->addServiceProvider( new MediaFontsServiceProvider() );
 
 		$common_subscribers = [
 			'license_subscriber',
@@ -402,6 +405,9 @@ class Plugin {
 			'lrc_frontend_subscriber',
 			'taxonomy_subscriber',
 			'termly_subscriber',
+			'media_fonts_frontend_subscriber',
+			'media_fonts_admin_subscriber',
+			'media_fonts_clean_subscriber',
 		];
 
 		$host_type = HostResolver::get_host_service();

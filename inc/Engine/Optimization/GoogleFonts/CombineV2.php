@@ -40,18 +40,27 @@ class CombineV2 extends AbstractGFOptimization {
 
 		$this->has_google_fonts = true;
 
-		$num_tags = count( $font_tags );
+		$exclusions = $this->get_exclusions();
+
+		$filtered_tags = array_filter(
+			$font_tags,
+			function ( $tag ) use ( $exclusions ) {
+				return ! $this->is_excluded( $tag[0], $exclusions );
+			}
+			);
+
+		$num_tags = count( $filtered_tags );
 
 		Logger::debug(
-			"Found {$num_tags} v2 Google Fonts.",
+			"Found {$num_tags} v2 Google Fonts after exclusions.",
 			[
 				'GF combine process',
-				'tags' => $font_tags,
+				'tags' => $filtered_tags,
 			]
 		);
 
 		$families = [];
-		foreach ( $font_tags as $tag ) {
+		foreach ( $filtered_tags as $tag ) {
 			$parsed_families = $this->parse( $tag );
 			if ( ! empty( $parsed_families ) ) {
 				$processed_tags[] = $tag;

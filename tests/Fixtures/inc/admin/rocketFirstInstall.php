@@ -77,6 +77,7 @@ $integration[ 'remove_unused_css_safelist' ] 					 = [];
 $integration[ 'preload_links' ]              					 = 1;
 $integration[ 'image_dimensions' ]           	 				 = 0;
 $integration[ 'exclude_lazyload' ]           					 = [];
+$integration['host_fonts_locally']           					 = 0;
 
 return [
 	'test_data' => [
