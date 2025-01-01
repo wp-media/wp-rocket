@@ -165,6 +165,15 @@ class PluginFamily implements PluginFamilyInterface {
 	 * @return string
 	 */
 	private function get_download_url(): string {
+
+		$slug = $this->get_slug();
+
+		$custom_download_url = $this->maybe_get_custom_download_url( $slug );
+
+		if ( false !== $custom_download_url ) {
+			return $custom_download_url;
+		}
+
 		$plugin_install = ABSPATH . 'wp-admin/includes/plugin-install.php';
 
 		if ( ! defined( 'ABSPATH' ) || ! file_exists( $plugin_install ) ) {
@@ -178,7 +187,7 @@ class PluginFamily implements PluginFamilyInterface {
 		require_once $plugin_install; // @phpstan-ignore-line
 
 		$data = [
-			'slug'   => $this->get_slug(),
+			'slug'   => $slug,
 			'fields' => [
 				'download_link'     => true,
 				'short_description' => false,
@@ -250,5 +259,37 @@ class PluginFamily implements PluginFamilyInterface {
 
 		wp_safe_redirect( wp_get_referer() );
 		exit;
+	}
+
+	/**
+	 * Returns a custom download url for plugin if exists.
+	 *
+	 * @param string $plugin_slug plugin slug.
+	 * @return string|bool
+	 */
+	private function maybe_get_custom_download_url( string $plugin_slug ) {
+		$parent_plugin_slug = $this->get_parent_plugin_slug();
+
+		$urls = [
+			'seo-by-rank-math' => 'https://rankmath.com/downloads/plugin-family/' . $parent_plugin_slug,
+		];
+
+		if ( ! isset( $urls[ $plugin_slug ] ) ) {
+			return false;
+		}
+
+		return $urls[ $plugin_slug ];
+	}
+
+	/**
+	 * Get parent plugin slug.
+	 *
+	 * @return string
+	 */
+	private function get_parent_plugin_slug(): string {
+		$plugin_path = plugin_basename( __FILE__ );
+		$chunks      = explode( '/', $plugin_path );
+
+		return $chunks[0];
 	}
 }

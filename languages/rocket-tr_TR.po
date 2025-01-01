@@ -8,9 +8,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.17.2-alpha1\n"
+"Project-Id-Version: WP Rocket 3.17.3-alpha2\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2024-10-29T08:02:18+00:00\n"
+"POT-Creation-Date: 2024-11-19T12:59:39+00:00\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: BouRock, 2024\n"
 "Language-Team: Turkish (Turkey) (https://app.transifex.com/wp-media/teams/18133/tr_TR/)\n"
@@ -731,8 +731,8 @@ msgstr "%s sürümünü yeniden yükle"
 #: inc/classes/class-wp-rocket-requirements-check.php:203
 #: inc/classes/class-wp-rocket-requirements-check.php:214
 #: inc/deprecated/3.11.php:236 inc/deprecated/3.11.php:251
-#: inc/Engine/Plugin/UpdaterSubscriber.php:473
-#: inc/Engine/Plugin/UpdaterSubscriber.php:487
+#: inc/Engine/Plugin/UpdaterSubscriber.php:477
+#: inc/Engine/Plugin/UpdaterSubscriber.php:491
 msgid "%s Update Rollback"
 msgstr "%s Güncellemesi Geri Alma"
 
@@ -886,7 +886,7 @@ msgid "<strong>WP Rocket:</strong> Cloudflare cache successfully purged."
 msgstr ""
 "<strong>WP Rocket:</strong> Cloudflare önbelleği başarılı olarak temizlendi."
 
-#: inc/deprecated/3.5.php:858 inc/Engine/HealthCheck/HealthCheck.php:81
+#: inc/deprecated/3.5.php:858 inc/Engine/HealthCheck/HealthCheck.php:73
 msgid ""
 "The following scheduled event failed to run. This may indicate the CRON "
 "system is not running properly, which can prevent some WP Rocket features "
@@ -904,7 +904,7 @@ msgstr[1] ""
 "sisteminin düzgün bir şekilde çalışmadığını gösterebilir ve bu da bazı WP "
 "Rocket özelliklerinin beklendiği gibi çalışmasını engelleyebilir:"
 
-#: inc/deprecated/3.5.php:867 inc/Engine/HealthCheck/HealthCheck.php:88
+#: inc/deprecated/3.5.php:867 inc/Engine/HealthCheck/HealthCheck.php:80
 msgid "Please contact your host to check if CRON is working."
 msgstr ""
 "CRON’un çalışıp çalışmadığını denetlemek için lütfen barındırıcınız ile "
@@ -935,7 +935,7 @@ msgstr ""
 "Önyüklemek için seçeneği işaretleyebilirsiniz."
 
 #. translators: 1 and 3 are link openings, 2 is a link closing.
-#: inc/deprecated/3.11.php:279 inc/Engine/Plugin/UpdaterSubscriber.php:510
+#: inc/deprecated/3.11.php:279 inc/Engine/Plugin/UpdaterSubscriber.php:514
 msgid "%1$sReturn to WP Rocket%2$s or %3$sgo to Plugins page%2$s"
 msgstr ""
 "%1$sWP Rocket’a geri dönün%2$s ya da %3$sEklentiler sayfasına gidin%2$s"
@@ -1168,36 +1168,36 @@ msgstr ""
 msgid "weekly"
 msgstr "haftalık"
 
-#: inc/Engine/Admin/Database/Optimization.php:30
+#: inc/Engine/Admin/Database/Optimization.php:33
 #: inc/Engine/Admin/Settings/Page.php:1363
 msgid "Revisions"
 msgstr "Düzeltmeler"
 
-#: inc/Engine/Admin/Database/Optimization.php:31
+#: inc/Engine/Admin/Database/Optimization.php:34
 #: inc/Engine/Admin/Settings/Page.php:1373
 msgid "Auto Drafts"
 msgstr "Otomatik Taslaklar"
 
-#: inc/Engine/Admin/Database/Optimization.php:32
+#: inc/Engine/Admin/Database/Optimization.php:35
 #: inc/Engine/Admin/Settings/Page.php:1383
 msgid "Trashed Posts"
 msgstr "Çöpe Atılmış Yazılar"
 
-#: inc/Engine/Admin/Database/Optimization.php:33
+#: inc/Engine/Admin/Database/Optimization.php:36
 #: inc/Engine/Admin/Settings/Page.php:1393
 msgid "Spam Comments"
 msgstr "İstenmeyen Yorumlar"
 
-#: inc/Engine/Admin/Database/Optimization.php:34
+#: inc/Engine/Admin/Database/Optimization.php:37
 #: inc/Engine/Admin/Settings/Page.php:1403
 msgid "Trashed Comments"
 msgstr "Çöpe Atılmış Yorumlar"
 
-#: inc/Engine/Admin/Database/Optimization.php:35
+#: inc/Engine/Admin/Database/Optimization.php:38
 msgid "Transients"
 msgstr "Geçiciler"
 
-#: inc/Engine/Admin/Database/Optimization.php:36
+#: inc/Engine/Admin/Database/Optimization.php:39
 msgid "Tables"
 msgstr "Tablolar"
 
@@ -1415,8 +1415,9 @@ msgstr ""
 "%1$sDaha fazla bilgi edinin%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:603
-msgid "Remove Unused CSS (RUCSS)"
-msgstr "Kullanılmayan CSS’yi (RUCSS) Kaldır"
+#: inc/Engine/Optimization/RUCSS/Admin/OptionSubscriber.php:74
+msgid "Remove Unused CSS"
+msgstr "Kullanılmayan CSS’yi Kaldır"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:606
@@ -2631,8 +2632,8 @@ msgstr "RocketCDN’yi kullanmak için CNAME’nizi %1$s%2$s%3$s ile değiştiri
 
 #. translators: %1$is = opening link tag, %2$s = closing link tag.
 #: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:155
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:228
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:328
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:229
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:329
 msgid "%1$sMore Info%2$s"
 msgstr "%1$sDaha Fazla Bilgi%2$s"
 
@@ -2685,6 +2686,24 @@ msgstr "RocketCDN önbellek temizleme başarısız oldu: %s"
 #: inc/Engine/CDN/RocketCDN/APIClient.php:247
 msgid "RocketCDN cache purge successful."
 msgstr "RocketCDN önbellek temizleme başarılı."
+
+#. translators: %1$s = Old CName, %2$s = New CName.
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:398
+msgid "We've updated your RocketCDN CNAME from %1$s to %2$s."
+msgstr "RocketCDN CNAME’inizi %1$s ifadesinden %2$s ifadesine güncelledik."
+
+#. translators: %1$s = New CName.
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:400
+msgid ""
+"The change is already applied to the plugin settings. If you were using the "
+"CNAME in your code, make sure to update it to: %1$s."
+msgstr ""
+"Değişiklik zaten eklenti ayarlarına uygulandı. Eğer kodunuzda CNAME "
+"kullanıyorsanız, bunu şu şekilde güncellediğinizden emin olun: %1$s."
+
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:409
+msgid "contact support"
+msgstr "destek ile iletişime geçin"
 
 #: inc/Engine/CDN/RocketCDN/RESTSubscriber.php:137
 msgid "RocketCDN enabled"
@@ -3078,24 +3097,24 @@ msgstr "İstenen yazı yok."
 msgid "Cannot generate CPCSS for unpublished post."
 msgstr "Yayınlanmamış yazı için ÖYCSS oluşturulamıyor."
 
-#: inc/Engine/HealthCheck/HealthCheck.php:142
+#: inc/Engine/HealthCheck/HealthCheck.php:134
 msgid "Scheduled Cache Purge"
 msgstr "Zamanlanmış Önbellek Temizleme"
 
-#: inc/Engine/HealthCheck/HealthCheck.php:143
+#: inc/Engine/HealthCheck/HealthCheck.php:135
 msgid "Scheduled Database Optimization"
 msgstr "Zamanlanmış Veritabanı İyileştirme"
 
-#: inc/Engine/HealthCheck/HealthCheck.php:144
+#: inc/Engine/HealthCheck/HealthCheck.php:136
 msgid "Database Optimization Process"
 msgstr "Veritabanı İyileştirme İşlemi"
 
-#: inc/Engine/HealthCheck/HealthCheck.php:145
+#: inc/Engine/HealthCheck/HealthCheck.php:137
 msgctxt "noun"
 msgid "Preload"
 msgstr "Önyükleme"
 
-#: inc/Engine/HealthCheck/HealthCheck.php:146
+#: inc/Engine/HealthCheck/HealthCheck.php:138
 msgid "Critical Path CSS Generation Process"
 msgstr "Önemli Yol CSS’yi Oluşturma İşlemi"
 
@@ -3376,33 +3395,33 @@ msgstr ""
 "Listelerin en son sürümünü sunucumuzdan almak için aktif bir lisansa "
 "ihtiyacınız var."
 
-#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:116
-msgid "Could not get updated lists from server."
-msgstr "Sunucudan güncellenmiş listeler alınamadı."
-
-#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:125
-msgid "Lists are up to date."
-msgstr "Listeler güncel."
-
-#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:134
-msgid "Could not update lists."
-msgstr "Listeler güncellenemedi."
-
-#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:143
-msgid "Lists are successfully updated."
-msgstr "Listeler başarılı olarak güncellendi."
-
-#: inc/Engine/Optimization/DynamicLists/ServiceProvider.php:72
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:109
 msgid "Default Lists"
 msgstr "Varsayılan Listeler"
 
-#: inc/Engine/Optimization/DynamicLists/ServiceProvider.php:78
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:110
 msgid "Delay JavaScript Execution Exclusion Lists"
 msgstr "JavaScript’i Geciktir Yürütmesi Hariç Tutma Listeleri"
 
-#: inc/Engine/Optimization/DynamicLists/ServiceProvider.php:84
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:111
 msgid "Incompatible plugins Lists"
 msgstr "Uyumsuz eklenti Listeleri"
+
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:121
+msgid "Could not get updated lists from server."
+msgstr "Sunucudan güncellenmiş listeler alınamadı."
+
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:130
+msgid "Lists are up to date."
+msgstr "Listeler güncel."
+
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:139
+msgid "Could not update lists."
+msgstr "Listeler güncellenemedi."
+
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:149
+msgid "Lists are successfully updated."
+msgstr "Listeler başarılı olarak güncellendi."
 
 #: inc/Engine/Optimization/Minify/AdminSubscriber.php:65
 msgid "Minify/combine JavaScript"
@@ -3411,10 +3430,6 @@ msgstr "JavaScript’i küçült/birleştir"
 #: inc/Engine/Optimization/Minify/CSS/AdminSubscriber.php:143
 msgid "Minify CSS"
 msgstr "CSS’yi küçült"
-
-#: inc/Engine/Optimization/RUCSS/Admin/OptionSubscriber.php:74
-msgid "Remove Unused CSS"
-msgstr "Kullanılmayan CSS’yi Kaldır"
 
 #. translators: %1$s = plugin name, %2$s = table name, %3$s = <a> open tag,
 #. %4$s = </a> closing tag.
@@ -4601,8 +4616,8 @@ msgid "How to improve LCP with WP Rocket"
 msgstr "WP Rocket ile LCP nasıl geliştirilir"
 
 #: views/settings/page-sections/tutorials.php:26
-msgid "How to improve FID with WP Rocket"
-msgstr "WP Rocket ile FID nasıl geliştirilir"
+msgid "How to improve INP with WP Rocket"
+msgstr "WP Rocket ile INP nasıl geliştirilir"
 
 #: views/settings/page-sections/tutorials.php:27
 msgid "How to improve CLS with WP Rocket"

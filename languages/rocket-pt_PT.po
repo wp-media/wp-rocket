@@ -5,9 +5,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.17.2-alpha1\n"
+"Project-Id-Version: WP Rocket 3.17.3-alpha2\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2024-10-29T08:02:18+00:00\n"
+"POT-Creation-Date: 2024-11-19T12:59:39+00:00\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Pedro Mendonça <ped.gaspar@gmail.com>, 2024\n"
 "Language-Team: Portuguese (Portugal) (https://app.transifex.com/wp-media/teams/18133/pt_PT/)\n"
@@ -738,8 +738,8 @@ msgstr "Reinstalar a versão %s"
 #: inc/classes/class-wp-rocket-requirements-check.php:203
 #: inc/classes/class-wp-rocket-requirements-check.php:214
 #: inc/deprecated/3.11.php:236 inc/deprecated/3.11.php:251
-#: inc/Engine/Plugin/UpdaterSubscriber.php:473
-#: inc/Engine/Plugin/UpdaterSubscriber.php:487
+#: inc/Engine/Plugin/UpdaterSubscriber.php:477
+#: inc/Engine/Plugin/UpdaterSubscriber.php:491
 msgid "%s Update Rollback"
 msgstr "Reversão da actualização do %s"
 
@@ -893,7 +893,7 @@ msgid "<strong>WP Rocket:</strong> Cloudflare cache successfully purged."
 msgstr ""
 "<strong>WP Rocket:</strong> A cache da Cloudflare foi limpa com sucesso."
 
-#: inc/deprecated/3.5.php:858 inc/Engine/HealthCheck/HealthCheck.php:81
+#: inc/deprecated/3.5.php:858 inc/Engine/HealthCheck/HealthCheck.php:73
 msgid ""
 "The following scheduled event failed to run. This may indicate the CRON "
 "system is not running properly, which can prevent some WP Rocket features "
@@ -915,7 +915,7 @@ msgstr[2] ""
 "sistema CRON não está a funcionar correctamente, e impedir algumas "
 "funcionalidades do WP Rocket de funcionarem como esperado:"
 
-#: inc/deprecated/3.5.php:867 inc/Engine/HealthCheck/HealthCheck.php:88
+#: inc/deprecated/3.5.php:867 inc/Engine/HealthCheck/HealthCheck.php:80
 msgid "Please contact your host to check if CRON is working."
 msgstr ""
 "Contacte com o seu serviço de alojamento para verificar se o CRON está a "
@@ -946,7 +946,7 @@ msgstr ""
 "seleccionar a opção para o pré-carregar."
 
 #. translators: 1 and 3 are link openings, 2 is a link closing.
-#: inc/deprecated/3.11.php:279 inc/Engine/Plugin/UpdaterSubscriber.php:510
+#: inc/deprecated/3.11.php:279 inc/Engine/Plugin/UpdaterSubscriber.php:514
 msgid "%1$sReturn to WP Rocket%2$s or %3$sgo to Plugins page%2$s"
 msgstr "%1$sVolte para o WP Rocket%2$s ou %3$svá para a página de plugins%2$s"
 
@@ -1177,36 +1177,36 @@ msgstr "A classe %1$s está <strong>obsoleta</strong> desde a versão %2$s!"
 msgid "weekly"
 msgstr "semanalmente"
 
-#: inc/Engine/Admin/Database/Optimization.php:30
+#: inc/Engine/Admin/Database/Optimization.php:33
 #: inc/Engine/Admin/Settings/Page.php:1363
 msgid "Revisions"
 msgstr "Revisões"
 
-#: inc/Engine/Admin/Database/Optimization.php:31
+#: inc/Engine/Admin/Database/Optimization.php:34
 #: inc/Engine/Admin/Settings/Page.php:1373
 msgid "Auto Drafts"
 msgstr "Rascunhos automáticos"
 
-#: inc/Engine/Admin/Database/Optimization.php:32
+#: inc/Engine/Admin/Database/Optimization.php:35
 #: inc/Engine/Admin/Settings/Page.php:1383
 msgid "Trashed Posts"
 msgstr "Conteúdos no lixo"
 
-#: inc/Engine/Admin/Database/Optimization.php:33
+#: inc/Engine/Admin/Database/Optimization.php:36
 #: inc/Engine/Admin/Settings/Page.php:1393
 msgid "Spam Comments"
 msgstr "Comentários de spam"
 
-#: inc/Engine/Admin/Database/Optimization.php:34
+#: inc/Engine/Admin/Database/Optimization.php:37
 #: inc/Engine/Admin/Settings/Page.php:1403
 msgid "Trashed Comments"
 msgstr "Comentários no lixo"
 
-#: inc/Engine/Admin/Database/Optimization.php:35
+#: inc/Engine/Admin/Database/Optimization.php:38
 msgid "Transients"
 msgstr "Transientes"
 
-#: inc/Engine/Admin/Database/Optimization.php:36
+#: inc/Engine/Admin/Database/Optimization.php:39
 msgid "Tables"
 msgstr "Tabelas"
 
@@ -1424,8 +1424,9 @@ msgstr ""
 "ambientes locais. %1$sSaiba mais%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:603
-msgid "Remove Unused CSS (RUCSS)"
-msgstr "Remover CSS não utilizado (RUCSS)"
+#: inc/Engine/Optimization/RUCSS/Admin/OptionSubscriber.php:74
+msgid "Remove Unused CSS"
+msgstr "Remover CSS não utilizado"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:606
@@ -1718,7 +1719,7 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:949
 msgid "Enable for CSS background images"
-msgstr "Activar para imagens de fundo CSS"
+msgstr "Activar para imagens de fundo de CSS"
 
 #: inc/Engine/Admin/Settings/Page.php:964
 msgid "Enable for iframes and videos"
@@ -2647,8 +2648,8 @@ msgstr "Para usar a RocketCDN, substitua o seu CNAME por %1$s%2$s%3$s."
 
 #. translators: %1$is = opening link tag, %2$s = closing link tag.
 #: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:155
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:228
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:328
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:229
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:329
 msgid "%1$sMore Info%2$s"
 msgstr "%1$sMais informações%2$s"
 
@@ -2699,6 +2700,24 @@ msgstr "Falhou ao limpar a cache da RocketCDN: %s."
 #: inc/Engine/CDN/RocketCDN/APIClient.php:247
 msgid "RocketCDN cache purge successful."
 msgstr "A cache da RocketCDN foi limpa com sucesso."
+
+#. translators: %1$s = Old CName, %2$s = New CName.
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:398
+msgid "We've updated your RocketCDN CNAME from %1$s to %2$s."
+msgstr "Actualizámos o CNAME da sua RocketCDN de %1$s para %2$s."
+
+#. translators: %1$s = New CName.
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:400
+msgid ""
+"The change is already applied to the plugin settings. If you were using the "
+"CNAME in your code, make sure to update it to: %1$s."
+msgstr ""
+"A alteração já foi aplicada às definições do seu plugin. Se estiver a usar o"
+" CNAME no seu código, certifique-se de que actualiza para: %1$s."
+
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:409
+msgid "contact support"
+msgstr "contacte o suporte"
 
 #: inc/Engine/CDN/RocketCDN/RESTSubscriber.php:137
 msgid "RocketCDN enabled"
@@ -3099,24 +3118,24 @@ msgstr "O conteúdo solicitado não existe."
 msgid "Cannot generate CPCSS for unpublished post."
 msgstr "Não é possível gerar o CSS crítico de conteúdos não publicados."
 
-#: inc/Engine/HealthCheck/HealthCheck.php:142
+#: inc/Engine/HealthCheck/HealthCheck.php:134
 msgid "Scheduled Cache Purge"
 msgstr "Limpeza de cache agendada"
 
-#: inc/Engine/HealthCheck/HealthCheck.php:143
+#: inc/Engine/HealthCheck/HealthCheck.php:135
 msgid "Scheduled Database Optimization"
 msgstr "Optimização agendada da base de dados"
 
-#: inc/Engine/HealthCheck/HealthCheck.php:144
+#: inc/Engine/HealthCheck/HealthCheck.php:136
 msgid "Database Optimization Process"
 msgstr "Processo de optimização da base de dados"
 
-#: inc/Engine/HealthCheck/HealthCheck.php:145
+#: inc/Engine/HealthCheck/HealthCheck.php:137
 msgctxt "noun"
 msgid "Preload"
 msgstr "Pré-carregamento"
 
-#: inc/Engine/HealthCheck/HealthCheck.php:146
+#: inc/Engine/HealthCheck/HealthCheck.php:138
 msgid "Critical Path CSS Generation Process"
 msgstr "Processo de geração do CSS do caminho crítico"
 
@@ -3397,33 +3416,33 @@ msgstr ""
 "Precisa de uma licença activa para obter a última versão das listas do nosso"
 " servidor."
 
-#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:116
-msgid "Could not get updated lists from server."
-msgstr "Não foi possível obter as listas actualizadas do servidor."
-
-#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:125
-msgid "Lists are up to date."
-msgstr "As listas estão actualizadas."
-
-#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:134
-msgid "Could not update lists."
-msgstr "Não foi possível actualizar as listas."
-
-#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:143
-msgid "Lists are successfully updated."
-msgstr "As listas foram actualizadas com sucesso."
-
-#: inc/Engine/Optimization/DynamicLists/ServiceProvider.php:72
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:109
 msgid "Default Lists"
 msgstr "Listas por omissão"
 
-#: inc/Engine/Optimization/DynamicLists/ServiceProvider.php:78
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:110
 msgid "Delay JavaScript Execution Exclusion Lists"
 msgstr "Listas de exclusão do diferimento da execução de JavaScript"
 
-#: inc/Engine/Optimization/DynamicLists/ServiceProvider.php:84
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:111
 msgid "Incompatible plugins Lists"
 msgstr "Listas de plugins incompatíveis"
+
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:121
+msgid "Could not get updated lists from server."
+msgstr "Não foi possível obter as listas actualizadas do servidor."
+
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:130
+msgid "Lists are up to date."
+msgstr "As listas estão actualizadas."
+
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:139
+msgid "Could not update lists."
+msgstr "Não foi possível actualizar as listas."
+
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:149
+msgid "Lists are successfully updated."
+msgstr "As listas foram actualizadas com sucesso."
 
 #: inc/Engine/Optimization/Minify/AdminSubscriber.php:65
 msgid "Minify/combine JavaScript"
@@ -3432,10 +3451,6 @@ msgstr "Minificar/combinar JavaScript"
 #: inc/Engine/Optimization/Minify/CSS/AdminSubscriber.php:143
 msgid "Minify CSS"
 msgstr "Minificar CSS"
-
-#: inc/Engine/Optimization/RUCSS/Admin/OptionSubscriber.php:74
-msgid "Remove Unused CSS"
-msgstr "Remover CSS não utilizado"
 
 #. translators: %1$s = plugin name, %2$s = table name, %3$s = <a> open tag,
 #. %4$s = </a> closing tag.
@@ -4631,8 +4646,8 @@ msgid "How to improve LCP with WP Rocket"
 msgstr "Como melhorar o LCP com o WP Rocket"
 
 #: views/settings/page-sections/tutorials.php:26
-msgid "How to improve FID with WP Rocket"
-msgstr "Como melhorar o FID com o WP Rocket"
+msgid "How to improve INP with WP Rocket"
+msgstr "Como melhorar o INP com o WP Rocket"
 
 #: views/settings/page-sections/tutorials.php:27
 msgid "How to improve CLS with WP Rocket"
