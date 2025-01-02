@@ -59,7 +59,7 @@ defined( 'ABSPATH' ) || exit;
 				continue;
 			}
 			?>
-			<div class="wpr-list<?php echo 'analytics' === $rocket_item_key ? ' open' : ''; ?>" id="wpr_djs_oneclick_exclusions_<?php echo esc_attr( $rocket_item_key ); ?>">
+			<div class="wpr-list" id="wpr_djs_oneclick_exclusions_<?php echo esc_attr( $rocket_item_key ); ?>">
 				<div class="wpr-list-header">
 					<div class="wpr-list-header-data">
 						<img src="<?php echo esc_url( WP_ROCKET_ASSETS_IMG_URL . $rocket_item['svg-icon'] . '.svg' ); ?>" />
