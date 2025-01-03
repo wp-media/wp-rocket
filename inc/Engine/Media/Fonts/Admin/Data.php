@@ -7,6 +7,7 @@ use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Common\Queue\AbstractASQueue;
+use Exception;
 
 class Data extends AbstractASQueue {
 	/**
@@ -72,7 +73,11 @@ class Data extends AbstractASQueue {
 			return;
 		}
 
-		$fonts = new RecursiveIteratorIterator( new RecursiveDirectoryIterator( $this->base_path . 'google-fonts/fonts/' ) );
+		try {
+			$fonts = new RecursiveIteratorIterator( new RecursiveDirectoryIterator( $this->base_path . 'google-fonts/fonts/' ) );
+		} catch ( Exception $exception ) {
+			return;
+		}
 
 		$allowed_extensions = [
 			'woff',
