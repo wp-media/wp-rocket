@@ -45,6 +45,8 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_staging_list'                => 'add_staging_exclusions',
 			'rocket_lrc_exclusions'              => 'add_lrc_exclusions',
 			'wp_rocket_upgrade'                  => 'update_lists_from_files',
+			'rocket_before_rollback'             => 'maybe_update_lists',
+			'rocket_exclude_locally_host_fonts'  => 'add_media_fonts_exclusions',
 		];
 	}
 
@@ -211,5 +213,29 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function update_lists_from_files() {
 		$this->dynamic_lists->update_lists_from_files();
+	}
+
+	/**
+	 * Update dynamic lists during rollback to versions < 3.18.
+	 *
+	 * @return void
+	 */
+	public function maybe_update_lists(): void {
+		if ( version_compare( rocket_get_constant( 'WP_ROCKET_LASTVERSION' ), '3.18', '>=' ) ) {
+			return;
+		}
+
+		$this->dynamic_lists->update_lists_from_remote();
+	}
+
+	/**
+	 * Add the media fonts exclusion to the array
+	 *
+	 * @param array $exclusions Array of Media fonts exclusions.
+	 *
+	 * @return array
+	 */
+	public function add_media_fonts_exclusions( array $exclusions ): array {
+		return array_merge( (array) $exclusions, $this->dynamic_lists->get_exclude_media_fonts() );
 	}
 }

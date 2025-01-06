@@ -11,6 +11,7 @@ use WP_Rocket\Subscriber\Third_Party\Plugins\NGG_Subscriber;
 use WP_Rocket\Subscriber\Third_Party\Plugins\SyntaxHighlighter_Subscriber;
 use WP_Rocket\ThirdParty\Plugins\Ads\Adthrive;
 use WP_Rocket\ThirdParty\Plugins\ConvertPlug;
+use WP_Rocket\ThirdParty\Plugins\Cookie\Termly;
 use WP_Rocket\ThirdParty\Plugins\Ecommerce\BigCommerce;
 use WP_Rocket\ThirdParty\Plugins\Ecommerce\WooCommerceSubscriber;
 use WP_Rocket\ThirdParty\Plugins\I18n\TranslatePress;
@@ -98,6 +99,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'wpgeotargeting',
 		'weglot',
 		'contactform7',
+		'termly_subscriber',
 	];
 
 	/**
@@ -227,5 +229,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->addShared( 'translatepress', TranslatePress::class );
 		$this->getContainer()->addShared( 'wpgeotargeting', WPGeotargeting::class );
 		$this->getContainer()->addShared( 'contactform7', ContactForm7::class );
+		$this->getContainer()->addShared( 'termly_subscriber', Termly::class );
 	}
 }

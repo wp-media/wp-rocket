@@ -430,6 +430,15 @@ function rocket_data_collection_preview_table() {
 
 	$html .= '<tr>';
 	$html .= '<td class="column-primary">';
+	$html .= sprintf( '<strong>%s</strong>', __( 'Anonymized WP Rocket statistics:', 'rocket' ) );
+	$html .= '</td>';
+	$html .= '<td>';
+	$html .= sprintf( '<em>%s</em>', __( 'How WP Rocket features function and perform.', 'rocket' ) );
+	$html .= '</td>';
+	$html .= '</tr>';
+
+	$html .= '<tr>';
+	$html .= '<td class="column-primary">';
 	$html .= sprintf( '<strong>%s</strong>', __( 'WP Rocket license type', 'rocket' ) );
 	$html .= '</td>';
 	$html .= '<td>';

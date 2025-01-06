@@ -10,7 +10,7 @@ abstract class AbstractAPIClient {
 	/**
 	 * API URL.
 	 */
-	const API_URL = 'https://b.rucss.wp-rocket.me/api/';
+	const API_URL = 'https://b.rucss.wp-rocket.me/api/v2/';
 
 	/**
 	 * Response Code.
@@ -92,9 +92,18 @@ abstract class AbstractAPIClient {
 	 * @return bool
 	 */
 	private function handle_request( array $args ) {
+		$use_old_api_url = false;
+
+		// Handle logic to set API Url to old version when rolling back to versions < 3.18.
+		if ( version_compare( rocket_get_constant( 'WP_ROCKET_LASTVERSION' ), '3.18', '<' ) && 'rocket_before_rollback' === current_action() ) {
+			$use_old_api_url = true;
+		}
+
 		$api_url = rocket_get_constant( 'WP_ROCKET_EXCLUSIONS_API_URL', false )
 			? rocket_get_constant( 'WP_ROCKET_EXCLUSIONS_API_URL', false )
 			: self::API_URL;
+
+		$api_url = $use_old_api_url ? str_replace( 'v2/', '', $api_url ) : $api_url;
 
 		if ( empty( $args['body'] ) ) {
 			$args['body'] = [];

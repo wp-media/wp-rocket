@@ -24,9 +24,9 @@ $default = [
 	'lazyload'                    => 0,
 	'lazyload_iframes'            => 0,
 	'lazyload_youtube'            => 0,
-	'minify_css'                  => 0,
+	'minify_css'                  => 1,
 	'minify_css_key'              => 'minify_css_key_uniqid',
-	'minify_js'                   => 0,
+	'minify_js'                   => 1,
 	'minify_js_key'               => 'minify_js_key_uniqid',
 	'minify_concatenate_js'       => 0,
 	'minify_google_fonts'         => 1,
@@ -69,6 +69,7 @@ $integration[ 'async_css_mobile' ]           					 = 1;
 $integration[ 'exclude_defer_js' ]           					 = [];
 $integration[ 'delay_js' ]                   					 = 0;
 $integration[ 'delay_js_exclusions' ]        					 = [];
+$integration[ 'delay_js_execution_safe_mode' ]                   = 0;
 $integration[ 'delay_js_exclusions_selected' ]        			 = [];
 $integration[ 'delay_js_exclusions_selected_exclusions' ]        = [];
 $integration[ 'remove_unused_css' ]          					 = 0;
@@ -76,6 +77,7 @@ $integration[ 'remove_unused_css_safelist' ] 					 = [];
 $integration[ 'preload_links' ]              					 = 1;
 $integration[ 'image_dimensions' ]           	 				 = 0;
 $integration[ 'exclude_lazyload' ]           					 = [];
+$integration['host_fonts_locally']           					 = 0;
 
 return [
 	'test_data' => [

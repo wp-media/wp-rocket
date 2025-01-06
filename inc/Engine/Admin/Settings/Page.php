@@ -512,9 +512,7 @@ class Page extends Abstract_Render {
 			]
 		);
 
-		$delay_js_list_helper  = esc_html__( 'If you have problems after activating this option, copy and paste the default exclusions to quickly resolve issues:', 'rocket' );
-		$delay_js_list_helper .= sprintf( '<br><pre><code>%1$s</code></pre><br>', implode( '<br>', DelayJSSettings::get_delay_js_default_exclusions() ) );
-		$delay_js_list_helper .= sprintf(
+		$delay_js_list_helper = sprintf(
 		// translators: %1$s = opening </a> tag, %2$s = closing </a> tag.
 			esc_html__( 'Also, please check our %1$sdocumentation%2$s for a list of compatibility exclusions.', 'rocket' ),
 			'<a href="' . esc_url( $delay_js_exclusions_beacon['url'] ) . '"  target="_blank" rel="noopener">',
@@ -777,8 +775,8 @@ class Page extends Abstract_Render {
 				'delay_js_exclusions_selected' => [
 					'type'              => 'categorized_multiselect',
 					'label'             => __( 'One-click exclusions', 'rocket' ),
-					'description'       => __( 'When using the Delay JavaScript Execution, you might experience delay loading elements located in the viewport that need to appear immediately - e.g. slider, header, menu.', 'rocket' ),
-					'sub_description'   => __( 'If you need instant visibility, click below on files that should NOT be delayed. This selection will help users interact with the elements straight away.', 'rocket' ),
+					'description'       => __( 'When using the Delay JavaScript feature, you might notice that some elements in the viewport take time to appear.', 'rocket' ),
+					'sub_description'   => __( 'If you need these elements to load immediately, select the related plugins, themes, or services below to ensure they appear without delay.', 'rocket' ),
 					'container_class'   => [
 						'wpr-field--children',
 					],
@@ -794,11 +792,11 @@ class Page extends Abstract_Render {
 				],
 				'delay_js_exclusions'          => [
 					'type'              => 'textarea',
-					'label'             => __( 'Excluded JavaScript Files', 'rocket' ),
-					'description'       => __( 'Specify URLs or keywords that can identify inline or JavaScript files to be excluded from delaying execution (one per line).', 'rocket' ),
 					'container_class'   => [
 						'wpr-field--children',
 					],
+					'label'             => __( 'Excluded JavaScript Files', 'rocket' ),
+					'description'       => __( 'Specify URLs or keywords that can identify inline or JavaScript files to be excluded from delaying execution (one per line).', 'rocket' ),
 					'parent'            => 'delay_js',
 					'section'           => 'js',
 					'page'              => 'file_optimization',
@@ -808,9 +806,34 @@ class Page extends Abstract_Render {
 						'disabled' => get_rocket_option( 'delay_js' ) ? 0 : 1,
 					],
 					'helper'            => DelayJSSettings::exclusion_list_has_default() ? $delay_js_found_list_helper : $delay_js_list_helper,
-					'placeholder'       => '/wp-includes/js/jquery/jquery.min.js',
+					'placeholder'       => '',
 				],
-			]
+				'delay_js_execution_safe_mode' => [
+					'type'              => 'checkbox',
+					'label'             => __( 'Safe Mode for Delay JavaScript Execution', 'rocket' ),
+					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+					'description'       => __( 'The Safe Mode mode prevents all internal scripts from being delayed.', 'rocket' ),
+					'helper'            => '',
+					'container_class'   => [
+						'wpr-field--parent',
+						'wpr-NoPaddingBottom',
+						'wpr-field--children',
+					],
+					'section'           => 'js',
+					'page'              => 'file_optimization',
+					'parent'            => 'delay_js',
+					'default'           => 0,
+					'sanitize_callback' => 'sanitize_checkbox',
+					'input_attr'        => [
+						'disabled' => 0,
+					],
+					'warning'           => [
+						'title'        => __( 'Performance impact', 'rocket' ),
+						'description'  => __( 'By enabling Safe Mode, you significantly reduce your website performance improvements. We recommend using it only as a temporary solution. If you’re experiencing issues with the Delay JavaScript feature, our support team can help you troubleshoot.', 'rocket' ),
+						'button_label' => __( 'ACTIVATE SAFE MODE', 'rocket' ),
+					],
+				],
+			],
 		);
 	}
 
@@ -823,12 +846,13 @@ class Page extends Abstract_Render {
 		$lazyload_beacon  = $this->beacon->get_suggest( 'lazyload' );
 		$exclude_lazyload = $this->beacon->get_suggest( 'exclude_lazyload' );
 		$dimensions       = $this->beacon->get_suggest( 'image_dimensions' );
+		$fonts            = $this->beacon->get_suggest( 'host_fonts_locally' );
 
 		$this->settings->add_page_section(
 			'media',
 			[
 				'title'            => __( 'Media', 'rocket' ),
-				'menu_description' => __( 'LazyLoad, image dimensions', 'rocket' ),
+				'menu_description' => __( 'LazyLoad, image dimensions, font optimization', 'rocket' ),
 			]
 		);
 
@@ -890,7 +914,7 @@ class Page extends Abstract_Render {
 
 		$this->settings->add_settings_sections(
 			[
-				'lazyload_section'   => [
+				'lazyload_section'          => [
 					'title'       => __( 'LazyLoad', 'rocket' ),
 					'type'        => 'fields_container',
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
@@ -903,12 +927,20 @@ class Page extends Abstract_Render {
 					// translators: %1$s = “WP Rocket”, %2$s = a list of plugin names.
 					'helper'      => ! empty( $disable_lazyload ) ? sprintf( __( 'LazyLoad is currently activated in %2$s. If you want to use WP Rocket’s LazyLoad, disable this option in %2$s.', 'rocket' ), WP_ROCKET_PLUGIN_NAME, $disable_lazyload ) : '',
 				],
-				'dimensions_section' => [
+				'dimensions_section'        => [
 					'title'       => __( 'Image Dimensions', 'rocket' ),
 					'type'        => 'fields_container',
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 					'description' => sprintf( __( 'Add missing width and height attributes to images. Helps prevent layout shifts and improve the reading experience for your visitors. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $dimensions['url'] ) . '" data-beacon-article="' . esc_attr( $dimensions['id'] ) . '" target="_blank" rel="noopener noreferrer">', '</a>' ),
 					'help'        => $dimensions,
+					'page'        => 'media',
+				],
+				'font_optimization_section' => [
+					'title'       => __( 'Fonts', 'rocket' ),
+					'type'        => 'fields_container',
+					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+					'description' => sprintf( __( 'Download and serve fonts directly from your server. Reduces connections to external servers and minimizes font shifts. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $fonts['url'] ) . '" data-beacon-article="' . esc_attr( $fonts['id'] ) . '" target="_blank" rel="noopener noreferrer">', '</a>' ),
+					'help'        => $fonts,
 					'page'        => 'media',
 				],
 			]
@@ -1005,6 +1037,14 @@ class Page extends Abstract_Render {
 					'type'              => 'checkbox',
 					'label'             => __( 'Add missing image dimensions', 'rocket' ),
 					'section'           => 'dimensions_section',
+					'page'              => 'media',
+					'default'           => 0,
+					'sanitize_callback' => 'sanitize_checkbox',
+				],
+				'host_fonts_locally'  => [
+					'type'              => 'checkbox',
+					'label'             => __( 'Self-host Google Fonts', 'rocket' ),
+					'section'           => 'font_optimization_section',
 					'page'              => 'media',
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',

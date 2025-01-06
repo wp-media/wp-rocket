@@ -5,9 +5,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.17.2-alpha2\n"
+"Project-Id-Version: WP Rocket 3.17.3-alpha2\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2024-10-29T19:35:10+00:00\n"
+"POT-Creation-Date: 2024-11-19T12:59:39+00:00\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Mohammad Yousefzadeh <regedit2007@yahoo.com>, 2024\n"
 "Language-Team: Persian (Iran) (https://app.transifex.com/wp-media/teams/18133/fa_IR/)\n"
@@ -712,8 +712,8 @@ msgstr "نصب دوباره نسخه %s"
 #: inc/classes/class-wp-rocket-requirements-check.php:203
 #: inc/classes/class-wp-rocket-requirements-check.php:214
 #: inc/deprecated/3.11.php:236 inc/deprecated/3.11.php:251
-#: inc/Engine/Plugin/UpdaterSubscriber.php:473
-#: inc/Engine/Plugin/UpdaterSubscriber.php:487
+#: inc/Engine/Plugin/UpdaterSubscriber.php:477
+#: inc/Engine/Plugin/UpdaterSubscriber.php:491
 msgid "%s Update Rollback"
 msgstr "%s بازگشتن به نسخه قبلی"
 
@@ -861,7 +861,7 @@ msgstr "<strong>راکت وردپرس:</strong> %s"
 msgid "<strong>WP Rocket:</strong> Cloudflare cache successfully purged."
 msgstr "<strong>WP Rocket:</strong>کش CloudFlare با موفقیت پاک شد."
 
-#: inc/deprecated/3.5.php:858 inc/Engine/HealthCheck/HealthCheck.php:81
+#: inc/deprecated/3.5.php:858 inc/Engine/HealthCheck/HealthCheck.php:73
 msgid ""
 "The following scheduled event failed to run. This may indicate the CRON "
 "system is not running properly, which can prevent some WP Rocket features "
@@ -879,7 +879,7 @@ msgstr[1] ""
 "درستی اجرا نمی شود ، که می تواند مانع از عملکرد برخی از ویژگی های موشک "
 "وردپرس شود:"
 
-#: inc/deprecated/3.5.php:867 inc/Engine/HealthCheck/HealthCheck.php:88
+#: inc/deprecated/3.5.php:867 inc/Engine/HealthCheck/HealthCheck.php:80
 msgid "Please contact your host to check if CRON is working."
 msgstr "لطفا با هاست خود جهت بررسی عملکرد CRON تماس بگیرید."
 
@@ -908,7 +908,7 @@ msgstr ""
 " توانید این گزینه را برای بارگذاری اولیه آن تیک بزنید."
 
 #. translators: 1 and 3 are link openings, 2 is a link closing.
-#: inc/deprecated/3.11.php:279 inc/Engine/Plugin/UpdaterSubscriber.php:510
+#: inc/deprecated/3.11.php:279 inc/Engine/Plugin/UpdaterSubscriber.php:514
 msgid "%1$sReturn to WP Rocket%2$s or %3$sgo to Plugins page%2$s"
 msgstr "%1$sبازگشت به موشک وردپرس%2$sیا %3$s رفتن به برگه افزونه‌ها%2$s"
 
@@ -1136,36 +1136,36 @@ msgstr "کلاس فراخوانی شده %1$s <strong>منسوخ</strong> شده
 msgid "weekly"
 msgstr "هفتگی"
 
-#: inc/Engine/Admin/Database/Optimization.php:30
+#: inc/Engine/Admin/Database/Optimization.php:33
 #: inc/Engine/Admin/Settings/Page.php:1363
 msgid "Revisions"
 msgstr "بازبینی‌ها"
 
-#: inc/Engine/Admin/Database/Optimization.php:31
+#: inc/Engine/Admin/Database/Optimization.php:34
 #: inc/Engine/Admin/Settings/Page.php:1373
 msgid "Auto Drafts"
 msgstr "پیش نویس خودکار"
 
-#: inc/Engine/Admin/Database/Optimization.php:32
+#: inc/Engine/Admin/Database/Optimization.php:35
 #: inc/Engine/Admin/Settings/Page.php:1383
 msgid "Trashed Posts"
 msgstr "نوشته‌های داخل زباله دان"
 
-#: inc/Engine/Admin/Database/Optimization.php:33
+#: inc/Engine/Admin/Database/Optimization.php:36
 #: inc/Engine/Admin/Settings/Page.php:1393
 msgid "Spam Comments"
 msgstr "دیدگاه‌های اسپم"
 
-#: inc/Engine/Admin/Database/Optimization.php:34
+#: inc/Engine/Admin/Database/Optimization.php:37
 #: inc/Engine/Admin/Settings/Page.php:1403
 msgid "Trashed Comments"
 msgstr "دیدگاه‌های زباله‌دان"
 
-#: inc/Engine/Admin/Database/Optimization.php:35
+#: inc/Engine/Admin/Database/Optimization.php:38
 msgid "Transients"
 msgstr "داده‌های گذرا"
 
-#: inc/Engine/Admin/Database/Optimization.php:36
+#: inc/Engine/Admin/Database/Optimization.php:39
 msgid "Tables"
 msgstr "جداول"
 
@@ -1377,8 +1377,9 @@ msgstr ""
 "ویژگی بهینه سازی تحویل CSS در محیط محلی غیرفعال است.%1$sبیشتر بخوانید%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:603
-msgid "Remove Unused CSS (RUCSS)"
-msgstr "حذف CSS بدون استفاده (RUCSS)"
+#: inc/Engine/Optimization/RUCSS/Admin/OptionSubscriber.php:74
+msgid "Remove Unused CSS"
+msgstr "حذف CSS بدون استفاده"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:606
@@ -2572,8 +2573,8 @@ msgstr ""
 
 #. translators: %1$is = opening link tag, %2$s = closing link tag.
 #: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:155
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:228
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:328
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:229
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:329
 msgid "%1$sMore Info%2$s"
 msgstr "%1$sراهنمایی%2$s"
 
@@ -2618,6 +2619,24 @@ msgstr "خطای پاک کردن حافظه RocketCDN:%s."
 #: inc/Engine/CDN/RocketCDN/APIClient.php:247
 msgid "RocketCDN cache purge successful."
 msgstr "حذف کش RocketCDN موفق بود."
+
+#. translators: %1$s = Old CName, %2$s = New CName.
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:398
+msgid "We've updated your RocketCDN CNAME from %1$s to %2$s."
+msgstr "ما سرویس RocketCDN CNAME از %1$s به %2$s بروزرسانی کردیم."
+
+#. translators: %1$s = New CName.
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:400
+msgid ""
+"The change is already applied to the plugin settings. If you were using the "
+"CNAME in your code, make sure to update it to: %1$s."
+msgstr ""
+"تغییر در تنظیمات افزونه انجام شده است. اگر در کد خود از CNAME استفاده می "
+"کنید، از بروزرسانی آن مطمئن شوید:%1$s."
+
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:409
+msgid "contact support"
+msgstr "تماس با پشتیبانی"
 
 #: inc/Engine/CDN/RocketCDN/RESTSubscriber.php:137
 msgid "RocketCDN enabled"
@@ -3000,24 +3019,24 @@ msgstr "نوشته درخواست شده موجود نیست."
 msgid "Cannot generate CPCSS for unpublished post."
 msgstr "برای نوشته های منتشر نشده نمی توان CPCSS ایجاد کرد."
 
-#: inc/Engine/HealthCheck/HealthCheck.php:142
+#: inc/Engine/HealthCheck/HealthCheck.php:134
 msgid "Scheduled Cache Purge"
 msgstr "برنامه ریزی خالی کردن کش"
 
-#: inc/Engine/HealthCheck/HealthCheck.php:143
+#: inc/Engine/HealthCheck/HealthCheck.php:135
 msgid "Scheduled Database Optimization"
 msgstr "برنامه ریزی بهینه سازی دیتابیس"
 
-#: inc/Engine/HealthCheck/HealthCheck.php:144
+#: inc/Engine/HealthCheck/HealthCheck.php:136
 msgid "Database Optimization Process"
 msgstr "پروسه بهینه سازی دیتابیس"
 
-#: inc/Engine/HealthCheck/HealthCheck.php:145
+#: inc/Engine/HealthCheck/HealthCheck.php:137
 msgctxt "noun"
 msgid "Preload"
 msgstr "پیش بارگذاری"
 
-#: inc/Engine/HealthCheck/HealthCheck.php:146
+#: inc/Engine/HealthCheck/HealthCheck.php:138
 msgid "Critical Path CSS Generation Process"
 msgstr "پروسه تولید CSS بحرانی"
 
@@ -3288,33 +3307,33 @@ msgid ""
 msgstr ""
 "برای دریافت آخرین نسخه لیست ها از سرور ما به یک لایسنس فعال نیاز دارید."
 
-#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:116
-msgid "Could not get updated lists from server."
-msgstr "نمی توان لیست های به روز شده را از سرور دریافت کرد."
-
-#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:125
-msgid "Lists are up to date."
-msgstr "لیست ها به روز هستند."
-
-#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:134
-msgid "Could not update lists."
-msgstr "لیست‌ها به‌روزرسانی نشد."
-
-#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:143
-msgid "Lists are successfully updated."
-msgstr "لیست ها با موفقیت به روز شدند."
-
-#: inc/Engine/Optimization/DynamicLists/ServiceProvider.php:72
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:109
 msgid "Default Lists"
 msgstr "لیست پیشفرض"
 
-#: inc/Engine/Optimization/DynamicLists/ServiceProvider.php:78
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:110
 msgid "Delay JavaScript Execution Exclusion Lists"
 msgstr "به تأخیر انداختن لیست های لغو اجرای جاوا اسکریپت"
 
-#: inc/Engine/Optimization/DynamicLists/ServiceProvider.php:84
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:111
 msgid "Incompatible plugins Lists"
 msgstr "لیست افزونه های ناهماهنگ"
+
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:121
+msgid "Could not get updated lists from server."
+msgstr "نمی توان لیست های به روز شده را از سرور دریافت کرد."
+
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:130
+msgid "Lists are up to date."
+msgstr "لیست ها به روز هستند."
+
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:139
+msgid "Could not update lists."
+msgstr "لیست‌ها به‌روزرسانی نشد."
+
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:149
+msgid "Lists are successfully updated."
+msgstr "لیست ها با موفقیت به روز شدند."
 
 #: inc/Engine/Optimization/Minify/AdminSubscriber.php:65
 msgid "Minify/combine JavaScript"
@@ -3323,10 +3342,6 @@ msgstr "فشرده کردن/ترکیب جاوا اسکریپت"
 #: inc/Engine/Optimization/Minify/CSS/AdminSubscriber.php:143
 msgid "Minify CSS"
 msgstr "فشرده‌سازی CSS"
-
-#: inc/Engine/Optimization/RUCSS/Admin/OptionSubscriber.php:74
-msgid "Remove Unused CSS"
-msgstr "حذف CSS بدون استفاده"
 
 #. translators: %1$s = plugin name, %2$s = table name, %3$s = <a> open tag,
 #. %4$s = </a> closing tag.
@@ -4468,8 +4483,8 @@ msgid "How to improve LCP with WP Rocket"
 msgstr "چگونه با موشک وردپرس LCP را بهبود بخشیم"
 
 #: views/settings/page-sections/tutorials.php:26
-msgid "How to improve FID with WP Rocket"
-msgstr "چگونه با موشک وردپرس FID را بهبود بخشیم"
+msgid "How to improve INP with WP Rocket"
+msgstr "چگونه INP را با این افزونه بهبود دهیم"
 
 #: views/settings/page-sections/tutorials.php:27
 msgid "How to improve CLS with WP Rocket"

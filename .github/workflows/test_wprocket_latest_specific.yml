@@ -8,6 +8,7 @@ on:
       - branch-*
       - feature/*
       - enhancement/*
+      - fix/*
 
 jobs:
   run:
