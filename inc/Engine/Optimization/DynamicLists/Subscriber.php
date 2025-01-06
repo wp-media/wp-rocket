@@ -46,7 +46,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_lrc_exclusions'              => 'add_lrc_exclusions',
 			'wp_rocket_upgrade'                  => 'update_lists_from_files',
 			'rocket_before_rollback'             => 'maybe_update_lists',
-			'rocket_media_fonts_exclusions'      => 'add_media_fonts_exclusions',
+			'rocket_exclude_locally_host_fonts'  => 'add_media_fonts_exclusions',
 		];
 	}
 
