@@ -14,7 +14,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @var array
 	 */
 	protected $provides = [
-		Subscriber::class,
+		'domain_change_subscriber',
 		AjaxHandler::class,
 	];
 
@@ -36,7 +36,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	public function register(): void {
 		$this->getContainer()->add( AjaxHandler::class );
-		$this->getContainer()->add( Subscriber::class )
+		$this->getContainer()->addShared( 'domain_change_subscriber', Subscriber::class )
 			->addArguments(
 				[
 					AjaxHandler::class,

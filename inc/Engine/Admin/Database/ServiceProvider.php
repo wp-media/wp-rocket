@@ -18,7 +18,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	protected $provides = [
 		OptimizationProcess::class,
 		Optimization::class,
-		Subscriber::class,
+		'db_optimization_subscriber',
 	];
 
 	/**
@@ -41,7 +41,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( OptimizationProcess::class );
 		$this->getContainer()->add( Optimization::class )
 			->addArgument( OptimizationProcess::class );
-		$this->getContainer()->addShared( Subscriber::class )
+		$this->getContainer()->addShared( 'db_optimization_subscriber', Subscriber::class )
 			->addArguments(
 				[
 					Optimization::class,

@@ -23,7 +23,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		Settings::class,
 		Render::class,
 		Page::class,
-		Subscriber::class,
+		'settings_page_subscriber',
 	];
 
 	/**
@@ -65,7 +65,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'delay_js_sitelist' ) )
 			->addArgument( $this->getContainer()->get( 'template_path' ) )
 			->addArgument( $this->getContainer()->get( 'options' ) );
-		$this->getContainer()->addShared( Subscriber::class )
+		$this->getContainer()->addShared( 'settings_page_subscriber', Subscriber::class )
 			->addArguments(
 				[
 					Page::class,

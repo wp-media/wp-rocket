@@ -17,7 +17,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @var array
 	 */
 	protected $provides = [
-		Beacon::class,
+		'beacon',
 	];
 
 	/**
@@ -37,7 +37,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register(): void {
-		$this->getContainer()->addShared( Beacon::class )
+		$this->getContainer()->addShared( 'beacon', Beacon::class )
 			->addArguments(
 				[
 					Options_Data::class,

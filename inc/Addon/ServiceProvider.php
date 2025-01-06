@@ -22,9 +22,9 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @var array
 	 */
 	protected $provides = [
-		SucuriSubscriber::class,
-		WebPSubscriber::class,
-		WebPAdminSubscriber::class,
+		'sucuri_subscriber',
+		'webp_subscriber',
+		'webp_admin_subscriber',
 	];
 
 	/**
@@ -42,10 +42,10 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * Registers items with the container
 	 */
 	public function register(): void {
-		$this->getContainer()->addShared( SucuriSubscriber::class )
+		$this->getContainer()->addShared( 'sucuri_subscriber', SucuriSubscriber::class )
 			->addArgument( Options_Data::class );
 
-		$this->getContainer()->addShared( WebPAdminSubscriber::class )
+		$this->getContainer()->addShared( 'webp_admin_subscriber', WebPAdminSubscriber::class )
 			->addArguments(
 				[
 					Options_Data::class,
@@ -54,7 +54,7 @@ class ServiceProvider extends AbstractServiceProvider {
 				]
 			);
 
-		$this->getContainer()->addShared( WebPSubscriber::class )
+		$this->getContainer()->addShared( 'webp_subscriber', WebPSubscriber::class )
 			->addArguments(
 				[
 					Options_Data::class,

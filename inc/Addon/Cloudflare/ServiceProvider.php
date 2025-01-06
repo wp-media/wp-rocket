@@ -26,8 +26,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		Client::class,
 		Endpoints::class,
 		Cloudflare::class,
-		CloudflareSubscriber::class,
-		CloudflareAdminSubscriber::class,
+		'cloudflare_subscriber',
+		'cloudflare_admin_subscriber',
 	];
 
 	/**
@@ -59,7 +59,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					Endpoints::class,
 				]
 			);
-		$this->getContainer()->addShared( CloudflareSubscriber::class )
+		$this->getContainer()->addShared( 'cloudflare_subscriber', CloudflareSubscriber::class )
 			->addArguments(
 				[
 					Cloudflare::class,
@@ -68,6 +68,6 @@ class ServiceProvider extends AbstractServiceProvider {
 					APIKeyFactory::class,
 				]
 			);
-		$this->getContainer()->addShared( CloudflareAdminSubscriber::class );
+		$this->getContainer()->addShared( 'cloudflare_admin_subscriber', CloudflareAdminSubscriber::class );
 	}
 }

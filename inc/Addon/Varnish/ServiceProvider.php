@@ -17,7 +17,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	protected $provides = [
 		Varnish::class,
-		Subscriber::class,
+		'varnish_subscriber',
 	];
 
 	/**
@@ -38,7 +38,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	public function register(): void {
 		$this->getContainer()->add( Varnish::class );
-		$this->getContainer()->addShared( Subscriber::class )
+		$this->getContainer()->addShared( 'varnish_subscriber', Subscriber::class )
 			->addArguments(
 				[
 					Varnish::class,

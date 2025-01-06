@@ -16,7 +16,7 @@ class Common_Subscribers extends AbstractServiceProvider {
 	 * @var array
 	 */
 	protected $provides = [
-		Detect_Missing_Tags_Subscriber::class,
+		'detect_missing_tags_subscriber',
 	];
 
 	/**
@@ -36,6 +36,6 @@ class Common_Subscribers extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register(): void {
-		$this->getContainer()->addShared( Detect_Missing_Tags_Subscriber::class );
+		$this->getContainer()->addShared( 'detect_missing_tags_subscriber', Detect_Missing_Tags_Subscriber::class );
 	}
 }

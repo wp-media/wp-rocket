@@ -12,7 +12,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @var array
 	 */
 	protected $provides = [
-		Subscriber::class,
+		'admin_api_subscriber',
 	];
 
 	/**
@@ -32,6 +32,6 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register(): void {
-		$this->getContainer()->add( Subscriber::class );
+		$this->getContainer()->add( 'admin_api_subscriber', Subscriber::class );
 	}
 }
