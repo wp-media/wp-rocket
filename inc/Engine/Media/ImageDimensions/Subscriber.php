@@ -34,12 +34,13 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_buffer' => [ 'specify_image_dimensions', 17 ],
+			'rocket_buffer'                   => [ 'specify_image_dimensions', 17 ],
+			'rocket_performance_hints_buffer' => 'image_dimensions_query_string',
 		];
 	}
 
 	/**
-	 * Update images that have no width/height with real dimentions.
+	 * Update images that have no width/height with real dimensions.
 	 *
 	 * @param string $buffer Page HTML content.
 	 *
@@ -49,6 +50,23 @@ class Subscriber implements Subscriber_Interface {
 		if ( rocket_bypass() ) {
 			return $buffer;
 		}
+
+		return $this->dimensions->specify_image_dimensions( $buffer );
+	}
+
+	/**
+	 * Add image dimensions if the query string is in the URL.
+	 *
+	 * @param string $buffer Page HTML content.
+	 *
+	 * @return string
+	 */
+	public function image_dimensions_query_string( $buffer ): string {
+		if ( empty( $_GET['wpr_imagedimensions'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			return $buffer;
+		}
+
+		add_filter( 'rocket_specify_image_dimensions', '__return_true' );
 
 		return $this->dimensions->specify_image_dimensions( $buffer );
 	}

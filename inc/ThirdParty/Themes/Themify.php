@@ -41,6 +41,7 @@ class Themify implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function disabling_concat_on_theme() {
+		// @phpstan-ignore-next-line
 		$data = themify_get_data();
 
 		$remove_unused_css = $this->options->get( 'remove_unused_css', false );
@@ -53,6 +54,7 @@ class Themify implements Subscriber_Interface {
 			$data = $this->maybe_enable( $data );
 		}
 
+		// @phpstan-ignore-next-line
 		themify_set_data( $data );
 	}
 
@@ -84,6 +86,7 @@ class Themify implements Subscriber_Interface {
 			return;
 		}
 
+		// @phpstan-ignore-next-line
 		$data = themify_get_data();
 
 		if ( ! $new['remove_unused_css'] ) {
@@ -94,6 +97,7 @@ class Themify implements Subscriber_Interface {
 			$data = $this->maybe_enable( $data );
 		}
 
+		// @phpstan-ignore-next-line
 		themify_set_data( $data );
 	}
 

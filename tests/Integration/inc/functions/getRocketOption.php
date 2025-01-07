@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\functions;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers ::get_rocket_option
+ * Test class covering ::get_rocket_option
  * @uses   \WP_Rocket\Admin\Options
  * @uses   \WP_Rocket\Admin\Options_Data
  *

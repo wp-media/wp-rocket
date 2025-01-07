@@ -6,7 +6,7 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers ::rocket_after_save_options
+ * Test class covering ::rocket_after_save_options
  *
  * @group admin
  * @group Options

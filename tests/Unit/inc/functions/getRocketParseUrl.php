@@ -7,7 +7,7 @@ use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
- * @covers ::get_rocket_parse_url
+ * Test class covering ::get_rocket_parse_url
  * @group  Functions
  * @group  Posts
  */

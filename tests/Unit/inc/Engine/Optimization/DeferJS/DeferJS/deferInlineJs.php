@@ -11,7 +11,7 @@ use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\DataManager;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\DeferJS\DeferJS::defer_inline_js
+ * Test class covering \WP_Rocket\Engine\Optimization\DeferJS\DeferJS::defer_inline_js
  *
  * @group  DeferJS
  */

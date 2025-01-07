@@ -9,7 +9,7 @@ use WP_Rocket\Engine\Optimization\DelayJS\Admin\Settings;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\DelayJS\Admin\Settings::set_option_on_update
+ * Test class covering \WP_Rocket\Engine\Optimization\DelayJS\Admin\Settings::set_option_on_update
  *
  * @group  DelayJS
  */

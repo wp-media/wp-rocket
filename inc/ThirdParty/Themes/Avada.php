@@ -59,8 +59,8 @@ class Avada implements Subscriber_Interface {
 	 *
 	 * @since 3.3.4
 	 *
-	 * @param string $old_value Previous Avada option value.
-	 * @param string $value     New Avada option value.
+	 * @param array $old_value Previous Avada option value.
+	 * @param array $value     New Avada option value.
 	 * @return void
 	 */
 	public function maybe_deactivate_lazyload( $old_value, $value ) {
@@ -100,7 +100,7 @@ class Avada implements Subscriber_Interface {
 			return $disable_images_lazyload;
 		}
 
-		if ( ! empty( $avada_options['lazy_load'] && 'avada' !== $avada_options['lazy_load'] ) ) {
+		if ( 'avada' !== $avada_options['lazy_load'] ) {
 			return $disable_images_lazyload;
 		}
 

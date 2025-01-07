@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\functions;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers ::rocket_put_content
+ * Test class covering ::rocket_put_content
  * @uses  ::rocket_get_filesystem_perms
  * @uses  ::rocket_direct_filesystem
  *

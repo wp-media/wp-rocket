@@ -8,10 +8,12 @@ use WP_Filesystem_Direct;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Settings\Settings;
 use WP_Rocket\Engine\Optimization\RegexTrait;
+use WP_Rocket\Engine\Support\CommentTrait;
 use WP_Rocket\Logger\Logger;
 
 class ImageDimensions {
 	use RegexTrait;
+	use CommentTrait;
 
 	/**
 	 * Options_Data instance
@@ -77,7 +79,7 @@ class ImageDimensions {
 	 *
 	 * @param string $html Buffer Page HTML contents.
 	 *
-	 * @return string Buffer Page HTML contents after inserting dimentions into images.
+	 * @return string Buffer Page HTML contents after inserting dimensions into images.
 	 */
 	public function specify_image_dimensions( $html ) {
 		Logger::debug( 'Start Specify Image Dimensions.' );
@@ -95,7 +97,7 @@ class ImageDimensions {
 		 *
 		 * @since  3.8
 		 *
-		 * @param bool Do or not. Default is True, so it will skip all img tags that are inside picture tag.
+		 * @param bool $skip_pictures Do or not. Default is True, so it will skip all img tags that are inside picture tag.
 		 */
 		if ( apply_filters( 'rocket_specify_dimension_skip_pictures', true ) ) {
 			$images_regex = '<\s*picture[^>]*>.*<\s*\/\s*picture\s*>(*SKIP)(*FAIL)|' . $images_regex;
@@ -118,7 +120,7 @@ class ImageDimensions {
 		 *
 		 * @since  3.8
 		 *
-		 * @param array Page images.
+		 * @param array $images Page images.
 		 */
 		$images = apply_filters( 'rocket_specify_dimension_images', $images_match[0] );
 
@@ -155,7 +157,9 @@ class ImageDimensions {
 			return $html;
 		}
 
-		return str_replace( array_keys( $replaces ), $replaces, $html );
+		$html = str_replace( array_keys( $replaces ), $replaces, $html );
+
+		return $this->add_meta_comment( 'image_dimensions', $html );
 	}
 
 	/**
@@ -208,10 +212,6 @@ class ImageDimensions {
 
 		$hosts = array_unique( $hosts );
 
-		if ( empty( $hosts ) ) {
-			return true;
-		}
-
 		// URL has domain and domain is part of the internal domains.
 		if ( ! empty( $file['host'] ) ) {
 			foreach ( $hosts as $host ) {
@@ -259,7 +259,7 @@ class ImageDimensions {
 		 *
 		 * @since 3.8
 		 *
-		 * @param bool Specify image dimensions for external images or not.
+		 * @param bool $specify_dimensions_external Specify image dimensions for external images or not.
 		 */
 		return ini_get( 'allow_url_fopen' ) && apply_filters( 'rocket_specify_image_dimensions_for_distant', false );
 	}
@@ -313,6 +313,8 @@ class ImageDimensions {
 
 			return 'width="' . $initial_width['width'] . '" height="' . (int) round( $sizes[1] * $ratio ) . '"';
 		}
+
+		return false;
 	}
 
 	/**
@@ -372,7 +374,7 @@ class ImageDimensions {
 		 *
 		 * @since 2.2
 		 *
-		 * @param bool Do the job or not.
+		 * @param bool $specify_dimensions Do the job or not.
 		 */
 		return apply_filters( 'rocket_specify_image_dimensions', false )
 			||

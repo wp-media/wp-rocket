@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\DynamicLists\Subsc
 use WPMedia\PHPUnit\Integration\RESTfulTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\DynamicLists\Subscriber::register_rest_route
+ * Test class covering \WP_Rocket\Engine\Optimization\DynamicLists\Subscriber::register_rest_route
  *
  * @group  DynamicLists
  */

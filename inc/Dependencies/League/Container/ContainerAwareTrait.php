@@ -1,74 +1,38 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace WP_Rocket\Dependencies\League\Container;
 
+use BadMethodCallException;
 use WP_Rocket\Dependencies\League\Container\Exception\ContainerException;
-use WP_Rocket\Dependencies\Psr\Container\ContainerInterface;
 
 trait ContainerAwareTrait
 {
     /**
-     * @var ContainerInterface
+     * @var ?DefinitionContainerInterface
      */
     protected $container;
 
-    /**
-     * @var Container
-     */
-    protected $leagueContainer;
-
-    /**
-     * Set a container.
-     *
-     * @param ContainerInterface $container
-     *
-     * @return ContainerAwareInterface
-     */
-    public function setContainer(ContainerInterface $container) : ContainerAwareInterface
+    public function setContainer(DefinitionContainerInterface $container): ContainerAwareInterface
     {
         $this->container = $container;
 
-        return $this;
-    }
-
-    /**
-     * Get the container.
-     *
-     * @return ContainerInterface
-     */
-    public function getContainer() : ContainerInterface
-    {
-        if ($this->container instanceof ContainerInterface) {
-            return $this->container;
+        if ($this instanceof ContainerAwareInterface) {
+            return $this;
         }
 
-        throw new ContainerException('No container implementation has been set.');
+        throw new BadMethodCallException(sprintf(
+            'Attempt to use (%s) while not implementing (%s)',
+            ContainerAwareTrait::class,
+            ContainerAwareInterface::class
+        ));
     }
 
-    /**
-     * Set a container.
-     *
-     * @param Container $container
-     *
-     * @return self
-     */
-    public function setLeagueContainer(Container $container) : ContainerAwareInterface
+    public function getContainer(): DefinitionContainerInterface
     {
-        $this->container = $container;
-        $this->leagueContainer = $container;
-
-        return $this;
-    }
-
-    /**
-     * Get the container.
-     *
-     * @return Container
-     */
-    public function getLeagueContainer() : Container
-    {
-        if ($this->leagueContainer instanceof Container) {
-            return $this->leagueContainer;
+        if ($this->container instanceof DefinitionContainerInterface) {
+            return $this->container;
         }
 
         throw new ContainerException('No container implementation has been set.');

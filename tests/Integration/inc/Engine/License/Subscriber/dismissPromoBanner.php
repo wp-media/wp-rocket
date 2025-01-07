@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\License\Subscriber;
 use WP_Rocket\Tests\Integration\AjaxTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\License\Subscriber::dismiss_promo_banner
+ * Test class covering \WP_Rocket\Engine\License\Subscriber::dismiss_promo_banner
  *
  * @group  AdminOnly
  * @group  License

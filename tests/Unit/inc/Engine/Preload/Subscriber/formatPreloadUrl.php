@@ -14,7 +14,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket_Mobile_Detect;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\Subscriber::format_preload_url
+ * Test class covering \WP_Rocket\Engine\Preload\Subscriber::format_preload_url
  *
  * @group  Preload
  */

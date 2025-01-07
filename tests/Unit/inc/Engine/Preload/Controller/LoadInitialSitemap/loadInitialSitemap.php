@@ -14,7 +14,7 @@ use WP_Sitemaps;
 use WP_Sitemaps_Index;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\Controller\LoadInitialSitemap::load_initial_sitemap
+ * Test class covering \WP_Rocket\Engine\Preload\Controller\LoadInitialSitemap::load_initial_sitemap
  * @group  Preload
  */
 class Test_LoadInitialSitemap extends TestCase {
@@ -56,9 +56,6 @@ class Test_LoadInitialSitemap extends TestCase {
 	protected function configureWordPressSitemap($config) {
 		if(count($config['filter_sitemaps']) > 0) {
 			return ;
-			$this->query->expects(self::once())->method('create_or_nothing')->with([
-				'url' => $config['home_url']
-			]);
 		}
 		Functions\expect('get_option')->with('blog_public')->andReturn($config['is_sitemap_activated']);
 

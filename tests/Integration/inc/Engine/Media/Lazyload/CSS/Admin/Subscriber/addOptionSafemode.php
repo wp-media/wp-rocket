@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Media\Lazyload\CSS\Admin\Subscr
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Media\Lazyload\CSS\Admin\Subscriber::add_option_safemode
+ * Test class covering \WP_Rocket\Engine\Media\Lazyload\CSS\Admin\Subscriber::add_option_safemode
  * @group AdminOnly
  */
 class Test_addOptionSafemode extends TestCase {

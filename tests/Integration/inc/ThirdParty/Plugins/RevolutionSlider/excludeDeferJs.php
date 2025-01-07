@@ -4,7 +4,7 @@ namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\RevolutionSlider;
 
 use WP_Rocket\Tests\Integration\TestCase;
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\RevolutionSlider::exclude_defer_js
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\RevolutionSlider::exclude_defer_js
  *
  * @group  RevolutionSlider
  * @group  ThirdParty

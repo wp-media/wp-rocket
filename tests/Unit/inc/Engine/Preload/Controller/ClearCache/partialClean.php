@@ -8,7 +8,7 @@ use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\Controller\ClearCache::partial_clean
+ * Test class covering \WP_Rocket\Engine\Preload\Controller\ClearCache::partial_clean
  * @group Preload
  */
 class Test_PartialClean extends TestCase

@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\Inc\ThirdParty\Plugins\Optimization\WPMete
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\Optimization\WPMeteor::disable_delay_js
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\Optimization\WPMeteor::disable_delay_js
  *
  * @group WPMeteor
  * @group ThirdParty

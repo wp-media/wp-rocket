@@ -5,7 +5,8 @@ namespace WP_Rocket\Tests\Integration\inc\admin;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers ::rocket_first_install
+ * Test class covering ::rocket_first_install
+ *
  * @group admin
  * @group upgrade
  * @group AdminOnly
@@ -110,9 +111,5 @@ class Test_RocketFirstInstall extends TestCase {
 		$this->assertTrue( is_array( $user_boxes ) );
 		$this->assertContains( $this->box_name, $user_boxes );
 		$this->assertNotSame( 'foobar', get_transient( $this->box_name ) );
-	}
-
-	public function addProvider() {
-		return $this->getTestData( __DIR__, 'rocketFirstInstall' );
 	}
 }

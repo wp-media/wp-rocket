@@ -6,7 +6,7 @@ use WP_Error;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers WP_Rocket\Addon\Cloudflare\Cloudflare::set_cache_level
+ * Test class covering WP_Rocket\Addon\Cloudflare\Cloudflare::set_cache_level
  *
  * @group Cloudflare
  */

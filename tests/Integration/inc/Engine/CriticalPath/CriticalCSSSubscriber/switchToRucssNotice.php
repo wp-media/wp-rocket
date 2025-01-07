@@ -2,15 +2,13 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\CriticalCSSSubscriber;
 
-use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::switch_to_rucss_notice
+ * Test class covering \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::switch_to_rucss_notice
  * @group  AdminOnly
  */
 class Test_switchToRucssNotice extends TestCase {
-	use DBTrait;
 	private static $user;
 
 	private $original_user;
@@ -26,7 +24,7 @@ class Test_switchToRucssNotice extends TestCase {
 	public static function set_up_before_class()
 	{
 		parent::set_up_before_class();
-		self::uninstallAll();
+
 		$container     = apply_filters( 'rocket_container', null );
 		self::$user    = $container->get( 'user' );
 	}

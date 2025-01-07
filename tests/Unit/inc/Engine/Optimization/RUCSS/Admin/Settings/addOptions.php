@@ -10,7 +10,7 @@ use WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Admin\Settings::add_options
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Admin\Settings::add_options
  *
  * @group  RUCSS
  */

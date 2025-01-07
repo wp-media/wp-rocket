@@ -88,7 +88,7 @@ function rocket_admin_bar( $wp_admin_bar ) {
 					[
 						'parent' => 'wp-rocket',
 						'id'     => 'purge-all',
-						'title'  => (bool) get_rocket_option( 'manual_preload', false ) ? __( 'Clear and preload cache', 'rocket' ) : __( 'Clear cache', 'rocket' ),
+						'title'  => (bool) get_rocket_option( 'manual_preload', false ) ? __( 'Clear and Preload Cache', 'rocket' ) : __( 'Clear Cache', 'rocket' ),
 					]
 				);
 
@@ -151,7 +151,7 @@ function rocket_admin_bar( $wp_admin_bar ) {
 					[
 						'parent' => 'wp-rocket',
 						'id'     => 'purge-all',
-						'title'  => (bool) get_rocket_option( 'manual_preload', false ) ? __( 'Clear and preload cache', 'rocket' ) : __( 'Clear cache', 'rocket' ),
+						'title'  => (bool) get_rocket_option( 'manual_preload', false ) ? __( 'Clear and Preload Cache', 'rocket' ) : __( 'Clear Cache', 'rocket' ),
 						'href'   => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . '&type=all' . $referer ), $action . '_all' ),
 					]
 				);

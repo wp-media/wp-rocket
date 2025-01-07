@@ -1,0 +1,33 @@
+// main: ../main.scss
+
+/*-----------------------------------------------*\
+
+    Plugin Tab style
+
+\*-----------------------------------------------*/
+.wpr-plugins {
+	gap: 25px;
+	&--box {
+		background: $cGreyLight3;
+		color: $cGreyDark4;
+		padding: 10px;
+		border: 1px solid #eff1f3;
+		margin: 20px 0 15px;
+		display: grid;
+	}
+	&--logo{
+		border-bottom: 1px solid #edeff2;
+		padding: 10px 0 5px;
+		margin-bottom: 15px;
+	}
+	&--meta{
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: 15px;
+		align-self: end;
+		span{
+			color: $cGreenDark1;
+		}
+	}
+}

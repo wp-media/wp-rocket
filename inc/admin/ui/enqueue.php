@@ -28,7 +28,7 @@ function rocket_add_admin_css_js() {
 			'rocket_localize_admin_script',
 			[
 				'nonce'      => wp_create_nonce( 'rocket-ajax' ),
-				'origin_url' => untrailingslashit( rocket_get_constant( 'WP_ROCKET_WEB_MAIN' ) ),
+				'origin_url' => 'https://api.wp-rocket.me',
 			]
 		)
 	);

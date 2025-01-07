@@ -10,7 +10,7 @@ use WP_Rocket\Engine\Media\ImageDimensions\ImageDimensions;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Media\ImageDimensions\ImageDimensions::specify_image_dimensions
+ * Test class covering \WP_Rocket\Engine\Media\ImageDimensions\ImageDimensions::specify_image_dimensions
  * @group  ImageDimensions
  * @group  Media
  */
@@ -51,6 +51,11 @@ class Test_SpecifyImageDimensions extends FilesystemTestCase {
 		Functions\when( 'site_url' )->alias( function( $path = '') use ( $site_url ) {
 			return $site_url . ltrim( $path, '/' );
 		} );
+
+		Filters\expectApplied( 'rocket_disable_meta_generator' )
+			->atMost()
+			->once()
+			->andReturn( true );
 
 		if ( isset( $config['rocket_specify_image_dimensions_filter'] ) ){
 			Filters\expectApplied( 'rocket_specify_image_dimensions' )

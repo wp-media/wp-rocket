@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
 use WP_Rocket\ThirdParty\Themes\Uncode;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Themes\Uncode::exclude_js
+ * Test class covering \WP_Rocket\ThirdParty\Themes\Uncode::exclude_js
  *
  * @group Uncode
  * @group Themes

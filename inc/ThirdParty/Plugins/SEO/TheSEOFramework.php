@@ -46,6 +46,7 @@ class TheSEOFramework implements Subscriber_Interface {
 		 *
 		 * @link https://github.com/wp-media/wp-rocket/issues/899
 		 */
+		// @phpstan-ignore-next-line
 		if ( ! $tsf->can_run_sitemap() ) {
 			return [];
 		}

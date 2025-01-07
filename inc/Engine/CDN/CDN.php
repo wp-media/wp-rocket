@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\CDN;
 
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Support\CommentTrait;
 
 /**
  * CDN class
@@ -11,6 +12,8 @@ use WP_Rocket\Admin\Options_Data;
  * @since 3.4
  */
 class CDN {
+	use CommentTrait;
+
 	/**
 	 * WP Rocket Options instance
 	 *
@@ -48,7 +51,7 @@ class CDN {
 		$buffer = $html;
 
 		/**
-		 * Filters the exclusion of CDN rewritting inside inline scripts
+		 * Filters the exclusion of CDN rewriting inside inline scripts
 		 *
 		 * @since 3.10.5
 		 *
@@ -80,7 +83,7 @@ class CDN {
 			$html    = str_replace( $match[0], $cdn_url, $html );
 		}
 
-		return $html;
+		return $this->add_meta_comment( 'cdn', $html );
 	}
 
 	/**

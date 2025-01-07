@@ -10,7 +10,7 @@ use WP_Rocket\Engine\Media\Lazyload\Subscriber;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Media\Lazyload\Subscriber::insert_lazyload_script
+ * Test class covering \WP_Rocket\Engine\Media\Lazyload\Subscriber::insert_lazyload_script
  *
  * @group Media
  * @group Lazyload

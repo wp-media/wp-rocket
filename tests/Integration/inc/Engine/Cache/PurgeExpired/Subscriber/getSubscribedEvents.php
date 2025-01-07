@@ -6,7 +6,7 @@ use WPMedia\PHPUnit\Integration\TestCase;
 use WP_Rocket\Engine\Cache\PurgeExpired\Subscriber;
 
 /**
- * @covers Subscriber::get_subscribed_events
+ * Test class covering Subscriber::get_subscribed_events
  * @group Subscriber
  */
 class TestGetSubscribedEvents extends TestCase {

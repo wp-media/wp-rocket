@@ -10,7 +10,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\Database\Queries\Cache::create_or_nothing
+ * Test class covering \WP_Rocket\Engine\Preload\Database\Queries\Cache::create_or_nothing
  *
  * @group Database
  * @group Preload

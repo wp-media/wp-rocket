@@ -3,7 +3,7 @@
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Hostings\WPEngine;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\WPEngine::add_footprint
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\WPEngine::add_footprint
  * @uses   ::rocket_get_constant
  *
  * @group  WPEngine

@@ -8,7 +8,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Engine\Admin\Deactivation\DeactivationIntent;
 
 /**
- * @covers \WP_Rocket\Engine\Admin\Deactivation\DeactivationIntent::insert_deactivation_intent_form
+ * Test class covering \WP_Rocket\Engine\Admin\Deactivation\DeactivationIntent::insert_deactivation_intent_form
  * @group  DeactivationIntent
  */
 class Test_InsertDeactivationIntentForm extends TestCase {

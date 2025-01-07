@@ -10,7 +10,7 @@ use WP_Rocket\Engine\CDN\Subscriber;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Addon\Webp\AdminSubscriber::maybe_disable_setting_field
+ * Test class covering \WP_Rocket\Addon\Webp\AdminSubscriber::maybe_disable_setting_field
  * @group WebP
  */
 class Test_MaybeDisableSettingField extends TestCase {

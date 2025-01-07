@@ -5,7 +5,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Themes\Jevelin;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Themes\Jevelin::preserve_patterns
+ * Test class covering \WP_Rocket\ThirdParty\Themes\Jevelin::preserve_patterns
  * @group Jevelin
  * @group ThirdParty
  */

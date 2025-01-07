@@ -7,7 +7,7 @@ use WP_Rocket\Tests\GlobTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Cache\PurgeActionsSubscriber:purge_user_cache
+ * Test class covering \WP_Rocket\Engine\Cache\PurgeActionsSubscriber:purge_user_cache
  * @uses   ::rocket_clean_user
  * @uses   ::get_rocket_parse_url
  * @uses   ::get_rocket_i18n_uri

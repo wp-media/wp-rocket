@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\License\Subscriber;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\License\Subscriber::set_dashboard_seen_transient
+ * Test class covering \WP_Rocket\Engine\License\Subscriber::set_dashboard_seen_transient
  *
  * @group License
  * @group AdminOnly

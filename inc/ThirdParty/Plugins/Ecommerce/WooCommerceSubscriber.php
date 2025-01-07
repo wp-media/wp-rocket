@@ -1,10 +1,10 @@
 <?php
 namespace WP_Rocket\ThirdParty\Plugins\Ecommerce;
 
+use WP_Post;
 use WP_Rocket\Engine\Optimization\DelayJS\HTML;
 use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\Event_Management\Event_Manager_Aware_Subscriber_Interface;
-use WP_Rocket\Logger\Logger;
 use WP_Rocket\Traits\Config_Updater;
 
 /**
@@ -18,7 +18,7 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 	/**
 	 * The WordPress Event Manager
 	 *
-	 * @var Event_Manager;
+	 * @var Event_Manager
 	 */
 	protected $event_manager;
 
@@ -82,7 +82,7 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 			 *
 			 * @since 3.1
 			 *
-			 * @param bool true to activate, false to deactivate.
+			 * @param bool $cache_cart true to activate, false to deactivate.
 			 */
 			if ( apply_filters( 'rocket_cache_wc_empty_cart', true ) ) {
 				$events['init']              = [ 'serve_cache_empty_cart', 11 ];
@@ -329,7 +329,7 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 		 *
 		 * @since 2.6.5
 		 *
-		 * @param bool false will force to cache the WooCommerce REST API
+		 * @param bool $cache_wc_rest_api false will force to cache the WooCommerce REST API
 		 */
 		if ( apply_filters( 'rocket_cache_reject_wc_rest_api', true ) ) {
 			$urls[] = rocket_clean_exclude_file( $this->get_wc_api_endpoint() );
@@ -388,7 +388,7 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 	 * @since 3.1
 	 * @author Remy Perona
 	 *
-	 * @return string
+	 * @return mixed
 	 */
 	private function get_cache_empty_cart() {
 		$lang = rocket_get_current_language();
@@ -549,12 +549,8 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 	 *
 	 * @return array
 	 */
-	public function show_notempty_product_gallery_with_delayJS( $exclusions = [] ): array {
+	public function show_notempty_product_gallery_with_delayJS( array $exclusions = [] ): array {
 		global $wp_version;
-
-		if ( ! is_array( $exclusions ) ) {
-			$exclusions = (array) $exclusions;
-		}
 
 		if ( ! $this->delayjs_html->is_allowed() ) {
 			return $exclusions;
@@ -612,7 +608,8 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 	 * @return void
 	 */
 	public function allow_rocket_clean_post( int $product_id ): void {
-		$urls          = [];
+		$urls = [];
+
 		$category_list = wc_get_product_category_list( $product_id );
 
 		if ( preg_match_all( '/<a\s+(?:[^>]*?\s+)?href=(["\'])(?<urls>.*?)\1/i', $category_list, $matches ) ) {

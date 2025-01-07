@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\DynamicLists\Subsc
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\DynamicLists\Subscriber::add_minify_excluded_external_js
+ * Test class covering \WP_Rocket\Engine\Optimization\DynamicLists\Subscriber::add_minify_excluded_external_js
  *
  * @group  DynamicLists
  */

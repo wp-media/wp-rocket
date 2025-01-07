@@ -4,6 +4,7 @@ namespace WP_Rocket\Engine\Preload;
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CDN\CDN;
+use WP_Rocket\Engine\Support\CommentTrait;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
@@ -12,6 +13,7 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  * @since 3.6
  */
 class Fonts implements Subscriber_Interface {
+	use CommentTrait;
 
 	/**
 	 * WP Rocket Options instance.
@@ -37,7 +39,7 @@ class Fonts implements Subscriber_Interface {
 	 * @since 3.6
 	 * @see   $this->sanitize_font()
 	 *
-	 * @var string|bool
+	 * @var array
 	 */
 	private $font_formats = [
 		'otf',
@@ -114,7 +116,15 @@ class Fonts implements Subscriber_Interface {
 			);
 		}
 
-		return preg_replace( '#</title>#', $preloads, $html, 1 );
+		$result = preg_replace( '#</title>#', $preloads, $html, 1 );
+
+		if ( null === $result ) {
+			return $html;
+		}
+
+		$result = $this->add_meta_comment( 'preload_fonts', $result );
+
+		return $result;
 	}
 
 	/**
@@ -125,11 +135,7 @@ class Fonts implements Subscriber_Interface {
 	 * @param  string $file Filepath to sanitize.
 	 * @return string|bool  Sanitized filepath. False if not a font file.
 	 */
-	private function sanitize_font( $file ) {
-		if ( ! is_string( $file ) ) {
-			return false;
-		}
-
+	private function sanitize_font( string $file ) {
 		$file = trim( $file );
 
 		if ( empty( $file ) ) {

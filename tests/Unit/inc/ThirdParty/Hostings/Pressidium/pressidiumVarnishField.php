@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Hostings\Pressidium;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\Pressidium::pressidium_varnish_field
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\Pressidium::pressidium_varnish_field
  *
  */
 class Test_pressidiumVarnishField extends TestCase {

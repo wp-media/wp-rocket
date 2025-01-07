@@ -10,7 +10,7 @@ use WP_Rocket\Addon\Cloudflare\Auth\AuthInterface;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers WP_Rocket\Addon\Cloudflare\API\Client::patch
+ * Test class covering WP_Rocket\Addon\Cloudflare\API\Client::patch
  *
  * @group Cloudflare
  */

@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Filters;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\Database\Queries\RocketCache::get_pending_jobs
+ * Test class covering \WP_Rocket\Engine\Preload\Database\Queries\RocketCache::get_pending_jobs
  *
  * @group Database
  * @group Preload

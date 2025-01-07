@@ -9,7 +9,7 @@ use WP_Rocket\ThirdParty\Plugins\PageBuilder\Elementor;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers WP_Rocket\ThirdParty\Plugins\PageBuilder\Elementor::exclude_post_css
+ * Test class covering WP_Rocket\ThirdParty\Plugins\PageBuilder\Elementor::exclude_post_css
  * @group Elementor
  * @group ThirdParty
  */

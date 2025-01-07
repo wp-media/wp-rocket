@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Hostings\Dreampress;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\Dreampress::set_varnish_host
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\Dreampress::set_varnish_host
  *
  * @group  Dreampress
  * @group  ThirdParty

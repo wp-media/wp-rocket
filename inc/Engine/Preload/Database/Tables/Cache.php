@@ -1,8 +1,9 @@
 <?php
+declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Preload\Database\Tables;
 
-use WP_Rocket\Dependencies\Database\Table;
+use WP_Rocket\Dependencies\BerlinDB\Database\Table;
 
 class Cache extends Table {
 
@@ -95,5 +96,18 @@ class Cache extends Table {
 		}
 
 		return $this->is_success( $created );
+	}
+
+	/**
+	 * Truncate cache table.
+	 *
+	 * @return bool
+	 */
+	public function truncate_cache_table(): bool {
+		if ( ! $this->exists() ) {
+			return false;
+		}
+
+		return $this->truncate();
 	}
 }

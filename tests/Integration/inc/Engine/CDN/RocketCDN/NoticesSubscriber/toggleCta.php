@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\NoticesSubscriber
 use WP_Rocket\Tests\Integration\AjaxTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber::toggle_cta
+ * Test class covering \WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber::toggle_cta
  *
  * @group  AdminOnly
  * @group  RocketCDN

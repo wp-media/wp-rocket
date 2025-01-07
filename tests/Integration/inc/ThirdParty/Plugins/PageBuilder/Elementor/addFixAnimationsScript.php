@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\PageBuilder\Elementor::add_fix_animation_script
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\PageBuilder\Elementor::add_fix_animation_script
  * @group Elementor
  * @group ThirdParty
  */

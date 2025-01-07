@@ -6,7 +6,7 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers ::rocket_validate_css
+ * Test class covering ::rocket_validate_css
  *
  * @group Functions
  * @group Formatting

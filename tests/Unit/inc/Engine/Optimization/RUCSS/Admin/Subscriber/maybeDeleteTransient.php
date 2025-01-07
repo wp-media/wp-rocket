@@ -7,14 +7,14 @@ use WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber;
 use Mockery;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Database;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
-use WP_Rocket\Engine\Optimization\RUCSS\Controller\Queue;
+use WP_Rocket\Engine\Common\JobManager\Queue\Queue;
 
 
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::maybe_delete_transient
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::maybe_delete_transient
  */
 class Test_maybeDeleteTransient extends TestCase {
 

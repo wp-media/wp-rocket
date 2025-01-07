@@ -9,7 +9,7 @@ use WP_Rocket\Tests\Fixtures\WP_Filesystem_Direct;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers WP_Rocket\Engine\Cache\AdminSubscriber::on_update
+ * Test class covering WP_Rocket\Engine\Cache\AdminSubscriber::on_update
  */
 class Test_onUpdate extends TestCase {
 	private $subscriber;

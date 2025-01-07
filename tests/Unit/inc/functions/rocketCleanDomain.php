@@ -8,7 +8,7 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers ::rocket_clean_domain
+ * Test class covering ::rocket_clean_domain
  * @uses  ::get_rocket_i18n_home_url
  * @uses  ::get_rocket_i18n_to_preserve
  * @uses  ::get_rocket_i18n_uri

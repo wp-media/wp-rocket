@@ -31,7 +31,7 @@ class Post extends Abstract_Render {
 	/**
 	 * Array of reasons to disable actions.
 	 *
-	 * @var array
+	 * @var null|array
 	 */
 	private $disabled_data;
 
@@ -153,7 +153,7 @@ class Post extends Abstract_Render {
 	 *
 	 * @since 3.6
 	 *
-	 * @return array
+	 * @return null|array
 	 */
 	private function get_disabled_data() {
 		global $post;

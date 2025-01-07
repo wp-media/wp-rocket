@@ -33,13 +33,13 @@ class OptimizationProcess extends WP_Rocket_WP_Background_Process {
 	/**
 	 * Dispatch
 	 *
-	 * @return array|WP_Error
+	 * @return void
 	 */
 	public function dispatch() {
 		set_transient( 'rocket_database_optimization_process', 'running', HOUR_IN_SECONDS );
 
 		// Perform remote post.
-		return parent::dispatch();
+		parent::dispatch();
 	}
 
 	/**
@@ -124,7 +124,7 @@ class OptimizationProcess extends WP_Rocket_WP_Background_Process {
 				}
 				break;
 			case 'database_optimize_tables':
-				$query = $wpdb->get_results( "SELECT table_name, data_free FROM information_schema.tables WHERE table_schema = '" . DB_NAME . "' and Engine <> 'InnoDB' and data_free > 0" );
+				$query = $wpdb->get_results( "SELECT table_name AS table_name, data_free AS data_free FROM information_schema.tables WHERE table_schema = '" . DB_NAME . "' and Engine <> 'InnoDB' and data_free > 0" );
 				if ( $query ) {
 					$number = 0;
 					foreach ( $query as $table ) {

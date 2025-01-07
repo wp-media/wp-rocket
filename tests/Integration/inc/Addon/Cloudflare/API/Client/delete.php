@@ -8,7 +8,7 @@ use WP_Rocket\Addon\Cloudflare\Auth\APIKey;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers WP_Rocket\Addon\Cloudflare\API\Client::delete
+ * Test class covering WP_Rocket\Addon\Cloudflare\API\Client::delete
  *
  * @group Cloudflare
  */

@@ -10,7 +10,7 @@ use WP_Rocket\Tests\Integration\IsolateHookTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\Kinsta::clean_kinsta_post_cache
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\Kinsta::clean_kinsta_post_cache
  *
  * @group  Kinsta
  * @group  ThirdParty

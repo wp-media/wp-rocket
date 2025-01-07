@@ -26,7 +26,7 @@ class Kinsta implements Subscriber_Interface {
 			$events['rocket_after_clean_domain']           = 'clean_kinsta_cache';
 			$events['after_rocket_clean_post']             = 'clean_kinsta_post_cache';
 			$events['rocket_rucss_after_clearing_usedcss'] = 'clean_kinsta_cache_url';
-			$events['rocket_rucss_complete_job_status']    = 'clean_kinsta_cache_url';
+			$events['rocket_saas_complete_job_status']     = 'clean_kinsta_cache_url';
 			$events['after_rocket_clean_home']             = [ 'clean_kinsta_cache_home', 10, 2 ];
 			$events['after_rocket_clean_file']             = 'clean_kinsta_cache_url';
 			$events['wp_rocket_loaded']                    = 'remove_partial_purge_hooks';

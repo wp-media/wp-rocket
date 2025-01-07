@@ -9,7 +9,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\WPGeotargeting::maybe_disable_rules
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\WPGeotargeting::maybe_disable_rules
  */
 class Test_maybeDisableRules extends TestCase {
 

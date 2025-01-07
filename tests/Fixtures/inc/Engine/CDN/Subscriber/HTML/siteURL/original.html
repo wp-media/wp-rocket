@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2.0">
-<meta name="p:domain_verify" content="0c53e57f0897b1179d2318f8a4eda4cf"/> 
-	
-<!-- Global site tag (gtag.js) - Google Analytics 
+<meta name="p:domain_verify" content="0c53e57f0897b1179d2318f8a4eda4cf"/>
+
+<!-- Global site tag (gtag.js) - Google Analytics
 
 	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-133192293-1"></script>
 
@@ -21,7 +21,7 @@
 			window[disableStr] = true;
 			alert('Das Tracking durch Google Analytics wurde in Ihrem Browser für diese Website deaktiviert.');
 		}
-		
+
 		window.dataLayer = window.dataLayer || [];
 		function gtag(){dataLayer.push(arguments);}
 		gtag('js', new Date());
@@ -55,18 +55,18 @@
 			features.push('left=' + left);
 			features.push('top=' + right);
 			features.push('scrollbars=1');
-		
+
 			var newWindow = window.open(url, title, features.join(','));
-		
+
 			if (window.focus) {
 				newWindow.focus();
 			}
-		
+
 			return newWindow;
 		};
-		
+
 		var isWebView = null;
-		
+
 		function checkWebView() {
 			if (isWebView === null) {
 				function _detectOS(ua) {
@@ -86,10 +86,10 @@
 					}
 					return "";
 				}
-		
+
 				function _detectBrowser(ua) {
 					var android = /Android/.test(ua);
-		
+
 					switch (true) {
 						case /CriOS/.test(ua):
 							return "Chrome for iOS";
@@ -112,7 +112,7 @@
 					}
 					return "";
 				}
-		
+
 				function _detectBrowserVersion(ua, browser) {
 					switch (browser) {
 						case "Chrome for iOS":
@@ -139,7 +139,7 @@
 					}
 					return "0.0.0";
 				}
-		
+
 				function _getVersion(ua, token) {
 					try {
 						return _normalizeSemverString(ua.split(token)[1].trim().split(/[^\w\.]/)[0]);
@@ -147,14 +147,14 @@
 					}
 					return "0.0.0";
 				}
-		
+
 				function _normalizeSemverString(version) {
 					var ary = version.split(/[\._]/);
 					return (parseInt(ary[0], 10) || 0) + "." +
 						(parseInt(ary[1], 10) || 0) + "." +
 						(parseInt(ary[2], 10) || 0);
 				}
-		
+
 				function _isWebView(ua, os, browser, version, options) {
 					switch (os + browser) {
 						case "iOSSafari":
@@ -168,39 +168,39 @@
 					}
 					return false;
 				}
-		
+
 				function _isWebView_iOS(options) {
 					var document = (window["document"] || {});
-		
+
 					if ("WEB_VIEW" in options) {
 						return options["WEB_VIEW"];
 					}
 					return !("fullscreenEnabled" in document || "webkitFullscreenEnabled" in document || false);
 				}
-		
+
 				function _isWebView_Android(options) {
 					if ("WEB_VIEW" in options) {
 						return options["WEB_VIEW"];
 					}
 					return !("requestFileSystem" in window || "webkitRequestFileSystem" in window || false);
 				}
-		
+
 				var options = {};
 				var nav = window.navigator || {};
 				var ua = nav.userAgent || "";
 				var os = _detectOS(ua);
 				var browser = _detectBrowser(ua);
 				var browserVersion = _detectBrowserVersion(ua, browser);
-		
+
 				isWebView = _isWebView(ua, os, browser, browserVersion, options);
 			}
-		
+
 			return isWebView;
 		}
-		
+
 		window._nsl.push(function ($) {
 			var targetWindow = _targetWindow || 'prefer-popup';
-		
+
 			$('a[data-plugin="nsl"][data-action="connect"],a[data-plugin="nsl"][data-action="link"]').on('click', function (e) {
 				var $target = $(this),
 					href = $target.attr('href'),
@@ -216,11 +216,11 @@
 				} else if (redirectTo && redirectTo !== '') {
 					href += 'redirect=' + encodeURIComponent(redirectTo) + '&';
 				}
-		
+
 				if (targetWindow !== 'prefer-same-window' && checkWebView()) {
 					targetWindow = 'prefer-same-window';
 				}
-		
+
 				if (targetWindow === 'prefer-popup') {
 					if (NSLPopupCenter(href + 'display=popup', 'nsl-social-connect', $target.data('popupwidth'), $target.data('popupheight'))) {
 						success = true;
@@ -236,13 +236,13 @@
 						e.preventDefault();
 					}
 				}
-		
+
 				if (!success) {
 					window.location = href;
 					e.preventDefault();
 				}
 			});
-		
+
 			var googleLoginButton = $('a[data-plugin="nsl"][data-provider="google"]');
 			if (googleLoginButton.length && checkWebView()) {
 				googleLoginButton.remove();
@@ -258,7 +258,7 @@ var htmlTag = document.getElementsByTagName("html")[0];
             htmlTag.className += ' ie10';
         }
 
-        if ( !!navigator.userAgent.match(/Trident.*rv\:11\./) ) { 
+        if ( !!navigator.userAgent.match(/Trident.*rv\:11\./) ) {
             htmlTag.className += ' ie11';
         }
 
@@ -400,7 +400,7 @@ img.emoji {
 				.wp-block-cover .wp-block-cover__inner-container h6 {
 					color: #000000;
 				}
-			
+
 </style>
 <link rel='stylesheet' id='storefront-style-css'  href='http://example.org/wp-content/themes/storefront/style.css?ver=2.5.0' type='text/css' media='all' />
 <style id='storefront-style-inline-css' type='text/css'>
@@ -584,7 +584,7 @@ img.emoji {
 <link rel='stylesheet' id='storefront-fonts-css'  href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,300italic,400italic,600,700,900&#038;subset=latin%2Clatin-ext' type='text/css' media='all' />
 <link rel='https://api.w.org/' href='http://example.org/wp-json/' />
 <link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://example.org/xmlrpc.php?rsd" />
-<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://example.org/wp-includes/wlwmanifest.xml" /> 
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://example.org/wp-includes/wlwmanifest.xml" />
 <meta name="generator" content="WordPress 5.2.2" />
 <link rel="canonical" href="http://example.org/about/page-image-alignment" />
 <link rel='shortlink' href='http://example.org/?p=1133' />
@@ -601,7 +601,7 @@ img.emoji {
 
 
 <div id="page" class="hfeed site">
-	
+
 	<header id="masthead" class="site-header" role="banner" style="">
 
 		<div class="col-full">      <a class="skip-link screen-reader-text" href="#site-navigation">Aller à la navigation</a>
@@ -742,15 +742,15 @@ img.emoji {
 		</div></div>
 	</header><!-- #masthead -->
 
-	
+
 	<div id="content" class="site-content" tabindex="-1">
 		<div class="col-full">
 
-		
+
 	<div id="primary" class="content-area">
 		<main id="main" class="site-main" role="main">
 
-			
+
 <article id="post-1133" class="post-1133 page type-page status-publish hentry">
 			<header class="entry-header">
 			<h1 class="entry-title">Page Image Alignment</h1>       </header><!-- .entry-header -->
@@ -814,7 +814,7 @@ img.emoji {
 <input type='hidden' name='comment_parent' id='comment_parent' value='0' />
 </p>            </form>
 			</div><!-- #respond -->
-	
+
 </section><!-- #comments -->
 
 		</main><!-- #main -->
@@ -1008,18 +1008,18 @@ img.emoji {
 		</div><!-- .col-full -->
 	</div><!-- #content -->
 
-	
+
 	<footer id="colophon" class="site-footer" role="contentinfo">
 		<div class="col-full">
 
 					<div class="site-info">
 			&copy; tests 2019                       <br />
 								<a href="https://woocommerce.com" target="_blank" title="WooCommerce - La meilleure plateforme eCommerce pour WordPress" rel="author">Construit avec Storefront &amp; WooCommerce</a>.                  </div><!-- .site-info -->
-		
+
 		</div><!-- .col-full -->
 	</footer><!-- #colophon -->
 
-	
+
 </div><!-- #page -->
 
 <script type='text/javascript'>

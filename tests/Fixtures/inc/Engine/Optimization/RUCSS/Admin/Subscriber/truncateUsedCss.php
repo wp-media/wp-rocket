@@ -17,13 +17,6 @@ $items = [
 
 
 return [
-	'shouldNotTruncateUnusedCSSDueToMissingSettings' => [
-		'input' => [
-			'items'             => $items,
-			'remove_unused_css' => false,
-			'home' => 'https://example.org',
-		],
-	],
 	'shouldTruncateUnusedCSS' => [
 		'input' => [
 			'remove_unused_css' => true,

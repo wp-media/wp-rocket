@@ -54,7 +54,12 @@ abstract class SmushSubscriberTestCase extends TestCase {
 	}
 
 	protected function setSmushSettings( $lazyload_enabled, array $lazyload_formats ) {
-		$settings              = $this->smush_settings;
+		$settings = $this->smush_settings;
+
+		if ( false === $settings ) {
+			$settings = [];
+		}
+
 		$settings['lazy_load'] = (bool) $lazyload_enabled;
 
 		$this->smush->set_setting( $this->smush_settings_option_name, $settings );

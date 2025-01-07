@@ -4,7 +4,7 @@ namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\Optimization;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers WP_Rocket\ThirdParty\Plugins\Optimization\RocketLazyLoad::exclude_rocket_lazyload_script
+ * Test class covering WP_Rocket\ThirdParty\Plugins\Optimization\RocketLazyLoad::exclude_rocket_lazyload_script
  * 
  * @group RocketLazyLoad
  */

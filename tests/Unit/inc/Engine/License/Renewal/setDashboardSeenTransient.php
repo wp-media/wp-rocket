@@ -11,7 +11,7 @@ use WP_Rocket\Engine\License\Renewal;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\License\Renewal::set_dashboard_seen_transient
+ * Test class covering \WP_Rocket\Engine\License\Renewal::set_dashboard_seen_transient
  *
  * @group License
  */

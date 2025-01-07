@@ -9,7 +9,7 @@ use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber::load_hooks
+ * Test class covering \WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber::load_hooks
  * @group  ThirdParty
  * @group  Webp
  */
@@ -50,7 +50,8 @@ class Test_LoadHooks extends TestCase {
 
 		$subscriber->load_hooks();
 
-		$this->assertTrue( true ); // Prevent "risky" warning.
+		// Prevent "risky" warning.
+		$this->assertTrue( true ); // @phpstan-ignore-line
 	}
 
 	public function testShouldCallCallbacksWhenDidAction() {

@@ -3,7 +3,7 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\Subscriber;
 
 /**
- * @covers \WP_Rocket\Engine\CDN\Subscriber::add_preconnect_cdn
+ * Test class covering \WP_Rocket\Engine\CDN\Subscriber::add_preconnect_cdn
  * @uses   \WP_Rocket\Engine\CDN\CDN::get_cdn_urls
  * @group  CDN
  */

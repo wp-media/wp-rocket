@@ -11,7 +11,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Filters;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Themes\Themify::disable_concat_on_saving_data
+ * Test class covering \WP_Rocket\ThirdParty\Themes\Themify::disable_concat_on_saving_data
  */
 class Test_disableConcatOnSavingData extends TestCase {
 

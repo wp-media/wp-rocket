@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Functions;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers ::rocket_clean_cache_busting
+ * Test class covering ::rocket_clean_cache_busting
  * @uses  ::rocket_direct_filesystem
  *
  * @group Functions

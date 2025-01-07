@@ -10,7 +10,7 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Admin\DomainChange\Subscriber::add_regenerate_configuration_action
+ * Test class covering \WP_Rocket\Engine\Admin\DomainChange\Subscriber::add_regenerate_configuration_action
  */
 class Test_addRegenerateConfigurationAction extends TestCase {
 

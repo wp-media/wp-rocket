@@ -11,7 +11,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WPMedia\Cloudflare\Auth\AuthFactoryInterface;
 
 /**
- * @covers WP_Rocket\Addon\Cloudflare\Subscriber::auto_purge_by_url
+ * Test class covering WP_Rocket\Addon\Cloudflare\Subscriber::auto_purge_by_url
  *
  * @group Cloudflare
  */

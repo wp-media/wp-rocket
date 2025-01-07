@@ -2,44 +2,39 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Cron\Subscriber;
 
+use Brain\Monkey\Functions;
 use Mockery;
-use WP_Rocket\Engine\Common\Queue\PreloadQueueRunner;
 use WP_Rocket\Engine\Preload\Admin\Settings;
 use WP_Rocket\Engine\Preload\Controller\PreloadUrl;
 use WP_Rocket\Engine\Preload\Cron\Subscriber;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Rocket\Tests\Unit\TestCase;
-use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\Cron\Subscriber::schedule_pending_jobs
+ * Test class covering \WP_Rocket\Engine\Preload\Cron\Subscriber::schedule_pending_jobs
  *
  * @group Cron
  * @group Preload
  */
-class Test_SchedulePendingJobs extends TestCase
-{
+class TestSchedulePendingJobs extends TestCase {
 	protected $subscriber;
 	protected $query;
 	protected $settings;
 	protected $controller;
-	protected $queue_runner;
 
-	protected function setUp(): void
-	{
+	protected function setUp(): void {
 		parent::setUp();
-		$this->query = $this->createMock(Cache::class);
-		$this->settings = Mockery::mock(Settings::class);
-		$this->controller = Mockery::mock(PreloadUrl::class);
-		$this->queue_runner = Mockery::mock(PreloadQueueRunner::class);
 
-		$this->subscriber =  new Subscriber($this->settings, $this->query, $this->controller, $this->queue_runner);
+		$this->query        = $this->createMock( Cache::class );
+		$this->settings     = Mockery::mock( Settings::class );
+		$this->controller   = Mockery::mock( PreloadUrl::class );
+		$this->subscriber   = new Subscriber( $this->settings, $this->query, $this->controller );
 	}
 
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldDoAsExpected($config) {
+	public function testShouldDoAsExpected( $config ) {
 
 		$this->settings->shouldReceive('is_enabled')->andReturn($config['is_enabled'])->atLeast()->once();
 		$this->configureCheckNextSchedule($config);

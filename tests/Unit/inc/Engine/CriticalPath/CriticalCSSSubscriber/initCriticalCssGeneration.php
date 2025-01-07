@@ -7,7 +7,7 @@ use WPDieException;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::init_critical_css_generation
+ * Test class covering \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::init_critical_css_generation
  * @uses   \WP_Rocket\Engine\CriticalPath\CriticalCss::process_handler
  * @uses   \WP_Rocket\Engine\CriticalPath\CriticalCSSGeneration::cancel_process
  * @uses   ::rocket_get_constant

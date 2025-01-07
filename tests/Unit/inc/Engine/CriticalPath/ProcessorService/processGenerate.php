@@ -11,7 +11,7 @@ use WP_Rocket\Engine\CriticalPath\ProcessorService;
 use WP_Rocket\Engine\CriticalPath\DataManager;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\ProcessorService::process_generate
+ * Test class covering \WP_Rocket\Engine\CriticalPath\ProcessorService::process_generate
  *
  * @group  CriticalPath
  */

@@ -77,7 +77,7 @@ abstract class AbstractASQueue implements QueueInterface {
 
 			if ( 1 < count( $pending_actions ) ) {
 				$this->cancel_all( $hook, $args );
-				return '';
+				return 0;
 			}
 
 			$running_actions = $this->search(
@@ -89,7 +89,7 @@ abstract class AbstractASQueue implements QueueInterface {
 			);
 
 			if ( 1 === count( $pending_actions ) + count( $running_actions ) ) {
-				return '';
+				return 0;
 			}
 
 			$this->cancel_all( $hook, $args );
@@ -147,7 +147,7 @@ abstract class AbstractASQueue implements QueueInterface {
 	 */
 	public function schedule_cron( $timestamp, $cron_schedule, $hook, $args = [] ) {
 		if ( $this->is_scheduled( $hook, $args ) ) {
-			return '';
+			return 0;
 		}
 
 		try {
@@ -197,7 +197,7 @@ abstract class AbstractASQueue implements QueueInterface {
 	}
 
 	/**
-	 * Get the date and time for the next scheduled occurence of an action with a given hook
+	 * Get the date and time for the next scheduled occurrence of an action with a given hook
 	 * (an optionally that matches certain args and group), if any.
 	 *
 	 * @param string $hook The hook that the job will trigger.

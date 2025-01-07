@@ -8,7 +8,7 @@ use WP_Rocket\Engine\CriticalPath\ProcessorService;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\ProcessorService::process_generate
+ * Test class covering \WP_Rocket\Engine\CriticalPath\ProcessorService::process_generate
  *
  * @group  CriticalPath
  * @group  vfs
@@ -17,7 +17,7 @@ class Test_ProcessGenerate extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/ProcessorService/processGenerate.php';
 
 	private static $container;
-	private static $user_id;
+	private static $user_id; // @phpstan-ignore-line
 	private $api_client;
 	private $processor;
 
@@ -138,7 +138,7 @@ class Test_ProcessGenerate extends FilesystemTestCase {
 			}
 		}
 
-		if ( isset( $save_cpcss ) && is_wp_error( $save_cpcss ) ) {
+		if ( is_wp_error( $save_cpcss ) ) {
 			$this->filesystem->chmod( 'wp-content/cache/critical-css/1/', 0444 );
 		}
 

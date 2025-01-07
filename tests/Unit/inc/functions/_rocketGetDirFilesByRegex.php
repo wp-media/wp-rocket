@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Unit\inc\functions;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers ::_rocket_get_dir_files_by_regex()
+ * Test class covering ::_rocket_get_dir_files_by_regex()
  *
  * @group Functions
  */

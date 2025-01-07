@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\AdminPageSubscrib
 use WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CDN\RocketCDN\AdminPageSubscriber::rocketcdn_field
+ * Test class covering \WP_Rocket\Engine\CDN\RocketCDN\AdminPageSubscriber::rocketcdn_field
  *
  * @uses   \WP_Rocket\Engine\CDN\RocketCDN\APIClient::get_subscription_data
  * @uses   \WP_Rocket\Admin\Options_Data::get

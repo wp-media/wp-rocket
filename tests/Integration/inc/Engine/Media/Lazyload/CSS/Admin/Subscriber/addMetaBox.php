@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Media\Lazyload\CSS\Admin\Subscr
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Media\Lazyload\CSS\Admin\Subscriber::add_meta_box
+ * Test class covering \WP_Rocket\Engine\Media\Lazyload\CSS\Admin\Subscriber::add_meta_box
  * @group AdminOnly
  */
 class Test_AddMetaBox extends TestCase {

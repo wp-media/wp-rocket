@@ -9,7 +9,7 @@ use WP_Rocket\Engine\Optimization\DelayJS\HTML;
 use WP_Rocket\ThirdParty\Plugins\PageBuilder\Elementor;
 
 /**
- * @covers WP_Rocket\ThirdParty\Plugins\PageBuilder\Elementor::exclude_js
+ * Test class covering WP_Rocket\ThirdParty\Plugins\PageBuilder\Elementor::exclude_js
  *
  * @group Elementor
  * @group ThirdParty

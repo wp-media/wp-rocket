@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\DomainChange\Subscriber;
 use WP_Rocket\Tests\Integration\TestCase;
 use Brain\Monkey\Functions;
 /**
- * @covers \WP_Rocket\Engine\Admin\DomainChange\Subscriber::add_regenerate_configuration_action
+ * Test class covering \WP_Rocket\Engine\Admin\DomainChange\Subscriber::add_regenerate_configuration_action
  */
 class Test_addRegenerateConfigurationAction extends TestCase {
 

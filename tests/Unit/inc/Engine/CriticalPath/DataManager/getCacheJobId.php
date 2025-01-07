@@ -7,13 +7,13 @@ use WP_Rocket\Engine\CriticalPath\DataManager;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\DataManager::get_cache_job_id
+ * Test class covering \WP_Rocket\Engine\CriticalPath\DataManager::get_cache_job_id
  *
- * @group  CriticalPath
+ * @group CriticalPath
  */
-class Test_GetCacheJobId extends TestCase {
+class TestGetCacheJobId extends TestCase {
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		Functions\when( 'get_current_blog_id' )->justReturn( 1 );
@@ -32,15 +32,5 @@ class Test_GetCacheJobId extends TestCase {
 		$actual       = $data_manager->get_cache_job_id( $item_url, $is_mobile );
 
 		$this->assertSame( $expected, $actual );
-
 	}
-
-	public function nonMultisiteTestData() {
-		if ( empty( $this->config ) ) {
-			$this->loadConfig();
-		}
-
-		return $this->config['test_data']['non_multisite'];
-	}
-
 }

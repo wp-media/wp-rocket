@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Plugins\Optimization\RapidLoad;
 
 /**
- * @covers WP_Rocket\ThirdParty\Plugins\Optimization\RapidLoad::disable_rucss_setting
+ * Test class covering WP_Rocket\ThirdParty\Plugins\Optimization\RapidLoad::disable_rucss_setting
  */
 class Test_DisableRucssOptionRapidLoad extends TestCase {
 	protected $subscriber;

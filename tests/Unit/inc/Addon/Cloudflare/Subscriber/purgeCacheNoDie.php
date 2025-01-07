@@ -11,7 +11,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WPMedia\Cloudflare\Auth\AuthFactoryInterface;
 
 /**
- * @covers WP_Rocket\Addon\Cloudflare\Subscriber::purge_cache_no_die
+ * Test class covering WP_Rocket\Addon\Cloudflare\Subscriber::purge_cache_no_die
  *
  * @group Cloudflare
  */
@@ -45,7 +45,7 @@ class TestPurgeCacheNoDie extends TestCase {
 		Functions\expect( 'is_wp_error' )
 			->atMost()
 			->once()
-			->AndReturn( $config['connection'] )
+			->andReturn( $config['connection'] )
 			->andAlsoExpectIt()
 			->atMost()
 			->once()

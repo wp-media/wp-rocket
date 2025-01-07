@@ -10,6 +10,7 @@ class RUCSSOptimizeContext extends AbstractContext {
 	 * Check if the operation is allowed.
 	 *
 	 * @param array $data Data to provide to the context.
+	 *
 	 * @return bool
 	 */
 	public function is_allowed( array $data = [] ): bool {
@@ -21,15 +22,7 @@ class RUCSSOptimizeContext extends AbstractContext {
 			]
 		);
 
-		if ( 'local' === wp_get_environment_type() ) {
-			return false;
-		}
-
 		if ( ! current_user_can( 'rocket_remove_unused_css' ) ) {
-			return false;
-		}
-
-		if ( is_admin() ) {
 			return false;
 		}
 

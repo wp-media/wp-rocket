@@ -11,7 +11,7 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
 use Mockery;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSS::get_exclude_async_css
+ * Test class covering \WP_Rocket\Engine\CriticalPath\CriticalCSS::get_exclude_async_css
  *
  * @group  CriticalPath
  */

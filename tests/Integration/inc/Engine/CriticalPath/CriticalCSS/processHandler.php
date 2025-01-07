@@ -8,34 +8,20 @@ use WP_Rocket\Engine\CriticalPath\CriticalCSS;
 use WP_Rocket\Engine\CriticalPath\CriticalCSSGeneration;
 use WP_Rocket\Engine\CriticalPath\DataManager;
 use WP_Rocket\Engine\CriticalPath\ProcessorService;
-use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSS::process_handler
- * @uses   \WP_Rocket\Engine\CriticalPath\CriticalCSSGeneration::save
- * @uses   \WP_Rocket\Engine\CriticalPath\CriticalCSSGeneration::dispatch
- * @uses   \WP_Rocket\Engine\CriticalPath\CriticalCSSGeneration::cancel_process
- * @uses   ::rocket_get_constant
+ * Test class covering \WP_Rocket\Engine\CriticalPath\CriticalCSS::process_handler
  *
- * @group  CriticalCss
- * @group  CriticalPath
+ * @uses \WP_Rocket\Engine\CriticalPath\CriticalCSSGeneration::save
+ * @uses \WP_Rocket\Engine\CriticalPath\CriticalCSSGeneration::dispatch
+ * @uses \WP_Rocket\Engine\CriticalPath\CriticalCSSGeneration::cancel_process
+ * @uses ::rocket_get_constant
+ *
+ * @group CriticalCss
+ * @group CriticalPath
  */
 class Test_ProcessHandler extends FilesystemTestCase {
-	use DBTrait;
-
-	public static function set_up_before_class()
-	{
-		parent::set_up_before_class();
-		self::installFresh();
-	}
-
-	public static function tear_down_after_class()
-	{
-		self::uninstallAll();
-		parent::tear_down_after_class();
-	}
-
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/CriticalCSS/processHandler.php';
 
 	private $critical_css;
@@ -64,7 +50,6 @@ class Test_ProcessHandler extends FilesystemTestCase {
 	}
 
 	public function tear_down() {
-		parent::tear_down();
 
 		foreach ( $this->to_be_removed as $item_name => $item ) {
 			switch ( $item_name ) {
@@ -102,6 +87,8 @@ class Test_ProcessHandler extends FilesystemTestCase {
 					break;
 			}
 		}
+
+		parent::tear_down();
 	}
 
 	/**
@@ -135,8 +122,6 @@ class Test_ProcessHandler extends FilesystemTestCase {
 		);
 
 		if ( $expected['generated'] ) {
-			$this->assertStopGeneration( $process );
-
 			$this->prepareSetItems( $config );
 		}
 
@@ -161,10 +146,6 @@ class Test_ProcessHandler extends FilesystemTestCase {
 				},
 			];
 		}
-	}
-
-	private function assertStopGeneration( $process ) {
-		//$process->shouldReceive( 'cancel_process' )->once()->andReturn( null );
 	}
 
 	private function prepareSetItems( $config ) {
@@ -262,7 +243,7 @@ class Test_ProcessHandler extends FilesystemTestCase {
 			$term->taxonomy
 		);
 
-		$this->to_be_removed['terms'][$term_array['term_id']] = $term->taxonomy;
+		$this->to_be_removed['terms'][ $term_array['term_id'] ] = $term->taxonomy;
 
 		return $term_array;
 	}

@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Media\Lazyload\Subscriber;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Media\Lazyload\Subscriber::lazyload_responsive
+ * Test class covering \WP_Rocket\Engine\Media\Lazyload\Subscriber::lazyload_responsive
  *
  * @group Media
  * @group Lazyload

@@ -8,7 +8,7 @@ use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\DataManager;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\DynamicLists\DataManager::get_lists
+ * Test class covering \WP_Rocket\Engine\Optimization\DynamicLists\DataManager::get_lists
  *
  * @group DynamicLists
  */

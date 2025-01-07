@@ -1,11 +1,11 @@
 === Action Scheduler ===
 Contributors: Automattic, wpmuguru, claudiosanches, peterfabian1000, vedjain, jamosova, obliviousharmony, konamiman, sadowski, royho, barryhughes-1
 Tags: scheduler, cron
-Requires at least: 5.2
-Tested up to: 6.0
-Stable tag: 3.5.4
+Stable tag: 3.8.1
 License: GPLv3
-Requires PHP: 5.6
+Requires at least: 6.3
+Tested up to: 6.5
+Requires PHP: 7.0
 
 Action Scheduler - Job Queue for WordPress
 
@@ -13,7 +13,7 @@ Action Scheduler - Job Queue for WordPress
 
 Action Scheduler is a scalable, traceable job queue for background processing large sets of actions in WordPress. It's specially designed to be distributed in WordPress plugins.
 
-Action Scheduler works by triggering an action hook to run at some time in the future. Each hook can be scheduled with unique data, to allow callbacks to perform operations on that data. The hook can also be scheduled to run on one or more occassions.
+Action Scheduler works by triggering an action hook to run at some time in the future. Each hook can be scheduled with unique data, to allow callbacks to perform operations on that data. The hook can also be scheduled to run on one or more occasions.
 
 Think of it like an extension to `do_action()` which adds the ability to delay and repeat a hook.
 
@@ -46,6 +46,88 @@ Action Scheduler is developed and maintained by [Automattic](http://automattic.c
 Collaboration is cool. We'd love to work with you to improve Action Scheduler. [Pull Requests](https://github.com/woocommerce/action-scheduler/pulls) welcome.
 
 == Changelog ==
+
+= 3.8.1 - 2024-06-20 =
+* Fix typos.
+* Improve the messaging in our unidentified action exceptions.
+
+= 3.8.0 - 2024-05-22 =
+* Documentation - Fixed typos in perf.md.
+* Update - We now require WordPress 6.3 or higher.
+* Update - We now require PHP 7.0 or higher.
+
+= 3.7.4 - 2024-04-05 =
+* Give a clear description of how the $unique parameter works.
+* Preserve the tab field if set.
+* Tweak - WP 6.5 compatibility.
+
+= 3.7.3 - 2024-03-20 =
+* Do not iterate over all of GET when building form in list table.
+* Fix a few issues reported by PCP (Plugin Check Plugin).
+* Try to save actions as unique even when the store doesn't support it.
+* Tweak - WP 6.4 compatibility.
+* Update "Tested up to" tag to WordPress 6.5.
+* update version in package-lock.json.
+
+= 3.7.2 - 2024-02-14 =
+* No longer user variables in `_n()` translation function.
+
+= 3.7.1 - 2023-12-13 =
+* update semver to 5.7.2 because of a security vulnerability in 5.7.1.
+
+= 3.7.0 - 2023-11-20 =
+* Important: starting with this release, Action Scheduler follows an L-2 version policy (WordPress, and consequently PHP).
+* Add extended indexes for hook_status_scheduled_date_gmt and status_scheduled_date_gmt.
+* Catch and log exceptions thrown when actions can't be created, e.g. under a corrupt database schema.
+* Tweak - WP 6.4 compatibility.
+* Update unit tests for upcoming dependency version policy.
+* make sure hook action_scheduler_failed_execution can access original exception object.
+* mention dependency version policy in usage.md.
+
+= 3.6.4 - 2023-10-11 =
+* Performance improvements when bulk cancelling actions.
+* Dev-related fixes.
+
+= 3.6.3 - 2023-09-13 =
+* Use `_doing_it_wrong` in initialization check.
+
+= 3.6.2 - 2023-08-09 =
+* Add guidance about passing arguments.
+* Atomic option locking.
+* Improve bulk delete handling.
+* Include database error in the exception message.
+* Tweak - WP 6.3 compatibility.
+
+= 3.6.1 - 2023-06-14 =
+* Document new optional `$priority` arg for various API functions.
+* Document the new `--exclude-groups` WP CLI option.
+* Document the new `action_scheduler_init` hook.
+* Ensure actions within each claim are executed in the expected order.
+* Fix incorrect text domain.
+* Remove SHOW TABLES usage when checking if tables exist.
+
+= 3.6.0 - 2023-05-10 =
+* Add $unique parameter to function signatures.
+* Add a cast-to-int for extra safety before forming new DateTime object.
+* Add a hook allowing exceptions for consistently failing recurring actions.
+* Add action priorities.
+* Add init hook.
+* Always raise the time limit.
+* Bump minimatch from 3.0.4 to 3.0.8.
+* Bump yaml from 2.2.1 to 2.2.2.
+* Defensive coding relating to gaps in declared schedule types.
+* Do not process an action if it cannot be set to `in-progress`.
+* Filter view labels (status names) should be translatable | #919.
+* Fix WPCLI progress messages.
+* Improve data-store initialization flow.
+* Improve error handling across all supported PHP versions.
+* Improve logic for flushing the runtime cache.
+* Support exclusion of multiple groups.
+* Update lint-staged and Node/NPM requirements.
+* add CLI clean command.
+* add CLI exclude-group filter.
+* exclude past-due from list table all filter count.
+* throwing an exception if as_schedule_recurring_action interval param is not of type integer.
 
 = 3.5.4 - 2023-01-17 =
 * Add pre filters during action registration.
@@ -90,7 +172,7 @@ Collaboration is cool. We'd love to work with you to improve Action Scheduler. [
 * Dev - ActionScheduler_wcSystemStatus PHPCS fixes (props @ovidiul). #761
 * Dev - ActionScheduler_DBLogger.php PHPCS fixes (props @ovidiul). #768
 * Dev - Fixed phpcs for ActionScheduler_Schedule_Deprecated (props @ovidiul). #762
-* Dev - Improve actions table indicies (props @glagonikas). #774 & #777
+* Dev - Improve actions table indices (props @glagonikas). #774 & #777
 * Dev - PHPCS fixes for ActionScheduler_DBStore.php (props @ovidiul). #769 & #778
 * Dev - PHPCS Fixes for ActionScheduler_Abstract_ListTable (props @ovidiul). #763 & #779
 * Dev - Adds new filter action_scheduler_claim_actions_order_by to allow tuning of the claim query (props @glagonikas). #773

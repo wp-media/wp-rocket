@@ -8,7 +8,7 @@ use WP_Rocket\Engine\Cache\WPCache;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Cache\WPCache::maybe_set_wp_cache
+ * Test class covering \WP_Rocket\Engine\Cache\WPCache::maybe_set_wp_cache
  *
  * @group WPCache
  * @group vfs

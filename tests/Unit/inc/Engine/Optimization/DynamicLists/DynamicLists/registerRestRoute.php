@@ -12,7 +12,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\DynamicLists::register_rest_route
+ * Test class covering \WP_Rocket\Engine\Optimization\DynamicLists::register_rest_route
  *
  * @group  DynamicLists
  */

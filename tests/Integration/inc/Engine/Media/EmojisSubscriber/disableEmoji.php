@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Media\EmojisSubscriber;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Media\EmojisSubscriber::disable_emoji
+ * Test class covering \WP_Rocket\Engine\Media\EmojisSubscriber::disable_emoji
  *
  * @group Media
  * @group Emojis

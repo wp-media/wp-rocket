@@ -9,7 +9,7 @@ use Brain\Monkey\Functions;
 use Mockery;
 
 /**
- * @covers \WP_Rocket\Buffer\Tests::can_process_buffer
+ * Test class covering \WP_Rocket\Buffer\Tests::can_process_buffer
  *
  * @group  Buffer
  */

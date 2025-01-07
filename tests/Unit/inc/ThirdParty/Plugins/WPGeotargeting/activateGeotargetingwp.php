@@ -10,7 +10,7 @@ use Brain\Monkey\Functions;
 use Brain\Monkey\Filters;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\WPGeotargeting::activate_geotargetingwp
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\WPGeotargeting::activate_geotargetingwp
  */
 class Test_activateGeotargetingwp extends TestCase {
 

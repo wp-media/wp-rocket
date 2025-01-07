@@ -8,7 +8,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Engine\Admin\Deactivation\DeactivationIntent;
 
 /**
- * @covers \WP_Rocket\Engine\Admin\Deactivation\DeactivationIntent::deactivate_and_snooze
+ * Test class covering \WP_Rocket\Engine\Admin\Deactivation\DeactivationIntent::deactivate_and_snooze
  * @group  DeactivationIntent
  */
 class Test_DeactivateAndSnooze extends TestCase {

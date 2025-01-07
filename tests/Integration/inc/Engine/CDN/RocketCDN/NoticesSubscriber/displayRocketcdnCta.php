@@ -6,7 +6,7 @@ use WP_Error;
 use WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber::display_rocketcdn_cta
+ * Test class covering \WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber::display_rocketcdn_cta
  * @uses   ::rocket_is_live_site
  * @uses   \WP_Rocket\Engine\CDN\RocketCDN\APIClient::get_subscription_data
  * @uses   \WP_Rocket\Engine\CDN\RocketCDN\APIClient::get_pricing_data

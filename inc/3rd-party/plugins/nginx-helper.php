@@ -153,6 +153,6 @@ if ( isset( $nginx_helper ) ) :
 	 * @since 3.12.3
 	 */
 	add_action( 'rocket_rucss_after_clearing_usedcss', 'rocket_clean_nginx_cache_url' );
-	add_action( 'rocket_rucss_complete_job_status', 'rocket_clean_nginx_helper_cache' );
+	add_action( 'rocket_saas_complete_job_status', 'rocket_clean_nginx_helper_cache' );
 
 endif;

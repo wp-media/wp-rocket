@@ -25,7 +25,7 @@ abstract class ActionScheduler_Abstract_RecurringSchedule extends ActionSchedule
 	protected $first_timestamp = NULL;
 
 	/**
-	 * The recurrance between each time an action is run using this schedule.
+	 * The recurrence between each time an action is run using this schedule.
 	 * Used to calculate the start date & time. Can be a number of seconds, in the
 	 * case of ActionScheduler_IntervalSchedule, or a cron expression, as in the
 	 * case of ActionScheduler_CronSchedule. Or something else.
@@ -36,7 +36,7 @@ abstract class ActionScheduler_Abstract_RecurringSchedule extends ActionSchedule
 
 	/**
 	 * @param DateTime $date The date & time to run the action.
-	 * @param mixed $recurrence The data used to determine the schedule's recurrance.
+	 * @param mixed $recurrence The data used to determine the schedule's recurrence.
 	 * @param DateTime|null $first (Optional) The date & time the first instance of this interval schedule ran. Default null, meaning this is the first instance.
 	 */
 	public function __construct( DateTime $date, $recurrence, DateTime $first = null ) {

@@ -10,7 +10,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WPMedia\Cloudflare\Auth\AuthFactoryInterface;
 
 /**
- * @covers WP_Rocket\Addon\Cloudflare\Subscriber::deactivate_devmode
+ * Test class covering WP_Rocket\Addon\Cloudflare\Subscriber::deactivate_devmode
  *
  * @group Cloudflare
  */

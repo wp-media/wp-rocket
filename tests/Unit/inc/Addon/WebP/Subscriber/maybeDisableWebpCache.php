@@ -12,7 +12,7 @@ use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Webp_Interface;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Addon\WebP\Subscriber::maybe_disable_webp_cache
+ * Test class covering \WP_Rocket\Addon\WebP\Subscriber::maybe_disable_webp_cache
  *
  * @group WebP
  */

@@ -9,7 +9,7 @@ use WP_Rocket\ThirdParty\Plugins\SEO\SEOPress;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\SEO\SEOPress::add_seopress_sitemap
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\SEO\SEOPress::add_seopress_sitemap
  *
  * @group  SEOPress
  * @group  ThirdParty

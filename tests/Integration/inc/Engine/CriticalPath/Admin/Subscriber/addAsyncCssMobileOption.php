@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\Admin\Subscriber;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\Admin\Subscriber::add_async_css_mobile_option
+ * Test class covering \WP_Rocket\Engine\CriticalPath\Admin\Subscriber::add_async_css_mobile_option
  *
  * @group  AdminOnly
  * @group  CriticalPath

@@ -10,7 +10,7 @@ use wpdb;
 use Brain\Monkey\Filters;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Themes\Divi::handle_save_template
+ * Test class covering \WP_Rocket\ThirdParty\Themes\Divi::handle_save_template
  *
  * @group  ThirdParty
  * @group  Divi
@@ -28,7 +28,7 @@ class Test_HandleSaveTemplate extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$GLOBALS['wpdb'] = $this->wpdb = new wpdb();
+		$GLOBALS['wpdb'] = $this->wpdb = new wpdb( 'dbuser', 'dbpassword', 'dbname', 'dbhost' );
 	}
 
 	protected function tearDown(): void {

@@ -5,7 +5,7 @@ namespace WP_Rocket\tests\Integration\inc\Engine\Optimization\DynamicLists\Subsc
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\DynamicLists\Subscriber::add_js_exclude_files()
+ * Test class covering \WP_Rocket\Engine\Optimization\DynamicLists\Subscriber::add_js_exclude_files()
  *
  * @group  DynamicLists
  */

@@ -3,10 +3,12 @@
 namespace WP_Rocket\Engine\Media\Lazyload\CSS\Front;
 
 use WP_Rocket\Engine\Optimization\RegexTrait;
+use WP_Rocket\Engine\Optimization\UrlTrait;
 
 class Extractor {
 
 	use RegexTrait;
+	use UrlTrait;
 
 	/**
 	 * Comment mapping.
@@ -130,8 +132,10 @@ class Extractor {
 				$block = trim( $block_matches[ $default_index ][ $block_index ] );
 			}
 
-			foreach ( $this->comments_mapping as $id => $comment ) {
-				$block = str_replace( $id, $comment, $block );
+			if ( ! empty( $this->comments_mapping ) ) {
+				foreach ( $this->comments_mapping as $id => $comment ) {
+					$block = str_replace( $id, $comment, $block );
+				}
 			}
 
 			foreach ( $urls as $url ) {
@@ -172,7 +176,13 @@ class Extractor {
 		 *
 		 * @param string[] $urls Ignored URLs.
 		 */
-		$ignored_urls = (array) apply_filters( 'rocket_lazyload_css_ignored_urls', [] );
+		$ignored_urls = (array) apply_filters(
+			'rocket_lazyload_css_ignored_urls',
+			[
+				'trustindex-google-widget.css',
+				'cdn.trustindex.io',
+			]
+		);
 
 		foreach ( $matches as $match ) {
 
@@ -268,7 +278,11 @@ class Extractor {
 	protected function make_url_complete( string $url, string $file_url ): string {
 		$host = wp_parse_url( $url, PHP_URL_HOST );
 
-		if ( $host || $this->is_relative( $url ) && ! empty( $file_url ) ) {
+		if (
+			$host
+			||
+			( $this->is_relative( $url ) && ! empty( $file_url ) )
+		) {
 			return $this->transform_relative_to_absolute( $url, $file_url );
 		}
 
@@ -337,15 +351,5 @@ class Extractor {
 		$home_host = wp_parse_url( rocket_get_home_url(), PHP_URL_HOST );
 
 		return $host !== $home_host;
-	}
-
-	/**
-	 * Check if the URL is relative.
-	 *
-	 * @param string $url URL to check.
-	 * @return bool
-	 */
-	protected function is_relative( string $url ): bool {
-		return preg_match( '/^\./', $url );
 	}
 }

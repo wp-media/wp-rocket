@@ -11,7 +11,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare::update_addon_field
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare::update_addon_field
  *
  * @group ThirdParty
  * @group CloudflarePlugin
@@ -63,10 +63,6 @@ class Test_updateAddonField extends TestCase {
 
 			if('cloudflare_api_key' === $name) {
 				return $config['cloudflare_api_key'];
-			}
-
-			if('cloudflare_cached_domain_name' === $name) {
-				return $config['cloudflare_cached_domain_name'];
 			}
 
 			if('cloudflare_cached_domain_name' === $name) {

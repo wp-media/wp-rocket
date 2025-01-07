@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\Inc\Addon\Cloudflare\Subscriber;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers WP_Rocket\Addon\Cloudflare\Subscriber::protocol_rewrite
+ * Test class covering WP_Rocket\Addon\Cloudflare\Subscriber::protocol_rewrite
  *
  * @group Cloudflare
  */

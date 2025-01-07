@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Plugins\PWA;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\PWA::exclude_service_worker
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\PWA::exclude_service_worker
  *
  * @group PWA
  * @group ThirdParty

@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Integration\IsolateHookTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\Jetpack::add_jetpack_sitemap
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\Jetpack::add_jetpack_sitemap
  *
  * @group  Jetpack
  * @group  ThirdParty

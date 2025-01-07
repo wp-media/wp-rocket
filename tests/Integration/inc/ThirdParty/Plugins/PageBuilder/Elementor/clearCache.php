@@ -6,7 +6,7 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers WP_Rocket\ThirdParty\Plugins\PageBuilder\Elementor::clear_cache
+ * Test class covering WP_Rocket\ThirdParty\Plugins\PageBuilder\Elementor::clear_cache
  * @group Elementor
  * @group ThirdParty
  */

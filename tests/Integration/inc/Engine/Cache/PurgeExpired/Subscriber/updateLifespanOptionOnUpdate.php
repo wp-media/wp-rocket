@@ -6,7 +6,7 @@ use WP_Rocket\Engine\Cache\PurgeExpired\Subscriber;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers Subscriber::update_lifespan_option_on_update
+ * Test class covering Subscriber::update_lifespan_option_on_update
  * @group  Cache
  */
 class Test_UpdateLifespanOptionOnUpdate extends TestCase {

@@ -6,7 +6,7 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber::add_dismiss_script
+ * Test class covering \WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber::add_dismiss_script
  * @uses   ::rocket_is_live_site
  *
  * @group  AdminOnly

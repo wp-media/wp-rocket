@@ -29,7 +29,7 @@ return [
 				'licence_expiration' => strtotime( 'next year' ),
 				'date_created'      => strtotime( 'last year' ),
 			] ) ),
-        'rucss_status' => false,
+        'rucss_status' => [],
         ],
 		'expected' => [
 			'contains' => true,
@@ -67,7 +67,7 @@ return [
 		'expected' => [
 			'contains' => false,
 			'content' => $notice,
-			'rucss_status' => false,
+			'rucss_status' => [],
 			'user_id' => 42,
 			'notice' => [
 				'status'                 => 'wpr-warning',
@@ -101,7 +101,7 @@ return [
 		'expected' => [
 			'contains' => false,
 			'content' => $notice,
-			'rucss_status' => false,
+			'rucss_status' => [],
 			'user_id' => 42,
 			'notice' => [
 				'status'                 => 'wpr-warning',
@@ -131,7 +131,7 @@ return [
 				'licence_expiration' => strtotime( 'last year' ),
 				'date_created'      => strtotime( 'last year' ),
 			] ) ),
-      'rucss_status' => false,
+      'rucss_status' => [],
 		],
 		'expected' => [
 			'contains' => false,
@@ -169,7 +169,7 @@ return [
 		'expected' => [
 			'contains' => false,
 			'content' => $notice,
-			'rucss_status' => false,
+			'rucss_status' => [],
 			'user_id' => 42,
 			'notice' => [
 				'status'                 => 'wpr-warning',

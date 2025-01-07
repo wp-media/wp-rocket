@@ -25,6 +25,7 @@ trait HasLoggerTrait
 		$this->logger = Mockery::mock(Logger::class, [
 			'notice' => [],
 			'debug' => [],
+			'error' => [],
 		]);
 		$aware->set_logger($this->logger);
 	}

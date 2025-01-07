@@ -8,7 +8,7 @@ use WP_Rocket\Engine\Media\Lazyload\CSS\Front\TagGenerator;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Media\Lazyload\CSS\Front\TagGenerator::generate
+ * Test class covering \WP_Rocket\Engine\Media\Lazyload\CSS\Front\TagGenerator::generate
  */
 class Test_generate extends TestCase {
 

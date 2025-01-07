@@ -7,6 +7,7 @@ use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Engine\CDN\Subscriber as CDNSubscriber;
+use WP_Rocket\Engine\Support\CommentTrait;
 
 /**
  * Subscriber for the WebP support.
@@ -14,6 +15,8 @@ use WP_Rocket\Engine\CDN\Subscriber as CDNSubscriber;
  * @since 3.4
  */
 class Subscriber extends AbstractWebp implements Subscriber_Interface {
+	use CommentTrait;
+
 	/**
 	 * Options_Data instance.
 	 *
@@ -38,7 +41,7 @@ class Subscriber extends AbstractWebp implements Subscriber_Interface {
 	/**
 	 * \WP_Filesystem_Direct instance.
 	 *
-	 * @var \WP_Filesystem_Direct
+	 * @var null|\WP_Filesystem_Direct
 	 */
 	private $filesystem;
 
@@ -58,11 +61,11 @@ class Subscriber extends AbstractWebp implements Subscriber_Interface {
 		$this->options_data = $options_data;
 		$this->options_api  = $options_api;
 
-		if ( ! isset( $server ) && ! empty( $_SERVER ) && is_array( $_SERVER ) ) {
+		if ( ! isset( $server ) && ! empty( $_SERVER ) ) {
 			$server = $_SERVER;
 		}
 
-		$this->server = $server && is_array( $server ) ? $server : [];
+		$this->server = $server ?: [];
 	}
 
 	/**
@@ -87,6 +90,10 @@ class Subscriber extends AbstractWebp implements Subscriber_Interface {
 	 * @return string
 	 */
 	public function convert_to_webp( $html ) {
+		if ( empty( $html ) ) {
+			return $html;
+		}
+
 		if ( ! $this->options_data->get( 'cache_webp', 0 ) ) {
 			return $html;
 		}
@@ -129,7 +136,7 @@ class Subscriber extends AbstractWebp implements Subscriber_Interface {
 				// This is a srcset attribute, with probably multiple URLs.
 				$new_value = $this->srcset_to_webp( $attribute['value'], $extensions );
 			} else {
-				// A single URL attibute.
+				// A single URL attribute.
 				$new_value = $this->url_to_webp( $attribute['value'], $extensions );
 			}
 
@@ -158,6 +165,8 @@ class Subscriber extends AbstractWebp implements Subscriber_Interface {
 		$has_webp = apply_filters( 'rocket_page_has_webp_files', $has_webp, $html );
 
 		if ( $has_webp ) {
+			$html = $this->add_meta_comment( 'cache_webp', $html );
+
 			return $html . '<!-- Rocket has webp -->';
 		}
 
@@ -202,8 +211,8 @@ class Subscriber extends AbstractWebp implements Subscriber_Interface {
 	 * @param array $requests Requests to make.
 	 * @return array
 	 */
-	public function add_accept_header( $requests ) {
-		if ( ! is_array( $requests ) || ! $this->options_data->get( 'cache_webp', 0 ) ) {
+	public function add_accept_header( array $requests ) {
+		if ( ! $this->options_data->get( 'cache_webp', 0 ) ) {
 			return $requests;
 		}
 
@@ -214,7 +223,7 @@ class Subscriber extends AbstractWebp implements Subscriber_Interface {
 				return $request;
 			},
 			$requests
-			);
+		);
 	}
 
 	/**

@@ -8,7 +8,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Themes\Avada;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Avada::fix_regex_lazyload_bg_images
+ * Test class covering \WP_Rocket\ThirdParty\Avada::fix_regex_lazyload_bg_images
  *
  * @group  AvadaTheme
  * @group  ThirdParty

@@ -6,7 +6,7 @@ use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
- * @covers ::rocket_add_url_protocol
+ * Test class covering ::rocket_add_url_protocol
  * @group  Functions
  * @group  Formatting
  */

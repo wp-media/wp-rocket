@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Support;
 
@@ -40,7 +41,7 @@ class Data {
 		'cdn'                     => 'CDN Enabled',
 		'do_cloudflare'           => 'Cloudflare Enabled',
 		'varnish_auto_purge'      => 'Varnish Purge Enabled',
-		'control_heartbeat'       => 'Hearbeat Control',
+		'control_heartbeat'       => 'Heartbeat Control',
 		'sucury_waf_cache_sync'   => 'Sucuri Add-on',
 	];
 
@@ -61,15 +62,34 @@ class Data {
 	 * @return array
 	 */
 	public function get_support_data() {
-		$active_options = array_intersect_key( $this->to_send, array_filter( $this->options->get_options() ) );
-
 		return [
 			'Website'                  => home_url(),
 			'WordPress Version'        => get_bloginfo( 'version' ),
-			'WP Rocket Version'        => rocket_get_constant( 'WP_ROCKET_VERSION' ),
+			'WP Rocket Version'        => rocket_get_constant( 'WP_ROCKET_VERSION', '' ),
 			'Theme'                    => wp_get_theme()->get( 'Name' ),
 			'Plugins Enabled'          => implode( ' - ', rocket_get_active_plugins() ),
-			'WP Rocket Active Options' => implode( ' - ', $active_options ),
+			'WP Rocket Active Options' => implode( ' - ', $this->get_active_options() ),
 		];
+	}
+
+	/**
+	 * Returns the active options
+	 *
+	 * @return array
+	 */
+	public function get_active_options(): array {
+		$active_options = array_intersect_key( $this->to_send, array_filter( $this->options->get_options() ) );
+
+		// This filter is documented in inc/Engine/Media/AboveTheFold/Context/Context.php.
+		if ( wpm_apply_filters_typed( 'boolean', 'rocket_above_the_fold_optimization', true ) ) {
+			$active_options['optimize_critical_images'] = 'Optimize Critical Images';
+		}
+
+		// This filter is documented in inc/Engine/Optimization/LazyRenderContent/Context/Context.php.
+		if ( wpm_apply_filters_typed( 'boolean', 'rocket_lrc_optimization', true ) ) {
+			$active_options['automatic_lazy_rendering'] = 'Automatic Lazy Rendering';
+		}
+
+		return $active_options;
 	}
 }

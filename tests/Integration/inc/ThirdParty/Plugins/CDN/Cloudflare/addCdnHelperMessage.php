@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\CDN\Cloudflare;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare::add_cdn_helper_message
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare::add_cdn_helper_message
  */
 class Test_addCdnHelperMessage extends TestCase {
 

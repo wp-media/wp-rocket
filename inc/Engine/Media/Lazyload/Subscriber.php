@@ -8,6 +8,7 @@ use WP_Rocket\Dependencies\RocketLazyload\Image;
 use WP_Rocket\Dependencies\RocketLazyload\Iframe;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\RegexTrait;
+use WP_Rocket\Engine\Support\CommentTrait;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
@@ -18,6 +19,7 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
 class Subscriber implements Subscriber_Interface {
 	use RegexTrait;
 	use CanLazyloadTrait;
+	use CommentTrait;
 
 	const SCRIPT_VERSION = '17.8.3';
 
@@ -245,9 +247,9 @@ class Subscriber implements Subscriber_Interface {
 		 * @param string $extension extension from the thumbnail from Youtube video.
 		 * @returns string
 		 */
-		$extension = apply_filters( 'rocket_lazyload_youtube_thumbnail_extension', 'jpg' );
+		$extension = wpm_apply_filters_typed( 'string', 'rocket_lazyload_youtube_thumbnail_extension', 'jpg' );
 
-		if ( ! is_string( $extension ) || ! in_array( $extension, [ 'jpg', 'webp' ], true ) ) {
+		if ( ! in_array( $extension, [ 'jpg', 'webp' ], true ) ) {
 			$extension = 'jpg';
 		}
 
@@ -330,6 +332,8 @@ class Subscriber implements Subscriber_Interface {
 			];
 
 			$html = $this->iframe->lazyloadIframes( $html, $buffer, $args );
+
+			$html = $this->add_meta_comment( 'lazyload_iframes', $html );
 		}
 
 		if ( $this->can_lazyload_images() ) {
@@ -352,6 +356,8 @@ class Subscriber implements Subscriber_Interface {
 			if ( apply_filters( 'rocket_lazyload_background_images', true ) ) {
 				$html = $this->image->lazyloadBackgroundImages( $html, $buffer );
 			}
+
+			$html = $this->add_meta_comment( 'lazyload_images', $html );
 		}
 
 		return $html;
@@ -456,11 +462,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @param array $exclusions Array of excluded patterns.
 	 * @return array
 	 */
-	public function add_exclusions( $exclusions ): array {
-		if ( ! is_array( $exclusions ) ) {
-			$exclusions = [];
-		}
-
+	public function add_exclusions( array $exclusions = [] ): array {
 		$exclude_lazyload = $this->options->get( 'exclude_lazyload', [] );
 
 		if ( empty( $exclude_lazyload ) ) {

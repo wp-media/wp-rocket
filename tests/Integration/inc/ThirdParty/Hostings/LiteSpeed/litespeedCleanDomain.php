@@ -2,7 +2,7 @@
 namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Hostings\LiteSpeed;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\LiteSpeed::litespeed_clean_domain
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\LiteSpeed::litespeed_clean_domain
  *
  * @group  LiteSpeed
  * @group  ThirdParty

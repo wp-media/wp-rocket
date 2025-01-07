@@ -12,6 +12,8 @@ use WP_Rocket\Event_Management\{Event_Manager, Event_Manager_Aware_Subscriber_In
 class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	use UpdaterApiTools;
 
+	const UPDATE_ENDPOINT = 'https://api.wp-rocket.me/check_update.php';
+
 	/**
 	 * Full path to the plugin.
 	 *
@@ -32,13 +34,6 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 * @var string
 	 */
 	private $vendor_url;
-
-	/**
-	 * URL to contact to get update info.
-	 *
-	 * @var string
-	 */
-	private $api_url;
 
 	/**
 	 * A list of plugin’s icon URLs.
@@ -84,17 +79,15 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 * Constructor
 	 *
 	 * @param RenewalNotice $renewal_notice RenewalNotice instance.
-	 * @param array         $args {
-	 *     Required arguments to populate the class properties.
 	 *
+	 * @param array         $args { Required arguments to populate the class properties.
 	 *     @type string $plugin_file    Full path to the plugin.
 	 *     @type string $plugin_version Current version of the plugin.
 	 *     @type string $vendor_url     URL to the plugin provider.
-	 *     @type string $api_url        URL to contact to get update info.
 	 * }
 	 */
 	public function __construct( RenewalNotice $renewal_notice, $args ) {
-		foreach ( [ 'plugin_file', 'plugin_version', 'vendor_url', 'api_url', 'icons' ] as $setting ) {
+		foreach ( [ 'plugin_file', 'plugin_version', 'vendor_url', 'icons' ] as $setting ) {
 			if ( isset( $args[ $setting ] ) ) {
 				$this->$setting = $args[ $setting ];
 			}
@@ -140,7 +133,7 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 * @return array           Updated array of HTTP request arguments.
 	 */
 	public function exclude_rocket_from_wp_updates( $request, $url ) {
-		if ( ! is_string( $url ) ) {
+		if ( ! is_string( $url ) ) { // @phpstan-ignore-line GH #7042 - $url variable may be change by other plugins to something else than string.
 			return $request;
 		}
 
@@ -211,7 +204,7 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	/**
 	 * Add WPR update data to the "WP update" transient.
 	 *
-	 * @param  \stdClass $transient_value New value of site transient.
+	 * @param  \stdClass|array $transient_value New value of site transient.
 	 * @return \stdClass
 	 */
 	public function maybe_add_rocket_update_data( $transient_value ) {
@@ -306,7 +299,7 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 */
 	public function get_latest_version_data() {
 		$request = wp_remote_get(
-			$this->api_url,
+			self::UPDATE_ENDPOINT,
 			[
 				'timeout' => 30,
 			]
@@ -470,13 +463,14 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 			'slug'        => $plugin_folder,
 			'new_version' => WP_ROCKET_LASTVERSION,
 			'url'         => 'https://wp-rocket.me',
-			'package'     => sprintf( 'https://wp-rocket.me/%s/wp-rocket_%s.zip', get_rocket_option( 'consumer_key' ), WP_ROCKET_LASTVERSION ),
+			'package'     => sprintf( 'https://api.wp-rocket.me/%s/wp-rocket_%s.zip', get_rocket_option( 'consumer_key' ), WP_ROCKET_LASTVERSION ),
 		];
 
 		$this->event_manager->remove_callback( 'pre_set_site_transient_update_plugins', [ $this, 'maybe_add_rocket_update_data' ] );
 
 		set_site_transient( 'update_plugins', $plugin_transient );
 
+		// @phpstan-ignore-next-line
 		require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
 
 		// translators: %s is the plugin name.

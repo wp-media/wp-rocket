@@ -6,7 +6,7 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::delete_cpcss
+ * Test class covering \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::delete_cpcss
  *
  * @group  Subscribers
  * @group  CriticalPath

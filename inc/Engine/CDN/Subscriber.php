@@ -45,8 +45,8 @@ class Subscriber implements Subscriber_Interface {
 	public static function get_subscribed_events() {
 		return [
 			'rocket_buffer'           => [
-				[ 'rewrite', 20 ],
-				[ 'rewrite_srcset', 21 ],
+				[ 'rewrite', 2 ],
+				[ 'rewrite_srcset', 3 ],
 			],
 			'rocket_css_content'      => 'rewrite_css_properties',
 			'rocket_usedcss_content'  => 'rewrite_css_properties',
@@ -110,7 +110,7 @@ class Subscriber implements Subscriber_Interface {
 		 *
 		 * @since 2.6
 		 *
-		 * @param bool true to apply CDN to properties, false otherwise
+		 * @param bool $do_rewrite true to apply CDN to properties, false otherwise.
 		 */
 		$do_rewrite = apply_filters( 'do_rocket_cdn_css_properties', true ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 

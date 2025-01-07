@@ -9,7 +9,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS::create_new_job
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS::create_new_job
  */
 class Test_createNewJob extends TestCase {
 
@@ -32,6 +32,7 @@ class Test_createNewJob extends TestCase {
 		Functions\when('current_time')->justReturn($config['now']);
 		$this->usedcss::$table_exists = true;
 
+		/* @phpstan-ignore-next-line */
 		$this->usedcss->expects(self::once())->method('add_item')->with($expected['item'])->willReturn($config['result']);
 
         $this->assertSame($expected['result'], $this->usedcss->create_new_job($config['url'], $config['job_id'], $config['queue_name'], $config['is_mobile']));

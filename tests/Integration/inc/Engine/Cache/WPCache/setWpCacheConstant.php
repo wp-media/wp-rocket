@@ -8,7 +8,7 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
 use WP_Rocket\Tests\Integration\CapTrait;
 
 /**
- * @covers \WP_Rocket\Engine\Cache\WPCache::set_wp_cache_constant
+ * Test class covering \WP_Rocket\Engine\Cache\WPCache::set_wp_cache_constant
  * @uses   ::rocket_valid_key
  *
  * @group WPCache

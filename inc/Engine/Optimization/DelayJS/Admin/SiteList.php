@@ -5,7 +5,6 @@ namespace WP_Rocket\Engine\Optimization\DelayJS\Admin;
 
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\Optimization\DynamicLists\DelayJSLists\DataManager;
 use WP_Rocket\Engine\Optimization\DynamicLists\DynamicLists;
 use WP_Theme;
 
@@ -13,7 +12,7 @@ class SiteList {
 	/**
 	 * Delay JS data manager.
 	 *
-	 * @var DataManager
+	 * @var DynamicLists
 	 */
 	protected $dynamic_lists;
 
@@ -72,23 +71,57 @@ class SiteList {
 	 * Check if script is in the list and return it if found.
 	 *
 	 * @param string $item_id Script ID.
+	 * @param string $script_type Script Type.
 	 *
 	 * @return array
 	 */
-	private function get_script_in_list( string $item_id ) {
-		$scripts = $this->get_scripts_from_list();
+	private function get_script_in_list( string $item_id, string $script_type ) {
+		$list    = $this->dynamic_lists->get_delayjs_list();
+		$scripts = ! empty( $list->scripts->$script_type ) ? (array) $list->scripts->$script_type : [];
+
 		return ! empty( $scripts[ $item_id ] ) ? (array) $scripts[ $item_id ] : [];
 	}
 
 	/**
-	 * Get all scripts from the list.
+	 * Get Analytics scripts from the list.
 	 *
 	 * @return array
 	 */
-	private function get_scripts_from_list() {
+	private function get_analytics_from_list() {
 		$list = $this->dynamic_lists->get_delayjs_list();
-		return ! empty( $list->scripts ) ? (array) $list->scripts : [];
+		return ! empty( $list->scripts->analytics ) ? (array) $list->scripts->analytics : [];
 	}
+
+	/**
+	 * Get Ad Networks from the list.
+	 *
+	 * @return array
+	 */
+	private function get_ad_networks_from_list() {
+		$list = $this->dynamic_lists->get_delayjs_list();
+		return ! empty( $list->scripts->ad_networks ) ? (array) $list->scripts->ad_networks : [];
+	}
+
+	/**
+	 * Get Payment Processors from the list.
+	 *
+	 * @return array
+	 */
+	private function get_payment_processors_from_list() {
+		$list = $this->dynamic_lists->get_delayjs_list();
+		return ! empty( $list->scripts->payment_processors ) ? (array) $list->scripts->payment_processors : [];
+	}
+
+	/**
+	 * Get Other Services from the list.
+	 *
+	 * @return array
+	 */
+	private function get_other_services_from_list() {
+		$list = $this->dynamic_lists->get_delayjs_list();
+		return ! empty( $list->scripts->other_services ) ? (array) $list->scripts->other_services : [];
+	}
+
 
 	/**
 	 * Get all plugins from the list.
@@ -118,7 +151,22 @@ class SiteList {
 	 * @return array
 	 */
 	public function get_delayjs_exclusions_by_id( string $item_id ) {
-		$item = $this->get_script_in_list( $item_id );
+		$item = $this->get_script_in_list( $item_id, 'analytics' );
+		if ( $item ) {
+			return $item['exclusions'];
+		}
+
+		$item = $this->get_script_in_list( $item_id, 'ad_networks' );
+		if ( $item ) {
+			return $item['exclusions'];
+		}
+
+		$item = $this->get_script_in_list( $item_id, 'payment_processors' );
+		if ( $item ) {
+			return $item['exclusions'];
+		}
+
+		$item = $this->get_script_in_list( $item_id, 'other_services' );
 		if ( $item ) {
 			return $item['exclusions'];
 		}
@@ -191,31 +239,107 @@ class SiteList {
 	 */
 	public function prepare_delayjs_ui_list() {
 		$full_list = [
-			'scripts' => [
-				'title'          => __( 'Analytics & Ads', 'rocket' ),
-				'items'          => [],
-				'dashicon-class' => 'analytics',
+			'third_parties' => [
+				'analytics'          => [
+					'title'    => __( 'Analytics & Trackers', 'rocket' ),
+					'items'    => [],
+					'svg-icon' => 'analytics',
+				],
+				'ad_networks'        => [
+					'title'    => __( 'Ad Networks', 'rocket' ),
+					'items'    => [],
+					'svg-icon' => 'ad_network',
+				],
+				'payment_processors' => [
+					'title'    => __( 'Payment Processors', 'rocket' ),
+					'items'    => [],
+					'svg-icon' => 'payment',
+				],
+				'other_services'     => [
+					'title'    => __( 'Other Services', 'rocket' ),
+					'items'    => [],
+					'svg-icon' => 'others',
+				],
+				'has_subcats'        => false,
 			],
-			'plugins' => [
-				'title'          => __( 'Plugins', 'rocket' ),
-				'items'          => [],
-				'dashicon-class' => 'admin-plugins',
-			],
-			'themes'  => [
-				'title'          => __( 'Themes', 'rocket' ),
-				'items'          => [],
-				'dashicon-class' => 'admin-appearance',
+			'wordpress'     => [
+				'themes'      => [
+					'title'    => __( 'Themes', 'rocket' ),
+					'items'    => [],
+					'svg-icon' => 'themes',
+				],
+				'plugins'     => [
+					'title'    => __( 'Plugins', 'rocket' ),
+					'items'    => [],
+					'svg-icon' => 'plugins',
+				],
+				'has_subcats' => false,
 			],
 		];
 
+		$has_subcats = false;
+
 		// Scripts.
-		$scripts = $this->get_scripts_from_list();
+		$scripts = $this->get_analytics_from_list();
 		foreach ( $scripts as $script_key => $script ) {
-			$full_list['scripts']['items'][] = [
+			$full_list['third_parties']['analytics']['items'][] = [
 				'id'    => $script_key,
 				'title' => $script->title,
 				'icon'  => $this->get_icon( $script ),
 			];
+
+			$has_subcats = ! $has_subcats ? true : $has_subcats;
+		}
+
+		$scripts = $this->get_ad_networks_from_list();
+		foreach ( $scripts as $script_key => $script ) {
+			$full_list['third_parties']['ad_networks']['items'][] = [
+				'id'    => $script_key,
+				'title' => $script->title,
+				'icon'  => $this->get_icon( $script ),
+			];
+
+			$has_subcats = ! $has_subcats ? true : $has_subcats;
+		}
+
+		$scripts = $this->get_payment_processors_from_list();
+		foreach ( $scripts as $script_key => $script ) {
+			$full_list['third_parties']['payment_processors']['items'][] = [
+				'id'    => $script_key,
+				'title' => $script->title,
+				'icon'  => $this->get_icon( $script ),
+			];
+
+			$has_subcats = ! $has_subcats ? true : $has_subcats;
+		}
+
+		$scripts = $this->get_other_services_from_list();
+		foreach ( $scripts as $script_key => $script ) {
+			$full_list['third_parties']['other_services']['items'][] = [
+				'id'    => $script_key,
+				'title' => $script->title,
+				'icon'  => $this->get_icon( $script ),
+			];
+
+			$has_subcats = ! $has_subcats ? true : $has_subcats;
+		}
+
+		$full_list['third_parties']['has_subcats'] = $has_subcats;
+		$has_subcats                               = false;
+
+		$active_theme = $this->get_active_theme();
+		foreach ( $this->get_themes_from_list() as $theme_key => $theme ) {
+			if ( $theme->condition !== $active_theme ) {
+				continue;
+			}
+
+			$full_list['wordpress']['themes']['items'][] = [
+				'id'    => $theme_key,
+				'title' => $theme->title,
+				'icon'  => $this->get_icon( $theme ),
+			];
+
+			$has_subcats = ! $has_subcats ? true : $has_subcats;
 		}
 
 		$active_plugins = $this->get_active_plugins();
@@ -224,36 +348,29 @@ class SiteList {
 				continue;
 			}
 
-			$full_list['plugins']['items'][] = [
+			$full_list['wordpress']['plugins']['items'][] = [
 				'id'    => $plugin_key,
 				'title' => $plugin->title,
 				'icon'  => $this->get_icon( $plugin ),
 			];
+
+			$has_subcats = ! $has_subcats ? true : $has_subcats;
 		}
 
-		$active_theme = $this->get_active_theme();
-		foreach ( $this->get_themes_from_list() as $theme_key => $theme ) {
-			if ( $theme->condition !== $active_theme ) {
-				continue;
-			}
-
-			$full_list['themes']['items'][] = [
-				'id'    => $theme_key,
-				'title' => $theme->title,
-				'icon'  => $this->get_icon( $theme ),
-			];
-		}
+		$full_list['wordpress']['has_subcats'] = $has_subcats;
+		$has_subcats                           = false;
 
 		return $full_list;
 	}
+
 	/**
 	 * Fetch the icon.
 	 *
-	 * @param array $item item from the list.
+	 * @param object $item item from the list.
 	 * @return string
 	 */
 	private function get_icon( $item ) {
-		if ( empty( $item ) || empty( $item->icon_url ) ) {
+		if ( empty( $item->icon_url ) ) {
 			return '';
 		}
 
@@ -495,7 +612,12 @@ class SiteList {
 	public function get_default_exclusions() {
 		$items = [];
 
-		$scripts = $this->get_scripts_from_list();
+		$scripts = array_merge(
+			$this->get_analytics_from_list(),
+			$this->get_ad_networks_from_list(),
+			$this->get_payment_processors_from_list(),
+			$this->get_other_services_from_list()
+		);
 		foreach ( $scripts as $script_key => $script ) {
 			if ( ! $script->is_default ) {
 				continue;

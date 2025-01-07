@@ -14,7 +14,7 @@ use WP_Rocket\Engine\CriticalPath\CriticalCSSGeneration;
 use WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::maybe_generate_cpcss_mobile
+ * Test class covering \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::maybe_generate_cpcss_mobile
  *
  * @group  Subscribers
  * @group  CriticalPath
@@ -23,7 +23,6 @@ class Test_MaybeGenerateCpcssMobile extends TestCase {
 
 	private $subscriber;
 	private $critical_css;
-	private $processor_service;
 	protected $user;
 	protected $options_api;
 

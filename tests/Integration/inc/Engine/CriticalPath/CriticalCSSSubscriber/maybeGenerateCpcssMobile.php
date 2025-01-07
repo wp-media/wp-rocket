@@ -7,7 +7,7 @@ use Brain\Monkey\Functions;
 use Brain\Monkey\Filters;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::maybe_generate_cpcss_mobile
+ * Test class covering \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::maybe_generate_cpcss_mobile
  * @uses   \WP_Rocket\Engine\CriticalPath\CriticalCss::process_handler
  * @uses   \WP_Rocket\Engine\CriticalPath\CriticalCSSGeneration::cancel_process
  * @uses   ::rocket_get_constant

@@ -65,7 +65,7 @@ class Config {
 	}
 
 	/**
-	 * Get the configured source loger.
+	 * Get the configured source logger.
 	 *
 	 * @return ActionScheduler_Logger
 	 */

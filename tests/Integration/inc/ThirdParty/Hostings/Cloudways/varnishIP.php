@@ -5,7 +5,7 @@ use WP_Rocket\ThirdParty\Hostings\Cloudways;
 use WPMedia\PHPUnit\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\Cloudways::varnish_ip
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\Cloudways::varnish_ip
  * @group Cloudways
  * @group ThirdParty
  */

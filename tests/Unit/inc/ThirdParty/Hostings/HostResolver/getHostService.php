@@ -7,7 +7,7 @@ use WP_Rocket\ThirdParty\Hostings\HostResolver;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\HostResolver::get_host_service
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\HostResolver::get_host_service
  * @uses   ::rocket_get_constant
  *
  * @group  Hostings

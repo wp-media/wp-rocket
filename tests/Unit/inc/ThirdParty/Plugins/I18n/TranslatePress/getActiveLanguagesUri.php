@@ -7,7 +7,7 @@ use WP_Rocket\ThirdParty\Plugins\I18n\TranslatePress;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\I18n\TranslatePress::get_active_languages_uri
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\I18n\TranslatePress::get_active_languages_uri
  * @group TranslatePress
  */
 class Test_GetActiveLanguagesUri extends TestCase {

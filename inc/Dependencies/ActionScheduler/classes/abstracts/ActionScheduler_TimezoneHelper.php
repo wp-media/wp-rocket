@@ -69,7 +69,7 @@ abstract class ActionScheduler_TimezoneHelper {
 		// Last try, guess timezone string manually.
 		foreach ( timezone_abbreviations_list() as $abbr ) {
 			foreach ( $abbr as $city ) {
-				if ( (bool) date( 'I' ) === (bool) $city['dst'] && $city['timezone_id'] && intval( $city['offset'] ) === $utc_offset ) {
+				if ( (bool) date( 'I' ) === (bool) $city['dst'] && $city['timezone_id'] && intval( $city['offset'] ) === $utc_offset ) { // phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date	 -- we are actually interested in the runtime timezone.
 					return $city['timezone_id'];
 				}
 			}
@@ -122,7 +122,7 @@ abstract class ActionScheduler_TimezoneHelper {
 
 					// Try mapping to the first abbreviation we can find.
 					if ( false === $tzstring ) {
-						$is_dst = date( 'I' );
+						$is_dst = date( 'I' ); // phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date	 -- we are actually interested in the runtime timezone.
 						foreach ( timezone_abbreviations_list() as $abbr ) {
 							foreach ( $abbr as $city ) {
 								if ( $city['dst'] == $is_dst && $city['offset'] == $gmt_offset ) {

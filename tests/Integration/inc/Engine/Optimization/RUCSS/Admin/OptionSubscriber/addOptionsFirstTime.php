@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\RUCSS\Admin\Option
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Admin\OptionSubscriber::add_options
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Admin\OptionSubscriber::add_options
  *
  * @group  RUCSS
  */

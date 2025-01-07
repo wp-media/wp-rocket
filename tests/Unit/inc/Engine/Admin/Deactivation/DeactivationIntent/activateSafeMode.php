@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Engine\Admin\Deactivation\DeactivationIntent;
 
 /**
- * @covers \WP_Rocket\Engine\Admin\Deactivation\DeactivationIntent::activate_safe_mode
+ * Test class covering \WP_Rocket\Engine\Admin\Deactivation\DeactivationIntent::activate_safe_mode
  * @group  DeactivationIntent
  */
 class Test_ActivateSafeMode extends TestCase {

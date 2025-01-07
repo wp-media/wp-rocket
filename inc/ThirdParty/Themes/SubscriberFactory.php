@@ -3,9 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\ThirdParty\Themes;
 
-use WP_Rocket\ThirdParty\SubscriberFactoryInterface;
-
-class SubscriberFactory implements SubscriberFactoryInterface {
+class SubscriberFactory {
 	/**
 	 * Get a theme subscriber data
 	 *

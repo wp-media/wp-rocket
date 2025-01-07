@@ -2,12 +2,14 @@
 
 namespace WP_Rocket\Tests\Integration;
 
+use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\SettingsTrait;
 use WP_Rocket\Tests\StubTrait;
 use WP_Rocket\Tests\VirtualFilesystemTrait;
 use WPMedia\PHPUnit\Integration\VirtualFilesystemTestCase;
 
 abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
+	use DBTrait;
 	use SettingsTrait;
 	use StubTrait;
 	use VirtualFilesystemTrait;
@@ -29,6 +31,8 @@ abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
 				static::$transients[ $transient ] = get_transient( $transient );
 			}
 		}
+
+		self::uninstallAll();
 
 		// Clean out the cached dirs before we run these tests.
 		_rocket_get_cache_dirs( '', '', true );

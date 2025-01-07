@@ -7,7 +7,7 @@ use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
- * @covers ::rocket_is_plugin_active
+ * Test class covering ::rocket_is_plugin_active
  * @group  Options
  * @group  Functions
  */

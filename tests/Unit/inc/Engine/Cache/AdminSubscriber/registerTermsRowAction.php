@@ -11,7 +11,7 @@ use WP_Rocket\Engine\Cache\AdvancedCache;
 use WP_Rocket\Engine\Cache\WPCache;
 use WP_Rocket\Event_Management\Event_Manager;
 /**
- * @covers WP_Rocket\Engine\Cache\AdminSubscriber::register_terms_row_action
+ * Test class covering WP_Rocket\Engine\Cache\AdminSubscriber::register_terms_row_action
  *
  * @group Cache
  */

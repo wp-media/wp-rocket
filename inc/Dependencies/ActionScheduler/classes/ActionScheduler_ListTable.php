@@ -234,7 +234,7 @@ class ActionScheduler_ListTable extends ActionScheduler_Abstract_ListTable {
 				if ( ! empty( $output ) ) {
 					$output .= ' ';
 				}
-				$output .= sprintf( _n( self::$time_periods[ $time_period_index ]['names'][0], self::$time_periods[ $time_period_index ]['names'][1], $periods_in_interval, 'action-scheduler' ), $periods_in_interval );
+				$output .= sprintf( translate_nooped_plural( self::$time_periods[ $time_period_index ]['names'], $periods_in_interval, 'action-scheduler' ), $periods_in_interval );
 				$seconds_remaining -= $periods_in_interval * self::$time_periods[ $time_period_index ]['seconds'];
 				$periods_included++;
 			}
@@ -252,7 +252,7 @@ class ActionScheduler_ListTable extends ActionScheduler_Abstract_ListTable {
 	 */
 	protected function get_recurrence( $action ) {
 		$schedule = $action->get_schedule();
-		if ( $schedule->is_recurring() ) {
+		if ( $schedule->is_recurring() && method_exists( $schedule, 'get_recurrence' ) ) {
 			$recurrence = $schedule->get_recurrence();
 
 			if ( is_numeric( $recurrence ) ) {
@@ -471,7 +471,7 @@ class ActionScheduler_ListTable extends ActionScheduler_Abstract_ListTable {
 			return __( 'async', 'action-scheduler' );
 		}
 
-		if ( ! $schedule->get_date() ) {
+		if ( ! method_exists( $schedule, 'get_date' ) || ! $schedule->get_date() ) {
 			return '0000-00-00 00:00:00';
 		}
 
@@ -502,7 +502,20 @@ class ActionScheduler_ListTable extends ActionScheduler_Abstract_ListTable {
 	 */
 	protected function bulk_delete( array $ids, $ids_sql ) {
 		foreach ( $ids as $id ) {
-			$this->store->delete_action( $id );
+			try {
+				$this->store->delete_action( $id );
+			} catch ( Exception $e ) {
+				// A possible reason for an exception would include a scenario where the same action is deleted by a
+				// concurrent request.
+				error_log(
+					sprintf(
+						/* translators: 1: action ID 2: exception message. */
+						__( 'Action Scheduler was unable to delete action %1$d. Reason: %2$s', 'action-scheduler' ),
+						$id,
+						$e->getMessage()
+					)
+				);
+			}
 		}
 	}
 

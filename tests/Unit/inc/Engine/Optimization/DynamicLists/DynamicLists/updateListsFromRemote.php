@@ -11,7 +11,7 @@ use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\DynamicLists::update_lists_from_remote
+ * Test class covering \WP_Rocket\Engine\Optimization\DynamicLists::update_lists_from_remote
  *
  * @group  DynamicLists
  */

@@ -1,12 +1,14 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace WP_Rocket\Dependencies\League\Container;
 
 use WP_Rocket\Dependencies\League\Container\Argument\{ArgumentResolverInterface, ArgumentResolverTrait};
+use WP_Rocket\Dependencies\League\Container\Exception\ContainerException;
 use WP_Rocket\Dependencies\League\Container\Exception\NotFoundException;
 use WP_Rocket\Dependencies\Psr\Container\ContainerInterface;
 use ReflectionClass;
-use ReflectionException;
 use ReflectionFunction;
 use ReflectionMethod;
 
@@ -18,27 +20,25 @@ class ReflectionContainer implements ArgumentResolverInterface, ContainerInterfa
     /**
      * @var boolean
      */
-    protected $cacheResolutions = false;
+    protected $cacheResolutions;
 
     /**
-     * Cache of resolutions.
-     *
      * @var array
      */
     protected $cache = [];
 
-    /**
-     * {@inheritdoc}
-     *
-     * @throws ReflectionException
-     */
+    public function __construct(bool $cacheResolutions = false)
+    {
+        $this->cacheResolutions = $cacheResolutions;
+    }
+
     public function get($id, array $args = [])
     {
         if ($this->cacheResolutions === true && array_key_exists($id, $this->cache)) {
             return $this->cache[$id];
         }
 
-        if (! $this->has($id)) {
+        if (!$this->has($id)) {
             throw new NotFoundException(
                 sprintf('Alias (%s) is not an existing class and therefore cannot be resolved', $id)
             );
@@ -54,8 +54,8 @@ class ReflectionContainer implements ArgumentResolverInterface, ContainerInterfa
         }
 
         $resolution = $construct === null
-            ? new $id
-            : $resolution = $reflector->newInstanceArgs($this->reflectArguments($construct, $args))
+            ? new $id()
+            : $reflector->newInstanceArgs($this->reflectArguments($construct, $args))
         ;
 
         if ($this->cacheResolutions === true) {
@@ -65,24 +65,11 @@ class ReflectionContainer implements ArgumentResolverInterface, ContainerInterfa
         return $resolution;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function has($id)
+    public function has($id): bool
     {
         return class_exists($id);
     }
 
-    /**
-     * Invoke a callable via the container.
-     *
-     * @param callable $callable
-     * @param array    $args
-     *
-     * @return mixed
-     *
-     * @throws ReflectionException
-     */
     public function call(callable $callable, array $args = [])
     {
         if (is_string($callable) && strpos($callable, '::') !== false) {
@@ -91,7 +78,12 @@ class ReflectionContainer implements ArgumentResolverInterface, ContainerInterfa
 
         if (is_array($callable)) {
             if (is_string($callable[0])) {
-                $callable[0] = $this->getContainer()->get($callable[0]);
+                // if we have a definition container, try that first, otherwise, reflect
+                try {
+                    $callable[0] = $this->getContainer()->get($callable[0]);
+                } catch (ContainerException $e) {
+                    $callable[0] = $this->get($callable[0]);
+                }
             }
 
             $reflection = new ReflectionMethod($callable[0], $callable[1]);
@@ -105,27 +97,11 @@ class ReflectionContainer implements ArgumentResolverInterface, ContainerInterfa
 
         if (is_object($callable)) {
             $reflection = new ReflectionMethod($callable, '__invoke');
-
             return $reflection->invokeArgs($callable, $this->reflectArguments($reflection, $args));
         }
 
         $reflection = new ReflectionFunction(\Closure::fromCallable($callable));
 
         return $reflection->invokeArgs($this->reflectArguments($reflection, $args));
-    }
-
-    /**
-     * Whether the container should default to caching resolutions and returning
-     * the cache on following calls.
-     *
-     * @param boolean $option
-     *
-     * @return self
-     */
-    public function cacheResolutions(bool $option = true) : ContainerInterface
-    {
-        $this->cacheResolutions = $option;
-
-        return $this;
     }
 }

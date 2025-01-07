@@ -228,7 +228,7 @@ function rocket_insert_deferred_js( $buffer ) {
 }
 
 /**
- * Used to display the defered module on settings form
+ * Used to display the deferred module on settings form
  *
  * @since 1.1.0
  * @deprecated 2.11
@@ -304,7 +304,7 @@ function rocket_defered_module() {
  *
  * @param string $url        The minified URL with Minify Library.
  * @param string $pretty_url The minified URL cache file.
- * @return bool True if sucessfully saved the minify cache file, false otherwise
+ * @return bool True if successfully saved the minify cache file, false otherwise
  */
 function rocket_fetch_and_cache_minify( $url, $pretty_url ) {
 	_deprecated_function( __FUNCTION__, '2.11', 'rocket_minify()' );
@@ -1712,7 +1712,7 @@ if ( ! function_exists( 'rocket_button' ) ) {
 
 if ( ! function_exists( 'rocket_display_options' ) ) {
 	/**
-	 * The main settings page construtor using the required functions from WP
+	 * The main settings page constructor using the required functions from WP
 	 *
 	 * @since 1.1.0 Add tabs, tools tab and change options severity
 	 * @since 1.0
@@ -2469,7 +2469,7 @@ if ( ! function_exists( 'rocket_extract_ie_conditionals' ) ) {
 
 if ( ! function_exists( 'rocket_inject_ie_conditionals' ) ) {
 	/**
-	 * Replaces WP Rocket placeholders with IE condtional tags
+	 * Replaces WP Rocket placeholders with IE conditional tags
 	 *
 	 * @since 1.0
 	 * @deprecated 3.1
@@ -3282,7 +3282,7 @@ if ( ! function_exists( 'rocket_dns_prefetch_buffer' ) ) {
 			$old_ie_conditional_tag = '<!--[if IE]><![endif]-->';
 		}
 
-		// Insert all DNS prefecth tags in head.
+		// Insert all DNS prefetch tags in head.
 		$buffer = preg_replace( '/<head(.*)>/', '<head$1>' . $old_ie_conditional_tag . $dns_link_tags, $buffer, 1 );
 
 		return $buffer;

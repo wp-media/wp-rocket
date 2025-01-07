@@ -13,20 +13,23 @@ class Optimization {
 	protected $process;
 
 	/**
-	 * Array of option name/label pairs.
-	 *
-	 * @var array
-	 */
-	private $options;
-
-	/**
 	 * Class constructor.
 	 *
 	 * @param OptimizationProcess $process Background process instance.
 	 */
 	public function __construct( OptimizationProcess $process ) {
 		$this->process = $process;
-		$this->options = [
+	}
+
+	/**
+	 * Get Database options
+	 *
+	 * @since 3.0.4
+	 *
+	 * @return array
+	 */
+	public function get_options() {
+		return [
 			'database_revisions'        => __( 'Revisions', 'rocket' ),
 			'database_auto_drafts'      => __( 'Auto Drafts', 'rocket' ),
 			'database_trashed_posts'    => __( 'Trashed Posts', 'rocket' ),
@@ -38,17 +41,6 @@ class Optimization {
 	}
 
 	/**
-	 * Get Database options
-	 *
-	 * @since 3.0.4
-	 *
-	 * @return array
-	 */
-	public function get_options() {
-		return $this->options;
-	}
-
-	/**
 	 * Performs the database optimization
 	 *
 	 * @since 2.11
@@ -56,7 +48,7 @@ class Optimization {
 	 * @param array $options WP Rocket Database options.
 	 */
 	public function process_handler( $options ) {
-		if ( method_exists( $this->process, 'cancel_process' ) ) {
+		if ( method_exists( $this->process, 'cancel_process' ) ) { // @phpstan-ignore-line
 			$this->process->cancel_process();
 		}
 

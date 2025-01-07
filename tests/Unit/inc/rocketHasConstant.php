@@ -6,7 +6,7 @@ use Brain\Monkey;
 use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
- * @covers ::rocket_has_constant
+ * Test class covering ::rocket_has_constant
  * @group Init
  * @group Constants
  */

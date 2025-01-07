@@ -6,7 +6,7 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers ::rocket_new_upgrade
+ * Test class covering ::rocket_new_upgrade
  * @group admin
  * @group upgrade
  */

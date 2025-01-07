@@ -8,7 +8,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\AdminTrait;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\Admin\Post::enqueue_admin_edit_script
+ * Test class covering \WP_Rocket\Engine\CriticalPath\Admin\Post::enqueue_admin_edit_script
  * @uses   ::rocket_get_constant
  *
  * @group  CriticalPath

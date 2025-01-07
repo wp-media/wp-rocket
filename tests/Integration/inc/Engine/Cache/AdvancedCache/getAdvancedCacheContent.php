@@ -6,7 +6,7 @@ use WP_Rocket\Engine\Cache\AdvancedCache;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Cache\AdvancedCache::get_advanced_cache_content
+ * Test class covering \WP_Rocket\Engine\Cache\AdvancedCache::get_advanced_cache_content
  * @uses   ::is_rocket_generate_caching_mobile_files
  * @uses   ::rocket_get_constant
  * @uses   ::rocket_direct_filesystem

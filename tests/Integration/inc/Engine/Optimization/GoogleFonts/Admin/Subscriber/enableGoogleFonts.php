@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\GoogleFonts\Admin\
 use WP_Rocket\Tests\Integration\AjaxTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\GoogleFonts\Admin\Subscriber::enable_google_fonts
+ * Test class covering \WP_Rocket\Engine\Optimization\GoogleFonts\Admin\Subscriber::enable_google_fonts
  * @uses   \WP_Rocket\Engine\Optimization\GoogleFonts\Admin\Settings::enable_google_fonts
  *
  * @group  AdminOnly

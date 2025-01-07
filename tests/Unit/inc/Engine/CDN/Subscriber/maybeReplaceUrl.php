@@ -10,7 +10,7 @@ use WP_Rocket\Engine\CDN\CDN;
 use WP_Rocket\Engine\CDN\Subscriber;
 
 /**
- * @covers \WP_Rocket\Engine\CDN\Subscriber::maybe_replace_url
+ * Test class covering \WP_Rocket\Engine\CDN\Subscriber::maybe_replace_url
  * @group  CDN
  */
 class Test_MaybeReplaceUrl extends TestCase {

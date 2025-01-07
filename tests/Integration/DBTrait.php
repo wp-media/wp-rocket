@@ -3,7 +3,7 @@
 namespace WP_Rocket\Tests\Integration;
 
 trait DBTrait {
-	public static function resourceFound( array $resource ) : bool {
+	public static function resourceFound( array $resource ): bool {
 		$container = apply_filters( 'rocket_container', null );
 		$resource_query = $container->get( 'rucss_used_css_query' );
 		return count($resource_query->query( $resource )) > 0;
@@ -14,13 +14,13 @@ trait DBTrait {
 		$resource_query = $container->get( 'rucss_used_css_query' );
 		$job_id = $resource_query->create_new_job($resource['url'], $resource['job_id'], $resource['queue_name']);
 		if(key_exists('status', $resource) && 'in-progress' === $resource['status']) {
-			$resource_query->make_status_inprogress($job_id);
+			$resource_query->make_status_inprogress($resource['url'], $resource['is_mobile']);
 		}
 		if(key_exists('status', $resource) && 'pending' === $resource['status']) {
-			$resource_query->make_status_pending($job_id);
+			$resource_query->make_status_pending($resource['url'], $job_id, $resource['queue_name'], $resource['is_mobile']);
 		}
 		if(key_exists('status', $resource) && 'completed' === $resource['status']) {
-			$resource_query->make_status_completed($job_id, $resource['hash']);
+			$resource_query->make_status_completed($resource['url'], $resource['is_mobile'], $resource['hash']);
 		}
 		return $job_id;
 	}
@@ -35,7 +35,7 @@ trait DBTrait {
 		$container           = apply_filters( 'rocket_container', null );
 		$rucss_usedcss_table = $container->get( 'rucss_usedcss_table' );
 
-		if ( $rucss_usedcss_table->exists() ){
+		if ( $rucss_usedcss_table->exists() ) {
 			$rucss_usedcss_table->truncate();
 		}
 	}
@@ -46,16 +46,72 @@ trait DBTrait {
 		return $cache_query->create_or_update( $resource );
 	}
 
+	public static function addLcp( array $resource ) {
+		$container = apply_filters( 'rocket_container', null );
+		$lcp_query = $container->get( 'atf_query' );
+		return $lcp_query->add_item( $resource );
+	}
+
+	public static function addLrc( array $resource ) {
+		$container = apply_filters( 'rocket_container', null );
+		$lrc_query = $container->get( 'lrc_query' );
+
+		return $lrc_query->add_item( $resource );
+	}
+
 	public static function installFresh() {
-		$container             = apply_filters( 'rocket_container', null );
+		$container = apply_filters( 'rocket_container', null );
 
 		self::uninstallAll();
 
-		$rucss_usedcss_table   = $container->get( 'rucss_usedcss_table' );
+		$rucss_usedcss_table = $container->get( 'rucss_usedcss_table' );
 		$rucss_usedcss_table->install();
 		$container->get( 'rucss_used_css_query' )::$table_exists = true;
+
 		$preload_cache_table = $container->get( 'preload_caches_table' );
 		$preload_cache_table->install();
+
+		$atf_table = $container->get( 'atf_table' );
+		$atf_table->install();
+
+		$lrc_table = $container->get( 'lrc_table' );
+		$lrc_table->install();
+	}
+
+	public static function installUsedCssTable() {
+		$container           = apply_filters( 'rocket_container', null );
+		$rucss_usedcss_table = $container->get( 'rucss_usedcss_table' );
+
+		if ( ! $rucss_usedcss_table->exists() ) {
+			$rucss_usedcss_table->install();
+		}
+	}
+
+	public static function installPreloadCacheTable() {
+		$container           = apply_filters( 'rocket_container', null );
+		$preload_cache_table = $container->get( 'preload_caches_table' );
+
+		if ( ! $preload_cache_table->exists() ) {
+			$preload_cache_table->install();
+		}
+	}
+
+	public static function installAtfTable() {
+		$container = apply_filters( 'rocket_container', null );
+		$atf_table = $container->get( 'atf_table' );
+
+		if ( ! $atf_table->exists() ) {
+			$atf_table->install();
+		}
+	}
+
+	public static function installLrcTable() {
+		$container = apply_filters( 'rocket_container', null );
+		$lrc_table = $container->get( 'lrc_table' );
+
+		if ( ! $lrc_table->exists() ) {
+			$lrc_table->install();
+		}
 	}
 
 	public static function uninstallAll() {
@@ -70,17 +126,65 @@ trait DBTrait {
 		if ( $preload_cache_table->exists() ) {
 			$preload_cache_table->uninstall();
 		}
+
+		$atf_table = $container->get( 'atf_table' );
+		if ( $atf_table->exists() ) {
+			$atf_table->uninstall();
+		}
+
+		$lrc_table = $container->get( 'lrc_table' );
+		if ( $lrc_table->exists() ) {
+			$lrc_table->uninstall();
+		}
+	}
+
+	public static function uninstallUsedCssTable() {
+		$container           = apply_filters( 'rocket_container', null );
+		$rucss_usedcss_table = $container->get( 'rucss_usedcss_table' );
+
+		$rucss_usedcss_table->uninstall();
+	}
+
+	public static function uninstallPreloadCacheTable() {
+		$container           = apply_filters( 'rocket_container', null );
+		$preload_cache_table = $container->get( 'preload_caches_table' );
+
+		$preload_cache_table->uninstall();
+	}
+
+	public static function uninstallAtfTable() {
+		$container = apply_filters( 'rocket_container', null );
+		$atf_table = $container->get( 'atf_table' );
+
+		if ( $atf_table->exists() ) {
+			$atf_table->uninstall();
+		}
+	}
+
+	public static function uninstallLrcTable() {
+		$container = apply_filters( 'rocket_container', null );
+		$lrc_table = $container->get( 'lrc_table' );
+
+		if ( $lrc_table->exists() ) {
+			$lrc_table->uninstall();
+		}
 	}
 
 	public static function removeDBHooks() {
-		$container             = apply_filters( 'rocket_container', null );
-		$rucss_usedcss_table   = $container->get( 'rucss_usedcss_table' );
-		$preload_table         = $container->get( 'preload_caches_table' );
+		$container           = apply_filters( 'rocket_container', null );
 
-		self::forceRemoveTableAdminInitHooks( 'admin_init', get_class( $rucss_usedcss_table ), 'maybe_upgrade', 10);
-		self::forceRemoveTableAdminInitHooks( 'switch_blog', get_class( $rucss_usedcss_table ), 'switch_blog', 10);
-		self::forceRemoveTableAdminInitHooks( 'admin_init', get_class( $preload_table ), 'maybe_upgrade', 10);
-		self::forceRemoveTableAdminInitHooks( 'switch_blog', get_class( $preload_table ), 'switch_blog', 10);
+		$tables = [
+			$container->get( 'rucss_usedcss_table' ),
+			$container->get( 'preload_caches_table' ),
+			$container->get( 'atf_table' ),
+			$container->get( 'lrc_table' ),
+		];
+
+		foreach ( $tables as $table ) {
+			self::forceRemoveTableAdminInitHooks( 'init', get_class( $table ), 'maybe_upgrade', 10 );
+			self::forceRemoveTableAdminInitHooks( 'admin_init', get_class( $table ), 'maybe_upgrade', 10 );
+			self::forceRemoveTableAdminInitHooks( 'switch_blog', get_class( $table ), 'switch_blog', 10 );
+		}
 	}
 
 	public static function forceRemoveTableAdminInitHooks( $hook_name = '', $class_name = '', $method_name = '', $priority = 0 ) {

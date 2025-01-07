@@ -100,7 +100,7 @@ class ActionScheduler_AdminView_Deprecated {
 	 * Convert an interval of seconds into a two part human friendly string.
 	 *
 	 * The WordPress human_time_diff() function only calculates the time difference to one degree, meaning
-	 * even if an action is 1 day and 11 hours away, it will display "1 day". This funciton goes one step
+	 * even if an action is 1 day and 11 hours away, it will display "1 day". This function goes one step
 	 * further to display two degrees of accuracy.
 	 *
 	 * Based on Crontrol::interval() function by Edward Dale: https://wordpress.org/plugins/wp-crontrol/

@@ -6,7 +6,7 @@ use WP_Error;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers WP_Rocket\Addon\Cloudflare\Cloudflare::purge_by_url
+ * Test class covering WP_Rocket\Addon\Cloudflare\Cloudflare::purge_by_url
  *
  * @group Cloudflare
  */

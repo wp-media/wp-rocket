@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Themes\Avada;
 use WP_Rocket\ThirdParty\Themes\Avada;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Themes\Avada::clean_domain
+ * Test class covering \WP_Rocket\ThirdParty\Themes\Avada::clean_domain
  *
  * @group  Themes
  */

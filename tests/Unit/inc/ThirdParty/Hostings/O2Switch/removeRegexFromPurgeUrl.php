@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Hostings\O2Switch;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\O2Switch::remove_regex_from_purge_url
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\O2Switch::remove_regex_from_purge_url
  *
  * @group  O2Switch
  * @group  ThirdParty

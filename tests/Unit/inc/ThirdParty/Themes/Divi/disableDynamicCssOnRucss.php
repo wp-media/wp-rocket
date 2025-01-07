@@ -13,7 +13,7 @@ use Brain\Monkey\Filters;
 use WP_Theme;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Divi::disable_dynamic_css_on_rucss
+ * Test class covering \WP_Rocket\ThirdParty\Divi::disable_dynamic_css_on_rucss
  *
  * @group  ThirdParty
  */

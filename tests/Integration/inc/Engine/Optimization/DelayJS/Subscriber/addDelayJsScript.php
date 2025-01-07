@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\DelayJS\Subscriber
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\DelayJS\Subscriber::add_delay_js_script
+ * Test class covering \WP_Rocket\Engine\Optimization\DelayJS\Subscriber::add_delay_js_script
  * @group  Optimize
  * @group  DelayJS
  *

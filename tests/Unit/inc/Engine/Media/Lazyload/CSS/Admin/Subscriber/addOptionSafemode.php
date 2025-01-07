@@ -10,7 +10,7 @@ use WP_Rocket\Engine\Common\Cache\CacheInterface;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Media\Lazyload\CSS\Admin\Subscriber::add_option_safemode
+ * Test class covering \WP_Rocket\Engine\Media\Lazyload\CSS\Admin\Subscriber::add_option_safemode
  */
 class Test_addOptionSafemode extends TestCase {
 

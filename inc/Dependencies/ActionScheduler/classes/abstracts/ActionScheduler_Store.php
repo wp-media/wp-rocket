@@ -248,7 +248,7 @@ abstract class ActionScheduler_Store extends ActionScheduler_Store_Deprecated {
 	}
 
 	/**
-	 * Get the time MySQL formated date/time string for an action's (next) scheduled date.
+	 * Get the time MySQL formatted date/time string for an action's (next) scheduled date.
 	 *
 	 * @param ActionScheduler_Action $action
 	 * @param DateTime $scheduled_date (optional)
@@ -265,7 +265,7 @@ abstract class ActionScheduler_Store extends ActionScheduler_Store_Deprecated {
 	}
 
 	/**
-	 * Get the time MySQL formated date/time string for an action's (next) scheduled date.
+	 * Get the time MySQL formatted date/time string for an action's (next) scheduled date.
 	 *
 	 * @param ActionScheduler_Action $action
 	 * @param DateTime $scheduled_date (optional)
@@ -325,7 +325,8 @@ abstract class ActionScheduler_Store extends ActionScheduler_Store_Deprecated {
 	 * @throws InvalidArgumentException When json encoded args is too long.
 	 */
 	protected function validate_action( ActionScheduler_Action $action ) {
-		if ( strlen( json_encode( $action->get_args() ) ) > static::$max_args_length ) {
+		if ( strlen( wp_json_encode( $action->get_args() ) ) > static::$max_args_length ) {
+			// translators: %d is a number (maximum length of action arguments).
 			throw new InvalidArgumentException( sprintf( __( 'ActionScheduler_Action::$args too long. To ensure the args column can be indexed, action args should not be more than %d characters when encoded as JSON.', 'action-scheduler' ), static::$max_args_length ) );
 		}
 	}
@@ -347,7 +348,7 @@ abstract class ActionScheduler_Store extends ActionScheduler_Store_Deprecated {
 					'hook'     => $hook,
 					'status'   => self::STATUS_PENDING,
 					'per_page' => 1000,
-					'orderby'  => 'action_id',
+					'orderby'  => 'none',
 				)
 			);
 
@@ -372,7 +373,7 @@ abstract class ActionScheduler_Store extends ActionScheduler_Store_Deprecated {
 					'group'    => $group,
 					'status'   => self::STATUS_PENDING,
 					'per_page' => 1000,
-					'orderby'  => 'action_id',
+					'orderby'  => 'none',
 				)
 			);
 

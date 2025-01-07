@@ -10,7 +10,7 @@ use WP_Rocket\Engine\License\Upgrade;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\License\Upgrade::display_promo_banner
+ * Test class covering \WP_Rocket\Engine\License\Upgrade::display_promo_banner
  *
  * @group License
  */
@@ -48,6 +48,11 @@ class DisplayPromoBanner extends TestCase {
 			->once()
 			->andReturn( $config['licence_expired'] );
 
+		$this->user->shouldReceive( 'get_available_upgrades' )
+			->atMost()
+			->twice()
+			->andReturn( $config['upgrades'] ?? [] );
+
 		$this->user->shouldReceive( 'get_license_expiration' )
 			->atMost()
 			->once()
@@ -60,7 +65,7 @@ class DisplayPromoBanner extends TestCase {
 
 		$this->pricing->shouldReceive( 'is_promo_active' )
 			->atMost()
-			->once()
+			->times(3)
 			->andReturn( $config['promo_active'] );
 
 		Functions\when( 'get_current_user_id' )->justReturn( 1 );
@@ -86,7 +91,7 @@ class DisplayPromoBanner extends TestCase {
 				->twice()
 				->andReturn( $config['pricing']['plus']['websites'] );
 
-			Functions\when( '_n' )
+			Functions\when( 'esc_html__' )
 				->justReturn( $config['message'] );
 
 			$this->pricing->shouldReceive( 'get_promo_end' )

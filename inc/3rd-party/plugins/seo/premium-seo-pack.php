@@ -17,7 +17,7 @@ if ( class_exists( 'psp' ) ) {
 	 */
 	function rocket_dequeue_premium_seo_pack_stylesheet() {
 
-		// Retun on all pages but WP Rocket settings page.
+		// Return on all pages but WP Rocket settings page.
 		$screen = get_current_screen();
 		if ( 'settings_page_wprocket' !== $screen->id ) {
 			return;

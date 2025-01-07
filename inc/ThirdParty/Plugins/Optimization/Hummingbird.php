@@ -106,7 +106,7 @@ class Hummingbird implements Subscriber_Interface {
 			return false;
 		}
 
-		if ( ! method_exists( 'WP_Hummingbird_Utils', 'get_module' ) ) {
+		if ( ! method_exists( 'WP_Hummingbird_Utils', 'get_module' ) ) { // @phpstan-ignore-line
 			return false;
 		}
 
@@ -126,7 +126,7 @@ class Hummingbird implements Subscriber_Interface {
 			return false;
 		}
 
-		if ( ! method_exists( 'WP_Hummingbird_Settings', 'get_setting' ) ) {
+		if ( ! method_exists( 'WP_Hummingbird_Settings', 'get_setting' ) ) { // @phpstan-ignore-line
 			return false;
 		}
 
@@ -146,7 +146,12 @@ class Hummingbird implements Subscriber_Interface {
 			return false;
 		}
 
-		if ( $this->options->get( 'emoji' ) && WP_Hummingbird_Settings::get_setting( 'emoji', 'advanced' ) ) {
+		if (
+			$this->options->get( 'emoji' )
+			&&
+
+			WP_Hummingbird_Settings::get_setting( 'emoji', 'advanced' )
+		) {
 			// Translators: %1$s = Plugin name, %2$s = <em>, %3$s = </em>.
 			$this->errors[] = sprintf( _x( '%1$s %2$sdisable emoji%3$s conflicts with WP Rockets %2$sdisable emoji%3$s', 'Hummingbird notice', 'rocket' ), 'Hummingbird', '<em>', '</em>' );
 			return true;
@@ -174,11 +179,11 @@ class Hummingbird implements Subscriber_Interface {
 			return false;
 		}
 
-		if ( ! method_exists( $gzip, 'is_htaccess_written' ) ) {
+		if ( ! method_exists( $gzip, 'is_htaccess_written' ) ) { // @phpstan-ignore-line
 			return false;
 		}
 
-		if ( ! method_exists( $gzip, 'get_server_type' ) ) {
+		if ( ! method_exists( $gzip, 'get_server_type' ) ) { // @phpstan-ignore-line
 			return false;
 		}
 
@@ -210,11 +215,11 @@ class Hummingbird implements Subscriber_Interface {
 			return false;
 		}
 
-		if ( ! method_exists( $caching, 'is_htaccess_written' ) ) {
+		if ( ! method_exists( $caching, 'is_htaccess_written' ) ) { // @phpstan-ignore-line
 			return false;
 		}
 
-		if ( ! method_exists( $caching, 'get_server_type' ) ) {
+		if ( ! method_exists( $caching, 'get_server_type' ) ) { // @phpstan-ignore-line
 			return false;
 		}
 
@@ -246,7 +251,7 @@ class Hummingbird implements Subscriber_Interface {
 			return false;
 		}
 
-		if ( ! method_exists( $cache, 'is_active' ) ) {
+		if ( ! method_exists( $cache, 'is_active' ) ) { // @phpstan-ignore-line
 			return false;
 		}
 
@@ -280,7 +285,7 @@ class Hummingbird implements Subscriber_Interface {
 			return false;
 		}
 
-		if ( ! method_exists( $minify, 'is_active' ) ) {
+		if ( ! method_exists( $minify, 'is_active' ) ) { // @phpstan-ignore-line
 			return false;
 		}
 

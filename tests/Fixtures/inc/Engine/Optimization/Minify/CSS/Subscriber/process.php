@@ -164,7 +164,7 @@ return [
 						<title>Sample Page</title>
 						<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/themes/twentytwenty/style.css?ver={{mtime}}" type="text/css" media="all">
 						<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/plugins/hello-dolly/style.css?ver={{mtime}}">
-						<link rel="stylesheet" href="https://123456.rocketcdn.me/wp-includes/css/dashicons.min.css">
+						<link rel="stylesheet" href="http://example.org/wp-includes/css/dashicons.min.css">
 						<link data-minify="1" rel="stylesheet" href="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/themes/twentytwenty/style-font-face.min.css?ver={{mtime}}">
 
 					</head>

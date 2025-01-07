@@ -11,7 +11,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\I18n\WPML::on_change_directory_for_default_language_clean_cache
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\I18n\WPML::on_change_directory_for_default_language_clean_cache
  */
 class Test_onChangeDirectoryForDefaultLanguageCleanCache extends TestCase {
 

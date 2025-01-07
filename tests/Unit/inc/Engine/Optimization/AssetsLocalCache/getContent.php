@@ -7,7 +7,7 @@ use WP_Rocket\Engine\Optimization\AssetsLocalCache;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\AssetsLocalCache::get_content
+ * Test class covering \WP_Rocket\Engine\Optimization\AssetsLocalCache::get_content
  * @group  Optimize
  * @group  AssetsLocalCache
  */

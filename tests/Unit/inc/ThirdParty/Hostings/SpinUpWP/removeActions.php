@@ -6,7 +6,7 @@ use WP_Rocket\ThirdParty\Hostings\SpinUpWP;
 use Brain\Monkey\Actions;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\SpinUpWP::remove_actions
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\SpinUpWP::remove_actions
  *
  * @group  SpinUpWP
  * @group  ThirdParty

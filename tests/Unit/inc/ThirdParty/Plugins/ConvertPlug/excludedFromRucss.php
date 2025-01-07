@@ -5,7 +5,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Plugins\ConvertPlug;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\ConvertPlug::excluded_from_rucss
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\ConvertPlug::excluded_from_rucss
  * @group ConvertPlug
  * @group ThirdParty
  */

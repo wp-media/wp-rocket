@@ -178,6 +178,8 @@ $(document).ready(function(){
 			url: rocket_ajax_data.rest_url,
 			beforeSend: function ( xhr ) {
 				xhr.setRequestHeader( 'X-WP-Nonce', rocket_ajax_data.rest_nonce );
+				xhr.setRequestHeader( 'Accept', 'application/json, */*;q=0.1' );
+				xhr.setRequestHeader( 'Content-Type', 'application/json' );
 			},
 			method: "PUT",
 			success: function(responses) {
@@ -195,4 +197,35 @@ $(document).ready(function(){
 			}
 		});
 	} );
+
+    /**
+     * Enable mobile cache option.
+     */
+    $('#wpr_enable_mobile_cache').on('click', function(e) {
+        e.preventDefault();
+
+		$('#wpr_enable_mobile_cache').addClass('wpr-isLoading');
+
+        $.post(
+            ajaxurl,
+            {
+                action: 'rocket_enable_mobile_cache',
+                _ajax_nonce: rocket_ajax_data.nonce
+            },
+			function(response) {
+				if ( response.success ) {
+					// Hide Mobile cache enable button on success.
+					$('#wpr_enable_mobile_cache').hide();
+					$('#wpr_mobile_cache_default').hide();
+					$('#wpr_mobile_cache_response').show();
+                    $('#wpr_enable_mobile_cache').removeClass('wpr-isLoading');
+
+                    // Set values of mobile cache and separate cache files for mobiles option to 1.
+                    $('#cache_mobile').val(1);
+                    $('#do_caching_mobile_files').val(1);
+				}
+			}
+        );
+    });
 });
+

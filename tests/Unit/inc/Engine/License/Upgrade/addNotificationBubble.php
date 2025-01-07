@@ -10,7 +10,7 @@ use WP_Rocket\Engine\License\Upgrade;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\License\Upgrade::add_notification_bubble
+ * Test class covering \WP_Rocket\Engine\License\Upgrade::add_notification_bubble
  *
  * @group License
  */
@@ -44,6 +44,11 @@ class AddNotificationBubble extends TestCase {
 			->atMost()
 			->once()
 			->andReturn( $config['licence_expired'] );
+
+		$this->user->shouldReceive( 'get_available_upgrades' )
+			->atMost()
+			->once()
+			->andReturn( $config['upgrades'] ?? [] );
 
 		$this->user->shouldReceive( 'get_license_expiration' )
 			->atMost()

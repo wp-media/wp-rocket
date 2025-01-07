@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\functions;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers ::is_rocket_generate_caching_mobile_files
+ * Test class covering ::is_rocket_generate_caching_mobile_files
  * @uses   ::get_rocket_option
  *
  * @group  Options

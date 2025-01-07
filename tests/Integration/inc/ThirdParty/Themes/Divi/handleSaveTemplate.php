@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Integration\WPThemeTestcase;
 use WP_Rocket\ThirdParty\Themes\Divi;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Themes\Divi::handle_save_template
+ * Test class covering \WP_Rocket\ThirdParty\Themes\Divi::handle_save_template
  *
  * @group Themes
  */
@@ -19,7 +19,10 @@ class Test_handleSaveTemplate extends WPThemeTestcase {
 
 	protected $path_to_test_data = '/inc/ThirdParty/Themes/Divi/handleSaveTemplate.php';
 
+	// @phpstan-ignore-next-line
 	private static $user_without_permission;
+
+	// @phpstan-ignore-next-line
 	private static $user_with_permission;
 
 	public static function set_up_before_class() {
@@ -33,9 +36,9 @@ class Test_handleSaveTemplate extends WPThemeTestcase {
 	}
 
 	public static function tear_down_after_class() {
-		parent::tear_down_after_class();
-
 		self::resetAdminCap();
+
+		parent::tear_down_after_class();
 	}
 
 	public function set_up() {

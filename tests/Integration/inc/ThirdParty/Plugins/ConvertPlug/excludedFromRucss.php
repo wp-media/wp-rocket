@@ -3,7 +3,7 @@
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers  \WP_Rocket\ThirdParty\Plugins\ConvertPlug::excluded_from_rucss
+ * Test class covering  \WP_Rocket\ThirdParty\Plugins\ConvertPlug::excluded_from_rucss
  * @group   ConvertPlug
  */
 class Test_ExcludedFromRucss extends TestCase {

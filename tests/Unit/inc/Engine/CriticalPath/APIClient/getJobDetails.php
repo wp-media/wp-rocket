@@ -8,7 +8,7 @@ use Brain\Monkey\Functions;
 use WP_Error;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\APIClient::get_job_details
+ * Test class covering \WP_Rocket\Engine\CriticalPath\APIClient::get_job_details
  *
  * @group  CriticalPath
  */

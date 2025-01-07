@@ -3,6 +3,7 @@
 namespace WP_Rocket\ThirdParty\Hostings;
 
 use NinukisCaching;
+use WP_Post;
 use WP_Rocket\ThirdParty\ReturnTypesTrait;
 
 class Pressidium extends AbstractNoCacheHost {
@@ -81,7 +82,7 @@ class Pressidium extends AbstractNoCacheHost {
 	 * Returns the path of URLs.
 	 *
 	 * @param array|string $urls Urls we want to get paths.
-	 * @return array|void the path.
+	 * @return array the path.
 	 */
 	private function get_paths( $urls ) {
 		if ( ! is_array( $urls ) ) {

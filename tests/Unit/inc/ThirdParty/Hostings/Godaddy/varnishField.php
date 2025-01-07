@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Hostings\Godaddy;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\Godaddy::varnish_field
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\Godaddy::varnish_field
  *
  * @group  Godaddy
  * @group  ThirdParty

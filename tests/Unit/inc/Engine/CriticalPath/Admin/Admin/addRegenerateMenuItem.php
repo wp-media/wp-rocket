@@ -12,7 +12,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\AdminTrait;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\Admin\Admin::add_regenerate_menu_item
+ * Test class covering \WP_Rocket\Engine\CriticalPath\Admin\Admin::add_regenerate_menu_item
  *
  * @group  CriticalPath
  * @group  CriticalPathAdmin

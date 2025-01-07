@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Engine\Admin\Deactivation\DeactivationIntent;
 
 /**
- * @covers \WP_Rocket\Engine\Admin\Deactivation\DeactivationIntent::add_data_attribute
+ * Test class covering \WP_Rocket\Engine\Admin\Deactivation\DeactivationIntent::add_data_attribute
  * @group  DeactivationIntent
  */
 class Test_AddDataAttribute extends TestCase {

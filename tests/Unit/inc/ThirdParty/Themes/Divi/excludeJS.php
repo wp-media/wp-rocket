@@ -8,7 +8,7 @@ use WP_Rocket\ThirdParty\Themes\Divi;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Themes\Divi::exclude_js
+ * Test class covering \WP_Rocket\ThirdParty\Themes\Divi::exclude_js
  * @uses   ::rocket_get_constant()
  *
  * @group  ThirdParty

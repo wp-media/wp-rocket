@@ -5,7 +5,7 @@ use WP_Rocket\Tests\Integration\TestCase;
 use WP_Rocket\ThirdParty\Plugins\UnlimitedElements;
 
 /**
- * @covers  \WP_Rocket\ThirdParty\Plugins\UnlimitedElements::exclude_inline_from_rucss
+ * Test class covering  \WP_Rocket\ThirdParty\Plugins\UnlimitedElements::exclude_inline_from_rucss
  * @group   UnlimitedElements
  */
 class Test_ExcludeInlineFromRucss extends TestCase {

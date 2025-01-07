@@ -8,7 +8,7 @@ use WP_Rocket\Engine\Optimization\DelayJS\Admin\Settings;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\DelayJS\Admin\Settings::add_options
+ * Test class covering \WP_Rocket\Engine\Optimization\DelayJS\Admin\Settings::add_options
  *
  * @group  DelayJS
  */

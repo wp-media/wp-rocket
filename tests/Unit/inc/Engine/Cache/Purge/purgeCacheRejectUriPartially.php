@@ -9,7 +9,7 @@ use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Rocket\Logger\Logger;
 
 /**
- * @covers \WP_Rocket\Engine\Cache\Purge::purge_cache_reject_uri_partially
+ * Test class covering \WP_Rocket\Engine\Cache\Purge::purge_cache_reject_uri_partially
  * 
  * @group  purge_actions
  */

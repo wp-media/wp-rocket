@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Engine\CriticalPath\Admin;
 
+use WP_Admin_Bar;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CriticalPath\ProcessorService;
 use WP_Rocket\Engine\CriticalPath\TransientTrait;
@@ -50,8 +51,6 @@ class Admin {
 			! current_user_can( 'rocket_regenerate_critical_css' )
 		) {
 			wp_send_json_error();
-
-			return;
 		}
 
 		$cpcss_pending = get_transient( 'rocket_cpcss_generation_pending' );
@@ -67,8 +66,6 @@ class Admin {
 		if ( empty( $cpcss_pending ) ) {
 			$this->generation_complete();
 			wp_send_json_success( [ 'status' => 'cpcss_complete' ] );
-
-			return;
 		}
 
 		set_transient( 'rocket_cpcss_generation_pending', $cpcss_pending, HOUR_IN_SECONDS );
@@ -129,8 +126,8 @@ class Admin {
 	 *
 	 * @since 3.6
 	 *
-	 * @param array|WP_Error $cpcss_generation CPCSS regeneration reply.
-	 * @param array          $cpcss_item       Item processed.
+	 * @param array|\WP_Error $cpcss_generation CPCSS regeneration reply.
+	 * @param array           $cpcss_item       Item processed.
 	 */
 	private function cpcss_heartbeat_notices( $cpcss_generation, $cpcss_item ) {
 		$mobile    = isset( $cpcss_item['mobile'] ) ? $cpcss_item['mobile'] : 0;

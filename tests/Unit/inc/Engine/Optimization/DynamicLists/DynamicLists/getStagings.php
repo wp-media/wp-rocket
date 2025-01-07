@@ -11,7 +11,7 @@ use WP_Rocket\Engine\Optimization\DynamicLists\DynamicLists;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\DynamicLists::get_stagings
+ * Test class covering \WP_Rocket\Engine\Optimization\DynamicLists::get_stagings
  *
  * @group  DynamicLists
  */

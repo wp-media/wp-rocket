@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Integration\CapTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers WP_Rocket\ThirdParty\Plugins\Optimization\Autoptimize::warn_when_aggregate_inline_css_and_cpcss_active
+ * Test class covering WP_Rocket\ThirdParty\Plugins\Optimization\Autoptimize::warn_when_aggregate_inline_css_and_cpcss_active
  *
  * @group  Autoptimize
  * @group  AdminOnly

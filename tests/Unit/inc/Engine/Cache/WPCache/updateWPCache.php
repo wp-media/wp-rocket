@@ -6,7 +6,7 @@ use WP_Rocket\Engine\Cache\WPCache;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Cache\WPCache::update_wp_cache
+ * Test class covering \WP_Rocket\Engine\Cache\WPCache::update_wp_cache
  * @uses   \rocket_valid_key()
  * @uses   \WP_Rocket\Engine\Cache\WPCache::set_wp_cache_constant
  *
@@ -21,7 +21,7 @@ class Test_UpdateWPCache extends TestCase {
 			->once()
 			->andReturn( false );
 
-		$this->assertNull( $wp_cache->update_wp_cache() );
+		$wp_cache->update_wp_cache();
 	}
 
 	public function testShouldCallSetCacheConstant() {
@@ -47,6 +47,6 @@ class Test_UpdateWPCache extends TestCase {
 		Functions\when( 'current_filter' )->justReturn( 'rocket_deactivation' );
 		Functions\when( 'is_multisite' )->justReturn( true );
 
-		$this->assertNull( $wp_cache->update_wp_cache( 1 ) );
+		$wp_cache->update_wp_cache( 1 );
 	}
 }

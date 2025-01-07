@@ -56,7 +56,7 @@ class Database {
 			return;
 		}
 
-		$this->rucss_usedcss_table->delete_old_used_css();
+		$this->rucss_usedcss_table->delete_old_rows();
 	}
 
 	/**
@@ -68,7 +68,7 @@ class Database {
 		if ( ! $this->rucss_usedcss_table->exists() ) {
 			return [];
 		}
-		return $this->rucss_usedcss_table->get_old_used_css();
+		return $this->rucss_usedcss_table->get_old_rows();
 	}
 
 	/**

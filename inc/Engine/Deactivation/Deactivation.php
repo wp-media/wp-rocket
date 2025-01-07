@@ -8,8 +8,11 @@ use WP_Rocket\Engine\Admin\Beacon\ServiceProvider as BeaconServiceProvider;
 use WP_Rocket\Engine\Support\ServiceProvider as SupportServiceProvider;
 use WP_Rocket\ServiceProvider\Options as OptionsServiceProvider;
 use WP_Rocket\ThirdParty\Hostings\HostResolver;
+use WP_Rocket\ThirdParty\Hostings\ServiceProvider as HostingsServiceProvider;
 
 class Deactivation {
+	const DEACTIVATION_ENDPOINT = 'https://api.wp-rocket.me/api/wp-rocket/deactivate-licence.php';
+
 	/**
 	 * Aliases in the container for each class that needs to call its deactivate method
 	 *
@@ -35,12 +38,12 @@ class Deactivation {
 		$container->add( 'options_api', new Options( 'wp_rocket_' ) );
 		$container->add( 'template_path', WP_ROCKET_PATH . 'views' );
 
-		$container->addServiceProvider( OptionsServiceProvider::class );
-		$container->addServiceProvider( BeaconServiceProvider::class );
-		$container->addServiceProvider( SupportServiceProvider::class );
+		$container->addServiceProvider( new OptionsServiceProvider() );
+		$container->addServiceProvider( new BeaconServiceProvider() );
+		$container->addServiceProvider( new SupportServiceProvider() );
 
-		$container->addServiceProvider( 'WP_Rocket\Engine\Deactivation\ServiceProvider' );
-		$container->addServiceProvider( 'WP_Rocket\ThirdParty\Hostings\ServiceProvider' );
+		$container->addServiceProvider( new ServiceProvider() );
+		$container->addServiceProvider( new HostingsServiceProvider() );
 
 		$host_type = HostResolver::get_host_service();
 
@@ -88,7 +91,7 @@ class Deactivation {
 
 		// Update customer key & licence.
 		wp_remote_get(
-			WP_ROCKET_WEB_API . 'pause-licence.php',
+			self::DEACTIVATION_ENDPOINT,
 			[
 				'blocking' => false,
 			]

@@ -7,7 +7,7 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers ::rocket_clean_cache_busting
+ * Test class covering ::rocket_clean_cache_busting
  * @uses  ::rocket_direct_filesystem
  *
  * @group Functions

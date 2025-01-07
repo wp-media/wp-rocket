@@ -5,7 +5,7 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers WP_Rocket\ThirdParty\Plugins\Optimization\Perfmatters::disable_rucss_option
+ * Test class covering WP_Rocket\ThirdParty\Plugins\Optimization\Perfmatters::disable_rucss_option
  * 
  * @group Perfmatters
  */

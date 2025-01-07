@@ -11,7 +11,7 @@ use WP_Rocket\Engine\Optimization\DynamicLists\DynamicLists;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\DynamicLists::get_js_minify_excluded_external
+ * Test class covering \WP_Rocket\Engine\Optimization\DynamicLists::get_js_minify_excluded_external
  *
  * @group  DynamicLists
  */

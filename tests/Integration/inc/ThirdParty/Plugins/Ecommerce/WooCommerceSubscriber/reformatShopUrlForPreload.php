@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Integration\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\Ecommerce\WooCommerceSubscriber::reformat_shop_url_for_preload
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\Ecommerce\WooCommerceSubscriber::reformat_shop_url_for_preload
  * @group WooCommerce
  * @group ThirdParty
  * @group WithWoo

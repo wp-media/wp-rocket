@@ -9,7 +9,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS::reset_job
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS::reset_job
  */
 class Test_resetJob extends TestCase {
 
@@ -33,6 +33,7 @@ class Test_resetJob extends TestCase {
 
 		$this->usedcss::$table_exists = true;
 
+		/* @phpstan-ignore-next-line */
 		$this->usedcss->expects(self::once())->method('update_item')->with($expected['id'], $expected['data'])->willReturn($config['updated']);
 
         $this->assertSame($expected['result'], $this->usedcss->reset_job($config['id'], $config['job_id']));

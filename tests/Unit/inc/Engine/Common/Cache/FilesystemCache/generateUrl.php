@@ -10,7 +10,7 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Common\Cache\FilesystemCache::generate_url
+ * Test class covering \WP_Rocket\Engine\Common\Cache\FilesystemCache::generate_url
  */
 class Test_generateUrl extends TestCase {
 

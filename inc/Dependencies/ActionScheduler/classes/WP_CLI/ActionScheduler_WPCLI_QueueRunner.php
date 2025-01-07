@@ -90,7 +90,7 @@ class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueRu
 		$count              = count( $this->actions );
 		$this->progress_bar = new ProgressBar(
 			/* translators: %d: amount of actions */
-			sprintf( _n( 'Running %d action', 'Running %d actions', $count, 'action-scheduler' ), number_format_i18n( $count ) ),
+			sprintf( _n( 'Running %d action', 'Running %d actions', $count, 'action-scheduler' ), $count ),
 			$count
 		);
 	}

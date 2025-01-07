@@ -11,7 +11,7 @@ use WP_Rocket\Engine\Preload\Fonts;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\Fonts::preload_fonts
+ * Test class covering \WP_Rocket\Engine\Preload\Fonts::preload_fonts
  * @group  Preload
  * @group  PreloadFonts
  */
@@ -37,6 +37,10 @@ class Test_PreloadFonts extends TestCase {
 	public function testShouldAddPreloadTagsWhenValidFonts( $buffer, $bypass, $filter, $rocket_options, $expected ) {
 		Functions\when( 'rocket_bypass' )->justReturn( $bypass );
 		Functions\when( 'home_url' )->justReturn( 'http://example.org' );
+		Filters\expectApplied( 'rocket_disable_meta_generator' )
+			->atMost()
+			->once()
+			->andReturn( true );
 
 		if ( $filter ) {
 			Filters\expectApplied( 'rocket_disable_preload_fonts' )

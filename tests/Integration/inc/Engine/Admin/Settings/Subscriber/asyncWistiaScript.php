@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\Settings\Subscriber;
 use WP_Rocket\Tests\Integration\AdminTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Admin\Settings\Subscriber::async_wistia_script
+ * Test class covering \WP_Rocket\Engine\Admin\Settings\Subscriber::async_wistia_script
  * @group  AdminOnly
  * @group  SettingsPage
  */

@@ -6,7 +6,7 @@ use WP_Rocket\ThirdParty\Plugins\I18n\TranslatePress;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\I18n\TranslatePress::add_langs_to_admin_bar
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\I18n\TranslatePress::add_langs_to_admin_bar
  * @group TranslatePress
  */
 class Test_AddLangsToAdminBar extends TestCase {

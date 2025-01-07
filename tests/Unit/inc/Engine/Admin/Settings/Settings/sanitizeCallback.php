@@ -10,7 +10,7 @@ use WP_Rocket\Engine\Admin\Settings\Settings;
 use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Admin\Settings\Settings::sanitize_callback
+ * Test class covering \WP_Rocket\Engine\Admin\Settings\Settings::sanitize_callback
  * @group  Admin
  * @group  Settings
  */

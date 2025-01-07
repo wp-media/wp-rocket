@@ -4,7 +4,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\CriticalCSSSubscri
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::exclude_inline_js
+ * Test class covering \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::exclude_inline_js
  *
  * @group  Subscribers
  * @group  CriticalCss

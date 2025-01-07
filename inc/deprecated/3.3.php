@@ -31,7 +31,7 @@ if ( ! function_exists( 'rocket_lazyload_script' ) ) :
  * Add lazyload options to the footer
  *
  * @deprecated 3.3
- * @since 2.11 load options in the footer and add filter for the treshold
+ * @since 2.11 load options in the footer and add filter for the threshold
  * @since 1.3.5 It's possible to exclude LazyLoad process by used do_rocket_lazyload filter
  * @since 1.1.0 This code is insert in head with inline script for more performance
  * @since 1.0
@@ -358,7 +358,7 @@ function rocket_convert_smilies( $text ) {
 	$textarr = preg_split( '/(<.*>)/U', $text, -1, PREG_SPLIT_DELIM_CAPTURE ); // capture the tags as well as in between.
 	$stop    = count( $textarr );// loop stuff.
 
-	// Ignore proessing of specific tags.
+	// Ignore processing of specific tags.
 	$tags_to_ignore       = 'code|pre|style|script|textarea';
 	$ignore_block_element = '';
 
@@ -617,7 +617,7 @@ endif;
 
 if ( ! function_exists( 'rocket_user_agent' ) ) :
 	/**
-	 * Add Rocket informations into USER_AGENT
+	 * Add Rocket information into USER_AGENT
 	 *
 	 * @since 1.1.0
 	 * @deprecated 3.3.6
@@ -864,7 +864,7 @@ if ( ! function_exists( 'rocket_reset_check_update_timer' ) ) :
 	function rocket_reset_check_update_timer( $transient = 'update_plugins', $value = null ) {
 		_deprecated_function( __FUNCTION__ . '()', '3.3.6' );
 
-		// $value used by setted.
+		// $value used by set.
 		if ( 'update_plugins' === $transient ) {
 			if ( is_null( $value ) || is_object( $value ) && ! isset( $value->response ) ) {
 				delete_site_transient( 'update_wprocket' );

@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\License\Subscriber;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\License\Subscriber::display_upgrade_section
+ * Test class covering \WP_Rocket\Engine\License\Subscriber::display_upgrade_section
  *
  * @group License
  * @group AdminOnly

@@ -4,7 +4,7 @@ namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Hostings\WordPressCom;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\WordPressCom::purge_wp_cache
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\WordPressCom::purge_wp_cache
  *
  * @group  WordPressCom
  * @group  ThirdParty

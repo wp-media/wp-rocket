@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Integration\CapTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\Optimization\Hummingbird::warning_notice
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\Optimization\Hummingbird::warning_notice
  *
  * @group Hummingbird
  * @group ThirdParty

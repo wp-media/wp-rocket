@@ -10,7 +10,7 @@ use WP_Rocket\Engine\Support\Rest;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Support\Rest::get_support_data
+ * Test class covering \WP_Rocket\Engine\Support\Rest::get_support_data
  *
  * @group Support
  */

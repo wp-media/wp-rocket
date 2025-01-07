@@ -70,6 +70,7 @@ class ContactForm7 implements Subscriber_Interface {
 			return;
 		}
 		if ( did_action( 'wp_enqueue_scripts' ) ) {
+			// @phpstan-ignore-next-line
 			wpcf7_enqueue_scripts();
 			return;
 		}
@@ -84,6 +85,7 @@ class ContactForm7 implements Subscriber_Interface {
 			return;
 		}
 		if ( did_action( 'wp_enqueue_scripts' ) ) {
+			// @phpstan-ignore-next-line
 			wpcf7_enqueue_styles();
 			return;
 		}
@@ -100,6 +102,7 @@ class ContactForm7 implements Subscriber_Interface {
 			return;
 		}
 
+		// @phpstan-ignore-next-line
 		wpcf7_enqueue_scripts();
 	}
 

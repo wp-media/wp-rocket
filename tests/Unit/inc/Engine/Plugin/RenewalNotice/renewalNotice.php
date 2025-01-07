@@ -8,7 +8,7 @@ use WP_Rocket\Engine\Plugin\RenewalNotice;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Plugin\RenewalNotice::renewal_notice
+ * Test class covering \WP_Rocket\Engine\Plugin\RenewalNotice::renewal_notice
  *
  * @group Plugin
  */

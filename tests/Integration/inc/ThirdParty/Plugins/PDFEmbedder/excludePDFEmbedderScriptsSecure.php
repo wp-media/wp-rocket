@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\PDFEmbedder;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\PDFEmbedder::exclude_pdfembedder_scripts
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\PDFEmbedder::exclude_pdfembedder_scripts
  * @group  ThirdParty
  * @group  PDFEmbedderSecure
  */

@@ -6,7 +6,7 @@ use WPMedia\PHPUnit\Integration\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber::purge_cache_notice
+ * Test class covering \WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber::purge_cache_notice
  * @uses ::rocket_notice_html
  *
  * @group  AdminOnly

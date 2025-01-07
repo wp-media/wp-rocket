@@ -9,7 +9,7 @@ use WP_Rocket\Engine\CriticalPath\{CriticalCSS, CriticalCSSGeneration};
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSS::clean_critical_css
+ * Test class covering \WP_Rocket\Engine\CriticalPath\CriticalCSS::clean_critical_css
  *
  * @group  CriticalPath
  */

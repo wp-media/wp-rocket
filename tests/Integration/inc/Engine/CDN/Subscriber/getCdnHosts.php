@@ -3,7 +3,7 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\Subscriber;
 
 /**
- * @covers \WP_Rocket\Engine\CDN\Subscriber::get_cdn_hosts
+ * Test class covering \WP_Rocket\Engine\CDN\Subscriber::get_cdn_hosts
  * @uses   \WP_Rocket\Engine\CDN\CDN::get_cdn_urls
  * @uses   ::rocket_add_url_protocol
  * @group  CDN

@@ -7,22 +7,29 @@ use WP_Rocket\Dependencies\League\Container\ServiceProvider\{AbstractServiceProv
 
 class ServiceProvider extends AbstractServiceProvider implements BootableServiceProviderInterface {
 	/**
-	 * The provides array is a way to let the container
-	 * know that a service is provided by this service
-	 * provider. Every service that is registered via
-	 * this service provider must have an alias added
-	 * to this array or it will be ignored.
+	 * Array of services provided by this service provider
 	 *
 	 * @var array
 	 */
 	protected $provides = [];
 
 	/**
+	 * Check if the service provider provides a specific service.
+	 *
+	 * @param string $id The id of the service.
+	 *
+	 * @return bool
+	 */
+	public function provides( string $id ): bool {
+		return in_array( $id, $this->provides, true );
+	}
+
+	/**
 	 * Register the service in the provider array
 	 *
 	 * @return void
 	 */
-	public function boot() {
+	public function boot(): void {
 		$theme = ThemeResolver::get_current_theme();
 
 		if ( ! empty( $theme ) ) {
@@ -35,7 +42,7 @@ class ServiceProvider extends AbstractServiceProvider implements BootableService
 	 *
 	 * @return void
 	 */
-	public function register() {
+	public function register(): void {
 		$theme = ThemeResolver::get_current_theme();
 
 		if ( ! empty( $theme ) ) {
@@ -53,7 +60,7 @@ class ServiceProvider extends AbstractServiceProvider implements BootableService
 			}
 
 			$this->getContainer()
-				->share( $theme, $theme_data['class'] )
+				->addShared( $theme, $theme_data['class'] )
 				->addArguments( $arguments );
 		}
 	}

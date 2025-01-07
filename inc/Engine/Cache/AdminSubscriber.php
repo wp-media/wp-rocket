@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\Cache;
 use WP_Filesystem_Direct;
 use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\Event_Management\Event_Manager_Aware_Subscriber_Interface;
+use WP_Term;
 
 /**
  * Subscriber for the cache admin events
@@ -15,7 +16,7 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	/**
 	 * Event Manager instance
 	 *
-	 * @var Event_Manager;
+	 * @var Event_Manager
 	 */
 	protected $event_manager;
 
@@ -61,22 +62,23 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	public static function get_subscribed_events() {
 		$slug = rocket_get_constant( 'WP_ROCKET_SLUG' );
 		return [
-			'admin_init'            => [
+			'admin_init'               => [
 				[ 'register_terms_row_action' ],
 				[ 'maybe_set_wp_cache' ],
 			],
-			'admin_notices'         => [
+			'admin_notices'            => [
 				[ 'notice_advanced_cache_permissions' ],
 				[ 'notice_wp_config_permissions' ],
 			],
-			"update_option_{$slug}" => [ 'maybe_set_wp_cache', 12 ],
-			'site_status_tests'     => 'add_wp_cache_status_test',
-			'wp_rocket_upgrade'     => [ 'on_update', 10, 2 ],
-			'rocket_domain_changed' => [
+			"update_option_{$slug}"    => [ 'maybe_set_wp_cache', 12 ],
+			'site_status_tests'        => 'add_wp_cache_status_test',
+			'wp_rocket_upgrade'        => [ 'on_update', 10, 2 ],
+			'rocket_domain_changed'    => [
 				[ 'regenerate_configs' ],
 				[ 'delete_old_configs' ],
 				[ 'clear_cache', 10, 2 ],
 			],
+			'rocket_after_save_import' => 'maybe_regenerate_advanced_cache',
 		];
 	}
 
@@ -261,9 +263,23 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 * @return void
 	 */
 	public function on_update( $new_version, $old_version ) {
-		if ( version_compare( $old_version, '3.15', '>=' ) ) {
+		if ( version_compare( $old_version, '3.16', '>=' ) ) {
 			return;
 		}
 		rocket_generate_advanced_cache_file();
+	}
+
+	/**
+	 * Regenerate config files after importing settings when do_caching_mobile_files is disabled and cache_mobile is enabled.
+	 *
+	 * @param boolean $regenerate_configs Returns whether to regenerate config.
+	 * @return void
+	 */
+	public function maybe_regenerate_advanced_cache( bool $regenerate_configs ): void {
+		if ( ! $regenerate_configs ) {
+			return;
+		}
+
+		$this->regenerate_configs();
 	}
 }

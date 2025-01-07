@@ -11,7 +11,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WPMedia\Cloudflare\Auth\AuthFactoryInterface;
 
 /**
- * @covers WP_Rocket\Addon\Cloudflare\Subscriber::protocol_rewrite
+ * Test class covering WP_Rocket\Addon\Cloudflare\Subscriber::protocol_rewrite
  *
  * @group Cloudflare
  */

@@ -6,7 +6,7 @@ use WP_Rocket\Engine\Media\Lazyload\AdminSubscriber;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Media\Lazyload\AdminSubscriber::add_option
+ * Test class covering \WP_Rocket\Engine\Media\Lazyload\AdminSubscriber::add_option
  *
  * @group Media
  * @group Lazyload

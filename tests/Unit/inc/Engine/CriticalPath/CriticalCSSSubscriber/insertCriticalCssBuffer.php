@@ -2,11 +2,11 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\CriticalCSSSubscriber;
 
-use Brain\Monkey\Functions;
+use Brain\Monkey\{Filters, Functions};
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::insert_critical_css_buffer
+ * Test class covering \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::insert_critical_css_buffer
  * @uses   ::rocket_get_constant
  * @uses   ::is_rocket_post_excluded_option
  * @uses   \WP_Rocket\Engine\CriticalPath\CriticalCss::get_critical_css_content
@@ -33,6 +33,11 @@ class Test_InsertCriticalCssBuffer extends FilesystemTestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldInsertCriticalCSS( $config, $expected, $expected_html = null ) {
+		Filters\expectApplied( 'rocket_disable_meta_generator' )
+			->atMost()
+			->once()
+			->andReturn( true );
+
 		$critical_css_path = $this->config['vfs_dir'] . '1/';
 
 		$this->assertTrue( $this->filesystem->is_dir( $critical_css_path ) );
