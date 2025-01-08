@@ -12,6 +12,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Set commit status as pending
+        uses: myrotvorets/set-commit-status-action@master
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          status: pending
+
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -32,3 +38,5 @@ jobs:
         with:
           commit_message: Adds missing licence-data.php file
           commit_user_name: WP-media GitHub Actions Bot
+
+
