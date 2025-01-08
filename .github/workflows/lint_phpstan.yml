@@ -9,6 +9,7 @@ on:
       - feature/*
       - enhancement/*
       - fix/*
+      - dev/*
 
 jobs:
   run:
