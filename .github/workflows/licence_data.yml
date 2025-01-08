@@ -46,7 +46,7 @@ jobs:
         continue-on-error: true
 
       - name: Set final commit status only when we find the file at the end
-        if: ${{ steps.findagain.outcome == 'failure' }}
+        if: ${{ steps.findagain.outcome == 'success' }}
         uses: myrotvorets/set-commit-status-action@master
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
