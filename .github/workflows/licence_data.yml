@@ -2,9 +2,9 @@ name: Rebuild Licence data file
 
 on:
   push:
-    branches: [ trunk, develop ]
+    branches: [ trunk, develop, trunk-clone ]
   pull_request:
-    branches: [ trunk, develop ]
+    branches: [ trunk, develop, trunk-clone ]
 
 jobs:
   licence:
