@@ -24,14 +24,14 @@ class DiscourageWPOptionUsage implements Rule
 		$functionName = $node->name instanceof Node\Name ? $node->name->toString() : '';
 
 		$discouragedFunctions = [
-			'update_option' => 'Usage of update_option() is discouraged. Use the Option object instead.',
-			'get_option' => 'Usage of get_option() is discouraged. Use the Option object instead.',
-			'delete_option' => 'Usage of delete_option() is discouraged. Use the Option object instead.',
+			'update_option' => true,
+			'get_option'    => true,
+			'delete_option' => true,
 		];
 
 		if (isset($discouragedFunctions[$functionName])) {
 			return [
-				RuleErrorBuilder::message($discouragedFunctions[$functionName])
+				RuleErrorBuilder::message( sprintf( 'Usage of %1$s() is discouraged. Use the Option object instead.', $functionName ) )
 					->identifier('custom.rules.discourageOptionUsage')
 					->build(),
 			];
