@@ -18,9 +18,9 @@ class Test_AddOption extends TestCase {
 	}
 
 	public function tear_down() {
-		parent::tear_down();
-
 		$this->restoreWpHook( 'rocket_first_install_options' );
+
+		parent::tear_down();
 	}
 
 	/**

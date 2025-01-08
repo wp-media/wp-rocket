@@ -57,17 +57,26 @@ class Combine extends AbstractGFOptimization {
 
 		$this->has_google_fonts = true;
 
-		$num_fonts = count( $fonts );
+		$exclusions = $this->get_exclusions();
+
+		$filtered_fonts = array_filter(
+			$fonts,
+			function ( $font ) use ( $exclusions ) {
+				return ! $this->is_excluded( $font[0], $exclusions );
+			}
+			);
+
+		$num_fonts = count( $filtered_fonts );
 
 		Logger::debug(
-			"Found {$num_fonts} Google Fonts.",
+			"Found {$num_fonts} Google Fonts after exclusions.",
 			[
 				'GF combine process',
-				'tags' => $fonts,
+				'tags' => $filtered_fonts,
 			]
 		);
 
-		$this->parse( $fonts );
+		$this->parse( $filtered_fonts );
 
 		if ( empty( $this->fonts ) ) {
 			Logger::debug( 'No Google Fonts left to combine.', [ 'GF combine process' ] );
@@ -77,7 +86,7 @@ class Combine extends AbstractGFOptimization {
 
 		$html = preg_replace( '@<\/title>@i', '$0' . $this->get_optimized_markup( $this->get_combined_url() ), $html, 1 );
 
-		foreach ( $fonts as $font ) {
+		foreach ( $filtered_fonts as $font ) {
 			$html = str_replace( $font[0], '', $html );
 		}
 

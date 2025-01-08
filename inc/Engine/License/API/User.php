@@ -133,4 +133,16 @@ class User {
 
 		return false;
 	}
+
+	/**
+	 * Get available upgrades from the API.
+	 *
+	 * @return array
+	 */
+	public function get_available_upgrades() {
+		if ( empty( $this->user->licence->prices->upgrades ) ) {
+			return [];
+		}
+		return (array) $this->user->licence->prices->upgrades;
+	}
 }

@@ -148,7 +148,7 @@ function is_rocket_generate_caching_mobile_files() { // phpcs:ignore WordPress.N
  * return Array An array of domain names to DNS prefetch
  */
 function rocket_get_dns_prefetch_domains() {
-	$domains = (array) get_rocket_option( 'dns_prefetch' );
+	$domains = (array) get_rocket_option( 'dns_prefetch', [] );
 
 	/**
 	 * Filter list of domains to prefetch DNS

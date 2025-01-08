@@ -56,6 +56,18 @@ return [
 		],
 		'expected' => false,
 	],
+	'testShouldDoNothingWhenNoUpgrades' => [
+		'config'   => [
+			'licence_account'    => 1,
+			'licence_expired'    => false,
+			'licence_expiration' => strtotime( 'next year' ),
+			'promo_active'       => true,
+			'transient'          => false,
+			'date_created'          => strtotime( 'last year' ),
+			'upgrades' => [],
+		],
+		'expected' => false,
+	],
 	'testShouldSetTransientWhenPromoNotSeen' => [
 		'config'   => [
 			'licence_account'    => 1,
@@ -64,6 +76,11 @@ return [
 			'promo_active'       => true,
 			'transient'          => false,
 			'date_created'          => strtotime( 'last year' ),
+			'upgrades' => [
+				(object) [
+					"name"=> "Growth",
+				]
+			],
 		],
 		'expected' => true,
 	],

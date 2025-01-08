@@ -329,6 +329,12 @@ function rocket_analytics_data() {
 		$data['license_type'] = rocket_get_license_type( $customer_data );
 	}
 
+	$media_font_data = get_transient( 'rocket_fonts_data_collection' );
+
+	if ( false !== $media_font_data ) {
+		$data = array_merge( $data, $media_font_data );
+	}
+
 	return $data;
 }
 

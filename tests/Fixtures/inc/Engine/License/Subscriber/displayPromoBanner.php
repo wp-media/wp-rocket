@@ -109,6 +109,21 @@ return [
 				'licence_account'    => 1,
 				'licence_expiration' => strtotime( 'next year' ),
 				'date_created'      => strtotime( 'last year' ),
+				'licence' => [
+					'prices' => [
+						'upgrades' => [
+							(object) [
+								'name' => 'Growth',
+								'slug' => 'growth',
+								'saving' => 150,
+								'upgrade_url' => "https://growthupgradeurl.com/",
+								'regular_price' => 200,
+								'websites' => "3",
+								'stack' => false,
+							]
+						],
+					],
+				],
 			] ) ),
 			'pricing' => json_decode( json_encode( [
 				'licenses' => [
@@ -153,7 +168,7 @@ return [
 		get a<strong>
 		20% off</strong>
 		for<strong>
-		upgrading your license to Plus or Infinite!</strong>
+		upgrading your license to Growth!</strong>
 		</p>
 		</div>
 		<div class="rocket-promo-cta-block">
@@ -192,6 +207,21 @@ return [
 				'licence_account'    => 3,
 				'licence_expiration' => strtotime( 'next year' ),
 				'date_created'      => strtotime( 'last year' ),
+				'licence' => [
+					'prices' => [
+						'upgrades' => [
+							(object) [
+								'name' => 'Multi',
+								'slug' => 'multi100',
+								'saving' => 150,
+								'upgrade_url' => "https://growthupgradeurl.com/",
+								'regular_price' => 200,
+								'websites' => "3",
+								'stack' => false,
+							]
+						],
+					],
+				],
 			] ) ),
 			'pricing' => json_decode( json_encode( [
 				'licenses' => [
@@ -236,7 +266,7 @@ return [
 		get a<strong>
 		20% off</strong>
 		for<strong>
-		upgrading your license to Infinite!</strong>
+		upgrading your license to Multi!</strong>
 		</p>
 		</div>
 		<div class="rocket-promo-cta-block">

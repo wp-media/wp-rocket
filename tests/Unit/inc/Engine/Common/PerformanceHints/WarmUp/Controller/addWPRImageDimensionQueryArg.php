@@ -36,11 +36,16 @@ class Test_AddWPRImageDimensionQueryArg extends TestCase {
 	public function testShouldReturnExpected( $config, $expected ) {
         $this->controller = new Controller( $config['filter'], $this->options, $this->api_client, $this->user, $this->queue );
 
+		$this->options->shouldReceive('get')
+			->with( 'remove_unused_css', 0 )
+			->andReturn( $config['remove_unused_css'] ?? 0 );
+
 		Functions\expect( 'add_query_arg' )
 			->with(
-				[ 'wpr_imagedimensions' => 1 ]
+				[ 'wpr_imagedimensions' => 1 ],
+				$config['url']
 			)
-			->andReturn( $expected );
+			->andReturn( $config['url'] . '/?wpr_imagedimensions=1' );
 
 		$this->assertSame(
 			$expected,

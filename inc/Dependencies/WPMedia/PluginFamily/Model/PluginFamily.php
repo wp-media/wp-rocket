@@ -63,7 +63,7 @@ class PluginFamily {
 				if ( is_plugin_active( $plugin_path ) && $main_plugin . '.php' !== $plugin_path ) {
 					// set cta data of active plugins.
 					$plugins[ $cat ]['plugins'][ $plugin ]['cta'] = [
-						'text' => 'Activated',
+						'text' => __( 'Activated', 'rocket' ),
 						'url'  => '#',
 					];
 
@@ -106,7 +106,7 @@ class PluginFamily {
 
 				// Set Installation link.
 				$plugins[ $cat ]['plugins'][ $plugin ]['cta'] = [
-					'text' => 'Install',
+					'text' => __( 'Install', 'rocket' ),
 					'url'  => $install_activate_url,
 				];
 
@@ -115,7 +115,7 @@ class PluginFamily {
 					$url = 'https://wp-rocket.me/?utm_source=' . $wpr_referrer . '-coupon&utm_medium=plugin&utm_campaign=' . $wpr_referrer;
 
 					$plugins[ $cat ]['plugins'][ $plugin ]['cta'] = [
-						'text' => 'Get it Now',
+						'text' => __( 'Get it Now', 'rocket' ),
 						'url'  => $url,
 					];
 
@@ -124,7 +124,7 @@ class PluginFamily {
 
 				// Set activation text.
 				if ( file_exists( WP_PLUGIN_DIR . '/' . $plugin_path ) ) {
-					$plugins[ $cat ]['plugins'][ $plugin ]['cta']['text'] = 'Activate';
+					$plugins[ $cat ]['plugins'][ $plugin ]['cta']['text'] = __( 'Activate', 'rocket' );
 
 					if ( 'wp-rocket/wp-rocket' === $plugin ) {
 						$plugins[ $cat ]['plugins'][ $plugin ]['cta']['url'] = $install_activate_url;

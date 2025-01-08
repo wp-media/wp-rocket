@@ -3,11 +3,12 @@
  * Upgrade section template.
  *
  * @since 3.7.3
+ *
+ * @var array $data
+ * @var object $this
  */
 
 defined( 'ABSPATH' ) || exit;
-
-$data = isset( $data ) ? $data : []; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 ?>
 <div class="wpr-Popin wpr-Popin-Upgrade">
 	<div class="wpr-Popin-header">
@@ -28,36 +29,19 @@ $data = isset( $data ) ? $data : []; // phpcs:ignore WordPress.NamingConventions
 		?>
 		</p>
 		<div class="wpr-Popin-flex">
-			<?php foreach ( $data['upgrades'] as $rocket_upgrade ) : ?>
-			<div class="wpr-Upgrade-<?php echo esc_attr( $rocket_upgrade['name'] ); ?>">
-				<?php if ( true === $data['is_promo_active'] ) : ?>
-					<div class="wpr-upgrade-saving">
-						<?php
-						// translators: %s = price.
-						printf( esc_html__( 'Save $%s', 'rocket' ), esc_html( $rocket_upgrade['saving'] ) );
-						?>
-					</div>
-					<?php endif; ?>
-				<h3 class="wpr-upgrade-title"><?php echo esc_html( $rocket_upgrade['name'] ); ?></h3>
-				<div class="wpr-upgrade-prices"><span class="wpr-upgrade-price-symbol">$</span> <?php echo esc_html( $rocket_upgrade['price'] ); ?>
-				<?php if ( true === $data['is_promo_active'] ) : ?>
-					<del class="wpr-upgrade-price-regular">$ <?php echo esc_html( $rocket_upgrade['regular_price'] ); ?></del>
-				<?php endif; ?>
-				</div>
-				<div class="wpr-upgrade-websites">
-				<?php
-				// translators: %s = number of websites.
-				printf( esc_html__( '%s websites', 'rocket' ),  esc_html( $rocket_upgrade['websites'] ) );
-				?>
-				</div>
-				<a href="<?php echo esc_url( $rocket_upgrade['upgrade_url'] ); ?>" class="wpr-upgrade-link" target="_blank" rel="noopener noreferrer">
-				<?php
-				// translators: %s = license name.
-				printf( esc_html__( 'Upgrade to %s', 'rocket' ), esc_html( $rocket_upgrade['name'] ) );
-				?>
-				</a>
-			</div>
-			<?php endforeach; ?>
+			<?php
+			foreach ( $data['upgrades'] as $rocket_upgrade_type => $rocket_upgrade ) {
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo $this->generate(
+					'upgrade-item',
+					[
+						'type'            => $rocket_upgrade_type, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+						'item'            => $rocket_upgrade, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+						'is_promo_active' => $data['is_promo_active'], // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					]
+				);
+			}
+			?>
 		</div>
 	</div>
 </div>
