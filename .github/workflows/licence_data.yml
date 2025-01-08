@@ -39,4 +39,8 @@ jobs:
           commit_message: Adds missing licence-data.php file
           commit_user_name: WP-media GitHub Actions Bot
 
-
+      - name: Set final commit status
+        uses: myrotvorets/set-commit-status-action@master
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          status: success
