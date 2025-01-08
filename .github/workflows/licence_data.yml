@@ -33,13 +33,20 @@ jobs:
         id: add
 
       - name: Commit the missing file
+        id: commit
         if: ${{ steps.add.outcome == 'success' }}
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: Adds missing licence-data.php file
           commit_user_name: WP-media GitHub Actions Bot
 
-      - name: Set final commit status
+      - name: Find file again
+        run: find ./licence-data.php
+        id: findagain
+        continue-on-error: true
+
+      - name: Set final commit status only when we find the file at the end
+        if: ${{ steps.findagain.outcome == 'success' }}
         uses: myrotvorets/set-commit-status-action@master
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
