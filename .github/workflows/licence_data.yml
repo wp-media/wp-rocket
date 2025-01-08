@@ -41,6 +41,7 @@ jobs:
           commit_user_name: WP-media GitHub Actions Bot
 
       - name: Set final commit status only when we find the file at the end
+        if: ${{ steps.find.outcome == 'success' || (steps.find.outcome == 'failure' && steps.commit.outcome == 'success') }}
         uses: myrotvorets/set-commit-status-action@master
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
