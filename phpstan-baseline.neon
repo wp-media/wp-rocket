@@ -398,11 +398,6 @@ parameters:
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
-			path: inc/Engine/Optimization/DelayJS/HTML.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
 			path: inc/Engine/Optimization/GoogleFonts/Admin/Settings.php
 
 		-
@@ -487,7 +482,7 @@ parameters:
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 2
+			count: 1
 			path: inc/Engine/Optimization/RUCSS/Controller/Filesystem.php
 
 		-
@@ -614,6 +609,11 @@ parameters:
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
 			path: inc/ThirdParty/Plugins/ContactForm7.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: inc/ThirdParty/Plugins/Cookie/Termly.php
 
 		-
 			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
@@ -2184,6 +2184,11 @@ parameters:
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/functions/rocketIsPluginActive.php
+
+		-
+			message: "#^Path in include_once\\(\\) \"vfs\\://public/wp\\-content/plugins/wp\\-rocket/inc/classes/dependencies/mobiledetect/mobiledetectlib/Mobile_Detect\\.php\" is not a file or it does not exist\\.$#"
+			count: 1
+			path: tests/Integration/vfs:/public/wp-content/advanced-cache.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"

@@ -36,5 +36,5 @@ jobs:
       run: composer install --prefer-dist --no-interaction --no-scripts
 
     - name: Lint with PHP Stan
-      run: composer run-stan
+      run: composer run-stan -- --error-format=github
 
