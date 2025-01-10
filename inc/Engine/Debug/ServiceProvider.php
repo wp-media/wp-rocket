@@ -1,8 +1,10 @@
 <?php
+declare(strict_types=1);
+
 namespace WP_Rocket\Engine\Debug;
 
-use WP_Rocket\Dependencies\League\Container\ServiceProvider\{AbstractServiceProvider, BootableServiceProviderInterface};
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Dependencies\League\Container\ServiceProvider\{AbstractServiceProvider, BootableServiceProviderInterface};
 
 /**
  * Service provider for Debug
@@ -60,7 +62,7 @@ class ServiceProvider extends AbstractServiceProvider implements BootableService
 	 * @return void
 	 */
 	public function register(): void {
-		$this->container->add( 'debug_subscriber', DebugSubscriber::class );
+		$this->container->addShared( 'debug_subscriber', DebugSubscriber::class );
 
 		if ( empty( $this->services ) ) {
 			return;
@@ -71,8 +73,8 @@ class ServiceProvider extends AbstractServiceProvider implements BootableService
 
 		foreach ( $this->services as $service ) {
 			$this->getContainer()->add( $service['service'], $service['class'] )
-				->addArgument( $this->getContainer()->get( 'options_debug' ) )
-				->addArgument( $this->getContainer()->get( 'options_api' ) );
+				->addArgument( 'options_debug' )
+				->addArgument( 'options_api' );
 		}
 	}
 }
