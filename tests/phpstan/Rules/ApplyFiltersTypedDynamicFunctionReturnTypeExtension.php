@@ -76,7 +76,7 @@ class ApplyFiltersTypedDynamicFunctionReturnTypeExtension implements Rule
 				'Missing docblock for wpm_apply_filters_typed call.'
 			)->identifier('docblock.missing')->build();
 
-			return [];
+			return $this->errors;
 		}
 
 		$this->validateDocBlock($resolvedPhpDoc);
