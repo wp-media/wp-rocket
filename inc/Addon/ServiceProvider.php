@@ -8,7 +8,6 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Addon\Sucuri\Subscriber as SucuriSubscriber;
 use WP_Rocket\Addon\WebP\AdminSubscriber as WebPAdminSubscriber;
 use WP_Rocket\Addon\WebP\Subscriber as WebPSubscriber;
-use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\CDN\Subscriber as CDNSubscriber;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 
@@ -49,8 +48,8 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArguments(
 				[
 					Options_Data::class,
-					CDNSubscriber::class,
-					Beacon::class,
+					'cdn_subscriber',
+					'beacon',
 				]
 			);
 
@@ -59,7 +58,7 @@ class ServiceProvider extends AbstractServiceProvider {
 				[
 					Options_Data::class,
 					Options::class,
-					CDNSubscriber::class,
+					'cdn_subscriber',
 				]
 			);
 	}
