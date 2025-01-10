@@ -60,9 +60,9 @@ class ServiceProvider extends AbstractServiceProvider {
 				[
 					new ArrayArgument(
 						[
-						'slug'       => WP_ROCKET_PLUGIN_SLUG,
-						'title'      => WP_ROCKET_PLUGIN_NAME,
-						'capability' => 'rocket_manage_options',
+							'slug'       => WP_ROCKET_PLUGIN_SLUG,
+							'title'      => WP_ROCKET_PLUGIN_NAME,
+							'capability' => 'rocket_manage_options',
 						]
 					),
 					'settings',

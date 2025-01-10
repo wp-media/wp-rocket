@@ -58,7 +58,7 @@ class ServiceProvider extends AbstractServiceProvider {
 				[
 					'options',
 					new StringArgument( rocket_get_constant( 'WP_ROCKET_CACHE_BUSTING_PATH', '' ) ),
-					new StringArgument( rocket_get_constant( 'WP_ROCKET_CACHE_BUSTING_URL', '' ) )
+					new StringArgument( rocket_get_constant( 'WP_ROCKET_CACHE_BUSTING_URL', '' ) ),
 				]
 			);
 		$this->getContainer()->add( 'optimize_google_fonts', Combine::class );
@@ -66,22 +66,23 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->addShared( 'combine_google_fonts_subscriber', Subscriber::class )
 			->addArguments(
 				[
-				'optimize_google_fonts',
-				'optimize_google_fonts_v2',
-				'options',
-			] );
+					'optimize_google_fonts',
+					'optimize_google_fonts_v2',
+					'options',
+				]
+				);
 		$this->getContainer()->addShared( 'minify_css_subscriber', Minify\CSS\Subscriber::class )
 			->addArguments(
 				[
 					'options',
-					$filesystem
+					$filesystem,
 				]
 			);
 		$this->getContainer()->addShared( 'minify_js_subscriber', Minify\JS\Subscriber::class )
 			->addArguments(
 				[
 					'options',
-					$filesystem
+					$filesystem,
 				]
 			);
 		$this->getContainer()->addShared( 'ie_conditionals_subscriber', IEConditionalSubscriber::class );

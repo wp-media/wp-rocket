@@ -60,7 +60,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArguments(
 				[
 					'options',
-					new StringArgument( $this->getContainer()->get( 'template_path' ) . '/metaboxes'),
+					new StringArgument( $this->getContainer()->get( 'template_path' ) . '/metaboxes' ),
 				]
 			);
 	}

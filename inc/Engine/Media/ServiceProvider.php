@@ -73,7 +73,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'lazyload_image', Image::class );
 		$this->getContainer()->add( 'lazyload_iframe', Iframe::class );
 		$this->getContainer()->addShared( 'lazyload_subscriber', Subscriber::class )
-			->addArguments( [
+			->addArguments(
+				[
 					'options',
 					'lazyload_assets',
 					'lazyload_image',

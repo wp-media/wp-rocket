@@ -42,7 +42,7 @@ class AdminServiceProvider extends AbstractServiceProvider {
 	 */
 	public function register(): void {
 		$this->getContainer()->addShared( 'minify_css_admin_subscriber', MinifyCssAdminSubscriber::class );
-		$this->getContainer()->add(  'google_fonts_settings', Settings::class )
+		$this->getContainer()->add( 'google_fonts_settings', Settings::class )
 			->addArgument( 'options' )
 			->addArgument( 'beacon' )
 			->addArgument( 'template_path' );
