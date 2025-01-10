@@ -58,11 +58,13 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'settings_page', Page::class )
 			->addArguments(
 				[
-					new ArrayArgument( [
+					new ArrayArgument(
+						[
 						'slug'       => WP_ROCKET_PLUGIN_SLUG,
 						'title'      => WP_ROCKET_PLUGIN_NAME,
 						'capability' => 'rocket_manage_options',
-					] ),
+						]
+					),
 					'settings',
 					'settings_render',
 					'beacon',
