@@ -8,16 +8,13 @@ use PHPStan\Analyser\Scope;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
 
-class DiscourageWPOptionUsage implements Rule
-{
-	public function getNodeType(): string
-	{
+class DiscourageWPOptionUsage implements Rule {
+	public function getNodeType(): string {
 		return FuncCall::class;
 	}
 
-	public function processNode( Node $node, Scope $scope ): array
-	{
-		if (!$node instanceof FuncCall) {
+	public function processNode( Node $node, Scope $scope ): array {
+		if ( !$node instanceof FuncCall ) {
 			return [];
 		}
 
@@ -29,7 +26,7 @@ class DiscourageWPOptionUsage implements Rule
 			'delete_option' => true,
 		];
 
-		if (isset($discouragedFunctions[$functionName])) {
+		if ( isset( $discouragedFunctions[ $functionName ] ) ) {
 			return [
 				RuleErrorBuilder::message( sprintf( 'Usage of %1$s() is discouraged. Use the Option object instead.', $functionName ) )
 					->identifier('custom.rules.discourageOptionUsage')
