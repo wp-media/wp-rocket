@@ -3,12 +3,9 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Addon;
 
-use WP_Rocket\Admin\Options;
-use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Addon\Sucuri\Subscriber as SucuriSubscriber;
 use WP_Rocket\Addon\WebP\AdminSubscriber as WebPAdminSubscriber;
 use WP_Rocket\Addon\WebP\Subscriber as WebPSubscriber;
-use WP_Rocket\Engine\CDN\Subscriber as CDNSubscriber;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 
 /**
@@ -42,12 +39,12 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	public function register(): void {
 		$this->getContainer()->addShared( 'sucuri_subscriber', SucuriSubscriber::class )
-			->addArgument( Options_Data::class );
+			->addArgument( 'options' );
 
 		$this->getContainer()->addShared( 'webp_admin_subscriber', WebPAdminSubscriber::class )
 			->addArguments(
 				[
-					Options_Data::class,
+					'options',
 					'cdn_subscriber',
 					'beacon',
 				]
@@ -56,8 +53,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->addShared( 'webp_subscriber', WebPSubscriber::class )
 			->addArguments(
 				[
-					Options_Data::class,
-					Options::class,
+					'options',
+					'options_api',
 					'cdn_subscriber',
 				]
 			);
