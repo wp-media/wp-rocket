@@ -1,7 +1,9 @@
 <?php
+declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Common\ExtractCSS;
 
+use WP_Rocket\Dependencies\League\Container\Argument\Literal\StringArgument;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Engine\Common\Cache\FilesystemCache;
 
@@ -43,7 +45,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		 */
 		$root = apply_filters( 'rocket_lazyload_css_cache_root', 'background-css' );
 		$this->getContainer()->add( 'lazyload_css_cache', FilesystemCache::class )
-			->addArgument( $root );
+			->addArgument( new StringArgument( $root ) );
 		$this->getContainer()->addShared( 'common_extractcss_subscriber', Subscriber::class );
 	}
 }
