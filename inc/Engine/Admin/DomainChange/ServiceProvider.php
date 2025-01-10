@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Admin\DomainChange;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
-use WP_Rocket\Engine\Admin\Beacon\Beacon;
+
 use WP_Rocket\Engine\Common\Ajax\AjaxHandler;
 
 class ServiceProvider extends AbstractServiceProvider {
@@ -15,7 +15,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	protected $provides = [
 		'domain_change_subscriber',
-		AjaxHandler::class,
+		'ajax_handler',
 	];
 
 	/**
@@ -35,12 +35,12 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register(): void {
-		$this->getContainer()->add( AjaxHandler::class );
+		$this->getContainer()->add( 'ajax_handler', AjaxHandler::class );
 		$this->getContainer()->addShared( 'domain_change_subscriber', Subscriber::class )
 			->addArguments(
 				[
-					AjaxHandler::class,
-					Beacon::class,
+					'ajax_handler',
+					'beacon',
 				]
 			);
 	}

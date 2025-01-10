@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace WP_Rocket\ServiceProvider;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
-use WP_Rocket\Admin\Options as OptionsAPI;
 use WP_Rocket\Admin\Options_Data;
 
 /**
@@ -17,7 +16,7 @@ class Options extends AbstractServiceProvider {
 	 * @var array
 	 */
 	protected $provides = [
-		Options_Data::class,
+		'options',
 	];
 
 	/**
@@ -37,7 +36,7 @@ class Options extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register(): void {
-		$this->getContainer()->add( Options_Data::class )
-			->addArgument( $this->getContainer()->get( OptionsAPI::class )->get( 'settings', [] ) );
+		$this->getContainer()->add( 'options', Options_Data::class )
+			->addArgument( $this->getContainer()->get( 'options_api' )->get( 'settings', [] ) );
 	}
 }

@@ -16,8 +16,8 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @var array
 	 */
 	protected $provides = [
-		OptimizationProcess::class,
-		Optimization::class,
+		'db_optimization_process',
+		'db_optimization',
 		'db_optimization_subscriber',
 	];
 
@@ -38,14 +38,14 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register(): void {
-		$this->getContainer()->add( OptimizationProcess::class );
-		$this->getContainer()->add( Optimization::class )
-			->addArgument( OptimizationProcess::class );
+		$this->getContainer()->add( 'db_optimization_process', OptimizationProcess::class );
+		$this->getContainer()->add( 'db_optimization', Optimization::class )
+			->addArgument( 'db_optimization_process' );
 		$this->getContainer()->addShared( 'db_optimization_subscriber', Subscriber::class )
 			->addArguments(
 				[
-					Optimization::class,
-					Options_Data::class,
+					'db_optimization',
+					'options',
 				]
 			);
 	}
