@@ -24,7 +24,7 @@ class WPML implements Subscriber_Interface {
 	 *
 	 * @param WP_Filesystem_Direct $filesystem Filesystem instance.
 	 */
-	public function __construct( ?WP_Filesystem_Direct $filesystem = null ) {
+	public function __construct( ?WP_Filesystem_Direct $filesystem ) {
 		$this->filesystem = ! empty( $filesystem ) ? $filesystem : rocket_direct_filesystem();
 	}
 
