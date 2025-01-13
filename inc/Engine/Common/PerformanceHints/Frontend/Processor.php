@@ -36,7 +36,7 @@ class Processor {
 	 * @param Options_Data              $options Options instance.
 	 * @param WP_Filesystem_Direct|null $filesystem WordPress filesystem.
 	 */
-	public function __construct( array $factories, Options_Data $options, WP_Filesystem_Direct $filesystem = null ) {
+	public function __construct( array $factories, Options_Data $options, ?WP_Filesystem_Direct $filesystem = null ) {
 		$this->factories  = $factories;
 		$this->options    = $options;
 		$this->filesystem = $filesystem ?: rocket_direct_filesystem();
