@@ -27,7 +27,7 @@ class FilesystemCache implements CacheInterface {
 	 * @param string                    $root_folder Root folder from the path.
 	 * @param WP_Filesystem_Direct|null $filesystem WordPress filesystem.
 	 */
-	public function __construct( string $root_folder, ?WP_Filesystem_Direct $filesystem ) {
+	public function __construct( string $root_folder, WP_Filesystem_Direct|null $filesystem ) {
 		$this->root_folder = $root_folder;
 		$this->filesystem  = $filesystem ?: rocket_direct_filesystem();
 	}
