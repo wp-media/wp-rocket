@@ -21,7 +21,7 @@ class ContentFetcher {
 	 *
 	 * @param WP_Filesystem_Direct $filesystem WordPress filesystem.
 	 */
-	public function __construct( WP_Filesystem_Direct|null $filesystem = null ) {
+	public function __construct( WP_Filesystem_Direct $filesystem = null ) {
 		$this->filesystem = $filesystem ?: rocket_direct_filesystem();
 	}
 
