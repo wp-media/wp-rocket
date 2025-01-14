@@ -58,12 +58,12 @@ class RUCSSQueueRunner extends ActionScheduler_Abstract_QueueRunner {
 	/**
 	 * ActionScheduler_QueueRunner constructor.
 	 *
-	 * @param ActionScheduler_Store|null $store Store Instance.
-	 * @param ActionScheduler_FatalErrorMonitor|null $monitor Fatal Error monitor instance.
-	 * @param Cleaner|null $cleaner Cleaner instance.
+	 * @param ActionScheduler_Store|null                    $store Store Instance.
+	 * @param ActionScheduler_FatalErrorMonitor|null        $monitor Fatal Error monitor instance.
+	 * @param Cleaner|null                                  $cleaner Cleaner instance.
 	 * @param ActionScheduler_AsyncRequest_QueueRunner|null $async_request Async Request Queue Runner instance.
 	 */
-	public function __construct(?ActionScheduler_Store $store = null, ?ActionScheduler_FatalErrorMonitor $monitor = null, ?Cleaner $cleaner = null, ?ActionScheduler_AsyncRequest_QueueRunner $async_request = null ) {
+	public function __construct( ?ActionScheduler_Store $store = null, ?ActionScheduler_FatalErrorMonitor $monitor = null, ?Cleaner $cleaner = null, ?ActionScheduler_AsyncRequest_QueueRunner $async_request = null ) {
 		if ( is_null( $cleaner ) ) {
 			/**
 			 * Filters the clean batch size.
