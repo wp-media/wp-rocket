@@ -142,6 +142,8 @@ class Dom implements ProcessorInterface {
 			if (
 				XML_ELEMENT_NODE !== $child->nodeType // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 				||
+				! $child->tagName
+				||
 				! in_array( strtoupper( $child->tagName ), $processed_tags, true ) // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 			) {
 				continue;
