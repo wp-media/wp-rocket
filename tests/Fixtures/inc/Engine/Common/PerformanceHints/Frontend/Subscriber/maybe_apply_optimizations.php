@@ -1,6 +1,8 @@
 <?php
 
 $html_input = file_get_contents(__DIR__ . '/HTML/input.html');
+$html_with_double_body = file_get_contents(__DIR__ . '/HTML/double_body_tag.html');
+$html_with_double_body_output = file_get_contents(__DIR__ . '/HTML/output_double_body_tag.html');
 $html_output = file_get_contents(__DIR__ . '/HTML/output.html');
 $html_output_with_preload = file_get_contents(__DIR__ . '/HTML/output_w_preload.html');
 $html_output_with_beacon = file_get_contents(__DIR__ . '/HTML/output_w_beacon.html');
@@ -614,6 +616,18 @@ return [
 				'lrc' => $lrc,
 			],
 			'expected' => $html_output_with_beacon_and_only_lrc_opt,
+		],
+		'shouldNotDuplicateBeaconOnAPage' => [
+			'config' => [
+				'html' => $html_with_double_body,
+				'atf' => [
+					'row' => null,
+				],
+				'lrc' => [
+					'row' => null,
+				],
+			],
+			'expected' => $html_with_double_body_output,
 		],
 	],
 ];

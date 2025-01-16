@@ -192,7 +192,7 @@ class Processor {
 		$script_tag = "<script data-name=\"wpr-wpr-beacon\" src='{$script_url}' async></script>"; // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript
 
 		// Append the script tag just before the closing body tag.
-		return str_replace( '</body>', $inline_script . $script_tag . '</body>', $html );
+		return preg_replace( '/<\/body>/', $inline_script . $script_tag . '</body>', $html, 1 );
 	}
 
 	/**
