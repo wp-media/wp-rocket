@@ -24,7 +24,6 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @var array
 	 */
 	protected $provides = [
-		'lazyload_css_cache',
 		'lazyload_css_subscriber',
 	];
 

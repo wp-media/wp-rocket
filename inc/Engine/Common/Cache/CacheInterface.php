@@ -33,4 +33,11 @@ interface CacheInterface extends \WP_Rocket\Dependencies\Psr\SimpleCache\CacheIn
 	 * @return string
 	 */
 	public function generate_path( string $url ): string;
+
+	/**
+	 * Wipes the whole cache directory .
+	 *
+	 * @return bool True on success and false on failure.
+	 */
+	public function full_clear(): bool;
 }
