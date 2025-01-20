@@ -30,6 +30,7 @@ class TestIsAccessible extends TestCase {
 	 */
 	public function testShouldReturnAsExpected( $config, $expected ) {
 	Functions\when('rocket_get_constant')->justReturn($config['root']);
+	Functions\when('get_current_blog_id')->justReturn( 1 );
 
 	$this->filesystem->shouldReceive('exists')->with($expected['path'])->andReturn($config['exists']);
 	if( ! $config['exists']) {
