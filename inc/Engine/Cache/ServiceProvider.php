@@ -77,5 +77,6 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'options' ) )
 			->addArgument( $this->getContainer()->get( 'options_api' ) );
 		$this->getContainer()->addShared( 'taxonomy_subscriber', TaxonomySubscriber::class );
+		$this->getContainer()->addShared( 'post_subscriber', PostSubscriber::class );
 	}
 }
