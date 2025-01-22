@@ -136,7 +136,7 @@ class Controller implements ControllerInterface {
 	 * @return string
 	 */
 	public function add_hashes( $html ) {
-		if ( empty( $html ) ) {
+		if ( empty( $html ) || rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) ) {
 			return $html;
 		}
 
