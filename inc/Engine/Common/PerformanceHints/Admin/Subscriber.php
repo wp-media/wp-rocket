@@ -99,9 +99,6 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function delete_post( int $post_id ): void {
-		if ( 'attachment' === get_post_type( $post_id ) ) {
-			return;
-		}
 		$this->controller->delete_post( $post_id );
 	}
 
