@@ -132,7 +132,11 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 * @param  string $url     The request URL.
 	 * @return array           Updated array of HTTP request arguments.
 	 */
-	public function exclude_rocket_from_wp_updates( $request, string $url ) {
+	public function exclude_rocket_from_wp_updates( $request, $url ) {
+		if ( ! is_string( $url ) ) { // @phpstan-ignore-line GH #7042 - $url variable may be change by other plugins to something else than string.
+			return $request;
+		}
+
 		if ( ! preg_match( '@^https?://api.wordpress.org/plugins/update-check(/|\?|$)@', $url ) || empty( $request['body']['plugins'] ) ) {
 			// Not a plugin update request. Stop immediately.
 			return $request;

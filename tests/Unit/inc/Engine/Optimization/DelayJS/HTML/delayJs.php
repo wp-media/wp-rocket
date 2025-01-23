@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\DelayJS\HTML;
 
 use Mockery;
+use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\DelayJS\HTML;
@@ -38,6 +39,11 @@ class Test_DelayJs extends TestCase {
 
 		$this->logger->allows()->debug(Mockery::any());
 
+		Filters\expectApplied( 'rocket_disable_meta_generator' )
+			->atMost()
+			->once()
+			->andReturn( true );
+
 		Functions\expect( 'rocket_bypass' )
 			->atMost()
 			->once()
@@ -66,6 +72,11 @@ class Test_DelayJs extends TestCase {
 				->atMost()
 				->once()
 				->andReturn( [] );
+			$this->options->shouldReceive('get')
+				->with('delay_js_execution_safe_mode', 0)
+				->atMost()
+				->once()
+				->andReturn($config['delay_js_safe_mode']);
 
 			$this->data_manager->shouldReceive( 'get_lists' )
 				->atMost()

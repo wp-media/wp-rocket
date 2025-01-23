@@ -81,7 +81,11 @@ class UpdaterApiCommonSubscriber implements Subscriber_Interface {
 	 * @param  string $url     Requested URL.
 	 * @return array           An array of requested arguments
 	 */
-	public function maybe_set_rocket_user_agent( $request, string $url ) {
+	public function maybe_set_rocket_user_agent( $request, $url ) {
+		if ( ! is_string( $url ) ) { // @phpstan-ignore-line GH #7042 - $url variable may be change by other plugins to something else than string.
+			return $request;
+		}
+
 		if ( strpos( $url, self::API_HOST ) !== false ) {
 			$request['user-agent'] = sprintf( '%s;%s', $request['user-agent'], $this->get_rocket_user_agent() );
 		}

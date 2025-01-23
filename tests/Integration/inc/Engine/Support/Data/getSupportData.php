@@ -19,11 +19,17 @@ class Test_GetSupportData extends TestCase {
 
 		global $wp_version;
 
+		add_filter( 'rocket_above_the_fold_optimization', '__return_true' );
+		add_filter( 'rocket_lrc_optimization', '__return_true' );
+
 		$this->wp_version = $wp_version;
 	}
 
 	public function tear_down() {
 		global $wp_version;
+
+		remove_filter( 'rocket_above_the_fold_optimization', '__return_true' );
+		remove_filter( 'rocket_lrc_optimization', '__return_true' );
 
 		$wp_version = $this->wp_version;
 

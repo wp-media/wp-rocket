@@ -1,8 +1,10 @@
 includes:
 	- phar://phpstan.phar/conf/bleedingEdge.neon
+	- phpstan-baseline.neon
 parameters:
 	level: 4
 	inferPrivatePropertyTypeFromConstructor: true
+	reportUnmatchedIgnoredErrors: false
 	paths:
 		# Test only the new architecture for now.
 		- %currentWorkingDirectory%/inc/Engine/
@@ -10,6 +12,7 @@ parameters:
 		- %currentWorkingDirectory%/inc/ThirdParty/
 		- %currentWorkingDirectory%/tests/Integration/
 		- %currentWorkingDirectory%/tests/Unit/
+		- %currentWorkingDirectory%/tests/phpstan/Rules/
 	bootstrapFiles:
 		# Must be first
 		- %currentWorkingDirectory%/inc/functions/options.php
@@ -51,3 +54,9 @@ parameters:
 		 # These need plugin stubs!
 		 - %currentWorkingDirectory%/inc/classes/subscriber/third-party/
 		 - %currentWorkingDirectory%/inc/3rd-party/
+rules:
+	- WP_Rocket\Tests\phpstan\Rules\DiscourageUpdateOptionUsage
+	- WP_Rocket\Tests\phpstan\Rules\DiscourageApplyFilters
+	- WP_Rocket\Tests\phpstan\Rules\EnsureCallbackMethodsExistsInSubscribedEvents
+	- WP_Rocket\Tests\phpstan\Rules\NoHooksInORM
+

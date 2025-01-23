@@ -69,9 +69,27 @@ return [
 			'promo_active'       => true,
 			'transient'          => false,
 			'date_created'      => strtotime( 'last year' ),
+			'upgrades' => [
+				(object) [
+					"name"=> "Growth",
+				]
+			],
 		],
 		'title'    => 'WP Rocket',
 		'expected' => 'WP Rocket <span class="rocket-promo-bubble">!</span>',
+	],
+	'testShouldReturnBubbleWhenNoUpgrades' => [
+		'config'   => [
+			'licence_account'    => 1,
+			'licence_expired'    => false,
+			'licence_expiration' => strtotime( 'next year' ),
+			'promo_active'       => true,
+			'transient'          => false,
+			'date_created'      => strtotime( 'last year' ),
+			'upgrades' => [],
+		],
+		'title'    => 'WP Rocket',
+		'expected' => 'WP Rocket',
 	],
 	'testShouldReturnDefaultWhenLicenceBoughtLessThan14daysAgo' => [
 		'config'   => [

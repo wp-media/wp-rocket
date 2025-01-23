@@ -6,8 +6,11 @@ namespace WP_Rocket\Engine\Optimization\LazyRenderContent\Frontend;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Engine\Common\PerformanceHints\Frontend\ControllerInterface;
 use WP_Rocket\Engine\Optimization\LazyRenderContent\Frontend\Processor\Processor;
+use WP_Rocket\Engine\Support\CommentTrait;
 
 class Controller implements ControllerInterface {
+	use CommentTrait;
+
 	/**
 	 * Processor instance
 	 *
@@ -69,7 +72,9 @@ class Controller implements ControllerInterface {
 		$html = $result;
 		$html = $this->remove_hashes( $html );
 
-		return $this->add_css( $html );
+		$html = $this->add_css( $html );
+
+		return $this->add_meta_comment( 'automatic_lazy_rendering', $html );
 	}
 
 	/**

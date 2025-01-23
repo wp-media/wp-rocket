@@ -65,7 +65,7 @@ abstract class AbstractSafeAPIClient {
 
 		$transient_key = $this->get_transient_key();
 		if ( get_transient( $transient_key . '_timeout_active' ) ) {
-			return new WP_Error( 429, __( 'Too many requests.', 'rocket' ) );
+			return new WP_Error( 429, 'Too many requests.' );
 		}
 		// Get previous_expiration early to avoid multiple parallel requests increasing the expiration multiple times.
 		$previous_expiration = (int) get_transient( $transient_key . '_timeout' );
@@ -82,7 +82,7 @@ abstract class AbstractSafeAPIClient {
 		$body = wp_remote_retrieve_body( $response );
 		if ( empty( $body ) || ( ! empty( $response['response']['code'] ) && 200 !== $response['response']['code'] ) ) {
 			$this->set_timeout_transients( $previous_expiration );
-			return new WP_Error( 500, __( 'Not valid response.', 'rocket' ) );
+			return new WP_Error( 500, 'Not valid response.' );
 		}
 
 		$this->delete_timeout_transients();
@@ -148,6 +148,6 @@ abstract class AbstractSafeAPIClient {
 				return wp_safe_remote_post( $api_url, $params );
 		}
 
-		return new WP_Error( 400, __( 'Not valid request type.', 'rocket' ) );
+		return new WP_Error( 400, 'Not valid request type.' );
 	}
 }

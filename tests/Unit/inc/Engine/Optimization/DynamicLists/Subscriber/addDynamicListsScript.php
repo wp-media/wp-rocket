@@ -21,8 +21,8 @@ class Test_AddDynamicListsScripts extends TestCase {
 
 		Functions\expect( 'rest_url' )
 			->once()
-			->with( "wp-rocket/v1/dynamic_lists/update/" )
-			->andReturn( 'http://example.org/wp-json/wp-rocket/v1/dynamic_lists/update/' );
+			->with( "wp-rocket/v1/dynamic_lists/update/?_locale=user" )
+			->andReturn( 'http://example.org/wp-json/wp-rocket/v1/dynamic_lists/update/?_locale=user' );
 
 		Functions\expect( 'wp_create_nonce' )
 			->once()
@@ -31,7 +31,7 @@ class Test_AddDynamicListsScripts extends TestCase {
 
 		$this->assertEquals(
 			[
-				'rest_url' => 'http://example.org/wp-json/wp-rocket/v1/dynamic_lists/update/',
+				'rest_url' => 'http://example.org/wp-json/wp-rocket/v1/dynamic_lists/update/?_locale=user',
 				'rest_nonce' => 'wp_rest_nonce',
 			],
 			$subscriber->add_dynamic_lists_script( [] )

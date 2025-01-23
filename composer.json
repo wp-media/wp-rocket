@@ -46,7 +46,8 @@
 		"cloudflare/cf-ip-rewrite": "^1.0",
 		"composer/installers": "^1.0 || ^2.0",
 		"voku/simple_html_dom": "^4.8",
-		"wp-media/apply-filters-typed": "^1.0"
+		"wp-media/apply-filters-typed": "^1.0",
+		"wp-media/plugin-family": "^1.0"
 	},
 	"require-dev": {
 		"php": "^7 || ^8",
@@ -121,9 +122,11 @@
 				"wp-media/wp-imagify-partner",
 				"wp-media/monolog",
 				"league/container",
-				"berlindb/core"
+				"berlindb/core",
+				"wp-media/plugin-family"
 			]
-		}
+		},
+		"plugin_domain": "rocket"
 	},
 	"scripts": {
 		"test-unit": "\"vendor/bin/phpunit\" --testsuite unit --colors=always --configuration tests/Unit/phpunit.xml.dist",
@@ -232,17 +235,21 @@
 			"@test-integration-pressidium"
 		],
 		"run-stan": "vendor/bin/phpstan analyze --memory-limit=2G --no-progress",
+		"run-stan-reset-baseline": "vendor/bin/phpstan analyze --memory-limit=2G --no-progress --generate-baseline",
+		"run-stan-test": "vendor/bin/phpstan analyze inc/Engine/Common/ExtractCSS/Subscriber.php --memory-limit=2G --no-progress --debug",
 		"install-codestandards": "Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\Plugin::run",
 		"phpcs": "phpcs --basepath=.",
 		"phpcs-changed": "./bin/phpcs-changed.sh",
 		"phpcs:fix": "phpcbf",
 		"post-install-cmd": [
 			"\"vendor/bin/mozart\" compose",
-			"composer dump-autoload"
+			"composer dump-autoload",
+			"WP_Rocket\\Dependencies\\WPMedia\\PluginFamily\\PostInstall::apply_text_domain"
 		],
 		"post-update-cmd": [
 			"\"vendor/bin/mozart\" compose",
-			"composer dump-autoload"
+			"composer dump-autoload",
+			"WP_Rocket\\Dependencies\\WPMedia\\PluginFamily\\PostInstall::apply_text_domain"
 		],
 		"report-code-coverage": "\"vendor/bin/phpcov\" merge tests/report --clover tests/report/coverage.clover"
 	}

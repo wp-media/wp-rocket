@@ -40,6 +40,7 @@ class WPRocketUninstall {
 		'wp_rocket_no_licence',
 		'wp_rocket_last_option_hash',
 		'wp_rocket_debug',
+		'wp_rocket_rocketcdn_old_url',
 	];
 
 	/**
@@ -86,6 +87,7 @@ class WPRocketUninstall {
 		'rocket_preload_check_duration',
 		'wpr_user_information_timeout_active',
 		'wpr_user_information_timeout',
+		'rocket_fonts_data_collection',
 	];
 
 	/**
@@ -112,6 +114,8 @@ class WPRocketUninstall {
 		'busting',
 		'critical-css',
 		'used-css',
+		'fonts',
+		'background-css',
 	];
 
 	/**
