@@ -9,7 +9,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  *
  * @group PerformanceHints
  */
-class Test_AddHashes extends TestCase {
+class Test_Add_Hashes extends TestCase {
   private $max_hashes;
 
 	public static function set_up_before_class() {
@@ -46,6 +46,7 @@ class Test_AddHashes extends TestCase {
 	 */
 	public function testShouldWorkAsExpected( $config, $expected ) {
 		self::addLrc( $config['row'] );
+		$this->donotrocketoptimize = $config['donotrocketoptimize'] ?? null;
 
 		add_filter( 'rocket_lrc_optimization', '__return_true' );
 		add_filter( 'rocket_lrc_exclusions', function() use ($config) {
