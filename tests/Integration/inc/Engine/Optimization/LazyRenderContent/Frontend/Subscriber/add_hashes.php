@@ -9,7 +9,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  *
  * @group PerformanceHints
  */
-class Test_Add_Hashes extends TestCase {
+class Test_AddHashes extends TestCase {
   private $max_hashes;
 
 	public static function set_up_before_class() {
