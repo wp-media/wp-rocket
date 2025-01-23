@@ -8,7 +8,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 
 /**
  * Test class covering PostSubscriber::disable_cache_on_not_valid_pages
- * @covers \WP_Rocket\Tests\Unit\inc\Engine\Cache\PostSubscriber::disable_cache_on_not_valid_pages
+ * @covers \WP_Rocket\Engine\Cache\PostSubscriber::disable_cache_on_not_valid_pages
  *
  * @uses PostSubscriber::is_not_valid_page
  *
