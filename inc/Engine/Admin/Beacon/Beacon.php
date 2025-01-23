@@ -831,6 +831,16 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 					'url' => 'https://fr.docs.wp-rocket.me/article/1836-rendu-differe-automatique/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
+			'host_fonts_locally'         => [
+				'en' => [
+					'id'  => '673358b02ddbd952f6241b38',
+					'url' => 'https://docs.wp-rocket.me/article/1847-self-host-google-fonts?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+				'fr' => [
+					'id'  => '675ab51d46b8d26833b2af82',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1852-auto-heberger-google-fonts?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+			],
 		];
 
 		return isset( $suggest[ $doc_id ][ $this->get_user_locale() ] )

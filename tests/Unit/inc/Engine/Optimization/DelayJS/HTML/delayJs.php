@@ -72,6 +72,11 @@ class Test_DelayJs extends TestCase {
 				->atMost()
 				->once()
 				->andReturn( [] );
+			$this->options->shouldReceive('get')
+				->with('delay_js_execution_safe_mode', 0)
+				->atMost()
+				->once()
+				->andReturn($config['delay_js_safe_mode']);
 
 			$this->data_manager->shouldReceive( 'get_lists' )
 				->atMost()

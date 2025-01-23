@@ -70,6 +70,7 @@ class Subscriber implements Subscriber_Interface {
 			'switch_theme'                            => 'truncate_used_css',
 			'permalink_structure_changed'             => 'truncate_used_css',
 			'rocket_domain_options_changed'           => 'truncate_used_css',
+			'rocket_host_fonts_locally_changed'       => 'delete_used_css_rows',
 			'wp_trash_post'                           => 'delete_used_css_on_update_or_delete',
 			'delete_post'                             => 'delete_used_css_on_update_or_delete',
 			'clean_post_cache'                        => 'delete_used_css_on_update_or_delete',
@@ -206,7 +207,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return void
 	 */
-	private function delete_used_css_rows() {
+	public function delete_used_css_rows() {
 		$this->used_css->delete_all_used_css();
 
 		if ( 0 < $this->used_css->get_not_completed_count() ) {

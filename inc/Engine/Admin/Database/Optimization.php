@@ -13,28 +13,12 @@ class Optimization {
 	protected $process;
 
 	/**
-	 * Array of option name/label pairs.
-	 *
-	 * @var array
-	 */
-	private $options;
-
-	/**
 	 * Class constructor.
 	 *
 	 * @param OptimizationProcess $process Background process instance.
 	 */
 	public function __construct( OptimizationProcess $process ) {
 		$this->process = $process;
-		$this->options = [
-			'database_revisions'        => __( 'Revisions', 'rocket' ),
-			'database_auto_drafts'      => __( 'Auto Drafts', 'rocket' ),
-			'database_trashed_posts'    => __( 'Trashed Posts', 'rocket' ),
-			'database_spam_comments'    => __( 'Spam Comments', 'rocket' ),
-			'database_trashed_comments' => __( 'Trashed Comments', 'rocket' ),
-			'database_all_transients'   => __( 'Transients', 'rocket' ),
-			'database_optimize_tables'  => __( 'Tables', 'rocket' ),
-		];
 	}
 
 	/**
@@ -45,7 +29,15 @@ class Optimization {
 	 * @return array
 	 */
 	public function get_options() {
-		return $this->options;
+		return [
+			'database_revisions'        => __( 'Revisions', 'rocket' ),
+			'database_auto_drafts'      => __( 'Auto Drafts', 'rocket' ),
+			'database_trashed_posts'    => __( 'Trashed Posts', 'rocket' ),
+			'database_spam_comments'    => __( 'Spam Comments', 'rocket' ),
+			'database_trashed_comments' => __( 'Trashed Comments', 'rocket' ),
+			'database_all_transients'   => __( 'Transients', 'rocket' ),
+			'database_optimize_tables'  => __( 'Tables', 'rocket' ),
+		];
 	}
 
 	/**
