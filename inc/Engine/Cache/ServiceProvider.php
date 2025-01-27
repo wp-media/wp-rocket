@@ -28,6 +28,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'preload_caches_query',
 		'cache_config',
 		'taxonomy_subscriber',
+		'post_subscriber',
 	];
 
 	/**
