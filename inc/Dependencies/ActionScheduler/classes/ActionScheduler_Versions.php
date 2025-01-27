@@ -19,6 +19,13 @@ class ActionScheduler_Versions {
 	private $versions = array();
 
 	/**
+	 * Registered sources.
+	 *
+	 * @var array<string, string>
+	 */
+	private $sources = array();
+
+	/**
 	 * Register version's callback.
 	 *
 	 * @param string   $version_string          Action Scheduler version.
@@ -28,7 +35,13 @@ class ActionScheduler_Versions {
 		if ( isset( $this->versions[ $version_string ] ) ) {
 			return false;
 		}
+
+		// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_debug_backtrace
+		$backtrace = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS );
+		$source    = $backtrace[0]['file'];
+
 		$this->versions[ $version_string ] = $initialization_callback;
+		$this->sources[ $source ]          = $version_string;
 		return true;
 	}
 
@@ -37,6 +50,15 @@ class ActionScheduler_Versions {
 	 */
 	public function get_versions() {
 		return $this->versions;
+	}
+
+	/**
+	 * Get registered sources.
+	 *
+	 * @return array<string, string>
+	 */
+	public function get_sources() {
+		return $this->sources;
 	}
 
 	/**
@@ -85,5 +107,80 @@ class ActionScheduler_Versions {
 	public static function initialize_latest_version() {
 		$self = self::instance();
 		call_user_func( $self->latest_version_callback() );
+	}
+
+	/**
+	 * Returns information about the plugin or theme which contains the current active version
+	 * of Action Scheduler.
+	 *
+	 * If this cannot be determined, or if Action Scheduler is being loaded via some other
+	 * method, then it will return an empty array. Otherwise, if populated, the array will
+	 * look like the following:
+	 *
+	 *     [
+	 *         'type' => 'plugin', # or 'theme'
+	 *         'name' => 'Name',
+	 *     ]
+	 *
+	 * @return array
+	 */
+	public function active_source(): array {
+		$file         = __FILE__;
+		$dir          = __DIR__;
+		$plugins      = get_plugins();
+		$plugin_files = array_keys( $plugins );
+
+		foreach ( $plugin_files as $plugin_file ) {
+			$plugin_path = trailingslashit( WP_PLUGIN_DIR ) . dirname( $plugin_file );
+			$plugin_file = trailingslashit( WP_PLUGIN_DIR ) . $plugin_file;
+
+			if ( 0 !== strpos( dirname( $dir ), $plugin_path ) ) {
+				continue;
+			}
+
+			$plugin_data = get_plugin_data( $plugin_file );
+
+			if ( ! is_array( $plugin_data ) || empty( $plugin_data['Name'] ) ) {
+				continue;
+			}
+
+			return array(
+				'type' => 'plugin',
+				'name' => $plugin_data['Name'],
+			);
+		}
+
+		$themes = (array) search_theme_directories();
+
+		foreach ( $themes as $slug => $data ) {
+			$needle = trailingslashit( $data['theme_root'] ) . $slug . '/';
+
+			if ( 0 !== strpos( $file, $needle ) ) {
+				continue;
+			}
+
+			$theme = wp_get_theme( $slug );
+
+			if ( ! is_object( $theme ) || ! is_a( $theme, \WP_Theme::class ) ) {
+				continue;
+			}
+
+			return array(
+				'type' => 'theme',
+				// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+				'name' => $theme->Name,
+			);
+		}
+
+		return array();
+	}
+
+	/**
+	 * Returns the directory path for the currently active installation of Action Scheduler.
+	 *
+	 * @return string
+	 */
+	public function active_source_path(): string {
+		return trailingslashit( dirname( __DIR__ ) );
 	}
 }

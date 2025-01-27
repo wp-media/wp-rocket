@@ -1,5 +1,12 @@
 *** Changelog ***
 
+= 3.9.1 - 2025-01-21 =
+* A number of new WP CLI commands have been added, making it easier to manage actions in the terminal and from scripts.
+* New wp action-scheduler source command to help determine how Action Scheduler is being loaded.
+* Additional information about the active instance of Action Scheduler is now available in the Help pull-down drawer.
+* Make some other nullable parameters explicitly nullable.
+* Set option value to `no` rather than deleting.
+
 = 3.9.0 - 2024-11-14 =  
 * Minimum required version of PHP is now 7.1.  
 * Performance improvements for the `as_pending_actions_due()` function.  
