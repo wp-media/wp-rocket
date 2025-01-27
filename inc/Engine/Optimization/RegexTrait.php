@@ -144,7 +144,7 @@ trait RegexTrait {
 	 * @return string
 	 */
 	protected function restore_html_comments( $html ) {
-		if ( empty( $this->html_replace ) ) {
+		if ( ! is_string( $html ) || empty( $this->html_replace ) ) {
 			return $html;
 		}
 
