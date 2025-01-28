@@ -35,6 +35,14 @@ class Test_WarmUpHome extends TestCase {
 
 		Functions\expect( 'wp_get_environment_type' )->andReturn($config['wp_env']);
 
+		Functions\when('rocket_get_constant')->alias(function ($name, $default = null) use ($config) {
+			if('DONOTROCKETOPTIMIZE' === $name) {
+				return $config['rocket_optimise'];
+			}
+
+			return $default;
+		});
+
 		$queue->shouldReceive('add_job_warmup')
 			->times($expected);
 

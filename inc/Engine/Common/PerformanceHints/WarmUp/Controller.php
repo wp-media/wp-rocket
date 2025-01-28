@@ -69,7 +69,8 @@ class Controller {
 		return ! (
 			'local' === wp_get_environment_type() ||
 			$this->user->is_license_expired_grace_period() ||
-			(bool) $this->options->get( 'remove_unused_css', 0 )
+			(bool) $this->options->get( 'remove_unused_css', 0 ) ||
+			rocket_get_constant( 'DONOTROCKETOPTIMIZE' )
 		);
 	}
 
