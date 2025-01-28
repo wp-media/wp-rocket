@@ -115,6 +115,13 @@ class FilesystemCache implements CacheInterface {
 		if ( ! $this->filesystem->exists( $base_path ) ) {
 			return false;
 		}
+
+		if ( ! empty( $preserve_dirs ) ) {
+			$preserve_dirs = array_map( function ( $dir ) use ( $base_path ) {
+				return $base_path . $dir;
+			}, $preserve_dirs );
+		}
+
 		rocket_rrmdir( $base_path, $preserve_dirs, $this->filesystem );
 		return true;
 	}
