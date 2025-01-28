@@ -227,12 +227,22 @@ class Controller implements ControllerInterface {
 		$exclusions = array_map(
 				function ( $exclusion ) {
 					$exclusion = wp_parse_url( $exclusion );
-					return ltrim( $exclusion['path'], '/' );
+					if ( isset( $exclusion['path'] ) && is_string( $exclusion['path'] ) ) {
+						return ltrim( $exclusion['path'], '/' );
+					}
+					// Return empty string if not set.
+					return null;
 				},
 			$exclusions
-			);
+		);
 
-		return $exclusions;
+		// Filter out null values.
+		return array_filter(
+			$exclusions,
+			function ( $value ) {
+				return $value !== null;
+			}
+			);
 	}
 
 	/**
