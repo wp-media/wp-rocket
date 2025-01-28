@@ -106,14 +106,16 @@ class FilesystemCache implements CacheInterface {
 	/**
 	 * Clear the whole background-css directory.
 	 *
+	 * @param array $preserve_dirs List of directories to be preserved.
+	 *
 	 * @return bool True on success and false on failure.
 	 */
-	public function full_clear(): bool {
+	public function full_clear( array $preserve_dirs = [] ): bool {
 		$base_path = $this->get_base_path();
 		if ( ! $this->filesystem->exists( $base_path ) ) {
 			return false;
 		}
-		rocket_rrmdir( $base_path, [], $this->filesystem );
+		rocket_rrmdir( $base_path, $preserve_dirs, $this->filesystem );
 		return true;
 	}
 

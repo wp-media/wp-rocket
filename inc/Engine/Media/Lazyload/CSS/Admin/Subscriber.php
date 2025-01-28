@@ -92,7 +92,10 @@ class Subscriber implements Subscriber_Interface {
 		if ( empty( $old_version ) || version_compare( $old_version, '3.18', '>' ) ) {
 			return;
 		}
+
+		$preserve_dirs = is_multisite() ? get_sites( [ 'fields' => 'ids' ] ) : [ get_current_blog_id() ];
+
 		// Completely clear background-css directory.
-		$this->cache->full_clear();
+		$this->cache->full_clear( $preserve_dirs );
 	}
 }
