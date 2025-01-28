@@ -89,7 +89,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function clear_background_css_with_upgrade( $new_version, $old_version ) {
-		if ( version_compare( $old_version, '3.18', '>' ) ) {
+		if ( empty( $old_version ) || version_compare( $old_version, '3.18', '>' ) ) {
 			return;
 		}
 		// Completely clear background-css directory.
