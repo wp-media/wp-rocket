@@ -227,7 +227,7 @@ class Controller implements ControllerInterface {
 		$exclusions = array_map(
 				function ( $exclusion ) {
 					$exclusion = wp_parse_url( $exclusion );
-					if ( isset( $exclusion['path'] ) && is_string( $exclusion['path'] ) ) {
+					if ( isset( $exclusion['path'] ) ) {
 						return ltrim( $exclusion['path'], '/' );
 					}
 					// Return empty string if not set.
@@ -242,7 +242,7 @@ class Controller implements ControllerInterface {
 			function ( $value ) {
 				return $value !== null;
 			}
-			);
+		);
 	}
 
 	/**
