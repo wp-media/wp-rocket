@@ -240,7 +240,7 @@ class Controller implements ControllerInterface {
 		return array_filter(
 			$exclusions,
 			function ( $value ) {
-				return $value !== null;
+				return null !== $value;
 			}
 		);
 	}
