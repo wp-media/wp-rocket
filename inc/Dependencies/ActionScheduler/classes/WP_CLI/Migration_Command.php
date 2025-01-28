@@ -21,7 +21,11 @@ use WP_CLI_Command;
  */
 class Migration_Command extends WP_CLI_Command {
 
-	/** @var int */
+	/**
+	 * Number of actions migrated.
+	 *
+	 * @var int
+	 */
 	private $total_processed = 0;
 
 	/**
@@ -32,38 +36,42 @@ class Migration_Command extends WP_CLI_Command {
 			return;
 		}
 
-		WP_CLI::add_command( 'action-scheduler migrate', [ $this, 'migrate' ], [
-			'shortdesc' => 'Migrates actions to the DB tables store',
-			'synopsis'  => [
-				[
-					'type'        => 'assoc',
-					'name'        => 'batch-size',
-					'optional'    => true,
-					'default'     => 100,
-					'description' => 'The number of actions to process in each batch',
-				],
-				[
-					'type'        => 'assoc',
-					'name'        => 'free-memory-on',
-					'optional'    => true,
-					'default'     => 50,
-					'description' => 'The number of actions to process between freeing memory. 0 disables freeing memory',
-				],
-				[
-					'type'        => 'assoc',
-					'name'        => 'pause',
-					'optional'    => true,
-					'default'     => 0,
-					'description' => 'The number of seconds to pause when freeing memory',
-				],
-				[
-					'type'        => 'flag',
-					'name'        => 'dry-run',
-					'optional'    => true,
-					'description' => 'Reports on the actions that would have been migrated, but does not change any data',
-				],
-			],
-		] );
+		WP_CLI::add_command(
+			'action-scheduler migrate',
+			array( $this, 'migrate' ),
+			array(
+				'shortdesc' => 'Migrates actions to the DB tables store',
+				'synopsis'  => array(
+					array(
+						'type'        => 'assoc',
+						'name'        => 'batch-size',
+						'optional'    => true,
+						'default'     => 100,
+						'description' => 'The number of actions to process in each batch',
+					),
+					array(
+						'type'        => 'assoc',
+						'name'        => 'free-memory-on',
+						'optional'    => true,
+						'default'     => 50,
+						'description' => 'The number of actions to process between freeing memory. 0 disables freeing memory',
+					),
+					array(
+						'type'        => 'assoc',
+						'name'        => 'pause',
+						'optional'    => true,
+						'default'     => 0,
+						'description' => 'The number of seconds to pause when freeing memory',
+					),
+					array(
+						'type'        => 'flag',
+						'name'        => 'dry-run',
+						'optional'    => true,
+						'description' => 'Reports on the actions that would have been migrated, but does not change any data',
+					),
+				),
+			)
+		);
 	}
 
 	/**
@@ -81,19 +89,19 @@ class Migration_Command extends WP_CLI_Command {
 		$runner = new Runner( $config );
 		$runner->init_destination();
 
-		$batch_size = isset( $assoc_args[ 'batch-size' ] ) ? (int) $assoc_args[ 'batch-size' ] : 100;
-		$free_on    = isset( $assoc_args[ 'free-memory-on' ] ) ? (int) $assoc_args[ 'free-memory-on' ] : 50;
-		$sleep      = isset( $assoc_args[ 'pause' ] ) ? (int) $assoc_args[ 'pause' ] : 0;
+		$batch_size = isset( $assoc_args['batch-size'] ) ? (int) $assoc_args['batch-size'] : 100;
+		$free_on    = isset( $assoc_args['free-memory-on'] ) ? (int) $assoc_args['free-memory-on'] : 50;
+		$sleep      = isset( $assoc_args['pause'] ) ? (int) $assoc_args['pause'] : 0;
 		\ActionScheduler_DataController::set_free_ticks( $free_on );
 		\ActionScheduler_DataController::set_sleep_time( $sleep );
 
 		do {
-			$actions_processed     = $runner->run( $batch_size );
+			$actions_processed      = $runner->run( $batch_size );
 			$this->total_processed += $actions_processed;
 		} while ( $actions_processed > 0 );
 
 		if ( ! $config->get_dry_run() ) {
-			// let the scheduler know that there's nothing left to do
+			// let the scheduler know that there's nothing left to do.
 			$scheduler = new Scheduler();
 			$scheduler->mark_complete();
 		}
@@ -109,12 +117,15 @@ class Migration_Command extends WP_CLI_Command {
 	 * @return ActionScheduler\Migration\Config
 	 */
 	private function get_migration_config( $args ) {
-		$args = wp_parse_args( $args, [
-			'dry-run' => false,
-		] );
+		$args = wp_parse_args(
+			$args,
+			array(
+				'dry-run' => false,
+			)
+		);
 
 		$config = Controller::instance()->get_migration_config_object();
-		$config->set_dry_run( ! empty( $args[ 'dry-run' ] ) );
+		$config->set_dry_run( ! empty( $args['dry-run'] ) );
 
 		return $config;
 	}
@@ -123,26 +134,57 @@ class Migration_Command extends WP_CLI_Command {
 	 * Hook command line logging into migration actions.
 	 */
 	private function init_logging() {
-		add_action( 'action_scheduler/migrate_action_dry_run', function ( $action_id ) {
-			WP_CLI::debug( sprintf( 'Dry-run: migrated action %d', $action_id ) );
-		}, 10, 1 );
-		add_action( 'action_scheduler/no_action_to_migrate', function ( $action_id ) {
-			WP_CLI::debug( sprintf( 'No action found to migrate for ID %d', $action_id ) );
-		}, 10, 1 );
-		add_action( 'action_scheduler/migrate_action_failed', function ( $action_id ) {
-			WP_CLI::warning( sprintf( 'Failed migrating action with ID %d', $action_id ) );
-		}, 10, 1 );
-		add_action( 'action_scheduler/migrate_action_incomplete', function ( $source_id, $destination_id ) {
-			WP_CLI::warning( sprintf( 'Unable to remove source action with ID %d after migrating to new ID %d', $source_id, $destination_id ) );
-		}, 10, 2 );
-		add_action( 'action_scheduler/migrated_action', function ( $source_id, $destination_id ) {
-			WP_CLI::debug( sprintf( 'Migrated source action with ID %d to new store with ID %d', $source_id, $destination_id ) );
-		}, 10, 2 );
-		add_action( 'action_scheduler/migration_batch_starting', function ( $batch ) {
-			WP_CLI::debug( 'Beginning migration of batch: ' . print_r( $batch, true ) );
-		}, 10, 1 );
-		add_action( 'action_scheduler/migration_batch_complete', function ( $batch ) {
-			WP_CLI::log( sprintf( 'Completed migration of %d actions', count( $batch ) ) );
-		}, 10, 1 );
+		add_action(
+			'action_scheduler/migrate_action_dry_run',
+			function ( $action_id ) {
+				WP_CLI::debug( sprintf( 'Dry-run: migrated action %d', $action_id ) );
+			}
+		);
+
+		add_action(
+			'action_scheduler/no_action_to_migrate',
+			function ( $action_id ) {
+				WP_CLI::debug( sprintf( 'No action found to migrate for ID %d', $action_id ) );
+			}
+		);
+
+		add_action(
+			'action_scheduler/migrate_action_failed',
+			function ( $action_id ) {
+				WP_CLI::warning( sprintf( 'Failed migrating action with ID %d', $action_id ) );
+			}
+		);
+
+		add_action(
+			'action_scheduler/migrate_action_incomplete',
+			function ( $source_id, $destination_id ) {
+				WP_CLI::warning( sprintf( 'Unable to remove source action with ID %d after migrating to new ID %d', $source_id, $destination_id ) );
+			},
+			10,
+			2
+		);
+
+		add_action(
+			'action_scheduler/migrated_action',
+			function ( $source_id, $destination_id ) {
+				WP_CLI::debug( sprintf( 'Migrated source action with ID %d to new store with ID %d', $source_id, $destination_id ) );
+			},
+			10,
+			2
+		);
+
+		add_action(
+			'action_scheduler/migration_batch_starting',
+			function ( $batch ) {
+				WP_CLI::debug( 'Beginning migration of batch: ' . print_r( $batch, true ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r
+			}
+		);
+
+		add_action(
+			'action_scheduler/migration_batch_complete',
+			function ( $batch ) {
+				WP_CLI::log( sprintf( 'Completed migration of %d actions', count( $batch ) ) );
+			}
+		);
 	}
 }

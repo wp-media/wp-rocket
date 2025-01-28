@@ -35,8 +35,9 @@ function as_enqueue_async_action( $hook, $args = array(), $group = '', $unique =
 	 * @param array    $args       Action arguments.
 	 * @param string   $group      Action group.
 	 * @param int      $priority   Action priority.
+	 * @param bool     $unique     Unique action.
 	 */
-	$pre = apply_filters( 'pre_as_enqueue_async_action', null, $hook, $args, $group, $priority );
+	$pre = apply_filters( 'pre_as_enqueue_async_action', null, $hook, $args, $group, $priority, $unique );
 	if ( null !== $pre ) {
 		return is_int( $pre ) ? $pre : 0;
 	}
@@ -126,6 +127,7 @@ function as_schedule_recurring_action( $timestamp, $interval_in_seconds, $hook, 
 
 	// We expect an integer and allow it to be passed using float and string types, but otherwise
 	// should reject unexpected values.
+	// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 	if ( ! is_numeric( $interval_in_seconds ) || $interval_in_seconds != $interval ) {
 		_doing_it_wrong(
 			__METHOD__,
@@ -455,7 +457,7 @@ function as_get_scheduled_actions( $args = array(), $return_format = OBJECT ) {
 		$actions[ $action_id ] = $store->fetch_action( $action_id );
 	}
 
-	if ( ARRAY_A == $return_format ) {
+	if ( ARRAY_A === $return_format ) {
 		foreach ( $actions as $action_id => $action_object ) {
 			$actions[ $action_id ] = get_object_vars( $action_object );
 		}
