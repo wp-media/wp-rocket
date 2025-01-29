@@ -105,6 +105,13 @@ class Optimization extends Abstract_Buffer {
 			return $buffer;
 		}
 
+		$filtered_buffer = preg_replace(
+			'#</title>#iU',
+			'</title>' . wpm_apply_filters_typed( 'string', 'rocket_head', '' ),
+			$filtered_buffer,
+			1
+		);
+
 		$this->log( 'Page optimized.', [], 'info' );
 
 		/**
