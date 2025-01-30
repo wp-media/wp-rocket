@@ -243,6 +243,10 @@ class FilesystemCache implements CacheInterface {
 	 * @return bool
 	 */
 	public function is_accessible(): bool {
+		$base_path = $this->get_base_path();
+		if ( ! $this->filesystem->exists( $base_path ) ) {
+			rocket_mkdir_p( $base_path, $this->filesystem );
+		}
 		$root_path = $this->get_root_path();
 		if ( ! $this->filesystem->exists( $root_path ) ) {
 			rocket_mkdir_p( $root_path, $this->filesystem );
