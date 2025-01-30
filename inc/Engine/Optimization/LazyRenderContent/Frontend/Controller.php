@@ -136,7 +136,7 @@ class Controller implements ControllerInterface {
 	 * @return string
 	 */
 	public function add_hashes( $html ) {
-		if ( empty( $html ) || rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) ) {
+		if ( empty( $html ) || ( rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) && ! isset( $_GET['wpr_lazyrendercontent'] ) ) ) {// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			return $html;
 		}
 
