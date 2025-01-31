@@ -92,7 +92,7 @@ class Test_MaybeApplyOptimizations extends FilesystemTestCase {
 
 		$this->assertSame(
 			trim($expected),
-			apply_filters( 'rocket_buffer', $config['html'] )
+			trim(apply_filters( 'rocket_buffer', $config['html'] ))
 		);
 	}
 
