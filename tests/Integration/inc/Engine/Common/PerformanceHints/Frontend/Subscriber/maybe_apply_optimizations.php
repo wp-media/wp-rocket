@@ -91,7 +91,7 @@ class Test_MaybeApplyOptimizations extends FilesystemTestCase {
 		add_filter( 'pre_get_rocket_option_cache_logged_user', [ $this, 'get_cache_user' ] );
 
 		$this->assertSame(
-			$expected,
+			trim($expected),
 			apply_filters( 'rocket_buffer', $config['html'] )
 		);
 	}
