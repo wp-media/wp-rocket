@@ -3409,7 +3409,7 @@ msgstr "بارگذاری تنبل پس ضمینه CSS"
 
 #: inc/Engine/Media/Lazyload/Subscriber.php:262
 msgid "Play Youtube video"
-msgstr "تماشای ویدیو"
+msgstr "تماشای ویدیو یوتیوب"
 
 #: inc/Engine/Optimization/DelayJS/Admin/SiteList.php:244
 msgid "Analytics & Trackers"
