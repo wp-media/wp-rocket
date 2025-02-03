@@ -5,9 +5,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.18-beta1\n"
+"Project-Id-Version: WP Rocket 3.18.1-beta1\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2025-01-06T13:04:08+00:00\n"
+"POT-Creation-Date: 2025-01-29T13:05:38+00:00\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Mohammad Yousefzadeh <regedit2007@yahoo.com>, 2025\n"
 "Language-Team: Persian (Iran) (https://app.transifex.com/wp-media/teams/18133/fa_IR/)\n"
@@ -2917,7 +2917,7 @@ msgstr "وقفه اسکریپت"
 msgid "It was not possible to determine a valid cut-off time: %s."
 msgstr "تعیین یک زمان قطع معتبر ممکن نبود:%s."
 
-#: inc/Engine/Common/Queue/RUCSSQueueRunner.php:269
+#: inc/Engine/Common/Queue/RUCSSQueueRunner.php:272
 msgid "Every minute"
 msgstr "هر دقیقه"
 
@@ -3403,9 +3403,13 @@ msgstr "باگذاری با تاخیر تصاویر"
 msgid "LazyLoad for iframes/videos"
 msgstr "بارگذاری با تاخیر آی‌‌فریم‌ها\\ویدیوها"
 
-#: inc/Engine/Media/Lazyload/CSS/Admin/Subscriber.php:48
+#: inc/Engine/Media/Lazyload/CSS/Admin/Subscriber.php:49
 msgid "LazyLoad CSS backgrounds"
 msgstr "بارگذاری تنبل پس ضمینه CSS"
+
+#: inc/Engine/Media/Lazyload/Subscriber.php:262
+msgid "Play Youtube video"
+msgstr "تماشای ویدیو"
 
 #: inc/Engine/Optimization/DelayJS/Admin/SiteList.php:244
 msgid "Analytics & Trackers"
