@@ -33,7 +33,6 @@ class Subscriber implements Subscriber_Interface {
 
 	public function print_head_elements( $content ) {
 		$items = wpm_apply_filters_typed( 'array','rocket_head_items', [] );
-		error_log( print_r( $items, true ) );
 		if ( empty( $items ) ) {
 			return $content;
 		}
