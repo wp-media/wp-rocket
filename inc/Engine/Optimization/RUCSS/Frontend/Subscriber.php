@@ -46,6 +46,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_disable_preload_fonts' => 'maybe_disable_preload_fonts',
 			'rocket_first_install_options' => 'on_install',
 			'wp_rocket_upgrade'            => [ 'on_update', 10, 2 ],
+			'rocket_head_items'            => [ 'insert_css_in_head', 50 ],
 		];
 	}
 
@@ -112,5 +113,9 @@ class Subscriber implements Subscriber_Interface {
 		update_option( 'wp_rocket_no_licence', 0 );
 
 		return $options;
+	}
+
+	public function insert_css_in_head( $items ) {
+		$this->used_css->add_used_css_to_html( $items );
 	}
 }

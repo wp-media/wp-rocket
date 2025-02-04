@@ -117,14 +117,13 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 				[ 'async_css', 32 ],
 			],
 
-			'rocket_head_items' => [ 'insert_css_in_head', 50 ],
-
+			'rocket_head_items'                 => [ 'insert_css_in_head', 50 ],
 			'switch_theme'                      => 'maybe_regenerate_cpcss',
 			'rocket_excluded_inline_js_content' => 'exclude_inline_js',
 			'before_delete_post'                => 'delete_cpcss',
-			'rocket_before_rollback' => [ 'stop_critical_css_generation', 9 ],
-			'wp_rocket_upgrade' => [ 'stop_critical_css_generation', 9 ],
-			'admin_post_switch_to_rucss' => 'switch_to_rucss',
+			'rocket_before_rollback'            => [ 'stop_critical_css_generation', 9 ],
+			'wp_rocket_upgrade'                 => [ 'stop_critical_css_generation', 9 ],
+			'admin_post_switch_to_rucss'        => 'switch_to_rucss',
 		];
 		// phpcs:enable WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned
 	}

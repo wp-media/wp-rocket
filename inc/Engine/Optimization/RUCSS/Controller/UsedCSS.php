@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\Optimization\RUCSS\Controller;
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
+use WP_Rocket\Engine\Common\Head\ElementTrait;
 use WP_Rocket\Engine\Optimization\CSSTrait;
 use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\DataManager;
 use WP_Rocket\Engine\Optimization\RegexTrait;
@@ -16,6 +17,7 @@ class UsedCSS {
 	use RegexTrait;
 	use CSSTrait;
 	use CommentTrait;
+	use ElementTrait;
 
 	/**
 	 * UsedCss Query instance.
@@ -79,6 +81,8 @@ class UsedCSS {
 	 * @var Manager
 	 */
 	private $manager;
+
+	private $used_css_content = '';
 
 	/**
 	 * Instantiate the class.
@@ -158,8 +162,9 @@ class UsedCSS {
 			return $html;
 		}
 
+		$this->used_css_content = $used_css_content;
+
 		$html = $this->remove_used_css_from_html( $clean_html, $html );
-		$html = $this->add_used_css_to_html( $html, $used_css_content );
 		$html = $this->add_used_fonts_preload( $html, $used_css_content );
 		$html = $this->remove_google_font_preconnect( $html );
 
@@ -354,26 +359,21 @@ class UsedCSS {
 	}
 
 	/**
-	 * Alter HTML string and add the used CSS style in <head> tag,
+	 * Add the used CSS style in <head> tag,
 	 *
-	 * @param string $html     HTML content.
-	 * @param string $used_css Used CSS content.
+	 * @param array $items Head items.
 	 *
-	 * @return string HTML content.
+	 * @return array Filtered head items.
 	 */
-	private function add_used_css_to_html( string $html, string $used_css ): string {
-		$replace = preg_replace(
-			'#</title>#iU',
-			'</title>' . $this->get_used_css_markup( $used_css ),
-			$html,
-			1
-		);
-
-		if ( null === $replace ) {
-			return $html;
+	private function add_used_css_to_html( array $items ): array {
+		if ( empty( $this->used_css_content ) ) {
+			return $items;
 		}
 
-		return $replace;
+		$items += $this->style_tag( $this->get_used_css_markup( $this->used_css_content ), [
+			'id' => 'wpr-usedcss',
+		] );
+		return $items;
 	}
 
 	/**
@@ -394,12 +394,7 @@ class UsedCSS {
 		$used_css = apply_filters( 'rocket_usedcss_content', $used_css );
 
 		$used_css = str_replace( '\\', '\\\\', $used_css );// Guard the backslashes before passing the content to preg_replace.
-		$used_css = $this->handle_charsets( $used_css, false );
-
-		return sprintf(
-			'<style id="wpr-usedcss">%s</style>',
-			$used_css
-		);
+		return $this->handle_charsets( $used_css, false );
 	}
 
 	/**
