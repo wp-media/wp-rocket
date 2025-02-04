@@ -47,6 +47,7 @@ class Controller implements ControllerInterface {
 	public function add_data(): array {
 		check_ajax_referer( 'rocket_beacon', 'rocket_beacon_nonce' );
 		$payload = [];
+
 		if ( ! $this->context->is_allowed() ) {
 			$payload['preload_fonts'] = 'not allowed';
 
@@ -72,8 +73,8 @@ class Controller implements ControllerInterface {
 			$max_preload_fonts_number = 1;
 		}
 
-		foreach ( (array) $fonts as $font ) {
-			$preload_fonts[] = sanitize_text_field( wp_unslash( $font ) );
+		foreach ( (array) $fonts as $index => $font ) {
+			$preload_fonts[ $index ] = sanitize_text_field( wp_unslash( $font ) );
 			--$max_preload_fonts_number;
 		}
 
