@@ -4,8 +4,10 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Media\PreloadFonts;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
-use WP_Rocket\Engine\Media\PreloadFonts\Database\Table\PreloadFonts as PLFTable;
-use WP_Rocket\Engine\Media\PreloadFonts\Database\Queries\PreloadFonts as PLFQuery;
+use WP_Rocket\Engine\Media\PreloadFonts\Database\Table\PreloadFonts as PreloadFontsTable;
+use WP_Rocket\Engine\Media\PreloadFonts\Database\Queries\PreloadFonts as PreloadFontsQuery;
+use WP_Rocket\Engine\Media\PreloadFonts\AJAX\Controller as AJAXController;
+use WP_Rocket\Engine\Media\PreloadFonts\Context\Context;
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
@@ -18,8 +20,10 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @var array
 	 */
 	protected $provides = [
-		'plf_table',
-		'plf_query',
+		'preload_fonts_table',
+		'preload_fonts_query',
+		'preload_fonts_ajax_controller',
+		'preload_fonts_context',
 	];
 
 	/**
@@ -39,7 +43,16 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register(): void {
-		$this->getContainer()->addShared( 'plf_table', PLFTable::class );
-		$this->getContainer()->add( 'plf_query', PLFQuery::class );
+		$this->getContainer()->addShared( 'preload_fonts_table', PreloadFontsTable::class );
+		$this->getContainer()->add( 'preload_fonts_query', PreloadFontsQuery::class );
+		$this->getContainer()->add( 'preload_fonts_context', Context::class );
+
+		$this->getContainer()->add( 'preload_fonts_ajax_controller', AJAXController::class )
+			->addArguments(
+				[
+					$this->getContainer()->get( 'preload_fonts_query' ),
+					$this->getContainer()->get( 'preload_fonts_context' ),
+				]
+			);
 	}
 }

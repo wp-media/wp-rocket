@@ -87,7 +87,7 @@ class PreloadFonts extends AbstractQueries implements QueriesInterface {
 		 *
 		 * @param int $delete_interval The interval in months after which an PLF entry is considered old. Default is 1 month.
 		 */
-		$delete_interval = wpm_apply_filters_typed( 'integer', 'rocket_plf_cleanup_interval', 1 );
+		$delete_interval = wpm_apply_filters_typed( 'integer', 'rocket_preload_fonts_cleanup_interval', 1 );
 
 		if ( $delete_interval <= 0 ) {
 			return false;
