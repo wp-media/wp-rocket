@@ -32,6 +32,16 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	public function print_head_elements( $content ) {
+        /**
+         * Filter Head elements array.
+         *
+         * @param array $head_items Elements to be added to head after closing of title tag.
+         *
+         * Priority 10: preconnect
+         * Priority 30: preload
+         * Priority 50: styles
+         * @returns array
+         */
 		$items = wpm_apply_filters_typed( 'array','rocket_head_items', [] );
 		if ( empty( $items ) ) {
 			return $content;

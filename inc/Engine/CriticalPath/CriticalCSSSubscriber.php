@@ -4,6 +4,7 @@ namespace WP_Rocket\Engine\CriticalPath;
 
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Common\Head\ElementTrait;
 use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Event_Management\Subscriber_Interface;
@@ -18,6 +19,7 @@ use WP_Rocket\Engine\Support\CommentTrait;
 class CriticalCSSSubscriber implements Subscriber_Interface {
 	use RegexTrait;
 	use CommentTrait;
+	use ElementTrait;
 
 	/**
 	 * Instance of Critical CSS.
@@ -60,6 +62,8 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 	 * @var User
 	 */
 	protected $user;
+
+	private $critical_css_content = '';
 
 	/**
 	 * Creates an instance of the Critical CSS Subscriber.
@@ -112,6 +116,8 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 				[ 'insert_critical_css_buffer', 19 ],
 				[ 'async_css', 32 ],
 			],
+
+			'rocket_head_items' => [ 'insert_css_in_head', 50 ],
 
 			'switch_theme'                      => 'maybe_regenerate_cpcss',
 			'rocket_excluded_inline_js_content' => 'exclude_inline_js',
@@ -595,18 +601,22 @@ JS;
 			return $buffer;
 		}
 
-		$critical_css_content = str_replace( '\\', '\\\\', $critical_css_content );
-
-		$buffer = preg_replace(
-			'#</title>#iU',
-			'</title><style id="rocket-critical-css">' . wp_strip_all_tags( $critical_css_content ) . '</style>',
-			$buffer,
-			1
-		);
+		$this->critical_css_content = str_replace( '\\', '\\\\', $critical_css_content );
 
 		$buffer = preg_replace( '#</body>#iU', $this->return_remove_cpcss_script() . '</body>', $buffer, 1 );
 
 		return $this->add_meta_comment( 'async_css', $buffer );
+	}
+
+	public function insert_css_in_head( $items ) {
+		if ( empty( $this->critical_css_content ) ) {
+			return $items;
+		}
+
+		$items += $this->style_tag( $this->critical_css_content, [
+			'id' => 'rocket-critical-css',
+		] );
+		return $items;
 	}
 
 	/**
