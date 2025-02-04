@@ -255,10 +255,11 @@ class Subscriber implements Subscriber_Interface {
 
 		$this->assets->insertYoutubeThumbnailScript(
 			[
-				'resolution' => $thumbnail_resolution,
-				'lazy_image' => (bool) $this->options->get( 'lazyload' ),
-				'native'     => $this->is_native_images(),
-				'extension'  => $extension,
+				'resolution'        => $thumbnail_resolution,
+				'lazy_image'        => (bool) $this->options->get( 'lazyload' ),
+				'native'            => $this->is_native_images(),
+				'extension'         => $extension,
+				'button_aria_label' => esc_html__( 'Play Youtube video', 'rocket' ),
 			]
 		);
 	}

@@ -24,7 +24,6 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @var array
 	 */
 	protected $provides = [
-		'lazyload_css_cache',
 		'lazyload_css_subscriber',
 	];
 
@@ -45,9 +44,6 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register(): void {
-		$this->getContainer()->add( 'lazyload_css_cache', FilesystemCache::class )
-			->addArgument( apply_filters( 'rocket_lazyload_css_cache_root', 'background-css/' . get_current_blog_id() ) );
-
 		$cache = $this->getContainer()->get( 'lazyload_css_cache' );
 
 		$this->getContainer()->add( 'lazyload_css_context', LazyloadCSSContext::class )

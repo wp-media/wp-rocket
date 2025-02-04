@@ -46,7 +46,7 @@ class Cleaner extends ActionScheduler_QueueCleaner {
 	 * @param int                        $batch_size The batch size.
 	 * @param string                     $group Current queue group.
 	 */
-	public function __construct( ActionScheduler_Store $store = null, $batch_size = 20, $group = '' ) {
+	public function __construct( ?ActionScheduler_Store $store = null, $batch_size = 20, $group = '' ) {
 		parent::__construct( $store, $batch_size );
 		$this->store = $store ? $store : ActionScheduler_Store::instance();
 		$this->group = $group;

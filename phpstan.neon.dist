@@ -55,7 +55,7 @@ parameters:
 		 - %currentWorkingDirectory%/inc/classes/subscriber/third-party/
 		 - %currentWorkingDirectory%/inc/3rd-party/
 rules:
-	- WP_Rocket\Tests\phpstan\Rules\DiscourageUpdateOptionUsage
+	- WP_Rocket\Tests\phpstan\Rules\DiscourageWPOptionUsage
 	- WP_Rocket\Tests\phpstan\Rules\DiscourageApplyFilters
 	- WP_Rocket\Tests\phpstan\Rules\EnsureCallbackMethodsExistsInSubscribedEvents
 	- WP_Rocket\Tests\phpstan\Rules\NoHooksInORM

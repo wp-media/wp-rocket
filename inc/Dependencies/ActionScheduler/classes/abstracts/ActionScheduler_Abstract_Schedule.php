@@ -10,16 +10,18 @@ abstract class ActionScheduler_Abstract_Schedule extends ActionScheduler_Schedul
 	 *
 	 * @var DateTime
 	 */
-	private $scheduled_date = NULL;
+	private $scheduled_date = null;
 
 	/**
 	 * Timestamp equivalent of @see $this->scheduled_date
 	 *
 	 * @var int
 	 */
-	protected $scheduled_timestamp = NULL;
+	protected $scheduled_timestamp = null;
 
 	/**
+	 * Construct.
+	 *
 	 * @param DateTime $date The date & time to run the action.
 	 */
 	public function __construct( DateTime $date ) {
@@ -36,7 +38,7 @@ abstract class ActionScheduler_Abstract_Schedule extends ActionScheduler_Schedul
 	/**
 	 * Calculate when the next instance of this schedule would run based on a given date & time.
 	 *
-	 * @param DateTime $after
+	 * @param DateTime $after Start timestamp.
 	 * @return DateTime
 	 */
 	abstract protected function calculate_next( DateTime $after );
@@ -44,7 +46,7 @@ abstract class ActionScheduler_Abstract_Schedule extends ActionScheduler_Schedul
 	/**
 	 * Get the next date & time when this schedule should run after a given date & time.
 	 *
-	 * @param DateTime $after
+	 * @param DateTime $after Start timestamp.
 	 * @return DateTime|null
 	 */
 	public function get_next( DateTime $after ) {
@@ -66,7 +68,8 @@ abstract class ActionScheduler_Abstract_Schedule extends ActionScheduler_Schedul
 	}
 
 	/**
-	 * For PHP 5.2 compat, since DateTime objects can't be serialized
+	 * For PHP 5.2 compat, because DateTime objects can't be serialized
+	 *
 	 * @return array
 	 */
 	public function __sleep() {
@@ -76,6 +79,9 @@ abstract class ActionScheduler_Abstract_Schedule extends ActionScheduler_Schedul
 		);
 	}
 
+	/**
+	 * Wakeup.
+	 */
 	public function __wakeup() {
 		$this->scheduled_date = as_get_datetime_object( $this->scheduled_timestamp );
 		unset( $this->scheduled_timestamp );
