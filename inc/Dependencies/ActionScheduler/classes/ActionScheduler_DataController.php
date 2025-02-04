@@ -18,10 +18,10 @@ class ActionScheduler_DataController {
 	const DATASTORE_CLASS = 'ActionScheduler_DBStore';
 
 	/** Logger data store class name. */
-	const LOGGER_CLASS    = 'ActionScheduler_DBLogger';
+	const LOGGER_CLASS = 'ActionScheduler_DBLogger';
 
 	/** Migration status option name. */
-	const STATUS_FLAG     = 'action_scheduler_migration_status';
+	const STATUS_FLAG = 'action_scheduler_migration_status';
 
 	/** Migration status option value. */
 	const STATUS_COMPLETE = 'complete';
@@ -29,13 +29,25 @@ class ActionScheduler_DataController {
 	/** Migration minimum required PHP version. */
 	const MIN_PHP_VERSION = '5.5';
 
-	/** @var ActionScheduler_DataController */
+	/**
+	 * Instance.
+	 *
+	 * @var ActionScheduler_DataController
+	 */
 	private static $instance;
 
-	/** @var int */
+	/**
+	 * Sleep time in seconds.
+	 *
+	 * @var int
+	 */
 	private static $sleep_time = 0;
 
-	/** @var int */
+	/**
+	 * Tick count required for freeing memory.
+	 *
+	 * @var int
+	 */
 	private static $free_ticks = 50;
 
 	/**
@@ -137,6 +149,8 @@ class ActionScheduler_DataController {
 		\WP_CLI::warning( __( 'Attempting to reduce used memory...', 'action-scheduler' ) );
 
 		/**
+		 * Globals.
+		 *
 		 * @var $wpdb            \wpdb
 		 * @var $wp_object_cache \WP_Object_Cache
 		 */
@@ -154,7 +168,7 @@ class ActionScheduler_DataController {
 		$wp_object_cache->cache          = array();
 
 		if ( is_callable( array( $wp_object_cache, '__remoteset' ) ) ) {
-			call_user_func( array( $wp_object_cache, '__remoteset' ) ); // important
+			call_user_func( array( $wp_object_cache, '__remoteset' ) ); // important!
 		}
 	}
 

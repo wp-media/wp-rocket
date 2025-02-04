@@ -672,7 +672,7 @@ function rocket_notice_html( $args ) {
 			break;
 		case 'clear_used_css':
 			$params = [
-				'action' => 'rocket_clear_usedcss',
+				'action' => 'rocket_clean_saas',
 			];
 
 			if ( ! empty( $_SERVER['REQUEST_URI'] ) ) {

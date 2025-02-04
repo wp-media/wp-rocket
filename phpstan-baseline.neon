@@ -41,6 +41,16 @@ parameters:
 			path: inc/Engine/Admin/Deactivation/DeactivationIntent.php
 
 		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: inc/Engine/Admin/Deactivation/DeactivationIntent.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 4
+			path: inc/Engine/Admin/DomainChange/Subscriber.php
+
+		-
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 2
 			path: inc/Engine/Admin/DomainChange/Subscriber.php
@@ -53,6 +63,11 @@ parameters:
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 12
+			path: inc/Engine/Admin/Settings/Page.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 2
 			path: inc/Engine/Admin/Settings/Page.php
 
 		-
@@ -81,13 +96,38 @@ parameters:
 			path: inc/Engine/CDN/CDN.php
 
 		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 3
+			path: inc/Engine/CDN/RocketCDN/APIClient.php
+
+		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
 			path: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php
 
 		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php
+
+		-
+			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: inc/Engine/CDN/RocketCDN/CDNOptionsManager.php
+
+		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
+			path: inc/Engine/CDN/RocketCDN/DataManagerSubscriber.php
+
+		-
+			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 3
+			path: inc/Engine/CDN/RocketCDN/DataManagerSubscriber.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 2
 			path: inc/Engine/CDN/RocketCDN/DataManagerSubscriber.php
 
 		-
@@ -97,6 +137,11 @@ parameters:
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			count: 2
+			path: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 2
 			path: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php
 
@@ -126,6 +171,11 @@ parameters:
 			path: inc/Engine/Cache/PurgeExpired/PurgeExpiredCache.php
 
 		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: inc/Engine/Cache/PurgeExpired/PurgeExpiredCache.php
+
+		-
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: inc/Engine/Cache/PurgeExpired/PurgeExpiredCache.php
@@ -146,6 +196,11 @@ parameters:
 			path: inc/Engine/Common/Clock/WPRClock.php
 
 		-
+			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: inc/Engine/Common/Database/Tables/AbstractTable.php
+
+		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
 			path: inc/Engine/Common/ExtractCSS/ServiceProvider.php
@@ -159,6 +214,11 @@ parameters:
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: inc/Engine/Common/JobManager/APIHandler/APIClient.php
+
+		-
+			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: inc/Engine/Common/PerformanceHints/Database/Table/AbstractTable.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
@@ -181,6 +241,11 @@ parameters:
 			path: inc/Engine/CriticalPath/Admin/Admin.php
 
 		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: inc/Engine/CriticalPath/Admin/Settings.php
+
+		-
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 2
 			path: inc/Engine/CriticalPath/Admin/Settings.php
@@ -191,7 +256,17 @@ parameters:
 			path: inc/Engine/CriticalPath/CriticalCSS.php
 
 		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 4
+			path: inc/Engine/CriticalPath/CriticalCSS.php
+
+		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			count: 2
+			path: inc/Engine/CriticalPath/CriticalCSSSubscriber.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 2
 			path: inc/Engine/CriticalPath/CriticalCSSSubscriber.php
 
@@ -211,9 +286,19 @@ parameters:
 			path: inc/Engine/Heartbeat/HeartbeatSubscriber.php
 
 		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: inc/Engine/License/Renewal.php
+
+		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 3
 			path: inc/Engine/Media/AboveTheFold/AJAX/Controller.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: inc/Engine/Media/AboveTheFold/Context/Context.php
 
 		-
 			message: "#^Hooks should not be used in ORM classes\\: WP_Rocket\\\\Engine\\\\Media\\\\AboveTheFold\\\\Database\\\\Queries\\\\AboveTheFold\\:\\:apply_filters$#"
@@ -286,6 +371,11 @@ parameters:
 			path: inc/Engine/Optimization/DeferJS/DeferJS.php
 
 		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: inc/Engine/Optimization/DeferJS/DeferJS.php
+
+		-
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: inc/Engine/Optimization/DeferJS/DeferJS.php
@@ -296,14 +386,14 @@ parameters:
 			path: inc/Engine/Optimization/DelayJS/Admin/SiteList.php
 
 		-
-			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
-			count: 1
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 2
 			path: inc/Engine/Optimization/DelayJS/Admin/SiteList.php
 
 		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
-			path: inc/Engine/Optimization/DelayJS/HTML.php
+			path: inc/Engine/Optimization/DelayJS/Admin/SiteList.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
@@ -319,6 +409,11 @@ parameters:
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
 			path: inc/Engine/Optimization/LazyRenderContent/AJAX/Controller.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: inc/Engine/Optimization/LazyRenderContent/Context/Context.php
 
 		-
 			message: "#^Hooks should not be used in ORM classes\\: WP_Rocket\\\\Engine\\\\Optimization\\\\LazyRenderContent\\\\Database\\\\Queries\\\\LazyRenderContent\\:\\:apply_filters$#"
@@ -366,13 +461,28 @@ parameters:
 			path: inc/Engine/Optimization/Minify/JS/Subscriber.php
 
 		-
+			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: inc/Engine/Optimization/RUCSS/Admin/Database.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 2
+			path: inc/Engine/Optimization/RUCSS/Admin/Settings.php
+
+		-
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 2
 			path: inc/Engine/Optimization/RUCSS/Admin/Settings.php
 
 		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php
+
+		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 2
+			count: 1
 			path: inc/Engine/Optimization/RUCSS/Controller/Filesystem.php
 
 		-
@@ -411,6 +521,11 @@ parameters:
 			path: inc/Engine/Preload/Controller/LoadInitialSitemap.php
 
 		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: inc/Engine/Preload/Controller/LoadInitialSitemap.php
+
+		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 8
 			path: inc/Engine/Preload/Controller/PreloadUrl.php
@@ -431,6 +546,11 @@ parameters:
 			path: inc/Engine/Preload/Database/Queries/Cache.php
 
 		-
+			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: inc/Engine/Preload/Database/Tables/Cache.php
+
+		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 2
 			path: inc/Engine/Preload/Fonts.php
@@ -446,9 +566,34 @@ parameters:
 			path: inc/Engine/Preload/Subscriber.php
 
 		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: inc/Engine/Preload/Subscriber.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: inc/Engine/Saas/Admin/Notices.php
+
+		-
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: inc/ThirdParty/Hostings/Godaddy.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 2
+			path: inc/ThirdParty/Hostings/OneCom.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: inc/ThirdParty/Hostings/ProIsp.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: inc/ThirdParty/Plugins/Ads/Adthrive.php
 
 		-
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
@@ -456,9 +601,24 @@ parameters:
 			path: inc/ThirdParty/Plugins/Ads/Adthrive.php
 
 		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 5
+			path: inc/ThirdParty/Plugins/CDN/Cloudflare.php
+
+		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
 			path: inc/ThirdParty/Plugins/ContactForm7.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: inc/ThirdParty/Plugins/Cookie/Termly.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 13
+			path: inc/ThirdParty/Plugins/Ecommerce/BigCommerce.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
@@ -466,9 +626,44 @@ parameters:
 			path: inc/ThirdParty/Plugins/Ecommerce/WooCommerceSubscriber.php
 
 		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 3
+			path: inc/ThirdParty/Plugins/Ecommerce/WooCommerceSubscriber.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: inc/ThirdParty/Plugins/I18n/WPML.php
+
+		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
 			path: inc/ThirdParty/Plugins/ModPagespeed.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 2
+			path: inc/ThirdParty/Plugins/Optimization/AMP.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 5
+			path: inc/ThirdParty/Plugins/Optimization/Autoptimize.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: inc/ThirdParty/Plugins/Optimization/Perfmatters.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: inc/ThirdParty/Plugins/Optimization/RapidLoad.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: inc/ThirdParty/Plugins/Optimization/WPMeteor.php
 
 		-
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
@@ -476,9 +671,24 @@ parameters:
 			path: inc/ThirdParty/Plugins/Optimization/WPMeteor.php
 
 		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: inc/ThirdParty/Plugins/PageBuilder/Elementor.php
+
+		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 2
 			path: inc/ThirdParty/Plugins/SEO/AllInOneSEOPack.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: inc/ThirdParty/Plugins/SEO/AllInOneSEOPack.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 2
+			path: inc/ThirdParty/Plugins/SEO/Yoast.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
@@ -491,7 +701,27 @@ parameters:
 			path: inc/ThirdParty/Plugins/SimpleCustomCss.php
 
 		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: inc/ThirdParty/Plugins/SimpleCustomCss.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 2
+			path: inc/ThirdParty/Plugins/ThirstyAffiliates.php
+
+		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			count: 1
+			path: inc/ThirdParty/Plugins/WPGeotargeting.php
+
+		-
+			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: inc/ThirdParty/Plugins/WPGeotargeting.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: inc/ThirdParty/Plugins/WPGeotargeting.php
 
@@ -499,6 +729,11 @@ parameters:
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: inc/ThirdParty/Plugins/WPGeotargeting.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: inc/ThirdParty/Themes/Avada.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
@@ -601,6 +836,11 @@ parameters:
 			path: tests/Integration/inc/Addon/Cloudflare/Subscriber/addCdnHelperMessage.php
 
 		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Addon/Cloudflare/Subscriber/deactivateDevMode.php
+
+		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Addon/Cloudflare/Subscriber/protocolRewrite.php
@@ -641,9 +881,24 @@ parameters:
 			path: tests/Integration/inc/Engine/Admin/Deactivation/DeactivationIntent/activateSafeMode.php
 
 		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Admin/Deactivation/DeactivationIntent/activateSafeMode.php
+
+		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/Admin/Deactivation/Subscriber/addDataAttribute.php
+
+		-
+			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Admin/Deactivation/Subscriber/addModalAssets.php
+
+		-
+			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Admin/Deactivation/Subscriber/insertDeactivationIntentForm.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
@@ -661,9 +916,19 @@ parameters:
 			path: tests/Integration/inc/Engine/Admin/Settings/Subscriber/asyncWistiaScript.php
 
 		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 2
+			path: tests/Integration/inc/Engine/Admin/Settings/Subscriber/enableMobileCache.php
+
+		-
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/Admin/Settings/Subscriber/enableMobileCache.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 2
+			path: tests/Integration/inc/Engine/Admin/Settings/Subscriber/enableSeparateCacheFilesMobile.php
 
 		-
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
@@ -681,9 +946,24 @@ parameters:
 			path: tests/Integration/inc/Engine/CDN/RocketCDN/AdminPageSubscriber/preserveAuthorizationToken.php
 
 		-
+			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/CDN/RocketCDN/AdminPageSubscriber/preserveAuthorizationToken.php
+
+		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/CDN/RocketCDN/AdminPageSubscriber/rocketcdnField.php
+
+		-
+			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/CDN/RocketCDN/CDNOptionsManager/TestCase.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 2
+			path: tests/Integration/inc/Engine/CDN/RocketCDN/CDNOptionsManager/TestCase.php
 
 		-
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
@@ -691,14 +971,29 @@ parameters:
 			path: tests/Integration/inc/Engine/CDN/RocketCDN/CDNOptionsManager/TestCase.php
 
 		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/CDN/RocketCDN/CDNOptionsManager/disable.php
+
+		-
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/CDN/RocketCDN/NoticesSubscriber/displayRocketcdnCta.php
 
 		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/CDN/RocketCDN/RESTSubscriber/disable.php
+
+		-
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/CDN/RocketCDN/RESTSubscriber/disable.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/CDN/RocketCDN/RESTSubscriber/enable.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
@@ -761,6 +1056,11 @@ parameters:
 			path: tests/Integration/inc/Engine/Cache/Config/ConfigSubscriber/changeCacheRejectUriWithPermalink.php
 
 		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Cache/PurgeActionsSubscriber/purgeCacheOnPublicSettingChange.php
+
+		-
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 2
 			path: tests/Integration/inc/Engine/Cache/PurgeActionsSubscriber/purgeCacheOnPublicSettingChange.php
@@ -774,6 +1074,11 @@ parameters:
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 2
 			path: tests/Integration/inc/Engine/Cache/PurgeExpired/Subscriber/scheduleEvent.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 2
+			path: tests/Integration/inc/Engine/Cache/PurgeExpired/Subscriber/updateLifespanOptionOnUpdate.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
@@ -836,12 +1141,27 @@ parameters:
 			path: tests/Integration/inc/Engine/CriticalPath/Admin/Subscriber/addHiddenAsyncCssMobile.php
 
 		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 2
+			path: tests/Integration/inc/Engine/CriticalPath/Admin/Subscriber/enableMobileCpcss.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/CriticalPath/Admin/Subscriber/setAsyncCssMobileDefaultValue.php
+
+		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/CriticalPath/CriticalCSS/cleanCriticalCss.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/CriticalPath/CriticalCSS/getCriticalCssContent.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/CriticalPath/CriticalCSS/getCriticalCssContent.php
 
@@ -854,6 +1174,11 @@ parameters:
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/CriticalPath/CriticalCSS/getCurrentPageCriticalCss.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/CriticalPath/CriticalCSSSubscriber/deleteCpcss.php
 
 		-
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
@@ -876,6 +1201,11 @@ parameters:
 			path: tests/Integration/inc/Engine/CriticalPath/CriticalCSSSubscriber/insertCriticalCssBuffer.php
 
 		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/CriticalPath/CriticalCSSSubscriber/insertCriticalCssBuffer.php
+
+		-
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 2
 			path: tests/Integration/inc/Engine/CriticalPath/CriticalCSSSubscriber/insertCriticalCssBuffer.php
@@ -887,6 +1217,11 @@ parameters:
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/CriticalPath/CriticalCSSSubscriber/stopCpcssProcess.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/CriticalPath/CriticalCSSSubscriber/stopCpcssProcess.php
 
@@ -1046,6 +1381,16 @@ parameters:
 			path: tests/Integration/inc/Engine/Optimization/DeferJS/AdminSubscriber/addDeferJsOption.php
 
 		-
+			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Optimization/DeferJS/AdminSubscriber/excludeJqueryDefer.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 2
+			path: tests/Integration/inc/Engine/Optimization/DeferJS/AdminSubscriber/excludeJqueryDefer.php
+
+		-
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/Optimization/DeferJS/AdminSubscriber/excludeJqueryDefer.php
@@ -1056,6 +1401,11 @@ parameters:
 			path: tests/Integration/inc/Engine/Optimization/DeferJS/Subscriber/deferInlineJs.php
 
 		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Optimization/DeferJS/Subscriber/deferInlineJs.php
+
+		-
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/Optimization/DeferJS/Subscriber/deferInlineJs.php
@@ -1066,12 +1416,22 @@ parameters:
 			path: tests/Integration/inc/Engine/Optimization/DeferJS/Subscriber/deferJs.php
 
 		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Optimization/DeferJS/Subscriber/deferJs.php
+
+		-
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/Optimization/DeferJS/Subscriber/deferJs.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Optimization/DeferJS/Subscriber/excludeJqueryCombine.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/Optimization/DeferJS/Subscriber/excludeJqueryCombine.php
 
@@ -1096,12 +1456,22 @@ parameters:
 			path: tests/Integration/inc/Engine/Optimization/DelayJS/Admin/Subscriber/sanitizeOptions.php
 
 		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Optimization/DelayJS/Admin/Subscriber/setOptionOnUpdate.php
+
+		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/Optimization/DelayJS/Subscriber/addDelayJsScript.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Optimization/DelayJS/Subscriber/delayJs.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/Optimization/DelayJS/Subscriber/delayJs.php
 
@@ -1161,6 +1531,11 @@ parameters:
 			path: tests/Integration/inc/Engine/Optimization/DynamicLists/Subscriber/updateLists.php
 
 		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 2
+			path: tests/Integration/inc/Engine/Optimization/GoogleFonts/Admin/Subscriber/enableGoogleFonts.php
+
+		-
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/Optimization/GoogleFonts/Admin/Subscriber/enableGoogleFonts.php
@@ -1189,6 +1564,11 @@ parameters:
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/Optimization/LazyRenderContent/Frontend/Subscriber/add_hashes_when_allowed.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Optimization/Minify/CSS/AdminSubscriber/regenerateMinifyCssKey.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
@@ -1251,7 +1631,17 @@ parameters:
 			path: tests/Integration/inc/Engine/Optimization/RUCSS/Admin/Subscriber/truncateUsedCss.php
 
 		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Optimization/RUCSS/Admin/Subscriber/updateSafelistItems.php
+
+		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Optimization/RUCSS/Frontend/Subscriber/maybeDisablePreloadFonts.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/Optimization/RUCSS/Frontend/Subscriber/maybeDisablePreloadFonts.php
 
@@ -1259,6 +1649,16 @@ parameters:
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/Optimization/RUCSS/Frontend/Subscriber/maybeDisablePreloadFonts.php
+
+		-
+			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 2
+			path: tests/Integration/inc/Engine/Optimization/RUCSS/Frontend/Subscriber/onUpdate.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Optimization/RUCSS/Frontend/Subscriber/onUpdate.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
@@ -1288,6 +1688,16 @@ parameters:
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
+			path: tests/Integration/inc/Engine/WPRocketUninstall/uninstall.php
+
+		-
+			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 2
+			path: tests/Integration/inc/Engine/WPRocketUninstall/uninstall.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 2
 			path: tests/Integration/inc/Engine/WPRocketUninstall/uninstall.php
 
 		-
@@ -1411,6 +1821,11 @@ parameters:
 			path: tests/Integration/inc/ThirdParty/Hostings/WPXCloud/varnishIP.php
 
 		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/ThirdParty/Plugins/Ads/Adthrive/addDelayJsExclusion.php
+
+		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/ThirdParty/Plugins/Ads/Adthrive/maybeAddDelayJsExclusion.php
@@ -1466,12 +1881,32 @@ parameters:
 			path: tests/Integration/inc/ThirdParty/Plugins/Jetpack/addJetpackSitemap.php
 
 		-
+			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/ThirdParty/Plugins/Optimization/AMP/disableOptionsOnAmp.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/ThirdParty/Plugins/Optimization/AMP/disableOptionsOnAmp.php
+
+		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/ThirdParty/Plugins/Optimization/AMP/excludeScriptFromDelayJs.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/ThirdParty/Plugins/Optimization/AMP/isAmpCompatibleCallback.php
+
+		-
+			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/ThirdParty/Plugins/Optimization/AMP/isAmpCompatibleCallback.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/ThirdParty/Plugins/Optimization/AMP/isAmpCompatibleCallback.php
 
@@ -1496,6 +1931,11 @@ parameters:
 			path: tests/Integration/inc/ThirdParty/Plugins/Optimization/Ezoic/addExplanations.php
 
 		-
+			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/ThirdParty/Plugins/Optimization/Hummingbird/warningNotice.php
+
+		-
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/ThirdParty/Plugins/Optimization/Hummingbird/warningNotice.php
@@ -1514,6 +1954,11 @@ parameters:
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/ThirdParty/Plugins/Optimization/RocketLazyLoad/excludeRocketLazyLoadScript.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/ThirdParty/Plugins/Optimization/WPMeteor/disableDelayJs.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
@@ -1541,12 +1986,22 @@ parameters:
 			path: tests/Integration/inc/ThirdParty/Plugins/PageBuilder/Elementor/addFixAnimationsScript.php
 
 		-
+			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/ThirdParty/Plugins/PageBuilder/Elementor/clearCache.php
+
+		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/ThirdParty/Plugins/PageBuilder/Elementor/excludeJs.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/ThirdParty/Plugins/PageBuilder/Elementor/excludePostCss.php
+
+		-
+			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/ThirdParty/Plugins/PageBuilder/Elementor/excludePostCss.php
 
@@ -1584,6 +2039,11 @@ parameters:
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/ThirdParty/Plugins/Smush/SmushSubscriberTestCase.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 2
+			path: tests/Integration/inc/ThirdParty/Plugins/Smush/maybeDeactivateRocketLazyload.php
 
 		-
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
@@ -1628,6 +2088,11 @@ parameters:
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 2
+			path: tests/Integration/inc/ThirdParty/Themes/Bridge/maybeClearCache.php
+
+		-
+			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
 			path: tests/Integration/inc/ThirdParty/Themes/Bridge/maybeClearCache.php
 
 		-
@@ -1701,6 +2166,16 @@ parameters:
 			path: tests/Integration/inc/admin/rocketAfterSaveOptions.php
 
 		-
+			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 2
+			path: tests/Integration/inc/admin/rocketFirstInstall.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 3
+			path: tests/Integration/inc/admin/rocketFirstInstall.php
+
+		-
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 2
 			path: tests/Integration/inc/admin/rocketFirstInstall.php
@@ -1709,6 +2184,11 @@ parameters:
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/functions/rocketIsPluginActive.php
+
+		-
+			message: "#^Path in include_once\\(\\) \"vfs\\://public/wp\\-content/plugins/wp\\-rocket/inc/classes/dependencies/mobiledetect/mobiledetectlib/Mobile_Detect\\.php\" is not a file or it does not exist\\.$#"
+			count: 1
+			path: tests/Integration/vfs:/public/wp-content/advanced-cache.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"

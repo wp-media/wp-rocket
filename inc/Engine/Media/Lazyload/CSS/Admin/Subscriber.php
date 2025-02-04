@@ -34,6 +34,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_meta_boxes_fields'       => [ 'add_meta_box', 8 ],
 			'admin_notices'                  => 'maybe_add_error_notice',
 			'rocket_safe_mode_reset_options' => 'add_option_safemode',
+			'wp_rocket_upgrade'              => [ 'clear_background_css_with_upgrade', 10, 2 ],
 		];
 	}
 
@@ -78,5 +79,23 @@ class Subscriber implements Subscriber_Interface {
 	public function add_option_safemode( array $options ) {
 		$options['lazyload_css_bg_img'] = 0;
 		return $options;
+	}
+
+	/**
+	 * Upgrade callback.
+	 *
+	 * @param string $new_version Plugin new version.
+	 * @param string $old_version Plugin old version.
+	 * @return void
+	 */
+	public function clear_background_css_with_upgrade( $new_version, $old_version ) {
+		if ( empty( $old_version ) || version_compare( $old_version, '3.18', '>' ) ) {
+			return;
+		}
+
+		$preserve_dirs = is_multisite() ? get_sites( [ 'fields' => 'ids' ] ) : [ get_current_blog_id() ];
+
+		// Completely clear background-css directory.
+		$this->cache->full_clear( $preserve_dirs );
 	}
 }

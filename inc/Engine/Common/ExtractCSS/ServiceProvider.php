@@ -41,7 +41,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		 *
 		 * @param string $root Background CSS cache folder.
 		 */
-		$root = apply_filters( 'rocket_lazyload_css_cache_root', 'background-css' );
+		$root = apply_filters( 'rocket_lazyload_css_cache_root', 'background-css/' );
 		$this->getContainer()->add( 'lazyload_css_cache', FilesystemCache::class )
 			->addArgument( $root );
 		$this->getContainer()->addShared( 'common_extractcss_subscriber', Subscriber::class );

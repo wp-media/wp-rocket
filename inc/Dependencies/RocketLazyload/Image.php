@@ -67,7 +67,7 @@ class Image {
 	 * @return string
 	 */
 	public function lazyloadBackgroundImages( $html, $buffer ) {
-		if ( ! preg_match_all( '#<(?<tag>div|figure|section|span|li|a)\s+(?<before>[^>]+[\'"\s])?style\s*=\s*([\'"])(?<styles>.*?)\3(?<after>[^>]*)>#is', $buffer, $elements, PREG_SET_ORDER ) ) {
+		if ( ! preg_match_all( '#<(?<tag>div|figure|section|aside|span|li|a)\s+(?<before>[^>]+[\'"\s])?style\s*=\s*([\'"])(?<styles>.*?)\3(?<after>[^>]*)>#is', $buffer, $elements, PREG_SET_ORDER ) ) {
 			return $html;
 		}
 
@@ -132,7 +132,7 @@ class Image {
 		$class = $this->getClasses( $element );
 
 		if ( ! $class ) {
-			$result = preg_replace( '#<(img|div|figure|section|li|span|a)([^>]*)>#is', '<\1 class="rocket-lazyload"\2>', $element );
+			$result = preg_replace( '#<(img|div|figure|section|aside|li|span|a)([^>]*)>#is', '<\1 class="rocket-lazyload"\2>', $element );
 
 			if ( ! $result ) {
 				return $element;

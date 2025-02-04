@@ -36,7 +36,7 @@ class Processor {
 	 * @param Options_Data              $options Options instance.
 	 * @param WP_Filesystem_Direct|null $filesystem WordPress filesystem.
 	 */
-	public function __construct( array $factories, Options_Data $options, WP_Filesystem_Direct $filesystem = null ) {
+	public function __construct( array $factories, Options_Data $options, ?WP_Filesystem_Direct $filesystem = null ) {
 		$this->factories  = $factories;
 		$this->options    = $options;
 		$this->filesystem = $filesystem ?: rocket_direct_filesystem();
@@ -189,10 +189,18 @@ class Processor {
 		$script_url = rocket_get_constant( 'WP_ROCKET_ASSETS_JS_URL' ) . 'wpr-beacon' . $min . '.js';
 
 		// Create the script tag.
-		$script_tag = "<script data-name=\"wpr-wpr-beacon\" src='{$script_url}' async></script>"; // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript
+		$script_tag             = "<script data-name=\"wpr-wpr-beacon\" src='{$script_url}' async></script>"; // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript
+		$last_body_tag_position = strrpos( $html, '</body>' );
 
-		// Append the script tag just before the closing body tag.
-		return str_replace( '</body>', $inline_script . $script_tag . '</body>', $html );
+		if ( false !== $last_body_tag_position ) {
+			// Append the script tag just before the last closing body tag especially in cases where there's an iframe.
+			$html = substr_replace( $html, $inline_script . $script_tag . '</body>', $last_body_tag_position, 7 );
+		} else {
+			// Append to the end of html if </body> is not found.
+			$html .= $inline_script . $script_tag;
+		}
+
+		return $html;
 	}
 
 	/**

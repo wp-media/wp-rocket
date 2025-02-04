@@ -27,7 +27,7 @@ class FilesystemCache implements CacheInterface {
 	 * @param string                    $root_folder Root folder from the path.
 	 * @param WP_Filesystem_Direct|null $filesystem WordPress filesystem.
 	 */
-	public function __construct( string $root_folder, WP_Filesystem_Direct $filesystem = null ) {
+	public function __construct( string $root_folder, ?WP_Filesystem_Direct $filesystem = null ) {
 		$this->root_folder = $root_folder;
 		$this->filesystem  = $filesystem ?: rocket_direct_filesystem();
 	}
@@ -100,6 +100,32 @@ class FilesystemCache implements CacheInterface {
 			return false;
 		}
 		rocket_rrmdir( $root_path, [], $this->filesystem );
+		return true;
+	}
+
+	/**
+	 * Clear the whole background-css directory.
+	 *
+	 * @param array $preserve_dirs List of directories to be preserved.
+	 *
+	 * @return bool True on success and false on failure.
+	 */
+	public function full_clear( array $preserve_dirs = [] ): bool {
+		$base_path = $this->get_base_path();
+		if ( ! $this->filesystem->exists( $base_path ) ) {
+			return false;
+		}
+
+		if ( ! empty( $preserve_dirs ) ) {
+			$preserve_dirs = array_map(
+					function ( $dir ) use ( $base_path ) {
+						return $base_path . $dir;
+					},
+				$preserve_dirs
+				);
+		}
+
+		rocket_rrmdir( $base_path, $preserve_dirs, $this->filesystem );
 		return true;
 	}
 
@@ -217,6 +243,10 @@ class FilesystemCache implements CacheInterface {
 	 * @return bool
 	 */
 	public function is_accessible(): bool {
+		$base_path = $this->get_base_path();
+		if ( ! $this->filesystem->exists( $base_path ) ) {
+			rocket_mkdir_p( $base_path, $this->filesystem );
+		}
 		$root_path = $this->get_root_path();
 		if ( ! $this->filesystem->exists( $root_path ) ) {
 			rocket_mkdir_p( $root_path, $this->filesystem );
@@ -226,11 +256,20 @@ class FilesystemCache implements CacheInterface {
 	}
 
 	/**
-	 * Get root path from the cache.
+	 * Get root path from the cache (including current blog ID) with trailing slash.
 	 *
 	 * @return string
 	 */
 	public function get_root_path(): string {
+		return $this->get_base_path() . get_current_blog_id() . '/';
+	}
+
+	/**
+	 * Get base path from the cache (/cache/background-css/) with trailing slash.
+	 *
+	 * @return string
+	 */
+	private function get_base_path(): string {
 		return rtrim( _rocket_normalize_path( rocket_get_constant( 'WP_ROCKET_CACHE_ROOT_PATH' ) ) . $this->root_folder, '/' ) . '/';
 	}
 }
