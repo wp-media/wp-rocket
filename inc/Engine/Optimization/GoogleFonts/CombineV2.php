@@ -74,8 +74,8 @@ class CombineV2 extends AbstractGFOptimization {
 		}
 
 		$families     = array_unique( $families );
-		$combined_tag = $this->get_optimized_markup( $this->get_combined_url( $families ) );
-		$html         = preg_replace( '@<\/title>@i', '$0' . $combined_tag, $html, 1 );
+		$combined_url = $this->get_combined_url( $families );
+		$this->font_urls[] = $combined_url;
 
 		foreach ( $processed_tags as $font ) {
 			$html = str_replace( $font[0], '', $html );
@@ -85,7 +85,7 @@ class CombineV2 extends AbstractGFOptimization {
 			'V2 Google Fonts successfully combined.',
 			[
 				'GF combine process',
-				'url' => $combined_tag,
+				'url' => $combined_url,
 			]
 		);
 

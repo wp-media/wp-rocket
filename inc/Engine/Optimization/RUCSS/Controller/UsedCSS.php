@@ -365,12 +365,12 @@ class UsedCSS {
 	 *
 	 * @return array Filtered head items.
 	 */
-	private function add_used_css_to_html( array $items ): array {
+	public function add_used_css_to_html( array $items ): array {
 		if ( empty( $this->used_css_content ) ) {
 			return $items;
 		}
 
-		$items += $this->style_tag( $this->get_used_css_markup( $this->used_css_content ), [
+		$items[] = $this->style_tag( $this->get_used_css_markup( $this->used_css_content ), [
 			'id' => 'wpr-usedcss',
 		] );
 		return $items;

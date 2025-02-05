@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\GoogleFonts;
 
+use WP_Rocket\Engine\Common\Head\ElementTrait;
 use WP_Rocket\Engine\Media\Fonts\FontsTrait;
 
 /**
@@ -12,6 +13,7 @@ use WP_Rocket\Engine\Media\Fonts\FontsTrait;
  */
 abstract class AbstractGFOptimization {
 	use FontsTrait;
+	use ElementTrait;
 
 	/**
 	 * Allowed display values.
@@ -36,6 +38,8 @@ abstract class AbstractGFOptimization {
 	 * @var bool
 	 */
 	protected $has_google_fonts = true;
+
+	public $font_urls = [];
 
 	/**
 	 * Optimize Google Fonts
@@ -133,5 +137,57 @@ abstract class AbstractGFOptimization {
 			'<link rel="preload" data-rocket-preload as="style" href="%1$s" /><link rel="stylesheet" href="%1$s" media="print" onload="this.media=\'all\'" /><noscript><link rel="stylesheet" href="%1$s" /></noscript>', // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
 			$url
 		);
+	}
+
+	private function is_preload_enabled() {
+		return ! wpm_apply_filters_typed( 'boolean', 'rocket_disable_google_fonts_preload', false );
+	}
+
+	public function insert_font_stylesheet_into_head( $items ) {
+		if ( empty( $this->font_urls ) ) {
+			return $items;
+		}
+
+		$preload_enabled = $this->is_preload_enabled();
+
+		foreach ( $this->font_urls as $font_url ) {
+			$item = $this->stylesheet_link( [
+				'href' => $font_url,
+			] );
+
+			if ( ! $preload_enabled ) {
+				$items[] = $item;
+				continue;
+			}
+
+			$item['media'] = 'print';
+			$item['onload'] = 'this.media=\'all\'';
+			$items[] = $item;
+
+			$items[] = $this->noscript_tag(
+				sprintf( '<link rel="stylesheet" href="%1$s" />', $font_url )
+			);
+		}
+
+		return $items;
+	}
+
+	public function insert_font_preload_into_head( $items ) {
+		if ( empty( $this->font_urls ) ) {
+			return $items;
+		}
+
+		if ( ! $this->is_preload_enabled() ) {
+			return $items;
+		}
+
+		foreach ( $this->font_urls as $font_url ) {
+			$items[] = $this->preload_link( [
+				'href' => $font_url,
+				'as'   => 'style',
+			] );
+		}
+
+		return $items;
 	}
 }

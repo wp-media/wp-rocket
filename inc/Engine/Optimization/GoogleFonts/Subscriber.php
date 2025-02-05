@@ -55,6 +55,10 @@ class Subscriber implements Subscriber_Interface {
 		return [
 			'wp_resource_hints' => [ 'preconnect', 10, 2 ],
 			'rocket_buffer'     => [ 'process', 17 ],
+			'rocket_head_items' => [
+				[ 'insert_fonts_preload', 30 ],
+				[ 'insert_fonts_stylesheets', 50 ],
+			],
 		];
 	}
 
@@ -125,5 +129,15 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		return ! is_user_logged_in() || (bool) $this->options->get( 'cache_logged_user', 0 );
+	}
+
+	public function insert_fonts_stylesheets( $items ) {
+		$items = $this->combine->insert_font_stylesheet_into_head( $items );
+		return $this->combine_v2->insert_font_stylesheet_into_head( $items );
+	}
+
+	public function insert_fonts_preload( $items ) {
+		$items = $this->combine->insert_font_preload_into_head( $items );
+		return $this->combine_v2->insert_font_preload_into_head( $items );
 	}
 }

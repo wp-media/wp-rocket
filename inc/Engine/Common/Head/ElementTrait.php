@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\Common\Head;
 trait ElementTrait {
 	protected function preload_link( array $args = [] ) {
 		$args['rel'] = 'preload';
+		$args[ 1 ] = 'data-rocket-preload';
 		return $this->link( $args );
 	}
 
@@ -28,6 +29,11 @@ trait ElementTrait {
 		return $this->link( $args );
 	}
 
+	protected function stylesheet_link( array $args = [] ) {
+		$args['rel'] = 'stylesheet';
+		return $this->link( $args );
+	}
+
 	protected function style_tag( string $css = '', array $args = [] ) {
 		$element = [
 			'open_tag' => '<style',
@@ -36,6 +42,18 @@ trait ElementTrait {
 			'inner_content' => $css,
 		] );
 		$element[ 'close_tag' ] = '</style>';
+
+		return $element;
+	}
+
+	protected function noscript_tag( string $content = '', array $args = [] ) {
+		$element = [
+			'open_tag' => '<noscript',
+		];
+		$element += wp_parse_args( $args, [
+			'inner_content' => $content,
+		] );
+		$element[ 'close_tag' ] = '</noscript>';
 
 		return $element;
 	}

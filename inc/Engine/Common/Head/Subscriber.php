@@ -54,16 +54,7 @@ class Subscriber implements Subscriber_Interface {
 			if ( $this->is_duplicate( $item ) ) {
 				continue;
 			}
-
-			foreach ( $item as $key => $value ) {
-				if ( in_array( $key, [ 'open_tag', 'close_tag', 'inner_content' ], true ) ) {
-					$elements .= $value . ' ';
-					continue;
-				}
-				$elements .= $key . '="' . esc_attr( $value ) . '" ';
-			}
-
-			$elements .= "\n";
+			$elements .= $this->prepare_element( $item ) . "\n";
 		}
 
 		return $content . $elements;
@@ -84,5 +75,39 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		return true;
+	}
+
+	private function prepare_element( $element ) {
+		$open_tag = '';
+		if ( ! empty( $element['open_tag'] ) ) {
+			$open_tag = $element['open_tag'];
+			unset( $element['open_tag'] );
+		}
+
+		$close_tag = '';
+		if ( ! empty( $element['close_tag'] ) ) {
+			$close_tag = $element['close_tag'];
+			unset( $element['close_tag'] );
+		}
+
+		$inner_content = '';
+		if ( ! empty( $element['inner_content'] ) ) {
+			$inner_content = $element['inner_content'];
+			unset( $element['inner_content'] );
+		}
+
+		$attributes = [];
+
+		foreach ( $element as $key => $value ) {
+			if (is_int( $key ) ) {
+				$attributes[] = $value;
+				continue;
+			}
+			$attributes[] = $key . '="' . esc_attr( $value ) . '"';
+		}
+
+		$attributes_html = ! empty( $attributes ) ? implode( ' ', $attributes ) : '';
+
+		return $open_tag . ' ' . $attributes_html . '>' . $inner_content . $close_tag;
 	}
 }

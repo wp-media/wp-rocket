@@ -84,7 +84,7 @@ class Combine extends AbstractGFOptimization {
 			return $html;
 		}
 
-		$html = preg_replace( '@<\/title>@i', '$0' . $this->get_optimized_markup( $this->get_combined_url() ), $html, 1 );
+		$this->font_urls[] = $this->get_combined_url();
 
 		foreach ( $filtered_fonts as $font ) {
 			$html = str_replace( $font[0], '', $html );

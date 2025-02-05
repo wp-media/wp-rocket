@@ -612,7 +612,7 @@ JS;
 			return $items;
 		}
 
-		$items += $this->style_tag( $this->critical_css_content, [
+		$items[] = $this->style_tag( $this->critical_css_content, [
 			'id' => 'rocket-critical-css',
 		] );
 		return $items;
