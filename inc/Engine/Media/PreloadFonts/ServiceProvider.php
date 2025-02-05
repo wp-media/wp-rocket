@@ -43,9 +43,12 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register(): void {
+		$options = $this->getContainer()->get( 'options' );
+
 		$this->getContainer()->addShared( 'preload_fonts_table', PreloadFontsTable::class );
 		$this->getContainer()->add( 'preload_fonts_query', PreloadFontsQuery::class );
-		$this->getContainer()->add( 'preload_fonts_context', Context::class );
+		$this->getContainer()->add( 'preload_fonts_context', Context::class )
+			->addArgument( $options );
 
 		$this->getContainer()->add( 'preload_fonts_ajax_controller', AJAXController::class )
 			->addArguments(

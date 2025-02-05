@@ -10,7 +10,6 @@ use WP_Rocket\Engine\Media\PreloadFonts\Database\Queries\PreloadFonts as Preload
 use WP_Rocket\Engine\Optimization\UrlTrait;
 
 class Controller implements ControllerInterface {
-	use UrlTrait;
 	use AJAXControllerTrait;
 
 	/**
