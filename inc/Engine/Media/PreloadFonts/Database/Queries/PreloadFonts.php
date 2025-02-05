@@ -4,6 +4,7 @@ namespace WP_Rocket\Engine\Media\PreloadFonts\Database\Queries;
 
 use WP_Rocket\Engine\Common\PerformanceHints\Database\Queries\AbstractQueries;
 use WP_Rocket\Engine\Common\PerformanceHints\Database\Queries\QueriesInterface;
+use WP_Rocket\Engine\Media\PreloadFonts\AJAX\Controller;
 use WP_Rocket\Engine\Media\PreloadFonts\Database\Schema\PreloadFonts as PreloadFontsSchema;
 use WP_Rocket\Engine\Media\PreloadFonts\Database\Rows\PreloadFonts as PreloadFontsRows;
 class PreloadFonts extends AbstractQueries implements QueriesInterface {
@@ -81,7 +82,7 @@ class PreloadFonts extends AbstractQueries implements QueriesInterface {
 			return false;
 		}
 
-		$delete_interval = $this->deletion_interval();
+		$delete_interval = Controller::deletion_interval();
 
 		if ( $delete_interval <= 0 ) {
 			return false;
@@ -91,15 +92,5 @@ class PreloadFonts extends AbstractQueries implements QueriesInterface {
 		$query               = "DELETE FROM `$prefixed_table_name` WHERE status = 'failed' OR `last_accessed` <= date_sub(now(), interval $delete_interval month)";
 
 		return $db->query( $query );
-	}
-
-	private function deletion_interval() {
-		/**
-		 * Filters the interval (in months) to determine when a Preload Fonts(PLF) entry is considered 'old'.
-		 * Old PLF entries are eligible for deletion. By default, a PLF entry is considered old if it hasn't been accessed in the last month.
-		 *
-		 * @param int $delete_interval The interval in months after which an PLF entry is considered old. Default is 1 month.
-		 */
-		return wpm_apply_filters_typed( 'integer', 'rocket_preload_fonts_cleanup_interval', 1 );
 	}
 }
