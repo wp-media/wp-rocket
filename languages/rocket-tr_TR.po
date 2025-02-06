@@ -8,9 +8,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.18-alpha4\n"
+"Project-Id-Version: WP Rocket 3.18.1-alpha1\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2025-01-03T17:17:23+00:00\n"
+"POT-Creation-Date: 2025-01-29T08:41:11+00:00\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: BouRock, 2025\n"
 "Language-Team: Turkish (Turkey) (https://app.transifex.com/wp-media/teams/18133/tr_TR/)\n"
@@ -2988,7 +2988,7 @@ msgstr "Komut kodu zaman aşımı"
 msgid "It was not possible to determine a valid cut-off time: %s."
 msgstr "Geçerli bir kesinti zamanı belirlemek mümkün değildi: %s."
 
-#: inc/Engine/Common/Queue/RUCSSQueueRunner.php:269
+#: inc/Engine/Common/Queue/RUCSSQueueRunner.php:272
 msgid "Every minute"
 msgstr "Her dakika"
 
@@ -3489,9 +3489,13 @@ msgstr "Resimler için LazyLoad"
 msgid "LazyLoad for iframes/videos"
 msgstr "Iframe’ler ve görüntüler için LazyLoad"
 
-#: inc/Engine/Media/Lazyload/CSS/Admin/Subscriber.php:48
+#: inc/Engine/Media/Lazyload/CSS/Admin/Subscriber.php:49
 msgid "LazyLoad CSS backgrounds"
 msgstr "LazyLoad CSS arka planları"
+
+#: inc/Engine/Media/Lazyload/Subscriber.php:262
+msgid "Play Youtube video"
+msgstr "YouTube görüntüsünü oynat"
 
 #: inc/Engine/Optimization/DelayJS/Admin/SiteList.php:244
 msgid "Analytics & Trackers"

@@ -469,8 +469,8 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 					'url' => 'https://docs.wp-rocket.me/article/1721-exclude-urls-from-being-preloaded?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 				'fr' => [
-					'id'  => '63496d5b8a552811521e52d2',
-					'url' => 'https://fr.docs.wp-rocket.me/article/1722-exclure-url-du-prechargement?utm_source=wp_plugin&utm_medium=wp_rocket',
+					'id'  => '640b30058ca4460845b4a1c4',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1739-comment-exclure-urls-prechargement?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 			'bot'                        => [

@@ -13,17 +13,23 @@
 abstract class ActionScheduler_Abstract_Schema {
 
 	/**
-	 * @var int Increment this value in derived class to trigger a schema update.
+	 * Increment this value in derived class to trigger a schema update.
+	 *
+	 * @var int
 	 */
 	protected $schema_version = 1;
 
 	/**
-	 * @var string Schema version stored in database.
+	 * Schema version stored in database.
+	 *
+	 * @var string
 	 */
 	protected $db_version;
 
 	/**
-	 * @var array Names of tables that will be registered by this class.
+	 * Names of tables that will be registered by this class.
+	 *
+	 * @var array
 	 */
 	protected $tables = array();
 
@@ -43,14 +49,14 @@ abstract class ActionScheduler_Abstract_Schema {
 	public function register_tables( $force_update = false ) {
 		global $wpdb;
 
-		// make WP aware of our tables
+		// make WP aware of our tables.
 		foreach ( $this->tables as $table ) {
 			$wpdb->tables[] = $table;
 			$name           = $this->get_full_table_name( $table );
 			$wpdb->$table   = $name;
 		}
 
-		// create the tables
+		// create the tables.
 		if ( $this->schema_update_required() || $force_update ) {
 			foreach ( $this->tables as $table ) {
 				/**
@@ -67,7 +73,9 @@ abstract class ActionScheduler_Abstract_Schema {
 	}
 
 	/**
-	 * @param string $table The name of the table
+	 * Get table definition.
+	 *
+	 * @param string $table The name of the table.
 	 *
 	 * @return string The CREATE TABLE statement, suitable for passing to dbDelta
 	 */
@@ -84,7 +92,7 @@ abstract class ActionScheduler_Abstract_Schema {
 		$option_name      = 'schema-' . static::class;
 		$this->db_version = get_option( $option_name, 0 );
 
-		// Check for schema option stored by the Action Scheduler Custom Tables plugin in case site has migrated from that plugin with an older schema
+		// Check for schema option stored by the Action Scheduler Custom Tables plugin in case site has migrated from that plugin with an older schema.
 		if ( 0 === $this->db_version ) {
 
 			$plugin_option_name = 'schema-';
@@ -115,7 +123,7 @@ abstract class ActionScheduler_Abstract_Schema {
 	private function mark_schema_update_complete() {
 		$option_name = 'schema-' . static::class;
 
-		// work around race conditions and ensure that our option updates
+		// work around race conditions and ensure that our option updates.
 		$value_to_save = (string) $this->schema_version . '.0.' . time();
 
 		update_option( $option_name, $value_to_save );
@@ -124,7 +132,7 @@ abstract class ActionScheduler_Abstract_Schema {
 	/**
 	 * Update the schema for the given table
 	 *
-	 * @param string $table The name of the table to update
+	 * @param string $table The name of the table to update.
 	 *
 	 * @return void
 	 */
@@ -135,14 +143,16 @@ abstract class ActionScheduler_Abstract_Schema {
 			$updated = dbDelta( $definition );
 			foreach ( $updated as $updated_table => $update_description ) {
 				if ( strpos( $update_description, 'Created table' ) === 0 ) {
-					do_action( 'action_scheduler/created_table', $updated_table, $table );
+					do_action( 'action_scheduler/created_table', $updated_table, $table ); // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 				}
 			}
 		}
 	}
 
 	/**
-	 * @param string $table
+	 * Get full table name.
+	 *
+	 * @param string $table Table name.
 	 *
 	 * @return string The full name of the table, including the
 	 *                table prefix for the current blog

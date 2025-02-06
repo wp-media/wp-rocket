@@ -1,11 +1,11 @@
 === Action Scheduler ===
 Contributors: Automattic, wpmuguru, claudiosanches, peterfabian1000, vedjain, jamosova, obliviousharmony, konamiman, sadowski, royho, barryhughes-1
 Tags: scheduler, cron
-Stable tag: 3.8.1
+Stable tag: 3.9.0
 License: GPLv3
-Requires at least: 6.3
-Tested up to: 6.5
-Requires PHP: 7.0
+Requires at least: 6.5
+Tested up to: 6.7
+Requires PHP: 7.1
 
 Action Scheduler - Job Queue for WordPress
 
@@ -46,6 +46,20 @@ Action Scheduler is developed and maintained by [Automattic](http://automattic.c
 Collaboration is cool. We'd love to work with you to improve Action Scheduler. [Pull Requests](https://github.com/woocommerce/action-scheduler/pulls) welcome.
 
 == Changelog ==
+
+= 3.9.0 - 2024-11-14 =  
+* Minimum required version of PHP is now 7.1.  
+* Performance improvements for the `as_pending_actions_due()` function.  
+* Existing filter hook `action_scheduler_claim_actions_order_by` enhanced to provide callbacks with additional information.  
+* Improved compatibility with PHP 8.4, specifically by making implicitly nullable parameters explicitly nullable.  
+* A large number of coding standards-enhancements, to help reduce friction when submitting plugins to marketplaces and plugin directories. Special props @crstauf for this effort.  
+* Minor documentation tweaks and improvements.
+
+= 3.8.2 - 2024-09-12 =
+* Add missing parameter to the `pre_as_enqueue_async_action` hook.
+* Bump minimum PHP version to 7.0.
+* Bump minimum WordPress version to 6.4.
+* Make the batch size adjustable during processing.
 
 = 3.8.1 - 2024-06-20 =
 * Fix typos.

@@ -40,6 +40,7 @@ class TestSetMultiple extends TestCase {
 		Functions\when('rocket_mkdir_p')->justReturn();
 
 		Functions\when('rocket_get_constant')->justReturn($config['root']);
+		Functions\when('get_current_blog_id')->justReturn( 1 );
 
 		foreach ($config['saved'] as $path => $saved) {
 			$this->filesystem->shouldReceive('put_contents')->with($path, $saved['content'], $config['rights'])->andReturn($saved['output']);
