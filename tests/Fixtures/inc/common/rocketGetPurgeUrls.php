@@ -115,6 +115,7 @@ return [
 			],
 			'expected' => [
 				'http://example.org/custompost/test_custom_post/',
+				'http://example.org/custompost/',
 				'http://example.org/custompost/index.html',
 				'http://example.org/custompost/index.html_gzip',
 				'http://example.org/custompost/page',
