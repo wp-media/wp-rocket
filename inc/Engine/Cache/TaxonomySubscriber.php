@@ -71,10 +71,10 @@ class TaxonomySubscriber implements Subscriber_Interface {
 
 		$term_link = urldecode( untrailingslashit( $term_link ) );
 
-		if ( $term_link !== urldecode( untrailingslashit( $current_link ) ) ) {
-			$current_link = home_url( add_query_arg( [], wp_unslash( $_SERVER['REQUEST_URI'] ) ?? '' ) );
+		if ( urldecode( untrailingslashit( $current_link ) ) !== $term_link && ! empty( $_SERVER['REQUEST_URI'] ) ) {
+			$current_link = home_url( add_query_arg( [], wp_unslash( $_SERVER['REQUEST_URI'] ) ?? '' ) );// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		}
 
-		return $term_link !== urldecode( untrailingslashit( $current_link ) );
+		return urldecode( untrailingslashit( $current_link ) ) !== $term_link;
 	}
 }
