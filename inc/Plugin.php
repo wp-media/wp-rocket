@@ -409,6 +409,7 @@ class Plugin {
 			'media_fonts_frontend_subscriber',
 			'media_fonts_admin_subscriber',
 			'media_fonts_clean_subscriber',
+			'preload_fonts_frontend_subscriber',
 		];
 
 		$host_type = HostResolver::get_host_service();

@@ -8,6 +8,7 @@ use WP_Rocket\Engine\Media\PreloadFonts\Database\Table\PreloadFonts as PreloadFo
 use WP_Rocket\Engine\Media\PreloadFonts\Database\Queries\PreloadFonts as PreloadFontsQuery;
 use WP_Rocket\Engine\Media\PreloadFonts\AJAX\Controller as AJAXController;
 use WP_Rocket\Engine\Media\PreloadFonts\Context\Context;
+use WP_Rocket\Engine\Media\PreloadFonts\Frontend\Subscriber as FrontendSubscriber;
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
@@ -24,6 +25,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'preload_fonts_query',
 		'preload_fonts_ajax_controller',
 		'preload_fonts_context',
+		'preload_fonts_frontend_subscriber',
 	];
 
 	/**
@@ -43,9 +45,11 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register(): void {
+		$this->getContainer()->addShared( 'preload_fonts_table', PreloadFontsTable::class );
+
+		$this->getContainer()->get( 'preload_fonts_table' );
 		$options = $this->getContainer()->get( 'options' );
 
-		$this->getContainer()->addShared( 'preload_fonts_table', PreloadFontsTable::class );
 		$this->getContainer()->add( 'preload_fonts_query', PreloadFontsQuery::class );
 		$this->getContainer()->add( 'preload_fonts_context', Context::class )
 			->addArgument( $options );
@@ -57,5 +61,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					$this->getContainer()->get( 'preload_fonts_context' ),
 				]
 			);
+
+		$this->getContainer()->addShared( 'preload_fonts_frontend_subscriber', FrontendSubscriber::class );
 	}
 }
