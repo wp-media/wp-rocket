@@ -68,6 +68,12 @@ class TestAddMetaGenerator extends TestCase {
 			->andReturn( $config['preload_links'] );
 		}
 
+		if ( isset( $config['host_fonts_locally'] ) ) {
+			$this->options->shouldReceive( 'get' )
+			->with( 'host_fonts_locally', 0 )
+			->andReturn( $config['host_fonts_locally'] );
+		}
+
 		$this->mobile_detect->shouldReceive( 'isMobile' )
 			->andReturn( $config['is_mobile'] ?? false );
 

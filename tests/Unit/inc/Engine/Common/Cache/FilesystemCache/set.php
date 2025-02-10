@@ -34,6 +34,7 @@ class TestSet extends TestCase {
 	Functions\when('rocket_get_constant')->justReturn($config['root']);
 	Functions\expect('rocket_mkdir_p')->with( dirname($expected['path']), $this->filesystem );
 	Functions\when('home_url')->justReturn($config['home_url']);
+		Functions\when('get_current_blog_id')->justReturn( 1 );
 
 	$this->filesystem->shouldReceive('put_contents')->with($expected['path'], $expected['content'], $config['rights'])->andReturn($config['saved']);
 
