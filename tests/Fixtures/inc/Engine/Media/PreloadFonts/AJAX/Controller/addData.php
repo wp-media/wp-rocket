@@ -8,20 +8,8 @@ return [
 			'is_mobile' => false,
 			'results' => json_encode([
 				'preload_fonts' => [
-					'Raleway' => [
-						'variations' => [
-							[
-								'weight' => '300',
-								'style' => 'normal',
-								'url' => 'https://fonts.gstatic.com/s/raleway/v34/1Ptug8zYS_SKggPNyC0IT4ttDfA.woff2',
-							],
-							[
-								'weight' => '400',
-								"style"  => 'normal',
-								"url"    => 'https://fonts.googleapis.com/css?family=Roboto',
-							],
-						],
-					],
+					'https://fonts.gstatic.com/s/raleway/v34/1Ptug8zYS_SKggPNyC0IT4ttDfA.woff2',
+					'https://fonts.googleapis.com/css?family=Roboto',
 				]
 			]),
 		],
@@ -32,20 +20,8 @@ return [
 				'status'         => 'completed',
 				'fonts' => json_encode(
 					[
-						"Raleway" => (object) [
-							'variations' => [
-								[
-									'weight' => "300",
-									"style"  => "normal",
-									'url'    => 'https://fonts.gstatic.com/s/raleway/v34/1Ptug8zYS_SKggPNyC0IT4ttDfA.woff2',
-								],
-								[
-									'weight' => "400",
-									"style"  => "normal",
-									"url"    => "https://fonts.googleapis.com/css?family=Roboto",
-								],
-							],
-						]
+						'https://fonts.gstatic.com/s/raleway/v34/1Ptug8zYS_SKggPNyC0IT4ttDfA.woff2',
+						'https://fonts.googleapis.com/css?family=Roboto',
 					],
 				),
 				'last_accessed'  => '2025-02-02 00:00:00',
@@ -60,20 +36,8 @@ return [
 				'error_message'  => '',
 				'fonts' => json_encode(
 					[
-						"Raleway" => (object) [
-							'variations' => [
-								[
-									'weight' => "300",
-									"style"  => "normal",
-									'url'    => 'https://fonts.gstatic.com/s/raleway/v34/1Ptug8zYS_SKggPNyC0IT4ttDfA.woff2',
-								],
-								[
-									'weight' => "400",
-									"style"  => "normal",
-									"url"    => "https://fonts.googleapis.com/css?family=Roboto",
-								],
-							],
-						]
+						'https://fonts.gstatic.com/s/raleway/v34/1Ptug8zYS_SKggPNyC0IT4ttDfA.woff2',
+						'https://fonts.googleapis.com/css?family=Roboto',
 					],
 				),
 				'created_at'     => '2025-02-02 00:00:00',
@@ -112,20 +76,8 @@ return [
 			'is_mobile' => false,
 			'results' => json_encode([
 				'preload_fonts' => [
-					'Raleway' => [
-						'variations' => [
-							[
-								'weight' => '300',
-								'style' => 'normal',
-								'url' => 'https://fonts.gstatic.com/s/raleway/v34/1Ptug8zYS_SKggPNyC0IT4ttDfA.woff2',
-							],
-							[
-								'weight' => '400',
-								"style"  => 'normal',
-								"url"    => 'https://fonts.googleapis.com/css?family=Roboto',
-							],
-						],
-					],
+					'https://fonts.gstatic.com/s/raleway/v34/1Ptug8zYS_SKggPNyC0IT4ttDfA.woff2',
+					'https://fonts.googleapis.com/css?family=Roboto',
 				]
 			]),
 		],
@@ -136,20 +88,8 @@ return [
 				'status'         => 'completed',
 				'fonts' => json_encode(
 					[
-						"Raleway" => (object) [
-							'variations' => [
-								[
-									'weight' => "300",
-									"style"  => "normal",
-									'url'    => 'https://fonts.gstatic.com/s/raleway/v34/1Ptug8zYS_SKggPNyC0IT4ttDfA.woff2',
-								],
-								[
-									'weight' => "400",
-									"style"  => "normal",
-									"url"    => "https://fonts.googleapis.com/css?family=Roboto",
-								],
-							],
-						]
+						'https://fonts.gstatic.com/s/raleway/v34/1Ptug8zYS_SKggPNyC0IT4ttDfA.woff2',
+						'https://fonts.googleapis.com/css?family=Roboto',
 					],
 				),
 				'last_accessed'  => '2025-02-02 00:00:00',
@@ -167,20 +107,8 @@ return [
 			'is_mobile' => true,
 			'results' => json_encode([
 				'preload_fonts' => [
-					'Raleway' => [
-						'variations' => [
-							[
-								'weight' => '300',
-								'style' => 'normal',
-								'url' => 'https://fonts.gstatic.com/s/raleway/v34/1Ptug8zYS_SKggPNyC0IT4ttDfA.woff2',
-							],
-							[
-								'weight' => '400',
-								"style"  => 'normal',
-								"url"    => 'https://fonts.googleapis.com/css?family=Roboto',
-							],
-						],
-					],
+					'https://fonts.gstatic.com/s/raleway/v34/1Ptug8zYS_SKggPNyC0IT4ttDfA.woff2',
+					'https://fonts.googleapis.com/css?family=Roboto',
 				]
 			]),
 		],
@@ -191,20 +119,8 @@ return [
 				'status'         => 'completed',
 				'fonts' => json_encode(
 					[
-						"Raleway" => (object) [
-							'variations' => [
-								[
-									'weight' => "300",
-									"style"  => "normal",
-									'url'    => 'https://fonts.gstatic.com/s/raleway/v34/1Ptug8zYS_SKggPNyC0IT4ttDfA.woff2',
-								],
-								[
-									'weight' => "400",
-									"style"  => "normal",
-									"url"    => "https://fonts.googleapis.com/css?family=Roboto",
-								],
-							],
-						]
+						'https://fonts.gstatic.com/s/raleway/v34/1Ptug8zYS_SKggPNyC0IT4ttDfA.woff2',
+						'https://fonts.googleapis.com/css?family=Roboto',
 					],
 				),
 				'last_accessed'  => '2025-02-02 00:00:00',
@@ -219,20 +135,8 @@ return [
 				'error_message'  => '',
 				'fonts' => json_encode(
 					[
-						"Raleway" => (object) [
-							'variations' => [
-								[
-									'weight' => "300",
-									"style"  => "normal",
-									'url'    => 'https://fonts.gstatic.com/s/raleway/v34/1Ptug8zYS_SKggPNyC0IT4ttDfA.woff2',
-								],
-								[
-									'weight' => "400",
-									"style"  => "normal",
-									"url"    => "https://fonts.googleapis.com/css?family=Roboto",
-								],
-							],
-						]
+						'https://fonts.gstatic.com/s/raleway/v34/1Ptug8zYS_SKggPNyC0IT4ttDfA.woff2',
+						'https://fonts.googleapis.com/css?family=Roboto',
 					],
 				),
 				'created_at'     => '2025-02-02 00:00:00',
