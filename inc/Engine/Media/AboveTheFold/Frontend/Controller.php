@@ -90,11 +90,11 @@ class Controller implements ControllerInterface {
 
 		$lcp = json_decode( $row->lcp );
 
-		$isEmptyLcp = ( is_object( $lcp ) && empty( get_object_vars( $lcp ) ) )
-			|| ( is_array( $lcp ) && empty( $lcp_decoded ) )
-			|| $lcp === null;
+		$is_non_valid_lcp = ( is_object( $lcp ) && empty( get_object_vars( $lcp ) ) )
+			|| is_array( $lcp )
+			|| null === $lcp;
 
-		if ( $isEmptyLcp ) {
+		if ( $is_non_valid_lcp ) {
 			return $html;
 		}
 
@@ -208,10 +208,10 @@ class Controller implements ControllerInterface {
 
 		$lcp_decoded = json_decode( $row->lcp );
 
-		$isEmptyLcp = ( is_object( $lcp_decoded ) && empty( get_object_vars( $lcp_decoded ) ) )
-			|| ( is_array( $lcp_decoded ) && empty( $lcp_decoded ) )
-			|| $lcp_decoded === null;
-		if ( $row->lcp && 'not found' !== $row->lcp && ! $isEmptyLcp ) {
+		$is_non_valid_lcp = ( is_object( $lcp_decoded ) && empty( get_object_vars( $lcp_decoded ) ) )
+			|| ( is_array( $lcp_decoded ) )
+			|| null === $lcp_decoded;
+		if ( $row->lcp && 'not found' !== $row->lcp && ! $is_non_valid_lcp ) {
 			$lcp = $this->generate_lcp_link_tag_with_sources( $lcp_decoded );
 			$lcp = $lcp['sources'];
 			$lcp = $this->get_path_for_exclusion( $lcp );
