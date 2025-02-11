@@ -91,7 +91,7 @@ class Controller implements ControllerInterface {
 		$lcp = json_decode( $row->lcp );
 
 		$is_non_valid_lcp = ( is_object( $lcp ) && empty( get_object_vars( $lcp ) ) )
-			|| is_array( $lcp )
+			|| ( is_array( $lcp ) && empty( $lcp ) )
 			|| null === $lcp;
 
 		if ( $is_non_valid_lcp ) {
@@ -209,7 +209,7 @@ class Controller implements ControllerInterface {
 		$lcp_decoded = json_decode( $row->lcp );
 
 		$is_non_valid_lcp = ( is_object( $lcp_decoded ) && empty( get_object_vars( $lcp_decoded ) ) )
-			|| ( is_array( $lcp_decoded ) )
+			|| ( is_array( $lcp_decoded ) && empty( $lcp_decoded ) )
 			|| null === $lcp_decoded;
 		if ( $row->lcp && 'not found' !== $row->lcp && ! $is_non_valid_lcp ) {
 			$lcp = $this->generate_lcp_link_tag_with_sources( $lcp_decoded );
@@ -219,7 +219,7 @@ class Controller implements ControllerInterface {
 
 		$viewport_decoded      = json_decode( $row->viewport );
 		$is_non_valid_viewport = ( is_object( $viewport_decoded ) && empty( get_object_vars( $viewport_decoded ) ) )
-			|| ( is_array( $viewport_decoded ) )
+			|| ( is_array( $viewport_decoded ) && empty( $viewport_decoded ) )
 			|| null === $viewport_decoded;
 
 		if ( $row->viewport && 'not found' !== $row->viewport && ! $is_non_valid_viewport ) {
