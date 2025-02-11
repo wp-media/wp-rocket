@@ -90,6 +90,14 @@ class Controller implements ControllerInterface {
 
 		$lcp = json_decode( $row->lcp );
 
+		$isEmptyLcp = ( is_object( $lcp ) && empty( get_object_vars( $lcp ) ) )
+			|| ( is_array( $lcp ) && empty( $lcp_decoded ) )
+			|| $lcp === null;
+
+		if ( $isEmptyLcp ) {
+			return $html;
+		}
+
 		$preload .= $this->preload_tag( $lcp );
 
 		$replace = preg_replace( '#' . $title . '#', $preload, $html, 1 );
@@ -198,8 +206,13 @@ class Controller implements ControllerInterface {
 			return $exclusions;
 		}
 
-		if ( $row->lcp && 'not found' !== $row->lcp ) {
-			$lcp = $this->generate_lcp_link_tag_with_sources( json_decode( $row->lcp ) );
+		$lcp_decoded = json_decode( $row->lcp );
+
+		$isEmptyLcp = ( is_object( $lcp_decoded ) && empty( get_object_vars( $lcp_decoded ) ) )
+			|| ( is_array( $lcp_decoded ) && empty( $lcp_decoded ) )
+			|| $lcp_decoded === null;
+		if ( $row->lcp && 'not found' !== $row->lcp && ! $isEmptyLcp ) {
+			$lcp = $this->generate_lcp_link_tag_with_sources( $lcp_decoded );
 			$lcp = $lcp['sources'];
 			$lcp = $this->get_path_for_exclusion( $lcp );
 		}
