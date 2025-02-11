@@ -217,7 +217,12 @@ class Controller implements ControllerInterface {
 			$lcp = $this->get_path_for_exclusion( $lcp );
 		}
 
-		if ( $row->viewport && 'not found' !== $row->viewport ) {
+		$viewport_decoded      = json_decode( $row->viewport );
+		$is_non_valid_viewport = ( is_object( $viewport_decoded ) && empty( get_object_vars( $viewport_decoded ) ) )
+			|| ( is_array( $viewport_decoded ) )
+			|| null === $viewport_decoded;
+
+		if ( $row->viewport && 'not found' !== $row->viewport && ! $is_non_valid_viewport ) {
 			$atf = $this->get_atf_sources( json_decode( $row->viewport ) );
 			$atf = $this->get_path_for_exclusion( $atf );
 		}
