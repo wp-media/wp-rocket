@@ -88,15 +88,13 @@ class Controller implements ControllerInterface {
 		$title   = $matches[0];
 		$preload = $title;
 
-		$lcp = json_decode( $row->lcp );
-
-		$is_non_valid_lcp = ( is_object( $lcp ) && empty( get_object_vars( $lcp ) ) )
-			|| ( is_array( $lcp ) && empty( $lcp ) )
-			|| null === $lcp;
+		$is_non_valid_lcp = $this->is_non_valid_data( $row->lcp );
 
 		if ( $is_non_valid_lcp ) {
 			return $html;
 		}
+
+		$lcp = json_decode( $row->lcp );
 
 		$preload .= $this->preload_tag( $lcp );
 
@@ -257,7 +255,7 @@ class Controller implements ControllerInterface {
 		foreach ( $exclusions as $exclusion ) {
 			$parsed = wp_parse_url( $exclusion );
 			if ( isset( $parsed['path'] ) ) {
-				$sanitized_exclusions[] = ltrim( $exclusion['path'], '/' );
+				$sanitized_exclusions[] = ltrim( $parsed['path'], '/' );
 			}
 		}
 
