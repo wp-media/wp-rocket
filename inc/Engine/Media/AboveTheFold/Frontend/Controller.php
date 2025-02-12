@@ -88,9 +88,7 @@ class Controller implements ControllerInterface {
 		$title   = $matches[0];
 		$preload = $title;
 
-		$is_non_valid_lcp = $this->is_non_valid_data( $row->lcp );
-
-		if ( $is_non_valid_lcp ) {
+		if ( $this->is_non_valid_data( $row->lcp ) ) {
 			return $html;
 		}
 
@@ -204,11 +202,8 @@ class Controller implements ControllerInterface {
 			return $exclusions;
 		}
 
-		$lcp_decoded      = json_decode( $row->lcp );
-		$is_non_valid_lcp = $this->is_non_valid_data( $row->lcp );
-
-		if ( $row->lcp && 'not found' !== $row->lcp && ! $is_non_valid_lcp ) {
-			$lcp = $this->generate_lcp_link_tag_with_sources( $lcp_decoded );
+		if ( $row->lcp && 'not found' !== $row->lcp && ! $this->is_non_valid_data( $row->lcp ) ) {
+			$lcp = $this->generate_lcp_link_tag_with_sources( json_decode( $row->lcp ) );
 			$lcp = $lcp['sources'];
 			$lcp = $this->get_path_for_exclusion( $lcp );
 		}
