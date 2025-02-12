@@ -298,10 +298,7 @@ class Subscriber implements Subscriber_Interface, PluginFamilyInterface {
 	 * @return void
 	 */
 	public function maybe_enable_auto_preload_fonts(): void {
-		$old_preload_fonts = get_option( 'rocket_preload_fonts', [] );
-		if ( ! empty( $old_preload_fonts ) ) {
-			update_option( 'auto_preload_fonts', true );
-		}
+		$this->page->maybe_enable_auto_preload_fonts();
 	}
 
 	/**

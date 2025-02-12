@@ -2302,4 +2302,20 @@ class Page extends Abstract_Render {
 			]
 		);
 	}
+
+	/**
+	 * Enables the auto preload fonts option if the old preload fonts option is not empty.
+	 *
+	 * This function checks the value of the `rocket_preload_fonts` option.
+	 * If it contains a non-empty value, it updates the `auto_preload_fonts` option to `true`.
+	 * This is useful for ensuring that automatic font preloading is enabled based on legacy settings.
+	 *
+	 * @return void
+	 */
+	public function maybe_enable_auto_preload_fonts(): void {
+		$old_preload_fonts = $this->options->get( 'rocket_preload_fonts', [] );
+		if ( ! empty( $old_preload_fonts ) ) {
+			$this->options->set( 'auto_preload_fonts', true );
+		}
+	}
 }
