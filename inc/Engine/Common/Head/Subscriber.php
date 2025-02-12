@@ -54,7 +54,7 @@ class Subscriber implements Subscriber_Interface {
 			if ( $this->is_duplicate( $item ) ) {
 				continue;
 			}
-			$elements .= $this->prepare_element( $item ) . "\n";
+			$elements .= "\n" . $this->prepare_element( $item );
 		}
 
 		return $content . $elements;
