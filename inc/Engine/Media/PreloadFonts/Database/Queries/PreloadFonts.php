@@ -2,7 +2,6 @@
 
 namespace WP_Rocket\Engine\Media\PreloadFonts\Database\Queries;
 
-use WP_Rocket\Engine\Common\PerformanceHints\Cron\Filter;
 use WP_Rocket\Engine\Common\PerformanceHints\Database\Queries\AbstractQueries;
 use WP_Rocket\Engine\Common\PerformanceHints\Database\Queries\QueriesInterface;
 use WP_Rocket\Engine\Media\PreloadFonts\Database\Schema\PreloadFonts as PreloadFontsSchema;
@@ -82,11 +81,7 @@ class PreloadFonts extends AbstractQueries implements QueriesInterface {
 			return false;
 		}
 
-		$delete_interval = ( new Filter() )->deletion_interval( 'rocket_preload_fonts_cleanup_interval' );
-
-		if ( $delete_interval <= 0 ) {
-			return false;
-		}
+		$delete_interval = $this->cleanup_interval ?? 1;
 
 		$prefixed_table_name = $db->prefix . $this->table_name;
 		$query               = "DELETE FROM `$prefixed_table_name` WHERE status = 'failed' OR `last_accessed` <= date_sub(now(), interval $delete_interval month)";

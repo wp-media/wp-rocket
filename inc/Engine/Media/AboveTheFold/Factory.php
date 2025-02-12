@@ -104,7 +104,7 @@ class Factory implements FactoryInterface {
 		 *
 		 * @param int $delete_interval The interval in months after which an ATF entry is considered old. Default is 1 month.
 		 */
-		$delete_interval = (int) apply_filters( 'rocket_atf_cleanup_interval', 1 );
+		$delete_interval = wpm_apply_filters_typed( 'integer', 'rocket_atf_cleanup_interval', 1 );
 
 		if ( $delete_interval <= 0 ) {
 			return $this->queries;

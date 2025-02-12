@@ -6,6 +6,11 @@ namespace WP_Rocket\Engine\Common\PerformanceHints\Database\Queries;
 use WP_Rocket\Dependencies\BerlinDB\Database\Query;
 
 class AbstractQueries extends Query {
+	/**
+	 * Cleanup interval.
+	 *
+	 * @var int
+	 */
 	protected $cleanup_interval;
 
 	/**
@@ -166,8 +171,14 @@ class AbstractQueries extends Query {
 		return $query;
 	}
 
-	public function set_cleanup_interval( $interval ) {
+	/**
+	 * Set cleanup interval
+	 *
+	 * @param int $interval The interval duration, usually default to 1.
+	 */
+	public function set_cleanup_interval( int $interval ) {
 		$this->cleanup_interval = $interval;
+
 		return $this;
 	}
 }
