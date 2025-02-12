@@ -1039,6 +1039,14 @@ class Page extends Abstract_Render {
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
 				],
+				'auto_preload_fonts'  => [
+					'type'              => 'checkbox',
+					'label'             => __( 'Preload Fonts', 'rocket' ),
+					'section'           => 'font_optimization_section',
+					'page'              => 'media',
+					'default'           => 0,
+					'sanitize_callback' => 'sanitize_checkbox',
+				],
 				'host_fonts_locally'  => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Self-host Google Fonts', 'rocket' ),
