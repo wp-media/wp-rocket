@@ -609,23 +609,6 @@ class UsedCSS {
 	}
 
 	/**
-	 * Converts an array of URLs to preload link tags
-	 *
-	 * @param array $urls An array of URLs.
-	 *
-	 * @return string
-	 */
-	private function preload_links( array $urls ): string {
-		$links = '';
-
-		foreach ( $urls as $url ) {
-			$links .= '<link rel="preload" data-rocket-preload as="font" href="' . esc_url( $url ) . '" crossorigin>';
-		}
-
-		return $links;
-	}
-
-	/**
 	 * Set Rucss inline attr exclusions
 	 *
 	 *  @return void
