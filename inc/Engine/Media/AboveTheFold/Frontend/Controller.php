@@ -242,9 +242,9 @@ class Controller implements ControllerInterface {
 		$sanitized_exclusions = [];
 
 		foreach ( $exclusions as $exclusion ) {
-			$parsed = wp_parse_url( $exclusion );
-			if ( isset( $parsed['path'] ) ) {
-				$sanitized_exclusions[] = ltrim( $parsed['path'], '/' );
+			$path = wp_parse_url( $exclusion, PHP_URL_PATH );
+			if ( isset( $path ) ) {
+				$sanitized_exclusions[] = ltrim( $path, '/' );
 			}
 		}
 
