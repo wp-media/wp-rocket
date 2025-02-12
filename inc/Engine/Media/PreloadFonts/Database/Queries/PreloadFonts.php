@@ -2,12 +2,14 @@
 
 namespace WP_Rocket\Engine\Media\PreloadFonts\Database\Queries;
 
+use WP_Rocket\Engine\Common\PerformanceHints\Cron\FilterTrait;
 use WP_Rocket\Engine\Common\PerformanceHints\Database\Queries\AbstractQueries;
 use WP_Rocket\Engine\Common\PerformanceHints\Database\Queries\QueriesInterface;
 use WP_Rocket\Engine\Media\PreloadFonts\AJAX\Controller;
 use WP_Rocket\Engine\Media\PreloadFonts\Database\Schema\PreloadFonts as PreloadFontsSchema;
 use WP_Rocket\Engine\Media\PreloadFonts\Database\Rows\PreloadFonts as PreloadFontsRows;
 class PreloadFonts extends AbstractQueries implements QueriesInterface {
+	use FilterTrait;
 
 	/**
 	 * Name of the database table to query.
@@ -82,7 +84,7 @@ class PreloadFonts extends AbstractQueries implements QueriesInterface {
 			return false;
 		}
 
-		$delete_interval = Controller::deletion_interval();
+		$delete_interval = $this->deletion_interval( 'rocket_preload_fonts_cleanup_interval' );
 
 		if ( $delete_interval <= 0 ) {
 			return false;

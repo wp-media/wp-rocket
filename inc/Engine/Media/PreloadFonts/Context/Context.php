@@ -34,11 +34,6 @@ class Context implements ContextInterface {
 			return false;
 		}
 
-		/**
-		 * Filters to manage preload fonts
-		 *
-		 * @param bool $allow True to allow, false otherwise.
-		 */
-		return wpm_apply_filters_typed( 'boolean', 'rocket_preload_fonts', true );
+		return (bool) $this->options->get( 'rocket_preload_fonts', 1 );
 	}
 }

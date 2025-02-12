@@ -143,19 +143,4 @@ class Controller implements ControllerInterface {
 
 		return $payload;
 	}
-
-	/**
-	 * Preload Fonts Deletion interval filter.
-	 *
-	 * @return int
-	 */
-	public static function deletion_interval(): int {
-		/**
-		 * Filters the interval (in months) to determine when a Preload Fonts entry is considered 'old'.
-		 * Old PLF entries are eligible for deletion. By default, a PLF entry is considered old if it hasn't been accessed in the last month.
-		 *
-		 * @param int $delete_interval The interval in months after which a preload fonts entry is considered old. Default is 1 month.
-		 */
-		return wpm_apply_filters_typed( 'integer', 'rocket_preload_fonts_cleanup_interval', 1 );
-	}
 }
