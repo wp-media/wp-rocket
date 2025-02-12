@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Common\PerformanceHints\Cron;
 
-trait FilterTrait {
+class Filter {
 	/**
 	 * Preload Fonts Deletion interval filter.
 	 *
