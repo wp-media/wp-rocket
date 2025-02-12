@@ -5,7 +5,7 @@ namespace WP_Rocket\Engine\Common\Head;
 trait ElementTrait {
 	protected function preload_link( array $args = [] ) {
 		$args['rel'] = 'preload';
-		$args[ 1 ] = 'data-rocket-preload';
+		$args[ 2 ] = 'data-rocket-preload';
 		return $this->link( $args );
 	}
 
@@ -65,7 +65,6 @@ trait ElementTrait {
 		$element += wp_parse_args( $args, [
 			'href' => '',
 		] );
-		$element[ 'close_tag' ] = '/>';
 
 		return $element;
 	}
