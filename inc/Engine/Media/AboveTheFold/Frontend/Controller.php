@@ -229,11 +229,9 @@ class Controller implements ControllerInterface {
 	 * @return bool
 	 */
 	private function is_non_valid_data( string $data ): bool {
-		$decode_data = json_decode( $data );
+		$decode_data = json_decode( $data, true );
 
-		return ( is_object( $decode_data ) && empty( get_object_vars( $decode_data ) ) )
-			|| ( is_array( $decode_data ) && empty( $decode_data ) )
-			|| null === $decode_data;
+		return empty( $decode_data );
 	}
 
 	/**
