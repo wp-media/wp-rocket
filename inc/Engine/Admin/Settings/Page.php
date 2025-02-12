@@ -847,6 +847,7 @@ class Page extends Abstract_Render {
 		$exclude_lazyload = $this->beacon->get_suggest( 'exclude_lazyload' );
 		$dimensions       = $this->beacon->get_suggest( 'image_dimensions' );
 		$fonts            = $this->beacon->get_suggest( 'host_fonts_locally' );
+		$fonts_preload    = $this->beacon->get_suggest( 'fonts_preload' );
 
 		$this->settings->add_page_section(
 			'media',
@@ -1041,7 +1042,9 @@ class Page extends Abstract_Render {
 				],
 				'auto_preload_fonts'  => [
 					'type'              => 'checkbox',
-					'label'             => __( 'Preload Fonts', 'rocket' ),
+					'label'             => __( 'Preload fonts', 'rocket' ),
+					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+					'description'       => sprintf( __( 'Preload above-the-fold fonts to enhance layout stability and optimize text-based LCP elements. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $fonts_preload['url'] ) . '" data-beacon-article="' . esc_attr( $fonts_preload['id'] ) . '" target="_blank" rel="noopener noreferrer">', '</a>' ),
 					'section'           => 'font_optimization_section',
 					'page'              => 'media',
 					'default'           => 0,
