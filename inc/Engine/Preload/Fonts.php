@@ -4,6 +4,7 @@ namespace WP_Rocket\Engine\Preload;
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CDN\CDN;
+use WP_Rocket\Engine\Common\Head\ElementTrait;
 use WP_Rocket\Engine\Support\CommentTrait;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
@@ -14,6 +15,7 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  */
 class Fonts implements Subscriber_Interface {
 	use CommentTrait;
+	use ElementTrait;
 
 	/**
 	 * WP Rocket Options instance.
@@ -49,6 +51,8 @@ class Fonts implements Subscriber_Interface {
 		'woff2',
 	];
 
+	private $fonts = [];
+
 	/**
 	 * Return an array of events that this subscriber wants to listen to.
 	 *
@@ -71,7 +75,8 @@ class Fonts implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_buffer' => [ 'preload_fonts', 20 ],
+			'rocket_head_items' => [ 'preload_fonts', 30 ],
+			'rocket_buffer'     => [ 'insert_meta_comment', 20 ],
 		];
 	}
 
@@ -83,7 +88,7 @@ class Fonts implements Subscriber_Interface {
 	 *
 	 * @since 3.6
 	 */
-	public function preload_fonts( $html ): string {
+	public function insert_meta_comment( $html ): string {
 		if ( ! $this->is_allowed() ) {
 			return $html;
 		}
@@ -107,24 +112,26 @@ class Fonts implements Subscriber_Interface {
 		$base_url = get_rocket_parse_url( home_url() );
 		$base_url = "{$base_url['scheme']}://{$base_url['host']}";
 
-		$preloads = '</title>';
-
 		foreach ( array_unique( $fonts ) as $font ) {
-			$preloads .= sprintf(
-				"\n<link rel=\"preload\" as=\"font\" href=\"%s\" crossorigin>",
-				esc_url( $this->cdn->rewrite_url( $base_url . $font ) )
-			);
+			$this->fonts[] = esc_url( $this->cdn->rewrite_url( $base_url . $font ) );
 		}
 
-		$result = preg_replace( '#</title>#', $preloads, $html, 1 );
+		return $this->add_meta_comment( 'preload_fonts', $html );
+	}
 
-		if ( null === $result ) {
-			return $html;
+	public function preload_fonts( $items ): array {
+		if ( empty( $this->fonts ) ) {
+			return $items;
 		}
 
-		$result = $this->add_meta_comment( 'preload_fonts', $result );
-
-		return $result;
+		foreach ( $this->fonts as $font ) {
+			$items[] = $this->preload_link( [
+				'href' => $font,
+				'as'   => 'font',
+				1      => 'crossorigin',
+			] );
+		}
+		return $items;
 	}
 
 	/**

@@ -84,6 +84,8 @@ class UsedCSS {
 
 	private $used_css_content = '';
 
+	private $preloaded_fonts = [];
+
 	/**
 	 * Instantiate the class.
 	 *
@@ -165,7 +167,7 @@ class UsedCSS {
 		$this->used_css_content = $used_css_content;
 
 		$html = $this->remove_used_css_from_html( $clean_html, $html );
-		$html = $this->add_used_fonts_preload( $html, $used_css_content );
+		$this->add_used_fonts_preload( $used_css_content );
 		$html = $this->remove_google_font_preconnect( $html );
 
 		if ( ! empty( $used_css->id ) ) {
@@ -376,6 +378,21 @@ class UsedCSS {
 		return $items;
 	}
 
+	public function insert_preload_fonts( $items ) {
+		if ( empty( $this->preloaded_fonts ) ) {
+			return $items;
+		}
+		foreach ( $this->preloaded_fonts as $font ) {
+			$items[] = $this->preload_link( [
+				'href' => esc_url( $font ),
+				'as'   => 'font',
+				1      => 'crossorigin',
+			] );
+		}
+
+		return $items;
+	}
+
 	/**
 	 * Return Markup for used_css into the page.
 	 *
@@ -440,12 +457,11 @@ class UsedCSS {
 	/**
 	 * Add preload links for the fonts in the used CSS
 	 *
-	 * @param string $html HTML content.
 	 * @param string $used_css Used CSS content.
 	 *
-	 * @return string
+	 * @return void
 	 */
-	private function add_used_fonts_preload( string $html, string $used_css ): string {
+	private function add_used_fonts_preload( string $used_css ): void {
 		/**
 		 * Filters the fonts preload from the used CSS
 		 *
@@ -454,15 +470,15 @@ class UsedCSS {
 		 * @param bool $enable True to enable, false to disable.
 		 */
 		if ( ! apply_filters( 'rocket_enable_rucss_fonts_preload', true ) ) {
-			return $html;
+			return;
 		}
 
 		if ( ! preg_match_all( '/@font-face\s*{\s*(?<content>[^}]+)}/is', $used_css, $font_faces, PREG_SET_ORDER ) ) {
-			return $html;
+			return;
 		}
 
 		if ( empty( $font_faces ) ) {
-			return $html;
+			return;
 		}
 
 		/**
@@ -521,23 +537,10 @@ class UsedCSS {
 		}
 
 		if ( empty( $urls ) ) {
-			return $html;
+			return;
 		}
 
-		$urls = array_unique( $urls );
-
-		$replace = preg_replace(
-			'#</title>#iU',
-			'</title>' . $this->preload_links( $urls ),
-			$html,
-			1
-		);
-
-		if ( null === $replace ) {
-			return $html;
-		}
-
-		return $replace;
+		$this->preloaded_fonts = array_unique( $urls );
 	}
 
 	/**
