@@ -6,6 +6,8 @@ namespace WP_Rocket\Engine\Common\PerformanceHints\Database\Queries;
 use WP_Rocket\Dependencies\BerlinDB\Database\Query;
 
 class AbstractQueries extends Query {
+	protected $cleanup_interval;
+
 	/**
 	 * Table status.
 	 *
@@ -162,5 +164,10 @@ class AbstractQueries extends Query {
 		}
 
 		return $query;
+	}
+
+	public function set_cleanup_interval( $interval ) {
+		$this->cleanup_interval = $interval;
+		return $this;
 	}
 }

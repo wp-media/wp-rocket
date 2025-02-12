@@ -98,7 +98,19 @@ class Factory implements FactoryInterface {
 	 * @return QueriesInterface
 	 */
 	public function queries(): QueriesInterface {
-		return $this->queries;
+		/**
+		 * Filters the interval (in months) to determine when an Above The Fold (ATF) entry is considered 'old'.
+		 * Old ATF entries are eligible for deletion. By default, an ATF entry is considered old if it hasn't been accessed in the last month.
+		 *
+		 * @param int $delete_interval The interval in months after which an ATF entry is considered old. Default is 1 month.
+		 */
+		$delete_interval = (int) apply_filters( 'rocket_atf_cleanup_interval', 1 );
+
+		if ( $delete_interval <= 0 ) {
+			return $this->queries;
+		}
+
+		return $this->queries->set_cleanup_interval( $delete_interval );
 	}
 
 	/**
