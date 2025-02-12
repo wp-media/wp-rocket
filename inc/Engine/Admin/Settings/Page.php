@@ -936,12 +936,10 @@ class Page extends Abstract_Render {
 					'page'        => 'media',
 				],
 				'font_optimization_section' => [
-					'title'       => __( 'Fonts', 'rocket' ),
-					'type'        => 'fields_container',
-					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description' => sprintf( __( 'Download and serve fonts directly from your server. Reduces connections to external servers and minimizes font shifts. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $fonts['url'] ) . '" data-beacon-article="' . esc_attr( $fonts['id'] ) . '" target="_blank" rel="noopener noreferrer">', '</a>' ),
-					'help'        => $fonts,
-					'page'        => 'media',
+					'title' => __( 'Fonts', 'rocket' ),
+					'type'  => 'fields_container',
+					'help'  => $fonts,
+					'page'  => 'media',
 				],
 			]
 		);
@@ -1044,6 +1042,8 @@ class Page extends Abstract_Render {
 				'host_fonts_locally'  => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Self-host Google Fonts', 'rocket' ),
+					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+					'description'       => sprintf( __( 'Download and serve fonts directly from your server. Reduces connections to external servers and minimizes font shifts. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $fonts['url'] ) . '" data-beacon-article="' . esc_attr( $fonts['id'] ) . '" target="_blank" rel="noopener noreferrer">', '</a>' ),
 					'section'           => 'font_optimization_section',
 					'page'              => 'media',
 					'default'           => 0,
