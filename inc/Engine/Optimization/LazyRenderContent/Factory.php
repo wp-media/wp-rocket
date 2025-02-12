@@ -98,7 +98,20 @@ class Factory implements FactoryInterface {
 	 * @return QueriesInterface
 	 */
 	public function queries(): QueriesInterface {
-		return $this->queries;
+
+		/**
+		 * Filters the interval (in months) to determine when Below The Fold entry is considered 'old'.
+		 * Old LRC entries are eligible for deletion. By default, LRC entry is considered old if it hasn't been accessed in the last month.
+		 *
+		 * @param int $delete_interval The interval in months after which LRC entry is considered old. Default is 1 month.
+		 */
+		$delete_interval = wpm_apply_filters_typed( 'integer', 'rocket_lrc_cleanup_interval', 1 );
+
+		if ( $delete_interval <= 0 ) {
+			return $this->queries;
+		}
+
+		return $this->queries->set_cleanup_interval( $delete_interval ); // @phpstan-ignore-line
 	}
 
 	/**
