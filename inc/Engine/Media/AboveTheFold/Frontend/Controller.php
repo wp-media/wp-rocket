@@ -206,21 +206,16 @@ class Controller implements ControllerInterface {
 			return $exclusions;
 		}
 
-		$lcp_decoded = json_decode( $row->lcp );
+		$lcp_decoded      = json_decode( $row->lcp );
+		$is_non_valid_lcp = $this->is_non_valid_data( $row->lcp );
 
-		$is_non_valid_lcp = ( is_object( $lcp_decoded ) && empty( get_object_vars( $lcp_decoded ) ) )
-			|| ( is_array( $lcp_decoded ) && empty( $lcp_decoded ) )
-			|| null === $lcp_decoded;
 		if ( $row->lcp && 'not found' !== $row->lcp && ! $is_non_valid_lcp ) {
 			$lcp = $this->generate_lcp_link_tag_with_sources( $lcp_decoded );
 			$lcp = $lcp['sources'];
 			$lcp = $this->get_path_for_exclusion( $lcp );
 		}
 
-		$viewport_decoded      = json_decode( $row->viewport );
-		$is_non_valid_viewport = ( is_object( $viewport_decoded ) && empty( get_object_vars( $viewport_decoded ) ) )
-			|| ( is_array( $viewport_decoded ) && empty( $viewport_decoded ) )
-			|| null === $viewport_decoded;
+		$is_non_valid_viewport = $this->is_non_valid_data( $row->viewport );
 
 		if ( $row->viewport && 'not found' !== $row->viewport && ! $is_non_valid_viewport ) {
 			$atf = $this->get_atf_sources( json_decode( $row->viewport ) );
@@ -236,31 +231,37 @@ class Controller implements ControllerInterface {
 	}
 
 	/**
+	 * Check if lcp/viewport is valid
+	 *
+	 * @param string $data The lcp/viewport data.
+	 *
+	 * @return bool
+	 */
+	private function is_non_valid_data( string $data ): bool {
+		$decode_data = json_decode( $data );
+
+		return ( is_object( $decode_data ) && empty( get_object_vars( $decode_data ) ) )
+			|| ( is_array( $decode_data ) && empty( $decode_data ) )
+			|| null === $decode_data;
+	}
+
+	/**
 	 * Get only the url path to exclude.
 	 *
 	 * @param array $exclusions Array of exclusions.
 	 * @return array
 	 */
 	private function get_path_for_exclusion( array $exclusions ): array {
-		$exclusions = array_map(
-				function ( $exclusion ) {
-					$exclusion = wp_parse_url( $exclusion );
-					if ( isset( $exclusion['path'] ) ) {
-						return ltrim( $exclusion['path'], '/' );
-					}
-					// Return empty string if not set.
-					return null;
-				},
-			$exclusions
-		);
+		$sanitized_exclusions = [];
 
-		// Filter out null values.
-		return array_filter(
-			$exclusions,
-			function ( $value ) {
-				return null !== $value;
+		foreach ( $exclusions as $exclusion ) {
+			$parsed = wp_parse_url( $exclusion );
+			if ( isset( $parsed['path'] ) ) {
+				$sanitized_exclusions[] = ltrim( $exclusion['path'], '/' );
 			}
-		);
+		}
+
+		return $sanitized_exclusions;
 	}
 
 	/**
