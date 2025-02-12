@@ -81,7 +81,7 @@ class PreloadFonts extends AbstractQueries implements QueriesInterface {
 			return false;
 		}
 
-		$delete_interval = $this->cleanup_interval ?? 1;
+		$delete_interval = $this->cleanup_interval;
 
 		$prefixed_table_name = $db->prefix . $this->table_name;
 		$query               = "DELETE FROM `$prefixed_table_name` WHERE status = 'failed' OR `last_accessed` <= date_sub(now(), interval $delete_interval month)";

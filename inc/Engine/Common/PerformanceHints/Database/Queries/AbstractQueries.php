@@ -11,7 +11,7 @@ class AbstractQueries extends Query {
 	 *
 	 * @var int
 	 */
-	protected $cleanup_interval;
+	public $cleanup_interval;
 
 	/**
 	 * Table status.
