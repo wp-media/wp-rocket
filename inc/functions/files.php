@@ -614,10 +614,10 @@ function rocket_clean_files( $urls, $filesystem = null, $run_actions = true ) {
 
 				// For regex we use it for file names only, and it should include the * character.
 				if ( str_contains( $entry, '*' ) ) {
-					$regex_part = basename( $entry );
-					$search_dir = str_replace( $regex_part, '', $entry );
+					$regex_part    = basename( $entry );
+					$search_dir    = str_replace( $regex_part, '', $entry );
 					$matched_files = _rocket_get_dir_files_by_regex( $search_dir, '#' . $regex_part . '#i' );
-					foreach ( $matched_files as $item) {
+					foreach ( $matched_files as $item ) {
 						$current_file = $item->getPath() . DIRECTORY_SEPARATOR . $item->getFilename();
 						if ( $filesystem->exists( $current_file ) ) {
 							$filesystem->delete( $current_file );
