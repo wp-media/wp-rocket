@@ -88,7 +88,7 @@ class Controller implements ControllerInterface {
 		$title   = $matches[0];
 		$preload = $title;
 
-		if ( $this->is_non_valid_data( $row->lcp ) ) {
+		if ( ! $this->is_valid_data( $row->lcp ) ) {
 			return $html;
 		}
 
@@ -202,13 +202,13 @@ class Controller implements ControllerInterface {
 			return $exclusions;
 		}
 
-		if ( $row->lcp && 'not found' !== $row->lcp && ! $this->is_non_valid_data( $row->lcp ) ) {
+		if ( $row->lcp && 'not found' !== $row->lcp && $this->is_valid_data( $row->lcp ) ) {
 			$lcp = $this->generate_lcp_link_tag_with_sources( json_decode( $row->lcp ) );
 			$lcp = $lcp['sources'];
 			$lcp = $this->get_path_for_exclusion( $lcp );
 		}
 
-		if ( $row->viewport && 'not found' !== $row->viewport && ! $this->is_non_valid_data( $row->viewport ) ) {
+		if ( $row->viewport && 'not found' !== $row->viewport && $this->is_valid_data( $row->viewport ) ) {
 			$atf = $this->get_atf_sources( json_decode( $row->viewport ) );
 			$atf = $this->get_path_for_exclusion( $atf );
 		}
@@ -228,8 +228,8 @@ class Controller implements ControllerInterface {
 	 *
 	 * @return bool
 	 */
-	private function is_non_valid_data( string $data ): bool {
-		return empty( json_decode( $data, true ) );
+	private function is_valid_data( string $data ): bool {
+		return ! empty( json_decode( $data, true ) );
 	}
 
 	/**
