@@ -118,10 +118,22 @@ class Subscriber implements Subscriber_Interface {
 		return $options;
 	}
 
+	/**
+	 * Insert used CSS into head.
+	 *
+	 * @param array $items Head elements.
+	 * @return mixed
+	 */
 	public function insert_css_in_head( $items ) {
 		return $this->used_css->add_used_css_to_html( $items );
 	}
 
+	/**
+	 * Insert font preloads into head.
+	 *
+	 * @param array $items Head elements.
+	 * @return mixed
+	 */
 	public function insert_preload_fonts( $items ) {
 		return $this->used_css->insert_preload_fonts( $items );
 	}

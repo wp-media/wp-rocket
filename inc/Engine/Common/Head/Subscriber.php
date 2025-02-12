@@ -3,8 +3,16 @@ namespace WP_Rocket\Engine\Common\Head;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
+/**
+ * Head subscriber class.
+ */
 class Subscriber implements Subscriber_Interface {
 
+	/**
+	 * Head elements array.
+	 *
+	 * @var array
+	 */
 	private $head_items = [];
 
 	/**
@@ -31,18 +39,24 @@ class Subscriber implements Subscriber_Interface {
 		];
 	}
 
+	/**
+	 * Print all head elements.
+	 *
+	 * @param string $content Head elements HTML.
+	 * @return string
+	 */
 	public function print_head_elements( $content ) {
-        /**
-         * Filter Head elements array.
-         *
-         * @param array $head_items Elements to be added to head after closing of title tag.
-         *
-         * Priority 10: preconnect
-         * Priority 30: preload
-         * Priority 50: styles
-         * @returns array
-         */
-		$items = wpm_apply_filters_typed( 'array','rocket_head_items', [] );
+		/**
+		 * Filter Head elements array.
+		 *
+		 * @param array $head_items Elements to be added to head after closing of title tag.
+		 *
+		 * Priority 10: preconnect
+		 * Priority 30: preload
+		 * Priority 50: styles
+		 * @returns array
+		 */
+		$items = wpm_apply_filters_typed( 'array', 'rocket_head_items', [] );
 		if ( empty( $items ) ) {
 			return $content;
 		}
@@ -60,6 +74,12 @@ class Subscriber implements Subscriber_Interface {
 		return $content . $elements;
 	}
 
+	/**
+	 * Check if the item is duplicate.
+	 *
+	 * @param array $item Item to check.
+	 * @return bool
+	 */
 	private function is_duplicate( $item ) {
 		if ( empty( $item['rel'] ) || empty( $item['href'] ) ) {
 			return false;
@@ -77,6 +97,12 @@ class Subscriber implements Subscriber_Interface {
 		return true;
 	}
 
+	/**
+	 * Prepare element HTML from the item array.
+	 *
+	 * @param array $element Item element.
+	 * @return string
+	 */
 	private function prepare_element( $element ) {
 		$open_tag = '';
 		if ( ! empty( $element['open_tag'] ) ) {
@@ -99,7 +125,7 @@ class Subscriber implements Subscriber_Interface {
 		$attributes = [];
 
 		foreach ( $element as $key => $value ) {
-			if (is_int( $key ) ) {
+			if ( is_int( $key ) ) {
 				$attributes[] = $value;
 				continue;
 			}

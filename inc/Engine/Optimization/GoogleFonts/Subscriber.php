@@ -131,11 +131,23 @@ class Subscriber implements Subscriber_Interface {
 		return ! is_user_logged_in() || (bool) $this->options->get( 'cache_logged_user', 0 );
 	}
 
-	public function insert_fonts_stylesheets( $items ) {
+	/**
+	 * Insert fonts link stylesheets into head elements for v1 and v2.
+	 *
+	 * @param array $items Head elements.
+	 * @return mixed
+	 */
+	public function insert_fonts_stylesheets( array $items ) {
 		$items = $this->combine->insert_font_stylesheet_into_head( $items );
 		return $this->combine_v2->insert_font_stylesheet_into_head( $items );
 	}
 
+	/**
+	 * Insert fonts preloads into head elements for v1 and v2.
+	 *
+	 * @param array $items Head elements.
+	 * @return mixed
+	 */
 	public function insert_fonts_preload( $items ) {
 		$items = $this->combine->insert_font_preload_into_head( $items );
 		return $this->combine_v2->insert_font_preload_into_head( $items );

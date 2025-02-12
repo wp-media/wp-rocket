@@ -73,8 +73,8 @@ class CombineV2 extends AbstractGFOptimization {
 			return $html;
 		}
 
-		$families     = array_unique( $families );
-		$combined_url = $this->get_combined_url( $families );
+		$families          = array_unique( $families );
+		$combined_url      = $this->get_combined_url( $families );
 		$this->font_urls[] = $combined_url;
 
 		foreach ( $processed_tags as $font ) {

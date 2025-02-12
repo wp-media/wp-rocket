@@ -51,6 +51,11 @@ class Fonts implements Subscriber_Interface {
 		'woff2',
 	];
 
+	/**
+	 * Loaded fonts
+	 *
+	 * @var array
+	 */
 	private $fonts = [];
 
 	/**
@@ -119,17 +124,25 @@ class Fonts implements Subscriber_Interface {
 		return $this->add_meta_comment( 'preload_fonts', $html );
 	}
 
+	/**
+	 * Add preload links into head.
+	 *
+	 * @param array $items Head elements.
+	 * @return array
+	 */
 	public function preload_fonts( $items ): array {
 		if ( empty( $this->fonts ) ) {
 			return $items;
 		}
 
 		foreach ( $this->fonts as $font ) {
-			$items[] = $this->preload_link( [
-				'href' => $font,
-				'as'   => 'font',
-				1      => 'crossorigin',
-			] );
+			$items[] = $this->preload_link(
+				[
+					'href' => $font,
+					'as'   => 'font',
+					1      => 'crossorigin',
+				]
+				);
 		}
 		return $items;
 	}

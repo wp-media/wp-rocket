@@ -82,8 +82,18 @@ class UsedCSS {
 	 */
 	private $manager;
 
+	/**
+	 * Used CSS contents.
+	 *
+	 * @var string
+	 */
 	private $used_css_content = '';
 
+	/**
+	 * Preloaded font urls.
+	 *
+	 * @var array
+	 */
 	private $preloaded_fonts = [];
 
 	/**
@@ -372,22 +382,33 @@ class UsedCSS {
 			return $items;
 		}
 
-		$items[] = $this->style_tag( $this->get_used_css_markup( $this->used_css_content ), [
-			'id' => 'wpr-usedcss',
-		] );
+		$items[] = $this->style_tag(
+			$this->get_used_css_markup( $this->used_css_content ),
+			[
+				'id' => 'wpr-usedcss',
+			]
+			);
 		return $items;
 	}
 
+	/**
+	 * Insert preload fonts into page head.
+	 *
+	 * @param array $items Head elements.
+	 * @return mixed
+	 */
 	public function insert_preload_fonts( $items ) {
 		if ( empty( $this->preloaded_fonts ) ) {
 			return $items;
 		}
 		foreach ( $this->preloaded_fonts as $font ) {
-			$items[] = $this->preload_link( [
-				'href' => esc_url( $font ),
-				'as'   => 'font',
-				1      => 'crossorigin',
-			] );
+			$items[] = $this->preload_link(
+				[
+					'href' => esc_url( $font ),
+					'as'   => 'font',
+					1      => 'crossorigin',
+				]
+				);
 		}
 
 		return $items;

@@ -63,6 +63,11 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 	 */
 	protected $user;
 
+	/**
+	 * Critical CSS contents.
+	 *
+	 * @var string
+	 */
 	private $critical_css_content = '';
 
 	/**
@@ -607,14 +612,23 @@ JS;
 		return $this->add_meta_comment( 'async_css', $buffer );
 	}
 
+	/**
+	 * Insert critical CSS into head.
+	 *
+	 * @param array $items Head elements.
+	 * @return mixed
+	 */
 	public function insert_css_in_head( $items ) {
 		if ( empty( $this->critical_css_content ) ) {
 			return $items;
 		}
 
-		$items[] = $this->style_tag( $this->critical_css_content, [
-			'id' => 'rocket-critical-css',
-		] );
+		$items[] = $this->style_tag(
+			$this->critical_css_content,
+			[
+				'id' => 'rocket-critical-css',
+			]
+		);
 		return $items;
 	}
 

@@ -39,6 +39,11 @@ abstract class AbstractGFOptimization {
 	 */
 	protected $has_google_fonts = true;
 
+	/**
+	 * Font urls.
+	 *
+	 * @var array
+	 */
 	public $font_urls = [];
 
 	/**
@@ -109,10 +114,21 @@ abstract class AbstractGFOptimization {
 		return isset( $this->display_values[ $display ] ) ? $display : 'swap';
 	}
 
+	/**
+	 * Check if preload google fonts is enabled or not using filter.
+	 *
+	 * @return bool
+	 */
 	private function is_preload_enabled() {
 		return ! wpm_apply_filters_typed( 'boolean', 'rocket_disable_google_fonts_preload', false );
 	}
 
+	/**
+	 * Insert font stylesheets into head.
+	 *
+	 * @param array $items Head elements.
+	 * @return mixed
+	 */
 	public function insert_font_stylesheet_into_head( $items ) {
 		if ( empty( $this->font_urls ) ) {
 			return $items;
@@ -121,27 +137,35 @@ abstract class AbstractGFOptimization {
 		$preload_enabled = $this->is_preload_enabled();
 
 		foreach ( $this->font_urls as $font_url ) {
-			$item = $this->stylesheet_link( [
-				'href' => $font_url,
-			] );
+			$item = $this->stylesheet_link(
+				[
+					'href' => $font_url,
+				]
+				);
 
 			if ( ! $preload_enabled ) {
 				$items[] = $item;
 				continue;
 			}
 
-			$item['media'] = 'print';
+			$item['media']  = 'print';
 			$item['onload'] = 'this.media=\'all\'';
-			$items[] = $item;
+			$items[]        = $item;
 
 			$items[] = $this->noscript_tag(
-				sprintf( '<link rel="stylesheet" href="%1$s" />', $font_url )
+				sprintf( '<link rel="stylesheet" href="%1$s" />', $font_url ) // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
 			);
 		}
 
 		return $items;
 	}
 
+	/**
+	 * Insert font preloads into head.
+	 *
+	 * @param array $items Head elements.
+	 * @return mixed
+	 */
 	public function insert_font_preload_into_head( $items ) {
 		if ( empty( $this->font_urls ) ) {
 			return $items;
@@ -152,10 +176,12 @@ abstract class AbstractGFOptimization {
 		}
 
 		foreach ( $this->font_urls as $font_url ) {
-			$items[] = $this->preload_link( [
-				'href' => $font_url,
-				'as'   => 'style',
-			] );
+			$items[] = $this->preload_link(
+				[
+					'href' => $font_url,
+					'as'   => 'style',
+				]
+				);
 		}
 
 		return $items;
