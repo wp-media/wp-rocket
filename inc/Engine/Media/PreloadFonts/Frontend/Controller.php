@@ -3,9 +3,45 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Media\PreloadFonts\Frontend;
 
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Common\PerformanceHints\Frontend\ControllerInterface;
+use WP_Rocket\Engine\Media\PreloadFonts\Database\Queries\PreloadFonts as PFQuery;
+use WP_Rocket\Engine\Media\PreloadFonts\Context\Context;
 
 class Controller implements ControllerInterface {
+	/**
+	 * Options instance
+	 *
+	 * @var Options_Data
+	 */
+	private $options;
+
+	/**
+	 * Queries instance
+	 *
+	 * @var ATFQuery
+	 */
+	private $query;
+
+	/**
+	 * Context instance.
+	 *
+	 * @var Context
+	 */
+	private $context;
+
+	/**
+	 * Constructor
+	 *
+	 * @param Options_Data $options Options instance.
+	 * @param ATFQuery     $query Queries instance.
+	 * @param Context      $context Context instance.
+	 */
+	public function __construct( Options_Data $options, PFQuery $query, Context $context ) {
+		$this->options = $options;
+		$this->query   = $query;
+		$this->context = $context;
+	}
 	/**
 	 * Applies optimization.
 	 *
