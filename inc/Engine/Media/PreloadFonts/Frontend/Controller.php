@@ -14,27 +14,27 @@ class Controller implements ControllerInterface {
 	 *
 	 * @var Options_Data
 	 */
-	private $options;
+	private $options; // @phpstan-ignore-line Use of this will come later.
 
 	/**
 	 * Queries instance
 	 *
-	 * @var ATFQuery
+	 * @var PFQuery
 	 */
-	private $query;
+	private $query; // @phpstan-ignore-line Use of this will come later.
 
 	/**
 	 * Context instance.
 	 *
 	 * @var Context
 	 */
-	private $context;
+	private $context; // @phpstan-ignore-line Use of this will come later.
 
 	/**
 	 * Constructor
 	 *
 	 * @param Options_Data $options Options instance.
-	 * @param ATFQuery     $query Queries instance.
+	 * @param PFQuery      $query Queries instance.
 	 * @param Context      $context Context instance.
 	 */
 	public function __construct( Options_Data $options, PFQuery $query, Context $context ) {
@@ -42,6 +42,7 @@ class Controller implements ControllerInterface {
 		$this->query   = $query;
 		$this->context = $context;
 	}
+
 	/**
 	 * Applies optimization.
 	 *
