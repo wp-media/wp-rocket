@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\LazyRenderContent;
 
+use WP_Rocket\Engine\Common\PerformanceHints\Cron\FilterTrait;
 use WP_Rocket\Engine\Common\PerformanceHints\FactoryInterface;
 use WP_Rocket\Engine\Common\PerformanceHints\AJAX\ControllerInterface as AjaxControllerInterface;
 use WP_Rocket\Engine\Common\PerformanceHints\Frontend\ControllerInterface as FrontendControllerInterface;
@@ -12,6 +13,7 @@ use WP_Rocket\Engine\Common\PerformanceHints\Database\Queries\QueriesInterface;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
 
 class Factory implements FactoryInterface {
+	use FilterTrait;
 
 	/**
 	 * Ajax Controller instance.
@@ -98,14 +100,7 @@ class Factory implements FactoryInterface {
 	 * @return QueriesInterface
 	 */
 	public function queries(): QueriesInterface {
-
-		/**
-		 * Filters the interval (in months) to determine when Below The Fold entry is considered 'old'.
-		 * Old LRC entries are eligible for deletion. By default, LRC entry is considered old if it hasn't been accessed in the last month.
-		 *
-		 * @param int $delete_interval The interval in months after which LRC entry is considered old. Default is 1 month.
-		 */
-		$delete_interval = wpm_apply_filters_typed( 'integer', 'rocket_lrc_cleanup_interval', 1 );
+		$delete_interval = $this->deletion_interval( 'rocket_lrc_cleanup_interval' );
 
 		if ( $delete_interval <= 0 ) {
 			return $this->queries;
