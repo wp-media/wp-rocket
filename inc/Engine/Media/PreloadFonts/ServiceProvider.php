@@ -28,6 +28,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'preload_fonts_context',
 		'preload_fonts_frontend_subscriber',
 		'preload_fonts_front_controller',
+		'preload_fonts_factory',
 	];
 
 	/**
