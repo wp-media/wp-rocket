@@ -46,6 +46,14 @@ class Factory implements FactoryInterface {
 	 */
 	protected $context;
 
+	/**
+	 * Instantiate the class.
+	 *
+	 * @param ContextInterface $context Preconnect external domains Context instance.
+	 */
+	public function __construct( ContextInterface $context ) {
+		$this->context = $context;
+	}
 
 	/**
 	 * Provides an Ajax controller object.
