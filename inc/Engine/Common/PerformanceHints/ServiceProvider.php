@@ -49,7 +49,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		'performance_hints_warmup_subscriber',
 		'performance_hints_admin_bar',
 		'performance_hints_clean',
-		'preload_fonts_factory',
 	];
 
 	/**
@@ -75,7 +74,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		$factory_array = [
 			$this->getContainer()->get( 'atf_factory' ),
 			$this->getContainer()->get( 'lrc_factory' ),
-			$this->getContainer()->get( 'preload_fonts_factory' ),
+		// $this->getContainer()->get( 'preload_fonts_factory' ),
 		];
 
 		foreach ( $factory_array as $factory ) {
