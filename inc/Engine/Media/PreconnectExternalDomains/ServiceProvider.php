@@ -26,6 +26,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'preconnect_external_domains_ajax_controller',
 		'preconnect_frontend_subscriber',
 		'preconnect_external_domains_table',
+		'preconnect_external_domains_factory',
 	];
 
 	/**
@@ -65,5 +66,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			);
 
 		$this->getContainer()->addShared( 'preconnect_frontend_subscriber', FrontendSubscriber::class );
+
+		$this->getContainer()->addShared( 'preconnect_external_domains_factory', Factory::class );
 	}
 }
