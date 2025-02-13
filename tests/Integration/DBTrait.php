@@ -59,6 +59,12 @@ trait DBTrait {
 		return $lrc_query->add_item( $resource );
 	}
 
+	public static function addPreloadFonts(array $resource) {
+		$container = apply_filters( 'rocket_container', null );
+		$preload_fonts_query = $container->get( 'preload_fonts_query' );
+		return $preload_fonts_query->add_item( $resource );
+	}
+
 	public static function installFresh() {
 		$container = apply_filters( 'rocket_container', null );
 
@@ -111,6 +117,15 @@ trait DBTrait {
 
 		if ( ! $lrc_table->exists() ) {
 			$lrc_table->install();
+		}
+	}
+
+	public static function installPreloadFontsTable() {
+		$container = apply_filters( 'rocket_container', null );
+		$preload_fonts_table = $container->get( 'preload_fonts_table' );
+
+		if ( ! $preload_fonts_table->exists() ) {
+			$preload_fonts_table->install();
 		}
 	}
 
@@ -167,6 +182,15 @@ trait DBTrait {
 
 		if ( $lrc_table->exists() ) {
 			$lrc_table->uninstall();
+		}
+	}
+
+	public static function uninstallPreloadFontsTable() {
+		$container = apply_filters( 'rocket_container', null );
+		$preload_fonts_table = $container->get( 'preload_fonts_table' );
+
+		if ( $preload_fonts_table->exists() ) {
+			$preload_fonts_table->uninstall();
 		}
 	}
 
