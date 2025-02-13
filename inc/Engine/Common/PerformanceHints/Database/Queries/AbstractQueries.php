@@ -175,8 +175,10 @@ class AbstractQueries extends Query {
 	 * Set cleanup interval
 	 *
 	 * @param int $interval The interval duration, usually default to 1.
+	 *
+	 * @return object
 	 */
-	public function set_cleanup_interval( int $interval ) {
+	public function set_cleanup_interval( int $interval ): object {
 		$this->cleanup_interval = $interval;
 
 		return $this;

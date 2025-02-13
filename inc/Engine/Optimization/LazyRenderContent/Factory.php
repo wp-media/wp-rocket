@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\LazyRenderContent;
 
-use WP_Rocket\Engine\Common\PerformanceHints\Cron\FilterTrait;
+use WP_Rocket\Engine\Common\PerformanceHints\Cron\CronTrait;
 use WP_Rocket\Engine\Common\PerformanceHints\FactoryInterface;
 use WP_Rocket\Engine\Common\PerformanceHints\AJAX\ControllerInterface as AjaxControllerInterface;
 use WP_Rocket\Engine\Common\PerformanceHints\Frontend\ControllerInterface as FrontendControllerInterface;
@@ -13,7 +13,7 @@ use WP_Rocket\Engine\Common\PerformanceHints\Database\Queries\QueriesInterface;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
 
 class Factory implements FactoryInterface {
-	use FilterTrait;
+	use CronTrait;
 
 	/**
 	 * Ajax Controller instance.
@@ -100,13 +100,8 @@ class Factory implements FactoryInterface {
 	 * @return QueriesInterface
 	 */
 	public function queries(): QueriesInterface {
-		$delete_interval = $this->deletion_interval( 'rocket_lrc_cleanup_interval' );
-
-		if ( $delete_interval <= 0 ) {
-			return $this->queries;
-		}
-
-		return $this->queries->set_cleanup_interval( $delete_interval ); // @phpstan-ignore-line
+		// Defines the interval for deletion and returns Queries object.
+		return $this->deletion_interval( 'rocket_lrc_cleanup_interval' );
 	}
 
 	/**
