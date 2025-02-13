@@ -97,6 +97,9 @@ return [
 				'lrc' => [
 					'row' => null,
 				],
+				'preload_fonts' => [
+					'row' => null,
+				],
 			],
 			'expected' => $html_output_with_beacon,
 		],
@@ -107,6 +110,37 @@ return [
 					'row' => null,
 				],
 				'lrc' => [
+					'row' => null,
+				],
+				'preload_fonts' => [
+					'row' => null,
+				],
+			],
+			'expected' => $html_output_with_beacon,
+		],
+		'shouldAddBeaconWhenOnlyMissingPreloadFontsData' => [
+			'config' => [
+				'html' => $html_input,
+				'atf' => [
+					'row' =>  [
+						'row' => [
+							'status' => 'completed',
+							'url' => 'http://example.org',
+							'lcp'      => json_encode( (object) [
+								'type' => 'img',
+								'src'  => 'http://example.org/wp-content/uploads/image.jpg',
+							] ),
+							'viewport' => json_encode( [
+								0 => (object) [
+									'type' => 'img',
+									'src'  => 'http://example.org/wp-content/uploads/image2.jpg',
+								],
+							] ),
+						],
+					],
+				],
+				'lrc' => $lrc,
+				'preload_fonts' => [
 					'row' => null,
 				],
 			],
