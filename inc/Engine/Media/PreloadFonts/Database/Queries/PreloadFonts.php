@@ -1,22 +1,19 @@
 <?php
-declare(strict_types=1);
 
-namespace WP_Rocket\Engine\Media\AboveTheFold\Database\Queries;
+namespace WP_Rocket\Engine\Media\PreloadFonts\Database\Queries;
 
 use WP_Rocket\Engine\Common\PerformanceHints\Database\Queries\AbstractQueries;
 use WP_Rocket\Engine\Common\PerformanceHints\Database\Queries\QueriesInterface;
-
-use WP_Rocket\Engine\Media\AboveTheFold\Database\Schemas\AboveTheFold as AboveTheFoldSchema;
-use WP_Rocket\Engine\Media\AboveTheFold\Database\Rows\AboveTheFold as AboveTheFoldRow;
-
-class AboveTheFold extends AbstractQueries implements QueriesInterface {
+use WP_Rocket\Engine\Media\PreloadFonts\Database\Schema\PreloadFonts as PreloadFontsSchema;
+use WP_Rocket\Engine\Media\PreloadFonts\Database\Rows\PreloadFonts as PreloadFontsRows;
+class PreloadFonts extends AbstractQueries implements QueriesInterface {
 
 	/**
 	 * Name of the database table to query.
 	 *
 	 * @var   string
 	 */
-	protected $table_name = 'wpr_above_the_fold';
+	protected $table_name = 'wpr_preload_fonts';
 
 	/**
 	 * String used to alias the database table in MySQL statement.
@@ -27,16 +24,14 @@ class AboveTheFold extends AbstractQueries implements QueriesInterface {
 	 *
 	 * @var   string
 	 */
-	protected $table_alias = 'wpr_atf';
+	protected $table_alias = 'wpr_plf';
 
 	/**
 	 * Name of class used to setup the database schema.
 	 *
 	 * @var   string
 	 */
-	protected $table_schema = AboveTheFoldSchema::class;
-
-	/** Item ******************************************************************/
+	protected $table_schema = PreloadFontsSchema::class;
 
 	/**
 	 * Name for a single item.
@@ -47,7 +42,7 @@ class AboveTheFold extends AbstractQueries implements QueriesInterface {
 	 *
 	 * @var   string
 	 */
-	protected $item_name = 'above_the_fold';
+	protected $item_name = 'preload_fonts';
 
 	/**
 	 * Plural version for a group of items.
@@ -58,7 +53,7 @@ class AboveTheFold extends AbstractQueries implements QueriesInterface {
 	 *
 	 * @var   string
 	 */
-	protected $item_name_plural = 'above_the_fold';
+	protected $item_name_plural = 'preload_fonts';
 
 	/**
 	 * Name of class used to turn IDs into first-class objects.
@@ -67,28 +62,21 @@ class AboveTheFold extends AbstractQueries implements QueriesInterface {
 	 *
 	 * @var   mixed
 	 */
-	protected $item_shape = AboveTheFoldRow::class;
+	protected $item_shape = PreloadFontsRows::class;
+
 
 	/**
-	 * Complete a job.
+	 * Deletes old rows from the database.
 	 *
-	 * @param string  $url Url from DB row.
-	 * @param boolean $is_mobile Is mobile from DB row.
-	 * @param array   $data LCP & Above the fold data.
+	 * This method is used to delete rows from the database that have not been accessed in the last month.
 	 *
-	 * @return boolean|int
-	 */
-
-	/**
-	 * Delete all rows which were not accessed in the last month.
-	 *
-	 * @return bool|int
+	 * @return bool|int Returns a boolean or integer value. The exact return value depends on the implementation.
 	 */
 	public function delete_old_rows() {
 		// Get the database interface.
 		$db = $this->get_db();
 
-		// Bail if no database interface is available.
+		// Early bailout if no database interface is available.
 		if ( ! $db ) {
 			return false;
 		}
@@ -97,8 +85,7 @@ class AboveTheFold extends AbstractQueries implements QueriesInterface {
 
 		$prefixed_table_name = $db->prefix . $this->table_name;
 		$query               = "DELETE FROM `$prefixed_table_name` WHERE status = 'failed' OR `last_accessed` <= date_sub(now(), interval $delete_interval month)";
-		$rows_affected       = $db->query( $query );
 
-		return $rows_affected;
+		return $db->query( $query );
 	}
 }
