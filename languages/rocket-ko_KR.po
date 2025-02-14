@@ -1338,7 +1338,7 @@ msgid ""
 "specific path."
 msgstr ""
 "<strong>내부:</strong> URL의 도메인 부분은 자동으로 제거됩니다. (.*).css 와일드카드를 사용하여 특정 경로에 있는"
-" 모든 CSS 파일을 제외합니다."
+" 모든 CSS 파일을 제외하세요."
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:553
