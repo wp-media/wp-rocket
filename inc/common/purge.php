@@ -241,8 +241,10 @@ function rocket_clean_post( $post_id, $post = null ) {
 	// Purge all files.
 	rocket_clean_files( $purge_urls );
 
-	// Never forget to purge homepage and their pagination.
-	rocket_clean_home( $lang );
+	if ( wpm_apply_filters_typed( 'boolean', 'rocket_clean_home_after_clean_post', true, $post_id ) ) {
+		// Never forget to purge homepage and their pagination.
+		rocket_clean_home( $lang );
+	}
 
 	// Purge home feeds (blog & comments).
 	if ( has_filter( 'rocket_cache_reject_uri', 'wp_rocket_cache_feed' ) !== false ) {
