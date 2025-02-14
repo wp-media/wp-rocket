@@ -110,7 +110,7 @@ class Factory implements FactoryInterface {
 			return $this->queries;
 		}
 
-		return $this->queries->set_cleanup_interval( $delete_interval ); // @phpstan-ignore-line
+		return $this->queries->set_cleanup_interval( $delete_interval );
 	}
 
 	/**
