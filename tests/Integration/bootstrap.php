@@ -286,6 +286,9 @@ tests_add_filter(
 
 		$lrc_table = $container->get( 'lrc_table' );
 		$lrc_table->uninstall();
+
+		$preload_fonts_table = $container->get( 'preload_fonts_table' );
+		$preload_fonts_table->uninstall();
 	}
 );
 
