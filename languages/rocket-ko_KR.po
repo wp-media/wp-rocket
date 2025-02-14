@@ -2135,7 +2135,7 @@ msgid ""
 "path."
 msgstr ""
 "URL의 도메인 부분은 자동으로 제거됩니다.<br>(.*) 와일드카드를 사용하여 특정 경로에 있는 주어진 파일 유형의 모든 파일을 "
-"제외합니다."
+"제외하세요."
 
 #: inc/Engine/Admin/Settings/Page.php:1636
 #: inc/Engine/Admin/Settings/Page.php:1644
