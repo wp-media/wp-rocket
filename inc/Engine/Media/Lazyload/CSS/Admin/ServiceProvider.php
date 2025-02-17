@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Media\Lazyload\CSS\Admin;
 
@@ -34,8 +35,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register(): void {
-
 		$this->getContainer()->addShared( 'lazyload_css_admin_subscriber', Subscriber::class )
-			->addArgument( $this->getContainer()->get( 'lazyload_css_cache' ) );
+			->addArgument( 'lazyload_css_cache' );
 	}
 }

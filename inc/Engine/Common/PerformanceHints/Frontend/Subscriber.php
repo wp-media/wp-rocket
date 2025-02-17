@@ -54,7 +54,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return string
 	 */
 	public function maybe_apply_optimizations( $html ): string {
-		if ( ! isset( $_GET['wpr_imagedimensions'] ) && isset( $_GET['wpr_lazyrendercontent'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( empty( $html ) || ( ! isset( $_GET['wpr_imagedimensions'] ) && isset( $_GET['wpr_lazyrendercontent'] ) ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			return $html;
 		}
 

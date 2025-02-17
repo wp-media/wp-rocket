@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Saas;
 
+use WP_Rocket\Dependencies\League\Container\Argument\Literal\StringArgument;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Engine\Saas\Admin\{AdminBar, Clean, Notices, Subscriber};
 
@@ -40,17 +41,29 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register(): void {
-		$this->getContainer()->add( 'sass_admin_bar', Adminbar::class )
-			->addArgument( $this->getContainer()->get( 'options' ) )
-			->addArgument( $this->getContainer()->get( 'rucss_optimize_context' ) )
-			->addArgument( $this->getContainer()->get( 'template_path' ) . '/settings' );
-		$this->getContainer()->add( 'sass_clean', Clean::class );
-		$this->getContainer()->add( 'sass_notices', Notices::class )
-			->addArgument( $this->getContainer()->get( 'options' ) )
-			->addArgument( $this->getContainer()->get( 'beacon' ) );
+		$this->getContainer()->add( 'saas_admin_bar', Adminbar::class )
+			->addArguments(
+				[
+					'options',
+					'rucss_optimize_context',
+					new StringArgument( $this->getContainer()->get( 'template_path' ) ),
+				]
+			);
+		$this->getContainer()->add( 'saas_clean', Clean::class );
+		$this->getContainer()->add( 'saas_notices', Notices::class )
+			->addArguments(
+				[
+					'options',
+					'beacon',
+				]
+			);
 		$this->getContainer()->addShared( 'saas_admin_subscriber', Subscriber::class )
-			->addArgument( $this->getContainer()->get( 'sass_admin_bar' ) )
-			->addArgument( $this->getContainer()->get( 'sass_clean' ) )
-			->addArgument( $this->getContainer()->get( 'sass_notices' ) );
+			->addArguments(
+				[
+					'saas_admin_bar',
+					'saas_clean',
+					'saas_notices',
+				]
+			);
 	}
 }

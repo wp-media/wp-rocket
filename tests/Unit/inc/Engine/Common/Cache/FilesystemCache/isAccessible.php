@@ -11,7 +11,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 /**
  * Test class covering \WP_Rocket\Engine\Common\Cache\FilesystemCache::is_accessible
  */
-class TestIsAccessible extends TestCase {
+class Test_IsAccessible extends TestCase {
 	protected $root_folder;
 	protected $filesystem;
 	protected $filesystemcache;
@@ -27,17 +27,35 @@ class TestIsAccessible extends TestCase {
 
 	/**
 	 * @dataProvider configTestData
+	 * @throws \Exception
 	 */
 	public function testShouldReturnAsExpected( $config, $expected ) {
-	Functions\when('rocket_get_constant')->justReturn($config['root']);
-	Functions\when('get_current_blog_id')->justReturn( 1 );
+		Functions\when('rocket_get_constant')->justReturn($config['root']);
+		Functions\when('get_current_blog_id')->justReturn( 1 );
 
-	$this->filesystem->shouldReceive('exists')->with($expected['path'])->andReturn($config['exists']);
-	if( ! $config['exists']) {
-		Functions\expect('rocket_mkdir_p')->with($expected['path'], $this->filesystem);
-	}
-	$this->filesystem->shouldReceive('is_writable')->with($expected['path'])->andReturn($config['is_writable']);
+		$base_path = $config['root'] . $this->root_folder;
+		$root_path = $expected['path'];
 
-	$this->assertSame($expected['output'], $this->filesystemcache->is_accessible());
+
+		$this->filesystem->shouldReceive('exists')
+			->with($base_path)
+			->andReturn($config['exists']);
+
+		if( ! $config['exists']) {
+			Functions\expect('rocket_mkdir_p')->with($base_path, $this->filesystem);
+		}
+
+		$this->filesystem->shouldReceive('exists')
+			->with($root_path)
+			->andReturn($config['exists']);
+
+		if (!$config['exists']) {
+			Functions\expect('rocket_mkdir_p')
+				->with($root_path, $this->filesystem);
+		}
+
+		$this->filesystem->shouldReceive('is_writable')->with($root_path)->andReturn($config['is_writable']);
+
+		$this->assertSame($expected['output'], $this->filesystemcache->is_accessible());
 	}
 }
