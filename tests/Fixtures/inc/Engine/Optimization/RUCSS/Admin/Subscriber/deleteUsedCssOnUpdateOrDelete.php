@@ -68,6 +68,7 @@ return [
 				'url' => 'http://example.org/category/test/',
 				'files_deleted'     => [],
 				'files_preserved'   => array_merge( $files, $preserved ),
+				'post_type' => 'post'
 			]
 		],
 		'shouldDeleteOnUpdate' => [
@@ -80,6 +81,7 @@ return [
 				'post_id' => 1,
 				'url' => 'http://example.org/category/test/',
 				'files_preserved'   => array_merge( $files, $preserved ),
+				'post_type' => 'post'
 			]
 		],
 		'shouldNotDeleteOnDisabledFilter' => [
@@ -92,6 +94,20 @@ return [
 				'items'             => $items,
 				'files_deleted'     => [],
 				'files_preserved'   => array_merge( $files, $preserved ),
+				'post_type' => 'post'
+			]
+		],
+		'shouldNotDeleteOnAttachmentPostType' => [
+			'input' => [
+				'remove_unused_css' => true,
+				'is_disabled' => false,
+				'wp_error' => false,
+				'post_id' => 1,
+				'url' => 'http://example.org/category/test/',
+				'items'             => $items,
+				'files_deleted'     => [],
+				'files_preserved'   => array_merge( $files, $preserved ),
+				'post_type' => 'attachment'
 			]
 		]
 	]
