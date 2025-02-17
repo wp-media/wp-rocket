@@ -5,13 +5,25 @@
  */
 abstract class ActionScheduler_Abstract_QueueRunner extends ActionScheduler_Abstract_QueueRunner_Deprecated {
 
-	/** @var ActionScheduler_QueueCleaner */
+	/**
+	 * ActionScheduler_QueueCleaner instance.
+	 *
+	 * @var ActionScheduler_QueueCleaner
+	 */
 	protected $cleaner;
 
-	/** @var ActionScheduler_FatalErrorMonitor */
+	/**
+	 * ActionScheduler_FatalErrorMonitor instance.
+	 *
+	 * @var ActionScheduler_FatalErrorMonitor
+	 */
 	protected $monitor;
 
-	/** @var ActionScheduler_Store */
+	/**
+	 * ActionScheduler_Store instance.
+	 *
+	 * @var ActionScheduler_Store
+	 */
 	protected $store;
 
 	/**
@@ -27,11 +39,11 @@ abstract class ActionScheduler_Abstract_QueueRunner extends ActionScheduler_Abst
 	/**
 	 * ActionScheduler_Abstract_QueueRunner constructor.
 	 *
-	 * @param ActionScheduler_Store             $store
-	 * @param ActionScheduler_FatalErrorMonitor $monitor
-	 * @param ActionScheduler_QueueCleaner      $cleaner
+	 * @param ActionScheduler_Store|null             $store Store object.
+	 * @param ActionScheduler_FatalErrorMonitor|null $monitor Monitor object.
+	 * @param ActionScheduler_QueueCleaner|null      $cleaner Cleaner object.
 	 */
-	public function __construct( ActionScheduler_Store $store = null, ActionScheduler_FatalErrorMonitor $monitor = null, ActionScheduler_QueueCleaner $cleaner = null ) {
+	public function __construct( ?ActionScheduler_Store $store = null, ?ActionScheduler_FatalErrorMonitor $monitor = null, ?ActionScheduler_QueueCleaner $cleaner = null ) {
 
 		$this->created_time = microtime( true );
 
@@ -43,12 +55,14 @@ abstract class ActionScheduler_Abstract_QueueRunner extends ActionScheduler_Abst
 	/**
 	 * Process an individual action.
 	 *
-	 * @param int $action_id The action ID to process.
+	 * @param int    $action_id The action ID to process.
 	 * @param string $context Optional identifier for the context in which this action is being processed, e.g. 'WP CLI' or 'WP Cron'
-	 *        Generally, this should be capitalised and not localised as it's a proper noun.
+	 *                        Generally, this should be capitalised and not localised as it's a proper noun.
+	 * @throws \Exception When error running action.
 	 */
 	public function process_action( $action_id, $context = '' ) {
 		// Temporarily override the error handler while we process the current action.
+		// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_set_error_handler
 		set_error_handler(
 			/**
 			 * Temporary error handler which can catch errors and convert them into exceptions. This facilitates more
@@ -141,8 +155,8 @@ abstract class ActionScheduler_Abstract_QueueRunner extends ActionScheduler_Abst
 	/**
 	 * Schedule the next instance of the action if necessary.
 	 *
-	 * @param ActionScheduler_Action $action
-	 * @param int $action_id
+	 * @param ActionScheduler_Action $action Action.
+	 * @param int                    $action_id Action ID.
 	 */
 	protected function schedule_next_instance( ActionScheduler_Action $action, $action_id ) {
 		// If a recurring action has been consistently failing, we may wish to stop rescheduling it.
@@ -192,7 +206,7 @@ abstract class ActionScheduler_Abstract_QueueRunner extends ActionScheduler_Abst
 			'date'         => date_create( 'now', timezone_open( 'UTC' ) )->format( 'Y-m-d H:i:s' ),
 			'date_compare' => '<',
 			'per_page'     => 1,
-			'offset'       => $consistent_failure_threshold - 1
+			'offset'       => $consistent_failure_threshold - 1,
 		);
 
 		$first_failing_action_id = $this->store->query_actions( $query_args );
@@ -222,8 +236,6 @@ abstract class ActionScheduler_Abstract_QueueRunner extends ActionScheduler_Abst
 
 	/**
 	 * Run the queue cleaner.
-	 *
-	 * @author Jeremy Pry
 	 */
 	protected function run_cleanup() {
 		$this->cleaner->clean( 10 * $this->get_time_limit() );
@@ -256,7 +268,7 @@ abstract class ActionScheduler_Abstract_QueueRunner extends ActionScheduler_Abst
 
 		$time_limit = 30;
 
-		// Apply deprecated filter from deprecated get_maximum_execution_time() method
+		// Apply deprecated filter from deprecated get_maximum_execution_time() method.
 		if ( has_filter( 'action_scheduler_maximum_execution_time' ) ) {
 			_deprecated_function( 'action_scheduler_maximum_execution_time', '2.1.1', 'action_scheduler_queue_runner_time_limit' );
 			$time_limit = apply_filters( 'action_scheduler_maximum_execution_time', $time_limit );
@@ -288,7 +300,7 @@ abstract class ActionScheduler_Abstract_QueueRunner extends ActionScheduler_Abst
 	/**
 	 * Check if the host's max execution time is (likely) to be exceeded if processing more actions.
 	 *
-	 * @param int $processed_actions The number of actions processed so far - used to determine the likelihood of exceeding the time limit if processing another action
+	 * @param int $processed_actions The number of actions processed so far - used to determine the likelihood of exceeding the time limit if processing another action.
 	 * @return bool
 	 */
 	protected function time_likely_to_be_exceeded( $processed_actions ) {
@@ -318,7 +330,7 @@ abstract class ActionScheduler_Abstract_QueueRunner extends ActionScheduler_Abst
 		if ( function_exists( 'ini_get' ) ) {
 			$memory_limit = ini_get( 'memory_limit' );
 		} else {
-			$memory_limit = '128M'; // Sensible default, and minimum required by WooCommerce
+			$memory_limit = '128M'; // Sensible default, and minimum required by WooCommerce.
 		}
 
 		if ( ! $memory_limit || -1 === $memory_limit || '-1' === $memory_limit ) {
@@ -353,7 +365,7 @@ abstract class ActionScheduler_Abstract_QueueRunner extends ActionScheduler_Abst
 	 *
 	 * Based on WC_Background_Process::batch_limits_exceeded()
 	 *
-	 * @param int $processed_actions The number of actions processed so far - used to determine the likelihood of exceeding the time limit if processing another action
+	 * @param int $processed_actions The number of actions processed so far - used to determine the likelihood of exceeding the time limit if processing another action.
 	 * @return bool
 	 */
 	protected function batch_limits_exceeded( $processed_actions ) {
@@ -363,7 +375,6 @@ abstract class ActionScheduler_Abstract_QueueRunner extends ActionScheduler_Abst
 	/**
 	 * Process actions in the queue.
 	 *
-	 * @author Jeremy Pry
 	 * @param string $context Optional identifier for the context in which this action is being processed, e.g. 'WP CLI' or 'WP Cron'
 	 *        Generally, this should be capitalised and not localised as it's a proper noun.
 	 * @return int The number of actions processed.

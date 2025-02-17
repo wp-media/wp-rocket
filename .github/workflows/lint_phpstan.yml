@@ -9,6 +9,7 @@ on:
       - feature/*
       - enhancement/*
       - fix/*
+      - dev/*
 
 jobs:
   run:
@@ -18,7 +19,7 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ubuntu-latest]
-        php-versions: ['8.2']
+        php-versions: ['8.4']
 
     name: WPRocket lint with PHP Stan. PHP ${{ matrix.php-versions }} on ${{ matrix.operating-system }}.
     steps:
@@ -36,5 +37,5 @@ jobs:
       run: composer install --prefer-dist --no-interaction --no-scripts
 
     - name: Lint with PHP Stan
-      run: composer run-stan -- --error-format=github
+      run: composer run-stan
 

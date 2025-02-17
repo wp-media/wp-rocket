@@ -3,9 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Media\Lazyload\CSS;
 
-use WP_Rocket\Dependencies\League\Container\Argument\Literal\StringArgument;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
-use WP_Rocket\Engine\Common\Cache\FilesystemCache;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Context\LazyloadCSSContext;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Data\LazyloadCSSContentFactory;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Front\{ContentFetcher,
@@ -25,7 +23,6 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @var array
 	 */
 	protected $provides = [
-		'lazyload_css_cache',
 		'lazyload_css_context',
 		'lazyload_css_content_fetcher',
 		'lazyload_css_extractor',
@@ -54,11 +51,6 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register(): void {
-		$path = apply_filters( 'rocket_lazyload_css_cache_root', 'background-css/' . get_current_blog_id() );
-
-		$this->getContainer()->add( 'lazyload_css_cache', FilesystemCache::class )
-			->addArgument( new StringArgument( $path ) );
-
 		$this->getContainer()->add( 'lazyload_css_context', LazyloadCSSContext::class )
 			->addArguments(
 				[

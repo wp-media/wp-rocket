@@ -144,7 +144,7 @@ trait RegexTrait {
 	 * @return string
 	 */
 	protected function restore_html_comments( $html ) {
-		if ( empty( $this->html_replace ) ) {
+		if ( ! is_string( $html ) || empty( $this->html_replace ) ) { // @phpstan-ignore-line For some reason, html could be null for some users, and we can't find a way to reproduce it.
 			return $html;
 		}
 

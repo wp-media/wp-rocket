@@ -91,12 +91,12 @@ class ActionScheduler_WPCLI_Scheduler_command extends WP_CLI_Command {
 
 		$batches_completed = 0;
 		$actions_completed = 0;
-		$unlimited         = $batches === 0;
-		if ( is_callable( [ ActionScheduler::store(), 'set_claim_filter' ] ) ) {
+		$unlimited         = 0 === $batches;
+		if ( is_callable( array( ActionScheduler::store(), 'set_claim_filter' ) ) ) {
 			$exclude_groups = $this->parse_comma_separated_string( $exclude_groups );
 
 			if ( ! empty( $exclude_groups ) ) {
-				ActionScheduler::store()->set_claim_filter('exclude-groups', $exclude_groups );
+				ActionScheduler::store()->set_claim_filter( 'exclude-groups', $exclude_groups );
 			}
 		}
 
@@ -104,7 +104,7 @@ class ActionScheduler_WPCLI_Scheduler_command extends WP_CLI_Command {
 			// Custom queue cleaner instance.
 			$cleaner = new ActionScheduler_QueueCleaner( null, $clean );
 
-			// Get the queue runner instance
+			// Get the queue runner instance.
 			$runner = new ActionScheduler_WPCLI_QueueRunner( null, null, $cleaner );
 
 			// Determine how many tasks will be run in the first batch.
@@ -141,9 +141,7 @@ class ActionScheduler_WPCLI_Scheduler_command extends WP_CLI_Command {
 	/**
 	 * Print WP CLI message about how many actions are about to be processed.
 	 *
-	 * @author Jeremy Pry
-	 *
-	 * @param int $total
+	 * @param int $total Number of actions found.
 	 */
 	protected function print_total_actions( $total ) {
 		WP_CLI::log(
@@ -158,9 +156,7 @@ class ActionScheduler_WPCLI_Scheduler_command extends WP_CLI_Command {
 	/**
 	 * Print WP CLI message about how many batches of actions were processed.
 	 *
-	 * @author Jeremy Pry
-	 *
-	 * @param int $batches_completed
+	 * @param int $batches_completed Number of completed batches.
 	 */
 	protected function print_total_batches( $batches_completed ) {
 		WP_CLI::log(
@@ -175,11 +171,9 @@ class ActionScheduler_WPCLI_Scheduler_command extends WP_CLI_Command {
 	/**
 	 * Convert an exception into a WP CLI error.
 	 *
-	 * @author Jeremy Pry
-	 *
 	 * @param Exception $e The error object.
 	 *
-	 * @throws \WP_CLI\ExitException
+	 * @throws \WP_CLI\ExitException Under some conditions WP CLI may throw an exception.
 	 */
 	protected function print_error( Exception $e ) {
 		WP_CLI::error(
@@ -194,9 +188,7 @@ class ActionScheduler_WPCLI_Scheduler_command extends WP_CLI_Command {
 	/**
 	 * Print a success message with the number of completed actions.
 	 *
-	 * @author Jeremy Pry
-	 *
-	 * @param int $actions_completed
+	 * @param int $actions_completed Number of completed actions.
 	 */
 	protected function print_success( $actions_completed ) {
 		WP_CLI::success(

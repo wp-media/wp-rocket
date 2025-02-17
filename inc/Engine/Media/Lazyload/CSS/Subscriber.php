@@ -118,7 +118,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @param LazyloadCSSContentFactory $lazyloaded_content_factory Make LazyloadedContent instance.
 	 * @param WP_Filesystem_Direct|null $filesystem WordPress filesystem.
 	 */
-	public function __construct( Extractor $extractor, RuleFormatter $rule_formatter, FileResolver $file_resolver, CacheInterface $cache, MappingFormatter $mapping_formatter, TagGenerator $tag_generator, ContentFetcher $fetcher, ContextInterface $context, Options_Data $options, LazyloadCSSContentFactory $lazyloaded_content_factory, WP_Filesystem_Direct $filesystem = null ) {
+	public function __construct( Extractor $extractor, RuleFormatter $rule_formatter, FileResolver $file_resolver, CacheInterface $cache, MappingFormatter $mapping_formatter, TagGenerator $tag_generator, ContentFetcher $fetcher, ContextInterface $context, Options_Data $options, LazyloadCSSContentFactory $lazyloaded_content_factory, ?WP_Filesystem_Direct $filesystem = null ) {
 		$this->extractor                  = $extractor;
 		$this->cache                      = $cache;
 		$this->rule_formatter             = $rule_formatter;
