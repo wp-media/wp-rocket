@@ -44,7 +44,7 @@ abstract class AbstractGFOptimization {
 	 *
 	 * @var array
 	 */
-	public $font_urls = [];
+	protected $font_urls = [];
 
 	/**
 	 * Optimize Google Fonts
@@ -130,18 +130,19 @@ abstract class AbstractGFOptimization {
 	 * @return mixed
 	 */
 	public function insert_font_stylesheet_into_head( $items ) {
-		if ( empty( $this->font_urls ) ) {
+		$font_urls = $this->get_font_urls();
+		if ( empty( $font_urls ) ) {
 			return $items;
 		}
 
 		$preload_enabled = $this->is_preload_enabled();
 
-		foreach ( $this->font_urls as $font_url ) {
+		foreach ( $font_urls as $font_url ) {
 			$item = $this->stylesheet_link(
 				[
 					'href' => $font_url,
 				]
-				);
+			);
 
 			if ( ! $preload_enabled ) {
 				$items[] = $item;
@@ -167,7 +168,8 @@ abstract class AbstractGFOptimization {
 	 * @return mixed
 	 */
 	public function insert_font_preload_into_head( $items ) {
-		if ( empty( $this->font_urls ) ) {
+		$font_urls = $this->get_font_urls();
+		if ( empty( $font_urls ) ) {
 			return $items;
 		}
 
@@ -175,7 +177,7 @@ abstract class AbstractGFOptimization {
 			return $items;
 		}
 
-		foreach ( $this->font_urls as $font_url ) {
+		foreach ( $font_urls as $font_url ) {
 			$items[] = $this->preload_link(
 				[
 					'href' => $font_url,
@@ -185,5 +187,9 @@ abstract class AbstractGFOptimization {
 		}
 
 		return $items;
+	}
+
+	public function get_font_urls(): array {
+		return $this->font_urls;
 	}
 }

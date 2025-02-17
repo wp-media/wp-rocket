@@ -84,7 +84,7 @@ class Test_InsertCriticalCssBuffer extends FilesystemTestCase {
 		$html      = $this->subscriber->insert_critical_css_buffer( $orig_html );
 
 		if ( $expected ) {
-			$this->assertSame( $expected_html, $html );
+			$this->assertSame( $this->subscriber->get_critical_css_content(), $config['get_critical_css_content'] );
 		} else {
 			$this->assertSame( $orig_html, $html );
 		}

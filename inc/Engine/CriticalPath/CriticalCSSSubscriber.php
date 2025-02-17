@@ -619,17 +619,22 @@ JS;
 	 * @return mixed
 	 */
 	public function insert_css_in_head( $items ) {
-		if ( empty( $this->critical_css_content ) ) {
+		$css = $this->get_critical_css_content();
+		if ( empty( $css ) ) {
 			return $items;
 		}
 
 		$items[] = $this->style_tag(
-			$this->critical_css_content,
+			$css,
 			[
 				'id' => 'rocket-critical-css',
 			]
 		);
 		return $items;
+	}
+
+	public function get_critical_css_content() {
+		return $this->critical_css_content;
 	}
 
 	/**
