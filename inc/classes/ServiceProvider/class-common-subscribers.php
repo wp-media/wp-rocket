@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace WP_Rocket\ServiceProvider;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;

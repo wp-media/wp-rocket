@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Common\PerformanceHints;
 
 use WP_Rocket\Buffer\{Config, Tests};
+use WP_Rocket\Dependencies\League\Container\Argument\Literal\{ArrayArgument, StringArgument};
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Engine\Common\PerformanceHints\Admin\{
 	Controller as AdminController,
@@ -49,6 +50,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'performance_hints_warmup_subscriber',
 		'performance_hints_admin_bar',
 		'performance_hints_clean',
+		'performance_hints_notices',
 	];
 
 	/**
@@ -68,7 +70,6 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register(): void {
-
 		$factories = [];
 
 		$factory_array = [
@@ -92,27 +93,32 @@ class ServiceProvider extends AbstractServiceProvider {
 			);
 
 		$this->getContainer()->addShared( 'performance_hints_ajax_subscriber', AjaxSubscriber::class )
-			->addArgument( $this->getContainer()->get( 'ajax_processor' ) );
+			->addArgument( 'ajax_processor' );
 
 		$this->getContainer()->add( 'frontend_processor', FrontendProcessor::class )
 			->addArguments(
 				[
 					$factories,
-					$this->getContainer()->get( 'options' ),
+					'options',
 				]
 			);
 
 		$this->getContainer()->add( 'config', Config::class )
-			->addArgument( [ 'config_dir_path' => rocket_get_constant( 'WP_ROCKET_CONFIG_PATH' ) ] );
-
+			->addArgument(
+				new ArrayArgument(
+					[
+						'config_dir_path' => rocket_get_constant( 'WP_ROCKET_CONFIG_PATH', '' ),
+					]
+				)
+			);
 		$this->getContainer()->add( 'tests', Tests::class )
-			->addArgument( $this->getContainer()->get( 'config' ) );
+			->addArgument( 'config' );
 
 		$this->getContainer()->addShared( 'performance_hints_frontend_subscriber', FrontendSubscriber::class )
 			->addArguments(
 				[
-					$this->getContainer()->get( 'frontend_processor' ),
-					$this->getContainer()->get( 'tests' ),
+					'frontend_processor',
+					'tests',
 				]
 			);
 
@@ -129,49 +135,41 @@ class ServiceProvider extends AbstractServiceProvider {
 					$factories,
 				]
 			);
-
 		$this->getContainer()->add( 'performance_hints_admin_bar', Adminbar::class )
 			->addArguments(
 				[
 					$factories,
-					$this->getContainer()->get( 'template_path' ) . '/settings',
+					new StringArgument( $this->getContainer()->get( 'template_path' ) . '/settings' ),
 				]
 			);
-
 		$this->getContainer()->add( 'performance_hints_clean', Clean::class );
-
 		$this->getContainer()->addShared( 'performance_hints_admin_subscriber', AdminSubscriber::class )
 			->addArguments(
 				[
-					$this->getContainer()->get( 'performance_hints_admin_controller' ),
-					$this->getContainer()->get( 'performance_hints_admin_bar' ),
-					$this->getContainer()->get( 'performance_hints_clean' ),
-					$this->getContainer()->get( 'performance_hints_notices' ),
+					'performance_hints_admin_controller',
+					'performance_hints_admin_bar',
+					'performance_hints_clean',
+					'performance_hints_notices',
 				]
 			);
 		$this->getContainer()->add( 'cron_controller', CronController::class )
 			->addArgument( $factory_array );
-
 		$this->getContainer()->addShared( 'performance_hints_cron_subscriber', CronSubscriber::class )
-			->addArgument( $this->getContainer()->get( 'cron_controller' ) );
-
+			->addArgument( 'cron_controller' );
 		$this->getContainer()->add( 'performance_hints_warmup_apiclient', APIClient::class )
-			->addArgument( $this->getContainer()->get( 'options' ) );
-
+			->addArgument( 'options' );
 		$this->getContainer()->add( 'performance_hints_warmup_queue', Queue::class );
-
 		$this->getContainer()->add( 'performance_hints_warmup_controller', WarmUpController::class )
 			->addArguments(
 				[
 					$factories,
-					$this->getContainer()->get( 'options' ),
-					$this->getContainer()->get( 'performance_hints_warmup_apiclient' ),
-					$this->getContainer()->get( 'user' ),
-					$this->getContainer()->get( 'performance_hints_warmup_queue' ),
+					'options',
+					'performance_hints_warmup_apiclient',
+					'user',
+					'performance_hints_warmup_queue',
 				]
 			);
-
 		$this->getContainer()->addShared( 'performance_hints_warmup_subscriber', WarmUpSubscriber::class )
-			->addArgument( $this->getContainer()->get( 'performance_hints_warmup_controller' ) );
+			->addArgument( 'performance_hints_warmup_controller' );
 	}
 }

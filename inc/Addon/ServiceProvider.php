@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace WP_Rocket\Addon;
 
 use WP_Rocket\Addon\Sucuri\Subscriber as SucuriSubscriber;
@@ -36,20 +38,25 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * Registers items with the container
 	 */
 	public function register(): void {
-		$options = $this->getContainer()->get( 'options' );
-
-		// Sucuri Addon.
 		$this->getContainer()->addShared( 'sucuri_subscriber', SucuriSubscriber::class )
-			->addArgument( $options );
+			->addArgument( 'options' );
 
 		$this->getContainer()->addShared( 'webp_admin_subscriber', WebPAdminSubscriber::class )
-			->addArgument( $options )
-			->addArgument( $this->getContainer()->get( 'cdn_subscriber' ) )
-			->addArgument( $this->getContainer()->get( 'beacon' ) );
+			->addArguments(
+				[
+					'options',
+					'cdn_subscriber',
+					'beacon',
+				]
+			);
 
 		$this->getContainer()->addShared( 'webp_subscriber', WebPSubscriber::class )
-			->addArgument( $options )
-			->addArgument( $this->getContainer()->get( 'options_api' ) )
-			->addArgument( $this->getContainer()->get( 'cdn_subscriber' ) );
+			->addArguments(
+				[
+					'options',
+					'options_api',
+					'cdn_subscriber',
+				]
+			);
 	}
 }
