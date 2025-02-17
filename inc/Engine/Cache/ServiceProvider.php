@@ -1,11 +1,13 @@
 <?php
+declare(strict_types=1);
+
 namespace WP_Rocket\Engine\Cache;
 
+use WP_Rocket\Dependencies\League\Container\Argument\Literal\StringArgument;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Engine\Cache\PurgeExpired\PurgeExpiredCache;
 use WP_Rocket\Engine\Cache\PurgeExpired\Subscriber;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache as CacheQuery;
-use WP_Rocket\Logger\Logger;
 use WP_Rocket\Engine\Cache\Config\ConfigSubscriber;
 
 /**
@@ -50,32 +52,54 @@ class ServiceProvider extends AbstractServiceProvider {
 		$filesystem = rocket_direct_filesystem();
 
 		$this->getContainer()->add( 'preload_caches_query', CacheQuery::class )
-			->addArgument( new Logger() );
-		$cache_query = $this->getContainer()->get( 'preload_caches_query' );
+			->addArgument( 'logger' );
 
 		$this->getContainer()->add( 'advanced_cache', AdvancedCache::class )
-			->addArgument( $this->getContainer()->get( 'template_path' ) . '/cache/' )
-			->addArgument( $filesystem );
+			->addArguments(
+				[
+					new StringArgument( $this->getContainer()->get( 'template_path' ) . '/cache/' ),
+					$filesystem,
+				]
+			);
 		$this->getContainer()->add( 'wp_cache', WPCache::class )
 			->addArgument( $filesystem );
 		$this->getContainer()->add( 'purge', Purge::class )
-			->addArgument( $filesystem )
-			->addArgument( $cache_query );
+			->addArguments(
+				[
+					$filesystem,
+					'preload_caches_query',
+				]
+			);
 		$this->getContainer()->addShared( 'purge_actions_subscriber', PurgeActionsSubscriber::class )
-			->addArgument( $this->getContainer()->get( 'options' ) )
-			->addArgument( $this->getContainer()->get( 'purge' ) );
+			->addArguments(
+				[
+					'options',
+					'purge',
+				]
+			);
 		$this->getContainer()->addShared( 'admin_cache_subscriber', AdminSubscriber::class )
-			->addArgument( $this->getContainer()->get( 'advanced_cache' ) )
-			->addArgument( $this->getContainer()->get( 'wp_cache' ) );
-
+			->addArguments(
+				[
+					'advanced_cache',
+					'wp_cache',
+				]
+			);
 		$this->getContainer()->add( 'expired_cache_purge', PurgeExpiredCache::class )
-			->addArgument( rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) );
+			->addArgument( new StringArgument( rocket_get_constant( 'WP_ROCKET_CACHE_PATH', '' ) ) );
 		$this->getContainer()->addShared( 'expired_cache_purge_subscriber', Subscriber::class )
-			->addArgument( $this->getContainer()->get( 'options' ) )
-			->addArgument( $this->getContainer()->get( 'expired_cache_purge' ) );
-		$this->getContainer()->add( 'cache_config', ConfigSubscriber::class )
-			->addArgument( $this->getContainer()->get( 'options' ) )
-			->addArgument( $this->getContainer()->get( 'options_api' ) );
+			->addArguments(
+				[
+					'options',
+					'expired_cache_purge',
+				]
+			);
+		$this->getContainer()->addShared( 'cache_config', ConfigSubscriber::class )
+			->addArguments(
+				[
+					'options',
+					'options_api',
+				]
+			);
 		$this->getContainer()->addShared( 'taxonomy_subscriber', TaxonomySubscriber::class );
 	}
 }
