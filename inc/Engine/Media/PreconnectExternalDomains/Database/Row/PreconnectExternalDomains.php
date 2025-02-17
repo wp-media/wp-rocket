@@ -5,7 +5,7 @@ namespace WP_Rocket\Engine\Media\PreconnectExternalDomains\Database\Row;
 
 use WP_Rocket\Dependencies\BerlinDB\Database\Row;
 
-class PreconnectExternalDomains extends Row{
+class PreconnectExternalDomains extends Row {
 	/**
 	 * Row ID
 	 *
