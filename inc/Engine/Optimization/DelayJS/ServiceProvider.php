@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace WP_Rocket\Engine\Optimization\DelayJS;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
@@ -7,7 +9,6 @@ use WP_Rocket\Engine\Optimization\DelayJS\Admin\{
 	SiteList,
 	Subscriber as AdminSubscriber
 };
-use WP_Rocket\Logger\Logger;
 
 /**
  * Service provider for the WP Rocket Delay JS
@@ -44,20 +45,36 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	public function register(): void {
 		$this->getContainer()->add( 'delay_js_sitelist', SiteList::class )
-			->addArgument( $this->getContainer()->get( 'dynamic_lists' ) )
-			->addArgument( $this->getContainer()->get( 'options' ) )
-			->addArgument( $this->getContainer()->get( 'options_api' ) );
+			->addArguments(
+				[
+					'dynamic_lists',
+					'options',
+					'options_api',
+				]
+			);
 		$this->getContainer()->add( 'delay_js_settings', Settings::class )
-			->addArgument( $this->getContainer()->get( 'options_api' ) );
+			->addArgument( 'options_api' );
 		$this->getContainer()->addShared( 'delay_js_admin_subscriber', AdminSubscriber::class )
-			->addArgument( $this->getContainer()->get( 'delay_js_settings' ) )
-			->addArgument( $this->getContainer()->get( 'delay_js_sitelist' ) );
+			->addArguments(
+				[
+					'delay_js_settings',
+					'delay_js_sitelist',
+				]
+			);
 		$this->getContainer()->add( 'delay_js_html', HTML::class )
-			->addArgument( $this->getContainer()->get( 'options' ) )
-			->addArgument( $this->getContainer()->get( 'dynamic_lists_defaultlists_data_manager' ) )
-			->addArgument( new Logger() );
+			->addArguments(
+				[
+					'options',
+					'dynamic_lists_defaultlists_data_manager',
+					'logger',
+				]
+			);
 		$this->getContainer()->addShared( 'delay_js_subscriber', Subscriber::class )
-			->addArgument( $this->getContainer()->get( 'delay_js_html' ) )
-			->addArgument( rocket_direct_filesystem() );
+			->addArguments(
+				[
+					'delay_js_html',
+					rocket_direct_filesystem(),
+				]
+			);
 	}
 }
