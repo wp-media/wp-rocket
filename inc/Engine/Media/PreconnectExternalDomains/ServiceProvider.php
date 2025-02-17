@@ -1,0 +1,65 @@
+<?php
+declare(strict_types=1);
+
+namespace WP_Rocket\Engine\Media\PreconnectExternalDomains;
+
+use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Engine\Media\PreconnectExternalDomains\Context\Context;
+use WP_Rocket\Engine\Media\PreconnectExternalDomains\Database\Queries\PreconnectExternalDomains as Query;
+use WP_Rocket\Engine\Media\PreconnectExternalDomains\AJAX\Controller as AJAXController;
+use WP_Rocket\Engine\Media\PreconnectExternalDomains\Database\Table\PreconnectExternalDomains as PreconnectTable;
+use WP_Rocket\Engine\Media\PreconnectExternalDomains\Frontend\Subscriber as FrontendSubscriber;
+
+class ServiceProvider extends AbstractServiceProvider {
+	/**
+	 * The provides array is a way to let the container
+	 * know that a service is provided by this service
+	 * provider. Every service that is registered via
+	 * this service provider must have an alias added
+	 * to this array or it will be ignored.
+	 *
+	 * @var array
+	 */
+	protected $provides = [
+		'preconnect_factory',
+		'preconnect_query',
+		'preconnect_context',
+		'preconnect_ajax_controller',
+		'preconnect_frontend_subscriber',
+		'preconnect_table',
+	];
+
+	/**
+	 * Check if the service provider provides a specific service.
+	 *
+	 * @param string $id The id of the service.
+	 *
+	 * @return bool
+	 */
+	public function provides( string $id ): bool {
+		return in_array( $id, $this->provides, true );
+	}
+
+
+	/**
+	 * Registers the classes in the container
+	 *
+	 * @return void
+	 */
+	public function register(): void {
+		$this->getContainer()->add( 'preconnect_query', Query::class );
+		$this->getContainer()->addShared( 'preconnect_table', PreconnectTable::class );
+
+		$this->getContainer()->get( 'preconnect_table' );
+
+		$this->getContainer()->add( 'preconnect_ajax_controller', AJAXController::class )
+			->addArguments(
+				[
+					$this->getContainer()->get( 'preconnect_query' ),
+					$this->getContainer()->get( 'preconnect_context' ),
+				]
+			);
+
+		$this->getContainer()->addShared( 'preconnect_frontend_subscriber', FrontendSubscriber::class );
+	}
+}
