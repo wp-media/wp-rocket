@@ -327,10 +327,10 @@ msgid_plural ""
 " cache files to serve your WebP images. %2$sMore info%3$s"
 msgstr[0] ""
 "Du bruger %1$s til at konvertere billeder til WebP. WP Rocket vil oprette "
-"separate cache-filer til at behandle dine WebP-billeder. %2$sMere info%3$s"
+"separate cache-filer til behandling af dine WebP-billeder. %2$sMere info%3$s"
 msgstr[1] ""
 "Du bruger %1$s til at konvertere billeder til WebP. WP Rocket vil oprette "
-"separate cache-filer til at servicere dine WebP-billeder. %2$sMere info%3$s"
+"separate cache-filer til at behandle dine WebP-billeder. %2$sMere info%3$s"
 
 #. Translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/Addon/WebP/AdminSubscriber.php:173
