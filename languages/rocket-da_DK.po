@@ -267,7 +267,7 @@ msgstr "Sucuri firewall API returnerede en ukendt fejl."
 #: inc/Addon/Sucuri/Subscriber.php:334
 msgid "The Sucuri firewall API returned the following error: %s"
 msgid_plural "The Sucuri firewall API returned the following errors: %s"
-msgstr[0] "Sucuri firewall API retunerede følgende fejl: %s"
+msgstr[0] "Sucuri firewall API returnerede følgende fejl: %s"
 msgstr[1] "Sucuri firewall API returnerede følgende fejl: %s"
 
 #. Translators: %1$s = plugin name(s), %2$s = opening <a> tag, %3$s = closing
