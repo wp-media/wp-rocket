@@ -163,7 +163,7 @@ msgstr "%1$sWP Rocket:%2$s Cloudflare-cachen blev slettet."
 #. translators: %s is the message returned by the CloudFlare API.
 #: inc/Addon/Cloudflare/Subscriber.php:311
 msgid "Cloudflare development mode error: %s"
-msgstr "Cloudflare udviklingstilstand fejl: %s"
+msgstr "Cloudflare udviklingstilstand-fejl: %s"
 
 #. translators: %s is the message returned by the CloudFlare API.
 #: inc/Addon/Cloudflare/Subscriber.php:318
