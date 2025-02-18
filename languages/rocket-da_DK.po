@@ -467,8 +467,8 @@ msgid ""
 "Make <strong>%2$s</strong> writeable and retry deactivation, or force deactivation now:"
 msgstr ""
 "<strong>%1$s</strong> er ikke blevet deaktiveret på grund af manglende "
-"skriverettigheder.<br> Gør <strong>%2$s</strong> skrivebar og prøv "
-"deaktiveringen igen, eller tving deaktiveringen nu:"
+"skriverettigheder.<br> Gør <strong>%2$s</strong> skrivbar og prøv at "
+"deaktivere igen, eller tving deaktiveringen igennem nu:"
 
 #. translators: %s is WP Rocket plugin name.
 #: inc/admin/ui/notices.php:97
