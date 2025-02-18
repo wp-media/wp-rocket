@@ -46,7 +46,7 @@ class Controller implements ControllerInterface {
 		$payload = [];
 
 		if ( ! $this->context->is_allowed() ) {
-			$payload['preload_fonts'] = 'not allowed';
+			$payload['preconnect_external_domains'] = 'not allowed';
 
 			return $payload;
 		}
@@ -65,7 +65,7 @@ class Controller implements ControllerInterface {
 		 * @param string $url Current page url.
 		 * @param string[]|array $hashes Current list of preload fonts.
 		 */
-		$max_preconnect_domains_number = wpm_apply_filters_typed( 'integer', 'rocket_preconnect_external_domains_number', 20, $url, $preload_fonts );
+		$max_preconnect_domains_number = wpm_apply_filters_typed( 'integer', 'rocket_preconnect_external_domains_number', 20, $url, $domains );
 		if ( 0 >= $max_preconnect_domains_number ) {
 			$max_preconnect_domains_number = 1;
 		}
@@ -90,7 +90,7 @@ class Controller implements ControllerInterface {
 			'is_mobile'     => $is_mobile,
 			'status'        => $status_code,
 			'error_message' => $status_message,
-			'fonts'         => wp_json_encode( $preload_fonts ),
+			'fonts'         => wp_json_encode( $preconnect_domains ),
 			'created_at'    => current_time( 'mysql', true ),
 			'last_accessed' => current_time( 'mysql', true ),
 		];
