@@ -63,15 +63,8 @@ if ( ! function_exists( 'rocket_get_purge_urls' ) ) {
 		if ( 'post' !== $post_type ) {
 			$post_type_archive = get_post_type_archive_link( $post_type );
 			if ( $post_type_archive ) {
-				// Rename the caching filename for SSL URLs.
-				$filename = 'index';
-				if ( is_ssl() ) {
-					$filename .= '-https';
-				}
-
 				$post_type_archive = trailingslashit( $post_type_archive );
-				$purge_urls[]      = $post_type_archive . $filename . '.html';
-				$purge_urls[]      = $post_type_archive . $filename . '.html_gzip';
+				$purge_urls[]      = $post_type_archive . 'index(.*).html';
 				$purge_urls[]      = $post_type_archive . $GLOBALS['wp_rewrite']->pagination_base;
 			}
 		}
@@ -248,8 +241,10 @@ function rocket_clean_post( $post_id, $post = null ) {
 	// Purge all files.
 	rocket_clean_files( $purge_urls );
 
-	// Never forget to purge homepage and their pagination.
-	rocket_clean_home( $lang );
+	if ( wpm_apply_filters_typed( 'boolean', 'rocket_clean_home_after_clean_post', true, $post_id ) ) {
+		// Never forget to purge homepage and their pagination.
+		rocket_clean_home( $lang );
+	}
 
 	// Purge home feeds (blog & comments).
 	if ( has_filter( 'rocket_cache_reject_uri', 'wp_rocket_cache_feed' ) !== false ) {

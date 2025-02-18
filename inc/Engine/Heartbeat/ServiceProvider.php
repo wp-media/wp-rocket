@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace WP_Rocket\Engine\Heartbeat;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
@@ -34,6 +36,6 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	public function register(): void {
 		$this->getContainer()->addShared( 'heartbeat_subscriber', HeartbeatSubscriber::class )
-			->addArgument( $this->getContainer()->get( 'options' ) );
+			->addArgument( 'options' );
 	}
 }
