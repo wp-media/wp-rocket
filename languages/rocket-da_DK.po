@@ -397,7 +397,7 @@ msgstr "Import af indstillinger mislykkedes:"
 
 #: inc/admin/admin.php:453
 msgid "Settings import failed: unexpected file content."
-msgstr "Import af indstillinger mislykkedes: uventet filindhold."
+msgstr "Import af indstillinger mislykkedes: Uventet filindhold."
 
 #: inc/admin/admin.php:498
 msgid "Settings imported and saved."
