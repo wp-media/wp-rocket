@@ -405,7 +405,7 @@ msgstr "Indstillinger importeret og gemt."
 
 #: inc/admin/options.php:102 inc/Engine/Admin/Settings/Page.php:549
 msgid "Excluded CSS Files"
-msgstr "Ekskluderede CSS filer"
+msgstr "Ekskluderede CSS-filer"
 
 #: inc/admin/options.php:103 inc/Engine/Admin/Settings/Page.php:697
 msgid "Excluded Inline JavaScript"
