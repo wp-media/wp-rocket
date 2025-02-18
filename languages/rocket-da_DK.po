@@ -490,7 +490,7 @@ msgstr ""
 
 #: inc/admin/ui/notices.php:147
 msgid "Deactivate"
-msgstr "Deaktiver"
+msgstr "Deaktivér"
 
 #: inc/admin/ui/notices.php:189
 msgid ""
