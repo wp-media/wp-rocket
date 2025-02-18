@@ -75,7 +75,7 @@ msgstr "Uventet svar fra Cloudflare"
 
 #: inc/Addon/Cloudflare/API/Client.php:143
 msgid "Missing Cloudflare result."
-msgstr "Manglende Cloudflare resultat."
+msgstr "Manglende Cloudflare-resultat."
 
 #: inc/Addon/Cloudflare/API/Client.php:194 inc/deprecated/3.5.php:112
 #: inc/deprecated/3.5.php:169
