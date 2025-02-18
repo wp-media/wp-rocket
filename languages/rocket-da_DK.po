@@ -528,7 +528,7 @@ msgstr ""
 msgid ""
 "%s could not modify the .htaccess file due to missing writing permissions."
 msgstr ""
-"%s kunne ikke ændre .htaccess filen på grund af manglende skrivetilladelser."
+"%s kunne ikke ændre .htaccess-filen på grund af manglende skrivetilladelser."
 
 #. translators: This is a doc title! %1$s = opening link; %2$s = closing link
 #: inc/admin/ui/notices.php:303 inc/admin/ui/notices.php:788
