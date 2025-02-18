@@ -664,7 +664,7 @@ msgstr "Aktivér \"Separate cachefiler til mobilenheder\" nu"
 
 #: inc/admin/ui/notices.php:715
 msgid "Force deactivation "
-msgstr "Tving deaktivering"
+msgstr "Gennemtving deaktivering"
 
 #: inc/admin/ui/notices.php:745
 msgid "The following code should have been written to this file:"
