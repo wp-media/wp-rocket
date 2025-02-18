@@ -130,7 +130,7 @@ msgstr "Mangler Cloudflare Zone ID."
 
 #: inc/Addon/Cloudflare/Cloudflare.php:104 inc/deprecated/3.5.php:153
 msgid "It looks like your domain is not set up on Cloudflare."
-msgstr "Det ser ud til, at dit domæne ikke er konfigureret på Cloudflare."
+msgstr "Det ser ud til, at dit domæne ikke er konfigureret hos Cloudflare."
 
 #: inc/Addon/Cloudflare/Cloudflare.php:200
 msgid "days"
