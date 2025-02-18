@@ -261,7 +261,7 @@ msgstr "Fik et ugyldigt svar fra Sucuri firewall API."
 
 #: inc/Addon/Sucuri/Subscriber.php:330
 msgid "The Sucuri firewall API returned an unknown error."
-msgstr "Sucuri firewall API returnerede med en ukendt fejl."
+msgstr "Sucuri firewall API returnerede en ukendt fejl."
 
 #. translators: %s is an error message.
 #: inc/Addon/Sucuri/Subscriber.php:334
