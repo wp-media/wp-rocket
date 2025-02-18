@@ -189,6 +189,11 @@ abstract class AbstractGFOptimization {
 		return $items;
 	}
 
+	/**
+	 * Get font urls, getter method for font_urls property.
+	 *
+	 * @return array
+	 */
 	public function get_font_urls(): array {
 		return $this->font_urls;
 	}

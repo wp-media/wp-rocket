@@ -633,6 +633,11 @@ JS;
 		return $items;
 	}
 
+	/**
+	 * Get critical CSS content, getter method for critical_css_content property.
+	 *
+	 * @return string
+	 */
 	public function get_critical_css_content() {
 		return $this->critical_css_content;
 	}
