@@ -188,7 +188,7 @@ msgstr " Cloudflare cacheniveau indstillet til %s"
 #. translators: %s is the message returned by the CloudFlare API.
 #: inc/Addon/Cloudflare/Subscriber.php:368
 msgid "Cloudflare rocket loader error: %s"
-msgstr "Cloudflare rocket loader fejl: %s"
+msgstr "Cloudflare rocket loader-fejl: %s"
 
 #. translators: %s is the message returned by the CloudFlare API.
 #: inc/Addon/Cloudflare/Subscriber.php:375
