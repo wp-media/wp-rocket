@@ -431,7 +431,7 @@ msgstr "Aldrig Cache-URL(er)"
 
 #: inc/admin/options.php:108 inc/Engine/Admin/Settings/Page.php:1257
 msgid "Never Cache User Agent(s)"
-msgstr "Aldrig Cache brugeragent(er)"
+msgstr "Aldrig Cache-brugeragent(er)"
 
 #: inc/admin/options.php:109 inc/Engine/Admin/Settings/Page.php:1263
 msgid "Always Purge URL(s)"
