@@ -449,7 +449,7 @@ msgstr "%1$s: <em>%2$s</em>"
 #: inc/admin/options.php:141
 msgid "The following pattern is invalid and has been removed:"
 msgid_plural "The following patterns are invalid and have been removed:"
-msgstr[0] "Det følgende mønster"
+msgstr[0] "Følgende mønster er ugyldigt og er blevet fjernet:"
 msgstr[1] "Følgende mønstre er ugyldige og er blevet fjernet:"
 
 #: inc/admin/options.php:157
