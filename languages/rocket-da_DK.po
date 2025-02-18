@@ -419,7 +419,7 @@ msgstr "Ekskluderede JavaScript-filer"
 
 #: inc/admin/options.php:105
 msgid "Defer JavaScript Files"
-msgstr "Udskyd JavaScript filer"
+msgstr "Udskyd JavaScript-filer"
 
 #: inc/admin/options.php:106
 msgid "Excluded Delay JavaScript Files"
