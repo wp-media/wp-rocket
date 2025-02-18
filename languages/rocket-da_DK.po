@@ -376,7 +376,7 @@ msgstr "Ryd denne cache"
 #: inc/admin/admin.php:408
 msgid "Settings import failed: you do not have the permissions to do this."
 msgstr ""
-"Import af indstillinger mislykkedes: du har ikke tilladelserne til at gøre "
+"Import af indstillinger mislykkedes: Du har ikke tilladelserne til at gøre "
 "dette."
 
 #: inc/admin/admin.php:412
