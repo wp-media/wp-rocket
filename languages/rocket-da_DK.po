@@ -509,8 +509,8 @@ msgid ""
 "%1$sSettings > General%2$s page to prevent any issues."
 msgstr ""
 "Endurance Cache er i øjeblikket aktiveret, hvilket vil være i konflikt med "
-"WP Rocket Cache. Indstil venligst Endurance Cache-cache-niveauet til Off "
-"(Niveau 0) til %1$sIndstillinger > Generelt%2$s side for at forhindre "
+"WP Rocket Cache. Indstil venligst cache-niveauet for Endurance Cache til Off"
+" (Niveau 0) under  %1$sIndstillinger > Generelt%2$s for at forhindre "
 "problemer."
 
 #. translators: %1$s WP Rocket plugin name; %2$s = opening link; %3$s =
