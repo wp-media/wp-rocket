@@ -21,12 +21,12 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @var array
 	 */
 	protected $provides = [
-		'preconnect_factory',
-		'preconnect_query',
-		'preconnect_context',
-		'preconnect_ajax_controller',
+		'preconnect_external_domains_factory',
+		'preconnect_external_domains_query',
+		'preconnect_external_domains_context',
+		'preconnect_external_domains_ajax_controller',
 		'preconnect_frontend_subscriber',
-		'preconnect_table',
+		'preconnect_external_domains_table',
 	];
 
 	/**
@@ -47,16 +47,16 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register(): void {
-		$this->getContainer()->add( 'preconnect_query', Query::class );
-		$this->getContainer()->addShared( 'preconnect_table', PreconnectTable::class );
+		$this->getContainer()->add( 'preconnect_external_domains_query', Query::class );
+		$this->getContainer()->addShared( 'preconnect_external_domains_table', PreconnectTable::class );
 
-		$this->getContainer()->get( 'preconnect_table' );
+		$this->getContainer()->get( 'preconnect_external_domains_table' );
 
-		$this->getContainer()->add( 'preconnect_ajax_controller', AJAXController::class )
+		$this->getContainer()->add( 'preconnect_external_domains_ajax_controller', AJAXController::class )
 			->addArguments(
 				[
-					$this->getContainer()->get( 'preconnect_query' ),
-					$this->getContainer()->get( 'preconnect_context' ),
+					$this->getContainer()->get( 'preconnect_external_domains_query' ),
+					$this->getContainer()->get( 'preconnect_external_domains_context' ),
 				]
 			);
 
