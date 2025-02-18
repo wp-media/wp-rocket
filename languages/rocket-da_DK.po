@@ -312,8 +312,8 @@ msgstr[0] ""
 "%2$sMere info%3$s"
 msgstr[1] ""
 "Du bruger %1$s til at konvertere billeder til WebP. Hvis du vil have, at WP "
-"Rocket skal servicere dem til dig, skal du aktivere dette valg. %2$sMere "
-"info%3$s"
+"Rocket skal behandle dem til dig, skal du aktivere denne indstilling. "
+"%2$sMere info%3$s"
 
 #. Translators: %1$s = plugin name(s), %2$s = opening <a> tag, %3$s = closing
 #. </a> tag.
