@@ -227,7 +227,7 @@ msgstr "WP Rocket: "
 #. translators: %s is the error message returned by the API.
 #: inc/Addon/Sucuri/Subscriber.php:96
 msgid "Sucuri cache purge error: %s"
-msgstr "Sucuri cache rensefejl: %s"
+msgstr "Rensningsfejl for Sucuri-cache : %s"
 
 #: inc/Addon/Sucuri/Subscriber.php:101
 msgid ""
