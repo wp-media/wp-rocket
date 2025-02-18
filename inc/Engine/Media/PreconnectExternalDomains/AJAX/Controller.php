@@ -19,7 +19,7 @@ class Controller implements ControllerInterface {
 	private $query;
 
 	/**
-	 * PreloadFonts Context.
+	 * PreconnectExternalDomains Context.
 	 *
 	 * @var ContextInterface
 	 */
@@ -53,8 +53,8 @@ class Controller implements ControllerInterface {
 
 		$url       = isset( $_POST['url'] ) ? untrailingslashit( esc_url_raw( wp_unslash( $_POST['url'] ) ) ) : '';
 		$is_mobile = isset( $_POST['is_mobile'] ) ? filter_var( wp_unslash( $_POST['is_mobile'] ), FILTER_VALIDATE_BOOLEAN ) : false;
-		$results   = isset( $_POST['results'] ) ? json_decode( wp_unslash( $_POST['results'] ) ) : (object) [ 'preconnect_external_domains' => [] ]; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-		$domains   = $results->preconnect_external_domains ?? [];
+		$results   = isset( $_POST['results'] ) ? json_decode( wp_unslash( $_POST['results'] ) ) : (object) [ 'domains' => [] ]; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$domains   = $results->domains ?? [];
 
 		$preconnect_domains = [];
 
@@ -63,7 +63,7 @@ class Controller implements ControllerInterface {
 		 *
 		 * @param int $max_number Maximum number to allow.
 		 * @param string $url Current page url.
-		 * @param string[]|array $hashes Current list of preload fonts.
+		 * @param string[]|array $hashes Current list of preconnect external domains.
 		 */
 		$max_preconnect_domains_number = wpm_apply_filters_typed( 'integer', 'rocket_preconnect_external_domains_number', 20, $url, $domains );
 		if ( 0 >= $max_preconnect_domains_number ) {
@@ -71,7 +71,7 @@ class Controller implements ControllerInterface {
 		}
 
 		foreach ( (array) $domains as $index => $domain ) {
-			$preconnect_domains[ $index ] = sanitize_text_field( wp_unslash( $domain ) );
+			$preconnect_domains[ $index ] = sanitize_url( wp_unslash( $domain ) );
 			--$max_preconnect_domains_number;
 		}
 
@@ -90,7 +90,7 @@ class Controller implements ControllerInterface {
 			'is_mobile'     => $is_mobile,
 			'status'        => $status_code,
 			'error_message' => $status_message,
-			'fonts'         => wp_json_encode( $preconnect_domains ),
+			'domains'       => wp_json_encode( $preconnect_domains ),
 			'created_at'    => current_time( 'mysql', true ),
 			'last_accessed' => current_time( 'mysql', true ),
 		];
