@@ -168,7 +168,7 @@ msgstr "Cloudflare udviklingstilstand-fejl: %s"
 #. translators: %s is the message returned by the CloudFlare API.
 #: inc/Addon/Cloudflare/Subscriber.php:318
 msgid "Cloudflare development mode %s"
-msgstr "Cloudflare  udviklingstilstand%s"
+msgstr "Cloudflare udviklingstilstand %s"
 
 #. translators: %s is the message returned by the CloudFlare API.
 #: inc/Addon/Cloudflare/Subscriber.php:337
