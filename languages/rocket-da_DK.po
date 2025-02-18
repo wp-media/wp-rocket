@@ -427,7 +427,7 @@ msgstr "Ekskluderede Delay JavaScript-filer"
 
 #: inc/admin/options.php:107 inc/Engine/Admin/Settings/Page.php:1243
 msgid "Never Cache URL(s)"
-msgstr "Aldrig Cache URL(er)"
+msgstr "Aldrig Cache-URL(er)"
 
 #: inc/admin/options.php:108 inc/Engine/Admin/Settings/Page.php:1257
 msgid "Never Cache User Agent(s)"
