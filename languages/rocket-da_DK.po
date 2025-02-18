@@ -568,7 +568,7 @@ msgid ""
 "%1$s is good to go! %2$sTest your load time%4$s, or visit your "
 "%3$ssettings%4$s."
 msgstr ""
-"%1$ser godt at gå! %2$sTest din indlæsningstid%4$s, eller gå til dine "
+"%1$ser klar! %2$sTest din indlæsningstid%4$s, eller gå til dine "
 "%3$sindstillinger%4$s."
 
 #: inc/admin/ui/notices.php:499
