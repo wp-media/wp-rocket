@@ -248,7 +248,8 @@ msgstr "Sucuri firewall API-nøgle er ugyldig."
 #. translators: %s is an error message.
 #: inc/Addon/Sucuri/Subscriber.php:286
 msgid "Error when contacting Sucuri firewall API. Error message was: %s"
-msgstr "Fejl ved kontakt til Sucuri firewall API. Fejlmeddelelse var: %s"
+msgstr ""
+"Fejl ved etablering af kontakt til Sucuri firewall API. Fejlmeddelelse: %s"
 
 #: inc/Addon/Sucuri/Subscriber.php:301
 msgid "Could not get a response from the Sucuri firewall API."
