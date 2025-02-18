@@ -2064,8 +2064,8 @@ msgid ""
 "%1$sCache for query strings%2$s enables you to force caching for specific "
 "GET parameters."
 msgstr ""
-"%1$sMuuttujat välimuistiin -optio%2$s mahdollistaa sinut pakottamaan tietyt "
-"GET-parametrit välimuistiin."
+"%1$sKyselyiden merkkijonojen välimuisti%2$s mahdollistaa välimuistiin "
+"tallentamisen pakottamisen tietyille GET-parametreille."
 
 #: inc/Engine/Admin/Settings/Page.php:1283
 msgid ""
