@@ -80,8 +80,8 @@ class Fonts implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_head_items' => [ 'preload_fonts', 30 ],
-			'rocket_buffer'     => [ 'insert_meta_comment', 20 ],
+			'rocket_head_items' => [ 'insert_preloaded_fonts_into_head', 30 ],
+			'rocket_buffer'     => [ 'preload_fonts', 20 ],
 		];
 	}
 
@@ -93,7 +93,7 @@ class Fonts implements Subscriber_Interface {
 	 *
 	 * @since 3.6
 	 */
-	public function insert_meta_comment( $html ): string {
+	public function preload_fonts( $html ): string {
 		if ( ! $this->is_allowed() ) {
 			return $html;
 		}
@@ -130,7 +130,7 @@ class Fonts implements Subscriber_Interface {
 	 * @param array $items Head elements.
 	 * @return array
 	 */
-	public function preload_fonts( $items ): array {
+	public function insert_preloaded_fonts_into_head( $items ): array {
 		if ( empty( $this->fonts ) ) {
 			return $items;
 		}
@@ -142,7 +142,7 @@ class Fonts implements Subscriber_Interface {
 					'as'   => 'font',
 					1      => 'crossorigin',
 				]
-				);
+			);
 		}
 		return $items;
 	}
@@ -191,5 +191,14 @@ class Fonts implements Subscriber_Interface {
 		 * @param bool $disable_preload_fonts True to disable, false otherwise.
 		 */
 		return ! apply_filters( 'rocket_disable_preload_fonts', false );
+	}
+
+	/**
+	 * Get fonts to preload, getter method for fonts property.
+	 *
+	 * @return array
+	 */
+	public function get_fonts(): array {
+		return $this->fonts;
 	}
 }

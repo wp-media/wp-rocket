@@ -378,16 +378,17 @@ class UsedCSS {
 	 * @return array Filtered head items.
 	 */
 	public function add_used_css_to_html( array $items ): array {
-		if ( empty( $this->used_css_content ) ) {
+		$used_css = $this->get_used_css_content();
+		if ( empty( $used_css ) ) {
 			return $items;
 		}
 
 		$items[] = $this->style_tag(
-			$this->get_used_css_markup( $this->used_css_content ),
+			$this->get_used_css_markup( $used_css ),
 			[
 				'id' => 'wpr-usedcss',
 			]
-			);
+		);
 		return $items;
 	}
 
@@ -408,7 +409,7 @@ class UsedCSS {
 					'as'   => 'font',
 					1      => 'crossorigin',
 				]
-				);
+			);
 		}
 
 		return $items;
@@ -696,5 +697,14 @@ class UsedCSS {
 	 */
 	public function has_one_completed_row_at_least() {
 		return $this->used_css_query->get_completed_count() > 0;
+	}
+
+	/**
+	 * Get generated used CSS, getter method for used_css_content property.
+	 *
+	 * @return string
+	 */
+	public function get_used_css_content() {
+		return $this->used_css_content;
 	}
 }
