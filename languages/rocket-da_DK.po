@@ -415,7 +415,7 @@ msgstr "Ekskluderet Inline JavaScript"
 #: inc/Engine/Admin/Settings/Page.php:748
 #: inc/Engine/Admin/Settings/Page.php:798
 msgid "Excluded JavaScript Files"
-msgstr "Udelukkede JavaScript filer"
+msgstr "Ekskluderede JavaScript-filer"
 
 #: inc/admin/options.php:105
 msgid "Defer JavaScript Files"
