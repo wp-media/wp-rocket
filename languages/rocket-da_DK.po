@@ -239,7 +239,7 @@ msgstr ""
 
 #: inc/Addon/Sucuri/Subscriber.php:218
 msgid "Sucuri firewall API key was not found."
-msgstr "Sucuri firewall API nøglen blev ikke fundet."
+msgstr "Sucuri firewall API-nøgle blev ikke fundet."
 
 #: inc/Addon/Sucuri/Subscriber.php:231
 msgid "Sucuri firewall API key is invalid."
