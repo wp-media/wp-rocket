@@ -348,7 +348,7 @@ msgstr ""
 #: inc/Addon/WebP/AdminSubscriber.php:185
 msgid "WP Rocket will create separate cache files to serve your WebP images."
 msgstr ""
-"WP Rocket vil oprette separate cache filer til at betjene dine WebP "
+"WP Rocket vil oprette separate cachefiler til behandling af dine WebP-"
 "billeder."
 
 #: inc/admin/admin.php:18 inc/common/admin-bar.php:273
