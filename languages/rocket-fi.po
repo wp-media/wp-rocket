@@ -2056,7 +2056,7 @@ msgstr "Evästeet, joita ei koskaan tallenneta välimuistiin"
 
 #: inc/Engine/Admin/Settings/Page.php:1269
 msgid "Cache Query String(s)"
-msgstr "Muuttujat välimuistiin"
+msgstr "Tallenna kyselyiden merkkijonot välimuistiin"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:1272
