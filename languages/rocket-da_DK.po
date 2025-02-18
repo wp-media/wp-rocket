@@ -597,8 +597,8 @@ msgid ""
 msgstr ""
 "Nedenfor er en detaljeret visning af alle data, WP Rocket vil indsamle, hvis"
 " der gives tilladelse. WP Rocket sender aldrig domænenavne eller "
-"e-mailadresser (undtagen licensvalidering), IP adresser eller tredjeparts "
-"API nøgler."
+"e-mailadresser (undtagen til licensvalidering), IP-adresser eller API-nøgler"
+" fra tredjeparter."
 
 #. translators: button text for data collection opt-in
 #: inc/admin/ui/notices.php:520
