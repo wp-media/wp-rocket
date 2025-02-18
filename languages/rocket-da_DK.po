@@ -631,7 +631,7 @@ msgstr "%s: Indlægscachen er ryddet."
 #. translators: %s = plugin name.
 #: inc/admin/ui/notices.php:619
 msgid "%s: Term cache cleared."
-msgstr "%s: Term cache ryddet."
+msgstr "%s: Term-cache ryddet."
 
 #. translators: %s = plugin name).
 #: inc/admin/ui/notices.php:626
