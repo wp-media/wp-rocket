@@ -409,7 +409,7 @@ msgstr "Ekskluderede CSS-filer"
 
 #: inc/admin/options.php:103 inc/Engine/Admin/Settings/Page.php:697
 msgid "Excluded Inline JavaScript"
-msgstr "Udelukket Inline JavaScript"
+msgstr "Ekskluderet Inline JavaScript"
 
 #: inc/admin/options.php:104 inc/Engine/Admin/Settings/Page.php:715
 #: inc/Engine/Admin/Settings/Page.php:748
