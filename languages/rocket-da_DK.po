@@ -652,7 +652,7 @@ msgstr "Ryd brugt CSS"
 
 #: inc/admin/ui/notices.php:685
 msgid "Stop Preload"
-msgstr "Stop Forudindlæs"
+msgstr "Stop Forudindlæsning"
 
 #: inc/admin/ui/notices.php:691
 msgid "Turn on Remove Unused CSS"
