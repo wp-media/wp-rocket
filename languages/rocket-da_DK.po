@@ -216,7 +216,7 @@ msgid ""
 "%1$sWP Rocket:%2$s Optimal settings deactivated for Cloudflare, reverted to "
 "previous settings:"
 msgstr ""
-"%1$sWP Rocket:%2$s Optimale indstillinger deaktiveret for Cloudflare, vendt "
+"%1$sWP Rocket:%2$s Optimale indstillinger deaktiveret for Cloudflare. Sat "
 "tilbage til tidligere indstillinger:"
 
 #: inc/Addon/Cloudflare/Subscriber.php:632 inc/admin/options.php:165
