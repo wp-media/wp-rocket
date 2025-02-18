@@ -385,7 +385,7 @@ msgstr "Import af indstillinger mislykkedes: Ingen fil blev uploadet."
 
 #: inc/admin/admin.php:416
 msgid "Settings import failed: incorrect filename."
-msgstr "Import af indstillinger mislykkedes: forkert filnavn."
+msgstr "Import af indstillinger mislykkedes: Forkert filnavn."
 
 #: inc/admin/admin.php:427
 msgid "Settings import failed: incorrect filetype."
