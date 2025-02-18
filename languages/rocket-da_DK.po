@@ -389,7 +389,7 @@ msgstr "Import af indstillinger mislykkedes: Forkert filnavn."
 
 #: inc/admin/admin.php:427
 msgid "Settings import failed: incorrect filetype."
-msgstr "Import af indstillinger mislykkedes: forkert filtype."
+msgstr "Import af indstillinger mislykkedes: Forkert filtype."
 
 #: inc/admin/admin.php:437
 msgid "Settings import failed: "
