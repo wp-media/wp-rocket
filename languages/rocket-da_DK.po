@@ -435,7 +435,7 @@ msgstr "Aldrig Cache-brugeragent(er)"
 
 #: inc/admin/options.php:109 inc/Engine/Admin/Settings/Page.php:1263
 msgid "Always Purge URL(s)"
-msgstr "Slet altid URL(er)"
+msgstr "Ryd altid-URL(er)"
 
 #: inc/admin/options.php:110 inc/Engine/Admin/Settings/Page.php:1544
 msgid "Exclude files from CDN"
