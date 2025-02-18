@@ -42,8 +42,8 @@ return [
 				<body>
 				</body>
 			</html>',
-		'expected' =>
-			'<!doctype html>
+		'expected' => [
+			'html' => '<!doctype html>
 			<html>
 				<head>
 					<title>Sample Page</title><link rel="preload" data-rocket-preload as="style" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@450&#038;display=swap" />
@@ -52,7 +52,11 @@ return [
 				</head>
 				<body>
 				</body>
-			</html>'
+			</html>',
+			'fonts' => [
+				'https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@450&#038;display=swap',
+			],
+		],
 	],
 	'shouldNotCombineMultipleTagsWithTextParam' => [
 		'config' => [
@@ -69,8 +73,8 @@ return [
 				<body>
 				</body>
 			</html>',
-		'expected' =>
-			'<!doctype html>
+		'expected' => [
+			'html' => '<!doctype html>
 			<html>
 				<head>
 					<title>Sample Page</title>
@@ -79,7 +83,11 @@ return [
 				</head>
 				<body>
 				</body>
-			</html>'
+			</html>',
+			'fonts' => [
+				'https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@450&#038;display=swap',
+			],
+		],
 	],
 	'shouldCombineMultipleTags' => [
 		'config' => [
@@ -97,8 +105,8 @@ return [
 				<body>
 				</body>
 			</html>',
-		'expected' =>
-			'<!doctype html>
+		'expected' => [
+			'html' => '<!doctype html>
 			<html>
 				<head>
 					<title>Sample Page</title>
@@ -106,7 +114,12 @@ return [
 				</head>
 				<body>
 				</body>
-			</html>'
+			</html>',
+			'fonts' => [
+				'https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@450&#038;family=Comfortaa&#038;display=swap',
+			],
+		],
+
 	],
 	'shouldCombineMultipleTagsWithMultipleFamiliesInTag' => [
 		'config' => [
@@ -125,8 +138,8 @@ return [
 				<body>
 				</body>
 			</html>',
-		'expected' =>
-			'<!doctype html>
+		'expected' => [
+			'html' => '<!doctype html>
 			<html>
 				<head>
 					<title>Sample Page</title>
@@ -135,7 +148,12 @@ return [
 				</head>
 				<body>
 				</body>
-			</html>'
+			</html>',
+			'fonts' => [
+				'https://fonts.googleapis.com/css2?family=Goldman:wght@700&#038;family=Roboto:ital,wght@0,100;0,400;0,500;1,500;1,900&#038;family=Comfortaa&#038;display=swap',
+			],
+		],
+
 	],
 	'shouldReplaceAnotherFontDisplayValueWithSwap' => [
 		'config' => [
@@ -154,8 +172,8 @@ return [
 			<body>
 			</body>
 			</html>',
-		'expected' =>
-			'<!doctype html>
+		'expected' => [
+			'html' => '<!doctype html>
 			<html>
 			<head>
 			<title>Sample Page</title>
@@ -164,7 +182,12 @@ return [
 			</head>
 			<body>
 			</body>
-			</html>'
+			</html>',
+			'fonts' => [
+				'https://fonts.googleapis.com/css2?family=Goldman:wght@700&#038;family=Roboto:ital,wght@0,100;0,400;0,500;1,500;1,900&#038;family=Comfortaa&#038;display=swap',
+			],
+		],
+
 	],
 	'shouldReplaceDisplayValueWithFilteredValue' => [
 		'config' => [
@@ -183,8 +206,8 @@ return [
 			<body>
 			</body>
 			</html>',
-		'expected' =>
-			'<!doctype html>
+		'expected' => [
+			'html' => '<!doctype html>
 			<html>
 			<head>
 			<title>Sample Page</title>
@@ -193,8 +216,11 @@ return [
 			</head>
 			<body>
 			</body>
-			</html>'
-		,
+			</html>',
+			'fonts' => [
+				'https://fonts.googleapis.com/css2?family=Goldman:wght@700&#038;family=Roboto:ital,wght@0,100;0,400;0,500;1,500;1,900&#038;family=Comfortaa&#038;display=optional',
+			]
+		],
 	],
 	'shouldCombineMultipleTagsNoPreload' => [
 		'config' => [
@@ -212,8 +238,8 @@ return [
 				<body>
 				</body>
 			</html>',
-		'expected' =>
-			'<!doctype html>
+		'expected' => [
+			'html' => '<!doctype html>
 			<html>
 				<head>
 					<title>Sample Page</title>
@@ -221,7 +247,11 @@ return [
 				</head>
 				<body>
 				</body>
-			</html>'
+			</html>',
+			'fonts' => [
+				'https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@450&#038;family=Comfortaa&#038;display=swap',
+			],
+		],
 	],
 	'shouldExcludeFontFromCombine' => [
 		'config' => [
@@ -244,7 +274,8 @@ return [
 			<body>
 			</body>
 			</html>',
-		'expected' => '<!doctype html>
+		'expected' => [
+			'html' => '<!doctype html>
 			<html>
 			<head>
 			<title>
@@ -261,5 +292,9 @@ return [
 			</body>
 			</html>
 			',
+			'fonts' => [
+				'https://fonts.googleapis.com/css2?family=Goldman:wght@700&#038;family=Roboto:ital,wght@0,100;0,400;0,500;1,500;1,900&#038;family=MontSerra:ital,wght@0,100;0,400;0,500;1,500;1,900&#038;family=Comfortaa&#038;display=optional',
+			],
+		],
 	]
 ];
