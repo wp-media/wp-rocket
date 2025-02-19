@@ -1025,7 +1025,7 @@ msgstr ""
 #. translators: 1 and 3 are link openings, 2 is a link closing.
 #: inc/deprecated/3.11.php:279 inc/Engine/Plugin/UpdaterSubscriber.php:514
 msgid "%1$sReturn to WP Rocket%2$s or %3$sgo to Plugins page%2$s"
-msgstr "%1$sReturn til WP Rocket%2$s eller %3$sgo til Plugins side%2$s"
+msgstr "%1$sGå tilbage til WP Rocket%2$s eller %3$sgå til Plugins-siden%2$s"
 
 #: inc/deprecated/3.12.php:56
 msgid "All in One SEO XML sitemap"
