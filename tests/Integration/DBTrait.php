@@ -97,7 +97,7 @@ trait DBTrait {
 		}
 	}
 
-	public static function installPreloadFontsTable() {
+	public static function installPreconnectExternalDomainsTable() {
 		$container = apply_filters( 'rocket_container', null );
 		$preconnect_external_domains_table = $container->get( 'preconnect_external_domains_table' );
 

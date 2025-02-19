@@ -5,12 +5,15 @@ namespace WP_Rocket\Engine\Media\PreconnectExternalDomains;
 
 use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Engine\Common\PerformanceHints\AJAX\ControllerInterface as AjaxControllerInterface;
+use WP_Rocket\Engine\Common\PerformanceHints\Cron\CronTrait;
 use WP_Rocket\Engine\Common\PerformanceHints\Database\Queries\QueriesInterface;
 use WP_Rocket\Engine\Common\PerformanceHints\Database\Table\TableInterface;
 use WP_Rocket\Engine\Common\PerformanceHints\FactoryInterface;
 use WP_Rocket\Engine\Common\PerformanceHints\Frontend\ControllerInterface as FrontendControllerInterface;
 
 class Factory implements FactoryInterface {
+	use CronTrait;
+
 	/**
 	 * Ajax Controller instance.
 	 *
@@ -49,21 +52,24 @@ class Factory implements FactoryInterface {
 	/**
 	 * Instantiate the class.
 	 *
-	 * @param QueriesInterface        $queries Preconnect external domains Queries instance.
-	 * @param ContextInterface        $context Preconnect external domains Context instance.
-	 * @param AjaxControllerInterface $ajax_controller Preconnect external domains AJAX Controller instance.
-	 * @param TableInterface          $table Preconnect external domains Table instance.
+	 * @param QueriesInterface            $queries Preconnect external domains Queries instance.
+	 * @param ContextInterface            $context Preconnect external domains Context instance.
+	 * @param AjaxControllerInterface     $ajax_controller Preconnect external domains AJAX Controller instance.
+	 * @param TableInterface              $table Preconnect external domains Table instance.
+	 * @param FrontendControllerInterface $frontend_controller Preconnect external domains Frontend Controller instance.
 	 */
 	public function __construct(
 		QueriesInterface $queries,
 		ContextInterface $context,
 		AjaxControllerInterface $ajax_controller,
-		TableInterface $table
+		TableInterface $table,
+		FrontendControllerInterface $frontend_controller
 	) {
-		$this->context         = $context;
-		$this->queries         = $queries;
-		$this->table           = $table;
-		$this->ajax_controller = $ajax_controller;
+		$this->context             = $context;
+		$this->queries             = $queries;
+		$this->table               = $table;
+		$this->ajax_controller     = $ajax_controller;
+		$this->frontend_controller = $frontend_controller;
 	}
 
 	/**
@@ -99,7 +105,8 @@ class Factory implements FactoryInterface {
 	 * @return QueriesInterface
 	 */
 	public function queries(): QueriesInterface {
-		return $this->queries;
+		// Defines the interval for deletion and returns Queries object.
+		return $this->deletion_interval( 'rocket_preconnect_external_domains_cleanup_interval' );
 	}
 
 	/**
