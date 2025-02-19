@@ -172,7 +172,7 @@ msgstr "Cloudflare utviklingsmodus %s"
 #. translators: %s is the message returned by the CloudFlare API.
 #: inc/Addon/Cloudflare/Subscriber.php:337
 msgid "Cloudflare cache level error: %s"
-msgstr "Feil på Cloudflare-cachenivå: %s"
+msgstr "Feil i Cloudflare cache-nivå: %s"
 
 #: inc/Addon/Cloudflare/Subscriber.php:344
 msgctxt "Cloudflare caching level"
