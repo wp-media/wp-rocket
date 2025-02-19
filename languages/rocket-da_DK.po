@@ -790,7 +790,7 @@ msgstr "Aktiveret"
 
 #: inc/Dependencies/WPMedia/PluginFamily/Model/PluginFamily.php:109
 msgid "Install"
-msgstr "Installér"
+msgstr "Installer"
 
 #: inc/Dependencies/WPMedia/PluginFamily/Model/PluginFamily.php:118
 msgid "Get it Now"
