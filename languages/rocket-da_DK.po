@@ -964,7 +964,7 @@ msgstr ""
 
 #: inc/deprecated/3.5.php:271
 msgid "Connection to Cloudflare failed"
-msgstr "Tilslutning til Cloudflare mislykkedes"
+msgstr "Kunne ikke forbinde til Cloudflare"
 
 #. translators: %s = CloudFare API return message.
 #: inc/deprecated/3.5.php:587
