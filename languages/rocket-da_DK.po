@@ -1354,7 +1354,7 @@ msgstr "Dashboard"
 
 #: inc/Engine/Admin/Settings/Page.php:427
 msgid "Get help, account info"
-msgstr "Få hjælp, konto info"
+msgstr "Få hjælp, kontoinformation"
 
 #: inc/Engine/Admin/Settings/Page.php:475
 msgid "File Optimization"
