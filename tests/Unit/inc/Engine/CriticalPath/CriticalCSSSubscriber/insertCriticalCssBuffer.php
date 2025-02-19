@@ -58,7 +58,6 @@ class Test_InsertCriticalCssBuffer extends FilesystemTestCase {
 		if ( isset( $config['is_rocket_post_excluded_option'] ) ) {
 			Functions\expect( 'is_rocket_post_excluded_option' )
 				->with( 'async_css' )
-				->twice()
 				->andReturn( $config['is_rocket_post_excluded_option'] );
 		} else {
 			Functions\expect( 'is_rocket_post_excluded_option' )
