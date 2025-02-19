@@ -778,7 +778,7 @@ msgstr "Ryd Sucuri-cache"
 
 #: inc/common/admin-bar.php:236 views/settings/fields/rocket-cdn.php:55
 msgid "Purge RocketCDN cache"
-msgstr "Rens RocketCDN cache"
+msgstr "Ryd RocketCDN-cache"
 
 #: inc/common/admin-bar.php:249 views/settings/partials/documentation.php:14
 msgid "Documentation"
