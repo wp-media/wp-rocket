@@ -1081,7 +1081,7 @@ msgstr ""
 
 #: inc/deprecated/deprecated.php:240
 msgid "<strong>JS</strong> files with Deferred Loading JavaScript"
-msgstr "<strong>JS</strong> filer med udskudt Loading JavaScript"
+msgstr "<strong>JS</strong>- filer med Deferred Loading JavaScript"
 
 #: inc/deprecated/deprecated.php:293
 msgid "Add URL"
