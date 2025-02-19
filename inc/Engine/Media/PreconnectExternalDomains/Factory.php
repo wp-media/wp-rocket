@@ -62,6 +62,7 @@ class Factory implements FactoryInterface {
 	) {
 		$this->context         = $context;
 		$this->queries         = $queries;
+		$this->table           = $table;
 		$this->ajax_controller = $ajax_controller;
 	}
 
