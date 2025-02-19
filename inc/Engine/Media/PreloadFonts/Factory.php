@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WP_Rocket\Engine\Optimization\LazyRenderContent;
+namespace WP_Rocket\Engine\Media\PreloadFonts;
 
 use WP_Rocket\Engine\Common\PerformanceHints\Cron\CronTrait;
 use WP_Rocket\Engine\Common\PerformanceHints\FactoryInterface;
@@ -53,18 +53,18 @@ class Factory implements FactoryInterface {
 	/**
 	 * Instantiate the class.
 	 *
-	 * @param ContextInterface            $context LRC Context instance.
-	 * @param TableInterface              $table LRC Table instance.
-	 * @param QueriesInterface            $queries LRC Queries instance.
-	 * @param AjaxControllerInterface     $ajax_controller LRC AJAX Controller instance.
-	 * @param FrontendControllerInterface $frontend_controller LRC Frontend Controller instance.
+	 * @param AjaxControllerInterface     $ajax_controller PreloadFonts AJAX Controller instance.
+	 * @param FrontendControllerInterface $frontend_controller PreloadFonts Frontend Controller instance.
+	 * @param TableInterface              $table PreloadFonts Table instance.
+	 * @param QueriesInterface            $queries PreloadFonts Queries instance.
+	 * @param ContextInterface            $context PreloadFonts Context instance.
 	 */
-	public function __construct( ContextInterface $context, TableInterface $table, QueriesInterface $queries, AjaxControllerInterface $ajax_controller, FrontendControllerInterface $frontend_controller ) {
-		$this->context             = $context;
-		$this->table               = $table;
-		$this->queries             = $queries;
+	public function __construct( AjaxControllerInterface $ajax_controller, FrontendControllerInterface $frontend_controller, TableInterface $table, QueriesInterface $queries, ContextInterface $context ) {
 		$this->ajax_controller     = $ajax_controller;
 		$this->frontend_controller = $frontend_controller;
+		$this->table               = $table;
+		$this->queries             = $queries;
+		$this->context             = $context;
 	}
 
 	/**
@@ -101,7 +101,7 @@ class Factory implements FactoryInterface {
 	 */
 	public function queries(): QueriesInterface {
 		// Defines the interval for deletion and returns Queries object.
-		return $this->deletion_interval( 'rocket_lrc_cleanup_interval' );
+		return $this->deletion_interval( 'rocket_pf_cleanup_interval' );
 	}
 
 	/**
