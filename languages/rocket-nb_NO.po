@@ -197,7 +197,7 @@ msgstr "Cloudflare Rocket Loader %s"
 #. translators: %s is the message returned by the CloudFlare API.
 #: inc/Addon/Cloudflare/Subscriber.php:393
 msgid "Cloudflare browser cache error: %s"
-msgstr "Cloudflare-nettleserbufferfeil: %s"
+msgstr "Feil i Cloudflare nettleser-cache: %s"
 
 #. translators: %s is the message returned by the CloudFlare API.
 #: inc/Addon/Cloudflare/Subscriber.php:400
