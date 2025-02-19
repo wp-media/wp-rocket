@@ -145,7 +145,7 @@ msgstr "minutter"
 
 #: inc/Addon/Cloudflare/Cloudflare.php:207
 msgid "hours"
-msgstr "Timer"
+msgstr "timer"
 
 #. translators: %1$s = <strong>, %2$s = </strong>, %3$s = CloudFare API return
 #. message.
