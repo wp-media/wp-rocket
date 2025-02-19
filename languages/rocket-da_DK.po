@@ -1319,9 +1319,9 @@ msgid ""
 "configuration files must be regenerated for the page cache and all other "
 "optimizations to work as intended. %3$sLearn More%4$s"
 msgstr ""
-"%1$sWP Rocket:%2$s Vi har opdaget, at websteddomænet er ændret. "
+"%1$sWP Rocket:%2$s Vi har opdaget, at hjemmesidedomænet er ændret. "
 "Konfigurationsfilerne skal genoprettes for at sidecachen og alle andre "
-"optimeringer kan fungere som planlagt. %3$sLær mere%4$s"
+"optimeringer kan fungere efter hensigten. %3$sLær mere%4$s"
 
 #: inc/Engine/Admin/DomainChange/Subscriber.php:171
 msgid "Regenerate WP Rocket configuration files now"
