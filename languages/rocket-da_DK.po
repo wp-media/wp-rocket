@@ -806,7 +806,7 @@ msgstr "Optimering af ydeevne"
 
 #: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:15
 msgid "Speed Up Your Website, Instantly"
-msgstr "Hurtiggøre din hjemmeside, øjeblikkeligt"
+msgstr "Gør din hjemmeside hurtigere med det samme"
 
 #: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:16
 msgid ""
