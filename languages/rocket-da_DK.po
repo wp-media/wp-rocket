@@ -738,7 +738,7 @@ msgid ""
 msgid_plural ""
 "Failed to detect the following requirements in your theme: closing %1$s."
 msgstr[0] ""
-"Det lykkedes ikke at opdage følgende krav i dit tema: lukning %1$s."
+"Det lykkedes ikke at registrere følgende krav i dit tema: lukning %1$s."
 msgstr[1] ""
 "Det lykkedes ikke at registrere følgende krav i dit tema: lukning %1$s."
 
