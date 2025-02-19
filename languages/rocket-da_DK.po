@@ -1146,7 +1146,7 @@ msgstr "Advarsel:"
 #: inc/deprecated/deprecated.php:1501
 msgctxt "button text"
 msgid "Download settings"
-msgstr "Downloadindstillinger"
+msgstr "Download-indstillinger"
 
 #: inc/deprecated/deprecated.php:1531
 msgid "Replace site's hostname with:"
