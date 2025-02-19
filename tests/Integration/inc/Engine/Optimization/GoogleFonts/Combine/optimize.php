@@ -29,7 +29,7 @@ class Test_Optimize extends TestCase {
 			],
         ];
 
-        $this->unregisterAllCallbacksExcept('rocket_buffer', 'process', 17 );
+        $this->unregisterAllCallbacksExceptMulti('rocket_buffer', [ 17 => 'process', 100000 => 'insert_rocket_head' ] );
 		add_filter('rocket_exclude_locally_host_fonts', [ $this, 'exclude_locally_host_fonts' ] ); // @phpstan-ignore-line
 	}
 
@@ -84,7 +84,7 @@ class Test_Optimize extends TestCase {
 		$actual = apply_filters( 'rocket_buffer', $original );
 
 		$this->assertSame(
-			$this->format_the_html( $expected ),
+			$this->format_the_html( $expected['html'] ),
 			$this->format_the_html( $actual )
 		);
 	}

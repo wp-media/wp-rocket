@@ -639,7 +639,7 @@ JS;
 	 * @return string
 	 */
 	public function get_critical_css_content() {
-		return $this->critical_css_content;
+		return $this->should_async_css() ? $this->critical_css_content : '';
 	}
 
 	/**
