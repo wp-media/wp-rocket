@@ -1054,7 +1054,7 @@ msgstr "Forudindlæs sitemap fra Jetpack-pluginet"
 #: inc/deprecated/3.15.php:28
 #: inc/Engine/Admin/Metaboxes/PostEditOptionsSubscriber.php:74
 msgid "WP Rocket Options"
-msgstr "WP Rocket muligheder"
+msgstr "WP Rocket-muligheder"
 
 #: inc/deprecated/3.15.php:57 views/metaboxes/post_edit_options.php:19
 msgid "Never cache this page"
