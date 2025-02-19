@@ -141,7 +141,7 @@ msgstr "sekunder"
 
 #: inc/Addon/Cloudflare/Cloudflare.php:205
 msgid "minutes"
-msgstr "Minutter"
+msgstr "minutter"
 
 #: inc/Addon/Cloudflare/Cloudflare.php:207
 msgid "hours"
