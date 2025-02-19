@@ -1113,7 +1113,7 @@ msgstr "Dine Cloudflare-oplysninger er gyldige."
 
 #: inc/deprecated/deprecated.php:1389
 msgid "Your Cloudflare credentials are invalid!"
-msgstr "Dine Cloudflare-oplysninger er ugyldige!"
+msgstr "Dine Cloudflare-oplysninger er ugyldige."
 
 #: inc/deprecated/deprecated.php:1453
 msgid "Save and optimize"
