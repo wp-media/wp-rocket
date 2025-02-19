@@ -1041,7 +1041,7 @@ msgstr "SEOPress XML sitemap"
 
 #: inc/deprecated/3.12.php:251
 msgid "The SEO Framework XML sitemap"
-msgstr "Den SEO ramme XML sitemap"
+msgstr "Sitemap fra SEO Framework XML"
 
 #: inc/deprecated/3.12.php:332
 msgid "Jetpack XML Sitemaps"
