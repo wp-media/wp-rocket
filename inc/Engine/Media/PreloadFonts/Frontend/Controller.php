@@ -7,8 +7,11 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Common\PerformanceHints\Frontend\ControllerInterface;
 use WP_Rocket\Engine\Media\PreloadFonts\Database\Queries\PreloadFonts as PFQuery;
 use WP_Rocket\Engine\Media\PreloadFonts\Context\Context;
+use WP_Rocket\Engine\Optimization\UrlTrait;
 
 class Controller implements ControllerInterface {
+	use UrlTrait;
+
 	/**
 	 * Options instance
 	 *
@@ -52,7 +55,12 @@ class Controller implements ControllerInterface {
 	 * @return string
 	 */
 	public function optimize( string $html, $row ): string {
-		// Implement the optimization logic here.
+		if ( ! $row->has_preload_fonts() ) {
+			return $html;
+		}
+
+		$html = $this->preload_fonts( $html, $row );
+
 		return $html;
 	}
 
@@ -102,5 +110,87 @@ class Controller implements ControllerInterface {
 		$data['system_fonts'] = $system_fonts;
 
 		return $data;
+	}
+
+	/**
+	 * Preload Fonts in HTML.
+	 *
+	 * @param string $html HTML content.
+	 *  @param object $row Corresponding DB row.
+	 *
+	 * @return string
+	 */
+	private function preload_fonts( string $html, $row ): string {
+		if ( 'completed' !== $row->status || empty( $row->fonts ) || '[]' === $row->fonts ) {
+			return $html;
+		}
+
+		if ( ! preg_match( '#</title\s*>#', $html, $matches ) ) {
+			return $html;
+		}
+		$title = $matches[0];
+
+		$preload = $title;
+
+		$fonts = json_decode( $row->fonts, true );
+
+		if ( empty( $fonts ) ) {
+			return $html;
+		}
+
+		foreach ( $fonts as $font ) {
+			$preload .= $this->preload_tag( $font );
+		}
+
+		$replace = preg_replace( '#' . $title . '#', $preload, $html, 1 );
+
+		if ( null === $replace ) {
+			return $html;
+		}
+
+		return $replace;
+	}
+
+	/**
+	 * Checks if the font URL is from a third party.
+	 *
+	 * @param string $font_url Font URL.
+	 *
+	 * @return bool
+	 */
+	private function is_third_party_font( string $font_url ): bool {
+		$parsed_url = wp_parse_url( $font_url );
+
+		if ( empty( $parsed_url['host'] ) ) {
+			return false;
+		}
+
+		$site_url = wp_parse_url( site_url() );
+
+		return $parsed_url['host'] !== $site_url['host'];
+	}
+
+	/**
+	 * Generates the preload tag for a font.
+	 *
+	 * @param string $font Font URL.
+	 *
+	 * @return string
+	 */
+	private function preload_tag( string $font ): string {
+		if ( ! $this->is_relative( $font ) ) {
+			$crossorigin = $this->is_third_party_font( $font ) ? ' crossorigin' : '';
+			$tag         = sprintf(
+				'<link rel="preload" data-rocket-preload as="font" href="%s"%s>',
+				esc_url( $font ),
+				$crossorigin
+			);
+		} else {
+			$tag = sprintf(
+				'<link rel="preload" data-rocket-preload as="font" href="%s">',
+				$font
+			);
+		}
+		return $tag;
 	}
 }
