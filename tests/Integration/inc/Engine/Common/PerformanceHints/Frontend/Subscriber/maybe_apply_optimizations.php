@@ -22,11 +22,13 @@ class Test_MaybeApplyOptimizations extends FilesystemTestCase {
 		// Install in set_up_before_class because of exists().
 		self::installAtfTable();
 		self::installLrcTable();
+		self::installPreloadFontsTable();
 	}
 
 	public static function tear_down_after_class() {
 		self::uninstallAtfTable();
 		self::uninstallLrcTable();
+		self::uninstallPreloadFontsTable();
 
 		parent::tear_down_after_class();
 	}
@@ -74,6 +76,10 @@ class Test_MaybeApplyOptimizations extends FilesystemTestCase {
 		}
 		if ( ! empty( $config['lrc']['row'] ) ) {
 			self::addLrc( $config['lrc']['row'] );
+		}
+
+		if ( ! empty( $config['preload_fonts']['row'] ) ) {
+			self::addPreloadFonts( $config['preload_fonts']['row'] );
 		}
 
 		if ( isset( $config['filter_delay'] ) ) {

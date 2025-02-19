@@ -301,16 +301,6 @@ parameters:
 			path: inc/Engine/Media/AboveTheFold/Context/Context.php
 
 		-
-			message: "#^Hooks should not be used in ORM classes\\: WP_Rocket\\\\Engine\\\\Media\\\\AboveTheFold\\\\Database\\\\Queries\\\\AboveTheFold\\:\\:apply_filters$#"
-			count: 1
-			path: inc/Engine/Media/AboveTheFold/Database/Queries/AboveTheFold.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: inc/Engine/Media/AboveTheFold/Database/Queries/AboveTheFold.php
-
-		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
 			path: inc/Engine/Media/AboveTheFold/Frontend/Controller.php
@@ -334,11 +324,6 @@ parameters:
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 3
 			path: inc/Engine/Media/Lazyload/CSS/Front/Extractor.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: inc/Engine/Media/Lazyload/CSS/ServiceProvider.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
@@ -414,16 +399,6 @@ parameters:
 			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: inc/Engine/Optimization/LazyRenderContent/Context/Context.php
-
-		-
-			message: "#^Hooks should not be used in ORM classes\\: WP_Rocket\\\\Engine\\\\Optimization\\\\LazyRenderContent\\\\Database\\\\Queries\\\\LazyRenderContent\\:\\:apply_filters$#"
-			count: 1
-			path: inc/Engine/Optimization/LazyRenderContent/Database/Queries/LazyRenderContent.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: inc/Engine/Optimization/LazyRenderContent/Database/Queries/LazyRenderContent.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
@@ -742,27 +717,27 @@ parameters:
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 18
+			count: 21
 			path: tests/Integration/AjaxTestCase.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 18
+			count: 21
 			path: tests/Integration/ApiTestCase.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 18
+			count: 21
 			path: tests/Integration/FilesystemTestCase.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 18
+			count: 21
 			path: tests/Integration/RESTVfsTestCase.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 18
+			count: 21
 			path: tests/Integration/TestCase.php
 
 		-
@@ -2184,11 +2159,6 @@ parameters:
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/functions/rocketIsPluginActive.php
-
-		-
-			message: "#^Path in include_once\\(\\) \"vfs\\://public/wp\\-content/plugins/wp\\-rocket/inc/classes/dependencies/mobiledetect/mobiledetectlib/Mobile_Detect\\.php\" is not a file or it does not exist\\.$#"
-			count: 1
-			path: tests/Integration/vfs:/public/wp-content/advanced-cache.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
