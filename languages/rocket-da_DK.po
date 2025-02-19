@@ -1298,7 +1298,7 @@ msgstr "Databaseoptimeringsprocessen kører"
 msgid ""
 "Database optimization process is complete. Everything was already optimized!"
 msgstr ""
-"Databasen optimeringsprocessen er afsluttet. Alt var allerede optimeret!"
+"Databaseoptimeringsprocessen er afsluttet. Alt var allerede optimeret!"
 
 #: inc/Engine/Admin/Database/Subscriber.php:227
 msgid ""
