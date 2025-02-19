@@ -116,6 +116,13 @@ abstract class AbstractGFOptimization {
 		return ! wpm_apply_filters_typed( 'boolean', 'rocket_disable_google_fonts_preload', false );
 	}
 
+	/**
+	 * Prepare preload fonts to the head items.
+	 *
+	 * @param array $fonts Fonts list.
+	 * @param array $items Head items.
+	 * @return array
+	 */
 	protected function prepare_preload_fonts_to_head( array $fonts, array $items ): array {
 		foreach ( $fonts as $font_url ) {
 			$items[] = $this->preload_link(
@@ -129,6 +136,13 @@ abstract class AbstractGFOptimization {
 		return $items;
 	}
 
+	/**
+	 * Prepare stylesheets to the head.
+	 *
+	 * @param array $fonts Fonts list.
+	 * @param array $items Head items.
+	 * @return array
+	 */
 	protected function prepare_stylesheet_fonts_to_head( array $fonts, array $items ): array {
 		$preload_enabled = $this->is_preload_enabled();
 
