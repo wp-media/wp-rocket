@@ -1131,7 +1131,7 @@ msgstr "Bemærk:"
 #: inc/deprecated/deprecated.php:1470
 msgctxt "screen-reader-text"
 msgid "Performance tip:"
-msgstr "Ydeevne tip:"
+msgstr "Tip til ydeevne:"
 
 #: inc/deprecated/deprecated.php:1476
 msgctxt "screen-reader-text"
