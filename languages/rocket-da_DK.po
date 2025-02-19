@@ -851,7 +851,7 @@ msgstr ""
 
 #: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:45
 msgid "Protect & Secure"
-msgstr "Beskyt & sikr"
+msgstr "Beskyt"
 
 #: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:52
 msgid "The Easiest Way to Protect Your Website"
