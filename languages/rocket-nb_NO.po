@@ -233,8 +233,8 @@ msgid ""
 "The Sucuri cache is being cleared. Note that it may take up to two minutes "
 "for it to be fully flushed."
 msgstr ""
-"Sucuri-cachen blir tømt. Merk at det kan ta opptil to minutter før den er "
-"helt spylet."
+"Sucuri-cache tømmes. Merk at det kan ta opptil to minutter før den er "
+"fullstendig fjernet."
 
 #: inc/Addon/Sucuri/Subscriber.php:218
 msgid "Sucuri firewall API key was not found."
