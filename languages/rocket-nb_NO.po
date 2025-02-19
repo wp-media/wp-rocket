@@ -61,8 +61,8 @@ msgid ""
 "Your site is hosted on %s, we have enabled Varnish auto-purge for "
 "compatibility."
 msgstr ""
-"Nettstedet ditt er vert på %s, vi har aktivert Varnish automatisk rensing "
-"for kompatibilitet."
+"Nettsiden din er hostet på %s, og vi har aktivert Varnish auto-purge for "
+"kompatibilitet."
 
 #: inc/Addon/Cloudflare/API/Client.php:129
 msgid "Cloudflare did not provide any reply. Please try again later."
