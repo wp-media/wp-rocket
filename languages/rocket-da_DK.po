@@ -951,7 +951,7 @@ msgid ""
 "%1$sdocumentation%2$s for further guidance."
 msgstr ""
 "Cloudflare-mail, API-nøgle og Zone ID er ikke angivet. Læs "
-"%1$sdocumentation%2$s for yderligere vejledning."
+"%1$sdokumentationen%2$s for yderligere vejledning."
 
 #. translators: %1$s = opening link; %2$s = closing link
 #: inc/deprecated/3.5.php:206
