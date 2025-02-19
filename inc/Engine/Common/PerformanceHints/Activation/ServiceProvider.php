@@ -31,7 +31,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'atf_activation_factory',
 		'lrc_context',
 		'lrc_activation_factory',
-		'preconnect_context',
+		'preconnect_external_domains_context',
 	];
 
 	/**
@@ -70,7 +70,7 @@ class ServiceProvider extends AbstractServiceProvider {
 				]
 			);
 
-		$this->getContainer()->add( 'preconnect_context', PreconnectContext::class );
+		$this->getContainer()->add( 'preconnect_external_domains_context', PreconnectContext::class );
 
 		$factories = [];
 

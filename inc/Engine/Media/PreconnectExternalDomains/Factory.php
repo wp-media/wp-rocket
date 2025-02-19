@@ -49,12 +49,20 @@ class Factory implements FactoryInterface {
 	/**
 	 * Instantiate the class.
 	 *
-	 * @param QueriesInterface $queries Preconnect external domains Queries instance.
-	 * @param ContextInterface $context Preconnect external domains Context instance.
+	 * @param QueriesInterface        $queries Preconnect external domains Queries instance.
+	 * @param ContextInterface        $context Preconnect external domains Context instance.
+	 * @param AjaxControllerInterface $ajax_controller Preconnect external domains AJAX Controller instance.
+	 * @param TableInterface          $table Preconnect external domains Table instance.
 	 */
-	public function __construct( QueriesInterface $queries, ContextInterface $context ) {
-		$this->context = $context;
-		$this->queries = $queries;
+	public function __construct(
+		QueriesInterface $queries,
+		ContextInterface $context,
+		AjaxControllerInterface $ajax_controller,
+		TableInterface $table
+	) {
+		$this->context         = $context;
+		$this->queries         = $queries;
+		$this->ajax_controller = $ajax_controller;
 	}
 
 	/**

@@ -70,8 +70,11 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->addShared( 'preconnect_external_domains_factory', Factory::class )
 			->addArguments(
 				[
+					$this->getContainer()->get( 'preconnect_external_domains_query' ),
 					$this->getContainer()->get( 'preconnect_external_domains_context' ),
+					$this->getContainer()->get( 'preconnect_external_domains_ajax_controller' ),
+					$this->getContainer()->get( 'preconnect_external_domains_table' ),
 				]
-			);;
+			);
 	}
 }
