@@ -912,8 +912,8 @@ msgid ""
 "Sitemap preload: %d uncached pages have now been preloaded. (refresh to see "
 "progress)"
 msgstr ""
-"Sitemap forindlæsning: %d uncached sider er nu blevet forindlæsning. "
-"(refresh for at se fremskridt)"
+"Sitemap forudindlæsning: %d ikke-cachede sider er nu blevet forudindlæst. "
+"(genindlæs  for at se fremskridt)"
 
 #. translators: %s is an URL.
 #: inc/deprecated/3.3.php:761 inc/deprecated/3.3.php:770
