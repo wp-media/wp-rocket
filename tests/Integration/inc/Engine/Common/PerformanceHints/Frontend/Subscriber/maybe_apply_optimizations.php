@@ -10,7 +10,7 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  *
  * @group PerformanceHints
  */
-class Test_MaybeApplyOptimizations extends FilesystemTestCase {
+class Test_Maybe_Apply_Optimizations extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/Common/PerformanceHints/Frontend/Subscriber/maybe_apply_optimizations.php';
 	protected $config;
 	private $cached_user = false;
@@ -79,7 +79,7 @@ class Test_MaybeApplyOptimizations extends FilesystemTestCase {
 		}
 
 		if ( ! empty( $config['preload_external_domains']['row'] ) ) {
-			self::addPreconnectExternalDomainsTable( $config['preload_external_domains']['row'] );
+			self::addPreconnectExternalDomains( $config['preload_external_domains']['row'] );
 		}
 
 		if ( isset( $config['filter_delay'] ) ) {
