@@ -1236,8 +1236,8 @@ msgid ""
 "The called class %1$s is <strong>deprecated</strong> since version %2$s! Use"
 " %3$s instead."
 msgstr ""
-"Den kaldte klasse %1$s er <strong>deprecated</strong> siden version %2$s! "
-"Brug %3$s i stedet."
+"Den kaldte klasse %1$s har været <strong>forældet</strong> siden version "
+"%2$s! Brug %3$s i stedet."
 
 #. translators: 1: PHP class name, 2: version number.
 #: inc/deprecated/DeprecatedClassTrait.php:65
