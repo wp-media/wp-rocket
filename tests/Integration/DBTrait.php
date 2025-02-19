@@ -59,11 +59,11 @@ trait DBTrait {
 		return $lrc_query->add_item( $resource );
 	}
 
-	public static function addPreconnectExternalDomainsTable(array $resource) {
+	public static function addPreconnectExternalDomains(array $resource) {
 		$container = apply_filters( 'rocket_container', null );
-		$preload_fonts_query = $container->get( 'preconnect_external_domains_table' );
+		$preconnect_external_domains = $container->get( 'preconnect_external_domains_query' );
 
-		return $preload_fonts_query->add_item( $resource );
+		return $preconnect_external_domains->add_item( $resource );
 	}
 
 	public static function installFresh() {
@@ -97,7 +97,7 @@ trait DBTrait {
 		}
 	}
 
-	public static function installPreloadFontsTable() {
+	public static function installPreconnectExternalDomainsTable() {
 		$container = apply_filters( 'rocket_container', null );
 		$preconnect_external_domains_table = $container->get( 'preconnect_external_domains_table' );
 
