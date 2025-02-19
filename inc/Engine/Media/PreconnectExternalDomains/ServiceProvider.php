@@ -21,7 +21,6 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @var array
 	 */
 	protected $provides = [
-		'preconnect_external_domains_factory',
 		'preconnect_external_domains_query',
 		'preconnect_external_domains_context',
 		'preconnect_external_domains_ajax_controller',
@@ -51,6 +50,11 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->addShared( 'preconnect_external_domains_table', PreconnectTable::class );
 
 		$this->getContainer()->get( 'preconnect_external_domains_table' );
+
+		$this->getContainer()->add( 'preconnect_external_domains_context', Context::class )
+			->addArgument(
+				$this->getContainer()->get( 'options' )
+			);
 
 		$this->getContainer()->add( 'preconnect_external_domains_ajax_controller', AJAXController::class )
 			->addArguments(

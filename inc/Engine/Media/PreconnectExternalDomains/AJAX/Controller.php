@@ -28,7 +28,7 @@ class Controller implements ControllerInterface {
 	/**
 	 * Constructor
 	 *
-	 * @param PreconnectQuery  $query   PLFQuery instance.
+	 * @param PreconnectQuery  $query   Preconnect External Domains Query instance.
 	 * @param ContextInterface $context Context interface.
 	 */
 	public function __construct( PreconnectQuery $query, ContextInterface $context ) {
