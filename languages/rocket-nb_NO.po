@@ -152,7 +152,7 @@ msgstr "timer"
 #: inc/Addon/Cloudflare/Subscriber.php:232
 #: inc/Addon/Cloudflare/Subscriber.php:261
 msgid "%1$sWP Rocket:%2$s %3$s"
-msgstr "%1$sWP Rakett:%2$s %3$s"
+msgstr "%1$sWP Rocket:%2$s %3$s"
 
 #. translators: %1$s = <strong>, %2$s = </strong>.
 #: inc/Addon/Cloudflare/Subscriber.php:250
