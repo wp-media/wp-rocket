@@ -995,7 +995,8 @@ msgstr[1] ""
 
 #: inc/deprecated/3.5.php:867 inc/Engine/HealthCheck/HealthCheck.php:80
 msgid "Please contact your host to check if CRON is working."
-msgstr "Kontakt venligst din vært for at kontrollere, om CRON fungerer."
+msgstr ""
+"Kontakt venligst din hostingudbyder for at kontrollere, om CRON fungerer."
 
 #: inc/deprecated/3.10.php:163
 msgid "OPcache purge failed."
