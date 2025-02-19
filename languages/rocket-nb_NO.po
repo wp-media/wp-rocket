@@ -192,7 +192,7 @@ msgstr "Feil i Cloudflare Rocket Loader: %s"
 #. translators: %s is the message returned by the CloudFlare API.
 #: inc/Addon/Cloudflare/Subscriber.php:375
 msgid "Cloudflare rocket loader %s"
-msgstr "Cloudflare rakettlaster %s"
+msgstr "Cloudflare Rocket Loader %s"
 
 #. translators: %s is the message returned by the CloudFlare API.
 #: inc/Addon/Cloudflare/Subscriber.php:393
