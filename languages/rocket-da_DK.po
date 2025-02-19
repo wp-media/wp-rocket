@@ -959,8 +959,8 @@ msgid ""
 "Cloudflare email and API key are not set. Read the %1$sdocumentation%2$s for"
 " further guidance."
 msgstr ""
-"Cloudflare-mail og API-nøgle er ikke angivet. Læs %1$sdocumentation%2$s for "
-"yderligere vejledning."
+"Cloudflare-mail og API-nøgle er ikke angivet. Læs %1$sdokumentationen%2$s "
+"for yderligere vejledning."
 
 #: inc/deprecated/3.5.php:271
 msgid "Connection to Cloudflare failed"
