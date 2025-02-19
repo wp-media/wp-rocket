@@ -814,8 +814,8 @@ msgid ""
 " your Google PageSpeed score. Get more traffic, better engagement, and "
 "higher conversions effortlessly."
 msgstr ""
-"WP Rocket er den nemmeste måde at gøre din WordPress hjemmeside hurtigere og"
-" øge din Google PageSpeed score. Få mere trafik, bedre engagement og højere "
+"Med WP Rocket kan du nemt gøre din WordPress-hjemmeside hurtigere og øge din"
+" Google PageSpeed-score. Få mere trafik, bedre engagement og højere "
 "konverteringer uden besvær."
 
 #: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:24
