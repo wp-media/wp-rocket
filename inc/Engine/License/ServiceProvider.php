@@ -1,7 +1,9 @@
 <?php
+declare(strict_types=1);
 
 namespace WP_Rocket\Engine\License;
 
+use WP_Rocket\Dependencies\League\Container\Argument\Literal\StringArgument;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Engine\License\API\{PricingClient, Pricing, UserClient, User};
 use WP_Rocket\Engine\License\{Renewal, Upgrade, Subscriber};
@@ -42,26 +44,38 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register(): void {
-		$views = __DIR__ . '/views';
+		$views = new StringArgument( __DIR__ . '/views' );
 
 		$this->getContainer()->add( 'pricing_client', PricingClient::class );
 		$this->getContainer()->add( 'user_client', UserClient::class )
-			->addArgument( $this->getContainer()->get( 'options' ) );
+			->addArgument( 'options' );
 		$this->getContainer()->addShared( 'pricing', Pricing::class )
 			->addArgument( $this->getContainer()->get( 'pricing_client' )->get_pricing_data() );
 		$this->getContainer()->addShared( 'user', User::class )
 			->addArgument( $this->getContainer()->get( 'user_client' )->get_user_data() );
 		$this->getContainer()->add( 'upgrade', Upgrade::class )
-			->addArgument( $this->getContainer()->get( 'pricing' ) )
-			->addArgument( $this->getContainer()->get( 'user' ) )
-			->addArgument( $views );
+			->addArguments(
+				[
+					'pricing',
+					'user',
+					$views,
+				]
+			);
 		$this->getContainer()->add( 'renewal', Renewal::class )
-			->addArgument( $this->getContainer()->get( 'pricing' ) )
-			->addArgument( $this->getContainer()->get( 'user' ) )
-			->addArgument( $this->getContainer()->get( 'options' ) )
-			->addArgument( $views );
+			->addArguments(
+				[
+					'pricing',
+					'user',
+					'options',
+					$views,
+				]
+			);
 		$this->getContainer()->addShared( 'license_subscriber', Subscriber::class )
-			->addArgument( $this->getContainer()->get( 'upgrade' ) )
-			->addArgument( $this->getContainer()->get( 'renewal' ) );
+			->addArguments(
+				[
+					'upgrade',
+					'renewal',
+				]
+			);
 	}
 }

@@ -64,6 +64,10 @@ class Controller {
 	 * @return void
 	 */
 	public function delete_post( $post_id ) {
+		if ( 'attachment' === get_post_type( $post_id ) ) {
+			return;
+		}
+
 		$url = get_permalink( $post_id );
 
 		// get_permalink should return false or string, but some plugins return null.

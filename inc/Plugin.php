@@ -1,10 +1,11 @@
 <?php
+declare(strict_types=1);
 
 namespace WP_Rocket;
 
 use Imagify_Partner;
 use WP_Rocket\Dependencies\League\Container\Container;
-use WP_Rocket\Admin\Options;
+use WP_Rocket\Admin\{Options, Options_Data};
 use WP_Rocket\Engine\Admin\API\ServiceProvider as APIServiceProvider;
 use WP_Rocket\Engine\Common\ExtractCSS\ServiceProvider as CommonExtractCSSServiceProvider;
 use WP_Rocket\Engine\Common\JobManager\ServiceProvider as JobManagerServiceProvider;
@@ -89,15 +90,6 @@ class Plugin {
 	private $is_valid_key;
 
 	/**
-	 * Instance of the Options.
-	 *
-	 * @since 3.6
-	 *
-	 * @var Options
-	 */
-	private $options_api;
-
-	/**
 	 * Instance of the Options_Data.
 	 *
 	 * @since 3.6
@@ -142,8 +134,8 @@ class Plugin {
 		$this->event_manager = new Event_Manager();
 		$this->container->addShared( 'event_manager', $this->event_manager );
 
-		$this->options_api = new Options( 'wp_rocket_' );
-		$this->container->add( 'options_api', $this->options_api );
+		$this->container->add( 'options_api', Options::class )
+			->addArgument( new StringArgument( 'wp_rocket_' ) );
 		$this->container->addServiceProvider( new OptionsServiceProvider() );
 		$this->options = $this->container->get( 'options' );
 
@@ -203,15 +195,6 @@ class Plugin {
 			$imagify->init();
 			remove_action( 'imagify_assets_enqueued', 'imagify_dequeue_sweetalert_wprocket' );
 		}
-
-		$this->container->add(
-			'settings_page_config',
-			[
-				'slug'       => WP_ROCKET_PLUGIN_SLUG,
-				'title'      => WP_ROCKET_PLUGIN_NAME,
-				'capability' => 'rocket_manage_options',
-			]
-		);
 
 		$this->container->addServiceProvider( new SettingsServiceProvider() );
 		$this->container->addServiceProvider( new EngineAdminServiceProvider() );
@@ -286,19 +269,17 @@ class Plugin {
 	private function init_common_subscribers() {
 		$this->container->addServiceProvider( new CapabilitiesServiceProvider() );
 		$this->container->addServiceProvider( new AddonServiceProvider() );
-
 		$this->container->addServiceProvider( new VarnishServiceProvider() );
 		$this->container->addServiceProvider( new PreloadServiceProvider() );
 		$this->container->addServiceProvider( new PreloadLinksServiceProvider() );
 		$this->container->addServiceProvider( new CDNServiceProvider() );
 		$this->container->addServiceProvider( new Common_Subscribers() );
-		$this->container->addServiceProvider( new ThirdPartyServiceProvider() );
 		$this->container->addServiceProvider( new HostingsServiceProvider() );
 		$this->container->addServiceProvider( new PluginServiceProvider() );
+		$this->container->addServiceProvider( new DynamicListsServiceProvider() );
 		$this->container->addServiceProvider( new DelayJSServiceProvider() );
 		$this->container->addServiceProvider( new RUCSSServiceProvider() );
 		$this->container->addServiceProvider( new HeartbeatServiceProvider() );
-		$this->container->addServiceProvider( new DynamicListsServiceProvider() );
 		$this->container->addServiceProvider( new LicenseServiceProvider() );
 		$this->container->addServiceProvider( new ThemesServiceProvider() );
 		$this->container->addServiceProvider( new APIServiceProvider() );
@@ -312,6 +293,7 @@ class Plugin {
 		$this->container->addServiceProvider( new LRCServiceProvider() );
 		$this->container->addServiceProvider( new MediaFontsServiceProvider() );
 		$this->container->addServiceProvider( new PreloadFontsServiceProvider() );
+		$this->container->addServiceProvider( new ThirdPartyServiceProvider() );
 
 		$common_subscribers = [
 			'license_subscriber',

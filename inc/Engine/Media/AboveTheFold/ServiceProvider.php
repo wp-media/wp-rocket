@@ -56,31 +56,30 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'atf_controller', FrontController::class )
 			->addArguments(
 				[
-					$this->getContainer()->get( 'options' ),
-					$this->getContainer()->get( 'atf_query' ),
-					$this->getContainer()->get( 'atf_context' ),
+					'options',
+					'atf_query',
+					'atf_context',
 				]
 			);
 
 		$this->getContainer()->addShared( 'atf_subscriber', FrontSubscriber::class )
-			->addArgument( $this->getContainer()->get( 'atf_controller' ) );
-
+			->addArgument( 'atf_controller' );
 		$this->getContainer()->add( 'atf_ajax_controller', AJAXController::class )
 			->addArguments(
 			[
-				$this->getContainer()->get( 'atf_query' ),
-				$this->getContainer()->get( 'atf_context' ),
+				'atf_query',
+				'atf_context',
 			]
 		);
 
 		$this->getContainer()->addShared( 'atf_factory', Factory::class )
 			->addArguments(
 				[
-					$this->getContainer()->get( 'atf_ajax_controller' ),
-					$this->getContainer()->get( 'atf_controller' ),
-					$this->getContainer()->get( 'atf_table' ),
-					$this->getContainer()->get( 'atf_query' ),
-					$this->getContainer()->get( 'atf_context' ),
+					'atf_ajax_controller',
+					'atf_controller',
+					'atf_table',
+					'atf_query',
+					'atf_context',
 				]
 			);
 	}

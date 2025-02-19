@@ -1,6 +1,9 @@
 <?php
+declare( strict_types=1 );
+
 namespace WP_Rocket\Engine\Optimization\RUCSS;
 
+use WP_Rocket\Dependencies\League\Container\Argument\Literal\StringArgument;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\{Database, OptionSubscriber, Settings};
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber as AdminSubscriber;
@@ -26,6 +29,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @var array
 	 */
 	protected $provides = [
+		'rucss_usedcss_table',
 		'rucss_settings',
 		'rucss_database',
 		'rucss_option_subscriber',
@@ -64,68 +68,87 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		$this->getContainer()->addShared( 'rucss_usedcss_table', UsedCSSTable::class );
 		$this->getContainer()->add( 'rucss_database', Database::class )
-			->addArgument( $this->getContainer()->get( 'rucss_usedcss_table' ) );
+			->addArgument( 'rucss_usedcss_table' );
 
 		$this->getContainer()->add( 'rucss_settings', Settings::class )
-			->addArgument( $this->getContainer()->get( 'options' ) )
-			->addArgument( $this->getContainer()->get( 'beacon' ) )
-			->addArgument( $this->getContainer()->get( 'rucss_usedcss_table' ) );
-
+			->addArguments(
+				[
+					'options',
+					'beacon',
+					'rucss_usedcss_table',
+				]
+			);
 		$this->getContainer()->add( 'rucss_used_css_query', UsedCSSQuery::class );
 		$this->getContainer()->add( 'rucss_queue', Queue::class );
 		$this->getContainer()->add( 'rucss_filesystem', Filesystem::class )
-			->addArgument( rocket_get_constant( 'WP_ROCKET_USED_CSS_PATH' ) )
-			->addArgument( rocket_direct_filesystem() );
-
+			->addArguments(
+				[
+					new StringArgument( rocket_get_constant( 'WP_ROCKET_USED_CSS_PATH', '' ) ),
+					rocket_direct_filesystem(),
+				]
+			);
 		$this->getContainer()->add( 'rucss_context', RUCSSContext::class )
-			->addArgument( $this->getContainer()->get( 'options' ) )
-			->addArgument( $this->getContainer()->get( 'rucss_filesystem' ) );
-
+			->addArguments(
+				[
+					'options',
+					'rucss_filesystem',
+				]
+			);
 		$this->getContainer()->add( 'rucss_optimize_context', RUCSSOptimizeContext::class )
-			->addArgument( $this->getContainer()->get( 'options' ) );
-
+			->addArgument( 'options' );
 		$this->getContainer()->add( 'rucss_context_saas', RUCSSContextSaas::class )
-			->addArgument( $this->getContainer()->get( 'options' ) );
-
+			->addArgument( 'options' );
 		$this->getContainer()->add( 'rucss_manager', Manager::class )
 			->addArguments(
 				[
-					$this->getContainer()->get( 'rucss_used_css_query' ),
-					$this->getContainer()->get( 'rucss_filesystem' ),
-					$this->getContainer()->get( 'rucss_context_saas' ),
-					$this->getContainer()->get( 'options' ),
+					'rucss_used_css_query',
+					'rucss_filesystem',
+					'rucss_context_saas',
+					'options',
 				]
 				);
-
 		$this->getContainer()->addShared( 'rucss_factory', Factory::class )
 			->addArguments(
-				[
-					$this->getContainer()->get( 'rucss_manager' ),
-					$this->getContainer()->get( 'rucss_usedcss_table' ),
-				]
+					[
+						'rucss_manager',
+						'rucss_usedcss_table',
+					]
 				);
-
 		$this->getContainer()->add( 'rucss_used_css_controller', UsedCSSController::class )
-			->addArgument( $this->getContainer()->get( 'options' ) )
-			->addArgument( $this->getContainer()->get( 'rucss_used_css_query' ) )
-			->addArgument( $this->getContainer()->get( 'dynamic_lists_defaultlists_data_manager' ) )
-			->addArgument( $this->getContainer()->get( 'rucss_filesystem' ) )
-			->addArgument( $this->getContainer()->get( 'rucss_context' ) )
-			->addArgument( $this->getContainer()->get( 'rucss_manager' ) );
-
+			->addArguments(
+				[
+					'options',
+					'rucss_used_css_query',
+					'dynamic_lists_defaultlists_data_manager',
+					'rucss_filesystem',
+					'rucss_context',
+					'rucss_manager',
+				]
+			);
 		$this->getContainer()->addShared( 'rucss_option_subscriber', OptionSubscriber::class )
-			->addArgument( $this->getContainer()->get( 'rucss_settings' ) );
+			->addArgument( 'rucss_settings' );
 		$this->getContainer()->addShared( 'rucss_admin_subscriber', AdminSubscriber::class )
-			->addArgument( $this->getContainer()->get( 'rucss_settings' ) )
-			->addArgument( $this->getContainer()->get( 'rucss_database' ) )
-			->addArgument( $this->getContainer()->get( 'rucss_used_css_controller' ) )
-			->addArgument( $this->getContainer()->get( 'rucss_queue' ) );
+			->addArguments(
+				[
+					'rucss_settings',
+					'rucss_database',
+					'rucss_used_css_controller',
+					'rucss_queue',
+				]
+			);
 		$this->getContainer()->addShared( 'rucss_frontend_subscriber', FrontendSubscriber::class )
-			->addArgument( $this->getContainer()->get( 'rucss_used_css_controller' ) )
-			->addArgument( $this->getContainer()->get( 'rucss_context' ) );
-
+			->addArguments(
+				[
+					'rucss_used_css_controller',
+					'rucss_context',
+				]
+			);
 		$this->getContainer()->addShared( 'rucss_cron_subscriber', CronSubscriber::class )
-			->addArgument( $this->getContainer()->get( 'job_processor' ) )
-			->addArgument( $this->getContainer()->get( 'rucss_used_css_query' ) );
+			->addArguments(
+				[
+					'job_processor',
+					'rucss_used_css_query',
+				]
+			);
 	}
 }
