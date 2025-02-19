@@ -157,7 +157,7 @@ msgstr "%1$sWP Rocket:%2$s %3$s"
 #. translators: %1$s = <strong>, %2$s = </strong>.
 #: inc/Addon/Cloudflare/Subscriber.php:250
 msgid "%1$sWP Rocket:%2$s Cloudflare cache successfully purged."
-msgstr "%1$sWP Rocket:%2$s Cloudflare-cache er renset."
+msgstr "%1$sWP Rocket:%2$s Cloudflare-cache er tømt."
 
 #. translators: %s is the message returned by the CloudFlare API.
 #: inc/Addon/Cloudflare/Subscriber.php:311
