@@ -1117,7 +1117,7 @@ msgstr "Dine Cloudflare-oplysninger er ugyldige."
 
 #: inc/deprecated/deprecated.php:1453
 msgid "Save and optimize"
-msgstr "Spar og optimer"
+msgstr "Gem og optimer"
 
 #: inc/deprecated/deprecated.php:1453
 msgid "Optimize"
