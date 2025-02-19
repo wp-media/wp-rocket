@@ -46,7 +46,7 @@ $preconnect_external_domains = [
 
 return [
 	'test_data' => [
-		/*'shouldReturnOriginalWhenBypassAndRow' => [
+		'shouldReturnOriginalWhenBypassAndRow' => [
 			'config' => [
 				'query_string' => 'nowprocket',
 				'html' => $html_input,
@@ -103,7 +103,7 @@ return [
 				],
 			],
 			'expected' => $html_input,
-		],*/
+		],
 		'shouldAddBeaconWhenDonotoptimizeAndSaaSVisit' => [
 			'config' => [
 				'donotrocketoptimize' => true,
@@ -121,7 +121,7 @@ return [
 			],
 			'expected' => $html_output_with_beacon,
 		],
-		/*'shouldAddBeaconToPage' => [
+		'shouldAddBeaconToPage' => [
 			'config' => [
 				'html' => $html_input,
 				'atf' => [
@@ -697,6 +697,6 @@ return [
 				],
 			],
 			'expected' => $html_input_without_closing_body_tag_output,
-		],*/
+		],
 	],
 ];

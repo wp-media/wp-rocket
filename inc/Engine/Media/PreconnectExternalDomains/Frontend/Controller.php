@@ -9,6 +9,26 @@ use WP_Rocket\Engine\Media\PreconnectExternalDomains\Context\Context;
 use WP_Rocket\Engine\Media\PreconnectExternalDomains\Database\Queries\PreconnectExternalDomains as PreconnectDomains;
 
 class Controller implements ControllerInterface {
+	/**
+	 * Options instance
+	 *
+	 * @var Options_Data
+	 */
+	private $options; // @phpstan-ignore-line Use of this will come later.
+
+	/**
+	 * Queries instance
+	 *
+	 * @var PreconnectDomains
+	 */
+	private $query; // @phpstan-ignore-line Use of this will come later.
+
+	/**
+	 * Context instance.
+	 *
+	 * @var Context
+	 */
+	private $context; // @phpstan-ignore-line Use of this will come later.
 
 	/**
 	 * Constructor
