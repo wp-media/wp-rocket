@@ -1004,7 +1004,7 @@ msgstr "OPcache-rydning mislykkedes."
 
 #: inc/deprecated/3.10.php:168
 msgid "OPcache successfully purged"
-msgstr "OPcache udslettet med succes"
+msgstr "OPcache ryddet"
 
 #: inc/deprecated/3.11.php:81
 msgid "Yoast SEO XML sitemap"
