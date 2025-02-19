@@ -729,7 +729,7 @@ msgstr "Geninstaller version %s"
 #: inc/Engine/Plugin/UpdaterSubscriber.php:477
 #: inc/Engine/Plugin/UpdaterSubscriber.php:491
 msgid "%s Update Rollback"
-msgstr "%s Opdater Rollback"
+msgstr "%s Opdatering Rollback"
 
 #. translators: %1$s = missing tags;
 #: inc/classes/subscriber/Tools/class-detect-missing-tags-subscriber.php:151
