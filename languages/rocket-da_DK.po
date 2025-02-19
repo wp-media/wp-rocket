@@ -869,7 +869,7 @@ msgstr ""
 
 #: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:61
 msgid "GDPR/CCPA Cookie Consent Banner"
-msgstr "GDPR/CCPA Cookie samtykke banner"
+msgstr "GDPR/CCPA Cookie samtykkebanner"
 
 #: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:62
 msgid ""
