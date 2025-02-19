@@ -820,7 +820,7 @@ msgstr ""
 
 #: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:24
 msgid "Speed Up Your Website With Lighter Images"
-msgstr "Hurtiggøre din hjemmeside med lysere billeder"
+msgstr "Gør din hjemmeside hurtigere med lettere billeder"
 
 #: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:25
 msgid ""
