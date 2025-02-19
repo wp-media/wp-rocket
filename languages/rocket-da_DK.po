@@ -720,7 +720,7 @@ msgstr ""
 #: inc/classes/class-wp-rocket-requirements-check.php:161
 #: inc/deprecated/deprecated.php:1947
 msgid "Re-install version %s"
-msgstr "Geninstallér version %s"
+msgstr "Geninstaller version %s"
 
 #. translators: %s is the plugin name.
 #: inc/classes/class-wp-rocket-requirements-check.php:203
