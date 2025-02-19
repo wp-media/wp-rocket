@@ -52,7 +52,10 @@ class Test_Treeshake extends FilesystemTestCase {
 			self::addResource($row);
 		}
 
-		$this->assertSame($expected['html'], apply_filters('rocket_buffer', $config['html']));
+		$this->assertSame(
+			$this->format_the_html( $expected['html'] ),
+			$this->format_the_html( apply_filters('rocket_buffer', $config['html']) )
+		);
 
 		foreach ($expected['rows'] as $row) {
 			$this->assertTrue(self::resourceFound($row), json_encode($row) . ' not found');

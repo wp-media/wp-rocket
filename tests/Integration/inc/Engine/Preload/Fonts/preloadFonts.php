@@ -18,7 +18,7 @@ class Test_PreloadFonts extends TestCase {
 	public function set_up() {
 		parent::set_up();
 
-		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'preload_fonts', 20);
+		$this->unregisterAllCallbacksExceptMulti( 'rocket_buffer', [ 20 => 'preload_fonts', 100000 => 'insert_rocket_head' ] );
 	}
 	public function tear_down() {
 		remove_filter( 'pre_get_rocket_option_preload_fonts', [ $this, 'return_preload_fonts' ] );
@@ -51,7 +51,7 @@ class Test_PreloadFonts extends TestCase {
 		$actual = $this->format_the_html( $output );
 
 		$this->assertStringContainsString(
-			$this->format_the_html( $expected ),
+			$this->format_the_html( is_string( $expected ) ? $expected : $expected['html'] ),
 			$actual
 		);
 	}

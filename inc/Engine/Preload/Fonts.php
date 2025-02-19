@@ -94,6 +94,7 @@ class Fonts implements Subscriber_Interface {
 	 * @since 3.6
 	 */
 	public function preload_fonts( $html ): string {
+		$this->fonts = [];
 		if ( ! $this->is_allowed() ) {
 			return $html;
 		}
@@ -131,11 +132,12 @@ class Fonts implements Subscriber_Interface {
 	 * @return array
 	 */
 	public function insert_preloaded_fonts_into_head( $items ): array {
-		if ( empty( $this->fonts ) ) {
+		$fonts = $this->get_fonts();
+		if ( empty( $fonts ) ) {
 			return $items;
 		}
 
-		foreach ( $this->fonts as $font ) {
+		foreach ( $fonts as $font ) {
 			$items[] = $this->preload_link(
 				[
 					'href' => $font,
@@ -199,6 +201,6 @@ class Fonts implements Subscriber_Interface {
 	 * @return array
 	 */
 	public function get_fonts(): array {
-		return $this->fonts;
+		return $this->is_allowed() ? $this->fonts : [];
 	}
 }
