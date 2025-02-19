@@ -1062,7 +1062,7 @@ msgstr "Cache aldrig denne side"
 
 #: inc/deprecated/3.15.php:61 views/metaboxes/post_edit_options.php:23
 msgid "Activate these options on this post:"
-msgstr "Aktivér disse muligheder på dette indlæg:"
+msgstr "Aktivér disse muligheder for dette indlæg:"
 
 #. translators: %s is the name of the option.
 #: inc/deprecated/3.15.php:81
