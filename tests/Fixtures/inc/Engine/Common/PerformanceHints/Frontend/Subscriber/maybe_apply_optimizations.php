@@ -20,6 +20,12 @@ $html_input_with_domain_img_lcp = file_get_contents(__DIR__ . '/HTML/input_lcp_i
 $html_output_with_beacon_and_lcp_opt = file_get_contents(__DIR__ . '/HTML/output_with_beacon_and_atf_opt.html');
 $html_input_with_only_lrc_opt = file_get_contents(__DIR__ . '/HTML/input_with_only_lrc_opt.html');
 $html_output_with_beacon_and_only_lrc_opt = file_get_contents(__DIR__ . '/HTML/output_with_beacon_and_only_lrc_opt.html');
+$html_input_preload_fonts = file_get_contents(__DIR__ . '/HTML/input_preload_fonts.html');
+$html_input_preload_fonts_w_relative_path = file_get_contents(__DIR__ . '/HTML/input_preload_fonts_w_relative_path.html');
+$html_input_preload_fonts_w_crossorigin = file_get_contents(__DIR__ . '/HTML/input_preload_fonts_w_crossorigin.html');
+$html_output_preload_fonts = file_get_contents(__DIR__ . '/HTML/output_preload_fonts.html');
+$html_output_preload_fonts_w_crossorigin = file_get_contents(__DIR__ . '/HTML/output_preload_fonts_w_crossorigin.html');
+$html_output_preload_fonts_w_relative_path = file_get_contents(__DIR__ . '/HTML/output_preload_fonts_w_relative_path.html');
 
 $lrc = [
 	'row' => [
@@ -38,9 +44,17 @@ $preload_fonts = [
 		'status' => 'completed',
 		'url' => 'http://example.org',
 		'fonts' => json_encode( [
-			'font1',
-			'font2',
+			'path/to/font1.woff2',
+			'path/to/font2.ttf',
 		] ),
+	],
+];
+
+$preload_fonts_empty = [
+	'row' => [
+		'status' => 'completed',
+		'url' => 'http://example.org',
+		'fonts' => json_encode( [] ),
 	],
 ];
 
@@ -67,7 +81,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
-				'preload_fonts' => $preload_fonts,
+				'preload_fonts' => $preload_fonts_empty
 			],
 			'expected' => $html_input,
 		],
@@ -200,7 +214,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
-				'preload_fonts' => $preload_fonts,
+				'preload_fonts' => $preload_fonts_empty
 			],
 			'expected' => $html_output_with_preload,
 		],
@@ -226,7 +240,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
-				'preload_fonts' => $preload_fonts,
+				'preload_fonts' => $preload_fonts_empty
 			],
 			'expected' => $html_output,
 		],
@@ -248,7 +262,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
-				'preload_fonts' => $preload_fonts,
+				'preload_fonts' => $preload_fonts_empty
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_bg_responsive_imgset_template.php'),
 		],
@@ -270,7 +284,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
-				'preload_fonts' => $preload_fonts,
+				'preload_fonts' => $preload_fonts_empty
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_bg_responsive_webkit_template.php'),
 		],
@@ -292,7 +306,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
-				'preload_fonts' => $preload_fonts,
+				'preload_fonts' => $preload_fonts_empty
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_layered_bg.php'),
 		],
@@ -313,7 +327,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
-				'preload_fonts' => $preload_fonts,
+				'preload_fonts' => $preload_fonts_empty
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_single_bg.php'),
 		],
@@ -334,7 +348,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
-				'preload_fonts' => $preload_fonts,
+				'preload_fonts' => $preload_fonts_empty
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_responsive.php'),
 		],
@@ -353,7 +367,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
-				'preload_fonts' => $preload_fonts,
+				'preload_fonts' => $preload_fonts_empty,
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_with_relative_img_lcp.php'),
 		],
@@ -372,7 +386,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
-				'preload_fonts' => $preload_fonts,
+				'preload_fonts' => $preload_fonts_empty
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_with_absolute_img_lcp.php'),
 		],
@@ -391,7 +405,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
-				'preload_fonts' => $preload_fonts,
+				'preload_fonts' => $preload_fonts_empty
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_image.php'),
 		],
@@ -410,7 +424,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
-				'preload_fonts' => $preload_fonts,
+				'preload_fonts' => $preload_fonts_empty
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_with_fetchpriority.html'),
 		],
@@ -429,7 +443,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
-				'preload_fonts' => $preload_fonts,
+				'preload_fonts' => $preload_fonts_empty
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_with_markup_comment.html'),
 		],
@@ -457,7 +471,7 @@ return [
 					],
 				],
 				'lrc' =>$lrc,
-				'preload_fonts' => $preload_fonts,
+				'preload_fonts' => $preload_fonts_empty
 			],
 			'expected' => $html_output_with_bg_image_lcp,
 		],
@@ -485,7 +499,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
-				'preload_fonts' => $preload_fonts,
+				'preload_fonts' => $preload_fonts_empty
 			],
 			'expected' => $html_output_with_picture_img_lcp,
 		],
@@ -513,7 +527,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
-				'preload_fonts' => $preload_fonts,
+				'preload_fonts' => $preload_fonts_empty
 			],
 			'expected' => $html_output_with_img_lcp,
 		],
@@ -530,7 +544,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
-				'preload_fonts' => $preload_fonts,
+				'preload_fonts' => $preload_fonts_empty
 			],
 			'expected' => $html_output,
 		],
@@ -563,7 +577,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
-				'preload_fonts' => $preload_fonts,
+				'preload_fonts' => $preload_fonts_empty
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_picture.php'),
 		],
@@ -596,7 +610,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
-				'preload_fonts' => $preload_fonts,
+				'preload_fonts' => $preload_fonts_empty
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_picture_2.php'),
 		],
@@ -629,7 +643,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
-				'preload_fonts' => $preload_fonts,
+				'preload_fonts' => $preload_fonts_empty
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_picture_3.php'),
 		],
@@ -660,7 +674,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
-				'preload_fonts' => $preload_fonts,
+				'preload_fonts' => $preload_fonts_empty
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_picture_4.php'),
 		],
@@ -767,5 +781,71 @@ return [
 			],
 			'expected' => $html_input_without_closing_body_tag_output,
 		],
+		'shouldPreloadFonts' => [
+			'config' => [
+				'html' => $html_input_preload_fonts,
+				'atf' => [
+					'row' => null,
+				],
+				'lrc' => [
+					'row' => null,
+				],
+				'preload_fonts' => [
+					'row' => [
+						'status' => 'completed',
+						'url' => 'http://example.org',
+						'fonts' => json_encode( [
+							'http://example.org/assets/fonts/font1.woff2',
+							'http://example.org/assets/fonts/font2.ttf',
+						] ),
+					],
+				],
+			],
+			'expected' => $html_output_preload_fonts,
+		],
+		'shouldPreloadFontsWithCrossOrigin' => [
+			'config' => [
+				'html' => $html_input_preload_fonts_w_crossorigin,
+				'atf' => [
+					'row' => null,
+				],
+				'lrc' => [
+					'row' => null,
+				],
+				'preload_fonts' => [
+					'row' => [
+						'status' => 'completed',
+						'url' => 'http://example.org',
+						'fonts' => json_encode( [
+							'http://external.domain/assets/fonts/font1.woff2',
+							'http://example.org/assets/fonts/font2.ttf',
+						] ),
+					],
+				],
+			],
+			'expected' => $html_output_preload_fonts_w_crossorigin,
+		],
+		'shouldPreloadFontsWithRelativePath' => [
+			'config' => [
+				'html' => $html_input_preload_fonts_w_relative_path,
+				'atf' => [
+					'row' => null,
+				],
+				'lrc' => [
+					'row' => null,
+				],
+				'preload_fonts' => [
+					'row' => [
+						'status' => 'completed',
+						'url' => 'http://example.org',
+						'fonts' => json_encode( [
+							'/assets/fonts/font1.woff2',
+							'/assets/fonts/font2.ttf',
+						] ),
+					],
+				],
+			],
+			'expected' => $html_output_preload_fonts_w_relative_path,
+		]
 	],
 ];
