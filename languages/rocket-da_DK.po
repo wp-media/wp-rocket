@@ -933,7 +933,7 @@ msgstr "Vælg et domæne fra listen"
 
 #: inc/deprecated/3.4.php:31
 msgid "No domain available in your Cloudflare account"
-msgstr "Ingen domæne er tilgængelig på din Cloudflare-konto"
+msgstr "Intet domæne er tilgængeligt på din Cloudflare-konto"
 
 #: inc/deprecated/3.5.php:71 inc/deprecated/3.5.php:195
 msgid ""
