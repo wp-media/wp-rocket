@@ -834,7 +834,7 @@ msgstr ""
 
 #: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:31
 msgid "Boost Traffic"
-msgstr "Forøg trafikken"
+msgstr "Boost trafikken"
 
 #: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:38
 msgid "The Swiss Army Knife of SEO Tools"
