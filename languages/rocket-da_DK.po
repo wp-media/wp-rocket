@@ -1000,7 +1000,7 @@ msgstr ""
 
 #: inc/deprecated/3.10.php:163
 msgid "OPcache purge failed."
-msgstr "OPcache purge mislykkedes."
+msgstr "OPcache-rydning mislykkedes."
 
 #: inc/deprecated/3.10.php:168
 msgid "OPcache successfully purged"
