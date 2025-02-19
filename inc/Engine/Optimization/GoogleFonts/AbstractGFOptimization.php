@@ -40,13 +40,6 @@ abstract class AbstractGFOptimization {
 	protected $has_google_fonts = true;
 
 	/**
-	 * Font urls.
-	 *
-	 * @var array
-	 */
-	protected $font_urls = [];
-
-	/**
 	 * Optimize Google Fonts
 	 *
 	 * @param string $html HTML content.
@@ -119,25 +112,27 @@ abstract class AbstractGFOptimization {
 	 *
 	 * @return bool
 	 */
-	private function is_preload_enabled() {
+	protected function is_preload_enabled() {
 		return ! wpm_apply_filters_typed( 'boolean', 'rocket_disable_google_fonts_preload', false );
 	}
 
-	/**
-	 * Insert font stylesheets into head.
-	 *
-	 * @param array $items Head elements.
-	 * @return mixed
-	 */
-	public function insert_font_stylesheet_into_head( $items ) {
-		$font_urls = $this->get_font_urls();
-		if ( empty( $font_urls ) ) {
-			return $items;
+	protected function prepare_preload_fonts_to_head( array $fonts, array $items ): array {
+		foreach ( $fonts as $font_url ) {
+			$items[] = $this->preload_link(
+				[
+					'href' => $font_url,
+					'as'   => 'style',
+				]
+			);
 		}
 
+		return $items;
+	}
+
+	protected function prepare_stylesheet_fonts_to_head( array $fonts, array $items ): array {
 		$preload_enabled = $this->is_preload_enabled();
 
-		foreach ( $font_urls as $font_url ) {
+		foreach ( $fonts as $font_url ) {
 			$item = $this->stylesheet_link(
 				[
 					'href' => $font_url,
@@ -150,51 +145,14 @@ abstract class AbstractGFOptimization {
 			}
 
 			$item['media']  = 'print';
-			$item['onload'] = 'this.media=\'all\'';
+			$item['onload'] = "this.media='all'";
 			$items[]        = $item;
 
 			$items[] = $this->noscript_tag(
-				sprintf( '<link rel="stylesheet" href="%1$s" />', $font_url ) // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
+				sprintf( '<link rel="stylesheet" href="%1$s">', $font_url ) // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
 			);
 		}
 
 		return $items;
-	}
-
-	/**
-	 * Insert font preloads into head.
-	 *
-	 * @param array $items Head elements.
-	 * @return mixed
-	 */
-	public function insert_font_preload_into_head( $items ) {
-		$font_urls = $this->get_font_urls();
-		if ( empty( $font_urls ) ) {
-			return $items;
-		}
-
-		if ( ! $this->is_preload_enabled() ) {
-			return $items;
-		}
-
-		foreach ( $font_urls as $font_url ) {
-			$items[] = $this->preload_link(
-				[
-					'href' => $font_url,
-					'as'   => 'style',
-				]
-				);
-		}
-
-		return $items;
-	}
-
-	/**
-	 * Get font urls, getter method for font_urls property.
-	 *
-	 * @return array
-	 */
-	public function get_font_urls(): array {
-		return $this->font_urls;
 	}
 }

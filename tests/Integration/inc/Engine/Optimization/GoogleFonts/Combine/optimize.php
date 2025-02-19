@@ -39,7 +39,6 @@ class Test_Optimize extends TestCase {
 		remove_filter( 'rocket_disable_google_fonts_preload', [ $this, 'set_disable_preload' ] );
 		remove_filter('rocket_exclude_locally_host_fonts', [ $this, 'exclude_locally_host_fonts' ] );
 
-
 		$this->restoreWpHook('rocket_buffer');
 
 		parent::tear_down();
@@ -84,7 +83,7 @@ class Test_Optimize extends TestCase {
 		$actual = apply_filters( 'rocket_buffer', $original );
 
 		$this->assertSame(
-			$this->format_the_html( $expected['html'] ),
+			$this->format_the_html( is_string( $expected ) ? $expected : $expected['html'] ),
 			$this->format_the_html( $actual )
 		);
 	}

@@ -15,6 +15,13 @@ class CombineV2 extends AbstractGFOptimization {
 	use RegexTrait;
 
 	/**
+	 * Font urls.
+	 *
+	 * @var array
+	 */
+	protected $font_urls = [];
+
+	/**
 	 * Combines multiple Google Fonts (API v2) links into one
 	 *
 	 * @since  3.8
@@ -24,6 +31,7 @@ class CombineV2 extends AbstractGFOptimization {
 	 * @return string
 	 */
 	public function optimize( $html ): string {
+		$this->font_urls = [];
 		Logger::info( 'GOOGLE FONTS COMBINE-V2 PROCESS STARTED.', [ 'GF combine process' ] );
 
 		$processed_tags  = [];
@@ -160,5 +168,48 @@ class CombineV2 extends AbstractGFOptimization {
 		}
 
 		return rtrim( $families_string, '&?' );
+	}
+
+	/**
+	 * Get font urls, getter method for font_urls property.
+	 *
+	 * @return array
+	 */
+	public function get_font_urls(): array {
+		return $this->font_urls;
+	}
+
+	/**
+	 * Insert font stylesheets into head.
+	 *
+	 * @param array $items Head elements.
+	 * @return mixed
+	 */
+	public function insert_font_stylesheet_into_head( $items ) {
+		$font_urls = $this->get_font_urls();
+		if ( empty( $font_urls ) ) {
+			return $items;
+		}
+
+		return $this->prepare_stylesheet_fonts_to_head( $font_urls, $items );
+	}
+
+	/**
+	 * Insert font preloads into head.
+	 *
+	 * @param array $items Head elements.
+	 * @return mixed
+	 */
+	public function insert_font_preload_into_head( $items ) {
+		$font_urls = $this->get_font_urls();
+		if ( empty( $font_urls ) ) {
+			return $items;
+		}
+
+		if ( ! $this->is_preload_enabled() ) {
+			return $items;
+		}
+
+		return $this->prepare_preload_fonts_to_head( $font_urls, $items );
 	}
 }

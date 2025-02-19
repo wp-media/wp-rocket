@@ -14,6 +14,7 @@ Trait IsolateHookTrait {
 	protected function unregisterAllCallbacksExceptMulti( $event_name, $methods = [] ) {
 		global $wp_filter;
 		$this->original_wp_filter = $wp_filter[ $event_name ]->callbacks;
+		$wp_filter[ $event_name ]->callbacks = [];
 
 		foreach ( $methods as $priority => $method_name ) {
 			foreach ( $this->original_wp_filter[ $priority ] as $key => $config ) {
@@ -23,9 +24,7 @@ Trait IsolateHookTrait {
 					continue;
 				}
 
-				$wp_filter[ $event_name ]->callbacks = [
-					$priority => [ $key => $config ],
-				];
+				$wp_filter[ $event_name ]->callbacks[ $priority ] = [ $key => $config ];
 			}
 		}
 

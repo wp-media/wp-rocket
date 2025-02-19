@@ -19,7 +19,7 @@ class Test_Treeshake extends FilesystemTestCase {
 
 		self::installUsedCssTable();
 
-		$this->unregisterAllCallbacksExcept('rocket_buffer', 'treeshake', 1000 );
+		$this->unregisterAllCallbacksExceptMulti('rocket_buffer', [ 1000 => 'treeshake', 100000 => 'insert_rocket_head' ] );
 		add_filter('pre_get_rocket_option_remove_unused_css', [$this, 'rucss']);
 		add_filter('rocket_exclude_rucss_fonts_preload', [$this, 'exclude_fonts_preload']);
 		add_filter('rocket_used_css_dir_level', [$this, 'used_css_dir_level']);

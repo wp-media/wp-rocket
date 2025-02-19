@@ -62,6 +62,7 @@ class Subscriber implements Subscriber_Interface {
 			return $content;
 		}
 
+		$this->head_items = [];
 		// Combine elements.
 		$elements = '';
 		foreach ( $items as $item ) {
@@ -125,6 +126,8 @@ class Subscriber implements Subscriber_Interface {
 
 		$attributes = [];
 
+		ksort( $element );
+
 		foreach ( $element as $key => $value ) {
 			if ( is_int( $key ) ) {
 				$attributes[] = $value;
@@ -133,9 +136,9 @@ class Subscriber implements Subscriber_Interface {
 			$attributes[] = $key . '="' . esc_attr( $value ) . '"';
 		}
 
-		$attributes_html = ! empty( $attributes ) ? implode( ' ', $attributes ) : '';
+		$attributes_html = ! empty( $attributes ) ? ' ' . implode( ' ', $attributes ) : '';
 
-		return $open_tag . ' ' . $attributes_html . '>' . $inner_content . $close_tag;
+		return $open_tag . $attributes_html . '>' . $inner_content . $close_tag;
 	}
 
 	/**

@@ -138,8 +138,11 @@ class Subscriber implements Subscriber_Interface {
 	 * @return mixed
 	 */
 	public function insert_fonts_stylesheets( array $items ) {
-		$items = $this->combine->insert_font_stylesheet_into_head( $items );
-		return $this->combine_v2->insert_font_stylesheet_into_head( $items );
+		if ( ! $this->is_allowed() ) {
+			return $items;
+		}
+		$items = $this->combine_v2->insert_font_stylesheet_into_head( $items );
+		return $this->combine->insert_font_stylesheet_into_head( $items );
 	}
 
 	/**
@@ -149,7 +152,10 @@ class Subscriber implements Subscriber_Interface {
 	 * @return mixed
 	 */
 	public function insert_fonts_preload( $items ) {
-		$items = $this->combine->insert_font_preload_into_head( $items );
-		return $this->combine_v2->insert_font_preload_into_head( $items );
+		if ( ! $this->is_allowed() ) {
+			return $items;
+		}
+		$items = $this->combine_v2->insert_font_preload_into_head( $items );
+		return $this->combine->insert_font_preload_into_head( $items );
 	}
 }
