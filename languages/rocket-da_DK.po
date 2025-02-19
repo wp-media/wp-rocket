@@ -1261,7 +1261,7 @@ msgstr "Revisioner"
 #: inc/Engine/Admin/Database/Optimization.php:34
 #: inc/Engine/Admin/Settings/Page.php:1413
 msgid "Auto Drafts"
-msgstr "Biludkast"
+msgstr "Automatiske udkast"
 
 #: inc/Engine/Admin/Database/Optimization.php:35
 #: inc/Engine/Admin/Settings/Page.php:1423
