@@ -182,7 +182,7 @@ msgstr "standard"
 #. translators: %s is the caching level returned by the CloudFlare API.
 #: inc/Addon/Cloudflare/Subscriber.php:350
 msgid "Cloudflare cache level set to %s"
-msgstr "Cloudflare-hurtigbuffernivå satt til %s"
+msgstr "Cloudflare cache-nivå satt til %s"
 
 #. translators: %s is the message returned by the CloudFlare API.
 #: inc/Addon/Cloudflare/Subscriber.php:368
