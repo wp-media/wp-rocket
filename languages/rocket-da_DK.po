@@ -989,9 +989,9 @@ msgstr[0] ""
 "systemet ikke kører korrekt, hvilket kan forhindre, at nogle WP Rocket-"
 "funktioner fungerer som planlagt:"
 msgstr[1] ""
-"Følgende planlagte hændelser kunne ikke køre. Dette kan indikere, at CRON-"
-"systemet ikke kører korrekt, hvilket kan forhindre, at nogle WP Rocket-"
-"funktioner fungerer som planlagt:"
+"Følgende planlagte handlinger kunne ikke udføres. Dette kan indikere, at "
+"CRON-systemet ikke kører korrekt, hvilket kan forhindre, at nogle WP Rocket-"
+"funktioner fungerer efter hensigten:"
 
 #: inc/deprecated/3.5.php:867 inc/Engine/HealthCheck/HealthCheck.php:80
 msgid "Please contact your host to check if CRON is working."
