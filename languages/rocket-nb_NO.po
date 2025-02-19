@@ -91,7 +91,7 @@ msgstr "Feil Cloudflare-e-postadresse eller API-nøkkel."
 #: inc/deprecated/3.5.php:129 inc/deprecated/3.5.php:157
 #: inc/deprecated/3.5.php:173
 msgid "Read the %1$sdocumentation%2$s for further guidance."
-msgstr "Les %1$sdocumentation%2$s for mer veiledning."
+msgstr "Les %1$sdokumentasjonen%2$s for mer veiledning."
 
 #. translators: Documentation exists in EN, FR; use localized URL if
 #. applicable.
