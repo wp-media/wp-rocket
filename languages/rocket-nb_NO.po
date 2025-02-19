@@ -202,7 +202,7 @@ msgstr "Feil i Cloudflare nettleser-cache: %s"
 #. translators: %s is the message returned by the CloudFlare API.
 #: inc/Addon/Cloudflare/Subscriber.php:400
 msgid "Cloudflare browser cache set to %s"
-msgstr "Cloudflare nettleserbuffer satt til %s"
+msgstr "Cloudflare nettleser-cache satt til %s"
 
 #. translators: %1$s = strong opening tag, %2$s = strong closing tag.
 #: inc/Addon/Cloudflare/Subscriber.php:507
