@@ -877,9 +877,9 @@ msgid ""
 "available. Google Gold Certified Partner to quickly comply with data privacy"
 " laws from around the world."
 msgstr ""
-"En af de nemmeste, mest omfattende og populære cookies samtykke plugins til "
-"rådighed. Google Gold Certified Partner til hurtigt at overholde "
-"databeskyttelseslove fra hele verden."
+"Et af de nemmeste, mest omfattende og populære plugins til cookie-"
+"samtykkebannere på markedet. Google Gold Certified Partner, der hurtigt "
+"hjælper dig med at overholde databeskyttelseslove fra hele verden."
 
 #: inc/deprecated/3.2.php:52 views/settings/page-sections/imagify.php:107
 msgid "Activate Imagify"
