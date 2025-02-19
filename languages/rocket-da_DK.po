@@ -1076,7 +1076,7 @@ msgid ""
 "%1$sNote:%2$s None of these options will be applied if this post has been "
 "excluded from cache in the global cache settings."
 msgstr ""
-"%1$sNote:%2$s Ingen af disse indstillinger anvendes, hvis denne post er "
+"%1$sBemærk:%2$s Ingen af disse indstillinger anvendes, hvis dette indlæg er "
 "blevet udelukket fra cache i de globale cache-indstillinger."
 
 #: inc/deprecated/deprecated.php:240
