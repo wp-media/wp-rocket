@@ -774,7 +774,7 @@ msgstr "Fjern denne URL"
 
 #: inc/common/admin-bar.php:212
 msgid "Purge Sucuri cache"
-msgstr "Rens Sucuri cache"
+msgstr "Ryd Sucuri-cache"
 
 #: inc/common/admin-bar.php:236 views/settings/fields/rocket-cdn.php:55
 msgid "Purge RocketCDN cache"
