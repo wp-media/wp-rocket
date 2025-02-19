@@ -1284,7 +1284,7 @@ msgstr "Forbigående"
 
 #: inc/Engine/Admin/Database/Optimization.php:39
 msgid "Tables"
-msgstr "Bord"
+msgstr "Tabeller"
 
 #: inc/Engine/Admin/Database/Subscriber.php:85
 msgid "monthly"
