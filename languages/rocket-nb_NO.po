@@ -133,7 +133,7 @@ msgstr "Det ser ut til at domenet ditt ikke er satt opp på Cloudflare."
 
 #: inc/Addon/Cloudflare/Cloudflare.php:200
 msgid "days"
-msgstr "Dager"
+msgstr "dager"
 
 #: inc/Addon/Cloudflare/Cloudflare.php:203
 msgid "seconds"
