@@ -1333,7 +1333,7 @@ msgstr "Gem ændringer"
 
 #: inc/Engine/Admin/Settings/Page.php:222
 msgid "Validate License"
-msgstr "Validerer licens"
+msgstr "Valider licens"
 
 #: inc/Engine/Admin/Settings/Page.php:278
 #: inc/Engine/Admin/Settings/Page.php:279 inc/functions/admin.php:559
