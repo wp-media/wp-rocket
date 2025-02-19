@@ -1136,7 +1136,7 @@ msgstr "Tip til ydeevne:"
 #: inc/deprecated/deprecated.php:1476
 msgctxt "screen-reader-text"
 msgid "Third-party feature detected:"
-msgstr "Tredjepartsfunktion opdaget:"
+msgstr "Tredjepartsfunktion registreret:"
 
 #: inc/deprecated/deprecated.php:1488 inc/deprecated/deprecated.php:1672
 msgctxt "screen-reader-text"
