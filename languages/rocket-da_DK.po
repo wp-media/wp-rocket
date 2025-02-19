@@ -1244,7 +1244,8 @@ msgstr ""
 msgid ""
 "The called class %1$s is <strong>deprecated</strong> since version %2$s!"
 msgstr ""
-"Den kaldte klasse %1$s er <strong>deprecated</strong> siden version %2$s!"
+"Den kaldte klasse %1$s har været <strong>forældet</strong> siden version "
+"%2$s!"
 
 #: inc/deprecated/Engine/Addon/FacebookTracking/Subscriber.php:92
 #: inc/deprecated/Engine/Addon/GoogleTracking/Subscriber.php:137
