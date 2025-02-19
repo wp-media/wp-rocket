@@ -1271,7 +1271,7 @@ msgstr "Kasserede indlæg"
 #: inc/Engine/Admin/Database/Optimization.php:36
 #: inc/Engine/Admin/Settings/Page.php:1433
 msgid "Spam Comments"
-msgstr "Spam kommentarer"
+msgstr "Spam-kommentarer"
 
 #: inc/Engine/Admin/Database/Optimization.php:37
 #: inc/Engine/Admin/Settings/Page.php:1443
