@@ -1150,7 +1150,7 @@ msgstr "Download-indstillinger"
 
 #: inc/deprecated/deprecated.php:1531
 msgid "Replace site's hostname with:"
-msgstr "Erstat webstedsnavnet med:"
+msgstr "Erstat hjemmesidenavnet med:"
 
 #: inc/deprecated/deprecated.php:1550 inc/deprecated/deprecated.php:1587
 #: inc/deprecated/deprecated.php:1615 views/settings/fields/cnames.php:41
