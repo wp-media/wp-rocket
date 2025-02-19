@@ -112,7 +112,7 @@ msgstr ""
 
 #: inc/Addon/Cloudflare/API/Client.php:208 inc/deprecated/3.5.php:125
 msgid "Incorrect Cloudflare Zone ID."
-msgstr "Feil Cloudflare-sone-ID."
+msgstr "Feil Cloudflare Zone ID."
 
 #. translators: %1$s = opening link; %2$s = closing link
 #: inc/Addon/Cloudflare/Auth/APIKey.php:61
