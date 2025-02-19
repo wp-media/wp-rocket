@@ -1371,9 +1371,9 @@ msgid ""
 "%1$s Minification is currently activated in <strong>Autoptimize</strong>. If"
 " you want to use %2$s’s minification, disable this option in Autoptimize."
 msgstr ""
-"%1$s Minificering er for øjeblikket aktiveret i "
-"<strong>Autoptimering</strong>. Hvis du vil bruge %2$s minificering, skal du"
-" deaktivere denne indstilling i Autoptimering."
+"%1$s-minificering er i øjeblikket aktiveret under "
+"<strong>Autoptimering</strong>. Hvis du vil bruge   %2$ss minificering, skal"
+" du deaktivere denne indstilling i Autoptimering."
 
 #: inc/Engine/Admin/Settings/Page.php:494
 msgid "CSS Files"
