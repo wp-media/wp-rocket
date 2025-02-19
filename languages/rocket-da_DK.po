@@ -754,7 +754,7 @@ msgstr ""
 
 #: inc/common/admin-bar.php:91 inc/common/admin-bar.php:154
 msgid "Clear and Preload Cache"
-msgstr "Fjern og forudindlæse cache"
+msgstr "Ryd og forudindlæs cache"
 
 #: inc/common/admin-bar.php:91 inc/common/admin-bar.php:154
 msgid "Clear Cache"
