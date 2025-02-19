@@ -758,7 +758,7 @@ msgstr "Ryd og forudindlæs cache"
 
 #: inc/common/admin-bar.php:91 inc/common/admin-bar.php:154
 msgid "Clear Cache"
-msgstr "Fjern cache"
+msgstr "Ryd cache"
 
 #: inc/common/admin-bar.php:131 inc/functions/i18n.php:20
 msgid "All languages"
