@@ -65,7 +65,7 @@ class Processor {
 		// Set flag as true by default.
 		$optimization_applied = true;
 
-		foreach ( $this->factories as $factory ) {var_dump(55);
+		foreach ( $this->factories as $factory ) {
 			$row = $factory->queries()->get_row( $url, $is_mobile );
 
 			if ( empty( $row ) ) {
