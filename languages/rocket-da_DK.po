@@ -1735,8 +1735,8 @@ msgid ""
 msgstr ""
 "Ved at aktivere Sikker tilstand reducerer du betydeligt forbedringer af din "
 "hjemmesides ydeevne. Vi anbefaler kun at bruge det som en midlertidig "
-"løsning. Hvis du oplever problemer med forsinkelse JavaScript-funktionen, "
-"kan vores supportteam hjælpe dig med fejlfinding."
+"løsning. Hvis du oplever problemer med Forsink JavaScript-funktionen, kan "
+"vores supportteam hjælpe dig med fejlfinding."
 
 #: inc/Engine/Admin/Settings/Page.php:833
 msgid "ACTIVATE SAFE MODE"
