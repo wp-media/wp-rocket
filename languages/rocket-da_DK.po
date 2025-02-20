@@ -1515,7 +1515,7 @@ msgid ""
 "setting, just deactivate it again, and your site will be back to normal."
 msgstr ""
 "Hvis du opdager fejl på din hjemmeside efter at have aktiveret denne "
-"indstilling, skal du blot deaktivere den igen, og dit websted vil være "
+"indstilling, skal du blot deaktivere den igen. Så vil din hjemmeside gå "
 "tilbage til det normale."
 
 #: inc/Engine/Admin/Settings/Page.php:608
