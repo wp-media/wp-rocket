@@ -1506,7 +1506,7 @@ msgstr ""
 #: inc/Engine/Admin/Settings/Page.php:606
 #: inc/Engine/Admin/Settings/Page.php:690
 msgid "This could break things!"
-msgstr "Det kan knække tingene!"
+msgstr "Dette kan ødelægge ting!"
 
 #: inc/Engine/Admin/Settings/Page.php:607
 #: inc/Engine/Admin/Settings/Page.php:691
