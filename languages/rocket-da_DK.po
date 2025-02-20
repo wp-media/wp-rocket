@@ -1500,7 +1500,7 @@ msgid ""
 " Recommended for best performance. Test thoroughly! %1$sMore info%2$s"
 msgstr ""
 "Fjerner ubrugt CSS pr. side og hjælper med at reducere sidestørrelse og "
-"HTTP-anmodninger. Anbefalet til bedste ydeevne. Test grundigt!%1$sMere "
+"HTTP-anmodninger. Anbefalet til bedste ydeevne. Test grundigt! %1$sMere "
 "info%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:606
