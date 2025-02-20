@@ -251,7 +251,7 @@ msgstr "Feil ved kontakt med Sucuri-brannmurens API. Feilmeldingen var: %s"
 
 #: inc/Addon/Sucuri/Subscriber.php:301
 msgid "Could not get a response from the Sucuri firewall API."
-msgstr "Kunne ikke få svar fra Sucuri-brannmurens API."
+msgstr "Fikk ikke få svar fra Sucuri-brannmurens API."
 
 #: inc/Addon/Sucuri/Subscriber.php:316
 msgid "Got an invalid response from the Sucuri firewall API."
