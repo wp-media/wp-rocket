@@ -1572,7 +1572,7 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:658
 msgid "Minify JavaScript files"
-msgstr "Minifys JavaScript-filer"
+msgstr "Minificer JavaScript-filer"
 
 #: inc/Engine/Admin/Settings/Page.php:659
 msgid ""
