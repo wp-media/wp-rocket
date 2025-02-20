@@ -8,6 +8,7 @@ use WP_Rocket\Dependencies\League\Container\Container;
 use WP_Rocket\Admin\{Options, Options_Data};
 use WP_Rocket\Engine\Admin\API\ServiceProvider as APIServiceProvider;
 use WP_Rocket\Engine\Common\ExtractCSS\ServiceProvider as CommonExtractCSSServiceProvider;
+use WP_Rocket\Engine\Common\Head\ServiceProvider as CommonHeadServiceProvider;
 use WP_Rocket\Engine\Common\JobManager\ServiceProvider as JobManagerServiceProvider;
 use WP_Rocket\Engine\Media\Lazyload\CSS\ServiceProvider as LazyloadCSSServiceProvider;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Admin\ServiceProvider as AdminLazyloadCSSServiceProvider;
@@ -284,6 +285,7 @@ class Plugin {
 		$this->container->addServiceProvider( new ThemesServiceProvider() );
 		$this->container->addServiceProvider( new APIServiceProvider() );
 		$this->container->addServiceProvider( new CommonExtractCSSServiceProvider() );
+		$this->container->addServiceProvider( new CommonHeadServiceProvider() );
 		$this->container->addServiceProvider( new LazyloadCSSServiceProvider() );
 		$this->container->addServiceProvider( new DebugServiceProvider() );
 		$this->container->addServiceProvider( new ATFServiceProvider() );
@@ -302,6 +304,7 @@ class Plugin {
 			'critical_css_subscriber',
 			'sucuri_subscriber',
 			'common_extractcss_subscriber',
+			'common_head_subscriber',
 			'expired_cache_purge_subscriber',
 			'fonts_preload_subscriber',
 			'heartbeat_subscriber',
