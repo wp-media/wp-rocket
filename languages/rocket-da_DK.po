@@ -1827,7 +1827,7 @@ msgstr "Aktivér for CSS-baggrundsbilleder"
 
 #: inc/Engine/Admin/Settings/Page.php:996
 msgid "Enable for iframes and videos"
-msgstr "Aktiver for iframes og videoer"
+msgstr "Aktivér for iframes og videoer"
 
 #: inc/Engine/Admin/Settings/Page.php:1011
 msgid "Replace YouTube iframe with preview image"
