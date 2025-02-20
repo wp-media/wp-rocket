@@ -1531,8 +1531,8 @@ msgid ""
 "Specify CSS filenames, IDs or classes that should not be removed (one per "
 "line)."
 msgstr ""
-"Angiv CSS filnavne, id'er eller klasser, der ikke bør fjernes (én per "
-"linje)."
+"Angiv CSS-filnavne, ID'er eller klasser, der ikke bør fjernes (ét element "
+"per linje)."
 
 #: inc/Engine/Admin/Settings/Page.php:630
 #: inc/Engine/CriticalPath/Admin/Subscriber.php:201
