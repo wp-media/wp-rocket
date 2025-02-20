@@ -1585,7 +1585,7 @@ msgstr ""
 msgid ""
 "Combine JavaScript files <em>(Enable Minify JavaScript files to select)</em>"
 msgstr ""
-"Kombiner JavaScript-filer <em>(Aktiver Minify JavaScript-filer for at "
+"Kombiner JavaScript-filer <em>(Aktivér Minificer JavaScript-filer for at "
 "vælge)</em>"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
