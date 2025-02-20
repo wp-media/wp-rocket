@@ -1485,8 +1485,8 @@ msgid ""
 "Optimize CSS Delivery features are disabled on local environments. %1$sLearn"
 " more%2$s"
 msgstr ""
-"Optimer CSS leveringsfunktioner er deaktiveret på lokale miljøer. %1$sFind "
-"ud af mere%2$s"
+"Funktioner for Optimering af CSS-levering er deaktiveret på lokale miljøer. "
+"%1$sLær mere%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:601
 #: inc/Engine/Optimization/RUCSS/Admin/OptionSubscriber.php:74
