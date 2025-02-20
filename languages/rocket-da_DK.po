@@ -1457,7 +1457,7 @@ msgstr ""
 #: inc/Engine/Admin/Settings/Page.php:566
 #: inc/Engine/Admin/Settings/Page.php:588
 msgid "Optimize CSS delivery"
-msgstr "Optimer CSS-levering"
+msgstr "Optimering af CSS-levering"
 
 #: inc/Engine/Admin/Settings/Page.php:571
 msgid ""
@@ -1466,8 +1466,8 @@ msgid ""
 "performance, but limited only to the users with active license."
 msgstr ""
 "Optimering af CSS-levering eliminerer render-blokering af CSS på din "
-"hjemmeside. Kun én metode kan vælges. Fjern ubrugte CSS anbefales for "
-"optimal ydeevne, men begrænses kun til brugere med aktiv licens."
+"hjemmeside. Kun én metode kan vælges. Fjern ubrugt CSS anbefales for optimal"
+" ydeevne, men begrænses kun til brugere med aktiv licens."
 
 #: inc/Engine/Admin/Settings/Page.php:571
 msgid ""
