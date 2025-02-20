@@ -1810,7 +1810,7 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:961
 msgid "Enable for images"
-msgstr "Aktiver for billeder"
+msgstr "Aktivér for billeder"
 
 #. translators: %1$s = “WP Rocket”, %2$s = a list of plugin names.
 #: inc/Engine/Admin/Settings/Page.php:973
