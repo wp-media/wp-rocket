@@ -1711,7 +1711,7 @@ msgid ""
 "excluded from delaying execution (one per line)."
 msgstr ""
 "Angiv URL'er eller søgeord, der kan identificere inline- eller JavaScript-"
-"filer, der skal udelukkes fra forsinket udførelse (én per linje)."
+"filer, der skal udelukkes fra forsinket udførelse (én/et per linje)."
 
 #: inc/Engine/Admin/Settings/Page.php:813
 msgid "Safe Mode for Delay JavaScript Execution"
