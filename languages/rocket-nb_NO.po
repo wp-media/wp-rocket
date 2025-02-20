@@ -347,7 +347,7 @@ msgstr ""
 #: inc/admin/admin.php:18 inc/common/admin-bar.php:273
 #: inc/deprecated/deprecated.php:1787
 msgid "Support"
-msgstr "Støtte"
+msgstr "Support"
 
 #: inc/admin/admin.php:20
 msgid "Docs"
