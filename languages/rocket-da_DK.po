@@ -1618,7 +1618,7 @@ msgid ""
 " per line). %1$sMore info%2$s"
 msgstr ""
 "Angiv mønstre for inline JavaScript, der skal udelukkes fra sammenkobling "
-"(en pr. linje).%1$sMere info%2$s"
+"(et pr. linje). %1$sMere info%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:716
 msgid ""
