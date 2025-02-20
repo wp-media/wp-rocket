@@ -20,14 +20,14 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Combine instance.
 	 *
-	 * @var AbstractGFOptimization
+	 * @var Combine
 	 */
 	private $combine;
 
 	/**
 	 * CombineV2 instance.
 	 *
-	 * @var AbstractGFOptimization
+	 * @var CombineV2
 	 */
 	private $combine_v2;
 
