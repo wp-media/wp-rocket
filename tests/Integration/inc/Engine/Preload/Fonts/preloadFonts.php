@@ -49,9 +49,10 @@ class Test_PreloadFonts extends TestCase {
 		$output = apply_filters( 'rocket_buffer', $buffer );
 
 		$actual = $this->format_the_html( $output );
+		$expected = is_string( $expected ) ? $expected : $expected['html'];
 
 		$this->assertStringContainsString(
-			$this->format_the_html( is_string( $expected ) ? $expected : $expected['html'] ),
+			$this->format_the_html( str_replace( "\n", '', $expected ) ),
 			$actual
 		);
 	}
