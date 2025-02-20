@@ -1790,8 +1790,8 @@ msgid ""
 "shifts and improve the reading experience for your visitors. %1$sMore "
 "info%2$s"
 msgstr ""
-"Tilføj mangler bredde og højde attributter til billeder. Hjælper med at "
-"forhindre layout forskydninger og forbedre læseoplevelsen for dine "
+"Tilføj manglende bredde- og højde-attributter til billeder. Dette hjælper "
+"med at forhindre layout-forskydninger og forbedrer læseoplevelsen for dine "
 "besøgende. %1$sMere info%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:939
