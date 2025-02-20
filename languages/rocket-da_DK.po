@@ -1644,8 +1644,8 @@ msgid ""
 "<strong>3rd Party:</strong> Use either the full URL path or only the domain "
 "name, to exclude external JS. %1$sMore info%2$s"
 msgstr ""
-"<strong>Tredjepart:</strong> Brug enten hele URL-vejen eller kun "
-"domænenavnet for at udelukke eksterne JS. %1$sMere info%2$s"
+"<strong>Tredjepart:</strong> Brug enten hele URL-stien eller kun "
+"domænenavnet for at udelukke ekstern JS. %1$sMere info%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:735
 #: inc/Engine/Optimization/DeferJS/AdminSubscriber.php:76
