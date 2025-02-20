@@ -1433,7 +1433,7 @@ msgstr ""
 msgid ""
 "Specify URLs of CSS files to be excluded from minification (one per line)."
 msgstr ""
-"Angiv URL'er af CSS-filer, der skal udelukkes fra minificering (én per "
+"Angiv URL'er for CSS-filer, der skal udelukkes fra minificering (én per "
 "linje)."
 
 #: inc/Engine/Admin/Settings/Page.php:551
