@@ -99,7 +99,7 @@ class Controller implements ControllerInterface {
 		 */
 		$system_fonts = wpm_apply_filters_typed( 'array', 'rocket_preload_fonts_system_fonts', $system_fonts );
 
-		// To Delete Mock Data during implementation of https://github.com/wp-media/wp-rocket/issues/7306
+		// To Delete Mock Data during implementation of https://github.com/wp-media/wp-rocket/issues/7306.
 		$font_data = [
 			'https://fonts.gstatic.com/s/poppins/v22/pxiAyp8kv8JHgFVrJJLmE0tMMPKhSkFEkm8.woff2' => [
 				[
