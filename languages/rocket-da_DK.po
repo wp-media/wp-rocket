@@ -1694,7 +1694,7 @@ msgid ""
 " in the viewport take time to appear."
 msgstr ""
 "Når du bruger Forsink JavaScript-funktionen, vil du måske opleve, at visse "
-"elementer i viewport tager tid at blive vist."
+"elementer i viewport er længe om at blive vist."
 
 #: inc/Engine/Admin/Settings/Page.php:779
 msgid ""
