@@ -1559,7 +1559,7 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:641
 msgid "Fallback critical CSS"
-msgstr "Anmeldelser af Fallback Critical CSS"
+msgstr "Fallback Critical CSS"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:643
