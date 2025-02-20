@@ -1475,8 +1475,9 @@ msgid ""
 "one method can be selected. Remove Unused CSS is recommended for optimal "
 "performance."
 msgstr ""
-"Optimere CSS-levering eliminerer render-blokering af CSS på din hjemmeside. "
-"Kun én metode kan vælges. Fjern ubrugte CSS anbefales for optimal ydeevne."
+"Optimering af CSS-levering eliminerer render-blokering af CSS på din "
+"hjemmeside. Kun én metode kan vælges. Fjern ubrugt CSS anbefales for optimal"
+" ydeevne."
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:581
