@@ -88,7 +88,10 @@ return [
 			],
 			'html' => file_get_contents(WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Optimization/RUCSS/Controller/UsedCSS/HTML/original.php'),
 		],
-		'expected' => file_get_contents(WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Optimization/RUCSS/Controller/UsedCSS/HTML/filtered.php'),
+		'expected' => [
+			'html' => file_get_contents(WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Optimization/RUCSS/Controller/UsedCSS/HTML/filtered.php'),
+			'used_css' => 'h1{color:red;}',
+		],
 	],
 	'expectedFilteredHTMlWhenNoPreconnectGoogleAPI' => [
 		'config' => [
@@ -112,7 +115,10 @@ return [
 			],
 			'html' => file_get_contents(WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Optimization/RUCSS/Controller/UsedCSS/HTML/google_fonts.php'),
 		],
-		'expected' => file_get_contents(WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Optimization/RUCSS/Controller/UsedCSS/HTML/filtered.php'),
+		'expected' => [
+			'html' => file_get_contents(WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Optimization/RUCSS/Controller/UsedCSS/HTML/filtered.php'),
+			'used_css' => 'h1{color:red;}',
+		],
 	],
 	'expectedFilteredHTMlWhenNoEmptyUsedCSSExcludeAttr' => [
 		'config' => [
@@ -142,7 +148,10 @@ return [
 			],
 			'html' => file_get_contents(WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Optimization/RUCSS/Controller/UsedCSS/HTML/original_exclude_attr.php'),
 		],
-		'expected' => file_get_contents(WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Optimization/RUCSS/Controller/UsedCSS/HTML/filtered_exclude_attr.php'),
+		'expected' => [
+			'html' => file_get_contents(WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Optimization/RUCSS/Controller/UsedCSS/HTML/filtered_exclude_attr.php'),
+			'used_css' => 'h1{color:red;}',
+		],
 	],
 	'expectedFilteredHTMlWhenNoEmptyUsedCSSExcludeContent' => [
 		'config' => [
@@ -172,7 +181,10 @@ return [
 			],
 			'html' => file_get_contents(WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Optimization/RUCSS/Controller/UsedCSS/HTML/original_exclude_content.php'),
 		],
-		'expected' => file_get_contents(WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Optimization/RUCSS/Controller/UsedCSS/HTML/filtered_exclude_content.php'),
+		'expected' => [
+			'html' => file_get_contents(WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Optimization/RUCSS/Controller/UsedCSS/HTML/filtered_exclude_content.php'),
+			'used_css' => 'h1{color:red;}',
+		],
 	],
 	'expectSameHtmlWhenNoTitleTag' => [
 		'config' => [

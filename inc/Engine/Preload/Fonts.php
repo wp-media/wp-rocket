@@ -4,6 +4,7 @@ namespace WP_Rocket\Engine\Preload;
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CDN\CDN;
+use WP_Rocket\Engine\Common\Head\ElementTrait;
 use WP_Rocket\Engine\Support\CommentTrait;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
@@ -14,6 +15,7 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  */
 class Fonts implements Subscriber_Interface {
 	use CommentTrait;
+	use ElementTrait;
 
 	/**
 	 * WP Rocket Options instance.
@@ -50,6 +52,13 @@ class Fonts implements Subscriber_Interface {
 	];
 
 	/**
+	 * Loaded fonts
+	 *
+	 * @var array
+	 */
+	private $fonts = [];
+
+	/**
 	 * Return an array of events that this subscriber wants to listen to.
 	 *
 	 * @since  3.6
@@ -71,7 +80,8 @@ class Fonts implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_buffer' => [ 'preload_fonts', 20 ],
+			'rocket_head_items' => [ 'insert_preloaded_fonts_into_head', 30 ],
+			'rocket_buffer'     => [ 'preload_fonts', 20 ],
 		];
 	}
 
@@ -84,6 +94,7 @@ class Fonts implements Subscriber_Interface {
 	 * @since 3.6
 	 */
 	public function preload_fonts( $html ): string {
+		$this->fonts = [];
 		if ( ! $this->is_allowed() ) {
 			return $html;
 		}
@@ -107,24 +118,35 @@ class Fonts implements Subscriber_Interface {
 		$base_url = get_rocket_parse_url( home_url() );
 		$base_url = "{$base_url['scheme']}://{$base_url['host']}";
 
-		$preloads = '</title>';
-
 		foreach ( array_unique( $fonts ) as $font ) {
-			$preloads .= sprintf(
-				"\n<link rel=\"preload\" as=\"font\" href=\"%s\" crossorigin>",
-				esc_url( $this->cdn->rewrite_url( $base_url . $font ) )
+			$this->fonts[] = esc_url( $this->cdn->rewrite_url( $base_url . $font ) );
+		}
+
+		return $this->add_meta_comment( 'preload_fonts', $html );
+	}
+
+	/**
+	 * Add preload links into head.
+	 *
+	 * @param array $items Head elements.
+	 * @return array
+	 */
+	public function insert_preloaded_fonts_into_head( $items ): array {
+		$fonts = $this->get_fonts();
+		if ( empty( $fonts ) ) {
+			return $items;
+		}
+
+		foreach ( $fonts as $font ) {
+			$items[] = $this->preload_link(
+				[
+					'href' => $font,
+					'as'   => 'font',
+					1      => 'crossorigin',
+				]
 			);
 		}
-
-		$result = preg_replace( '#</title>#', $preloads, $html, 1 );
-
-		if ( null === $result ) {
-			return $html;
-		}
-
-		$result = $this->add_meta_comment( 'preload_fonts', $result );
-
-		return $result;
+		return $items;
 	}
 
 	/**
@@ -171,5 +193,14 @@ class Fonts implements Subscriber_Interface {
 		 * @param bool $disable_preload_fonts True to disable, false otherwise.
 		 */
 		return ! apply_filters( 'rocket_disable_preload_fonts', false );
+	}
+
+	/**
+	 * Get fonts to preload, getter method for fonts property.
+	 *
+	 * @return array
+	 */
+	public function get_fonts(): array {
+		return $this->is_allowed() ? $this->fonts : [];
 	}
 }
