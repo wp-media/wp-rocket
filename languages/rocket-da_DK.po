@@ -1650,7 +1650,7 @@ msgstr ""
 #: inc/Engine/Admin/Settings/Page.php:735
 #: inc/Engine/Optimization/DeferJS/AdminSubscriber.php:76
 msgid "Load JavaScript deferred"
-msgstr "Indlæse JavaScript udskudt"
+msgstr "Indlæs JavaScript udskudt"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:737
