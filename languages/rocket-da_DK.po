@@ -1604,8 +1604,8 @@ msgid ""
 "For compatibility and best results, this option is disabled when delay "
 "javascript execution is enabled."
 msgstr ""
-"For kompatibilitet og bedste resultater, er denne indstilling deaktiveret, "
-"når forsinkelse javascript udførelse er aktiveret."
+"Af hensyn til kompatibilitet og bedste resultater, er denne indstilling "
+"deaktiveret, når delay javascript-udførelse er aktiveret."
 
 #: inc/Engine/Admin/Settings/Page.php:692
 msgid "Activate combine JavaScript"
