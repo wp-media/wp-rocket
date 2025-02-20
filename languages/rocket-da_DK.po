@@ -1467,7 +1467,7 @@ msgid ""
 msgstr ""
 "Optimering af CSS-levering eliminerer render-blokering af CSS på din "
 "hjemmeside. Kun én metode kan vælges. Fjern ubrugt CSS anbefales for optimal"
-" ydeevne, men begrænses kun til brugere med aktiv licens."
+" ydeevne, men begrænses til brugere med aktiv licens."
 
 #: inc/Engine/Admin/Settings/Page.php:571
 msgid ""
