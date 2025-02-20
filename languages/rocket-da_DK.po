@@ -1491,7 +1491,7 @@ msgstr ""
 #: inc/Engine/Admin/Settings/Page.php:601
 #: inc/Engine/Optimization/RUCSS/Admin/OptionSubscriber.php:74
 msgid "Remove Unused CSS"
-msgstr "Fjern ubrugte CSS"
+msgstr "Fjern ubrugt CSS"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:604
