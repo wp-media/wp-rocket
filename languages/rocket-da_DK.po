@@ -1686,7 +1686,7 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:777
 msgid "One-click exclusions"
-msgstr "En-klik udelukkelser"
+msgstr "Et-klik-udelukkelser"
 
 #: inc/Engine/Admin/Settings/Page.php:778
 msgid ""
