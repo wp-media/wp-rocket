@@ -1400,7 +1400,7 @@ msgid ""
 "Also, please check our %1$sdocumentation%2$s for a list of compatibility "
 "exclusions."
 msgstr ""
-"Se også vores %1$sdokumentation%2$s for en liste over "
+"Se også vores %1$sdokumentation%2$s, hvor du finder en liste over "
 "kompatibilitetsudelukkelser."
 
 #: inc/Engine/Admin/Settings/Page.php:522
