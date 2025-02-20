@@ -1767,7 +1767,8 @@ msgid ""
 msgstr ""
 "Det kan forbedre den faktiske og opfattede indlæsningstid, da billeder, "
 "iframes og videoer kun indlæses, når de kommer ind i (eller er ved at komme "
-"ind i) viewport, og reducerer antallet af HTTP-anmodninger."
+"ind i) viewport, og reducerer antallet af HTTP-anmodninger. %1$sMere "
+"info%2$s"
 
 #. translators: %1$s = “WP Rocket”, %2$s = a list of plugin names.
 #: inc/Engine/Admin/Settings/Page.php:928
