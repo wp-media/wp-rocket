@@ -1668,7 +1668,7 @@ msgid ""
 "per line). %1$sMore info%2$s"
 msgstr ""
 "Angiv URL'er eller søgeord for JavaScript-filer, der skal udelukkes fra "
-"udsættelse (en pr. linje).%1$sMere info%2$s"
+"udsættelse (en pr. linje). %1$sMere info%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:766
 #: inc/Engine/Optimization/DelayJS/Admin/Subscriber.php:210
