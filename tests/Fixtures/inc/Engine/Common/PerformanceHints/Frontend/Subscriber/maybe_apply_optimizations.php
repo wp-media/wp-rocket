@@ -214,7 +214,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
-				'preload_fonts' => $preload_fonts_empty
+				'preload_fonts' => $preload_fonts_empty,
 			],
 			'expected' => $html_output_with_preload,
 		],
@@ -240,7 +240,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
-				'preload_fonts' => $preload_fonts_empty
+				'preload_fonts' => $preload_fonts_empty,
 			],
 			'expected' => $html_output,
 		],

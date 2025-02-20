@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Support;
 
-use WP_Rocket_Mobile_Detect;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket_Mobile_Detect;
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
@@ -37,20 +37,30 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register(): void {
-		$options = $this->getContainer()->get( 'options' );
-
 		$this->getContainer()->add( 'mobile_detect', WP_Rocket_Mobile_Detect::class );
 
 		$this->getContainer()->add( 'support_data', Data::class )
-			->addArgument( $options );
+			->addArgument( 'options' );
 		$this->getContainer()->add( 'support_rest', Rest::class )
-			->addArgument( $this->getContainer()->get( 'support_data' ) )
-			->addArgument( $options );
+			->addArguments(
+				[
+					'support_data',
+					'options',
+				]
+			);
 		$this->getContainer()->add( 'support_meta', Meta::class )
-			->addArgument( $this->getContainer()->get( 'mobile_detect' ) )
-			->addArgument( $options );
+			->addArguments(
+				[
+					'mobile_detect',
+					'options',
+				]
+			);
 		$this->getContainer()->addShared( 'support_subscriber', Subscriber::class )
-			->addArgument( $this->getContainer()->get( 'support_rest' ) )
-			->addArgument( $this->getContainer()->get( 'support_meta' ) );
+			->addArguments(
+				[
+					'support_rest',
+					'support_meta',
+				]
+			);
 	}
 }
