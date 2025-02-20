@@ -1740,7 +1740,7 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:833
 msgid "ACTIVATE SAFE MODE"
-msgstr "AKTIVER SIKKERHEDSTILSTAND"
+msgstr "AKTIVÉR SIKKERHEDSTILSTAND"
 
 #: inc/Engine/Admin/Settings/Page.php:854
 msgid "Media"
