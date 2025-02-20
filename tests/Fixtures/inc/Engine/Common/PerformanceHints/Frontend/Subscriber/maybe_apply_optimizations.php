@@ -1,6 +1,8 @@
 <?php
 
 $html_input = file_get_contents(__DIR__ . '/HTML/input.html');
+$html_input_without_closing_body_tag = file_get_contents(__DIR__ . '/HTML/no_closing_body_tag_input.html');
+$html_input_without_closing_body_tag_output = file_get_contents(__DIR__ . '/HTML/no_closing_body_tag_output.html');
 $html_with_double_body = file_get_contents(__DIR__ . '/HTML/double_body_tag.html');
 $html_with_double_body_output = file_get_contents(__DIR__ . '/HTML/output_double_body_tag.html');
 $html_output = file_get_contents(__DIR__ . '/HTML/output.html');
@@ -628,6 +630,18 @@ return [
 				],
 			],
 			'expected' => $html_with_double_body_output,
+		],
+		'shouldAddBeaconWithoutClosingBodyTag' => [
+			'config' => [
+				'html' => $html_input_without_closing_body_tag,
+				'atf' => [
+					'row' => null,
+				],
+				'lrc' => [
+					'row' => null,
+				],
+			],
+			'expected' => $html_input_without_closing_body_tag_output,
 		],
 	],
 ];

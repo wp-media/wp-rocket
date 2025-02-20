@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the WP Rocket plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.18-beta1\n"
+"Project-Id-Version: WP Rocket 3.18.2-alpha\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
 "Last-Translator: WP Media (http://wp-rocket.me/)\n"
 "Language-Team: WP Media (http://www.transifex.com/projects/p/wp-media/) <contact@wp-media.me>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-01-06T13:04:08+00:00\n"
+"POT-Creation-Date: 2025-02-17T11:30:03+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: rocket\n"
@@ -2323,7 +2323,7 @@ msgid "This action will clear the Critical Images and Lazily Rendered Content."
 msgstr ""
 
 #. translators: %1$s = plugin name.
-#: inc/Engine/Common/PerformanceHints/Admin/Controller.php:136
+#: inc/Engine/Common/PerformanceHints/Admin/Controller.php:140
 msgid "%1$s: Critical images and Lazy Render data was cleared!"
 msgstr ""
 
@@ -2340,7 +2340,7 @@ msgstr ""
 msgid "It was not possible to determine a valid cut-off time: %s."
 msgstr ""
 
-#: inc/Engine/Common/Queue/RUCSSQueueRunner.php:269
+#: inc/Engine/Common/Queue/RUCSSQueueRunner.php:272
 msgid "Every minute"
 msgstr ""
 
@@ -2733,8 +2733,12 @@ msgstr ""
 msgid "LazyLoad for iframes/videos"
 msgstr ""
 
-#: inc/Engine/Media/Lazyload/CSS/Admin/Subscriber.php:48
+#: inc/Engine/Media/Lazyload/CSS/Admin/Subscriber.php:49
 msgid "LazyLoad CSS backgrounds"
+msgstr ""
+
+#: inc/Engine/Media/Lazyload/Subscriber.php:262
+msgid "Play Youtube video"
 msgstr ""
 
 #: inc/Engine/Optimization/DelayJS/Admin/SiteList.php:244
@@ -2807,7 +2811,7 @@ msgid "%1$s: Could not create the %2$s table in the database which is necessary 
 msgstr ""
 
 #. translators: %1$s = plugin name.
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:275
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:279
 msgid "%1$s: Used CSS cache cleared!"
 msgstr ""
 

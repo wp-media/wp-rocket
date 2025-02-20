@@ -574,7 +574,7 @@ function rocket_clean_files( $urls, $filesystem = null, $run_actions = true ) {
 		do_action( 'before_rocket_clean_files', $urls ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	}
 
-	foreach ( $urls as $url ) {
+	foreach ( $urls as $url_key => $url ) {
 		if ( $run_actions ) {
 			/**
 			 * Fires before the cache file is deleted.
@@ -611,6 +611,22 @@ function rocket_clean_files( $urls, $filesystem = null, $run_actions = true ) {
 				}
 
 				$entry = $dir . $parsed_url['path'];
+
+				// For regex we use it for file names only, and it should include the * character.
+				if ( str_contains( $entry, '*' ) ) {
+					$regex_part    = basename( $entry );
+					$search_dir    = str_replace( $regex_part, '', $entry );
+					$matched_files = _rocket_get_dir_files_by_regex( $search_dir, '#' . $regex_part . '#i' );
+					foreach ( $matched_files as $item ) {
+						$current_file = $item->getPath() . DIRECTORY_SEPARATOR . $item->getFilename();
+						if ( $filesystem->exists( $current_file ) ) {
+							$filesystem->delete( $current_file );
+						}
+					}
+					// Remove the regex part from the url.
+					$url              = str_replace( $regex_part, '', $url );
+					$urls[ $url_key ] = $url;
+				}
 
 				// Skip if the dir/file does not exist.
 				if ( ! $filesystem->exists( $entry ) ) {
