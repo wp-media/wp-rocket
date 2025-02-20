@@ -1682,7 +1682,7 @@ msgid ""
 "interaction (e.g. scroll, click). %1$sMore info%2$s"
 msgstr ""
 "Forbedrer ydeevnen ved at forsinke indlæsningen af JavaScript-filer indtil "
-"brugerinteraktion (f.eks. scroll, klik).%1$sMere info%2$s"
+"brugerinteraktion (f.eks. scroll, klik). %1$sMere info%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:777
 msgid "One-click exclusions"
