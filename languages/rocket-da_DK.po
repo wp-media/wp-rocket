@@ -1537,7 +1537,7 @@ msgstr ""
 #: inc/Engine/Admin/Settings/Page.php:630
 #: inc/Engine/CriticalPath/Admin/Subscriber.php:201
 msgid "Load CSS asynchronously"
-msgstr "Indlæse CSS asynkront"
+msgstr "Indlæs CSS asynkront"
 
 #. translators: %1$s = plugin name.
 #: inc/Engine/Admin/Settings/Page.php:633
