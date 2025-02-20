@@ -126,7 +126,7 @@ class Subscriber implements Subscriber_Interface {
 
 		$attributes = [];
 
-		ksort( $element );
+		ksort( $element, SORT_NATURAL );
 
 		foreach ( $element as $key => $value ) {
 			if ( is_int( $key ) ) {

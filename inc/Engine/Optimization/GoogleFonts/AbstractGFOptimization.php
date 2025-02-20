@@ -169,4 +169,24 @@ abstract class AbstractGFOptimization {
 
 		return $items;
 	}
+
+	/**
+	 * Insert font stylesheets into head.
+	 *
+	 * @param array $items Head elements.
+	 * @return mixed
+	 */
+	public function insert_font_stylesheet_into_head( $items ) {
+		return $items;
+	}
+
+	/**
+	 * Insert font preloads into head.
+	 *
+	 * @param array $items Head elements.
+	 * @return mixed
+	 */
+	public function insert_font_preload_into_head( $items ) {
+		return $items;
+	}
 }
