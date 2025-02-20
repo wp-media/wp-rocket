@@ -1555,7 +1555,7 @@ msgstr ""
 msgid ""
 "Generates critical path CSS and loads CSS asynchronously. %1$sMore info%2$s"
 msgstr ""
-"Genererer kritisk vej CSS og indlæser CSS asynkront. %1$sMere info%2$s"
+"Genererer kritisk CSS-sti og indlæser CSS asynkront. %1$sMere info%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:641
 msgid "Fallback critical CSS"
