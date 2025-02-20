@@ -1442,9 +1442,8 @@ msgid ""
 "automatically. Use (.*).css wildcards to exclude all CSS files located at a "
 "specific path."
 msgstr ""
-"<strong>Internal:</strong> Domænet i URL'en fjernes automatisk. Brug "
-"(.*).css wildcards til at udelukke alle CSS-filer placeret på en bestemt "
-"vej."
+"<strong>Internt:</strong> Domænet i URL'en fjernes automatisk. Brug (.*).css"
+" wildcards til at udelukke alle CSS-filer placeret på en bestemt sti."
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:553
