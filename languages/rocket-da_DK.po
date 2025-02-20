@@ -1567,8 +1567,8 @@ msgid ""
 "Provides a fallback if auto-generated critical path CSS is incomplete. "
 "%1$sMore info%2$s"
 msgstr ""
-"Giver en tilbagegang, hvis den automatisk genererede kritiske vej CSS er "
-"ufuldstændig. %1$sMere info%2$s"
+"Giver en fallback, hvis den automatisk genererede kritiske CSS-sti er "
+"ufuldkommen. %1$sMere info%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:658
 msgid "Minify JavaScript files"
