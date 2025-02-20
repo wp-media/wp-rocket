@@ -1724,7 +1724,7 @@ msgstr "Sikker tilstand forhindrer alle interne scripts i at blive forsinket."
 
 #: inc/Engine/Admin/Settings/Page.php:831
 msgid "Performance impact"
-msgstr "Indvirkning på præstationen"
+msgstr "Indvirkning på ydeevne"
 
 #: inc/Engine/Admin/Settings/Page.php:832
 msgid ""
