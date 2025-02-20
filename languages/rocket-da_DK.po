@@ -1693,7 +1693,7 @@ msgid ""
 "When using the Delay JavaScript feature, you might notice that some elements"
 " in the viewport take time to appear."
 msgstr ""
-"Når du bruger funktionen Forsink JavaScript, kan du bemærke, at visse "
+"Når du bruger Forsink JavaScript-funktionen, vil du måske opleve, at visse "
 "elementer i viewport tager tid at blive vist."
 
 #: inc/Engine/Admin/Settings/Page.php:779
