@@ -1831,7 +1831,7 @@ msgstr "Aktivér for iframes og videoer"
 
 #: inc/Engine/Admin/Settings/Page.php:1011
 msgid "Replace YouTube iframe with preview image"
-msgstr "Erstat YouTube iframe med forhåndsvisning af billedet"
+msgstr "Erstat YouTube-iframe med forhåndsvisning af billedet"
 
 #. translators: %1$s = “WP Rocket”, %2$s = a list of plugin or themes names.
 #: inc/Engine/Admin/Settings/Page.php:1013
