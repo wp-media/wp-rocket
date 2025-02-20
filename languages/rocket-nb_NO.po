@@ -259,7 +259,7 @@ msgstr "Fikk et ugyldig svar fra Sucuri-brannmurens API."
 
 #: inc/Addon/Sucuri/Subscriber.php:330
 msgid "The Sucuri firewall API returned an unknown error."
-msgstr "Sucuri-brannmur-API-en returnerte en ukjent feil."
+msgstr "Sucuri-brannmurens API returnerte en ukjent feil."
 
 #. translators: %s is an error message.
 #: inc/Addon/Sucuri/Subscriber.php:334
