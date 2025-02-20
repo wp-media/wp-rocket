@@ -1658,8 +1658,8 @@ msgid ""
 "Load JavaScript deferred eliminates render-blocking JS on your site and can "
 "improve load time. %1$sMore info%2$s"
 msgstr ""
-"Lade JavaScript udskudt eliminerer render-blokering JS på dit websted og kan"
-" forbedre indlæsningstiden. %1$sMere info%2$s"
+"Indlæs JavaScript udskudt eliminerer render-blokering af JS på din "
+"hjemmeside og kan forbedre indlæsningstiden. %1$sMere info%2$s"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:750
