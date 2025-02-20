@@ -1595,9 +1595,9 @@ msgid ""
 " JS reducing HTTP requests. Not recommended if your site uses HTTP/2. "
 "%1$sMore info%2$s"
 msgstr ""
-"Kombiner JavaScript-filer kombinerer dit websteds interne, tredjeparts- og "
-"inline JS for at reducere HTTP-anmodninger. Ikke anbefales, hvis dit websted"
-" bruger HTTP/2. %1$sMere info%2$s"
+"Kombiner JavaScript-filer kombinerer dit hjemmesides interne, tredjeparts- "
+"og inline JS for at reducere HTTP-anmodninger. Anbefales ikke, hvis din "
+"hjemmeside bruger HTTP/2. %1$sMere info%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:676
 msgid ""
