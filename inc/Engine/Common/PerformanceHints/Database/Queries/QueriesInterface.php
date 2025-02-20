@@ -14,4 +14,13 @@ interface QueriesInterface {
 	 * @return bool|int Returns a boolean or integer value. The exact return value depends on the implementation.
 	 */
 	public function delete_old_rows();
+
+	/**
+	 * Sets the cleanup interval.
+	 *
+	 * This method sets the interval at which the cleanup process should run.
+	 *
+	 * @param int $interval The interval in seconds.
+	 */
+	public function set_cleanup_interval( int $interval );
 }
