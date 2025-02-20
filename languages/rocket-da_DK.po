@@ -1634,9 +1634,9 @@ msgid ""
 "automatically. Use (.*).js wildcards to exclude all JS files located at a "
 "specific path."
 msgstr ""
-"<strong> Intern:</strong> Den domæne del af URL vil blive fjernet "
+"<strong> Internt:</strong> Domænedelen af URL'en vil blive fjernet "
 "automatisk. Brug (.*).js wildcards til at udelukke alle JS-filer placeret på"
-" en bestemt vej."
+" én bestemt sti."
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:719
