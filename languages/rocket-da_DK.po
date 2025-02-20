@@ -1804,8 +1804,9 @@ msgid ""
 "Download and serve fonts directly from your server. Reduces connections to "
 "external servers and minimizes font shifts. %1$sMore info%2$s"
 msgstr ""
-"Hent og server skrifttyper direkte fra din server. Reducerer forbindelser "
-"til eksterne servere og minimerer skrifttype skift. %1$sMere info%2$s"
+"Hent og brug skrifttyper direkte fra din server. Dette reducerer "
+"forbindelser til eksterne servere og minimerer skrifttype-skift. %1$sMere "
+"info%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:961
 msgid "Enable for images"
