@@ -1521,7 +1521,17 @@ parameters:
 			path: tests/Integration/inc/Engine/Optimization/GoogleFonts/Admin/Subscriber/enableGoogleFonts.php
 
 		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			message: "#^Property WP_Rocket\\\\Tests\\\\Integration\\\\inc\\\\Engine\\\\Optimization\\\\GoogleFonts\\\\Test_Optimize\\:\\:\\$disable_preload is never written, only read\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Optimization/GoogleFonts/Combine/optimize.php
+
+		-
+			message: "#^Property WP_Rocket\\\\Tests\\\\Integration\\\\inc\\\\Engine\\\\Optimization\\\\GoogleFonts\\\\Test_Optimize\\:\\:\\$display is never written, only read\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Optimization/GoogleFonts/Combine/optimize.php
+
+		-
+			message: "#^Unreachable statement \\- code above always terminates\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/Optimization/GoogleFonts/Combine/optimize.php
 
@@ -1641,7 +1651,7 @@ parameters:
 			path: tests/Integration/inc/Engine/Optimization/RUCSS/Frontend/Subscriber/onUpdate.php
 
 		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			message: "#^Unreachable statement \\- code above always terminates\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/Optimization/RUCSS/Frontend/Subscriber/treeshake.php
 
@@ -1651,7 +1661,7 @@ parameters:
 			path: tests/Integration/inc/Engine/Preload/Cron/Subscriber/processPendingUrls.php
 
 		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			message: "#^Unreachable statement \\- code above always terminates\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/Preload/Fonts/preloadFonts.php
 
