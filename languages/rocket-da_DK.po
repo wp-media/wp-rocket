@@ -2132,8 +2132,8 @@ msgid ""
 "Specify URLs you always want purged from cache whenever you update any post "
 "or page (one per line)"
 msgstr ""
-"Angiv de webadresser, du altid vil have renset fra cachen, når du opdaterer "
-"et indlæg eller en side (en per linje)"
+"Angiv de webadresser (URL'er), du altid vil have renset fra cachen, når du "
+"opdaterer et indlæg eller en side (en per linje)"
 
 #: inc/Engine/Admin/Settings/Page.php:1334
 msgid "Specify query strings for caching (one per line)"
