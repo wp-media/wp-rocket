@@ -34,22 +34,6 @@ class Test_SanitizeCallback extends AdminTestCase {
 	}
 
 	/**
-	 * @dataProvider addFontPreloadProvider
-	 */
-	public function testShouldSanitizeFontPreloadEntries( $input, $expected ) {
-		self::removeDBHooks();
-		$this->fireAdminInit();
-
-		$output = apply_filters( 'sanitize_option_wp_rocket_settings', $input );
-
-		$this->assertArrayHasKey( 'preload_fonts', $output );
-		$this->assertSame(
-			$expected['preload_fonts'],
-			array_values( $output['preload_fonts'] )
-		);
-	}
-
-	/**
 	 * @dataProvider addCriticalCSSProvider
 	 */
 	public function testShouldSanitizeCriticalCss( $original, $sanitized ) {

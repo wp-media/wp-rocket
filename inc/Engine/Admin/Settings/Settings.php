@@ -342,9 +342,6 @@ class Settings {
 		// Options: Activate bot preload.
 		$input['manual_preload'] = ! empty( $input['manual_preload'] ) ? 1 : 0;
 
-		// Option : fonts to preload.
-		$input['preload_fonts'] = ! empty( $input['preload_fonts'] ) ? $this->sanitize_fonts( $input['preload_fonts'] ) : [];
-
 		// Options: Sucuri cache. And yeah, there's a typo, but now it's too late to fix ^^'.
 		$input['sucury_waf_cache_sync'] = ! empty( $input['sucury_waf_cache_sync'] ) ? 1 : 0;
 
@@ -528,24 +525,6 @@ class Settings {
 				$urls
 			)
 		);
-	}
-
-	/**
-	 * Sanitize a list of font file paths.
-	 *
-	 * @since 3.6
-	 *
-	 * @param  array|string $files List of filepaths to sanitize. Can be an array of strings or a string listing paths separated by "\n".
-	 * @return array               Sanitized filepaths.
-	 */
-	private function sanitize_fonts( $files ) {
-		if ( ! is_array( $files ) ) {
-			$files = explode( "\n", trim( $files ) );
-		}
-
-		$files = array_map( [ $this, 'sanitize_font' ], $files );
-
-		return array_unique( array_filter( $files ) );
 	}
 
 	/**
