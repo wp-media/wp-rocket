@@ -1892,7 +1892,7 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:1089
 msgid "Preload Links"
-msgstr "Preload links"
+msgstr "Forudindlæs links"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:1092
