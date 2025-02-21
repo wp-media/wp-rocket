@@ -1,13 +1,11 @@
 <?php
-declare(strict_types=1);
 
-namespace WP_Rocket\Engine\CDN;
+namespace WP_Rocket\Engine\Common\Head;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
-use WP_Rocket\Engine\CDN\Admin\Subscriber as AdminSubscriber;
 
 /**
- * Service provider for WP Rocket CDN
+ * Service provider.
  */
 class ServiceProvider extends AbstractServiceProvider {
 	/**
@@ -16,9 +14,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @var array
 	 */
 	protected $provides = [
-		'cdn',
-		'cdn_subscriber',
-		'cdn_admin_subscriber',
+		'common_head_subscriber',
 	];
 
 	/**
@@ -38,15 +34,6 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register(): void {
-		$this->getContainer()->addShared( 'cdn', CDN::class )
-			->addArgument( 'options' );
-		$this->getContainer()->addShared( 'cdn_subscriber', Subscriber::class )
-			->addArguments(
-				[
-					'options',
-					'cdn',
-				]
-			);
-		$this->getContainer()->addShared( 'cdn_admin_subscriber', AdminSubscriber::class );
+		$this->getContainer()->addShared( 'common_head_subscriber', Subscriber::class );
 	}
 }

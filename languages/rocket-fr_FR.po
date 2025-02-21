@@ -6,9 +6,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.18.1-alpha1\n"
+"Project-Id-Version: WP Rocket 3.18.1-beta1\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2025-01-29T08:41:11+00:00\n"
+"POT-Creation-Date: 2025-01-29T13:05:38+00:00\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Romain • WP Rocket <contact@wp-rocket.me>, 2025\n"
 "Language-Team: French (France) (https://app.transifex.com/wp-media/teams/18133/fr_FR/)\n"
@@ -4872,7 +4872,7 @@ msgid ""
 "Below is a detailed view of all data WP Rocket will collect %1$sif granted "
 "permission.%2$s"
 msgstr ""
-"Vous trouverez ci-dessous les données collectées par WP Rocket%1$ssi vous "
+"Vous trouverez ci-dessous les données collectées par WP Rocket %1$ssi vous "
 "nous en donnez l'autorisation.%2$s"
 
 #: views/settings/page.php:89

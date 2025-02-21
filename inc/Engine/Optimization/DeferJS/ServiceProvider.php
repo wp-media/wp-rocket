@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace WP_Rocket\Engine\Optimization\DeferJS;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
@@ -36,11 +38,15 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	public function register(): void {
 		$this->getContainer()->add( 'defer_js', DeferJS::class )
-			->addArgument( $this->getContainer()->get( 'options' ) )
-			->addArgument( $this->getContainer()->get( 'dynamic_lists_defaultlists_data_manager' ) );
+			->addArguments(
+				[
+					'options',
+					'dynamic_lists_defaultlists_data_manager',
+				]
+			);
 		$this->getContainer()->addShared( 'defer_js_admin_subscriber', AdminSubscriber::class )
-			->addArgument( $this->getContainer()->get( 'defer_js' ) );
+			->addArgument( 'defer_js' );
 		$this->getContainer()->addShared( 'defer_js_subscriber', Subscriber::class )
-			->addArgument( $this->getContainer()->get( 'defer_js' ) );
+			->addArgument( 'defer_js' );
 	}
 }
