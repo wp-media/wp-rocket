@@ -2306,7 +2306,7 @@ msgstr[0] ""
 " påkrævet for at %2$l kan fungere på dit websted."
 msgstr[1] ""
 "%1$s%2$l Add-ons%3$s er aktiveret i øjeblikket. Konfiguration af CDN-"
-"indstillinger er ikke påkrævet for at %2$l kan fungere på dit websted."
+"indstillinger er ikke påkrævet for at %2$l kan fungere på din hjemmeside."
 
 #: inc/Engine/Admin/Settings/Page.php:1595
 msgid "Enable Content Delivery Network"
