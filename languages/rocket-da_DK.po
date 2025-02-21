@@ -2181,7 +2181,7 @@ msgstr "Databaseoprydning"
 
 #: inc/Engine/Admin/Settings/Page.php:1388
 msgid "Reduces overhead of database tables"
-msgstr "Reducerer overhead af databasetabeller"
+msgstr "Reducerer overhead i databasetabeller"
 
 #: inc/Engine/Admin/Settings/Page.php:1392
 msgid "Automatic Cleanup"
