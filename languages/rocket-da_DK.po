@@ -2165,7 +2165,7 @@ msgstr "Spam og kasserede kommentarer vil blive slettet permanent."
 
 #: inc/Engine/Admin/Settings/Page.php:1380
 msgid "Transients Cleanup"
-msgstr "Forbigående rengøring"
+msgstr "Ryd op i transienter"
 
 #: inc/Engine/Admin/Settings/Page.php:1382
 msgid ""
