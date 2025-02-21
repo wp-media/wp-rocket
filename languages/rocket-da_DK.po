@@ -1960,7 +1960,7 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:1161
 msgid "Fonts to preload"
-msgstr "Fonts til preload"
+msgstr "Skrifttyper, der skal forudindlæses"
 
 #: inc/Engine/Admin/Settings/Page.php:1162
 msgid ""
