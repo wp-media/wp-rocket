@@ -9,14 +9,18 @@ use WP_Rocket\Engine\Media\PreloadFonts\Frontend\Controller as PreloadFonts;
 class Subscriber implements Subscriber_Interface {
 
 	/**
+	 * Preload Fonts controller instance.
+	 *
 	 * @var PreloadFonts
 	 */
 	private $preload_fonts;
 
 	/**
-	 * @param PreloadFonts $preload_fonts
+	 * Subscriber constructor.
+	 *
+	 * @param PreloadFonts $preload_fonts Preload Fonts controller instance.
 	 */
-	public function __construct(PreloadFonts $preload_fonts) {
+	public function __construct( PreloadFonts $preload_fonts ) {
 		$this->preload_fonts = $preload_fonts;
 	}
 
@@ -34,7 +38,9 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * @param array $items
+	 * Add preload fonts into head.
+	 *
+	 * @param array $items Head items.
 	 * @return array
 	 */
 	public function add_preload_fonts_in_head( $items ) {
