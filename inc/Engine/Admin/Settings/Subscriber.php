@@ -295,6 +295,9 @@ class Subscriber implements Subscriber_Interface, PluginFamilyInterface {
 	 * If it contains a non-empty value, it updates the `auto_preload_fonts` option to `true`.
 	 * This is useful for ensuring that automatic font preloading is enabled based on legacy settings.
 	 *
+	 * @param string $new_version New plugin version.
+	 * @param string $old_version Previous plugin version.
+	 *
 	 * @return void
 	 */
 	public function maybe_enable_auto_preload_fonts( $new_version, $old_version ): void {
