@@ -2236,7 +2236,7 @@ msgstr "Alle transienter"
 #: inc/Engine/Admin/Settings/Page.php:1455
 msgid "%s transient in your database."
 msgid_plural "%s transients in your database."
-msgstr[0] "%s forbigående i din database."
+msgstr[0] "%s transient i din database."
 msgstr[1] "%s transienter i din database."
 
 #: inc/Engine/Admin/Settings/Page.php:1463
