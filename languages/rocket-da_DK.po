@@ -2229,7 +2229,7 @@ msgstr[1] "%s kasserede kommentarer i din database."
 
 #: inc/Engine/Admin/Settings/Page.php:1453
 msgid "All transients"
-msgstr "Alle forbigående"
+msgstr "Alle transienter"
 
 #. translators: %s is the number of revisions found in the database. It's a
 #. formatted number, don't use %d.
