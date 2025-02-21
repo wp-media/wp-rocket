@@ -2137,7 +2137,7 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:1334
 msgid "Specify query strings for caching (one per line)"
-msgstr "Angiv forespørgselsstrenge til caching (en per linje)"
+msgstr "Angiv forespørgselsstrenge til caching (én per linje)"
 
 #: inc/Engine/Admin/Settings/Page.php:1360
 msgid "Optimize, reduce bloat"
