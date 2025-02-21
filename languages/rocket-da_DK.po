@@ -2125,7 +2125,7 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:1316
 msgid "Use (.*) wildcards to detect parts of UA strings."
-msgstr "Brug (.*) wildcards til at registrere dele af UA strenge."
+msgstr "Brug (.*) wildcards til at registrere dele af UA-strenge."
 
 #: inc/Engine/Admin/Settings/Page.php:1325
 msgid ""
