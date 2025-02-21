@@ -1900,24 +1900,25 @@ msgid ""
 "Link preloading improves the perceived load time by downloading a page when "
 "a user hovers over the link. %1$sMore info%2$s"
 msgstr ""
-"Link forindlæsning forbedrer den opfattede indlæsning tid ved at downloade "
-"en side, når en bruger hover over linket. %1$sMere info%2$s"
+"Forudindlæsning af links forbedrer den opfattede indlæsningstid ved at "
+"downloade en side, når en bruger holder markøren over linket. %1$sMere "
+"info%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:1100
 msgid "Prefetch DNS Requests"
-msgstr "Præfetch DNS-anmodninger"
+msgstr "Prefetch DNS-anmodninger"
 
 #: inc/Engine/Admin/Settings/Page.php:1102
 msgid ""
 "DNS prefetching can make external files load faster, especially on mobile "
 "networks"
 msgstr ""
-"DNS prefetching kan gøre eksterne filer lastes hurtigere, især på "
+"DNS prefetching kan gøre, at eksterne filer indlæses hurtigere, især på "
 "mobilnetværk"
 
 #: inc/Engine/Admin/Settings/Page.php:1107
 msgid "Preload Fonts"
-msgstr "Preload fonter"
+msgstr "Forudindlæs skrifttyper"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:1110
@@ -1930,7 +1931,7 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:1124
 msgid "Activate Preloading"
-msgstr "Aktiver Preloading"
+msgstr "Aktivér Forudindlæsning"
 
 #: inc/Engine/Admin/Settings/Page.php:1135
 msgid "Exclude URLs"
