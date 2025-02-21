@@ -114,7 +114,7 @@ class Controller implements ControllerInterface {
 		 */
 		wpm_apply_filters_typed( 'array', 'rocket_preload_fonts_processed_extensions', $processed_extensions );
 
-		$data[ 'processed_extensions' ] = $processed_extensions;
+		$data['processed_extensions'] = $processed_extensions;
 
 		return $data;
 	}
