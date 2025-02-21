@@ -35,9 +35,7 @@ class Controller implements ControllerInterface {
 	 *
 	 * @var Context
 	 */
-	private $context;
-
-	private $fonts_tags = [];
+	private $context; // @phpstan-ignore-line Use of this will come later.
 
 	/**
 	 * Constructor
@@ -61,7 +59,7 @@ class Controller implements ControllerInterface {
 	 * @return string
 	 */
 	public function optimize( string $html, $row ): string {
-		if ( ! $this->context->is_allowed() ) {
+		if ( ! $this->context->is_allowed() || ! $row->has_preload_fonts() ) {
 			return $html;
 		}
 		return $this->add_meta_comment( 'auto_preload_fonts', $html );
@@ -114,7 +112,16 @@ class Controller implements ControllerInterface {
 		 */
 		$system_fonts = wpm_apply_filters_typed( 'array', 'rocket_preload_fonts_system_fonts', $system_fonts );
 
-		$data['system_fonts'] = $system_fonts;
+		/**
+		 * Filters the list of mock font urls.
+		 *
+		 * @param array $font_data Array of font data.
+		 */
+		$font_data = wpm_apply_filters_typed( 'array', 'rocket_preload_fonts_font_data', [] );
+
+		$data['system_fonts']            = $system_fonts;
+		$data['font_data']               = $font_data;
+		$data['status']['preload_fonts'] = $this->context->is_allowed();
 
 		return $data;
 	}
