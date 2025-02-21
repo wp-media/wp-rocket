@@ -1877,7 +1877,7 @@ msgstr "Generer cachefiler, forudindlæs skrifttyper"
 
 #: inc/Engine/Admin/Settings/Page.php:1078
 msgid "Preload Cache"
-msgstr "Preload cache"
+msgstr "Forudindlæs cache"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:1081
