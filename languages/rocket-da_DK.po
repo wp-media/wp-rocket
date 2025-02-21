@@ -2145,7 +2145,7 @@ msgstr "Optimer, reducer bloat"
 
 #: inc/Engine/Admin/Settings/Page.php:1367
 msgid "Post Cleanup"
-msgstr "Efter Cleanup"
+msgstr "Oprydning for indlæg"
 
 #: inc/Engine/Admin/Settings/Page.php:1369
 msgid ""
