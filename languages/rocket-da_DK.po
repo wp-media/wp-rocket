@@ -1935,7 +1935,7 @@ msgstr "Aktivér Forudindlæsning"
 
 #: inc/Engine/Admin/Settings/Page.php:1135
 msgid "Exclude URLs"
-msgstr "Udelukke URL'er"
+msgstr "Ekskluder URL'er"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:1140
@@ -1943,12 +1943,12 @@ msgid ""
 "Specify URLs to be excluded from the preload feature (one per line). "
 "%1$sMore info%2$s"
 msgstr ""
-"Angiv de webadresser, der skal udelukkes fra forindlæsningsfunktionen (en "
-"pr. linje). %1$sMere info%2$s"
+"Angiv de URL'er, der skal udelukkes fra forudindlæsningsfunktionen (en pr. "
+"linje). %1$sMere info%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:1151
 msgid "URLs to prefetch"
-msgstr "URL'er til prefetch"
+msgstr "URL'er, der skal prefetches"
 
 #: inc/Engine/Admin/Settings/Page.php:1152
 msgid ""
