@@ -1873,7 +1873,7 @@ msgstr "Selvhosting af Google Fonts"
 
 #: inc/Engine/Admin/Settings/Page.php:1066
 msgid "Generate cache files, preload fonts"
-msgstr "Generere cachefiler, forudindlæse skrifttyper"
+msgstr "Generer cachefiler, forudindlæs skrifttyper"
 
 #: inc/Engine/Admin/Settings/Page.php:1078
 msgid "Preload Cache"
