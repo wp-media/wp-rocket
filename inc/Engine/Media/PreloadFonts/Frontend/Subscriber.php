@@ -4,8 +4,21 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Media\PreloadFonts\Frontend;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\Engine\Media\PreloadFonts\Frontend\Controller as PreloadFonts;
 
 class Subscriber implements Subscriber_Interface {
+
+	/**
+	 * @var PreloadFonts
+	 */
+	private $preload_fonts;
+
+	/**
+	 * @param PreloadFonts $preload_fonts
+	 */
+	public function __construct(PreloadFonts $preload_fonts) {
+		$this->preload_fonts = $preload_fonts;
+	}
 
 	/**
 	 * Returns an array of events that this subscriber wants to listen to.
@@ -15,6 +28,20 @@ class Subscriber implements Subscriber_Interface {
 	 * @return array
 	 */
 	public static function get_subscribed_events(): array {
-		return [];
+		return [
+			'rocket_head_items' => ['add_preload_fonts_in_head', 20],
+		];
+	}
+
+	/**
+	 * @param array $items
+	 * @return void
+	 */
+	public function add_preload_fonts_in_head( $items ) {
+		if ( ! is_array( $items ) ) {
+			$items = [];
+		}
+
+		$this->preload_fonts->add_preload_fonts_in_head( $items );
 	}
 }

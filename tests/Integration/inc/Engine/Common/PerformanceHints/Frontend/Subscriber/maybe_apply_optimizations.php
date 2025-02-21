@@ -38,7 +38,9 @@ class Test_MaybeApplyOptimizations extends FilesystemTestCase {
 
 		add_filter( 'rocket_disable_meta_generator', '__return_true' );
 
-		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'maybe_apply_optimizations', 17 );
+		$this->unregisterAllCallbacksExceptMulti('rocket_buffer', [17 => 'maybe_apply_optimizations', 100000 => 'insert_rocket_head']);
+
+//		$this->unregisterAllCallbacksExceptMulti('rocket_buffer', [17 => 'maybe_apply_optimizations', 100000 => 'add_preload_fonts_in_head']);
 	}
 
 	public function tear_down() {

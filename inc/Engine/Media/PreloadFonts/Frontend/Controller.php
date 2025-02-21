@@ -8,9 +8,13 @@ use WP_Rocket\Engine\Common\PerformanceHints\Frontend\ControllerInterface;
 use WP_Rocket\Engine\Media\PreloadFonts\Database\Queries\PreloadFonts as PFQuery;
 use WP_Rocket\Engine\Media\PreloadFonts\Context\Context;
 use WP_Rocket\Engine\Optimization\UrlTrait;
+use WP_Rocket\Engine\Support\CommentTrait;
+use WP_Rocket\Engine\Common\Head\ElementTrait;
 
 class Controller implements ControllerInterface {
 	use UrlTrait;
+	use CommentTrait;
+	use ElementTrait;
 
 	/**
 	 * Options instance
@@ -31,7 +35,9 @@ class Controller implements ControllerInterface {
 	 *
 	 * @var Context
 	 */
-	private $context; // @phpstan-ignore-line Use of this will come later.
+	private $context;
+
+	private $fonts_tags = [];
 
 	/**
 	 * Constructor
@@ -125,12 +131,6 @@ class Controller implements ControllerInterface {
 			return $html;
 		}
 
-		if ( ! preg_match( '#</title\s*>#', $html, $matches ) ) {
-			return $html;
-		}
-		$title = $matches[0];
-
-		$preload = $title;
 
 		$fonts = json_decode( $row->fonts, true );
 
@@ -139,16 +139,11 @@ class Controller implements ControllerInterface {
 		}
 
 		foreach ( $fonts as $font ) {
-			$preload .= $this->preload_tag( $font );
+			$this->fonts_tags[] = $this->preload_tag( $font );
 		}
 
-		$replace = preg_replace( '#' . $title . '#', $preload, $html, 1 );
 
-		if ( null === $replace ) {
-			return $html;
-		}
-
-		return $replace;
+		return $this->add_meta_comment( 'auto_preload_fonts', $html );
 	}
 
 	/**
@@ -171,26 +166,54 @@ class Controller implements ControllerInterface {
 	}
 
 	/**
-	 * Generates the preload tag for a font.
+	 * Generates the preload tag for a font as an array for rocket_head_items.
 	 *
 	 * @param string $font Font URL.
 	 *
-	 * @return string
+	 * @return array
 	 */
-	private function preload_tag( string $font ): string {
+	private function preload_tag( string $font ): array {
+		$attributes = [
+			'open_tag'   => '<link',
+			'close_tag'  => '>',
+			'id'         => 'preload-font-' . md5( $font ), // Unique ID based on font URL.
+			'rel'        => 'preload',
+			'href'       => esc_url( $font ),
+			'as'         => 'font',
+			1            => 'data-rocket-preload',
+		];
+
 		if ( ! $this->is_relative( $font ) ) {
-			$crossorigin = $this->is_third_party_font( $font ) ? ' crossorigin' : '';
-			$tag         = sprintf(
-				'<link rel="preload" data-rocket-preload as="font" href="%s"%s>',
-				esc_url( $font ),
-				$crossorigin
-			);
-		} else {
-			$tag = sprintf(
-				'<link rel="preload" data-rocket-preload as="font" href="%s">',
-				$font
-			);
+			if ( $this->is_third_party_font( $font ) ) {
+				// Add crossorigin attribute.
+				$attributes[2] = 'crossorigin';
+			}
 		}
-		return $tag;
+		return $attributes;
+	}
+
+	/**
+	 * Adds the preload fonts to the head tag.
+	 *
+	 * @param array $items added to the head.
+	 * @return array Items to be added to the head.
+	 */
+	public function add_preload_fonts_in_head( $items ) {
+		$fonts_tags = $this->get_preload_fonts_tags();
+
+		foreach ($fonts_tags as $tag) {
+			$items[] = $tag;
+		}
+
+		return $items;
+	}
+
+	/**
+	 * Returns the list of fonts to be preloaded.
+	 *
+	 * @return array
+	 */
+	private function get_preload_fonts_tags() {
+		return ( $this->context->is_allowed() ? $this->fonts_tags : [] );
 	}
 }
