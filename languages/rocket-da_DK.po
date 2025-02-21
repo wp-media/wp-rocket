@@ -1846,8 +1846,8 @@ msgid ""
 "This can significantly improve your loading time if you have a lot of "
 "YouTube videos on a page."
 msgstr ""
-"Dette kan betydeligt forbedre din indlæsning tid, hvis du har en masse "
-"YouTube videoer på en side."
+"Dette kan forbedre din indlæsningstid betydeligt, hvis du har en masse "
+"YouTube-videoer på én side."
 
 #: inc/Engine/Admin/Settings/Page.php:1028
 msgid "Excluded images or iframes"
