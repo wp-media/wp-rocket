@@ -68,7 +68,7 @@ class Subscriber implements Subscriber_Interface, PluginFamilyInterface {
 			'wp_ajax_rocket_enable_mobile_cache'   => 'enable_mobile_cache',
 			'wp_rocket_upgrade'                    => [
 				[ 'enable_separate_cache_files_mobile', 9, 2 ],
-				[ 'maybe_enable_auto_preload_fonts', 9 ],
+				[ 'maybe_enable_auto_preload_fonts', 9, 2 ],
 			],
 			'admin_notices'                        => 'display_update_notice',
 		];
@@ -297,7 +297,11 @@ class Subscriber implements Subscriber_Interface, PluginFamilyInterface {
 	 *
 	 * @return void
 	 */
-	public function maybe_enable_auto_preload_fonts(): void {
+	public function maybe_enable_auto_preload_fonts( $new_version, $old_version ): void {
+		if ( version_compare( $old_version, '3.19', '>' ) ) {
+			return;
+		}
+
 		$this->page->maybe_enable_auto_preload_fonts();
 	}
 
