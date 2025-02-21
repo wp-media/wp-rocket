@@ -35,13 +35,14 @@ class Subscriber implements Subscriber_Interface {
 
 	/**
 	 * @param array $items
-	 * @return void
+	 * @return array
 	 */
 	public function add_preload_fonts_in_head( $items ) {
+		// Here we don't need this check, but we need to check if context->is_allowed returns true.
 		if ( ! is_array( $items ) ) {
 			$items = [];
 		}
 
-		$this->preload_fonts->add_preload_fonts_in_head( $items );
+		return $this->preload_fonts->add_preload_fonts_in_head( $items );
 	}
 }
