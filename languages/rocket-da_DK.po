@@ -2063,8 +2063,8 @@ msgid ""
 "%1$sCache for query strings%2$s enables you to force caching for specific "
 "GET parameters."
 msgstr ""
-"%1$sCache for forespørgselsstrenge%2$s gør det muligt at tvinge caching til "
-"specifikke GET-parametre."
+"%1$sCache for forespørgselsstrenge%2$s gør det muligt at gennemtvinge "
+"caching for specifikke GET-parametre."
 
 #: inc/Engine/Admin/Settings/Page.php:1283
 msgid ""
