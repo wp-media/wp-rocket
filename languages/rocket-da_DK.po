@@ -1851,7 +1851,7 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:1028
 msgid "Excluded images or iframes"
-msgstr "Udelukkede billeder eller iframes"
+msgstr "Ekskluderede billeder eller iframes"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:1030
