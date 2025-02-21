@@ -8,7 +8,7 @@ use WP_Rocket\Engine\Media\PreconnectExternalDomains\Context\Context;
 use WP_Rocket\Engine\Media\PreconnectExternalDomains\Database\Queries\PreconnectExternalDomains as Query;
 use WP_Rocket\Engine\Media\PreconnectExternalDomains\AJAX\Controller as AJAXController;
 use WP_Rocket\Engine\Media\PreconnectExternalDomains\Database\Table\PreconnectExternalDomains as PreconnectTable;
-use WP_Rocket\Engine\Media\PreconnectExternalDomains\Frontend\Subscriber as FrontendSubscriber;
+use WP_Rocket\Engine\Media\PreconnectExternalDomains\Frontend\{Controller as FrontController, Subscriber as FrontendSubscriber};
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
@@ -26,6 +26,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		'preconnect_external_domains_ajax_controller',
 		'preconnect_frontend_subscriber',
 		'preconnect_external_domains_table',
+		'preconnect_external_domains_factory',
+		'preconnect_external_domains_controller',
 	];
 
 	/**
@@ -65,5 +67,25 @@ class ServiceProvider extends AbstractServiceProvider {
 			);
 
 		$this->getContainer()->addShared( 'preconnect_frontend_subscriber', FrontendSubscriber::class );
+
+		$this->getContainer()->add( 'preconnect_external_domains_controller', FrontController::class )
+			->addArguments(
+				[
+					$this->getContainer()->get( 'options' ),
+					$this->getContainer()->get( 'preconnect_external_domains_query' ),
+					$this->getContainer()->get( 'preconnect_external_domains_context' ),
+				]
+			);
+
+		$this->getContainer()->addShared( 'preconnect_external_domains_factory', Factory::class )
+			->addArguments(
+				[
+					$this->getContainer()->get( 'preconnect_external_domains_query' ),
+					$this->getContainer()->get( 'preconnect_external_domains_context' ),
+					$this->getContainer()->get( 'preconnect_external_domains_ajax_controller' ),
+					$this->getContainer()->get( 'preconnect_external_domains_table' ),
+					$this->getContainer()->get( 'preconnect_external_domains_controller' ),
+				]
+			);
 	}
 }
