@@ -2326,7 +2326,7 @@ msgstr "Angiv CNAME(s) nedenfor"
 msgid ""
 "Specify URL(s) of files that should not get served via CDN (one per line)."
 msgstr ""
-"Angiv URL(er) for filer, der ikke skal serviceres via CDN (én per linje)."
+"Angiv URL(er) for filer, der ikke skal behandles via CDN (én per linje)."
 
 #: inc/Engine/Admin/Settings/Page.php:1613
 msgid ""
