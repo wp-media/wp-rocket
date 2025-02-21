@@ -2334,9 +2334,8 @@ msgid ""
 "wildcards to exclude all files of a given file type located at a specific "
 "path."
 msgstr ""
-"Den domæne del af URL'en vil blive fjernet automatisk.<br>Brug (.*) "
-"wildcards til at udelukke alle filer af en given filtype placeret på en "
-"bestemt vej."
+"Domænedelen af URL'en vil blive fjernet automatisk.<br>Brug (.*) wildcards "
+"til at udelukke alle filer af en given filtype placeret på en bestemt sti."
 
 #: inc/Engine/Admin/Settings/Page.php:1636
 #: inc/Engine/Admin/Settings/Page.php:1644
