@@ -2185,7 +2185,7 @@ msgstr "Reducerer overhead i databasetabeller"
 
 #: inc/Engine/Admin/Settings/Page.php:1392
 msgid "Automatic Cleanup"
-msgstr "Automatisk rengøring"
+msgstr "Automatisk oprydning"
 
 #. translators: %s is the number of revisions found in the database. It's a
 #. formatted number, don't use %d.
