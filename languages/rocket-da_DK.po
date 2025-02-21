@@ -2253,7 +2253,7 @@ msgstr[1] "%s tabeller til optimering i din database."
 
 #: inc/Engine/Admin/Settings/Page.php:1476
 msgid "Schedule Automatic Cleanup"
-msgstr "Planlæg automatisk rengøring"
+msgstr "Planlæg automatisk oprydning"
 
 #: inc/Engine/Admin/Settings/Page.php:1488
 msgid "Frequency"
