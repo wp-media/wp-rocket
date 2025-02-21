@@ -1837,7 +1837,7 @@ msgstr "Erstat YouTube-iframe med forhåndsvisning af billedet"
 #: inc/Engine/Admin/Settings/Page.php:1013
 msgid "Replace YouTube iframe with preview image is not compatible with %2$s."
 msgstr ""
-"Erstatning af YouTube iframe med forhåndsvisning af billedet er ikke "
+"Erstatning af YouTube-iframe med forhåndsvisning af billedet er ikke "
 "kompatibel med %2$s."
 
 #. translators: %1$s = “WP Rocket”, %2$s = a list of plugin or themes names.
