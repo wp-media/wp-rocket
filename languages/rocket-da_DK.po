@@ -2344,7 +2344,7 @@ msgstr "Heartbeat"
 
 #: inc/Engine/Admin/Settings/Page.php:1637
 msgid "Control WordPress Heartbeat API"
-msgstr "Kontrol WordPress Heartbeat API"
+msgstr "Kontrollér WordPress Heartbeat API"
 
 #: inc/Engine/Admin/Settings/Page.php:1645
 msgid ""
