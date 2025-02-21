@@ -2105,8 +2105,8 @@ msgid ""
 "The domain part of the URL will be stripped automatically.<br>Use (.*) "
 "wildcards to address multiple URLs under a given path."
 msgstr ""
-"Den domæne del af URL'en vil blive fjernet automatisk.<br>Brug (.*) "
-"wildcards til at adressere flere URL'er under en given vej."
+"Domænedelen af URL'en vil blive fjernet automatisk.<br>Brug (.*) wildcards "
+"til at adressere flere URL'er under en given sti."
 
 #: inc/Engine/Admin/Settings/Page.php:1307
 msgid ""
