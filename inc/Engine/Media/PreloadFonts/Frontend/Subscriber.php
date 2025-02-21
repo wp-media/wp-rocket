@@ -29,7 +29,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'rocket_head_items' => ['add_preload_fonts_in_head', 20],
+			'rocket_head_items' => [ 'add_preload_fonts_in_head', 30 ],
 		];
 	}
 
@@ -38,11 +38,6 @@ class Subscriber implements Subscriber_Interface {
 	 * @return array
 	 */
 	public function add_preload_fonts_in_head( $items ) {
-		// Here we don't need this check, but we need to check if context->is_allowed returns true.
-		if ( ! is_array( $items ) ) {
-			$items = [];
-		}
-
 		return $this->preload_fonts->add_preload_fonts_in_head( $items );
 	}
 }

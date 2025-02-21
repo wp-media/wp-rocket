@@ -61,13 +61,10 @@ class Controller implements ControllerInterface {
 	 * @return string
 	 */
 	public function optimize( string $html, $row ): string {
-		if ( ! $row->has_preload_fonts() ) {
+		if ( ! $this->context->is_allowed() ) {
 			return $html;
 		}
-
-		$html = $this->preload_fonts( $html, $row );
-
-		return $html;
+		return $this->add_meta_comment( 'auto_preload_fonts', $html );
 	}
 
 	/**
@@ -78,6 +75,10 @@ class Controller implements ControllerInterface {
 	 * @return array
 	 */
 	public function add_custom_data( array $data ): array {
+		if ( ! $this->context->is_allowed() ) {
+			return $data;
+		}
+
 		$system_fonts = [
 			'serif',
 			'sans-serif',
@@ -119,34 +120,6 @@ class Controller implements ControllerInterface {
 	}
 
 	/**
-	 * Preload Fonts in HTML.
-	 *
-	 * @param string $html HTML content.
-	 *  @param object $row Corresponding DB row.
-	 *
-	 * @return string
-	 */
-	private function preload_fonts( string $html, $row ): string {
-		if ( 'completed' !== $row->status || empty( $row->fonts ) || '[]' === $row->fonts ) {
-			return $html;
-		}
-
-
-		$fonts = json_decode( $row->fonts, true );
-
-		if ( empty( $fonts ) ) {
-			return $html;
-		}
-
-		foreach ( $fonts as $font ) {
-			$this->fonts_tags[] = $this->preload_tag( $font );
-		}
-
-
-		return $this->add_meta_comment( 'auto_preload_fonts', $html );
-	}
-
-	/**
 	 * Checks if the font URL is from a third party.
 	 *
 	 * @param string $font_url Font URL.
@@ -166,54 +139,46 @@ class Controller implements ControllerInterface {
 	}
 
 	/**
-	 * Generates the preload tag for a font as an array for rocket_head_items.
-	 *
-	 * @param string $font Font URL.
-	 *
-	 * @return array
-	 */
-	private function preload_tag( string $font ): array {
-		$attributes = [
-			'open_tag'   => '<link',
-			'close_tag'  => '>',
-			'id'         => 'preload-font-' . md5( $font ), // Unique ID based on font URL.
-			'rel'        => 'preload',
-			'href'       => esc_url( $font ),
-			'as'         => 'font',
-			1            => 'data-rocket-preload',
-		];
-
-		if ( ! $this->is_relative( $font ) ) {
-			if ( $this->is_third_party_font( $font ) ) {
-				// Add crossorigin attribute.
-				$attributes[2] = 'crossorigin';
-			}
-		}
-		return $attributes;
-	}
-
-	/**
 	 * Adds the preload fonts to the head tag.
 	 *
 	 * @param array $items added to the head.
 	 * @return array Items to be added to the head.
 	 */
 	public function add_preload_fonts_in_head( $items ) {
-		$fonts_tags = $this->get_preload_fonts_tags();
+		if ( ! $this->context->is_allowed() ) {
+			return $items;
+		}
 
-		foreach ($fonts_tags as $tag) {
-			$items[] = $tag;
+		global $wp;
+
+		$url       = untrailingslashit( home_url( add_query_arg( [], $wp->request ) ) );
+		$is_mobile = $this->context->is_mobile_allowed();
+
+		$row = $this->query->get_row( $url, $is_mobile );
+		if ( empty( $row ) || 'completed' !== $row->status || empty( $row->fonts ) || '[]' === $row->fonts ) {
+			return $items;
+		}
+
+		$fonts = json_decode( $row->fonts, true );
+
+		if ( empty( $fonts ) ) {
+			return $items;
+		}
+
+		foreach ( $fonts as $font ) {
+			$item_args = [
+				//'id'         => 'preload-font-' . md5( $font ), // Unique ID based on font URL.
+				'href'       => esc_url( $font ),
+				'as'         => 'font',
+			];
+
+			if ( ! $this->is_relative( $font ) && $this->is_third_party_font( $font ) ) {
+				$item_args[ 2 ] = 'crossorigin';
+			}
+
+			$items[] = $this->preload_link( $item_args );
 		}
 
 		return $items;
-	}
-
-	/**
-	 * Returns the list of fonts to be preloaded.
-	 *
-	 * @return array
-	 */
-	private function get_preload_fonts_tags() {
-		return ( $this->context->is_allowed() ? $this->fonts_tags : [] );
 	}
 }
