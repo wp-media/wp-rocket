@@ -2152,7 +2152,7 @@ msgid ""
 "Post revisions and drafts will be permanently deleted. Do not use this "
 "option if you need to retain revisions or drafts."
 msgstr ""
-"Post revisions og udkast vil blive permanent slettet. Brug ikke denne "
+"Post-revisioner og udkast vil blive slettet permanent. Brug ikke denne "
 "indstilling, hvis du har brug for at beholde revisioner eller udkast."
 
 #: inc/Engine/Admin/Settings/Page.php:1374
