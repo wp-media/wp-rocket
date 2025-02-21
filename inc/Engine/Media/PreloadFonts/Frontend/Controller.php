@@ -99,7 +99,116 @@ class Controller implements ControllerInterface {
 		 */
 		$system_fonts = wpm_apply_filters_typed( 'array', 'rocket_preload_fonts_system_fonts', $system_fonts );
 
-		$data['system_fonts'] = $system_fonts;
+		// To Delete Mock Data during implementation of https://github.com/wp-media/wp-rocket/issues/7306.
+		$font_data = [
+			'https://fonts.gstatic.com/s/poppins/v22/pxiAyp8kv8JHgFVrJJLmE0tMMPKhSkFEkm8.woff2' => [
+				[
+					'family'       => 'Poppins',
+					'weight'       => '100',
+					'style'        => 'italic',
+					'unicodeRange' => 'U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7…',
+				],
+			],
+			'https://fonts.gstatic.com/s/poppins/v22/pxiAyp8kv8JHgFVrJJLmE0tCMPKhSkFE.woff2' => [
+				[
+					'family'       => 'Poppins',
+					'weight'       => '100',
+					'style'        => 'italic',
+					'unicodeRange' => 'U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC…',
+				],
+			],
+			'https://fonts.gstatic.com/s/poppins/v22/pxiDyp8kv8JHgFVrJJLmv1pVGdeOYktMqlap.woff2' => [
+				[
+					'family'       => 'Poppins',
+					'weight'       => '200',
+					'style'        => 'italic',
+					'unicodeRange' => 'U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7…',
+				],
+			],
+			'https://fonts.gstatic.com/s/poppins/v22/pxiDyp8kv8JHgFVrJJLmv1pVF9eOYktMqg.woff2' => [
+				[
+					'family'       => 'Poppins',
+					'weight'       => '200',
+					'style'        => 'italic',
+					'unicodeRange' => 'U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC…',
+				],
+			],
+			'https://fonts.gstatic.com/s/poppins/v22/pxiDyp8kv8JHgFVrJJLm21lVGdeOYktMqlap.woff2' => [
+				[
+					'family'       => 'Poppins',
+					'weight'       => '300',
+					'style'        => 'italic',
+					'unicodeRange' => 'U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7…',
+				],
+			],
+			'https://fonts.gstatic.com/s/poppins/v22/pxiDyp8kv8JHgFVrJJLm21lVF9eOYktMqg.woff2' => [
+				[
+					'family'       => 'Poppins',
+					'weight'       => '300',
+					'style'        => 'italic',
+					'unicodeRange' => 'U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC…',
+				],
+			],
+			'https://fonts.gstatic.com/s/poppins/v22/pxiEyp8kv8JHgFVrJJLmg1hHGpeKQEk.woff2' => [
+				[
+					'family'       => 'Poppins',
+					'weight'       => '400',
+					'style'        => 'italic',
+					'unicodeRange' => 'U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC…',
+				],
+			],
+			'https://fonts.gstatic.com/s/poppins/v22/pxiFyp8kv8JHgFVrJJLucHtUFMNEKQ.woff2' => [
+				[
+					'family'       => 'Poppins',
+					'weight'       => '500',
+					'style'        => 'italic',
+					'unicodeRange' => 'U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC…',
+				],
+			],
+			'https://fonts.gstatic.com/s/poppins/v22/pxiGyp8kv8JHgFVrJJLsbX9NE9eO.woff2' => [
+				[
+					'family'       => 'Poppins',
+					'weight'       => '600',
+					'style'        => 'italic',
+					'unicodeRange' => 'U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC…',
+				],
+			],
+			'https://fonts.gstatic.com/s/poppins/v22/pxiGyp8kv8JHgFVrJJLsbXpNE9eO.woff2' => [
+				[
+					'family'       => 'Poppins',
+					'weight'       => '900',
+					'style'        => 'italic',
+					'unicodeRange' => 'U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC…',
+				],
+			],
+			'https://fonts.gstatic.com/s/poppins/v22/pxiGyp8kv8JHgFVrLPTufntAOvWDSHFF.woff2' => [
+				[
+					'family'       => 'Poppins',
+					'weight'       => '100',
+					'style'        => 'normal',
+					'unicodeRange' => 'U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7…',
+				],
+			],
+			'https://fonts.cdnfonts.com/s/31427/Paper Sign.woff' => [
+				[
+					'family'       => 'Paper Sign',
+					'weight'       => '400',
+					'style'        => 'normal',
+					'unicodeRange' => 'U+0000-10FFFF',
+				],
+			],
+		];
+
+		/**
+		 * Filters the list of mock font urls.
+		 *
+			* @param array $font_data Array of font data.
+		 */
+		$font_data = wpm_apply_filters_typed( 'array', 'rocket_preload_fonts_font_data', $font_data );
+
+		$data['system_fonts']            = $system_fonts;
+		$data['font_data']               = $font_data;
+		$data['status']['preload_fonts'] = $this->context->is_allowed();
 
 		return $data;
 	}
