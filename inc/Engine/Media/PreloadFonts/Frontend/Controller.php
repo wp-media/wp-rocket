@@ -101,6 +101,21 @@ class Controller implements ControllerInterface {
 
 		$data['system_fonts'] = $system_fonts;
 
+		$processed_extensions = [
+			'woff2',
+			'woff',
+			'ttf',
+		];
+
+		/**
+		 * Filters the list of processed font extensions.
+		 *
+		 * @param array $processed_extensions Array of processed font extensions.
+		 */
+		wpm_apply_filters_typed( 'array', 'rocket_preload_fonts_processed_extensions', $processed_extensions );
+
+		$data[ 'processed_extensions' ] = $processed_extensions;
+
 		return $data;
 	}
 }
