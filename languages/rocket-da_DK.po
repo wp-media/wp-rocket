@@ -2216,7 +2216,7 @@ msgstr[1] "%s kasserede indlæg i din database."
 #: inc/Engine/Admin/Settings/Page.php:1435
 msgid "%s spam comment in your database."
 msgid_plural "%s spam comments in your database."
-msgstr[0] "%s spam kommentar i din database."
+msgstr[0] "%s spam-kommentar i din database."
 msgstr[1] "%s spam-kommentarer i din database."
 
 #. translators: %s is the number of revisions found in the database. It's a
