@@ -1976,12 +1976,12 @@ msgid ""
 "The domain part of the URL will be stripped automatically.<br/>Allowed font "
 "extensions: otf, ttf, svg, woff, woff2."
 msgstr ""
-"Den domæne del af URL'en vil blive strippet automatisk.<br/>Tilladte "
-"skrifttypeudvidelser: otf, ttf, svg, woff, woff2."
+"Domænedelen af URL'en vil blive fjernet automatisk. <br/>Tilladte "
+"skrifttype-endelser: otf, ttf, svg, woff, woff2."
 
 #: inc/Engine/Admin/Settings/Page.php:1172
 msgid "Enable link preloading"
-msgstr "Aktivér link preloading"
+msgstr "Aktivér forudindlæsning af links"
 
 #: inc/Engine/Admin/Settings/Page.php:1191
 msgid "Advanced Rules"
@@ -1989,7 +1989,7 @@ msgstr "Avancerede regler"
 
 #: inc/Engine/Admin/Settings/Page.php:1192
 msgid "Fine-tune cache rules"
-msgstr "Fine-tune cache regler"
+msgstr "Finjuster cacheregler"
 
 #: inc/Engine/Admin/Settings/Page.php:1205
 msgid ""
