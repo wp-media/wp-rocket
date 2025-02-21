@@ -2310,7 +2310,7 @@ msgstr[1] ""
 
 #: inc/Engine/Admin/Settings/Page.php:1595
 msgid "Enable Content Delivery Network"
-msgstr "Aktivér indholdsleveringsnetværk"
+msgstr "Aktivér indholdsleveringsnetværk (CDN)"
 
 #: inc/Engine/Admin/Settings/Page.php:1604
 #: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:162
