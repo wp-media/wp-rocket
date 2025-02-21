@@ -2280,8 +2280,8 @@ msgid ""
 "All URLs of static files (CSS, JS, images) will be rewritten to the CNAME(s)"
 " you provide."
 msgstr ""
-"Alle URL'er af statiske filer (CSS, JS, billeder) vil blive omskrevet til de"
-" CNAME'er, du giver."
+"Alle URL'er for statiske filer (CSS, JS, billeder) vil blive omskrevet til "
+"de CNAME(s), du giver."
 
 #. translators: %1$s = opening link tag, %2$s = closing link tag.
 #: inc/Engine/Admin/Settings/Page.php:1529
