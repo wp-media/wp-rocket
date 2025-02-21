@@ -2055,7 +2055,7 @@ msgstr "Cache aldrig cookies"
 
 #: inc/Engine/Admin/Settings/Page.php:1269
 msgid "Cache Query String(s)"
-msgstr "Cache forespørgselsstreng(er)"
+msgstr "Streng(e) til cacheforespørgsler"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:1272
