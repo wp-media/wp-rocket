@@ -2006,7 +2006,7 @@ msgstr "WooCommerce"
 #: inc/Engine/Admin/Settings/Page.php:1210
 msgctxt "plugin name"
 msgid "Easy Digital Downloads"
-msgstr "Nem digital download"
+msgstr "Nemme digitale downloads"
 
 #: inc/Engine/Admin/Settings/Page.php:1212
 msgctxt "plugin name"
