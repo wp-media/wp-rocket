@@ -2200,7 +2200,7 @@ msgstr[1] "%s revisioner i din database."
 #: inc/Engine/Admin/Settings/Page.php:1415
 msgid "%s draft in your database."
 msgid_plural "%s drafts in your database."
-msgstr[0] "%s draft i din database."
+msgstr[0] "%s udkast i din database."
 msgstr[1] "%s udkast i din database."
 
 #. translators: %s is the number of revisions found in the database. It's a
@@ -2208,8 +2208,8 @@ msgstr[1] "%s udkast i din database."
 #: inc/Engine/Admin/Settings/Page.php:1425
 msgid "%s trashed post in your database."
 msgid_plural "%s trashed posts in your database."
-msgstr[0] "%s spildt post i din database."
-msgstr[1] "%s spildte indlæg i din database."
+msgstr[0] "%s kasseret indlæg i din database."
+msgstr[1] "%s kasserede indlæg i din database."
 
 #. translators: %s is the number of revisions found in the database. It's a
 #. formatted number, don't use %d.
