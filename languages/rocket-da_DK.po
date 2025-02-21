@@ -2172,7 +2172,7 @@ msgid ""
 "Transients are temporary options; they are safe to remove. They will be "
 "automatically regenerated as your plugins require them."
 msgstr ""
-"Forbigående er midlertidige muligheder; de er sikre at fjerne. De vil "
+"Transienter er midlertidige indstillinger, der er sikre at fjerne. De vil "
 "automatisk blive regenereret, når dine plugins kræver dem."
 
 #: inc/Engine/Admin/Settings/Page.php:1386
