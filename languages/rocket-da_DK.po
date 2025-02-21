@@ -1886,9 +1886,9 @@ msgid ""
 " and save all URLs to the database. The plugin will make sure that your "
 "cache is always preloaded."
 msgstr ""
-"Når du aktiverer forindlæggelse, vil WP Rocket automatisk registrere dine "
+"Når du aktiverer forudindlæsning, vil WP Rocket automatisk registrere dine "
 "sitemaps og gemme alle URL'er i databasen. Pluginet vil sikre, at din cache "
-"altid er forindlæst."
+"altid er forudindlæst."
 
 #: inc/Engine/Admin/Settings/Page.php:1089
 msgid "Preload Links"
