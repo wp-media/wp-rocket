@@ -38,32 +38,6 @@ class Settings {
 	private $hidden_settings;
 
 	/**
-	 * Font formats allowed to be preloaded.
-	 *
-	 * @since 3.6
-	 * @see   $this->sanitize_font()
-	 *
-	 * @var array
-	 */
-	private $font_formats = [
-		'otf',
-		'ttf',
-		'svg',
-		'woff',
-		'woff2',
-	];
-
-	/**
-	 * Array of valid hosts.
-	 *
-	 * @since 3.6
-	 * @see   $this->get_hosts()
-	 *
-	 * @var array
-	 */
-	private $hosts;
-
-	/**
 	 * Constructor
 	 *
 	 * @since 3.0
@@ -525,83 +499,6 @@ class Settings {
 				$urls
 			)
 		);
-	}
-
-	/**
-	 * Sanitize an entry for the preload fonts option.
-	 *
-	 * @since 3.6
-	 *
-	 * @param string $file URL or path to a font file.
-	 * @return string|bool
-	 */
-	private function sanitize_font( string $file ) {
-		$file = trim( $file );
-
-		if ( empty( $file ) ) {
-			return false;
-		}
-
-		$parsed_url = wp_parse_url( $file );
-		$hosts      = $this->get_hosts();
-
-		if ( ! empty( $parsed_url['host'] ) ) {
-			$match = false;
-
-			foreach ( $hosts as $host ) {
-				if ( false !== strpos( $file, $host ) ) {
-					$match = true;
-					break;
-				}
-			}
-
-			if ( ! $match ) {
-				return false;
-			}
-		}
-
-		$file = str_replace( [ 'http:', 'https:' ], '', $file );
-		$file = str_replace( $hosts, '', $file );
-		$file = '/' . ltrim( $file, '/' );
-
-		$ext = strtolower( pathinfo( $parsed_url['path'], PATHINFO_EXTENSION ) );
-
-		if ( ! in_array( $ext, $this->font_formats, true ) ) {
-			return false;
-		}
-
-		return $file;
-	}
-
-	/**
-	 * Gets an array of valid hosts.
-	 *
-	 * @since 3.6
-	 *
-	 * @return array
-	 */
-	private function get_hosts() {
-		$urls   = (array) $this->options->get( 'cdn_cnames', [] );
-		$urls[] = home_url();
-		$urls   = array_map( 'rocket_add_url_protocol', $urls );
-
-		foreach ( $urls as $url ) {
-			$parsed_url = get_rocket_parse_url( $url );
-
-			if ( empty( $parsed_url['host'] ) ) {
-				continue;
-			}
-
-			$parsed_url['path'] = ( '/' === $parsed_url['path'] ) ? '' : $parsed_url['path'];
-
-			$this->hosts[] = "//{$parsed_url['host']}{$parsed_url['path']}";
-		}
-
-		if ( empty( $this->hosts ) ) {
-			$this->hosts = [];
-		}
-
-		return $this->hosts;
 	}
 
 	/**
