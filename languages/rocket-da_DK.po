@@ -1860,7 +1860,7 @@ msgid ""
 " the image or iframe code to be excluded (one per line). %1$sMore info%2$s"
 msgstr ""
 "Angiv nøgleord (f.eks. billedfilnavn, CSS-filnavn, CSS-klasse, domæne) fra "
-"billedet eller iframe-koden, der skal udelukkes (en pr. linje). %1$sMere "
+"billedet eller iframe-koden, der skal udelukkes (et pr. linje). %1$sMere "
 "info%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:1038
