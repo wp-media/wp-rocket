@@ -1955,7 +1955,7 @@ msgid ""
 "Specify external hosts to be prefetched (no <code>http:</code>, one per "
 "line)"
 msgstr ""
-"Angiv eksterne værter, der skal præfetches (ingen <code>http:</code>, en pr."
+"Angiv eksterne værter, der skal prefetches (intet <code>http:</code>, en pr."
 " linje)"
 
 #: inc/Engine/Admin/Settings/Page.php:1161
