@@ -2030,8 +2030,8 @@ msgid ""
 "<br>Cart, checkout and \"my account\" pages set in "
 "<strong>%1$s%2$s%3$s</strong> will be detected and never cached by default."
 msgstr ""
-"<br>Kørestol, betaling og \"min konto\" sider indstillet i "
-"<strong>%1$s%2$s%3$s</strong> vil blive registreret og aldrig caches som "
+"<br>Kurv-, betalings- og \"min konto\"-sider indstillet i "
+"<strong>%1$s%2$s%3$s</strong> vil blive registreret og caches aldrig som "
 "standard."
 
 #: inc/Engine/Admin/Settings/Page.php:1232
