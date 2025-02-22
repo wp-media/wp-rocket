@@ -7,7 +7,7 @@ return [
 			'url'       => 'http://example.org',
 			'is_mobile' => false,
 			'results' => json_encode([
-				'domains' => [
+				'preconnect_external_domain' => [
 					'https://example-domain-1.com/',
 					'https://example-domain-2.com/',
 				]
@@ -52,7 +52,7 @@ return [
 			'is_mobile' => false,
 			'results' => json_encode(
 				[
-					'domains' => []
+					'preconnect_external_domain' => []
 				],
 			),
 		],
@@ -75,7 +75,7 @@ return [
 			'url'       => 'http://example.org',
 			'is_mobile' => false,
 			'results' => json_encode([
-				'domains' => [
+				'preconnect_external_domain' => [
 					'https://fonts.googleapis.org',
 					'https://fonts.googleapis.com',
 				]
@@ -106,7 +106,7 @@ return [
 			'url'       => 'http://example.org',
 			'is_mobile' => true,
 			'results' => json_encode([
-				'domains' => [
+				'preconnect_external_domain' => [
 					'https://example-domain.org',
 					'https://example-domain.ng',
 				]
@@ -151,7 +151,7 @@ return [
 			'is_mobile' => false,
 			'results' => json_encode(
 				[
-					'domains' => []
+					'preconnect_external_domain' => []
 				],
 			),
 		],
