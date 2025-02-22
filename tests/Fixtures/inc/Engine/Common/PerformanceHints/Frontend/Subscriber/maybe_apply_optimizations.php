@@ -33,6 +33,17 @@ $lrc = [
 	],
 ];
 
+$preconnect_external_domains = [
+	'row' => [
+		'status'  => 'completed',
+		'url'     => 'http://example.org',
+		'domains' => json_encode( [
+			'http://example-domain.org',
+			'http://example-domain.com',
+		] ),
+	],
+];
+
 return [
 	'test_data' => [
 		'shouldReturnOriginalWhenBypassAndRow' => [
@@ -56,6 +67,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
+				'preload_external_domains' => $preconnect_external_domains,
 			],
 			'expected' => $html_input,
 		],
@@ -68,6 +80,9 @@ return [
 				],
 				'lrc' => [
 					'row' => null,
+				],
+				'preload_external_domains' => [
+					'row' => null
 				],
 			],
 			'expected' => $html_input,
@@ -83,6 +98,9 @@ return [
 				'lrc' => [
 					'row' => null,
 				],
+				'preload_external_domains' => [
+					'row' => null
+				],
 			],
 			'expected' => $html_input,
 		],
@@ -97,6 +115,9 @@ return [
 				'lrc' => [
 					'row' => null,
 				],
+				'preload_external_domains' => [
+					'row' => null
+				],
 			],
 			'expected' => $html_output_with_beacon,
 		],
@@ -108,6 +129,9 @@ return [
 				],
 				'lrc' => [
 					'row' => null,
+				],
+				'preload_external_domains' => [
+					'row' => null
 				],
 			],
 			'expected' => $html_output_with_beacon,
@@ -121,6 +145,9 @@ return [
 				],
 				'lrc' => [
 					'row' => null,
+				],
+				'preload_external_domains' => [
+					'row' => null
 				],
 			],
 			'expected' => $html_output_with_beacon,
@@ -145,6 +172,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
+				'preload_external_domains' => $preconnect_external_domains,
 			],
 			'expected' => $html_output_with_preload,
 		],
@@ -153,6 +181,7 @@ return [
 				'html' => $html_input,
 				'atf' => [],
 				'lrc' => [],
+				'preload_external_domains' => [],
 				'is_logged_in' => true,
 				'user_cache_enabled' => 1,
 			],
@@ -170,6 +199,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
+				'preload_external_domains' => $preconnect_external_domains,
 			],
 			'expected' => $html_output,
 		],
@@ -191,6 +221,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
+				'preload_external_domains' => $preconnect_external_domains
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_bg_responsive_imgset_template.php'),
 		],
@@ -212,6 +243,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
+				'preload_external_domains' => $preconnect_external_domains,
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_bg_responsive_webkit_template.php'),
 		],
@@ -233,6 +265,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
+				'preload_external_domains' => $preconnect_external_domains,
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_layered_bg.php'),
 		],
@@ -253,6 +286,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
+				'preload_external_domains' => $preconnect_external_domains,
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_single_bg.php'),
 		],
@@ -273,6 +307,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
+				'preload_external_domains' => $preconnect_external_domains,
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_responsive.php'),
 		],
@@ -291,6 +326,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
+				'preload_external_domains' => $preconnect_external_domains,
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_with_relative_img_lcp.php'),
 		],
@@ -309,6 +345,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
+				'preload_external_domains' => $preconnect_external_domains,
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_with_absolute_img_lcp.php'),
 		],
@@ -327,6 +364,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
+				'preload_external_domains' => $preconnect_external_domains,
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_image.php'),
 		],
@@ -345,6 +383,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
+				'preload_external_domains' => $preconnect_external_domains,
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_with_fetchpriority.html'),
 		],
@@ -363,6 +402,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
+				'preload_external_domains' => $preconnect_external_domains,
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_with_markup_comment.html'),
 		],
@@ -389,7 +429,8 @@ return [
 						] ),
 					],
 				],
-				'lrc' =>$lrc,
+				'lrc' => $lrc,
+				'preload_external_domains' => $preconnect_external_domains,
 			],
 			'expected' => $html_output_with_bg_image_lcp,
 		],
@@ -417,6 +458,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
+				'preload_external_domains' => $preconnect_external_domains,
 			],
 			'expected' => $html_output_with_picture_img_lcp,
 		],
@@ -444,6 +486,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
+				'preload_external_domains' => $preconnect_external_domains,
 			],
 			'expected' => $html_output_with_img_lcp,
 		],
@@ -460,6 +503,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
+				'preload_external_domains' => $preconnect_external_domains,
 			],
 			'expected' => $html_output,
 		],
@@ -492,6 +536,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
+				'preload_external_domains' => $preconnect_external_domains,
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_picture.php'),
 		],
@@ -524,6 +569,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
+				'preload_external_domains' => $preconnect_external_domains,
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_picture_2.php'),
 		],
@@ -556,6 +602,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
+				'preload_external_domains' => $preconnect_external_domains,
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_picture_3.php'),
 		],
@@ -586,6 +633,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
+				'preload_external_domains' => $preconnect_external_domains,
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_picture_4.php'),
 		],
@@ -606,6 +654,9 @@ return [
 				'lrc' => [
 					'row' => null,
 				],
+				'preload_external_domains' => [
+					'row' => null
+				],
 			],
 			'expected' => $html_output_with_beacon_and_lcp_opt,
 		],
@@ -616,6 +667,7 @@ return [
 					'row' => null,
 				],
 				'lrc' => $lrc,
+				'preload_external_domains' => $preconnect_external_domains,
 			],
 			'expected' => $html_output_with_beacon_and_only_lrc_opt,
 		],
@@ -639,6 +691,9 @@ return [
 				],
 				'lrc' => [
 					'row' => null,
+				],
+				'preload_external_domains' => [
+					'row' => null
 				],
 			],
 			'expected' => $html_input_without_closing_body_tag_output,
