@@ -122,7 +122,7 @@ class Controller implements ControllerInterface {
 			// Use dns-prefetch.
 			return $this->prefetch_link(
 				[
-					'href' => $domain,
+					'href' => esc_url( $domain ),
 					1      => 'crossorigin',
 					2      => 'data-rocket-prefetch',
 				]
@@ -132,7 +132,7 @@ class Controller implements ControllerInterface {
 		// Use preconnect by default.
 		return $this->preconnect_link(
 			[
-				'href' => $domain,
+				'href' => esc_url( $domain ),
 				1      => 'crossorigin',
 				2      => 'data-rocket-preconnect',
 			]
