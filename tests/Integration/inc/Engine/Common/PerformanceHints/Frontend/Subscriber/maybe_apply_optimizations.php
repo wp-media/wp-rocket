@@ -38,7 +38,7 @@ class Test_MaybeApplyOptimizations extends FilesystemTestCase {
 
 		add_filter( 'rocket_disable_meta_generator', '__return_true' );
 
-		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'maybe_apply_optimizations', 17 );
+		$this->unregisterAllCallbacksExceptMulti('rocket_buffer', [17 => 'maybe_apply_optimizations', 100000 => 'insert_rocket_head']);
 	}
 
 	public function tear_down() {
@@ -97,8 +97,8 @@ class Test_MaybeApplyOptimizations extends FilesystemTestCase {
 		add_filter( 'pre_get_rocket_option_cache_logged_user', [ $this, 'get_cache_user' ] );
 
 		$this->assertSame(
-			trim($expected),
-			trim(apply_filters( 'rocket_buffer', $config['html'] ))
+			$this->format_the_html($expected),
+			$this->format_the_html(apply_filters( 'rocket_buffer', $config['html'] ))
 		);
 	}
 

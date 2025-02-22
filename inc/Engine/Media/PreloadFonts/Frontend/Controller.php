@@ -7,8 +7,15 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Common\PerformanceHints\Frontend\ControllerInterface;
 use WP_Rocket\Engine\Media\PreloadFonts\Database\Queries\PreloadFonts as PFQuery;
 use WP_Rocket\Engine\Media\PreloadFonts\Context\Context;
+use WP_Rocket\Engine\Optimization\UrlTrait;
+use WP_Rocket\Engine\Support\CommentTrait;
+use WP_Rocket\Engine\Common\Head\ElementTrait;
 
 class Controller implements ControllerInterface {
+	use UrlTrait;
+	use CommentTrait;
+	use ElementTrait;
+
 	/**
 	 * Options instance
 	 *
@@ -52,8 +59,10 @@ class Controller implements ControllerInterface {
 	 * @return string
 	 */
 	public function optimize( string $html, $row ): string {
-		// Implement the optimization logic here.
-		return $html;
+		if ( ! $this->context->is_allowed() || ! $row->has_preload_fonts() ) {
+			return $html;
+		}
+		return $this->add_meta_comment( 'auto_preload_fonts', $html );
 	}
 
 	/**
@@ -64,6 +73,10 @@ class Controller implements ControllerInterface {
 	 * @return array
 	 */
 	public function add_custom_data( array $data ): array {
+		if ( ! $this->context->is_allowed() ) {
+			return $data;
+		}
+
 		$system_fonts = [
 			'serif',
 			'sans-serif',
@@ -99,117 +112,80 @@ class Controller implements ControllerInterface {
 		 */
 		$system_fonts = wpm_apply_filters_typed( 'array', 'rocket_preload_fonts_system_fonts', $system_fonts );
 
-		// To Delete Mock Data during implementation of https://github.com/wp-media/wp-rocket/issues/7306.
-		$font_data = [
-			'https://fonts.gstatic.com/s/poppins/v22/pxiAyp8kv8JHgFVrJJLmE0tMMPKhSkFEkm8.woff2' => [
-				[
-					'family'       => 'Poppins',
-					'weight'       => '100',
-					'style'        => 'italic',
-					'unicodeRange' => 'U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7…',
-				],
-			],
-			'https://fonts.gstatic.com/s/poppins/v22/pxiAyp8kv8JHgFVrJJLmE0tCMPKhSkFE.woff2' => [
-				[
-					'family'       => 'Poppins',
-					'weight'       => '100',
-					'style'        => 'italic',
-					'unicodeRange' => 'U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC…',
-				],
-			],
-			'https://fonts.gstatic.com/s/poppins/v22/pxiDyp8kv8JHgFVrJJLmv1pVGdeOYktMqlap.woff2' => [
-				[
-					'family'       => 'Poppins',
-					'weight'       => '200',
-					'style'        => 'italic',
-					'unicodeRange' => 'U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7…',
-				],
-			],
-			'https://fonts.gstatic.com/s/poppins/v22/pxiDyp8kv8JHgFVrJJLmv1pVF9eOYktMqg.woff2' => [
-				[
-					'family'       => 'Poppins',
-					'weight'       => '200',
-					'style'        => 'italic',
-					'unicodeRange' => 'U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC…',
-				],
-			],
-			'https://fonts.gstatic.com/s/poppins/v22/pxiDyp8kv8JHgFVrJJLm21lVGdeOYktMqlap.woff2' => [
-				[
-					'family'       => 'Poppins',
-					'weight'       => '300',
-					'style'        => 'italic',
-					'unicodeRange' => 'U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7…',
-				],
-			],
-			'https://fonts.gstatic.com/s/poppins/v22/pxiDyp8kv8JHgFVrJJLm21lVF9eOYktMqg.woff2' => [
-				[
-					'family'       => 'Poppins',
-					'weight'       => '300',
-					'style'        => 'italic',
-					'unicodeRange' => 'U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC…',
-				],
-			],
-			'https://fonts.gstatic.com/s/poppins/v22/pxiEyp8kv8JHgFVrJJLmg1hHGpeKQEk.woff2' => [
-				[
-					'family'       => 'Poppins',
-					'weight'       => '400',
-					'style'        => 'italic',
-					'unicodeRange' => 'U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC…',
-				],
-			],
-			'https://fonts.gstatic.com/s/poppins/v22/pxiFyp8kv8JHgFVrJJLucHtUFMNEKQ.woff2' => [
-				[
-					'family'       => 'Poppins',
-					'weight'       => '500',
-					'style'        => 'italic',
-					'unicodeRange' => 'U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC…',
-				],
-			],
-			'https://fonts.gstatic.com/s/poppins/v22/pxiGyp8kv8JHgFVrJJLsbX9NE9eO.woff2' => [
-				[
-					'family'       => 'Poppins',
-					'weight'       => '600',
-					'style'        => 'italic',
-					'unicodeRange' => 'U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC…',
-				],
-			],
-			'https://fonts.gstatic.com/s/poppins/v22/pxiGyp8kv8JHgFVrJJLsbXpNE9eO.woff2' => [
-				[
-					'family'       => 'Poppins',
-					'weight'       => '900',
-					'style'        => 'italic',
-					'unicodeRange' => 'U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC…',
-				],
-			],
-			'https://fonts.gstatic.com/s/poppins/v22/pxiGyp8kv8JHgFVrLPTufntAOvWDSHFF.woff2' => [
-				[
-					'family'       => 'Poppins',
-					'weight'       => '100',
-					'style'        => 'normal',
-					'unicodeRange' => 'U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7…',
-				],
-			],
-			'https://fonts.cdnfonts.com/s/31427/Paper Sign.woff' => [
-				[
-					'family'       => 'Paper Sign',
-					'weight'       => '400',
-					'style'        => 'normal',
-					'unicodeRange' => 'U+0000-10FFFF',
-				],
-			],
-		];
-
 		/**
 		 * Filters the list of mock font urls.
 		 *
-			* @param array $font_data Array of font data.
+		 * @param array $font_data Array of font data.
 		 */
-		$font_data = wpm_apply_filters_typed( 'array', 'rocket_preload_fonts_font_data', $font_data );
+		$font_data = wpm_apply_filters_typed( 'array', 'rocket_preload_fonts_font_data', [] );
 
 		$data['system_fonts']            = $system_fonts;
 		$data['font_data']               = $font_data;
 		$data['status']['preload_fonts'] = $this->context->is_allowed();
 
 		return $data;
+	}
+
+	/**
+	 * Checks if the font URL is from a third party.
+	 *
+	 * @param string $font_url Font URL.
+	 *
+	 * @return bool
+	 */
+	private function is_third_party_font( string $font_url ): bool {
+		$parsed_url = wp_parse_url( $font_url );
+
+		if ( empty( $parsed_url['host'] ) ) {
+			return false;
+		}
+
+		$site_url = wp_parse_url( site_url() );
+
+		return $parsed_url['host'] !== $site_url['host'];
+	}
+
+	/**
+	 * Adds the preload fonts to the head tag.
+	 *
+	 * @param array $items added to the head.
+	 * @return array Items to be added to the head.
+	 */
+	public function add_preload_fonts_in_head( $items ) {
+		if ( ! $this->context->is_allowed() ) {
+			return $items;
+		}
+
+		global $wp;
+
+		$url       = untrailingslashit( home_url( add_query_arg( [], $wp->request ) ) );
+		$is_mobile = $this->context->is_mobile_allowed();
+
+		$row = $this->query->get_row( $url, $is_mobile );
+		if ( empty( $row ) || 'completed' !== $row->status || empty( $row->fonts ) || '[]' === $row->fonts ) {
+			return $items;
+		}
+
+		$fonts = json_decode( $row->fonts, true );
+
+		if ( empty( $fonts ) ) {
+			return $items;
+		}
+
+		foreach ( $fonts as $font ) {
+			$item_args = [
+				// 'id'         => 'preload-font-' . md5( $font ), // Unique ID based on font URL.
+				'href' => esc_url( $font ),
+				'as'   => 'font',
+			];
+
+			if ( ! $this->is_relative( $font ) && $this->is_third_party_font( $font ) ) {
+				$item_args[2] = 'crossorigin';
+			}
+
+			$items[] = $this->preload_link( $item_args );
+		}
+
+		return $items;
 	}
 }
