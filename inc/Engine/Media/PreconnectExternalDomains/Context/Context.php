@@ -43,4 +43,15 @@ class Context implements ContextInterface {
 		 */
 		return wpm_apply_filters_typed( 'boolean', 'rocket_preconnect_external_domains_optimization', true );
 	}
+
+	/**
+	 * Determines if the page is mobile and separate cache for mobile files is enabled.
+	 *
+	 * @return bool
+	 */
+	public function is_mobile_allowed(): bool {
+		return $this->options->get( 'cache_mobile', 0 )
+			&& $this->options->get( 'do_caching_mobile_files', 0 )
+			&& wp_is_mobile();
+	}
 }
