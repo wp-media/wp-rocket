@@ -66,6 +66,63 @@ class Controller implements ControllerInterface {
 			return $data;
 		}
 
+		$elements = [
+			'link',
+			'script',
+			'iframe',
+		];
+
+		/**
+		 * Filters the array of eligible elements to be processed by the preconnect external domain beacon.
+		 *
+		 * @since 3.19
+		 *
+		 * @param array $elements Array of elements
+		 */
+		$elements = wpm_apply_filters_typed( 'array', 'rocket_preconnect_external_domain_elements', $elements );
+		$elements = array_filter( $elements, 'is_string' );
+
+		$data['preconnect_external_domain_elements'] = $elements;
+
+		$exclusions = [
+			[
+				'type'  => 'attribute',
+				'key'   => 'rel',
+				'value' => 'profile',
+			],
+			[
+				'type'  => 'attribute',
+				'key'   => 'rel',
+				'value' => 'preconnect',
+			],
+			[
+				'type'  => 'attribute',
+				'key'   => 'rel',
+				'value' => 'dns-prefetch',
+			],
+			[
+				'type'  => 'attribute',
+				'key'   => 'async',
+				'value' => '',
+			],
+			[
+				'type'  => 'domain',
+				'value' => 'static.cloudflareinsights.com',
+			],
+		];
+
+		/**
+		 * Filters the array of elements to be excluded from being processed by the preconnect external domain beacon.
+		 *
+		 * @since 3.19
+		 *
+		 * @param array $excluded_elements Array of elements
+		 */
+		$exclusions = wpm_apply_filters_typed( 'array', 'preconnect_external_domain_exclusions', $exclusions );
+
+		$data['preconnect_external_domain_exclusions'] = $exclusions;
+		$data['status']['preconnect_external_domain']  = $this->context->is_allowed();
+
 		return $data;
 	}
 
@@ -126,7 +183,7 @@ class Controller implements ControllerInterface {
 					1      => 'crossorigin',
 					2      => 'data-rocket-prefetch',
 				]
-				);
+			);
 		}
 
 		// Use preconnect by default.
@@ -136,7 +193,7 @@ class Controller implements ControllerInterface {
 				1      => 'crossorigin',
 				2      => 'data-rocket-preconnect',
 			]
-			);
+		);
 	}
 
 	/**
