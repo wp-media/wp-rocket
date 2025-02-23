@@ -17,12 +17,14 @@ class Test_StartPerformanceHintsBuffer extends TestCase {
 		self::installAtfTable();
 		self::installLrcTable();
 		self::installPreloadFontsTable();
+		self::installPreconnectExternalDomainsTable();
 	}
 
 	public static function tear_down_after_class() {
 		self::uninstallAtfTable();
 		self::uninstallLrcTable();
 		self::uninstallPreloadFontsTable();
+		self::uninstallPreconnectDomainsTable();
 
 		parent::tear_down_after_class();
 	}

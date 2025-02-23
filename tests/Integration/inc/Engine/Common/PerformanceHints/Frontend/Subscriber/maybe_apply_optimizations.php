@@ -23,12 +23,14 @@ class Test_MaybeApplyOptimizations extends FilesystemTestCase {
 		self::installAtfTable();
 		self::installLrcTable();
 		self::installPreloadFontsTable();
+		self::installPreconnectExternalDomainsTable();
 	}
 
 	public static function tear_down_after_class() {
 		self::uninstallAtfTable();
 		self::uninstallLrcTable();
 		self::uninstallPreloadFontsTable();
+		self::uninstallPreconnectDomainsTable();
 
 		parent::tear_down_after_class();
 	}
@@ -80,6 +82,10 @@ class Test_MaybeApplyOptimizations extends FilesystemTestCase {
 
 		if ( ! empty( $config['preload_fonts']['row'] ) ) {
 			self::addPreloadFonts( $config['preload_fonts']['row'] );
+		}
+
+		if ( ! empty( $config['preload_external_domains']['row'] ) ) {
+			self::addPreconnectExternalDomains( $config['preload_external_domains']['row'] );
 		}
 
 		if ( isset( $config['filter_delay'] ) ) {

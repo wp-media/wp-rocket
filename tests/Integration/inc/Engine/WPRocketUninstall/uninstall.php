@@ -145,6 +145,7 @@ class Test_Uninstall extends FilesystemTestCase {
 		$atf_table           = $container->get( 'atf_table' );
 		$lrc_table           = $container->get( 'lrc_table' );
 		$preload_fonts_table = $container->get( 'preload_fonts_table' );
+		$preconnect_table    = $container->get( 'preconnect_external_domains_table' );
 
 		$uninstall = new WPRocketUninstall(
 			$cache_path,
@@ -153,7 +154,8 @@ class Test_Uninstall extends FilesystemTestCase {
 			$preload_table,
 			$atf_table,
 			$lrc_table,
-			$preload_fonts_table
+			$preload_fonts_table,
+			$preconnect_table
 		);
 
 		$uninstall->uninstall();
