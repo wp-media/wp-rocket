@@ -8,6 +8,7 @@ $html_with_double_body_output = file_get_contents(__DIR__ . '/HTML/output_double
 $html_output = file_get_contents(__DIR__ . '/HTML/output.html');
 $html_output_with_preload = file_get_contents(__DIR__ . '/HTML/output_w_preload.html');
 $html_output_with_beacon = file_get_contents(__DIR__ . '/HTML/output_w_beacon.html');
+$html_output_with_beacon_preconnect_external_domains_disabled = file_get_contents(__DIR__ . '/HTML/output_w_beacon_external_disabled.html');
 $html_input_with_bg_image_lcp = file_get_contents(__DIR__ . '/HTML/input_w_bg_image_lcp.html');
 $html_output_with_bg_image_lcp = file_get_contents(__DIR__ . '/HTML/output_w_bg_image_lcp.html');
 $html_input_with_picture_img_lcp = file_get_contents(__DIR__ . '/HTML/input_w_picture_img_lcp.html');
@@ -43,10 +44,7 @@ $preconnect_external_domains = [
 	'row' => [
 		'status'  => 'completed',
 		'url'     => 'http://example.org',
-		'domains' => json_encode( [
-			'http://example-domain.org',
-			'http://example-domain.com',
-		] ),
+		'domains' => json_encode( [] ),
 	],
 ];
 
@@ -154,7 +152,7 @@ return [
 					'row' => null
 				],
 			],
-			'expected' => $html_output_with_beacon,
+			'expected' => $html_output_with_beacon_preconnect_external_domains_disabled,
 		],
 		'shouldAddBeaconToPage' => [
 			'config' => [
@@ -270,7 +268,13 @@ return [
 				],
 				'lrc' => $lrc,
 				'preload_fonts' => $preload_fonts_empty,
-				'preload_external_domains' => $preconnect_external_domains,
+				'preload_external_domains' => [
+					'row' => [
+						'status' => 'failed',
+						'url' => 'http://example.org',
+						'domains'      => json_encode( (object) [] ),
+					],
+				],
 			],
 			'expected' => $html_output,
 		],
