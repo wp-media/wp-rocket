@@ -722,27 +722,27 @@ parameters:
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 21
+			count: 24
 			path: tests/Integration/AjaxTestCase.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 21
+			count: 24
 			path: tests/Integration/ApiTestCase.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 21
+			count: 24
 			path: tests/Integration/FilesystemTestCase.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 21
+			count: 24
 			path: tests/Integration/RESTVfsTestCase.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 21
+			count: 24
 			path: tests/Integration/TestCase.php
 
 		-
@@ -2174,6 +2174,11 @@ parameters:
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/functions/rocketIsPluginActive.php
+
+		-
+			message: "#^Path in include_once\\(\\) \"vfs\\://public/wp\\-content/plugins/wp\\-rocket/inc/classes/dependencies/mobiledetect/mobiledetectlib/Mobile_Detect\\.php\" is not a file or it does not exist\\.$#"
+			count: 1
+			path: tests/Integration/vfs:/public/wp-content/advanced-cache.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"

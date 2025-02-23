@@ -148,13 +148,13 @@ class WPRocketUninstall {
 	/**
 	 * Constructor.
 	 *
-	 * @param string            $cache_path            Path to the cache folder.
-	 * @param string            $config_path           Path to the config folder.
-	 * @param UsedCSS           $rucss_usedcss_table   RUCSS used_css table.
-	 * @param Cache             $rocket_cache          Preload rocket_cache table.
-	 * @param AboveTheFold      $atf_table             Above the fold table.
-	 * @param LazyRenderContent $lrc_table Lazy Render content table.
-	 * @param PreloadFonts      $preload_fonts_table   Preload fonts table.
+	 * @param string                    $cache_path            Path to the cache folder.
+	 * @param string                    $config_path           Path to the config folder.
+	 * @param UsedCSS                   $rucss_usedcss_table   RUCSS used_css table.
+	 * @param Cache                     $rocket_cache          Preload rocket_cache table.
+	 * @param AboveTheFold              $atf_table             Above the fold table.
+	 * @param LazyRenderContent         $lrc_table Lazy Render content table.
+	 * @param PreloadFonts              $preload_fonts_table   Preload fonts table.
 	 * @param PreconnectExternalDomains $preload_domains_table Preload External Domains content table.
 	 */
 	public function __construct(

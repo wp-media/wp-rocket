@@ -33,11 +33,11 @@ require_once __DIR__ . '/inc/Engine/Optimization/LazyRenderContent/Database/Tabl
 require_once __DIR__ . '/inc/Engine/Media/PreloadFonts/Database/Table/PreloadFonts.php';
 require_once __DIR__ . '/inc/Engine/Media/PreconnectExternalDomains/Database/Table/PreconnectExternalDomains.php';
 
-$rocket_rucss_usedcss_table = new WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS();
-$rocket_cache_table         = new WP_Rocket\Engine\Preload\Database\Tables\Cache();
-$rocket_atf_table           = new WP_Rocket\Engine\Media\AboveTheFold\Database\Tables\AboveTheFold();
-$rocket_lrc_table           = new WP_Rocket\Engine\Optimization\LazyRenderContent\Database\Table\LazyRenderContent();
-$rocket_preload_fonts_table = new WP_Rocket\Engine\Media\PreloadFonts\Database\Table\PreloadFonts();
+$rocket_rucss_usedcss_table   = new WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS();
+$rocket_cache_table           = new WP_Rocket\Engine\Preload\Database\Tables\Cache();
+$rocket_atf_table             = new WP_Rocket\Engine\Media\AboveTheFold\Database\Tables\AboveTheFold();
+$rocket_lrc_table             = new WP_Rocket\Engine\Optimization\LazyRenderContent\Database\Table\LazyRenderContent();
+$rocket_preload_fonts_table   = new WP_Rocket\Engine\Media\PreloadFonts\Database\Table\PreloadFonts();
 $rocket_preload_domains_table = new WP_Rocket\Engine\Media\PreconnectExternalDomains\Database\Table\PreconnectExternalDomains();
 $rocket_uninstall             = new WPRocketUninstall(
 	WP_ROCKET_CACHE_ROOT_PATH,
