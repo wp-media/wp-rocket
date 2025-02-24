@@ -2638,7 +2638,7 @@ msgid ""
 msgstr ""
 "%1$sWP Rocket:%2$s Pluginet er blevet opdateret til version 3.17. Ny "
 "funktion: %3$sAutomatic Lazy Rendering%4$s. Tjek vores dokumentation for at "
-"lære mere om dette."
+"lære mere om det."
 
 #: inc/Engine/Admin/Settings/Settings.php:363
 msgid ""
