@@ -2979,7 +2979,7 @@ msgstr "Generer specifik CPCSS"
 #: inc/Engine/CriticalPath/Admin/Post.php:145
 #: views/cpcss/metabox/generate.php:45
 msgid "Regenerate specific CPCSS"
-msgstr "Regenerer specifikke CPCSS"
+msgstr "Regenerer specifik CPCSS"
 
 #: inc/Engine/CriticalPath/Admin/Post.php:216
 msgid "This feature is not available for non-public post types."
