@@ -2564,7 +2564,7 @@ msgstr "Find din API-nøgle"
 #: inc/Engine/Admin/Settings/Page.php:1991
 msgctxt "Cloudflare"
 msgid "Account email"
-msgstr "Konto e-mail"
+msgstr "Konto-e-mail"
 
 #: inc/Engine/Admin/Settings/Page.php:2000
 msgctxt "Cloudflare"
