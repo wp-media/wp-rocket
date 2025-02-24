@@ -2911,7 +2911,7 @@ msgstr ""
 
 #: inc/Engine/Common/JobManager/Cron/Subscriber.php:185
 msgid "WP Rocket process pending jobs"
-msgstr "WP Rocket proces ventende job"
+msgstr "WP Rocket-processering af afventende jobs"
 
 #: inc/Engine/Common/JobManager/Cron/Subscriber.php:204
 msgid "WP Rocket clear failed jobs"
