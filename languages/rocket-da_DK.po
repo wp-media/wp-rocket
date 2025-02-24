@@ -2395,7 +2395,7 @@ msgstr "Adfærd i backend"
 
 #: inc/Engine/Admin/Settings/Page.php:1692
 msgid "Behavior in post editor"
-msgstr "Adfærd i post editor"
+msgstr "Adfærd i indlægseditor"
 
 #: inc/Engine/Admin/Settings/Page.php:1698
 msgid "Behavior in frontend"
