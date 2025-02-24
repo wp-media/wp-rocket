@@ -2461,7 +2461,7 @@ msgstr "Cloudflare"
 
 #: inc/Engine/Admin/Settings/Page.php:1775
 msgid "Integrate your Cloudflare account with this add-on."
-msgstr "Integrer din Cloudflare-konto med dette tilføjelsesprogram."
+msgstr "Integrer din Cloudflare-konto med dette add-on."
 
 #: inc/Engine/Admin/Settings/Page.php:1776
 msgid ""
