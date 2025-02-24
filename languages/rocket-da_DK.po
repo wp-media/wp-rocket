@@ -2923,7 +2923,7 @@ msgstr "WP Rocket-processering på indsendte jobs"
 
 #: inc/Engine/Common/PerformanceHints/Admin/AdminBar.php:44
 msgid "Clear Priority Elements"
-msgstr "Tydelige prioriterede elementer"
+msgstr "Fjern prioriterede elementer"
 
 #: inc/Engine/Common/PerformanceHints/Admin/AdminBar.php:79
 msgid "Clear Priority Elements of this URL"
