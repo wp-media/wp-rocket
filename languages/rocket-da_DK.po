@@ -3237,7 +3237,7 @@ msgid ""
 "Renew your license for 1 year now and get %1$s%3$s OFF%2$s immediately: you "
 "will only pay %1$s%4$s%2$s!"
 msgstr ""
-"Forny din licens med 1 år nu og få %1$s%3$s OFF%2$s med det samme: du "
+"Forny din licens med 1 år nu og få %1$s%3$s rabat%2$s med det samme. Du "
 "betaler kun %1$s%4$s%2$s!"
 
 #. translators: %1$s = <strong>, %2$s = </strong>, %3$s = discount price.
