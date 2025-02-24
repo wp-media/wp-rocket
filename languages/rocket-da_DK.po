@@ -2645,8 +2645,8 @@ msgid ""
 "Sucuri Add-on: The API key for the Sucuri firewall must be in format "
 "<code>{32 characters}/{32 characters}</code>."
 msgstr ""
-"Sucuri-tilføjelsesprogram: API-nøglen til Sucuri-brandvæggen skal være i "
-"formatet <code>{32 characters}/{32 characters}</code>."
+"Sucuri add-on: API-nøglen til Sucuri-firewall skal være i formatet <code>{32"
+" tegn}/{32 tegn}</code>."
 
 #: inc/Engine/Admin/Settings/Settings.php:661
 msgid ""
