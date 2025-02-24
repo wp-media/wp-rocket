@@ -2531,7 +2531,7 @@ msgid ""
 "Provide your API key to clear the Sucuri cache when WP Rocket’s cache is "
 "cleared."
 msgstr ""
-"Giv din API-nøgle til at rydde Sucuri cachen, når WP Rockets cache er "
+"Angiv din API-nøgle for at rydde Sucuri-cachen, når WP Rockets cache er "
 "ryddet."
 
 #: inc/Engine/Admin/Settings/Page.php:1911
