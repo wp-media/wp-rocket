@@ -63,6 +63,7 @@ class Controller implements ControllerInterface {
 	 */
 	public function add_custom_data( array $data ): array {
 		if ( ! $this->context->is_allowed() ) {
+			$data['status']['preconnect_external_domain'] = false;
 			return $data;
 		}
 

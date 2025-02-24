@@ -5,7 +5,9 @@ use WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS;
 use WP_Rocket\Engine\Preload\Database\Tables\Cache;
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Tables\AboveTheFold;
 use WP_Rocket\Engine\Optimization\LazyRenderContent\Database\Table\LazyRenderContent;
+use WP_Rocket\Engine\Media\PreloadFonts\Database\Table\PreloadFonts;
 use WP_Rocket\Engine\Media\PreconnectExternalDomains\Database\Table\PreconnectExternalDomains;
+
 /**
  * Manages the deletion of WP Rocket data and files on uninstall.
  */
@@ -152,6 +154,7 @@ class WPRocketUninstall {
 	 * @param Cache                     $rocket_cache          Preload rocket_cache table.
 	 * @param AboveTheFold              $atf_table             Above the fold table.
 	 * @param LazyRenderContent         $lrc_table Lazy Render content table.
+	 * @param PreloadFonts              $preload_fonts_table   Preload fonts table.
 	 * @param PreconnectExternalDomains $preload_domains_table Preload External Domains content table.
 	 */
 	public function __construct(
@@ -161,6 +164,7 @@ class WPRocketUninstall {
 		$rocket_cache,
 		$atf_table,
 		$lrc_table,
+		$preload_fonts_table,
 		$preload_domains_table
 	) {
 		$this->cache_path  = trailingslashit( $cache_path );
@@ -170,6 +174,7 @@ class WPRocketUninstall {
 			$rocket_cache,
 			$atf_table,
 			$lrc_table,
+			$preload_fonts_table,
 			$preload_domains_table,
 		];
 	}

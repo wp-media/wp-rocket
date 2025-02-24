@@ -24,12 +24,14 @@ class Test_Cleanup extends TestCase {
 		// Install in set_up_before_class because of exists().
 		self::installAtfTable();
 		self::installLrcTable();
+		self::installPreloadFontsTable();
 		self::installPreconnectExternalDomainsTable();
 	}
 
 	public static function tear_down_after_class() {
 		self::uninstallAtfTable();
 		self::uninstallLrcTable();
+		self::uninstallPreloadFontsTable();
 		self::uninstallPreconnectDomainsTable();
 
 		parent::tear_down_after_class();

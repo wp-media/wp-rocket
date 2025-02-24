@@ -3,28 +3,10 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Media\PreconnectExternalDomains\Context;
 
-use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
+use WP_Rocket\Engine\Common\Context\AbstractContext;
 
-class Context implements ContextInterface {
-
-	/**
-	 * Options instance
-	 *
-	 * @var Options_Data
-	 */
-	private $options;
-
-
-	/**
-	 * Constructor
-	 *
-	 * @param Options_Data $options Options instance.
-	 */
-	public function __construct( Options_Data $options ) {
-		$this->options = $options;
-	}
-
+class Context extends AbstractContext implements ContextInterface {
 	/**
 	 * Determine if the action is allowed.
 	 *
@@ -33,6 +15,14 @@ class Context implements ContextInterface {
 	 */
 	public function is_allowed( array $data = [] ): bool {
 		if ( $this->options->get( 'wp_rocket_no_licence', 0 ) ) {
+			return false;
+		}
+
+		$checks = [
+			'do_not_optimize' => false,
+			'bypass'          => false,
+		];
+		if ( ! $this->run_common_checks( $checks ) ) {
 			return false;
 		}
 

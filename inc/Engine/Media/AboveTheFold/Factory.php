@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Media\AboveTheFold;
 
+use WP_Rocket\Engine\Common\PerformanceHints\Cron\CronTrait;
 use WP_Rocket\Engine\Common\PerformanceHints\FactoryInterface;
 use WP_Rocket\Engine\Common\PerformanceHints\AJAX\ControllerInterface as AjaxControllerInterface;
 use WP_Rocket\Engine\Common\PerformanceHints\Frontend\ControllerInterface as FrontendControllerInterface;
@@ -12,6 +13,7 @@ use WP_Rocket\Engine\Common\PerformanceHints\Database\Queries\QueriesInterface;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
 
 class Factory implements FactoryInterface {
+	use CronTrait;
 
 	/**
 	 * Ajax Controller instance.
@@ -98,7 +100,8 @@ class Factory implements FactoryInterface {
 	 * @return QueriesInterface
 	 */
 	public function queries(): QueriesInterface {
-		return $this->queries;
+		// Defines the interval for deletion and returns Queries object.
+		return $this->deletion_interval( 'rocket_atf_cleanup_interval' );
 	}
 
 	/**

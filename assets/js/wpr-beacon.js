@@ -388,11 +388,11 @@
     static FONT_FILE_REGEX = /\.(woff2?|ttf|otf|eot)(\?.*)?$/i;
     /**
      * Checks if a given font family is a system font.
-     * 
+     *
      * This method checks if the provided font family is part of the system fonts
      * defined in the configuration. It returns true if the font family is a system
      * font, and false otherwise.
-     * 
+     *
      * @param {string} fontFamily - The font family to check.
      * @returns {boolean} True if the font family is a system font, false otherwise.
      */
@@ -402,11 +402,11 @@
     }
     /**
      * Checks if an element is visible in the viewport.
-     * 
+     *
      * This method checks if the provided element is visible in the viewport by
      * considering its display, visibility, opacity, width, and height properties.
      * It returns true if the element is visible, and false otherwise.
-     * 
+     *
      * @param {Element} element - The element to check for visibility.
      * @returns {boolean} True if the element is visible, false otherwise.
      */
@@ -417,10 +417,10 @@
     }
     /**
      * Cleans a URL by removing query parameters and fragments.
-     * 
+     *
      * This method takes a URL as input, removes any query parameters and fragments,
      * and returns the cleaned URL.
-     * 
+     *
      * @param {string} url - The URL to clean.
      * @returns {string} The cleaned URL.
      */
@@ -434,10 +434,10 @@
     }
     /**
      * Retrieves a map of network-loaded fonts.
-     * 
+     *
      * This method uses the Performance API to get all resource entries, filters out
      * the ones that match the font file regex, and maps them to their cleaned URLs.
-     * 
+     *
      * @returns {Map} A map where each key is a cleaned URL of a font file and
      *                each value is the original URL of the font file.
      */
@@ -448,11 +448,11 @@
     }
     /**
      * Retrieves font-face rules from stylesheets.
-     * 
+     *
      * This method scans all stylesheets loaded on the page and collects
      * font-face rules, including their source URLs, font families, weights,
      * and styles. It returns an object containing the collected font data.
-     * 
+     *
      * @returns {Object} An object mapping font families to their respective
      *                  URLs and variations.
      */
@@ -499,7 +499,7 @@
     }
     /**
      * Checks if an element is above the fold (visible in the viewport without scrolling).
-     * 
+     *
      * @param {Element} element - The element to check.
      * @returns {boolean} True if the element is above the fold, false otherwise.
      */
@@ -516,7 +516,7 @@
      * This method fetches network-loaded fonts, stylesheet fonts, and external font pairs.
      * It then processes each element on the page to determine which fonts are used above the fold.
      * The results are summarized and logged.
-     * 
+     *
      * @returns {Promise<void>} A promise that resolves when the analysis is complete.
      */
     async run() {
@@ -705,11 +705,11 @@
     }
     /**
      * Processes external font pairs to identify their usage on the page.
-     * 
+     *
      * This method iterates through all elements on the page, checks if they are above the fold,
      * and determines the font information for each element. It then matches the font information
      * with the provided external font pairs to identify which fonts are used and where.
-     * 
+     *
      * @param {Object} fontPairs - An object where each key is a URL and the value is an array of font variations.
      * @returns {Promise<Object>} A promise that resolves to an object where each key is a URL and the value is an object containing information about the elements using that font.
      */
@@ -792,7 +792,7 @@
     /**
      * Retrieves the results of the font analysis, specifically the fonts used above the fold.
      * This method returns an array containing the URLs of the fonts used above the fold.
-     * 
+     *
      * @returns {Array<string>} An array of URLs of the fonts used above the fold.
      */
     getResults() {
@@ -825,10 +825,10 @@
     }
     /**
      * Processes a single element to determine if it should be preconnected.
-     * 
+     *
      * This method checks if the element is excluded based on attribute or domain rules.
      * If not excluded, it checks if the element's URL is an external domain and adds it to the list of matched items.
-     * 
+     *
      * @param {Element} el - The element to process.
      */
     processElement(el) {
@@ -852,10 +852,10 @@
     }
     /**
      * Checks if an element is excluded based on attribute rules.
-     * 
+     *
      * This method iterates through the excludedPatterns array and checks if any pattern matches the element's attribute.
      * If a match is found, it returns true, indicating the element is excluded.
-     * 
+     *
      * @param {Element} el - The element to check.
      * @returns {boolean} True if the element is excluded by an attribute rule, false otherwise.
      */
@@ -866,10 +866,10 @@
     }
     /**
      * Checks if a URL is excluded based on domain rules.
-     * 
+     *
      * This method iterates through the excludedPatterns array and checks if any pattern matches the URL's hostname.
      * If a match is found, it returns true, indicating the URL is excluded.
-     * 
+     *
      * @param {URL} url - The URL to check.
      * @returns {boolean} True if the URL is excluded by a domain rule, false otherwise.
      */
@@ -880,10 +880,10 @@
     }
     /**
      * Checks if a URL is from an external domain.
-     * 
+     *
      * This method compares the hostname of the given URL with the hostname of the current location.
      * If they are not the same, it indicates the URL is from an external domain.
-     * 
+     *
      * @param {URL} url - The URL to check.
      * @returns {boolean} True if the URL is from an external domain, false otherwise.
      */
@@ -892,11 +892,11 @@
     }
     /**
      * Creates an exclusion object based on the URL, element, and type.
-     * 
+     *
      * This method finds the pattern in the excludedPatterns array that matches the type and the element's attribute or the URL's hostname.
      * It then constructs a reason string based on the type and the pattern.
      * Finally, it returns an object with the URL's hostname, the element's tag name, and the reason.
-     * 
+     *
      * @param {URL} url - The URL to create the exclusion object for.
      * @param {Element} el - The element to create the exclusion object for.
      * @param {string} type - The type of the exclusion (attribute or domain).
@@ -911,10 +911,10 @@
     }
     /**
      * Returns an array of matched items, each item split into its domain and element type.
-     * 
+     *
      * This method iterates through the matchedItems set, splits each item into its domain and element type using the last hyphen as a delimiter,
      * and returns an array of these split items.
-     * 
+     *
      * @returns {Array} An array of arrays, each containing a domain and an element type.
      */
     getMatchedItems() {
@@ -930,9 +930,9 @@
     }
     /**
      * Returns the array of unique domain names that were found to be external.
-     * 
+     *
      * This method returns the result array, which contains a list of unique domain names that were identified as external during the analysis process.
-     * 
+     *
      * @returns {Array} An array of unique domain names.
      */
     getResults() {
@@ -946,15 +946,11 @@
     constructor(enabled) {
       this.enabled = enabled;
     }
-    logMessage(label, msg = "") {
+    logMessage(msg) {
       if (!this.enabled) {
         return;
       }
-      if (msg !== "") {
-        console.log(label, msg);
-        return;
-      }
-      console.log(label);
+      console.log(msg);
     }
     logColoredMessage(msg, color = "green") {
       if (!this.enabled) {

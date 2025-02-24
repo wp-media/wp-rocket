@@ -19,6 +19,7 @@ trait CronTrait {
 		 * @param int $delete_interval The interval in months after which a performance data entry is considered old. Default is 1 month.
 		 */
 		$delete_interval = wpm_apply_filters_typed( 'integer', $filter_name, 1 );
+
 		if ( $delete_interval <= 0 ) {
 			return $this->queries;
 		}

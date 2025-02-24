@@ -847,6 +847,7 @@ class Page extends Abstract_Render {
 		$exclude_lazyload = $this->beacon->get_suggest( 'exclude_lazyload' );
 		$dimensions       = $this->beacon->get_suggest( 'image_dimensions' );
 		$fonts            = $this->beacon->get_suggest( 'host_fonts_locally' );
+		$fonts_preload    = $this->beacon->get_suggest( 'fonts_preload' );
 
 		$this->settings->add_page_section(
 			'media',
@@ -936,12 +937,10 @@ class Page extends Abstract_Render {
 					'page'        => 'media',
 				],
 				'font_optimization_section' => [
-					'title'       => __( 'Fonts', 'rocket' ),
-					'type'        => 'fields_container',
-					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description' => sprintf( __( 'Download and serve fonts directly from your server. Reduces connections to external servers and minimizes font shifts. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $fonts['url'] ) . '" data-beacon-article="' . esc_attr( $fonts['id'] ) . '" target="_blank" rel="noopener noreferrer">', '</a>' ),
-					'help'        => $fonts,
-					'page'        => 'media',
+					'title' => __( 'Fonts', 'rocket' ),
+					'type'  => 'fields_container',
+					'help'  => $fonts,
+					'page'  => 'media',
 				],
 			]
 		);
@@ -1041,9 +1040,21 @@ class Page extends Abstract_Render {
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
 				],
+				'auto_preload_fonts'  => [
+					'type'              => 'checkbox',
+					'label'             => __( 'Preload fonts', 'rocket' ),
+					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+					'description'       => sprintf( __( 'Preload above-the-fold fonts to enhance layout stability and optimize text-based LCP elements. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $fonts_preload['url'] ) . '" data-beacon-article="' . esc_attr( $fonts_preload['id'] ) . '" target="_blank" rel="noopener noreferrer">', '</a>' ),
+					'section'           => 'font_optimization_section',
+					'page'              => 'media',
+					'default'           => 0,
+					'sanitize_callback' => 'sanitize_checkbox',
+				],
 				'host_fonts_locally'  => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Self-host Google Fonts', 'rocket' ),
+					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+					'description'       => sprintf( __( 'Download and serve fonts directly from your server. Reduces connections to external servers and minimizes font shifts. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $fonts['url'] ) . '" data-beacon-article="' . esc_attr( $fonts['id'] ) . '" target="_blank" rel="noopener noreferrer">', '</a>' ),
 					'section'           => 'font_optimization_section',
 					'page'              => 'media',
 					'default'           => 0,
@@ -2293,5 +2304,21 @@ class Page extends Abstract_Render {
 				'dismiss_button' => 'rocket_update_notice',
 			]
 		);
+	}
+
+	/**
+	 * Enables the auto preload fonts option if the old preload fonts option is not empty.
+	 *
+	 * This function checks the value of the `rocket_preload_fonts` option.
+	 * If it contains a non-empty value, it updates the `auto_preload_fonts` option to `true`.
+	 * This is useful for ensuring that automatic font preloading is enabled based on legacy settings.
+	 *
+	 * @return void
+	 */
+	public function maybe_enable_auto_preload_fonts(): void {
+		$old_preload_fonts = $this->options->get( 'rocket_preload_fonts', [] );
+		if ( ! empty( $old_preload_fonts ) ) {
+			$this->options->set( 'auto_preload_fonts', true );
+		}
 	}
 }

@@ -8,6 +8,7 @@ $html_with_double_body_output = file_get_contents(__DIR__ . '/HTML/output_double
 $html_output = file_get_contents(__DIR__ . '/HTML/output.html');
 $html_output_with_preload = file_get_contents(__DIR__ . '/HTML/output_w_preload.html');
 $html_output_with_beacon = file_get_contents(__DIR__ . '/HTML/output_w_beacon.html');
+$html_output_with_beacon_preconnect_external_domains_disabled = file_get_contents(__DIR__ . '/HTML/output_w_beacon_external_disabled.html');
 $html_input_with_bg_image_lcp = file_get_contents(__DIR__ . '/HTML/input_w_bg_image_lcp.html');
 $html_output_with_bg_image_lcp = file_get_contents(__DIR__ . '/HTML/output_w_bg_image_lcp.html');
 $html_input_with_picture_img_lcp = file_get_contents(__DIR__ . '/HTML/input_w_picture_img_lcp.html');
@@ -20,6 +21,12 @@ $html_input_with_domain_img_lcp = file_get_contents(__DIR__ . '/HTML/input_lcp_i
 $html_output_with_beacon_and_lcp_opt = file_get_contents(__DIR__ . '/HTML/output_with_beacon_and_atf_opt.html');
 $html_input_with_only_lrc_opt = file_get_contents(__DIR__ . '/HTML/input_with_only_lrc_opt.html');
 $html_output_with_beacon_and_only_lrc_opt = file_get_contents(__DIR__ . '/HTML/output_with_beacon_and_only_lrc_opt.html');
+$html_input_preload_fonts = file_get_contents(__DIR__ . '/HTML/input_preload_fonts.html');
+$html_input_preload_fonts_w_relative_path = file_get_contents(__DIR__ . '/HTML/input_preload_fonts_w_relative_path.html');
+$html_input_preload_fonts_w_crossorigin = file_get_contents(__DIR__ . '/HTML/input_preload_fonts_w_crossorigin.html');
+$html_output_preload_fonts = file_get_contents(__DIR__ . '/HTML/output_preload_fonts.html');
+$html_output_preload_fonts_w_crossorigin = file_get_contents(__DIR__ . '/HTML/output_preload_fonts_w_crossorigin.html');
+$html_output_preload_fonts_w_relative_path = file_get_contents(__DIR__ . '/HTML/output_preload_fonts_w_relative_path.html');
 
 $lrc = [
 	'row' => [
@@ -37,10 +44,26 @@ $preconnect_external_domains = [
 	'row' => [
 		'status'  => 'completed',
 		'url'     => 'http://example.org',
-		'domains' => json_encode( [
-			'http://example-domain.org',
-			'http://example-domain.com',
+		'domains' => json_encode( [] ),
+	],
+];
+
+$preload_fonts = [
+	'row' => [
+		'status' => 'completed',
+		'url' => 'http://example.org',
+		'fonts' => json_encode( [
+			'path/to/font1.woff2',
+			'path/to/font2.ttf',
 		] ),
+	],
+];
+
+$preload_fonts_empty = [
+	'row' => [
+		'status' => 'completed',
+		'url' => 'http://example.org',
+		'fonts' => json_encode( [] ),
 	],
 ];
 
@@ -67,6 +90,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
+				'preload_fonts' => $preload_fonts_empty,
 				'preload_external_domains' => $preconnect_external_domains,
 			],
 			'expected' => $html_input,
@@ -79,6 +103,9 @@ return [
 					'row' => null,
 				],
 				'lrc' => [
+					'row' => null,
+				],
+				'preload_fonts' => [
 					'row' => null,
 				],
 				'preload_external_domains' => [
@@ -98,6 +125,9 @@ return [
 				'lrc' => [
 					'row' => null,
 				],
+				'preload_fonts' => [
+					'row' => null,
+				],
 				'preload_external_domains' => [
 					'row' => null
 				],
@@ -115,11 +145,14 @@ return [
 				'lrc' => [
 					'row' => null,
 				],
+				'preload_fonts' => [
+					'row' => null,
+				],
 				'preload_external_domains' => [
 					'row' => null
 				],
 			],
-			'expected' => $html_output_with_beacon,
+			'expected' => $html_output_with_beacon_preconnect_external_domains_disabled,
 		],
 		'shouldAddBeaconToPage' => [
 			'config' => [
@@ -128,6 +161,37 @@ return [
 					'row' => null,
 				],
 				'lrc' => [
+					'row' => null,
+				],
+				'preload_fonts' => [
+					'row' => null,
+				],
+			],
+			'expected' => $html_output_with_beacon,
+		],
+		'shouldAddBeaconWhenOnlyMissingPreloadFontsData' => [
+			'config' => [
+				'html' => $html_input,
+				'atf' => [
+					'row' =>  [
+						'row' => [
+							'status' => 'completed',
+							'url' => 'http://example.org',
+							'lcp'      => json_encode( (object) [
+								'type' => 'img',
+								'src'  => 'http://example.org/wp-content/uploads/image.jpg',
+							] ),
+							'viewport' => json_encode( [
+								0 => (object) [
+									'type' => 'img',
+									'src'  => 'http://example.org/wp-content/uploads/image2.jpg',
+								],
+							] ),
+						],
+					],
+				],
+				'lrc' => $lrc,
+				'preload_fonts' => [
 					'row' => null,
 				],
 				'preload_external_domains' => [
@@ -144,6 +208,9 @@ return [
 					'row' => null,
 				],
 				'lrc' => [
+					'row' => null,
+				],
+				'preload_fonts' => [
 					'row' => null,
 				],
 				'preload_external_domains' => [
@@ -172,6 +239,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
+				'preload_fonts' => $preload_fonts_empty,
 				'preload_external_domains' => $preconnect_external_domains,
 			],
 			'expected' => $html_output_with_preload,
@@ -199,7 +267,14 @@ return [
 					],
 				],
 				'lrc' => $lrc,
-				'preload_external_domains' => $preconnect_external_domains,
+				'preload_fonts' => $preload_fonts_empty,
+				'preload_external_domains' => [
+					'row' => [
+						'status' => 'failed',
+						'url' => 'http://example.org',
+						'domains'      => json_encode( (object) [] ),
+					],
+				],
 			],
 			'expected' => $html_output,
 		],
@@ -221,6 +296,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
+				'preload_fonts' => $preload_fonts_empty,
 				'preload_external_domains' => $preconnect_external_domains
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_bg_responsive_imgset_template.php'),
@@ -243,6 +319,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
+				'preload_fonts' => $preload_fonts_empty,
 				'preload_external_domains' => $preconnect_external_domains,
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_bg_responsive_webkit_template.php'),
@@ -265,6 +342,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
+				'preload_fonts' => $preload_fonts_empty,
 				'preload_external_domains' => $preconnect_external_domains,
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_layered_bg.php'),
@@ -286,6 +364,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
+				'preload_fonts' => $preload_fonts_empty,
 				'preload_external_domains' => $preconnect_external_domains,
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_single_bg.php'),
@@ -307,6 +386,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
+				'preload_fonts' => $preload_fonts_empty,
 				'preload_external_domains' => $preconnect_external_domains,
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_responsive.php'),
@@ -326,6 +406,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
+				'preload_fonts' => $preload_fonts_empty,
 				'preload_external_domains' => $preconnect_external_domains,
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_with_relative_img_lcp.php'),
@@ -345,6 +426,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
+				'preload_fonts' => $preload_fonts_empty,
 				'preload_external_domains' => $preconnect_external_domains,
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_with_absolute_img_lcp.php'),
@@ -364,6 +446,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
+				'preload_fonts' => $preload_fonts_empty,
 				'preload_external_domains' => $preconnect_external_domains,
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_image.php'),
@@ -383,6 +466,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
+				'preload_fonts' => $preload_fonts_empty,
 				'preload_external_domains' => $preconnect_external_domains,
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_with_fetchpriority.html'),
@@ -402,6 +486,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
+				'preload_fonts' => $preload_fonts_empty,
 				'preload_external_domains' => $preconnect_external_domains,
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_with_markup_comment.html'),
@@ -429,7 +514,8 @@ return [
 						] ),
 					],
 				],
-				'lrc' => $lrc,
+				'lrc' =>$lrc,
+				'preload_fonts' => $preload_fonts_empty,
 				'preload_external_domains' => $preconnect_external_domains,
 			],
 			'expected' => $html_output_with_bg_image_lcp,
@@ -458,6 +544,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
+				'preload_fonts' => $preload_fonts_empty,
 				'preload_external_domains' => $preconnect_external_domains,
 			],
 			'expected' => $html_output_with_picture_img_lcp,
@@ -486,6 +573,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
+				'preload_fonts' => $preload_fonts_empty,
 				'preload_external_domains' => $preconnect_external_domains,
 			],
 			'expected' => $html_output_with_img_lcp,
@@ -503,6 +591,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
+				'preload_fonts' => $preload_fonts_empty,
 				'preload_external_domains' => $preconnect_external_domains,
 			],
 			'expected' => $html_output,
@@ -536,6 +625,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
+				'preload_fonts' => $preload_fonts_empty,
 				'preload_external_domains' => $preconnect_external_domains,
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_picture.php'),
@@ -569,6 +659,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
+				'preload_fonts' => $preload_fonts_empty,
 				'preload_external_domains' => $preconnect_external_domains,
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_picture_2.php'),
@@ -602,6 +693,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
+				'preload_fonts' => $preload_fonts_empty,
 				'preload_external_domains' => $preconnect_external_domains,
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_picture_3.php'),
@@ -633,6 +725,7 @@ return [
 					],
 				],
 				'lrc' => $lrc,
+				'preload_fonts' => $preload_fonts_empty,
 				'preload_external_domains' => $preconnect_external_domains,
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_picture_4.php'),
@@ -654,6 +747,9 @@ return [
 				'lrc' => [
 					'row' => null,
 				],
+				'preload_fonts' => [
+					'row' => null,
+				],
 				'preload_external_domains' => [
 					'row' => null
 				],
@@ -667,9 +763,49 @@ return [
 					'row' => null,
 				],
 				'lrc' => $lrc,
+				'preload_fonts' => [
+					'row' => null,
+				],
 				'preload_external_domains' => $preconnect_external_domains,
 			],
 			'expected' => $html_output_with_beacon_and_only_lrc_opt,
+		],
+		'ShouldAddBeaconToPageWhenOnlyLrcMissing' => [
+			'config' => [
+				'html' => $html_input_with_domain_img_lcp,
+				'atf' => [
+					'row' => [
+						'status' => 'completed',
+						'url' => 'http://example.org',
+						'lcp'      => json_encode( (object) [
+							'type' => 'img',
+							'src'  => 'http://example.org/wp-content/uploads/sample_url_image.png',
+						] ),
+						'viewport' => json_encode ( [] ),
+					],
+				],
+				'lrc' => [
+					'row' => null,
+				],
+				'preload_fonts' => [
+					'row' => $preload_fonts,
+				],
+			],
+			'expected' => $html_output_with_beacon_and_lcp_opt,
+		],
+		'ShouldAddBeauconToPageWhenOnlyLcpIsMissing' => [
+			'config' => [
+				'html' => $html_input_with_only_lrc_opt,
+				'atf' => [
+					'row' => null,
+				],
+				'lrc' => $lrc,
+				'preload_fonts' => [
+					'row' => $preload_fonts,
+				],
+			],
+			'expected' => $html_output_with_beacon_and_only_lrc_opt,
+
 		],
 		'shouldNotDuplicateBeaconOnAPage' => [
 			'config' => [
@@ -678,6 +814,9 @@ return [
 					'row' => null,
 				],
 				'lrc' => [
+					'row' => null,
+				],
+				'preload_fonts' => [
 					'row' => null,
 				],
 			],
@@ -692,11 +831,80 @@ return [
 				'lrc' => [
 					'row' => null,
 				],
+				'preload_fonts' => [
+					'row' => null,
+				],
 				'preload_external_domains' => [
 					'row' => null
 				],
 			],
 			'expected' => $html_input_without_closing_body_tag_output,
 		],
+		'shouldPreloadFonts' => [
+			'config' => [
+				'html' => $html_input_preload_fonts,
+				'atf' => [
+					'row' => null,
+				],
+				'lrc' => [
+					'row' => null,
+				],
+				'preload_fonts' => [
+					'row' => [
+						'status' => 'completed',
+						'url' => 'http://example.org',
+						'fonts' => json_encode( [
+							'http://example.org/assets/fonts/font1.woff2',
+							'http://example.org/assets/fonts/font2.ttf',
+						] ),
+					],
+				],
+			],
+			'expected' => $html_output_preload_fonts,
+		],
+		'shouldPreloadFontsWithCrossOrigin' => [
+			'config' => [
+				'html' => $html_input_preload_fonts_w_crossorigin,
+				'atf' => [
+					'row' => null,
+				],
+				'lrc' => [
+					'row' => null,
+				],
+				'preload_fonts' => [
+					'row' => [
+						'status' => 'completed',
+						'url' => 'http://example.org',
+						'fonts' => json_encode( [
+							'http://external.domain/assets/fonts/font1.woff2',
+							'http://example.org/assets/fonts/font2.ttf',
+						] ),
+					],
+				],
+			],
+			'expected' => $html_output_preload_fonts_w_crossorigin,
+		],
+		'shouldPreloadFontsWithRelativePath' => [
+			'config' => [
+				'html' => $html_input_preload_fonts_w_relative_path,
+				'atf' => [
+					'row' => null,
+				],
+				'lrc' => [
+					'row' => null,
+				],
+				'preload_fonts' => [
+					'row' => [
+						'status' => 'completed',
+						'url' => 'http://example.org',
+						'fonts' => json_encode( [
+							'/assets/fonts/font1.woff2',
+							'/assets/fonts/font2.ttf',
+						] ),
+					],
+				],
+			],
+			'expected' => $html_output_preload_fonts_w_relative_path,
+		]
 	],
 ];
