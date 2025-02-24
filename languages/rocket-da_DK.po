@@ -2881,7 +2881,7 @@ msgstr "Reducer dette banner"
 msgid ""
 "Speed up your website with RocketCDN, WP Rocket’s Content Delivery Network."
 msgstr ""
-"Hurtiggøre din hjemmeside med RocketCDN, WP Rockets Content Delivery "
+"Gør din hjemmeside hurtigere med RocketCDN, WP Rockets Content Delivery "
 "Network."
 
 #: inc/Engine/CDN/RocketCDN/views/cta-small.php:22
