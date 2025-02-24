@@ -2808,7 +2808,7 @@ msgstr ""
 
 #: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:409
 msgid "contact support"
-msgstr "kontakt support"
+msgstr "kontakt supporten"
 
 #: inc/Engine/CDN/RocketCDN/RESTSubscriber.php:137
 msgid "RocketCDN enabled"
