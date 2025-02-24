@@ -3323,7 +3323,7 @@ msgstr "Opgrader nu"
 
 #: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:13
 msgid "The Optimize CSS Delivery feature is disabled."
-msgstr "Funktionen Optimere CSS Delivery er deaktiveret."
+msgstr "Funktionen Optimer CSS-levering er deaktiveret."
 
 #: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:17
 msgid ""
