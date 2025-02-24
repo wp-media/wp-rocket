@@ -2370,7 +2370,7 @@ msgstr ""
 msgid ""
 "Disabling Heartbeat entirely may break plugins and themes using this API."
 msgstr ""
-"Deaktivering af Heartbeat helt kan bryde plugins og temaer ved hjælp af "
+"En fuld deaktivering af Heartbeat kan afbryde plugins og temaer, der bruger "
 "denne API."
 
 #: inc/Engine/Admin/Settings/Page.php:1666
