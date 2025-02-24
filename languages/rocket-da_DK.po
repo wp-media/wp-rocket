@@ -2795,7 +2795,7 @@ msgstr "RocketCDN cacherydning udført."
 #. translators: %1$s = Old CName, %2$s = New CName.
 #: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:398
 msgid "We've updated your RocketCDN CNAME from %1$s to %2$s."
-msgstr "Vi har opdateret din RocketCDN CNAME fra% 1$s til% 2$s."
+msgstr "Vi har opdateret din RocketCDN CNAME fra %1$s til %2$s."
 
 #. translators: %1$s = New CName.
 #: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:400
