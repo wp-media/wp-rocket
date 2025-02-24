@@ -2391,7 +2391,7 @@ msgstr "Kontrollér Heartbeat"
 
 #: inc/Engine/Admin/Settings/Page.php:1685
 msgid "Behavior in backend"
-msgstr "Adfærd i baggrunden"
+msgstr "Adfærd i backend"
 
 #: inc/Engine/Admin/Settings/Page.php:1692
 msgid "Behavior in post editor"
