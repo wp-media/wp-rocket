@@ -2992,7 +2992,7 @@ msgstr "%l for at bruge denne funktion."
 #. translators: %s = post type.
 #: inc/Engine/CriticalPath/Admin/Post.php:222
 msgid "Publish the %s"
-msgstr "Publicer %s"
+msgstr "Udgiv %s"
 
 #: inc/Engine/CriticalPath/Admin/Post.php:223
 msgid "Enable Load CSS asynchronously in WP Rocket settings"
