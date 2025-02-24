@@ -2726,7 +2726,7 @@ msgstr "Næste faktureringsdato"
 
 #: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:103
 msgid "No Subscription"
-msgstr "Ingen abonnement"
+msgstr "Intet abonnement"
 
 #: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:138
 msgid "Your RocketCDN subscription is currently active."
