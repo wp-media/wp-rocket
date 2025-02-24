@@ -2834,7 +2834,7 @@ msgid ""
 "High performance Content Delivery Network (CDN) with %1$sunlimited "
 "bandwidth%2$s"
 msgstr ""
-"Høj ydeevne Content Delivery Network (CDN) med %1$unlimited båndbredde%2$s"
+"Højtydende Content Delivery Network (CDN) med %1$subegrænset båndbredde%2$s"
 
 #. translators: %1$s = opening strong tag, %2$s = closing strong tag.
 #: inc/Engine/CDN/RocketCDN/views/cta-big.php:50
