@@ -2412,7 +2412,7 @@ msgstr "Tilføj flere funktioner"
 
 #: inc/Engine/Admin/Settings/Page.php:1725
 msgid "One-click Rocket Add-ons"
-msgstr "One-click raket tilføjelser"
+msgstr "Et-klik Rocket Add-ons"
 
 #: inc/Engine/Admin/Settings/Page.php:1726
 msgid ""
