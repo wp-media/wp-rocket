@@ -3341,8 +3341,8 @@ msgid ""
 "performance."
 msgstr ""
 "Du har brug for en %1$s aktiv licens%2$s for at fortsætte med at optimere "
-"din CSS-levering, hvilket adresserer en PageSpeed Insights anbefaling og "
-"forbedrer din side ydeevne."
+"din CSS-levering, der adresserer en PageSpeed Insights-anbefaling og "
+"forbedrer din sides ydeevne."
 
 #: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:31
 #: inc/Engine/License/views/renewal-expired-banner-ocd.php:41
