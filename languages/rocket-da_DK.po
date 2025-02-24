@@ -3330,8 +3330,8 @@ msgid ""
 "You can no longer use the Remove Unused CSS or Load CSS asynchronously "
 "options."
 msgstr ""
-"Du kan ikke længere bruge indstillingerne Fjern ubrugte CSS eller Indlæse "
-"CSS asynkront."
+"Du kan ikke længere bruge indstillingerne Fjern ubrugt CSS eller Indlæs CSS "
+"asynkront."
 
 #. translators: %1$s = <strong>, %2$s = </strong>.
 #: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:22
