@@ -2469,9 +2469,9 @@ msgid ""
 "as clearing the Cloudflare cache and enabling optimal settings with WP "
 "Rocket."
 msgstr ""
-"Giv din konto e-mail, global API-nøgle og domæne til at bruge muligheder som"
-" f.eks. at rydde Cloudflare-cachen og aktivere optimale indstillinger med WP"
-" Rocket."
+"Angiv din konto-e-mail, global API-nøgle og dit domæne for at bruge "
+"muligheder som f.eks. at rydde Cloudflare-cachen og aktivere optimale "
+"indstillinger for WP Rocket."
 
 #. translators: %1$s = opening span tag, %2$s = closing span tag.
 #: inc/Engine/Admin/Settings/Page.php:1779
