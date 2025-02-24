@@ -2867,7 +2867,7 @@ msgstr ""
 
 #: inc/Engine/CDN/RocketCDN/views/cta-big.php:88
 msgid "Billed monthly"
-msgstr "Billet månedligt"
+msgstr "Faktureres månedligt"
 
 #: inc/Engine/CDN/RocketCDN/views/cta-big.php:89
 msgid "Get Started"
