@@ -2983,7 +2983,7 @@ msgstr "Regenerer specifik CPCSS"
 
 #: inc/Engine/CriticalPath/Admin/Post.php:216
 msgid "This feature is not available for non-public post types."
-msgstr "Denne funktion er ikke tilgængelig for ikke-offentlige posttyper."
+msgstr "Denne funktion er ikke tilgængelig for ikke-offentlige indlægstyper."
 
 #: inc/Engine/CriticalPath/Admin/Post.php:219
 msgid "%l to use this feature."
