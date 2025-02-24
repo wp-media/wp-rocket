@@ -2862,7 +2862,7 @@ msgid ""
 "*$%1$s/month for 12 months then $%2$s/month. You can cancel your "
 "subscription at any time."
 msgstr ""
-"*$%1$s/måned i 12 måneder og derefter $%2$s/måned. Du kan annullere dit "
+"*$%1$s/måned i 12 måneder og derefter $%2$s/måned. Du kan opsige dit "
 "abonnement når som helst."
 
 #: inc/Engine/CDN/RocketCDN/views/cta-big.php:88
