@@ -2620,7 +2620,8 @@ msgid ""
 "Firewall API key (for plugin), must be in format {32 characters}/{32 "
 "characters}:"
 msgstr ""
-"Firewall API nøgle (for plugin), skal være i formatet {32 tegn} / {32 tegn}:"
+"Firewall API-nøgle (til pluginet) skal være i formatet {32 tegn} / {32 "
+"tegn}:"
 
 #: inc/Engine/Admin/Settings/Page.php:2082
 msgctxt "Sucuri"
