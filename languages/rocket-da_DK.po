@@ -2822,7 +2822,7 @@ msgstr "RocketCDN deaktiveret"
 #. 'date_format' ).
 #: inc/Engine/CDN/RocketCDN/views/cta-big.php:29
 msgid "Valid until %s only!"
-msgstr "Gyldigt indtil kun %s!"
+msgstr "Kun gyldigt indtil %s!"
 
 #: inc/Engine/CDN/RocketCDN/views/cta-big.php:38
 msgid "Speed up your website thanks to:"
