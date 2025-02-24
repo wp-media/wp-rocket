@@ -2705,8 +2705,8 @@ msgid ""
 "The WP_CACHE constant needs to be set to true for WP Rocket cache to work "
 "properly"
 msgstr ""
-"WP_CACHE konstant skal indstilles til true for WP Rocket cache at fungere "
-"korrekt"
+"WP_CACHE-konstanten skal indstilles til \"true\" for at WP Rocket-cachen kan"
+" fungere korrekt"
 
 #: inc/Engine/Cache/WPCache.php:368
 msgid "WP_CACHE is set to true"
