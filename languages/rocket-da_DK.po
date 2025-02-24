@@ -3169,7 +3169,7 @@ msgstr "Kritisk CSS-fil slettet."
 #. translators: %1$s = Item URL or item type.
 #: inc/Engine/CriticalPath/ProcessorService.php:294
 msgid "Mobile Critical CSS for %1$s timeout. Please retry a little later."
-msgstr "Mobile Critical CSS for %1$s timeout. Prøv igen senere."
+msgstr "Kritisk CSS til mobil for %1$s timeout. Prøv igen senere."
 
 #. translators: %1$s = Item URL or item type.
 #: inc/Engine/CriticalPath/ProcessorService.php:307
