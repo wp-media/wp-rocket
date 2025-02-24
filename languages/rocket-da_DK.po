@@ -3191,7 +3191,7 @@ msgstr "Kan ikke generere CPCSS for upubliceret indlæg."
 
 #: inc/Engine/HealthCheck/HealthCheck.php:134
 msgid "Scheduled Cache Purge"
-msgstr "Planlagt cache rensning"
+msgstr "Planlagt cacherydning"
 
 #: inc/Engine/HealthCheck/HealthCheck.php:135
 msgid "Scheduled Database Optimization"
