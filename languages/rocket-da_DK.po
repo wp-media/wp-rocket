@@ -3183,7 +3183,7 @@ msgstr "Generering af mobil-CPCSS ikke aktiveret."
 #: inc/Engine/CriticalPath/RESTWPPost.php:36
 #: inc/Engine/CriticalPath/RESTWPPost.php:69
 msgid "Requested post does not exist."
-msgstr "Den ønskede post findes ikke."
+msgstr "Det ønskede indlæg findes ikke."
 
 #: inc/Engine/CriticalPath/RESTWPPost.php:46
 msgid "Cannot generate CPCSS for unpublished post."
