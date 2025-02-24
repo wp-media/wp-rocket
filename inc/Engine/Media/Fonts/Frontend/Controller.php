@@ -410,8 +410,9 @@ class Controller {
 				continue;
 			}
 
-			$font_url      = html_entity_decode( $item['href'], ENT_QUOTES );
-			$gf_parameters = wp_parse_url( $font_url, PHP_URL_QUERY );
+			$font_url       = html_entity_decode( $item['href'], ENT_QUOTES );
+			$gf_parameters  = wp_parse_url( $font_url, PHP_URL_QUERY );
+			$local_font_url = $this->get_font_local_url( $item['href'] );
 
 			if ( $this->is_host_fonts_inline_css() ) {
 				$items[] = $this->get_font_styles_by_url( $item['href'], $gf_parameters );
@@ -419,7 +420,7 @@ class Controller {
 				continue;
 			}
 
-			$item['href']                          = $this->get_font_local_url( $item['href'] );
+			$item['href']                          = $local_font_url;
 			$item['data-wpr-hosted-gf-parameters'] = $gf_parameters;
 		}
 		return $items;
