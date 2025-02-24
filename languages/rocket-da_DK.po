@@ -2952,7 +2952,7 @@ msgstr "%1$s: Kritiske billeder og Lazy Render-data er blevet fjernet."
 
 #: inc/Engine/Common/PerformanceHints/AJAX/AJAXControllerTrait.php:19
 msgid "Script error"
-msgstr "Script fejl"
+msgstr "Scriptfejl"
 
 #: inc/Engine/Common/PerformanceHints/AJAX/AJAXControllerTrait.php:22
 msgid "Script timeout"
