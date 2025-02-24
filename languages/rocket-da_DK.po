@@ -3089,7 +3089,7 @@ msgstr "Kritisk CSS-generering er afsluttet for %1$d af %2$d sidetyper."
 
 #: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:482
 msgid "Critical CSS generation encountered one or more errors."
-msgstr "Kritisk CSS generation stødte på en eller flere fejl."
+msgstr "Kritisk CSS-generering stødte på en eller flere fejl."
 
 #: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:482
 msgid "Learn more."
