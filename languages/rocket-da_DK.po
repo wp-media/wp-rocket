@@ -2636,9 +2636,9 @@ msgid ""
 "feature: %3$sAutomatic Lazy Rendering%4$s. Check out our documentation to "
 "learn more about it."
 msgstr ""
-"%1$sWP Rocket:%2$s plugin er blevet opdateret til 3.17 version. Ny funktion:"
-" %3$sAutomatic Lazy Rendering%4$s. Tjek vores dokumentation for at lære mere"
-" om det."
+"%1$sWP Rocket:%2$s Pluginet er blevet opdateret til version 3.17. Ny "
+"funktion: %3$sAutomatic Lazy Rendering%4$s. Tjek vores dokumentation for at "
+"lære mere om dette."
 
 #: inc/Engine/Admin/Settings/Settings.php:363
 msgid ""
