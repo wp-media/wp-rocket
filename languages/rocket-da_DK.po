@@ -2756,7 +2756,7 @@ msgstr ""
 
 #: inc/Engine/CDN/RocketCDN/APIClient.php:140
 msgid "RocketCDN is not available at the moment. Please retry later."
-msgstr "RocketCDN er ikke tilgængelig i øjeblikket. Prøv igen senere."
+msgstr "RocketCDN er i øjeblikket ikke tilgængeligt. Prøv igen senere."
 
 #: inc/Engine/CDN/RocketCDN/APIClient.php:177
 msgid "RocketCDN cache purge failed: Missing identifier parameter."
