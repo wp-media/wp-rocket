@@ -2490,8 +2490,7 @@ msgstr "Varnish"
 
 #: inc/Engine/Admin/Settings/Page.php:1833
 msgid "If Varnish runs on your server, you must activate this add-on."
-msgstr ""
-"Hvis Varnish kører på din server, skal du aktivere dette tilføjelsesprogram."
+msgstr "Hvis Varnish kører på din server, skal du aktivere dette add-on."
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:1835
