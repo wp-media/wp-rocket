@@ -2451,8 +2451,8 @@ msgid ""
 "User cache is great when you have user-specific or restricted content on "
 "your website.<br>%1$sLearn more%2$s"
 msgstr ""
-"Brugercache er fantastisk, når du har bruger-specifik eller begrænset "
-"indhold på dit websted.<br>%1$sLær mere%2$s"
+"Brugercache er fantastisk, når du har brugerspecifikt eller begrænset "
+"indhold på din hjemmeside.<br>%1$sLær mere%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:1769
 #: inc/Engine/Admin/Settings/Page.php:1938
