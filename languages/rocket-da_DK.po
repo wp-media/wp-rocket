@@ -2419,9 +2419,9 @@ msgid ""
 "One-Click Add-ons are features extending available options without "
 "configuration needed. Switch the option \"on\" to enable from this screen."
 msgstr ""
-"One-Click Add-ons er funktioner, der udvider tilgængelige muligheder uden "
-"behov for konfiguration. Skift indstillingen \"på\" for at aktivere fra "
-"denne skærm."
+"Et-klik Rocket Add-ons er funktioner, der udvider tilgængelige muligheder "
+"uden behov for konfiguration. Skift indstillingen til \"til\" for at "
+"aktivere fra denne skærm."
 
 #: inc/Engine/Admin/Settings/Page.php:1736
 msgid "Rocket Add-ons"
