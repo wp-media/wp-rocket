@@ -2849,7 +2849,7 @@ msgid ""
 "WP Rocket integration: the CDN option is %1$sautomatically configured%2$s in"
 " our plugin"
 msgstr ""
-"WP Rocket integration: CDN-indstillingen er %1$sautomatisk konfigureret%2$s "
+"WP Rocket-integration: CDN-indstillingen er %1$sautomatisk konfigureret%2$s "
 "i vores plugin"
 
 #: inc/Engine/CDN/RocketCDN/views/cta-big.php:60
