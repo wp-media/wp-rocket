@@ -2790,7 +2790,7 @@ msgstr "RocketCDN cacherydning mislykkedes: %s."
 
 #: inc/Engine/CDN/RocketCDN/APIClient.php:247
 msgid "RocketCDN cache purge successful."
-msgstr "RocketCDN cache rensning lykkedes."
+msgstr "RocketCDN cacherydning udført."
 
 #. translators: %1$s = Old CName, %2$s = New CName.
 #: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:398
