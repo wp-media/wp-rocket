@@ -2425,7 +2425,7 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:1736
 msgid "Rocket Add-ons"
-msgstr "Rocket tilføjelser"
+msgstr "Rocket Add-ons"
 
 #: inc/Engine/Admin/Settings/Page.php:1737
 msgid "Rocket Add-ons are complementary features extending available options."
