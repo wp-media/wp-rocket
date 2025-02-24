@@ -400,6 +400,10 @@ class Controller {
 	 * @return array
 	 */
 	public function rewrite_fonts_in_head( array $items ): array {
+		if ( ! $this->optimization_context->is_allowed() ) {
+			return $items;
+		}
+
 		$exclusions = $this->get_exclusions();
 		foreach ( $items as &$item ) {
 			if ( empty( $item['href'] ) || ! $this->is_google_font_url( $item['href'] ) ) {
