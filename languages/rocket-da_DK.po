@@ -2442,8 +2442,8 @@ msgid ""
 "If you need to create a dedicated set of cache files for each logged-in "
 "WordPress user, you must activate this add-on."
 msgstr ""
-"Hvis du skal oprette et dedikeret sæt cache-filer til hver indlogget "
-"WordPress-bruger, skal du aktivere dette tilføjelsesprogram."
+"Hvis du skal oprette et dedikeret sæt cachefiler til hver indlogget "
+"WordPress-bruger, skal du aktivere dette add-on."
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:1756
