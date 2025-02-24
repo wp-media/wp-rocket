@@ -2956,7 +2956,7 @@ msgstr "Scriptfejl"
 
 #: inc/Engine/Common/PerformanceHints/AJAX/AJAXControllerTrait.php:22
 msgid "Script timeout"
-msgstr "Script timeout"
+msgstr "Script-timeout"
 
 #. Translators: %s is the exception message.
 #: inc/Engine/Common/Queue/Cleaner.php:87
