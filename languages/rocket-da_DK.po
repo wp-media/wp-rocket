@@ -2519,7 +2519,7 @@ msgid ""
 msgstr ""
 "Aktivér denne indstilling, hvis du ønsker, at WP Rocket skal levere WebP-"
 "billeder til kompatible browsere. Bemærk, at WP Rocket ikke kan oprette "
-"WebP-billeder til dig. For at oprette WebP-billeder anbefaler vi "
+"WebP-billeder til dig. Til oprettelse af WebP-billeder anbefaler vi "
 "%1$sImagify%2$s. %3$sMere info%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:1900
