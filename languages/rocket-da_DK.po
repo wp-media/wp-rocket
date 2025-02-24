@@ -3000,7 +3000,7 @@ msgstr "Aktivér Indlæs CSS asynkront i WP Rocket-indstillinger"
 
 #: inc/Engine/CriticalPath/Admin/Post.php:224
 msgid "Enable Load CSS asynchronously in the options above"
-msgstr "Aktivér Indlæse CSS asynkront i ovennævnte indstillinger"
+msgstr "Aktivér Indlæs CSS asynkront i ovennævnte indstillinger"
 
 #. translators: %1$s = type of content, %2$s = error message.
 #: inc/Engine/CriticalPath/APIClient.php:64
