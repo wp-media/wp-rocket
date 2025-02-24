@@ -2498,7 +2498,7 @@ msgid ""
 "Varnish cache will be purged each time WP Rocket clears its cache to ensure "
 "content is always up-to-date.<br>%1$sLearn more%2$s"
 msgstr ""
-"Varmecache vil blive renset hver gang WP Rocket renser sin cache for at "
+"Varnish-cache vil blive renset hver gang WP Rocket renser sin cache for at "
 "sikre, at indholdet altid er opdateret.<br>%1$sLær mere%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:1870
