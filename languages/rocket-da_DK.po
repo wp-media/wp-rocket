@@ -2686,7 +2686,7 @@ msgstr "Vores plugins"
 
 #: inc/Engine/Admin/Settings/Subscriber.php:309
 msgid "Build Better, Faster, Safer"
-msgstr "Byg bedre, hurtigere og sikrere"
+msgstr "Byg bedre, hurtigere og mere sikkert"
 
 #: inc/Engine/Cache/PurgeExpired/Subscriber.php:75
 msgid "WP Rocket Expired Cache Interval"
