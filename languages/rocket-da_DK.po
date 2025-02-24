@@ -2804,7 +2804,7 @@ msgid ""
 "CNAME in your code, make sure to update it to: %1$s."
 msgstr ""
 "Ændringen er allerede blevet anvendt til plugin-indstillingerne. Hvis du "
-"brugte CNAME i din kode, skal du opdatere den til:%1$s."
+"brugte CNAME i din kode, skal du opdatere den til: %1$s."
 
 #: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:409
 msgid "contact support"
