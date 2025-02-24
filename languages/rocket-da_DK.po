@@ -3059,7 +3059,7 @@ msgstr ""
 #: inc/Engine/CriticalPath/APIClient.php:207
 #: inc/Engine/CriticalPath/ProcessorService.php:178
 msgid "Error: %1$s"
-msgstr "Fejl:% 1$s"
+msgstr "Fejl: %1$s"
 
 #: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:179
 msgid "Critical CSS generation is currently running."
