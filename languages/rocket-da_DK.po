@@ -2718,7 +2718,7 @@ msgstr "WP_CACHE er ikke indstillet"
 
 #: inc/Engine/Cache/WPCache.php:384
 msgid "WP_CACHE is set to false"
-msgstr "WP_CACHE er sat til falsk"
+msgstr "WP_CACHE er sat til false"
 
 #: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:96
 msgid "Next Billing Date"
