@@ -3178,7 +3178,7 @@ msgstr "Kritisk CSS for %1$s timeout. Prøv igen senere."
 
 #: inc/Engine/CriticalPath/RESTWP.php:141
 msgid "Mobile CPCSS generation not enabled."
-msgstr "Mobile CPCSS generation ikke aktiveret."
+msgstr "Generering af mobil-CPCSS ikke aktiveret."
 
 #: inc/Engine/CriticalPath/RESTWPPost.php:36
 #: inc/Engine/CriticalPath/RESTWPPost.php:69
