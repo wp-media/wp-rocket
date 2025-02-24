@@ -2559,7 +2559,7 @@ msgstr "Global API-nøgle:"
 #: inc/Engine/Admin/Settings/Page.php:1979
 msgctxt "Cloudflare"
 msgid "Find your API key"
-msgstr "Find din API nøgle"
+msgstr "Find din API-nøgle"
 
 #: inc/Engine/Admin/Settings/Page.php:1991
 msgctxt "Cloudflare"
