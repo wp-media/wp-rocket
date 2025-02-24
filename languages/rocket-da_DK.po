@@ -3068,7 +3068,8 @@ msgstr "Kritisk CSS-generering kører i øjeblikket."
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
 #: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:184
 msgid "Go to the %1$sWP Rocket settings%2$s page to track progress."
-msgstr "Gå til siden %1$sWP Rocket settings%2$s for at spore fremskridt."
+msgstr ""
+"Gå til siden for %1$sWP Rocket-indstillinger%2$s for at spore fremskridt."
 
 #. Translators: %1$d = number of critical CSS generated, %2$d = total number
 #. of critical CSS to generate.
