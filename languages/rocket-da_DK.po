@@ -2573,7 +2573,7 @@ msgstr "Zone-ID"
 
 #: inc/Engine/Admin/Settings/Page.php:2010
 msgid "Development mode"
-msgstr "Udviklingsmåde"
+msgstr "Udviklingstilstand"
 
 #. translators: %1$s = link opening tag, %2$s = link closing tag.
 #: inc/Engine/Admin/Settings/Page.php:2012
