@@ -3204,7 +3204,7 @@ msgstr "Databaseoptimeringsproces"
 #: inc/Engine/HealthCheck/HealthCheck.php:137
 msgctxt "noun"
 msgid "Preload"
-msgstr "Preload"
+msgstr "Forudindlæs"
 
 #: inc/Engine/HealthCheck/HealthCheck.php:138
 msgid "Critical Path CSS Generation Process"
