@@ -3063,7 +3063,7 @@ msgstr "Fejl: %1$s"
 
 #: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:179
 msgid "Critical CSS generation is currently running."
-msgstr "Kritisk CSS generation kører i øjeblikket."
+msgstr "Kritisk CSS-generation kører i øjeblikket."
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
 #: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:184
