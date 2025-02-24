@@ -2606,7 +2606,7 @@ msgid ""
 "files (CSS, JS, images) will be rewritten to use // instead of http:// or "
 "https://."
 msgstr ""
-"Skal kun bruges med Cloudflares fleksible SSL-funktion. URL'er af statiske "
+"Bør kun bruges med Cloudflares fleksible SSL-funktion. URL'er af statiske "
 "filer (CSS, JS, billeder) vil blive omskrevet til at bruge // i stedet for "
 "http:// eller https://."
 
