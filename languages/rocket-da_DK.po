@@ -2593,7 +2593,7 @@ msgid ""
 "Automatically enhances your Cloudflare configuration for speed, performance "
 "grade and compatibility."
 msgstr ""
-"Automatisk forbedrer din Cloudflare-konfiguration for hastighed, ydeevne og "
+"Forbedrer automatisk din Cloudflare-konfiguration på hastighed, ydeevne og "
 "kompatibilitet."
 
 #: inc/Engine/Admin/Settings/Page.php:2029
