@@ -2480,9 +2480,9 @@ msgid ""
 "activate the official Cloudflare plugin and configure it. WP Rocket will "
 "automatically enable compatibility."
 msgstr ""
-"%1$sPlanlægger du at bruge Automatisk Platformoptimering (APO)?%2$s Aktiver "
-"blot det officielle Cloudflare-plugin og konfigurer det. WP Rocket aktiverer"
-" automatisk kompatibilitet."
+"%1$sPlanlægger du at bruge Automatisk Platformoptimering (APO)?%2$s Så skal "
+"du blot aktivere det officielle Cloudflare-plugin og konfigurere det. WP "
+"Rocket aktiverer automatisk kompatibilitet."
 
 #: inc/Engine/Admin/Settings/Page.php:1827
 msgid "Varnish"
