@@ -3222,7 +3222,7 @@ msgid ""
 "Renew with a %1$s%2$s discount%3$s before it is too late, you will only pay "
 "%4$s%5$s%6$s!"
 msgstr ""
-"Forny med %1$s%2$s rabat%3$s, før det er for sent, vil du kun betale "
+"Forny med %1$s%2$s rabat%3$s, før det er for sent. Du betaler kun "
 "%4$s%5$s%6$s!"
 
 #. translators: %1$s = <strong>, %2$s = </strong>, %3$s = price.
