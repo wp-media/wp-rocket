@@ -2694,7 +2694,7 @@ msgstr "WP Rocket udløbet cache-interval"
 
 #: inc/Engine/Cache/WPCache.php:338
 msgid "WP_CACHE value"
-msgstr "WP_CACHE værdi"
+msgstr "WP_CACHE-værdi"
 
 #: inc/Engine/Cache/WPCache.php:355
 msgid "Cache"
