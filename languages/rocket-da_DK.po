@@ -2581,8 +2581,8 @@ msgid ""
 "Temporarily activate development mode on your website. This setting will "
 "automatically turn off after 3 hours. %1$sLearn more%2$s"
 msgstr ""
-"Aktivér udviklingsmode midlertidigt på din hjemmeside. Denne indstilling "
-"slukkes automatisk efter 3 timer. %1$sLær mere%2$s"
+"Aktivér udviklingstilstand midlertidigt på din hjemmeside. Denne indstilling"
+" slukkes automatisk efter 3 timer. %1$sLær mere%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:2020
 msgid "Optimal settings"
