@@ -2352,7 +2352,7 @@ msgid ""
 "your server’s resources."
 msgstr ""
 "At reducere eller deaktivere Heartbeat API's aktivitet kan hjælpe med at "
-"spare nogle af serverens ressourcer."
+"spare på nogle af serverens ressourcer."
 
 #: inc/Engine/Admin/Settings/Page.php:1651
 msgid "Reduce or disable Heartbeat activity"
