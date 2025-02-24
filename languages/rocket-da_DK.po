@@ -2690,7 +2690,7 @@ msgstr "Byg bedre, hurtigere og mere sikkert"
 
 #: inc/Engine/Cache/PurgeExpired/Subscriber.php:75
 msgid "WP Rocket Expired Cache Interval"
-msgstr "WP Rocket udløbet cache interval"
+msgstr "WP Rocket udløbet cache-interval"
 
 #: inc/Engine/Cache/WPCache.php:338
 msgid "WP_CACHE value"
