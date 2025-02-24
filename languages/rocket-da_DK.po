@@ -2915,7 +2915,7 @@ msgstr "WP Rocket-processering af afventende jobs"
 
 #: inc/Engine/Common/JobManager/Cron/Subscriber.php:204
 msgid "WP Rocket clear failed jobs"
-msgstr "WP Rocket klar af mislykkede job"
+msgstr "WP Rocket-rydning af mislykkede jobs"
 
 #: inc/Engine/Common/JobManager/Cron/Subscriber.php:221
 msgid "WP Rocket process on submit jobs"
