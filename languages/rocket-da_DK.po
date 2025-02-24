@@ -2626,7 +2626,7 @@ msgstr ""
 #: inc/Engine/Admin/Settings/Page.php:2082
 msgctxt "Sucuri"
 msgid "Find your API key"
-msgstr "Find din API nøgle"
+msgstr "Find din API-nøgle"
 
 #. translators: %1$s: opening strong tag, %2$s: closing strong tag, %3$s:
 #. opening a tag, %4$s: opening a tag.
