@@ -2363,8 +2363,8 @@ msgid ""
 "Reducing activity will change Heartbeat frequency from one hit each minute "
 "to one hit every 2 minutes."
 msgstr ""
-"Reducering af aktiviteten vil ændre hjertefrekvensen fra et slag pr. minut "
-"til et slag pr. 2 minutter."
+"Reducering af aktiviteten vil ændre Heartbeat-frekvensen fra ét slag pr. "
+"minut til ét slag hvert andet minut."
 
 #: inc/Engine/Admin/Settings/Page.php:1652
 msgid ""
