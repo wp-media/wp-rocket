@@ -2826,7 +2826,7 @@ msgstr "Kun gyldigt indtil %s!"
 
 #: inc/Engine/CDN/RocketCDN/views/cta-big.php:38
 msgid "Speed up your website thanks to:"
-msgstr "Hurtiggøre din hjemmeside takket være:"
+msgstr "Gør din hjemmeside hurtigere ved hjælp af:"
 
 #. translators: %1$s = opening strong tag, %2$s = closing strong tag.
 #: inc/Engine/CDN/RocketCDN/views/cta-big.php:44
