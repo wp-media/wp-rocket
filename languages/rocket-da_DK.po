@@ -2765,7 +2765,7 @@ msgstr ""
 
 #: inc/Engine/CDN/RocketCDN/APIClient.php:186
 msgid "RocketCDN cache purge failed: Missing user token."
-msgstr "RocketCDN cache clearance mislykkedes: Manglende bruger token."
+msgstr "RocketCDN cacherydning mislykkedes: Manglende user token."
 
 #: inc/Engine/CDN/RocketCDN/APIClient.php:212
 msgid ""
