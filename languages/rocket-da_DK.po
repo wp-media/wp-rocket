@@ -2554,7 +2554,7 @@ msgstr "Cloudflare-indstillinger"
 #: inc/Engine/Admin/Settings/Page.php:1978
 msgctxt "Cloudflare"
 msgid "Global API key:"
-msgstr "Global API nøgle:"
+msgstr "Global API-nøgle:"
 
 #: inc/Engine/Admin/Settings/Page.php:1979
 msgctxt "Cloudflare"
