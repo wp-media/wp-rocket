@@ -3369,9 +3369,9 @@ msgid ""
 " to address the PageSpeed Insights recommendations and improve your website "
 "performance."
 msgstr ""
-"Fjern ubrugte CSS og indlæse CSS asynkront funktioner er gode muligheder for"
-" at imødekomme PageSpeed Insights anbefalinger og forbedre din hjemmeside "
-"ydeevne."
+"\"Fjern ubrugt CSS\"- og \"Indlæs CSS asynkront\"-funktioner er gode "
+"muligheder for at imødekomme PageSpeed Insights-anbefalinger og forbedre din"
+" hjemmesides ydeevne."
 
 #. translators: %1$s = <strong>, %2$s = </strong>, %3$s = date.
 #: inc/Engine/License/views/renewal-expired-banner-ocd.php:31
