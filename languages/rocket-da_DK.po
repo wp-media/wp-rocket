@@ -2677,7 +2677,7 @@ msgstr "Tutorials"
 
 #: inc/Engine/Admin/Settings/Subscriber.php:233
 msgid "Getting started and how to videos"
-msgstr "At komme i gang og hvordan til videoer"
+msgstr "\"Kom i gang\"- og \"Hvordan\"-videoer"
 
 #: inc/Engine/Admin/Settings/Subscriber.php:308
 #: views/settings/page-sections/plugins.php:13
