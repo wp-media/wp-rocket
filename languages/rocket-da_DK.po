@@ -2969,7 +2969,7 @@ msgstr "Hvert minut"
 
 #: inc/Engine/CriticalPath/Admin/Admin.php:261
 msgid "Regenerate Critical Path CSS"
-msgstr "Regenerer kritisk vej CSS"
+msgstr "Regenerer kritisk sti CSS"
 
 #: inc/Engine/CriticalPath/Admin/Post.php:144
 #: views/cpcss/metabox/generate.php:47
