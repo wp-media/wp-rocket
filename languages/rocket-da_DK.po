@@ -2760,7 +2760,8 @@ msgstr "RocketCDN er i øjeblikket ikke tilgængeligt. Prøv igen senere."
 
 #: inc/Engine/CDN/RocketCDN/APIClient.php:177
 msgid "RocketCDN cache purge failed: Missing identifier parameter."
-msgstr "RocketCDN cache purge mislykkedes: Manglende identifikator parameter."
+msgstr ""
+"RocketCDN cacherydning mislykkedes: Manglende identifikator-parameter."
 
 #: inc/Engine/CDN/RocketCDN/APIClient.php:186
 msgid "RocketCDN cache purge failed: Missing user token."
