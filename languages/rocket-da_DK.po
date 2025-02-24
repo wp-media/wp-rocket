@@ -2896,7 +2896,7 @@ msgstr "RocketCDN er ikke tilgængeligt på lokale domæner og stagingsider."
 
 #: inc/Engine/CDN/RocketCDN/views/dashboard-status.php:33
 msgid "Get RocketCDN"
-msgstr "Get RocketCDN"
+msgstr "Få RocketCDN"
 
 #: inc/Engine/CDN/RocketCDN/views/promote-notice.php:11
 msgid "New!"
@@ -2906,7 +2906,7 @@ msgstr "Nyhed!"
 msgid ""
 "Speed up your website with RocketCDN, WP Rocket’s Content Delivery Network!"
 msgstr ""
-"Hurtiggøre din hjemmeside med RocketCDN, WP Rockets Content Delivery "
+"Gør din hjemmeside hurtigere med RocketCDN, WP Rockets Content Delivery "
 "Network!"
 
 #: inc/Engine/Common/JobManager/Cron/Subscriber.php:185
