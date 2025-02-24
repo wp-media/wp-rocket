@@ -2653,9 +2653,9 @@ msgid ""
 "Sorry! Adding /(.*) in Advanced Rules > Never Cache URL(s) was not saved "
 "because it disables caching and optimizations for every page on your site."
 msgstr ""
-"Beklager! Tilføjelse af /(.*) i Avancerede regler > Aldrig cache URL'er blev"
+"Beklager! Tilføjelse af /(.*) i Avancerede regler > Cache aldrig URL'er blev"
 " ikke gemt, fordi det deaktiverer caching og optimeringer for hver side på "
-"dit websted."
+"din hjemmeside."
 
 #: inc/Engine/Admin/Settings/Subscriber.php:189
 msgid "Import, Export, Rollback"
