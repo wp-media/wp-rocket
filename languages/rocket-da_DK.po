@@ -3101,8 +3101,8 @@ msgid ""
 "We highly recommend the %1$supdated Remove Unused CSS%2$s for a better CSS "
 "optimization. Load CSS Asynchronously is always available as a back-up."
 msgstr ""
-"Vi anbefaler stærkt %1$updated Remove Unused CSS%2$s for en bedre CSS "
-"optimering. Load CSS Asynchronously er altid tilgængelig som en backup."
+"Vi anbefaler stærkt det %1$sopdaterede Fjern ubrugt CSS%2$s for en bedre "
+"CSS-optimering. Indlæs CSS asynkront er altid tilgængeligt som en backup."
 
 #: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:851
 msgid "Stay with the old option"
