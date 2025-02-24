@@ -2507,7 +2507,7 @@ msgstr "WebP-kompatibilitet"
 
 #: inc/Engine/Admin/Settings/Page.php:1876
 msgid "Improve browser compatibility for WebP images."
-msgstr "Forbedre browserkompatibilitet for WebP-billeder."
+msgstr "Øg browserkompatibilitet for WebP-billeder."
 
 #. translators: %1$s and %3$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:1880
