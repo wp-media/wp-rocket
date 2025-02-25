@@ -3667,7 +3667,7 @@ msgstr "Servertype:"
 
 #: inc/functions/admin.php:370
 msgid "PHP version number:"
-msgstr "PHP-versionnummer:"
+msgstr "PHP-versionsnummer:"
 
 #: inc/functions/admin.php:379
 msgid "WordPress version number:"
