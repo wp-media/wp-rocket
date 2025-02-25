@@ -3916,7 +3916,7 @@ msgid ""
 "Cloudflare cache will be purged each time WP Rocket clears its cache to "
 "ensure content is always up-to-date."
 msgstr ""
-"Cloudflare cache vil blive renset hver gang WP Rocket renser sin cache for "
+"Cloudflare-cache vil blive ryddet hver gang WP Rocket rydder sin cache for "
 "at sikre, at indholdet altid er opdateret."
 
 #. Translators: %1$s = strong opening tag, %2$s = strong closing tag.
