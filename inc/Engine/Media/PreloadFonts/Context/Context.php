@@ -34,7 +34,7 @@ class Context implements ContextInterface {
 			return false;
 		}
 
-		return wpm_apply_filters_typed( 'boolean', 'rocket_preload_fonts_optimization', (bool) $this->options->get( 'rocket_preload_fonts', 0 ) );
+		return (bool) $this->options->get( 'auto_preload_fonts', 0 );
 	}
 
 	/**
