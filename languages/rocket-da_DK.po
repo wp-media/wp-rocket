@@ -3777,7 +3777,7 @@ msgstr "Hvis du ikke har en WP Rocket-konto, skal du %1$skøbe en licens%2$s."
 msgid ""
 "License validation failed. This user account does not exist in our database."
 msgstr ""
-"Licens validering mislykkedes. Denne brugerkonto eksisterer ikke i vores "
+"Licensvalidering mislykkedes. Denne brugerkonto eksisterer ikke i vores "
 "database."
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
