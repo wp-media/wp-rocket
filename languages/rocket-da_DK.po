@@ -3897,7 +3897,7 @@ msgid ""
 "%1$s: Cloudflare's HTTP/2 Server Push is incompatible with the features of "
 "Remove Unused CSS and Combine CSS files. We strongly recommend disabling it."
 msgstr ""
-"%1$s: Cloudflare's HTTP/2 Server Push er ikke kompatibel med funktionerne i "
+"%1$s: Cloudflares HTTP/2 Server Push er ikke kompatibel med funktionerne i "
 "Fjern ubrugt CSS og Kombiner CSS-filer. Vi anbefaler stærkt at deaktivere "
 "det."
 
