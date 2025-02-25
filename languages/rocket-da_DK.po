@@ -3783,7 +3783,7 @@ msgstr ""
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
 #: inc/functions/options.php:515
 msgid "To resolve, please contact support."
-msgstr "For at løse problemet, bedes du kontakte support."
+msgstr "For at løse problemet bedes du kontakte support."
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
 #: inc/functions/options.php:523
