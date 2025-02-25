@@ -3460,7 +3460,7 @@ msgstr "LazyLoad til iframes/videoer"
 
 #: inc/Engine/Media/Lazyload/CSS/Admin/Subscriber.php:49
 msgid "LazyLoad CSS backgrounds"
-msgstr "LazyLoad CSS baggrunde"
+msgstr "LazyLoad CSS-baggrunde"
 
 #: inc/Engine/Media/Lazyload/Subscriber.php:262
 msgid "Play Youtube video"
