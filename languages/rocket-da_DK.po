@@ -3875,8 +3875,8 @@ msgid ""
 "Varnish auto-purge will be automatically enabled once Varnish is enabled on "
 "your %s server."
 msgstr ""
-"Automatisk oprydning af maling aktiveres automatisk, når maling er aktiveret"
-" på din %s server."
+"Varnish auto-purge aktiveres automatisk, når Varnish er aktiveret på din %s "
+"server."
 
 #. translators: %1$s = opening link tag, %2$s = closing link tag.
 #: inc/ThirdParty/Hostings/Kinsta.php:159
