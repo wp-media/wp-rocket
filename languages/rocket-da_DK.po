@@ -3468,7 +3468,7 @@ msgstr "Afspil Youtube-video"
 
 #: inc/Engine/Optimization/DelayJS/Admin/SiteList.php:244
 msgid "Analytics & Trackers"
-msgstr "Analyse & sporing"
+msgstr "Analyse & tracking"
 
 #: inc/Engine/Optimization/DelayJS/Admin/SiteList.php:249
 msgid "Ad Networks"
