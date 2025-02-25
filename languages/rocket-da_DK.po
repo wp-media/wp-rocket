@@ -3571,7 +3571,7 @@ msgstr "Tilbagerul fastlåste mislykkede jobs for WP Rocket-forudindlæsning"
 
 #: inc/Engine/Saas/Admin/AdminBar.php:106
 msgid "Clear Used CSS of this URL"
-msgstr "Fjern brugt CSS af denne URL"
+msgstr "Fjern brugt CSS for denne URL"
 
 #: inc/Engine/Saas/Admin/AdminBar.php:133
 msgid "Used CSS"
