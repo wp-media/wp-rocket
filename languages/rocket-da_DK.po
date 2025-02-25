@@ -3645,7 +3645,7 @@ msgstr "- I sikkerhedspluginet, hvis du bruger et"
 
 #: inc/Engine/Saas/Admin/Notices.php:287
 msgid "- In the server's firewall. Your host can help you with this"
-msgstr "- I serverens firewall. Din vært kan hjælpe dig med dette"
+msgstr "- I serverens firewall. Din host kan hjælpe dig med dette"
 
 #: inc/functions/admin.php:21
 msgid ""
