@@ -1715,7 +1715,7 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:813
 msgid "Safe Mode for Delay JavaScript Execution"
-msgstr "Sikker tilstand til Forsink JavaScript-udførelse"
+msgstr "Sikker tilstand til Delay JavaScript-udførelse"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:815
