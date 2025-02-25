@@ -58,6 +58,7 @@ use WP_Rocket\Engine\Optimization\LazyRenderContent\ServiceProvider as LRCServic
 use WP_Rocket\Engine\Media\Fonts\ServiceProvider as MediaFontsServiceProvider;
 use WP_Rocket\Engine\Media\PreloadFonts\ServiceProvider as PreloadFontsServiceProvider;
 
+use WP_Rocket\Engine\Media\PreconnectExternalDomains\ServiceProvider as PreconnectExternalDomainsServiceProvider;
 /**
  * Plugin Manager.
  */
@@ -89,6 +90,15 @@ class Plugin {
 	 * @var bool
 	 */
 	private $is_valid_key;
+
+	/**
+	 * Instance of the Options.
+	 *
+	 * @since 3.6
+	 *
+	 * @var Options
+	 */
+	private $options_api;
 
 	/**
 	 * Instance of the Options_Data.
@@ -296,6 +306,7 @@ class Plugin {
 		$this->container->addServiceProvider( new MediaFontsServiceProvider() );
 		$this->container->addServiceProvider( new PreloadFontsServiceProvider() );
 		$this->container->addServiceProvider( new ThirdPartyServiceProvider() );
+		$this->container->addServiceProvider( new PreconnectExternalDomainsServiceProvider() );
 
 		$common_subscribers = [
 			'license_subscriber',
@@ -395,6 +406,7 @@ class Plugin {
 			'media_fonts_admin_subscriber',
 			'media_fonts_clean_subscriber',
 			'preload_fonts_frontend_subscriber',
+			'preconnect_frontend_subscriber',
 		];
 
 		$host_type = HostResolver::get_host_service();

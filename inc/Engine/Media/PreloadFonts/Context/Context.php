@@ -34,6 +34,17 @@ class Context implements ContextInterface {
 			return false;
 		}
 
-		return wpm_apply_filters_typed( 'boolean', 'rocket_preload_fonts_optimization', (bool) $this->options->get( 'rocket_preload_fonts', 1 ) );
+		return wpm_apply_filters_typed( 'boolean', 'rocket_preload_fonts_optimization', (bool) $this->options->get( 'rocket_preload_fonts', 0 ) );
+	}
+
+	/**
+	 * Determines if the page is mobile and separate cache for mobile files is enabled.
+	 *
+	 * @return bool
+	 */
+	public function is_mobile_allowed(): bool {
+		return $this->options->get( 'cache_mobile', 0 )
+			&& $this->options->get( 'do_caching_mobile_files', 0 )
+			&& wp_is_mobile();
 	}
 }
