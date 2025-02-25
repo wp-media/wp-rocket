@@ -3543,7 +3543,7 @@ msgid ""
 "%3$sdocumentation%4$s."
 msgstr ""
 "%1$s: Kunne ikke oprette den %2$s-tabel i databasen, som er nødvendig for, "
-"at funktionen Fjern ubrugte CSS fungerer. Se vores %3$s-dokumentation%4$s."
+"at funktionen Fjern ubrugt CSS kan fungere. Se vores %3$s-dokumentation%4$s."
 
 #. translators: %1$s = plugin name.
 #: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:279
