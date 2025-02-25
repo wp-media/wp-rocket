@@ -3397,7 +3397,7 @@ msgid ""
 "Your %1$sWP Rocket license is about to expire%2$s: you will soon lose access"
 " to product updates and support."
 msgstr ""
-"Din %1$sWP Rocket licens er ved at udløbe%2$s: Du vil snart miste adgang til"
+"Din %1$sWP Rocket-licens er ved at udløbe%2$s: Du vil snart miste adgang til"
 " produktopdateringer og support."
 
 #. translators: %1$s = span opening tag, %2$s = price, %3$s = span closing
