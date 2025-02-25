@@ -3886,9 +3886,9 @@ msgid ""
 "working correctly. Please get in touch with Kinsta support through your "
 "%1$sMyKinsta%2$s account to resolve this issue."
 msgstr ""
-"Din installation synes at mangle kerne Kinsta filer, der administrerer Cache"
-" clearing, hvilket vil forhindre din Kinsta installation og WP Rocket i at "
-"fungere korrekt. Kontakt Kinsta support via din %1$sMyKinsta%2$s konto for "
+"Din installation synes at mangle Kinsta-kernefiler, der administrerer Cache-"
+"rydning, hvilket vil forhindre din Kinsta-installation og WP Rocket i at "
+"fungere korrekt. Kontakt Kinsta-support via din %1$sMyKinsta%2$s-konto for "
 "at løse dette problem."
 
 #. translators: %1$s = plugin name.
