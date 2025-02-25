@@ -3748,8 +3748,8 @@ msgid ""
 "License validation failed. You may be using a nulled version of the plugin. "
 "Please do the following:"
 msgstr ""
-"Licens validering mislykkedes. Du bruger muligvis en nulleret version af "
-"plugin. Gør følgende:"
+"Licensvalidering mislykkedes. Du bruger muligvis en udløbet version af "
+"pluginet. Gør følgende:"
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
 #: inc/functions/options.php:507 inc/functions/options.php:549
