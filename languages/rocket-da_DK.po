@@ -3770,7 +3770,7 @@ msgstr "Geninstallér"
 #: inc/functions/options.php:507
 msgid ""
 "If you do not have a WP Rocket account, please %1$spurchase a license%2$s."
-msgstr "Hvis du ikke har en WP Rocket-konto, skal du købe en licens%2$s."
+msgstr "Hvis du ikke har en WP Rocket-konto, skal du %1$skøbe en licens%2$s."
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
 #: inc/functions/options.php:515
