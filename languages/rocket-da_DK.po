@@ -3859,7 +3859,7 @@ msgstr "Licensvalidering mislykkedes: %s"
 
 #: inc/Logger/Logger.php:227 inc/Logger/Logger.php:257
 msgid "The log file does not exist."
-msgstr "Logfil eksisterer ikke."
+msgstr "Logfilen eksisterer ikke."
 
 #: inc/Logger/Logger.php:233 inc/Logger/Logger.php:263
 msgid "The log file could not be read."
