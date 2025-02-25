@@ -3759,7 +3759,7 @@ msgstr "Log ind på din WP Rocket-%1$skonto%2$s"
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
 #: inc/functions/options.php:507 inc/functions/options.php:549
 msgid "Download the zip file"
-msgstr "Download zip filen"
+msgstr "Download zip-filen"
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
 #: inc/functions/options.php:507 inc/functions/options.php:549
