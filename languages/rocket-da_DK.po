@@ -3635,9 +3635,9 @@ msgid ""
 "accessing the SaaS features. IPs listed %1$shere in our documentation%2$s "
 "should be added to your allowlists:"
 msgstr ""
-"Det ser ud til, at en sikkerhedsplugin eller serverens firewall forhindrer "
-"WP Rocket i at få adgang til SaaS-funktionerne. IP'er, der er opført %1$here"
-" i vores dokumentation%2$s, bør føjes til dine tilladelseslister:"
+"Det ser ud til, at et sikkerhedsplugin eller serverens firewall forhindrer "
+"WP Rocket i at få adgang til SaaS-funktionerne. IP'er, der er listet %1$sher"
+"  i vores dokumentation%2$s, bør føjes til dine tilladelseslister:"
 
 #: inc/Engine/Saas/Admin/Notices.php:286
 msgid "- In the security plugin, if you are using one"
