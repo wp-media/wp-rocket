@@ -3711,7 +3711,7 @@ msgstr "Hvordan WP Rocket-funktioner fungerer og performer."
 
 #: inc/functions/admin.php:442
 msgid "WP Rocket license type"
-msgstr "WP Rocket licenstype"
+msgstr "WP Rocket-licenstype"
 
 #: inc/functions/options.php:429
 msgid "The provided license data are not valid."
