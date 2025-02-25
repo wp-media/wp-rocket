@@ -3432,9 +3432,9 @@ msgid ""
 "upgrade, simply pay the %1$sprice difference%2$s between your current and "
 "new licenses, as shown below."
 msgstr ""
-"Du kan bruge WP Rocket på flere websteder ved at opgradere din licens. For "
-"at opgradere skal du blot betale %1$prisforskellen%2$s mellem dine nuværende"
-" og nye licenser, som vist nedenfor."
+"Du kan bruge WP Rocket på flere hjemmesider ved at opgradere din licens. For"
+" at opgradere skal du blot betale %1$pprisforskellen%2$s mellem din "
+"nuværende og nye licens, som vist nedenfor."
 
 #. translators: %1$s = opening strong tag, %2$s = closing strong tag.
 #: inc/Engine/License/views/upgrade-popin.php:28
