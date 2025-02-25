@@ -3671,7 +3671,7 @@ msgstr "PHP-versionsnummer:"
 
 #: inc/functions/admin.php:379
 msgid "WordPress version number:"
-msgstr "WordPress version nummer:"
+msgstr "WordPress-versionsnummer:"
 
 #: inc/functions/admin.php:388
 msgid "WordPress multisite:"
