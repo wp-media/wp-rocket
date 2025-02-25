@@ -3504,7 +3504,7 @@ msgstr "Standardlister"
 
 #: inc/Engine/Optimization/DynamicLists/DynamicLists.php:110
 msgid "Delay JavaScript Execution Exclusion Lists"
-msgstr "Delay JavaScript udførelse udelukkelse lister"
+msgstr "Delay JavaScript Execution Exclusion-lister"
 
 #: inc/Engine/Optimization/DynamicLists/DynamicLists.php:111
 msgid "Incompatible plugins Lists"
