@@ -3575,7 +3575,7 @@ msgstr "Fjern brugt CSS for denne URL"
 
 #: inc/Engine/Saas/Admin/AdminBar.php:133
 msgid "Used CSS"
-msgstr "Brugte CSS"
+msgstr "Brugt CSS"
 
 #: inc/Engine/Saas/Admin/AdminBar.php:136
 msgid "This action will clear the used CSS files."
