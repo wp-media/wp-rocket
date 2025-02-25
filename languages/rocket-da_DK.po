@@ -1735,7 +1735,7 @@ msgid ""
 msgstr ""
 "Ved at aktivere Sikker tilstand reducerer du betydeligt forbedringer af din "
 "hjemmesides ydeevne. Vi anbefaler kun at bruge det som en midlertidig "
-"løsning. Hvis du oplever problemer med Forsink JavaScript-funktionen, kan "
+"løsning. Hvis du oplever problemer med Delay JavaScript-funktionen, kan "
 "vores supportteam hjælpe dig med fejlfinding."
 
 #: inc/Engine/Admin/Settings/Page.php:833
