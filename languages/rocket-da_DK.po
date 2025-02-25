@@ -3414,7 +3414,7 @@ msgstr "Hjemmesider"
 #. translators: %s = number of websites.
 #: inc/Engine/License/views/upgrade-item.php:58
 msgid "%s websites"
-msgstr "%s websteder"
+msgstr "%s hjemmesider"
 
 #. translators: %s = license name.
 #: inc/Engine/License/views/upgrade-item.php:66
