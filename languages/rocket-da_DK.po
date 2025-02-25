@@ -3729,7 +3729,7 @@ msgid ""
 "License validation failed. Our server could not resolve the request from "
 "your website."
 msgstr ""
-"Licens validering mislykkedes. Vores server kunne ikke løse anmodningen fra "
+"Licensvalidering mislykkedes. Vores server kunne ikke løse anmodningen fra "
 "din hjemmeside."
 
 #. Translators: %1$s = opening em tag, %2$s = closing em tag, %3$s = opening
