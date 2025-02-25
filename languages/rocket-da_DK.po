@@ -3658,7 +3658,7 @@ msgstr[0] ""
 "Der synes at være et problem med at validere din licens. Se fejlmeddelelsen "
 "nedenfor."
 msgstr[1] ""
-"Der synes at være et problem med at validere din licens. Du kan se "
+"Der ser ud til at være et problem med at validere din licens. Du kan se "
 "fejlmeddelelserne nedenfor."
 
 #: inc/functions/admin.php:361
