@@ -3675,7 +3675,7 @@ msgstr "WordPress-versionsnummer:"
 
 #: inc/functions/admin.php:388
 msgid "WordPress multisite:"
-msgstr "WordPress multisite:"
+msgstr "WordPress-multisite:"
 
 #: inc/functions/admin.php:397
 msgid "Current theme:"
