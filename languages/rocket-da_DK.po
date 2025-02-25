@@ -3404,7 +3404,7 @@ msgstr ""
 #. tag.
 #: inc/Engine/License/views/upgrade-item.php:17
 msgid "Save $%1$s%2$s%3$s"
-msgstr "Gem $%1$s%2$s%3$s"
+msgstr "Spar $%1$s%2$s%3$s"
 
 #: inc/Engine/License/views/upgrade-item.php:35
 #: inc/Engine/License/views/upgrade-item.php:50
