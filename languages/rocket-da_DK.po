@@ -3626,7 +3626,7 @@ msgstr ""
 #. translators: %1$s = promo percentage.
 #: inc/Engine/Saas/Admin/Notices.php:228
 msgid "Click here to get a WP Rocket single license at %1$s off!"
-msgstr "Klik her for at få en enkelt WP Rocket licens til %1$s rabat!"
+msgstr "Klik her for at få en enkelt WP Rocket-licens med %1$s rabat!"
 
 #. translators: %1$s = <a> open tag, %2$s = </a> closing tag.
 #: inc/Engine/Saas/Admin/Notices.php:281
