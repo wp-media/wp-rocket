@@ -7,8 +7,15 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Common\PerformanceHints\Frontend\ControllerInterface;
 use WP_Rocket\Engine\Media\PreloadFonts\Database\Queries\PreloadFonts as PFQuery;
 use WP_Rocket\Engine\Media\PreloadFonts\Context\Context;
+use WP_Rocket\Engine\Optimization\UrlTrait;
+use WP_Rocket\Engine\Support\CommentTrait;
+use WP_Rocket\Engine\Common\Head\ElementTrait;
 
 class Controller implements ControllerInterface {
+	use UrlTrait;
+	use CommentTrait;
+	use ElementTrait;
+
 	/**
 	 * Options instance
 	 *
@@ -52,8 +59,10 @@ class Controller implements ControllerInterface {
 	 * @return string
 	 */
 	public function optimize( string $html, $row ): string {
-		// Implement the optimization logic here.
-		return $html;
+		if ( ! $this->context->is_allowed() || ! $row->has_preload_fonts() ) {
+			return $html;
+		}
+		return $this->add_meta_comment( 'auto_preload_fonts', $html );
 	}
 
 	/**
@@ -64,6 +73,10 @@ class Controller implements ControllerInterface {
 	 * @return array
 	 */
 	public function add_custom_data( array $data ): array {
+		if ( ! $this->context->is_allowed() ) {
+			return $data;
+		}
+
 		$system_fonts = [
 			'serif',
 			'sans-serif',
@@ -99,7 +112,12 @@ class Controller implements ControllerInterface {
 		 */
 		$system_fonts = wpm_apply_filters_typed( 'array', 'rocket_preload_fonts_system_fonts', $system_fonts );
 
-		$data['system_fonts'] = $system_fonts;
+		/**
+		 * Filters the list of mock font urls.
+		 *
+		 * @param array $font_data Array of font data.
+		 */
+		$font_data = wpm_apply_filters_typed( 'array', 'rocket_preload_fonts_font_data', [] );
 
 		$processed_extensions = [
 			'woff2',
@@ -114,8 +132,75 @@ class Controller implements ControllerInterface {
 		 */
 		wpm_apply_filters_typed( 'array', 'rocket_preload_fonts_processed_extensions', $processed_extensions );
 
+
+		$data['system_fonts']            = $system_fonts;
+		$data['font_data']               = $font_data;
+		$data['status']['preload_fonts'] = $this->context->is_allowed();
 		$data['processed_extensions'] = $processed_extensions;
 
 		return $data;
+	}
+
+	/**
+	 * Checks if the font URL is from a third party.
+	 *
+	 * @param string $font_url Font URL.
+	 *
+	 * @return bool
+	 */
+	private function is_third_party_font( string $font_url ): bool {
+		$parsed_url = wp_parse_url( $font_url );
+
+		if ( empty( $parsed_url['host'] ) ) {
+			return false;
+		}
+
+		$site_url = wp_parse_url( site_url() );
+
+		return $parsed_url['host'] !== $site_url['host'];
+	}
+
+	/**
+	 * Adds the preload fonts to the head tag.
+	 *
+	 * @param array $items added to the head.
+	 * @return array Items to be added to the head.
+	 */
+	public function add_preload_fonts_in_head( $items ) {
+		if ( ! $this->context->is_allowed() ) {
+			return $items;
+		}
+
+		global $wp;
+
+		$url       = untrailingslashit( home_url( add_query_arg( [], $wp->request ) ) );
+		$is_mobile = $this->context->is_mobile_allowed();
+
+		$row = $this->query->get_row( $url, $is_mobile );
+		if ( empty( $row ) || 'completed' !== $row->status || empty( $row->fonts ) || '[]' === $row->fonts ) {
+			return $items;
+		}
+
+		$fonts = json_decode( $row->fonts, true );
+
+		if ( empty( $fonts ) ) {
+			return $items;
+		}
+
+		foreach ( $fonts as $font ) {
+			$item_args = [
+				// 'id'         => 'preload-font-' . md5( $font ), // Unique ID based on font URL.
+				'href' => esc_url( $font ),
+				'as'   => 'font',
+			];
+
+			if ( ! $this->is_relative( $font ) && $this->is_third_party_font( $font ) ) {
+				$item_args[2] = 'crossorigin';
+			}
+
+			$items[] = $this->preload_link( $item_args );
+		}
+
+		return $items;
 	}
 }

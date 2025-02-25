@@ -378,6 +378,569 @@
   };
   var BeaconLrc_default = BeaconLrc;
 
+  // src/BeaconPreloadFonts.js
+  var BeaconPreloadFonts = class _BeaconPreloadFonts {
+    constructor(config, logger) {
+      this.config = config;
+      this.logger = logger;
+      this.aboveTheFoldFonts = [];
+    }
+    static FONT_FILE_REGEX = /\.(woff2?|ttf|otf|eot)(\?.*)?$/i;
+    /**
+     * Checks if a given font family is a system font.
+     *
+     * This method checks if the provided font family is part of the system fonts
+     * defined in the configuration. It returns true if the font family is a system
+     * font, and false otherwise.
+     *
+     * @param {string} fontFamily - The font family to check.
+     * @returns {boolean} True if the font family is a system font, false otherwise.
+     */
+    isSystemFont(fontFamily) {
+      const systemFonts = new Set(this.config.system_fonts);
+      return systemFonts.has(fontFamily);
+    }
+    /**
+     * Checks if an element is visible in the viewport.
+     *
+     * This method checks if the provided element is visible in the viewport by
+     * considering its display, visibility, opacity, width, and height properties.
+     * It returns true if the element is visible, and false otherwise.
+     *
+     * @param {Element} element - The element to check for visibility.
+     * @returns {boolean} True if the element is visible, false otherwise.
+     */
+    isElementVisible(element) {
+      const style = window.getComputedStyle(element);
+      const rect = element.getBoundingClientRect();
+      return !(style.display === "none" || style.visibility === "hidden" || style.opacity === "0" || rect.width === 0 || rect.height === 0);
+    }
+    /**
+     * Cleans a URL by removing query parameters and fragments.
+     *
+     * This method takes a URL as input, removes any query parameters and fragments,
+     * and returns the cleaned URL.
+     *
+     * @param {string} url - The URL to clean.
+     * @returns {string} The cleaned URL.
+     */
+    cleanUrl(url) {
+      try {
+        url = url.split("?")[0].split("#")[0];
+        return new URL(url, window.location.href).href;
+      } catch (e) {
+        return url;
+      }
+    }
+    /**
+     * Retrieves a map of network-loaded fonts.
+     *
+     * This method uses the Performance API to get all resource entries, filters out
+     * the ones that match the font file regex, and maps them to their cleaned URLs.
+     *
+     * @returns {Map} A map where each key is a cleaned URL of a font file and
+     *                each value is the original URL of the font file.
+     */
+    getNetworkLoadedFonts() {
+      return new Map(
+        window.performance.getEntriesByType("resource").filter((resource) => _BeaconPreloadFonts.FONT_FILE_REGEX.test(resource.name)).map((resource) => [this.cleanUrl(resource.name), resource.name])
+      );
+    }
+    /**
+     * Retrieves font-face rules from stylesheets.
+     *
+     * This method scans all stylesheets loaded on the page and collects
+     * font-face rules, including their source URLs, font families, weights,
+     * and styles. It returns an object containing the collected font data.
+     *
+     * @returns {Object} An object mapping font families to their respective
+     *                  URLs and variations.
+     */
+    getFontFaceRules() {
+      const stylesheetFonts = {};
+      Array.from(document.styleSheets).forEach((sheet) => {
+        if (sheet.href && new URL(sheet.href).origin !== window.location.origin) return;
+        try {
+          Array.from(sheet.cssRules || []).forEach((rule) => {
+            if (rule instanceof CSSFontFaceRule) {
+              const src = rule.style.getPropertyValue("src");
+              const fontFamily = rule.style.getPropertyValue("font-family").replace(/['"]+/g, "").trim();
+              const weight = rule.style.getPropertyValue("font-weight") || "400";
+              const style = rule.style.getPropertyValue("font-style") || "normal";
+              if (!stylesheetFonts[fontFamily]) {
+                stylesheetFonts[fontFamily] = {
+                  urls: [],
+                  variations: /* @__PURE__ */ new Set()
+                };
+              }
+              const urls = src.match(/url\(['"]?([^'"]+)['"]?\)/g) || [];
+              urls.forEach((urlMatch) => {
+                const rawUrl = urlMatch.match(/url\(['"]?([^'"]+)['"]?\)/)[1];
+                const url = new URL(rawUrl, sheet.href).href;
+                const normalizedUrl = this.cleanUrl(url);
+                if (!stylesheetFonts[fontFamily].urls.includes(normalizedUrl)) {
+                  stylesheetFonts[fontFamily].urls.push(normalizedUrl);
+                  stylesheetFonts[fontFamily].variations.add(JSON.stringify({
+                    weight,
+                    style
+                  }));
+                }
+              });
+            }
+          });
+        } catch (e) {
+          this.logger.logMessage(e);
+        }
+      });
+      Object.values(stylesheetFonts).forEach((fontData) => {
+        fontData.variations = Array.from(fontData.variations).map((v) => JSON.parse(v));
+      });
+      return stylesheetFonts;
+    }
+    /**
+     * Checks if an element is above the fold (visible in the viewport without scrolling).
+     *
+     * @param {Element} element - The element to check.
+     * @returns {boolean} True if the element is above the fold, false otherwise.
+     */
+    isElementAboveFold(element) {
+      if (!this.isElementVisible(element)) return false;
+      const rect = element.getBoundingClientRect();
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      const elementTop = rect.top + scrollTop;
+      const foldPosition = window.innerHeight || document.documentElement.clientHeight;
+      return elementTop <= foldPosition;
+    }
+    /**
+     * Initiates the process of analyzing and summarizing font usage on the page.
+     * This method fetches network-loaded fonts, stylesheet fonts, and external font pairs.
+     * It then processes each element on the page to determine which fonts are used above the fold.
+     * The results are summarized and logged.
+     *
+     * @returns {Promise<void>} A promise that resolves when the analysis is complete.
+     */
+    async run() {
+      const networkLoadedFonts = this.getNetworkLoadedFonts();
+      const stylesheetFonts = this.getFontFaceRules();
+      const hostedFonts = /* @__PURE__ */ new Map();
+      const externalFontPairs = this.config.font_data;
+      const externalFontsResults = await this.processExternalFonts(externalFontPairs);
+      const elements = Array.from(document.getElementsByTagName("*")).filter((el) => this.isElementAboveFold(el));
+      elements.forEach((element) => {
+        const processElementFont = (style, pseudoElement = null) => {
+          if (!style || !this.isElementVisible(element)) return;
+          const fontFamily = style.fontFamily.split(",")[0].replace(/['"]+/g, "").trim();
+          const hasContent = pseudoElement ? style.content !== "none" && style.content !== '""' : element.textContent.trim();
+          if (hasContent && !this.isSystemFont(fontFamily) && stylesheetFonts[fontFamily]) {
+            if (!hostedFonts.has(fontFamily)) {
+              hostedFonts.set(fontFamily, {
+                elements: /* @__PURE__ */ new Set(),
+                urls: stylesheetFonts[fontFamily].urls,
+                variations: stylesheetFonts[fontFamily].variations
+              });
+            }
+            hostedFonts.get(fontFamily).elements.add(element);
+          }
+        };
+        try {
+          processElementFont(window.getComputedStyle(element));
+          ["::before", "::after"].forEach((pseudo) => {
+            processElementFont(window.getComputedStyle(element, pseudo), pseudo);
+          });
+        } catch (e) {
+          console.debug("Error processing element:", e);
+        }
+      });
+      const aboveTheFoldFonts = this.summarizeMatches(externalFontsResults, hostedFonts, networkLoadedFonts);
+      if (!Object.keys(aboveTheFoldFonts.allFonts).length && !Object.keys(aboveTheFoldFonts.externalFonts).length && !Object.keys(aboveTheFoldFonts.hostedFonts).length) {
+        this.logger.logMessage("No fonts found above the fold.");
+        return;
+      }
+      this.logger.logMessage("Above the fold fonts:", aboveTheFoldFonts);
+      this.aboveTheFoldFonts = Object.values(aboveTheFoldFonts.allFonts).flatMap((font) => font.variations.map((variation) => variation.url));
+    }
+    /**
+     * Summarizes all font matches found on the page
+     * Creates a comprehensive object containing font usage data
+     *
+     * @param {Object} externalFontsResults - Results from External Fonts analysis
+     * @param {Map} hostedFonts - Map of hosted (non-External) fonts found
+     * @param {Map} networkLoadedFonts - Map of all font files loaded via network
+     * @returns {Object} Complete analysis of font usage including locations and counts
+     */
+    summarizeMatches(externalFontsResults, hostedFonts, networkLoadedFonts) {
+      const allFonts = {};
+      const hostedFontsResults = {};
+      if (hostedFonts.size > 0) {
+        hostedFonts.forEach((data, fontFamily) => {
+          if (data.variations) {
+            const elements = Array.from(data.elements);
+            const aboveElements = elements.filter((el) => this.isElementAboveFold(el));
+            const belowElements = elements.filter((el) => !this.isElementAboveFold(el));
+            if (!allFonts[fontFamily]) {
+              allFonts[fontFamily] = {
+                type: "hosted",
+                variations: [],
+                elementCount: {
+                  aboveFold: aboveElements.length,
+                  belowFold: belowElements.length,
+                  total: elements.length
+                },
+                urlCount: {
+                  aboveFold: /* @__PURE__ */ new Set(),
+                  belowFold: /* @__PURE__ */ new Set()
+                }
+              };
+            }
+            data.variations.forEach((variation) => {
+              let matchingUrl = null;
+              for (const styleUrl of data.urls) {
+                const normalizedStyleUrl = this.cleanUrl(styleUrl);
+                if (networkLoadedFonts.has(normalizedStyleUrl)) {
+                  matchingUrl = networkLoadedFonts.get(normalizedStyleUrl);
+                  break;
+                }
+              }
+              allFonts[fontFamily].variations.push({
+                weight: variation.weight,
+                style: variation.style,
+                url: matchingUrl || "File not found",
+                elementCount: {
+                  aboveFold: aboveElements.length,
+                  belowFold: belowElements.length,
+                  total: elements.length
+                }
+              });
+              if (matchingUrl) {
+                if (aboveElements.length > 0) {
+                  allFonts[fontFamily].urlCount.aboveFold.add(matchingUrl);
+                }
+                if (belowElements.length > 0) {
+                  allFonts[fontFamily].urlCount.belowFold.add(matchingUrl);
+                }
+              }
+            });
+            if (!Object.prototype.hasOwnProperty.call(allFonts, fontFamily)) {
+              return;
+            }
+            hostedFontsResults[fontFamily] = {
+              variations: allFonts[fontFamily].variations,
+              elementCount: { ...allFonts[fontFamily].elementCount },
+              urlCount: { ...allFonts[fontFamily].urlCount }
+            };
+          }
+        });
+      }
+      if (Object.keys(externalFontsResults).length > 0) {
+        Object.entries(externalFontsResults).forEach(([url, data]) => {
+          if (data.elementCount.aboveFold > 0) {
+            data.variations.forEach((variation) => {
+              if (!allFonts[variation.family]) {
+                allFonts[variation.family] = {
+                  type: "external",
+                  variations: [],
+                  // Track element counts at font family level
+                  elementCount: {
+                    aboveFold: 0,
+                    belowFold: 0,
+                    total: 0
+                  },
+                  // Track unique URLs used in each fold location
+                  urlCount: {
+                    aboveFold: /* @__PURE__ */ new Set(),
+                    belowFold: /* @__PURE__ */ new Set()
+                  }
+                };
+              }
+              const aboveElements = Array.from(data.elements).filter((el) => this.isElementAboveFold(el));
+              const belowElements = Array.from(data.elements).filter((el) => !this.isElementAboveFold(el));
+              allFonts[variation.family].variations.push({
+                weight: variation.weight,
+                style: variation.style,
+                url,
+                elementCount: {
+                  aboveFold: aboveElements.length,
+                  belowFold: belowElements.length,
+                  total: data.elements.length
+                }
+              });
+              allFonts[variation.family].elementCount.aboveFold += aboveElements.length;
+              allFonts[variation.family].elementCount.belowFold += belowElements.length;
+              allFonts[variation.family].elementCount.total += data.elements.length;
+              if (aboveElements.length > 0) {
+                allFonts[variation.family].urlCount.aboveFold.add(url);
+              }
+              if (belowElements.length > 0) {
+                allFonts[variation.family].urlCount.belowFold.add(url);
+              }
+            });
+          }
+        });
+      }
+      Object.values(allFonts).forEach((font) => {
+        font.urlCount = {
+          aboveFold: font.urlCount.aboveFold.size,
+          belowFold: font.urlCount.belowFold.size,
+          total: (/* @__PURE__ */ new Set([...font.urlCount.aboveFold, ...font.urlCount.belowFold])).size
+        };
+      });
+      Object.values(hostedFontsResults).forEach((font) => {
+        if (font.urlCount.aboveFold instanceof Set) {
+          font.urlCount = {
+            aboveFold: font.urlCount.aboveFold.size,
+            belowFold: font.urlCount.belowFold.size,
+            total: (/* @__PURE__ */ new Set([...font.urlCount.aboveFold, ...font.urlCount.belowFold])).size
+          };
+        }
+      });
+      return {
+        externalFonts: Object.fromEntries(
+          Object.entries(externalFontsResults).filter(
+            (entry) => entry[1].elementCount.aboveFold > 0
+          )
+        ),
+        hostedFonts: hostedFontsResults,
+        allFonts
+      };
+    }
+    /**
+     * Processes external font pairs to identify their usage on the page.
+     *
+     * This method iterates through all elements on the page, checks if they are above the fold,
+     * and determines the font information for each element. It then matches the font information
+     * with the provided external font pairs to identify which fonts are used and where.
+     *
+     * @param {Object} fontPairs - An object where each key is a URL and the value is an array of font variations.
+     * @returns {Promise<Object>} A promise that resolves to an object where each key is a URL and the value is an object containing information about the elements using that font.
+     */
+    async processExternalFonts(fontPairs) {
+      const matches = /* @__PURE__ */ new Map();
+      const elements = Array.from(document.getElementsByTagName("*")).filter((el) => this.isElementAboveFold(el));
+      const fontMap = /* @__PURE__ */ new Map();
+      Object.entries(fontPairs).forEach(([url, variations]) => {
+        variations.forEach((variation) => {
+          const key = `${variation.family}|${variation.weight}|${variation.style}`;
+          fontMap.set(key, { url, ...variation });
+        });
+      });
+      const getFontInfoForElement = (style) => {
+        const family = style.fontFamily.split(",")[0].replace(/['"]+/g, "").trim();
+        const weight = style.fontWeight;
+        const fontStyle = style.fontStyle;
+        const key = `${family}|${weight}|${fontStyle}`;
+        let fontInfo = fontMap.get(key);
+        if (!fontInfo && weight !== "400") {
+          const fallbackKey = `${family}|400|${fontStyle}`;
+          fontInfo = fontMap.get(fallbackKey);
+        }
+        return fontInfo;
+      };
+      elements.forEach((element) => {
+        if (element.textContent.trim()) {
+          const style = window.getComputedStyle(element);
+          const fontInfo = getFontInfoForElement(style);
+          if (fontInfo) {
+            if (!matches.has(fontInfo.url)) {
+              matches.set(fontInfo.url, {
+                elements: /* @__PURE__ */ new Set(),
+                variations: /* @__PURE__ */ new Set()
+              });
+            }
+            matches.get(fontInfo.url).elements.add(element);
+            matches.get(fontInfo.url).variations.add(JSON.stringify({
+              family: fontInfo.family,
+              weight: fontInfo.weight,
+              style: fontInfo.style
+            }));
+          }
+        }
+        ["::before", "::after"].forEach((pseudo) => {
+          const pseudoStyle = window.getComputedStyle(element, pseudo);
+          if (pseudoStyle.content !== "none" && pseudoStyle.content !== '""') {
+            const fontInfo = getFontInfoForElement(pseudoStyle);
+            if (fontInfo) {
+              if (!matches.has(fontInfo.url)) {
+                matches.set(fontInfo.url, {
+                  elements: /* @__PURE__ */ new Set(),
+                  variations: /* @__PURE__ */ new Set()
+                });
+              }
+              matches.get(fontInfo.url).elements.add(element);
+              matches.get(fontInfo.url).variations.add(JSON.stringify({
+                family: fontInfo.family,
+                weight: fontInfo.weight,
+                style: fontInfo.style
+              }));
+            }
+          }
+        });
+      });
+      return Object.fromEntries(
+        Array.from(matches.entries()).map(([url, data]) => [
+          url,
+          {
+            elementCount: {
+              aboveFold: Array.from(data.elements).filter((el) => this.isElementAboveFold(el)).length,
+              total: data.elements.size
+            },
+            variations: Array.from(data.variations).map((v) => JSON.parse(v)),
+            elements: Array.from(data.elements)
+          }
+        ])
+      );
+    }
+    /**
+     * Retrieves the results of the font analysis, specifically the fonts used above the fold.
+     * This method returns an array containing the URLs of the fonts used above the fold.
+     *
+     * @returns {Array<string>} An array of URLs of the fonts used above the fold.
+     */
+    getResults() {
+      return this.aboveTheFoldFonts;
+    }
+  };
+  var BeaconPreloadFonts_default = BeaconPreloadFonts;
+
+  // src/BeaconPreconnectExternalDomain.js
+  var BeaconPreconnectExternalDomain = class {
+    constructor(config, logger) {
+      this.logger = logger;
+      this.result = [];
+      this.excludedPatterns = config.preconnect_external_domain_exclusions;
+      this.eligibleElements = config.preconnect_external_domain_elements;
+      this.matchedItems = /* @__PURE__ */ new Set();
+      this.excludedItems = /* @__PURE__ */ new Set();
+    }
+    /**
+     * Initiates the process of identifying and logging external domains that require preconnection.
+     * This method queries the document for eligible elements, processes each element to determine
+     * if it should be preconnected, and logs the results.
+     */
+    async run() {
+      const elements = document.querySelectorAll(
+        `${this.eligibleElements.join(", ")}[src], ${this.eligibleElements.join(", ")}[href], ${this.eligibleElements.join(", ")}[rel], ${this.eligibleElements.join(", ")}[type]`
+      );
+      elements.forEach((el) => this.processElement(el));
+      this.logger.logMessage({ matchedItems: this.getMatchedItems(), excludedItems: Array.from(this.excludedItems) });
+    }
+    /**
+     * Processes a single element to determine if it should be preconnected.
+     *
+     * This method checks if the element is excluded based on attribute or domain rules.
+     * If not excluded, it checks if the element's URL is an external domain and adds it to the list of matched items.
+     *
+     * @param {Element} el - The element to process.
+     */
+    processElement(el) {
+      try {
+        const url = new URL(el.src || el.href || "", location.href);
+        if (this.isExcludedByAttribute(el)) {
+          this.excludedItems.add(this.createExclusionObject(url, el, "attribute"));
+          return;
+        }
+        if (this.isExcludedByDomain(url)) {
+          this.excludedItems.add(this.createExclusionObject(url, el, "domain"));
+          return;
+        }
+        if (this.isExternalDomain(url)) {
+          this.matchedItems.add(`${url.hostname}-${el.tagName.toLowerCase()}`);
+          this.result = [...new Set(this.result.concat(url.hostname))];
+        }
+      } catch (e) {
+        this.logger.logMessage(e);
+      }
+    }
+    /**
+     * Checks if an element is excluded based on attribute rules.
+     *
+     * This method iterates through the excludedPatterns array and checks if any pattern matches the element's attribute.
+     * If a match is found, it returns true, indicating the element is excluded.
+     *
+     * @param {Element} el - The element to check.
+     * @returns {boolean} True if the element is excluded by an attribute rule, false otherwise.
+     */
+    isExcludedByAttribute(el) {
+      return this.excludedPatterns.some(
+        (pattern) => pattern.type === "attribute" && el.getAttribute(pattern.key) === pattern.value
+      );
+    }
+    /**
+     * Checks if a URL is excluded based on domain rules.
+     *
+     * This method iterates through the excludedPatterns array and checks if any pattern matches the URL's hostname.
+     * If a match is found, it returns true, indicating the URL is excluded.
+     *
+     * @param {URL} url - The URL to check.
+     * @returns {boolean} True if the URL is excluded by a domain rule, false otherwise.
+     */
+    isExcludedByDomain(url) {
+      return this.excludedPatterns.some(
+        (pattern) => pattern.type === "domain" && url.hostname.includes(pattern.value)
+      );
+    }
+    /**
+     * Checks if a URL is from an external domain.
+     *
+     * This method compares the hostname of the given URL with the hostname of the current location.
+     * If they are not the same, it indicates the URL is from an external domain.
+     *
+     * @param {URL} url - The URL to check.
+     * @returns {boolean} True if the URL is from an external domain, false otherwise.
+     */
+    isExternalDomain(url) {
+      return url.hostname !== location.hostname && url.hostname;
+    }
+    /**
+     * Creates an exclusion object based on the URL, element, and type.
+     *
+     * This method finds the pattern in the excludedPatterns array that matches the type and the element's attribute or the URL's hostname.
+     * It then constructs a reason string based on the type and the pattern.
+     * Finally, it returns an object with the URL's hostname, the element's tag name, and the reason.
+     *
+     * @param {URL} url - The URL to create the exclusion object for.
+     * @param {Element} el - The element to create the exclusion object for.
+     * @param {string} type - The type of the exclusion (attribute or domain).
+     * @returns {Object} An object with the URL's hostname, the element's tag name, and the reason.
+     */
+    createExclusionObject(url, el, type) {
+      const pattern = this.excludedPatterns.find(
+        (p) => type === "attribute" && el.getAttribute(p.key) === p.value || type === "domain" && url.hostname.includes(p.value)
+      );
+      let reason = type === "attribute" ? `${pattern.key}=${pattern.value}` : `domain-partial=${pattern.value}`;
+      return { domain: url.hostname, elementType: el.tagName.toLowerCase(), reason };
+    }
+    /**
+     * Returns an array of matched items, each item split into its domain and element type.
+     *
+     * This method iterates through the matchedItems set, splits each item into its domain and element type using the last hyphen as a delimiter,
+     * and returns an array of these split items.
+     *
+     * @returns {Array} An array of arrays, each containing a domain and an element type.
+     */
+    getMatchedItems() {
+      return Array.from(this.matchedItems).map((item) => {
+        const lastHyphenIndex = item.lastIndexOf("-");
+        return [
+          item.substring(0, lastHyphenIndex),
+          // Domain
+          item.substring(lastHyphenIndex + 1)
+          // Element type
+        ];
+      });
+    }
+    /**
+     * Returns the array of unique domain names that were found to be external.
+     *
+     * This method returns the result array, which contains a list of unique domain names that were identified as external during the analysis process.
+     *
+     * @returns {Array} An array of unique domain names.
+     */
+    getResults() {
+      return this.result;
+    }
+  };
+  var BeaconPreconnectExternalDomain_default = BeaconPreconnectExternalDomain;
+
   // src/Logger.js
   var Logger = class {
     constructor(enabled) {
@@ -404,6 +967,8 @@
       this.config = config;
       this.lcpBeacon = null;
       this.lrcBeacon = null;
+      this.preloadFontsBeacon = null;
+      this.preconnectExternalDomainBeacon = null;
       this.infiniteLoopId = null;
       this.errorCode = "";
       this.logger = new Logger_default(this.config.debug);
@@ -425,6 +990,8 @@
       const isGeneratedBefore = await this._getGeneratedBefore();
       const shouldGenerateLcp = this.config.status.atf && (isGeneratedBefore === false || isGeneratedBefore.lcp === false);
       const shouldGeneratelrc = this.config.status.lrc && (isGeneratedBefore === false || isGeneratedBefore.lrc === false);
+      const shouldGeneratePreloadFonts = this.config.status.preload_fonts && (isGeneratedBefore === false || isGeneratedBefore.preload_fonts === false);
+      const shouldGeneratePreconnectExternalDomain = this.config.status.preconnect_external_domain && (isGeneratedBefore === false || isGeneratedBefore.preconnect_external_domain === false);
       if (shouldGenerateLcp) {
         this.lcpBeacon = new BeaconLcp_default(this.config, this.logger);
         await this.lcpBeacon.run();
@@ -437,7 +1004,19 @@
       } else {
         this.logger.logMessage("Not running BeaconLrc because data is already available or feature is disabled");
       }
-      if (shouldGenerateLcp || shouldGeneratelrc) {
+      if (shouldGeneratePreloadFonts) {
+        this.preloadFontsBeacon = new BeaconPreloadFonts_default(this.config, this.logger);
+        await this.preloadFontsBeacon.run();
+      } else {
+        this.logger.logMessage("Not running BeaconPreloadFonts because data is already available or feature is disabled");
+      }
+      if (shouldGeneratePreconnectExternalDomain) {
+        this.preconnectExternalDomainBeacon = new BeaconPreconnectExternalDomain_default(this.config, this.logger);
+        await this.preconnectExternalDomainBeacon.run();
+      } else {
+        this.logger.logMessage("Not running BeaconPreconnectExternalDomain because data is already available or feature is disabled");
+      }
+      if (shouldGenerateLcp || shouldGeneratelrc || shouldGeneratePreloadFonts || shouldGeneratePreconnectExternalDomain) {
         this._saveFinalResultIntoDB();
       } else {
         this.logger.logMessage("Not saving results into DB as no beacon features ran.");
@@ -474,7 +1053,9 @@
     _saveFinalResultIntoDB() {
       const results = {
         lcp: this.lcpBeacon ? this.lcpBeacon.getResults() : null,
-        lrc: this.lrcBeacon ? this.lrcBeacon.getResults() : null
+        lrc: this.lrcBeacon ? this.lrcBeacon.getResults() : null,
+        preload_fonts: this.preloadFontsBeacon ? this.preloadFontsBeacon.getResults() : null,
+        preconnect_external_domain: this.preconnectExternalDomainBeacon ? this.preconnectExternalDomainBeacon.getResults() : null
       };
       const data = new FormData();
       data.append("action", "rocket_beacon");
