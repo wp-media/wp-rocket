@@ -3587,8 +3587,8 @@ msgid ""
 "%1$s: Please wait %2$s seconds. The Remove Unused CSS service is processing "
 "your pages, the plugin is optimizing LCP and the images above the fold."
 msgstr ""
-"%1$s: Vent %2$s sekunder. Tjenesten Fjern ubrugte CSS behandler dine sider, "
-"plugin optimerer LCP og billederne over foldet."
+"%1$s: Vent %2$s sekunder. Tjenesten Fjern ubrugt CSS behandler dine sider. "
+"Pluginet optimerer LCP og billederne på den øverste del af siden."
 
 #. translators: %1$s = plugin name, %2$s = number of URLs, %3$s = number of
 #. seconds.
