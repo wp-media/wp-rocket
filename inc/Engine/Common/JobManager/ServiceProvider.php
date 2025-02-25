@@ -48,40 +48,35 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register(): void {
-
 		$factories = [
 			$this->getContainer()->get( 'rucss_factory' ),
 		];
 
 		$this->getContainer()->add( 'wpr_clock', WPRClock::class );
-
 		$this->getContainer()->add( 'retry_strategy_context', RetryContext::class );
-
 		$this->getContainer()->add( 'retry_strategy_factory', StrategyFactory::class )
-			->addArgument( $this->getContainer()->get( 'wpr_clock' ) );
-
+			->addArgument( 'wpr_clock' );
 		$this->getContainer()->add( 'queue', Queue::class );
 
 		$this->getContainer()->add( 'api_client', APIClient::class )
-			->addArgument( $this->getContainer()->get( 'options' ) );
+			->addArgument( 'options' );
 
 		$this->getContainer()->addShared( 'job_processor', JobProcessor::class )
 			->addArguments(
 				[
 					$factories,
-					$this->getContainer()->get( 'queue' ),
-					$this->getContainer()->get( 'retry_strategy_factory' ),
-					$this->getContainer()->get( 'api_client' ),
-					$this->getContainer()->get( 'wpr_clock' ),
+					'queue',
+					'retry_strategy_factory',
+					'api_client',
+					'wpr_clock',
 				]
-		);
-
+			);
 		$this->getContainer()->addShared( 'cron_subscriber', CronSubscriber::class )
 			->addArguments(
 				[
-					$this->getContainer()->get( 'job_processor' ),
+					'job_processor',
 					$factories,
 				]
-				);
+			);
 	}
 }

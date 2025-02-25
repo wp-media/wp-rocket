@@ -37,6 +37,8 @@ class Test_DeletePost extends TestCase {
 		$controller = new Controller( ! $config['filter'] ? [] : $this->factories );
 
 		Functions\when( 'get_permalink' )->justReturn( $config['url'] );
+		Functions\when( 'get_post_type' )
+			->justReturn( $config['post_type'] );
 
 		if ( $expected ) {
 			$this->queries->expects( $this->once() )
