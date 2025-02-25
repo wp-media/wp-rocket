@@ -3563,7 +3563,7 @@ msgstr ""
 
 #: inc/Engine/Preload/Cron/Subscriber.php:138
 msgid "WP Rocket Preload pending jobs"
-msgstr "WP Rocket Preload ventende job"
+msgstr " Afventende jobs for WP Rocket-forudindlæsning"
 
 #: inc/Engine/Preload/Cron/Subscriber.php:166
 msgid "WP Rocket Preload revert stuck failed jobs"
