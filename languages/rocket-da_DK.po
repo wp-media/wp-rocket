@@ -3528,7 +3528,7 @@ msgstr "Listerne er blevet opdateret."
 
 #: inc/Engine/Optimization/Minify/AdminSubscriber.php:65
 msgid "Minify/combine JavaScript"
-msgstr "Minifys/kombinér JavaScript"
+msgstr "Minificer/kombinér JavaScript"
 
 #: inc/Engine/Optimization/Minify/CSS/AdminSubscriber.php:144
 msgid "Minify CSS"
