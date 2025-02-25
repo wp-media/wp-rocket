@@ -3935,9 +3935,9 @@ msgid ""
 "requiring the use of “Dynamic Cookies Cache” developers for an alternative "
 "way to be page-cache friendly. %1$sMore info%2$s"
 msgstr ""
-"Du bør enten deaktivere Cloudflare APO eller kontrollere med "
-"temaet/pluginet, der kræver brug af \"Dynamic Cookies Cache\" udviklere for "
-"en alternativ måde at være side-cache-venlige. %1$sMere info%2$s"
+"Du bør enten deaktivere Cloudflare APO eller tjekke med udviklerne af det "
+"tema/plugin, der kræver brug af \"Dynamic Cookies Cache\", om der findes en "
+"alternativ løsning til side-caching. %1$sMere info%2$s"
 
 #. Translators: %1$s = strong opening tag, %2$s = strong closing tag, %3$s =
 #. opening <a> tag, %4$s = closing </a> tag, %5$s = opening <a> tag.
