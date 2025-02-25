@@ -3793,7 +3793,7 @@ msgstr "Licensvalidering mislykkedes. Denne brugerkonto er blokeret."
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
 #: inc/functions/options.php:523
 msgid "Please see %1$sthis guide%2$s for more info."
-msgstr "Se %1$stthis guide%2$s for mere information."
+msgstr "Se %1$sdenne vejledning%2$s for mere information."
 
 #. Translators: %1$s = opening em tag, %2$s = closing em tag, %3$s = opening
 #. link tag, %4$s closing link tag.
