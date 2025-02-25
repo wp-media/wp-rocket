@@ -65,6 +65,13 @@ trait DBTrait {
 		return $preload_fonts_query->add_item( $resource );
 	}
 
+	public static function addPreconnectExternalDomains(array $resource) {
+		$container = apply_filters( 'rocket_container', null );
+		$preconnect_external_domains = $container->get( 'preconnect_external_domains_query' );
+
+		return $preconnect_external_domains->add_item( $resource );
+	}
+
 	public static function installFresh() {
 		$container = apply_filters( 'rocket_container', null );
 
@@ -85,6 +92,9 @@ trait DBTrait {
 
 		$preload_fonts_table = $container->get( 'preload_fonts_table' );
 		$preload_fonts_table->install();
+
+		$preconnect_external_domains_table = $container->get( 'preconnect_external_domains_table' );
+		$preconnect_external_domains_table->install();
 	}
 
 	public static function installUsedCssTable() {
@@ -93,6 +103,15 @@ trait DBTrait {
 
 		if ( ! $rucss_usedcss_table->exists() ) {
 			$rucss_usedcss_table->install();
+		}
+	}
+
+	public static function installPreconnectExternalDomainsTable() {
+		$container = apply_filters( 'rocket_container', null );
+		$preconnect_external_domains_table = $container->get( 'preconnect_external_domains_table' );
+
+		if ( ! $preconnect_external_domains_table->exists() ) {
+			$preconnect_external_domains_table->install();
 		}
 	}
 
@@ -159,6 +178,20 @@ trait DBTrait {
 		if ( $preload_fonts_table->exists() ) {
 			$preload_fonts_table->uninstall();
 		}
+
+		$preconnect_external_domains_table = $container->get( 'preconnect_external_domains_table' );
+		if ( $preconnect_external_domains_table->exists() ) {
+			$preconnect_external_domains_table->uninstall();
+		}
+	}
+
+	public static function uninstallPreconnectDomainsTable() {
+		$container = apply_filters( 'rocket_container', null );
+		$preconnect_external_domains_table = $container->get( 'preconnect_external_domains_table' );
+
+		if ( $preconnect_external_domains_table->exists() ) {
+			$preconnect_external_domains_table->uninstall();
+		}
 	}
 
 	public static function uninstallUsedCssTable() {
@@ -211,6 +244,7 @@ trait DBTrait {
 			$container->get( 'atf_table' ),
 			$container->get( 'lrc_table' ),
 			$container->get( 'preload_fonts_table' ),
+			$container->get( 'preconnect_external_domains_table' ),
 		];
 
 		foreach ( $tables as $table ) {

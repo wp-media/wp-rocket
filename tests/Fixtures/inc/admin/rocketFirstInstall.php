@@ -62,6 +62,7 @@ $default = [
 	'analytics_enabled'           => 0,
 	'sucury_waf_cache_sync'       => 0,
 	'sucury_waf_api_key'          => '',
+	'rocket_preload_fonts'        => 0,
 ];
 
 $integration                                 					 = $default;
