@@ -3567,7 +3567,7 @@ msgstr " Afventende jobs for WP Rocket-forudindlæsning"
 
 #: inc/Engine/Preload/Cron/Subscriber.php:166
 msgid "WP Rocket Preload revert stuck failed jobs"
-msgstr "WP Rocket Preload revert stuede mislykkede job"
+msgstr "Tilbagerul fastlåste mislykkede jobs for WP Rocket-forudindlæsning"
 
 #: inc/Engine/Saas/Admin/AdminBar.php:106
 msgid "Clear Used CSS of this URL"
