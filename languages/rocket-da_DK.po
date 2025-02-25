@@ -3829,7 +3829,7 @@ msgid ""
 "Upgrade your %1$saccount%2$s or %3$stransfer your license%2$s to this "
 "domain."
 msgstr ""
-"Opgrader din %1$s-konto%2$s eller %3$overfør din licens%2$s til dette "
+"Opgrader din %1$skonto%2$s eller %3$ooverfør din licens%2$s til dette "
 "domæne."
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
