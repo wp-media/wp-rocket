@@ -3532,7 +3532,7 @@ msgstr "Minificer/kombinér JavaScript"
 
 #: inc/Engine/Optimization/Minify/CSS/AdminSubscriber.php:144
 msgid "Minify CSS"
-msgstr "Minify CSS"
+msgstr "Minificer CSS"
 
 #. translators: %1$s = plugin name, %2$s = table name, %3$s = <a> open tag,
 #. %4$s = </a> closing tag.
