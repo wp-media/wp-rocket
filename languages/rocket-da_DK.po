@@ -3948,8 +3948,9 @@ msgid ""
 "Cloudflare APO to serve the right version of the cache. %4$sMore info%5$s"
 msgstr ""
 "%1$sWP Rocket:%2$s Du bruger \"Separate cachefiler for mobilenheder\". Du "
-"skal aktivere \"Cache by Device Type\" %3$setetting%5$s på Cloudflare APO "
-"for at betjene den rigtige version af cachen. %4$sMere info%5$s"
+"skal aktivere \"Cache ud fra enhedstype\" %3$s-indstillingen%5$s i "
+"Cloudflare APO for at betjene den rigtige version af cachen. %4$sMere "
+"info%5$s"
 
 #. Translators: %1$s = strong opening tag, %2$s = strong closing tag.
 #: inc/ThirdParty/Plugins/CDN/Cloudflare.php:293
