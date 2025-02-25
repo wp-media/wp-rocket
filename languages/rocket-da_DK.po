@@ -3840,7 +3840,7 @@ msgstr "Denne hjemmeside er ikke tilladt."
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
 #: inc/functions/options.php:547
 msgid "Please %1$scontact support%2$s."
-msgstr "%1$skontakt support%2$s."
+msgstr "%1$sKontakt supporten%2$s."
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
 #: inc/functions/options.php:549
