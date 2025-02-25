@@ -3850,7 +3850,7 @@ msgstr "Kan ikke genkende denne licensnøgle."
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
 #: inc/functions/options.php:549
 msgid "If the issue persists, please %1$scontact support%2$s."
-msgstr "Hvis problemet fortsætter, bedes %1$scontact support%2$s."
+msgstr "Hvis problemet fortsætter, bedes du %1$skontakte supporten%2$s."
 
 #. Translators: %s = error message returned.
 #: inc/functions/options.php:555
