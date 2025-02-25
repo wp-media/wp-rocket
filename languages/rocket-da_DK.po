@@ -3557,9 +3557,9 @@ msgid ""
 "continue to cache all your pages whenever they are purged. No further action"
 " is needed."
 msgstr ""
-"%1$s: Preload-tjenesten er nu aktiv. Efter den indledende forindlæsning vil "
-"den fortsætte med at cache alle dine sider, når de bliver renset. Ingen "
-"yderligere handling er nødvendig."
+"%1$s: Forudindlæs-tjenesten er nu aktiv. Efter den indledende "
+"forudindlæsning vil den fortsætte med at cache alle dine sider, når de "
+"bliver renset. Ingen yderligere handling er nødvendig."
 
 #: inc/Engine/Preload/Cron/Subscriber.php:138
 msgid "WP Rocket Preload pending jobs"
