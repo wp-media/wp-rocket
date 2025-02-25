@@ -3376,7 +3376,7 @@ msgstr ""
 #. translators: %1$s = <strong>, %2$s = </strong>, %3$s = date.
 #: inc/Engine/License/views/renewal-expired-banner-ocd.php:31
 msgid "These features will be %1$sautomatically disabled on %3$s%2$s."
-msgstr "Disse funktioner bliver automatisk deaktiveret på %3$s%2$s."
+msgstr "Disse funktioner bliver %1$sautomatisk deaktiveret den %3$s%2$s."
 
 #: inc/Engine/License/views/renewal-expired-banner.php:13
 msgid "Your WP Rocket license is expired!"
