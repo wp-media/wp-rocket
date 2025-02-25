@@ -3611,8 +3611,7 @@ msgstr ""
 #: inc/Engine/Saas/Admin/Notices.php:167
 msgid "To learn more about the process check our %1$sdocumentation%2$s."
 msgstr ""
-"Hvis du vil vide mere om processen, kan du tjekke vores "
-"%1$sdokumentation%2$s."
+"Hvis du vil vide mere om processen, kan du læse vores %1$sdokumentation%2$s."
 
 #: inc/Engine/Saas/Admin/Notices.php:225
 msgid ""
