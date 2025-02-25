@@ -3663,11 +3663,11 @@ msgstr[1] ""
 
 #: inc/functions/admin.php:361
 msgid "Server type:"
-msgstr "Server type:"
+msgstr "Servertype:"
 
 #: inc/functions/admin.php:370
 msgid "PHP version number:"
-msgstr "PHP version nummer:"
+msgstr "PHP-versionnummer:"
 
 #: inc/functions/admin.php:379
 msgid "WordPress version number:"
