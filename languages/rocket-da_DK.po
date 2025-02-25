@@ -3603,7 +3603,9 @@ msgstr ""
 #. translators: %1$s = opening link tag, %2$s = closing link tag.
 #: inc/Engine/Saas/Admin/Notices.php:157
 msgid "We suggest enabling %1$sPreload%2$s for the fastest results."
-msgstr "Vi foreslår at aktivere %1$sPreload%2$s for de hurtigste resultater."
+msgstr ""
+"Vi foreslår at aktivere %1$sForudindlæsning%2$s for at få hurtigste "
+"resultater."
 
 #. translators: %1$s = opening link tag, %2$s = closing link tag.
 #: inc/Engine/Saas/Admin/Notices.php:167
