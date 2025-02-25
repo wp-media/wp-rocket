@@ -3389,7 +3389,7 @@ msgid ""
 "features and enhancements%2$s. 🚀"
 msgstr ""
 "Din hjemmeside kunne være meget hurtigere, hvis den kunne drage fordel af "
-"vores nye funktioner og forbedringer%2$s."
+"vores %1$snye funktioner og forbedringer%2$s. 🚀"
 
 #. translators: %1$s = <strong>, %2$s = </strong>.
 #: inc/Engine/License/views/renewal-soon-banner.php:24
