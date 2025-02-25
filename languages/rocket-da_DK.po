@@ -3683,7 +3683,7 @@ msgstr "Aktuelt tema:"
 
 #: inc/functions/admin.php:406
 msgid "Current site language:"
-msgstr "Aktuelt webstedssprog:"
+msgstr "Aktuelt hjemmesidesprog:"
 
 #: inc/functions/admin.php:415
 msgid "Active plugins:"
