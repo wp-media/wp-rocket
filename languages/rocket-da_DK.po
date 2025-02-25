@@ -3508,7 +3508,7 @@ msgstr "Delay JavaScript Execution Exclusion-lister"
 
 #: inc/Engine/Optimization/DynamicLists/DynamicLists.php:111
 msgid "Incompatible plugins Lists"
-msgstr "Inkompatible plugins Lister"
+msgstr "Lister over inkompatible plugins"
 
 #: inc/Engine/Optimization/DynamicLists/DynamicLists.php:121
 msgid "Could not get updated lists from server."
