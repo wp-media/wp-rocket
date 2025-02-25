@@ -3739,8 +3739,8 @@ msgid ""
 "Try clicking %1$sValidate License%2$s below. If the error persists, follow "
 "%3$sthis guide%4$s."
 msgstr ""
-"Prøv at klikke på %1$sValidate License%2$s nedenfor. Hvis fejlen fortsætter,"
-" skal du følge %3$sthis guide%4$s."
+"Prøv at klikke på %1$sValider licens%2$s nedenfor. Hvis fejlen fortsætter, "
+"skal du følge %3$sdenne vejledning%4$s."
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
 #: inc/functions/options.php:507
