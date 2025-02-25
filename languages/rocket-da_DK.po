@@ -3524,7 +3524,7 @@ msgstr "Kunne ikke opdatere lister."
 
 #: inc/Engine/Optimization/DynamicLists/DynamicLists.php:149
 msgid "Lists are successfully updated."
-msgstr "Listerne opdateres med succes."
+msgstr "Listerne er blevet opdateret."
 
 #: inc/Engine/Optimization/Minify/AdminSubscriber.php:65
 msgid "Minify/combine JavaScript"
