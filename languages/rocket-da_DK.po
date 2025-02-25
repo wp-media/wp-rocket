@@ -3720,7 +3720,7 @@ msgstr "De angivne licensdata er ikke gyldige."
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
 #: inc/functions/options.php:432
 msgid "To resolve, please %1$scontact support%2$s."
-msgstr "For at løse problemet bedes du  %1$skontakte support%2$s."
+msgstr "For at løse problemet bedes du  %1$skontakte supporten%2$s."
 
 #. Translators: %1$s = opening em tag, %2$s = closing em tag, %3$s = opening
 #. link tag, %4$s closing link tag.
