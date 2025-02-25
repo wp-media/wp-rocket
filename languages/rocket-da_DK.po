@@ -3813,7 +3813,7 @@ msgstr "Din licens er ikke gyldig."
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
 #: inc/functions/options.php:543
 msgid "Make sure you have an active %1$sWP Rocket license%2$s."
-msgstr "Sørg for, at du har en aktiv %1$sWP Rocket licens%2$s."
+msgstr "Sørg for, at du har en aktiv %1$sWP Rocket-licens%2$s."
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag, %3$s =
 #. opening link tag.
