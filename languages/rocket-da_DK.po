@@ -3380,7 +3380,7 @@ msgstr "Disse funktioner bliver %1$sautomatisk deaktiveret den %3$s%2$s."
 
 #: inc/Engine/License/views/renewal-expired-banner.php:13
 msgid "Your WP Rocket license is expired!"
-msgstr "Din WP Rocket licens er udløbet!"
+msgstr "Din WP Rocket-licens er udløbet!"
 
 #. translators: %1$s = <strong>, %2$s = </strong>.
 #: inc/Engine/License/views/renewal-expired-banner.php:20
