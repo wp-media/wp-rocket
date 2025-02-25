@@ -132,11 +132,10 @@ class Controller implements ControllerInterface {
 		 */
 		wpm_apply_filters_typed( 'array', 'rocket_preload_fonts_processed_extensions', $processed_extensions );
 
-
 		$data['system_fonts']            = $system_fonts;
 		$data['font_data']               = $font_data;
 		$data['status']['preload_fonts'] = $this->context->is_allowed();
-		$data['processed_extensions'] = $processed_extensions;
+		$data['processed_extensions']    = $processed_extensions;
 
 		return $data;
 	}
