@@ -364,7 +364,7 @@ msgstr "Innstillinger"
 #: inc/admin/admin.php:96 inc/admin/admin.php:117 inc/deprecated/3.5.php:898
 #: inc/Engine/Cache/AdminSubscriber.php:135
 msgid "Clear this cache"
-msgstr "Tøm denne hurtigbufferen"
+msgstr "Tøm denne cachen"
 
 #: inc/admin/admin.php:408
 msgid "Settings import failed: you do not have the permissions to do this."
