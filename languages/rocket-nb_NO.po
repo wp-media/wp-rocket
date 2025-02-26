@@ -617,7 +617,7 @@ msgstr "%s: Cache tømt."
 #. translators: %s = plugin name.
 #: inc/admin/ui/notices.php:612
 msgid "%s: Post cache cleared."
-msgstr "%s: Post-cache tømt"
+msgstr "%s: Innleggs-cache tømt"
 
 #. translators: %s = plugin name.
 #: inc/admin/ui/notices.php:619
