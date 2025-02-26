@@ -639,7 +639,7 @@ msgstr "Avvis dette varselet"
 
 #: inc/admin/ui/notices.php:682 inc/Engine/Saas/Admin/AdminBar.php:51
 msgid "Clear Used CSS"
-msgstr "Fjern brukt CSS"
+msgstr "Tøm brukt CSS"
 
 #: inc/admin/ui/notices.php:685
 msgid "Stop Preload"
