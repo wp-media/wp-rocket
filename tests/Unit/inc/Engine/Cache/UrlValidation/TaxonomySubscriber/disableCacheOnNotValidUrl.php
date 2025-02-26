@@ -8,9 +8,9 @@ use WP_Rocket\Engine\Cache\UrlValidation\TaxonomySubscriber;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * Test class covering \WP_Rocket\Engine\Cache\TaxonomySubscriber::disable_cache_on_not_valid_url
+ * Test class covering \WP_Rocket\Engine\Cache\UrlValidation\TaxonomySubscriber::disable_cache_on_not_valid_url
  *
- * @uses \WP_Rocket\Engine\Cache\TaxonomySubscriber::is_not_valid_url
+ * @uses \WP_Rocket\Engine\Cache\UrlValidation\TaxonomySubscriber::is_not_valid_url
  *
  * @group Cache
  */
