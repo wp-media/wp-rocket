@@ -817,8 +817,8 @@ msgid ""
 "compresses images, converts them to WebP and AVIF formats, and lets you "
 "resize and optimize with just one click!"
 msgstr ""
-"Imagify er den enkleste WordPress bilde optimaliserer. Den komprimerer "
-"automatisk bilder, konverterer dem til WebP- og AVIF-formater, og lar deg "
+"Imagify er den enkleste bildeoptimalisatoren for WordPress. Den komprimerer "
+"bilder automatisk, konverterer dem til WebP og AVIF-formater, og lar deg "
 "endre størrelse og optimalisere med bare ett klikk!"
 
 #: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:31
