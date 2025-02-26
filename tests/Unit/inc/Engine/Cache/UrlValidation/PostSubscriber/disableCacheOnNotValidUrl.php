@@ -8,14 +8,14 @@ use WP_Rocket\Engine\Cache\UrlValidation\PostSubscriber;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * Test class covering PostSubscriber::disable_cache_on_not_valid_pages
- * @covers \WP_Rocket\Engine\Cache\PostSubscriber::disable_cache_on_not_valid_pages
+ * Test class covering PostSubscriber::disable_cache_on_not_valid_url
+ * @covers \WP_Rocket\Engine\Cache\PostSubscriber::disable_cache_on_not_valid_url
  *
- * @uses PostSubscriber::is_not_valid_page
+ * @uses PostSubscriber::is_not_valid_url
  *
  * @group Cache
  */
-class Test_DisableCacheOnNotValidPages extends TestCase {
+class TestDisableCacheOnNotValidUrl extends TestCase {
 	private $subscriber;
 
 	protected function setUp(): void {
@@ -37,6 +37,6 @@ class Test_DisableCacheOnNotValidPages extends TestCase {
 		Functions\when( 'is_paged' )->justReturn( ! empty( $config['page'] ) );
 		Functions\when( 'get_query_var' )->justReturn( $config['page'] ?? 0 );
 
-		$this->assertSame( $can_cache, $this->subscriber->disable_cache_on_not_valid_pages( true ) );
+		$this->assertSame( $can_cache, $this->subscriber->disable_cache_on_not_valid_url( true ) );
 	}
 }

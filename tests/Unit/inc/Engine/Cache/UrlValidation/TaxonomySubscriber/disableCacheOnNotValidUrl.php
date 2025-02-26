@@ -8,13 +8,13 @@ use WP_Rocket\Engine\Cache\UrlValidation\TaxonomySubscriber;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * Test class covering \WP_Rocket\Engine\Cache\TaxonomySubscriber::disable_cache_on_not_valid_taxonomy_pages
+ * Test class covering \WP_Rocket\Engine\Cache\TaxonomySubscriber::disable_cache_on_not_valid_url
  *
- * @uses \WP_Rocket\Engine\Cache\TaxonomySubscriber::is_not_valid_taxonomies_page
+ * @uses \WP_Rocket\Engine\Cache\TaxonomySubscriber::is_not_valid_url
  *
  * @group Cache
  */
-class Test_DisableCacheOnNotValidTaxonomyPages extends TestCase {
+class TestDisableCacheOnNotValidUrl extends TestCase {
 	private $subscriber;
 
 	protected function setUp(): void {
@@ -38,6 +38,6 @@ class Test_DisableCacheOnNotValidTaxonomyPages extends TestCase {
 		Functions\when( 'is_paged' )->justReturn( ! empty( $config['page'] ) );
 		Functions\when( 'get_query_var' )->justReturn( $config['page'] ?? 0 );
 
-		$this->assertSame( $can_cache, $this->subscriber->disable_cache_on_not_valid_taxonomy_pages( true ) );
+		$this->assertSame( $can_cache, $this->subscriber->disable_cache_on_not_valid_url( true ) );
 	}
 }
