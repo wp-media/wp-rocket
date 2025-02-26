@@ -4054,7 +4054,7 @@ msgid ""
 "%1$s %2$sbrowser caching%3$s conflicts with WP Rocket %2$sbrowser "
 "caching%3$s"
 msgstr ""
-"%1$s %2$s browser caching%3$s konflikter med WP Rocket %2$s browser "
+"%1$s %2$s browser-caching%3$s konflikter med WP Rockets %2$s browser-"
 "caching%3$s"
 
 #. Translators: %1$s = Plugin name, %2$s = <em>, %3$s = </em>.
