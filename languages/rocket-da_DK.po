@@ -4044,7 +4044,7 @@ msgid ""
 "%1$s %2$sGZIP compression%3$s conflicts with WP Rocket %2$sGZIP "
 "compression%3$s"
 msgstr ""
-"%1$s %2$sGZIP kompression%3$s er i konflikt med WP Rocket %2$sGZIP "
+"%1$s %2$sGZIP-kompression%3$s er i konflikt med WP Rockets %2$sGZIP-"
 "kompression%3$s"
 
 #. Translators: %1$s = Plugin name, %2$s = <em>, %3$s = </em>.
