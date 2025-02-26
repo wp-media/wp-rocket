@@ -651,7 +651,7 @@ msgstr "Slå på Fjern ubrukt CSS"
 
 #: inc/admin/ui/notices.php:697
 msgid "Enable “Separate Cache Files for Mobile Devices” now"
-msgstr "Aktiver \"Separate bufferfiler for mobile enheter\" nå"
+msgstr "Aktiver \"Separate Cache Files for Mobile Devices\" nå"
 
 #: inc/admin/ui/notices.php:715
 msgid "Force deactivation "
