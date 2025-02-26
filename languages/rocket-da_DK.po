@@ -3974,7 +3974,7 @@ msgid ""
 "may cause unexpected results. %2$sMore Info%3$s"
 msgstr ""
 "<strong>%1$s</strong>: Mod PageSpeed er ikke kompatibel med dette plugin og "
-"kan forårsage uventede resultater. %2$sMere info%3$s"
+"kan give uventede resultater. %2$sMere info%3$s"
 
 #. Translators: %1$s is an opening <strong> tag; %2$s is a closing </strong>
 #. tag
