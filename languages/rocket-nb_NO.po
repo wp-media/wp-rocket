@@ -423,7 +423,7 @@ msgstr "Aldri cache URL(er)"
 
 #: inc/admin/options.php:108 inc/Engine/Admin/Settings/Page.php:1257
 msgid "Never Cache User Agent(s)"
-msgstr "Buffer aldri brukeragent(er)"
+msgstr "Aldri cache brukeragent(er)"
 
 #: inc/admin/options.php:109 inc/Engine/Admin/Settings/Page.php:1263
 msgid "Always Purge URL(s)"
