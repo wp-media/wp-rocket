@@ -511,8 +511,8 @@ msgid ""
 "%1$s: A custom permalink structure is required for the plugin to work "
 "properly. %2$sGo to permalinks settings%3$s"
 msgstr ""
-"%1$s: En tilpasset permalinkstruktur er nødvendig for at plugin-en skal "
-"fungere skikkelig. %2$sGå til permalinks-innstillinger%3$s"
+"%1$s: En tilpasset permalenkestruktur er nødvendig for at pluginen skal "
+"fungere riktig. %2$sGå til permalenke-innstillinger%3$s"
 
 #. translators: %s = plugin name.
 #: inc/admin/ui/notices.php:297
