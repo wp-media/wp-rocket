@@ -369,8 +369,7 @@ msgstr "Tøm denne cachen"
 #: inc/admin/admin.php:408
 msgid "Settings import failed: you do not have the permissions to do this."
 msgstr ""
-"Innstillinger importeres mislyktes: du har ikke tillatelse til å gjøre "
-"dette."
+"Import av innstillinger mislyktes: Du har ikke tillatelse til å gjøre dette."
 
 #: inc/admin/admin.php:412
 msgid "Settings import failed: no file uploaded."
