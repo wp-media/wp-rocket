@@ -687,8 +687,8 @@ msgid ""
 "PHP %1$s. To use this WP Rocket version, please ask your web host how to "
 "upgrade your server to PHP %1$s or higher."
 msgstr ""
-"PHP %1$s. For å bruke denne WP Rocket-versjonen, vennligst spør webverten "
-"din hvordan du oppgraderer serveren din til PHP %1$s eller høyere."
+"PHP %1$s. For å bruke denne WP Rocket-versjonen, vennligst spør webhosten "
+"din om hvordan du oppgraderer serveren din til PHP %1$s eller høyere."
 
 #. Translators: %1$s = WordPress version required.
 #: inc/classes/class-wp-rocket-requirements-check.php:156
