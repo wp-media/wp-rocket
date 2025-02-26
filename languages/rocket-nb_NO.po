@@ -567,8 +567,8 @@ msgid ""
 "Would you allow WP Rocket to collect non-sensitive diagnostic data from this"
 " website?"
 msgstr ""
-"Vil du tillate WP Rocket å samle inn ikke-sensitive diagnostiske data fra "
-"dette nettstedet?"
+"Vil du tillate at WP Rocket samler inn ikke-sensitive diagnostiske data fra "
+"denne nettsiden?"
 
 #: inc/admin/ui/notices.php:500
 msgid "This would help us to improve WP Rocket for you in the future."
