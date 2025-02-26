@@ -446,7 +446,7 @@ msgstr[1] "Følgende mønstre er ugyldige og har blitt fjernet:"
 
 #: inc/admin/options.php:157
 msgid "More info"
-msgstr "Ytterligere informasjon"
+msgstr "Mer info"
 
 #: inc/admin/ui/meta-boxes.php:37 inc/admin/ui/notices.php:671
 msgid "Clear cache"
