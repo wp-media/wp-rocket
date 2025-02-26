@@ -1,9 +1,10 @@
 <?php
+declare(strict_types=1);
 
-namespace WP_Rocket\Tests\Unit\inc\Engine\Cache\TaxonomySubscriber;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Cache\UrlValidation\TaxonomySubscriber;
 
 use Brain\Monkey\Functions;
-use WP_Rocket\Engine\Cache\TaxonomySubscriber;
+use WP_Rocket\Engine\Cache\UrlValidation\TaxonomySubscriber;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
@@ -21,7 +22,6 @@ class Test_DisableCacheOnNotValidTaxonomyPages extends TestCase {
 
 		$this->subscriber = new TaxonomySubscriber();
 	}
-
 
 	/**
 	 * @dataProvider configTestData

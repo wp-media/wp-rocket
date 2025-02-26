@@ -1,12 +1,12 @@
 <?php
-namespace WP_Rocket\Engine\Cache;
+namespace WP_Rocket\Engine\Cache\UrlValidation;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
  * Subscriber for the post/page frontend pages.
  */
-class PostSubscriber implements Subscriber_Interface {
+class PostSubscriber extends AbstractUrlValidation implements Subscriber_Interface {
 	/**
 	 * {@inheritdoc}
 	 */
@@ -18,36 +18,11 @@ class PostSubscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Disable caching invalid page urls.
-	 *
-	 * @param bool $can_cache Filter callback passed value.
-	 * @return bool
-	 */
-	public function disable_cache_on_not_valid_pages( $can_cache ) {
-		if ( $this->is_not_valid_page() ) {
-			return false;
-		}
-
-		return $can_cache;
-	}
-
-	/**
-	 * Stop optimizing those invalid pages by returning empty html string,
-	 * So it fall back to the normal page's HTML.
-	 *
-	 * @param string $html Page's buffer HTML.
-	 * @return string
-	 */
-	public function stop_optimizations_for_not_valid_pages( $html ) {
-		return $this->is_not_valid_page() ? '' : $html;
-	}
-
-	/**
 	 * Check if we are on the post frontend page, but it's not valid url query.
 	 *
 	 * @return bool (True when not valid post url, False if it's a valid one)
 	 */
-	private function is_not_valid_page() {
+	protected function is_not_valid_url(): bool {
 		if ( ! is_singular() ) {
 			return false;
 		}

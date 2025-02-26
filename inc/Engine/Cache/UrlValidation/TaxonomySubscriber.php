@@ -1,12 +1,12 @@
 <?php
-namespace WP_Rocket\Engine\Cache;
+namespace WP_Rocket\Engine\Cache\UrlValidation;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
  * Subscriber for the taxonomy frontend pages.
  */
-class TaxonomySubscriber implements Subscriber_Interface {
+class TaxonomySubscriber extends AbstractUrlValidation implements Subscriber_Interface {
 	/**
 	 * {@inheritdoc}
 	 */
@@ -18,36 +18,11 @@ class TaxonomySubscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Disable caching invalid taxonomy frontend pages.
-	 *
-	 * @param bool $can_cache Filter callback passed value.
-	 * @return bool
-	 */
-	public function disable_cache_on_not_valid_taxonomy_pages( $can_cache ) {
-		if ( $this->is_not_valid_taxonomy_page() ) {
-			return false;
-		}
-
-		return $can_cache;
-	}
-
-	/**
-	 * Stop optimizing those invalid taxonomy pages by returning empty html string,
-	 * So it fall back to the normal page's HTML.
-	 *
-	 * @param string $html Page's buffer HTML.
-	 * @return string
-	 */
-	public function stop_optimizations_for_not_valid_taxonomy_pages( $html ) {
-		return $this->is_not_valid_taxonomy_page() ? '' : $html;
-	}
-
-	/**
 	 * Check if we are on the taxonomy frontend page, but it's not valid url query.
 	 *
 	 * @return bool (True when not valid taxonomy page, False if it's a valid one)
 	 */
-	private function is_not_valid_taxonomy_page() {
+	protected function is_not_valid_url(): bool {
 		if ( ! is_category() && ! is_tag() && ! is_tax() ) {
 			return false;
 		}

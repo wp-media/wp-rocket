@@ -1,9 +1,10 @@
 <?php
+declare(strict_types=1);
 
-namespace WP_Rocket\Tests\Unit\inc\Engine\Cache\PostSubscriber;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Cache\UrlValidation\PostSubscriber;
 
 use Brain\Monkey\Functions;
-use WP_Rocket\Engine\Cache\PostSubscriber;
+use WP_Rocket\Engine\Cache\UrlValidation\PostSubscriber;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
@@ -22,7 +23,6 @@ class Test_DisableCacheOnNotValidPages extends TestCase {
 
 		$this->subscriber = new PostSubscriber();
 	}
-
 
 	/**
 	 * @dataProvider configTestData
