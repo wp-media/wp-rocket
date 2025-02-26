@@ -612,7 +612,7 @@ msgstr "WP Rocket samler nå inn disse målingene fra nettsiden din:"
 #. translators: %s = plugin name.
 #: inc/admin/ui/notices.php:605
 msgid "%s: Cache cleared."
-msgstr "%s: Hurtigbufferen er tømt."
+msgstr "%s: Cache tømt."
 
 #. translators: %s = plugin name.
 #: inc/admin/ui/notices.php:612
