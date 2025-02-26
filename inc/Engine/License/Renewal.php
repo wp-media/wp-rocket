@@ -71,17 +71,9 @@ class Renewal extends Abstract_Render {
 
 				$data['message'] = sprintf(
 				// translators: %1$s WP Rocket plugin name.
-				esc_html__( 'Your %1$s licence is about to expire: you will soon lose access to product updates and support.', 'rocket' ),
-					'WP_ROCKET_PLUGIN_NAME'
+				esc_html__( 'Your %1$s license is about to expire: you will soon lose access to product updates and support.', 'rocket' ),
+					WP_ROCKET_PLUGIN_NAME
 				);
-
-		if ( $this->get_discount_percent() ) {
-			$data['message'] = sprintf(
-			// translators: %1$s WP Rocket plugin name.
-			esc_html__( 'Your %1$s licence is about to expire: you will soon lose access to product updates and support.', 'rocket' ),
-				'WP_ROCKET_PLUGIN_NAME'
-			);
-		}
 
 		echo $this->generate( 'renewal-soon-banner', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
@@ -124,7 +116,7 @@ class Renewal extends Abstract_Render {
 		$ocd_enabled = $this->options->get( 'optimize_css_delivery', 0 );
 		$renewal_url = $this->user->get_renewal_url();
 
-		$message = esc_html__( 'RENEW NOW ', 'rocket' );
+		$message = esc_html__( 'RENEW NOW', 'rocket' );
 
 		if ( $ocd_enabled ) {
 			if ( 15 > $expired_since ) {
@@ -193,8 +185,8 @@ class Renewal extends Abstract_Render {
 		if ( $this->is_grandfather() ) {
 			$message = sprintf(
 				// translators: %1$s WP Rocket plugin name.
-				esc_html__( 'Your %1$s licence is about to expire: you will soon lose access to product updates and support.', 'rocket' ),
-				'WP_ROCKET_PLUGIN_NAME'
+				esc_html__( 'Your %1$s license is about to expire: you will soon lose access to product updates and support.', 'rocket' ),
+				WP_ROCKET_PLUGIN_NAME
 			);
 		}
 
