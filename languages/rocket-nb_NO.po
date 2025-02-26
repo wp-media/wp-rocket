@@ -477,8 +477,8 @@ msgid ""
 "<strong>%s</strong>: The following plugins are not compatible with this "
 "plugin and may cause unexpected results:"
 msgstr ""
-"<strong>%s</strong>: Følgende plugins er ikke kompatible med denne plugin-"
-"modulen og kan forårsake uventede resultater:"
+"<strong>%s</strong>: Følgende plugins er ikke kompatible med denne pluginen "
+"og kan føre til uventede resultater:"
 
 #: inc/admin/ui/notices.php:147
 msgid "Deactivate"
