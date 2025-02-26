@@ -285,8 +285,8 @@ msgstr[0] ""
 "server WebP for deg i stedet, vennligst deaktiver WebP-visning i %1$s."
 msgstr[1] ""
 "Du bruker %1$s til å vise WebP-bilder, så du trenger ikke å aktivere dette "
-"alternativet. %2$sMer info%3$s %4$s Hvis du foretrekker å ha WP Rocket "
-"server WebP for deg i stedet, vennligst deaktiver WebP-visning i %1$s."
+"alternativet. %2$sMer info%3$s %4$s Hvis du foretrekker at WP Rocket viser "
+"WebP for deg i stedet, vennligst deaktiver WebP-visning i %1$s."
 
 #: inc/Addon/WebP/AdminSubscriber.php:105
 msgid "WebP cache is disabled by filter."
