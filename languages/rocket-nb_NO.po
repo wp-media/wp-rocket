@@ -550,7 +550,7 @@ msgid ""
 "recommended (not required):"
 msgstr ""
 "For optimal ytelse anbefales det å legge til følgende linjer i .htaccess "
-"(ikke nødvendig):"
+"(ikke påkrevd):"
 
 #. translators: %1$s = plugin name, %2$s + %3$s = opening links, %4$s =
 #. closing link
