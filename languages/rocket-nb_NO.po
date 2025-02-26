@@ -622,7 +622,7 @@ msgstr "%s: Post-cache tømt"
 #. translators: %s = plugin name.
 #: inc/admin/ui/notices.php:619
 msgid "%s: Term cache cleared."
-msgstr "%s: Terminbufferen er tømt."
+msgstr "%s: Term-cache tømt."
 
 #. translators: %s = plugin name).
 #: inc/admin/ui/notices.php:626
