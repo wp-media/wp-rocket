@@ -674,7 +674,7 @@ msgstr "Berørt fil/mappe: %s"
 
 #: inc/classes/admin/class-logs.php:124
 msgid "The debug file could not be deleted."
-msgstr "Feil ved sletting av debug-filen."
+msgstr "Debug-filen kunne ikke slettes."
 
 #. Translators: %1$s = Plugin name, %2$s = Plugin version.
 #: inc/classes/class-wp-rocket-requirements-check.php:147
