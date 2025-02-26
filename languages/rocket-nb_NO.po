@@ -834,9 +834,9 @@ msgid ""
 "Rank Math SEO is the Best WordPress SEO plugin with the features of many SEO"
 " and AI SEO tools in a single package to help multiply your SEO traffic."
 msgstr ""
-"Rank Math SEO er den beste WordPress SEO-pluginen med funksjonene til mange "
-"SEO- og AI SEO-verktøy i en enkelt pakke for å multiplisere SEO-trafikken "
-"din."
+"Rank Math SEO er den beste SEO-pluginen for WordPress med funksjonene til "
+"mange SEO- og AI-SEO-verktøy i én pakke som hjelper deg å multiplisere SEO-"
+"trafikken din."
 
 #: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:45
 msgid "Protect & Secure"
