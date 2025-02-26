@@ -659,7 +659,7 @@ msgstr "Tving deaktivering "
 
 #: inc/admin/ui/notices.php:745
 msgid "The following code should have been written to this file:"
-msgstr "Følgende kode skal ha blitt skrevet til denne filen:"
+msgstr "Følgende kode skulle vært skrevet til denne filen:"
 
 #. translators: %s = plugin name.
 #: inc/admin/ui/notices.php:776
