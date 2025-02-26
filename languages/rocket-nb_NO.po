@@ -747,7 +747,7 @@ msgstr "Tøm og forhåndslast hurtigbuffer"
 
 #: inc/common/admin-bar.php:91 inc/common/admin-bar.php:154
 msgid "Clear Cache"
-msgstr "Tøm hurtigbuffer"
+msgstr "Tøm cache"
 
 #: inc/common/admin-bar.php:131 inc/functions/i18n.php:20
 msgid "All languages"
