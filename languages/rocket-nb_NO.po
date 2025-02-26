@@ -795,7 +795,7 @@ msgstr "Optimaliser ytelsen"
 
 #: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:15
 msgid "Speed Up Your Website, Instantly"
-msgstr "Få fart på nettstedet ditt umiddelbart"
+msgstr "Øk hastigheten på nettsiden din umiddelbart"
 
 #: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:16
 msgid ""
