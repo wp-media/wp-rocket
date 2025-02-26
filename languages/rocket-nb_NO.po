@@ -419,7 +419,7 @@ msgstr "Ekskluderte Delay JavaScript-filer"
 
 #: inc/admin/options.php:107 inc/Engine/Admin/Settings/Page.php:1243
 msgid "Never Cache URL(s)"
-msgstr "Buffer aldri URL(er)"
+msgstr "Aldri cache URL(er)"
 
 #: inc/admin/options.php:108 inc/Engine/Admin/Settings/Page.php:1257
 msgid "Never Cache User Agent(s)"
