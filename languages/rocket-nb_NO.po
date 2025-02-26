@@ -335,7 +335,7 @@ msgid ""
 "do not enable this option."
 msgstr ""
 "%5$sVi har ikke oppdaget noen kompatibel WebP-plugin!%6$s%4$s Hvis du ikke "
-"allerede har WebP-bilder på nettstedet ditt, bør du vurdere å bruke "
+"allerede har WebP-bilder på nettsiden din, bør du vurdere å bruke "
 "%3$sImagify%2$s eller et annet støttet plugin. %1$sMer info%2$s %4$s Hvis du"
 " ikke bruker WebP, må du ikke aktivere dette alternativet."
 
