@@ -559,8 +559,8 @@ msgid ""
 "%1$s is good to go! %2$sTest your load time%4$s, or visit your "
 "%3$ssettings%4$s."
 msgstr ""
-"%1$s er i gang! %2$sTest innlastingstiden%4$s, eller gå til "
-"%3$ssettings%4$s."
+"%1$s er i klar til bruk! %2$sTest lastetiden din%4$s, eller gå til "
+"%3$sinnstillingene%4$s dine."
 
 #: inc/admin/ui/notices.php:499
 msgid ""
