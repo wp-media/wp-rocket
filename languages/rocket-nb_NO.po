@@ -783,7 +783,7 @@ msgstr "Installer"
 
 #: inc/Dependencies/WPMedia/PluginFamily/Model/PluginFamily.php:118
 msgid "Get it Now"
-msgstr "Skaff deg det nå"
+msgstr "Få den nå"
 
 #: inc/Dependencies/WPMedia/PluginFamily/Model/PluginFamily.php:127
 msgid "Activate"
