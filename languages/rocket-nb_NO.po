@@ -500,9 +500,9 @@ msgid ""
 "Cache. Please set the Endurance Cache cache level to Off (Level 0) on the "
 "%1$sSettings > General%2$s page to prevent any issues."
 msgstr ""
-"Endurance Cache er for øyeblikket aktivert, noe som vil komme i konflikt med"
-" WP Rocket Cache. Sett hurtigbuffernivået for Endurance Cache til Av (nivå "
-"0) på siden %1$sSettings > Generelt%2$s for å unngå problemer."
+"Endurance Cache er for øyeblikket aktivert, og dette vil komme i konflikt "
+"med WP Rocket Cache. Sett Endurance Cache cache-nivå til Av (Nivå 0) på "
+"siden %1$sInnstillinger > Generelt%2$s for å unngå problemer."
 
 #. translators: %1$s WP Rocket plugin name; %2$s = opening link; %3$s =
 #. closing link
