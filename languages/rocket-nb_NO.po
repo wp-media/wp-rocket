@@ -958,7 +958,7 @@ msgstr "Tilkobling til Cloudflare mislyktes"
 #. translators: %s = CloudFare API return message.
 #: inc/deprecated/3.5.php:587
 msgid "<strong>WP Rocket:</strong> %s"
-msgstr "<strong>WP-rakett:</strong> %s"
+msgstr "<strong>WP Rocket:</strong> %s"
 
 #: inc/deprecated/3.5.php:592
 msgid "<strong>WP Rocket:</strong> Cloudflare cache successfully purged."
