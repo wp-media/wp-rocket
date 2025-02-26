@@ -627,7 +627,7 @@ msgstr "%s: Term-cache tømt."
 #. translators: %s = plugin name).
 #: inc/admin/ui/notices.php:626
 msgid "%s: User cache cleared."
-msgstr "%s: Brukerbuffer tømt."
+msgstr "%s: Bruker-cache tømt."
 
 #: inc/admin/ui/notices.php:662 inc/Engine/License/views/promo-banner.php:38
 #: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:34
