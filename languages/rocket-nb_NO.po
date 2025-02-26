@@ -759,7 +759,7 @@ msgstr "Fjern dette innlegget"
 
 #: inc/common/admin-bar.php:192
 msgid "Purge this URL"
-msgstr "Tøm denne URL-adressen"
+msgstr "Tøm denne URL-en"
 
 #: inc/common/admin-bar.php:212
 msgid "Purge Sucuri cache"
