@@ -827,7 +827,7 @@ msgstr "Øk trafikken"
 
 #: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:38
 msgid "The Swiss Army Knife of SEO Tools"
-msgstr "Den sveitsiske hærkniven med SEO-verktøy"
+msgstr "En alt-i-ett-løsning for SEO-verktøy"
 
 #: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:39
 msgid ""
