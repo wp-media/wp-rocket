@@ -4027,7 +4027,7 @@ msgstr[0] ""
 "funktioner:"
 msgstr[1] ""
 "Deaktiver venligst følgende %s indstillinger, der er i konflikt med WP "
-"Rocket funktioner:"
+"Rocket-funktioner:"
 
 #. Translators: %1$s = Plugin name, %2$s = <em>, %3$s = </em>.
 #: inc/ThirdParty/Plugins/Optimization/Hummingbird.php:156
