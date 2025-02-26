@@ -9,6 +9,7 @@ use WP_Rocket\Engine\Cache\PurgeExpired\PurgeExpiredCache;
 use WP_Rocket\Engine\Cache\PurgeExpired\Subscriber;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache as CacheQuery;
 use WP_Rocket\Engine\Cache\Config\ConfigSubscriber;
+use WP_Rocket\Engine\Cache\UrlValidation\{ TaxonomySubscriber, PostSubscriber };
 
 /**
  * Service Provider for cache subscribers
