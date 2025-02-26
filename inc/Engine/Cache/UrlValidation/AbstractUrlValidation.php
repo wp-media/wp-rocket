@@ -11,7 +11,7 @@ abstract class AbstractUrlValidation {
 	 *
 	 * @return bool
 	 */
-	public function disable_cache_on_not_valid_pages( $can_cache ) {
+	public function disable_cache_on_not_valid_url( $can_cache ) {
 		if ( $this->is_disabled() ) {
 			return $can_cache;
 		}
@@ -31,7 +31,7 @@ abstract class AbstractUrlValidation {
 	 *
 	 * @return string
 	 */
-	public function stop_optimizations_for_not_valid_pages( $html ) {
+	public function stop_optimizations_for_not_valid_url( $html ) {
 		if ( $this->is_disabled() ) {
 			return $html;
 		}

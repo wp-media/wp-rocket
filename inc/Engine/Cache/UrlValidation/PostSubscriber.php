@@ -12,8 +12,8 @@ class PostSubscriber extends AbstractUrlValidation implements Subscriber_Interfa
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'do_rocket_generate_caching_files' => 'disable_cache_on_not_valid_pages',
-			'rocket_buffer'                    => [ 'stop_optimizations_for_not_valid_pages', 1 ],
+			'do_rocket_generate_caching_files' => 'disable_cache_on_not_valid_url',
+			'rocket_buffer'                    => [ 'stop_optimizations_for_not_valid_url', 1 ],
 		];
 	}
 
