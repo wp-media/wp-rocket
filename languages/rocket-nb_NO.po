@@ -373,7 +373,7 @@ msgstr ""
 
 #: inc/admin/admin.php:412
 msgid "Settings import failed: no file uploaded."
-msgstr "Innstillinger import mislyktes: ingen fil lastet opp."
+msgstr "Import av innstillinger mislyktes: Ingen fil ble lastet opp."
 
 #: inc/admin/admin.php:416
 msgid "Settings import failed: incorrect filename."
