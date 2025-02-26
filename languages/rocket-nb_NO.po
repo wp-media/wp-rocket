@@ -844,7 +844,7 @@ msgstr "Beskytt og sikre"
 
 #: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:52
 msgid "The Easiest Way to Protect Your Website"
-msgstr "Den enkleste måten å beskytte nettstedet ditt på"
+msgstr "Den enkleste måten å beskytte nettsiden din på"
 
 #: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:53
 msgid ""
