@@ -767,7 +767,7 @@ msgstr "Tøm Sucuri-cache"
 
 #: inc/common/admin-bar.php:236 views/settings/fields/rocket-cdn.php:55
 msgid "Purge RocketCDN cache"
-msgstr "Purge RocketCDN cache"
+msgstr "Tøm RocketCDN-cache"
 
 #: inc/common/admin-bar.php:249 views/settings/partials/documentation.php:14
 msgid "Documentation"
