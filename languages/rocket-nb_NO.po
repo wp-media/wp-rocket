@@ -489,8 +489,8 @@ msgid ""
 "WP Rocket Footer JS is not an official add-on. It prevents some options in "
 "WP Rocket from working correctly. Please deactivate it if you have problems."
 msgstr ""
-"WP Rocket Footer JS er ikke et offisielt tillegg. Det forhindrer at noen "
-"alternativer i WP Rocket fungerer som de skal. Deaktiver den hvis du har "
+"WP Rocket Footer JS er ikke et offisielt tillegg. Det hindrer noen "
+"alternativer i WP Rocket fra å fungere korrekt. Deaktiver det hvis du har "
 "problemer."
 
 #. translators: %1$s = opening link tag, %2$s = closing link tag.
