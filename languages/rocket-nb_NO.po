@@ -415,7 +415,7 @@ msgstr "Utsett JavaScript-filer"
 
 #: inc/admin/options.php:106
 msgid "Excluded Delay JavaScript Files"
-msgstr "Ekskluderte JavaScript-filer med forsinkelse"
+msgstr "Ekskluderte Delay JavaScript-filer"
 
 #: inc/admin/options.php:107 inc/Engine/Admin/Settings/Page.php:1243
 msgid "Never Cache URL(s)"
