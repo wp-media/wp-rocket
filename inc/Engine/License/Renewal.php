@@ -261,31 +261,6 @@ class Renewal extends Abstract_Render {
 	}
 
 	/**
-	 * Gets the discount corresponding to the current user status
-	 *
-	 * @since 3.7.5
-	 *
-	 * @return int
-	 */
-	private function get_discount_percent() {
-		$prices = $this->get_license_pricing_data();
-
-		$renewals = $this->get_user_renewal_status();
-
-		if ( ! isset( $prices->prices, $prices->prices->renewal ) ) {
-			return 0;
-		}
-
-		$prices = $prices->prices;
-
-		if ( $renewals['is_grandfather'] ) {
-			return $renewals['discount_percent']->is_grandfather;
-		}
-
-		return 0;
-	}
-
-	/**
 	 * Is user grandfathered
 	 *
 	 * @return bool
@@ -294,16 +269,6 @@ class Renewal extends Abstract_Render {
 		$renewals = $this->get_user_renewal_status();
 
 		return key_exists( 'is_grandfather', $renewals ) && $renewals['is_grandfather'];
-	}
-	/**
-	 * Is user grandmothered
-	 *
-	 * @return bool
-	 */
-	private function has_grandmother(): bool {
-		$renewals = $this->get_user_renewal_status();
-
-		return key_exists( 'is_grandmother', $renewals ) && $renewals['is_grandmother'];
 	}
 
 	/**
