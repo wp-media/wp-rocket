@@ -450,7 +450,7 @@ msgstr "Mer info"
 
 #: inc/admin/ui/meta-boxes.php:37 inc/admin/ui/notices.php:671
 msgid "Clear cache"
-msgstr "Tøm hurtigbufferen"
+msgstr "Tøm cache"
 
 #. translators: %1$s WP Rocket plugin name; %2$s = file name.
 #: inc/admin/ui/notices.php:30 inc/admin/ui/notices.php:43
