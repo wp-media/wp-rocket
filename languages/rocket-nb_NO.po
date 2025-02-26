@@ -679,7 +679,7 @@ msgstr "Debug-filen kunne ikke slettes."
 #. Translators: %1$s = Plugin name, %2$s = Plugin version.
 #: inc/classes/class-wp-rocket-requirements-check.php:147
 msgid "To function properly, %1$s %2$s requires at least:"
-msgstr "For å fungere skikkelig krever %1$s %2$s minst:"
+msgstr "For å fungere riktig, krever %1$s %2$s minimum:"
 
 #. Translators: %1$s = PHP version required.
 #: inc/classes/class-wp-rocket-requirements-check.php:151
