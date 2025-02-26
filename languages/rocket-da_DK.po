@@ -3963,7 +3963,7 @@ msgstr ""
 "%1$sWP Rocket:%2$s Du har \"Cache ud fra enhedstype\" aktiveret på "
 "Cloudflare APO. Hvis du finder det nødvendigt for hjemmesiden at have "
 "forskellig cache på mobil og desktop, foreslår vi, at du aktiverer vores "
-"\"Separate Cache Files for Mobile Devices\" for at sikre, at den genererede "
+"\"Separate cachefiler for mobilenheder\" for at sikre, at den genererede "
 "cache er nøjagtig."
 
 #. translators: %1$s is WP Rocket plugin name, %2$s is opening <a> tag, %3$s
