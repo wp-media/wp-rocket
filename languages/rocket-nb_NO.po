@@ -743,7 +743,7 @@ msgstr ""
 
 #: inc/common/admin-bar.php:91 inc/common/admin-bar.php:154
 msgid "Clear and Preload Cache"
-msgstr "Tøm og forhåndslast hurtigbuffer"
+msgstr "Tøm og forhåndslast cache"
 
 #: inc/common/admin-bar.php:91 inc/common/admin-bar.php:154
 msgid "Clear Cache"
