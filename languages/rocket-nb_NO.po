@@ -852,10 +852,9 @@ msgid ""
 " for WordPress. Easily schedule automatic backups, securely store and "
 "restore with just a few clicks!"
 msgstr ""
-"BackWPup er den mest omfattende og brukervennlige pluginen for "
-"sikkerhetskopiering og gjenoppretting for WordPress. Planlegg enkelt "
-"automatiske sikkerhetskopier, lagre og gjenopprett sikkert med bare noen få "
-"klikk!"
+"BackWPup er en av de mest omfattende og brukervennlige backup- og "
+"gjenopprettingspluginene for WordPress. Planlegg enkelt automatiske "
+"backuper, lagre dataene sikkert, og gjenopprett med bare noen få klikk!"
 
 #: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:61
 msgid "GDPR/CCPA Cookie Consent Banner"
