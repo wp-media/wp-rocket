@@ -541,8 +541,8 @@ msgid ""
 "Don’t worry, WP Rocket’s page caching and settings will still function "
 "correctly."
 msgstr ""
-"Ikke bekymre deg, WP Rockets sidebufring og innstillinger vil fortsatt "
-"fungere som de skal."
+"Ikke bekymre deg, WP Rocket sin sidecache og innstillinger vil fortsatt "
+"fungere korrekt."
 
 #: inc/admin/ui/notices.php:311
 msgid ""
