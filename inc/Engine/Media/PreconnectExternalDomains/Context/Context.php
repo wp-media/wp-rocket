@@ -18,14 +18,6 @@ class Context extends AbstractContext implements ContextInterface {
 			return false;
 		}
 
-		$checks = [
-			'do_not_optimize' => false,
-			'bypass'          => false,
-		];
-		if ( ! $this->run_common_checks( $checks ) ) {
-			return false;
-		}
-
 		/**
 		 * Filters to manage above the fold optimization
 		 *

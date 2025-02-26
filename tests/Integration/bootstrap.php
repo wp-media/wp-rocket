@@ -20,7 +20,7 @@ tests_add_filter(
 		// Disable ATF, LRC, Preload fonts, and Preconnect external domains optimizations to prevent DB requests (unrelated to other tests).
 		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
 		add_filter( 'rocket_lrc_optimization', '__return_false' );
-		add_filter( 'rocket_preload_fonts_optimization', '__return_false' );
+		add_filter( 'pre_get_rocket_option_auto_preload_fonts', '__return_false' );
 		add_filter( 'rocket_preconnect_external_domains_optimization', '__return_false' );
 
 		if ( BootstrapManager::isGroup( 'TranslatePress' ) ) {
@@ -269,7 +269,7 @@ tests_add_filter(
 			add_filter( 'rocket_above_the_fold_optimization', '__return_true' );
 			add_filter( 'rocket_lrc_optimization', '__return_true' );
 			add_filter( 'rocket_preconnect_external_domains_optimization', '__return_true' );
-			add_filter( 'rocket_preload_fonts_optimization', '__return_true' );
+			add_filter( 'pre_get_rocket_option_auto_preload_fonts', '__return_true' );
 		}
 
 		// Load the plugin.
