@@ -381,7 +381,7 @@ msgstr "Import av innstillinger mislyktes: Feil filnavn."
 
 #: inc/admin/admin.php:427
 msgid "Settings import failed: incorrect filetype."
-msgstr "Innstillinger import mislyktes: feil filtype."
+msgstr "Import av innstillinger mislyktes: Feil filtype."
 
 #: inc/admin/admin.php:437
 msgid "Settings import failed: "
