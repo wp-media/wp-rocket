@@ -729,7 +729,7 @@ msgid ""
 msgid_plural ""
 "Failed to detect the following requirements in your theme: closing %1$s."
 msgstr[0] "Kunne ikke oppdage følgende krav i temaet ditt: lukking av %1$s."
-msgstr[1] "Kunne ikke oppdage følgende krav i temaet ditt: lukking %1$s."
+msgstr[1] "Fant ikke de nødvendige kravene i temaet ditt: lukker %1$s."
 
 #. translators: Documentation exists in EN, FR; use localized URL if
 #. applicable.
