@@ -809,7 +809,7 @@ msgstr ""
 
 #: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:24
 msgid "Speed Up Your Website With Lighter Images"
-msgstr "Få fart på nettstedet ditt med lettere bilder"
+msgstr "Øk hastigheten på nettsiden din med lette bilder"
 
 #: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:25
 msgid ""
