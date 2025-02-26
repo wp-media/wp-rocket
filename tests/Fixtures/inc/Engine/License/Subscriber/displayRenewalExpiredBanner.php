@@ -92,7 +92,7 @@ return [
 				<p>
 				Your website could be much faster if it could take advantage of our <strong>new features and enhancements</strong>. 🚀
 				</p>
-				<p>Renew your license for 1 year now at<strong>$34.30</strong>.</p>
+				<p>RENEW NOW</p>
 			</div>
 			<div class="rocket-expired-cta-container">
 				<a href="https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/" class="rocket-renew-cta" target="_blank" rel="noopener noreferrer">Renew now</a>
