@@ -1527,9 +1527,9 @@ msgid ""
 "Load CSS asynchronously is currently handled by the %1$s plugin. If you want"
 " to use WP Rocket’s load CSS asynchronously option, disable the %1$s plugin."
 msgstr ""
-"Last inn CSS asynkront håndteres for øyeblikket av %1$s-plugin-modulen. Hvis"
-" du vil bruke WP Rockets last CSS-alternativ asynkront, deaktiver "
-"%1$s-plugin."
+"Last inn CSS asynkront håndteres for øyeblikket av %1$s-pluginen. Hvis du "
+"vil bruke WP Rocket sitt last CSS asynkront-alternativ, deaktiver "
+"%1$s-pluginen."
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:635
