@@ -4377,7 +4377,7 @@ msgstr "Mobilcache er nu aktiveret for din hjemmeside."
 
 #: views/settings/mobile-cache.php:34
 msgid "Enable Mobile Cache"
-msgstr "Aktivér mobil cache"
+msgstr "Aktivér mobilcache"
 
 #: views/settings/page-sections/cloudflare.php:27
 msgid "Cloudflare Cache"
