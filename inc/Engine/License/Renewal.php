@@ -69,11 +69,13 @@ class Renewal extends Abstract_Render {
 		$data              = $this->get_banner_data();
 		$data['countdown'] = $this->get_countdown_data();
 
-				$data['message'] = sprintf(
-				// translators: %1$s WP Rocket plugin name.
-				esc_html__( 'Your %1$s license is about to expire: you will soon lose access to product updates and support.', 'rocket' ),
-					WP_ROCKET_PLUGIN_NAME
-				);
+		$data['message'] = sprintf(
+		// translators: %1$s WP Rocket plugin name.
+		esc_html__( 'Your %1$s%2$s license is about to expire%3$s: you will soon lose access to product updates and support.', 'rocket' ),
+			'<strong>',
+			WP_ROCKET_PLUGIN_NAME,
+			'</strong>'
+		);
 
 		echo $this->generate( 'renewal-soon-banner', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
@@ -261,6 +263,32 @@ class Renewal extends Abstract_Render {
 	}
 
 	/**
+	 * Gets the discount corresponding to the current user status
+	 *
+	 * @since 3.7.5
+	 *
+	 * @return int
+	 * @phpstan-ignore-next-line
+	 */
+	private function get_discount_percent() {
+		$prices = $this->get_license_pricing_data();
+
+		$renewals = $this->get_user_renewal_status();
+
+		if ( ! isset( $prices->prices, $prices->prices->renewal ) ) {
+			return 0;
+		}
+
+		$prices = $prices->prices;
+
+		if ( $renewals['is_grandfather'] ) {
+			return $renewals['discount_percent']->is_grandfather;
+		}
+
+		return 0;
+	}
+
+	/**
 	 * Is user grandfathered
 	 *
 	 * @return bool
@@ -269,6 +297,18 @@ class Renewal extends Abstract_Render {
 		$renewals = $this->get_user_renewal_status();
 
 		return key_exists( 'is_grandfather', $renewals ) && $renewals['is_grandfather'];
+	}
+
+	/**
+	 * Is user grandmothered
+	 *
+	 * @return bool
+	 * @phpstan-ignore-next-line
+	 */
+	private function has_grandmother(): bool {
+		$renewals = $this->get_user_renewal_status();
+
+		return key_exists( 'is_grandmother', $renewals ) && $renewals['is_grandmother'];
 	}
 
 	/**
