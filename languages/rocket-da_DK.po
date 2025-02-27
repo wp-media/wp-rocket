@@ -4527,7 +4527,7 @@ msgstr ""
 
 #: views/settings/page-sections/imagify.php:28
 msgid "Images can account for 50% of your loading time!"
-msgstr "Billeder kan udgøre 50% af din indlæsning tid!"
+msgstr "Billeder kan udgøre 50% af din indlæsningstid!"
 
 #: views/settings/page-sections/imagify.php:31
 msgid ""
