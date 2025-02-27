@@ -3274,7 +3274,7 @@ msgstr "%s-kampanjen er live!"
 
 #: inc/Engine/License/views/promo-banner.php:29
 msgid "Hurry Up! Deal ends in:"
-msgstr "Skynd deg! Avtalen ender om:"
+msgstr "Skynd deg! Tilbudet avsluttes om:"
 
 #: inc/Engine/License/views/promo-banner.php:33
 #: inc/Engine/License/views/renewal-soon-banner.php:16
