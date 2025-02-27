@@ -4365,7 +4365,7 @@ msgstr "Slet alle RocketCDN cachefiler"
 
 #: views/settings/mobile-cache.php:11
 msgid "Mobile Cache"
-msgstr "Mobil cache"
+msgstr "Mobilcache"
 
 #: views/settings/mobile-cache.php:14
 msgid "Speed your site for mobile visitors."
