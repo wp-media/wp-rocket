@@ -4387,7 +4387,7 @@ msgstr "Cloudflare-cache"
 #: views/settings/page-sections/cloudflare.php:35
 #: views/settings/page-sections/sucuri.php:36
 msgid "Purges cached resources for your website. %s"
-msgstr "Renser cachede ressourcer til din hjemmeside. %s"
+msgstr "Rydder cachede ressourcer til din hjemmeside. %s"
 
 #: views/settings/page-sections/cloudflare.php:36
 msgid "https://support.cloudflare.com/hc/en-us/articles/200169246"
