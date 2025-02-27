@@ -2047,8 +2047,7 @@ msgstr ""
 msgid ""
 "Specify time after which the global cache is cleared<br>(0 = unlimited )"
 msgstr ""
-"Angi tidspunktet for når den globale hurtigbufferen tømmes<br>(0 = "
-"ubegrenset)"
+"Angi tidspunktet for når den globale cachen tømmes<br>(0 = ubegrenset)"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:1285
