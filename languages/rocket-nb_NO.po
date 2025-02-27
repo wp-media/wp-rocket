@@ -1407,7 +1407,7 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:534
 msgid "Minify CSS files"
-msgstr "Minifiser CSS-filer"
+msgstr "Minify CSS-filer"
 
 #: inc/Engine/Admin/Settings/Page.php:535
 msgid "Minify CSS removes whitespace and comments to reduce the file size."
