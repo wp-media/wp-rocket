@@ -2652,7 +2652,7 @@ msgstr "Veiledninger"
 
 #: inc/Engine/Admin/Settings/Subscriber.php:233
 msgid "Getting started and how to videos"
-msgstr "Komme i gang og veiledningsvideoer"
+msgstr "Veiledningsvideoer for å komme i gang"
 
 #: inc/Engine/Admin/Settings/Subscriber.php:308
 #: views/settings/page-sections/plugins.php:13
@@ -2680,12 +2680,12 @@ msgid ""
 "The WP_CACHE constant needs to be set to true for WP Rocket cache to work "
 "properly"
 msgstr ""
-"Den WP_CACHE konstanten må settes til sann for at WP Rocket-cache skal "
-"fungere ordentlig"
+"WP_CACHE-konstanten må settes til true for at WP Rocket-cache skal fungere "
+"riktig."
 
 #: inc/Engine/Cache/WPCache.php:368
 msgid "WP_CACHE is set to true"
-msgstr "WP_CACHE er satt til sann"
+msgstr "WP_CACHE er satt til true"
 
 #: inc/Engine/Cache/WPCache.php:376
 msgid "WP_CACHE is not set"
