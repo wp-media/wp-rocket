@@ -2097,7 +2097,7 @@ msgstr "Dage"
 msgid ""
 "Specify URLs of pages or posts that should never be cached (one per line)"
 msgstr ""
-"Angiv URL'er på sider eller indlæg, der aldrig bør caches (én per linje)"
+"Angiv URL'er for sider eller indlæg, der aldrig bør caches (én per linje)"
 
 #: inc/Engine/Admin/Settings/Page.php:1298
 #: inc/Engine/Admin/Settings/Page.php:1326
