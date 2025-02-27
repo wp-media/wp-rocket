@@ -1252,7 +1252,7 @@ msgstr "Automatiske utkast"
 #: inc/Engine/Admin/Database/Optimization.php:35
 #: inc/Engine/Admin/Settings/Page.php:1423
 msgid "Trashed Posts"
-msgstr "Kasserte innlegg"
+msgstr "Slettede innlegg"
 
 #: inc/Engine/Admin/Database/Optimization.php:36
 #: inc/Engine/Admin/Settings/Page.php:1433
