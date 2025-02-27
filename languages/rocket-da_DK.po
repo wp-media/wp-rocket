@@ -4121,7 +4121,7 @@ msgstr ""
 
 #: views/cpcss/activate-cpcss-mobile.php:13
 msgid "Load CSS asynchronously for mobile"
-msgstr "Indlæse CSS asynkront til mobil"
+msgstr "Indlæs CSS asynkront til mobil"
 
 #: views/cpcss/activate-cpcss-mobile.php:14
 msgid ""
