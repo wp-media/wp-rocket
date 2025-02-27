@@ -4373,7 +4373,7 @@ msgstr "Gør din hjemmeside hurtigere for mobilbesøgende."
 
 #: views/settings/mobile-cache.php:28
 msgid "Mobile Cache is now enabled for your site."
-msgstr "Mobile Cache er nu aktiveret for dit websted."
+msgstr "Mobilcache er nu aktiveret for din hjemmeside."
 
 #: views/settings/mobile-cache.php:34
 msgid "Enable Mobile Cache"
