@@ -1196,7 +1196,7 @@ msgstr "Forhåndsinnlasting"
 #: inc/Engine/Admin/Settings/Subscriber.php:188
 #: views/settings/page-sections/tools.php:33
 msgid "Tools"
-msgstr "Redskapene"
+msgstr "Verktøy"
 
 #: inc/deprecated/deprecated.php:1789 inc/Engine/Admin/Settings/Page.php:368
 #: views/settings/page-sections/dashboard.php:81
