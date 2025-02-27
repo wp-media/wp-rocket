@@ -4232,7 +4232,7 @@ msgstr "7 dage"
 
 #: views/deactivation-intent/form.php:80
 msgid "30 days"
-msgstr "Dage"
+msgstr "30 dage"
 
 #: views/deactivation-intent/form.php:81
 msgid "Forever"
