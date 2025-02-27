@@ -4228,7 +4228,7 @@ msgstr "1 dag"
 
 #: views/deactivation-intent/form.php:79
 msgid "7 days"
-msgstr "Dage"
+msgstr "7 dage"
 
 #: views/deactivation-intent/form.php:80
 msgid "30 days"
