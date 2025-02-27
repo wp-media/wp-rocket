@@ -1064,8 +1064,7 @@ msgid ""
 "excluded from cache in the global cache settings."
 msgstr ""
 "%1$sMerk:%2$s Ingen av disse alternativene vil bli brukt hvis dette "
-"innlegget har blitt ekskludert fra hurtigbufferen i de globale hurtigbuffer-"
-"innstillingene."
+"innlegget er ekskludert fra cache i de globale cache-innstillingene."
 
 #: inc/deprecated/deprecated.php:240
 msgid "<strong>JS</strong> files with Deferred Loading JavaScript"
