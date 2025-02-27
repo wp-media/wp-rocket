@@ -2726,7 +2726,7 @@ msgid ""
 "unexpected error code."
 msgstr ""
 "Vi kunne ikke hente gjeldende pris fordi RocketCDN API returnerte en uventet"
-" kode."
+" feilkode."
 
 #: inc/Engine/CDN/RocketCDN/APIClient.php:140
 msgid "RocketCDN is not available at the moment. Please retry later."
