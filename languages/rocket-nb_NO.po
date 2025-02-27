@@ -1394,7 +1394,7 @@ msgid ""
 "take full advantage of this option."
 msgstr ""
 "Interne skript er ekskludert som standard for å forhindre problemer. Fjern "
-"dem for å dra full nytte av dette alternativet."
+"dem for å utnytte denne funksjonen fullt ut."
 
 #. translators: %1$s = opening </a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:525
