@@ -1426,9 +1426,9 @@ msgid ""
 "automatically. Use (.*).css wildcards to exclude all CSS files located at a "
 "specific path."
 msgstr ""
-"<strong>Intern:</strong> Domenedelen av URL-en blir fjernet automatisk. Bruk"
-" (.*).css jokertegn for å utelate alle CSS-filer som ligger på en bestemt "
-"bane."
+"<strong>Intern:</strong> Domenedelen av URL-en vil bli fjernet automatisk. "
+"Bruk (.*).css wildcard for å ekskludere alle CSS-filer som ligger på en "
+"spesifikk sti."
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:553
