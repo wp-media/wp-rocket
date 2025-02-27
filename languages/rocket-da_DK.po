@@ -4707,7 +4707,7 @@ msgstr "Sådan måler du hastigheden på din hjemmeside"
 
 #: views/settings/page-sections/tutorials.php:19
 msgid "How Preloading Works"
-msgstr "Hvordan preloading fungerer"
+msgstr "Sådan fungerer forudindlæsning"
 
 #: views/settings/page-sections/tutorials.php:23
 msgid "Passing the Core Web vitals"
