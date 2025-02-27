@@ -4434,7 +4434,7 @@ msgstr "Min konto"
 
 #: views/settings/page-sections/dashboard.php:69
 msgid "Refresh info"
-msgstr "Frisk info"
+msgstr "Genindlæs info"
 
 #: views/settings/page-sections/dashboard.php:87
 msgid "with"
