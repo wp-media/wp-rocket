@@ -938,8 +938,8 @@ msgid ""
 "Cloudflare email, API key and Zone ID are not set. Read the "
 "%1$sdocumentation%2$s for further guidance."
 msgstr ""
-"Cloudflare-e-post, API-nøkkel og sone-ID er ikke angitt. Les "
-"%1$sdocumentation%2$s for mer veiledning."
+"Cloudflare-e-post, API-nøkkel og Zone ID er ikke angitt. Les "
+"%1$sdokumentasjonen%2$s for mer veiledning."
 
 #. translators: %1$s = opening link; %2$s = closing link
 #: inc/deprecated/3.5.php:206
