@@ -4170,7 +4170,7 @@ msgstr "Generer specifik kritisk CSS-sti til dette indlæg.%1$sMere info%2$s"
 #. translators: %1$s = opening link tag, %2$s = closing link tag.
 #: views/cpcss/metabox/generate.php:33
 msgid "This post uses specific Critical Path CSS. %1$sMore info%2$s"
-msgstr "Dette indlæg bruger specifikke kritiske vej CSS. %1$sMere info%2$s"
+msgstr "Dette indlæg bruger specifik kritisk CSS-sti. %1$sMere info%2$s"
 
 #: views/cpcss/metabox/generate.php:56
 msgid "Revert back to the default CPCSS"
