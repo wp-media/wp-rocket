@@ -1624,7 +1624,7 @@ msgid ""
 "<strong>3rd Party:</strong> Use either the full URL path or only the domain "
 "name, to exclude external JS. %1$sMore info%2$s"
 msgstr ""
-"<strong>3. Part:</strong> Bruk enten den fullstendige URL-banen eller bare "
+"<strong>3. part:</strong> Bruk enten den fullstendige URL-stien eller bare "
 "domenenavnet for å utelate ekstern JS. %1$sMer info%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:735
