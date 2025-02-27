@@ -4152,7 +4152,7 @@ msgstr ""
 msgid ""
 "Your site is now using mobile-specific critical path CSS. %1$sMore info%2$s"
 msgstr ""
-"Din hjemmeside bruger nu mobilspecifik kritisk vej CSS. %1$sMere info%2$s"
+"Din hjemmeside bruger nu mobilspecifik kritisk CSS-sti. %1$sMere info%2$s"
 
 #: views/cpcss/activate-cpcss-mobile.php:39
 msgid "Generate Mobile Specific CPCSS"
