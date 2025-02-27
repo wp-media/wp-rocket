@@ -4464,7 +4464,7 @@ msgstr "Denne handlingen vil tømme alle hurtigbufferfilene."
 
 #: views/settings/page-sections/dashboard.php:169
 msgid "Clear and preload"
-msgstr "Klar og forhåndslast"
+msgstr "Tøm og forhåndslast"
 
 #: views/settings/page-sections/dashboard.php:183
 #: views/settings/page-sections/dashboard.php:189
