@@ -1942,7 +1942,7 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:1161
 msgid "Fonts to preload"
-msgstr "Skrifter som skal forhåndslastes"
+msgstr "Fonter som skal forhåndslastes"
 
 #: inc/Engine/Admin/Settings/Page.php:1162
 msgid ""
