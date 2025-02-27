@@ -2878,8 +2878,8 @@ msgstr "Nyeste"
 msgid ""
 "Speed up your website with RocketCDN, WP Rocket’s Content Delivery Network!"
 msgstr ""
-"Få fart på nettstedet ditt med RocketCDN, WP Rockets "
-"innholdsleveringsnettverk!"
+"Øk hastigheten på nettsiden din med RocketCDN, WP Rockets Content Delivery "
+"Network!"
 
 #: inc/Engine/Common/JobManager/Cron/Subscriber.php:185
 msgid "WP Rocket process pending jobs"
