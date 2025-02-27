@@ -4407,7 +4407,7 @@ msgstr "WP Rocket er nu aktiveret og arbejder allerede for dig."
 
 #: views/settings/page-sections/dashboard.php:43
 msgid "Your website should be loading faster now!"
-msgstr "Din hjemmeside skal indlæse hurtigere nu!"
+msgstr "Din hjemmeside bør blive indlæst hurtigere nu!"
 
 #: views/settings/page-sections/dashboard.php:45
 msgid ""
