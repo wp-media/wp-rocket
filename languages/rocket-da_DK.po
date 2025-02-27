@@ -4160,7 +4160,7 @@ msgstr "Generer mobilspecifik CPCSS"
 
 #: views/cpcss/metabox/container.php:19
 msgid "Critical Path CSS"
-msgstr "Kritisk vej CSS"
+msgstr "Kritisk CSS-sti"
 
 #. translators: %1$s = opening link tag, %2$s = closing link tag.
 #: views/cpcss/metabox/generate.php:23
