@@ -1450,9 +1450,9 @@ msgid ""
 "one method can be selected. Remove Unused CSS is recommended for optimal "
 "performance, but limited only to the users with active license."
 msgstr ""
-"Optimaliser CSS-levering eliminerer gjengivelsesblokkerende CSS på "
-"nettstedet ditt. Bare én metode kan velges. Fjern ubrukt CSS anbefales for "
-"optimal ytelse, men begrenset bare til brukere med aktiv lisens."
+"Optimize CSS delivery eliminerer render-blokkering CSS på nettsiden din. Kun"
+" én metode kan velges. Fjern ubrukt CSS anbefales for optimal ytelse, men er"
+" kun tilgjengelig for brukere med aktiv lisens."
 
 #: inc/Engine/Admin/Settings/Page.php:571
 msgid ""
