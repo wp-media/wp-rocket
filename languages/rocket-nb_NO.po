@@ -1558,7 +1558,7 @@ msgstr "Minifiser JavaScript-filer"
 msgid ""
 "Minify JavaScript removes whitespace and comments to reduce the file size."
 msgstr ""
-"Minify JavaScript fjerner mellomrom og kommentarer for å redusere "
+"Minifiser JavaScript fjerner mellomrom og kommentarer for å redusere "
 "filstørrelsen."
 
 #: inc/Engine/Admin/Settings/Page.php:673
