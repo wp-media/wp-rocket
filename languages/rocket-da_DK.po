@@ -4735,7 +4735,7 @@ msgstr "Fejlfinding af visningsproblemer med filoptimering"
 
 #: views/settings/page-sections/tutorials.php:34
 msgid "How to Find the Right JavaScript to Exclude"
-msgstr "Sådan finder du den rigtige JavaScript til at udelukke"
+msgstr "Sådan finder du det rigtige JavaScript til udelukkelse"
 
 #: views/settings/page-sections/tutorials.php:35
 msgid "How External Content Slows Your Site"
