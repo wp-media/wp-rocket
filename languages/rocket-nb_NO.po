@@ -1109,7 +1109,7 @@ msgstr "Lagre og optimaliser"
 
 #: inc/deprecated/deprecated.php:1453
 msgid "Optimize"
-msgstr "Optimalisere"
+msgstr "Optimaliser"
 
 #: inc/deprecated/deprecated.php:1464 inc/deprecated/deprecated.php:1666
 msgctxt "screen-reader-text"
