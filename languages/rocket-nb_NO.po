@@ -1648,8 +1648,8 @@ msgid ""
 "Specify URLs or keywords of JavaScript files to be excluded from defer (one "
 "per line). %1$sMore info%2$s"
 msgstr ""
-"Angi URL-adresser eller nøkkelord for JavaScript-filer som skal utelates fra"
-" utsettelse (én per linje). %1$sMer info%2$s"
+"Angi URL-er eller nøkkelord for JavaScript-filer som skal utelates fra "
+"utsettelse (én per linje). %1$sMer info%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:766
 #: inc/Engine/Optimization/DelayJS/Admin/Subscriber.php:210
