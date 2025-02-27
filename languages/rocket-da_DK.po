@@ -4116,8 +4116,8 @@ msgid ""
 "Your Divi template was updated. Clear the Used CSS if the layout, design or "
 "CSS styles were changed."
 msgstr ""
-"Din Divi-skabelon er blevet opdateret. Fjern Brugte CSS, hvis layoutet, "
-"designet eller CSS-stilerne er blevet ændret."
+"Din Divi-skabelon er blevet opdateret. Ryd Brugt CSS, hvis layoutet, "
+"designet eller CSS-stil er blevet ændret."
 
 #: views/cpcss/activate-cpcss-mobile.php:13
 msgid "Load CSS asynchronously for mobile"
