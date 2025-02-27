@@ -1278,7 +1278,7 @@ msgstr "månedlig"
 
 #: inc/Engine/Admin/Database/Subscriber.php:194
 msgid "Database optimization process is running"
-msgstr "Databaseoptimaliseringsprosessen kjører"
+msgstr "Optimalisering av databasen pågår"
 
 #: inc/Engine/Admin/Database/Subscriber.php:224
 msgid ""
