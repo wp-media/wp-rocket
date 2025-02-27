@@ -4711,7 +4711,7 @@ msgstr "Sådan fungerer forudindlæsning"
 
 #: views/settings/page-sections/tutorials.php:23
 msgid "Passing the Core Web vitals"
-msgstr "Gennemgang af Core Web-nøgletal"
+msgstr "Gennemgang af Core Web Vitals"
 
 #: views/settings/page-sections/tutorials.php:25
 msgid "How to improve LCP with WP Rocket"
