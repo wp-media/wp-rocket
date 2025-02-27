@@ -4479,7 +4479,7 @@ msgstr "Denne handling vil rydde alle cachedata."
 
 #: views/settings/page-sections/dashboard.php:169
 msgid "Clear and preload"
-msgstr "Klar og præload"
+msgstr "Ryd og forudindlæs"
 
 #: views/settings/page-sections/dashboard.php:183
 #: views/settings/page-sections/dashboard.php:189
