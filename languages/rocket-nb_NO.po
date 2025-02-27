@@ -991,7 +991,7 @@ msgstr "OPcache-tømming mislyktes."
 
 #: inc/deprecated/3.10.php:168
 msgid "OPcache successfully purged"
-msgstr "OPcache vellykket renset"
+msgstr "OPcache ble vellykket tømt"
 
 #: inc/deprecated/3.11.php:81
 msgid "Yoast SEO XML sitemap"
