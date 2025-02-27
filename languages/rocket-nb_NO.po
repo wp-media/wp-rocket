@@ -1024,7 +1024,7 @@ msgstr "Rank Math XML sitemap"
 
 #: inc/deprecated/3.12.php:184
 msgid "SEOPress XML sitemap"
-msgstr "SEOPress XML nettstedskart"
+msgstr "SEOPress XML sitemap"
 
 #: inc/deprecated/3.12.php:251
 msgid "The SEO Framework XML sitemap"
