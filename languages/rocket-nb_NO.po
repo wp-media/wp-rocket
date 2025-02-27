@@ -1883,9 +1883,8 @@ msgid ""
 "Link preloading improves the perceived load time by downloading a page when "
 "a user hovers over the link. %1$sMore info%2$s"
 msgstr ""
-"Forhåndsinnlasting av koblinger forbedrer den oppfattede innlastingstiden "
-"ved å laste ned en side når en bruker holder musepekeren over lenken. "
-"%1$sMer info%2$s"
+"Forhåndsinnlasting av lenker forbedrer den oppfattede lastetiden ved å laste"
+" ned en side når en bruker holder musepekeren over lenken. %1$sMer info%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:1100
 msgid "Prefetch DNS Requests"
