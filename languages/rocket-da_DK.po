@@ -126,7 +126,7 @@ msgstr ""
 
 #: inc/Addon/Cloudflare/Cloudflare.php:71 inc/deprecated/3.5.php:88
 msgid "Missing Cloudflare Zone ID."
-msgstr "Mangler Cloudflare Zone ID."
+msgstr "Mangler Cloudflare Zone-ID."
 
 #: inc/Addon/Cloudflare/Cloudflare.php:104 inc/deprecated/3.5.php:153
 msgid "It looks like your domain is not set up on Cloudflare."
