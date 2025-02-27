@@ -901,7 +901,7 @@ msgid ""
 "Sitemap preload: %d uncached pages have now been preloaded. (refresh to see "
 "progress)"
 msgstr ""
-"Forhåndsinnlasting av nettsidekart: %d ikke-cachede sider har nå blitt "
+"Forhåndsinnlasting av sitemap: %d ikke-cachede sider har nå blitt "
 "forhåndslastet. (oppdater for å se fremdrift)"
 
 #. translators: %s is an URL.
