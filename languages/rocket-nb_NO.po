@@ -3446,7 +3446,7 @@ msgstr "Annonsenettverk"
 
 #: inc/Engine/Optimization/DelayJS/Admin/SiteList.php:254
 msgid "Payment Processors"
-msgstr "Betaling Behandlere"
+msgstr "Betalingsbehandlere"
 
 #: inc/Engine/Optimization/DelayJS/Admin/SiteList.php:259
 msgid "Other Services"
