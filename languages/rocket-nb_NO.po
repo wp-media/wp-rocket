@@ -2299,7 +2299,7 @@ msgstr "CDN CNAME(r)"
 #: inc/Engine/Admin/Settings/Page.php:1605
 #: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:163
 msgid "Specify the CNAME(s) below"
-msgstr "Angi CNAME(ne) nedenfor"
+msgstr "Angi CNAME(er) nedenfor"
 
 #: inc/Engine/Admin/Settings/Page.php:1612
 msgid ""
