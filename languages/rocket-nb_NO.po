@@ -1592,7 +1592,7 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:692
 msgid "Activate combine JavaScript"
-msgstr "Aktiver kombiner JavaScript"
+msgstr "Aktiver combine JavaScript"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:699
