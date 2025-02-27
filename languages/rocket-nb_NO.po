@@ -2091,9 +2091,8 @@ msgid ""
 "Specify full or partial IDs of cookies that, when set in the visitor's "
 "browser, should prevent a page from getting cached (one per line)"
 msgstr ""
-"Angi fullstendige eller delvise ID-er for informasjonskapsler som, når de "
-"angis i den besøkendes nettleser, skal forhindre at en side blir bufret (én "
-"per linje)"
+"Angi fullstendige eller delvise ID-er for cookies som, når de angis i den "
+"besøkendes nettleser, skal forhindre at en side blir cachet (én per linje)"
 
 #: inc/Engine/Admin/Settings/Page.php:1315
 msgid ""
