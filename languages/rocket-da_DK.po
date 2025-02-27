@@ -4827,8 +4827,8 @@ msgstr "Du har ikke aktiveret indlogget brugercache."
 msgid ""
 "Use a private browser to check your website's speed and visual appearance."
 msgstr ""
-"Brug en privat browser til at kontrollere din websteds hastighed og visuelle"
-" udseende."
+"Brug en privat browser til at kontrollere din hjemmesides hastighed og "
+"visuelle udseende."
 
 #: views/settings/sections/addons-container.php:24
 #: views/settings/sections/fields-container.php:28
