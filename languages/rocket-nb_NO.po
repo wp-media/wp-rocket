@@ -893,7 +893,7 @@ msgstr "Flere detaljer"
 #. translators: %d is the number of pages preloaded.
 #: inc/deprecated/3.2.php:228
 msgid "Sitemap preload: %d pages have been cached."
-msgstr "Forhåndsinnlasting av områdekart: %d-sider er bufret."
+msgstr "Forhåndsinnlasting av nettsidekart: %d sider har blitt cachet."
 
 #. translators: %d = Number of pages preloaded.
 #: inc/deprecated/3.2.php:261
