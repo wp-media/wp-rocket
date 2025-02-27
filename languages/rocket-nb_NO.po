@@ -2757,11 +2757,11 @@ msgstr "RocketCDN-cache-tømming mislyktes: API-et returnerte et uventet svar."
 #. translators: %s = message returned by the API.
 #: inc/Engine/CDN/RocketCDN/APIClient.php:239
 msgid "RocketCDN cache purge failed: %s."
-msgstr "RocketCDN-cache-rensing mislyktes: %s."
+msgstr "RocketCDN-cache-tømming mislyktes: %s."
 
 #: inc/Engine/CDN/RocketCDN/APIClient.php:247
 msgid "RocketCDN cache purge successful."
-msgstr "RocketCDN-cache-rensing vellykket."
+msgstr "RocketCDN-cache-tømming vellykket."
 
 #. translators: %1$s = Old CName, %2$s = New CName.
 #: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:398
