@@ -3183,7 +3183,7 @@ msgstr "Prosess for databaseoptimalisering"
 #: inc/Engine/HealthCheck/HealthCheck.php:137
 msgctxt "noun"
 msgid "Preload"
-msgstr "Forhåndsinnlasting"
+msgstr "Forhåndslast"
 
 #: inc/Engine/HealthCheck/HealthCheck.php:138
 msgid "Critical Path CSS Generation Process"
