@@ -888,7 +888,7 @@ msgstr ""
 
 #: inc/deprecated/3.2.php:72
 msgid "More details"
-msgstr "Mer informasjon"
+msgstr "Flere detaljer"
 
 #. translators: %d is the number of pages preloaded.
 #: inc/deprecated/3.2.php:228
