@@ -4756,7 +4756,7 @@ msgstr "version %s"
 
 #: views/settings/page.php:61
 msgid "Show Sidebar"
-msgstr "Vis sidebar"
+msgstr "Vis sidemenu"
 
 #. translators: %1$s = <strong>, %2$s = </strong>.
 #: views/settings/page.php:83
