@@ -4300,7 +4300,7 @@ msgstr "Optimer Google Fonts"
 
 #: views/settings/fields/cache-lifespan.php:26
 msgid "Clear cache after"
-msgstr "Fjern cache efter"
+msgstr "Fjern cache fra"
 
 #: views/settings/fields/categorized_multiselect.php:54
 msgid "3rd parties"
