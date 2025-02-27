@@ -1238,7 +1238,7 @@ msgstr ""
 #: inc/deprecated/Engine/Addon/GoogleTracking/Subscriber.php:137
 #: inc/Engine/Admin/Database/Subscriber.php:79
 msgid "weekly"
-msgstr "Ukentlig"
+msgstr "ukentlig"
 
 #: inc/Engine/Admin/Database/Optimization.php:33
 #: inc/Engine/Admin/Settings/Page.php:1403
