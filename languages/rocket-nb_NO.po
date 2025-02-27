@@ -2621,14 +2621,14 @@ msgid ""
 "<code>{32 characters}/{32 characters}</code>."
 msgstr ""
 "Sucuri-tillegg: API-nøkkelen for Sucuri-brannmuren må være i formatet "
-"kode>{32 tegn}/{32 tegn}kode>."
+"<code>{32 tegn}/{32 tegn}</code>."
 
 #: inc/Engine/Admin/Settings/Settings.php:661
 msgid ""
 "Sorry! Adding /(.*) in Advanced Rules > Never Cache URL(s) was not saved "
 "because it disables caching and optimizations for every page on your site."
 msgstr ""
-"Unnskyld! Å legge til /(.*) i Avanserte regler > Never Cache URL(s) ble ikke"
+"Beklager! Å legge til /(.*) i Avanserte regler > Never Cache URL(s) ble ikke"
 " lagret fordi det deaktiverer caching og optimaliseringer for hver side på "
 "nettstedet ditt."
 
