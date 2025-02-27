@@ -4609,7 +4609,7 @@ msgid ""
 msgstr ""
 "Ud over WP Rocket er der en hel familie af plugins, der er designet til at "
 "hjælpe dig med at opbygge bedre, hurtigere og mere sikre hjemmesider. Hver "
-"af dem er skabt med vores unikke blanding af ekspertise, enkelhed og "
+"af dem er skabt ud fra vores unikke blanding af ekspertise, enkelhed og "
 "fremragende support."
 
 #: views/settings/page-sections/plugins.php:22
