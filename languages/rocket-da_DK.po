@@ -62,7 +62,7 @@ msgid ""
 "Your site is hosted on %s, we have enabled Varnish auto-purge for "
 "compatibility."
 msgstr ""
-"Din hjemmeside er hostet på %s. Vi har aktiveret automatisk rensning af "
+"Din hjemmeside er hostet hos %s. Vi har aktiveret automatisk rensning af "
 "Varnish for kompatibilitet."
 
 #: inc/Addon/Cloudflare/API/Client.php:129
