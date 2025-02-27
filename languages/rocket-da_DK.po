@@ -4178,7 +4178,7 @@ msgstr "Tilbage til standard CPCSS"
 
 #: views/deactivation-intent/form.php:21
 msgid "Facing an issue?"
-msgstr "Overfor et problem?"
+msgstr "Oplever du problemer?"
 
 #: views/deactivation-intent/form.php:24
 msgid ""
