@@ -4791,7 +4791,7 @@ msgstr "Læs dokumentationen"
 
 #: views/settings/partials/getting-started.php:11
 msgid "What WP Rocket Does For You By Default"
-msgstr "Hvad WP Rocket gør for dig som standard"
+msgstr "Hvad WP Rocket som standard gør for dig"
 
 #: views/settings/partials/sidebar.php:12
 msgid "How to correctly measure your website’s loading time"
