@@ -2098,7 +2098,7 @@ msgstr ""
 msgid ""
 "Specify user agent strings that should never see cached pages (one per line)"
 msgstr ""
-"Angi brukeragentstrenger som aldri skal se bufrede sider (én per linje)"
+"Angi brukeragent-strenger som aldri skal se cachede sider (én per linje)"
 
 #: inc/Engine/Admin/Settings/Page.php:1316
 msgid "Use (.*) wildcards to detect parts of UA strings."
