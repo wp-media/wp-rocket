@@ -4608,9 +4608,9 @@ msgid ""
 "unique blend of expertise, simplicity, and outstanding support."
 msgstr ""
 "Ud over WP Rocket er der en hel familie af plugins, der er designet til at "
-"hjælpe dig med at opbygge bedre, hurtigere og sikrere websteder. Hver enkelt"
-" er skabt med vores unikke blanding af ekspertise, enkelhed og fremragende "
-"support."
+"hjælpe dig med at opbygge bedre, hurtigere og mere sikre hjemmesider. Hver "
+"af dem er skabt med vores unikke blanding af ekspertise, enkelhed og "
+"fremragende support."
 
 #: views/settings/page-sections/plugins.php:22
 msgid "Combine our plugins below to build incredible WordPress websites!"
