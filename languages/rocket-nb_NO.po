@@ -3270,7 +3270,7 @@ msgstr "%s rabatt"
 #. translators: %s = promotion name.
 #: inc/Engine/License/views/promo-banner.php:23
 msgid "%s promotion is live!"
-msgstr "%s kampanje er live!"
+msgstr "%s-kampanjen er live!"
 
 #: inc/Engine/License/views/promo-banner.php:29
 msgid "Hurry Up! Deal ends in:"
