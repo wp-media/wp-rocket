@@ -4414,7 +4414,7 @@ msgid ""
 "To guarantee fast websites, WP Rocket automatically applies 80% of web "
 "performance best practices."
 msgstr ""
-"WP Rocket anvender automatisk 80 % af de bedste metoder til optimal "
+"WP Rocket anvender automatisk 80% af de bedste metoder til optimal "
 "webperformance."
 
 #: views/settings/page-sections/dashboard.php:45
