@@ -961,7 +961,7 @@ msgstr "<strong>WP Rocket:</strong> %s"
 
 #: inc/deprecated/3.5.php:592
 msgid "<strong>WP Rocket:</strong> Cloudflare cache successfully purged."
-msgstr "<strong>WP-rakett:</strong> Cloudflare-hurtigbufferen ble slettet."
+msgstr "<strong>WP Rocket:</strong> Cloudflare-cache ble tømt."
 
 #: inc/deprecated/3.5.php:858 inc/Engine/HealthCheck/HealthCheck.php:73
 msgid ""
