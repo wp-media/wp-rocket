@@ -2779,7 +2779,7 @@ msgstr ""
 
 #: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:409
 msgid "contact support"
-msgstr "Kontakt support"
+msgstr "kontakt support"
 
 #: inc/Engine/CDN/RocketCDN/RESTSubscriber.php:137
 msgid "RocketCDN enabled"
@@ -2787,7 +2787,7 @@ msgstr "RocketCDN aktivert"
 
 #: inc/Engine/CDN/RocketCDN/RESTSubscriber.php:160
 msgid "RocketCDN disabled"
-msgstr "RocketCDN disabled"
+msgstr "RocketCDN deaktivert"
 
 #. Translators: %s = date formatted using date_i18n() and get_option(
 #. 'date_format' ).
