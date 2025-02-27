@@ -362,7 +362,7 @@ msgstr "Docs"
 
 #: inc/admin/admin.php:22 inc/common/admin-bar.php:261
 msgid "FAQ"
-msgstr "OSS"
+msgstr "FAQ"
 
 #: inc/admin/admin.php:24 inc/common/admin-bar.php:70
 msgid "Settings"
