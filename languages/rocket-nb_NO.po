@@ -3402,23 +3402,23 @@ msgid ""
 "upgrade, simply pay the %1$sprice difference%2$s between your current and "
 "new licenses, as shown below."
 msgstr ""
-"Du kan bruke WP Rocket på flere nettsteder ved å oppgradere lisensen din. "
-"For å oppgradere betaler du ganske enkelt %1$sprisforskjellen%2$s mellom "
-"dine nåværende og nye lisenser, som vist nedenfor."
+"Du kan bruke WP Rocket på flere nettsider ved å oppgradere lisensen din. For"
+" å oppgradere betaler du ganske enkelt %1$sprisforskjellen%2$s mellom dine "
+"nåværende og nye lisenser, som vist nedenfor."
 
 #. translators: %1$s = opening strong tag, %2$s = closing strong tag.
 #: inc/Engine/License/views/upgrade-popin.php:28
 msgid ""
 "%1$sN.B.%2$s: Upgrading your license does not change your expiration date"
-msgstr "%1$sN.B.%2$s: Oppgradering av lisensen endrer ikke utløpsdatoen"
+msgstr "%1$sNB.%2$s: Oppgradering av lisensen endrer ikke utløpsdatoen"
 
 #: inc/Engine/License/views/upgrade-section.php:11
 msgid ""
 "You can use WP Rocket on more websites by upgrading your license (you will "
 "only pay the price difference between your current and new licenses)."
 msgstr ""
-"Du kan bruke WP Rocket på flere nettsteder ved å oppgradere lisensen din (du"
-" betaler bare prisforskjellen mellom dine nåværende og nye lisenser)."
+"Du kan bruke WP Rocket på flere nettsider ved å oppgradere lisensen din (du "
+"betaler kun prisforskjellen mellom dine nåværende og nye lisenser)."
 
 #: inc/Engine/Media/Lazyload/AdminSubscriber.php:62
 msgid "LazyLoad for images"
