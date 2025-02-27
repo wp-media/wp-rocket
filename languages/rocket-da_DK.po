@@ -4467,7 +4467,7 @@ msgstr "Hurtige handlinger"
 
 #: views/settings/page-sections/dashboard.php:162
 msgid "Cache files"
-msgstr "Cache-filer"
+msgstr "Cachefiler"
 
 #: views/settings/page-sections/dashboard.php:163
 msgid "This action will clear and preload all the cache files."
