@@ -4772,8 +4772,8 @@ msgid ""
 "WP Rocket will never transmit any domain names or email addresses (except "
 "for license validation), IP addresses, or third-party API keys."
 msgstr ""
-"WP Rocket vil aldrig overføre nogen domænenavne eller e-mail-adresser "
-"(bortset fra licens validering), IP-adresser eller tredjeparts API-nøgler."
+"WP Rocket vil aldrig overføre domænenavne eller e-mailadresser (bortset fra "
+"ved licensvalidering), IP-adresser eller API-nøgler fra tredjeparter."
 
 #: views/settings/page.php:91
 msgid "Activate Rocket analytics"
