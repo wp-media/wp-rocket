@@ -3438,7 +3438,7 @@ msgstr "Spill av Youtube-video"
 
 #: inc/Engine/Optimization/DelayJS/Admin/SiteList.php:244
 msgid "Analytics & Trackers"
-msgstr "Analyse og sporere"
+msgstr "Analyser og sporing"
 
 #: inc/Engine/Optimization/DelayJS/Admin/SiteList.php:249
 msgid "Ad Networks"
