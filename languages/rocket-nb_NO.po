@@ -1615,8 +1615,7 @@ msgid ""
 "specific path."
 msgstr ""
 "<strong>Intern:</strong> Domenedelen av URL-en blir fjernet automatisk. Bruk"
-" (.*).js jokertegn for å utelate alle JS-filer som ligger på en bestemt "
-"bane."
+" (.*).js-wildcards for å utelate alle JS-filer som ligger på en bestemt sti."
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:719
@@ -1638,8 +1637,8 @@ msgid ""
 "Load JavaScript deferred eliminates render-blocking JS on your site and can "
 "improve load time. %1$sMore info%2$s"
 msgstr ""
-"Utsatt innlasting av JavaScript eliminerer gjengivelsesblokkerende JS på "
-"nettstedet ditt og kan forbedre lastetiden. %1$sMer info%2$s"
+"Last inn JavaScript utsatt fjerner render-blokkering JS på nettsiden din og "
+"kan forbedre lastetiden. %1$sMer info%2$s"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:750
@@ -1653,7 +1652,7 @@ msgstr ""
 #: inc/Engine/Admin/Settings/Page.php:766
 #: inc/Engine/Optimization/DelayJS/Admin/Subscriber.php:210
 msgid "Delay JavaScript execution"
-msgstr "Forsink JavaScript-kjøring"
+msgstr "Delay JavaScript-kjøring"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:768
@@ -1662,7 +1661,7 @@ msgid ""
 "interaction (e.g. scroll, click). %1$sMore info%2$s"
 msgstr ""
 "Forbedrer ytelsen ved å forsinke innlastingen av JavaScript-filer til "
-"brukerinteraksjon (f.eks. rulling, klikk). %1$sMer info%2$s"
+"brukerinteraksjon (f.eks. skrolling, klikk). %1$sMer info%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:777
 msgid "One-click exclusions"
@@ -1674,16 +1673,16 @@ msgid ""
 " in the viewport take time to appear."
 msgstr ""
 "Når du bruker Delay JavaScript-funksjonen, vil du kanskje legge merke til at"
-" noen elementer i visningsporten tar tid før de vises."
+" noen elementer i visningsområdet tar tid før de vises."
 
 #: inc/Engine/Admin/Settings/Page.php:779
 msgid ""
 "If you need these elements to load immediately, select the related plugins, "
 "themes, or services below to ensure they appear without delay."
 msgstr ""
-"Hvis du trenger at disse elementene skal lastes inn umiddelbart, velg de "
-"relaterte pluginene, temaene eller tjenestene nedenfor for å sikre at de "
-"vises uten forsinkelse."
+"Hvis du trenger at disse elementene lastes umiddelbart, velg de relaterte "
+"pluginene, temaene eller tjenestene nedenfor for å sikre at de vises uten "
+"forsinkelse."
 
 #: inc/Engine/Admin/Settings/Page.php:799
 msgid ""
@@ -1695,12 +1694,12 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:813
 msgid "Safe Mode for Delay JavaScript Execution"
-msgstr "Sikkermodus for forsinkelse av JavaScript-kjøring"
+msgstr "Sikkerhetsmodus for Delay JavaScript-kjøring"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:815
 msgid "The Safe Mode mode prevents all internal scripts from being delayed."
-msgstr "Sikkermodus-modus forhindrer at alle interne skript blir forsinket."
+msgstr "Sikkerhetsmodus forhindrer at alle interne skript blir forsinket."
 
 #: inc/Engine/Admin/Settings/Page.php:831
 msgid "Performance impact"
@@ -1713,14 +1712,14 @@ msgid ""
 "experiencing issues with the Delay JavaScript feature, our support team can "
 "help you troubleshoot."
 msgstr ""
-"Ved å aktivere sikkermodus reduserer du ytelsesforbedringene på nettstedet "
-"ditt betydelig. Vi anbefaler å bruke den kun som en midlertidig løsning. "
+"Ved å aktivere Sikkerhetsmodus reduserer du betydelig ytelsesforbedringene "
+"på nettsiden din. Vi anbefaler å bruke det kun som en midlertidig løsning. "
 "Hvis du opplever problemer med Delay JavaScript-funksjonen, kan "
 "supportteamet vårt hjelpe deg med feilsøking."
 
 #: inc/Engine/Admin/Settings/Page.php:833
 msgid "ACTIVATE SAFE MODE"
-msgstr "AKTIVER SIKKER MODUS"
+msgstr "AKTIVER SIKKERHETSMODUS"
 
 #: inc/Engine/Admin/Settings/Page.php:854
 msgid "Media"
@@ -1728,7 +1727,7 @@ msgstr "Media"
 
 #: inc/Engine/Admin/Settings/Page.php:855
 msgid "LazyLoad, image dimensions, font optimization"
-msgstr "LazyLoad, bildedimensjoner, optimalisering av skrifttype"
+msgstr "LazyLoad, bildedimensjoner, optimalisering av font"
 
 #: inc/Engine/Admin/Settings/Page.php:864
 msgid "Autoptimize"
@@ -1745,9 +1744,9 @@ msgid ""
 "videos will be loaded only as they enter (or about to enter) the viewport "
 "and reduces the number of HTTP requests. %1$sMore Info%2$s"
 msgstr ""
-"Det kan forbedre faktisk og oppfattet lastetid ettersom bilder, iframes og "
-"videoer bare lastes inn når de kommer inn i (eller er i ferd med å gå inn) "
-"visningsporten og reduserer antall HTTP-forespørsler. %1$sMer info%2$s"
+"Det kan forbedre faktisk og opplevd lastetid, ettersom bilder, iframes og "
+"videoer kun lastes når de kommer inn (eller er i ferd med å komme inn) i "
+"visningsområdet, og reduserer antallet HTTP-forespørsler. %1$sMer info%2$s"
 
 #. translators: %1$s = “WP Rocket”, %2$s = a list of plugin names.
 #: inc/Engine/Admin/Settings/Page.php:928
@@ -1760,7 +1759,7 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:931
 msgid "Image Dimensions"
-msgstr "Bildets dimensjoner"
+msgstr "Bildedimensjoner"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:934
@@ -1769,13 +1768,13 @@ msgid ""
 "shifts and improve the reading experience for your visitors. %1$sMore "
 "info%2$s"
 msgstr ""
-"Legg til manglende bredde- og høydeattributter for bilder. Bidrar til å "
-"forhindre layoutendringer og forbedre leseopplevelsen for de besøkende. "
-"%1$sMer info%2$s"
+"Legg til manglende bredde- og høydeattributter for bilder. Dette bidrar til "
+"å forhindre skift i oppsettet og forbedrer leseopplevelsen for dine "
+"besøkende. %1$sMer info%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:939
 msgid "Fonts"
-msgstr "Skrifter"
+msgstr "Fonter"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:942
@@ -1783,9 +1782,9 @@ msgid ""
 "Download and serve fonts directly from your server. Reduces connections to "
 "external servers and minimizes font shifts. %1$sMore info%2$s"
 msgstr ""
-"Last ned og server skrifter direkte fra serveren din. Reduserer tilkoblinger"
-" til eksterne servere og minimerer skrifttype forskyvninger. %1$sMer "
-"info%2$s"
+"Last ned og last opp fonter direkte fra din egen server. Dette reduserer "
+"tilkoblinger til eksterne servere og minimerer endringer i fontene på "
+"nettsiden. %1$sMer info%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:961
 msgid "Enable for images"
@@ -1810,13 +1809,13 @@ msgstr "Aktiver for iframes og videoer"
 
 #: inc/Engine/Admin/Settings/Page.php:1011
 msgid "Replace YouTube iframe with preview image"
-msgstr "Erstatt YouTube iframe med forhåndsvisning bilde"
+msgstr "Erstatt YouTube iframe med forhåndsvisning av bilde"
 
 #. translators: %1$s = “WP Rocket”, %2$s = a list of plugin or themes names.
 #: inc/Engine/Admin/Settings/Page.php:1013
 msgid "Replace YouTube iframe with preview image is not compatible with %2$s."
 msgstr ""
-"Erstatt YouTube iframe med forhåndsvisningsbilde er ikke kompatibelt med "
+"Erstatt YouTube iframe med forhåndsvisning av bilde er ikke kompatibelt med "
 "%2$s."
 
 #. translators: %1$s = “WP Rocket”, %2$s = a list of plugin or themes names.
@@ -1826,7 +1825,7 @@ msgid ""
 "YouTube videos on a page."
 msgstr ""
 "Dette kan forbedre lastetiden betydelig hvis du har mange YouTube-videoer på"
-" en side."
+" én side."
 
 #: inc/Engine/Admin/Settings/Page.php:1028
 msgid "Excluded images or iframes"
@@ -1848,7 +1847,7 @@ msgstr "Legg til manglende bilde-dimensjoner"
 
 #: inc/Engine/Admin/Settings/Page.php:1046
 msgid "Self-host Google Fonts"
-msgstr "Google Fonts er vert for deg selv"
+msgstr "Selvhosting av Google Fonts"
 
 #: inc/Engine/Admin/Settings/Page.php:1066
 msgid "Generate cache files, preload fonts"
@@ -1904,8 +1903,8 @@ msgid ""
 "Improves performance by helping browsers discover fonts in CSS files. "
 "%1$sMore info%2$s"
 msgstr ""
-"Forbedrer ytelsen ved å hjelpe nettlesere med å oppdage skrifter i CSS-"
-"filer. %1$sMer info%2$s"
+"Forbedrer ytelsen ved å hjelpe nettlesere med å oppdage fonter i CSS-filer. "
+"%1$sMer info%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:1124
 msgid "Activate Preloading"
@@ -1913,7 +1912,7 @@ msgstr "Aktiver forhåndsinnlasting"
 
 #: inc/Engine/Admin/Settings/Page.php:1135
 msgid "Exclude URLs"
-msgstr "Ekskluder nettadresser"
+msgstr "Ekskluder URL-er"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:1140
@@ -1926,7 +1925,7 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:1151
 msgid "URLs to prefetch"
-msgstr "URL-adresser som skal forhåndshentes"
+msgstr "URL-er som skal forhåndshentes"
 
 #: inc/Engine/Admin/Settings/Page.php:1152
 msgid ""
@@ -1953,8 +1952,8 @@ msgid ""
 "The domain part of the URL will be stripped automatically.<br/>Allowed font "
 "extensions: otf, ttf, svg, woff, woff2."
 msgstr ""
-"Domenedelen av URL-en blir fjernet automatisk.<br/>Tillatte skrifttyper: "
-"otf, ttf, svg, woff, woff2."
+"Domenedelen av URL-en blir fjernet automatisk.<br/>Tillatte fonter: otf, "
+"ttf, svg, woff, woff2."
 
 #: inc/Engine/Admin/Settings/Page.php:1172
 msgid "Enable link preloading"
@@ -1966,14 +1965,14 @@ msgstr "Avanserte regler"
 
 #: inc/Engine/Admin/Settings/Page.php:1192
 msgid "Fine-tune cache rules"
-msgstr "Finjustere bufferregler"
+msgstr "Finjuster cache-regler"
 
 #: inc/Engine/Admin/Settings/Page.php:1205
 msgid ""
 "Sensitive pages like custom login/logout URLs should be excluded from cache."
 msgstr ""
-"Sensitive sider, for eksempel egendefinerte nettadresser for "
-"pålogging/utlogging, bør ekskluderes fra bufferen."
+"Sensitive sider som tilpassede innloggings-/utloggings-URL-er bør "
+"ekskluderes fra cache."
 
 #: inc/Engine/Admin/Settings/Page.php:1208
 msgctxt "plugin name"
@@ -2007,12 +2006,12 @@ msgid ""
 "<br>Cart, checkout and \"my account\" pages set in "
 "<strong>%1$s%2$s%3$s</strong> will be detected and never cached by default."
 msgstr ""
-"<br>Handlekurv-, Gå til kassen- og \"min konto\"-sider satt i "
-"<strong>%1$s%2$s%3$s</strong> vil bli oppdaget og aldri bufret som standard."
+"<br>Handlekurv-, kasse- og \"min konto\"-sider satt i "
+"<strong>%1$s%2$s%3$s</strong> vil bli oppdaget og aldri cachet som standard."
 
 #: inc/Engine/Admin/Settings/Page.php:1232
 msgid "Cache Lifespan"
-msgstr "Cache levetid"
+msgstr "Cache-levetid"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:1235
@@ -2027,11 +2026,11 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:1251
 msgid "Never Cache Cookies"
-msgstr "Aldri bufre informasjonskapsler"
+msgstr "Aldri cache cookies"
 
 #: inc/Engine/Admin/Settings/Page.php:1269
 msgid "Cache Query String(s)"
-msgstr "Buffer spørringsstreng(er)"
+msgstr "Cache spørringsstreng(er)"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:1272
@@ -2039,8 +2038,8 @@ msgid ""
 "%1$sCache for query strings%2$s enables you to force caching for specific "
 "GET parameters."
 msgstr ""
-"%1$sCache for spørringsstrenger%2$s gjør det mulig å fremtvinge "
-"hurtigbufring for bestemte GET-parametere."
+"%1$sCache for spørringsstrenger%2$s gjør det mulig å tvinge caching for "
+"spesifikke GET-parametere."
 
 #: inc/Engine/Admin/Settings/Page.php:1283
 msgid ""
@@ -2082,8 +2081,8 @@ msgid ""
 "The domain part of the URL will be stripped automatically.<br>Use (.*) "
 "wildcards to address multiple URLs under a given path."
 msgstr ""
-"Domenedelen av URL-en blir fjernet automatisk.<br>Bruk (.*) jokertegn for å "
-"adressere flere URL-adresser under en gitt bane."
+"Domenedelen av URL-en blir fjernet automatisk.<br>Bruk (.*) wildcards for å "
+"adressere flere URL-er under en gitt sti."
 
 #: inc/Engine/Admin/Settings/Page.php:1307
 msgid ""
@@ -2101,7 +2100,7 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:1316
 msgid "Use (.*) wildcards to detect parts of UA strings."
-msgstr "Bruk (.*) jokertegn for å oppdage deler av UA-strenger."
+msgstr "Bruk (.*) wildcards for å oppdage deler av UA-strenger."
 
 #: inc/Engine/Admin/Settings/Page.php:1325
 msgid ""
@@ -2311,13 +2310,13 @@ msgid ""
 "wildcards to exclude all files of a given file type located at a specific "
 "path."
 msgstr ""
-"Domenedelen av URL-en blir fjernet automatisk.<br>Bruk (.*) jokertegn for å "
-"utelate alle filer av en gitt filtype som ligger på en bestemt bane."
+"Domenedelen av URL-en blir fjernet automatisk.<br>Bruk (.*) wildcards for å "
+"utelate alle filer av en gitt filtype som ligger på en bestemt sti."
 
 #: inc/Engine/Admin/Settings/Page.php:1636
 #: inc/Engine/Admin/Settings/Page.php:1644
 msgid "Heartbeat"
-msgstr "Hjerteslag"
+msgstr "Heartbeat"
 
 #: inc/Engine/Admin/Settings/Page.php:1637
 msgid "Control WordPress Heartbeat API"
@@ -2333,22 +2332,22 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:1651
 msgid "Reduce or disable Heartbeat activity"
-msgstr "Reduser eller deaktiver pulsaktivitet"
+msgstr "Reduser eller deaktiver Heartbeat-aktivitet"
 
 #: inc/Engine/Admin/Settings/Page.php:1652
 msgid ""
 "Reducing activity will change Heartbeat frequency from one hit each minute "
 "to one hit every 2 minutes."
 msgstr ""
-"Hvis du reduserer aktiviteten, endres frekvensen for hjerteslag fra ett "
-"treff hvert minutt til ett treff hvert 2."
+"Hvis du reduserer aktiviteten, endres Heartbeat-frekvensen fra ett treff "
+"hvert minutt til ett treff hvert 2 minutt."
 
 #: inc/Engine/Admin/Settings/Page.php:1652
 msgid ""
 "Disabling Heartbeat entirely may break plugins and themes using this API."
 msgstr ""
-"Deaktivering av Heartbeat helt kan ødelegge plugins og temaer ved å bruke "
-"denne API-en."
+"Deaktivering av Heartbeat helt kan føre til at plugins og temaer som bruker "
+"dette API-et ikke fungerer som de skal."
 
 #: inc/Engine/Admin/Settings/Page.php:1666
 msgid "Do not limit"
@@ -2356,19 +2355,19 @@ msgstr "Ikke begrens"
 
 #: inc/Engine/Admin/Settings/Page.php:1667
 msgid "Reduce activity"
-msgstr "Reduser aktiviteten"
+msgstr "Reduser aktivitet"
 
 #: inc/Engine/Admin/Settings/Page.php:1668
 msgid "Disable"
-msgstr "Deaktivere"
+msgstr "Deaktiver"
 
 #: inc/Engine/Admin/Settings/Page.php:1676
 msgid "Control Heartbeat"
-msgstr "Kontroller hjerterytme"
+msgstr "Kontroller Heartbeat"
 
 #: inc/Engine/Admin/Settings/Page.php:1685
 msgid "Behavior in backend"
-msgstr "Virkemåte i backend"
+msgstr "Atferd i backend"
 
 #: inc/Engine/Admin/Settings/Page.php:1692
 msgid "Behavior in post editor"
@@ -2376,7 +2375,7 @@ msgstr "Atferd i innleggsredigereren"
 
 #: inc/Engine/Admin/Settings/Page.php:1698
 msgid "Behavior in frontend"
-msgstr "Virkemåte i frontend"
+msgstr "Atferd i frontend"
 
 #: inc/Engine/Admin/Settings/Page.php:1717
 #: views/settings/page-sections/tutorials.php:39
@@ -2402,17 +2401,17 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:1736
 msgid "Rocket Add-ons"
-msgstr "Rakett-tillegg"
+msgstr "Rocket-tillegg"
 
 #: inc/Engine/Admin/Settings/Page.php:1737
 msgid "Rocket Add-ons are complementary features extending available options."
 msgstr ""
-"Rocket Add-ons er komplementære funksjoner som utvider tilgjengelige "
+"Rocket-tillegg er komplementære funksjoner som utvider tilgjengelige "
 "alternativer."
 
 #: inc/Engine/Admin/Settings/Page.php:1748
 msgid "User Cache"
-msgstr "Brukerens buffer"
+msgstr "Bruker-cache"
 
 #: inc/Engine/Admin/Settings/Page.php:1754
 msgid ""
@@ -2428,8 +2427,8 @@ msgid ""
 "User cache is great when you have user-specific or restricted content on "
 "your website.<br>%1$sLearn more%2$s"
 msgstr ""
-"Brukerbuffer er flott når du har brukerspesifikt eller begrenset innhold på "
-"nettstedet ditt.<br>%1$sFinn ut mer%2$s"
+"Bruker-cache er flott når du har brukerspesifikt eller begrenset innhold på "
+"nettsiden din.<br>%1$sLær mer%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:1769
 #: inc/Engine/Admin/Settings/Page.php:1938
@@ -2446,9 +2445,9 @@ msgid ""
 "as clearing the Cloudflare cache and enabling optimal settings with WP "
 "Rocket."
 msgstr ""
-"Oppgi konto-e-post, global API-nøkkel og domene for å bruke alternativer som"
-" å tømme Cloudflare-bufferen og aktivere optimale innstillinger med WP "
-"Rocket."
+"Oppgi e-postadressen til kontoen din, global API-nøkkel og domenet for å "
+"bruke alternativer som å tømme Cloudflare-cache og aktivere optimale "
+"innstillinger med WP Rocket."
 
 #. translators: %1$s = opening span tag, %2$s = closing span tag.
 #: inc/Engine/Admin/Settings/Page.php:1779
@@ -2457,9 +2456,9 @@ msgid ""
 "activate the official Cloudflare plugin and configure it. WP Rocket will "
 "automatically enable compatibility."
 msgstr ""
-"%1$sPlanlegger du å bruke automatisk plattformoptimalisering (APO)?%2$s Bare"
-" aktiver den offisielle Cloudflare-pluginen og konfigurer den. WP Rocket vil"
-" automatisk aktivere kompatibilitet."
+"%1$sPlanlegger du å bruke Automatic Platform Optimization (APO)%2$s Bare "
+"aktiver den offisielle Cloudflare-pluginen og konfigurer den. WP Rocket vil "
+"automatisk aktivere kompatibilitet."
 
 #: inc/Engine/Admin/Settings/Page.php:1827
 msgid "Varnish"
@@ -2475,8 +2474,8 @@ msgid ""
 "Varnish cache will be purged each time WP Rocket clears its cache to ensure "
 "content is always up-to-date.<br>%1$sLearn more%2$s"
 msgstr ""
-"Varnish-cachen vil bli tømt hver gang WP Rocket tømmer hurtigbufferen for å "
-"sikre at innholdet alltid er oppdatert.<br>%1$sFinn ut mer%2$s"
+"Varnish-cache vil bli tømt hver gang WP Rocket tømmer cachen for å sikre at "
+"innholdet alltid er oppdatert.<br>%1$sLær mer%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:1870
 msgid "WebP Compatibility"
@@ -2501,14 +2500,14 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:1900
 msgid "Clear the Sucuri cache when WP Rocket’s cache is cleared."
-msgstr "Tøm Sucuri-bufferen når WP Rockets cache er tømt."
+msgstr "Tøm Sucuri-cachen når WP Rockets cache er tømt."
 
 #: inc/Engine/Admin/Settings/Page.php:1903
 msgid ""
 "Provide your API key to clear the Sucuri cache when WP Rocket’s cache is "
 "cleared."
 msgstr ""
-"Oppgi API-nøkkelen din for å tømme Sucuri-bufferen når WP Rockets cache er "
+"Oppgi API-nøkkelen din for å tømme Sucuri-cachen når WP Rockets cache er "
 "tømt."
 
 #: inc/Engine/Admin/Settings/Page.php:1911
@@ -2518,7 +2517,7 @@ msgstr "Sucuri"
 
 #: inc/Engine/Admin/Settings/Page.php:1917
 msgid "Synchronize Sucuri cache with this add-on."
-msgstr "Synkroniser Sucuri-bufferen med dette tillegget."
+msgstr "Synkroniser Sucuri-cache med dette tillegget."
 
 #: inc/Engine/Admin/Settings/Page.php:1955
 msgid "Cloudflare credentials"
@@ -2558,8 +2557,8 @@ msgid ""
 "Temporarily activate development mode on your website. This setting will "
 "automatically turn off after 3 hours. %1$sLearn more%2$s"
 msgstr ""
-"Aktiver utviklingsmodus midlertidig på nettstedet ditt. Denne innstillingen "
-"slås automatisk av etter 3 timer. %1$sFinn ut mer%2$s"
+"Aktiver utviklingsmodus midlertidig på nettsiden din. Denne innstillingen "
+"slås automatisk av etter 3 timer. %1$sLær mer%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:2020
 msgid "Optimal settings"
@@ -2612,9 +2611,9 @@ msgid ""
 "feature: %3$sAutomatic Lazy Rendering%4$s. Check out our documentation to "
 "learn more about it."
 msgstr ""
-"%1$sWP Rocket:%2$s plugin-en har blitt oppdatert til 3.17-versjonen. Ny "
-"funksjon: %3$sAutomatisk lat gjengivelse%4$s. Sjekk ut dokumentasjonen vår "
-"for å lære mer om det."
+"%1$sWP Rocket:%2$s pluginen har blitt oppdatert til versjon 3.17. Ny "
+"funksjon: %3$sAutomatic Lazy Rendering%4$s. Sjekk ut dokumentasjonen vår for"
+" å lære mer om det."
 
 #: inc/Engine/Admin/Settings/Settings.php:363
 msgid ""
@@ -2635,7 +2634,7 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Subscriber.php:189
 msgid "Import, Export, Rollback"
-msgstr "Import, eksport, tilbakerulling"
+msgstr "Import, eksport, rollback"
 
 #: inc/Engine/Admin/Settings/Subscriber.php:214
 #: views/settings/page-sections/imagify.php:14
@@ -3184,7 +3183,7 @@ msgstr "CSS-genereringsprosess for kritisk vei"
 #. translators: %1$s = <strong>, %2$s = price, %3$s = </strong>.
 #: inc/Engine/License/Renewal.php:76
 msgid "Renew before it is too late, you will only pay %1$s%2$s%3$s!"
-msgstr "Forny før det er for sent, du betaler bare %1$s%2$s%3$s!"
+msgstr "Forny før det er for sent, du betaler kun %1$s%2$s%3$s!"
 
 #. translators: %1$s = <strong>, %2$s = discount, %3$s = </strong>,%4$s =
 #. <strong>, %5$s = price, %6$s=</strong>.
@@ -3757,7 +3756,7 @@ msgstr ""
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
 #: inc/functions/options.php:515
 msgid "To resolve, please contact support."
-msgstr "For å løse problemet, vennligst kontakt kundestøtte."
+msgstr "For å løse problemet, vennligst kontakt support."
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
 #: inc/functions/options.php:523
@@ -3776,8 +3775,8 @@ msgid ""
 "Try clicking %1$sSave Changes%2$s below. If the error persists, follow "
 "%3$sthis guide%4$s."
 msgstr ""
-"Prøv å klikke på %1$sSave Changes%2$s nedenfor. Hvis feilen vedvarer, følg "
-"%3$sdenne veiledningen%4$s."
+"Prøv å klikke på %1$sLagre endringer%2$s nedenfor. Hvis feilen vedvarer, "
+"følg %3$sdenne guiden%4$s."
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
 #: inc/functions/options.php:543
@@ -3933,7 +3932,7 @@ msgid ""
 "Mobiles Devices” to ensure the generated cache is accurate."
 msgstr ""
 "%1$sWP Rocket:%2$s Du har \"Cache by Device Type\" aktivert på Cloudflare "
-"APO. Hvis du anser det som nødvendig for nettstedet å ha en annen cache på "
+"APO. Hvis du anser det som nødvendig for nettsiden å ha en annen cache på "
 "mobil og desktop, foreslår vi at du aktiverer vår \"Separate Cache Files for"
 " Mobiles Devices\" for å sikre at den genererte cachen er nøyaktig."
 
@@ -4062,9 +4061,9 @@ msgid ""
 "for Autoptimize. If you want to use WP Rocket's Remove Unused CSS feature, "
 "disable the  RapidLoad Power-Up for Autoptimize plugin."
 msgstr ""
-"Automatisert ubrukt CSS-fjerning er for øyeblikket aktivert i RapidLoad "
+"Automatisert fjerning av ubrukt CSS-er for øyeblikket aktivert i RapidLoad "
 "Power-Up for Autoptimize. Hvis du vil bruke WP Rockets Fjern ubrukt CSS-"
-"funksjon, deaktiver RapidLoad Power-Up for Autoptimize-plugin."
+"funksjon, deaktiver RapidLoad Power-Up for Autoptimize-pluginen."
 
 #. translators: %1$s = plugin name.
 #: inc/ThirdParty/Plugins/Optimization/WPMeteor.php:42
@@ -4088,7 +4087,7 @@ msgid ""
 "Your Divi template was updated. Clear the Used CSS if the layout, design or "
 "CSS styles were changed."
 msgstr ""
-"Divi-malen din ble oppdatert. Fjern merket for Brukt CSS hvis layout-, "
+"Divi-malen din ble oppdatert. Fjern merket for Brukt CSS hvis oppsett-, "
 "design- eller CSS-stilene ble endret."
 
 #: views/cpcss/activate-cpcss-mobile.php:13
