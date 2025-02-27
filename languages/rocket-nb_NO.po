@@ -2648,7 +2648,7 @@ msgstr "Komprimer bildene dine"
 #: inc/Engine/Admin/Settings/Subscriber.php:232
 #: views/settings/page-sections/tutorials.php:48
 msgid "Tutorials"
-msgstr "Tutorial"
+msgstr "Veiledninger"
 
 #: inc/Engine/Admin/Settings/Subscriber.php:233
 msgid "Getting started and how to videos"
