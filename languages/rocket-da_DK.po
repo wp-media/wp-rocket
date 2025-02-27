@@ -2786,7 +2786,7 @@ msgstr ""
 #. translators: %s = message returned by the API.
 #: inc/Engine/CDN/RocketCDN/APIClient.php:239
 msgid "RocketCDN cache purge failed: %s."
-msgstr "RocketCDN cacherydning mislykkedes: %s."
+msgstr "RocketCDN-cacherydning mislykkedes: %s."
 
 #: inc/Engine/CDN/RocketCDN/APIClient.php:247
 msgid "RocketCDN cache purge successful."
