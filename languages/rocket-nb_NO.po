@@ -3547,7 +3547,8 @@ msgstr "WP Rocket Forhåndsinnlasting ventende jobber"
 
 #: inc/Engine/Preload/Cron/Subscriber.php:166
 msgid "WP Rocket Preload revert stuck failed jobs"
-msgstr "WP Rocket Preload tilbakestiller fastlåste mislykkede jobber"
+msgstr ""
+"WP Rocket Forhåndsinnlasting tilbakestill fastlåste, mislykkede jobber"
 
 #: inc/Engine/Saas/Admin/AdminBar.php:106
 msgid "Clear Used CSS of this URL"
