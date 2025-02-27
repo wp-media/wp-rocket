@@ -2744,7 +2744,7 @@ msgstr "RocketCDN-cache-tømming mislyktes: Manglende brukertoken."
 msgid ""
 "RocketCDN cache purge failed: The API returned an unexpected response code."
 msgstr ""
-"RocketCDN-cache-tømming mislyktes: API-en returnerte en uventet svarkode."
+"RocketCDN-cache-tømming mislyktes: API-et returnerte en uventet svarkode."
 
 #: inc/Engine/CDN/RocketCDN/APIClient.php:221
 msgid "RocketCDN cache purge failed: The API returned an empty response."
