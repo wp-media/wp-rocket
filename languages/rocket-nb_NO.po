@@ -1016,7 +1016,7 @@ msgstr "%1$sGå tilbake til WP Rocket%2$s eller %3$sgå til Plugins-siden%2$s"
 
 #: inc/deprecated/3.12.php:56
 msgid "All in One SEO XML sitemap"
-msgstr "Alt-i-ett SEO XML-nettsidekart"
+msgstr "Alt-i-ett SEO XML sitemap"
 
 #: inc/deprecated/3.12.php:85
 msgid "Rank Math XML sitemap"
