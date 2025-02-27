@@ -4072,8 +4072,8 @@ msgid ""
 "%1$s %2$sasset optimization%3$s conflicts with WP Rocket %2$sfile "
 "optimization%3$s"
 msgstr ""
-"%1$s %2$sasset optimering%3$s er i konflikt med WP Rocket %2$s fil "
-"optimering%3$s"
+"%1$s %2$sasset optimization%3$s er i konflikt med WP Rockets %2$s "
+"filoptimering%3$s"
 
 #: inc/ThirdParty/Plugins/Optimization/Perfmatters.php:38
 msgid ""
