@@ -4537,9 +4537,9 @@ msgid ""
 "sacrificing quality."
 msgstr ""
 "Imagify optimerer automatisk alle dine billeder, hvilket hjælper din "
-"hjemmeside med at få dyrebare sekunder, samtidig med at du sparer tid. Med "
-"blot ét klik ændres størrelsen, komprimeres og konverteres dine billeder til"
-" WebP- og AVIF-formater uden at ofre kvalitet."
+"hjemmeside med at vinde dyrebare sekunder, samtidig med at du sparer tid. "
+"Med blot ét klik ændres størrelsen, og dine billeder komprimeres og "
+"konverteres til WebP- og AVIF-formater uden at ofre kvalitet."
 
 #. Translators: %1$s = <strong>, %2$s = </strong>.
 #: views/settings/page-sections/imagify.php:41
