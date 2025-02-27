@@ -3358,7 +3358,7 @@ msgid ""
 "Your website could be much faster if it could take advantage of our %1$snew "
 "features and enhancements%2$s. 🚀"
 msgstr ""
-"Nettstedet ditt kunne vært mye raskere hvis det kunne dra nytte av våre "
+"Nettsiden din kunne vært mye raskere hvis den kunne dra nytte av våre "
 "%1$snye funksjoner og forbedringer%2$s. 🚀"
 
 #. translators: %1$s = <strong>, %2$s = </strong>.
@@ -3368,7 +3368,7 @@ msgid ""
 " to product updates and support."
 msgstr ""
 "Din %1$sWP Rocket-lisens er i ferd med å utløpe%2$s: du vil snart miste "
-"tilgangen til produktoppdateringer og støtte."
+"tilgangen til produktoppdateringer og support."
 
 #. translators: %1$s = span opening tag, %2$s = price, %3$s = span closing
 #. tag.
