@@ -1311,7 +1311,7 @@ msgstr ""
 
 #: inc/Engine/Admin/DomainChange/Subscriber.php:171
 msgid "Regenerate WP Rocket configuration files now"
-msgstr "Generer WP Rocket-konfigurasjonsfiler nå"
+msgstr "Regenerer WP Rocket-konfigurasjonsfilene nå"
 
 #: inc/Engine/Admin/Settings/Page.php:222
 msgid "Save Changes"
