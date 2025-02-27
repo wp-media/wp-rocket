@@ -4813,7 +4813,7 @@ msgstr "Lær om optimale WP Rocket-indstillinger til mobil."
 
 #: views/settings/partials/sidebar.php:27
 msgid "Test and Improve Google Core Web Vitals for WordPress."
-msgstr "Test og forbedring af Google Core Web Vital for WordPress."
+msgstr "Test og forbedring af Google Core Web Vitals for WordPress."
 
 #: views/settings/partials/sidebar.php:28
 msgid "Read more"
