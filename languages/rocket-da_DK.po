@@ -4644,7 +4644,7 @@ msgstr "Eksportindstillinger"
 
 #: views/settings/page-sections/tools.php:38
 msgid "Download a backup file of your settings"
-msgstr "Download en backup fil af dine indstillinger"
+msgstr "Download en backupfil af dine indstillinger"
 
 #: views/settings/page-sections/tools.php:46
 msgid "Download settings"
