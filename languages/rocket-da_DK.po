@@ -476,7 +476,7 @@ msgid ""
 "<strong>%s</strong>: One or more plugins have been enabled or disabled, "
 "clear the cache if they affect the front end of your site."
 msgstr ""
-"<strong>%s</strong>: En eller flere plugins er blevet aktiveret eller "
+"<strong>%s</strong>: Et eller flere plugins er blevet aktiveret eller "
 "deaktiveret. Ryd cachen, hvis de påvirker frontend-delen af din hjemmeside."
 
 #. translators: %s is WP Rocket plugin name.
