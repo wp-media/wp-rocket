@@ -4260,7 +4260,7 @@ msgstr ""
 
 #: views/settings/dynamic-lists-update.php:14
 msgid "Update Inclusion and Exclusion Lists"
-msgstr "Opdatering af inkludering og eksklusionslister"
+msgstr "Opdater inklusions- og eksklusionslister"
 
 #. translators: %1$s = opening link tag, %2$s = closing link tag.
 #: views/settings/dynamic-lists-update.php:19
