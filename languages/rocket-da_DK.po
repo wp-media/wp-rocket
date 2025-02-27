@@ -4292,7 +4292,7 @@ msgstr ""
 msgid ""
 "Google Fonts Optimization is now enabled for your site. %1$sMore info%2$s"
 msgstr ""
-"Google Fontoptimering er nu aktiveret for din hjemmeside. %1$sMere info%2$s"
+"Google Font-optimering er nu aktiveret for din hjemmeside. %1$sMere info%2$s"
 
 #: views/settings/enable-google-fonts.php:38
 msgid "Optimize Google Fonts"
