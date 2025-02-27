@@ -3538,8 +3538,8 @@ msgid ""
 " is needed."
 msgstr ""
 "%1$s: Forhåndsinnlastingstjenesten er nå aktiv. Etter den første "
-"forhåndsinnlastingen vil den fortsette å bufre alle sidene dine når de blir "
-"slettet. Ingen ytterligere tiltak er nødvendig."
+"forhåndsinnlastingen vil den fortsette å cache alle sidene dine hver gang de"
+" blir tømt. Ingen videre handling er nødvendig."
 
 #: inc/Engine/Preload/Cron/Subscriber.php:138
 msgid "WP Rocket Preload pending jobs"
