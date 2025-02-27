@@ -3587,7 +3587,8 @@ msgstr ""
 #: inc/Engine/Saas/Admin/Notices.php:157
 msgid "We suggest enabling %1$sPreload%2$s for the fastest results."
 msgstr ""
-"Vi foreslår at du aktiverer %1$sPreload%2$s for de raskeste resultatene."
+"Vi foreslår at du aktiverer %1$sForhåndsinnlasting%2$s for de raskeste "
+"resultatene."
 
 #. translators: %1$s = opening link tag, %2$s = closing link tag.
 #: inc/Engine/Saas/Admin/Notices.php:167
