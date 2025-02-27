@@ -3384,7 +3384,7 @@ msgstr "Nettsider"
 #. translators: %s = number of websites.
 #: inc/Engine/License/views/upgrade-item.php:58
 msgid "%s websites"
-msgstr "%s nettsteder"
+msgstr "%s nettsider"
 
 #. translators: %s = license name.
 #: inc/Engine/License/views/upgrade-item.php:66
