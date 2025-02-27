@@ -1129,7 +1129,7 @@ msgstr "Tredjepartsfunksjon oppdaget:"
 #: inc/deprecated/deprecated.php:1488 inc/deprecated/deprecated.php:1672
 msgctxt "screen-reader-text"
 msgid "Warning:"
-msgstr "Advarsel"
+msgstr "Advarsel:"
 
 #: inc/deprecated/deprecated.php:1501
 msgctxt "button text"
