@@ -1442,7 +1442,7 @@ msgstr ""
 #: inc/Engine/Admin/Settings/Page.php:566
 #: inc/Engine/Admin/Settings/Page.php:588
 msgid "Optimize CSS delivery"
-msgstr "Optimaliser CSS-levering"
+msgstr "Optimize CSS delivery"
 
 #: inc/Engine/Admin/Settings/Page.php:571
 msgid ""
