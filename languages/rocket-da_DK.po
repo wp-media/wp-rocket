@@ -4511,7 +4511,7 @@ msgstr "Lav en backup af din database, før du kører en oprydning!"
 #: views/settings/page-sections/database.php:26
 msgid ""
 "Once a database optimization has been performed, there is no way to undo it."
-msgstr "Når en databaseoptimering er udført, er der ingen måde at ophæve den."
+msgstr "Når en databaseoptimering er udført, kan den ikke fortrydes."
 
 #: views/settings/page-sections/database.php:28
 msgid "Save Changes and Optimize"
