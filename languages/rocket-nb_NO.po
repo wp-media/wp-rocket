@@ -1535,8 +1535,7 @@ msgstr ""
 #: inc/Engine/Admin/Settings/Page.php:635
 msgid ""
 "Generates critical path CSS and loads CSS asynchronously. %1$sMore info%2$s"
-msgstr ""
-"Genererer CSS for kritisk vei og laster CSS asynkront. %1$sMer info%2$s"
+msgstr "Genererer kristisk CSS-sti og laster CSS asynkront. %1$sMer info%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:641
 msgid "Fallback critical CSS"
