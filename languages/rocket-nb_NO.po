@@ -1262,7 +1262,7 @@ msgstr "Spamkommentarer"
 #: inc/Engine/Admin/Database/Optimization.php:37
 #: inc/Engine/Admin/Settings/Page.php:1443
 msgid "Trashed Comments"
-msgstr "Søppel kommentarer"
+msgstr "Slettede kommentarer"
 
 #: inc/Engine/Admin/Database/Optimization.php:38
 msgid "Transients"
