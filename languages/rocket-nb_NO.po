@@ -3265,7 +3265,7 @@ msgstr "eller"
 #. translators: %s = promotion discount percentage.
 #: inc/Engine/License/views/promo-banner.php:18
 msgid "%s off"
-msgstr "%s av"
+msgstr "%s rabatt"
 
 #. translators: %s = promotion name.
 #: inc/Engine/License/views/promo-banner.php:23
