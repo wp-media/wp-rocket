@@ -1691,8 +1691,8 @@ msgid ""
 "Specify URLs or keywords that can identify inline or JavaScript files to be "
 "excluded from delaying execution (one per line)."
 msgstr ""
-"Angi URL-adresser eller nøkkelord som kan identifisere innebygde filer eller"
-" JavaScript-filer som skal utelates fra å forsinke kjøringen (én per linje)."
+"Angi URL-er eller nøkkelord som kan identifisere innsatte- eller JavaScript-"
+"filer som skal utelates fra forsinket utførelse (én per linje)."
 
 #: inc/Engine/Admin/Settings/Page.php:813
 msgid "Safe Mode for Delay JavaScript Execution"
