@@ -1401,8 +1401,8 @@ msgstr ""
 msgid ""
 "If this causes trouble, restore the default exclusions, found %1$shere%2$s"
 msgstr ""
-"Hvis dette forårsaker problemer, gjenoppretter du standardutelatelsene, "
-"funnet %1$shere%2$s"
+"Hvis dette forårsaker problemer, gjenoppretter du standardunntakene som "
+"finnes %1$sher%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:534
 msgid "Minify CSS files"
