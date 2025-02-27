@@ -3255,8 +3255,8 @@ msgid ""
 "Take advantage of %1$s to speed up more websites:%2$s get a %3$s%4$s off%5$s"
 " for %3$supgrading your license to %6$s!%5$s"
 msgstr ""
-"Dra nytte av %1$s for å øke hastigheten på flere nettsteder:%2$s får "
-"%3$s%4$s rabatt%5$s for %3$soppgraderer lisensen din til %6$s!%5$s"
+"Dra nytte av %1$s for å øke hastigheten på flere nettsider:%2$s få  %3$s%4$s"
+" rabatt%5$s for å %3$soppgradere lisensen din til %6$s!%5$s"
 
 #: inc/Engine/License/Upgrade.php:258
 msgid "or"
