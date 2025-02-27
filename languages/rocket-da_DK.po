@@ -4337,11 +4337,11 @@ msgstr "Importindstillinger"
 #: views/settings/fields/one-click-addon.php:43
 #: views/settings/fields/rocket-addon.php:43
 msgid "Add-on status"
-msgstr "Tilføjelsesstatus"
+msgstr "Status for add-on"
 
 #: views/settings/fields/rocket-addon.php:72
 msgid "Modify options"
-msgstr "Ændre muligheder"
+msgstr "Rediger muligheder"
 
 #: views/settings/fields/rocket-cdn.php:29
 #: views/settings/fields/rocket-cdn.php:41
