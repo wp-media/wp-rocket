@@ -2304,8 +2304,7 @@ msgstr "Angi CNAME(er) nedenfor"
 #: inc/Engine/Admin/Settings/Page.php:1612
 msgid ""
 "Specify URL(s) of files that should not get served via CDN (one per line)."
-msgstr ""
-"Spesifiser URL(er) for filer som ikke skal betjenes via CDN (én per linje)."
+msgstr "Angi URL(er) for filer som ikke skal betjenes via CDN (én per linje)."
 
 #: inc/Engine/Admin/Settings/Page.php:1613
 msgid ""
