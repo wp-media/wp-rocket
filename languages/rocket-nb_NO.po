@@ -1045,7 +1045,7 @@ msgstr "WP Rocket-alternativer"
 
 #: inc/deprecated/3.15.php:57 views/metaboxes/post_edit_options.php:19
 msgid "Never cache this page"
-msgstr "Aldri bufre denne siden"
+msgstr "Aldri cache denne siden"
 
 #: inc/deprecated/3.15.php:61 views/metaboxes/post_edit_options.php:23
 msgid "Activate these options on this post:"
