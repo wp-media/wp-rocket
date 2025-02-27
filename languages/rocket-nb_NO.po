@@ -2748,7 +2748,7 @@ msgstr ""
 
 #: inc/Engine/CDN/RocketCDN/APIClient.php:221
 msgid "RocketCDN cache purge failed: The API returned an empty response."
-msgstr "RocketCDN-cache-tømming mislyktes: API-en returnerte et tomt svar."
+msgstr "RocketCDN-cache-tømming mislyktes: API-et returnerte et tomt svar."
 
 #: inc/Engine/CDN/RocketCDN/APIClient.php:230
 msgid "RocketCDN cache purge failed: The API returned an unexpected response."
