@@ -4091,7 +4091,7 @@ msgid ""
 "disable the  RapidLoad Power-Up for Autoptimize plugin."
 msgstr ""
 "Automatisk fjernelse af ubrugt CSS er for øjeblikket aktiveret i RapidLoad "
-"Power-Up for Autoptimize. Hvis du vil bruge WP Rockets Remove Unused CSS-"
+"Power-Up for Autoptimize. Hvis du vil bruge WP Rockets Fjern ubrugt CSS-"
 "funktion, skal du deaktivere RapidLoad Power-Up for Autoptimize-pluginet."
 
 #. translators: %1$s = plugin name.
