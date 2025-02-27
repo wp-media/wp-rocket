@@ -4369,7 +4369,7 @@ msgstr "Mobilcache"
 
 #: views/settings/mobile-cache.php:14
 msgid "Speed your site for mobile visitors."
-msgstr "Hurtiggøre din hjemmeside for mobile besøgende."
+msgstr "Gør din hjemmeside hurtigere for mobilbesøgende."
 
 #: views/settings/mobile-cache.php:28
 msgid "Mobile Cache is now enabled for your site."
