@@ -2556,7 +2556,7 @@ msgstr "E-postadresse for konto"
 #: inc/Engine/Admin/Settings/Page.php:2000
 msgctxt "Cloudflare"
 msgid "Zone ID"
-msgstr "Sone-ID"
+msgstr "Zone ID"
 
 #: inc/Engine/Admin/Settings/Page.php:2010
 msgid "Development mode"
