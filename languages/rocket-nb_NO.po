@@ -2109,8 +2109,8 @@ msgid ""
 "Specify URLs you always want purged from cache whenever you update any post "
 "or page (one per line)"
 msgstr ""
-"Spesifiser URL-er du alltid vil fjerne fra hurtigbufferen hver gang du "
-"oppdaterer et innlegg eller en side (én per linje)"
+"Angi URL-er som alltid skal tømmes fra cache hver gang du oppdaterer et "
+"innlegg eller en side (én per linje)."
 
 #: inc/Engine/Admin/Settings/Page.php:1334
 msgid "Specify query strings for caching (one per line)"
