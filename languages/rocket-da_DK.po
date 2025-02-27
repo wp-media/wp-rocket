@@ -4346,7 +4346,7 @@ msgstr "Rediger muligheder"
 #: views/settings/fields/rocket-cdn.php:29
 #: views/settings/fields/rocket-cdn.php:41
 msgid "CDN CNAME"
-msgstr "CDN CNAME"
+msgstr "CDN-CNAME"
 
 #. translators: %s is a "Learn more" link.
 #: views/settings/fields/rocket-cdn.php:62
