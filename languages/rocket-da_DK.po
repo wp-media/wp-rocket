@@ -4133,7 +4133,8 @@ msgstr ""
 
 #: views/cpcss/activate-cpcss-mobile.php:15
 msgid "Click the button to enable mobile-specific CPCSS for your site."
-msgstr "Klik på knappen for at aktivere mobil-specifik CPCSS til dit websted."
+msgstr ""
+"Klik på knappen for at aktivere mobilspecifik CPCSS til dn hjemmeside."
 
 #. translators: %1$s = opening link tag, %2$s = closing link tag.
 #: views/cpcss/activate-cpcss-mobile.php:20
