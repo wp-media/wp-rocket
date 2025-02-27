@@ -4471,7 +4471,7 @@ msgstr "Cachefiler"
 
 #: views/settings/page-sections/dashboard.php:163
 msgid "This action will clear and preload all the cache files."
-msgstr "Denne handling vil rydde og forudlade alle cachedata."
+msgstr "Denne handling vil rydde og forudindlæse alle cachedata."
 
 #: views/settings/page-sections/dashboard.php:163
 msgid "This action will clear all the cache files."
