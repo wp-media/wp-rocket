@@ -3470,7 +3470,7 @@ msgstr ""
 
 #: inc/Engine/Optimization/DynamicLists/DynamicLists.php:109
 msgid "Default Lists"
-msgstr "Standard lister"
+msgstr "Standardlister"
 
 #: inc/Engine/Optimization/DynamicLists/DynamicLists.php:110
 msgid "Delay JavaScript Execution Exclusion Lists"
