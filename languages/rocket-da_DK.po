@@ -4671,7 +4671,7 @@ msgstr ""
 #. translators: %s = WP Rocket previous version.
 #: views/settings/page-sections/tools.php:80
 msgid "Reinstall version %s"
-msgstr "Geninstallation af version %s"
+msgstr "Geninstaller version %s"
 
 #: views/settings/page-sections/tools.php:106
 msgid "Debug mode"
