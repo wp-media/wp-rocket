@@ -4277,7 +4277,7 @@ msgstr "Opdateringslister"
 
 #: views/settings/enable-google-fonts.php:13
 msgid "Enable Google Font Optimization"
-msgstr "Aktivér Google Fontoptimering"
+msgstr "Aktivér Google Font-optimering"
 
 #: views/settings/enable-google-fonts.php:14
 msgid ""
