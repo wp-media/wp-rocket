@@ -4747,7 +4747,7 @@ msgstr "Opsætning af Cloudflare-add-on"
 
 #: views/settings/page.php:16
 msgid "WP Rocket Settings"
-msgstr "WP raketindstillinger"
+msgstr "WP Rocket-indstillinger"
 
 #. translators: %s = Plugin version number.
 #: views/settings/page.php:30
