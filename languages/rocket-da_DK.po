@@ -4800,7 +4800,7 @@ msgstr "Sådan måler du korrekt din hjemmesides indlæsningstider"
 #: views/settings/partials/sidebar.php:14
 msgid "Check our tutorial and learn how to measure the speed of your site."
 msgstr ""
-"Tjek vores tutorial og lær hvordan du måler hastigheden på dit websted."
+"Se vores tutorial og lær, hvordan du måler hastigheden på din hjemmeside."
 
 #: views/settings/partials/sidebar.php:15
 #: views/settings/partials/sidebar.php:24
