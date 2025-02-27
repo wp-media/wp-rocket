@@ -1386,7 +1386,7 @@ msgid ""
 "Also, please check our %1$sdocumentation%2$s for a list of compatibility "
 "exclusions."
 msgstr ""
-"Sjekk også %1$sdocumentation%2$s for en liste over kompatibilitetsunntak."
+"Sjekk også %1$sdokumentasjonen%2$s for en liste over kompatibilitetsunntak."
 
 #: inc/Engine/Admin/Settings/Page.php:522
 msgid ""
