@@ -1925,8 +1925,8 @@ msgid ""
 "Specify URLs to be excluded from the preload feature (one per line). "
 "%1$sMore info%2$s"
 msgstr ""
-"Angi URL-adresser som skal ekskluderes fra forhåndsinnlastingsfunksjonen (én"
-" per linje). %1$sMer info%2$s"
+"Spesifiser URL-er som skal ekskluderes fra forhåndsinnlasting (en per "
+"linje). %1$sMer info%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:1151
 msgid "URLs to prefetch"
