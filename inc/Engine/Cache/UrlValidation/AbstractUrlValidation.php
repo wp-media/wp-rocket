@@ -45,6 +45,11 @@ abstract class AbstractUrlValidation {
 	 * @return bool
 	 */
 	protected function is_disabled(): bool {
+		/**
+		 * Filters whether to disable URL validation.
+		 *
+		 * @param bool $disable True to disable URL validation, false to enable it.
+		 */
 		return wpm_apply_filters_typed( 'boolean', 'rocket_disable_url_validation', false );
 	}
 
