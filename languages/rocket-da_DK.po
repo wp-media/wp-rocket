@@ -4684,7 +4684,7 @@ msgstr "Opret en debug-logfil."
 #: views/settings/page-sections/tutorials.php:13
 #: views/settings/partials/getting-started.php:18
 msgid "Getting Started"
-msgstr "At komme i gang"
+msgstr "Kom i gang"
 
 #: views/settings/page-sections/tutorials.php:15
 msgid "Getting Started with WP Rocket"
