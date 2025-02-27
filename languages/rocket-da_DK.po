@@ -4351,7 +4351,7 @@ msgstr "CDN-CNAME"
 #. translators: %s is a "Learn more" link.
 #: views/settings/fields/rocket-cdn.php:62
 msgid "Purges RocketCDN cached resources for your website. %s"
-msgstr "Renser RocketCDN cachede ressourcer til din hjemmeside. %s"
+msgstr "Rydder RocketCDN-cachede ressourcer til din hjemmeside. %s"
 
 #: views/settings/fields/rocket-cdn.php:63
 #: views/settings/page-sections/cloudflare.php:36
