@@ -4395,7 +4395,7 @@ msgstr "https://support.cloudflare.com/hc/en-us/articles/200169246"
 
 #: views/settings/page-sections/cloudflare.php:45
 msgid "Clear all Cloudflare cache files"
-msgstr "Slet alle Cloudflare cache-filer"
+msgstr "Slet alle Cloudflare-cachefiler"
 
 #: views/settings/page-sections/dashboard.php:39
 msgid "Congratulations!"
