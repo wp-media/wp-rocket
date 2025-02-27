@@ -1376,8 +1376,8 @@ msgid ""
 "%1$s Minification is currently activated in <strong>Autoptimize</strong>. If"
 " you want to use %2$s’s minification, disable those options in Autoptimize."
 msgstr ""
-"%1$s Minifisering er for øyeblikket aktivert i <strong>Autoptimize</strong>."
-" Hvis du vil bruke %2$s minifisering, deaktiver disse alternativene i "
+"%1$s Minification er for øyeblikket aktivert i <strong>Autoptimize</strong>."
+" Hvis du vil bruke %2$ss Minification, deaktiver disse alternativene i "
 "Autoptimize."
 
 #. translators: %1$s = opening </a> tag, %2$s = closing </a> tag.
