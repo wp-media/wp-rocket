@@ -4254,9 +4254,9 @@ msgid ""
 "and enhancements of this major version. You need an active license to use "
 "them on your website, don’t miss out! %6$sRenew Now%5$s"
 msgstr ""
-"%1$sWP Rocket %2$s%3$s er tilgængelig. %4$sLær mere%5$s om opdateringer og "
-"forbedringer af denne store version. Du har brug for en aktiv licens til at "
-"bruge dem på din hjemmeside, gå ikke glip af det! %6$sForny nu%5$s"
+"%1$sWP Rocket %2$s%3$s er tilgængeligt. %4$sLær mere%5$s om opdateringer og "
+"forbedringer i denne store version. Du har brug for en aktiv licens for at "
+"bruge dem på din hjemmeside - gå ikke glip af det! %6$sForny nu%5$s"
 
 #: views/settings/dynamic-lists-update.php:14
 msgid "Update Inclusion and Exclusion Lists"
