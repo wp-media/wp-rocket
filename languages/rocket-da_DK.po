@@ -4626,7 +4626,7 @@ msgstr "Slet alle Sucuri-cachefiler"
 #. (don't use %2$d).
 #: views/settings/page-sections/tools.php:20
 msgid "Files size: %1$s. Number of entries: %2$s."
-msgstr "Filstørrelse:% 1$s. Antal poster:% 2$s."
+msgstr "Filstørrelse: %1$s. Antal poster: %2$s"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: views/settings/page-sections/tools.php:23
