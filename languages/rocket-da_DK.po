@@ -941,7 +941,7 @@ msgid ""
 "required for the Cloudflare Add-on to work correctly."
 msgstr ""
 "Curl er deaktiveret på din server. Bed din hostingudbyder om at aktivere "
-"det. Dette er nødvendigt for at få Cloudflare-tilføjelsen til at fungere "
+"det. Dette er nødvendigt for at få Cloudflare-add-on'et til at fungere "
 "korrekt."
 
 #. translators: %1$s = opening link; %2$s = closing link
