@@ -1211,10 +1211,10 @@ msgid ""
 "higher. If you are not able to upgrade, you can rollback to the previous "
 "version by using the button below."
 msgstr ""
-"%1$s %2$s krever minst PHP %3$s for å fungere skikkelig. For å bruke denne "
-"versjonen, vennligst spør webverten din hvordan du oppgraderer serveren din "
-"til PHP %3$s eller høyere. Hvis du ikke kan oppgradere, kan du gå tilbake "
-"til forrige versjon ved å bruke knappen nedenfor."
+"%1$s %2$s krever minst PHP %3$s å fungere riktig. For å bruke denne "
+"versjonen, vennligst spør webhosten din om hvordan du oppgraderer serveren "
+"din til PHP %3$s eller høyere. Hvis du ikke kan oppgradere, kan du gå "
+"tilbake til forrige versjon ved å bruke knappen nedenfor."
 
 #. translators: 1: PHP class name, 2: version number, 3: replacement class
 #. name.
