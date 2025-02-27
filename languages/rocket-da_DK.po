@@ -4821,7 +4821,7 @@ msgstr "Læs mere"
 
 #: views/settings/partials/sidebar.php:33
 msgid "You have not activated logged-in user cache."
-msgstr "Du har ikke aktiveret logget-in brugercache."
+msgstr "Du har ikke aktiveret indlogget brugercache."
 
 #: views/settings/partials/sidebar.php:34
 msgid ""
