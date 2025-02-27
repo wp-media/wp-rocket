@@ -4426,7 +4426,7 @@ msgstr ""
 
 #: views/settings/page-sections/dashboard.php:46
 msgid "Continue to the options to further optimize your site!"
-msgstr "Fortsæt til mulighederne for yderligere at optimere din hjemmeside!"
+msgstr "Fortsæt til mulighederne for at optimere din hjemmeside yderligere!"
 
 #: views/settings/page-sections/dashboard.php:63
 msgid "My Account"
