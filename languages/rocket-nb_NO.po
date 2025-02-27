@@ -1934,8 +1934,8 @@ msgid ""
 "Specify external hosts to be prefetched (no <code>http:</code>, one per "
 "line)"
 msgstr ""
-"Angi eksterne verter som skal forhåndshentes (ingen kode>http:kode>, én per "
-"linje)"
+"Angi eksterne hoster som skal forhåndshentes (uten <code>http:</code>, én "
+"per linje)"
 
 #: inc/Engine/Admin/Settings/Page.php:1161
 msgid "Fonts to preload"
