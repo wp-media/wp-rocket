@@ -1190,7 +1190,7 @@ msgstr "Database"
 
 #: inc/deprecated/deprecated.php:1776 inc/Engine/Admin/Settings/Page.php:1065
 msgid "Preload"
-msgstr "Forhåndsinnlasting"
+msgstr "Forhåndslast"
 
 #: inc/deprecated/deprecated.php:1786
 #: inc/Engine/Admin/Settings/Subscriber.php:188
