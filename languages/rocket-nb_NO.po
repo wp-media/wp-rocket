@@ -1507,7 +1507,7 @@ msgstr "Aktiver Fjern ubrukt CSS"
 
 #: inc/Engine/Admin/Settings/Page.php:614
 msgid "CSS safelist"
-msgstr "Sikker CSS-liste"
+msgstr "CSS safelist"
 
 #: inc/Engine/Admin/Settings/Page.php:615
 msgid ""
