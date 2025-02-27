@@ -1290,8 +1290,8 @@ msgstr ""
 msgid ""
 "Database optimization process is complete. List of optimized items below:"
 msgstr ""
-"Databaseoptimaliseringsprosessen er fullført. Liste over optimaliserte "
-"elementer nedenfor:"
+"Optimalisering av databasen er fullført. Liste over optimaliserte elementer "
+"nedenfor:"
 
 #. translators: %1$d = number of items optimized, %2$s = type of optimization
 #: inc/Engine/Admin/Database/Subscriber.php:235
