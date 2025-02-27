@@ -929,8 +929,8 @@ msgid ""
 "Curl is disabled on your server. Please ask your host to enable it. This is "
 "required for the Cloudflare Add-on to work correctly."
 msgstr ""
-"Curl er deaktivert på serveren din. Be verten din om å aktivere den. Dette "
-"er nødvendig for at Cloudflare-tillegget skal fungere riktig."
+"Curl er deaktivert på serveren din. Vennligst be hosten din om å aktivere "
+"det. Dette er nødvendig for at Cloudflare-tillegget skal fungere korrekt."
 
 #. translators: %1$s = opening link; %2$s = closing link
 #: inc/deprecated/3.5.php:79
