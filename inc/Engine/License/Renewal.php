@@ -68,6 +68,7 @@ class Renewal extends Abstract_Render {
 
 		$data              = $this->get_banner_data();
 		$data['countdown'] = $this->get_countdown_data();
+		$data['more_info'] = true;
 
 		if ( -1 === $this->user->get_license_type() ) {
 			$data['message'] = sprintf(
@@ -77,6 +78,7 @@ class Renewal extends Abstract_Render {
 				WP_ROCKET_PLUGIN_NAME,
 				'</strong>'
 			);
+			$data['more_info'] = false;
 		}
 
 		echo $this->generate( 'renewal-soon-banner', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
@@ -191,7 +193,7 @@ class Renewal extends Abstract_Render {
 			// translators: %1$s = <strong>, %2$s = discount percentage, %3$s = </strong>, %4$s = discount price.
 				esc_html__( 'Renew with a %1$s%2$s discount%3$s before it is too late, you will only pay %1$s%4$s%3$s!', 'rocket' ),
 				'<strong>',
-				esc_html( '$' . number_format_i18n( $this->get_discount_percent(), 2 ) ),
+				esc_html( $this->get_discount_percent() . '%' ),
 				'</strong>',
 				$price
 			);

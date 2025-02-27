@@ -103,7 +103,7 @@ return [
 			<p>
 				Your <strong>WP Rocket license is about to expire</strong>: you will soon lose access to product updates and support.
 			</p>
-			<p>Your WP Rocket license is about to expire: you will soon lose access to product updates and support.</p>
+			<p>Renew before it is too late, you will pay <strong>$34.30</strong>.</p>
 		</div>
 		<div class="rocket-renew-cta-container">
 			<a href="https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/" class="rocket-renew-cta" target="_blank" rel="noopener noreferrer">Renew now</a>
@@ -133,7 +133,7 @@ return [
 				Your <strong>WP Rocket license is about to expire</strong>: you will soon lose access to product updates and support.
 			</p>
 			<p>
-			Your WP Rocket license is about to expire: you will soon lose access to product updates and support.
+			Renew with a <strong>20% discount</strong> before it is too late, you will only pay <strong>$24.50</strong>!
 			</p>
 		</div>
 		<div class="rocket-renew-cta-container">
@@ -163,7 +163,7 @@ return [
 			<p>
 				Your <strong>WP Rocket license is about to expire</strong>: you will soon lose access to product updates and support.
 			</p>
-			<p>Your WP Rocket license is about to expire: you will soon lose access to product updates and support.</p>
+			<p>Renew before it is too late, you will pay <strong>$69.30</strong>.</p>
 		</div>
 		<div class="rocket-renew-cta-container">
 			<a href="https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/" class="rocket-renew-cta" target="_blank" rel="noopener noreferrer">Renew now</a>
@@ -193,7 +193,7 @@ return [
 				Your <strong>WP Rocket license is about to expire</strong>: you will soon lose access to product updates and support.
 			</p>
 			<p>
-			Your WP Rocket license is about to expire: you will soon lose access to product updates and support.
+			Renew with a <strong>20% discount</strong> before it is too late, you will only pay <strong>$49.50</strong>!
 			</p>
 		</div>
 		<div class="rocket-renew-cta-container">
@@ -223,8 +223,6 @@ return [
 			<p>
 				Your <strong>WP Rocket license is about to expire</strong>: you will soon lose access to product updates and support.
 			</p>
-			<p>
-			Your WP Rocket license is about to expire: you will soon lose access to product updates and support.</p>
 		</div>
 		<div class="rocket-renew-cta-container">
 			<a href="https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/" class="rocket-renew-cta" target="_blank" rel="noopener noreferrer">Renew now</a>
@@ -252,9 +250,6 @@ return [
 		<div class="rocket-renew-message">
 			<p>
 				Your <strong>WP Rocket license is about to expire</strong>: you will soon lose access to product updates and support.
-			</p>
-			<p>
-			Your WP Rocket license is about to expire: you will soon lose access to product updates and support.
 			</p>
 		</div>
 		<div class="rocket-renew-cta-container">
