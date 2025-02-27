@@ -4743,7 +4743,7 @@ msgstr "Hvordan eksternt indhold bremser din hjemmeside"
 
 #: views/settings/page-sections/tutorials.php:41
 msgid "Set Up the Cloudflare Add-on"
-msgstr "Opsætning af Cloudflare-tilføjelsesprogrammet"
+msgstr "Opsætning af Cloudflare-add-on"
 
 #: views/settings/page.php:16
 msgid "WP Rocket Settings"
