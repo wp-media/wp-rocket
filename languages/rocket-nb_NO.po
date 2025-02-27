@@ -914,7 +914,7 @@ msgid ""
 msgstr ""
 "Det oppstod en uventet feil. Noe kan være galt med WP-Rocket.me eller denne "
 "serverens konfigurasjon. Hvis du fortsatt har problemer, kan du <a "
-"href=\"%s\">kontakte kundestøtte</a>."
+"href=\"%s\">kontakte support</a>."
 
 #: inc/deprecated/3.4.php:18
 msgid "Choose a domain from the list"
