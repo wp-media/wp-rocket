@@ -1963,7 +1963,7 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:1172
 msgid "Enable link preloading"
-msgstr "Aktiver forhåndsinnlasting av koblinger"
+msgstr "Aktiver forhåndsinnlasting av lenker"
 
 #: inc/Engine/Admin/Settings/Page.php:1191
 msgid "Advanced Rules"
