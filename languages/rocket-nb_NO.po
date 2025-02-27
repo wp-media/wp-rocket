@@ -1949,9 +1949,9 @@ msgid ""
 "Specify urls of the font files to be preloaded (one per line). Fonts must be"
 " hosted on your own domain, or the domain you have specified on the CDN tab."
 msgstr ""
-"Angi URL-adresser for skrifttype-filene som skal forhåndslastes (én per "
-"linje). Skrifter må ligge på ditt eget domene, eller domenet du har "
-"spesifisert på CDN-fanen."
+"Spesifiser URL-er til font-filene som skal forhåndslastes (én per linje). "
+"Fonter må ligge på ditt eget domene, eller domenet du har angitt på CDN-"
+"fanen."
 
 #: inc/Engine/Admin/Settings/Page.php:1163
 msgid ""
