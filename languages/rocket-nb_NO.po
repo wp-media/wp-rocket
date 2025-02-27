@@ -2026,9 +2026,9 @@ msgid ""
 "%1$spreloading%2$s for the cache to be rebuilt automatically after lifespan "
 "expiration."
 msgstr ""
-"Hurtigbufferfiler som er eldre enn den angitte levetiden, "
-"slettes.<br>Aktiver %1$spreloading%2$s for at hurtigbufferen skal "
-"gjenoppbygges automatisk etter utløp av levetiden."
+"Cache-filer eldre enn den angitte levetiden vil bli slettet.<br>Aktiver "
+"%1$sforhåndsinnlasting%2$s for at cachen skal bygges automatisk på nytt "
+"etter at levetiden er utløpt."
 
 #: inc/Engine/Admin/Settings/Page.php:1251
 msgid "Never Cache Cookies"
