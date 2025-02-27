@@ -1275,7 +1275,7 @@ msgstr "Tabeller"
 
 #: inc/Engine/Admin/Database/Subscriber.php:85
 msgid "monthly"
-msgstr "Månedlig"
+msgstr "månedlig"
 
 #: inc/Engine/Admin/Database/Subscriber.php:194
 msgid "Database optimization process is running"
