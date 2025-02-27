@@ -3393,7 +3393,7 @@ msgstr "Oppgrader til %s"
 
 #: inc/Engine/License/views/upgrade-popin.php:15
 msgid "Speed Up More Websites"
-msgstr "Få fart på flere nettsteder"
+msgstr "Øk hastigheten på flere nettsider"
 
 #. translators: %1$s = opening strong tag, %2$s = closing strong tag.
 #: inc/Engine/License/views/upgrade-popin.php:22
