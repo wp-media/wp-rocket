@@ -883,8 +883,8 @@ msgid ""
 "Speed up your website and boost your SEO by reducing image file sizes "
 "without losing quality with Imagify."
 msgstr ""
-"Få fart på nettstedet ditt og øk SEO ved å redusere filstørrelser på bilder "
-"uten å miste kvalitet med Imagify."
+"Øk hastigheten på nettsiden din og boost SEO-en din ved å redusere "
+"bildestørrelser uten å miste kvalitet med Imagify."
 
 #: inc/deprecated/3.2.php:72
 msgid "More details"
