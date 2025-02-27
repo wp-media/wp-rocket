@@ -4220,7 +4220,7 @@ msgstr ""
 
 #: views/deactivation-intent/form.php:76
 msgid "No, deactivate and snooze this message for"
-msgstr "Nej, deaktivere og snooze denne besked for"
+msgstr "Nej, deaktiver og snooze denne besked for"
 
 #: views/deactivation-intent/form.php:78
 msgid "1 day"
