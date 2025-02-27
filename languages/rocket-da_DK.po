@@ -4156,7 +4156,7 @@ msgstr ""
 
 #: views/cpcss/activate-cpcss-mobile.php:39
 msgid "Generate Mobile Specific CPCSS"
-msgstr "Generer mobile specifikke CPCSS"
+msgstr "Generer mobilspecifik CPCSS"
 
 #: views/cpcss/metabox/container.php:19
 msgid "Critical Path CSS"
