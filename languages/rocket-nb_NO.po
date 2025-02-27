@@ -987,7 +987,7 @@ msgstr "Ta kontakt med hosten din for å sjekke om CRON fungerer."
 
 #: inc/deprecated/3.10.php:163
 msgid "OPcache purge failed."
-msgstr "OPcache-rensing mislyktes."
+msgstr "OPcache-tømming mislyktes."
 
 #: inc/deprecated/3.10.php:168
 msgid "OPcache successfully purged"
