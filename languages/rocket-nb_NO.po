@@ -1606,8 +1606,8 @@ msgid ""
 "Specify URLs of JavaScript files to be excluded from minification and "
 "concatenation (one per line)."
 msgstr ""
-"Angi URL-adresser til JavaScript-filer som skal ekskluderes fra minifisering"
-" og sammenkobling (én per linje)."
+"Angi URL-er til JavaScript-filer som skal utelates fra minification og "
+"kombinasjon (én per linje)."
 
 #: inc/Engine/Admin/Settings/Page.php:717
 msgid ""
