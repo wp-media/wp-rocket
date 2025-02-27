@@ -1077,7 +1077,7 @@ msgid ""
 "excluded from cache in the global cache settings."
 msgstr ""
 "%1$sBemærk:%2$s Ingen af disse indstillinger anvendes, hvis dette indlæg er "
-"blevet udelukket fra cache i de globale cache-indstillinger."
+"blevet udelukket fra cache i de globale cacheindstillinger."
 
 #: inc/deprecated/deprecated.php:240
 msgid "<strong>JS</strong> files with Deferred Loading JavaScript"
