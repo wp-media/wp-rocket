@@ -1357,8 +1357,8 @@ msgid ""
 "%1$s Minification is currently activated in <strong>Autoptimize</strong>. If"
 " you want to use %2$s’s minification, disable this option in Autoptimize."
 msgstr ""
-"%1$s Minifisering er for øyeblikket aktivert i <strong>Autoptimize</strong>."
-" Hvis du vil bruke %2$s minifisering, deaktiver dette alternativet i "
+"%1$s Minification er for øyeblikket aktivert i <strong>Autoptimize</strong>."
+" Hvis du vil bruke %2$ss Minification, deaktiver dette alternativet i "
 "Autoptimize."
 
 #: inc/Engine/Admin/Settings/Page.php:494
