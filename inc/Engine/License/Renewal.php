@@ -116,7 +116,7 @@ class Renewal extends Abstract_Render {
 		$ocd_enabled = $this->options->get( 'optimize_css_delivery', 0 );
 		$renewal_url = $this->user->get_renewal_url();
 
-		$message = esc_html__( 'RENEW NOW', 'rocket' );
+		$message = esc_html__( 'RENEW NOW!', 'rocket' );
 
 		if ( $ocd_enabled ) {
 			if ( 15 > $expired_since ) {
