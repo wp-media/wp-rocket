@@ -1599,8 +1599,8 @@ msgid ""
 "Specify patterns of inline JavaScript to be excluded from concatenation (one"
 " per line). %1$sMore info%2$s"
 msgstr ""
-"Angi mønstre for innebygd JavaScript som skal utelates fra sammenkjeding "
-"(ett per linje). %1$sMer info%2$s"
+"Angi mønstre for innsatt JavaScript som skal utelates fra kombinasjon (én "
+"per linje). %1$sMer info%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:716
 msgid ""
