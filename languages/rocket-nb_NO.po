@@ -995,7 +995,7 @@ msgstr "OPcache vellykket renset"
 
 #: inc/deprecated/3.11.php:81
 msgid "Yoast SEO XML sitemap"
-msgstr "Yoast SEO XML nettstedskart"
+msgstr "Yoast SEO XML sitemap"
 
 #. translators: %s = Name of the plugin.
 #. translators: %s = plugin name, e.g. Yoast SEO.
