@@ -1036,7 +1036,7 @@ msgstr "Jetpack XML Sitemaps"
 
 #: inc/deprecated/3.12.php:334
 msgid "Preload the sitemap from the Jetpack plugin"
-msgstr "Forhåndslast nettstedskartet fra Jetpack-pluginen"
+msgstr "Forhåndslast sitemap fra Jetpack-pluginen"
 
 #: inc/deprecated/3.15.php:28
 #: inc/Engine/Admin/Metaboxes/PostEditOptionsSubscriber.php:74
