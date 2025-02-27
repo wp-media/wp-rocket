@@ -4361,7 +4361,7 @@ msgstr "Lær mere"
 
 #: views/settings/fields/rocket-cdn.php:72
 msgid "Clear all RocketCDN cache files"
-msgstr "Slet alle RocketCDN cache-filer"
+msgstr "Slet alle RocketCDN cachefiler"
 
 #: views/settings/mobile-cache.php:11
 msgid "Mobile Cache"
