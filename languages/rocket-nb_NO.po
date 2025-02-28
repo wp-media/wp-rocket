@@ -4525,7 +4525,7 @@ msgstr "%1$sKomprimer%2$s alle bildene dine med ett klikk"
 #. Translators: %1$s = <strong>, %2$s = </strong>.
 #: views/settings/page-sections/imagify.php:49
 msgid "%1$sConvert%2$s images to WebP and Avif"
-msgstr "%1$sConvert%2$s bilder til WebP og Avif"
+msgstr "%1$sKonverter%2$s bilder til WebP og Avif"
 
 #. Translators: %1$s = <strong>, %2$s = </strong>.
 #: views/settings/page-sections/imagify.php:57
