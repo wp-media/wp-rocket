@@ -3584,7 +3584,7 @@ msgstr ""
 #. translators: %1$s = opening link tag, %2$s = closing link tag.
 #: inc/Engine/Saas/Admin/Notices.php:167
 msgid "To learn more about the process check our %1$sdocumentation%2$s."
-msgstr "For å lære mer om prosessen, sjekk våre %1$sdocumentation%2$s."
+msgstr "For å lære mer om prosessen, sjekk %1$sdokumentasjonen%2$s vår."
 
 #: inc/Engine/Saas/Admin/Notices.php:225
 msgid ""
