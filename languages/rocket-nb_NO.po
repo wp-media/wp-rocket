@@ -2985,7 +2985,7 @@ msgid ""
 "Critical CSS for %1$s on mobile not generated. Error: The API returned an "
 "empty response."
 msgstr ""
-"Kritisk CSS for %1$s på mobil genereres ikke. Feil: API-en returnerte et "
+"Critical CSS for %1$s på mobil genereres ikke. Feil: API-et returnerte et "
 "tomt svar."
 
 #. translators: %s = item URL.
