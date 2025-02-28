@@ -3049,7 +3049,7 @@ msgid ""
 "Critical CSS generation is currently running: %1$d of %2$d page types "
 "completed. (Refresh this page to view progress)"
 msgstr ""
-"Kritisk CSS-generering kjører for øyeblikket: %1$d av %2$d sidetyper "
+"Critical CSS-generering kjører for øyeblikket: %1$d av %2$d sidetyper "
 "fullført. (Oppdater denne siden for å se fremdriften)"
 
 #. Translators: %1$d = number of critical CSS generated, %2$d = total number
