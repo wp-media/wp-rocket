@@ -2899,7 +2899,7 @@ msgstr "Tøm prioriterte elementer"
 
 #: inc/Engine/Common/PerformanceHints/Admin/AdminBar.php:79
 msgid "Clear Priority Elements of this URL"
-msgstr "Fjern prioritetselementer for denne URL-adressen"
+msgstr "Tøm prioriterte elementer for denne URL-en"
 
 #: inc/Engine/Common/PerformanceHints/Admin/AdminBar.php:100
 msgid "Priority Elements"
