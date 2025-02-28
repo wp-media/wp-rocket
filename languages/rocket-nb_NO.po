@@ -4276,7 +4276,7 @@ msgstr "Tøm cache fra"
 
 #: views/settings/fields/categorized_multiselect.php:54
 msgid "3rd parties"
-msgstr "3. parter"
+msgstr "Tredjeparts"
 
 #: views/settings/fields/categorized_multiselect.php:82
 #: views/settings/fields/categorized_multiselect.php:142
