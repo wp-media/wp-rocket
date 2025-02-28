@@ -2116,7 +2116,7 @@ msgstr "Angi spørringsstrenger for cache (én per linje)."
 
 #: inc/Engine/Admin/Settings/Page.php:1360
 msgid "Optimize, reduce bloat"
-msgstr "Optimaliser, reduser oppblåsthet"
+msgstr "Optimaliser, reduser bloat"
 
 #: inc/Engine/Admin/Settings/Page.php:1367
 msgid "Post Cleanup"
