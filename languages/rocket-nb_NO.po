@@ -2176,7 +2176,7 @@ msgstr[1] "%s revisjoner i databasen din."
 msgid "%s draft in your database."
 msgid_plural "%s drafts in your database."
 msgstr[0] "%s utkast i databasen."
-msgstr[1] "%s utkast i databasen."
+msgstr[1] "%s utkast i databasen din."
 
 #. translators: %s is the number of revisions found in the database. It's a
 #. formatted number, don't use %d.
