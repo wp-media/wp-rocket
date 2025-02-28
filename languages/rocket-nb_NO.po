@@ -2859,7 +2859,7 @@ msgstr ""
 #: inc/Engine/CDN/RocketCDN/views/promote-notice.php:13
 #: views/settings/page-sections/plugins.php:60
 msgid "Learn More"
-msgstr "Les mer"
+msgstr "Lær mer"
 
 #: inc/Engine/CDN/RocketCDN/views/dashboard-status.php:24
 msgid "RocketCDN is unavailable on local domains and staging sites."
