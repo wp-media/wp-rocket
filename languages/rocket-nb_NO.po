@@ -3721,8 +3721,8 @@ msgid ""
 "License validation failed. You may be using a nulled version of the plugin. "
 "Please do the following:"
 msgstr ""
-"Lisensvalidering mislyktes. Du bruker kanskje en nullet versjon av plugin-"
-"modulen. Vennligst gjør følgende:"
+"Lisensvalidering mislyktes. Du bruker kanskje en utløpt versjon av pluginen."
+" Vennligst gjør følgende:"
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
 #: inc/functions/options.php:507 inc/functions/options.php:549
