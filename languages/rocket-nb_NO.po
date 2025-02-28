@@ -4399,7 +4399,7 @@ msgstr ""
 #: views/settings/page-sections/dashboard.php:46
 msgid "Continue to the options to further optimize your site!"
 msgstr ""
-"Fortsett til alternativene for å optimalisere nettstedet ditt ytterligere!"
+"Fortsett til alternativene for å optimalisere nettsiden din ytterligere!"
 
 #: views/settings/page-sections/dashboard.php:63
 msgid "My Account"
