@@ -3112,7 +3112,7 @@ msgstr "Critical CSS-fil for mobil kan ikke slettes"
 
 #: inc/Engine/CriticalPath/DataManager.php:122
 msgid "Critical CSS file cannot be deleted"
-msgstr "Kritisk CSS-fil kan ikke slettes"
+msgstr "Critical CSS-fil kan ikke slettes"
 
 #. translators: %1$s = item URL or item type.
 #: inc/Engine/CriticalPath/ProcessorService.php:164
