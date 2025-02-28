@@ -3178,7 +3178,7 @@ msgstr "Forhåndslast"
 
 #: inc/Engine/HealthCheck/HealthCheck.php:138
 msgid "Critical Path CSS Generation Process"
-msgstr "Genereringsprosess for kritisk CSS-sti"
+msgstr "Critical Path CSS Generation-prosess"
 
 #. translators: %1$s = <strong>, %2$s = price, %3$s = </strong>.
 #: inc/Engine/License/Renewal.php:76
