@@ -4639,7 +4639,7 @@ msgid ""
 " request."
 msgstr ""
 "Du kan gå tilbake til forrige hovedversjon her.%sSend oss deretter en "
-"støtteforespørsel."
+"supportforespørsel."
 
 #. translators: %s = WP Rocket previous version.
 #: views/settings/page-sections/tools.php:80
