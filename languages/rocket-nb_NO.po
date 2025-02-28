@@ -2994,7 +2994,8 @@ msgid ""
 "Critical CSS for %1$s not generated. Error: The API returned an empty "
 "response."
 msgstr ""
-"Kritisk CSS for %1$s genereres ikke. Feil: API-en returnerte et tomt svar."
+"Critical CSS for %1$s ble ikke generert. Feil: API-et returnerte et tomt "
+"svar."
 
 #. translators: %s = item URL.
 #: inc/Engine/CriticalPath/APIClient.php:187
