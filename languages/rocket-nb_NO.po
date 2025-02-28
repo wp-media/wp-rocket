@@ -2863,8 +2863,7 @@ msgstr "Lær mer"
 
 #: inc/Engine/CDN/RocketCDN/views/dashboard-status.php:24
 msgid "RocketCDN is unavailable on local domains and staging sites."
-msgstr ""
-"RocketCDN er ikke tilgjengelig på lokale domener og iscenesettelsessider."
+msgstr "RocketCDN er ikke tilgjengelig på lokale domener og staging-sider."
 
 #: inc/Engine/CDN/RocketCDN/views/dashboard-status.php:33
 msgid "Get RocketCDN"
