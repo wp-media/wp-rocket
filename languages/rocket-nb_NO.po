@@ -4226,8 +4226,8 @@ msgid ""
 "them on your website, don’t miss out! %6$sRenew Now%5$s"
 msgstr ""
 " %1$sWP Rocket %2$s%3$s er tilgjengelig. %4$sFinn ut mer%5$s om "
-"oppdateringene og forbedringene av denne hovedversjonen. Du trenger en aktiv"
-" lisens for å bruke dem på nettstedet ditt, ikke gå glipp av det! %6$sForny "
+"oppdateringene og forbedringene i denne store versjonen. Du trenger en aktiv"
+" lisens for å bruke dem på nettsiden din, ikke gå glipp av det! %6$sForny "
 "nå%5$s"
 
 #: views/settings/dynamic-lists-update.php:14
