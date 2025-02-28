@@ -4329,7 +4329,7 @@ msgstr "Tømmer RocketCDN-cachede ressurser for nettsiden din. %s"
 #: views/settings/page-sections/cloudflare.php:36
 #: views/settings/page-sections/sucuri.php:37
 msgid "Learn more"
-msgstr "Les mer"
+msgstr "Lær mer"
 
 #: views/settings/fields/rocket-cdn.php:72
 msgid "Clear all RocketCDN cache files"
