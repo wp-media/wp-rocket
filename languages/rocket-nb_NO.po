@@ -4098,8 +4098,8 @@ msgid ""
 "Your website currently uses the same Critical Path CSS for both desktop and "
 "mobile."
 msgstr ""
-"Nettsiden din bruker for øyeblikket samme Critical Path CSS for både desktop"
-" og mobil."
+"Nettsiden din bruker for øyeblikket samme kritisk CSS-sti for både desktop "
+"og mobil."
 
 #: views/cpcss/activate-cpcss-mobile.php:15
 msgid "Click the button to enable mobile-specific CPCSS for your site."
