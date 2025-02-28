@@ -2977,7 +2977,7 @@ msgstr "Aktiver Last inn CSS asynkront i alternativene ovenfor"
 #. translators: %1$s = type of content, %2$s = error message.
 #: inc/Engine/CriticalPath/APIClient.php:64
 msgid "Critical CSS for %1$s not generated. Error: %2$s"
-msgstr "Critical CSS for %1$s genereres ikke. Feil: %2$s"
+msgstr "Critical CSS for %1$s ble ikke generert. Feil: %2$s"
 
 #. translators: %s = item URL.
 #: inc/Engine/CriticalPath/APIClient.php:172
