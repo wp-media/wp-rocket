@@ -3888,8 +3888,8 @@ msgid ""
 "Cloudflare cache will be purged each time WP Rocket clears its cache to "
 "ensure content is always up-to-date."
 msgstr ""
-"Cloudflare-cachen vil bli renset hver gang WP Rocket tømmer hurtigbufferen "
-"for å sikre at innholdet alltid er oppdatert."
+"Cloudflare-cachen vil bli tømt hver gang WP Rocket tømmer cachen for å sikre"
+" at innholdet alltid er oppdatert."
 
 #. Translators: %1$s = strong opening tag, %2$s = strong closing tag.
 #: inc/ThirdParty/Plugins/CDN/Cloudflare.php:215
