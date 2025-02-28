@@ -4666,7 +4666,7 @@ msgstr "Kom i gang med WP Rocket"
 #: views/settings/page-sections/tutorials.php:16
 #: views/settings/partials/getting-started.php:12
 msgid "Finding the Best Settings for Your Site"
-msgstr "Finne de beste Innstillinger for nettstedet ditt"
+msgstr "Finn de beste innstillingene for nettsiden din"
 
 #: views/settings/page-sections/tutorials.php:17
 #: views/settings/partials/getting-started.php:13
