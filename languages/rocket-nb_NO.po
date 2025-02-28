@@ -4512,10 +4512,10 @@ msgid ""
 "compresses, and converts your images to WebP and AVIF formats without "
 "sacrificing quality."
 msgstr ""
-"Imagify optimaliserer automatisk alle bildene dine, og hjelper nettstedet "
-"ditt med å få dyrebare sekunder samtidig som du sparer tid. Med bare ett "
-"klikk endrer den størrelse, komprimerer og konverterer bildene dine til "
-"WebP- og AVIF-formater uten å ofre kvaliteten."
+"Imagify optimaliserer automatisk alle bildene dine, og hjelper nettsiden din"
+" med å vinne dyrebare sekunder samtidig som du sparer tid. Med bare ett "
+"klikk, endrer den størrelsen, komprimerer og konverterer bildene dine til "
+"WebP- og AVIF-formater uten å gå på bekostning av kvaliteten."
 
 #. Translators: %1$s = <strong>, %2$s = </strong>.
 #: views/settings/page-sections/imagify.php:41
