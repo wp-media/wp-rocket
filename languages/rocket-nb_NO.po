@@ -3674,7 +3674,7 @@ msgstr "Anonymiserte WP Rocket-innstillinger:"
 
 #: inc/functions/admin.php:427
 msgid "Which WP Rocket settings are active"
-msgstr "Hvilke WP Rocket-innstillinger er aktive"
+msgstr "Hvilke WP Rocket-innstillinger som er aktive"
 
 #: inc/functions/admin.php:433
 msgid "Anonymized WP Rocket statistics:"
