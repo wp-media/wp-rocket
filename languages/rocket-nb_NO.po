@@ -4149,7 +4149,7 @@ msgstr "Gå tilbake til standard CPCSS"
 
 #: views/deactivation-intent/form.php:21
 msgid "Facing an issue?"
-msgstr "Står du overfor et problem?"
+msgstr "Opplever du et problem?"
 
 #: views/deactivation-intent/form.php:24
 msgid ""
