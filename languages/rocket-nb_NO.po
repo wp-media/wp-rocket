@@ -4554,7 +4554,7 @@ msgstr "WP Rocket var ikke i stand til å validere lisensen din automatisk."
 #. translators: %1$s = tutorial URL, %2$s = support URL.
 #: views/settings/page-sections/license.php:29
 msgid "Follow this %1$s, or contact %2$s to get the engine started."
-msgstr "Følg denne %1$s, eller kontakt %2$s for å få motoren i gang."
+msgstr "Følg denne %1$s, eller kontakt %2$s for å starte verktøyet."
 
 #. translators: %1$s = <a href=", %2$s =  tutorial href,  %3$s =  "
 #. target="_blank">,  %4$s =  </a>.
