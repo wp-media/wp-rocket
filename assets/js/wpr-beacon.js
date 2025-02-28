@@ -520,6 +520,7 @@
      * @returns {Promise<void>} A promise that resolves when the analysis is complete.
      */
     async run() {
+      await document.fonts.ready;
       const networkLoadedFonts = this.getNetworkLoadedFonts();
       const stylesheetFonts = this.getFontFaceRules();
       const hostedFonts = /* @__PURE__ */ new Map();
