@@ -3215,7 +3215,7 @@ msgstr ""
 #. translators: %1$s = <strong>, %2$s = </strong>, %3$s = discount price.
 #: inc/Engine/License/Renewal.php:218
 msgid "Renew before it is too late, you will pay %1$s%3$s%2$s."
-msgstr "Forny før det er for sent, betaler du %1$s%3$s%2$s."
+msgstr "Forny før det er for sent. Du betaler %1$s%3$s%2$s."
 
 #. translators: %1$s = <strong>, %2$s = discount percentage, %3$s = </strong>,
 #. %4$s = discount price.
