@@ -3919,10 +3919,9 @@ msgid ""
 "devices\". You need to activate \"Cache by Device Type\" %3$ssetting%5$s on "
 "Cloudflare APO to serve the right version of the cache. %4$sMore info%5$s"
 msgstr ""
-"%1$sWP Rocket:%2$s Du bruker \"SYou are using \"Separate cache files for "
-"mobile devices\". Du må aktivere \"Cache by Device Type\" "
-"%3$s-innstillingen%5$s på Cloudflare APO for å betjene riktig versjon av "
-"cachen. %4$sMer info%5$s"
+"%1$sWP Rocket:%2$s Du bruker \"Separate cache files for mobile devices\". Du"
+" må aktivere \"Cache by Device Type\" %3$s-innstillingen%5$s på Cloudflare "
+"APO for å betjene riktig versjon av cachen. %4$sMer info%5$s"
 
 #. Translators: %1$s = strong opening tag, %2$s = strong closing tag.
 #: inc/ThirdParty/Plugins/CDN/Cloudflare.php:293
