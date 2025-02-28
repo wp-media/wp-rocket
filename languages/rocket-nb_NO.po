@@ -3104,7 +3104,7 @@ msgstr "Critical CSS-fil for mobil finnes ikke"
 
 #: inc/Engine/CriticalPath/DataManager.php:108
 msgid "Critical CSS file does not exist"
-msgstr "Kritisk CSS-fil eksisterer ikke"
+msgstr "Critical CSS-fil eksisterer ikke"
 
 #: inc/Engine/CriticalPath/DataManager.php:120
 msgid "Critical CSS file for mobile cannot be deleted"
