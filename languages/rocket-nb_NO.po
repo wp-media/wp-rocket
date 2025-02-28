@@ -4423,7 +4423,7 @@ msgstr "Se kontoen min"
 
 #: views/settings/page-sections/dashboard.php:131 views/settings/page.php:76
 msgid "Rocket Analytics"
-msgstr "Rakettanalyse"
+msgstr "Rocket Analytics"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: views/settings/page-sections/dashboard.php:137
