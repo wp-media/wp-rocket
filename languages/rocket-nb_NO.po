@@ -4535,7 +4535,7 @@ msgstr "%1$sEndre størrelsen%2$s på bildene dine på farten"
 #. Translators: %1$s = <strong>, %2$s = </strong>.
 #: views/settings/page-sections/imagify.php:65
 msgid "%1$sFree plan%2$s includes 20MB/month (around 200 images)"
-msgstr "%1$sGratis pakke%2$s inkluderer 20MB/måned (rundt 200 bilder)"
+msgstr "%1$sGratis pakken%2$s inkluderer 20 MB/måned (ca. 200 bilder)"
 
 #. Translators: %1$s = <strong>, %2$s = </strong>.
 #: views/settings/page-sections/imagify.php:83
