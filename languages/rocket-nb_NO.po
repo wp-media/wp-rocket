@@ -4393,8 +4393,8 @@ msgstr ""
 msgid ""
 "We also enable options that provide immediate benefits to your website."
 msgstr ""
-"Vi aktiverer også alternativer som gir umiddelbare fordeler for nettstedet "
-"ditt."
+"Vi aktiverer også alternativer som gir umiddelbare fordeler for nettsiden "
+"din."
 
 #: views/settings/page-sections/dashboard.php:46
 msgid "Continue to the options to further optimize your site!"
