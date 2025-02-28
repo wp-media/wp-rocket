@@ -3703,7 +3703,7 @@ msgid ""
 "your website."
 msgstr ""
 "Lisensvalidering mislyktes. Serveren vår kunne ikke løse forespørselen fra "
-"nettstedet ditt."
+"nettsiden din."
 
 #. Translators: %1$s = opening em tag, %2$s = closing em tag, %3$s = opening
 #. link tag, %4$s closing link tag.
