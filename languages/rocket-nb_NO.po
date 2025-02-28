@@ -4767,7 +4767,7 @@ msgstr "Hva WP Rocket gjør for deg som standard"
 
 #: views/settings/partials/sidebar.php:12
 msgid "How to correctly measure your website’s loading time"
-msgstr "Slik måler du nettstedets lastetid riktig"
+msgstr "Slik måler du nettsidens lastetid riktig"
 
 #: views/settings/partials/sidebar.php:14
 msgid "Check our tutorial and learn how to measure the speed of your site."
