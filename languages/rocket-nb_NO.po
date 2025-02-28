@@ -2200,7 +2200,7 @@ msgstr[1] "%s Spamkommentarer i databasen din."
 msgid "%s trashed comment in your database."
 msgid_plural "%s trashed comments in your database."
 msgstr[0] "%s søppelkommentar i databasen din."
-msgstr[1] "%s har slettet kommentarer i databasen."
+msgstr[1] "%s slettede kommentarer i databasen din."
 
 #: inc/Engine/Admin/Settings/Page.php:1453
 msgid "All transients"
