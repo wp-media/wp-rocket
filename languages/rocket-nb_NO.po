@@ -4033,7 +4033,7 @@ msgctxt "Hummingbird notice"
 msgid ""
 "%1$s %2$spage caching%3$s conflicts with WP Rocket %2$spage caching%3$s"
 msgstr ""
-"%1$s %2$spage caching%3$s er i konflikt med WP Rocket %2$spage caching%3$s"
+"%1$s %2$sside-caching%3$s er i konflikt med WP Rocket %2$sside-caching%3$s"
 
 #. Translators: %1$s = Plugin name, %2$s = <em>, %3$s = </em>.
 #: inc/ThirdParty/Plugins/Optimization/Hummingbird.php:294
