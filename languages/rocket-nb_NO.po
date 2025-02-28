@@ -4772,8 +4772,7 @@ msgstr "Slik måler du nettsidens lastetid riktig"
 #: views/settings/partials/sidebar.php:14
 msgid "Check our tutorial and learn how to measure the speed of your site."
 msgstr ""
-"Sjekk veiledningen vår og lær hvordan du måler hastigheten på nettstedet "
-"ditt."
+"Sjekk veiledningen vår og lær hvordan du måler hastigheten på nettsiden din."
 
 #: views/settings/partials/sidebar.php:15
 #: views/settings/partials/sidebar.php:24
