@@ -4560,7 +4560,7 @@ msgstr "Følg denne %1$s, eller kontakt %2$s for å starte verktøyet."
 #. target="_blank">,  %4$s =  </a>.
 #: views/settings/page-sections/license.php:32
 msgid "%1$s%2$s%3$stutorial%4$s"
-msgstr "%1$s%2$s%3$stutorial%4$s"
+msgstr "%1$s%2$s%3$sveiledning%4$s"
 
 #: views/settings/page-sections/license.php:34
 msgid ""
