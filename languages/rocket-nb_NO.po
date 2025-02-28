@@ -4136,7 +4136,7 @@ msgstr "Critical Path CSS"
 #: views/cpcss/metabox/generate.php:23
 msgid "Generate specific Critical Path CSS for this post. %1$sMore info%2$s"
 msgstr ""
-"Generer spesifikk CSS for kritisk vei for dette innlegget. %1$sMer info%2$s"
+"Generer spesifikk Critical Path CSS for dette innlegget. %1$sMer info%2$s"
 
 #. translators: %1$s = opening link tag, %2$s = closing link tag.
 #: views/cpcss/metabox/generate.php:33
