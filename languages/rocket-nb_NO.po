@@ -4799,7 +4799,7 @@ msgstr "Du har ikke aktivert cache for innloggede brukere."
 msgid ""
 "Use a private browser to check your website's speed and visual appearance."
 msgstr ""
-"Bruk en privat nettleser for å sjekke nettstedets hastighet og visuelle "
+"Bruk en privat nettleser for å sjekke nettsidens hastighet og visuelle "
 "utseende."
 
 #: views/settings/sections/addons-container.php:24
