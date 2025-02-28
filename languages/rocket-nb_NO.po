@@ -4684,7 +4684,7 @@ msgstr "Slik fungerer forhåndsinnlasting"
 
 #: views/settings/page-sections/tutorials.php:23
 msgid "Passing the Core Web vitals"
-msgstr "Passerer nøkkelstatistikken for kjernenettet"
+msgstr "Oppnå gode resultater i Core Web vitals"
 
 #: views/settings/page-sections/tutorials.php:25
 msgid "How to improve LCP with WP Rocket"
