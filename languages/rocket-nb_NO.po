@@ -3801,7 +3801,8 @@ msgid ""
 "Upgrade your %1$saccount%2$s or %3$stransfer your license%2$s to this "
 "domain."
 msgstr ""
-"Oppgrader %1$saccount%2$s eller %3$soverfør lisens%2$s til dette domenet."
+"Oppgrader %1$skontoen%2$s din, eller %3$soverfør lisensen din%2$s til dette "
+"domenet."
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
 #: inc/functions/options.php:547
