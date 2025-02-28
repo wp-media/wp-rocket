@@ -4215,7 +4215,7 @@ msgstr "Avbryt"
 
 #: views/deactivation-intent/form.php:88
 msgid "Confirm"
-msgstr "Bekrefte"
+msgstr "Bekreft"
 
 #. translators: %1$s = <strong>, %2$s = plugin version, %3$s = </strong>, %4$s
 #. = <a>, %5$s = </a>, %6$s = <a>.
