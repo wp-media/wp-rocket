@@ -3943,7 +3943,7 @@ msgid ""
 "<strong>%1$s</strong>: Mod PageSpeed is not compatible with this plugin and "
 "may cause unexpected results. %2$sMore Info%3$s"
 msgstr ""
-"<strong>%1$s</strong>: Mod PageSpeed er ikke kompatibel med denne plugin-en "
+"<strong>%1$s</strong>: Mod PageSpeed er ikke kompatibel med denne pluginen "
 "og kan forårsake uventede resultater. %2$sMer info%3$s"
 
 #. Translators: %1$s is an opening <strong> tag; %2$s is a closing </strong>
