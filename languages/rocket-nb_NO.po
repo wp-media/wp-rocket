@@ -4661,7 +4661,7 @@ msgstr "Kom i gang"
 
 #: views/settings/page-sections/tutorials.php:15
 msgid "Getting Started with WP Rocket"
-msgstr "Komme i gang med WP Rocket"
+msgstr "Kom i gang med WP Rocket"
 
 #: views/settings/page-sections/tutorials.php:16
 #: views/settings/partials/getting-started.php:12
