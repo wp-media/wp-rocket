@@ -3971,7 +3971,7 @@ msgid ""
 "advantage of Load CSS Asynchronously Execution."
 msgstr ""
 "%1$sWP Rocket: %2$sVi har oppdaget at Autoptimizes Aggregate Inline CSS-"
-"funksjonen er aktivert. WP Rockets Load CSS Asynchronously vil ikke fungere "
+"funksjonen er aktivert. WP Rockets  Last inn CSS asynkront vil ikke fungere "
 "som den skal. Vi foreslår at du deaktiverer %1$sAggregate Inline CSS%2$s for"
 " å dra full nytte av Load CSS Asynchronously Execution."
 
