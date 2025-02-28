@@ -3970,9 +3970,9 @@ msgid ""
 "advantage of Load CSS Asynchronously Execution."
 msgstr ""
 "%1$sWP Rocket: %2$sVi har oppdaget at Autoptimizes Aggregate Inline CSS-"
-"funksjon er aktivert. WP Rockets Load CSS asynkront vil ikke fungere som den"
-" skal. Vi foreslår at du deaktiverer %1$sAggregate Inline CSS%2$s for å dra "
-"full nytte av Load CSS Asynchronously Execution."
+"funksjonen er aktivert. WP Rockets Load CSS Asynchronously vil ikke fungere "
+"som den skal. Vi foreslår at du deaktiverer %1$sAggregate Inline CSS%2$s for"
+" å dra full nytte av Load CSS Asynchronously Execution."
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/ThirdParty/Plugins/Optimization/Ezoic.php:45
