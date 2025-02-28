@@ -4341,7 +4341,7 @@ msgstr "Mobilcache"
 
 #: views/settings/mobile-cache.php:14
 msgid "Speed your site for mobile visitors."
-msgstr "Få fart på nettstedet ditt for mobile besøkende."
+msgstr "Øk hastigheten på nettsiden din for mobilbesøkende."
 
 #: views/settings/mobile-cache.php:28
 msgid "Mobile Cache is now enabled for your site."
