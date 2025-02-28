@@ -4195,7 +4195,7 @@ msgstr "Nei, deaktiver og utsett denne meldingen i"
 
 #: views/deactivation-intent/form.php:78
 msgid "1 day"
-msgstr "Dag"
+msgstr "1 dag"
 
 #: views/deactivation-intent/form.php:79
 msgid "7 days"
