@@ -4240,7 +4240,7 @@ msgid ""
 "Compatibility lists are downloaded automatically every week. Click the "
 "button if you want to update them manually. %1$sMore info%2$s"
 msgstr ""
-"Kompatibilitetslister lastes ned automatisk hver uke. Klikk på knappen hvis "
+"Kompatibilitetslister lastes automatisk ned hver uke. Klikk på knappen hvis "
 "du vil oppdatere dem manuelt. %1$sMer info%2$s"
 
 #: views/settings/dynamic-lists-update.php:29
