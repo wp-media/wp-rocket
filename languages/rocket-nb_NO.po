@@ -4024,8 +4024,8 @@ msgid ""
 "%1$s %2$sbrowser caching%3$s conflicts with WP Rocket %2$sbrowser "
 "caching%3$s"
 msgstr ""
-"%1$s %2$snettleserbufring%3$s er i konflikt med WP Rocket "
-"%2$snettleserbufring%3$s"
+"%1$s %2$sNettleser-caching%3$s er i konflikt med WP Rocket %2$snettleser-"
+"caching%3$s"
 
 #. Translators: %1$s = Plugin name, %2$s = <em>, %3$s = </em>.
 #: inc/ThirdParty/Plugins/Optimization/Hummingbird.php:260
