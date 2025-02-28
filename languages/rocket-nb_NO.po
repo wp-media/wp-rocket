@@ -3792,8 +3792,7 @@ msgstr "Sørg for at du har en aktiv %1$sWP Rocket-lisens%2$s."
 #. opening link tag.
 #: inc/functions/options.php:545
 msgid "You have added as many sites as your current license allows."
-msgstr ""
-"Du har lagt til så mange nettsteder som din nåværende lisens tillater."
+msgstr "Du har lagt til så mange nettsider som din nåværende lisens tillater."
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag, %3$s =
 #. opening link tag.
