@@ -1539,7 +1539,7 @@ msgstr "Genererer Critical Path CSS og laster CSS asynkront. %1$sMer info%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:641
 msgid "Fallback critical CSS"
-msgstr "Fallback for kritisk CSS"
+msgstr "Fallback for Critical CSS"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:643
