@@ -10,6 +10,8 @@ use WP_Rocket\Engine\Media\PreloadFonts\AJAX\Controller as AJAXController;
 use WP_Rocket\Engine\Media\PreloadFonts\Context\Context;
 use WP_Rocket\Engine\Media\PreloadFonts\Frontend\Controller as FrontendController;
 use WP_Rocket\Engine\Media\PreloadFonts\Frontend\Subscriber as FrontendSubscriber;
+use WP_Rocket\Engine\Media\PreloadFonts\Admin\Subscriber as AdminSubscriber;
+use WP_Rocket\Engine\Media\PreloadFonts\Admin\Settings as AdminSettings;
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
@@ -29,6 +31,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		'preload_fonts_frontend_subscriber',
 		'preload_fonts_front_controller',
 		'preload_fonts_factory',
+		'preload_fonts_admin_subscriber',
+		'preload_fonts_admin_settings',
 	];
 
 	/**
@@ -51,7 +55,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->addShared( 'preload_fonts_table', PreloadFontsTable::class );
 
 		$this->getContainer()->get( 'preload_fonts_table' );
-		$options = $this->getContainer()->get( 'options' );
+		$options     = $this->getContainer()->get( 'options' );
+		$options_api = $this->getContainer()->get( 'options_api' );
 
 		$this->getContainer()->add( 'preload_fonts_query', PreloadFontsQuery::class );
 		$this->getContainer()->add( 'preload_fonts_context', Context::class )
@@ -88,6 +93,20 @@ class ServiceProvider extends AbstractServiceProvider {
 					$this->getContainer()->get( 'preload_fonts_table' ),
 					$this->getContainer()->get( 'preload_fonts_query' ),
 					$this->getContainer()->get( 'preload_fonts_context' ),
+				]
+			);
+
+		$this->getContainer()->addShared( 'preload_fonts_admin_settings', AdminSettings::class )
+			->addArguments(
+				[
+					$this->getContainer()->get( 'options' ),
+					$this->getContainer()->get( 'options_api' ),
+				]
+			);
+		$this->getContainer()->add( 'preload_fonts_admin_subscriber', AdminSubscriber::class )
+			->addArguments(
+				[
+					$this->getContainer()->get( 'preload_fonts_admin_settings' ),
 				]
 			);
 	}
