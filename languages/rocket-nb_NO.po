@@ -3312,9 +3312,9 @@ msgid ""
 "which addresses a PageSpeed Insights recommendation and improves your page "
 "performance."
 msgstr ""
-"Du trenger en %1$saktiv lisens%2$s for å fortsette å optimalisere CSS-"
-"leveringen din, som adresserer en PageSpeed Insights-anbefaling og forbedrer"
-" sideytelsen din."
+"Du trenger en %1$saktiv lisens%2$s for å fortsette å optimalisere CSS "
+"delivery, som adresserer en PageSpeed Insights-anbefaling og forbedrer "
+"sideytelsen din."
 
 #: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:31
 #: inc/Engine/License/views/renewal-expired-banner-ocd.php:41
