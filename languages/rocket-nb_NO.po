@@ -4431,7 +4431,7 @@ msgid ""
 "I agree to share anonymous data with the development team to help improve WP"
 " Rocket. %1$sWhat info will we collect?%2$s"
 msgstr ""
-"Jeg godtar å dele anonyme data med utviklingsteamet for å hjelpe til med å "
+"Jeg godtar å dele anonym data med utviklingsteamet for å hjelpe til med å "
 "forbedre WP Rocket. %1$sHvilken informasjon vil vi samle inn?%2$s"
 
 #: views/settings/page-sections/dashboard.php:155
