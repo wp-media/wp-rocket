@@ -3086,8 +3086,8 @@ msgid ""
 "Critical CSS for %1$s on mobile not generated. Error: The destination folder"
 " could not be created."
 msgstr ""
-"Kritisk CSS for %1$s på mobil genereres ikke. Feil: Målmappen kunne ikke "
-"opprettes."
+"Critical CSS for %1$s på mobil ble ikke generert. Feil: Målmappen kunne ikke"
+" opprettes."
 
 #. translators: %s = item URL.
 #: inc/Engine/CriticalPath/DataManager.php:71
