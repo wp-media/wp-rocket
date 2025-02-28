@@ -2264,8 +2264,8 @@ msgid ""
 "Not required for services like Cloudflare and Sucuri. Please see our "
 "available %1$sAdd-ons%2$s."
 msgstr ""
-"Ikke nødvendig for tjenester som Cloudflare og Sucuri. Vennligst se våre "
-"tilgjengelige %1$sAdd-ons%2$s."
+"Kreves ikke for tjenester som Cloudflare og Sucuri. Vennligst se våre "
+"tilgjengelige %1$sTillegg%2$s."
 
 #. translators: %1$s = opening em tag, %2$l = list of add-on name(s), %3$s =
 #. closing em tag.
