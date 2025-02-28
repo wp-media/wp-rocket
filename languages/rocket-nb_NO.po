@@ -3007,7 +3007,7 @@ msgstr "Critical CSS for %1$s på mobil ble ikke generert."
 #: inc/Engine/CriticalPath/APIClient.php:189
 #: inc/Engine/CriticalPath/ProcessorService.php:171
 msgid "Critical CSS for %1$s not generated."
-msgstr "Kritisk CSS for %1$s genereres ikke."
+msgstr "Critical CSS for %1$s ble ikke generert."
 
 #. translators: %s = URL.
 #: inc/Engine/CriticalPath/APIClient.php:197
