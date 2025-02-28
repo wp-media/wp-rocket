@@ -4676,7 +4676,7 @@ msgstr "Slik sjekker du om WP Rocket cacher nettsiden din"
 #: views/settings/page-sections/tutorials.php:18
 #: views/settings/partials/getting-started.php:14
 msgid "How to Measure the Speed of Your Site"
-msgstr "Hvordan måle hastigheten på nettstedet ditt"
+msgstr "Slik måler du hastigheten på nettsiden din"
 
 #: views/settings/page-sections/tutorials.php:19
 msgid "How Preloading Works"
