@@ -3122,7 +3122,7 @@ msgstr "Mobile Critical CSS for %1$s ble ikke generert."
 #. translators: %1$s = Item URL or item type.
 #: inc/Engine/CriticalPath/ProcessorService.php:205
 msgid "Critical CSS for %s in progress."
-msgstr "Kritisk CSS for %s pågår."
+msgstr "Critical CSS for %s pågår."
 
 #. translators: %1$s = Item URL or item type.
 #: inc/Engine/CriticalPath/ProcessorService.php:239
