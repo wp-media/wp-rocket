@@ -4005,8 +4005,7 @@ msgctxt "Hummingbird notice"
 msgid ""
 "%1$s %2$sdisable emoji%3$s conflicts with WP Rockets %2$sdisable emoji%3$s"
 msgstr ""
-"%1$s %2$sdisable emoji%3$s er i konflikt med WP Rockets %2$sdisable "
-"emoji%3$s"
+"%1$s %2$sdiable emoji%3$s er i konflikt med WP Rockets %2$sdisable emoji%3$s"
 
 #. Translators: %1$s = Plugin name, %2$s = <em>, %3$s = </em>.
 #: inc/ThirdParty/Plugins/Optimization/Hummingbird.php:192
