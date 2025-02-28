@@ -3015,8 +3015,8 @@ msgid ""
 "Critical CSS for %1$s on mobile not generated. Error: The API returned an "
 "invalid response code."
 msgstr ""
-"Kritisk CSS for %1$s på mobil genereres ikke. Feil: API-et returnerte en "
-"ugyldig kode."
+"Critical CSS for %1$s på mobil ble ikke generert. Feil: API-et returnerte en"
+" ugyldig kode."
 
 #. translators: %s = URL.
 #: inc/Engine/CriticalPath/APIClient.php:199
