@@ -2140,7 +2140,7 @@ msgstr "Spam og slettede kommentarer vil bli permanent slettet."
 
 #: inc/Engine/Admin/Settings/Page.php:1380
 msgid "Transients Cleanup"
-msgstr "Opprydding av transienter"
+msgstr "Rydd opp i transienter"
 
 #: inc/Engine/Admin/Settings/Page.php:1382
 msgid ""
