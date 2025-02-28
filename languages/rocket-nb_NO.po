@@ -3956,7 +3956,7 @@ msgid ""
 "Aggregation%2$s to take full advantage of Delay JavaScript Execution."
 msgstr ""
 "%1$sWP Rocket: %2$sVi har oppdaget at Autoptimizes JavaScript Aggregation-"
-"funksjon er aktivert. WP Rockets Delay JavaScript Execution vil ikke bli "
+"funksjonen er aktivert. WP Rockets Delay JavaScript Execution vil ikke bli "
 "brukt på filen den oppretter. Vi foreslår at du deaktiverer %1$sJavaScript "
 "Aggregation%2$s for å dra full nytte av Delay JavaScript Execution."
 
