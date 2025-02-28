@@ -3000,7 +3000,7 @@ msgstr ""
 #. translators: %s = item URL.
 #: inc/Engine/CriticalPath/APIClient.php:187
 msgid "Critical CSS for %1$s on mobile not generated."
-msgstr "Kritisk CSS for %1$s på mobil ble ikke generert."
+msgstr "Critical CSS for %1$s på mobil ble ikke generert."
 
 #. translators: %s = item URL.
 #. translators: %1$s = item URL or item type.
