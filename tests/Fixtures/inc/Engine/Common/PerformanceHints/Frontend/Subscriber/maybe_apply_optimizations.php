@@ -805,7 +805,6 @@ return [
 				],
 			],
 			'expected' => $html_output_with_beacon_and_only_lrc_opt,
-
 		],
 		'shouldNotDuplicateBeaconOnAPage' => [
 			'config' => [
