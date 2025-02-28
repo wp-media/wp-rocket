@@ -4589,7 +4589,7 @@ msgstr ""
 #: views/settings/page-sections/plugins.php:22
 msgid "Combine our plugins below to build incredible WordPress websites!"
 msgstr ""
-"Kombiner pluginene våre nedenfor for å bygge utrolige WordPress-nettsteder!"
+"Kombiner pluginene våre nedenfor for å bygge utrolige WordPress-nettsider!"
 
 #: views/settings/page-sections/sucuri.php:46
 msgid "Clear all Sucuri cache files"
