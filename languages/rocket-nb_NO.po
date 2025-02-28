@@ -4386,8 +4386,8 @@ msgid ""
 "To guarantee fast websites, WP Rocket automatically applies 80% of web "
 "performance best practices."
 msgstr ""
-"For å garantere raske nettsteder, bruker WP Rocket automatisk 80 % av beste "
-"praksis for nettytelse."
+"For å garantere raske nettsider, bruker WP Rocket automatisk 80 % av beste "
+"praksis for webytelse."
 
 #: views/settings/page-sections/dashboard.php:45
 msgid ""
