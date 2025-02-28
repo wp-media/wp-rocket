@@ -4353,7 +4353,7 @@ msgstr "Aktiver Mobilcache"
 
 #: views/settings/page-sections/cloudflare.php:27
 msgid "Cloudflare Cache"
-msgstr "Cloudflare-buffer"
+msgstr "Cloudflare-cache"
 
 #. translators: %s is a "Learn more" link.
 #: views/settings/page-sections/cloudflare.php:35
