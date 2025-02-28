@@ -4582,9 +4582,9 @@ msgid ""
 "build better, faster, and safer websites. Each one is crafted with our "
 "unique blend of expertise, simplicity, and outstanding support."
 msgstr ""
-"Utover WP Rocket er det en hel familie av plugins designet for å hjelpe deg "
-"med å bygge bedre, raskere og tryggere nettsteder. Hver og en er laget med "
-"vår unike blanding av ekspertise, enkelhet og enestående støtte."
+"Utover WP Rocket, finnes det en hel familie av plugins designet for å hjelpe"
+" deg med å bygge bedre, raskere og sikrere nettsider. Hver av dem er laget "
+"med vår unike kombinasjon av ekspertise, enkelhet og enestående support."
 
 #: views/settings/page-sections/plugins.php:22
 msgid "Combine our plugins below to build incredible WordPress websites!"
