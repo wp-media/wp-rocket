@@ -4178,7 +4178,7 @@ msgstr "Vil du bruke vår Sikkerhetsmodus for å feilsøke WP Rocket?"
 #. translators: %1$s = opening strong tag, %2$s = closing strong tag.
 #: views/deactivation-intent/form.php:55
 msgid "Yes, apply \"%1$sSafe Mode%2$s\""
-msgstr "Ja, bruk \"%1$sSafe Mode%2$s\""
+msgstr "Ja, bruk \"%1$sSikkerhetsmodus%2$s\""
 
 #. translators: %1$s = opening strong tag, %2$s = closing strong tag.
 #: views/deactivation-intent/form.php:68
