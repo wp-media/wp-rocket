@@ -4487,8 +4487,7 @@ msgstr "Ta backup av databasen din før du kjører en opprydding!"
 #: views/settings/page-sections/database.php:26
 msgid ""
 "Once a database optimization has been performed, there is no way to undo it."
-msgstr ""
-"Når en databaseoptimalisering er utført, er det ingen måte å angre den på."
+msgstr "Når en databaseoptimalisering er utført, kan det ikke angres."
 
 #: views/settings/page-sections/database.php:28
 msgid "Save Changes and Optimize"
