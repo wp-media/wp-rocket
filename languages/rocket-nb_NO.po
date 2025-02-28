@@ -2868,7 +2868,7 @@ msgstr ""
 
 #: inc/Engine/CDN/RocketCDN/views/dashboard-status.php:33
 msgid "Get RocketCDN"
-msgstr "Get RocketCDN"
+msgstr "Få RocketCDN"
 
 #: inc/Engine/CDN/RocketCDN/views/promote-notice.php:11
 msgid "New!"
