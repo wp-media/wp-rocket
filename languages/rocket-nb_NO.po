@@ -3560,7 +3560,7 @@ msgid ""
 "your pages, the plugin is optimizing LCP and the images above the fold."
 msgstr ""
 "%1$s: Vent %2$s sekunder. Tjenesten Fjern ubrukt CSS behandler sidene dine, "
-"plugin-en optimaliserer LCP og bildene over den synlige delen av nettsiden."
+"pluginen optimaliserer LCP og bildene over den synlige delen av nettsiden."
 
 #. translators: %1$s = plugin name, %2$s = number of URLs, %3$s = number of
 #. seconds.
