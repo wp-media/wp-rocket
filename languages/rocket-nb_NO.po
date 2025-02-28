@@ -2909,7 +2909,7 @@ msgstr "Prioriterte elementer"
 #: inc/Engine/Saas/Admin/AdminBar.php:134
 #: views/settings/page-sections/dashboard.php:169
 msgid "Clear"
-msgstr "Klar"
+msgstr "Tøm"
 
 #: inc/Engine/Common/PerformanceHints/Admin/AdminBar.php:103
 msgid ""
