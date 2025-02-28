@@ -4704,7 +4704,7 @@ msgstr "Feilsøking"
 
 #: views/settings/page-sections/tutorials.php:33
 msgid "Troubleshooting Display Issues with File Optimization"
-msgstr "Feilsøking av skjermproblemer med filoptimalisering"
+msgstr "Feilsøking av visningsproblemer med optimalisering av filer"
 
 #: views/settings/page-sections/tutorials.php:34
 msgid "How to Find the Right JavaScript to Exclude"
