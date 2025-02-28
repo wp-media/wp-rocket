@@ -4122,7 +4122,7 @@ msgstr ""
 msgid ""
 "Your site is now using mobile-specific critical path CSS. %1$sMore info%2$s"
 msgstr ""
-"Nettsiden din bruker nå mobilspesifikk kritisk CSS-sti. %1$sMer info%2$s"
+"Nettsiden din bruker nå mobilspesifikk critical path CSS. %1$sMer info%2$s"
 
 #: views/cpcss/activate-cpcss-mobile.php:39
 msgid "Generate Mobile Specific CPCSS"
@@ -4130,7 +4130,7 @@ msgstr "Generer mobilspesifikk CPCSS"
 
 #: views/cpcss/metabox/container.php:19
 msgid "Critical Path CSS"
-msgstr "CSS for kritisk vei"
+msgstr "Critical Path CSS"
 
 #. translators: %1$s = opening link tag, %2$s = closing link tag.
 #: views/cpcss/metabox/generate.php:23
