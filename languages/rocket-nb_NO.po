@@ -2281,9 +2281,8 @@ msgstr[0] ""
 "innstillingene er ikke nødvendig for at %2$l skal fungere på nettstedet "
 "ditt."
 msgstr[1] ""
-"%1$s%2$l Tillegg%3$s er aktivert for øyeblikket. Konfigurasjon av CDN-"
-"innstillingene er ikke nødvendig for at %2$l skal fungere på nettstedet "
-"ditt."
+"%1$s%2$l Tillegg%3$s er for øyeblikket aktiver. Konfigurering av CDN-"
+"innstillingene er ikke nødvendig for at %2$l skal fungere på nettsiden din."
 
 #: inc/Engine/Admin/Settings/Page.php:1595
 msgid "Enable Content Delivery Network"
