@@ -2812,7 +2812,8 @@ msgstr ""
 msgid ""
 "Easy configuration: the %1$sbest CDN settings%2$s are automatically applied"
 msgstr ""
-"Enkel konfigurasjon: %1$sbest CDN-innstillingene%2$s brukes automatisk"
+"Enkel konfigurasjon: de %1$sbeste CDN-innstillingene%2$s blir automatisk "
+"brukt"
 
 #. translators: %1$s = opening strong tag, %2$s = closing strong tag.
 #: inc/Engine/CDN/RocketCDN/views/cta-big.php:56
