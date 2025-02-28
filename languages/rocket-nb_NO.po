@@ -3879,9 +3879,9 @@ msgid ""
 "Cloudflare auto-purge for compatibility. If you have APO activated, it is "
 "also compatible."
 msgstr ""
-"Nettstedet ditt bruker den offisielle Cloudflare-pluginen. Vi har aktivert "
-"Cloudflare automatisk sletting for kompatibilitet. Hvis du har APO aktivert,"
-" er den også kompatibel."
+"Nettsiden din bruker den offisielle Cloudflare-pluginen. Vi har aktivert "
+"Cloudflare auto-purge for kompatibilitet. Hvis du har APO aktivert, er det "
+"også kompatibelt."
 
 #: inc/ThirdParty/Plugins/CDN/Cloudflare.php:171
 msgid ""
