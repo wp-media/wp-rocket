@@ -2136,7 +2136,7 @@ msgstr "Rydd opp i kommentarer"
 
 #: inc/Engine/Admin/Settings/Page.php:1376
 msgid "Spam and trashed comments will be permanently deleted."
-msgstr "Spam og kommentarer som kastes bort, blir slettet for godt."
+msgstr "Spam og slettede kommentarer vil bli permanent slettet."
 
 #: inc/Engine/Admin/Settings/Page.php:1380
 msgid "Transients Cleanup"
