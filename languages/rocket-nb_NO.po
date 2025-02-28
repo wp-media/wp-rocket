@@ -2822,7 +2822,7 @@ msgid ""
 " our plugin"
 msgstr ""
 "WP Rocket-integrasjon: CDN-alternativet er %1$sautomatisk konfigurert%2$s i "
-"plugin-en vår"
+"pluginen vår"
 
 #: inc/Engine/CDN/RocketCDN/views/cta-big.php:60
 msgid "Learn more about RocketCDN"
