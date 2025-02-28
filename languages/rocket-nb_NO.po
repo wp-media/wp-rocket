@@ -4249,7 +4249,7 @@ msgstr "Oppdater lister"
 
 #: views/settings/enable-google-fonts.php:13
 msgid "Enable Google Font Optimization"
-msgstr "Aktiver Google-skriftoptimalisering"
+msgstr "Aktiver Google Font Optimization"
 
 #: views/settings/enable-google-fonts.php:14
 msgid ""
