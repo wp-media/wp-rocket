@@ -1266,7 +1266,7 @@ msgstr "Slettede kommentarer"
 
 #: inc/Engine/Admin/Database/Optimization.php:38
 msgid "Transients"
-msgstr "Midlertidige data"
+msgstr "Transienter"
 
 #: inc/Engine/Admin/Database/Optimization.php:39
 msgid "Tables"
