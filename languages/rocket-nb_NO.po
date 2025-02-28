@@ -4540,7 +4540,8 @@ msgstr "%1$sGratis pakken%2$s inkluderer 20 MB/måned (ca. 200 bilder)"
 #. Translators: %1$s = <strong>, %2$s = </strong>.
 #: views/settings/page-sections/imagify.php:83
 msgid "%1$sInstall Imagify, the Easiest WordPress Image Optimizer%2$s"
-msgstr "%1$sInstaller Imagify, den enkleste WordPress Image Optimizer%2$s"
+msgstr ""
+"%1$sInstaller Imagify, den enkleste WordPress bildeoptimaliseringen%2$s"
 
 #: views/settings/page-sections/imagify.php:110
 msgid "Install Imagify"
