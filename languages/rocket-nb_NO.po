@@ -2147,8 +2147,8 @@ msgid ""
 "Transients are temporary options; they are safe to remove. They will be "
 "automatically regenerated as your plugins require them."
 msgstr ""
-"Transienter er midlertidige alternativer; de er trygge å fjerne. De vil "
-"automatisk bli regenerert etter hvert som pluginene dine krever dem."
+"Transientene er midlertidige alternativer; de er trygge å fjerne. De vil "
+"automatisk bli regenerert etter hvert som pluginene dine trenger dem."
 
 #: inc/Engine/Admin/Settings/Page.php:1386
 msgid "Database Cleanup"
