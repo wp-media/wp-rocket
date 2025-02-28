@@ -3064,7 +3064,7 @@ msgstr "Critical CSS-generering oppdaget en eller flere feil."
 
 #: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:482
 msgid "Learn more."
-msgstr "Les mer"
+msgstr "Lær mer."
 
 #. translators: %1$ = opening bold tag, %2$ = closing bold tag.
 #: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:846
