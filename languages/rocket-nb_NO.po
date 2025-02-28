@@ -3117,7 +3117,7 @@ msgstr "Critical CSS-fil kan ikke slettes"
 #. translators: %1$s = item URL or item type.
 #: inc/Engine/CriticalPath/ProcessorService.php:164
 msgid "Mobile Critical CSS for %1$s not generated."
-msgstr "Mobilkritisk CSS for %1$s genereres ikke."
+msgstr "Mobile Critical CSS for %1$s ble ikke generert."
 
 #. translators: %1$s = Item URL or item type.
 #: inc/Engine/CriticalPath/ProcessorService.php:205
