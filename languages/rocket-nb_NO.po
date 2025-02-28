@@ -3727,7 +3727,7 @@ msgstr ""
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
 #: inc/functions/options.php:507 inc/functions/options.php:549
 msgid "Login to your WP Rocket %1$saccount%2$s"
-msgstr "Logg inn på WP Rocket %1$saccount%2$s"
+msgstr "Logg inn på WP Rocket-%1$skontoen%2$s din"
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
 #: inc/functions/options.php:507 inc/functions/options.php:549
