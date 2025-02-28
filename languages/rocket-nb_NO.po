@@ -2184,7 +2184,7 @@ msgstr[1] "%s utkast i databasen din."
 msgid "%s trashed post in your database."
 msgid_plural "%s trashed posts in your database."
 msgstr[0] "%s søppelpost i databasen."
-msgstr[1] "%s søppelinnlegg i databasen din."
+msgstr[1] "%s slettede innlegg i databasen din."
 
 #. translators: %s is the number of revisions found in the database. It's a
 #. formatted number, don't use %d.
