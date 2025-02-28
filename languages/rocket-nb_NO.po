@@ -4708,7 +4708,7 @@ msgstr "Feilsøking av visningsproblemer med optimalisering av filer"
 
 #: views/settings/page-sections/tutorials.php:34
 msgid "How to Find the Right JavaScript to Exclude"
-msgstr "Hvordan finne riktig JavaScript å ekskludere"
+msgstr "Slik finner du riktig JavaScript å ekskludere"
 
 #: views/settings/page-sections/tutorials.php:35
 msgid "How External Content Slows Your Site"
