@@ -2883,7 +2883,7 @@ msgstr ""
 
 #: inc/Engine/Common/JobManager/Cron/Subscriber.php:185
 msgid "WP Rocket process pending jobs"
-msgstr "WP Rocket-prosess venter på jobber"
+msgstr "WP Rocket-prosess for ventende jobber"
 
 #: inc/Engine/Common/JobManager/Cron/Subscriber.php:204
 msgid "WP Rocket clear failed jobs"
@@ -3973,7 +3973,7 @@ msgstr ""
 "%1$sWP Rocket: %2$sVi har oppdaget at Autoptimizes Aggregate Inline CSS-"
 "funksjonen er aktivert. WP Rockets  Last inn CSS asynkront vil ikke fungere "
 "som den skal. Vi foreslår at du deaktiverer %1$sAggregate Inline CSS%2$s for"
-" å dra full nytte av Load CSS Asynchronously Execution."
+" å dra full nytte av Last inn CSS asynkron-kjøring."
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/ThirdParty/Plugins/Optimization/Ezoic.php:45
