@@ -4671,7 +4671,7 @@ msgstr "Finn de beste innstillingene for nettsiden din"
 #: views/settings/page-sections/tutorials.php:17
 #: views/settings/partials/getting-started.php:13
 msgid "How to Check if WP Rocket is Caching Your Site"
-msgstr "Hvordan sjekke om WP Rocket bufrer nettstedet ditt"
+msgstr "Slik sjekker du om WP Rocket cacher nettsiden din"
 
 #: views/settings/page-sections/tutorials.php:18
 #: views/settings/partials/getting-started.php:14
