@@ -3024,7 +3024,7 @@ msgid ""
 "Critical CSS for %1$s not generated. Error: The API returned an invalid "
 "response code."
 msgstr ""
-"Kritisk CSS for %1$s genereres ikke. Feil: API-et returnerte en ugyldig "
+"Critical CSS for %1$s ble ikke generert. Feil: API-et returnerte en ugyldig "
 "kode."
 
 #. translators: %1$s = error message.
