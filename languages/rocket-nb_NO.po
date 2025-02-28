@@ -4737,8 +4737,8 @@ msgid ""
 "Below is a detailed view of all data WP Rocket will collect %1$sif granted "
 "permission.%2$s"
 msgstr ""
-"Nedenfor er en detaljert oversikt over alle data WP Rocket vil samle inn "
-"%1$shvis gitt tillatelse.%2$s"
+"Nedenfor er en detaljert visning av all data WP Rocket vil samle inn "
+"%1$shvis tillatelse gis.%2$s"
 
 #: views/settings/page.php:89
 msgid ""
