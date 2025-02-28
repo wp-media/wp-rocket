@@ -4692,11 +4692,11 @@ msgstr "Slik forbedrer du LCP med WP Rocket"
 
 #: views/settings/page-sections/tutorials.php:26
 msgid "How to improve INP with WP Rocket"
-msgstr "Hvordan forbedre INP med WP Rocket"
+msgstr "Slik forbedrer du INP med WP Rocket"
 
 #: views/settings/page-sections/tutorials.php:27
 msgid "How to improve CLS with WP Rocket"
-msgstr "Hvordan forbedre CLS med WP Rocket"
+msgstr "Slik forbedrer du CLS med WP Rocket"
 
 #: views/settings/page-sections/tutorials.php:31
 msgid "Troubleshooting"
