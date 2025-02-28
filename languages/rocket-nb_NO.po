@@ -4156,9 +4156,9 @@ msgid ""
 "It is not always necessary to deactivate WP Rocket when facing any issues. "
 "Most of them can be fixed by deactivating only some options."
 msgstr ""
-"Det er ikke alltid nødvendig å deaktivere WP Rocket når du står overfor "
-"problemer. De fleste av dem kan fikses ved å deaktivere bare noen "
-"alternativer."
+"Det er ikke alltid nødvendig å deaktivere WP Rocket når du opplever "
+"problemer. De fleste av dem kan løses ved kun å deaktivere noen av "
+"alternativene."
 
 #. translators: %1$s = opening strong tag, %2$s = closing strong tag.
 #: views/deactivation-intent/form.php:29
