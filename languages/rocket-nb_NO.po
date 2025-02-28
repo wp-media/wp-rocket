@@ -2120,7 +2120,7 @@ msgstr "Optimaliser, reduser bloat"
 
 #: inc/Engine/Admin/Settings/Page.php:1367
 msgid "Post Cleanup"
-msgstr "Etter opprydding"
+msgstr "Rydd opp i innlegg"
 
 #: inc/Engine/Admin/Settings/Page.php:1369
 msgid ""
