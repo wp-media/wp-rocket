@@ -3136,7 +3136,7 @@ msgstr "Critical CSS for %s generert."
 
 #: inc/Engine/CriticalPath/ProcessorService.php:272
 msgid "Critical CSS file deleted successfully."
-msgstr "Kritisk CSS-fil slettet."
+msgstr "Critical CSS-fil slettet."
 
 #. translators: %1$s = Item URL or item type.
 #: inc/Engine/CriticalPath/ProcessorService.php:294
