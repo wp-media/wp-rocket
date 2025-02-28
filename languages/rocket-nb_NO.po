@@ -2891,7 +2891,7 @@ msgstr "WP Rocket-rydding av mislykkede jobber"
 
 #: inc/Engine/Common/JobManager/Cron/Subscriber.php:221
 msgid "WP Rocket process on submit jobs"
-msgstr "WP Rocket-prosess ved innsending av jobber"
+msgstr "WP Rocket-prosess for innsending av jobber"
 
 #: inc/Engine/Common/PerformanceHints/Admin/AdminBar.php:44
 msgid "Clear Priority Elements"
