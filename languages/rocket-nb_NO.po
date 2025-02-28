@@ -2895,7 +2895,7 @@ msgstr "WP Rocket-prosess for innsending av jobber"
 
 #: inc/Engine/Common/PerformanceHints/Admin/AdminBar.php:44
 msgid "Clear Priority Elements"
-msgstr "Fjern prioriterte elementer"
+msgstr "Tøm prioriterte elementer"
 
 #: inc/Engine/Common/PerformanceHints/Admin/AdminBar.php:79
 msgid "Clear Priority Elements of this URL"
