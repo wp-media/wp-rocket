@@ -3751,7 +3751,7 @@ msgstr ""
 msgid ""
 "License validation failed. This user account does not exist in our database."
 msgstr ""
-"Lisensvalidering mislyktes. Denne brukerkontoen finnes ikke i vår database."
+"Lisensvalidering mislyktes. Denne brukerkontoen finnes ikke i databasen vår."
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
 #: inc/functions/options.php:515
