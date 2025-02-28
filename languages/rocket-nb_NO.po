@@ -3870,7 +3870,7 @@ msgid ""
 "Remove Unused CSS and Combine CSS files. We strongly recommend disabling it."
 msgstr ""
 "%1$s: Cloudflares HTTP/2 Server Push er inkompatibel med funksjonene til "
-"Fjern ubrukte CSS- og Kombiner CSS-filer. Vi anbefaler på det sterkeste å "
+"Fjern ubrukt CSS- og Kombiner CSS-filer. Vi anbefaler på det sterkeste å "
 "deaktivere den."
 
 #: inc/ThirdParty/Plugins/CDN/Cloudflare.php:170
