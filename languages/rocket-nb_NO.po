@@ -4648,7 +4648,7 @@ msgstr "Installer versjon %s på nytt"
 
 #: views/settings/page-sections/tools.php:106
 msgid "Debug mode"
-msgstr "Feilsøkingsmodus"
+msgstr "Debug mode"
 
 #: views/settings/page-sections/tools.php:111
 msgid "Create a debug log file."
