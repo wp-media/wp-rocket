@@ -4482,7 +4482,7 @@ msgstr "Spør support"
 
 #: views/settings/page-sections/database.php:25
 msgid "Backup your database before you run a cleanup!"
-msgstr "Sikkerhetskopier databasen din før du kjører en opprydding!"
+msgstr "Ta backup av databasen din før du kjører en opprydding!"
 
 #: views/settings/page-sections/database.php:26
 msgid ""
