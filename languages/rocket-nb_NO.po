@@ -3100,7 +3100,7 @@ msgstr ""
 
 #: inc/Engine/CriticalPath/DataManager.php:106
 msgid "Critical CSS file for mobile does not exist"
-msgstr "Kritisk CSS-fil for mobil finnes ikke"
+msgstr "Critical CSS-fil for mobil finnes ikke"
 
 #: inc/Engine/CriticalPath/DataManager.php:108
 msgid "Critical CSS file does not exist"
