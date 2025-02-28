@@ -4777,7 +4777,7 @@ msgstr ""
 #: views/settings/partials/sidebar.php:15
 #: views/settings/partials/sidebar.php:24
 msgid "Read our guide"
-msgstr "Les vår guide"
+msgstr "Les guiden vår"
 
 #: views/settings/partials/sidebar.php:18
 msgid "Learn about optimal WP Rocket settings for mobile."
