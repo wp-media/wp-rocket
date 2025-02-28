@@ -4457,7 +4457,7 @@ msgstr "Tøm og forhåndslast"
 #: views/settings/page-sections/dashboard.php:183
 #: views/settings/page-sections/dashboard.php:189
 msgid "Regenerate Critical CSS"
-msgstr "Regenerere kritisk CSS"
+msgstr "Regenerer Critical CSS"
 
 #: views/settings/page-sections/dashboard.php:215
 msgid "Frequently Asked Questions"
