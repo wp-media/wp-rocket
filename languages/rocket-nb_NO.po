@@ -3860,7 +3860,7 @@ msgid ""
 msgstr ""
 "Installasjonen din ser ut til å mangle kjernefiler fra Kinsta som håndterer "
 "rydding i Cache, noe som hindrer at Kinsta-installasjonen din og WP Rocket "
-"fungerer riktig. Vennligst kontakt  Kinsta-support via din "
+"fungerer riktig. Vennligst kontakt Kinsta-support via din "
 "%1$sMyKinsta%2$s-konto for å løse dette problemet."
 
 #. translators: %1$s = plugin name.
