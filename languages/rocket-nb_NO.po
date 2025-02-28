@@ -3132,7 +3132,7 @@ msgstr "Mobile Critical CSS for %s generert."
 #. translators: %1$s = Item URL or item type.
 #: inc/Engine/CriticalPath/ProcessorService.php:250
 msgid "Critical CSS for %s generated."
-msgstr "Kritisk CSS for %s generert."
+msgstr "Critical CSS for %s generert."
 
 #: inc/Engine/CriticalPath/ProcessorService.php:272
 msgid "Critical CSS file deleted successfully."
