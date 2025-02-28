@@ -2920,7 +2920,7 @@ msgstr ""
 #. translators: %1$s = plugin name.
 #: inc/Engine/Common/PerformanceHints/Admin/Controller.php:140
 msgid "%1$s: Critical images and Lazy Render data was cleared!"
-msgstr "%1$s: Kritiske bilder og Lazy Render-data ble slettet!"
+msgstr "%1$s: Critical images og Lazy Render-data ble tømt!"
 
 #: inc/Engine/Common/PerformanceHints/AJAX/AJAXControllerTrait.php:19
 msgid "Script error"
