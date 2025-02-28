@@ -4720,7 +4720,7 @@ msgstr "Sett opp Cloudflare-tillegget"
 
 #: views/settings/page.php:16
 msgid "WP Rocket Settings"
-msgstr "WP Rocket Innstillinger"
+msgstr "WP Rocket-innstillinger"
 
 #. translators: %s = Plugin version number.
 #: views/settings/page.php:30
