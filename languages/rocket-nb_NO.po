@@ -3209,8 +3209,8 @@ msgid ""
 "Renew your license for 1 year now and get %1$s%3$s OFF%2$s immediately: you "
 "will only pay %1$s%4$s%2$s!"
 msgstr ""
-"Forny lisensen din for 1 år nå og få %1$s%3$s OFF%2$s umiddelbart: du "
-"betaler bare %1$s%4$s%2$s!"
+"Forny lisensen din for 1 år nå og få %1$s%3$s rabatt%2$s med en gang. Du "
+"betaler kun %1$s%4$s%2$s!"
 
 #. translators: %1$s = <strong>, %2$s = </strong>, %3$s = discount price.
 #: inc/Engine/License/Renewal.php:218
