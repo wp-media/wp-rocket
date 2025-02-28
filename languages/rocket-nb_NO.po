@@ -3658,7 +3658,7 @@ msgstr "Gjeldende tema:"
 
 #: inc/functions/admin.php:406
 msgid "Current site language:"
-msgstr "Gjeldende språk på nettstedet:"
+msgstr "Nåværende nettsidespråk:"
 
 #: inc/functions/admin.php:415
 msgid "Active plugins:"
