@@ -2132,7 +2132,7 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:1374
 msgid "Comments Cleanup"
-msgstr "Opprydding av kommentarer"
+msgstr "Rydd opp i kommentarer"
 
 #: inc/Engine/Admin/Settings/Page.php:1376
 msgid "Spam and trashed comments will be permanently deleted."
