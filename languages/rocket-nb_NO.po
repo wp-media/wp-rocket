@@ -2224,7 +2224,7 @@ msgstr "Optimaliser tabeller"
 msgid "%s table to optimize in your database."
 msgid_plural "%s tables to optimize in your database."
 msgstr[0] "%s-tabellen for å optimalisere i databasen."
-msgstr[1] "%s tabeller for å optimalisere i databasen."
+msgstr[1] "%s tabeller å optimalisere i databasen din."
 
 #: inc/Engine/Admin/Settings/Page.php:1476
 msgid "Schedule Automatic Cleanup"
