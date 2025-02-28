@@ -4256,8 +4256,8 @@ msgid ""
 "Improves font performance and combines multiple font requests to reduce the "
 "number of HTTP requests."
 msgstr ""
-"Forbedrer skrifttype-ytelsen og kombinerer flere skrifttype-forespørsler for"
-" å redusere antall HTTP-forespørsler."
+"Forbedrer fontytelsen og kombinerer flere fontforespørsler for å redusere "
+"antallet HTTP-forespørsler."
 
 #. translators: %1$s = opening link tag, %2$s = closing link tag.
 #: views/settings/enable-google-fonts.php:29
