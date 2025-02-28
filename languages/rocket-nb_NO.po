@@ -3822,7 +3822,7 @@ msgstr "Denne lisensnøkkelen gjenkjennes ikke."
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
 #: inc/functions/options.php:549
 msgid "If the issue persists, please %1$scontact support%2$s."
-msgstr "Hvis problemet vedvarer, kan du %1$skontakte kundestøtte%2$s."
+msgstr "Hvis problemet vedvarer, kan du %1$skontakte suuport%2$s."
 
 #. Translators: %s = error message returned.
 #: inc/functions/options.php:555
