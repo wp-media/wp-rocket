@@ -3848,7 +3848,7 @@ msgid ""
 "your %s server."
 msgstr ""
 "Varnish auto-purge vil automatisk bli aktivert når Varnish er aktivert på "
-"din %s server."
+"%s-serveren din."
 
 #. translators: %1$s = opening link tag, %2$s = closing link tag.
 #: inc/ThirdParty/Hostings/Kinsta.php:159
