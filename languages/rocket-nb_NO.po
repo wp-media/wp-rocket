@@ -4498,8 +4498,8 @@ msgstr "Lagre endringer og optimaliser"
 msgid ""
 "%1$sWP Rocket created IMAGIFY to give your website an extra speed boost!%2$s"
 msgstr ""
-"%1$sWP Rocket opprettet IMAGIFY for å gi nettstedet ditt en ekstra "
-"hastighetsøkning!%2$s"
+"%1$sWP Rocket opprettet IMAGIFY for å gi nettsiden din et ekstra "
+"hastighetsløft!%2$s"
 
 #: views/settings/page-sections/imagify.php:28
 msgid "Images can account for 50% of your loading time!"
