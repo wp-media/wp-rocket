@@ -4617,7 +4617,7 @@ msgstr "Eksporter innstillinger"
 
 #: views/settings/page-sections/tools.php:38
 msgid "Download a backup file of your settings"
-msgstr "Last ned en sikkerhetskopifil av innstillingene dine"
+msgstr "Last ned en backup av innstillingene dine"
 
 #: views/settings/page-sections/tools.php:46
 msgid "Download settings"
