@@ -3737,7 +3737,7 @@ msgstr "Last ned zip-filen"
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
 #: inc/functions/options.php:507 inc/functions/options.php:549
 msgid "Reinstall"
-msgstr "Installere"
+msgstr "Installer på nytt"
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
 #: inc/functions/options.php:507
