@@ -3682,7 +3682,7 @@ msgstr "Anonymisert WP Rocket-statistikk:"
 
 #: inc/functions/admin.php:436
 msgid "How WP Rocket features function and perform."
-msgstr "Hvordan WP Rocket-funksjoner fungerer og fungerer."
+msgstr "Hvordan WP Rocket-funksjoner fungerer og presterer."
 
 #: inc/functions/admin.php:442
 msgid "WP Rocket license type"
