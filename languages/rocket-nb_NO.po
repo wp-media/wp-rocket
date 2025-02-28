@@ -4630,7 +4630,7 @@ msgstr "Rollback"
 #. translators: %s = WP Rocket version number.
 #: views/settings/page-sections/tools.php:64
 msgid "Has version %s caused an issue on your website?"
-msgstr "Har versjon %s forårsaket et problem på nettstedet ditt?"
+msgstr "Har versjon %s forårsaket et problem på nettsiden din?"
 
 #. translators: %s = <br>.
 #: views/settings/page-sections/tools.php:69
