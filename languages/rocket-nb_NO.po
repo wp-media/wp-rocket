@@ -4688,7 +4688,7 @@ msgstr "Oppnå gode resultater i Core Web vitals"
 
 #: views/settings/page-sections/tutorials.php:25
 msgid "How to improve LCP with WP Rocket"
-msgstr "Hvordan forbedre LCP med WP Rocket"
+msgstr "Slik forbedrer du LCP med WP Rocket"
 
 #: views/settings/page-sections/tutorials.php:26
 msgid "How to improve INP with WP Rocket"
