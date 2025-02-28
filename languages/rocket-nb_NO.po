@@ -2248,7 +2248,7 @@ msgstr "Månedlig"
 
 #: inc/Engine/Admin/Settings/Page.php:1515
 msgid "Integrate your CDN"
-msgstr "Integrer CDN"
+msgstr "Integrer din CDN"
 
 #: inc/Engine/Admin/Settings/Page.php:1527
 msgid ""
