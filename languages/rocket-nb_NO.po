@@ -2933,7 +2933,7 @@ msgstr "Tidsavbrudd for skript"
 #. Translators: %s is the exception message.
 #: inc/Engine/Common/Queue/Cleaner.php:87
 msgid "It was not possible to determine a valid cut-off time: %s."
-msgstr "Det var ikke mulig å fastslå en gyldig skjæringstid: %s."
+msgstr "Det var ikke mulig å fastslå en gyldig avbruddstid: %s."
 
 #: inc/Engine/Common/Queue/RUCSSQueueRunner.php:272
 msgid "Every minute"
