@@ -2168,7 +2168,7 @@ msgstr "Automatisk opprydding"
 msgid "%s revision in your database."
 msgid_plural "%s revisions in your database."
 msgstr[0] "%s revisjon i databasen."
-msgstr[1] "%s revisjoner i databasen."
+msgstr[1] "%s revisjoner i databasen din."
 
 #. translators: %s is the number of revisions found in the database. It's a
 #. formatted number, don't use %d.
