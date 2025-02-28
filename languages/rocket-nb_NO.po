@@ -4712,7 +4712,7 @@ msgstr "Slik finner du riktig JavaScript å ekskludere"
 
 #: views/settings/page-sections/tutorials.php:35
 msgid "How External Content Slows Your Site"
-msgstr "Hvordan eksternt innhold bremser nettstedet ditt"
+msgstr "Hvordan eksternt innhold bremser nettsiden din"
 
 #: views/settings/page-sections/tutorials.php:41
 msgid "Set Up the Cloudflare Add-on"
