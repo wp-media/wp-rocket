@@ -2914,7 +2914,8 @@ msgstr "Tøm"
 #: inc/Engine/Common/PerformanceHints/Admin/AdminBar.php:103
 msgid ""
 "This action will clear the Critical Images and Lazily Rendered Content."
-msgstr "Denne handlingen vil fjerne kritiske bilder og lat gjengitt innhold."
+msgstr ""
+"Denne handlingen vil tømme Critical Images og Lazily Rendered Content."
 
 #. translators: %1$s = plugin name.
 #: inc/Engine/Common/PerformanceHints/Admin/Controller.php:140
