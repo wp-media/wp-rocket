@@ -4473,7 +4473,7 @@ msgstr "Finner du fortsatt ikke en løsning?"
 msgid ""
 "Submit a ticket and get help from our friendly and knowledgeable Rocketeers."
 msgstr ""
-"Send inn en billett og få hjelp fra våre vennlige og kunnskapsrike "
+"Send inn en ticket og få hjelp fra våre vennlige og kunnskapsrike "
 "Rocketeers."
 
 #: views/settings/page-sections/dashboard.php:238
