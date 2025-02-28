@@ -3056,7 +3056,7 @@ msgstr ""
 #. of critical CSS to generate.
 #: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:475
 msgid "Critical CSS generation finished for %1$d of %2$d page types."
-msgstr "Kritisk CSS-generering fullført for %1$d av %2$d sidetyper."
+msgstr "Critical CSS-generering fullført for %1$d av %2$d sidetyper."
 
 #: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:482
 msgid "Critical CSS generation encountered one or more errors."
