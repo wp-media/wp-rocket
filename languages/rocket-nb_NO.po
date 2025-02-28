@@ -4478,7 +4478,7 @@ msgstr ""
 
 #: views/settings/page-sections/dashboard.php:238
 msgid "Ask support"
-msgstr "Spør kundestøtte"
+msgstr "Spør support"
 
 #: views/settings/page-sections/database.php:25
 msgid "Backup your database before you run a cleanup!"
