@@ -2872,7 +2872,7 @@ msgstr "Get RocketCDN"
 
 #: inc/Engine/CDN/RocketCDN/views/promote-notice.php:11
 msgid "New!"
-msgstr "Nyeste"
+msgstr "Nytt!"
 
 #: inc/Engine/CDN/RocketCDN/views/promote-notice.php:12
 msgid ""
