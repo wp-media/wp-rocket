@@ -4272,7 +4272,7 @@ msgstr "Optimaliser Google Fonts"
 
 #: views/settings/fields/cache-lifespan.php:26
 msgid "Clear cache after"
-msgstr "Tøm hurtigbufferen etter"
+msgstr "Tøm cache fra"
 
 #: views/settings/fields/categorized_multiselect.php:54
 msgid "3rd parties"
