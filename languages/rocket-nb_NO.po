@@ -4367,7 +4367,7 @@ msgstr "https://support.cloudflare.com/hc/en-us/articles/200169246"
 
 #: views/settings/page-sections/cloudflare.php:45
 msgid "Clear all Cloudflare cache files"
-msgstr "Tøm alle Cloudflare-bufferfiler"
+msgstr "Tøm alle Cloudflare cache-filer"
 
 #: views/settings/page-sections/dashboard.php:39
 msgid "Congratulations!"
