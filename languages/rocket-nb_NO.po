@@ -4337,7 +4337,7 @@ msgstr "Tøm alle RocketCDN cache-filer"
 
 #: views/settings/mobile-cache.php:11
 msgid "Mobile Cache"
-msgstr "Mobil buffer"
+msgstr "Mobilcache"
 
 #: views/settings/mobile-cache.php:14
 msgid "Speed your site for mobile visitors."
