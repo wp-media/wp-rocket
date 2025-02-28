@@ -2192,7 +2192,7 @@ msgstr[1] "%s slettede innlegg i databasen din."
 msgid "%s spam comment in your database."
 msgid_plural "%s spam comments in your database."
 msgstr[0] "%s spam-kommentar i databasen din."
-msgstr[1] "%s spam-kommentarer i databasen din."
+msgstr[1] "%s Spamkommentarer i databasen din."
 
 #. translators: %s is the number of revisions found in the database. It's a
 #. formatted number, don't use %d.
