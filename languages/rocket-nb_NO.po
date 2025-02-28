@@ -3146,7 +3146,7 @@ msgstr "Mobile Critical CSS for %1$s tidsavbrudd. Prøv på nytt litt senere."
 #. translators: %1$s = Item URL or item type.
 #: inc/Engine/CriticalPath/ProcessorService.php:307
 msgid "Critical CSS for %1$s timeout. Please retry a little later."
-msgstr "Kritisk CSS for %1$s tidsavbrudd. Prøv på nytt litt senere."
+msgstr "Critical CSS for %1$s tidsavbrudd. Prøv på nytt litt senere."
 
 #: inc/Engine/CriticalPath/RESTWP.php:141
 msgid "Mobile CPCSS generation not enabled."
