@@ -3666,7 +3666,7 @@ msgstr "Aktive plugins:"
 
 #: inc/functions/admin.php:418
 msgid "Plugin names of all active plugins"
-msgstr "Plugin-navn på alle aktive plugins"
+msgstr "Navn på alle aktive plugins"
 
 #: inc/functions/admin.php:424
 msgid "Anonymized WP Rocket settings:"
