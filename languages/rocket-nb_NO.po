@@ -4530,7 +4530,7 @@ msgstr "%1$sKonverter%2$s bilder til WebP og Avif"
 #. Translators: %1$s = <strong>, %2$s = </strong>.
 #: views/settings/page-sections/imagify.php:57
 msgid "%1$sResize%2$s your images on the fly"
-msgstr "%1$sResize%2$s bildene dine på farten"
+msgstr "%1$sEndre størrelsen%2$s på bildene dine på farten"
 
 #. Translators: %1$s = <strong>, %2$s = </strong>.
 #: views/settings/page-sections/imagify.php:65
