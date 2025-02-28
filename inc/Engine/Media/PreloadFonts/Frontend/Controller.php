@@ -130,7 +130,7 @@ class Controller implements ControllerInterface {
 		 *
 		 * @param array $processed_extensions Array of processed font extensions.
 		 */
-		wpm_apply_filters_typed( 'array', 'rocket_preload_fonts_processed_extensions', $processed_extensions );
+		$processed_extensions = wpm_apply_filters_typed( 'array', 'rocket_preload_fonts_processed_extensions', $processed_extensions );
 
 		$data['system_fonts']            = $system_fonts;
 		$data['font_data']               = $font_data;
