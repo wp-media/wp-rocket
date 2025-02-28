@@ -3512,9 +3512,9 @@ msgid ""
 " the Remove Unused CSS feature to work. Please check our "
 "%3$sdocumentation%4$s."
 msgstr ""
-"%1$s: Kan ikke opprette %2$s-tabellen i databasen som er nødvendig for at "
-"funksjonen Fjern ubrukt CSS skal fungere. Vennligst sjekk våre "
-"%3$sdocumentation%4$s."
+"%1$s: Kunne ikke opprette %2$s-tabellen i databasen som er nødvendig for at "
+"funksjonen Fjern ubrukt CSS skal fungere. Vennligst sjekk "
+"%3$sdokumentasjonen%4$s vår."
 
 #. translators: %1$s = plugin name.
 #: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:279
