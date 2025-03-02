@@ -95,7 +95,7 @@ return [
 			'template' => 'renewal-expired-banner-ocd',
 			'data' => [
 				'renewal_url'   => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
-				'message' => 'RENEW NOW',
+				'message' => null,
 				'disabled_date' => strtotime( 'now + 5 days' ),
 			],
 		],
@@ -119,7 +119,7 @@ return [
 				'template' => 'renewal-expired-banner-ocd',
 				'data' => [
 					'renewal_url'   => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
-					'message' => 'RENEW NOW',
+					'message' => null,
 					'disabled_date' => strtotime( 'now + 5 days' ),
 				],
 			],
@@ -143,7 +143,7 @@ return [
 				'template' => 'renewal-expired-banner-ocd',
 				'data' => [
 					'renewal_url'   => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
-					'message' => 'RENEW NOW',
+					'message' => null,
 					'disabled_date' => strtotime( 'now + 5 days' ),
 				],
 			],
@@ -184,7 +184,7 @@ return [
 				'template' => 'renewal-expired-banner-ocd',
 				'data' => [
 					'renewal_url'   => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
-					'message' => 'RENEW NOW',
+					'message' => null,
 					'disabled_date' => strtotime( 'now + 5 days' ),
 				],
 			],
@@ -208,7 +208,7 @@ return [
 				'template' => 'renewal-expired-banner-ocd',
 				'data' => [
 					'renewal_url'   => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
-					'message' => 'RENEW NOW',
+					'message' => null,
 					'disabled_date' => strtotime( 'now + 5 days' ),
 				],
 			],
@@ -232,7 +232,7 @@ return [
 				'template' => 'renewal-expired-banner-ocd-disabled',
 				'data' => [
 					'renewal_url'   => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
-					'message' => 'RENEW NOW',
+					'message' => null,
 				],
 			],
 		],
@@ -255,7 +255,7 @@ return [
 				'template' => 'renewal-expired-banner',
 				'data' => [
 					'renewal_url'   => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
-					'message' => 'RENEW NOW',
+					'message' => null,
 				],
 			],
 		],
@@ -278,7 +278,7 @@ return [
 				'template' => 'renewal-expired-banner',
 				'data' => [
 					'renewal_url'   => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
-					'message' => 'RENEW NOW',
+					'message' => null,
 				],
 			],
 		],
@@ -301,7 +301,7 @@ return [
 				'template' => 'renewal-expired-banner',
 				'data' => [
 					'renewal_url'   => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
-					'message' => 'RENEW NOW',
+					'message' => null,
 				],
 			],
 		],
@@ -324,7 +324,7 @@ return [
 				'template' => 'renewal-expired-banner',
 				'data' => [
 					'renewal_url'   => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
-					'message' => 'RENEW NOW',
+					'message' => null,
 				],
 			],
 		],
@@ -347,7 +347,7 @@ return [
 				'template' => 'renewal-expired-banner',
 				'data' => [
 					'renewal_url'   => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
-					'message' => 'RENEW NOW',
+					'message' => null,
 				],
 			],
 		],
@@ -387,7 +387,7 @@ return [
 				'template' => 'renewal-expired-banner',
 				'data' => [
 					'renewal_url'   => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
-					'message' => 'RENEW NOW',
+					'message' => null,
 				],
 			],
 		],
@@ -410,7 +410,7 @@ return [
 				'template' => 'renewal-expired-banner',
 				'data' => [
 					'renewal_url'   => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
-					'message' => 'RENEW NOW',
+					'message' => null,
 				],
 			],
 		],
@@ -433,7 +433,7 @@ return [
 				'template' => 'renewal-expired-banner',
 				'data' => [
 					'renewal_url'   => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
-					'message' => 'RENEW NOW',
+					'message' => null,
 				],
 			],
 		],
@@ -456,7 +456,7 @@ return [
 				'template' => 'renewal-expired-banner',
 				'data' => [
 					'renewal_url'   => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
-					'message' => 'RENEW NOW',
+					'message' => null,
 				],
 			],
 		],
