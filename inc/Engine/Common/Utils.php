@@ -28,4 +28,24 @@ class Utils {
 		);
 		return untrailingslashit( $url ) === untrailingslashit( $home_url );
 	}
+
+	/**
+	 * Get the request header from SaaS visits
+	 *
+	 * @param string $feature The name of the feature we're checking, this could be LRC, ATF etc.
+	 *
+	 * @return bool
+	 */
+	public static function get_saas_request_header( string $feature ): bool {
+		$headers = getAllHeaders();
+		$wpr_opt_list = $headers['Wpr-Opt-List'];
+
+		if( empty( $wpr_opt_list ) ) {
+			return false;
+		}
+
+		$options = array_map( 'trim', explode( ',', $wpr_opt_list ) );
+
+		return in_array( $feature, $options, true );
+	}
 }
