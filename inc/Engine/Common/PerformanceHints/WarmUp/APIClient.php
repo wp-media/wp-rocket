@@ -21,7 +21,7 @@ class APIClient extends BaseAPIClient {
 
 		$config = [
 			'optimization_list' => [
-				'performance_hints', //performance_hints represent atf,lrc.
+				'performance_hints', // performance_hints represent atf,lrc.
 			],
 			'is_home'           => $is_home,
 			'is_mobile'         => 'mobile' === $device,

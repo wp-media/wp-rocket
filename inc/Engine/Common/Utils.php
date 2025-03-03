@@ -37,10 +37,10 @@ class Utils {
 	 * @return bool
 	 */
 	public static function get_saas_request_header( string $feature ): bool {
-		$headers = getAllHeaders();
+		$headers      = getAllHeaders();
 		$wpr_opt_list = $headers['Wpr-Opt-List'];
 
-		if( empty( $wpr_opt_list ) ) {
+		if ( empty( $wpr_opt_list ) ) {
 			return false;
 		}
 
