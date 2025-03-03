@@ -55,7 +55,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return string
 	 */
 	public function maybe_apply_optimizations( $html ): string {
-		if ( empty( $html ) || ! Utils::get_saas_request_header( 'performance_hints' ) ) {
+		if ( empty( $html ) || ! Utils::get_saas_request_header() ) {
 			return $html;
 		}
 
@@ -68,7 +68,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function start_performance_hints_buffer() {
-		if ( ! Utils::get_saas_request_header( 'performance_hints' ) ) {
+		if ( ! Utils::get_saas_request_header() ) {
 			return;
 		}
 
