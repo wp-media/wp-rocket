@@ -84,7 +84,7 @@ return [
 			'pricing' => $pricing,
 			'transient' => false,
 		],
-		'expected' => '<section class="rocket-renewal-expired-banner" id="rocket-renewal-banner">
+		'expected' => '<section class="rocket-renewal-expired-banner" id="rocket-renewal-banner"><div class="banner-copy">
 		<h3 class="rocket-expired-title">Your WP Rocket license is expired!</h3>
 		<div class="rocket-renewal-expired-banner-container">
 			<div class="rocket-expired-message">
@@ -92,7 +92,7 @@ return [
 				<p>
 				Your website could be much faster if it could take advantage of our <strong>new features and enhancements</strong>. 🚀
 				</p>
-				<p></p>
+			</div>
 			</div>
 			<div class="rocket-expired-cta-container">
 				<a href="https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/" class="rocket-renew-cta" target="_blank" rel="noopener noreferrer">Renew now</a>

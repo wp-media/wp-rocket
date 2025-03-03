@@ -20,11 +20,13 @@
     margin-top: 2 * $space;
     padding: 3 * $space;
     position: relative;
-}
-
-.rocket-renewal-expired-banner-container {
 	display: flex;
-    justify-content: space-around;
+}
+.banner-copy{
+	width: 75%;
+}
+.rocket-renewal-expired-banner-container {
+
 
 	@include respond-to('xs') {
         flex-flow: column;
@@ -38,7 +40,7 @@
             width: 100%;
         }
 
-        width: 50%;
+        width: 70%;
     }
 }
 
@@ -70,8 +72,7 @@
 }
 
 .rocket-expired-cta-container {
-    justify-content: center;
-    align-items: center;
+    align-self: center;
 }
 
 .rocket-renew-cta {

@@ -1243,12 +1243,13 @@ div.wpr-upgrade-websites.notstacked {
   margin-top: 16px;
   padding: 24px;
   position: relative;
+  display: flex;
 }
 
-.rocket-renewal-expired-banner-container {
-  display: flex;
-  justify-content: space-around;
+.banner-copy {
+  width: 75%;
 }
+
 @media (max-width: 783px) {
   .rocket-renewal-expired-banner-container {
     flex-flow: column;
@@ -1257,7 +1258,7 @@ div.wpr-upgrade-websites.notstacked {
 .rocket-renewal-expired-banner-container > div {
   display: flex;
   flex-flow: column;
-  width: 50%;
+  width: 70%;
 }
 @media (max-width: 783px) {
   .rocket-renewal-expired-banner-container > div {
@@ -1294,8 +1295,7 @@ div.wpr-upgrade-websites.notstacked {
 }
 
 .rocket-expired-cta-container {
-  justify-content: center;
-  align-items: center;
+  align-self: center;
 }
 
 .rocket-renew-cta {
