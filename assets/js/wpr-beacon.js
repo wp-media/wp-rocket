@@ -459,7 +459,6 @@
     getFontFaceRules() {
       const stylesheetFonts = {};
       Array.from(document.styleSheets).forEach((sheet) => {
-        if (sheet.href && new URL(sheet.href).origin !== window.location.origin) return;
         try {
           Array.from(sheet.cssRules || []).forEach((rule) => {
             if (rule instanceof CSSFontFaceRule) {
@@ -475,9 +474,11 @@
               }
               const urls = src.match(/url\(['"]?([^'"]+)['"]?\)/g) || [];
               urls.forEach((urlMatch) => {
-                const rawUrl = urlMatch.match(/url\(['"]?([^'"]+)['"]?\)/)[1];
-                const url = new URL(rawUrl, sheet.href).href;
-                const normalizedUrl = this.cleanUrl(url);
+                let rawUrl = urlMatch.match(/url\(['"]?([^'"]+)['"]?\)/)[1];
+                if (sheet.href) {
+                  rawUrl = new URL(rawUrl, sheet.href).href;
+                }
+                const normalizedUrl = this.cleanUrl(rawUrl);
                 if (!stylesheetFonts[fontFamily].urls.includes(normalizedUrl)) {
                   stylesheetFonts[fontFamily].urls.push(normalizedUrl);
                   stylesheetFonts[fontFamily].variations.add(JSON.stringify({
@@ -520,6 +521,7 @@
      * @returns {Promise<void>} A promise that resolves when the analysis is complete.
      */
     async run() {
+      await document.fonts.ready;
       const networkLoadedFonts = this.getNetworkLoadedFonts();
       const stylesheetFonts = this.getFontFaceRules();
       const hostedFonts = /* @__PURE__ */ new Map();
