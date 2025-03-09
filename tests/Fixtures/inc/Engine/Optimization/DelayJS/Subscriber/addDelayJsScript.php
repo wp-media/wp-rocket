@@ -8,9 +8,15 @@ $html = '<html>
 $ie_compat = '<script>if(navigator.userAgent.match(/MSIE|Internet Explorer/i)||navigator.userAgent.match(/Trident\/7\..*?rv:11/i)){var href=document.location.href;if(!href.match(/[?&]nowprocket/)){if(href.indexOf("?")==-1){if(href.indexOf("#")==-1){document.location.href=href+"?nowprocket=1"}else{document.location.href=href.replace("#","?nowprocket=1#")}}else{if(href.indexOf("#")==-1){document.location.href=href+"&nowprocket=1"}else{document.location.href=href.replace("#","&nowprocket=1#")}}}}</script>';
 
 $delay_js = '<script>' . file_get_contents( WP_ROCKET_PLUGIN_ROOT . 'assets/js/lazyload-scripts.min.js' ) . '</script>';
+$delay_1_2_6_js = '<script>' . file_get_contents( WP_ROCKET_PLUGIN_ROOT . 'assets/js/lazyload-scripts1.2.6.min.js' ) . '</script>';
 
 $expected = '<html>
 <head>' . $ie_compat . $delay_js . '<title>Sample Page</title></head>
+<body></body>
+</html>';
+
+$expected_1_2_6 = '<html>
+<head>' . $ie_compat . $delay_1_2_6_js . '<title>Sample Page</title></head>
 <body></body>
 </html>';
 
@@ -79,6 +85,7 @@ return [
 			'delay_js'      => 1,
 			'donotoptimize' => false,
 			'bypass'        => true,
+			'js_version'    => '',
 		],
 		'html'     => $html,
 		'expected' => $html,
@@ -89,6 +96,7 @@ return [
 			'delay_js'      => 0,
 			'donotoptimize' => true,
 			'bypass'        => false,
+			'js_version'    => '',
 		],
 		'html'     => $html,
 		'expected' => $html,
@@ -99,6 +107,7 @@ return [
 			'delay_js'      => 0,
 			'donotoptimize' => false,
 			'bypass'        => false,
+			'js_version'    => '',
 		],
 		'html'     => $html,
 		'expected' => $html,
@@ -109,6 +118,7 @@ return [
 			'delay_js' => 1,
 			'donotoptimize' => false,
 			'bypass'        => false,
+			'js_version'    => '',
 		],
 		'html'     => $html,
 		'expected' => $expected,
@@ -118,6 +128,7 @@ return [
 			'delay_js' => 1,
 			'donotoptimize' => false,
 			'bypass'        => false,
+			'js_version'    => '',
 		],
 		'html'     => $html_charset,
 		'expected' => $expected_charset,
@@ -127,6 +138,7 @@ return [
 			'delay_js' => 1,
 			'donotoptimize' => false,
 			'bypass'        => false,
+			'js_version'    => '',
 		],
 		'html'     => $html_http_equiv_charset,
 		'expected' => $expected_http_equiv_charset,
@@ -136,6 +148,7 @@ return [
 			'delay_js' => 1,
 			'donotoptimize' => false,
 			'bypass'        => false,
+			'js_version'    => '',
 		],
 		'html'     => $html_invalid_charset_head,
 		'expected' => $expected_invalid_charset_head,
@@ -145,8 +158,19 @@ return [
 			'delay_js' => 1,
 			'donotoptimize' => false,
 			'bypass'        => false,
+			'js_version'    => '',
 		],
 		'html'     => $html_invalid_charset_body,
 		'expected' => $expected_invalid_charset_body,
 	],
+	'testWithASpecifyVersionShouldReturnTheScriptVersion' => [
+		'config'   => [
+			'delay_js' => 1,
+			'donotoptimize' => false,
+			'bypass'        => false,
+			'js_version'    => '1.2.6',
+		],
+		'html'     => $html,
+		'expected' => $expected_1_2_6,
+	]
 ];
