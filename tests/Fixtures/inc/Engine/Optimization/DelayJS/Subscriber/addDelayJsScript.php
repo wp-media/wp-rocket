@@ -172,5 +172,15 @@ return [
 		],
 		'html'     => $html,
 		'expected' => $expected_1_2_6,
+	],
+	'testWithASpecifyVersionNotExistingShouldReturnTheDefaultScript' => [
+		'config'   => [
+			'delay_js' => 1,
+			'donotoptimize' => false,
+			'bypass'        => false,
+			'js_version'    => '0.0.0',
+		],
+		'html'     => $html,
+		'expected' => $expected,
 	]
 ];
