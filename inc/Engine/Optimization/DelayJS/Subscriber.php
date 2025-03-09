@@ -90,7 +90,7 @@ class Subscriber implements Subscriber_Interface {
 		 *
 		 * @param string $version Version of the script.
 		 */
-		$version = wpm_apply_filters_typesafe('rocket_delay_js_version_js_script', '');
+		$version = wpm_apply_filters_typesafe( 'rocket_delay_js_version_js_script', '' );
 
 		$lazyload_script = $this->filesystem->get_contents( rocket_get_constant( 'WP_ROCKET_PATH' ) . "assets/js/lazyload-scripts$version.min.js" );
 
