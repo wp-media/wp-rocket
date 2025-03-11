@@ -16,6 +16,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	protected $provides = [
 		'health_check',
+		'health_check_page_cache',
 		'action_scheduler_check',
 	];
 
@@ -38,6 +39,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function register(): void {
 		$this->getContainer()->addShared( 'health_check', HealthCheck::class )
 			->addArgument( 'options' );
+		$this->getContainer()->addShared( 'health_check_page_cache', PageCache::class );
 		$this->getContainer()->addShared( 'action_scheduler_check', ActionSchedulerCheck::class );
 	}
 }
