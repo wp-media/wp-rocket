@@ -85,7 +85,20 @@ class Subscriber implements Subscriber_Interface {
 
 		$pattern = '/<head[^>]*>/i';
 
-		$lazyload_script = $this->filesystem->get_contents( rocket_get_constant( 'WP_ROCKET_PATH' ) . 'assets/js/lazyload-scripts.min.js' );
+		/**
+		 * Select the version of the JS script used for delay js.
+		 *
+		 * @param string $version Version of the script.
+		 */
+		$version = wpm_apply_filters_typesafe( 'rocket_delay_js_version_js_script', '' );
+
+		$path_script = rocket_get_constant( 'WP_ROCKET_PATH' ) . "assets/js/lazyload-scripts$version.min.js";
+
+		if ( ! $this->filesystem->exists( $path_script ) ) {
+			$path_script = rocket_get_constant( 'WP_ROCKET_PATH' ) . 'assets/js/lazyload-scripts.min.js';
+		}
+
+		$lazyload_script = $this->filesystem->get_contents( $path_script );
 
 		$replaced_html = $html;
 
