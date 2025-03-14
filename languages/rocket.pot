@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the WP Rocket plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.18.2-alpha\n"
+"Project-Id-Version: WP Rocket 3.18.3-alpha\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
 "Last-Translator: WP Media (http://wp-rocket.me/)\n"
 "Language-Team: WP Media (http://www.transifex.com/projects/p/wp-media/) <contact@wp-media.me>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-02-17T11:30:03+00:00\n"
+"POT-Creation-Date: 2025-03-14T07:16:36+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: rocket\n"
@@ -534,9 +534,9 @@ msgstr ""
 
 #: inc/admin/ui/notices.php:662
 #: inc/Engine/License/views/promo-banner.php:38
-#: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:34
-#: inc/Engine/License/views/renewal-expired-banner-ocd.php:44
-#: inc/Engine/License/views/renewal-expired-banner.php:32
+#: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:38
+#: inc/Engine/License/views/renewal-expired-banner-ocd.php:48
+#: inc/Engine/License/views/renewal-expired-banner.php:37
 #: views/settings/page-sections/dashboard.php:47
 msgid "Dismiss this notice"
 msgstr ""
@@ -2552,48 +2552,33 @@ msgstr ""
 msgid "Critical Path CSS Generation Process"
 msgstr ""
 
-#. translators: %1$s = <strong>, %2$s = price, %3$s = </strong>.
+#. translators: %1$s WP Rocket plugin name.
 #: inc/Engine/License/Renewal.php:76
-msgid "Renew before it is too late, you will only pay %1$s%2$s%3$s!"
-msgstr ""
-
-#. translators: %1$s = <strong>, %2$s = discount, %3$s = </strong>,%4$s = <strong>, %5$s = price, %6$s=</strong>.
-#: inc/Engine/License/Renewal.php:85
-msgid "Renew with a %1$s%2$s discount%3$s before it is too late, you will only pay %4$s%5$s%6$s!"
-msgstr ""
-
-#. translators: %1$s = <strong>, %2$s = </strong>, %3$s = price.
-#: inc/Engine/License/Renewal.php:139
-msgid "Renew your license for 1 year now at %1$s%3$s%2$s."
-msgstr ""
-
-#. translators: %1$s = <strong>, %2$s = </strong>, %3$s = discount percentage, %4$s = price.
-#: inc/Engine/License/Renewal.php:152
-msgid "Renew your license for 1 year now and get %1$s%3$s OFF%2$s immediately: you will only pay %1$s%4$s%2$s!"
+msgid "Your %1$s%2$s license is about to expire%3$s: you will soon lose access to product updates and support."
 msgstr ""
 
 #. translators: %1$s = <strong>, %2$s = </strong>, %3$s = discount price.
-#: inc/Engine/License/Renewal.php:218
+#: inc/Engine/License/Renewal.php:185
 msgid "Renew before it is too late, you will pay %1$s%3$s%2$s."
 msgstr ""
 
 #. translators: %1$s = <strong>, %2$s = discount percentage, %3$s = </strong>, %4$s = discount price.
-#: inc/Engine/License/Renewal.php:227
+#: inc/Engine/License/Renewal.php:194
 msgid "Renew with a %1$s%2$s discount%3$s before it is too late, you will only pay %1$s%4$s%3$s!"
 msgstr ""
 
 #. translators: %1$s = <a>, %2$s = </a>.
-#: inc/Engine/License/Renewal.php:526
+#: inc/Engine/License/Renewal.php:496
 msgid "You need a valid license to continue using this feature. %1$sRenew now%2$s before losing access."
 msgstr ""
 
 #. translators: %1$s = <a>, %2$s = </a>.
-#: inc/Engine/License/Renewal.php:547
+#: inc/Engine/License/Renewal.php:517
 msgid "You need an active license to enable this option. %1$sRenew now%2$s."
 msgstr ""
 
 #. translators: %1$s = <a>, %2$s = </a>.
-#: inc/Engine/License/Renewal.php:575
+#: inc/Engine/License/Renewal.php:545
 msgid "You need an active license to enable this option. %1$sMore info%2$s."
 msgstr ""
 
@@ -2635,50 +2620,50 @@ msgstr ""
 msgid "Upgrade now"
 msgstr ""
 
-#: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:13
+#: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:14
 msgid "The Optimize CSS Delivery feature is disabled."
 msgstr ""
 
-#: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:17
+#: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:18
 msgid "You can no longer use the Remove Unused CSS or Load CSS asynchronously options."
 msgstr ""
 
 #. translators: %1$s = <strong>, %2$s = </strong>.
-#: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:22
+#: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:23
 msgid "You need an %1$sactive license%2$s to keep optimizing your CSS delivery, which addresses a PageSpeed Insights recommendation and improves your page performance."
 msgstr ""
 
-#: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:31
-#: inc/Engine/License/views/renewal-expired-banner-ocd.php:41
-#: inc/Engine/License/views/renewal-expired-banner.php:29
-#: inc/Engine/License/views/renewal-soon-banner.php:33
+#: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:36
+#: inc/Engine/License/views/renewal-expired-banner-ocd.php:46
+#: inc/Engine/License/views/renewal-expired-banner.php:34
+#: inc/Engine/License/views/renewal-soon-banner.php:35
 msgid "Renew now"
 msgstr ""
 
-#: inc/Engine/License/views/renewal-expired-banner-ocd.php:13
+#: inc/Engine/License/views/renewal-expired-banner-ocd.php:14
 msgid "You will soon lose access to some features."
 msgstr ""
 
 #. translators: %1$s = <strong>, %2$s = </strong>.
-#: inc/Engine/License/views/renewal-expired-banner-ocd.php:20
+#: inc/Engine/License/views/renewal-expired-banner-ocd.php:21
 msgid "You need an %1$sactive license to continue optimizing your CSS delivery%2$s."
 msgstr ""
 
-#: inc/Engine/License/views/renewal-expired-banner-ocd.php:26
+#: inc/Engine/License/views/renewal-expired-banner-ocd.php:27
 msgid "The Remove Unused CSS and Load CSS asynchronously features are great options to address the PageSpeed Insights recommendations and improve your website performance."
 msgstr ""
 
 #. translators: %1$s = <strong>, %2$s = </strong>, %3$s = date.
-#: inc/Engine/License/views/renewal-expired-banner-ocd.php:31
+#: inc/Engine/License/views/renewal-expired-banner-ocd.php:32
 msgid "These features will be %1$sautomatically disabled on %3$s%2$s."
 msgstr ""
 
-#: inc/Engine/License/views/renewal-expired-banner.php:13
+#: inc/Engine/License/views/renewal-expired-banner.php:14
 msgid "Your WP Rocket license is expired!"
 msgstr ""
 
 #. translators: %1$s = <strong>, %2$s = </strong>.
-#: inc/Engine/License/views/renewal-expired-banner.php:20
+#: inc/Engine/License/views/renewal-expired-banner.php:21
 msgid "Your website could be much faster if it could take advantage of our %1$snew features and enhancements%2$s. 🚀"
 msgstr ""
 
