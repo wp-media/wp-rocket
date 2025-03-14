@@ -46,7 +46,7 @@ class ServiceProvider extends AbstractServiceProvider {
 				[
 					'options',
 					'rucss_optimize_context',
-					new StringArgument( $this->getContainer()->get( 'template_path' ) ),
+					new StringArgument( $this->getContainer()->get( 'template_path' ) . '/settings' ),
 				]
 			);
 		$this->getContainer()->add( 'saas_clean', Clean::class );
