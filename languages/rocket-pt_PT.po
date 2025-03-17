@@ -5,9 +5,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.18.1-beta1\n"
+"Project-Id-Version: WP Rocket 3.18.3-alpha\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2025-01-29T13:05:38+00:00\n"
+"POT-Creation-Date: 2025-03-14T07:16:36+00:00\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Pedro Mendonça <ped.gaspar@gmail.com>, 2025\n"
 "Language-Team: Portuguese (Portugal) (https://app.transifex.com/wp-media/teams/18133/pt_PT/)\n"
@@ -650,9 +650,9 @@ msgid "%s: User cache cleared."
 msgstr "%s: A cache do utilizador foi limpa."
 
 #: inc/admin/ui/notices.php:662 inc/Engine/License/views/promo-banner.php:38
-#: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:34
-#: inc/Engine/License/views/renewal-expired-banner-ocd.php:44
-#: inc/Engine/License/views/renewal-expired-banner.php:32
+#: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:38
+#: inc/Engine/License/views/renewal-expired-banner-ocd.php:48
+#: inc/Engine/License/views/renewal-expired-banner.php:37
 #: views/settings/page-sections/dashboard.php:47
 msgid "Dismiss this notice"
 msgstr "Descartar esta notificação"
@@ -2991,7 +2991,7 @@ msgstr ""
 "diferida."
 
 #. translators: %1$s = plugin name.
-#: inc/Engine/Common/PerformanceHints/Admin/Controller.php:136
+#: inc/Engine/Common/PerformanceHints/Admin/Controller.php:140
 msgid "%1$s: Critical images and Lazy Render data was cleared!"
 msgstr ""
 "%1$s: As imagens críticas e os dados de apresentação diferida foram limpos!"
@@ -3262,44 +3262,23 @@ msgstr "Pré-carregamento"
 msgid "Critical Path CSS Generation Process"
 msgstr "Processo de geração do CSS do caminho crítico"
 
-#. translators: %1$s = <strong>, %2$s = price, %3$s = </strong>.
+#. translators: %1$s WP Rocket plugin name.
 #: inc/Engine/License/Renewal.php:76
-msgid "Renew before it is too late, you will only pay %1$s%2$s%3$s!"
-msgstr "Renove antes que seja tarde demais, pagará apenas %1$s%2$s%3$s!"
-
-#. translators: %1$s = <strong>, %2$s = discount, %3$s = </strong>,%4$s =
-#. <strong>, %5$s = price, %6$s=</strong>.
-#: inc/Engine/License/Renewal.php:85
 msgid ""
-"Renew with a %1$s%2$s discount%3$s before it is too late, you will only pay "
-"%4$s%5$s%6$s!"
+"Your %1$s%2$s license is about to expire%3$s: you will soon lose access to "
+"product updates and support."
 msgstr ""
-"Renove com %1$s%2$s de desconto%3$s antes que seja tarde demais, por apenas "
-"%4$s%5$s%6$s!"
-
-#. translators: %1$s = <strong>, %2$s = </strong>, %3$s = price.
-#: inc/Engine/License/Renewal.php:139
-msgid "Renew your license for 1 year now at %1$s%3$s%2$s."
-msgstr "Renove agora a sua licença por 1 ano por %1$s%3$s%2$s."
-
-#. translators: %1$s = <strong>, %2$s = </strong>, %3$s = discount percentage,
-#. %4$s = price.
-#: inc/Engine/License/Renewal.php:152
-msgid ""
-"Renew your license for 1 year now and get %1$s%3$s OFF%2$s immediately: you "
-"will only pay %1$s%4$s%2$s!"
-msgstr ""
-"Renove agora a sua licença por 1 ano e obtenha de imediato %1$s%3$s de "
-"desconto%2$s: apenas pagará %1$s%4$s%2$s!"
+"A sua %1$slicença do %2$s está prestes a expirar%3$s: em breve deixará de "
+"ter acesso às actualizações e suporte do produto."
 
 #. translators: %1$s = <strong>, %2$s = </strong>, %3$s = discount price.
-#: inc/Engine/License/Renewal.php:218
+#: inc/Engine/License/Renewal.php:185
 msgid "Renew before it is too late, you will pay %1$s%3$s%2$s."
 msgstr "Renove antes que seja tarde demais, pagará %1$s%3$s%2$s."
 
 #. translators: %1$s = <strong>, %2$s = discount percentage, %3$s = </strong>,
 #. %4$s = discount price.
-#: inc/Engine/License/Renewal.php:227
+#: inc/Engine/License/Renewal.php:194
 msgid ""
 "Renew with a %1$s%2$s discount%3$s before it is too late, you will only pay "
 "%1$s%4$s%3$s!"
@@ -3308,7 +3287,7 @@ msgstr ""
 "%1$s%4$s%3$s!"
 
 #. translators: %1$s = <a>, %2$s = </a>.
-#: inc/Engine/License/Renewal.php:526
+#: inc/Engine/License/Renewal.php:496
 msgid ""
 "You need a valid license to continue using this feature. %1$sRenew now%2$s "
 "before losing access."
@@ -3317,13 +3296,13 @@ msgstr ""
 "%1$sRenove agora%2$s antes de perde o acesso."
 
 #. translators: %1$s = <a>, %2$s = </a>.
-#: inc/Engine/License/Renewal.php:547
+#: inc/Engine/License/Renewal.php:517
 msgid "You need an active license to enable this option. %1$sRenew now%2$s."
 msgstr ""
 "Precisa de uma licença válida para activar esta opção. %1$sRenove agora%2$s."
 
 #. translators: %1$s = <a>, %2$s = </a>.
-#: inc/Engine/License/Renewal.php:575
+#: inc/Engine/License/Renewal.php:545
 msgid "You need an active license to enable this option. %1$sMore info%2$s."
 msgstr ""
 "Precisa de uma licença válida para activar esta opção. %1$sMais "
@@ -3372,11 +3351,11 @@ msgstr "Segundos"
 msgid "Upgrade now"
 msgstr "Actualize agora"
 
-#: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:13
+#: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:14
 msgid "The Optimize CSS Delivery feature is disabled."
 msgstr "A funcionalidade de optimizar entrega do CSS está desactivada."
 
-#: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:17
+#: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:18
 msgid ""
 "You can no longer use the Remove Unused CSS or Load CSS asynchronously "
 "options."
@@ -3385,7 +3364,7 @@ msgstr ""
 "CSS já não podem ser utilizadas."
 
 #. translators: %1$s = <strong>, %2$s = </strong>.
-#: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:22
+#: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:23
 msgid ""
 "You need an %1$sactive license%2$s to keep optimizing your CSS delivery, "
 "which addresses a PageSpeed Insights recommendation and improves your page "
@@ -3395,26 +3374,26 @@ msgstr ""
 "de CSS, para cumprir a recomendação do PageSpeed Insights e melhorar o "
 "desempenho da sua página."
 
-#: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:31
-#: inc/Engine/License/views/renewal-expired-banner-ocd.php:41
-#: inc/Engine/License/views/renewal-expired-banner.php:29
-#: inc/Engine/License/views/renewal-soon-banner.php:33
+#: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:36
+#: inc/Engine/License/views/renewal-expired-banner-ocd.php:46
+#: inc/Engine/License/views/renewal-expired-banner.php:34
+#: inc/Engine/License/views/renewal-soon-banner.php:35
 msgid "Renew now"
 msgstr "Renove agora"
 
-#: inc/Engine/License/views/renewal-expired-banner-ocd.php:13
+#: inc/Engine/License/views/renewal-expired-banner-ocd.php:14
 msgid "You will soon lose access to some features."
 msgstr "Em breve irá perder acesso a algumas funcionalidades."
 
 #. translators: %1$s = <strong>, %2$s = </strong>.
-#: inc/Engine/License/views/renewal-expired-banner-ocd.php:20
+#: inc/Engine/License/views/renewal-expired-banner-ocd.php:21
 msgid ""
 "You need an %1$sactive license to continue optimizing your CSS delivery%2$s."
 msgstr ""
 "Precisa de uma %1$slicença activa para continuar a optimizar a entrega do "
 "CSS%2$s."
 
-#: inc/Engine/License/views/renewal-expired-banner-ocd.php:26
+#: inc/Engine/License/views/renewal-expired-banner-ocd.php:27
 msgid ""
 "The Remove Unused CSS and Load CSS asynchronously features are great options"
 " to address the PageSpeed Insights recommendations and improve your website "
@@ -3425,17 +3404,17 @@ msgstr ""
 "Insights e melhorar o desempenho do seu site."
 
 #. translators: %1$s = <strong>, %2$s = </strong>, %3$s = date.
-#: inc/Engine/License/views/renewal-expired-banner-ocd.php:31
+#: inc/Engine/License/views/renewal-expired-banner-ocd.php:32
 msgid "These features will be %1$sautomatically disabled on %3$s%2$s."
 msgstr ""
 "Estas funcionalidades serão %1$sautomaticamente desactivadas em %3$s%2$s."
 
-#: inc/Engine/License/views/renewal-expired-banner.php:13
+#: inc/Engine/License/views/renewal-expired-banner.php:14
 msgid "Your WP Rocket license is expired!"
 msgstr "A sua licença do WP Rocket está expirada!"
 
 #. translators: %1$s = <strong>, %2$s = </strong>.
-#: inc/Engine/License/views/renewal-expired-banner.php:20
+#: inc/Engine/License/views/renewal-expired-banner.php:21
 msgid ""
 "Your website could be much faster if it could take advantage of our %1$snew "
 "features and enhancements%2$s. 🚀"
@@ -3600,7 +3579,7 @@ msgstr ""
 " nossa %3$sdocumentação%4$s."
 
 #. translators: %1$s = plugin name.
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:275
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:279
 msgid "%1$s: Used CSS cache cleared!"
 msgstr "%1$s: A cache do CSS utilizado foi limpa!"
 
