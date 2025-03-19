@@ -298,9 +298,9 @@ msgstr[1] ""
 "sirva las imágenes WebP por favor desactiva las opciones de servir WebP en "
 "%1$s."
 msgstr[2] ""
-"Estás usando %1$spara servir las imágenes WebP así que no necesitas activar "
-"esta opción. %2$s Más información %3$s %4$sSi prefieres que WP Rocket sirva "
-"las imágenes WebP por favor desactiva la opción de servir WebP en %1$s."
+"Estás usando %1$spara servir imágenes WebP así que no necesitas activar esta"
+" opción. %2$s Más información %3$s %4$sSi prefieres que WP Rocket sirva "
+"imágenes WebP por favor desactiva la opción de servir WebP en %1$s."
 
 #: inc/Addon/WebP/AdminSubscriber.php:105
 msgid "WebP cache is disabled by filter."
