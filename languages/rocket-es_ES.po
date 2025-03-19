@@ -2870,7 +2870,7 @@ msgid ""
 "The change is already applied to the plugin settings. If you were using the "
 "CNAME in your code, make sure to update it to: %1$s."
 msgstr ""
-"El cambio ya se aplica a la configuración del plugin. Si estabas utilizando "
+"El cambio ya se aplicó a la configuración del plugin. Si estabas utilizando "
 "el CNAME en tu código, asegúrate de actualizarlo a: %1$s"
 
 #: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:409
