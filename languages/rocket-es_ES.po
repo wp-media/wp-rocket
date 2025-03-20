@@ -3620,7 +3620,7 @@ msgstr "Trabajos pendientes de la Precarga de WP Rocket"
 
 #: inc/Engine/Preload/Cron/Subscriber.php:166
 msgid "WP Rocket Preload revert stuck failed jobs"
-msgstr "La Precarga de WP Rocket revierte trabajos atascados fallidos"
+msgstr "Precarga de WP Rocket revertir trabajos atascados fallidos"
 
 #: inc/Engine/Saas/Admin/AdminBar.php:106
 msgid "Clear Used CSS of this URL"
