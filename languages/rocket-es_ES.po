@@ -3428,7 +3428,7 @@ msgstr ""
 #: inc/Engine/License/views/renewal-expired-banner-ocd.php:32
 msgid "These features will be %1$sautomatically disabled on %3$s%2$s."
 msgstr ""
-"Estas características serán %1$s desactivadas automáticamente en %3$s%2$s."
+"Estas características serán %1$s desactivadas automáticamente el %3$s%2$s."
 
 #: inc/Engine/License/views/renewal-expired-banner.php:14
 msgid "Your WP Rocket license is expired!"
