@@ -1911,7 +1911,7 @@ msgstr "Añadir dimensiones de imagen faltantes"
 
 #: inc/Engine/Admin/Settings/Page.php:1046
 msgid "Self-host Google Fonts"
-msgstr "Auto Alojar fuentes de Google"
+msgstr "Alojar localmente fuentes de Google"
 
 #: inc/Engine/Admin/Settings/Page.php:1066
 msgid "Generate cache files, preload fonts"
