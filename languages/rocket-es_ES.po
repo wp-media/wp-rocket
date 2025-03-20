@@ -1399,7 +1399,7 @@ msgstr "Optimizar archivos"
 
 #: inc/Engine/Admin/Settings/Page.php:476
 msgid "Optimize CSS & JS"
-msgstr "Optimizar CSS&JS"
+msgstr "Optimizar CSS & JS"
 
 #. translators: %1$s = type of minification (HTML, CSS or JS), %2$s = “WP
 #. Rocket”.
