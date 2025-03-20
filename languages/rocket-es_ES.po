@@ -3289,8 +3289,8 @@ msgid ""
 "Your %1$s%2$s license is about to expire%3$s: you will soon lose access to "
 "product updates and support."
 msgstr ""
-"Tu %1$s%2$s licencia de WP Rocket está a punto de caducar%3$s: pronto "
-"perderás el acceso a las actualizaciones del plugin y al soporte."
+"Tu licencia de %1$s%2$s está a punto de expirar%3$s: pronto perderás el "
+"acceso a las actualizaciones del plugin y al soporte."
 
 #. translators: %1$s = <strong>, %2$s = </strong>, %3$s = discount price.
 #: inc/Engine/License/Renewal.php:185
