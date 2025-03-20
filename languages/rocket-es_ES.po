@@ -3014,8 +3014,8 @@ msgstr ""
 #: inc/Engine/Common/PerformanceHints/Admin/Controller.php:140
 msgid "%1$s: Critical images and Lazy Render data was cleared!"
 msgstr ""
-"%1$s: Se han borrado las Imágenes Críticas y los datos del Renderizado "
-"Automático Diferido."
+"%1$s: Se han borrado las Imágenes Críticas y los datos del Contenido "
+"Renderizado de Forma Diferida."
 
 #: inc/Engine/Common/PerformanceHints/AJAX/AJAXControllerTrait.php:19
 msgid "Script error"
