@@ -3007,8 +3007,8 @@ msgstr "Limpiar"
 msgid ""
 "This action will clear the Critical Images and Lazily Rendered Content."
 msgstr ""
-"Esta acción borrará las Imágenes críticas y el Contenido renderizado de "
-"forma diferida."
+"Esta acción borrará las Imágenes Críticas y el Contenido Renderizado de "
+"Forma Diferida."
 
 #. translators: %1$s = plugin name.
 #: inc/Engine/Common/PerformanceHints/Admin/Controller.php:140
