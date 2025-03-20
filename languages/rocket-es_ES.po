@@ -1496,7 +1496,7 @@ msgstr ""
 #: inc/Engine/Admin/Settings/Page.php:566
 #: inc/Engine/Admin/Settings/Page.php:588
 msgid "Optimize CSS delivery"
-msgstr "Optimizar la entrega del CSS"
+msgstr "Optimizar la entrega de CSS"
 
 #: inc/Engine/Admin/Settings/Page.php:571
 msgid ""
