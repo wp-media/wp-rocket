@@ -3171,8 +3171,8 @@ msgid ""
 "optimization. Load CSS Asynchronously is always available as a back-up."
 msgstr ""
 "Recomendamos encarecidamente el %1$s uso de Eliminar el CSS no Utilizado "
-"%2$s para una mejor optimización CSS. La opción de Cargar CSS asíncrono, "
-"siempre estará disponible como respaldo."
+"%2$s para una mejor optimización CSS. La opción de Cargar CSS de manera "
+"asíncrona, siempre estará disponible como respaldo."
 
 #: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:851
 msgid "Stay with the old option"
