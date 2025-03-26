@@ -389,6 +389,7 @@ class Plugin {
 			'media_fonts_frontend_subscriber',
 			'media_fonts_admin_subscriber',
 			'media_fonts_clean_subscriber',
+			'health_check_page_cache',
 		];
 
 		$host_type = HostResolver::get_host_service();
