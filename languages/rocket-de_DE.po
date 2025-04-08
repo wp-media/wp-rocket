@@ -1121,7 +1121,7 @@ msgstr "Wähle eine Datei von deinem Computer (maximale Größe: %s)"
 
 #: inc/deprecated/deprecated.php:1294 inc/Engine/Admin/Settings/Render.php:499
 msgid "Upload file and import settings"
-msgstr "Datei hochladen und Einstellungen importieren."
+msgstr "Datei hochladen und Einstellungen importieren"
 
 #: inc/deprecated/deprecated.php:1385
 msgid "Your Cloudflare credentials are valid."
