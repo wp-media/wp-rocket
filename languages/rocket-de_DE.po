@@ -1439,7 +1439,7 @@ msgstr "CSS minifizieren"
 
 #: inc/Engine/Admin/Settings/Page.php:535
 msgid "Minify CSS removes whitespace and comments to reduce the file size."
-msgstr "Entfernt Leerzeilen und Kommentare zur Reduzierung der Datei-Größe."
+msgstr "Entfernt Leerzeilen und Kommentare zur Reduzierung der Dateigröße."
 
 #: inc/Engine/Admin/Settings/Page.php:550
 msgid ""
