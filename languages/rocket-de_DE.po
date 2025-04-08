@@ -1592,7 +1592,7 @@ msgstr "JavaScript minifizieren"
 #: inc/Engine/Admin/Settings/Page.php:659
 msgid ""
 "Minify JavaScript removes whitespace and comments to reduce the file size."
-msgstr "Entfernt Leerzeilen und Kommentare zur Reduzierung der Datei-Größe."
+msgstr "Entfernt Leerzeilen und Kommentare zur Reduzierung der Dateigröße."
 
 #: inc/Engine/Admin/Settings/Page.php:673
 msgid ""
