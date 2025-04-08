@@ -29,7 +29,7 @@ class Data {
 		'lazyload'                => 'Lazyload Images',
 		'lazyload_css_bg_img'     => 'Lazyload CSS Background Images',
 		'lazyload_iframes'        => 'Lazyload Iframes',
-		'lazyload_youtube'        => 'Lazyload Youtube',
+		'lazyload_youtube'        => 'Lazyload YouTube',
 		'cache_webp'              => 'WebP Cache',
 		'minify_css'              => 'Minify CSS',
 		'remove_unused_css'       => 'Remove Unused CSS',
