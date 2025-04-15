@@ -36,8 +36,7 @@ msgstr "https://wp-rocket.me/de/"
 #. Description of the plugin
 #: wp-rocket.php
 msgid "The best WordPress performance plugin."
-msgstr ""
-"Das beliebte WordPress-Plugin für Caching und Performance-Optimierung."
+msgstr "Das beste WordPress-Plugin für Caching und Leistungsoptimierung."
 
 #. Author of the plugin
 #: wp-rocket.php
