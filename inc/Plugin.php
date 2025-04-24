@@ -55,6 +55,7 @@ use WP_Rocket\Engine\Debug\ServiceProvider as DebugServiceProvider;
 use WP_Rocket\Engine\Common\PerformanceHints\ServiceProvider as PerformanceHintsServiceProvider;
 use WP_Rocket\Engine\Optimization\LazyRenderContent\ServiceProvider as LRCServiceProvider;
 use WP_Rocket\Engine\Media\Fonts\ServiceProvider as MediaFontsServiceProvider;
+use WP_Rocket\Engine\Tracking\ServiceProvider as TrackingServiceProvider;
 
 /**
  * Plugin Manager.
@@ -200,6 +201,7 @@ class Plugin {
 		$this->container->addServiceProvider( new OptimizationAdminServiceProvider() );
 		$this->container->addServiceProvider( new DomainChangeServiceProvider() );
 		$this->container->addServiceProvider( new AdminLazyloadCSSServiceProvider() );
+		$this->container->addServiceProvider( new TrackingServiceProvider() );
 
 		return [
 			'beacon',
@@ -224,6 +226,7 @@ class Plugin {
 			'domain_change_subscriber',
 			'lazyload_css_admin_subscriber',
 			'post_edit_options_subscriber',
+			'tracking_subscriber',
 		];
 	}
 
