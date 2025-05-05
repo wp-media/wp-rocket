@@ -119,7 +119,20 @@ class Elementor implements Subscriber_Interface {
 		}
 		$pattern = '/<\/body*>/i';
 
-		$fix_elementor_animation_script = $this->filesystem->get_contents( rocket_get_constant( 'WP_ROCKET_PATH' ) . 'assets/js/elementor-animation.js' );
+		/**
+		 * Select the version of the JS script used for delay js.
+		 *
+		 * @param string $version Version of the script.
+		 */
+		$version = wpm_apply_filters_typesafe( 'rocket_delay_js_version_js_script', '' );
+
+		$path_script = rocket_get_constant( 'WP_ROCKET_PATH' ) . "assets/js/elementor-animation$version.js";
+
+		if ( ! $this->filesystem->exists( $path_script ) ) {
+			$path_script = rocket_get_constant( 'WP_ROCKET_PATH' ) . 'assets/js/elementor-animation.js';
+		}
+
+		$fix_elementor_animation_script = $this->filesystem->get_contents( $path_script );
 
 		if ( false !== $fix_elementor_animation_script ) {
 			$html = preg_replace( $pattern, "<script>{$fix_elementor_animation_script}</script>$0", $html, 1 );
