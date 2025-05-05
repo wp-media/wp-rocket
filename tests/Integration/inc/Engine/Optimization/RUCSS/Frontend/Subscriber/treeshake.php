@@ -73,8 +73,4 @@ class Test_Treeshake extends FilesystemTestCase {
 	public function used_css_dir_level() {
 		return 3;
 	}
-
-	public function rocket_preload_fonts_optimization() {
-		return $this->config['preload_fonts_feature'];
-	}
 }
