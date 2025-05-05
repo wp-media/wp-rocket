@@ -128,7 +128,7 @@ class Controller implements ControllerInterface {
 		/**
 		 * Filters the list of processed font extensions.
 		 *
-		 * @param array $processed_extensions Array of processed font extensions.
+		 * @param string[] $processed_extensions Array of processed font extensions.
 		 */
 		$processed_extensions = wpm_apply_filters_typed( 'string[]', 'rocket_preload_fonts_processed_extensions', $processed_extensions );
 
