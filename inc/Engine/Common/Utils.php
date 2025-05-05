@@ -35,6 +35,6 @@ class Utils {
 	 * @return bool
 	 */
 	public static function is_saas_visit(): bool {
-		return isset( $_SERVER[ 'HTTP_WPR_OPT_LIST' ] );
+		return isset( $_SERVER['HTTP_WPR_OPT_LIST'] );
 	}
 }

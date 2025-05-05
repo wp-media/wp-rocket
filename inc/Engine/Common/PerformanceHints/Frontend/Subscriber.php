@@ -58,7 +58,6 @@ class Subscriber implements Subscriber_Interface {
 		if ( empty( $html ) || ! Utils::is_saas_visit() ) {
 			return $html;
 		}
-
 		return $this->processor->maybe_apply_optimizations( $html );
 	}
 
