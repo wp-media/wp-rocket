@@ -41,9 +41,11 @@ class Settings {
 	 * @return void
 	 */
 	public function maybe_enable_auto_preload_fonts(): void {
-		if ( ! empty( $this->options->get( 'preload_fonts', [] ) ) ) {
+		if ( empty( $this->options->get( 'preload_fonts', [] ) ) ) {
+			return;
+		}
+
 			$this->options->set( 'auto_preload_fonts', true );
 			$this->options_api->set( 'auto_preload_fonts', true );
-		}
 	}
 }
