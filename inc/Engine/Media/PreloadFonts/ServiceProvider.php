@@ -99,8 +99,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->addShared( 'preload_fonts_admin_settings', AdminSettings::class )
 			->addArguments(
 				[
-					$this->getContainer()->get( 'options' ),
-					$this->getContainer()->get( 'options_api' ),
+					$options,
+					$options_api,
 				]
 			);
 		$this->getContainer()->add( 'preload_fonts_admin_subscriber', AdminSubscriber::class )
