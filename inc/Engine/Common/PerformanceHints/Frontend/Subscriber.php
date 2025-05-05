@@ -55,7 +55,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return string
 	 */
 	public function maybe_apply_optimizations( $html ): string {
-		if ( empty( $html ) || ! Utils::get_saas_request_header() ) {
+		if ( empty( $html ) || ! Utils::is_saas_visit() ) {
 			return $html;
 		}
 
@@ -68,7 +68,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function start_performance_hints_buffer() {
-		if ( ! Utils::get_saas_request_header() ) {
+		if ( ! Utils::is_saas_visit() ) {
 			return;
 		}
 
@@ -92,7 +92,7 @@ class Subscriber implements Subscriber_Interface {
 		 *
 		 * @since 3.17
 		 *
-		 * @param $buffer Page HTML content.
+		 * @param $buffer string HTML content.
 		 */
 		return wpm_apply_filters_typed( 'string', 'rocket_performance_hints_buffer', $buffer );
 	}

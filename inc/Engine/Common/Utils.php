@@ -30,17 +30,11 @@ class Utils {
 	}
 
 	/**
-	 * Get the request header from SaaS visits
+	 * Checks if current request is coming from our SaaS.
 	 *
 	 * @return bool
 	 */
-	public static function get_saas_request_header(): bool {
-		$headers = getAllHeaders();
-
-		if ( ! isset( $headers['Wpr-Opt-List'] ) ) {
-			return false;
-		}
-
-		return true;
+	public static function is_saas_visit(): bool {
+		return isset( $_SERVER[ 'HTTP_WPR_OPT_LIST' ] );
 	}
 }
