@@ -22,11 +22,15 @@ class Test_MaybeApplyOptimizations extends FilesystemTestCase {
 		// Install in set_up_before_class because of exists().
 		self::installAtfTable();
 		self::installLrcTable();
+		self::installPreloadFontsTable();
+		self::installPreconnectExternalDomainsTable();
 	}
 
 	public static function tear_down_after_class() {
 		self::uninstallAtfTable();
 		self::uninstallLrcTable();
+		self::uninstallPreloadFontsTable();
+		self::uninstallPreconnectDomainsTable();
 
 		parent::tear_down_after_class();
 	}
@@ -36,7 +40,7 @@ class Test_MaybeApplyOptimizations extends FilesystemTestCase {
 
 		add_filter( 'rocket_disable_meta_generator', '__return_true' );
 
-		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'maybe_apply_optimizations', 17 );
+		$this->unregisterAllCallbacksExceptMulti('rocket_buffer', [17 => 'maybe_apply_optimizations', 100000 => 'insert_rocket_head']);
 	}
 
 	public function tear_down() {
@@ -76,6 +80,14 @@ class Test_MaybeApplyOptimizations extends FilesystemTestCase {
 			self::addLrc( $config['lrc']['row'] );
 		}
 
+		if ( ! empty( $config['preload_fonts']['row'] ) ) {
+			self::addPreloadFonts( $config['preload_fonts']['row'] );
+		}
+
+		if ( ! empty( $config['preload_external_domains']['row'] ) ) {
+			self::addPreconnectExternalDomains( $config['preload_external_domains']['row'] );
+		}
+
 		if ( isset( $config['filter_delay'] ) ) {
 			add_filter( 'rocket_performance_hints_optimization_delay', [ $this, 'add_delay' ] );
 		}
@@ -91,8 +103,8 @@ class Test_MaybeApplyOptimizations extends FilesystemTestCase {
 		add_filter( 'pre_get_rocket_option_cache_logged_user', [ $this, 'get_cache_user' ] );
 
 		$this->assertSame(
-			trim($expected),
-			trim(apply_filters( 'rocket_buffer', $config['html'] ))
+			$this->format_the_html($expected),
+			$this->format_the_html(apply_filters( 'rocket_buffer', $config['html'] ))
 		);
 	}
 

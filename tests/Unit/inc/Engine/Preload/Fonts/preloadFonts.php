@@ -63,10 +63,19 @@ class Test_PreloadFonts extends TestCase {
 				} );
 		}
 
-		$this->assertSame(
-			$expected,
-			$this->fonts->preload_fonts( $buffer )
-		);
+		$optimized_buffer = $this->fonts->preload_fonts( $buffer );
+		if ( is_string( $expected ) ) {
+			$this->assertSame(
+				$expected,
+				$optimized_buffer,
+			);
+		} else if ( is_array( $expected ) ) {
+			$this->assertSame(
+				$expected['fonts'],
+				$this->fonts->get_fonts(),
+			);
+		}
+
 	}
 
 	public function providerTestData() {
