@@ -174,7 +174,7 @@ class Controller implements ControllerInterface {
 
 				return true;
 			}
-			);
+		);
 
 		return array_values( $filtered_fonts );
 	}
