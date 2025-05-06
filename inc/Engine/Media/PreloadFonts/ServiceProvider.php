@@ -55,21 +55,26 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		$this->getContainer()->add( 'preload_fonts_query', PreloadFontsQuery::class );
 		$this->getContainer()->add( 'preload_fonts_context', Context::class )
-			->addArgument( $options );
+			->addArguments( 
+				[
+					'options',
+					'dynamic_lists_defaultlists_data_manager',
+				]
+			);
 		$this->getContainer()->addShared( 'preload_fonts_front_controller', FrontendController::class )
 		->addArguments(
 			[
-				$this->getContainer()->get( 'options' ),
-				$this->getContainer()->get( 'preload_fonts_query' ),
-				$this->getContainer()->get( 'preload_fonts_context' ),
+				'options',
+				'preload_fonts_query',
+				'preload_fonts_context',
 			]
 		);
 
 		$this->getContainer()->add( 'preload_fonts_ajax_controller', AJAXController::class )
 			->addArguments(
 				[
-					$this->getContainer()->get( 'preload_fonts_query' ),
-					$this->getContainer()->get( 'preload_fonts_context' ),
+					'preload_fonts_query',
+					'preload_fonts_context',
 				]
 			);
 
