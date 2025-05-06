@@ -44,6 +44,6 @@ class Utils {
 	 * @return bool
 	 */
 	public static function is_inspector_visit(): bool {
-		return isset( $_GET['wpr_lazyrendercontent'] );
+		return isset( $_GET['wpr_lazyrendercontent'] );// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 	}
 }
