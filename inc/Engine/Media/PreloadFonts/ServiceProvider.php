@@ -55,58 +55,56 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->addShared( 'preload_fonts_table', PreloadFontsTable::class );
 
 		$this->getContainer()->get( 'preload_fonts_table' );
-		$options     = $this->getContainer()->get( 'options' );
-		$options_api = $this->getContainer()->get( 'options_api' );
 
 		$this->getContainer()->add( 'preload_fonts_query', PreloadFontsQuery::class );
 		$this->getContainer()->add( 'preload_fonts_context', Context::class )
-			->addArgument( $options );
+			->addArgument( 'options' );
 		$this->getContainer()->addShared( 'preload_fonts_front_controller', FrontendController::class )
 		->addArguments(
 			[
-				$this->getContainer()->get( 'options' ),
-				$this->getContainer()->get( 'preload_fonts_query' ),
-				$this->getContainer()->get( 'preload_fonts_context' ),
+				'options',
+				'preload_fonts_query',
+				'preload_fonts_context',
 			]
 		);
 
 		$this->getContainer()->add( 'preload_fonts_ajax_controller', AJAXController::class )
 			->addArguments(
 				[
-					$this->getContainer()->get( 'preload_fonts_query' ),
-					$this->getContainer()->get( 'preload_fonts_context' ),
+					'preload_fonts_query',
+					'preload_fonts_context',
 				]
 			);
 
 		$this->getContainer()->addShared( 'preload_fonts_frontend_subscriber', FrontendSubscriber::class )
 			->addArguments(
 				[
-					$this->getContainer()->get( 'preload_fonts_front_controller' ),
+					'preload_fonts_front_controller',
 				]
 			);
 
 		$this->getContainer()->addShared( 'preload_fonts_factory', Factory::class )
 			->addArguments(
 				[
-					$this->getContainer()->get( 'preload_fonts_ajax_controller' ),
-					$this->getContainer()->get( 'preload_fonts_front_controller' ),
-					$this->getContainer()->get( 'preload_fonts_table' ),
-					$this->getContainer()->get( 'preload_fonts_query' ),
-					$this->getContainer()->get( 'preload_fonts_context' ),
+					'preload_fonts_ajax_controller',
+					'preload_fonts_front_controller',
+					'preload_fonts_table',
+					'preload_fonts_query',
+					'preload_fonts_context',
 				]
 			);
 
 		$this->getContainer()->addShared( 'preload_fonts_admin_settings', AdminSettings::class )
 			->addArguments(
 				[
-					$options,
-					$options_api,
+					'options',
+					'options_api',
 				]
 			);
 		$this->getContainer()->add( 'preload_fonts_admin_subscriber', AdminSubscriber::class )
 			->addArguments(
 				[
-					$this->getContainer()->get( 'preload_fonts_admin_settings' ),
+					'preload_fonts_admin_settings',
 				]
 			);
 	}
