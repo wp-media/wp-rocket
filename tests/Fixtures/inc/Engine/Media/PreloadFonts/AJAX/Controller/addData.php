@@ -59,8 +59,8 @@ return [
 				]
 			]),
 			'exclusions' => [
-				'https://fonts.gstatic.com/s/montserrat/v25/JTUQjIg1_i6t8kCHKm459WxZ.woff2',
-				'lato',
+				'Montserrat',
+				'https://fonts.gstatic.com/s/lato/v24/S6uyw4BMUTPHjx4wWw.woff2',
 			]
 		],
 		'expected' => [
