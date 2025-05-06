@@ -160,7 +160,7 @@ class Controller implements ControllerInterface {
 		$filtered_fonts = array_filter(
 			$fonts,
 			function ( $font ) use ( $exclusions ) {
-				// Check if font is not in exclusions array
+				// Check if font is not in exclusions array.
 				if ( in_array( $font, $exclusions, true ) ) {
 					return false;
 				}
