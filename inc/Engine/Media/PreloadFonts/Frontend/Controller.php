@@ -188,4 +188,22 @@ class Controller implements ControllerInterface {
 
 		return $items;
 	}
+
+
+	/**
+	 * Disables the Remove Unused CSS (RUCSS) feature for preloading fonts.
+	 *
+	 * This method can be used as a filter callback to control whether the RUCSS feature
+	 * should be applied when preloading fonts.
+	 *
+	 * @param bool $status Current status of the RUCSS preload fonts feature.
+	 * @return bool Modified status indicating whether RUCSS should be disabled for preloading fonts.
+	 */
+	public function disable_rucss_preload_fonts( $status ) {
+		if ( ! $this->context->is_allowed() ) {
+			return $status;
+		}
+
+		return false;
+	}
 }

@@ -19,7 +19,6 @@ return [
 
 				],
 				'font_excluded' => [],
-				'rocket_preload_fonts_optimization' => false,
 			],
 			'expected' => [
 				'html' => $html_output,
@@ -56,7 +55,6 @@ return [
 
 				],
 				'font_excluded' => [],
-				'rocket_preload_fonts_optimization' => false,
 			],
 			'expected' => [
 				'html' => $html_output,
@@ -92,7 +90,6 @@ return [
 				'files' => [
 					'wp-content/cache/used-css/1/1/2/3/4abcd.css.gz' => gzencode( file_get_contents(__DIR__ . '/CSS/test.css') )
 				],
-				'rocket_preload_fonts_optimization' => false,
 			],
 			'expected' => [
 				'html' => $html_output_font_excluded,
@@ -131,7 +128,6 @@ return [
 				'files' => [
 					'wp-content/cache/used-css/1/1/2/3/4abcd.css.gz' => gzencode( file_get_contents(__DIR__ . '/CSS/FontPreloaded.css') )
 				],
-				'rocket_preload_fonts_optimization' => true,
 			],
 			'expected' => [
 				'html' => $html_output_font_preloaded,
@@ -170,7 +166,6 @@ return [
 				'files' => [
 					'wp-content/cache/used-css/1/1/2/3/4abcd.css.gz' => gzencode( file_get_contents(__DIR__ . '/CSS/FontPreloaded.css') )
 				],
-				'rocket_preload_fonts_optimization' => false,
 			],
 			'expected' => [
 				'html' => $html_output_font_preloaded,
