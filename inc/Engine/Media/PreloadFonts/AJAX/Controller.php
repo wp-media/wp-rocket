@@ -167,7 +167,7 @@ class Controller implements ControllerInterface {
 
 				// Check if font doesn't contain any of the exclusion.
 				foreach ( $exclusions as $exclusion ) {
-					if ( stripos( $exclusion, $font ) !== false ) {
+					if ( stripos( $font, $exclusion ) !== false ) {
 						return false;
 					}
 				}
