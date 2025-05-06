@@ -56,7 +56,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @param bool $status The current status of font preloading.
 	 * @return bool Modified status indicating whether font preloading should be disabled.
 	 */
-	public function disable_rucss_preload_fonts( $status ) {
-		$this->preload_fonts->disable_rucss_preload_fonts( $status );
+	public function disable_rucss_preload_fonts( $status ): bool {
+		return $this->preload_fonts->disable_rucss_preload_fonts( $status );
 	}
 }
