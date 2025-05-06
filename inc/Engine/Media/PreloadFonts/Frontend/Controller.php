@@ -77,41 +77,6 @@ class Controller implements ControllerInterface {
 			return $data;
 		}
 
-		$system_fonts = [
-			'serif',
-			'sans-serif',
-			'monospace',
-			'cursive',
-			'fantasy',
-			'system-ui',
-			'ui-serif',
-			'ui-sans-serif',
-			'ui-monospace',
-			'ui-rounded',
-			'Arial',
-			'Helvetica',
-			'Times New Roman',
-			'Times',
-			'Courier New',
-			'Courier',
-			'Georgia',
-			'Palatino',
-			'Garamond',
-			'Bookman',
-			'Tahoma',
-			'Trebuchet MS',
-			'Arial Black',
-			'Impact',
-			'Comic Sans MS',
-		];
-
-		/**
-		 * Filters the list of system fonts to be excluded from optimization.
-		 *
-			 * @param array $system_fonts Array of system fonts.
-		 */
-		$system_fonts = wpm_apply_filters_typed( 'array', 'rocket_preload_fonts_system_fonts', $system_fonts );
-
 		/**
 		 * Filters the list of mock font urls.
 		 *
@@ -119,7 +84,7 @@ class Controller implements ControllerInterface {
 		 */
 		$font_data = wpm_apply_filters_typed( 'array', 'rocket_preload_fonts_font_data', [] );
 
-		$data['system_fonts']            = $system_fonts;
+		$data['exclusions']            	 = $this->context->get_exclusions();
 		$data['font_data']               = $font_data;
 		$data['status']['preload_fonts'] = $this->context->is_allowed();
 
