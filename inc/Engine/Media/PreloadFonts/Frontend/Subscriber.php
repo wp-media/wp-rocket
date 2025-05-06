@@ -34,6 +34,7 @@ class Subscriber implements Subscriber_Interface {
 	public static function get_subscribed_events(): array {
 		return [
 			'rocket_head_items' => [ 'add_preload_fonts_in_head', 30 ],
+			'rocket_enable_rucss_fonts_preload' => 'disable_rucss_preload_fonts',
 		];
 	}
 
@@ -45,5 +46,13 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function add_preload_fonts_in_head( $items ) {
 		return $this->preload_fonts->add_preload_fonts_in_head( $items );
+	}
+
+	public function disable_rucss_preload_fonts( $status ) {
+		// If preload fonts is disabled{
+		// return $status
+		// }
+
+		// return false
 	}
 }

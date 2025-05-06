@@ -495,17 +495,6 @@ class UsedCSS {
 			return;
 		}
 
-		/**
-		 * Filters the preload fonts optimization
-		 *
-		 * @since 3.19
-		 *
-		 * @param bool $enable True to enable, false to disable.
-		 */
-		if ( wpm_apply_filters_typed( 'boolean', 'rocket_preload_fonts_optimization', true ) ) {
-			return;
-		}
-
 		if ( ! preg_match_all( '/@font-face\s*{\s*(?<content>[^}]+)}/is', $used_css, $font_faces, PREG_SET_ORDER ) ) {
 			return;
 		}
