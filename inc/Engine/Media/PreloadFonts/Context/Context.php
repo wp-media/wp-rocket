@@ -23,7 +23,7 @@ class Context implements ContextInterface {
 	private $data_manager;
 
 	/**
-	 * Array of default fonts to exclude (mostly system).
+	 * Array of default fonts to exclude (mostly system fonts).
 	 *
 	 * @var array
 	 */
