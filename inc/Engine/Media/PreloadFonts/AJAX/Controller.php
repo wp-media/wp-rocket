@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Media\PreloadFonts\AJAX;
 
-use WP_Rocket\Engine\Common\Context\ContextInterface;
+use WP_Rocket\Engine\Media\PreloadFonts\Context\Context;
 use WP_Rocket\Engine\Common\PerformanceHints\AJAX\AJAXControllerTrait;
 use WP_Rocket\Engine\Common\PerformanceHints\AJAX\ControllerInterface;
 use WP_Rocket\Engine\Media\PreloadFonts\Database\Queries\PreloadFonts as PreloadFontsQuery;
@@ -22,7 +22,7 @@ class Controller implements ControllerInterface {
 	/**
 	 * PreloadFonts Context.
 	 *
-	 * @var ContextInterface
+	 * @var Context
 	 */
 	protected $context;
 
@@ -30,9 +30,9 @@ class Controller implements ControllerInterface {
 	 * Constructor
 	 *
 	 * @param PreloadFontsQuery $query   PLFQuery instance.
-	 * @param ContextInterface  $context Context interface.
+	 * @param Context  $context Context instance.
 	 */
-	public function __construct( PreloadFontsQuery $query, ContextInterface $context ) {
+	public function __construct( PreloadFontsQuery $query, Context $context ) {
 		$this->query   = $query;
 		$this->context = $context;
 	}
