@@ -55,7 +55,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return string
 	 */
 	public function maybe_apply_optimizations( $html ): string {
-		if ( empty( $html ) || ! Utils::is_saas_visit() ) {
+		if ( empty( $html ) || ( ! Utils::is_saas_visit() && Utils::is_inspector_visit() ) ) {
 			return $html;
 		}
 		return $this->processor->maybe_apply_optimizations( $html );
@@ -67,7 +67,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function start_performance_hints_buffer() {
-		if ( ! Utils::is_saas_visit() ) {
+		if ( ! Utils::is_saas_visit() && ! Utils::is_inspector_visit() ) {
 			return;
 		}
 
