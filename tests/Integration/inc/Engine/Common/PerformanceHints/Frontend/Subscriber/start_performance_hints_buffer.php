@@ -49,7 +49,8 @@ class Test_StartPerformanceHintsBuffer extends TestCase {
 	 */
 	public function testShouldReturnAsExpected($config, $expected) {
 		// Set up GET parameters
-		$_GET = $config;
+		$_GET = $config['get'] ?? [];
+		$_SERVER = $config['server'] ?? [];
 		ob_start();
 
 		$before_ob_level = ob_get_level();

@@ -69,7 +69,7 @@ class Test_MaybeApplyOptimizations extends FilesystemTestCase {
 			$_GET[ $config['query_string'] ] = 1;
 		}
 
-		if ( isset( $config['sass_visit'] ) ) {
+		if ( ! empty( $config['sass_visit'] ) ) {
 			$_SERVER['HTTP_WPR_OPT_LIST'] = 'all';
 		} else {
 			if ( isset( $_SERVER['HTTP_WPR_OPT_LIST'] ) ) {

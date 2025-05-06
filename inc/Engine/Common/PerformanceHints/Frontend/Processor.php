@@ -96,7 +96,7 @@ class Processor {
 	 * @return string The modified HTML content with the beacon script injected just before the closing body tag.
 	 */
 	private function inject_beacon( $html, $url, $is_mobile ): string {
-		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) && ! Utils::is_saas_visit() ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) && ! Utils::is_saas_visit() ) {
 			return $html;
 		}
 
