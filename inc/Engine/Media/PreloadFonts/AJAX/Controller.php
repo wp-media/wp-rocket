@@ -30,7 +30,7 @@ class Controller implements ControllerInterface {
 	 * Constructor
 	 *
 	 * @param PreloadFontsQuery $query   PLFQuery instance.
-	 * @param Context  $context Context instance.
+	 * @param Context           $context Context instance.
 	 */
 	public function __construct( PreloadFontsQuery $query, Context $context ) {
 		$this->query   = $query;
