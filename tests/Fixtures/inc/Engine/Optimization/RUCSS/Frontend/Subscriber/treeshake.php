@@ -4,6 +4,7 @@ $html_input = file_get_contents(__DIR__ . '/HTML/input.html');
 $html_output = file_get_contents(__DIR__ . '/HTML/output.html');
 $html_output_font_excluded = file_get_contents(__DIR__ . '/HTML/outputFontExcluded.html');
 $html_output_font_preloaded = file_get_contents(__DIR__ . '/HTML/outputFontPreloaded.html');
+$html_output_font_not_in_usedcss = file_get_contents(__DIR__ . '/HTML/outputFontNotPreloaded.html');
 
 
 return [
@@ -19,6 +20,7 @@ return [
 
 				],
 				'font_excluded' => [],
+				'rocket_preload_fonts_optimization' => false,
 			],
 			'expected' => [
 				'html' => $html_output,
@@ -55,7 +57,7 @@ return [
 
 				],
 				'font_excluded' => [],
-
+				'rocket_preload_fonts_optimization' => false,
 			],
 			'expected' => [
 				'html' => $html_output,
@@ -91,6 +93,7 @@ return [
 				'files' => [
 					'wp-content/cache/used-css/1/1/2/3/4abcd.css.gz' => gzencode( file_get_contents(__DIR__ . '/CSS/test.css') )
 				],
+				'rocket_preload_fonts_optimization' => false,
 			],
 			'expected' => [
 				'html' => $html_output_font_excluded,
@@ -129,6 +132,7 @@ return [
 				'files' => [
 					'wp-content/cache/used-css/1/1/2/3/4abcd.css.gz' => gzencode( file_get_contents(__DIR__ . '/CSS/FontPreloaded.css') )
 				],
+				'rocket_preload_fonts_optimization' => true,
 			],
 			'expected' => [
 				'html' => $html_output_font_preloaded,
@@ -167,6 +171,7 @@ return [
 				'files' => [
 					'wp-content/cache/used-css/1/1/2/3/4abcd.css.gz' => gzencode( file_get_contents(__DIR__ . '/CSS/FontPreloaded.css') )
 				],
+				'rocket_preload_fonts_optimization' => false,
 			],
 			'expected' => [
 				'html' => $html_output_font_preloaded,

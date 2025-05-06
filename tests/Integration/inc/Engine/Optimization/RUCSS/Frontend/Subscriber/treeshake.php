@@ -24,6 +24,7 @@ class Test_Treeshake extends FilesystemTestCase {
 		add_filter('rocket_exclude_rucss_fonts_preload', [$this, 'exclude_fonts_preload']);
 		add_filter('rocket_used_css_dir_level', [$this, 'used_css_dir_level']);
 		add_filter( 'rocket_disable_meta_generator', '__return_true' );
+		add_filter( 'rocket_preload_fonts_optimization', [ $this, 'rocket_preload_fonts_optimization' ] );
 	}
 
 	public function tear_down() {
@@ -33,6 +34,7 @@ class Test_Treeshake extends FilesystemTestCase {
 		remove_filter('rocket_exclude_rucss_fonts_preload', [$this, 'exclude_fonts_preload']);
 		remove_filter('rocket_used_css_dir_level', [$this, 'used_css_dir_level']);
 		remove_filter( 'rocket_disable_meta_generator', '__return_true' );
+		remove_filter( 'rocket_preload_fonts_optimization', [ $this, 'rocket_preload_fonts_optimization' ] );
 
 		$this->restoreWpHook('rocket_buffer');
 
@@ -72,5 +74,9 @@ class Test_Treeshake extends FilesystemTestCase {
 
 	public function used_css_dir_level() {
 		return 3;
+	}
+
+	public function rocket_preload_fonts_optimization() {
+		return $this->config[ 'rocket_preload_fonts_optimization' ];
 	}
 }
