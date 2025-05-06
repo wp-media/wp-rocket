@@ -73,7 +73,7 @@ class Controller implements ControllerInterface {
 		}
 
 		$exclusions = $this->context->get_exclusions();
-		$fonts = $this->remove_excluded_fonts( $fonts, $exclusions );
+		$fonts      = $this->remove_excluded_fonts( $fonts, $exclusions );
 
 		foreach ( (array) $fonts as $index => $font ) {
 			$preload_fonts[ $index ] = sanitize_text_field( wp_unslash( $font ) );
@@ -152,27 +152,30 @@ class Controller implements ControllerInterface {
 	 *
 	 * @param array $fonts Array of fonts to be preloaded.
 	 * @param array $exclusions Array of fonts to be excluded.
-	 * 
+	 *
 	 * @return array Filtered array of fonts, excluding those specified in the exclusion list.
 	 */
-    public function remove_excluded_fonts( array $fonts, array $exclusions ): array {
-        // Filter out the excluded fonts.
-        $filtered_fonts = array_filter( $fonts, function( $font ) use ( $exclusions ) {
-            // Check if font is not in exclusions array
-            if ( in_array( $font, $exclusions, true ) ) {
-                return false;
-            }
-            
-            // Check if font doesn't contain any of the exclusion.
-            foreach ( $exclusions as $exclusion ) {
-                if ( stripos( $exclusion, $font ) !== false ) {
-                    return false;
-                }
-            }
-            
-            return true;
-        } );
+	public function remove_excluded_fonts( array $fonts, array $exclusions ): array {
+		// Filter out the excluded fonts.
+		$filtered_fonts = array_filter(
+			$fonts,
+			function ( $font ) use ( $exclusions ) {
+				// Check if font is not in exclusions array
+				if ( in_array( $font, $exclusions, true ) ) {
+					return false;
+				}
 
-        return array_values( $filtered_fonts );
-    }
+				// Check if font doesn't contain any of the exclusion.
+				foreach ( $exclusions as $exclusion ) {
+					if ( stripos( $exclusion, $font ) !== false ) {
+						return false;
+					}
+				}
+
+				return true;
+			}
+			);
+
+		return array_values( $filtered_fonts );
+	}
 }

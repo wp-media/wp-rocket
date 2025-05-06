@@ -27,33 +27,33 @@ class Context implements ContextInterface {
 	 *
 	 * @var array
 	 */
-	private $exclusions  = [
-        'serif',
-        'sans-serif',
-        'monospace',
-        'cursive',
-        'fantasy',
-        'system-ui',
-        'ui-serif',
-        'ui-sans-serif',
-        'ui-monospace',
-        'ui-rounded',
-        'Arial',
-        'Helvetica',
-        'Times New Roman',
-        'Times',
-        'Courier New',
-        'Courier',
-        'Georgia',
-        'Palatino',
-        'Garamond',
-        'Bookman',
-        'Tahoma',
-        'Trebuchet MS',
-        'Arial Black',
-        'Impact',
-        'Comic Sans MS',
-    ];
+	private $exclusions = [
+		'serif',
+		'sans-serif',
+		'monospace',
+		'cursive',
+		'fantasy',
+		'system-ui',
+		'ui-serif',
+		'ui-sans-serif',
+		'ui-monospace',
+		'ui-rounded',
+		'Arial',
+		'Helvetica',
+		'Times New Roman',
+		'Times',
+		'Courier New',
+		'Courier',
+		'Georgia',
+		'Palatino',
+		'Garamond',
+		'Bookman',
+		'Tahoma',
+		'Trebuchet MS',
+		'Arial Black',
+		'Impact',
+		'Comic Sans MS',
+	];
 
 	/**
 	 * Constructor.
@@ -62,7 +62,7 @@ class Context implements ContextInterface {
 	 * @param DataManager  $data_manager DataManager instance.
 	 */
 	public function __construct( Options_Data $options, DataManager $data_manager ) {
-		$this->options = $options;
+		$this->options      = $options;
 		$this->data_manager = $data_manager;
 	}
 
@@ -92,20 +92,20 @@ class Context implements ContextInterface {
 	}
 
 	/**
-     * Get array of fonts to be excluded.
-     *
-     * @return array
-     */
-    public function get_exclusions(): array {
-		$lists = $this->data_manager->get_lists();
-		$lists = isset( $lists->delay_js_exclusions ) ? $lists->delay_js_exclusions : [];
-        $exclusions = array_merge( $this->exclusions, $lists );
+	 * Get array of fonts to be excluded.
+	 *
+	 * @return array
+	 */
+	public function get_exclusions(): array {
+		$lists      = $this->data_manager->get_lists();
+		$lists      = isset( $lists->delay_js_exclusions ) ? $lists->delay_js_exclusions : [];
+		$exclusions = array_merge( $this->exclusions, $lists );
 
-        /**
+		/**
 		 * Filters excluded fonts.
 
 		 * @param array $exclusions Array of fonts to exclude.
 		 */
-        return wpm_apply_filters_typed('array', 'rocket_preload_fonts_excluded_fonts', $exclusions );
-    }
+		return wpm_apply_filters_typed( 'array', 'rocket_preload_fonts_excluded_fonts', $exclusions );
+	}
 }

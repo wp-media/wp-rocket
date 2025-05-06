@@ -55,7 +55,7 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		$this->getContainer()->add( 'preload_fonts_query', PreloadFontsQuery::class );
 		$this->getContainer()->add( 'preload_fonts_context', Context::class )
-			->addArguments( 
+			->addArguments(
 				[
 					'options',
 					'dynamic_lists_defaultlists_data_manager',
