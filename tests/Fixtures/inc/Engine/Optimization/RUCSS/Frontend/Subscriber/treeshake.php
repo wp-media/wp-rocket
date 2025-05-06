@@ -4,7 +4,6 @@ $html_input = file_get_contents(__DIR__ . '/HTML/input.html');
 $html_output = file_get_contents(__DIR__ . '/HTML/output.html');
 $html_output_font_excluded = file_get_contents(__DIR__ . '/HTML/outputFontExcluded.html');
 $html_output_font_preloaded = file_get_contents(__DIR__ . '/HTML/outputFontPreloaded.html');
-$html_output_font_not_in_usedcss = file_get_contents(__DIR__ . '/HTML/outputFontNotPreloaded.html');
 
 
 return [
