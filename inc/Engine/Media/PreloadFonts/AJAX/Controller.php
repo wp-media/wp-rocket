@@ -72,8 +72,7 @@ class Controller implements ControllerInterface {
 			$max_preload_fonts_number = 1;
 		}
 
-		$exclusions = $this->context->get_exclusions();
-		$fonts      = $this->remove_excluded_fonts( $fonts, $exclusions );
+		$fonts      = $this->remove_excluded_fonts( $fonts, $this->context->get_exclusions() );
 
 		foreach ( (array) $fonts as $index => $font ) {
 			$preload_fonts[ $index ] = sanitize_text_field( wp_unslash( $font ) );
