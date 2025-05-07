@@ -154,7 +154,7 @@ class Controller implements ControllerInterface {
 	 *
 	 * @return array Filtered array of fonts, excluding those specified in the exclusion list.
 	 */
-	public function remove_excluded_fonts( array $fonts, array $exclusions ): array {
+	private function remove_excluded_fonts( array $fonts, array $exclusions ): array {
 		// Filter out the excluded fonts.
 		$filtered_fonts = array_filter(
 			$fonts,
