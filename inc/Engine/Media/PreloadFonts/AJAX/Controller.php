@@ -72,7 +72,7 @@ class Controller implements ControllerInterface {
 			$max_preload_fonts_number = 1;
 		}
 
-		$fonts      = $this->remove_excluded_fonts( $fonts, $this->context->get_exclusions() );
+		$fonts = $this->remove_excluded_fonts( $fonts, $this->context->get_exclusions() );
 
 		foreach ( (array) $fonts as $index => $font ) {
 			$preload_fonts[ $index ] = sanitize_text_field( wp_unslash( $font ) );
@@ -155,23 +155,27 @@ class Controller implements ControllerInterface {
 	 * @return array Filtered array of fonts, excluding those specified in the exclusion list.
 	 */
 	private function remove_excluded_fonts( array $fonts, array $exclusions ): array {
-		// Filter out the excluded fonts.
+		if ( empty( $exclusions ) ) {
+			return $fonts;
+		}
+
+		/**
+		 * Create a single regex pattern from all exclusions.
+		 * Use a different delimiter (#) to avoid issues with URLs containing slashes.
+		 */
+		$pattern = '#(' . implode( '|', array_map( 'preg_quote', $exclusions ) ) . ')#i';
+
+		// Filter out fonts that match the pattern.
 		$filtered_fonts = array_filter(
 			$fonts,
-			function ( $font ) use ( $exclusions ) {
-				// Check if font is not in exclusions array.
+			function ( $font ) use ( $pattern, $exclusions ) {
+				// Check exact match ( Mainly url match ).
 				if ( in_array( $font, $exclusions, true ) ) {
 					return false;
 				}
 
-				// Check if font doesn't contain any of the exclusion.
-				foreach ( $exclusions as $exclusion ) {
-					if ( stripos( $font, $exclusion ) !== false ) {
-						return false;
-					}
-				}
-
-				return true;
+				// Check for substring match using regex.
+				return ! preg_match( $pattern, $font );
 			}
 		);
 
