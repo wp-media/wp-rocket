@@ -78,7 +78,7 @@ return [
             'get_lists' => (object) [
                 'preload_fonts_exclusions' => [
                     'Montserrat',
-				    'https://fonts.gstatic.com/s/lato/v24/S6uyw4BMUTPHjx4wWw.woff2',
+                    'https://fonts.gstatic.com/s/lato/v24/S6uyw4BMUTPHjx4wWw.woff2',
                 ],
             ],
         ],
@@ -109,7 +109,7 @@ return [
             'Impact',
             'Comic Sans MS',
             'Montserrat',
-			'https://fonts.gstatic.com/s/lato/v24/S6uyw4BMUTPHjx4wWw.woff2',
+            'https://fonts.gstatic.com/s/lato/v24/S6uyw4BMUTPHjx4wWw.woff2',
         ],
     ],
 ];
