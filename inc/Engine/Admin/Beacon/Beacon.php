@@ -841,6 +841,16 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 					'url' => 'https://fr.docs.wp-rocket.me/article/1852-auto-heberger-google-fonts?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
+			'preconnect_domains'         => [
+				'en' => [
+					'id'  => '',
+					'url' => '',
+				],
+				'fr' => [
+					'id'  => '',
+					'url' => '',
+				],
+			],
 		];
 
 		return isset( $suggest[ $doc_id ][ $this->get_user_locale() ] )
