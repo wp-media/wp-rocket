@@ -84,9 +84,9 @@ class Controller implements ControllerInterface {
 		 */
 		$font_data = wpm_apply_filters_typed( 'array', 'rocket_preload_fonts_font_data', [] );
 
-		$data['preload_fonts_exclusions']              = $this->context->get_exclusions();
-		$data['font_data']               = $font_data;
-		$data['status']['preload_fonts'] = $this->context->is_allowed();
+		$data['preload_fonts_exclusions'] = $this->context->get_exclusions();
+		$data['font_data']                = $font_data;
+		$data['status']['preload_fonts']  = $this->context->is_allowed();
 
 		return $data;
 	}
