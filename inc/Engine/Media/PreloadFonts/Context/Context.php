@@ -98,7 +98,7 @@ class Context implements ContextInterface {
 	 */
 	public function get_exclusions(): array {
 		$lists      = $this->data_manager->get_lists();
-		$lists      = isset( $lists->delay_js_exclusions ) ? $lists->delay_js_exclusions : [];
+		$lists      = isset( $lists->preload_fonts_exclusions ) ? $lists->preload_fonts_exclusions : [];
 		$exclusions = array_merge( $this->exclusions, $lists );
 
 		/**
