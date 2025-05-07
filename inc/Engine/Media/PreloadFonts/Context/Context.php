@@ -105,8 +105,8 @@ class Context implements ContextInterface {
 		/**
 		 * Filters excluded fonts.
 
-		 * @param array $exclusions Array of fonts to exclude.
+		 * @param string[] $exclusions Array of fonts to exclude.
 		 */
-		return wpm_apply_filters_typed( 'array', 'rocket_preload_fonts_excluded_fonts', $exclusions );
+		return wpm_apply_filters_typed( 'string[]', 'rocket_preload_fonts_excluded_fonts', $exclusions );
 	}
 }
