@@ -174,14 +174,10 @@ class Controller implements ControllerInterface {
 
 		foreach ( $fonts as $font ) {
 			$item_args = [
-				// 'id'         => 'preload-font-' . md5( $font ), // Unique ID based on font URL.
 				'href' => esc_url( $font ),
 				'as'   => 'font',
+				2      => 'crossorigin',
 			];
-
-			if ( ! $this->is_relative( $font ) && $this->is_third_party_font( $font ) ) {
-				$item_args[2] = 'crossorigin';
-			}
 
 			$items[] = $this->preload_link( $item_args );
 		}
