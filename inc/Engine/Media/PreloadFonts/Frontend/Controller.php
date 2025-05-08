@@ -127,25 +127,6 @@ class Controller implements ControllerInterface {
 	}
 
 	/**
-	 * Checks if the font URL is from a third party.
-	 *
-	 * @param string $font_url Font URL.
-	 *
-	 * @return bool
-	 */
-	private function is_third_party_font( string $font_url ): bool {
-		$parsed_url = wp_parse_url( $font_url );
-
-		if ( empty( $parsed_url['host'] ) ) {
-			return false;
-		}
-
-		$site_url = wp_parse_url( site_url() );
-
-		return $parsed_url['host'] !== $site_url['host'];
-	}
-
-	/**
 	 * Adds the preload fonts to the head tag.
 	 *
 	 * @param array $items added to the head.
