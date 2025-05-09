@@ -821,16 +821,6 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 					'url' => 'https://fr.docs.wp-rocket.me/article/1833-impossible-creer-table-rucssusedcss/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
-			'lazy_render_content'        => [
-				'en' => [
-					'id'  => '66b11e26a62a7505fcf339e7',
-					'url' => 'https://docs.wp-rocket.me/article/1835-lazy-render-content/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-				'fr' => [
-					'id'  => '66ba0e8e082392452a0773ea',
-					'url' => 'https://fr.docs.wp-rocket.me/article/1836-rendu-differe-automatique/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-			],
 			'host_fonts_locally'         => [
 				'en' => [
 					'id'  => '673358b02ddbd952f6241b38',
