@@ -833,12 +833,12 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 			],
 			'preconnect_domains'         => [
 				'en' => [
-					'id'  => '',
-					'url' => '',
+					'id'  => '681b61d889bd957cd04bd2d9',
+					'url' => 'https://docs.wp-rocket.me/article/1869-preconnect-to-external-domains',
 				],
 				'fr' => [
-					'id'  => '',
-					'url' => '',
+					'id'  => '681da5ae11561a04f5de356e',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1870-preconnexion-aux-domaines-externes',
 				],
 			],
 		];
