@@ -18,13 +18,18 @@ class Test_MaybeEnableAutoPreloadFonts extends TestCase {
 	public function set_up() {
 		parent::set_up();
 
+		$this->setUpSettings();
+
 		$this->unregisterAllCallbacksExcept( 'wp_rocket_upgrade', 'maybe_enable_auto_preload_fonts', 9 );
 
 	}
 
 	public function tear_down() {
+		$this->tearDownSettings();
+
 		$this->restoreWpHook( 'wp_rocket_upgrade' );
-		delete_option( 'wp_rocket_settings' );
+
+//		remove_filter( 'pre_get_rocket_option_preload_fonts', [ $this, 'set_option'] );
 
 		parent::tear_down();
 	}
@@ -33,21 +38,21 @@ class Test_MaybeEnableAutoPreloadFonts extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoAsExpected( $config, $expected ) {
-		$options = get_option( 'wp_rocket_settings' );
+		$this->mergeExistingSettingsAndUpdate( $config['options'] );
 
-		$options['preload_fonts'] = $config['options']['preload_fonts'];
 
-		update_option( 'wp_rocket_settings', $options );
 
 		do_action( 'wp_rocket_upgrade', $config['new'], $config['old'] );
 
 		$options = get_option( 'wp_rocket_settings' );
 
 		foreach ( $expected['options'] as $key => $value ) {
-			$this->assertArrayHasKey( $key, $expected['options'] );
-			$this->assertSame( $value, $expected['options'][ $key ] );
+			$this->assertArrayHasKey( $key, $options );
+			$this->assertSame( $value, $options[ $key ] );
 		}
 
 	}
-
+	public function set_option() {
+		return $this->option;
+	}
 }

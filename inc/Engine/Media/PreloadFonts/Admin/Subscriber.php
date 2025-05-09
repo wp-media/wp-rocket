@@ -50,7 +50,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function maybe_enable_auto_preload_fonts( $new_version, $old_version ): void {
-		if ( version_compare( $old_version, '3.19', '<' ) ) {
+		if ( version_compare( $old_version, '3.19', '>' ) ) {
 			return;
 		}
 		$this->controller->maybe_enable_auto_preload_fonts();

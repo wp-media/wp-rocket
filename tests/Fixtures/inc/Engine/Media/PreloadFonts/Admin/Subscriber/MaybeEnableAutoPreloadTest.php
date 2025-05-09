@@ -15,7 +15,7 @@ return [
 			]
 		],
 	],
-	'testShouldUpdateOptionWhenVersionUnder319' => [
+	'testShouldNotEnableAutoPreloadIfOldPreloadEmpty' => [
 		'config' => [
 			'new' => '3.19',
 			'old' => '3.18',
@@ -29,7 +29,7 @@ return [
 			],
 		],
 	],
-	'testShouldNotEnableOptionWhenVersionUnder319' => [
+	'testShouldEnableNewAutoPreloadWhenVersionUnder319' => [
 		'config' => [
 			'new' => '3.19',
 			'old' => '3.18',
@@ -41,9 +41,6 @@ return [
 		],
 		'expected' => [
 			'options' => [
-				'preload_fonts' => [
-					'fonts1'
-				],
 				'auto_preload_fonts' => true
 			]
 		],

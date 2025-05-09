@@ -46,5 +46,6 @@ class Settings {
 		}
 
 		$this->options->set( 'auto_preload_fonts', true );
-		$this->options_api->set( 'settings', $this->options->get_options() );   }
+		$this->options_api->set( 'settings', $this->options->get_options() );
+	}
 }
