@@ -78,6 +78,6 @@ class Test_CheckData extends TestCase {
 			->with( $config['url'], $config['is_mobile'] )
 			->willReturn( $config['row'] );
 
-		$this->assertSame( [ 'preconnect_external_domains' => $expected['message'] ], $this->controller->check_data() );
+		$this->assertSame( [ 'preconnect_external_domain' => $expected['message'] ], $this->controller->check_data() );
 	}
 }

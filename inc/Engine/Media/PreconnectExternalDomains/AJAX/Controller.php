@@ -119,13 +119,13 @@ class Controller implements ControllerInterface {
 	 */
 	public function check_data(): array {
 		$payload = [
-			'preconnect_external_domains' => false,
+			'preconnect_external_domain' => false,
 		];
 
 		check_ajax_referer( 'rocket_beacon', 'rocket_beacon_nonce' );
 
 		if ( ! $this->context->is_allowed() ) {
-			$payload['preconnect_external_domains'] = true;
+			$payload['preconnect_external_domain'] = true;
 
 			return $payload;
 		}
@@ -136,7 +136,7 @@ class Controller implements ControllerInterface {
 		$row = $this->query->get_row( $url, $is_mobile );
 
 		if ( ! empty( $row ) ) {
-			$payload['preconnect_external_domains'] = true;
+			$payload['preconnect_external_domain'] = true;
 		}
 
 		return $payload;

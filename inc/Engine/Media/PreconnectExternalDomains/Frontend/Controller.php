@@ -178,7 +178,7 @@ class Controller implements ControllerInterface {
 	private function get_domain_preconnect_item( $domain ) {
 		if ( $this->use_prefetch( $domain ) ) {
 			// Use dns-prefetch.
-			return $this->prefetch_link(
+			return $this->dns_prefetch_link(
 				[
 					'href' => esc_url( $domain ),
 					1      => 'crossorigin',
