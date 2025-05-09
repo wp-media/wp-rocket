@@ -13,7 +13,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  */
 class Test_MaybeEnableAutoPreloadFonts extends TestCase {
 
-	private $option;
+//	private $option;
 
 	public function set_up() {
 		parent::set_up();
@@ -40,7 +40,7 @@ class Test_MaybeEnableAutoPreloadFonts extends TestCase {
 	public function testShouldDoAsExpected( $config, $expected ) {
 		$this->mergeExistingSettingsAndUpdate( $config['options'] );
 
-
+//		add_filter( 'pre_get_rocket_option_preload_fonts', [ $this, 'set_option'] );
 
 		do_action( 'wp_rocket_upgrade', $config['new'], $config['old'] );
 
@@ -52,7 +52,7 @@ class Test_MaybeEnableAutoPreloadFonts extends TestCase {
 		}
 
 	}
-	public function set_option() {
-		return $this->option;
-	}
+//	public function set_option() {
+//		return $this->option;
+//	}
 }
