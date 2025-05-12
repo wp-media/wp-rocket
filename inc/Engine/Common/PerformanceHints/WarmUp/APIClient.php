@@ -20,7 +20,9 @@ class APIClient extends BaseAPIClient {
 		$is_home = Utils::is_home( $url );
 
 		$config = [
-			'optimization_list' => '',
+			'optimization_list' => [
+				'performance_hints', // performance_hints represent atf,lrc.
+			],
 			'is_home'           => $is_home,
 			'is_mobile'         => 'mobile' === $device,
 		];
