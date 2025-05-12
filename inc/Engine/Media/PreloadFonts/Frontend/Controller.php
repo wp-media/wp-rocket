@@ -7,6 +7,7 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Common\PerformanceHints\Frontend\ControllerInterface;
 use WP_Rocket\Engine\Media\PreloadFonts\Database\Queries\PreloadFonts as PFQuery;
 use WP_Rocket\Engine\Media\PreloadFonts\Context\Context;
+use WP_Rocket\Engine\Media\PreloadFonts\Database\Rows\PreloadFonts;
 use WP_Rocket\Engine\Optimization\UrlTrait;
 use WP_Rocket\Engine\Support\CommentTrait;
 use WP_Rocket\Engine\Common\Head\ElementTrait;
@@ -156,13 +157,8 @@ class Controller implements ControllerInterface {
 			return $items;
 		}
 
-		global $wp;
-
-		$url       = untrailingslashit( home_url( add_query_arg( [], $wp->request ) ) );
-		$is_mobile = $this->context->is_mobile_allowed();
-
-		$row = $this->query->get_row( $url, $is_mobile );
-		if ( empty( $row ) || 'completed' !== $row->status || empty( $row->fonts ) || '[]' === $row->fonts ) {
+		$row = $this->get_current_url_row();
+		if ( empty( $row ) ) {
 			return $items;
 		}
 
@@ -189,6 +185,23 @@ class Controller implements ControllerInterface {
 		return $items;
 	}
 
+	/**
+	 * Get current visited page row in DB.
+	 *
+	 * @return false|PreloadFonts
+	 */
+	private function get_current_url_row() {
+		global $wp;
+
+		$url       = untrailingslashit( home_url( add_query_arg( [], $wp->request ) ) );
+		$is_mobile = $this->context->is_mobile_allowed();
+
+		$row = $this->query->get_row( $url, $is_mobile );
+		if ( empty( $row ) || 'completed' !== $row->status || empty( $row->fonts ) || '[]' === $row->fonts ) {
+			return false;
+		}
+		return $row;
+	}
 
 	/**
 	 * Disables the Remove Unused CSS (RUCSS) feature for preloading fonts.
@@ -201,6 +214,11 @@ class Controller implements ControllerInterface {
 	 */
 	public function disable_rucss_preload_fonts( $status ) {
 		if ( ! $this->context->is_allowed() ) {
+			return $status;
+		}
+
+		$row = $this->get_current_url_row();
+		if ( empty( $row ) ) {
 			return $status;
 		}
 
