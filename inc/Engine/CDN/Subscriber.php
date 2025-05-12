@@ -44,20 +44,21 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_buffer'           => [
+			'rocket_buffer'                         => [
 				[ 'rewrite', 2 ],
 				[ 'rewrite_srcset', 3 ],
 			],
-			'rocket_css_content'      => 'rewrite_css_properties',
-			'rocket_usedcss_content'  => 'rewrite_css_properties',
-			'rocket_cdn_hosts'        => [ 'get_cdn_hosts', 10, 2 ],
-			'rocket_dns_prefetch'     => 'add_dns_prefetch_cdn',
-			'rocket_facebook_sdk_url' => 'add_cdn_url',
-			'rocket_css_url'          => [ 'add_cdn_url', 10, 2 ],
-			'rocket_js_url'           => [ 'add_cdn_url', 10, 2 ],
-			'rocket_asset_url'        => [ 'maybe_replace_url', 10, 2 ],
-			'wp_resource_hints'       => [ 'add_preconnect_cdn', 10, 2 ],
-			'rocket_font_url'         => [ 'add_cdn_url', 10, 2 ],
+			'rocket_css_content'                    => 'rewrite_css_properties',
+			'rocket_usedcss_content'                => 'rewrite_css_properties',
+			'rocket_cdn_hosts'                      => [ 'get_cdn_hosts', 10, 2 ],
+			'rocket_dns_prefetch'                   => 'add_dns_prefetch_cdn',
+			'rocket_facebook_sdk_url'               => 'add_cdn_url',
+			'rocket_css_url'                        => [ 'add_cdn_url', 10, 2 ],
+			'rocket_js_url'                         => [ 'add_cdn_url', 10, 2 ],
+			'rocket_asset_url'                      => [ 'maybe_replace_url', 10, 2 ],
+			'wp_resource_hints'                     => [ 'add_preconnect_cdn', 10, 2 ],
+			'rocket_font_url'                       => [ 'add_cdn_url', 10, 2 ],
+			'preconnect_external_domain_exclusions' => 'exclude_cdn_hosts_from_preconnect_external',
 		];
 	}
 
@@ -345,5 +346,31 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	private function is_cdn_enabled() {
 		return (bool) $this->options->get( 'cdn', 0 );
+	}
+
+	/**
+	 * Exclude cdn hosts from being preconnected, deal with them as local urls not external ones.
+	 *
+	 * @param array $exclusions Array of exclusions.
+	 *
+	 * @return array
+	 */
+	public function exclude_cdn_hosts_from_preconnect_external( array $exclusions ): array {
+		if ( ! $this->is_allowed() ) {
+			return $exclusions;
+		}
+
+		$hosts = $this->get_cdn_hosts();
+		if ( empty( $hosts ) ) {
+			return $exclusions;
+		}
+
+		foreach ( $hosts as $host ) {
+			$exclusions[] = [
+				'type'  => 'domain',
+				'value' => $host,
+			];
+		}
+		return $exclusions;
 	}
 }
