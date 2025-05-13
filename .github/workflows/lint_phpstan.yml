@@ -1,41 +1,14 @@
-name: PHP Stan lint
+name: PHPStan
 
 on:
   pull_request:
-    branches:
-      - trunk
-      - develop
-      - branch-*
-      - feature/*
-      - enhancement/*
-      - fix/*
-      - dev/*
+  workflow_dispatch:
+
+# Cancel all previous workflow runs for the same branch that have not yet completed.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  run:
-    runs-on: ${{ matrix.operating-system }}
-
-    strategy:
-      fail-fast: false
-      matrix:
-        operating-system: [ubuntu-latest]
-        php-versions: ['8.4']
-
-    name: WPRocket lint with PHP Stan. PHP ${{ matrix.php-versions }} on ${{ matrix.operating-system }}.
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-
-    - name: Setup PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: ${{ matrix.php-versions }}
-        coverage: none  # XDebug can be enabled here 'coverage: xdebug'
-        tools: composer:v2
-
-    - name: Install dependencies
-      run: composer install --prefer-dist --no-interaction --no-scripts
-
-    - name: Lint with PHP Stan
-      run: composer run-stan
-
+  lint:
+    uses: wp-media/workflows/.github/workflows/phpstan.yml@main
