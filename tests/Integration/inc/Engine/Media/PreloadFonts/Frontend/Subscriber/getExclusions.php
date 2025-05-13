@@ -18,7 +18,7 @@ class Test_GetExclusions extends TestCase {
 
 		$this->assertSame(
 			$expected,
-			apply_filters( 'rocket_preload_fonts_excluded_fonts', [] )
+			wpm_apply_filters_typed( 'string[]', 'rocket_preload_fonts_excluded_fonts', [] )
 		);
 	}
 }
