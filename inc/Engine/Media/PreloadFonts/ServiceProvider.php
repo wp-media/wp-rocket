@@ -58,7 +58,6 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArguments(
 				[
 					'options',
-					'dynamic_lists_defaultlists_data_manager',
 				]
 			);
 		$this->getContainer()->addShared( 'preload_fonts_front_controller', FrontendController::class )
@@ -82,6 +81,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArguments(
 				[
 					$this->getContainer()->get( 'preload_fonts_front_controller' ),
+					'dynamic_lists_defaultlists_data_manager',
 				]
 			);
 
