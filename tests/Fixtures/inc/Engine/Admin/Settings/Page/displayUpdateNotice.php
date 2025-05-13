@@ -48,7 +48,7 @@ return [
 		],
 		'expected' => null,
 	],
-	'testShouldDoNothingWhenFirstInstall' => [
+	'testShouldShowNoticeWhenFirstInstall' => [
 		'config' => [
 			'capability' => true,
 			'screen'     => (object) [
@@ -61,7 +61,12 @@ return [
 				'url' => 'http://example.org',
 			],
 		],
-		'expected' => null,
+		'expected' => [
+			'status'         => 'info',
+			'dismissible'    => '',
+			'message'        => '<strong>WP Rocket:</strong> the plugin has been updated to the 3.19 version. New feature: <a href="http://example.org" data-beacon-article="123" target="_blank" rel="noopener noreferrer">Preconnect to external domains</a>. Check out our documentation to learn more about it.',
+			'dismiss_button' => 'rocket_update_notice',
+		],
 	],
 	'testShouldDoNothingWhenVersionGT317' => [
 		'config' => [
