@@ -79,7 +79,12 @@ class Subscriber implements Subscriber_Interface {
 			return $lists;
 		}
 
-		// Only merge if exclusion is not empty.
+		// Return early if lists is empty.
+		if ( empty( $lists ) ) {
+			return $exclusions;
+		}
+
+		// Only merge if exclusion and list is not empty.
 		return array_merge( $exclusions, $lists );
 	}
 }
