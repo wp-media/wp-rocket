@@ -5,7 +5,6 @@ namespace WP_Rocket\Engine\Media\PreloadFonts\Context;
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
-use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\DataManager;
 
 class Context implements ContextInterface {
 	/**
@@ -16,54 +15,12 @@ class Context implements ContextInterface {
 	private $options;
 
 	/**
-	 * DataManager instance
-	 *
-	 * @var DataManager
-	 */
-	private $data_manager;
-
-	/**
-	 * Array of default fonts to exclude (mostly system fonts).
-	 *
-	 * @var array
-	 */
-	private $exclusions = [
-		'serif',
-		'sans-serif',
-		'monospace',
-		'cursive',
-		'fantasy',
-		'system-ui',
-		'ui-serif',
-		'ui-sans-serif',
-		'ui-monospace',
-		'ui-rounded',
-		'Arial',
-		'Helvetica',
-		'Times New Roman',
-		'Times',
-		'Courier New',
-		'Courier',
-		'Georgia',
-		'Palatino',
-		'Garamond',
-		'Bookman',
-		'Tahoma',
-		'Trebuchet MS',
-		'Arial Black',
-		'Impact',
-		'Comic Sans MS',
-	];
-
-	/**
 	 * Constructor.
 	 *
 	 * @param Options_Data $options Instance of the Option_Data class.
-	 * @param DataManager  $data_manager DataManager instance.
 	 */
-	public function __construct( Options_Data $options, DataManager $data_manager ) {
-		$this->options      = $options;
-		$this->data_manager = $data_manager;
+	public function __construct( Options_Data $options ) {
+		$this->options = $options;
 	}
 
 	/**
@@ -97,22 +54,11 @@ class Context implements ContextInterface {
 	 * @return array
 	 */
 	public function get_exclusions(): array {
-		$lists = $this->data_manager->get_lists();
-		$lists = isset( $lists->preload_fonts_exclusions ) ? $lists->preload_fonts_exclusions : [];
-
-		// Check that lists is a valid array.
-		if ( ! is_array( $lists ) ) {
-			$lists = [];
-		}
-
-		// Avoid unnecessary merge if lists is an empty array.
-		$exclusions = empty( $lists ) ? $this->exclusions : array_merge( $this->exclusions, $lists );
-
 		/**
 		 * Filters excluded fonts.
 
 		 * @param string[] $exclusions Array of fonts to exclude.
 		 */
-		return wpm_apply_filters_typed( 'string[]', 'rocket_preload_fonts_excluded_fonts', $exclusions );
+		return wpm_apply_filters_typed( 'string[]', 'rocket_preload_fonts_excluded_fonts', [] );
 	}
 }
