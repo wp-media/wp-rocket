@@ -379,13 +379,14 @@
   var BeaconLrc_default = BeaconLrc;
 
   // src/BeaconPreloadFonts.js
-  var BeaconPreloadFonts = class _BeaconPreloadFonts {
+  var BeaconPreloadFonts = class {
     constructor(config, logger) {
       this.config = config;
       this.logger = logger;
       this.aboveTheFoldFonts = [];
+      const extensions = (Array.isArray(this.config.processed_extensions) && this.config.processed_extensions.length > 0 ? this.config.processed_extensions : ["woff", "woff2", "ttf"]).map((ext) => ext.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|");
+      this.FONT_FILE_REGEX = new RegExp(`\\.(${extensions})(\\?.*)?$`, "i");
     }
-    static FONT_FILE_REGEX = /\.(woff2?|ttf|otf|eot)(\?.*)?$/i;
     /**
      * Checks if a given font family is a system font.
      * 
@@ -443,7 +444,7 @@
      */
     getNetworkLoadedFonts() {
       return new Map(
-        window.performance.getEntriesByType("resource").filter((resource) => _BeaconPreloadFonts.FONT_FILE_REGEX.test(resource.name)).map((resource) => [this.cleanUrl(resource.name), resource.name])
+        window.performance.getEntriesByType("resource").filter((resource) => this.FONT_FILE_REGEX.test(resource.name)).map((resource) => [this.cleanUrl(resource.name), resource.name])
       );
     }
     /**
@@ -459,7 +460,6 @@
     getFontFaceRules() {
       const stylesheetFonts = {};
       Array.from(document.styleSheets).forEach((sheet) => {
-        if (sheet.href && new URL(sheet.href).origin !== window.location.origin) return;
         try {
           Array.from(sheet.cssRules || []).forEach((rule) => {
             if (rule instanceof CSSFontFaceRule) {
@@ -475,9 +475,11 @@
               }
               const urls = src.match(/url\(['"]?([^'"]+)['"]?\)/g) || [];
               urls.forEach((urlMatch) => {
-                const rawUrl = urlMatch.match(/url\(['"]?([^'"]+)['"]?\)/)[1];
-                const url = new URL(rawUrl, sheet.href).href;
-                const normalizedUrl = this.cleanUrl(url);
+                let rawUrl = urlMatch.match(/url\(['"]?([^'"]+)['"]?\)/)[1];
+                if (sheet.href) {
+                  rawUrl = new URL(rawUrl, sheet.href).href;
+                }
+                const normalizedUrl = this.cleanUrl(rawUrl);
                 if (!stylesheetFonts[fontFamily].urls.includes(normalizedUrl)) {
                   stylesheetFonts[fontFamily].urls.push(normalizedUrl);
                   stylesheetFonts[fontFamily].variations.add(JSON.stringify({
@@ -520,6 +522,7 @@
      * @returns {Promise<void>} A promise that resolves when the analysis is complete.
      */
     async run() {
+      await document.fonts.ready;
       const networkLoadedFonts = this.getNetworkLoadedFonts();
       const stylesheetFonts = this.getFontFaceRules();
       const hostedFonts = /* @__PURE__ */ new Map();
