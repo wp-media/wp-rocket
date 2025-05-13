@@ -483,16 +483,6 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 					'url' => 'https://fr.docs.wp-rocket.me/article/188-comment-est-pre-charge-le-cache/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
-			'dns_prefetch'               => [
-				'en' => [
-					'id'  => '5e055a602c7d3a7e9ae5881c',
-					'url' => 'https://docs.wp-rocket.me/article/1302-prefetch-dns-requests/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-				'fr' => [
-					'id'  => '5e1891892c7d3a7e9ae60983',
-					'url' => 'https://fr.docs.wp-rocket.me/article/1303-prechargement-requetes-dns/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-			],
 			'fonts_preload'              => [
 				'en' => [
 					'id'  => '5eab7729042863474d19f647',
