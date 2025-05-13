@@ -2255,11 +2255,6 @@ class Page extends Abstract_Render {
 
 		$previous_version = $this->options->get( 'previous_version' );
 
-		// Bail-out for fresh install.
-		if ( empty( $previous_version ) ) {
-			return;
-		}
-
 		// Bail-out if previous version is greater than or equal to 3.19.
 		if ( version_compare( $previous_version, '3.19', '>=' ) ) {
 			return;
