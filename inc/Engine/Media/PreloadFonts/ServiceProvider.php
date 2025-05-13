@@ -10,6 +10,8 @@ use WP_Rocket\Engine\Media\PreloadFonts\AJAX\Controller as AJAXController;
 use WP_Rocket\Engine\Media\PreloadFonts\Context\Context;
 use WP_Rocket\Engine\Media\PreloadFonts\Frontend\Controller as FrontendController;
 use WP_Rocket\Engine\Media\PreloadFonts\Frontend\Subscriber as FrontendSubscriber;
+use WP_Rocket\Engine\Media\PreloadFonts\Admin\Subscriber as AdminSubscriber;
+use WP_Rocket\Engine\Media\PreloadFonts\Admin\Settings as AdminSettings;
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
@@ -29,6 +31,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		'preload_fonts_frontend_subscriber',
 		'preload_fonts_front_controller',
 		'preload_fonts_factory',
+		'preload_fonts_admin_subscriber',
+		'preload_fonts_admin_settings',
 	];
 
 	/**
@@ -51,43 +55,56 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->addShared( 'preload_fonts_table', PreloadFontsTable::class );
 
 		$this->getContainer()->get( 'preload_fonts_table' );
-		$options = $this->getContainer()->get( 'options' );
 
 		$this->getContainer()->add( 'preload_fonts_query', PreloadFontsQuery::class );
 		$this->getContainer()->add( 'preload_fonts_context', Context::class )
-			->addArgument( $options );
+			->addArgument( 'options' );
 		$this->getContainer()->addShared( 'preload_fonts_front_controller', FrontendController::class )
 		->addArguments(
 			[
-				$this->getContainer()->get( 'options' ),
-				$this->getContainer()->get( 'preload_fonts_query' ),
-				$this->getContainer()->get( 'preload_fonts_context' ),
+				'options',
+				'preload_fonts_query',
+				'preload_fonts_context',
 			]
 		);
 
 		$this->getContainer()->add( 'preload_fonts_ajax_controller', AJAXController::class )
 			->addArguments(
 				[
-					$this->getContainer()->get( 'preload_fonts_query' ),
-					$this->getContainer()->get( 'preload_fonts_context' ),
+					'preload_fonts_query',
+					'preload_fonts_context',
 				]
 			);
 
 		$this->getContainer()->addShared( 'preload_fonts_frontend_subscriber', FrontendSubscriber::class )
 			->addArguments(
 				[
-					$this->getContainer()->get( 'preload_fonts_front_controller' ),
+					'preload_fonts_front_controller',
 				]
 			);
 
 		$this->getContainer()->addShared( 'preload_fonts_factory', Factory::class )
 			->addArguments(
 				[
-					$this->getContainer()->get( 'preload_fonts_ajax_controller' ),
-					$this->getContainer()->get( 'preload_fonts_front_controller' ),
-					$this->getContainer()->get( 'preload_fonts_table' ),
-					$this->getContainer()->get( 'preload_fonts_query' ),
-					$this->getContainer()->get( 'preload_fonts_context' ),
+					'preload_fonts_ajax_controller',
+					'preload_fonts_front_controller',
+					'preload_fonts_table',
+					'preload_fonts_query',
+					'preload_fonts_context',
+				]
+			);
+
+		$this->getContainer()->addShared( 'preload_fonts_admin_settings', AdminSettings::class )
+			->addArguments(
+				[
+					'options',
+					'options_api',
+				]
+			);
+		$this->getContainer()->add( 'preload_fonts_admin_subscriber', AdminSubscriber::class )
+			->addArguments(
+				[
+					'preload_fonts_admin_settings',
 				]
 			);
 	}

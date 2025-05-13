@@ -66,10 +66,7 @@ class Subscriber implements Subscriber_Interface, PluginFamilyInterface {
 			'rocket_after_settings_radio_options'  => [ 'display_radio_options_sub_fields', 11 ],
 			'rocket_settings_tools_content'        => 'display_mobile_cache_option',
 			'wp_ajax_rocket_enable_mobile_cache'   => 'enable_mobile_cache',
-			'wp_rocket_upgrade'                    => [
-				[ 'enable_separate_cache_files_mobile', 9, 2 ],
-				[ 'maybe_enable_auto_preload_fonts', 9 ],
-			],
+			'wp_rocket_upgrade'                    => [ 'enable_separate_cache_files_mobile', 9, 2 ],
 			'admin_notices'                        => 'display_update_notice',
 		];
 
@@ -286,19 +283,6 @@ class Subscriber implements Subscriber_Interface, PluginFamilyInterface {
 		}
 
 		$this->page->enable_separate_cache_files_mobile();
-	}
-
-	/**
-	 * Enables the auto preload fonts option if the old preload fonts option is not empty.
-	 *
-	 * This function checks the value of the `rocket_preload_fonts` option.
-	 * If it contains a non-empty value, it updates the `auto_preload_fonts` option to `true`.
-	 * This is useful for ensuring that automatic font preloading is enabled based on legacy settings.
-	 *
-	 * @return void
-	 */
-	public function maybe_enable_auto_preload_fonts(): void {
-		$this->page->maybe_enable_auto_preload_fonts();
 	}
 
 	/**

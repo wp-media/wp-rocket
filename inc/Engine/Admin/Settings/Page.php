@@ -1074,7 +1074,7 @@ class Page extends Abstract_Render {
 			'preload',
 			[
 				'title'            => __( 'Preload', 'rocket' ),
-				'menu_description' => __( 'Generate cache files, preload fonts', 'rocket' ),
+				'menu_description' => __( 'Generate cache files', 'rocket' ),
 			]
 		);
 
@@ -1112,17 +1112,6 @@ class Page extends Abstract_Render {
 					'type'        => 'fields_container',
 					'description' => __( 'DNS prefetching can make external files load faster, especially on mobile networks', 'rocket' ),
 					'help'        => $this->beacon->get_suggest( 'dns_prefetch' ),
-					'page'        => 'preload',
-				],
-				'preload_fonts_section' => [
-					'title'       => __( 'Preload Fonts', 'rocket' ),
-					'type'        => 'fields_container',
-					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description' => sprintf( __( 'Improves performance by helping browsers discover fonts in CSS files. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $fonts_preload['url'] ) . '" data-beacon-article="' . esc_attr( $fonts_preload['id'] ) . '" target="_blank">', '</a>' ),
-					'help'        => [
-						'id'  => $fonts_preload['id'],
-						'url' => $fonts_preload['url'],
-					],
 					'page'        => 'preload',
 				],
 			]
@@ -1163,17 +1152,6 @@ class Page extends Abstract_Render {
 					'description'       => __( 'Specify external hosts to be prefetched (no <code>http:</code>, one per line)', 'rocket' ),
 					'placeholder'       => '//example.com',
 					'section'           => 'dns_prefetch_section',
-					'page'              => 'preload',
-					'default'           => [],
-					'sanitize_callback' => 'sanitize_textarea',
-				],
-				'preload_fonts'        => [
-					'type'              => 'textarea',
-					'label'             => __( 'Fonts to preload', 'rocket' ),
-					'description'       => __( 'Specify urls of the font files to be preloaded (one per line). Fonts must be hosted on your own domain, or the domain you have specified on the CDN tab.', 'rocket' ),
-					'helper'            => __( 'The domain part of the URL will be stripped automatically.<br/>Allowed font extensions: otf, ttf, svg, woff, woff2.', 'rocket' ),
-					'placeholder'       => '/wp-content/themes/your-theme/assets/fonts/font-file.woff',
-					'section'           => 'preload_fonts_section',
 					'page'              => 'preload',
 					'default'           => [],
 					'sanitize_callback' => 'sanitize_textarea',
@@ -2304,21 +2282,5 @@ class Page extends Abstract_Render {
 				'dismiss_button' => 'rocket_update_notice',
 			]
 		);
-	}
-
-	/**
-	 * Enables the auto preload fonts option if the old preload fonts option is not empty.
-	 *
-	 * This function checks the value of the `rocket_preload_fonts` option.
-	 * If it contains a non-empty value, it updates the `auto_preload_fonts` option to `true`.
-	 * This is useful for ensuring that automatic font preloading is enabled based on legacy settings.
-	 *
-	 * @return void
-	 */
-	public function maybe_enable_auto_preload_fonts(): void {
-		$old_preload_fonts = $this->options->get( 'rocket_preload_fonts', [] );
-		if ( ! empty( $old_preload_fonts ) ) {
-			$this->options->set( 'auto_preload_fonts', true );
-		}
 	}
 }
