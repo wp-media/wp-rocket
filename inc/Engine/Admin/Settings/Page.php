@@ -1107,13 +1107,6 @@ class Page extends Abstract_Render {
 					],
 					'page'        => 'preload',
 				],
-				'dns_prefetch_section'  => [
-					'title'       => __( 'Prefetch DNS Requests', 'rocket' ),
-					'type'        => 'fields_container',
-					'description' => __( 'DNS prefetching can make external files load faster, especially on mobile networks', 'rocket' ),
-					'help'        => $this->beacon->get_suggest( 'dns_prefetch' ),
-					'page'        => 'preload',
-				],
 			]
 		);
 
@@ -1142,16 +1135,6 @@ class Page extends Abstract_Render {
 					'helper'            => 'Use (.*) wildcards to address multiple URLs under a given path.',
 					'parent'            => 'manual_preload',
 					'section'           => 'preload_section',
-					'page'              => 'preload',
-					'default'           => [],
-					'sanitize_callback' => 'sanitize_textarea',
-				],
-				'dns_prefetch'         => [
-					'type'              => 'textarea',
-					'label'             => __( 'URLs to prefetch', 'rocket' ),
-					'description'       => __( 'Specify external hosts to be prefetched (no <code>http:</code>, one per line)', 'rocket' ),
-					'placeholder'       => '//example.com',
-					'section'           => 'dns_prefetch_section',
 					'page'              => 'preload',
 					'default'           => [],
 					'sanitize_callback' => 'sanitize_textarea',
@@ -2105,6 +2088,7 @@ class Page extends Abstract_Render {
 			'minify_concatenate_css',
 			'cloudflare_api_key',
 			'cloudflare_zone_id',
+			'dns_prefetch',
 		];
 
 		$this->settings->add_hidden_settings_fields(
