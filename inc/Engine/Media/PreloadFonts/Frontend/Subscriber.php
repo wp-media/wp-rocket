@@ -66,25 +66,11 @@ class Subscriber implements Subscriber_Interface {
 	 * @return array
 	 */
 	public function get_exclusions( array $exclusions ): array {
-		$lists = $this->data_manager->get_lists();
-		$lists = isset( $lists->preload_fonts_exclusions ) ? $lists->preload_fonts_exclusions : [];
-
-		// Check that lists is a valid array.
-		if ( ! is_array( $lists ) ) {
-			$lists = [];
-		}
-
-		// Return early if exlusions is empty.
-		if ( empty( $exclusions ) ) {
-			return $lists;
-		}
-
-		// Return early if lists is empty.
-		if ( empty( $lists ) ) {
-			return $exclusions;
-		}
-
-		// Only merge if exclusion and list is not empty.
-		return array_merge( $exclusions, $lists );
+		$lists = $this->data_manager->get_lists()->preload_fonts_exclusions ?? [];
+		/**
+		 * Merge exclusions and lists.
+		 * Handle empty arrays gracefully.
+		 */
+		return array_merge( $exclusions, (array) $lists );
 	}
 }
