@@ -60,29 +60,6 @@ class Test_SanitizeCallback extends TestCase {
 	}
 
 	/**
-	 * @dataProvider addDNSPrefetchProvider
-	 */
-	public function testShouldSanitizeDNSPrefetchEntries( $input, $expected ) {
-		Functions\when( 'esc_url_raw' )->alias( function ( $url ) {
-			if ( false === strpos( $url, ':' ) ) {
-				$url = 'http:' . $url;
-			}
-
-			return filter_var( $url, FILTER_VALIDATE_URL );
-		} );
-		$this->stubWpParseUrl();
-		Functions\when( 'rocket_valid_key' )->justReturn( true );
-
-		$output = $this->settings->sanitize_callback( $input );
-
-		$this->assertArrayHasKey( 'dns_prefetch', $output );
-		$this->assertSame(
-			$expected['dns_prefetch'],
-			array_values( $output['dns_prefetch'] )
-		);
-	}
-
-	/**
 	 * @dataProvider addExcludeCSSProvider
 	 */
 	public function testShouldSanitizeExcludeCSS( $original, $sanitized ) {
@@ -111,10 +88,6 @@ class Test_SanitizeCallback extends TestCase {
 
 	public function addExcludeCSSProvider() {
 		return $this->getTestData( __DIR__, 'exclude-css' );
-	}
-
-	public function addDNSPrefetchProvider() {
-		return $this->getTestData( __DIR__, 'dns-prefetch' );
 	}
 
 	public function addFontPreloadProvider() {
