@@ -12,3 +12,5 @@ concurrency:
 jobs:
   lint:
     uses: wp-media/workflows/.github/workflows/phpcs.yml@main
+    with:
+      composer-options: --no-scripts
