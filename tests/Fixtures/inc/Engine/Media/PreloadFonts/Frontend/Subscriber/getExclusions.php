@@ -16,10 +16,12 @@ return [
     'testShouldReturnEmptyArrayWhenDyanmicListAttributeIsNotAnArray' => [
         'config' => [
             'get_lists' => (object) [
-                'preload_fonts_exclusions' => '',
+                'preload_fonts_exclusions' => 'Montserrat',
             ],
         ],
-        'expected' => [],
+        'expected' => [
+            'Montserrat',
+        ],
     ],
     'testShouldReturnDynamicListExclusions' => [
         'config' => [
