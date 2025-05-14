@@ -11,4 +11,6 @@ concurrency:
 
 jobs:
   lint:
-    uses: wp-media/workflows/.github/workflows/phpstan.yml@a678fad8471e1f47e6b827834baf90b91f6bb18a
+    uses: wp-media/workflows/.github/workflows/phpstan.yml@e1e3f9fcfaf77d0b5bfbdf703162b2dbac06c424
+    with:
+      composer-options: --no-scripts
