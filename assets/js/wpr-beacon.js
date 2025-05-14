@@ -559,8 +559,8 @@
                 urls,
                 variations: stylesheetFonts[fontFamily].variations
               });
+              hostedFonts.get(fontFamily).elements.add(element);
             }
-            hostedFonts.get(fontFamily).elements.add(element);
           }
         };
         try {
@@ -766,13 +766,13 @@
                 elements: /* @__PURE__ */ new Set(),
                 variations: /* @__PURE__ */ new Set()
               });
+              matches.get(fontInfo.url).elements.add(element);
+              matches.get(fontInfo.url).variations.add(JSON.stringify({
+                family: fontInfo.family,
+                weight: fontInfo.weight,
+                style: fontInfo.style
+              }));
             }
-            matches.get(fontInfo.url).elements.add(element);
-            matches.get(fontInfo.url).variations.add(JSON.stringify({
-              family: fontInfo.family,
-              weight: fontInfo.weight,
-              style: fontInfo.style
-            }));
           }
         }
         ["::before", "::after"].forEach((pseudo) => {
@@ -785,13 +785,13 @@
                   elements: /* @__PURE__ */ new Set(),
                   variations: /* @__PURE__ */ new Set()
                 });
+                matches.get(fontInfo.url).elements.add(element);
+                matches.get(fontInfo.url).variations.add(JSON.stringify({
+                  family: fontInfo.family,
+                  weight: fontInfo.weight,
+                  style: fontInfo.style
+                }));
               }
-              matches.get(fontInfo.url).elements.add(element);
-              matches.get(fontInfo.url).variations.add(JSON.stringify({
-                family: fontInfo.family,
-                weight: fontInfo.weight,
-                style: fontInfo.style
-              }));
             }
           }
         });
