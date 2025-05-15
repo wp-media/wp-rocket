@@ -223,6 +223,9 @@ class Settings {
 
 		$input['purge_cron_unit'] = isset( $input['purge_cron_unit'], $allowed_cron_units[ $input['purge_cron_unit'] ] ) ? $input['purge_cron_unit'] : $this->options->get( 'purge_cron_unit' );
 
+		// Option : Prefetch DNS requests.
+		$input['dns_prefetch'] = $this->sanitize_dns_prefetch( $input );
+
 		// Option : Empty the cache of the following pages when updating a post.
 		if ( ! empty( $input['cache_purge_pages'] ) ) {
 			$input['cache_purge_pages'] = rocket_sanitize_textarea_field( 'cache_purge_pages', $input['cache_purge_pages'] );
@@ -446,6 +449,58 @@ class Settings {
 		return isset( $array[ $key ] ) && ! empty( $array[ $key ] ) ? 1 : 0;
 	}
 
+	/**
+	 * Sanitizes the DNS Prefetch sub-option value
+	 *
+	 * @since 3.5.1
+	 *
+	 * @param array $input Array of values for the WP Rocket settings option.
+	 * @return array Sanitized array for the DNS Prefetch sub-option
+	 */
+	private function sanitize_dns_prefetch( array $input ) {
+		if ( empty( $input['dns_prefetch'] ) ) {
+			return [];
+		}
+
+		$value = $input['dns_prefetch'];
+
+		if ( ! is_array( $value ) ) {
+			$value = explode( "\n", $value );
+		}
+
+		$urls = [];
+
+		foreach ( $value as $url ) {
+			$url = trim( $url );
+
+			if ( empty( $url ) ) {
+				continue;
+			}
+
+			$url = preg_replace( '/^(?:https?)?:?\/{3,}/i', 'http://', $url );
+			$url = esc_url_raw( $url );
+
+			if ( empty( $url ) ) {
+				continue;
+			}
+
+			$urls[] = $url;
+		}
+
+		if ( empty( $urls ) ) {
+			return [];
+		}
+
+		return array_unique(
+			array_map(
+				function ( $url ) {
+					return '//' . wp_parse_url( $url, PHP_URL_HOST );
+				},
+				$urls
+			)
+		);
+	}
+	
 	/**
 	 * Sets radio buttons sub fields value from wp options.
 	 *

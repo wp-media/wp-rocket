@@ -966,6 +966,21 @@ if ( ! function_exists( 'rocket_settings_callback' ) ) {
 		$inputs['remove_query_strings'] = ! empty( $inputs['remove_query_strings'] ) ? 1 : 0;
 
 		/*
+		* Option : Prefetch DNS requests
+		*/
+		if ( ! empty( $inputs['dns_prefetch'] ) ) {
+			if ( ! is_array( $inputs['dns_prefetch'] ) ) {
+				$inputs['dns_prefetch'] = explode( "\n", $inputs['dns_prefetch'] );
+			}
+			$inputs['dns_prefetch'] = array_map( 'trim', $inputs['dns_prefetch'] );
+			$inputs['dns_prefetch'] = array_map( 'esc_url', $inputs['dns_prefetch'] );
+			$inputs['dns_prefetch'] = (array) array_filter( $inputs['dns_prefetch'] );
+			$inputs['dns_prefetch'] = array_unique( $inputs['dns_prefetch'] );
+		} else {
+			$inputs['dns_prefetch'] = array();
+		}
+		
+		/*
 		* Option : Empty the cache of the following pages when updating an article
 		*/
 		if ( ! empty( $inputs['cache_purge_pages'] ) ) {
