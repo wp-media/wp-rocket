@@ -500,7 +500,7 @@ class Settings {
 			)
 		);
 	}
-	
+
 	/**
 	 * Sets radio buttons sub fields value from wp options.
 	 *

@@ -431,7 +431,7 @@ class Render extends Abstract_render {
 		if ( is_array( $args['value'] ) ) {
 			$args['value'] = implode( "\n", $args['value'] );
 		}
-		
+
 		echo $this->generate( 'fields/hidden', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 
