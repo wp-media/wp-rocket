@@ -116,7 +116,7 @@ class Test_SanitizeCallback extends TestCase {
 	public function addDNSPrefetchProvider() {
 		return $this->getTestData( __DIR__, 'dns-prefetch' );
 	}
-	
+
 	public function addFontPreloadProvider() {
 		return $this->getTestData( __DIR__, 'font-preload' );
 	}

@@ -979,7 +979,7 @@ if ( ! function_exists( 'rocket_settings_callback' ) ) {
 		} else {
 			$inputs['dns_prefetch'] = array();
 		}
-		
+
 		/*
 		* Option : Empty the cache of the following pages when updating an article
 		*/
