@@ -100,7 +100,7 @@ class Controller implements ControllerInterface {
 		$data['preload_fonts_exclusions'] = $this->context->get_exclusions();
 		$data['font_data']                = $font_data;
 		$data['status']['preload_fonts']  = $this->context->is_allowed();
-		$data['processed_extensions']    = $processed_extensions;
+		$data['processed_extensions']     = $processed_extensions;
 
 		return $data;
 	}
