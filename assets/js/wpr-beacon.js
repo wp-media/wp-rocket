@@ -379,13 +379,14 @@
   var BeaconLrc_default = BeaconLrc;
 
   // src/BeaconPreloadFonts.js
-  var BeaconPreloadFonts = class _BeaconPreloadFonts {
+  var BeaconPreloadFonts = class {
     constructor(config, logger) {
       this.config = config;
       this.logger = logger;
       this.aboveTheFoldFonts = [];
+      const extensions = (Array.isArray(this.config.processed_extensions) && this.config.processed_extensions.length > 0 ? this.config.processed_extensions : ["woff", "woff2", "ttf"]).map((ext) => ext.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|");
+      this.FONT_FILE_REGEX = new RegExp(`\\.(${extensions})(\\?.*)?$`, "i");
     }
-    static FONT_FILE_REGEX = /\.(woff2?|ttf|otf|eot)(\?.*)?$/i;
     /**
      * Checks if a given font family is a system font.
      * 
@@ -443,7 +444,7 @@
      */
     getNetworkLoadedFonts() {
       return new Map(
-        window.performance.getEntriesByType("resource").filter((resource) => _BeaconPreloadFonts.FONT_FILE_REGEX.test(resource.name)).map((resource) => [this.cleanUrl(resource.name), resource.name])
+        window.performance.getEntriesByType("resource").filter((resource) => this.FONT_FILE_REGEX.test(resource.name)).map((resource) => [this.cleanUrl(resource.name), resource.name])
       );
     }
     /**

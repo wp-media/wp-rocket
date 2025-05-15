@@ -119,9 +119,23 @@ class Controller implements ControllerInterface {
 		 */
 		$font_data = wpm_apply_filters_typed( 'array', 'rocket_preload_fonts_font_data', [] );
 
+		$processed_extensions = [
+			'woff2',
+			'woff',
+			'ttf',
+		];
+
+		/**
+		 * Filters the list of processed font extensions.
+		 *
+		 * @param string[] $processed_extensions Array of processed font extensions.
+		 */
+		$processed_extensions = wpm_apply_filters_typed( 'string[]', 'rocket_preload_fonts_processed_extensions', $processed_extensions );
+
 		$data['system_fonts']            = $system_fonts;
 		$data['font_data']               = $font_data;
 		$data['status']['preload_fonts'] = $this->context->is_allowed();
+		$data['processed_extensions']    = $processed_extensions;
 
 		return $data;
 	}

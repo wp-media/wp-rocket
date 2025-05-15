@@ -70,7 +70,21 @@ class Subscriber implements Subscriber_Interface, PluginFamilyInterface {
 			'admin_notices'                        => 'display_update_notice',
 		];
 
-		return array_merge( $events, PluginFamily::get_subscribed_events() );
+		foreach ( PluginFamily::get_subscribed_events() as $hook => $callback ) {
+			if ( isset( $events[ $hook ] ) ) {
+				// Make sure it's an array of callbacks.
+				if ( ! is_array( $events[ $hook ][0] ) ) {
+					$events[ $hook ] = [ $events[ $hook ] ];
+				}
+
+				// Wrap single callback in array if needed.
+				$events[ $hook ][] = is_array( $callback ) ? $callback : [ $callback ];
+			} else {
+				$events[ $hook ] = is_array( $callback ) ? $callback : [ [ $callback ] ];
+			}
+		}
+
+		return $events;
 	}
 
 	/**
