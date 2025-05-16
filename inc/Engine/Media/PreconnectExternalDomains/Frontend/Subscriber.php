@@ -50,7 +50,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @param bool $status Current status.
 	 * @return bool
 	 */
-	public function stop_cdn_insert_resource_hints( $status ) {
+	public function stop_cdn_insert_resource_hints( $status ): bool {
 		return $this->controller->can_cdn_insert_resource_hints( $status );
 	}
 }

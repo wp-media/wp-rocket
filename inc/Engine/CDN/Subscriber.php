@@ -354,13 +354,13 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return bool
 	 */
-	private function can_insert_resource_hints() {
+	private function can_insert_resource_hints(): bool {
 		/**
 		 * Enable adding resource hints by CDN feature.
 		 *
 		 * @since 3.19
 		 *
-		 * @param array $clean An array containing the status and message.
+		 * @param bool $can_insert Can cdn insert resource hints or not, default is true.
 		 */
 		return wpm_apply_filters_typed( 'boolean', 'rocket_cdn_insert_resource_hints', true );
 	}

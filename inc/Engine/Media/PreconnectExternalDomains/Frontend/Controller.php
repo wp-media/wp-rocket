@@ -214,7 +214,7 @@ class Controller implements ControllerInterface {
 	 *
 	 * @return bool
 	 */
-	public function can_cdn_insert_resource_hints( $status ) {
+	public function can_cdn_insert_resource_hints( $status ): bool {
 		if ( ! $status || ! $this->context->is_allowed() ) {
 			return $status;
 		}
