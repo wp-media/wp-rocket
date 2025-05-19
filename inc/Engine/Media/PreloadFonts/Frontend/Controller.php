@@ -106,25 +106,6 @@ class Controller implements ControllerInterface {
 	}
 
 	/**
-	 * Checks if the font URL is from a third party.
-	 *
-	 * @param string $font_url Font URL.
-	 *
-	 * @return bool
-	 */
-	private function is_third_party_font( string $font_url ): bool {
-		$parsed_url = wp_parse_url( $font_url );
-
-		if ( empty( $parsed_url['host'] ) ) {
-			return false;
-		}
-
-		$site_url = wp_parse_url( site_url() );
-
-		return $parsed_url['host'] !== $site_url['host'];
-	}
-
-	/**
 	 * Adds the preload fonts to the head tag.
 	 *
 	 * @param array $items added to the head.
@@ -153,14 +134,10 @@ class Controller implements ControllerInterface {
 
 		foreach ( $fonts as $font ) {
 			$item_args = [
-				// 'id'         => 'preload-font-' . md5( $font ), // Unique ID based on font URL.
 				'href' => esc_url( $font ),
 				'as'   => 'font',
+				2      => 'crossorigin',
 			];
-
-			if ( ! $this->is_relative( $font ) && $this->is_third_party_font( $font ) ) {
-				$item_args[2] = 'crossorigin';
-			}
 
 			$items[] = $this->preload_link( $item_args );
 		}
