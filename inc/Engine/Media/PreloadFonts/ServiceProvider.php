@@ -80,6 +80,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArguments(
 				[
 					'preload_fonts_front_controller',
+					'dynamic_lists_defaultlists_data_manager',
 				]
 			);
 

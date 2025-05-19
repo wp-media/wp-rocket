@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Media\PreloadFonts\AJAX;
 
-use WP_Rocket\Engine\Common\Context\ContextInterface;
+use WP_Rocket\Engine\Media\PreloadFonts\Context\Context;
 use WP_Rocket\Engine\Common\PerformanceHints\AJAX\AJAXControllerTrait;
 use WP_Rocket\Engine\Common\PerformanceHints\AJAX\ControllerInterface;
 use WP_Rocket\Engine\Media\PreloadFonts\Database\Queries\PreloadFonts as PreloadFontsQuery;
@@ -22,7 +22,7 @@ class Controller implements ControllerInterface {
 	/**
 	 * PreloadFonts Context.
 	 *
-	 * @var ContextInterface
+	 * @var Context
 	 */
 	protected $context;
 
@@ -30,9 +30,9 @@ class Controller implements ControllerInterface {
 	 * Constructor
 	 *
 	 * @param PreloadFontsQuery $query   PLFQuery instance.
-	 * @param ContextInterface  $context Context interface.
+	 * @param Context           $context Context instance.
 	 */
-	public function __construct( PreloadFontsQuery $query, ContextInterface $context ) {
+	public function __construct( PreloadFontsQuery $query, Context $context ) {
 		$this->query   = $query;
 		$this->context = $context;
 	}
@@ -71,6 +71,8 @@ class Controller implements ControllerInterface {
 		if ( 0 >= $max_preload_fonts_number ) {
 			$max_preload_fonts_number = 1;
 		}
+
+		$fonts = $this->remove_excluded_fonts( $fonts, $this->context->get_exclusions() );
 
 		foreach ( (array) $fonts as $index => $font ) {
 			$preload_fonts[ $index ] = sanitize_text_field( wp_unslash( $font ) );
@@ -142,5 +144,41 @@ class Controller implements ControllerInterface {
 		}
 
 		return $payload;
+	}
+
+	/**
+	 * Removes excluded fonts from the list of fonts to be preloaded.
+	 *
+	 * @param array $fonts Array of fonts to be preloaded.
+	 * @param array $exclusions Array of fonts to be excluded.
+	 *
+	 * @return array Filtered array of fonts, excluding those specified in the exclusion list.
+	 */
+	private function remove_excluded_fonts( array $fonts, array $exclusions ): array {
+		if ( empty( $exclusions ) ) {
+			return $fonts;
+		}
+
+		/**
+		 * Create a single regex pattern from all exclusions.
+		 * Use a different delimiter (#) to avoid issues with URLs containing slashes.
+		 */
+		$pattern = '#(' . implode( '|', array_map( 'preg_quote', $exclusions ) ) . ')#i';
+
+		// Filter out fonts that match the pattern.
+		$filtered_fonts = array_filter(
+			$fonts,
+			function ( $font ) use ( $pattern, $exclusions ) {
+				// Check exact match ( Mainly url match ).
+				if ( in_array( $font, $exclusions, true ) ) {
+					return false;
+				}
+
+				// Check for substring match using regex.
+				return ! preg_match( $pattern, $font );
+			}
+		);
+
+		return array_values( $filtered_fonts );
 	}
 }
