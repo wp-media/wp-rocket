@@ -85,41 +85,14 @@ class Controller implements ControllerInterface {
 
 		$data['preconnect_external_domain_elements'] = $elements;
 
-		$exclusions = [
-			[
-				'type'  => 'attribute',
-				'key'   => 'rel',
-				'value' => 'profile',
-			],
-			[
-				'type'  => 'attribute',
-				'key'   => 'rel',
-				'value' => 'preconnect',
-			],
-			[
-				'type'  => 'attribute',
-				'key'   => 'rel',
-				'value' => 'dns-prefetch',
-			],
-			[
-				'type'  => 'attribute',
-				'key'   => 'async',
-				'value' => '',
-			],
-			[
-				'type'  => 'domain',
-				'value' => 'static.cloudflareinsights.com',
-			],
-		];
-
 		/**
 		 * Filters the array of elements to be excluded from being processed by the preconnect external domain beacon.
 		 *
 		 * @since 3.19
 		 *
-		 * @param array $excluded_elements Array of elements
+		 * @param string[] $excluded_elements Array of elements
 		 */
-		$exclusions = wpm_apply_filters_typed( 'array', 'preconnect_external_domain_exclusions', $exclusions );
+		$exclusions = wpm_apply_filters_typed( 'string[]', 'preconnect_external_domain_exclusions', [] );
 
 		$data['preconnect_external_domain_exclusions'] = $exclusions;
 		$data['status']['preconnect_external_domain']  = $this->context->is_allowed();
