@@ -24,12 +24,12 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Constructor.
 	 *
-	 * @param Controller $controller Controller instance.
-	 * @param DataManager  $data_manager DataManager instance.
+	 * @param Controller  $controller Controller instance.
+	 * @param DataManager $data_manager DataManager instance.
 	 */
 	public function __construct( Controller $controller, DataManager $data_manager ) {
-		$this->controller = $controller;
-		$this->data_manager  = $data_manager;
+		$this->controller   = $controller;
+		$this->data_manager = $data_manager;
 	}
 
 	/**
@@ -39,7 +39,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'rocket_head_items' => [ 'preconnect_domains', 10 ],
+			'rocket_head_items'                     => [ 'preconnect_domains', 10 ],
 			'preconnect_external_domain_exclusions' => 'get_exclusions',
 		];
 	}
