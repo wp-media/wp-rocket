@@ -47,4 +47,18 @@ class Context implements ContextInterface {
 			&& $this->options->get( 'do_caching_mobile_files', 0 )
 			&& wp_is_mobile();
 	}
+
+	/**
+	 * Get array of fonts to be excluded.
+	 *
+	 * @return array
+	 */
+	public function get_exclusions(): array {
+		/**
+		 * Filters excluded fonts.
+
+		 * @param string[] $exclusions Array of fonts to exclude.
+		 */
+		return wpm_apply_filters_typed( 'string[]', 'rocket_preload_fonts_excluded_fonts', [] );
+	}
 }

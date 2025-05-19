@@ -77,41 +77,6 @@ class Controller implements ControllerInterface {
 			return $data;
 		}
 
-		$system_fonts = [
-			'serif',
-			'sans-serif',
-			'monospace',
-			'cursive',
-			'fantasy',
-			'system-ui',
-			'ui-serif',
-			'ui-sans-serif',
-			'ui-monospace',
-			'ui-rounded',
-			'Arial',
-			'Helvetica',
-			'Times New Roman',
-			'Times',
-			'Courier New',
-			'Courier',
-			'Georgia',
-			'Palatino',
-			'Garamond',
-			'Bookman',
-			'Tahoma',
-			'Trebuchet MS',
-			'Arial Black',
-			'Impact',
-			'Comic Sans MS',
-		];
-
-		/**
-		 * Filters the list of system fonts to be excluded from optimization.
-		 *
-			 * @param array $system_fonts Array of system fonts.
-		 */
-		$system_fonts = wpm_apply_filters_typed( 'array', 'rocket_preload_fonts_system_fonts', $system_fonts );
-
 		/**
 		 * Filters the list of mock font urls.
 		 *
@@ -132,31 +97,12 @@ class Controller implements ControllerInterface {
 		 */
 		$processed_extensions = wpm_apply_filters_typed( 'string[]', 'rocket_preload_fonts_processed_extensions', $processed_extensions );
 
-		$data['system_fonts']            = $system_fonts;
-		$data['font_data']               = $font_data;
-		$data['status']['preload_fonts'] = $this->context->is_allowed();
-		$data['processed_extensions']    = $processed_extensions;
+		$data['preload_fonts_exclusions'] = $this->context->get_exclusions();
+		$data['font_data']                = $font_data;
+		$data['status']['preload_fonts']  = $this->context->is_allowed();
+		$data['processed_extensions']     = $processed_extensions;
 
 		return $data;
-	}
-
-	/**
-	 * Checks if the font URL is from a third party.
-	 *
-	 * @param string $font_url Font URL.
-	 *
-	 * @return bool
-	 */
-	private function is_third_party_font( string $font_url ): bool {
-		$parsed_url = wp_parse_url( $font_url );
-
-		if ( empty( $parsed_url['host'] ) ) {
-			return false;
-		}
-
-		$site_url = wp_parse_url( site_url() );
-
-		return $parsed_url['host'] !== $site_url['host'];
 	}
 
 	/**
@@ -188,14 +134,10 @@ class Controller implements ControllerInterface {
 
 		foreach ( $fonts as $font ) {
 			$item_args = [
-				// 'id'         => 'preload-font-' . md5( $font ), // Unique ID based on font URL.
 				'href' => esc_url( $font ),
 				'as'   => 'font',
+				2      => 'crossorigin',
 			];
-
-			if ( ! $this->is_relative( $font ) && $this->is_third_party_font( $font ) ) {
-				$item_args[2] = 'crossorigin';
-			}
 
 			$items[] = $this->preload_link( $item_args );
 		}
