@@ -379,26 +379,45 @@
   var BeaconLrc_default = BeaconLrc;
 
   // src/BeaconPreloadFonts.js
-  var BeaconPreloadFonts = class _BeaconPreloadFonts {
+  var BeaconPreloadFonts = class {
     constructor(config, logger) {
       this.config = config;
       this.logger = logger;
       this.aboveTheFoldFonts = [];
+      const extensions = (Array.isArray(this.config.processed_extensions) && this.config.processed_extensions.length > 0 ? this.config.processed_extensions : ["woff", "woff2", "ttf"]).map((ext) => ext.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|");
+      this.FONT_FILE_REGEX = new RegExp(`\\.(${extensions})(\\?.*)?$`, "i");
     }
-    static FONT_FILE_REGEX = /\.(woff2?|ttf|otf|eot)(\?.*)?$/i;
     /**
-     * Checks if a given font family is a system font.
+     * Checks if a font family or URL should be excluded from preloading.
      * 
-     * This method checks if the provided font family is part of the system fonts
-     * defined in the configuration. It returns true if the font family is a system
-     * font, and false otherwise.
+     * This method determines if the provided font family or any of its URLs
+     * match any exclusion patterns defined in the configuration. It checks for
+     * exact matches and substring matches for both the font family and URLs.
      * 
      * @param {string} fontFamily - The font family to check.
-     * @returns {boolean} True if the font family is a system font, false otherwise.
+     * @param {string[]} urls - Array of font file URLs to check.
+     * @returns {boolean} True if the font should be excluded, false otherwise.
      */
-    isSystemFont(fontFamily) {
-      const systemFonts = new Set(this.config.system_fonts);
-      return systemFonts.has(fontFamily);
+    isExcluded(fontFamily, urls) {
+      const exclusions = this.config.preload_fonts_exclusions;
+      const exclusionsSet = new Set(exclusions);
+      if (exclusionsSet.has(fontFamily)) {
+        return true;
+      }
+      if (exclusions.some((exclusion) => fontFamily.includes(exclusion))) {
+        return true;
+      }
+      if (Array.isArray(urls) && urls.length > 0) {
+        if (urls.some((url) => exclusionsSet.has(url))) {
+          return true;
+        }
+        if (urls.some(
+          (url) => exclusions.some((exclusion) => url.includes(exclusion))
+        )) {
+          return true;
+        }
+      }
+      return false;
     }
     /**
      * Checks if an element is visible in the viewport.
@@ -443,7 +462,7 @@
      */
     getNetworkLoadedFonts() {
       return new Map(
-        window.performance.getEntriesByType("resource").filter((resource) => _BeaconPreloadFonts.FONT_FILE_REGEX.test(resource.name)).map((resource) => [this.cleanUrl(resource.name), resource.name])
+        window.performance.getEntriesByType("resource").filter((resource) => this.FONT_FILE_REGEX.test(resource.name)).map((resource) => [this.cleanUrl(resource.name), resource.name])
       );
     }
     /**
@@ -533,15 +552,16 @@
           if (!style || !this.isElementVisible(element)) return;
           const fontFamily = style.fontFamily.split(",")[0].replace(/['"]+/g, "").trim();
           const hasContent = pseudoElement ? style.content !== "none" && style.content !== '""' : element.textContent.trim();
-          if (hasContent && !this.isSystemFont(fontFamily) && stylesheetFonts[fontFamily]) {
-            if (!hostedFonts.has(fontFamily)) {
+          if (hasContent && stylesheetFonts[fontFamily]) {
+            let urls = stylesheetFonts[fontFamily].urls;
+            if (!this.isExcluded(fontFamily, urls) && !hostedFonts.has(fontFamily)) {
               hostedFonts.set(fontFamily, {
                 elements: /* @__PURE__ */ new Set(),
-                urls: stylesheetFonts[fontFamily].urls,
+                urls,
                 variations: stylesheetFonts[fontFamily].variations
               });
+              hostedFonts.get(fontFamily).elements.add(element);
             }
-            hostedFonts.get(fontFamily).elements.add(element);
           }
         };
         try {
@@ -742,18 +762,18 @@
           const style = window.getComputedStyle(element);
           const fontInfo = getFontInfoForElement(style);
           if (fontInfo) {
-            if (!matches.has(fontInfo.url)) {
+            if (!this.isExcluded(fontInfo.family, [fontInfo.url]) && !matches.has(fontInfo.url)) {
               matches.set(fontInfo.url, {
                 elements: /* @__PURE__ */ new Set(),
                 variations: /* @__PURE__ */ new Set()
               });
+              matches.get(fontInfo.url).elements.add(element);
+              matches.get(fontInfo.url).variations.add(JSON.stringify({
+                family: fontInfo.family,
+                weight: fontInfo.weight,
+                style: fontInfo.style
+              }));
             }
-            matches.get(fontInfo.url).elements.add(element);
-            matches.get(fontInfo.url).variations.add(JSON.stringify({
-              family: fontInfo.family,
-              weight: fontInfo.weight,
-              style: fontInfo.style
-            }));
           }
         }
         ["::before", "::after"].forEach((pseudo) => {
@@ -761,18 +781,18 @@
           if (pseudoStyle.content !== "none" && pseudoStyle.content !== '""') {
             const fontInfo = getFontInfoForElement(pseudoStyle);
             if (fontInfo) {
-              if (!matches.has(fontInfo.url)) {
+              if (!this.isExcluded(fontInfo.family, [fontInfo.url]) && !matches.has(fontInfo.url)) {
                 matches.set(fontInfo.url, {
                   elements: /* @__PURE__ */ new Set(),
                   variations: /* @__PURE__ */ new Set()
                 });
+                matches.get(fontInfo.url).elements.add(element);
+                matches.get(fontInfo.url).variations.add(JSON.stringify({
+                  family: fontInfo.family,
+                  weight: fontInfo.weight,
+                  style: fontInfo.style
+                }));
               }
-              matches.get(fontInfo.url).elements.add(element);
-              matches.get(fontInfo.url).variations.add(JSON.stringify({
-                family: fontInfo.family,
-                weight: fontInfo.weight,
-                style: fontInfo.style
-              }));
             }
           }
         });

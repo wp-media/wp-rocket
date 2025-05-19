@@ -1107,13 +1107,6 @@ class Page extends Abstract_Render {
 					],
 					'page'        => 'preload',
 				],
-				'dns_prefetch_section'  => [
-					'title'       => __( 'Prefetch DNS Requests', 'rocket' ),
-					'type'        => 'fields_container',
-					'description' => __( 'DNS prefetching can make external files load faster, especially on mobile networks', 'rocket' ),
-					'help'        => $this->beacon->get_suggest( 'dns_prefetch' ),
-					'page'        => 'preload',
-				],
 			]
 		);
 
@@ -1142,16 +1135,6 @@ class Page extends Abstract_Render {
 					'helper'            => 'Use (.*) wildcards to address multiple URLs under a given path.',
 					'parent'            => 'manual_preload',
 					'section'           => 'preload_section',
-					'page'              => 'preload',
-					'default'           => [],
-					'sanitize_callback' => 'sanitize_textarea',
-				],
-				'dns_prefetch'         => [
-					'type'              => 'textarea',
-					'label'             => __( 'URLs to prefetch', 'rocket' ),
-					'description'       => __( 'Specify external hosts to be prefetched (no <code>http:</code>, one per line)', 'rocket' ),
-					'placeholder'       => '//example.com',
-					'section'           => 'dns_prefetch_section',
 					'page'              => 'preload',
 					'default'           => [],
 					'sanitize_callback' => 'sanitize_textarea',
@@ -2105,6 +2088,7 @@ class Page extends Abstract_Render {
 			'minify_concatenate_css',
 			'cloudflare_api_key',
 			'cloudflare_zone_id',
+			'dns_prefetch',
 		];
 
 		$this->settings->add_hidden_settings_fields(
@@ -2255,48 +2239,27 @@ class Page extends Abstract_Render {
 
 		$previous_version = $this->options->get( 'previous_version' );
 
-		// Bail-out for fresh install.
-		if ( empty( $previous_version ) ) {
+		// Bail-out if previous version is greater than or equal to 3.19.
+		if ( version_compare( $previous_version, '3.19', '>=' ) ) {
 			return;
 		}
 
-		// Bail-out if previous version is greater than 3.17.
-		if ( $previous_version > '3.17' ) {
-			return;
-		}
-
-		$lazy_render_content = $this->beacon->get_suggest( 'lazy_render_content' );
+		$preconnect_content = $this->beacon->get_suggest( 'preconnect_domains' );
 
 		rocket_notice_html(
 			[
 				'status'         => 'info',
 				'dismissible'    => '',
 				'message'        => sprintf(
-					// translators: %1$s: opening strong tag, %2$s: closing strong tag, %3$s: opening a tag, %4$s: opening a tag.
-					__( '%1$sWP Rocket:%2$s the plugin has been updated to the 3.17 version. New feature: %3$sAutomatic Lazy Rendering%4$s. Check out our documentation to learn more about it.', 'rocket' ),
-					'<strong>',
-					'</strong>',
-					'<a href="' . esc_url( $lazy_render_content['url'] ) . '" data-beacon-article="' . esc_attr( $lazy_render_content['id'] ) . '" target="_blank" rel="noopener noreferrer">',
-					'</a>'
+						// translators: %1$s: opening strong tag, %2$s: closing strong tag, %3$s: opening a tag, %4$s: closing a tag.
+						__( '%1$sWP Rocket:%2$s the plugin has been updated to the 3.19 version. New feature: %3$sPreconnect to external domains%4$s. Check out our documentation to learn more about it.', 'rocket' ),
+						'<strong>',
+						'</strong>',
+						'<a href="' . esc_url( $preconnect_content['url'] ) . '" data-beacon-article="' . esc_attr( $preconnect_content['id'] ) . '" target="_blank" rel="noopener noreferrer">',
+						'</a>'
 				),
 				'dismiss_button' => 'rocket_update_notice',
 			]
 		);
-	}
-
-	/**
-	 * Enables the auto preload fonts option if the old preload fonts option is not empty.
-	 *
-	 * This function checks the value of the `rocket_preload_fonts` option.
-	 * If it contains a non-empty value, it updates the `auto_preload_fonts` option to `true`.
-	 * This is useful for ensuring that automatic font preloading is enabled based on legacy settings.
-	 *
-	 * @return void
-	 */
-	public function maybe_enable_auto_preload_fonts(): void {
-		$old_preload_fonts = $this->options->get( 'rocket_preload_fonts', [] );
-		if ( ! empty( $old_preload_fonts ) ) {
-			$this->options->set( 'auto_preload_fonts', true );
-		}
 	}
 }

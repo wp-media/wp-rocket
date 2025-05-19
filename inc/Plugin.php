@@ -406,6 +406,7 @@ class Plugin {
 			'media_fonts_admin_subscriber',
 			'media_fonts_clean_subscriber',
 			'preload_fonts_frontend_subscriber',
+			'preload_fonts_admin_subscriber',
 			'preconnect_frontend_subscriber',
 		];
 

@@ -63,6 +63,13 @@ class Test_AddData extends TestCase {
 			->once()
 			->andReturn( $config['filter'] );
 
+		$exclusions = isset( $config['exclusions'] ) ? $config['exclusions'] : [];
+
+		$this->context->shouldReceive( 'get_exclusions' )
+			->atMost()
+			->once()
+			->andReturn( $exclusions );
+
 		$valid_source = $expected['valid_source'] ?? [];
 
 		if(empty($valid_source)) {
