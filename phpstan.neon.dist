@@ -10,7 +10,6 @@ parameters:
 		- %currentWorkingDirectory%/inc/Engine/
 		- %currentWorkingDirectory%/inc/Addon/
 		- %currentWorkingDirectory%/inc/ThirdParty/
-		- %currentWorkingDirectory%/tests/Integration/
 		- %currentWorkingDirectory%/tests/Unit/
 		- %currentWorkingDirectory%/tests/phpstan/Rules/
 	bootstrapFiles:
