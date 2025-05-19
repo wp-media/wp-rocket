@@ -18,13 +18,13 @@ $valid_preload_fonts_options = <<<HTML
 		<title>
 			WP Rocket
 		</title>
-<link crossorigin as="font" href="http://example.org/wp-content/file.otf" rel="preload" data-rocket-preload>
-<link crossorigin as="font" href="http://example.org/wp-content/file.ttf" rel="preload" data-rocket-preload>
-<link crossorigin as="font" href="http://example.org/wp-content/file.svg" rel="preload" data-rocket-preload>
-<link crossorigin as="font" href="http://example.org/wp-content/file.woff?v=4.4.0" rel="preload" data-rocket-preload>
-<link crossorigin as="font" href="http://example.org/wp-content/file.woff2" rel="preload" data-rocket-preload>
-<link crossorigin as="font" href="http://example.org/wp-content/themes/paperback/inc/fontawesome/fonts/fontawesome-webfont.woff2?v=4.4.0" rel="preload" data-rocket-preload>
-<link crossorigin as="font" href="http://example.org/wp-content/themes/paperback/inc/fontawesome/fonts/fontawesome-webfont.woff2#123" rel="preload" data-rocket-preload>
+<link crossorigin data-rocket-preload as="font" href="http://example.org/wp-content/file.otf" rel="preload">
+<link crossorigin data-rocket-preload as="font" href="http://example.org/wp-content/file.ttf" rel="preload">
+<link crossorigin data-rocket-preload as="font" href="http://example.org/wp-content/file.svg" rel="preload">
+<link crossorigin data-rocket-preload as="font" href="http://example.org/wp-content/file.woff?v=4.4.0" rel="preload">
+<link crossorigin data-rocket-preload as="font" href="http://example.org/wp-content/file.woff2" rel="preload">
+<link crossorigin data-rocket-preload as="font" href="http://example.org/wp-content/themes/paperback/inc/fontawesome/fonts/fontawesome-webfont.woff2?v=4.4.0" rel="preload">
+<link crossorigin data-rocket-preload as="font" href="http://example.org/wp-content/themes/paperback/inc/fontawesome/fonts/fontawesome-webfont.woff2#123" rel="preload">
 	</head>
 	<body>
 	</body>
@@ -37,11 +37,11 @@ $valid_preload_fonts_options_wit_cdn = <<<HTML
 		<title>
 			WP Rocket
 		</title>
-<link crossorigin as="font" href="https://123456.rocketcdn.me/wp-content/file.otf" rel="preload" data-rocket-preload>
-<link crossorigin as="font" href="https://123456.rocketcdn.me/wp-content/file.ttf" rel="preload" data-rocket-preload>
-<link crossorigin as="font" href="https://123456.rocketcdn.me/wp-content/file.svg" rel="preload" data-rocket-preload>
-<link crossorigin as="font" href="https://123456.rocketcdn.me/wp-content/file.woff" rel="preload" data-rocket-preload>
-<link crossorigin as="font" href="https://123456.rocketcdn.me/wp-content/file.woff2" rel="preload" data-rocket-preload>
+<link crossorigin data-rocket-preload as="font" href="https://123456.rocketcdn.me/wp-content/file.otf" rel="preload">
+<link crossorigin data-rocket-preload as="font" href="https://123456.rocketcdn.me/wp-content/file.ttf" rel="preload">
+<link crossorigin data-rocket-preload as="font" href="https://123456.rocketcdn.me/wp-content/file.svg" rel="preload">
+<link crossorigin data-rocket-preload as="font" href="https://123456.rocketcdn.me/wp-content/file.woff" rel="preload">
+<link crossorigin data-rocket-preload as="font" href="https://123456.rocketcdn.me/wp-content/file.woff2" rel="preload">
 	</head>
 	<body>
 	</body>
