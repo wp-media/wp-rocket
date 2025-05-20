@@ -84,7 +84,7 @@ class Test_Treeshake extends TestCase {
 			->zeroOrMoreTimes()
 			->andReturn( $config['home_url'] );
 
-		$this->context->expects()->is_allowed()->andReturn($config['is_allowed']);
+		$this->context->shouldReceive( 'is_allowed' )->andReturn($config['is_allowed']);
 
 		$this->configureIsMobile($config);
 
