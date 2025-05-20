@@ -2,7 +2,6 @@
 namespace WP_Rocket\Engine\Media\PreconnectExternalDomains\Admin;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
-use WP_Rocket\Engine\Media\PreconnectExternalDomains\Admin\Settings;
 
 /**
  * Preconnect External Domains admin controller
@@ -38,13 +37,13 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Clears the preconnect domains table if relevant minify settings changed.
+	 * Clears the preconnect domains table if relevant settings is changed.
 	 *
 	 * @param array $old Old settings.
 	 * @param array $new New settings.
 	 * @return void
 	 */
-	public function maybe_clear_preconnect_domains( array $old, array $new ): void {
+	public function maybe_clear_preconnect_domains( array $old, array $new ): void { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.newFound
 		$this->settings->maybe_clear_preconnect_external_domains( $old, $new );
 	}
 }

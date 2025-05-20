@@ -9,8 +9,15 @@ class Settings {
 	 *
 	 * @var PreconnectExternalDomainsTable
 	 */
-	private PreconnectExternalDomainsTable $table;
+	private $table;
 
+	/**
+	 * Constructor for the Settings class.
+	 *
+	 * Initializes the Settings instance with a PreconnectExternalDomainsTable object.
+	 *
+	 * @param PreconnectExternalDomainsTable $table The table instance used to manage preconnect external domains.
+	 */
 	public function __construct( PreconnectExternalDomainsTable $table ) {
 		$this->table = $table;
 	}
@@ -26,8 +33,15 @@ class Settings {
 	 *
 	 * @return void
 	 */
-	public function maybe_clear_preconnect_external_domains( array $old, array $new ): void {
-		$keys = [ 'minify_css', 'minify_js', 'exclude_css', 'exclude_js', 'cdn', 'cdn_cnames' ];
+	public function maybe_clear_preconnect_external_domains( array $old, array $new ): void { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.newFound
+		$keys = [
+			'minify_css',
+			'minify_js',
+			'exclude_css',
+			'exclude_js',
+			'cdn',
+			'cdn_cnames',
+		];
 		foreach ( $keys as $key ) {
 			if ( $this->did_setting_change( $key, $old, $new ) ) {
 				$this->table->truncate_table();
@@ -51,8 +65,7 @@ class Settings {
 			&&
 			array_key_exists( $setting, $value )
 			&&
-			// phpcs:ignore Universal.Operators.StrictComparisons.LooseNotEqual
-			$old_value[ $setting ] != $value[ $setting ]
+			(int) $old_value[ $setting ] !== (int) $value[ $setting ]
 		);
 	}
 }

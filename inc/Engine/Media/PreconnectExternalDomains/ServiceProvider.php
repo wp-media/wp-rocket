@@ -9,8 +9,10 @@ use WP_Rocket\Engine\Media\PreconnectExternalDomains\Database\Queries\Preconnect
 use WP_Rocket\Engine\Media\PreconnectExternalDomains\AJAX\Controller as AJAXController;
 use WP_Rocket\Engine\Media\PreconnectExternalDomains\Database\Table\PreconnectExternalDomains as PreconnectTable;
 use WP_Rocket\Engine\Media\PreconnectExternalDomains\Frontend\{Controller as FrontController, Subscriber as FrontendSubscriber};
-use WP_Rocket\Engine\Media\PreconnectExternalDomains\Admin\Settings as AdminSettings;
-use WP_Rocket\Engine\Media\PreconnectExternalDomains\Admin\Subscriber as AdminSubscriber;
+use WP_Rocket\Engine\Media\PreconnectExternalDomains\Admin\{
+	Settings as AdminSettings,
+	Subscriber as AdminSubscriber
+};
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
