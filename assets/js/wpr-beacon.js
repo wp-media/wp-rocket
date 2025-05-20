@@ -388,36 +388,18 @@
       this.FONT_FILE_REGEX = new RegExp(`\\.(${extensions})(\\?.*)?$`, "i");
     }
     /**
-     * Checks if a font family or URL should be excluded from preloading.
+     * Checks if a given font family is a system font.
      * 
-     * This method determines if the provided font family or any of its URLs
-     * match any exclusion patterns defined in the configuration. It checks for
-     * exact matches and substring matches for both the font family and URLs.
+     * This method checks if the provided font family is part of the system fonts
+     * defined in the configuration. It returns true if the font family is a system
+     * font, and false otherwise.
      * 
      * @param {string} fontFamily - The font family to check.
-     * @param {string[]} urls - Array of font file URLs to check.
-     * @returns {boolean} True if the font should be excluded, false otherwise.
+     * @returns {boolean} True if the font family is a system font, false otherwise.
      */
-    isExcluded(fontFamily, urls) {
-      const exclusions = this.config.preload_fonts_exclusions;
-      const exclusionsSet = new Set(exclusions);
-      if (exclusionsSet.has(fontFamily)) {
-        return true;
-      }
-      if (exclusions.some((exclusion) => fontFamily.includes(exclusion))) {
-        return true;
-      }
-      if (Array.isArray(urls) && urls.length > 0) {
-        if (urls.some((url) => exclusionsSet.has(url))) {
-          return true;
-        }
-        if (urls.some(
-          (url) => exclusions.some((exclusion) => url.includes(exclusion))
-        )) {
-          return true;
-        }
-      }
-      return false;
+    isSystemFont(fontFamily) {
+      const systemFonts = new Set(this.config.system_fonts);
+      return systemFonts.has(fontFamily);
     }
     /**
      * Checks if an element is visible in the viewport.
@@ -452,6 +434,187 @@
       }
     }
     /**
+     * Fetches external stylesheet links from known font providers, retrieves their CSS,
+     * parses them into in-memory CSSStyleSheet objects, and extracts font-family/font-face
+     * information into a structured object.
+     *
+     * @async
+     * @function externalStylesheetsDoc
+     * @returns {Promise<{styleSheets: CSSStyleSheet[], fontPairs: Object}>} An object containing:
+     *   - styleSheets: Array of parsed CSSStyleSheet objects (not attached to the DOM).
+     *   - fontPairs: An object mapping font URLs to arrays of font variation objects
+     *     ({family, weight, style}).
+     *
+     * @example
+     * const { styleSheets, fontPairs } = await externalStylesheetsDoc();
+     * this.logger.logMessage(fontPairs);
+     */
+    async externalStylesheetsDoc() {
+      function generateFontPairsFromStyleSheets(styleSheetsArray) {
+        const fontPairs = {};
+        function _extractFirstUrlFromSrc(srcValue) {
+          if (!srcValue) return null;
+          const urlMatch = srcValue.match(/url\s*\(\s*(['"]?)(.+?)\1\s*\)/);
+          return urlMatch ? urlMatch[2] : null;
+        }
+        function _cleanFontFamilyName(fontFamilyValue) {
+          if (!fontFamilyValue) return "";
+          return fontFamilyValue.replace(/^['"]+|['"]+$/g, "").trim();
+        }
+        if (!styleSheetsArray || !Array.isArray(styleSheetsArray)) {
+          console.warn(
+            "generateFontPairsFromStyleSheets: Input is not a valid array. Received:",
+            styleSheetsArray
+          );
+          return fontPairs;
+        }
+        if (styleSheetsArray.length === 0) {
+          return fontPairs;
+        }
+        styleSheetsArray.forEach((sheet) => {
+          if (sheet && sheet.cssRules) {
+            try {
+              for (const rule of sheet.cssRules) {
+                if (rule.type === CSSRule.FONT_FACE_RULE) {
+                  const cssFontFaceRule = rule;
+                  const fontFamily = _cleanFontFamilyName(
+                    cssFontFaceRule.style.getPropertyValue("font-family")
+                  );
+                  const fontWeight = cssFontFaceRule.style.getPropertyValue("font-weight") || "normal";
+                  const fontStyle = cssFontFaceRule.style.getPropertyValue("font-style") || "normal";
+                  const src = cssFontFaceRule.style.getPropertyValue("src");
+                  const fontUrl = _extractFirstUrlFromSrc(src);
+                  if (fontFamily && fontUrl) {
+                    const variation = {
+                      family: fontFamily,
+                      weight: fontWeight,
+                      style: fontStyle
+                    };
+                    if (!fontPairs[fontUrl]) fontPairs[fontUrl] = [];
+                    const variationExists = fontPairs[fontUrl].some(
+                      (v) => v.family === variation.family && v.weight === variation.weight && v.style === variation.style
+                    );
+                    if (!variationExists) fontPairs[fontUrl].push(variation);
+                  }
+                }
+              }
+            } catch (e) {
+              console.warn(
+                "Error processing CSS rules from a stylesheet:",
+                e,
+                sheet
+              );
+            }
+          } else if (sheet && !sheet.cssRules) {
+            console.warn(
+              "Skipping a stylesheet as its cssRules are not accessible or it is empty:",
+              sheet
+            );
+          }
+        });
+        return fontPairs;
+      }
+      const externalFontsProviders = [
+        "fonts.googleapis.com",
+        "fonts.gstatic.com",
+        "use.typekit.net",
+        "fonts.adobe.com",
+        "cdn.fonts.net"
+        // Add more known external font domains as needed
+      ];
+      const links = [
+        ...document.querySelectorAll('link[rel="stylesheet"]')
+      ].filter(
+        (link) => externalFontsProviders.some((domain) => link.href.includes(domain))
+      );
+      if (links.length === 0) {
+        this.logger.logMessage("No external CSS links found to process.");
+        return {
+          // Consistent return structure
+          styleSheets: [],
+          // The retrievable CSSStyleSheet objects
+          fontPairs: {}
+          // Processed data from these sheets
+        };
+      }
+      const fetchedCssPromises = links.map(
+        (linkElement) => fetch(linkElement.href, { mode: "cors" }).then((response) => {
+          if (response.ok) {
+            return response.text();
+          }
+          console.warn(
+            `Failed to fetch external CSS from ${linkElement.href}: ${response.status} ${response.statusText}`
+          );
+          return null;
+        }).catch((error) => {
+          console.error(
+            `Network error fetching external CSS from ${linkElement.href}:`,
+            error
+          );
+          return null;
+        })
+      );
+      const cssTexts = await Promise.all(fetchedCssPromises);
+      const temporaryStyleSheets = [];
+      cssTexts.forEach((txt) => {
+        if (txt && txt.trim() !== "") {
+          try {
+            const sheet = new CSSStyleSheet();
+            sheet.replaceSync(txt);
+            temporaryStyleSheets.push(sheet);
+          } catch (error) {
+            console.error(
+              "Could not parse fetched CSS into a stylesheet:",
+              error,
+              `
+CSS (first 200 chars): ${txt.substring(0, 200)}...`
+            );
+          }
+        }
+      });
+      if (temporaryStyleSheets.length > 0) {
+        this.logger.logMessage(
+          `[Beacon] ${temporaryStyleSheets.length} stylesheet(s) fetched and parsed into CSSStyleSheet objects.`
+        );
+      } else {
+        this.logger.logMessage(
+          "[Beacon] No stylesheets were successfully parsed from the fetched CSS."
+        );
+      }
+      const processedFontPairs = generateFontPairsFromStyleSheets(temporaryStyleSheets);
+      return {
+        styleSheets: temporaryStyleSheets,
+        fontPairs: processedFontPairs
+      };
+    }
+    /**
+     * Asynchronously initializes and parses external font stylesheets.
+     * 
+     * Fetches external font stylesheets and font pairs using `externalStylesheetsDoc`,
+     * then stores the parsed results in `externalParsedSheets` and `externalParsedPairs`.
+     * Logs the process and handles errors by resetting `externalParsedSheets` to an empty array.
+     * 
+     * @async
+     * @returns {Promise<void>} Resolves when external font stylesheets have been initialized.
+     */
+    async _initializeExternalFontSheets() {
+      this.logger.logMessage("Initializing external font stylesheets...");
+      try {
+        const result = await this.externalStylesheetsDoc();
+        this.externalParsedSheets = result.styleSheets || [];
+        this.externalParsedPairs = result.fontPairs || [];
+        this.logger.logMessage(
+          `Successfully parsed ${this.externalParsedSheets.length} external font stylesheets.`
+        );
+      } catch (error) {
+        this.logger.logMessage(
+          "Error initializing external font stylesheets:",
+          error
+        );
+        this.externalParsedSheets = [];
+      }
+    }
+    /**
      * Retrieves a map of network-loaded fonts.
      * 
      * This method uses the Performance API to get all resource entries, filters out
@@ -477,7 +640,7 @@
      */
     getFontFaceRules() {
       const stylesheetFonts = {};
-      Array.from(document.styleSheets).forEach((sheet) => {
+      Array.from(Array.from(document.styleSheets)).filter((sheet) => !sheet.href || new URL(sheet.href).origin === location.origin).forEach((sheet) => {
         try {
           Array.from(sheet.cssRules || []).forEach((rule) => {
             if (rule instanceof CSSFontFaceRule) {
@@ -541,6 +704,7 @@
      */
     async run() {
       await document.fonts.ready;
+      await this._initializeExternalFontSheets();
       const networkLoadedFonts = this.getNetworkLoadedFonts();
       const stylesheetFonts = this.getFontFaceRules();
       const hostedFonts = /* @__PURE__ */ new Map();
@@ -552,16 +716,15 @@
           if (!style || !this.isElementVisible(element)) return;
           const fontFamily = style.fontFamily.split(",")[0].replace(/['"]+/g, "").trim();
           const hasContent = pseudoElement ? style.content !== "none" && style.content !== '""' : element.textContent.trim();
-          if (hasContent && stylesheetFonts[fontFamily]) {
-            let urls = stylesheetFonts[fontFamily].urls;
-            if (!this.isExcluded(fontFamily, urls) && !hostedFonts.has(fontFamily)) {
+          if (hasContent && !this.isSystemFont(fontFamily) && stylesheetFonts[fontFamily]) {
+            if (!hostedFonts.has(fontFamily)) {
               hostedFonts.set(fontFamily, {
                 elements: /* @__PURE__ */ new Set(),
-                urls,
+                urls: stylesheetFonts[fontFamily].urls,
                 variations: stylesheetFonts[fontFamily].variations
               });
-              hostedFonts.get(fontFamily).elements.add(element);
             }
+            hostedFonts.get(fontFamily).elements.add(element);
           }
         };
         try {
@@ -762,18 +925,18 @@
           const style = window.getComputedStyle(element);
           const fontInfo = getFontInfoForElement(style);
           if (fontInfo) {
-            if (!this.isExcluded(fontInfo.family, [fontInfo.url]) && !matches.has(fontInfo.url)) {
+            if (!matches.has(fontInfo.url)) {
               matches.set(fontInfo.url, {
                 elements: /* @__PURE__ */ new Set(),
                 variations: /* @__PURE__ */ new Set()
               });
-              matches.get(fontInfo.url).elements.add(element);
-              matches.get(fontInfo.url).variations.add(JSON.stringify({
-                family: fontInfo.family,
-                weight: fontInfo.weight,
-                style: fontInfo.style
-              }));
             }
+            matches.get(fontInfo.url).elements.add(element);
+            matches.get(fontInfo.url).variations.add(JSON.stringify({
+              family: fontInfo.family,
+              weight: fontInfo.weight,
+              style: fontInfo.style
+            }));
           }
         }
         ["::before", "::after"].forEach((pseudo) => {
@@ -781,18 +944,18 @@
           if (pseudoStyle.content !== "none" && pseudoStyle.content !== '""') {
             const fontInfo = getFontInfoForElement(pseudoStyle);
             if (fontInfo) {
-              if (!this.isExcluded(fontInfo.family, [fontInfo.url]) && !matches.has(fontInfo.url)) {
+              if (!matches.has(fontInfo.url)) {
                 matches.set(fontInfo.url, {
                   elements: /* @__PURE__ */ new Set(),
                   variations: /* @__PURE__ */ new Set()
                 });
-                matches.get(fontInfo.url).elements.add(element);
-                matches.get(fontInfo.url).variations.add(JSON.stringify({
-                  family: fontInfo.family,
-                  weight: fontInfo.weight,
-                  style: fontInfo.style
-                }));
               }
+              matches.get(fontInfo.url).elements.add(element);
+              matches.get(fontInfo.url).variations.add(JSON.stringify({
+                family: fontInfo.family,
+                weight: fontInfo.weight,
+                style: fontInfo.style
+              }));
             }
           }
         });
