@@ -21,7 +21,7 @@ return [
 				<html>
 			<head>
 				<title>Sample Page</title>
-				<link as="style" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A100%2C300%2C300italic%2C400%2C600%2C700%7CRoboto%3A100italic%2C300italic%2C400%2C500%2C600%2C700%7CUnica%20One%3A400%2C600%2C700%7CJosefin%20Sans%3Aregular%2C300%7CJosefin%20Sans%3A300&#038;display=swap" rel="preload" data-rocket-preload>
+				<link data-rocket-preload as="style" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A100%2C300%2C300italic%2C400%2C600%2C700%7CRoboto%3A100italic%2C300italic%2C400%2C500%2C600%2C700%7CUnica%20One%3A400%2C600%2C700%7CJosefin%20Sans%3Aregular%2C300%7CJosefin%20Sans%3A300&#038;display=swap" rel="preload">
 				<link href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A100%2C300%2C300italic%2C400%2C600%2C700%7CRoboto%3A100italic%2C300italic%2C400%2C500%2C600%2C700%7CUnica%20One%3A400%2C600%2C700%7CJosefin%20Sans%3Aregular%2C300%7CJosefin%20Sans%3A300&#038;display=swap" media="print" onload="this.media=&#039;all&#039;" rel="stylesheet">
 				<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A100%2C300%2C300italic%2C400%2C600%2C700%7CRoboto%3A100italic%2C300italic%2C400%2C500%2C600%2C700%7CUnica%20One%3A400%2C600%2C700%7CJosefin%20Sans%3Aregular%2C300%7CJosefin%20Sans%3A300&#038;display=swap"></noscript>
 			</head>
@@ -52,7 +52,7 @@ return [
 			'html' => '<html>
 			<head>
 				<title>Sample Page</title>
-				<link as="style" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A100%2C300%2C300italic%2C400%2C600%2C700%7CRoboto%3A100italic%2C300italic%2C400%2C500%2C600%2C700%7CUnica%20One%3A400%2C600%2C700%7CJosefin%20Sans%3Aregular%2C300%7CJosefin%20Sans%3A300&#038;display=optional" rel="preload" data-rocket-preload>
+				<link data-rocket-preload as="style" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A100%2C300%2C300italic%2C400%2C600%2C700%7CRoboto%3A100italic%2C300italic%2C400%2C500%2C600%2C700%7CUnica%20One%3A400%2C600%2C700%7CJosefin%20Sans%3Aregular%2C300%7CJosefin%20Sans%3A300&#038;display=optional" rel="preload">
 				<link href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A100%2C300%2C300italic%2C400%2C600%2C700%7CRoboto%3A100italic%2C300italic%2C400%2C500%2C600%2C700%7CUnica%20One%3A400%2C600%2C700%7CJosefin%20Sans%3Aregular%2C300%7CJosefin%20Sans%3A300&#038;display=optional" media="print" onload="this.media=&#039;all&#039;" rel="stylesheet">
 				<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A100%2C300%2C300italic%2C400%2C600%2C700%7CRoboto%3A100italic%2C300italic%2C400%2C500%2C600%2C700%7CUnica%20One%3A400%2C600%2C700%7CJosefin%20Sans%3Aregular%2C300%7CJosefin%20Sans%3A300&#038;display=optional"></noscript>
 			</head>
@@ -83,7 +83,7 @@ return [
 			'html' => '<html>
 			<head>
 				<title>Sample Page</title>
-				<link as="style" href="https://fonts.googleapis.com/css?family=Lato%3A100%2C300%2C400%2C600%2C700%2C900%7COpen%20Sans%3A700%2C300%2C600%2C400%7CRaleway%3A900%7CPlayfair%20Display%7COpen%20Sans%7CJockey%20One%3A400%7CAbril%20Fatface%3Aregular&#038;subset=latin&#038;display=swap" rel="preload" data-rocket-preload>
+				<link data-rocket-preload as="style" href="https://fonts.googleapis.com/css?family=Lato%3A100%2C300%2C400%2C600%2C700%2C900%7COpen%20Sans%3A700%2C300%2C600%2C400%7CRaleway%3A900%7CPlayfair%20Display%7COpen%20Sans%7CJockey%20One%3A400%7CAbril%20Fatface%3Aregular&#038;subset=latin&#038;display=swap" rel="preload">
 				<link href="https://fonts.googleapis.com/css?family=Lato%3A100%2C300%2C400%2C600%2C700%2C900%7COpen%20Sans%3A700%2C300%2C600%2C400%7CRaleway%3A900%7CPlayfair%20Display%7COpen%20Sans%7CJockey%20One%3A400%7CAbril%20Fatface%3Aregular&#038;subset=latin&#038;display=swap" media="print" onload="this.media=&#039;all&#039;" rel="stylesheet">
 				<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato%3A100%2C300%2C400%2C600%2C700%2C900%7COpen%20Sans%3A700%2C300%2C600%2C400%7CRaleway%3A900%7CPlayfair%20Display%7COpen%20Sans%7CJockey%20One%3A400%7CAbril%20Fatface%3Aregular&#038;subset=latin&#038;display=swap"></noscript>
 			</head>
@@ -114,7 +114,7 @@ return [
 			'html' => '<html>
 			<head>
 				<title>Sample Page</title>
-				<link as="style" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A100%2C300%2C300italic%2C400%2C600%2C700%7CRoboto%3A100italic%2C300italic%2C400%2C500%2C600%2C700%7CUnica%20One%3A400%2C600%2C700%7CJosefin%20Sans%3Aregular%2C300%7CJosefin%20Sans%3A300&#038;display=swap" rel="preload" data-rocket-preload>
+				<link data-rocket-preload as="style" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A100%2C300%2C300italic%2C400%2C600%2C700%7CRoboto%3A100italic%2C300italic%2C400%2C500%2C600%2C700%7CUnica%20One%3A400%2C600%2C700%7CJosefin%20Sans%3Aregular%2C300%7CJosefin%20Sans%3A300&#038;display=swap" rel="preload">
 				<link href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A100%2C300%2C300italic%2C400%2C600%2C700%7CRoboto%3A100italic%2C300italic%2C400%2C500%2C600%2C700%7CUnica%20One%3A400%2C600%2C700%7CJosefin%20Sans%3Aregular%2C300%7CJosefin%20Sans%3A300&#038;display=swap" media="print" onload="this.media=&#039;all&#039;" rel="stylesheet">
 				<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A100%2C300%2C300italic%2C400%2C600%2C700%7CRoboto%3A100italic%2C300italic%2C400%2C500%2C600%2C700%7CUnica%20One%3A400%2C600%2C700%7CJosefin%20Sans%3Aregular%2C300%7CJosefin%20Sans%3A300&#038;display=swap"></noscript>
 			</head>
@@ -145,7 +145,7 @@ return [
 			'html' => '<html>
 			<head>
 				<title>Sample Page</title>
-				<link as="style" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3Aregular%2C300%7CLato%3Aregular%2C300&#038;display=swap" rel="preload" data-rocket-preload>
+				<link data-rocket-preload as="style" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3Aregular%2C300%7CLato%3Aregular%2C300&#038;display=swap" rel="preload">
 				<link href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3Aregular%2C300%7CLato%3Aregular%2C300&#038;display=swap" media="print" onload="this.media=&#039;all&#039;" rel="stylesheet">
 				<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3Aregular%2C300%7CLato%3Aregular%2C300&#038;display=swap"></noscript>
 			</head>
@@ -176,7 +176,7 @@ return [
 			'html' => '<html>
 			<head>
 			<title>Sample Page</title>
-			<link as="style" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3Aregular%2C300%7CLato%3Aregular%2C300&#038;display=swap" rel="preload" data-rocket-preload>
+			<link data-rocket-preload as="style" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3Aregular%2C300%7CLato%3Aregular%2C300&#038;display=swap" rel="preload">
 			<link href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3Aregular%2C300%7CLato%3Aregular%2C300&#038;display=swap" media="print" onload="this.media=&#039;all&#039;" rel="stylesheet">
 			<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3Aregular%2C300%7CLato%3Aregular%2C300&#038;display=swap"></noscript>
 			<link href="https://fonts.googleapis.com/css?" rel="stylesheet" property="stylesheet" type"text/css" media="all">
@@ -207,7 +207,7 @@ return [
 			'html' => '<html>
 			<head>
 				<title>Sample Page</title>
-				<link as="style" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A300&#038;display=swap" rel="preload" data-rocket-preload>
+				<link data-rocket-preload as="style" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A300&#038;display=swap" rel="preload">
 				<link href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A300&#038;display=swap" media="print" onload="this.media=&#039;all&#039;" rel="stylesheet">
 				<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A300&#038;display=swap"></noscript>
 			</head>
@@ -236,7 +236,7 @@ return [
 			'html' => '<html>
 			<head>
 				<title>Sample Page</title>
-				<link as="style" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A300&#038;display=swap" rel="preload" data-rocket-preload>
+				<link data-rocket-preload as="style" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A300&#038;display=swap" rel="preload">
 				<link href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A300&#038;display=swap" media="print" onload="this.media=&#039;all&#039;" rel="stylesheet">
 				<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A300&#038;display=swap"></noscript>
 			</head>
@@ -265,7 +265,7 @@ return [
 			'html' => '<html>
 			<head>
 				<title>Sample Page</title>
-				<link as="style" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A300&#038;display=swap" rel="preload" data-rocket-preload>
+				<link data-rocket-preload as="style" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A300&#038;display=swap" rel="preload">
 				<link href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A300&#038;display=swap" media="print" onload="this.media=&#039;all&#039;" rel="stylesheet">
 				<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A300&#038;display=swap"></noscript>
 			</head>
@@ -294,7 +294,7 @@ return [
 			'html' => '<html>
 			<head>
 				<title>Sample Page</title>
-				<link as="style" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A100%2C300%2C300italic%2C400%2C600%2C700%7CRoboto%3A100italic%2C300italic%2C400%2C500%2C600%2C700%7CUnica%20One%3A400%2C600%2C700&#038;display=swap" rel="preload" data-rocket-preload>
+				<link data-rocket-preload as="style" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A100%2C300%2C300italic%2C400%2C600%2C700%7CRoboto%3A100italic%2C300italic%2C400%2C500%2C600%2C700%7CUnica%20One%3A400%2C600%2C700&#038;display=swap" rel="preload">
 				<link href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A100%2C300%2C300italic%2C400%2C600%2C700%7CRoboto%3A100italic%2C300italic%2C400%2C500%2C600%2C700%7CUnica%20One%3A400%2C600%2C700&#038;display=swap" media="print" onload="this.media=&#039;all&#039;" rel="stylesheet">
 				<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A100%2C300%2C300italic%2C400%2C600%2C700%7CRoboto%3A100italic%2C300italic%2C400%2C500%2C600%2C700%7CUnica%20One%3A400%2C600%2C700&#038;display=swap"></noscript>
 			</head>
@@ -326,7 +326,7 @@ return [
 			'html' => '<html>
 			<head>
 				<title>Sample Page</title>
-				<link as="style" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A100%2C300%2C300italic%2C400%2C600%2C700%7CRoboto%3A100italic%2C300italic%2C400%2C500%2C600%2C700%7CUnica%20One%3A400%2C600%2C700%7CJosefin%20Sans%3Aregular%2C300%7CJosefin%20Sans%3A300&#038;display=swap" rel="preload" data-rocket-preload>
+				<link data-rocket-preload as="style" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A100%2C300%2C300italic%2C400%2C600%2C700%7CRoboto%3A100italic%2C300italic%2C400%2C500%2C600%2C700%7CUnica%20One%3A400%2C600%2C700%7CJosefin%20Sans%3Aregular%2C300%7CJosefin%20Sans%3A300&#038;display=swap" rel="preload">
 				<link href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A100%2C300%2C300italic%2C400%2C600%2C700%7CRoboto%3A100italic%2C300italic%2C400%2C500%2C600%2C700%7CUnica%20One%3A400%2C600%2C700%7CJosefin%20Sans%3Aregular%2C300%7CJosefin%20Sans%3A300&#038;display=swap" media="print" onload="this.media=&#039;all&#039;" rel="stylesheet">
 				<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A100%2C300%2C300italic%2C400%2C600%2C700%7CRoboto%3A100italic%2C300italic%2C400%2C500%2C600%2C700%7CUnica%20One%3A400%2C600%2C700%7CJosefin%20Sans%3Aregular%2C300%7CJosefin%20Sans%3A300&#038;display=swap"></noscript>
 				<title>Sample Title 2</title>
@@ -359,7 +359,7 @@ return [
 			'html' => '<html>
 			<head>
 				<title>Sample Page</title>
-				<link as="style" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A100%2C300%2C300italic%2C400%2C600%2C700%7CRoboto%3A100italic%2C300italic%2C400%2C500%2C600%2C700%7CUnica%20One%3A400%2C600%2C700%7CJosefin%20Sans%3Aregular%2C300%7CJosefin%20Sans%3A300&#038;display=swap" rel="preload" data-rocket-preload>
+				<link data-rocket-preload as="style" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A100%2C300%2C300italic%2C400%2C600%2C700%7CRoboto%3A100italic%2C300italic%2C400%2C500%2C600%2C700%7CUnica%20One%3A400%2C600%2C700%7CJosefin%20Sans%3Aregular%2C300%7CJosefin%20Sans%3A300&#038;display=swap" rel="preload">
 				<link href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A100%2C300%2C300italic%2C400%2C600%2C700%7CRoboto%3A100italic%2C300italic%2C400%2C500%2C600%2C700%7CUnica%20One%3A400%2C600%2C700%7CJosefin%20Sans%3Aregular%2C300%7CJosefin%20Sans%3A300&#038;display=swap" media="print" onload="this.media=&#039;all&#039;" rel="stylesheet">
 				<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A100%2C300%2C300italic%2C400%2C600%2C700%7CRoboto%3A100italic%2C300italic%2C400%2C500%2C600%2C700%7CUnica%20One%3A400%2C600%2C700%7CJosefin%20Sans%3Aregular%2C300%7CJosefin%20Sans%3A300&#038;display=swap"></noscript>
 			</head>
@@ -393,7 +393,7 @@ return [
 			'html' => '<html>
 			<head>
 				<title>Sample Page</title>
-				<link as="style" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A100%2C300%2C300italic%2C400%2C600%2C700%7CRoboto%3A100italic%2C300italic%2C400%2C500%2C600%2C700%7CUnica%20One%3A400%2C600%2C700%7CJosefin%20Sans%3Aregular%2C300%7CJosefin%20Sans%3A300&#038;display=swap" rel="preload" data-rocket-preload>
+				<link data-rocket-preload as="style" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A100%2C300%2C300italic%2C400%2C600%2C700%7CRoboto%3A100italic%2C300italic%2C400%2C500%2C600%2C700%7CUnica%20One%3A400%2C600%2C700%7CJosefin%20Sans%3Aregular%2C300%7CJosefin%20Sans%3A300&#038;display=swap" rel="preload">
 				<link href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A100%2C300%2C300italic%2C400%2C600%2C700%7CRoboto%3A100italic%2C300italic%2C400%2C500%2C600%2C700%7CUnica%20One%3A400%2C600%2C700%7CJosefin%20Sans%3Aregular%2C300%7CJosefin%20Sans%3A300&#038;display=swap" media="print" onload="this.media=&#039;all&#039;" rel="stylesheet">
 				<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin%20Sans%3A100%2C300%2C300italic%2C400%2C600%2C700%7CRoboto%3A100italic%2C300italic%2C400%2C500%2C600%2C700%7CUnica%20One%3A400%2C600%2C700%7CJosefin%20Sans%3Aregular%2C300%7CJosefin%20Sans%3A300&#038;display=swap"></noscript>
 			</head>
@@ -462,7 +462,7 @@ return [
 			<head>
 			<title>
 			Sample Page</title>
-			<link as="style" href="https://fonts.googleapis.com/css?family=Roboto%7CMontSerra%7CComfortaa&#038;display=optional" rel="preload" data-rocket-preload>
+			<link data-rocket-preload as="style" href="https://fonts.googleapis.com/css?family=Roboto%7CMontSerra%7CComfortaa&#038;display=optional" rel="preload">
 			<link href="https://fonts.googleapis.com/css?family=Roboto%7CMontSerra%7CComfortaa&#038;display=optional" media="print" onload="this.media=&#039;all&#039;" rel="stylesheet">
 			<noscript>
 			<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto%7CMontSerra%7CComfortaa&#038;display=optional">
