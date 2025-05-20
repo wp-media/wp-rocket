@@ -44,7 +44,7 @@ class Settings {
 			'host_fonts_locally',
 		];
 		foreach ( $keys as $key ) {
-			if ( $this->did_setting_change( $key, $old, $new ) ) {
+			if ( $this->did_setting_change( $key, $old_settings, $new_settings ) ) {
 				$this->table->truncate_table();
 				break;
 			}
