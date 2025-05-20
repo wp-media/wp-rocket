@@ -28,12 +28,12 @@ class Settings {
 	 * This method compares the old and new settings arrays, and if changes affecting
 	 * preconnect external domains are detected, it triggers a cache clear or update.
 	 *
-	 * @param array $old The previous settings values.
-	 * @param array $new The new settings values.
+	 * @param array $old_settings The previous settings values.
+	 * @param array $new_settings The new settings values.
 	 *
 	 * @return void
 	 */
-	public function maybe_clear_preconnect_external_domains( array $old, array $new ): void { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.newFound
+	public function maybe_clear_preconnect_external_domains( array $old_settings, array $new_settings ): void {
 		$keys = [
 			'minify_css',
 			'minify_js',
