@@ -856,12 +856,8 @@
     processElement(el) {
       try {
         const url = new URL(el.src || el.href || "", location.href);
-        if (this.isExcludedByAttribute(el)) {
-          this.excludedItems.add(this.createExclusionObject(url, el, "attribute"));
-          return;
-        }
-        if (this.isExcludedByDomain(url)) {
-          this.excludedItems.add(this.createExclusionObject(url, el, "domain"));
+        if (this.isExcluded(el)) {
+          this.excludedItems.add(this.createExclusionObject(url, el));
           return;
         }
         if (this.isExternalDomain(url)) {
@@ -873,17 +869,18 @@
       }
     }
     /**
-     * Checks if an element is excluded based on attribute rules.
+     * Checks if an element is excluded based on exclusions patterns.
      * 
-     * This method iterates through the excludedPatterns array and checks if any pattern matches the element's attribute.
+     * This method iterates through the excludedPatterns array and checks if any pattern matches any of the element's attribute or values.
      * If a match is found, it returns true, indicating the element is excluded.
      * 
      * @param {Element} el - The element to check.
      * @returns {boolean} True if the element is excluded by an attribute rule, false otherwise.
      */
-    isExcludedByAttribute(el) {
+    isExcluded(el) {
+      const outerHTML = el.outerHTML.substring(0, el.outerHTML.indexOf(">") + 1);
       return this.excludedPatterns.some(
-        (pattern) => pattern.type === "attribute" && el.getAttribute(pattern.key) === pattern.value
+        (pattern) => outerHTML.includes(pattern)
       );
     }
     /**
@@ -913,23 +910,14 @@
       return url.hostname !== location.hostname && url.hostname;
     }
     /**
-     * Creates an exclusion object based on the URL, element, and type.
-     * 
-     * This method finds the pattern in the excludedPatterns array that matches the type and the element's attribute or the URL's hostname.
-     * It then constructs a reason string based on the type and the pattern.
-     * Finally, it returns an object with the URL's hostname, the element's tag name, and the reason.
+     * Creates an exclusion object based on the URL, element.
      * 
      * @param {URL} url - The URL to create the exclusion object for.
      * @param {Element} el - The element to create the exclusion object for.
-     * @param {string} type - The type of the exclusion (attribute or domain).
      * @returns {Object} An object with the URL's hostname, the element's tag name, and the reason.
      */
-    createExclusionObject(url, el, type) {
-      const pattern = this.excludedPatterns.find(
-        (p) => type === "attribute" && el.getAttribute(p.key) === p.value || type === "domain" && url.hostname.includes(p.value)
-      );
-      let reason = type === "attribute" ? `${pattern.key}=${pattern.value}` : `domain-partial=${pattern.value}`;
-      return { domain: url.hostname, elementType: el.tagName.toLowerCase(), reason };
+    createExclusionObject(url, el) {
+      return { domain: url.hostname, elementType: el.tagName.toLowerCase() };
     }
     /**
      * Returns an array of matched items, each item split into its domain and element type.
