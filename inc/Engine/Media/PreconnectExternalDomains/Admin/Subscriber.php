@@ -37,7 +37,7 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Clears the preconnect domains table if relevant settings is changed.
+	 * Clears the preconnect domains table if relevant settings are changed.
 	 *
 	 * @param array $old Old settings.
 	 * @param array $new New settings.
