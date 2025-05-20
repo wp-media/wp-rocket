@@ -44,6 +44,7 @@ class Subscriber implements Subscriber_Interface {
 	public static function get_subscribed_events(): array {
 		return [
 			'rocket_head_items'                   => [ 'add_preload_fonts_in_head', 30 ],
+			'rocket_enable_rucss_fonts_preload'   => 'disable_rucss_preload_fonts',
 			'rocket_preload_fonts_excluded_fonts' => 'get_exclusions',
 		];
 	}
@@ -56,6 +57,18 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function add_preload_fonts_in_head( $items ) {
 		return $this->preload_fonts->add_preload_fonts_in_head( $items );
+	}
+
+	/**
+	 * Disables the preloading of fonts by the Remove Unused CSS (RUCSS) feature.
+	 *
+	 * This method is used to prevent RUCSS from preloading fonts when certain conditions are met.
+	 *
+	 * @param bool $status The current status of font preloading.
+	 * @return bool Modified status indicating whether font preloading should be disabled.
+	 */
+	public function disable_rucss_preload_fonts( $status ): bool {
+		return $this->preload_fonts->disable_rucss_preload_fonts( $status );
 	}
 
 	/**

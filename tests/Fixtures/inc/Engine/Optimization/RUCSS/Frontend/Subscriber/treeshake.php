@@ -55,7 +55,6 @@ return [
 
 				],
 				'font_excluded' => [],
-
 			],
 			'expected' => [
 				'html' => $html_output,
