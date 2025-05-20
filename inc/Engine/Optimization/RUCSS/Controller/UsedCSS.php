@@ -399,9 +399,10 @@ class UsedCSS {
 	 * @return mixed
 	 */
 	public function insert_preload_fonts( $items ) {
-		if ( empty( $this->preloaded_fonts ) ) {
+		if ( ! $this->context->is_allowed() ) {
 			return $items;
 		}
+
 		foreach ( $this->preloaded_fonts as $font ) {
 			$items[] = $this->preload_link(
 				[
@@ -705,6 +706,9 @@ class UsedCSS {
 	 * @return string
 	 */
 	public function get_used_css_content() {
+		if ( ! $this->context->is_allowed() ) {
+			return '';
+		}
 		return $this->used_css_content;
 	}
 }
