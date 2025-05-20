@@ -90,7 +90,7 @@ class Controller implements ControllerInterface {
 		 *
 		 * @since 3.19
 		 *
-		 * @param string[] $excluded_elements Array of elements
+		 * @param string[] $exclusions Array of patterns used to identify elements that should be excluded.
 		 */
 		$exclusions = wpm_apply_filters_typed( 'string[]', 'preconnect_external_domain_exclusions', [] );
 
