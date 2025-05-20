@@ -39,11 +39,11 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Clears the preconnect domains table if relevant settings are changed.
 	 *
-	 * @param array $old Old settings.
-	 * @param array $new New settings.
+	 * @param array $old_settings Old settings.
+	 * @param array $new_settings New settings.
 	 * @return void
 	 */
-	public function maybe_clear_preconnect_domains( array $old, array $new ): void { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.newFound
-		$this->settings->maybe_clear_preconnect_external_domains( $old, $new );
+	public function maybe_clear_preconnect_domains( array $old_settings, array $new_settings ): void {
+		$this->settings->maybe_clear_preconnect_external_domains( $old_settings, $new_settings );
 	}
 }
