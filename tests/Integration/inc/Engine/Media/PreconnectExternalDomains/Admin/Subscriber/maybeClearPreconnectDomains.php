@@ -9,6 +9,7 @@ use WP_Rocket\Tests\Integration\DBTrait;
  * Test class covering \WP_Rocket\Engine\Media\PreconnectExternalDomains\Admin\Subscriber::maybe_clear_preconnect_domains
  *
  * @group PreconnectExternalDomains
+ * @group AdminOnly
  * @group Media
  */
 class MaybeClearPreconnectDomains extends TestCase {
@@ -24,19 +25,6 @@ class MaybeClearPreconnectDomains extends TestCase {
 		self::uninstallPreconnectDomainsTable();
 
 		parent::tear_down_after_class();
-	}
-
-	public function set_up() {
-		parent::set_up();
-
-		$this->unregisterAllCallbacksExcept( 'update_option_wp_rocket_settings', 'maybe_clear_preconnect_domains', 12 );
-	}
-
-
-	public function tear_down() {
-		parent::tear_down();
-
-		$this->restoreWpHook( 'update_option_wp_rocket_settings' );
 	}
 
 	/**

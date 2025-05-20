@@ -41,6 +41,7 @@ class Settings {
 			'exclude_js',
 			'cdn',
 			'cdn_cnames',
+			'host_fonts_locally',
 		];
 		foreach ( $keys as $key ) {
 			if ( $this->did_setting_change( $key, $old, $new ) ) {
@@ -65,7 +66,7 @@ class Settings {
 			&&
 			array_key_exists( $setting, $value )
 			&&
-			(int) $old_value[ $setting ] !== (int) $value[ $setting ]
+			$old_value[ $setting ] !== $value[ $setting ]
 		);
 	}
 }
