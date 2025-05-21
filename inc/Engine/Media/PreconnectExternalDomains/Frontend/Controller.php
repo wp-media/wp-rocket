@@ -179,4 +179,24 @@ class Controller implements ControllerInterface {
 	private function use_prefetch( $domain ) {
 		return wpm_apply_filters_typed( 'boolean', 'rocket_preconnect_external_domains_use_prefetch', false, $domain );
 	}
+
+	/**
+	 * Check if we can let CDN inserts resource hints or not.
+	 *
+	 * @param bool $status Current status.
+	 *
+	 * @return bool
+	 */
+	public function can_cdn_insert_resource_hints( $status ): bool {
+		if ( ! $status || ! $this->context->is_allowed() ) {
+			return $status;
+		}
+
+		$row = $this->get_current_url_row();
+		if ( empty( $row ) || ! $row->has_preconnect_external_domains() ) {
+			return $status;
+		}
+
+		return false;
+	}
 }

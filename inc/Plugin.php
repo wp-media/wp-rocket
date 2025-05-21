@@ -236,6 +236,9 @@ class Plugin {
 			'domain_change_subscriber',
 			'lazyload_css_admin_subscriber',
 			'post_edit_options_subscriber',
+			'preconnect_external_domains_admin_subscriber',
+			'media_fonts_admin_subscriber',
+			'preload_fonts_admin_subscriber',
 		];
 	}
 

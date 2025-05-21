@@ -40,6 +40,7 @@ class Subscriber implements Subscriber_Interface {
 	public static function get_subscribed_events(): array {
 		return [
 			'rocket_head_items'                     => [ 'preconnect_domains', 10 ],
+			'rocket_cdn_insert_resource_hints'      => 'stop_cdn_insert_resource_hints',
 			'preconnect_external_domain_exclusions' => 'get_exclusions',
 		];
 	}
@@ -55,7 +56,16 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Gets the exclusion patterns used to identify elements that should be excluded.
+	 * Stop CDN from adding resource hints into head.
+	 *
+	 * @param bool $status Current status.
+	 * @return bool
+	 */
+	public function stop_cdn_insert_resource_hints( $status ): bool {
+		return $this->controller->can_cdn_insert_resource_hints( $status );
+	}
+
+	/** Gets the exclusion patterns used to identify elements that should be excluded.
 	 * Merges any existing exclusions pattern with those from the dynamic lists.
 	 *
 	 * @param array $exclusions Array of exclusion patterns.
