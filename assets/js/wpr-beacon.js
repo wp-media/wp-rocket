@@ -388,18 +388,36 @@
       this.FONT_FILE_REGEX = new RegExp(`\\.(${extensions})(\\?.*)?$`, "i");
     }
     /**
-     * Checks if a given font family is a system font.
+     * Checks if a font family or URL should be excluded from preloading.
      * 
-     * This method checks if the provided font family is part of the system fonts
-     * defined in the configuration. It returns true if the font family is a system
-     * font, and false otherwise.
+     * This method determines if the provided font family or any of its URLs
+     * match any exclusion patterns defined in the configuration. It checks for
+     * exact matches and substring matches for both the font family and URLs.
      * 
      * @param {string} fontFamily - The font family to check.
-     * @returns {boolean} True if the font family is a system font, false otherwise.
+     * @param {string[]} urls - Array of font file URLs to check.
+     * @returns {boolean} True if the font should be excluded, false otherwise.
      */
-    isSystemFont(fontFamily) {
-      const systemFonts = new Set(this.config.system_fonts);
-      return systemFonts.has(fontFamily);
+    isExcluded(fontFamily, urls) {
+      const exclusions = this.config.preload_fonts_exclusions;
+      const exclusionsSet = new Set(exclusions);
+      if (exclusionsSet.has(fontFamily)) {
+        return true;
+      }
+      if (exclusions.some((exclusion) => fontFamily.includes(exclusion))) {
+        return true;
+      }
+      if (Array.isArray(urls) && urls.length > 0) {
+        if (urls.some((url) => exclusionsSet.has(url))) {
+          return true;
+        }
+        if (urls.some(
+          (url) => exclusions.some((exclusion) => url.includes(exclusion))
+        )) {
+          return true;
+        }
+      }
+      return false;
     }
     /**
      * Checks if an element is visible in the viewport.
@@ -716,15 +734,16 @@ CSS (first 200 chars): ${txt.substring(0, 200)}...`
           if (!style || !this.isElementVisible(element)) return;
           const fontFamily = style.fontFamily.split(",")[0].replace(/['"]+/g, "").trim();
           const hasContent = pseudoElement ? style.content !== "none" && style.content !== '""' : element.textContent.trim();
-          if (hasContent && !this.isSystemFont(fontFamily) && stylesheetFonts[fontFamily]) {
-            if (!hostedFonts.has(fontFamily)) {
+          if (hasContent && stylesheetFonts[fontFamily]) {
+            let urls = stylesheetFonts[fontFamily].urls;
+            if (!this.isExcluded(fontFamily, urls) && !hostedFonts.has(fontFamily)) {
               hostedFonts.set(fontFamily, {
                 elements: /* @__PURE__ */ new Set(),
-                urls: stylesheetFonts[fontFamily].urls,
+                urls,
                 variations: stylesheetFonts[fontFamily].variations
               });
+              hostedFonts.get(fontFamily).elements.add(element);
             }
-            hostedFonts.get(fontFamily).elements.add(element);
           }
         };
         try {
@@ -925,18 +944,18 @@ CSS (first 200 chars): ${txt.substring(0, 200)}...`
           const style = window.getComputedStyle(element);
           const fontInfo = getFontInfoForElement(style);
           if (fontInfo) {
-            if (!matches.has(fontInfo.url)) {
+            if (!this.isExcluded(fontInfo.family, [fontInfo.url]) && !matches.has(fontInfo.url)) {
               matches.set(fontInfo.url, {
                 elements: /* @__PURE__ */ new Set(),
                 variations: /* @__PURE__ */ new Set()
               });
+              matches.get(fontInfo.url).elements.add(element);
+              matches.get(fontInfo.url).variations.add(JSON.stringify({
+                family: fontInfo.family,
+                weight: fontInfo.weight,
+                style: fontInfo.style
+              }));
             }
-            matches.get(fontInfo.url).elements.add(element);
-            matches.get(fontInfo.url).variations.add(JSON.stringify({
-              family: fontInfo.family,
-              weight: fontInfo.weight,
-              style: fontInfo.style
-            }));
           }
         }
         ["::before", "::after"].forEach((pseudo) => {
@@ -944,18 +963,18 @@ CSS (first 200 chars): ${txt.substring(0, 200)}...`
           if (pseudoStyle.content !== "none" && pseudoStyle.content !== '""') {
             const fontInfo = getFontInfoForElement(pseudoStyle);
             if (fontInfo) {
-              if (!matches.has(fontInfo.url)) {
+              if (!this.isExcluded(fontInfo.family, [fontInfo.url]) && !matches.has(fontInfo.url)) {
                 matches.set(fontInfo.url, {
                   elements: /* @__PURE__ */ new Set(),
                   variations: /* @__PURE__ */ new Set()
                 });
+                matches.get(fontInfo.url).elements.add(element);
+                matches.get(fontInfo.url).variations.add(JSON.stringify({
+                  family: fontInfo.family,
+                  weight: fontInfo.weight,
+                  style: fontInfo.style
+                }));
               }
-              matches.get(fontInfo.url).elements.add(element);
-              matches.get(fontInfo.url).variations.add(JSON.stringify({
-                family: fontInfo.family,
-                weight: fontInfo.weight,
-                style: fontInfo.style
-              }));
             }
           }
         });
@@ -1019,12 +1038,8 @@ CSS (first 200 chars): ${txt.substring(0, 200)}...`
     processElement(el) {
       try {
         const url = new URL(el.src || el.href || "", location.href);
-        if (this.isExcludedByAttribute(el)) {
-          this.excludedItems.add(this.createExclusionObject(url, el, "attribute"));
-          return;
-        }
-        if (this.isExcludedByDomain(url)) {
-          this.excludedItems.add(this.createExclusionObject(url, el, "domain"));
+        if (this.isExcluded(el)) {
+          this.excludedItems.add(this.createExclusionObject(url, el));
           return;
         }
         if (this.isExternalDomain(url)) {
@@ -1036,17 +1051,18 @@ CSS (first 200 chars): ${txt.substring(0, 200)}...`
       }
     }
     /**
-     * Checks if an element is excluded based on attribute rules.
+     * Checks if an element is excluded based on exclusions patterns.
      * 
-     * This method iterates through the excludedPatterns array and checks if any pattern matches the element's attribute.
+     * This method iterates through the excludedPatterns array and checks if any pattern matches any of the element's attribute or values.
      * If a match is found, it returns true, indicating the element is excluded.
      * 
      * @param {Element} el - The element to check.
      * @returns {boolean} True if the element is excluded by an attribute rule, false otherwise.
      */
-    isExcludedByAttribute(el) {
+    isExcluded(el) {
+      const outerHTML = el.outerHTML.substring(0, el.outerHTML.indexOf(">") + 1);
       return this.excludedPatterns.some(
-        (pattern) => pattern.type === "attribute" && el.getAttribute(pattern.key) === pattern.value
+        (pattern) => outerHTML.includes(pattern)
       );
     }
     /**
@@ -1076,23 +1092,14 @@ CSS (first 200 chars): ${txt.substring(0, 200)}...`
       return url.hostname !== location.hostname && url.hostname;
     }
     /**
-     * Creates an exclusion object based on the URL, element, and type.
-     * 
-     * This method finds the pattern in the excludedPatterns array that matches the type and the element's attribute or the URL's hostname.
-     * It then constructs a reason string based on the type and the pattern.
-     * Finally, it returns an object with the URL's hostname, the element's tag name, and the reason.
+     * Creates an exclusion object based on the URL, element.
      * 
      * @param {URL} url - The URL to create the exclusion object for.
      * @param {Element} el - The element to create the exclusion object for.
-     * @param {string} type - The type of the exclusion (attribute or domain).
      * @returns {Object} An object with the URL's hostname, the element's tag name, and the reason.
      */
-    createExclusionObject(url, el, type) {
-      const pattern = this.excludedPatterns.find(
-        (p) => type === "attribute" && el.getAttribute(p.key) === p.value || type === "domain" && url.hostname.includes(p.value)
-      );
-      let reason = type === "attribute" ? `${pattern.key}=${pattern.value}` : `domain-partial=${pattern.value}`;
-      return { domain: url.hostname, elementType: el.tagName.toLowerCase(), reason };
+    createExclusionObject(url, el) {
+      return { domain: url.hostname, elementType: el.tagName.toLowerCase() };
     }
     /**
      * Returns an array of matched items, each item split into its domain and element type.
