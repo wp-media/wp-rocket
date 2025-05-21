@@ -445,8 +445,16 @@
      */
     cleanUrl(url) {
       try {
-        url = url.split("?")[0].split("#")[0];
-        return new URL(url, window.location.href).href;
+        let absUrl;
+        if (/^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(url)) {
+          absUrl = url;
+        } else {
+          absUrl = new URL(url, window.location.href).href;
+        }
+        const u = new URL(absUrl);
+        u.search = "";
+        u.hash = "";
+        return u.href;
       } catch (e) {
         return url;
       }
