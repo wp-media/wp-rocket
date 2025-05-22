@@ -862,7 +862,7 @@
         }
         if (this.isExternalDomain(url)) {
           this.matchedItems.add(`${url.hostname}-${el.tagName.toLowerCase()}`);
-          this.result = [...new Set(this.result.concat(url.hostname))];
+          this.result = [...new Set(this.result.concat(url.origin))];
         }
       } catch (e) {
         this.logger.logMessage(e);
