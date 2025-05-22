@@ -15,6 +15,17 @@ class Context implements ContextInterface {
 	private $options;
 
 	/**
+	 * List of allowed extensions.
+	 *
+	 * @var string[]
+	 */
+	private $extensions = [
+		'woff2',
+		'woff',
+		'ttf',
+	];
+
+	/**
 	 * Constructor.
 	 *
 	 * @param Options_Data $options Instance of the Option_Data class.
@@ -60,5 +71,19 @@ class Context implements ContextInterface {
 		 * @param string[] $exclusions Array of fonts to exclude.
 		 */
 		return wpm_apply_filters_typed( 'string[]', 'rocket_preload_fonts_excluded_fonts', [] );
+	}
+
+	/**
+	 * Get filtered allowed list of extensions.
+	 *
+	 * @return string[]
+	 */
+	public function get_extensions(): array {
+		/**
+		 * Filters the list of processed font extensions.
+		 *
+		 * @param string[] $processed_extensions Array of processed font extensions.
+		 */
+		return wpm_apply_filters_typed( 'string[]', 'rocket_preload_fonts_processed_extensions', $this->extensions );
 	}
 }
