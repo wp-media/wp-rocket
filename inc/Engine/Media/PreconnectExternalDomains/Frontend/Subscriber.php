@@ -29,7 +29,8 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'rocket_head_items' => [ 'preconnect_domains', 10 ],
+			'rocket_head_items'                => [ 'preconnect_domains', 10 ],
+			'rocket_cdn_insert_resource_hints' => 'stop_cdn_insert_resource_hints',
 		];
 	}
 
@@ -41,5 +42,15 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function preconnect_domains( array $items ) {
 		return $this->controller->add_preconnect_to_head( $items );
+	}
+
+	/**
+	 * Stop CDN from adding resource hints into head.
+	 *
+	 * @param bool $status Current status.
+	 * @return bool
+	 */
+	public function stop_cdn_insert_resource_hints( $status ): bool {
+		return $this->controller->can_cdn_insert_resource_hints( $status );
 	}
 }
