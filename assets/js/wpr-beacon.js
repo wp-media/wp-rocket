@@ -726,8 +726,7 @@ CSS (first 200 chars): ${txt.substring(0, 200)}...`
       const networkLoadedFonts = this.getNetworkLoadedFonts();
       const stylesheetFonts = this.getFontFaceRules();
       const hostedFonts = /* @__PURE__ */ new Map();
-      const externalFontPairs = this.config.font_data;
-      const externalFontsResults = await this.processExternalFonts(externalFontPairs);
+      const externalFontsResults = await this.processExternalFonts(this.externalParsedPairs);
       const elements = Array.from(document.getElementsByTagName("*")).filter((el) => this.isElementAboveFold(el));
       elements.forEach((element) => {
         const processElementFont = (style, pseudoElement = null) => {
