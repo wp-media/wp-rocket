@@ -72,7 +72,7 @@ class Controller implements ControllerInterface {
 			$max_preload_fonts_number = 1;
 		}
 
-		$fonts = $this->remove_excluded_fonts( $fonts, $this->context->get_exclusions() );
+		$fonts = $this->filter_fonts( $fonts, $this->context->get_exclusions() );
 
 		foreach ( (array) $fonts as $index => $font ) {
 			$preload_fonts[ $index ] = sanitize_url( wp_unslash( $font ) );
@@ -147,14 +147,14 @@ class Controller implements ControllerInterface {
 	}
 
 	/**
-	 * Removes excluded fonts from the list of fonts to be preloaded.
+	 * Filter font urls before saving into DB by checking exclusions list and extensions.
 	 *
 	 * @param array $fonts Array of fonts to be preloaded.
 	 * @param array $exclusions Array of fonts to be excluded.
 	 *
 	 * @return array Filtered array of fonts, excluding those specified in the exclusion list.
 	 */
-	private function remove_excluded_fonts( array $fonts, array $exclusions ): array {
+	private function filter_fonts( array $fonts, array $exclusions ): array {
 		if ( empty( $exclusions ) ) {
 			return $fonts;
 		}
@@ -163,12 +163,17 @@ class Controller implements ControllerInterface {
 		 * Create a single regex pattern from all exclusions.
 		 * Use a different delimiter (#) to avoid issues with URLs containing slashes.
 		 */
-		$pattern = '#(' . implode( '|', array_map( 'preg_quote', $exclusions ) ) . ')#i';
+		$pattern    = '#(' . implode( '|', array_map( 'preg_quote', $exclusions ) ) . ')#i';
+		$extensions = $this->context->get_extensions();
 
 		// Filter out fonts that match the pattern.
 		$filtered_fonts = array_filter(
 			$fonts,
-			function ( $font ) use ( $pattern, $exclusions ) {
+			function ( $font ) use ( $pattern, $exclusions, $extensions ) {
+				if ( ! in_array( pathinfo( $font, PATHINFO_EXTENSION ), $extensions, true ) ) {
+					return false;
+				}
+
 				// Check exact match ( Mainly url match ).
 				if ( in_array( $font, $exclusions, true ) ) {
 					return false;

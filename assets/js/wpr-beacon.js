@@ -452,6 +452,187 @@
       }
     }
     /**
+     * Fetches external stylesheet links from known font providers, retrieves their CSS,
+     * parses them into in-memory CSSStyleSheet objects, and extracts font-family/font-face
+     * information into a structured object.
+     *
+     * @async
+     * @function externalStylesheetsDoc
+     * @returns {Promise<{styleSheets: CSSStyleSheet[], fontPairs: Object}>} An object containing:
+     *   - styleSheets: Array of parsed CSSStyleSheet objects (not attached to the DOM).
+     *   - fontPairs: An object mapping font URLs to arrays of font variation objects
+     *     ({family, weight, style}).
+     *
+     * @example
+     * const { styleSheets, fontPairs } = await externalStylesheetsDoc();
+     * this.logger.logMessage(fontPairs);
+     */
+    async externalStylesheetsDoc() {
+      function generateFontPairsFromStyleSheets(styleSheetsArray) {
+        const fontPairs = {};
+        function _extractFirstUrlFromSrc(srcValue) {
+          if (!srcValue) return null;
+          const urlMatch = srcValue.match(/url\s*\(\s*(['"]?)(.+?)\1\s*\)/);
+          return urlMatch ? urlMatch[2] : null;
+        }
+        function _cleanFontFamilyName(fontFamilyValue) {
+          if (!fontFamilyValue) return "";
+          return fontFamilyValue.replace(/^['"]+|['"]+$/g, "").trim();
+        }
+        if (!styleSheetsArray || !Array.isArray(styleSheetsArray)) {
+          console.warn(
+            "generateFontPairsFromStyleSheets: Input is not a valid array. Received:",
+            styleSheetsArray
+          );
+          return fontPairs;
+        }
+        if (styleSheetsArray.length === 0) {
+          return fontPairs;
+        }
+        styleSheetsArray.forEach((sheet) => {
+          if (sheet && sheet.cssRules) {
+            try {
+              for (const rule of sheet.cssRules) {
+                if (rule.type === CSSRule.FONT_FACE_RULE) {
+                  const cssFontFaceRule = rule;
+                  const fontFamily = _cleanFontFamilyName(
+                    cssFontFaceRule.style.getPropertyValue("font-family")
+                  );
+                  const fontWeight = cssFontFaceRule.style.getPropertyValue("font-weight") || "normal";
+                  const fontStyle = cssFontFaceRule.style.getPropertyValue("font-style") || "normal";
+                  const src = cssFontFaceRule.style.getPropertyValue("src");
+                  const fontUrl = _extractFirstUrlFromSrc(src);
+                  if (fontFamily && fontUrl) {
+                    const variation = {
+                      family: fontFamily,
+                      weight: fontWeight,
+                      style: fontStyle
+                    };
+                    if (!fontPairs[fontUrl]) fontPairs[fontUrl] = [];
+                    const variationExists = fontPairs[fontUrl].some(
+                      (v) => v.family === variation.family && v.weight === variation.weight && v.style === variation.style
+                    );
+                    if (!variationExists) fontPairs[fontUrl].push(variation);
+                  }
+                }
+              }
+            } catch (e) {
+              console.warn(
+                "Error processing CSS rules from a stylesheet:",
+                e,
+                sheet
+              );
+            }
+          } else if (sheet && !sheet.cssRules) {
+            console.warn(
+              "Skipping a stylesheet as its cssRules are not accessible or it is empty:",
+              sheet
+            );
+          }
+        });
+        return fontPairs;
+      }
+      const externalFontsProviders = [
+        "fonts.googleapis.com",
+        "fonts.gstatic.com",
+        "use.typekit.net",
+        "fonts.adobe.com",
+        "cdn.fonts.net"
+        // Add more known external font domains as needed
+      ];
+      const links = [
+        ...document.querySelectorAll('link[rel="stylesheet"]')
+      ].filter(
+        (link) => externalFontsProviders.some((domain) => link.href.includes(domain))
+      );
+      if (links.length === 0) {
+        this.logger.logMessage("No external CSS links found to process.");
+        return {
+          // Consistent return structure
+          styleSheets: [],
+          // The retrievable CSSStyleSheet objects
+          fontPairs: {}
+          // Processed data from these sheets
+        };
+      }
+      const fetchedCssPromises = links.map(
+        (linkElement) => fetch(linkElement.href, { mode: "cors" }).then((response) => {
+          if (response.ok) {
+            return response.text();
+          }
+          console.warn(
+            `Failed to fetch external CSS from ${linkElement.href}: ${response.status} ${response.statusText}`
+          );
+          return null;
+        }).catch((error) => {
+          console.error(
+            `Network error fetching external CSS from ${linkElement.href}:`,
+            error
+          );
+          return null;
+        })
+      );
+      const cssTexts = await Promise.all(fetchedCssPromises);
+      const temporaryStyleSheets = [];
+      cssTexts.forEach((txt) => {
+        if (txt && txt.trim() !== "") {
+          try {
+            const sheet = new CSSStyleSheet();
+            sheet.replaceSync(txt);
+            temporaryStyleSheets.push(sheet);
+          } catch (error) {
+            console.error(
+              "Could not parse fetched CSS into a stylesheet:",
+              error,
+              `
+CSS (first 200 chars): ${txt.substring(0, 200)}...`
+            );
+          }
+        }
+      });
+      if (temporaryStyleSheets.length > 0) {
+        this.logger.logMessage(
+          `[Beacon] ${temporaryStyleSheets.length} stylesheet(s) fetched and parsed into CSSStyleSheet objects.`
+        );
+      } else {
+        this.logger.logMessage(
+          "[Beacon] No stylesheets were successfully parsed from the fetched CSS."
+        );
+      }
+      const processedFontPairs = generateFontPairsFromStyleSheets(temporaryStyleSheets);
+      return {
+        styleSheets: temporaryStyleSheets,
+        fontPairs: processedFontPairs
+      };
+    }
+    /**
+     * Asynchronously initializes and parses external font stylesheets.
+     * 
+     * Fetches external font stylesheets and font pairs using `externalStylesheetsDoc`,
+     * then stores the parsed results in `externalParsedSheets` and `externalParsedPairs`.
+     * Logs the process and handles errors by resetting `externalParsedSheets` to an empty array.
+     * 
+     * @async
+     * @returns {Promise<void>} Resolves when external font stylesheets have been initialized.
+     */
+    async _initializeExternalFontSheets() {
+      this.logger.logMessage("Initializing external font stylesheets...");
+      try {
+        const result = await this.externalStylesheetsDoc();
+        this.externalParsedSheets = result.styleSheets || [];
+        this.externalParsedPairs = result.fontPairs || [];
+        this.logger.logMessage(
+          `Successfully parsed ${this.externalParsedSheets.length} external font stylesheets.`
+        );
+      } catch (error) {
+        this.logger.logMessage(
+          "Error initializing external font stylesheets:",
+          error
+        );
+        this.externalParsedSheets = [];
+      }
+    }
+    /**
      * Retrieves a map of network-loaded fonts.
      * 
      * This method uses the Performance API to get all resource entries, filters out
@@ -477,7 +658,7 @@
      */
     getFontFaceRules() {
       const stylesheetFonts = {};
-      Array.from(document.styleSheets).forEach((sheet) => {
+      Array.from(Array.from(document.styleSheets)).filter((sheet) => !sheet.href || new URL(sheet.href).origin === location.origin).forEach((sheet) => {
         try {
           Array.from(sheet.cssRules || []).forEach((rule) => {
             if (rule instanceof CSSFontFaceRule) {
@@ -541,11 +722,11 @@
      */
     async run() {
       await document.fonts.ready;
+      await this._initializeExternalFontSheets();
       const networkLoadedFonts = this.getNetworkLoadedFonts();
       const stylesheetFonts = this.getFontFaceRules();
       const hostedFonts = /* @__PURE__ */ new Map();
-      const externalFontPairs = this.config.font_data;
-      const externalFontsResults = await this.processExternalFonts(externalFontPairs);
+      const externalFontsResults = await this.processExternalFonts(this.externalParsedPairs);
       const elements = Array.from(document.getElementsByTagName("*")).filter((el) => this.isElementAboveFold(el));
       elements.forEach((element) => {
         const processElementFont = (style, pseudoElement = null) => {

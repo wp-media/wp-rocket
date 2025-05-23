@@ -78,30 +78,9 @@ class Controller implements ControllerInterface {
 			return $data;
 		}
 
-		/**
-		 * Filters the list of mock font urls.
-		 *
-		 * @param array $font_data Array of font data.
-		 */
-		$font_data = wpm_apply_filters_typed( 'array', 'rocket_preload_fonts_font_data', [] );
-
-		$processed_extensions = [
-			'woff2',
-			'woff',
-			'ttf',
-		];
-
-		/**
-		 * Filters the list of processed font extensions.
-		 *
-		 * @param string[] $processed_extensions Array of processed font extensions.
-		 */
-		$processed_extensions = wpm_apply_filters_typed( 'string[]', 'rocket_preload_fonts_processed_extensions', $processed_extensions );
-
 		$data['preload_fonts_exclusions'] = $this->context->get_exclusions();
-		$data['font_data']                = $font_data;
 		$data['status']['preload_fonts']  = $this->context->is_allowed();
-		$data['processed_extensions']     = $processed_extensions;
+		$data['processed_extensions']     = $this->context->get_extensions();
 
 		return $data;
 	}
