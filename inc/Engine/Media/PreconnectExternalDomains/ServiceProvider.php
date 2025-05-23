@@ -79,7 +79,12 @@ class ServiceProvider extends AbstractServiceProvider {
 			);
 
 		$this->getContainer()->addShared( 'preconnect_frontend_subscriber', FrontendSubscriber::class )
-			->addArgument( 'preconnect_external_domains_controller' );
+			->addArguments(
+				[
+					'preconnect_external_domains_controller',
+					'dynamic_lists_defaultlists_data_manager',
+				]
+			);
 
 		$this->getContainer()->addShared( 'preconnect_external_domains_factory', Factory::class )
 			->addArguments(
