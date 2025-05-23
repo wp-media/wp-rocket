@@ -402,6 +402,7 @@ class UsedCSS {
 		if ( ! $this->context->is_allowed() ) {
 			return $items;
 		}
+
 		foreach ( $this->preloaded_fonts as $font ) {
 			$items[] = $this->preload_link(
 				[
