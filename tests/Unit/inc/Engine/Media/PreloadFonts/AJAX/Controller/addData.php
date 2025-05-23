@@ -75,27 +75,16 @@ class Test_AddData extends TestCase {
 
 		$valid_source = $expected['valid_source'] ?? [];
 
-		if(empty($valid_source)) {
-			Functions\when( 'sanitize_text_field' )->alias(
-				function ( $value ) {
-					return is_string( $value ) ? strip_tags( $value ) : $value;
-				}
-			);
-		} else{
-			Functions\when('sanitize_text_field')->alias(
-				function ($value) use ($valid_source) {
-					$arr_value = [];
-					if (!is_string($value)) {
-						foreach ($valid_source as $key => $replacement) {
-							$arr_value[] = strip_tags($replacement);
-						}
-						return (object) $arr_value;
-					}
-
-					return strip_tags($value);
-				}
-			);
-		}
+		Functions\when( 'sanitize_text_field' )->alias(
+			function ( $value ) {
+				return is_string( $value ) ? strip_tags( $value ) : $value;
+			}
+		);
+		Functions\when( 'sanitize_url' )->alias(
+			function ( $url ) {
+				return str_replace( [ '&amp;', '&' ], '&#038;', $url );
+			}
+		);
 
 		Functions\when( 'current_time' )
 			->justReturn( $expected['item']['last_accessed'] );
