@@ -34,12 +34,12 @@ class Settings {
 	 * Initializes the Settings instance with a PreconnectExternalDomainsTable object.
 	 *
 	 * @param PreconnectExternalDomainsTable $table The table instance used to manage preconnect external domains.
-	 * @param Options_Data $options Instance of the Option_Data class.
-	 * @param Options_API  $options_api WP Rocket Options API instance.
+	 * @param Options_Data                   $options Instance of the Option_Data class.
+	 * @param Options_API                    $options_api WP Rocket Options API instance.
 	 */
 	public function __construct( PreconnectExternalDomainsTable $table, Options_Data $options, Options_API $options_api ) {
-		$this->table = $table;
-		$this->options = $options;
+		$this->table       = $table;
+		$this->options     = $options;
 		$this->options_api = $options_api;
 	}
 

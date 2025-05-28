@@ -33,7 +33,7 @@ class Subscriber implements Subscriber_Interface {
 	public static function get_subscribed_events(): array {
 		return [
 			'update_option_wp_rocket_settings' => [ 'maybe_clear_preconnect_domains', 12, 2 ],
-			'wp_rocket_upgrade' => [ 'maybe_clear_dns_prefetch_values', 10, 2 ],
+			'wp_rocket_upgrade'                => [ 'maybe_clear_dns_prefetch_values', 10, 2 ],
 		];
 	}
 
@@ -49,18 +49,18 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	* Removes old DNS prefetch values when upgrading from versions prior to 3.19.
-	* 
-	* @param string $new_version New plugin version.
-	* @param string $old_version Previous plugin version.
-	* 
-	* @return void
-	*/
+	 * Removes old DNS prefetch values when upgrading from versions prior to 3.19.
+	 *
+	 * @param string $new_version New plugin version.
+	 * @param string $old_version Previous plugin version.
+	 *
+	 * @return void
+	 */
 	public function maybe_clear_dns_prefetch_values( $new_version, $old_version ): void {
 		if ( version_compare( $old_version, '3.19', '>' ) ) {
 			return;
 		}
-		
+
 		$this->settings->maybe_clear_dns_prefetch_values();
 	}
 }
