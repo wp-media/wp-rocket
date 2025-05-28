@@ -2,6 +2,8 @@
 namespace WP_Rocket\Engine\Media\PreconnectExternalDomains\Admin;
 
 use WP_Rocket\Engine\Media\PreconnectExternalDomains\Database\Table\PreconnectExternalDomains as PreconnectExternalDomainsTable;
+use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Admin\Options as Options_API;
 
 class Settings {
 	/**
@@ -12,14 +14,33 @@ class Settings {
 	private $table;
 
 	/**
+	 * WP Rocket options instance.
+	 *
+	 * @var Options_Data
+	 */
+	private $options;
+
+
+	/**
+	 * WP Rocket Options API Instance.
+	 *
+	 * @var Options_API
+	 */
+	private $options_api;
+
+	/**
 	 * Constructor for the Settings class.
 	 *
 	 * Initializes the Settings instance with a PreconnectExternalDomainsTable object.
 	 *
 	 * @param PreconnectExternalDomainsTable $table The table instance used to manage preconnect external domains.
+	 * @param Options_Data $options Instance of the Option_Data class.
+	 * @param Options_API  $options_api WP Rocket Options API instance.
 	 */
-	public function __construct( PreconnectExternalDomainsTable $table ) {
+	public function __construct( PreconnectExternalDomainsTable $table, Options_Data $options, Options_API $options_api ) {
 		$this->table = $table;
+		$this->options = $options;
+		$this->options_api = $options_api;
 	}
 
 	/**
@@ -68,5 +89,20 @@ class Settings {
 			&&
 			$old_value[ $setting ] !== $value[ $setting ]
 		);
+	}
+
+	/**
+	 * Removes old DNS prefetch values from settings.
+	 *
+	 * @return void
+	 */
+	public function maybe_clear_dns_prefetch_values(): void {
+		$options = $this->options_api->get( 'settings', [] );
+		if ( empty( $options['dns_prefetch'] ) ) {
+			return;
+		}
+
+		$this->options->set( 'dns_prefetch', [] );
+		$this->options_api->set( 'settings', $this->options->get_options() );
 	}
 }
