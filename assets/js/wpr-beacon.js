@@ -780,21 +780,6 @@ CSS (first 200 chars): ${txt.substring(0, 200)}...`
             const elements = Array.from(data.elements);
             const aboveElements = elements.filter((el) => this.isElementAboveFold(el));
             const belowElements = elements.filter((el) => !this.isElementAboveFold(el));
-            if (!allFonts[fontFamily]) {
-              allFonts[fontFamily] = {
-                type: "hosted",
-                variations: [],
-                elementCount: {
-                  aboveFold: aboveElements.length,
-                  belowFold: belowElements.length,
-                  total: elements.length
-                },
-                urlCount: {
-                  aboveFold: /* @__PURE__ */ new Set(),
-                  belowFold: /* @__PURE__ */ new Set()
-                }
-              };
-            }
             data.variations.forEach((variation) => {
               let matchingUrl = null;
               for (const styleUrl of data.urls) {
@@ -804,17 +789,32 @@ CSS (first 200 chars): ${txt.substring(0, 200)}...`
                   break;
                 }
               }
-              allFonts[fontFamily].variations.push({
-                weight: variation.weight,
-                style: variation.style,
-                url: matchingUrl || "File not found",
-                elementCount: {
-                  aboveFold: aboveElements.length,
-                  belowFold: belowElements.length,
-                  total: elements.length
-                }
-              });
               if (matchingUrl) {
+                if (!allFonts[fontFamily]) {
+                  allFonts[fontFamily] = {
+                    type: "hosted",
+                    variations: [],
+                    elementCount: {
+                      aboveFold: aboveElements.length,
+                      belowFold: belowElements.length,
+                      total: elements.length
+                    },
+                    urlCount: {
+                      aboveFold: /* @__PURE__ */ new Set(),
+                      belowFold: /* @__PURE__ */ new Set()
+                    }
+                  };
+                }
+                allFonts[fontFamily].variations.push({
+                  weight: variation.weight,
+                  style: variation.style,
+                  url: matchingUrl,
+                  elementCount: {
+                    aboveFold: aboveElements.length,
+                    belowFold: belowElements.length,
+                    total: elements.length
+                  }
+                });
                 if (aboveElements.length > 0) {
                   allFonts[fontFamily].urlCount.aboveFold.add(matchingUrl);
                 }
@@ -826,11 +826,13 @@ CSS (first 200 chars): ${txt.substring(0, 200)}...`
             if (!Object.prototype.hasOwnProperty.call(allFonts, fontFamily)) {
               return;
             }
-            hostedFontsResults[fontFamily] = {
-              variations: allFonts[fontFamily].variations,
-              elementCount: { ...allFonts[fontFamily].elementCount },
-              urlCount: { ...allFonts[fontFamily].urlCount }
-            };
+            if (allFonts[fontFamily]) {
+              hostedFontsResults[fontFamily] = {
+                variations: allFonts[fontFamily].variations,
+                elementCount: { ...allFonts[fontFamily].elementCount },
+                urlCount: { ...allFonts[fontFamily].urlCount }
+              };
+            }
           }
         });
       }
