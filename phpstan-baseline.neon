@@ -1358,6 +1358,11 @@ parameters:
 		-
 			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
+			path: tests/Integration/inc/Engine/Media/PreconnectExternalDomains/Admin/Subscriber/maybeClearDnsPrefetchValues.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
 			path: tests/Integration/inc/Engine/Media/PreloadFonts/Admin/Subscriber/MaybeEnableAutoPreloadTest.php
 
 		-
