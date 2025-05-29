@@ -98,7 +98,13 @@ class ServiceProvider extends AbstractServiceProvider {
 			);
 
 		$this->getContainer()->add( 'preconnect_external_domains_admin_settings', AdminSettings::class )
-			->addArgument( 'preconnect_external_domains_table' );
+			->addArguments(
+				[
+					'preconnect_external_domains_table',
+					'options',
+					'options_api',
+				]
+			);
 
 			$this->getContainer()->addShared( 'preconnect_external_domains_admin_subscriber', AdminSubscriber::class )
 			->addArgument( 'preconnect_external_domains_admin_settings' );
