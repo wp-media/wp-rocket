@@ -100,7 +100,7 @@ class AdminBar extends Abstract_Render {
 			__( 'Priority Elements', 'rocket' ),
 			esc_html__( 'Clear', 'rocket' ),
 			'rocket_clean_performance_hints',
-			__( 'This action will reset stored optimizations for: Critical Images, Lazy Rendered Content, Preconnect to External Domains, and Preload Fonts.', 'rocket' )
+			__( 'Reset stored optimizations related to Automatic Lazy Rendering, Critical Images, Preconnect to External Domains, and Preload Fonts.', 'rocket' )
 		);
 	}
 }
