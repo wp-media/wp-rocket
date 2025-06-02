@@ -3051,7 +3051,7 @@ msgid ""
 "New data will be generated as needed."
 msgstr ""
 "%1$s: Otomatik Lazy İşleme, Önemli Resimler, Harici Etki Alanlarına "
-"Önbağlanma ve Yazı Tiplerini Önyükleme için saklanan iyileştirme verileri "
+"Önbağlama ve Yazı Tiplerini Önyükleme için saklanan iyileştirme verileri "
 "temizlendi! Gerektiğinde yeni veriler oluşturulacaktır."
 
 #: inc/Engine/Common/PerformanceHints/AJAX/AJAXControllerTrait.php:19
