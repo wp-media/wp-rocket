@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\GoogleFonts;
 
+use WP_Rocket\Engine\Common\Head\ElementTrait;
 use WP_Rocket\Engine\Media\Fonts\FontsTrait;
 
 /**
@@ -12,6 +13,7 @@ use WP_Rocket\Engine\Media\Fonts\FontsTrait;
  */
 abstract class AbstractGFOptimization {
 	use FontsTrait;
+	use ElementTrait;
 
 	/**
 	 * Allowed display values.
@@ -106,32 +108,85 @@ abstract class AbstractGFOptimization {
 	}
 
 	/**
-	 * Returns the optimized markup for Google Fonts
+	 * Check if preload google fonts is enabled or not using filter.
 	 *
-	 * @since 3.9.1
-	 *
-	 * @param string $url Google Fonts URL.
-	 *
-	 * @return string
+	 * @return bool
 	 */
-	protected function get_optimized_markup( string $url ): string {
-		/**
-		 * Filters whether to disable Google Fonts preloading.
-		 *
-		 * @since 3.18
-		 *
-		 * @param bool $disable_google_fonts_preload Whether to disable Google Fonts preloading. Default false.
-		 */
-		if ( wpm_apply_filters_typed( 'boolean', 'rocket_disable_google_fonts_preload', false ) ) {
-			return sprintf(
-				'<link rel="stylesheet" href="%1$s" />', // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
-				$url
+	protected function is_preload_enabled() {
+		return ! wpm_apply_filters_typed( 'boolean', 'rocket_disable_google_fonts_preload', false );
+	}
+
+	/**
+	 * Prepare preload fonts to the head items.
+	 *
+	 * @param array $fonts Fonts list.
+	 * @param array $items Head items.
+	 * @return array
+	 */
+	protected function prepare_preload_fonts_to_head( array $fonts, array $items ): array {
+		foreach ( $fonts as $font_url ) {
+			$items[] = $this->preload_link(
+				[
+					'href' => $font_url,
+					'as'   => 'style',
+				]
 			);
 		}
 
-		return sprintf(
-			'<link rel="preload" data-rocket-preload as="style" href="%1$s" /><link rel="stylesheet" href="%1$s" media="print" onload="this.media=\'all\'" /><noscript><link rel="stylesheet" href="%1$s" /></noscript>', // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
-			$url
-		);
+		return $items;
+	}
+
+	/**
+	 * Prepare stylesheets to the head.
+	 *
+	 * @param array $fonts Fonts list.
+	 * @param array $items Head items.
+	 * @return array
+	 */
+	protected function prepare_stylesheet_fonts_to_head( array $fonts, array $items ): array {
+		$preload_enabled = $this->is_preload_enabled();
+
+		foreach ( $fonts as $font_url ) {
+			$item = $this->stylesheet_link(
+				[
+					'href' => $font_url,
+				]
+			);
+
+			if ( ! $preload_enabled ) {
+				$items[] = $item;
+				continue;
+			}
+
+			$item['media']  = 'print';
+			$item['onload'] = "this.media='all'";
+			$items[]        = $item;
+
+			$items[] = $this->noscript_tag(
+				sprintf( '<link rel="stylesheet" href="%1$s">', $font_url ) // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
+			);
+		}
+
+		return $items;
+	}
+
+	/**
+	 * Insert font stylesheets into head.
+	 *
+	 * @param array $items Head elements.
+	 * @return mixed
+	 */
+	public function insert_font_stylesheet_into_head( $items ) {
+		return $items;
+	}
+
+	/**
+	 * Insert font preloads into head.
+	 *
+	 * @param array $items Head elements.
+	 * @return mixed
+	 */
+	public function insert_font_preload_into_head( $items ) {
+		return $items;
 	}
 }

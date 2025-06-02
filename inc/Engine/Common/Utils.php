@@ -28,4 +28,22 @@ class Utils {
 		);
 		return untrailingslashit( $url ) === untrailingslashit( $home_url );
 	}
+
+	/**
+	 * Checks if current request is coming from our SaaS.
+	 *
+	 * @return bool
+	 */
+	public static function is_saas_visit(): bool {
+		return isset( $_SERVER['HTTP_WPR_OPT_LIST'] );
+	}
+
+	/**
+	 * Checks if current request is coming from our inspector tool.
+	 *
+	 * @return bool
+	 */
+	public static function is_inspector_visit(): bool {
+		return isset( $_GET['wpr_lazyrendercontent'] );// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	}
 }
