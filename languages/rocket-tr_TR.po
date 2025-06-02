@@ -2719,8 +2719,8 @@ msgid ""
 " to learn more about it."
 msgstr ""
 "%1$sWP Rocket:%2$s eklenti 3.19 sürümüne güncellendi. Yeni özellik: "
-"%3$sHarici etki alanlarına önceden bağlan%4$s. Bu konuda daha fazla bilgi "
-"edinmek için belgelerimizi gözden geçirin."
+"%3$sHarici etki alanlarına önbağla%4$s. Bu konuda daha fazla bilgi edinmek "
+"için belgelerimizi gözden geçirin."
 
 #: inc/Engine/Admin/Settings/Settings.php:334
 msgid ""
