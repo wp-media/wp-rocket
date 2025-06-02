@@ -4,6 +4,7 @@ namespace WP_Rocket\Engine\CriticalPath;
 
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Common\Head\ElementTrait;
 use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Event_Management\Subscriber_Interface;
@@ -18,6 +19,7 @@ use WP_Rocket\Engine\Support\CommentTrait;
 class CriticalCSSSubscriber implements Subscriber_Interface {
 	use RegexTrait;
 	use CommentTrait;
+	use ElementTrait;
 
 	/**
 	 * Instance of Critical CSS.
@@ -60,6 +62,13 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 	 * @var User
 	 */
 	protected $user;
+
+	/**
+	 * Critical CSS contents.
+	 *
+	 * @var string
+	 */
+	private $critical_css_content = '';
 
 	/**
 	 * Creates an instance of the Critical CSS Subscriber.
@@ -113,12 +122,13 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 				[ 'async_css', 32 ],
 			],
 
+			'rocket_head_items'                 => [ 'insert_css_in_head', 50 ],
 			'switch_theme'                      => 'maybe_regenerate_cpcss',
 			'rocket_excluded_inline_js_content' => 'exclude_inline_js',
 			'before_delete_post'                => 'delete_cpcss',
-			'rocket_before_rollback' => [ 'stop_critical_css_generation', 9 ],
-			'wp_rocket_upgrade' => [ 'stop_critical_css_generation', 9 ],
-			'admin_post_switch_to_rucss' => 'switch_to_rucss',
+			'rocket_before_rollback'            => [ 'stop_critical_css_generation', 9 ],
+			'wp_rocket_upgrade'                 => [ 'stop_critical_css_generation', 9 ],
+			'admin_post_switch_to_rucss'        => 'switch_to_rucss',
 		];
 		// phpcs:enable WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned
 	}
@@ -595,18 +605,41 @@ JS;
 			return $buffer;
 		}
 
-		$critical_css_content = str_replace( '\\', '\\\\', $critical_css_content );
-
-		$buffer = preg_replace(
-			'#</title>#iU',
-			'</title><style id="rocket-critical-css">' . wp_strip_all_tags( $critical_css_content ) . '</style>',
-			$buffer,
-			1
-		);
+		$this->critical_css_content = str_replace( '\\', '\\\\', $critical_css_content );
 
 		$buffer = preg_replace( '#</body>#iU', $this->return_remove_cpcss_script() . '</body>', $buffer, 1 );
 
 		return $this->add_meta_comment( 'async_css', $buffer );
+	}
+
+	/**
+	 * Insert critical CSS into head.
+	 *
+	 * @param array $items Head elements.
+	 * @return mixed
+	 */
+	public function insert_css_in_head( $items ) {
+		$css = $this->get_critical_css_content();
+		if ( empty( $css ) ) {
+			return $items;
+		}
+
+		$items[] = $this->style_tag(
+			$css,
+			[
+				'id' => 'rocket-critical-css',
+			]
+		);
+		return $items;
+	}
+
+	/**
+	 * Get critical CSS content, getter method for critical_css_content property.
+	 *
+	 * @return string
+	 */
+	public function get_critical_css_content() {
+		return $this->should_async_css() ? $this->critical_css_content : '';
 	}
 
 	/**

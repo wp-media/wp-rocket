@@ -84,7 +84,7 @@ class Test_Treeshake extends TestCase {
 			->zeroOrMoreTimes()
 			->andReturn( $config['home_url'] );
 
-		$this->context->expects()->is_allowed()->andReturn($config['is_allowed']);
+		$this->context->shouldReceive( 'is_allowed' )->andReturn($config['is_allowed']);
 
 		$this->configureIsMobile($config);
 
@@ -107,7 +107,16 @@ class Test_Treeshake extends TestCase {
 			->once()
 			->andReturn( $dynamic_lists );
 
-		$this->assertEquals($this->format_the_html($expected), $this->format_the_html($this->usedCss->treeshake($config['html'])));
+		$optimized_html = $this->usedCss->treeshake($config['html']);
+		if ( is_string( $expected ) ) {
+			$this->assertEquals(
+				$this->format_the_html($expected),
+				$this->format_the_html( $optimized_html )
+			);
+		} else if ( is_array( $expected ) ) {
+			$this->assertSame( $expected['used_css'], $this->usedCss->get_used_css_content() );
+		}
+
 	}
 
 	protected function configureIsMobile($config) {

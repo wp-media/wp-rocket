@@ -18,13 +18,13 @@ $valid_preload_fonts_options = <<<HTML
 		<title>
 			WP Rocket
 		</title>
-<link rel="preload" as="font" href="http://example.org/wp-content/file.otf" crossorigin>
-<link rel="preload" as="font" href="http://example.org/wp-content/file.ttf" crossorigin>
-<link rel="preload" as="font" href="http://example.org/wp-content/file.svg" crossorigin>
-<link rel="preload" as="font" href="http://example.org/wp-content/file.woff?v=4.4.0" crossorigin>
-<link rel="preload" as="font" href="http://example.org/wp-content/file.woff2" crossorigin>
-<link rel="preload" as="font" href="http://example.org/wp-content/themes/paperback/inc/fontawesome/fonts/fontawesome-webfont.woff2?v=4.4.0" crossorigin>
-<link rel="preload" as="font" href="http://example.org/wp-content/themes/paperback/inc/fontawesome/fonts/fontawesome-webfont.woff2#123" crossorigin>
+<link crossorigin data-rocket-preload as="font" href="http://example.org/wp-content/file.otf" rel="preload">
+<link crossorigin data-rocket-preload as="font" href="http://example.org/wp-content/file.ttf" rel="preload">
+<link crossorigin data-rocket-preload as="font" href="http://example.org/wp-content/file.svg" rel="preload">
+<link crossorigin data-rocket-preload as="font" href="http://example.org/wp-content/file.woff?v=4.4.0" rel="preload">
+<link crossorigin data-rocket-preload as="font" href="http://example.org/wp-content/file.woff2" rel="preload">
+<link crossorigin data-rocket-preload as="font" href="http://example.org/wp-content/themes/paperback/inc/fontawesome/fonts/fontawesome-webfont.woff2?v=4.4.0" rel="preload">
+<link crossorigin data-rocket-preload as="font" href="http://example.org/wp-content/themes/paperback/inc/fontawesome/fonts/fontawesome-webfont.woff2#123" rel="preload">
 	</head>
 	<body>
 	</body>
@@ -37,11 +37,11 @@ $valid_preload_fonts_options_wit_cdn = <<<HTML
 		<title>
 			WP Rocket
 		</title>
-<link rel="preload" as="font" href="https://123456.rocketcdn.me/wp-content/file.otf" crossorigin>
-<link rel="preload" as="font" href="https://123456.rocketcdn.me/wp-content/file.ttf" crossorigin>
-<link rel="preload" as="font" href="https://123456.rocketcdn.me/wp-content/file.svg" crossorigin>
-<link rel="preload" as="font" href="https://123456.rocketcdn.me/wp-content/file.woff" crossorigin>
-<link rel="preload" as="font" href="https://123456.rocketcdn.me/wp-content/file.woff2" crossorigin>
+<link crossorigin data-rocket-preload as="font" href="https://123456.rocketcdn.me/wp-content/file.otf" rel="preload">
+<link crossorigin data-rocket-preload as="font" href="https://123456.rocketcdn.me/wp-content/file.ttf" rel="preload">
+<link crossorigin data-rocket-preload as="font" href="https://123456.rocketcdn.me/wp-content/file.svg" rel="preload">
+<link crossorigin data-rocket-preload as="font" href="https://123456.rocketcdn.me/wp-content/file.woff" rel="preload">
+<link crossorigin data-rocket-preload as="font" href="https://123456.rocketcdn.me/wp-content/file.woff2" rel="preload">
 	</head>
 	<body>
 	</body>
@@ -126,7 +126,18 @@ return [
 			'cdn'           => false,
 			'cdn_cnames'    => [],
 		],
-		'expected' => $valid_preload_fonts_options,
+		'expected' => [
+			'html' => $valid_preload_fonts_options,
+			'fonts' => [
+				'http://example.org/wp-content/file.otf',
+				'http://example.org/wp-content/file.ttf',
+				'http://example.org/wp-content/file.svg',
+				'http://example.org/wp-content/file.woff?v=4.4.0',
+				'http://example.org/wp-content/file.woff2',
+				'http://example.org/wp-content/themes/paperback/inc/fontawesome/fonts/fontawesome-webfont.woff2?v=4.4.0',
+				'http://example.org/wp-content/themes/paperback/inc/fontawesome/fonts/fontawesome-webfont.woff2#123',
+			],
+		],
 	],
 	'validPreloadFontsOptionsWithCDN'     => [
 		'buffer'   => $html,
@@ -146,6 +157,15 @@ return [
 				'https://123456.rocketcdn.me',
 			],
 		],
-		'expected' => $valid_preload_fonts_options_wit_cdn,
+		'expected' => [
+			'html' => $valid_preload_fonts_options_wit_cdn,
+			'fonts' => [
+				'https://123456.rocketcdn.me/wp-content/file.otf',
+				'https://123456.rocketcdn.me/wp-content/file.ttf',
+				'https://123456.rocketcdn.me/wp-content/file.svg',
+				'https://123456.rocketcdn.me/wp-content/file.woff',
+				'https://123456.rocketcdn.me/wp-content/file.woff2',
+			],
+		],
 	],
 ];

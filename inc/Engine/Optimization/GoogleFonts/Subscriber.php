@@ -55,6 +55,10 @@ class Subscriber implements Subscriber_Interface {
 		return [
 			'wp_resource_hints' => [ 'preconnect', 10, 2 ],
 			'rocket_buffer'     => [ 'process', 17 ],
+			'rocket_head_items' => [
+				[ 'insert_fonts_preload', 30 ],
+				[ 'insert_fonts_stylesheets', 50 ],
+			],
 		];
 	}
 
@@ -125,5 +129,33 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		return ! is_user_logged_in() || (bool) $this->options->get( 'cache_logged_user', 0 );
+	}
+
+	/**
+	 * Insert fonts link stylesheets into head elements for v1 and v2.
+	 *
+	 * @param array $items Head elements.
+	 * @return mixed
+	 */
+	public function insert_fonts_stylesheets( array $items ) {
+		if ( ! $this->is_allowed() ) {
+			return $items;
+		}
+		$items = $this->combine_v2->insert_font_stylesheet_into_head( $items );
+		return $this->combine->insert_font_stylesheet_into_head( $items );
+	}
+
+	/**
+	 * Insert fonts preloads into head elements for v1 and v2.
+	 *
+	 * @param array $items Head elements.
+	 * @return mixed
+	 */
+	public function insert_fonts_preload( $items ) {
+		if ( ! $this->is_allowed() ) {
+			return $items;
+		}
+		$items = $this->combine_v2->insert_font_preload_into_head( $items );
+		return $this->combine->insert_font_preload_into_head( $items );
 	}
 }
