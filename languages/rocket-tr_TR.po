@@ -3039,7 +3039,7 @@ msgid ""
 "Reset stored optimizations related to Automatic Lazy Rendering, Critical "
 "Images, Preconnect to External Domains, and Preload Fonts."
 msgstr ""
-"Otomatik Lazy İşleme, Önemli Resimler, Harici Etki Alanlarına Önbağlanma ve "
+"Otomatik Lazy İşleme, Önemli Resimler, Harici Etki Alanlarına Önbağlama ve "
 "Yazı Tiplerini Önyükleme ile ilgili saklanan iyileştirmeleri sıfırlayın."
 
 #. translators: %1$s = plugin name.
