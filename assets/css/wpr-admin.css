@@ -715,7 +715,7 @@ a:focus, button:focus {
   color: #121116;
   padding: 8px 0;
   padding-left: 4px;
-  border-bottom: 1px solid rgb(194.1698113208, 202.0188679245, 211.8301886792);
+  border-bottom: 1px solid #c2cad4;
 }
 .wpr-Popin .wp-rocket-data-table td:not(.column-primary) {
   font-family: "Monaco";
@@ -1235,7 +1235,7 @@ div.wpr-upgrade-websites.notstacked {
   align-items: center;
   justify-content: space-evenly;
   margin-top: 16px;
-  padding: 8px;
+  padding: 8px 8px 16px;
 }
 
 .rocket-renewal-expired-banner {
@@ -1243,12 +1243,13 @@ div.wpr-upgrade-websites.notstacked {
   margin-top: 16px;
   padding: 24px;
   position: relative;
+  display: flex;
 }
 
-.rocket-renewal-expired-banner-container {
-  display: flex;
-  justify-content: space-around;
+.banner-copy {
+  width: 75%;
 }
+
 @media (max-width: 783px) {
   .rocket-renewal-expired-banner-container {
     flex-flow: column;
@@ -1257,7 +1258,7 @@ div.wpr-upgrade-websites.notstacked {
 .rocket-renewal-expired-banner-container > div {
   display: flex;
   flex-flow: column;
-  width: 50%;
+  width: 70%;
 }
 @media (max-width: 783px) {
   .rocket-renewal-expired-banner-container > div {
@@ -1294,8 +1295,7 @@ div.wpr-upgrade-websites.notstacked {
 }
 
 .rocket-expired-cta-container {
-  justify-content: center;
-  align-items: center;
+  align-self: center;
 }
 
 .rocket-renew-cta {
@@ -2870,7 +2870,7 @@ div.wpr-tutorial-item {
   font-family: Monaco;
   color: #121116;
   background: #fff;
-  border: 2px solid rgb(194.1698113208, 202.0188679245, 211.8301886792);
+  border: 2px solid #c2cad4;
   border-radius: 3px;
   font-size: 0.8125rem;
   line-height: 1.2307692308;
@@ -2902,7 +2902,7 @@ div.wpr-tutorial-item {
   height: 32px;
   color: #121116;
   background: #fff;
-  border: 2px solid rgb(194.1698113208, 202.0188679245, 211.8301886792);
+  border: 2px solid #c2cad4;
   border-radius: 3px;
   font-family: Monaco;
   font-size: 0.75rem;

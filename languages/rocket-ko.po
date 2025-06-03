@@ -5,9 +5,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.18-beta1\n"
+"Project-Id-Version: WP Rocket 3.18.2-alpha\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2025-01-06T13:04:08+00:00\n"
+"POT-Creation-Date: 2025-02-17T11:30:03+00:00\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Romain • WP Rocket <contact@wp-rocket.me>, 2025\n"
 "Language-Team: Korean (https://app.transifex.com/wp-media/teams/18133/ko/)\n"
@@ -2692,7 +2692,7 @@ msgid ""
 msgstr "이 작업을 수행하면 중요한 이미지와 느리게 렌더링된 콘텐츠가 지워집니다."
 
 #. translators: %1$s = plugin name.
-#: inc/Engine/Common/PerformanceHints/Admin/Controller.php:136
+#: inc/Engine/Common/PerformanceHints/Admin/Controller.php:140
 msgid "%1$s: Critical images and Lazy Render data was cleared!"
 msgstr "%1$s: 중요한 이미지와 Lazy Render 데이터가 지워졌습니다!"
 
@@ -2709,7 +2709,7 @@ msgstr "스크립트 시간 초과"
 msgid "It was not possible to determine a valid cut-off time: %s."
 msgstr "유효한 마감 시간을 결정할 수 없습니다: %s."
 
-#: inc/Engine/Common/Queue/RUCSSQueueRunner.php:269
+#: inc/Engine/Common/Queue/RUCSSQueueRunner.php:272
 msgid "Every minute"
 msgstr "매 분마다"
 
@@ -3169,9 +3169,13 @@ msgstr "이미지에 대한 지연 로드"
 msgid "LazyLoad for iframes/videos"
 msgstr "iframe/비디오에 대한 지연 로드"
 
-#: inc/Engine/Media/Lazyload/CSS/Admin/Subscriber.php:48
+#: inc/Engine/Media/Lazyload/CSS/Admin/Subscriber.php:49
 msgid "LazyLoad CSS backgrounds"
 msgstr "CSS 배경 지연 로드"
+
+#: inc/Engine/Media/Lazyload/Subscriber.php:262
+msgid "Play Youtube video"
+msgstr "YouTube 동영상 재생"
 
 #: inc/Engine/Optimization/DelayJS/Admin/SiteList.php:244
 msgid "Analytics & Trackers"
@@ -3251,7 +3255,7 @@ msgstr ""
 "확인하세요."
 
 #. translators: %1$s = plugin name.
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:275
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:279
 msgid "%1$s: Used CSS cache cleared!"
 msgstr "%1$s: 사용된 CSS 캐시가 지워졌습니다!"
 

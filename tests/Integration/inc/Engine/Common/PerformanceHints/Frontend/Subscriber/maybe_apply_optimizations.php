@@ -22,11 +22,15 @@ class Test_MaybeApplyOptimizations extends FilesystemTestCase {
 		// Install in set_up_before_class because of exists().
 		self::installAtfTable();
 		self::installLrcTable();
+		self::installPreloadFontsTable();
+		self::installPreconnectExternalDomainsTable();
 	}
 
 	public static function tear_down_after_class() {
 		self::uninstallAtfTable();
 		self::uninstallLrcTable();
+		self::uninstallPreloadFontsTable();
+		self::uninstallPreconnectDomainsTable();
 
 		parent::tear_down_after_class();
 	}
@@ -36,7 +40,7 @@ class Test_MaybeApplyOptimizations extends FilesystemTestCase {
 
 		add_filter( 'rocket_disable_meta_generator', '__return_true' );
 
-		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'maybe_apply_optimizations', 17 );
+		$this->unregisterAllCallbacksExceptMulti('rocket_buffer', [17 => 'maybe_apply_optimizations', 100000 => 'insert_rocket_head']);
 	}
 
 	public function tear_down() {
@@ -65,8 +69,12 @@ class Test_MaybeApplyOptimizations extends FilesystemTestCase {
 			$_GET[ $config['query_string'] ] = 1;
 		}
 
-		if ( isset( $config['sass_visit'] ) ) {
-			$_GET[ 'wpr_imagedimensions' ] = $config['sass_visit'];
+		if ( ! empty( $config['sass_visit'] ) ) {
+			$_SERVER['HTTP_WPR_OPT_LIST'] = 'all';
+		} else {
+			if ( isset( $_SERVER['HTTP_WPR_OPT_LIST'] ) ) {
+				unset( $_SERVER['HTTP_WPR_OPT_LIST'] );
+			}
 		}
 
 		if ( ! empty( $config['atf']['row'] ) ) {
@@ -74,6 +82,14 @@ class Test_MaybeApplyOptimizations extends FilesystemTestCase {
 		}
 		if ( ! empty( $config['lrc']['row'] ) ) {
 			self::addLrc( $config['lrc']['row'] );
+		}
+
+		if ( ! empty( $config['preload_fonts']['row'] ) ) {
+			self::addPreloadFonts( $config['preload_fonts']['row'] );
+		}
+
+		if ( ! empty( $config['preload_external_domains']['row'] ) ) {
+			self::addPreconnectExternalDomains( $config['preload_external_domains']['row'] );
 		}
 
 		if ( isset( $config['filter_delay'] ) ) {
@@ -91,8 +107,8 @@ class Test_MaybeApplyOptimizations extends FilesystemTestCase {
 		add_filter( 'pre_get_rocket_option_cache_logged_user', [ $this, 'get_cache_user' ] );
 
 		$this->assertSame(
-			trim($expected),
-			trim(apply_filters( 'rocket_buffer', $config['html'] ))
+			$this->format_the_html($expected),
+			$this->format_the_html(apply_filters( 'rocket_buffer', $config['html'] ))
 		);
 	}
 
