@@ -7,6 +7,13 @@ use WP_Rocket\Dependencies\BerlinDB\Database\Query;
 
 class AbstractQueries extends Query {
 	/**
+	 * Cleanup interval.
+	 *
+	 * @var int
+	 */
+	public $cleanup_interval;
+
+	/**
 	 * Table status.
 	 *
 	 * @var boolean
@@ -162,5 +169,18 @@ class AbstractQueries extends Query {
 		}
 
 		return $query;
+	}
+
+	/**
+	 * Set cleanup interval
+	 *
+	 * @param int $interval The interval duration, usually default to 1.
+	 *
+	 * @return object
+	 */
+	public function set_cleanup_interval( int $interval ): object {
+		$this->cleanup_interval = $interval;
+
+		return $this;
 	}
 }

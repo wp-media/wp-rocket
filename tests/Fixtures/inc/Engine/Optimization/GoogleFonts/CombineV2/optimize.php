@@ -42,17 +42,22 @@ return [
 				<body>
 				</body>
 			</html>',
-		'expected' =>
-			'<!doctype html>
+		'expected' => [
+			'html' => '<!doctype html>
 			<html>
 				<head>
-					<title>Sample Page</title><link rel="preload" data-rocket-preload as="style" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@450&#038;display=swap" />
-					<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@450&#038;display=swap" media="print" onload="this.media=\'all\'" />
-					<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@450&#038;display=swap" /></noscript>
+					<title>Sample Page</title>
+					<link data-rocket-preload as="style" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@450&#038;display=swap" rel="preload">
+					<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@450&#038;display=swap" media="print" onload="this.media=&#039;all&#039;" rel="stylesheet">
+					<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@450&#038;display=swap"></noscript>
 				</head>
 				<body>
 				</body>
-			</html>'
+			</html>',
+			'fonts' => [
+				'https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@450&#038;display=swap',
+			],
+		],
 	],
 	'shouldNotCombineMultipleTagsWithTextParam' => [
 		'config' => [
@@ -69,17 +74,23 @@ return [
 				<body>
 				</body>
 			</html>',
-		'expected' =>
-			'<!doctype html>
+		'expected' => [
+			'html' => '<!doctype html>
 			<html>
 				<head>
 					<title>Sample Page</title>
-					<link rel="preload" data-rocket-preload as="style" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@450&#038;display=swap" /><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@450&#038;display=swap" media="print" onload="this.media=\'all\'" /><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@450&#038;display=swap" /></noscript>
+					<link data-rocket-preload as="style" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@450&#038;display=swap" rel="preload">
+					<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@450&#038;display=swap" media="print" onload="this.media=&#039;all&#039;" rel="stylesheet">
+					<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@450&#038;display=swap"></noscript>
 					<link rel="stylesheet" id="dt-more-fonts-css" href="https://fonts.googleapis.com/css2?family=Comfortaa&text=Hello" type="text/css" media="all" />
 				</head>
 				<body>
 				</body>
-			</html>'
+			</html>',
+			'fonts' => [
+				'https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@450&#038;display=swap',
+			],
+		],
 	],
 	'shouldCombineMultipleTags' => [
 		'config' => [
@@ -97,16 +108,23 @@ return [
 				<body>
 				</body>
 			</html>',
-		'expected' =>
-			'<!doctype html>
+		'expected' => [
+			'html' => '<!doctype html>
 			<html>
 				<head>
 					<title>Sample Page</title>
-					<link rel="preload" data-rocket-preload as="style" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@450&#038;family=Comfortaa&#038;display=swap" /><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@450&#038;family=Comfortaa&#038;display=swap" media="print" onload="this.media=\'all\'" /><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@450&#038;family=Comfortaa&#038;display=swap" /></noscript>
+					<link data-rocket-preload as="style" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@450&#038;family=Comfortaa&#038;display=swap" rel="preload">
+					<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@450&#038;family=Comfortaa&#038;display=swap" media="print" onload="this.media=&#039;all&#039;" rel="stylesheet">
+					<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@450&#038;family=Comfortaa&#038;display=swap"></noscript>
 				</head>
 				<body>
 				</body>
-			</html>'
+			</html>',
+			'fonts' => [
+				'https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@450&#038;family=Comfortaa&#038;display=swap',
+			],
+		],
+
 	],
 	'shouldCombineMultipleTagsWithMultipleFamiliesInTag' => [
 		'config' => [
@@ -125,17 +143,24 @@ return [
 				<body>
 				</body>
 			</html>',
-		'expected' =>
-			'<!doctype html>
+		'expected' => [
+			'html' => '<!doctype html>
 			<html>
 				<head>
 					<title>Sample Page</title>
-					<link rel="preload" data-rocket-preload as="style" href="https://fonts.googleapis.com/css2?family=Goldman:wght@700&#038;family=Roboto:ital,wght@0,100;0,400;0,500;1,500;1,900&#038;family=Comfortaa&#038;display=swap" /><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Goldman:wght@700&#038;family=Roboto:ital,wght@0,100;0,400;0,500;1,500;1,900&#038;family=Comfortaa&#038;display=swap" media="print" onload="this.media=\'all\'" /><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Goldman:wght@700&#038;family=Roboto:ital,wght@0,100;0,400;0,500;1,500;1,900&#038;family=Comfortaa&#038;display=swap" /></noscript>
+					<link data-rocket-preload as="style" href="https://fonts.googleapis.com/css2?family=Goldman:wght@700&#038;family=Roboto:ital,wght@0,100;0,400;0,500;1,500;1,900&#038;family=Comfortaa&#038;display=swap" rel="preload">
+					<link href="https://fonts.googleapis.com/css2?family=Goldman:wght@700&#038;family=Roboto:ital,wght@0,100;0,400;0,500;1,500;1,900&#038;family=Comfortaa&#038;display=swap" media="print" onload="this.media=&#039;all&#039;" rel="stylesheet">
+					<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Goldman:wght@700&#038;family=Roboto:ital,wght@0,100;0,400;0,500;1,500;1,900&#038;family=Comfortaa&#038;display=swap"></noscript>
 					<link rel="preconnect" href="https://fonts.gstatic.com">
 				</head>
 				<body>
 				</body>
-			</html>'
+			</html>',
+			'fonts' => [
+				'https://fonts.googleapis.com/css2?family=Goldman:wght@700&#038;family=Roboto:ital,wght@0,100;0,400;0,500;1,500;1,900&#038;family=Comfortaa&#038;display=swap',
+			],
+		],
+
 	],
 	'shouldReplaceAnotherFontDisplayValueWithSwap' => [
 		'config' => [
@@ -154,17 +179,24 @@ return [
 			<body>
 			</body>
 			</html>',
-		'expected' =>
-			'<!doctype html>
+		'expected' => [
+			'html' => '<!doctype html>
 			<html>
 			<head>
 			<title>Sample Page</title>
-			<link rel="preload" data-rocket-preload as="style" href="https://fonts.googleapis.com/css2?family=Goldman:wght@700&#038;family=Roboto:ital,wght@0,100;0,400;0,500;1,500;1,900&#038;family=Comfortaa&#038;display=swap" /><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Goldman:wght@700&#038;family=Roboto:ital,wght@0,100;0,400;0,500;1,500;1,900&#038;family=Comfortaa&#038;display=swap" media="print" onload="this.media=\'all\'" /><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Goldman:wght@700&#038;family=Roboto:ital,wght@0,100;0,400;0,500;1,500;1,900&#038;family=Comfortaa&#038;display=swap" /></noscript>
+			<link data-rocket-preload as="style" href="https://fonts.googleapis.com/css2?family=Goldman:wght@700&#038;family=Roboto:ital,wght@0,100;0,400;0,500;1,500;1,900&#038;family=Comfortaa&#038;display=swap" rel="preload">
+			<link href="https://fonts.googleapis.com/css2?family=Goldman:wght@700&#038;family=Roboto:ital,wght@0,100;0,400;0,500;1,500;1,900&#038;family=Comfortaa&#038;display=swap" media="print" onload="this.media=&#039;all&#039;" rel="stylesheet">
+			<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Goldman:wght@700&#038;family=Roboto:ital,wght@0,100;0,400;0,500;1,500;1,900&#038;family=Comfortaa&#038;display=swap"></noscript>
 			<link rel="preconnect" href="https://fonts.gstatic.com">
 			</head>
 			<body>
 			</body>
-			</html>'
+			</html>',
+			'fonts' => [
+				'https://fonts.googleapis.com/css2?family=Goldman:wght@700&#038;family=Roboto:ital,wght@0,100;0,400;0,500;1,500;1,900&#038;family=Comfortaa&#038;display=swap',
+			],
+		],
+
 	],
 	'shouldReplaceDisplayValueWithFilteredValue' => [
 		'config' => [
@@ -183,18 +215,23 @@ return [
 			<body>
 			</body>
 			</html>',
-		'expected' =>
-			'<!doctype html>
+		'expected' => [
+			'html' => '<!doctype html>
 			<html>
 			<head>
 			<title>Sample Page</title>
-			<link rel="preload" data-rocket-preload as="style" href="https://fonts.googleapis.com/css2?family=Goldman:wght@700&#038;family=Roboto:ital,wght@0,100;0,400;0,500;1,500;1,900&#038;family=Comfortaa&#038;display=optional" /><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Goldman:wght@700&#038;family=Roboto:ital,wght@0,100;0,400;0,500;1,500;1,900&#038;family=Comfortaa&#038;display=optional" media="print" onload="this.media=\'all\'" /><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Goldman:wght@700&#038;family=Roboto:ital,wght@0,100;0,400;0,500;1,500;1,900&#038;family=Comfortaa&#038;display=optional" /></noscript>
+			<link data-rocket-preload as="style" href="https://fonts.googleapis.com/css2?family=Goldman:wght@700&#038;family=Roboto:ital,wght@0,100;0,400;0,500;1,500;1,900&#038;family=Comfortaa&#038;display=optional" rel="preload">
+			<link href="https://fonts.googleapis.com/css2?family=Goldman:wght@700&#038;family=Roboto:ital,wght@0,100;0,400;0,500;1,500;1,900&#038;family=Comfortaa&#038;display=optional" media="print" onload="this.media=&#039;all&#039;" rel="stylesheet">
+			<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Goldman:wght@700&#038;family=Roboto:ital,wght@0,100;0,400;0,500;1,500;1,900&#038;family=Comfortaa&#038;display=optional"></noscript>
 			<link rel="preconnect" href="https://fonts.gstatic.com">
 			</head>
 			<body>
 			</body>
-			</html>'
-		,
+			</html>',
+			'fonts' => [
+				'https://fonts.googleapis.com/css2?family=Goldman:wght@700&#038;family=Roboto:ital,wght@0,100;0,400;0,500;1,500;1,900&#038;family=Comfortaa&#038;display=optional',
+			]
+		],
 	],
 	'shouldCombineMultipleTagsNoPreload' => [
 		'config' => [
@@ -212,16 +249,20 @@ return [
 				<body>
 				</body>
 			</html>',
-		'expected' =>
-			'<!doctype html>
+		'expected' => [
+			'html' => '<!doctype html>
 			<html>
 				<head>
 					<title>Sample Page</title>
-					<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@450&#038;family=Comfortaa&#038;display=swap" />
+					<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@450&#038;family=Comfortaa&#038;display=swap" rel="stylesheet">
 				</head>
 				<body>
 				</body>
-			</html>'
+			</html>',
+			'fonts' => [
+				'https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@450&#038;family=Comfortaa&#038;display=swap',
+			],
+		],
 	],
 	'shouldExcludeFontFromCombine' => [
 		'config' => [
@@ -244,15 +285,16 @@ return [
 			<body>
 			</body>
 			</html>',
-		'expected' => '<!doctype html>
+		'expected' => [
+			'html' => '<!doctype html>
 			<html>
 			<head>
 			<title>
 			Sample Page</title>
-			<link rel="preload" data-rocket-preload as="style" href="https://fonts.googleapis.com/css2?family=Goldman:wght@700&#038;family=Roboto:ital,wght@0,100;0,400;0,500;1,500;1,900&#038;family=MontSerra:ital,wght@0,100;0,400;0,500;1,500;1,900&#038;family=Comfortaa&#038;display=optional" />
-			<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Goldman:wght@700&#038;family=Roboto:ital,wght@0,100;0,400;0,500;1,500;1,900&#038;family=MontSerra:ital,wght@0,100;0,400;0,500;1,500;1,900&#038;family=Comfortaa&#038;display=optional" media="print" onload="this.media=\'all\'" />
+			<link data-rocket-preload as="style" href="https://fonts.googleapis.com/css2?family=Goldman:wght@700&#038;family=Roboto:ital,wght@0,100;0,400;0,500;1,500;1,900&#038;family=MontSerra:ital,wght@0,100;0,400;0,500;1,500;1,900&#038;family=Comfortaa&#038;display=optional" rel="preload">
+			<link href="https://fonts.googleapis.com/css2?family=Goldman:wght@700&#038;family=Roboto:ital,wght@0,100;0,400;0,500;1,500;1,900&#038;family=MontSerra:ital,wght@0,100;0,400;0,500;1,500;1,900&#038;family=Comfortaa&#038;display=optional" media="print" onload="this.media=&#039;all&#039;" rel="stylesheet">
 			<noscript>
-			<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Goldman:wght@700&#038;family=Roboto:ital,wght@0,100;0,400;0,500;1,500;1,900&#038;family=MontSerra:ital,wght@0,100;0,400;0,500;1,500;1,900&#038;family=Comfortaa&#038;display=optional" />
+			<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Goldman:wght@700&#038;family=Roboto:ital,wght@0,100;0,400;0,500;1,500;1,900&#038;family=MontSerra:ital,wght@0,100;0,400;0,500;1,500;1,900&#038;family=Comfortaa&#038;display=optional">
 			</noscript>
 			<link rel="preconnect" href="https://fonts.gstatic.com">
 			<link href="https://fonts.googleapis.com/css2?family=Lato:wght@700&display=auto" rel="stylesheet">
@@ -261,5 +303,9 @@ return [
 			</body>
 			</html>
 			',
+			'fonts' => [
+				'https://fonts.googleapis.com/css2?family=Goldman:wght@700&#038;family=Roboto:ital,wght@0,100;0,400;0,500;1,500;1,900&#038;family=MontSerra:ital,wght@0,100;0,400;0,500;1,500;1,900&#038;family=Comfortaa&#038;display=optional',
+			],
+		],
 	]
 ];

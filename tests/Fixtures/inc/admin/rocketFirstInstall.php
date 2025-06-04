@@ -62,6 +62,7 @@ $default = [
 	'analytics_enabled'           => 0,
 	'sucury_waf_cache_sync'       => 0,
 	'sucury_waf_api_key'          => '',
+	'rocket_preload_fonts'        => 0,
 ];
 
 $integration                                 					 = $default;
@@ -78,6 +79,7 @@ $integration[ 'preload_links' ]              					 = 1;
 $integration[ 'image_dimensions' ]           	 				 = 0;
 $integration[ 'exclude_lazyload' ]           					 = [];
 $integration['host_fonts_locally']           					 = 0;
+$integration['auto_preload_fonts']  	   					     = 0;
 
 return [
 	'test_data' => [

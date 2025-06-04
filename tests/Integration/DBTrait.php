@@ -59,6 +59,19 @@ trait DBTrait {
 		return $lrc_query->add_item( $resource );
 	}
 
+	public static function addPreloadFonts(array $resource) {
+		$container = apply_filters( 'rocket_container', null );
+		$preload_fonts_query = $container->get( 'preload_fonts_query' );
+		return $preload_fonts_query->add_item( $resource );
+	}
+
+	public static function addPreconnectExternalDomains(array $resource) {
+		$container = apply_filters( 'rocket_container', null );
+		$preconnect_external_domains = $container->get( 'preconnect_external_domains_query' );
+
+		return $preconnect_external_domains->add_item( $resource );
+	}
+
 	public static function installFresh() {
 		$container = apply_filters( 'rocket_container', null );
 
@@ -76,6 +89,12 @@ trait DBTrait {
 
 		$lrc_table = $container->get( 'lrc_table' );
 		$lrc_table->install();
+
+		$preload_fonts_table = $container->get( 'preload_fonts_table' );
+		$preload_fonts_table->install();
+
+		$preconnect_external_domains_table = $container->get( 'preconnect_external_domains_table' );
+		$preconnect_external_domains_table->install();
 	}
 
 	public static function installUsedCssTable() {
@@ -84,6 +103,15 @@ trait DBTrait {
 
 		if ( ! $rucss_usedcss_table->exists() ) {
 			$rucss_usedcss_table->install();
+		}
+	}
+
+	public static function installPreconnectExternalDomainsTable() {
+		$container = apply_filters( 'rocket_container', null );
+		$preconnect_external_domains_table = $container->get( 'preconnect_external_domains_table' );
+
+		if ( ! $preconnect_external_domains_table->exists() ) {
+			$preconnect_external_domains_table->install();
 		}
 	}
 
@@ -114,6 +142,15 @@ trait DBTrait {
 		}
 	}
 
+	public static function installPreloadFontsTable() {
+		$container = apply_filters( 'rocket_container', null );
+		$preload_fonts_table = $container->get( 'preload_fonts_table' );
+
+		if ( ! $preload_fonts_table->exists() ) {
+			$preload_fonts_table->install();
+		}
+	}
+
 	public static function uninstallAll() {
 		$container           = apply_filters( 'rocket_container', null );
 		$rucss_usedcss_table = $container->get( 'rucss_usedcss_table' );
@@ -135,6 +172,25 @@ trait DBTrait {
 		$lrc_table = $container->get( 'lrc_table' );
 		if ( $lrc_table->exists() ) {
 			$lrc_table->uninstall();
+		}
+
+		$preload_fonts_table = $container->get( 'preload_fonts_table' );
+		if ( $preload_fonts_table->exists() ) {
+			$preload_fonts_table->uninstall();
+		}
+
+		$preconnect_external_domains_table = $container->get( 'preconnect_external_domains_table' );
+		if ( $preconnect_external_domains_table->exists() ) {
+			$preconnect_external_domains_table->uninstall();
+		}
+	}
+
+	public static function uninstallPreconnectDomainsTable() {
+		$container = apply_filters( 'rocket_container', null );
+		$preconnect_external_domains_table = $container->get( 'preconnect_external_domains_table' );
+
+		if ( $preconnect_external_domains_table->exists() ) {
+			$preconnect_external_domains_table->uninstall();
 		}
 	}
 
@@ -170,6 +226,15 @@ trait DBTrait {
 		}
 	}
 
+	public static function uninstallPreloadFontsTable() {
+		$container = apply_filters( 'rocket_container', null );
+		$preload_fonts_table = $container->get( 'preload_fonts_table' );
+
+		if ( $preload_fonts_table->exists() ) {
+			$preload_fonts_table->uninstall();
+		}
+	}
+
 	public static function removeDBHooks() {
 		$container           = apply_filters( 'rocket_container', null );
 
@@ -178,6 +243,8 @@ trait DBTrait {
 			$container->get( 'preload_caches_table' ),
 			$container->get( 'atf_table' ),
 			$container->get( 'lrc_table' ),
+			$container->get( 'preload_fonts_table' ),
+			$container->get( 'preconnect_external_domains_table' ),
 		];
 
 		foreach ( $tables as $table ) {

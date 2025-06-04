@@ -483,16 +483,6 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 					'url' => 'https://fr.docs.wp-rocket.me/article/188-comment-est-pre-charge-le-cache/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
-			'dns_prefetch'               => [
-				'en' => [
-					'id'  => '5e055a602c7d3a7e9ae5881c',
-					'url' => 'https://docs.wp-rocket.me/article/1302-prefetch-dns-requests/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-				'fr' => [
-					'id'  => '5e1891892c7d3a7e9ae60983',
-					'url' => 'https://fr.docs.wp-rocket.me/article/1303-prechargement-requetes-dns/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-			],
 			'fonts_preload'              => [
 				'en' => [
 					'id'  => '5eab7729042863474d19f647',
@@ -821,16 +811,6 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 					'url' => 'https://fr.docs.wp-rocket.me/article/1833-impossible-creer-table-rucssusedcss/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
-			'lazy_render_content'        => [
-				'en' => [
-					'id'  => '66b11e26a62a7505fcf339e7',
-					'url' => 'https://docs.wp-rocket.me/article/1835-lazy-render-content/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-				'fr' => [
-					'id'  => '66ba0e8e082392452a0773ea',
-					'url' => 'https://fr.docs.wp-rocket.me/article/1836-rendu-differe-automatique/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-			],
 			'host_fonts_locally'         => [
 				'en' => [
 					'id'  => '673358b02ddbd952f6241b38',
@@ -839,6 +819,16 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 				'fr' => [
 					'id'  => '675ab51d46b8d26833b2af82',
 					'url' => 'https://fr.docs.wp-rocket.me/article/1852-auto-heberger-google-fonts?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+			],
+			'preconnect_domains'         => [
+				'en' => [
+					'id'  => '681b61d889bd957cd04bd2d9',
+					'url' => 'https://docs.wp-rocket.me/article/1869-preconnect-to-external-domains',
+				],
+				'fr' => [
+					'id'  => '681da5ae11561a04f5de356e',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1870-preconnexion-aux-domaines-externes',
 				],
 			],
 		];

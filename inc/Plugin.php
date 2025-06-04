@@ -8,6 +8,7 @@ use WP_Rocket\Dependencies\League\Container\Container;
 use WP_Rocket\Admin\{Options, Options_Data};
 use WP_Rocket\Engine\Admin\API\ServiceProvider as APIServiceProvider;
 use WP_Rocket\Engine\Common\ExtractCSS\ServiceProvider as CommonExtractCSSServiceProvider;
+use WP_Rocket\Engine\Common\Head\ServiceProvider as CommonHeadServiceProvider;
 use WP_Rocket\Engine\Common\JobManager\ServiceProvider as JobManagerServiceProvider;
 use WP_Rocket\Engine\Media\Lazyload\CSS\ServiceProvider as LazyloadCSSServiceProvider;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Admin\ServiceProvider as AdminLazyloadCSSServiceProvider;
@@ -55,6 +56,8 @@ use WP_Rocket\Engine\Debug\ServiceProvider as DebugServiceProvider;
 use WP_Rocket\Engine\Common\PerformanceHints\ServiceProvider as PerformanceHintsServiceProvider;
 use WP_Rocket\Engine\Optimization\LazyRenderContent\ServiceProvider as LRCServiceProvider;
 use WP_Rocket\Engine\Media\Fonts\ServiceProvider as MediaFontsServiceProvider;
+use WP_Rocket\Engine\Media\PreloadFonts\ServiceProvider as PreloadFontsServiceProvider;
+use WP_Rocket\Engine\Media\PreconnectExternalDomains\ServiceProvider as PreconnectExternalDomainsServiceProvider;
 
 /**
  * Plugin Manager.
@@ -87,6 +90,15 @@ class Plugin {
 	 * @var bool
 	 */
 	private $is_valid_key;
+
+	/**
+	 * Instance of the Options.
+	 *
+	 * @since 3.6
+	 *
+	 * @var Options
+	 */
+	private $options_api;
 
 	/**
 	 * Instance of the Options_Data.
@@ -224,6 +236,9 @@ class Plugin {
 			'domain_change_subscriber',
 			'lazyload_css_admin_subscriber',
 			'post_edit_options_subscriber',
+			'preconnect_external_domains_admin_subscriber',
+			'media_fonts_admin_subscriber',
+			'preload_fonts_admin_subscriber',
 		];
 	}
 
@@ -283,6 +298,7 @@ class Plugin {
 		$this->container->addServiceProvider( new ThemesServiceProvider() );
 		$this->container->addServiceProvider( new APIServiceProvider() );
 		$this->container->addServiceProvider( new CommonExtractCSSServiceProvider() );
+		$this->container->addServiceProvider( new CommonHeadServiceProvider() );
 		$this->container->addServiceProvider( new LazyloadCSSServiceProvider() );
 		$this->container->addServiceProvider( new DebugServiceProvider() );
 		$this->container->addServiceProvider( new ATFServiceProvider() );
@@ -291,7 +307,9 @@ class Plugin {
 		$this->container->addServiceProvider( new PerformanceHintsServiceProvider() );
 		$this->container->addServiceProvider( new LRCServiceProvider() );
 		$this->container->addServiceProvider( new MediaFontsServiceProvider() );
+		$this->container->addServiceProvider( new PreloadFontsServiceProvider() );
 		$this->container->addServiceProvider( new ThirdPartyServiceProvider() );
+		$this->container->addServiceProvider( new PreconnectExternalDomainsServiceProvider() );
 
 		$common_subscribers = [
 			'license_subscriber',
@@ -300,6 +318,7 @@ class Plugin {
 			'critical_css_subscriber',
 			'sucuri_subscriber',
 			'common_extractcss_subscriber',
+			'common_head_subscriber',
 			'expired_cache_purge_subscriber',
 			'fonts_preload_subscriber',
 			'heartbeat_subscriber',
@@ -389,6 +408,9 @@ class Plugin {
 			'media_fonts_frontend_subscriber',
 			'media_fonts_admin_subscriber',
 			'media_fonts_clean_subscriber',
+			'preload_fonts_frontend_subscriber',
+			'preload_fonts_admin_subscriber',
+			'preconnect_frontend_subscriber',
 		];
 
 		$host_type = HostResolver::get_host_service();

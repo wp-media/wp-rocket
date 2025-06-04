@@ -3,14 +3,15 @@
 # Translators:
 # Carl Andersen, 2024
 # annsofie.madsen, 2025
+# Romain • WP Rocket <contact@wp-rocket.me>, 2025
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.18.2-alpha\n"
+"Project-Id-Version: WP Rocket 3.18.3-beta\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2025-02-17T11:30:03+00:00\n"
+"POT-Creation-Date: 2025-03-17T10:01:29+00:00\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
-"Last-Translator: annsofie.madsen, 2025\n"
+"Last-Translator: Romain • WP Rocket <contact@wp-rocket.me>, 2025\n"
 "Language-Team: Danish (Denmark) (https://app.transifex.com/wp-media/teams/18133/da_DK/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -639,9 +640,9 @@ msgid "%s: User cache cleared."
 msgstr "%s: Brugercache ryddet."
 
 #: inc/admin/ui/notices.php:662 inc/Engine/License/views/promo-banner.php:38
-#: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:34
-#: inc/Engine/License/views/renewal-expired-banner-ocd.php:44
-#: inc/Engine/License/views/renewal-expired-banner.php:32
+#: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:38
+#: inc/Engine/License/views/renewal-expired-banner-ocd.php:48
+#: inc/Engine/License/views/renewal-expired-banner.php:37
 #: views/settings/page-sections/dashboard.php:47
 msgid "Dismiss this notice"
 msgstr "Afvis denne meddelelse"
@@ -3210,44 +3211,23 @@ msgstr "Forudindlæs"
 msgid "Critical Path CSS Generation Process"
 msgstr "Genereringsproces for kritisk CSS-sti"
 
-#. translators: %1$s = <strong>, %2$s = price, %3$s = </strong>.
+#. translators: %1$s WP Rocket plugin name.
 #: inc/Engine/License/Renewal.php:76
-msgid "Renew before it is too late, you will only pay %1$s%2$s%3$s!"
-msgstr "Forny, før det er for sent. Du betaler kun %1$s%2$s%3$s!"
-
-#. translators: %1$s = <strong>, %2$s = discount, %3$s = </strong>,%4$s =
-#. <strong>, %5$s = price, %6$s=</strong>.
-#: inc/Engine/License/Renewal.php:85
 msgid ""
-"Renew with a %1$s%2$s discount%3$s before it is too late, you will only pay "
-"%4$s%5$s%6$s!"
+"Your %1$s%2$s license is about to expire%3$s: you will soon lose access to "
+"product updates and support."
 msgstr ""
-"Forny med %1$s%2$s rabat%3$s, før det er for sent. Du betaler kun "
-"%4$s%5$s%6$s!"
-
-#. translators: %1$s = <strong>, %2$s = </strong>, %3$s = price.
-#: inc/Engine/License/Renewal.php:139
-msgid "Renew your license for 1 year now at %1$s%3$s%2$s."
-msgstr "Forny din licens med 1 år nu for %1$s%3$s%2$s."
-
-#. translators: %1$s = <strong>, %2$s = </strong>, %3$s = discount percentage,
-#. %4$s = price.
-#: inc/Engine/License/Renewal.php:152
-msgid ""
-"Renew your license for 1 year now and get %1$s%3$s OFF%2$s immediately: you "
-"will only pay %1$s%4$s%2$s!"
-msgstr ""
-"Forny din licens med 1 år nu og få %1$s%3$s rabat%2$s med det samme. Du "
-"betaler kun %1$s%4$s%2$s!"
+"Din %1$s %2$s licens er ved at udløbe %3$s: du vil snart miste adgang til "
+"produktopdateringer og support."
 
 #. translators: %1$s = <strong>, %2$s = </strong>, %3$s = discount price.
-#: inc/Engine/License/Renewal.php:218
+#: inc/Engine/License/Renewal.php:185
 msgid "Renew before it is too late, you will pay %1$s%3$s%2$s."
 msgstr "Forny, før det er for sent. Du betaler %1$s%3$s%2$s."
 
 #. translators: %1$s = <strong>, %2$s = discount percentage, %3$s = </strong>,
 #. %4$s = discount price.
-#: inc/Engine/License/Renewal.php:227
+#: inc/Engine/License/Renewal.php:194
 msgid ""
 "Renew with a %1$s%2$s discount%3$s before it is too late, you will only pay "
 "%1$s%4$s%3$s!"
@@ -3256,7 +3236,7 @@ msgstr ""
 "%1$s%4$s%3$s!"
 
 #. translators: %1$s = <a>, %2$s = </a>.
-#: inc/Engine/License/Renewal.php:526
+#: inc/Engine/License/Renewal.php:496
 msgid ""
 "You need a valid license to continue using this feature. %1$sRenew now%2$s "
 "before losing access."
@@ -3265,14 +3245,14 @@ msgstr ""
 "%1$sForny nu%2$s, før du mister adgang."
 
 #. translators: %1$s = <a>, %2$s = </a>.
-#: inc/Engine/License/Renewal.php:547
+#: inc/Engine/License/Renewal.php:517
 msgid "You need an active license to enable this option. %1$sRenew now%2$s."
 msgstr ""
 "Du skal have en aktiv licens for at aktivere denne indstilling. %1$sForny "
 "nu%2$s."
 
 #. translators: %1$s = <a>, %2$s = </a>.
-#: inc/Engine/License/Renewal.php:575
+#: inc/Engine/License/Renewal.php:545
 msgid "You need an active license to enable this option. %1$sMore info%2$s."
 msgstr ""
 "Du skal have en aktiv licens for at aktivere denne indstilling. %1$sMere "
@@ -3286,7 +3266,7 @@ msgid ""
 " for %3$supgrading your license to %6$s!%5$s"
 msgstr ""
 "Udnyt %1$s, og gør flere hjemmesider hurtigere:%2$s Få %3$s%4$s rabat%5$s "
-"når du %3$oopgraderer din licens til %6$s!%5$s"
+"når du %3$s opgraderer din licens til %6$s!%5$s"
 
 #: inc/Engine/License/Upgrade.php:258
 msgid "or"
@@ -3321,11 +3301,11 @@ msgstr " sekunder"
 msgid "Upgrade now"
 msgstr "Opgrader nu"
 
-#: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:13
+#: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:14
 msgid "The Optimize CSS Delivery feature is disabled."
 msgstr "Funktionen Optimer CSS-levering er deaktiveret."
 
-#: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:17
+#: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:18
 msgid ""
 "You can no longer use the Remove Unused CSS or Load CSS asynchronously "
 "options."
@@ -3334,7 +3314,7 @@ msgstr ""
 "asynkront."
 
 #. translators: %1$s = <strong>, %2$s = </strong>.
-#: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:22
+#: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:23
 msgid ""
 "You need an %1$sactive license%2$s to keep optimizing your CSS delivery, "
 "which addresses a PageSpeed Insights recommendation and improves your page "
@@ -3344,26 +3324,26 @@ msgstr ""
 "din CSS-levering, der adresserer en PageSpeed Insights-anbefaling og "
 "forbedrer din sides ydeevne."
 
-#: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:31
-#: inc/Engine/License/views/renewal-expired-banner-ocd.php:41
-#: inc/Engine/License/views/renewal-expired-banner.php:29
-#: inc/Engine/License/views/renewal-soon-banner.php:33
+#: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:36
+#: inc/Engine/License/views/renewal-expired-banner-ocd.php:46
+#: inc/Engine/License/views/renewal-expired-banner.php:34
+#: inc/Engine/License/views/renewal-soon-banner.php:35
 msgid "Renew now"
 msgstr "Forny nu"
 
-#: inc/Engine/License/views/renewal-expired-banner-ocd.php:13
+#: inc/Engine/License/views/renewal-expired-banner-ocd.php:14
 msgid "You will soon lose access to some features."
 msgstr "Du vil snart miste adgang til nogle funktioner."
 
 #. translators: %1$s = <strong>, %2$s = </strong>.
-#: inc/Engine/License/views/renewal-expired-banner-ocd.php:20
+#: inc/Engine/License/views/renewal-expired-banner-ocd.php:21
 msgid ""
 "You need an %1$sactive license to continue optimizing your CSS delivery%2$s."
 msgstr ""
 "Du har brug for en %1$saktiv licens for at fortsætte med at optimere din "
 "CSS-levering%2$s."
 
-#: inc/Engine/License/views/renewal-expired-banner-ocd.php:26
+#: inc/Engine/License/views/renewal-expired-banner-ocd.php:27
 msgid ""
 "The Remove Unused CSS and Load CSS asynchronously features are great options"
 " to address the PageSpeed Insights recommendations and improve your website "
@@ -3374,16 +3354,16 @@ msgstr ""
 " hjemmesides ydeevne."
 
 #. translators: %1$s = <strong>, %2$s = </strong>, %3$s = date.
-#: inc/Engine/License/views/renewal-expired-banner-ocd.php:31
+#: inc/Engine/License/views/renewal-expired-banner-ocd.php:32
 msgid "These features will be %1$sautomatically disabled on %3$s%2$s."
 msgstr "Disse funktioner bliver %1$sautomatisk deaktiveret den %3$s%2$s."
 
-#: inc/Engine/License/views/renewal-expired-banner.php:13
+#: inc/Engine/License/views/renewal-expired-banner.php:14
 msgid "Your WP Rocket license is expired!"
 msgstr "Din WP Rocket-licens er udløbet!"
 
 #. translators: %1$s = <strong>, %2$s = </strong>.
-#: inc/Engine/License/views/renewal-expired-banner.php:20
+#: inc/Engine/License/views/renewal-expired-banner.php:21
 msgid ""
 "Your website could be much faster if it could take advantage of our %1$snew "
 "features and enhancements%2$s. 🚀"
@@ -3433,7 +3413,7 @@ msgid ""
 "new licenses, as shown below."
 msgstr ""
 "Du kan bruge WP Rocket på flere hjemmesider ved at opgradere din licens. For"
-" at opgradere skal du blot betale %1$pprisforskellen%2$s mellem din "
+" at opgradere skal du blot be %1$s tale prisforskellen%2$s mellem din "
 "nuværende og nye licens, som vist nedenfor."
 
 #. translators: %1$s = opening strong tag, %2$s = closing strong tag.
@@ -3829,7 +3809,7 @@ msgid ""
 "Upgrade your %1$saccount%2$s or %3$stransfer your license%2$s to this "
 "domain."
 msgstr ""
-"Opgrader din %1$skonto%2$s eller %3$ooverfør din licens%2$s til dette "
+"Opgrader din %1$skonto%2$s eller %3$s overfør din licens%2$s til dette "
 "domæne."
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
