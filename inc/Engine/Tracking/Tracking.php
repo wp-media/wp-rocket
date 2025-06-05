@@ -10,7 +10,6 @@ class Tracking {
 	/**
 	 * Options Data instance.
 	 *
-	 *
 	 * @var Options_Data
 	 */
 	private $options;
@@ -48,10 +47,10 @@ class Tracking {
 		}
 
 		$options_to_track = [
-			'auto_preload_fonts'
+			'auto_preload_fonts',
 		];
 
-		foreach( $options_to_track as $option_tracked ) {
+		foreach ( $options_to_track as $option_tracked ) {
 			if ( ! isset( $old_value[ $option_tracked ], $value[ $option_tracked ] ) ) {
 				continue;
 			}

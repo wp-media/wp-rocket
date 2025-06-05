@@ -42,7 +42,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArguments(
 				[
 					'options',
-					'mixpanel_tracking'
+					'mixpanel_tracking',
 				]
 			);
 		$this->getContainer()->add( 'tracking_subscriber', Subscriber::class )

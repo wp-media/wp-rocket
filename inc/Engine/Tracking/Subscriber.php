@@ -6,6 +6,11 @@ namespace WP_Rocket\Engine\Tracking;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 class Subscriber implements Subscriber_Interface {
+	/**
+	 * The tracking service.
+	 *
+	 * @var Tracking
+	 */
 	private $tracking;
 
 	/**
