@@ -320,7 +320,6 @@ class Plugin {
 			'common_extractcss_subscriber',
 			'common_head_subscriber',
 			'expired_cache_purge_subscriber',
-			'fonts_preload_subscriber',
 			'heartbeat_subscriber',
 			'db_optimization_subscriber',
 			'mobile_subscriber',
