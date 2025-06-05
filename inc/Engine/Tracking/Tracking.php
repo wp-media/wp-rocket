@@ -59,12 +59,15 @@ class Tracking {
 				continue;
 			}
 
+			$host = wp_parse_url( get_site_url(), PHP_URL_HOST );
+
 			$this->mixpanel->track(
 				'WPM Option Changed',
 				[
 					'brand'          => 'WP Media',
 					'product'        => 'WP Rocket',
 					'context'        => 'wp_plugin',
+					'domain'         => $this->mixpanel->hash( $host ),
 					'option_name'    => $option_tracked,
 					'previous_value' => $old_value[ $option_tracked ],
 					'new_value'      => $value[ $option_tracked ],
