@@ -28,10 +28,14 @@ class Test_DisplayRocketcdnStatus extends TestCase {
 		parent::set_up();
 
 		add_filter( 'home_url', [ $this, 'home_url_cb' ] );
+
+		$this->unregisterAllCallbacksExcept( 'rocket_dashboard_after_account_data', 'display_rocketcdn_status' );
 	}
 
 	public function tear_down() {
 		delete_transient( 'rocketcdn_status' );
+
+		$this->restoreWpHook( 'rocket_dashboard_after_account_data' );
 
 		parent::tear_down();
 	}
