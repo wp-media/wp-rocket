@@ -66,7 +66,7 @@ $(document).ready(function(){
         var name  = $(this).attr('id');
         var value = $(this).prop('checked') ? 1 : 0;
 
-		var excluded = [ 'cloudflare_auto_settings', 'cloudflare_devmode' ];
+		var excluded = [ 'cloudflare_auto_settings', 'cloudflare_devmode', 'analytics_enabled' ];
 		if ( excluded.indexOf( name ) >= 0 ) {
 			return;
 		}
@@ -229,3 +229,24 @@ $(document).ready(function(){
     });
 });
 
+document.addEventListener('DOMContentLoaded', function() {
+	const analyticsCheckbox = document.getElementById('analytics_enabled');
+
+	if (analyticsCheckbox) {
+		analyticsCheckbox.addEventListener('change', function() {
+			const isChecked = this.checked;
+
+			fetch(ajaxurl, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/x-www-form-urlencoded',
+				},
+				body: new URLSearchParams({
+					action: 'rocket_toggle_optin',
+					value: isChecked ? 1 : 0,
+					_ajax_nonce: rocket_ajax_data.nonce,
+				})
+			});
+		});
+	}
+});
