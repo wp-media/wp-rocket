@@ -119,7 +119,8 @@ $rocket_manual_preload = (bool) get_rocket_option( 'manual_preload', false );
 					</div>
 				</div>
 			</div>
-			<?php endif;
+				<?php
+			endif;
 			/**
 			 * Fires after the account data section on the WP Rocket settings dashboard
 			 *

@@ -3,7 +3,7 @@
  * Optin section template.
  *
  * @param array $data {
- *	 @type int $current_value Current value of the optin option.
+ *    @type int $current_value Current value of the optin option.
  * }
  */
 
