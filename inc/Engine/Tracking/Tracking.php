@@ -19,7 +19,6 @@ class Tracking extends Abstract_Render {
 	/**
 	 * Optin instance.
 	 *
-	 *
 	 * @var Optin
 	 */
 	private $optin;
@@ -37,7 +36,7 @@ class Tracking extends Abstract_Render {
 	 * @param Options_Data     $options Options Data instance.
 	 * @param Optin            $optin Optin instance.
 	 * @param MixpanelTracking $mixpanel Mixpanel Tracking instance.
-	 * @param string		   $template_path Path to the template files.
+	 * @param string           $template_path Path to the template files.
 	 */
 	public function __construct( Options_Data $options, Optin $optin, MixpanelTracking $mixpanel, $template_path ) {
 		parent::__construct( $template_path );
@@ -116,7 +115,7 @@ class Tracking extends Abstract_Render {
 	 * @return void
 	 */
 	public function render_optin(): void {
-		echo $this->generate(
+		echo $this->generate( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			'optin',
 			[
 				'current_value' => (int) $this->optin->is_enabled(),
