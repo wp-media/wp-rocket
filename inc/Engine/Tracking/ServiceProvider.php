@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Tracking;
 
+use WP_Rocket\Dependencies\League\Container\Argument\Literal\StringArgument;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WPMedia\Mixpanel\Optin;
 use WPMedia\Mixpanel\Tracking as MixpanelTracking;
 
 class ServiceProvider extends AbstractServiceProvider {
@@ -35,14 +37,23 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register(): void {
+		$this->getContainer()->add( 'mixpanel_optin', Optin::class )
+			->addArguments(
+				[
+					'rocket',
+					'rocket_manage_options',
+				]
+			);
 		$this->getContainer()->add( 'mixpanel_tracking', MixpanelTracking::class )
-			// Mixpanel toke for staging.
+			// Mixpanel token for staging.
 			->addArgument( 'ca194771e8caa6fca7ff02896cded17d' );
 		$this->getContainer()->add( 'tracking', Tracking::class )
 			->addArguments(
 				[
 					'options',
+					'mixpanel_optin',
 					'mixpanel_tracking',
+					new StringArgument( $this->getContainer()->get( 'template_path' ) . '/settings/sections/' ),
 				]
 			);
 		$this->getContainer()->add( 'tracking_subscriber', Subscriber::class )
