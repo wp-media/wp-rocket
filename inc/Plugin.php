@@ -92,15 +92,6 @@ class Plugin {
 	private $is_valid_key;
 
 	/**
-	 * Instance of the Options.
-	 *
-	 * @since 3.6
-	 *
-	 * @var Options
-	 */
-	private $options_api;
-
-	/**
 	 * Instance of the Options_Data.
 	 *
 	 * @since 3.6
