@@ -34,7 +34,7 @@ class Settings {
 	 */
 	public function sanitize_option_value( array $input, AdminSettings $settings ): array {
 		$input['host_fonts_locally']  = $settings->sanitize_checkbox( $input, 'host_fonts_locally' );
-		$intput['auto_preload_fonts'] = $settings->sanitize_checkbox( $input, 'auto_preload_fonts' );
+		$input['auto_preload_fonts'] = $settings->sanitize_checkbox( $input, 'auto_preload_fonts' );
 
 		return $input;
 	}
