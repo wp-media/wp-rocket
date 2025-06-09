@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Tracking\Tracking;
 
-use Brain\Monkey\Functions;
 use Mockery;
 use WPMedia\Mixpanel\Optin;
 use WPMedia\Mixpanel\Tracking as MixpanelTracking;
