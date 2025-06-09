@@ -11,19 +11,19 @@ use WP_Rocket\Engine\Media\PreloadFonts\Admin\Settings;
  */
 class Subscriber implements Subscriber_Interface {
 	/**
-	 * Controller instance
+	 * Settings instance
 	 *
 	 * @var Settings
 	 */
-	private $controller;
+	private $settings;
 
 	/**
 	 *  Creates an instance of the object.
 	 *
-	 * @param Settings $controller Controller instance.
+	 * @param Settings $settings Settings instance.
 	 */
-	public function __construct( Settings $controller ) {
-		$this->controller = $controller;
+	public function __construct( Settings $settings ) {
+		$this->settings = $settings;
 	}
 
 	/**
@@ -33,7 +33,10 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'wp_rocket_upgrade' => [ 'maybe_enable_auto_preload_fonts', 9, 2 ],
+			'wp_rocket_upgrade' => [
+				[ 'maybe_enable_auto_preload_fonts', 9, 2 ],
+				[ 'maybe_clear_preload_fonts_values', 10, 2 ],
+			],
 		];
 	}
 
@@ -53,6 +56,22 @@ class Subscriber implements Subscriber_Interface {
 		if ( version_compare( $old_version, '3.19', '>' ) ) {
 			return;
 		}
-		$this->controller->maybe_enable_auto_preload_fonts();
+		$this->settings->maybe_enable_auto_preload_fonts();
+	}
+
+	/**
+	 * Removes old preload fonts values when upgrading from versions prior to 3.19.1.
+	 *
+	 * @param string $new_version New plugin version.
+	 * @param string $old_version Previous plugin version.
+	 *
+	 * @return void
+	 */
+	public function maybe_clear_preload_fonts_values( string $new_version, string $old_version ): void {
+		if ( version_compare( $old_version, '3.19.1', '>' ) ) {
+			return;
+		}
+
+		$this->settings->maybe_clear_preload_fonts_values();
 	}
 }

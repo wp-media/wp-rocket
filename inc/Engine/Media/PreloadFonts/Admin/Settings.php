@@ -12,7 +12,6 @@ class Settings {
 	 */
 	private $options;
 
-
 	/**
 	 * WP Rocket Options API Instance.
 	 *
@@ -34,7 +33,7 @@ class Settings {
 	/**
 	 * Enables the auto preload fonts option if the old preload fonts option is not empty.
 	 *
-	 * This function checks the value of the `rocket_preload_fonts` option.
+	 * This function checks the value of the `preload_fonts` option.
 	 * If it contains a non-empty value, it updates the `auto_preload_fonts` option to `true`.
 	 * This is useful for ensuring that automatic font preloading is enabled based on legacy settings.
 	 *
@@ -47,6 +46,21 @@ class Settings {
 		}
 
 		$this->options->set( 'auto_preload_fonts', true );
+		$this->options_api->set( 'settings', $this->options->get_options() );
+	}
+
+	/**
+	 * Removes old preload fonts values from settings.
+	 *
+	 * @return void
+	 */
+	public function maybe_clear_preload_fonts_values(): void {
+		$options = $this->options_api->get( 'settings', [] );
+		if ( empty( $options['preload_fonts'] ) ) {
+			return;
+		}
+
+		$this->options->set( 'preload_fonts', [] );
 		$this->options_api->set( 'settings', $this->options->get_options() );
 	}
 }
