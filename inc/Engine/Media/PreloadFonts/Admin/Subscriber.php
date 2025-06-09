@@ -5,7 +5,7 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Engine\Media\PreloadFonts\Admin\Settings;
 
 /**
- * Preload Fonts admin controller
+ * Preload Fonts admin subscriber
  *
  * @since 3.19
  */
@@ -43,7 +43,7 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Enables the auto preload fonts option if the old preload fonts option is not empty.
 	 *
-	 * This function checks the value of the `rocket_preload_fonts` option.
+	 * This function checks the value of the `preload_fonts` option.
 	 * If it contains a non-empty value, it updates the `auto_preload_fonts` option to `true`.
 	 * This is useful for ensuring that automatic font preloading is enabled based on legacy settings.
 	 *
