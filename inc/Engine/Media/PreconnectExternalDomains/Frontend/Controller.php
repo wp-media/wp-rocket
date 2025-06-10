@@ -154,8 +154,7 @@ class Controller implements ControllerInterface {
 			return $this->dns_prefetch_link(
 				[
 					'href' => esc_url( $domain ),
-					1      => 'crossorigin',
-					2      => 'data-rocket-prefetch',
+					1      => 'data-rocket-prefetch',
 				]
 			);
 		}
