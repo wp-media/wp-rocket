@@ -19,7 +19,7 @@ class Test_MaybeRemoveExistingPreloadedFonts extends TestCase
 	public function set_up() {
 		parent::set_up();
 
-		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'maybe_remove_existing_preloaded_fonts', 10 );
+		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'maybe_remove_existing_preloaded_fonts' );
 		add_filter( 'rocket_remove_existing_preloaded_fonts', [ $this, 'remove_existing_preloaded_fonts' ] );
 		add_filter( 'pre_get_rocket_option_auto_preload_fonts', '__return_true' );
 

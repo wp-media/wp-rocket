@@ -46,7 +46,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_head_items'                   => [ 'add_preload_fonts_in_head', 30 ],
 			'rocket_enable_rucss_fonts_preload'   => 'disable_rucss_preload_fonts',
 			'rocket_preload_fonts_excluded_fonts' => 'get_exclusions',
-			'rocket_buffer'                       => [ 'maybe_remove_existing_preloaded_fonts', 10 ],
+			'rocket_buffer'                       => 'maybe_remove_existing_preloaded_fonts',
 		];
 	}
 

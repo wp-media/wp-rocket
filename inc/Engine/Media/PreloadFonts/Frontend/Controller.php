@@ -174,7 +174,11 @@ class Controller implements ControllerInterface {
 			return $html;
 		}
 
-		// Apply a filter to allow overriding the removal of preloaded font tags.
+		/**
+		 * Filter to enable or disable the deleting of existing preloaded tags.
+		 *
+		 * @param bool $should_remove Enable or disable the removal of existing preloaded tags.
+		 */
 		$should_remove = wpm_apply_filters_typed( 'boolean', 'rocket_remove_existing_preloaded_fonts', true );
 
 		if ( ! $should_remove ) {
