@@ -159,4 +159,29 @@ class Controller implements ControllerInterface {
 
 		return false;
 	}
+
+	/**
+	 * Removes existing preloaded font links from the provided HTML content if necessary.
+	 *
+	 * This method scans the given HTML string and removes any <link rel="preload" as="font"> tags
+	 * that match certain criteria, to prevent duplicate or unnecessary font preloads.
+	 *
+	 * @param string $html The HTML content to process.
+	 * @return string The modified HTML content with preloaded font links removed if applicable.
+	 */
+	public function maybe_remove_existing_preloaded_fonts( string $html ): string {
+		if ( ! $this->context->is_allowed() ) {
+			return $html;
+		}
+
+		// Apply a filter to allow overriding the removal of preloaded font tags.
+		$should_remove = wpm_apply_filters_typed( 'boolean', 'rocket_remove_existing_preloaded_fonts', true );
+
+		if ( ! $should_remove ) {
+			return $html;
+		}
+
+		// Use regex to remove <link rel="preload" as="font"> tags.
+		return preg_replace( '/^\s*<link[^>]*rel=["\']preload["\'][^>]*as=["\']font["\'][^>]*>\s*$/m', '', $html );
+	}
 }

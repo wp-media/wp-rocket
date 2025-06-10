@@ -46,6 +46,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_head_items'                   => [ 'add_preload_fonts_in_head', 30 ],
 			'rocket_enable_rucss_fonts_preload'   => 'disable_rucss_preload_fonts',
 			'rocket_preload_fonts_excluded_fonts' => 'get_exclusions',
+			'rocket_buffer'                       => [ 'maybe_remove_existing_preloaded_fonts', 10 ],
 		];
 	}
 
@@ -85,5 +86,15 @@ class Subscriber implements Subscriber_Interface {
 		 * Handle empty arrays gracefully.
 		 */
 		return array_merge( $exclusions, (array) $lists );
+	}
+
+	/**
+	 * Removes existing preloaded font tags from the HTML buffer.
+	 *
+	 * @param string $html The HTML content.
+	 * @return string Modified HTML content.
+	 */
+	public function maybe_remove_existing_preloaded_fonts( string $html ): string {
+		return $this->preload_fonts->maybe_remove_existing_preloaded_fonts( $html );
 	}
 }
