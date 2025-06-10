@@ -6,9 +6,7 @@
 	<title>Multiple Fonts Every 100px</title>
 	<!-- already preloaded -->
 	<!-- unused -->
-
 	<!-- used -->
-
 	<style>
 
 		@font-face {
