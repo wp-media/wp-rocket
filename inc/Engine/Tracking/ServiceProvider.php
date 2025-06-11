@@ -45,8 +45,7 @@ class ServiceProvider extends AbstractServiceProvider {
 				]
 			);
 		$this->getContainer()->add( 'mixpanel_tracking', MixpanelTracking::class )
-			// Mixpanel token for staging.
-			->addArgument( 'ca194771e8caa6fca7ff02896cded17d' );
+			->addArgument( 'e1135bbed811a82645a7df564f0278c4' );
 		$this->getContainer()->add( 'tracking', Tracking::class )
 			->addArguments(
 				[
