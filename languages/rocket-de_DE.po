@@ -3039,7 +3039,7 @@ msgid ""
 "Reset stored optimizations related to Automatic Lazy Rendering, Critical "
 "Images, Preconnect to External Domains, and Preload Fonts."
 msgstr ""
-"Gespeicherte Optimierungen zurücksetzen wie Automatisches verzögertes "
+"Gespeicherte Optimierungen zurücksetzen für Automatisches verzögertes "
 "Rendern, Kritische Bilder, Frühzeitiges Verbinden externer Domains und "
 "Vorladen von Schriften."
 
