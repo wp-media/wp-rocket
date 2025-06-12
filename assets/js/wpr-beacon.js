@@ -658,41 +658,40 @@ CSS (first 200 chars): ${txt.substring(0, 200)}...`
      */
     getFontFaceRules() {
       const stylesheetFonts = {};
-      Array.from(Array.from(document.styleSheets)).filter((sheet) => !sheet.href || new URL(sheet.href).origin === location.origin).forEach((sheet) => {
+      const processSheet = (sheet) => {
         try {
           Array.from(sheet.cssRules || []).forEach((rule) => {
             if (rule instanceof CSSFontFaceRule) {
               const src = rule.style.getPropertyValue("src");
-              const fontFamily = rule.style.getPropertyValue("font-family").replace(/['"]+/g, "").trim();
+              const fontFamily = rule.style.getPropertyValue("font-family").replace(/['"]/g, "").trim();
               const weight = rule.style.getPropertyValue("font-weight") || "400";
               const style = rule.style.getPropertyValue("font-style") || "normal";
               if (!stylesheetFonts[fontFamily]) {
-                stylesheetFonts[fontFamily] = {
-                  urls: [],
-                  variations: /* @__PURE__ */ new Set()
-                };
+                stylesheetFonts[fontFamily] = { urls: [], variations: /* @__PURE__ */ new Set() };
               }
-              const urls = src.match(/url\(['"]?([^'"]+)['"]?\)/g) || [];
+              const urls = src.match(/url\(['"]?([^'")]+)['"]?\)/g) || [];
               urls.forEach((urlMatch) => {
-                let rawUrl = urlMatch.match(/url\(['"]?([^'"]+)['"]?\)/)[1];
+                let rawUrl = urlMatch.match(/url\(['"]?([^'")]+)['"]?\)/)[1];
                 if (sheet.href) {
                   rawUrl = new URL(rawUrl, sheet.href).href;
                 }
-                const normalizedUrl = this.cleanUrl(rawUrl);
-                if (!stylesheetFonts[fontFamily].urls.includes(normalizedUrl)) {
-                  stylesheetFonts[fontFamily].urls.push(normalizedUrl);
-                  stylesheetFonts[fontFamily].variations.add(JSON.stringify({
-                    weight,
-                    style
-                  }));
+                const normalized = this.cleanUrl(rawUrl);
+                if (!stylesheetFonts[fontFamily].urls.includes(normalized)) {
+                  stylesheetFonts[fontFamily].urls.push(normalized);
+                  stylesheetFonts[fontFamily].variations.add(
+                    JSON.stringify({ weight, style })
+                  );
                 }
               });
+            } else if (rule.styleSheet) {
+              processSheet(rule.styleSheet);
             }
           });
         } catch (e) {
           this.logger.logMessage(e);
         }
-      });
+      };
+      Array.from(document.styleSheets).filter((sheet) => !sheet.href || new URL(sheet.href).origin === location.origin).forEach(processSheet);
       Object.values(stylesheetFonts).forEach((fontData) => {
         fontData.variations = Array.from(fontData.variations).map((v) => JSON.parse(v));
       });
