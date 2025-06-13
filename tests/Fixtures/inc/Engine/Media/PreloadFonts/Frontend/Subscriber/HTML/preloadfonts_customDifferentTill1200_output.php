@@ -6,7 +6,26 @@
 	<title>Multiple Fonts Every 100px</title>
 	<!-- already preloaded -->
 	<!-- unused -->
+
 	<!-- used -->
+
+	<!-- Edge case: No quotes around attribute values -->
+
+	<!-- Edge case: rel after as -->
+
+	<!-- Edge case: Mixed quotes -->
+
+	<!-- Regular preload - should be removed -->
+
+	<!-- Without any quotes -->
+
+	<script>
+		// This is JavaScript, not markup!
+		var preloadTag = '<link rel="preload" as="font" href="fake.woff2">';
+		// The script might dynamically inject this OR just use it as a string for any purpose
+		console.log(preloadTag);
+	</script>
+
 	<style>
 
 		@font-face {

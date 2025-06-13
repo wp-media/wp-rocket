@@ -11,6 +11,27 @@
 	<!-- used -->
 	<link rel="preload" href="/wp-content/rocket-test-data/fonts/OpenSans-Regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
 
+	<!-- Edge case: No quotes around attribute values -->
+	<link rel=preload as=font href="https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/fonts/OpenSans-Regular.woff2">
+
+	<!-- Edge case: rel after as -->
+	<link href="https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/fonts/OpenSans-Regular.woff2"  as="font" type="font/woff2" rel="preload" crossorigin="anonymous"/>
+
+	<!-- Edge case: Mixed quotes -->
+	<link rel='preload' as="font" href="/wp-content/rocket-test-data/fonts/mixed-quotes.woff2" type="font/woff2" crossorigin="anonymous">
+
+	<!-- Regular preload - should be removed -->
+	<link rel="preload" as="font" href="/wp-content/rocket-test-data/fonts/regular.woff2" type="font/woff2" crossorigin="anonymous">
+
+	<!-- Without any quotes -->
+	<link rel=preload as=font href="/wp-content/rocket-test-data/fonts/without-quotes.woff2" type="font/woff2" crossorigin="anonymous">
+
+	<script>
+		// This is JavaScript, not markup!
+		var preloadTag = '<link rel="preload" as="font" href="fake.woff2">';
+		// The script might dynamically inject this OR just use it as a string for any purpose
+		console.log(preloadTag);
+	</script>
 
 	<style>
 

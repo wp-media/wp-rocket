@@ -165,6 +165,7 @@ class Controller implements ControllerInterface {
 	 *
 	 * This method scans the given HTML string and removes any <link rel="preload" as="font"> tags
 	 * that match certain criteria, to prevent duplicate or unnecessary font preloads.
+	 * Only removes preloaded fonts when WP Rocket's font optimization is actually applied.
 	 *
 	 * @param string $html The HTML content to process.
 	 * @return string The modified HTML content with preloaded font links removed if applicable.
@@ -173,19 +174,32 @@ class Controller implements ControllerInterface {
 		if ( ! $this->context->is_allowed() ) {
 			return $html;
 		}
+		$row = $this->get_current_url_row();
+		if ( ! $row ) {
+			return $html;
+		}
 
 		/**
-		 * Filter to enable or disable the deleting of existing preloaded tags.
+		 * Filter to enable or disable deleting existing preloaded tags.
 		 *
-		 * @param bool $should_remove Enable or disable the removal of existing preloaded tags.
+		 * @param bool $should_remove
 		 */
 		$should_remove = wpm_apply_filters_typed( 'boolean', 'rocket_remove_existing_preloaded_fonts', true );
-
 		if ( ! $should_remove ) {
 			return $html;
 		}
 
-		// Use regex to remove <link rel="preload" as="font"> tags.
-		return preg_replace( '/<link[^>]*rel=["\']preload["\'][^>]*as=["\']font["\'][^>]*>\s*/i', '', $html );
+		// One regex to skip scripts and remove any <link rel=preload as=font…> tag (entire line, including indentation and newline):.
+		$html = preg_replace(
+			'#<script\b[^>]*>[\s\S]*?<\/script\b[^>]*>(*SKIP)(*FAIL)'    // skip <script> blocks.
+			. '|^[ \t]*<link\b'                                           // OR match a <link at line start (with optional indent).
+			. '(?=[^>]*\brel\s*=\s*(["\']?)preload\1)'                 // lookahead rel=preload.
+			. '(?=[^>]*\bas\s*=\s*(["\']?)font\2)'                     // lookahead as=font.
+			. '[^>]*?\/?>[ \t]*(?:\r?\n|$)#im',                        // up to /> or >, then trim whitespace and newline.
+			'',
+			$html
+		);
+
+		return $html;
 	}
 }
