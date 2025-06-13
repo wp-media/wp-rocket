@@ -6,7 +6,7 @@ namespace WP_Rocket\Engine\Tracking;
 use WP_Rocket\Abstract_Render;
 use WP_Rocket\Admin\Options_Data;
 use WPMedia\Mixpanel\Optin;
-use WPMedia\Mixpanel\Tracking as MixpanelTracking;
+use WPMedia\Mixpanel\TrackingPlugin as MixpanelTracking;
 
 class Tracking extends Abstract_Render {
 	/**
@@ -72,15 +72,12 @@ class Tracking extends Abstract_Render {
 				continue;
 			}
 
-			$host = wp_parse_url( get_site_url(), PHP_URL_HOST );
-
 			$this->mixpanel->track(
 				'WPM Option Changed',
 				[
 					'brand'          => 'WP Media',
 					'product'        => 'WP Rocket',
 					'context'        => 'wp_plugin',
-					'domain'         => $this->mixpanel->hash( $host ),
 					'option_name'    => $option_tracked,
 					'previous_value' => $old_value[ $option_tracked ],
 					'new_value'      => $value[ $option_tracked ],

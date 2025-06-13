@@ -6,7 +6,7 @@ namespace WP_Rocket\Engine\Tracking;
 use WP_Rocket\Dependencies\League\Container\Argument\Literal\StringArgument;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WPMedia\Mixpanel\Optin;
-use WPMedia\Mixpanel\Tracking as MixpanelTracking;
+use WPMedia\Mixpanel\TrackingPlugin as MixpanelTracking;
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
@@ -45,7 +45,12 @@ class ServiceProvider extends AbstractServiceProvider {
 				]
 			);
 		$this->getContainer()->add( 'mixpanel_tracking', MixpanelTracking::class )
-			->addArgument( 'e1135bbed811a82645a7df564f0278c4' );
+			->addArguments(
+				[
+					'e1135bbed811a82645a7df564f0278c4',
+					'WP Rocket ' . rocket_get_constant( 'WP_ROCKET_VERSION', '' ),
+				]
+			);
 		$this->getContainer()->add( 'tracking', Tracking::class )
 			->addArguments(
 				[
