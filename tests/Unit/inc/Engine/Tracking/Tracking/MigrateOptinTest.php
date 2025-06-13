@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Tracking\Tracking;
 
 use Mockery;
 use WPMedia\Mixpanel\Optin;
-use WPMedia\Mixpanel\Tracking as MixpanelTracking;
+use WPMedia\Mixpanel\TrackingPlugin as MixpanelTracking;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Tracking\Tracking;
 use WP_Rocket\Tests\Unit\TestCase;

@@ -6,7 +6,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Tracking\Tracking;
 use Brain\Monkey\Functions;
 use Mockery;
 use WPMedia\Mixpanel\Optin;
-use WPMedia\Mixpanel\Tracking as MixpanelTracking;
+use WPMedia\Mixpanel\TrackingPlugin as MixpanelTracking;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Tracking\Tracking;
 use WP_Rocket\Tests\Unit\TestCase;
@@ -59,13 +59,6 @@ class TrackOptionChangeTest extends TestCase {
 		if ( ! $expected ) {
 			$this->mixpanel->shouldNotReceive( 'track' );
 		} else {
-			$this->mixpanel->shouldReceive( 'hash' )
-				->once()
-				->andReturnUsing(
-					function ( $value ) {
-						return hash( 'sha3-224', $value );
-					}
-				);
 			$this->mixpanel->shouldReceive( 'track' )
 				->once()
 				->with(
@@ -74,7 +67,6 @@ class TrackOptionChangeTest extends TestCase {
 						'brand'          => 'WP Media',
 						'product'        => 'WP Rocket',
 						'context'        => 'wp_plugin',
-						'domain'         => '8ede95682637b1d3b4632e95c974624179e95b9f184c88b92abf3562',
 						'option_name'    => 'auto_preload_fonts',
 						'previous_value' => $config['old_value']['auto_preload_fonts'],
 						'new_value'      => $config['value']['auto_preload_fonts'],
