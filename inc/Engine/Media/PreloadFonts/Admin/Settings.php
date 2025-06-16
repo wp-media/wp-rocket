@@ -48,19 +48,4 @@ class Settings {
 		$this->options->set( 'auto_preload_fonts', true );
 		$this->options_api->set( 'settings', $this->options->get_options() );
 	}
-
-	/**
-	 * Removes old preload fonts values from settings.
-	 *
-	 * @return void
-	 */
-	public function maybe_clear_preload_fonts_values(): void {
-		$options = $this->options_api->get( 'settings', [] );
-		if ( empty( $options['preload_fonts'] ) ) {
-			return;
-		}
-
-		$this->options->set( 'preload_fonts', [] );
-		$this->options_api->set( 'settings', $this->options->get_options() );
-	}
 }
