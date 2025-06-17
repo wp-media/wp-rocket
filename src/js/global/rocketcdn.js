@@ -6,6 +6,11 @@
 		document.querySelectorAll( '.wpr-rocketcdn-open' ).forEach( ( el ) => {
 			el.addEventListener( 'click', ( e ) => {
 				e.preventDefault();
+
+				let iframe = document.querySelector( '#rocketcdn-iframe' );
+				if ( null !== iframe ) {
+					iframe.setAttribute( 'src', iframe.dataset.src );
+				}
 			} );
 		} );
 
@@ -72,7 +77,8 @@
 	};
 
 	function maybeOpenModal() {
-		let postData = '';
+		let postData = '',
+			iframe = document.querySelector( '#rocketcdn-iframe' );
 
 		postData += 'action=rocketcdn_process_status';
 		postData += '&nonce=' + rocket_ajax_data.nonce;
@@ -85,6 +91,10 @@
 
 				if ( true === responseTxt.success ) {
 					MicroModal.show( 'wpr-rocketcdn-modal' );
+
+					if ( null !== iframe ) {
+						iframe.setAttribute( 'src', iframe.dataset.src );
+					}
 				}
 			}
 		};
