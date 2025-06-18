@@ -22,7 +22,6 @@ defined( 'ABSPATH' ) || exit;
  *
  * @since 1.0.0
  */
-#[\AllowDynamicProperties]
 class Base {
 
 	/**
@@ -281,7 +280,7 @@ class Base {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return \wpdb|false Database interface, or False if not set
+	 * @return \wpdb Database interface, or False if not set
 	 */
 	protected function get_db() {
 
