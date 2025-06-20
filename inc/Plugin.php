@@ -404,6 +404,7 @@ class Plugin {
 			'preload_fonts_frontend_subscriber',
 			'preload_fonts_admin_subscriber',
 			'preconnect_frontend_subscriber',
+			'post_subscriber',
 		];
 
 		$host_type = HostResolver::get_host_service();
