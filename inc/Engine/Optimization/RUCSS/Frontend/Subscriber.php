@@ -43,7 +43,6 @@ class Subscriber implements Subscriber_Interface {
 	public static function get_subscribed_events(): array {
 		return [
 			'rocket_buffer'                => [ 'treeshake', 1000 ],
-			'rocket_disable_preload_fonts' => 'maybe_disable_preload_fonts',
 			'rocket_first_install_options' => 'on_install',
 			'wp_rocket_upgrade'            => [ 'on_update', 10, 2 ],
 			'rocket_head_items'            => [
@@ -62,23 +61,6 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function treeshake( string $html ): string {
 		return $this->used_css->treeshake( $html );
-	}
-
-	/**
-	 * Disables the preload fonts if RUCSS is enabled
-	 *
-	 * @since 3.9
-	 *
-	 * @param bool $value Value for the disable preload fonts filter.
-	 *
-	 * @return bool
-	 */
-	public function maybe_disable_preload_fonts( $value ): bool {
-		if ( $this->context->is_allowed() ) {
-			return true;
-		}
-
-		return $value;
 	}
 
 	/**
