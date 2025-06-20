@@ -9,6 +9,7 @@ use WP_Rocket\Engine\Cache\PurgeExpired\PurgeExpiredCache;
 use WP_Rocket\Engine\Cache\PurgeExpired\Subscriber;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache as CacheQuery;
 use WP_Rocket\Engine\Cache\Config\ConfigSubscriber;
+use WP_Rocket\Engine\Cache\UrlValidation\{ TaxonomySubscriber, PostSubscriber };
 
 /**
  * Service Provider for cache subscribers
@@ -30,6 +31,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'preload_caches_query',
 		'cache_config',
 		'taxonomy_subscriber',
+		'post_subscriber',
 	];
 
 	/**
@@ -101,5 +103,6 @@ class ServiceProvider extends AbstractServiceProvider {
 				]
 			);
 		$this->getContainer()->addShared( 'taxonomy_subscriber', TaxonomySubscriber::class );
+		$this->getContainer()->addShared( 'post_subscriber', PostSubscriber::class );
 	}
 }
