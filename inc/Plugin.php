@@ -58,6 +58,7 @@ use WP_Rocket\Engine\Optimization\LazyRenderContent\ServiceProvider as LRCServic
 use WP_Rocket\Engine\Media\Fonts\ServiceProvider as MediaFontsServiceProvider;
 use WP_Rocket\Engine\Media\PreloadFonts\ServiceProvider as PreloadFontsServiceProvider;
 use WP_Rocket\Engine\Media\PreconnectExternalDomains\ServiceProvider as PreconnectExternalDomainsServiceProvider;
+use WP_Rocket\Engine\Tracking\ServiceProvider as TrackingServiceProvider;
 
 /**
  * Plugin Manager.
@@ -203,6 +204,7 @@ class Plugin {
 		$this->container->addServiceProvider( new OptimizationAdminServiceProvider() );
 		$this->container->addServiceProvider( new DomainChangeServiceProvider() );
 		$this->container->addServiceProvider( new AdminLazyloadCSSServiceProvider() );
+		$this->container->addServiceProvider( new TrackingServiceProvider() );
 
 		return [
 			'beacon',
@@ -230,6 +232,7 @@ class Plugin {
 			'preconnect_external_domains_admin_subscriber',
 			'media_fonts_admin_subscriber',
 			'preload_fonts_admin_subscriber',
+			'tracking_subscriber',
 		];
 	}
 
