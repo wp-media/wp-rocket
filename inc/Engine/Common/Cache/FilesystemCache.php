@@ -41,7 +41,7 @@ class FilesystemCache implements CacheInterface {
 	 *
 	 * @return mixed The value of the item from the cache, or $default in case of cache miss.
 	 */
-	public function get( string $key, $default = null )  {
+	public function get( string $key, $default = null ) {
 		$path = $this->generate_path( $key );
 
 		if ( ! $this->filesystem->exists( $path ) ) {
