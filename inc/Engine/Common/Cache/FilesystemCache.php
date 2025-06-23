@@ -41,7 +41,7 @@ class FilesystemCache implements CacheInterface {
 	 *
 	 * @return mixed The value of the item from the cache, or $default in case of cache miss.
 	 */
-	public function get( string $key, mixed $default = null ): mixed {
+	public function get( string $key, $default = null )  {
 		$path = $this->generate_path( $key );
 
 		if ( ! $this->filesystem->exists( $path ) ) {
@@ -62,7 +62,7 @@ class FilesystemCache implements CacheInterface {
 	 *
 	 * @return bool True on success and false on failure.
 	 */
-	public function set( string $key, mixed $value, $ttl = null ): bool {
+	public function set( string $key, $value, $ttl = null ): bool {
 		$path      = $this->generate_path( $key );
 		$directory = dirname( $path );
 		rocket_mkdir_p( $directory, $this->filesystem );
@@ -137,7 +137,7 @@ class FilesystemCache implements CacheInterface {
 	 *
 	 * @return iterable A list of key => value pairs. Cache keys that do not exist or are stale will have $default as value.
 	 */
-	public function getMultiple( iterable $keys, mixed $default = null ): iterable {
+	public function getMultiple( iterable $keys, $default = null ): iterable {
 		$results = [];
 		foreach ( $keys as $key ) {
 			$results[ $key ] = $this->get( $key, $default );
