@@ -62,7 +62,7 @@ class FilesystemCache implements CacheInterface {
 	 *
 	 * @return bool True on success and false on failure.
 	 */
-	public function set( string $key, mixed $value, null|int|\DateInterval $ttl = null ): bool {
+	public function set( string $key, mixed $value, $ttl = null ): bool {
 		$path      = $this->generate_path( $key );
 		$directory = dirname( $path );
 		rocket_mkdir_p( $directory, $this->filesystem );
@@ -155,7 +155,7 @@ class FilesystemCache implements CacheInterface {
 	 *
 	 * @return bool True on success and false on failure.
 	 */
-	public function setMultiple( iterable $values, null|int|\DateInterval $ttl = null ): bool {
+	public function setMultiple( iterable $values, $ttl = null ): bool {
 		$result = true;
 		foreach ( $values as $key => $value ) {
 			$result &= $this->set( $key, $value, $ttl );
