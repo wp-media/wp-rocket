@@ -101,5 +101,5 @@ interface CacheItemInterface
      * @return static
      *   The called object.
      */
-    public function expiresAfter(int|\DateInterval|null $time): static;
+    public function expiresAfter($time): static;
 }
