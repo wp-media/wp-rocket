@@ -236,7 +236,7 @@ class Plugin {
 		// Only add tracking service provider if cURL extension is loaded.
 		// MixPanel (used by TrackingServiceProvider) requires cURL and will throw a fatal error if not available.
 		// This prevents crashes when WP Rocket is installed on servers without cURL support.
-		if ( extension_loaded( 'curl' ) ) {
+		if ( function_exists( 'curl_init' ) ) {
 			$this->container->addServiceProvider( new TrackingServiceProvider() );
 			$subscribers[] = 'tracking_subscriber';
 		}
