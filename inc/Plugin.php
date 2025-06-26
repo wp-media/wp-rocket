@@ -204,7 +204,13 @@ class Plugin {
 		$this->container->addServiceProvider( new OptimizationAdminServiceProvider() );
 		$this->container->addServiceProvider( new DomainChangeServiceProvider() );
 		$this->container->addServiceProvider( new AdminLazyloadCSSServiceProvider() );
-		$this->container->addServiceProvider( new TrackingServiceProvider() );
+		
+		// Only add tracking service provider if cURL extension is loaded.
+		// MixPanel (used by TrackingServiceProvider) requires cURL and will throw a fatal error if not available.
+		// This prevents crashes when WP Rocket is installed on servers without cURL support.
+		if ( extension_loaded( 'curl' ) ) {
+			$this->container->addServiceProvider( new TrackingServiceProvider() );
+		}
 
 		return [
 			'beacon',
@@ -232,8 +238,9 @@ class Plugin {
 			'preconnect_external_domains_admin_subscriber',
 			'media_fonts_admin_subscriber',
 			'preload_fonts_admin_subscriber',
-			'tracking_subscriber',
-		];
+		// Conditionally add tracking_subscriber only if cURL is available.
+		// to prevent fatal errors from MixPanel dependency.
+		] + ( extension_loaded( 'curl' ) ? [ 'tracking_subscriber' ] : [] );
 	}
 
 	/**
