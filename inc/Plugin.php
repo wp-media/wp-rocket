@@ -204,7 +204,7 @@ class Plugin {
 		$this->container->addServiceProvider( new OptimizationAdminServiceProvider() );
 		$this->container->addServiceProvider( new DomainChangeServiceProvider() );
 		$this->container->addServiceProvider( new AdminLazyloadCSSServiceProvider() );
-		
+
 		// Only add tracking service provider if cURL extension is loaded.
 		// MixPanel (used by TrackingServiceProvider) requires cURL and will throw a fatal error if not available.
 		// This prevents crashes when WP Rocket is installed on servers without cURL support.
