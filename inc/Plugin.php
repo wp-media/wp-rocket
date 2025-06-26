@@ -212,35 +212,7 @@ class Plugin {
 			$this->container->addServiceProvider( new TrackingServiceProvider() );
 		}
 
-		return [
-			'beacon',
-			'settings_page_subscriber',
-			'deactivation_intent_subscriber',
-			'hummingbird_subscriber',
-			'rocketcdn_admin_subscriber',
-			'rocketcdn_notices_subscriber',
-			'rocketcdn_data_manager_subscriber',
-			'critical_css_admin_subscriber',
-			'health_check',
-			'minify_css_admin_subscriber',
-			'admin_cache_subscriber',
-			'google_fonts_admin_subscriber',
-			'image_dimensions_admin_subscriber',
-			'defer_js_admin_subscriber',
-			'lazyload_admin_subscriber',
-			'preload_admin_subscriber',
-			'minify_admin_subscriber',
-			'action_scheduler_check',
-			'actionscheduler_admin_subscriber',
-			'domain_change_subscriber',
-			'lazyload_css_admin_subscriber',
-			'post_edit_options_subscriber',
-			'preconnect_external_domains_admin_subscriber',
-			'media_fonts_admin_subscriber',
-			'preload_fonts_admin_subscriber',
-		// Conditionally add tracking_subscriber only if cURL is available.
-		// to prevent fatal errors from MixPanel dependency.
-		array_merge(
+		return array_merge(
 			[
 				'beacon',
 				'settings_page_subscriber',
