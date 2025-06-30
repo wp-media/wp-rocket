@@ -134,12 +134,12 @@ class Combine extends AbstractGFOptimization {
 				$font_family = rtrim( $font_family, '%7C' );
 				$font_family = rtrim( $font_family, '|' );
 				// Add font to the collection.
-				$fonts_array[] = rawurlencode( htmlentities( $font_family ) );
+				$fonts_array[] = rawurlencode( $font_family );
 			}
 
 			// Add subset to collection.
 			if ( isset( $font['subset'] ) ) {
-				$subsets_array[] = rawurlencode( htmlentities( $font['subset'] ) );
+				$subsets_array[] = rawurlencode( $font['subset'] );
 			}
 		}
 
