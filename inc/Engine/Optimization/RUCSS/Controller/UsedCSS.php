@@ -384,9 +384,12 @@ class UsedCSS {
 		}
 
 		// Remove locally hosted google fonts.
-		$items = array_filter( $items, function( $item ) {
-			return ! isset( $item['data-wpr-hosted-gf-parameters'] );
-		} );
+		$items = array_filter(
+			$items,
+			function ( $item ) {
+				return ! isset( $item['data-wpr-hosted-gf-parameters'] );
+			}
+			);
 
 		$items[] = $this->style_tag(
 			$this->get_used_css_markup( $used_css ),

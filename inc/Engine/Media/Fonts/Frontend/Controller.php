@@ -407,7 +407,7 @@ class Controller {
 
 			if ( $this->is_host_fonts_inline_css() ) {
 				$items[] = $this->get_font_styles_by_url( $item['href'], $gf_parameters );
-				unset( $items[$key] );
+				unset( $items[ $key ] );
 				continue;
 			}
 
