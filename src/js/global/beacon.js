@@ -45,6 +45,11 @@ $(document).ready(function(){
                 return;
             }
             
+            // Identify user with hashed license email if available
+            if (rocket_mixpanel_data.user_id && typeof mixpanel.identify === 'function') {
+                mixpanel.identify(rocket_mixpanel_data.user_id);
+            }
+            
             mixpanel.track('WPM Button Clicked', {
                 'button': button,
                 'brand': rocket_mixpanel_data.brand,

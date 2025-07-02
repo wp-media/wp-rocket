@@ -159,6 +159,10 @@ class Tracking extends Abstract_Render {
 			return;
 		}
 
+		// Get the license email and hash it for privacy.
+		$consumer_email = $this->options->get( 'consumer_email', '' );
+		$hashed_email   = ! empty( $consumer_email ) ? hash( 'sha256', $consumer_email ) : '';
+
 		wp_localize_script(
 			'wpr-admin-common',
 			'rocket_mixpanel_data',
@@ -168,6 +172,7 @@ class Tracking extends Abstract_Render {
 				'product'       => 'WP Rocket',
 				'context'       => 'wp_plugin',
 				'path'          => isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '',
+				'user_id'       => $hashed_email,
 			]
 		);
 	}
