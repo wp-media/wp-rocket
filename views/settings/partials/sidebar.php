@@ -1,6 +1,10 @@
 <?php
 /**
- * Sidebar template.
+<h3 class="wpr-Sidebar-title wpr-title2"><?php esc_html_e( 'How to correctly measure your website's loading time', 'rocket' ); ?></h3>
+<div class="wpr-Sidebar-notice">
+	<p><?php esc_html_e( 'Check our tutorial and learn how to measure the speed of your site.', 'rocket' ); ?></p>
+	<a href="<?php echo esc_url( 'https://wp-rocket.me/blog/how-to-test-wordpress-site-performance-measure-speed-results/?utm_source=wp_plugin&utm_medium=wp_rocket' ); ?>" target="_blank" rel="noopener" data-wpr_track_help="Loading Time Guide" data-wpr_track_context="Sidebar" class="wpr-Sidebar-notice-link"><?php esc_html_e( 'Read our guide', 'rocket' ); ?></a>
+</div>ebar template.
  *
  * @since 3.0
  */

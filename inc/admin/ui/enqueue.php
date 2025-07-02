@@ -57,7 +57,23 @@ add_action( 'admin_enqueue_scripts', 'rocket_add_admin_css_js_everywhere', 11 );
  * @author Remy Perona
  */
 function rocket_add_mixpanel_code() {
-	if ( rocket_send_analytics_data() ) {
+	$should_load_mixpanel = false;
+
+	// Check old analytics system.
+	if ( get_rocket_option( 'analytics_enabled' ) && current_user_can( 'rocket_manage_options' ) ) {
+		$should_load_mixpanel = true;
+	}
+
+	// Also check new opt-in system if available.
+	if ( ! $should_load_mixpanel ) {
+		// Check the mixpanel optin option directly.
+		$optin_enabled = get_option( 'wp_rocket_mixpanel_optin', false );
+		if ( $optin_enabled && current_user_can( 'rocket_manage_options' ) ) {
+			$should_load_mixpanel = true;
+		}
+	}
+
+	if ( $should_load_mixpanel ) {
 		?>
 	<!-- start Mixpanel --><script type="text/javascript">(function(e,a){if(!a.__SV){var b=window;try{var c,l,i,j=b.location,g=j.hash;c=function(a,b){return(l=a.match(RegExp(b+"=([^&]*)")))?l[1]:null};g&&c(g,"state")&&(i=JSON.parse(decodeURIComponent(c(g,"state"))),"mpeditor"===i.action&&(b.sessionStorage.setItem("_mpcehash",g),history.replaceState(i.desiredHash||"",e.title,j.pathname+j.search)))}catch(m){}var k,h;window.mixpanel=a;a._i=[];a.init=function(b,c,f){function e(b,a){var c=a.split(".");2==c.length&&(b=b[c[0]],a=c[1]);b[a]=function(){b.push([a].concat(Array.prototype.slice.call(arguments,
 0)))}}var d=a;"undefined"!==typeof f?d=a[f]=[]:f="mixpanel";d.people=d.people||[];d.toString=function(b){var a="mixpanel";"mixpanel"!==f&&(a+="."+f);b||(a+=" (stub)");return a};d.people.toString=function(){return d.toString(1)+".people (stub)"};k="disable time_event track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config reset people.set people.set_once people.increment people.append people.union people.track_charge people.clear_charges people.delete_user".split(" ");

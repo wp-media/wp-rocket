@@ -33,6 +33,7 @@ class Subscriber implements Subscriber_Interface {
 			'wp_rocket_upgrade'                   => [ 'migrate_optin', 10, 2 ],
 			'rocket_dashboard_after_account_data' => [ 'render_optin', 9 ],
 			'wp_ajax_rocket_toggle_optin'         => [ 'ajax_toggle_optin' ],
+			'admin_enqueue_scripts'               => [ 'localize_optin_status', 15 ],
 		];
 	}
 
@@ -76,5 +77,14 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function ajax_toggle_optin(): void {
 		$this->tracking->ajax_toggle_optin();
+	}
+
+	/**
+	 * Localize opt-in status to JavaScript.
+	 *
+	 * @return void
+	 */
+	public function localize_optin_status(): void {
+		$this->tracking->localize_optin_status();
 	}
 }

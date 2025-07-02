@@ -7,6 +7,13 @@ $(document).ready(function(){
         var $help = $('.wpr-infoAction--help');
         $help.on('click', function(e){
             var ids = $(this).data('beacon-id');
+            var button = $(this).data('wpr_track_button') || 'Beacon Help';
+            var context = $(this).data('wpr_track_context') || 'Settings';
+            
+            // Track with MixPanel JS SDK
+            wprTrackHelpButton(button, context);
+            
+            // Continue with existing beacon functionality
             wprCallBeacon(ids);
             return false;
         });
@@ -29,4 +36,25 @@ $(document).ready(function(){
 
         }
     }
+    
+    // MixPanel tracking function
+    function wprTrackHelpButton(button, context) {
+        if (typeof mixpanel !== 'undefined' && mixpanel.track) {
+            // Check if user has opted in using localized data
+            if (typeof rocket_mixpanel_data === 'undefined' || !rocket_mixpanel_data.optin_enabled || rocket_mixpanel_data.optin_enabled === '0') {
+                return;
+            }
+            
+            mixpanel.track('WPM Button Clicked', {
+                'button': button,
+                'brand': rocket_mixpanel_data.brand,
+                'product': rocket_mixpanel_data.product,
+                'context': context,
+                'path': rocket_mixpanel_data.path
+            });
+        }
+    }
+    
+    // Make function globally available
+    window.wprTrackHelpButton = wprTrackHelpButton;
 });

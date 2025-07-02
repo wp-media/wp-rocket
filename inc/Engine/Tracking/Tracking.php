@@ -148,4 +148,27 @@ class Tracking extends Abstract_Render {
 
 		wp_send_json_error( 'Invalid value parameter.' );
 	}
+
+	/**
+	 * Add opt-in status to admin scripts.
+	 *
+	 * @return void
+	 */
+	public function localize_optin_status(): void {
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			return;
+		}
+
+		wp_localize_script(
+			'wpr-admin-common',
+			'rocket_mixpanel_data',
+			[
+				'optin_enabled' => $this->optin->is_enabled() ? true : false,
+				'brand'         => 'WP Media',
+				'product'       => 'WP Rocket',
+				'context'       => 'wp_plugin',
+				'path'          => isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '',
+			]
+		);
+	}
 }
