@@ -129,19 +129,6 @@ class Controller {
 	}
 
 	/**
-	 * Rewrite fonts for normal optimizations.
-	 *
-	 * @param string $html page HTML.
-	 * @return string
-	 */
-	public function rewrite_fonts_for_optimizations( $html ): string {
-		if ( ! $this->optimization_context->is_allowed() ) {
-			return $html;
-		}
-		return $this->rewrite_fonts( $html );
-	}
-
-	/**
 	 * Rewrite fonts for SaaS visits optimizations.
 	 *
 	 * @param string $html page HTML.
@@ -405,7 +392,7 @@ class Controller {
 		}
 
 		$exclusions = $this->get_exclusions();
-		foreach ( $items as &$item ) {
+		foreach ( $items as $key => &$item ) {
 			if ( empty( $item['href'] ) || ! $this->is_google_font_url( $item['href'] ) ) {
 				continue;
 			}
@@ -420,7 +407,7 @@ class Controller {
 
 			if ( $this->is_host_fonts_inline_css() ) {
 				$items[] = $this->get_font_styles_by_url( $item['href'], $gf_parameters );
-				unset( $item );
+				unset( $items[$key] );
 				continue;
 			}
 
