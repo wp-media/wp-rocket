@@ -173,7 +173,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @param string $attribute_value Attribute value.
 	 * @return string
 	 */
-	private function esc_attribute($attribute_name, $attribute_value ) {
+	private function esc_attribute( $attribute_name, $attribute_value ) {
 		if ( 'data-wpr-hosted-gf-parameters' === $attribute_name ) {
 			return $attribute_value;
 		}
