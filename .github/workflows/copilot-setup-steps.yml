@@ -1,0 +1,49 @@
+name: Copilot Setup Steps
+
+on:
+  push:
+    branches:
+      - main
+      - test/*
+  pull_request:
+    branches:
+      - main
+      - test/*
+
+jobs:
+  setup-and-test:
+    name: Setup and Test WP Rocket
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Install PHP and Composer
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.1
+          extensions: mbstring, intl, curl, dom
+          tools: composer
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install Dependencies
+        run: |
+          composer install
+          npm install
+
+      - name: Run PHPCS
+        run: |
+          composer phpcs
+
+      - name: Run PHPStan
+        run: composer run-stan
+
+      - name: Run PHPUnit Tests
+        run: |
+          composer run-tests
+
