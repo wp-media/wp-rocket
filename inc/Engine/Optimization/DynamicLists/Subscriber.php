@@ -248,6 +248,6 @@ class Subscriber implements Subscriber_Interface {
 	 * @return array
 	 */
 	public function add_mixpanel_tracked_options( array $options ): array {
-		return array_merge( (array) $options, $this->dynamic_lists->get_mixpanel_tracked_options() );
+		return array_unique( array_merge( (array) $options, $this->dynamic_lists->get_mixpanel_tracked_options() ) );
 	}
 }
