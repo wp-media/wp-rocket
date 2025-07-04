@@ -1663,7 +1663,7 @@ parameters:
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 2
-			path: tests/Integration/inc/Engine/Tracking/TrackingWithDynamicLists.php
+			path: tests/Integration/inc/Engine/Tracking/Tracking/trackOptionChange.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
