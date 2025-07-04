@@ -4,6 +4,31 @@ This document provides comprehensive guidelines for developing code with GitHub 
 
 ---
 
+## What is WP Rocket?
+
+**WP Rocket** is a premium caching and performance optimization plugin for WordPress. Its goal is to improve website speed and Core Web Vitals by applying a variety of frontend and backend performance techniques, often with minimal user configuration.
+
+WP Rocket handles:
+
+- **Page caching** for faster load times
+- **Cache preloading** based on sitemaps and homepage crawling
+- **JavaScript and CSS optimization**, including:
+  - Minification
+  - Concatenation
+  - Removal of unused CSS (RUCSS)
+  - Delay of non-critical JS execution
+- **Image and media optimization**, including:
+  - Lazy loading of images and iframes
+  - Preloading of fonts
+  - Above-the-fold critical image prioritization
+- **CDN integration**, including Cloudflare and custom CDNs
+- **Database optimization tools**
+- **Multisite and mobile-specific caching support**
+
+Behind the scenes, it uses a **buffer-based output system**, integrates deeply with WordPress core APIs, and supports **container-based service injection** for modular, testable development.
+
+---
+
 ## Table of Contents
 
 1. [PHP Coding Standards](#1-php-coding-standards)
