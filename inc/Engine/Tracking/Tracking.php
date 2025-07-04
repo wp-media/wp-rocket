@@ -59,6 +59,14 @@ class Tracking extends Abstract_Render {
 			return;
 		}
 
+		/*
+		 * Filters the tracked options.
+		 *
+		 * @since 3.19.2
+		 *
+		 * @param string[] $options Array of options that are tracked by default.
+		 * @return string[] array of strings.
+		 */
 		$options_to_track = wpm_apply_filters_typed(
 			'string[]',
 			'rocket_mixpanel_tracked_options',
