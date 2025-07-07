@@ -129,6 +129,19 @@ class Controller {
 	}
 
 	/**
+	 * Rewrite fonts for normal optimizations.
+	 *
+	 * @param string $html page HTML.
+	 * @return string
+	 */
+	public function rewrite_fonts_for_optimizations( $html ): string {
+		if ( ! $this->optimization_context->is_allowed() ) {
+			return $html;
+		}
+		return $this->rewrite_fonts( $html );
+	}
+	
+	/**
 	 * Rewrite fonts for SaaS visits optimizations.
 	 *
 	 * @param string $html page HTML.
