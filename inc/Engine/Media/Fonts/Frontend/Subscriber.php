@@ -31,7 +31,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'rocket_buffer' => [ 'rewrite_fonts_for_optimizations', 18 ],
+			'rocket_buffer'                       => [ 'rewrite_fonts_for_optimizations', 18 ],
 			'rocket_disable_google_fonts_preload' => 'disable_google_fonts_preload',
 			'rocket_performance_hints_buffer'     => 'rewrite_fonts_for_saas',
 			'rocket_head_items'                   => [ 'rewrite_fonts_in_head', 1000 ],
@@ -47,7 +47,7 @@ class Subscriber implements Subscriber_Interface {
 	public function rewrite_fonts_for_optimizations( $html ): string {
 		return $this->frontend_controller->rewrite_fonts_for_optimizations( $html );
 	}
-	
+
 	/**
 	 * Rewrites the Google Fonts paths to local ones for SaaS.
 	 *

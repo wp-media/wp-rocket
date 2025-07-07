@@ -140,7 +140,7 @@ class Controller {
 		}
 		return $this->rewrite_fonts( $html );
 	}
-	
+
 	/**
 	 * Rewrite fonts for SaaS visits optimizations.
 	 *
