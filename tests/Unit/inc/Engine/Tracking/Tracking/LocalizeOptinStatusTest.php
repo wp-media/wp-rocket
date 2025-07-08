@@ -33,6 +33,13 @@ class LocalizeOptinStatusTest extends TestCase {
 			->with( $config['consumer_email'] )
 			->andReturnNull();
 
+		// Mock the hash method when consumer_email is not empty
+		if ( ! empty( $config['consumer_email'] ) ) {
+			$mixpanel->shouldReceive( 'hash' )
+				->with( $config['consumer_email'] )
+				->andReturn( hash( 'sha256', $config['consumer_email'] ) );
+		}
+
 		$tracking = new Tracking( $options, $optin, $mixpanel, '' );
 
 		Functions\when( 'current_user_can' )->justReturn( $config['user_can_manage'] );
