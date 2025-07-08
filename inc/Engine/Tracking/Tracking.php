@@ -162,7 +162,7 @@ class Tracking extends Abstract_Render {
 		// Get the license email and hash it for privacy.
 		$consumer_email = $this->options->get( 'consumer_email', '' );
 		$hashed_email   = ! empty( $consumer_email ) ? $this->mixpanel->hash( $consumer_email ) : '';
-		
+
 		wp_localize_script(
 			'wpr-admin-common',
 			'rocket_mixpanel_data',
