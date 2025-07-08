@@ -22,6 +22,7 @@ class PluginFamily implements PluginFamilyInterface {
 	public static function get_subscribed_events(): array {
 		$events                  = self::get_post_install_event();
 		$events['admin_notices'] = 'display_error_notice';
+		$events['enqueue_block_editor_assets'] = 'enqueue_assets';
 
 		return $events;
 	}
@@ -165,15 +166,6 @@ class PluginFamily implements PluginFamilyInterface {
 	 * @return string
 	 */
 	private function get_download_url(): string {
-
-		$slug = $this->get_slug();
-
-		$custom_download_url = $this->maybe_get_custom_download_url( $slug );
-
-		if ( false !== $custom_download_url ) {
-			return $custom_download_url;
-		}
-
 		$plugin_install = ABSPATH . 'wp-admin/includes/plugin-install.php';
 
 		if ( ! defined( 'ABSPATH' ) || ! file_exists( $plugin_install ) ) {
@@ -187,7 +179,7 @@ class PluginFamily implements PluginFamilyInterface {
 		require_once $plugin_install; // @phpstan-ignore-line
 
 		$data = [
-			'slug'   => $slug,
+			'slug'   => $this->get_slug(),
 			'fields' => [
 				'download_link'     => true,
 				'short_description' => false,
@@ -261,35 +253,17 @@ class PluginFamily implements PluginFamilyInterface {
 		exit;
 	}
 
-	/**
-	 * Returns a custom download url for plugin if exists.
-	 *
-	 * @param string $plugin_slug plugin slug.
-	 * @return string|bool
-	 */
-	private function maybe_get_custom_download_url( string $plugin_slug ) {
-		$parent_plugin_slug = $this->get_parent_plugin_slug();
-
-		$urls = [
-			'seo-by-rank-math' => 'https://rankmath.com/downloads/plugin-family/' . $parent_plugin_slug,
-		];
-
-		if ( ! isset( $urls[ $plugin_slug ] ) ) {
-			return false;
+	public function enqueue_assets() {
+		if ( wp_script_is( 'plugin-family-script' ) ) {
+			return;
 		}
 
-		return $urls[ $plugin_slug ];
-	}
+		$script_url = plugin_dir_url( dirname( __FILE__ ) ) . 'assets/js/index.js';
 
-	/**
-	 * Get parent plugin slug.
-	 *
-	 * @return string
-	 */
-	private function get_parent_plugin_slug(): string {
-		$plugin_path = plugin_basename( __FILE__ );
-		$chunks      = explode( '/', $plugin_path );
-
-		return $chunks[0];
+		wp_enqueue_script(
+			'plugin-family-script',
+			$script_url,
+			array( 'wp-plugins', 'wp-edit-post', 'wp-i18n', 'wp-element' )
+		);
 	}
 }

@@ -343,4 +343,8 @@ class Subscriber implements Subscriber_Interface, PluginFamilyInterface {
 	public function display_error_notice(): void {
 		$this->plugin_family->display_error_notice();
 	}
+
+	public function enqueue_assets(): void {
+		$this->plugin_family->enqueue_assets();
+	}
 }
