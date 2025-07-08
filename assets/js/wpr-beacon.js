@@ -667,9 +667,14 @@ CSS (first 200 chars): ${txt.substring(0, 200)}...`
         if (!stylesheetFonts[fontFamily]) {
           stylesheetFonts[fontFamily] = { urls: [], variations: /* @__PURE__ */ new Set() };
         }
-        const urls = src.match(/url\(['"]?([^'")]+)['"]?\)/g) || [];
-        urls.forEach((urlMatch) => {
-          let rawUrl = urlMatch.match(/url\(['"]?([^'")]+)['"]?\)/)[1];
+        const extractFirstUrlFromSrc = (srcValue) => {
+          if (!srcValue) return null;
+          const urlMatch = srcValue.match(/url\s*\(\s*(['"]?)(.+?)\1\s*\)/);
+          return urlMatch ? urlMatch[2] : null;
+        };
+        const firstUrl = extractFirstUrlFromSrc(src);
+        if (firstUrl) {
+          let rawUrl = firstUrl;
           if (baseHref) {
             rawUrl = new URL(rawUrl, baseHref).href;
           }
@@ -680,7 +685,7 @@ CSS (first 200 chars): ${txt.substring(0, 200)}...`
               JSON.stringify({ weight, style })
             );
           }
-        });
+        }
       };
       const processImportRule = async (rule) => {
         try {
@@ -900,9 +905,6 @@ CSS (first 200 chars): ${txt.substring(0, 200)}...`
                   break;
                 }
               }
-              if (!matchingUrl && aboveElements.length > 0 && data.urls.length > 0) {
-                matchingUrl = data.urls[0];
-              }
               if (matchingUrl) {
                 if (!allFonts[fontFamily]) {
                   allFonts[fontFamily] = {
@@ -937,9 +939,6 @@ CSS (first 200 chars): ${txt.substring(0, 200)}...`
                 }
               }
             });
-            if (!Object.prototype.hasOwnProperty.call(allFonts, fontFamily)) {
-              return;
-            }
             if (allFonts[fontFamily]) {
               hostedFontsResults[fontFamily] = {
                 variations: allFonts[fontFamily].variations,
