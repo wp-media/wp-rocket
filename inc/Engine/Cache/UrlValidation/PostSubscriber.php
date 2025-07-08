@@ -39,7 +39,7 @@ class PostSubscriber extends AbstractUrlValidation implements Subscriber_Interfa
 			return false;
 		}
 
-		$current_link = home_url( add_query_arg( [], $wp->request ?? '' ) );
+		$current_link = $this->get_current_url();
 		if ( is_paged() ) {
 			$post_link = trailingslashit( $post_link ) . 'page/' . get_query_var( 'paged' );
 		}
