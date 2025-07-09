@@ -70,10 +70,8 @@ class Tracking extends Abstract_Render {
 		$options_to_track = wpm_apply_filters_typed(
 			'string[]',
 			'rocket_mixpanel_tracked_options',
-			[
-				'auto_preload_fonts',
-			]
-			);
+			[]
+		);
 
 		foreach ( $options_to_track as $option_tracked ) {
 			if ( ! isset( $old_value[ $option_tracked ], $value[ $option_tracked ] ) ) {
