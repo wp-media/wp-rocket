@@ -32,8 +32,6 @@ class PostSubscriber extends AbstractUrlValidation implements Subscriber_Interfa
 			return false;
 		}
 
-		global $wp;
-
 		$post_link = get_permalink( $post_id );
 		if ( ! $post_link ) {
 			return false;
@@ -42,6 +40,10 @@ class PostSubscriber extends AbstractUrlValidation implements Subscriber_Interfa
 		$current_link = $this->get_current_url();
 		if ( is_paged() ) {
 			$post_link = trailingslashit( $post_link ) . 'page/' . get_query_var( 'paged' );
+		}
+
+		if ( urldecode( untrailingslashit( $current_link ) ) !== $post_link && ! empty( $_SERVER['REQUEST_URI'] ) ) {
+			$current_link = home_url( add_query_arg( [], wp_unslash( $_SERVER['REQUEST_URI'] ) ) );// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		}
 
 		return urldecode( untrailingslashit( $post_link ) ) !== urldecode( untrailingslashit( $current_link ) );
