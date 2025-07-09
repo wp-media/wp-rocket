@@ -59,13 +59,13 @@ add_action( 'admin_enqueue_scripts', 'rocket_add_admin_css_js_everywhere', 11 );
  */
 function rocket_add_mixpanel_code() {
 	_deprecated_function( __FUNCTION__, '3.19.2', 'WP_Rocket\Engine\Tracking\Tracking' );
-	
+
 	// This functionality has been moved to the new Tracking system.
-	// The Tracking class now handles Mixpanel script injection via the 
+	// The Tracking class now handles Mixpanel script injection via the
 	// inject_mixpanel_script() method.
 }
-// Remove the action hook - the new Tracking system handles this
-// add_action( 'admin_print_scripts', 'rocket_add_mixpanel_code' );
+// Remove the action hook - the new Tracking system handles this.
+
 
 /**
  * Add CSS & JS files for the Imagify installation call to action
