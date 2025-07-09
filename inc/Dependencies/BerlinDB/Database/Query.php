@@ -342,7 +342,7 @@ class Query extends Base {
 	 * @since 1.0.0
 	 *
 	 * @param string|array $query Array or URL query string of parameters.
-	 * * @param bool $use_cache Use DB cache or not. (custom parameter added by us!)
+	 * @param bool $use_cache Use DB cache or not. (custom parameter added by us!)
 	 * @return array|int List of items, or number of items when 'count' is passed as a query var.
 	 */
 	public function query( $query = array(), bool $use_cache = true ) {
