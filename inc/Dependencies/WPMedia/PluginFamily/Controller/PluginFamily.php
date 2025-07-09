@@ -8,6 +8,13 @@ namespace WP_Rocket\Dependencies\WPMedia\PluginFamily\Controller;
 class PluginFamily implements PluginFamilyInterface {
 
 	/**
+	 * Plugin family version.
+	 *
+	 * @var string
+	 */
+	private $version = '1.0.5';
+
+	/**
 	 * Error transient.
 	 *
 	 * @var string
@@ -301,7 +308,7 @@ class PluginFamily implements PluginFamilyInterface {
 			'plugin-family-script',
 			$script_url,
 			[ 'react-jsx-runtime', 'wp-block-editor', 'wp-components', 'wp-compose', 'wp-element', 'wp-hooks', 'wp-i18n', 'wp-primitives' ],
-			'1.0.5',
+			$this->version,
 			[
 				'in_footer' => true,
 			]
@@ -384,7 +391,7 @@ class PluginFamily implements PluginFamilyInterface {
 			'plugin-family-admin-script',
 			$script_url,
 			[ 'jquery' ], // jQuery as a dependency.
-			'1.0.5',
+			$this->version,
 			[
 				'in_footer' => true,
 			]
@@ -397,7 +404,7 @@ class PluginFamily implements PluginFamilyInterface {
 			'plugin-family-admin-style',
 			$style_url,
 			[],
-			'1.0.5'
+			$this->version
 		);
 	}
 
