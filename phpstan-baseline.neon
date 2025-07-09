@@ -1838,6 +1838,11 @@ parameters:
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
+			path: tests/Integration/inc/ThirdParty/Plugins/I18n/TranslatePress/adjustCurrentUrl.php
+
+		-
+			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			count: 1
 			path: tests/Integration/inc/ThirdParty/Plugins/I18n/TranslatePress/detectHomepage.php
 
 		-
