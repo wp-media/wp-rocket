@@ -77,7 +77,7 @@ class Query extends Base {
 	 * @since 1.0.0
 	 * @var   string
 	 */
-	protected $table_schema = '\\WP_Rocket\Dependencies\BerlinDB\\Database\\Schema';
+	protected $table_schema = '\\WP_Rocket\\Dependencies\\BerlinDB\\Database\\Schema';
 
 	/** Item ******************************************************************/
 
@@ -113,7 +113,7 @@ class Query extends Base {
 	 * @since 1.0.0
 	 * @var   mixed
 	 */
-	protected $item_shape = '\\WP_Rocket\Dependencies\BerlinDB\\Database\\Row';
+	protected $item_shape = '\\WP_Rocket\\Dependencies\\BerlinDB\\Database\\Row';
 
 	/** Cache *****************************************************************/
 
@@ -342,6 +342,7 @@ class Query extends Base {
 	 * @since 1.0.0
 	 *
 	 * @param string|array $query Array or URL query string of parameters.
+	 * * @param bool $use_cache Use DB cache or not. (custom parameter added by us!)
 	 * @return array|int List of items, or number of items when 'count' is passed as a query var.
 	 */
 	public function query( $query = array(), bool $use_cache = true ) {
@@ -857,6 +858,8 @@ class Query extends Base {
 	 *
 	 * @since 1.0.0
 	 *
+	 * @param bool $use_cache Use DB cache or not. (custom parameter added by us!)
+	 *
 	 * @return array|int List of items, or number of items when 'count' is passed as a query var.
 	 */
 	private function get_items( bool $use_cache = true ) {
@@ -895,8 +898,8 @@ class Query extends Base {
 				$cache_value = array(
 					'item_ids'    => $item_ids,
 					'found_items' => intval( $this->found_items ),
-				);			
-				
+				);
+
 				// Add value to the cache
 				$this->cache_add( $cache_key, $cache_value, $this->cache_group );
 
