@@ -1,0 +1,17 @@
+.pluginfamily-promote-imagify{
+    padding: 20px 20px 20px 60px;
+    border: 1px solid #007CBA;
+    border-radius: 6px;
+    margin: 20px 0;
+    background: url("../imgs/plus.png") no-repeat 20px 20px;
+}
+.pluginfamily-promote-imagify p{
+    font-size: 14px;
+    margin: 0 0 10px;
+}
+
+.pluginfamily-promote-imagify a{
+    font-weight: bold;
+    color: #000;
+    font-size: 14px;
+}
