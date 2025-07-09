@@ -317,7 +317,7 @@ class TranslatePress implements Subscriber_Interface {
 	public function adjust_current_url( $current_url ) {
 		$translatepress = \TRP_Translate_Press::get_trp_instance();
 		$converter      = $translatepress->get_component( 'url_converter' );
-		$language     = $converter->get_lang_from_url_string( $current_url );
+		$language       = $converter->get_lang_from_url_string( $current_url );
 
 		return str_replace( '#TRPLINKPROCESSED', '', $converter->get_url_for_language( $language, $current_url ) );
 	}
