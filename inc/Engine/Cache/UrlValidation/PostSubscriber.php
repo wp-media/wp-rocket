@@ -42,7 +42,7 @@ class PostSubscriber extends AbstractUrlValidation implements Subscriber_Interfa
 			$post_link = trailingslashit( $post_link ) . 'page/' . get_query_var( 'paged' );
 		}
 
-		if ( urldecode( untrailingslashit( $current_link ) ) !== $post_link && ! empty( $_SERVER['REQUEST_URI'] ) ) {
+		if ( urldecode( untrailingslashit( $current_link ) ) !== urldecode( untrailingslashit( $post_link ) ) && ! empty( $_SERVER['REQUEST_URI'] ) ) {
 			$current_link = home_url( add_query_arg( [], wp_unslash( $_SERVER['REQUEST_URI'] ) ) );// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		}
 
