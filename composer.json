@@ -48,7 +48,7 @@
 		"voku/simple_html_dom": "^4.8",
 		"wp-media/apply-filters-typed": "^1.0",
 		"wp-media/plugin-family": "^1.0",
-		"wp-media/wp-mixpanel": "dev-enhancement/adds-a-way-to-get-token-dynamicly"
+		"wp-media/wp-mixpanel": "dev-develop"
 	},
 	"require-dev": {
 		"php": "^7 || ^8",
