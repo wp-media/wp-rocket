@@ -368,7 +368,7 @@ class PluginFamily implements PluginFamilyInterface {
 				'nonce'            => wp_create_nonce( 'install-imagify-nonce' ),
 				'plugins_page_url' => admin_url( 'plugins.php' ),
 			]
-			);
+		);
 	}
 
 	/**
