@@ -46,8 +46,8 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_first_install_options' => 'on_install',
 			'wp_rocket_upgrade'            => [ 'on_update', 10, 2 ],
 			'rocket_head_items'            => [
-				[ 'insert_preload_fonts', 30 ],
-				[ 'insert_css_in_head', 50 ],
+				[ 'insert_preload_fonts', 1100 ],
+				[ 'insert_css_in_head', 1200 ],
 			],
 		];
 	}
