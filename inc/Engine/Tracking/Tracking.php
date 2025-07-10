@@ -200,8 +200,6 @@ for(h=0;h<k.length;h++)e(d,k[h]);a._i.push([b,c,f])};a.__SV=1.2;b=e.createElemen
 			'ip':false,
 			'property_blacklist': ['$initial_referrer', '$current_url', '$initial_referring_domain', '$referrer', '$referring_domain']
 		} );
-		mixpanel.track( 'WP Rocket', <?php echo wp_json_encode( $analytics_data ); ?> );
-		mixpanel.track( 'Settings Sidebar Display', localStorage.getItem('wpr-show-sidebar') );
 		</script><!-- end Mixpanel -->
 		<?php
 	}
