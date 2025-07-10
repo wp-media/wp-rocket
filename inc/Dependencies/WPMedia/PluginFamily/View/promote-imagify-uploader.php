@@ -7,11 +7,11 @@ defined( 'ABSPATH' ) || exit;
 			<?php
 			printf(
 				// translators: %1$is = Plugin Name.
-				esc_html__( '%1$s recommends you to optimize your images for even better website performance.', '%domain%' ),
+				esc_html__( '%1$s recommends you to optimize your images for even better website performance.', 'rocket' ),
 				'WP Rocket'
 			);
 			?>
 		</p>
-        <button id="pluginfamily_install_imagify"><?php esc_html_e( 'Install Imagify Plugin', '%domain%' ); ?></button>
+        <button id="pluginfamily_install_imagify"><?php esc_html_e( 'Install Imagify Plugin', 'rocket' ); ?></button>
 	</div>
 </script>

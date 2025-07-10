@@ -127,7 +127,8 @@
 				"wp-media/plugin-family"
 			]
 		},
-		"plugin_domain": "rocket"
+		"plugin_domain": "rocket",
+		"imagify_partner": "wp-rocket"
 	},
 	"scripts": {
 		"test-unit": "\"vendor/bin/phpunit\" --testsuite unit --colors=always --configuration tests/Unit/phpunit.xml.dist",

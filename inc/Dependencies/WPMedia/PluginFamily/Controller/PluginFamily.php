@@ -326,7 +326,7 @@ class PluginFamily implements PluginFamilyInterface {
 		check_ajax_referer( 'install-imagify-nonce' );
 
 		if ( ! current_user_can( is_multisite() ? 'manage_network_plugins' : 'install_plugins' ) ) {
-			wp_send_json_error( __( 'Not Allowed', '%domain%' ) );
+			wp_send_json_error( __( 'Not Allowed', 'rocket' ) );
 		}
 
 		if ( ! $this->is_imagify_installed() ) {
@@ -337,7 +337,19 @@ class PluginFamily implements PluginFamilyInterface {
 		if ( is_wp_error( $activated ) ) {
 			wp_send_json_error( $activated->get_error_message() );
 		}
-		wp_send_json_success( __( 'Imagify installed! Click here to start using it.', '%domain%' ) );
+
+		$this->set_imagify_partner( 'wp-rocket' );
+		wp_send_json_success( __( 'Imagify installed! Click here to start using it.', 'rocket' ) );
+	}
+
+	/**
+	 * Set the imagify plugin partner.
+	 *
+	 * @param string $plugin Current plugin.
+	 * @return void
+	 */
+	private function set_imagify_partner( $plugin ) {
+		update_option( 'imagifyp_id', $plugin, false );
 	}
 
 	/**
