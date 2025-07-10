@@ -405,7 +405,7 @@ class Controller {
 		}
 
 		$exclusions = $this->get_exclusions();
-		foreach ( $items as &$item ) {
+		foreach ( $items as $key => &$item ) {
 			if ( empty( $item['href'] ) || ! $this->is_google_font_url( $item['href'] ) ) {
 				continue;
 			}
@@ -420,7 +420,7 @@ class Controller {
 
 			if ( $this->is_host_fonts_inline_css() ) {
 				$items[] = $this->get_font_styles_by_url( $item['href'], $gf_parameters );
-				unset( $item );
+				unset( $items[ $key ] );
 				continue;
 			}
 
