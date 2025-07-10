@@ -133,7 +133,7 @@ class Subscriber implements Subscriber_Interface {
 				$attributes[] = $value;
 				continue;
 			}
-			$attributes[] = $key . '="' . esc_attr( $value ) . '"';
+			$attributes[] = $key . '="' . $this->esc_attribute( $key, $value ) . '"';
 		}
 
 		$attributes_html = ! empty( $attributes ) ? ' ' . implode( ' ', $attributes ) : '';
@@ -164,5 +164,20 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		return $filtered_buffer;
+	}
+
+	/**
+	 * Escape attribute value before printing it.
+	 *
+	 * @param string $attribute_name Attribute name.
+	 * @param string $attribute_value Attribute value.
+	 * @return string
+	 */
+	private function esc_attribute( $attribute_name, $attribute_value ) {
+		if ( 'data-wpr-hosted-gf-parameters' === $attribute_name ) {
+			return $attribute_value;
+		}
+
+		return esc_attr( $attribute_value );
 	}
 }

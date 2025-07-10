@@ -691,46 +691,162 @@ CSS (first 200 chars): ${txt.substring(0, 200)}...`
      * font-face rules, including their source URLs, font families, weights,
      * and styles. It returns an object containing the collected font data.
      * 
-     * @returns {Object} An object mapping font families to their respective
+     * @returns {Promise<Object>} An object mapping font families to their respective
      *                  URLs and variations.
      */
-    getFontFaceRules() {
+    async getFontFaceRules() {
       const stylesheetFonts = {};
-      Array.from(Array.from(document.styleSheets)).filter((sheet) => !sheet.href || new URL(sheet.href).origin === location.origin).forEach((sheet) => {
+      const processedUrls = /* @__PURE__ */ new Set();
+      const processFontFaceRule = (rule, baseHref = null) => {
+        const src = rule.style.getPropertyValue("src");
+        const fontFamily = rule.style.getPropertyValue("font-family").replace(/['"]/g, "").trim();
+        const weight = rule.style.getPropertyValue("font-weight") || "400";
+        const style = rule.style.getPropertyValue("font-style") || "normal";
+        if (!stylesheetFonts[fontFamily]) {
+          stylesheetFonts[fontFamily] = { urls: [], variations: /* @__PURE__ */ new Set() };
+        }
+        const extractFirstUrlFromSrc = (srcValue) => {
+          if (!srcValue) return null;
+          const urlMatch = srcValue.match(/url\s*\(\s*(['"]?)(.+?)\1\s*\)/);
+          return urlMatch ? urlMatch[2] : null;
+        };
+        const firstUrl = extractFirstUrlFromSrc(src);
+        if (firstUrl) {
+          let rawUrl = firstUrl;
+          if (baseHref) {
+            rawUrl = new URL(rawUrl, baseHref).href;
+          }
+          const normalized = this.cleanUrl(rawUrl);
+          if (!stylesheetFonts[fontFamily].urls.includes(normalized)) {
+            stylesheetFonts[fontFamily].urls.push(normalized);
+            stylesheetFonts[fontFamily].variations.add(
+              JSON.stringify({ weight, style })
+            );
+          }
+        }
+      };
+      const processImportRule = async (rule) => {
         try {
-          Array.from(sheet.cssRules || []).forEach((rule) => {
+          const importUrl = rule.href;
+          if (processedUrls.has(importUrl)) {
+            return;
+          }
+          processedUrls.add(importUrl);
+          const response = await fetch(importUrl, { mode: "cors" });
+          if (!response.ok) {
+            this.logger.logMessage(`Failed to fetch @import CSS: ${response.status}`);
+            return;
+          }
+          const cssText = await response.text();
+          const tempSheet = new CSSStyleSheet();
+          tempSheet.replaceSync(cssText);
+          Array.from(tempSheet.cssRules || []).forEach((importedRule) => {
+            if (importedRule instanceof CSSFontFaceRule) {
+              processFontFaceRule(importedRule, importUrl);
+            }
+          });
+        } catch (error) {
+          this.logger.logMessage(`Error processing @import rule: ${error.message}`);
+        }
+      };
+      const processSheet = async (sheet) => {
+        try {
+          const rules = Array.from(sheet.cssRules || []);
+          for (const rule of rules) {
             if (rule instanceof CSSFontFaceRule) {
-              const src = rule.style.getPropertyValue("src");
-              const fontFamily = rule.style.getPropertyValue("font-family").replace(/['"]+/g, "").trim();
-              const weight = rule.style.getPropertyValue("font-weight") || "400";
-              const style = rule.style.getPropertyValue("font-style") || "normal";
-              if (!stylesheetFonts[fontFamily]) {
-                stylesheetFonts[fontFamily] = {
-                  urls: [],
-                  variations: /* @__PURE__ */ new Set()
-                };
+              processFontFaceRule(rule, sheet.href);
+            } else if (rule instanceof CSSImportRule) {
+              if (rule.styleSheet) {
+                await processSheet(rule.styleSheet);
+              } else {
+                await processImportRule(rule);
               }
-              const urls = src.match(/url\(['"]?([^'"]+)['"]?\)/g) || [];
-              urls.forEach((urlMatch) => {
-                let rawUrl = urlMatch.match(/url\(['"]?([^'"]+)['"]?\)/)[1];
-                if (sheet.href) {
-                  rawUrl = new URL(rawUrl, sheet.href).href;
+            } else if (rule.styleSheet) {
+              await processSheet(rule.styleSheet);
+            }
+          }
+        } catch (e) {
+          if (e.name === "SecurityError" && sheet.href) {
+            if (processedUrls.has(sheet.href)) {
+              return;
+            }
+            processedUrls.add(sheet.href);
+            try {
+              const response = await fetch(sheet.href, { mode: "cors" });
+              if (response.ok) {
+                const cssText = await response.text();
+                const tempSheet = new CSSStyleSheet();
+                tempSheet.replaceSync(cssText);
+                Array.from(tempSheet.cssRules || []).forEach((rule) => {
+                  if (rule instanceof CSSFontFaceRule) {
+                    processFontFaceRule(rule, sheet.href);
+                  }
+                });
+                const importRegex = /@import\s+url\(['"]?([^'")]+)['"]?\);?/g;
+                let importMatch;
+                while ((importMatch = importRegex.exec(cssText)) !== null) {
+                  const importUrl = new URL(importMatch[1], sheet.href).href;
+                  if (processedUrls.has(importUrl)) {
+                    continue;
+                  }
+                  processedUrls.add(importUrl);
+                  try {
+                    const importResponse = await fetch(importUrl, { mode: "cors" });
+                    if (importResponse.ok) {
+                      const importCssText = await importResponse.text();
+                      const tempImportSheet = new CSSStyleSheet();
+                      tempImportSheet.replaceSync(importCssText);
+                      Array.from(tempImportSheet.cssRules || []).forEach((importedRule) => {
+                        if (importedRule instanceof CSSFontFaceRule) {
+                          processFontFaceRule(importedRule, importUrl);
+                        }
+                      });
+                    }
+                  } catch (importError) {
+                    this.logger.logMessage(`Error fetching @import ${importUrl}: ${importError.message}`);
+                  }
                 }
-                const normalizedUrl = this.cleanUrl(rawUrl);
-                if (!stylesheetFonts[fontFamily].urls.includes(normalizedUrl)) {
-                  stylesheetFonts[fontFamily].urls.push(normalizedUrl);
-                  stylesheetFonts[fontFamily].variations.add(JSON.stringify({
-                    weight,
-                    style
-                  }));
+              }
+            } catch (fetchError) {
+              this.logger.logMessage(`Error fetching stylesheet ${sheet.href}: ${fetchError.message}`);
+            }
+          } else {
+            this.logger.logMessage(`Error processing stylesheet: ${e.message}`);
+          }
+        }
+      };
+      const sheets = Array.from(document.styleSheets);
+      for (const sheet of sheets) {
+        await processSheet(sheet);
+      }
+      const inlineStyleElements = document.querySelectorAll("style");
+      for (const styleElement of inlineStyleElements) {
+        const cssText = styleElement.textContent || styleElement.innerHTML || "";
+        const importRegex = /@import\s+url\s*\(\s*['"]?([^'")]+)['"]?\s*\)\s*;?/g;
+        let importMatch;
+        while ((importMatch = importRegex.exec(cssText)) !== null) {
+          const importUrl = importMatch[1];
+          if (processedUrls.has(importUrl)) {
+            continue;
+          }
+          processedUrls.add(importUrl);
+          try {
+            const response = await fetch(importUrl, { mode: "cors" });
+            if (response.ok) {
+              const importCssText = await response.text();
+              const tempSheet = new CSSStyleSheet();
+              tempSheet.replaceSync(importCssText);
+              Array.from(tempSheet.cssRules || []).forEach((importedRule) => {
+                if (importedRule instanceof CSSFontFaceRule) {
+                  processFontFaceRule(importedRule, importUrl);
                 }
               });
             }
-          });
-        } catch (e) {
-          this.logger.logMessage(e);
+          } catch (importError) {
+            this.logger.logMessage(`Error fetching inline @import ${importUrl}: ${importError.message}`);
+          }
         }
-      });
+      }
       Object.values(stylesheetFonts).forEach((fontData) => {
         fontData.variations = Array.from(fontData.variations).map((v) => JSON.parse(v));
       });
@@ -762,7 +878,7 @@ CSS (first 200 chars): ${txt.substring(0, 200)}...`
       await document.fonts.ready;
       await this._initializeExternalFontSheets();
       const networkLoadedFonts = this.getNetworkLoadedFonts();
-      const stylesheetFonts = this.getFontFaceRules();
+      const stylesheetFonts = await this.getFontFaceRules();
       const hostedFonts = /* @__PURE__ */ new Map();
       const externalFontsResults = await this.processExternalFonts(this.externalParsedPairs);
       const elements = Array.from(document.getElementsByTagName("*")).filter((el) => this.isElementAboveFold(el));
@@ -861,9 +977,6 @@ CSS (first 200 chars): ${txt.substring(0, 200)}...`
                 }
               }
             });
-            if (!Object.prototype.hasOwnProperty.call(allFonts, fontFamily)) {
-              return;
-            }
             if (allFonts[fontFamily]) {
               hostedFontsResults[fontFamily] = {
                 variations: allFonts[fontFamily].variations,
@@ -876,7 +989,9 @@ CSS (first 200 chars): ${txt.substring(0, 200)}...`
       }
       if (Object.keys(externalFontsResults).length > 0) {
         Object.entries(externalFontsResults).forEach(([url, data]) => {
-          if (data.elementCount.aboveFold > 0) {
+          const aboveElements = Array.from(data.elements).filter((el) => this.isElementAboveFold(el));
+          const belowElements = Array.from(data.elements).filter((el) => !this.isElementAboveFold(el));
+          if (data.elementCount.aboveFold > 0 || aboveElements.length > 0) {
             data.variations.forEach((variation) => {
               if (!allFonts[variation.family]) {
                 allFonts[variation.family] = {
@@ -895,8 +1010,6 @@ CSS (first 200 chars): ${txt.substring(0, 200)}...`
                   }
                 };
               }
-              const aboveElements = Array.from(data.elements).filter((el) => this.isElementAboveFold(el));
-              const belowElements = Array.from(data.elements).filter((el) => !this.isElementAboveFold(el));
               allFonts[variation.family].variations.push({
                 weight: variation.weight,
                 style: variation.style,
