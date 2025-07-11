@@ -44,6 +44,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_plugins_to_deactivate'       => 'add_incompatible_plugins_to_deactivate',
 			'rocket_staging_list'                => 'add_staging_exclusions',
 			'rocket_lrc_exclusions'              => 'add_lrc_exclusions',
+			'rocket_mixpanel_tracked_options'    => 'add_mixpanel_tracked_options',
 			'wp_rocket_upgrade'                  => 'update_lists_from_files',
 			'rocket_before_rollback'             => 'maybe_update_lists',
 			'rocket_exclude_locally_host_fonts'  => 'add_media_fonts_exclusions',
@@ -237,5 +238,16 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function add_media_fonts_exclusions( array $exclusions ): array {
 		return array_merge( (array) $exclusions, $this->dynamic_lists->get_exclude_media_fonts() );
+	}
+
+	/**
+	 * Add the MixPanel tracked options to the array
+	 *
+	 * @param array $options Array of tracked options.
+	 *
+	 * @return array
+	 */
+	public function add_mixpanel_tracked_options( array $options ): array {
+		return array_unique( array_merge( (array) $options, $this->dynamic_lists->get_mixpanel_tracked_options() ) );
 	}
 }

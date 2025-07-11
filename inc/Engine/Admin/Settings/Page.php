@@ -315,7 +315,6 @@ class Page extends Abstract_Render {
 		}
 
 		$allowed = [
-			'analytics_enabled'           => 1,
 			'debug_enabled'               => 1,
 			'varnish_auto_purge'          => 1,
 			'do_cloudflare'               => 1,

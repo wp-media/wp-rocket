@@ -58,6 +58,7 @@ use WP_Rocket\Engine\Optimization\LazyRenderContent\ServiceProvider as LRCServic
 use WP_Rocket\Engine\Media\Fonts\ServiceProvider as MediaFontsServiceProvider;
 use WP_Rocket\Engine\Media\PreloadFonts\ServiceProvider as PreloadFontsServiceProvider;
 use WP_Rocket\Engine\Media\PreconnectExternalDomains\ServiceProvider as PreconnectExternalDomainsServiceProvider;
+use WP_Rocket\Engine\Tracking\ServiceProvider as TrackingServiceProvider;
 
 /**
  * Plugin Manager.
@@ -90,15 +91,6 @@ class Plugin {
 	 * @var bool
 	 */
 	private $is_valid_key;
-
-	/**
-	 * Instance of the Options.
-	 *
-	 * @since 3.6
-	 *
-	 * @var Options
-	 */
-	private $options_api;
 
 	/**
 	 * Instance of the Options_Data.
@@ -213,7 +205,7 @@ class Plugin {
 		$this->container->addServiceProvider( new DomainChangeServiceProvider() );
 		$this->container->addServiceProvider( new AdminLazyloadCSSServiceProvider() );
 
-		return [
+		$subscribers = [
 			'beacon',
 			'settings_page_subscriber',
 			'deactivation_intent_subscriber',
@@ -240,6 +232,16 @@ class Plugin {
 			'media_fonts_admin_subscriber',
 			'preload_fonts_admin_subscriber',
 		];
+
+		// Only add tracking service provider if cURL extension is loaded.
+		// MixPanel (used by TrackingServiceProvider) requires cURL and will throw a fatal error if not available.
+		// This prevents crashes when WP Rocket is installed on servers without cURL support.
+		if ( function_exists( 'curl_init' ) ) {
+			$this->container->addServiceProvider( new TrackingServiceProvider() );
+			$subscribers[] = 'tracking_subscriber';
+		}
+
+		return $subscribers;
 	}
 
 	/**
@@ -410,6 +412,7 @@ class Plugin {
 			'preload_fonts_frontend_subscriber',
 			'preload_fonts_admin_subscriber',
 			'preconnect_frontend_subscriber',
+			'post_subscriber',
 		];
 
 		$host_type = HostResolver::get_host_service();
