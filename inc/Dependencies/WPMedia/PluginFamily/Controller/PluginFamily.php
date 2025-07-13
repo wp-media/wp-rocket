@@ -173,6 +173,9 @@ class PluginFamily implements PluginFamilyInterface {
 		if ( 'imagify' === $slug ) {
 			return 'imagify/imagify.php';
 		}
+		if ( empty( $_GET['plugin_to_install'] ) ) {
+			return '';
+		}
 		return rawurldecode( sanitize_text_field( wp_unslash( $_GET['plugin_to_install'] ) ) ) . '.php'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotValidated
 	}
 
