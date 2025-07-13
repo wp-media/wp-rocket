@@ -173,7 +173,7 @@ class PluginFamily implements PluginFamilyInterface {
 		if ( 'imagify' === $slug ) {
 			return 'imagify/imagify.php';
 		}
-		if ( empty( $_GET['plugin_to_install'] ) ) {
+		if ( empty( $_GET['plugin_to_install'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			return '';
 		}
 		return rawurldecode( sanitize_text_field( wp_unslash( $_GET['plugin_to_install'] ) ) ) . '.php'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotValidated
@@ -382,7 +382,7 @@ class PluginFamily implements PluginFamilyInterface {
 		];
 		wp_add_inline_script(
 			$script_id,
-			'window.wpmedia_pluginfamily = ' . wp_json_encode($data) . ';',
+			'window.wpmedia_pluginfamily = ' . wp_json_encode( $data ) . ';',
 			'before'
 		);
 	}
