@@ -372,14 +372,15 @@ class PluginFamily implements PluginFamilyInterface {
 	 * @return void
 	 */
 	private function add_install_imagify_localized_script( $script_id ) {
-		wp_localize_script(
+		$data = [
+			'ajax_url'         => admin_url( 'admin-ajax.php' ),
+			'nonce'            => wp_create_nonce( 'install-imagify-nonce' ),
+			'plugins_page_url' => admin_url( 'plugins.php' ),
+		];
+		wp_add_inline_script(
 			$script_id,
-			'wpmedia_pluginfamily',
-			[
-				'ajax_url'         => admin_url( 'admin-ajax.php' ),
-				'nonce'            => wp_create_nonce( 'install-imagify-nonce' ),
-				'plugins_page_url' => admin_url( 'plugins.php' ),
-			]
+			'window.wpmedia_pluginfamily = ' . wp_json_encode($data) . ';',
+			'before'
 		);
 	}
 
