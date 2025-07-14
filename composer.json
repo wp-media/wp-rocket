@@ -47,7 +47,7 @@
 		"composer/installers": "^1.0 || ^2.0",
 		"voku/simple_html_dom": "^4.8",
 		"wp-media/apply-filters-typed": "^1.0",
-		"wp-media/plugin-family": "^1.0",
+		"wp-media/plugin-family": "v1.0.5",
 		"wp-media/wp-mixpanel": "^1.0"
 	},
 	"require-dev": {
@@ -127,7 +127,8 @@
 				"wp-media/plugin-family"
 			]
 		},
-		"plugin_domain": "rocket"
+		"plugin_domain": "rocket",
+		"imagify_partner": "wp-rocket"
 	},
 	"scripts": {
 		"test-unit": "\"vendor/bin/phpunit\" --testsuite unit --colors=always --configuration tests/Unit/phpunit.xml.dist",
