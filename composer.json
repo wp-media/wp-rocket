@@ -58,7 +58,7 @@
 		"league/container": "^4.2",
 		"mikey179/vfsstream": "1.6.11",
 		"mnsami/composer-custom-directory-installer": "^2.0",
-		"mobiledetect/mobiledetectlib": "^2.8 || ^3.74 || ^4.8",
+		"mobiledetect/mobiledetectlib": "^2.8",
 		"php-stubs/wordpress-tests-stubs": "^6.8",
 		"phpcompatibility/phpcompatibility-wp": "^2.0",
 		"phpstan/extension-installer": "^1.3",
