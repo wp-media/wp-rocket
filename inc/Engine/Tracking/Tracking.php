@@ -194,16 +194,6 @@ class Tracking extends Abstract_Render {
 	 * @return void
 	 */
 	public function inject_mixpanel_script(): void {
-		$screen = get_current_screen();
-
-		if (
-			isset( $screen->id )
-			&&
-			'settings_page_wprocket' !== $screen->id
-		) {
-			return;
-		}
-
 		// Only inject if user has capability and opt-in is enabled.
 		if ( ! current_user_can( 'rocket_manage_options' ) || ! $this->optin->is_enabled() ) {
 			return;
