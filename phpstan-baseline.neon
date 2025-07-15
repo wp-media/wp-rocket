@@ -196,6 +196,26 @@ parameters:
 			path: inc/Engine/Common/Clock/WPRClock.php
 
 		-
+			message: "#^Expression in empty\\(\\) is not falsy\\.$#"
+			count: 1
+			path: inc/Engine/Common/Database/Queries/AbstractQuery.php
+
+		-
+			message: "#^Method WP_Rocket\\\\Dependencies\\\\BerlinDB\\\\Database\\\\Query\\:\\:query\\(\\) invoked with 2 parameters, 0\\-1 required\\.$#"
+			count: 1
+			path: inc/Engine/Common/Database/Queries/AbstractQuery.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: inc/Engine/Common/Database/Queries/AbstractQuery.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 3
+			path: inc/Engine/Common/Database/Tables/AbstractTable.php
+
+		-
 			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: inc/Engine/Common/Database/Tables/AbstractTable.php
@@ -214,6 +234,16 @@ parameters:
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: inc/Engine/Common/JobManager/APIHandler/APIClient.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: inc/Engine/Common/PerformanceHints/Database/Queries/AbstractQueries.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: inc/Engine/Common/PerformanceHints/Database/Table/AbstractTable.php
 
 		-
 			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
@@ -301,6 +331,11 @@ parameters:
 			path: inc/Engine/Media/AboveTheFold/Context/Context.php
 
 		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: inc/Engine/Media/AboveTheFold/Database/Queries/AboveTheFold.php
+
+		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
 			path: inc/Engine/Media/AboveTheFold/Frontend/Controller.php
@@ -334,6 +369,16 @@ parameters:
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 9
 			path: inc/Engine/Media/Lazyload/Subscriber.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: inc/Engine/Media/PreconnectExternalDomains/Database/Queries/PreconnectExternalDomains.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: inc/Engine/Media/PreloadFonts/Database/Queries/PreloadFonts.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
@@ -406,6 +451,11 @@ parameters:
 			path: inc/Engine/Optimization/LazyRenderContent/Context/Context.php
 
 		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: inc/Engine/Optimization/LazyRenderContent/Database/Queries/LazyRenderContent.php
+
+		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 2
 			path: inc/Engine/Optimization/Minify/AbstractMinifySubscriber.php
@@ -471,6 +521,11 @@ parameters:
 			path: inc/Engine/Optimization/RUCSS/Controller/UsedCSS.php
 
 		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: inc/Engine/Optimization/RUCSS/Database/Queries/UsedCSS.php
+
+		-
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 2
 			path: inc/Engine/Optimization/RUCSS/Frontend/Subscriber.php
@@ -518,6 +573,16 @@ parameters:
 		-
 			message: "#^Hooks should not be used in ORM classes\\: WP_Rocket\\\\Engine\\\\Preload\\\\Database\\\\Queries\\\\Cache\\:\\:apply_filters$#"
 			count: 4
+			path: inc/Engine/Preload/Database/Queries/Cache.php
+
+		-
+			message: "#^Method WP_Rocket\\\\Dependencies\\\\BerlinDB\\\\Database\\\\Query\\:\\:query\\(\\) invoked with 2 parameters, 0\\-1 required\\.$#"
+			count: 4
+			path: inc/Engine/Preload/Database/Queries/Cache.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 6
 			path: inc/Engine/Preload/Database/Queries/Cache.php
 
 		-
@@ -1508,6 +1573,11 @@ parameters:
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
+			path: tests/Integration/inc/Engine/Optimization/DynamicLists/Subscriber/addMixpanelTrackedOptions.php
+
+		-
+			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			count: 1
 			path: tests/Integration/inc/Engine/Optimization/DynamicLists/Subscriber/addMoveAfterCombineJs.php
 
 		-
@@ -1654,6 +1724,11 @@ parameters:
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/Preload/Links/AdminSubscriber/addOption.php
+
+		-
+			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			count: 2
+			path: tests/Integration/inc/Engine/Tracking/Tracking/trackOptionChange.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
@@ -1834,6 +1909,11 @@ parameters:
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/ThirdParty/Plugins/Ecommerce/WooCommerceSubscriber/showNotemptyProductGalleryWithDelayJS.php
+
+		-
+			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/ThirdParty/Plugins/I18n/TranslatePress/adjustCurrentUrl.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
