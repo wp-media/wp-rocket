@@ -4739,7 +4739,7 @@ msgstr "Vider et précharger les fichiers de cache."
 
 #: views/settings/page-sections/dashboard.php:143
 msgid "Clear all the cache files."
-msgstr "Vider les fichiers de cache."
+msgstr "Vider tous les fichiers de cache."
 
 #: views/settings/page-sections/dashboard.php:149
 msgid "Clear and preload"
