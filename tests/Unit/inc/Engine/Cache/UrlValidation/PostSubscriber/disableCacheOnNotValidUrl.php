@@ -24,6 +24,12 @@ class TestDisableCacheOnNotValidUrl extends TestCase {
 		$this->subscriber = new PostSubscriber();
 	}
 
+	protected function tearDown(): void {
+		unset( $_SERVER['REQUEST_URI'] );
+
+		parent::tearDown();
+	}
+
 	/**
 	 * @dataProvider configTestData
 	 */
@@ -33,7 +39,28 @@ class TestDisableCacheOnNotValidUrl extends TestCase {
 
 		Functions\when( 'get_permalink' )->justReturn( $config['current_post_link'] ?? '' );
 		Functions\when( 'add_query_arg' )->justReturn( '' );
-		Functions\when( 'home_url' )->justReturn( $config['current_page_url'] ?? '' );
+
+		if ( isset( $config['request_uri'] ) ) {
+			$_SERVER['REQUEST_URI'] = $config['request_uri'];
+			Functions\when( 'wp_unslash' )->justReturn( $config['request_uri'] );
+		}
+
+		$condition = isset( $config['current_page_url'] ) && isset( $config['current_post_id']) && $config['current_post_id'] !== 0;
+
+		switch ($condition) {
+			case true:
+				Functions\expect( 'home_url' )
+					->times( isset( $config['request_uri'] ) ? 2 : 1 )
+					->andReturn( 
+						$config['current_page_url'],
+						$config['second_current_page_url'] ?? ''
+					);
+				break;
+			case false:
+				Functions\expect( 'home_url' )->never();
+				break;
+		}
+
 		Functions\when( 'is_paged' )->justReturn( ! empty( $config['page'] ) );
 		Functions\when( 'get_query_var' )->justReturn( $config['page'] ?? 0 );
 
