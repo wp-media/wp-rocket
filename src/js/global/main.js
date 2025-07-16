@@ -52,8 +52,59 @@ $(document).ready(function(){
 		} ).trigger( 'change' );
 	} );
 
+	/***
+	* Help Button Tracking
+	***/
+	
+	// Track clicks on various help elements with data attributes
+	$(document).on('click', '[data-wpr_track_help]', function(e) {
+		if (typeof window.wprTrackHelpButton === 'function') {
+			var $el = $(this);
+			var button = $el.data('wpr_track_help');
+			var context = $el.data('wpr_track_context') || '';
+			
+			window.wprTrackHelpButton(button, context);
+		}
+	});
 
+	// Track specific help resource clicks with explicit selectors
+	$(document).on('click', '.wistia_embed', function() {
+		if (typeof window.wprTrackHelpButton === 'function') {
+			var title = $(this).text() || 'Getting Started Video';
+			window.wprTrackHelpButton(title, 'Getting Started');
+		}
+	});
 
+	// Track FAQ links 
+	$(document).on('click', 'a[data-beacon-article]', function() {
+		if (typeof window.wprTrackHelpButton === 'function') {
+			var href = $(this).attr('href');
+			var text = $(this).text();
+			
+			// Check if it's in FAQ section or sidebar documentation
+			if ($(this).closest('.wpr-fieldsContainer-fieldset').prev('.wpr-optionHeader').find('.wpr-title2').text().includes('Frequently Asked Questions')) {
+				window.wprTrackHelpButton('FAQ - ' + text, 'Dashboard');
+			} else if ($(this).closest('.wpr-documentation').length > 0) {
+				window.wprTrackHelpButton('Documentation', 'Sidebar');
+			} else {
+				window.wprTrackHelpButton('Documentation Link', 'General');
+			}
+		}
+	});
+	
+	// Track "How to measure loading time" link
+	$(document).on('click', 'a[href*="how-to-test-wordpress-site-performance"]', function() {
+		if (typeof window.wprTrackHelpButton === 'function') {
+			window.wprTrackHelpButton('Loading Time Guide', 'Sidebar');
+		}
+	});
+
+	// Track "Need help?" links (existing help buttons)
+	$(document).on('click', '.wpr-infoAction--help:not([data-beacon-id])', function() {
+		if (typeof window.wprTrackHelpButton === 'function') {
+			window.wprTrackHelpButton('Need Help', 'General');
+		}
+	});
 
 
 	/***
