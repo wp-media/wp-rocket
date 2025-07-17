@@ -119,28 +119,8 @@ $rocket_manual_preload = (bool) get_rocket_option( 'manual_preload', false );
 					</div>
 				</div>
 			</div>
-			<?php endif; ?>
-			<div class="wpr-fieldsContainer">
-				<fieldset class="wpr-fieldsContainer-fieldset">
-					<div class="wpr-field wpr-field--radio">
-						<div class="wpr-radio">
-							<input type="checkbox" id="analytics_enabled" class="" name="wp_rocket_settings[analytics_enabled]" value="1" <?php checked( get_rocket_option( 'analytics_enabled', 0 ), 1 ); ?>>
-							<label for="analytics_enabled" class="">
-								<span data-l10n-active="On"
-									data-l10n-inactive="Off" class="wpr-radio-ui"></span>
-								<?php esc_html_e( 'Rocket Analytics', 'rocket' ); ?>
-							</label>
-						</div>
-						<div class="wpr-field-description">
-							<?php
-							// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-							printf( esc_html__( 'I agree to share anonymous data with the development team to help improve WP Rocket. %1$sWhat info will we collect?%2$s', 'rocket' ), '<button class="wpr-js-popin">', '</button>' );
-							?>
-						</div>
-					</div>
-				</fieldset>
-			</div>
-			<?php
+				<?php
+			endif;
 			/**
 			 * Fires after the account data section on the WP Rocket settings dashboard
 			 *
@@ -159,8 +139,8 @@ $rocket_manual_preload = (bool) get_rocket_option( 'manual_preload', false );
 				<fieldset class="wpr-fieldsContainer-fieldset">
 					<?php if ( current_user_can( 'rocket_purge_cache' ) ) : ?>
 					<div class="wpr-field">
-						<h4 class="wpr-title3"><?php esc_html_e( 'Cache files', 'rocket' ); ?></h4>
-						<p><?php echo $rocket_manual_preload ? esc_html__( 'This action will clear and preload all the cache files.', 'rocket' ) : esc_html__( 'This action will clear all the cache files.', 'rocket' ); ?></p>
+						<h4 class="wpr-title3"><?php esc_html_e( 'Cache Files', 'rocket' ); ?></h4>
+						<p><?php echo $rocket_manual_preload ? esc_html__( 'Clear and preload all the cache files.', 'rocket' ) : esc_html__( 'Clear all the cache files.', 'rocket' ); ?></p>
 						<?php
 						$this->render_action_button(
 							'link',

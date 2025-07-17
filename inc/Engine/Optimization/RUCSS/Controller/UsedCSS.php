@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\Optimization\RUCSS\Controller;
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
+use WP_Rocket\Engine\Common\Head\ElementTrait;
 use WP_Rocket\Engine\Optimization\CSSTrait;
 use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\DataManager;
 use WP_Rocket\Engine\Optimization\RegexTrait;
@@ -16,6 +17,7 @@ class UsedCSS {
 	use RegexTrait;
 	use CSSTrait;
 	use CommentTrait;
+	use ElementTrait;
 
 	/**
 	 * UsedCss Query instance.
@@ -79,6 +81,20 @@ class UsedCSS {
 	 * @var Manager
 	 */
 	private $manager;
+
+	/**
+	 * Used CSS contents.
+	 *
+	 * @var string
+	 */
+	private $used_css_content = '';
+
+	/**
+	 * Preloaded font urls.
+	 *
+	 * @var array
+	 */
+	private $preloaded_fonts = [];
 
 	/**
 	 * Instantiate the class.
@@ -158,9 +174,10 @@ class UsedCSS {
 			return $html;
 		}
 
+		$this->used_css_content = $used_css_content;
+
 		$html = $this->remove_used_css_from_html( $clean_html, $html );
-		$html = $this->add_used_css_to_html( $html, $used_css_content );
-		$html = $this->add_used_fonts_preload( $html, $used_css_content );
+		$this->add_used_fonts_preload( $used_css_content );
 		$html = $this->remove_google_font_preconnect( $html );
 
 		if ( ! empty( $used_css->id ) ) {
@@ -354,26 +371,57 @@ class UsedCSS {
 	}
 
 	/**
-	 * Alter HTML string and add the used CSS style in <head> tag,
+	 * Add the used CSS style in <head> tag,
 	 *
-	 * @param string $html     HTML content.
-	 * @param string $used_css Used CSS content.
+	 * @param array $items Head items.
 	 *
-	 * @return string HTML content.
+	 * @return array Filtered head items.
 	 */
-	private function add_used_css_to_html( string $html, string $used_css ): string {
-		$replace = preg_replace(
-			'#</title>#iU',
-			'</title>' . $this->get_used_css_markup( $used_css ),
-			$html,
-			1
-		);
-
-		if ( null === $replace ) {
-			return $html;
+	public function add_used_css_to_html( array $items ): array {
+		$used_css = $this->get_used_css_content();
+		if ( empty( $used_css ) ) {
+			return $items;
 		}
 
-		return $replace;
+		// Remove locally hosted google fonts.
+		$items = array_filter(
+			$items,
+			function ( $item ) {
+				return ! isset( $item['data-wpr-hosted-gf-parameters'] );
+			}
+			);
+
+		$items[] = $this->style_tag(
+			$this->get_used_css_markup( $used_css ),
+			[
+				'id' => 'wpr-usedcss',
+			]
+		);
+		return $items;
+	}
+
+	/**
+	 * Insert preload fonts into page head.
+	 *
+	 * @param array $items Head elements.
+	 * @return mixed
+	 */
+	public function insert_preload_fonts( $items ) {
+		if ( ! $this->context->is_allowed() ) {
+			return $items;
+		}
+
+		foreach ( $this->preloaded_fonts as $font ) {
+			$items[] = $this->preload_link(
+				[
+					'href' => esc_url( $font ),
+					'as'   => 'font',
+					1      => 'crossorigin',
+				]
+			);
+		}
+
+		return $items;
 	}
 
 	/**
@@ -394,12 +442,7 @@ class UsedCSS {
 		$used_css = apply_filters( 'rocket_usedcss_content', $used_css );
 
 		$used_css = str_replace( '\\', '\\\\', $used_css );// Guard the backslashes before passing the content to preg_replace.
-		$used_css = $this->handle_charsets( $used_css, false );
-
-		return sprintf(
-			'<style id="wpr-usedcss">%s</style>',
-			$used_css
-		);
+		return $this->handle_charsets( $used_css, false );
 	}
 
 	/**
@@ -445,12 +488,11 @@ class UsedCSS {
 	/**
 	 * Add preload links for the fonts in the used CSS
 	 *
-	 * @param string $html HTML content.
 	 * @param string $used_css Used CSS content.
 	 *
-	 * @return string
+	 * @return void
 	 */
-	private function add_used_fonts_preload( string $html, string $used_css ): string {
+	private function add_used_fonts_preload( string $used_css ): void {
 		/**
 		 * Filters the fonts preload from the used CSS
 		 *
@@ -459,15 +501,15 @@ class UsedCSS {
 		 * @param bool $enable True to enable, false to disable.
 		 */
 		if ( ! apply_filters( 'rocket_enable_rucss_fonts_preload', true ) ) {
-			return $html;
+			return;
 		}
 
 		if ( ! preg_match_all( '/@font-face\s*{\s*(?<content>[^}]+)}/is', $used_css, $font_faces, PREG_SET_ORDER ) ) {
-			return $html;
+			return;
 		}
 
 		if ( empty( $font_faces ) ) {
-			return $html;
+			return;
 		}
 
 		/**
@@ -526,23 +568,10 @@ class UsedCSS {
 		}
 
 		if ( empty( $urls ) ) {
-			return $html;
+			return;
 		}
 
-		$urls = array_unique( $urls );
-
-		$replace = preg_replace(
-			'#</title>#iU',
-			'</title>' . $this->preload_links( $urls ),
-			$html,
-			1
-		);
-
-		if ( null === $replace ) {
-			return $html;
-		}
-
-		return $replace;
+		$this->preloaded_fonts = array_unique( $urls );
 	}
 
 	/**
@@ -608,23 +637,6 @@ class UsedCSS {
 		}
 
 		return '';
-	}
-
-	/**
-	 * Converts an array of URLs to preload link tags
-	 *
-	 * @param array $urls An array of URLs.
-	 *
-	 * @return string
-	 */
-	private function preload_links( array $urls ): string {
-		$links = '';
-
-		foreach ( $urls as $url ) {
-			$links .= '<link rel="preload" data-rocket-preload as="font" href="' . esc_url( $url ) . '" crossorigin>';
-		}
-
-		return $links;
 	}
 
 	/**
@@ -694,5 +706,17 @@ class UsedCSS {
 	 */
 	public function has_one_completed_row_at_least() {
 		return $this->used_css_query->get_completed_count() > 0;
+	}
+
+	/**
+	 * Get generated used CSS, getter method for used_css_content property.
+	 *
+	 * @return string
+	 */
+	public function get_used_css_content() {
+		if ( ! $this->context->is_allowed() ) {
+			return '';
+		}
+		return $this->used_css_content;
 	}
 }

@@ -196,6 +196,26 @@ parameters:
 			path: inc/Engine/Common/Clock/WPRClock.php
 
 		-
+			message: "#^Expression in empty\\(\\) is not falsy\\.$#"
+			count: 1
+			path: inc/Engine/Common/Database/Queries/AbstractQuery.php
+
+		-
+			message: "#^Method WP_Rocket\\\\Dependencies\\\\BerlinDB\\\\Database\\\\Query\\:\\:query\\(\\) invoked with 2 parameters, 0\\-1 required\\.$#"
+			count: 1
+			path: inc/Engine/Common/Database/Queries/AbstractQuery.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: inc/Engine/Common/Database/Queries/AbstractQuery.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 3
+			path: inc/Engine/Common/Database/Tables/AbstractTable.php
+
+		-
 			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: inc/Engine/Common/Database/Tables/AbstractTable.php
@@ -214,6 +234,16 @@ parameters:
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: inc/Engine/Common/JobManager/APIHandler/APIClient.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: inc/Engine/Common/PerformanceHints/Database/Queries/AbstractQueries.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: inc/Engine/Common/PerformanceHints/Database/Table/AbstractTable.php
 
 		-
 			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
@@ -301,12 +331,7 @@ parameters:
 			path: inc/Engine/Media/AboveTheFold/Context/Context.php
 
 		-
-			message: "#^Hooks should not be used in ORM classes\\: WP_Rocket\\\\Engine\\\\Media\\\\AboveTheFold\\\\Database\\\\Queries\\\\AboveTheFold\\:\\:apply_filters$#"
-			count: 1
-			path: inc/Engine/Media/AboveTheFold/Database/Queries/AboveTheFold.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			message: "#^Negated boolean expression is always false\\.$#"
 			count: 1
 			path: inc/Engine/Media/AboveTheFold/Database/Queries/AboveTheFold.php
 
@@ -337,11 +362,6 @@ parameters:
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: inc/Engine/Media/Lazyload/CSS/ServiceProvider.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 3
 			path: inc/Engine/Media/Lazyload/CSS/Subscriber.php
 
@@ -349,6 +369,21 @@ parameters:
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 9
 			path: inc/Engine/Media/Lazyload/Subscriber.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: inc/Engine/Media/PreconnectExternalDomains/Database/Queries/PreconnectExternalDomains.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: inc/Engine/Media/PreloadFonts/Database/Queries/PreloadFonts.php
+
+		-
+			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			count: 1
+			path: inc/Engine/Media/PreloadFonts/Frontend/Controller.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
@@ -416,12 +451,7 @@ parameters:
 			path: inc/Engine/Optimization/LazyRenderContent/Context/Context.php
 
 		-
-			message: "#^Hooks should not be used in ORM classes\\: WP_Rocket\\\\Engine\\\\Optimization\\\\LazyRenderContent\\\\Database\\\\Queries\\\\LazyRenderContent\\:\\:apply_filters$#"
-			count: 1
-			path: inc/Engine/Optimization/LazyRenderContent/Database/Queries/LazyRenderContent.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			message: "#^Negated boolean expression is always false\\.$#"
 			count: 1
 			path: inc/Engine/Optimization/LazyRenderContent/Database/Queries/LazyRenderContent.php
 
@@ -491,6 +521,11 @@ parameters:
 			path: inc/Engine/Optimization/RUCSS/Controller/UsedCSS.php
 
 		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: inc/Engine/Optimization/RUCSS/Database/Queries/UsedCSS.php
+
+		-
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 2
 			path: inc/Engine/Optimization/RUCSS/Frontend/Subscriber.php
@@ -541,6 +576,16 @@ parameters:
 			path: inc/Engine/Preload/Database/Queries/Cache.php
 
 		-
+			message: "#^Method WP_Rocket\\\\Dependencies\\\\BerlinDB\\\\Database\\\\Query\\:\\:query\\(\\) invoked with 2 parameters, 0\\-1 required\\.$#"
+			count: 4
+			path: inc/Engine/Preload/Database/Queries/Cache.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 6
+			path: inc/Engine/Preload/Database/Queries/Cache.php
+
+		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 4
 			path: inc/Engine/Preload/Database/Queries/Cache.php
@@ -549,11 +594,6 @@ parameters:
 			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: inc/Engine/Preload/Database/Tables/Cache.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 2
-			path: inc/Engine/Preload/Fonts.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
@@ -742,27 +782,27 @@ parameters:
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 18
+			count: 24
 			path: tests/Integration/AjaxTestCase.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 18
+			count: 24
 			path: tests/Integration/ApiTestCase.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 18
+			count: 24
 			path: tests/Integration/FilesystemTestCase.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 18
+			count: 24
 			path: tests/Integration/RESTVfsTestCase.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 18
+			count: 24
 			path: tests/Integration/TestCase.php
 
 		-
@@ -907,7 +947,7 @@ parameters:
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 4
+			count: 3
 			path: tests/Integration/inc/Engine/Admin/Settings/Settings/sanitizeCallback.php
 
 		-
@@ -1371,6 +1411,26 @@ parameters:
 			path: tests/Integration/inc/Engine/Media/Lazyload/Subscriber/maybeDisableCoreLazyload.php
 
 		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Media/PreconnectExternalDomains/Admin/Subscriber/maybeClearDnsPrefetchValues.php
+
+		-
+			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			count: 25
+			path: tests/Integration/inc/Engine/Media/PreconnectExternalDomains/Admin/Subscriber/maybeClearPreconnectDomains.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Media/PreloadFonts/Admin/Subscriber/MaybeEnableAutoPreloadTest.php
+
+		-
+			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			count: 24
+			path: tests/Integration/inc/Engine/Media/PreloadFonts/Frontend/Subscriber/maybeRemoveExistingPreloadedFonts.php
+
+		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/Optimization/CacheDynamicResource/cacheDynamicResource.php
@@ -1513,6 +1573,11 @@ parameters:
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
+			path: tests/Integration/inc/Engine/Optimization/DynamicLists/Subscriber/addMixpanelTrackedOptions.php
+
+		-
+			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			count: 1
 			path: tests/Integration/inc/Engine/Optimization/DynamicLists/Subscriber/addMoveAfterCombineJs.php
 
 		-
@@ -1636,21 +1701,6 @@ parameters:
 			path: tests/Integration/inc/Engine/Optimization/RUCSS/Admin/Subscriber/updateSafelistItems.php
 
 		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Optimization/RUCSS/Frontend/Subscriber/maybeDisablePreloadFonts.php
-
-		-
-			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Optimization/RUCSS/Frontend/Subscriber/maybeDisablePreloadFonts.php
-
-		-
-			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Optimization/RUCSS/Frontend/Subscriber/maybeDisablePreloadFonts.php
-
-		-
 			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 2
 			path: tests/Integration/inc/Engine/Optimization/RUCSS/Frontend/Subscriber/onUpdate.php
@@ -1663,17 +1713,7 @@ parameters:
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
-			path: tests/Integration/inc/Engine/Optimization/RUCSS/Frontend/Subscriber/treeshake.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
 			path: tests/Integration/inc/Engine/Preload/Cron/Subscriber/processPendingUrls.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Preload/Fonts/preloadFonts.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
@@ -1684,6 +1724,11 @@ parameters:
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/Preload/Links/AdminSubscriber/addOption.php
+
+		-
+			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			count: 2
+			path: tests/Integration/inc/Engine/Tracking/Tracking/trackOptionChange.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
@@ -1864,6 +1909,11 @@ parameters:
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/ThirdParty/Plugins/Ecommerce/WooCommerceSubscriber/showNotemptyProductGalleryWithDelayJS.php
+
+		-
+			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/ThirdParty/Plugins/I18n/TranslatePress/adjustCurrentUrl.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
@@ -2184,11 +2234,6 @@ parameters:
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/functions/rocketIsPluginActive.php
-
-		-
-			message: "#^Path in include_once\\(\\) \"vfs\\://public/wp\\-content/plugins/wp\\-rocket/inc/classes/dependencies/mobiledetect/mobiledetectlib/Mobile_Detect\\.php\" is not a file or it does not exist\\.$#"
-			count: 1
-			path: tests/Integration/vfs:/public/wp-content/advanced-cache.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Media\Fonts\Frontend;
 
+use WP_Rocket\Engine\Common\Head\ElementTrait;
 use WP_Rocket\Engine\Media\Fonts\Context\OptimizationContext;
 use WP_Rocket\Engine\Media\Fonts\Context\SaasContext;
 use WP_Rocket\Engine\Media\Fonts\Filesystem;
@@ -13,6 +14,7 @@ use WP_Rocket\Engine\Media\Fonts\FontsTrait;
 class Controller {
 	use RegexTrait;
 	use FontsTrait;
+	use ElementTrait;
 
 	/**
 	 * Optimization Context instance.
@@ -202,14 +204,7 @@ class Controller {
 		$original_url  = html_entity_decode( $original_url, ENT_QUOTES );
 		$gf_parameters = wp_parse_url( $original_url, PHP_URL_QUERY );
 
-		/**
-		 * Filters to enable the inline css output.
-		 *
-		 * @since 3.18
-		 *
-		 * @param bool $enable Tells if we are enabling or not the inline css output.
-		 */
-		if ( wpm_apply_filters_typed( 'boolean', 'rocket_host_fonts_locally_inline_css', false ) ) {
+		if ( $this->is_host_fonts_inline_css() ) {
 			$local_css_path = $this->get_css_path( $hash, $font_provider );
 
 			$inline_css = $this->get_font_inline_css( $local_css_path, $gf_parameters );
@@ -227,6 +222,36 @@ class Controller {
 			$url,
 			$gf_parameters
 		);
+	}
+
+	/**
+	 * Check if we need to show local font styles as inline or not.
+	 *
+	 * @return bool
+	 */
+	private function is_host_fonts_inline_css() {
+		/**
+		 * Filters to enable the inline css output.
+		 *
+		 * @since 3.18
+		 *
+		 * @param bool $enable Tells if we are enabling or not the inline css output.
+		 */
+		return wpm_apply_filters_typed( 'boolean', 'rocket_host_fonts_locally_inline_css', false );
+	}
+
+	/**
+	 * Get optimized local url.
+	 *
+	 * @param string $hash Font url hash.
+	 * @param string $font_provider Font provider.
+	 * @return string
+	 */
+	private function get_optimized_url( string $hash, string $font_provider ) {
+		$font_provider_path = sprintf( '%s/', $font_provider );
+
+		// This filter is documented in inc/classes/optimization/css/class-abstract-css-optimization.php.
+		return wpm_apply_filters_typed( 'string', 'rocket_css_url', $this->base_url . $font_provider_path . 'css/' . $this->filesystem->hash_to_path( $hash ) . '.css' );
 	}
 
 	/**
@@ -307,5 +332,101 @@ class Controller {
 			$gf_parameters,
 			$content
 		);
+	}
+
+	/**
+	 * Get local font url using the external one.
+	 *
+	 * @param string $font_url Font url.
+	 * @param string $font_provider Font provider.
+	 * @return string
+	 */
+	private function get_font_local_url( string $font_url, string $font_provider = 'google-fonts' ): string {
+		$hash = md5( $font_url );
+
+		if ( $this->filesystem->exists( $this->get_css_path( $hash, $font_provider ) ) ) {
+			return $this->get_optimized_url( $hash, $font_provider );
+		}
+
+		if ( ! $this->filesystem->write_font_css( $font_url, $font_provider ) ) {
+			$this->error = true;
+
+			return '';
+		}
+
+		return $this->get_optimized_url( $hash, $font_provider );
+	}
+
+	/**
+	 * Is this a url of google font or not.
+	 *
+	 * @param string $url Font url to test.
+	 * @return bool
+	 */
+	private function is_google_font_url( string $url ): bool {
+		return ! empty( $this->find( '(?:https?:)?\/\/fonts\.googleapis\.com\/css.+', $url ) );
+	}
+
+	/**
+	 * Get font CSS styles as inline using font url.
+	 *
+	 * @param string $font_url Font url.
+	 * @param string $gf_parameters Google font query string.
+	 * @param string $font_provider Font provider.
+	 *
+	 * @return array|string[]
+	 */
+	private function get_font_styles_by_url( string $font_url, string $gf_parameters, string $font_provider = 'google-fonts' ) {
+		$hash           = md5( $font_url );
+		$local_css_path = $this->get_css_path( $hash, $font_provider );
+
+		$inline_css = $this->filesystem->get_file_content( $local_css_path );
+		if ( empty( $inline_css ) ) {
+			return [];
+		}
+
+		return $this->style_tag(
+			$inline_css,
+			[
+				'data-wpr-hosted-gf-parameters' => $gf_parameters,
+			]
+		);
+	}
+
+	/**
+	 * Rewrite fonts in head items.
+	 *
+	 * @param array $items Head items.
+	 * @return array
+	 */
+	public function rewrite_fonts_in_head( array $items ): array {
+		if ( ! $this->optimization_context->is_allowed() ) {
+			return $items;
+		}
+
+		$exclusions = $this->get_exclusions();
+		foreach ( $items as $key => &$item ) {
+			if ( empty( $item['href'] ) || ! $this->is_google_font_url( $item['href'] ) ) {
+				continue;
+			}
+
+			if ( $this->is_excluded( $item['href'], $exclusions ) ) {
+				continue;
+			}
+
+			$font_url       = html_entity_decode( $item['href'], ENT_QUOTES );
+			$gf_parameters  = wp_parse_url( $font_url, PHP_URL_QUERY );
+			$local_font_url = $this->get_font_local_url( $item['href'] );
+
+			if ( $this->is_host_fonts_inline_css() ) {
+				$items[] = $this->get_font_styles_by_url( $item['href'], $gf_parameters );
+				unset( $items[ $key ] );
+				continue;
+			}
+
+			$item['href']                          = $local_font_url;
+			$item['data-wpr-hosted-gf-parameters'] = $gf_parameters;
+		}
+		return $items;
 	}
 }

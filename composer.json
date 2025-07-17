@@ -47,7 +47,8 @@
 		"composer/installers": "^1.0 || ^2.0",
 		"voku/simple_html_dom": "^4.8",
 		"wp-media/apply-filters-typed": "^1.0",
-		"wp-media/plugin-family": "^1.0"
+		"wp-media/plugin-family": "v1.0.5",
+		"wp-media/wp-mixpanel": "^1.0"
 	},
 	"require-dev": {
 		"php": "^7 || ^8",
@@ -58,7 +59,7 @@
 		"mikey179/vfsstream": "1.6.11",
 		"mnsami/composer-custom-directory-installer": "^2.0",
 		"mobiledetect/mobiledetectlib": "^2.8",
-		"php-stubs/wordpress-tests-stubs": "^6.5",
+		"php-stubs/wordpress-tests-stubs": "^6.8",
 		"phpcompatibility/phpcompatibility-wp": "^2.0",
 		"phpstan/extension-installer": "^1.3",
 		"phpstan/phpstan-mockery": "^1.1",
@@ -126,7 +127,8 @@
 				"wp-media/plugin-family"
 			]
 		},
-		"plugin_domain": "rocket"
+		"plugin_domain": "rocket",
+		"imagify_partner": "wp-rocket"
 	},
 	"scripts": {
 		"test-unit": "\"vendor/bin/phpunit\" --testsuite unit --colors=always --configuration tests/Unit/phpunit.xml.dist",

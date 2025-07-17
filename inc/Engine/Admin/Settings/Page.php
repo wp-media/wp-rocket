@@ -315,7 +315,6 @@ class Page extends Abstract_Render {
 		}
 
 		$allowed = [
-			'analytics_enabled'           => 1,
 			'debug_enabled'               => 1,
 			'varnish_auto_purge'          => 1,
 			'do_cloudflare'               => 1,
@@ -847,6 +846,7 @@ class Page extends Abstract_Render {
 		$exclude_lazyload = $this->beacon->get_suggest( 'exclude_lazyload' );
 		$dimensions       = $this->beacon->get_suggest( 'image_dimensions' );
 		$fonts            = $this->beacon->get_suggest( 'host_fonts_locally' );
+		$fonts_preload    = $this->beacon->get_suggest( 'fonts_preload' );
 
 		$this->settings->add_page_section(
 			'media',
@@ -936,12 +936,10 @@ class Page extends Abstract_Render {
 					'page'        => 'media',
 				],
 				'font_optimization_section' => [
-					'title'       => __( 'Fonts', 'rocket' ),
-					'type'        => 'fields_container',
-					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description' => sprintf( __( 'Download and serve fonts directly from your server. Reduces connections to external servers and minimizes font shifts. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $fonts['url'] ) . '" data-beacon-article="' . esc_attr( $fonts['id'] ) . '" target="_blank" rel="noopener noreferrer">', '</a>' ),
-					'help'        => $fonts,
-					'page'        => 'media',
+					'title' => __( 'Fonts', 'rocket' ),
+					'type'  => 'fields_container',
+					'help'  => $fonts,
+					'page'  => 'media',
 				],
 			]
 		);
@@ -1041,9 +1039,21 @@ class Page extends Abstract_Render {
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
 				],
+				'auto_preload_fonts'  => [
+					'type'              => 'checkbox',
+					'label'             => __( 'Preload fonts', 'rocket' ),
+					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+					'description'       => sprintf( __( 'Preload above-the-fold fonts to enhance layout stability and optimize text-based LCP elements. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $fonts_preload['url'] ) . '" data-beacon-article="' . esc_attr( $fonts_preload['id'] ) . '" target="_blank" rel="noopener noreferrer">', '</a>' ),
+					'section'           => 'font_optimization_section',
+					'page'              => 'media',
+					'default'           => 0,
+					'sanitize_callback' => 'sanitize_checkbox',
+				],
 				'host_fonts_locally'  => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Self-host Google Fonts', 'rocket' ),
+					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+					'description'       => sprintf( __( 'Download and serve fonts directly from your server. Reduces connections to external servers and minimizes font shifts. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $fonts['url'] ) . '" data-beacon-article="' . esc_attr( $fonts['id'] ) . '" target="_blank" rel="noopener noreferrer">', '</a>' ),
 					'section'           => 'font_optimization_section',
 					'page'              => 'media',
 					'default'           => 0,
@@ -1063,7 +1073,7 @@ class Page extends Abstract_Render {
 			'preload',
 			[
 				'title'            => __( 'Preload', 'rocket' ),
-				'menu_description' => __( 'Generate cache files, preload fonts', 'rocket' ),
+				'menu_description' => __( 'Generate cache files', 'rocket' ),
 			]
 		);
 
@@ -1096,24 +1106,6 @@ class Page extends Abstract_Render {
 					],
 					'page'        => 'preload',
 				],
-				'dns_prefetch_section'  => [
-					'title'       => __( 'Prefetch DNS Requests', 'rocket' ),
-					'type'        => 'fields_container',
-					'description' => __( 'DNS prefetching can make external files load faster, especially on mobile networks', 'rocket' ),
-					'help'        => $this->beacon->get_suggest( 'dns_prefetch' ),
-					'page'        => 'preload',
-				],
-				'preload_fonts_section' => [
-					'title'       => __( 'Preload Fonts', 'rocket' ),
-					'type'        => 'fields_container',
-					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description' => sprintf( __( 'Improves performance by helping browsers discover fonts in CSS files. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $fonts_preload['url'] ) . '" data-beacon-article="' . esc_attr( $fonts_preload['id'] ) . '" target="_blank">', '</a>' ),
-					'help'        => [
-						'id'  => $fonts_preload['id'],
-						'url' => $fonts_preload['url'],
-					],
-					'page'        => 'preload',
-				],
 			]
 		);
 
@@ -1142,27 +1134,6 @@ class Page extends Abstract_Render {
 					'helper'            => 'Use (.*) wildcards to address multiple URLs under a given path.',
 					'parent'            => 'manual_preload',
 					'section'           => 'preload_section',
-					'page'              => 'preload',
-					'default'           => [],
-					'sanitize_callback' => 'sanitize_textarea',
-				],
-				'dns_prefetch'         => [
-					'type'              => 'textarea',
-					'label'             => __( 'URLs to prefetch', 'rocket' ),
-					'description'       => __( 'Specify external hosts to be prefetched (no <code>http:</code>, one per line)', 'rocket' ),
-					'placeholder'       => '//example.com',
-					'section'           => 'dns_prefetch_section',
-					'page'              => 'preload',
-					'default'           => [],
-					'sanitize_callback' => 'sanitize_textarea',
-				],
-				'preload_fonts'        => [
-					'type'              => 'textarea',
-					'label'             => __( 'Fonts to preload', 'rocket' ),
-					'description'       => __( 'Specify urls of the font files to be preloaded (one per line). Fonts must be hosted on your own domain, or the domain you have specified on the CDN tab.', 'rocket' ),
-					'helper'            => __( 'The domain part of the URL will be stripped automatically.<br/>Allowed font extensions: otf, ttf, svg, woff, woff2.', 'rocket' ),
-					'placeholder'       => '/wp-content/themes/your-theme/assets/fonts/font-file.woff',
-					'section'           => 'preload_fonts_section',
 					'page'              => 'preload',
 					'default'           => [],
 					'sanitize_callback' => 'sanitize_textarea',
@@ -2116,6 +2087,7 @@ class Page extends Abstract_Render {
 			'minify_concatenate_css',
 			'cloudflare_api_key',
 			'cloudflare_zone_id',
+			'dns_prefetch',
 		];
 
 		$this->settings->add_hidden_settings_fields(
@@ -2266,29 +2238,24 @@ class Page extends Abstract_Render {
 
 		$previous_version = $this->options->get( 'previous_version' );
 
-		// Bail-out for fresh install.
-		if ( empty( $previous_version ) ) {
+		// Bail-out if previous version is greater than or equal to 3.19.
+		if ( version_compare( $previous_version, '3.19', '>=' ) ) {
 			return;
 		}
 
-		// Bail-out if previous version is greater than 3.17.
-		if ( $previous_version > '3.17' ) {
-			return;
-		}
-
-		$lazy_render_content = $this->beacon->get_suggest( 'lazy_render_content' );
+		$preconnect_content = $this->beacon->get_suggest( 'preconnect_domains' );
 
 		rocket_notice_html(
 			[
 				'status'         => 'info',
 				'dismissible'    => '',
 				'message'        => sprintf(
-					// translators: %1$s: opening strong tag, %2$s: closing strong tag, %3$s: opening a tag, %4$s: opening a tag.
-					__( '%1$sWP Rocket:%2$s the plugin has been updated to the 3.17 version. New feature: %3$sAutomatic Lazy Rendering%4$s. Check out our documentation to learn more about it.', 'rocket' ),
-					'<strong>',
-					'</strong>',
-					'<a href="' . esc_url( $lazy_render_content['url'] ) . '" data-beacon-article="' . esc_attr( $lazy_render_content['id'] ) . '" target="_blank" rel="noopener noreferrer">',
-					'</a>'
+						// translators: %1$s: opening strong tag, %2$s: closing strong tag, %3$s: opening a tag, %4$s: closing a tag.
+						__( '%1$sWP Rocket:%2$s the plugin has been updated to the 3.19 version. New feature: %3$sPreconnect to external domains%4$s. Check out our documentation to learn more about it.', 'rocket' ),
+						'<strong>',
+						'</strong>',
+						'<a href="' . esc_url( $preconnect_content['url'] ) . '" data-beacon-article="' . esc_attr( $preconnect_content['id'] ) . '" target="_blank" rel="noopener noreferrer">',
+						'</a>'
 				),
 				'dismiss_button' => 'rocket_update_notice',
 			]
