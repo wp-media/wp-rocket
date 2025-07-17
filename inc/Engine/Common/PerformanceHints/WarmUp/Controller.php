@@ -67,6 +67,7 @@ class Controller {
 	 */
 	private function is_allowed(): bool {
 		return ! (
+			rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) ||
 			'local' === wp_get_environment_type() ||
 			$this->user->is_license_expired_grace_period() ||
 			(bool) $this->options->get( 'remove_unused_css', 0 )

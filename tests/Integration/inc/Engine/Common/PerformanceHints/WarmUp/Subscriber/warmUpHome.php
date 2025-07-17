@@ -33,12 +33,14 @@ class Test_WarmUpHome extends TestCase {
 		$controller->shouldReceive('send_to_saas')
 			->andReturn($config['home_url']);
 
-		Functions\expect( 'wp_get_environment_type' )->andReturn($config['wp_env']);
+		Functions\when( 'wp_get_environment_type' )->justReturn($config['wp_env']);
+		Functions\when( 'rocket_get_constant' )
+			->justReturn( $config['donotrocketoptimize'] ?? false );
 
 		$queue->shouldReceive('add_job_warmup')
 			->times($expected);
 
-		if ( 'local' !== $config['wp_env'] ) {
+		if ( 'local' !== $config['wp_env'] && ( ! isset( $config['donotrocketoptimize'] ) || ! $config['donotrocketoptimize'] ) ) {
 			$options->shouldReceive('get')
 				->with('remove_unused_css', 0)
 				->andReturn($config['remove_unused_css']);

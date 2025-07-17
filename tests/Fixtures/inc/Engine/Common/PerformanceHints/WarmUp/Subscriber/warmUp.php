@@ -52,6 +52,20 @@ return [
 		],
 		'expected' => 0,
 	],
+	'testShouldNotCallSendToSaasWhenDONOTROCKETOPTIMIZE' => [
+		'config'   => [
+			'wp_env' => 'production',
+			'remove_unused_css' => 0,
+			'license_expired' => false,
+			'is_allowed' => [1],
+			'donotrocketoptimize' => true,
+			'links' => [
+				'http://example.com/link1',
+				'http://example.com/link2',
+			],
+		],
+		'expected' => 0,
+	],
 	'testShouldNotCallSendToSaasWhenNotAllowed' => [
 		'config'   => [
 			'wp_env' => 'production',

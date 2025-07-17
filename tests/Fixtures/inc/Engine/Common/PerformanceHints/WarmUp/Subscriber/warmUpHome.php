@@ -40,6 +40,17 @@ return [
 		],
 		'expected' => 0,
 	],
+	'testShouldNotCallSendToSaasWhenDONOTROCKETOPTIMIZE' => [
+		'config'   => [
+			'wp_env' => 'production',
+			'remove_unused_css' => 0,
+			'license_expired' => false,
+			'factories' => [1],
+			'donotrocketoptimize' => true,
+			'home_url' =>  'http://example.com/',
+		],
+		'expected' => 0,
+	],
 	'testShouldNotCallSendToSaasWhenFactoriesAreEmpty' => [
 		'config'   => [
 			'wp_env' => 'production',

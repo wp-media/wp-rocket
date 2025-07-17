@@ -33,9 +33,11 @@ class Test_WarmUp extends TestCase {
 		$controller->shouldReceive('fetch_links')
 			->andReturn($config['links']);
 
-		Functions\expect( 'wp_get_environment_type' )->andReturn($config['wp_env']);
+		Functions\when( 'wp_get_environment_type' )->justReturn($config['wp_env']);
+		Functions\when( 'rocket_get_constant' )
+			->justReturn( $config['donotrocketoptimize'] ?? false );
 
-		if ( 'local' !== $config['wp_env'] ) {
+		if ( 'local' !== $config['wp_env'] && ( ! isset( $config['donotrocketoptimize'] ) || ! $config['donotrocketoptimize'] ) ) {
 			$options->shouldReceive('get')
 				->with('remove_unused_css', 0)
 				->andReturn($config['remove_unused_css']);
