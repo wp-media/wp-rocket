@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Optimization\LazyRenderContent\Context;
 
 use WP_Rocket\Engine\Common\Context\ContextInterface;
+use WP_Rocket\Engine\Common\Utils;
 
 class Context implements ContextInterface {
 	/**
@@ -17,7 +18,7 @@ class Context implements ContextInterface {
 			return false;
 		}
 
-		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) ) {
+		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) && ! Utils::is_saas_visit() ) {
 			return false;
 		}
 
