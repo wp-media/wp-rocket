@@ -12,7 +12,7 @@ class PluginFamily implements PluginFamilyInterface {
 	 *
 	 * @var string
 	 */
-	private $version = '1.0.5';
+	private $version = '1.0.6';
 
 	/**
 	 * Error transient.
@@ -31,6 +31,7 @@ class PluginFamily implements PluginFamilyInterface {
 		$events['admin_notices']               = 'display_error_notice';
 		$events['enqueue_block_editor_assets'] = 'enqueue_assets';
 		$events['wp_ajax_install_imagify']     = 'install_imagify';
+		$events['wp_ajax_dismiss_promote_imagify']     = 'dismiss_promote_imagify';
 		$events['admin_enqueue_scripts']       = 'enqueue_admin_assets';
 		$events['admin_footer']                = 'insert_footer_templates';
 
@@ -340,7 +341,13 @@ class PluginFamily implements PluginFamilyInterface {
 	 * @return void
 	 */
 	public function enqueue_assets() {
-		if ( $this->is_imagify_activated() || wp_script_is( 'plugin-family-script' ) ) {
+		if (
+			$this->is_promote_imagify_dismissed()
+			||
+			$this->is_imagify_activated()
+			||
+			wp_script_is( 'plugin-family-script' )
+		) {
 			return;
 		}
 
@@ -401,6 +408,9 @@ class PluginFamily implements PluginFamilyInterface {
 	 * @return bool
 	 */
 	private function can_enqueue_admin_assets( $page = '' ): bool {
+		if ( $this->is_promote_imagify_dismissed() ) {
+			return false;
+		}
 		if ( empty( $page ) ) {
 			return in_array( get_current_screen()->id, [ 'post', 'upload' ], true );
 		}
@@ -473,5 +483,30 @@ class PluginFamily implements PluginFamilyInterface {
 			return;
 		}
 		include_once __DIR__ . '/../View/promote-imagify-uploader.php';
+	}
+
+	/**
+	 * Dismiss promote Imagify using the ajax request.
+	 *
+	 * @return void
+	 */
+	public function dismiss_promote_imagify() {
+		check_ajax_referer( 'install-imagify-nonce' );
+
+		if ( ! current_user_can( is_multisite() ? 'manage_network_plugins' : 'install_plugins' ) ) {
+			wp_send_json_error( __( 'Not Allowed', 'rocket' ) );
+		}
+
+		update_option( 'plugin_family_dismiss_promote_imagify', true );
+		wp_send_json_success( __( 'Dismissed.', 'rocket' ) );
+	}
+
+	/**
+	 * Check if promote imagify message is dismissed.
+	 *
+	 * @return bool
+	 */
+	private function is_promote_imagify_dismissed() {
+		return ! empty( get_option( 'plugin_family_dismiss_promote_imagify' ) );
 	}
 }

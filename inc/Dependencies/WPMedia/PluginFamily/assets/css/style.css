@@ -4,6 +4,7 @@
     border-radius: 6px;
     margin: 20px 0;
     background: url("../imgs/plus.png") no-repeat 20px 20px;
+    position: relative;
 }
 .pluginfamily-promote-imagify p{
     margin: 0 0 10px;
@@ -17,4 +18,19 @@
     cursor: pointer;
     padding: 0;
     text-align: left;
+}
+
+.pluginfamily-promote-imagify-dismiss{
+    width: 32px;
+    height: 32px;
+    position: absolute;
+    right: 8px;
+    top: 8px;
+}
+
+.pluginfamily-promote-imagify-dismiss-icon{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
 }
