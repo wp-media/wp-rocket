@@ -27,13 +27,13 @@ class PluginFamily implements PluginFamilyInterface {
 	 * @return array
 	 */
 	public static function get_subscribed_events(): array {
-		$events                                = self::get_post_install_event();
-		$events['admin_notices']               = 'display_error_notice';
-		$events['enqueue_block_editor_assets'] = 'enqueue_assets';
-		$events['wp_ajax_install_imagify']     = 'install_imagify';
-		$events['wp_ajax_dismiss_promote_imagify']     = 'dismiss_promote_imagify';
-		$events['admin_enqueue_scripts']       = 'enqueue_admin_assets';
-		$events['admin_footer']                = 'insert_footer_templates';
+		$events                                    = self::get_post_install_event();
+		$events['admin_notices']                   = 'display_error_notice';
+		$events['enqueue_block_editor_assets']     = 'enqueue_assets';
+		$events['wp_ajax_install_imagify']         = 'install_imagify';
+		$events['wp_ajax_dismiss_promote_imagify'] = 'dismiss_promote_imagify';
+		$events['admin_enqueue_scripts']           = 'enqueue_admin_assets';
+		$events['admin_footer']                    = 'insert_footer_templates';
 
 		return $events;
 	}
