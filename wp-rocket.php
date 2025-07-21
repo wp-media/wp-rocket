@@ -3,7 +3,7 @@
  * Plugin Name: WP Rocket
  * Plugin URI: https://wp-rocket.me
  * Description: The best WordPress performance plugin.
- * Version: 3.19.2
+ * Version: 3.19.2.1-alpha
  * Requires at least: 5.8
  * Requires PHP: 7.3
  * Code Name: Iego
