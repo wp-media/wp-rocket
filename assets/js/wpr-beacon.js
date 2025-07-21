@@ -869,6 +869,19 @@ CSS (first 200 chars): ${txt.substring(0, 200)}...`
       return elementTop <= foldPosition;
     }
     /**
+     * Checks if an element can be processed for font analysis.
+     * 
+     * This method combines checks for whether an element can be styled with font-family
+     * and whether it is above the fold, providing a single method to determine if an
+     * element should be processed during font analysis.
+     * 
+     * @param {Element} element - The element to check.
+     * @returns {boolean} True if the element can be processed, false otherwise.
+     */
+    canElementBeProcessed(element) {
+      return this.canElementBeStyledWithFontFamily(element) && this.isElementAboveFold(element);
+    }
+    /**
      * Initiates the process of analyzing and summarizing font usage on the page.
      * This method fetches network-loaded fonts, stylesheet fonts, and external font pairs.
      * It then processes each element on the page to determine which fonts are used above the fold.
@@ -883,7 +896,7 @@ CSS (first 200 chars): ${txt.substring(0, 200)}...`
       const stylesheetFonts = await this.getFontFaceRules();
       const hostedFonts = /* @__PURE__ */ new Map();
       const externalFontsResults = await this.processExternalFonts(this.externalParsedPairs);
-      const elements = Array.from(document.getElementsByTagName("*")).filter((el) => this.isElementAboveFold(el));
+      const elements = Array.from(document.getElementsByTagName("*")).filter((el) => this.canElementBeProcessed(el) && this.isElementAboveFold(el));
       elements.forEach((element) => {
         const processElementFont = (style, pseudoElement = null) => {
           if (!style || !this.isElementVisible(element)) return;
