@@ -47,7 +47,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'mixpanel_tracking', MixpanelTracking::class )
 			->addArguments(
 				[
-					'e1135bbed811a82645a7df564f0278c4',
+					'4cdc36e9083c158244c3e26d280540f6',
 					'WP Rocket ' . rocket_get_constant( 'WP_ROCKET_VERSION', '' ),
 				]
 			);
