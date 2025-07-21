@@ -98,7 +98,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return array
 	 */
 	public function get_external_font_exclusions( array $exclusions ): array {
-		// Merge with dynamic lists exclusions
+		// Merge with dynamic lists exclusions.
 		$lists = $this->data_manager->get_lists()->external_font_exclusions ?? [];
 
 		return array_merge( $exclusions, (array) $lists );
