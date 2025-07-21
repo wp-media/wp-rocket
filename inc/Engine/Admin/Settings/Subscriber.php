@@ -380,4 +380,13 @@ class Subscriber implements Subscriber_Interface, PluginFamilyInterface {
 	public function insert_footer_templates(): void {
 		$this->plugin_family->insert_footer_templates();
 	}
+
+	/**
+	 * Dismiss promote Imagify using the ajax request.
+	 *
+	 * @return void
+	 */
+	public function dismiss_promote_imagify(): void {
+		$this->plugin_family->dismiss_promote_imagify();
+	}
 }
