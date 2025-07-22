@@ -24,6 +24,65 @@
     static isPageScrolled() {
       return window.pageYOffset > 0 || document.documentElement.scrollTop > 0;
     }
+    /**
+     * Checks if an element is visible in the viewport.
+     * 
+     * This method checks if the provided element is visible in the viewport by
+     * considering its display, visibility, opacity, width, and height properties.
+     * It also excludes elements with transparent text properties.
+     * It returns true if the element is visible, and false otherwise.
+     * 
+     * @param {Element} element - The element to check for visibility.
+     * @returns {boolean} True if the element is visible, false otherwise.
+     */
+    static isElementVisible(element) {
+      const style = window.getComputedStyle(element);
+      const rect = element.getBoundingClientRect();
+      if (!style) {
+        return false;
+      }
+      if (this.hasTransparentText(element)) {
+        return false;
+      }
+      return !(style.display === "none" || style.visibility === "hidden" || style.opacity === "0" || rect.width === 0 || rect.height === 0);
+    }
+    /**
+     * Checks if an element has transparent text properties.
+     *
+     * This method checks for specific CSS properties that make text invisible,
+     * such as `color: transparent`, `color: rgba(..., 0)`, `color: hsla(..., 0)`,
+     * `color: #...00` (8-digit hex with alpha = 0), and `filter: opacity(0)`.
+     *
+     * @param {Element} element - The element to check.
+     * @returns {boolean} True if the element has transparent text properties, false otherwise.
+     */
+    static hasTransparentText(element) {
+      const style = window.getComputedStyle(element);
+      if (!style) {
+        return false;
+      }
+      const color = style.color || "";
+      const filter = style.filter || "";
+      if (color === "transparent") {
+        return true;
+      }
+      const rgbaMatch = color.match(/rgba\(\d+,\s*\d+,\s*\d+,\s*0\)/);
+      if (rgbaMatch) {
+        return true;
+      }
+      const hslaMatch = color.match(/hsla\(\d+,\s*\d+%,\s*\d+%,\s*0\)/);
+      if (hslaMatch) {
+        return true;
+      }
+      const hexMatch = color.match(/#[0-9a-fA-F]{6}00/);
+      if (hexMatch) {
+        return true;
+      }
+      if (filter.includes("opacity(0)")) {
+        return true;
+      }
+      return false;
+    }
   };
   var Utils_default = BeaconUtils;
 
@@ -72,9 +131,7 @@
           rect
         };
       }).filter((item) => item !== null).filter((item) => {
-        const style = window.getComputedStyle(item.element);
-        const isVisible = !(style.display === "none" || style.visibility === "hidden" || style.opacity === "0");
-        return item.rect.width > 0 && item.rect.height > 0 && Utils_default.isIntersecting(item.rect) && isVisible;
+        return item.rect.width > 0 && item.rect.height > 0 && Utils_default.isIntersecting(item.rect) && Utils_default.isElementVisible(item.element);
       }).map((item) => ({
         item,
         area: this._getElementArea(item.rect),
@@ -424,55 +481,14 @@
     /**
      * Checks if an element is visible in the viewport.
      * 
-     * This method checks if the provided element is visible in the viewport by
-     * considering its display, visibility, opacity, width, and height properties.
-     * It also excludes elements with transparent text properties.
-     * It returns true if the element is visible, and false otherwise.
+     * This method delegates to BeaconUtils.isElementVisible() for consistent
+     * visibility checking across all beacons.
      * 
      * @param {Element} element - The element to check for visibility.
      * @returns {boolean} True if the element is visible, false otherwise.
      */
     isElementVisible(element) {
-      const style = window.getComputedStyle(element);
-      const rect = element.getBoundingClientRect();
-      if (this.hasTransparentText(element)) {
-        return false;
-      }
-      return !(style.display === "none" || style.visibility === "hidden" || style.opacity === "0" || rect.width === 0 || rect.height === 0);
-    }
-    /**
-     * Checks if an element has transparent text properties.
-     *
-     * This method checks for specific CSS properties that make text invisible,
-     * such as `color: transparent`, `color: rgba(..., 0)`, `color: hsla(..., 0)`,
-     * `color: #...00` (8-digit hex with alpha = 0), and `filter: opacity(0)`.
-     *
-     * @param {Element} element - The element to check.
-     * @returns {boolean} True if the element has transparent text properties, false otherwise.
-     */
-    hasTransparentText(element) {
-      const style = window.getComputedStyle(element);
-      const color = style.color || "";
-      const filter = style.filter || "";
-      if (color === "transparent") {
-        return true;
-      }
-      const rgbaMatch = color.match(/rgba\(\d+,\s*\d+,\s*\d+,\s*0\)/);
-      if (rgbaMatch) {
-        return true;
-      }
-      const hslaMatch = color.match(/hsla\(\d+,\s*\d+%,\s*\d+%,\s*0\)/);
-      if (hslaMatch) {
-        return true;
-      }
-      const hexMatch = color.match(/#[0-9a-fA-F]{6}00/);
-      if (hexMatch) {
-        return true;
-      }
-      if (filter.includes("opacity(0)")) {
-        return true;
-      }
-      return false;
+      return Utils_default.isElementVisible(element);
     }
     /**
      * Cleans a URL by removing query parameters and fragments.
