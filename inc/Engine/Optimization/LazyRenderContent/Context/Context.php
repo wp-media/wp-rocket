@@ -18,7 +18,7 @@ class Context implements ContextInterface {
 			return false;
 		}
 
-		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) && ! Utils::is_saas_visit() ) {
+		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) ) {
 			return false;
 		}
 
