@@ -4,6 +4,7 @@ namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Hostings\HostSubscriberFactory;
 
 use WP_Rocket\ThirdParty\Hostings\HostSubscriberFactory;
 use WP_Rocket\Tests\Unit\TestCase;
+use Brain\Monkey\Functions;
 
 /**
  * Test class covering \WP_Rocket\ThirdParty\Hostings\HostSubscriberFactory::get_subscriber
@@ -31,6 +32,17 @@ class TestGetSubscriber extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnSubscriber( $host, $expected ) {
+		Functions\when( 'wp_unslash' )->alias(
+			function ( $value ) {
+				return is_string( $value ) ? stripslashes( $value ) : $value;
+			}
+		);
+		Functions\when( 'sanitize_text_field' )->alias(
+			function ( $value ) {
+				return is_string( $value ) ? strip_tags( $value ) : $value;
+			}
+		);
+
 		switch ( $host ) {
 			case 'cloudways':
 				$_SERVER['cw_allowed_ip'] = true;
