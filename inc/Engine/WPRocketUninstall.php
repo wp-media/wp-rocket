@@ -43,6 +43,7 @@ class WPRocketUninstall {
 		'wp_rocket_last_option_hash',
 		'wp_rocket_debug',
 		'wp_rocket_rocketcdn_old_url',
+		'plugin_family_dismiss_promote_imagify',
 	];
 
 	/**
