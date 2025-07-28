@@ -185,7 +185,7 @@ class Controller implements ControllerInterface {
 	 * @return array
 	 */
 	public function add_custom_data( array $data ): array {
-		$data['status']['lrc'] = ! rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) && $this->context->is_allowed();
+		$data['status']['lrc'] = $this->context->is_allowed();
 
 		/**
 		 * Filters the LRC threshold
