@@ -24,7 +24,6 @@ class TestIsAllowed extends TestCase {
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
 		Functions\when( 'get_option' )->justReturn( $config['licence'] );
-		Functions\when( 'rocket_get_constant' )->justReturn( $config['donotrocketoptimize'] );
 		Filters\expectApplied( 'rocket_lrc_optimization' )
 			->andReturn( $config['filter'] );
 

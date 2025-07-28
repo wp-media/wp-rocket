@@ -121,6 +121,10 @@ class Controller implements ControllerInterface {
 	 * @return string
 	 */
 	public function add_hashes_when_allowed( $html ) {
+		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) ) {
+			return $html;
+		}
+
 		if ( ! $this->context->is_allowed() ) {
 			return $html;
 		}
@@ -181,7 +185,7 @@ class Controller implements ControllerInterface {
 	 * @return array
 	 */
 	public function add_custom_data( array $data ): array {
-		$data['status']['lrc'] = $this->context->is_allowed();
+		$data['status']['lrc'] = ! rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) && $this->context->is_allowed();
 
 		/**
 		 * Filters the LRC threshold

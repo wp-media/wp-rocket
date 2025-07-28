@@ -18,10 +18,6 @@ class Context implements ContextInterface {
 			return false;
 		}
 
-		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) ) {
-			return false;
-		}
-
 		/**
 		 * Filters to manage lazy render content optimization
 		 *
