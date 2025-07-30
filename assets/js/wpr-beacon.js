@@ -24,6 +24,65 @@
     static isPageScrolled() {
       return window.pageYOffset > 0 || document.documentElement.scrollTop > 0;
     }
+    /**
+     * Checks if an element is visible in the viewport.
+     * 
+     * This method checks if the provided element is visible in the viewport by
+     * considering its display, visibility, opacity, width, and height properties.
+     * It also excludes elements with transparent text properties.
+     * It returns true if the element is visible, and false otherwise.
+     * 
+     * @param {Element} element - The element to check for visibility.
+     * @returns {boolean} True if the element is visible, false otherwise.
+     */
+    static isElementVisible(element) {
+      const style = window.getComputedStyle(element);
+      const rect = element.getBoundingClientRect();
+      if (!style) {
+        return false;
+      }
+      if (this.hasTransparentText(element)) {
+        return false;
+      }
+      return !(style.display === "none" || style.visibility === "hidden" || style.opacity === "0" || rect.width === 0 || rect.height === 0);
+    }
+    /**
+     * Checks if an element has transparent text properties.
+     *
+     * This method checks for specific CSS properties that make text invisible,
+     * such as `color: transparent`, `color: rgba(..., 0)`, `color: hsla(..., 0)`,
+     * `color: #...00` (8-digit hex with alpha = 0), and `filter: opacity(0)`.
+     *
+     * @param {Element} element - The element to check.
+     * @returns {boolean} True if the element has transparent text properties, false otherwise.
+     */
+    static hasTransparentText(element) {
+      const style = window.getComputedStyle(element);
+      if (!style) {
+        return false;
+      }
+      const color = style.color || "";
+      const filter = style.filter || "";
+      if (color === "transparent") {
+        return true;
+      }
+      const rgbaMatch = color.match(/rgba\(\d+,\s*\d+,\s*\d+,\s*0\)/);
+      if (rgbaMatch) {
+        return true;
+      }
+      const hslaMatch = color.match(/hsla\(\d+,\s*\d+%,\s*\d+%,\s*0\)/);
+      if (hslaMatch) {
+        return true;
+      }
+      const hexMatch = color.match(/#[0-9a-fA-F]{6}00/);
+      if (hexMatch) {
+        return true;
+      }
+      if (filter.includes("opacity(0)")) {
+        return true;
+      }
+      return false;
+    }
   };
   var Utils_default = BeaconUtils;
 
@@ -72,7 +131,7 @@
           rect
         };
       }).filter((item) => item !== null).filter((item) => {
-        return item.rect.width > 0 && item.rect.height > 0 && Utils_default.isIntersecting(item.rect);
+        return item.rect.width > 0 && item.rect.height > 0 && Utils_default.isIntersecting(item.rect) && Utils_default.isElementVisible(item.element);
       }).map((item) => ({
         item,
         area: this._getElementArea(item.rect),
@@ -386,55 +445,6 @@
       this.aboveTheFoldFonts = [];
       const extensions = (Array.isArray(this.config.processed_extensions) && this.config.processed_extensions.length > 0 ? this.config.processed_extensions : ["woff", "woff2", "ttf"]).map((ext) => ext.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|");
       this.FONT_FILE_REGEX = new RegExp(`\\.(${extensions})(\\?.*)?$`, "i");
-      this.EXCLUDED_TAG_NAMES = /* @__PURE__ */ new Set([
-        // Metadata/document head
-        "BASE",
-        "HEAD",
-        "LINK",
-        "META",
-        "STYLE",
-        "TITLE",
-        "SCRIPT",
-        // Media
-        "IMG",
-        "VIDEO",
-        "AUDIO",
-        "EMBED",
-        "OBJECT",
-        "IFRAME",
-        // Templating, wrappers, components, fallback
-        "NOSCRIPT",
-        "TEMPLATE",
-        "SLOT",
-        "CANVAS",
-        // Resources
-        "SOURCE",
-        "TRACK",
-        "PARAM",
-        // SVG references
-        "USE",
-        "SYMBOL",
-        // Layout work
-        "BR",
-        "HR",
-        "WBR",
-        // Obsolete/deprecated
-        "APPLET",
-        "ACRONYM",
-        "BGSOUND",
-        "BIG",
-        "BLINK",
-        "CENTER",
-        "FONT",
-        "FRAME",
-        "FRAMESET",
-        "MARQUEE",
-        "NOFRAMES",
-        "STRIKE",
-        "TT",
-        "U",
-        "XMP"
-      ]);
     }
     /**
      * Checks if a font family or URL should be excluded from preloading.
@@ -469,69 +479,16 @@
       return false;
     }
     /**
-     * Checks if an element can be styled with font-family.
-     * 
-     * This method determines if the provided element's tag name is not in the list
-     * of excluded tag names that cannot be styled with font-family CSS property.
-     * 
-     * @param {Element} element - The element to check.
-     * @returns {boolean} True if the element can be styled with font-family, false otherwise.
-     */
-    canElementBeStyledWithFontFamily(element) {
-      return !this.EXCLUDED_TAG_NAMES.has(element.tagName);
-    }
-    /**
      * Checks if an element is visible in the viewport.
      * 
-     * This method checks if the provided element is visible in the viewport by
-     * considering its display, visibility, opacity, width, and height properties.
-     * It also excludes elements with transparent text properties.
-     * It returns true if the element is visible, and false otherwise.
+     * This method delegates to BeaconUtils.isElementVisible() for consistent
+     * visibility checking across all beacons.
      * 
      * @param {Element} element - The element to check for visibility.
      * @returns {boolean} True if the element is visible, false otherwise.
      */
     isElementVisible(element) {
-      const style = window.getComputedStyle(element);
-      const rect = element.getBoundingClientRect();
-      if (this.hasTransparentText(element)) {
-        return false;
-      }
-      return !(style.display === "none" || style.visibility === "hidden" || style.opacity === "0" || rect.width === 0 || rect.height === 0);
-    }
-    /**
-     * Checks if an element has transparent text properties.
-     *
-     * This method checks for specific CSS properties that make text invisible,
-     * such as `color: transparent`, `color: rgba(..., 0)`, `color: hsla(..., 0)`,
-     * `color: #...00` (8-digit hex with alpha = 0), and `filter: opacity(0)`.
-     *
-     * @param {Element} element - The element to check.
-     * @returns {boolean} True if the element has transparent text properties, false otherwise.
-     */
-    hasTransparentText(element) {
-      const style = window.getComputedStyle(element);
-      const color = style.color || "";
-      const filter = style.filter || "";
-      if (color === "transparent") {
-        return true;
-      }
-      const rgbaMatch = color.match(/rgba\(\d+,\s*\d+,\s*\d+,\s*0\)/);
-      if (rgbaMatch) {
-        return true;
-      }
-      const hslaMatch = color.match(/hsla\(\d+,\s*\d+%,\s*\d+%,\s*0\)/);
-      if (hslaMatch) {
-        return true;
-      }
-      const hexMatch = color.match(/#[0-9a-fA-F]{6}00/);
-      if (hexMatch) {
-        return true;
-      }
-      if (filter.includes("opacity(0)")) {
-        return true;
-      }
-      return false;
+      return Utils_default.isElementVisible(element);
     }
     /**
      * Cleans a URL by removing query parameters and fragments.
@@ -928,19 +885,6 @@ CSS (first 200 chars): ${txt.substring(0, 200)}...`
       return elementTop <= foldPosition;
     }
     /**
-     * Checks if an element can be processed for font analysis.
-     * 
-     * This method combines checks for whether an element can be styled with font-family
-     * and whether it is above the fold, providing a single method to determine if an
-     * element should be processed during font analysis.
-     * 
-     * @param {Element} element - The element to check.
-     * @returns {boolean} True if the element can be processed, false otherwise.
-     */
-    canElementBeProcessed(element) {
-      return this.canElementBeStyledWithFontFamily(element) && this.isElementAboveFold(element);
-    }
-    /**
      * Initiates the process of analyzing and summarizing font usage on the page.
      * This method fetches network-loaded fonts, stylesheet fonts, and external font pairs.
      * It then processes each element on the page to determine which fonts are used above the fold.
@@ -955,7 +899,7 @@ CSS (first 200 chars): ${txt.substring(0, 200)}...`
       const stylesheetFonts = await this.getFontFaceRules();
       const hostedFonts = /* @__PURE__ */ new Map();
       const externalFontsResults = await this.processExternalFonts(this.externalParsedPairs);
-      const elements = Array.from(document.getElementsByTagName("*")).filter((el) => this.canElementBeProcessed(el));
+      const elements = Array.from(document.getElementsByTagName("*")).filter((el) => this.isElementAboveFold(el));
       elements.forEach((element) => {
         const processElementFont = (style, pseudoElement = null) => {
           if (!style || !this.isElementVisible(element)) return;
@@ -1145,7 +1089,7 @@ CSS (first 200 chars): ${txt.substring(0, 200)}...`
      */
     async processExternalFonts(fontPairs) {
       const matches = /* @__PURE__ */ new Map();
-      const elements = Array.from(document.getElementsByTagName("*")).filter((el) => this.canElementBeProcessed(el));
+      const elements = Array.from(document.getElementsByTagName("*")).filter((el) => this.isElementAboveFold(el));
       const fontMap = /* @__PURE__ */ new Map();
       Object.entries(fontPairs).forEach(([url, variations]) => {
         variations.forEach((variation) => {
