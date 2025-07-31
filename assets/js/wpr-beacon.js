@@ -649,19 +649,21 @@
         });
         return fontPairs;
       }
-      const externalFontsProviders = [
-        "fonts.googleapis.com",
-        "fonts.gstatic.com",
-        "use.typekit.net",
-        "fonts.adobe.com",
-        "cdn.fonts.net"
-        // Add more known external font domains as needed
-      ];
       const links = [
         ...document.querySelectorAll('link[rel="stylesheet"]')
-      ].filter(
-        (link) => externalFontsProviders.some((domain) => link.href.includes(domain))
-      );
+      ].filter((link) => {
+        try {
+          const linkUrl = new URL(link.href);
+          const currentUrl = new URL(window.location.href);
+          if (linkUrl.origin === currentUrl.origin) {
+            return false;
+          }
+          const exclusions = this.config.external_font_exclusions || [];
+          return !exclusions.some((exclusion) => link.href.includes(exclusion));
+        } catch (e) {
+          return false;
+        }
+      });
       if (links.length === 0) {
         this.logger.logMessage("No external CSS links found to process.");
         return {
