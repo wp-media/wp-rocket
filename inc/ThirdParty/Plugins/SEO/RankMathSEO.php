@@ -14,11 +14,7 @@ class RankMathSEO implements Subscriber_Interface {
 	 * @return array
 	 */
 	public static function get_subscribed_events(): array {
-		if ( ! class_exists( 'RankMath\Helper' ) ) {
-			return [];
-		}
-
-		if ( ! defined( 'RANK_MATH_FILE' ) || ! Helper::is_module_active( 'sitemap' ) ) {
+		if ( ! defined( 'RANK_MATH_FILE' ) ) {
 			return [];
 		}
 
@@ -35,6 +31,9 @@ class RankMathSEO implements Subscriber_Interface {
 	 * @return array
 	 */
 	public function add_sitemap( $sitemaps ) {
+		if ( ! class_exists( 'RankMath\Helper' ) || ! Helper::is_module_active( 'sitemap' ) ) {
+			return $sitemaps;
+		}
 		if ( ! class_exists( 'RankMath\Sitemap\Router' ) ) {
 			return $sitemaps;
 		}
