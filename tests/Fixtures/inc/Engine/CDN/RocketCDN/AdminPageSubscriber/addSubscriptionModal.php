@@ -26,6 +26,7 @@ return [
 	<div class="wpr-rocketcdn-modal__overlay" tabindex="-1">
 		<div class="wpr-rocketcdn-modal__container" role="dialog" aria-modal="true" aria-labelledby="wpr-rocketcdn-modal-title">
 			<div id="wpr-rocketcdn-modal-content">
+				<div class="wpr-loader" id="wpr-rocketcdn-modal-loader"></div>
 				<iframe id="rocketcdn-iframe" src="https://api.wp-rocket.me/cdn/iframe?website=http://example.org&#038;callback=http://example.org/index.php?rest_route=/wp-rocket/v1/rocketcdn/&#038;source=plugin" loading="lazy" width="674" height="425"></iframe>
 			</div>
 		</div>
