@@ -2601,6 +2601,7 @@ div.wpr-tutorial-item {
   max-height: 100vh;
   overflow-y: auto;
   box-sizing: border-box;
+  z-index: 1;
 }
 .wpr-rocketcdn-modal iframe {
   max-width: 100%;
