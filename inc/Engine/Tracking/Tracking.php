@@ -199,7 +199,7 @@ class Tracking extends Abstract_Render {
 
 		$screen = get_current_screen();
 
-		if ( ! $screen || 'settings_page_rocket' !== $screen->id ) {
+		if ( ! $screen || 'settings_page_wprocket' !== $screen->id ) {
 			return;
 		}
 
