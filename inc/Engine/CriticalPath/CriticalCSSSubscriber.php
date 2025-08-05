@@ -570,7 +570,7 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 			return;
 		}
 
-		echo /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. */ <<<JS
+		echo /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. */ <<<'JS'
 <script>
 /*! loadCSS rel=preload polyfill. [c]2017 Filament Group, Inc. MIT License */
 (function(w){"use strict";if(!w.loadCSS){w.loadCSS=function(){}}
