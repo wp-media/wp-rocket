@@ -8,9 +8,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.19.2-beta1\n"
+"Project-Id-Version: WP Rocket 3.19.3-alpha\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2025-07-15T21:11:01+00:00\n"
+"POT-Creation-Date: 2025-08-05T09:19:09+00:00\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: BouRock, 2025\n"
 "Language-Team: Turkish (Turkey) (https://app.transifex.com/wp-media/teams/18133/tr_TR/)\n"
@@ -834,13 +834,18 @@ msgstr "RocketCDN önbelleğini temizle"
 msgid "Documentation"
 msgstr "Belgeler"
 
-#: inc/Dependencies/WPMedia/PluginFamily/Controller/PluginFamily.php:371
+#: inc/Dependencies/WPMedia/PluginFamily/Controller/PluginFamily.php:378
+#: inc/Dependencies/WPMedia/PluginFamily/Controller/PluginFamily.php:497
 msgid "Not Allowed"
 msgstr "İzin Verilmiyor"
 
-#: inc/Dependencies/WPMedia/PluginFamily/Controller/PluginFamily.php:384
+#: inc/Dependencies/WPMedia/PluginFamily/Controller/PluginFamily.php:391
 msgid "Imagify installed! Click here to start using it."
 msgstr "Imagify yüklendi! Kullanmaya başlamak için buraya tıklayın."
+
+#: inc/Dependencies/WPMedia/PluginFamily/Controller/PluginFamily.php:501
+msgid "Dismissed."
+msgstr "Vazgeçildi."
 
 #: inc/Dependencies/WPMedia/PluginFamily/Model/PluginFamily.php:66
 msgid "Activated"
@@ -940,7 +945,7 @@ msgstr ""
 " uyum sağlamak için Google Gold Sertifikalı İş Ortağı."
 
 #. translators: %1$is = Plugin Name.
-#: inc/Dependencies/WPMedia/PluginFamily/View/promote-imagify-uploader.php:10
+#: inc/Dependencies/WPMedia/PluginFamily/View/promote-imagify-uploader.php:15
 #, php-format
 msgid ""
 "%1$s recommends you to optimize your images for even better website "
@@ -949,7 +954,7 @@ msgstr ""
 "%1$s, daha iyi web sitesi performansı için resimlerinizi en uygun hale "
 "getirmenizi önerir."
 
-#: inc/Dependencies/WPMedia/PluginFamily/View/promote-imagify-uploader.php:15
+#: inc/Dependencies/WPMedia/PluginFamily/View/promote-imagify-uploader.php:20
 msgid "Install Imagify Plugin"
 msgstr "Imagify Eklentisini Yükle"
 
