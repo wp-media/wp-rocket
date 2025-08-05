@@ -49,6 +49,8 @@ class ServiceProvider extends AbstractServiceProvider {
 				[
 					'517e881edc2636e99a2ecf013d8134d3',
 					'WP Rocket ' . rocket_get_constant( 'WP_ROCKET_VERSION', '' ),
+					'WP Media',
+					'WP Rocket',
 				]
 			);
 		$this->getContainer()->add( 'tracking', Tracking::class )
