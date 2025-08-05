@@ -845,7 +845,7 @@ msgstr "Imagify yüklendi! Kullanmaya başlamak için buraya tıklayın."
 
 #: inc/Dependencies/WPMedia/PluginFamily/Controller/PluginFamily.php:501
 msgid "Dismissed."
-msgstr "Vazgeçildi."
+msgstr "Yoksayıldı."
 
 #: inc/Dependencies/WPMedia/PluginFamily/Model/PluginFamily.php:66
 msgid "Activated"
