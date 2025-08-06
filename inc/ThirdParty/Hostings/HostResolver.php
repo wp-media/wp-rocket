@@ -44,7 +44,15 @@ class HostResolver {
 			}
 		}
 
-		if ( isset( $_SERVER['cw_allowed_ip'] ) ) {
+		if (
+			(
+				isset( $_SERVER['DOCUMENT_ROOT'] )
+				&&
+				str_contains( sanitize_text_field( wp_unslash( $_SERVER['DOCUMENT_ROOT'] ) ), '.cloudwaysapps.com/' )
+			)
+			||
+			isset( $_SERVER['cw_allowed_ip'] )
+		) {
 			self::$hostname = 'cloudways';
 
 			return 'cloudways';

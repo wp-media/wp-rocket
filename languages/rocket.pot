@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the WP Rocket plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.19.2\n"
+"Project-Id-Version: WP Rocket 3.19.3-beta\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
 "Last-Translator: WP Media (http://wp-rocket.me/)\n"
 "Language-Team: WP Media (http://www.transifex.com/projects/p/wp-media/) <contact@wp-media.me>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-07-16T12:58:45+00:00\n"
+"POT-Creation-Date: 2025-08-06T08:03:23+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: rocket\n"
@@ -707,12 +707,17 @@ msgstr ""
 msgid "Documentation"
 msgstr ""
 
-#: inc/Dependencies/WPMedia/PluginFamily/Controller/PluginFamily.php:371
+#: inc/Dependencies/WPMedia/PluginFamily/Controller/PluginFamily.php:378
+#: inc/Dependencies/WPMedia/PluginFamily/Controller/PluginFamily.php:497
 msgid "Not Allowed"
 msgstr ""
 
-#: inc/Dependencies/WPMedia/PluginFamily/Controller/PluginFamily.php:384
+#: inc/Dependencies/WPMedia/PluginFamily/Controller/PluginFamily.php:391
 msgid "Imagify installed! Click here to start using it."
+msgstr ""
+
+#: inc/Dependencies/WPMedia/PluginFamily/Controller/PluginFamily.php:501
+msgid "Dismissed."
 msgstr ""
 
 #: inc/Dependencies/WPMedia/PluginFamily/Model/PluginFamily.php:66
@@ -784,12 +789,12 @@ msgid "One of the easiest, most comprehensive, and popular cookie consent plugin
 msgstr ""
 
 #. translators: %1$is = Plugin Name.
-#: inc/Dependencies/WPMedia/PluginFamily/View/promote-imagify-uploader.php:10
+#: inc/Dependencies/WPMedia/PluginFamily/View/promote-imagify-uploader.php:15
 #, php-format
 msgid "%1$s recommends you to optimize your images for even better website performance."
 msgstr ""
 
-#: inc/Dependencies/WPMedia/PluginFamily/View/promote-imagify-uploader.php:15
+#: inc/Dependencies/WPMedia/PluginFamily/View/promote-imagify-uploader.php:20
 msgid "Install Imagify Plugin"
 msgstr ""
 
