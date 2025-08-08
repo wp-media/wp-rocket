@@ -53,11 +53,11 @@ class Test_RemoveAllCompletedRows extends TestCase {
 			$this->assertNotFalse( $item_id );
 		}
 
-		// Verify initial count.
+		// Verify initial count (bypass cache to avoid stale values).
 		$initial_count = $pm_query->query( [
 			'number' => 999,
 			'count' => true,
-		] );
+		], false );
 		$this->assertEquals( count( $config['items'] ), $initial_count );
 
 		// Remove all completed rows.
@@ -76,20 +76,20 @@ class Test_RemoveAllCompletedRows extends TestCase {
 
 		// Only check remaining count if table still exists.
 		if ( ! isset( $config['uninstall_table'] ) || ! $config['uninstall_table'] ) {
-			// Verify remaining count.
+			// Verify remaining count (bypass cache to avoid stale values).
 			$remaining_count = $pm_query->query( [
 				'number' => 999,
 				'count' => true,
-			] );
+			], false );
 			$this->assertEquals( $expected['remaining_count'], $remaining_count );
 
 			// Verify specific statuses if needed.
 			if ( isset( $expected['remaining_statuses'] ) ) {
+				// Fetch full rows so we can pluck 'status' reliably
 				$remaining_items = $pm_query->query( [
 					'number' => 999,
-					'fields' => 'status',
-				] );
-				$remaining_statuses = array_column( $remaining_items, 'status' );
+				], false );
+				$remaining_statuses = array_map( function( $item ) { return $item->status; }, $remaining_items );
 				sort( $remaining_statuses );
 				sort( $expected['remaining_statuses'] );
 				$this->assertEquals( $expected['remaining_statuses'], $remaining_statuses );
@@ -125,7 +125,11 @@ class Test_RemoveAllCompletedRows extends TestCase {
 		$pm_table = $container->get( 'pm_table' );
 
 		if ( $pm_table && $pm_table->exists() ) {
+			global $wpdb;
+			$prev = $wpdb->suppress_errors();
+			$wpdb->suppress_errors( true );
 			$pm_table->uninstall();
+			$wpdb->suppress_errors( $prev );
 		}
 	}
 }

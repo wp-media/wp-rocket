@@ -92,9 +92,13 @@ class PerformanceMonitoring extends Query {
 
 		$delete_interval = $this->cleanup_interval;
 
-		$prefixed_table_name = $db->prefix . $this->table_name;
-		$query               = "DELETE FROM `$prefixed_table_name` WHERE status = 'failed' OR `last_accessed` <= date_sub(now(), interval $delete_interval month)";
-		$rows_affected       = $db->query( $query );
+		// Use table class naming helper for consistency with prefixes.
+		$prefixed_table_name = $this->table_name;
+		if ( property_exists( $db, 'prefix' ) && ! empty( $db->prefix ) ) {
+			$prefixed_table_name = $db->prefix . $this->table_name;
+		}
+		$query         = "DELETE FROM `$prefixed_table_name` WHERE status = 'failed' OR `last_accessed` <= date_sub(now(), interval $delete_interval month)";
+		$rows_affected = $db->query( $query );
 
 		return $rows_affected;
 	}

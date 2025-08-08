@@ -34,7 +34,8 @@ return [
 				],
 			],
 			'expected' => [
-				'remaining_count' => 4, // Temporary - method not working correctly
+				'remaining_count' => 2,
+				'remaining_statuses' => ['pending', 'in-progress'],
 			],
 		],
 		'allCompletedFailed' => [
@@ -57,7 +58,7 @@ return [
 				],
 			],
 			'expected' => [
-				'remaining_count' => 2, // Temporary - method not working correctly
+				'remaining_count' => 0,
 			],
 		],
 		'nothingToRemove' => [

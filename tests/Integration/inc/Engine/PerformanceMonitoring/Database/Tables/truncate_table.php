@@ -62,7 +62,7 @@ class Test_TruncateTable extends TestCase {
 			$initial_count = $pm_query->query( [
 				'number' => 999,
 				'count' => true,
-			] );
+			], false );
 			$this->assertEquals( count( $config['items'] ), $initial_count );
 		}
 
@@ -83,7 +83,7 @@ class Test_TruncateTable extends TestCase {
 				$remaining_count = $pm_query->query( [
 					'number' => 999,
 					'count' => true,
-				] );
+				], false );
 				$this->assertEquals( $expected['remaining_count'], $remaining_count );
 			}
 		}
@@ -117,7 +117,11 @@ class Test_TruncateTable extends TestCase {
 		$pm_table = $container->get( 'pm_table' );
 
 		if ( $pm_table && $pm_table->exists() ) {
+			global $wpdb;
+			$prev = $wpdb->suppress_errors();
+			$wpdb->suppress_errors( true );
 			$pm_table->uninstall();
+			$wpdb->suppress_errors( $prev );
 		}
 	}
 }

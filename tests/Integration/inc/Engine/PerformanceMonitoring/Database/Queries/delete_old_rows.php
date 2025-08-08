@@ -75,7 +75,7 @@ class Test_DeleteOldRows extends TestCase {
 			$initial_count = $pm_query->query( [
 				'number' => 999,
 				'count' => true,
-			] );
+			], false );
 			$this->assertEquals( count( $config['items'] ), $initial_count );
 		}
 
@@ -106,7 +106,7 @@ class Test_DeleteOldRows extends TestCase {
 				$remaining_count = $pm_query->query( [
 					'number' => 999,
 					'count' => true,
-				] );
+				], false );
 				
 				if ( is_string( $expected['remaining_count'] ) ) {
 					// Handle operators.
@@ -124,7 +124,7 @@ class Test_DeleteOldRows extends TestCase {
 				$remaining_items = $pm_query->query( [
 					'number' => 999,
 					'fields' => 'url',
-				] );
+				], false );
 				$remaining_urls = array_column( $remaining_items, 'url' );
 				sort( $remaining_urls );
 				sort( $expected['remaining_urls'] );
@@ -136,7 +136,7 @@ class Test_DeleteOldRows extends TestCase {
 				$remaining_items = $pm_query->query( [
 					'number' => 999,
 					'fields' => 'test_id',
-				] );
+				], false );
 				$remaining_test_ids = array_column( $remaining_items, 'test_id' );
 				$this->assertContains( $expected['remaining_test_id'], $remaining_test_ids );
 			}
@@ -145,7 +145,7 @@ class Test_DeleteOldRows extends TestCase {
 			if ( isset( $expected['no_failed_status'] ) && $expected['no_failed_status'] ) {
 				$remaining_items = $pm_query->query( [
 					'number' => 999,
-				] );
+				], false );
 				$failed_items = array_filter( $remaining_items, function( $item ) {
 					return $item->status === 'failed';
 				});
@@ -182,7 +182,11 @@ class Test_DeleteOldRows extends TestCase {
 		$pm_table = $container->get( 'pm_table' );
 
 		if ( $pm_table && $pm_table->exists() ) {
+			global $wpdb;
+			$prev = $wpdb->suppress_errors();
+			$wpdb->suppress_errors( true );
 			$pm_table->uninstall();
+			$wpdb->suppress_errors( $prev );
 		}
 	}
 }

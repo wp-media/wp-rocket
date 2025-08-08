@@ -87,7 +87,7 @@ class PerformanceMonitoring extends AbstractTable {
 			return false;
 		}
 
-		$prefixed_table_name = $this->apply_prefix( $this->table_name );
+		$prefixed_table_name = $this->get_name();
 		return $db->query( "DELETE FROM `$prefixed_table_name` WHERE status IN ( 'failed', 'completed' )" );
 	}
 
