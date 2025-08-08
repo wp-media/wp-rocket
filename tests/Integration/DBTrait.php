@@ -72,6 +72,13 @@ trait DBTrait {
 		return $preconnect_external_domains->add_item( $resource );
 	}
 
+	public static function addPerformanceMonitoring(array $resource) {
+		$container = apply_filters( 'rocket_container', null );
+		$pm_query = $container->get( 'pm_query' );
+
+		return $pm_query->add_item( $resource );
+	}
+
 	public static function installFresh() {
 		$container = apply_filters( 'rocket_container', null );
 
@@ -95,6 +102,9 @@ trait DBTrait {
 
 		$preconnect_external_domains_table = $container->get( 'preconnect_external_domains_table' );
 		$preconnect_external_domains_table->install();
+
+		$pm_table = $container->get( 'pm_table' );
+		$pm_table->install();
 	}
 
 	public static function installUsedCssTable() {
@@ -151,6 +161,15 @@ trait DBTrait {
 		}
 	}
 
+	public static function installPerformanceMonitoringTable() {
+		$container = apply_filters( 'rocket_container', null );
+		$pm_table = $container->get( 'pm_table' );
+
+		if ( ! $pm_table->exists() ) {
+			$pm_table->install();
+		}
+	}
+
 	public static function uninstallAll() {
 		$container           = apply_filters( 'rocket_container', null );
 		$rucss_usedcss_table = $container->get( 'rucss_usedcss_table' );
@@ -182,6 +201,11 @@ trait DBTrait {
 		$preconnect_external_domains_table = $container->get( 'preconnect_external_domains_table' );
 		if ( $preconnect_external_domains_table->exists() ) {
 			$preconnect_external_domains_table->uninstall();
+		}
+
+		$pm_table = $container->get( 'pm_table' );
+		if ( $pm_table->exists() ) {
+			$pm_table->uninstall();
 		}
 	}
 
@@ -235,6 +259,15 @@ trait DBTrait {
 		}
 	}
 
+	public static function uninstallPerformanceMonitoringTable() {
+		$container = apply_filters( 'rocket_container', null );
+		$pm_table = $container->get( 'pm_table' );
+
+		if ( $pm_table->exists() ) {
+			$pm_table->uninstall();
+		}
+	}
+
 	public static function removeDBHooks() {
 		$container           = apply_filters( 'rocket_container', null );
 
@@ -245,6 +278,7 @@ trait DBTrait {
 			$container->get( 'lrc_table' ),
 			$container->get( 'preload_fonts_table' ),
 			$container->get( 'preconnect_external_domains_table' ),
+			$container->get( 'pm_table' ),
 		];
 
 		foreach ( $tables as $table ) {
