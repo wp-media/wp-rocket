@@ -59,6 +59,7 @@ use WP_Rocket\Engine\Media\Fonts\ServiceProvider as MediaFontsServiceProvider;
 use WP_Rocket\Engine\Media\PreloadFonts\ServiceProvider as PreloadFontsServiceProvider;
 use WP_Rocket\Engine\Media\PreconnectExternalDomains\ServiceProvider as PreconnectExternalDomainsServiceProvider;
 use WP_Rocket\Engine\Tracking\ServiceProvider as TrackingServiceProvider;
+use WP_Rocket\Engine\PerformanceMonitoring\ServiceProvider as PerformanceMonitoringServiceProvider;
 
 /**
  * Plugin Manager.
@@ -312,6 +313,7 @@ class Plugin {
 		$this->container->addServiceProvider( new PreloadFontsServiceProvider() );
 		$this->container->addServiceProvider( new ThirdPartyServiceProvider() );
 		$this->container->addServiceProvider( new PreconnectExternalDomainsServiceProvider() );
+		$this->container->addServiceProvider( new PerformanceMonitoringServiceProvider() );
 
 		$common_subscribers = [
 			'license_subscriber',
