@@ -35,6 +35,13 @@ class PerformanceMonitoring extends Query {
 	 */
 	protected $table_schema = PerformanceMonitoringSchema::class;
 
+	/**
+	 * Cleanup interval in months.
+	 *
+	 * @var   int
+	 */
+	protected $cleanup_interval = 3;
+
 		/** Item ******************************************************************/
 
 	/**
