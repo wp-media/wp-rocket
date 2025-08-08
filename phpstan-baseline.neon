@@ -481,6 +481,11 @@ parameters:
 			path: inc/Engine/Optimization/RUCSS/Jobs/Manager.php
 
 		-
+			message: "#^Call to function property_exists\\(\\) with wpdb and 'prefix' will always evaluate to true\\.$#"
+			count: 1
+			path: inc/Engine/PerformanceMonitoring/Database/Queries/PerformanceMonitoring.php
+
+		-
 			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: inc/Engine/PerformanceMonitoring/Database/Tables/PerformanceMonitoring.php
