@@ -9,15 +9,15 @@ class PerformanceMonitoring extends Schema {
 
 	/**
 	 * Array of database column objects
-	 * 
+	 *
 	 * @var array
 	 */
 	public $columns = [
 		// ID Column.
 		[
-			'name' => 'id',
-			'type' => 'bigint',
-			'length' => 20,
+			'name'     => 'id',
+			'type'     => 'bigint',
+			'length'   => 20,
 			'unsigned' => true,
 			'extra'    => 'auto_increment',
 			'primary'  => true,
@@ -46,12 +46,12 @@ class PerformanceMonitoring extends Schema {
 		// TEST_ID Column.
 		[
 			'name'       => 'test_id',
-			'type' => 'varchar',
-			'length' => '255',
-			'default' => '',
-			'cache_key' => true,
+			'type'       => 'varchar',
+			'length'     => '255',
+			'default'    => '',
+			'cache_key'  => true,
 			'searchable' => true,
-			'sortable' => true,
+			'sortable'   => true,
 		],
 		// error_message column.
 		[
@@ -72,7 +72,7 @@ class PerformanceMonitoring extends Schema {
 			'searchable' => true,
 			'sortable'   => false,
 		],
-		// DATA Column
+		// DATA Column.
 		[
 			'name'       => 'data',
 			'type'       => 'longtext',

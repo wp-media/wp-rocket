@@ -71,34 +71,33 @@ class PerformanceMonitoring extends Row {
 
 	/**
 	 * Constructor
-	 * 
-	 * @param mixed $item
+	 *
+	 * @param mixed $item Object Row.
 	 */
 	public function __construct( $item ) {
 		parent::__construct( $item );
 
-		$this->id			 = (int) $item->id;
-		$this->url			 = (string) $item->url;
-		$this->is_mobile	 = (bool) $item->is_mobile;
-		$this->test_id		 = (string) $item->test_id;
-		$this->error_message  = (string) $item->error_message;
-		$this->status		 = (string) $item->status;
-		$this->data			 = (string) $item->data;
-		$this->modified		 = (int) $item->modified;
-		$this->last_accessed	 = (int) $item->last_accessed;
+		$this->id            = (int) $item->id;
+		$this->url           = (string) $item->url;
+		$this->is_mobile     = (bool) $item->is_mobile;
+		$this->test_id       = (string) $item->test_id;
+		$this->error_message = (string) $item->error_message;
+		$this->status        = (string) $item->status;
+		$this->data          = (string) $item->data;
+		$this->modified      = (int) $item->modified;
+		$this->last_accessed = (int) $item->last_accessed;
 	}
 
 	/**
 	 * Checks if the object has a valid result value.
-	 * 
+	 *
 	 * @return bool Returns true if the object's status is 'completed' and the result is not empty, false otherwise
 	 */
-	public function has_result() : bool {
+	public function has_result(): bool {
 		if ( 'completed' !== $this->status ) {
 			return false;
 		}
-		
+
 		return ! empty( $this->data );
 	}
-
 }

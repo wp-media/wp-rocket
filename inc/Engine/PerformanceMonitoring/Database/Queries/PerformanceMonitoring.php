@@ -12,11 +12,11 @@ class PerformanceMonitoring extends Query {
 
 	/**
 	 * Name of the database table to query.
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $table_name = 'wpr_performance_monitoring';
-	
+
 	/**
 	 * String used to alias the database table in MySQL statement.
 	 *
@@ -70,10 +70,10 @@ class PerformanceMonitoring extends Query {
 
 
 		/**
-	 * Delete all rows which were not accessed in the last month.
-	 *
-	 * @return bool|int
-	 */
+		 * Delete all rows which were not accessed in the last month.
+		 *
+		 * @return bool|int
+		 */
 	public function delete_old_rows() {
 		// Get the database interface.
 		$db = $this->get_db();
@@ -91,5 +91,4 @@ class PerformanceMonitoring extends Query {
 
 		return $rows_affected;
 	}
-
 }
