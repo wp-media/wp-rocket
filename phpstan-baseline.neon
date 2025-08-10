@@ -61,6 +61,16 @@ parameters:
 			path: inc/Engine/Admin/Metaboxes/PostEditOptionsSubscriber.php
 
 		-
+			message: "#^Call to function property_exists\\(\\) with wpdb and 'prefix' will always evaluate to true\\.$#"
+			count: 1
+			path: inc/Engine/Admin/PerformanceMonitoring/Database/Queries/PerformanceMonitoring.php
+
+		-
+			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: inc/Engine/Admin/PerformanceMonitoring/Database/Tables/PerformanceMonitoring.php
+
+		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 12
 			path: inc/Engine/Admin/Settings/Page.php
@@ -486,6 +496,16 @@ parameters:
 			path: inc/Engine/PerformanceMonitoring/Database/Queries/PerformanceMonitoring.php
 
 		-
+			message: "#^Class WP_Rocket\\\\Engine\\\\PerformanceMonitoring\\\\Database\\\\Rows\\\\PerformanceMonitoring not found\\.$#"
+			count: 1
+			path: inc/Engine/PerformanceMonitoring/Database/Queries/PerformanceMonitoring.php
+
+		-
+			message: "#^Class WP_Rocket\\\\Engine\\\\PerformanceMonitoring\\\\Database\\\\Schemas\\\\PerformanceMonitoring not found\\.$#"
+			count: 1
+			path: inc/Engine/PerformanceMonitoring/Database/Queries/PerformanceMonitoring.php
+
+		-
 			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: inc/Engine/PerformanceMonitoring/Database/Tables/PerformanceMonitoring.php
@@ -899,6 +919,31 @@ parameters:
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/Admin/DomainChange/Subscriber/addRegenerateConfigurationAction.php
+
+		-
+			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			count: 29
+			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/Database/Queries/delete_old_rows.php
+
+		-
+			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			count: 29
+			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/Database/Tables/remove_all_completed_rows.php
+
+		-
+			message: "#^Method WP_Rocket\\\\Tests\\\\Integration\\\\inc\\\\Engine\\\\Admin\\\\PerformanceMonitoring\\\\Database\\\\Tables\\\\Test_TruncateTable\\:\\:truncatePerformanceMonitoringTable\\(\\) is unused\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/Database/Tables/truncate_table.php
+
+		-
+			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			count: 29
+			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/Database/Tables/truncate_table.php
+
+		-
+			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			count: 4
+			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/serviceProvider.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
@@ -1671,26 +1716,6 @@ parameters:
 			path: tests/Integration/inc/Engine/PerformanceMonitoring/Database/Queries/delete_old_rows.php
 
 		-
-			message: "#^Call to method PHPUnit\\\\Framework\\\\Assert\\:\\:assertIsBool\\(\\) with bool will always evaluate to true\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/PerformanceMonitoring/Database/Rows/has_result.php
-
-		-
-			message: "#^Call to method PHPUnit\\\\Framework\\\\Assert\\:\\:assertIsInt\\(\\) with int will always evaluate to true\\.$#"
-			count: 3
-			path: tests/Integration/inc/Engine/PerformanceMonitoring/Database/Rows/has_result.php
-
-		-
-			message: "#^Call to method PHPUnit\\\\Framework\\\\Assert\\:\\:assertIsString\\(\\) with string will always evaluate to true\\.$#"
-			count: 5
-			path: tests/Integration/inc/Engine/PerformanceMonitoring/Database/Rows/has_result.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 29
-			path: tests/Integration/inc/Engine/PerformanceMonitoring/Database/Rows/has_result.php
-
-		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 29
 			path: tests/Integration/inc/Engine/PerformanceMonitoring/Database/Tables/remove_all_completed_rows.php
@@ -1704,11 +1729,6 @@ parameters:
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 29
 			path: tests/Integration/inc/Engine/PerformanceMonitoring/Database/Tables/truncate_table.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 4
-			path: tests/Integration/inc/Engine/PerformanceMonitoring/serviceProvider.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
