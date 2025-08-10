@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace WP_Rocket\Engine\PerformanceMonitoring\Database\Rows;
+namespace WP_Rocket\Engine\Admin\PerformanceMonitoring\Database\Rows;
 
 use WP_Rocket\Dependencies\BerlinDB\Database\Row;
 

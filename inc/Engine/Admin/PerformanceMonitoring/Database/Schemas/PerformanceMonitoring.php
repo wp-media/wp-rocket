@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace WP_Rocket\Engine\PerformanceMonitoring\Database\Schemas;
+namespace WP_Rocket\Engine\Admin\PerformanceMonitoring\Database\Schemas;
 
 use WP_Rocket\Dependencies\BerlinDB\Database\Schema;
 

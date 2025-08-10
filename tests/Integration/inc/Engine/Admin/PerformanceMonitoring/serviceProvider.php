@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\PerformanceMonitoring;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\PerformanceMonitoring;
 
-use WP_Rocket\Engine\PerformanceMonitoring\Database\Queries\PerformanceMonitoring as PMQuery;
-use WP_Rocket\Engine\PerformanceMonitoring\Database\Tables\PerformanceMonitoring as PMTable;
-use WP_Rocket\Engine\PerformanceMonitoring\ServiceProvider;
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\Database\Queries\PerformanceMonitoring as PMQuery;
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\Database\Tables\PerformanceMonitoring as PMTable;
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\ServiceProvider;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * Test class covering \WP_Rocket\Engine\PerformanceMonitoring\ServiceProvider
+ * Test class covering \WP_Rocket\Engine\Admin\PerformanceMonitoring\ServiceProvider
  *
  * @group PerformanceMonitoring
  */

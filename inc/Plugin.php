@@ -59,7 +59,7 @@ use WP_Rocket\Engine\Media\Fonts\ServiceProvider as MediaFontsServiceProvider;
 use WP_Rocket\Engine\Media\PreloadFonts\ServiceProvider as PreloadFontsServiceProvider;
 use WP_Rocket\Engine\Media\PreconnectExternalDomains\ServiceProvider as PreconnectExternalDomainsServiceProvider;
 use WP_Rocket\Engine\Tracking\ServiceProvider as TrackingServiceProvider;
-use WP_Rocket\Engine\PerformanceMonitoring\ServiceProvider as PerformanceMonitoringServiceProvider;
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\ServiceProvider as PerformanceMonitoringServiceProvider;
 
 /**
  * Plugin Manager.

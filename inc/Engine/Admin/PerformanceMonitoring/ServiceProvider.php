@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace WP_Rocket\Engine\PerformanceMonitoring;
+namespace WP_Rocket\Engine\Admin\PerformanceMonitoring;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
-use WP_Rocket\Engine\PerformanceMonitoring\Database\Tables\PerformanceMonitoring as PMTable;
-use WP_Rocket\Engine\PerformanceMonitoring\Database\Queries\PerformanceMonitoring as PMQuery;
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\Database\Tables\PerformanceMonitoring as PMTable;
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\Database\Queries\PerformanceMonitoring as PMQuery;
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
