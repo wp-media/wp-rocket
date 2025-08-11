@@ -20,6 +20,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	protected $provides = [
 		'pm_table',
 		'pm_query',
+		'pm_subscriber',
 	];
 
 	/**
@@ -41,6 +42,9 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function register(): void {
 		$this->getContainer()->addShared( 'pm_table', PMTable::class );
 		$this->getContainer()->add( 'pm_query', PMQuery::class );
+
+		// Register the subscriber
+		$this->getContainer()->addShared( 'pm_subscriber', Subscriber::class );
 
 		// Ensure the table is created.
 		$this->getContainer()->get( 'pm_table' );
