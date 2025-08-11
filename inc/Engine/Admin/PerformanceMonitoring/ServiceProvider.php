@@ -43,7 +43,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->addShared( 'pm_table', PMTable::class );
 		$this->getContainer()->add( 'pm_query', PMQuery::class );
 
-		// Register the subscriber
+		// Register the subscriber.
 		$this->getContainer()->addShared( 'pm_subscriber', Subscriber::class );
 
 		// Ensure the table is created.

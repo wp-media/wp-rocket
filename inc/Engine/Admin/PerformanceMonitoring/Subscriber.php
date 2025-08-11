@@ -23,7 +23,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function on_init(): void {
-		// Basic initialization - the table creation is handled by the ServiceProvider
-		// This subscriber exists primarily to ensure the ServiceProvider is loaded
+		// Basic initialization - the table creation is handled by the ServiceProvider.
+		// This subscriber exists primarily to ensure the ServiceProvider is loaded.
 	}
 }
