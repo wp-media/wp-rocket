@@ -122,7 +122,7 @@ class PerformanceMonitoring extends Query {
 			'last_accessed' => gmdate( 'Y-m-d H:i:s' ),
 		];
 
-		/** @var int|false $result */
+		/** @var int|false $result result. */
 		$result = $this->add_item( $data );
 		return $result;
 	}
