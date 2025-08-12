@@ -5,7 +5,7 @@ namespace WP_Rocket\Engine\Admin\PerformanceMonitoring\Activation;
 
 use WP_Rocket\Engine\Activation\ActivationInterface;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Queue\Queue;
-use WP_Rocket\Engine\Admin\PerformanceMonitoring\Context\PerformanceMonitoringContext;
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\Context\ActivationContext;
 use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
 
@@ -27,17 +27,17 @@ class Activation implements ActivationInterface, LoggerAwareInterface {
 	/**
 	 * Context instance.
 	 *
-	 * @var PerformanceMonitoringContext
+	 * @var ActivationContext
 	 */
 	private $context;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param Queue                         $queue Queue instance.
-	 * @param PerformanceMonitoringContext $context Context instance.
+	 * @param Queue             $queue Queue instance.
+	 * @param ActivationContext $context Context instance.
 	 */
-	public function __construct( Queue $queue, PerformanceMonitoringContext $context ) {
+	public function __construct( Queue $queue, ActivationContext $context ) {
 		$this->queue   = $queue;
 		$this->context = $context;
 	}
@@ -58,10 +58,10 @@ class Activation implements ActivationInterface, LoggerAwareInterface {
 		error_log( 'Performance Monitoring: Activation triggered' );
 		$this->logger::debug( 'Performance Monitoring: Activation triggered' );
 
-		// Check if feature is allowed
-		if ( ! $this->context->is_allowed() ) {
-			error_log( 'Performance Monitoring: Feature not allowed, skipping tests' );
-			$this->logger::debug( 'Performance Monitoring: Feature not allowed, skipping tests' );
+		// Check if we should run homepage tests (includes first install and allowed checks)
+		if ( ! $this->context->should_run_homepage_tests() ) {
+			error_log( 'Performance Monitoring: Homepage tests not allowed, skipping' );
+			$this->logger::debug( 'Performance Monitoring: Homepage tests not allowed, skipping' );
 			return;
 		}
 

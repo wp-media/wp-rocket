@@ -12,6 +12,8 @@ use WP_Rocket\Engine\Admin\PerformanceMonitoring\Jobs\Factory as PMFactory;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Jobs\Manager as PMManager;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Queue\Queue as PMQueue;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Queue\Processor as PMProcessor;
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\Activation\Activation as PMActivation;
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\Context\ActivationContext as PMActivationContext;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Subscriber;
 
 class ServiceProvider extends AbstractServiceProvider {
@@ -33,6 +35,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		'pm_factory',
 		'pm_queue',
 		'pm_processor',
+		'pm_activation',
+		'pm_activation_context',
 		'pm_subscriber',
 	];
 
@@ -89,6 +93,17 @@ class ServiceProvider extends AbstractServiceProvider {
 				'pm_api_client',
 				'pm_queue',
 				'pm_query',
+			] );
+
+		// Activation context
+		$this->getContainer()->add( 'pm_activation_context', PMActivationContext::class )
+			->addArgument( 'options' );
+
+		// Activation
+		$this->getContainer()->add( 'pm_activation', PMActivation::class )
+			->addArguments( [
+				'pm_queue',
+				'pm_activation_context',
 			] );
 
 		// Subscriber

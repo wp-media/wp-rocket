@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Admin\PerformanceMonitoring\Activation;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
-use WP_Rocket\Engine\Admin\PerformanceMonitoring\Context\PerformanceMonitoringContext;
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\Context\ActivationContext;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Queue\Queue as PMQueue;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Activation\Activation as PMActivation;
 
@@ -44,11 +44,10 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register(): void {
-		// Context for activation
-		$this->getContainer()->add( 'pm_activation_context', PerformanceMonitoringContext::class )
-			->addArgument( 'options' );
+		// Context for activation - minimal version without dependencies
+		$this->getContainer()->add( 'pm_activation_context', ActivationContext::class );
 
-		// Queue for activation
+		// Queue for activation - minimal version without dependencies
 		$this->getContainer()->add( 'pm_activation_queue', PMQueue::class );
 
 		// Activation class
