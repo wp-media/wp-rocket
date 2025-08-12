@@ -11,7 +11,7 @@ use WP_Rocket\Tests\Integration\TestCase;
 /**
  * Test class covering \WP_Rocket\Engine\Admin\PerformanceMonitoring\ServiceProvider
  *
- * @group PerformanceMonitoring
+ * @group PerformanceMonitoring AdminOnly
  */
 class Test_ServiceProvider extends TestCase {
 

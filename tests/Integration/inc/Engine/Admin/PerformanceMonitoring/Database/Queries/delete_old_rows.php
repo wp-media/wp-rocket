@@ -9,7 +9,7 @@ use WP_Rocket\Tests\Integration\TestCase;
 /**
  * Test class covering \WP_Rocket\Engine\Admin\PerformanceMonitoring\Database\Queries\PerformanceMonitoring::delete_old_rows
  *
- * @group PerformanceMonitoring
+ * @group PerformanceMonitoring AdminOnly
  */
 class Test_DeleteOldRows extends TestCase {
 	use DBTrait;

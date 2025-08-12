@@ -9,7 +9,7 @@ use WP_Rocket\Tests\Integration\TestCase;
 /**
  * Test class covering \WP_Rocket\Engine\Admin\PerformanceMonitoring\Database\Rows\PerformanceMonitoring::has_result
  *
- * @group PerformanceMonitoring
+ * @group PerformanceMonitoring AdminOnly
  */
 class Test_HasResult extends TestCase {
 
