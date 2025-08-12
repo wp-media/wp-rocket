@@ -203,6 +203,9 @@ trait DBTrait {
 			$preconnect_external_domains_table->uninstall();
 		}
 
+		if ( ! $container->has( 'pm_table' ) ) {
+			return;
+		}
 		$pm_table = $container->get( 'pm_table' );
 		if ( $pm_table->exists() ) {
 			$pm_table->uninstall();
@@ -280,6 +283,9 @@ trait DBTrait {
 			$container->get( 'preconnect_external_domains_table' ),
 			$container->get( 'pm_table' ),
 		];
+		if ( $container->has( 'pm_table' ) ) {
+			$tables[] = $container->get( 'pm_table' );
+		}
 
 		foreach ( $tables as $table ) {
 			self::forceRemoveTableAdminInitHooks( 'init', get_class( $table ), 'maybe_upgrade', 10 );

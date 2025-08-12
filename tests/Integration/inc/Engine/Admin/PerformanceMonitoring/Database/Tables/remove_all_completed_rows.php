@@ -10,6 +10,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  * Test class covering \WP_Rocket\Engine\Admin\PerformanceMonitoring\Database\Tables\PerformanceMonitoring::remove_all_completed_rows
  *
  * @group PerformanceMonitoring
+ * @group AdminOnly
  */
 class Test_RemoveAllCompletedRows extends TestCase {
 	use DBTrait;
