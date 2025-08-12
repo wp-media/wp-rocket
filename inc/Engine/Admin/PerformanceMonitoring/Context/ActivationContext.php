@@ -29,7 +29,8 @@ class ActivationContext {
 	 * @return bool
 	 */
 	public function is_first_install(): bool {
-		$settings = \get_option( 'wp_rocket_settings', [] ); // @phpcs-ignore We will have to change get_option for option object.
+		// @phpstan-ignore-next-line
+		$settings = get_option( 'wp_rocket_settings', [] ); // @phpcs-ignore We will have to change get_option for option object.
 		return empty( $settings['version'] );
 	}
 

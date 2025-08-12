@@ -28,9 +28,9 @@ class Client extends AbstractAPIClient implements LoggerAwareInterface {
 	 *
 	 * @param string $url The URL to test.
 	 * @param array  $options Test options (device, location, etc.).
-	 * @return array|WP_Error
+	 * @return array|\WP_Error
 	 */
-	public function initiate_test( string $url, array $options = [] ): array {
+	public function initiate_test( string $url, array $options = [] ) {
 		$this->request_path = 'performance-test/initiate';
 
 		// Default options.
@@ -111,9 +111,9 @@ class Client extends AbstractAPIClient implements LoggerAwareInterface {
 	 * Get the status of a performance test.
 	 *
 	 * @param string $test_id The external test ID.
-	 * @return array|WP_Error
+	 * @return array|\WP_Error
 	 */
-	public function get_test_status( string $test_id ): array {
+	public function get_test_status( string $test_id ) {
 		$this->request_path = "performance-test/{$test_id}/status";
 
 		$args = [

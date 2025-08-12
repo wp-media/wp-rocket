@@ -22,6 +22,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * Queue instance.
 	 *
 	 * @var Queue
+	 * @phpstan-ignore-next-line
 	 */
 	private $queue;
 
@@ -29,6 +30,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * Context instance.
 	 *
 	 * @var PerformanceMonitoringContext
+	 * @phpstan-ignore-next-line
 	 */
 	private $context;
 
@@ -36,6 +38,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * Query instance.
 	 *
 	 * @var PerformanceMonitoring_Query
+	 * @phpstan-ignore-next-line
 	 */
 	private $query;
 

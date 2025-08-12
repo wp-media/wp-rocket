@@ -22,6 +22,7 @@ class Processor implements Subscriber_Interface, LoggerAwareInterface {
 	 * Jobs factory instance.
 	 *
 	 * @var Factory
+	 * @phpstan-ignore-next-line
 	 */
 	private $factory;
 

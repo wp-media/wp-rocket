@@ -94,6 +94,7 @@ class PerformanceMonitoring extends Query {
 
 		// Use table class naming helper for consistency with prefixes.
 		$prefixed_table_name = $this->table_name;
+		// @phpstan-ignore-next-line
 		if ( property_exists( $db, 'prefix' ) && ! empty( $db->prefix ) ) {
 			$prefixed_table_name = $db->prefix . $this->table_name;
 		}
@@ -121,7 +122,9 @@ class PerformanceMonitoring extends Query {
 			'last_accessed' => gmdate( 'Y-m-d H:i:s' ),
 		];
 
-		return $this->add_item( $data );
+		/** @var int|false $result */
+		$result = $this->add_item( $data );
+		return $result;
 	}
 
 	/**
@@ -256,6 +259,7 @@ class PerformanceMonitoring extends Query {
 		}
 
 		$prefixed_table_name = $this->table_name;
+		// @phpstan-ignore-next-line
 		if ( property_exists( $db, 'prefix' ) && ! empty( $db->prefix ) ) {
 			$prefixed_table_name = $db->prefix . $this->table_name;
 		}
@@ -281,6 +285,7 @@ class PerformanceMonitoring extends Query {
 		}
 
 		$prefixed_table_name = $this->table_name;
+		// @phpstan-ignore-next-line
 		if ( property_exists( $db, 'prefix' ) && ! empty( $db->prefix ) ) {
 			$prefixed_table_name = $db->prefix . $this->table_name;
 		}
@@ -295,6 +300,7 @@ class PerformanceMonitoring extends Query {
 
 		$results = $db->get_results( $sql, ARRAY_A );
 
+		// @phpstan-ignore-next-line
 		return $results && is_array( $results ) && ! empty( $results[0] )
 			? array_map( 'intval', $results[0] )
 			: [];

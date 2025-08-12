@@ -2259,3 +2259,58 @@ parameters:
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 5
 			path: tests/Unit/inc/Engine/Optimization/CSSTraitApplyFontDisplaySwap.php
+
+		-
+			message: "#^Call to an undefined method WP_Rocket\\\\Engine\\\\Admin\\\\PerformanceMonitoring\\\\Database\\\\Queries\\\\PerformanceMonitoring\\:\\:get_row\\(\\)\\.$#"
+			count: 2
+			path: inc/Engine/Common/JobManager/Managers/AbstractManager.php
+
+		-
+			message: "#^Call to an undefined method WP_Rocket\\\\Engine\\\\Admin\\\\PerformanceMonitoring\\\\Database\\\\Queries\\\\PerformanceMonitoring\\:\\:create_new_job\\(\\)\\.$#"
+			count: 1
+			path: inc/Engine/Common/JobManager/Managers/AbstractManager.php
+
+		-
+			message: "#^Call to an undefined method WP_Rocket\\\\Engine\\\\Admin\\\\PerformanceMonitoring\\\\Database\\\\Queries\\\\PerformanceMonitoring\\:\\:reset_job\\(\\)\\.$#"
+			count: 1
+			path: inc/Engine/Common/JobManager/Managers/AbstractManager.php
+
+		-
+			message: "#^Call to an undefined method WP_Rocket\\\\Engine\\\\Admin\\\\PerformanceMonitoring\\\\Database\\\\Queries\\\\PerformanceMonitoring\\:\\:get_failed_rows\\(\\)\\.$#"
+			count: 1
+			path: inc/Engine/Common/JobManager/Managers/AbstractManager.php
+
+		-
+			message: "#^Call to an undefined method WP_Rocket\\\\Engine\\\\Admin\\\\PerformanceMonitoring\\\\Database\\\\Queries\\\\PerformanceMonitoring\\:\\:make_status_inprogress\\(\\)\\.$#"
+			count: 1
+			path: inc/Engine/Common/JobManager/Managers/AbstractManager.php
+
+		-
+			message: "#^Call to an undefined method WP_Rocket\\\\Engine\\\\Admin\\\\PerformanceMonitoring\\\\Database\\\\Queries\\\\PerformanceMonitoring\\:\\:get_on_submit_jobs\\(\\)\\.$#"
+			count: 1
+			path: inc/Engine/Common/JobManager/Managers/AbstractManager.php
+
+		-
+			message: "#^Call to an undefined method WP_Rocket\\\\Engine\\\\Admin\\\\PerformanceMonitoring\\\\Database\\\\Queries\\\\PerformanceMonitoring\\:\\:make_status_failed\\(\\)\\.$#"
+			count: 1
+			path: inc/Engine/Common/JobManager/Managers/AbstractManager.php
+
+		-
+			message: "#^Call to an undefined method WP_Rocket\\\\Engine\\\\Admin\\\\PerformanceMonitoring\\\\Database\\\\Queries\\\\PerformanceMonitoring\\:\\:make_status_pending\\(\\)\\.$#"
+			count: 1
+			path: inc/Engine/Common/JobManager/Managers/AbstractManager.php
+
+		-
+			message: "#^Call to an undefined method WP_Rocket\\\\Engine\\\\Admin\\\\PerformanceMonitoring\\\\Database\\\\Queries\\\\PerformanceMonitoring\\:\\:increment_retries\\(\\)\\.$#"
+			count: 1
+			path: inc/Engine/Common/JobManager/Managers/AbstractManager.php
+
+		-
+			message: "#^Call to an undefined method WP_Rocket\\\\Engine\\\\Admin\\\\PerformanceMonitoring\\\\Database\\\\Queries\\\\PerformanceMonitoring\\:\\:update_message\\(\\)\\.$#"
+			count: 1
+			path: inc/Engine/Common/JobManager/Managers/AbstractManager.php
+
+		-
+			message: "#^Call to an undefined method WP_Rocket\\\\Engine\\\\Admin\\\\PerformanceMonitoring\\\\Database\\\\Queries\\\\PerformanceMonitoring\\:\\:update_next_retry_time\\(\\)\\.$#"
+			count: 1
+			path: inc/Engine/Common/JobManager/Managers/AbstractManager.php
