@@ -112,7 +112,7 @@ class PerformanceMonitoring extends Row {
 		}
 
 		$data = json_decode( $this->data, true );
-		
+
 		return isset( $data['performance_score'] ) ? (int) $data['performance_score'] : null;
 	}
 
@@ -127,7 +127,7 @@ class PerformanceMonitoring extends Row {
 		}
 
 		$data = json_decode( $this->data, true );
-		
+
 		return $data['report_url'] ?? null;
 	}
 
@@ -160,7 +160,7 @@ class PerformanceMonitoring extends Row {
 		}
 
 		$data = json_decode( $this->data, true );
-		
+
 		return [
 			'largest_contentful_paint' => $data['largest_contentful_paint'] ?? null,
 			'total_blocking_time'      => $data['total_blocking_time'] ?? null,

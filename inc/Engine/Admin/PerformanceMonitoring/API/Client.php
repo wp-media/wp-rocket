@@ -33,7 +33,7 @@ class Client extends AbstractAPIClient implements LoggerAwareInterface {
 	public function initiate_test( string $url, array $options = [] ): array {
 		$this->request_path = 'performance-test/initiate';
 
-		// Default options
+		// Default options.
 		$default_options = [
 			'device'   => 'desktop',
 			'location' => 'auto',
@@ -42,12 +42,12 @@ class Client extends AbstractAPIClient implements LoggerAwareInterface {
 		$options = array_merge( $default_options, $options );
 
 		$args = [
-			'body' => [
+			'body'    => [
 				'url'      => $url,
-				'priority' => true, // Synchronous priority request
+				'priority' => true, // Synchronous priority request.
 				'options'  => $options,
 			],
-			'timeout' => 30, // Longer timeout for initiation
+			'timeout' => 30, // Longer timeout for initiation.
 		];
 
 		$this->logger::debug(
@@ -190,23 +190,23 @@ class Client extends AbstractAPIClient implements LoggerAwareInterface {
 		$test_data = $api_response['data']['data'];
 
 		return [
-			'gtmetrix_id'               => $test_data['gtmetrix_id'] ?? null,
-			'report_url'                => $test_data['report_url'] ?? null,
-			'performance_score'         => $test_data['performance_score'] ?? null,
-			'structure_score'           => $test_data['structure_score'] ?? null,
-			'largest_contentful_paint'  => $test_data['largest_contentful_paint'] ?? null,
-			'total_blocking_time'       => $test_data['total_blocking_time'] ?? null,
-			'cumulative_layout_shift'   => $test_data['cumulative_layout_shift'] ?? null,
-			'first_contentful_paint'    => $test_data['first_contentful_paint'] ?? null,
-			'time_to_interactive'       => $test_data['time_to_interactive'] ?? null,
-			'speed_index'               => $test_data['speed_index'] ?? null,
-			'fully_loaded_time'         => $test_data['fully_loaded_time'] ?? null,
-			'page_size'                 => $test_data['page_size'] ?? null,
-			'requests'                  => $test_data['requests'] ?? null,
-			'server_name'               => $api_response['data']['server_name'] ?? null,
-			'region_name'               => $api_response['data']['region_name'] ?? null,
-			'browser_name'              => $api_response['data']['browser_name'] ?? null,
-			'platform'                  => $api_response['data']['platform'] ?? null,
+			'gtmetrix_id'              => $test_data['gtmetrix_id'] ?? null,
+			'report_url'               => $test_data['report_url'] ?? null,
+			'performance_score'        => $test_data['performance_score'] ?? null,
+			'structure_score'          => $test_data['structure_score'] ?? null,
+			'largest_contentful_paint' => $test_data['largest_contentful_paint'] ?? null,
+			'total_blocking_time'      => $test_data['total_blocking_time'] ?? null,
+			'cumulative_layout_shift'  => $test_data['cumulative_layout_shift'] ?? null,
+			'first_contentful_paint'   => $test_data['first_contentful_paint'] ?? null,
+			'time_to_interactive'      => $test_data['time_to_interactive'] ?? null,
+			'speed_index'              => $test_data['speed_index'] ?? null,
+			'fully_loaded_time'        => $test_data['fully_loaded_time'] ?? null,
+			'page_size'                => $test_data['page_size'] ?? null,
+			'requests'                 => $test_data['requests'] ?? null,
+			'server_name'              => $api_response['data']['server_name'] ?? null,
+			'region_name'              => $api_response['data']['region_name'] ?? null,
+			'browser_name'             => $api_response['data']['browser_name'] ?? null,
+			'platform'                 => $api_response['data']['platform'] ?? null,
 		];
 	}
 }

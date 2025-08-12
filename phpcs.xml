@@ -139,4 +139,6 @@
 	</rule>
 	<!-- Enforce short array syntax: `[]` in place of `array()`. -->
 	<rule ref="Generic.Arrays.DisallowLongArraySyntax" />
+
+	<rule ref="Squiz.Commenting.InlineComment.InvalidEndChar"/>
 </ruleset>

@@ -44,17 +44,19 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register(): void {
-		// Context for activation - minimal version without dependencies
+		// Context for activation - minimal version without dependencies.
 		$this->getContainer()->add( 'pm_activation_context', ActivationContext::class );
 
-		// Queue for activation - minimal version without dependencies
+		// Queue for activation - minimal version without dependencies.
 		$this->getContainer()->add( 'pm_activation_queue', PMQueue::class );
 
-		// Activation class
+		// Activation class.
 		$this->getContainer()->add( 'pm_activation', PMActivation::class )
-			->addArguments( [
-				'pm_activation_queue',
-				'pm_activation_context',
-			] );
+			->addArguments(
+				[
+					'pm_activation_queue',
+					'pm_activation_context',
+				]
+				);
 	}
 }

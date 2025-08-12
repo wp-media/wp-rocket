@@ -42,9 +42,9 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	/**
 	 * Constructor.
 	 *
-	 * @param Queue                           $queue Queue instance.
-	 * @param PerformanceMonitoringContext    $context Context instance.
-	 * @param PerformanceMonitoring_Query     $query Query instance.
+	 * @param Queue                        $queue Queue instance.
+	 * @param PerformanceMonitoringContext $context Context instance.
+	 * @param PerformanceMonitoring_Query  $query Query instance.
 	 */
 	public function __construct( Queue $queue, PerformanceMonitoringContext $context, PerformanceMonitoring_Query $query ) {
 		$this->queue   = $queue;

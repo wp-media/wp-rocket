@@ -36,7 +36,7 @@ class PerformanceMonitoringContext implements ContextInterface {
 	 * @return bool
 	 */
 	public function is_allowed( array $data = [] ): bool {
-		// @TODO: Add a check if the user has a license
+		// @TODO: Add a check if the user has a license.
 
 		return true;
 	}
@@ -47,7 +47,7 @@ class PerformanceMonitoringContext implements ContextInterface {
 	 * @return bool
 	 */
 	public function should_process_homepage(): bool {
-		// For fresh installations, always process homepage first
+		// For fresh installations, always process homepage first.
 		return true;
 	}
 
@@ -78,12 +78,12 @@ class PerformanceMonitoringContext implements ContextInterface {
 	 * @return bool
 	 */
 	public function is_supported_environment(): bool {
-		// Don't run on localhost or development environments
+		// Don't run on localhost or development environments.
 		if ( rocket_get_constant( 'WP_ENVIRONMENT_TYPE' ) === 'development' ) {
 			return false;
 		}
 
-		// Don't run if external requests are blocked
+		// Don't run if external requests are blocked.
 		if ( rocket_get_constant( 'WP_HTTP_BLOCK_EXTERNAL', false ) ) {
 			return false;
 		}
@@ -99,16 +99,16 @@ class PerformanceMonitoringContext implements ContextInterface {
 	 */
 	public function get_test_options( array $data = [] ): array {
 		$options = [
-			'device'   => 'desktop', // Default to desktop
-			'location' => 'auto',    // Let SaaS choose optimal location
+			'device'   => 'desktop', // Default to desktop.
+			'location' => 'auto',    // Let SaaS choose optimal location.
 		];
 
-		// Allow override of device type
+		// Allow override of device type.
 		if ( ! empty( $data['device'] ) ) {
 			$options['device'] = $data['device'];
 		}
 
-		// Allow override of location
+		// Allow override of location.
 		if ( ! empty( $data['location'] ) ) {
 			$options['location'] = $data['location'];
 		}

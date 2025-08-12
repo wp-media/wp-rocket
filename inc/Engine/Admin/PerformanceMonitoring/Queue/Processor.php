@@ -49,10 +49,10 @@ class Processor implements Subscriber_Interface, LoggerAwareInterface {
 	/**
 	 * Constructor.
 	 *
-	 * @param Factory                      $factory Jobs factory.
-	 * @param APIClient                    $api_client API client.
-	 * @param Queue                        $queue Queue instance.
-	 * @param PerformanceMonitoring_Query  $query Query instance.
+	 * @param Factory                     $factory Jobs factory.
+	 * @param APIClient                   $api_client API client.
+	 * @param Queue                       $queue Queue instance.
+	 * @param PerformanceMonitoring_Query $query Query instance.
 	 */
 	public function __construct( Factory $factory, APIClient $api_client, Queue $queue, PerformanceMonitoring_Query $query ) {
 		$this->factory    = $factory;
@@ -68,10 +68,10 @@ class Processor implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'pma_initiate_test'       => 'process_test_initiation',
-			'pma_check_test_status'   => 'process_status_check',
-			'pma_cleanup_old_tests'   => 'cleanup_old_tests',
-			'init'                    => 'schedule_cleanup_job',
+			'pma_initiate_test'     => 'process_test_initiation',
+			'pma_check_test_status' => 'process_status_check',
+			'pma_cleanup_old_tests' => 'cleanup_old_tests',
+			'init'                  => 'schedule_cleanup_job',
 		];
 	}
 
@@ -80,47 +80,51 @@ class Processor implements Subscriber_Interface, LoggerAwareInterface {
 	 *
 	 * @param string $page_url Page URL to test.
 	 * @param array  $options Test options.
+	 *
+	 * @throws \Exception If error happens.
 	 */
 	public function process_test_initiation( string $page_url, array $options = [] ): void {
-		error_log( 'PM Processor: process_test_initiation called for ' . $page_url );
 		$this->logger::debug( 'Performance Monitoring: Initiating test', [ 'page_url' => $page_url ] );
 
 		try {
-			// Create database record
-			error_log( 'PM Processor: Creating database record' );
+			// Create database record.
 			$db_id = $this->query->create_test_record( $page_url, $options );
-			
+
 			if ( ! $db_id ) {
 				throw new \Exception( 'Failed to create database record' );
 			}
 
-			error_log( 'PM Processor: Created DB record with ID: ' . $db_id );
-
-			// Send API request to initiate test
+			// Send API request to initiate test.
 			$response = $this->api_client->initiate_test( $page_url, $options );
-			
+
 			if ( ! $response || ! isset( $response['test_id'] ) ) {
 				throw new \Exception( 'Failed to initiate test via API: ' . ( $response['message'] ?? 'Unknown error' ) );
 			}
 
-			// Update database with external test ID and set status to 'running'
+			// Update database with external test ID and set status to 'running'.
 			$this->query->update_test_id( $db_id, $response['test_id'], 'running' );
 
-			// Schedule recurring status checks
+			// Schedule recurring status checks.
 			$this->queue->schedule_status_check( $response['test_id'], $db_id );
 
-			$this->logger::info( 
-				'Performance Monitoring: Test initiated successfully', 
-				[ 'test_id' => $response['test_id'], 'db_id' => $db_id ] 
+			$this->logger::info(
+				'Performance Monitoring: Test initiated successfully',
+				[
+					'test_id' => $response['test_id'],
+					'db_id'   => $db_id,
+				]
 			);
 
 		} catch ( \Exception $e ) {
-			$this->logger::error( 
-				'Performance Monitoring: Test initiation failed', 
-				[ 'error' => $e->getMessage(), 'page_url' => $page_url ] 
+			$this->logger::error(
+				'Performance Monitoring: Test initiation failed',
+				[
+					'error'    => $e->getMessage(),
+					'page_url' => $page_url,
+				]
 			);
 
-			// Mark as failed if we have a database record
+			// Mark as failed if we have a database record.
 			if ( isset( $db_id ) ) {
 				$this->query->update_status( $db_id, 'failed', $e->getMessage() );
 			}
@@ -134,27 +138,36 @@ class Processor implements Subscriber_Interface, LoggerAwareInterface {
 	 * @param int    $db_id Database record ID.
 	 * @param int    $attempts Current attempt number.
 	 * @param int    $max_attempts Maximum attempts.
+	 *
+	 * @throws \Exception If error happens.
 	 */
 	public function process_status_check( string $test_id, int $db_id, int $attempts = 0, int $max_attempts = 20 ): void {
-		$this->logger::debug( 
-			'Performance Monitoring: Checking test status', 
-			[ 'test_id' => $test_id, 'attempt' => $attempts + 1, 'max_attempts' => $max_attempts ] 
+		$this->logger::debug(
+			'Performance Monitoring: Checking test status',
+			[
+				'test_id'      => $test_id,
+				'attempt'      => $attempts + 1,
+				'max_attempts' => $max_attempts,
+			]
 		);
 
 		try {
-			// Check if we've exceeded max attempts
+			// Check if we've exceeded max attempts.
 			if ( $attempts >= $max_attempts ) {
 				$this->query->update_status( $db_id, 'failed', 'Test timed out after maximum attempts' );
-				$this->logger::warning( 
-					'Performance Monitoring: Test timed out', 
-					[ 'test_id' => $test_id, 'attempts' => $attempts ] 
+				$this->logger::warning(
+					'Performance Monitoring: Test timed out',
+					[
+						'test_id'  => $test_id,
+						'attempts' => $attempts,
+					]
 				);
 				return;
 			}
 
-			// Get test status from API
+			// Get test status from API.
 			$response = $this->api_client->get_test_status( $test_id );
-			
+
 			if ( ! $response || ! isset( $response['status'] ) ) {
 				throw new \Exception( 'Failed to get test status from API: ' . ( $response['message'] ?? 'Unknown error' ) );
 			}
@@ -163,27 +176,35 @@ class Processor implements Subscriber_Interface, LoggerAwareInterface {
 				case 'complete':
 					$this->handle_completed_test( $test_id, $db_id, $response );
 					break;
-				
+
 				case 'failed':
 					$error_message = $response['data']['error'] ?? 'Test failed on SaaS side';
 					$this->query->update_status( $db_id, 'failed', $error_message );
-					$this->logger::warning( 'Performance Monitoring: Test failed', [ 'test_id' => $test_id, 'error' => $error_message ] );
+					$this->logger::warning(
+						'Performance Monitoring: Test failed',
+						[
+							'test_id' => $test_id,
+							'error'   => $error_message,
+						]
+						);
 					break;
-				
+
 				case 'running':
 				default:
-					// Schedule next check with exponential backoff
+					// Schedule next check with exponential backoff.
 					$this->schedule_next_status_check( $test_id, $db_id, $attempts + 1, $max_attempts );
 					break;
 			}
-
 		} catch ( \Exception $e ) {
-			$this->logger::error( 
-				'Performance Monitoring: Status check failed', 
-				[ 'error' => $e->getMessage(), 'test_id' => $test_id ] 
+			$this->logger::error(
+				'Performance Monitoring: Status check failed',
+				[
+					'error'   => $e->getMessage(),
+					'test_id' => $test_id,
+				]
 			);
 
-			// Schedule retry with exponential backoff
+			// Schedule retry with exponential backoff.
 			$this->schedule_next_status_check( $test_id, $db_id, $attempts + 1, $max_attempts );
 		}
 	}
@@ -197,10 +218,10 @@ class Processor implements Subscriber_Interface, LoggerAwareInterface {
 	 * @param int    $max_attempts Maximum attempts.
 	 */
 	private function schedule_next_status_check( string $test_id, int $db_id, int $attempts, int $max_attempts ): void {
-		// Always check every 5 seconds as requested
+		// Always check every 5 seconds as requested.
 		$delay = 5;
 
-		// Stop after 10 minutes (120 attempts * 5 seconds = 600 seconds)
+		// Stop after 10 minutes (120 attempts * 5 seconds = 600 seconds).
 		if ( $attempts >= 120 ) {
 			$this->query->update_status( $db_id, 'failed', 'Test timed out after 10 minutes' );
 			$this->logger::warning( 'Performance Monitoring: Test timed out', [ 'test_id' => $test_id ] );
@@ -226,19 +247,22 @@ class Processor implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	private function handle_completed_test( string $test_id, int $db_id, array $response ): void {
 		$parsed_data = $this->api_client->parse_test_results( $response );
-		
-		$test_data = array_merge( $parsed_data, [
-			'completed_at' => gmdate( 'Y-m-d H:i:s' )
-		] );
+
+		$test_data = array_merge(
+			$parsed_data,
+			[
+				'completed_at' => gmdate( 'Y-m-d H:i:s' ),
+			]
+			);
 
 		$this->query->update_test_data( $db_id, 'completed', $test_data );
-		
-		$this->logger::info( 
-			'Performance Monitoring: Test completed successfully', 
-			[ 
-				'test_id' => $test_id, 
-				'score' => $parsed_data['performance_score'] ?? null 
-			] 
+
+		$this->logger::info(
+			'Performance Monitoring: Test completed successfully',
+			[
+				'test_id' => $test_id,
+				'score'   => $parsed_data['performance_score'] ?? null,
+			]
 		);
 	}
 
@@ -254,12 +278,12 @@ class Processor implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public function cleanup_old_tests(): void {
 		$this->logger::debug( 'Performance Monitoring: Starting cleanup of old tests' );
-		
+
 		$deleted_count = $this->query->delete_old_tests( 30 ); // 30 days retention
-		
-		$this->logger::info( 
-			'Performance Monitoring: Cleanup completed', 
-			[ 'deleted_tests' => $deleted_count ] 
+
+		$this->logger::info(
+			'Performance Monitoring: Cleanup completed',
+			[ 'deleted_tests' => $deleted_count ]
 		);
 	}
 }

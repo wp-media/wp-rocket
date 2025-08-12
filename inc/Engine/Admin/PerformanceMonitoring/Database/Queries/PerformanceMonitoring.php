@@ -175,7 +175,7 @@ class PerformanceMonitoring extends Query {
 	public function update_test_data( int $db_id, string $status, array $test_data ): bool {
 		$update_data = [
 			'status'   => $status,
-			'data'     => json_encode( $test_data ),
+			'data'     => wp_json_encode( $test_data ),
 			'modified' => gmdate( 'Y-m-d H:i:s' ),
 		];
 
@@ -295,8 +295,8 @@ class PerformanceMonitoring extends Query {
 
 		$results = $db->get_results( $sql, ARRAY_A );
 
-		return $results && is_array( $results ) && ! empty( $results[0] ) 
-			? array_map( 'intval', $results[0] ) 
+		return $results && is_array( $results ) && ! empty( $results[0] )
+			? array_map( 'intval', $results[0] )
 			: [];
 	}
 }

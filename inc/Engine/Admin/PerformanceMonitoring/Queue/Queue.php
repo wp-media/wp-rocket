@@ -48,7 +48,6 @@ class Queue extends AbstractASQueue {
 	 * @return int Action ID.
 	 */
 	public function schedule_test_initiation( string $page_url, array $options = [] ): int {
-		error_log('Schedule test initiation for ' . $page_url);
 		$args = [
 			'page_url' => $page_url,
 			'options'  => $options,
@@ -73,7 +72,7 @@ class Queue extends AbstractASQueue {
 			'max_attempts' => $max_attempts,
 		];
 
-		// Schedule first check in 30 seconds
+		// Schedule first check in 30 seconds.
 		return $this->schedule_single( time() + 30, $this->check_status_hook, $args );
 	}
 
@@ -82,7 +81,7 @@ class Queue extends AbstractASQueue {
 	 */
 	public function schedule_cleanup_job(): void {
 		if ( ! $this->is_scheduled( $this->cleanup_hook ) ) {
-			// Schedule weekly cleanup
+			// Schedule weekly cleanup.
 			$this->schedule_recurring(
 				time() + DAY_IN_SECONDS,
 				WEEK_IN_SECONDS,
@@ -98,7 +97,7 @@ class Queue extends AbstractASQueue {
 	 * @param string $test_id External test ID.
 	 */
 	public function cancel_status_checks( string $test_id ): void {
-		// Cancel all pending status checks for this test
+		// Cancel all pending status checks for this test.
 		$this->cancel_all( $this->check_status_hook, [ 'test_id' => $test_id ] );
 	}
 

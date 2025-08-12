@@ -67,7 +67,7 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 	 * @param PerformanceTests_Query $query Performance Tests Query instance.
 	 * @param APIClient              $api_client API Client instance.
 	 * @param ContextInterface       $context Performance Monitoring Context.
-	 * @param Options_Data          $options Options instance.
+	 * @param Options_Data           $options Options instance.
 	 */
 	public function __construct(
 		PerformanceTests_Query $query,
@@ -109,15 +109,15 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 	 * @return void
 	 */
 	public function validate_and_fail( array $job_details, $row_details, string $optimization_type ): void {
-		// Implementation for handling failed performance tests
-		$this->logger::error( 
-			'Performance Monitoring: Job validation failed', 
-			[ 
-				'job_id' => $job_details['id'] ?? null,
-				'page_url' => $row_details->url ?? null 
-			] 
+		// Implementation for handling failed performance tests.
+		$this->logger::error(
+			'Performance Monitoring: Job validation failed',
+			[
+				'job_id'   => $job_details['id'] ?? null,
+				'page_url' => $row_details->url ?? null,
+			]
 		);
-		
+
 		$this->query->update_status( $row_details->id, 'failed' );
 	}
 
@@ -130,12 +130,12 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 	 * @return void
 	 */
 	public function process( array $job_details, $row_details, string $optimization_type ): void {
-		$this->logger::debug( 
-			'Performance Monitoring: Processing job', 
-			[ 
+		$this->logger::debug(
+			'Performance Monitoring: Processing job',
+			[
 				'job_id' => $job_details['id'] ?? null,
-				'status' => $job_details['status'] ?? null 
-			] 
+				'status' => $job_details['status'] ?? null,
+			]
 		);
 
 		switch ( $job_details['status'] ) {
@@ -159,19 +159,22 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 	 */
 	private function handle_completed_test( array $job_details, $row_details ): void {
 		$parsed_data = $this->api_client->parse_test_results( $job_details );
-		
-		$test_data = array_merge( $parsed_data, [
-			'completed_at' => gmdate( 'Y-m-d H:i:s' )
-		] );
+
+		$test_data = array_merge(
+			$parsed_data,
+			[
+				'completed_at' => gmdate( 'Y-m-d H:i:s' ),
+			]
+			);
 
 		$this->query->update_test_data( $row_details->id, 'completed', $test_data );
-		
-		$this->logger::info( 
-			'Performance Monitoring: Test completed successfully', 
-			[ 
-				'test_id' => $row_details->test_id, 
-				'score' => $parsed_data['performance_score'] ?? null 
-			] 
+
+		$this->logger::info(
+			'Performance Monitoring: Test completed successfully',
+			[
+				'test_id' => $row_details->test_id,
+				'score'   => $parsed_data['performance_score'] ?? null,
+			]
 		);
 	}
 
@@ -183,15 +186,15 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 	 */
 	private function handle_failed_test( array $job_details, $row_details ): void {
 		$error_message = $job_details['message'] ?? 'Performance test failed';
-		
+
 		$this->query->update_status( $row_details->id, 'failed', $error_message );
-		
-		$this->logger::warning( 
-			'Performance Monitoring: Test failed', 
-			[ 
+
+		$this->logger::warning(
+			'Performance Monitoring: Test failed',
+			[
 				'test_id' => $row_details->test_id,
-				'error' => $error_message
-			] 
+				'error'   => $error_message,
+			]
 		);
 	}
 
@@ -201,11 +204,11 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 	 * @param object $row_details Database row details.
 	 */
 	private function schedule_status_check( $row_details ): void {
-		// This would be implemented with the Queue system
-		// For now, we just log that a status check should be scheduled
-		$this->logger::debug( 
-			'Performance Monitoring: Test still running, should schedule next status check', 
-			[ 'test_id' => $row_details->test_id ] 
+		// This would be implemented with the Queue system.
+		// For now, we just log that a status check should be scheduled.
+		$this->logger::debug(
+			'Performance Monitoring: Test still running, should schedule next status check',
+			[ 'test_id' => $row_details->test_id ]
 		);
 	}
 
@@ -220,7 +223,7 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 			'headers' => [
 				'X-WP-Rocket-Email' => $this->options->get( 'consumer_email', '' ),
 				'X-WP-Rocket-Key'   => $this->options->get( 'consumer_key', '' ),
-			]
+			],
 		];
 	}
 
