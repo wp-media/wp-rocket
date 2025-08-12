@@ -100,4 +100,72 @@ class PerformanceMonitoring extends Row {
 
 		return ! empty( $this->data );
 	}
+
+	/**
+	 * Get the performance score from the stored data.
+	 *
+	 * @return int|null
+	 */
+	public function get_performance_score(): ?int {
+		if ( empty( $this->data ) ) {
+			return null;
+		}
+
+		$data = json_decode( $this->data, true );
+		
+		return isset( $data['performance_score'] ) ? (int) $data['performance_score'] : null;
+	}
+
+	/**
+	 * Get the report URL from the stored data.
+	 *
+	 * @return string|null
+	 */
+	public function get_report_url(): ?string {
+		if ( empty( $this->data ) ) {
+			return null;
+		}
+
+		$data = json_decode( $this->data, true );
+		
+		return $data['report_url'] ?? null;
+	}
+
+	/**
+	 * Check if test is still in progress.
+	 *
+	 * @return bool
+	 */
+	public function is_running(): bool {
+		return in_array( $this->status, [ 'pending', 'running' ], true );
+	}
+
+	/**
+	 * Check if test has failed.
+	 *
+	 * @return bool
+	 */
+	public function has_failed(): bool {
+		return 'failed' === $this->status;
+	}
+
+	/**
+	 * Get all core web vitals from the stored data.
+	 *
+	 * @return array
+	 */
+	public function get_core_web_vitals(): array {
+		if ( empty( $this->data ) ) {
+			return [];
+		}
+
+		$data = json_decode( $this->data, true );
+		
+		return [
+			'largest_contentful_paint' => $data['largest_contentful_paint'] ?? null,
+			'total_blocking_time'      => $data['total_blocking_time'] ?? null,
+			'cumulative_layout_shift'  => $data['cumulative_layout_shift'] ?? null,
+			'first_contentful_paint'   => $data['first_contentful_paint'] ?? null,
+		];
+	}
 }

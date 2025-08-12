@@ -415,6 +415,7 @@ class Plugin {
 			'preload_fonts_admin_subscriber',
 			'preconnect_frontend_subscriber',
 			'pm_subscriber',
+			'pm_processor',
 			'post_subscriber',
 		];
 

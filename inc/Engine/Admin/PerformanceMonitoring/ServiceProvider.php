@@ -6,6 +6,13 @@ namespace WP_Rocket\Engine\Admin\PerformanceMonitoring;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Database\Tables\PerformanceMonitoring as PMTable;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Database\Queries\PerformanceMonitoring as PMQuery;
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\API\Client as PMAPIClient;
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\Context\PerformanceMonitoringContext;
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\Jobs\Factory as PMFactory;
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\Jobs\Manager as PMManager;
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\Queue\Queue as PMQueue;
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\Queue\Processor as PMProcessor;
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\Subscriber;
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
@@ -20,6 +27,12 @@ class ServiceProvider extends AbstractServiceProvider {
 	protected $provides = [
 		'pm_table',
 		'pm_query',
+		'pm_api_client',
+		'pm_context',
+		'pm_manager',
+		'pm_factory',
+		'pm_queue',
+		'pm_processor',
 		'pm_subscriber',
 	];
 
@@ -40,13 +53,53 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register(): void {
+		// Database layer
 		$this->getContainer()->addShared( 'pm_table', PMTable::class );
 		$this->getContainer()->add( 'pm_query', PMQuery::class );
 
-		// Register the subscriber.
-		$this->getContainer()->addShared( 'pm_subscriber', Subscriber::class );
+		// API Client
+		$this->getContainer()->add( 'pm_api_client', PMAPIClient::class )
+			->addArgument( 'options' );
 
-		// Ensure the table is created.
+		// Context
+		$this->getContainer()->add( 'pm_context', PerformanceMonitoringContext::class )
+			->addArgument( 'options' );
+
+		// Jobs layer
+		$this->getContainer()->add( 'pm_manager', PMManager::class )
+			->addArguments( [
+				'pm_query',
+				'pm_api_client',
+				'pm_context',
+				'options',
+			] );
+
+		$this->getContainer()->addShared( 'pm_factory', PMFactory::class )
+			->addArguments( [
+				'pm_manager',
+				'pm_table',
+			] );
+
+		// Queue layer
+		$this->getContainer()->add( 'pm_queue', PMQueue::class );
+
+		$this->getContainer()->add( 'pm_processor', PMProcessor::class )
+			->addArguments( [
+				'pm_factory',
+				'pm_api_client',
+				'pm_queue',
+				'pm_query',
+			] );
+
+		// Subscriber
+		$this->getContainer()->add( 'pm_subscriber', Subscriber::class )
+			->addArguments( [
+				'pm_queue',
+				'pm_context',
+				'pm_query',
+			] );
+
+		// Ensure the table is created
 		$this->getContainer()->get( 'pm_table' );
 	}
 }
