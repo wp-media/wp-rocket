@@ -10,6 +10,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  * Test class covering \WP_Rocket\Engine\Admin\PerformanceMonitoring\Database\Queries\PerformanceMonitoring::delete_old_rows
  *
  * @group PerformanceMonitoring
+ * @group AdminOnly
  */
 class Test_DeleteOldRows extends TestCase {
 	use DBTrait;
@@ -60,7 +61,7 @@ class Test_DeleteOldRows extends TestCase {
 			$table_name = $wpdb->prefix . 'wpr_performance_monitoring';
 			$update_config = $config['update_old_timestamp'];
 			$old_timestamp = strtotime( $update_config['last_accessed'] );
-			
+
 			$wpdb->query(
 				$wpdb->prepare(
 					"UPDATE {$table_name} SET last_accessed = %s WHERE test_id = %s",
@@ -107,7 +108,7 @@ class Test_DeleteOldRows extends TestCase {
 					'number' => 999,
 					'count' => true,
 				], false );
-				
+
 				if ( is_string( $expected['remaining_count'] ) ) {
 					// Handle operators.
 					if ( strpos( $expected['remaining_count'], '<= ' ) === 0 ) {

@@ -12,6 +12,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  * Test class covering \WP_Rocket\Engine\Admin\PerformanceMonitoring\ServiceProvider
  *
  * @group PerformanceMonitoring
+ * @group AdminOnly
  */
 class Test_ServiceProvider extends TestCase {
 
@@ -69,7 +70,7 @@ class Test_ServiceProvider extends TestCase {
 		// The table should be accessible and instantiated when the service provider is registered.
 		$this->assertNotNull( $pm_table );
 		$this->assertIsString( $pm_table->get_name() );
-		
+
 		// Verify we can get table information
 		$table_name = $pm_table->get_name();
 		$this->assertStringContainsString( 'wpr_performance_monitoring', $table_name );

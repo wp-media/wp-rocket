@@ -10,6 +10,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  * Test class covering \WP_Rocket\Engine\Admin\PerformanceMonitoring\Database\Tables\PerformanceMonitoring::truncate_table
  *
  * @group PerformanceMonitoring
+ * @group AdminOnly
  */
 class Test_TruncateTable extends TestCase {
 	use DBTrait;
