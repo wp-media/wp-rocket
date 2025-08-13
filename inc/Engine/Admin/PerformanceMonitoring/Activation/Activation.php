@@ -46,7 +46,7 @@ class Activation implements ActivationInterface, LoggerAwareInterface {
 	 * Hook into activation events.
 	 */
 	public function activate(): void {
-		add_action( 'rocket_activation', [ $this, 'schedule_homepage_tests' ] );
+		add_action( 'rocket_first_install', [ $this, 'schedule_homepage_tests' ] );
 	}
 
 	/**

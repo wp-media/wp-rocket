@@ -20,12 +20,12 @@ class Test_Activate extends TestCase {
 		parent::set_up();
 
 		$this->setUpSettings();
-		$this->unregisterAllCallbacksExcept( 'rocket_activation', 'schedule_homepage_tests' );
+		$this->unregisterAllCallbacksExcept( 'rocket_first_install', 'schedule_homepage_tests' );
 	}
 
 	public function tear_down() {
 		$this->tearDownSettings();
-		$this->restoreWpHook( 'rocket_activation' );
+		$this->restoreWpHook( 'rocket_first_install' );
 		parent::tear_down();
 	}
 
