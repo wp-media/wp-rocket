@@ -20,19 +20,19 @@ class Test_Activate extends TestCase {
 		parent::set_up();
 
 		$this->setUpSettings();
-		$this->unregisterAllCallbacksExcept( 'wp_rocket_first_install', 'schedule_homepage_tests', 20 );
+		$this->unregisterAllCallbacksExcept( 'rocket_activation', 'schedule_homepage_tests' );
 	}
 
 	public function tear_down() {
 		$this->tearDownSettings();
-		$this->restoreWpHook( 'wp_rocket_first_install' );
+		$this->restoreWpHook( 'rocket_activation' );
 		parent::tear_down();
 	}
 
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function shouldReturnAsExpected($config, $expected) {
+	public function testShouldReturnAsExpected($config, $expected) {
 		if ( $config['is_first_install'] ) {
 			delete_option('wp_rocket_settings');
 		} else {
@@ -50,7 +50,7 @@ class Test_Activate extends TestCase {
 		$container = apply_filters( 'rocket_container', null );
 		$activation = $container->get( 'pm_activation' );
 		$queue = $container->get( 'pm_queue' );
-
-		return $queue->get_pending_actions();
+		var_export($queue->get_pending_actions());
+		return count( $queue->get_pending_actions() );
 	}
 }
