@@ -16,16 +16,23 @@ class Test_Activate extends TestCase {
 
 	use IsolateHookTrait;
 
+	protected $config;
+
+	protected $container;
+
 	public function set_up() {
 		parent::set_up();
+		$this->unregisterAllCallbacksExcept( 'wp_rocket_first_install', 'schedule_homepage_tests' );
+		// Get the activation instance and call activate() to register the hook.
+		$this->container = apply_filters( 'rocket_container', null );
+		$activation = $this->container->get( 'pm_activation' );
+		$activation->activate();
 
-		$this->setUpSettings();
-		$this->unregisterAllCallbacksExcept( 'rocket_first_install', 'schedule_homepage_tests' );
 	}
 
 	public function tear_down() {
 		$this->tearDownSettings();
-		$this->restoreWpHook( 'rocket_first_install' );
+		$this->restoreWpHook( 'wp_rocket_first_install' );
 		parent::tear_down();
 	}
 
@@ -33,24 +40,26 @@ class Test_Activate extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnAsExpected($config, $expected) {
-		if ( $config['is_first_install'] ) {
-			delete_option('wp_rocket_settings');
-		} else {
-			\update_option( 'wp_rocket_settings', [ 'wp_rocket_version' => '3.20' ] );
-		}
+		$this->config = $config;
+		$this->setUpSettings();
+
+		// Get count before triggering action
+		$actions_before = $this->getScheduledActionsCount();
 
 		do_action( 'wp_rocket_first_install' );
 
-		$this->assertSame( $expected['schedule_actions'], $this->getScheduledActionsCount() );
+		// Get count after triggering action
+		$actions_after = $this->getScheduledActionsCount();
+		$new_actions = $actions_after - $actions_before;
+
+		$this->assertSame( $expected['schedule_actions'], $new_actions );
 
 	}
 
 	public function getScheduledActionsCount() : int {
 		// Get container services
-		$container = apply_filters( 'rocket_container', null );
-		$activation = $container->get( 'pm_activation' );
-		$queue = $container->get( 'pm_queue' );
-		var_export($queue->get_pending_actions());
+		$queue = $this->container->get( 'pm_queue' );
+
 		return count( $queue->get_pending_actions() );
 	}
 }

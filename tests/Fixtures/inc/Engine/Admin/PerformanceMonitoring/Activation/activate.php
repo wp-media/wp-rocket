@@ -3,7 +3,9 @@
 return [
 	'testShouldScheduleHomepageTestsAsExpected' => [
 		'config' => [
-			'is_first_install' => true,
+			'settings' => [
+				'version' => '',
+			]
 		],
 		'expected' => [
 			'schedule_actions' => 2
@@ -11,7 +13,9 @@ return [
 	],
 	'testShouldNotScheduleHomepageOnUpgrade' => [
 		'config' => [
-			'is_first_install' => false
+			'settings' => [
+				'version' => '3.19',
+			]
 		],
 		'expected' => [
 			'schedule_actions' => 0
