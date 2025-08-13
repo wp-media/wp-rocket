@@ -9,8 +9,11 @@ class Subscriber implements Subscriber_Interface {
 
 	private $render;
 
-	public function __construct( Render $render ) {
+	private $controller;
+
+	public function __construct( Render $render, Controller $controller ) {
 		$this->render = $render;
+		$this->controller = $controller;
 	}
 
 	/**
@@ -25,6 +28,7 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	public function render_ui() {
-		$this->render->render_ui();
+		$items = $this->controller->get_items();
+		$this->render->render_ui( $items );
 	}
 }

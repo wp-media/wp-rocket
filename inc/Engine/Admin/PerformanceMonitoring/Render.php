@@ -6,9 +6,12 @@ namespace WP_Rocket\Engine\Admin\PerformanceMonitoring;
 use WP_Rocket\Abstract_Render;
 
 class Render extends Abstract_Render {
-	public function render_ui() {
+	public function render_ui( $items ) {
 		echo $this->generate( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			'sections/performance-monitoring'
+			'sections/performance-monitoring',
+			[
+				'items' => $items,
+			]
 		);
 	}
 }
