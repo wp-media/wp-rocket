@@ -47,7 +47,7 @@ class ActivationContext {
 	 * @return bool
 	 */
 	public function is_first_install(): bool {
-		// Use the options object to get the version
+		// Use the options object to get the version.
 		$version = $this->options->get( 'version', '' );
 		return empty( $version );
 	}
