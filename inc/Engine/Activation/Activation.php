@@ -8,7 +8,6 @@ use WP_Rocket\Dependencies\League\Container\Container;
 use WP_Rocket\Engine\Common\PerformanceHints\Activation\ServiceProvider as PerformanceHintsActivationServiceProvider;
 use WP_Rocket\Engine\License\ServiceProvider as LicenseServiceProvider;
 use WP_Rocket\Engine\Preload\Activation\ServiceProvider as PreloadActivationServiceProvider;
-use WP_Rocket\Engine\Admin\PerformanceMonitoring\Activation\ServiceProvider as PerformanceMonitoringActivationServiceProvider;
 use WP_Rocket\Logger\ServiceProvider as LoggerServiceProvider;
 use WP_Rocket\ServiceProvider\Options as OptionsServiceProvider;
 use WP_Rocket\ThirdParty\Hostings\HostResolver;
@@ -35,7 +34,6 @@ class Activation {
 		'action_scheduler_check',
 		'preload_activation',
 		'performance_hints_activation',
-		'pm_activation',
 	];
 
 	/**
@@ -58,7 +56,6 @@ class Activation {
 		$container->addServiceProvider( new LoggerServiceProvider() );
 		$container->get( 'logger' );
 		$container->addServiceProvider( new PerformanceHintsActivationServiceProvider() );
-		$container->addServiceProvider( new PerformanceMonitoringActivationServiceProvider() );
 		$event_manager->add_subscriber( $container->get( 'performance_hints_warmup_subscriber' ) );
 
 		$host_type = HostResolver::get_host_service();

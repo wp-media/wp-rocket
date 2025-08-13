@@ -1,18 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\PerformanceMonitoring\Activation;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\PerformanceMonitoring\Subscriber;
 
 use WP_Rocket\Tests\Integration\TestCase;
 use WP_Rocket\Tests\Integration\IsolateHookTrait;
 
 /**
- * Test class covering \WP_Rocket\Engine\Admin\PerformanceMonitoring\Activation\Activation::activate
+ * Test class covering \WP_Rocket\Engine\Admin\PerformanceMonitoring\Subscriber::schedule_homepage_tests
  *
  * @group PerformanceMonitoring
  * @group AdminOnly
  */
-class Test_Activate extends TestCase {
+class Test_ScheduleHomepageTest extends TestCase {
 
 	use IsolateHookTrait;
 
@@ -23,11 +23,8 @@ class Test_Activate extends TestCase {
 	public function set_up() {
 		parent::set_up();
 		$this->unregisterAllCallbacksExcept( 'wp_rocket_first_install', 'schedule_homepage_tests' );
-		// Get the activation instance and call activate() to register the hook.
-		$this->container = apply_filters( 'rocket_container', null );
-		$activation = $this->container->get( 'pm_activation' );
-		$activation->activate();
-
+		// @phpstan-ignore-next-line
+		$this->container = apply_filters('rocket_container', null);
 	}
 
 	public function tear_down() {

@@ -62,17 +62,50 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'init' => 'on_init',
+			'wp_rocket_first_install' => 'schedule_homepage_tests',
 		];
 	}
 
 	/**
-	 * Initialize the performance monitoring functionality.
+	 * Schedules homepage performance tests on plugin activation.
+	 *
+	 * This method is triggered when the plugin is first installed.
+	 * It schedules both desktop and mobile tests for the homepage URL.
 	 *
 	 * @return void
 	 */
-	public function on_init(): void {
-		// Basic initialization - the table creation is handled by the ServiceProvider.
-		// This subscriber exists primarily to ensure the ServiceProvider is loaded.
+	public function schedule_homepage_tests(): void {
+		$this->logger::debug( 'Performance Monitoring: Activation triggered' );
+
+		// Check if we should run homepage tests (includes first install and allowed checks).
+		if ( ! $this->context->is_allowed() ) {
+			$this->logger::debug( 'Performance Monitoring: Homepage tests not allowed, skipping' );
+			return;
+		}
+
+		$homepage_url = home_url();
+
+		// Schedule desktop test.
+		$desktop_options   = [
+			'device'   => 'desktop',
+			'location' => 'auto',
+		];
+		$desktop_action_id = $this->queue->schedule_test_initiation( $homepage_url, $desktop_options );
+
+		// Schedule mobile test.
+		$mobile_options   = [
+			'device'   => 'mobile',
+			'location' => 'auto',
+		];
+		$mobile_action_id = $this->queue->schedule_test_initiation( $homepage_url, $mobile_options );
+
+		$this->logger::info(
+			'Performance Monitoring: Scheduled homepage tests on activation',
+			[
+				'url'               => $homepage_url,
+				'desktop_action_id' => $desktop_action_id,
+				'mobile_action_id'  => $mobile_action_id,
+			]
+		);
 	}
 }
