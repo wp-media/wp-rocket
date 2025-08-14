@@ -22,6 +22,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'pm_table',
 		'pm_query',
 		'pm_render',
+		'pm_controller',
 		'pm_subscriber',
 	];
 
@@ -47,10 +48,15 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		$this->getContainer()->add( 'pm_render', Render::class )
 			->addArgument( new StringArgument( $this->getContainer()->get( 'template_path' ) . '/settings/' ) );
+		$this->getContainer()->add( 'pm_controller', Controller::class )
+			->addArgument( 'pm_query' );
 
 		// Register the subscriber.
 		$this->getContainer()->addShared( 'pm_subscriber', Subscriber::class )
-			->addArgument( 'pm_render' );
+			->addArguments( [
+				'pm_render',
+				'pm_controller',
+			] );
 
 		// Ensure the table is created.
 		$this->getContainer()->get( 'pm_table' );

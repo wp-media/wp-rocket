@@ -17,18 +17,18 @@ defined( 'ABSPATH' ) || exit;
 		<tr class="wpr-speed-radar-item">
 			<td class="wpr-speed-radar-page"><?php esc_html_e( 'Global score', 'rocket' ); ?></td>
 			<td class="wpr-speed-radar-status">
-				<span class="wpr-infoAction wpr-icon-refresh wpr-isLoading" title="<?php esc_attr_e( 'Loading...', 'rocket' ); ?>"></span>
+				100
 			</td>
 			<td class="wpr-speed-radar-date"></td>
 			<td class="wpr-speed-radar-actions"></td>
 		</tr>
 		<?php foreach ( $data['items'] as $item ) { ?>
 			<tr class="wpr-speed-radar-item">
-				<td class="wpr-speed-radar-page"><?php esc_html_e( 'Home page', 'rocket' ); ?></td>
+				<td class="wpr-speed-radar-page"><?php echo esc_html( $item->title ); ?></td>
 				<td class="wpr-speed-radar-status">
 					<span class="wpr-speed-radar-score wpr-speed-radar-score--good">100</span>
 				</td>
-				<td class="wpr-speed-radar-date">06/19/2025</td>
+				<td class="wpr-speed-radar-date"><?php echo esc_html( $item->modified ); ?></td>
 				<td class="wpr-speed-radar-actions">
 					<?php
 					$this->render_action_button(
