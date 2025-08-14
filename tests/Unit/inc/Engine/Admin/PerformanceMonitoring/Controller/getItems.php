@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Admin\PerformanceMonitoring\Controller;
 
-use Mockery;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Controller;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Database\Queries\PerformanceMonitoring;
 use WP_Rocket\Tests\Unit\TestCase;
