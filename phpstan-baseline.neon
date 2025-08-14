@@ -61,6 +61,11 @@ parameters:
 			path: inc/Engine/Admin/Metaboxes/PostEditOptionsSubscriber.php
 
 		-
+			message: "#^Property WP_Rocket\\\\Engine\\\\Admin\\\\PerformanceMonitoring\\\\Context\\\\PerformanceMonitoringContext\\:\\:\\$options is never read, only written\\.$#"
+			count: 1
+			path: inc/Engine/Admin/PerformanceMonitoring/Context/PerformanceMonitoringContext.php
+
+		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 12
 			path: inc/Engine/Admin/Settings/Page.php
@@ -881,9 +886,94 @@ parameters:
 			path: tests/Integration/inc/Engine/Admin/DomainChange/Subscriber/addRegenerateConfigurationAction.php
 
 		-
+			message: "#^Access to an undefined property \\:\\:\\$data\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/Database/Queries/create_test_record.php
+
+		-
+			message: "#^Access to an undefined property \\:\\:\\$test_id\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/Database/Queries/create_test_record.php
+
+		-
+			message: "#^Access to an undefined property hasProperty\\(modified\\)\\:\\:\\$last_accessed\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/Database/Queries/create_test_record.php
+
+		-
+			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			count: 27
+			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/Database/Queries/create_test_record.php
+
+		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 29
 			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/Database/Queries/delete_old_rows.php
+
+		-
+			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			count: 29
+			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/Database/Queries/delete_old_tests.php
+
+		-
+			message: "#^Access to an undefined property hasProperty\\(modified\\)\\:\\:\\$is_mobile\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/Database/Queries/update_status.php
+
+		-
+			message: "#^Access to an undefined property hasProperty\\(modified\\)\\:\\:\\$test_id\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/Database/Queries/update_status.php
+
+		-
+			message: "#^Access to an undefined property hasProperty\\(modified\\)\\:\\:\\$url\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/Database/Queries/update_status.php
+
+		-
+			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			count: 29
+			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/Database/Queries/update_status.php
+
+		-
+			message: "#^Access to an undefined property \\:\\:\\$is_mobile\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/Database/Queries/update_test_data.php
+
+		-
+			message: "#^Access to an undefined property \\:\\:\\$test_id\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/Database/Queries/update_test_data.php
+
+		-
+			message: "#^Access to an undefined property \\:\\:\\$url\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/Database/Queries/update_test_data.php
+
+		-
+			message: "#^Access to an undefined property hasProperty\\(data\\)\\:\\:\\$modified\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/Database/Queries/update_test_data.php
+
+		-
+			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			count: 29
+			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/Database/Queries/update_test_data.php
+
+		-
+			message: "#^Access to an undefined property hasProperty\\(modified\\)\\:\\:\\$is_mobile\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/Database/Queries/update_test_id.php
+
+		-
+			message: "#^Access to an undefined property hasProperty\\(modified\\)\\:\\:\\$url\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/Database/Queries/update_test_id.php
+
+		-
+			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			count: 29
+			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/Database/Queries/update_test_id.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
