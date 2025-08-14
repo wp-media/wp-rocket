@@ -213,9 +213,9 @@ class PerformanceMonitoring extends AbstractQuery {
 			$prefixed_table_name = $db->prefix . $this->table_name;
 		}
 
-		$query         = "DELETE FROM `$prefixed_table_name` WHERE `modified` <= date_sub(now(), interval %d day)";
+		$query          = "DELETE FROM `$prefixed_table_name` WHERE `modified` <= date_sub(now(), interval %d day)";
 		$prepared_query = $db->prepare( $query, $days );
-		$rows_affected = $db->query( $prepared_query );
+		$rows_affected  = $db->query( $prepared_query );
 
 		return $rows_affected;
 	}
