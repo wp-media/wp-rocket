@@ -172,4 +172,51 @@ class PerformanceMonitoring extends AbstractQuery {
 
 		return (bool) $this->update_item( $db_id, $update_data );
 	}
+
+	/**
+	 * Update test data with status and test results.
+	 *
+	 * @param int    $db_id Database record ID.
+	 * @param string $status Test status.
+	 * @param array  $test_data Test results data.
+	 * @return bool
+	 */
+	public function update_test_data( int $db_id, string $status, array $test_data ): bool {
+		$update_data = [
+			'status'   => $status,
+			'data'     => wp_json_encode( $test_data ),
+			'modified' => gmdate( 'Y-m-d H:i:s' ),
+		];
+
+		return (bool) $this->update_item( $db_id, $update_data );
+	}
+
+	/**
+	 * Delete tests older than specified number of days.
+	 *
+	 * @param int $days Number of days to retain tests.
+	 * @return bool|int Number of deleted records or false on failure.
+	 */
+	public function delete_old_tests( int $days ) {
+		// Get the database interface.
+		$db = $this->get_db();
+
+		// Bail if no database interface is available.
+		if ( ! $db ) {
+			return false;
+		}
+
+		// Use table class naming helper for consistency with prefixes.
+		$prefixed_table_name = $this->table_name;
+		// @phpstan-ignore-next-line
+		if ( property_exists( $db, 'prefix' ) && ! empty( $db->prefix ) ) {
+			$prefixed_table_name = $db->prefix . $this->table_name;
+		}
+
+		$query         = "DELETE FROM `$prefixed_table_name` WHERE `modified` <= date_sub(now(), interval %d day)";
+		$prepared_query = $db->prepare( $query, $days );
+		$rows_affected = $db->query( $prepared_query );
+
+		return $rows_affected;
+	}
 }
