@@ -72,6 +72,8 @@ class PerformanceMonitoring extends AbstractTable {
 	}
 
 	/**
+	 * Add title column to the database table directly after url column.
+	 *
 	 * @return bool
 	 */
 	protected function add_title_column() {

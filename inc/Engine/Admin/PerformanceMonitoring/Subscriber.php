@@ -7,12 +7,28 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
 
 class Subscriber implements Subscriber_Interface {
 
+	/**
+	 * Render object.
+	 *
+	 * @var Render
+	 */
 	private $render;
 
+	/**
+	 * Controller object.
+	 *
+	 * @var Controller
+	 */
 	private $controller;
 
+	/**
+	 * Constructor.
+	 *
+	 * @param Render     $render Render object.
+	 * @param Controller $controller Controller object.
+	 */
 	public function __construct( Render $render, Controller $controller ) {
-		$this->render = $render;
+		$this->render     = $render;
 		$this->controller = $controller;
 	}
 
@@ -27,6 +43,11 @@ class Subscriber implements Subscriber_Interface {
 		];
 	}
 
+	/**
+	 * Render the Ui in dashboard.
+	 *
+	 * @return void
+	 */
 	public function render_ui() {
 		$items = $this->controller->get_items();
 		$this->render->render_ui( $items );
