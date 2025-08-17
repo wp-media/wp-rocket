@@ -2,13 +2,13 @@
 
 namespace WP_Rocket\Engine\Common\JobManager;
 
-use WP_Rocket\Logger\LoggerAware;
-use WP_Rocket\Logger\LoggerAwareInterface;
+use WP_Rocket\Engine\Common\Clock\WPRClock;
 use WP_Rocket\Engine\Common\JobManager\Queue\Queue;
 use WP_Rocket\Engine\Common\JobManager\Strategy\Factory\StrategyFactory;
-use WP_Rocket\Engine\Common\JobManager\APIHandler\APIClient;
-use WP_Rocket\Engine\Common\Clock\WPRClock;
 use WP_Rocket\Engine\Common\Utils;
+use WP_Rocket\Engine\Optimization\RUCSS\APIHandler\APIClient;
+use WP_Rocket\Logger\LoggerAware;
+use WP_Rocket\Logger\LoggerAwareInterface;
 
 class JobProcessor implements LoggerAwareInterface {
 	use LoggerAware;
@@ -35,13 +35,6 @@ class JobProcessor implements LoggerAwareInterface {
 	protected $strategy_factory;
 
 	/**
-	 * APIClient instance
-	 *
-	 * @var APIClient
-	 */
-	private $api;
-
-	/**
 	 * Clock instance.
 	 *
 	 * @var WPRClock
@@ -54,20 +47,17 @@ class JobProcessor implements LoggerAwareInterface {
 	 * @param array           $factories Array of factories.
 	 * @param Queue           $queue Queue instance.
 	 * @param StrategyFactory $strategy_factory Strategy Factory.
-	 * @param APIClient       $api APIClient instance.
 	 * @param WPRClock        $clock Clock object instance.
 	 */
 	public function __construct(
 		array $factories,
 		Queue $queue,
 		StrategyFactory $strategy_factory,
-		APIClient $api,
 		WPRClock $clock
 	) {
 		$this->factories        = $factories;
 		$this->queue            = $queue;
 		$this->strategy_factory = $strategy_factory;
-		$this->api              = $api;
 		$this->wpr_clock        = $clock;
 	}
 
@@ -180,12 +170,12 @@ class JobProcessor implements LoggerAwareInterface {
 			return;
 		}
 
-		// Send the request to get the job status from SaaS.
-		$job_details = $this->api->get_queue_job_status( $row_details->job_id, $row_details->queue_name, Utils::is_home( $row_details->url ) );
+		$job_factory = $this->factories[ $optimization_type ] ?? 'rucss';
 
-		foreach ( $this->factories as $factory ) {
-			$factory->manager()->validate_and_fail( $job_details, $row_details, $optimization_type );
-		}
+		// Send the request to get the job status from SaaS.
+		$job_details = $job_factory->api()->get_queue_job_status( $row_details->job_id, $row_details->queue_name, Utils::is_home( $row_details->url ) );
+
+		$job_factory->manager()->validate_and_fail( $job_details, $row_details, $optimization_type );
 
 		if (
 			200 !== (int) $job_details['code']
@@ -202,9 +192,7 @@ class JobProcessor implements LoggerAwareInterface {
 		 */
 		do_action( 'rocket_preload_unlock_url', $row_details->url );
 
-		foreach ( $this->factories as $factory ) {
-			$factory->manager()->process( $job_details, $row_details, $optimization_type );
-		}
+		$job_factory->manager()->process( $job_details, $row_details, $optimization_type );
 
 		/**
 		 * Fires after successfully Processing the SaaS jobs.
@@ -293,7 +281,6 @@ class JobProcessor implements LoggerAwareInterface {
 			$response          = $this->send_api( $row->url, (bool) $row->is_mobile, $optimization_type );
 
 			if ( false === $response || ! isset( $response['contents'], $response['contents']['jobId'], $response['contents']['queueName'] ) ) {
-
 				$this->make_status_failed( $row->url, $row->is_mobile, '', '', $optimization_type );
 				continue;
 			}
@@ -344,7 +331,8 @@ class JobProcessor implements LoggerAwareInterface {
 
 		$config = $this->set_request_params( $config, $optimization_type );
 
-		$add_to_queue_response = $this->api->add_to_queue( $url, $config );
+		$job_factory = $this->factories[ $optimization_type ] ?? 'rucss';
+		$add_to_queue_response = $job_factory->api()->add_to_queue( $url, $config );
 
 		if ( 200 !== $add_to_queue_response['code'] ) {
 			$this->logger::error(
@@ -449,9 +437,8 @@ class JobProcessor implements LoggerAwareInterface {
 	 * @return void
 	 */
 	private function make_status_inprogress( string $url, bool $is_mobile, string $optimization_type ): void {
-		foreach ( $this->factories as $factory ) {
-			$factory->manager()->make_status_inprogress( $url, $is_mobile, $optimization_type );
-		}
+		$job_factory = $this->factories[ $optimization_type ] ?? 'rucss';
+		$job_factory->manager()->make_status_inprogress( $url, $is_mobile, $optimization_type );
 	}
 
 	/**
@@ -464,17 +451,8 @@ class JobProcessor implements LoggerAwareInterface {
 	 * @return bool|object
 	 */
 	private function get_single_job( string $url, bool $is_mobile, string $optimization_type ) {
-		$job = [];
-
-		foreach ( $this->factories as $factory ) {
-			if ( $optimization_type === $factory->manager()->get_optimization_type() ) {
-				return $factory->manager()->get_single_job( $url, $is_mobile );
-			}
-		}
-
-		$job = $this->factories[0]->manager()->get_single_job( $url, $is_mobile );
-
-		return ( ! $job ? [] : $job );
+		$job_factory = $this->factories[ $optimization_type ] ?? 'rucss';
+		return $job_factory->manager()->get_single_job( $url, $is_mobile );
 	}
 
 	/**
@@ -493,85 +471,22 @@ class JobProcessor implements LoggerAwareInterface {
 
 		$rows = [];
 
-		switch ( $type ) {
-			case 'pending':
-				foreach ( $this->factories as $factory ) {
+		foreach ( $this->factories as $factory ) {
+			switch ( $type ) {
+				case 'pending':
 					$rows = array_merge( $rows, $factory->manager()->get_pending_jobs( $num_rows ) );
-				}
-				break;
-			case 'submit':
-				foreach ( $this->factories as $factory ) {
+					break;
+				case 'submit':
 					$rows = array_merge( $rows, $factory->manager()->get_on_submit_jobs( $num_rows ) );
-				}
-				break;
+					break;
+			}
 		}
 
 		if ( ! $rows ) {
 			return [];
 		}
 
-		// Get distinct rows.
-		return $this->get_distinct( $rows );
-	}
-
-	/**
-	 * Get rows common to jobs.
-	 *
-	 * @param array $rows Merged DB Rows of jobs.
-	 * @return array
-	 */
-	private function get_common_jobs( array $rows ): array {
-		list($occurrences, $duplicates) = [ [], [] ];
-
-		foreach ( $rows as $row ) {
-			$key = $row->url . '|' . ( isset( $row->is_mobile ) ? (bool) $row->is_mobile : 'null' );
-
-			if ( ! isset( $occurrences[ $key ] ) ) {
-				$occurrences[ $key ] = 1;
-
-				continue;
-			}
-
-			++$occurrences[ $key ];
-
-			if ( 2 === $occurrences[ $key ] ) {
-				// Add new is_common property to the object and add object to duplicate.
-				$row->is_common = true;
-				$duplicates[]   = $row;
-			}
-		}
-
-		return $duplicates;
-	}
-
-	/**
-	 * Get distinct rows merged from both jobs.
-	 *
-	 * @param array $rows Merged DB Rows of jobs.
-	 * @return array
-	 */
-	private function get_distinct( array $rows ): array {
-		// Get jobs common to both optimizations.
-		$common_rows = $this->get_common_jobs( $rows );
-
-		if ( ! $common_rows ) {
-			return $rows;
-		}
-
-		$index = 0;
-
-		foreach ( $rows as $row ) {
-			foreach ( $common_rows as $common_row ) {
-				if ( $row->url === $common_row->url && (bool) $row->is_mobile === (bool) $common_row->is_mobile ) {
-					// Remove the common row that is without the new is_common property.
-					unset( $rows[ $index ] );
-				}
-			}
-
-			++$index;
-		}
-
-		return array_merge( $rows, $common_rows );
+		return $rows;
 	}
 
 	/**
@@ -608,14 +523,8 @@ class JobProcessor implements LoggerAwareInterface {
 	 * @return void
 	 */
 	private function decide_strategy( $row_details, array $job_details, string $optimization_type ): void {
-		foreach ( $this->factories as $factory ) {
-			if ( $optimization_type === $factory->manager()->get_optimization_type() ) {
-				$this->strategy_factory->manage( $row_details, $job_details, $factory->manager() );
-				break;
-			}
-
-			$this->strategy_factory->manage( $row_details, $job_details, $factory->manager() );
-		}
+		$job_factory = $this->factories[ $optimization_type ] ?? 'rucss';
+		$this->strategy_factory->manage( $row_details, $job_details, $job_factory->manager() );
 	}
 
 	/**
@@ -629,9 +538,8 @@ class JobProcessor implements LoggerAwareInterface {
 	 * @return void
 	 */
 	private function make_status_failed( string $url, bool $is_mobile, string $error_code, string $error_message, $optimization_type ): void {
-		foreach ( $this->factories as $factory ) {
-			$factory->manager()->make_status_failed( $url, $is_mobile, $error_code, $error_message, $optimization_type );
-		}
+		$job_factory = $this->factories[ $optimization_type ] ?? 'rucss';
+		$job_factory->manager()->make_status_failed( $url, $is_mobile, $error_code, $error_message, $optimization_type );
 	}
 
 	/**
@@ -645,8 +553,7 @@ class JobProcessor implements LoggerAwareInterface {
 	 * @return void
 	 */
 	private function make_status_pending( string $url, string $job_id, string $queue_name, bool $is_mobile, string $optimization_type ): void {
-		foreach ( $this->factories as $factory ) {
-			$factory->manager()->make_status_pending( $url, $job_id, $queue_name, $is_mobile, $optimization_type );
-		}
+		$job_factory = $this->factories[ $optimization_type ] ?? 'rucss';
+		$job_factory->manager()->make_status_pending( $url, $job_id, $queue_name, $is_mobile, $optimization_type );
 	}
 }
