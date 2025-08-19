@@ -25,7 +25,16 @@ class PerformanceMonitoring extends AbstractTable {
 	 *
 	 * @var int
 	 */
-	protected $version = 20250808;
+	protected $version = 20250814;
+
+	/**
+	 * Key => value array of versions => methods.
+	 *
+	 * @var array
+	 */
+	protected $upgrades = [
+		20250814 => 'add_title_column',
+	];
 
 	/**
 	 * Table schema data.
@@ -35,6 +44,7 @@ class PerformanceMonitoring extends AbstractTable {
 	protected $schema_data = "
 		id               bigint(20) unsigned NOT NULL AUTO_INCREMENT,
 		url              varchar(2000)       NOT NULL default '',
+		title            text       NULL default '',
 		is_mobile        tinyint(1)          NOT NULL default 0,
 		test_id          varchar(255)        NOT NULL default '',
 		error_message    longtext                     default NULL,
@@ -59,5 +69,20 @@ class PerformanceMonitoring extends AbstractTable {
 		}
 
 		return $this->truncate();
+	}
+
+	/**
+	 * Add title column to the database table directly after url column.
+	 *
+	 * @return bool
+	 */
+	protected function add_title_column() {
+		$title_column_exists = $this->column_exists( 'title' );
+		if ( $title_column_exists ) {
+			return true;
+		}
+
+		$added = $this->get_db()->query( "ALTER TABLE {$this->table_name} ADD COLUMN title text NULL default '' AFTER url" );
+		return $this->is_success( $added );
 	}
 }

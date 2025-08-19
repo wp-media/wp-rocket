@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Admin\PerformanceMonitoring;
 
+use WP_Rocket\Dependencies\League\Container\Argument\Literal\StringArgument;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Database\Tables\PerformanceMonitoring as PMTable;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Database\Queries\PerformanceMonitoring as PMQuery;
@@ -32,6 +33,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		'pm_factory',
 		'pm_queue',
 		'pm_processor',
+		'pm_render',
+		'pm_controller',
 		'pm_subscriber',
 	];
 
@@ -56,6 +59,12 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->addShared( 'pm_table', PMTable::class );
 		$this->getContainer()->add( 'pm_query', PMQuery::class );
 
+		$this->getContainer()->add( 'pm_render', Render::class )
+			->addArgument( new StringArgument( $this->getContainer()->get( 'template_path' ) . '/settings/' ) );
+		$this->getContainer()->add( 'pm_controller', Controller::class )
+			->addArgument( 'pm_query' );
+
+		// Register the subscriber.
 		// API Client.
 		$this->getContainer()->add( 'pm_api_client', PMAPIClient::class )
 			->addArgument( 'options' );
@@ -100,9 +109,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'pm_subscriber', Subscriber::class )
 			->addArguments(
 				[
-					'pm_queue',
-					'pm_context',
-					'pm_query',
+					'pm_render',
+					'pm_controller',
 				]
 				);
 
