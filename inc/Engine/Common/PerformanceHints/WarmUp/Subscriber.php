@@ -33,7 +33,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_after_clear_performance_hints_data' => 'warm_up_home',
 			'rocket_job_warmup'                         => 'warm_up',
 			'rocket_job_warmup_url'                     => 'send_to_saas',
-			'rocket_saas_api_queued_url'                => 'add_wpr_imagedimensions_query_arg',
+			'rocket_saas_api_queued_url'                => [ 'add_wpr_imagedimensions_query_arg', 10, 2 ],
 		];
 	}
 
@@ -88,7 +88,10 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return string
 	 */
-	public function add_wpr_imagedimensions_query_arg( string $url ): string {
+	public function add_wpr_imagedimensions_query_arg( string $url, string $optimization_type = '' ): string {
+		if ( 'rucss' !== $optimization_type ) {
+			return $url;
+		}
 		return $this->controller->add_wpr_imagedimensions_query_arg( $url );
 	}
 }
