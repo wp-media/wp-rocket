@@ -21,7 +21,7 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 	 *
 	 * @var string
 	 */
-	protected $request_path = 'performance-test';
+	protected $request_path = '';
 
 	/**
 	 * Initiate a performance test with the SaaS Director API.
@@ -31,15 +31,7 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 	 * @return array|\WP_Error
 	 */
 	public function add_to_queue( string $url, array $options = [] ) {
-		$this->request_path = 'performance-test/initiate';
-
-		// Default options.
-		$default_options = [
-			'device'   => 'mobile',
-			'location' => 'auto',
-		];
-
-		$options = array_merge( $default_options, $options );
+		$this->request_path = 'performance/submit';
 
 		/**
 		 * Filter the url that is sent to Saas.
@@ -51,9 +43,12 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 
 		$args = [
 			'body'    => [
+				'email' => $this->options->get( 'consumer_email', '' ),
+				'key'   => $this->options->get( 'consumer_key', '' ),
 				'url'      => $url,
-				'priority' => Utils::is_home( $url ),
-				'options'  => $options,
+				'is_priority' => $options['is_home'] ?? false,
+				'device'  => ! $options['is_mobile'] ? 'desktop' : 'mobile',
+				'region'  => $options['region'] ?? '',
 			],
 			'timeout' => 30, // Longer timeout for initiation.
 		];
@@ -122,7 +117,7 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 	 * @return array|\WP_Error
 	 */
 	public function get_queue_job_status( string $test_id, $queue_name, $is_home = false ) {
-		$this->request_path = "performance-test/{$test_id}/status";
+		$this->request_path = 'performance/result?uuid=' . $test_id;
 
 		$args = [
 			'timeout' => 15,

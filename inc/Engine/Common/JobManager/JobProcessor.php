@@ -329,7 +329,7 @@ class JobProcessor implements LoggerAwareInterface {
 			'is_home'   => Utils::is_home( $url ),
 		];
 
-		$config = $this->set_request_params( $config, $optimization_type );
+		$config = array_merge( $config, $this->set_request_params( $optimization_type ) );
 
 		$job_factory = $this->factories[ $optimization_type ?? 'rucss' ];
 		$add_to_queue_response = $job_factory->api()->add_to_queue( $url, $config );
@@ -354,11 +354,10 @@ class JobProcessor implements LoggerAwareInterface {
 	/**
 	 * Set request parameters
 	 *
-	 * @param array  $config Array of request parameters.
 	 * @param string $optimization_type The type of optimization applied for the current job.
 	 * @return array
 	 */
-	public function set_request_params( array $config, string $optimization_type ): array {
+	public function set_request_params( string $optimization_type ): array {
 		$job_factory = $this->factories[ $optimization_type ?? 'rucss' ];
 		return $job_factory->manager()->set_request_param();
 	}
