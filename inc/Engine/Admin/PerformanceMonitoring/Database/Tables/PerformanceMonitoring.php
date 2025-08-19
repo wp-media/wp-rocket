@@ -40,7 +40,6 @@ class PerformanceMonitoring extends AbstractTable {
 		job_id           varchar(255)        NOT NULL default '',
 		queue_name       varchar(255)        NOT NULL default '',
 		retries          tinyint(1)          NOT NULL default 1,
-		error_message    longtext                     default NULL,
 		status           varchar(255)                 default NULL,
 		data             longtext            NOT NULL default '',
 		modified         timestamp           NOT NULL default '0000-00-00 00:00:00',
@@ -52,11 +51,11 @@ class PerformanceMonitoring extends AbstractTable {
 		error_code       varchar(32)             NULL default NULL,
 		error_message    longtext                NULL default NULL,
 		PRIMARY KEY (id),
-		KEY url (url(100)),
-		KEY is_mobile (is_mobile),
-		KEY test_id (test_id),
-		KEY status (status),
-		INDEX `status_index` (`status`(191))";
+		KEY url (url(150), is_mobile),
+		KEY modified (modified),
+		KEY last_accessed (last_accessed),
+		INDEX `status_index` (`status`(191)),
+		INDEX `error_code_index` (`error_code`(32))";
 
 	/**
 	 * Truncate DB table.
