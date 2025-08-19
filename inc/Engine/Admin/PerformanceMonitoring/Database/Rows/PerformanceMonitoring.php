@@ -21,18 +21,25 @@ class PerformanceMonitoring extends Row {
 	public $url;
 
 	/**
-	 * Is the request for mobile
-	 *
-	 * @var bool
-	 */
-	public $is_mobile;
-
-	/**
-	 * Test ID
+	 * CSS
 	 *
 	 * @var string
 	 */
-	public $test_id;
+	public $css;
+
+	/**
+	 * Hash storage value
+	 *
+	 * @var string
+	 */
+	public $hash;
+
+	/**
+	 * Error code
+	 *
+	 * @var string
+	 */
+	public $error_code;
 
 	/**
 	 * Error message
@@ -42,18 +49,39 @@ class PerformanceMonitoring extends Row {
 	public $error_message;
 
 	/**
+	 * Number of retries
+	 *
+	 * @var int
+	 */
+	public $retries;
+
+	/**
+	 * Is CSS for mobile
+	 *
+	 * @var bool
+	 */
+	public $is_mobile;
+
+	/**
+	 * Job ID
+	 *
+	 * @var string
+	 */
+	public $job_id;
+
+	/**
+	 * Job queue name
+	 *
+	 * @var string
+	 */
+	public $queue_name;
+
+	/**
 	 * Status
 	 *
 	 * @var string
 	 */
 	public $status;
-
-	/**
-	 * Result of the test
-	 *
-	 * @var string
-	 */
-	public $data;
 
 	/**
 	 * Last modified time
@@ -70,6 +98,26 @@ class PerformanceMonitoring extends Row {
 	public $last_accessed;
 
 	/**
+	 * Submitted date
+	 *
+	 * @var int
+	 */
+	public $submitted_at;
+
+	/**
+	 * Tells when the retry has to be processed
+	 *
+	 * @var int
+	 */
+	public $next_retry_time;
+
+	public $data;
+
+	public $score;
+
+	public $report_url;
+
+	/**
 	 * Constructor
 	 *
 	 * @param mixed $item Object Row.
@@ -79,13 +127,21 @@ class PerformanceMonitoring extends Row {
 
 		$this->id            = (int) $item->id;
 		$this->url           = (string) $item->url;
+		$this->title           = (string) $item->title;
 		$this->is_mobile     = (bool) $item->is_mobile;
-		$this->test_id       = (string) $item->test_id;
-		$this->error_message = (string) $item->error_message;
-		$this->status        = (string) $item->status;
-		$this->data          = (string) $item->data;
-		$this->modified      = (int) $item->modified;
-		$this->last_accessed = (int) $item->last_accessed;
+		$this->job_id       = (string) $item->job_id;
+		$this->queue_name = (string) $item->queue_name;
+		$this->retries         = (int) $this->retries;
+		$this->status          = (string) $this->status;
+		$this->data          = ! empty( $item->data ) ? json_decode( $item->data, true ) : [];
+		$this->modified        = empty( $this->modified ) ? 0 : strtotime( (string) $this->modified);
+		$this->last_accessed   = empty( $this->last_accessed ) ? 0 : strtotime( (string) $this->last_accessed );
+		$this->submitted_at    = empty( $this->submitted_at ) ? 0 : strtotime( (string) $this->submitted_at );
+		$this->next_retry_time = empty( $this->next_retry_time ) ? 0 : strtotime( (string) $this->next_retry_time );
+		$this->score = (int) $this->score;
+		$this->report_url = (string) $this->report_url;
+		$this->error_code = (int) $this->error_code;
+		$this->error_message   = (string) $this->error_message;
 	}
 
 	/**
@@ -102,36 +158,6 @@ class PerformanceMonitoring extends Row {
 	}
 
 	/**
-	 * Get the performance score from the stored data.
-	 *
-	 * @return int|null
-	 */
-	public function get_performance_score(): ?int {
-		if ( empty( $this->data ) ) {
-			return null;
-		}
-
-		$data = json_decode( $this->data, true );
-
-		return isset( $data['performance_score'] ) ? (int) $data['performance_score'] : null;
-	}
-
-	/**
-	 * Get the report URL from the stored data.
-	 *
-	 * @return string|null
-	 */
-	public function get_report_url(): ?string {
-		if ( empty( $this->data ) ) {
-			return null;
-		}
-
-		$data = json_decode( $this->data, true );
-
-		return $data['report_url'] ?? null;
-	}
-
-	/**
 	 * Check if test is still in progress.
 	 *
 	 * @return bool
@@ -145,27 +171,7 @@ class PerformanceMonitoring extends Row {
 	 *
 	 * @return bool
 	 */
-	public function has_failed(): bool {
+	public function is_failed(): bool {
 		return 'failed' === $this->status;
-	}
-
-	/**
-	 * Get all core web vitals from the stored data.
-	 *
-	 * @return array
-	 */
-	public function get_core_web_vitals(): array {
-		if ( empty( $this->data ) ) {
-			return [];
-		}
-
-		$data = json_decode( $this->data, true );
-
-		return [
-			'largest_contentful_paint' => $data['largest_contentful_paint'] ?? null,
-			'total_blocking_time'      => $data['total_blocking_time'] ?? null,
-			'cumulative_layout_shift'  => $data['cumulative_layout_shift'] ?? null,
-			'first_contentful_paint'   => $data['first_contentful_paint'] ?? null,
-		];
 	}
 }
