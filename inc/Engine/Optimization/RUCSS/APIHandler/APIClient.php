@@ -1,8 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace WP_Rocket\Engine\Common\JobManager\APIHandler;
+namespace WP_Rocket\Engine\Optimization\RUCSS\APIHandler;
 
+use WP_Rocket\Engine\Common\JobManager\APIHandler\AbstractAPIClient;
 use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
 
@@ -15,13 +16,6 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 	 * @var string
 	 */
 	protected $request_path = 'rucss-job';
-
-	/**
-	 * Array of Factories.
-	 *
-	 * @var array
-	 */
-	protected $factories;
 
 	/**
 	 * Calls Central SaaS API.
@@ -41,7 +35,7 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 		);
 
 		/**
-		 * Filter the url that is sent to Saas when RUCSS and LCP/ATF is on.
+		 * Filter the url that is sent to Saas when RUCSS is on.
 		 *
 		 * @param string $url contains the URL that is sent to Saas.
 		 */

@@ -7,7 +7,7 @@ use WP_Rocket\Dependencies\League\Container\Argument\Literal\StringArgument;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Database\Tables\PerformanceMonitoring as PMTable;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Database\Queries\PerformanceMonitoring as PMQuery;
-use WP_Rocket\Engine\Admin\PerformanceMonitoring\API\Client as PMAPIClient;
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\APIHandler\APIClient as PMAPIClient;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Context\PerformanceMonitoringContext;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Jobs\Factory as PMFactory;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Jobs\Manager as PMManager;
@@ -78,7 +78,6 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArguments(
 				[
 					'pm_query',
-					'pm_api_client',
 					'pm_context',
 					'options',
 				]
@@ -89,6 +88,7 @@ class ServiceProvider extends AbstractServiceProvider {
 				[
 					'pm_manager',
 					'pm_table',
+					'pm_api_client',
 				]
 				);
 

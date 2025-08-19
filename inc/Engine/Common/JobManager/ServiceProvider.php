@@ -5,11 +5,11 @@ namespace WP_Rocket\Engine\Common\JobManager;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Engine\Common\Clock\WPRClock;
-use WP_Rocket\Engine\Common\JobManager\APIHandler\APIClient;
 use WP_Rocket\Engine\Common\JobManager\Cron\Subscriber as CronSubscriber;
 use WP_Rocket\Engine\Common\JobManager\Queue\Queue;
 use WP_Rocket\Engine\Common\JobManager\Strategy\Context\RetryContext;
 use WP_Rocket\Engine\Common\JobManager\Strategy\Factory\StrategyFactory;
+use WP_Rocket\Engine\Optimization\RUCSS\APIHandler\APIClient;
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
@@ -49,7 +49,8 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	public function register(): void {
 		$factories = [
-			$this->getContainer()->get( 'rucss_factory' ),
+			'rucss' => $this->getContainer()->get( 'rucss_factory' ),
+			'pma'   => $this->getContainer()->get( 'pm_factory' ),
 		];
 
 		$this->getContainer()->add( 'wpr_clock', WPRClock::class );
@@ -58,16 +59,12 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( 'wpr_clock' );
 		$this->getContainer()->add( 'queue', Queue::class );
 
-		$this->getContainer()->add( 'api_client', APIClient::class )
-			->addArgument( 'options' );
-
 		$this->getContainer()->addShared( 'job_processor', JobProcessor::class )
 			->addArguments(
 				[
 					$factories,
 					'queue',
 					'retry_strategy_factory',
-					'api_client',
 					'wpr_clock',
 				]
 			);

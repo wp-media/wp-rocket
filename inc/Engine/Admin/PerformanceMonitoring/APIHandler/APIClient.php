@@ -1,19 +1,19 @@
 <?php
 declare(strict_types=1);
 
-namespace WP_Rocket\Engine\Admin\PerformanceMonitoring\API;
+namespace WP_Rocket\Engine\Admin\PerformanceMonitoring\APIHandler;
 
 use WP_Rocket\Engine\Common\JobManager\APIHandler\AbstractAPIClient;
+use WP_Rocket\Engine\Common\Utils;
 use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
-use WP_Error;
 
 /**
  * Performance Monitoring API Client
  *
  * Handles communication with the SaaS Director API for performance testing
  */
-class Client extends AbstractAPIClient implements LoggerAwareInterface {
+class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 	use LoggerAware;
 
 	/**
@@ -30,21 +30,28 @@ class Client extends AbstractAPIClient implements LoggerAwareInterface {
 	 * @param array  $options Test options (device, location, etc.).
 	 * @return array|\WP_Error
 	 */
-	public function initiate_test( string $url, array $options = [] ) {
+	public function add_to_queue( string $url, array $options = [] ) {
 		$this->request_path = 'performance-test/initiate';
 
 		// Default options.
 		$default_options = [
-			'device'   => 'desktop',
+			'device'   => 'mobile',
 			'location' => 'auto',
 		];
 
 		$options = array_merge( $default_options, $options );
 
+		/**
+		 * Filter the url that is sent to Saas.
+		 *
+		 * @param string $url contains the URL that is sent to Saas.
+		 */
+		$url = apply_filters( 'rocket_saas_api_queued_url', $url );
+
 		$args = [
 			'body'    => [
 				'url'      => $url,
-				'priority' => true, // Synchronous priority request.
+				'priority' => Utils::is_home( $url ),
 				'options'  => $options,
 			],
 			'timeout' => 30, // Longer timeout for initiation.
@@ -113,7 +120,7 @@ class Client extends AbstractAPIClient implements LoggerAwareInterface {
 	 * @param string $test_id The external test ID.
 	 * @return array|\WP_Error
 	 */
-	public function get_test_status( string $test_id ) {
+	public function get_queue_job_status( string $test_id, $queue_name, $is_home = false ) {
 		$this->request_path = "performance-test/{$test_id}/status";
 
 		$args = [
@@ -173,40 +180,6 @@ class Client extends AbstractAPIClient implements LoggerAwareInterface {
 			'code'   => 200,
 			'status' => $response_data['status'] ?? 'running',
 			'data'   => $response_data['data'] ?? null,
-		];
-	}
-
-	/**
-	 * Parse the completed test data from API response.
-	 *
-	 * @param array $api_response The raw API response data.
-	 * @return array Parsed test data ready for database storage.
-	 */
-	public function parse_test_results( array $api_response ): array {
-		if ( ! isset( $api_response['data']['data'] ) ) {
-			return [];
-		}
-
-		$test_data = $api_response['data']['data'];
-
-		return [
-			'gtmetrix_id'              => $test_data['gtmetrix_id'] ?? null,
-			'report_url'               => $test_data['report_url'] ?? null,
-			'performance_score'        => $test_data['performance_score'] ?? null,
-			'structure_score'          => $test_data['structure_score'] ?? null,
-			'largest_contentful_paint' => $test_data['largest_contentful_paint'] ?? null,
-			'total_blocking_time'      => $test_data['total_blocking_time'] ?? null,
-			'cumulative_layout_shift'  => $test_data['cumulative_layout_shift'] ?? null,
-			'first_contentful_paint'   => $test_data['first_contentful_paint'] ?? null,
-			'time_to_interactive'      => $test_data['time_to_interactive'] ?? null,
-			'speed_index'              => $test_data['speed_index'] ?? null,
-			'fully_loaded_time'        => $test_data['fully_loaded_time'] ?? null,
-			'page_size'                => $test_data['page_size'] ?? null,
-			'requests'                 => $test_data['requests'] ?? null,
-			'server_name'              => $api_response['data']['server_name'] ?? null,
-			'region_name'              => $api_response['data']['region_name'] ?? null,
-			'browser_name'             => $api_response['data']['browser_name'] ?? null,
-			'platform'                 => $api_response['data']['platform'] ?? null,
 		];
 	}
 }
