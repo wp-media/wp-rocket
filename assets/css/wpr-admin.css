@@ -1346,6 +1346,20 @@ div.wpr-upgrade-websites.notstacked {
   margin-left: 8px;
 }
 
+/* Speed Radar Styles */
+.wpr-field-speed-radar {
+  margin-top: 20px;
+}
+
+.wpr-speed-radar-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border: 1px solid #E8EBEE;
+  border-radius: 3px;
+  margin-bottom: 20px;
+}
+
 /*-----------------------------------------------*\
 
     Navigation menu item

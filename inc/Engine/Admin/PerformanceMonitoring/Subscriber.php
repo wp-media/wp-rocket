@@ -6,6 +6,32 @@ namespace WP_Rocket\Engine\Admin\PerformanceMonitoring;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 class Subscriber implements Subscriber_Interface {
+
+	/**
+	 * Render object.
+	 *
+	 * @var Render
+	 */
+	private $render;
+
+	/**
+	 * Controller object.
+	 *
+	 * @var Controller
+	 */
+	private $controller;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param Render     $render Render object.
+	 * @param Controller $controller Controller object.
+	 */
+	public function __construct( Render $render, Controller $controller ) {
+		$this->render     = $render;
+		$this->controller = $controller;
+	}
+
 	/**
 	 * Returns an array of events that this subscriber wants to listen to.
 	 *
@@ -13,17 +39,17 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'init' => 'on_init',
+			'rocket_dashboard_after_account_data' => [ 'render_ui', 11 ],
 		];
 	}
 
 	/**
-	 * Initialize the performance monitoring functionality.
+	 * Render the Ui in dashboard.
 	 *
 	 * @return void
 	 */
-	public function on_init(): void {
-		// Basic initialization - the table creation is handled by the ServiceProvider.
-		// This subscriber exists primarily to ensure the ServiceProvider is loaded.
+	public function render_ui() {
+		$items = $this->controller->get_items();
+		$this->render->render_ui( $items );
 	}
 }
