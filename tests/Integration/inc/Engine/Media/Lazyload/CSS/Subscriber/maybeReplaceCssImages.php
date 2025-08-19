@@ -18,7 +18,7 @@ class Test_MaybeReplaceCssImages extends FilesystemTestCase {
 	public function set_up() {
 		parent::set_up();
 
-		$this->unregisterAllCallbacksExcept('rocket_buffer', 'maybe_replace_css_images', 1002);
+		$this->unregisterAllCallbacksExcept('rocket_buffer', 'maybe_replace_css_images', 110000);
 
 		add_filter('pre_get_rocket_option_lazyload_css_bg_img', [$this, 'lazyload_css_bg_img']);
 		add_filter('rocket_lazyload_excluded_src', [$this, 'exclude_lazyload']);
