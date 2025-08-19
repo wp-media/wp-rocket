@@ -69,7 +69,6 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArguments(
 				[
 					'pm_query',
-					'pm_api_client',
 					'pm_context',
 					'options',
 				]

@@ -75,37 +75,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return void
 	 */
 	public function schedule_homepage_tests(): void {
-		$this->logger::debug( 'Performance Monitoring: Activation triggered' );
 
-		// Check if we should run homepage tests (includes first install and allowed checks).
-		if ( ! $this->context->is_allowed() ) {
-			$this->logger::debug( 'Performance Monitoring: Homepage tests not allowed, skipping' );
-			return;
-		}
-
-		$homepage_url = home_url();
-
-		// Schedule desktop test.
-		$desktop_options   = [
-			'device'   => 'desktop',
-			'location' => 'auto',
-		];
-		$desktop_action_id = $this->queue->schedule_test_initiation( $homepage_url, $desktop_options );
-
-		// Schedule mobile test.
-		$mobile_options   = [
-			'device'   => 'mobile',
-			'location' => 'auto',
-		];
-		$mobile_action_id = $this->queue->schedule_test_initiation( $homepage_url, $mobile_options );
-
-		$this->logger::info(
-			'Performance Monitoring: Scheduled homepage tests on activation',
-			[
-				'url'               => $homepage_url,
-				'desktop_action_id' => $desktop_action_id,
-				'mobile_action_id'  => $mobile_action_id,
-			]
-		);
 	}
 }

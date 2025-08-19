@@ -359,26 +359,8 @@ class JobProcessor implements LoggerAwareInterface {
 	 * @return array
 	 */
 	public function set_request_params( array $config, string $optimization_type ): array {
-		list($updated_config, $optimization_list, $request_param) = [ [], [], [] ];
-
-		foreach ( $this->factories as $factory ) {
-			if ( $optimization_type === $factory->manager()->get_optimization_type() ) {
-				$config = array_merge( $config, $factory->manager()->set_request_param() );
-
-				return $config;
-			}
-
-			$request_param = $factory->manager()->set_request_param();
-
-			$optimization_list = array_merge( $optimization_list, $request_param['optimization_list'] );
-			$updated_config    = array_merge( $request_param, $updated_config );
-		}
-
-		if ( ! $updated_config ) {
-			$updated_config['optimization_list'] = $optimization_list;
-		}
-
-		return $updated_config;
+		$job_factory = $this->factories[ $optimization_type ] ?? 'rucss';
+		return $job_factory->manager()->set_request_param();
 	}
 
 	/**

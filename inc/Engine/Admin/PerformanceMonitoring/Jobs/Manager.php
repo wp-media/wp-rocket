@@ -6,7 +6,7 @@ namespace WP_Rocket\Engine\Admin\PerformanceMonitoring\Jobs;
 use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Database\Queries\PerformanceMonitoring as PerformanceTests_Query;
-use WP_Rocket\Engine\Admin\PerformanceMonitoring\API\Client as APIClient;
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\APIHandler\APIClient;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Common\JobManager\Managers\AbstractManager;
@@ -27,13 +27,6 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 	protected $query;
 
 	/**
-	 * API Client instance.
-	 *
-	 * @var APIClient
-	 */
-	private $api_client;
-
-	/**
 	 * Performance Monitoring Context.
 	 *
 	 * @var ContextInterface
@@ -48,13 +41,6 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 	protected $optimization_type = 'performance_monitoring';
 
 	/**
-	 * Check if manager can process.
-	 *
-	 * @var boolean
-	 */
-	protected $can_process = true;
-
-	/**
 	 * Plugin options instance.
 	 *
 	 * @var Options_Data
@@ -65,18 +51,15 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 	 * Instantiate the class.
 	 *
 	 * @param PerformanceTests_Query $query Performance Tests Query instance.
-	 * @param APIClient              $api_client API Client instance.
 	 * @param ContextInterface       $context Performance Monitoring Context.
 	 * @param Options_Data           $options Options instance.
 	 */
 	public function __construct(
 		PerformanceTests_Query $query,
-		APIClient $api_client,
 		ContextInterface $context,
 		Options_Data $options
 	) {
 		$this->query      = $query;
-		$this->api_client = $api_client;
 		$this->context    = $context;
 		$this->options    = $options;
 	}
@@ -109,6 +92,10 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 	 * @return void
 	 */
 	public function validate_and_fail( array $job_details, $row_details, string $optimization_type ): void {
+		if ( 'completed' === $job_details['status'] ) {
+			return;
+		}
+
 		// Implementation for handling failed performance tests.
 		$this->logger::error(
 			'Performance Monitoring: Job validation failed',
@@ -118,7 +105,7 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 			]
 		);
 
-		$this->query->update_status( $row_details->id, 'failed' );
+		$this->query->make_status_failed( $row_details->url, $row_details->is_mobile, '', $job_details['message'] ?? '' );
 	}
 
 	/**
@@ -130,45 +117,6 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 	 * @return void
 	 */
 	public function process( array $job_details, $row_details, string $optimization_type ): void {
-		$this->logger::debug(
-			'Performance Monitoring: Processing job',
-			[
-				'job_id' => $job_details['id'] ?? null,
-				'status' => $job_details['status'] ?? null,
-			]
-		);
-
-		switch ( $job_details['status'] ) {
-			case 'completed':
-				$this->handle_completed_test( $job_details, $row_details );
-				break;
-			case 'running':
-				$this->schedule_status_check( $row_details );
-				break;
-			case 'failed':
-				$this->handle_failed_test( $job_details, $row_details );
-				break;
-		}
-	}
-
-	/**
-	 * Handle completed performance test.
-	 *
-	 * @param array  $job_details Details from SaaS API.
-	 * @param object $row_details Database row details.
-	 */
-	private function handle_completed_test( array $job_details, $row_details ): void {
-		$parsed_data = $this->api_client->parse_test_results( $job_details );
-
-		$test_data = array_merge(
-			$parsed_data,
-			[
-				'completed_at' => gmdate( 'Y-m-d H:i:s' ),
-			]
-			);
-
-		$this->query->update_test_data( $row_details->id, 'completed', $test_data );
-
 		$this->logger::info(
 			'Performance Monitoring: Test completed successfully',
 			[
@@ -176,40 +124,8 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 				'score'   => $parsed_data['performance_score'] ?? null,
 			]
 		);
-	}
 
-	/**
-	 * Handle failed performance test.
-	 *
-	 * @param array  $job_details Details from SaaS API.
-	 * @param object $row_details Database row details.
-	 */
-	private function handle_failed_test( array $job_details, $row_details ): void {
-		$error_message = $job_details['message'] ?? 'Performance test failed';
-
-		$this->query->update_status( $row_details->id, 'failed', $error_message );
-
-		$this->logger::warning(
-			'Performance Monitoring: Test failed',
-			[
-				'test_id' => $row_details->test_id,
-				'error'   => $error_message,
-			]
-		);
-	}
-
-	/**
-	 * Schedule recurring status check for running test.
-	 *
-	 * @param object $row_details Database row details.
-	 */
-	private function schedule_status_check( $row_details ): void {
-		// This would be implemented with the Queue system.
-		// For now, we just log that a status check should be scheduled.
-		$this->logger::debug(
-			'Performance Monitoring: Test still running, should schedule next status check',
-			[ 'test_id' => $row_details->test_id ]
-		);
+		$this->query->make_status_completed( $row_details->id, 'completed', $this->parse_test_results( $job_details ) );
 	}
 
 	/**
@@ -235,5 +151,39 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 	 */
 	public function get_optimization_type_from_row( $row ): string {
 		return $this->optimization_type;
+	}
+
+	/**
+	 * Parse the completed test data from API response.
+	 *
+	 * @param array $api_response The raw API response data.
+	 * @return array Parsed test data ready for database storage.
+	 */
+	private function parse_test_results( array $api_response ): array {
+		if ( ! isset( $api_response['data']['data'] ) ) {
+			return [];
+		}
+
+		$test_data = $api_response['data']['data'];
+
+		return [
+			'gtmetrix_id'              => $test_data['gtmetrix_id'] ?? null,
+			'report_url'               => $test_data['report_url'] ?? null,
+			'performance_score'        => $test_data['performance_score'] ?? null,
+			'structure_score'          => $test_data['structure_score'] ?? null,
+			'largest_contentful_paint' => $test_data['largest_contentful_paint'] ?? null,
+			'total_blocking_time'      => $test_data['total_blocking_time'] ?? null,
+			'cumulative_layout_shift'  => $test_data['cumulative_layout_shift'] ?? null,
+			'first_contentful_paint'   => $test_data['first_contentful_paint'] ?? null,
+			'time_to_interactive'      => $test_data['time_to_interactive'] ?? null,
+			'speed_index'              => $test_data['speed_index'] ?? null,
+			'fully_loaded_time'        => $test_data['fully_loaded_time'] ?? null,
+			'page_size'                => $test_data['page_size'] ?? null,
+			'requests'                 => $test_data['requests'] ?? null,
+			'server_name'              => $api_response['data']['server_name'] ?? null,
+			'region_name'              => $api_response['data']['region_name'] ?? null,
+			'browser_name'             => $api_response['data']['browser_name'] ?? null,
+			'platform'                 => $api_response['data']['platform'] ?? null,
+		];
 	}
 }

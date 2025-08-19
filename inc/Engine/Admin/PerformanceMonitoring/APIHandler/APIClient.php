@@ -182,38 +182,4 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 			'data'   => $response_data['data'] ?? null,
 		];
 	}
-
-	/**
-	 * Parse the completed test data from API response.
-	 *
-	 * @param array $api_response The raw API response data.
-	 * @return array Parsed test data ready for database storage.
-	 */
-	public function parse_test_results( array $api_response ): array {
-		if ( ! isset( $api_response['data']['data'] ) ) {
-			return [];
-		}
-
-		$test_data = $api_response['data']['data'];
-
-		return [
-			'gtmetrix_id'              => $test_data['gtmetrix_id'] ?? null,
-			'report_url'               => $test_data['report_url'] ?? null,
-			'performance_score'        => $test_data['performance_score'] ?? null,
-			'structure_score'          => $test_data['structure_score'] ?? null,
-			'largest_contentful_paint' => $test_data['largest_contentful_paint'] ?? null,
-			'total_blocking_time'      => $test_data['total_blocking_time'] ?? null,
-			'cumulative_layout_shift'  => $test_data['cumulative_layout_shift'] ?? null,
-			'first_contentful_paint'   => $test_data['first_contentful_paint'] ?? null,
-			'time_to_interactive'      => $test_data['time_to_interactive'] ?? null,
-			'speed_index'              => $test_data['speed_index'] ?? null,
-			'fully_loaded_time'        => $test_data['fully_loaded_time'] ?? null,
-			'page_size'                => $test_data['page_size'] ?? null,
-			'requests'                 => $test_data['requests'] ?? null,
-			'server_name'              => $api_response['data']['server_name'] ?? null,
-			'region_name'              => $api_response['data']['region_name'] ?? null,
-			'browser_name'             => $api_response['data']['browser_name'] ?? null,
-			'platform'                 => $api_response['data']['platform'] ?? null,
-		];
-	}
 }

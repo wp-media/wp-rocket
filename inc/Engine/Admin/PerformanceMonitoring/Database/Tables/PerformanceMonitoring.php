@@ -25,7 +25,7 @@ class PerformanceMonitoring extends AbstractTable {
 	 *
 	 * @var int
 	 */
-	protected $version = 20250808;
+	protected $version = 20250819;
 
 	/**
 	 * Table schema data.
@@ -36,17 +36,26 @@ class PerformanceMonitoring extends AbstractTable {
 		id               bigint(20) unsigned NOT NULL AUTO_INCREMENT,
 		url              varchar(2000)       NOT NULL default '',
 		is_mobile        tinyint(1)          NOT NULL default 0,
-		test_id          varchar(255)        NOT NULL default '',
+		job_id           varchar(255)        NOT NULL default '',
+		queue_name       varchar(255)        NOT NULL default '',
+		retries          tinyint(1)          NOT NULL default 1,
 		error_message    longtext                     default NULL,
 		status           varchar(255)                 default NULL,
 		data             longtext            NOT NULL default '',
 		modified         timestamp           NOT NULL default '0000-00-00 00:00:00',
 		last_accessed    timestamp           NOT NULL default '0000-00-00 00:00:00',
+		submitted_at     timestamp           NULL,
+		next_retry_time  timestamp           NOT NULL default '0000-00-00 00:00:00',
+		score            tinyint(3)          NULL default 0,
+		report_url       varchar(255)        NULL default '',
+		error_code       varchar(32)             NULL default NULL,
+		error_message    longtext                NULL default NULL,
 		PRIMARY KEY (id),
 		KEY url (url(100)),
 		KEY is_mobile (is_mobile),
 		KEY test_id (test_id),
-		KEY status (status)";
+		KEY status (status),
+		INDEX `status_index` (`status`(191))";
 
 	/**
 	 * Truncate DB table.
