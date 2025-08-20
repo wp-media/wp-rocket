@@ -61,8 +61,6 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		$this->getContainer()->add( 'pm_render', Render::class )
 			->addArgument( new StringArgument( $this->getContainer()->get( 'template_path' ) . '/settings/' ) );
-		$this->getContainer()->add( 'pm_controller', Controller::class )
-			->addArgument( 'pm_query' );
 
 		// Register the subscriber.
 		// API Client.
@@ -89,7 +87,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'pm_query',
 					'pm_manager',
 				]
-				);
+			);
 
 		$this->getContainer()->addShared( 'pm_factory', PMFactory::class )
 			->addArguments(
