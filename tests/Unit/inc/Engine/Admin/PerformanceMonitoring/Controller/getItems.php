@@ -5,6 +5,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Admin\PerformanceMonitoring\Controller
 
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Controller;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Database\Queries\PerformanceMonitoring;
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\Jobs\Manager;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
@@ -26,7 +27,8 @@ class Test_GetItems extends TestCase {
 			->with($expected_params)
 			->willReturn(['foo']);
 
-		$controller = new Controller($mock_query);
+		$mock_manager = $this->createMock(Manager::class);
+		$controller = new Controller($mock_query, $mock_manager);
 		$result = $controller->get_items();
 
 		$this->assertEquals(['foo'], $result);
