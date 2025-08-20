@@ -102,7 +102,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'pm_queue', PMQueue::class );
 
 		// Subscriber.
-		$this->getContainer()->add( 'pm_subscriber', Subscriber::class )
+		$this->getContainer()->addShared( 'pm_subscriber', Subscriber::class )
 			->addArguments(
 				[
 					'pm_render',
