@@ -163,7 +163,6 @@ trait AbstractManager {
 		if ( ! $this->is_allowed( $optimization_type ) ) {
 			return;
 		}
-
 		$this->query->make_status_pending( $url, $job_id, $queue_name, $is_mobile );
 	}
 

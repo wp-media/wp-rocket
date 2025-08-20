@@ -46,10 +46,10 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 			'key'   => $this->options->get( 'consumer_key', '' ),
 			'url'      => $url,
 			'is_priority' => $options['is_home'] ?? false,
-			'device'  => ! $options['is_mobile'] ? 'desktop' : 'mobile',
+			//'device'  => ! $options['is_mobile'] ? 'desktop' : 'mobile',
 		];
 		if ( ! empty( $options['region'] ) ) {
-			$request_body['region'] = $options['region'];
+			//$request_body['region'] = $options['region'];
 		}
 		$args = [
 			'json_encode' => true,
@@ -160,8 +160,8 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 		);
 
 		return [
-			'code'   => 200,
-			'status' => $response_data['status'] ?? 'running',
+			'code'   => 'pending' === $response_data['status'] ? 425 : 200,
+			'status' => $response_data['status'] ?? 'pending',
 			'data'   => $response_data['data'] ?? null,
 		];
 	}
