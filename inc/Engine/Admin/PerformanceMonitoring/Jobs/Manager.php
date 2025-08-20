@@ -6,7 +6,6 @@ namespace WP_Rocket\Engine\Admin\PerformanceMonitoring\Jobs;
 use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Database\Queries\PerformanceMonitoring as PerformanceTests_Query;
-use WP_Rocket\Engine\Admin\PerformanceMonitoring\APIHandler\APIClient;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Common\JobManager\Managers\AbstractManager;
@@ -136,10 +135,6 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 	public function set_request_param(): array {
 		return [
 			'timeout' => 15,
-			'headers' => [
-				'X-WP-Rocket-Email' => $this->options->get( 'consumer_email', '' ),
-				'X-WP-Rocket-Key'   => $this->options->get( 'consumer_key', '' ),
-			],
 		];
 	}
 
@@ -185,5 +180,15 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 			'browser_name'             => $api_response['data']['browser_name'] ?? null,
 			'platform'                 => $api_response['data']['platform'] ?? null,
 		];
+	}
+
+	public function process_jobid( $url, $response, $is_mobile, $optimization_type ) {
+		$this->make_status_pending(
+			$url,
+			$response['uuid'],
+			'',
+			$is_mobile,
+			$optimization_type
+		);
 	}
 }

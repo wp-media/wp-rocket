@@ -215,4 +215,14 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 
 		return $this->optimization_type;
 	}
+
+	public function process_jobid( $url, $response, $is_mobile, $optimization_type ) {
+		$this->make_status_pending(
+			$url,
+			$response['contents']['jobId'],
+			$response['contents']['queueName'],
+			$is_mobile,
+			$optimization_type
+		);
+	}
 }

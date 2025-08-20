@@ -279,8 +279,9 @@ class JobProcessor implements LoggerAwareInterface {
 		foreach ( $rows as $row ) {
 			$optimization_type = $this->get_optimization_type( $row );
 			$response          = $this->send_api( $row->url, (bool) $row->is_mobile, $optimization_type );
+			$job_factory = $this->factories[ $optimization_type ?? 'rucss' ];
 
-			if ( false === $response || ! isset( $response['contents'], $response['contents']['jobId'], $response['contents']['queueName'] ) ) {
+			if ( ! $response || ! $job_factory->api()->validate_add_to_queue_response( $response ) ) {
 				$this->make_status_failed( $row->url, $row->is_mobile, '', '', $optimization_type );
 				continue;
 			}
@@ -292,10 +293,9 @@ class JobProcessor implements LoggerAwareInterface {
 			 */
 			do_action( 'rocket_preload_lock_url', $row->url );
 
-			$this->make_status_pending(
+			$job_factory->manager()->process_jobid(
 				$row->url,
-				$response['contents']['jobId'],
-				$response['contents']['queueName'],
+				$response,
 				(bool) $row->is_mobile,
 				$optimization_type
 			);
@@ -334,7 +334,7 @@ class JobProcessor implements LoggerAwareInterface {
 		$job_factory = $this->factories[ $optimization_type ?? 'rucss' ];
 		$add_to_queue_response = $job_factory->api()->add_to_queue( $url, $config );
 
-		if ( 200 !== $add_to_queue_response['code'] ) {
+		if ( ! in_array( $add_to_queue_response['code'], [ 200, 201 ] ) ) {
 			$this->logger::error(
 				'Error when contacting the SaaS API.',
 				[

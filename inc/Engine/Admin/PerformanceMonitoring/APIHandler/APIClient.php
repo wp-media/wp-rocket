@@ -41,16 +41,22 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 		 */
 		$url = apply_filters( 'rocket_saas_api_queued_url', $url, 'performance_monitoring' );
 
+		$request_body = [
+			'email' => $this->options->get( 'consumer_email', '' ),
+			'key'   => $this->options->get( 'consumer_key', '' ),
+			'url'      => $url,
+			'is_priority' => $options['is_home'] ?? false,
+			'device'  => ! $options['is_mobile'] ? 'desktop' : 'mobile',
+		];
+		if ( ! empty( $options['region'] ) ) {
+			$request_body['region'] = $options['region'];
+		}
 		$args = [
-			'body'    => [
-				'email' => $this->options->get( 'consumer_email', '' ),
-				'key'   => $this->options->get( 'consumer_key', '' ),
-				'url'      => $url,
-				'is_priority' => $options['is_home'] ?? false,
-				'device'  => ! $options['is_mobile'] ? 'desktop' : 'mobile',
-				'region'  => $options['region'] ?? '',
-			],
-			'timeout' => 30, // Longer timeout for initiation.
+			'json_encode' => true,
+			'body'    => $request_body,
+			'headers' => [
+				'Content-Type' => 'application/json',
+			]
 		];
 
 		$this->logger::debug(
@@ -79,35 +85,16 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 
 		$response_data = json_decode( $this->response_body, true );
 
-		if ( ! $response_data || ! isset( $response_data['test_id'] ) ) {
-			$error_data = [
-				'code'    => 400,
-				'message' => 'Invalid API response - missing test_id',
-			];
-
-			$this->logger::error(
-				'Performance Monitoring: Invalid API response',
-				$error_data
-			);
-
-			return $error_data;
-		}
-
 		$this->logger::info(
 			'Performance Monitoring: Test initiated successfully',
 			[
-				'test_id'              => $response_data['test_id'],
-				'status'               => $response_data['status'] ?? 'unknown',
-				'estimated_completion' => $response_data['estimated_completion'] ?? null,
+				'job_id' => $response_data['uuid'],
 			]
 		);
 
-		return [
-			'code'                 => 200,
-			'test_id'              => $response_data['test_id'],
-			'status'               => $response_data['status'] ?? 'running',
-			'estimated_completion' => $response_data['estimated_completion'] ?? null,
-		];
+		$response_data['code'] = $this->response_code;
+
+		return $response_data;
 	}
 
 	/**
@@ -177,5 +164,9 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 			'status' => $response_data['status'] ?? 'running',
 			'data'   => $response_data['data'] ?? null,
 		];
+	}
+
+	public function validate_add_to_queue_response( array $response ): bool {
+		return ! empty( $response['uuid'] );
 	}
 }
