@@ -115,7 +115,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					[
 						'rucss_manager',
 						'rucss_usedcss_table',
-						'rucss_api_client'
+						'rucss_api_client',
 					]
 				);
 		$this->getContainer()->add( 'rucss_used_css_controller', UsedCSSController::class )

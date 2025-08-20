@@ -50,7 +50,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'wp_rocket_first_install' => 'schedule_homepage_tests',
+			'wp_rocket_first_install'             => 'schedule_homepage_tests',
 			'rocket_dashboard_after_account_data' => [ 'render_ui', 11 ],
 		];
 	}
@@ -61,8 +61,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return void
 	 */
 	public function render_ui() {
-		$items = $this->controller->get_items();
-		$this->render->render_ui( $items );
+		$this->render->render_ui( $this->controller->get_items() );
 	}
 
 	/**
@@ -74,6 +73,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return void
 	 */
 	public function schedule_homepage_tests(): void {
-
+		$this->controller->add_homepage();
 	}
 }

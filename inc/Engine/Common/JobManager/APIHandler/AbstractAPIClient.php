@@ -85,7 +85,7 @@ abstract class AbstractAPIClient {
 			$args['body'] = wp_json_encode( $args['body'] );
 		}
 
-		$response       = wp_remote_request(
+		$response = wp_remote_request(
 			$api_url . $this->request_path,
 			$args
 		);
@@ -127,7 +127,7 @@ abstract class AbstractAPIClient {
 			? wp_remote_retrieve_response_code( $response )
 			: $response->get_error_code();
 
-		if ( ! in_array( $this->response_code, [ 200, 201 ] ) ) {
+		if ( ! in_array( (int) $this->response_code, [ 200, 201 ], true ) ) {
 			$previous_errors = (int) get_transient( 'wp_rocket_rucss_errors_count' );
 			set_transient( 'wp_rocket_rucss_errors_count', $previous_errors + 1, 5 * MINUTE_IN_SECONDS );
 
@@ -148,5 +148,11 @@ abstract class AbstractAPIClient {
 		return true;
 	}
 
+	/**
+	 * Validate add to queue response.
+	 *
+	 * @param array $response Response array to be validated.
+	 * @return bool
+	 */
 	abstract public function validate_add_to_queue_response( array $response ): bool;
 }

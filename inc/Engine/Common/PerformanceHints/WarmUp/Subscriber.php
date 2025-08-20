@@ -85,6 +85,7 @@ class Subscriber implements Subscriber_Interface {
 	 * Add image dimensions query parameter to URL.
 	 *
 	 * @param string $url URL to be sent.
+	 * @param string $optimization_type Optimization type.
 	 *
 	 * @return string
 	 */

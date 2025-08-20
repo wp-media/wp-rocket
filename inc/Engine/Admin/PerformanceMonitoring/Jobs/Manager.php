@@ -58,9 +58,9 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 		ContextInterface $context,
 		Options_Data $options
 	) {
-		$this->query      = $query;
-		$this->context    = $context;
-		$this->options    = $options;
+		$this->query   = $query;
+		$this->context = $context;
+		$this->options = $options;
 	}
 
 	/**
@@ -156,8 +156,8 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 	 */
 	private function parse_test_results( array $api_response ): array {
 		$defaults = [
-			'report_url'         => '',
-			'performance_score'  => 0,
+			'report_url'        => '',
+			'performance_score' => 0,
 		];
 		if ( ! isset( $api_response['data']['data'] ) ) {
 			return $defaults;
@@ -166,7 +166,17 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 		return wp_parse_args( $api_response['data']['data'], $defaults );
 	}
 
-	public function process_jobid( $url, $response, $is_mobile, $optimization_type ) {
+	/**
+	 * Process Job ID by saving it into DB.
+	 *
+	 * @param string $url Row url.
+	 * @param array  $response API Response array.
+	 * @param bool   $is_mobile Is mobile or not.
+	 * @param string $optimization_type Optimization type.
+	 *
+	 * @return void
+	 */
+	public function process_jobid( string $url, array $response, bool $is_mobile, string $optimization_type ) {
 		$this->make_status_pending(
 			$url,
 			$response['uuid'],

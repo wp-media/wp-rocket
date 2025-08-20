@@ -81,6 +81,14 @@ class ServiceProvider extends AbstractServiceProvider {
 					'pm_context',
 					'options',
 				]
+			);
+
+		$this->getContainer()->add( 'pm_controller', Controller::class )
+			->addArguments(
+				[
+					'pm_query',
+					'pm_manager',
+				]
 				);
 
 		$this->getContainer()->addShared( 'pm_factory', PMFactory::class )
@@ -95,16 +103,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		// Queue layer.
 		$this->getContainer()->add( 'pm_queue', PMQueue::class );
 
-		$this->getContainer()->add( 'pm_processor', PMProcessor::class )
-			->addArguments(
-				[
-					'pm_factory',
-					'pm_api_client',
-					'pm_queue',
-					'pm_query',
-				]
-				);
-
 		// Subscriber.
 		$this->getContainer()->add( 'pm_subscriber', Subscriber::class )
 			->addArguments(
@@ -112,7 +110,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'pm_render',
 					'pm_controller',
 				]
-				);
+			);
 
 		// Ensure the table is created.
 		$this->getContainer()->get( 'pm_table' );

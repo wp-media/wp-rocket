@@ -42,21 +42,21 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 		$url = apply_filters( 'rocket_saas_api_queued_url', $url, 'performance_monitoring' );
 
 		$request_body = [
-			'email' => $this->options->get( 'consumer_email', '' ),
-			'key'   => $this->options->get( 'consumer_key', '' ),
-			'url'      => $url,
+			'email'       => $this->options->get( 'consumer_email', '' ),
+			'key'         => $this->options->get( 'consumer_key', '' ),
+			'url'         => $url,
 			'is_priority' => $options['is_home'] ?? false,
-			//'device'  => ! $options['is_mobile'] ? 'desktop' : 'mobile',
+			// @Todo: Both items are not working because of SaaS.
+			// 'device'  => ! $options['is_mobile'] ? 'desktop' : 'mobile',
+			// 'region' => $options['region'] ?? '',
 		];
-		if ( ! empty( $options['region'] ) ) {
-			//$request_body['region'] = $options['region'];
-		}
+
 		$args = [
 			'json_encode' => true,
-			'body'    => $request_body,
-			'headers' => [
+			'body'        => $request_body,
+			'headers'     => [
 				'Content-Type' => 'application/json',
-			]
+			],
 		];
 
 		$this->logger::debug(
@@ -101,6 +101,9 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 	 * Get the status of a performance test.
 	 *
 	 * @param string $test_id The external test ID.
+	 * @param string $queue_name Queue name just in case.
+	 * @param bool   $is_home Url is Homepage.
+	 *
 	 * @return array|\WP_Error
 	 */
 	public function get_queue_job_status( string $test_id, $queue_name, $is_home = false ) {
@@ -108,10 +111,6 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 
 		$args = [
 			'timeout' => 15,
-			'headers' => [
-				'X-WP-Rocket-Email' => $this->options->get( 'consumer_email', '' ),
-				'X-WP-Rocket-Key'   => $this->options->get( 'consumer_key', '' ),
-			],
 		];
 
 		$this->logger::debug(
@@ -166,6 +165,12 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 		];
 	}
 
+	/**
+	 * Validate add to queue response if it's valid or not..
+	 *
+	 * @param array $response Response array.
+	 * @return bool
+	 */
 	public function validate_add_to_queue_response( array $response ): bool {
 		return ! empty( $response['uuid'] );
 	}

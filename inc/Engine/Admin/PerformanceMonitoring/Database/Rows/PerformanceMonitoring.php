@@ -111,10 +111,25 @@ class PerformanceMonitoring extends Row {
 	 */
 	public $next_retry_time;
 
+	/**
+	 * Data column.
+	 *
+	 * @var array|mixed
+	 */
 	public $data;
 
+	/**
+	 * Score column.
+	 *
+	 * @var int
+	 */
 	public $score;
 
+	/**
+	 * Report URL column.
+	 *
+	 * @var string
+	 */
 	public $report_url;
 
 	/**
@@ -125,22 +140,22 @@ class PerformanceMonitoring extends Row {
 	public function __construct( $item ) {
 		parent::__construct( $item );
 
-		$this->id            = (int) $item->id;
-		$this->url           = (string) $item->url;
+		$this->id              = (int) $item->id;
+		$this->url             = (string) $item->url;
 		$this->title           = (string) $item->title;
-		$this->is_mobile     = (bool) $item->is_mobile;
-		$this->job_id       = (string) $item->job_id;
-		$this->queue_name = (string) $item->queue_name;
+		$this->is_mobile       = (bool) $item->is_mobile;
+		$this->job_id          = (string) $item->job_id;
+		$this->queue_name      = (string) $item->queue_name;
 		$this->retries         = (int) $this->retries;
 		$this->status          = (string) $this->status;
-		$this->data          = ! empty( $item->data ) ? json_decode( $item->data, true ) : [];
-		$this->modified        = empty( $this->modified ) ? 0 : strtotime( (string) $this->modified);
+		$this->data            = ! empty( $item->data ) ? json_decode( $item->data, true ) : [];
+		$this->modified        = empty( $this->modified ) ? 0 : strtotime( (string) $this->modified );
 		$this->last_accessed   = empty( $this->last_accessed ) ? 0 : strtotime( (string) $this->last_accessed );
 		$this->submitted_at    = empty( $this->submitted_at ) ? 0 : strtotime( (string) $this->submitted_at );
 		$this->next_retry_time = empty( $this->next_retry_time ) ? 0 : strtotime( (string) $this->next_retry_time );
-		$this->score = (int) $this->score;
-		$this->report_url = (string) $this->report_url;
-		$this->error_code = (int) $this->error_code;
+		$this->score           = (int) $this->score;
+		$this->report_url      = (string) $this->report_url;
+		$this->error_code      = (int) $this->error_code;
 		$this->error_message   = (string) $this->error_message;
 	}
 

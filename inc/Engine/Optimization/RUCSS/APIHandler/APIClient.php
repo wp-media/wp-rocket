@@ -137,6 +137,12 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 		return (array) wp_parse_args( ( $result && $result['returnvalue'] ) ? (array) $result['returnvalue'] : [], $default );
 	}
 
+	/**
+	 * Validate add to queue response.
+	 *
+	 * @param array $response Response array to be validated.
+	 * @return bool
+	 */
 	public function validate_add_to_queue_response( array $response ): bool {
 		return isset( $response['contents'], $response['contents']['jobId'], $response['contents']['queueName'] );
 	}

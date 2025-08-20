@@ -24,13 +24,18 @@ class Factory implements SaasFactory {
 	 */
 	private $table;
 
+	/**
+	 * API Client instance.
+	 *
+	 * @var AbstractAPIClient
+	 */
 	private $api_client;
 
 	/**
 	 * Instantiate the class.
 	 *
-	 * @param ManagerInterface $manager RUCSS Manager.
-	 * @param TableInterface   $table RUCSS Table.
+	 * @param ManagerInterface  $manager RUCSS Manager.
+	 * @param TableInterface    $table RUCSS Table.
 	 * @param AbstractAPIClient $api_client API Client instance.
 	 */
 	public function __construct( ManagerInterface $manager, TableInterface $table, AbstractAPIClient $api_client ) {
