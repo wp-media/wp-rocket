@@ -18,12 +18,14 @@ class Test_ScheduleOnSubmitJobs extends TestCase {
 		$this->unregisterAllCallbacksExcept( 'init', 'schedule_on_submit_jobs' );
 
 		add_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'rucss' ] );
+		add_filter( 'rocket_performance_monitoring_enabled', '__return_false' );
 	}
 
 	public function tear_down() {
 		$this->restoreWpHook( 'init' );
 
 		remove_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'rucss' ] );
+		remove_filter( 'rocket_performance_monitoring_enabled', '__return_false' );
 		parent::tear_down();
 	}
 

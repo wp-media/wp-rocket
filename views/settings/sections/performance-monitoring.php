@@ -32,7 +32,7 @@ defined( 'ABSPATH' ) || exit;
 				<td class="wpr-speed-radar-status">
 					<span class="wpr-speed-radar-score wpr-speed-radar-score--good"><?php echo intval( $rocket_db_item->score ); ?></span>
 				</td>
-				<td class="wpr-speed-radar-date"><?php echo esc_html( date( 'Y-m-d H:i:s', $rocket_db_item->modified ) ); ?></td>
+				<td class="wpr-speed-radar-date"><?php echo esc_html( gmdate( 'Y-m-d H:i:s', $rocket_db_item->modified ) ); ?></td>
 				<td class="wpr-speed-radar-actions">
 					<?php
 					$this->render_action_button(

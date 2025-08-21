@@ -36,8 +36,11 @@ class PerformanceMonitoringContext implements ContextInterface {
 	 * @return bool
 	 */
 	public function is_allowed( array $data = [] ): bool {
-		// @TODO: Add a check if the user has a license.
-
-		return true;
+		/**
+		 * Filters performance monitoring addon enable status.
+		 *
+		 * @param boolean $enabled Current status, default is true.
+		 */
+		return wpm_apply_filters_typed( 'boolean', 'rocket_performance_monitoring_enabled', true );
 	}
 }

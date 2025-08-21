@@ -24,6 +24,7 @@ class Test_ProcessOnSubmitJobs extends TestCase {
 
 		add_filter( 'rocket_saas_max_pending_jobs', [ $this, 'max_rows' ] );
 		add_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'rucss_enabled' ] );
+		add_filter( 'rocket_performance_monitoring_enabled', '__return_false' );
 		$this->setup_http();
 	}
 
@@ -35,6 +36,7 @@ class Test_ProcessOnSubmitJobs extends TestCase {
 
 		remove_filter( 'rocket_saas_max_pending_jobs', [ $this, 'max_rows' ] );
 		remove_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'rucss_enabled' ] );
+		remove_filter( 'rocket_performance_monitoring_enabled', '__return_false' );
 
 		parent::tear_down();
 	}
