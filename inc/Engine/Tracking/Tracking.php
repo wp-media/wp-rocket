@@ -83,7 +83,7 @@ class Tracking extends Abstract_Render {
 			}
 
 			$this->mixpanel->track(
-				'WPM Option Changed',
+				'Option Changed',
 				[
 					'context'        => 'wp_plugin',
 					'option_name'    => $option_tracked,
@@ -176,8 +176,9 @@ class Tracking extends Abstract_Render {
 			'rocket_mixpanel_data',
 			[
 				'optin_enabled' => $this->optin->is_enabled() ? true : false,
-				'brand'         => 'WP Media',
-				'product'       => 'WP Rocket',
+				'plugin'		=> 'wp rocket' . rocket_get_constant( 'WP_ROCKET_VERSION', '' ),
+				'brand'         => 'wp media',
+				'app'           => 'wp rocket',
 				'context'       => 'wp_plugin',
 				'path'          => isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '',
 				'user_id'       => $hashed_email,
