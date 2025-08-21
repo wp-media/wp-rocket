@@ -281,7 +281,6 @@ trait DBTrait {
 			$container->get( 'lrc_table' ),
 			$container->get( 'preload_fonts_table' ),
 			$container->get( 'preconnect_external_domains_table' ),
-			$container->get( 'pm_table' ),
 		];
 		if ( $container->has( 'pm_table' ) ) {
 			$tables[] = $container->get( 'pm_table' );
