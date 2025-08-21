@@ -9,7 +9,6 @@ use WP_Rocket\Engine\Common\JobManager\Cron\Subscriber as CronSubscriber;
 use WP_Rocket\Engine\Common\JobManager\Queue\Queue;
 use WP_Rocket\Engine\Common\JobManager\Strategy\Context\RetryContext;
 use WP_Rocket\Engine\Common\JobManager\Strategy\Factory\StrategyFactory;
-use WP_Rocket\Engine\Optimization\RUCSS\APIHandler\APIClient;
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**

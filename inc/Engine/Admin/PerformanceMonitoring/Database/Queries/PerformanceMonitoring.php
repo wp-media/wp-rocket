@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Admin\PerformanceMonitoring\Database\Queries;
 
-use WP_Rocket\Dependencies\BerlinDB\Database\Query;
-
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Database\Schemas\PerformanceMonitoring as PerformanceMonitoringSchema;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Database\Rows\PerformanceMonitoring as PerformanceMonitoringRow;
 use WP_Rocket\Engine\Common\Database\Queries\AbstractQuery;

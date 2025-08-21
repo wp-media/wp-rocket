@@ -72,7 +72,7 @@ class JobProcessor implements LoggerAwareInterface {
 		}
 
 		$is_allowed = false;
-		foreach ( $this->factories as $key => $factory ) {
+		foreach ( $this->factories as $factory ) {
 			$is_allowed = $is_allowed || $factory->manager()->is_allowed();
 		}
 

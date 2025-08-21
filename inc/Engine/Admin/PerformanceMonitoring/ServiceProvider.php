@@ -12,7 +12,6 @@ use WP_Rocket\Engine\Admin\PerformanceMonitoring\Context\PerformanceMonitoringCo
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Jobs\Factory as PMFactory;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Jobs\Manager as PMManager;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Queue\Queue as PMQueue;
-use WP_Rocket\Engine\Admin\PerformanceMonitoring\Queue\Processor as PMProcessor;
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
@@ -62,7 +61,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'pm_render', Render::class )
 			->addArgument( new StringArgument( $this->getContainer()->get( 'template_path' ) . '/settings/' ) );
 
-		// Register the subscriber.
 		// API Client.
 		$this->getContainer()->add( 'pm_api_client', PMAPIClient::class )
 			->addArgument( 'options' );
