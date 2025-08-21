@@ -125,5 +125,4 @@ class PerformanceMonitoring extends AbstractQuery {
 
 		return (bool) $this->update_item( $db_id, $update_data );
 	}
-
 }
