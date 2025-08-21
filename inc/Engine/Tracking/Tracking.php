@@ -176,7 +176,7 @@ class Tracking extends Abstract_Render {
 			'rocket_mixpanel_data',
 			[
 				'optin_enabled' => $this->optin->is_enabled() ? true : false,
-				'plugin'		=> 'wp rocket' . rocket_get_constant( 'WP_ROCKET_VERSION', '' ),
+				'plugin'        => 'wp rocket ' . rocket_get_constant( 'WP_ROCKET_VERSION', '' ),
 				'brand'         => 'wp media',
 				'app'           => 'wp rocket',
 				'context'       => 'wp_plugin',
