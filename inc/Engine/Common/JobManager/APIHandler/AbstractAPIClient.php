@@ -164,7 +164,7 @@ abstract class AbstractAPIClient {
 	 *
 	 * @return mixed
 	 */
-	protected function filter_url($url, $optimization_type ) {
+	protected function filter_url( $url, $optimization_type ) {
 		/**
 		 * Filter the url that is sent to Saas.
 		 *

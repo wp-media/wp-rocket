@@ -72,9 +72,8 @@ class JobProcessor implements LoggerAwareInterface {
 		}
 
 		$is_allowed = false;
-
-		foreach ( $this->factories as $factory ) {
-			$is_allowed |= $factory->manager()->is_allowed();
+		foreach ( $this->factories as $key => $factory ) {
+			$is_allowed = $is_allowed || $factory->manager()->is_allowed();
 		}
 
 		return $is_allowed;
@@ -170,7 +169,7 @@ class JobProcessor implements LoggerAwareInterface {
 			return;
 		}
 
-		$job_factory = $this->factories[ $optimization_type ] ?? $this->factories[ 'rucss' ];
+		$job_factory = $this->factories[ $optimization_type ] ?? $this->factories['rucss'];
 
 		// Send the request to get the job status from SaaS.
 		$job_details = $job_factory->api()->get_queue_job_status( $row_details->job_id, $row_details->queue_name, Utils::is_home( $row_details->url ) );
@@ -279,7 +278,7 @@ class JobProcessor implements LoggerAwareInterface {
 		foreach ( $rows as $row ) {
 			$optimization_type = $this->get_optimization_type( $row );
 			$response          = $this->send_api( $row->url, (bool) $row->is_mobile, $optimization_type );
-			$job_factory       = $this->factories[ $optimization_type ?? 'rucss' ];
+			$job_factory       = $this->factories[ $optimization_type ] ?? $this->factories[ 'rucss' ];
 
 			if ( ! $response || ! $job_factory->api()->validate_add_to_queue_response( $response ) ) {
 				$this->make_status_failed( $row->url, $row->is_mobile, '', '', $optimization_type );
@@ -331,7 +330,7 @@ class JobProcessor implements LoggerAwareInterface {
 
 		$config = array_merge( $config, $this->set_request_params( $optimization_type ) );
 
-		$job_factory           = $this->factories[ $optimization_type ?? 'rucss' ];
+		$job_factory           = $this->factories[ $optimization_type ] ?? $this->factories[ 'rucss' ];
 		$add_to_queue_response = $job_factory->api()->add_to_queue( $url, $config );
 
 		if ( ! in_array( (int) $add_to_queue_response['code'], [ 200, 201 ], true ) ) {
@@ -358,7 +357,7 @@ class JobProcessor implements LoggerAwareInterface {
 	 * @return array
 	 */
 	public function set_request_params( string $optimization_type ): array {
-		$job_factory = $this->factories[ $optimization_type ] ?? $this->factories[ 'rucss' ];
+		$job_factory = $this->factories[ $optimization_type ] ?? $this->factories['rucss'];
 		return $job_factory->manager()->set_request_param();
 	}
 
@@ -418,7 +417,7 @@ class JobProcessor implements LoggerAwareInterface {
 	 * @return void
 	 */
 	private function make_status_inprogress( string $url, bool $is_mobile, string $optimization_type ): void {
-		$job_factory = $this->factories[ $optimization_type ] ?? $this->factories[ 'rucss' ];
+		$job_factory = $this->factories[ $optimization_type ] ?? $this->factories['rucss'];
 		$job_factory->manager()->make_status_inprogress( $url, $is_mobile, $optimization_type );
 	}
 
@@ -432,7 +431,7 @@ class JobProcessor implements LoggerAwareInterface {
 	 * @return bool|object
 	 */
 	private function get_single_job( string $url, bool $is_mobile, string $optimization_type ) {
-		$job_factory = $this->factories[ $optimization_type ] ?? $this->factories[ 'rucss' ];
+		$job_factory = $this->factories[ $optimization_type ] ?? $this->factories['rucss'];
 		return $job_factory->manager()->get_single_job( $url, $is_mobile );
 	}
 
@@ -504,7 +503,7 @@ class JobProcessor implements LoggerAwareInterface {
 	 * @return void
 	 */
 	private function decide_strategy( $row_details, array $job_details, string $optimization_type ): void {
-		$job_factory = $this->factories[ $optimization_type ] ?? $this->factories[ 'rucss' ];
+		$job_factory = $this->factories[ $optimization_type ] ?? $this->factories['rucss'];
 		$this->strategy_factory->manage( $row_details, $job_details, $job_factory->manager() );
 	}
 
@@ -519,7 +518,7 @@ class JobProcessor implements LoggerAwareInterface {
 	 * @return void
 	 */
 	private function make_status_failed( string $url, bool $is_mobile, string $error_code, string $error_message, $optimization_type ): void {
-		$job_factory = $this->factories[ $optimization_type ] ?? $this->factories[ 'rucss' ];
+		$job_factory = $this->factories[ $optimization_type ] ?? $this->factories['rucss'];
 		$job_factory->manager()->make_status_failed( $url, $is_mobile, $error_code, $error_message, $optimization_type );
 	}
 
@@ -534,7 +533,7 @@ class JobProcessor implements LoggerAwareInterface {
 	 * @return void
 	 */
 	private function make_status_pending( string $url, string $job_id, string $queue_name, bool $is_mobile, string $optimization_type ): void {
-		$job_factory = $this->factories[ $optimization_type ] ?? $this->factories[ 'rucss' ];
+		$job_factory = $this->factories[ $optimization_type ] ?? $this->factories['rucss'];
 		$job_factory->manager()->make_status_pending( $url, $job_id, $queue_name, $is_mobile, $optimization_type );
 	}
 }
