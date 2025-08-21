@@ -35,6 +35,7 @@ class Subscriber implements Subscriber_Interface {
 			'wp_ajax_rocket_toggle_optin'         => [ 'ajax_toggle_optin' ],
 			'admin_enqueue_scripts'               => [ 'localize_optin_status', 15 ],
 			'admin_print_scripts'                 => [ 'inject_mixpanel_script' ],
+			'rocket_mixpanel_optin_changed'       => 'track_optin_change',
 		];
 	}
 
@@ -97,5 +98,16 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function inject_mixpanel_script(): void {
 		$this->tracking->inject_mixpanel_script();
+	}
+
+	/**
+	 * Track opt-in change event.
+	 *
+	 * @param bool $status The new opt-in status.
+	 *
+	 * @return void
+	 */
+	public function track_optin_change( $status ): void {
+		$this->tracking->track_optin_change( $status );
 	}
 }

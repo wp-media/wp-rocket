@@ -82,6 +82,15 @@ class Controller implements ControllerInterface {
 		$data['status']['preload_fonts']  = $this->context->is_allowed();
 		$data['processed_extensions']     = $this->context->get_extensions();
 
+		/**
+		 * Filters the external font domains to exclude from processing
+		 *
+		 * @since 3.19.1
+		 *
+		 * @param array $exclusions Array of domains to exclude from external font processing
+		 */
+		$data['external_font_exclusions'] = wpm_apply_filters_typed( 'string[]', 'rocket_external_font_exclusions', [] );
+
 		return $data;
 	}
 

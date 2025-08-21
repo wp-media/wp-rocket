@@ -56,7 +56,7 @@ class TrackOptionChangeTest extends TestCase {
 			->andReturn( $config['optin_enabled'] );
 
 		Functions\when( 'get_site_url' )->justReturn( 'http://example.org' );
-		
+
 		// Mock the filter to return the options that should be tracked
 		Filters\expectApplied( 'rocket_mixpanel_tracked_options' )
 			->with( [] )
@@ -70,8 +70,6 @@ class TrackOptionChangeTest extends TestCase {
 				->with(
 					'WPM Option Changed',
 					[
-						'brand'          => 'WP Media',
-						'product'        => 'WP Rocket',
 						'context'        => 'wp_plugin',
 						'option_name'    => 'auto_preload_fonts',
 						'previous_value' => $config['old_value']['auto_preload_fonts'],
