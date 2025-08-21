@@ -33,13 +33,7 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 	public function add_to_queue( string $url, array $options = [] ) {
 		$this->request_path = 'performance/submit';
 
-		/**
-		 * Filter the url that is sent to Saas.
-		 *
-		 * @param string $url contains the URL that is sent to Saas.
-		 * @param string $optimization_type Optimization type.
-		 */
-		$url = apply_filters( 'rocket_saas_api_queued_url', $url, 'performance_monitoring' );
+		$url = $this->filter_url( $url, 'performance_monitoring' );
 
 		$request_body = [
 			'email'       => $this->options->get( 'consumer_email', '' ),

@@ -21,6 +21,13 @@ class PerformanceMonitoring extends Row {
 	public $url;
 
 	/**
+	 * Title
+	 *
+	 * @var string
+	 */
+	public $title;
+
+	/**
 	 * CSS
 	 *
 	 * @var string
@@ -155,7 +162,7 @@ class PerformanceMonitoring extends Row {
 		$this->next_retry_time = empty( $this->next_retry_time ) ? 0 : strtotime( (string) $this->next_retry_time );
 		$this->score           = (int) $this->score;
 		$this->report_url      = (string) $this->report_url;
-		$this->error_code      = (int) $this->error_code;
+		$this->error_code      = (string) $this->error_code;
 		$this->error_message   = (string) $this->error_message;
 	}
 

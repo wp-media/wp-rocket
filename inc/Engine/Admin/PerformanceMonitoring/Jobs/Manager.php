@@ -119,8 +119,8 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 		$this->logger::info(
 			'Performance Monitoring: Test completed successfully',
 			[
-				'test_id' => $row_details->test_id,
-				'score'   => $parsed_data['performance_score'] ?? null,
+				'test_id' => $row_details->job_id,
+				'score'   => $job_details['performance_score'] ?? null,
 			]
 		);
 
