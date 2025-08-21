@@ -107,73 +107,6 @@ class PerformanceMonitoring extends AbstractQuery {
 	}
 
 	/**
-	 * Create a new performance test record.
-	 *
-	 * @param string $url The URL to test.
-	 * @param array  $options Test options.
-	 * @return int|false Database record ID on success, false on failure.
-	 */
-	public function create_test_record( string $url, array $options = [] ) {
-		$is_mobile = isset( $options['device'] ) && 'mobile' === $options['device'];
-
-		$data = [
-			'url'           => $url,
-			'is_mobile'     => $is_mobile ? 1 : 0,
-			'status'        => 'pending',
-			'modified'      => gmdate( 'Y-m-d H:i:s' ),
-			'last_accessed' => gmdate( 'Y-m-d H:i:s' ),
-		];
-
-		/**
-		 * Tells if the row has been added.
-		 *
-		 * @var int|false $result .
-		 */
-		$result = $this->add_item( $data );
-		return $result;
-	}
-
-	/**
-	 * Update test record with external test ID and status.
-	 *
-	 * @param int    $db_id Database record ID.
-	 * @param string $test_id External test ID.
-	 * @param string $status Test status.
-	 * @return bool
-	 */
-	public function update_test_id( int $db_id, string $test_id, string $status = 'running' ): bool {
-		return (bool) $this->update_item(
-			$db_id,
-			[
-				'test_id'  => $test_id,
-				'status'   => $status,
-				'modified' => gmdate( 'Y-m-d H:i:s' ),
-			]
-		);
-	}
-
-	/**
-	 * Update test status.
-	 *
-	 * @param int    $db_id Database record ID.
-	 * @param string $status New status.
-	 * @param string $error_message Optional error message.
-	 * @return bool
-	 */
-	public function update_status( int $db_id, string $status, string $error_message = '' ): bool {
-		$update_data = [
-			'status'   => $status,
-			'modified' => gmdate( 'Y-m-d H:i:s' ),
-		];
-
-		if ( ! empty( $error_message ) ) {
-			$update_data['error_message'] = $error_message;
-		}
-
-		return (bool) $this->update_item( $db_id, $update_data );
-	}
-
-	/**
 	 * Update test data with status and test results.
 	 *
 	 * @param int    $db_id Database record ID.
@@ -193,32 +126,4 @@ class PerformanceMonitoring extends AbstractQuery {
 		return (bool) $this->update_item( $db_id, $update_data );
 	}
 
-	/**
-	 * Delete tests older than specified number of days.
-	 *
-	 * @param int $days Number of days to retain tests.
-	 * @return bool|int Number of deleted records or false on failure.
-	 */
-	public function delete_old_tests( int $days ) {
-		// Get the database interface.
-		$db = $this->get_db();
-
-		// Bail if no database interface is available.
-		if ( ! $db ) {
-			return false;
-		}
-
-		// Use table class naming helper for consistency with prefixes.
-		$prefixed_table_name = $this->table_name;
-		// @phpstan-ignore-next-line
-		if ( property_exists( $db, 'prefix' ) && ! empty( $db->prefix ) ) {
-			$prefixed_table_name = $db->prefix . $this->table_name;
-		}
-
-		$query          = "DELETE FROM `$prefixed_table_name` WHERE `modified` <= date_sub(now(), interval %d day)";
-		$prepared_query = $db->prepare( $query, $days );
-		$rows_affected  = $db->query( $prepared_query );
-
-		return $rows_affected;
-	}
 }

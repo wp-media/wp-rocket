@@ -8,7 +8,7 @@ return [
 			]
 		],
 		'expected' => [
-			'schedule_actions' => 2
+			'schedule_actions' => 0,
 		],
 	],
 ];

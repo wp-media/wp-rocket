@@ -33,7 +33,6 @@ class Test_ServiceProvider extends TestCase {
 		$this->assertTrue( $service_provider->provides( 'pm_manager' ) );
 		$this->assertTrue( $service_provider->provides( 'pm_factory' ) );
 		$this->assertTrue( $service_provider->provides( 'pm_queue' ) );
-		$this->assertTrue( $service_provider->provides( 'pm_processor' ) );
 		$this->assertTrue( $service_provider->provides( 'pm_subscriber' ) );
 
 		// Test non-existent service returns false
@@ -51,7 +50,6 @@ class Test_ServiceProvider extends TestCase {
 		$this->assertTrue( $container->has( 'pm_manager' ) );
 		$this->assertTrue( $container->has( 'pm_factory' ) );
 		$this->assertTrue( $container->has( 'pm_queue' ) );
-		$this->assertTrue( $container->has( 'pm_processor' ) );
 		$this->assertTrue( $container->has( 'pm_subscriber' ) );
 
 		// Test that we can retrieve the services and they are of correct type.
@@ -62,7 +60,6 @@ class Test_ServiceProvider extends TestCase {
 		$pm_manager = $container->get( 'pm_manager' );
 		$pm_factory = $container->get( 'pm_factory' );
 		$pm_queue = $container->get( 'pm_queue' );
-		$pm_processor = $container->get( 'pm_processor' );
 		$pm_subscriber = $container->get( 'pm_subscriber' );
 
 		$this->assertInstanceOf( PMTable::class, $pm_table );
@@ -138,16 +135,10 @@ class Test_ServiceProvider extends TestCase {
 		$this->assertNotSame( $pm_queue_1, $pm_queue_2 );
 		$this->assertInstanceOf( PMQueue::class, $pm_queue_1 );
 
-		// Test Processor - should be different instances.
-		$pm_processor_1 = $container->get( 'pm_processor' );
-		$pm_processor_2 = $container->get( 'pm_processor' );
-		$this->assertNotSame( $pm_processor_1, $pm_processor_2 );
-		$this->assertInstanceOf( PMProcessor::class, $pm_processor_1 );
-
-		// Test Subscriber - should be different instances.
+		// Test Subscriber - should be one instance.
 		$pm_subscriber_1 = $container->get( 'pm_subscriber' );
 		$pm_subscriber_2 = $container->get( 'pm_subscriber' );
-		$this->assertNotSame( $pm_subscriber_1, $pm_subscriber_2 );
+		$this->assertSame( $pm_subscriber_1, $pm_subscriber_2 );
 		$this->assertInstanceOf( Subscriber::class, $pm_subscriber_1 );
 	}
 
@@ -184,10 +175,6 @@ class Test_ServiceProvider extends TestCase {
 		$pm_factory = $container->get( 'pm_factory' );
 		$this->assertInstanceOf( PMFactory::class, $pm_factory );
 
-		// Processor should have factory, api_client, queue, and query dependencies.
-		$pm_processor = $container->get( 'pm_processor' );
-		$this->assertInstanceOf( PMProcessor::class, $pm_processor );
-
 		// Subscriber should have queue, context, and query dependencies.
 		$pm_subscriber = $container->get( 'pm_subscriber' );
 		$this->assertInstanceOf( Subscriber::class, $pm_subscriber );
@@ -203,7 +190,6 @@ class Test_ServiceProvider extends TestCase {
 			'pm_manager',
 			'pm_factory',
 			'pm_queue',
-			'pm_processor',
 			'pm_subscriber',
 		];
 
