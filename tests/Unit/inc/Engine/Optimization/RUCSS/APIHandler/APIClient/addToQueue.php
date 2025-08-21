@@ -7,7 +7,6 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\RUCSS\APIHandler\APIClient;
 use WP_Rocket\Tests\Unit\HasLoggerTrait;
 use WP_Rocket\Tests\Unit\TestCase;
-use function Brain\Monkey\Functions;
 
 /**
  * Test class covering \WP_Rocket\Engine\Common\JobManager\APIHandler\APIClient::add_to_queue

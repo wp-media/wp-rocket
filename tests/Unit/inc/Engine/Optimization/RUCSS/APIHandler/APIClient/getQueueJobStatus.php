@@ -6,7 +6,6 @@ use Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\RUCSS\APIHandler\APIClient;
 use WP_Rocket\Tests\Unit\TestCase;
-use function Brain\Monkey\Functions;
 
 /**
  * Test class covering WP_Rocket\Engine\Optimization\RUCSS\APIHandler\APIClient::get_queue_job_status

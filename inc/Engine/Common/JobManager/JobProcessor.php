@@ -278,7 +278,7 @@ class JobProcessor implements LoggerAwareInterface {
 		foreach ( $rows as $row ) {
 			$optimization_type = $this->get_optimization_type( $row );
 			$response          = $this->send_api( $row->url, (bool) $row->is_mobile, $optimization_type );
-			$job_factory       = $this->factories[ $optimization_type ] ?? $this->factories[ 'rucss' ];
+			$job_factory       = $this->factories[ $optimization_type ] ?? $this->factories['rucss'];
 
 			if ( ! $response || ! $job_factory->api()->validate_add_to_queue_response( $response ) ) {
 				$this->make_status_failed( $row->url, $row->is_mobile, '', '', $optimization_type );
@@ -330,7 +330,7 @@ class JobProcessor implements LoggerAwareInterface {
 
 		$config = array_merge( $config, $this->set_request_params( $optimization_type ) );
 
-		$job_factory           = $this->factories[ $optimization_type ] ?? $this->factories[ 'rucss' ];
+		$job_factory           = $this->factories[ $optimization_type ] ?? $this->factories['rucss'];
 		$add_to_queue_response = $job_factory->api()->add_to_queue( $url, $config );
 
 		if ( ! in_array( (int) $add_to_queue_response['code'], [ 200, 201 ], true ) ) {

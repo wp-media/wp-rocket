@@ -5,12 +5,11 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\PerformanceMonitoring;
 
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Database\Queries\PerformanceMonitoring as PMQuery;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Database\Tables\PerformanceMonitoring as PMTable;
-use WP_Rocket\Engine\Admin\PerformanceMonitoring\API\Client as PMAPIClient;
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\APIHandler\APIClient as PMAPIClient;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Context\PerformanceMonitoringContext;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Jobs\Factory as PMFactory;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Jobs\Manager as PMManager;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Queue\Queue as PMQueue;
-use WP_Rocket\Engine\Admin\PerformanceMonitoring\Queue\Processor as PMProcessor;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Subscriber;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\ServiceProvider;
 use WP_Rocket\Tests\Integration\TestCase;
@@ -36,7 +35,7 @@ class Test_ServiceProvider extends TestCase {
 		$this->assertTrue( $service_provider->provides( 'pm_queue' ) );
 		$this->assertTrue( $service_provider->provides( 'pm_processor' ) );
 		$this->assertTrue( $service_provider->provides( 'pm_subscriber' ) );
-		
+
 		// Test non-existent service returns false
 		$this->assertFalse( $service_provider->provides( 'non_existent_service' ) );
 	}
@@ -73,7 +72,6 @@ class Test_ServiceProvider extends TestCase {
 		$this->assertInstanceOf( PMManager::class, $pm_manager );
 		$this->assertInstanceOf( PMFactory::class, $pm_factory );
 		$this->assertInstanceOf( PMQueue::class, $pm_queue );
-		$this->assertInstanceOf( PMProcessor::class, $pm_processor );
 		$this->assertInstanceOf( Subscriber::class, $pm_subscriber );
 	}
 
@@ -210,7 +208,7 @@ class Test_ServiceProvider extends TestCase {
 		];
 
 		foreach ( $expected_services as $service_id ) {
-			$this->assertTrue( 
+			$this->assertTrue(
 				$service_provider->provides( $service_id ),
 				"Service provider should provide service: {$service_id}"
 			);
