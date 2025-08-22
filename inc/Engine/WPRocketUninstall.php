@@ -149,35 +149,18 @@ class WPRocketUninstall {
 	/**
 	 * Constructor.
 	 *
-	 * @param string                    $cache_path            Path to the cache folder.
-	 * @param string                    $config_path           Path to the config folder.
-	 * @param UsedCSS                   $rucss_usedcss_table   RUCSS used_css table.
-	 * @param Cache                     $rocket_cache          Preload rocket_cache table.
-	 * @param AboveTheFold              $atf_table             Above the fold table.
-	 * @param LazyRenderContent         $lrc_table Lazy Render content table.
-	 * @param PreloadFonts              $preload_fonts_table   Preload fonts table.
-	 * @param PreconnectExternalDomains $preload_domains_table Preload External Domains content table.
+	 * @param string $cache_path            Path to the cache folder.
+	 * @param string $config_path           Path to the config folder.
+	 * @param array  $tables Array of tables to be dropped.
 	 */
 	public function __construct(
 		$cache_path,
 		$config_path,
-		$rucss_usedcss_table,
-		$rocket_cache,
-		$atf_table,
-		$lrc_table,
-		$preload_fonts_table,
-		$preload_domains_table
+		$tables
 	) {
 		$this->cache_path  = trailingslashit( $cache_path );
 		$this->config_path = $config_path;
-		$this->tables      = [
-			$rucss_usedcss_table,
-			$rocket_cache,
-			$atf_table,
-			$lrc_table,
-			$preload_fonts_table,
-			$preload_domains_table,
-		];
+		$this->tables      = $tables;
 	}
 
 	/**
