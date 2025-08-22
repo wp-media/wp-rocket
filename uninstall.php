@@ -54,6 +54,6 @@ $rocket_uninstall = new WPRocketUninstall(
 		$rocket_preload_domains_table,
 		$rocket_pm_table,
 	]
-	);
+);
 
 $rocket_uninstall->uninstall();
