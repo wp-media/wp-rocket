@@ -21,18 +21,32 @@ class PerformanceMonitoring extends Row {
 	public $url;
 
 	/**
-	 * Is the request for mobile
-	 *
-	 * @var bool
-	 */
-	public $is_mobile;
-
-	/**
-	 * Test ID
+	 * Title
 	 *
 	 * @var string
 	 */
-	public $test_id;
+	public $title;
+
+	/**
+	 * CSS
+	 *
+	 * @var string
+	 */
+	public $css;
+
+	/**
+	 * Hash storage value
+	 *
+	 * @var string
+	 */
+	public $hash;
+
+	/**
+	 * Error code
+	 *
+	 * @var string
+	 */
+	public $error_code;
 
 	/**
 	 * Error message
@@ -42,18 +56,39 @@ class PerformanceMonitoring extends Row {
 	public $error_message;
 
 	/**
+	 * Number of retries
+	 *
+	 * @var int
+	 */
+	public $retries;
+
+	/**
+	 * Is CSS for mobile
+	 *
+	 * @var bool
+	 */
+	public $is_mobile;
+
+	/**
+	 * Job ID
+	 *
+	 * @var string
+	 */
+	public $job_id;
+
+	/**
+	 * Job queue name
+	 *
+	 * @var string
+	 */
+	public $queue_name;
+
+	/**
 	 * Status
 	 *
 	 * @var string
 	 */
 	public $status;
-
-	/**
-	 * Result of the test
-	 *
-	 * @var string
-	 */
-	public $data;
 
 	/**
 	 * Last modified time
@@ -70,6 +105,41 @@ class PerformanceMonitoring extends Row {
 	public $last_accessed;
 
 	/**
+	 * Submitted date
+	 *
+	 * @var int
+	 */
+	public $submitted_at;
+
+	/**
+	 * Tells when the retry has to be processed
+	 *
+	 * @var int
+	 */
+	public $next_retry_time;
+
+	/**
+	 * Data column.
+	 *
+	 * @var array|mixed
+	 */
+	public $data;
+
+	/**
+	 * Score column.
+	 *
+	 * @var int
+	 */
+	public $score;
+
+	/**
+	 * Report URL column.
+	 *
+	 * @var string
+	 */
+	public $report_url;
+
+	/**
 	 * Constructor
 	 *
 	 * @param mixed $item Object Row.
@@ -77,15 +147,23 @@ class PerformanceMonitoring extends Row {
 	public function __construct( $item ) {
 		parent::__construct( $item );
 
-		$this->id            = (int) $item->id;
-		$this->url           = (string) $item->url;
-		$this->is_mobile     = (bool) $item->is_mobile;
-		$this->test_id       = (string) $item->test_id;
-		$this->error_message = (string) $item->error_message;
-		$this->status        = (string) $item->status;
-		$this->data          = (string) $item->data;
-		$this->modified      = (int) $item->modified;
-		$this->last_accessed = (int) $item->last_accessed;
+		$this->id              = (int) $item->id;
+		$this->url             = (string) $item->url;
+		$this->title           = (string) $item->title;
+		$this->is_mobile       = (bool) $item->is_mobile;
+		$this->job_id          = (string) $item->job_id;
+		$this->queue_name      = (string) $item->queue_name;
+		$this->retries         = (int) $this->retries;
+		$this->status          = (string) $this->status;
+		$this->data            = ! empty( $item->data ) ? json_decode( $item->data, true ) : [];
+		$this->modified        = empty( $this->modified ) ? 0 : strtotime( (string) $this->modified );
+		$this->last_accessed   = empty( $this->last_accessed ) ? 0 : strtotime( (string) $this->last_accessed );
+		$this->submitted_at    = empty( $this->submitted_at ) ? 0 : strtotime( (string) $this->submitted_at );
+		$this->next_retry_time = empty( $this->next_retry_time ) ? 0 : strtotime( (string) $this->next_retry_time );
+		$this->score           = (int) $this->score;
+		$this->report_url      = (string) $this->report_url;
+		$this->error_code      = (string) $this->error_code;
+		$this->error_message   = (string) $this->error_message;
 	}
 
 	/**
@@ -99,5 +177,23 @@ class PerformanceMonitoring extends Row {
 		}
 
 		return ! empty( $this->data );
+	}
+
+	/**
+	 * Check if test is still in progress.
+	 *
+	 * @return bool
+	 */
+	public function is_running(): bool {
+		return in_array( $this->status, [ 'pending', 'running' ], true );
+	}
+
+	/**
+	 * Check if test has failed.
+	 *
+	 * @return bool
+	 */
+	public function is_failed(): bool {
+		return 'failed' === $this->status;
 	}
 }

@@ -64,9 +64,9 @@ class Test_DeleteOldRows extends TestCase {
 
 			$wpdb->query(
 				$wpdb->prepare(
-					"UPDATE {$table_name} SET last_accessed = %s WHERE test_id = %s",
+					"UPDATE {$table_name} SET last_accessed = %s WHERE job_id = %s",
 					gmdate( 'Y-m-d H:i:s', $old_timestamp ),
-					$update_config['test_id']
+					$update_config['job_id']
 				)
 			);
 		}
@@ -132,14 +132,14 @@ class Test_DeleteOldRows extends TestCase {
 				$this->assertEquals( $expected['remaining_urls'], $remaining_urls );
 			}
 
-			// Verify specific test_id remaining.
-			if ( isset( $expected['remaining_test_id'] ) ) {
+			// Verify specific job_id remaining.
+			if ( isset( $expected['remaining_job_id'] ) ) {
 				$remaining_items = $pm_query->query( [
 					'number' => 999,
-					'fields' => 'test_id',
+					'fields' => 'job_id',
 				], false );
-				$remaining_test_ids = array_column( $remaining_items, 'test_id' );
-				$this->assertContains( $expected['remaining_test_id'], $remaining_test_ids );
+				$remaining_job_ids = array_column( $remaining_items, 'job_id' );
+				$this->assertContains( $expected['remaining_job_id'], $remaining_job_ids );
 			}
 
 			// Verify no failed status remains.

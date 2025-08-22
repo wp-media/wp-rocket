@@ -315,6 +315,7 @@ class Plugin {
 		$this->container->addServiceProvider( new PreloadFontsServiceProvider() );
 		$this->container->addServiceProvider( new ThirdPartyServiceProvider() );
 		$this->container->addServiceProvider( new PreconnectExternalDomainsServiceProvider() );
+		$this->container->addServiceProvider( new PerformanceMonitoringServiceProvider() );
 
 		$common_subscribers = [
 			'license_subscriber',
@@ -415,6 +416,7 @@ class Plugin {
 			'preload_fonts_frontend_subscriber',
 			'preload_fonts_admin_subscriber',
 			'preconnect_frontend_subscriber',
+			'pm_subscriber',
 			'post_subscriber',
 		];
 

@@ -1,31 +1,34 @@
 <?php
 declare(strict_types=1);
 
-namespace WP_Rocket\Engine\Optimization\RUCSS\Jobs;
+namespace WP_Rocket\Engine\Admin\PerformanceMonitoring\Jobs;
 
 use WP_Rocket\Engine\Common\JobManager\AbstractFactory\SaasFactory;
 use WP_Rocket\Engine\Common\JobManager\APIHandler\AbstractAPIClient;
 use WP_Rocket\Engine\Common\JobManager\Managers\ManagerInterface;
 use WP_Rocket\Engine\Common\Database\TableInterface;
 
+/**
+ * Performance Monitoring Jobs Factory
+ */
 class Factory implements SaasFactory {
 
 	/**
-	 * RUCSS Manager.
+	 * Performance Monitoring Manager.
 	 *
 	 * @var ManagerInterface
 	 */
 	private $manager;
 
 	/**
-	 * RUCSS Table.
+	 * Performance Monitoring Table.
 	 *
 	 * @var TableInterface
 	 */
 	private $table;
 
 	/**
-	 * API Client instance.
+	 * API Client.
 	 *
 	 * @var AbstractAPIClient
 	 */
@@ -34,8 +37,8 @@ class Factory implements SaasFactory {
 	/**
 	 * Instantiate the class.
 	 *
-	 * @param ManagerInterface  $manager RUCSS Manager.
-	 * @param TableInterface    $table RUCSS Table.
+	 * @param ManagerInterface  $manager Performance Monitoring Manager.
+	 * @param TableInterface    $table Performance Monitoring Table.
 	 * @param AbstractAPIClient $api_client API Client instance.
 	 */
 	public function __construct( ManagerInterface $manager, TableInterface $table, AbstractAPIClient $api_client ) {
@@ -45,7 +48,7 @@ class Factory implements SaasFactory {
 	}
 
 	/**
-	 * RUCSS job manager.
+	 * Performance Monitoring job manager.
 	 *
 	 * @return ManagerInterface
 	 */
@@ -54,7 +57,7 @@ class Factory implements SaasFactory {
 	}
 
 	/**
-	 * RUCSS Table.
+	 * Performance Monitoring Table.
 	 *
 	 * @return TableInterface
 	 */

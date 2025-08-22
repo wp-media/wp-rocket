@@ -7,6 +7,7 @@ use WP_Rocket\Engine\Admin\PerformanceMonitoring\Database\Schemas\PerformanceMon
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Database\Rows\PerformanceMonitoring as PerformanceMonitoringRow;
 use WP_Rocket\Engine\Common\Database\Queries\AbstractQuery;
 
+
 class PerformanceMonitoring extends AbstractQuery {
 
 	/**
@@ -41,7 +42,7 @@ class PerformanceMonitoring extends AbstractQuery {
 	 */
 	protected $cleanup_interval = 3;
 
-		/** Item ******************************************************************/
+	/** Item ******************************************************************/
 
 	/**
 	 * Name for a single item.
@@ -93,6 +94,7 @@ class PerformanceMonitoring extends AbstractQuery {
 
 		// Use table class naming helper for consistency with prefixes.
 		$prefixed_table_name = $this->table_name;
+		// @phpstan-ignore-next-line
 		if ( property_exists( $db, 'prefix' ) && ! empty( $db->prefix ) ) {
 			$prefixed_table_name = $db->prefix . $this->table_name;
 		}
@@ -100,5 +102,25 @@ class PerformanceMonitoring extends AbstractQuery {
 		$rows_affected = $db->query( $query );
 
 		return $rows_affected;
+	}
+
+	/**
+	 * Update test data with status and test results.
+	 *
+	 * @param int    $db_id Database record ID.
+	 * @param string $status Test status.
+	 * @param array  $test_data Test results data.
+	 * @return bool
+	 */
+	public function make_status_completed( int $db_id, string $status, array $test_data ): bool {
+		$update_data = [
+			'status'     => $status,
+			'data'       => wp_json_encode( $test_data ),
+			'modified'   => gmdate( 'Y-m-d H:i:s' ),
+			'score'      => $test_data['performance_score'],
+			'report_url' => $test_data['report_url'],
+		];
+
+		return (bool) $this->update_item( $db_id, $update_data );
 	}
 }

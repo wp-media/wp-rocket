@@ -3,23 +3,33 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Admin\PerformanceMonitoring;
 
-use WP_Rocket\Engine\Admin\PerformanceMonitoring\Database\Queries\PerformanceMonitoring;
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\Database\Queries\PerformanceMonitoring as PMQuery;
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\Jobs\Manager;
 
 class Controller {
 	/**
 	 * Query object.
 	 *
-	 * @var PerformanceMonitoring
+	 * @var PMQuery
 	 */
 	private $query;
 
 	/**
+	 * Manager instance.
+	 *
+	 * @var Manager
+	 */
+	private $manager;
+
+	/**
 	 * Constructor.
 	 *
-	 * @param PerformanceMonitoring $query Query object.
+	 * @param PMQuery $query Query instance.
+	 * @param Manager $manager Manager instance.
 	 */
-	public function __construct( PerformanceMonitoring $query ) {
-		$this->query = $query;
+	public function __construct( PMQuery $query, Manager $manager ) {
+		$this->query   = $query;
+		$this->manager = $manager;
 	}
 
 	/**
@@ -34,5 +44,14 @@ class Controller {
 			'number'  => 20,
 		];
 		return $this->query->query( $query_params );
+	}
+
+	/**
+	 * Add homepage to the database to be queued.
+	 *
+	 * @return void
+	 */
+	public function add_homepage() {
+		$this->manager->add_url_to_the_queue( home_url(), true );
 	}
 }

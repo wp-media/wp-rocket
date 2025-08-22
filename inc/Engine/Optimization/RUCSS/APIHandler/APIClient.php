@@ -1,8 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace WP_Rocket\Engine\Common\JobManager\APIHandler;
+namespace WP_Rocket\Engine\Optimization\RUCSS\APIHandler;
 
+use WP_Rocket\Engine\Common\JobManager\APIHandler\AbstractAPIClient;
 use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
 
@@ -15,13 +16,6 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 	 * @var string
 	 */
 	protected $request_path = 'rucss-job';
-
-	/**
-	 * Array of Factories.
-	 *
-	 * @var array
-	 */
-	protected $factories;
 
 	/**
 	 * Calls Central SaaS API.
@@ -40,12 +34,7 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 			user_trailingslashit( $url )
 		);
 
-		/**
-		 * Filter the url that is sent to Saas when RUCSS and LCP/ATF is on.
-		 *
-		 * @param string $url contains the URL that is sent to Saas.
-		 */
-		$url = apply_filters( 'rocket_saas_api_queued_url', $url );
+		$url = $this->filter_url( $url, 'rucss' );
 
 		$args = [
 			'body'    => [
@@ -140,5 +129,15 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 
 		$result = json_decode( $this->response_body, true );
 		return (array) wp_parse_args( ( $result && $result['returnvalue'] ) ? (array) $result['returnvalue'] : [], $default );
+	}
+
+	/**
+	 * Validate add to queue response.
+	 *
+	 * @param array $response Response array to be validated.
+	 * @return bool
+	 */
+	public function validate_add_to_queue_response( array $response ): bool {
+		return isset( $response['contents'], $response['contents']['jobId'], $response['contents']['queueName'] );
 	}
 }

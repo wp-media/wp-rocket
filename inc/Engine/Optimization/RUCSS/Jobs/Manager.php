@@ -215,4 +215,24 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 
 		return $this->optimization_type;
 	}
+
+	/**
+	 * Process Job ID by saving it into DB.
+	 *
+	 * @param string $url Row url.
+	 * @param array  $response API Response array.
+	 * @param bool   $is_mobile Is mobile or not.
+	 * @param string $optimization_type Optimization type.
+	 *
+	 * @return void
+	 */
+	public function process_jobid( string $url, array $response, bool $is_mobile, string $optimization_type ) {
+		$this->make_status_pending(
+			$url,
+			$response['contents']['jobId'],
+			$response['contents']['queueName'],
+			$is_mobile,
+			$optimization_type
+		);
+	}
 }

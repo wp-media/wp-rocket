@@ -24,11 +24,15 @@ defined( 'ABSPATH' ) || exit;
 		</tr>
 		<?php foreach ( $data['items'] as $rocket_db_item ) { ?>
 			<tr class="wpr-speed-radar-item">
-				<td class="wpr-speed-radar-page"><?php echo esc_html( $rocket_db_item->title ); ?></td>
-				<td class="wpr-speed-radar-status">
-					<span class="wpr-speed-radar-score wpr-speed-radar-score--good">100</span>
+				<td class="wpr-speed-radar-page">
+					<a href="<?php echo esc_url( $rocket_db_item->url ); ?>" target="_blank" rel="noopener">
+						<?php echo esc_html( $rocket_db_item->title ); ?>
+					</a>
 				</td>
-				<td class="wpr-speed-radar-date"><?php echo esc_html( $rocket_db_item->modified ); ?></td>
+				<td class="wpr-speed-radar-status">
+					<span class="wpr-speed-radar-score wpr-speed-radar-score--good"><?php echo intval( $rocket_db_item->score ); ?></span>
+				</td>
+				<td class="wpr-speed-radar-date"><?php echo esc_html( gmdate( 'Y-m-d H:i:s', $rocket_db_item->modified ) ); ?></td>
 				<td class="wpr-speed-radar-actions">
 					<?php
 					$this->render_action_button(

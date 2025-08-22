@@ -79,7 +79,13 @@ abstract class AbstractAPIClient {
 		];
 
 		$args['method'] = strtoupper( $type );
-		$response       = wp_remote_request(
+
+		if ( ! empty( $args['json_encode'] ) ) {
+			unset( $args['json_encode'] );
+			$args['body'] = wp_json_encode( $args['body'] );
+		}
+
+		$response = wp_remote_request(
 			$api_url . $this->request_path,
 			$args
 		);
@@ -121,7 +127,7 @@ abstract class AbstractAPIClient {
 			? wp_remote_retrieve_response_code( $response )
 			: $response->get_error_code();
 
-		if ( 200 !== $this->response_code ) {
+		if ( ! in_array( (int) $this->response_code, [ 200, 201 ], true ) ) {
 			$previous_errors = (int) get_transient( 'wp_rocket_rucss_errors_count' );
 			set_transient( 'wp_rocket_rucss_errors_count', $previous_errors + 1, 5 * MINUTE_IN_SECONDS );
 
@@ -140,5 +146,31 @@ abstract class AbstractAPIClient {
 		$this->response_body = wp_remote_retrieve_body( $response );
 
 		return true;
+	}
+
+	/**
+	 * Validate add to queue response.
+	 *
+	 * @param array $response Response array to be validated.
+	 * @return bool
+	 */
+	abstract public function validate_add_to_queue_response( array $response ): bool;
+
+	/**
+	 * Add a filter on url.
+	 *
+	 * @param string $url Url to be filtered.
+	 * @param string $optimization_type Optimization type.
+	 *
+	 * @return mixed
+	 */
+	protected function filter_url( $url, $optimization_type ) {
+		/**
+		 * Filter the url that is sent to Saas.
+		 *
+		 * @param string $url contains the URL that is sent to Saas.
+		 * @param string $optimization_type Optimization type.
+		 */
+		return wpm_apply_filters_typed( 'string', 'rocket_saas_api_queued_url', $url, $optimization_type );
 	}
 }

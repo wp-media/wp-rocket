@@ -61,14 +61,9 @@ parameters:
 			path: inc/Engine/Admin/Metaboxes/PostEditOptionsSubscriber.php
 
 		-
-			message: "#^Call to function property_exists\\(\\) with wpdb and 'prefix' will always evaluate to true\\.$#"
+			message: "#^Property WP_Rocket\\\\Engine\\\\Admin\\\\PerformanceMonitoring\\\\Context\\\\PerformanceMonitoringContext\\:\\:\\$options is never read, only written\\.$#"
 			count: 1
-			path: inc/Engine/Admin/PerformanceMonitoring/Database/Queries/PerformanceMonitoring.php
-
-		-
-			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
-			count: 1
-			path: inc/Engine/Admin/PerformanceMonitoring/Database/Tables/PerformanceMonitoring.php
+			path: inc/Engine/Admin/PerformanceMonitoring/Context/PerformanceMonitoringContext.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
@@ -214,16 +209,6 @@ parameters:
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
 			path: inc/Engine/Common/ExtractCSS/ServiceProvider.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: inc/Engine/Common/JobManager/APIHandler/APIClient.php
-
-		-
-			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
-			count: 1
-			path: inc/Engine/Common/JobManager/APIHandler/APIClient.php
 
 		-
 			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
@@ -451,6 +436,11 @@ parameters:
 			path: inc/Engine/Optimization/Minify/JS/Subscriber.php
 
 		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: inc/Engine/Optimization/RUCSS/APIHandler/APIClient.php
+
+		-
 			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: inc/Engine/Optimization/RUCSS/Admin/Database.php
@@ -489,26 +479,6 @@ parameters:
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 7
 			path: inc/Engine/Optimization/RUCSS/Jobs/Manager.php
-
-		-
-			message: "#^Call to function property_exists\\(\\) with wpdb and 'prefix' will always evaluate to true\\.$#"
-			count: 1
-			path: inc/Engine/PerformanceMonitoring/Database/Queries/PerformanceMonitoring.php
-
-		-
-			message: "#^Class WP_Rocket\\\\Engine\\\\PerformanceMonitoring\\\\Database\\\\Rows\\\\PerformanceMonitoring not found\\.$#"
-			count: 1
-			path: inc/Engine/PerformanceMonitoring/Database/Queries/PerformanceMonitoring.php
-
-		-
-			message: "#^Class WP_Rocket\\\\Engine\\\\PerformanceMonitoring\\\\Database\\\\Schemas\\\\PerformanceMonitoring not found\\.$#"
-			count: 1
-			path: inc/Engine/PerformanceMonitoring/Database/Queries/PerformanceMonitoring.php
-
-		-
-			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
-			count: 1
-			path: inc/Engine/PerformanceMonitoring/Database/Tables/PerformanceMonitoring.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
@@ -579,16 +549,6 @@ parameters:
 			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: inc/Engine/Saas/Admin/Notices.php
-
-		-
-			message: "#^Call to an undefined method WPMedia\\\\Mixpanel\\\\TrackingPlugin\\:\\:add_script\\(\\)\\.$#"
-			count: 1
-			path: inc/Engine/Tracking/Tracking.php
-
-		-
-			message: "#^Call to an undefined method WPMedia\\\\Mixpanel\\\\TrackingPlugin\\:\\:track_optin\\(\\)\\.$#"
-			count: 1
-			path: inc/Engine/Tracking/Tracking.php
 
 		-
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
@@ -942,7 +902,7 @@ parameters:
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 4
+			count: 7
 			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/serviceProvider.php
 
 		-
@@ -1709,26 +1669,6 @@ parameters:
 			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/Optimization/RUCSS/Frontend/Subscriber/onUpdate.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 29
-			path: tests/Integration/inc/Engine/PerformanceMonitoring/Database/Queries/delete_old_rows.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 29
-			path: tests/Integration/inc/Engine/PerformanceMonitoring/Database/Tables/remove_all_completed_rows.php
-
-		-
-			message: "#^Method WP_Rocket\\\\Tests\\\\Integration\\\\inc\\\\Engine\\\\PerformanceMonitoring\\\\Database\\\\Tables\\\\Test_TruncateTable\\:\\:truncatePerformanceMonitoringTable\\(\\) is unused\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/PerformanceMonitoring/Database/Tables/truncate_table.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 29
-			path: tests/Integration/inc/Engine/PerformanceMonitoring/Database/Tables/truncate_table.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
