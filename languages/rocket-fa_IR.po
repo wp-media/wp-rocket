@@ -5,9 +5,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.19.2\n"
+"Project-Id-Version: WP Rocket 3.19.4-beta2\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2025-07-16T12:58:45+00:00\n"
+"POT-Creation-Date: 2025-08-22T07:57:08+00:00\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Mohammad Yousefzadeh <regedit2007@yahoo.com>, 2025\n"
 "Language-Team: Persian (Iran) (https://app.transifex.com/wp-media/teams/18133/fa_IR/)\n"
@@ -811,13 +811,18 @@ msgstr "تخلیه کش RocketCDN"
 msgid "Documentation"
 msgstr "مستندات"
 
-#: inc/Dependencies/WPMedia/PluginFamily/Controller/PluginFamily.php:371
+#: inc/Dependencies/WPMedia/PluginFamily/Controller/PluginFamily.php:378
+#: inc/Dependencies/WPMedia/PluginFamily/Controller/PluginFamily.php:497
 msgid "Not Allowed"
 msgstr "مجاز نیست"
 
-#: inc/Dependencies/WPMedia/PluginFamily/Controller/PluginFamily.php:384
+#: inc/Dependencies/WPMedia/PluginFamily/Controller/PluginFamily.php:391
 msgid "Imagify installed! Click here to start using it."
 msgstr "Imagify نصب شد! برای شروع استفاده از آن اینجا کلیک کنید."
+
+#: inc/Dependencies/WPMedia/PluginFamily/Controller/PluginFamily.php:501
+msgid "Dismissed."
+msgstr "رد شده."
 
 #: inc/Dependencies/WPMedia/PluginFamily/Model/PluginFamily.php:66
 msgid "Activated"
@@ -916,14 +921,14 @@ msgstr ""
 "ها از سراسر جهان."
 
 #. translators: %1$is = Plugin Name.
-#: inc/Dependencies/WPMedia/PluginFamily/View/promote-imagify-uploader.php:10
+#: inc/Dependencies/WPMedia/PluginFamily/View/promote-imagify-uploader.php:15
 #, php-format
 msgid ""
 "%1$s recommends you to optimize your images for even better website "
 "performance."
 msgstr "%1$s توصیه می‌شود برای عملکرد بهتر وب‌سایت، تصاویر خود را بهینه کنید."
 
-#: inc/Dependencies/WPMedia/PluginFamily/View/promote-imagify-uploader.php:15
+#: inc/Dependencies/WPMedia/PluginFamily/View/promote-imagify-uploader.php:20
 msgid "Install Imagify Plugin"
 msgstr "افزونه Imagify را نصب کنید"
 
