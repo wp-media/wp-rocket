@@ -496,6 +496,19 @@
       ]);
     }
     /**
+     * Checks if a URL should be excluded from external font processing based on domain exclusions.
+     * 
+     * @param {string} url - The URL to check.
+     * @returns {boolean} True if the URL should be excluded, false otherwise.
+     */
+    isUrlExcludedFromExternalProcessing(url) {
+      if (!url) return false;
+      const externalFontExclusions = this.config.external_font_exclusions || [];
+      const preloadFontsExclusions = this.config.preload_fonts_exclusions || [];
+      const allExclusions = [...externalFontExclusions, ...preloadFontsExclusions];
+      return allExclusions.some((exclusion) => url.includes(exclusion));
+    }
+    /**
      * Checks if a font family or URL should be excluded from preloading.
      * 
      * This method determines if the provided font family or any of its URLs
@@ -658,8 +671,7 @@
           if (linkUrl.origin === currentUrl.origin) {
             return false;
           }
-          const exclusions = this.config.external_font_exclusions || [];
-          return !exclusions.some((exclusion) => link.href.includes(exclusion));
+          return !this.isUrlExcludedFromExternalProcessing(link.href);
         } catch (e) {
           return false;
         }
@@ -809,6 +821,9 @@ CSS (first 200 chars): ${txt.substring(0, 200)}...`
       const processImportRule = async (rule) => {
         try {
           const importUrl = rule.href;
+          if (this.isUrlExcludedFromExternalProcessing(importUrl)) {
+            return;
+          }
           if (processedUrls.has(importUrl)) {
             return;
           }
@@ -848,6 +863,9 @@ CSS (first 200 chars): ${txt.substring(0, 200)}...`
           }
         } catch (e) {
           if (e.name === "SecurityError" && sheet.href) {
+            if (this.isUrlExcludedFromExternalProcessing(sheet.href)) {
+              return;
+            }
             if (processedUrls.has(sheet.href)) {
               return;
             }
@@ -867,6 +885,9 @@ CSS (first 200 chars): ${txt.substring(0, 200)}...`
                 let importMatch;
                 while ((importMatch = importRegex.exec(cssText)) !== null) {
                   const importUrl = new URL(importMatch[1], sheet.href).href;
+                  if (this.isUrlExcludedFromExternalProcessing(importUrl)) {
+                    continue;
+                  }
                   if (processedUrls.has(importUrl)) {
                     continue;
                   }
@@ -907,6 +928,9 @@ CSS (first 200 chars): ${txt.substring(0, 200)}...`
         let importMatch;
         while ((importMatch = importRegex.exec(cssText)) !== null) {
           const importUrl = importMatch[1];
+          if (this.isUrlExcludedFromExternalProcessing(importUrl)) {
+            continue;
+          }
           if (processedUrls.has(importUrl)) {
             continue;
           }
