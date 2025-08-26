@@ -21,7 +21,7 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 	 *
 	 * @var string
 	 */
-	protected $request_path = '';
+	protected $request_path = 'performance/';
 
 	/**
 	 * Initiate a performance test with the SaaS Director API.
@@ -31,8 +31,6 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 	 * @return array|\WP_Error
 	 */
 	public function add_to_queue( string $url, array $options = [] ) {
-		$this->request_path = 'performance/submit';
-
 		$url = $this->filter_url( $url, 'performance_monitoring' );
 
 		$request_body = [
@@ -101,9 +99,10 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 	 * @return array|\WP_Error
 	 */
 	public function get_queue_job_status( string $test_id, $queue_name, $is_home = false ) {
-		$this->request_path = 'performance/result?uuid=' . $test_id;
-
 		$args = [
+			'body'    => [
+				'uuid' => $test_id,
+			],
 			'timeout' => 15,
 		];
 
