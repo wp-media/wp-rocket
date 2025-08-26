@@ -104,6 +104,16 @@ class WPRocketUninstall {
 		'rocket_cache_dir_size_check',
 		'rocketcdn_check_subscription_status_event',
 		'rocket_cron_deactivate_cloudflare_devmode',
+		'rocket_saas_clean_rows_time_event',
+		'rocket_saas_on_submit_jobs',
+		'rocket_saas_pending_jobs',
+		'rocket_remove_saas_failed_jobs',
+		'rocket_performance_hints_cleanup',
+		'action_scheduler_run_queue_rucss',
+		'rocket_update_dynamic_lists',
+		'rocket_preload_clean_rows_time_event',
+		'rocket_preload_process_pending',
+		'rocket_preload_revert_old_failed_rows',
 	];
 
 	/**
