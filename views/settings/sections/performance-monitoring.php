@@ -49,10 +49,11 @@ defined( 'ABSPATH' ) || exit;
 					);
 
 					$this->render_action_button(
-						'button',
+						'link',
 						'gtmetrix_open',
 						[
 							'label'      => 'GT',
+							'url'   =>  esc_url( $rocket_db_item->report_url ),
 							'attributes' => [
 								'target' => '_blank',
 								'class'  => 'wpr-button wpr-button--small wpr-button--gray',
