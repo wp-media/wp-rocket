@@ -219,4 +219,13 @@ trait AbstractManager {
 
 		$this->query->update_next_retry_time( $url, $is_mobile, $next_retry_time );
 	}
+
+	/**
+	 * Check if we need to allow retry strategies or send job to failed directly based on the feature.
+	 *
+	 * @return bool
+	 */
+	public function allow_retry_strategies() {
+		return true;
+	}
 }
