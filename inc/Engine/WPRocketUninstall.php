@@ -239,6 +239,9 @@ class WPRocketUninstall {
 		array_walk( $this->options, 'delete_option' );
 
 		foreach ( $this->events as $event ) {
+			if ( ! wp_next_scheduled( $event ) ) {
+				continue;
+			}
 			wp_clear_scheduled_hook( $event );
 		}
 	}
