@@ -54,7 +54,7 @@ defined( 'ABSPATH' ) || exit;
 							'gtmetrix_open',
 							[
 								'label'      => 'GT',
-								'url'   =>  esc_url( $rocket_db_item->report_url ),
+								'url'        => esc_url( $rocket_db_item->report_url ),
 								'attributes' => [
 									'target' => '_blank',
 									'class'  => 'wpr-button wpr-button--small wpr-button--gray',
