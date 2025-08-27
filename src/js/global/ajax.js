@@ -249,4 +249,133 @@ document.addEventListener('DOMContentLoaded', function() {
 			});
 		});
 	}
+
+     /**
+     * Start Performance Monitoring.
+     */
+
+    // Create shared data.
+    let pmIds = [];
+    let pmCheckInterval;
+
+    // Handle new page addtion event.
+    $("#add_page_speed_radar").on('click', (e) => {
+        e.preventDefault();
+        const pageUrlSelector = $('#wpr-speed-radar-url-input');
+        const pageUrl = pageUrlSelector.val();
+        // Validate empty input.
+        if ('' === pageUrl) {
+            alert('No page address was added');
+            return;
+        }
+
+        // Validate invalid url.
+        try {
+            const url = new URL(pageUrl);
+            // Require a TLD (domain extension)
+            if (!url.hostname.includes('.') || '' === url.hostname.split('.').slice(-1)[0]) {
+                alert('Please enter a valid url with an extension');
+                return;
+            }
+        } catch (_) {
+            alert('Please enter a valid URL.');
+            return;
+        }
+
+        // Payload
+        const payload = {
+            page_url: pageUrl,
+            action: 'rocket_pm_add_new_page',
+            _ajax_nonce: rocket_ajax_data.nonce
+        }
+
+        // Send payload.
+        $.post(ajaxurl, payload, function (response) {
+            if (response.success) {
+                // Clear url field.
+                pageUrlSelector.val('');
+
+                // Update UI.
+                $('.wpr-speed-radar-table tbody').append(response.data.html);
+
+                // Push new added ids to be tracked.
+                pmIds.push(response.data.id);
+
+                // Start polling for tracking results every 30s; Only Start Polling if none started.
+                if (!pmCheckInterval) {
+                pmCheckInterval = setInterval(() => {
+                    getResults();
+                }, 30000);
+                }
+
+                return;
+            }
+            // Log error response.
+            console.log(response.data.message);
+        });
+    });
+
+    // Handle polling logic.
+    const getResults = () => {
+        // Stop Polling.
+        if (pmIds.length === 0) {
+            clearInterval(pmCheckInterval);
+            pmCheckInterval = null;
+            return;
+        }
+
+        // Payload
+        const payload = {
+            ids: pmIds,
+            action: 'rocket_pm_get_results',
+            _ajax_nonce: rocket_ajax_data.nonce
+        }
+
+        // Get results
+        $.get(ajaxurl, payload, function (response) {
+            if (response.success && Array.isArray(response.data.results)) {
+                response.data.results.forEach(result => {
+                // Update row UI
+                $(`[data-rocket-pm-id="${result.id}"] .wpr-speed-radar-score`).html(result.status);
+        
+                // 🔹 Remove completed ids
+                if ('completed' === result.status) {
+                    $(`[data-rocket-pm-id="${result.id}"] .wpr-speed-radar-score`).html(result.score);
+                    pmIds = pmIds.filter(x => x !== parseInt(result.id));
+                }
+                });
+
+                return;
+            }
+            // Empty ids: Stop polling in the case of an error response.
+            pmIds = [];
+            // Log error response.
+            console.log(response.data.results);
+        });
+    }
+
+    /**
+     * Handle real time monitoring on refresh
+     */
+    if ($('.wpr-speed-radar-item-result').length > 0) {
+        $('.wpr-speed-radar-item-result').each(function () {
+            if ('completed' !== $(this).data('rocket-pm-status')) {
+                pmIds.push($(this).data('rocket-pm-id'));
+            }
+        });
+    }
+
+    // Detect if current screen is dashboard.
+    let isDashboard = '?page=wprocket#dashboard' === window.location.search + window.location.hash;
+
+    // Keep tracking after page refresh on when on dashboard screen.
+    const keepTrackingAfterRefresh = () => {
+        if (!pmCheckInterval && 0 !== pmIds.length && isDashboard) {
+            pmCheckInterval = setInterval(() => {
+                getResults();
+            }, 30000);
+        }
+    }
+
+    keepTrackingAfterRefresh();
 });
