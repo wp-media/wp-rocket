@@ -36,11 +36,13 @@ class PerformanceMonitoringContext implements ContextInterface {
 	 * @return bool
 	 */
 	public function is_allowed( array $data = [] ): bool {
+		$enabled = current_user_can( 'rocket_manage_options' );
+
 		/**
 		 * Filters performance monitoring addon enable status.
 		 *
 		 * @param boolean $enabled Current status, default is true.
 		 */
-		return wpm_apply_filters_typed( 'boolean', 'rocket_performance_monitoring_enabled', true );
+		return wpm_apply_filters_typed( 'boolean', 'rocket_performance_monitoring_enabled', $enabled );
 	}
 }

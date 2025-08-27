@@ -62,10 +62,11 @@ defined( 'ABSPATH' ) || exit;
 					);
 
 					$this->render_action_button(
-						'button',
+						'link',
 						'speed_radar_delete',
 						[
 							'label'      => '',
+							'url'        => $rocket_db_item->delete_url(),
 							'attributes' => [
 								'class'      => 'wpr-icon-trash',
 								'title'      => __( 'Delete', 'rocket' ),

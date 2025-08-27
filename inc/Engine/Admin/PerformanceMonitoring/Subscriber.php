@@ -52,6 +52,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		return [
 			'wp_rocket_first_install'             => 'schedule_homepage_tests',
 			'rocket_dashboard_after_account_data' => [ 'render_ui', 11 ],
+			'admin_post_delete_pm'                => 'delete_row',
 		];
 	}
 
@@ -74,5 +75,14 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public function schedule_homepage_tests(): void {
 		$this->controller->add_homepage();
+	}
+
+	/**
+	 * Delete one row.
+	 *
+	 * @return void
+	 */
+	public function delete_row() {
+		$this->controller->delete_row();
 	}
 }

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Admin\PerformanceMonitoring;
 
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\Context\PerformanceMonitoringContext;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Database\Queries\PerformanceMonitoring as PMQuery;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Jobs\Manager;
 
@@ -22,14 +23,23 @@ class Controller {
 	private $manager;
 
 	/**
+	 * Context instance.
+	 *
+	 * @var PerformanceMonitoringContext
+	 */
+	private $context;
+
+	/**
 	 * Constructor.
 	 *
-	 * @param PMQuery $query Query instance.
-	 * @param Manager $manager Manager instance.
+	 * @param PMQuery                      $query Query instance.
+	 * @param Manager                      $manager Manager instance.
+	 * @param PerformanceMonitoringContext $context Context instance.
 	 */
-	public function __construct( PMQuery $query, Manager $manager ) {
+	public function __construct( PMQuery $query, Manager $manager, PerformanceMonitoringContext $context ) {
 		$this->query   = $query;
 		$this->manager = $manager;
+		$this->context = $context;
 	}
 
 	/**
@@ -53,5 +63,31 @@ class Controller {
 	 */
 	public function add_homepage() {
 		$this->manager->add_url_to_the_queue( home_url(), true );
+	}
+
+	/**
+	 * Delete one row.
+	 *
+	 * @return void
+	 */
+	public function delete_row() {
+		if ( ! $this->context->is_allowed() ) {
+			wp_die();
+		}
+
+		if (
+			! isset( $_GET['_wpnonce'] )
+			||
+			! wp_verify_nonce( sanitize_key( $_GET['_wpnonce'] ), 'delete_pm' )
+		) {
+			wp_nonce_ays( 'delete_pm' );
+		}
+
+		$id = ! empty( $_GET['id'] ) ? intval( $_GET['id'] ) : 0;
+		if ( ! empty( $id ) ) {
+			$this->query->delete_item( $id );
+		}
+
+		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
 	}
 }
