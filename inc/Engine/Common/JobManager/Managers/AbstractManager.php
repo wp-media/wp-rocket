@@ -47,9 +47,9 @@ trait AbstractManager {
 	 * @param string $url page URL.
 	 * @param bool   $is_mobile page is for mobile.
 	 *
-	 * @return void
+	 * @return mixed
 	 */
-	public function add_url_to_the_queue( string $url, bool $is_mobile ): void {
+	public function add_url_to_the_queue( string $url, bool $is_mobile ) {
 		if ( ! $this->is_allowed() ) {
 			return;
 		}
@@ -57,8 +57,7 @@ trait AbstractManager {
 		$row = $this->query->get_row( $url, (bool) $is_mobile );
 
 		if ( empty( $row ) ) {
-			$this->query->create_new_job( $url, '', '', $is_mobile );
-			return;
+			return $this->query->create_new_job( $url, '', '', $is_mobile );
 		}
 		$this->query->reset_job( (int) $row->id );
 	}
