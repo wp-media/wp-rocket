@@ -335,14 +335,14 @@ document.addEventListener('DOMContentLoaded', function() {
         $.get(ajaxurl, payload, function (response) {
             if (response.success && Array.isArray(response.data.results)) {
                 response.data.results.forEach(result => {
-                // Update row UI
-                $(`[data-rocket-pm-id="${result.id}"] .wpr-speed-radar-score`).html(result.status);
-        
-                // 🔹 Remove completed ids
-                if ('completed' === result.status) {
-                    $(`[data-rocket-pm-id="${result.id}"] .wpr-speed-radar-score`).html(result.score);
-                    pmIds = pmIds.filter(x => x !== parseInt(result.id));
-                }
+                    // Update row UI
+                    $(`[data-rocket-pm-id="${result.id}"] .wpr-speed-radar-score`).html(result.status);
+            
+                    // Remove completed ids
+                    if ('completed' === result.status) {
+                        $(`[data-rocket-pm-id="${result.id}"] .wpr-speed-radar-score`).html(result.score);
+                        pmIds = pmIds.filter(x => x !== parseInt(result.id));
+                    }
                 });
 
                 return;
