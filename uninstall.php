@@ -32,6 +32,7 @@ require_once __DIR__ . '/inc/Engine/Media/AboveTheFold/Database/Tables/AboveTheF
 require_once __DIR__ . '/inc/Engine/Optimization/LazyRenderContent/Database/Table/LazyRenderContent.php';
 require_once __DIR__ . '/inc/Engine/Media/PreloadFonts/Database/Table/PreloadFonts.php';
 require_once __DIR__ . '/inc/Engine/Media/PreconnectExternalDomains/Database/Table/PreconnectExternalDomains.php';
+require_once __DIR__ . '/inc/Engine/Admin/PerformanceMonitoring/Database/Tables/PerformanceMonitoring.php';
 
 $rocket_rucss_usedcss_table   = new WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS();
 $rocket_cache_table           = new WP_Rocket\Engine\Preload\Database\Tables\Cache();
@@ -39,15 +40,20 @@ $rocket_atf_table             = new WP_Rocket\Engine\Media\AboveTheFold\Database
 $rocket_lrc_table             = new WP_Rocket\Engine\Optimization\LazyRenderContent\Database\Table\LazyRenderContent();
 $rocket_preload_fonts_table   = new WP_Rocket\Engine\Media\PreloadFonts\Database\Table\PreloadFonts();
 $rocket_preload_domains_table = new WP_Rocket\Engine\Media\PreconnectExternalDomains\Database\Table\PreconnectExternalDomains();
-$rocket_uninstall             = new WPRocketUninstall(
+$rocket_pm_table              = new WP_Rocket\Engine\Admin\PerformanceMonitoring\Database\Tables\PerformanceMonitoring();
+
+$rocket_uninstall = new WPRocketUninstall(
 	WP_ROCKET_CACHE_ROOT_PATH,
 	WP_ROCKET_CONFIG_PATH,
-	$rocket_rucss_usedcss_table,
-	$rocket_cache_table,
-	$rocket_atf_table,
-	$rocket_lrc_table,
-	$rocket_preload_fonts_table,
-	$rocket_preload_domains_table
-	);
+	[
+		$rocket_rucss_usedcss_table,
+		$rocket_cache_table,
+		$rocket_atf_table,
+		$rocket_lrc_table,
+		$rocket_preload_fonts_table,
+		$rocket_preload_domains_table,
+		$rocket_pm_table,
+	]
+);
 
 $rocket_uninstall->uninstall();
