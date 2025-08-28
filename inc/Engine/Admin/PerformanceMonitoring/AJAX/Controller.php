@@ -67,7 +67,7 @@ class Controller extends Abstract_Render {
 		$row_id   = $this->manager->add_url_to_the_queue( $url, true );
 		$row_data = $this->query->get_row_by_id( $row_id );
 
-		$payload['id']   = $row_data->id;
+		$payload['id']   = $row_id;
 		$payload['html'] = $this->generate( 'partials/performance-monitoring-row', $row_data );
 
 		wp_send_json_success( $payload );
@@ -175,12 +175,7 @@ class Controller extends Abstract_Render {
 		$ids = array_map( 'intval', $_GET['ids'] );
 
 		// Remove anything that is not a valid integer > 0.
-		$ids = array_filter(
-			$ids,
-			function ( $id ) {
-				return is_int( $id ) && $id > 0;
-			}
-			);
+		$ids = array_filter( $ids );
 
 		// Keep index clean.
 		$ids = array_values( $ids );
