@@ -9,6 +9,7 @@ use WP_Rocket\Engine\Admin\PerformanceMonitoring\Context\PerformanceMonitoringCo
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Database\Queries\PerformanceMonitoring as PerformanceMonitoring_Query;
 use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\AJAX\Controller as AjaxController;
 
 /**
  * Performance Monitoring Subscriber
@@ -33,14 +34,23 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	private $controller;
 
 	/**
+	 * AjaxController object.
+	 *
+	 * @var AjaxController
+	 */
+	private $ajax_controller;
+
+	/**
 	 * Constructor.
 	 *
-	 * @param Render     $render Render object.
-	 * @param Controller $controller Controller object.
+	 * @param Render         $render Render object.
+	 * @param Controller     $controller Controller object.
+	 * @param AjaxController $ajax_controller AjaxController object.
 	 */
-	public function __construct( Render $render, Controller $controller ) {
-		$this->render     = $render;
-		$this->controller = $controller;
+	public function __construct( Render $render, Controller $controller, AjaxController $ajax_controller ) {
+		$this->render          = $render;
+		$this->controller      = $controller;
+		$this->ajax_controller = $ajax_controller;
 	}
 
 	/**
@@ -52,6 +62,9 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		return [
 			'wp_rocket_first_install'             => 'schedule_homepage_tests',
 			'rocket_dashboard_after_account_data' => [ 'render_ui', 11 ],
+			'wp_ajax_rocket_pm_add_new_page'      => 'add_new_page',
+			'wp_ajax_rocket_pm_get_results'       => 'get_results',
+			'rocket_localize_admin_script'        => 'add_pending_ids',
 			'admin_post_delete_pm'                => 'delete_row',
 		];
 	}
@@ -75,6 +88,35 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public function schedule_homepage_tests(): void {
 		$this->controller->add_homepage();
+	}
+
+	/**
+	 * Handles the AJAX request to add a new page for performance monitoring.
+	 *
+	 * @return void
+	 */
+	public function add_new_page(): void {
+		$this->ajax_controller->add_new_page();
+	}
+
+	/**
+	 * Handles the AJAX request to get results of urls for performance monitoring.
+	 *
+	 * @return void
+	 */
+	public function get_results(): void {
+		$this->ajax_controller->get_results();
+	}
+
+	/**
+	 * Add pm_ids key to the admin ajax js variable.
+	 *
+	 * @param array $data Array of data.
+	 * @return array
+	 */
+	public function add_pending_ids( array $data = [] ) {
+		$data['pm_ids'] = $this->controller->get_not_finished_ids();
+		return $data;
 	}
 
 	/**

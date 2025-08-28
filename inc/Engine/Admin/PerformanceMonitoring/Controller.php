@@ -66,6 +66,15 @@ class Controller {
 	}
 
 	/**
+	 * Get not finished IDs.
+	 *
+	 * @return array
+	 */
+	public function get_not_finished_ids() {
+		return $this->query->get_not_finished_ids();
+	}
+
+	/**
 	 * Delete one row.
 	 *
 	 * @return void

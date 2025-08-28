@@ -29,20 +29,6 @@ class PerformanceMonitoring extends Row {
 	public $title;
 
 	/**
-	 * CSS
-	 *
-	 * @var string
-	 */
-	public $css;
-
-	/**
-	 * Hash storage value
-	 *
-	 * @var string
-	 */
-	public $hash;
-
-	/**
 	 * Error code
 	 *
 	 * @var string
