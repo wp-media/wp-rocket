@@ -5,6 +5,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Subscriber;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Render;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Controller;
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\AJAX\Controller as AjaxController;
 
 class Test_RenderUI extends TestCase {
 	public function testRenderUIFetchesAndRendersItems() {
@@ -19,7 +20,9 @@ class Test_RenderUI extends TestCase {
 			->method('render_ui')
 			->with(['item1', 'item2']);
 
-		$subscriber = new Subscriber($mock_render, $mock_controller);
+		$mock_ajax_controller = $this->createMock(AjaxController::class);
+
+		$subscriber = new Subscriber($mock_render, $mock_controller, $mock_ajax_controller);
 		$subscriber->render_ui();
 	}
 }
