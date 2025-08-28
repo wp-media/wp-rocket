@@ -22,64 +22,9 @@ defined( 'ABSPATH' ) || exit;
 			<td class="wpr-speed-radar-date"></td>
 			<td class="wpr-speed-radar-actions"></td>
 		</tr>
-		<?php foreach ( $data['items'] as $rocket_db_item ) { ?>
-			<tr class="wpr-speed-radar-item">
-				<td class="wpr-speed-radar-page">
-					<a href="<?php echo esc_url( $rocket_db_item->url ); ?>" target="_blank" rel="noopener">
-						<?php echo esc_html( $rocket_db_item->title ); ?>
-					</a>
-				</td>
-				<td class="wpr-speed-radar-status">
-					<span class="wpr-speed-radar-score wpr-speed-radar-score--good"><?php echo intval( $rocket_db_item->score ); ?></span>
-				</td>
-				<td class="wpr-speed-radar-date"><?php echo esc_html( gmdate( 'Y-m-d H:i:s', $rocket_db_item->modified ) ); ?></td>
-				<td class="wpr-speed-radar-actions">
-					<?php
-					$this->render_action_button(
-						'button',
-						'speed_radar_refresh',
-						[
-							'label'      => '',
-							'attributes' => [
-								'class'      => 'wpr-icon-refresh',
-								'title'      => __( 'Refresh', 'rocket' ),
-								'aria-label' => __( 'Refresh', 'rocket' ),
-							],
-						]
-					);
-
-					if ( ! empty( $rocket_db_item->report_url ) ) {
-						$this->render_action_button(
-							'link',
-							'gtmetrix_open',
-							[
-								'label'      => 'GT',
-								'url'        => esc_url( $rocket_db_item->report_url ),
-								'attributes' => [
-									'target' => '_blank',
-									'class'  => 'wpr-button wpr-button--small wpr-button--gray',
-									'title'  => __( 'Open in GTmetrix', 'rocket' ),
-								],
-							]
-						);
-					}
-
-					$this->render_action_button(
-						'button',
-						'speed_radar_delete',
-						[
-							'label'      => '',
-							'attributes' => [
-								'class'      => 'wpr-icon-trash',
-								'title'      => __( 'Delete', 'rocket' ),
-								'aria-label' => __( 'Delete', 'rocket' ),
-							],
-						]
-					);
-					?>
-				</td>
-			</tr>
-			<?php
+		<?php
+		foreach ( $data['items'] as $rocket_db_item ) {
+			$this->render_parts_with_data( 'performance-monitoring-row', $rocket_db_item );
 		}
 		?>
 
@@ -101,6 +46,7 @@ defined( 'ABSPATH' ) || exit;
 				'url'        => '#',
 				'attributes' => [
 					'class' => 'wpr-button wpr-button--icon wpr-button--small wpr-button--purple',
+					'id'    => 'add_page_speed_radar',
 				],
 			]
 		);

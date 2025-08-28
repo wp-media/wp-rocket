@@ -154,4 +154,16 @@ abstract class Abstract_Render implements Render_Interface {
 
 		echo $this->generate( 'buttons/link', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
+
+	/**
+	 * Displays a partial template.
+	 *
+	 * @since 3.0
+	 *
+	 * @param string $part Partial template name.
+	 * @param mixed  $data     Data to pass to the template.
+	 */
+	public function render_parts_with_data( string $part, $data ) {
+		echo $this->generate( 'partials/' . $part, $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+	}
 }

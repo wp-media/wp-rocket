@@ -250,3 +250,155 @@ document.addEventListener('DOMContentLoaded', function() {
 		});
 	}
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+	/**
+	 * Performance Monitoring with Progressive Polling.
+	 */
+
+		// ==== Configuration ====
+	const POLL_BASE_INTERVAL = 5000;   // Start polling at 5 seconds
+	const POLL_MAX_INTERVAL = 15000;  // Max polling interval (e.g. 15 seconds)
+
+	// ==== State ====
+	let pmIds = Array.isArray(window.rocket_ajax_data?.pm_ids) ? window.rocket_ajax_data.pm_ids.slice() : [];
+	let pollInterval = POLL_BASE_INTERVAL;
+	let pollTimer = null;
+
+	// ==== DOM Selectors ====
+	const $pageUrlInput = $('#wpr-speed-radar-url-input');
+	const $tableBody = $('.wpr-speed-radar-table tbody');
+
+	// ==== Utility Functions ====
+	function isValidUrl(input) {
+		try {
+			const url = new URL(input);
+			return url.hostname.includes('.') && url.hostname.split('.').pop().length > 0;
+		} catch {
+			return false;
+		}
+	}
+
+	function addIds(newId) {
+		if (!pmIds.includes(newId)) {
+			pmIds.push(newId);
+		}
+	}
+
+	function removeId(id) {
+		pmIds = pmIds.filter(x => x !== parseInt(id, 10));
+	}
+
+	function resetPolling() {
+		if (pollTimer) {
+			clearTimeout(pollTimer);
+			pollTimer = null;
+		}
+		pollInterval = POLL_BASE_INTERVAL;
+	}
+
+	function schedulePolling() {
+		resetPolling();
+		if (pmIds.length > 0) {
+			pollTimer = setTimeout(() => {
+				getResults();
+			}, pollInterval);
+		}
+	}
+
+	function incrementPolling() {
+		pollInterval = Math.min(pollInterval * 1.5, POLL_MAX_INTERVAL); // Exponential backoff
+	}
+
+	// ==== AJAX Handlers ====
+	function getResults() {
+		if (pmIds.length === 0) {
+			resetPolling();
+			return;
+		}
+
+		$.get(ajaxurl, {
+			ids: pmIds,
+			action: 'rocket_pm_get_results',
+			_ajax_nonce: rocket_ajax_data.nonce
+		}, function(response) {
+			if (response.success && Array.isArray(response.data.results)) {
+				response.data.results.forEach(result => {
+					const $row = $(`[data-rocket-pm-id="${result.id}"] .wpr-speed-radar-score`);
+					$row.html(result.status);
+
+					if (result.status === 'completed') {
+						$row.html(result.score);
+						removeId(result.id);
+					}
+				});
+
+				incrementPolling();
+				schedulePolling();
+			} else {
+				// On error, clear IDs and stop polling
+				pmIds = [];
+				resetPolling();
+				console.error('Polling error:', response.data?.results || response);
+			}
+		});
+	}
+
+	function handleAddPage(e) {
+		e.preventDefault();
+		const pageUrl = $pageUrlInput.val().trim();
+
+		if (!pageUrl) {
+			alert('No page address was added');
+			return;
+		}
+
+		if (!isValidUrl(pageUrl)) {
+			alert('Please enter a valid URL with an extension');
+			return;
+		}
+
+		$.post(ajaxurl, {
+			page_url: pageUrl,
+			action: 'rocket_pm_add_new_page',
+			_ajax_nonce: rocket_ajax_data.nonce
+		}, function(response) {
+			if (response.success) {
+				$pageUrlInput.val('');
+				$tableBody.append(response.data.html);
+				addIds(response.data.id);
+
+				// Start polling if not already running
+				if (!pollTimer) {
+					pollInterval = POLL_BASE_INTERVAL;
+					schedulePolling();
+				}
+			} else {
+				console.error(response.data?.message || response);
+			}
+		});
+	}
+
+	// ==== Initialization ====
+	// Bind event
+	$("#add_page_speed_radar").on('click', handleAddPage);
+
+	// On page load, collect unfinished IDs
+	$('.wpr-speed-radar-item-result').each(function() {
+		if ($(this).data('rocketPmStatus') !== 'completed') {
+			addIds($(this).data('rocketPmId'));
+		}
+	});
+
+	// Only poll if on the dashboard (more robust check)
+	function isOnDashboard() {
+		const urlParams = new URLSearchParams(window.location.search);
+		return urlParams.get('page') === 'wprocket' && window.location.hash === '#dashboard';
+	}
+
+	// Resume polling if needed
+	if (isOnDashboard() && pmIds.length > 0) {
+		pollInterval = POLL_BASE_INTERVAL;
+		schedulePolling();
+	}
+});

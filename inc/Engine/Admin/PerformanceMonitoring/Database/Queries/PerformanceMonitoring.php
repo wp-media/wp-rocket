@@ -123,4 +123,22 @@ class PerformanceMonitoring extends AbstractQuery {
 
 		return (bool) $this->update_item( $db_id, $update_data );
 	}
+
+	/**
+	 * Get not finished IDs.
+	 *
+	 * @return array
+	 */
+	public function get_not_finished_ids() {
+		return $this->query(
+			[
+				'fields'     => 'ids',
+				'status__in' => [
+					'to-submit',
+					'pending',
+					'in-progress',
+				],
+			]
+			);
+	}
 }

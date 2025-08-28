@@ -5,13 +5,16 @@ namespace WP_Rocket\Engine\Admin\PerformanceMonitoring;
 
 use WP_Rocket\Dependencies\League\Container\Argument\Literal\StringArgument;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
-use WP_Rocket\Engine\Admin\PerformanceMonitoring\Database\Tables\PerformanceMonitoring as PMTable;
-use WP_Rocket\Engine\Admin\PerformanceMonitoring\Database\Queries\PerformanceMonitoring as PMQuery;
-use WP_Rocket\Engine\Admin\PerformanceMonitoring\APIHandler\APIClient as PMAPIClient;
-use WP_Rocket\Engine\Admin\PerformanceMonitoring\Context\PerformanceMonitoringContext;
-use WP_Rocket\Engine\Admin\PerformanceMonitoring\Jobs\Factory as PMFactory;
-use WP_Rocket\Engine\Admin\PerformanceMonitoring\Jobs\Manager as PMManager;
-use WP_Rocket\Engine\Admin\PerformanceMonitoring\Queue\Queue as PMQueue;
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\{
+	Database\Tables\PerformanceMonitoring as PMTable,
+	Database\Queries\PerformanceMonitoring as PMQuery,
+	APIHandler\APIClient as PMAPIClient,
+	Context\PerformanceMonitoringContext,
+	Jobs\Factory as PMFactory,
+	Jobs\Manager as PMManager,
+	Queue\Queue as PMQueue,
+	AJAX\Controller as AjaxController
+};
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
@@ -35,6 +38,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'pm_render',
 		'pm_controller',
 		'pm_subscriber',
+		'pm_ajax_controller',
 	];
 
 	/**
@@ -98,6 +102,15 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		// Queue layer.
 		$this->getContainer()->add( 'pm_queue', PMQueue::class );
+		$this->getContainer()->add( 'pm_ajax_controller', AjaxController::class )
+			->addArguments(
+				[
+					'pm_query',
+					'pm_manager',
+					'pm_context',
+					new StringArgument( $this->getContainer()->get( 'template_path' ) . '/settings/' ),
+				]
+				);
 
 		// Subscriber.
 		$this->getContainer()->addShared( 'pm_subscriber', Subscriber::class )
@@ -105,6 +118,7 @@ class ServiceProvider extends AbstractServiceProvider {
 				[
 					'pm_render',
 					'pm_controller',
+					'pm_ajax_controller',
 				]
 			);
 
