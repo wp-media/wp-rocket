@@ -54,4 +54,13 @@ class Controller {
 	public function add_homepage() {
 		$this->manager->add_url_to_the_queue( home_url(), true );
 	}
+
+	/**
+	 * Get not finished IDs.
+	 *
+	 * @return array
+	 */
+	public function get_not_finished_ids() {
+		return $this->query->get_not_finished_ids();
+	}
 }

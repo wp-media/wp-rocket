@@ -64,6 +64,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'rocket_dashboard_after_account_data' => [ 'render_ui', 11 ],
 			'wp_ajax_rocket_pm_add_new_page'      => 'add_new_page',
 			'wp_ajax_rocket_pm_get_results'       => 'get_results',
+			'rocket_localize_admin_script'        => 'add_pending_ids',
 		];
 	}
 
@@ -104,5 +105,16 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public function get_results(): void {
 		$this->ajax_controller->get_results();
+	}
+
+	/**
+	 * Add pm_ids key to the admin ajax js variable.
+	 *
+	 * @param array $data Array of data.
+	 * @return array
+	 */
+	public function add_pending_ids( array $data = [] ) {
+		$data['pm_ids'] = $this->controller->get_not_finished_ids();
+		return $data;
 	}
 }

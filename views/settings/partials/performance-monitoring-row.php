@@ -28,7 +28,7 @@ defined( 'ABSPATH' ) || exit;
 			?>
 		</span>
 	</td>
-	<td class="wpr-speed-radar-date"><?php echo esc_html( gmdate( 'Y-m-d H:i:s', $data->modified ) ); ?></td>
+	<td class="wpr-speed-radar-date"><?php echo esc_html( $data->modified ); ?></td>
 	<td class="wpr-speed-radar-actions">
 		<?php
 		$this->render_action_button(
