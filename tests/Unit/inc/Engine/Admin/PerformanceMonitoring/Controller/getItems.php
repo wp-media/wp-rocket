@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Admin\PerformanceMonitoring\Controller;
 
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\Context\PerformanceMonitoringContext;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Controller;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Database\Queries\PerformanceMonitoring;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Jobs\Manager;
@@ -28,7 +29,8 @@ class Test_GetItems extends TestCase {
 			->willReturn(['foo']);
 
 		$mock_manager = $this->createMock(Manager::class);
-		$controller = new Controller($mock_query, $mock_manager);
+		$mock_context = $this->createMock(PerformanceMonitoringContext::class);
+		$controller = new Controller($mock_query, $mock_manager, $mock_context);
 		$result = $controller->get_items();
 
 		$this->assertEquals(['foo'], $result);
