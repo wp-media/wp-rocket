@@ -249,133 +249,156 @@ document.addEventListener('DOMContentLoaded', function() {
 			});
 		});
 	}
+});
 
-     /**
-     * Start Performance Monitoring.
-     */
+document.addEventListener('DOMContentLoaded', function() {
+	/**
+	 * Performance Monitoring with Progressive Polling.
+	 */
 
-    // Create shared data.
-    let pmIds = window.rocket_ajax_data.pm_ids || [];
-    let pmCheckInterval;
+		// ==== Configuration ====
+	const POLL_BASE_INTERVAL = 5000;   // Start polling at 5 seconds
+	const POLL_MAX_INTERVAL = 15000;  // Max polling interval (e.g. 15 seconds)
 
-    // Handle new page addtion event.
-    $("#add_page_speed_radar").on('click', (e) => {
-        e.preventDefault();
-        const pageUrlSelector = $('#wpr-speed-radar-url-input');
-        const pageUrl = pageUrlSelector.val();
-        // Validate empty input.
-        if ('' === pageUrl) {
-            alert('No page address was added');
-            return;
-        }
+	// ==== State ====
+	let pmIds = Array.isArray(window.rocket_ajax_data?.pm_ids) ? window.rocket_ajax_data.pm_ids.slice() : [];
+	let pollInterval = POLL_BASE_INTERVAL;
+	let pollTimer = null;
 
-        // Validate invalid url.
-        try {
-            const url = new URL(pageUrl);
-            // Require a TLD (domain extension)
-            if (!url.hostname.includes('.') || '' === url.hostname.split('.').slice(-1)[0]) {
-                alert('Please enter a valid url with an extension');
-                return;
-            }
-        } catch (_) {
-            alert('Please enter a valid URL.');
-            return;
-        }
+	// ==== DOM Selectors ====
+	const $pageUrlInput = $('#wpr-speed-radar-url-input');
+	const $tableBody = $('.wpr-speed-radar-table tbody');
 
-        // Payload
-        const payload = {
-            page_url: pageUrl,
-            action: 'rocket_pm_add_new_page',
-            _ajax_nonce: rocket_ajax_data.nonce
-        }
+	// ==== Utility Functions ====
+	function isValidUrl(input) {
+		try {
+			const url = new URL(input);
+			return url.hostname.includes('.') && url.hostname.split('.').pop().length > 0;
+		} catch {
+			return false;
+		}
+	}
 
-        // Send payload.
-        $.post(ajaxurl, payload, function (response) {
-            if (response.success) {
-                // Clear url field.
-                pageUrlSelector.val('');
+	function addIds(newId) {
+		if (!pmIds.includes(newId)) {
+			pmIds.push(newId);
+		}
+	}
 
-                // Update UI.
-                $('.wpr-speed-radar-table tbody').append(response.data.html);
+	function removeId(id) {
+		pmIds = pmIds.filter(x => x !== parseInt(id, 10));
+	}
 
-                // Push new added ids to be tracked.
-                pmIds.push(response.data.id);
+	function resetPolling() {
+		if (pollTimer) {
+			clearTimeout(pollTimer);
+			pollTimer = null;
+		}
+		pollInterval = POLL_BASE_INTERVAL;
+	}
 
-                // Start polling for tracking results every 30s; Only Start Polling if none started.
-                if (!pmCheckInterval) {
-                pmCheckInterval = setInterval(() => {
-                    getResults();
-                }, 30000);
-                }
+	function schedulePolling() {
+		resetPolling();
+		if (pmIds.length > 0) {
+			pollTimer = setTimeout(() => {
+				getResults();
+			}, pollInterval);
+		}
+	}
 
-                return;
-            }
-            // Log error response.
-            console.log(response.data.message);
-        });
-    });
+	function incrementPolling() {
+		pollInterval = Math.min(pollInterval * 1.5, POLL_MAX_INTERVAL); // Exponential backoff
+	}
 
-    // Handle polling logic.
-    const getResults = () => {
-        // Stop Polling.
-        if (pmIds.length === 0) {
-            clearInterval(pmCheckInterval);
-            pmCheckInterval = null;
-            return;
-        }
+	// ==== AJAX Handlers ====
+	function getResults() {
+		if (pmIds.length === 0) {
+			resetPolling();
+			return;
+		}
 
-        // Payload
-        const payload = {
-            ids: pmIds,
-            action: 'rocket_pm_get_results',
-            _ajax_nonce: rocket_ajax_data.nonce
-        }
+		$.get(ajaxurl, {
+			ids: pmIds,
+			action: 'rocket_pm_get_results',
+			_ajax_nonce: rocket_ajax_data.nonce
+		}, function(response) {
+			if (response.success && Array.isArray(response.data.results)) {
+				response.data.results.forEach(result => {
+					const $row = $(`[data-rocket-pm-id="${result.id}"] .wpr-speed-radar-score`);
+					$row.html(result.status);
 
-        // Get results
-        $.get(ajaxurl, payload, function (response) {
-            if (response.success && Array.isArray(response.data.results)) {
-                response.data.results.forEach(result => {
-                    // Update row UI
-                    $(`[data-rocket-pm-id="${result.id}"] .wpr-speed-radar-score`).html(result.status);
+					if (result.status === 'completed') {
+						$row.html(result.score);
+						removeId(result.id);
+					}
+				});
 
-                    // Remove completed ids
-                    if ('completed' === result.status) {
-                        $(`[data-rocket-pm-id="${result.id}"] .wpr-speed-radar-score`).html(result.score);
-                        pmIds = pmIds.filter(x => x !== parseInt(result.id));
-                    }
-                });
+				incrementPolling();
+				schedulePolling();
+			} else {
+				// On error, clear IDs and stop polling
+				pmIds = [];
+				resetPolling();
+				console.error('Polling error:', response.data?.results || response);
+			}
+		});
+	}
 
-                return;
-            }
-            // Empty ids: Stop polling in the case of an error response.
-            pmIds = [];
-            // Log error response.
-            console.log(response.data.results);
-        });
-    }
+	function handleAddPage(e) {
+		e.preventDefault();
+		const pageUrl = $pageUrlInput.val().trim();
 
-    /**
-     * Handle real time monitoring on refresh
-     */
-    if ($('.wpr-speed-radar-item-result').length > 0) {
-        $('.wpr-speed-radar-item-result').each(function () {
-            if ('completed' !== $(this).data('rocket-pm-status')) {
-                pmIds.push($(this).data('rocket-pm-id'));
-            }
-        });
-    }
+		if (!pageUrl) {
+			alert('No page address was added');
+			return;
+		}
 
-    // Detect if current screen is dashboard.
-    let isDashboard = '?page=wprocket#dashboard' === window.location.search + window.location.hash;
+		if (!isValidUrl(pageUrl)) {
+			alert('Please enter a valid URL with an extension');
+			return;
+		}
 
-    // Keep tracking after page refresh on when on dashboard screen.
-    const keepTrackingAfterRefresh = () => {
-        if (!pmCheckInterval && 0 !== pmIds.length && isDashboard) {
-            pmCheckInterval = setInterval(() => {
-                getResults();
-            }, 30000);
-        }
-    }
+		$.post(ajaxurl, {
+			page_url: pageUrl,
+			action: 'rocket_pm_add_new_page',
+			_ajax_nonce: rocket_ajax_data.nonce
+		}, function(response) {
+			if (response.success) {
+				$pageUrlInput.val('');
+				$tableBody.append(response.data.html);
+				addIds(response.data.id);
 
-    keepTrackingAfterRefresh();
+				// Start polling if not already running
+				if (!pollTimer) {
+					pollInterval = POLL_BASE_INTERVAL;
+					schedulePolling();
+				}
+			} else {
+				console.error(response.data?.message || response);
+			}
+		});
+	}
+
+	// ==== Initialization ====
+	// Bind event
+	$("#add_page_speed_radar").on('click', handleAddPage);
+
+	// On page load, collect unfinished IDs
+	$('.wpr-speed-radar-item-result').each(function() {
+		if ($(this).data('rocketPmStatus') !== 'completed') {
+			addIds($(this).data('rocketPmId'));
+		}
+	});
+
+	// Only poll if on the dashboard (more robust check)
+	function isOnDashboard() {
+		const urlParams = new URLSearchParams(window.location.search);
+		return urlParams.get('page') === 'wprocket' && window.location.hash === '#dashboard';
+	}
+
+	// Resume polling if needed
+	if (isOnDashboard() && pmIds.length > 0) {
+		pollInterval = POLL_BASE_INTERVAL;
+		schedulePolling();
+	}
 });
