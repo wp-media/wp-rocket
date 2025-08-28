@@ -91,7 +91,7 @@ class Controller extends Abstract_Render {
 
 		if ( 'local' === wp_get_environment_type() ) {
 			$payload['error']   = true;
-			$payload['message'] = 'Performance hints is disabled for local environment';
+			$payload['message'] = 'Performance monitoring is disabled for local environment';
 
 			return $payload;
 		}
