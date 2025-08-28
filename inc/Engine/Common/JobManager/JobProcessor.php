@@ -178,6 +178,8 @@ class JobProcessor implements LoggerAwareInterface {
 
 		if (
 			200 !== (int) $job_details['code']
+			&&
+			$job_factory->manager()->allow_retry_strategies()
 		) {
 			$this->logger::debug( 'Job status failed for url: ' . $row_details->url, $job_details );
 			$this->decide_strategy( $row_details, $job_details, $optimization_type );

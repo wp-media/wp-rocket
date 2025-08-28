@@ -185,4 +185,13 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 			$optimization_type
 		);
 	}
+
+	/**
+	 * Check if we need to allow retry strategies or send job to failed directly based on the feature.
+	 *
+	 * @return bool
+	 */
+	public function allow_retry_strategies() {
+		return false;
+	}
 }
