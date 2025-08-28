@@ -68,9 +68,9 @@ defined( 'ABSPATH' ) || exit;
 							'label'      => '',
 							'url'        => $rocket_db_item->delete_url(),
 							'attributes' => [
-								'class'      => 'wpr-icon-trash',
-								'title'      => __( 'Delete', 'rocket' ),
-								'aria-label' => __( 'Delete', 'rocket' ),
+								'class'            => 'wpr-icon-trash',
+								'title'            => __( 'Delete', 'rocket' ),
+								'aria-label'       => __( 'Delete', 'rocket' ),
 								'data-wpr_onclick' => 'return confirm("' . esc_js( __( 'Are you sure you want to delete this item?', 'rocket' ) ) . '")',
 							],
 						]
