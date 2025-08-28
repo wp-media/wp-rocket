@@ -88,6 +88,7 @@ class ServiceProvider extends AbstractServiceProvider {
 				[
 					'pm_query',
 					'pm_manager',
+					'pm_context',
 				]
 			);
 

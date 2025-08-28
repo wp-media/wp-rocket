@@ -420,4 +420,9 @@ $(document).ready(function(){
 
 		} );
 	}
+
+	$('[data-wpr_onclick]').each(function() {
+		$(this).attr('onclick', $(this).data('wpr_onclick'));
+		$(this).removeAttr('data-wpr_onclick');
+	});
 });

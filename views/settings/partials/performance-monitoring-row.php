@@ -61,14 +61,16 @@ defined( 'ABSPATH' ) || exit;
 		}
 
 		$this->render_action_button(
-			'button',
+			'link',
 			'speed_radar_delete',
 			[
 				'label'      => '',
+				'url'        => $data->delete_url(),
 				'attributes' => [
-					'class'      => 'wpr-icon-trash',
-					'title'      => __( 'Delete', 'rocket' ),
-					'aria-label' => __( 'Delete', 'rocket' ),
+					'class'            => 'wpr-icon-trash',
+					'title'            => __( 'Delete', 'rocket' ),
+					'aria-label'       => __( 'Delete', 'rocket' ),
+					'data-wpr_onclick' => 'return confirm("' . esc_js( __( 'Are you sure you want to delete this item?', 'rocket' ) ) . '")',
 				],
 			]
 		);

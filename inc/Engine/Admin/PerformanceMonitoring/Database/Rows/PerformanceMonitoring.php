@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Admin\PerformanceMonitoring\Database\Rows;
 
 use WP_Rocket\Dependencies\BerlinDB\Database\Row;
+use WP_Rocket\Engine\Common\Utils;
 
 class PerformanceMonitoring extends Row {
 	/**
@@ -171,7 +172,7 @@ class PerformanceMonitoring extends Row {
 	 * @return bool
 	 */
 	public function is_running(): bool {
-		return in_array( $this->status, [ 'pending', 'running' ], true );
+		return in_array( $this->status, [ 'pending', 'in-progress' ], true );
 	}
 
 	/**
@@ -181,5 +182,14 @@ class PerformanceMonitoring extends Row {
 	 */
 	public function is_failed(): bool {
 		return 'failed' === $this->status;
+	}
+
+	/**
+	 * Get the delete url.
+	 *
+	 * @return string
+	 */
+	public function delete_url() {
+		return Utils::get_nonce_post_url( 'delete_pm', [ 'id' => $this->id ] );
 	}
 }

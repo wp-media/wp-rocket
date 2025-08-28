@@ -4,9 +4,6 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Admin\PerformanceMonitoring;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
-use WP_Rocket\Engine\Admin\PerformanceMonitoring\Queue\Queue;
-use WP_Rocket\Engine\Admin\PerformanceMonitoring\Context\PerformanceMonitoringContext;
-use WP_Rocket\Engine\Admin\PerformanceMonitoring\Database\Queries\PerformanceMonitoring as PerformanceMonitoring_Query;
 use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\AJAX\Controller as AjaxController;
@@ -65,6 +62,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'wp_ajax_rocket_pm_add_new_page'      => 'add_new_page',
 			'wp_ajax_rocket_pm_get_results'       => 'get_results',
 			'rocket_localize_admin_script'        => 'add_pending_ids',
+			'admin_post_delete_pm'                => 'delete_row',
 		];
 	}
 
@@ -116,5 +114,14 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	public function add_pending_ids( array $data = [] ) {
 		$data['pm_ids'] = $this->controller->get_not_finished_ids();
 		return $data;
+	}
+
+	/**
+	 * Delete one row.
+	 *
+	 * @return void
+	 */
+	public function delete_row() {
+		$this->controller->delete_row();
 	}
 }

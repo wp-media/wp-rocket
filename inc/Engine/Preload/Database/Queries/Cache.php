@@ -119,7 +119,7 @@ class Cache extends Query {
 	 *
 	 * @param array $resource Resource array.
 	 *
-	 * @return bool
+	 * @return bool|int
 	 */
 	public function create_or_update( array $resource ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.resourceFound
 
@@ -156,7 +156,7 @@ class Cache extends Query {
 				]
 			);
 
-			if ( $resource_id ) {
+			if ( ! empty( $resource_id ) ) {
 				return $resource_id;
 			}
 
@@ -194,7 +194,7 @@ class Cache extends Query {
 	 *
 	 * @param array $resource Resource array.
 	 *
-	 * @return bool
+	 * @return bool|int
 	 */
 	public function create_or_nothing( array $resource ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.resourceFound
 
@@ -234,7 +234,7 @@ class Cache extends Query {
 			]
 		);
 
-		if ( $resource_id ) {
+		if ( ! empty( $resource_id ) ) {
 			return $resource_id;
 		}
 
