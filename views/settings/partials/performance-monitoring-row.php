@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 ?>
-<tr class="wpr-speed-radar-item wpr-speed-radar-item-result" data-rocket-pm-id="<?php echo esc_attr( $data->id ); ?>" data-rocket-pm-status="<?php echo esc_attr( $data->status ); ?>">
+<tr class="wpr-speed-radar-item wpr-speed-radar-item-result" data-rocket-pm-id="<?php echo esc_attr( $data->id ); ?>">
 	<td class="wpr-speed-radar-page">
 		<a href="<?php echo esc_url( $data->url ); ?>" target="_blank" rel="noopener">
 			<?php echo esc_html( $data->title ); ?>

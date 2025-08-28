@@ -379,16 +379,37 @@ document.addEventListener('DOMContentLoaded', function() {
 		});
 	}
 
+	function handleResetPage(e) {
+		e.preventDefault();
+
+		let id = $(this).parents('.wpr-speed-radar-item').data('rocketPmId');
+		if ( ! id ) {
+			return;
+		}
+
+		$.post(ajaxurl, {
+			id,
+			action: 'rocket_pm_reset_page',
+			_ajax_nonce: rocket_ajax_data.nonce
+		}, function(response) {
+			if (response.success) {
+				addIds(response.data.id);
+
+				// Start polling if not already running
+				if (!pollTimer) {
+					pollInterval = POLL_BASE_INTERVAL;
+					schedulePolling();
+				}
+			} else {
+				console.error(response.data?.message || response);
+			}
+		});
+	}
+
 	// ==== Initialization ====
 	// Bind event
 	$("#add_page_speed_radar").on('click', handleAddPage);
-
-	// On page load, collect unfinished IDs
-	$('.wpr-speed-radar-item-result').each(function() {
-		if ($(this).data('rocketPmStatus') !== 'completed') {
-			addIds($(this).data('rocketPmId'));
-		}
-	});
+	$("#wpr-action-speed_radar_refresh").on('click', handleResetPage);
 
 	// Only poll if on the dashboard (more robust check)
 	function isOnDashboard() {
