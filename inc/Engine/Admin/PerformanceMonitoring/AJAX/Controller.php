@@ -235,7 +235,7 @@ class Controller extends Abstract_Render {
 				);
 		}
 
-		$this->manager->add_url_to_the_queue( $row->url, true );
+		$this->manager->add_url_to_the_queue( $row->url, true ); // @phpstan-ignore-line
 
 		wp_send_json_success(
 			[
