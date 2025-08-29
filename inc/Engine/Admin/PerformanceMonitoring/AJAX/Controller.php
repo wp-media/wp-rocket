@@ -111,8 +111,8 @@ class Controller extends Abstract_Render {
 		$title = wp_strip_all_tags( $title );
 		$title = sanitize_text_field( $title );
 
-        // Remove site name from title.
-        $title = str_replace( get_bloginfo( 'name' ), '', $title );
+		// Remove site name from title.
+		$title = str_replace( get_bloginfo( 'name' ), '', $title );
 
 		return $title;
 	}
