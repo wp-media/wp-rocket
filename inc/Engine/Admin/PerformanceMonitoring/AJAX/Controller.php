@@ -215,7 +215,7 @@ class Controller extends Abstract_Render {
 	public function reset_page() {
 		check_ajax_referer( 'rocket-ajax', 'nonce', true );
 
-		$id = ! empty( $_GET['id'] ) ? intval( $_GET['id'] ) : 0;
+		$id = ! empty( $_POST['id'] ) ? intval( $_POST['id'] ) : 0;
 		if ( empty( $id ) ) {
 			wp_send_json_error(
 				[
