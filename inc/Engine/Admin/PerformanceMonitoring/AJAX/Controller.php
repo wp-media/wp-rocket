@@ -167,7 +167,7 @@ class Controller extends Abstract_Render {
 		}
 
 		// Check if url is a valid url.
-		$user_agent = 'WP Rocket/Fetch Page Title Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1';
+		$user_agent = 'WP Rocket/Fetch Page Buffer for Performance Monitoring Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1';
 		$args       = [
 			'user-agent' => $user_agent,
 			'timeout'    => 60,
