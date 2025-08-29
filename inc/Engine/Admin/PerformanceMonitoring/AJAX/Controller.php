@@ -111,19 +111,8 @@ class Controller extends Abstract_Render {
 		$title = wp_strip_all_tags( $title );
 		$title = sanitize_text_field( $title );
 
-		$separators = [
-			' | ',
-			' - ',
-			' – ',
-			' » ',
-		];
-
-		foreach ( $separators as $seperator ) {
-			if ( false !== strpos( $title, $seperator ) ) {
-				$title = trim( explode( $seperator, $title, 2 )[0] );
-				break;
-			}
-		}
+        // Remove site name from title.
+        $title = str_replace( get_bloginfo( 'name' ), '', $title );
 
 		return $title;
 	}
