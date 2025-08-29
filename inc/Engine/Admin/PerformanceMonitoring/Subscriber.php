@@ -63,6 +63,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'wp_ajax_rocket_pm_get_results'       => 'get_results',
 			'rocket_localize_admin_script'        => 'add_pending_ids',
 			'admin_post_delete_pm'                => 'delete_row',
+			'wp_ajax_rocket_pm_reset_page'        => 'reset_page',
 		];
 	}
 
@@ -123,5 +124,14 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public function delete_row() {
 		$this->controller->delete_row();
+	}
+
+	/**
+	 * Reset testing a page/url.
+	 *
+	 * @return void
+	 */
+	public function reset_page(): void {
+		$this->ajax_controller->reset_page();
 	}
 }
