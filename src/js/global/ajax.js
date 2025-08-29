@@ -395,6 +395,9 @@ document.addEventListener('DOMContentLoaded', function() {
 			if (response.success) {
 				addIds(response.data.id);
 
+				const $row = $(`[data-rocket-pm-id="${response.data.id}"]`);
+				$row.replaceWith(response.data.html);
+
 				// Start polling if not already running
 				if (!pollTimer) {
 					pollInterval = POLL_BASE_INTERVAL;
@@ -408,8 +411,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	// ==== Initialization ====
 	// Bind event
-	$("#add_page_speed_radar").on('click', handleAddPage);
-	$("#wpr-action-speed_radar_refresh").on('click', handleResetPage);
+	$(document).on( 'click', '#add_page_speed_radar', handleAddPage );
+	$(document).on( 'click', '#wpr-action-speed_radar_refresh', handleResetPage );
 
 	// Only poll if on the dashboard (more robust check)
 	function isOnDashboard() {
