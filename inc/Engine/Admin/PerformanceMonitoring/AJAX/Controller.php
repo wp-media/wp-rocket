@@ -144,12 +144,12 @@ class Controller extends Abstract_Render {
 			'message' => '',
 		];
 
-		// if ( 'local' === wp_get_environment_type() ) {
-		// 	$payload['error']   = true;
-		// 	$payload['message'] = 'Performance monitoring is disabled for local environment';
+		if ( 'local' === wp_get_environment_type() ) {
+			$payload['error']   = true;
+			$payload['message'] = 'Performance monitoring is disabled for local environment';
 
-		// 	return $payload;
-		// }
+			return $payload;
+		}
 
 		// Validate that performance monitoring is not disabled.
 		if ( ! $this->context->is_allowed() ) {
