@@ -65,7 +65,6 @@ class Controller extends Abstract_Render {
 		}
 
 		$page_title = $this->get_page_title( $payload['message'] );
-		error_log( var_export( $page_title, true ) );
 
 		$row_id = $this->manager->add_url_to_the_queue(
 			$url,
