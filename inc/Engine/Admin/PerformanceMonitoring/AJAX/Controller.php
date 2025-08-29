@@ -206,4 +206,43 @@ class Controller extends Abstract_Render {
 		$payload['results'] = $results;
 		wp_send_json_success( $payload );
 	}
+
+	/**
+	 * Reset testing a page using its ID.
+	 *
+	 * @return void
+	 */
+	public function reset_page() {
+		check_ajax_referer( 'rocket-ajax', 'nonce', true );
+
+		$id = ! empty( $_POST['id'] ) ? intval( $_POST['id'] ) : 0;
+		if ( empty( $id ) ) {
+			wp_send_json_error(
+				[
+					'error'   => true,
+					'message' => __( 'No ID was provided.', 'rocket' ),
+				]
+				);
+		}
+
+		$row = $this->query->get_row_by_id( $id );
+		if ( ! $row ) {
+			wp_send_json_error(
+				[
+					'error'   => true,
+					'message' => __( 'Not valid ID', 'rocket' ),
+				]
+				);
+		}
+
+		$this->manager->add_url_to_the_queue( $row->url, true ); // @phpstan-ignore-line
+
+		$row = $this->query->get_row_by_id( $id );
+		wp_send_json_success(
+			[
+				'id'   => $id,
+				'html' => $this->generate( 'partials/performance-monitoring-row', $row ),
+			]
+			);
+	}
 }
