@@ -65,12 +65,29 @@ class Controller extends Abstract_Render {
 		}
 
 		$page_title = $this->get_page_title( $payload['message'] );
+		error_log( var_export( $page_title, true ) );
+
+		$row_id = $this->manager->add_url_to_the_queue(
+			$url,
+			true,
+			[
+				'title' => $page_title,
+			]
+			);
+
+		if ( empty( $row_id ) ) {
+			wp_send_json_error(
+				[
+					'error'   => true,
+					'message' => esc_html__( 'Not valid inputs', 'rocket' ),
+				]
+				);
+		}
+
+		$row_data = $this->query->get_row_by_id( (int) $row_id );
 
 		// Remove message from the response payload.
 		unset( $payload['message'] );
-
-		$row_id   = $this->manager->add_url_to_the_queue( $url, true, $page_title );
-		$row_data = $this->query->get_row_by_id( $row_id );
 
 		$payload['id']   = $row_id;
 		$payload['html'] = $this->generate( 'partials/performance-monitoring-row', $row_data );
@@ -110,9 +127,6 @@ class Controller extends Abstract_Render {
 
 		$title = wp_strip_all_tags( $title );
 		$title = sanitize_text_field( $title );
-
-		// Remove site name from title.
-		$title = str_replace( get_bloginfo( 'name' ), '', $title );
 
 		return $title;
 	}

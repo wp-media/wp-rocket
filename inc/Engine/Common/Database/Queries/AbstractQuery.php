@@ -144,11 +144,11 @@ class AbstractQuery extends Query {
 	 * @param string $job_id API job_id.
 	 * @param string $queue_name API Queue name.
 	 * @param bool   $is_mobile if the request is for mobile page.
-	 * @param string $title Page title.
+	 * @param array  $additional_details Additional details to be saved into DB.
 	 *
 	 * @return bool
 	 */
-	public function create_new_job( string $url, string $job_id = '', string $queue_name = '', bool $is_mobile = false, string $title = '' ) {
+	public function create_new_job( string $url, string $job_id = '', string $queue_name = '', bool $is_mobile = false, array $additional_details = [] ) {
 		if ( ! self::$table_exists && ! $this->table_exists() ) {
 			return false;
 		}
@@ -163,8 +163,8 @@ class AbstractQuery extends Query {
 			'last_accessed' => current_time( 'mysql', true ),
 		];
 
-		if ( '' !== $title ) {
-			$item['title'] = $title;
+		if ( ! empty( $additional_details ) ) {
+			$item = array_merge( $item, $additional_details );
 		}
 
 		$result = $this->add_item( $item );

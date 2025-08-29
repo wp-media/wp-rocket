@@ -69,10 +69,10 @@ defined( 'ABSPATH' ) || exit;
 				'label'      => '',
 				'url'        => $data->delete_url(),
 				'attributes' => [
-					'class'            => 'wpr-icon-trash',
+					'class'            => 'wpr-icon-trash wpr-confirm-delete',
 					'title'            => __( 'Delete', 'rocket' ),
 					'aria-label'       => __( 'Delete', 'rocket' ),
-					'data-wpr_onclick' => 'return confirm("' . esc_js( __( 'Are you sure you want to delete this item?', 'rocket' ) ) . '")',
+					'data-wpr_confirm_msg' => esc_html__( 'Are you sure you want to delete this item?', 'rocket' ),
 				],
 			]
 		);

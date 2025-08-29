@@ -46,11 +46,11 @@ trait AbstractManager {
 	 *
 	 * @param string $url page URL.
 	 * @param bool   $is_mobile page is for mobile.
-	 * @param string $title Page title.
+	 * @param array  $additional_details Additional details to be saved into DB.
 	 *
-	 * @return mixed
+	 * @return bool|void
 	 */
-	public function add_url_to_the_queue( string $url, bool $is_mobile, string $title = '' ) {
+	public function add_url_to_the_queue( string $url, bool $is_mobile, array $additional_details = [] ) {
 		if ( ! $this->is_allowed() ) {
 			return;
 		}
@@ -58,7 +58,7 @@ trait AbstractManager {
 		$row = $this->query->get_row( $url, (bool) $is_mobile );
 
 		if ( empty( $row ) ) {
-			return $this->query->create_new_job( $url, '', '', $is_mobile, $title );
+			return $this->query->create_new_job( $url, '', '', $is_mobile, $additional_details );
 		}
 		$this->query->reset_job( (int) $row->id );
 	}
