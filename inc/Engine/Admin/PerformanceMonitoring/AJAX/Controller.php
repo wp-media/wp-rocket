@@ -144,12 +144,12 @@ class Controller extends Abstract_Render {
 			'message' => '',
 		];
 
-		if ( 'local' === wp_get_environment_type() ) {
-			$payload['error']   = true;
-			$payload['message'] = 'Performance monitoring is disabled for local environment';
+		// if ( 'local' === wp_get_environment_type() ) {
+		// 	$payload['error']   = true;
+		// 	$payload['message'] = 'Performance monitoring is disabled for local environment';
 
-			return $payload;
-		}
+		// 	return $payload;
+		// }
 
 		// Validate that performance monitoring is not disabled.
 		if ( ! $this->context->is_allowed() ) {
@@ -186,7 +186,7 @@ class Controller extends Abstract_Render {
 
 		$response = wp_safe_remote_get( $url, $args );
 
-		if ( is_wp_error( $response ) ) {
+		if ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
 			$payload['error']   = true;
 			$payload['message'] = 'Url does not resolve to a valid page.';
 
