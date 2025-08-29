@@ -64,10 +64,10 @@ class Controller extends Abstract_Render {
 			wp_send_json_error( $payload );
 		}
 
-        $page_title = $this->get_page_title( $payload['message'] );
+		$page_title = $this->get_page_title( $payload['message'] );
 
-        // Remove message from the response payload.
-        unset( $payload['message'] );
+		// Remove message from the response payload.
+		unset( $payload['message'] );
 
 		$row_id   = $this->manager->add_url_to_the_queue( $url, true, $page_title );
 		$row_data = $this->query->get_row_by_id( $row_id );
@@ -78,55 +78,55 @@ class Controller extends Abstract_Render {
 		wp_send_json_success( $payload );
 	}
 
-    /**
-     * Extracts and sanitizes the page title from the provided HTML string.
-     *
-     * This method attempts to find the <title> tag in the given HTML, decodes any HTML entities,
-     * strips all tags, sanitizes the text, and then trims the title at common separators
-     * (such as " | ", " - ", " – ", " » ") to return a clean, concise page title.
-     *
-     * @param string $html The HTML content from which to extract the page title.
-     *
-     * @return string The sanitized and trimmed page title, or an empty string if not found.
-     */
-    public function get_page_title( string $html ): string {
-        $title = '';
+	/**
+	 * Extracts and sanitizes the page title from the provided HTML string.
+	 *
+	 * This method attempts to find the <title> tag in the given HTML, decodes any HTML entities,
+	 * strips all tags, sanitizes the text, and then trims the title at common separators
+	 * (such as " | ", " - ", " – ", " » ") to return a clean, concise page title.
+	 *
+	 * @param string $html The HTML content from which to extract the page title.
+	 *
+	 * @return string The sanitized and trimmed page title, or an empty string if not found.
+	 */
+	public function get_page_title( string $html ): string {
+		$title = '';
 
-        if ( empty( $html ) ) {
-            return $title;
-        }
-        
-        // Extract title from title tag.
-        if ( ! preg_match( '/<title[^>]*>(.*?)<\/title>/is', $html, $matches ) ) {
-            return $title;
-        }
+		if ( empty( $html ) ) {
+			return $title;
+		}
 
-        // Clean up and sanitize the title.
-        $title = html_entity_decode( trim( $matches[1] ), ENT_QUOTES, 'UTF-8' );
+		// Extract title from title tag.
+		if ( ! preg_match( '/<title[^>]*>(.*?)<\/title>/is', $html, $matches ) ) {
+			return $title;
+		}
 
-        if ( empty( $title ) ) {
-            return $title;
-        }
+		// Clean up and sanitize the title.
+		$title = html_entity_decode( trim( $matches[1] ), ENT_QUOTES, 'UTF-8' );
 
-        $title = wp_strip_all_tags( $title );
-        $title = sanitize_text_field( $title );
-        
-        $separators = [
-            ' | ',
-            ' - ',
-            ' – ',
-            ' » ',
-        ];
+		if ( empty( $title ) ) {
+			return $title;
+		}
 
-        foreach ( $separators as $seperator ) {
-            if ( false !== strpos( $title, $seperator ) ) {
-                $title = trim( explode( $seperator, $title, 2 )[0] );
-                break;
-            }
-        }
+		$title = wp_strip_all_tags( $title );
+		$title = sanitize_text_field( $title );
 
-        return $title;
-    }
+		$separators = [
+			' | ',
+			' - ',
+			' – ',
+			' » ',
+		];
+
+		foreach ( $separators as $seperator ) {
+			if ( false !== strpos( $title, $seperator ) ) {
+				$title = trim( explode( $seperator, $title, 2 )[0] );
+				break;
+			}
+		}
+
+		return $title;
+	}
 
 	/**
 	 * Validates a given URL for performance monitoring eligibility.
@@ -178,13 +178,13 @@ class Controller extends Abstract_Render {
 		}
 
 		// Check if url is a valid url.
-        $user_agent = 'WP Rocket/Fetch Page Title Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1';
-        $args     = [
+		$user_agent = 'WP Rocket/Fetch Page Title Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1';
+		$args       = [
 			'user-agent' => $user_agent,
 			'timeout'    => 60,
 		];
 
-        $response = wp_safe_remote_get( $url, $args );
+		$response = wp_safe_remote_get( $url, $args );
 
 		if ( is_wp_error( $response ) ) {
 			$payload['error']   = true;
@@ -213,8 +213,8 @@ class Controller extends Abstract_Render {
 
 		// TODO: Check if page is cached.
 
-        // Fetch url body and send to payload.
-        $payload['message'] = wp_remote_retrieve_body( $response );
+		// Fetch url body and send to payload.
+		$payload['message'] = wp_remote_retrieve_body( $response );
 
 		return $payload;
 	}

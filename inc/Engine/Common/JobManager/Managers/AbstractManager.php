@@ -46,7 +46,7 @@ trait AbstractManager {
 	 *
 	 * @param string $url page URL.
 	 * @param bool   $is_mobile page is for mobile.
-	 * @param string   $title Page title.
+	 * @param string $title Page title.
 	 *
 	 * @return mixed
 	 */
