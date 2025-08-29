@@ -348,11 +348,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		e.preventDefault();
 		const pageUrl = $pageUrlInput.val().trim();
 
-		if (!pageUrl) {
-			alert('No page address was added');
-			return;
-		}
-
 		if (!isValidUrl(pageUrl)) {
 			alert('Please enter a valid URL with an extension');
 			return;

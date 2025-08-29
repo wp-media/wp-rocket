@@ -421,8 +421,8 @@ $(document).ready(function(){
 		} );
 	}
 
-	$('[data-wpr_onclick]').each(function() {
-		$(this).attr('onclick', $(this).data('wpr_onclick'));
-		$(this).removeAttr('data-wpr_onclick');
-	});
+	$(document).on( 'click', '.wpr-confirm-delete', function (e) {
+		return confirm( $(this).data('wpr_confirm_msg') );
+	} );
+
 });

@@ -64,13 +64,70 @@ class Controller extends Abstract_Render {
 			wp_send_json_error( $payload );
 		}
 
-		$row_id   = $this->manager->add_url_to_the_queue( $url, true );
-		$row_data = $this->query->get_row_by_id( $row_id );
+		$page_title = $this->get_page_title( $payload['message'] );
+
+		$row_id = $this->manager->add_url_to_the_queue(
+			$url,
+			true,
+			[
+				'title' => $page_title,
+			]
+			);
+
+		if ( empty( $row_id ) ) {
+			wp_send_json_error(
+				[
+					'error'   => true,
+					'message' => esc_html__( 'Not valid inputs', 'rocket' ),
+				]
+				);
+		}
+
+		$row_data = $this->query->get_row_by_id( (int) $row_id );
+
+		// Remove message from the response payload.
+		unset( $payload['message'] );
 
 		$payload['id']   = $row_id;
 		$payload['html'] = $this->generate( 'partials/performance-monitoring-row', $row_data );
 
 		wp_send_json_success( $payload );
+	}
+
+	/**
+	 * Extracts and sanitizes the page title from the provided HTML string.
+	 *
+	 * This method attempts to find the <title> tag in the given HTML, decodes any HTML entities,
+	 * strips all tags, sanitizes the text, and then trims the title at common separators
+	 * (such as " | ", " - ", " – ", " » ") to return a clean, concise page title.
+	 *
+	 * @param string $html The HTML content from which to extract the page title.
+	 *
+	 * @return string The sanitized and trimmed page title, or an empty string if not found.
+	 */
+	public function get_page_title( string $html ): string {
+		$title = '';
+
+		if ( empty( $html ) ) {
+			return $title;
+		}
+
+		// Extract title from title tag.
+		if ( ! preg_match( '/<title[^>]*>(.*?)<\/title>/is', $html, $matches ) ) {
+			return $title;
+		}
+
+		// Clean up and sanitize the title.
+		$title = html_entity_decode( trim( $matches[1] ), ENT_QUOTES, 'UTF-8' );
+
+		if ( empty( $title ) ) {
+			return $title;
+		}
+
+		$title = wp_strip_all_tags( $title );
+		$title = sanitize_text_field( $title );
+
+		return $title;
 	}
 
 	/**
@@ -123,9 +180,15 @@ class Controller extends Abstract_Render {
 		}
 
 		// Check if url is a valid url.
-		$response = wp_remote_head( $url );
+		$user_agent = 'WP Rocket/Fetch Page Buffer for Performance Monitoring Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1';
+		$args       = [
+			'user-agent' => $user_agent,
+			'timeout'    => 60,
+		];
 
-		if ( is_wp_error( $response ) ) {
+		$response = wp_safe_remote_get( $url, $args );
+
+		if ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
 			$payload['error']   = true;
 			$payload['message'] = 'Url does not resolve to a valid page.';
 
@@ -151,6 +214,9 @@ class Controller extends Abstract_Render {
 		// TODO: Check if url is not excluded.
 
 		// TODO: Check if page is cached.
+
+		// Fetch url body and send to payload.
+		$payload['message'] = wp_remote_retrieve_body( $response );
 
 		return $payload;
 	}
