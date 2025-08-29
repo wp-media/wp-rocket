@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 ?>
-<tr class="wpr-speed-radar-item wpr-speed-radar-item-result" data-rocket-pm-id="<?php echo esc_attr( $data->id ); ?>">
+<tr class="wpr-speed-radar-item wpr-speed-radar-item-result" data-rocket-pm-id="<?php echo esc_attr( $data->id ); ?>" >
 	<td class="wpr-speed-radar-page">
 		<a href="<?php echo esc_url( $data->url ); ?>" target="_blank" rel="noopener">
 			<?php echo esc_html( $data->title ); ?>
@@ -28,7 +28,7 @@ defined( 'ABSPATH' ) || exit;
 			?>
 		</span>
 	</td>
-	<td class="wpr-speed-radar-date"><?php echo esc_html( $data->modified ); ?></td>
+	<td class="wpr-speed-radar-date"><?php echo esc_html( gmdate( 'Y-m-d H:i:s', $data->modified ) ); ?></td>
 	<td class="wpr-speed-radar-actions">
 		<?php
 		$this->render_action_button(
