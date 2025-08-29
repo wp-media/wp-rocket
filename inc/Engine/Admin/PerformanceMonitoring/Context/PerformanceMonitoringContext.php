@@ -36,7 +36,7 @@ class PerformanceMonitoringContext implements ContextInterface {
 	 * @return bool
 	 */
 	public function is_allowed( array $data = [] ): bool {
-		$enabled = current_user_can( 'rocket_manage_options' );
+		$enabled = current_user_can( 'rocket_manage_options' ) || wp_doing_cron();
 
 		/**
 		 * Filters performance monitoring addon enable status.
