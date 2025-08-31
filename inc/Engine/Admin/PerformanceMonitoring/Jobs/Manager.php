@@ -121,7 +121,6 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 				'Performance Monitoring: Revert to pending because of API status is pending',
 				[
 					'job_id' => $row_details->job_id,
-					'status' => $job_details['status'],
 				]
 			);
 
