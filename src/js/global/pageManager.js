@@ -150,45 +150,31 @@ PageManager.prototype.change = function() {
     this.$submitButton.value = this.buttonText;
     this.$content.classList.add('isNotFull');
 
+    const pagesWithoutSubmit = [
+        'dashboard',
+        'addons',
+        'database',
+        'tools',
+        'addons',
+        'imagify',
+        'tutorials',
+        'plugins',
+        'rocket_insights',
+    ];
 
     // Exception for dashboard
     if(this.pageId == "dashboard"){
         this.$sidebar.style.display = 'none';
         this.$tips.style.display = 'none';
-        this.$submitButton.style.display = 'none';
         this.$content.classList.remove('isNotFull');
-    }
-
-    // Exception for addons
-    if(this.pageId == "addons"){
-        this.$submitButton.style.display = 'none';
-    }
-
-    // Exception for database
-    if(this.pageId == "database"){
-        this.$submitButton.style.display = 'none';
-    }
-
-    // Exception for tools and addons
-    if(this.pageId == "tools" || this.pageId == "addons"){
-        this.$submitButton.style.display = 'none';
     }
 
     if (this.pageId == "imagify") {
         this.$sidebar.style.display = 'none';
         this.$tips.style.display = 'none';
-        this.$submitButton.style.display = 'none';
     }
 
-    if (this.pageId == "tutorials") {
+    if (pagesWithoutSubmit.includes(this.pageId)) {
         this.$submitButton.style.display = 'none';
     }
-
-	if (this.pageId == "plugins") {
-		this.$submitButton.style.display = 'none';
-	}
-
-	if (this.pageId == "rocket_insights") {
-		this.$submitButton.style.display = 'none';
-	}
 };
