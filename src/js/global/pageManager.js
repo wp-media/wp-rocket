@@ -187,4 +187,8 @@ PageManager.prototype.change = function() {
 	if (this.pageId == "plugins") {
 		this.$submitButton.style.display = 'none';
 	}
+
+	if (this.pageId == "rocket_insights") {
+		this.$submitButton.style.display = 'none';
+	}
 };
