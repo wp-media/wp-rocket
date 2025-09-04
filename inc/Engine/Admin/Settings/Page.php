@@ -206,6 +206,7 @@ class Page extends Abstract_Render {
 			$this->database_section();
 			$this->cdn_section();
 			$this->heartbeat_section();
+			$this->rocket_insights_section();
 			$this->addons_section();
 			$this->cloudflare_section();
 			$this->sucuri_section();
@@ -1669,6 +1670,21 @@ class Page extends Abstract_Render {
 						'label' => __( 'Behavior in frontend', 'rocket' ),
 					]
 				),
+			]
+		);
+	}
+
+	/**
+	 * Registers Rocket Insights section.
+	 *
+	 * @since 3.20
+	 */
+	public function rocket_insights_section() {
+		$this->settings->add_page_section(
+			'rocket_insights',
+			[
+				'title'            => __( 'Rocket Insights', 'rocket' ),
+				'menu_description' => __( 'Analyze your pages speed', 'rocket' ),
 			]
 		);
 	}
