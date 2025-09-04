@@ -116,11 +116,23 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 	 * @return void
 	 */
 	public function process( array $job_details, $row_details, string $optimization_type ): void {
+		if ( ! empty( $job_details['status'] ) && 'pending' === $job_details['status'] ) {
+			$this->logger::info(
+				'Performance Monitoring: Revert to pending because of API status is pending',
+				[
+					'job_id' => $row_details->job_id,
+				]
+			);
+
+			$this->query->revert_to_pending( $row_details->id );
+			return;
+		}
+
 		$this->logger::info(
 			'Performance Monitoring: Test completed successfully',
 			[
-				'test_id' => $row_details->job_id,
-				'score'   => $job_details['performance_score'] ?? null,
+				'job_id' => $row_details->job_id,
+				'score'  => $job_details['performance_score'] ?? null,
 			]
 		);
 
