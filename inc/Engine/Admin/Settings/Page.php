@@ -199,6 +199,7 @@ class Page extends Abstract_Render {
 		$rocket_valid_key = rocket_valid_key();
 		if ( $rocket_valid_key ) {
 			$this->dashboard_section();
+			$this->rocket_insights_section();
 			$this->assets_section();
 			$this->media_section();
 			$this->preload_section();
@@ -206,7 +207,6 @@ class Page extends Abstract_Render {
 			$this->database_section();
 			$this->cdn_section();
 			$this->heartbeat_section();
-			$this->rocket_insights_section();
 			$this->addons_section();
 			$this->cloudflare_section();
 			$this->sucuri_section();
@@ -1684,7 +1684,7 @@ class Page extends Abstract_Render {
 			'rocket_insights',
 			[
 				'title'            => __( 'Rocket Insights', 'rocket' ),
-				'menu_description' => __( 'Analyze your pages speed', 'rocket' ),
+				'menu_description' => __( 'Get performance insights', 'rocket' ),
 			]
 		);
 	}
