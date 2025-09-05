@@ -199,6 +199,7 @@ class Page extends Abstract_Render {
 		$rocket_valid_key = rocket_valid_key();
 		if ( $rocket_valid_key ) {
 			$this->dashboard_section();
+			$this->rocket_insights_section();
 			$this->assets_section();
 			$this->media_section();
 			$this->preload_section();
@@ -1669,6 +1670,21 @@ class Page extends Abstract_Render {
 						'label' => __( 'Behavior in frontend', 'rocket' ),
 					]
 				),
+			]
+		);
+	}
+
+	/**
+	 * Registers Rocket Insights section.
+	 *
+	 * @since 3.20
+	 */
+	public function rocket_insights_section() {
+		$this->settings->add_page_section(
+			'rocket_insights',
+			[
+				'title'            => __( 'Rocket Insights', 'rocket' ),
+				'menu_description' => __( 'Get performance insights', 'rocket' ),
 			]
 		);
 	}

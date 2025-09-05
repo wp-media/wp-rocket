@@ -335,6 +335,14 @@ a:focus, button:focus {
   content: url("../img/plugins-hover.png");
 }
 
+.wpr-icon-rocket-insights:before, #wpr-nav-rocket_insights:before {
+  content: url("../img/rocket-insights.svg");
+}
+
+.wpr-icon-rocket-insights-hover:before, #wpr-nav-rocket_insights.isActive:before, #wpr-nav-rocket_insights:hover:before {
+  content: url("../img/rocket-insights-hover.svg");
+}
+
 .wpr-title1 {
   font-size: 1.625rem;
   line-height: 1;
