@@ -132,7 +132,7 @@ if ( ! function_exists( 'rocket_get_purge_urls' ) ) {
 		}
 
 		// Add all children.
-		$children = get_all_descendant( $post_id );
+		$children = rocket_get_all_descendant( $post_id );
 		if ( (bool) $children ) {
 			foreach ( $children as $child_id ) {
 				$purge_urls[] = get_permalink( $child_id );
@@ -152,7 +152,7 @@ if ( ! function_exists( 'rocket_get_purge_urls' ) ) {
  * @param int $parent_id The ID of the parent page.
  * @return int[] A flat array with all descendant page IDs (children, grandchildren, etc.).
  */
-function get_all_descendant( $parent_id ) {
+function rocket_get_all_descendant( $parent_id ) {
 	// 'child_of' retrieves all descendants, not just direct children.
 	$all_descendants = get_pages( [
 		'child_of' => $parent_id,
@@ -663,7 +663,7 @@ function rocket_clean_post_cache_on_slug_change( $post_id, $post_data ) {
 	$purge_urls[] = get_the_permalink( $post_id );
 
 	// Clear cache for all child pages.
-	$children = get_all_descendant( $post_id );
+	$children = rocket_get_all_descendant( $post_id );
 	if ( (bool) $children ) {
 		foreach ( $children as $child_id ) {
 			$purge_urls[] = get_the_permalink( $child_id );
