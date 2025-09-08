@@ -17,4 +17,32 @@ class Render extends Abstract_Render {
 		$data = compact( 'items' );
 		echo $this->generate( 'sections/performance-monitoring', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
+
+	public function render_performance_score( array $data ) {
+
+		$data[ 'status-color' ] = $this->get_score_color_status( (int) $data['score'] );
+
+		echo $this->generate( 'partials/performance-monitoring/performance-score', $data );
+	}
+
+	public function render_global_score_widget(array $data ){
+		echo $this->generate( 'partials/performance-monitoring/global-score-widget', $data );
+	}
+
+	/**
+	 * Get color status class based on performance score.
+	 *
+	 * @param int $score Performance score (0-100).
+	 * @return string Color status class.
+	 */
+	public function get_score_color_status( int $score ): string {
+		if ( $score <= 50 ) {
+			return 'status-red';
+		} elseif ( $score <= 85 ) {
+			return 'status-yellow';
+		} else {
+			return 'status-green';
+		}
+	}
+
 }

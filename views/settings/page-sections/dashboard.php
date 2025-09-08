@@ -131,6 +131,12 @@ $rocket_manual_preload = (bool) get_rocket_option( 'manual_preload', false );
 		</div>
 
 		<div class="wpr-Page-col wpr-Page-col--fixed">
+			<?php
+			/**
+			 * Fires in the dashboard sidebar
+			 */
+			do_action( 'rocket_dashboard_sidebar' );
+			?>
 			<div class="wpr-optionHeader">
 				<h3 class="wpr-title2"><?php esc_html_e( 'Quick Actions', 'rocket' ); ?></h3>
 			</div>

@@ -64,6 +64,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'rocket_localize_admin_script'        => 'add_pending_ids',
 			'admin_post_delete_pm'                => 'delete_row',
 			'wp_ajax_rocket_pm_reset_page'        => 'reset_page',
+			'rocket_dashboard_sidebar'            => [ 'render_global_score_widget', 10 ],
 		];
 	}
 
@@ -133,5 +134,16 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public function reset_page(): void {
 		$this->ajax_controller->reset_page();
+	}
+
+	/**
+	 * Render the global performance score widget in the dashboard sidebar.
+	 *
+	 * @return void
+	 */
+	public function render_global_score_widget(): void
+	{
+		$global_score = $this->controller->get_global_score();
+		$this->render->render_global_score_widget( $global_score );
 	}
 }
