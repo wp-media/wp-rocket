@@ -2,10 +2,13 @@
 /**
  * Global Score Widget view.
  */
+
 defined( 'ABSPATH' ) || exit;
 ?>
 <div class="wpr-optionHeader">
-	<h3 class="wpr-title2"><?php esc_html_e( 'RocketInsights', 'rocket' ); ?></h3>
+	<h3 class="wpr-title2">
+		<?php echo esc_html__( 'RocketInsights', 'rocket' ); ?>
+	</h3>
 </div>
 <div class="wpr-fieldsContainer">
 	<fieldset class="wpr-fieldsContainer-fieldset">
@@ -22,10 +25,8 @@ defined( 'ABSPATH' ) || exit;
 				</div>
 				<p class="wpr-page-num-txt">
 				<?php
-				printf(
-						esc_html__( '%1$s page monitored.', 'rocket' ),
-						$data['pages_num']
-					);
+				// translators: %1$s is the number of pages monitored.
+				printf( esc_html__( '%1$s page monitored.', 'rocket' ), esc_html( $data['pages_num'] ) );
 				?>
 				</p>
 				<?php

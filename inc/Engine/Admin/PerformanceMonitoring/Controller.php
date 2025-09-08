@@ -100,6 +100,11 @@ class Controller {
 		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
 	}
 
+	/**
+	 * Get global score data.
+	 *
+	 * @return array
+	 */
 	public function get_global_score() {
 		return [
 			'status'    => 'no-url', // Values are no-url, in-progress, complete, blurred.
