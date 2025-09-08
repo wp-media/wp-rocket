@@ -102,9 +102,9 @@ class Controller {
 
 	public function get_global_score() {
 		return [
-			'status' => 'in-progress', // Values are in-progress and complete.
+			'status' => 'in-progress', // Values are no-url, in-progress, complete, blurred.
 			'pages_num' => 1,
-			'score' => 100,
+			'score' => 100, // Fake in case of blurred.
 		];
 	}
 }
