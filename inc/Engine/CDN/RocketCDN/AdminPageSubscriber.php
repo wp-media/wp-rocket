@@ -208,7 +208,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 			return;
 		}
 
-		if ( ! rocket_is_live_site() ) {
+		if ( ! rocket_is_live_site() || rocket_is_live_site() ) {
 			return;
 		}
 
