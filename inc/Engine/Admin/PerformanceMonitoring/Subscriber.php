@@ -141,8 +141,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 *
 	 * @return void
 	 */
-	public function render_global_score_widget(): void
-	{
+	public function render_global_score_widget(): void {
 		$global_score = $this->controller->get_global_score();
 		$this->render->render_global_score_widget( $global_score );
 	}

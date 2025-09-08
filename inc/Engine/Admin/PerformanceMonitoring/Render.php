@@ -20,12 +20,12 @@ class Render extends Abstract_Render {
 
 	public function render_performance_score( array $data ) {
 
-		$data[ 'status-color' ] = $this->get_score_color_status( (int) $data['score'] );
+		$data['status-color'] = $this->get_score_color_status( (int) $data['score'] );
 
 		echo $this->generate( 'partials/performance-monitoring/performance-score', $data );
 	}
 
-	public function render_global_score_widget(array $data ){
+	public function render_global_score_widget( array $data ) {
 		echo $this->generate( 'partials/performance-monitoring/global-score-widget', $data );
 	}
 
@@ -44,5 +44,4 @@ class Render extends Abstract_Render {
 			return 'status-green';
 		}
 	}
-
 }

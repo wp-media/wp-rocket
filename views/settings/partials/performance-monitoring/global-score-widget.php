@@ -13,24 +13,27 @@ defined( 'ABSPATH' ) || exit;
 			<div class="wpr-percentage-score-widget">
 				<div>
 					<?php
-					if ( isset( $data[ 'status' ] ) && 'no-url' !== $data[ 'status' ] ):
+					if ( isset( $data['status'] ) && 'no-url' !== $data['status'] ) :
 						$this->render_performance_score( $data );
-					?>
-					<?php else: ?>
+						?>
+					<?php else : ?>
 						<img class="wpr-score-no-urls" src="<?php echo esc_url( WP_ROCKET_ASSETS_IMG_URL . 'pma-light-pulp.svg' ); ?>"/>
 					<?php endif; ?>
 				</div>
-				<p class="wpr-page-num-txt"><?php printf(
+				<p class="wpr-page-num-txt">
+				<?php
+				printf(
 						esc_html__( '%1$s page monitored.', 'rocket' ),
-						$data[ 'pages_num' ]
-					); ?>
+						$data['pages_num']
+					);
+				?>
 				</p>
 				<?php
 				$this->render_action_button(
 					'link',
 					'',
 					[
-						'label'      => $data[ 'pages_num' ] ? __( 'ADD PAGE', 'rocket' ) : __( 'ADD HOME PAGE', 'rocket' ),
+						'label'      => $data['pages_num'] ? __( 'ADD PAGE', 'rocket' ) : __( 'ADD HOME PAGE', 'rocket' ),
 						'parameters' => [
 							'type' => 'all',
 						],
