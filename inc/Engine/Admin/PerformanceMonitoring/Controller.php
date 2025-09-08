@@ -99,4 +99,12 @@ class Controller {
 
 		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
 	}
+
+	public function get_global_score() {
+		return [
+			'status' => 'in-progress', // Values are in-progress and complete.
+			'pages_num' => 1,
+			'score' => 100,
+		];
+	}
 }
