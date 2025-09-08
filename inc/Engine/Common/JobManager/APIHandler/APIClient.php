@@ -108,37 +108,39 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 	 * @return array
 	 */
 	public function get_queue_job_status( $job_id, $queue_name, $is_home = false ) {
-		$args = [
-			'body'    => [
-				'id'          => $job_id,
-				'force_queue' => $queue_name,
-				'is_home'     => $is_home,
-			],
-			'timeout' => 5,
-		];
+    $args = [
+        'body'    => [
+            'id'         => $job_id,
+            'force_queue' => $queue_name,
+            'is_home'    => $is_home,
+        ],
+        'timeout' => 5,
+    ];
 
-		if ( ! $this->handle_get( $args ) ) {
-			return [
-				'code'    => $this->response_code,
-				'message' => $this->error_message,
-			];
-		}
+    if ( ! $this->handle_get( $args ) ) {
+        return [
+            'code'    => $this->response_code,
+            'message' => $this->error_message,
+        ];
+    }
 
-		$default = [
-			'code'     => 400,
-			'status'   => 'failed',
-			'message'  => 'No message. Defaulted in get_queue_job_status',
-			'contents' => [
-				'success'               => false,
-				'shakedCSS'             => '',
-				'above_the_fold_result' => [
-					'lcp'               => [],
-					'images_above_fold' => [],
-				],
-			],
-		];
+    $default = [
+        'code'    => 400,
+        'status'  => 'failed',
+        'message' => 'No message. Defaulted in get_queue_job_status',
+        'contents' => [
+            'success'           => false,
+            'shakedCSS'         => '',
+            'above_the_fold_result' => [
+                'lcp'                => [],
+                'images_above_fold' => [],
+            ],
+        ],
+    ];
 
-		$result = json_decode( $this->response_body, true );
-		return (array) wp_parse_args( ( $result && $result['returnvalue'] ) ? (array) $result['returnvalue'] : [], $default );
+    $result = json_decode( $this->response_body, true );
+    
+    // Corrected part: Check if $result is an array and has the 'returnvalue' key
+    return (array) wp_parse_args( ( is_array($result) && isset( $result['returnvalue'] ) ) ? (array) $result['returnvalue'] : [], $default ); 
 	}
 }
