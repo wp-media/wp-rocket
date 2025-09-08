@@ -612,7 +612,7 @@ function rocket_clean_files( $urls, $filesystem = null, $run_actions = true ) {
 
 				$entry = $dir . $parsed_url['path'];
 
-				if ( !empty($parsed_url['query']) ) {
+				if ( ! empty( $parsed_url['query'] ) ) {
 					$entry = trailingslashit( $entry ) . '#' . str_replace( '&', '#', $parsed_url['query'] );
 				}
 
