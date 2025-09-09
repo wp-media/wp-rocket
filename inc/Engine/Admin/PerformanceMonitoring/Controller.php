@@ -100,11 +100,16 @@ class Controller {
 		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
 	}
 
+	/**
+	 * Get global score data.
+	 *
+	 * @return array
+	 */
 	public function get_global_score() {
 		return [
-			'status' => 'in-progress', // Values are no-url, in-progress, complete, blurred.
+			'status'    => 'no-url', // Values are no-url, in-progress, complete, blurred.
 			'pages_num' => 1,
-			'score' => 100, // Fake in case of blurred.
+			'score'     => 85, // Fake in case of blurred.
 		];
 	}
 }
