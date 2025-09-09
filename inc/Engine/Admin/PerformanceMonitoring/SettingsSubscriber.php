@@ -55,11 +55,11 @@ class SettingsSubscriber extends Abstract_Render implements Subscriber_Interface
 			return;
 		}
 
-		$status_class    = ' wpr-isInvalid';
-		$label           = '';
-		$status_text     = __( 'No subscription', 'rocket' );
-		$service_name    = __( 'Rocket Insights', 'rocket' );
-		$sku             = $this->user->get_pma_addon_sku_active();
+		$status_class = ' wpr-isInvalid';
+		$label        = '';
+		$status_text  = __( 'No subscription', 'rocket' );
+		$service_name = __( 'Rocket Insights', 'rocket' );
+		$sku          = $this->user->get_pma_addon_sku_active();
 
 		$upgrade_skus = $this->user->get_pma_addon_upgrade_skus( $sku );
 
@@ -82,10 +82,10 @@ class SettingsSubscriber extends Abstract_Render implements Subscriber_Interface
 		];
 
 		if ( count( $upgrade_skus ) > 0 ) {
-			$upgrade_sku  = array_shift( $upgrade_skus );
-			$upgrade_link = $this->user->get_pma_addon_btn_url( $upgrade_sku );
-			$data['upgrade_link'] = $upgrade_link;
-			$data['upgrade_text'] = $this->user->get_pma_addon_btn_text( $upgrade_sku );
+			$upgrade_sku             = array_shift( $upgrade_skus );
+			$upgrade_link            = $this->user->get_pma_addon_btn_url( $upgrade_sku );
+			$data['upgrade_link']    = $upgrade_link;
+			$data['upgrade_text']    = $this->user->get_pma_addon_btn_text( $upgrade_sku );
 			$data['container_class'] = ' wpr-flex--egal';
 		}
 
