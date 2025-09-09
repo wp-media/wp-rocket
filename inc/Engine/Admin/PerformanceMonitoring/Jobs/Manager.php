@@ -105,6 +105,16 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 		);
 
 		$this->query->make_status_failed( $row_details->url, $row_details->is_mobile, '', $job_details['message'] ?? 'Failed with no msg' );
+
+		/**
+		 * Fires when a performance monitoring job fails.
+		 *
+		 * @since 3.20
+		 *
+		 * @param object $row_details Details related to the database row.
+		 * @param array  $job_details Details related to the job.
+		 */
+		do_action( 'rocket_pm_job_failed', $row_details, $job_details );
 	}
 
 	/**
@@ -137,6 +147,16 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 		);
 
 		$this->query->make_status_completed( $row_details->id, 'completed', $this->parse_test_results( $job_details ) );
+
+		/**
+		 * Fires when a performance monitoring job completes successfully.
+		 *
+		 * @since 3.20
+		 *
+		 * @param object $row_details Details related to the database row.
+		 * @param array  $job_details Details related to the job.
+		 */
+		do_action( 'rocket_pm_job_completed', $row_details, $job_details );
 	}
 
 	/**

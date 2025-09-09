@@ -63,6 +63,15 @@ class Controller {
 	 */
 	public function add_homepage() {
 		$this->manager->add_url_to_the_queue( home_url(), true );
+
+		/**
+		 * Fires when a performance monitoring job is added.
+		 *
+		 * @since 3.20
+		 *
+		 * @param string $url The URL that was added for monitoring.
+		 */
+		do_action( 'rocket_pm_job_added', home_url() );
 	}
 
 	/**
@@ -95,6 +104,15 @@ class Controller {
 		$id = ! empty( $_GET['id'] ) ? intval( $_GET['id'] ) : 0;
 		if ( ! empty( $id ) ) {
 			$this->query->delete_item( $id );
+
+			/**
+			 * Fires when a performance monitoring job is deleted.
+			 *
+			 * @since 3.20
+			 *
+			 * @param int $id The ID of the deleted performance monitoring job.
+			 */
+			do_action( 'rocket_pm_job_deleted', $id );
 		}
 
 		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
