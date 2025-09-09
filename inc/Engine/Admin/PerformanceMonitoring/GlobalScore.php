@@ -49,11 +49,11 @@ class GlobalScore {
 	public function get_global_score(): int {
 		$cached_data = $this->get_cached_data();
 
-		if ( false !== $cached_data && isset( $cached_data['global_score'] ) ) {
-			return (int) $cached_data['global_score'];
+		if ( false !== $cached_data && isset( $cached_data['score'] ) ) {
+			return (int) $cached_data['score'];
 		}
 
-		return $this->calculate_and_cache_data()['global_score'];
+		return $this->calculate_and_cache_data()['score'];
 	}
 
 	/**
@@ -67,11 +67,11 @@ class GlobalScore {
 	public function get_pages_number(): int {
 		$cached_data = $this->get_cached_data();
 
-		if ( false !== $cached_data && isset( $cached_data['pages_number'] ) ) {
-			return (int) $cached_data['pages_number'];
+		if ( false !== $cached_data && isset( $cached_data['pages_num'] ) ) {
+			return (int) $cached_data['pages_num'];
 		}
 
-		return $this->calculate_and_cache_data()['pages_number'];
+		return $this->calculate_and_cache_data()['pages_num'];
 	}
 
 	/**
@@ -85,11 +85,22 @@ class GlobalScore {
 	public function get_current_status(): string {
 		$cached_data = $this->get_cached_data();
 
-		if ( false !== $cached_data && isset( $cached_data['current_status'] ) ) {
-			return $cached_data['current_status'];
+		if ( false !== $cached_data && isset( $cached_data['status'] ) ) {
+			return $cached_data['status'];
 		}
 
-		return $this->calculate_and_cache_data()['current_status'];
+		return $this->calculate_and_cache_data()['status'];
+	}
+
+	public function get_global_score_data(): array {
+		$cached_data = $this->get_cached_data();
+
+		if ( false !== $cached_data ) {
+			return $cached_data;
+		}
+
+		return $this->calculate_and_cache_data();
+
 	}
 
 	/**
@@ -115,13 +126,13 @@ class GlobalScore {
 	/**
 	 * Calculate all metrics and cache the results.
 	 *
-	 * @return array Calculated data containing global_score, pages_number, and current_status.
+	 * @return array Calculated data containing score, pages_num, and status.
 	 */
 	private function calculate_and_cache_data(): array {
 		$data = [
-			'global_score'   => $this->calculate_global_score(),
-			'pages_number'   => $this->calculate_pages_number(),
-			'current_status' => $this->calculate_current_status(),
+			'score'   => $this->calculate_global_score(),
+			'pages_num'   => $this->calculate_pages_number(),
+			'status' => $this->calculate_current_status(),
 		];
 
 		set_transient( self::TRANSIENT_NAME, $data, self::CACHE_EXPIRATION );
