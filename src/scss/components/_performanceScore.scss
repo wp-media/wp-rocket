@@ -1,0 +1,73 @@
+.wpr-percentage-score-widget{
+	text-align: center;
+	padding: $space;
+	.wpr-page-num-txt{
+		margin: 3*$space 0 2*$space 0;
+		font-size: 14px;
+		line-height: 1.3;
+	}
+	.wpr-score-no-urls{
+		background-image: url(../img/pma-light-pulp.svg);
+		background-repeat: no-repeat;
+		background-position: center;
+		background-size: contain;
+		width: 92px;
+		height: 92px;
+		margin: 0 auto;
+		display: block;
+	}
+}
+// Percentage indicator component
+.wpr-percentage-indicator {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	.wpr-percentage-circle {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 118px;
+		height: 118px;
+		font-size: 50px;
+		font-family: Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+		font-weight: 500;
+		border-radius: 50%;
+		border: 3px solid;
+		&-sm{
+			width: 32px;
+			height: 32px;
+			font-size: 14px;
+		}
+
+		// Default styles
+		&.status-red {
+			border-color: $errorDark;
+			color: $errorDark;
+			background-color: $errorLighter;
+		}
+
+		&.status-yellow {
+			border-color: $warningDark;
+			color: $warningDark;
+			background-color: $warningLighter;
+		}
+
+		&.status-green {
+			border-color: $successDark;
+			color: $successDark;
+			background-color:$successLighter;
+		}
+		&.blurred {
+			filter: blur(4px);
+		}
+	}
+	.wpr-loading-img{
+		width: 118px;
+		height: 118px;
+		&-sm{
+			width: 32px;
+			height: 32px;
+		}
+	}
+}
