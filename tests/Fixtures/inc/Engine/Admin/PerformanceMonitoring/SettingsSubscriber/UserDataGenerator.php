@@ -23,6 +23,9 @@ class UserDataGenerator {
 		$plans[] = (object) [
 			"sku" => "perf-monitor-free",
 			"status" => $this->pma_sku_active == "perf-monitor-free" ? "active" : "inactive",
+			"upgrades" => [
+				"perf-monitor-advanced"
+			],
 			"button" => (object) [
 				"label" => "Your plan",
 				"action" => "none",
@@ -33,6 +36,7 @@ class UserDataGenerator {
 		$plans[] = (object) [
 			"sku" => "perf-monitor-advanced",
 			"status" => $this->pma_sku_active == "perf-monitor-advanced" ? "active" : "inactive",
+			"upgrades" => [],
 			"button" => (object) [
 				"label" => "Get Advanced",
 				"action" => "purchase",

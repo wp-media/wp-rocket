@@ -24,14 +24,22 @@ $data = isset( $data ) && is_array( $data ) ? $data : []; // phpcs:ignore WordPr
 </div>
 <div class="wpr-field wpr-field-account">
 	<?php if ( ! $data['is_live_site'] ) : ?>
-	<span class="wpr-infoAccount wpr-isInvalid"><?php printf( esc_html__( '%s is unavailable on local domains and staging sites.', 'rocket' ), esc_html( $data['service_name'] ) ); ?></span>
+	<span class="wpr-infoAccount wpr-isInvalid">
+		<?php
+		printf(
+		/* translators: %1$s = domain. */
+		esc_html__( '%s is unavailable on local domains and staging sites.', 'rocket' ),
+		esc_html( $data['service_name'] )
+												);
+		?>
+		</span>
 	<?php else : ?>
 	<div class="wpr-flex<?php echo esc_attr( $data['container_class'] ); ?>">
 		<div>
 			<span class="wpr-title3"><?php echo esc_html( $data['label'] ); ?></span>
 			<span class="wpr-infoAccount<?php echo esc_attr( $data['status_class'] ); ?>"><?php echo esc_html( $data['status_text'] ); ?></span>
 		</div>
-		<?php if ( key_exists('upgrade_link', $data) ) : ?>
+		<?php if ( key_exists( 'upgrade_link', $data ) ) : ?>
 		<div>
 			<a href="<?php echo esc_url( $data['upgrade_link'] ); ?>" class="wpr-button"><?php echo esc_html( $data['upgrade_text'] ); ?></a>
 		</div>

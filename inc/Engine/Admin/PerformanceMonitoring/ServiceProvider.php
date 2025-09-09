@@ -124,7 +124,7 @@ class ServiceProvider extends AbstractServiceProvider {
 				]
 			);
 
-		// Addon Subscriber
+		// Addon Subscriber.
 		$this->getContainer()->addShared( 'pm_settings_subscriber', SettingsSubscriber::class )
 			->addArguments(
 				[
