@@ -50,10 +50,10 @@ class Render extends Abstract_Render {
 	public function get_score_color_status( int $score ): string {
 		if ( $score <= 50 ) {
 			return 'status-red';
-		} elseif ( $score <= 85 ) {
-			return 'status-yellow';
-		} else {
-			return 'status-green';
 		}
+		if ( $score <= 85 ) {
+			return 'status-yellow';
+		}
+		return 'status-green';
 	}
 }
