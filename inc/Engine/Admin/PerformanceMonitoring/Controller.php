@@ -45,12 +45,12 @@ class Controller {
 	 * @param PMQuery                      $query Query instance.
 	 * @param Manager                      $manager Manager instance.
 	 * @param PerformanceMonitoringContext $context Context instance.
-	 * @param GlobalScore $global_score GlobalScore instance.
+	 * @param GlobalScore                  $global_score GlobalScore instance.
 	 */
 	public function __construct( PMQuery $query, Manager $manager, PerformanceMonitoringContext $context, GlobalScore $global_score ) {
-		$this->query   = $query;
-		$this->manager = $manager;
-		$this->context = $context;
+		$this->query        = $query;
+		$this->manager      = $manager;
+		$this->context      = $context;
 		$this->global_score = $global_score;
 	}
 
