@@ -91,6 +91,9 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 		$label           = '';
 		$status_text     = '';
 		$is_active       = false;
+		$service_name    = 'RocketCDN';
+		$upgrade_text    = __( 'Get RocketCDN', 'rocket' );
+		$upgrade_link    = '#page_cdn';
 
 		if ( 'running' === $subscription_data['subscription_status'] ) {
 			$label        = __( 'Next Billing Date', 'rocket' );
@@ -110,9 +113,12 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 			'status_class'    => $status_class,
 			'status_text'     => $status_text,
 			'is_active'       => $is_active,
+			'service_name'    => $service_name,
+			'upgrade_link'    => $upgrade_link,
+			'upgrade_text'    => $upgrade_text,
 		];
 
-		echo $this->generate( 'dashboard-status', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+		echo $this->generate( '../License/views/dashboard-addon-status', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 
 	/**

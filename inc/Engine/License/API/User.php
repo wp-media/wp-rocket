@@ -19,6 +19,10 @@ class User {
 		$this->user = is_object( $user ) ? $user : new \stdClass();
 	}
 
+	public function set_user($user) {
+		$this->user = $user;
+	}
+
 	/**
 	 * Gets the user license type
 	 *
@@ -144,5 +148,73 @@ class User {
 			return [];
 		}
 		return (array) $this->user->licence->prices->upgrades;
+	}
+
+	/**
+	 * Gets the addon license expiration timestamp
+	 *
+	 * @since 3.20
+	 *
+	 * @return int
+	 */
+	public function get_pma_license_expiration() {
+		if ( ! isset( $this->user->performance_monitoring->expiration ) ) {
+			return 0;
+		}
+
+		return (int) $this->user->performance_monitoring->expiration;
+	}
+
+	/**
+	 * Checks if the addon license is active
+	 *
+	 * @since 3.20
+	 *
+	 * @return boolean
+	 */
+	public function is_pma_addon_active(string $sku) {
+		return 'perf-monitor-free' !== $sku;
+	}
+
+	public function get_pma_addon_sku_active(): string {
+
+		if( ! isset( $this->user->performance_monitoring ) || ! isset( $this->user->performance_monitoring->active_sku )) {
+			return '';
+		}
+
+		return (string) $this->user->performance_monitoring->active_sku;
+	}
+
+	public function get_pma_addon_btn_text(string $sku) {
+		$plan = $this->get_pma_data($sku);
+		if(! $plan) {
+			return '';
+		}
+
+		return $plan->button->label;
+	}
+
+	public function get_pma_addon_btn_url(string $sku) {
+		$plan = $this->get_pma_data($sku);
+
+		if(! $plan) {
+			return '';
+		}
+
+		return $plan->button->url;
+	}
+
+	protected function get_pma_data(string $sku) {
+
+		if( ! isset( $this->user->performance_monitoring ) || ! isset( $this->user->performance_monitoring->plans )) {
+			return null;
+		}
+
+		foreach ( $this->user->performance_monitoring->plans as $plan ) {
+			if ( $plan->sku === $sku ) {
+				return $plan;
+			}
+		}
+		return null;
 	}
 }
