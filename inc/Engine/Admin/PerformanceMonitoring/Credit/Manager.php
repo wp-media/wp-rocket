@@ -43,6 +43,15 @@ class Manager {
 	}
 
 	/**
+	 * Check if we have one credit at least.
+	 *
+	 * @return bool
+	 */
+	public function has_credit(): bool {
+		return 0 < $this->get_credit();
+	}
+
+	/**
 	 * Decrease credit.
 	 *
 	 * @return bool

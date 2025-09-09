@@ -5,7 +5,7 @@ namespace WP_Rocket\Engine\Admin\PerformanceMonitoring;
 
 use WP_Rocket\Dependencies\League\Container\Argument\Literal\StringArgument;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
-use WP_Rocket\Engine\Admin\PerformanceMonitoring\{
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\{Context\FreePlanContext,
 	Credit\Manager as Credit_Manager,
 	Database\Tables\PerformanceMonitoring as PMTable,
 	Database\Queries\PerformanceMonitoring as PMQuery,
@@ -39,6 +39,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'pm_subscriber',
 		'pm_ajax_controller',
 		'pm_credit_manager',
+		'pm_free_plan_context',
 	];
 
 	/**
@@ -72,6 +73,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		// Context.
 		$this->getContainer()->add( 'pm_context', PerformanceMonitoringContext::class )
 			->addArgument( 'options' );
+
+		$this->getContainer()->add( 'pm_free_plan_context', FreePlanContext::class );
 
 		$this->getContainer()->add( 'pm_credit_manager', Credit_Manager::class )
 			->addArgument( 'options_api' );
@@ -125,6 +128,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'pm_controller',
 					'pm_ajax_controller',
 					'pm_queue',
+					'pm_free_plan_context',
 				]
 			);
 

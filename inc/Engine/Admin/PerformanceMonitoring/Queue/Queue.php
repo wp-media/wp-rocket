@@ -28,12 +28,17 @@ class Queue extends AbstractASQueue {
 
 
 	/**
-	 * Cancel all performance monitoring jobs.
+	 * Cancel reset job.
 	 */
-	public function cancel_all_jobs(): void {
-		$this->cancel_all( $this->reset_hook );
+	public function cancel_reset_job(): void {
+		$this->cancel( $this->reset_hook );
 	}
 
+	/**
+	 * Schedule reset task.
+	 *
+	 * @return void
+	 */
 	public function schedule_reset_task() {
 		if ( $this->is_scheduled( $this->reset_hook ) ) {
 			return;

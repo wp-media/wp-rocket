@@ -110,7 +110,28 @@ class Controller {
 		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
 	}
 
+	/**
+	 * Reset credit.
+	 *
+	 * @return void
+	 */
 	public function reset_credit() {
 		$this->credit_manager->reset_credit();
+	}
+
+	/**
+	 * Validate credit for DB row ID.
+	 *
+	 * @param int $row_id DB row ID.
+	 *
+	 * @return void
+	 */
+	public function validate_credit( $row_id ) {
+		if ( $this->credit_manager->has_credit() ) {
+			$this->credit_manager->decrease_credit();
+			return;
+		}
+
+		$this->query->make_blurred( $row_id );
 	}
 }
