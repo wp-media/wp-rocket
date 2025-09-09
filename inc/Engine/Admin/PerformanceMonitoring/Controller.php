@@ -3,9 +3,12 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Admin\PerformanceMonitoring;
 
-use WP_Rocket\Engine\Admin\PerformanceMonitoring\Context\PerformanceMonitoringContext;
-use WP_Rocket\Engine\Admin\PerformanceMonitoring\Database\Queries\PerformanceMonitoring as PMQuery;
-use WP_Rocket\Engine\Admin\PerformanceMonitoring\Jobs\Manager;
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\{
+	GlobalScore,
+	Jobs\Manager,
+	Context\PerformanceMonitoringContext,
+	Database\Queries\PerformanceMonitoring as PMQuery
+};
 
 class Controller {
 	/**
@@ -30,16 +33,25 @@ class Controller {
 	private $context;
 
 	/**
+	 * GlobalScore instance.
+	 *
+	 * @var GlobalScore
+	 */
+	private $global_score;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param PMQuery                      $query Query instance.
 	 * @param Manager                      $manager Manager instance.
 	 * @param PerformanceMonitoringContext $context Context instance.
+	 * @param GlobalScore $global_score GlobalScore instance.
 	 */
-	public function __construct( PMQuery $query, Manager $manager, PerformanceMonitoringContext $context ) {
+	public function __construct( PMQuery $query, Manager $manager, PerformanceMonitoringContext $context, GlobalScore $global_score ) {
 		$this->query   = $query;
 		$this->manager = $manager;
 		$this->context = $context;
+		$this->global_score = $global_score;
 	}
 
 	/**
@@ -106,10 +118,6 @@ class Controller {
 	 * @return array
 	 */
 	public function get_global_score() {
-		return [
-			'status'    => 'no-url', // Values are no-url, in-progress, complete, blurred.
-			'pages_num' => 1,
-			'score'     => 85, // Fake in case of blurred.
-		];
+		return $this->global_score->get_global_score_data();
 	}
 }
