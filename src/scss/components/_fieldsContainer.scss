@@ -59,6 +59,21 @@
             margin-right: calc($space/2);
         }
     }
+	&.pma-settings-container{
+		.wpr-fieldsContainer-fieldset{
+			display: flex;
+			.wpr-checkbox{
+				flex: 1 1 50%;
+				display: flex;
+				justify-content: left;
+			}
+			.wpr-field--select{
+				flex: 1 1 50%;
+				display: flex;
+				justify-content: right;
+			}
+		}
+	}
 }
 
 .wpr-fieldsContainer.wpr-isHidden{

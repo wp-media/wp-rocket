@@ -64,6 +64,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'rocket_localize_admin_script'        => 'add_pending_ids',
 			'admin_post_delete_pm'                => 'delete_row',
 			'wp_ajax_rocket_pm_reset_page'        => 'reset_page',
+			'rocket_insights_tab_content'         => [ 'render_settings_section', 30 ],
 		];
 	}
 
@@ -133,5 +134,14 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public function reset_page(): void {
 		$this->ajax_controller->reset_page();
+	}
+
+	/**
+	 * Render the settings section in the Performance Monitoring tab.
+	 *
+	 * @return void
+	 */
+	public function render_settings_section() {
+		$this->render->render_settings_section( $this->controller->get_settings_section_data() );
 	}
 }

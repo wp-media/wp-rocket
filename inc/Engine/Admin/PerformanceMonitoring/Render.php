@@ -17,4 +17,15 @@ class Render extends Abstract_Render {
 		$data = compact( 'items' );
 		echo $this->generate( 'sections/performance-monitoring', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
+
+	/**
+	 * Render the settings section from views.
+	 *
+	 * @param array $data Data to render the settings section.
+	 *
+	 * @return void
+	 */
+	public function render_settings_section( array $data ) {
+		echo $this->generate( 'partials/performance-monitoring/settings', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	}
 }
