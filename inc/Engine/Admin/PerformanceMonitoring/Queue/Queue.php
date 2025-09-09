@@ -24,7 +24,7 @@ class Queue extends AbstractASQueue {
 	 *
 	 * @var string
 	 */
-	private $reset_hook = 'pma_credit_reset';
+	private $reset_hook = 'rocket_pma_credit_reset';
 
 
 	/**
