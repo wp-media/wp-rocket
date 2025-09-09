@@ -72,7 +72,7 @@ class SettingsSubscriber extends Abstract_Render implements Subscriber_Interface
 		}
 
 		$data = [
-			'is_live_site'    => true,//rocket_is_live_site(),
+			'is_live_site'    => rocket_is_live_site(),
 			'container_class' => '',
 			'label'           => $label,
 			'status_class'    => $status_class,
