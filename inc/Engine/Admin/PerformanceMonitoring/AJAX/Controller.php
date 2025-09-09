@@ -326,7 +326,7 @@ class Controller {
 		wp_send_json_success(
 			[
 				'id'                => $id,
-				'html'              => $this->generate( 'partials/performance-monitoring-row', $row ),
+				'html'              => $this->render->get_performance_monitoring_list_row( $row ),
 				'global_score_data' => $this->get_global_score_payload(),
 			]
 			);
