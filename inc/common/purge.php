@@ -154,9 +154,9 @@ if ( ! function_exists( 'rocket_get_purge_urls' ) ) {
  */
 function rocket_get_all_descendant( $parent_id ) {
 	// 'child_of' retrieves all descendants, not just direct children.
-	$all_descendants = get_pages( [
-		'child_of' => $parent_id,
-	] );
+	$all_descendants = get_pages(
+		[ 'child_of' => $parent_id ] 
+	);
 
 	if ( empty( $all_descendants ) ) {
 		return [];
@@ -638,7 +638,6 @@ add_action( 'upgrader_process_complete', 'rocket_clean_cache_theme_update', 10, 
  *
  * @param int   $post_id   The post ID.
  * @param array $post_data Array of unslashed post data.
- * 
  */
 function rocket_clean_post_cache_on_slug_change( $post_id, $post_data ) {
 	if ( rocket_is_importing() ) {
@@ -659,7 +658,7 @@ function rocket_clean_post_cache_on_slug_change( $post_id, $post_data ) {
 		return;
 	}
 
-	$purge_urls = [];
+	$purge_urls   = [];
 	$purge_urls[] = get_the_permalink( $post_id );
 
 	// Clear cache for all child pages.
