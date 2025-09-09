@@ -20,9 +20,9 @@ class Manager {
 	const CREDIT_OPTION_NAME = 'pm_credit';
 
 	/**
-	 * Number of updates for settings in a month.
+	 * Last reset date option name.
 	 */
-	const SETTINGS_CREDIT_OPTION_NAME = 'pm_settings_updated';
+	const RESET_CREDIT_OPTION_NAME = 'pm_last_reset';
 
 	/**
 	 * Constructor.
@@ -43,29 +43,16 @@ class Manager {
 	}
 
 	/**
-	 * Increase credit only when the current credit is zero.
-	 *
-	 * @return bool
-	 */
-	public function increase_credit(): bool {
-		if ( 0 !== $this->get_credit() ) {
-			return false;
-		}
-
-		$this->options->set( self::CREDIT_OPTION_NAME, 1 );
-		return true;
-	}
-
-	/**
-	 * Decrease credit only when the current credit is one.
+	 * Decrease credit.
 	 *
 	 * @return bool
 	 */
 	public function decrease_credit(): bool {
-		if ( 1 !== $this->get_credit() ) {
+		$credit = $this->get_credit();
+		if ( 0 === $credit ) {
 			return false;
 		}
-		$this->options->set( self::CREDIT_OPTION_NAME, 0 );
+		$this->options->set( self::CREDIT_OPTION_NAME, $credit - 1 );
 		return true;
 	}
 
@@ -75,7 +62,16 @@ class Manager {
 	 * @return bool
 	 */
 	public function reset_credit(): bool {
-		$this->options->set( self::CREDIT_OPTION_NAME, 1 );
+		// Check if the duration from last reset date and time now is more than or equal 1 month
+		// As a sanity check not to have this action to run manually and hack the system.
+		$last_reset_date = $this->get_last_reset_date();
+		if ( ! empty( $last_reset_date ) && MONTH_IN_SECONDS > ( time() - $last_reset_date ) ) {
+			return false;
+		}
+
+		$this->options->set( self::CREDIT_OPTION_NAME, 3 );
+		$this->set_last_reset_date();
+
 		return true;
 	}
 
@@ -85,23 +81,8 @@ class Manager {
 	 *
 	 * @return int
 	 */
-	public function get_settings_credit(): int {
-		return (int) $this->options->get( self::SETTINGS_CREDIT_OPTION_NAME, 0 );
-	}
-
-	/**
-	 * Increase number of settings saving per month, making sure it won't exceed 3.
-	 *
-	 * @return bool
-	 */
-	public function increase_settings_credit(): bool {
-		$settings_credit = $this->get_settings_credit();
-		if ( 3 <= $settings_credit ) {
-			return false;
-		}
-
-		$this->options->set( self::SETTINGS_CREDIT_OPTION_NAME, $settings_credit + 1 );
-		return true;
+	public function get_last_reset_date(): int {
+		return (int) $this->options->get( self::RESET_CREDIT_OPTION_NAME, 0 );
 	}
 
 	/**
@@ -109,8 +90,8 @@ class Manager {
 	 *
 	 * @return bool
 	 */
-	public function reset_settings_credit(): bool {
-		$this->options->set( self::SETTINGS_CREDIT_OPTION_NAME, 0 );
+	public function set_last_reset_date(): bool {
+		$this->options->set( self::RESET_CREDIT_OPTION_NAME, time() );
 		return true;
 	}
 }

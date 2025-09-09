@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Admin\PerformanceMonitoring;
 
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\Queue\Queue;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
@@ -38,16 +39,25 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	private $ajax_controller;
 
 	/**
+	 * Queue object.
+	 *
+	 * @var Queue
+	 */
+	private $queue;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param Render         $render Render object.
 	 * @param Controller     $controller Controller object.
 	 * @param AjaxController $ajax_controller AjaxController object.
+	 * @param Queue $queue Queue object.
 	 */
-	public function __construct( Render $render, Controller $controller, AjaxController $ajax_controller ) {
+	public function __construct( Render $render, Controller $controller, AjaxController $ajax_controller, Queue $queue ) {
 		$this->render          = $render;
 		$this->controller      = $controller;
 		$this->ajax_controller = $ajax_controller;
+		$this->queue           = $queue;
 	}
 
 	/**
@@ -64,6 +74,8 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'rocket_localize_admin_script'        => 'add_pending_ids',
 			'admin_post_delete_pm'                => 'delete_row',
 			'wp_ajax_rocket_pm_reset_page'        => 'reset_page',
+			'init'                                => 'schedule_reset_credit',
+			'pma_credit_reset'                    => 'reset_credit_monthly',
 		];
 	}
 
@@ -133,5 +145,13 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public function reset_page(): void {
 		$this->ajax_controller->reset_page();
+	}
+
+	public function schedule_reset_credit(): void {
+		$this->queue->schedule_reset_task();
+	}
+
+	public function reset_credit_monthly() {
+		$this->controller->reset_credit();
 	}
 }

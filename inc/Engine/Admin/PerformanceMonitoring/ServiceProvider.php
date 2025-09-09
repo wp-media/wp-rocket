@@ -6,6 +6,7 @@ namespace WP_Rocket\Engine\Admin\PerformanceMonitoring;
 use WP_Rocket\Dependencies\League\Container\Argument\Literal\StringArgument;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\{
+	Credit\Manager as Credit_Manager,
 	Database\Tables\PerformanceMonitoring as PMTable,
 	Database\Queries\PerformanceMonitoring as PMQuery,
 	APIHandler\APIClient as PMAPIClient,
@@ -13,8 +14,7 @@ use WP_Rocket\Engine\Admin\PerformanceMonitoring\{
 	Jobs\Factory as PMFactory,
 	Jobs\Manager as PMManager,
 	Queue\Queue as PMQueue,
-	AJAX\Controller as AjaxController
-};
+	AJAX\Controller as AjaxController};
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
@@ -33,12 +33,12 @@ class ServiceProvider extends AbstractServiceProvider {
 		'pm_context',
 		'pm_manager',
 		'pm_factory',
-		'pm_queue',
 		'pm_processor',
 		'pm_render',
 		'pm_controller',
 		'pm_subscriber',
 		'pm_ajax_controller',
+		'pm_credit_manager',
 	];
 
 	/**
@@ -73,6 +73,9 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'pm_context', PerformanceMonitoringContext::class )
 			->addArgument( 'options' );
 
+		$this->getContainer()->add( 'pm_credit_manager', Credit_Manager::class )
+			->addArgument( 'options_api' );
+
 		// Jobs layer.
 		$this->getContainer()->add( 'pm_manager', PMManager::class )
 			->addArguments(
@@ -89,6 +92,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'pm_query',
 					'pm_manager',
 					'pm_context',
+					'pm_credit_manager',
 				]
 			);
 
@@ -120,6 +124,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'pm_render',
 					'pm_controller',
 					'pm_ajax_controller',
+					'pm_queue',
 				]
 			);
 
