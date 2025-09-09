@@ -20,7 +20,7 @@ defined( 'ABSPATH' ) || exit;
 						$this->render_performance_score( $data );
 						?>
 					<?php else : ?>
-						<img class="wpr-score-no-urls" src="<?php echo esc_url( WP_ROCKET_ASSETS_IMG_URL . 'pma-light-pulp.svg' ); ?>"/>
+						<div class="wpr-score-no-urls"></div>
 					<?php endif; ?>
 				</div>
 				<p class="wpr-page-num-txt">

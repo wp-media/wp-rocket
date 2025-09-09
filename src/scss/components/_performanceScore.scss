@@ -7,7 +7,14 @@
 		line-height: 1.3;
 	}
 	.wpr-score-no-urls{
+		background-image: url(../img/pma-light-pulp.svg);
+		background-repeat: no-repeat;
+		background-position: center;
+		background-size: contain;
 		width: 92px;
+		height: 92px;
+		margin: 0 auto;
+		display: block;
 	}
 }
 // Percentage indicator component
