@@ -410,13 +410,13 @@ document.addEventListener('DOMContentLoaded', function() {
 	$(document).on( 'click', '#wpr-action-speed_radar_refresh', handleResetPage );
 
 	// Only poll if on the dashboard (more robust check)
-	function isOnDashboard() {
+	function isOnPMA() {
 		const urlParams = new URLSearchParams(window.location.search);
-		return urlParams.get('page') === 'wprocket' && window.location.hash === '#dashboard';
+		return urlParams.get('page') === 'wprocket' && window.location.hash === '#rocket_insights';
 	}
 
 	// Resume polling if needed
-	if (isOnDashboard() && pmIds.length > 0) {
+	if (isOnPMA() && pmIds.length > 0) {
 		pollInterval = POLL_BASE_INTERVAL;
 		schedulePolling();
 	}
