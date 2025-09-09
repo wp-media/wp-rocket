@@ -26,7 +26,7 @@ defined( 'ABSPATH' ) || exit;
 				<p class="wpr-page-num-txt">
 				<?php
 				// translators: %1$s is the number of pages monitored.
-				printf( esc_html__( '%1$s page monitored.', 'rocket' ), esc_html( $data['pages_num'] ) );
+				printf( esc_html__( '%1$s page monitored.', 'rocket' ), intval( $data['pages_num'] ) );
 				?>
 				</p>
 				<?php
