@@ -92,6 +92,11 @@ class GlobalScore {
 		return $this->calculate_and_cache_data()['status'];
 	}
 
+	/**
+	 * Retrieve all global score related data.
+	 *
+	 * @return array Array with keys: score, pages_num, status.
+	 */
 	public function get_global_score_data(): array {
 		$cached_data = $this->get_cached_data();
 
@@ -100,7 +105,6 @@ class GlobalScore {
 		}
 
 		return $this->calculate_and_cache_data();
-
 	}
 
 	/**
@@ -130,9 +134,9 @@ class GlobalScore {
 	 */
 	private function calculate_and_cache_data(): array {
 		$data = [
-			'score'   => $this->calculate_global_score(),
-			'pages_num'   => $this->calculate_pages_number(),
-			'status' => $this->calculate_current_status(),
+			'score'     => $this->calculate_global_score(),
+			'pages_num' => $this->calculate_pages_number(),
+			'status'    => $this->calculate_current_status(),
 		];
 
 		set_transient( self::TRANSIENT_NAME, $data, self::CACHE_EXPIRATION );
