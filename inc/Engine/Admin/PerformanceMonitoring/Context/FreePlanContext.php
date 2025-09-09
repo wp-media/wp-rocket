@@ -23,6 +23,6 @@ class FreePlanContext implements ContextInterface {
 	 * @return bool
 	 */
 	public function is_allowed( array $data = [] ): bool {
-		return true; // @Todo: We need to check the user API endpoint to get the current plan and check if it's the free one.
+		return true; // @Todo: We need to check the user API endpoint to get the current plan and check if it's the free one, once PR #7623 is merged.
 	}
 }
