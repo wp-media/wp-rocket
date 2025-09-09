@@ -40,6 +40,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'pm_ajax_controller',
 		'pm_credit_manager',
 		'pm_free_plan_context',
+		'pm_queue',
 	];
 
 	/**
