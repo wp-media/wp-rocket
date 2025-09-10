@@ -3,7 +3,7 @@
 return [
 	'testShouldReturnCompleteData' => [
 		'config' => [
-			'items' => 
+			'items' =>
 			[
 				[
 					'url' => 'https://example.com/page1',
@@ -41,7 +41,7 @@ return [
 	],
 	'testShouldReturnInProgressData' => [
 		'config' => [
-			'items' => 
+			'items' =>
 			[
 				[
 					'url' => 'https://example.com/page1',

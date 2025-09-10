@@ -26,9 +26,9 @@ class Test_GetGlobalScoreData extends TestCase {
 
 	public function set_up() {
 		parent::set_up();
-		
+
 		// Clean up data and cache before each test
-		self::run();
+		self::truncatePerformanceMonitoringTable();
 		$this->resetGlobalScoreTransient();
 	}
 
@@ -47,12 +47,12 @@ class Test_GetGlobalScoreData extends TestCase {
 		foreach ( $config['items'] as $item ) {
 			self::addPerformanceMonitoring( $item );
 		}
-		
+
 		$container = apply_filters( 'rocket_container', null );
 		$global_score = $container->get( 'pm_global_score' );
-		
+
 		$actual = $global_score->get_global_score_data();
-		
+
 		$this->assertEquals( $expected['data'], $actual );
 	}
 
