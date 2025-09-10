@@ -77,6 +77,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'rocket_pm_job_failed'                => 'reset_global_score',
 			'rocket_pm_job_added'                 => 'reset_global_score',
 			'rocket_pm_job_deleted'               => 'reset_global_score',
+			'rocket_dashboard_sidebar'            => 'render_global_score_widget',
 		];
 	}
 
@@ -157,5 +158,14 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public function reset_global_score(): void {
 		$this->global_score->reset();
+	}
+	
+	/**
+	 * Render the global performance score widget in the dashboard sidebar.
+	 *
+	 * @return void
+	 */
+	public function render_global_score_widget(): void {
+		$this->render->render_global_score_widget( $this->controller->get_global_score() );
 	}
 }
