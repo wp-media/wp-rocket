@@ -145,4 +145,33 @@ class User {
 		}
 		return (array) $this->user->licence->prices->upgrades;
 	}
+
+	/**
+	 * Checks if the addon license is active
+	 *
+	 * @param string $sku The SKU of the addon.
+	 *
+	 * @since 3.20
+	 *
+	 * @return boolean
+	 */
+	public function is_pma_addon_active( string $sku ) {
+		return 'perf-monitor-free' !== $sku;
+	}
+
+	/**
+	 * Retrieves the active SKU for the Performance Monitoring Addon.
+	 *
+	 * @since 3.20
+	 *
+	 * @return string
+	 */
+	public function get_pma_addon_sku_active(): string {
+
+		if ( ! isset( $this->user->performance_monitoring ) || ! isset( $this->user->performance_monitoring->active_sku ) ) {
+			return '';
+		}
+
+		return (string) $this->user->performance_monitoring->active_sku;
+	}
 }

@@ -56,6 +56,14 @@ class Controller extends Abstract_Render {
 	public function add_new_page(): void {
 		check_ajax_referer( 'rocket-ajax', 'nonce', true );
 
+		// Check if adding a page is allowed based on URL limits.
+		if ( ! wpm_apply_filters_typesafe( 'wpr_pm_allow_add_page', true ) ) {
+			wp_send_json_error([
+				'error'   => true,
+				'message' => __( 'Maximum number of URLs reached for your license.', 'rocket' ),
+			]);
+		}
+
 		$url = isset( $_POST['page_url'] ) ? untrailingslashit( esc_url_raw( sanitize_text_field( wp_unslash( $_POST['page_url'] ) ) ) ) : '';
 
 		$payload = $this->get_url_validation_payload( $url );
