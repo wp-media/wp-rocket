@@ -15,14 +15,14 @@ defined( 'ABSPATH' ) || exit;
 ?>
 <div class="wpr-notice wpr-pma-notice">
 	<div class="wpr-notice-container">
-		<div class="wpr-notice-description"><?php wp_kses_post( __( '<strong>Congrats!</strong> You can now monitor up to 10 pages, run on-demand tests, and access advanced GTmetrix reports.', 'rocket' ) ); ?></div>
+		<div class="wpr-notice-description"><?php echo wp_kses_post( __( '<strong>Congrats!</strong> You can now monitor up to 10 pages, run on-demand tests, and access advanced GTmetrix reports.', 'rocket' ) ); ?></div>
 		<a id="wpr-congratulations-notice" class="wpr-notice-close wpr-icon-close rocket-dismiss" href="http://localhost:10003/wp-admin/admin-post.php?action=rocket_ignore&amp;box=rocket_activation_notice&amp;_wpnonce=7b9071d8e2"><span class="screen-reader-text">Dismiss this notice</span></a>
 	</div>
 </div>
 
 <div class="wpr-notice wpr-pma-notice wpr-error-notice">
 	<div class="wpr-notice-container">
-		<div class="wpr-notice-description"><?php wp_kses_post( __( "You've <strong>reached your free limit.</strong> Upgrade to continue.", 'rocket' ) ); ?></div>
+		<div class="wpr-notice-description"><?php echo wp_kses_post( __( "You've <strong>reached your free limit.</strong> Upgrade to continue.", 'rocket' ) ); ?></div>
 		<a id="wpr-congratulations-notice"  class="wpr-notice-close" href=""><?php esc_html_e( 'Upgrade Now', 'rocket' ); ?></a>
 	</div>
 </div>
@@ -36,8 +36,8 @@ defined( 'ABSPATH' ) || exit;
 	<p class="wpr-pma-summary-info">
 		<?php
 		printf(
-		// translators: %1$s: number of pages, %2$s: number of tests available.
-		esc_html__( 'You can analyze up to <strong>%1$s pages</strong> and run <strong>%2$s test per month.</strong> Want more? ', 'rocket' ),
+			// translators: %1$s: number of pages, %2$s: number of tests available.
+			wp_kses_post( __( 'You can analyze up to <strong>%1$s pages</strong> and run <strong>%2$s test per month.</strong> Want more? ', 'rocket' ) ),
 			'1', // number of pages.
 			'3'  // total number of tests available.
 		);
