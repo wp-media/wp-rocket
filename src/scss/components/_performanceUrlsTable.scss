@@ -1,3 +1,29 @@
+.wpr-pma-notice{
+	background-image: none ;
+	border-radius: 0;
+	border-left: 4px solid #3ECE9D;
+	.wpr-notice-container{
+		padding: 2*$space;
+	}
+	.wpr-notice-description{
+		margin: 0;
+	}
+	.wpr-notice-close{
+		top: 2*$space;
+	}
+	&.wpr-error-notice{
+		border-left-color: $cOrange;
+		background-color:  $cOrangeLight4;
+		.wpr-notice-close{
+			font-size: 14px;
+			text-decoration: underline;
+			font-weight: 600;
+			color: $cBlack;
+			top: 20px;
+		}
+	}
+}
+
 .wpr-pma-summary-info a{
 	color: $cOrange;
 }
@@ -77,5 +103,21 @@
 				margin-right: $space;
 			}
 		}
+	}
+}
+.wpr-pma-add-section{
+	margin: 2*$space 0;
+	display: flex;
+	.wpr-speed-radar-input{
+		display: flex;
+		width: 80%;
+		margin-right: 2 * $space;
+	}
+	.wpr-button{
+		display: flex;
+		text-align: center;
+		justify-content: center;
+		padding: $space;
+		width: 20%;
 	}
 }

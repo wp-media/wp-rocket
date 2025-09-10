@@ -2742,6 +2742,32 @@ div.wpr-tutorial-item {
   height: 32px;
 }
 
+.wpr-pma-notice {
+  background-image: none;
+  border-radius: 0;
+  border-left: 4px solid #3ECE9D;
+}
+.wpr-pma-notice .wpr-notice-container {
+  padding: 16px;
+}
+.wpr-pma-notice .wpr-notice-description {
+  margin: 0;
+}
+.wpr-pma-notice .wpr-notice-close {
+  top: 16px;
+}
+.wpr-pma-notice.wpr-error-notice {
+  border-left-color: #F56640;
+  background-color: #FDE0D9;
+}
+.wpr-pma-notice.wpr-error-notice .wpr-notice-close {
+  font-size: 14px;
+  text-decoration: underline;
+  font-weight: 600;
+  color: #121116;
+  top: 20px;
+}
+
 .wpr-pma-summary-info a {
   color: #F56640;
 }
@@ -2819,6 +2845,23 @@ div.wpr-tutorial-item {
   position: relative;
   top: 2px;
   margin-right: 8px;
+}
+
+.wpr-pma-add-section {
+  margin: 16px 0;
+  display: flex;
+}
+.wpr-pma-add-section .wpr-speed-radar-input {
+  display: flex;
+  width: 80%;
+  margin-right: 16px;
+}
+.wpr-pma-add-section .wpr-button {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  padding: 8px;
+  width: 20%;
 }
 
 /*-----------------------------------------------*\

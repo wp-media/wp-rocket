@@ -12,8 +12,23 @@
  */
 defined('ABSPATH') || exit;
 ?>
+<div class="wpr-notice wpr-pma-notice">
+	<div class="wpr-notice-container">
+		<div class="wpr-notice-description"><?php _e('<strong>Congrats!</strong> You can now monitor up to 10 pages, run on-demand tests, and access advanced GTmetrix reports.', 'rocket'); ?></div>
+		<a id="wpr-congratulations-notice" class="wpr-notice-close wpr-icon-close rocket-dismiss" href="http://localhost:10003/wp-admin/admin-post.php?action=rocket_ignore&amp;box=rocket_activation_notice&amp;_wpnonce=7b9071d8e2"><span class="screen-reader-text">Dismiss this notice</span></a>
+	</div>
+</div>
+
+<div class="wpr-notice wpr-pma-notice wpr-error-notice">
+	<div class="wpr-notice-container">
+		<div class="wpr-notice-description"><?php _e("You've <strong>reached your free limit.</strong> Upgrade to continue.", 'rocket'); ?></div>
+		<a id="wpr-congratulations-notice"  class="wpr-notice-close" href=""><?php esc_html_e('Upgrade Now', 'rocket'); ?></a>
+	</div>
+</div>
+
 <div class="wpr-optionHeader">
 	<h3 class="wpr-title2"><?php esc_html_e('Performance Summary', 'rocket'); ?></h3>
+	<button data-beacon-id="<?php echo esc_attr( '' ); ?>" data-wpr_track_button="Need Help" data-wpr_track_context="Addons" class="wpr-infoAction wpr-infoAction--help wpr-icon-help"><?php esc_html_e( 'Need Help?', 'rocket' ); ?></button>
 </div>
 
 <?php if ( empty($data['items']) || 'in-progress' == $data[ 'global_score' ] [ 'status' ] ) : ?>
@@ -45,7 +60,7 @@ defined('ABSPATH') || exit;
 	</table>
 <?php endif; ?>
 
-<div class="wpr-speed-radar-add">
+<div class="wpr-pma-add-section">
 	<input type="text"
 		   class="wpr-speed-radar-input"
 		   placeholder="<?php esc_attr_e( 'Enter a page address to monitor', 'rocket' ); ?>"
