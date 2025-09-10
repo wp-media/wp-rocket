@@ -150,10 +150,12 @@ class GlobalScore {
 
 		// Check if any URLs are blurred.
 		$blurred_count = 0;
-		$blurred_count = $this->query->query( [
-			'count'      => true,
-			'is_blurred' => 1,
-		] );
+		$blurred_count = $this->query->query(
+			[
+				'count'      => true,
+				'is_blurred' => 1,
+			]
+			);
 
 		if ( $blurred_count > 0 ) { // @phpstan-ignore-line
 			return 'blurred';

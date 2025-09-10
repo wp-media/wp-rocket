@@ -159,7 +159,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	public function reset_global_score(): void {
 		$this->global_score->reset();
 	}
-	
+
 	/**
 	 * Render the global performance score widget in the dashboard sidebar.
 	 *
