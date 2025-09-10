@@ -149,7 +149,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 				'items'        => $this->controller->get_items(),
 				'global_score' => $this->controller->get_global_score(),
 			]
-			);
+		);
 	}
 
 	/**
