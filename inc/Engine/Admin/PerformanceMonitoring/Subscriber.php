@@ -138,6 +138,11 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		$this->ajax_controller->reset_page();
 	}
 
+	/**
+	 * Render the performance URLs table in the Performance Monitoring tab.
+	 *
+	 * @return void
+	 */
 	public function render_performance_urls_table() {
 		$this->render->render_pma_urls_table(
 			[

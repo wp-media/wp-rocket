@@ -2,6 +2,7 @@
 /**
  * Global Score row view.
  */
+
 defined( 'ABSPATH' ) || exit;
 ?>
 <tr class="wpr-pma-item wpr-global-score">
@@ -11,30 +12,10 @@ defined( 'ABSPATH' ) || exit;
 		?>
 	</td>
 	<td class="wpr-pma-item-title">
-		<?php if ( 'in-progress' == $data ['status'] ) : ?>
-			<span>
-					<?php
-					esc_html_e(
-						sprintf(
-							'Tracked pages: %s',
-						$data['pages_num']
-						),
-						'rocket'
-						);
-					?>
-				</span>
+		<?php if ( 'in-progress' === $data ['status'] ) : ?>
+			<span><?php printf( esc_html( 'Tracked pages: %s' ), esc_html( $data['pages_num'] ) ); ?></span>
 		<?php else : ?>
-			<span>
-					<?php
-					esc_html_e(
-						sprintf(
-							'%s pages monitored',
-							$data['pages_num']
-						),
-						'rocket'
-						);
-					?>
-				</span>
+			<span><?php printf( esc_html( '%s pages monitored' ), esc_html( $data['pages_num'] ) ); ?></span>
 		<?php endif; ?>
 	</td>
 	<td class="wpr-pma-item-actions"></td>

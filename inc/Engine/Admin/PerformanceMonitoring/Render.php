@@ -39,7 +39,7 @@ class Render extends Abstract_Render {
 	/**
 	 * Render global score row.
 	 *
-	 * @param array $items
+	 * @param array $data Data for the global score row.
 	 * @return void
 	 */
 	public function render_global_score_row( array $data ) {
@@ -49,7 +49,7 @@ class Render extends Abstract_Render {
 	/**
 	 * Render performance urls table.
 	 *
-	 * @param array $items
+	 * @param array $data Data for the performance urls table.
 	 * @return void
 	 */
 	public function render_pma_urls_table( array $data ) {

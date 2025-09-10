@@ -20,7 +20,7 @@ defined( 'ABSPATH' ) || exit;
 	<?php if ( ! empty( $data['tool_tip'] ) ) : ?>
 		<div class="wpr-tooltip">
 			<div class="wpr-tooltip-content">
-				<?php esc_html_e( $data['tool_tip'] ); ?>
+				<?php echo esc_html( $data['tool_tip'] ); ?>
 			</div>
 		</div>
 	<?php endif; ?>

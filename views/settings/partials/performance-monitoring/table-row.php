@@ -18,7 +18,7 @@ defined( 'ABSPATH' ) || exit;
 		<a href="<?php echo esc_url( $data->url ); ?>" target="_blank" rel="noopener">
 			<span class="wpr-pma-title"><?php echo esc_html( $data->title ); ?></span> <span class="wpr-pma-dot">.</span>
 			<span
-				class="wpr-pma-date"><?php echo esc_html( human_time_diff( $data->modified, current_time( 'timestamp' ) ) . ' ' . __( 'ago', 'rocket' ) ); ?>
+				class="wpr-pma-date"><?php echo esc_html( human_time_diff( $data->modified, time() ) . ' ' . __( 'ago', 'rocket' ) ); ?>
 			</span>
 		</a>
 	</td>
