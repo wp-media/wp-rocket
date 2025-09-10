@@ -2807,6 +2807,7 @@ div.wpr-tutorial-item {
 .wpr-percentage-indicator .wpr-tooltip {
   left: 12px;
   top: 30px;
+  min-width: max-content;
 }
 .wpr-percentage-indicator .wpr-tooltip:before {
   top: -6px;

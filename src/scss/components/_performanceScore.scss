@@ -74,6 +74,7 @@
 	.wpr-tooltip{
 		left: 12px;
 		top: 30px;
+		min-width: max-content;
 		&:before {
 			top: -6px;
 			left: 17.6px;
