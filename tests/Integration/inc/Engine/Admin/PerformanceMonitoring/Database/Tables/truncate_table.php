@@ -95,15 +95,6 @@ class Test_TruncateTable extends TestCase {
 		}
 	}
 
-	private function truncatePerformanceMonitoringTable() {
-		$container = apply_filters( 'rocket_container', null );
-		$pm_table = $container->get( 'pm_table' );
-
-		if ( $pm_table->exists() ) {
-			$pm_table->truncate();
-		}
-	}
-
 	public static function installPerformanceMonitoringTable() {
 		$container = apply_filters( 'rocket_container', null );
 		$pm_table = $container->get( 'pm_table' );
