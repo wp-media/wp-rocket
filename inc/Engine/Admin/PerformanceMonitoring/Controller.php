@@ -127,8 +127,7 @@ class Controller {
 	 * @return void
 	 */
 	public function validate_credit( $row_id ) {
-		if ( $this->credit_manager->has_credit() ) {
-			$this->credit_manager->decrease_credit();
+		if ( $this->credit_manager->decrease_credit() ) {
 			return;
 		}
 
