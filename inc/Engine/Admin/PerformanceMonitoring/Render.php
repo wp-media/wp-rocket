@@ -45,6 +45,6 @@ class Render extends Abstract_Render {
 	 */
 	public function render_pma_urls_table( array $items ) {
 		$data = compact( 'items' );
-		echo $this->generate( 'sections/performance-monitoring', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo $this->generate( 'partials/performance-monitoring/urls-table', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 }

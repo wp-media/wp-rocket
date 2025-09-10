@@ -8,15 +8,16 @@
 defined( 'ABSPATH' ) || exit;
 ?>
 <tr class="wpr-pma-item wpr-speed-radar-item-result" data-rocket-pm-id="<?php echo esc_attr( $data->id ); ?>" >
+	<td class="wpr-pma-item-status">
+		<?php
+		$this->render_performance_score( (array) $data);
+		?>
+	</td>
+
 	<td class="wpr-pma-item-title">
 		<a href="<?php echo esc_url( $data->url ); ?>" target="_blank" rel="noopener">
 			<?php echo esc_html( $data->title ); ?>
 		</a>
-	</td>
-	<td class="wpr-pma-item-status">
-		<?php
-		$this->render_performance_score();
-		?>
 	</td>
 
 	<td class="wpr-pma-item-date"><?php echo esc_html( gmdate( 'Y-m-d H:i:s', $data->modified ) ); ?></td>
@@ -27,9 +28,9 @@ defined( 'ABSPATH' ) || exit;
 			'button',
 			'speed_radar_refresh',
 			[
-				'label'      => '',
+				'label'      => __( 'Re-test', 'rocket' ),
 				'attributes' => [
-					'class'      => 'wpr-icon-refresh',
+					'class'      => 'wpr-icon-bold-refresh',
 					'title'      => __( 'Re-test', 'rocket' ),
 					'aria-label' => __( 'Re-test', 'rocket' ),
 				],
@@ -41,11 +42,11 @@ defined( 'ABSPATH' ) || exit;
 				'link',
 				'gtmetrix_open',
 				[
-					'label'      => 'GT',
+					'label'      => __( 'See Report', 'rocket' ),
 					'url'        => esc_url( $data->report_url ),
 					'attributes' => [
 						'target' => '_blank',
-						'class'  => 'wpr-icon-trash',
+						'class'  => 'wpr-icon-report',
 						'title'  => __( 'See Report', 'rocket' ),
 					],
 				]
