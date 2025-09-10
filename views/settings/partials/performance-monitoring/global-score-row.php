@@ -11,21 +11,29 @@ defined( 'ABSPATH' ) || exit;
 		?>
 	</td>
 	<td class="wpr-pma-item-title">
-		<?php if ( 'in-progress' == $data [ 'status' ] ): ?>
+		<?php if ( 'in-progress' == $data ['status'] ) : ?>
 			<span>
-					<?php esc_html_e(
-						sprintf('Tracked pages: %s',
+					<?php
+					esc_html_e(
+						sprintf(
+							'Tracked pages: %s',
 						$data['pages_num']
 						),
-						'rocket'); ?>
+						'rocket'
+						);
+					?>
 				</span>
-		<?php else: ?>
+		<?php else : ?>
 			<span>
-					<?php esc_html_e(
-						sprintf('%s pages monitored',
+					<?php
+					esc_html_e(
+						sprintf(
+							'%s pages monitored',
 							$data['pages_num']
 						),
-						'rocket'); ?>
+						'rocket'
+						);
+					?>
 				</span>
 		<?php endif; ?>
 	</td>

@@ -1839,6 +1839,22 @@ div.wpr-upgrade-websites.notstacked {
   background: #121116;
   color: #fff;
 }
+.wpr-btn-with-tool-tip {
+  position: relative;
+  display: inline-block;
+}
+.wpr-btn-with-tool-tip .wpr-tooltip {
+  position: absolute;
+  right: auto;
+  top: auto;
+  min-width: max-content;
+}
+.wpr-btn-with-tool-tip:hover .wpr-tooltip {
+  visibility: visible;
+  opacity: 1;
+  z-index: 99;
+}
+
 /*-----------------------------------------------*\
 
     Field container
@@ -2921,6 +2937,15 @@ div.wpr-tutorial-item {
   position: relative;
   top: 2px;
   margin-right: 8px;
+}
+.wpr-pma-urls-table .wpr-pma-item-actions .wpr-pma-action--disabled, .wpr-pma-urls-table .wpr-pma-item-actions .wpr-pma-action:disabled {
+  color: rgb(134.5094339623, 150.0566037736, 169.4905660377) !important;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+.wpr-pma-urls-table .wpr-pma-item-actions .wpr-pma-action--disabled:focus, .wpr-pma-urls-table .wpr-pma-item-actions .wpr-pma-action:disabled:focus {
+  transform: none;
+  box-shadow: none;
 }
 
 .wpr-pma-add-section {

@@ -39,7 +39,6 @@ class Render extends Abstract_Render {
 	/**
 	 * Render global score row.
 	 *
-	 *
 	 * @param array $items
 	 * @return void
 	 */
@@ -49,7 +48,6 @@ class Render extends Abstract_Render {
 
 	/**
 	 * Render performance urls table.
-	 *
 	 *
 	 * @param array $items
 	 * @return void

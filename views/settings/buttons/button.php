@@ -16,4 +16,12 @@
 defined( 'ABSPATH' ) || exit;
 
 ?>
-<button id="wpr-action-<?php echo esc_attr( $data['action'] ); ?>" <?php echo $data['attributes']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $data['attributes'] escaped with sanitize_key & esc_attr ?>><?php echo $data['label']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?></button>
+<button id="wpr-action-<?php echo esc_attr( $data['action'] ); ?>" <?php echo $data['attributes']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $data['attributes'] escaped with sanitize_key & esc_attr ?>><?php echo $data['label']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>
+	<?php if ( ! empty( $data['tool_tip'] ) ) : ?>
+		<div class="wpr-tooltip">
+			<div class="wpr-tooltip-content">
+				<?php esc_html_e( $data['tool_tip'] ); ?>
+			</div>
+		</div>
+	<?php endif; ?>
+</button>

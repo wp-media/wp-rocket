@@ -102,6 +102,16 @@
 				top: 2px;
 				margin-right: $space;
 			}
+			&--disabled,
+			&:disabled {
+				color: darken($cGrey, 30%) !important;
+				cursor: not-allowed;
+				box-shadow: none;
+				&:focus {
+					transform: none;
+					box-shadow: none;
+				}
+			}
 		}
 	}
 }

@@ -57,15 +57,15 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'wp_rocket_first_install'             => 'schedule_homepage_tests',
-			'wp_ajax_rocket_pm_add_new_page'      => 'add_new_page',
-			'wp_ajax_rocket_pm_get_results'       => 'get_results',
-			'rocket_localize_admin_script'        => 'add_pending_ids',
-			'admin_post_delete_pm'                => 'delete_row',
-			'wp_ajax_rocket_pm_reset_page'        => 'reset_page',
-			'rocket_insights_tab_content'         => [
-				['render_performance_urls_table', 20],
-				['render_settings_section', 30]
+			'wp_rocket_first_install'        => 'schedule_homepage_tests',
+			'wp_ajax_rocket_pm_add_new_page' => 'add_new_page',
+			'wp_ajax_rocket_pm_get_results'  => 'get_results',
+			'rocket_localize_admin_script'   => 'add_pending_ids',
+			'admin_post_delete_pm'           => 'delete_row',
+			'wp_ajax_rocket_pm_reset_page'   => 'reset_page',
+			'rocket_insights_tab_content'    => [
+				[ 'render_performance_urls_table', 20 ],
+				[ 'render_settings_section', 30 ],
 			],
 		];
 	}
@@ -138,11 +138,13 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		$this->ajax_controller->reset_page();
 	}
 
-	public function render_performance_urls_table(){
-		$this->render->render_pma_urls_table( [
-			'items' => $this->controller->get_items(),
-			'global_score' => $this->controller->get_global_score(),
-		] );
+	public function render_performance_urls_table() {
+		$this->render->render_pma_urls_table(
+			[
+				'items'        => $this->controller->get_items(),
+				'global_score' => $this->controller->get_global_score(),
+			]
+			);
 	}
 
 	/**

@@ -19,13 +19,13 @@ defined( 'ABSPATH' ) || exit;
 			<?php echo esc_html( $data['score'] ); ?>
 		</div>
 	<?php endif; ?>
-	<?php if (isset($data['status']) && ( 'failed' === $data['status'] || 'blurred' === $data['status'] ) ): ?>
+	<?php if ( isset( $data['status'] ) && ( 'failed' === $data['status'] || 'blurred' === $data['status'] ) ) : ?>
 		<div class="wpr-tooltip">
 			<?php
-				$tool_tip_text = !empty( $data['error_message'] ) ? $data['error_message'] : __( 'Upgrade your plan to see your score.', 'rocket' );
+				$tool_tip_text = ! empty( $data['error_message'] ) ? $data['error_message'] : __( 'Upgrade your plan to see your score.', 'rocket' );
 			?>
 			<div class="wpr-tooltip-content">
-				<?php esc_html_e($tool_tip_text)?>
+				<?php esc_html_e( $tool_tip_text ); ?>
 			</div>
 		</div>
 	<?php endif; ?>
