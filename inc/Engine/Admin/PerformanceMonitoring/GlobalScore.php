@@ -39,60 +39,6 @@ class GlobalScore {
 	}
 
 	/**
-	 * Get the global score.
-	 *
-	 * Calculates the average of all successful individual scores.
-	 * Uses transient caching for performance.
-	 *
-	 * @return int The global score (0-100) or 0 if no valid scores.
-	 */
-	public function get_global_score(): int {
-		$cached_data = $this->get_cached_data();
-
-		if ( false !== $cached_data && isset( $cached_data['score'] ) ) {
-			return (int) $cached_data['score'];
-		}
-
-		return $this->calculate_and_cache_data()['score'];
-	}
-
-	/**
-	 * Get the number of pages being monitored.
-	 *
-	 * Returns the total count of pages regardless of status.
-	 * Uses transient caching for performance.
-	 *
-	 * @return int The number of pages being monitored.
-	 */
-	public function get_pages_number(): int {
-		$cached_data = $this->get_cached_data();
-
-		if ( false !== $cached_data && isset( $cached_data['pages_num'] ) ) {
-			return (int) $cached_data['pages_num'];
-		}
-
-		return $this->calculate_and_cache_data()['pages_num'];
-	}
-
-	/**
-	 * Get the current status of the monitoring system.
-	 *
-	 * Returns one of: 'no-url', 'in-progress', 'complete', 'blurred'.
-	 * Uses transient caching for performance.
-	 *
-	 * @return string Current status.
-	 */
-	public function get_current_status(): string {
-		$cached_data = $this->get_cached_data();
-
-		if ( false !== $cached_data && isset( $cached_data['status'] ) ) {
-			return $cached_data['status'];
-		}
-
-		return $this->calculate_and_cache_data()['status'];
-	}
-
-	/**
 	 * Retrieve all global score related data.
 	 *
 	 * @return array Array with keys: score, pages_num, status.
@@ -203,13 +149,11 @@ class GlobalScore {
 		}
 
 		// Check if any URLs are blurred.
-		// Note: is_blurred column will be added in issue #7599.
 		$blurred_count = 0;
-		// TODO: Uncomment when is_blurred column is available
-		// $blurred_count = $this->query->query( [
-		// 'count'      => true,
-		// 'is_blurred' => 1,
-		// ] );.
+		$blurred_count = $this->query->query( [
+			'count'      => true,
+			'is_blurred' => 1,
+		] );
 
 		if ( $blurred_count > 0 ) { // @phpstan-ignore-line
 			return 'blurred';
