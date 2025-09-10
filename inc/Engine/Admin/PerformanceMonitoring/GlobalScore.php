@@ -45,7 +45,7 @@ class GlobalScore {
 	 */
 	public function get_global_score_data(): array {
 		return [
-			'status'    => 'no_url',
+			'status'    => 'no-url',
 			'pages_num' => 0,
 			'score'     => 0,
 		];
