@@ -91,9 +91,6 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 		$label           = '';
 		$status_text     = '';
 		$is_active       = false;
-		$service_name    = 'RocketCDN';
-		$upgrade_text    = __( 'Get RocketCDN', 'rocket' );
-		$upgrade_link    = '#page_cdn';
 
 		if ( 'running' === $subscription_data['subscription_status'] ) {
 			$label        = __( 'Next Billing Date', 'rocket' );
