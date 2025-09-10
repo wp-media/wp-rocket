@@ -63,8 +63,10 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'rocket_localize_admin_script'        => 'add_pending_ids',
 			'admin_post_delete_pm'                => 'delete_row',
 			'wp_ajax_rocket_pm_reset_page'        => 'reset_page',
-			'rocket_insights_tab_content'         => [ 'render_performance_urls_table', 20 ],
-			'rocket_insights_tab_content'         => [ 'render_settings_section', 30 ],
+			'rocket_insights_tab_content'         => [
+				['render_performance_urls_table', 20],
+				['render_settings_section', 30]
+			],
 		];
 	}
 

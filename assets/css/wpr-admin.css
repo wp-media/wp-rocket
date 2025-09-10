@@ -132,16 +132,10 @@ a:focus, button:focus {
     background-position: 0% 50%, 50% 50%, 100% 100%;
   }
 }
-/* Checkbox tool tip */
-.wpr-checkbox {
-  position: relative;
-}
-.wpr-checkbox .wpr-tooltip {
+.wpr-tooltip {
   visibility: hidden;
   position: absolute;
   border-radius: 4px;
-  left: -16px;
-  top: 20px;
   background-color: #0e1428;
   color: #ffffff;
   padding: 8px 16px;
@@ -154,7 +148,7 @@ a:focus, button:focus {
   min-width: 300px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
-.wpr-checkbox .wpr-tooltip:before {
+.wpr-tooltip:before {
   content: "";
   position: absolute;
   top: -6px;
@@ -164,6 +158,19 @@ a:focus, button:focus {
   border-left: 8px solid transparent;
   border-right: 8px solid transparent;
   border-bottom: 8px solid #0e1428;
+}
+
+/* Checkbox tool tip */
+.wpr-checkbox {
+  position: relative;
+}
+.wpr-checkbox .wpr-tooltip {
+  left: -16px;
+  top: 20px;
+}
+.wpr-checkbox .wpr-tooltip:before {
+  top: -6px;
+  left: 17.6px;
 }
 .wpr-checkbox:hover .wpr-tooltip {
   visibility: visible;
