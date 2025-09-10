@@ -158,7 +158,7 @@ class GlobalScore {
 		// ]
 		// );.
 
-		if ( $blurred_count > 0 ) {
+		if ( $blurred_count > 0 ) { // @phpstan-ignore-line to be removed once is_blurred is implemented.
 			return 'blurred';
 		}
 

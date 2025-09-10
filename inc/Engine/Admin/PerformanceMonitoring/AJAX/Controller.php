@@ -88,8 +88,7 @@ class Controller extends Abstract_Render {
 		 *
 		 * @since 3.20
 		 *
-		 * @param string $url The URL that was added for monitoring.
-		 * @param int    $row_id The database row ID of the added job.
+		 * @param string $url The URL that was added for monitoring.b.
 		 */
 		do_action( 'rocket_pm_job_added', $url );
 
