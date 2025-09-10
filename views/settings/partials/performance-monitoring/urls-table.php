@@ -37,7 +37,6 @@ defined('ABSPATH') || exit;
 				100
 			</td>
 			<td class="wpr-pma-item-title"><?php esc_html_e('Global score', 'rocket'); ?></td>
-			<td class="wpr-pma-item-date"></td>
 			<td class="wpr-pma-item-actions"></td>
 		</tr>
 		<?php

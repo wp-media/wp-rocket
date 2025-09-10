@@ -1,0 +1,24 @@
+.wpr-pma-urls-table{
+	.wpr-percentage-indicator{
+		.wpr-percentage-circle{
+			width: 32px;
+			height: 32px;
+			font-size: 14px;
+		}
+		.wpr-loading-img{
+			width: 32px;
+			height: 32px;
+		}
+	}
+	.wpr-pma-item-actions{
+		text-align: right;
+		.wpr-pma-action{
+			display: inline-block;
+			font-size: 14px;
+			margin-left: 2* $space;
+			&:first-child{
+				margin-left: 0;
+			}
+		}
+	}
+}

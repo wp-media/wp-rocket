@@ -344,11 +344,11 @@ a:focus, button:focus {
 }
 
 .wpr-icon-bold-refresh:before {
-  content: url("../img/bold-refresh.svg");
+  content: "\e923";
 }
 
 .wpr-icon-report:before {
-  content: url("../img/report.svg");
+  content: "\e924";
 }
 
 .wpr-title1 {
@@ -2740,6 +2740,27 @@ div.wpr-tutorial-item {
 .wpr-percentage-indicator .wpr-loading-img-sm {
   width: 32px;
   height: 32px;
+}
+
+.wpr-pma-urls-table .wpr-percentage-indicator .wpr-percentage-circle {
+  width: 32px;
+  height: 32px;
+  font-size: 14px;
+}
+.wpr-pma-urls-table .wpr-percentage-indicator .wpr-loading-img {
+  width: 32px;
+  height: 32px;
+}
+.wpr-pma-urls-table .wpr-pma-item-actions {
+  text-align: right;
+}
+.wpr-pma-urls-table .wpr-pma-item-actions .wpr-pma-action {
+  display: inline-block;
+  font-size: 14px;
+  margin-left: 16px;
+}
+.wpr-pma-urls-table .wpr-pma-item-actions .wpr-pma-action:first-child {
+  margin-left: 0;
 }
 
 /*-----------------------------------------------*\

@@ -15,12 +15,13 @@ defined( 'ABSPATH' ) || exit;
 	</td>
 
 	<td class="wpr-pma-item-title">
-		<a href="<?php echo esc_url( $data->url ); ?>" target="_blank" rel="noopener">
-			<?php echo esc_html( $data->title ); ?>
+		<a href="<?php echo esc_url($data->url); ?>" target="_blank" rel="noopener">
+			<span class="wpr-pma-title"><?php echo esc_html($data->title); ?></span> <span class="wpr-pma-dot">.</span>
+			<span
+				class="wpr-pma-date"><?php echo esc_html(human_time_diff($data->modified, current_time('timestamp')) . ' ' . __('ago', 'rocket')); ?>
+			</span>
 		</a>
 	</td>
-
-	<td class="wpr-pma-item-date"><?php echo esc_html( gmdate( 'Y-m-d H:i:s', $data->modified ) ); ?></td>
 
 	<td class="wpr-pma-item-actions">
 		<?php
@@ -30,7 +31,7 @@ defined( 'ABSPATH' ) || exit;
 			[
 				'label'      => __( 'Re-test', 'rocket' ),
 				'attributes' => [
-					'class'      => 'wpr-icon-bold-refresh',
+					'class'      => 'wpr-icon-bold-refresh wpr-pma-action',
 					'title'      => __( 'Re-test', 'rocket' ),
 					'aria-label' => __( 'Re-test', 'rocket' ),
 				],
@@ -46,7 +47,7 @@ defined( 'ABSPATH' ) || exit;
 					'url'        => esc_url( $data->report_url ),
 					'attributes' => [
 						'target' => '_blank',
-						'class'  => 'wpr-icon-report',
+						'class'  => 'wpr-icon-report wpr-pma-action',
 						'title'  => __( 'See Report', 'rocket' ),
 					],
 				]
@@ -60,7 +61,7 @@ defined( 'ABSPATH' ) || exit;
 				'label'      => '',
 				'url'        => $data->delete_url(),
 				'attributes' => [
-					'class'                => 'wpr-icon-trash wpr-confirm-delete',
+					'class'                => 'wpr-icon-trash wpr-confirm-delete wpr-pma-action',
 					'title'                => __( 'Delete', 'rocket' ),
 					'aria-label'           => __( 'Delete', 'rocket' ),
 					'data-wpr_confirm_msg' => esc_html__( 'Are you sure you want to delete this item?', 'rocket' ),
