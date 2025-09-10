@@ -37,14 +37,24 @@ class Render extends Abstract_Render {
 	}
 
 	/**
+	 * Render global score row.
+	 *
+	 *
+	 * @param array $items
+	 * @return void
+	 */
+	public function render_global_score_row( array $data ) {
+		echo $this->generate( 'partials/performance-monitoring/global-score-row', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	}
+
+	/**
 	 * Render performance urls table.
 	 *
 	 *
 	 * @param array $items
 	 * @return void
 	 */
-	public function render_pma_urls_table( array $items ) {
-		$data = compact( 'items' );
+	public function render_pma_urls_table( array $data ) {
 		echo $this->generate( 'partials/performance-monitoring/urls-table', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 }

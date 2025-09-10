@@ -1,5 +1,9 @@
+.wpr-pma-summary-info a{
+	color: $cOrange;
+}
 .wpr-pma-urls-table{
 	.wpr-percentage-indicator{
+		border-right: 1px solid $cGreyLighter2;
 		.wpr-percentage-circle{
 			width: 32px;
 			height: 32px;
@@ -10,14 +14,67 @@
 			height: 32px;
 		}
 	}
+	.wpr-pma-item{
+		background: $cGreyLighter1;
+		&.wpr-global-score{
+			background: $cWhite;
+			.wpr-pma-item-actions{
+				min-height: 60px;
+				position: relative;
+				display: block;
+			}
+		}
+	}
+	.wpr-pma-item-score{
+		vertical-align: middle;
+		padding: 0 $space;
+	}
+	.wpr-pma-item-title{
+		font-size: 14px;
+		color: $cBlack;
+		vertical-align: middle;
+		a{
+			display: inline-block;
+			vertical-align: middle;
+			box-sizing: border-box;
+		}
+		.wpr-pma-title{
+			text-decoration: underline;
+		}
+		.wpr-pma-dot{
+			color: $cGreyLighter3;
+		}
+		.wpr-pma-date{
+			color: $cGreyLighter3;
+		}
+	}
 	.wpr-pma-item-actions{
 		text-align: right;
+		vertical-align: middle;
 		.wpr-pma-action{
 			display: inline-block;
 			font-size: 14px;
-			margin-left: 2* $space;
+			line-height: 1.5;
+			padding: 0 2* $space;
+			margin: $space 0;
+			color: $cBlack;
+			border-left: 1px solid $cGreyLighter2;
 			&:first-child{
 				margin-left: 0;
+				border-left: none;
+			}
+			&.wpr-confirm-delete{
+				&:before{
+					font-size: 14px;
+					top: 0;
+					margin-right: 0;
+				}
+			}
+			&:before{
+				font-size: 18px;
+				position: relative;
+				top: 2px;
+				margin-right: $space;
 			}
 		}
 	}

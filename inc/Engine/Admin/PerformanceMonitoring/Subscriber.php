@@ -136,6 +136,9 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	}
 
 	public function render_performance_urls_table(){
-		$this->render->render_pma_urls_table( $this->controller->get_items());
+		$this->render->render_pma_urls_table( [
+			'items' => $this->controller->get_items(),
+			'global_score' => $this->controller->get_global_score(),
+		] );
 	}
 }

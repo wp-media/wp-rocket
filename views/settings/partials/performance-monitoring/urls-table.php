@@ -16,11 +16,11 @@ defined('ABSPATH') || exit;
 	<h3 class="wpr-title2"><?php esc_html_e('Performance Summary', 'rocket'); ?></h3>
 </div>
 
-<?php if (empty($data['items'])) : ?>
-	<p>
-		<?php esc_html_e(
-			printf(
-				'You can analyze up to %1s pages and run %2s test per month. Want more?',
+<?php if ( empty($data['items']) || 'in-progress' == $data[ 'global_score' ] [ 'status' ] ) : ?>
+	<p class="wpr-pma-summary-info">
+		<?php _e(
+			sprintf(
+				'You can analyze up to <strong>%1$s pages</strong> and run <strong>%2$s test per month.</strong> Want more? ',
 				'1', // number of pages.
 				'3', // total number of tests available.
 			), 'rocket');
@@ -32,13 +32,9 @@ defined('ABSPATH') || exit;
 <?php if (!empty($data['items'])) : ?>
 	<table class="wp-rocket-data-table widefat wpr-pma-urls-table">
 		<tbody>
-		<tr class="wpr-pma-item wpr-global-score">
-			<td class="wpr-pma-item-status">
-				100
-			</td>
-			<td class="wpr-pma-item-title"><?php esc_html_e('Global score', 'rocket'); ?></td>
-			<td class="wpr-pma-item-actions"></td>
-		</tr>
+		<?php
+		$this->render_global_score_row( $data[ 'global_score' ] );
+		?>
 		<?php
 		foreach ($data['items'] as $pma_record) {
 			$this->render_parts_with_data('performance-monitoring/table-row', $pma_record);

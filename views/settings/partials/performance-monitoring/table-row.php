@@ -7,8 +7,8 @@
 
 defined( 'ABSPATH' ) || exit;
 ?>
-<tr class="wpr-pma-item wpr-speed-radar-item-result" data-rocket-pm-id="<?php echo esc_attr( $data->id ); ?>" >
-	<td class="wpr-pma-item-status">
+<tr class="wpr-pma-item wpr-pma-item-result" data-rocket-pm-id="<?php echo esc_attr( $data->id ); ?>" >
+	<td class="wpr-pma-item-score">
 		<?php
 		$this->render_performance_score( (array) $data);
 		?>
@@ -61,7 +61,7 @@ defined( 'ABSPATH' ) || exit;
 				'label'      => '',
 				'url'        => $data->delete_url(),
 				'attributes' => [
-					'class'                => 'wpr-icon-trash wpr-confirm-delete wpr-pma-action',
+					'class'                => 'wpr-icon-trash wpr-pma-action wpr-confirm-delete',
 					'title'                => __( 'Delete', 'rocket' ),
 					'aria-label'           => __( 'Delete', 'rocket' ),
 					'data-wpr_confirm_msg' => esc_html__( 'Are you sure you want to delete this item?', 'rocket' ),

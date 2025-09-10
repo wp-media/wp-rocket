@@ -2742,6 +2742,13 @@ div.wpr-tutorial-item {
   height: 32px;
 }
 
+.wpr-pma-summary-info a {
+  color: #F56640;
+}
+
+.wpr-pma-urls-table .wpr-percentage-indicator {
+  border-right: 1px solid #D4D9DD;
+}
 .wpr-pma-urls-table .wpr-percentage-indicator .wpr-percentage-circle {
   width: 32px;
   height: 32px;
@@ -2751,16 +2758,67 @@ div.wpr-tutorial-item {
   width: 32px;
   height: 32px;
 }
+.wpr-pma-urls-table .wpr-pma-item {
+  background: #E2E5E9;
+}
+.wpr-pma-urls-table .wpr-pma-item.wpr-global-score {
+  background: #fff;
+}
+.wpr-pma-urls-table .wpr-pma-item.wpr-global-score .wpr-pma-item-actions {
+  min-height: 60px;
+  position: relative;
+  display: block;
+}
+.wpr-pma-urls-table .wpr-pma-item-score {
+  vertical-align: middle;
+  padding: 0 8px;
+}
+.wpr-pma-urls-table .wpr-pma-item-title {
+  font-size: 14px;
+  color: #121116;
+  vertical-align: middle;
+}
+.wpr-pma-urls-table .wpr-pma-item-title a {
+  display: inline-block;
+  vertical-align: middle;
+  box-sizing: border-box;
+}
+.wpr-pma-urls-table .wpr-pma-item-title .wpr-pma-title {
+  text-decoration: underline;
+}
+.wpr-pma-urls-table .wpr-pma-item-title .wpr-pma-dot {
+  color: #738191;
+}
+.wpr-pma-urls-table .wpr-pma-item-title .wpr-pma-date {
+  color: #738191;
+}
 .wpr-pma-urls-table .wpr-pma-item-actions {
   text-align: right;
+  vertical-align: middle;
 }
 .wpr-pma-urls-table .wpr-pma-item-actions .wpr-pma-action {
   display: inline-block;
   font-size: 14px;
-  margin-left: 16px;
+  line-height: 1.5;
+  padding: 0 16px;
+  margin: 8px 0;
+  color: #121116;
+  border-left: 1px solid #D4D9DD;
 }
 .wpr-pma-urls-table .wpr-pma-item-actions .wpr-pma-action:first-child {
   margin-left: 0;
+  border-left: none;
+}
+.wpr-pma-urls-table .wpr-pma-item-actions .wpr-pma-action.wpr-confirm-delete:before {
+  font-size: 14px;
+  top: 0;
+  margin-right: 0;
+}
+.wpr-pma-urls-table .wpr-pma-item-actions .wpr-pma-action:before {
+  font-size: 18px;
+  position: relative;
+  top: 2px;
+  margin-right: 8px;
 }
 
 /*-----------------------------------------------*\
