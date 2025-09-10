@@ -91,7 +91,7 @@ class Controller extends Abstract_Render {
 		 * @param string $url The URL that was added for monitoring.
 		 * @param int    $row_id The database row ID of the added job.
 		 */
-		do_action( 'rocket_pm_job_added', $url, (int) $row_id );
+		do_action( 'rocket_pm_job_added', $url );
 
 		$row_data = $this->query->get_row_by_id( (int) $row_id );
 
@@ -320,7 +320,7 @@ class Controller extends Abstract_Render {
 		 *
 		 * @param int    $id The database row ID of the reset job.
 		 */
-		do_action( 'rocket_pm_job_added', $id );
+		do_action( 'rocket_pm_job_retest', $id );
 
 		$row = $this->query->get_row_by_id( $id );
 		wp_send_json_success(
