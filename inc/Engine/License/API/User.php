@@ -11,6 +11,17 @@ class User {
 	private $user;
 
 	/**
+	 * Set the user object.
+	 *
+	 * @param object $user The user object.
+	 *
+	 * @return void
+	 */
+	public function set_user( $user ) {
+		$this->user = $user;
+	}
+
+	/**
 	 * Instantiate the class
 	 *
 	 * @param object|false $user The user object.
