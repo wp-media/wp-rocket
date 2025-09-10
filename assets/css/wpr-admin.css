@@ -2759,6 +2759,7 @@ div.wpr-tutorial-item {
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
 }
 .wpr-percentage-indicator .wpr-percentage-circle {
   display: flex;
@@ -2802,6 +2803,18 @@ div.wpr-tutorial-item {
 .wpr-percentage-indicator .wpr-loading-img-sm {
   width: 32px;
   height: 32px;
+}
+.wpr-percentage-indicator .wpr-tooltip {
+  left: 12px;
+  top: 30px;
+}
+.wpr-percentage-indicator .wpr-tooltip:before {
+  top: -6px;
+  left: 17.6px;
+}
+.wpr-percentage-indicator:hover .wpr-tooltip {
+  visibility: visible;
+  opacity: 1;
 }
 
 .wpr-pma-notice {

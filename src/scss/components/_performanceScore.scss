@@ -22,6 +22,7 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	position: relative;
 
 	.wpr-percentage-circle {
 		display: flex;
@@ -68,6 +69,20 @@
 		&-sm{
 			width: 32px;
 			height: 32px;
+		}
+	}
+	.wpr-tooltip{
+		left: 12px;
+		top: 30px;
+		&:before {
+			top: -6px;
+			left: 17.6px;
+		}
+	}
+	&:hover {
+		.wpr-tooltip {
+			visibility: visible;
+			opacity: 1;
 		}
 	}
 }
