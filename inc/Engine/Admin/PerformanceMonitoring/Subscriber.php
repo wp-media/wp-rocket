@@ -64,6 +64,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'admin_post_delete_pm'                => 'delete_row',
 			'wp_ajax_rocket_pm_reset_page'        => 'reset_page',
 			'rocket_insights_tab_content'         => [ 'render_performance_urls_table', 20 ],
+			'rocket_insights_tab_content'         => [ 'render_settings_section', 30 ],
 		];
 	}
 
@@ -140,5 +141,14 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'items' => $this->controller->get_items(),
 			'global_score' => $this->controller->get_global_score(),
 		] );
+	}
+
+	/**
+	 * Render the settings section in the Performance Monitoring tab.
+	 *
+	 * @return void
+	 */
+	public function render_settings_section() {
+		$this->render->render_settings_section( $this->controller->get_settings_section_data() );
 	}
 }
