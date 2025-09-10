@@ -7,11 +7,6 @@ use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Database\Queries\PerformanceMonitoring as PMQuery;
 
-/**
- * Subscriber for URL limit functionality
- *
- * @since 3.20
- */
 class Subscriber implements Subscriber_Interface {
 	/**
 	 * Maximum number of URLs for free users.
