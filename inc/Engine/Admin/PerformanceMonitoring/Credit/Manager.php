@@ -68,20 +68,18 @@ class Manager {
 	/**
 	 * Reset credit, this will be called mainly each month.
 	 *
-	 * @return bool
+	 * @return void
 	 */
-	public function reset_credit(): bool {
+	public function reset_credit() {
 		// Check if the duration from last reset date and time now is more than or equal 1 month
 		// As a sanity check not to have this action to run manually and hack the system.
 		$last_reset_date = $this->get_last_reset_date();
 		if ( ! empty( $last_reset_date ) && MONTH_IN_SECONDS > ( time() - $last_reset_date ) ) {
-			return false;
+			return;
 		}
 
 		$this->options->set( self::CREDIT_OPTION_NAME, 3 );
 		$this->set_last_reset_date();
-
-		return true;
 	}
 
 
@@ -97,10 +95,9 @@ class Manager {
 	/**
 	 * Reset number of settings saving per month.
 	 *
-	 * @return bool
+	 * @return void
 	 */
-	public function set_last_reset_date(): bool {
+	public function set_last_reset_date(): void {
 		$this->options->set( self::RESET_CREDIT_OPTION_NAME, time() );
-		return true;
 	}
 }
