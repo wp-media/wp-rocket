@@ -38,7 +38,7 @@ defined( 'ABSPATH' ) || exit;
 				id="wpr-speed-radar-url-input" />
 
 		<?php
-		$button_args = [
+		$wp_rocket_button_args = [
 			'label'      => __( 'ADD PAGE +', 'rocket' ),
 			'url'        => '#',
 			'attributes' => [
@@ -48,17 +48,17 @@ defined( 'ABSPATH' ) || exit;
 		];
 
 		// Apply filter to allow modifying button attributes.
-		$is_allowed = wpm_apply_filters_typesafe( 'wpr_pm_allow_add_page', true );
+		$wp_rocket_is_allowed = wpm_apply_filters_typesafe( 'wpr_pm_allow_add_page', true );
 
-		if( ! $is_allowed ) {
-			$button_args['attributes']['class'] .= ' wpr-button--disabled';
-			$button_args['attributes']['disabled'] = 'disabled';
+		if ( ! $wp_rocket_is_allowed ) {
+			$wp_rocket_button_args['attributes']['class']   .= ' wpr-button--disabled';
+			$wp_rocket_button_args['attributes']['disabled'] = 'disabled';
 		}
 
 		$this->render_action_button(
 			'link',
 			'add_page_speed_radar',
-			$button_args
+			$wp_rocket_button_args
 		);
 		?>
 	</div>
