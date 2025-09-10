@@ -83,6 +83,15 @@ class Controller extends Abstract_Render {
 				);
 		}
 
+		/**
+		 * Fires when a performance monitoring job is added via AJAX.
+		 *
+		 * @since 3.20
+		 *
+		 * @param string $url The URL that was added for monitoring.b.
+		 */
+		do_action( 'rocket_pm_job_added', $url );
+
 		$row_data = $this->query->get_row_by_id( (int) $row_id );
 
 		// Remove message from the response payload.
@@ -302,6 +311,15 @@ class Controller extends Abstract_Render {
 		}
 
 		$this->manager->add_url_to_the_queue( $row->url, true ); // @phpstan-ignore-line
+
+		/**
+		 * Fires when a performance monitoring job is reset/retested.
+		 *
+		 * @since 3.20
+		 *
+		 * @param int    $id The database row ID of the reset job.
+		 */
+		do_action( 'rocket_pm_job_retest', $id );
 
 		$row = $this->query->get_row_by_id( $id );
 		wp_send_json_success(

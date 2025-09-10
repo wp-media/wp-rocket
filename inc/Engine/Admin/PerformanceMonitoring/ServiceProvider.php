@@ -39,6 +39,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'pm_controller',
 		'pm_subscriber',
 		'pm_ajax_controller',
+		'pm_global_score',
 	];
 
 	/**
@@ -113,6 +114,13 @@ class ServiceProvider extends AbstractServiceProvider {
 				]
 				);
 
+		// Global Score layer.
+		$this->getContainer()->add( 'pm_global_score', GlobalScore::class )
+			->addArguments(
+				[
+					'pm_query',
+				]
+			);
 		// Subscriber.
 		$this->getContainer()->addShared( 'pm_subscriber', Subscriber::class )
 			->addArguments(
@@ -120,6 +128,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'pm_render',
 					'pm_controller',
 					'pm_ajax_controller',
+					'pm_global_score',
 				]
 			);
 
