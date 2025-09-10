@@ -6,18 +6,6 @@ namespace WP_Rocket\Engine\Admin\PerformanceMonitoring;
 use WP_Rocket\Abstract_Render;
 
 class Render extends Abstract_Render {
-	/**
-	 * Render the ui part from views.
-	 *
-	 * @param array $items Items from database.
-	 *
-	 * @return void
-	 */
-	public function render_ui( array $items ) {
-		$data = compact( 'items' );
-		echo $this->generate( 'sections/performance-monitoring', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-	}
-
 
 	/**
 	 * Render performance score.
@@ -46,5 +34,17 @@ class Render extends Abstract_Render {
 			return 'status-yellow';
 		}
 		return 'status-green';
+	}
+
+	/**
+	 * Render performance urls table.
+	 *
+	 *
+	 * @param array $items
+	 * @return void
+	 */
+	public function render_pma_urls_table( array $items ) {
+		$data = compact( 'items' );
+		echo $this->generate( 'sections/performance-monitoring', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 }

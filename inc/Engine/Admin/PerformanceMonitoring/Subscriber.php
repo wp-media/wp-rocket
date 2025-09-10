@@ -58,12 +58,12 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	public static function get_subscribed_events(): array {
 		return [
 			'wp_rocket_first_install'             => 'schedule_homepage_tests',
-			'rocket_dashboard_after_account_data' => [ 'render_ui', 11 ],
 			'wp_ajax_rocket_pm_add_new_page'      => 'add_new_page',
 			'wp_ajax_rocket_pm_get_results'       => 'get_results',
 			'rocket_localize_admin_script'        => 'add_pending_ids',
 			'admin_post_delete_pm'                => 'delete_row',
 			'wp_ajax_rocket_pm_reset_page'        => 'reset_page',
+			'rocket_insights_tab_content'         => [ 'render_performance_urls_table', 20 ],
 		];
 	}
 
@@ -133,5 +133,9 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public function reset_page(): void {
 		$this->ajax_controller->reset_page();
+	}
+
+	public function render_performance_urls_table(){
+		$this->render->render_pma_urls_table( $this->controller->get_items());
 	}
 }

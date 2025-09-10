@@ -7,31 +7,21 @@
 
 defined( 'ABSPATH' ) || exit;
 ?>
-<tr class="wpr-speed-radar-item wpr-speed-radar-item-result" data-rocket-pm-id="<?php echo esc_attr( $data->id ); ?>" >
-	<td class="wpr-speed-radar-page">
+<tr class="wpr-pma-item wpr-speed-radar-item-result" data-rocket-pm-id="<?php echo esc_attr( $data->id ); ?>" >
+	<td class="wpr-pma-item-title">
 		<a href="<?php echo esc_url( $data->url ); ?>" target="_blank" rel="noopener">
 			<?php echo esc_html( $data->title ); ?>
 		</a>
 	</td>
-	<td class="wpr-speed-radar-status">
-		<span class="wpr-speed-radar-score wpr-speed-radar-score--good">
-			<?php
-			switch ( $data->status ) {
-				case 'completed':
-					echo intval( $data->score );
-					break;
-
-				default:
-					echo esc_html( $data->status ); // TODO: Will likely be replaced with a loader to unify the progress inidicator.
-					break;
-			}
-			?>
-		</span>
+	<td class="wpr-pma-item-status">
+		<?php
+		$this->render_performance_score();
+		?>
 	</td>
 
-	<td class="wpr-speed-radar-date"><?php echo esc_html( gmdate( 'Y-m-d H:i:s', $data->modified ) ); ?></td>
+	<td class="wpr-pma-item-date"><?php echo esc_html( gmdate( 'Y-m-d H:i:s', $data->modified ) ); ?></td>
 
-	<td class="wpr-speed-radar-actions">
+	<td class="wpr-pma-item-actions">
 		<?php
 		$this->render_action_button(
 			'button',
@@ -40,8 +30,8 @@ defined( 'ABSPATH' ) || exit;
 				'label'      => '',
 				'attributes' => [
 					'class'      => 'wpr-icon-refresh',
-					'title'      => __( 'Refresh', 'rocket' ),
-					'aria-label' => __( 'Refresh', 'rocket' ),
+					'title'      => __( 'Re-test', 'rocket' ),
+					'aria-label' => __( 'Re-test', 'rocket' ),
 				],
 			]
 		);
@@ -55,8 +45,8 @@ defined( 'ABSPATH' ) || exit;
 					'url'        => esc_url( $data->report_url ),
 					'attributes' => [
 						'target' => '_blank',
-						'class'  => 'wpr-button wpr-button--small wpr-button--gray',
-						'title'  => __( 'Open in GTmetrix', 'rocket' ),
+						'class'  => 'wpr-icon-trash',
+						'title'  => __( 'See Report', 'rocket' ),
 					],
 				]
 			);
