@@ -113,12 +113,9 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 			'status_class'    => $status_class,
 			'status_text'     => $status_text,
 			'is_active'       => $is_active,
-			'service_name'    => $service_name,
-			'upgrade_link'    => $upgrade_link,
-			'upgrade_text'    => $upgrade_text,
 		];
 
-		echo $this->generate( '../License/views/dashboard-addon-status', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+		echo $this->generate( 'dashboard-status', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 
 	/**
