@@ -38,7 +38,7 @@ class SettingsSubscriber extends Abstract_Render implements Subscriber_Interface
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_dashboard_after_account_data' => [ 'display_addon_status', 20 ], // Higher priority than RocketCDN.
+			'rocket_dashboard_after_account_data' => [ 'display_addon_status', 9 ], // Higher priority than RocketCDN.
 		];
 	}
 
@@ -57,7 +57,7 @@ class SettingsSubscriber extends Abstract_Render implements Subscriber_Interface
 
 		$status_class = ' wpr-isInvalid';
 		$label        = '';
-		$status_text  = __( 'No subscription', 'rocket' );
+		$status_text  = __( 'No Subscription', 'rocket' );
 		$service_name = __( 'Rocket Insights', 'rocket' );
 		$sku          = $this->user->get_pma_addon_sku_active();
 
@@ -66,7 +66,7 @@ class SettingsSubscriber extends Abstract_Render implements Subscriber_Interface
 		$is_active = $this->user->is_pma_addon_active( $sku );
 
 		if ( $is_active ) {
-			$label        = __( 'Expiration Date', 'rocket' );
+			$label        = __( 'Next Billing Date', 'rocket' );
 			$status_class = ' wpr-isValid';
 			$status_text  = date_i18n( get_option( 'date_format' ), $this->user->get_pma_license_expiration() );
 		}
