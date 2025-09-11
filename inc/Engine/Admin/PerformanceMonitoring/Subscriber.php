@@ -3,10 +3,15 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Admin\PerformanceMonitoring;
 
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\{
+	Context\FreePlanContext,
+	Database\Rows\PerformanceMonitoring,
+	Queue\Queue,
+	AJAX\Controller as AjaxController
+};
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
-use WP_Rocket\Engine\Admin\PerformanceMonitoring\AJAX\Controller as AjaxController;
 
 /**
  * Performance Monitoring Subscriber
@@ -38,6 +43,20 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	private $ajax_controller;
 
 	/**
+	 * Queue object.
+	 *
+	 * @var Queue
+	 */
+	private $queue;
+
+	/**
+	 * Free Plan context.
+	 *
+	 * @var FreePlanContext
+	 */
+	private $free_plan_context;
+
+	/**
 	 * GlobalScore instance.
 	 *
 	 * @var GlobalScore
@@ -47,15 +66,19 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	/**
 	 * Constructor.
 	 *
-	 * @param Render         $render Render object.
-	 * @param Controller     $controller Controller object.
-	 * @param AjaxController $ajax_controller AjaxController object.
+	 * @param Render          $render Render object.
+	 * @param Controller      $controller Controller object.
+	 * @param AjaxController  $ajax_controller AjaxController object.
+	 * @param Queue           $queue Queue object.
+	 * @param FreePlanContext $free_plan_context Free Plan context.
 	 * @param GlobalScore    $global_score GlobalScore instance.
 	 */
-	public function __construct( Render $render, Controller $controller, AjaxController $ajax_controller, GlobalScore $global_score ) {
-		$this->render          = $render;
-		$this->controller      = $controller;
-		$this->ajax_controller = $ajax_controller;
+	public function __construct( Render $render, Controller $controller, AjaxController $ajax_controller, Queue $queue, FreePlanContext $free_plan_context, GlobalScore $global_score ) {
+		$this->render            = $render;
+		$this->controller        = $controller;
+		$this->ajax_controller   = $ajax_controller;
+		$this->queue             = $queue;
+		$this->free_plan_context = $free_plan_context;
 		$this->global_score    = $global_score;
 	}
 
@@ -73,7 +96,12 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'rocket_localize_admin_script'        => 'add_pending_ids',
 			'admin_post_delete_pm'                => 'delete_row',
 			'wp_ajax_rocket_pm_reset_page'        => 'reset_page',
-			'rocket_pm_job_completed'             => 'reset_global_score',
+			'init'                                => 'schedule_reset_credit',
+			'rocket_pma_credit_reset'             => 'reset_credit_monthly',
+			'rocket_pm_job_completed'             => [
+				[ 'validate_credit' ],
+				[ 'reset_global_score' ],
+			],
 			'rocket_pm_job_failed'                => 'reset_global_score',
 			'rocket_pm_job_added'                 => 'reset_global_score',
 			'rocket_pm_job_retest'                => 'reset_global_score',
@@ -148,6 +176,46 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public function reset_page(): void {
 		$this->ajax_controller->reset_page();
+	}
+
+	/**
+	 * Schedule reset credit recurring AS task.
+	 *
+	 * @return void
+	 */
+	public function schedule_reset_credit(): void {
+		if ( ! $this->free_plan_context->is_allowed() ) {
+			$this->queue->cancel_reset_job();
+			return;
+		}
+
+		$this->queue->schedule_reset_task();
+	}
+
+	/**
+	 * Callback to reset the credit for the recurring task hook.
+	 *
+	 * @return void
+	 */
+	public function reset_credit_monthly() {
+		if ( ! $this->free_plan_context->is_allowed() ) {
+			return;
+		}
+		$this->controller->reset_credit();
+	}
+
+	/**
+	 * Validate credit with job success.
+	 *
+	 * @param PerformanceMonitoring $row DB row.
+	 *
+	 * @return void
+	 */
+	public function validate_credit( $row ) {
+		if ( ! $this->free_plan_context->is_allowed() ) {
+			return;
+		}
+		$this->controller->validate_credit( $row->id );
 	}
 
 	/**
