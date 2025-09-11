@@ -57,6 +57,13 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	private $free_plan_context;
 
 	/**
+	 * GlobalScore instance.
+	 *
+	 * @var GlobalScore
+	 */
+	private $global_score;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param Render          $render Render object.
@@ -64,13 +71,15 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @param AjaxController  $ajax_controller AjaxController object.
 	 * @param Queue           $queue Queue object.
 	 * @param FreePlanContext $free_plan_context Free Plan context.
+	 * @param GlobalScore     $global_score GlobalScore instance.
 	 */
-	public function __construct( Render $render, Controller $controller, AjaxController $ajax_controller, Queue $queue, FreePlanContext $free_plan_context ) {
+	public function __construct( Render $render, Controller $controller, AjaxController $ajax_controller, Queue $queue, FreePlanContext $free_plan_context, GlobalScore $global_score ) {
 		$this->render            = $render;
 		$this->controller        = $controller;
 		$this->ajax_controller   = $ajax_controller;
 		$this->queue             = $queue;
 		$this->free_plan_context = $free_plan_context;
+		$this->global_score      = $global_score;
 	}
 
 	/**
@@ -89,7 +98,15 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'wp_ajax_rocket_pm_reset_page'        => 'reset_page',
 			'init'                                => 'schedule_reset_credit',
 			'rocket_pma_credit_reset'             => 'reset_credit_monthly',
-			'rocket_pm_job_completed'             => 'validate_credit',
+			'rocket_pm_job_completed'             => [
+				[ 'validate_credit' ],
+				[ 'reset_global_score' ],
+			],
+			'rocket_pm_job_failed'                => 'reset_global_score',
+			'rocket_pm_job_added'                 => 'reset_global_score',
+			'rocket_pm_job_retest'                => 'reset_global_score',
+			'rocket_pm_job_deleted'               => 'reset_global_score',
+			'rocket_dashboard_sidebar'            => 'render_global_score_widget',
 		];
 	}
 
@@ -199,5 +216,25 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			return;
 		}
 		$this->controller->validate_credit( $row->id );
+	}
+
+	/**
+	 * Invalidate the global score cache.
+	 *
+	 * Called when any Performance Monitoring job status changes.
+	 *
+	 * @return void
+	 */
+	public function reset_global_score(): void {
+		$this->global_score->reset();
+	}
+
+	/**
+	 * Render the global performance score widget in the dashboard sidebar.
+	 *
+	 * @return void
+	 */
+	public function render_global_score_widget(): void {
+		$this->render->render_global_score_widget( $this->controller->get_global_score() );
 	}
 }

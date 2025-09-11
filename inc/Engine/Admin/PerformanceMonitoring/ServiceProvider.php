@@ -43,6 +43,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'pm_ajax_controller',
 		'pm_credit_manager',
 		'pm_free_plan_context',
+		'pm_global_score',
 		'pm_settings_subscriber',
 	];
 
@@ -93,6 +94,14 @@ class ServiceProvider extends AbstractServiceProvider {
 				]
 			);
 
+		// Global Score layer.
+		$this->getContainer()->add( 'pm_global_score', GlobalScore::class )
+			->addArguments(
+				[
+					'pm_query',
+				]
+			);
+
 		$this->getContainer()->add( 'pm_controller', Controller::class )
 			->addArguments(
 				[
@@ -100,6 +109,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'pm_manager',
 					'pm_context',
 					'pm_credit_manager',
+					'pm_global_score',
 				]
 			);
 
@@ -110,7 +120,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'pm_table',
 					'pm_api_client',
 				]
-				);
+			);
 
 		// Queue layer.
 		$this->getContainer()->add( 'pm_queue', PMQueue::class );
@@ -120,10 +130,10 @@ class ServiceProvider extends AbstractServiceProvider {
 					'pm_query',
 					'pm_manager',
 					'pm_context',
-					new StringArgument( $this->getContainer()->get( 'template_path' ) . '/settings/' ),
+					'pm_global_score',
+					'pm_render',
 				]
-				);
-
+			);
 		// Subscriber.
 		$this->getContainer()->addShared( 'pm_subscriber', Subscriber::class )
 			->addArguments(
@@ -133,6 +143,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'pm_ajax_controller',
 					'pm_queue',
 					'pm_free_plan_context',
+					'pm_global_score',
 				]
 			);
 

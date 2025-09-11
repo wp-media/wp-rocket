@@ -320,4 +320,14 @@ trait DBTrait {
 
 		return false;
 	}
+
+	public static function truncatePerformanceMonitoringTable() {
+		$container           = apply_filters( 'rocket_container', null );
+		$pm_table = $container->get( 'pm_table' );
+
+		if ( $pm_table->exists() ) {
+			$pm_table->truncate();
+		}
+
+	}
 }
