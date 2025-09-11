@@ -234,6 +234,7 @@ class Plugin {
 			'media_fonts_admin_subscriber',
 			'preload_fonts_admin_subscriber',
 			'pm_subscriber',
+			'pm_settings_subscriber',
 		];
 
 		// Only add tracking service provider if cURL extension is loaded.
