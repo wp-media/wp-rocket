@@ -159,11 +159,12 @@ class GlobalScore {
 
 		// Check if any URLs are blurred.
 		$blurred_count = $this->query->query(
-			[
+	[
 				'count'      => true,
-				'status__in' => [ 'blurred' ],
+				'status__in' => [ 'completed' ],
+				'is_blurred' => 1,
 			]
-			);
+		);
 
 		if ( $blurred_count > 0 ) {
 			return 'blurred';
