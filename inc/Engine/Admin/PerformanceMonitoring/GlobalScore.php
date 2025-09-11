@@ -166,7 +166,7 @@ class GlobalScore {
 		]
 		);
 
-		if ( $blurred_count > 0 ) {
+		if ( (int) $blurred_count > 0 ) {
 			return 'blurred';
 		}
 
