@@ -20,6 +20,8 @@ class FreePlanContext implements ContextInterface {
 
 	/**
 	 * Constructor.
+	 *
+	 * @param User $user User client API instance.
 	 */
 	public function __construct( User $user ) {
 		$this->user = $user;
