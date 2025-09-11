@@ -120,7 +120,12 @@ class GlobalScore {
 	 * @return int Number of pages.
 	 */
 	private function calculate_pages_number(): int {
-		return $this->query->query( [ 'count' => true ] );
+		return $this->query->query(
+			[
+				'count'          => true,
+				'status__not_in' => [ 'failed' ],
+			]
+		);
 	}
 
 	/**
@@ -129,7 +134,11 @@ class GlobalScore {
 	 * @return string Current status.
 	 */
 	private function calculate_current_status(): string {
-		$total_count = $this->query->query( [ 'count' => true ] );
+		$total_count = $this->query->query(
+			[
+				'count' => true,
+			]
+		);
 
 		// No URLs are being monitored.
 		if ( 0 === $total_count ) {
@@ -149,17 +158,27 @@ class GlobalScore {
 		}
 
 		// Check if any URLs are blurred.
-		$blurred_count = 0;
-		// $blurred_count = $this->query->query( // TODO: To be uncommented when is_blurred is implemented.
-		// [
-		// 'count'      => true,
-		// 'status__in' => [ 'completed' ],
-		// 'is_blurred' => 1,
-		// ]
-		// );.
+		$blurred_count = $this->query->query(
+			[
+				'count'      => true,
+				'status__in' => [ 'blurred' ],
+			]
+			);
 
-		if ( $blurred_count > 0 ) { // @phpstan-ignore-line to be removed once is_blurred is implemented.
+		if ( $blurred_count > 0 ) {
 			return 'blurred';
+		}
+
+		// Check if *all* URLs have failed.
+		$failed_count = $this->query->query(
+			[
+				'count'      => true,
+				'status__in' => [ 'failed' ],
+			]
+		);
+
+		if ( (int) $failed_count === (int) $total_count ) {
+			return 'failed';
 		}
 
 		// All tests are complete and none are blurred.
