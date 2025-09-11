@@ -88,7 +88,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'admin_post_delete_pm'                => 'delete_row',
 			'wp_ajax_rocket_pm_reset_page'        => 'reset_page',
 			'init'                                => 'schedule_reset_credit',
-			'pma_credit_reset'                    => 'reset_credit_monthly',
+			'rocket_pma_credit_reset'             => 'reset_credit_monthly',
 			'rocket_pm_job_completed'             => 'validate_credit',
 		];
 	}
