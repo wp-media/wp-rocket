@@ -71,15 +71,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	}
 
 	/**
-	 * Render the Ui in dashboard.
-	 *
-	 * @return void
-	 */
-	public function render_ui() {
-		$this->render->render_ui( $this->controller->get_items() );
-	}
-
-	/**
 	 * Schedules homepage performance tests on plugin activation.
 	 *
 	 * This method is triggered when the plugin is first installed.
@@ -149,7 +140,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 				'items'        => $this->controller->get_items(),
 				'global_score' => $this->controller->get_global_score(),
 			]
-			);
+		);
 	}
 
 	/**
