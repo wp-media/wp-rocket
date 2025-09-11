@@ -38,17 +38,27 @@ defined( 'ABSPATH' ) || exit;
 				id="wpr-speed-radar-url-input" />
 
 		<?php
+		$wp_rocket_button_args = [
+			'label'      => __( 'ADD PAGE +', 'rocket' ),
+			'url'        => '#',
+			'attributes' => [
+				'class' => 'wpr-button wpr-button--icon wpr-button--small wpr-button--purple',
+				'id'    => 'add_page_speed_radar',
+			],
+		];
+
+		// Apply filter to allow modifying button attributes.
+		$wp_rocket_is_allowed = wpm_apply_filters_typesafe( 'wpr_pm_allow_add_page', true );
+
+		if ( ! $wp_rocket_is_allowed ) {
+			$wp_rocket_button_args['attributes']['class']   .= ' wpr-button--disabled';
+			$wp_rocket_button_args['attributes']['disabled'] = 'disabled';
+		}
+
 		$this->render_action_button(
 			'link',
 			'add_page_speed_radar',
-			[
-				'label'      => __( 'ADD PAGE +', 'rocket' ),
-				'url'        => '#',
-				'attributes' => [
-					'class' => 'wpr-button wpr-button--icon wpr-button--small wpr-button--purple',
-					'id'    => 'add_page_speed_radar',
-				],
-			]
+			$wp_rocket_button_args
 		);
 		?>
 	</div>

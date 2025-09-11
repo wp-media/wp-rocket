@@ -1,8 +1,7 @@
 <?php
 
-use WP_Rocket\Tests\Fixtures\inc\Engine\Admin\PerformanceMonitoring\SettingsSubscriber\UserDataGenerator;
 
-require_once __DIR__ . '/UserDataGenerator.php';
+use WP_Rocket\Tests\Fixtures\Generators\UserDataGenerator;
 
 return [
 	'testShouldRenderFreeVersionHTMLWhenNotActive' => [

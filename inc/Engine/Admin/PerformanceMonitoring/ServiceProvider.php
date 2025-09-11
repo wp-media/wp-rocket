@@ -15,8 +15,10 @@ use WP_Rocket\Engine\Admin\PerformanceMonitoring\{
 	Jobs\Factory as PMFactory,
 	Jobs\Manager as PMManager,
 	Queue\Queue as PMQueue,
-	AJAX\Controller as AjaxController
+	AJAX\Controller as AjaxController,
+	URLLimit\Subscriber as URLLimitSubscriber
 };
+use WP_Rocket\Engine\License\API\UserClient;
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
@@ -44,6 +46,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'pm_credit_manager',
 		'pm_free_plan_context',
 		'pm_global_score',
+		'pm_url_limit_subscriber',
 		'pm_settings_subscriber',
 	];
 
@@ -147,7 +150,15 @@ class ServiceProvider extends AbstractServiceProvider {
 				]
 			);
 
-		// Addon Subscriber.
+		// URL Limit subscriber.
+		$this->getContainer()->addShared( 'pm_url_limit_subscriber', URLLimitSubscriber::class )
+			->addArguments(
+				[
+					'pm_query',
+					'user',
+				]
+			);
+			// Addon Subscriber.
 		$this->getContainer()->addShared( 'pm_settings_subscriber', SettingsSubscriber::class )
 			->addArguments(
 				[

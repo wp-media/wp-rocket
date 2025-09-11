@@ -1,6 +1,7 @@
 <?php
 
-namespace WP_Rocket\Tests\Fixtures\inc\Engine\Admin\PerformanceMonitoring\SettingsSubscriber;
+namespace WP_Rocket\Tests\Fixtures\Generators;
+
 
 class UserDataGenerator {
 
@@ -30,7 +31,8 @@ class UserDataGenerator {
 				"label" => "Your plan",
 				"action" => "none",
 				"url" => null,
-			]
+			],
+			'limit' => '3'
 		];
 
 		$plans[] = (object) [
@@ -42,7 +44,8 @@ class UserDataGenerator {
 				"action" => "purchase",
 				"url" => "https://wp-rocket.me/express-checkout/?user_id=202331&domain=random.app&product_sku=perf-monitor-advanced&consumer_key=12be53be",
 			],
-			"price" => "0.00"
+			"price" => "0.00",
+			'limit' => '10'
 		];
 
 		return (object)[

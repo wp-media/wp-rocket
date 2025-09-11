@@ -418,6 +418,7 @@ class Plugin {
 			'preload_fonts_admin_subscriber',
 			'preconnect_frontend_subscriber',
 			'pm_subscriber',
+			'pm_url_limit_subscriber',
 			'post_subscriber',
 		];
 
