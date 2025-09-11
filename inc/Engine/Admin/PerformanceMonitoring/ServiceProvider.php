@@ -132,10 +132,10 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArguments(
 				[
 					'pm_query',
-					$this->getContainer()->get( 'user' ),
+					'user',
 				]
 			);
-          // Addon Subscriber.
+			// Addon Subscriber.
 		$this->getContainer()->addShared( 'pm_settings_subscriber', SettingsSubscriber::class )
 			->addArguments(
 				[

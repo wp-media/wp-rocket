@@ -251,6 +251,23 @@ class User {
 	}
 
 	/**
+	 * Retrieves the limit for the PMA add-on based on the provided SKU.
+	 *
+	 * @param string $sku The SKU used to fetch the PMA addon data.
+	 *
+	 * @return string
+	 */
+	public function get_pma_addon_limit( string $sku ) {
+		$plan = $this->get_pma_data( $sku );
+
+		if ( ! $plan || ! isset( $plan->limit ) ) {
+			return 3;
+		}
+
+		return $plan->limit;
+	}
+
+	/**
 	 * Retrieves the performance monitoring plan data associated with the specified SKU.
 	 *
 	 * @param string $sku The SKU identifier used to find the corresponding performance monitoring plan.

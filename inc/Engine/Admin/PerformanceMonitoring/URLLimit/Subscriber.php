@@ -8,19 +8,6 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Database\Queries\PerformanceMonitoring as PMQuery;
 
 class Subscriber implements Subscriber_Interface {
-	/**
-	 * Maximum number of URLs for free users.
-	 *
-	 * @var int
-	 */
-	const FREE_USER_MAX_URLS = 3;
-
-	/**
-	 * Maximum number of URLs for paid users.
-	 *
-	 * @var int
-	 */
-	const PAID_USER_MAX_URLS = 10;
 
 	/**
 	 * Performance monitoring query instance.
@@ -65,7 +52,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function is_adding_page_allowed(): bool {
 		$current_url_count = $this->get_url_count();
-		$max_urls          = $this->get_max_urls();
+		$max_urls          = $this->user->get_pma_addon_limit( $this->user->get_pma_addon_sku_active() );
 		return $current_url_count < $max_urls;
 	}
 
@@ -82,16 +69,5 @@ class Subscriber implements Subscriber_Interface {
 			);
 
 		return (int) $count;
-	}
-
-	/**
-	 * Gets the maximum number of URLs allowed based on license type.
-	 *
-	 * @return int Maximum number of URLs.
-	 */
-	private function get_max_urls(): int {
-		$is_paid_user = $this->user->is_pma_addon_active( $this->user->get_pma_addon_sku_active() );
-
-		return $is_paid_user ? self::PAID_USER_MAX_URLS : self::FREE_USER_MAX_URLS;
 	}
 }
