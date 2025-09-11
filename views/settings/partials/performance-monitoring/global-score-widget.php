@@ -35,7 +35,7 @@ defined( 'ABSPATH' ) || exit;
 						'link',
 						'',
 						[
-							'label'      => $data['pages_num'] ? __( 'ADD PAGE', 'rocket' ) : __( 'ADD HOME PAGE', 'rocket' ),
+							'label'      => $data['pages_num'] ? __( 'Add Page', 'rocket' ) : __( 'Add Homepage', 'rocket' ),
 							'parameters' => [
 								'type' => 'all',
 							],
