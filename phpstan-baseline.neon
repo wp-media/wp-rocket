@@ -903,22 +903,7 @@ parameters:
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 30
-			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/GlobalScore/get_current_status.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 30
-			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/GlobalScore/get_global_score.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 30
 			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/GlobalScore/get_global_score_data.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 30
-			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/GlobalScore/get_pages_number.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
@@ -929,6 +914,16 @@ parameters:
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/SettingsSubscriber/displayAddonStatus.php
+
+		-
+			message: "#^Property WP_Rocket\\\\Tests\\\\Integration\\\\inc\\\\Engine\\\\Admin\\\\PerformanceMonitoring\\\\URLLimit\\\\Subscriber\\\\Test_IsAddingPageAllowed\\:\\:\\$user_client is unused\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/URLLimit/Subscriber/isAddingPageAllowed.php
+
+		-
+			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			count: 30
+			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/URLLimit/Subscriber/isAddingPageAllowed.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
