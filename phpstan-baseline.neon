@@ -66,6 +66,11 @@ parameters:
 			path: inc/Engine/Admin/PerformanceMonitoring/Context/PerformanceMonitoringContext.php
 
 		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: inc/Engine/Admin/PerformanceMonitoring/SettingsSubscriber.php
+
+		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 12
 			path: inc/Engine/Admin/Settings/Page.php
@@ -899,6 +904,16 @@ parameters:
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 29
 			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/Database/Tables/truncate_table.php
+
+		-
+			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/SettingsSubscriber/displayAddonStatus.php
+
+		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/SettingsSubscriber/displayAddonStatus.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
