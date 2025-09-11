@@ -119,4 +119,19 @@ class Controller {
 			'help'               => 'performance-monitoring-settings', // beacon id for help button.
 		];
 	}
+
+	/**
+	 * Get user data for the settings.
+	 *
+	 * @return array
+	 */
+	public function get_license__data(): array {
+		return [
+			'price'                 => '4.99',
+			'currency'              => '$',
+			'price_before_discount' => '9.99',
+			'page_number'           => 10,
+			'period'                => 'month',
+		];
+	}
 }

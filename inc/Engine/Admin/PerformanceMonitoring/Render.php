@@ -28,4 +28,15 @@ class Render extends Abstract_Render {
 	public function render_settings_section( array $data ) {
 		echo $this->generate( 'partials/performance-monitoring/settings', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
+
+	/**
+	 * Render the license banner section from views.
+	 *
+	 * @param array $data Data to render the license banner section.
+	 *
+	 * @return void
+	 */
+	public function render_license_banner_section( array $data ) {
+		echo $this->generate( 'partials/performance-monitoring/license-banner', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	}
 }
