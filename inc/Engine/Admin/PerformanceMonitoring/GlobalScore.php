@@ -39,15 +39,130 @@ class GlobalScore {
 	}
 
 	/**
-	 * Get global score data.
+	 * Retrieve all global score related data.
 	 *
-	 * @return string Array of global score data.
+	 * @return array Array with keys: score, pages_num, status.
 	 */
 	public function get_global_score_data(): array {
-		return [
-			'status'    => 'no-url',
-			'pages_num' => 0,
-			'score'     => 0,
+		$cached_data = $this->get_cached_data();
+
+		if ( false !== $cached_data ) {
+			return $cached_data;
+		}
+
+		return $this->calculate_and_cache_data();
+	}
+
+	/**
+	 * Invalidate the cached data.
+	 *
+	 * Called when data changes to force recalculation on next request.
+	 *
+	 * @return void
+	 */
+	public function reset(): void {
+		delete_transient( self::TRANSIENT_NAME );
+	}
+
+	/**
+	 * Get cached data from transient.
+	 *
+	 * @return array|false Cached data or false if not cached.
+	 */
+	private function get_cached_data() {
+		return get_transient( self::TRANSIENT_NAME );
+	}
+
+	/**
+	 * Calculate all metrics and cache the results.
+	 *
+	 * @return array Calculated data containing score, pages_num, and status.
+	 */
+	private function calculate_and_cache_data(): array {
+		$data = [
+			'score'     => $this->calculate_global_score(),
+			'pages_num' => $this->calculate_pages_number(),
+			'status'    => $this->calculate_current_status(),
 		];
+
+		set_transient( self::TRANSIENT_NAME, $data, self::CACHE_EXPIRATION );
+
+		return $data;
+	}
+
+	/**
+	 * Calculate the global score from database.
+	 *
+	 * @return int Global score (0-100).
+	 */
+	private function calculate_global_score(): int {
+		$scores = $this->query->query(
+			[
+				'fields'        => 'score',
+				'status'        => 'completed',
+				'score__not_in' => [ 0 ],
+			]
+			);
+
+		if ( empty( $scores ) ) {
+			return 0;
+		}
+
+		$total_score = array_sum( $scores );
+		$count       = count( $scores );
+
+		return (int) round( $total_score / $count );
+	}
+
+	/**
+	 * Calculate the total number of pages being monitored.
+	 *
+	 * @return int Number of pages.
+	 */
+	private function calculate_pages_number(): int {
+		return $this->query->query( [ 'count' => true ] );
+	}
+
+	/**
+	 * Calculate the current status of the monitoring system.
+	 *
+	 * @return string Current status.
+	 */
+	private function calculate_current_status(): string {
+		$total_count = $this->query->query( [ 'count' => true ] );
+
+		// No URLs are being monitored.
+		if ( 0 === $total_count ) {
+			return 'no-url';
+		}
+
+		// Check if any URLs are in progress.
+		$in_progress_count = $this->query->query(
+			[
+				'count'      => true,
+				'status__in' => [ 'to-submit', 'pending', 'in-progress' ],
+			]
+			);
+
+		if ( (int) $in_progress_count > 0 ) {
+			return 'in-progress';
+		}
+
+		// Check if any URLs are blurred.
+		$blurred_count = 0;
+		// $blurred_count = $this->query->query( // TODO: To be uncommented when is_blurred is implemented.
+		// [
+		// 'count'      => true,
+		// 'status__in' => [ 'completed' ],
+		// 'is_blurred' => 1,
+		// ]
+		// );.
+
+		if ( $blurred_count > 0 ) { // @phpstan-ignore-line to be removed once is_blurred is implemented.
+			return 'blurred';
+		}
+
+		// All tests are complete and none are blurred.
+		return 'complete';
 	}
 }

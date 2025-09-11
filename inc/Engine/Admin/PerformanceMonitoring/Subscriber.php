@@ -38,16 +38,25 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	private $ajax_controller;
 
 	/**
+	 * GlobalScore instance.
+	 *
+	 * @var GlobalScore
+	 */
+	private $global_score;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param Render         $render Render object.
 	 * @param Controller     $controller Controller object.
 	 * @param AjaxController $ajax_controller AjaxController object.
+	 * @param GlobalScore    $global_score GlobalScore instance.
 	 */
-	public function __construct( Render $render, Controller $controller, AjaxController $ajax_controller ) {
+	public function __construct( Render $render, Controller $controller, AjaxController $ajax_controller, GlobalScore $global_score ) {
 		$this->render          = $render;
 		$this->controller      = $controller;
 		$this->ajax_controller = $ajax_controller;
+		$this->global_score    = $global_score;
 	}
 
 	/**
@@ -64,6 +73,10 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'rocket_localize_admin_script'        => 'add_pending_ids',
 			'admin_post_delete_pm'                => 'delete_row',
 			'wp_ajax_rocket_pm_reset_page'        => 'reset_page',
+			'rocket_pm_job_completed'             => 'reset_global_score',
+			'rocket_pm_job_failed'                => 'reset_global_score',
+			'rocket_pm_job_added'                 => 'reset_global_score',
+			'rocket_pm_job_deleted'               => 'reset_global_score',
 			'rocket_dashboard_sidebar'            => 'render_global_score_widget',
 		];
 	}
@@ -134,6 +147,17 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public function reset_page(): void {
 		$this->ajax_controller->reset_page();
+	}
+
+	/**
+	 * Invalidate the global score cache.
+	 *
+	 * Called when any Performance Monitoring job status changes.
+	 *
+	 * @return void
+	 */
+	public function reset_global_score(): void {
+		$this->global_score->reset();
 	}
 
 	/**

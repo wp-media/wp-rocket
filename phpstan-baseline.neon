@@ -717,27 +717,27 @@ parameters:
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 27
+			count: 28
 			path: tests/Integration/AjaxTestCase.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 27
+			count: 28
 			path: tests/Integration/ApiTestCase.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 27
+			count: 28
 			path: tests/Integration/FilesystemTestCase.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 27
+			count: 28
 			path: tests/Integration/RESTVfsTestCase.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 27
+			count: 28
 			path: tests/Integration/TestCase.php
 
 		-
@@ -891,14 +891,29 @@ parameters:
 			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/Database/Tables/remove_all_completed_rows.php
 
 		-
-			message: "#^Method WP_Rocket\\\\Tests\\\\Integration\\\\inc\\\\Engine\\\\Admin\\\\PerformanceMonitoring\\\\Database\\\\Tables\\\\Test_TruncateTable\\:\\:truncatePerformanceMonitoringTable\\(\\) is unused\\.$#"
-			count: 1
+			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			count: 29
 			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/Database/Tables/truncate_table.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 29
-			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/Database/Tables/truncate_table.php
+			count: 30
+			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/GlobalScore/get_current_status.php
+
+		-
+			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			count: 30
+			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/GlobalScore/get_global_score.php
+
+		-
+			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			count: 30
+			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/GlobalScore/get_global_score_data.php
+
+		-
+			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			count: 30
+			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/GlobalScore/get_pages_number.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
@@ -1377,7 +1392,7 @@ parameters:
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 28
+			count: 29
 			path: tests/Integration/inc/Engine/Media/PreconnectExternalDomains/Admin/Subscriber/maybeClearPreconnectDomains.php
 
 		-
@@ -1387,7 +1402,7 @@ parameters:
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 27
+			count: 28
 			path: tests/Integration/inc/Engine/Media/PreloadFonts/Frontend/Subscriber/maybeRemoveExistingPreloadedFonts.php
 
 		-

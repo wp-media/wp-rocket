@@ -130,6 +130,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'pm_render',
 					'pm_controller',
 					'pm_ajax_controller',
+					'pm_global_score',
 				]
 			);
 
