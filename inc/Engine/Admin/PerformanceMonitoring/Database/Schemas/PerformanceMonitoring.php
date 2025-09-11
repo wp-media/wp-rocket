@@ -163,6 +163,17 @@ class PerformanceMonitoring extends Schema {
 			'sortable'   => true,
 		],
 
+		// IS_BLURRED column.
+		[
+			'name'       => 'is_blurred',
+			'type'       => 'tinyint',
+			'length'     => '1',
+			'default'    => 0,
+			'cache_key'  => true,
+			'searchable' => true,
+			'sortable'   => true,
+		],
+
 		// error_code column.
 		[
 			'name'       => 'error_code',

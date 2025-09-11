@@ -1193,12 +1193,14 @@ div.wpr-upgrade-websites.notstacked {
 .rocket-promo-banner > div {
   display: flex;
   flex-flow: column;
-  width: 50%;
 }
 @media (max-width: 783px) {
   .rocket-promo-banner > div {
     width: 100%;
   }
+}
+.rocket-promo-banner > div {
+  width: 50%;
 }
 
 .rocket-promo-title {
@@ -1294,12 +1296,14 @@ div.wpr-upgrade-websites.notstacked {
 .rocket-renewal-expired-banner-container > div {
   display: flex;
   flex-flow: column;
-  width: 70%;
 }
 @media (max-width: 783px) {
   .rocket-renewal-expired-banner-container > div {
     width: 100%;
   }
+}
+.rocket-renewal-expired-banner-container > div {
+  width: 70%;
 }
 
 .rocket-renew-message {
@@ -1352,20 +1356,6 @@ div.wpr-upgrade-websites.notstacked {
   content: "→";
   font-weight: normal;
   margin-left: 8px;
-}
-
-/* Speed Radar Styles */
-.wpr-field-speed-radar {
-  margin-top: 20px;
-}
-
-.wpr-speed-radar-table {
-  width: 100%;
-  border-collapse: collapse;
-  background: #fff;
-  border: 1px solid #E8EBEE;
-  border-radius: 3px;
-  margin-bottom: 20px;
 }
 
 /*-----------------------------------------------*\
@@ -2661,6 +2651,75 @@ div.wpr-tutorial-item {
   color: #00A66B;
 }
 
+.wpr-percentage-score-widget {
+  text-align: center;
+  padding: 8px;
+}
+.wpr-percentage-score-widget .wpr-page-num-txt {
+  margin: 24px 0 16px 0;
+  font-size: 14px;
+  line-height: 1.3;
+}
+.wpr-percentage-score-widget .wpr-score-no-urls {
+  background-image: url(../img/pma-light-pulp.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  width: 92px;
+  height: 92px;
+  margin: 0 auto;
+  display: block;
+}
+
+.wpr-percentage-indicator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.wpr-percentage-indicator .wpr-percentage-circle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 118px;
+  height: 118px;
+  font-size: 50px;
+  font-family: Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  font-weight: 500;
+  border-radius: 50%;
+  border: 3px solid;
+}
+.wpr-percentage-indicator .wpr-percentage-circle-sm {
+  width: 32px;
+  height: 32px;
+  font-size: 14px;
+}
+.wpr-percentage-indicator .wpr-percentage-circle.status-red {
+  border-color: #C01B1B;
+  color: #C01B1B;
+  background-color: #FBE4E4;
+}
+.wpr-percentage-indicator .wpr-percentage-circle.status-yellow {
+  border-color: #E9AA01;
+  color: #E9AA01;
+  background-color: #FFF7EA;
+}
+.wpr-percentage-indicator .wpr-percentage-circle.status-green {
+  border-color: #2E8F44;
+  color: #2E8F44;
+  background-color: #E8F8EB;
+}
+.wpr-percentage-indicator .wpr-percentage-circle.blurred {
+  filter: blur(4px);
+}
+.wpr-percentage-indicator .wpr-loading-img {
+  width: 118px;
+  height: 118px;
+}
+.wpr-percentage-indicator .wpr-loading-img-sm {
+  width: 32px;
+  height: 32px;
+}
+
 /*-----------------------------------------------*\
 
     Custom checkbox
@@ -3095,10 +3154,6 @@ div.wpr-tutorial-item {
   padding: 10px;
   margin: 8px 0;
 }
-.wpr-multiple-select .wpr-list .wpr-list-header {
-  display: flex;
-  justify-content: space-between;
-}
 .wpr-multiple-select .wpr-list .wpr-list-header .wpr-multiple-select-exclude_js_ads:before {
   font-family: "wpr-icomoon";
   content: "\e9b7";
@@ -3113,6 +3168,10 @@ div.wpr-tutorial-item {
   font-family: "wpr-icomoon";
   content: "\e927";
   padding-right: 8px;
+}
+.wpr-multiple-select .wpr-list .wpr-list-header {
+  display: flex;
+  justify-content: space-between;
 }
 .wpr-multiple-select .wpr-list .wpr-list-header .wpr-list-header-arrow {
   width: 15px;
