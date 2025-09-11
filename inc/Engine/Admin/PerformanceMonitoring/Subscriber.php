@@ -71,7 +71,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @param AjaxController  $ajax_controller AjaxController object.
 	 * @param Queue           $queue Queue object.
 	 * @param FreePlanContext $free_plan_context Free Plan context.
-	 * @param GlobalScore    $global_score GlobalScore instance.
+	 * @param GlobalScore     $global_score GlobalScore instance.
 	 */
 	public function __construct( Render $render, Controller $controller, AjaxController $ajax_controller, Queue $queue, FreePlanContext $free_plan_context, GlobalScore $global_score ) {
 		$this->render            = $render;
@@ -79,7 +79,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		$this->ajax_controller   = $ajax_controller;
 		$this->queue             = $queue;
 		$this->free_plan_context = $free_plan_context;
-		$this->global_score    = $global_score;
+		$this->global_score      = $global_score;
 	}
 
 	/**

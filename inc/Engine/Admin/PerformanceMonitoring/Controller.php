@@ -61,7 +61,7 @@ class Controller {
 		$this->manager        = $manager;
 		$this->context        = $context;
 		$this->credit_manager = $credit_manager;
-		$this->global_score = $global_score;
+		$this->global_score   = $global_score;
 	}
 
 	/**
