@@ -64,9 +64,9 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'rocket_localize_admin_script'        => 'add_pending_ids',
 			'admin_post_delete_pm'                => 'delete_row',
 			'wp_ajax_rocket_pm_reset_page'        => 'reset_page',
-			'rocket_insights_tab_content' => [
-				['render_license_banner_section', 10],
-				['render_settings_section', 30],
+			'rocket_insights_tab_content'         => [
+				[ 'render_license_banner_section', 10 ],
+				[ 'render_settings_section', 30 ],
 			],
 		];
 	}
@@ -154,8 +154,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return void
 	 */
 	public function render_license_banner_section() {
-		if ( true ){ // add some logic here to check if the banner should be displayed
-			$this->render->render_license_banner_section( $this->controller->get_license__data() );
-		}
+		// add some logic here to check if the banner should be displayed.
+		$this->render->render_license_banner_section( $this->controller->get_license_data() );
 	}
 }

@@ -125,7 +125,7 @@ class Controller {
 	 *
 	 * @return array
 	 */
-	public function get_license__data(): array {
+	public function get_license_data(): array {
 		return [
 			'price'                 => '4.99',
 			'currency'              => '$',
