@@ -25,7 +25,17 @@ class PerformanceMonitoring extends AbstractTable {
 	 *
 	 * @var int
 	 */
-	protected $version = 20250819;
+	protected $version = 20250909;
+
+	/**
+	 * Upgrades array.
+	 * Key => value array of versions => methods.
+	 *
+	 * @var array
+	 */
+	protected $upgrades = [
+		20250909 => 'add_is_blurred_column',
+	];
 
 	/**
 	 * Table schema data.
@@ -48,6 +58,7 @@ class PerformanceMonitoring extends AbstractTable {
 		next_retry_time  timestamp           NOT NULL default '0000-00-00 00:00:00',
 		score            tinyint(3)          NULL default 0,
 		report_url       varchar(255)        NULL default '',
+		is_blurred       tinyint(1)          NOT NULL default 0,
 		error_code       varchar(32)             NULL default NULL,
 		error_message    longtext                NULL default NULL,
 		PRIMARY KEY (id),
@@ -55,7 +66,8 @@ class PerformanceMonitoring extends AbstractTable {
 		KEY modified (modified),
 		KEY last_accessed (last_accessed),
 		INDEX `status_index` (`status`(191)),
-		INDEX `error_code_index` (`error_code`(32))";
+		INDEX `error_code_index` (`error_code`(32)),
+		INDEX `is_blurred` (is_blurred)";
 
 	/**
 	 * Truncate DB table.
@@ -68,5 +80,22 @@ class PerformanceMonitoring extends AbstractTable {
 		}
 
 		return $this->truncate();
+	}
+
+	/**
+	 * Add is blurred columns.
+	 *
+	 * @return bool
+	 */
+	protected function add_is_blurred_column() {
+		$column_exists = $this->column_exists( 'is_blurred' );
+
+		$created = true;
+
+		if ( ! $column_exists ) {
+			$created &= $this->get_db()->query( "ALTER TABLE {$this->table_name} ADD COLUMN is_blurred tinyint(1) NULL default 0 AFTER report_url, ADD INDEX is_blurred (is_blurred) " );
+		}
+
+		return $this->is_success( $created );
 	}
 }
