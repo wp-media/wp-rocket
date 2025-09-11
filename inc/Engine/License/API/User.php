@@ -255,7 +255,7 @@ class User {
 	 *
 	 * @param string $sku The SKU used to fetch the PMA addon data.
 	 *
-	 * @return string
+	 * @return int
 	 */
 	public function get_pma_addon_limit( string $sku ) {
 		$plan = $this->get_pma_data( $sku );
@@ -264,7 +264,7 @@ class User {
 			return 3;
 		}
 
-		return $plan->limit;
+		return (int) $plan->limit;
 	}
 
 	/**
