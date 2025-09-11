@@ -6,6 +6,7 @@ namespace WP_Rocket\Engine\Admin\PerformanceMonitoring;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Context\PerformanceMonitoringContext;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Database\Queries\PerformanceMonitoring as PMQuery;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Jobs\Manager;
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\Credit\Manager as CreditManager;
 
 class Controller {
 	/**
@@ -30,16 +31,25 @@ class Controller {
 	private $context;
 
 	/**
+	 * Credit manager instance.
+	 *
+	 * @var CreditManager
+	 */
+	private $credit_manager;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param PMQuery                      $query Query instance.
 	 * @param Manager                      $manager Manager instance.
 	 * @param PerformanceMonitoringContext $context Context instance.
+	 * @param CreditManager                $credit_manager Credit manager instance.
 	 */
-	public function __construct( PMQuery $query, Manager $manager, PerformanceMonitoringContext $context ) {
-		$this->query   = $query;
-		$this->manager = $manager;
-		$this->context = $context;
+	public function __construct( PMQuery $query, Manager $manager, PerformanceMonitoringContext $context, CreditManager $credit_manager ) {
+		$this->query          = $query;
+		$this->manager        = $manager;
+		$this->context        = $context;
+		$this->credit_manager = $credit_manager;
 	}
 
 	/**
@@ -98,5 +108,29 @@ class Controller {
 		}
 
 		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
+	}
+
+	/**
+	 * Reset credit.
+	 *
+	 * @return void
+	 */
+	public function reset_credit() {
+		$this->credit_manager->reset_credit();
+	}
+
+	/**
+	 * Validate credit for DB row ID.
+	 *
+	 * @param int $row_id DB row ID.
+	 *
+	 * @return void
+	 */
+	public function validate_credit( $row_id ) {
+		if ( $this->credit_manager->decrease_credit() ) {
+			return;
+		}
+
+		$this->query->make_blurred( $row_id );
 	}
 }
