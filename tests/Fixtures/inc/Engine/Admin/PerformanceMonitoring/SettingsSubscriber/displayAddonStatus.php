@@ -1,0 +1,35 @@
+<?php
+
+use WP_Rocket\Tests\Fixtures\inc\Engine\Admin\PerformanceMonitoring\SettingsSubscriber\UserDataGenerator;
+
+require_once __DIR__ . '/UserDataGenerator.php';
+
+return [
+	'testShouldRenderFreeVersionHTMLWhenNotActive' => [
+		'config' => [
+			'rocket_display_addon_status' => true,
+			'is_live_site' => true,
+			'customer_data' => (new UserDataGenerator())->generate()
+		],
+		'expected' => <<<HTML
+<span class="wpr-infoAccount wpr-isInvalid">No Subscription</span>
+HTML
+	],
+	'testShouldOutputAddonLicenseStatusWhenActive' => [
+		'config' => [
+			'rocket_display_addon_status' => true,
+			'is_live_site' => true,
+			'date_format' => 'F j, Y',
+			'customer_data' => (new UserDataGenerator())
+				->with_pma_active_sku('perf-monitor-advanced')
+				->with_pma_expiration(1756841100)
+				->generate()
+		],
+		'expected' => <<<HTML
+		<div>
+			<span class="wpr-title3">Next Billing Date</span>
+			<span class="wpr-infoAccount wpr-isValid">September 2, 2025</span>
+		</div>
+HTML
+	],
+];
