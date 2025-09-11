@@ -122,8 +122,7 @@ class GlobalScore {
 	private function calculate_pages_number(): int {
 		return $this->query->query(
 			[
-				'count'          => true,
-				'status__not_in' => [ 'failed' ],
+				'count' => true,
 			]
 		);
 	}
