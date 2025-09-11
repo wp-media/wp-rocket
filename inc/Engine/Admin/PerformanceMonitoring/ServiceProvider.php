@@ -82,7 +82,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'pm_context', PerformanceMonitoringContext::class )
 			->addArgument( 'options' );
 
-		$this->getContainer()->add( 'pm_free_plan_context', FreePlanContext::class );
+		$this->getContainer()->add( 'pm_free_plan_context', FreePlanContext::class )
+			->addArgument( 'user' );
 
 		$this->getContainer()->add( 'pm_credit_manager', Credit_Manager::class )
 			->addArgument( 'options_api' );
