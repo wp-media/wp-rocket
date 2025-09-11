@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Admin\PerformanceMonitoring\Context;
 
+use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Credit\Manager as CreditManager;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
 
@@ -11,9 +12,17 @@ use WP_Rocket\Engine\Common\Context\ContextInterface;
  */
 class FreePlanContext implements ContextInterface {
 	/**
+	 * User client API instance.
+	 *
+	 * @var User
+	 */
+	private $user;
+
+	/**
 	 * Constructor.
 	 */
-	public function __construct() {
+	public function __construct( User $user ) {
+		$this->user = $user;
 	}
 
 	/**
@@ -23,6 +32,6 @@ class FreePlanContext implements ContextInterface {
 	 * @return bool
 	 */
 	public function is_allowed( array $data = [] ): bool {
-		return true; // @Todo: We need to check the user API endpoint to get the current plan and check if it's the free one, once PR #7623 is merged.
+		return $this->user->is_pma_addon_active( $this->user->get_pma_addon_sku_active() );
 	}
 }
