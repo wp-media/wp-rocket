@@ -32,7 +32,7 @@ class Test_DeleteOldRows extends TestCase {
 		parent::set_up();
 
 		// Clear the table before each test.
-		$this->truncatePerformanceMonitoringTable();
+		self::truncatePerformanceMonitoringTable();
 	}
 
 	/**
@@ -157,15 +157,6 @@ class Test_DeleteOldRows extends TestCase {
 		// Reinstall table if it was uninstalled for this test.
 		if ( isset( $config['uninstall_table'] ) && $config['uninstall_table'] ) {
 			self::installPerformanceMonitoringTable();
-		}
-	}
-
-	private function truncatePerformanceMonitoringTable() {
-		$container = apply_filters( 'rocket_container', null );
-		$pm_table = $container->get( 'pm_table' );
-
-		if ( $pm_table->exists() ) {
-			$pm_table->truncate();
 		}
 	}
 
