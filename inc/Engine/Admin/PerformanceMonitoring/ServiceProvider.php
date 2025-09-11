@@ -40,6 +40,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'pm_subscriber',
 		'pm_ajax_controller',
 		'pm_global_score',
+		'pm_settings_subscriber',
 	];
 
 	/**
@@ -131,6 +132,15 @@ class ServiceProvider extends AbstractServiceProvider {
 					'pm_controller',
 					'pm_ajax_controller',
 					'pm_global_score',
+				]
+			);
+
+		// Addon Subscriber.
+		$this->getContainer()->addShared( 'pm_settings_subscriber', SettingsSubscriber::class )
+			->addArguments(
+				[
+					'user',
+					new StringArgument( __DIR__ . '/../../../Engine/License/views' ),
 				]
 			);
 
