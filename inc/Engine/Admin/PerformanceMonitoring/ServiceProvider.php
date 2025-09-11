@@ -84,12 +84,21 @@ class ServiceProvider extends AbstractServiceProvider {
 				]
 			);
 
+		// Global Score layer.
+		$this->getContainer()->add( 'pm_global_score', GlobalScore::class )
+			->addArguments(
+				[
+					'pm_query',
+				]
+			);
+
 		$this->getContainer()->add( 'pm_controller', Controller::class )
 			->addArguments(
 				[
 					'pm_query',
 					'pm_manager',
 					'pm_context',
+					'pm_global_score',
 				]
 			);
 
@@ -100,7 +109,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'pm_table',
 					'pm_api_client',
 				]
-				);
+			);
 
 		// Queue layer.
 		$this->getContainer()->add( 'pm_queue', PMQueue::class );
@@ -110,15 +119,8 @@ class ServiceProvider extends AbstractServiceProvider {
 					'pm_query',
 					'pm_manager',
 					'pm_context',
-					new StringArgument( $this->getContainer()->get( 'template_path' ) . '/settings/' ),
-				]
-				);
-
-		// Global Score layer.
-		$this->getContainer()->add( 'pm_global_score', GlobalScore::class )
-			->addArguments(
-				[
-					'pm_query',
+					'pm_global_score',
+					'pm_render',
 				]
 			);
 		// Subscriber.

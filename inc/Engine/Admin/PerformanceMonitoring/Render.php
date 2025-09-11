@@ -38,7 +38,27 @@ class Render extends Abstract_Render {
 	 * @return void
 	 */
 	public function render_global_score_widget( array $data ) {
-		echo $this->generate( 'partials/performance-monitoring/global-score-widget', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo $this->get_global_score_widget( $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	}
+
+	/**
+	 * Generate the global score widget HTML.
+	 *
+	 * @param array $data Data for the global score widget.
+	 * @return string The rendered HTML for the global score widget.
+	 */
+	public function get_global_score_widget( array $data ): string {
+		return $this->generate( 'partials/performance-monitoring/global-score-widget', $data );
+	}
+
+	/**
+	 * Generates the HTML for a single performance monitoring list row.
+	 *
+	 * @param object $data The data object representing a single row (page) in the performance monitoring list.
+	 * @return string The rendered HTML for the performance monitoring row.
+	 */
+	public function get_performance_monitoring_list_row( object $data ): string {
+		return $this->generate( 'partials/performance-monitoring-row', $data );
 	}
 
 	/**
