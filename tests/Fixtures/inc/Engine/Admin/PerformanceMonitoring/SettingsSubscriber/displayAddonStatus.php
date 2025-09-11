@@ -12,7 +12,7 @@ return [
 			'customer_data' => (new UserDataGenerator())->generate()
 		],
 		'expected' => <<<HTML
-<span class="wpr-infoAccount wpr-isInvalid">No subscription</span>
+<span class="wpr-infoAccount wpr-isInvalid">No Subscription</span>
 HTML
 	],
 	'testShouldOutputAddonLicenseStatusWhenActive' => [
@@ -27,7 +27,7 @@ HTML
 		],
 		'expected' => <<<HTML
 		<div>
-			<span class="wpr-title3">Expiration Date</span>
+			<span class="wpr-title3">Next Billing Date</span>
 			<span class="wpr-infoAccount wpr-isValid">September 2, 2025</span>
 		</div>
 HTML
