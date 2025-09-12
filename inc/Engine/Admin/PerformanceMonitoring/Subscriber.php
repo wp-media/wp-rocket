@@ -107,7 +107,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'rocket_pm_job_retest'                => 'reset_global_score',
 			'rocket_pm_job_deleted'               => 'reset_global_score',
 			'rocket_dashboard_sidebar'            => 'render_global_score_widget',
-			'admin_post_rocket_pm_add_homepage'	=> 'add_homepage_from_widget',
+			'admin_post_rocket_pm_add_homepage'   => 'add_homepage_from_widget',
 		];
 	}
 
