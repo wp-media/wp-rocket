@@ -374,11 +374,17 @@ a:focus, button:focus {
 }
 
 .wpr-icon-rocket-insights:before, #wpr-nav-rocket_insights:before {
-  content: url("../img/rocket-insights.svg");
+  content: "";
+  background-image: url("../img/rocket-insights.svg");
+  background-repeat: no-repeat;
+  background-position: center center;
 }
 
 .wpr-icon-rocket-insights-hover:before, #wpr-nav-rocket_insights.isActive:before, #wpr-nav-rocket_insights:hover:before {
-  content: url("../img/rocket-insights-hover.svg");
+  content: "";
+  background-image: url("../img/rocket-insights-hover.svg");
+  background-repeat: no-repeat;
+  background-position: center center;
 }
 
 .wpr-title1 {
@@ -1527,7 +1533,7 @@ div.wpr-upgrade-websites.notstacked {
   height: 2px;
   bottom: -1px;
   left: 0;
-  background: #F56640;
+  background-color: #F56640;
 }
 .wpr-sectionHeader .wpr-title1 {
   line-height: 48px;
@@ -1537,10 +1543,12 @@ div.wpr-upgrade-websites.notstacked {
   width: 48px;
   height: 48px;
   margin-right: 24px;
-  background: #FDE0D9;
+  background-color: #FDE0D9;
+  background-size: 65%;
   color: #F56640;
   text-align: center;
   border-radius: 3px;
+  vertical-align: middle;
 }
 .wpr-sectionHeader-title {
   margin-top: 8px;
