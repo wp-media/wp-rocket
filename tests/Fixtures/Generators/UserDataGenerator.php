@@ -9,6 +9,8 @@ class UserDataGenerator {
 
 	protected $expiration = 0;
 
+	protected $promos = [];
+
 	public function with_pma_expiration(int $expiration): self {
 		$this->expiration = $expiration;
 		return $this;
@@ -19,8 +21,18 @@ class UserDataGenerator {
 		return $this;
 	}
 
-	public function generate() {
+	/**
+	 * @param string $sku
+	 * @param callable(PmaPromoGenerator) $callback
+	 *
+	 * @return $this
+	 */
+	public function with_promo(string $sku, callable $callback): self {
+		$this->promos[$sku] = $callback(new PmaPromoGenerator());
+		return $this;
+	}
 
+	public function generate() {
 		$plans[] = (object) [
 			"sku" => "perf-monitor-free",
 			"status" => $this->pma_sku_active == "perf-monitor-free" ? "active" : "inactive",
@@ -32,6 +44,8 @@ class UserDataGenerator {
 				"action" => "none",
 				"url" => null,
 			],
+			'highlights' => [],
+			'promo' => (object) $this->generate_promo("perf-monitor-free"),
 			'limit' => '3'
 		];
 
@@ -44,8 +58,14 @@ class UserDataGenerator {
 				"action" => "purchase",
 				"url" => "https://wp-rocket.me/express-checkout/?user_id=202331&domain=random.app&product_sku=perf-monitor-advanced&consumer_key=12be53be",
 			],
+			'highlights' => [
+				'Up to 10 pages tracked',
+				'Automatic performance monitoring',
+				'performance',
+			],
 			"price" => "0.00",
-			'limit' => '10'
+			'limit' => '10',
+			'promo' => (object) $this->generate_promo("perf-monitor-advanced"),
 		];
 
 		return (object)[
@@ -55,5 +75,17 @@ class UserDataGenerator {
 				"plans" => $plans,
 			]
 		];
+	}
+
+	protected function generate_promo(string $sku) {
+		return key_exists($sku, $this->promos) ?
+			$this->promos[$sku]->generate()
+			:
+			[
+				'name' => '',
+				'price' => '',
+				'expires_at' => 0,
+				'description' => '',
+			];
 	}
 }

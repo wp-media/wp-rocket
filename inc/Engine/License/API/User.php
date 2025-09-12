@@ -268,6 +268,117 @@ class User {
 	}
 
 	/**
+	 * Retrieves the description for the PMA add-on based on the provided SKU.
+	 *
+	 * @param string $sku The SKU used to fetch the PMA addon data.
+	 *
+	 * @return string
+	 */
+	public function get_pma_addon_description( string $sku ) {
+		$plan = $this->get_pma_data( $sku );
+
+		if ( ! $plan || ! isset( $plan->description ) ) {
+			return '';
+		}
+
+		return $plan->description;
+	}
+
+
+	/**
+	 * Retrieves the highlights for the PMA add-on based on the provided SKU.
+	 *
+	 * @param string $sku The SKU used to fetch the PMA addon data.
+	 *
+	 * @return array
+	 */
+	public function get_pma_addon_highlights( string $sku ) {
+		$plan = $this->get_pma_data( $sku );
+
+		if ( ! $plan || ! isset( $plan->highlights ) ) {
+			return [];
+		}
+
+		return $plan->highlights;
+	}
+
+	/**
+	 * Checks if the PMA add-on has a promo based on the provided SKU.
+	 *
+	 * @param string $sku The SKU used to fetch the PMA addon data.
+	 *
+	 * @return bool
+	 */
+	public function has_pma_addon_promo( string $sku ) {
+		return $this->get_pma_addon_promo( $sku ) !== false;
+	}
+
+	public function get_pma_addon_promo_price( string $sku ) {
+		$promo = $this->get_pma_addon_promo( $sku );
+
+		if( ! $promo || ! isset( $promo->price ) ) {
+			return '';
+		}
+
+		return $promo->price;
+	}
+
+	/**
+	 * Retrieves the promo name for the PMA add-on based on the provided SKU.
+	 *
+	 * @param string $sku The SKU used to fetch the PMA addon data.
+	 *
+	 * @return string
+	 */
+	public function get_pma_addon_promo_name( string $sku ) {
+		$promo = $this->get_pma_addon_promo( $sku );
+
+		if( ! $promo || ! isset( $promo->name ) ) {
+			return '';
+		}
+
+		return $promo->name;
+	}
+
+	/**
+	 * Retrieves the promo description for the PMA add-on based on the provided SKU.
+	 *
+	 * @param string $sku The SKU used to fetch the PMA addon data.
+	 *
+	 * @return string
+	 */
+	public function get_pma_addon_promo_description( string $sku ) {
+		$promo = $this->get_pma_addon_promo( $sku );
+
+		if( ! $promo || ! isset( $promo->description ) ) {
+			return '';
+		}
+
+		return $promo->description;
+	}
+
+	/**
+	 * Retrieves the promo data for the PMA add-on based on the provided SKU.
+	 *
+	 * @param string $sku The SKU used to fetch the PMA addon data.
+	 *
+	 * @return false|object
+	 */
+	protected function get_pma_addon_promo( string $sku ) {
+		$plan = $this->get_pma_data( $sku );
+
+		if ( ! $plan || ! isset( $plan->promo ) ) {
+			return false;
+		}
+
+		if( ! isset( $plan->promo->expires_at ) || ( (int) $plan->promo->expires_at ) > time() ) {
+			return false;
+		}
+
+		return $plan->promo;
+	}
+
+	/**
 	 * Retrieves the performance monitoring plan data associated with the specified SKU.
 	 *
 	 * @param string $sku The SKU identifier used to find the corresponding performance monitoring plan.
