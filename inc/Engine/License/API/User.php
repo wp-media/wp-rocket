@@ -313,6 +313,30 @@ class User {
 		return $this->get_pma_addon_promo( $sku ) !== false;
 	}
 
+	/**
+	 * Retrieves the price for the PMA add-on based on the provided SKU.
+	 *
+	 * @param string $sku The SKU used to fetch the PMA addon data.
+	 *
+	 * @return string
+	 */
+	public function get_pma_addon_price( string $sku ) {
+		$data = $this->get_pma_data( $sku );
+
+		if( ! $data || ! isset( $data->price ) ) {
+			return '';
+		}
+
+		return $data->price;
+	}
+
+	/**
+	 * Retrieves the promo price for the PMA add-on based on the provided SKU.
+	 *
+	 * @param string $sku The SKU used to fetch the PMA addon data.
+	 *
+	 * @return string
+	 */
 	public function get_pma_addon_promo_price( string $sku ) {
 		$promo = $this->get_pma_addon_promo( $sku );
 
@@ -371,7 +395,7 @@ class User {
 			return false;
 		}
 
-		if( ! isset( $plan->promo->expires_at ) || ( (int) $plan->promo->expires_at ) > time() ) {
+		if( ! isset( $plan->promo->expires_at ) || ( (int) $plan->promo->expires_at ) < time() ) {
 			return false;
 		}
 

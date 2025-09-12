@@ -39,11 +39,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<span><?php echo wp_kses_post( __( 'Full GTmetrix <strong>performance reports</strong>', 'rocket' ) ); ?></span>
 			</li>
 		</ul>
+		<?php if ( $data['price_before_discount'] ): ?>
 		<p class="wpr-pma-terms">
 			<?php esc_html_e( '* Billed monthly. Launch price valid for the first 12 months, after which standard pricing applies. You can cancel at any time, each month started is due.', 'rocket' ); ?>
 		</p>
+		<?php endif; ?>
 	</div>
 		<div class="wpr-pma-price-box">
+			<?php if ( $data['price_before_discount'] ): ?>
 			<span class="wpr-pma-offer"><?php esc_html_e( 'Launch Offer', 'rocket' ); ?></span>
 			<p class="wpr-pma-price-before-discount">
 				<?php
@@ -55,6 +58,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				);
 				?>
 			</p>
+			<?php endif; ?>
 			<?php $this->render_license_banner_plan_price( $data['price'], '$', $data['period'] ); ?>
 			<p class="wpr-pma-vat">
 				<?php esc_html_e( '(excl. VAT)', 'rocket' ); ?>

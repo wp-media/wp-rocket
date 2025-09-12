@@ -113,6 +113,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'pm_context',
 					'pm_credit_manager',
 					'pm_global_score',
+					'user',
 				]
 			);
 
