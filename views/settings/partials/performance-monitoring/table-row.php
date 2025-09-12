@@ -49,7 +49,7 @@ defined( 'ABSPATH' ) || exit;
 			],
 		];
 
-		if ( ! empty( $data->can_access_report() ) ) {
+		if ( ! $data->can_access_report() ) {
 			$rocket_show_report_btn_args['attributes']['class'] .= ' wpr-btn-with-tool-tip';
 			$rocket_show_report_btn_args['tool_tip']             = __( 'Upgrade your plan to get access to the Report', 'rocket' );
 		}
