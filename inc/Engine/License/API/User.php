@@ -20,6 +20,17 @@ class User {
 	}
 
 	/**
+	 * Set the user object.
+	 *
+	 * @param object $user The user object.
+	 *
+	 * @return void
+	 */
+	public function set_user( $user ) {
+		$this->user = $user;
+	}
+
+	/**
 	 * Gets the user license type
 	 *
 	 * @return int
@@ -144,5 +155,136 @@ class User {
 			return [];
 		}
 		return (array) $this->user->licence->prices->upgrades;
+	}
+
+	/**
+	 * Gets the addon license expiration timestamp
+	 *
+	 * @since 3.20
+	 *
+	 * @return int
+	 */
+	public function get_pma_license_expiration() {
+		if ( ! isset( $this->user->performance_monitoring->expiration ) ) {
+			return 0;
+		}
+
+		return (int) $this->user->performance_monitoring->expiration;
+	}
+
+	/**
+	 * Checks if the addon license is active
+	 *
+	 * @param string $sku The SKU of the addon.
+	 *
+	 * @since 3.20
+	 *
+	 * @return boolean
+	 */
+	public function is_pma_addon_active( string $sku ) {
+		return 'perf-monitor-free' !== $sku;
+	}
+
+	/**
+	 * Retrieves the active SKU for the Performance Monitoring Addon.
+	 *
+	 * @since 3.20
+	 *
+	 * @return string
+	 */
+	public function get_pma_addon_sku_active(): string {
+
+		if ( ! isset( $this->user->performance_monitoring ) || ! isset( $this->user->performance_monitoring->active_sku ) ) {
+			return '';
+		}
+
+		return (string) $this->user->performance_monitoring->active_sku;
+	}
+
+	/**
+	 * Retrieves the PMA addon upgrade SKUs based on the provided SKU.
+	 *
+	 * @param string $sku The SKU for which to retrieve the upgrade data.
+	 *
+	 * @return array
+	 */
+	public function get_pma_addon_upgrade_skus( string $sku ) {
+		$plan = $this->get_pma_data( $sku );
+		if ( ! $plan || ! isset( $plan->upgrades ) ) {
+			return [];
+		}
+
+		return $plan->upgrades;
+	}
+
+	/**
+	 * Retrieves the button text for the PMA addon based on the provided SKU.
+	 *
+	 * @param string $sku The SKU used to fetch the PMA addon data.
+	 *
+	 * @return string
+	 */
+	public function get_pma_addon_btn_text( string $sku ) {
+		$plan = $this->get_pma_data( $sku );
+		if ( ! $plan ) {
+			return '';
+		}
+
+		return $plan->button->label;
+	}
+
+	/**
+	 * Retrieves the URL for the PMA add-on button associated with the specified SKU.
+	 *
+	 * @param string $sku The SKU identifier used to fetch.
+	 *
+	 * @return string
+	 */
+	public function get_pma_addon_btn_url( string $sku ) {
+		$plan = $this->get_pma_data( $sku );
+
+		if ( ! $plan ) {
+			return '';
+		}
+
+		return $plan->button->url;
+	}
+
+	/**
+	 * Retrieves the limit for the PMA add-on based on the provided SKU.
+	 *
+	 * @param string $sku The SKU used to fetch the PMA addon data.
+	 *
+	 * @return int
+	 */
+	public function get_pma_addon_limit( string $sku ) {
+		$plan = $this->get_pma_data( $sku );
+
+		if ( ! $plan || ! isset( $plan->limit ) ) {
+			return 3;
+		}
+
+		return (int) $plan->limit;
+	}
+
+	/**
+	 * Retrieves the performance monitoring plan data associated with the specified SKU.
+	 *
+	 * @param string $sku The SKU identifier used to find the corresponding performance monitoring plan.
+	 *
+	 * @return object|null
+	 */
+	protected function get_pma_data( string $sku ) {
+
+		if ( ! isset( $this->user->performance_monitoring ) || ! isset( $this->user->performance_monitoring->plans ) ) {
+			return null;
+		}
+
+		foreach ( $this->user->performance_monitoring->plans as $plan ) {
+			if ( $plan->sku === $sku ) {
+				return $plan;
+			}
+		}
+		return null;
 	}
 }

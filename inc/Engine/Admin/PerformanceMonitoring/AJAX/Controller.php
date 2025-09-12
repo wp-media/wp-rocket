@@ -4,13 +4,14 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Admin\PerformanceMonitoring\AJAX;
 
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\{
-	Database\Queries\PerformanceMonitoring as PMQuery,
+	Render,
+	GlobalScore,
 	Jobs\Manager,
-	Context\PerformanceMonitoringContext as Context
+	Context\PerformanceMonitoringContext as Context,
+	Database\Queries\PerformanceMonitoring as PMQuery
 };
-use WP_Rocket\Abstract_Render;
 
-class Controller extends Abstract_Render {
+class Controller {
 	/**
 	 * Query object.
 	 *
@@ -33,19 +34,34 @@ class Controller extends Abstract_Render {
 	private $context;
 
 	/**
+	 * GlobalScore instance.
+	 *
+	 * @var GlobalScore
+	 */
+	private $global_score;
+
+	/**
+	 * Render instance.
+	 *
+	 * @var Render
+	 */
+	private $render;
+
+	/**
 	 * Constructor.
 	 *
-	 * @param PMQuery $query Query instance.
-	 * @param Manager $manager Manager instance.
-	 * @param Context $context Context instance.
-	 * @param string  $template_path Absolute path to the views/settings.
+	 * @param PMQuery     $query Query instance.
+	 * @param Manager     $manager Manager instance.
+	 * @param Context     $context Context instance.
+	 * @param GlobalScore $global_score GlobalScore instance.
+	 * @param Render      $render Render instance.
 	 */
-	public function __construct( PMQuery $query, Manager $manager, Context $context, $template_path ) {
-		parent::__construct( $template_path );
-
-		$this->query   = $query;
-		$this->manager = $manager;
-		$this->context = $context;
+	public function __construct( PMQuery $query, Manager $manager, Context $context, GlobalScore $global_score, Render $render ) {
+		$this->query        = $query;
+		$this->manager      = $manager;
+		$this->context      = $context;
+		$this->global_score = $global_score;
+		$this->render       = $render;
 	}
 
 	/**
@@ -55,6 +71,16 @@ class Controller extends Abstract_Render {
 	 */
 	public function add_new_page(): void {
 		check_ajax_referer( 'rocket-ajax', 'nonce', true );
+
+		// Check if adding a page is allowed based on URL limits.
+		if ( ! wpm_apply_filters_typesafe( 'wpr_pm_allow_add_page', true ) ) {
+			wp_send_json_error(
+				[
+					'error'   => true,
+					'message' => __( 'Maximum number of URLs reached for your license.', 'rocket' ),
+				]
+				);
+		}
 
 		$url = isset( $_POST['page_url'] ) ? untrailingslashit( esc_url_raw( sanitize_text_field( wp_unslash( $_POST['page_url'] ) ) ) ) : '';
 
@@ -83,13 +109,23 @@ class Controller extends Abstract_Render {
 				);
 		}
 
+		/**
+		 * Fires when a performance monitoring job is added via AJAX.
+		 *
+		 * @since 3.20
+		 *
+		 * @param string $url The URL that was added for monitoring.b.
+		 */
+		do_action( 'rocket_pm_job_added', $url );
+
 		$row_data = $this->query->get_row_by_id( (int) $row_id );
 
 		// Remove message from the response payload.
 		unset( $payload['message'] );
 
-		$payload['id']   = $row_id;
-		$payload['html'] = $this->generate( 'partials/performance-monitoring-row', $row_data );
+		$payload['id']                = $row_id;
+		$payload['html']              = $this->render->get_performance_monitoring_list_row( $row_data );
+		$payload['global_score_data'] = $this->get_global_score_payload();
 
 		wp_send_json_success( $payload );
 	}
@@ -269,7 +305,9 @@ class Controller extends Abstract_Render {
 			wp_send_json_error( $payload );
 		}
 
-		$payload['results'] = $results;
+		$payload['results']           = $results;
+		$payload['global_score_data'] = $this->get_global_score_payload();
+
 		wp_send_json_success( $payload );
 	}
 
@@ -303,12 +341,45 @@ class Controller extends Abstract_Render {
 
 		$this->manager->add_url_to_the_queue( $row->url, true ); // @phpstan-ignore-line
 
+		/**
+		 * Fires when a performance monitoring job is reset/retested.
+		 *
+		 * @since 3.20
+		 *
+		 * @param int    $id The database row ID of the reset job.
+		 */
+		do_action( 'rocket_pm_job_retest', $id );
+
 		$row = $this->query->get_row_by_id( $id );
 		wp_send_json_success(
 			[
-				'id'   => $id,
-				'html' => $this->generate( 'partials/performance-monitoring-row', $row ),
+				'id'                => $id,
+				'html'              => $this->render->get_performance_monitoring_list_row( $row ),
+				'global_score_data' => $this->get_global_score_payload(),
 			]
 			);
+	}
+
+	/**
+	 * Retrieves the global performance score payload for AJAX responses.
+	 *
+	 * Gets the global score data, determines the status color, and generates the HTML
+	 * for the global score widget.
+	 *
+	 * @return array {
+	 *     @type array  $data Global score data including score, pages_num, status, and status-color.
+	 *     @type string $html Rendered HTML for the global score widget.
+	 * }
+	 */
+	private function get_global_score_payload() {
+		$payload = [];
+
+		$payload                 = $this->global_score->get_global_score_data();
+		$payload['status-color'] = $this->render->get_score_color_status( (int) $payload['score'] );
+
+		return [
+			'data' => $payload,
+			'html' => $this->render->get_global_score_widget( $payload ),
+		];
 	}
 }

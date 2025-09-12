@@ -264,6 +264,14 @@ document.addEventListener('DOMContentLoaded', function() {
 	let pmIds = Array.isArray(window.rocket_ajax_data?.pm_ids) ? window.rocket_ajax_data.pm_ids.slice() : [];
 	let pollInterval = POLL_BASE_INTERVAL;
 	let pollTimer = null;
+    let globalScoreData = {
+        data: {
+            status: '',
+            score: 0,
+            pages_num: 0
+        },
+        html: ''
+    };
 
 	// ==== DOM Selectors ====
 	const $pageUrlInput = $('#wpr-speed-radar-url-input');
@@ -310,6 +318,11 @@ document.addEventListener('DOMContentLoaded', function() {
 		pollInterval = Math.min(pollInterval * 1.5, POLL_MAX_INTERVAL); // Exponential backoff
 	}
 
+    function isOnDashboard() {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get('page') === 'wprocket' && window.location.hash === '#dashboard';
+    }
+
 	// ==== AJAX Handlers ====
 	function getResults() {
 		if (pmIds.length === 0) {
@@ -323,6 +336,16 @@ document.addEventListener('DOMContentLoaded', function() {
 			_ajax_nonce: rocket_ajax_data.nonce
 		}, function(response) {
 			if (response.success && Array.isArray(response.data.results)) {
+                // Update global score data and widget when status || page count changes.
+                if (globalScoreData.data.status !== response.data.global_score_data.data.status || globalScoreData.data.pages_num !== response.data.global_score_data.data.pages_num) {
+                    // Update global score data.
+                    globalScoreData = response.data.global_score_data;
+        
+                    // Update global score widget if on dashboard.
+                    if ( isOnDashboard() ) {
+                        $('#wpr_global_score_widget').html(response.data.global_score_data.html);
+                    }
+                }
 				response.data.results.forEach(result => {
 					const $row = $(`[data-rocket-pm-id="${result.id}"] .wpr-speed-radar-score`);
 					$row.html(result.status);
@@ -363,6 +386,9 @@ document.addEventListener('DOMContentLoaded', function() {
 				$tableBody.append(response.data.html);
 				addIds(response.data.id);
 
+                // Update global score data.
+                globalScoreData = response.data.global_score_data;
+
 				// Start polling if not already running
 				if (!pollTimer) {
 					pollInterval = POLL_BASE_INTERVAL;
@@ -393,6 +419,9 @@ document.addEventListener('DOMContentLoaded', function() {
 				const $row = $(`[data-rocket-pm-id="${response.data.id}"]`);
 				$row.replaceWith(response.data.html);
 
+                // Update global score data.
+                globalScoreData = response.data.global_score_data;
+
 				// Start polling if not already running
 				if (!pollTimer) {
 					pollInterval = POLL_BASE_INTERVAL;
@@ -409,15 +438,37 @@ document.addEventListener('DOMContentLoaded', function() {
 	$(document).on( 'click', '#add_page_speed_radar', handleAddPage );
 	$(document).on( 'click', '#wpr-action-speed_radar_refresh', handleResetPage );
 
-	// Only poll if on the dashboard (more robust check)
-	function isOnDashboard() {
-		const urlParams = new URLSearchParams(window.location.search);
-		return urlParams.get('page') === 'wprocket' && window.location.hash === '#dashboard';
-	}
+	// Only poll if on a wpr section that requires polling(dashboard|rocket_insights) (more robust check)
+    function isValidPageForPolling() {
+        const urlParams = new URLSearchParams(window.location.search);
+        switch (window.location.hash) {
+            case '#dashboard':
+            case '#rocket_insights':
+                return urlParams.get('page') === 'wprocket';
+            default:
+                return false;
+        }
+    }
 
 	// Resume polling if needed
-	if (isOnDashboard() && pmIds.length > 0) {
+	if (isValidPageForPolling() && pmIds.length > 0) {
 		pollInterval = POLL_BASE_INTERVAL;
 		schedulePolling();
 	}
+
+    // Update global score widget in the cause of a slow polling interval when dashboard menu is clicked.
+    $('#wpr-nav-dashboard').on('click', () => {
+        if ( '' === globalScoreData.html ) {
+            return;
+        }
+
+        let  globalScoreWidget = $('#wpr_global_score_widget');
+
+        setTimeout(() => {
+            if (globalScoreWidget.length && globalScoreWidget.is(':visible')) {
+                // Update global score widget.
+                globalScoreWidget.html(globalScoreData.html);
+            }
+        }, 30); // Wait for 30ms after click for target element to be ready and visible.
+    })
 });
