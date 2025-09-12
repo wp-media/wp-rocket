@@ -96,4 +96,14 @@ class Render extends Abstract_Render {
 	public function render_settings_section( array $data ) {
 		echo $this->generate( 'partials/performance-monitoring/settings', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
+
+	/**
+	 * Render the HTML for a single performance monitoring list row.
+	 *
+	 * @param object $data The data object representing a single row (page) in the performance monitoring list.
+	 * @return void
+	 */
+	public function render_performance_monitoring_list_row( object $data ) {
+		echo $this->get_performance_monitoring_list_row( $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	}
 }
