@@ -323,7 +323,7 @@ class User {
 	public function get_pma_addon_price( string $sku ) {
 		$data = $this->get_pma_data( $sku );
 
-		if( ! $data || ! isset( $data->price ) ) {
+		if ( ! $data || ! isset( $data->price ) ) {
 			return '';
 		}
 
@@ -340,7 +340,7 @@ class User {
 	public function get_pma_addon_promo_price( string $sku ) {
 		$promo = $this->get_pma_addon_promo( $sku );
 
-		if( ! $promo || ! isset( $promo->price ) ) {
+		if ( ! $promo || ! isset( $promo->price ) ) {
 			return '';
 		}
 
@@ -357,7 +357,7 @@ class User {
 	public function get_pma_addon_promo_name( string $sku ) {
 		$promo = $this->get_pma_addon_promo( $sku );
 
-		if( ! $promo || ! isset( $promo->name ) ) {
+		if ( ! $promo || ! isset( $promo->name ) ) {
 			return '';
 		}
 
@@ -374,7 +374,7 @@ class User {
 	public function get_pma_addon_promo_description( string $sku ) {
 		$promo = $this->get_pma_addon_promo( $sku );
 
-		if( ! $promo || ! isset( $promo->description ) ) {
+		if ( ! $promo || ! isset( $promo->description ) ) {
 			return '';
 		}
 
@@ -395,7 +395,7 @@ class User {
 			return false;
 		}
 
-		if( ! isset( $plan->promo->expires_at ) || ( (int) $plan->promo->expires_at ) < time() ) {
+		if ( ! isset( $plan->promo->expires_at ) || ( (int) $plan->promo->expires_at ) < time() ) {
 			return false;
 		}
 

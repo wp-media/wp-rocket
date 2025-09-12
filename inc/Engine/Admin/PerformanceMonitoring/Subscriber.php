@@ -258,7 +258,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public function render_license_banner_section() {
 
-		if( ! $this->controller->display_banner() ) {
+		if ( ! $this->controller->display_banner() ) {
 			return;
 		}
 		// add some logic here to check if the banner should be displayed.

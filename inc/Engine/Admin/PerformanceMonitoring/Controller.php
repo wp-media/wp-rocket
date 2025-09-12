@@ -49,6 +49,8 @@ class Controller {
 	private $global_score;
 
 	/**
+	 * User client API instance.
+	 *
 	 * @var User
 	 */
 	protected $user;
@@ -207,9 +209,9 @@ class Controller {
 	 * @return bool
 	 */
 	public function display_banner(): bool {
-		$sku = $this->user->get_pma_addon_sku_active();
-		$upgrades = $this->user->get_pma_addon_upgrade_skus($sku);
-		return 0 !== count($upgrades);
+		$sku      = $this->user->get_pma_addon_sku_active();
+		$upgrades = $this->user->get_pma_addon_upgrade_skus( $sku );
+		return 0 !== count( $upgrades );
 	}
 
 	/**
@@ -218,14 +220,14 @@ class Controller {
 	 * @return array
 	 */
 	public function get_license_data(): array {
-		$sku = $this->user->get_pma_addon_sku_active();
-		$upgrades = $this->user->get_pma_addon_upgrade_skus($sku);
-		$upgrade = array_shift($upgrades);
+		$sku      = $this->user->get_pma_addon_sku_active();
+		$upgrades = $this->user->get_pma_addon_upgrade_skus( $sku );
+		$upgrade  = array_shift( $upgrades );
 
-		$price = $this->user->get_pma_addon_price($upgrade);
+		$price = $this->user->get_pma_addon_price( $upgrade );
 
-		$limit = $this->user->get_pma_addon_limit($upgrade);
-		if( ! $this->user->has_pma_addon_promo( $upgrade )) {
+		$limit = $this->user->get_pma_addon_limit( $upgrade );
+		if ( ! $this->user->has_pma_addon_promo( $upgrade ) ) {
 			return [
 				'price'                 => $price,
 				'currency'              => '$',
@@ -235,7 +237,7 @@ class Controller {
 			];
 		}
 
-		$promo_price = $this->user->get_pma_addon_promo_price($upgrade);
+		$promo_price = $this->user->get_pma_addon_promo_price( $upgrade );
 
 		return [
 			'price'                 => $promo_price,
