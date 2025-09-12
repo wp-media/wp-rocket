@@ -275,7 +275,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	// ==== DOM Selectors ====
 	const $pageUrlInput = $('#wpr-speed-radar-url-input');
-	const $tableBody = $('.wpr-speed-radar-table tbody');
+	const $tableBody = $('.wpr-pma-urls-table tbody');
 
 	// ==== Utility Functions ====
 	function isValidUrl(input) {
