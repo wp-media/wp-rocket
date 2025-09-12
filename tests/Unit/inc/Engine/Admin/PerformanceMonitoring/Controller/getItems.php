@@ -7,6 +7,8 @@ use WP_Rocket\Engine\Admin\PerformanceMonitoring\Context\PerformanceMonitoringCo
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Controller;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Database\Queries\PerformanceMonitoring;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Jobs\Manager;
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\Credit\Manager as CreditManager;
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\GlobalScore;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
@@ -28,9 +30,11 @@ class Test_GetItems extends TestCase {
 			->with($expected_params)
 			->willReturn(['foo']);
 
-		$mock_manager = $this->createMock(Manager::class);
-		$mock_context = $this->createMock(PerformanceMonitoringContext::class);
-		$controller = new Controller($mock_query, $mock_manager, $mock_context);
+		$mock_manager        = $this->createMock(Manager::class);
+		$mock_context        = $this->createMock(PerformanceMonitoringContext::class);
+		$mock_credit_manager = $this->createMock(CreditManager::class);
+		$global_score = $this->createMock(GlobalScore::class);
+		$controller = new Controller($mock_query, $mock_manager, $mock_context, $mock_credit_manager, $global_score);
 		$result = $controller->get_items();
 
 		$this->assertEquals(['foo'], $result);

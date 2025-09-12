@@ -141,4 +141,20 @@ class PerformanceMonitoring extends AbstractQuery {
 			]
 			);
 	}
+
+	/**
+	 * Make one row blurred.
+	 *
+	 * @param int $row_id DB row ID.
+	 *
+	 * @return void
+	 */
+	public function make_blurred( $row_id ) {
+		$this->update_item(
+			$row_id,
+			[
+				'is_blurred' => 1,
+			]
+		);
+	}
 }
