@@ -37,49 +37,59 @@
 	}
 
 	// Benefits list
-	.wpr-pma-benefits-list {
+	.wpr-pma-benefits-list-container {
 		flex: 1;
 		padding: 0;
 		margin: 0;
-		list-style: none;
 		max-width: 60%;
+		.wpr-pma-benefits-list {
+			list-style: none;
 
-		@media (max-width: 768px) {
-			max-width: 100%;
-		}
-
-		li {
-			position: relative;
-			padding-left: 30px;
-			margin-bottom: 20px;
-			font-size: 16px;
-			color: #333;
-			display: flex;
-			align-items: center;
-
-			&:last-child {
-				margin-bottom: 0;
+			@media (max-width: 768px) {
+				max-width: 100%;
 			}
 
-			&:before {
-				content: "✓";
-				position: absolute;
-				left: 0;
-				color: #1a1a1a;
-				font-weight: bold;
+			li {
+				position: relative;
+				padding-left: 30px;
+				margin-bottom: 20px;
+				font-size: 16px;
+				color: #333;
 				display: flex;
 				align-items: center;
-				justify-content: center;
-				width: 20px;
-				height: 20px;
-			}
 
-			strong {
-				font-weight: 600;
+				&:last-child {
+					margin-bottom: 0;
+				}
+
+				&:before {
+					content: "✓";
+					position: absolute;
+					left: 0;
+					color: #1a1a1a;
+					font-weight: bold;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					width: 20px;
+					height: 20px;
+				}
+
+				strong {
+					font-weight: 600;
+				}
+			}
+		}
+		.wpr-pma-terms {
+			margin-top: 70px;
+			font-size: 12px;
+			color: #999;
+			line-height: 1.5;
+			@media (max-width: 768px) {
+				margin-top: 20px;
 			}
 		}
 	}
-
 	// Price box
 	.wpr-pma-price-box {
 		background-color: white;
@@ -129,32 +139,37 @@
 
 		.wpr-currency {
 			font-size: 20px;
-			font-weight: 500;
-			color: #333;
+			color: #738191;
 			margin-right: 2px;
+			position: relative;
+			top: -(2*$space);
 		}
 
-		.wpr-price {
-			font-size: 48px;
-			font-weight: 700;
-			color: #333;
-
-			@media (max-width: 480px) {
-				font-size: 42px;
-			}
+		.wpr-price-number {
+			font-size: 46px;
+			font-weight: 500;
+			color: $cBlack;
+		}
+		.wpr-price-decimal {
+			color: $cBlack;
+			font-size: 30px;
+			position: relative;
+			top: -(2*$space);
 		}
 
 		.wpr-period {
 			font-size: 16px;
 			color: #777;
 			margin-left: 1px;
+			position: relative;
+			top: -(2*$space);
 		}
 	}
 
 	// VAT notice
 	.wpr-pma-vat {
 		font-size: 14px;
-		color: #777;
+		color: #738191;
 		margin: 0 0 20px;
 	}
 
@@ -178,19 +193,6 @@
 
 		&:hover {
 			background-color: darken(#f67954, 5%);
-		}
-	}
-
-	// Footer terms
-	.wpr-pma-banner-footer {
-		margin-top: 20px;
-
-		.wpr-pma-terms {
-			font-size: 12px;
-			color: #999;
-			margin: 0;
-			line-height: 1.5;
-			font-style: italic;
 		}
 	}
 }
