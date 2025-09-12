@@ -83,7 +83,7 @@ class Render extends Abstract_Render {
 	 * @return string The rendered HTML for the performance monitoring row.
 	 */
 	public function get_performance_monitoring_list_row( object $data ): string {
-		return $this->generate( 'partials/performance-monitoring-row', $data );
+		return $this->generate( 'partials/performance-monitoring/table-row', $data );
 	}
 
 	/**
