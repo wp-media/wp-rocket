@@ -200,4 +200,8 @@ class PerformanceMonitoring extends Row {
 	public function delete_url() {
 		return Utils::get_nonce_post_url( 'delete_pm', [ 'id' => $this->id ] );
 	}
+
+	public function can_access_report(): bool {
+		return ! empty( $this->report_url ) && ! $this->is_blurred;
+	}
 }

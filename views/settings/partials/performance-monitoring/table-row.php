@@ -39,22 +39,30 @@ defined( 'ABSPATH' ) || exit;
 			]
 		);
 
-		if ( ! empty( $data->report_url ) ) {
-			$this->render_action_button(
-				'link',
-				'gtmetrix_open',
-				[
-					'label'      => __( 'See Report', 'rocket' ),
-					'url'        => esc_url( $data->report_url ),
-					'attributes' => [
-						'target' => '_blank',
-						'class'  => 'wpr-btn-with-tool-tip wpr-icon-report wpr-pma-action',
-						'title'  => __( 'See Report', 'rocket' ),
-					],
-					'tool_tip'   => __( 'Upgrade your plan to get access to the Report', 'rocket' ), // should be based on a logic.
-				]
-			);
+		$show_report_btn_args = [
+			'label'      => __( 'See Report', 'rocket' ),
+			'url'        => esc_url( $data->report_url ?? '#' ),
+			'attributes' => [
+				'target' => '_blank',
+				'class'  => 'wpr-icon-report wpr-pma-action',
+				'title'  => __( 'See Report', 'rocket' ),
+			],
+		];
+
+		if ( ! empty( $data->can_access_report() ) ) {
+			$show_report_btn_args['attributes']['class'] .= ' wpr-btn-with-tool-tip';
+			$show_report_btn_args['tool_tip'] = __( 'Upgrade your plan to get access to the Report', 'rocket' );
 		}
+
+		if ( empty( $data->report_url ) ) {
+			$show_report_btn_args['attributes']['class'] .= ' wpr-pma-action--disabled';
+		}
+
+		$this->render_action_button(
+			'link',
+			'gtmetrix_open',
+			$show_report_btn_args
+		);
 
 		$this->render_action_button(
 			'link',
