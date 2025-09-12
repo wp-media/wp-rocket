@@ -6,7 +6,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $rocket_pma_item_is_blurred = false;
-if ( isset( $data['is_blurred'] ) && $data['is_blurred'] || isset( $data['status'] ) && 'blurred' === $data['status'] ) {
+if ( ( isset( $data['is_blurred'] ) && $data['is_blurred'] ) || ( isset( $data['status'] ) && 'blurred' === $data['status'] ) ) {
 	$rocket_pma_item_is_blurred = true;
 }
 ?>
