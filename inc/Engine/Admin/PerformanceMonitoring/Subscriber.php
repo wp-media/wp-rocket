@@ -12,7 +12,6 @@ use WP_Rocket\Engine\Admin\PerformanceMonitoring\{
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
-use WP_Rocket\Engine\Admin\PerformanceMonitoring\AJAX\Controller as AjaxController;
 
 /**
  * Performance Monitoring Subscriber

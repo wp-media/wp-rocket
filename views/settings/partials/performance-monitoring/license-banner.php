@@ -55,7 +55,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				);
 				?>
 			</p>
-			<?php $this->render_license_banner_plan_price($data['price'],'$',$data['period']); ?>
+			<?php $this->render_license_banner_plan_price( $data['price'], '$', $data['period'] ); ?>
 			<p class="wpr-pma-vat">
 				<?php esc_html_e( '(excl. VAT)', 'rocket' ); ?>
 			</p>
