@@ -8,7 +8,7 @@ use WP_Rocket\Engine\Admin\PerformanceMonitoring\Credit\Manager as CreditManager
 
 class Render extends Abstract_Render {
 	/**
-	 * @var
+	 * @var CreditManager
 	 */
 	private $credit_manager;
 

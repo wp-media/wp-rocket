@@ -66,6 +66,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 
 	/**
 	 * Credit Manager instance
+	 *
 	 * @var CreditManager
 	 */
 	private $credit;

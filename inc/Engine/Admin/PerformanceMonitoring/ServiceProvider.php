@@ -75,10 +75,12 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( 'options_api' );
 
 		$this->getContainer()->add( 'pm_render', Render::class )
-			->addArguments( [
-				new StringArgument( $this->getContainer()->get( 'template_path' ) . '/settings/' ),
-				'pm_credit_manager'
-			] );
+			->addArguments(
+				[
+					new StringArgument( $this->getContainer()->get( 'template_path' ) . '/settings/' ),
+					'pm_credit_manager',
+				]
+				);
 
 		// API Client.
 		$this->getContainer()->add( 'pm_api_client', PMAPIClient::class )

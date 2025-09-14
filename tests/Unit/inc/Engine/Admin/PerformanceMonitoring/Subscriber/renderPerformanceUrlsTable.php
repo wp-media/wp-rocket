@@ -9,6 +9,7 @@ use WP_Rocket\Engine\Admin\PerformanceMonitoring\Render;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Controller;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\GlobalScore;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\AJAX\Controller as AjaxController;
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\Credit\Manager as CreditManager;
 
 class Test_renderPerformanceUrlsTable extends TestCase {
 	public function testFetchesAndRendersItems() {
@@ -41,8 +42,9 @@ class Test_renderPerformanceUrlsTable extends TestCase {
 		$mock_ajax_controller   = $this->createMock(AjaxController::class);
 		$mock_queue             = $this->createMock(Queue::class);
 		$mock_free_plan_context = $this->createMock(FreePlanContext::class);
+		$mock_credit            = $this->createMock(CreditManager::class);
 
-		$subscriber = new Subscriber($mock_render, $mock_controller, $mock_ajax_controller, $mock_queue, $mock_free_plan_context, $mock_global_score);
+		$subscriber = new Subscriber($mock_render, $mock_controller, $mock_ajax_controller, $mock_queue, $mock_free_plan_context, $mock_global_score, $mock_credit);
 		$subscriber->render_performance_urls_table();
 	}
 }
