@@ -55,7 +55,7 @@ defined( 'ABSPATH' ) || exit;
 		<?php
 		// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 		foreach ( $data['items'] as $wpr_pma_record ) {
-			$this->render_performance_monitoring_list_row( $wpr_pma_record );
+			$this->render_performance_monitoring_list_row( $wpr_pma_record, $data['credit'] );
 		}
 		?>
 

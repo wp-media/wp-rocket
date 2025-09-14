@@ -4,8 +4,18 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Admin\PerformanceMonitoring;
 
 use WP_Rocket\Abstract_Render;
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\Credit\Manager as CreditManager;
 
 class Render extends Abstract_Render {
+	/**
+	 * @var
+	 */
+	private $credit_manager;
+
+	public function __construct( $template_path, CreditManager $credit_manager ) {
+		parent::__construct( $template_path );
+		$this->credit_manager = $credit_manager;
+	}
 
 	/**
 	 * Get color status class based on performance score.
@@ -105,5 +115,24 @@ class Render extends Abstract_Render {
 	 */
 	public function render_performance_monitoring_list_row( object $data ) {
 		echo $this->get_performance_monitoring_list_row( $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	}
+
+	/**
+	 * Check if the retest button is enabled or not
+	 *
+	 * @param object $item DB row item.
+	 * @return bool
+	 */
+	public function is_retest_btn_enabled( $item ) {
+		return ! $item->is_running() && $this->has_credit();
+	}
+
+	/**
+	 * Check there is a credit or not.
+	 *
+	 * @return bool
+	 */
+	public function has_credit() {
+		return $this->credit_manager->has_credit();
 	}
 }

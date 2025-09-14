@@ -192,4 +192,8 @@ class Controller {
 			'help'               => 'performance-monitoring-settings', // beacon id for help button.
 		];
 	}
+
+	public function get_current_credit() {
+		return $this->credit_manager->get_credit();
+	}
 }

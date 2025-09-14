@@ -25,18 +25,29 @@ defined( 'ABSPATH' ) || exit;
 
 	<td class="wpr-pma-item-actions">
 		<?php
+		$retest_button_args = [
+			'label'      => __( 'Re-test', 'rocket' ),
+			'attributes' => [
+				'class'      => 'wpr-icon-bold-refresh wpr-pma-action', // add class `wpr-pma-action--disabled` to disable the button.
+				'title'      => __( 'Re-test', 'rocket' ),
+				'aria-label' => __( 'Re-test', 'rocket' ),
+			],
+		];
+
+		// Retest button should be disabled if the score is zero or this row is still running.
+		if ( $this->is_retest_btn_enabled( $data ) ) {
+			$retest_button_args['attributes']['class'] .= ' wpr-pma-action--disabled';
+		}
+
+		if ( ! $this->has_credit() ) {
+			$retest_button_args['attributes']['class'] .= ' wpr-btn-with-tool-tip';
+			$retest_button_args['tool_tip']             = __( 'Upgrade your plan to get access to Automatic Updates', 'rocket' );
+		}
+
 		$this->render_action_button(
 			'button',
 			'speed_radar_refresh',
-			[
-				'label'      => __( 'Re-test', 'rocket' ),
-				'attributes' => [
-					'class'      => 'wpr-btn-with-tool-tip wpr-icon-bold-refresh wpr-pma-action', // add class `wpr-pma-action--disabled` to disable the button.
-					'title'      => __( 'Re-test', 'rocket' ),
-					'aria-label' => __( 'Re-test', 'rocket' ),
-				],
-				'tool_tip'   => __( 'Upgrade your plan to get access to Automatic Updates', 'rocket' ), // should be based on a logic.
-			]
+			$retest_button_args
 		);
 
 		$rocket_show_report_btn_args = [
