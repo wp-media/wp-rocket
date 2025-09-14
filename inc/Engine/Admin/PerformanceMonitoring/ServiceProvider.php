@@ -71,8 +71,14 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->addShared( 'pm_table', PMTable::class );
 		$this->getContainer()->add( 'pm_query', PMQuery::class );
 
+		$this->getContainer()->add( 'pm_credit_manager', Credit_Manager::class )
+			->addArgument( 'options_api' );
+
 		$this->getContainer()->add( 'pm_render', Render::class )
-			->addArgument( new StringArgument( $this->getContainer()->get( 'template_path' ) . '/settings/' ) );
+			->addArguments( [
+				new StringArgument( $this->getContainer()->get( 'template_path' ) . '/settings/' ),
+				'pm_credit_manager'
+			] );
 
 		// API Client.
 		$this->getContainer()->add( 'pm_api_client', PMAPIClient::class )
@@ -83,9 +89,6 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( 'options' );
 
 		$this->getContainer()->add( 'pm_free_plan_context', FreePlanContext::class );
-
-		$this->getContainer()->add( 'pm_credit_manager', Credit_Manager::class )
-			->addArgument( 'options_api' );
 
 		// Jobs layer.
 		$this->getContainer()->add( 'pm_manager', PMManager::class )
