@@ -7,7 +7,8 @@ use WP_Rocket\Engine\Admin\PerformanceMonitoring\{
 	Context\FreePlanContext,
 	Database\Rows\PerformanceMonitoring,
 	Queue\Queue,
-	AJAX\Controller as AjaxController
+	AJAX\Controller as AjaxController,
+	Credit\Manager as CreditManager
 };
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Logger\LoggerAware;
@@ -64,6 +65,12 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	private $global_score;
 
 	/**
+	 * Credit Manager instance
+	 * @var CreditManager
+	 */
+	private $credit;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param Render          $render Render object.
@@ -72,14 +79,16 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @param Queue           $queue Queue object.
 	 * @param FreePlanContext $free_plan_context Free Plan context.
 	 * @param GlobalScore     $global_score GlobalScore instance.
+	 * @param CreditManager   $credit Credit Manager instance.
 	 */
-	public function __construct( Render $render, Controller $controller, AjaxController $ajax_controller, Queue $queue, FreePlanContext $free_plan_context, GlobalScore $global_score ) {
+	public function __construct( Render $render, Controller $controller, AjaxController $ajax_controller, Queue $queue, FreePlanContext $free_plan_context, GlobalScore $global_score, CreditManager $credit ) {
 		$this->render            = $render;
 		$this->controller        = $controller;
 		$this->ajax_controller   = $ajax_controller;
 		$this->queue             = $queue;
 		$this->free_plan_context = $free_plan_context;
 		$this->global_score      = $global_score;
+		$this->credit            = $credit;
 	}
 
 	/**
@@ -242,6 +251,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			[
 				'items'        => $this->controller->get_items(),
 				'global_score' => $this->controller->get_global_score(),
+				'credit'       => $this->credit->get_credit(),
 			]
 		);
 	}
