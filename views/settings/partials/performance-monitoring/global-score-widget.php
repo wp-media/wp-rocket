@@ -31,19 +31,28 @@ defined( 'ABSPATH' ) || exit;
 					?>
 					</p>
 					<?php
+					$rocket_pma_add_button_args = [
+						'label'      => $data['pages_num'] ? __( 'Add Page', 'rocket' ) : __( 'Add Homepage', 'rocket' ),
+						'parameters' => [
+							'type' => 'all',
+						],
+						'url'        => '#rocket_insights',
+						'attributes' => [
+							'class' => 'wpr-button wpr-button--icon wpr-button--small wpr-button--purple wpr-icon-plus wpr-button--no-min-width wpr-pma-global-score-add-url-button',
+						],
+					];
+
+					// Add tooltip if no credit and disable btn.
+					if ( ! $this->has_credit() ) {
+						$rocket_pma_add_button_args['attributes']['class'] .= ' wpr-btn-with-tool-tip disabled';
+						$rocket_pma_add_button_args['tool_tip']             = __( 'You don\'t have enough credits', 'rocket' );
+						$rocket_pma_add_button_args['url']                  = '#';
+						$rocket_pma_add_button_args['disabled']             = true;
+					}
 					$this->render_action_button(
 						'link',
-						'',
-						[
-							'label'      => $data['pages_num'] ? __( 'Add Page', 'rocket' ) : __( 'Add Homepage', 'rocket' ),
-							'parameters' => [
-								'type' => 'all',
-							],
-							'url'        => '#rocket_insights',
-							'attributes' => [
-								'class' => 'wpr-button wpr-button--icon wpr-button--small wpr-button--purple wpr-icon-plus wpr-button--no-min-width',
-							],
-						]
+						$data['pages_num'] ? '' : 'rocket_pm_add_homepage',
+						$rocket_pma_add_button_args
 					);
 					?>
 				</div>

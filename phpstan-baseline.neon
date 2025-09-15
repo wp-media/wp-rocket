@@ -916,6 +916,11 @@ parameters:
 			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/SettingsSubscriber/displayAddonStatus.php
 
 		-
+			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/Subscriber/renderLicenseBannerSection.php
+
+		-
 			message: "#^Property WP_Rocket\\\\Tests\\\\Integration\\\\inc\\\\Engine\\\\Admin\\\\PerformanceMonitoring\\\\URLLimit\\\\Subscriber\\\\Test_IsAddingPageAllowed\\:\\:\\$user_client is unused\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/URLLimit/Subscriber/isAddingPageAllowed.php

@@ -39,6 +39,7 @@ More information here : https://suitcss.github.io/ or http://www.alsacreations.c
 @import "layout/_Upgrade";
 @import "layout/_Promotion";
 @import "layout/_Renewals";
+@import "layout/_PerformanceMonitoring";
 
 //--> Components
 @import "components/_menuItem";
@@ -58,6 +59,8 @@ More information here : https://suitcss.github.io/ or http://www.alsacreations.c
 @import "components/_modal";
 @import "components/_plugins";
 @import "components/_performanceScore";
+@import "components/_pmaLicenseBanner";
+@import "components/_performanceUrlsTable";
 
 //--> _fieldsContainer
 @import "components/fields/_checkbox";
