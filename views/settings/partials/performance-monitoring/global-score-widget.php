@@ -31,7 +31,7 @@ defined( 'ABSPATH' ) || exit;
 					?>
 					</p>
 					<?php
-					$wpr_pma_add_button_args = [
+					$rocket_pma_add_button_args = [
 						'label'      => $data['pages_num'] ? __( 'Add Page', 'rocket' ) : __( 'Add Homepage', 'rocket' ),
 						'parameters' => [
 							'type' => 'all',
@@ -44,15 +44,15 @@ defined( 'ABSPATH' ) || exit;
 
 					// Add tooltip if no credit and disable btn.
 					if ( ! $this->has_credit() ) {
-						$wpr_pma_add_button_args['attributes']['class'] .= ' wpr-btn-with-tool-tip disabled';
-						$wpr_pma_add_button_args['tool_tip']             = __( 'You don\'t have enough credits', 'rocket' );
-						$wpr_pma_add_button_args['url']             =  '#';
-						$wpr_pma_add_button_args['disabled']        = true;
+						$rocket_pma_add_button_args['attributes']['class'] .= ' wpr-btn-with-tool-tip disabled';
+						$rocket_pma_add_button_args['tool_tip']             = __( 'You don\'t have enough credits', 'rocket' );
+						$rocket_pma_add_button_args['url']                  = '#';
+						$rocket_pma_add_button_args['disabled']             = true;
 					}
 					$this->render_action_button(
 						'link',
 						'',
-						$wpr_pma_add_button_args
+						$rocket_pma_add_button_args
 					);
 					?>
 				</div>
