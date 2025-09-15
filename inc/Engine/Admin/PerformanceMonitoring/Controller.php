@@ -192,4 +192,15 @@ class Controller {
 			'help'               => 'performance-monitoring-settings', // beacon id for help button.
 		];
 	}
+
+
+
+	/**
+	 * Retrieves the current credit available for performance monitoring.
+	 *
+	 * @return int The current credit value.
+	 */
+	public function get_current_credit() {
+		return $this->credit_manager->get_credit();
+	}
 }

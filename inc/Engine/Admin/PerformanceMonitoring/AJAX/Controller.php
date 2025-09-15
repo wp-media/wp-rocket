@@ -288,12 +288,6 @@ class Controller {
 		}
 
 		$query_params = [
-			'fields' => [
-				'id',
-				'score',
-				'status',
-				'modified',
-			],
 			'id__in' => $ids,
 		];
 
@@ -303,6 +297,10 @@ class Controller {
 		if ( empty( $results ) ) {
 			$payload['results'] = 'No rows found in DB for ids: ' . implode( ',', $ids );
 			wp_send_json_error( $payload );
+		}
+
+		foreach ( $results as $result ) {
+			$result->html = $this->render->get_performance_monitoring_list_row( $result );
 		}
 
 		$payload['results']           = $results;

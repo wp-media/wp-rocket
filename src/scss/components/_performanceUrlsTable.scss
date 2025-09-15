@@ -1,0 +1,133 @@
+.wpr-pma-notice{
+	background-image: none ;
+	border-radius: 0;
+	border-left: 4px solid #3ECE9D;
+	.wpr-notice-container{
+		padding: 2*$space;
+	}
+	.wpr-notice-description{
+		margin: 0;
+	}
+	.wpr-notice-close{
+		top: 2*$space;
+	}
+	&.wpr-error-notice{
+		border-left-color: $cOrange;
+		background-color:  $cOrangeLight4;
+		.wpr-notice-close{
+			font-size: 14px;
+			text-decoration: underline;
+			font-weight: 600;
+			color: $cBlack;
+			top: 20px;
+		}
+	}
+}
+
+.wpr-pma-summary-info a{
+	color: $cOrange;
+}
+.wpr-pma-urls-table{
+	.wpr-percentage-indicator{
+		border-right: 1px solid $cGreyLighter2;
+		.wpr-percentage-circle{
+			width: 32px;
+			height: 32px;
+			font-size: 14px;
+		}
+		.wpr-loading-img{
+			width: 32px;
+			height: 32px;
+		}
+	}
+	.wpr-pma-item{
+		background: $cGreyLighter1;
+		&.wpr-global-score{
+			background: $cWhite;
+			.wpr-pma-item-actions{
+				min-height: 60px;
+				position: relative;
+				display: block;
+			}
+		}
+	}
+	.wpr-pma-item-score{
+		vertical-align: middle;
+		padding: 0 $space;
+	}
+	.wpr-pma-item-title{
+		font-size: 14px;
+		color: $cBlack;
+		vertical-align: middle;
+		a{
+			display: inline-block;
+			vertical-align: middle;
+			box-sizing: border-box;
+		}
+		.wpr-pma-title{
+			text-decoration: underline;
+		}
+		.wpr-pma-dot{
+			color: $cGreyLighter3;
+		}
+		.wpr-pma-date{
+			color: $cGreyLighter3;
+		}
+	}
+	.wpr-pma-item-actions{
+		text-align: right;
+		vertical-align: middle;
+		.wpr-pma-action{
+			display: inline-block;
+			font-size: 14px;
+			line-height: 1.5;
+			padding: 0 2* $space;
+			margin: $space 0;
+			color: $cBlack;
+			border-left: 1px solid $cGreyLighter2;
+			&:first-child{
+				margin-left: 0;
+				border-left: none;
+			}
+			&.wpr-confirm-delete{
+				&:before{
+					font-size: 14px;
+					top: 0;
+					margin-right: 0;
+				}
+			}
+			&:before{
+				font-size: 18px;
+				position: relative;
+				top: 2px;
+				margin-right: $space;
+			}
+			&--disabled,
+			&:disabled {
+				color: darken($cGrey, 30%) !important;
+				cursor: not-allowed;
+				box-shadow: none;
+				&:focus {
+					transform: none;
+					box-shadow: none;
+				}
+			}
+		}
+	}
+}
+.wpr-pma-add-section{
+	margin: 2*$space 0;
+	display: flex;
+	.wpr-speed-radar-input{
+		display: flex;
+		width: 80%;
+		margin-right: 2 * $space;
+	}
+	.wpr-button{
+		display: flex;
+		text-align: center;
+		justify-content: center;
+		padding: $space;
+		width: 20%;
+	}
+}
