@@ -33,7 +33,7 @@ defined( 'ABSPATH' ) || exit;
 					<?php
 					$this->render_action_button(
 						'link',
-						'rocket_pm_add_homepage',
+						$data['pages_num'] ? '' : 'rocket_pm_add_homepage',
 						[
 							'label'      => $data['pages_num'] ? __( 'Add Page', 'rocket' ) : __( 'Add Homepage', 'rocket' ),
 							'url'        => '#rocket_insights',
