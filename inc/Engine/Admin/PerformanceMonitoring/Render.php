@@ -132,16 +132,6 @@ class Render extends Abstract_Render {
 	}
 
 	/**
-	 * Check if the retest button is enabled or not
-	 *
-	 * @param object $item DB row item.
-	 * @return bool
-	 */
-	public function is_retest_btn_enabled( $item ) {
-		return ! $item->is_running() && $this->credit_manager->has_credit();
-	}
-
-	/**
 	 * Render the license banner section from views.
 	 *
 	 * @param array $data Data to render the license banner section.
