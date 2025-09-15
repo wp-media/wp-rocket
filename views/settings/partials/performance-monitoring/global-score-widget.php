@@ -33,12 +33,9 @@ defined( 'ABSPATH' ) || exit;
 					<?php
 					$this->render_action_button(
 						'link',
-						'',
+						$data['pages_num'] ? '' : 'rocket_pm_add_homepage',
 						[
 							'label'      => $data['pages_num'] ? __( 'Add Page', 'rocket' ) : __( 'Add Homepage', 'rocket' ),
-							'parameters' => [
-								'type' => 'all',
-							],
 							'url'        => '#rocket_insights',
 							'attributes' => [
 								'class' => 'wpr-button wpr-button--icon wpr-button--small wpr-button--purple wpr-icon-plus wpr-button--no-min-width',

@@ -141,6 +141,29 @@ class Controller {
 	}
 
 	/**
+	 * Adds homepage for monitoring from the dashboard widget.
+	 *
+	 * @return void
+	 */
+	public function add_homepage_from_widget() {
+		if ( ! $this->context->is_allowed() ) {
+			wp_die();
+		}
+
+		if (
+			! isset( $_GET['_wpnonce'] )
+			||
+			! wp_verify_nonce( sanitize_key( $_GET['_wpnonce'] ), 'rocket_pm_add_homepage' )
+		) {
+			wp_nonce_ays( 'rocket_pm_add_homepage' );
+		}
+
+		$this->add_homepage();
+
+		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
+	}
+
+	/**
 	 * Get global score data.
 	 *
 	 * @return array
