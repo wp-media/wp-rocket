@@ -275,7 +275,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	// ==== DOM Selectors ====
 	const $pageUrlInput = $('#wpr-speed-radar-url-input');
-	const $tableBody = $('.wpr-speed-radar-table tbody');
+	const $tableBody = $('.wpr-pma-urls-table tbody');
+	const $table = $('.wpr-pma-urls-table');
 
 	// ==== Utility Functions ====
 	function isValidUrl(input) {
@@ -340,18 +341,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (globalScoreData.data.status !== response.data.global_score_data.data.status || globalScoreData.data.pages_num !== response.data.global_score_data.data.pages_num) {
                     // Update global score data.
                     globalScoreData = response.data.global_score_data;
-        
+
                     // Update global score widget if on dashboard.
                     if ( isOnDashboard() ) {
                         $('#wpr_global_score_widget').html(response.data.global_score_data.html);
                     }
                 }
 				response.data.results.forEach(result => {
-					const $row = $(`[data-rocket-pm-id="${result.id}"] .wpr-speed-radar-score`);
-					$row.html(result.status);
+					const $row = $(`[data-rocket-pm-id="${result.id}"]`);
+					$row.replaceWith(result.html);
 
-					if (result.status === 'completed') {
-						$row.html(result.score);
+					if (result.status === 'completed' || result.status === 'failed') {
 						removeId(result.id);
 					}
 				});
@@ -384,6 +384,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			if (response.success) {
 				$pageUrlInput.val('');
 				$tableBody.append(response.data.html);
+				$table.removeClass('hidden');
 				addIds(response.data.id);
 
                 // Update global score data.
@@ -403,7 +404,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	function handleResetPage(e) {
 		e.preventDefault();
 
-		let id = $(this).parents('.wpr-speed-radar-item').data('rocketPmId');
+		let id = $(this).parents('.wpr-pma-item').data('rocketPmId');
 		if ( ! id ) {
 			return;
 		}
@@ -436,7 +437,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	// ==== Initialization ====
 	// Bind event
 	$(document).on( 'click', '#add_page_speed_radar', handleAddPage );
-	$(document).on( 'click', '#wpr-action-speed_radar_refresh', handleResetPage );
+	$(document).on( 'click', '.wpr-action-speed_radar_refresh', handleResetPage );
 
 	// Only poll if on a wpr section that requires polling(dashboard|rocket_insights) (more robust check)
     function isValidPageForPolling() {

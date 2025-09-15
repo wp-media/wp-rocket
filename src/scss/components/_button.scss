@@ -130,3 +130,22 @@
 		}
 	}
 }
+.wpr-btn-with-tool-tip{
+	position: relative;
+	display: inline-block;
+
+	.wpr-tooltip{
+		position: absolute;
+		right: auto;
+		top: auto;
+		min-width: max-content;
+	}
+
+	&:hover {
+		.wpr-tooltip {
+			visibility: visible;
+			opacity: 1;
+			z-index: 99;
+		}
+	}
+}

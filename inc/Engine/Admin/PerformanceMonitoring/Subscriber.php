@@ -7,7 +7,8 @@ use WP_Rocket\Engine\Admin\PerformanceMonitoring\{
 	Context\FreePlanContext,
 	Database\Rows\PerformanceMonitoring,
 	Queue\Queue,
-	AJAX\Controller as AjaxController
+	AJAX\Controller as AjaxController,
+	Credit\Manager as CreditManager
 };
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Logger\LoggerAware;
@@ -89,38 +90,29 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'wp_rocket_first_install'             => 'schedule_homepage_tests',
-			'rocket_dashboard_after_account_data' => [ 'render_ui', 11 ],
-			'wp_ajax_rocket_pm_add_new_page'      => 'add_new_page',
-			'wp_ajax_rocket_pm_get_results'       => 'get_results',
-			'rocket_localize_admin_script'        => 'add_pending_ids',
-			'admin_post_delete_pm'                => 'delete_row',
-			'wp_ajax_rocket_pm_reset_page'        => 'reset_page',
-			'init'                                => 'schedule_reset_credit',
-			'rocket_pma_credit_reset'             => 'reset_credit_monthly',
-			'rocket_pm_job_completed'             => [
+			'wp_rocket_first_install'        => 'schedule_homepage_tests',
+			'wp_ajax_rocket_pm_add_new_page' => 'add_new_page',
+			'wp_ajax_rocket_pm_get_results'  => 'get_results',
+			'rocket_localize_admin_script'   => 'add_pending_ids',
+			'admin_post_delete_pm'           => 'delete_row',
+			'wp_ajax_rocket_pm_reset_page'   => 'reset_page',
+			'init'                           => 'schedule_reset_credit',
+			'rocket_pma_credit_reset'        => 'reset_credit_monthly',
+			'rocket_pm_job_completed'        => [
 				[ 'validate_credit' ],
 				[ 'reset_global_score' ],
 			],
-			'rocket_pm_job_failed'                => 'reset_global_score',
-			'rocket_pm_job_added'                 => 'reset_global_score',
-			'rocket_pm_job_retest'                => 'reset_global_score',
-			'rocket_pm_job_deleted'               => 'reset_global_score',
-			'rocket_dashboard_sidebar'            => 'render_global_score_widget',
-			'rocket_insights_tab_content'         => [
+			'rocket_pm_job_failed'           => 'reset_global_score',
+			'rocket_pm_job_added'            => 'reset_global_score',
+			'rocket_pm_job_retest'           => 'reset_global_score',
+			'rocket_pm_job_deleted'          => 'reset_global_score',
+			'rocket_dashboard_sidebar'       => 'render_global_score_widget',
+			'rocket_insights_tab_content'    => [
 				[ 'render_license_banner_section', 10 ],
+				[ 'render_performance_urls_table', 20 ],
 				[ 'render_settings_section', 30 ],
 			],
 		];
-	}
-
-	/**
-	 * Render the Ui in dashboard.
-	 *
-	 * @return void
-	 */
-	public function render_ui() {
-		$this->render->render_ui( $this->controller->get_items() );
 	}
 
 	/**
@@ -240,6 +232,20 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public function render_global_score_widget(): void {
 		$this->render->render_global_score_widget( $this->controller->get_global_score() );
+	}
+
+	/**
+	 * Render the performance URLs table in the Performance Monitoring tab.
+	 *
+	 * @return void
+	 */
+	public function render_performance_urls_table() {
+		$this->render->render_pma_urls_table(
+			[
+				'items'        => $this->controller->get_items(),
+				'global_score' => $this->controller->get_global_score(),
+			]
+		);
 	}
 
 	/**

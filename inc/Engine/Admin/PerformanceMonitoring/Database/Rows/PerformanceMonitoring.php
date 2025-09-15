@@ -180,7 +180,7 @@ class PerformanceMonitoring extends Row {
 	 * @return bool
 	 */
 	public function is_running(): bool {
-		return in_array( $this->status, [ 'pending', 'in-progress' ], true );
+		return in_array( $this->status, [ 'to-submit', 'pending', 'in-progress' ], true );
 	}
 
 	/**
@@ -199,5 +199,23 @@ class PerformanceMonitoring extends Row {
 	 */
 	public function delete_url() {
 		return Utils::get_nonce_post_url( 'delete_pm', [ 'id' => $this->id ] );
+	}
+
+	/**
+	 * Check if the report can be accessed.
+	 *
+	 * @return bool
+	 */
+	public function can_access_report(): bool {
+		return ! empty( $this->report_url ) && ! $this->is_blurred;
+	}
+
+	/**
+	 * Check if the report can be accessed.
+	 *
+	 * @return bool
+	 */
+	public function can_re_test(): bool {
+		return ! $this->is_running() && ! $this->is_blurred;
 	}
 }
