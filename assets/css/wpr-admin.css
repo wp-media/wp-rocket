@@ -381,11 +381,17 @@ a:focus, button:focus {
 }
 
 .wpr-icon-rocket-insights:before, #wpr-nav-rocket_insights:before {
-  content: url("../img/rocket-insights.svg");
+  content: "";
+  background-image: url("../img/rocket-insights.svg");
+  background-repeat: no-repeat;
+  background-position: center center;
 }
 
 .wpr-icon-rocket-insights-hover:before, #wpr-nav-rocket_insights.isActive:before, #wpr-nav-rocket_insights:hover:before {
-  content: url("../img/rocket-insights-hover.svg");
+  content: "";
+  background-image: url("../img/rocket-insights-hover.svg");
+  background-repeat: no-repeat;
+  background-position: center center;
 }
 
 .wpr-icon-bold-refresh:before {
@@ -1246,14 +1252,12 @@ div.wpr-upgrade-websites.notstacked {
 .rocket-promo-banner > div {
   display: flex;
   flex-flow: column;
+  width: 50%;
 }
 @media (max-width: 783px) {
   .rocket-promo-banner > div {
     width: 100%;
   }
-}
-.rocket-promo-banner > div {
-  width: 50%;
 }
 
 .rocket-promo-title {
@@ -1349,14 +1353,12 @@ div.wpr-upgrade-websites.notstacked {
 .rocket-renewal-expired-banner-container > div {
   display: flex;
   flex-flow: column;
+  width: 70%;
 }
 @media (max-width: 783px) {
   .rocket-renewal-expired-banner-container > div {
     width: 100%;
   }
-}
-.rocket-renewal-expired-banner-container > div {
-  width: 70%;
 }
 
 .rocket-renew-message {
@@ -1556,7 +1558,7 @@ div.wpr-upgrade-websites.notstacked {
   height: 2px;
   bottom: -1px;
   left: 0;
-  background: #F56640;
+  background-color: #F56640;
 }
 .wpr-sectionHeader .wpr-title1 {
   line-height: 48px;
@@ -1566,10 +1568,12 @@ div.wpr-upgrade-websites.notstacked {
   width: 48px;
   height: 48px;
   margin-right: 24px;
-  background: #FDE0D9;
+  background-color: #FDE0D9;
+  background-size: 65%;
   color: #F56640;
   text-align: center;
   border-radius: 3px;
+  vertical-align: middle;
 }
 .wpr-sectionHeader-title {
   margin-top: 8px;
@@ -2865,6 +2869,184 @@ div.wpr-tutorial-item {
   opacity: 1;
 }
 
+.wpr-pma-license-banner {
+  background-color: #f9f9f9;
+  border-radius: 6px;
+  padding: 30px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  margin: 20px 0;
+  max-width: 100%;
+}
+.wpr-pma-license-banner .wpr-pma-banner-header {
+  margin-bottom: 20px;
+}
+.wpr-pma-license-banner .wpr-pma-banner-header h2 {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0 0 10px;
+  color: #333;
+}
+.wpr-pma-license-banner .wpr-pma-banner-header p {
+  font-size: 16px;
+  color: #555;
+  margin: 0;
+  line-height: 1.5;
+}
+.wpr-pma-license-banner .wpr-pma-banner-content {
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+}
+@media (max-width: 768px) {
+  .wpr-pma-license-banner .wpr-pma-banner-content {
+    flex-direction: column;
+  }
+}
+.wpr-pma-license-banner .wpr-pma-benefits-list-container {
+  flex: 1;
+  padding: 0;
+  margin: 0;
+  max-width: 60%;
+}
+.wpr-pma-license-banner .wpr-pma-benefits-list-container .wpr-pma-benefits-list {
+  list-style: none;
+}
+@media (max-width: 768px) {
+  .wpr-pma-license-banner .wpr-pma-benefits-list-container .wpr-pma-benefits-list {
+    max-width: 100%;
+  }
+}
+.wpr-pma-license-banner .wpr-pma-benefits-list-container .wpr-pma-benefits-list li {
+  position: relative;
+  padding-left: 30px;
+  margin-bottom: 20px;
+  font-size: 16px;
+  color: #333;
+  display: flex;
+  align-items: center;
+}
+.wpr-pma-license-banner .wpr-pma-benefits-list-container .wpr-pma-benefits-list li:last-child {
+  margin-bottom: 0;
+}
+.wpr-pma-license-banner .wpr-pma-benefits-list-container .wpr-pma-benefits-list li:before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: #1a1a1a;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+}
+.wpr-pma-license-banner .wpr-pma-benefits-list-container .wpr-pma-benefits-list li strong {
+  font-weight: 600;
+}
+.wpr-pma-license-banner .wpr-pma-benefits-list-container .wpr-pma-terms {
+  margin-top: 70px;
+  font-size: 12px;
+  color: #999;
+  line-height: 1.5;
+}
+@media (max-width: 768px) {
+  .wpr-pma-license-banner .wpr-pma-benefits-list-container .wpr-pma-terms {
+    margin-top: 20px;
+  }
+}
+.wpr-pma-license-banner .wpr-pma-price-box {
+  background-color: white;
+  border-radius: 5px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 280px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  position: relative;
+}
+@media (max-width: 768px) {
+  .wpr-pma-license-banner .wpr-pma-price-box {
+    min-width: auto;
+    width: 100%;
+  }
+}
+.wpr-pma-license-banner .wpr-pma-price-box .wpr-pma-offer {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #FED055;
+  color: #121116;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 4px;
+}
+.wpr-pma-license-banner .wpr-pma-price-before-discount {
+  color: #999;
+  text-decoration: line-through;
+  font-size: 16px;
+  margin: 0 0 5px;
+}
+.wpr-pma-license-banner .wpr-pma-price {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  margin: 0 0 5px;
+  line-height: 1;
+}
+.wpr-pma-license-banner .wpr-pma-price .wpr-currency {
+  font-size: 20px;
+  color: #738191;
+  margin-right: 2px;
+  position: relative;
+  top: -16px;
+}
+.wpr-pma-license-banner .wpr-pma-price .wpr-price-number {
+  font-size: 46px;
+  font-weight: 500;
+  color: #121116;
+}
+.wpr-pma-license-banner .wpr-pma-price .wpr-price-decimal {
+  color: #121116;
+  font-size: 30px;
+  position: relative;
+  top: -16px;
+}
+.wpr-pma-license-banner .wpr-pma-price .wpr-period {
+  font-size: 16px;
+  color: #777;
+  margin-left: 1px;
+  position: relative;
+  top: -16px;
+}
+.wpr-pma-license-banner .wpr-pma-vat {
+  font-size: 14px;
+  color: #738191;
+  margin: 0 0 20px;
+}
+.wpr-pma-license-banner .wpr-pma-cta-button {
+  background-color: #f67954;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 15px 20px;
+  width: 100%;
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+  display: block;
+  cursor: pointer;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: background-color 0.2s ease;
+}
+.wpr-pma-license-banner .wpr-pma-cta-button:hover {
+  background-color: rgb(244.725, 102.0166666667, 59.775);
+}
+
 .wpr-pma-notice {
   background-image: none;
   border-radius: 0;
@@ -3430,6 +3612,10 @@ div.wpr-tutorial-item {
   padding: 10px;
   margin: 8px 0;
 }
+.wpr-multiple-select .wpr-list .wpr-list-header {
+  display: flex;
+  justify-content: space-between;
+}
 .wpr-multiple-select .wpr-list .wpr-list-header .wpr-multiple-select-exclude_js_ads:before {
   font-family: "wpr-icomoon";
   content: "\e9b7";
@@ -3444,10 +3630,6 @@ div.wpr-tutorial-item {
   font-family: "wpr-icomoon";
   content: "\e927";
   padding-right: 8px;
-}
-.wpr-multiple-select .wpr-list .wpr-list-header {
-  display: flex;
-  justify-content: space-between;
 }
 .wpr-multiple-select .wpr-list .wpr-list-header .wpr-list-header-arrow {
   width: 15px;

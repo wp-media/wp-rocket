@@ -108,6 +108,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'rocket_pm_job_deleted'          => 'reset_global_score',
 			'rocket_dashboard_sidebar'       => 'render_global_score_widget',
 			'rocket_insights_tab_content'    => [
+				[ 'render_license_banner_section', 10 ],
 				[ 'render_performance_urls_table', 20 ],
 				[ 'render_settings_section', 30 ],
 			],
@@ -254,5 +255,19 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public function render_settings_section() {
 		$this->render->render_settings_section( $this->controller->get_settings_section_data() );
+	}
+
+	/**
+	 * Render the license banner section in the Performance Monitoring tab.
+	 *
+	 * @return void
+	 */
+	public function render_license_banner_section() {
+
+		if ( ! $this->controller->display_banner() ) {
+			return;
+		}
+		// add some logic here to check if the banner should be displayed.
+		$this->render->render_license_banner_section( $this->controller->get_license_data() );
 	}
 }

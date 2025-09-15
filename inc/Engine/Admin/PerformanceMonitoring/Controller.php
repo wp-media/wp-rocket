@@ -10,6 +10,7 @@ use WP_Rocket\Engine\Admin\PerformanceMonitoring\{
 	Database\Queries\PerformanceMonitoring as PMQuery,
 	Credit\Manager as CreditManager
 };
+use WP_Rocket\Engine\License\API\User;
 
 class Controller {
 	/**
@@ -48,6 +49,13 @@ class Controller {
 	private $global_score;
 
 	/**
+	 * User client API instance.
+	 *
+	 * @var User
+	 */
+	protected $user;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param PMQuery                      $query Query instance.
@@ -55,13 +63,15 @@ class Controller {
 	 * @param PerformanceMonitoringContext $context Context instance.
 	 * @param CreditManager                $credit_manager Credit manager instance.
 	 * @param GlobalScore                  $global_score GlobalScore instance.
+	 * @param User                         $user User client API instance.
 	 */
-	public function __construct( PMQuery $query, Manager $manager, PerformanceMonitoringContext $context, CreditManager $credit_manager, GlobalScore $global_score ) {
+	public function __construct( PMQuery $query, Manager $manager, PerformanceMonitoringContext $context, CreditManager $credit_manager, GlobalScore $global_score, User $user ) {
 		$this->query          = $query;
 		$this->manager        = $manager;
 		$this->context        = $context;
 		$this->credit_manager = $credit_manager;
 		$this->global_score   = $global_score;
+		$this->user           = $user;
 	}
 
 	/**
@@ -202,5 +212,53 @@ class Controller {
 	 */
 	public function get_current_credit() {
 		return $this->credit_manager->get_credit();
+	}
+
+	/**
+	 * Display banner.
+	 *
+	 * @return bool
+	 */
+	public function display_banner(): bool {
+		$sku      = $this->user->get_pma_addon_sku_active();
+		$upgrades = $this->user->get_pma_addon_upgrade_skus( $sku );
+		return 0 !== count( $upgrades );
+	}
+
+	/**
+	 * Get user data for the settings.
+	 *
+	 * @return array
+	 */
+	public function get_license_data(): array {
+		$sku      = $this->user->get_pma_addon_sku_active();
+		$upgrades = $this->user->get_pma_addon_upgrade_skus( $sku );
+		$upgrade  = array_shift( $upgrades );
+
+		$price = $this->user->get_pma_addon_price( $upgrade );
+
+		$limit = $this->user->get_pma_addon_limit( $upgrade );
+
+		$data = [
+			'currency'    => '$',
+			'page_number' => $limit,
+			'period'      => 'month',
+			'description' => $this->user->get_pma_addon_description( $upgrade ),
+			'highlights'  => $this->user->get_pma_addon_highlights( $upgrade ),
+		];
+
+		if ( ! $this->user->has_pma_addon_promo( $upgrade ) ) {
+			$data['price']                 = $price;
+			$data['price_before_discount'] = '';
+
+			return $data;
+		}
+
+		$promo_price                   = $this->user->get_pma_addon_promo_price( $upgrade );
+		$data['price']                 = $promo_price;
+		$data['price_before_discount'] = $price;
+		$data['promo_name']            = $this->user->get_pma_addon_promo_name( $upgrade );
+		$data['promo_description']     = $this->user->get_pma_addon_promo_description( $upgrade );
+		return $data;
 	}
 }

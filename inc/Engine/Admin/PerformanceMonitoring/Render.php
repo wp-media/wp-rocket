@@ -145,4 +145,37 @@ class Render extends Abstract_Render {
 	public function has_credit() {
 		return $this->credit_manager->has_credit();
 	}
+
+	/**
+	 * Render the license banner section from views.
+	 *
+	 * @param array $data Data to render the license banner section.
+	 *
+	 * @return void
+	 */
+	public function render_license_banner_section( array $data ) {
+		echo $this->generate( 'partials/performance-monitoring/license-banner', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	}
+
+	/**
+	 * Render the plan price in the license banner section from views.
+	 *
+	 * @param string $price    Price value.
+	 * @param string $currency Currency symbol, default is '$'.
+	 * @param string $period   Billing period, default is 'month'.
+	 *
+	 * @return void
+	 */
+	public function render_license_banner_plan_price( string $price, string $currency = '$', string $period = 'month' ) {
+		$dot   = get_locale() === 'en_US' ? '.' : ',';
+		$price = number_format_i18n( $price, 2 );
+		$price = explode( $dot, $price );
+		$data  = [
+			'price_number'  => $price[0],
+			'price_decimal' => $dot . $price[1],
+			'currency'      => $currency,
+			'period'        => $period,
+		];
+		echo $this->generate( 'partials/performance-monitoring/license-banner-plan-price', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	}
 }
