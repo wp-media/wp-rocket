@@ -385,7 +385,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			if (response.success) {
 				$pageUrlInput.val('');
 				$tableBody.append(response.data.html);
-				$table.toggleClass('hidden');
+				$table.removeClass('hidden');
 				addIds(response.data.id);
 
                 // Update global score data.
