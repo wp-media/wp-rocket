@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Tests\Unit\inc\Engine\Admin\PerformanceMonitoring\Subscriber;
 
-use WP_Rocket\Engine\Admin\PerformanceMonitoring\Context\FreePlanContext;
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\Context\PerformanceMonitoringContext;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Queue\Queue;
 use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Subscriber;
@@ -40,9 +40,9 @@ class Test_renderPerformanceUrlsTable extends TestCase {
 
 		$mock_ajax_controller   = $this->createMock(AjaxController::class);
 		$mock_queue             = $this->createMock(Queue::class);
-		$mock_free_plan_context = $this->createMock(FreePlanContext::class);
+		$pm_context = $this->createMock(PerformanceMonitoringContext::class);
 
-		$subscriber = new Subscriber($mock_render, $mock_controller, $mock_ajax_controller, $mock_queue, $mock_free_plan_context, $mock_global_score);
+		$subscriber = new Subscriber($mock_render, $mock_controller, $mock_ajax_controller, $mock_queue, $pm_context, $mock_global_score);
 		$subscriber->render_performance_urls_table();
 	}
 }
