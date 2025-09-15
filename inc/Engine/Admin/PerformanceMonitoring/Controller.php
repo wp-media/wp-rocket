@@ -229,25 +229,25 @@ class Controller {
 		$limit = $this->user->get_pma_addon_limit( $upgrade );
 
 		$data = [
-			'currency'              => '$',
-			'page_number'           => $limit,
-			'period'                => 'month',
-			'description'           => $this->user->get_pma_addon_description( $upgrade ),
-			'highlights'            => $this->user->get_pma_addon_highlights( $upgrade ),
+			'currency'    => '$',
+			'page_number' => $limit,
+			'period'      => 'month',
+			'description' => $this->user->get_pma_addon_description( $upgrade ),
+			'highlights'  => $this->user->get_pma_addon_highlights( $upgrade ),
 		];
 
 		if ( ! $this->user->has_pma_addon_promo( $upgrade ) ) {
-			$data['price'] = $price;
+			$data['price']                 = $price;
 			$data['price_before_discount'] = '';
 
 			return $data;
 		}
 
-		$promo_price = $this->user->get_pma_addon_promo_price( $upgrade );
-		$data['price'] = $promo_price;
+		$promo_price                   = $this->user->get_pma_addon_promo_price( $upgrade );
+		$data['price']                 = $promo_price;
 		$data['price_before_discount'] = $price;
-		$data['promo_name'] = $this->user->get_pma_addon_promo_name( $upgrade );
-		$data['promo_description'] = $this->user->get_pma_addon_promo_description( $upgrade );
+		$data['promo_name']            = $this->user->get_pma_addon_promo_name( $upgrade );
+		$data['promo_description']     = $this->user->get_pma_addon_promo_description( $upgrade );
 		return $data;
 	}
 }

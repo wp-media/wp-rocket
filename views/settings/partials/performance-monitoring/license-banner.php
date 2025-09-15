@@ -18,9 +18,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<div class="wpr-pma-banner-content">
 	<div class="wpr-pma-benefits-list-container">
 		<ul class="wpr-pma-benefits-list">
-			<?php foreach ( $data['highlights'] as $highlight ) : ?>
+			<?php foreach ( $data['highlights'] as $wp_rocket_highlight ) : ?>
 			<li>
-				<span><?php echo esc_html( $highlight ); ?></span>
+				<span><?php echo esc_html( $wp_rocket_highlight ); ?></span>
 			</li>
 			<?php endforeach; ?>
 		</ul>
@@ -32,7 +32,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	</div>
 		<div class="wpr-pma-price-box">
 			<?php if ( $data['price_before_discount'] ) : ?>
-			<span class="wpr-pma-offer"><?php echo esc_html( $data['promo_name'] ) ?></span>
+			<span class="wpr-pma-offer"><?php echo esc_html( $data['promo_name'] ); ?></span>
 			<p class="wpr-pma-price-before-discount">
 				<?php
 				printf(

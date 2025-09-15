@@ -281,8 +281,8 @@ class User {
 			return '';
 		}
 
-		if ($plan->description == 'See how your top pages perform and quickly spot and optimize what slows your site down.') {
-			return __('See how your top pages perform and quickly spot and optimize what slows your site down.', 'wp-rocket');
+		if ( 'See how your top pages perform and quickly spot and optimize what slows your site down.' === $plan->description ) {
+			return __( 'See how your top pages perform and quickly spot and optimize what slows your site down.', 'rocket' );
 		}
 
 		return $plan->description;
@@ -305,28 +305,28 @@ class User {
 
 		$highlights = [];
 
-		foreach ($plan->highlights as $highlight) {
-			if($highlight == 'Up to 10 pages tracked') {
-				$highlights [] = __('Up to 10 pages tracked', 'wp-rocket');
+		foreach ( $plan->highlights as $highlight ) {
+			if ( 'Up to 10 pages tracked' === $highlight ) {
+				$highlights [] = __( 'Up to 10 pages tracked', 'rocket' );
 				continue;
 			}
 
-			if($highlight == 'Automatic performance monitoring') {
-				$highlights []= __('Automatic performance monitoring', 'wp-rocket');
+			if ( 'Automatic performance monitoring' === $highlight ) {
+				$highlights [] = __( 'Automatic performance monitoring', 'rocket' );
 				continue;
 			}
 
-			if($highlight == 'Unlimited on-demand tests') {
-				$highlights []= __('Unlimited on-demand tests', 'wp-rocket');
+			if ( 'Unlimited on-demand tests' === $highlight ) {
+				$highlights [] = __( 'Unlimited on-demand tests', 'rocket' );
 				continue;
 			}
 
-			if($highlight == 'Full GTmetrix performance reports') {
-				$highlights []= __('Full GTmetrix performance reports', 'wp-rocket');
+			if ( 'Full GTmetrix performance reports' === $highlight ) {
+				$highlights [] = __( 'Full GTmetrix performance reports', 'rocket' );
 				continue;
 			}
 
-			$highlights []= $highlight;
+			$highlights [] = $highlight;
 		}
 
 		return $highlights;
@@ -391,8 +391,8 @@ class User {
 			return '';
 		}
 
-		if( $promo->name == 'Launch Offer') {
-			return __('Launch Offer', 'wp-rocket');
+		if ( 'Launch Offer' === $promo->name ) {
+			return __( 'Launch Offer', 'rocket' );
 		}
 
 		return $promo->name;
@@ -407,13 +407,12 @@ class User {
 	 */
 	public function get_pma_addon_promo_description( string $sku ) {
 		$promo = $this->get_pma_addon_promo( $sku );
-
 		if ( ! $promo || ! isset( $promo->description ) ) {
 			return '';
 		}
 
-		if ($promo->description == '* Billed monthly. Launch price valid for the first 12 months, after which standard pricing applies. You can cancel at any time, each month started is due.') {
-			return __('* Billed monthly. Launch price valid for the first 12 months, after which standard pricing applies. You can cancel at any time, each month started is due.', 'wp-rocket');
+		if ( '* Billed monthly. Launch price valid for the first 12 months, after which standard pricing applies. You can cancel at any time, each month started is due.' === $promo->description ) {
+			return __( '* Billed monthly. Launch price valid for the first 12 months, after which standard pricing applies. You can cancel at any time, each month started is due.', 'rocket' );
 		}
 
 		return $promo->description;
