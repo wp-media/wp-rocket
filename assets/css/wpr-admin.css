@@ -2759,6 +2759,9 @@ div.wpr-tutorial-item {
   text-align: center;
   padding: 8px;
 }
+.wpr-percentage-score-widget .wpr-percentage-indicator .wpr-tooltip {
+  display: none;
+}
 .wpr-percentage-score-widget .wpr-page-num-txt {
   margin: 24px 0 16px 0;
   font-size: 14px;

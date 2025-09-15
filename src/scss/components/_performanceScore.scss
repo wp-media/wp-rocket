@@ -1,6 +1,11 @@
 .wpr-percentage-score-widget{
 	text-align: center;
 	padding: $space;
+	.wpr-percentage-indicator {
+		.wpr-tooltip{
+			display: none;
+		}
+	}
 	.wpr-page-num-txt{
 		margin: 3*$space 0 2*$space 0;
 		font-size: 14px;
