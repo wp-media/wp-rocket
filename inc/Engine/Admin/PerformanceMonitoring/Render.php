@@ -83,6 +83,8 @@ class Render extends Abstract_Render {
 	 * @return void
 	 */
 	public function render_global_score_widget( array $data ) {
+		$data['has_credit'] = $this->credit_manager->has_credit();
+
 		echo $this->get_global_score_widget( $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
@@ -103,6 +105,8 @@ class Render extends Abstract_Render {
 	 * @return string The rendered HTML for the performance monitoring row.
 	 */
 	public function get_performance_monitoring_list_row( object $data ): string {
+		$data['has_credit'] = $this->credit_manager->has_credit();
+
 		return $this->generate( 'partials/performance-monitoring/table-row', $data );
 	}
 
@@ -134,16 +138,7 @@ class Render extends Abstract_Render {
 	 * @return bool
 	 */
 	public function is_retest_btn_enabled( $item ) {
-		return ! $item->is_running() && $this->has_credit();
-	}
-
-	/**
-	 * Check there is a credit or not.
-	 *
-	 * @return bool
-	 */
-	public function has_credit() {
-		return $this->credit_manager->has_credit();
+		return ! $item->is_running() && $this->credit_manager->has_credit();
 	}
 
 	/**
