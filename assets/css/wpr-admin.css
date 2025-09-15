@@ -1252,14 +1252,12 @@ div.wpr-upgrade-websites.notstacked {
 .rocket-promo-banner > div {
   display: flex;
   flex-flow: column;
+  width: 50%;
 }
 @media (max-width: 783px) {
   .rocket-promo-banner > div {
     width: 100%;
   }
-}
-.rocket-promo-banner > div {
-  width: 50%;
 }
 
 .rocket-promo-title {
@@ -1355,14 +1353,12 @@ div.wpr-upgrade-websites.notstacked {
 .rocket-renewal-expired-banner-container > div {
   display: flex;
   flex-flow: column;
+  width: 70%;
 }
 @media (max-width: 783px) {
   .rocket-renewal-expired-banner-container > div {
     width: 100%;
   }
-}
-.rocket-renewal-expired-banner-container > div {
-  width: 70%;
 }
 
 .rocket-renew-message {
@@ -2873,137 +2869,6 @@ div.wpr-tutorial-item {
   opacity: 1;
 }
 
-.wpr-pma-notice {
-  background-image: none;
-  border-radius: 0;
-  border-left: 4px solid #3ECE9D;
-}
-.wpr-pma-notice .wpr-notice-container {
-  padding: 16px;
-}
-.wpr-pma-notice .wpr-notice-description {
-  margin: 0;
-}
-.wpr-pma-notice .wpr-notice-close {
-  top: 16px;
-}
-.wpr-pma-notice.wpr-error-notice {
-  border-left-color: #F56640;
-  background-color: #FDE0D9;
-}
-.wpr-pma-notice.wpr-error-notice .wpr-notice-close {
-  font-size: 14px;
-  text-decoration: underline;
-  font-weight: 600;
-  color: #121116;
-  top: 20px;
-}
-
-.wpr-pma-summary-info a {
-  color: #F56640;
-}
-
-.wpr-pma-urls-table .wpr-percentage-indicator {
-  border-right: 1px solid #D4D9DD;
-}
-.wpr-pma-urls-table .wpr-percentage-indicator .wpr-percentage-circle {
-  width: 32px;
-  height: 32px;
-  font-size: 14px;
-}
-.wpr-pma-urls-table .wpr-percentage-indicator .wpr-loading-img {
-  width: 32px;
-  height: 32px;
-}
-.wpr-pma-urls-table .wpr-pma-item {
-  background: #E2E5E9;
-}
-.wpr-pma-urls-table .wpr-pma-item.wpr-global-score {
-  background: #fff;
-}
-.wpr-pma-urls-table .wpr-pma-item.wpr-global-score .wpr-pma-item-actions {
-  min-height: 60px;
-  position: relative;
-  display: block;
-}
-.wpr-pma-urls-table .wpr-pma-item-score {
-  vertical-align: middle;
-  padding: 0 8px;
-}
-.wpr-pma-urls-table .wpr-pma-item-title {
-  font-size: 14px;
-  color: #121116;
-  vertical-align: middle;
-}
-.wpr-pma-urls-table .wpr-pma-item-title a {
-  display: inline-block;
-  vertical-align: middle;
-  box-sizing: border-box;
-}
-.wpr-pma-urls-table .wpr-pma-item-title .wpr-pma-title {
-  text-decoration: underline;
-}
-.wpr-pma-urls-table .wpr-pma-item-title .wpr-pma-dot {
-  color: #738191;
-}
-.wpr-pma-urls-table .wpr-pma-item-title .wpr-pma-date {
-  color: #738191;
-}
-.wpr-pma-urls-table .wpr-pma-item-actions {
-  text-align: right;
-  vertical-align: middle;
-}
-.wpr-pma-urls-table .wpr-pma-item-actions .wpr-pma-action {
-  display: inline-block;
-  font-size: 14px;
-  line-height: 1.5;
-  padding: 0 16px;
-  margin: 8px 0;
-  color: #121116;
-  border-left: 1px solid #D4D9DD;
-}
-.wpr-pma-urls-table .wpr-pma-item-actions .wpr-pma-action:first-child {
-  margin-left: 0;
-  border-left: none;
-}
-.wpr-pma-urls-table .wpr-pma-item-actions .wpr-pma-action.wpr-confirm-delete:before {
-  font-size: 14px;
-  top: 0;
-  margin-right: 0;
-}
-.wpr-pma-urls-table .wpr-pma-item-actions .wpr-pma-action:before {
-  font-size: 18px;
-  position: relative;
-  top: 2px;
-  margin-right: 8px;
-}
-.wpr-pma-urls-table .wpr-pma-item-actions .wpr-pma-action--disabled, .wpr-pma-urls-table .wpr-pma-item-actions .wpr-pma-action:disabled {
-  color: rgb(134.5094339623, 150.0566037736, 169.4905660377) !important;
-  cursor: not-allowed;
-  box-shadow: none;
-}
-.wpr-pma-urls-table .wpr-pma-item-actions .wpr-pma-action--disabled:focus, .wpr-pma-urls-table .wpr-pma-item-actions .wpr-pma-action:disabled:focus {
-  transform: none;
-  box-shadow: none;
-}
-
-.wpr-pma-add-section {
-  margin: 16px 0;
-  display: flex;
-}
-.wpr-pma-add-section .wpr-speed-radar-input {
-  display: flex;
-  width: 80%;
-  margin-right: 16px;
-}
-.wpr-pma-add-section .wpr-button {
-  display: flex;
-  text-align: center;
-  justify-content: center;
-  padding: 8px;
-  width: 20%;
-}
-
 .wpr-pma-license-banner {
   background-color: #f9f9f9;
   border-radius: 6px;
@@ -3180,6 +3045,137 @@ div.wpr-tutorial-item {
 }
 .wpr-pma-license-banner .wpr-pma-cta-button:hover {
   background-color: rgb(244.725, 102.0166666667, 59.775);
+}
+
+.wpr-pma-notice {
+  background-image: none;
+  border-radius: 0;
+  border-left: 4px solid #3ECE9D;
+}
+.wpr-pma-notice .wpr-notice-container {
+  padding: 16px;
+}
+.wpr-pma-notice .wpr-notice-description {
+  margin: 0;
+}
+.wpr-pma-notice .wpr-notice-close {
+  top: 16px;
+}
+.wpr-pma-notice.wpr-error-notice {
+  border-left-color: #F56640;
+  background-color: #FDE0D9;
+}
+.wpr-pma-notice.wpr-error-notice .wpr-notice-close {
+  font-size: 14px;
+  text-decoration: underline;
+  font-weight: 600;
+  color: #121116;
+  top: 20px;
+}
+
+.wpr-pma-summary-info a {
+  color: #F56640;
+}
+
+.wpr-pma-urls-table .wpr-percentage-indicator {
+  border-right: 1px solid #D4D9DD;
+}
+.wpr-pma-urls-table .wpr-percentage-indicator .wpr-percentage-circle {
+  width: 32px;
+  height: 32px;
+  font-size: 14px;
+}
+.wpr-pma-urls-table .wpr-percentage-indicator .wpr-loading-img {
+  width: 32px;
+  height: 32px;
+}
+.wpr-pma-urls-table .wpr-pma-item {
+  background: #E2E5E9;
+}
+.wpr-pma-urls-table .wpr-pma-item.wpr-global-score {
+  background: #fff;
+}
+.wpr-pma-urls-table .wpr-pma-item.wpr-global-score .wpr-pma-item-actions {
+  min-height: 60px;
+  position: relative;
+  display: block;
+}
+.wpr-pma-urls-table .wpr-pma-item-score {
+  vertical-align: middle;
+  padding: 0 8px;
+}
+.wpr-pma-urls-table .wpr-pma-item-title {
+  font-size: 14px;
+  color: #121116;
+  vertical-align: middle;
+}
+.wpr-pma-urls-table .wpr-pma-item-title a {
+  display: inline-block;
+  vertical-align: middle;
+  box-sizing: border-box;
+}
+.wpr-pma-urls-table .wpr-pma-item-title .wpr-pma-title {
+  text-decoration: underline;
+}
+.wpr-pma-urls-table .wpr-pma-item-title .wpr-pma-dot {
+  color: #738191;
+}
+.wpr-pma-urls-table .wpr-pma-item-title .wpr-pma-date {
+  color: #738191;
+}
+.wpr-pma-urls-table .wpr-pma-item-actions {
+  text-align: right;
+  vertical-align: middle;
+}
+.wpr-pma-urls-table .wpr-pma-item-actions .wpr-pma-action {
+  display: inline-block;
+  font-size: 14px;
+  line-height: 1.5;
+  padding: 0 16px;
+  margin: 8px 0;
+  color: #121116;
+  border-left: 1px solid #D4D9DD;
+}
+.wpr-pma-urls-table .wpr-pma-item-actions .wpr-pma-action:first-child {
+  margin-left: 0;
+  border-left: none;
+}
+.wpr-pma-urls-table .wpr-pma-item-actions .wpr-pma-action.wpr-confirm-delete:before {
+  font-size: 14px;
+  top: 0;
+  margin-right: 0;
+}
+.wpr-pma-urls-table .wpr-pma-item-actions .wpr-pma-action:before {
+  font-size: 18px;
+  position: relative;
+  top: 2px;
+  margin-right: 8px;
+}
+.wpr-pma-urls-table .wpr-pma-item-actions .wpr-pma-action--disabled, .wpr-pma-urls-table .wpr-pma-item-actions .wpr-pma-action:disabled {
+  color: rgb(134.5094339623, 150.0566037736, 169.4905660377) !important;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+.wpr-pma-urls-table .wpr-pma-item-actions .wpr-pma-action--disabled:focus, .wpr-pma-urls-table .wpr-pma-item-actions .wpr-pma-action:disabled:focus {
+  transform: none;
+  box-shadow: none;
+}
+
+.wpr-pma-add-section {
+  margin: 16px 0;
+  display: flex;
+}
+.wpr-pma-add-section .wpr-speed-radar-input {
+  display: flex;
+  width: 80%;
+  margin-right: 16px;
+}
+.wpr-pma-add-section .wpr-button {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  padding: 8px;
+  width: 20%;
 }
 
 /*-----------------------------------------------*\
@@ -3616,6 +3612,10 @@ div.wpr-tutorial-item {
   padding: 10px;
   margin: 8px 0;
 }
+.wpr-multiple-select .wpr-list .wpr-list-header {
+  display: flex;
+  justify-content: space-between;
+}
 .wpr-multiple-select .wpr-list .wpr-list-header .wpr-multiple-select-exclude_js_ads:before {
   font-family: "wpr-icomoon";
   content: "\e9b7";
@@ -3630,10 +3630,6 @@ div.wpr-tutorial-item {
   font-family: "wpr-icomoon";
   content: "\e927";
   padding-right: 8px;
-}
-.wpr-multiple-select .wpr-list .wpr-list-header {
-  display: flex;
-  justify-content: space-between;
 }
 .wpr-multiple-select .wpr-list .wpr-list-header .wpr-list-header-arrow {
   width: 15px;
