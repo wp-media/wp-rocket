@@ -66,7 +66,7 @@ defined( 'ABSPATH' ) || exit;
 			$rocket_show_report_btn_args['attributes']['class'] .= ' wpr-pma-action--disabled';
 			$rocket_show_report_btn_args['attributes']['target'] = '';
 			$rocket_show_report_btn_args['disabled']             = true;
-		} else if ( ! $data->can_access_report() ) {
+		} elseif ( ! $data->can_access_report() ) {
 			$rocket_show_report_btn_args['attributes']['class'] .= ' wpr-btn-with-tool-tip wpr-pma-action--disabled';
 			$rocket_show_report_btn_args['attributes']['target'] = '';
 			$rocket_show_report_btn_args['disabled']             = true;

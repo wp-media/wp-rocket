@@ -78,10 +78,12 @@ class ServiceProvider extends AbstractServiceProvider {
 			);
 
 		$this->getContainer()->add( 'pm_credit_manager', Credit_Manager::class )
-			->addArguments( [
-				'options_api',
-				'pm_context',
-			] );
+			->addArguments(
+				[
+					'options_api',
+					'pm_context',
+				]
+				);
 
 		$this->getContainer()->add( 'pm_render', Render::class )
 			->addArguments(
