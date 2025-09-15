@@ -25,7 +25,7 @@ defined( 'ABSPATH' ) || exit;
 			);
 			?>
 		</div>
-		<a id="wpr-congratulations-notice" class="wpr-notice-close wpr-icon-close rocket-dismiss" href="#">
+		<a class="wpr-notice-close wpr-icon-close rocket-dismiss" href="#">
 			<span class="screen-reader-text">
 				<?php esc_html_e( 'Dismiss this notice', 'rocket' ); ?>
 			</span>
@@ -45,7 +45,7 @@ defined( 'ABSPATH' ) || exit;
 			);
 			?>
 		</div>
-		<a id="wpr-congratulations-notice"  class="wpr-notice-close" href="">
+		<a class="wpr-notice-close" href="">
 			<?php esc_html_e( 'Upgrade Now', 'rocket' ); ?>
 		</a>
 	</div>
