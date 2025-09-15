@@ -15,6 +15,11 @@ class Manager {
 	 */
 	private $options;
 
+	/**
+	 * Context instance.
+	 *
+	 * @var PerformanceMonitoringContext
+	 */
 	private $context;
 
 	/**
@@ -30,7 +35,8 @@ class Manager {
 	/**
 	 * Constructor.
 	 *
-	 * @param Options $options Options instance.
+	 * @param Options                      $options Options instance.
+	 * @param PerformanceMonitoringContext $context Context instance.
 	 */
 	public function __construct( Options $options, PerformanceMonitoringContext $context ) {
 		$this->options = $options;
