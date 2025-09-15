@@ -348,11 +348,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 }
 				response.data.results.forEach(result => {
-					const $row = $(`[data-rocket-pm-id="${result.id}"] .wpr-speed-radar-score`);
-					$row.html(result.status);
+					const $row = $(`[data-rocket-pm-id="${result.id}"]`);
+					$row.html(result.html);
 
-					if (result.status === 'completed') {
-						$row.html(result.score);
+					if (result.status === 'completed' || result.status === 'failed') {
 						removeId(result.id);
 					}
 				});
