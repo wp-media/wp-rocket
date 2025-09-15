@@ -276,6 +276,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	// ==== DOM Selectors ====
 	const $pageUrlInput = $('#wpr-speed-radar-url-input');
 	const $tableBody = $('.wpr-pma-urls-table tbody');
+	const $table = $('.wpr-pma-urls-table');
 
 	// ==== Utility Functions ====
 	function isValidUrl(input) {
@@ -384,6 +385,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			if (response.success) {
 				$pageUrlInput.val('');
 				$tableBody.append(response.data.html);
+				$table.toggleClass('hidden');
 				addIds(response.data.id);
 
                 // Update global score data.
