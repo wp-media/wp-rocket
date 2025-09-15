@@ -307,7 +307,6 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 
 	function schedulePolling() {
-		resetPolling();
 		if (pmIds.length > 0) {
 			pollTimer = setTimeout(() => {
 				getResults();
@@ -316,7 +315,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 
 	function incrementPolling() {
-		pollInterval = Math.min(pollInterval * 1.5, POLL_MAX_INTERVAL); // Exponential backoff
+		pollInterval = Math.min(pollInterval * 1.3, POLL_MAX_INTERVAL); // Exponential backoff
 	}
 
     function isOnDashboard() {

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Admin\PerformanceMonitoring\Credit;
 
 use WP_Rocket\Admin\Options;
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\Context\PerformanceMonitoringContext;
 
 class Manager {
 
@@ -13,6 +14,8 @@ class Manager {
 	 * @var Options
 	 */
 	private $options;
+
+	private $context;
 
 	/**
 	 * Credit option name.
@@ -29,8 +32,9 @@ class Manager {
 	 *
 	 * @param Options $options Options instance.
 	 */
-	public function __construct( Options $options ) {
+	public function __construct( Options $options, PerformanceMonitoringContext $context ) {
 		$this->options = $options;
+		$this->context = $context;
 	}
 
 	/**
@@ -48,7 +52,7 @@ class Manager {
 	 * @return bool
 	 */
 	public function has_credit(): bool {
-		return 0 < $this->get_credit();
+		return ! $this->context->is_free_user() || 0 < $this->get_credit();
 	}
 
 	/**
