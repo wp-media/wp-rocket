@@ -2774,6 +2774,30 @@ div.wpr-tutorial-item {
   margin: 0 auto;
   display: block;
 }
+.wpr-percentage-score-widget .wpr-pma-global-score-add-url-button.disabled {
+  background: rgb(134.5094339623, 150.0566037736, 169.4905660377) !important;
+  color: #121116 !important;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+.wpr-percentage-score-widget .wpr-pma-global-score-add-url-button.disabled:focus {
+  transform: none;
+  box-shadow: none;
+}
+.wpr-percentage-score-widget .wpr-pma-global-score-add-url-button .wpr-tooltip {
+  font-size: 14px;
+  font-weight: normal;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: -40px;
+  min-width: max-content;
+  text-transform: none;
+}
+.wpr-percentage-score-widget .wpr-pma-global-score-add-url-button .wpr-tooltip:before {
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+}
 
 .wpr-percentage-indicator {
   display: flex;
