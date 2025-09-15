@@ -8,10 +8,20 @@ use WP_Rocket\Engine\Admin\PerformanceMonitoring\Credit\Manager as CreditManager
 
 class Render extends Abstract_Render {
 	/**
+	 * CreditManager instance.
+	 *
 	 * @var CreditManager
 	 */
 	private $credit_manager;
 
+	/**
+	 * Constructor for the Render class.
+	 *
+	 * Initializes the Render instance with the provided template path and CreditManager.
+	 *
+	 * @param string        $template_path   Path to the template file.
+	 * @param CreditManager $credit_manager  Instance of CreditManager for managing credits.
+	 */
 	public function __construct( $template_path, CreditManager $credit_manager ) {
 		parent::__construct( $template_path );
 		$this->credit_manager = $credit_manager;
