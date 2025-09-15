@@ -56,14 +56,16 @@ defined( 'ABSPATH' ) || exit;
 	<button data-beacon-id="<?php echo esc_attr( '' ); ?>" data-wpr_track_button="Need Help" data-wpr_track_context="Addons" class="wpr-infoAction wpr-infoAction--help wpr-icon-help"><?php esc_html_e( 'Need Help?', 'rocket' ); ?></button>
 </div>
 
-<?php if ( empty( $data['items'] ) || 'in-progress' === $data['global_score'] ['status'] ) : ?>
+<?php if ( empty( $data['items'] ) || 'in-progress' === $data['global_score']['status'] ) : ?>
 	<p class="wpr-pma-summary-info">
 		<?php
 		printf(
 		// Translators: %1$s = opening strong tag, %2$s: number of pages, %3$s = closing strong tag, %4$s: number of tests available.
 			esc_html__( 'You can analyze up to %1$s%2$s pages%3$s and run %1$s%4$s test per month.%1$s Want more?', 'rocket' ),
 			'<strong>',
-			'</strong>'
+			'1', // number of pages.
+			'</strong>',
+			'3' // total number of tests available.
 		);
 		?>
 		<a href="#"><?php esc_html_e( 'Upgrade Now', 'rocket' ); ?></a>

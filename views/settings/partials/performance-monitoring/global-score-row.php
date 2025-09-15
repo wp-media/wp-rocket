@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) || exit;
 		?>
 	</td>
 	<td class="wpr-pma-item-title">
-		<?php if ( 'in-progress' === $data ['status'] ) : ?>
+		<?php if ( 'in-progress' === $data['status'] ) : ?>
 			<span><?php printf( esc_html( 'Tracked pages: %s' ), esc_html( $data['pages_num'] ) ); ?></span>
 		<?php else : ?>
 			<span><?php printf( esc_html( '%s pages monitored' ), esc_html( $data['pages_num'] ) ); ?></span>

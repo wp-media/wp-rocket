@@ -44,7 +44,7 @@ defined( 'ABSPATH' ) || exit;
 
 		if ( ! $this->has_credit() ) {
 			$rocket_pma_retest_button_args['attributes']['class'] .= ' wpr-btn-with-tool-tip';
-			$rocket_pma_retest_button_args['tool_tip']             = __( 'Upgrade your plan to get access to Automatic Updates', 'rocket' );
+			$rocket_pma_retest_button_args['tool_tip']             = __( 'Upgrade your plan to get access to re-test performance or run new tests', 'rocket' );
 			$rocket_pma_retest_button_args['disabled']             = true;
 		}
 
