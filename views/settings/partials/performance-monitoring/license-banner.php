@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 <div class="wpr-pma-license-banner">
 	<div class="wpr-pma-banner-header">
 		<h2><?php esc_html_e( 'Unlock Your Site’s True Performance!', 'rocket' ); ?></h2>
-		<p><?php esc_html( $data['description'] ); ?></p>
+		<p><?php echo esc_html( $data['description'] ); ?></p>
 	</div>
 	<div class="wpr-pma-banner-content">
 	<div class="wpr-pma-benefits-list-container">
@@ -26,13 +26,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</ul>
 		<?php if ( $data['price_before_discount'] ) : ?>
 		<p class="wpr-pma-terms">
-			<?php esc_html( $data['promo_description'] ); ?>
+			<?php echo esc_html( $data['promo_description'] ); ?>
 		</p>
 		<?php endif; ?>
 	</div>
 		<div class="wpr-pma-price-box">
 			<?php if ( $data['price_before_discount'] ) : ?>
-			<span class="wpr-pma-offer"><?php esc_html( $data['promo_name'] ) ?></span>
+			<span class="wpr-pma-offer"><?php echo esc_html( $data['promo_name'] ) ?></span>
 			<p class="wpr-pma-price-before-discount">
 				<?php
 				printf(
