@@ -10,25 +10,39 @@ use WP_Rocket\Engine\Admin\PerformanceMonitoring\Controller;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\GlobalScore;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\AJAX\Controller as AjaxController;
 
-class Test_RenderUI extends TestCase {
-	public function testRenderUIFetchesAndRendersItems() {
+class Test_renderPerformanceUrlsTable extends TestCase {
+	public function testFetchesAndRendersItems() {
 		$mock_render = $this->createMock(Render::class);
 		$mock_controller = $this->createMock(Controller::class);
 		$mock_global_score = $this->createMock(GlobalScore::class);
 
+		$items = ['item1', 'item2'];
+		$score = [
+			'status'    => 'in-progress',
+			'pages_num' => 1,
+			'score'     => 85,
+		];
+
 		$mock_controller->expects($this->once())
 			->method('get_items')
-			->willReturn(['item1', 'item2']);
+			->willReturn( $items );
+
+		$mock_controller->expects($this->once())
+			->method('get_global_score')
+			->willReturn( $score );
 
 		$mock_render->expects($this->once())
-			->method('render_ui')
-			->with(['item1', 'item2']);
+			->method('render_pma_urls_table')
+			->with([
+				'items'        => $items,
+				'global_score' => $score,
+			]);
 
 		$mock_ajax_controller   = $this->createMock(AjaxController::class);
 		$mock_queue             = $this->createMock(Queue::class);
 		$mock_free_plan_context = $this->createMock(FreePlanContext::class);
 
 		$subscriber = new Subscriber($mock_render, $mock_controller, $mock_ajax_controller, $mock_queue, $mock_free_plan_context, $mock_global_score);
-		$subscriber->render_ui();
+		$subscriber->render_performance_urls_table();
 	}
 }

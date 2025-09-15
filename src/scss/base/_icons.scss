@@ -170,9 +170,21 @@
   content: url('../img/plugins-hover.png');
 }
 .wpr-icon-rocket-insights:before {
-  content: url('../img/rocket-insights.svg');
+	content: '';
+	background-image: url('../img/rocket-insights.svg');
+	background-repeat: no-repeat;
+	background-position: center center;
 }
 .wpr-icon-rocket-insights-hover:before {
-  content: url('../img/rocket-insights-hover.svg');
+	content: '';
+	background-image: url('../img/rocket-insights-hover.svg');
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+.wpr-icon-bold-refresh:before {
+	content: '\e923' ;
+}
+.wpr-icon-report:before {
+	content: '\e924';
 }
 
