@@ -1,14 +1,11 @@
 <?php
 
 return [
-	'testShouldScheduleHomepageTestsAsExpected' => [
-		'config' => [
-			'settings' => [
-				'version' => '',
-			]
-		],
+	'testShouldDoAsExpected' => [
+		'config' => [],
 		'expected' => [
-			'schedule_actions' => 0,
-		],
+			'database_entries' => 1,
+			'hook_fired' => true,
+		]
 	],
 ];
