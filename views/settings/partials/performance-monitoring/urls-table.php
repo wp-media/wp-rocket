@@ -49,13 +49,14 @@ defined( 'ABSPATH' ) || exit;
 
 <table class="wp-rocket-data-table widefat wpr-pma-urls-table <?php echo empty( $data['items'] ) ? 'hidden' : ''; ?>" >
 	<tbody>
-		<?php if ( ! empty( $data['items'] ) ) :
-		$this->render_global_score_row( $data['global_score'] );
+		<?php
+		if ( ! empty( $data['items'] ) ) :
+			$this->render_global_score_row( $data['global_score'] );
 		// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
-		foreach ( $data['items'] as $wpr_pma_record ) {
-			$this->render_performance_monitoring_list_row( $wpr_pma_record );
-		}
-		?>
+			foreach ( $data['items'] as $wpr_pma_record ) {
+				$this->render_performance_monitoring_list_row( $wpr_pma_record );
+			}
+			?>
 		<?php endif; ?>
 	</tbody>
 </table>
