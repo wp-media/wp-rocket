@@ -439,11 +439,6 @@ document.addEventListener('DOMContentLoaded', function() {
 	$(document).on( 'click', '#add_page_speed_radar', handleAddPage );
 	$(document).on( 'click', '.wpr-action-speed_radar_refresh', handleResetPage );
 
-	// Only poll if on the dashboard (more robust check)
-	function isOnPMA() {
-		const urlParams = new URLSearchParams(window.location.search);
-		return urlParams.get('page') === 'wprocket' && window.location.hash === '#rocket_insights';
-	}
 	// Only poll if on a wpr section that requires polling(dashboard|rocket_insights) (more robust check)
     function isValidPageForPolling() {
         const urlParams = new URLSearchParams(window.location.search);
