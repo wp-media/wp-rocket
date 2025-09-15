@@ -13,7 +13,7 @@ if ( ( isset( $data['is_blurred'] ) && $data['is_blurred'] ) || ( isset( $data['
 <div class="wpr-percentage-indicator">
 	<?php if ( isset( $data['status'] ) && 'in-progress' === $data['status'] ) : ?>
 		<div class="wpr-loading-container">
-			<img class="wpr-loading-img" src="<?php echo esc_url( WP_ROCKET_ASSETS_IMG_URL . 'orange-loading.gif' ); ?>"/>
+			<img class="wpr-loading-img" src="<?php echo esc_url( WP_ROCKET_ASSETS_IMG_URL . 'orange-loading.svg' ); ?>"/>
 		</div>
 	<?php elseif ( isset( $data['status'] ) && 'failed' === $data['status'] ) : ?>
 		<div class="wpr-percentage-circle  status-red <?php echo $rocket_pma_item_is_blurred ? 'blurred' : ''; ?>">
