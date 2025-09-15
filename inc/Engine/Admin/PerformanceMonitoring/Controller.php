@@ -227,24 +227,27 @@ class Controller {
 		$price = $this->user->get_pma_addon_price( $upgrade );
 
 		$limit = $this->user->get_pma_addon_limit( $upgrade );
+
+		$data = [
+			'currency'              => '$',
+			'page_number'           => $limit,
+			'period'                => 'month',
+			'description'           => $this->user->get_pma_addon_description( $upgrade ),
+			'highlights'            => $this->user->get_pma_addon_highlights( $upgrade ),
+		];
+
 		if ( ! $this->user->has_pma_addon_promo( $upgrade ) ) {
-			return [
-				'price'                 => $price,
-				'currency'              => '$',
-				'price_before_discount' => '',
-				'page_number'           => $limit,
-				'period'                => 'month',
-			];
+			$data['price'] = $price;
+			$data['price_before_discount'] = '';
+
+			return $data;
 		}
 
 		$promo_price = $this->user->get_pma_addon_promo_price( $upgrade );
-
-		return [
-			'price'                 => $promo_price,
-			'currency'              => '$',
-			'price_before_discount' => $price,
-			'page_number'           => $limit,
-			'period'                => 'month',
-		];
+		$data['price'] = $promo_price;
+		$data['price_before_discount'] = $price;
+		$data['promo_name'] = $this->user->get_pma_addon_promo_name( $upgrade );
+		$data['promo_description'] = $this->user->get_pma_addon_promo_description( $upgrade );
+		return $data;
 	}
 }
