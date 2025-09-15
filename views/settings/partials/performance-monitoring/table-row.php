@@ -35,7 +35,7 @@ defined( 'ABSPATH' ) || exit;
 		];
 
 		// Retest button should be disabled if the score is zero or this row is still running.
-		if ( $this->is_retest_btn_enabled( $data ) ) {
+		if ( ! $this->is_retest_btn_enabled( $data ) ) {
 			$wpr_pma_retest_button_args['attributes']['class'] .= ' wpr-pma-action--disabled';
 		}
 
