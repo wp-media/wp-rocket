@@ -16,16 +16,18 @@ defined( 'ABSPATH' ) || exit;
 <div class="wpr-notice wpr-pma-notice">
 	<div class="wpr-notice-container">
 		<div class="wpr-notice-description">
-			<?php printf(
+			<?php
+			printf(
 				// Translators: %1$s = opening strong tag, %2$s = closing strong tag.
 				esc_html__( '%1$sCongrats!%2$s You can now monitor up to 10 pages, run on-demand tests, and access advanced GTmetrix reports.', 'rocket' ),
 				'<strong>',
 				'</strong>'
-			); ?>
+			);
+			?>
 		</div>
 		<a id="wpr-congratulations-notice" class="wpr-notice-close wpr-icon-close rocket-dismiss" href="#">
 			<span class="screen-reader-text">
-				<?php esc_html_e( 'Dismiss this notice', 'rocket' );?>
+				<?php esc_html_e( 'Dismiss this notice', 'rocket' ); ?>
 			</span>
 		</a>
 	</div>
@@ -34,12 +36,14 @@ defined( 'ABSPATH' ) || exit;
 <div class="wpr-notice wpr-pma-notice wpr-error-notice">
 	<div class="wpr-notice-container">
 		<div class="wpr-notice-description">
-			<?php printf(
+			<?php
+			printf(
 				// Translators: %1$s = opening strong tag, %2$s = closing strong tag.
 				esc_html__( 'You\'ve %1$sreached your free limit.%2$s Upgrade to continue.', 'rocket' ),
 				'<strong>',
 				'</strong>'
-			); ?>
+			);
+			?>
 		</div>
 		<a id="wpr-congratulations-notice"  class="wpr-notice-close" href="">
 			<?php esc_html_e( 'Upgrade Now', 'rocket' ); ?>
@@ -54,12 +58,14 @@ defined( 'ABSPATH' ) || exit;
 
 <?php if ( empty( $data['items'] ) || 'in-progress' === $data['global_score'] ['status'] ) : ?>
 	<p class="wpr-pma-summary-info">
-		<?php printf(
+		<?php
+		printf(
 		// Translators: %1$s = opening strong tag, %2$s: number of pages, %3$s = closing strong tag, %4$s: number of tests available.
 			esc_html__( 'You can analyze up to %1$s%2$s pages%3$s and run %1$s%4$s test per month.%1$s Want more?', 'rocket' ),
 			'<strong>',
 			'</strong>'
-		); ?>
+		);
+		?>
 		<a href="#"><?php esc_html_e( 'Upgrade Now', 'rocket' ); ?></a>
 	</p>
 <?php endif; ?>
