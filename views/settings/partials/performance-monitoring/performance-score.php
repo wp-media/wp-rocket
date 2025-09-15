@@ -11,7 +11,7 @@ if ( ( isset( $data['is_blurred'] ) && $data['is_blurred'] ) || ( isset( $data['
 }
 ?>
 <div class="wpr-percentage-indicator">
-	<?php if ( isset( $data['status'] ) && 'in-progress' === $data['status'] ) : ?>
+	<?php if ( ! empty( $data['is_running'] ) ) : ?>
 		<div class="wpr-loading-container">
 			<img class="wpr-loading-img" src="<?php echo esc_url( WP_ROCKET_ASSETS_IMG_URL . 'orange-loading.svg' ); ?>"/>
 		</div>

@@ -10,7 +10,9 @@ defined( 'ABSPATH' ) || exit;
 <tr class="wpr-pma-item wpr-pma-item-result" data-rocket-pm-id="<?php echo esc_attr( $data->id ); ?>" >
 	<td class="wpr-pma-item-score">
 		<?php
-		$this->render_performance_score( (array) $data );
+		$rocket_data_array               = (array) $data;
+		$rocket_data_array['is_running'] = $data->is_running();
+		$this->render_performance_score( $rocket_data_array );
 		?>
 	</td>
 
