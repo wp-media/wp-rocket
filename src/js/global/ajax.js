@@ -403,7 +403,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	function handleResetPage(e) {
 		e.preventDefault();
 
-		let id = $(this).parents('.wpr-speed-radar-item').data('rocketPmId');
+		let id = $(this).parents('.wpr-pma-item').data('rocketPmId');
 		if ( ! id ) {
 			return;
 		}
@@ -436,7 +436,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	// ==== Initialization ====
 	// Bind event
 	$(document).on( 'click', '#add_page_speed_radar', handleAddPage );
-	$(document).on( 'click', '#wpr-action-speed_radar_refresh', handleResetPage );
+	$(document).on( 'click', '.wpr-action-speed_radar_refresh', handleResetPage );
 
 	// Only poll if on the dashboard (more robust check)
 	function isOnPMA() {

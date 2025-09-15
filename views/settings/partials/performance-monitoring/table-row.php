@@ -28,7 +28,7 @@ defined( 'ABSPATH' ) || exit;
 		$wpr_pma_retest_button_args = [
 			'label'      => __( 'Re-test', 'rocket' ),
 			'attributes' => [
-				'class'      => 'wpr-icon-bold-refresh wpr-pma-action', // add class `wpr-pma-action--disabled` to disable the button.
+				'class'      => 'wpr-icon-bold-refresh wpr-pma-action wpr-action-speed_radar_refresh', // add class `wpr-pma-action--disabled` to disable the button.
 				'title'      => __( 'Re-test', 'rocket' ),
 				'aria-label' => __( 'Re-test', 'rocket' ),
 			],
