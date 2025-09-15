@@ -112,6 +112,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 				[ 'render_settings_section', 30 ],
 			],
 			'admin_post_rocket_pm_add_homepage' => 'add_homepage_from_widget',
+			'rocket_deactivation'               => 'cancel_scheduled_jobs',
 		];
 	}
 
@@ -280,5 +281,14 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		}
 		// add some logic here to check if the banner should be displayed.
 		$this->render->render_license_banner_section( $this->controller->get_license_data() );
+	}
+
+	/**
+	 * Cancel scheduled jobs with plugin deactivation.
+	 *
+	 * @return void
+	 */
+	public function cancel_scheduled_jobs() {
+		$this->queue->cancel_reset_job();
 	}
 }

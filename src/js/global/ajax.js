@@ -386,6 +386,8 @@ document.addEventListener('DOMContentLoaded', function() {
 				$tableBody.append(response.data.html);
 				$table.removeClass('hidden');
 				addIds(response.data.id);
+				let pages_num_container = $('#rocket_pma_pages_num');
+				pages_num_container.text( parseInt( pages_num_container.text() ) + 1 );
 
                 // Update global score data.
                 globalScoreData = response.data.global_score_data;
