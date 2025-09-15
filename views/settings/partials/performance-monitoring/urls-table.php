@@ -61,7 +61,7 @@ defined( 'ABSPATH' ) || exit;
 		<?php
 		printf(
 		// Translators: %1$s = opening strong tag, %2$s: number of pages, %3$s = closing strong tag, %4$s: number of tests available.
-			esc_html__( 'You can analyze up to %1$s%2$s pages%3$s and run %1$s%4$s test per month.%1$s Want more?', 'rocket' ),
+			esc_html__( 'You can analyze up to %1$s%2$s page%3$s and run %1$s%4$s tests per month%3$s. %1$sWant more?%3$s', 'rocket' ),
 			'<strong>',
 			'1', // number of pages.
 			'</strong>',
