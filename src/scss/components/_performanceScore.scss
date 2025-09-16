@@ -7,12 +7,13 @@
 			font-size: 43px;
 			font-weight: 600;
 		}
+		margin-bottom: 40px;
 		.wpr-tooltip{
 			display: none;
 		}
 	}
 	.wpr-page-num-txt{
-		margin: 5*$space 0 $space 0;
+		margin: 0 0 $space 0;
 		font-size: 14px;
 		line-height: 1.3;
 	}
@@ -25,6 +26,7 @@
 		height: 92px;
 		margin: 0 auto;
 		display: block;
+		margin-bottom: 10px;
 	}
 	.wpr-pma-global-score-add-url-button{
 		padding:10px 30px 10px 10px;

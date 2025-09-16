@@ -2778,11 +2778,14 @@ div.wpr-tutorial-item {
   font-size: 43px;
   font-weight: 600;
 }
+.wpr-percentage-score-widget .wpr-percentage-indicator {
+  margin-bottom: 40px;
+}
 .wpr-percentage-score-widget .wpr-percentage-indicator .wpr-tooltip {
   display: none;
 }
 .wpr-percentage-score-widget .wpr-page-num-txt {
-  margin: 40px 0 8px 0;
+  margin: 0 0 8px 0;
   font-size: 14px;
   line-height: 1.3;
 }
@@ -2795,6 +2798,7 @@ div.wpr-tutorial-item {
   height: 92px;
   margin: 0 auto;
   display: block;
+  margin-bottom: 10px;
 }
 .wpr-percentage-score-widget .wpr-pma-global-score-add-url-button {
   padding: 10px 30px 10px 10px;
