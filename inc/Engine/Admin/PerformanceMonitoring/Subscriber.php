@@ -4,11 +4,10 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Admin\PerformanceMonitoring;
 
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\{
-	Context\FreePlanContext,
+	Context\PerformanceMonitoringContext,
 	Database\Rows\PerformanceMonitoring,
 	Queue\Queue,
-	AJAX\Controller as AjaxController,
-	Credit\Manager as CreditManager
+	AJAX\Controller as AjaxController
 };
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Logger\LoggerAware;
@@ -51,11 +50,11 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	private $queue;
 
 	/**
-	 * Free Plan context.
+	 * PMA context.
 	 *
-	 * @var FreePlanContext
+	 * @var PerformanceMonitoringContext
 	 */
-	private $free_plan_context;
+	private $pma_context;
 
 	/**
 	 * GlobalScore instance.
@@ -67,20 +66,20 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	/**
 	 * Constructor.
 	 *
-	 * @param Render          $render Render object.
-	 * @param Controller      $controller Controller object.
-	 * @param AjaxController  $ajax_controller AjaxController object.
-	 * @param Queue           $queue Queue object.
-	 * @param FreePlanContext $free_plan_context Free Plan context.
-	 * @param GlobalScore     $global_score GlobalScore instance.
+	 * @param Render                       $render Render object.
+	 * @param Controller                   $controller Controller object.
+	 * @param AjaxController               $ajax_controller AjaxController object.
+	 * @param Queue                        $queue Queue object.
+	 * @param PerformanceMonitoringContext $pma_context PMA context.
+	 * @param GlobalScore                  $global_score GlobalScore instance.
 	 */
-	public function __construct( Render $render, Controller $controller, AjaxController $ajax_controller, Queue $queue, FreePlanContext $free_plan_context, GlobalScore $global_score ) {
-		$this->render            = $render;
-		$this->controller        = $controller;
-		$this->ajax_controller   = $ajax_controller;
-		$this->queue             = $queue;
-		$this->free_plan_context = $free_plan_context;
-		$this->global_score      = $global_score;
+	public function __construct( Render $render, Controller $controller, AjaxController $ajax_controller, Queue $queue, PerformanceMonitoringContext $pma_context, GlobalScore $global_score ) {
+		$this->render          = $render;
+		$this->controller      = $controller;
+		$this->ajax_controller = $ajax_controller;
+		$this->queue           = $queue;
+		$this->pma_context     = $pma_context;
+		$this->global_score    = $global_score;
 	}
 
 	/**
@@ -113,6 +112,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 				[ 'render_settings_section', 30 ],
 			],
 			'admin_post_rocket_pm_add_homepage' => 'add_homepage_from_widget',
+			'rocket_deactivation'               => 'cancel_scheduled_jobs',
 		];
 	}
 
@@ -181,7 +181,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return void
 	 */
 	public function schedule_reset_credit(): void {
-		if ( ! $this->free_plan_context->is_allowed() ) {
+		if ( ! $this->pma_context->is_allowed() || ! $this->pma_context->is_free_user() ) {
 			$this->queue->cancel_reset_job();
 			return;
 		}
@@ -195,7 +195,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return void
 	 */
 	public function reset_credit_monthly() {
-		if ( ! $this->free_plan_context->is_allowed() ) {
+		if ( ! $this->pma_context->is_allowed() || ! $this->pma_context->is_free_user() ) {
 			return;
 		}
 		$this->controller->reset_credit();
@@ -209,7 +209,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return void
 	 */
 	public function validate_credit( $row ) {
-		if ( ! $this->free_plan_context->is_allowed() ) {
+		if ( ! $this->pma_context->is_allowed() || ! $this->pma_context->is_free_user() ) {
 			return;
 		}
 		$this->controller->validate_credit( $row->id );
@@ -223,6 +223,9 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return void
 	 */
 	public function reset_global_score(): void {
+		if ( ! $this->pma_context->is_allowed() ) {
+			return;
+		}
 		$this->global_score->reset();
 	}
 
@@ -273,11 +276,19 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return void
 	 */
 	public function render_license_banner_section() {
-
 		if ( ! $this->controller->display_banner() ) {
 			return;
 		}
 		// add some logic here to check if the banner should be displayed.
 		$this->render->render_license_banner_section( $this->controller->get_license_data() );
+	}
+
+	/**
+	 * Cancel scheduled jobs with plugin deactivation.
+	 *
+	 * @return void
+	 */
+	public function cancel_scheduled_jobs() {
+		$this->queue->cancel_reset_job();
 	}
 }

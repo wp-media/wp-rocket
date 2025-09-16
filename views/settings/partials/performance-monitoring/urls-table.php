@@ -13,7 +13,7 @@
 
 defined( 'ABSPATH' ) || exit;
 ?>
-<div class="wpr-notice wpr-pma-notice">
+<div class="wpr-notice wpr-pma-notice hidden">
 	<div class="wpr-notice-container">
 		<div class="wpr-notice-description">
 			<?php
@@ -33,7 +33,7 @@ defined( 'ABSPATH' ) || exit;
 	</div>
 </div>
 
-<div class="wpr-notice wpr-pma-notice wpr-error-notice">
+<div class="wpr-notice wpr-pma-notice wpr-error-notice hidden">
 	<div class="wpr-notice-container">
 		<div class="wpr-notice-description">
 			<?php

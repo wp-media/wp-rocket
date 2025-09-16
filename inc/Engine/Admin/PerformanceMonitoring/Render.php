@@ -105,7 +105,7 @@ class Render extends Abstract_Render {
 	 * @return string The rendered HTML for the performance monitoring row.
 	 */
 	public function get_performance_monitoring_list_row( object $data ): string {
-		$data['has_credit'] = $this->credit_manager->has_credit();
+		$data->has_credit = $this->credit_manager->has_credit();
 
 		return $this->generate( 'partials/performance-monitoring/table-row', $data );
 	}
