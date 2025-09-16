@@ -20,7 +20,6 @@ class Test_ProcessOnSubmitJobs extends TestCase {
 		parent::set_up();
 
 		self::installUsedCssTable();
-		self::installPerformanceMonitoringTable();
 		self::installPreloadCacheTable();
 
 		add_filter( 'rocket_saas_max_pending_jobs', [ $this, 'max_rows' ] );
