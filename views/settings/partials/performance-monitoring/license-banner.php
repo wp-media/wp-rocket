@@ -22,11 +22,12 @@ defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 			</li>
 			<?php endforeach; ?>
 		</ul>
-		<?php if ( $data['price_before_discount'] ) : ?>
 		<p class="wpr-pma-terms">
-			<?php echo esc_html( $data['promo_description'] ); ?>
+			<?php echo esc_html( $data['billing'] ); ?>
+			<?php if ( $data['price_before_discount'] ) : ?>
+				<?php echo esc_html( $data['promo_billing'] ); ?>
+			<?php endif; ?>
 		</p>
-		<?php endif; ?>
 	</div>
 		<div class="wpr-pma-price-box">
 			<?php if ( $data['price_before_discount'] ) : ?>

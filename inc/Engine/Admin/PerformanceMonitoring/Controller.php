@@ -267,6 +267,7 @@ class Controller {
 			'page_number' => $limit,
 			'period'      => 'month',
 			'description' => $this->user->get_pma_addon_description( $upgrade ),
+			'billing'     => $this->user->get_pma_addon_billing( $upgrade ),
 			'highlights'  => $this->user->get_pma_addon_highlights( $upgrade ),
 		];
 
@@ -281,7 +282,7 @@ class Controller {
 		$data['price']                 = $promo_price;
 		$data['price_before_discount'] = $price;
 		$data['promo_name']            = $this->user->get_pma_addon_promo_name( $upgrade );
-		$data['promo_description']     = $this->user->get_pma_addon_promo_description( $upgrade );
+		$data['promo_billing']     = $this->user->get_pma_addon_promo_billing( $upgrade );
 		return $data;
 	}
 }
