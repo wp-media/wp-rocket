@@ -36,12 +36,12 @@ defined( 'ABSPATH' ) || exit;
 		];
 
 		// Retest button should be disabled if the score is zero or this row is still running.
-		if ( ! $data->is_running() && $data['has_credit'] ) {
+		if ( ! $data->is_running() && $data->has_credit ) {
 			$rocket_pma_retest_button_args['attributes']['class'] .= ' wpr-pma-action--disabled';
 			$rocket_pma_retest_button_args['disabled']             = true;
 		}
 
-		if ( ! $data['has_credit'] ) {
+		if ( ! $data->has_credit ) {
 			$rocket_pma_retest_button_args['attributes']['class'] .= ' wpr-btn-with-tool-tip';
 			$rocket_pma_retest_button_args['tool_tip']             = __( 'Upgrade your plan to get access to re-test performance or run new tests', 'rocket' );
 			$rocket_pma_retest_button_args['disabled']             = true;
