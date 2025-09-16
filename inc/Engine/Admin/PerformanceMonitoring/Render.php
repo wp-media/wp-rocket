@@ -49,7 +49,7 @@ class Render extends Abstract_Render {
 	 * @param array $data Data for the global score row.
 	 * @return string The rendered HTML for the global score row.
 	 */
-	public function get_global_score_row( array $data  ){
+	public function get_global_score_row( array $data ) {
 		return $this->generate( 'partials/performance-monitoring/global-score-row', $data );
 	}
 

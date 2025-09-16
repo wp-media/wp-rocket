@@ -376,8 +376,8 @@ class Controller {
 		$payload['status-color'] = $this->render->get_score_color_status( (int) $payload['score'] );
 
 		return [
-			'data' => $payload,
-			'html' => $this->render->get_global_score_widget( $payload ),
+			'data'     => $payload,
+			'html'     => $this->render->get_global_score_widget( $payload ),
 			'row_html' => $this->render->get_global_score_row( $payload ),
 		];
 	}
