@@ -333,7 +333,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		if ( isOnRocketInsights() ) {
 			const $tableGlobalScore = $('.wpr-pma-urls-table .wpr-global-score');
 			if ($tableGlobalScore.length > 0){
-				console.log(response.data.global_score_data.row_html);
 				$tableGlobalScore.replaceWith(response.data.global_score_data.row_html);
 			}else {
 				$tableBody.prepend(response.data.global_score_data.row_html);
