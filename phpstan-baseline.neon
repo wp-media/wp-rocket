@@ -916,9 +916,59 @@ parameters:
 			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/SettingsSubscriber/displayAddonStatus.php
 
 		-
+			message: "#^Parameter \\$preempt of method WP_Rocket\\\\Tests\\\\Integration\\\\inc\\\\Engine\\\\Admin\\\\PerformanceMonitoring\\\\Subscriber\\\\Test_AddNewPage\\:\\:mock_http_request\\(\\) has invalid type WP_Rocket\\\\Tests\\\\Integration\\\\inc\\\\Engine\\\\Admin\\\\PerformanceMonitoring\\\\Subscriber\\\\WP_Error\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/Subscriber/addNewPage.php
+
+		-
+			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			count: 29
+			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/Subscriber/addNewPage.php
+
+		-
+			message: "#^You should use assertCount\\(\\$expectedCount, \\$variable\\) instead of assertSame\\(\\$expectedCount, count\\(\\$variable\\)\\)\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/Subscriber/addNewPage.php
+
+		-
+			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			count: 31
+			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/Subscriber/deleteRow.php
+
+		-
+			message: "#^You should use assertCount\\(\\$expectedCount, \\$variable\\) instead of assertSame\\(\\$expectedCount, count\\(\\$variable\\)\\)\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/Subscriber/deleteRow.php
+
+		-
+			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			count: 28
+			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/Subscriber/getResults.php
+
+		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/Subscriber/renderLicenseBannerSection.php
+
+		-
+			message: "#^Property WP_Rocket\\\\Tests\\\\Integration\\\\inc\\\\Engine\\\\Admin\\\\PerformanceMonitoring\\\\Subscriber\\\\Test_ResetGlobalScore\\:\\:\\$reset_called is never read, only written\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/Subscriber/resetGlobalScore.php
+
+		-
+			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			count: 30
+			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/Subscriber/resetGlobalScore.php
+
+		-
+			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			count: 28
+			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/Subscriber/resetPage.php
+
+		-
+			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			count: 29
+			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/Subscriber/schedule_homepage_tests.php
 
 		-
 			message: "#^Property WP_Rocket\\\\Tests\\\\Integration\\\\inc\\\\Engine\\\\Admin\\\\PerformanceMonitoring\\\\URLLimit\\\\Subscriber\\\\Test_IsAddingPageAllowed\\:\\:\\$user_client is unused\\.$#"
