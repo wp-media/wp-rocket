@@ -63,11 +63,12 @@
 				}
 
 				&:before {
-					content: "✓";
+					font-family: 'wpr-icomoon';
+					content: "\e920";
 					position: absolute;
 					left: 0;
 					color: #1a1a1a;
-					font-weight: bold;
+					font-size: 13px;
 					display: flex;
 					align-items: center;
 					justify-content: center;
