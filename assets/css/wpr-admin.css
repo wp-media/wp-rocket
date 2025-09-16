@@ -3087,6 +3087,55 @@ div.wpr-tutorial-item {
   color: #F56640;
 }
 
+.wpr-pma-urls-table.widefat {
+  margin-top: 16px;
+  border: none;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 5px;
+  overflow: hidden;
+}
+.wpr-pma-urls-table.widefat td, .wpr-pma-urls-table.widefat th {
+  border: 1px solid #E2E5E9;
+  border-bottom: none;
+}
+.wpr-pma-urls-table.widefat td:not(:first-child):not(:last-child),
+.wpr-pma-urls-table.widefat th:not(:first-child):not(:last-child) {
+  border-left: none;
+  border-right: none;
+}
+.wpr-pma-urls-table.widefat td:first-child {
+  border-right: none;
+}
+.wpr-pma-urls-table.widefat td:last-child {
+  border-left: none;
+}
+.wpr-pma-urls-table.widefat tr:last-child td,
+.wpr-pma-urls-table.widefat tr:last-child th {
+  border-bottom: 1px solid #E2E5E9;
+}
+.wpr-pma-urls-table.widefat {
+  /* Target the top-left and top-right cells of the first row */
+}
+.wpr-pma-urls-table.widefat tr:nth-child(2) th:first-child,
+.wpr-pma-urls-table.widefat tr:nth-child(2) td:first-child {
+  border-top-left-radius: 5px;
+}
+.wpr-pma-urls-table.widefat tr:nth-child(2) th:last-child,
+.wpr-pma-urls-table.widefat tr:nth-child(2) td:last-child {
+  border-top-right-radius: 5px;
+}
+.wpr-pma-urls-table.widefat {
+  /* Target the bottom-left and bottom-right cells of the last row */
+}
+.wpr-pma-urls-table.widefat tr:last-child th:first-child,
+.wpr-pma-urls-table.widefat tr:last-child td:first-child {
+  border-bottom-left-radius: 5px;
+}
+.wpr-pma-urls-table.widefat tr:last-child th:last-child,
+.wpr-pma-urls-table.widefat tr:last-child td:last-child {
+  border-bottom-right-radius: 5px;
+}
 .wpr-pma-urls-table .wpr-percentage-indicator {
   border-right: 1px solid #D4D9DD;
 }
@@ -3100,10 +3149,13 @@ div.wpr-tutorial-item {
   height: 32px;
 }
 .wpr-pma-urls-table .wpr-pma-item {
-  background: #E2E5E9;
+  background: #F9FAFB;
 }
 .wpr-pma-urls-table .wpr-pma-item.wpr-global-score {
   background: #fff;
+}
+.wpr-pma-urls-table .wpr-pma-item.wpr-global-score td, .wpr-pma-urls-table .wpr-pma-item.wpr-global-score th {
+  border: none;
 }
 .wpr-pma-urls-table .wpr-pma-item.wpr-global-score .wpr-pma-item-actions {
   min-height: 60px;

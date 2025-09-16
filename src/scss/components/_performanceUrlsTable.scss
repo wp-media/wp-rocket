@@ -28,6 +28,53 @@
 	color: $cOrange;
 }
 .wpr-pma-urls-table{
+	&.widefat{
+		margin-top: 2*$space;
+		border:none;
+		border-collapse: separate;
+		border-spacing: 0;
+		border-radius: 5px;
+		overflow: hidden;
+		td, th {
+			border: 1px solid $cGreyLighter1;
+			border-bottom: none;
+		}
+		td:not(:first-child):not(:last-child),
+		th:not(:first-child):not(:last-child) {
+			border-left: none;
+			border-right: none;
+		}
+		td:first-child{
+			border-right: none ;
+		}
+		td:last-child{
+			border-left: none ;
+		}
+		tr:last-child td,
+		tr:last-child th {
+			border-bottom: 1px solid $cGreyLighter1;
+		}
+
+		/* Target the top-left and top-right cells of the first row */
+		tr:nth-child(2) th:first-child,
+		tr:nth-child(2) td:first-child {
+			border-top-left-radius: 5px;
+		}
+		tr:nth-child(2) th:last-child,
+		tr:nth-child(2) td:last-child {
+			border-top-right-radius: 5px;
+		}
+
+		/* Target the bottom-left and bottom-right cells of the last row */
+		tr:last-child th:first-child,
+		tr:last-child td:first-child {
+			border-bottom-left-radius: 5px;
+		}
+		tr:last-child th:last-child,
+		tr:last-child td:last-child {
+			border-bottom-right-radius: 5px;
+		}
+	}
 	.wpr-percentage-indicator{
 		border-right: 1px solid $cGreyLighter2;
 		.wpr-percentage-circle{
@@ -41,9 +88,12 @@
 		}
 	}
 	.wpr-pma-item{
-		background: $cGreyLighter1;
+		background: #F9FAFB;
 		&.wpr-global-score{
 			background: $cWhite;
+			td, th {
+				border: none;
+			}
 			.wpr-pma-item-actions{
 				min-height: 60px;
 				position: relative;
