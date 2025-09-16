@@ -3093,7 +3093,6 @@ div.wpr-tutorial-item {
   border-collapse: separate;
   border-spacing: 0;
   border-radius: 5px;
-  overflow: hidden;
 }
 .wpr-pma-urls-table.widefat td, .wpr-pma-urls-table.widefat th {
   border: 1px solid #E2E5E9;
