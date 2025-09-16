@@ -385,6 +385,8 @@ a:focus, button:focus {
   background-image: url("../img/rocket-insights.svg");
   background-repeat: no-repeat;
   background-position: center center;
+  width: 26px;
+  height: 28px;
 }
 
 .wpr-icon-rocket-insights-hover:before, #wpr-nav-rocket_insights.isActive:before, #wpr-nav-rocket_insights:hover:before {
