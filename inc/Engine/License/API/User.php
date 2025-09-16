@@ -207,7 +207,7 @@ class User {
 	 */
 	public function get_pma_addon_sku_active(): string {
 		if ( ! isset( $this->user->performance_monitoring ) || ! isset( $this->user->performance_monitoring->active_sku ) ) {
-			return '';
+			return 'perf-monitor-free';
 		}
 
 		return (string) $this->user->performance_monitoring->active_sku;
