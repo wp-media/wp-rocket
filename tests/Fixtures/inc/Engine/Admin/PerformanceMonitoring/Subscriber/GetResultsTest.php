@@ -75,7 +75,7 @@ return [
 		],
 		'expected' => [
 			'success' => false,
-			'error_message' => 'ids empty',
+			'error_message' => 'No ids param available or ids not array',
 		],
 	],
 	'testShouldFailWithInvalidIdValues' => [
