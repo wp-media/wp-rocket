@@ -3156,6 +3156,10 @@ div.wpr-tutorial-item {
 }
 .wpr-pma-urls-table .wpr-pma-item-title .wpr-pma-dot {
   color: #738191;
+  display: inline-block;
+  position: relative;
+  top: -4px;
+  margin: 0 8px;
 }
 .wpr-pma-urls-table .wpr-pma-item-title .wpr-pma-date {
   color: #738191;

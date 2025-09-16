@@ -118,6 +118,10 @@
 		}
 		.wpr-pma-dot{
 			color: $cGreyLighter3;
+			display: inline-block;
+			position: relative;
+			top: -$space/2;
+			margin: 0 $space;
 		}
 		.wpr-pma-date{
 			color: $cGreyLighter3;
