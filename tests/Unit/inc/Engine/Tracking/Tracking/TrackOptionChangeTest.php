@@ -68,7 +68,7 @@ class TrackOptionChangeTest extends TestCase {
 			$this->mixpanel->shouldReceive( 'track' )
 				->once()
 				->with(
-					'WPM Option Changed',
+					'Option Changed',
 					[
 						'context'        => 'wp_plugin',
 						'option_name'    => 'auto_preload_fonts',
