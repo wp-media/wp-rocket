@@ -21,32 +21,6 @@
 		margin: 0 auto;
 		display: block;
 	}
-	.wpr-pma-global-score-add-url-button{
-		&.disabled{
-			background: darken($cGrey, 30%) !important;
-			color: $cBlack !important;
-			cursor: not-allowed;
-			box-shadow: none;
-			&:focus {
-				transform: none;
-				box-shadow: none;
-			}
-		}
-		.wpr-tooltip{
-			font-size: 14px;
-			font-weight: normal;
-			left: 50%;
-			transform: translateX(-50%);
-			bottom: -40px;
-			min-width: max-content;
-			text-transform: none;
-			&:before {
-				top: -6px;
-				left: 50%;
-				transform: translateX(-50%);
-			}
-		}
-	}
 }
 // Percentage indicator component
 .wpr-percentage-indicator {

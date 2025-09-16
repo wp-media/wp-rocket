@@ -38,7 +38,7 @@ defined( 'ABSPATH' ) || exit;
 						],
 						'url'        => '#rocket_insights',
 						'attributes' => [
-							'class' => 'wpr-button wpr-button--icon wpr-button--small wpr-button--purple wpr-icon-plus wpr-button--no-min-width wpr-pma-global-score-add-url-button',
+							'class' => 'wpr-button wpr-button--icon wpr-button--small wpr-button--purple wpr-icon-plus wpr-button--no-min-width wpr-pma-add-url-button wpr-pma-global-score-add-url-button',
 						],
 					];
 
