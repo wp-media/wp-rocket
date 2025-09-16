@@ -226,8 +226,6 @@ class Controller {
 		];
 	}
 
-
-
 	/**
 	 * Retrieves the current credit available for performance monitoring.
 	 *
@@ -243,9 +241,11 @@ class Controller {
 	 * @return bool
 	 */
 	public function display_banner(): bool {
-		$sku      = $this->user->get_pma_addon_sku_active();
-		$upgrades = $this->user->get_pma_addon_upgrade_skus( $sku );
-		return 0 !== count( $upgrades );
+		if ( ! $this->context->is_allowed() ) {
+			return false;
+		}
+		$upgrades = $this->user->get_pma_addon_upgrade_skus( $this->user->get_pma_addon_sku_active() );
+		return ! empty( $upgrades );
 	}
 
 	/**

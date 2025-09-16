@@ -30,19 +30,18 @@ defined( 'ABSPATH' ) || exit;
 		$rocket_pma_retest_button_args = [
 			'label'      => __( 'Re-test', 'rocket' ),
 			'attributes' => [
-				'class'      => 'wpr-icon-bold-refresh wpr-pma-action wpr-action-speed_radar_refresh', // add class `wpr-pma-action--disabled` to disable the button.
-				'title'      => __( 'Re-test', 'rocket' ),
+				'class'      => 'wpr-icon-bold-refresh wpr-pma-action wpr-action-speed_radar_refresh',
 				'aria-label' => __( 'Re-test', 'rocket' ),
 			],
 		];
 
 		// Retest button should be disabled if the score is zero or this row is still running.
-		if ( ! $this->is_retest_btn_enabled( $data ) ) {
+		if ( ! $data->is_running() && $data->has_credit ) {
 			$rocket_pma_retest_button_args['attributes']['class'] .= ' wpr-pma-action--disabled';
 			$rocket_pma_retest_button_args['disabled']             = true;
 		}
 
-		if ( ! $this->has_credit() ) {
+		if ( ! $data->has_credit ) {
 			$rocket_pma_retest_button_args['attributes']['class'] .= ' wpr-btn-with-tool-tip';
 			$rocket_pma_retest_button_args['tool_tip']             = __( 'Upgrade your plan to get access to re-test performance or run new tests', 'rocket' );
 			$rocket_pma_retest_button_args['disabled']             = true;
@@ -60,22 +59,18 @@ defined( 'ABSPATH' ) || exit;
 			'attributes' => [
 				'target' => '_blank',
 				'class'  => 'wpr-icon-report wpr-pma-action',
-				'title'  => __( 'See Report', 'rocket' ),
 			],
 		];
-
-		if ( ! $data->can_access_report() ) {
-			$rocket_show_report_btn_args['attributes']['class'] .= ' wpr-btn-with-tool-tip wpr-pma-action--disabled';
-			$rocket_show_report_btn_args['attributes']['target'] = '';
-			$rocket_show_report_btn_args['disabled']             = true;
-			$rocket_show_report_btn_args['tool_tip']             = __( 'Upgrade your plan to get access to the Report', 'rocket' );
-
-		}
 
 		if ( empty( $data->report_url ) ) {
 			$rocket_show_report_btn_args['attributes']['class'] .= ' wpr-pma-action--disabled';
 			$rocket_show_report_btn_args['attributes']['target'] = '';
 			$rocket_show_report_btn_args['disabled']             = true;
+		} elseif ( ! $data->can_access_report() ) {
+			$rocket_show_report_btn_args['attributes']['class'] .= ' wpr-btn-with-tool-tip wpr-pma-action--disabled';
+			$rocket_show_report_btn_args['attributes']['target'] = '';
+			$rocket_show_report_btn_args['disabled']             = true;
+			$rocket_show_report_btn_args['tool_tip']             = __( 'Upgrade your plan to get access to the Report', 'rocket' );
 		}
 
 		$this->render_action_button(

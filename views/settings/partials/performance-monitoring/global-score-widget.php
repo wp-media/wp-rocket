@@ -43,9 +43,9 @@ defined( 'ABSPATH' ) || exit;
 					];
 
 					// Add tooltip if no credit and disable btn.
-					if ( ! $this->has_credit() ) {
+					if ( ! $data['has_credit'] ) {
 						$rocket_pma_add_button_args['attributes']['class'] .= ' wpr-btn-with-tool-tip disabled';
-						$rocket_pma_add_button_args['tool_tip']             = __( 'You don\'t have enough credits', 'rocket' );
+						$rocket_pma_add_button_args['tool_tip']             = esc_html__( 'You don\'t have enough credits', 'rocket' );
 						$rocket_pma_add_button_args['url']                  = '#';
 						$rocket_pma_add_button_args['disabled']             = true;
 					}
