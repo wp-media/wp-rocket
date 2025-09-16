@@ -1,4 +1,5 @@
 <?php
+declare( strict_types=1 );
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\PerformanceMonitoring\Subscriber;
 
@@ -11,7 +12,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group PerformanceMonitoring
  * @group AdminOnly
  */
-class Test_DeleteRow extends TestCase {
+class DeleteRowTest extends TestCase {
 	use DBTrait;
 
 	private $hook_fired = false;
@@ -107,13 +108,13 @@ class Test_DeleteRow extends TestCase {
 	private function executeAction() {
 		// Capture output to prevent redirect from breaking tests
 		ob_start();
-		
+
 		try {
 			do_action( 'admin_post_delete_pm' );
 		} catch ( \WPDieException $e ) {
 			// Expected for wp_die() calls
 		}
-		
+
 		ob_end_clean();
 	}
 
@@ -121,7 +122,7 @@ class Test_DeleteRow extends TestCase {
 		// Check if hook was fired
 		if ( isset( $expected['hook_fired'] ) ) {
 			$this->assertSame( $expected['hook_fired'], $this->hook_fired );
-			
+
 			if ( $expected['hook_fired'] && isset( $expected['hook_fired_id'] ) ) {
 				$this->assertSame( $expected['hook_fired_id'], $this->hook_fired_id );
 			}

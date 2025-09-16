@@ -1,4 +1,5 @@
 <?php
+declare( strict_types=1 );
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\PerformanceMonitoring\Subscriber;
 
@@ -11,7 +12,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group PerformanceMonitoring
  * @group AdminOnly
  */
-class Test_ResetGlobalScore extends TestCase {
+class ResetGlobalScoreTest extends TestCase {
 	use DBTrait;
 
 	private $reset_called = false;
@@ -115,18 +116,18 @@ class Test_ResetGlobalScore extends TestCase {
 		// Test hook-triggered resets
 		if ( isset( $config['hook_to_test'] ) ) {
 			$hook = $config['hook_to_test'];
-			
+
 			switch ( $hook ) {
 				case 'rocket_pm_job_completed':
 					// Create a mock row for the completed job
-					$mock_row = (object) [ 
-						'id' => 1, 
+					$mock_row = (object) [
+						'id' => 1,
 						'url' => 'http://example.org/page1',
 						'status' => 'completed'
 					];
 					do_action( $hook, $mock_row );
 					break;
-				
+
 				case 'rocket_pm_job_failed':
 				case 'rocket_pm_job_added':
 				case 'rocket_pm_job_retest':
@@ -145,16 +146,16 @@ class Test_ResetGlobalScore extends TestCase {
 		// Verify that the method can be called without errors
 		if ( isset( $expected['method_callable'] ) ) {
 			$subscriber = $container->get( 'pm_subscriber' );
-			$this->assertTrue( 
-				method_exists( $subscriber, 'reset_global_score' ), 
-				'reset_global_score method should exist on subscriber' 
+			$this->assertTrue(
+				method_exists( $subscriber, 'reset_global_score' ),
+				'reset_global_score method should exist on subscriber'
 			);
 		}
 
 		// Verify that the hook is properly registered for each event
 		if ( isset( $expected['hook_registered'] ) && $expected['hook_registered'] ) {
 			$hook = $expected['hook_name'];
-			
+
 			// Check if the hook has callbacks registered
 			$has_callback = has_action( $hook );
 			$this->assertNotFalse( $has_callback, "Hook {$hook} should have callbacks registered" );
@@ -163,12 +164,12 @@ class Test_ResetGlobalScore extends TestCase {
 		// Test that the global score reset functionality works
 		if ( isset( $expected['global_score_reset'] ) && $expected['global_score_reset'] ) {
 			// The global score should have been reset (cache cleared)
-			// We can verify this by checking that calling get_global_score_data 
+			// We can verify this by checking that calling get_global_score_data
 			// recalculates from fresh database data
-			
+
 			// Since reset() clears the cache, a subsequent call should recalculate
 			$score_after_reset = $global_score->get_global_score_data();
-			
+
 			// Verify the score data structure is correct
 			$this->assertIsArray( $score_after_reset );
 			$this->assertArrayHasKey( 'score', $score_after_reset );

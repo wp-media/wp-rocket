@@ -1,4 +1,5 @@
 <?php
+declare( strict_types=1 );
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\PerformanceMonitoring\Subscriber;
 
@@ -6,16 +7,13 @@ use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\AjaxTestCase;
 
 /**
- * Test class covering WP_Rocket\Engine\Admin\PerformanceMonitoring\Subscriber::reset_page
+ * Test class covering WP_Rocket\Engine\Admin\PerformanceMonitoring\Subscriber::get_results
  *
  * @group PerformanceMonitoring
  * @group AdminOnly
  */
-class Test_ResetPage extends AjaxTestCase {
+class GetResultsTest extends AjaxTestCase {
 	use DBTrait;
-
-	private $hook_fired = false;
-	private $hook_fired_id = null;
 
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
@@ -40,13 +38,7 @@ class Test_ResetPage extends AjaxTestCase {
 		add_filter( 'rocket_performance_monitoring_enabled', '__return_true' );
 
 		// Set the AJAX action
-		$this->action = 'rocket_pm_reset_page';
-
-		// Add a hook to capture when rocket_pm_job_retest is fired
-		add_action( 'rocket_pm_job_retest', [ $this, 'capture_hook_fired' ] );
-
-		$this->hook_fired = false;
-		$this->hook_fired_id = null;
+		$this->action = 'rocket_pm_get_results';
 	}
 
 	public function tear_down() {
@@ -55,9 +47,6 @@ class Test_ResetPage extends AjaxTestCase {
 
 		// Remove Performance Monitoring enabled filter
 		remove_filter( 'rocket_performance_monitoring_enabled', '__return_true' );
-
-		// Remove our test hook
-		remove_action( 'rocket_pm_job_retest', [ $this, 'capture_hook_fired' ] );
 
 		parent::tear_down();
 	}
@@ -75,7 +64,7 @@ class Test_ResetPage extends AjaxTestCase {
 
 	private function setUpTest( $config ) {
 		// Set up the nonce
-		$_POST['nonce'] = \wp_create_nonce( 'rocket-ajax' );
+		$_GET['nonce'] = \wp_create_nonce( 'rocket-ajax' );
 
 		// Set up database entries if provided
 		if ( isset( $config['database_entries'] ) ) {
@@ -84,10 +73,10 @@ class Test_ResetPage extends AjaxTestCase {
 			}
 		}
 
-		// Set up POST data if provided
-		if ( isset( $config['post_data'] ) ) {
-			foreach ( $config['post_data'] as $key => $value ) {
-				$_POST[ $key ] = $value;
+		// Set up GET data if provided
+		if ( isset( $config['get_data'] ) ) {
+			foreach ( $config['get_data'] as $key => $value ) {
+				$_GET[ $key ] = $value;
 			}
 		}
 	}
@@ -117,55 +106,35 @@ class Test_ResetPage extends AjaxTestCase {
 
 	private function assertSuccessResponse( $response, $expected ) {
 		$this->assertTrue( $response['success'] );
-		
-		// Check if hook was fired
-		if ( isset( $expected['hook_fired'] ) && $expected['hook_fired'] ) {
-			$this->assertTrue( $this->hook_fired );
-			
-			if ( isset( $expected['hook_fired_id'] ) ) {
-				$this->assertSame( $expected['hook_fired_id'], $this->hook_fired_id );
-			}
+
+		// Check if results are returned
+		if ( isset( $expected['results_count'] ) ) {
+			$this->assertArrayHasKey( 'results', $response['data'] );
+			$this->assertCount( $expected['results_count'], $response['data']['results'] );
 		}
 
-		// Check response data if provided
-		if ( isset( $expected['response_data'] ) ) {
-			foreach ( $expected['response_data'] as $key => $value ) {
-				$this->assertArrayHasKey( $key, $response['data'] );
-				if ( $value !== null ) {
-					$this->assertSame( $value, $response['data'][ $key ] );
-				}
-			}
+		// Check if global_score_data is present
+		if ( isset( $expected['has_global_score_data'] ) && $expected['has_global_score_data'] ) {
+			$this->assertArrayHasKey( 'global_score_data', $response['data'] );
 		}
 
-		// Check that response contains expected keys
-		if ( isset( $expected['response_keys'] ) ) {
-			foreach ( $expected['response_keys'] as $key ) {
-				$this->assertArrayHasKey( $key, $response['data'] );
+		// Check if each result has HTML
+		if ( isset( $expected['results_have_html'] ) && $expected['results_have_html'] ) {
+			foreach ( $response['data']['results'] as $result ) {
+				// Convert to array if it's an object
+				$result_array = (array) $result;
+				$this->assertArrayHasKey( 'html', $result_array );
+				$this->assertNotEmpty( $result_array['html'] );
 			}
 		}
 	}
 
 	private function assertErrorResponse( $response, $expected ) {
 		$this->assertFalse( $response['success'] );
-		
+
 		// Check error message if provided
 		if ( isset( $expected['error_message'] ) ) {
-			$this->assertStringContainsString( $expected['error_message'], $response['data']['message'] );
+			$this->assertStringContainsString( $expected['error_message'], $response['data']['results'] );
 		}
-
-		// Check if hook was NOT fired for error cases
-		if ( isset( $expected['hook_fired'] ) && ! $expected['hook_fired'] ) {
-			$this->assertFalse( $this->hook_fired );
-		}
-	}
-
-	/**
-	 * Callback to capture when rocket_pm_job_retest hook is fired.
-	 *
-	 * @param int $id The database row ID of the reset job.
-	 */
-	public function capture_hook_fired( $id ) {
-		$this->hook_fired = true;
-		$this->hook_fired_id = $id;
 	}
 }
