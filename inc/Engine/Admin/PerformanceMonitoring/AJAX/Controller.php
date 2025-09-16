@@ -374,7 +374,6 @@ class Controller {
 
 		$payload                 = $this->global_score->get_global_score_data();
 		$payload['status-color'] = $this->render->get_score_color_status( (int) $payload['score'] );
-		$payload['is_running']   = $payload['status'] === 'in-progress';
 
 		return [
 			'data' => $payload,
