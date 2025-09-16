@@ -16,9 +16,9 @@ defined( 'ABSPATH' ) || exit;
 			<span>
 				<?php
 				printf(
-					// Translators: %1$s = pages number.
-					esc_html__( 'Tracked pages: %1$s', 'rocket' ),
-					'<span id="rocket_pma_pages_num">' . intval( $data['pages_num'] ) . '</span>'
+					// translators: %s is the number of pages monitored.
+					esc_html__( 'Tracked pages: %s', 'rocket' ),
+					esc_html( $data['pages_num'] )
 				);
 				?>
 			</span>
@@ -26,9 +26,9 @@ defined( 'ABSPATH' ) || exit;
 			<span>
 				<?php
 				printf(
-					// Translators: %1$s = pages number.
-					esc_html__( '%1$s pages monitored', 'rocket' ),
-					'<span id="rocket_pma_pages_num">' . intval( $data['pages_num'] ) . '</span>'
+					// translators: %s is the number of pages monitored.
+					esc_html__( '%s pages monitored', 'rocket' ),
+					esc_html( $data['pages_num'] )
 				);
 				?>
 			</span>
