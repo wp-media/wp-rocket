@@ -127,11 +127,6 @@ class Test_AddNewPage extends AjaxTestCase {
 	}
 
 	private function assertSuccessResponse( $response, $expected ) {
-		// Debug output if the response is not successful
-		if ( ! $response['success'] ) {
-			error_log( 'AJAX Response: ' . print_r( $response, true ) );
-		}
-		
 		$this->assertTrue( $response['success'] );
 		
 		// Check if database entry was created
