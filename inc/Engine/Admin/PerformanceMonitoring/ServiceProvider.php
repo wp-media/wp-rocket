@@ -153,6 +153,8 @@ class ServiceProvider extends AbstractServiceProvider {
 					'pm_queue',
 					'pm_free_plan_context',
 					'pm_global_score',
+					'user_client',
+					'user',
 				]
 			);
 

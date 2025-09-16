@@ -142,6 +142,10 @@ class Render extends Abstract_Render {
 		echo $this->generate( 'partials/performance-monitoring/license-banner', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
+	public function render_limit_tooltip() {
+		echo $this->generate( 'partials/performance-monitoring/limit-tooltip' );
+	}
+
 	/**
 	 * Render the plan price in the license banner section from views.
 	 *
