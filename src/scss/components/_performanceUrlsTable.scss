@@ -131,8 +131,10 @@
 		text-align: right;
 		vertical-align: middle;
 		.wpr-pma-action{
+			font-family: Roboto, Arial, sans-serif;
 			display: inline-block;
 			font-size: 14px;
+			font-weight: 600;
 			line-height: 1.5;
 			padding: 0 2* $space;
 			margin: $space 0;

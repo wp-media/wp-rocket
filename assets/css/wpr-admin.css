@@ -3180,8 +3180,10 @@ div.wpr-tutorial-item {
   vertical-align: middle;
 }
 .wpr-pma-urls-table .wpr-pma-item-actions .wpr-pma-action {
+  font-family: Roboto, Arial, sans-serif;
   display: inline-block;
   font-size: 14px;
+  font-weight: 600;
   line-height: 1.5;
   padding: 0 16px;
   margin: 8px 0;
