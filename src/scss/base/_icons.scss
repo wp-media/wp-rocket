@@ -174,8 +174,6 @@
 	background-image: url('../img/rocket-insights.svg');
 	background-repeat: no-repeat;
 	background-position: center center;
-	width: 26px;
-	height: 28px;
 }
 .wpr-icon-rocket-insights-hover:before {
 	content: '';
@@ -188,5 +186,13 @@
 }
 .wpr-icon-report:before {
 	content: '\e924';
+}
+
+.wpr-Header-nav{
+	.wpr-icon-rocket-insights:before{
+		width: 30px;
+		height: 24px;
+		right: 15px;
+	}
 }
 
