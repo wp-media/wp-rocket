@@ -2773,11 +2773,16 @@ div.wpr-tutorial-item {
   text-align: center;
   padding: 8px;
 }
+.wpr-percentage-score-widget .wpr-percentage-indicator .wpr-percentage-circle {
+  border-width: 4px;
+  font-size: 43px;
+  font-weight: 600;
+}
 .wpr-percentage-score-widget .wpr-percentage-indicator .wpr-tooltip {
   display: none;
 }
 .wpr-percentage-score-widget .wpr-page-num-txt {
-  margin: 24px 0 16px 0;
+  margin: 40px 0 16px 0;
   font-size: 14px;
   line-height: 1.3;
 }
@@ -2791,6 +2796,12 @@ div.wpr-tutorial-item {
   margin: 0 auto;
   display: block;
 }
+.wpr-percentage-score-widget .wpr-pma-global-score-add-url-button {
+  padding: 10px 30px 10px 10px;
+  font-size: 11px;
+  font-weight: bold;
+  font-family: "Roboto", sans-serif;
+}
 
 .wpr-percentage-indicator {
   display: flex;
@@ -2802,8 +2813,8 @@ div.wpr-tutorial-item {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 118px;
-  height: 118px;
+  width: 92px;
+  height: 92px;
   font-size: 50px;
   font-family: Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
   font-weight: 500;
