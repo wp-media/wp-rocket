@@ -2769,13 +2769,13 @@ div.wpr-tutorial-item {
   text-align: center;
   padding: 8px;
 }
+.wpr-percentage-score-widget .wpr-percentage-indicator {
+  margin-bottom: 40px;
+}
 .wpr-percentage-score-widget .wpr-percentage-indicator .wpr-percentage-circle {
   border-width: 4px;
   font-size: 43px;
   font-weight: 600;
-}
-.wpr-percentage-score-widget .wpr-percentage-indicator {
-  margin-bottom: 40px;
 }
 .wpr-percentage-score-widget .wpr-percentage-indicator .wpr-tooltip {
   display: none;
@@ -3093,6 +3093,8 @@ div.wpr-tutorial-item {
   border-collapse: separate;
   border-spacing: 0;
   border-radius: 5px;
+  /* Target the top-left and top-right cells of the first row */
+  /* Target the bottom-left and bottom-right cells of the last row */
 }
 .wpr-pma-urls-table.widefat td, .wpr-pma-urls-table.widefat th {
   border: 1px solid #E2E5E9;
@@ -3113,9 +3115,6 @@ div.wpr-tutorial-item {
 .wpr-pma-urls-table.widefat tr:last-child th {
   border-bottom: 1px solid #E2E5E9;
 }
-.wpr-pma-urls-table.widefat {
-  /* Target the top-left and top-right cells of the first row */
-}
 .wpr-pma-urls-table.widefat tr:nth-child(2) th:first-child,
 .wpr-pma-urls-table.widefat tr:nth-child(2) td:first-child {
   border-top-left-radius: 5px;
@@ -3123,9 +3122,6 @@ div.wpr-tutorial-item {
 .wpr-pma-urls-table.widefat tr:nth-child(2) th:last-child,
 .wpr-pma-urls-table.widefat tr:nth-child(2) td:last-child {
   border-top-right-radius: 5px;
-}
-.wpr-pma-urls-table.widefat {
-  /* Target the bottom-left and bottom-right cells of the last row */
 }
 .wpr-pma-urls-table.widefat tr:last-child th:first-child,
 .wpr-pma-urls-table.widefat tr:last-child td:first-child {
