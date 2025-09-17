@@ -101,9 +101,9 @@ class Controller {
 			return;
 		}
 
-		$url = home_url();
+		$url        = home_url();
 		$page_title = '';
-		$response = $this->get_page_content( $url );
+		$response   = $this->get_page_content( $url );
 
 		if ( false !== $response ) {
 			$page_title = $this->get_page_title( $response );

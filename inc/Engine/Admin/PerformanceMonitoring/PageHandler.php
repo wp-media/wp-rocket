@@ -41,29 +41,29 @@ trait PageHandler {
 	}
 
 
-    /**
-     * Fetches the HTML content of a given URL using a custom user agent.
-     *
-     * Performs a remote GET request to the specified URL, simulating a mobile browser user agent,
-     * and returns the response body if the request is successful (HTTP 200).
-     *
-     * @param string $url The URL to fetch the HTML content from.
-     *
-     * @return string|false The HTML content of the page on success, or false on failure.
-     */
-    public function get_page_content( string $url ) {
-        $user_agent = 'WP Rocket/Fetch Page Buffer for Performance Monitoring Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1';
-        $args       = [
-            'user-agent' => $user_agent,
-            'timeout'    => 60,
-        ];
+	/**
+	 * Fetches the HTML content of a given URL using a custom user agent.
+	 *
+	 * Performs a remote GET request to the specified URL, simulating a mobile browser user agent,
+	 * and returns the response body if the request is successful (HTTP 200).
+	 *
+	 * @param string $url The URL to fetch the HTML content from.
+	 *
+	 * @return string|false The HTML content of the page on success, or false on failure.
+	 */
+	public function get_page_content( string $url ) {
+		$user_agent = 'WP Rocket/Fetch Page Buffer for Performance Monitoring Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1';
+		$args       = [
+			'user-agent' => $user_agent,
+			'timeout'    => 60,
+		];
 
-        $response = wp_safe_remote_get( $url, $args );
+		$response = wp_safe_remote_get( $url, $args );
 
-        if ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
-            return false;
-        }
+		if ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
+			return false;
+		}
 
-        return wp_remote_retrieve_body( $response );
-    }
+		return wp_remote_retrieve_body( $response );
+	}
 }

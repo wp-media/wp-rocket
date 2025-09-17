@@ -5,7 +5,7 @@ namespace WP_Rocket\Engine\Admin\PerformanceMonitoring\AJAX;
 
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\{
 	Render,
-    PageHandler,
+	PageHandler,
 	GlobalScore,
 	Jobs\Manager,
 	Context\PerformanceMonitoringContext as Context,
@@ -14,7 +14,7 @@ use WP_Rocket\Engine\Admin\PerformanceMonitoring\{
 
 class Controller {
 
-    use PageHandler;
+	use PageHandler;
 
 	/**
 	 * Query object.
