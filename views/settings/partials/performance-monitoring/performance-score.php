@@ -24,7 +24,7 @@ if ( ( isset( $data['is_blurred'] ) && $data['is_blurred'] ) || ( isset( $data['
 	<?php elseif ( isset( $data['status'] ) && 'failed' === $data['status'] ) : ?>
 		<?php echo $rocket_opening_anchor_tag; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			<div class="wpr-percentage-circle  status-red <?php echo $rocket_pma_item_is_blurred ? 'blurred' : ''; ?>">
-				!
+				<span class="wpr-failed-score wpr-icon-exclamation"></span>
 			</div>
 		<?php echo $rocket_closing_anchor_tag; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 	<?php else : ?>
