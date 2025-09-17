@@ -8,7 +8,7 @@ defined( 'ABSPATH' ) || exit;
 <div id="wpr_global_score_widget">
 	<div class="wpr-optionHeader">
 		<h3 class="wpr-title2">
-			<?php echo esc_html__( 'RocketInsights', 'rocket' ); ?>
+			<?php echo esc_html__( 'Rocket Insights Global Score', 'rocket' ); ?>
 		</h3>
 	</div>
 	<div class="wpr-fieldsContainer">
