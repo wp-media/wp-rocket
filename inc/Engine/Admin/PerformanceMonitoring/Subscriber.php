@@ -91,7 +91,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		return [
 			'wp_rocket_first_install'           => [
 				[ 'schedule_reset_credit' ],
-				[ 'schedule_homepage_tests', 11 ],
+				[ 'schedule_homepage_tests' ],
 			],
 			'wp_ajax_rocket_pm_add_new_page'    => 'add_new_page',
 			'wp_ajax_rocket_pm_get_results'     => 'get_results',
@@ -190,7 +190,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public function schedule_reset_credit(): void {
 		if ( ! $this->pma_context->is_allowed() || ! $this->pma_context->is_free_user() ) {
-			$this->queue->cancel_reset_job();
+			$this->cancel_scheduled_jobs();
 			return;
 		}
 
