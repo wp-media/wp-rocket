@@ -312,13 +312,12 @@ class AbstractQuery extends Query {
 	 *
 	 * @return bool
 	 */
-	public function reset_job( int $id, string $job_id = '' ) {
+	public function reset_job( int $id, string $job_id = '', array $additional_details = [] ) {
 		if ( ! self::$table_exists && ! $this->table_exists() ) {
 			return false;
 		}
 
-		return $this->update_item(
-			$id,
+		$item = wp_parse_args(
 			[
 				'job_id'        => $job_id,
 				'status'        => 'to-submit',
@@ -327,7 +326,12 @@ class AbstractQuery extends Query {
 				'retries'       => 0,
 				'modified'      => current_time( 'mysql', true ),
 				'submitted_at'  => current_time( 'mysql', true ),
-			]
+			],
+			$additional_details );
+
+		return $this->update_item(
+			$id,
+			$item
 		);
 	}
 
