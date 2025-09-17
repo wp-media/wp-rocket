@@ -8,6 +8,7 @@ defined( 'ABSPATH' ) || exit;
 <tr class="wpr-pma-item wpr-global-score">
 	<td class="wpr-pma-item-score">
 		<?php
+		$data['is_dashboard'] = false; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 		$this->render_performance_score( $data );
 		?>
 	</td>

@@ -18,6 +18,7 @@ defined( 'ABSPATH' ) || exit;
 					<div>
 						<?php
 						if ( isset( $data['status'] ) && 'no-url' !== $data['status'] ) :
+							$data['is_dashboard'] = true; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 							$this->render_performance_score( $data );
 							?>
 						<?php else : ?>
