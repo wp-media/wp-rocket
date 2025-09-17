@@ -4,10 +4,15 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\PerformanceMonitoring\GlobalScore;
 
-use WP_Rocket\Engine\Admin\PerformanceMonitoring\GlobalScore;
 use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
+/**
+ * Test class covering \WP_Rocket\Engine\Admin\PerformanceMonitoring\GlobalScore::get_global_score_data
+ *
+ * @group PerformanceMonitoring
+ * @group AdminOnly
+ */
 class Test_GetGlobalScoreData extends TestCase {
 	use DBTrait;
 
