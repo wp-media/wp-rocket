@@ -1,4 +1,5 @@
 <?php
+declare( strict_types=1 );
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\PerformanceMonitoring\Subscriber;
 
@@ -11,7 +12,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group PerformanceMonitoring
  * @group AdminOnly
  */
-class TestRenderLicenseBannerSection extends TestCase {
+class RenderLicenseBannerSectionTest extends TestCase {
 	use CapTrait;
 
 	private static $user_id;
