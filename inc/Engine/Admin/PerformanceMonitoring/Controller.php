@@ -262,14 +262,14 @@ class Controller {
 
 		$limit = $this->user->get_pma_addon_limit( $upgrade );
 
-		$data = [
+		$data            = [
 			'currency'    => '$',
 			'page_number' => $limit,
 			'period'      => 'month',
 			'description' => $this->user->get_pma_addon_description( $upgrade ),
 			'highlights'  => $this->user->get_pma_addon_highlights( $upgrade ),
 		];
-		$data['btn_url']         = $this->user->get_pma_addon_btn_url( $upgrade );
+		$data['btn_url'] = $this->user->get_pma_addon_btn_url( $upgrade );
 
 		if ( ! $this->user->has_pma_addon_promo( $upgrade ) ) {
 			$data['price']                 = $price;
