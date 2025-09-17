@@ -317,21 +317,26 @@ class AbstractQuery extends Query {
 			return false;
 		}
 
-		$item = wp_parse_args(
-			[
-				'job_id'        => $job_id,
-				'status'        => 'to-submit',
-				'error_code'    => '',
-				'error_message' => '',
-				'retries'       => 0,
-				'modified'      => current_time( 'mysql', true ),
-				'submitted_at'  => current_time( 'mysql', true ),
-			],
-			$additional_details );
+		$updates = [
+			'job_id'        => $job_id,
+			'status'        => 'to-submit',
+			'error_code'    => '',
+			'error_message' => '',
+			'retries'       => 0,
+			'modified'      => current_time( 'mysql', true ),
+			'submitted_at'  => current_time( 'mysql', true ),
+		];
+
+		if ( ! empty( $additional_details ) ) {
+			$updates = wp_parse_args(
+				$updates,
+				$additional_details
+			);
+		}
 
 		return $this->update_item(
 			$id,
-			$item
+			$updates
 		);
 	}
 
