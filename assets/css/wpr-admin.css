@@ -2862,6 +2862,10 @@ div.wpr-tutorial-item {
 .wpr-percentage-indicator .wpr-percentage-circle.blurred {
   filter: blur(4px);
 }
+.wpr-percentage-indicator .wpr-percentage-circle .wpr-failed-score {
+  width: 21.333px;
+  height: 21.333px;
+}
 .wpr-percentage-indicator .wpr-percentage-circle .wpr-failed-score:before {
   width: 21.333px;
   height: 21.333px;
