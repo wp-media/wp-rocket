@@ -89,13 +89,16 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'wp_rocket_first_install'           => 'schedule_homepage_tests',
+			'wp_rocket_first_install'           => [
+				[ 'schedule_reset_credit' ],
+				[ 'schedule_homepage_tests', 11 ],
+			],
 			'wp_ajax_rocket_pm_add_new_page'    => 'add_new_page',
 			'wp_ajax_rocket_pm_get_results'     => 'get_results',
 			'rocket_localize_admin_script'      => 'add_pending_ids',
 			'admin_post_delete_pm'              => 'delete_row',
 			'wp_ajax_rocket_pm_reset_page'      => 'reset_page',
-			'init'                              => 'schedule_reset_credit',
+			'admin_init'                        => 'schedule_reset_credit',
 			'rocket_pma_credit_reset'           => 'reset_credit_monthly',
 			'rocket_pm_job_completed'           => [
 				[ 'validate_credit' ],
@@ -113,6 +116,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			],
 			'admin_post_rocket_pm_add_homepage' => 'add_homepage_from_widget',
 			'rocket_deactivation'               => 'cancel_scheduled_jobs',
+			'wp_rocket_upgrade'                 => [ 'schedule_reset_credit_on_upgrade', 10, 2 ],
 		];
 	}
 
@@ -294,5 +298,19 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public function cancel_scheduled_jobs() {
 		$this->queue->cancel_reset_job();
+	}
+
+	/**
+	 * Schedule reset credit recurring task with updating from a version older than 3.20.
+	 *
+	 * @param string $new_version The new version of the plugin.
+	 * @param string $old_version The old version of the plugin.
+	 * @return void
+	 */
+	public function schedule_reset_credit_on_upgrade( $new_version, $old_version ) {
+		if ( version_compare( $old_version, '3.20', '>=' ) ) {
+			return;
+		}
+		$this->schedule_reset_credit();
 	}
 }

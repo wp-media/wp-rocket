@@ -8,7 +8,7 @@ defined( 'ABSPATH' ) || exit;
 <div id="wpr_global_score_widget">
 	<div class="wpr-optionHeader">
 		<h3 class="wpr-title2">
-			<?php echo esc_html__( 'RocketInsights', 'rocket' ); ?>
+			<?php echo esc_html__( 'Rocket Insights Global Score', 'rocket' ); ?>
 		</h3>
 	</div>
 	<div class="wpr-fieldsContainer">
@@ -33,13 +33,13 @@ defined( 'ABSPATH' ) || exit;
 					</p>
 					<?php
 					$rocket_pma_add_button_args = [
-						'label'      => $data['pages_num'] ? __( 'Add Page', 'rocket' ) : __( 'Add Homepage', 'rocket' ),
+						'label'      => $data['pages_num'] ? __( 'Add Pages', 'rocket' ) : __( 'Add Homepage', 'rocket' ),
 						'parameters' => [
 							'type' => 'all',
 						],
 						'url'        => '#rocket_insights',
 						'attributes' => [
-							'class' => 'wpr-button wpr-button--icon wpr-button--small wpr-button--purple wpr-icon-plus wpr-button--no-min-width wpr-pma-global-score-add-url-button',
+							'class' => 'wpr-button wpr-button--icon wpr-button--small wpr-button--purple wpr-icon-plus wpr-button--no-min-width wpr-pma-add-url-button wpr-pma-global-score-add-url-button',
 						],
 					];
 
