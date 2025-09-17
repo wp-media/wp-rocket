@@ -3143,6 +3143,7 @@ div.wpr-tutorial-item {
   width: 32px;
   height: 32px;
   font-size: 14px;
+  border-width: 2px;
 }
 .wpr-pma-urls-table .wpr-percentage-indicator .wpr-loading-img {
   width: 32px;
@@ -3212,11 +3213,22 @@ div.wpr-tutorial-item {
   padding: 0 16px;
   margin: 8px 0;
   color: #121116;
+}
+.wpr-pma-urls-table .wpr-pma-item-actions .wpr-pma-action:after {
+  position: relative;
+  content: "";
+  top: 4px;
+  left: 16px;
+  height: 18px;
+  display: inline-block;
   border-left: 1px solid #D4D9DD;
 }
 .wpr-pma-urls-table .wpr-pma-item-actions .wpr-pma-action:first-child {
   margin-left: 0;
   border-left: none;
+}
+.wpr-pma-urls-table .wpr-pma-item-actions .wpr-pma-action:last-child:after {
+  display: none;
 }
 .wpr-pma-urls-table .wpr-pma-item-actions .wpr-pma-action.wpr-confirm-delete:before {
   font-size: 14px;
@@ -3224,7 +3236,7 @@ div.wpr-tutorial-item {
   margin-right: 0;
 }
 .wpr-pma-urls-table .wpr-pma-item-actions .wpr-pma-action:before {
-  font-size: 18px;
+  font-size: 16px;
   position: relative;
   top: 2px;
   margin-right: 8px;

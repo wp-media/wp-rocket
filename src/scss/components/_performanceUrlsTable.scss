@@ -80,6 +80,7 @@
 			width: 32px;
 			height: 32px;
 			font-size: 14px;
+			border-width: 2px;
 		}
 		.wpr-loading-img{
 			width: 32px;
@@ -149,10 +150,23 @@
 			padding: 0 2* $space;
 			margin: $space 0;
 			color: $cBlack;
-			border-left: 1px solid $cGreyLighter2;
+			&:after{
+				position: relative;
+				content: "";
+				top: 4px;
+				left: 16px;
+				height: 18px;
+				display: inline-block;
+				border-left: 1px solid #D4D9DD;
+			}
 			&:first-child{
 				margin-left: 0;
 				border-left: none;
+			}
+			&:last-child{
+				&:after {
+					display: none;
+				}
 			}
 			&.wpr-confirm-delete{
 				&:before{
@@ -162,7 +176,7 @@
 				}
 			}
 			&:before{
-				font-size: 18px;
+				font-size: 16px;
 				position: relative;
 				top: 2px;
 				margin-right: $space;
