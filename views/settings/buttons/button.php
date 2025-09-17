@@ -15,6 +15,9 @@
 
 defined( 'ABSPATH' ) || exit;
 
+if ( ! empty( $data['disabled'] ) ) {
+	$data['attributes'] .= 'disabled ="disabled"'; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
+}
 ?>
 <button id="wpr-action-<?php echo esc_attr( $data['action'] ); ?>" <?php echo $data['attributes']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $data['attributes'] escaped with sanitize_key & esc_attr ?>><?php echo $data['label']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>
 	<?php if ( ! empty( $data['tool_tip'] ) ) : ?>

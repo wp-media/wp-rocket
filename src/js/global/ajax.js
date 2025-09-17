@@ -386,6 +386,10 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 
 	function handleAddPage(e) {
+		// check if has attr disabled
+		if ($(this).attr('disabled')) {
+			return;
+		}
 		e.preventDefault();
 		const pageUrl = $pageUrlInput.val().trim();
 
