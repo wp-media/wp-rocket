@@ -13,6 +13,9 @@ use WP_Rocket\Engine\Admin\PerformanceMonitoring\{
 use WP_Rocket\Engine\License\API\User;
 
 class Controller {
+
+	use PageHandlerTrait;
+
 	/**
 	 * Query object.
 	 *
@@ -98,7 +101,21 @@ class Controller {
 			return;
 		}
 
-		$this->manager->add_url_to_the_queue( home_url(), true );
+		$url        = home_url();
+		$page_title = '';
+		$response   = $this->get_page_content( $url );
+
+		if ( false !== $response ) {
+			$page_title = $this->get_page_title( $response );
+		}
+
+		$this->manager->add_url_to_the_queue(
+			$url,
+			true,
+			[
+				'title' => $page_title,
+			]
+		);
 
 		/**
 		 * Fires when a performance monitoring job is added.
