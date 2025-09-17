@@ -283,10 +283,14 @@ class JobProcessor implements LoggerAwareInterface {
 			$job_factory       = $this->factories[ $optimization_type ] ?? $this->factories['rucss'];
 
 			if ( ! $response || ! $job_factory->api()->validate_add_to_queue_response( $response ) ) {
-				$job_factory->manager()->validate_and_fail( [
-					'status' => 'failed',
-					'message' => 'To Submit request failed',
-				], $row, $optimization_type );
+				$job_factory->manager()->validate_and_fail(
+					[
+						'status'  => 'failed',
+						'message' => 'To Submit request failed',
+					],
+					$row,
+					$optimization_type
+					);
 				continue;
 			}
 
