@@ -282,6 +282,7 @@ class Controller {
 		$data['price_before_discount'] = $price;
 		$data['promo_name']            = $this->user->get_pma_addon_promo_name( $upgrade );
 		$data['promo_description']     = $this->user->get_pma_addon_promo_description( $upgrade );
+		$data['promo_btn_url']         = $this->user->get_pma_addon_btn_url( $upgrade );
 		return $data;
 	}
 }
