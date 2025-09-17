@@ -86,7 +86,7 @@ abstract class Abstract_Render implements Render_Interface {
 			'url'        => '',
 			'parameter'  => '',
 			'attributes' => '',
-			'tool_tip'   => '',
+			'tooltip'   => '',
 		];
 
 		$args = wp_parse_args( $args, $default );
@@ -94,6 +94,11 @@ abstract class Abstract_Render implements Render_Interface {
 		if ( ! empty( $args['attributes'] ) ) {
 			$attributes = '';
 			foreach ( $args['attributes'] as $key => $value ) {
+				if ( true === $value ) {
+					$attributes .= ' ' . sanitize_key( $key );
+					continue;
+				}
+
 				$attributes .= ' ' . sanitize_key( $key ) . '="' . esc_attr( $value ) . '"';
 			}
 
