@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Admin\PerformanceMonitoring;
 
-trait PageHandler {
+trait PageHandlerTrait {
 	/**
 	 * Extracts and sanitizes the page title from the provided HTML string.
 	 *
