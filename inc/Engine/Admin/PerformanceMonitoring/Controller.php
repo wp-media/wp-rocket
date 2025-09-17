@@ -14,7 +14,7 @@ use WP_Rocket\Engine\License\API\User;
 
 class Controller {
 
-	use PageHandler;
+	use PageHandlerTrait;
 
 	/**
 	 * Query object.
