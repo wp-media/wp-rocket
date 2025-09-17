@@ -309,6 +309,7 @@ class AbstractQuery extends Query {
 	 *
 	 * @param int    $id DB row ID.
 	 * @param string $job_id API job_id.
+	 * @param array  $additional_details Additional details to be saved into DB.
 	 *
 	 * @return bool
 	 */
