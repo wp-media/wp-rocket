@@ -114,6 +114,24 @@
 			display: inline-block;
 			vertical-align: middle;
 			box-sizing: border-box;
+
+			&.wpr-btn-with-tool-tip {
+				.wpr-tooltip {
+					left: 0;
+					top: 100%;
+					margin-top: $space/2;
+					&:before {
+						top: -6px;
+						left: 17.6px;
+					}
+				}
+				&:hover {
+					.wpr-tooltip {
+						visibility: visible;
+						opacity: 1;
+					}
+				}
+			}
 		}
 		.wpr-pma-title{
 			text-decoration: underline;

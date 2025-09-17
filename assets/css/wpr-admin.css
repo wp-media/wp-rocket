@@ -823,7 +823,7 @@ a:focus, button:focus {
   color: #121116;
   padding: 8px 0;
   padding-left: 4px;
-  border-bottom: 1px solid rgb(194.1698113208, 202.0188679245, 211.8301886792);
+  border-bottom: 1px solid #c2cad4;
 }
 .wpr-Popin .wp-rocket-data-table td:not(.column-primary) {
   font-family: "Monaco";
@@ -1265,14 +1265,12 @@ div.wpr-upgrade-websites.notstacked {
 .rocket-promo-banner > div {
   display: flex;
   flex-flow: column;
+  width: 50%;
 }
 @media (max-width: 783px) {
   .rocket-promo-banner > div {
     width: 100%;
   }
-}
-.rocket-promo-banner > div {
-  width: 50%;
 }
 
 .rocket-promo-title {
@@ -1368,14 +1366,12 @@ div.wpr-upgrade-websites.notstacked {
 .rocket-renewal-expired-banner-container > div {
   display: flex;
   flex-flow: column;
+  width: 70%;
 }
 @media (max-width: 783px) {
   .rocket-renewal-expired-banner-container > div {
     width: 100%;
   }
-}
-.rocket-renewal-expired-banner-container > div {
-  width: 70%;
 }
 
 .rocket-renew-message {
@@ -3087,7 +3083,7 @@ div.wpr-tutorial-item {
   transition: background-color 0.2s ease;
 }
 .wpr-pma-license-banner .wpr-pma-cta-button:hover {
-  background-color: rgb(244.725, 102.0166666667, 59.775);
+  background-color: #f5663c;
 }
 
 .wpr-pma-notice {
@@ -3126,6 +3122,8 @@ div.wpr-tutorial-item {
   border-collapse: separate;
   border-spacing: 0;
   border-radius: 5px;
+  /* Target the top-left and top-right cells of the first row */
+  /* Target the bottom-left and bottom-right cells of the last row */
 }
 .wpr-pma-urls-table.widefat td, .wpr-pma-urls-table.widefat th {
   border: 1px solid #E2E5E9;
@@ -3146,9 +3144,6 @@ div.wpr-tutorial-item {
 .wpr-pma-urls-table.widefat tr:last-child th {
   border-bottom: 1px solid #E2E5E9;
 }
-.wpr-pma-urls-table.widefat {
-  /* Target the top-left and top-right cells of the first row */
-}
 .wpr-pma-urls-table.widefat tr:nth-child(2) th:first-child,
 .wpr-pma-urls-table.widefat tr:nth-child(2) td:first-child {
   border-top-left-radius: 5px;
@@ -3156,9 +3151,6 @@ div.wpr-tutorial-item {
 .wpr-pma-urls-table.widefat tr:nth-child(2) th:last-child,
 .wpr-pma-urls-table.widefat tr:nth-child(2) td:last-child {
   border-top-right-radius: 5px;
-}
-.wpr-pma-urls-table.widefat {
-  /* Target the bottom-left and bottom-right cells of the last row */
 }
 .wpr-pma-urls-table.widefat tr:last-child th:first-child,
 .wpr-pma-urls-table.widefat tr:last-child td:first-child {
@@ -3209,6 +3201,19 @@ div.wpr-tutorial-item {
   display: inline-block;
   vertical-align: middle;
   box-sizing: border-box;
+}
+.wpr-pma-urls-table .wpr-pma-item-title a.wpr-btn-with-tool-tip .wpr-tooltip {
+  left: 0;
+  top: 100%;
+  margin-top: 4px;
+}
+.wpr-pma-urls-table .wpr-pma-item-title a.wpr-btn-with-tool-tip .wpr-tooltip:before {
+  top: -6px;
+  left: 17.6px;
+}
+.wpr-pma-urls-table .wpr-pma-item-title a.wpr-btn-with-tool-tip:hover .wpr-tooltip {
+  visibility: visible;
+  opacity: 1;
 }
 .wpr-pma-urls-table .wpr-pma-item-title .wpr-pma-title {
   text-decoration: underline;
@@ -3274,7 +3279,7 @@ div.wpr-tutorial-item {
   margin-right: 8px;
 }
 .wpr-pma-urls-table .wpr-pma-item-actions .wpr-pma-action--disabled, .wpr-pma-urls-table .wpr-pma-item-actions .wpr-pma-action:disabled {
-  color: rgb(134.5094339623, 150.0566037736, 169.4905660377) !important;
+  color: #8796a9 !important;
   cursor: not-allowed;
   box-shadow: none;
 }
@@ -3594,7 +3599,7 @@ div.wpr-tutorial-item {
   font-family: Monaco;
   color: #121116;
   background: #fff;
-  border: 2px solid rgb(194.1698113208, 202.0188679245, 211.8301886792);
+  border: 2px solid #c2cad4;
   border-radius: 3px;
   font-size: 0.8125rem;
   line-height: 1.2307692308;
@@ -3626,7 +3631,7 @@ div.wpr-tutorial-item {
   height: 32px;
   color: #121116;
   background: #fff;
-  border: 2px solid rgb(194.1698113208, 202.0188679245, 211.8301886792);
+  border: 2px solid #c2cad4;
   border-radius: 3px;
   font-family: Monaco;
   font-size: 0.75rem;
@@ -3768,6 +3773,10 @@ div.wpr-tutorial-item {
   padding: 10px;
   margin: 8px 0;
 }
+.wpr-multiple-select .wpr-list .wpr-list-header {
+  display: flex;
+  justify-content: space-between;
+}
 .wpr-multiple-select .wpr-list .wpr-list-header .wpr-multiple-select-exclude_js_ads:before {
   font-family: "wpr-icomoon";
   content: "\e9b7";
@@ -3782,10 +3791,6 @@ div.wpr-tutorial-item {
   font-family: "wpr-icomoon";
   content: "\e927";
   padding-right: 8px;
-}
-.wpr-multiple-select .wpr-list .wpr-list-header {
-  display: flex;
-  justify-content: space-between;
 }
 .wpr-multiple-select .wpr-list .wpr-list-header .wpr-list-header-arrow {
   width: 15px;
