@@ -33,7 +33,7 @@ defined( 'ABSPATH' ) || exit;
 					</p>
 					<?php
 					$rocket_pma_add_button_args = [
-						'label'      => $data['pages_num'] ? __( 'Add Page', 'rocket' ) : __( 'Add Homepage', 'rocket' ),
+						'label'      => $data['pages_num'] ? __( 'Add Pages', 'rocket' ) : __( 'Add Homepage', 'rocket' ),
 						'parameters' => [
 							'type' => 'all',
 						],
