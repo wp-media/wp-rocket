@@ -18,11 +18,16 @@ defined( 'ABSPATH' ) || exit;
 	</td>
 
 	<td class="wpr-pma-item-title">
-		<a href="<?php echo esc_url( $data->url ); ?>" target="_blank" rel="noopener">
+		<a href="<?php echo esc_url( $data->url ); ?>" target="_blank" rel="noopener" class="wpr-btn-with-tool-tip">
 			<span class="wpr-pma-title"><?php echo esc_html( $data->title ); ?></span> <span class="wpr-pma-dot">.</span>
 			<span
 				class="wpr-pma-date"><?php echo esc_html( human_time_diff( $data->modified, time() ) . ' ' . __( 'ago', 'rocket' ) ); ?>
 			</span>
+			<div class="wpr-tooltip">
+				<div class="wpr-tooltip-content">
+					<?php esc_html_e( 'Open page', 'rocket' ); ?>
+				</div>
+			</div>
 		</a>
 	</td>
 
@@ -44,7 +49,7 @@ defined( 'ABSPATH' ) || exit;
 
 		if ( ! $data->has_credit ) {
 			$rocket_pma_retest_button_args['attributes']['class'] .= ' wpr-btn-with-tool-tip';
-			$rocket_pma_retest_button_args['tool_tip']             = __( 'Upgrade your plan to get access to re-test performance or run new tests', 'rocket' );
+			$rocket_pma_retest_button_args['tool_tip']             = __( 'You’ve reached your free monthly plan limit. Upgrade now to unlock unlimited on-demand tests.', 'rocket' );
 			$rocket_pma_retest_button_args['disabled']             = true;
 		}
 
