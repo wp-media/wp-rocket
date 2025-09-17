@@ -86,7 +86,7 @@ abstract class Abstract_Render implements Render_Interface {
 			'url'        => '',
 			'parameter'  => '',
 			'attributes' => '',
-			'tooltip'   => '',
+			'tooltip'    => '',
 		];
 
 		$args = wp_parse_args( $args, $default );

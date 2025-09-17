@@ -48,9 +48,9 @@ defined( 'ABSPATH' ) || exit;
 		}
 
 		if ( ! $data->has_credit ) {
-			$rocket_pma_retest_button_args['attributes']['class']    .= ' wpr-btn-with-tool-tip';
+			$rocket_pma_retest_button_args['attributes']['class']   .= ' wpr-btn-with-tool-tip';
 			$rocket_pma_retest_button_args['tooltip']                = __( 'You’ve reached your free monthly plan limit. Upgrade now to unlock unlimited on-demand tests.', 'rocket' );
-			$rocket_pma_retest_button_args['attributes']['disabled']  = true;
+			$rocket_pma_retest_button_args['attributes']['disabled'] = true;
 		}
 
 		$this->render_action_button(
@@ -69,11 +69,11 @@ defined( 'ABSPATH' ) || exit;
 		];
 
 		if ( empty( $data->report_url ) ) {
-			$rocket_show_report_btn_args['attributes']['class']  .= ' wpr-pma-action--disabled';
-			$rocket_show_report_btn_args['attributes']['target']  = '';
+			$rocket_show_report_btn_args['attributes']['class'] .= ' wpr-pma-action--disabled';
+			$rocket_show_report_btn_args['attributes']['target'] = '';
 		} elseif ( ! $data->can_access_report() ) {
-			$rocket_show_report_btn_args['attributes']['class']  .= ' wpr-btn-with-tool-tip wpr-pma-action--disabled';
-			$rocket_show_report_btn_args['attributes']['target']  = '';
+			$rocket_show_report_btn_args['attributes']['class'] .= ' wpr-btn-with-tool-tip wpr-pma-action--disabled';
+			$rocket_show_report_btn_args['attributes']['target'] = '';
 			$rocket_show_report_btn_args['tooltip']              = __( 'Upgrade your plan to see the report', 'rocket' );
 		}
 
