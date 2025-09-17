@@ -268,7 +268,7 @@ class Controller {
 		$payload = [];
 
 		// Check if ids is set.
-		if ( ! isset( $_GET['ids'] ) && ! is_array( $_GET['ids'] ) ) {
+		if ( empty( $_GET['ids'] ) || ! is_array( $_GET['ids'] ) ) {
 			$payload['results'] = 'No ids param available or ids not array';
 			wp_send_json_error( $payload );
 		}

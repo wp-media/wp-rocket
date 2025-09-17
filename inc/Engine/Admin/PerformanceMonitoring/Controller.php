@@ -94,6 +94,10 @@ class Controller {
 	 * @return void
 	 */
 	public function add_homepage() {
+		if ( ! $this->context->is_allowed() ) {
+			return;
+		}
+
 		$this->manager->add_url_to_the_queue( home_url(), true );
 
 		/**

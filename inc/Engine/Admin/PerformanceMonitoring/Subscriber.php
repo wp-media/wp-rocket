@@ -153,6 +153,10 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return array
 	 */
 	public function add_pending_ids( array $data = [] ) {
+		if ( ! $this->pma_context->is_allowed() ) {
+			return $data;
+		}
+
 		$data['pm_ids'] = $this->controller->get_not_finished_ids();
 		return $data;
 	}
