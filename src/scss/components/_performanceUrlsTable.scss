@@ -75,7 +75,7 @@
 		}
 	}
 	.wpr-percentage-indicator{
-		border-right: 1px solid $cGreyLighter2;
+		top: 3px;
 		.wpr-percentage-circle{
 			width: 32px;
 			height: 32px;
@@ -102,12 +102,13 @@
 	}
 	.wpr-pma-item-score{
 		vertical-align: middle;
-		padding: 0 $space;
+		padding: 0 8px 0 0;
 	}
 	.wpr-pma-item-title{
 		font-size: 14px;
 		color: $cBlack;
 		vertical-align: middle;
+		padding-left: 16px;
 		a{
 			display: inline-block;
 			vertical-align: middle;
@@ -125,6 +126,15 @@
 		}
 		.wpr-pma-date{
 			color: $cGreyLighter3;
+		}
+		&:before{
+			position: relative;
+			content: "";
+			top: 6px;
+			left: -16px;
+			height: 18px;
+			display: inline-block;
+			border-left: 1px solid #D4D9DD;
 		}
 	}
 	.wpr-pma-item-actions{
