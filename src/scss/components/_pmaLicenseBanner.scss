@@ -1,10 +1,10 @@
 .wpr-pma-license-banner {
 	background-color: #f9f9f9;
-	border-radius: 6px;
+	border-radius: 2px;
 	padding: 30px;
-	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 	margin: 20px 0;
 	max-width: 100%;
+	border: 1px solid #E2E5E9;
 
 	// Header section
 	.wpr-pma-banner-header {
@@ -51,12 +51,14 @@
 			}
 
 			li {
+				font-family: Roboto, Arial, sans-serif;
 				position: relative;
 				padding-left: 35px;
 				margin-bottom: 20px;
 				font-size: 14px;
-				line-break: 1.3;
-				color: #333;
+				font-weight: 400;
+				line-height: 1.3;
+				color: #0C0F1F;
 				display: flex;
 				align-items: center;
 
@@ -115,15 +117,17 @@
 		}
 
 		.wpr-pma-offer {
+			font-family: Roboto, Arial, sans-serif;
 			position: absolute;
 			top: -20px;
 			left: 50%;
 			transform: translateX(-50%);
 			background-color: #FED055;
 			color: #0C0F1F;
-			padding: $space 2*$space;
+			padding: 4px 12px;
 			font-size: 14px;
 			font-weight: 600;
+			line-height: 1.3;
 			border-radius: 4px;
 		}
 	}
@@ -169,7 +173,7 @@
 			color: #738191;
 			margin-left: 1px;
 			position: relative;
-			top: -(2*$space);
+			top: -24px;
 		}
 	}
 
@@ -183,8 +187,9 @@
 	// CTA button
 	.wpr-pma-cta-button {
 		font-family: Roboto, Arial, sans-serif;
-		background-color: #f67954;
-		border: 1px solid #f67954;
+		background-color: #F3704D;
+		border: 1px solid #F3704D;
+		line-height: 1.3;
 		color: white;
 		border-radius: 4px;
 		padding: 12px 16px;

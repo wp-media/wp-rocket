@@ -103,7 +103,7 @@
 	}
 	.wpr-pma-item-score{
 		vertical-align: middle;
-		padding: 0 8px 0 0;
+		padding: 0 8px;
 	}
 	.wpr-pma-item-title{
 		font-size: 14px;
@@ -170,7 +170,7 @@
 			}
 			&.wpr-confirm-delete{
 				&:before{
-					font-size: 14px;
+					font-size: 12px;
 					top: 0;
 					margin-right: 0;
 				}
@@ -212,11 +212,18 @@
 }
 
 .wpr-pma-add-url-button{
+	font-family: "Segoe UI ", Tahoma, Geneva, Verdana, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	font-weight: 700;
+	line-height: normal;
+	text-transform: uppercase;
 	&.disabled{
-		background: darken($cGrey, 30%) !important;
-		color: $cBlack !important;
 		cursor: not-allowed;
-		box-shadow: none;
+		border-radius: 4px;
+		opacity: 0.5;
+		background: #2D1656;
+		box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.20);
 		&:focus {
 			transform: none;
 			box-shadow: none;
