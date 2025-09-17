@@ -49,7 +49,7 @@ class Queue extends AbstractASQueue {
 			MONTH_IN_SECONDS,
 			$this->reset_hook,
 			[],
-			200
+			1
 		);
 	}
 }
