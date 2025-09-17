@@ -31,6 +31,9 @@ class Queue extends AbstractASQueue {
 	 * Cancel reset job.
 	 */
 	public function cancel_reset_job(): void {
+		if ( ! $this->is_scheduled( $this->reset_hook ) ) {
+			return;
+		}
 		$this->cancel( $this->reset_hook );
 	}
 
@@ -44,7 +47,9 @@ class Queue extends AbstractASQueue {
 		$this->schedule_recurring(
 			time(),
 			MONTH_IN_SECONDS,
-			$this->reset_hook
+			$this->reset_hook,
+			[],
+			200
 		);
 	}
 }
