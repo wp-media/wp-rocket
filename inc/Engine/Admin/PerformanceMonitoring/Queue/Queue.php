@@ -40,10 +40,6 @@ class Queue extends AbstractASQueue {
 	 * @return void
 	 */
 	public function schedule_reset_task() {
-		if ( $this->is_scheduled( $this->reset_hook ) ) {
-			return;
-		}
-
 		// Schedule weekly cleanup.
 		$this->schedule_recurring(
 			time(),
