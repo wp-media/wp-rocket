@@ -338,7 +338,7 @@ class Controller {
 		}
 
 		$this->manager->add_url_to_the_queue(
-			$row->url,
+			$row->url, // @phpstan-ignore-line
 			true,
 			[
 				'data'       => '',
@@ -346,7 +346,7 @@ class Controller {
 				'report_url' => '',
 				'is_blurred' => 0,
 			]
-			); // @phpstan-ignore-line
+			);
 
 		/**
 		 * Fires when a performance monitoring job is reset/retested.
