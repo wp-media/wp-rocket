@@ -83,8 +83,6 @@ class Render extends Abstract_Render {
 	 * @return void
 	 */
 	public function render_global_score_widget( array $data ) {
-		$data['has_credit'] = $this->credit_manager->has_credit();
-
 		echo $this->get_global_score_widget( $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
@@ -95,6 +93,7 @@ class Render extends Abstract_Render {
 	 * @return string The rendered HTML for the global score widget.
 	 */
 	public function get_global_score_widget( array $data ): string {
+		$data['has_credit'] = $this->credit_manager->has_credit();
 		return $this->generate( 'partials/performance-monitoring/global-score-widget', $data );
 	}
 

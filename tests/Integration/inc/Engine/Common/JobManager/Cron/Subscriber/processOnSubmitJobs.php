@@ -19,14 +19,14 @@ class Test_ProcessOnSubmitJobs extends TestCase {
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
 
-		self::installUsedCssTable();
 		self::installPerformanceMonitoringTable();
+		self::installUsedCssTable();
 		self::installPreloadCacheTable();
 	}
 
 	public static function tear_down_after_class() {
-		self::uninstallUsedCssTable();
 		self::uninstallPerformanceMonitoringTable();
+		self::uninstallUsedCssTable();
 		self::uninstallPreloadCacheTable();
 
 		parent::tear_down_after_class();
