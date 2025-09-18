@@ -145,7 +145,6 @@ a:focus, button:focus {
   z-index: 100;
   width: auto;
   opacity: 0;
-  min-width: 300px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 .wpr-tooltip:before {
@@ -1868,7 +1867,6 @@ div.wpr-upgrade-websites.notstacked {
   position: absolute;
   right: auto;
   top: auto;
-  min-width: max-content;
 }
 .wpr-btn-with-tool-tip:hover .wpr-tooltip {
   visibility: visible;
@@ -2882,7 +2880,6 @@ div.wpr-tutorial-item {
 .wpr-percentage-indicator .wpr-tooltip {
   left: 12px;
   top: 30px;
-  min-width: max-content;
 }
 .wpr-percentage-indicator .wpr-tooltip:before {
   top: -6px;
@@ -3330,7 +3327,6 @@ div.wpr-tutorial-item {
   left: 50%;
   transform: translateX(-50%);
   bottom: -40px;
-  min-width: max-content;
   text-transform: none;
 }
 .wpr-pma-add-url-button .wpr-tooltip:before {
