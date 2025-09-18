@@ -38,6 +38,9 @@ class TestCheckUpgrade extends AdminTestCase {
         $this->unregisterAllCallbacksExcept('admin_init', 'check_upgrade', 10);
 
 		add_filter('wp_rocket_pma_upgraded', [$this, 'mock_wp_rocket_pma_upgraded']);
+
+		$this->setCurrentUser( 'administrator' );
+		$this->setEditTagsAsCurrentScreen(); // visit any admin page to fix an issue with WP 5.8 related to wp_add_privacy_policy_content.
     }
 
     /**
