@@ -266,7 +266,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			[
 				'items'           => $this->controller->get_items(),
 				'global_score'    => $this->controller->get_global_score(),
-				'pma_addon_limit' => $license_data['page_number'] ?? 0,
+				'pma_addon_limit' => $this->controller->get_pma_addon_limit(),
 				'upgrade_url'     => $license_data['btn_url'] ?? '',
 				'can_add_pages'   => wpm_apply_filters_typesafe( 'wpr_pm_allow_add_page', true ),
 			]

@@ -306,4 +306,13 @@ class Controller {
 		$data['promo_description']     = $this->user->get_pma_addon_promo_description( $upgrade );
 		return $data;
 	}
+
+	/**
+	 * Get PMA addon limit.
+	 *
+	 * @return int
+	 */
+	public function get_pma_addon_limit() {
+		return $this->user->get_pma_addon_limit( $this->user->get_pma_addon_sku_active() );
+	}
 }
