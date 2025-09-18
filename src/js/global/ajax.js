@@ -308,11 +308,11 @@ document.addEventListener('DOMContentLoaded', function() {
 	function disableAddUrlElements() {
 		$('#add_page_speed_radar').addClass('disabled').attr('disabled', true);
 		$pageUrlInput.attr('disabled', true);
-		
+
 		$('.wpr-pma-global-score-add-url-button').addClass('disabled').attr('disabled', true);
-		
-		const tooltipMessage = window.rocket_ajax_data && window.rocket_ajax_data.reach_max_url_message 
-			? window.rocket_ajax_data.reach_max_url_message 
+
+		const tooltipMessage = window.rocket_ajax_data && window.rocket_ajax_data.reach_max_url_message
+			? window.rocket_ajax_data.reach_max_url_message
 			: 'Maximum number of URLs reached for your license.';
 		$('#add_page_speed_radar').attr('title', tooltipMessage);
 		$('.wpr-pma-global-score-add-url-button').attr('title', tooltipMessage);
@@ -321,9 +321,9 @@ document.addEventListener('DOMContentLoaded', function() {
 	function enableAddUrlElements() {
 		$('#add_page_speed_radar').removeClass('disabled').attr('disabled', false);
 		$pageUrlInput.attr('disabled', false);
-		
+
 		$('.wpr-pma-global-score-add-url-button').removeClass('disabled').attr('disabled', false);
-		
+
 		$('#add_page_speed_radar').removeAttr('title');
 		$('.wpr-pma-global-score-add-url-button').removeAttr('title');
 	}
@@ -496,10 +496,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 				// Update global score row in table if on Rocket Insights page.
 				updateGlobalScoreRow(response);
-
-				// Check remaining URLs and update button state
-				updateUrlLimitState(response.data.remaining_urls);
-
 				// Start polling if not already running
 				if (!pollTimer) {
 					pollInterval = POLL_BASE_INTERVAL;
