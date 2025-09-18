@@ -95,17 +95,24 @@ defined( 'ABSPATH' ) || exit;
 			id="wpr-speed-radar-url-input" />
 
 	<?php
+	$rocket_pma_add_page_button_args = [
+		'label'      => __( 'ADD PAGE +', 'rocket' ),
+		'url'        => '#',
+		'attributes' => [
+			'class' => 'wpr-button wpr-button--icon wpr-button--small wpr-button--purple wpr-pma-add-url-button',
+			'id'    => 'add_page_speed_radar',
+		],
+	];
+	if ( ! $data['has_credit'] ) {
+		$rocket_pma_add_page_button_args['attributes']['class'] .= ' wpr-btn-with-tool-tip disabled';
+		$rocket_pma_add_page_button_args['tool_tip']             = esc_html__( 'You don\'t have enough credits', 'rocket' );
+		$rocket_pma_add_page_button_args['url']                  = '#';
+		$rocket_pma_add_page_button_args['disabled']             = true;
+	}
 	$this->render_action_button(
 		'link',
 		'add_page_speed_radar',
-		[
-			'label'      => __( 'ADD PAGE +', 'rocket' ),
-			'url'        => '#',
-			'attributes' => [
-				'class' => 'wpr-button wpr-button--icon wpr-button--small wpr-button--purple',
-				'id'    => 'add_page_speed_radar',
-			],
-		]
+		$rocket_pma_add_page_button_args
 	);
 	?>
 </div>

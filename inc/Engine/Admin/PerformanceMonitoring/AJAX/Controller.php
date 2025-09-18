@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\Admin\PerformanceMonitoring\AJAX;
 
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\{
 	Render,
+	PageHandlerTrait,
 	GlobalScore,
 	Jobs\Manager,
 	Context\PerformanceMonitoringContext as Context,
@@ -12,6 +13,9 @@ use WP_Rocket\Engine\Admin\PerformanceMonitoring\{
 };
 
 class Controller {
+
+	use PageHandlerTrait;
+
 	/**
 	 * Query object.
 	 *
@@ -131,42 +135,6 @@ class Controller {
 	}
 
 	/**
-	 * Extracts and sanitizes the page title from the provided HTML string.
-	 *
-	 * This method attempts to find the <title> tag in the given HTML, decodes any HTML entities,
-	 * strips all tags, sanitizes the text, and then trims the title at common separators
-	 * (such as " | ", " - ", " – ", " » ") to return a clean, concise page title.
-	 *
-	 * @param string $html The HTML content from which to extract the page title.
-	 *
-	 * @return string The sanitized and trimmed page title, or an empty string if not found.
-	 */
-	public function get_page_title( string $html ): string {
-		$title = '';
-
-		if ( empty( $html ) ) {
-			return $title;
-		}
-
-		// Extract title from title tag.
-		if ( ! preg_match( '/<title[^>]*>(.*?)<\/title>/is', $html, $matches ) ) {
-			return $title;
-		}
-
-		// Clean up and sanitize the title.
-		$title = html_entity_decode( trim( $matches[1] ), ENT_QUOTES, 'UTF-8' );
-
-		if ( empty( $title ) ) {
-			return $title;
-		}
-
-		$title = wp_strip_all_tags( $title );
-		$title = sanitize_text_field( $title );
-
-		return $title;
-	}
-
-	/**
 	 * Validates a given URL for performance monitoring eligibility.
 	 *
 	 * @param string $url The URL to validate.
@@ -215,16 +183,9 @@ class Controller {
 			return $payload;
 		}
 
-		// Check if url is a valid url.
-		$user_agent = 'WP Rocket/Fetch Page Buffer for Performance Monitoring Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1';
-		$args       = [
-			'user-agent' => $user_agent,
-			'timeout'    => 60,
-		];
+		$response = $this->get_page_content( $url );
 
-		$response = wp_safe_remote_get( $url, $args );
-
-		if ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
+		if ( ! $response ) {
 			$payload['error']   = true;
 			$payload['message'] = 'Url does not resolve to a valid page.';
 
@@ -252,7 +213,7 @@ class Controller {
 		// TODO: Check if page is cached.
 
 		// Fetch url body and send to payload.
-		$payload['message'] = wp_remote_retrieve_body( $response );
+		$payload['message'] = $response;
 
 		return $payload;
 	}
@@ -337,7 +298,16 @@ class Controller {
 				);
 		}
 
-		$this->manager->add_url_to_the_queue( $row->url, true ); // @phpstan-ignore-line
+		$this->manager->add_url_to_the_queue(
+			$row->url, // @phpstan-ignore-line
+			true,
+			[
+				'data'       => '',
+				'score'      => '',
+				'report_url' => '',
+				'is_blurred' => 0,
+			]
+			);
 
 		/**
 		 * Fires when a performance monitoring job is reset/retested.
@@ -376,8 +346,9 @@ class Controller {
 		$payload['status-color'] = $this->render->get_score_color_status( (int) $payload['score'] );
 
 		return [
-			'data' => $payload,
-			'html' => $this->render->get_global_score_widget( $payload ),
+			'data'     => $payload,
+			'html'     => $this->render->get_global_score_widget( $payload ),
+			'row_html' => $this->render->get_global_score_row( $payload ),
 		];
 	}
 }

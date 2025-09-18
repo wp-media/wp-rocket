@@ -270,7 +270,8 @@ document.addEventListener('DOMContentLoaded', function() {
             score: 0,
             pages_num: 0
         },
-        html: ''
+        html: '',
+        row_html: '',
     };
 
 	// ==== DOM Selectors ====
@@ -323,6 +324,22 @@ document.addEventListener('DOMContentLoaded', function() {
         return urlParams.get('page') === 'wprocket' && window.location.hash === '#dashboard';
     }
 
+	function isOnRocketInsights() {
+		const urlParams = new URLSearchParams(window.location.search);
+		return urlParams.get('page') === 'wprocket' && window.location.hash === '#rocket_insights';
+	}
+
+	function updateGlobalScoreRow(response){
+		if ( isOnRocketInsights() ) {
+			const $tableGlobalScore = $('.wpr-pma-urls-table .wpr-global-score');
+			if ($tableGlobalScore.length > 0){
+				$tableGlobalScore.replaceWith(response.data.global_score_data.row_html);
+			}else {
+				$tableBody.prepend(response.data.global_score_data.row_html);
+			}
+		}
+	}
+
 	// ==== AJAX Handlers ====
 	function getResults() {
 		if (pmIds.length === 0) {
@@ -345,6 +362,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     if ( isOnDashboard() ) {
                         $('#wpr_global_score_widget').html(response.data.global_score_data.html);
                     }
+					// Update global score row in table if on Rocket Insights page.
+					updateGlobalScoreRow(response);
                 }
 				response.data.results.forEach(result => {
 					const $row = $(`[data-rocket-pm-id="${result.id}"]`);
@@ -367,6 +386,10 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 
 	function handleAddPage(e) {
+		// check if has attr disabled
+		if ($(this).attr('disabled')) {
+			return;
+		}
 		e.preventDefault();
 		const pageUrl = $pageUrlInput.val().trim();
 
@@ -390,6 +413,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 // Update global score data.
                 globalScoreData = response.data.global_score_data;
+
+				// Update global score row in table if on Rocket Insights page.
+				updateGlobalScoreRow(response);
 
 				// Start polling if not already running
 				if (!pollTimer) {
@@ -423,6 +449,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 // Update global score data.
                 globalScoreData = response.data.global_score_data;
+
+				// Update global score row in table if on Rocket Insights page.
+				updateGlobalScoreRow(response);
 
 				// Start polling if not already running
 				if (!pollTimer) {

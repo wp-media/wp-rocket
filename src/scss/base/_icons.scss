@@ -196,3 +196,10 @@
 	}
 }
 
+.wpr-icon-exclamation:before{
+	content: '';
+	background-image: url('../img/exclamation.svg');
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+
