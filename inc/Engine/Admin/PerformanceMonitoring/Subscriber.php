@@ -109,10 +109,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'wp_rocket_first_install'           => [
-				[ 'schedule_reset_credit' ],
-				[ 'schedule_homepage_tests' ],
-			],
+			'wp_rocket_first_install'           => 'schedule_homepage_tests',
 			'wp_ajax_rocket_pm_add_new_page'    => 'add_new_page',
 			'wp_ajax_rocket_pm_get_results'     => 'get_results',
 			'rocket_localize_admin_script'      => 'add_pending_ids',
@@ -140,7 +137,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'admin_post_rocket_pm_add_homepage' => 'add_homepage_from_widget',
 			'wp_rocket_pma_upgraded'            => 'reset_user_data',
 			'rocket_deactivation'               => 'cancel_scheduled_jobs',
-			'wp_rocket_upgrade'                 => [ 'schedule_reset_credit_on_upgrade', 10, 2 ],
 		];
 	}
 
@@ -213,7 +209,11 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return void
 	 */
 	public function schedule_reset_credit(): void {
-		if ( ! $this->pma_context->is_allowed() || ! $this->pma_context->is_free_user() ) {
+		if ( ! $this->pma_context->is_allowed() ) {
+			return;
+		}
+
+		if ( ! $this->pma_context->is_free_user() ) {
 			$this->cancel_scheduled_jobs();
 			return;
 		}
