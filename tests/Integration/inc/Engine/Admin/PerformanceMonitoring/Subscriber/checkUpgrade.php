@@ -58,6 +58,7 @@ class TestCheckUpgrade extends AdminTestCase {
      * @dataProvider configTestData
      */
     public function testShouldDoExpected($config, $expected) {
+		self::removeDBHooks();
 		$this->setCurrentUser( 'administrator' );
 		update_user_meta( $this->user_id, 'rocket_boxes', ['pma_upgrade_notice'] );
 		// Set up the GET parameter
@@ -76,7 +77,7 @@ class TestCheckUpgrade extends AdminTestCase {
 		add_filter( 'wp_redirect', [ $this, 'return_empty_string' ], PHP_INT_MAX );
 
         // Execute the method
-        do_action('admin_init');
+		$this->fireAdminInit();
 
 		$this->assertSame($expected['upgrade_action'], $this->action_called);
 
