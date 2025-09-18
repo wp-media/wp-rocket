@@ -2783,6 +2783,16 @@ div.wpr-tutorial-item {
   font-size: 43px;
   font-weight: 600;
 }
+.wpr-percentage-score-widget .wpr-percentage-indicator .wpr-percentage-circle .wpr-failed-score {
+  width: 50px;
+  height: 50px;
+}
+.wpr-percentage-score-widget .wpr-percentage-indicator .wpr-percentage-circle .wpr-failed-score:before {
+  width: 50px;
+  height: 50px;
+  background-size: contain;
+  display: inline-block;
+}
 .wpr-percentage-score-widget .wpr-percentage-indicator .wpr-tooltip {
   display: none;
 }
