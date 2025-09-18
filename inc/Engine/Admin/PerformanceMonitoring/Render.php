@@ -74,7 +74,7 @@ class Render extends Abstract_Render {
 		$data['has_credit']    = $this->credit_manager->has_credit();
 		$data['can_add_url']   = wpm_apply_filters_typesafe( 'wpr_pm_allow_add_page', true );
 		$data['reach_max_url'] = ! $data['can_add_url'];
-		// remaining_urls is passed from Subscriber
+
 		echo $this->generate( 'partials/performance-monitoring/urls-table', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
@@ -111,7 +111,7 @@ class Render extends Abstract_Render {
 		$data['has_credit']    = $this->credit_manager->has_credit();
 		$data['can_add_url']   = wpm_apply_filters_typesafe( 'wpr_pm_allow_add_page', true );
 		$data['reach_max_url'] = ! $data['can_add_url'];
-		// remaining_urls is passed from Subscriber
+
 		return $this->generate( 'partials/performance-monitoring/global-score-widget', $data );
 	}
 
