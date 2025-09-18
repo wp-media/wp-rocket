@@ -311,7 +311,9 @@ document.addEventListener('DOMContentLoaded', function() {
 		
 		$('.wpr-pma-global-score-add-url-button').addClass('disabled').attr('disabled', true);
 		
-		const tooltipMessage = 'Maximum number of URLs reached for your license.';
+		const tooltipMessage = window.rocket_ajax_data && window.rocket_ajax_data.reach_max_url_message 
+			? window.rocket_ajax_data.reach_max_url_message 
+			: 'Maximum number of URLs reached for your license.';
 		$('#add_page_speed_radar').attr('title', tooltipMessage);
 		$('.wpr-pma-global-score-add-url-button').attr('title', tooltipMessage);
 	}
