@@ -13,27 +13,15 @@ defined( 'ABSPATH' ) || exit;
 		?>
 	</td>
 	<td class="wpr-pma-item-title">
-		<?php if ( 'in-progress' === $data['status'] ) : ?>
-			<span>
-				<?php
-				printf(
-					// translators: %s is the number of pages monitored.
-					esc_html__( 'Tracked pages: %s', 'rocket' ),
-					esc_html( $data['pages_num'] )
-				);
-				?>
-			</span>
-		<?php else : ?>
-			<span>
-				<?php
-				printf(
-					// translators: %s is the number of pages monitored.
-					esc_html__( '%s pages monitored', 'rocket' ),
-					esc_html( $data['pages_num'] )
-				);
-				?>
-			</span>
-		<?php endif; ?>
+		<span>
+			<?php
+			printf(
+				// translators: %s is the number of pages tracked/monitored.
+				esc_html( $data['status_text'] . ': %s' ),
+				esc_html( $data['pages_num'] )
+			);
+			?>
+		</span>
 	</td>
 	<td class="wpr-pma-item-actions"></td>
 </tr>
