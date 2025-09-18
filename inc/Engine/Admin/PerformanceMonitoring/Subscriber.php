@@ -244,7 +244,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return void
 	 */
 	public function render_global_score_widget(): void {
-		$data = $this->controller->get_global_score();
+		$data                   = $this->controller->get_global_score();
 		$data['remaining_urls'] = $this->controller->get_remaining_url_count();
 		$this->render->render_global_score_widget( $data );
 	}
@@ -266,8 +266,8 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	public function render_performance_urls_table() {
 		$this->render->render_pma_urls_table(
 			[
-				'items'         => $this->controller->get_items(),
-				'global_score'  => $this->controller->get_global_score(),
+				'items'          => $this->controller->get_items(),
+				'global_score'   => $this->controller->get_global_score(),
 				'remaining_urls' => $this->controller->get_remaining_url_count(),
 			]
 		);
