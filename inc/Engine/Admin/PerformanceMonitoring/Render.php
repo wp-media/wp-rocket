@@ -71,9 +71,10 @@ class Render extends Abstract_Render {
 	 * @return void
 	 */
 	public function render_pma_urls_table( array $data ) {
-		$data['has_credit']    = $this->credit_manager->has_credit();
-		$data['can_add_url']   = wpm_apply_filters_typesafe( 'wpr_pm_allow_add_page', true );
-		$data['reach_max_url'] = ! $data['can_add_url'];
+		$data['has_credit']      = $this->credit_manager->has_credit();
+		$data['can_add_url']     = wpm_apply_filters_typesafe( 'wpr_pm_allow_add_page', true );
+		$data['reach_max_url']   = ! $data['can_add_url'];
+		$data['remaining_urls']  = $this->get_remaining_url_count();
 		echo $this->generate( 'partials/performance-monitoring/urls-table', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
@@ -107,9 +108,10 @@ class Render extends Abstract_Render {
 	 * @return string The rendered HTML for the global score widget.
 	 */
 	public function get_global_score_widget( array $data ): string {
-		$data['has_credit']    = $this->credit_manager->has_credit();
-		$data['can_add_url']   = wpm_apply_filters_typesafe( 'wpr_pm_allow_add_page', true );
-		$data['reach_max_url'] = ! $data['can_add_url'];
+		$data['has_credit']      = $this->credit_manager->has_credit();
+		$data['can_add_url']     = wpm_apply_filters_typesafe( 'wpr_pm_allow_add_page', true );
+		$data['reach_max_url']   = ! $data['can_add_url'];
+		$data['remaining_urls']  = $this->get_remaining_url_count();
 		return $this->generate( 'partials/performance-monitoring/global-score-widget', $data );
 	}
 
@@ -177,5 +179,21 @@ class Render extends Abstract_Render {
 			'period'        => $period,
 		];
 		echo $this->generate( 'partials/performance-monitoring/license-banner-plan-price', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	}
+
+	/**
+	 * Get the remaining number of URLs that can be added based on user's plan limit.
+	 *
+	 * @return int Number of URLs that can still be added.
+	 */
+	private function get_remaining_url_count(): int {
+		$container = apply_filters( 'rocket_container', null );
+		$pm_query = $container->get( 'pm_query' );
+		$user = $container->get( 'user' );
+		
+		$current_url_count = $pm_query->query( [ 'count' => true ] );
+		$max_urls = $user->get_pma_addon_limit( $user->get_pma_addon_sku_active() );
+		
+		return max( 0, $max_urls - (int) $current_url_count );
 	}
 }

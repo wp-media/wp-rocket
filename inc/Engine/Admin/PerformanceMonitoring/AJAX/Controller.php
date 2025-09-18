@@ -130,6 +130,7 @@ class Controller {
 		$payload['id']                = $row_id;
 		$payload['html']              = $this->render->get_performance_monitoring_list_row( $row_data );
 		$payload['global_score_data'] = $this->get_global_score_payload();
+		$payload['remaining_urls']    = $this->get_remaining_url_count();
 
 		wp_send_json_success( $payload );
 	}
@@ -324,6 +325,7 @@ class Controller {
 				'id'                => $id,
 				'html'              => $this->render->get_performance_monitoring_list_row( $row ),
 				'global_score_data' => $this->get_global_score_payload(),
+				'remaining_urls'    => $this->get_remaining_url_count(),
 			]
 			);
 	}
@@ -350,5 +352,19 @@ class Controller {
 			'html'     => $this->render->get_global_score_widget( $payload ),
 			'row_html' => $this->render->get_global_score_row( $payload ),
 		];
+	}
+
+	/**
+	 * Get the remaining number of URLs that can be added based on user's plan limit.
+	 *
+	 * @return int Number of URLs that can still be added.
+	 */
+	private function get_remaining_url_count(): int {
+		$current_url_count = $this->query->query( [ 'count' => true ] );
+		$container = apply_filters( 'rocket_container', null );
+		$user = $container->get( 'user' );
+		$max_urls = $user->get_pma_addon_limit( $user->get_pma_addon_sku_active() );
+		
+		return max( 0, $max_urls - (int) $current_url_count );
 	}
 }
