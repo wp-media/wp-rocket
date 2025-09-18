@@ -10,6 +10,7 @@ use Brain\Monkey\Functions;
  * Test class covering WP_Rocket\Engine\Admin\PerformanceMonitoring\Subscriber::check_upgrade
  *
  * @group PerformanceMonitoring
+ * @group AdminOnly
  */
 class TestCheckUpgrade extends AdminTestCase {
     /**
