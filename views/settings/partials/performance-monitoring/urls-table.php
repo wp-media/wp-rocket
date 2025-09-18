@@ -33,42 +33,44 @@ defined( 'ABSPATH' ) || exit;
 	</div>
 </div>
 
-<div class="wpr-notice wpr-pma-notice wpr-error-notice hidden">
-	<div class="wpr-notice-container">
-		<div class="wpr-notice-description">
-			<?php
-			printf(
-				// Translators: %1$s = opening strong tag, %2$s = closing strong tag.
-				esc_html__( 'You\'ve %1$sreached your free limit.%2$s Upgrade to continue.', 'rocket' ),
-				'<strong>',
-				'</strong>'
-			);
-			?>
-		</div>
-		<a class="wpr-notice-close" href="">
-			<?php esc_html_e( 'Upgrade Now', 'rocket' ); ?>
-		</a>
-	</div>
-</div>
-
 <div class="wpr-optionHeader">
 	<h3 class="wpr-title2"><?php esc_html_e( 'Performance Summary', 'rocket' ); ?></h3>
 	<button data-beacon-id="<?php echo esc_attr( '' ); ?>" data-wpr_track_button="Need Help" data-wpr_track_context="Addons" class="wpr-infoAction wpr-infoAction--help wpr-icon-help"><?php esc_html_e( 'Need Help?', 'rocket' ); ?></button>
 </div>
 
-<?php if ( empty( $data['items'] ) || 'in-progress' === $data['global_score']['status'] ) : ?>
+<?php if ( isset( $data['can_add_pages'] ) && ! $data['can_add_pages'] ) : ?>
+	<div class="wpr-notice wpr-pma-notice wpr-error-notice">
+		<div class="wpr-notice-container">
+			<div class="wpr-notice-description">
+				<?php
+				printf(
+				// Translators: %1$s = opening strong tag, %2$s = closing strong tag.
+					esc_html__( 'You\'ve %1$sreached your free limit.%2$s Upgrade to continue.', 'rocket' ),
+					'<strong>',
+					'</strong>'
+				);
+				?>
+			</div>
+			<a class="wpr-notice-close" href="<?php echo esc_url( $data['upgrade_url'] ); ?>">
+				<?php esc_html_e( 'Upgrade Now', 'rocket' ); ?>
+			</a>
+		</div>
+	</div>
+<?php endif; ?>
+
+<?php if ( ! empty( $data['can_add_pages'] ) ) : ?>
 	<p class="wpr-pma-summary-info">
 		<?php
 		printf(
-		// Translators: %1$s = opening strong tag, %2$s: number of pages, %3$s = closing strong tag, %4$s: number of tests available.
+		// Translators: %1$s = opening strong tag, %2$s: number of pages left, %3$s = closing strong tag, %4$s: number of tests available.
 			esc_html__( 'You can analyze up to %1$s%2$s page%3$s and run %1$s%4$s tests per month%3$s. %1$sWant more?%3$s', 'rocket' ),
 			'<strong>',
-			'1', // number of pages.
+			esc_html( $data['pma_addon_limit'] - count( $data['items'] ) ), // number of pages left to add.
 			'</strong>',
-			'3' // total number of tests available.
+			esc_html( $data['pma_addon_limit'] ) // total number of tests available.
 		);
 		?>
-		<a href="#"><?php esc_html_e( 'Upgrade Now', 'rocket' ); ?></a>
+		<a href="<?php echo esc_url( $data['upgrade_url'] ); ?>"><?php esc_html_e( 'Upgrade Now', 'rocket' ); ?></a>
 	</p>
 <?php endif; ?>
 

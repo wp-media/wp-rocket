@@ -261,10 +261,14 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return void
 	 */
 	public function render_performance_urls_table() {
+		$license_data = $this->controller->get_license_data();
 		$this->render->render_pma_urls_table(
 			[
-				'items'        => $this->controller->get_items(),
-				'global_score' => $this->controller->get_global_score(),
+				'items'           => $this->controller->get_items(),
+				'global_score'    => $this->controller->get_global_score(),
+				'pma_addon_limit' => $license_data['page_number'] ?? 0,
+				'upgrade_url'     => $license_data['btn_url'] ?? '',
+				'can_add_pages'   => wpm_apply_filters_typesafe( 'wpr_pm_allow_add_page', true ),
 			]
 		);
 	}
