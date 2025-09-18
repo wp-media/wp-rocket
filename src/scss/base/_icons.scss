@@ -188,3 +188,18 @@
 	content: '\e924';
 }
 
+.wpr-Header-nav{
+	.wpr-icon-rocket-insights:before{
+		width: 30px;
+		height: 24px;
+		right: 15px;
+	}
+}
+
+.wpr-icon-exclamation:before{
+	content: '';
+	background-image: url('../img/exclamation.svg');
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+

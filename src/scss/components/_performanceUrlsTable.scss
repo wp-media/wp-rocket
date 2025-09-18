@@ -28,12 +28,59 @@
 	color: $cOrange;
 }
 .wpr-pma-urls-table{
+	&.widefat{
+		margin-top: 2*$space;
+		border:none;
+		border-collapse: separate;
+		border-spacing: 0;
+		border-radius: 5px;
+		td, th {
+			border: 1px solid $cGreyLighter1;
+			border-bottom: none;
+		}
+		td:not(:first-child):not(:last-child),
+		th:not(:first-child):not(:last-child) {
+			border-left: none;
+			border-right: none;
+		}
+		td:first-child{
+			border-right: none ;
+		}
+		td:last-child{
+			border-left: none ;
+		}
+		tr:last-child td,
+		tr:last-child th {
+			border-bottom: 1px solid $cGreyLighter1;
+		}
+
+		/* Target the top-left and top-right cells of the first row */
+		tr:nth-child(2) th:first-child,
+		tr:nth-child(2) td:first-child {
+			border-top-left-radius: 5px;
+		}
+		tr:nth-child(2) th:last-child,
+		tr:nth-child(2) td:last-child {
+			border-top-right-radius: 5px;
+		}
+
+		/* Target the bottom-left and bottom-right cells of the last row */
+		tr:last-child th:first-child,
+		tr:last-child td:first-child {
+			border-bottom-left-radius: 5px;
+		}
+		tr:last-child th:last-child,
+		tr:last-child td:last-child {
+			border-bottom-right-radius: 5px;
+		}
+	}
 	.wpr-percentage-indicator{
-		border-right: 1px solid $cGreyLighter2;
+		top: 3px;
 		.wpr-percentage-circle{
 			width: 32px;
 			height: 32px;
 			font-size: 14px;
+			border-width: 2px;
 		}
 		.wpr-loading-img{
 			width: 32px;
@@ -41,9 +88,12 @@
 		}
 	}
 	.wpr-pma-item{
-		background: $cGreyLighter1;
+		background: #F9FAFB;
 		&.wpr-global-score{
 			background: $cWhite;
+			td, th {
+				border: none;
+			}
 			.wpr-pma-item-actions{
 				min-height: 60px;
 				position: relative;
@@ -53,12 +103,13 @@
 	}
 	.wpr-pma-item-score{
 		vertical-align: middle;
-		padding: 0 $space;
+		padding: 0 8px;
 	}
 	.wpr-pma-item-title{
 		font-size: 14px;
 		color: $cBlack;
 		vertical-align: middle;
+		padding-left: 16px;
 		a{
 			display: inline-block;
 			vertical-align: middle;
@@ -69,35 +120,63 @@
 		}
 		.wpr-pma-dot{
 			color: $cGreyLighter3;
+			display: inline-block;
+			position: relative;
+			top: -$space/2;
+			margin: 0 $space;
 		}
 		.wpr-pma-date{
 			color: $cGreyLighter3;
+		}
+		&:before{
+			position: relative;
+			content: "";
+			top: 6px;
+			left: -16px;
+			height: 18px;
+			display: inline-block;
+			border-left: 1px solid #D4D9DD;
 		}
 	}
 	.wpr-pma-item-actions{
 		text-align: right;
 		vertical-align: middle;
 		.wpr-pma-action{
+			font-family: Roboto, Arial, sans-serif;
 			display: inline-block;
 			font-size: 14px;
+			font-weight: 600;
 			line-height: 1.5;
 			padding: 0 2* $space;
 			margin: $space 0;
 			color: $cBlack;
-			border-left: 1px solid $cGreyLighter2;
+			&:after{
+				position: relative;
+				content: "";
+				top: 4px;
+				left: 16px;
+				height: 18px;
+				display: inline-block;
+				border-left: 1px solid #D4D9DD;
+			}
 			&:first-child{
 				margin-left: 0;
 				border-left: none;
 			}
+			&:last-child{
+				&:after {
+					display: none;
+				}
+			}
 			&.wpr-confirm-delete{
 				&:before{
-					font-size: 14px;
+					font-size: 12px;
 					top: 0;
 					margin-right: 0;
 				}
 			}
 			&:before{
-				font-size: 18px;
+				font-size: 16px;
 				position: relative;
 				top: 2px;
 				margin-right: $space;
@@ -129,5 +208,39 @@
 		justify-content: center;
 		padding: $space;
 		width: 20%;
+	}
+}
+
+.wpr-pma-add-url-button{
+	font-family: "Segoe UI ", Tahoma, Geneva, Verdana, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	font-weight: 700;
+	line-height: normal;
+	text-transform: uppercase;
+	&.disabled{
+		cursor: not-allowed;
+		border-radius: 4px;
+		opacity: 0.5;
+		background: #2D1656;
+		box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.20);
+		&:focus {
+			transform: none;
+			box-shadow: none;
+		}
+	}
+	.wpr-tooltip{
+		font-size: 14px;
+		font-weight: normal;
+		left: 50%;
+		transform: translateX(-50%);
+		bottom: -40px;
+		min-width: max-content;
+		text-transform: none;
+		&:before {
+			top: -6px;
+			left: 50%;
+			transform: translateX(-50%);
+		}
 	}
 }

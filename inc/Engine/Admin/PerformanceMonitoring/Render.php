@@ -44,13 +44,24 @@ class Render extends Abstract_Render {
 	}
 
 	/**
+	 * Generate global score row HTML.
+	 *
+	 * @param array $data Data for the global score row.
+	 * @return string The rendered HTML for the global score row.
+	 */
+	public function get_global_score_row( array $data ) {
+		return $this->generate( 'partials/performance-monitoring/global-score-row', $data );
+	}
+
+
+	/**
 	 * Render global score row.
 	 *
 	 * @param array $data Data for the global score row.
 	 * @return void
 	 */
 	public function render_global_score_row( array $data ) {
-		echo $this->generate( 'partials/performance-monitoring/global-score-row', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo $this->get_global_score_row( $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	/**
@@ -60,6 +71,7 @@ class Render extends Abstract_Render {
 	 * @return void
 	 */
 	public function render_pma_urls_table( array $data ) {
+		$data['has_credit'] = $this->credit_manager->has_credit();
 		echo $this->generate( 'partials/performance-monitoring/urls-table', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
@@ -83,8 +95,6 @@ class Render extends Abstract_Render {
 	 * @return void
 	 */
 	public function render_global_score_widget( array $data ) {
-		$data['has_credit'] = $this->credit_manager->has_credit();
-
 		echo $this->get_global_score_widget( $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
@@ -95,6 +105,7 @@ class Render extends Abstract_Render {
 	 * @return string The rendered HTML for the global score widget.
 	 */
 	public function get_global_score_widget( array $data ): string {
+		$data['has_credit'] = $this->credit_manager->has_credit();
 		return $this->generate( 'partials/performance-monitoring/global-score-widget', $data );
 	}
 
@@ -105,7 +116,7 @@ class Render extends Abstract_Render {
 	 * @return string The rendered HTML for the performance monitoring row.
 	 */
 	public function get_performance_monitoring_list_row( object $data ): string {
-		$data['has_credit'] = $this->credit_manager->has_credit();
+		$data->has_credit = $this->credit_manager->has_credit();
 
 		return $this->generate( 'partials/performance-monitoring/table-row', $data );
 	}
