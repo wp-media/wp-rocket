@@ -344,8 +344,9 @@ class Controller {
 	private function get_global_score_payload() {
 		$payload = [];
 
-		$payload                 = $this->global_score->get_global_score_data();
-		$payload['status-color'] = $this->render->get_score_color_status( (int) $payload['score'] );
+		$payload                    = $this->global_score->get_global_score_data();
+		$payload['status-color']    = $this->render->get_score_color_status( (int) $payload['score'] );
+		$payload['remaining_urls']  = $this->get_remaining_url_count();
 
 		return [
 			'data'     => $payload,
@@ -361,10 +362,10 @@ class Controller {
 	 */
 	private function get_remaining_url_count(): int {
 		$current_url_count = $this->query->query( [ 'count' => true ] );
-		$container = apply_filters( 'rocket_container', null );
-		$user = $container->get( 'user' );
-		$max_urls = $user->get_pma_addon_limit( $user->get_pma_addon_sku_active() );
-		
+		$container         = apply_filters( 'rocket_container', null );
+		$user              = $container->get( 'user' );
+		$max_urls          = $user->get_pma_addon_limit( $user->get_pma_addon_sku_active() );
+
 		return max( 0, $max_urls - (int) $current_url_count );
 	}
 }

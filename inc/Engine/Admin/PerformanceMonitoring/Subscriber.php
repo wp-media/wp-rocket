@@ -161,8 +161,8 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			return $data;
 		}
 
-		$data['pm_ids'] = $this->controller->get_not_finished_ids();
-		$data['remaining_urls'] = $this->get_remaining_url_count();
+		$data['pm_ids']         = $this->controller->get_not_finished_ids();
+		$data['remaining_urls'] = $this->controller->get_remaining_url_count();
 		return $data;
 	}
 
@@ -244,7 +244,9 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return void
 	 */
 	public function render_global_score_widget(): void {
-		$this->render->render_global_score_widget( $this->controller->get_global_score() );
+		$data = $this->controller->get_global_score();
+		$data['remaining_urls'] = $this->controller->get_remaining_url_count();
+		$this->render->render_global_score_widget( $data );
 	}
 
 	/**
@@ -264,8 +266,9 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	public function render_performance_urls_table() {
 		$this->render->render_pma_urls_table(
 			[
-				'items'        => $this->controller->get_items(),
-				'global_score' => $this->controller->get_global_score(),
+				'items'         => $this->controller->get_items(),
+				'global_score'  => $this->controller->get_global_score(),
+				'remaining_urls' => $this->controller->get_remaining_url_count(),
 			]
 		);
 	}
@@ -313,21 +316,5 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			return;
 		}
 		$this->schedule_reset_credit();
-	}
-
-	/**
-	 * Get the remaining number of URLs that can be added based on user's plan limit.
-	 *
-	 * @return int Number of URLs that can still be added.
-	 */
-	private function get_remaining_url_count(): int {
-		$container = apply_filters( 'rocket_container', null );
-		$pm_query = $container->get( 'pm_query' );
-		$user = $container->get( 'user' );
-		
-		$current_url_count = $pm_query->query( [ 'count' => true ] );
-		$max_urls = $user->get_pma_addon_limit( $user->get_pma_addon_sku_active() );
-		
-		return max( 0, $max_urls - (int) $current_url_count );
 	}
 }
