@@ -9,7 +9,7 @@
 <div>
 <div class="wpr-percentage-indicator">
 <div class="wpr-loading-container">
-<img class="wpr-loading-img" src="http://example.org/wp-content/plugins/var/www/html/wp-content/plugins/wp-rocket/assets/img/orange-loading.svg"/>
+<img class="wpr-loading-img" src="http://example.org/wp-content/plugins/wp-rocket/assets/img/orange-loading.svg"/>
 </div>
 </div>
 </div>
