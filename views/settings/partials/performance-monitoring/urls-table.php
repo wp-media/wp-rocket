@@ -12,7 +12,9 @@
  */
 
 defined( 'ABSPATH' ) || exit;
+$boxes = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
 ?>
+<?php if ( ! in_array( 'pma_upgrade_notice', (array) $boxes, true ) ): ?>
 <div class="wpr-notice wpr-pma-notice">
 	<div class="wpr-notice-container">
 		<div class="wpr-notice-description">
@@ -25,13 +27,14 @@ defined( 'ABSPATH' ) || exit;
 			);
 			?>
 		</div>
-		<a class="wpr-notice-close wpr-icon-close rocket-dismiss" href="#">
+		<a class="wpr-notice-close wpr-icon-close rocket-dismiss" href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box=pma_upgrade_notice' ), 'rocket_ignore_pma_upgrade_notice' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>">
 			<span class="screen-reader-text">
 				<?php esc_html_e( 'Dismiss this notice', 'rocket' ); ?>
 			</span>
 		</a>
 	</div>
 </div>
+<?php endif; ?>
 
 <div class="wpr-notice wpr-pma-notice wpr-error-notice">
 	<div class="wpr-notice-container">

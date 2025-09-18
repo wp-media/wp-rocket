@@ -126,6 +126,8 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 				[ 'render_license_banner_section', 10 ],
 				[ 'render_performance_urls_table', 20 ],
 				[ 'render_settings_section', 30 ],
+			],
+			'admin_init' => [
 				[ 'check_upgrade', 8 ],
 			],
 			'admin_post_rocket_pm_add_homepage' => 'add_homepage_from_widget',
@@ -309,7 +311,9 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		}
 		do_action( 'wp_rocket_pma_upgraded' );
 
-		$this->render->render_limit_tooltip();
+		rocket_renew_box( 'pma_upgrade_notice' );
+
+		wp_redirect(admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '#rocket_insights'));
 	}
 
 	/**
