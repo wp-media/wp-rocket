@@ -66,11 +66,15 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	private $global_score;
 
 	/**
+	 *  User client API instance.
+	 *
 	 * @var UserClient
 	 */
 	private $user_client;
 
 	/**
+	 *  User instance.
+	 *
 	 * @var User
 	 */
 	private $user;
@@ -84,16 +88,18 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @param Queue                        $queue Queue object.
 	 * @param PerformanceMonitoringContext $pma_context PMA context.
 	 * @param GlobalScore                  $global_score GlobalScore instance.
+	 * @param UserClient                   $user_client  User client API instance.
+	 * @param User                         $user         User instance.
 	 */
-	public function __construct( Render $render, Controller $controller, AjaxController $ajax_controller, Queue $queue, PerformanceMonitoringContext $pma_context, GlobalScore $global_score, UserClient $user_client, User $user  ) {
+	public function __construct( Render $render, Controller $controller, AjaxController $ajax_controller, Queue $queue, PerformanceMonitoringContext $pma_context, GlobalScore $global_score, UserClient $user_client, User $user ) {
 		$this->render          = $render;
 		$this->controller      = $controller;
 		$this->ajax_controller = $ajax_controller;
 		$this->queue           = $queue;
 		$this->pma_context     = $pma_context;
 		$this->global_score    = $global_score;
-  	$this->user_client       = $user_client;
-		$this->user              = $user;
+		$this->user_client     = $user_client;
+		$this->user            = $user;
 	}
 
 	/**
@@ -112,7 +118,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'rocket_localize_admin_script'      => 'add_pending_ids',
 			'admin_post_delete_pm'              => 'delete_row',
 			'wp_ajax_rocket_pm_reset_page'      => 'reset_page',
-			'admin_init'                        => 'schedule_reset_credit',
 			'rocket_pma_credit_reset'           => 'reset_credit_monthly',
 			'rocket_pm_job_completed'           => [
 				[ 'validate_credit' ],
@@ -128,11 +133,12 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 				[ 'render_performance_urls_table', 20 ],
 				[ 'render_settings_section', 30 ],
 			],
-			'admin_init' => [
+			'admin_init'                        => [
 				[ 'check_upgrade', 8 ],
+				[ 'schedule_reset_credit' ],
 			],
 			'admin_post_rocket_pm_add_homepage' => 'add_homepage_from_widget',
-			'wp_rocket_pma_upgraded' => 'reset_user_data',
+			'wp_rocket_pma_upgraded'            => 'reset_user_data',
 			'rocket_deactivation'               => 'cancel_scheduled_jobs',
 			'wp_rocket_upgrade'                 => [ 'schedule_reset_credit_on_upgrade', 10, 2 ],
 		];
@@ -315,14 +321,14 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return void
 	 */
 	public function check_upgrade() {
-		if( ! isset($_GET['upgrade']) ) {
+		if ( ! isset( $_GET['upgrade'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			return;
 		}
 		do_action( 'wp_rocket_pma_upgraded' );
 
 		rocket_renew_box( 'pma_upgrade_notice' );
 
-		wp_redirect(admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '#rocket_insights'));
+		wp_safe_redirect( admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '#rocket_insights' ) );
 	}
 
 	/**
@@ -336,11 +342,11 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	public function reset_user_data() {
 		$this->user_client->flush_cache();
 		$user_data = $this->user_client->get_user_data();
-		$this->user->set_user($user_data);
-  }
+		$this->user->set_user( $user_data );
+	}
 
-  /**
-   * Cancel scheduled jobs with plugin deactivation.
+	/**
+	 * Cancel scheduled jobs with plugin deactivation.
 	 *
 	 * @return void
 	 */

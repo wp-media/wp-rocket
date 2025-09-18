@@ -12,9 +12,9 @@
  */
 
 defined( 'ABSPATH' ) || exit;
-$boxes = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
+$wp_rocket_boxes = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
 ?>
-<?php if ( ! in_array( 'pma_upgrade_notice', (array) $boxes, true ) ): ?>
+<?php if ( ! in_array( 'pma_upgrade_notice', (array) $wp_rocket_boxes, true ) ) : ?>
 <div class="wpr-notice wpr-pma-notice">
 	<div class="wpr-notice-container">
 		<div class="wpr-notice-description">
