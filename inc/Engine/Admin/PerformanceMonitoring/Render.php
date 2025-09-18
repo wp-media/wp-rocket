@@ -16,7 +16,7 @@ class Render extends Abstract_Render {
 	 * @var CreditManager
 	 */
 	private $credit_manager;
-	
+
 	/**
 	 * Context instance.
 	 *
@@ -29,14 +29,14 @@ class Render extends Abstract_Render {
 	 *
 	 * Initializes the Render instance with the provided template path and CreditManager.
 	 *
-	 * @param string        $template_path   Path to the template file.
-	 * @param CreditManager $credit_manager  Instance of CreditManager for managing credits.
+	 * @param string                       $template_path   Path to the template file.
+	 * @param CreditManager                $credit_manager  Instance of CreditManager for managing credits.
 	 * @param PerformanceMonitoringContext $context Context instance.
 	 */
 	public function __construct( $template_path, CreditManager $credit_manager, PerformanceMonitoringContext $context ) {
 		parent::__construct( $template_path );
 		$this->credit_manager = $credit_manager;
-		$this->context = $context;
+		$this->context        = $context;
 	}
 
 	/**
@@ -106,7 +106,7 @@ class Render extends Abstract_Render {
 	 * @return string The rendered HTML for the global score widget.
 	 */
 	public function get_global_score_widget( array $data ): string {
-		$data['has_credit'] = $this->credit_manager->has_credit();
+		$data['has_credit']  = $this->credit_manager->has_credit();
 		$data['status_text'] = $this->get_monitoring_status_text();
 		return $this->generate( 'partials/performance-monitoring/global-score-widget', $data );
 	}
