@@ -466,7 +466,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	// ==== Initialization ====
 	// Bind event
-	$(document).on( 'click', '#add_page_speed_radar', handleAddPage );
+	$(document).on( 'click', '#wpr-action-add_page_speed_radar', handleAddPage );
 	$(document).on( 'click', '.wpr-action-speed_radar_refresh', handleResetPage );
 
 	// Only poll if on a wpr section that requires polling(dashboard|rocket_insights) (more robust check)
