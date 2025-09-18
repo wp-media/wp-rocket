@@ -336,13 +336,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 	}
 
-	function checkInitialUrlLimit() {
-		if (typeof window.rocket_ajax_data !== 'undefined' && 
-			window.rocket_ajax_data.remaining_urls !== undefined) {
-			updateUrlLimitState(window.rocket_ajax_data.remaining_urls);
-		}
-	}
-
 	function resetPolling() {
 		if (pollTimer) {
 			clearTimeout(pollTimer);
@@ -520,9 +513,6 @@ document.addEventListener('DOMContentLoaded', function() {
 	// Bind event
 	$(document).on( 'click', '#add_page_speed_radar', handleAddPage );
 	$(document).on( 'click', '.wpr-action-speed_radar_refresh', handleResetPage );
-
-	// Check initial URL limit state
-	checkInitialUrlLimit();
 
 	// Only poll if on a wpr section that requires polling(dashboard|rocket_insights) (more robust check)
     function isValidPageForPolling() {
