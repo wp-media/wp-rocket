@@ -64,4 +64,13 @@ class PerformanceMonitoringContext implements ContextInterface {
 	public function is_free_user(): bool {
 		return $this->user->is_pma_free_active( $this->user->get_pma_addon_sku_active() );
 	}
+
+	/**
+	 * Determines if scheduling for Performance Monitoring is allowed.
+	 *
+	 * @return bool True if Performance Monitoring is enabled, false otherwise.
+	 */
+	public function is_schedule_allowed(): bool {
+		return (bool) $this->options->get( 'performance_monitoring', 0 );
+	}
 }
