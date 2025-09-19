@@ -62,10 +62,10 @@ defined( 'ABSPATH' ) || exit;
 	<p class="wpr-pma-summary-info">
 		<?php
 		printf(
-		// Translators: %1$s = opening strong tag, %2$s: number of pages left, %3$s = closing strong tag, %4$s: number of tests available.
+		// Translators: %1$s = opening strong tag, %2$s: number of pages, %3$s = closing strong tag, %4$s: number of tests available.
 			esc_html__( 'You can analyze up to %1$s%2$s page%3$s and run %1$s%4$s tests per month%3$s. Want more?', 'rocket' ),
 			'<strong>',
-			esc_html( $data['pma_addon_limit'] - count( $data['items'] ) ), // number of pages left to add.
+			esc_html( $data['pma_addon_limit'] ), // number of pages.
 			'</strong>',
 			esc_html( $data['pma_addon_limit'] ) // total number of tests available.
 		);
