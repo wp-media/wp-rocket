@@ -13,6 +13,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  */
 class Test_RenderGlobalScoreWidget extends TestCase {
     private $performance_monitoring;
+    private const TRANSIENT_NAME = 'wpr_global_score_data';
 
     public function set_up() {
         parent::set_up();
@@ -22,6 +23,9 @@ class Test_RenderGlobalScoreWidget extends TestCase {
 
     public function tear_down() {
         $this->restoreWpHook('rocket_dashboard_sidebar');
+        remove_filter( 'pre_get_rocket_option_performance_monitoring', [ $this, 'set_performance_monitoring' ] );
+        
+        delete_transient( self::TRANSIENT_NAME );
 
         parent::tear_down();
     }
@@ -33,7 +37,7 @@ class Test_RenderGlobalScoreWidget extends TestCase {
         $this->performance_monitoring = $config['performance_monitoring'];
 		add_filter( 'pre_get_rocket_option_performance_monitoring', [ $this, 'set_performance_monitoring' ] );
 
-        set_transient( 'wpr_global_score_data', $config['global_score_data'], MINUTE_IN_SECONDS );
+        set_transient( self::TRANSIENT_NAME, $config['global_score_data'], MINUTE_IN_SECONDS );
 
         $actual = $this->get_actual_html();
 
