@@ -86,8 +86,10 @@ class Plan {
 
 	/**
 	 * Remove current plan option.
+	 *
+	 * @return void
 	 */
-	public function remove_current_plan(): string {
+	public function remove_current_plan() {
 		$this->options->delete( self::CURRENT_PLAN_OPTION_NAME );
 	}
 }

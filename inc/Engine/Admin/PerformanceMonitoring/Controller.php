@@ -58,13 +58,6 @@ class Controller {
 	private $user;
 
 	/**
-	 * Plan manager instance.
-	 *
-	 * @var Plan
-	 */
-	private $plan;
-
-	/**
 	 * Constructor.
 	 *
 	 * @param PMQuery                      $query Query instance.
@@ -73,7 +66,6 @@ class Controller {
 	 * @param CreditManager                $credit_manager Credit manager instance.
 	 * @param GlobalScore                  $global_score GlobalScore instance.
 	 * @param User                         $user User client API instance.
-	 * @param Plan                         $plan Plan manager.
 	 */
 	public function __construct(
 		PMQuery $query,
@@ -81,8 +73,7 @@ class Controller {
 		PerformanceMonitoringContext $context,
 		CreditManager $credit_manager,
 		GlobalScore $global_score,
-		User $user,
-		Plan $plan
+		User $user
 	) {
 		$this->query          = $query;
 		$this->manager        = $manager;
@@ -90,7 +81,6 @@ class Controller {
 		$this->credit_manager = $credit_manager;
 		$this->global_score   = $global_score;
 		$this->user           = $user;
-		$this->plan           = $plan;
 	}
 
 	/**
@@ -321,23 +311,5 @@ class Controller {
 		$data['promo_name']            = $this->user->get_pma_addon_promo_name( $upgrade );
 		$data['promo_description']     = $this->user->get_pma_addon_promo_description( $upgrade );
 		return $data;
-	}
-
-	/**
-	 * Check plan upgrade.
-	 *
-	 * @return void
-	 */
-	public function check_upgrade() {
-		$this->plan->check_upgrade();
-	}
-
-	/**
-	 * Remove current plan with plugin deactivation.
-	 *
-	 * @return void
-	 */
-	public function remove_current_plan() {
-		$this->plan->remove_current_plan();
 	}
 }

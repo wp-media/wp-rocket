@@ -3,12 +3,11 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Admin\PerformanceMonitoring;
 
-use WP_Rocket\Engine\Admin\PerformanceMonitoring\{
-	Context\PerformanceMonitoringContext,
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\{Context\PerformanceMonitoringContext,
 	Database\Rows\PerformanceMonitoring,
+	Managers\Plan,
 	Queue\Queue,
-	AJAX\Controller as AjaxController
-};
+	AJAX\Controller as AjaxController};
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
@@ -64,6 +63,13 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	private $global_score;
 
 	/**
+	 * Plan manager instance.
+	 *
+	 * @var Plan
+	 */
+	private $plan;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param Render                       $render Render object.
@@ -72,6 +78,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @param Queue                        $queue Queue object.
 	 * @param PerformanceMonitoringContext $pma_context PMA context.
 	 * @param GlobalScore                  $global_score GlobalScore instance.
+	 * @param Plan                         $plan Plan manager.
 	 */
 	public function __construct(
 		Render $render,
@@ -79,7 +86,8 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		AjaxController $ajax_controller,
 		Queue $queue,
 		PerformanceMonitoringContext $pma_context,
-		GlobalScore $global_score
+		GlobalScore $global_score,
+		Plan $plan
 	) {
 		$this->render          = $render;
 		$this->controller      = $controller;
@@ -87,6 +95,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		$this->queue           = $queue;
 		$this->pma_context     = $pma_context;
 		$this->global_score    = $global_score;
+		$this->plan            = $plan;
 	}
 
 	/**
@@ -316,7 +325,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return void
 	 */
 	public function check_upgrade() {
-		$this->controller->check_upgrade();
+		$this->plan->check_upgrade();
 	}
 
 	/**
@@ -325,6 +334,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return void
 	 */
 	public function remove_current_plan() {
-		$this->controller->remove_current_plan();
+		$this->plan->remove_current_plan();
 	}
 }

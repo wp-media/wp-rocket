@@ -133,7 +133,6 @@ class ServiceProvider extends AbstractServiceProvider {
 					'pm_credit_manager',
 					'pm_global_score',
 					'user',
-					'pm_plan',
 				]
 			);
 
@@ -168,6 +167,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'pm_queue',
 					'pm_context',
 					'pm_global_score',
+					'pm_plan',
 				]
 			);
 
