@@ -51,7 +51,7 @@ defined( 'ABSPATH' ) || exit;
 				);
 				?>
 			</div>
-			<a class="wpr-notice-close" href="<?php echo esc_url( $data['upgrade_url'] ); ?>">
+			<a class="wpr-notice-close" target="_blank" href="<?php echo esc_url( $data['upgrade_url'] ); ?>">
 				<?php esc_html_e( 'Upgrade Now', 'rocket' ); ?>
 			</a>
 		</div>
@@ -63,14 +63,14 @@ defined( 'ABSPATH' ) || exit;
 		<?php
 		printf(
 		// Translators: %1$s = opening strong tag, %2$s: number of pages, %3$s = closing strong tag, %4$s: number of tests available.
-			esc_html__( 'You can analyze up to %1$s%2$s page%3$s and run %1$s%4$s tests per month%3$s. Want more?', 'rocket' ),
+			esc_html__( 'You can analyze up to %1$s%2$s pages%3$s and run %1$s%4$s tests per month%3$s. Want more?', 'rocket' ),
 			'<strong>',
 			esc_html( $data['pma_addon_limit'] ), // number of pages.
 			'</strong>',
 			esc_html( $data['pma_addon_limit'] ) // total number of tests available.
 		);
 		?>
-		<a href="<?php echo esc_url( $data['upgrade_url'] ); ?>"><?php esc_html_e( 'Upgrade Now', 'rocket' ); ?></a>
+		<a href="<?php echo esc_url( $data['upgrade_url'] ); ?>" target="_blank"><?php esc_html_e( 'Upgrade Now', 'rocket' ); ?></a>
 	</p>
 <?php endif; ?>
 
