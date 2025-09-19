@@ -13,9 +13,6 @@ use WP_Rocket\Engine\Admin\PerformanceMonitoring\{
 use WP_Rocket\Engine\License\API\User;
 
 class Controller {
-
-	use PageHandlerTrait;
-
 	/**
 	 * Query object.
 	 *
