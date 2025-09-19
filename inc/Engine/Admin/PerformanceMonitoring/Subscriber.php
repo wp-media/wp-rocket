@@ -3,12 +3,13 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Admin\PerformanceMonitoring;
 
-use WP_Rocket\Engine\Admin\PerformanceMonitoring\{
-	Context\PerformanceMonitoringContext,
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\{Context\PerformanceMonitoringContext,
 	Database\Rows\PerformanceMonitoring,
+	Jobs\Manager,
 	Queue\Queue,
-	AJAX\Controller as AjaxController
-};
+	AJAX\Controller as AjaxController};
+use WP_Rocket\Admin\Options;
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
@@ -64,6 +65,16 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	private $global_score;
 
 	/**
+	 * @var Options
+	 */
+	private $options;
+
+	/**
+	 * @var Manager
+	 */
+	private $manager;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param Render                       $render Render object.
@@ -72,14 +83,18 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @param Queue                        $queue Queue object.
 	 * @param PerformanceMonitoringContext $pma_context PMA context.
 	 * @param GlobalScore                  $global_score GlobalScore instance.
+	 * @param Options                      $options Plugin options.
+	 * @param Manager                      $manager Manager instance.
 	 */
-	public function __construct( Render $render, Controller $controller, AjaxController $ajax_controller, Queue $queue, PerformanceMonitoringContext $pma_context, GlobalScore $global_score ) {
+	public function __construct( Render $render, Controller $controller, AjaxController $ajax_controller, Queue $queue, PerformanceMonitoringContext $pma_context, GlobalScore $global_score, Options $options, Manager $manager ) {
 		$this->render          = $render;
 		$this->controller      = $controller;
 		$this->ajax_controller = $ajax_controller;
 		$this->queue           = $queue;
 		$this->pma_context     = $pma_context;
 		$this->global_score    = $global_score;
+		$this->options         = $options;
+		$this->manager         = $manager;
 	}
 
 	/**
@@ -113,6 +128,11 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			],
 			'admin_post_rocket_pm_add_homepage' => 'add_homepage_from_widget',
 			'rocket_deactivation'               => 'cancel_scheduled_jobs',
+			'init' => [
+				['maybe_cancel_scheduled_jobs'],
+				['maybe_schedule_next_test'],
+			],
+			'rocket_options_changed' => 'maybe_cancel_scheduled_jobs',
 		];
 	}
 
@@ -193,8 +213,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			$this->cancel_scheduled_jobs();
 			return;
 		}
-
-		$this->queue->schedule_reset_task();
 	}
 
 	/**
@@ -312,5 +330,61 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			return;
 		}
 		$this->schedule_reset_credit();
+	}
+
+	/**
+	 * Schedule the next test for performance monitoring under certain conditions.
+	 *
+	 * @return void
+	 */
+	public function maybe_schedule_next_test() {
+		if( $this->pma_context->is_free_user() ) {
+			return;
+		}
+
+		if( ! $this->options->get( 'performance_monitoring') ) {
+			return;
+		}
+
+		if( wp_next_scheduled( 'retest_all_pages' ) ) {
+			return;
+		}
+
+		wp_schedule_event( time(), 'daily', 'retest_all_pages' );
+	}
+
+	/**
+	 * Retest all pages.
+	 *
+	 * @return void
+	 */
+	public function retest_all_pages() {
+		foreach ( $this->controller->get_items() as $item ) {
+			$this->manager->add_url_to_the_queue($item->url, $item->is_mobile);
+		}
+	}
+
+	/**
+	 * Cancels scheduled jobs for performance monitoring under certain conditions.
+	 *
+	 * @return void
+	 */
+	public function maybe_cancel_scheduled_jobs() {
+		if( ! $this->pma_context->is_free_user() ) {
+			return;
+		}
+
+		if( $this->options->get( 'performance_monitoring') ) {
+			return;
+		}
+
+		$next_event = wp_next_scheduled( 'retest_all_pages' );
+
+		if( ! $next_event ) {
+			return;
+		}
+
+		wp_unschedule_event($next_event, 'retest_all_pages');
+
 	}
 }

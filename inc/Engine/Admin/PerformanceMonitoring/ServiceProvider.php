@@ -90,6 +90,7 @@ class ServiceProvider extends AbstractServiceProvider {
 				[
 					new StringArgument( $this->getContainer()->get( 'template_path' ) . '/settings/' ),
 					'pm_credit_manager',
+					'pm_context',
 				]
 				);
 
@@ -124,6 +125,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'pm_credit_manager',
 					'pm_global_score',
 					'user',
+					'options',
 				]
 			);
 

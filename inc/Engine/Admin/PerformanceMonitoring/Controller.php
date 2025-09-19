@@ -10,6 +10,7 @@ use WP_Rocket\Engine\Admin\PerformanceMonitoring\{
 	Database\Queries\PerformanceMonitoring as PMQuery,
 	Credit\Manager as CreditManager
 };
+use WP_Rocket\Admin\Options;
 use WP_Rocket\Engine\License\API\User;
 
 class Controller {
@@ -59,6 +60,13 @@ class Controller {
 	protected $user;
 
 	/**
+	 * Plugin options instance.
+	 *
+	 * @var Options
+	 */
+	protected $options;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param PMQuery                      $query Query instance.
@@ -67,14 +75,16 @@ class Controller {
 	 * @param CreditManager                $credit_manager Credit manager instance.
 	 * @param GlobalScore                  $global_score GlobalScore instance.
 	 * @param User                         $user User client API instance.
+	 * @param Options                      $options Plugin options instance.
 	 */
-	public function __construct( PMQuery $query, Manager $manager, PerformanceMonitoringContext $context, CreditManager $credit_manager, GlobalScore $global_score, User $user ) {
+	public function __construct( PMQuery $query, Manager $manager, PerformanceMonitoringContext $context, CreditManager $credit_manager, GlobalScore $global_score, User $user, Options $options ) {
 		$this->query          = $query;
 		$this->manager        = $manager;
 		$this->context        = $context;
 		$this->credit_manager = $credit_manager;
 		$this->global_score   = $global_score;
 		$this->user           = $user;
+		$this->options         = $options;
 	}
 
 	/**
@@ -236,8 +246,8 @@ class Controller {
 		return [
 			'id'                 => 'performance_monitoring',
 			'title'              => __( 'Performance Monitoring', 'rocket' ),
-			'value'              => 1, // enabled or not.
-			'schedule_frequency' => 'weekly', // frequency of tests.
+			'value'              => $this->options->get('performance_monitoring'), // enabled or not.
+			'schedule_frequency' => 'monthly', // frequency of tests.
 			'choices'            => [ // frequency options in select.
 				'daily'   => __( 'Daily', 'rocket' ),
 				'weekly'  => __( 'Weekly', 'rocket' ),
