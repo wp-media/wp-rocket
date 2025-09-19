@@ -52,7 +52,7 @@ class TestCheckUpgrade extends AdminTestCase {
 		remove_filter('wp_rocket_pma_upgraded', [$this, 'mock_wp_rocket_pma_upgraded']);
 
         $this->restoreWpHook('admin_init');
-        unset($_GET['upgrade']);
+        unset($_GET['rocket_pma_upgrade']);
 
         parent::tear_down();
     }
@@ -66,7 +66,7 @@ class TestCheckUpgrade extends AdminTestCase {
 		update_user_meta( $this->user_id, 'rocket_boxes', ['pma_upgrade_notice'] );
 		// Set up the GET parameter
         if ($config['upgrade_param']) {
-            $_GET['upgrade'] = '1';
+            $_GET['rocket_pma_upgrade'] = '1';
         }
 
         // Mock user data
