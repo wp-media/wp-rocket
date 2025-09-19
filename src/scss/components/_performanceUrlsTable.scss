@@ -210,6 +210,12 @@
 				}
 			}
 		}
+		.wpr-tooltip{
+			width:280px;
+			@media screen and (max-width: 600px) {
+				width: auto;
+			}
+		}
 	}
 }
 .wpr-pma-add-section{
