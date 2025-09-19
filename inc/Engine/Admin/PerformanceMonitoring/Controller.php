@@ -102,12 +102,8 @@ class Controller {
 		}
 
 		$url        = home_url();
-		$page_title = '';
-		$response   = $this->get_page_content( $url );
 
-		if ( false !== $response ) {
-			$page_title = $this->get_page_title( $response );
-		}
+		$page_title = __('Home Page', 'rocket');
 
 		$this->manager->add_url_to_the_queue(
 			$url,
