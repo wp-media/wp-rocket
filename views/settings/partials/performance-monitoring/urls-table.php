@@ -63,7 +63,7 @@ defined( 'ABSPATH' ) || exit;
 		<?php
 		printf(
 		// Translators: %1$s = opening strong tag, %2$s: number of pages left, %3$s = closing strong tag, %4$s: number of tests available.
-			esc_html__( 'You can analyze up to %1$s%2$s page%3$s and run %1$s%4$s tests per month%3$s. %1$sWant more?%3$s', 'rocket' ),
+			esc_html__( 'You can analyze up to %1$s%2$s page%3$s and run %1$s%4$s tests per month%3$s. Want more?', 'rocket' ),
 			'<strong>',
 			esc_html( $data['pma_addon_limit'] - count( $data['items'] ) ), // number of pages left to add.
 			'</strong>',
