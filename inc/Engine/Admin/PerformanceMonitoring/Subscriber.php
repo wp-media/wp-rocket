@@ -73,7 +73,14 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @param PerformanceMonitoringContext $pma_context PMA context.
 	 * @param GlobalScore                  $global_score GlobalScore instance.
 	 */
-	public function __construct( Render $render, Controller $controller, AjaxController $ajax_controller, Queue $queue, PerformanceMonitoringContext $pma_context, GlobalScore $global_score ) {
+	public function __construct(
+		Render $render,
+		Controller $controller,
+		AjaxController $ajax_controller,
+		Queue $queue,
+		PerformanceMonitoringContext $pma_context,
+		GlobalScore $global_score
+	) {
 		$this->render          = $render;
 		$this->controller      = $controller;
 		$this->ajax_controller = $ajax_controller;
@@ -95,7 +102,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'rocket_localize_admin_script'      => 'add_pending_ids',
 			'admin_post_delete_pm'              => 'delete_row',
 			'wp_ajax_rocket_pm_reset_page'      => 'reset_page',
-			'admin_init'                        => 'schedule_reset_credit',
+			'admin_init'                        => 'check_upgrade',
 			'rocket_pma_credit_reset'           => 'reset_credit_monthly',
 			'rocket_pm_job_completed'           => [
 				[ 'validate_credit' ],
@@ -301,16 +308,11 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	}
 
 	/**
-	 * Schedule reset credit recurring task with updating from a version older than 3.20.
+	 * Check plan upgrade.
 	 *
-	 * @param string $new_version The new version of the plugin.
-	 * @param string $old_version The old version of the plugin.
 	 * @return void
 	 */
-	public function schedule_reset_credit_on_upgrade( $new_version, $old_version ) {
-		if ( version_compare( $old_version, '3.20', '>=' ) ) {
-			return;
-		}
-		$this->schedule_reset_credit();
+	public function check_upgrade() {
+		$this->controller->check_upgrade();
 	}
 }

@@ -3,13 +3,12 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Admin\PerformanceMonitoring;
 
-use WP_Rocket\Engine\Admin\PerformanceMonitoring\{
-	GlobalScore,
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\{GlobalScore,
 	Jobs\Manager,
 	Context\PerformanceMonitoringContext,
 	Database\Queries\PerformanceMonitoring as PMQuery,
-	Credit\Manager as CreditManager
-};
+	Credit\Manager as CreditManager,
+	Managers\Plan};
 use WP_Rocket\Engine\License\API\User;
 
 class Controller {
@@ -56,7 +55,14 @@ class Controller {
 	 *
 	 * @var User
 	 */
-	protected $user;
+	private $user;
+
+	/**
+	 * Plan manager instance.
+	 *
+	 * @var Plan
+	 */
+	private $plan;
 
 	/**
 	 * Constructor.
@@ -67,14 +73,24 @@ class Controller {
 	 * @param CreditManager                $credit_manager Credit manager instance.
 	 * @param GlobalScore                  $global_score GlobalScore instance.
 	 * @param User                         $user User client API instance.
+	 * @param Plan                         $plan Plan manager.
 	 */
-	public function __construct( PMQuery $query, Manager $manager, PerformanceMonitoringContext $context, CreditManager $credit_manager, GlobalScore $global_score, User $user ) {
+	public function __construct(
+		PMQuery $query,
+		Manager $manager,
+		PerformanceMonitoringContext $context,
+		CreditManager $credit_manager,
+		GlobalScore $global_score,
+		User $user,
+		Plan $plan
+	) {
 		$this->query          = $query;
 		$this->manager        = $manager;
 		$this->context        = $context;
 		$this->credit_manager = $credit_manager;
 		$this->global_score   = $global_score;
 		$this->user           = $user;
+		$this->plan           = $plan;
 	}
 
 	/**
@@ -305,5 +321,14 @@ class Controller {
 		$data['promo_name']            = $this->user->get_pma_addon_promo_name( $upgrade );
 		$data['promo_description']     = $this->user->get_pma_addon_promo_description( $upgrade );
 		return $data;
+	}
+
+	/**
+	 * Check plan upgrade.
+	 *
+	 * @return void
+	 */
+	public function check_upgrade() {
+		$this->plan->check_upgrade();
 	}
 }
