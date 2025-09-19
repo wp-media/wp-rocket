@@ -62,6 +62,7 @@ class Render extends Abstract_Render {
 	 * @return string The rendered HTML for the global score row.
 	 */
 	public function get_global_score_row( array $data ) {
+		$data['status_text'] = $this->get_monitoring_status_text();
 		return $this->generate( 'partials/performance-monitoring/global-score-row', $data );
 	}
 
@@ -73,7 +74,6 @@ class Render extends Abstract_Render {
 	 * @return void
 	 */
 	public function render_global_score_row( array $data ) {
-		$data['status_text'] = $this->get_monitoring_status_text();
 		echo $this->get_global_score_row( $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
