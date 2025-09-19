@@ -321,9 +321,14 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return void
 	 */
 	public function check_upgrade() {
-		if ( ! isset( $_GET['upgrade'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( ! isset( $_GET['rocket_pma_upgrade'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			return;
 		}
+		/**
+		 * Fires when the Performance Monitoring Add-on license is upgraded.
+		 *
+		 * @since 3.20
+		 */
 		do_action( 'wp_rocket_pma_upgraded' );
 
 		rocket_renew_box( 'pma_upgrade_notice' );
