@@ -33,7 +33,7 @@ class Plan {
 	/**
 	 * Current plan option name.
 	 */
-	const CURRENT_PLAN_OPTION_NAME = 'pma_current_plan';
+	const CURRENT_PLAN_OPTION_NAME = 'insights_current_plan';
 
 	/**
 	 * Constructor.
@@ -82,5 +82,12 @@ class Plan {
 		 * @param string $new_plan New plan.
 		 */
 		do_action( 'rocket_insights_upgrade', $old_plan, $new_plan );
+	}
+
+	/**
+	 * Remove current plan option.
+	 */
+	public function remove_current_plan(): string {
+		$this->options->delete( self::CURRENT_PLAN_OPTION_NAME );
 	}
 }

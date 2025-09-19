@@ -331,4 +331,13 @@ class Controller {
 	public function check_upgrade() {
 		$this->plan->check_upgrade();
 	}
+
+	/**
+	 * Remove current plan with plugin deactivation.
+	 *
+	 * @return void
+	 */
+	public function remove_current_plan() {
+		$this->plan->remove_current_plan();
+	}
 }

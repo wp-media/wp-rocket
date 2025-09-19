@@ -119,7 +119,10 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 				[ 'render_settings_section', 30 ],
 			],
 			'admin_post_rocket_pm_add_homepage' => 'add_homepage_from_widget',
-			'rocket_deactivation'               => 'cancel_scheduled_jobs',
+			'rocket_deactivation'               => [
+				'cancel_scheduled_jobs',
+				'remove_current_plan',
+			],
 		];
 	}
 
@@ -314,5 +317,14 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public function check_upgrade() {
 		$this->controller->check_upgrade();
+	}
+
+	/**
+	 * Remove current plan with plugin deactivation.
+	 *
+	 * @return void
+	 */
+	public function remove_current_plan() {
+		$this->controller->remove_current_plan();
 	}
 }
