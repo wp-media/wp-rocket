@@ -11,6 +11,16 @@
 				border-width: 4px;
 				font-size: 43px;
 				font-weight: 600;
+				.wpr-failed-score{
+					width: 50px;
+					height: 50px;
+					&:before{
+						width: 50px;
+						height: 50px;
+						background-size: contain;
+						display: inline-block;
+					}
+				}
 			}
 			.wpr-tooltip{
 				display: none;
