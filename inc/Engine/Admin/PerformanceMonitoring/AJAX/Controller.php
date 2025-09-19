@@ -11,6 +11,7 @@ use WP_Rocket\Engine\Admin\PerformanceMonitoring\{
 	Context\PerformanceMonitoringContext as Context,
 	Database\Queries\PerformanceMonitoring as PMQuery
 };
+use WP_Rocket\Engine\Common\Utils;
 
 class Controller {
 
