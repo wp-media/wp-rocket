@@ -65,7 +65,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	private $global_score;
 
 	/**
-	 * @var Options
+	 * @var Options_Data
 	 */
 	private $options;
 
@@ -83,10 +83,10 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @param Queue                        $queue Queue object.
 	 * @param PerformanceMonitoringContext $pma_context PMA context.
 	 * @param GlobalScore                  $global_score GlobalScore instance.
-	 * @param Options                      $options Plugin options.
+	 * @param Options_Data                      $options Plugin options.
 	 * @param Manager                      $manager Manager instance.
 	 */
-	public function __construct( Render $render, Controller $controller, AjaxController $ajax_controller, Queue $queue, PerformanceMonitoringContext $pma_context, GlobalScore $global_score, Options $options, Manager $manager ) {
+	public function __construct( Render $render, Controller $controller, AjaxController $ajax_controller, Queue $queue, PerformanceMonitoringContext $pma_context, GlobalScore $global_score, Options_Data $options, Manager $manager ) {
 		$this->render          = $render;
 		$this->controller      = $controller;
 		$this->ajax_controller = $ajax_controller;
@@ -335,21 +335,48 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	/**
 	 * Schedule the next test for performance monitoring under certain conditions.
 	 *
+	 * @since TBD
+	 *
 	 * @return void
 	 */
 	public function maybe_schedule_next_test() {
-		if( $this->pma_context->is_free_user() ) {
+		if ( ! $this->should_schedule_next_test() ) {
 			return;
 		}
 
-		if( ! $this->options->get( 'performance_monitoring') ) {
-			return;
+		$this->schedule_retest_event();
+	}
+
+	/**
+	 * Determines if the next test should be scheduled based on user plan and settings.
+	 *
+	 * @since TBD
+	 *
+	 * @return bool Whether the next test should be scheduled.
+	 */
+	private function should_schedule_next_test(): bool {
+		// Only premium users can schedule tests.
+		if ( $this->pma_context->is_free_user() ) {
+			return false;
 		}
 
-		if( wp_next_scheduled( 'retest_all_pages' ) ) {
-			return;
+		// Performance monitoring must be enabled.
+		if ( ! $this->options->get( 'performance_monitoring' ) ) {
+			return false;
 		}
 
+		// Don't schedule if already scheduled.
+		return ! $this->is_retest_event_scheduled();
+	}
+
+	/**
+	 * Schedules the daily retest event.
+	 *
+	 * @since TBD
+	 *
+	 * @return void
+	 */
+	private function schedule_retest_event(): void {
 		wp_schedule_event( time(), 'daily', 'retest_all_pages' );
 	}
 
@@ -365,26 +392,68 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	}
 
 	/**
-	 * Cancels scheduled jobs for performance monitoring under certain conditions.
+	 * Cancels scheduled jobs for performance monitoring if the user is on the free plan
+	 * and performance monitoring is disabled.
+	 *
+	 * @since TBD
 	 *
 	 * @return void
 	 */
 	public function maybe_cancel_scheduled_jobs() {
-		if( ! $this->pma_context->is_free_user() ) {
+		if ( ! $this->should_cancel_scheduled_jobs() ) {
 			return;
 		}
 
-		if( $this->options->get( 'performance_monitoring') ) {
-			return;
+		$this->cancel_retest_scheduled_event();
+	}
+
+	/**
+	 * Determines if scheduled jobs should be cancelled based on user plan and settings.
+	 *
+	 * @since TBD
+	 *
+	 * @return bool Whether scheduled jobs should be cancelled.
+	 */
+	private function should_cancel_scheduled_jobs(): bool {
+		// Only free users might need cancellation.
+		if ( ! $this->pma_context->is_free_user() ) {
+			return false;
 		}
 
+		// If performance monitoring is enabled, don't cancel.
+		if ( $this->options->get( 'performance_monitoring' ) ) {
+			return false;
+		}
+
+		// Only cancel if there's an event scheduled.
+		return $this->is_retest_event_scheduled();
+	}
+
+	/**
+	 * Checks if the retest event is scheduled.
+	 *
+	 * @since TBD
+	 *
+	 * @return bool Whether the retest event is scheduled.
+	 */
+	private function is_retest_event_scheduled(): bool {
+		return (bool) wp_next_scheduled( 'retest_all_pages' );
+	}
+
+	/**
+	 * Cancels the scheduled retest event.
+	 *
+	 * @since TBD
+	 *
+	 * @return void
+	 */
+	private function cancel_retest_scheduled_event(): void {
 		$next_event = wp_next_scheduled( 'retest_all_pages' );
 
-		if( ! $next_event ) {
+		if ( ! $next_event ) {
 			return;
 		}
 
-		wp_unschedule_event($next_event, 'retest_all_pages');
-
+		wp_unschedule_event( $next_event, 'retest_all_pages' );
 	}
 }

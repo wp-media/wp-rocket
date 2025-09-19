@@ -160,6 +160,8 @@ class ServiceProvider extends AbstractServiceProvider {
 					'pm_queue',
 					'pm_context',
 					'pm_global_score',
+					'options',
+					'pm_manager',
 				]
 			);
 

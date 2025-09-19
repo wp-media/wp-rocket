@@ -10,7 +10,7 @@ use WP_Rocket\Engine\Admin\PerformanceMonitoring\{
 	Database\Queries\PerformanceMonitoring as PMQuery,
 	Credit\Manager as CreditManager
 };
-use WP_Rocket\Admin\Options;
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\License\API\User;
 
 class Controller {
@@ -62,7 +62,7 @@ class Controller {
 	/**
 	 * Plugin options instance.
 	 *
-	 * @var Options
+	 * @var Options_Data
 	 */
 	protected $options;
 
@@ -75,9 +75,9 @@ class Controller {
 	 * @param CreditManager                $credit_manager Credit manager instance.
 	 * @param GlobalScore                  $global_score GlobalScore instance.
 	 * @param User                         $user User client API instance.
-	 * @param Options                      $options Plugin options instance.
+	 * @param Options_Data                      $options Plugin options instance.
 	 */
-	public function __construct( PMQuery $query, Manager $manager, PerformanceMonitoringContext $context, CreditManager $credit_manager, GlobalScore $global_score, User $user, Options $options ) {
+	public function __construct( PMQuery $query, Manager $manager, PerformanceMonitoringContext $context, CreditManager $credit_manager, GlobalScore $global_score, User $user, Options_Data $options ) {
 		$this->query          = $query;
 		$this->manager        = $manager;
 		$this->context        = $context;
