@@ -94,8 +94,11 @@ class Controller {
 			wp_send_json_error( $payload );
 		}
 
-		$page_title = $this->get_page_title( $payload['message'] );
-
+		if ( Utils::is_home( $url ) ) {
+			$page_title = __( 'Home Page', 'rocket' );
+		} else {
+			$page_title = $this->get_page_title( $payload['message'] );
+		}
 		$row_id = $this->manager->add_url_to_the_queue(
 			$url,
 			true,
