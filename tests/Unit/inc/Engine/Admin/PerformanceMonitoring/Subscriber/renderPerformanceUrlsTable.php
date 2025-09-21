@@ -37,6 +37,7 @@ class Test_renderPerformanceUrlsTable extends TestCase {
 			->with([
 				'items'        => $items,
 				'global_score' => $score,
+				'remaining_urls' => 0
 			]);
 
 		$mock_ajax_controller   = $this->createMock(AjaxController::class);

@@ -155,6 +155,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'pm_context',
 					'pm_global_score',
 					'pm_render',
+					'user',
 				]
 			);
 		// Subscriber.

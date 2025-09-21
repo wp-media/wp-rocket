@@ -11,6 +11,7 @@ use WP_Rocket\Engine\Admin\PerformanceMonitoring\{
 	Context\PerformanceMonitoringContext as Context,
 	Database\Queries\PerformanceMonitoring as PMQuery
 };
+use WP_Rocket\Engine\License\API\User;
 
 class Controller {
 
@@ -52,6 +53,13 @@ class Controller {
 	private $render;
 
 	/**
+	 * User client API instance.
+	 *
+	 * @var User
+	 */
+	private $user;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param PMQuery     $query Query instance.
@@ -59,13 +67,15 @@ class Controller {
 	 * @param Context     $context Context instance.
 	 * @param GlobalScore $global_score GlobalScore instance.
 	 * @param Render      $render Render instance.
+	 * @param User        $user User client API instance.
 	 */
-	public function __construct( PMQuery $query, Manager $manager, Context $context, GlobalScore $global_score, Render $render ) {
+	public function __construct( PMQuery $query, Manager $manager, Context $context, GlobalScore $global_score, Render $render, User $user ) {
 		$this->query        = $query;
 		$this->manager      = $manager;
 		$this->context      = $context;
 		$this->global_score = $global_score;
 		$this->render       = $render;
+		$this->user         = $user;
 	}
 
 	/**
@@ -130,6 +140,7 @@ class Controller {
 		$payload['id']                = $row_id;
 		$payload['html']              = $this->render->get_performance_monitoring_list_row( $row_data );
 		$payload['global_score_data'] = $this->get_global_score_payload();
+		$payload['remaining_urls']    = $this->get_remaining_url_count();
 
 		wp_send_json_success( $payload );
 	}
@@ -324,6 +335,7 @@ class Controller {
 				'id'                => $id,
 				'html'              => $this->render->get_performance_monitoring_list_row( $row ),
 				'global_score_data' => $this->get_global_score_payload(),
+				'remaining_urls'    => $this->get_remaining_url_count(),
 			]
 			);
 	}
@@ -342,13 +354,26 @@ class Controller {
 	private function get_global_score_payload() {
 		$payload = [];
 
-		$payload                 = $this->global_score->get_global_score_data();
-		$payload['status-color'] = $this->render->get_score_color_status( (int) $payload['score'] );
+		$payload                   = $this->global_score->get_global_score_data();
+		$payload['status-color']   = $this->render->get_score_color_status( (int) $payload['score'] );
+		$payload['remaining_urls'] = $this->get_remaining_url_count();
 
 		return [
 			'data'     => $payload,
 			'html'     => $this->render->get_global_score_widget( $payload ),
 			'row_html' => $this->render->get_global_score_row( $payload ),
 		];
+	}
+
+	/**
+	 * Get the remaining number of URLs that can be added based on user's plan limit.
+	 *
+	 * @return int Number of URLs that can still be added.
+	 */
+	private function get_remaining_url_count(): int {
+		$current_url_count = $this->query->query( [ 'count' => true ] );
+		$max_urls          = $this->user->get_pma_addon_limit( $this->user->get_pma_addon_sku_active() );
+
+		return max( 0, $max_urls - (int) $current_url_count );
 	}
 }

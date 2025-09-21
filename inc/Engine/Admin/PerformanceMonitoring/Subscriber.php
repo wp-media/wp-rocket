@@ -166,7 +166,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	}
 
 	/**
-	 * Add pm_ids key to the admin ajax js variable.
+	 * Add pm_ids, remaining_urls & pm_max_urls_reached_message key to the admin ajax js variable.
 	 *
 	 * @param array $data Array of data.
 	 * @return array
@@ -176,7 +176,9 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			return $data;
 		}
 
-		$data['pm_ids'] = $this->controller->get_not_finished_ids();
+		$data['pm_ids']                      = $this->controller->get_not_finished_ids();
+		$data['remaining_urls']              = $this->controller->get_remaining_url_count();
+		$data['pm_max_urls_reached_message'] = __( 'Maximum number of URLs reached for your license.', 'rocket' );
 		return $data;
 	}
 
@@ -262,7 +264,9 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return void
 	 */
 	public function render_global_score_widget(): void {
-		$this->render->render_global_score_widget( $this->controller->get_global_score() );
+		$data                   = $this->controller->get_global_score();
+		$data['remaining_urls'] = $this->controller->get_remaining_url_count();
+		$this->render->render_global_score_widget( $data );
 	}
 
 	/**
@@ -282,8 +286,9 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	public function render_performance_urls_table() {
 		$this->render->render_pma_urls_table(
 			[
-				'items'        => $this->controller->get_items(),
-				'global_score' => $this->controller->get_global_score(),
+				'items'          => $this->controller->get_items(),
+				'global_score'   => $this->controller->get_global_score(),
+				'remaining_urls' => $this->controller->get_remaining_url_count(),
 			]
 		);
 	}
