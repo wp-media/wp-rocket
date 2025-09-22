@@ -8,7 +8,8 @@ return [
             'user_data' => (new UserDataGenerator())
                 ->with_pma_active_sku('perf-monitor-free')
                 ->generate(),
-            'performance_monitoring_enabled' => 'monthly',
+            'performance_monitoring_enabled' => true,
+            'schedule_frequency' => 'monthly',
             'event_scheduled' => false,
         ],
         'expected' => [
@@ -21,7 +22,8 @@ return [
                 ->with_pma_active_sku('perf-monitor-advanced')
                 ->generate(),
             'performance_monitoring_enabled' => false,
-            'event_scheduled' => false,
+			'schedule_frequency' => 'monthly',
+			'event_scheduled' => false,
         ],
         'expected' => [
             'scheduled' => false,
@@ -32,8 +34,9 @@ return [
             'user_data' => (new UserDataGenerator())
                 ->with_pma_active_sku('perf-monitor-advanced')
                 ->generate(),
-            'performance_monitoring_enabled' => 'monthly',
-            'event_scheduled' => true,
+            'performance_monitoring_enabled' => true,
+			'schedule_frequency' => 'monthly',
+			'event_scheduled' => true,
         ],
         'expected' => [
             'scheduled' => false,
@@ -44,8 +47,9 @@ return [
             'user_data' => (new UserDataGenerator())
                 ->with_pma_active_sku('perf-monitor-advanced')
                 ->generate(),
-            'performance_monitoring_enabled' => 'monthly',
-            'event_scheduled' => false,
+            'performance_monitoring_enabled' => true,
+			'schedule_frequency' => 'monthly',
+			'event_scheduled' => false,
         ],
         'expected' => [
             'scheduled' => true,

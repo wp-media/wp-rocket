@@ -16,6 +16,8 @@ class Test_MaybeScheduleNextTest extends TestCase {
 
 	protected $pre_get_rocket_option_performance_monitoring;
 
+	protected $performance_monitoring_schedule_frequency;
+
 	protected $schedule_event;
 
     public function set_up() {
@@ -29,9 +31,11 @@ class Test_MaybeScheduleNextTest extends TestCase {
 		add_filter( 'pre_get_rocket_option_performance_monitoring', [ $this, 'mock_pre_get_rocket_option_performance_monitoring' ] );
     	add_filter( 'pre_get_scheduled_event', [ $this, 'mock_pre_get_scheduled_event' ] );
     	add_filter( 'pre_schedule_event', [ $this, 'mock_pre_schedule_event' ] );
+    	add_filter( 'pre_get_rocket_option_performance_monitoring_schedule_frequency', [ $this, 'mock_performance_monitoring_schedule_frequency' ] );
 	}
 
     public function tear_down() {
+		remove_filter( 'pre_get_rocket_option_performance_monitoring_schedule_frequency', [ $this, 'mock_performance_monitoring_schedule_frequency' ] );
 		remove_filter( 'pre_schedule_event', [ $this, 'mock_pre_schedule_event' ] );
 		remove_filter( 'pre_get_scheduled_event', [ $this, 'mock_pre_get_scheduled_event' ] );
 		remove_filter( 'pre_get_rocket_option_performance_monitoring', [ $this, 'mock_pre_get_rocket_option_performance_monitoring' ] );
@@ -45,6 +49,7 @@ class Test_MaybeScheduleNextTest extends TestCase {
      */
     public function testShouldDoExpected($config, $expected) {
 		$this->pre_get_rocket_option_performance_monitoring = $config['performance_monitoring_enabled'];
+		$this->performance_monitoring_schedule_frequency = $config['schedule_frequency'];
 		$this->schedule_event = false;
 		$this->event_scheduled = $config['event_scheduled'];
 		$container = apply_filters('rocket_container', null);
@@ -68,8 +73,12 @@ class Test_MaybeScheduleNextTest extends TestCase {
 
 	public function mock_pre_get_scheduled_event() {
 		return $this->event_scheduled ? (object) [
-			'hook' => 'retest_all_pages',
+			'hook' => 'wpr_pma_retest_all_pages',
 			'timestamp' => time() + DAY_IN_SECONDS
 		] : false;
+	}
+
+	public function mock_performance_monitoring_schedule_frequency() {
+		return $this->performance_monitoring_schedule_frequency;
 	}
 }

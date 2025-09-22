@@ -80,7 +80,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @var Manager
 	 */
 	private $manager;
- 
+
 	/**
 	 *  User client API instance.
 	 *
@@ -163,6 +163,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			],
 			'cron_schedules'                    => 'maybe_add_monthly_schedule',
 			'rocket_options_changed'            => 'maybe_cancel_scheduled_jobs',
+			'wpr_pma_retest_all_pages'            => 'retest_all_pages',
 		];
 	}
 
@@ -452,9 +453,9 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	private function schedule_retest_event(): void {
 
-		$schedule = $this->options->get( 'performance_monitoring', 'monthly' );
+		$schedule = $this->options->get( 'performance_monitoring_schedule_frequency', 'monthly' );
 
-		wp_schedule_event( time(), $schedule, 'retest_all_pages' );
+		wp_schedule_event( time(), $schedule, 'wpr_pma_retest_all_pages' );
 	}
 
 	/**
@@ -538,7 +539,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return bool Whether the retest event is scheduled.
 	 */
 	private function is_retest_event_scheduled(): bool {
-		return (bool) wp_next_scheduled( 'retest_all_pages' );
+		return (bool) wp_next_scheduled( 'wpr_pma_retest_all_pages' );
 	}
 
 	/**
@@ -549,12 +550,12 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return void
 	 */
 	private function cancel_retest_scheduled_event(): void {
-		$next_event = wp_next_scheduled( 'retest_all_pages' );
+		$next_event = wp_next_scheduled( 'wpr_pma_retest_all_pages' );
 
 		if ( ! $next_event ) {
 			return;
 		}
 
-		wp_unschedule_event( $next_event, 'retest_all_pages' );
+		wp_unschedule_event( $next_event, 'wpr_pma_retest_all_pages' );
 	}
 }
