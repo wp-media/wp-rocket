@@ -101,6 +101,9 @@ trait StubTrait {
 			case 'WP_ROCKET_ASSETS_JS_URL':
 				return 'http://example.org/wp-content/plugins/wp-rocket/assets/js/';
 
+			case 'WP_ROCKET_ASSETS_IMG_URL' :
+				return 'http://example.org/wp-content/plugins/wp-rocket/assets/img/';
+
 			case 'WP_ROCKET_CACHE_PATH':
 				return "{$this->wp_content_dir}/cache/wp-rocket/";
 
