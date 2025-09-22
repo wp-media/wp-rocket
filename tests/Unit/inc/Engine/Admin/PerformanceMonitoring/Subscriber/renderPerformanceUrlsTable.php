@@ -31,11 +31,19 @@ class Test_renderPerformanceUrlsTable extends TestCase {
 			->method('get_global_score')
 			->willReturn( $score );
 
+		$mock_controller->expects($this->once())
+			->method('get_pma_addon_limit')
+			->willReturn( 1 );
+
 		$mock_render->expects($this->once())
 			->method('render_pma_urls_table')
 			->with([
 				'items'        => $items,
 				'global_score' => $score,
+				'remaining_urls' => 0,
+				'pma_addon_limit' => 1,
+				'upgrade_url'    => '',
+				'can_add_pages'  => true,
 			]);
 
 		$mock_ajax_controller   = $this->createMock(AjaxController::class);
