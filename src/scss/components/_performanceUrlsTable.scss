@@ -12,20 +12,39 @@
 		top: 2*$space;
 	}
 	&.wpr-error-notice{
-		border-left-color: $cOrange;
-		background-color:  $cOrangeLight4;
+		color:#AC2B15;
+		border-left: 4px solid #F56640;
+		background: #FDE0D9;
+		font-family: Roboto, Arial, sans-serif;
+		font-size: 14px;
+		font-style: normal;
+		font-weight: 400;
+		line-height: 130%;
 		.wpr-notice-close{
 			font-size: 14px;
 			text-decoration: underline;
 			font-weight: 600;
-			color: $cBlack;
+			color: #0C0F1F;
 			top: 20px;
+			line-height: 130%;
 		}
 	}
 }
 
-.wpr-pma-summary-info a{
-	color: $cOrange;
+.wpr-pma-summary-info{
+	font-family: Roboto, Arial, sans-serif;
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 130%;
+	color: #0C0F1F;
+	a{
+		color: #F3704D;
+		font-weight: 600;
+	}
+	strong{
+		font-weight: 600;
+	}
 }
 .wpr-pma-urls-table{
 	&.widefat{

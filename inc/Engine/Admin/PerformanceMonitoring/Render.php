@@ -81,7 +81,10 @@ class Render extends Abstract_Render {
 	 * @return void
 	 */
 	public function render_pma_urls_table( array $data ) {
-		$data['has_credit'] = $this->credit_manager->has_credit();
+		$data['has_credit']    = $this->credit_manager->has_credit();
+		$data['can_add_url']   = wpm_apply_filters_typesafe( 'wpr_pm_allow_add_page', true );
+		$data['reach_max_url'] = ! $data['can_add_url'];
+
 		echo $this->generate( 'partials/performance-monitoring/urls-table', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
@@ -115,7 +118,10 @@ class Render extends Abstract_Render {
 	 * @return string The rendered HTML for the global score widget.
 	 */
 	public function get_global_score_widget( array $data ): string {
-		$data['has_credit'] = $this->credit_manager->has_credit();
+		$data['has_credit']    = $this->credit_manager->has_credit();
+		$data['can_add_url']   = wpm_apply_filters_typesafe( 'wpr_pm_allow_add_page', true );
+		$data['reach_max_url'] = ! $data['can_add_url'];
+
 		return $this->generate( 'partials/performance-monitoring/global-score-widget', $data );
 	}
 

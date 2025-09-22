@@ -946,6 +946,16 @@ parameters:
 			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/Subscriber/GetResultsTest.php
 
 		-
+			message: "#^Method WP_Rocket\\\\Tests\\\\Integration\\\\inc\\\\Engine\\\\Admin\\\\PerformanceMonitoring\\\\Subscriber\\\\RenderGlobalScoreWidgetTest\\:\\:getExpectedHtml\\(\\) is unused\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/Subscriber/RenderGlobalScoreWidgetTest.php
+
+		-
+			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			count: 29
+			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/Subscriber/RenderGlobalScoreWidgetTest.php
+
+		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/Subscriber/RenderLicenseBannerSectionTest.php
@@ -969,6 +979,16 @@ parameters:
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 29
 			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/Subscriber/ScheduleHomepageTestsTest.php
+
+		-
+			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/Subscriber/checkUpgrade.php
+
+		-
+			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/Subscriber/resetUserData.php
 
 		-
 			message: "#^Property WP_Rocket\\\\Tests\\\\Integration\\\\inc\\\\Engine\\\\Admin\\\\PerformanceMonitoring\\\\URLLimit\\\\Subscriber\\\\Test_IsAddingPageAllowed\\:\\:\\$user_client is unused\\.$#"

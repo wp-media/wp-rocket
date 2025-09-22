@@ -7,8 +7,11 @@ use WP_Rocket\Engine\Admin\PerformanceMonitoring\{Context\PerformanceMonitoringC
 	Database\Rows\PerformanceMonitoring,
 	Jobs\Manager,
 	Queue\Queue,
-	AJAX\Controller as AjaxController};
+	AJAX\Controller as AjaxController
+};
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\License\API\User;
+use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
@@ -77,6 +80,20 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @var Manager
 	 */
 	private $manager;
+ 
+	/**
+	 *  User client API instance.
+	 *
+	 * @var UserClient
+	 */
+	private $user_client;
+
+	/**
+	 *  User instance.
+	 *
+	 * @var User
+	 */
+	private $user;
 
 	/**
 	 * Constructor.
@@ -89,8 +106,10 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @param GlobalScore                  $global_score GlobalScore instance.
 	 * @param Options_Data                 $options Plugin options.
 	 * @param Manager                      $manager Manager instance.
+   * @param UserClient                   $user_client  User client API instance.
+	 * @param User                         $user         User instance.
 	 */
-	public function __construct( Render $render, Controller $controller, AjaxController $ajax_controller, Queue $queue, PerformanceMonitoringContext $pma_context, GlobalScore $global_score, Options_Data $options, Manager $manager ) {
+	public function __construct( Render $render, Controller $controller, AjaxController $ajax_controller, Queue $queue, PerformanceMonitoringContext $pma_context, GlobalScore $global_score, Options_Data $options, Manager $manager, UserClient $user_client, User $user ) {
 		$this->render          = $render;
 		$this->controller      = $controller;
 		$this->ajax_controller = $ajax_controller;
@@ -99,6 +118,8 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		$this->global_score    = $global_score;
 		$this->options         = $options;
 		$this->manager         = $manager;
+		$this->user_client     = $user_client;
+		$this->user            = $user;
 	}
 
 	/**
@@ -114,7 +135,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'rocket_localize_admin_script'      => 'add_pending_ids',
 			'admin_post_delete_pm'              => 'delete_row',
 			'wp_ajax_rocket_pm_reset_page'      => 'reset_page',
-			'admin_init'                        => 'schedule_reset_credit',
 			'rocket_pma_credit_reset'           => 'reset_credit_monthly',
 			'rocket_pm_job_completed'           => [
 				[ 'validate_credit' ],
@@ -130,7 +150,12 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 				[ 'render_performance_urls_table', 20 ],
 				[ 'render_settings_section', 30 ],
 			],
+			'admin_init'                        => [
+				[ 'check_upgrade', 8 ],
+				[ 'schedule_reset_credit' ],
+			],
 			'admin_post_rocket_pm_add_homepage' => 'add_homepage_from_widget',
+			'wp_rocket_pma_upgraded'            => 'reset_user_data',
 			'rocket_deactivation'               => 'cancel_scheduled_jobs',
 			'init'                              => [
 				[ 'maybe_cancel_scheduled_jobs' ],
@@ -172,7 +197,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	}
 
 	/**
-	 * Add pm_ids key to the admin ajax js variable.
+	 * Add pm_ids, remaining_urls & pm_max_urls_reached_message key to the admin ajax js variable.
 	 *
 	 * @param array $data Array of data.
 	 * @return array
@@ -182,7 +207,9 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			return $data;
 		}
 
-		$data['pm_ids'] = $this->controller->get_not_finished_ids();
+		$data['pm_ids']                      = $this->controller->get_not_finished_ids();
+		$data['remaining_urls']              = $this->controller->get_remaining_url_count();
+		$data['pm_max_urls_reached_message'] = __( 'Maximum number of URLs reached for your license.', 'rocket' );
 		return $data;
 	}
 
@@ -266,7 +293,9 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return void
 	 */
 	public function render_global_score_widget(): void {
-		$this->render->render_global_score_widget( $this->controller->get_global_score() );
+		$data                   = $this->controller->get_global_score();
+		$data['remaining_urls'] = $this->controller->get_remaining_url_count();
+		$this->render->render_global_score_widget( $data );
 	}
 
 	/**
@@ -284,10 +313,15 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return void
 	 */
 	public function render_performance_urls_table() {
+		$license_data = $this->controller->get_license_data();
 		$this->render->render_pma_urls_table(
 			[
-				'items'        => $this->controller->get_items(),
-				'global_score' => $this->controller->get_global_score(),
+				'items'           => $this->controller->get_items(),
+				'global_score'    => $this->controller->get_global_score(),
+				'remaining_urls'  => $this->controller->get_remaining_url_count(),
+				'pma_addon_limit' => $this->controller->get_pma_addon_limit(),
+				'upgrade_url'     => $license_data['btn_url'] ?? '',
+				'can_add_pages'   => wpm_apply_filters_typesafe( 'wpr_pm_allow_add_page', true ),
 			]
 		);
 	}
@@ -312,6 +346,41 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		}
 		// add some logic here to check if the banner should be displayed.
 		$this->render->render_license_banner_section( $this->controller->get_license_data() );
+	}
+
+	/**
+	 * Check if the plugin was upgraded.
+	 *
+	 * @return void
+	 */
+	public function check_upgrade() {
+		if ( ! isset( $_GET['rocket_pma_upgrade'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			return;
+		}
+		/**
+		 * Fires when the Performance Monitoring Add-on license is upgraded.
+		 *
+		 * @since 3.20
+		 */
+		do_action( 'wp_rocket_pma_upgraded' );
+
+		rocket_renew_box( 'pma_upgrade_notice' );
+
+		wp_safe_redirect( admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '#rocket_insights' ) );
+	}
+
+	/**
+	 * Resets the user data by clearing the user cache and setting updated user information.
+	 *
+	 * This method retrieves fresh user data from the client after flushing the cache
+	 * and applies it to the current user session.
+	 *
+	 * @return void
+	 */
+	public function reset_user_data() {
+		$this->user_client->flush_cache();
+		$user_data = $this->user_client->get_user_data();
+		$this->user->set_user( $user_data );
 	}
 
 	/**

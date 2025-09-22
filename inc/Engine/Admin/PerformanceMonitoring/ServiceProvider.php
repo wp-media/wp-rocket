@@ -148,6 +148,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'pm_context',
 					'pm_global_score',
 					'pm_render',
+					'user',
 				]
 			);
 		// Subscriber.
@@ -162,6 +163,8 @@ class ServiceProvider extends AbstractServiceProvider {
 					'pm_global_score',
 					'options',
 					'pm_manager',
+					'user_client',
+					'user',
 				]
 			);
 

@@ -2789,6 +2789,16 @@ div.wpr-tutorial-item {
   font-size: 43px;
   font-weight: 600;
 }
+.wpr-percentage-score-widget .wpr-percentage-indicator .wpr-percentage-circle .wpr-failed-score {
+  width: 50px;
+  height: 50px;
+}
+.wpr-percentage-score-widget .wpr-percentage-indicator .wpr-percentage-circle .wpr-failed-score:before {
+  width: 50px;
+  height: 50px;
+  background-size: contain;
+  display: inline-block;
+}
 .wpr-percentage-score-widget .wpr-percentage-indicator .wpr-tooltip {
   display: none;
 }
@@ -3105,19 +3115,38 @@ div.wpr-tutorial-item {
   top: 16px;
 }
 .wpr-pma-notice.wpr-error-notice {
-  border-left-color: #F56640;
-  background-color: #FDE0D9;
+  color: #AC2B15;
+  border-left: 4px solid #F56640;
+  background: #FDE0D9;
+  font-family: Roboto, Arial, sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 130%;
 }
 .wpr-pma-notice.wpr-error-notice .wpr-notice-close {
   font-size: 14px;
   text-decoration: underline;
   font-weight: 600;
-  color: #121116;
+  color: #0C0F1F;
   top: 20px;
+  line-height: 130%;
 }
 
+.wpr-pma-summary-info {
+  font-family: Roboto, Arial, sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 130%;
+  color: #0C0F1F;
+}
 .wpr-pma-summary-info a {
-  color: #F56640;
+  color: #F3704D;
+  font-weight: 600;
+}
+.wpr-pma-summary-info strong {
+  font-weight: 600;
 }
 
 .wpr-pma-urls-table.widefat {

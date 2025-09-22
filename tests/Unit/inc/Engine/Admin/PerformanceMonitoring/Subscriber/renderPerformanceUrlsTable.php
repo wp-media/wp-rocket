@@ -5,6 +5,8 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Context\PerformanceMonitoringContext;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Jobs\Manager;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Queue\Queue;
+use WP_Rocket\Engine\License\API\User;
+use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Subscriber;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Render;
@@ -33,11 +35,19 @@ class Test_renderPerformanceUrlsTable extends TestCase {
 			->method('get_global_score')
 			->willReturn( $score );
 
+		$mock_controller->expects($this->once())
+			->method('get_pma_addon_limit')
+			->willReturn( 1 );
+
 		$mock_render->expects($this->once())
 			->method('render_pma_urls_table')
 			->with([
 				'items'        => $items,
 				'global_score' => $score,
+				'remaining_urls' => 0,
+				'pma_addon_limit' => 1,
+				'upgrade_url'    => '',
+				'can_add_pages'  => true,
 			]);
 
 		$mock_ajax_controller   = $this->createMock(AjaxController::class);
@@ -45,8 +55,11 @@ class Test_renderPerformanceUrlsTable extends TestCase {
 		$pm_context = $this->createMock(PerformanceMonitoringContext::class);
 		$options = $this->createMock(Options_Data::class);
 		$manager = $this->createMock(Manager::class);
-
-		$subscriber = new Subscriber($mock_render, $mock_controller, $mock_ajax_controller, $mock_queue, $pm_context, $mock_global_score, $options, $manager);
+		$user = $this->createMock(User::class);
+		$user_client = $this->createMock(UserClient::class);
+    
+		$subscriber = new Subscriber($mock_render, $mock_controller, $mock_ajax_controller, $mock_queue, $pm_context, $mock_global_score, $options, $manager, $user_client, $user);
+    
 		$subscriber->render_performance_urls_table();
 	}
 }

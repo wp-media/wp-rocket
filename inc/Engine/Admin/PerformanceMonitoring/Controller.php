@@ -14,9 +14,6 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\License\API\User;
 
 class Controller {
-
-	use PageHandlerTrait;
-
 	/**
 	 * Query object.
 	 *
@@ -111,13 +108,9 @@ class Controller {
 			return;
 		}
 
-		$url        = home_url();
-		$page_title = '';
-		$response   = $this->get_page_content( $url );
+		$url = home_url();
 
-		if ( false !== $response ) {
-			$page_title = $this->get_page_title( $response );
-		}
+		$page_title = __( 'Home Page', 'rocket' );
 
 		$this->manager->add_url_to_the_queue(
 			$url,
@@ -315,5 +308,26 @@ class Controller {
 		$data['promo_name']            = $this->user->get_pma_addon_promo_name( $upgrade );
 		$data['promo_description']     = $this->user->get_pma_addon_promo_description( $upgrade );
 		return $data;
+	}
+
+	/**
+	 * Get the remaining number of URLs that can be added based on user's plan limit.
+	 *
+	 * @return int Number of URLs that can still be added.
+	 */
+	public function get_remaining_url_count(): int {
+		$current_url_count = $this->query->query( [ 'count' => true ] );
+		$max_urls          = $this->user->get_pma_addon_limit( $this->user->get_pma_addon_sku_active() );
+
+		return max( 0, $max_urls - (int) $current_url_count );
+	}
+
+	/**
+	 * Get PMA addon limit.
+	 *
+	 * @return int
+	 */
+	public function get_pma_addon_limit() {
+		return $this->user->get_pma_addon_limit( $this->user->get_pma_addon_sku_active() );
 	}
 }
