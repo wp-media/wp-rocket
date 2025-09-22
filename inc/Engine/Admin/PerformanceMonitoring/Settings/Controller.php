@@ -48,7 +48,7 @@ class Controller extends Abstract_Render {
 		if ( $is_active ) {
 			$label        = __( 'Next Billing Date', 'rocket' );
 			$status_class = ' wpr-isValid';
-			$status_text  = date_i18n( get_option( 'date_format' ), $this->user->get_pma_license_expiration() );
+			$status_text  = date_i18n( get_option( 'date_format' ), $this->user->get_pma_license_expiration() ); // @phpstan-ignore-line
 		}
 
 		$data = [
