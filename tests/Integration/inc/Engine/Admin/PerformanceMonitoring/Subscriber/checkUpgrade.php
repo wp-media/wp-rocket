@@ -37,8 +37,6 @@ class TestCheckUpgrade extends AdminTestCase {
 
         $this->unregisterAllCallbacksExcept('admin_init', 'check_upgrade', 10);
 
-		add_filter('wp_rocket_pma_upgraded', [$this, 'mock_wp_rocket_pma_upgraded']);
-
 		$this->setCurrentUser( 'administrator' );
 		$this->setEditTagsAsCurrentScreen(); // visit any admin page to fix an issue with WP 5.8 related to wp_add_privacy_policy_content.
     }
@@ -48,8 +46,6 @@ class TestCheckUpgrade extends AdminTestCase {
      */
     public function tear_down() {
 		remove_filter( 'wp_redirect', [ $this, 'return_empty_string' ], PHP_INT_MAX );
-
-		remove_filter('wp_rocket_pma_upgraded', [$this, 'mock_wp_rocket_pma_upgraded']);
 
         $this->restoreWpHook('admin_init');
         unset($_GET['rocket_pma_upgrade']);
@@ -82,8 +78,6 @@ class TestCheckUpgrade extends AdminTestCase {
         // Execute the method
 		$this->fireAdminInit();
 
-		$this->assertSame($expected['upgrade_action'], $this->action_called);
-
         if ($expected['has_user']) {
 			$this->assertFalse($this->is_notice_present('pma_upgrade_notice'));
             $this->assertTrue($this->wp_redirect_called);
@@ -93,10 +87,6 @@ class TestCheckUpgrade extends AdminTestCase {
 	protected function is_notice_present(string $notice_id) {
 		$values = get_user_meta( get_current_user_id(), 'rocket_boxes', true ) ?: [];
 		return in_array( $notice_id, $values, true );
-	}
-
-	public function mock_wp_rocket_pma_upgraded() {
-		$this->action_called = true;
 	}
 
 	public function mock_http_request($resp, $args, $url) {

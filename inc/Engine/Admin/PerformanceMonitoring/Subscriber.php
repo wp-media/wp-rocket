@@ -336,6 +336,8 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		}
 
 		$this->plan->remove_customer_data_cache();
+		rocket_renew_box( 'pma_upgrade_notice' );
+
 		wp_safe_redirect( admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '#rocket_insights' ) );
 	}
 
