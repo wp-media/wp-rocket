@@ -6,6 +6,7 @@ namespace WP_Rocket\Engine\Admin\PerformanceMonitoring\Managers;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Context\PerformanceMonitoringContext;
 use WP_Rocket\Engine\License\API\User;
+use WP_Rocket\Engine\License\API\UserClient;
 
 class Plan {
 
@@ -31,6 +32,13 @@ class Plan {
 	private $user;
 
 	/**
+	 *  User client API instance.
+	 *
+	 * @var UserClient
+	 */
+	private $user_client;
+
+	/**
 	 * Current plan option name.
 	 */
 	const CURRENT_PLAN_OPTION_NAME = 'insights_current_plan';
@@ -41,11 +49,13 @@ class Plan {
 	 * @param Options                      $options Options instance.
 	 * @param PerformanceMonitoringContext $context Context instance.
 	 * @param User                         $user User instance.
+	 * @param UserClient                   $user_client  User client API instance.
 	 */
-	public function __construct( Options $options, PerformanceMonitoringContext $context, User $user ) {
-		$this->options = $options;
-		$this->context = $context;
-		$this->user    = $user;
+	public function __construct( Options $options, PerformanceMonitoringContext $context, User $user, UserClient $user_client ) {
+		$this->options     = $options;
+		$this->context     = $context;
+		$this->user        = $user;
+		$this->user_client = $user_client;
 	}
 
 	/**
@@ -110,6 +120,10 @@ class Plan {
 			return;
 		}
 
-		delete_transient( 'wp_rocket_customer_data' );
+		$this->user_client->flush_cache();
+	}
+
+	public function remove_customer_data_cache() {
+		$this->user_client->flush_cache();
 	}
 }

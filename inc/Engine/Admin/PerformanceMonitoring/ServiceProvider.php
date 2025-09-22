@@ -105,6 +105,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'options_api',
 					'pm_context',
 					'user',
+					'user_client',
 				]
 			);
 

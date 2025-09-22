@@ -72,20 +72,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	private $plan;
 
 	/**
-	 *  User client API instance.
-	 *
-	 * @var UserClient
-	 */
-	private $user_client;
-
-	/**
-	 *  User instance.
-	 *
-	 * @var User
-	 */
-	private $user;
-
-	/**
 	 * Constructor.
 	 *
 	 * @param Render                       $render Render object.
@@ -94,8 +80,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @param Queue                        $queue Queue object.
 	 * @param PerformanceMonitoringContext $pma_context PMA context.
 	 * @param GlobalScore                  $global_score GlobalScore instance.
-	 * @param UserClient                   $user_client  User client API instance.
-	 * @param User                         $user         User instance.
 	 * @param Plan                         $plan Plan manager.
 	 */
 	public function __construct(
@@ -105,8 +89,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		Queue $queue,
 		PerformanceMonitoringContext $pma_context,
 		GlobalScore $global_score,
-		UserClient $user_client,
-		User $user,
 		Plan $plan
 	) {
 		$this->render          = $render;
@@ -115,8 +97,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		$this->queue           = $queue;
 		$this->pma_context     = $pma_context;
 		$this->global_score    = $global_score;
-		$this->user_client     = $user_client;
-		$this->user            = $user;
 		$this->plan            = $plan;
 	}
 
@@ -149,12 +129,11 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 				[ 'render_settings_section', 30 ],
 			],
 			'admin_init'                        => [
+				[ 'flush_license_cache', 8 ],
 				[ 'check_upgrade' ],
-				[ 'check_upgrade_cyrille', 8 ],
 				[ 'schedule_reset_credit' ],
 			],
 			'admin_post_rocket_pm_add_homepage' => 'add_homepage_from_widget',
-			'wp_rocket_pma_upgraded'            => 'reset_user_data',
 			'rocket_deactivation'               => [
 				'cancel_scheduled_jobs',
 				'remove_current_plan',
@@ -351,34 +330,13 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 *
 	 * @return void
 	 */
-	public function check_upgrade_cyrille() {
+	public function flush_license_cache() {
 		if ( ! isset( $_GET['rocket_pma_upgrade'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			return;
 		}
-		/**
-		 * Fires when the Performance Monitoring Add-on license is upgraded.
-		 *
-		 * @since 3.20
-		 */
-		do_action( 'wp_rocket_pma_upgraded' );
 
-		rocket_renew_box( 'pma_upgrade_notice' );
-
+		$this->plan->remove_customer_data_cache();
 		wp_safe_redirect( admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '#rocket_insights' ) );
-	}
-
-	/**
-	 * Resets the user data by clearing the user cache and setting updated user information.
-	 *
-	 * This method retrieves fresh user data from the client after flushing the cache
-	 * and applies it to the current user session.
-	 *
-	 * @return void
-	 */
-	public function reset_user_data() {
-		$this->user_client->flush_cache();
-		$user_data = $this->user_client->get_user_data();
-		$this->user->set_user( $user_data );
 	}
 
 	/**
