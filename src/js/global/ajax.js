@@ -13,7 +13,7 @@ $(document).ready(function(){
             e.preventDefault();
             _isRefreshing = true;
             button.trigger( 'blur' );
-         			// Update global score row in table if on Rocket Insights page.
+                    // Update global score row in table if on Rocket Insights page.
 			updateGlobalScoreRow(response);
 
 			// Check remaining URLs and update button state
@@ -306,7 +306,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 
 	function disableAddUrlElements() {
-		$('#add_page_speed_radar').addClass('disabled').attr('disabled', true);
+		$('#wpr-action-add_page_speed_radar').addClass('disabled').attr('disabled', true);
 		$pageUrlInput.attr('disabled', true);
 
 		$('.wpr-pma-global-score-add-url-button').addClass('disabled').attr('disabled', true);
@@ -314,17 +314,17 @@ document.addEventListener('DOMContentLoaded', function() {
 		const tooltipMessage = window.rocket_ajax_data && window.rocket_ajax_data.reach_max_url_message
 			? window.rocket_ajax_data.reach_max_url_message
 			: 'Maximum number of URLs reached for your license.';
-		$('#add_page_speed_radar').attr('title', tooltipMessage);
+		$('#wpr-action-add_page_speed_radar').attr('title', tooltipMessage);
 		$('.wpr-pma-global-score-add-url-button').attr('title', tooltipMessage);
 	}
 
 	function enableAddUrlElements() {
-		$('#add_page_speed_radar').removeClass('disabled').attr('disabled', false);
+		$('#wpr-action-add_page_speed_radar').removeClass('disabled').attr('disabled', false);
 		$pageUrlInput.attr('disabled', false);
 
 		$('.wpr-pma-global-score-add-url-button').removeClass('disabled').attr('disabled', false);
 
-		$('#add_page_speed_radar').removeAttr('title');
+		$('#wpr-action-add_page_speed_radar').removeAttr('title');
 		$('.wpr-pma-global-score-add-url-button').removeAttr('title');
 	}
 
