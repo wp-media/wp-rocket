@@ -17,14 +17,18 @@ class Test_DisplayAddonStatus extends TestCase {
 
 	protected $customer_data;
 
+	protected $is_live_site;
+
     public function set_up() {
         parent::set_up();
 
 		add_filter('rocket_display_addon_status', [$this, 'filter_rocket_display_addon_status']);
+		add_filter('rocket_is_live_site', [$this, 'filter_rocket_is_live_site']);
 	}
 
     public function tear_down() {
         remove_filter('rocket_display_addon_status', [$this, 'filter_rocket_display_addon_status']);
+        remove_filter('rocket_is_live_site', [$this, 'filter_rocket_is_live_site']);
 
         parent::tear_down();
     }
@@ -34,6 +38,7 @@ class Test_DisplayAddonStatus extends TestCase {
      */
     public function testShouldReturnExpected($config, $expected) {
 		$this->display_addon_status = $config['rocket_display_addon_status'];
+		$this->is_live_site = $config['is_live_site'] ?? true;
 
 		$container = apply_filters('rocket_container', null);
 
@@ -52,6 +57,10 @@ class Test_DisplayAddonStatus extends TestCase {
 
     public function filter_rocket_display_addon_status() {
         return $this->display_addon_status;
+    }
+
+    public function filter_rocket_is_live_site() {
+        return $this->is_live_site;
     }
 
     protected function format_the_html($html) {
