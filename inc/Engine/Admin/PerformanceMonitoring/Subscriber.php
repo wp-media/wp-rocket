@@ -136,7 +136,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 				[ 'maybe_cancel_scheduled_jobs' ],
 				[ 'maybe_schedule_next_test' ],
 			],
-			'cron_schedules' => 'maybe_add_monthly_schedule',
+			'cron_schedules'                    => 'maybe_add_monthly_schedule',
 			'rocket_options_changed'            => 'maybe_cancel_scheduled_jobs',
 		];
 	}
@@ -395,19 +395,19 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 *
 	 * @return array
 	 */
-	public function maybe_add_monthly_schedule($schedules) {
-		if( ! is_array($schedules) ) {
+	public function maybe_add_monthly_schedule( $schedules ) {
+		if ( ! is_array( $schedules ) ) {
 			return $schedules;
 		}
 
-		if( isset($schedules['monthly']) ) {
+		if ( isset( $schedules['monthly'] ) ) {
 			return $schedules;
 		}
 
-		$schedules['monthly'] = array(
+		$schedules['monthly'] = [
 			'interval' => 2635200,
-			'display' => __('Once a month', 'rocket')
-		);
+			'display'  => __( 'Once a month', 'rocket' ),
+		];
 
 		return $schedules;
 	}
