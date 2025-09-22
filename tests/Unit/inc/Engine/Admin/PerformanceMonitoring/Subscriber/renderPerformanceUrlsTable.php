@@ -37,6 +37,14 @@ class Test_renderPerformanceUrlsTable extends TestCase {
 			->method('get_pma_addon_limit')
 			->willReturn( 1 );
 
+		$mock_controller->expects($this->once())
+			->method('get_remaining_url_count')
+			->willReturn( 0 );
+
+		$mock_controller->expects($this->once())
+			->method('get_license_data')
+			->willReturn( [] );
+
 		$mock_render->expects($this->once())
 			->method('render_pma_urls_table')
 			->with([
@@ -51,6 +59,9 @@ class Test_renderPerformanceUrlsTable extends TestCase {
 		$mock_ajax_controller   = $this->createMock(AjaxController::class);
 		$mock_queue             = $this->createMock(Queue::class);
 		$pm_context = $this->createMock(PerformanceMonitoringContext::class);
+		$pm_context->expects($this->once())
+			->method('is_allowed')
+			->willReturn(true);
 		$user = $this->createMock(User::class);
 		$user_client = $this->createMock(UserClient::class);
 
