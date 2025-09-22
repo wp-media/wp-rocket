@@ -120,9 +120,14 @@ class Plan {
 			return;
 		}
 
-		$this->user_client->flush_cache();
+		$this->remove_customer_data_cache();
 	}
 
+	/**
+	 * Flush customer data cache.
+	 *
+	 * @return void
+	 */
 	public function remove_customer_data_cache() {
 		$this->user_client->flush_cache();
 	}
