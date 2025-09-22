@@ -5,7 +5,8 @@ namespace WP_Rocket\Engine\Admin\PerformanceMonitoring;
 
 use WP_Rocket\Dependencies\League\Container\Argument\Literal\StringArgument;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
-use WP_Rocket\Engine\Admin\PerformanceMonitoring\{Credit\Manager as Credit_Manager,
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\{
+	Credit\Manager as Credit_Manager,
 	Database\Tables\PerformanceMonitoring as PMTable,
 	Database\Queries\PerformanceMonitoring as PMQuery,
 	APIHandler\APIClient as PMAPIClient,
@@ -15,7 +16,8 @@ use WP_Rocket\Engine\Admin\PerformanceMonitoring\{Credit\Manager as Credit_Manag
 	Managers\Plan,
 	Queue\Queue as PMQueue,
 	AJAX\Controller as AjaxController,
-	URLLimit\Subscriber as URLLimitSubscriber};
+	URLLimit\Subscriber as URLLimitSubscriber
+};
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
