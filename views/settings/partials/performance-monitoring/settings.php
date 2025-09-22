@@ -7,7 +7,7 @@ defined( 'ABSPATH' ) || exit;
 	<button data-beacon-id="<?php echo esc_attr( $data['help'] ?? '' ); ?>" data-wpr_track_button="Need Help" data-wpr_track_context="Addons" class="wpr-infoAction wpr-infoAction--help wpr-icon-help"><?php esc_html_e( 'Need Help?', 'rocket' ); ?></button>
 </div>
 <div class="wpr-fieldsContainer pma-settings-container">
-<fieldset class="wpr-fieldsContainer-fieldset<?php echo $data['is_free_user'] ? ' wpr-field-disabled': '' ?>">
+<fieldset class="wpr-fieldsContainer-fieldset<?php echo $data['is_free_user'] ? ' wpr-field-disabled' : ''; ?>">
 	<div class="wpr-field wpr-field--checkbox">
 		<div class="wpr-checkbox">
 			<input type="checkbox" id="<?php echo esc_html( $data['id'] ); ?>" class=""

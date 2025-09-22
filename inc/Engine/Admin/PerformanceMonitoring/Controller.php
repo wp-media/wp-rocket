@@ -75,7 +75,7 @@ class Controller {
 	 * @param CreditManager                $credit_manager Credit manager instance.
 	 * @param GlobalScore                  $global_score GlobalScore instance.
 	 * @param User                         $user User client API instance.
-	 * @param Options_Data                      $options Plugin options instance.
+	 * @param Options_Data                 $options Plugin options instance.
 	 */
 	public function __construct( PMQuery $query, Manager $manager, PerformanceMonitoringContext $context, CreditManager $credit_manager, GlobalScore $global_score, User $user, Options_Data $options ) {
 		$this->query          = $query;
@@ -84,7 +84,7 @@ class Controller {
 		$this->credit_manager = $credit_manager;
 		$this->global_score   = $global_score;
 		$this->user           = $user;
-		$this->options         = $options;
+		$this->options        = $options;
 	}
 
 	/**
@@ -246,7 +246,7 @@ class Controller {
 		return [
 			'id'                 => 'performance_monitoring',
 			'title'              => __( 'Performance Monitoring', 'rocket' ),
-			'value'              => $this->options->get('performance_monitoring'), // enabled or not.
+			'value'              => $this->options->get( 'performance_monitoring' ), // enabled or not.
 			'schedule_frequency' => 'monthly', // frequency of tests.
 			'choices'            => [ // frequency options in select.
 				'daily'   => __( 'Daily', 'rocket' ),

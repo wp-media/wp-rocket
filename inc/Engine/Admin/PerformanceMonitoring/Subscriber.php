@@ -64,11 +64,15 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	private $global_score;
 
 	/**
+	 * Plugin options.
+	 *
 	 * @var Options_Data
 	 */
 	private $options;
 
 	/**
+	 * Manager instance.
+	 *
 	 * @var Manager
 	 */
 	private $manager;
@@ -82,7 +86,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @param Queue                        $queue Queue object.
 	 * @param PerformanceMonitoringContext $pma_context PMA context.
 	 * @param GlobalScore                  $global_score GlobalScore instance.
-	 * @param Options_Data                      $options Plugin options.
+	 * @param Options_Data                 $options Plugin options.
 	 * @param Manager                      $manager Manager instance.
 	 */
 	public function __construct( Render $render, Controller $controller, AjaxController $ajax_controller, Queue $queue, PerformanceMonitoringContext $pma_context, GlobalScore $global_score, Options_Data $options, Manager $manager ) {
@@ -127,11 +131,11 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			],
 			'admin_post_rocket_pm_add_homepage' => 'add_homepage_from_widget',
 			'rocket_deactivation'               => 'cancel_scheduled_jobs',
-			'init' => [
-				['maybe_cancel_scheduled_jobs'],
-				['maybe_schedule_next_test'],
+			'init'                              => [
+				[ 'maybe_cancel_scheduled_jobs' ],
+				[ 'maybe_schedule_next_test' ],
 			],
-			'rocket_options_changed' => 'maybe_cancel_scheduled_jobs',
+			'rocket_options_changed'            => 'maybe_cancel_scheduled_jobs',
 		];
 	}
 
@@ -377,7 +381,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	private function schedule_retest_event(): void {
 
-		$schedule = $this->options->get('performance_monitoring', 'monthly');
+		$schedule = $this->options->get( 'performance_monitoring', 'monthly' );
 
 		wp_schedule_event( time(), $schedule, 'retest_all_pages' );
 	}
@@ -389,7 +393,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public function retest_all_pages() {
 		foreach ( $this->controller->get_items() as $item ) {
-			$this->manager->add_url_to_the_queue($item->url, $item->is_mobile);
+			$this->manager->add_url_to_the_queue( $item->url, $item->is_mobile );
 		}
 	}
 

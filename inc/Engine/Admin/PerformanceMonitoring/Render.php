@@ -15,6 +15,11 @@ class Render extends Abstract_Render {
 	 */
 	private $credit_manager;
 
+	/**
+	 * PerformanceMonitoringContext instance.
+	 *
+	 * @var PerformanceMonitoringContext
+	 */
 	private $pma_context;
 
 	/**
@@ -22,8 +27,9 @@ class Render extends Abstract_Render {
 	 *
 	 * Initializes the Render instance with the provided template path and CreditManager.
 	 *
-	 * @param string        $template_path   Path to the template file.
-	 * @param CreditManager $credit_manager  Instance of CreditManager for managing credits.
+	 * @param string                       $template_path   Path to the template file.
+	 * @param CreditManager                $credit_manager  Instance of CreditManager for managing credits.
+	 * @param PerformanceMonitoringContext $pma_context Instance of PerformanceMonitoringContext for managing performance monitoring context.
 	 */
 	public function __construct( $template_path, CreditManager $credit_manager, PerformanceMonitoringContext $pma_context ) {
 		parent::__construct( $template_path );
