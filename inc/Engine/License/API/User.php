@@ -452,6 +452,21 @@ class User {
 	}
 
 	/**
+	 * Checks if the user account is from a reseller license
+	 *
+	 * @since 3.20
+	 *
+	 * @return boolean
+	 */
+	public function is_reseller_account() {
+		if ( ! isset( $this->user->is_reseller ) ) {
+			return false;
+		}
+		
+		return (bool) $this->user->is_reseller;
+	}
+
+	/**
 	 * Retrieves the performance monitoring plan data associated with the specified SKU.
 	 *
 	 * @param string $sku The SKU identifier used to find the corresponding performance monitoring plan.

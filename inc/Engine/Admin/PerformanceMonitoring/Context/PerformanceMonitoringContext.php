@@ -64,4 +64,27 @@ class PerformanceMonitoringContext implements ContextInterface {
 	public function is_free_user(): bool {
 		return $this->user->is_pma_free_active( $this->user->get_pma_addon_sku_active() );
 	}
+
+	/**
+	 * Check if Rocket Insights should be hidden.
+	 *
+	 * This will hide Rocket Insights for reseller accounts and localhost installations.
+	 *
+	 * @since 3.20
+	 *
+	 * @return bool True if Rocket Insights should be hidden, false otherwise.
+	 */
+	public function should_hide_rocket_insights(): bool {
+		// Hide for reseller accounts.
+		if ( $this->user->is_reseller_account() ) {
+			return true;
+		}
+
+		// Hide for non-live installations.
+		if ( ! rocket_is_live_site() ) {
+			return true;
+		}
+
+		return false;
+	}
 }

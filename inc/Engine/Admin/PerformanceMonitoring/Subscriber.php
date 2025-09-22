@@ -260,11 +260,16 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	}
 
 	/**
-	 * Render the performance URLs table in the Performance Monitoring tab.
+	 * Render performance URLs table in the Rocket Insights tab.
 	 *
 	 * @return void
 	 */
 	public function render_performance_urls_table() {
+		// Hide Rocket Insights content for reseller accounts and non-live installations.
+		if ( $this->pma_context->should_hide_rocket_insights() ) {
+			return;
+		}
+
 		$this->render->render_pma_urls_table(
 			[
 				'items'          => $this->controller->get_items(),
@@ -280,6 +285,11 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return void
 	 */
 	public function render_settings_section() {
+		// Hide Rocket Insights content for reseller accounts and non-live installations.
+		if ( $this->pma_context->should_hide_rocket_insights() ) {
+			return;
+		}
+
 		$this->render->render_settings_section( $this->controller->get_settings_section_data() );
 	}
 
@@ -289,6 +299,11 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return void
 	 */
 	public function render_license_banner_section() {
+		// Hide Rocket Insights content for reseller accounts and non-live installations.
+		if ( $this->pma_context->should_hide_rocket_insights() ) {
+			return;
+		}
+
 		if ( ! $this->controller->display_banner() ) {
 			return;
 		}

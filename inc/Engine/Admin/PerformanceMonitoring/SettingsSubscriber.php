@@ -55,6 +55,11 @@ class SettingsSubscriber extends Abstract_Render implements Subscriber_Interface
 			return;
 		}
 
+		// Hide Rocket Insights status for reseller accounts and non-live installations.
+		if ( $this->user->is_reseller_account() || ! rocket_is_live_site() ) {
+			return;
+		}
+
 		$status_class = ' wpr-isInvalid';
 		$label        = '';
 		$status_text  = __( 'No Subscription', 'rocket' );
