@@ -11,7 +11,7 @@ defined( 'ABSPATH' ) || exit;
 	<div class="wpr-field wpr-field--checkbox">
 		<div class="wpr-checkbox">
 			<input type="checkbox" id="<?php echo esc_html( $data['id'] ); ?>" class=""
-					name="wp_rocket_settings['<?php echo esc_html( $data['id'] ); ?>']"
+					name="wp_rocket_settings[<?php echo esc_html( $data['id'] ); ?>]"
 					value="1" <?php checked( $data['value'] ?? 0, 1 ); ?>>
 			<label for="performance_monitoring" class="">
 				<?php echo esc_html( $data['title'] ); ?>

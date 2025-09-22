@@ -148,7 +148,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'rocket_insights_tab_content'       => [
 				[ 'render_license_banner_section', 10 ],
 				[ 'render_performance_urls_table', 20 ],
-				[ 'render_settings_section', 30 ],
+				//[ 'render_settings_section', 30 ],
 			],
 			'admin_init'                        => [
 				[ 'check_upgrade', 8 ],

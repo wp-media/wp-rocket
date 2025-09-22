@@ -1683,8 +1683,40 @@ class Page extends Abstract_Render {
 		$this->settings->add_page_section(
 			'rocket_insights',
 			[
-				'title'            => __( 'Rocket Insights', 'rocket' ),
+				'title'            => __( 'Settings', 'rocket' ),
 				'menu_description' => __( 'Get performance insights', 'rocket' ),
+			]
+		);
+
+		$this->settings->add_settings_sections(
+			[
+				'performance_monitoring' => [
+					'title'  => __( 'Rocket Insights', 'rocket' ),
+					'help'   => [
+						'id'  => '',
+						'url' => '',
+					],
+					'page'   => 'rocket_insights',
+					'helper' => '',
+				],
+			]
+		);
+
+		$this->settings->add_settings_fields(
+			[
+				'performance_monitoring'                   => [
+					'type'              => 'checkbox',
+					'label'             => __( 'Performance Monitoring', 'rocket' ),
+					'description'       => __( 'Automatically test your tracked pages.', 'rocket' ),
+					'container_class'   => [],
+					'section'           => 'performance_monitoring',
+					'page'              => 'rocket_insights',
+					'default'           => 0,
+					'sanitize_callback' => 'sanitize_checkbox',
+					'input_attr'        => [
+						'disabled' => false,
+					],
+				],
 			]
 		);
 	}
@@ -2104,8 +2136,6 @@ class Page extends Abstract_Render {
 			'cloudflare_api_key',
 			'cloudflare_zone_id',
 			'dns_prefetch',
-			'performance_monitoring',
-			'performance_monitoring_schedule_frequency',
 		];
 
 		$this->settings->add_hidden_settings_fields(
