@@ -150,7 +150,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			],
 			'admin_init'                        => [
 				[ 'check_upgrade' ],
-				[ 'check_upgrade', 8 ],
+				[ 'check_upgrade_cyrille', 8 ],
 				[ 'schedule_reset_credit' ],
 			],
 			'admin_post_rocket_pm_add_homepage' => 'add_homepage_from_widget',
@@ -351,7 +351,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 *
 	 * @return void
 	 */
-	public function check_upgrade() {
+	public function check_upgrade_cyrille() {
 		if ( ! isset( $_GET['rocket_pma_upgrade'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			return;
 		}
