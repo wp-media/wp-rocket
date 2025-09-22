@@ -279,7 +279,7 @@ class Controller {
 		if ( empty( $upgrades ) ) {
 			return [];
 		}
-		$upgrade  = array_shift( $upgrades );
+		$upgrade = array_shift( $upgrades );
 
 		$price = $this->user->get_pma_addon_price( $upgrade );
 
