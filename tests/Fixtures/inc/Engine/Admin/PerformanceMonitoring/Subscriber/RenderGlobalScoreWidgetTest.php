@@ -5,6 +5,7 @@ use WP_Rocket\Tests\Fixtures\Generators\UserDataGenerator;
 return [
 	'freeUserCanAddUrl' => [
 		'config' => [
+			'performance_monitoring' => false,
 			'customer_data' => (new UserDataGenerator()),
 			'rows' => [
 				[
@@ -25,6 +26,7 @@ return [
 	],
 	'freeUserReachedLimit' => [
 		'config' => [
+			'performance_monitoring' => false,
 			'customer_data' => (new UserDataGenerator()),
 			'rows' => [
 				[
@@ -50,6 +52,7 @@ return [
 	],
 	'advancedUserCanAddUrl' => [
 		'config' => [
+			'performance_monitoring' => true,
 			'customer_data' => (new UserDataGenerator())->with_pma_active_sku('perf-monitor-advanced'),
 			'rows' => [
 				[
@@ -82,7 +85,7 @@ return [
 		'expected' => [
 			'button_enabled' => true,
 			'contains' => [
-				'5 page monitored',
+				'Monitored Pages:',
 				'Add Pages',
 				'wpr-pma-global-score-add-url-button',
 			],
@@ -95,6 +98,7 @@ return [
 	],
 	'mixedStatusUrls' => [
 		'config' => [
+			'performance_monitoring' => false,
 			'customer_data' => (new UserDataGenerator()),
 			'rows' => [
 				[
