@@ -90,10 +90,9 @@ defined( 'ABSPATH' ) || exit;
 				'label'      => '',
 				'url'        => $data->delete_url(),
 				'attributes' => [
-					'class'                => 'wpr-btn-with-tool-tip wpr-icon-trash wpr-pma-action wpr-confirm-delete',
-					'title'                => __( 'Delete', 'rocket' ),
-					'aria-label'           => __( 'Delete', 'rocket' ),
-					'data-wpr_confirm_msg' => esc_html__( 'Are you sure you want to delete this item?', 'rocket' ),
+					'class'      => 'wpr-btn-with-tool-tip wpr-icon-trash wpr-pma-action',
+					'title'      => __( 'Delete', 'rocket' ),
+					'aria-label' => __( 'Delete', 'rocket' ),
 				],
 			]
 		);

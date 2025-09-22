@@ -259,7 +259,13 @@ class User {
 			return '';
 		}
 
-		return $plan->button->url;
+		if ( ! isset( $plan->button->url ) || '' === $plan->button->url ) {
+			return '';
+		}
+
+		$url = admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '&rocket_pma_upgrade=true#rocket_insights' );
+
+		return add_query_arg( 'dashboard_url', rawurlencode( $url ), $plan->button->url );
 	}
 
 	/**
