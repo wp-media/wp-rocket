@@ -1692,7 +1692,7 @@ class Page extends Abstract_Render {
 	 */
 	public function rocket_insights_section() {
 		// Hide Rocket Insights for reseller accounts and localhost installations.
-		if ( $this->pm_context->should_hide_rocket_insights() ) {
+		if ( ! $this->pm_context->is_allowed() ) {
 			return;
 		}
 

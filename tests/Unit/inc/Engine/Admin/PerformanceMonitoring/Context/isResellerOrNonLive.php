@@ -14,7 +14,7 @@ use WP_Rocket\Tests\Unit\TestCase;
  *
  * @group PerformanceMonitoring
  */
-class ShouldHideRocketInsights extends TestCase {
+class IsResellerOrNonLive extends TestCase {
 	private $options;
 	private $user;
 	private $context;

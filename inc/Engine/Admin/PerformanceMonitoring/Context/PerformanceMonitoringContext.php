@@ -46,6 +46,11 @@ class PerformanceMonitoringContext implements ContextInterface {
 	 * @return bool
 	 */
 	public function is_allowed( array $data = [] ): bool {
+		// Block for reseller accounts and non-live installations.
+		if ( $this->is_reseller_or_non_live() ) {
+			return false;
+		}
+
 		$enabled = current_user_can( 'rocket_manage_options' ) || wp_doing_cron();
 
 		/**
@@ -66,15 +71,15 @@ class PerformanceMonitoringContext implements ContextInterface {
 	}
 
 	/**
-	 * Check if Rocket Insights should be hidden.
+	 * Check if current installation is a reseller account or non-live site.
 	 *
-	 * This will hide Rocket Insights for reseller accounts and localhost installations.
+	 * This will block Performance Monitoring functionality for reseller accounts and localhost installations.
 	 *
 	 * @since 3.20
 	 *
-	 * @return bool True if Rocket Insights should be hidden, false otherwise.
+	 * @return bool True if is reseller account or non-live installation, false otherwise.
 	 */
-	public function should_hide_rocket_insights(): bool {
+	public function is_reseller_or_non_live(): bool {
 		// Hide for reseller accounts.
 		if ( $this->user->is_reseller_account() ) {
 			return true;

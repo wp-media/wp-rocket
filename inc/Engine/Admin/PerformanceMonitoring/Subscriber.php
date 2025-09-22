@@ -269,7 +269,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return void
 	 */
 	public function render_global_score_widget(): void {
-		if ( $this->pma_context->should_hide_rocket_insights() ) {
+		if ( ! $this->pma_context->is_allowed() ) {
 			return;
 		}
 		$data                   = $this->controller->get_global_score();
@@ -293,7 +293,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public function render_performance_urls_table() {
 		// Hide Rocket Insights content for reseller accounts and non-live installations.
-		if ( $this->pma_context->should_hide_rocket_insights() ) {
+		if ( ! $this->pma_context->is_allowed() ) {
 			return;
 		}
 
@@ -318,7 +318,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public function render_settings_section() {
 		// Hide Rocket Insights content for reseller accounts and non-live installations.
-		if ( $this->pma_context->should_hide_rocket_insights() ) {
+		if ( ! $this->pma_context->is_allowed() ) {
 			return;
 		}
 
@@ -332,7 +332,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public function render_license_banner_section() {
 		// Hide Rocket Insights content for reseller accounts and non-live installations.
-		if ( $this->pma_context->should_hide_rocket_insights() ) {
+		if ( ! $this->pma_context->is_allowed() ) {
 			return;
 		}
 
