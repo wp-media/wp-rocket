@@ -462,7 +462,7 @@ class User {
 		if ( ! isset( $this->user->is_reseller ) ) {
 			return false;
 		}
-		
+
 		return (bool) $this->user->is_reseller;
 	}
 

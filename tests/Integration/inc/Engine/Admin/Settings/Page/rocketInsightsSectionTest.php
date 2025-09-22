@@ -32,7 +32,7 @@ class RocketInsightsSectionTest extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldHideWhenReseller( $config, $expected ) {
-		$container = apply_filters( 'rocket_container', null );
+		$container = wpm_apply_filters_typed( 'rocket_container', null, 'object' );
 		$user      = $container->get( 'user' );
 		
 		// Try to get the settings page - may not be available in integration tests
@@ -40,7 +40,6 @@ class RocketInsightsSectionTest extends TestCase {
 			$page = $container->get( 'settings_page' );
 		} catch ( \Exception $e ) {
 			$this->markTestSkipped( 'Settings page service not available in integration test environment' );
-			return;
 		}
 
 		// Set up user data for the test
@@ -84,7 +83,6 @@ class RocketInsightsSectionTest extends TestCase {
 			// This is likely the "should show on live site" test failing due to Docker localhost detection
 			if ( isset( $config['is_live_site'] ) && $config['is_live_site'] === true && $config['customer_data']->is_reseller === 0 ) {
 				$this->markTestSkipped( 'Cannot properly mock live site detection in Docker localhost environment. Feature works correctly - hiding content on localhost as expected.' );
-				return;
 			}
 		}
 
