@@ -461,9 +461,9 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	/**
 	 * Add monthly schedule to cron schedules.
 	 *
-	 * @param array $schedules Cron schedules.
+	 * @param array|mixed $schedules Cron schedules.
 	 *
-	 * @return array
+	 * @return array|mixed
 	 */
 	public function maybe_add_monthly_schedule( $schedules ) {
 		if ( ! is_array( $schedules ) ) {
