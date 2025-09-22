@@ -12,7 +12,6 @@ use Brain\Monkey\Functions;
  */
 class Test_MaybeScheduleNextTest extends TestCase {
     private $event_scheduled = false;
-    private $scheduled_time = 1727000000; // Future timestamp for testing
 
 	protected $pre_get_rocket_option_performance_monitoring;
 
