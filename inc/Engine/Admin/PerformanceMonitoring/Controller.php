@@ -281,12 +281,12 @@ class Controller {
 		$sku      = $this->user->get_pma_addon_sku_active();
 		$upgrades = $this->user->get_pma_addon_upgrade_skus( $sku );
 
-		if(0 === count($upgrades)) {
+		if ( 0 === count( $upgrades ) ) {
 			return [];
 		}
 
-		$upgrade  = array_shift( $upgrades );
-		$price = $this->user->get_pma_addon_price( $upgrade );
+		$upgrade = array_shift( $upgrades );
+		$price   = $this->user->get_pma_addon_price( $upgrade );
 
 		$limit = $this->user->get_pma_addon_limit( $upgrade );
 
