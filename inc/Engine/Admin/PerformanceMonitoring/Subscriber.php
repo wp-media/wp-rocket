@@ -8,7 +8,6 @@ use WP_Rocket\Engine\Admin\PerformanceMonitoring\{Context\PerformanceMonitoringC
 	Jobs\Manager,
 	Queue\Queue,
 	AJAX\Controller as AjaxController};
-use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Logger\LoggerAware;
@@ -377,7 +376,10 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return void
 	 */
 	private function schedule_retest_event(): void {
-		wp_schedule_event( time(), 'daily', 'retest_all_pages' );
+
+		$schedule = $this->options->get('performance_monitoring', 'monthly');
+
+		wp_schedule_event( time(), $schedule, 'retest_all_pages' );
 	}
 
 	/**
