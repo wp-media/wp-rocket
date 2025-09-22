@@ -997,6 +997,11 @@ parameters:
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Admin/Settings/Page/rocketInsightsSectionTest.php
+
+		-
+			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 3
 			path: tests/Integration/inc/Engine/Admin/Settings/Settings/sanitizeCallback.php
 

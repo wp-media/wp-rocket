@@ -32,7 +32,7 @@ class RocketInsightsSectionTest extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldHideWhenReseller( $config, $expected ) {
-		$container = wpm_apply_filters_typed( 'rocket_container', null, 'object' );
+		$container = apply_filters( 'rocket_container', null );
 		$user      = $container->get( 'user' );
 		
 		// Try to get the settings page - may not be available in integration tests
