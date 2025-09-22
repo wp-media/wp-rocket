@@ -318,4 +318,13 @@ class Controller {
 
 		return max( 0, $max_urls - (int) $current_url_count );
 	}
+
+	/**
+	 * Get PMA addon limit.
+	 *
+	 * @return int
+	 */
+	public function get_pma_addon_limit() {
+		return $this->user->get_pma_addon_limit( $this->user->get_pma_addon_sku_active() );
+	}
 }
