@@ -12,6 +12,7 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
+use function Symfony\Component\String\s;
 
 /**
  * Performance Monitoring Subscriber
@@ -135,6 +136,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 				[ 'maybe_cancel_scheduled_jobs' ],
 				[ 'maybe_schedule_next_test' ],
 			],
+			'cron_schedules' => 'maybe_add_monthly_schedule',
 			'rocket_options_changed'            => 'maybe_cancel_scheduled_jobs',
 		];
 	}
@@ -384,6 +386,30 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		$schedule = $this->options->get( 'performance_monitoring', 'monthly' );
 
 		wp_schedule_event( time(), $schedule, 'retest_all_pages' );
+	}
+
+	/**
+	 * Add monthly schedule to cron schedules.
+	 *
+	 * @param array $schedules Cron schedules.
+	 *
+	 * @return array
+	 */
+	public function maybe_add_monthly_schedule($schedules) {
+		if( ! is_array($schedules) ) {
+			return $schedules;
+		}
+
+		if( isset($schedules['monthly']) ) {
+			return $schedules;
+		}
+
+		$schedules['monthly'] = array(
+			'interval' => 2635200,
+			'display' => __('Once a month', 'rocket')
+		);
+
+		return $schedules;
 	}
 
 	/**

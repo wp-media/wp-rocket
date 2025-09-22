@@ -51,52 +51,11 @@ class Test_MaybeScheduleNextTest extends TestCase {
 		$user = $container->get('user');
 		$user->set_user($config['user_data']);
 
-        // Mock wp_next_scheduled and wp_schedule_event
-        $this->mockScheduleFunctions($config['event_scheduled']);
-
         // Trigger the method via the hook
         do_action('init');
 
         // Assert the event was scheduled or not as expected
         $this->assertEquals($expected['scheduled'], $this->schedule_event);
-    }
-
-    /**
-     * Mock the WordPress scheduling functions
-     *
-     * @param bool $event_scheduled Whether the event is already scheduled
-     */
-    private function mockScheduleFunctions($event_scheduled) {
-        // Mock wp_next_scheduled to return true or false depending on test case
-        add_filter('pre_option_cron', function() use ($event_scheduled) {
-            $crons = [];
-
-            if ($event_scheduled) {
-                $crons[$this->scheduled_time]['retest_all_pages'][md5('retest_all_pages')] = [
-                    'schedule' => 'daily',
-                    'args' => [],
-                    'interval' => 86400,
-                ];
-            }
-
-            return $crons;
-        });
-
-        // Mock wp_schedule_event to set our flag
-        add_filter('pre_update_option_cron', function($new_cron, $old_cron) {
-            // Check if our event was added
-            if (isset($new_cron) && is_array($new_cron)) {
-                foreach ($new_cron as $timestamp => $hooks) {
-                    if (isset($hooks['retest_all_pages'])) {
-                        $this->event_scheduled = true;
-                        break;
-                    }
-                }
-            }
-
-            // Return the old value to prevent actual scheduling
-            return $old_cron;
-        }, 10, 2);
     }
 
 	public function mock_pre_get_rocket_option_performance_monitoring() {
