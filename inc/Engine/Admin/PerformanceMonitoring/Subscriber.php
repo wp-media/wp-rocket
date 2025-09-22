@@ -269,6 +269,9 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return void
 	 */
 	public function render_global_score_widget(): void {
+		if ( $this->pma_context->should_hide_rocket_insights() ) {
+			return;
+		}
 		$data                   = $this->controller->get_global_score();
 		$data['remaining_urls'] = $this->controller->get_remaining_url_count();
 		$this->render->render_global_score_widget( $data );
