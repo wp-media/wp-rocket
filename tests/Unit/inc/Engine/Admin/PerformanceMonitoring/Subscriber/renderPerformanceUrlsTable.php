@@ -40,7 +40,7 @@ class Test_renderPerformanceUrlsTable extends TestCase {
 			->with([
 				'items'        => $items,
 				'global_score' => $score,
-				'remaining_urls' => 0
+				'remaining_urls' => 0,
 				'pma_addon_limit' => 1,
 				'upgrade_url'    => '',
 				'can_add_pages'  => true,
