@@ -107,7 +107,7 @@ defined( 'ABSPATH' ) || exit;
 	if ( $data['reach_max_url'] ) {
 		$rocket_pma_add_page_button_args['attributes']['class'] .= ' wpr-btn-with-tool-tip disabled';
 		$rocket_pma_add_page_button_args['url']                  = '#';
-		$rocket_pma_add_page_button_args['tooltip']              = esc_html__( 'You don\'t have enough credits', 'rocket' );
+		$rocket_pma_add_page_button_args['tooltip']              = esc_html__( 'You have reached your maximum page limit', 'rocket' );
 		$rocket_pma_add_page_button_args['disabled']             = true;
 	}
 	$this->render_action_button(
