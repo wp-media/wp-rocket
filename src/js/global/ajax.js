@@ -13,7 +13,13 @@ $(document).ready(function(){
             e.preventDefault();
             _isRefreshing = true;
             button.trigger( 'blur' );
-            button.addClass('wpr-isLoading');
+         			// Update global score row in table if on Rocket Insights page.
+			updateGlobalScoreRow(response);
+
+			// Check remaining URLs and update button state
+			updateUrlLimitState(response.data.remaining_urls);
+
+			// Start polling if not already running.addClass('wpr-isLoading');
             expire.removeClass('wpr-isValid wpr-isInvalid');
 
             $.post(
@@ -299,6 +305,39 @@ document.addEventListener('DOMContentLoaded', function() {
 		pmIds = pmIds.filter(x => x !== parseInt(id, 10));
 	}
 
+	function disableAddUrlElements() {
+		$('#add_page_speed_radar').addClass('disabled').attr('disabled', true);
+		$pageUrlInput.attr('disabled', true);
+
+		$('.wpr-pma-global-score-add-url-button').addClass('disabled').attr('disabled', true);
+
+		const tooltipMessage = window.rocket_ajax_data && window.rocket_ajax_data.reach_max_url_message
+			? window.rocket_ajax_data.reach_max_url_message
+			: 'Maximum number of URLs reached for your license.';
+		$('#add_page_speed_radar').attr('title', tooltipMessage);
+		$('.wpr-pma-global-score-add-url-button').attr('title', tooltipMessage);
+	}
+
+	function enableAddUrlElements() {
+		$('#add_page_speed_radar').removeClass('disabled').attr('disabled', false);
+		$pageUrlInput.attr('disabled', false);
+
+		$('.wpr-pma-global-score-add-url-button').removeClass('disabled').attr('disabled', false);
+
+		$('#add_page_speed_radar').removeAttr('title');
+		$('.wpr-pma-global-score-add-url-button').removeAttr('title');
+	}
+
+	function updateUrlLimitState(remainingUrls) {
+		if (remainingUrls !== undefined) {
+			if (remainingUrls <= 0) {
+				disableAddUrlElements();
+			} else {
+				enableAddUrlElements();
+			}
+		}
+	}
+
 	function resetPolling() {
 		if (pollTimer) {
 			clearTimeout(pollTimer);
@@ -417,6 +456,11 @@ document.addEventListener('DOMContentLoaded', function() {
 				// Update global score row in table if on Rocket Insights page.
 				updateGlobalScoreRow(response);
 
+				// Check if we've reached the URL limit
+				if (response.data.remaining_urls !== undefined && response.data.remaining_urls <= 0) {
+					disableAddUrlElements();
+				}
+
 				// Start polling if not already running
 				if (!pollTimer) {
 					pollInterval = POLL_BASE_INTERVAL;
@@ -452,7 +496,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 				// Update global score row in table if on Rocket Insights page.
 				updateGlobalScoreRow(response);
-
 				// Start polling if not already running
 				if (!pollTimer) {
 					pollInterval = POLL_BASE_INTERVAL;

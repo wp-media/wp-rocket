@@ -103,9 +103,9 @@ defined( 'ABSPATH' ) || exit;
 			'id'    => 'add_page_speed_radar',
 		],
 	];
-	if ( ! $data['has_credit'] ) {
+	if ( $data['reach_max_url'] ) {
 		$rocket_pma_add_page_button_args['attributes']['class'] .= ' wpr-btn-with-tool-tip disabled';
-		$rocket_pma_add_page_button_args['tool_tip']             = esc_html__( 'You don\'t have enough credits', 'rocket' );
+		$rocket_pma_add_page_button_args['tool_tip']             = esc_html__( 'Maximum number of URLs reached for your license.', 'rocket' );
 		$rocket_pma_add_page_button_args['url']                  = '#';
 		$rocket_pma_add_page_button_args['disabled']             = true;
 	}
