@@ -270,6 +270,9 @@ class Controller {
 	public function get_license_data(): array {
 		$sku      = $this->user->get_pma_addon_sku_active();
 		$upgrades = $this->user->get_pma_addon_upgrade_skus( $sku );
+		if ( empty( $upgrades ) ) {
+			return [];
+		}
 		$upgrade  = array_shift( $upgrades );
 
 		$price = $this->user->get_pma_addon_price( $upgrade );
