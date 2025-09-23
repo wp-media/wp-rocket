@@ -15,7 +15,6 @@ use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
-use function Symfony\Component\String\s;
 
 /**
  * Performance Monitoring Subscriber
