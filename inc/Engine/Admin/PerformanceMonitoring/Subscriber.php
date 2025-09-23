@@ -15,7 +15,6 @@ use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
-use function Symfony\Component\String\s;
 
 /**
  * Performance Monitoring Subscriber
@@ -451,9 +450,9 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	/**
 	 * Add monthly schedule to cron schedules.
 	 *
-	 * @param array $schedules Cron schedules.
+	 * @param array|mixed $schedules Cron schedules.
 	 *
-	 * @return array
+	 * @return array|mixed
 	 */
 	public function maybe_add_monthly_schedule( $schedules ) {
 		if ( ! is_array( $schedules ) ) {
