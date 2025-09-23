@@ -47,9 +47,9 @@ class PerformanceMonitoringContext implements ContextInterface {
 	 */
 	public function is_allowed( array $data = [] ): bool {
 		// Block for reseller accounts and non-live installations.
-		if ( $this->is_reseller_or_non_live() ) {
-			return false;
-		}
+		// if ( $this->is_reseller_or_non_live() ) {
+		// 	return false;
+		// }
 
 		$enabled = current_user_can( 'rocket_manage_options' ) || wp_doing_cron();
 
