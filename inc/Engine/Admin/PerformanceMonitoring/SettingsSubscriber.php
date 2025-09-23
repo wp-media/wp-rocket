@@ -31,13 +31,13 @@ class SettingsSubscriber extends Abstract_Render implements Subscriber_Interface
 	/**
 	 * Instantiate the class
 	 *
-	 * @param User   $user          User API client.
-	 * @param string $template_path Path to the templates.
+	 * @param User                         $user          User API client.
+	 * @param string                       $template_path Path to the templates.
 	 * @param PerformanceMonitoringContext $pm_context Performance Monitoring context.
 	 */
 	public function __construct( User $user, $template_path, PerformanceMonitoringContext $pm_context ) {
 		parent::__construct( $template_path );
-		$this->user = $user;
+		$this->user       = $user;
 		$this->pm_context = $pm_context;
 	}
 
