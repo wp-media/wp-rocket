@@ -178,6 +178,7 @@ class ServiceProvider extends AbstractServiceProvider {
 				[
 					'user',
 					new StringArgument( __DIR__ . '/../../../Engine/License/views' ),
+					'pm_context',
 				]
 			);
 

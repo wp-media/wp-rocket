@@ -6,6 +6,7 @@ namespace WP_Rocket\Engine\Admin\PerformanceMonitoring;
 use WP_Rocket\Abstract_Render;
 use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\Context\PerformanceMonitoringContext;
 
 /**
  * Handle Add-On license status display
@@ -21,14 +22,23 @@ class SettingsSubscriber extends Abstract_Render implements Subscriber_Interface
 	private $user;
 
 	/**
+	 * Performance Monitoring context
+	 *
+	 * @var PerformanceMonitoringContext
+	 */
+	private $pm_context;
+
+	/**
 	 * Instantiate the class
 	 *
 	 * @param User   $user          User API client.
 	 * @param string $template_path Path to the templates.
+	 * @param PerformanceMonitoringContext $pm_context Performance Monitoring context.
 	 */
-	public function __construct( User $user, $template_path ) {
+	public function __construct( User $user, $template_path, PerformanceMonitoringContext $pm_context ) {
 		parent::__construct( $template_path );
 		$this->user = $user;
+		$this->pm_context = $pm_context;
 	}
 
 	/**
@@ -55,8 +65,7 @@ class SettingsSubscriber extends Abstract_Render implements Subscriber_Interface
 			return;
 		}
 
-		// Hide Rocket Insights status for reseller accounts and non-live installations.
-		if ( $this->user->is_reseller_account() || ! rocket_is_live_site() ) {
+		if ( $this->pm_context->is_allowed() ) {
 			return;
 		}
 
