@@ -125,6 +125,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'rocket_dashboard_sidebar'          => 'render_global_score_widget',
 			'rocket_insights_tab_content'       => [
 				[ 'render_license_banner_section', 10 ],
+				[ 'maybe_show_notice', 18 ],
 				[ 'render_performance_urls_table', 20 ],
 				[ 'render_settings_section', 30 ],
 			],
@@ -135,8 +136,8 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			],
 			'admin_post_rocket_pm_add_homepage' => 'add_homepage_from_widget',
 			'rocket_deactivation'               => [
-				'cancel_scheduled_jobs',
-				'remove_current_plan',
+				[ 'cancel_scheduled_jobs' ],
+				[ 'remove_current_plan' ],
 			],
 		];
 	}
@@ -366,5 +367,9 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public function remove_current_plan() {
 		$this->plan->remove_current_plan();
+	}
+
+	public function maybe_show_notice() {
+		$this->controller->maybe_show_notice();
 	}
 }
