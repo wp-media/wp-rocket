@@ -337,7 +337,7 @@ class Controller {
 
 		if (
 			in_array(
-				'insights_upgrade_notice',
+				'insights_upgrade',
 				(array) get_user_meta( get_current_user_id(), 'rocket_boxes', true ),
 				true
 			)
@@ -358,7 +358,7 @@ class Controller {
 				),
 				'id'                     => 'insights_upgrade',
 				'class_prefix'           => 'wpr-',
-				'dismiss_button' => true,
+				'dismiss_button' => 'insights_upgrade',
 				'dismiss_button_class' => 'wpr-notice-close wpr-icon-close rocket-dismiss',
 				'dismiss_button_message' => '',
 			]

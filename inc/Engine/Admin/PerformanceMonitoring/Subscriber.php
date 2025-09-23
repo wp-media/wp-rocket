@@ -110,9 +110,9 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'wp_rocket_first_install'           => 'schedule_homepage_tests',
 			'wp_ajax_rocket_pm_add_new_page'    => 'add_new_page',
 			'wp_ajax_rocket_pm_get_results'     => 'get_results',
-			'rocket_localize_admin_script'      => 'add_pending_ids',
 			'admin_post_delete_pm'              => 'delete_row',
 			'wp_ajax_rocket_pm_reset_page'      => 'reset_page',
+			'rocket_localize_admin_script'      => 'add_pending_ids',
 			'rocket_pma_credit_reset'           => 'reset_credit_monthly',
 			'rocket_pm_job_completed'           => [
 				[ 'validate_credit' ],
@@ -337,7 +337,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		}
 
 		$this->plan->remove_customer_data_cache();
-		rocket_renew_box( 'pma_upgrade_notice' );
+		rocket_renew_box( 'insights_upgrade' );
 
 		wp_safe_redirect( admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '#rocket_insights' ) );
 	}
