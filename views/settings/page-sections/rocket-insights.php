@@ -21,6 +21,6 @@ defined( 'ABSPATH' ) || exit;
 		<h2 class="wpr-title1 wpr-icon-rocket-insights-hover"><?php echo esc_html( $data['title'] ); ?></h2>
 	</div>
 	<?php do_action( 'rocket_insights_tab_content' ); ?>
-
+	<?php $this->render_settings_sections( $data['id'] ); ?>
 </div>
 
