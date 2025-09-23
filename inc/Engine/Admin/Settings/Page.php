@@ -2254,12 +2254,10 @@ class Page extends Abstract_Render {
 
 		$previous_version = $this->options->get( 'previous_version' );
 
-		// Bail-out if previous version is greater than or equal to 3.19.
-		if ( version_compare( $previous_version, '3.19', '>=' ) ) {
+		// Bail-out if previous version is greater than or equal to 3.20.
+		if ( version_compare( $previous_version, '3.20', '>=' ) ) {
 			return;
 		}
-
-		$preconnect_content = $this->beacon->get_suggest( 'preconnect_domains' );
 
 		rocket_notice_html(
 			[
@@ -2267,10 +2265,10 @@ class Page extends Abstract_Render {
 				'dismissible'    => '',
 				'message'        => sprintf(
 						// translators: %1$s: opening strong tag, %2$s: closing strong tag, %3$s: opening a tag, %4$s: closing a tag.
-						__( '%1$sWP Rocket:%2$s the plugin has been updated to the 3.19 version. New feature: %3$sPreconnect to external domains%4$s. Check out our documentation to learn more about it.', 'rocket' ),
+						__( '%1$sWP Rocket:%2$s the plugin has been updated to the 3.20 version. New feature: %3$sRocket Insights%4$s. Check out our documentation to learn more about it.', 'rocket' ),
 						'<strong>',
 						'</strong>',
-						'<a href="' . esc_url( $preconnect_content['url'] ) . '" data-beacon-article="' . esc_attr( $preconnect_content['id'] ) . '" target="_blank" rel="noopener noreferrer">',
+						'<a href="" data-beacon-article="" target="_blank" rel="noopener noreferrer">',
 						'</a>'
 				),
 				'dismiss_button' => 'rocket_update_notice',
