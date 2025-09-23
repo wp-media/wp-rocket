@@ -46,11 +46,6 @@ class PerformanceMonitoringContext implements ContextInterface {
 	 * @return bool
 	 */
 	public function is_allowed( array $data = [] ): bool {
-		// Block for reseller accounts and non-live installations.
-		if ( $this->is_reseller_or_non_live() ) {
-			return false;
-		}
-
 		$enabled = current_user_can( 'rocket_manage_options' ) || wp_doing_cron();
 
 		/**
@@ -58,7 +53,14 @@ class PerformanceMonitoringContext implements ContextInterface {
 		 *
 		 * @param boolean $enabled Current status, default is true.
 		 */
-		return wpm_apply_filters_typed( 'boolean', 'rocket_performance_monitoring_enabled', $enabled );
+		$enabled = wpm_apply_filters_typed( 'boolean', 'rocket_performance_monitoring_enabled', $enabled );
+
+		// Block for reseller accounts and non-live installations.
+		if ( $enabled && $this->is_reseller_or_non_live() ) {
+			return false;
+		}
+
+		return $enabled;
 	}
 
 	/**
