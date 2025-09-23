@@ -330,6 +330,11 @@ class Controller {
 		return $this->user->get_pma_addon_limit( $this->user->get_pma_addon_sku_active() );
 	}
 
+	/**
+	 * Maybe show upgrade notice.
+	 *
+	 * @return void
+	 */
 	public function maybe_show_notice() {
 		if ( ! $this->context->is_allowed() || $this->context->is_free_user() ) {
 			return;
@@ -358,8 +363,8 @@ class Controller {
 				),
 				'id'                     => 'insights_upgrade',
 				'class_prefix'           => 'wpr-',
-				'dismiss_button' => 'insights_upgrade',
-				'dismiss_button_class' => 'wpr-notice-close wpr-icon-close rocket-dismiss',
+				'dismiss_button'         => 'insights_upgrade',
+				'dismiss_button_class'   => 'wpr-notice-close wpr-icon-close rocket-dismiss',
 				'dismiss_button_message' => '',
 			]
 		);

@@ -170,7 +170,7 @@ class Render extends Abstract_Render {
 	 */
 	public function render_license_banner_plan_price( string $price, string $currency = '$', string $period = 'month' ) {
 		global $wp_locale;
-		$dot = $wp_locale->number_format['decimal_point'] ?? '.';
+		$dot   = $wp_locale->number_format['decimal_point'] ?? '.';
 		$price = number_format_i18n( $price, 2 );
 		$price = explode( $dot, $price );
 		$data  = [

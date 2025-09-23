@@ -369,6 +369,11 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		$this->plan->remove_current_plan();
 	}
 
+	/**
+	 * Maybe show upgrade notice.
+	 *
+	 * @return void
+	 */
 	public function maybe_show_notice() {
 		$this->controller->maybe_show_notice();
 	}
