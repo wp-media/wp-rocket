@@ -106,7 +106,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @param GlobalScore                  $global_score GlobalScore instance.
 	 * @param Options_Data                 $options Plugin options.
 	 * @param Manager                      $manager Manager instance.
-   * @param UserClient                   $user_client  User client API instance.
+	 * @param UserClient                   $user_client  User client API instance.
 	 * @param User                         $user         User instance.
 	 */
 	public function __construct( Render $render, Controller $controller, AjaxController $ajax_controller, Queue $queue, PerformanceMonitoringContext $pma_context, GlobalScore $global_score, Options_Data $options, Manager $manager, UserClient $user_client, User $user ) {
@@ -148,7 +148,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'rocket_insights_tab_content'       => [
 				[ 'render_license_banner_section', 10 ],
 				[ 'render_performance_urls_table', 20 ],
-				//[ 'render_settings_section', 30 ],
+				// [ 'render_settings_section', 30 ],
 			],
 			'admin_init'                        => [
 				[ 'check_upgrade', 8 ],
@@ -163,7 +163,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			],
 			'cron_schedules'                    => 'maybe_add_monthly_schedule',
 			'rocket_options_changed'            => 'maybe_cancel_scheduled_jobs',
-			'wpr_pma_retest_all_pages'            => 'retest_all_pages',
+			'wpr_pma_retest_all_pages'          => 'retest_all_pages',
 		];
 	}
 

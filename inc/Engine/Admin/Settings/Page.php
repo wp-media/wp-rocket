@@ -1698,26 +1698,41 @@ class Page extends Abstract_Render {
 					],
 					'page'   => 'rocket_insights',
 					'helper' => '',
+					'class'  => [ 'pma-settings-container' ],
 				],
 			]
 		);
 
 		$this->settings->add_settings_fields(
 			[
-				'performance_monitoring'                   => [
+				'performance_monitoring' => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Performance Monitoring', 'rocket' ),
 					'description'       => __( 'Automatically test your tracked pages.', 'rocket' ),
-					'container_class'   => [],
 					'section'           => 'performance_monitoring',
 					'page'              => 'rocket_insights',
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
-					'input_attr'        => [
-						'disabled' => false,
+				],
+				'performance_monitoring_schedule_frequency' => [
+					'container_class'   => [
+						'wpr-field--children',
+					],
+					'type'              => 'select',
+					'label'             => '',
+					'description'       => '',
+					'parent'            => 'performance_monitoring',
+					'section'           => 'performance_monitoring',
+					'page'              => 'rocket_insights',
+					'default'           => 'monthly',
+					'sanitize_callback' => 'sanitize_text_field',
+					'choices'           => [
+						'daily'   => __( 'Daily', 'rocket' ),
+						'weekly'  => __( 'Weekly', 'rocket' ),
+						'monthly' => __( 'Monthly', 'rocket' ),
 					],
 				],
-			]
+			],
 		);
 	}
 
