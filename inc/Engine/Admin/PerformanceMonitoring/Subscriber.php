@@ -148,7 +148,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'rocket_insights_tab_content'       => [
 				[ 'render_license_banner_section', 10 ],
 				[ 'render_performance_urls_table', 20 ],
-				// [ 'render_settings_section', 30 ],
 			],
 			'admin_init'                        => [
 				[ 'check_upgrade', 8 ],
@@ -325,15 +324,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 				'can_add_pages'   => wpm_apply_filters_typesafe( 'wpr_pm_allow_add_page', true ),
 			]
 		);
-	}
-
-	/**
-	 * Render the settings section in the Performance Monitoring tab.
-	 *
-	 * @return void
-	 */
-	public function render_settings_section() {
-		$this->render->render_settings_section( $this->controller->get_settings_section_data() );
 	}
 
 	/**

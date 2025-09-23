@@ -138,18 +138,6 @@ class Render extends Abstract_Render {
 	}
 
 	/**
-	 * Render the settings section from views.
-	 *
-	 * @param array $data Data to render the settings section.
-	 *
-	 * @return void
-	 */
-	public function render_settings_section( array $data ) {
-		$data['is_free_user'] = $this->pma_context->is_free_user();
-		echo $this->generate( 'partials/performance-monitoring/settings', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-	}
-
-	/**
 	 * Render the HTML for a single performance monitoring list row.
 	 *
 	 * @param object $data The data object representing a single row (page) in the performance monitoring list.
