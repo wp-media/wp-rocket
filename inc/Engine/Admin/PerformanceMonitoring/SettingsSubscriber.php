@@ -65,7 +65,8 @@ class SettingsSubscriber extends Abstract_Render implements Subscriber_Interface
 			return;
 		}
 
-		if ( ! $this->pm_context->is_allowed() ) {
+		// Hide Rocket Insights status for reseller accounts and non-live installations.
+		if ( $this->pm_context->is_reseller_or_non_live() ) {
 			return;
 		}
 
