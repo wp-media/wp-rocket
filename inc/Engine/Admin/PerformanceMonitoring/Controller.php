@@ -358,6 +358,9 @@ class Controller {
 				),
 				'id'                     => 'insights_upgrade',
 				'class_prefix'           => 'wpr-',
+				'dismiss_button' => true,
+				'dismiss_button_class' => 'wpr-notice-close wpr-icon-close rocket-dismiss',
+				'dismiss_button_message' => '',
 			]
 		);
 	}
