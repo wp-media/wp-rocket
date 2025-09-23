@@ -65,7 +65,7 @@ class SettingsSubscriber extends Abstract_Render implements Subscriber_Interface
 			return;
 		}
 
-		if ( $this->pm_context->is_allowed() ) {
+		if ( ! $this->pm_context->is_allowed() ) {
 			return;
 		}
 
