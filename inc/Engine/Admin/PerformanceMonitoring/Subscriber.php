@@ -244,6 +244,8 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			$this->cancel_scheduled_jobs();
 			return;
 		}
+
+		$this->queue->schedule_reset_task();
 	}
 
 	/**
@@ -464,7 +466,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		}
 
 		$schedules['monthly'] = [
-			'interval' => 2635200,
+			'interval' => MONTH_IN_SECONDS,
 			'display'  => __( 'Once a month', 'rocket' ),
 		];
 

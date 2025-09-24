@@ -281,7 +281,7 @@ class Controller {
 		$sku      = $this->user->get_pma_addon_sku_active();
 		$upgrades = $this->user->get_pma_addon_upgrade_skus( $sku );
 
-		if ( 0 === count( $upgrades ) ) {
+		if ( empty( $upgrades ) ) {
 			return [];
 		}
 
