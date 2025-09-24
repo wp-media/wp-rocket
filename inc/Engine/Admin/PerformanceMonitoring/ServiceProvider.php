@@ -13,6 +13,7 @@ use WP_Rocket\Engine\Admin\PerformanceMonitoring\{
 	Context\PerformanceMonitoringContext,
 	Jobs\Factory as PMFactory,
 	Jobs\Manager as PMManager,
+	Managers\Plan,
 	Queue\Queue as PMQueue,
 	AJAX\Controller as AjaxController,
 	URLLimit\Subscriber as URLLimitSubscriber,
@@ -48,6 +49,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'pm_url_limit_subscriber',
 		'rocket_insights_settings',
 		'pm_settings_subscriber',
+		'pm_plan',
 	];
 
 	/**
@@ -99,6 +101,16 @@ class ServiceProvider extends AbstractServiceProvider {
 		// API Client.
 		$this->getContainer()->add( 'pm_api_client', PMAPIClient::class )
 			->addArgument( 'options' );
+
+		$this->getContainer()->add( 'pm_plan', Plan::class )
+			->addArguments(
+				[
+					'options_api',
+					'pm_context',
+					'user',
+					'user_client',
+				]
+			);
 
 		// Jobs layer.
 		$this->getContainer()->add( 'pm_manager', PMManager::class )
@@ -162,8 +174,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'pm_queue',
 					'pm_context',
 					'pm_global_score',
-					'user_client',
-					'user',
+					'pm_plan',
 				]
 			);
 

@@ -2,12 +2,17 @@
 	background-image: none ;
 	border-radius: 0;
 	border-left: 4px solid #3ECE9D;
-	.wpr-notice-container{
+	.wpr-notice-container, p:first-child{
 		padding: 2*$space;
 	}
-	.wpr-notice-description{
+	.wpr-notice-description, p{
 		margin: 0;
 	}
+
+	p:first-child{
+		@include font-size(14,22);
+	}
+
 	.wpr-notice-close{
 		top: 2*$space;
 	}
