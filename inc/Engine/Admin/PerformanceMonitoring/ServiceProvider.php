@@ -175,8 +175,6 @@ class ServiceProvider extends AbstractServiceProvider {
 					'pm_global_score',
 					'options',
 					'pm_manager',
-					'user_client',
-					'user',
 					'pm_plan',
 				]
 			);

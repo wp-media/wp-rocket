@@ -107,6 +107,8 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		Queue $queue,
 		PerformanceMonitoringContext $pma_context,
 		GlobalScore $global_score,
+		Options_Data $options,
+		Manager $manager,
 		Plan $plan
 	) {
 		$this->render          = $render;
@@ -115,6 +117,8 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		$this->queue           = $queue;
 		$this->pma_context     = $pma_context;
 		$this->global_score    = $global_score;
+		$this->options         = $options;
+		$this->manager         = $manager;
 		$this->plan            = $plan;
 	}
 
