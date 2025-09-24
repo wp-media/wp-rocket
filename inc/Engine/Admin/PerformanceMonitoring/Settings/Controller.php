@@ -71,4 +71,13 @@ class Controller extends Abstract_Render {
 
 		echo $this->generate( 'dashboard-addon-status', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
+
+	/**
+	 * Check if the current plan is free or not.
+	 *
+	 * @return bool
+	 */
+	public function is_free_plan() {
+		return $this->user->is_pma_free_active( $this->user->get_pma_addon_sku_active() );
+	}
 }

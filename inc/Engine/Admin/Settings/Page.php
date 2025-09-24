@@ -1691,7 +1691,7 @@ class Page extends Abstract_Render {
 		$this->settings->add_settings_sections(
 			[
 				'performance_monitoring' => [
-					'title'  => __( 'Rocket Insights', 'rocket' ),
+					'title'  => __( 'Settings', 'rocket' ),
 					'help'   => [
 						'id'  => '',
 						'url' => '',
@@ -1703,6 +1703,13 @@ class Page extends Abstract_Render {
 			]
 		);
 
+		/**
+		 * Filters whether to enabled Rocket Insights settings.
+		 *
+		 * @param bool $enabled True to enable settings, false to disable it.
+		 */
+		$insights_settings_enabled = wpm_apply_filters_typed( 'boolean', 'rocket_insights_settings_enabled', true );
+
 		$this->settings->add_settings_fields(
 			[
 				'performance_monitoring' => [
@@ -1713,10 +1720,18 @@ class Page extends Abstract_Render {
 					'page'              => 'rocket_insights',
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
+					'container_class'   => [
+						! $insights_settings_enabled ? 'wpr-isDisabled' : '',
+					],
+					'input_attr'        => [
+						'disabled' => ! $insights_settings_enabled ? 1 : 0,
+					],
+					'tooltip'           => ! $insights_settings_enabled ? __( 'Upgrade your plan to get access to Automatic Updates', 'rocket' ) : '',
 				],
 				'performance_monitoring_schedule_frequency' => [
 					'container_class'   => [
 						'wpr-field--children',
+						! $insights_settings_enabled ? 'wpr-isDisabled' : '',
 					],
 					'type'              => 'select',
 					'label'             => '',
@@ -1730,6 +1745,9 @@ class Page extends Abstract_Render {
 						'daily'   => __( 'Daily', 'rocket' ),
 						'weekly'  => __( 'Weekly', 'rocket' ),
 						'monthly' => __( 'Monthly', 'rocket' ),
+					],
+					'input_attr'        => [
+						'disabled' => ! $insights_settings_enabled ? 1 : 0,
 					],
 				],
 			],
