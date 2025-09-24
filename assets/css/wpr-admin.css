@@ -3104,11 +3104,15 @@ div.wpr-tutorial-item {
   border-radius: 0;
   border-left: 4px solid #3ECE9D;
 }
-.wpr-pma-notice .wpr-notice-container {
+.wpr-pma-notice .wpr-notice-container, .wpr-pma-notice p:first-child {
   padding: 16px;
 }
-.wpr-pma-notice .wpr-notice-description {
+.wpr-pma-notice .wpr-notice-description, .wpr-pma-notice p {
   margin: 0;
+}
+.wpr-pma-notice p:first-child {
+  font-size: 0.875rem;
+  line-height: 1.5714285714;
 }
 .wpr-pma-notice .wpr-notice-close {
   top: 16px;

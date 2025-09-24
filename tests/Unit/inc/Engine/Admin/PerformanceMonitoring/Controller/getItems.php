@@ -10,6 +10,7 @@ use WP_Rocket\Engine\Admin\PerformanceMonitoring\Database\Queries\PerformanceMon
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Jobs\Manager;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Credit\Manager as CreditManager;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\GlobalScore;
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\Managers\Plan;
 use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Tests\Unit\TestCase;
 

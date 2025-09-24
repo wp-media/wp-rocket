@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Admin\PerformanceMonitoring;
 
-use WP_Rocket\Engine\Admin\PerformanceMonitoring\{
-	GlobalScore,
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\{GlobalScore,
 	Jobs\Manager,
 	Context\PerformanceMonitoringContext,
 	Database\Queries\PerformanceMonitoring as PMQuery,
-	Credit\Manager as CreditManager
+	Credit\Manager as CreditManager,
+	Managers\Plan
 };
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\License\API\User;
@@ -54,7 +54,7 @@ class Controller {
 	 *
 	 * @var User
 	 */
-	protected $user;
+	private $user;
 
 	/**
 	 * Plugin options instance.
@@ -74,7 +74,15 @@ class Controller {
 	 * @param User                         $user User client API instance.
 	 * @param Options_Data                 $options Plugin options instance.
 	 */
-	public function __construct( PMQuery $query, Manager $manager, PerformanceMonitoringContext $context, CreditManager $credit_manager, GlobalScore $global_score, User $user, Options_Data $options ) {
+	public function __construct(
+		PMQuery $query,
+		Manager $manager,
+		PerformanceMonitoringContext $context,
+		CreditManager $credit_manager,
+		GlobalScore $global_score,
+		User $user,
+		Options_Data $options
+	) {
 		$this->query          = $query;
 		$this->manager        = $manager;
 		$this->context        = $context;
@@ -333,5 +341,45 @@ class Controller {
 	 */
 	public function get_pma_addon_limit() {
 		return $this->user->get_pma_addon_limit( $this->user->get_pma_addon_sku_active() );
+	}
+
+	/**
+	 * Maybe show upgrade notice.
+	 *
+	 * @return void
+	 */
+	public function maybe_show_notice() {
+		if ( ! $this->context->is_allowed() || $this->context->is_free_user() ) {
+			return;
+		}
+
+		if (
+			in_array(
+				'insights_upgrade',
+				(array) get_user_meta( get_current_user_id(), 'rocket_boxes', true ),
+				true
+			)
+		) {
+			return;
+		}
+
+		rocket_notice_html(
+			[
+				'status'                 => 'pma wpr-pma-notice',
+				'dismissible'            => 'is-dismissible',
+				'message'                => sprintf(
+				// Translators: %1$s = opening strong tag, %2$s = closing strong tag, %3$s = number of pages as a limit.
+					esc_html__( '%1$sCongrats!%2$s You can now monitor up to %3$s pages, run on-demand tests, and access advanced GTmetrix reports.', 'rocket' ),
+					'<strong>',
+					'</strong>',
+					$this->get_pma_addon_limit()
+				),
+				'id'                     => 'insights_upgrade',
+				'class_prefix'           => 'wpr-',
+				'dismiss_button'         => 'insights_upgrade',
+				'dismiss_button_class'   => 'wpr-notice-close wpr-icon-close rocket-dismiss',
+				'dismiss_button_message' => '',
+			]
+		);
 	}
 }

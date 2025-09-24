@@ -3,8 +3,10 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Admin\PerformanceMonitoring;
 
-use WP_Rocket\Engine\Admin\PerformanceMonitoring\{Context\PerformanceMonitoringContext,
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\{
+	Context\PerformanceMonitoringContext,
 	Database\Rows\PerformanceMonitoring,
+	Managers\Plan,
 	Jobs\Manager,
 	Queue\Queue,
 	AJAX\Controller as AjaxController
@@ -81,18 +83,11 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	private $manager;
 
 	/**
-	 *  User client API instance.
+	 * Plan manager instance.
 	 *
-	 * @var UserClient
+	 * @var Plan
 	 */
-	private $user_client;
-
-	/**
-	 *  User instance.
-	 *
-	 * @var User
-	 */
-	private $user;
+	private $plan;
 
 	/**
 	 * Constructor.
@@ -103,22 +98,24 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @param Queue                        $queue Queue object.
 	 * @param PerformanceMonitoringContext $pma_context PMA context.
 	 * @param GlobalScore                  $global_score GlobalScore instance.
-	 * @param Options_Data                 $options Plugin options.
-	 * @param Manager                      $manager Manager instance.
-	 * @param UserClient                   $user_client  User client API instance.
-	 * @param User                         $user         User instance.
+	 * @param Plan                         $plan Plan manager.
 	 */
-	public function __construct( Render $render, Controller $controller, AjaxController $ajax_controller, Queue $queue, PerformanceMonitoringContext $pma_context, GlobalScore $global_score, Options_Data $options, Manager $manager, UserClient $user_client, User $user ) {
+	public function __construct(
+		Render $render,
+		Controller $controller,
+		AjaxController $ajax_controller,
+		Queue $queue,
+		PerformanceMonitoringContext $pma_context,
+		GlobalScore $global_score,
+		Plan $plan
+	) {
 		$this->render          = $render;
 		$this->controller      = $controller;
 		$this->ajax_controller = $ajax_controller;
 		$this->queue           = $queue;
 		$this->pma_context     = $pma_context;
 		$this->global_score    = $global_score;
-		$this->options         = $options;
-		$this->manager         = $manager;
-		$this->user_client     = $user_client;
-		$this->user            = $user;
+		$this->plan            = $plan;
 	}
 
 	/**
@@ -131,9 +128,9 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'wp_rocket_first_install'           => 'schedule_homepage_tests',
 			'wp_ajax_rocket_pm_add_new_page'    => 'add_new_page',
 			'wp_ajax_rocket_pm_get_results'     => 'get_results',
-			'rocket_localize_admin_script'      => 'add_pending_ids',
 			'admin_post_delete_pm'              => 'delete_row',
 			'wp_ajax_rocket_pm_reset_page'      => 'reset_page',
+			'rocket_localize_admin_script'      => 'add_pending_ids',
 			'rocket_pma_credit_reset'           => 'reset_credit_monthly',
 			'rocket_pm_job_completed'           => [
 				[ 'validate_credit' ],
@@ -146,15 +143,19 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'rocket_dashboard_sidebar'          => 'render_global_score_widget',
 			'rocket_insights_tab_content'       => [
 				[ 'render_license_banner_section', 10 ],
+				[ 'maybe_show_notice', 18 ],
 				[ 'render_performance_urls_table', 20 ],
 			],
 			'admin_init'                        => [
-				[ 'check_upgrade', 8 ],
+				[ 'flush_license_cache', 8 ],
+				[ 'check_upgrade' ],
 				[ 'schedule_reset_credit' ],
 			],
 			'admin_post_rocket_pm_add_homepage' => 'add_homepage_from_widget',
-			'wp_rocket_pma_upgraded'            => 'reset_user_data',
-			'rocket_deactivation'               => 'cancel_scheduled_jobs',
+			'rocket_deactivation'               => [
+				[ 'cancel_scheduled_jobs' ],
+				[ 'remove_current_plan' ],
+			],
 			'init'                              => [
 				[ 'maybe_cancel_scheduled_jobs' ],
 				[ 'maybe_schedule_next_test' ],
@@ -345,34 +346,15 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 *
 	 * @return void
 	 */
-	public function check_upgrade() {
+	public function flush_license_cache() {
 		if ( ! isset( $_GET['rocket_pma_upgrade'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			return;
 		}
-		/**
-		 * Fires when the Performance Monitoring Add-on license is upgraded.
-		 *
-		 * @since 3.20
-		 */
-		do_action( 'wp_rocket_pma_upgraded' );
 
-		rocket_renew_box( 'pma_upgrade_notice' );
+		$this->plan->remove_customer_data_cache();
+		rocket_renew_box( 'insights_upgrade' );
 
 		wp_safe_redirect( admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '#rocket_insights' ) );
-	}
-
-	/**
-	 * Resets the user data by clearing the user cache and setting updated user information.
-	 *
-	 * This method retrieves fresh user data from the client after flushing the cache
-	 * and applies it to the current user session.
-	 *
-	 * @return void
-	 */
-	public function reset_user_data() {
-		$this->user_client->flush_cache();
-		$user_data = $this->user_client->get_user_data();
-		$this->user->set_user( $user_data );
 	}
 
 	/**
@@ -385,17 +367,30 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	}
 
 	/**
-	 * Schedule reset credit recurring task with updating from a version older than 3.20.
+	 * Check plan upgrade.
 	 *
-	 * @param string $new_version The new version of the plugin.
-	 * @param string $old_version The old version of the plugin.
 	 * @return void
 	 */
-	public function schedule_reset_credit_on_upgrade( $new_version, $old_version ) {
-		if ( version_compare( $old_version, '3.20', '>=' ) ) {
-			return;
-		}
-		$this->schedule_reset_credit();
+	public function check_upgrade() {
+		$this->plan->check_upgrade();
+	}
+
+	/**
+	 * Remove current plan with plugin deactivation.
+	 *
+	 * @return void
+	 */
+	public function remove_current_plan() {
+		$this->plan->remove_current_plan();
+	}
+
+	/**
+	 * Maybe show upgrade notice.
+	 *
+	 * @return void
+	 */
+	public function maybe_show_notice() {
+		$this->controller->maybe_show_notice();
 	}
 
 	/**
