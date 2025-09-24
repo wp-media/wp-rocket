@@ -590,6 +590,7 @@ a:focus, button:focus {
 }
 .wpr-Content.isNotFull {
   max-width: 960px;
+  z-index: 1000;
 }
 .wpr-Content-tips {
   position: absolute;
@@ -3351,8 +3352,7 @@ div.wpr-tutorial-item {
 .wpr-pma-add-url-button.disabled {
   cursor: not-allowed;
   border-radius: 4px;
-  opacity: 0.5;
-  background: #2D1656;
+  background: #a199b1;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2);
 }
 .wpr-pma-add-url-button.disabled:focus {
