@@ -147,6 +147,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'pm_global_score',
 					'pm_render',
 					'user',
+					'pm_credit_manager',
 				]
 			);
 		// Subscriber.
