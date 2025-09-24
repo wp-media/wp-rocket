@@ -662,6 +662,7 @@ function rocket_notice_html( $args ) {
 		'dismiss_button_message' => __( 'Dismiss this notice', 'rocket' ),
 		'readonly_content'       => '',
 		'id'                     => '',
+		'class_prefix'           => '',
 	];
 
 	$args = wp_parse_args( $args, $defaults );
@@ -735,7 +736,7 @@ function rocket_notice_html( $args ) {
 	}
 
 	?>
-	<div class="notice notice-<?php echo esc_attr( $args['status'] ); ?> <?php echo esc_attr( $args['dismissible'] ); ?>"<?php echo $notice_id; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
+	<div class="<?php echo esc_attr( $args['class_prefix'] ); ?>notice notice-<?php echo esc_attr( $args['status'] ); ?> <?php echo esc_attr( $args['dismissible'] ); ?>"<?php echo $notice_id; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
 		<?php
 			$tag = 0 !== strpos( $args['message'], '<p' ) && 0 !== strpos( $args['message'], '<ul' );
 
