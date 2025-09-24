@@ -1683,7 +1683,7 @@ class Page extends Abstract_Render {
 		$this->settings->add_page_section(
 			'rocket_insights',
 			[
-				'title'            => __( 'Settings', 'rocket' ),
+				'title'            => __( 'Rocket Insights', 'rocket' ),
 				'menu_description' => __( 'Get performance insights', 'rocket' ),
 			]
 		);
