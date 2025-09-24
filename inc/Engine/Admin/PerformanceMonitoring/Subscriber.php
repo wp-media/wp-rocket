@@ -184,6 +184,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		$data['pm_ids']                      = $this->controller->get_not_finished_ids();
 		$data['remaining_urls']              = $this->controller->get_remaining_url_count();
 		$data['pm_max_urls_reached_message'] = __( 'Maximum number of URLs reached for your license.', 'rocket' );
+		$data['pm_no_credit_tooltip']        = __( 'Upgrade your plan to get access to re-test performance or run new tests', 'rocket' );
 		return $data;
 	}
 

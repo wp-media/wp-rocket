@@ -350,12 +350,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	function updateAllRetestButtons() {
 		const retestButtons = document.querySelectorAll('.wpr-action-speed_radar_refresh');
+		
+		// Cache all rows that are currently running to avoid repeated DOM queries
+		const runningRows = new Set(
+			Array.from(document.querySelectorAll('.wpr-pma-item')).filter(row =>
+				row.querySelector('.wpr-loading-img') !== null
+			)
+		);
+		
 		retestButtons.forEach(button => {
 			const row = button.closest('.wpr-pma-item');
 			if (!row) return;
 
-			// Check if the row is currently running
-			const isRunning = row.querySelector('.wpr-loading-img') !== null;
+			// Check if the row is currently running (using cached set)
+			const isRunning = runningRows.has(row);
 
 			if (!hasCredit || isRunning) {
 				// Disable button
@@ -365,7 +373,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				if (!hasCredit) {
 					// Add tooltip for no credit
 					button.classList.add('wpr-btn-with-tool-tip');
-					button.setAttribute('title', 'Upgrade your plan to get access to re-test performance or run new tests');
+					button.setAttribute('title', window.rocket_ajax_data?.pm_no_credit_tooltip || 'Upgrade your plan to get access to re-test performance or run new tests');
 				}
 			} else {
 				// Enable button
