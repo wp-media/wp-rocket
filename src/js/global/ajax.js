@@ -328,6 +328,19 @@ document.addEventListener('DOMContentLoaded', function() {
 		$('.wpr-pma-global-score-add-url-button').removeAttr('title');
 	}
 
+	function updateQuotaBanner(canAddPages) {
+		const $quotaBanner = $('#wpr-pma-quota-banner');
+		const $summaryInfo = $('.wpr-pma-summary-info');
+		
+		if (canAddPages === false) {
+			$quotaBanner.removeClass('hidden');
+			$summaryInfo.hide();
+		} else {
+			$quotaBanner.addClass('hidden');
+			$summaryInfo.show();
+		}
+	}
+
 	function updateUrlLimitState(remainingUrls) {
 		if (remainingUrls !== undefined) {
 			if (remainingUrls <= 0) {
@@ -460,6 +473,9 @@ document.addEventListener('DOMContentLoaded', function() {
 				if (response.data.remaining_urls !== undefined && response.data.remaining_urls <= 0) {
 					disableAddUrlElements();
 				}
+
+				// Show/hide quota banner based on can_add_pages
+				updateQuotaBanner(response.data.can_add_pages);
 
 				// Start polling if not already running
 				if (!pollTimer) {
