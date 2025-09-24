@@ -165,7 +165,7 @@ class PerformanceMonitoring extends AbstractQuery {
 	 *
 	 * @return void
 	 */
-	public function limit_urls( int $to_keep ) {
+	public function prune_old_items( int $to_keep ) {
 		$ids = $this->query(
 			[
 				'fields'  => 'ids',

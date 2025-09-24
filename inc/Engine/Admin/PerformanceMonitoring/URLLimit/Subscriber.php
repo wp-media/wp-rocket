@@ -85,6 +85,6 @@ class Subscriber implements Subscriber_Interface {
 		if ( $this->get_url_count() <= $limit ) {
 			return;
 		}
-		$this->pm_query->limit_urls( $limit );
+		$this->pm_query->prune_old_items( $limit );
 	}
 }
