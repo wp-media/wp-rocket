@@ -364,19 +364,13 @@ document.addEventListener('DOMContentLoaded', function() {
 	function updateAllRetestButtons() {
 		const retestButtons = document.querySelectorAll('.wpr-action-speed_radar_refresh');
 		
-		// Cache all rows that are currently running to avoid repeated DOM queries
-		const runningRows = new Set(
-			Array.from(document.querySelectorAll('.wpr-pma-item')).filter(row =>
-				row.querySelector('.wpr-loading-img') !== null
-			)
-		);
-		
 		retestButtons.forEach(button => {
 			const row = button.closest('.wpr-pma-item');
 			if (!row) return;
 
-			// Check if the row is currently running (using cached set)
-			const isRunning = runningRows.has(row);
+			// Get the row ID and check if it's currently being processed
+			const rowId = parseInt(row.dataset.rocketPmId, 10);
+			const isRunning = pmIds.includes(rowId);
 
 			if (!hasCredit || isRunning) {
 				// Disable button
