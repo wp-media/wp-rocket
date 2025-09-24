@@ -96,6 +96,8 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @param Queue                        $queue Queue object.
 	 * @param PerformanceMonitoringContext $pma_context PMA context.
 	 * @param GlobalScore                  $global_score GlobalScore instance.
+	 * @param Options_Data                 $options Options instance.
+	 * @param Manager                      $manager Manager instance.
 	 * @param Plan                         $plan Plan manager.
 	 */
 	public function __construct(

@@ -57,7 +57,7 @@ class Test_renderPerformanceUrlsTable extends TestCase {
 
 		$plan_mock = $this->createMock( Plan::class );
 
-		$subscriber = new Subscriber($mock_render, $mock_controller, $mock_ajax_controller, $mock_queue, $pm_context, $mock_global_score, $plan_mock);
+		$subscriber = new Subscriber($mock_render, $mock_controller, $mock_ajax_controller, $mock_queue, $pm_context, $mock_global_score, $options, $manager, $plan_mock);
 		$subscriber->render_performance_urls_table();
 	}
 }
