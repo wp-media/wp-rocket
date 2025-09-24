@@ -328,6 +328,19 @@ document.addEventListener('DOMContentLoaded', function() {
 		$('.wpr-pma-global-score-add-url-button').removeAttr('title');
 	}
 
+	function updateQuotaBanner(canAddPages) {
+		const $quotaBanner = $('#wpr-pma-quota-banner');
+		const $summaryInfo = $('.wpr-pma-summary-info');
+		
+		if (canAddPages === false) {
+			$quotaBanner.removeClass('hidden');
+			$summaryInfo.hide();
+		} else {
+			$quotaBanner.addClass('hidden');
+			$summaryInfo.show();
+		}
+	}
+
 	function updateUrlLimitState(remainingUrls) {
 		if (remainingUrls !== undefined) {
 			if (remainingUrls <= 0) {
@@ -368,15 +381,53 @@ document.addEventListener('DOMContentLoaded', function() {
 		return urlParams.get('page') === 'wprocket' && window.location.hash === '#rocket_insights';
 	}
 
-	function updateGlobalScoreRow(response){
+	function updateGlobalScoreRow(globalScoreData){
 		if ( isOnRocketInsights() ) {
 			const $tableGlobalScore = $('.wpr-pma-urls-table .wpr-global-score');
 			if ($tableGlobalScore.length > 0){
-				$tableGlobalScore.replaceWith(response.data.global_score_data.row_html);
+				$tableGlobalScore.replaceWith(globalScoreData.row_html);
 			}else {
-				$tableBody.prepend(response.data.global_score_data.row_html);
+				$tableBody.prepend(globalScoreData.row_html);
 			}
 		}
+	}
+
+	/**
+	 * Updates the global score UI widget or table row based on the selected menu.
+	 * When the dashboard or rocket insights menu is clicked, this function updates
+	 * the corresponding global score display after a short delay.
+	 *
+	 * @param {string} id - The ID of the clicked menu item.
+	 */
+	function decideGlobalScoreToUpdate(id) {
+		// Delay UI update a bit till element is visible.
+		setTimeout(() => {
+			switch (id) {
+				// Handle action when dashboard menu is clicked.
+				case 'wpr-nav-dashboard':
+				
+					if ('' === globalScoreData.html) {
+						return;
+					}
+					let globalScoreWidget = $('#wpr_global_score_widget');
+
+					if (globalScoreWidget.length && globalScoreWidget.is(':visible')) {
+						// Update global score widget.
+						globalScoreWidget.html(globalScoreData.html);
+					}
+					break;
+
+				// Handle action when rocket insights menu is clicked.
+				case 'wpr-nav-rocket_insights':
+					
+					if ('' === globalScoreData.row_html) {
+						return;
+					}
+					
+					updateGlobalScoreRow(globalScoreData);
+					break;
+			}
+		}, 30);
 	}
 
 	// ==== AJAX Handlers ====
@@ -402,7 +453,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         $('#wpr_global_score_widget').html(response.data.global_score_data.html);
                     }
 					// Update global score row in table if on Rocket Insights page.
-					updateGlobalScoreRow(response);
+					updateGlobalScoreRow(globalScoreData);
                 }
 				response.data.results.forEach(result => {
 					const $row = $(`[data-rocket-pm-id="${result.id}"]`);
@@ -454,12 +505,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 globalScoreData = response.data.global_score_data;
 
 				// Update global score row in table if on Rocket Insights page.
-				updateGlobalScoreRow(response);
+				updateGlobalScoreRow(globalScoreData);
 
 				// Check if we've reached the URL limit
 				if (response.data.remaining_urls !== undefined && response.data.remaining_urls <= 0) {
 					disableAddUrlElements();
 				}
+
+				// Show/hide quota banner based on can_add_pages
+				updateQuotaBanner(response.data.can_add_pages);
 
 				// Start polling if not already running
 				if (!pollTimer) {
@@ -495,7 +549,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 globalScoreData = response.data.global_score_data;
 
 				// Update global score row in table if on Rocket Insights page.
-				updateGlobalScoreRow(response);
+				updateGlobalScoreRow(globalScoreData);
 				// Start polling if not already running
 				if (!pollTimer) {
 					pollInterval = POLL_BASE_INTERVAL;
@@ -530,19 +584,21 @@ document.addEventListener('DOMContentLoaded', function() {
 		schedulePolling();
 	}
 
-    // Update global score widget in the cause of a slow polling interval when dashboard menu is clicked.
-    $('#wpr-nav-dashboard').on('click', () => {
-        if ( '' === globalScoreData.html ) {
-            return;
-        }
+    // Handle UI update when menu(dashboard|rocket_insights) is clicked.
+	$('.wpr-Header-nav a').on('click', function() {
+		const id = this.id;
+		decideGlobalScoreToUpdate(id);
+	});
+	
+	// Handle UI update when add pages button is clicked.
+	$(document).on('click', '.wpr-percentage-score-widget .wpr-pma-add-url-button', function() {
+		if (!this.textContent.includes('Add Pages')) {
+			return;
+		} 
 
-        let  globalScoreWidget = $('#wpr_global_score_widget');
-
-        setTimeout(() => {
-            if (globalScoreWidget.length && globalScoreWidget.is(':visible')) {
-                // Update global score widget.
-                globalScoreWidget.html(globalScoreData.html);
-            }
-        }, 30); // Wait for 30ms after click for target element to be ready and visible.
-    })
+		// Delay UI update a bit till element is visible.
+		setTimeout(() => {
+			updateGlobalScoreRow(globalScoreData);
+		}, 30);
+	});
 });

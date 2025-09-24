@@ -3,12 +3,13 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Admin\PerformanceMonitoring;
 
-use WP_Rocket\Engine\Admin\PerformanceMonitoring\{
-	Context\PerformanceMonitoringContext,
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\{Context\PerformanceMonitoringContext,
 	Database\Rows\PerformanceMonitoring,
+	Managers\Plan,
 	Queue\Queue,
-	AJAX\Controller as AjaxController
-};
+	AJAX\Controller as AjaxController};
+use WP_Rocket\Engine\License\API\User;
+use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
@@ -64,6 +65,13 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	private $global_score;
 
 	/**
+	 * Plan manager instance.
+	 *
+	 * @var Plan
+	 */
+	private $plan;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param Render                       $render Render object.
@@ -72,14 +80,24 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @param Queue                        $queue Queue object.
 	 * @param PerformanceMonitoringContext $pma_context PMA context.
 	 * @param GlobalScore                  $global_score GlobalScore instance.
+	 * @param Plan                         $plan Plan manager.
 	 */
-	public function __construct( Render $render, Controller $controller, AjaxController $ajax_controller, Queue $queue, PerformanceMonitoringContext $pma_context, GlobalScore $global_score ) {
+	public function __construct(
+		Render $render,
+		Controller $controller,
+		AjaxController $ajax_controller,
+		Queue $queue,
+		PerformanceMonitoringContext $pma_context,
+		GlobalScore $global_score,
+		Plan $plan
+	) {
 		$this->render          = $render;
 		$this->controller      = $controller;
 		$this->ajax_controller = $ajax_controller;
 		$this->queue           = $queue;
 		$this->pma_context     = $pma_context;
 		$this->global_score    = $global_score;
+		$this->plan            = $plan;
 	}
 
 	/**
@@ -92,10 +110,9 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'wp_rocket_first_install'           => 'schedule_homepage_tests',
 			'wp_ajax_rocket_pm_add_new_page'    => 'add_new_page',
 			'wp_ajax_rocket_pm_get_results'     => 'get_results',
-			'rocket_localize_admin_script'      => 'add_pending_ids',
 			'admin_post_delete_pm'              => 'delete_row',
 			'wp_ajax_rocket_pm_reset_page'      => 'reset_page',
-			'admin_init'                        => 'schedule_reset_credit',
+			'rocket_localize_admin_script'      => 'add_pending_ids',
 			'rocket_pma_credit_reset'           => 'reset_credit_monthly',
 			'rocket_pm_job_completed'           => [
 				[ 'validate_credit' ],
@@ -108,11 +125,20 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'rocket_dashboard_sidebar'          => 'render_global_score_widget',
 			'rocket_insights_tab_content'       => [
 				[ 'render_license_banner_section', 10 ],
+				[ 'maybe_show_notice', 18 ],
 				[ 'render_performance_urls_table', 20 ],
 				[ 'render_settings_section', 30 ],
 			],
+			'admin_init'                        => [
+				[ 'flush_license_cache', 8 ],
+				[ 'check_upgrade' ],
+				[ 'schedule_reset_credit' ],
+			],
 			'admin_post_rocket_pm_add_homepage' => 'add_homepage_from_widget',
-			'rocket_deactivation'               => 'cancel_scheduled_jobs',
+			'rocket_deactivation'               => [
+				[ 'cancel_scheduled_jobs' ],
+				[ 'remove_current_plan' ],
+			],
 		];
 	}
 
@@ -301,6 +327,22 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	}
 
 	/**
+	 * Check if the plugin was upgraded.
+	 *
+	 * @return void
+	 */
+	public function flush_license_cache() {
+		if ( ! isset( $_GET['rocket_pma_upgrade'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			return;
+		}
+
+		$this->plan->remove_customer_data_cache();
+		rocket_renew_box( 'insights_upgrade' );
+
+		wp_safe_redirect( admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '#rocket_insights' ) );
+	}
+
+	/**
 	 * Cancel scheduled jobs with plugin deactivation.
 	 *
 	 * @return void
@@ -310,16 +352,29 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	}
 
 	/**
-	 * Schedule reset credit recurring task with updating from a version older than 3.20.
+	 * Check plan upgrade.
 	 *
-	 * @param string $new_version The new version of the plugin.
-	 * @param string $old_version The old version of the plugin.
 	 * @return void
 	 */
-	public function schedule_reset_credit_on_upgrade( $new_version, $old_version ) {
-		if ( version_compare( $old_version, '3.20', '>=' ) ) {
-			return;
-		}
-		$this->schedule_reset_credit();
+	public function check_upgrade() {
+		$this->plan->check_upgrade();
+	}
+
+	/**
+	 * Remove current plan with plugin deactivation.
+	 *
+	 * @return void
+	 */
+	public function remove_current_plan() {
+		$this->plan->remove_current_plan();
+	}
+
+	/**
+	 * Maybe show upgrade notice.
+	 *
+	 * @return void
+	 */
+	public function maybe_show_notice() {
+		$this->controller->maybe_show_notice();
 	}
 }

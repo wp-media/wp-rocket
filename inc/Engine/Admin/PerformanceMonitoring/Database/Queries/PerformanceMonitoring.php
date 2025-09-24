@@ -157,4 +157,25 @@ class PerformanceMonitoring extends AbstractQuery {
 			]
 		);
 	}
+
+	/**
+	 * Limit rows to keep the passed argument and remove others.
+	 *
+	 * @param int $to_keep Number of rows to keep.
+	 *
+	 * @return void
+	 */
+	public function prune_old_items( int $to_keep ) {
+		$ids = $this->query(
+			[
+				'fields'  => 'ids',
+				'offset'  => $to_keep,
+				'orderby' => 'modified',
+				'order'   => 'asc',
+			]
+			);
+		foreach ( $ids as $id ) {
+			$this->delete_item( $id );
+		}
+	}
 }
