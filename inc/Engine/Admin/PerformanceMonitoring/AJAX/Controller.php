@@ -145,6 +145,7 @@ class Controller {
 		$payload['html']              = $this->render->get_performance_monitoring_list_row( $row_data );
 		$payload['global_score_data'] = $this->get_global_score_payload();
 		$payload['remaining_urls']    = $this->get_remaining_url_count();
+		$payload['has_credit']        = $this->context->is_free_user() ? $this->get_credit_manager()->has_credit() : true;
 
 		wp_send_json_success( $payload );
 	}
@@ -281,6 +282,7 @@ class Controller {
 
 		$payload['results']           = $results;
 		$payload['global_score_data'] = $this->get_global_score_payload();
+		$payload['has_credit']        = $this->context->is_free_user() ? $this->get_credit_manager()->has_credit() : true;
 
 		wp_send_json_success( $payload );
 	}
@@ -340,6 +342,7 @@ class Controller {
 				'html'              => $this->render->get_performance_monitoring_list_row( $row ),
 				'global_score_data' => $this->get_global_score_payload(),
 				'remaining_urls'    => $this->get_remaining_url_count(),
+				'has_credit'        => $this->context->is_free_user() ? $this->get_credit_manager()->has_credit() : true,
 			]
 			);
 	}
@@ -379,5 +382,14 @@ class Controller {
 		$max_urls          = $this->user->get_pma_addon_limit( $this->user->get_pma_addon_sku_active() );
 
 		return max( 0, $max_urls - (int) $current_url_count );
+	}
+
+	/**
+	 * Get the credit manager instance.
+	 *
+	 * @return \WP_Rocket\Engine\Admin\PerformanceMonitoring\Credit\Manager
+	 */
+	private function get_credit_manager() {
+		return apply_filters( 'rocket_container', null )->get( 'pm_credit_manager' );
 	}
 }

@@ -270,6 +270,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	let pmIds = Array.isArray(window.rocket_ajax_data?.pm_ids) ? window.rocket_ajax_data.pm_ids.slice() : [];
 	let pollInterval = POLL_BASE_INTERVAL;
 	let pollTimer = null;
+	let hasCredit = true; // Track credit status
     let globalScoreData = {
         data: {
             status: '',
@@ -338,6 +339,43 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 	}
 
+	function updateCreditState(responseHasCredit) {
+		if (responseHasCredit !== undefined && hasCredit !== responseHasCredit) {
+			hasCredit = responseHasCredit;
+			
+			// Update all retest buttons when credit status changes
+			updateAllRetestButtons();
+		}
+	}
+
+	function updateAllRetestButtons() {
+		const retestButtons = document.querySelectorAll('.wpr-action-speed_radar_refresh');
+		retestButtons.forEach(button => {
+			const row = button.closest('.wpr-pma-item');
+			if (!row) return;
+
+			// Check if the row is currently running
+			const isRunning = row.querySelector('.wpr-loading-img') !== null;
+
+			if (!hasCredit || isRunning) {
+				// Disable button
+				button.classList.add('wpr-pma-action--disabled');
+				button.setAttribute('disabled', 'true');
+				
+				if (!hasCredit) {
+					// Add tooltip for no credit
+					button.classList.add('wpr-btn-with-tool-tip');
+					button.setAttribute('title', 'Upgrade your plan to get access to re-test performance or run new tests');
+				}
+			} else {
+				// Enable button
+				button.classList.remove('wpr-pma-action--disabled', 'wpr-btn-with-tool-tip');
+				button.removeAttribute('disabled');
+				button.removeAttribute('title');
+			}
+		});
+	}
+
 	function resetPolling() {
 		if (pollTimer) {
 			clearTimeout(pollTimer);
@@ -392,6 +430,9 @@ document.addEventListener('DOMContentLoaded', function() {
 			_ajax_nonce: rocket_ajax_data.nonce
 		}, function(response) {
 			if (response.success && Array.isArray(response.data.results)) {
+				// Update credit status
+				updateCreditState(response.data.has_credit);
+
                 // Update global score data and widget when status || page count changes.
                 if (globalScoreData.data.status !== response.data.global_score_data.data.status || globalScoreData.data.pages_num !== response.data.global_score_data.data.pages_num) {
                     // Update global score data.
@@ -450,6 +491,9 @@ document.addEventListener('DOMContentLoaded', function() {
 				let pages_num_container = $('#rocket_pma_pages_num');
 				pages_num_container.text( parseInt( pages_num_container.text() ) + 1 );
 
+				// Update credit status
+				updateCreditState(response.data.has_credit);
+
                 // Update global score data.
                 globalScoreData = response.data.global_score_data;
 
@@ -490,6 +534,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
 				const $row = $(`[data-rocket-pm-id="${response.data.id}"]`);
 				$row.replaceWith(response.data.html);
+
+				// Update credit status
+				updateCreditState(response.data.has_credit);
 
                 // Update global score data.
                 globalScoreData = response.data.global_score_data;
