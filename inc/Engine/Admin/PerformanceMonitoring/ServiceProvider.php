@@ -16,7 +16,9 @@ use WP_Rocket\Engine\Admin\PerformanceMonitoring\{
 	Managers\Plan,
 	Queue\Queue as PMQueue,
 	AJAX\Controller as AjaxController,
-	URLLimit\Subscriber as URLLimitSubscriber
+	URLLimit\Subscriber as URLLimitSubscriber,
+	Settings\Controller as SettingsController,
+	Settings\Subscriber as SettingsSubscriber,
 };
 
 class ServiceProvider extends AbstractServiceProvider {
@@ -45,6 +47,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'pm_credit_manager',
 		'pm_global_score',
 		'pm_url_limit_subscriber',
+		'rocket_insights_settings',
 		'pm_settings_subscriber',
 		'pm_plan',
 	];
@@ -183,14 +186,16 @@ class ServiceProvider extends AbstractServiceProvider {
 					'user',
 				]
 			);
-			// Addon Subscriber.
-		$this->getContainer()->addShared( 'pm_settings_subscriber', SettingsSubscriber::class )
+		// Settings Subscriber.
+		$this->getContainer()->add( 'rocket_insights_settings', SettingsController::class )
 			->addArguments(
 				[
 					'user',
 					new StringArgument( __DIR__ . '/../../../Engine/License/views' ),
 				]
 			);
+		$this->getContainer()->addShared( 'pm_settings_subscriber', SettingsSubscriber::class )
+			->addArgument( 'rocket_insights_settings' );
 
 		// Ensure the table is created.
 		$this->getContainer()->get( 'pm_table' );
