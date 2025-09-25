@@ -476,11 +476,13 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 
 	function handleAddPage(e) {
+		e.preventDefault();
+
 		// check if has attr disabled
 		if ($(this).attr('disabled')) {
 			return;
 		}
-		e.preventDefault();
+
 		const pageUrl = $pageUrlInput.val().trim();
 
 		if (!isValidUrl(pageUrl)) {
