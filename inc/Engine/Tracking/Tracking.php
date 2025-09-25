@@ -235,9 +235,9 @@ class Tracking extends Abstract_Render {
 		$this->mixpanel->track(
 			'Rocket Insights Page Added',
 			[
-				'context'        => 'wp_plugin',
-				'plan_type'      => $current_plan,
-				'tracked_pages'  => $urls_count,
+				'context'       => 'wp_plugin',
+				'plan_type'     => $current_plan,
+				'tracked_pages' => $urls_count,
 			]
 		);
 	}
@@ -261,11 +261,11 @@ class Tracking extends Abstract_Render {
 		$this->mixpanel->track(
 			'Rocket Insights Performance Test',
 			[
-				'context' => 'wp_plugin',
-				'status'  => $row_details->status,
-				'score'   => $data->performance_score,
-				'retest'  => $data->is_retest,
-				'duration'=> time() - $data->start_time,
+				'context'  => 'wp_plugin',
+				'status'   => $row_details->status,
+				'score'    => $data->performance_score,
+				'retest'   => $data->is_retest,
+				'duration' => time() - $data->start_time,
 			]
 		);
 	}
@@ -280,20 +280,20 @@ class Tracking extends Abstract_Render {
 			return;
 		}
 
-		$user = wp_get_current_user();
-        $transient = 'rocket_tracking_admin_visited_' . $user->ID;
+		$user      = wp_get_current_user();
+		$transient = 'rocket_tracking_admin_visited_' . $user->ID;
 
-        if ( false !== get_transient( $transient ) ) {
-            return;
-        }
+		if ( false !== get_transient( $transient ) ) {
+			return;
+		}
 
-        $this->mixpanel->track(
-            'Page Viewed',
-            [
-                'path'       => '/wp-admin/options-general.php?page=wprocket',
-                'context'    => 'wp_plugin',
-            ]
-        );
-        set_transient( $transient, true, WEEK_IN_SECONDS );
-    }
+		$this->mixpanel->track(
+			'Page Viewed',
+			[
+				'path'    => '/wp-admin/options-general.php?page=wprocket',
+				'context' => 'wp_plugin',
+			]
+		);
+		set_transient( $transient, true, WEEK_IN_SECONDS );
+	}
 }

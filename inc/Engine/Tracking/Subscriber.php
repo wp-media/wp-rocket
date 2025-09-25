@@ -125,7 +125,8 @@ class Subscriber implements Subscriber_Interface {
 	 * @param int    $urls_count   The current number of URLs being monitored.
 	 *
 	 * @return void
-	 */ public function track_rocket_insights_url_added( $url, $current_plan, $urls_count ): void {
+	 */
+	public function track_rocket_insights_url_added( $url, $current_plan, $urls_count ): void {
 		$this->tracking->track_rocket_insights_url_added( $url, $current_plan, $urls_count );
 	}
 
@@ -151,4 +152,3 @@ class Subscriber implements Subscriber_Interface {
 		$this->tracking->track_admin_visits();
 	}
 }
-

@@ -63,20 +63,20 @@ class Controller {
 	/**
 	 * Constructor.
 	 *
-	 * @param PMQuery       $query Query instance.
-	 * @param Manager       $manager Manager instance.
-	 * @param Context       $context Context instance.
-	 * @param GlobalScore   $global_score GlobalScore instance.
-	 * @param Render        $render Render instance.
-	 * @param Plan          $plan Plan instance.
+	 * @param PMQuery     $query Query instance.
+	 * @param Manager     $manager Manager instance.
+	 * @param Context     $context Context instance.
+	 * @param GlobalScore $global_score GlobalScore instance.
+	 * @param Render      $render Render instance.
+	 * @param Plan        $plan Plan instance.
 	 */
 	public function __construct( PMQuery $query, Manager $manager, Context $context, GlobalScore $global_score, Render $render, Plan $plan ) {
-		$this->query          = $query;
-		$this->manager        = $manager;
-		$this->context        = $context;
-		$this->global_score   = $global_score;
-		$this->render         = $render;
-		$this->plan           = $plan;
+		$this->query        = $query;
+		$this->manager      = $manager;
+		$this->context      = $context;
+		$this->global_score = $global_score;
+		$this->render       = $render;
+		$this->plan         = $plan;
 	}
 
 	/**
@@ -386,7 +386,10 @@ class Controller {
 	 * @return int Number of URLs that can still be added.
 	 */
 	private function get_remaining_url_count(): int {
-		return max( 0, $this->plan->max_urls() - (int) $this->query->
-get_total_count() );
+		return max(
+			0,
+			$this->plan->max_urls() - (int) $this->query->
+		get_total_count()
+			);
 	}
 }

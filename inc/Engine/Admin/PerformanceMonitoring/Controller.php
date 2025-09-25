@@ -82,13 +82,13 @@ class Controller {
 		User $user,
 		Options_Data $options
 	) {
-		$this->query          = $query;
-		$this->manager        = $manager;
-		$this->context        = $context;
-		$this->plan           = $plan;
-		$this->global_score   = $global_score;
-		$this->user           = $user;
-		$this->options        = $options;
+		$this->query        = $query;
+		$this->manager      = $manager;
+		$this->context      = $context;
+		$this->plan         = $plan;
+		$this->global_score = $global_score;
+		$this->user         = $user;
+		$this->options      = $options;
 	}
 
 	/**
