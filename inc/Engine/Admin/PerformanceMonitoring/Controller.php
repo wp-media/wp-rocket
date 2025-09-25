@@ -127,14 +127,19 @@ class Controller {
 			]
 		);
 
+		$urls_count   = $this->query->get_total_count();
+		$current_plan = $this->plan->get_current_plan();
+
 		/**
-		 * Fires when a performance monitoring job is added.
+		 * Fires when a performance monitoring job is added via AJAX.
 		 *
 		 * @since 3.20
 		 *
-		 * @param string $url The URL that was added for monitoring.
+		 * @param string $url          The URL that was added for monitoring.
+		 * @param string $current_plan The current plan of the user.
+		 * @param int    $urls_count   The current number of URLs being monitored.
 		 */
-		do_action( 'rocket_pm_job_added', home_url() );
+		do_action( 'rocket_pm_job_added', $url, $current_plan, $urls_count );
 	}
 
 	/**
