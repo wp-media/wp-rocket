@@ -495,7 +495,18 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public function retest_all_pages() {
 		foreach ( $this->controller->get_items() as $item ) {
-			$this->manager->add_url_to_the_queue( $item->url, $item->is_mobile );
+			$this->manager->add_to_the_queue(
+				$item->url,
+				$item->is_mobile,
+				[
+					'data'       => [
+						'is_retest' => true,
+					],
+					'score'      => '',
+					'report_url' => '',
+					'is_blurred' => 0,
+				]
+				);
 		}
 	}
 
