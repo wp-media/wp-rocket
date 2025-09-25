@@ -63,13 +63,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return int Number of URLs.
 	 */
 	private function get_url_count(): int {
-		$count = $this->pm_query->query(
-			[
-				'count' => true,
-			]
-			);
-
-		return (int) $count;
+		return $this->pm_query->get_total_count();
 	}
 
 	/**

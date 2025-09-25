@@ -11,7 +11,7 @@
 <div class="wpr-percentage-circle status-red ">0</div>
 </div>
 </div>
-<p class="wpr-page-num-txt">2 page monitored.</p>
+<p class="wpr-page-num-txt">Tracked Pages: 2</p>
 <div id="wpr_global_score_widget_add_page_btn_wrapper">
 <a href="#rocket_insights" class="wpr-button wpr-button--icon wpr-button--small wpr-button--purple wpr-icon-plus wpr-button--no-min-width wpr-pma-add-url-button wpr-pma-global-score-add-url-button">Add Pages </a>
 </div>

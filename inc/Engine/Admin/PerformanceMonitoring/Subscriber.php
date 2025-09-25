@@ -211,7 +211,8 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			return $data;
 		}
 
-		$data['pm_ids'] = $this->controller->get_not_finished_ids();
+		$data['pm_ids']               = $this->controller->get_not_finished_ids();
+		$data['pm_no_credit_tooltip'] = __( 'Upgrade your plan to get access to re-test performance or run new tests', 'rocket' );
 
 		return $data;
 	}
@@ -493,7 +494,18 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public function retest_all_pages() {
 		foreach ( $this->controller->get_items() as $item ) {
-			$this->manager->add_url_to_the_queue( $item->url, $item->is_mobile );
+			$this->manager->add_to_the_queue(
+				$item->url,
+				$item->is_mobile,
+				[
+					'data'       => [
+						'is_retest' => true,
+					],
+					'score'      => '',
+					'report_url' => '',
+					'is_blurred' => 0,
+				]
+				);
 		}
 	}
 

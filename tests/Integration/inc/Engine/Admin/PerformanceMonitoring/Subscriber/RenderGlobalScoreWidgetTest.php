@@ -18,6 +18,8 @@ class RenderGlobalScoreWidgetTest extends TestCase {
 
 	protected static $container;
 
+	private $performance_monitoring;
+
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
 
@@ -55,6 +57,8 @@ class RenderGlobalScoreWidgetTest extends TestCase {
 		// Remove Performance Monitoring enabled filter
 		remove_filter( 'rocket_performance_monitoring_enabled', '__return_true' );
 
+		remove_filter( 'pre_get_rocket_option_performance_monitoring', [ $this, 'set_performance_monitoring' ] );
+
 		parent::tear_down();
 	}
 
@@ -73,6 +77,9 @@ class RenderGlobalScoreWidgetTest extends TestCase {
 	}
 
 	private function setUpTest( $config ) {
+		$this->performance_monitoring = $config['performance_monitoring'];
+		add_filter( 'pre_get_rocket_option_performance_monitoring', [ $this, 'set_performance_monitoring' ] );
+
 		// Set up user data if provided
 		if ( isset( $config['customer_data'] ) ) {
 			$user = self::$container->get( 'user' );
@@ -177,4 +184,8 @@ class RenderGlobalScoreWidgetTest extends TestCase {
 		
 		return file_get_contents( $file_path );
 	}
+
+	public function set_performance_monitoring() {
+        return $this->performance_monitoring;
+    }
 }

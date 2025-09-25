@@ -18,8 +18,10 @@ $rocket_pma_add_button_args = [
 
 // Add tooltip if reach max URL and disable btn.
 if ( $data['reach_max_url'] ) {
-	$rocket_pma_add_button_args['attributes']['class'] .= ' wpr-btn-with-tool-tip disabled';
-	$rocket_pma_add_button_args['tooltip']              = esc_html__( 'You have reached your maximum page limit', 'rocket' );
+	$rocket_pma_add_button_args['url']                    = '';
+	$rocket_pma_add_button_args['attributes']['class']   .= ' wpr-btn-with-tool-tip disabled';
+	$rocket_pma_add_button_args['attributes']['disabled'] = 'disabled';
+	$rocket_pma_add_button_args['tooltip']                = esc_html__( 'You have reached your maximum page limit', 'rocket' );
 }
 
 $this->render_action_button(

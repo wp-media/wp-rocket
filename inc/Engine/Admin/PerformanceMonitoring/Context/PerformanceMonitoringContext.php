@@ -73,6 +73,15 @@ class PerformanceMonitoringContext implements ContextInterface {
 	}
 
 	/**
+	 * Determines if scheduling for Performance Monitoring is allowed.
+	 *
+	 * @return bool True if Performance Monitoring is enabled, false otherwise.
+	 */
+	public function is_schedule_allowed(): bool {
+		return (bool) $this->options->get( 'performance_monitoring', 0 );
+	}
+
+	/**
 	 * Check if current installation is a reseller account or non-live site.
 	 *
 	 * This will block Performance Monitoring functionality for reseller accounts and localhost installations.
