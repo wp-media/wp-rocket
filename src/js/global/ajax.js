@@ -377,7 +377,7 @@ document.addEventListener('DOMContentLoaded', function() {
 					}
 					let globalScoreWidget = $('#wpr_global_score_widget');
 
-					if (!globalScoreWidget.length && !globalScoreWidget.is(':visible')) {
+					if (!globalScoreWidget.is(':visible')) {
 						return;
 					}
 
