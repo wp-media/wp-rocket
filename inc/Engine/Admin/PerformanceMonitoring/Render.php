@@ -5,15 +5,15 @@ namespace WP_Rocket\Engine\Admin\PerformanceMonitoring;
 
 use WP_Rocket\Abstract_Render;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Context\PerformanceMonitoringContext;
-use WP_Rocket\Engine\Admin\PerformanceMonitoring\Credit\Manager as CreditManager;
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\Managers\Plan;
 
 class Render extends Abstract_Render {
 	/**
-	 * CreditManager instance.
+	 * Plan instance.
 	 *
-	 * @var CreditManager
+	 * @var Plan
 	 */
-	private $credit_manager;
+	private $plan;
 
 	/**
 	 * PerformanceMonitoringContext instance.
@@ -28,13 +28,13 @@ class Render extends Abstract_Render {
 	 * Initializes the Render instance with the provided template path and CreditManager.
 	 *
 	 * @param string                       $template_path   Path to the template file.
-	 * @param CreditManager                $credit_manager  Instance of CreditManager for managing credits.
-	 * @param PerformanceMonitoringContext $pma_context Instance of PerformanceMonitoringContext for managing performance monitoring context.
+	 * @param Plan                         $plan            Plan instance.
+	 * @param PerformanceMonitoringContext $pma_context     Instance of PerformanceMonitoringContext for managing performance monitoring context.
 	 */
-	public function __construct( $template_path, CreditManager $credit_manager, PerformanceMonitoringContext $pma_context ) {
+	public function __construct( $template_path, Plan $plan, PerformanceMonitoringContext $pma_context ) {
 		parent::__construct( $template_path );
-		$this->credit_manager = $credit_manager;
-		$this->pma_context    = $pma_context;
+		$this->plan        = $plan;
+		$this->pma_context = $pma_context;
 	}
 
 	/**
@@ -81,7 +81,7 @@ class Render extends Abstract_Render {
 	 * @return void
 	 */
 	public function render_pma_urls_table( array $data ) {
-		$data['has_credit']    = $this->credit_manager->has_credit();
+		$data['has_credit']    = $this->plan->has_credit();
 		$data['can_add_url']   = wpm_apply_filters_typesafe( 'wpr_pm_allow_add_page', true );
 		$data['reach_max_url'] = ! $data['can_add_url'];
 
@@ -118,7 +118,7 @@ class Render extends Abstract_Render {
 	 * @return string The rendered HTML for the global score widget.
 	 */
 	public function get_global_score_widget( array $data ): string {
-		$data['has_credit']    = $this->credit_manager->has_credit();
+		$data['has_credit']    = $this->plan->has_credit();
 		$data['can_add_url']   = wpm_apply_filters_typesafe( 'wpr_pm_allow_add_page', true );
 		$data['reach_max_url'] = ! $data['can_add_url'];
 
@@ -132,7 +132,7 @@ class Render extends Abstract_Render {
 	 * @return string The rendered HTML for the performance monitoring row.
 	 */
 	public function get_performance_monitoring_list_row( object $data ): string {
-		$data->has_credit = $this->credit_manager->has_credit();
+		$data->has_credit = $this->plan->has_credit();
 
 		return $this->generate( 'partials/performance-monitoring/table-row', $data );
 	}

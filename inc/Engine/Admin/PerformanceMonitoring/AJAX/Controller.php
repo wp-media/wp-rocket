@@ -10,10 +10,9 @@ use WP_Rocket\Engine\Admin\PerformanceMonitoring\{
 	Jobs\Manager,
 	Context\PerformanceMonitoringContext as Context,
 	Database\Queries\PerformanceMonitoring as PMQuery,
-	Credit\Manager as CreditManager
+	Managers\Plan
 };
 use WP_Rocket\Engine\Common\Utils;
-use WP_Rocket\Engine\License\API\User;
 
 class Controller {
 
@@ -55,18 +54,11 @@ class Controller {
 	private $render;
 
 	/**
-	 * User client API instance.
+	 * Plan instance.
 	 *
-	 * @var User
+	 * @var Plan
 	 */
-	private $user;
-
-	/**
-	 * Credit Manager instance.
-	 *
-	 * @var CreditManager
-	 */
-	private $credit_manager;
+	private $plan;
 
 	/**
 	 * Constructor.
@@ -76,17 +68,15 @@ class Controller {
 	 * @param Context       $context Context instance.
 	 * @param GlobalScore   $global_score GlobalScore instance.
 	 * @param Render        $render Render instance.
-	 * @param User          $user User client API instance.
-	 * @param CreditManager $credit_manager Credit Manager instance.
+	 * @param Plan          $plan Plan instance.
 	 */
-	public function __construct( PMQuery $query, Manager $manager, Context $context, GlobalScore $global_score, Render $render, User $user, CreditManager $credit_manager ) {
+	public function __construct( PMQuery $query, Manager $manager, Context $context, GlobalScore $global_score, Render $render, Plan $plan ) {
 		$this->query          = $query;
 		$this->manager        = $manager;
 		$this->context        = $context;
 		$this->global_score   = $global_score;
 		$this->render         = $render;
-		$this->user           = $user;
-		$this->credit_manager = $credit_manager;
+		$this->plan           = $plan;
 	}
 
 	/**
@@ -138,7 +128,7 @@ class Controller {
 		}
 
 		$urls_count   = $this->query->get_total_count();
-		$current_plan = $this->user->get_pma_addon_sku_active();
+		$current_plan = $this->plan->get_current_plan();
 
 		/**
 		 * Fires when a performance monitoring job is added via AJAX.
@@ -160,7 +150,7 @@ class Controller {
 		$payload['html']              = $this->render->get_performance_monitoring_list_row( $row_data );
 		$payload['global_score_data'] = $this->get_global_score_payload();
 		$payload['remaining_urls']    = $this->get_remaining_url_count();
-		$payload['has_credit']        = $this->user_has_credit();
+		$payload['has_credit']        = $this->plan->has_credit();
 		$payload['can_add_pages']     = wpm_apply_filters_typesafe( 'wpr_pm_allow_add_page', true );
 
 		wp_send_json_success( $payload );
@@ -298,7 +288,7 @@ class Controller {
 
 		$payload['results']           = $results;
 		$payload['global_score_data'] = $this->get_global_score_payload();
-		$payload['has_credit']        = $this->user_has_credit();
+		$payload['has_credit']        = $this->plan->has_credit();
 
 		wp_send_json_success( $payload );
 	}
@@ -360,7 +350,7 @@ class Controller {
 				'html'              => $this->render->get_performance_monitoring_list_row( $row ),
 				'global_score_data' => $this->get_global_score_payload(),
 				'remaining_urls'    => $this->get_remaining_url_count(),
-				'has_credit'        => $this->user_has_credit(),
+				'has_credit'        => $this->plan->has_credit(),
 			]
 			);
 	}
@@ -396,18 +386,7 @@ class Controller {
 	 * @return int Number of URLs that can still be added.
 	 */
 	private function get_remaining_url_count(): int {
-		$current_url_count = $this->query->query( [ 'count' => true ] );
-		$max_urls          = $this->user->get_pma_addon_limit( $this->user->get_pma_addon_sku_active() );
-
-		return max( 0, $max_urls - (int) $current_url_count );
-	}
-
-	/**
-	 * Check if the current user has available credits for performance monitoring.
-	 *
-	 * @return bool True if user has credits available, false otherwise.
-	 */
-	private function user_has_credit(): bool {
-		return $this->context->is_free_user() ? $this->credit_manager->has_credit() : true;
+		return max( 0, $this->plan->max_urls() - (int) $this->query->
+get_total_count() );
 	}
 }
