@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\Admin\PerformanceMonitoring\Settings;
 
 use WP_Rocket\Abstract_Render;
 use WP_Rocket\Engine\License\API\User;
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\Context\PerformanceMonitoringContext;
 
 class Controller extends Abstract_Render {
 	/**
@@ -15,14 +16,23 @@ class Controller extends Abstract_Render {
 	private $user;
 
 	/**
+	 * Performance Monitoring context
+	 *
+	 * @var PerformanceMonitoringContext
+	 */
+	private $pm_context;
+
+	/**
 	 * Instantiate the class
 	 *
-	 * @param User   $user          User API client.
-	 * @param string $template_path Path to the templates.
+	 * @param User                         $user          User API client.
+	 * @param string                       $template_path Path to the templates.
+	 * @param PerformanceMonitoringContext $pm_context Performance Monitoring context.
 	 */
-	public function __construct( User $user, $template_path ) {
+	public function __construct( User $user, $template_path, PerformanceMonitoringContext $pm_context ) {
 		parent::__construct( $template_path );
-		$this->user = $user;
+		$this->user       = $user;
+		$this->pm_context = $pm_context;
 	}
 
 	/**
@@ -34,6 +44,11 @@ class Controller extends Abstract_Render {
 	 */
 	public function display_addon_status() {
 		if ( (bool) rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) ) {
+			return;
+		}
+
+		// Hide Rocket Insights status for reseller accounts and non-live installations.
+		if ( $this->pm_context->is_reseller_or_non_live() ) {
 			return;
 		}
 

@@ -33,10 +33,14 @@ class RenderLicenseBannerSectionTest extends TestCase {
         parent::set_up();
 
         $this->unregisterAllCallbacksExcept('rocket_insights_tab_content', 'render_license_banner_section', 10);
+
+        // Mock rocket_is_live_site to return true (live site) for these tests.
+        add_filter('rocket_is_live_site', '__return_true');
     }
 
     public function tear_down() {
         $this->restoreWpHook('rocket_insights_tab_content');
+        remove_filter('rocket_is_live_site', '__return_true');
 
         parent::tear_down();
     }
