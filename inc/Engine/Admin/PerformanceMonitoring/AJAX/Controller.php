@@ -137,7 +137,7 @@ class Controller {
 				);
 		}
 
-		$urls_count   = $this->query->query( [ 'count' => true ] );
+		$urls_count   = $this->query->get_total_count();
 		$current_plan = $this->user->get_pma_addon_sku_active();
 
 		/**
