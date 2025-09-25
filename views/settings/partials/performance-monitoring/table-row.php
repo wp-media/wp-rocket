@@ -59,7 +59,7 @@ defined( 'ABSPATH' ) || exit;
 			'url'        => esc_url( $data->report_url ?? '#' ),
 			'attributes' => [
 				'target' => '_blank',
-				'class'  => 'wpr-icon-report wpr-pma-action',
+				'class'  => 'wpr-icon-report wpr-pma-action wpr-ri-report',
 			],
 		];
 
