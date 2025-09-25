@@ -273,6 +273,10 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         html: '',
         row_html: '',
+		disabled_btn_html: {
+			global_score_widget: '',
+			rocket_insights: ''
+		}
     };
 
 	// ==== DOM Selectors ====
@@ -298,16 +302,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	function removeId(id) {
 		pmIds = pmIds.filter(x => x !== parseInt(id, 10));
-	}
-
-	function disableAddUrlElements() {
-		$('.wpr-pma-global-score-add-url-button').addClass('disabled').attr('disabled', true);
-
-		const tooltipMessage = window.rocket_ajax_data && window.rocket_ajax_data.reach_max_url_message
-			? window.rocket_ajax_data.reach_max_url_message
-			: 'Maximum number of URLs reached for your license.';
-		$('#wpr-action-add_page_speed_radar').attr('title', tooltipMessage);
-		$('.wpr-pma-global-score-add-url-button').attr('title', tooltipMessage);
 	}
 
 	function updateQuotaBanner(canAddPages) {
@@ -383,10 +377,19 @@ document.addEventListener('DOMContentLoaded', function() {
 					}
 					let globalScoreWidget = $('#wpr_global_score_widget');
 
-					if (globalScoreWidget.length && globalScoreWidget.is(':visible')) {
-						// Update global score widget.
-						globalScoreWidget.html(globalScoreData.html);
+					if (!globalScoreWidget.length && !globalScoreWidget.is(':visible')) {
+						return;
 					}
+
+					// Update global score widget.
+					globalScoreWidget.html(globalScoreData.html);
+
+					// Disable "Add Pages" button on global score widget.
+					if (!('disabled_btn_html' in globalScoreData)) {
+						return;
+					}
+
+					$('#wpr_global_score_widget_add_page_btn_wrapper').html(globalScoreData.disabled_btn_html.global_score_widget);
 					break;
 
 				// Handle action when rocket insights menu is clicked.
@@ -479,8 +482,8 @@ document.addEventListener('DOMContentLoaded', function() {
 				// Update global score row in table if on Rocket Insights page.
 				updateGlobalScoreRow(globalScoreData);
 
-				if ('disabled_btn_html' in response.data) {
-					$('#wpr-pma-add-url-button-container').html(response.data.disabled_btn_html.rocket_insights);
+				if ('disabled_btn_html' in globalScoreData) {
+					$('#wpr_rocket_insights_add_page_btn_wrapper').html(globalScoreData.disabled_btn_html.rocket_insights);
 				}
 
 				// Show/hide quota banner based on can_add_pages
@@ -561,7 +564,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		decideGlobalScoreToUpdate(id);
 	});
 	
-	// Handle UI update when add pages button is clicked.
+	// Handle UI update on the rocket insights tab when "Add Pages" button on the global score widget is clicked.
 	$(document).on('click', '.wpr-percentage-score-widget .wpr-pma-add-url-button', function() {
 		if (!this.textContent.includes('Add Pages')) {
 			return;
