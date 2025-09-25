@@ -60,6 +60,9 @@
         }
     }
 	&.pma-settings-container{
+		.wpr-field {
+			border: none;
+		}
 		.wpr-fieldsContainer-fieldset{
 			display: flex;
 			.wpr-field--checkbox{

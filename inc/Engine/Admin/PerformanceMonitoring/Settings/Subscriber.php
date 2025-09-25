@@ -35,6 +35,7 @@ class Subscriber implements Subscriber_Interface {
 	public static function get_subscribed_events() {
 		return [
 			'rocket_dashboard_after_account_data' => [ 'display_addon_status', 9 ], // Higher priority than RocketCDN.
+			'rocket_insights_settings_enabled'    => 'disable_for_free_plan',
 		];
 	}
 
@@ -47,5 +48,19 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function display_addon_status() {
 		$this->controller->display_addon_status();
+	}
+
+	/**
+	 * Disable rocket insights settings for free plan.
+	 *
+	 * @param bool $enabled Current status.
+	 * @return bool
+	 */
+	public function disable_for_free_plan( $enabled ) {
+		if ( ! $enabled ) {
+			return $enabled;
+		}
+
+		return ! $this->controller->is_free_plan();
 	}
 }

@@ -3,13 +3,15 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Admin\PerformanceMonitoring;
 
-use WP_Rocket\Engine\Admin\PerformanceMonitoring\{Context\PerformanceMonitoringContext,
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\{
+	Context\PerformanceMonitoringContext,
 	Database\Rows\PerformanceMonitoring,
 	Managers\Plan,
+	Jobs\Manager,
 	Queue\Queue,
-	AJAX\Controller as AjaxController};
-use WP_Rocket\Engine\License\API\User;
-use WP_Rocket\Engine\License\API\UserClient;
+	AJAX\Controller as AjaxController
+};
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
@@ -65,6 +67,20 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	private $global_score;
 
 	/**
+	 * Plugin options.
+	 *
+	 * @var Options_Data
+	 */
+	private $options;
+
+	/**
+	 * Manager instance.
+	 *
+	 * @var Manager
+	 */
+	private $manager;
+
+	/**
 	 * Plan manager instance.
 	 *
 	 * @var Plan
@@ -80,6 +96,8 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @param Queue                        $queue Queue object.
 	 * @param PerformanceMonitoringContext $pma_context PMA context.
 	 * @param GlobalScore                  $global_score GlobalScore instance.
+	 * @param Options_Data                 $options Options instance.
+	 * @param Manager                      $manager Manager instance.
 	 * @param Plan                         $plan Plan manager.
 	 */
 	public function __construct(
@@ -89,6 +107,8 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		Queue $queue,
 		PerformanceMonitoringContext $pma_context,
 		GlobalScore $global_score,
+		Options_Data $options,
+		Manager $manager,
 		Plan $plan
 	) {
 		$this->render          = $render;
@@ -97,6 +117,8 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		$this->queue           = $queue;
 		$this->pma_context     = $pma_context;
 		$this->global_score    = $global_score;
+		$this->options         = $options;
+		$this->manager         = $manager;
 		$this->plan            = $plan;
 	}
 
@@ -127,7 +149,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 				[ 'render_license_banner_section', 10 ],
 				[ 'maybe_show_notice', 18 ],
 				[ 'render_performance_urls_table', 20 ],
-				[ 'render_settings_section', 30 ],
 			],
 			'admin_init'                        => [
 				[ 'flush_license_cache', 8 ],
@@ -139,6 +160,13 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 				[ 'cancel_scheduled_jobs' ],
 				[ 'remove_current_plan' ],
 			],
+			'init'                              => [
+				[ 'maybe_cancel_scheduled_jobs' ],
+				[ 'maybe_schedule_next_test' ],
+			],
+			'cron_schedules'                    => 'maybe_add_monthly_schedule',
+			'rocket_options_changed'            => 'maybe_cancel_scheduled_jobs',
+			'wpr_pma_retest_all_pages'          => 'retest_all_pages',
 		];
 	}
 
@@ -314,20 +342,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	}
 
 	/**
-	 * Render the settings section in the Performance Monitoring tab.
-	 *
-	 * @return void
-	 */
-	public function render_settings_section() {
-		// Hide Rocket Insights content for reseller accounts and non-live installations.
-		if ( ! $this->pma_context->is_allowed() ) {
-			return;
-		}
-
-		$this->render->render_settings_section( $this->controller->get_settings_section_data() );
-	}
-
-	/**
 	 * Render the license banner section in the Performance Monitoring tab.
 	 *
 	 * @return void
@@ -395,5 +409,157 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public function maybe_show_notice() {
 		$this->controller->maybe_show_notice();
+	}
+
+	/**
+	 * Schedule the next test for performance monitoring under certain conditions.
+	 *
+	 * @since TBD
+	 *
+	 * @return void
+	 */
+	public function maybe_schedule_next_test() {
+		if ( ! $this->should_schedule_next_test() ) {
+			return;
+		}
+
+		$this->schedule_retest_event();
+	}
+
+	/**
+	 * Determines if the next test should be scheduled based on user plan and settings.
+	 *
+	 * @since TBD
+	 *
+	 * @return bool Whether the next test should be scheduled.
+	 */
+	private function should_schedule_next_test(): bool {
+		// Only premium users can schedule tests.
+		if ( $this->pma_context->is_free_user() ) {
+			return false;
+		}
+
+		// Performance monitoring must be enabled.
+		if ( ! $this->options->get( 'performance_monitoring' ) ) {
+			return false;
+		}
+
+		// Don't schedule if already scheduled.
+		return ! $this->is_retest_event_scheduled();
+	}
+
+	/**
+	 * Schedules the daily retest event.
+	 *
+	 * @since TBD
+	 *
+	 * @return void
+	 */
+	private function schedule_retest_event(): void {
+
+		$schedule = $this->options->get( 'performance_monitoring_schedule_frequency', 'monthly' );
+
+		wp_schedule_event( time(), $schedule, 'wpr_pma_retest_all_pages' );
+	}
+
+	/**
+	 * Add monthly schedule to cron schedules.
+	 *
+	 * @param array|mixed $schedules Cron schedules.
+	 *
+	 * @return array|mixed
+	 */
+	public function maybe_add_monthly_schedule( $schedules ) {
+		if ( ! is_array( $schedules ) ) {
+			return $schedules;
+		}
+
+		if ( isset( $schedules['monthly'] ) ) {
+			return $schedules;
+		}
+
+		$schedules['monthly'] = [
+			'interval' => MONTH_IN_SECONDS,
+			'display'  => __( 'Once a month', 'rocket' ),
+		];
+
+		return $schedules;
+	}
+
+	/**
+	 * Retest all pages.
+	 *
+	 * @return void
+	 */
+	public function retest_all_pages() {
+		foreach ( $this->controller->get_items() as $item ) {
+			$this->manager->add_url_to_the_queue( $item->url, $item->is_mobile );
+		}
+	}
+
+	/**
+	 * Cancels scheduled jobs for performance monitoring if the user is on the free plan
+	 * and performance monitoring is disabled.
+	 *
+	 * @since TBD
+	 *
+	 * @return void
+	 */
+	public function maybe_cancel_scheduled_jobs() {
+		if ( ! $this->should_cancel_scheduled_jobs() ) {
+			return;
+		}
+
+		$this->cancel_retest_scheduled_event();
+	}
+
+	/**
+	 * Determines if scheduled jobs should be cancelled based on user plan and settings.
+	 *
+	 * @since TBD
+	 *
+	 * @return bool Whether scheduled jobs should be cancelled.
+	 */
+	private function should_cancel_scheduled_jobs(): bool {
+		// Only free users might need cancellation.
+		if ( ! $this->pma_context->is_free_user() ) {
+			return false;
+		}
+
+		// If performance monitoring is enabled, don't cancel.
+		if ( $this->options->get( 'performance_monitoring' ) ) {
+			return false;
+		}
+
+		// Only cancel if there's an event scheduled.
+		return $this->is_retest_event_scheduled();
+	}
+
+	/**
+	 * Checks if the retest event is scheduled.
+	 *
+	 * @since TBD
+	 *
+	 * @return bool Whether the retest event is scheduled.
+	 */
+	private function is_retest_event_scheduled(): bool {
+		return (bool) wp_next_scheduled( 'wpr_pma_retest_all_pages' );
+	}
+
+	/**
+	 * Cancels the scheduled retest event.
+	 *
+	 * @since TBD
+	 *
+	 * @return void
+	 */
+	private function cancel_retest_scheduled_event(): void {
+		$next_event = wp_next_scheduled( 'wpr_pma_retest_all_pages' );
+
+		if ( ! $next_event ) {
+			return;
+		}
+
+		wp_unschedule_event( $next_event, 'wpr_pma_retest_all_pages' );
 	}
 }

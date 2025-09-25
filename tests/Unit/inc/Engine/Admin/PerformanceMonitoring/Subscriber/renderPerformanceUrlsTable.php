@@ -1,7 +1,9 @@
 <?php
 namespace WP_Rocket\Tests\Unit\inc\Engine\Admin\PerformanceMonitoring\Subscriber;
 
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Context\PerformanceMonitoringContext;
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\Jobs\Manager;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Managers\Plan;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Queue\Queue;
 use WP_Rocket\Tests\Unit\TestCase;
@@ -61,9 +63,12 @@ class Test_renderPerformanceUrlsTable extends TestCase {
 		$pm_context->expects($this->once())
 			->method('is_allowed')
 			->willReturn(true);
+		$options = $this->createMock(Options_Data::class);
+		$manager = $this->createMock(Manager::class);
+
 		$plan_mock = $this->createMock( Plan::class );
 
-		$subscriber = new Subscriber($mock_render, $mock_controller, $mock_ajax_controller, $mock_queue, $pm_context, $mock_global_score, $plan_mock);
+		$subscriber = new Subscriber($mock_render, $mock_controller, $mock_ajax_controller, $mock_queue, $pm_context, $mock_global_score, $options, $manager, $plan_mock);
 		$subscriber->render_performance_urls_table();
 	}
 }
