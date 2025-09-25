@@ -8,7 +8,9 @@ use WP_Rocket\Engine\Admin\PerformanceMonitoring\{GlobalScore,
 	Context\PerformanceMonitoringContext,
 	Database\Queries\PerformanceMonitoring as PMQuery,
 	Credit\Manager as CreditManager,
-	Managers\Plan};
+	Managers\Plan
+};
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\License\API\User;
 
 class Controller {
@@ -55,6 +57,13 @@ class Controller {
 	private $user;
 
 	/**
+	 * Plugin options instance.
+	 *
+	 * @var Options_Data
+	 */
+	protected $options;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param PMQuery                      $query Query instance.
@@ -63,6 +72,7 @@ class Controller {
 	 * @param CreditManager                $credit_manager Credit manager instance.
 	 * @param GlobalScore                  $global_score GlobalScore instance.
 	 * @param User                         $user User client API instance.
+	 * @param Options_Data                 $options Plugin options instance.
 	 */
 	public function __construct(
 		PMQuery $query,
@@ -70,7 +80,8 @@ class Controller {
 		PerformanceMonitoringContext $context,
 		CreditManager $credit_manager,
 		GlobalScore $global_score,
-		User $user
+		User $user,
+		Options_Data $options
 	) {
 		$this->query          = $query;
 		$this->manager        = $manager;
@@ -78,6 +89,7 @@ class Controller {
 		$this->credit_manager = $credit_manager;
 		$this->global_score   = $global_score;
 		$this->user           = $user;
+		$this->options        = $options;
 	}
 
 	/**
@@ -235,8 +247,8 @@ class Controller {
 		return [
 			'id'                 => 'performance_monitoring',
 			'title'              => __( 'Performance Monitoring', 'rocket' ),
-			'value'              => 1, // enabled or not.
-			'schedule_frequency' => 'weekly', // frequency of tests.
+			'value'              => $this->options->get( 'performance_monitoring' ), // enabled or not.
+			'schedule_frequency' => 'monthly', // frequency of tests.
 			'choices'            => [ // frequency options in select.
 				'daily'   => __( 'Daily', 'rocket' ),
 				'weekly'  => __( 'Weekly', 'rocket' ),
@@ -276,12 +288,13 @@ class Controller {
 	public function get_license_data(): array {
 		$sku      = $this->user->get_pma_addon_sku_active();
 		$upgrades = $this->user->get_pma_addon_upgrade_skus( $sku );
+
 		if ( empty( $upgrades ) ) {
 			return [];
 		}
-		$upgrade = array_shift( $upgrades );
 
-		$price = $this->user->get_pma_addon_price( $upgrade );
+		$upgrade = array_shift( $upgrades );
+		$price   = $this->user->get_pma_addon_price( $upgrade );
 
 		$limit = $this->user->get_pma_addon_limit( $upgrade );
 

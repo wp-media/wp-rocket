@@ -1678,6 +1678,9 @@ div.wpr-upgrade-websites.notstacked {
   line-height: 1;
   margin-right: 4px;
 }
+.wpr-fieldsContainer.pma-settings-container .wpr-field {
+  border: none;
+}
 .wpr-fieldsContainer.pma-settings-container .wpr-fieldsContainer-fieldset {
   display: flex;
 }
