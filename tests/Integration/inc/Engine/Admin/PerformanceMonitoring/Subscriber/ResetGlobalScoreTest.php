@@ -118,7 +118,12 @@ class ResetGlobalScoreTest extends TestCase {
 			$hook = $config['hook_to_test'];
 
 			switch ( $hook ) {
+				case 'rocket_pm_job_added':
+					do_action( $hook, 'url', 'free', 1 );
+					break;
+
 				case 'rocket_pm_job_completed':
+				case 'rocket_pm_job_failed':
 					// Create a mock row for the completed job
 					$mock_row = (object) [
 						'id' => 1,
@@ -128,8 +133,6 @@ class ResetGlobalScoreTest extends TestCase {
 					do_action( $hook, $mock_row );
 					break;
 
-				case 'rocket_pm_job_failed':
-				case 'rocket_pm_job_added':
 				case 'rocket_pm_job_retest':
 				case 'rocket_pm_job_deleted':
 					// These hooks pass different parameters
