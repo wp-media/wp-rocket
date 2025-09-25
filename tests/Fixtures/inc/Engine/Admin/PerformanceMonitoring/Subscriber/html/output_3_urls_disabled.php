@@ -11,7 +11,7 @@
 <div class="wpr-percentage-circle status-red ">0</div>
 </div>
 </div>
-<p class="wpr-page-num-txt">3 page monitored.</p>
+<p class="wpr-page-num-txt">Tracked Pages: 3</p>
 <a href="javascript:void(0);" class="wpr-button wpr-button--icon wpr-button--small wpr-button--purple wpr-icon-plus wpr-button--no-min-width wpr-pma-add-url-button wpr-pma-global-score-add-url-button wpr-btn-with-tool-tip disabled"disabled ="disabled">Add Pages <div class="wpr-tooltip"> <div class="wpr-tooltip-content"> Maximum number of URLs reached for your license. </div> </div> </a>
 </div>
 </div>
