@@ -500,7 +500,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 				$item->is_mobile,
 				[
 					'data'       => [
-						'auto_retest' => true,
+						'is_retest' => true,
 					],
 					'score'      => '',
 					'report_url' => '',
