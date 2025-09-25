@@ -193,12 +193,13 @@ class Render extends Abstract_Render {
 	 */
 	public function get_add_page_btn( string $type, array $data ) {
 		switch ( $type ) {
-			case 'rocket-insights':
-				$button = $this->generate( 'partials/performance-monitoring/buttons/rocket-insights-panel', $data );
-				break;
-
 			case 'global-score-widget':
 				$button = $this->generate( 'partials/performance-monitoring/buttons/global-score-widget', $data );
+				break;
+
+			case 'rocket-insights':
+			default:
+				$button = $this->generate( 'partials/performance-monitoring/buttons/rocket-insights-panel', $data );
 				break;
 		}
 
