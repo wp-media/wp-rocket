@@ -27,13 +27,21 @@ defined( 'ABSPATH' ) || exit;
 
 <div class="wpr-field wpr-field--select <?php echo esc_attr( $data['container_class'] ); ?>"<?php echo $data['parent']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $data['parent'] escaped with esc_attr. ?>>
 	<div class="wpr-select">
-		<select id="<?php echo esc_attr( $data['id'] ); ?>" name="wp_rocket_settings[<?php echo esc_attr( $data['id'] ); ?>]">
+		<select id="<?php echo esc_attr( $data['id'] ); ?>" name="wp_rocket_settings[<?php echo esc_attr( $data['id'] ); ?>]"<?php echo $data['input_attr']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>>
 		<?php foreach ( $data['choices'] as $value => $label ) : // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound ?>
 			<option value="<?php echo esc_attr( $value ); ?>" <?php selected( $value, $data['value'] ); ?>><?php echo esc_html( $label ); ?></option>
 		<?php endforeach; ?>
 		</select>
 		<label for="<?php echo esc_attr( $data['id'] ); ?>"><?php echo esc_html( $data['label'] ); ?></label>
 	</div>
+
+	<?php if ( ! empty( $data['tooltip'] ) ) { ?>
+		<div class="wpr-tooltip">
+			<div class="wpr-tooltip-content">
+				<?php echo esc_html( $data['tooltip'] ); ?>
+			</div>
+		</div>
+	<?php } ?>
 
 	<?php if ( ! empty( $data['description'] ) ) : ?>
 		<div class="wpr-field-description">

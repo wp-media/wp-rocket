@@ -159,7 +159,6 @@ PageManager.prototype.change = function() {
         'imagify',
         'tutorials',
         'plugins',
-        'rocket_insights',
     ];
 
     // Exception for dashboard

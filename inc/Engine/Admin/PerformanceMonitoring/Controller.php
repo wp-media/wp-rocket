@@ -3,13 +3,14 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Admin\PerformanceMonitoring;
 
-use WP_Rocket\Engine\Admin\PerformanceMonitoring\{
-	GlobalScore,
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\{GlobalScore,
 	Jobs\Manager,
 	Context\PerformanceMonitoringContext,
 	Database\Queries\PerformanceMonitoring as PMQuery,
-	Credit\Manager as CreditManager
+	Credit\Manager as CreditManager,
+	Managers\Plan
 };
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\License\API\User;
 
 class Controller {
@@ -53,7 +54,14 @@ class Controller {
 	 *
 	 * @var User
 	 */
-	protected $user;
+	private $user;
+
+	/**
+	 * Plugin options instance.
+	 *
+	 * @var Options_Data
+	 */
+	protected $options;
 
 	/**
 	 * Constructor.
@@ -64,14 +72,24 @@ class Controller {
 	 * @param CreditManager                $credit_manager Credit manager instance.
 	 * @param GlobalScore                  $global_score GlobalScore instance.
 	 * @param User                         $user User client API instance.
+	 * @param Options_Data                 $options Plugin options instance.
 	 */
-	public function __construct( PMQuery $query, Manager $manager, PerformanceMonitoringContext $context, CreditManager $credit_manager, GlobalScore $global_score, User $user ) {
+	public function __construct(
+		PMQuery $query,
+		Manager $manager,
+		PerformanceMonitoringContext $context,
+		CreditManager $credit_manager,
+		GlobalScore $global_score,
+		User $user,
+		Options_Data $options
+	) {
 		$this->query          = $query;
 		$this->manager        = $manager;
 		$this->context        = $context;
 		$this->credit_manager = $credit_manager;
 		$this->global_score   = $global_score;
 		$this->user           = $user;
+		$this->options        = $options;
 	}
 
 	/**
@@ -229,8 +247,8 @@ class Controller {
 		return [
 			'id'                 => 'performance_monitoring',
 			'title'              => __( 'Performance Monitoring', 'rocket' ),
-			'value'              => 1, // enabled or not.
-			'schedule_frequency' => 'weekly', // frequency of tests.
+			'value'              => $this->options->get( 'performance_monitoring' ), // enabled or not.
+			'schedule_frequency' => 'monthly', // frequency of tests.
 			'choices'            => [ // frequency options in select.
 				'daily'   => __( 'Daily', 'rocket' ),
 				'weekly'  => __( 'Weekly', 'rocket' ),
@@ -270,12 +288,13 @@ class Controller {
 	public function get_license_data(): array {
 		$sku      = $this->user->get_pma_addon_sku_active();
 		$upgrades = $this->user->get_pma_addon_upgrade_skus( $sku );
+
 		if ( empty( $upgrades ) ) {
 			return [];
 		}
-		$upgrade = array_shift( $upgrades );
 
-		$price = $this->user->get_pma_addon_price( $upgrade );
+		$upgrade = array_shift( $upgrades );
+		$price   = $this->user->get_pma_addon_price( $upgrade );
 
 		$limit = $this->user->get_pma_addon_limit( $upgrade );
 
@@ -322,5 +341,45 @@ class Controller {
 	 */
 	public function get_pma_addon_limit() {
 		return $this->user->get_pma_addon_limit( $this->user->get_pma_addon_sku_active() );
+	}
+
+	/**
+	 * Maybe show upgrade notice.
+	 *
+	 * @return void
+	 */
+	public function maybe_show_notice() {
+		if ( ! $this->context->is_allowed() || $this->context->is_free_user() ) {
+			return;
+		}
+
+		if (
+			in_array(
+				'insights_upgrade',
+				(array) get_user_meta( get_current_user_id(), 'rocket_boxes', true ),
+				true
+			)
+		) {
+			return;
+		}
+
+		rocket_notice_html(
+			[
+				'status'                 => 'pma wpr-pma-notice',
+				'dismissible'            => 'is-dismissible',
+				'message'                => sprintf(
+				// Translators: %1$s = opening strong tag, %2$s = closing strong tag, %3$s = number of pages as a limit.
+					esc_html__( '%1$sCongrats!%2$s You can now monitor up to %3$s pages, run on-demand tests, and access advanced GTmetrix reports.', 'rocket' ),
+					'<strong>',
+					'</strong>',
+					$this->get_pma_addon_limit()
+				),
+				'id'                     => 'insights_upgrade',
+				'class_prefix'           => 'wpr-',
+				'dismiss_button'         => 'insights_upgrade',
+				'dismiss_button_class'   => 'wpr-notice-close wpr-icon-close rocket-dismiss',
+				'dismiss_button_message' => '',
+			]
+		);
 	}
 }

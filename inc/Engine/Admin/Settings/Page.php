@@ -1687,6 +1687,71 @@ class Page extends Abstract_Render {
 				'menu_description' => __( 'Get performance insights', 'rocket' ),
 			]
 		);
+
+		$this->settings->add_settings_sections(
+			[
+				'performance_monitoring' => [
+					'title'  => __( 'Settings', 'rocket' ),
+					'help'   => [
+						'id'  => '',
+						'url' => '',
+					],
+					'page'   => 'rocket_insights',
+					'helper' => '',
+					'class'  => [ 'pma-settings-container' ],
+				],
+			]
+		);
+
+		/**
+		 * Filters whether to enabled Rocket Insights settings.
+		 *
+		 * @param bool $enabled True to enable settings, false to disable it.
+		 */
+		$insights_settings_enabled = wpm_apply_filters_typed( 'boolean', 'rocket_insights_settings_enabled', true );
+
+		$this->settings->add_settings_fields(
+			[
+				'performance_monitoring' => [
+					'type'              => 'checkbox',
+					'label'             => __( 'Performance Monitoring', 'rocket' ),
+					'description'       => __( 'Automatically test your tracked pages.', 'rocket' ),
+					'section'           => 'performance_monitoring',
+					'page'              => 'rocket_insights',
+					'default'           => 0,
+					'sanitize_callback' => 'sanitize_checkbox',
+					'container_class'   => [
+						! $insights_settings_enabled ? 'wpr-isDisabled' : '',
+					],
+					'input_attr'        => [
+						'disabled' => ! $insights_settings_enabled ? 1 : 0,
+					],
+					'tooltip'           => ! $insights_settings_enabled ? __( 'Upgrade your plan to get access to automatic performance tests', 'rocket' ) : '',
+				],
+				'performance_monitoring_schedule_frequency' => [
+					'container_class'   => [
+						'wpr-field--children',
+						! $insights_settings_enabled ? 'wpr-isDisabled' : '',
+					],
+					'type'              => 'select',
+					'label'             => '',
+					'description'       => '',
+					'parent'            => 'performance_monitoring',
+					'section'           => 'performance_monitoring',
+					'page'              => 'rocket_insights',
+					'default'           => 'monthly',
+					'sanitize_callback' => 'sanitize_text_field',
+					'choices'           => [
+						'daily'   => __( 'Daily', 'rocket' ),
+						'weekly'  => __( 'Weekly', 'rocket' ),
+						'monthly' => __( 'Monthly', 'rocket' ),
+					],
+					'input_attr'        => [
+						'disabled' => ! $insights_settings_enabled ? 1 : 0,
+					],
+				],
+			],
+		);
 	}
 
 	/**

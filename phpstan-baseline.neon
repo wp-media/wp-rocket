@@ -66,9 +66,19 @@ parameters:
 			path: inc/Engine/Admin/PerformanceMonitoring/Context/PerformanceMonitoringContext.php
 
 		-
+			message: "#^Property WP_Rocket\\\\Engine\\\\Admin\\\\PerformanceMonitoring\\\\Render\\:\\:\\$pma_context is never read, only written\\.$#"
+			count: 1
+			path: inc/Engine/Admin/PerformanceMonitoring/Render.php
+
+		-
 			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: inc/Engine/Admin/PerformanceMonitoring/SettingsSubscriber.php
+
+		-
+			message: "#^Call to function is_array\\(\\) with array will always evaluate to true\\.$#"
+			count: 1
+			path: inc/Engine/Admin/PerformanceMonitoring/Subscriber.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
@@ -984,6 +994,21 @@ parameters:
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/Subscriber/checkUpgrade.php
+
+		-
+			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/Subscriber/maybeCancelScheduledJobs.php
+
+		-
+			message: "#^Property WP_Rocket\\\\Tests\\\\Integration\\\\Inc\\\\Engine\\\\Admin\\\\PerformanceMonitoring\\\\Subscriber\\\\Test_MaybeScheduleNextTest\\:\\:\\$scheduled_time is never read, only written\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/Subscriber/maybeScheduleNextTest.php
+
+		-
+			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Admin/PerformanceMonitoring/Subscriber/maybeScheduleNextTest.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"

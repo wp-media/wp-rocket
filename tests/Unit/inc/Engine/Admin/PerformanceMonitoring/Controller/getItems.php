@@ -3,12 +3,14 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Admin\PerformanceMonitoring\Controller;
 
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Context\PerformanceMonitoringContext;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Controller;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Database\Queries\PerformanceMonitoring;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Jobs\Manager;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Credit\Manager as CreditManager;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\GlobalScore;
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\Managers\Plan;
 use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Tests\Unit\TestCase;
 
@@ -36,7 +38,9 @@ class Test_GetItems extends TestCase {
 		$mock_credit_manager = $this->createMock(CreditManager::class);
 		$user = $this->createMock(User::class);
 		$global_score = $this->createMock(GlobalScore::class);
-		$controller = new Controller($mock_query, $mock_manager, $mock_context, $mock_credit_manager, $global_score, $user);
+		$options = $this->createMock(Options_Data::class);
+
+		$controller = new Controller($mock_query, $mock_manager, $mock_context, $mock_credit_manager, $global_score, $user, $options);
 		$result = $controller->get_items();
 
 		$this->assertEquals(['foo'], $result);
