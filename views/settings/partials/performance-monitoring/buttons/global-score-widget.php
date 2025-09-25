@@ -25,4 +25,3 @@ $this->render_action_button(
 	$data['pages_num'] ? '' : 'rocket_pm_add_homepage',
 	$rocket_pma_add_button_args
 );
-?>
