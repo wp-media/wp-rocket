@@ -1726,7 +1726,7 @@ class Page extends Abstract_Render {
 					'input_attr'        => [
 						'disabled' => ! $insights_settings_enabled ? 1 : 0,
 					],
-					'tooltip'           => ! $insights_settings_enabled ? __( 'Upgrade your plan to get access to Automatic Updates', 'rocket' ) : '',
+					'tooltip'           => ! $insights_settings_enabled ? __( 'Upgrade your plan to get access to automatic performance tests', 'rocket' ) : '',
 				],
 				'performance_monitoring_schedule_frequency' => [
 					'container_class'   => [
