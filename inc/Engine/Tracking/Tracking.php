@@ -243,6 +243,34 @@ class Tracking extends Abstract_Render {
 	}
 
 	/**
+	 * Tracks when a performance test is completed or failed in Rocket Insights.
+	 *
+	 * @since 3.20
+	 *
+	 * @param object $row_details Details related to the database row.
+	 *
+	 * @return void
+	 */
+	public function track_rocket_insights_test( $row_details ): void {
+		if ( ! $this->optin->is_enabled() ) {
+			return;
+		}
+
+		$data = json_decode( $row_details->data );
+
+		$this->mixpanel->track(
+			'Rocket Insights Performance Test',
+			[
+				'context' => 'wp_plugin',
+				'status'  => $row_details->status,
+				'score'   => $data->performance_score,
+				'retest'  => $data->is_retest,
+				'duration'=> time() - $data->start_time,
+			]
+		);
+	}
+
+	/**
 	 * Tracks visits to settings page
 	 *
 	 * @return void

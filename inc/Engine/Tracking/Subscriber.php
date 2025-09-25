@@ -38,6 +38,8 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_mixpanel_optin_changed'       => 'track_optin_change',
 			'rocket_pm_job_added'                 => [ 'track_rocket_insights_url_added', 10, 3 ],
 			'admin_footer-settings_page_wprocket' => 'track_admin_visits',
+			'rocket_pm_job_failed'                => 'track_rocket_insights_test',
+			'rocket_pm_job_completed'             => 'track_rocket_insights_test',
 		];
 	}
 
@@ -125,6 +127,19 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */ public function track_rocket_insights_url_added( $url, $current_plan, $urls_count ): void {
 		$this->tracking->track_rocket_insights_url_added( $url, $current_plan, $urls_count );
+	}
+
+	/**
+	 * Tracks when a performance test is completed or failed in Rocket Insights.
+	 *
+	 * @since 3.20
+	 *
+	 * @param object $row_details Details related to the database row.
+	 *
+	 * @return void
+	 */
+	public function track_rocket_insights_test( $row_details ): void {
+		$this->tracking->track_rocket_insights_test( $row_details );
 	}
 
 	/**
