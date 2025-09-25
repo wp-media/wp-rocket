@@ -31,9 +31,11 @@ defined( 'ABSPATH' ) || exit;
 					printf( esc_html__( '%1$s page monitored.', 'rocket' ), intval( $data['pages_num'] ) );
 					?>
 					</p>
-					<?php
-					$this->render_add_page_btn( 'global-score-widget', $data );
-					?>
+					<div id="wpr_global_score_widget_add_page_btn_wrapper">
+						<?php
+						$this->render_add_page_btn( 'global-score-widget', $data );
+						?>
+					</div>
 				</div>
 			</div>
 		</fieldset>

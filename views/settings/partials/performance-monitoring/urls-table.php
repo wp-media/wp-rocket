@@ -80,7 +80,7 @@ if ( ! isset( $data['can_add_pages'] ) || $data['can_add_pages'] ) {
 			placeholder="<?php esc_attr_e( 'Enter a page URL to monitor', 'rocket' ); ?>"
 			id="wpr-speed-radar-url-input" />
 	
-	<div id="wpr-pma-add-url-button-container">
+	<div id="wpr_rocket_insights_add_page_btn_wrapper">
 		<?php
 		$this->render_add_page_btn( 'rocket-insights', $data );
 		?>
