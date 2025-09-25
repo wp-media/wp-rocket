@@ -3,7 +3,7 @@
  * Global score widget "Add Page" button template.
  */
 
- defined( 'ABSPATH' ) || exit;
+defined( 'ABSPATH' ) || exit;
 
 $rocket_pma_add_button_args = [
 	'label'      => $data['pages_num'] ? __( 'Add Pages', 'rocket' ) : __( 'Add Homepage', 'rocket' ),
