@@ -42,7 +42,7 @@ if ( ! isset( $data['can_add_pages'] ) || $data['can_add_pages'] ) {
 	</div>
 </div>
 
-<?php if ( ! empty( $data['can_add_pages'] ) ) : ?>
+<?php if ( ! empty( $data['can_add_pages'] ) && ! empty( $data['is_free'] ) ) : ?>
 	<p class="wpr-pma-summary-info">
 		<?php
 		printf(

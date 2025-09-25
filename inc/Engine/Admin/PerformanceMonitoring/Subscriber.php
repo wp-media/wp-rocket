@@ -298,6 +298,9 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return void
 	 */
 	public function render_global_score_widget(): void {
+		if ( ! $this->pma_context->is_allowed() ) {
+			return;
+		}
 		$data                   = $this->controller->get_global_score();
 		$data['remaining_urls'] = $this->controller->get_remaining_url_count();
 		$this->render->render_global_score_widget( $data );
@@ -313,12 +316,18 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	}
 
 	/**
-	 * Render the performance URLs table in the Performance Monitoring tab.
+	 * Render performance URLs table in the Rocket Insights tab.
 	 *
 	 * @return void
 	 */
 	public function render_performance_urls_table() {
+		// Hide Rocket Insights content for reseller accounts and non-live installations.
+		if ( ! $this->pma_context->is_allowed() ) {
+			return;
+		}
+
 		$license_data = $this->controller->get_license_data();
+
 		$this->render->render_pma_urls_table(
 			[
 				'items'           => $this->controller->get_items(),
@@ -327,6 +336,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 				'pma_addon_limit' => $this->controller->get_pma_addon_limit(),
 				'upgrade_url'     => $license_data['btn_url'] ?? '',
 				'can_add_pages'   => wpm_apply_filters_typesafe( 'wpr_pm_allow_add_page', true ),
+				'is_free'         => $this->pma_context->is_free_user(),
 			]
 		);
 	}
@@ -337,6 +347,11 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return void
 	 */
 	public function render_license_banner_section() {
+		// Hide Rocket Insights content for reseller accounts and non-live installations.
+		if ( ! $this->pma_context->is_allowed() ) {
+			return;
+		}
+
 		if ( ! $this->controller->display_banner() ) {
 			return;
 		}
