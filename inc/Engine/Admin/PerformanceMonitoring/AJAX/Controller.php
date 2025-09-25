@@ -146,6 +146,17 @@ class Controller {
 		$payload['global_score_data'] = $this->get_global_score_payload();
 		$payload['remaining_urls']    = $this->get_remaining_url_count();
 
+		// Add disabled button html data to payload.
+		if ( 0 === $this->get_remaining_url_count() ) {
+			$data = $payload['global_score_data'];
+			$data['reach_max_url'] = true;
+
+			$payload['disabled_btn_html'] = [
+				'global_score_widget' => $this->render->get_add_page_btn( 'global-score-widget', $data ),
+				'rocket_insights' => $this->render->get_add_page_btn( 'rocket-insights', $data ),
+			];
+		}
+
 		wp_send_json_success( $payload );
 	}
 
