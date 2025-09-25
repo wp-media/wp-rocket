@@ -121,11 +121,7 @@ class GlobalScore {
 	 * @return int Number of pages.
 	 */
 	private function calculate_pages_number(): int {
-		return $this->query->query(
-			[
-				'count' => true,
-			]
-		);
+		return $this->query->get_total_count();
 	}
 
 	/**
@@ -134,11 +130,7 @@ class GlobalScore {
 	 * @return string Current status.
 	 */
 	private function calculate_current_status(): string {
-		$total_count = $this->query->query(
-			[
-				'count' => true,
-			]
-		);
+		$total_count = $this->query->get_total_count();
 
 		// No URLs are being monitored.
 		if ( 0 === $total_count ) {
