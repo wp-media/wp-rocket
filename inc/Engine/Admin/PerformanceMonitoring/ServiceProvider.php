@@ -13,9 +13,12 @@ use WP_Rocket\Engine\Admin\PerformanceMonitoring\{
 	Context\PerformanceMonitoringContext,
 	Jobs\Factory as PMFactory,
 	Jobs\Manager as PMManager,
+	Managers\Plan,
 	Queue\Queue as PMQueue,
 	AJAX\Controller as AjaxController,
-	URLLimit\Subscriber as URLLimitSubscriber
+	URLLimit\Subscriber as URLLimitSubscriber,
+	Settings\Controller as SettingsController,
+	Settings\Subscriber as SettingsSubscriber,
 };
 
 class ServiceProvider extends AbstractServiceProvider {
@@ -44,7 +47,9 @@ class ServiceProvider extends AbstractServiceProvider {
 		'pm_credit_manager',
 		'pm_global_score',
 		'pm_url_limit_subscriber',
+		'rocket_insights_settings',
 		'pm_settings_subscriber',
+		'pm_plan',
 	];
 
 	/**
@@ -96,6 +101,16 @@ class ServiceProvider extends AbstractServiceProvider {
 		// API Client.
 		$this->getContainer()->add( 'pm_api_client', PMAPIClient::class )
 			->addArgument( 'options' );
+
+		$this->getContainer()->add( 'pm_plan', Plan::class )
+			->addArguments(
+				[
+					'options_api',
+					'pm_context',
+					'user',
+					'user_client',
+				]
+			);
 
 		// Jobs layer.
 		$this->getContainer()->add( 'pm_manager', PMManager::class )
@@ -159,8 +174,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'pm_queue',
 					'pm_context',
 					'pm_global_score',
-					'user_client',
-					'user',
+					'pm_plan',
 				]
 			);
 
@@ -172,8 +186,8 @@ class ServiceProvider extends AbstractServiceProvider {
 					'user',
 				]
 			);
-			// Addon Subscriber.
-		$this->getContainer()->addShared( 'pm_settings_subscriber', SettingsSubscriber::class )
+		// Settings Subscriber.
+		$this->getContainer()->add( 'rocket_insights_settings', SettingsController::class )
 			->addArguments(
 				[
 					'user',
@@ -181,6 +195,8 @@ class ServiceProvider extends AbstractServiceProvider {
 					'pm_context',
 				]
 			);
+		$this->getContainer()->addShared( 'pm_settings_subscriber', SettingsSubscriber::class )
+			->addArgument( 'rocket_insights_settings' );
 
 		// Ensure the table is created.
 		$this->getContainer()->get( 'pm_table' );

@@ -145,6 +145,7 @@ class Controller {
 		$payload['html']              = $this->render->get_performance_monitoring_list_row( $row_data );
 		$payload['global_score_data'] = $this->get_global_score_payload();
 		$payload['remaining_urls']    = $this->get_remaining_url_count();
+		$payload['can_add_pages']     = wpm_apply_filters_typesafe( 'wpr_pm_allow_add_page', true );
 
 		wp_send_json_success( $payload );
 	}

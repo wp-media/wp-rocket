@@ -16,6 +16,8 @@ return [
 				'id' => null, // Will be generated
 				'html' => null, // Will be generated
 				'global_score_data' => null, // Will be generated
+				'remaining_urls' => null, // Will be generated
+				'can_add_pages' => true,
 			],
 		],
 	],

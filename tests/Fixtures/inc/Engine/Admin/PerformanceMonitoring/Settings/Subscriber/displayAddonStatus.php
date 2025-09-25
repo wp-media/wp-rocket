@@ -6,7 +6,6 @@ use WP_Rocket\Tests\Fixtures\Generators\UserDataGenerator;
 return [
 	'testShouldRenderFreeVersionHTMLWhenNotActive' => [
 		'config' => [
-			'rocket_display_addon_status' => true,
 			'is_live_site' => true,
 			'customer_data' => (new UserDataGenerator())->with_reseller_status(0)->generate()
 		],
@@ -16,7 +15,6 @@ HTML
 	],
 	'testShouldOutputAddonLicenseStatusWhenActive' => [
 		'config' => [
-			'rocket_display_addon_status' => true,
 			'is_live_site' => true,
 			'date_format' => 'F j, Y',
 			'customer_data' => (new UserDataGenerator())
