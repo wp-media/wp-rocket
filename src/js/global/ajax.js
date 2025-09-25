@@ -451,11 +451,13 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 
 	function handleAddPage(e) {
-		// check if has attr disabled
-		if ($(this).attr('disabled')) {
+		e.preventDefault();
+
+		// Bail out if button is disabled.
+		if ($(this).hasClass('disabled')) {
 			return;
 		}
-		e.preventDefault();
+
 		const pageUrl = $pageUrlInput.val().trim();
 
 		if (!isValidUrl(pageUrl)) {
