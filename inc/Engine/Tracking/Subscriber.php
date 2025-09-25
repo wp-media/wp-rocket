@@ -36,6 +36,8 @@ class Subscriber implements Subscriber_Interface {
 			'admin_enqueue_scripts'               => [ 'localize_optin_status', 15 ],
 			'admin_print_scripts'                 => [ 'inject_mixpanel_script' ],
 			'rocket_mixpanel_optin_changed'       => 'track_optin_change',
+			'rocket_pm_job_added'                 => [ 'track_rocket_insights_url_added', 10, 3 ],
+			'admin_footer-settings_page_wprocket' => 'track_admin_visits',
 		];
 	}
 
@@ -110,4 +112,28 @@ class Subscriber implements Subscriber_Interface {
 	public function track_optin_change( $status ): void {
 		$this->tracking->track_optin_change( $status );
 	}
+
+	/**
+	 * Track when a URL is added to Rocket Insights (Performance Monitoring).
+	 *
+	 * @since 3.20
+	 *
+	 * @param string $url          The URL that was added for monitoring.
+	 * @param string $current_plan The current plan of the user.
+	 * @param int    $urls_count   The current number of URLs being monitored.
+	 *
+	 * @return void
+	 */ public function track_rocket_insights_url_added( $url, $current_plan, $urls_count ): void {
+		$this->tracking->track_rocket_insights_url_added( $url, $current_plan, $urls_count );
+	}
+
+	/**
+	 * Tracks visits to settings page
+	 *
+	 * @return void
+	 */
+	public function track_admin_visits(): void {
+		$this->tracking->track_admin_visits();
+	}
 }
+

@@ -217,4 +217,55 @@ class Tracking extends Abstract_Render {
 	public function track_optin_change( $status ): void {
 		$this->mixpanel->track_optin( $status );
 	}
+
+	/**
+	 * Track when a URL is added in Rocket Insights
+	 *
+	 * @param string $url          The URL that was added for monitoring.
+	 * @param string $current_plan The current plan of the user.
+	 * @param int    $urls_count   The current number of URLs being monitored.
+	 *
+	 * @return void
+	 */
+	public function track_rocket_insights_url_added( $url, $current_plan, $urls_count ): void {
+		if ( ! $this->optin->is_enabled() ) {
+			return;
+		}
+
+		$this->mixpanel->track(
+			'Rocket Insights Page Added',
+			[
+				'context'        => 'wp_plugin',
+				'plan_type'      => $current_plan,
+				'tracked_pages'  => $urls_count,
+			]
+		);
+	}
+
+	/**
+	 * Tracks visits to settings page
+	 *
+	 * @return void
+	 */
+	public function track_admin_visits(): void {
+		if ( ! $this->optin->is_enabled() ) {
+			return;
+		}
+
+		$user = wp_get_current_user();
+        $transient = 'rocket_tracking_admin_visited_' . $user->ID;
+
+        if ( false !== get_transient( $transient ) ) {
+            return;
+        }
+
+        $this->mixpanel->track(
+            'Page Viewed',
+            [
+                'path'       => '/wp-admin/options-general.php?page=wprocket',
+                'context'    => 'wp_plugin',
+            ]
+        );
+        set_transient( $transient, true, WEEK_IN_SECONDS );
+    }
 }
