@@ -18,11 +18,11 @@ class Render extends Abstract_Render {
 	private $credit_manager;
 
 	/**
-	 * Context instance.
+	 * PerformanceMonitoringContext instance.
 	 *
 	 * @var PerformanceMonitoringContext
 	 */
-	private $context;
+	private $pma_context;
 
 	/**
 	 * Constructor for the Render class.
@@ -31,12 +31,12 @@ class Render extends Abstract_Render {
 	 *
 	 * @param string                       $template_path   Path to the template file.
 	 * @param CreditManager                $credit_manager  Instance of CreditManager for managing credits.
-	 * @param PerformanceMonitoringContext $context Context instance.
+	 * @param PerformanceMonitoringContext $pma_context Instance of PerformanceMonitoringContext for managing performance monitoring context.
 	 */
-	public function __construct( $template_path, CreditManager $credit_manager, PerformanceMonitoringContext $context ) {
+	public function __construct( $template_path, CreditManager $credit_manager, PerformanceMonitoringContext $pma_context ) {
 		parent::__construct( $template_path );
 		$this->credit_manager = $credit_manager;
-		$this->context        = $context;
+		$this->pma_context    = $pma_context;
 	}
 
 	/**
@@ -142,17 +142,6 @@ class Render extends Abstract_Render {
 	}
 
 	/**
-	 * Render the settings section from views.
-	 *
-	 * @param array $data Data to render the settings section.
-	 *
-	 * @return void
-	 */
-	public function render_settings_section( array $data ) {
-		echo $this->generate( 'partials/performance-monitoring/settings', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-	}
-
-	/**
 	 * Render the HTML for a single performance monitoring list row.
 	 *
 	 * @param object $data The data object representing a single row (page) in the performance monitoring list.
@@ -202,7 +191,7 @@ class Render extends Abstract_Render {
 	 * @return string The translated status text for monitored or tracked pages.
 	 */
 	private function get_monitoring_status_text(): string {
-		if ( $this->context->is_schedule_allowed() ) {
+		if ( $this->pma_context->is_schedule_allowed() ) {
 			return __( 'Monitored Pages', 'rocket' );
 		}
 

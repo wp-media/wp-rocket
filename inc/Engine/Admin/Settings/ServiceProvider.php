@@ -73,6 +73,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'delay_js_sitelist',
 					'template_path',
 					'options',
+					'pm_context',
 				]
 			);
 		$this->getContainer()->addShared( 'settings_page_subscriber', Subscriber::class )
