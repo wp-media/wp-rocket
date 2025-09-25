@@ -13,11 +13,6 @@ $(document).ready(function(){
             e.preventDefault();
             _isRefreshing = true;
             button.trigger( 'blur' );
-                    // Update global score row in table if on Rocket Insights page.
-			updateGlobalScoreRow(response);
-
-			// Check remaining URLs and update button state
-			updateUrlLimitState(response.data.remaining_urls);
 
 			// Start polling if not already running.addClass('wpr-isLoading');
             expire.removeClass('wpr-isValid wpr-isInvalid');
@@ -306,9 +301,6 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 
 	function disableAddUrlElements() {
-		$('#wpr-action-add_page_speed_radar').addClass('disabled').attr('disabled', true);
-		$pageUrlInput.attr('disabled', true);
-
 		$('.wpr-pma-global-score-add-url-button').addClass('disabled').attr('disabled', true);
 
 		const tooltipMessage = window.rocket_ajax_data && window.rocket_ajax_data.reach_max_url_message
@@ -316,26 +308,6 @@ document.addEventListener('DOMContentLoaded', function() {
 			: 'Maximum number of URLs reached for your license.';
 		$('#wpr-action-add_page_speed_radar').attr('title', tooltipMessage);
 		$('.wpr-pma-global-score-add-url-button').attr('title', tooltipMessage);
-	}
-
-	function enableAddUrlElements() {
-		$('#wpr-action-add_page_speed_radar').removeClass('disabled').attr('disabled', false);
-		$pageUrlInput.attr('disabled', false);
-
-		$('.wpr-pma-global-score-add-url-button').removeClass('disabled').attr('disabled', false);
-
-		$('#wpr-action-add_page_speed_radar').removeAttr('title');
-		$('.wpr-pma-global-score-add-url-button').removeAttr('title');
-	}
-
-	function updateUrlLimitState(remainingUrls) {
-		if (remainingUrls !== undefined) {
-			if (remainingUrls <= 0) {
-				disableAddUrlElements();
-			} else {
-				enableAddUrlElements();
-			}
-		}
 	}
 
 	function resetPolling() {
@@ -456,9 +428,8 @@ document.addEventListener('DOMContentLoaded', function() {
 				// Update global score row in table if on Rocket Insights page.
 				updateGlobalScoreRow(response);
 
-				// Check if we've reached the URL limit
-				if (response.data.remaining_urls !== undefined && response.data.remaining_urls <= 0) {
-					disableAddUrlElements();
+				if ('disabled_btn_html' in response.data) {
+					$('#wpr-pma-add-url-button-container').html(response.data.disabled_btn_html.rocket_insights);
 				}
 
 				// Start polling if not already running
