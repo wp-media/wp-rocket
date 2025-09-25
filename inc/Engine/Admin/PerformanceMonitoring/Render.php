@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Admin\PerformanceMonitoring;
 
 use WP_Rocket\Abstract_Render;
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\Context\PerformanceMonitoringContext;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Credit\Manager as CreditManager;
 
 class Render extends Abstract_Render {
@@ -15,16 +16,25 @@ class Render extends Abstract_Render {
 	private $credit_manager;
 
 	/**
+	 * PerformanceMonitoringContext instance.
+	 *
+	 * @var PerformanceMonitoringContext
+	 */
+	private $pma_context;
+
+	/**
 	 * Constructor for the Render class.
 	 *
 	 * Initializes the Render instance with the provided template path and CreditManager.
 	 *
-	 * @param string        $template_path   Path to the template file.
-	 * @param CreditManager $credit_manager  Instance of CreditManager for managing credits.
+	 * @param string                       $template_path   Path to the template file.
+	 * @param CreditManager                $credit_manager  Instance of CreditManager for managing credits.
+	 * @param PerformanceMonitoringContext $pma_context Instance of PerformanceMonitoringContext for managing performance monitoring context.
 	 */
-	public function __construct( $template_path, CreditManager $credit_manager ) {
+	public function __construct( $template_path, CreditManager $credit_manager, PerformanceMonitoringContext $pma_context ) {
 		parent::__construct( $template_path );
 		$this->credit_manager = $credit_manager;
+		$this->pma_context    = $pma_context;
 	}
 
 	/**
@@ -125,17 +135,6 @@ class Render extends Abstract_Render {
 		$data->has_credit = $this->credit_manager->has_credit();
 
 		return $this->generate( 'partials/performance-monitoring/table-row', $data );
-	}
-
-	/**
-	 * Render the settings section from views.
-	 *
-	 * @param array $data Data to render the settings section.
-	 *
-	 * @return void
-	 */
-	public function render_settings_section( array $data ) {
-		echo $this->generate( 'partials/performance-monitoring/settings', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	/**
