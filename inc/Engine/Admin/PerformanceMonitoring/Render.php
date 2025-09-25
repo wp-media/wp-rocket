@@ -196,7 +196,7 @@ class Render extends Abstract_Render {
 			case 'rocket-insights':
 				$button = $this->generate( 'partials/performance-monitoring/buttons/rocket-insights-panel', $data );
 				break;
-			
+
 			case 'global-score-widget':
 				$button = $this->generate( 'partials/performance-monitoring/buttons/global-score-widget', $data );
 				break;
