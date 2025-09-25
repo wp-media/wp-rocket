@@ -120,7 +120,7 @@ class Controller {
 		} else {
 			$page_title = $this->get_page_title( $payload['message'] );
 		}
-		$row_id = $this->manager->add_url_to_the_queue(
+		$row_id = $this->manager->add_to_the_queue(
 			$url,
 			true,
 			[
@@ -326,11 +326,13 @@ class Controller {
 				);
 		}
 
-		$this->manager->add_url_to_the_queue(
+		$this->manager->add_to_the_queue(
 			$row->url, // @phpstan-ignore-line
 			true,
 			[
-				'data'       => '',
+				'data'       => [
+					'is_retest' => true,
+				],
 				'score'      => '',
 				'report_url' => '',
 				'is_blurred' => 0,

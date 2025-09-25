@@ -120,7 +120,7 @@ class Controller {
 
 		$page_title = __( 'Home Page', 'rocket' );
 
-		$this->manager->add_url_to_the_queue(
+		$this->manager->add_to_the_queue(
 			$url,
 			true,
 			[
