@@ -14,7 +14,9 @@
 </div>
 </div>
 <p class="wpr-page-num-txt">3 page monitored.</p>
+<div id="wpr_global_score_widget_add_page_btn_wrapper">
 <a href="#rocket_insights" class="wpr-button wpr-button--icon wpr-button--small wpr-button--purple wpr-icon-plus wpr-button--no-min-width wpr-pma-add-url-button wpr-pma-global-score-add-url-button wpr-btn-with-tool-tip disabled">Add Pages <div class="wpr-tooltip"> <div class="wpr-tooltip-content"> You have reached your maximum page limit </div> </div> </a>
+</div>
 </div>
 </div>
 </fieldset>
