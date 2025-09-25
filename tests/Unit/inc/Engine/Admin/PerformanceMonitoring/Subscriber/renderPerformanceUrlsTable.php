@@ -55,6 +55,7 @@ class Test_renderPerformanceUrlsTable extends TestCase {
 				'pma_addon_limit' => 1,
 				'upgrade_url'    => '',
 				'can_add_pages'  => true,
+				'is_free' => false,
 			]);
 
 		$mock_ajax_controller   = $this->createMock(AjaxController::class);
