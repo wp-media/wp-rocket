@@ -136,11 +136,11 @@
         @include font-size(14,24);
     }
 
-    // Disabled field
-    &.wpr-isDisabled{
-        opacity: 0.55;
+    &.wpr-isDisabled {
+        label {
+            color: #8a8b8d;
+        }
     }
-
     // Parent field
     &.wpr-isParent{
         padding-bottom: 0;
@@ -200,6 +200,12 @@
     &--checkbox{
         .wpr-field-description{
             margin-left: $space*4;
+        }
+    }
+
+    &--checkbox.wpr-isDisabled {
+        .wpr-field-description {
+            color: #b0b0b1;
         }
     }
 

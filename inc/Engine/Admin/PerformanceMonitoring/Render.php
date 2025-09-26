@@ -195,4 +195,43 @@ class Render extends Abstract_Render {
 
 		return __( 'Tracked Pages', 'rocket' );
 	}
+
+	/**
+	 * Generates the appropriate "Add Page" button markup for the given UI context.
+	 *
+	 * @since 3.20
+	 *
+	 * @param string $type The context in which the button is used. Accepts 'rocket-insights' or 'global-score-widget'.
+	 * @param array  $data Data to be passed to the button template.
+	 *
+	 * @return string The generated HTML for the "Add Page" button.
+	 */
+	public function get_add_page_btn( string $type, array $data ) {
+		switch ( $type ) {
+			case 'global-score-widget':
+				$button = $this->generate( 'partials/performance-monitoring/buttons/global-score-widget', $data );
+				break;
+
+			case 'rocket-insights':
+			default:
+				$button = $this->generate( 'partials/performance-monitoring/buttons/rocket-insights-panel', $data );
+				break;
+		}
+
+		return $button;
+	}
+
+	/**
+	 * Outputs the HTML for the "Add Page" button using the provided type and data.
+	 *
+	 * @since 3.20
+	 *
+	 * @param string $type The context in which the button is used. Accepts 'rocket-insights' or 'global-score-widget'.
+	 * @param array  $data Data to be passed to the button template.
+	 *
+	 * @return void
+	 */
+	public function render_add_page_btn( string $type, array $data ): void {
+		echo $this->get_add_page_btn( $type, $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	}
 }

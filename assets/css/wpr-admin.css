@@ -145,7 +145,6 @@ a:focus, button:focus {
   z-index: 100;
   width: auto;
   opacity: 0;
-  min-width: 300px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 .wpr-tooltip:before {
@@ -591,6 +590,7 @@ a:focus, button:focus {
 }
 .wpr-Content.isNotFull {
   max-width: 960px;
+  z-index: 1000;
 }
 .wpr-Content-tips {
   position: absolute;
@@ -1871,7 +1871,6 @@ div.wpr-upgrade-websites.notstacked {
   position: absolute;
   right: auto;
   top: auto;
-  min-width: max-content;
 }
 .wpr-btn-with-tool-tip:hover .wpr-tooltip {
   visibility: visible;
@@ -1994,8 +1993,8 @@ div.wpr-upgrade-websites.notstacked {
   font-size: 0.875rem;
   line-height: 1.7142857143;
 }
-.wpr-field.wpr-isDisabled {
-  opacity: 0.55;
+.wpr-field.wpr-isDisabled label {
+  color: #8a8b8d;
 }
 .wpr-field.wpr-isParent {
   padding-bottom: 0;
@@ -2044,6 +2043,9 @@ div.wpr-upgrade-websites.notstacked {
 }
 .wpr-field--checkbox .wpr-field-description {
   margin-left: 32px;
+}
+.wpr-field--checkbox.wpr-isDisabled .wpr-field-description {
+  color: #b0b0b1;
 }
 .wpr-field--radio {
   padding: 24px 16px;
@@ -2893,7 +2895,7 @@ div.wpr-tutorial-item {
   height: 32px;
 }
 .wpr-percentage-indicator .wpr-tooltip {
-  left: 12px;
+  left: 6px;
   top: 30px;
   min-width: max-content;
 }
@@ -3238,6 +3240,19 @@ div.wpr-tutorial-item {
   vertical-align: middle;
   box-sizing: border-box;
 }
+.wpr-pma-urls-table .wpr-pma-item-title a.wpr-btn-with-tool-tip .wpr-tooltip {
+  left: 0;
+  top: 100%;
+  margin-top: 4px;
+}
+.wpr-pma-urls-table .wpr-pma-item-title a.wpr-btn-with-tool-tip .wpr-tooltip:before {
+  top: -6px;
+  left: 17.6px;
+}
+.wpr-pma-urls-table .wpr-pma-item-title a.wpr-btn-with-tool-tip:hover .wpr-tooltip {
+  visibility: visible;
+  opacity: 1;
+}
 .wpr-pma-urls-table .wpr-pma-item-title .wpr-pma-title {
   text-decoration: underline;
 }
@@ -3310,6 +3325,14 @@ div.wpr-tutorial-item {
   transform: none;
   box-shadow: none;
 }
+.wpr-pma-urls-table .wpr-pma-item-actions .wpr-tooltip {
+  width: 280px;
+}
+@media screen and (max-width: 600px) {
+  .wpr-pma-urls-table .wpr-pma-item-actions .wpr-tooltip {
+    width: auto;
+  }
+}
 
 .wpr-pma-add-section {
   margin: 16px 0;
@@ -3339,8 +3362,7 @@ div.wpr-tutorial-item {
 .wpr-pma-add-url-button.disabled {
   cursor: not-allowed;
   border-radius: 4px;
-  opacity: 0.5;
-  background: #2D1656;
+  background: #a199b1;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2);
 }
 .wpr-pma-add-url-button.disabled:focus {
@@ -3353,7 +3375,6 @@ div.wpr-tutorial-item {
   left: 50%;
   transform: translateX(-50%);
   bottom: -40px;
-  min-width: max-content;
   text-transform: none;
 }
 .wpr-pma-add-url-button .wpr-tooltip:before {
@@ -3441,6 +3462,10 @@ div.wpr-tutorial-item {
 
 .wpr-checkbox-warning::before {
   margin-right: 8px;
+}
+
+.wpr-isDisabled .wpr-checkbox [type=checkbox]:not(:checked) + label:before, .wpr-isDisabled .wpr-checkbox [type=checkbox]:checked + label:before {
+  border: 2px solid #9d9e9e;
 }
 
 /*-----------------------------------------------*\

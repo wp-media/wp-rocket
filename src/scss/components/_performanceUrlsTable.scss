@@ -138,6 +138,24 @@
 			display: inline-block;
 			vertical-align: middle;
 			box-sizing: border-box;
+
+			&.wpr-btn-with-tool-tip {
+				.wpr-tooltip {
+					left: 0;
+					top: 100%;
+					margin-top: $space/2;
+					&:before {
+						top: -6px;
+						left: 17.6px;
+					}
+				}
+				&:hover {
+					.wpr-tooltip {
+						visibility: visible;
+						opacity: 1;
+					}
+				}
+			}
 		}
 		.wpr-pma-title{
 			text-decoration: underline;
@@ -216,6 +234,12 @@
 				}
 			}
 		}
+		.wpr-tooltip{
+			width:280px;
+			@media screen and (max-width: 600px) {
+				width: auto;
+			}
+		}
 	}
 }
 .wpr-pma-add-section{
@@ -245,8 +269,7 @@
 	&.disabled{
 		cursor: not-allowed;
 		border-radius: 4px;
-		opacity: 0.5;
-		background: #2D1656;
+		background: #a199b1;
 		box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.20);
 		&:focus {
 			transform: none;
@@ -259,7 +282,6 @@
 		left: 50%;
 		transform: translateX(-50%);
 		bottom: -40px;
-		min-width: max-content;
 		text-transform: none;
 		&:before {
 			top: -6px;

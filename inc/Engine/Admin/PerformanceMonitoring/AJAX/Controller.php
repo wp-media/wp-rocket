@@ -91,8 +91,10 @@ class Controller {
 		if ( ! wpm_apply_filters_typesafe( 'wpr_pm_allow_add_page', true ) ) {
 			wp_send_json_error(
 				[
-					'error'   => true,
-					'message' => __( 'Maximum number of URLs reached for your license.', 'rocket' ),
+					'error'          => true,
+					'message'        => __( 'Maximum number of URLs reached for your license.', 'rocket' ),
+					'remaining_urls' => 0,
+					'can_add_pages'  => false,
 				]
 				);
 		}
@@ -152,6 +154,17 @@ class Controller {
 		$payload['remaining_urls']    = $this->get_remaining_url_count();
 		$payload['has_credit']        = $this->plan->has_credit();
 		$payload['can_add_pages']     = wpm_apply_filters_typesafe( 'wpr_pm_allow_add_page', true );
+
+		// Add disabled button html data to payload.
+		if ( 0 === $this->get_remaining_url_count() ) {
+			$data                  = $payload['global_score_data']['data'];
+			$data['reach_max_url'] = true;
+
+			$payload['global_score_data']['disabled_btn_html'] = [
+				'global_score_widget' => $this->render->get_add_page_btn( 'global-score-widget', $data ),
+				'rocket_insights'     => $this->render->get_add_page_btn( 'rocket-insights', $data ),
+			];
+		}
 
 		wp_send_json_success( $payload );
 	}
