@@ -1,18 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace WP_Rocket\Engine\Admin\PerformanceMonitoring;
+namespace WP_Rocket\Engine\Admin\PerformanceMonitoring\Settings;
 
 use WP_Rocket\Abstract_Render;
 use WP_Rocket\Engine\License\API\User;
-use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\Context\PerformanceMonitoringContext;
 
-/**
- * Handle Add-On license status display
- *
- * @since 3.20
- */
-class SettingsSubscriber extends Abstract_Render implements Subscriber_Interface {
+class Controller extends Abstract_Render {
 	/**
 	 * User API client
 	 *
@@ -21,25 +16,23 @@ class SettingsSubscriber extends Abstract_Render implements Subscriber_Interface
 	private $user;
 
 	/**
-	 * Instantiate the class
+	 * Performance Monitoring context
 	 *
-	 * @param User   $user          User API client.
-	 * @param string $template_path Path to the templates.
+	 * @var PerformanceMonitoringContext
 	 */
-	public function __construct( User $user, $template_path ) {
-		parent::__construct( $template_path );
-		$this->user = $user;
-	}
+	private $pm_context;
 
 	/**
-	 * Events this subscriber listens to
+	 * Instantiate the class
 	 *
-	 * @return array
+	 * @param User                         $user          User API client.
+	 * @param string                       $template_path Path to the templates.
+	 * @param PerformanceMonitoringContext $pm_context Performance Monitoring context.
 	 */
-	public static function get_subscribed_events() {
-		return [
-			'rocket_dashboard_after_account_data' => [ 'display_addon_status', 9 ], // Higher priority than RocketCDN.
-		];
+	public function __construct( User $user, $template_path, PerformanceMonitoringContext $pm_context ) {
+		parent::__construct( $template_path );
+		$this->user       = $user;
+		$this->pm_context = $pm_context;
 	}
 
 	/**
@@ -50,8 +43,12 @@ class SettingsSubscriber extends Abstract_Render implements Subscriber_Interface
 	 * @return void
 	 */
 	public function display_addon_status() {
-
 		if ( (bool) rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) ) {
+			return;
+		}
+
+		// Hide Rocket Insights status for reseller accounts and non-live installations.
+		if ( $this->pm_context->is_reseller_or_non_live() ) {
 			return;
 		}
 
@@ -60,15 +57,13 @@ class SettingsSubscriber extends Abstract_Render implements Subscriber_Interface
 		$status_text  = __( 'No Subscription', 'rocket' );
 		$service_name = __( 'Rocket Insights', 'rocket' );
 		$sku          = $this->user->get_pma_addon_sku_active();
-
 		$upgrade_skus = $this->user->get_pma_addon_upgrade_skus( $sku );
-
-		$is_active = $this->user->is_pma_addon_active( $sku );
+		$is_active    = $this->user->is_pma_addon_active( $sku );
 
 		if ( $is_active ) {
 			$label        = __( 'Next Billing Date', 'rocket' );
 			$status_class = ' wpr-isValid';
-			$status_text  = date_i18n( get_option( 'date_format' ), $this->user->get_pma_license_expiration() );
+			$status_text  = date_i18n( get_option( 'date_format' ), $this->user->get_pma_license_expiration() ); // @phpstan-ignore-line
 		}
 
 		$data = [
@@ -90,5 +85,14 @@ class SettingsSubscriber extends Abstract_Render implements Subscriber_Interface
 		}
 
 		echo $this->generate( 'dashboard-addon-status', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	}
+
+	/**
+	 * Check if the current plan is free or not.
+	 *
+	 * @return bool
+	 */
+	public function is_free_plan() {
+		return $this->user->is_pma_free_active( $this->user->get_pma_addon_sku_active() );
 	}
 }

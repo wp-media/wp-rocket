@@ -149,6 +149,11 @@ class AddNewPageTest extends AjaxTestCase {
 		if ( isset( $expected['response_data'] ) ) {
 			foreach ( $expected['response_data'] as $key => $value ) {
 				$this->assertArrayHasKey( $key, $response['data'] );
+				
+				// For specific fields, check the expected values
+				if ( $key === 'can_add_pages' && $value !== null ) {
+					$this->assertSame( $value, $response['data'][$key] );
+				}
 			}
 		}
 	}

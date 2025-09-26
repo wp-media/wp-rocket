@@ -13,9 +13,12 @@ use WP_Rocket\Engine\Admin\PerformanceMonitoring\{
 	Context\PerformanceMonitoringContext,
 	Jobs\Factory as PMFactory,
 	Jobs\Manager as PMManager,
+	Managers\Plan,
 	Queue\Queue as PMQueue,
 	AJAX\Controller as AjaxController,
-	URLLimit\Subscriber as URLLimitSubscriber
+	URLLimit\Subscriber as URLLimitSubscriber,
+	Settings\Controller as SettingsController,
+	Settings\Subscriber as SettingsSubscriber,
 };
 
 class ServiceProvider extends AbstractServiceProvider {
@@ -44,7 +47,9 @@ class ServiceProvider extends AbstractServiceProvider {
 		'pm_credit_manager',
 		'pm_global_score',
 		'pm_url_limit_subscriber',
+		'rocket_insights_settings',
 		'pm_settings_subscriber',
+		'pm_plan',
 	];
 
 	/**
@@ -90,12 +95,23 @@ class ServiceProvider extends AbstractServiceProvider {
 				[
 					new StringArgument( $this->getContainer()->get( 'template_path' ) . '/settings/' ),
 					'pm_credit_manager',
+					'pm_context',
 				]
 				);
 
 		// API Client.
 		$this->getContainer()->add( 'pm_api_client', PMAPIClient::class )
 			->addArgument( 'options' );
+
+		$this->getContainer()->add( 'pm_plan', Plan::class )
+			->addArguments(
+				[
+					'options_api',
+					'pm_context',
+					'user',
+					'user_client',
+				]
+			);
 
 		// Jobs layer.
 		$this->getContainer()->add( 'pm_manager', PMManager::class )
@@ -124,6 +140,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'pm_credit_manager',
 					'pm_global_score',
 					'user',
+					'options',
 				]
 			);
 
@@ -147,6 +164,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'pm_global_score',
 					'pm_render',
 					'user',
+					'pm_credit_manager',
 				]
 			);
 		// Subscriber.
@@ -159,8 +177,9 @@ class ServiceProvider extends AbstractServiceProvider {
 					'pm_queue',
 					'pm_context',
 					'pm_global_score',
-					'user_client',
-					'user',
+					'options',
+					'pm_manager',
+					'pm_plan',
 				]
 			);
 
@@ -170,16 +189,20 @@ class ServiceProvider extends AbstractServiceProvider {
 				[
 					'pm_query',
 					'user',
+					'pm_global_score',
 				]
 			);
-			// Addon Subscriber.
-		$this->getContainer()->addShared( 'pm_settings_subscriber', SettingsSubscriber::class )
+		// Settings Subscriber.
+		$this->getContainer()->add( 'rocket_insights_settings', SettingsController::class )
 			->addArguments(
 				[
 					'user',
 					new StringArgument( __DIR__ . '/../../../Engine/License/views' ),
+					'pm_context',
 				]
 			);
+		$this->getContainer()->addShared( 'pm_settings_subscriber', SettingsSubscriber::class )
+			->addArgument( 'rocket_insights_settings' );
 
 		// Ensure the table is created.
 		$this->getContainer()->get( 'pm_table' );

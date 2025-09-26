@@ -9,7 +9,8 @@ use WP_Rocket\Engine\Admin\PerformanceMonitoring\{
 	GlobalScore,
 	Jobs\Manager,
 	Context\PerformanceMonitoringContext as Context,
-	Database\Queries\PerformanceMonitoring as PMQuery
+	Database\Queries\PerformanceMonitoring as PMQuery,
+	Credit\Manager as CreditManager
 };
 use WP_Rocket\Engine\Common\Utils;
 use WP_Rocket\Engine\License\API\User;
@@ -61,22 +62,31 @@ class Controller {
 	private $user;
 
 	/**
+	 * Credit Manager instance.
+	 *
+	 * @var CreditManager
+	 */
+	private $credit_manager;
+
+	/**
 	 * Constructor.
 	 *
-	 * @param PMQuery     $query Query instance.
-	 * @param Manager     $manager Manager instance.
-	 * @param Context     $context Context instance.
-	 * @param GlobalScore $global_score GlobalScore instance.
-	 * @param Render      $render Render instance.
-	 * @param User        $user User client API instance.
+	 * @param PMQuery       $query Query instance.
+	 * @param Manager       $manager Manager instance.
+	 * @param Context       $context Context instance.
+	 * @param GlobalScore   $global_score GlobalScore instance.
+	 * @param Render        $render Render instance.
+	 * @param User          $user User client API instance.
+	 * @param CreditManager $credit_manager Credit Manager instance.
 	 */
-	public function __construct( PMQuery $query, Manager $manager, Context $context, GlobalScore $global_score, Render $render, User $user ) {
-		$this->query        = $query;
-		$this->manager      = $manager;
-		$this->context      = $context;
-		$this->global_score = $global_score;
-		$this->render       = $render;
-		$this->user         = $user;
+	public function __construct( PMQuery $query, Manager $manager, Context $context, GlobalScore $global_score, Render $render, User $user, CreditManager $credit_manager ) {
+		$this->query          = $query;
+		$this->manager        = $manager;
+		$this->context        = $context;
+		$this->global_score   = $global_score;
+		$this->render         = $render;
+		$this->user           = $user;
+		$this->credit_manager = $credit_manager;
 	}
 
 	/**
@@ -91,8 +101,10 @@ class Controller {
 		if ( ! wpm_apply_filters_typesafe( 'wpr_pm_allow_add_page', true ) ) {
 			wp_send_json_error(
 				[
-					'error'   => true,
-					'message' => __( 'Maximum number of URLs reached for your license.', 'rocket' ),
+					'error'          => true,
+					'message'        => __( 'Maximum number of URLs reached for your license.', 'rocket' ),
+					'remaining_urls' => 0,
+					'can_add_pages'  => false,
 				]
 				);
 		}
@@ -110,7 +122,7 @@ class Controller {
 		} else {
 			$page_title = $this->get_page_title( $payload['message'] );
 		}
-		$row_id = $this->manager->add_url_to_the_queue(
+		$row_id = $this->manager->add_to_the_queue(
 			$url,
 			true,
 			[
@@ -145,6 +157,8 @@ class Controller {
 		$payload['html']              = $this->render->get_performance_monitoring_list_row( $row_data );
 		$payload['global_score_data'] = $this->get_global_score_payload();
 		$payload['remaining_urls']    = $this->get_remaining_url_count();
+		$payload['has_credit']        = $this->user_has_credit();
+		$payload['can_add_pages']     = wpm_apply_filters_typesafe( 'wpr_pm_allow_add_page', true );
 
 		wp_send_json_success( $payload );
 	}
@@ -281,6 +295,7 @@ class Controller {
 
 		$payload['results']           = $results;
 		$payload['global_score_data'] = $this->get_global_score_payload();
+		$payload['has_credit']        = $this->user_has_credit();
 
 		wp_send_json_success( $payload );
 	}
@@ -313,11 +328,13 @@ class Controller {
 				);
 		}
 
-		$this->manager->add_url_to_the_queue(
+		$this->manager->add_to_the_queue(
 			$row->url, // @phpstan-ignore-line
 			true,
 			[
-				'data'       => '',
+				'data'       => [
+					'is_retest' => true,
+				],
 				'score'      => '',
 				'report_url' => '',
 				'is_blurred' => 0,
@@ -340,6 +357,7 @@ class Controller {
 				'html'              => $this->render->get_performance_monitoring_list_row( $row ),
 				'global_score_data' => $this->get_global_score_payload(),
 				'remaining_urls'    => $this->get_remaining_url_count(),
+				'has_credit'        => $this->user_has_credit(),
 			]
 			);
 	}
@@ -379,5 +397,14 @@ class Controller {
 		$max_urls          = $this->user->get_pma_addon_limit( $this->user->get_pma_addon_sku_active() );
 
 		return max( 0, $max_urls - (int) $current_url_count );
+	}
+
+	/**
+	 * Check if the current user has available credits for performance monitoring.
+	 *
+	 * @return bool True if user has credits available, false otherwise.
+	 */
+	private function user_has_credit(): bool {
+		return $this->context->is_free_user() ? $this->credit_manager->has_credit() : true;
 	}
 }

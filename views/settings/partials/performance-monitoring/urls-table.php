@@ -12,56 +12,37 @@
  */
 
 defined( 'ABSPATH' ) || exit;
-$wp_rocket_boxes = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
 ?>
-<?php if ( ! in_array( 'pma_upgrade_notice', (array) $wp_rocket_boxes, true ) ) : ?>
-<div class="wpr-notice wpr-pma-notice">
-	<div class="wpr-notice-container">
-		<div class="wpr-notice-description">
-			<?php
-			printf(
-				// Translators: %1$s = opening strong tag, %2$s = closing strong tag.
-				esc_html__( '%1$sCongrats!%2$s You can now monitor up to 10 pages, run on-demand tests, and access advanced GTmetrix reports.', 'rocket' ),
-				'<strong>',
-				'</strong>'
-			);
-			?>
-		</div>
-		<a class="wpr-notice-close wpr-icon-close rocket-dismiss" href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box=pma_upgrade_notice' ), 'rocket_ignore_pma_upgrade_notice' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>">
-			<span class="screen-reader-text">
-				<?php esc_html_e( 'Dismiss this notice', 'rocket' ); ?>
-			</span>
-		</a>
-	</div>
-</div>
-<?php endif; ?>
-
 <div class="wpr-optionHeader">
 	<h3 class="wpr-title2"><?php esc_html_e( 'Performance Summary', 'rocket' ); ?></h3>
 	<button data-beacon-id="<?php echo esc_attr( '' ); ?>" data-wpr_track_button="Need Help" data-wpr_track_context="Addons" class="wpr-infoAction wpr-infoAction--help wpr-icon-help"><?php esc_html_e( 'Need Help?', 'rocket' ); ?></button>
 </div>
 
-<?php if ( isset( $data['can_add_pages'] ) && ! $data['can_add_pages'] ) : ?>
-	<div class="wpr-notice wpr-pma-notice wpr-error-notice">
-		<div class="wpr-notice-container">
-			<div class="wpr-notice-description">
-				<?php
-				printf(
-				// Translators: %1$s = opening strong tag, %2$s = closing strong tag.
-					esc_html__( 'You\'ve %1$sreached your free limit.%2$s Upgrade to continue.', 'rocket' ),
-					'<strong>',
-					'</strong>'
-				);
-				?>
-			</div>
-			<a class="wpr-notice-close" target="_blank" href="<?php echo esc_url( $data['upgrade_url'] ); ?>">
-				<?php esc_html_e( 'Upgrade Now', 'rocket' ); ?>
-			</a>
+<?php
+$wp_rocket_pm_quota_banner_class = 'wpr-notice wpr-pma-notice wpr-error-notice';
+if ( ! isset( $data['can_add_pages'] ) || $data['can_add_pages'] ) {
+	$wp_rocket_pm_quota_banner_class .= ' hidden';
+}
+?>
+<div class="<?php echo esc_attr( $wp_rocket_pm_quota_banner_class ); ?>" id="wpr-pma-quota-banner">
+	<div class="wpr-notice-container">
+		<div class="wpr-notice-description">
+			<?php
+			printf(
+			// Translators: %1$s = opening strong tag, %2$s = closing strong tag.
+				esc_html__( 'You\'ve %1$sreached your free limit.%2$s Upgrade to continue.', 'rocket' ),
+				'<strong>',
+				'</strong>'
+			);
+			?>
 		</div>
+		<a class="wpr-notice-close" target="_blank" href="<?php echo esc_url( $data['upgrade_url'] ); ?>">
+			<?php esc_html_e( 'Upgrade Now', 'rocket' ); ?>
+		</a>
 	</div>
-<?php endif; ?>
+</div>
 
-<?php if ( ! empty( $data['can_add_pages'] ) ) : ?>
+<?php if ( ! empty( $data['can_add_pages'] ) && ! empty( $data['is_free'] ) ) : ?>
 	<p class="wpr-pma-summary-info">
 		<?php
 		printf(

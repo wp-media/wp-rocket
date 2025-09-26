@@ -10,6 +10,7 @@ return [
         'config' => [
             'customer_data' => (new UserDataGenerator())
                 ->with_pma_active_sku('perf-monitor-advanced')
+                ->with_reseller_status(0)
                 ->generate(),
         ],
         'expected' => '',
@@ -18,6 +19,7 @@ return [
         'config' => [
             'customer_data' => (new UserDataGenerator())
                 ->with_pma_active_sku('perf-monitor-free')
+                ->with_reseller_status(0)
                 ->generate(),
         ],
         'expected' => '<span class="wpr-currency">
@@ -31,6 +33,7 @@ $</span>
 		'config' => [
 			'customer_data' => (new UserDataGenerator())
 				->with_pma_active_sku('perf-monitor-free')
+				->with_reseller_status(0)
 				->with_promo('perf-monitor-advanced', function (PmaPromoGenerator $generator) {
 					$generator->with_price("10.0");
 					$generator->with_expires_at(time() + MONTH_IN_SECONDS);
