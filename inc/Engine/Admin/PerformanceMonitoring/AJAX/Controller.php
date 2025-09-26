@@ -203,7 +203,7 @@ class Controller {
 
 		// Check if URL has protocol, add if needed.
 		$processed_url = rocket_add_url_protocol( $url );
-		
+
 		$response = $this->get_page_content( $processed_url );
 
 		if ( ! $response ) {
