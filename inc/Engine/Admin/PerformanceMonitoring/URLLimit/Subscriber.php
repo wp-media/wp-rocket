@@ -79,12 +79,12 @@ class Subscriber implements Subscriber_Interface {
 		if ( $current_url_count >= $max_urls ) {
 			return false;
 		}
-		
+
 		// For free users, also check credit availability.
 		if ( $this->context->is_free_user() && ! $this->credit_manager->has_credit() ) {
 			return false;
 		}
-		
+
 		return true;
 	}
 
