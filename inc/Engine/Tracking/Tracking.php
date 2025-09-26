@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\Tracking;
 
 use WP_Rocket\Abstract_Render;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\Managers\Plan;
 use WPMedia\Mixpanel\Optin;
 use WPMedia\Mixpanel\TrackingPlugin as MixpanelTracking;
 
@@ -221,13 +222,13 @@ class Tracking extends Abstract_Render {
 	/**
 	 * Track when a URL is added in Rocket Insights
 	 *
-	 * @param string $url          The URL that was added for monitoring.
-	 * @param string $current_plan The current plan of the user.
-	 * @param int    $urls_count   The current number of URLs being monitored.
+	 * @param string $url        The URL that was added for monitoring.
+	 * @param Plan   $plan       Plan instance.
+	 * @param int    $urls_count The current number of URLs being monitored.
 	 *
 	 * @return void
 	 */
-	public function track_rocket_insights_url_added( $url, $current_plan, $urls_count ): void {
+	public function track_rocket_insights_url_added( $url, $plan, $urls_count ): void {
 		if ( ! $this->optin->is_enabled() ) {
 			return;
 		}
@@ -236,7 +237,7 @@ class Tracking extends Abstract_Render {
 			'Rocket Insights Page Added',
 			[
 				'context'       => 'wp_plugin',
-				'plan_type'     => $current_plan,
+				'plan_type'     => $plan->get_current_plan(),
 				'tracked_pages' => $urls_count,
 			]
 		);
@@ -248,15 +249,21 @@ class Tracking extends Abstract_Render {
 	 * @since 3.20
 	 *
 	 * @param object $row_details Details related to the database row.
+	 * @param array  $job_details Details related to the job.
+	 * @param Plan   $plan Plan instance.
 	 *
 	 * @return void
 	 */
-	public function track_rocket_insights_test( $row_details ): void {
+	public function track_rocket_insights_test( $row_details, $job_details, $plan ): void {
 		if ( ! $this->optin->is_enabled() ) {
 			return;
 		}
 
 		$data = json_decode( $row_details->data );
+
+		if ( null === $data ) {
+			return;
+		}
 
 		$this->mixpanel->track(
 			'Rocket Insights Performance Test',
@@ -266,6 +273,7 @@ class Tracking extends Abstract_Render {
 				'score'    => $data->performance_score,
 				'retest'   => $data->is_retest,
 				'duration' => time() - $data->start_time,
+				'plan_type' => $plan->get_current_plan(),
 			]
 		);
 	}

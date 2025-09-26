@@ -38,8 +38,8 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_mixpanel_optin_changed'       => 'track_optin_change',
 			'rocket_pm_job_added'                 => [ 'track_rocket_insights_url_added', 10, 3 ],
 			'admin_footer-settings_page_wprocket' => 'track_admin_visits',
-			'rocket_pm_job_failed'                => 'track_rocket_insights_test',
-			'rocket_pm_job_completed'             => 'track_rocket_insights_test',
+			'rocket_pm_job_failed'                => [ 'track_rocket_insights_test', 10, 3 ],
+			'rocket_pm_job_completed'             => [ 'track_rocket_insights_test', 10, 3 ],
 		];
 	}
 
@@ -120,14 +120,14 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @since 3.20
 	 *
-	 * @param string $url          The URL that was added for monitoring.
-	 * @param string $current_plan The current plan of the user.
-	 * @param int    $urls_count   The current number of URLs being monitored.
+	 * @param string $url        The URL that was added for monitoring.
+	 * @param Plan   $plan       Plan instance.
+	 * @param int    $urls_count The current number of URLs being monitored.
 	 *
 	 * @return void
 	 */
-	public function track_rocket_insights_url_added( $url, $current_plan, $urls_count ): void {
-		$this->tracking->track_rocket_insights_url_added( $url, $current_plan, $urls_count );
+	public function track_rocket_insights_url_added( $url, $plan, $urls_count ): void {
+		$this->tracking->track_rocket_insights_url_added( $url, $plan, $urls_count );
 	}
 
 	/**
@@ -136,11 +136,13 @@ class Subscriber implements Subscriber_Interface {
 	 * @since 3.20
 	 *
 	 * @param object $row_details Details related to the database row.
+	 * @param array  $job_details Details related to the job.
+	 * @param Plan   $plan Plan instance.
 	 *
 	 * @return void
 	 */
-	public function track_rocket_insights_test( $row_details ): void {
-		$this->tracking->track_rocket_insights_test( $row_details );
+	public function track_rocket_insights_test( $row_details, $job_details, $plan ): void {
+		$this->tracking->track_rocket_insights_test( $row_details, $job_details, $plan );
 	}
 
 	/**
