@@ -101,8 +101,10 @@ class Controller {
 		if ( ! wpm_apply_filters_typesafe( 'wpr_pm_allow_add_page', true ) ) {
 			wp_send_json_error(
 				[
-					'error'   => true,
-					'message' => __( 'Maximum number of URLs reached for your license.', 'rocket' ),
+					'error'          => true,
+					'message'        => __( 'Maximum number of URLs reached for your license.', 'rocket' ),
+					'remaining_urls' => 0,
+					'can_add_pages'  => false,
 				]
 				);
 		}
