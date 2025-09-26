@@ -295,6 +295,12 @@ class Tracking extends Abstract_Render {
 			return;
 		}
 
+		$screen = get_current_screen();
+
+		if ( ! $screen || 'settings_page_wprocket' !== $screen->id ) {
+			return;
+		}
+
 		$this->mixpanel->track(
 			'Page Viewed',
 			[
