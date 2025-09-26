@@ -204,6 +204,16 @@ class AddNewPageTest extends AjaxTestCase {
 			];
 		}
 
+		// Mock successful response for external URLs like Google
+		if ( strpos( $url, 'https://google.com' ) === 0 ) {
+			return [
+				'response' => [
+					'code' => 200,
+				],
+				'body' => '<html><head><title>Google</title></head><body>Google content</body></html>',
+			];
+		}
+
 		// Mock 404 for invalid URLs
 		return [
 			'response' => [

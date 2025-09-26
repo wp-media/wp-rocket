@@ -115,13 +115,15 @@ class Controller {
 			wp_send_json_error( $payload );
 		}
 
+		$processed_url = rocket_add_url_protocol( $url );
+
 		if ( Utils::is_home( $url ) ) {
 			$page_title = __( 'Home Page', 'rocket' );
 		} else {
 			$page_title = $this->get_page_title( $payload['message'] );
 		}
 		$row_id = $this->manager->add_to_the_queue(
-			$url,
+			$processed_url,
 			true,
 			[
 				'title' => $page_title,
@@ -199,18 +201,10 @@ class Controller {
 			return $payload;
 		}
 
-		// Check if url is an internal one.
-		$url_parts         = get_rocket_parse_url( rocket_add_url_protocol( $url ) );
-		$site_domain_parts = get_rocket_parse_url( home_url() );
-
-		if ( $url_parts['host'] !== $site_domain_parts['host'] ) {
-			$payload['error']   = true;
-			$payload['message'] = 'Url is external.';
-
-			return $payload;
-		}
-
-		$response = $this->get_page_content( $url );
+		// Check if URL has protocol, add if needed.
+		$processed_url = rocket_add_url_protocol( $url );
+		
+		$response = $this->get_page_content( $processed_url );
 
 		if ( ! $response ) {
 			$payload['error']   = true;
@@ -220,7 +214,7 @@ class Controller {
 		}
 
 		// check if url is not from admin.
-		if ( strpos( $url, admin_url() ) === 0 ) {
+		if ( strpos( $processed_url, admin_url() ) === 0 ) {
 			$payload['error']   = true;
 			$payload['message'] = 'Url is an admin page.';
 
@@ -228,7 +222,7 @@ class Controller {
 		}
 
 		// Check if url has not been submited.
-		if ( false !== $this->manager->get_single_job( $url, true ) ) {
+		if ( false !== $this->manager->get_single_job( $processed_url, true ) ) {
 			$payload['error']   = true;
 			$payload['message'] = 'Page url performance is already been monitored.';
 
