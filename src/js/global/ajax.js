@@ -496,8 +496,8 @@ document.addEventListener('DOMContentLoaded', function() {
 	function handleAddPage(e) {
 		e.preventDefault();
 
-		// Bail out if button is disabled.
-		if ($(this).hasClass('disabled')) {
+		// check if has attr disabled
+		if ($(this).attr('disabled')) {
 			return;
 		}
 
@@ -543,6 +543,17 @@ document.addEventListener('DOMContentLoaded', function() {
 					schedulePolling();
 				}
 			} else {
+				// Clear the input field on error
+				$pageUrlInput.val('');
+				
+				// Handle URL limit reached error
+				if (response.data?.message && response.data.message.includes('Maximum number of URLs reached')) {
+					// Update UI state to reflect URL limit has been reached
+					disableAddUrlElements();
+					// Show quota banner (can_add_pages = false)
+					updateQuotaBanner(response.data.can_add_pages !== undefined ? response.data.can_add_pages : false);
+				}
+				
 				console.error(response.data?.message || response);
 			}
 		});
