@@ -130,7 +130,9 @@ class ResetGlobalScoreTest extends TestCase {
 						'url' => 'http://example.org/page1',
 						'status' => 'completed'
 					];
-					do_action( $hook, $mock_row );
+					$job_details = [];
+					$plan = null;
+					do_action( $hook, $mock_row, $job_details, $plan );
 					break;
 
 				case 'rocket_pm_job_retest':
