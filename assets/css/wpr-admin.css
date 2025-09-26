@@ -1993,8 +1993,8 @@ div.wpr-upgrade-websites.notstacked {
   font-size: 0.875rem;
   line-height: 1.7142857143;
 }
-.wpr-field.wpr-isDisabled {
-  opacity: 0.55;
+.wpr-field.wpr-isDisabled label {
+  color: #8a8b8d;
 }
 .wpr-field.wpr-isParent {
   padding-bottom: 0;
@@ -2043,6 +2043,9 @@ div.wpr-upgrade-websites.notstacked {
 }
 .wpr-field--checkbox .wpr-field-description {
   margin-left: 32px;
+}
+.wpr-field--checkbox.wpr-isDisabled .wpr-field-description {
+  color: #b0b0b1;
 }
 .wpr-field--radio {
   padding: 24px 16px;
@@ -3459,6 +3462,10 @@ div.wpr-tutorial-item {
 
 .wpr-checkbox-warning::before {
   margin-right: 8px;
+}
+
+.wpr-isDisabled .wpr-checkbox [type=checkbox]:not(:checked) + label:before, .wpr-isDisabled .wpr-checkbox [type=checkbox]:checked + label:before {
+  border: 2px solid #9d9e9e;
 }
 
 /*-----------------------------------------------*\
