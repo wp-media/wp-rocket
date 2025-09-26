@@ -11,8 +11,10 @@ use WP_Rocket\Engine\License\API\UserClient;
 
 /**
  * @covers \WP_Rocket\Engine\Admin\PerformanceMonitoring\URLLimit\Subscriber::is_adding_page_allowed
+ *
  * @group PerformanceMonitoring
  * @group URLLimit
+ * @group AdminOnly
  */
 class Test_IsAddingPageAllowed extends TestCase {
     use DBTrait;
@@ -42,14 +44,11 @@ class Test_IsAddingPageAllowed extends TestCase {
      */
     public function testShouldReturnExpectedValue($config, $expected) {
 		$container = apply_filters('rocket_container', null);
-
 		$user = $container->get('user');
-
 		$user->set_user($config['customer_data']->generate());
 
         // Set up performance monitoring URLs count
         $this->setURLCount($config['urls_count']);
-
 
 		$result = apply_filters('wpr_pm_allow_add_page', true);
 
