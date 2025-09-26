@@ -31,4 +31,20 @@ return [
         ],
         'expected' => false,
     ],
+    'free_user_0_urls_no_credits' => [
+        'config' => [
+            'customer_data' => (new UserDataGenerator()),
+            'urls_count' => 0,
+            'credits' => 0, // Free user with no credits - should show banner
+        ],
+        'expected' => false,
+    ],
+    'free_user_2_urls_no_credits' => [
+        'config' => [
+            'customer_data' => (new UserDataGenerator()),
+            'urls_count' => 2,
+            'credits' => 0, // Free user with 2 URLs but no credits - should show banner
+        ],
+        'expected' => false,
+    ],
 ];

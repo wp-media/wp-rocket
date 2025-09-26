@@ -63,7 +63,7 @@ return [
 	'testShouldSucceedWithExternalUrl' => [
 		'config' => [
 			'post_data' => [
-				'page_url' => 'https://google.com',
+				'page_url' => 'https://example.org',
 			],
 			'mock_http' => true,
 		],

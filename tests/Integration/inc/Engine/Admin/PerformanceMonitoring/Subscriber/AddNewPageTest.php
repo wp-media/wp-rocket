@@ -214,6 +214,16 @@ class AddNewPageTest extends AjaxTestCase {
 			];
 		}
 
+		// Mock successful response for example.org URL used in tests
+		if ( strpos( $url, 'https://example.org' ) === 0 ) {
+			return [
+				'response' => [
+					'code' => 200,
+				],
+				'body' => '<html><head><title>Example Domain</title></head><body>Example domain content</body></html>',
+			];
+		}
+
 		// Mock 404 for invalid URLs
 		return [
 			'response' => [

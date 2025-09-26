@@ -115,7 +115,7 @@ class Controller {
 			wp_send_json_error( $payload );
 		}
 
-		$processed_url = rocket_add_url_protocol( $url );
+		$processed_url = $payload['processed_url'];
 
 		if ( Utils::is_home( $url ) ) {
 			$page_title = __( 'Home Page', 'rocket' );
@@ -169,14 +169,16 @@ class Controller {
 	 * @param string $url The URL to validate.
 	 *
 	 * @return array {
-	 *     @type bool   $error   Whether an error occurred during validation.
-	 *     @type string $message The error message, or an empty string if no error.
+	 *     @type bool   $error        Whether an error occurred during validation.
+	 *     @type string $message      The error message, or an empty string if no error.
+	 *     @type string $processed_url The URL with protocol added if validation passes.
 	 * }
 	 */
 	protected function get_url_validation_payload( string $url ): array {
 		$payload = [
-			'error'   => false,
-			'message' => '',
+			'error'         => false,
+			'message'       => '',
+			'processed_url' => '',
 		];
 
 		if ( 'local' === wp_get_environment_type() ) {
@@ -202,7 +204,8 @@ class Controller {
 		}
 
 		// Check if URL has protocol, add if needed.
-		$processed_url = rocket_add_url_protocol( $url );
+		$processed_url            = rocket_add_url_protocol( $url );
+		$payload['processed_url'] = $processed_url;
 
 		$response = $this->get_page_content( $processed_url );
 
