@@ -39,8 +39,8 @@ class Subscriber implements Subscriber_Interface {
 	 * @param GlobalScore $global_score GlobalScore instance.
 	 */
 	public function __construct( PMQuery $pm_query, User $user, GlobalScore $global_score ) {
-		$this->pm_query = $pm_query;
-		$this->user     = $user;
+		$this->pm_query     = $pm_query;
+		$this->user         = $user;
 		$this->global_score = $global_score;
 	}
 
