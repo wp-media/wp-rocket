@@ -71,10 +71,12 @@ defined( 'ABSPATH' ) || exit;
 		if ( empty( $data->report_url ) ) {
 			$rocket_show_report_btn_args['attributes']['class'] .= ' wpr-pma-action--disabled';
 			$rocket_show_report_btn_args['attributes']['target'] = '';
+			$rocket_show_report_btn_args['url']                  = '';
 		} elseif ( ! $data->can_access_report() ) {
 			$rocket_show_report_btn_args['attributes']['class'] .= ' wpr-btn-with-tool-tip wpr-pma-action--disabled';
 			$rocket_show_report_btn_args['attributes']['target'] = '';
 			$rocket_show_report_btn_args['tooltip']              = __( 'Upgrade your plan to see the report', 'rocket' );
+			$rocket_show_report_btn_args['url']                  = '';
 		}
 
 		$this->render_action_button(
