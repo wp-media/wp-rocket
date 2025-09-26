@@ -6,6 +6,8 @@ namespace WP_Rocket\Engine\Admin\PerformanceMonitoring\URLLimit;
 use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Database\Queries\PerformanceMonitoring as PMQuery;
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\Credit\Manager as CreditManager;
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\Context\PerformanceMonitoringContext as Context;
 
 class Subscriber implements Subscriber_Interface {
 
@@ -24,14 +26,32 @@ class Subscriber implements Subscriber_Interface {
 	private $user;
 
 	/**
+	 * Credit Manager instance.
+	 *
+	 * @var CreditManager
+	 */
+	private $credit_manager;
+
+	/**
+	 * Context instance.
+	 *
+	 * @var Context
+	 */
+	private $context;
+
+	/**
 	 * Constructor
 	 *
-	 * @param PMQuery $pm_query    Performance monitoring query instance.
-	 * @param User    $user User client API instance.
+	 * @param PMQuery       $pm_query       Performance monitoring query instance.
+	 * @param User          $user           User client API instance.
+	 * @param CreditManager $credit_manager Credit Manager instance.
+	 * @param Context       $context        Context instance.
 	 */
-	public function __construct( PMQuery $pm_query, User $user ) {
-		$this->pm_query = $pm_query;
-		$this->user     = $user;
+	public function __construct( PMQuery $pm_query, User $user, CreditManager $credit_manager, Context $context ) {
+		$this->pm_query       = $pm_query;
+		$this->user           = $user;
+		$this->credit_manager = $credit_manager;
+		$this->context        = $context;
 	}
 
 	/**
@@ -48,13 +68,24 @@ class Subscriber implements Subscriber_Interface {
 
 	/**
 	 * Checks if adding a new page is allowed based on user license and current URL count.
+	 * For free users, also considers credit availability.
 	 *
 	 * @return bool True if adding a page is allowed, false otherwise.
 	 */
 	public function is_adding_page_allowed(): bool {
 		$current_url_count = $this->get_url_count();
 		$max_urls          = $this->user->get_pma_addon_limit( $this->user->get_pma_addon_sku_active() );
-		return $current_url_count < $max_urls;
+		// Check URL limit first.
+		if ( $current_url_count >= $max_urls ) {
+			return false;
+		}
+		
+		// For free users, also check credit availability.
+		if ( $this->context->is_free_user() && ! $this->credit_manager->has_credit() ) {
+			return false;
+		}
+		
+		return true;
 	}
 
 	/**

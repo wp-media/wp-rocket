@@ -189,6 +189,8 @@ class ServiceProvider extends AbstractServiceProvider {
 				[
 					'pm_query',
 					'user',
+					'pm_credit_manager',
+					'pm_context',
 				]
 			);
 		// Settings Subscriber.
