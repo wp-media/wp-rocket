@@ -6,6 +6,7 @@ namespace WP_Rocket\Engine\Admin\PerformanceMonitoring\Context;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Engine\License\API\User;
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\Database\Queries\PerformanceMonitoring as PMQuery;
 
 /**
  * Performance Monitoring Context
@@ -29,14 +30,23 @@ class PerformanceMonitoringContext implements ContextInterface {
 	private $user;
 
 	/**
+	 * Performance monitoring query instance.
+	 *
+	 * @var PMQuery
+	 */
+	private $pm_query;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param Options_Data $options Options instance.
 	 * @param User         $user User client API instance.
+	 * @param PMQuery     $pm_query    Performance monitoring query instance.
 	 */
-	public function __construct( Options_Data $options, User $user ) {
+	public function __construct( Options_Data $options, User $user, PMQuery $pm_query ) {
 		$this->options = $options;
 		$this->user    = $user;
+		$this->pm_query     = $pm_query;
 	}
 
 	/**
@@ -102,5 +112,16 @@ class PerformanceMonitoringContext implements ContextInterface {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Checks if adding a new page is allowed based on user license and current URL count.
+	 *
+	 * @return bool True if adding a page is allowed, false otherwise.
+	 */
+	public function is_adding_page_allowed(): bool {
+		$current_url_count = $this->pm_query->get_total_count();
+		$max_urls          = $this->user->get_pma_addon_limit( $this->user->get_pma_addon_sku_active() );
+		return $current_url_count < $max_urls;
 	}
 }
