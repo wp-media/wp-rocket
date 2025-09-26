@@ -67,7 +67,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function clean_upgrade_plan_urls( $old_plan, $new_plan ) {
 		$limit = $this->user->get_pma_addon_limit( $new_plan );
-		if ( $this->get_url_count() <= $limit ) {
+		if ( $this->pm_query->get_total_count() <= $limit ) {
 			return;
 		}
 		$this->pm_query->prune_old_items( $limit );
