@@ -665,4 +665,17 @@ class AbstractQuery extends Query {
 
 		return true;
 	}
+
+	/**
+	 * Get total number of rows.
+	 *
+	 * @return int
+	 */
+	public function get_total_count() {
+		return (int) $this->query(
+			[
+				'count' => true,
+			]
+		);
+	}
 }

@@ -83,6 +83,27 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 	}
 
 	/**
+	 * Send the request to add url into the queue.
+	 *
+	 * @param string $url page URL.
+	 * @param bool   $is_mobile page is for mobile.
+	 * @param array  $additional_details Additional details to be saved into DB.
+	 *
+	 * @return bool|void
+	 */
+	public function add_to_the_queue( string $url, bool $is_mobile, array $additional_details = [] ) {
+		$additional_details['data'] = wp_parse_args(
+			$additional_details['data'] ?? [],
+			[
+				'start_time' => time(),
+				'is_retest'  => false,
+			]
+			);
+		$additional_details['data'] = wp_json_encode( $additional_details['data'] );
+		return $this->add_url_to_the_queue( $url, $is_mobile, $additional_details );
+	}
+
+	/**
 	 * Validate SaaS response and fail job.
 	 *
 	 * @param array  $job_details Details related to the job.

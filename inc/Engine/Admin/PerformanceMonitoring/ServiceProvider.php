@@ -95,6 +95,7 @@ class ServiceProvider extends AbstractServiceProvider {
 				[
 					new StringArgument( $this->getContainer()->get( 'template_path' ) . '/settings/' ),
 					'pm_credit_manager',
+					'pm_context',
 				]
 				);
 
@@ -139,6 +140,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'pm_credit_manager',
 					'pm_global_score',
 					'user',
+					'options',
 				]
 			);
 
@@ -162,6 +164,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'pm_global_score',
 					'pm_render',
 					'user',
+					'pm_credit_manager',
 				]
 			);
 		// Subscriber.
@@ -174,6 +177,8 @@ class ServiceProvider extends AbstractServiceProvider {
 					'pm_queue',
 					'pm_context',
 					'pm_global_score',
+					'options',
+					'pm_manager',
 					'pm_plan',
 				]
 			);
@@ -192,6 +197,7 @@ class ServiceProvider extends AbstractServiceProvider {
 				[
 					'user',
 					new StringArgument( __DIR__ . '/../../../Engine/License/views' ),
+					'pm_context',
 				]
 			);
 		$this->getContainer()->addShared( 'pm_settings_subscriber', SettingsSubscriber::class )

@@ -11,6 +11,7 @@ use WP_Rocket\Engine\Admin\Database\Optimization;
 use WP_Rocket\Engine\Admin\Settings\{Page, Render, Settings};
 use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Engine\Optimization\DelayJS\Admin\SiteList;
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\Context\PerformanceMonitoringContext;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
@@ -46,7 +47,8 @@ class TestDisplayUpdateNotice extends TestCase {
 			Mockery::mock( UserClient::class ),
 			Mockery::mock( SiteList::class ),
 			$template_path,
-			$this->options
+			$this->options,
+			Mockery::mock( PerformanceMonitoringContext::class )
 		);
 
 		$this->stubEscapeFunctions();
