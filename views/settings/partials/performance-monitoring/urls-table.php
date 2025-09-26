@@ -77,28 +77,12 @@ if ( ! isset( $data['can_add_pages'] ) || $data['can_add_pages'] ) {
 <div class="wpr-pma-add-section">
 	<input type="text"
 			class="wpr-speed-radar-input"
-			placeholder="<?php esc_attr_e( 'Enter a page address to monitor', 'rocket' ); ?>"
+			placeholder="<?php esc_attr_e( 'Enter a page URL to monitor', 'rocket' ); ?>"
 			id="wpr-speed-radar-url-input" />
-
-	<?php
-	$rocket_pma_add_page_button_args = [
-		'label'      => __( 'ADD PAGE +', 'rocket' ),
-		'url'        => '#',
-		'attributes' => [
-			'class' => 'wpr-button wpr-button--icon wpr-button--small wpr-button--purple wpr-pma-add-url-button',
-			'id'    => 'add_page_speed_radar',
-		],
-	];
-	if ( $data['reach_max_url'] ) {
-		$rocket_pma_add_page_button_args['attributes']['class'] .= ' wpr-btn-with-tool-tip disabled';
-		$rocket_pma_add_page_button_args['tool_tip']             = esc_html__( 'Maximum number of URLs reached for your license.', 'rocket' );
-		$rocket_pma_add_page_button_args['url']                  = '#';
-		$rocket_pma_add_page_button_args['disabled']             = true;
-	}
-	$this->render_action_button(
-		'link',
-		'add_page_speed_radar',
-		$rocket_pma_add_page_button_args
-	);
-	?>
+	
+	<div id="wpr_rocket_insights_add_page_btn_wrapper">
+		<?php
+		$this->render_add_page_btn( 'rocket-insights', $data );
+		?>
+	</div>
 </div>
