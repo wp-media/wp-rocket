@@ -24,6 +24,7 @@
 
     &.isNotFull{
         max-width: 960px;
+        z-index: 1000;
     }
 
     &-tips{

@@ -31,31 +31,11 @@ defined( 'ABSPATH' ) || exit;
 					printf( esc_html( $data['status_text'] . ': %s' ), intval( $data['pages_num'] ) );
 					?>
 					</p>
-					<?php
-					$rocket_pma_add_button_args = [
-						'label'      => $data['pages_num'] ? __( 'Add Pages', 'rocket' ) : __( 'Add Homepage', 'rocket' ),
-						'parameters' => [
-							'type' => 'all',
-						],
-						'url'        => '#rocket_insights',
-						'attributes' => [
-							'class' => 'wpr-button wpr-button--icon wpr-button--small wpr-button--purple wpr-icon-plus wpr-button--no-min-width wpr-pma-add-url-button wpr-pma-global-score-add-url-button',
-						],
-					];
-
-					// Add tooltip if reach max URL and disable btn.
-					if ( $data['reach_max_url'] ) {
-						$rocket_pma_add_button_args['attributes']['class'] .= ' wpr-btn-with-tool-tip disabled';
-						$rocket_pma_add_button_args['tool_tip']             = esc_html__( 'Maximum number of URLs reached for your license.', 'rocket' );
-						$rocket_pma_add_button_args['url']                  = '#';
-						$rocket_pma_add_button_args['disabled']             = true;
-					}
-					$this->render_action_button(
-						'link',
-						$data['pages_num'] ? '' : 'rocket_pm_add_homepage',
-						$rocket_pma_add_button_args
-					);
-					?>
+					<div id="wpr_global_score_widget_add_page_btn_wrapper">
+						<?php
+						$this->render_add_page_btn( 'global-score-widget', $data );
+						?>
+					</div>
 				</div>
 			</div>
 		</fieldset>
