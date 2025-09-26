@@ -41,12 +41,12 @@ class PerformanceMonitoringContext implements ContextInterface {
 	 *
 	 * @param Options_Data $options Options instance.
 	 * @param User         $user User client API instance.
-	 * @param PMQuery     $pm_query    Performance monitoring query instance.
+	 * @param PMQuery      $pm_query    Performance monitoring query instance.
 	 */
 	public function __construct( Options_Data $options, User $user, PMQuery $pm_query ) {
-		$this->options = $options;
-		$this->user    = $user;
-		$this->pm_query     = $pm_query;
+		$this->options  = $options;
+		$this->user     = $user;
+		$this->pm_query = $pm_query;
 	}
 
 	/**
