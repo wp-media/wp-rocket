@@ -186,6 +186,19 @@ class User {
 	}
 
 	/**
+	 * Checks if license is on free plan.
+	 *
+	 * @param string $sku The SKU of the addon.
+	 *
+	 * @since 3.20
+	 *
+	 * @return boolean
+	 */
+	public function is_pma_free_active( string $sku ) {
+		return 'perf-monitor-free' === $sku;
+	}
+
+	/**
 	 * Retrieves the active SKU for the Performance Monitoring Addon.
 	 *
 	 * @since 3.20
@@ -193,9 +206,8 @@ class User {
 	 * @return string
 	 */
 	public function get_pma_addon_sku_active(): string {
-
 		if ( ! isset( $this->user->performance_monitoring ) || ! isset( $this->user->performance_monitoring->active_sku ) ) {
-			return '';
+			return 'perf-monitor-free';
 		}
 
 		return (string) $this->user->performance_monitoring->active_sku;
@@ -247,7 +259,13 @@ class User {
 			return '';
 		}
 
-		return $plan->button->url;
+		if ( ! isset( $plan->button->url ) || '' === $plan->button->url ) {
+			return '';
+		}
+
+		$url = admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '&rocket_pma_upgrade=true#rocket_insights' );
+
+		return add_query_arg( 'dashboard_url', rawurlencode( $url ), $plan->button->url );
 	}
 
 	/**
@@ -458,6 +476,21 @@ class User {
 		}
 
 		return $plan->promo;
+	}
+
+	/**
+	 * Checks if the user account is from a reseller license
+	 *
+	 * @since 3.20
+	 *
+	 * @return boolean
+	 */
+	public function is_reseller_account() {
+		if ( ! isset( $this->user->is_reseller ) ) {
+			return false;
+		}
+
+		return (bool) $this->user->is_reseller;
 	}
 
 	/**

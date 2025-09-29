@@ -11,6 +11,8 @@ class UserDataGenerator {
 
 	protected $promos = [];
 
+	protected $is_reseller = 0;
+
 	public function with_pma_expiration(int $expiration): self {
 		$this->expiration = $expiration;
 		return $this;
@@ -18,6 +20,11 @@ class UserDataGenerator {
 
 	public function with_pma_active_sku(string $sku): self {
 		$this->pma_sku_active = $sku;
+		return $this;
+	}
+
+	public function with_reseller_status(int $is_reseller): self {
+		$this->is_reseller = $is_reseller;
 		return $this;
 	}
 
@@ -71,6 +78,7 @@ class UserDataGenerator {
 		];
 
 		return (object)[
+			'is_reseller' => $this->is_reseller,
 			'performance_monitoring' => (object) [
 				"expiration" => $this->expiration,
 				"active_sku" => $this->pma_sku_active,

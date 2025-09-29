@@ -47,7 +47,7 @@ defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 			<p class="wpr-pma-vat">
 				<?php esc_html_e( '(excl. VAT)', 'rocket' ); ?>
 			</p>
-			<a href="#" class="wpr-pma-cta-button" data-wpr_track_button="Get Performance Monitoring" data-wpr_track_context="Addons">
+			<a href="<?php echo esc_url( $data['btn_url'] ); ?>" class="wpr-pma-cta-button" data-wpr_track_button="Get Performance Monitoring" data-wpr_track_context="Addons">
 				<?php esc_html_e( 'GET STARTED', 'rocket' ); ?>
 			</a>
 		</div>

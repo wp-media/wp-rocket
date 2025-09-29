@@ -16,12 +16,24 @@ class Test_ProcessOnSubmitJobs extends TestCase {
 
 	protected $config;
 
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
+
+		self::installPerformanceMonitoringTable();
+		self::installUsedCssTable();
+		self::installPreloadCacheTable();
+	}
+
+	public static function tear_down_after_class() {
+		self::uninstallPerformanceMonitoringTable();
+		self::uninstallUsedCssTable();
+		self::uninstallPreloadCacheTable();
+
+		parent::tear_down_after_class();
+	}
+
 	public function set_up() {
 		parent::set_up();
-
-		self::installUsedCssTable();
-		self::installPerformanceMonitoringTable();
-		self::installPreloadCacheTable();
 
 		add_filter( 'rocket_saas_max_pending_jobs', [ $this, 'max_rows' ] );
 		add_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'rucss_enabled' ] );
@@ -30,10 +42,6 @@ class Test_ProcessOnSubmitJobs extends TestCase {
 	}
 
 	public function tear_down() {
-		self::uninstallUsedCssTable();
-		self::uninstallPerformanceMonitoringTable();
-		self::uninstallPreloadCacheTable();
-
 		$this->tear_down_http();
 
 		remove_filter( 'rocket_saas_max_pending_jobs', [ $this, 'max_rows' ] );

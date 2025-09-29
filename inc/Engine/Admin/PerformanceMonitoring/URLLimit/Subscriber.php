@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Admin\PerformanceMonitoring\URLLimit;
 
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\GlobalScore;
 use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Database\Queries\PerformanceMonitoring as PMQuery;
@@ -24,14 +25,23 @@ class Subscriber implements Subscriber_Interface {
 	private $user;
 
 	/**
+	 * GlobalScore instance.
+	 *
+	 * @var GlobalScore
+	 */
+	private $global_score;
+
+	/**
 	 * Constructor
 	 *
-	 * @param PMQuery $pm_query    Performance monitoring query instance.
-	 * @param User    $user User client API instance.
+	 * @param PMQuery     $pm_query    Performance monitoring query instance.
+	 * @param User        $user User client API instance.
+	 * @param GlobalScore $global_score GlobalScore instance.
 	 */
-	public function __construct( PMQuery $pm_query, User $user ) {
-		$this->pm_query = $pm_query;
-		$this->user     = $user;
+	public function __construct( PMQuery $pm_query, User $user, GlobalScore $global_score ) {
+		$this->pm_query     = $pm_query;
+		$this->user         = $user;
+		$this->global_score = $global_score;
 	}
 
 	/**
@@ -41,7 +51,8 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'wpr_pm_allow_add_page' => 'is_adding_page_allowed',
+			'wpr_pm_allow_add_page'   => 'is_adding_page_allowed',
+			'rocket_insights_upgrade' => [ 'clean_upgrade_plan_urls', 10, 2 ],
 		];
 	}
 
@@ -62,12 +73,23 @@ class Subscriber implements Subscriber_Interface {
 	 * @return int Number of URLs.
 	 */
 	private function get_url_count(): int {
-		$count = $this->pm_query->query(
-			[
-				'count' => true,
-			]
-			);
+		return $this->pm_query->get_total_count();
+	}
 
-		return (int) $count;
+	/**
+	 * Make sure that the new plan limits on urls are applied.
+	 *
+	 * @param string $old_plan Old plan sku.
+	 * @param string $new_plan New plan sku.
+	 *
+	 * @return void
+	 */
+	public function clean_upgrade_plan_urls( $old_plan, $new_plan ) {
+		$limit = $this->user->get_pma_addon_limit( $new_plan );
+		if ( $this->get_url_count() <= $limit ) {
+			return;
+		}
+		$this->pm_query->prune_old_items( $limit );
+		$this->global_score->reset();
 	}
 }

@@ -4,7 +4,10 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Admin\PerformanceMonitoring;
 
 use WP_Rocket\Abstract_Render;
-use WP_Rocket\Engine\Admin\PerformanceMonitoring\Credit\Manager as CreditManager;
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\{
+	Credit\Manager as CreditManager,
+	Context\PerformanceMonitoringContext,
+};
 
 class Render extends Abstract_Render {
 	/**
@@ -15,16 +18,25 @@ class Render extends Abstract_Render {
 	private $credit_manager;
 
 	/**
+	 * PerformanceMonitoringContext instance.
+	 *
+	 * @var PerformanceMonitoringContext
+	 */
+	private $pma_context;
+
+	/**
 	 * Constructor for the Render class.
 	 *
 	 * Initializes the Render instance with the provided template path and CreditManager.
 	 *
-	 * @param string        $template_path   Path to the template file.
-	 * @param CreditManager $credit_manager  Instance of CreditManager for managing credits.
+	 * @param string                       $template_path   Path to the template file.
+	 * @param CreditManager                $credit_manager  Instance of CreditManager for managing credits.
+	 * @param PerformanceMonitoringContext $pma_context Instance of PerformanceMonitoringContext for managing performance monitoring context.
 	 */
-	public function __construct( $template_path, CreditManager $credit_manager ) {
+	public function __construct( $template_path, CreditManager $credit_manager, PerformanceMonitoringContext $pma_context ) {
 		parent::__construct( $template_path );
 		$this->credit_manager = $credit_manager;
+		$this->pma_context    = $pma_context;
 	}
 
 	/**
@@ -44,13 +56,25 @@ class Render extends Abstract_Render {
 	}
 
 	/**
+	 * Generate global score row HTML.
+	 *
+	 * @param array $data Data for the global score row.
+	 * @return string The rendered HTML for the global score row.
+	 */
+	public function get_global_score_row( array $data ) {
+		$data['status_text'] = $this->get_monitoring_status_text();
+		return $this->generate( 'partials/performance-monitoring/global-score-row', $data );
+	}
+
+
+	/**
 	 * Render global score row.
 	 *
 	 * @param array $data Data for the global score row.
 	 * @return void
 	 */
 	public function render_global_score_row( array $data ) {
-		echo $this->generate( 'partials/performance-monitoring/global-score-row', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo $this->get_global_score_row( $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	/**
@@ -60,6 +84,10 @@ class Render extends Abstract_Render {
 	 * @return void
 	 */
 	public function render_pma_urls_table( array $data ) {
+		$data['has_credit']    = $this->credit_manager->has_credit();
+		$data['can_add_url']   = wpm_apply_filters_typesafe( 'wpr_pm_allow_add_page', true );
+		$data['reach_max_url'] = ! $data['can_add_url'];
+
 		echo $this->generate( 'partials/performance-monitoring/urls-table', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
@@ -83,8 +111,6 @@ class Render extends Abstract_Render {
 	 * @return void
 	 */
 	public function render_global_score_widget( array $data ) {
-		$data['has_credit'] = $this->credit_manager->has_credit();
-
 		echo $this->get_global_score_widget( $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
@@ -95,6 +121,11 @@ class Render extends Abstract_Render {
 	 * @return string The rendered HTML for the global score widget.
 	 */
 	public function get_global_score_widget( array $data ): string {
+		$data['has_credit']    = $this->credit_manager->has_credit();
+		$data['can_add_url']   = wpm_apply_filters_typesafe( 'wpr_pm_allow_add_page', true );
+		$data['reach_max_url'] = ! $data['can_add_url'];
+		$data['status_text']   = $this->get_monitoring_status_text();
+
 		return $this->generate( 'partials/performance-monitoring/global-score-widget', $data );
 	}
 
@@ -105,20 +136,9 @@ class Render extends Abstract_Render {
 	 * @return string The rendered HTML for the performance monitoring row.
 	 */
 	public function get_performance_monitoring_list_row( object $data ): string {
-		$data['has_credit'] = $this->credit_manager->has_credit();
+		$data->has_credit = $this->credit_manager->has_credit();
 
 		return $this->generate( 'partials/performance-monitoring/table-row', $data );
-	}
-
-	/**
-	 * Render the settings section from views.
-	 *
-	 * @param array $data Data to render the settings section.
-	 *
-	 * @return void
-	 */
-	public function render_settings_section( array $data ) {
-		echo $this->generate( 'partials/performance-monitoring/settings', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	/**
@@ -152,7 +172,8 @@ class Render extends Abstract_Render {
 	 * @return void
 	 */
 	public function render_license_banner_plan_price( string $price, string $currency = '$', string $period = 'month' ) {
-		$dot   = get_locale() === 'en_US' ? '.' : ',';
+		global $wp_locale;
+		$dot   = $wp_locale->number_format['decimal_point'] ?? '.';
 		$price = number_format_i18n( $price, 2 );
 		$price = explode( $dot, $price );
 		$data  = [
@@ -162,5 +183,57 @@ class Render extends Abstract_Render {
 			'period'        => $period,
 		];
 		echo $this->generate( 'partials/performance-monitoring/license-banner-plan-price', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	}
+
+	/**
+	 * Returns the appropriate monitoring status text based on schedule allowance.
+	 *
+	 * @return string The translated status text for monitored or tracked pages.
+	 */
+	private function get_monitoring_status_text(): string {
+		if ( $this->pma_context->is_schedule_allowed() ) {
+			return __( 'Monitored Pages', 'rocket' );
+		}
+
+		return __( 'Tracked Pages', 'rocket' );
+	}
+
+	/**
+	 * Generates the appropriate "Add Page" button markup for the given UI context.
+	 *
+	 * @since 3.20
+	 *
+	 * @param string $type The context in which the button is used. Accepts 'rocket-insights' or 'global-score-widget'.
+	 * @param array  $data Data to be passed to the button template.
+	 *
+	 * @return string The generated HTML for the "Add Page" button.
+	 */
+	public function get_add_page_btn( string $type, array $data ) {
+		switch ( $type ) {
+			case 'global-score-widget':
+				$button = $this->generate( 'partials/performance-monitoring/buttons/global-score-widget', $data );
+				break;
+
+			case 'rocket-insights':
+			default:
+				$button = $this->generate( 'partials/performance-monitoring/buttons/rocket-insights-panel', $data );
+				break;
+		}
+
+		return $button;
+	}
+
+	/**
+	 * Outputs the HTML for the "Add Page" button using the provided type and data.
+	 *
+	 * @since 3.20
+	 *
+	 * @param string $type The context in which the button is used. Accepts 'rocket-insights' or 'global-score-widget'.
+	 * @param array  $data Data to be passed to the button template.
+	 *
+	 * @return void
+	 */
+	public function render_add_page_btn( string $type, array $data ): void {
+		echo $this->get_add_page_btn( $type, $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 }

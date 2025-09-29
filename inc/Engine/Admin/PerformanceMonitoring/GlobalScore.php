@@ -80,9 +80,10 @@ class GlobalScore {
 	 */
 	private function calculate_and_cache_data(): array {
 		$data = [
-			'score'     => $this->calculate_global_score(),
-			'pages_num' => $this->calculate_pages_number(),
-			'status'    => $this->calculate_current_status(),
+			'score'      => $this->calculate_global_score(),
+			'pages_num'  => $this->calculate_pages_number(),
+			'status'     => $this->calculate_current_status(),
+			'is_running' => $this->calculate_current_status() === 'in-progress',
 		];
 
 		set_transient( self::TRANSIENT_NAME, $data, self::CACHE_EXPIRATION );
@@ -120,11 +121,7 @@ class GlobalScore {
 	 * @return int Number of pages.
 	 */
 	private function calculate_pages_number(): int {
-		return $this->query->query(
-			[
-				'count' => true,
-			]
-		);
+		return $this->query->get_total_count();
 	}
 
 	/**
@@ -133,11 +130,7 @@ class GlobalScore {
 	 * @return string Current status.
 	 */
 	private function calculate_current_status(): string {
-		$total_count = $this->query->query(
-			[
-				'count' => true,
-			]
-		);
+		$total_count = $this->query->get_total_count();
 
 		// No URLs are being monitored.
 		if ( 0 === $total_count ) {

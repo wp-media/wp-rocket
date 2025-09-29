@@ -9,10 +9,10 @@ $(document).ready(function(){
             var ids = $(this).data('beacon-id');
             var button = $(this).data('wpr_track_button') || 'Beacon Help';
             var context = $(this).data('wpr_track_context') || 'Settings';
-            
+
             // Track with MixPanel JS SDK
             wprTrackHelpButton(button, context);
-            
+
             // Continue with existing beacon functionality
             wprCallBeacon(ids);
             return false;
@@ -36,7 +36,7 @@ $(document).ready(function(){
 
         }
     }
-    
+
     // MixPanel tracking function
     function wprTrackHelpButton(button, context) {
         if (typeof mixpanel !== 'undefined' && mixpanel.track) {
@@ -44,22 +44,24 @@ $(document).ready(function(){
             if (typeof rocket_mixpanel_data === 'undefined' || !rocket_mixpanel_data.optin_enabled || rocket_mixpanel_data.optin_enabled === '0') {
                 return;
             }
-            
+
             // Identify user with hashed license email if available
             if (rocket_mixpanel_data.user_id && typeof mixpanel.identify === 'function') {
                 mixpanel.identify(rocket_mixpanel_data.user_id);
             }
-            
-            mixpanel.track('WPM Button Clicked', {
+
+            mixpanel.track('Button Clicked', {
                 'button': button,
+				'button_context': context,
+				'plugin': rocket_mixpanel_data.plugin,
                 'brand': rocket_mixpanel_data.brand,
-                'product': rocket_mixpanel_data.product,
-                'context': context,
+                'application': rocket_mixpanel_data.app,
+                'context': rocket_mixpanel_data.context,
                 'path': rocket_mixpanel_data.path
             });
         }
     }
-    
+
     // Make function globally available
     window.wprTrackHelpButton = wprTrackHelpButton;
 });

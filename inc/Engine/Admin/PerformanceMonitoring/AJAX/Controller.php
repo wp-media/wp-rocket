@@ -5,13 +5,20 @@ namespace WP_Rocket\Engine\Admin\PerformanceMonitoring\AJAX;
 
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\{
 	Render,
+	PageHandlerTrait,
 	GlobalScore,
 	Jobs\Manager,
 	Context\PerformanceMonitoringContext as Context,
-	Database\Queries\PerformanceMonitoring as PMQuery
+	Database\Queries\PerformanceMonitoring as PMQuery,
+	Credit\Manager as CreditManager
 };
+use WP_Rocket\Engine\Common\Utils;
+use WP_Rocket\Engine\License\API\User;
 
 class Controller {
+
+	use PageHandlerTrait;
+
 	/**
 	 * Query object.
 	 *
@@ -48,20 +55,38 @@ class Controller {
 	private $render;
 
 	/**
+	 * User client API instance.
+	 *
+	 * @var User
+	 */
+	private $user;
+
+	/**
+	 * Credit Manager instance.
+	 *
+	 * @var CreditManager
+	 */
+	private $credit_manager;
+
+	/**
 	 * Constructor.
 	 *
-	 * @param PMQuery     $query Query instance.
-	 * @param Manager     $manager Manager instance.
-	 * @param Context     $context Context instance.
-	 * @param GlobalScore $global_score GlobalScore instance.
-	 * @param Render      $render Render instance.
+	 * @param PMQuery       $query Query instance.
+	 * @param Manager       $manager Manager instance.
+	 * @param Context       $context Context instance.
+	 * @param GlobalScore   $global_score GlobalScore instance.
+	 * @param Render        $render Render instance.
+	 * @param User          $user User client API instance.
+	 * @param CreditManager $credit_manager Credit Manager instance.
 	 */
-	public function __construct( PMQuery $query, Manager $manager, Context $context, GlobalScore $global_score, Render $render ) {
-		$this->query        = $query;
-		$this->manager      = $manager;
-		$this->context      = $context;
-		$this->global_score = $global_score;
-		$this->render       = $render;
+	public function __construct( PMQuery $query, Manager $manager, Context $context, GlobalScore $global_score, Render $render, User $user, CreditManager $credit_manager ) {
+		$this->query          = $query;
+		$this->manager        = $manager;
+		$this->context        = $context;
+		$this->global_score   = $global_score;
+		$this->render         = $render;
+		$this->user           = $user;
+		$this->credit_manager = $credit_manager;
 	}
 
 	/**
@@ -76,8 +101,10 @@ class Controller {
 		if ( ! wpm_apply_filters_typesafe( 'wpr_pm_allow_add_page', true ) ) {
 			wp_send_json_error(
 				[
-					'error'   => true,
-					'message' => __( 'Maximum number of URLs reached for your license.', 'rocket' ),
+					'error'          => true,
+					'message'        => __( 'Maximum number of URLs reached for your license.', 'rocket' ),
+					'remaining_urls' => 0,
+					'can_add_pages'  => false,
 				]
 				);
 		}
@@ -90,9 +117,12 @@ class Controller {
 			wp_send_json_error( $payload );
 		}
 
-		$page_title = $this->get_page_title( $payload['message'] );
-
-		$row_id = $this->manager->add_url_to_the_queue(
+		if ( Utils::is_home( $url ) ) {
+			$page_title = __( 'Home Page', 'rocket' );
+		} else {
+			$page_title = $this->get_page_title( $payload['message'] );
+		}
+		$row_id = $this->manager->add_to_the_queue(
 			$url,
 			true,
 			[
@@ -126,44 +156,22 @@ class Controller {
 		$payload['id']                = $row_id;
 		$payload['html']              = $this->render->get_performance_monitoring_list_row( $row_data );
 		$payload['global_score_data'] = $this->get_global_score_payload();
+		$payload['remaining_urls']    = $this->get_remaining_url_count();
+		$payload['has_credit']        = $this->user_has_credit();
+		$payload['can_add_pages']     = wpm_apply_filters_typesafe( 'wpr_pm_allow_add_page', true );
+
+		// Add disabled button html data to payload.
+		if ( 0 === $this->get_remaining_url_count() ) {
+			$data                  = $payload['global_score_data']['data'];
+			$data['reach_max_url'] = true;
+
+			$payload['global_score_data']['disabled_btn_html'] = [
+				'global_score_widget' => $this->render->get_add_page_btn( 'global-score-widget', $data ),
+				'rocket_insights'     => $this->render->get_add_page_btn( 'rocket-insights', $data ),
+			];
+		}
 
 		wp_send_json_success( $payload );
-	}
-
-	/**
-	 * Extracts and sanitizes the page title from the provided HTML string.
-	 *
-	 * This method attempts to find the <title> tag in the given HTML, decodes any HTML entities,
-	 * strips all tags, sanitizes the text, and then trims the title at common separators
-	 * (such as " | ", " - ", " – ", " » ") to return a clean, concise page title.
-	 *
-	 * @param string $html The HTML content from which to extract the page title.
-	 *
-	 * @return string The sanitized and trimmed page title, or an empty string if not found.
-	 */
-	public function get_page_title( string $html ): string {
-		$title = '';
-
-		if ( empty( $html ) ) {
-			return $title;
-		}
-
-		// Extract title from title tag.
-		if ( ! preg_match( '/<title[^>]*>(.*?)<\/title>/is', $html, $matches ) ) {
-			return $title;
-		}
-
-		// Clean up and sanitize the title.
-		$title = html_entity_decode( trim( $matches[1] ), ENT_QUOTES, 'UTF-8' );
-
-		if ( empty( $title ) ) {
-			return $title;
-		}
-
-		$title = wp_strip_all_tags( $title );
-		$title = sanitize_text_field( $title );
-
-		return $title;
 	}
 
 	/**
@@ -215,16 +223,9 @@ class Controller {
 			return $payload;
 		}
 
-		// Check if url is a valid url.
-		$user_agent = 'WP Rocket/Fetch Page Buffer for Performance Monitoring Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1';
-		$args       = [
-			'user-agent' => $user_agent,
-			'timeout'    => 60,
-		];
+		$response = $this->get_page_content( $url );
 
-		$response = wp_safe_remote_get( $url, $args );
-
-		if ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
+		if ( ! $response ) {
 			$payload['error']   = true;
 			$payload['message'] = 'Url does not resolve to a valid page.';
 
@@ -252,7 +253,7 @@ class Controller {
 		// TODO: Check if page is cached.
 
 		// Fetch url body and send to payload.
-		$payload['message'] = wp_remote_retrieve_body( $response );
+		$payload['message'] = $response;
 
 		return $payload;
 	}
@@ -268,7 +269,7 @@ class Controller {
 		$payload = [];
 
 		// Check if ids is set.
-		if ( ! isset( $_GET['ids'] ) && ! is_array( $_GET['ids'] ) ) {
+		if ( empty( $_GET['ids'] ) || ! is_array( $_GET['ids'] ) ) {
 			$payload['results'] = 'No ids param available or ids not array';
 			wp_send_json_error( $payload );
 		}
@@ -305,6 +306,7 @@ class Controller {
 
 		$payload['results']           = $results;
 		$payload['global_score_data'] = $this->get_global_score_payload();
+		$payload['has_credit']        = $this->user_has_credit();
 
 		wp_send_json_success( $payload );
 	}
@@ -337,7 +339,18 @@ class Controller {
 				);
 		}
 
-		$this->manager->add_url_to_the_queue( $row->url, true ); // @phpstan-ignore-line
+		$this->manager->add_to_the_queue(
+			$row->url, // @phpstan-ignore-line
+			true,
+			[
+				'data'       => [
+					'is_retest' => true,
+				],
+				'score'      => '',
+				'report_url' => '',
+				'is_blurred' => 0,
+			]
+			);
 
 		/**
 		 * Fires when a performance monitoring job is reset/retested.
@@ -354,6 +367,8 @@ class Controller {
 				'id'                => $id,
 				'html'              => $this->render->get_performance_monitoring_list_row( $row ),
 				'global_score_data' => $this->get_global_score_payload(),
+				'remaining_urls'    => $this->get_remaining_url_count(),
+				'has_credit'        => $this->user_has_credit(),
 			]
 			);
 	}
@@ -372,12 +387,35 @@ class Controller {
 	private function get_global_score_payload() {
 		$payload = [];
 
-		$payload                 = $this->global_score->get_global_score_data();
-		$payload['status-color'] = $this->render->get_score_color_status( (int) $payload['score'] );
+		$payload                   = $this->global_score->get_global_score_data();
+		$payload['status-color']   = $this->render->get_score_color_status( (int) $payload['score'] );
+		$payload['remaining_urls'] = $this->get_remaining_url_count();
 
 		return [
-			'data' => $payload,
-			'html' => $this->render->get_global_score_widget( $payload ),
+			'data'     => $payload,
+			'html'     => $this->render->get_global_score_widget( $payload ),
+			'row_html' => $this->render->get_global_score_row( $payload ),
 		];
+	}
+
+	/**
+	 * Get the remaining number of URLs that can be added based on user's plan limit.
+	 *
+	 * @return int Number of URLs that can still be added.
+	 */
+	private function get_remaining_url_count(): int {
+		$current_url_count = $this->query->query( [ 'count' => true ] );
+		$max_urls          = $this->user->get_pma_addon_limit( $this->user->get_pma_addon_sku_active() );
+
+		return max( 0, $max_urls - (int) $current_url_count );
+	}
+
+	/**
+	 * Check if the current user has available credits for performance monitoring.
+	 *
+	 * @return bool True if user has credits available, false otherwise.
+	 */
+	private function user_has_credit(): bool {
+		return $this->context->is_free_user() ? $this->credit_manager->has_credit() : true;
 	}
 }
