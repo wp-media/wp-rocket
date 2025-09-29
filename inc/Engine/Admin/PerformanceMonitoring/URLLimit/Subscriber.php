@@ -26,32 +26,14 @@ class Subscriber implements Subscriber_Interface {
 	private $user;
 
 	/**
-	 * Credit Manager instance.
-	 *
-	 * @var CreditManager
-	 */
-	private $credit_manager;
-
-	/**
-	 * Context instance.
-	 *
-	 * @var Context
-	 */
-	private $context;
-
-	/**
 	 * Constructor
 	 *
 	 * @param PMQuery       $pm_query       Performance monitoring query instance.
 	 * @param User          $user           User client API instance.
-	 * @param CreditManager $credit_manager Credit Manager instance.
-	 * @param Context       $context        Context instance.
 	 */
-	public function __construct( PMQuery $pm_query, User $user, CreditManager $credit_manager, Context $context ) {
-		$this->pm_query       = $pm_query;
-		$this->user           = $user;
-		$this->credit_manager = $credit_manager;
-		$this->context        = $context;
+	public function __construct( PMQuery $pm_query, User $user ) {
+		$this->pm_query = $pm_query;
+		$this->user     = $user;
 	}
 
 	/**
@@ -74,7 +56,6 @@ class Subscriber implements Subscriber_Interface {
 	public function is_adding_page_allowed(): bool {
 		$current_url_count = $this->get_url_count();
 		$max_urls          = $this->user->get_pma_addon_limit( $this->user->get_pma_addon_sku_active() );
-
 		return $current_url_count < $max_urls;
 	}
 
