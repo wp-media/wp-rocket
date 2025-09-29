@@ -129,7 +129,10 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'wp_rocket_first_install'           => 'schedule_homepage_tests',
+			'wp_rocket_first_install'           => [
+				[ 'reset_credit_monthly', 9 ],
+				[ 'schedule_homepage_tests' ],
+			],
 			'wp_ajax_rocket_pm_add_new_page'    => 'add_new_page',
 			'wp_ajax_rocket_pm_get_results'     => 'get_results',
 			'admin_post_delete_pm'              => 'delete_row',
