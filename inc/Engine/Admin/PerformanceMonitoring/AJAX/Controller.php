@@ -98,7 +98,7 @@ class Controller {
 		check_ajax_referer( 'rocket-ajax', 'nonce', true );
 
 		// Check if adding a page is allowed based on URL limits.
-		if ( ! wpm_apply_filters_typesafe( 'wpr_pm_allow_add_page', true ) ) {
+		if ( ! $this->context->is_adding_page_allowed() ) {
 			wp_send_json_error(
 				[
 					'error'          => true,
@@ -158,7 +158,7 @@ class Controller {
 		$payload['global_score_data'] = $this->get_global_score_payload();
 		$payload['remaining_urls']    = $this->get_remaining_url_count();
 		$payload['has_credit']        = $this->user_has_credit();
-		$payload['can_add_pages']     = wpm_apply_filters_typesafe( 'wpr_pm_allow_add_page', true );
+		$payload['can_add_pages']     = $this->context->is_adding_page_allowed();
 
 		// Add disabled button html data to payload.
 		if ( 0 === $this->get_remaining_url_count() ) {
