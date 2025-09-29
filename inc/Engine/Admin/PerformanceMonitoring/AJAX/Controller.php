@@ -393,7 +393,7 @@ class Controller {
 
 		return [
 			'data'     => $payload,
-			'html'     => $this->render->get_global_score_widget( $payload ),
+			'html'     => $this->render->get_global_score_widget_content( $payload ),
 			'row_html' => $this->render->get_global_score_row( $payload ),
 		];
 	}
