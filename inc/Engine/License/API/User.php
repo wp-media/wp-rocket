@@ -173,6 +173,19 @@ class User {
 	}
 
 	/**
+	 * Get the timestamp when the addon was cancelled.
+	 *
+	 * @return int
+	 */
+	public function get_pma_addon_cancelled_at() {
+		if ( ! isset( $this->user->performance_monitoring->cancelled_at ) ) {
+			return 0;
+		}
+
+		return (int) $this->user->performance_monitoring->cancelled_at;
+	}
+
+	/**
 	 * Checks if the addon license is active
 	 *
 	 * @param string $sku The SKU of the addon.
@@ -425,7 +438,7 @@ class User {
 	 */
 	public function get_pma_addon_promo_description( string $sku ) {
 		$promo = $this->get_pma_addon_promo( $sku );
-		if ( ! $promo || ! isset( $promo->description ) ) {
+		if ( ! $promo || ! isset( $promo->billing ) ) {
 			return '';
 		}
 
@@ -433,7 +446,7 @@ class User {
 			return __( '* Billed monthly. Launch price valid for the first 12 months, after which standard pricing applies. You can cancel at any time, each month started is due.', 'rocket' );
 		}
 
-		return $promo->description;
+		return $promo->billing;
 	}
 
 	/**
