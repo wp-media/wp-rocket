@@ -442,7 +442,7 @@ class User {
 			return '';
 		}
 
-		if ( '* Billed monthly. Launch price valid for the first 12 months, after which standard pricing applies. You can cancel at any time, each month started is due.' === $promo->description ) {
+		if ( '* Billed monthly. Launch price valid for the first 12 months, after which standard pricing applies. You can cancel at any time, each month started is due.' === $promo->billing ) {
 			return __( '* Billed monthly. Launch price valid for the first 12 months, after which standard pricing applies. You can cancel at any time, each month started is due.', 'rocket' );
 		}
 
