@@ -59,9 +59,10 @@ class Controller extends Abstract_Render {
 		$sku          = $this->user->get_pma_addon_sku_active();
 		$upgrade_skus = $this->user->get_pma_addon_upgrade_skus( $sku );
 		$is_active    = $this->user->is_pma_addon_active( $sku );
+		$cancelled_at = $this->user->get_pma_addon_cancelled_at();
 
 		if ( $is_active ) {
-			$label        = __( 'Next Billing Date', 'rocket' );
+			$label        = $cancelled_at ? __( 'Expires at', 'rocket' ) : __( 'Next Billing Date', 'rocket' );
 			$status_class = ' wpr-isValid';
 			$status_text  = date_i18n( get_option( 'date_format' ), $this->user->get_pma_license_expiration() ); // @phpstan-ignore-line
 		}
