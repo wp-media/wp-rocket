@@ -165,7 +165,7 @@ abstract class Abstract_Render implements Render_Interface {
 	/**
 	 * Displays or returns a partial template with provided data.
 	 *
-	 * @since 3.0
+	 * @since 3.20
 	 *
 	 * @param string $part             Partial template name (relative to 'partials/').
 	 * @param mixed  $data             Data to pass to the template.
