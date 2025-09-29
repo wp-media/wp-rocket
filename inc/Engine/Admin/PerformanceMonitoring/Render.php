@@ -121,12 +121,38 @@ class Render extends Abstract_Render {
 	 * @return string The rendered HTML for the global score widget.
 	 */
 	public function get_global_score_widget( array $data ): string {
-		$data['has_credit']    = $this->credit_manager->has_credit();
-		$data['can_add_url']   = wpm_apply_filters_typesafe( 'wpr_pm_allow_add_page', true );
-		$data['reach_max_url'] = ! $data['can_add_url'];
-		$data['status_text']   = $this->get_monitoring_status_text();
+		$data = array_merge( $data, $this->get_global_score_widget_data() );
 
 		return $this->generate( 'partials/performance-monitoring/global-score-widget', $data );
+	}
+
+	/**
+	 * Generate the content for the global score widget.
+	 *
+	 * @param array $data Data for the global score widget content.
+	 * @return string The rendered HTML for the global score widget content.
+	 */
+	public function get_global_score_widget_content( array $data ): string {
+		$data = array_merge( $data, $this->get_global_score_widget_data() );
+
+		return $this->render_parts_with_data( 'performance-monitoring/global-score-widget-content', $data, true );
+	}
+
+	/**
+	 * Get the data array for the global score widget.
+	 *
+	 * @return array The data for the global score widget.
+	 */
+	private function get_global_score_widget_data() {
+		$data = [
+			'has_credit'  => $this->credit_manager->has_credit(),
+			'can_add_url' => wpm_apply_filters_typesafe( 'wpr_pm_allow_add_page', true ),
+			'status_text' => $this->get_monitoring_status_text(),
+		];
+
+		$data['reach_max_url'] = ! $data['can_add_url'];
+
+		return $data;
 	}
 
 	/**
