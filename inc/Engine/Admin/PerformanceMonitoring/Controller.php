@@ -276,8 +276,23 @@ class Controller {
 		if ( ! $this->context->is_allowed() ) {
 			return false;
 		}
+
 		$upgrades = $this->user->get_pma_addon_upgrade_skus( $this->user->get_pma_addon_sku_active() );
-		return ! empty( $upgrades );
+		if ( empty( $upgrades ) ) {
+			return false;
+		}
+
+		// For free users, show banner when URL limit is reached OR credits are exhausted.
+		if ( $this->context->is_free_user() ) {
+			$current_url_count = $this->query->query( [ 'count' => true ] );
+			$max_urls          = $this->user->get_pma_addon_limit( $this->user->get_pma_addon_sku_active() );
+
+			// Show banner if URL limit is reached OR no credits left.
+			return $current_url_count >= $max_urls || ! $this->credit_manager->has_credit();
+		}
+
+		// For non-free users, show banner if upgrades are available.
+		return true;
 	}
 
 	/**

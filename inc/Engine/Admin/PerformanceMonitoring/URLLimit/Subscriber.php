@@ -68,24 +68,14 @@ class Subscriber implements Subscriber_Interface {
 
 	/**
 	 * Checks if adding a new page is allowed based on user license and current URL count.
-	 * For free users, also considers credit availability.
 	 *
 	 * @return bool True if adding a page is allowed, false otherwise.
 	 */
 	public function is_adding_page_allowed(): bool {
 		$current_url_count = $this->get_url_count();
 		$max_urls          = $this->user->get_pma_addon_limit( $this->user->get_pma_addon_sku_active() );
-		// Check URL limit first.
-		if ( $current_url_count >= $max_urls ) {
-			return false;
-		}
 
-		// For free users, also check credit availability.
-		if ( $this->context->is_free_user() && ! $this->credit_manager->has_credit() ) {
-			return false;
-		}
-
-		return true;
+		return $current_url_count < $max_urls;
 	}
 
 	/**

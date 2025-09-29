@@ -20,7 +20,7 @@ defined( 'ABSPATH' ) || exit;
 
 <?php
 $wp_rocket_pm_quota_banner_class = 'wpr-notice wpr-pma-notice wpr-error-notice';
-if ( ! isset( $data['can_add_pages'] ) || $data['can_add_pages'] ) {
+if ( ! isset( $data['show_quota_banner'] ) || ! $data['show_quota_banner'] ) {
 	$wp_rocket_pm_quota_banner_class .= ' hidden';
 }
 ?>
