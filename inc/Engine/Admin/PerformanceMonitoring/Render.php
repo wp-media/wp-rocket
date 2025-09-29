@@ -85,7 +85,7 @@ class Render extends Abstract_Render {
 	 */
 	public function render_pma_urls_table( array $data ) {
 		$data['has_credit']    = $this->credit_manager->has_credit();
-		$data['can_add_url']   = wpm_apply_filters_typesafe( 'wpr_pm_allow_add_page', true );
+		$data['can_add_url']   = $this->pma_context->is_adding_page_allowed();
 		$data['reach_max_url'] = ! $data['can_add_url'];
 
 		echo $this->generate( 'partials/performance-monitoring/urls-table', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
@@ -122,7 +122,7 @@ class Render extends Abstract_Render {
 	 */
 	public function get_global_score_widget( array $data ): string {
 		$data['has_credit']    = $this->credit_manager->has_credit();
-		$data['can_add_url']   = wpm_apply_filters_typesafe( 'wpr_pm_allow_add_page', true );
+		$data['can_add_url']   = $this->pma_context->is_adding_page_allowed();
 		$data['reach_max_url'] = ! $data['can_add_url'];
 		$data['status_text']   = $this->get_monitoring_status_text();
 

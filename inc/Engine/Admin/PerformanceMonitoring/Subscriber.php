@@ -336,7 +336,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 				'remaining_urls'  => $this->controller->get_remaining_url_count(),
 				'pma_addon_limit' => $this->controller->get_pma_addon_limit(),
 				'upgrade_url'     => $license_data['btn_url'] ?? '',
-				'can_add_pages'   => wpm_apply_filters_typesafe( 'wpr_pm_allow_add_page', true ),
+				'can_add_pages'   => $this->pma_context->is_adding_page_allowed(),
 				'is_free'         => $this->pma_context->is_free_user(),
 			]
 		);
