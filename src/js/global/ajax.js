@@ -13,11 +13,6 @@ $(document).ready(function(){
             e.preventDefault();
             _isRefreshing = true;
             button.trigger( 'blur' );
-         			// Update global score row in table if on Rocket Insights page.
-			updateGlobalScoreRow(response);
-
-			// Check remaining URLs and update button state
-			updateUrlLimitState(response.data.remaining_urls);
 
 			// Start polling if not already running.addClass('wpr-isLoading');
             expire.removeClass('wpr-isValid wpr-isInvalid');
@@ -279,6 +274,10 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         html: '',
         row_html: '',
+		disabled_btn_html: {
+			global_score_widget: '',
+			rocket_insights: ''
+		}
     };
 
 	// ==== DOM Selectors ====
@@ -306,29 +305,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		pmIds = pmIds.filter(x => x !== parseInt(id, 10));
 	}
 
-	function disableAddUrlElements() {
-		$('#add_page_speed_radar').addClass('disabled').attr('disabled', true);
-		$pageUrlInput.attr('disabled', true);
-
-		$('.wpr-pma-global-score-add-url-button').addClass('disabled').attr('disabled', true);
-
-		const tooltipMessage = window.rocket_ajax_data && window.rocket_ajax_data.reach_max_url_message
-			? window.rocket_ajax_data.reach_max_url_message
-			: 'Maximum number of URLs reached for your license.';
-		$('#add_page_speed_radar').attr('title', tooltipMessage);
-		$('.wpr-pma-global-score-add-url-button').attr('title', tooltipMessage);
-	}
-
-	function enableAddUrlElements() {
-		$('#add_page_speed_radar').removeClass('disabled').attr('disabled', false);
-		$pageUrlInput.attr('disabled', false);
-
-		$('.wpr-pma-global-score-add-url-button').removeClass('disabled').attr('disabled', false);
-
-		$('#add_page_speed_radar').removeAttr('title');
-		$('.wpr-pma-global-score-add-url-button').removeAttr('title');
-	}
-
 	function updateQuotaBanner(canAddPages) {
 		const $quotaBanner = $('#wpr-pma-quota-banner');
 		const $summaryInfo = $('.wpr-pma-summary-info');
@@ -339,16 +315,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		} else {
 			$quotaBanner.addClass('hidden');
 			$summaryInfo.show();
-		}
-	}
-
-	function updateUrlLimitState(remainingUrls) {
-		if (remainingUrls !== undefined) {
-			if (remainingUrls <= 0) {
-				disableAddUrlElements();
-			} else {
-				enableAddUrlElements();
-			}
 		}
 	}
 
@@ -451,10 +417,19 @@ document.addEventListener('DOMContentLoaded', function() {
 					}
 					let globalScoreWidget = $('#wpr_global_score_widget');
 
-					if (globalScoreWidget.length && globalScoreWidget.is(':visible')) {
-						// Update global score widget.
-						globalScoreWidget.html(globalScoreData.html);
+					if (!globalScoreWidget.is(':visible')) {
+						return;
 					}
+
+					// Update global score widget.
+					globalScoreWidget.html(globalScoreData.html);
+
+					// Disable "Add Pages" button on global score widget.
+					if (!('disabled_btn_html' in globalScoreData)) {
+						return;
+					}
+
+					$('#wpr_global_score_widget_add_page_btn_wrapper').html(globalScoreData.disabled_btn_html.global_score_widget);
 					break;
 
 				// Handle action when rocket insights menu is clicked.
@@ -555,9 +530,8 @@ document.addEventListener('DOMContentLoaded', function() {
 				// Update global score row in table if on Rocket Insights page.
 				updateGlobalScoreRow(globalScoreData);
 
-				// Check if we've reached the URL limit
-				if (response.data.remaining_urls !== undefined && response.data.remaining_urls <= 0) {
-					disableAddUrlElements();
+				if ('disabled_btn_html' in globalScoreData) {
+					$('#wpr_rocket_insights_add_page_btn_wrapper').html(globalScoreData.disabled_btn_html.rocket_insights);
 				}
 
 				// Show/hide quota banner based on can_add_pages
@@ -625,7 +599,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	// ==== Initialization ====
 	// Bind event
-	$(document).on( 'click', '#add_page_speed_radar', handleAddPage );
+	$(document).on( 'click', '#wpr-action-add_page_speed_radar', handleAddPage );
 	$(document).on( 'click', '.wpr-action-speed_radar_refresh', handleResetPage );
 
 	// Only poll if on a wpr section that requires polling(dashboard|rocket_insights) (more robust check)
@@ -652,7 +626,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		decideGlobalScoreToUpdate(id);
 	});
 	
-	// Handle UI update when add pages button is clicked.
+	// Handle UI update on the rocket insights tab when "Add Pages" button on the global score widget is clicked.
 	$(document).on('click', '.wpr-percentage-score-widget .wpr-pma-add-url-button', function() {
 		if (!this.textContent.includes('Add Pages')) {
 			return;

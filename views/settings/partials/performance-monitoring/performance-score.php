@@ -37,7 +37,7 @@ if ( ( isset( $data['is_blurred'] ) && $data['is_blurred'] ) || ( isset( $data['
 	<?php if ( ( isset( $data['status'] ) && 'failed' === $data['status'] ) || $rocket_pma_item_is_blurred ) : ?>
 		<div class="wpr-tooltip">
 			<div class="wpr-tooltip-content">
-				<?php echo 'failed' === $data['status'] ? esc_html__( 'Something went wrong with this URL', 'rocket' ) : esc_html__( 'Upgrade your plan to see your score.', 'rocket' ); ?>
+				<?php echo 'failed' === $data['status'] ? esc_html__( 'Something went wrong with this URL', 'rocket' ) : esc_html__( 'Upgrade your plan to see your score', 'rocket' ); ?>
 			</div>
 		</div>
 	<?php endif; ?>

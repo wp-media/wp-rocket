@@ -201,7 +201,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	}
 
 	/**
-	 * Add pm_ids, remaining_urls & pm_max_urls_reached_message key to the admin ajax js variable.
+	 * Add pm_ids key to the admin ajax js variable.
 	 *
 	 * @param array $data Array of data.
 	 * @return array
@@ -211,10 +211,9 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			return $data;
 		}
 
-		$data['pm_ids']                      = $this->controller->get_not_finished_ids();
-		$data['remaining_urls']              = $this->controller->get_remaining_url_count();
-		$data['pm_max_urls_reached_message'] = __( 'Maximum number of URLs reached for your license.', 'rocket' );
-		$data['pm_no_credit_tooltip']        = __( 'Upgrade your plan to get access to re-test performance or run new tests', 'rocket' );
+		$data['pm_ids']               = $this->controller->get_not_finished_ids();
+		$data['pm_no_credit_tooltip'] = __( 'Upgrade your plan to get access to re-test performance or run new tests', 'rocket' );
+
 		return $data;
 	}
 
