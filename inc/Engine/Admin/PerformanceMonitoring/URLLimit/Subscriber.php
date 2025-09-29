@@ -6,8 +6,6 @@ namespace WP_Rocket\Engine\Admin\PerformanceMonitoring\URLLimit;
 use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Database\Queries\PerformanceMonitoring as PMQuery;
-use WP_Rocket\Engine\Admin\PerformanceMonitoring\Credit\Manager as CreditManager;
-use WP_Rocket\Engine\Admin\PerformanceMonitoring\Context\PerformanceMonitoringContext as Context;
 
 class Subscriber implements Subscriber_Interface {
 
