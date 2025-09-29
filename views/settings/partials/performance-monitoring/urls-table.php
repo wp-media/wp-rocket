@@ -42,7 +42,7 @@ if ( ! isset( $data['show_quota_banner'] ) || ! $data['show_quota_banner'] ) {
 	</div>
 </div>
 
-<?php if ( ! empty( $data['can_add_pages'] ) && ! empty( $data['is_free'] ) ) : ?>
+<?php if ( ! empty( $data['can_add_pages'] ) && ! empty( $data['is_free'] ) && ! $data['show_quota_banner'] ) : ?>
 	<p class="wpr-pma-summary-info">
 		<?php
 		printf(
