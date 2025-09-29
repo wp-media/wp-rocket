@@ -138,10 +138,10 @@ class Controller {
 		 * @since 3.20
 		 *
 		 * @param string $url        The URL that was added for monitoring.
-		 * @param Plan   $plan       Plan instance.
+		 * @param string $plan       Plan name.
 		 * @param int    $urls_count The current number of URLs being monitored.
 		 */
-		do_action( 'rocket_pm_job_added', $url, $this->plan, $urls_count );
+		do_action( 'rocket_pm_job_added', $url, $current_plan, $urls_count );
 
 		$row_data = $this->query->get_row_by_id( (int) $row_id );
 

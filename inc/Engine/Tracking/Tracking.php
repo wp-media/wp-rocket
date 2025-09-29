@@ -223,7 +223,7 @@ class Tracking extends Abstract_Render {
 	 * Track when a URL is added in Rocket Insights
 	 *
 	 * @param string $url        The URL that was added for monitoring.
-	 * @param Plan   $plan       Plan instance.
+	 * @param String $plan       Plan name.
 	 * @param int    $urls_count The current number of URLs being monitored.
 	 *
 	 * @return void
@@ -237,7 +237,7 @@ class Tracking extends Abstract_Render {
 			'Rocket Insights Page Added',
 			[
 				'context'       => 'wp_plugin',
-				'plan_type'     => $plan->get_current_plan(),
+				'plan_type'     => $plan,
 				'tracked_pages' => $urls_count,
 			]
 		);
@@ -250,7 +250,7 @@ class Tracking extends Abstract_Render {
 	 *
 	 * @param object $row_details Details related to the database row.
 	 * @param array  $job_details Details related to the job.
-	 * @param Plan   $plan Plan instance.
+	 * @param string $plan Plan name.
 	 *
 	 * @return void
 	 */
@@ -273,7 +273,7 @@ class Tracking extends Abstract_Render {
 				'score'     => $data->performance_score,
 				'retest'    => $data->is_retest,
 				'duration'  => time() - $data->start_time,
-				'plan_type' => $plan->get_current_plan(),
+				'plan_type' => $plan,
 			]
 		);
 	}
