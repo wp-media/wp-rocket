@@ -151,8 +151,15 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 			]
 		);
 
+		$code = 200;
+		if ( 'pending' === $response_data['status'] ) {
+			$code = 425;
+		} elseif ( 'failed' === $response_data['status'] ) {
+			$code = 500;
+		}
+
 		return [
-			'code'   => 'pending' === $response_data['status'] ? 425 : ( 'failed' === $response_data['status'] ? 500 : 200 ),
+			'code'   => $code,
 			'status' => $response_data['status'] ?? 'pending',
 			'data'   => $response_data['data'] ?? null,
 		];
