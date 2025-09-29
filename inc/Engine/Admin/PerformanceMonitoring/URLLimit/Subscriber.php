@@ -28,8 +28,8 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Constructor
 	 *
-	 * @param PMQuery       $pm_query       Performance monitoring query instance.
-	 * @param User          $user           User client API instance.
+	 * @param PMQuery $pm_query       Performance monitoring query instance.
+	 * @param User    $user           User client API instance.
 	 */
 	public function __construct( PMQuery $pm_query, User $user ) {
 		$this->pm_query = $pm_query;
