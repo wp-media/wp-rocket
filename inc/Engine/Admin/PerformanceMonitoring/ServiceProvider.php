@@ -6,7 +6,6 @@ namespace WP_Rocket\Engine\Admin\PerformanceMonitoring;
 use WP_Rocket\Dependencies\League\Container\Argument\Literal\StringArgument;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\{
-	Credit\Manager as Credit_Manager,
 	Database\Tables\PerformanceMonitoring as PMTable,
 	Database\Queries\PerformanceMonitoring as PMQuery,
 	APIHandler\APIClient as PMAPIClient,
@@ -44,7 +43,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		'pm_controller',
 		'pm_subscriber',
 		'pm_ajax_controller',
-		'pm_credit_manager',
 		'pm_global_score',
 		'pm_url_limit_subscriber',
 		'rocket_insights_settings',
@@ -83,19 +81,11 @@ class ServiceProvider extends AbstractServiceProvider {
 				]
 			);
 
-		$this->getContainer()->add( 'pm_credit_manager', Credit_Manager::class )
-			->addArguments(
-				[
-					'options_api',
-					'pm_context',
-				]
-				);
-
 		$this->getContainer()->add( 'pm_render', Render::class )
 			->addArguments(
 				[
 					new StringArgument( $this->getContainer()->get( 'template_path' ) . '/settings/' ),
-					'pm_credit_manager',
+					'pm_plan',
 					'pm_context',
 				]
 				);
@@ -120,7 +110,7 @@ class ServiceProvider extends AbstractServiceProvider {
 				[
 					'pm_query',
 					'pm_context',
-					'options',
+					'pm_plan',
 				]
 			);
 
@@ -138,7 +128,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'pm_query',
 					'pm_manager',
 					'pm_context',
-					'pm_credit_manager',
+					'pm_plan',
 					'pm_global_score',
 					'user',
 					'options',
@@ -164,8 +154,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'pm_context',
 					'pm_global_score',
 					'pm_render',
-					'user',
-					'pm_credit_manager',
+					'pm_plan',
 				]
 			);
 		// Subscriber.

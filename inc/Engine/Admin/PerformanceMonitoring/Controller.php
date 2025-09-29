@@ -7,7 +7,6 @@ use WP_Rocket\Engine\Admin\PerformanceMonitoring\{GlobalScore,
 	Jobs\Manager,
 	Context\PerformanceMonitoringContext,
 	Database\Queries\PerformanceMonitoring as PMQuery,
-	Credit\Manager as CreditManager,
 	Managers\Plan
 };
 use WP_Rocket\Admin\Options_Data;
@@ -36,11 +35,11 @@ class Controller {
 	private $context;
 
 	/**
-	 * Credit manager instance.
+	 * Plan instance.
 	 *
-	 * @var CreditManager
+	 * @var Plan
 	 */
-	private $credit_manager;
+	private $plan;
 
 	/**
 	 * GlobalScore instance.
@@ -69,7 +68,7 @@ class Controller {
 	 * @param PMQuery                      $query Query instance.
 	 * @param Manager                      $manager Manager instance.
 	 * @param PerformanceMonitoringContext $context Context instance.
-	 * @param CreditManager                $credit_manager Credit manager instance.
+	 * @param Plan                         $plan Plan instance.
 	 * @param GlobalScore                  $global_score GlobalScore instance.
 	 * @param User                         $user User client API instance.
 	 * @param Options_Data                 $options Plugin options instance.
@@ -78,18 +77,18 @@ class Controller {
 		PMQuery $query,
 		Manager $manager,
 		PerformanceMonitoringContext $context,
-		CreditManager $credit_manager,
+		Plan $plan,
 		GlobalScore $global_score,
 		User $user,
 		Options_Data $options
 	) {
-		$this->query          = $query;
-		$this->manager        = $manager;
-		$this->context        = $context;
-		$this->credit_manager = $credit_manager;
-		$this->global_score   = $global_score;
-		$this->user           = $user;
-		$this->options        = $options;
+		$this->query        = $query;
+		$this->manager      = $manager;
+		$this->context      = $context;
+		$this->plan         = $plan;
+		$this->global_score = $global_score;
+		$this->user         = $user;
+		$this->options      = $options;
 	}
 
 	/**
@@ -128,14 +127,19 @@ class Controller {
 			]
 		);
 
+		$urls_count   = $this->query->get_total_count();
+		$current_plan = $this->plan->get_current_plan();
+
 		/**
-		 * Fires when a performance monitoring job is added.
+		 * Fires when a performance monitoring job is added via AJAX.
 		 *
 		 * @since 3.20
 		 *
-		 * @param string $url The URL that was added for monitoring.
+		 * @param string $url          The URL that was added for monitoring.
+		 * @param string $current_plan The current plan of the user.
+		 * @param int    $urls_count   The current number of URLs being monitored.
 		 */
-		do_action( 'rocket_pm_job_added', home_url() );
+		do_action( 'rocket_pm_job_added', $url, $current_plan, $urls_count );
 	}
 
 	/**
@@ -220,7 +224,7 @@ class Controller {
 	 * @return void
 	 */
 	public function reset_credit() {
-		$this->credit_manager->reset_credit();
+		$this->plan->reset_credit();
 	}
 
 	/**
@@ -231,7 +235,7 @@ class Controller {
 	 * @return void
 	 */
 	public function validate_credit( $row_id ) {
-		if ( $this->credit_manager->decrease_credit() ) {
+		if ( $this->plan->decrease_credit() ) {
 			return;
 		}
 
@@ -264,7 +268,7 @@ class Controller {
 	 * @return bool If there is credit or not.
 	 */
 	public function has_credit() {
-		return $this->credit_manager->has_credit();
+		return $this->plan->has_credit();
 	}
 
 	/**
