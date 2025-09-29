@@ -355,13 +355,10 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			return false;
 		}
 
-		// Get current URL count and limits.
-		$current_url_count = $this->controller->get_remaining_url_count();
-		$max_urls          = $this->controller->get_pma_addon_limit();
-		$used_urls         = $max_urls - $current_url_count;
+		$remaining_url_count = $this->controller->get_remaining_url_count();
 
 		// Show banner if URL limit reached OR no credits left.
-		return $used_urls >= $max_urls || ! $this->controller->get_current_credit();
+		return empty( $remaining_url_count ) || ! $this->controller->has_credit();
 	}
 
 	/**
