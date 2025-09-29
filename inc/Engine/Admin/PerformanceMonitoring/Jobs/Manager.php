@@ -134,9 +134,9 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 		 *
 		 * @param object $row_details Details related to the database row.
 		 * @param array  $job_details Details related to the job.
-		 * @param Plan   $plan Plan instance.
+		 * @param string $plan Plan name.
 		 */
-		do_action( 'rocket_pm_job_failed', $row_details, $job_details, $this->plan );
+		do_action( 'rocket_pm_job_failed', $row_details, $job_details, $this->plan->get_current_plan() );
 	}
 
 	/**
@@ -177,9 +177,9 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 		 *
 		 * @param object $row_details Details related to the database row.
 		 * @param array  $job_details Details related to the job.
-		 * @param Plan   $plan Plan instance.
+		 * @param string $plan Plan name.
 		 */
-		do_action( 'rocket_pm_job_completed', $row_details, $job_details, $this->plan );
+		do_action( 'rocket_pm_job_completed', $row_details, $job_details, $this->plan->get_current_plan() );
 	}
 
 	/**
