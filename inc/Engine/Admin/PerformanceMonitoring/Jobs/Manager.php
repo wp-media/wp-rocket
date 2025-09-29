@@ -127,6 +127,8 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 
 		$this->query->make_status_failed( $row_details->url, $row_details->is_mobile, '', $job_details['message'] ?? 'Failed with no msg' );
 
+		$row_details = $this->query->get_row_by_id( $row_details->id );
+
 		/**
 		 * Fires when a performance monitoring job fails.
 		 *
@@ -169,6 +171,8 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 		);
 
 		$this->query->make_status_completed( $row_details->id, 'completed', $this->parse_test_results( $job_details ) );
+
+		$row_details = $this->query->get_row_by_id( $row_details->id );
 
 		/**
 		 * Fires when a performance monitoring job completes successfully.

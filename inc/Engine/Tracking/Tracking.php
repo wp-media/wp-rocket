@@ -259,9 +259,7 @@ class Tracking extends Abstract_Render {
 			return;
 		}
 
-		$data = json_decode( $row_details->data );
-
-		if ( null === $data ) {
+		if ( empty( $row_details->data ) ) {
 			return;
 		}
 
@@ -270,9 +268,9 @@ class Tracking extends Abstract_Render {
 			[
 				'context'   => 'wp_plugin',
 				'status'    => $row_details->status,
-				'score'     => $data->performance_score,
-				'retest'    => $data->is_retest,
-				'duration'  => time() - $data->start_time,
+				'score'     => $row_details->score,
+				'retest'    => $row_details->data['is_retest'],
+				'duration'  => time() - $row_details->data['start_time'],
 				'plan_type' => $plan,
 			]
 		);
