@@ -334,14 +334,14 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 
 		$this->render->render_pma_urls_table(
 			[
-				'items'           => $this->controller->get_items(),
-				'global_score'    => $this->controller->get_global_score(),
-				'remaining_urls'  => $this->controller->get_remaining_url_count(),
-				'pma_addon_limit' => $this->controller->get_pma_addon_limit(),
-				'upgrade_url'     => $license_data['btn_url'] ?? '',
-				'can_add_pages'   => $this->pma_context->is_adding_page_allowed(),
+				'items'             => $this->controller->get_items(),
+				'global_score'      => $this->controller->get_global_score(),
+				'remaining_urls'    => $this->controller->get_remaining_url_count(),
+				'pma_addon_limit'   => $this->controller->get_pma_addon_limit(),
+				'upgrade_url'       => $license_data['btn_url'] ?? '',
+				'can_add_pages'     => $this->pma_context->is_adding_page_allowed(),
 				'show_quota_banner' => $this->should_show_quota_banner(),
-				'is_free'         => $this->pma_context->is_free_user(),
+				'is_free'           => $this->pma_context->is_free_user(),
 			]
 		);
 	}

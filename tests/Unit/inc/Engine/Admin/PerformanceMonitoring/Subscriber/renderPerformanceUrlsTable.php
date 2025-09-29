@@ -32,19 +32,17 @@ class Test_renderPerformanceUrlsTable extends TestCase {
 
 		// Determine call counts based on user type
 		$remaining_url_calls = $config['is_free'] ? 2 : 1; // Free users call twice (main array + quota banner)
-		$addon_limit_calls = $config['is_free'] ? 2 : 1;   // Free users call twice (main array + quota banner)
 
 		// Override with specific expectations if provided
 		if (isset($config['call_count_expectations'])) {
 			$remaining_url_calls = $config['call_count_expectations']['get_remaining_url_count'] ?? $remaining_url_calls;
-			$addon_limit_calls = $config['call_count_expectations']['get_pma_addon_limit'] ?? $addon_limit_calls;
 		}
 
 		$mock_controller->expects($this->exactly($remaining_url_calls))
 			->method('get_remaining_url_count')
 			->willReturn( $config['remaining_urls'] );
 
-		$mock_controller->expects($this->exactly($addon_limit_calls))
+		$mock_controller->expects($this->exactly(1))
 			->method('get_pma_addon_limit')
 			->willReturn( $config['pma_addon_limit'] );
 
@@ -55,7 +53,7 @@ class Test_renderPerformanceUrlsTable extends TestCase {
 		// Mock current credit for quota banner logic (only for free users)
 		if ($config['is_free'] && isset($config['has_credits'])) {
 			$mock_controller->expects($this->once())
-				->method('get_current_credit')
+				->method('has_credit')
 				->willReturn( $config['has_credits'] ? 1 : 0 );
 		}
 
@@ -72,6 +70,9 @@ class Test_renderPerformanceUrlsTable extends TestCase {
 		$pm_context->expects($this->exactly(2))
 			->method('is_free_user')
 			->willReturn($config['is_free']);
+		$pm_context->expects($this->any())
+			->method('is_adding_page_allowed')
+			->willReturn(count( $config['items'] ) < $config['pma_addon_limit']);
 		$options = $this->createMock(Options_Data::class);
 		$manager = $this->createMock(Manager::class);
 
