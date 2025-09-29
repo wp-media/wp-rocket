@@ -33,7 +33,7 @@ class Test_renderPerformanceUrlsTable extends TestCase {
 		// Determine call counts based on user type
 		$remaining_url_calls = $config['is_free'] ? 2 : 1; // Free users call twice (main array + quota banner)
 		$addon_limit_calls = $config['is_free'] ? 2 : 1;   // Free users call twice (main array + quota banner)
-		
+
 		// Override with specific expectations if provided
 		if (isset($config['call_count_expectations'])) {
 			$remaining_url_calls = $config['call_count_expectations']['get_remaining_url_count'] ?? $remaining_url_calls;

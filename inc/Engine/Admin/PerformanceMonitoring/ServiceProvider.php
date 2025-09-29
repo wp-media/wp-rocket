@@ -79,6 +79,7 @@ class ServiceProvider extends AbstractServiceProvider {
 				[
 					'options',
 					'user',
+					'pm_query',
 				]
 			);
 
