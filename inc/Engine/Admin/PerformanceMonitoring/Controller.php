@@ -277,7 +277,6 @@ class Controller {
 			return false;
 		}
 		$upgrades = $this->user->get_pma_addon_upgrade_skus( $this->user->get_pma_addon_sku_active() );
-
 		return ! empty( $upgrades );
 	}
 
