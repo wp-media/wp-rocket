@@ -129,7 +129,10 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'wp_rocket_first_install'           => 'schedule_homepage_tests',
+			'wp_rocket_first_install'           => [
+				[ 'reset_credit_monthly', 9 ],
+				[ 'schedule_homepage_tests' ],
+			],
 			'wp_ajax_rocket_pm_add_new_page'    => 'add_new_page',
 			'wp_ajax_rocket_pm_get_results'     => 'get_results',
 			'admin_post_delete_pm'              => 'delete_row',
@@ -331,15 +334,34 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 
 		$this->render->render_pma_urls_table(
 			[
-				'items'           => $this->controller->get_items(),
-				'global_score'    => $this->controller->get_global_score(),
-				'remaining_urls'  => $this->controller->get_remaining_url_count(),
-				'pma_addon_limit' => $this->controller->get_pma_addon_limit(),
-				'upgrade_url'     => $license_data['btn_url'] ?? '',
-				'can_add_pages'   => $this->pma_context->is_adding_page_allowed(),
-				'is_free'         => $this->pma_context->is_free_user(),
+				'items'             => $this->controller->get_items(),
+				'global_score'      => $this->controller->get_global_score(),
+				'remaining_urls'    => $this->controller->get_remaining_url_count(),
+				'pma_addon_limit'   => $this->controller->get_pma_addon_limit(),
+				'upgrade_url'       => $license_data['btn_url'] ?? '',
+				'can_add_pages'     => $this->pma_context->is_adding_page_allowed(),
+				'show_quota_banner' => $this->should_show_quota_banner(),
+				'is_free'           => $this->pma_context->is_free_user(),
 			]
 		);
+	}
+
+	/**
+	 * Determine if the quota banner should be displayed.
+	 *
+	 * Shows banner when free users have reached URL limit OR exhausted credits.
+	 *
+	 * @return bool True if the quota banner should be shown.
+	 */
+	private function should_show_quota_banner(): bool {
+		if ( ! $this->pma_context->is_free_user() ) {
+			return false;
+		}
+
+		$remaining_url_count = $this->controller->get_remaining_url_count();
+
+		// Show banner if URL limit reached OR no credits left.
+		return empty( $remaining_url_count ) || ! $this->controller->has_credit();
 	}
 
 	/**
