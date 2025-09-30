@@ -142,15 +142,14 @@ class Render extends Abstract_Render {
 	 * @return array The data for the global score widget.
 	 */
 	private function get_global_score_widget_data() {
-		$data = [
-			'has_credit'  => $this->plan->has_credit(),
-			'can_add_url' => $this->pma_context->is_adding_page_allowed(),
-			'status_text' => $this->get_monitoring_status_text(),
+		$is_adding_page_allowed = $this->pma_context->is_adding_page_allowed();
+
+		return [
+			'has_credit'    => $this->plan->has_credit(),
+			'can_add_url'   => $is_adding_page_allowed,
+			'reach_max_url' => ! $is_adding_page_allowed,
+			'status_text'   => $this->get_monitoring_status_text(),
 		];
-
-		$data['reach_max_url'] = ! $data['can_add_url'];
-
-		return $data;
 	}
 
 	/**
