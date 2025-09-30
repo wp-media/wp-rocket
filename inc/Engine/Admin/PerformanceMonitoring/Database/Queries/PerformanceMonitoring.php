@@ -177,4 +177,28 @@ class PerformanceMonitoring extends AbstractQuery {
 			$this->delete_item( $id );
 		}
 	}
+
+	/**
+	 * Change blurred rows into unblurred.
+	 *
+	 * @return bool|int
+	 */
+	public function unblur_blurred_rows() {
+		// Get the database interface.
+		$db = $this->get_db();
+
+		// Bail if no database interface is available.
+		if ( ! $db ) {
+			return false;
+		}
+
+		// Use table class naming helper for consistency with prefixes.
+		$prefixed_table_name = $this->table_name;
+		// @phpstan-ignore-next-line
+		if ( ! empty( $db->prefix ) ) {
+			$prefixed_table_name = $db->prefix . $this->table_name;
+		}
+
+		return $db->query( "UPDATE `$prefixed_table_name` SET is_blurred = '0' WHERE status = 'completed' AND is_blurred = '1'" );
+	}
 }

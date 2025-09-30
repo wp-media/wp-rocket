@@ -5,10 +5,9 @@ namespace WP_Rocket\Engine\Admin\PerformanceMonitoring\URLLimit;
 
 use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Event_Management\Subscriber_Interface;
-use WP_Rocket\Engine\Admin\PerformanceMonitoring\{
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\{Context\PerformanceMonitoringContext,
 	GlobalScore,
-	Database\Queries\PerformanceMonitoring as PMQuery
-};
+	Database\Queries\PerformanceMonitoring as PMQuery};
 
 class Subscriber implements Subscriber_Interface {
 
@@ -34,16 +33,25 @@ class Subscriber implements Subscriber_Interface {
 	private $global_score;
 
 	/**
+	 * Context instance.
+	 *
+	 * @var PerformanceMonitoringContext
+	 */
+	private $context;
+
+	/**
 	 * Constructor
 	 *
-	 * @param PMQuery     $pm_query       Performance monitoring query instance.
-	 * @param User        $user           User client API instance.
-	 * @param GlobalScore $global_score GlobalScore instance.
+	 * @param PMQuery                      $pm_query       Performance monitoring query instance.
+	 * @param User                         $user           User client API instance.
+	 * @param GlobalScore                  $global_score GlobalScore instance.
+	 * @param PerformanceMonitoringContext $context Context instance.
 	 */
-	public function __construct( PMQuery $pm_query, User $user, GlobalScore $global_score ) {
+	public function __construct( PMQuery $pm_query, User $user, GlobalScore $global_score, PerformanceMonitoringContext $context ) {
 		$this->pm_query     = $pm_query;
 		$this->user         = $user;
 		$this->global_score = $global_score;
+		$this->context      = $context;
 	}
 
 	/**
@@ -53,7 +61,11 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'rocket_insights_upgrade' => [ 'clean_upgrade_plan_urls', 10, 2 ],
+			'rocket_insights_upgrade' => [
+				[ 'clean_upgrade_plan_urls', 10, 2 ],
+				[ 'unblur_blurred_rows', 11 ],
+			],
+
 		];
 	}
 
@@ -71,6 +83,23 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 		$this->pm_query->prune_old_items( $limit );
+	}
+
+	/**
+	 * Change blurred rows into unblurred.
+	 *
+	 * @return void
+	 */
+	public function unblur_blurred_rows() {
+		if ( ! $this->context->is_allowed() ) {
+			return;
+		}
+
+		if ( $this->context->is_free_user() ) {
+			return;
+		}
+
+		$this->pm_query->unblur_blurred_rows();
 		$this->global_score->reset();
 	}
 }

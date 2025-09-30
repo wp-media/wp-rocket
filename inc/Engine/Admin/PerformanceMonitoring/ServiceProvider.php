@@ -180,6 +180,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'pm_query',
 					'user',
 					'pm_global_score',
+					'pm_context',
 				]
 			);
 		// Settings Subscriber.
