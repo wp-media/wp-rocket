@@ -286,24 +286,24 @@ class User {
 	}
 
 	/**
-	 * Retrieves the description for the PMA add-on based on the provided SKU.
+	 * Retrieves the subtitle for the PMA add-on based on the provided SKU.
 	 *
 	 * @param string $sku The SKU used to fetch the PMA addon data.
 	 *
 	 * @return string
 	 */
-	public function get_pma_addon_description( string $sku ) {
+	public function get_pma_addon_subtitle( string $sku ) {
 		$plan = $this->get_pma_data( $sku );
 
-		if ( ! $plan || ! isset( $plan->description ) ) {
+		if ( ! $plan || ! isset( $plan->subtitle ) ) {
 			return '';
 		}
 
-		if ( 'See how your top pages perform and quickly spot and optimize what slows your site down.' === $plan->description ) {
+		if ( 'See how your top pages perform and quickly spot and optimize what slows your site down.' === $plan->subtitle ) {
 			return __( 'See how your top pages perform and quickly spot and optimize what slows your site down.', 'rocket' );
 		}
 
-		return $plan->description;
+		return $plan->subtitle;
 	}
 
 	/**
