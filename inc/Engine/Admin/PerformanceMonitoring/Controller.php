@@ -265,10 +265,10 @@ class Controller {
 	/**
 	 * Retrieves the current credit available for performance monitoring.
 	 *
-	 * @return int The current credit value.
+	 * @return bool If there is credit or not.
 	 */
-	public function get_current_credit() {
-		return $this->plan->get_credit();
+	public function has_credit() {
+		return $this->plan->has_credit();
 	}
 
 	/**
@@ -332,7 +332,7 @@ class Controller {
 	 * @return int Number of URLs that can still be added.
 	 */
 	public function get_remaining_url_count(): int {
-		$current_url_count = $this->query->query( [ 'count' => true ] );
+		$current_url_count = $this->query->get_total_count();
 		$max_urls          = $this->user->get_pma_addon_limit( $this->user->get_pma_addon_sku_active() );
 
 		return max( 0, $max_urls - (int) $current_url_count );
