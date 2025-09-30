@@ -183,7 +183,7 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 			 * @param array  $job_details Details related to the job.
 			 * @param string $validation_error The validation error message.
 			 */
-			do_action( 'rocket_pm_job_failed', $row_details, $job_details );
+			do_action( 'rocket_pm_job_failed', $row_details, $job_details, $validation_error );
 
 			return;
 		}
