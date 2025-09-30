@@ -80,7 +80,7 @@ return [
 			'error_message' => 'Maximum number of URLs reached',
 		],
 	],
-	'testShouldFailWithInvalidUrl' => [
+	'testShouldFailWithUnreachableUrl' => [
 		'config' => [
 			'post_data' => [
 				'page_url' => 'https://external-site.com/page',
@@ -97,7 +97,29 @@ return [
 		],
 		'expected' => [
 			'success' => false,
-			'error_message' => 'Url is external',
+			'error_message' => 'Url does not resolve to a valid page',
+		],
+	],
+	'testShouldSucceedWithExternalUrl' => [
+		'config' => [
+			'post_data' => [
+				'page_url' => 'https://example.org',
+			],
+			'rows' => [],
+			'customer_data' => (new UserDataGenerator()),
+			'mock_http' => true,
+		],
+		'expected' => [
+			'success' => true,
+			'database_entries' => 1,
+			'hook_fired' => true,
+			'response_data' => [
+				'id' => null, // Will be generated
+				'html' => null, // Will be generated
+				'global_score_data' => null, // Will be generated
+				'remaining_urls' => null, // Will be generated
+				'can_add_pages' => true,
+			],
 		],
 	],
 ];
