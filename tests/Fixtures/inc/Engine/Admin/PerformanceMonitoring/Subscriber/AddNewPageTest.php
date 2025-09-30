@@ -105,6 +105,8 @@ return [
 			'post_data' => [
 				'page_url' => 'https://example.org',
 			],
+			'rows' => [],
+			'customer_data' => (new UserDataGenerator()),
 			'mock_http' => true,
 		],
 		'expected' => [
