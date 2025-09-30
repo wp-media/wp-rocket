@@ -119,9 +119,10 @@ class Render extends Abstract_Render {
 	 * @return string The rendered HTML for the global score widget.
 	 */
 	public function get_global_score_widget( array $data ): string {
-		$data = array_merge( $data, $this->get_global_score_widget_data() );
-
-		return $this->generate( 'partials/performance-monitoring/global-score-widget', $data );
+		return $this->generate(
+			'partials/performance-monitoring/global-score-widget',
+			$this->get_global_score_widget_data( $data )
+		);
 	}
 
 	/**
@@ -131,20 +132,24 @@ class Render extends Abstract_Render {
 	 * @return string The rendered HTML for the global score widget content.
 	 */
 	public function get_global_score_widget_content( array $data ): string {
-		$data = array_merge( $data, $this->get_global_score_widget_data() );
-
-		return $this->render_parts_with_data( 'performance-monitoring/global-score-widget-content', $data, true );
+		return $this->render_parts_with_data(
+			'performance-monitoring/global-score-widget-content',
+			$this->get_global_score_widget_data( $data ),
+			true
+		);
 	}
 
 	/**
-	 * Get the data array for the global score widget.
+	 * Retrieves the data array for the global score widget.
 	 *
-	 * @return array The data for the global score widget.
+	 * @param array $data Input data for the global score widget.
+	 * @return array The prepared data for the global score widget.
 	 */
-	private function get_global_score_widget_data() {
+	private function prepare_global_score_widget_data( array $data ) {
 		$is_adding_page_allowed = $this->pma_context->is_adding_page_allowed();
 
 		return [
+			...$data,
 			'has_credit'    => $this->plan->has_credit(),
 			'can_add_url'   => $is_adding_page_allowed,
 			'reach_max_url' => ! $is_adding_page_allowed,
