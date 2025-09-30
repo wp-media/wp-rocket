@@ -306,7 +306,7 @@ class Controller {
 			'currency'    => '$',
 			'page_number' => $limit,
 			'period'      => 'month',
-			'subtitle' => $this->user->get_pma_addon_subtitle( $upgrade ),
+			'subtitle'    => $this->user->get_pma_addon_subtitle( $upgrade ),
 			'billing'     => $this->user->get_pma_addon_billing( $upgrade ),
 			'highlights'  => $this->user->get_pma_addon_highlights( $upgrade ),
 		];
