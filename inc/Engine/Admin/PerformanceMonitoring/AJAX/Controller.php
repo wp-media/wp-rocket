@@ -110,7 +110,7 @@ class Controller {
 		$url = $payload['processed_url'];
 
 		if ( Utils::is_home( $url ) ) {
-			$page_title = __( 'Home Page', 'rocket' );
+			$page_title = __( 'Homepage', 'rocket' );
 		} else {
 			$page_title = $this->get_page_title( $payload['message'] );
 		}
