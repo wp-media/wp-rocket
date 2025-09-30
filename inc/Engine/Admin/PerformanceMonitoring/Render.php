@@ -121,7 +121,7 @@ class Render extends Abstract_Render {
 	public function get_global_score_widget( array $data ): string {
 		return $this->generate(
 			'partials/performance-monitoring/global-score-widget',
-			$this->get_global_score_widget_data( $data )
+			$this->prepare_global_score_widget_data( $data )
 		);
 	}
 
@@ -134,7 +134,7 @@ class Render extends Abstract_Render {
 	public function get_global_score_widget_content( array $data ): string {
 		return $this->render_parts_with_data(
 			'performance-monitoring/global-score-widget-content',
-			$this->get_global_score_widget_data( $data ),
+			$this->prepare_global_score_widget_data( $data ),
 			true
 		);
 	}
