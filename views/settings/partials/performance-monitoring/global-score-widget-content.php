@@ -18,8 +18,8 @@ defined( 'ABSPATH' ) || exit;
 	</div>
 	<p class="wpr-page-num-txt">
 	<?php
-	// translators: %1$s is the number of pages tracked/monitored.
-	printf( esc_html( $data['status_text'] . ': %s' ), intval( $data['pages_num'] ) );
+	// translators: %1$s is the status text, %2$s is the number of pages tracked/monitored.
+	printf( '%1$s: %2$s', esc_html( $data['status_text'] ), intval( $data['pages_num'] ) );
 	?>
 	</p>
 	<div id="wpr_global_score_widget_add_page_btn_wrapper">
