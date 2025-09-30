@@ -16,6 +16,7 @@ class AddNewPageTest extends AjaxTestCase {
 	use DBTrait;
 
 	private $hook_fired = false;
+	private $container;
 
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
@@ -48,6 +49,8 @@ class AddNewPageTest extends AjaxTestCase {
 		add_action( 'rocket_pm_job_added', [ $this, 'capture_hook_fired' ] );
 
 		$this->hook_fired = false;
+
+		$this->container = apply_filters('rocket_container', null);
 	}
 
 	public function tear_down() {
@@ -83,6 +86,13 @@ class AddNewPageTest extends AjaxTestCase {
 	}
 
 	private function setUpTest( $config ) {
+		
+		foreach ( $config['rows'] as $row ) {
+			$this->addPerformanceMonitoring( $row );
+		}
+
+		$this->container->get('user')->set_user($config['customer_data']->generate());
+
 		// Set up the nonce
 		$_POST['nonce'] = \wp_create_nonce( 'rocket-ajax' );
 
@@ -90,13 +100,6 @@ class AddNewPageTest extends AjaxTestCase {
 		if ( isset( $config['post_data'] ) ) {
 			foreach ( $config['post_data'] as $key => $value ) {
 				$_POST[ $key ] = $value;
-			}
-		}
-
-		// Set up filters if provided
-		if ( isset( $config['filters'] ) ) {
-			foreach ( $config['filters'] as $filter => $callback ) {
-				add_filter( $filter, $callback );
 			}
 		}
 
@@ -134,9 +137,7 @@ class AddNewPageTest extends AjaxTestCase {
 
 		// Check if database entry was created
 		if ( isset( $expected['database_entries'] ) && $expected['database_entries'] > 0 ) {
-			$container = apply_filters( 'rocket_container', null );
-			$pm_query = $container->get( 'pm_query' );
-			$items = $pm_query->query( [] );
+			$items = $this->container->get( 'pm_query' )->query( [] );
 			$this->assertSame( $expected['database_entries'], count( $items ) );
 		}
 
