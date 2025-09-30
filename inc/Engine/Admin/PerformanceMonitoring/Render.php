@@ -143,7 +143,7 @@ class Render extends Abstract_Render {
 	 */
 	private function get_global_score_widget_data() {
 		$data = [
-			'has_credit'  => $this->credit_manager->has_credit(),
+			'has_credit'  => $this->plan->has_credit(),
 			'can_add_url' => $this->pma_context->is_adding_page_allowed(),
 			'status_text' => $this->get_monitoring_status_text(),
 		];
