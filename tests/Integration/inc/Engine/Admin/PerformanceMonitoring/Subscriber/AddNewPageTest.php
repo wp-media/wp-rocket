@@ -205,6 +205,26 @@ class AddNewPageTest extends AjaxTestCase {
 			];
 		}
 
+		// Mock successful response for external URLs (use a local test URL instead of Google)
+		if ( strpos( $url, 'http://example.org/test-external' ) === 0 ) {
+			return [
+				'response' => [
+					'code' => 200,
+				],
+				'body' => '<html><head><title>External Test Page</title></head><body>External test content</body></html>',
+			];
+		}
+
+		// Mock successful response for example.org URL used in tests
+		if ( strpos( $url, 'https://example.org' ) === 0 ) {
+			return [
+				'response' => [
+					'code' => 200,
+				],
+				'body' => '<html><head><title>Example Domain</title></head><body>Example domain content</body></html>',
+			];
+		}
+
 		// Mock 404 for invalid URLs
 		return [
 			'response' => [

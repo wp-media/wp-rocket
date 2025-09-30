@@ -117,7 +117,7 @@ class Controller {
 
 		$url = home_url();
 
-		$page_title = __( 'Home Page', 'rocket' );
+		$page_title = __( 'Homepage', 'rocket' );
 
 		$this->manager->add_to_the_queue(
 			$url,
