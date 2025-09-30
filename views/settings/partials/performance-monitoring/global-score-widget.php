@@ -7,11 +7,9 @@ defined( 'ABSPATH' ) || exit;
 ?>
 
 <div class="wpr-optionHeader">
-	<div class="wpr-optionHeader">
-		<h3 class="wpr-title2">
-			<?php echo esc_html__( 'Rocket Insights Score', 'rocket' ); ?>
-		</h3>
-	</div>
+	<h3 class="wpr-title2">
+		<?php echo esc_html__( 'Rocket Insights Score', 'rocket' ); ?>
+	</h3>
 </div>
 <div class="wpr-fieldsContainer">
 	<fieldset class="wpr-fieldsContainer-fieldset">
