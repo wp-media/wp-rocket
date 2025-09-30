@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\Tracking;
 
 use WP_Rocket\Abstract_Render;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\Database\Rows\PerformanceMonitoring;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Managers\Plan;
 use WPMedia\Mixpanel\Optin;
 use WPMedia\Mixpanel\TrackingPlugin as MixpanelTracking;
@@ -248,9 +249,9 @@ class Tracking extends Abstract_Render {
 	 *
 	 * @since 3.20
 	 *
-	 * @param object $row_details Details related to the database row.
-	 * @param array  $job_details Details related to the job.
-	 * @param string $plan Plan name.
+	 * @param PerformanceMonitoring $row_details Details related to the database row.
+	 * @param array                 $job_details Details related to the job.
+	 * @param string                $plan Plan name.
 	 *
 	 * @return void
 	 */
