@@ -1,4 +1,5 @@
 <?php
+use WP_Rocket\Tests\Fixtures\Generators\UserDataGenerator;
 
 return [
 	'testShouldAddPageSuccessfully' => [
@@ -6,11 +7,19 @@ return [
 			'post_data' => [
 				'page_url' => 'http://example.org/test-page',
 			],
+			'rows' => [
+				[
+					'url' => 'http://example.org',
+					'status' => 'completed',
+					'is_mobile' => 1,
+				],
+			],
+			'customer_data' => (new UserDataGenerator()),
 			'mock_http' => true,
 		],
 		'expected' => [
 			'success' => true,
-			'database_entries' => 1,
+			'database_entries' => 2,
 			'hook_fired' => true,
 			'response_data' => [
 				'id' => null, // Will be generated
@@ -26,6 +35,14 @@ return [
 			'post_data' => [
 				'page_url' => '',
 			],
+			'rows' => [
+				[
+					'url' => 'http://example.org',
+					'status' => 'completed',
+					'is_mobile' => 1,
+				],
+			],
+			'customer_data' => (new UserDataGenerator()),
 			'mock_http' => false,
 		],
 		'expected' => [
@@ -38,9 +55,24 @@ return [
 			'post_data' => [
 				'page_url' => 'https://example.com/test-page',
 			],
-			'filters' => [
-				'wpr_pm_allow_add_page' => '__return_false',
+			'rows' => [
+				[
+					'url' => 'http://example.org',
+					'status' => 'completed',
+					'is_mobile' => 1,
+				],
+				[
+					'url' => 'http://example.org/page2',
+					'status' => 'completed',
+					'is_mobile' => 1,
+				],
+				[
+					'url' => 'http://example.org/page3',
+					'status' => 'completed',
+					'is_mobile' => 1,
+				],
 			],
+			'customer_data' => (new UserDataGenerator()),
 			'mock_http' => false,
 		],
 		'expected' => [
@@ -53,7 +85,15 @@ return [
 			'post_data' => [
 				'page_url' => 'https://external-site.com/page',
 			],
-			'mock_http' => false,
+			'rows' => [
+				[
+					'url' => 'http://example.org',
+					'status' => 'completed',
+					'is_mobile' => 1,
+				],
+			],
+			'customer_data' => (new UserDataGenerator()),
+			'mock_http' => true,
 		],
 		'expected' => [
 			'success' => false,

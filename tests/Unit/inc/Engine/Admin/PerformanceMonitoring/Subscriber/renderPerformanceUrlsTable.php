@@ -64,6 +64,11 @@ class Test_renderPerformanceUrlsTable extends TestCase {
 		$pm_context->expects($this->once())
 			->method('is_allowed')
 			->willReturn(true);
+
+		$pm_context->expects($this->once())
+			->method('is_adding_page_allowed')
+			->willReturn(true);
+			
 		$options = $this->createMock(Options_Data::class);
 		$manager = $this->createMock(Manager::class);
 
