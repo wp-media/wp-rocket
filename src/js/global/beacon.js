@@ -37,6 +37,10 @@ $(document).ready(function(){
         }
     }
 
+	$( '.wpr-ri-report' ).on( 'click', function() {
+		wprTrackHelpButton( 'rocket insights see report', 'performance summary' );
+	} );
+
     // MixPanel tracking function
     function wprTrackHelpButton(button, context) {
         if (typeof mixpanel !== 'undefined' && mixpanel.track) {
