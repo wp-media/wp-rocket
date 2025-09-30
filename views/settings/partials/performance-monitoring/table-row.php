@@ -20,8 +20,14 @@ defined( 'ABSPATH' ) || exit;
 	<td class="wpr-pma-item-title">
 		<a href="<?php echo esc_url( $data->url ); ?>" target="_blank" rel="noopener" class="wpr-btn-with-tool-tip">
 			<span class="wpr-pma-title"><?php echo esc_html( $data->title ); ?></span> <span class="wpr-pma-dot">.</span>
-			<span
-				class="wpr-pma-date"><?php echo esc_html( human_time_diff( $data->modified, time() ) . ' ' . __( 'ago', 'rocket' ) ); ?>
+			<span class="wpr-pma-date">
+				<?php
+				if ( $data->is_running() ) {
+					echo esc_html( __( 'Analyzing your page (~1 min)', 'rocket' ) );
+				} else {
+					echo esc_html( human_time_diff( $data->modified, time() ) . ' ' . __( 'ago', 'rocket' ) );
+				}
+				?>
 			</span>
 			<div class="wpr-tooltip">
 				<div class="wpr-tooltip-content">
