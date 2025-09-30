@@ -117,7 +117,7 @@ class Controller {
 			wp_send_json_error( $payload );
 		}
 
-		$processed_url = $payload['processed_url'];
+		$url = $payload['processed_url'];
 
 		if ( Utils::is_home( $url ) ) {
 			$page_title = __( 'Home Page', 'rocket' );
@@ -125,7 +125,7 @@ class Controller {
 			$page_title = $this->get_page_title( $payload['message'] );
 		}
 		$row_id = $this->manager->add_to_the_queue(
-			$processed_url,
+			$url,
 			true,
 			[
 				'title' => $page_title,
@@ -217,10 +217,10 @@ class Controller {
 		}
 
 		// Check if URL has protocol, add if needed.
-		$processed_url            = rocket_add_url_protocol( $url );
-		$payload['processed_url'] = $processed_url;
+		$url                      = rocket_add_url_protocol( $url );
+		$payload['processed_url'] = $url;
 
-		$response = $this->get_page_content( $processed_url );
+		$response = $this->get_page_content( $url );
 
 		if ( ! $response ) {
 			$payload['error']   = true;
@@ -230,7 +230,7 @@ class Controller {
 		}
 
 		// check if url is not from admin.
-		if ( strpos( $processed_url, admin_url() ) === 0 ) {
+		if ( strpos( $url, admin_url() ) === 0 ) {
 			$payload['error']   = true;
 			$payload['message'] = 'Url is an admin page.';
 
@@ -238,7 +238,7 @@ class Controller {
 		}
 
 		// Check if url has not been submited.
-		if ( false !== $this->manager->get_single_job( $processed_url, true ) ) {
+		if ( false !== $this->manager->get_single_job( $url, true ) ) {
 			$payload['error']   = true;
 			$payload['message'] = 'Page url performance is already been monitored.';
 
