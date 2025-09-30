@@ -148,13 +148,15 @@ class Render extends Abstract_Render {
 	private function prepare_global_score_widget_data( array $data ) {
 		$is_adding_page_allowed = $this->pma_context->is_adding_page_allowed();
 
-		return [
-			...$data,
-			'has_credit'    => $this->plan->has_credit(),
-			'can_add_url'   => $is_adding_page_allowed,
-			'reach_max_url' => ! $is_adding_page_allowed,
-			'status_text'   => $this->get_monitoring_status_text(),
-		];
+		return array_merge(
+			$data,
+			[
+				'has_credit'    => $this->plan->has_credit(),
+				'can_add_url'   => $is_adding_page_allowed,
+				'reach_max_url' => ! $is_adding_page_allowed,
+				'status_text'   => $this->get_monitoring_status_text(),
+			]
+		);
 	}
 
 	/**
