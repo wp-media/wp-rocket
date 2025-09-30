@@ -1700,7 +1700,7 @@ class Page extends Abstract_Render {
 			'rocket_insights',
 			[
 				'title'            => __( 'Rocket Insights', 'rocket' ),
-				'menu_description' => __( 'Get performance insights', 'rocket' ),
+				'menu_description' => __( 'Enable automatic performance testing for your pages', 'rocket' ),
 			]
 		);
 
