@@ -132,7 +132,7 @@ abstract class Abstract_Render implements Render_Interface {
 			case 'rocket_purge_rocketcdn':
 			case 'rocket_clean_saas':
 			case 'rocket_clean_performance_hints':
-			case 'rocket_pm_add_homepage':
+			case 'rocket_rocket_insights_add_homepage':
 				$referer = '';
 
 				if ( ! empty( $_SERVER['REQUEST_URI'] ) ) {
