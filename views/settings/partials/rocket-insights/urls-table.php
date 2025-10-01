@@ -19,12 +19,12 @@ defined( 'ABSPATH' ) || exit;
 </div>
 
 <?php
-$wp_rocket_pm_quota_banner_class = 'wpr-notice wpr-pma-notice wpr-error-notice';
+$rocket_insights_quota_banner_class = 'wpr-notice wpr-ri-notice wpr-error-notice';
 if ( ! isset( $data['can_add_pages'] ) || $data['can_add_pages'] ) {
-	$wp_rocket_pm_quota_banner_class .= ' hidden';
+	$rocket_insights_quota_banner_class .= ' hidden';
 }
 ?>
-<div class="<?php echo esc_attr( $wp_rocket_pm_quota_banner_class ); ?>" id="wpr-pma-quota-banner">
+<div class="<?php echo esc_attr( $rocket_insights_quota_banner_class ); ?>" id="wpr-ri-quota-banner">
 	<div class="wpr-notice-container">
 		<div class="wpr-notice-description">
 			<?php
@@ -43,15 +43,15 @@ if ( ! isset( $data['can_add_pages'] ) || $data['can_add_pages'] ) {
 </div>
 
 <?php if ( ! empty( $data['can_add_pages'] ) && ! empty( $data['is_free'] ) ) : ?>
-	<p class="wpr-pma-summary-info">
+	<p class="wpr-ri-summary-info">
 		<?php
 		printf(
 		// Translators: %1$s = opening strong tag, %2$s: number of pages, %3$s = closing strong tag, %4$s: number of tests available.
 			esc_html__( 'You can analyze up to %1$s%2$s pages%3$s and run %1$s%4$s tests per month%3$s. Want more?', 'rocket' ),
 			'<strong>',
-			esc_html( $data['pma_addon_limit'] ), // number of pages.
+			esc_html( $data['rocket_insights_addon_limit'] ), // number of pages.
 			'</strong>',
-			esc_html( $data['pma_addon_limit'] ) // total number of tests available.
+			esc_html( $data['rocket_insights_addon_limit'] ) // total number of tests available.
 		);
 		?>
 		<a href="<?php echo esc_url( $data['upgrade_url'] ); ?>" target="_blank"><?php esc_html_e( 'Upgrade Now', 'rocket' ); ?></a>
@@ -59,14 +59,14 @@ if ( ! isset( $data['can_add_pages'] ) || $data['can_add_pages'] ) {
 <?php endif; ?>
 
 
-<table class="wp-rocket-data-table widefat wpr-pma-urls-table <?php echo empty( $data['items'] ) ? 'hidden' : ''; ?>" >
+<table class="wp-rocket-data-table widefat wpr-ri-urls-table <?php echo empty( $data['items'] ) ? 'hidden' : ''; ?>" >
 	<tbody>
 		<?php
 		if ( ! empty( $data['items'] ) ) :
 			$this->render_global_score_row( $data['global_score'] );
 		// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
-			foreach ( $data['items'] as $wpr_pma_record ) {
-				$this->render_performance_monitoring_list_row( $wpr_pma_record );
+			foreach ( $data['items'] as $rocket_insights_record ) {
+				$this->render_performance_monitoring_list_row( $rocket_insights_record );
 			}
 			?>
 		<?php endif; ?>
@@ -74,12 +74,12 @@ if ( ! isset( $data['can_add_pages'] ) || $data['can_add_pages'] ) {
 </table>
 
 
-<div class="wpr-pma-add-section">
+<div class="wpr-ri-add-section">
 	<input type="text"
 			class="wpr-speed-radar-input"
 			placeholder="<?php esc_attr_e( 'Enter a page URL to monitor', 'rocket' ); ?>"
 			id="wpr-speed-radar-url-input" />
-	
+
 	<div id="wpr_rocket_insights_add_page_btn_wrapper">
 		<?php
 		$this->render_add_page_btn( 'rocket-insights', $data );

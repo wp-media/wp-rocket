@@ -8,14 +8,14 @@
 defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 ?>
 
-<div class="wpr-pma-license-banner">
-	<div class="wpr-pma-banner-header">
+<div class="wpr-ri-license-banner">
+	<div class="wpr-ri-banner-header">
 		<h2><?php esc_html_e( 'Unlock Your Site’s True Performance!', 'rocket' ); ?></h2>
 		<p><?php echo esc_html( $data['description'] ); ?></p>
 	</div>
-	<div class="wpr-pma-banner-content">
-	<div class="wpr-pma-benefits-list-container">
-		<ul class="wpr-pma-benefits-list">
+	<div class="wpr-ri-banner-content">
+	<div class="wpr-ri-benefits-list-container">
+		<ul class="wpr-ri-benefits-list">
 			<?php foreach ( $data['highlights'] as $wp_rocket_highlight ) : ?>
 			<li>
 				<span><?php echo esc_html( $wp_rocket_highlight ); ?></span>
@@ -23,15 +23,15 @@ defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 			<?php endforeach; ?>
 		</ul>
 		<?php if ( $data['price_before_discount'] ) : ?>
-		<p class="wpr-pma-terms">
+		<p class="wpr-ri-terms">
 			<?php echo esc_html( $data['promo_description'] ); ?>
 		</p>
 		<?php endif; ?>
 	</div>
-		<div class="wpr-pma-price-box">
+		<div class="wpr-ri-price-box">
 			<?php if ( $data['price_before_discount'] ) : ?>
-			<span class="wpr-pma-offer"><?php echo esc_html( $data['promo_name'] ); ?></span>
-			<p class="wpr-pma-price-before-discount">
+			<span class="wpr-ri-offer"><?php echo esc_html( $data['promo_name'] ); ?></span>
+			<p class="wpr-ri-price-before-discount">
 				<?php
 				printf(
 				// translators: %1$s currency symbol, %2$s price before discount.
@@ -43,14 +43,14 @@ defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 			</p>
 			<?php endif; ?>
 			<?php $this->render_license_banner_plan_price( $data['price'], '$', $data['period'] ); ?>
-			<p class="wpr-pma-vat">
+			<p class="wpr-ri-vat">
 				<?php esc_html_e( '(excl. VAT)', 'rocket' ); ?>
 			</p>
-			<a href="<?php echo esc_url( $data['btn_url'] ); ?>" class="wpr-pma-cta-button" data-wpr_track_button="Get Performance Monitoring" data-wpr_track_context="Addons">
+			<a href="<?php echo esc_url( $data['btn_url'] ); ?>" class="wpr-ri-cta-button" data-wpr_track_button="Get Performance Monitoring" data-wpr_track_context="Addons">
 				<?php esc_html_e( 'GET STARTED', 'rocket' ); ?>
 			</a>
 		</div>
 	</div>
-	<div class="wpr-pma-banner-footer">
+	<div class="wpr-ri-banner-footer">
 	</div>
 </div>
