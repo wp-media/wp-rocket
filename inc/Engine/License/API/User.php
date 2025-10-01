@@ -164,7 +164,7 @@ class User {
 	 *
 	 * @return int
 	 */
-	public function get_pma_license_expiration() {
+	public function get_rocket_insights_license_expiration() {
 		if ( ! isset( $this->user->performance_monitoring->expiration ) ) {
 			return 0;
 		}
@@ -181,7 +181,7 @@ class User {
 	 *
 	 * @return boolean
 	 */
-	public function is_pma_addon_active( string $sku ) {
+	public function is_rocket_insights_addon_active( string $sku ) {
 		return 'perf-monitor-free' !== $sku;
 	}
 
@@ -194,18 +194,18 @@ class User {
 	 *
 	 * @return boolean
 	 */
-	public function is_pma_free_active( string $sku ) {
+	public function is_rocket_insights_free_active( string $sku ) {
 		return 'perf-monitor-free' === $sku;
 	}
 
 	/**
-	 * Retrieves the active SKU for the Performance Monitoring Addon.
+	 * Retrieves the active SKU for the Rocket Insights Addon.
 	 *
 	 * @since 3.20
 	 *
 	 * @return string
 	 */
-	public function get_pma_addon_sku_active(): string {
+	public function get_rocket_insights_addon_sku_active(): string {
 		if ( ! isset( $this->user->performance_monitoring ) || ! isset( $this->user->performance_monitoring->active_sku ) ) {
 			return 'perf-monitor-free';
 		}
@@ -214,14 +214,14 @@ class User {
 	}
 
 	/**
-	 * Retrieves the PMA addon upgrade SKUs based on the provided SKU.
+	 * Retrieves the Rocket Insights addon upgrade SKUs based on the provided SKU.
 	 *
 	 * @param string $sku The SKU for which to retrieve the upgrade data.
 	 *
 	 * @return array
 	 */
-	public function get_pma_addon_upgrade_skus( string $sku ) {
-		$plan = $this->get_pma_data( $sku );
+	public function get_rocket_insights_addon_upgrade_skus( string $sku ) {
+		$plan = $this->get_rocket_insights_data( $sku );
 		if ( ! $plan || ! isset( $plan->upgrades ) ) {
 			return [];
 		}
@@ -230,14 +230,14 @@ class User {
 	}
 
 	/**
-	 * Retrieves the button text for the PMA addon based on the provided SKU.
+	 * Retrieves the button text for the Rocket Insights addon based on the provided SKU.
 	 *
-	 * @param string $sku The SKU used to fetch the PMA addon data.
+	 * @param string $sku The SKU used to fetch the Rocket Insights addon data.
 	 *
 	 * @return string
 	 */
-	public function get_pma_addon_btn_text( string $sku ) {
-		$plan = $this->get_pma_data( $sku );
+	public function get_rocket_insights_addon_btn_text( string $sku ) {
+		$plan = $this->get_rocket_insights_data( $sku );
 		if ( ! $plan ) {
 			return '';
 		}
@@ -246,14 +246,14 @@ class User {
 	}
 
 	/**
-	 * Retrieves the URL for the PMA add-on button associated with the specified SKU.
+	 * Retrieves the URL for the Rocket Insights add-on button associated with the specified SKU.
 	 *
 	 * @param string $sku The SKU identifier used to fetch.
 	 *
 	 * @return string
 	 */
-	public function get_pma_addon_btn_url( string $sku ) {
-		$plan = $this->get_pma_data( $sku );
+	public function get_rocket_insights_addon_btn_url( string $sku ) {
+		$plan = $this->get_rocket_insights_data( $sku );
 
 		if ( ! $plan ) {
 			return '';
@@ -263,20 +263,20 @@ class User {
 			return '';
 		}
 
-		$url = admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '&rocket_pma_upgrade=true#rocket_insights' );
+		$url = admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '&rocket_insights_upgrade=true#rocket_insights' );
 
 		return add_query_arg( 'dashboard_url', rawurlencode( $url ), $plan->button->url );
 	}
 
 	/**
-	 * Retrieves the limit for the PMA add-on based on the provided SKU.
+	 * Retrieves the limit for the Rocket Insights add-on based on the provided SKU.
 	 *
-	 * @param string $sku The SKU used to fetch the PMA addon data.
+	 * @param string $sku The SKU used to fetch the Rocket Insights addon data.
 	 *
 	 * @return int
 	 */
-	public function get_pma_addon_limit( string $sku ) {
-		$plan = $this->get_pma_data( $sku );
+	public function get_rocket_insights_addon_limit( string $sku ) {
+		$plan = $this->get_rocket_insights_data( $sku );
 
 		if ( ! $plan || ! isset( $plan->limit ) ) {
 			return 3;
@@ -286,14 +286,14 @@ class User {
 	}
 
 	/**
-	 * Retrieves the description for the PMA add-on based on the provided SKU.
+	 * Retrieves the description for the Rocket Insights add-on based on the provided SKU.
 	 *
-	 * @param string $sku The SKU used to fetch the PMA addon data.
+	 * @param string $sku The SKU used to fetch the Rocket Insights addon data.
 	 *
 	 * @return string
 	 */
-	public function get_pma_addon_description( string $sku ) {
-		$plan = $this->get_pma_data( $sku );
+	public function get_rocket_insights_addon_description( string $sku ) {
+		$plan = $this->get_rocket_insights_data( $sku );
 
 		if ( ! $plan || ! isset( $plan->description ) ) {
 			return '';
@@ -308,14 +308,14 @@ class User {
 
 
 	/**
-	 * Retrieves the highlights for the PMA add-on based on the provided SKU.
+	 * Retrieves the highlights for the Rocket Insights add-on based on the provided SKU.
 	 *
-	 * @param string $sku The SKU used to fetch the PMA addon data.
+	 * @param string $sku The SKU used to fetch the Rocket Insights addon data.
 	 *
 	 * @return array
 	 */
-	public function get_pma_addon_highlights( string $sku ) {
-		$plan = $this->get_pma_data( $sku );
+	public function get_rocket_insights_addon_highlights( string $sku ) {
+		$plan = $this->get_rocket_insights_data( $sku );
 
 		if ( ! $plan || ! isset( $plan->highlights ) ) {
 			return [];
@@ -351,25 +351,25 @@ class User {
 	}
 
 	/**
-	 * Checks if the PMA add-on has a promo based on the provided SKU.
+	 * Checks if the Rocket Insights add-on has a promo based on the provided SKU.
 	 *
-	 * @param string $sku The SKU used to fetch the PMA addon data.
+	 * @param string $sku The SKU used to fetch the Rocket Insights addon data.
 	 *
 	 * @return bool
 	 */
-	public function has_pma_addon_promo( string $sku ) {
-		return $this->get_pma_addon_promo( $sku ) !== false;
+	public function has_rocket_insights_addon_promo( string $sku ) {
+		return $this->get_rocket_insights_addon_promo( $sku ) !== false;
 	}
 
 	/**
-	 * Retrieves the price for the PMA add-on based on the provided SKU.
+	 * Retrieves the price for the Rocket Insights add-on based on the provided SKU.
 	 *
-	 * @param string $sku The SKU used to fetch the PMA addon data.
+	 * @param string $sku The SKU used to fetch the Rocket Insights addon data.
 	 *
 	 * @return string
 	 */
-	public function get_pma_addon_price( string $sku ) {
-		$data = $this->get_pma_data( $sku );
+	public function get_rocket_insights_addon_price( string $sku ) {
+		$data = $this->get_rocket_insights_data( $sku );
 
 		if ( ! $data || ! isset( $data->price ) ) {
 			return '';
@@ -379,14 +379,14 @@ class User {
 	}
 
 	/**
-	 * Retrieves the promo price for the PMA add-on based on the provided SKU.
+	 * Retrieves the promo price for the Rocket Insights add-on based on the provided SKU.
 	 *
-	 * @param string $sku The SKU used to fetch the PMA addon data.
+	 * @param string $sku The SKU used to fetch the Rocket Insights addon data.
 	 *
 	 * @return string
 	 */
-	public function get_pma_addon_promo_price( string $sku ) {
-		$promo = $this->get_pma_addon_promo( $sku );
+	public function get_rocket_insights_addon_promo_price( string $sku ) {
+		$promo = $this->get_rocket_insights_addon_promo( $sku );
 
 		if ( ! $promo || ! isset( $promo->price ) ) {
 			return '';
@@ -396,14 +396,14 @@ class User {
 	}
 
 	/**
-	 * Retrieves the promo name for the PMA add-on based on the provided SKU.
+	 * Retrieves the promo name for the Rocket Insights add-on based on the provided SKU.
 	 *
-	 * @param string $sku The SKU used to fetch the PMA addon data.
+	 * @param string $sku The SKU used to fetch the Rocket Insights addon data.
 	 *
 	 * @return string
 	 */
-	public function get_pma_addon_promo_name( string $sku ) {
-		$promo = $this->get_pma_addon_promo( $sku );
+	public function get_rocket_insights_addon_promo_name( string $sku ) {
+		$promo = $this->get_rocket_insights_addon_promo( $sku );
 
 		if ( ! $promo || ! isset( $promo->name ) ) {
 			return '';
@@ -417,14 +417,14 @@ class User {
 	}
 
 	/**
-	 * Retrieves the promo description for the PMA add-on based on the provided SKU.
+	 * Retrieves the promo description for the Rocket Insights add-on based on the provided SKU.
 	 *
-	 * @param string $sku The SKU used to fetch the PMA addon data.
+	 * @param string $sku The SKU used to fetch the Rocket Insights addon data.
 	 *
 	 * @return string
 	 */
-	public function get_pma_addon_promo_description( string $sku ) {
-		$promo = $this->get_pma_addon_promo( $sku );
+	public function get_rocket_insights_addon_promo_description( string $sku ) {
+		$promo = $this->get_rocket_insights_addon_promo( $sku );
 		if ( ! $promo || ! isset( $promo->description ) ) {
 			return '';
 		}
@@ -437,14 +437,14 @@ class User {
 	}
 
 	/**
-	 * Retrieves the promo data for the PMA add-on based on the provided SKU.
+	 * Retrieves the promo data for the Rocket Insights add-on based on the provided SKU.
 	 *
-	 * @param string $sku The SKU used to fetch the PMA addon data.
+	 * @param string $sku The SKU used to fetch the Rocket Insights addon data.
 	 *
 	 * @return false|object
 	 */
-	protected function get_pma_addon_promo( string $sku ) {
-		$plan = $this->get_pma_data( $sku );
+	protected function get_rocket_insights_addon_promo( string $sku ) {
+		$plan = $this->get_rocket_insights_data( $sku );
 
 		if ( ! $plan || ! isset( $plan->promo ) ) {
 			return false;
@@ -473,13 +473,13 @@ class User {
 	}
 
 	/**
-	 * Retrieves the performance monitoring plan data associated with the specified SKU.
+	 * Retrieves the Rocket Insights plan data associated with the specified SKU.
 	 *
-	 * @param string $sku The SKU identifier used to find the corresponding performance monitoring plan.
+	 * @param string $sku The SKU identifier used to find the corresponding Rocket Insights plan.
 	 *
 	 * @return object|null
 	 */
-	protected function get_pma_data( string $sku ) {
+	protected function get_rocket_insights_data( string $sku ) {
 
 		if ( ! isset( $this->user->performance_monitoring ) || ! isset( $this->user->performance_monitoring->plans ) ) {
 			return null;
