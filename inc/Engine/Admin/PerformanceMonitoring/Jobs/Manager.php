@@ -148,6 +148,11 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 	 * @return void
 	 */
 	public function process( array $job_details, $row_details, string $optimization_type ): void {
+		// Bail out if status is failed
+		if ( 'failed' === $job_details['status'] ) {
+			return;
+		}
+
 		if ( ! empty( $job_details['status'] ) && 'pending' === $job_details['status'] ) {
 			$this->logger::info(
 				'Performance Monitoring: Revert to pending because of API status is pending',
@@ -157,35 +162,6 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 			);
 
 			$this->query->revert_to_pending( $row_details->id );
-			return;
-		}
-
-		// Validate job data before marking as completed.
-		$validation_error = $this->validate_job_data( $job_details, $row_details );
-		if ( ! empty( $validation_error ) ) {
-			$this->logger::error(
-				'Performance Monitoring: Job validation failed - ' . $validation_error,
-				[
-					'job_id'            => $row_details->job_id ?? 'missing',
-					'page_url'          => $row_details->url ?? null,
-					'performance_score' => $job_details['data']['data']['performance_score'] ?? null,
-					'report_url'        => $job_details['data']['data']['report_url'] ?? null,
-				]
-			);
-
-			$this->query->make_status_failed( $row_details->url, $row_details->is_mobile, '', $validation_error );
-
-			/**
-			 * Fires when a performance monitoring job fails validation.
-			 *
-			 * @since 3.20
-			 *
-			 * @param object $row_details Details related to the database row.
-			 * @param array  $job_details Details related to the job.
-			 * @param string $validation_error The validation error message.
-			 */
-			do_action( 'rocket_pm_job_failed', $row_details, $job_details, $validation_error );
-
 			return;
 		}
 
@@ -230,46 +206,6 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 	 */
 	public function get_optimization_type_from_row( $row ): string {
 		return $this->optimization_type;
-	}
-
-	/**
-	 * Validate job data to ensure it has required fields with valid values.
-	 *
-	 * @param array  $job_details Details related to the job.
-	 * @param object $row_details Details related to the row.
-	 * @return string Empty string if valid, error message if invalid.
-	 */
-	private function validate_job_data( array $job_details, $row_details ): string {
-		// Check if job_id exists in row_details.
-		if ( empty( $row_details->job_id ) ) {
-			return 'Missing job_id in database row';
-		}
-
-		// Check if we have the expected data structure.
-		if ( ! isset( $job_details['data']['data'] ) ) {
-			return 'Invalid job data structure - missing data.data';
-		}
-
-		$test_data = $job_details['data']['data'];
-
-		// Check if performance_score exists and is not zero.
-		$performance_score = $test_data['performance_score'] ?? 0;
-		if ( empty( $performance_score ) || 0 === (int) $performance_score ) {
-			return 'Invalid performance score - score is zero or missing';
-		}
-
-		// Check if report_url exists and is not empty.
-		$report_url = $test_data['report_url'] ?? '';
-		if ( empty( $report_url ) ) {
-			return 'Missing or empty report URL';
-		}
-
-		// Validate that report_url is a valid URL.
-		if ( ! filter_var( $report_url, FILTER_VALIDATE_URL ) ) {
-			return 'Invalid report URL format';
-		}
-
-		return '';
 	}
 
 	/**
