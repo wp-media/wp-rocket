@@ -243,26 +243,6 @@ class Controller {
 	}
 
 	/**
-	 * Get settings section data.
-	 *
-	 * @return array
-	 */
-	public function get_settings_section_data(): array {
-		return [
-			'id'                 => 'performance_monitoring',
-			'title'              => __( 'Performance Monitoring', 'rocket' ),
-			'value'              => $this->options->get( 'performance_monitoring' ), // enabled or not.
-			'schedule_frequency' => 'monthly', // frequency of tests.
-			'choices'            => [ // frequency options in select.
-				'daily'   => __( 'Daily', 'rocket' ),
-				'weekly'  => __( 'Weekly', 'rocket' ),
-				'monthly' => __( 'Monthly', 'rocket' ),
-			],
-			'help'               => 'performance-monitoring-settings', // beacon id for help button.
-		];
-	}
-
-	/**
 	 * Retrieves the current credit available for performance monitoring.
 	 *
 	 * @return bool If there is credit or not.
