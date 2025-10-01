@@ -201,7 +201,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	}
 
 	/**
-	 * Add pm_ids key to the admin ajax js variable.
+	 * Add rocket_insights_ids key to the admin ajax js variable.
 	 *
 	 * @param array $data Array of data.
 	 * @return array
