@@ -262,7 +262,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	const POLL_MAX_INTERVAL = 15000;  // Max polling interval (e.g. 15 seconds)
 
 	// ==== State ====
-	let pmIds = Array.isArray(window.rocket_ajax_data?.pm_ids) ? window.rocket_ajax_data.pm_ids.slice() : [];
+	let rocketInsightsIds = Array.isArray(window.rocket_ajax_data?.rocket_insights_ids) ? window.rocket_ajax_data.rocket_insights_ids.slice() : [];
 	let pollInterval = POLL_BASE_INTERVAL;
 	let pollTimer = null;
 	let hasCredit = true; // Track credit status
@@ -296,13 +296,13 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 
 	function addIds(newId) {
-		if (!pmIds.includes(newId)) {
-			pmIds.push(newId);
+		if (!rocketInsightsIds.includes(newId)) {
+			rocketInsightsIds.push(newId);
 		}
 	}
 
 	function removeId(id) {
-		pmIds = pmIds.filter(x => x !== parseInt(id, 10));
+		rocketInsightsIds = rocketInsightsIds.filter(x => x !== parseInt(id, 10));
 	}
 
 	function updateQuotaBanner(canAddPages) {
@@ -336,7 +336,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 			// Get the row ID and check if it's currently being processed
 			const rowId = parseInt(row.dataset.rocketPmId, 10);
-			const isRunning = pmIds.includes(rowId);
+			const isRunning = rocketInsightsIds.includes(rowId);
 
 			if (!hasCredit || isRunning) {
 				// Disable button
@@ -346,7 +346,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				if (!hasCredit) {
 					// Add tooltip for no credit
 					button.classList.add('wpr-btn-with-tool-tip');
-					button.setAttribute('title', window.rocket_ajax_data?.pm_no_credit_tooltip || 'Upgrade your plan to get access to re-test performance or run new tests');
+					button.setAttribute('title', window.rocket_ajax_data?.ri_no_credit_tooltip || 'Upgrade your plan to get access to re-test performance or run new tests');
 				}
 			} else {
 				// Enable button
@@ -366,7 +366,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 
 	function schedulePolling() {
-		if (pmIds.length > 0) {
+		if (rocketInsightsIds.length > 0) {
 			pollTimer = setTimeout(() => {
 				getResults();
 			}, pollInterval);
@@ -447,13 +447,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	// ==== AJAX Handlers ====
 	function getResults() {
-		if (pmIds.length === 0) {
+		if (rocketInsightsIds.length === 0) {
 			resetPolling();
 			return;
 		}
 
 		$.get(ajaxurl, {
-			ids: pmIds,
+			ids: rocketInsightsIds,
 			action: 'rocket_rocket_insights_get_results',
 			_ajax_nonce: rocket_ajax_data.nonce
 		}, function(response) {
@@ -486,7 +486,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				schedulePolling();
 			} else {
 				// On error, clear IDs and stop polling
-				pmIds = [];
+				rocketInsightsIds = [];
 				resetPolling();
 				console.error('Polling error:', response.data?.results || response);
 			}
@@ -615,7 +615,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
 	// Resume polling if needed
-	if (isValidPageForPolling() && pmIds.length > 0) {
+	if (isValidPageForPolling() && rocketInsightsIds.length > 0) {
 		pollInterval = POLL_BASE_INTERVAL;
 		schedulePolling();
 	}
