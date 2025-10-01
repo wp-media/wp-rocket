@@ -4,9 +4,6 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\RocketInsights\URLLimit\S
 
 use WP_Rocket\Tests\Integration\TestCase;
 use WP_Rocket\Tests\Integration\DBTrait;
-use WP_Rocket\Engine\Admin\RocketInsights\URLLimit\Subscriber;
-use WP_Rocket\Tests\Fixtures\Generators\UserDataGenerator;
-use WP_Rocket\Engine\Admin\RocketInsights\Database\Queries\RocketInsights;
 use WP_Rocket\Engine\License\API\UserClient;
 
 /**
@@ -14,7 +11,7 @@ use WP_Rocket\Engine\License\API\UserClient;
  * @group RocketInsights
  * @group URLLimit
  */
-class Test_IsAddingPageAllowed extends TestCase {
+class IsAddingPageAllowedTest extends TestCase {
     use DBTrait;
 
 

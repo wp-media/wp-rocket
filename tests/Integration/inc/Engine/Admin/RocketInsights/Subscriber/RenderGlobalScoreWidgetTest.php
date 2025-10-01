@@ -5,7 +5,6 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\RocketInsights\Subscriber
 
 use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\TestCase;
-use WP_Rocket\Tests\Fixtures\Generators\UserDataGenerator;
 
 /**
  * Test class covering WP_Rocket\Engine\Admin\RocketInsights\Subscriber::render_global_score_widget
@@ -46,7 +45,7 @@ class RenderGlobalScoreWidgetTest extends TestCase {
 		self::$container = apply_filters( 'rocket_container', null );
 
 		// Clear global score cache
-		$global_score = self::$container->get( 'pm_global_score' );
+		$global_score = self::$container->get( 'ri_global_score' );
 		$global_score->reset();
 	}
 

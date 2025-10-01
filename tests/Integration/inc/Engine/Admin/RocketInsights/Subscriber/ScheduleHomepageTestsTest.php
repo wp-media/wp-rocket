@@ -73,9 +73,9 @@ class ScheduleHomepageTestsTest extends TestCase {
 
 		// Check if an entry was added to the database
 		$container = apply_filters( 'rocket_container', null );
-		$pm_query = $container->get( 'pm_query' );
+		$ri_query = $container->get( 'ri_query' );
 
-		$items = $pm_query->query( [] );
+		$items = $ri_query->query( [] );
 		$actual_count = count( $items );
 
 		// Assert the expected number of database entries

@@ -71,8 +71,8 @@ class ResetGlobalScoreTest extends TestCase {
 	private function executeTest( $config ) {
 		// Get the container and global score service
 		$container = apply_filters( 'rocket_container', null );
-		$global_score = $container->get( 'pm_global_score' );
-		$subscriber = $container->get( 'pm_subscriber' );
+		$global_score = $container->get( 'ri_global_score' );
+		$subscriber = $container->get( 'ri_subscriber' );
 
 		// First, let's set up some test data in the global score
 		// Add some performance monitoring entries to create a score
@@ -141,11 +141,11 @@ class ResetGlobalScoreTest extends TestCase {
 
 	private function assertResult( $expected ) {
 		$container = apply_filters( 'rocket_container', null );
-		$global_score = $container->get( 'pm_global_score' );
+		$global_score = $container->get( 'ri_global_score' );
 
 		// Verify that the method can be called without errors
 		if ( isset( $expected['method_callable'] ) ) {
-			$subscriber = $container->get( 'pm_subscriber' );
+			$subscriber = $container->get( 'ri_subscriber' );
 			$this->assertTrue(
 				method_exists( $subscriber, 'reset_global_score' ),
 				'reset_global_score method should exist on subscriber'

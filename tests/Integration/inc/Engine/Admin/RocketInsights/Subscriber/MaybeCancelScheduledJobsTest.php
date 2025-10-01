@@ -3,14 +3,13 @@
 namespace WP_Rocket\Tests\Integration\Inc\Engine\Admin\RocketInsights\Subscriber;
 
 use WP_Rocket\Tests\Integration\TestCase;
-use Brain\Monkey\Functions;
 
 /**
  * Test class covering WP_Rocket\Engine\Admin\RocketInsights\Subscriber::maybe_cancel_scheduled_jobs
  *
  * @group RocketInsights
  */
-class TestMaybeCancelScheduledJobs extends TestCase {
+class MaybeCancelScheduledJobsTest extends TestCase {
 	protected $pre_get_rocket_option_performance_monitoring;
 
 	protected $pre_schedule_event;

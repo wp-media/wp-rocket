@@ -3,14 +3,13 @@
 namespace WP_Rocket\Tests\Integration\Inc\Engine\Admin\RocketInsights\Subscriber;
 
 use WP_Rocket\Tests\Integration\TestCase;
-use Brain\Monkey\Functions;
 
 /**
  * Test class covering WP_Rocket\Engine\Admin\RocketInsights\Subscriber::maybe_schedule_next_test
  *
  * @group RocketInsights
  */
-class Test_MaybeScheduleNextTest extends TestCase {
+class MaybeScheduleNextTestTest extends TestCase {
     private $event_scheduled = false;
 
 	protected $pre_get_rocket_option_performance_monitoring;

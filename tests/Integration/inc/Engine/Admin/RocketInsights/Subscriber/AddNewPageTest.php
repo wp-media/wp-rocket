@@ -135,8 +135,8 @@ class AddNewPageTest extends AjaxTestCase {
 		// Check if database entry was created
 		if ( isset( $expected['database_entries'] ) && $expected['database_entries'] > 0 ) {
 			$container = apply_filters( 'rocket_container', null );
-			$pm_query = $container->get( 'pm_query' );
-			$items = $pm_query->query( [] );
+			$ri_query = $container->get( 'ri_query' );
+			$items = $ri_query->query( [] );
 			$this->assertSame( $expected['database_entries'], count( $items ) );
 		}
 

@@ -12,7 +12,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group RocketInsights
  * @group AdminOnly
  */
-class Test_RemoveAllCompletedRows extends TestCase {
+class RemoveAllCompletedRowsTest extends TestCase {
 	use DBTrait;
 
 	public static function set_up_before_class() {
@@ -40,8 +40,8 @@ class Test_RemoveAllCompletedRows extends TestCase {
 	 */
 	public function testShouldWorkAsExpected( $config, $expected ) {
 		$container = apply_filters( 'rocket_container', null );
-		$pm_query = $container->get( 'pm_query' );
-		$pm_table = $container->get( 'pm_table' );
+		$ri_query = $container->get( 'ri_query' );
+		$ri_table = $container->get( 'ri_table' );
 
 		// Handle special case where table should be uninstalled.
 		if ( isset( $config['uninstall_table'] ) && $config['uninstall_table'] ) {
@@ -50,19 +50,19 @@ class Test_RemoveAllCompletedRows extends TestCase {
 
 		// Add test data.
 		foreach ( $config['items'] as $item ) {
-			$item_id = $pm_query->add_item( $item );
+			$item_id = $ri_query->add_item( $item );
 			$this->assertNotFalse( $item_id );
 		}
 
 		// Verify initial count (bypass cache to avoid stale values).
-		$initial_count = $pm_query->query( [
+		$initial_count = $ri_query->query( [
 			'number' => 999,
 			'count' => true,
 		], false );
 		$this->assertEquals( count( $config['items'] ), $initial_count );
 
 		// Remove all completed rows.
-		$result = $pm_table->remove_all_completed_rows();
+		$result = $ri_table->remove_all_completed_rows();
 
 		if ( isset( $expected['result'] ) ) {
 			if ( $expected['result'] === 'false_or_zero' ) {
@@ -78,7 +78,7 @@ class Test_RemoveAllCompletedRows extends TestCase {
 		// Only check remaining count if table still exists.
 		if ( ! isset( $config['uninstall_table'] ) || ! $config['uninstall_table'] ) {
 			// Verify remaining count (bypass cache to avoid stale values).
-			$remaining_count = $pm_query->query( [
+			$remaining_count = $ri_query->query( [
 				'number' => 999,
 				'count' => true,
 			], false );
@@ -87,7 +87,7 @@ class Test_RemoveAllCompletedRows extends TestCase {
 			// Verify specific statuses if needed.
 			if ( isset( $expected['remaining_statuses'] ) ) {
 				// Fetch full rows so we can pluck 'status' reliably
-				$remaining_items = $pm_query->query( [
+				$remaining_items = $ri_query->query( [
 					'number' => 999,
 				], false );
 				$remaining_statuses = array_map( function( $item ) { return $item->status; }, $remaining_items );
@@ -100,28 +100,6 @@ class Test_RemoveAllCompletedRows extends TestCase {
 		// Reinstall table if it was uninstalled for this test.
 		if ( isset( $config['uninstall_table'] ) && $config['uninstall_table'] ) {
 			self::installPerformanceMonitoringTable();
-		}
-	}
-
-	public static function installPerformanceMonitoringTable() {
-		$container = apply_filters( 'rocket_container', null );
-		$pm_table = $container->get( 'pm_table' );
-
-		if ( ! $pm_table->exists() ) {
-			$pm_table->install();
-		}
-	}
-
-	public static function uninstallPerformanceMonitoringTable() {
-		$container = apply_filters( 'rocket_container', null );
-		$pm_table = $container->get( 'pm_table' );
-
-		if ( $pm_table && $pm_table->exists() ) {
-			global $wpdb;
-			$prev = $wpdb->suppress_errors();
-			$wpdb->suppress_errors( true );
-			$pm_table->uninstall();
-			$wpdb->suppress_errors( $prev );
 		}
 	}
 }

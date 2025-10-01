@@ -12,7 +12,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group RocketInsights
  * @group AdminOnly
  */
-class Test_DeleteOldRows extends TestCase {
+class DeleteOldRowsTest extends TestCase {
 	use DBTrait;
 
 	public static function set_up_before_class() {
@@ -40,7 +40,7 @@ class Test_DeleteOldRows extends TestCase {
 	 */
 	public function testShouldWorkAsExpected( $config, $expected ) {
 		$container = apply_filters( 'rocket_container', null );
-		$pm_query = $container->get( 'pm_query' );
+		$ri_query = $container->get( 'ri_query' );
 
 		// Handle special case where table should be uninstalled.
 		if ( isset( $config['uninstall_table'] ) && $config['uninstall_table'] ) {
@@ -50,7 +50,7 @@ class Test_DeleteOldRows extends TestCase {
 		// Add test data.
 		$item_ids = [];
 		foreach ( $config['items'] as $item ) {
-			$item_id = $pm_query->add_item( $item );
+			$item_id = $ri_query->add_item( $item );
 			$this->assertNotFalse( $item_id );
 			$item_ids[] = $item_id;
 		}
@@ -73,7 +73,7 @@ class Test_DeleteOldRows extends TestCase {
 
 		// Verify initial count.
 		if ( ! isset( $config['uninstall_table'] ) || ! $config['uninstall_table'] ) {
-			$initial_count = $pm_query->query( [
+			$initial_count = $ri_query->query( [
 				'number' => 999,
 				'count' => true,
 			], false );
@@ -81,7 +81,7 @@ class Test_DeleteOldRows extends TestCase {
 		}
 
 		// Delete old rows.
-		$deleted_count = $pm_query->delete_old_rows();
+		$deleted_count = $ri_query->delete_old_rows();
 
 		// Handle special expectations.
 		if ( isset( $expected['result'] ) && $expected['result'] === 'false_or_zero' ) {
@@ -104,7 +104,7 @@ class Test_DeleteOldRows extends TestCase {
 		// Only check remaining count if table still exists.
 		if ( ! isset( $config['uninstall_table'] ) || ! $config['uninstall_table'] ) {
 			if ( isset( $expected['remaining_count'] ) ) {
-				$remaining_count = $pm_query->query( [
+				$remaining_count = $ri_query->query( [
 					'number' => 999,
 					'count' => true,
 				], false );
@@ -122,7 +122,7 @@ class Test_DeleteOldRows extends TestCase {
 
 			// Verify specific URLs remaining.
 			if ( isset( $expected['remaining_urls'] ) ) {
-				$remaining_items = $pm_query->query( [
+				$remaining_items = $ri_query->query( [
 					'number' => 999,
 					'fields' => 'url',
 				], false );
@@ -134,7 +134,7 @@ class Test_DeleteOldRows extends TestCase {
 
 			// Verify specific job_id remaining.
 			if ( isset( $expected['remaining_job_id'] ) ) {
-				$remaining_items = $pm_query->query( [
+				$remaining_items = $ri_query->query( [
 					'number' => 999,
 					'fields' => 'job_id',
 				], false );
@@ -144,7 +144,7 @@ class Test_DeleteOldRows extends TestCase {
 
 			// Verify no failed status remains.
 			if ( isset( $expected['no_failed_status'] ) && $expected['no_failed_status'] ) {
-				$remaining_items = $pm_query->query( [
+				$remaining_items = $ri_query->query( [
 					'number' => 999,
 				], false );
 				$failed_items = array_filter( $remaining_items, function( $item ) {
@@ -157,28 +157,6 @@ class Test_DeleteOldRows extends TestCase {
 		// Reinstall table if it was uninstalled for this test.
 		if ( isset( $config['uninstall_table'] ) && $config['uninstall_table'] ) {
 			self::installPerformanceMonitoringTable();
-		}
-	}
-
-	public static function installPerformanceMonitoringTable() {
-		$container = apply_filters( 'rocket_container', null );
-		$pm_table = $container->get( 'pm_table' );
-
-		if ( ! $pm_table->exists() ) {
-			$pm_table->install();
-		}
-	}
-
-	public static function uninstallPerformanceMonitoringTable() {
-		$container = apply_filters( 'rocket_container', null );
-		$pm_table = $container->get( 'pm_table' );
-
-		if ( $pm_table && $pm_table->exists() ) {
-			global $wpdb;
-			$prev = $wpdb->suppress_errors();
-			$wpdb->suppress_errors( true );
-			$pm_table->uninstall();
-			$wpdb->suppress_errors( $prev );
 		}
 	}
 }

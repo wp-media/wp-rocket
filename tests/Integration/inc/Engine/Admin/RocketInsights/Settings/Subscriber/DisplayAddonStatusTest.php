@@ -11,7 +11,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group License
  * @group AdminOnly
  */
-class Test_DisplayAddonStatus extends TestCase {
+class DisplayAddonStatusTest extends TestCase {
     /**
      * @dataProvider configTestData
      */

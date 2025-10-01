@@ -12,7 +12,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group RocketInsights
  * @group AdminOnly
  */
-class Test_HasResult extends TestCase {
+class HasResultTest extends TestCase {
 
 	/**
 	 * @dataProvider configTestData

@@ -13,7 +13,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group RocketInsights
  * @group AdminOnly
  */
-class Test_GetGlobalScoreData extends TestCase {
+class GetGlobalScoreDataTest extends TestCase {
 	use DBTrait;
 
 	public static function set_up_before_class() {
@@ -54,7 +54,7 @@ class Test_GetGlobalScoreData extends TestCase {
 		}
 
 		$container = apply_filters( 'rocket_container', null );
-		$global_score = $container->get( 'pm_global_score' );
+		$global_score = $container->get( 'ri_global_score' );
 
 		$actual = $global_score->get_global_score_data();
 
@@ -63,7 +63,7 @@ class Test_GetGlobalScoreData extends TestCase {
 
 	private function resetGlobalScoreTransient() {
 		$container = apply_filters( 'rocket_container', null );
-		$global_score = $container->get( 'pm_global_score' );
+		$global_score = $container->get( 'ri_global_score' );
 		$global_score->reset();
 	}
 }

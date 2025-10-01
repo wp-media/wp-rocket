@@ -131,24 +131,24 @@ class DeleteRowTest extends TestCase {
 		// Check database state
 		if ( isset( $expected['database_entries_after'] ) ) {
 			$container = apply_filters( 'rocket_container', null );
-			$pm_query = $container->get( 'pm_query' );
-			$items = $pm_query->query( [] );
+			$ri_query = $container->get( 'ri_query' );
+			$items = $ri_query->query( [] );
 			$this->assertSame( $expected['database_entries_after'], count( $items ) );
 		}
 
 		// Check if specific item was deleted
 		if ( isset( $expected['item_deleted_id'] ) ) {
 			$container = apply_filters( 'rocket_container', null );
-			$pm_query = $container->get( 'pm_query' );
-			$item = $pm_query->get_row_by_id( $expected['item_deleted_id'] );
+			$ri_query = $container->get( 'ri_query' );
+			$item = $ri_query->get_row_by_id( $expected['item_deleted_id'] );
 			$this->assertFalse( $item );
 		}
 
 		// Check if item still exists
 		if ( isset( $expected['item_exists_id'] ) ) {
 			$container = apply_filters( 'rocket_container', null );
-			$pm_query = $container->get( 'pm_query' );
-			$item = $pm_query->get_row_by_id( $expected['item_exists_id'] );
+			$ri_query = $container->get( 'ri_query' );
+			$item = $ri_query->get_row_by_id( $expected['item_exists_id'] );
 			$this->assertNotFalse( $item );
 		}
 	}
