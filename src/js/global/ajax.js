@@ -306,25 +306,16 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 
 	function updateQuotaBanner(canAddPages) {
-		const $freeQuotaBanner = $('#wpr-pma-quota-banner');
-		const $proQuotaBanner = $('#insights_survey');
-		const $summaryInfo = $('.wpr-pma-summary-info');
-		const isFree       = window.rocket_ajax_data?.is_free === '1';
+		const $summaryInfo    = $('.wpr-pma-summary-info');
+		const isFree  = window.rocket_ajax_data?.is_free === '1';
+		const $quotaBanner = isFree ? $('#wpr-pma-quota-banner') : $('#insights_survey');
 
 		if (canAddPages === false) {
 			$summaryInfo.hide();
-			if ( isFree ) {
-				$freeQuotaBanner.removeClass('hidden');
-			} else {
-				$proQuotaBanner.removeClass('hidden');
-			}
+			$quotaBanner.removeClass('hidden');
 		} else {
 			$summaryInfo.show();
-			if ( isFree ) {
-				$freeQuotaBanner.addClass('hidden');
-			} else {
-				$proQuotaBanner.addClass('hidden');
-			}
+			$quotaBanner.addClass('hidden');
 		}
 	}
 
