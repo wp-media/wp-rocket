@@ -1731,7 +1731,7 @@ class Page extends Abstract_Render {
 				'performance_monitoring' => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Performance Monitoring', 'rocket' ),
-					'description'       => __( 'Automatically test your tracked pages.', 'rocket' ),
+					'description'       => __( 'Enable automatic performance testing for your pages.', 'rocket' ),
 					'section'           => 'performance_monitoring',
 					'page'              => 'rocket_insights',
 					'default'           => 0,
