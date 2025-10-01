@@ -148,7 +148,7 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 	 * @return void
 	 */
 	public function process( array $job_details, $row_details, string $optimization_type ): void {
-		// Bail out if status is failed
+		// Bail out if status is failed.
 		if ( 'failed' === $job_details['status'] ) {
 			return;
 		}
