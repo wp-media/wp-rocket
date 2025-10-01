@@ -183,7 +183,7 @@ class PerformanceMonitoring extends AbstractQuery {
 	 *
 	 * @return bool|int
 	 */
-	public function unblur_blurred_rows() {
+	public function unblur_rows() {
 		// Get the database interface.
 		$db = $this->get_db();
 

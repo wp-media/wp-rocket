@@ -63,7 +63,7 @@ class Subscriber implements Subscriber_Interface {
 		return [
 			'rocket_insights_upgrade' => [
 				[ 'clean_upgrade_plan_urls', 10, 2 ],
-				[ 'unblur_blurred_rows', 11 ],
+				[ 'unblur_rows', 11 ],
 			],
 
 		];
@@ -90,7 +90,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return void
 	 */
-	public function unblur_blurred_rows() {
+	public function unblur_rows() {
 		if ( ! $this->context->is_allowed() ) {
 			return;
 		}
@@ -99,7 +99,7 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$this->pm_query->unblur_blurred_rows();
+		$this->pm_query->unblur_rows();
 		$this->global_score->reset();
 	}
 }
