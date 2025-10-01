@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Tests\Fixtures\Generators;
 
-class PmaPromoGenerator {
+class RocketInsightsPromoGenerator {
 	protected $expires_at = 0;
 
 	protected $name = '';

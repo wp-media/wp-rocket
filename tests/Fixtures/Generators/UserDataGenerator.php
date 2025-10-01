@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Fixtures\Generators;
 
 class UserDataGenerator {
 
-	protected $pma_sku_active ='perf-monitor-free';
+	protected $ri_sku_active ='perf-monitor-free';
 
 	protected $expiration = 0;
 
@@ -13,13 +13,13 @@ class UserDataGenerator {
 
 	protected $is_reseller = 0;
 
-	public function with_pma_expiration(int $expiration): self {
+	public function with_rocket_insights_expiration(int $expiration): self {
 		$this->expiration = $expiration;
 		return $this;
 	}
 
-	public function with_pma_active_sku(string $sku): self {
-		$this->pma_sku_active = $sku;
+	public function with_rocket_insights_active_sku(string $sku): self {
+		$this->ri_sku_active = $sku;
 		return $this;
 	}
 
@@ -30,19 +30,19 @@ class UserDataGenerator {
 
 	/**
 	 * @param string $sku
-	 * @param callable(PmaPromoGenerator) $callback
+	 * @param callable(RocketInsightsPromoGenerator) $callback
 	 *
 	 * @return $this
 	 */
 	public function with_promo(string $sku, callable $callback): self {
-		$this->promos[$sku] = $callback(new PmaPromoGenerator());
+		$this->promos[$sku] = $callback(new RocketInsightsPromoGenerator());
 		return $this;
 	}
 
 	public function generate() {
 		$plans[] = (object) [
 			"sku" => "perf-monitor-free",
-			"status" => $this->pma_sku_active == "perf-monitor-free" ? "active" : "inactive",
+			"status" => $this->ri_sku_active == "perf-monitor-free" ? "active" : "inactive",
 			"upgrades" => [
 				"perf-monitor-advanced"
 			],
@@ -58,7 +58,7 @@ class UserDataGenerator {
 
 		$plans[] = (object) [
 			"sku" => "perf-monitor-advanced",
-			"status" => $this->pma_sku_active == "perf-monitor-advanced" ? "active" : "inactive",
+			"status" => $this->ri_sku_active == "perf-monitor-advanced" ? "active" : "inactive",
 			"upgrades" => [],
 			"button" => (object) [
 				"label" => "Get Advanced",
@@ -79,7 +79,7 @@ class UserDataGenerator {
 			'is_reseller' => $this->is_reseller,
 			'performance_monitoring' => (object) [
 				"expiration" => $this->expiration,
-				"active_sku" => $this->pma_sku_active,
+				"active_sku" => $this->ri_sku_active,
 				"plans" => $plans,
 			]
 		];
