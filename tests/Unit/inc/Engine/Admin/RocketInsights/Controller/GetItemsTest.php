@@ -20,7 +20,7 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @group Admin
  * @group SettingsPage
  */
-class Test_GetItems extends TestCase {
+class GetItemsTest extends TestCase {
 	public function testShouldGetItems() {
 		$mock_query = $this->createMock(RocketInsights::class);
 		$expected_params = [
