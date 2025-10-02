@@ -7,14 +7,14 @@ use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * Test class covering WP_Rocket\Engine\Admin\PerformanceMonitoring\Render::get_performance_monitoring_list_row
- * 
- * Specifically tests the new functionality where "Analyzing your page (~1 min)" is shown 
+ * Test class covering WP_Rocket\Engine\Admin\RocketInsights\Render::get_performance_monitoring_list_row
+ *
+ * Specifically tests the new functionality where "Analyzing your page (~1 min)" is shown
  * instead of "xx seconds ago" when a URL is being tested.
  *
- * @group PerformanceMonitoring
+ * @group RocketInsights
  */
-class Test_getPerformanceMonitoringListRow extends TestCase {
+class GetPerformanceMonitoringListRowTest extends TestCase {
 	use DBTrait;
 
 	protected static $container;
@@ -40,7 +40,7 @@ class Test_getPerformanceMonitoringListRow extends TestCase {
 		self::truncatePerformanceMonitoringTable();
 
 		// Enable Performance Monitoring for the test
-		add_filter( 'rocket_performance_monitoring_enabled', '__return_true' );
+		add_filter( 'rocket_rocket_insights_enabled', '__return_true' );
 
 		// Get container and render instance
 		self::$container = apply_filters( 'rocket_container', null );
@@ -52,7 +52,7 @@ class Test_getPerformanceMonitoringListRow extends TestCase {
 		self::truncatePerformanceMonitoringTable();
 
 		// Remove Performance Monitoring enabled filter
-		remove_filter( 'rocket_performance_monitoring_enabled', '__return_true' );
+		remove_filter( 'rocket_rocket_insights_enabled', '__return_true' );
 
 		parent::tear_down();
 	}
@@ -65,7 +65,7 @@ class Test_getPerformanceMonitoringListRow extends TestCase {
 		$row_id = $this->addPerformanceMonitoring( $config['row_data'] );
 
 		// Get the row object
-		$query = self::$container->get( 'pm_query' );
+		$query = self::$container->get( 'ri_query' );
 		$row = $query->get_item( $row_id );
 
 		// Generate the HTML
@@ -99,6 +99,6 @@ class Test_getPerformanceMonitoringListRow extends TestCase {
 		// Additional standard assertions for all rows
 		$this->assertStringContainsString( $config['row_data']['url'], $html );
 		$this->assertStringContainsString( $config['row_data']['title'], $html );
-		$this->assertStringContainsString( 'data-rocket-pm-id="' . $row_id . '"', $html );
+		$this->assertStringContainsString( 'data-rocket-insights-id="' . $row_id . '"', $html );
 	}
 }
