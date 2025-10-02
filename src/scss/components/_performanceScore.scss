@@ -8,8 +8,8 @@
 		margin-top: 10px;
 		.wpr-percentage-indicator {
 			.wpr-percentage-circle{
-				border-width: 4px;
-				font-size: 43px;
+				border-width: 3.83px;
+				font-size: 42.17px;
 				font-weight: 600;
 				.wpr-failed-score{
 					width: 50px;
@@ -67,12 +67,10 @@
 			justify-content: center;
 			align-items: center;
 			width: 92px;
-			height: 92px;
-			font-size: 50px;
+			height: 93px;
 			font-family: Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-			font-weight: 500;
 			border-radius: 50%;
-			border: 3px solid;
+			border: 3.83px solid;
 			&-sm{
 				width: 32px;
 				height: 32px;

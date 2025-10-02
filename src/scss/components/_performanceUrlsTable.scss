@@ -101,10 +101,11 @@
 	.wpr-percentage-indicator{
 		top: 3px;
 		.wpr-percentage-circle{
-			width: 32px;
-			height: 32px;
+			width: 33.5px;
+			height: 33.5px;
 			font-size: 14px;
-			border-width: 2px;
+			border-width: 1.33px;
+			font-weight: 600;
 		}
 		.wpr-loading-img{
 			width: 32px;
