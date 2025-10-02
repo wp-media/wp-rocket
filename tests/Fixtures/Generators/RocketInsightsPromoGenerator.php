@@ -36,6 +36,7 @@ class RocketInsightsPromoGenerator {
 			'description' => $this->description,
 			'price' => $this->price,
 			'expires_at' => $this->expires_at,
+			'billing' => '',
 		];
 	}
 }

@@ -306,15 +306,16 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 
 	function updateQuotaBanner(canAddPages) {
-		const $quotaBanner = $('#wpr-ri-quota-banner');
-		const $summaryInfo = $('.wpr-ri-summary-info');
+		const $summaryInfo    = $('.wpr-ri-summary-info');
+		const isFree  = window.rocket_ajax_data?.is_free === '1';
+		const $quotaBanner = isFree ? $('#wpr-ri-quota-banner') : $('#rocket_insights_survey');
 
 		if (canAddPages === false) {
-			$quotaBanner.removeClass('hidden');
 			$summaryInfo.hide();
+			$quotaBanner.removeClass('hidden');
 		} else {
-			$quotaBanner.addClass('hidden');
 			$summaryInfo.show();
+			$quotaBanner.addClass('hidden');
 		}
 	}
 
