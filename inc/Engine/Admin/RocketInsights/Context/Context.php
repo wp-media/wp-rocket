@@ -6,7 +6,7 @@ namespace WP_Rocket\Engine\Admin\RocketInsights\Context;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Engine\License\API\User;
-use WP_Rocket\Engine\Admin\PerformanceMonitoring\Database\Queries\PerformanceMonitoring as PMQuery;
+use WP_Rocket\Engine\Admin\RocketInsights\Database\Queries\RocketInsights as RIQuery;
 
 /**
  * Rocket Insights Context
@@ -31,21 +31,21 @@ class Context implements ContextInterface {
 	/**
 	 * Performance monitoring query instance.
 	 *
-	 * @var PMQuery
+	 * @var RIQuery
 	 */
-	private $pm_query;
+	private $ri_query;
 
 	/**
 	 * Constructor.
 	 *
 	 * @param Options_Data $options Options instance.
 	 * @param User         $user User client API instance.
-	 * @param PMQuery      $pm_query    Performance monitoring query instance.
+	 * @param RIQuery      $ri_query    Performance monitoring query instance.
 	 */
-	public function __construct( Options_Data $options, User $user, PMQuery $pm_query ) {
+	public function __construct( Options_Data $options, User $user, RIQuery $ri_query ) {
 		$this->options  = $options;
 		$this->user     = $user;
-		$this->pm_query = $pm_query;
+		$this->ri_query = $ri_query;
 	}
 
 	/**
@@ -119,8 +119,8 @@ class Context implements ContextInterface {
 	 * @return bool True if adding a page is allowed, false otherwise.
 	 */
 	public function is_adding_page_allowed(): bool {
-		$current_url_count = $this->pm_query->get_total_count();
-		$max_urls          = $this->user->get_pma_addon_limit( $this->user->get_pma_addon_sku_active() );
+		$current_url_count = $this->ri_query->get_total_count();
+		$max_urls          = $this->user->get_rocket_insights_addon_limit( $this->user->get_rocket_insights_addon_sku_active() );
 		return $current_url_count < $max_urls;
 	}
 }
