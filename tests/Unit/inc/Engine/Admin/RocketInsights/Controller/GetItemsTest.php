@@ -35,12 +35,12 @@ class GetItemsTest extends TestCase {
 
 		$mock_manager        = $this->createMock(Manager::class);
 		$mock_context        = $this->createMock(Context::class);
-		$mock_credit_manager = $this->createMock(CreditManager::class);
+		$mock_plan = $this->createMock(Plan::class);
 		$user = $this->createMock(User::class);
 		$global_score = $this->createMock(GlobalScore::class);
 		$options = $this->createMock(Options_Data::class);
 
-		$controller = new Controller($mock_query, $mock_manager, $mock_context, $mock_credit_manager, $global_score, $user, $options);
+		$controller = new Controller($mock_query, $mock_manager, $mock_context, $mock_plan, $global_score, $user, $options);
 		$result = $controller->get_items();
 
 		$this->assertEquals(['foo'], $result);

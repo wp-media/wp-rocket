@@ -7,7 +7,7 @@ use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
 use WP_Rocket\Engine\Admin\RocketInsights\Database\Queries\RocketInsights as RocketInsightsQuery;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
-use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\Managers\Plan;
 use WP_Rocket\Engine\Common\JobManager\Managers\AbstractManager;
 use WP_Rocket\Engine\Common\JobManager\Managers\ManagerInterface;
 
@@ -40,27 +40,27 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 	protected $optimization_type = 'rocket_insights';
 
 	/**
-	 * Plugin options instance.
+	 * Plan instance.
 	 *
-	 * @var Options_Data
+	 * @var Plan
 	 */
-	protected $options;
+	protected $plan;
 
 	/**
 	 * Instantiate the class.
 	 *
 	 * @param RocketInsightsQuery $query Rocket Insights Query instance.
 	 * @param ContextInterface    $context Rocket Insights Context.
-	 * @param Options_Data        $options Options instance.
+	 * @param Plan                $plan Plan instance.
 	 */
 	public function __construct(
 		RocketInsightsQuery $query,
 		ContextInterface $context,
-		Options_Data $options
+		Plan $plan
 	) {
 		$this->query   = $query;
 		$this->context = $context;
-		$this->options = $options;
+		$this->plan    = $plan;
 	}
 
 	/**
@@ -134,8 +134,9 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 		 *
 		 * @param object $row_details Details related to the database row.
 		 * @param array  $job_details Details related to the job.
+		 * @param string $plan Plan name.
 		 */
-		do_action( 'rocket_rocket_insights_job_failed', $row_details, $job_details );
+		do_action( 'rocket_rocket_insights_job_failed', $row_details, $job_details, $this->plan->get_current_plan() );
 	}
 
 	/**
@@ -176,8 +177,9 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 		 *
 		 * @param object $row_details Details related to the database row.
 		 * @param array  $job_details Details related to the job.
+		 * @param string $plan Plan name.
 		 */
-		do_action( 'rocket_rocket_insights_job_completed', $row_details, $job_details );
+		do_action( 'rocket_rocket_insights_job_completed', $row_details, $job_details, $this->plan->get_current_plan() );
 	}
 
 	/**

@@ -1,4 +1,5 @@
 <?php
+use WP_Rocket\Tests\Fixtures\Generators\UserDataGenerator;
 
 return [
 	'testShouldAddPageSuccessfully' => [
@@ -6,11 +7,19 @@ return [
 			'post_data' => [
 				'page_url' => 'http://example.org/test-page',
 			],
+			'rows' => [
+				[
+					'url' => 'http://example.org',
+					'status' => 'completed',
+					'is_mobile' => 1,
+				],
+			],
+			'customer_data' => (new UserDataGenerator()),
 			'mock_http' => true,
 		],
 		'expected' => [
 			'success' => true,
-			'database_entries' => 1,
+			'database_entries' => 2,
 			'hook_fired' => true,
 			'response_data' => [
 				'id' => null, // Will be generated
@@ -26,6 +35,14 @@ return [
 			'post_data' => [
 				'page_url' => '',
 			],
+			'rows' => [
+				[
+					'url' => 'http://example.org',
+					'status' => 'completed',
+					'is_mobile' => 1,
+				],
+			],
+			'customer_data' => (new UserDataGenerator()),
 			'mock_http' => false,
 		],
 		'expected' => [
@@ -38,9 +55,24 @@ return [
 			'post_data' => [
 				'page_url' => 'https://example.com/test-page',
 			],
-			'filters' => [
-				'rocket_rocket_insights_allow_add_page' => '__return_false',
+			'rows' => [
+				[
+					'url' => 'http://example.org',
+					'status' => 'completed',
+					'is_mobile' => 1,
+				],
+				[
+					'url' => 'http://example.org/page2',
+					'status' => 'completed',
+					'is_mobile' => 1,
+				],
+				[
+					'url' => 'http://example.org/page3',
+					'status' => 'completed',
+					'is_mobile' => 1,
+				],
 			],
+			'customer_data' => (new UserDataGenerator()),
 			'mock_http' => false,
 		],
 		'expected' => [
@@ -48,16 +80,46 @@ return [
 			'error_message' => 'Maximum number of URLs reached',
 		],
 	],
-	'testShouldFailWithInvalidUrl' => [
+	'testShouldFailWithUnreachableUrl' => [
 		'config' => [
 			'post_data' => [
 				'page_url' => 'https://external-site.com/page',
 			],
+			'rows' => [
+				[
+					'url' => 'http://example.org',
+					'status' => 'completed',
+					'is_mobile' => 1,
+				],
+			],
+			'customer_data' => (new UserDataGenerator()),
 			'mock_http' => true,
 		],
 		'expected' => [
 			'success' => false,
-			'error_message' => 'Url is external',
+			'error_message' => 'Url does not resolve to a valid page',
+		],
+	],
+	'testShouldSucceedWithExternalUrl' => [
+		'config' => [
+			'post_data' => [
+				'page_url' => 'https://example.org',
+			],
+			'rows' => [],
+			'customer_data' => (new UserDataGenerator()),
+			'mock_http' => true,
+		],
+		'expected' => [
+			'success' => true,
+			'database_entries' => 1,
+			'hook_fired' => true,
+			'response_data' => [
+				'id' => null, // Will be generated
+				'html' => null, // Will be generated
+				'global_score_data' => null, // Will be generated
+				'remaining_urls' => null, // Will be generated
+				'can_add_pages' => true,
+			],
 		],
 	],
 ];

@@ -163,14 +163,23 @@ abstract class Abstract_Render implements Render_Interface {
 	}
 
 	/**
-	 * Displays a partial template.
+	 * Displays or returns a partial template with provided data.
 	 *
-	 * @since 3.0
+	 * @since 3.20
 	 *
-	 * @param string $part Partial template name.
-	 * @param mixed  $data     Data to pass to the template.
+	 * @param string $part             Partial template name (relative to 'partials/').
+	 * @param mixed  $data             Data to pass to the template.
+	 * @param bool   $return_template  Optional. Whether to return the template as a string instead of echoing it. Default false.
+	 *
+	 * @return void|string Returns the template string if $return_template is true, otherwise echoes the template.
 	 */
-	public function render_parts_with_data( string $part, $data ) {
-		echo $this->generate( 'partials/' . $part, $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+	public function render_parts_with_data( string $part, $data, $return_template = false ) {
+		$template = $this->generate( 'partials/' . $part, $data );
+
+		if ( $return_template ) {
+			return $template;
+		}
+
+		echo $template; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 }

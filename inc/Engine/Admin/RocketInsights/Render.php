@@ -4,18 +4,16 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Admin\RocketInsights;
 
 use WP_Rocket\Abstract_Render;
-use WP_Rocket\Engine\Admin\RocketInsights\{
-	Credit\Manager as CreditManager,
-	Context\Context,
-};
+use WP_Rocket\Engine\Admin\RocketInsights\Context\Context;
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\Managers\Plan;
 
 class Render extends Abstract_Render {
 	/**
-	 * CreditManager instance.
+	 * Plan instance.
 	 *
-	 * @var CreditManager
+	 * @var Plan
 	 */
-	private $credit_manager;
+	private $plan;
 
 	/**
 	 * Context instance.
@@ -29,15 +27,15 @@ class Render extends Abstract_Render {
 	 *
 	 * Initializes the Render instance with the provided template path and CreditManager.
 	 *
-	 * @param string        $template_path  Path to the template file.
-	 * @param CreditManager $credit_manager Instance of CreditManager for managing credits.
-	 * @param Context       $context Context instance.
+	 * @param string                       $template_path   Path to the template file.
+	 * @param Plan    $plan Plan instance.
+	 * @param Context $context Instance of PerformanceMonitoringContext for managing performance monitoring context.
 	 */
-	public function __construct( $template_path, CreditManager $credit_manager, Context $context ) {
+	public function __construct( $template_path, Plan $plan, Context $context ) {
 		parent::__construct( $template_path );
 
-		$this->credit_manager = $credit_manager;
-		$this->context        = $context;
+		$this->plan        = $plan;
+		$this->context     = $context;
 	}
 
 	/**
@@ -85,8 +83,8 @@ class Render extends Abstract_Render {
 	 * @return void
 	 */
 	public function render_rocket_insights_urls_table( array $data ) {
-		$data['has_credit']    = $this->credit_manager->has_credit();
-		$data['can_add_url']   = wpm_apply_filters_typesafe( 'rocket_rocket_insights_allow_add_page', true );
+		$data['has_credit']    = $this->plan->has_credit();
+		$data['can_add_url']   = $this->context->is_adding_page_allowed();
 		$data['reach_max_url'] = ! $data['can_add_url'];
 
 		echo $this->generate( 'partials/rocket-insights/urls-table', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
@@ -121,12 +119,44 @@ class Render extends Abstract_Render {
 	 * @return string The rendered HTML for the global score widget.
 	 */
 	public function get_global_score_widget( array $data ): string {
-		$data['has_credit']    = $this->credit_manager->has_credit();
-		$data['can_add_url']   = wpm_apply_filters_typesafe( 'rocket_rocket_insights_allow_add_page', true );
-		$data['reach_max_url'] = ! $data['can_add_url'];
-		$data['status_text']   = $this->get_monitoring_status_text();
+		return $this->generate(
+			'partials/rocket-insights/global-score-widget',
+			$this->prepare_global_score_widget_data( $data )
+		);
+	}
 
-		return $this->generate( 'partials/rocket-insights/global-score-widget', $data );
+	/**
+	 * Generate the content for the global score widget.
+	 *
+	 * @param array $data Data for the global score widget content.
+	 * @return string The rendered HTML for the global score widget content.
+	 */
+	public function get_global_score_widget_content( array $data ): string {
+		return $this->render_parts_with_data(
+			'rocket-insights/global-score-widget-content',
+			$this->prepare_global_score_widget_data( $data ),
+			true
+		);
+	}
+
+	/**
+	 * Retrieves the data array for the global score widget.
+	 *
+	 * @param array $data Input data for the global score widget.
+	 * @return array The prepared data for the global score widget.
+	 */
+	private function prepare_global_score_widget_data( array $data ) {
+		$is_adding_page_allowed = $this->context->is_adding_page_allowed();
+
+		return array_merge(
+			$data,
+			[
+				'has_credit'    => $this->plan->has_credit(),
+				'can_add_url'   => $is_adding_page_allowed,
+				'reach_max_url' => ! $is_adding_page_allowed,
+				'status_text'   => $this->get_monitoring_status_text(),
+			]
+		);
 	}
 
 	/**
@@ -136,7 +166,7 @@ class Render extends Abstract_Render {
 	 * @return string The rendered HTML for the performance monitoring row.
 	 */
 	public function get_performance_monitoring_list_row( object $data ): string {
-		$data->has_credit = $this->credit_manager->has_credit();
+		$data->has_credit = $this->plan->has_credit();
 
 		return $this->generate( 'partials/rocket-insights/table-row', $data );
 	}

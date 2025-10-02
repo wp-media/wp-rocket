@@ -10,10 +10,9 @@ use WP_Rocket\Engine\Admin\RocketInsights\{
 	Jobs\Manager,
 	Context\Context,
 	Database\Queries\RocketInsights as RIQuery,
-	Credit\Manager as CreditManager
+	Managers\Plan
 };
 use WP_Rocket\Engine\Common\Utils;
-use WP_Rocket\Engine\License\API\User;
 
 class Controller {
 	use PageHandlerTrait;
@@ -54,38 +53,29 @@ class Controller {
 	private $render;
 
 	/**
-	 * User client API instance.
+	 * Plan instance.
 	 *
-	 * @var User
+	 * @var Plan
 	 */
-	private $user;
-
-	/**
-	 * Credit Manager instance.
-	 *
-	 * @var CreditManager
-	 */
-	private $credit_manager;
+	private $plan;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param RIQuery       $query Query instance.
-	 * @param Manager       $manager Manager instance.
-	 * @param Context       $context Context instance.
-	 * @param GlobalScore   $global_score GlobalScore instance.
-	 * @param Render        $render Render instance.
-	 * @param User          $user User client API instance.
-	 * @param CreditManager $credit_manager Credit Manager instance.
+	 * @param RIQuery     $query Query instance.
+	 * @param Manager     $manager Manager instance.
+	 * @param Context     $context Context instance.
+	 * @param GlobalScore $global_score GlobalScore instance.
+	 * @param Render      $render Render instance.
+	 * @param Plan        $plan Plan instance.
 	 */
-	public function __construct( RIQuery $query, Manager $manager, Context $context, GlobalScore $global_score, Render $render, User $user, CreditManager $credit_manager ) {
-		$this->query          = $query;
-		$this->manager        = $manager;
-		$this->context        = $context;
-		$this->global_score   = $global_score;
-		$this->render         = $render;
-		$this->user           = $user;
-		$this->credit_manager = $credit_manager;
+	public function __construct( RIQuery $query, Manager $manager, Context $context, GlobalScore $global_score, Render $render, Plan $plan ) {
+		$this->query        = $query;
+		$this->manager      = $manager;
+		$this->context      = $context;
+		$this->global_score = $global_score;
+		$this->render       = $render;
+		$this->plan         = $plan;
 	}
 
 	/**
@@ -97,7 +87,7 @@ class Controller {
 		check_ajax_referer( 'rocket-ajax', 'nonce', true );
 
 		// Check if adding a page is allowed based on URL limits.
-		if ( ! wpm_apply_filters_typesafe( 'rocket_rocket_insights_allow_add_page', true ) ) {
+		if ( ! $this->context->is_adding_page_allowed() ) {
 			wp_send_json_error(
 				[
 					'error'          => true,
@@ -116,7 +106,10 @@ class Controller {
 			wp_send_json_error( $payload );
 		}
 
+		$url = $payload['processed_url'];
+
 		if ( Utils::is_home( $url ) ) {
+			$page_title = __( 'Homepage', 'rocket' );
 			$page_title = __( 'Homepage', 'rocket' );
 		} else {
 			$page_title = $this->get_page_title( $payload['message'] );
@@ -138,14 +131,19 @@ class Controller {
 				);
 		}
 
+		$urls_count   = $this->query->get_total_count();
+		$current_plan = $this->plan->get_current_plan();
+
 		/**
 		 * Fires when a Rocket Insights job is added via AJAX.
 		 *
 		 * @since 3.20
 		 *
-		 * @param string $url The URL that was added for monitoring.
+		 * @param string $url        The URL that was added for monitoring.
+		 * @param string $plan       Plan name.
+		 * @param int    $urls_count The current number of URLs being monitored.
 		 */
-		do_action( 'rocket_rocket_insights_job_added', $url );
+		do_action( 'rocket_rocket_insights_job_added', $url, $current_plan, $urls_count );
 
 		$row_data = $this->query->get_row_by_id( (int) $row_id );
 
@@ -156,8 +154,8 @@ class Controller {
 		$payload['html']              = $this->render->get_performance_monitoring_list_row( $row_data );
 		$payload['global_score_data'] = $this->get_global_score_payload();
 		$payload['remaining_urls']    = $this->get_remaining_url_count();
-		$payload['has_credit']        = $this->user_has_credit();
-		$payload['can_add_pages']     = wpm_apply_filters_typesafe( 'rocket_rocket_insights_allow_add_page', true );
+		$payload['has_credit']        = $this->plan->has_credit();
+		$payload['can_add_pages']     = $this->context->is_adding_page_allowed();
 
 		// Add disabled button html data to payload.
 		if ( 0 === $this->get_remaining_url_count() ) {
@@ -179,14 +177,16 @@ class Controller {
 	 * @param string $url The URL to validate.
 	 *
 	 * @return array {
-	 *     @type bool   $error   Whether an error occurred during validation.
-	 *     @type string $message The error message, or an empty string if no error.
+	 *     @type bool   $error        Whether an error occurred during validation.
+	 *     @type string $message      The error message, or an empty string if no error.
+	 *     @type string $processed_url The URL with protocol added if validation passes.
 	 * }
 	 */
 	protected function get_url_validation_payload( string $url ): array {
 		$payload = [
-			'error'   => false,
-			'message' => '',
+			'error'         => false,
+			'message'       => '',
+			'processed_url' => '',
 		];
 
 		if ( 'local' === wp_get_environment_type() ) {
@@ -211,16 +211,9 @@ class Controller {
 			return $payload;
 		}
 
-		// Check if url is an internal one.
-		$url_parts         = get_rocket_parse_url( rocket_add_url_protocol( $url ) );
-		$site_domain_parts = get_rocket_parse_url( home_url() );
-
-		if ( $url_parts['host'] !== $site_domain_parts['host'] ) {
-			$payload['error']   = true;
-			$payload['message'] = 'Url is external.';
-
-			return $payload;
-		}
+		// Check if URL has protocol, add if needed.
+		$url                      = rocket_add_url_protocol( $url );
+		$payload['processed_url'] = $url;
 
 		$response = $this->get_page_content( $url );
 
@@ -305,7 +298,7 @@ class Controller {
 
 		$payload['results']           = $results;
 		$payload['global_score_data'] = $this->get_global_score_payload();
-		$payload['has_credit']        = $this->user_has_credit();
+		$payload['has_credit']        = $this->plan->has_credit();
 
 		wp_send_json_success( $payload );
 	}
@@ -367,7 +360,7 @@ class Controller {
 				'html'              => $this->render->get_performance_monitoring_list_row( $row ),
 				'global_score_data' => $this->get_global_score_payload(),
 				'remaining_urls'    => $this->get_remaining_url_count(),
-				'has_credit'        => $this->user_has_credit(),
+				'has_credit'        => $this->plan->has_credit(),
 			]
 			);
 	}
@@ -392,7 +385,7 @@ class Controller {
 
 		return [
 			'data'     => $payload,
-			'html'     => $this->render->get_global_score_widget( $payload ),
+			'html'     => $this->render->get_global_score_widget_content( $payload ),
 			'row_html' => $this->render->get_global_score_row( $payload ),
 		];
 	}
@@ -403,18 +396,10 @@ class Controller {
 	 * @return int Number of URLs that can still be added.
 	 */
 	private function get_remaining_url_count(): int {
-		$current_url_count = $this->query->query( [ 'count' => true ] );
-		$max_urls          = $this->user->get_rocket_insights_addon_limit( $this->user->get_rocket_insights_addon_sku_active() );
-
-		return max( 0, $max_urls - (int) $current_url_count );
-	}
-
-	/**
-	 * Check if the current user has available credits for performance monitoring.
-	 *
-	 * @return bool True if user has credits available, false otherwise.
-	 */
-	private function user_has_credit(): bool {
-		return $this->context->is_free_user() ? $this->credit_manager->has_credit() : true;
+		return max(
+			0,
+			$this->plan->max_urls() - (int) $this->query->
+			get_total_count()
+		);
 	}
 }

@@ -20,7 +20,7 @@ defined( 'ABSPATH' ) || exit;
 
 <?php
 $rocket_insights_quota_banner_class = 'wpr-notice wpr-ri-notice wpr-error-notice';
-if ( ! isset( $data['can_add_pages'] ) || $data['can_add_pages'] ) {
+if ( ! isset( $data['show_quota_banner'] ) || ! $data['show_quota_banner'] ) {
 	$rocket_insights_quota_banner_class .= ' hidden';
 }
 ?>
@@ -42,7 +42,7 @@ if ( ! isset( $data['can_add_pages'] ) || $data['can_add_pages'] ) {
 	</div>
 </div>
 
-<?php if ( ! empty( $data['can_add_pages'] ) && ! empty( $data['is_free'] ) ) : ?>
+<?php if ( ! empty( $data['can_add_pages'] ) && ! empty( $data['is_free'] ) && ! $data['show_quota_banner'] ) : ?>
 	<p class="wpr-ri-summary-info">
 		<?php
 		printf(
