@@ -77,6 +77,7 @@ class ServiceProvider extends AbstractServiceProvider {
 				[
 					'options',
 					'user',
+					'ri_query',
 				]
 			);
 
@@ -109,7 +110,7 @@ class ServiceProvider extends AbstractServiceProvider {
 				[
 					'ri_query',
 					'ri_context',
-					'options',
+					'ri_plan',
 				]
 			);
 
@@ -153,7 +154,6 @@ class ServiceProvider extends AbstractServiceProvider {
 					'ri_context',
 					'ri_global_score',
 					'ri_render',
-					'user',
 					'ri_plan',
 				]
 			);
