@@ -286,24 +286,45 @@ class User {
 	}
 
 	/**
-	 * Retrieves the description for the PMA add-on based on the provided SKU.
+	 * Retrieves the subtitle for the PMA add-on based on the provided SKU.
 	 *
 	 * @param string $sku The SKU used to fetch the PMA addon data.
 	 *
 	 * @return string
 	 */
-	public function get_pma_addon_description( string $sku ) {
+	public function get_pma_addon_subtitle( string $sku ) {
 		$plan = $this->get_pma_data( $sku );
 
-		if ( ! $plan || ! isset( $plan->description ) ) {
+		if ( ! $plan || ! isset( $plan->subtitle ) ) {
 			return '';
 		}
 
-		if ( 'See how your top pages perform and quickly spot and optimize what slows your site down.' === $plan->description ) {
+		if ( 'See how your top pages perform and quickly spot and optimize what slows your site down.' === $plan->subtitle ) {
 			return __( 'See how your top pages perform and quickly spot and optimize what slows your site down.', 'rocket' );
 		}
 
-		return $plan->description;
+		return $plan->subtitle;
+	}
+
+	/**
+	 * Retrieves the billing for the PMA add-on based on the provided SKU.
+	 *
+	 * @param string $sku The SKU used to fetch the PMA addon data.
+	 *
+	 * @return string
+	 */
+	public function get_pma_addon_billing( string $sku ) {
+		$plan = $this->get_pma_data( $sku );
+
+		if ( ! $plan || ! isset( $plan->billing ) ) {
+			return '';
+		}
+
+		if ( '* Billed monthly. You can cancel at any time, each month started is due.' === $plan->billing ) {
+			return __( '* Billed monthly. You can cancel at any time, each month started is due.', 'rocket' );
+		}
+
+		return $plan->billing;
 	}
 
 
@@ -417,23 +438,23 @@ class User {
 	}
 
 	/**
-	 * Retrieves the promo description for the PMA add-on based on the provided SKU.
+	 * Retrieves the promo billing for the PMA add-on based on the provided SKU.
 	 *
 	 * @param string $sku The SKU used to fetch the PMA addon data.
 	 *
 	 * @return string
 	 */
-	public function get_pma_addon_promo_description( string $sku ) {
+	public function get_pma_addon_promo_billing( string $sku ) {
 		$promo = $this->get_pma_addon_promo( $sku );
-		if ( ! $promo || ! isset( $promo->description ) ) {
+		if ( ! $promo || ! isset( $promo->billing ) ) {
 			return '';
 		}
 
-		if ( '* Billed monthly. Launch price valid for the first 12 months, after which standard pricing applies. You can cancel at any time, each month started is due.' === $promo->description ) {
-			return __( '* Billed monthly. Launch price valid for the first 12 months, after which standard pricing applies. You can cancel at any time, each month started is due.', 'rocket' );
+		if ( ' Launch price valid for the first 12 months, after which standard pricing applies.' === $promo->billing ) {
+			return __( ' Launch price valid for the first 12 months, after which standard pricing applies.', 'rocket' );
 		}
 
-		return $promo->description;
+		return $promo->billing;
 	}
 
 	/**

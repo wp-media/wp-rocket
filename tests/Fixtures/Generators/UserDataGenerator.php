@@ -52,6 +52,7 @@ class UserDataGenerator {
 				"url" => null,
 			],
 			'highlights' => [],
+			'billing' => '',
 			'promo' => (object) $this->generate_promo("perf-monitor-free"),
 			'limit' => '3'
 		];
@@ -72,6 +73,7 @@ class UserDataGenerator {
 			],
 			"price" => "0.00",
 			'limit' => '10',
+			'billing' => '',
 			'promo' => (object) $this->generate_promo("perf-monitor-advanced"),
 		];
 

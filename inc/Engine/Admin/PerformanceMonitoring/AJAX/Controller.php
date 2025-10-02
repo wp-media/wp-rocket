@@ -377,8 +377,6 @@ class Controller {
 	 * }
 	 */
 	private function get_global_score_payload() {
-		$payload = [];
-
 		$payload                   = $this->global_score->get_global_score_data();
 		$payload['status-color']   = $this->render->get_score_color_status( (int) $payload['score'] );
 		$payload['remaining_urls'] = $this->get_remaining_url_count();
