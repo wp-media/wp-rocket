@@ -38,7 +38,7 @@ class DeleteRowTest extends TestCase {
 		self::truncatePerformanceMonitoringTable();
 
 		// Enable Performance Monitoring for the test
-		add_filter( 'rocket_performance_monitoring_enabled', '__return_true' );
+		add_filter( 'rocket_rocket_insights_enabled', '__return_true' );
 
 		// Add a hook to capture when rocket_rocket_insights_job_deleted is fired
 		add_action( 'rocket_rocket_insights_job_deleted', [ $this, 'capture_hook_fired' ] );
@@ -52,7 +52,7 @@ class DeleteRowTest extends TestCase {
 		self::truncatePerformanceMonitoringTable();
 
 		// Remove Performance Monitoring enabled filter
-		remove_filter( 'rocket_performance_monitoring_enabled', '__return_true' );
+		remove_filter( 'rocket_rocket_insights_enabled', '__return_true' );
 
 		// Remove our test hook
 		remove_action( 'rocket_rocket_insights_job_deleted', [ $this, 'capture_hook_fired' ] );

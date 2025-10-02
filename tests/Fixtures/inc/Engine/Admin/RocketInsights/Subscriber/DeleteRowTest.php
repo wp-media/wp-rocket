@@ -202,7 +202,7 @@ return [
 				'id' => 1,
 			],
 			'filters' => [
-				'rocket_performance_monitoring_enabled' => '__return_false',
+				'rocket_rocket_insights_enabled' => '__return_false',
 			],
 		],
 		'expected' => [

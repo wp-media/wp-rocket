@@ -39,7 +39,7 @@ class AddNewPageTest extends AjaxTestCase {
 		self::truncatePerformanceMonitoringTable();
 
 		// Enable Performance Monitoring for the test
-		add_filter( 'rocket_performance_monitoring_enabled', '__return_true' );
+		add_filter( 'rocket_rocket_insights_enabled', '__return_true' );
 
 		// Set the AJAX action
 		$this->action = 'rocket_rocket_insights_add_new_page';
@@ -55,7 +55,7 @@ class AddNewPageTest extends AjaxTestCase {
 		self::truncatePerformanceMonitoringTable();
 
 		// Remove Performance Monitoring enabled filter
-		remove_filter( 'rocket_performance_monitoring_enabled', '__return_true' );
+		remove_filter( 'rocket_rocket_insights_enabled', '__return_true' );
 
 		// Remove URL limit filter if set
 		remove_filter( 'rocket_rocket_insights_allow_add_page', '__return_false' );

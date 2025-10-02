@@ -37,7 +37,7 @@ class ScheduleHomepageTestsTest extends TestCase {
 		self::truncatePerformanceMonitoringTable();
 
 		// Enable Performance Monitoring for the test
-		add_filter( 'rocket_performance_monitoring_enabled', '__return_true' );
+		add_filter( 'rocket_rocket_insights_enabled', '__return_true' );
 
 		// Unregister all callbacks except the one we're testing
 		$this->unregisterAllCallbacksExcept( 'wp_rocket_first_install', 'schedule_homepage_tests' );
@@ -53,7 +53,7 @@ class ScheduleHomepageTestsTest extends TestCase {
 		self::truncatePerformanceMonitoringTable();
 
 		// Remove Performance Monitoring enabled filter
-		remove_filter( 'rocket_performance_monitoring_enabled', '__return_true' );
+		remove_filter( 'rocket_rocket_insights_enabled', '__return_true' );
 
 		// Remove our test hook
 		remove_action( 'rocket_rocket_insights_job_added', [ $this, 'capture_hook_fired' ] );

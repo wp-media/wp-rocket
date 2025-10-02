@@ -39,7 +39,7 @@ class RenderGlobalScoreWidgetTest extends TestCase {
 		self::truncatePerformanceMonitoringTable();
 
 		// Enable Performance Monitoring for the test
-		add_filter( 'rocket_performance_monitoring_enabled', '__return_true' );
+		add_filter( 'rocket_rocket_insights_enabled', '__return_true' );
 
 		// Get container
 		self::$container = apply_filters( 'rocket_container', null );
@@ -54,7 +54,7 @@ class RenderGlobalScoreWidgetTest extends TestCase {
 		self::truncatePerformanceMonitoringTable();
 
 		// Remove Performance Monitoring enabled filter
-		remove_filter( 'rocket_performance_monitoring_enabled', '__return_true' );
+		remove_filter( 'rocket_rocket_insights_enabled', '__return_true' );
 
 		remove_filter( 'pre_get_rocket_option_performance_monitoring', [ $this, 'set_performance_monitoring' ] );
 

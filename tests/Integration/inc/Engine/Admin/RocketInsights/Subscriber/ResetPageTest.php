@@ -38,7 +38,7 @@ class ResetPageTest extends AjaxTestCase {
 		self::truncatePerformanceMonitoringTable();
 
 		// Enable Performance Monitoring for the test
-		add_filter( 'rocket_performance_monitoring_enabled', '__return_true' );
+		add_filter( 'rocket_rocket_insights_enabled', '__return_true' );
 
 		// Set the AJAX action
 		$this->action = 'rocket_rocket_insights_reset_page';
@@ -55,7 +55,7 @@ class ResetPageTest extends AjaxTestCase {
 		self::truncatePerformanceMonitoringTable();
 
 		// Remove Performance Monitoring enabled filter
-		remove_filter( 'rocket_performance_monitoring_enabled', '__return_true' );
+		remove_filter( 'rocket_rocket_insights_enabled', '__return_true' );
 
 		// Remove our test hook
 		remove_action( 'rocket_rocket_insights_job_retest', [ $this, 'capture_hook_fired' ] );
