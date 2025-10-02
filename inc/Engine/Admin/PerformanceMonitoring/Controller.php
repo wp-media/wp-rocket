@@ -373,7 +373,7 @@ class Controller {
 				'dismissible'            => 'is-dismissible',
 				'message'                => sprintf(
 				// Translators: %1$s = opening strong tag, %2$s = closing strong tag, %3$s = number of pages as a limit.
-					esc_html__( '%1$sCongrats!%2$s You can now monitor up to %3$s pages, run on-demand tests, run unlimited on-demand tests, and schedule them to run automatically.', 'rocket' ),
+					esc_html__( '%1$sCongrats!%2$s You can now monitor up to %3$s pages, run unlimited on-demand tests, and schedule them to run automatically.', 'rocket' ),
 					'<strong>',
 					'</strong>',
 					$this->get_pma_addon_limit()
