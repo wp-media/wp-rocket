@@ -386,4 +386,31 @@ class Controller {
 			]
 		);
 	}
+
+	/**
+	 * Maybe show notice for paid users when reaching limits.
+	 *
+	 * @return void
+	 */
+	public function maybe_show_paid_reach_limits_notice() {
+		if ( ! $this->context->is_allowed() || $this->context->is_free_user() ) {
+			return;
+		}
+
+		rocket_notice_html(
+			[
+				'status'       => 'pma wpr-pma-notice' . ( 0 < $this->get_remaining_url_count() ? ' hidden' : '' ),
+				'message'      => sprintf(
+				// Translators: %1$s = number of pages as a limit, %2$s anchor tag opening, %3$s anchor tag closing.
+					esc_html__( 'Wow, you’ve already added %1$s pages! That\'s the limit for now. Help shape what’s next by %2$ssharing your feedback%3$s.', 'rocket' ),
+					$this->get_pma_addon_limit(),
+					'<a href="https://wp-rocket.me/rocket-insights-survey/" rel="noopener noreferrer" target="_blank">',
+					'</a>'
+				),
+				'id'           => 'rocket_insights_survey',
+				'class_prefix' => 'wpr-',
+				'dismissible'  => '',
+			]
+		);
+	}
 }

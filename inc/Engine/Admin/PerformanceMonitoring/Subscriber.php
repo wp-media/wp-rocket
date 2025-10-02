@@ -150,6 +150,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'rocket_dashboard_sidebar'          => 'render_global_score_widget',
 			'rocket_insights_tab_content'       => [
 				[ 'render_license_banner_section', 10 ],
+				[ 'maybe_show_paid_reach_limits_notice', 17 ],
 				[ 'maybe_show_notice', 18 ],
 				[ 'render_performance_urls_table', 20 ],
 			],
@@ -216,6 +217,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 
 		$data['pm_ids']               = $this->controller->get_not_finished_ids();
 		$data['pm_no_credit_tooltip'] = __( 'Upgrade your plan to get access to re-test performance or run new tests', 'rocket' );
+		$data['is_free']              = (int) $this->pma_context->is_free_user();
 
 		return $data;
 	}
@@ -432,6 +434,15 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public function maybe_show_notice() {
 		$this->controller->maybe_show_notice();
+	}
+
+	/**
+	 * Maybe show notice for paid users when reaching limits.
+	 *
+	 * @return void
+	 */
+	public function maybe_show_paid_reach_limits_notice() {
+		$this->controller->maybe_show_paid_reach_limits_notice();
 	}
 
 	/**
