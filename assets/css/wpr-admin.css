@@ -2786,8 +2786,8 @@ div.wpr-tutorial-item {
   margin-top: 10px;
 }
 .wpr-percentage-score-widget .wpr-percentage-indicator .wpr-percentage-circle {
-  border-width: 4px;
-  font-size: 43px;
+  border-width: 3.83px;
+  font-size: 42.17px;
   font-weight: 600;
 }
 .wpr-percentage-score-widget .wpr-percentage-indicator .wpr-percentage-circle .wpr-failed-score {
@@ -2843,12 +2843,10 @@ div.wpr-tutorial-item {
   justify-content: center;
   align-items: center;
   width: 92px;
-  height: 92px;
-  font-size: 50px;
+  height: 93px;
   font-family: Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-  font-weight: 500;
   border-radius: 50%;
-  border: 3px solid;
+  border: 3.83px solid;
 }
 .wpr-percentage-indicator .wpr-percentage-circle-sm {
   width: 32px;
@@ -3202,10 +3200,11 @@ div.wpr-tutorial-item {
   top: 3px;
 }
 .wpr-pma-urls-table .wpr-percentage-indicator .wpr-percentage-circle {
-  width: 32px;
-  height: 32px;
+  width: 33.5px;
+  height: 33.5px;
   font-size: 14px;
-  border-width: 2px;
+  border-width: 1.33px;
+  font-weight: 600;
 }
 .wpr-pma-urls-table .wpr-percentage-indicator .wpr-loading-img {
   width: 32px;
