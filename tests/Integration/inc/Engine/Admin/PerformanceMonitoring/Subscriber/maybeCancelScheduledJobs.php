@@ -9,7 +9,6 @@ use Brain\Monkey\Functions;
  * Test class covering WP_Rocket\Engine\Admin\PerformanceMonitoring\Subscriber::maybe_cancel_scheduled_jobs
  *
  * @group PerformanceMonitoring
- * @group AdminOnly
  */
 class TestMaybeCancelScheduledJobs extends TestCase {
 	protected $pre_get_rocket_option_performance_monitoring;
