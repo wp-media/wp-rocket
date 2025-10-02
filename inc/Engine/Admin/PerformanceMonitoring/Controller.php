@@ -407,7 +407,7 @@ class Controller {
 					'<a href="https://wp-rocket.me/rocket-insights-survey/" rel="noopener noreferrer" target="_blank">',
 					'</a>'
 				),
-				'id'           => 'insights_survey',
+				'id'           => 'rocket_insights_survey',
 				'class_prefix' => 'wpr-',
 				'dismissible'  => '',
 			]

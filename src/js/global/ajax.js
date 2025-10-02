@@ -308,7 +308,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	function updateQuotaBanner(canAddPages) {
 		const $summaryInfo    = $('.wpr-pma-summary-info');
 		const isFree  = window.rocket_ajax_data?.is_free === '1';
-		const $quotaBanner = isFree ? $('#wpr-pma-quota-banner') : $('#insights_survey');
+		const $quotaBanner = isFree ? $('#wpr-pma-quota-banner') : $('#rocket_insights_survey');
 
 		if (canAddPages === false) {
 			$summaryInfo.hide();
