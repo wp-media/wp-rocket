@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace WP_Rocket\Tests\Unit\inc\Engine\Admin\RocketInsights\Subscriber;
 
 use WP_Rocket\Admin\Options_Data;
@@ -6,12 +8,12 @@ use WP_Rocket\Engine\Admin\RocketInsights\Context\Context;
 use WP_Rocket\Engine\Admin\RocketInsights\Jobs\Manager;
 use WP_Rocket\Engine\Admin\RocketInsights\Managers\Plan;
 use WP_Rocket\Engine\Admin\RocketInsights\Queue\Queue;
-use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Engine\Admin\RocketInsights\Subscriber;
 use WP_Rocket\Engine\Admin\RocketInsights\Render;
 use WP_Rocket\Engine\Admin\RocketInsights\Controller;
 use WP_Rocket\Engine\Admin\RocketInsights\GlobalScore;
 use WP_Rocket\Engine\Admin\RocketInsights\AJAX\Controller as AjaxController;
+use WP_Rocket\Tests\Unit\TestCase;
 
 class RenderPerformanceUrlsTableTest extends TestCase {
 	/**
@@ -43,8 +45,8 @@ class RenderPerformanceUrlsTableTest extends TestCase {
 			->willReturn( $config['remaining_urls'] );
 
 		$mock_controller->expects($this->exactly(1))
-			->method('get_pma_addon_limit')
-			->willReturn( $config['pma_addon_limit'] );
+			->method('get_rocket_insights_addon_limit')
+			->willReturn( $config['rocket_insights_addon_limit'] );
 
 		$mock_controller->expects($this->once())
 			->method('get_license_data')
@@ -58,21 +60,21 @@ class RenderPerformanceUrlsTableTest extends TestCase {
 		}
 
 		$mock_render->expects($this->once())
-			->method('render_pma_urls_table')
+			->method('render_rocket_insights_urls_table')
 			->with($expected);
 
 		$mock_ajax_controller = $this->createMock(AjaxController::class);
 		$mock_queue = $this->createMock(Queue::class);
-		$pm_context = $this->createMock(PerformanceMonitoringContext::class);
-		$pm_context->expects($this->once())
+		$ri_context = $this->createMock(Context::class);
+		$ri_context->expects($this->once())
 			->method('is_allowed')
 			->willReturn(true);
-		$pm_context->expects($this->exactly(2))
+		$ri_context->expects($this->exactly(2))
 			->method('is_free_user')
 			->willReturn($config['is_free']);
-		$pm_context->expects($this->any())
+		$ri_context->expects($this->any())
 			->method('is_adding_page_allowed')
-			->willReturn(count( $config['items'] ) < $config['pma_addon_limit']);
+			->willReturn(count( $config['items'] ) < $config['rocket_insights_addon_limit']);
 		$options = $this->createMock(Options_Data::class);
 		$manager = $this->createMock(Manager::class);
 

@@ -6,7 +6,6 @@ namespace WP_Rocket\Engine\Admin\RocketInsights;
 use WP_Rocket\Dependencies\League\Container\Argument\Literal\StringArgument;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Engine\Admin\RocketInsights\{
-	Credit\Manager as Credit_Manager,
 	Database\Tables\RocketInsights as RITable,
 	Database\Queries\RocketInsights as RIQuery,
 	APIHandler\APIClient as RIAPIClient,
@@ -44,7 +43,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		'ri_controller',
 		'ri_subscriber',
 		'ri_ajax_controller',
-		'ri_credit_manager',
 		'ri_global_score',
 		'ri_url_limit_subscriber',
 		'ri_settings',
@@ -82,19 +80,11 @@ class ServiceProvider extends AbstractServiceProvider {
 				]
 			);
 
-		$this->getContainer()->add( 'ri_credit_manager', Credit_Manager::class )
-			->addArguments(
-				[
-					'options_api',
-					'ri_context',
-				]
-				);
-
 		$this->getContainer()->add( 'ri_render', Render::class )
 			->addArguments(
 				[
 					new StringArgument( $this->getContainer()->get( 'template_path' ) . '/settings/' ),
-					'ri_credit_manager',
+					'ri_plan',
 					'ri_context',
 				]
 				);
@@ -137,7 +127,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'ri_query',
 					'ri_manager',
 					'ri_context',
-					'ri_credit_manager',
+					'ri_plan',
 					'ri_global_score',
 					'user',
 					'options',
@@ -164,7 +154,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'ri_global_score',
 					'ri_render',
 					'user',
-					'ri_credit_manager',
+					'ri_plan',
 				]
 			);
 		// Subscriber.

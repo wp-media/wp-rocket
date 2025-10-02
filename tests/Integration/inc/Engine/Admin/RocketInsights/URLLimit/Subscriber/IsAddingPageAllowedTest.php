@@ -14,14 +14,6 @@ use WP_Rocket\Engine\License\API\UserClient;
 class IsAddingPageAllowedTest extends TestCase {
     use DBTrait;
 
-
-    /**
-     * UserClient mock
-     *
-     * @var UserClient
-     */
-    private $user_client;
-
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
 

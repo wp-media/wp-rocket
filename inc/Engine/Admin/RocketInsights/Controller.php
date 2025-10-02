@@ -65,13 +65,13 @@ class Controller {
 	/**
 	 * Constructor.
 	 *
-	 * @param Query         $query Query instance.
-	 * @param Manager       $manager Manager instance.
-	 * @param Context       $context Context instance.
-	 * @param Plan          $plan Plan instance.
-	 * @param GlobalScore   $global_score GlobalScore instance.
-	 * @param User          $user User client API instance.
-	 * @param Options_Data  $options Plugin options instance.
+	 * @param Query        $query Query instance.
+	 * @param Manager      $manager Manager instance.
+	 * @param Context      $context Context instance.
+	 * @param Plan         $plan Plan instance.
+	 * @param GlobalScore  $global_score GlobalScore instance.
+	 * @param User         $user User client API instance.
+	 * @param Options_Data $options Plugin options instance.
 	 */
 	public function __construct(
 		Query $query,
@@ -309,7 +309,7 @@ class Controller {
 			'page_number' => $limit,
 			'period'      => 'month',
 			'subtitle'    => $this->user->get_rocket_insights_addon_subtitle( $upgrade ),
-			'billing'     => $this->user->get_pma_addon_billing( $upgrade ),
+			'billing'     => $this->user->get_rocket_insights_addon_billing( $upgrade ),
 			'highlights'  => $this->user->get_rocket_insights_addon_highlights( $upgrade ),
 		];
 		$data['btn_url'] = $this->user->get_rocket_insights_addon_btn_url( $upgrade );
@@ -406,7 +406,7 @@ class Controller {
 				'message'      => sprintf(
 				// Translators: %1$s = number of pages as a limit, %2$s anchor tag opening, %3$s anchor tag closing.
 					esc_html__( 'Wow, you’ve already added %1$s pages! That\'s the limit for now. Help shape what’s next by %2$ssharing your feedback%3$s.', 'rocket' ),
-					$this->get_pma_addon_limit(),
+					$this->get_rocket_insights_addon_limit(),
 					'<a href="https://wp-rocket.me/rocket-insights-survey/" rel="noopener noreferrer" target="_blank">',
 					'</a>'
 				),

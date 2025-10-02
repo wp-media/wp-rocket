@@ -7,7 +7,7 @@ use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
 use WP_Rocket\Engine\Admin\RocketInsights\Database\Queries\RocketInsights as RocketInsightsQuery;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
-use WP_Rocket\Engine\Admin\PerformanceMonitoring\Managers\Plan;
+use WP_Rocket\Engine\Admin\RocketInsights\Managers\Plan;
 use WP_Rocket\Engine\Common\JobManager\Managers\AbstractManager;
 use WP_Rocket\Engine\Common\JobManager\Managers\ManagerInterface;
 

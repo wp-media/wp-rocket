@@ -215,6 +215,6 @@ class Plan {
 	 * @return int
 	 */
 	public function max_urls(): int {
-		return $this->user->get_pma_addon_limit( $this->user->get_pma_addon_sku_active() );
+		return $this->user->get_rocket_insights_addon_limit( $this->user->get_rocket_insights_addon_sku_active() );
 	}
 }

@@ -217,7 +217,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 
 		$data['rocket_insights_ids']               = $this->controller->get_not_finished_ids();
 		$data['rocket_insights_no_credit_tooltip'] = __( 'Upgrade your plan to get access to re-test performance or run new tests', 'rocket' );
-		$data['is_free']              = (int) $this->pma_context->is_free_user();
+		$data['is_free']                           = (int) $this->context->is_free_user();
 
 		return $data;
 	}
@@ -356,25 +356,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return bool True if the quota banner should be shown.
 	 */
 	private function should_show_quota_banner(): bool {
-		if ( ! $this->pma_context->is_free_user() ) {
-			return false;
-		}
-
-		$remaining_url_count = $this->controller->get_remaining_url_count();
-
-		// Show banner if URL limit reached OR no credits left.
-		return empty( $remaining_url_count ) || ! $this->controller->has_credit();
-	}
-
-	/**
-	 * Determine if the quota banner should be displayed.
-	 *
-	 * Shows banner when free users have reached URL limit OR exhausted credits.
-	 *
-	 * @return bool True if the quota banner should be shown.
-	 */
-	private function should_show_quota_banner(): bool {
-		if ( ! $this->pma_context->is_free_user() ) {
+		if ( ! $this->context->is_free_user() ) {
 			return false;
 		}
 

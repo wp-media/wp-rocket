@@ -5,7 +5,7 @@ namespace WP_Rocket\Engine\Admin\RocketInsights;
 
 use WP_Rocket\Abstract_Render;
 use WP_Rocket\Engine\Admin\RocketInsights\Context\Context;
-use WP_Rocket\Engine\Admin\PerformanceMonitoring\Managers\Plan;
+use WP_Rocket\Engine\Admin\RocketInsights\Managers\Plan;
 
 class Render extends Abstract_Render {
 	/**
@@ -27,15 +27,15 @@ class Render extends Abstract_Render {
 	 *
 	 * Initializes the Render instance with the provided template path and CreditManager.
 	 *
-	 * @param string                       $template_path   Path to the template file.
+	 * @param string  $template_path   Path to the template file.
 	 * @param Plan    $plan Plan instance.
 	 * @param Context $context Instance of PerformanceMonitoringContext for managing performance monitoring context.
 	 */
 	public function __construct( $template_path, Plan $plan, Context $context ) {
 		parent::__construct( $template_path );
 
-		$this->plan        = $plan;
-		$this->context     = $context;
+		$this->plan    = $plan;
+		$this->context = $context;
 	}
 
 	/**

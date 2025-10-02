@@ -17,8 +17,6 @@ class RenderGlobalScoreWidgetTest extends TestCase {
 
 	protected static $container;
 
-	private $performance_monitoring;
-
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
 
@@ -173,18 +171,4 @@ class RenderGlobalScoreWidgetTest extends TestCase {
 
 		return trim($html);
 	}
-
-	private function getExpectedHtml( $filename ) {
-		$file_path = dirname( __FILE__ ) . '/../../../../../../Fixtures/inc/Engine/Admin/RocketInsights/Subscriber/html/' . $filename;
-
-		if ( ! file_exists( $file_path ) ) {
-			$this->fail( "HTML fixture file not found: {$file_path}" );
-		}
-
-		return file_get_contents( $file_path );
-	}
-
-	public function set_performance_monitoring() {
-        return $this->performance_monitoring;
-    }
 }

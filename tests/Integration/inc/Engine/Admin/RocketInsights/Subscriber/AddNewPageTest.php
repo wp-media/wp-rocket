@@ -138,7 +138,7 @@ class AddNewPageTest extends AjaxTestCase {
 		// Check if database entry was created
 		if ( isset( $expected['database_entries'] ) && $expected['database_entries'] > 0 ) {
 			$items = $this->container->get( 'ri_query' )->query( [] );
-			$this->assertSame( $expected['database_entries'], count( $items ) );
+			$this->assertCount( $items, $expected['database_entries'] );
 		}
 
 		// Check if hook was fired
@@ -189,7 +189,7 @@ class AddNewPageTest extends AjaxTestCase {
 	/**
 	 * Mock HTTP requests for URL validation.
 	 *
-	 * @param false|array|WP_Error $preempt A preemptive return value of an HTTP request.
+	 * @param false|array|\WP_Error $preempt A preemptive return value of an HTTP request.
 	 * @param array                $args HTTP request arguments.
 	 * @param string               $url The request URL.
 	 * @return array|false

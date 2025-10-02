@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Tracking;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
-use WP_Rocket\Engine\Admin\PerformanceMonitoring\Managers\Plan;
+use WP_Rocket\Engine\Admin\RocketInsights\Managers\Plan;
 
 class Subscriber implements Subscriber_Interface {
 	/**
