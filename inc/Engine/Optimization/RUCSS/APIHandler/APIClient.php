@@ -149,7 +149,11 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 	 * @return bool
 	 */
 	protected function check_response( $response ): bool {
-		if ( ! in_array( (int) $this->response_code, [ 200, 201 ], true ) ) {
+		$code = is_array( $response )
+			? wp_remote_retrieve_response_code( $response )
+			: $response->get_error_code();
+
+		if ( ! in_array( (int) $code, [ 200, 201 ], true ) ) {
 			$previous_errors = (int) get_transient( 'wp_rocket_rucss_errors_count' );
 			set_transient( 'wp_rocket_rucss_errors_count', $previous_errors + 1, 5 * MINUTE_IN_SECONDS );
 		} else {
