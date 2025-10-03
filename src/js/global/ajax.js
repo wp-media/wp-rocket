@@ -347,7 +347,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				if (!hasCredit) {
 					// Add tooltip for no credit
 					button.classList.add('wpr-btn-with-tool-tip');
-					button.setAttribute('title', window.rocket_ajax_data?.ri_no_credit_tooltip || 'Upgrade your plan to get access to re-test performance or run new tests');
+					button.setAttribute('title', window.rocket_ajax_data?.rocket_insights_no_credit_tooltip || 'Upgrade your plan to get access to re-test performance or run new tests');
 				}
 			} else {
 				// Enable button
