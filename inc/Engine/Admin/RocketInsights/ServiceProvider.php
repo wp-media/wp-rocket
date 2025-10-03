@@ -180,6 +180,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'ri_query',
 					'user',
 					'ri_global_score',
+					'ri_context',
 				]
 			);
 		// Settings Subscriber.
