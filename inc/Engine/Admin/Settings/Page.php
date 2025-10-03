@@ -1755,7 +1755,7 @@ class Page extends Abstract_Render {
 					'parent'            => 'performance_monitoring',
 					'section'           => 'performance_monitoring',
 					'page'              => 'rocket_insights',
-					'default'           => 'monthly',
+					'default'           => 'weekly',
 					'sanitize_callback' => 'sanitize_text_field',
 					'choices'           => [
 						'daily'   => __( 'Daily', 'rocket' ),
