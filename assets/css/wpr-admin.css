@@ -3108,6 +3108,7 @@ div.wpr-tutorial-item {
   background-image: none;
   border-radius: 0;
   border-left: 4px solid #3ECE9D;
+  margin: 15px 0 0 0;
 }
 .wpr-pma-notice .wpr-notice-container, .wpr-pma-notice p:first-child {
   padding: 16px;
@@ -3158,7 +3159,6 @@ div.wpr-tutorial-item {
 }
 
 .wpr-pma-urls-table.widefat {
-  margin-top: 16px;
   border: none;
   border-collapse: separate;
   border-spacing: 0;
