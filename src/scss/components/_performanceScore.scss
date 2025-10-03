@@ -101,7 +101,11 @@
 				background-color:$successLighter;
 			}
 			&.blurred {
-				filter: blur(4px);
+				filter: blur(8px);
+				user-select: none;
+				-webkit-user-select: none;
+				-moz-user-select: none;
+				pointer-events: none;
 			}
 			.wpr-failed-score{
 				width: 21.333px;
