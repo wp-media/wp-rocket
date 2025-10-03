@@ -306,7 +306,8 @@ class Controller {
 			'currency'    => '$',
 			'page_number' => $limit,
 			'period'      => 'month',
-			'description' => $this->user->get_pma_addon_description( $upgrade ),
+			'subtitle'    => $this->user->get_pma_addon_subtitle( $upgrade ),
+			'billing'     => $this->user->get_pma_addon_billing( $upgrade ),
 			'highlights'  => $this->user->get_pma_addon_highlights( $upgrade ),
 		];
 		$data['btn_url'] = $this->user->get_pma_addon_btn_url( $upgrade );
@@ -322,7 +323,7 @@ class Controller {
 		$data['price']                 = $promo_price;
 		$data['price_before_discount'] = $price;
 		$data['promo_name']            = $this->user->get_pma_addon_promo_name( $upgrade );
-		$data['promo_description']     = $this->user->get_pma_addon_promo_description( $upgrade );
+		$data['promo_billing']         = $this->user->get_pma_addon_promo_billing( $upgrade );
 		return $data;
 	}
 
@@ -373,7 +374,7 @@ class Controller {
 				'dismissible'            => 'is-dismissible',
 				'message'                => sprintf(
 				// Translators: %1$s = opening strong tag, %2$s = closing strong tag, %3$s = number of pages as a limit.
-					esc_html__( '%1$sCongrats!%2$s You can now monitor up to %3$s pages, run on-demand tests, and access advanced GTmetrix reports.', 'rocket' ),
+					esc_html__( '%1$sCongrats!%2$s You can now monitor up to %3$s pages, run unlimited on-demand tests, and schedule them to run automatically.', 'rocket' ),
 					'<strong>',
 					'</strong>',
 					$this->get_pma_addon_limit()
@@ -383,6 +384,33 @@ class Controller {
 				'dismiss_button'         => 'insights_upgrade',
 				'dismiss_button_class'   => 'wpr-notice-close wpr-icon-close rocket-dismiss',
 				'dismiss_button_message' => '',
+			]
+		);
+	}
+
+	/**
+	 * Maybe show notice for paid users when reaching limits.
+	 *
+	 * @return void
+	 */
+	public function maybe_show_paid_reach_limits_notice() {
+		if ( ! $this->context->is_allowed() || $this->context->is_free_user() ) {
+			return;
+		}
+
+		rocket_notice_html(
+			[
+				'status'       => 'pma wpr-pma-notice' . ( 0 < $this->get_remaining_url_count() ? ' hidden' : '' ),
+				'message'      => sprintf(
+				// Translators: %1$s = number of pages as a limit, %2$s anchor tag opening, %3$s anchor tag closing.
+					esc_html__( 'Wow, you’ve already added %1$s pages! That\'s the limit for now. Help shape what’s next by %2$ssharing your feedback%3$s.', 'rocket' ),
+					$this->get_pma_addon_limit(),
+					'<a href="https://wp-rocket.me/rocket-insights-survey/" rel="noopener noreferrer" target="_blank">',
+					'</a>'
+				),
+				'id'           => 'rocket_insights_survey',
+				'class_prefix' => 'wpr-',
+				'dismissible'  => '',
 			]
 		);
 	}
