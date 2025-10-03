@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\Tracking;
 
 use WP_Rocket\Abstract_Render;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\Database\Rows\PerformanceMonitoring;
 use WP_Rocket\Engine\Admin\PerformanceMonitoring\Managers\Plan;
 use WPMedia\Mixpanel\Optin;
 use WPMedia\Mixpanel\TrackingPlugin as MixpanelTracking;
@@ -248,9 +249,9 @@ class Tracking extends Abstract_Render {
 	 *
 	 * @since 3.20
 	 *
-	 * @param object $row_details Details related to the database row.
-	 * @param array  $job_details Details related to the job.
-	 * @param string $plan Plan name.
+	 * @param PerformanceMonitoring $row_details Details related to the database row.
+	 * @param array                 $job_details Details related to the job.
+	 * @param string                $plan Plan name.
 	 *
 	 * @return void
 	 */
@@ -259,9 +260,7 @@ class Tracking extends Abstract_Render {
 			return;
 		}
 
-		$data = json_decode( $row_details->data );
-
-		if ( null === $data ) {
+		if ( empty( $row_details->data ) ) {
 			return;
 		}
 
@@ -270,9 +269,9 @@ class Tracking extends Abstract_Render {
 			[
 				'context'   => 'wp_plugin',
 				'status'    => $row_details->status,
-				'score'     => $data->performance_score,
-				'retest'    => $data->is_retest,
-				'duration'  => time() - $data->start_time,
+				'score'     => $row_details->score,
+				'retest'    => $row_details->data['is_retest'],
+				'duration'  => time() - $row_details->data['start_time'],
 				'plan_type' => $plan,
 			]
 		);

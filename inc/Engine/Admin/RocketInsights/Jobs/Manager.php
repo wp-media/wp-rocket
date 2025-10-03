@@ -127,6 +127,8 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 
 		$this->query->make_status_failed( $row_details->url, $row_details->is_mobile, '', $job_details['message'] ?? 'Failed with no msg' );
 
+		$row_details = $this->query->get_row_by_id( $row_details->id );
+
 		/**
 		 * Fires when a Rocket Insights job fails.
 		 *
@@ -148,6 +150,11 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 	 * @return void
 	 */
 	public function process( array $job_details, $row_details, string $optimization_type ): void {
+		// Bail out if status is failed.
+		if ( 'failed' === $job_details['status'] ) {
+			return;
+		}
+
 		if ( ! empty( $job_details['status'] ) && 'pending' === $job_details['status'] ) {
 			$this->logger::info(
 				'Rocket Insights: Revert to pending because of API status is pending',
@@ -169,6 +176,8 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 		);
 
 		$this->query->make_status_completed( $row_details->id, 'completed', $this->parse_test_results( $job_details ) );
+
+		$row_details = $this->query->get_row_by_id( $row_details->id );
 
 		/**
 		 * Fires when a Rocket Insights job completes successfully.
