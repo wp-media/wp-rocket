@@ -141,7 +141,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 		if ( empty( $cdn_cnames ) || $cdn_cnames[0] !== $subscription_data['cdn_url'] ) {
 			$helper_text = sprintf(
 				// translators: %1$s = opening <code> tag, %2$s = CDN URL, %3$s = closing </code> tag.
-				__( 'To use RocketCDN, replace your CNAME with %1$s%2$s%3$s.', 'rocket' ),
+				__( 'To use RocketCDN, paste your RocketCDN URL into the field above: %1$s%2$s%3$s.', 'rocket' ),
 				'<code>',
 				$subscription_data['cdn_url'],
 				'</code>'
@@ -159,8 +159,8 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 
 		$fields['cdn_cnames'] = [
 			'type'        => 'rocket_cdn',
-			'label'       => __( 'CDN CNAME(s)', 'rocket' ),
-			'description' => __( 'Specify the CNAME(s) below', 'rocket' ),
+			'label'       => __( 'CDN URL(s)', 'rocket' ),
+			'description' => __( 'Specify the CDN URL(s) below', 'rocket' ),
 			'helper'      => $helper_text . ' ' . $more_info,
 			'default'     => '',
 			'section'     => 'cnames_section',
