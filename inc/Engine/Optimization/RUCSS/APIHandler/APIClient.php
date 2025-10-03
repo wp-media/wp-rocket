@@ -152,9 +152,9 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 		if ( ! in_array( (int) $this->response_code, [ 200, 201 ], true ) ) {
 			$previous_errors = (int) get_transient( 'wp_rocket_rucss_errors_count' );
 			set_transient( 'wp_rocket_rucss_errors_count', $previous_errors + 1, 5 * MINUTE_IN_SECONDS );
+		} else {
+			delete_transient( 'wp_rocket_rucss_errors_count' );
 		}
-
-		delete_transient( 'wp_rocket_rucss_errors_count' );
 
 		return parent::check_response( $response );
 	}
