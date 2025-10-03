@@ -1696,6 +1696,8 @@ class Page extends Abstract_Render {
 			return;
 		}
 
+		$rocket_insights_beacon = $this->beacon->get_suggest( 'rocket_insights' );
+
 		$this->settings->add_page_section(
 			'rocket_insights',
 			[
@@ -1709,8 +1711,8 @@ class Page extends Abstract_Render {
 				'performance_monitoring' => [
 					'title'  => __( 'Settings', 'rocket' ),
 					'help'   => [
-						'id'  => '',
-						'url' => '',
+						'id'  => $rocket_insights_beacon['id'],
+						'url' => $rocket_insights_beacon['url'],
 					],
 					'page'   => 'rocket_insights',
 					'helper' => '',
