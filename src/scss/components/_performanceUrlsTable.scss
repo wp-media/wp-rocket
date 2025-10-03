@@ -2,6 +2,7 @@
 	background-image: none ;
 	border-radius: 0;
 	border-left: 4px solid #3ECE9D;
+	margin: 15px 0 0 0;
 	.wpr-notice-container, p:first-child{
 		padding: 2*$space;
 	}
@@ -53,7 +54,6 @@
 }
 .wpr-pma-urls-table{
 	&.widefat{
-		margin-top: 2*$space;
 		border:none;
 		border-collapse: separate;
 		border-spacing: 0;
