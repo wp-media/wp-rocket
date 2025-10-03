@@ -127,6 +127,13 @@ class GetResultsTest extends AjaxTestCase {
 				$this->assertNotEmpty( $result_array['html'] );
 			}
 		}
+
+		// Check that response contains expected keys
+		if ( isset( $expected['response_keys'] ) ) {
+			foreach ( $expected['response_keys'] as $key ) {
+				$this->assertArrayHasKey( $key, $response['data'] );
+			}
+		}
 	}
 
 	private function assertErrorResponse( $response, $expected ) {

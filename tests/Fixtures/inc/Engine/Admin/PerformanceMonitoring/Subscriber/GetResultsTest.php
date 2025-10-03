@@ -125,4 +125,29 @@ return [
 			'results_have_html' => true,
 		],
 	],
+	'testShouldReturnCanAddPagesFlag' => [
+		'config' => [
+			'database_entries' => [
+				[
+					'id' => 1,
+					'url' => 'http://example.org/page1',
+					'is_mobile' => false,
+					'job_id' => 'test_123',
+					'status' => 'completed',
+					'score' => 80,
+					'data' => '{"status":"complete","data":{"data":{"performance_score":80}}}',
+				],
+			],
+			'get_data' => [
+				'ids' => [ 1 ],
+			],
+		],
+		'expected' => [
+			'success' => true,
+			'results_count' => 1,
+			'has_global_score_data' => true,
+			'results_have_html' => true,
+			'response_keys' => [ 'results', 'global_score_data', 'has_credit', 'can_add_pages' ],
+		],
+	],
 ];

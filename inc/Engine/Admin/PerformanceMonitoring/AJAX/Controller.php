@@ -299,6 +299,7 @@ class Controller {
 		$payload['results']           = $results;
 		$payload['global_score_data'] = $this->get_global_score_payload();
 		$payload['has_credit']        = $this->plan->has_credit();
+		$payload['can_add_pages']     = $this->context->is_adding_page_allowed();
 
 		wp_send_json_success( $payload );
 	}

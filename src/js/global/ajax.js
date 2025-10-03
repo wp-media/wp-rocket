@@ -467,6 +467,9 @@ document.addEventListener('DOMContentLoaded', function() {
 				// Update credit status
 				updateCreditState(response.data.has_credit);
 
+				// Update quota banner visibility
+				updateQuotaBanner(response.data.can_add_pages);
+
                 // Update global score data and widget when status || page count changes.
                 if (globalScoreData.data.status !== response.data.global_score_data.data.status || globalScoreData.data.pages_num !== response.data.global_score_data.data.pages_num) {
                     // Update global score data.
