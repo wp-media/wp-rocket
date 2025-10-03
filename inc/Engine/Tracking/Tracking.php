@@ -6,7 +6,6 @@ namespace WP_Rocket\Engine\Tracking;
 use WP_Rocket\Abstract_Render;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\RocketInsights\Database\Rows\RocketInsights;
-use WP_Rocket\Engine\Admin\RocketInsights\Managers\Plan;
 use WPMedia\Mixpanel\Optin;
 use WPMedia\Mixpanel\TrackingPlugin as MixpanelTracking;
 
