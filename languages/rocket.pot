@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-10-03T14:44:01+00:00\n"
+"POT-Creation-Date: 2025-10-03T15:04:46+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.4.0\n"
 "X-Domain: rocket\n"
@@ -3952,7 +3952,7 @@ msgstr ""
 
 #. Translators: %1$s = opening strong tag, %2$s = closing strong tag.
 #: views/settings/partials/performance-monitoring/urls-table.php:33
-msgid "You've %1$sreached your free limit.%2$s Upgrade to continue."
+msgid "%1$sCongrats!%2$s You fully enjoyed your free plan. Upgrade to keep testing, or wait for your free limit to reset."
 msgstr ""
 
 #: views/settings/partials/performance-monitoring/urls-table.php:40
