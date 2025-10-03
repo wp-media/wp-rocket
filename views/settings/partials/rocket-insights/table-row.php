@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 ?>
-<tr class="wpr-ri-item wpr-ri-item-result" data-rocket-pm-id="<?php echo esc_attr( $data->id ); ?>" >
+<tr class="wpr-ri-item wpr-ri-item-result" data-rocket-insights-id="<?php echo esc_attr( $data->id ); ?>" >
 	<td class="wpr-ri-item-score">
 		<?php
 		$rocket_data_array                 = (array) $data;
