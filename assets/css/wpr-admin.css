@@ -1680,9 +1680,11 @@ div.wpr-upgrade-websites.notstacked {
 }
 .wpr-fieldsContainer.pma-settings-container .wpr-field {
   border: none;
+  padding: 0;
 }
 .wpr-fieldsContainer.pma-settings-container .wpr-fieldsContainer-fieldset {
   display: flex;
+  padding: 15px;
 }
 .wpr-fieldsContainer.pma-settings-container .wpr-fieldsContainer-fieldset .wpr-field--checkbox {
   flex: 0 0 50%;
@@ -3149,6 +3151,7 @@ div.wpr-tutorial-item {
   font-weight: 400;
   line-height: 130%;
   color: #0C0F1F;
+  margin: 15px 0;
 }
 .wpr-pma-summary-info a {
   color: #F3704D;
