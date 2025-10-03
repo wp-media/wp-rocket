@@ -118,7 +118,7 @@ class ResetGlobalScoreTest extends TestCase {
 			$hook = $config['hook_to_test'];
 
 			switch ( $hook ) {
-				case 'rocket_pm_rocket_insights_added':
+				case 'rocket_rocket_insights_added':
 					do_action( $hook, 'url', 'free', 1 );
 					break;
 

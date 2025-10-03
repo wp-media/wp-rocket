@@ -37,10 +37,10 @@ class Subscriber implements Subscriber_Interface {
 			'admin_enqueue_scripts'               => [ 'localize_optin_status', 15 ],
 			'admin_print_scripts'                 => [ 'inject_mixpanel_script' ],
 			'rocket_mixpanel_optin_changed'       => 'track_optin_change',
-			'rocket_pm_job_added'                 => [ 'track_rocket_insights_url_added', 10, 3 ],
+			'rocket_rocket_insights_job_added'    => [ 'track_rocket_insights_url_added', 10, 3 ],
 			'admin_footer-settings_page_wprocket' => 'track_admin_visits',
-			'rocket_pm_job_failed'                => [ 'track_rocket_insights_test', 10, 3 ],
-			'rocket_pm_job_completed'             => [ 'track_rocket_insights_test', 10, 3 ],
+			'rocket_rocket_insights_job_failed'    => [ 'track_rocket_insights_test', 10, 3 ],
+			'rocket_rocket_insights_job_completed' => [ 'track_rocket_insights_test', 10, 3 ],
 		];
 	}
 
