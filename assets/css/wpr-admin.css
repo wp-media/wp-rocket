@@ -3320,10 +3320,9 @@ div.wpr-tutorial-item {
   margin-right: 0;
 }
 .wpr-pma-urls-table .wpr-pma-item-actions .wpr-pma-action:before {
-  font-size: 16px;
   position: relative;
   top: 2px;
-  margin-right: 8px;
+  margin-right: 6px;
 }
 .wpr-pma-urls-table .wpr-pma-item-actions .wpr-pma-action--disabled, .wpr-pma-urls-table .wpr-pma-item-actions .wpr-pma-action:disabled {
   color: rgb(134.5094339623, 150.0566037736, 169.4905660377) !important;
@@ -3333,6 +3332,15 @@ div.wpr-tutorial-item {
 .wpr-pma-urls-table .wpr-pma-item-actions .wpr-pma-action--disabled:focus, .wpr-pma-urls-table .wpr-pma-item-actions .wpr-pma-action:disabled:focus {
   transform: none;
   box-shadow: none;
+}
+.wpr-pma-urls-table .wpr-pma-item-actions .wpr-pma-action.wpr-icon-bold-refresh:before {
+  font-size: 15px;
+}
+.wpr-pma-urls-table .wpr-pma-item-actions .wpr-pma-action.wpr-icon-trash {
+  width: 8%;
+}
+.wpr-pma-urls-table .wpr-pma-item-actions .wpr-pma-action.wpr-icon-trash:before {
+  font-size: 14px;
 }
 .wpr-pma-urls-table .wpr-pma-item-actions .wpr-tooltip {
   width: 280px;
@@ -3351,6 +3359,7 @@ div.wpr-tutorial-item {
   display: flex;
   width: 80%;
   margin-right: 16px;
+  border: 2px solid #C2CAD4;
 }
 .wpr-pma-add-section .wpr-button {
   display: flex;
