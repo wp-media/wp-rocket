@@ -2876,7 +2876,7 @@ div.wpr-tutorial-item {
   background-color: #E8F8EB;
 }
 .wpr-percentage-indicator .wpr-percentage-circle.blurred {
-  filter: blur(8px);
+  filter: blur(10px);
   user-select: none;
   -webkit-user-select: none;
   -moz-user-select: none;
