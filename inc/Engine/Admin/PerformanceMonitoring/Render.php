@@ -97,7 +97,7 @@ class Render extends Abstract_Render {
 		$data['has_credit']    = $this->plan->has_credit();
 		$data['can_add_url']   = $this->pma_context->is_adding_page_allowed();
 		$data['reach_max_url'] = ! $data['can_add_url'];
-		$data['beacon_id']     = $rocket_insights_beacon['id'];
+		$data['help']          = $rocket_insights_beacon;
 
 		echo $this->generate( 'partials/performance-monitoring/urls-table', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
