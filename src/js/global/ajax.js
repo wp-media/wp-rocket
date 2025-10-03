@@ -279,6 +279,11 @@ document.addEventListener('DOMContentLoaded', function() {
 			rocket_insights: ''
 		}
     };
+    
+    // Initialize globalScoreData from localized script data if available
+    if (window.rocket_ajax_data?.global_score_data) {
+        globalScoreData = window.rocket_ajax_data.global_score_data;
+    }
 
 	// ==== DOM Selectors ====
 	const $pageUrlInput = $('#wpr-speed-radar-url-input');
