@@ -144,7 +144,7 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 	/**
 	 * Handle SaaS request error.
 	 *
-	 * @param array|WP_Error $response WP Remote request.
+	 * @param array|\WP_Error $response WP Remote request.
 	 *
 	 * @return bool
 	 */
