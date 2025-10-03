@@ -1679,9 +1679,8 @@ class Page extends Abstract_Render {
 	 * @since 3.0
 	 */
 	private function addons_section() {
-		$webp_beacon            = $this->beacon->get_suggest( 'webp' );
-		$user_cache_beacon      = $this->beacon->get_suggest( 'user_cache' );
-		$rocket_insights_beacon = $this->beacon->get_suggest( 'rocket_insights' );
+		$webp_beacon       = $this->beacon->get_suggest( 'webp' );
+		$user_cache_beacon = $this->beacon->get_suggest( 'user_cache' );
 
 		$this->settings->add_page_section(
 			'addons',
@@ -1697,7 +1696,6 @@ class Page extends Abstract_Render {
 					'title'       => __( 'One-click Rocket Add-ons', 'rocket' ),
 					'description' => __( 'One-Click Add-ons are features extending available options without configuration needed. Switch the option "on" to enable from this screen.', 'rocket' ),
 					'type'        => 'addons_container',
-					'help'        => $rocket_insights_beacon,
 					'page'        => 'addons',
 				],
 			]
@@ -1709,7 +1707,6 @@ class Page extends Abstract_Render {
 					'title'       => __( 'Rocket Add-ons', 'rocket' ),
 					'description' => __( 'Rocket Add-ons are complementary features extending available options.', 'rocket' ),
 					'type'        => 'addons_container',
-					'help'        => $rocket_insights_beacon,
 					'page'        => 'addons',
 				],
 			]
