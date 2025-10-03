@@ -122,15 +122,12 @@ abstract class AbstractAPIClient {
 	 *
 	 * @return bool
 	 */
-	private function check_response( $response ): bool {
+	protected function check_response( $response ): bool {
 		$this->response_code = is_array( $response )
 			? wp_remote_retrieve_response_code( $response )
 			: $response->get_error_code();
 
 		if ( ! in_array( (int) $this->response_code, [ 200, 201 ], true ) ) {
-			$previous_errors = (int) get_transient( 'wp_rocket_rucss_errors_count' );
-			set_transient( 'wp_rocket_rucss_errors_count', $previous_errors + 1, 5 * MINUTE_IN_SECONDS );
-
 			if ( empty( $response ) ) {
 				$this->error_message = 'API Client Error';
 				return false;
@@ -142,7 +139,7 @@ abstract class AbstractAPIClient {
 
 			return false;
 		}
-		delete_transient( 'wp_rocket_rucss_errors_count' );
+
 		$this->response_body = wp_remote_retrieve_body( $response );
 
 		return true;
