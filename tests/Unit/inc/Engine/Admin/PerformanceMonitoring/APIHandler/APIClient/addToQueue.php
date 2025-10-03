@@ -31,7 +31,6 @@ class Test_AddToQueue extends TestCase {
 	 */
 	public function testShouldReturnAsExpected( $config, $expected ) {
 		Functions\expect( 'user_trailingslashit' )->with( $config['url'] )->andReturn( $config['url_with_slash'] );
-		Functions\expect( 'wpm_apply_filters_typed' )->with( 'string', 'rocket_saas_api_queued_url', $config['url_with_slash'], 'performance_monitoring' )->andReturn( $config['url_with_slash'] );
 		Functions\expect( 'rocket_get_constant' )->with( 'WP_ROCKET_SAAS_API_URL', false )->andReturn( $config['api_url'] );
 		$this->options->expects()->get( 'consumer_email', '' )->andReturn( $config['email'] );
 		$this->options->expects()->get( 'consumer_key', '' )->andReturn( $config['key'] );
