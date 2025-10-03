@@ -17,6 +17,8 @@ class RenderGlobalScoreWidgetTest extends TestCase {
 
 	protected static $container;
 
+	private $performance_monitoring;
+
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
 
@@ -171,4 +173,8 @@ class RenderGlobalScoreWidgetTest extends TestCase {
 
 		return trim($html);
 	}
+
+	public function set_performance_monitoring() {
+        return $this->performance_monitoring;
+    }
 }

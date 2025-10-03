@@ -133,7 +133,7 @@ class DeleteRowTest extends TestCase {
 			$container = apply_filters( 'rocket_container', null );
 			$ri_query = $container->get( 'ri_query' );
 			$items = $ri_query->query( [] );
-			$this->assertCount( $items, $expected['database_entries_after'] );
+			$this->assertCount( $expected['database_entries_after'], $items );
 		}
 
 		// Check if specific item was deleted

@@ -14,7 +14,7 @@ defined( 'ABSPATH' ) || exit;
 <div class="wpr-fieldsContainer">
 	<fieldset class="wpr-fieldsContainer-fieldset">
 		<div class="wpr-field" id="wpr_global_score_widget">
-			<?php $this->render_parts_with_data( 'performance-monitoring/global-score-widget-content', $data ); ?>
+			<?php $this->render_parts_with_data( 'rocket-insights/global-score-widget-content', $data ); ?>
 		</div>
 	</fieldset>
 </div>

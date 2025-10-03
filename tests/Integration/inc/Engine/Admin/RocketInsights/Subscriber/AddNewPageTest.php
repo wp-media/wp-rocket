@@ -138,7 +138,7 @@ class AddNewPageTest extends AjaxTestCase {
 		// Check if database entry was created
 		if ( isset( $expected['database_entries'] ) && $expected['database_entries'] > 0 ) {
 			$items = $this->container->get( 'ri_query' )->query( [] );
-			$this->assertCount( $items, $expected['database_entries'] );
+			$this->assertCount( $expected['database_entries'], $items );
 		}
 
 		// Check if hook was fired
