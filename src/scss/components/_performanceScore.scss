@@ -22,6 +22,9 @@
 					}
 				}
 			}
+			.wpr-percentage-circle.wpr-centralize-100-score {
+				text-indent: -1px;
+			}
 			.wpr-tooltip{
 				display: none;
 			}
@@ -67,10 +70,12 @@
 			justify-content: center;
 			align-items: center;
 			width: 92px;
-			height: 93px;
+			height: 92px;
 			font-family: Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 			border-radius: 50%;
 			border: 3.83px solid;
+			text-indent: 1px;
+			line-height: 0;
 			&-sm{
 				width: 32px;
 				height: 32px;

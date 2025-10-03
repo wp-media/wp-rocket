@@ -101,15 +101,20 @@
 	.wpr-percentage-indicator{
 		top: 3px;
 		.wpr-percentage-circle{
-			width: 33.5px;
-			height: 33.5px;
-			font-size: 14px;
+			width: 32px;
+			height: 32px;
+			font-size: 14.67px;
 			border-width: 1.33px;
 			font-weight: 600;
+			text-indent: 1px;
+			line-height: 0;
 		}
 		.wpr-loading-img{
 			width: 32px;
 			height: 32px;
+		}
+		.wpr-percentage-circle.wpr-centralize-100-score {
+			text-indent: -1px;
 		}
 	}
 	.wpr-pma-item{
