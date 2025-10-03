@@ -30,15 +30,15 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'update_option_wp_rocket_settings'    => [ 'track_option_change', 10, 2 ],
-			'wp_rocket_upgrade'                   => [ 'migrate_optin', 10, 2 ],
-			'rocket_dashboard_after_account_data' => [ 'render_optin', 8 ],
-			'wp_ajax_rocket_toggle_optin'         => [ 'ajax_toggle_optin' ],
-			'admin_enqueue_scripts'               => [ 'localize_optin_status', 15 ],
-			'admin_print_scripts'                 => [ 'inject_mixpanel_script' ],
-			'rocket_mixpanel_optin_changed'       => 'track_optin_change',
-			'rocket_rocket_insights_job_added'    => [ 'track_rocket_insights_url_added', 10, 3 ],
-			'admin_footer-settings_page_wprocket' => 'track_admin_visits',
+			'update_option_wp_rocket_settings'     => [ 'track_option_change', 10, 2 ],
+			'wp_rocket_upgrade'                    => [ 'migrate_optin', 10, 2 ],
+			'rocket_dashboard_after_account_data'  => [ 'render_optin', 8 ],
+			'wp_ajax_rocket_toggle_optin'          => [ 'ajax_toggle_optin' ],
+			'admin_enqueue_scripts'                => [ 'localize_optin_status', 15 ],
+			'admin_print_scripts'                  => [ 'inject_mixpanel_script' ],
+			'rocket_mixpanel_optin_changed'        => 'track_optin_change',
+			'rocket_rocket_insights_job_added'     => [ 'track_rocket_insights_url_added', 10, 3 ],
+			'admin_footer-settings_page_wprocket'  => 'track_admin_visits',
 			'rocket_rocket_insights_job_failed'    => [ 'track_rocket_insights_test', 10, 3 ],
 			'rocket_rocket_insights_job_completed' => [ 'track_rocket_insights_test', 10, 3 ],
 		];
