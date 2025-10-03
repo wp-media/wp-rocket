@@ -31,6 +31,7 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 	 * @return array|\WP_Error
 	 */
 	public function add_to_queue( string $url, array $options = [] ) {
+		$url = user_trailingslashit( $url );
 		$url = $this->filter_url( $url, 'performance_monitoring' );
 
 		$request_body = [
