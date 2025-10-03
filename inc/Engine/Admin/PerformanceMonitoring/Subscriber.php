@@ -219,6 +219,16 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		$data['pm_no_credit_tooltip'] = __( 'Upgrade your plan to get access to re-test performance or run new tests', 'rocket' );
 		$data['is_free']              = (int) $this->pma_context->is_free_user();
 
+		$global_score_data                   = $this->controller->get_global_score();
+		$global_score_data['status-color']   = $this->render->get_score_color_status( (int) $global_score_data['score'] );
+		$global_score_data['remaining_urls'] = $this->controller->get_remaining_url_count();
+
+		$data['global_score_data'] = [
+			'data'     => $global_score_data,
+			'html'     => $this->render->get_global_score_widget_content( $global_score_data ),
+			'row_html' => $this->render->get_global_score_row( $global_score_data ),
+		];
+
 		return $data;
 	}
 
