@@ -122,7 +122,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @since 3.20
 	 *
 	 * @param string $url        The URL that was added for monitoring.
-	 * @param Plan   $plan       Plan instance.
+	 * @param string $plan       Plan name.
 	 * @param int    $urls_count The current number of URLs being monitored.
 	 *
 	 * @return void
@@ -138,7 +138,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @param object $row_details Details related to the database row.
 	 * @param array  $job_details Details related to the job.
-	 * @param Plan   $plan Plan instance.
+	 * @param string $plan Plan name.
 	 *
 	 * @return void
 	 */

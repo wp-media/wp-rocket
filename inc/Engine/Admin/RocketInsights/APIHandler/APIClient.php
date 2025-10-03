@@ -116,6 +116,7 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 			$error_data = [
 				'code'    => $this->response_code,
 				'message' => $this->error_message,
+				'status'  => 'failed',
 			];
 
 			$this->logger::error(
@@ -132,6 +133,7 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 			$error_data = [
 				'code'    => 400,
 				'message' => 'Invalid API response - malformed JSON',
+				'status'  => 'failed',
 			];
 
 			$this->logger::error(
@@ -150,8 +152,19 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 			]
 		);
 
+		switch ( $response_data['status'] ?? 'pending' ) {
+			case 'pending':
+				$code = 425;
+				break;
+			case 'failed':
+				$code = 500;
+				break;
+			default:
+				$code = 200;
+				break;
+		}
 		return [
-			'code'   => 'pending' === $response_data['status'] ? 425 : 200,
+			'code'   => $code,
 			'status' => $response_data['status'] ?? 'pending',
 			'data'   => $response_data['data'] ?? null,
 		];

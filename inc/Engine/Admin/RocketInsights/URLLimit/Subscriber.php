@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Admin\RocketInsights\URLLimit;
 
+use WP_Rocket\Engine\Admin\RocketInsights\Context\Context;
 use WP_Rocket\Engine\Admin\RocketInsights\GlobalScore;
 use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Event_Management\Subscriber_Interface;
@@ -31,16 +32,25 @@ class Subscriber implements Subscriber_Interface {
 	private $global_score;
 
 	/**
+	 * Context instance.
+	 *
+	 * @var Context
+	 */
+	private $context;
+
+	/**
 	 * Constructor
 	 *
-	 * @param Query       $query    Rocket Insights query instance.
-	 * @param User        $user     User client API instance.
+	 * @param Query       $query        Rocket Insights query instance.
+	 * @param User        $user         User client API instance.
 	 * @param GlobalScore $global_score GlobalScore instance.
+	 * @param Context     $context      Context instance.
 	 */
-	public function __construct( Query $query, User $user, GlobalScore $global_score ) {
+	public function __construct( Query $query, User $user, GlobalScore $global_score, Context $context ) {
 		$this->query        = $query;
 		$this->user         = $user;
 		$this->global_score = $global_score;
+		$this->context      = $context;
 	}
 
 	/**
@@ -51,7 +61,10 @@ class Subscriber implements Subscriber_Interface {
 	public static function get_subscribed_events(): array {
 		return [
 			'rocket_rocket_insights_allow_add_page' => 'is_adding_page_allowed',
-			'rocket_rocket_insights_upgrade'        => [ 'clean_upgrade_plan_urls', 10, 2 ],
+			'rocket_rocket_insights_upgrade'        => [
+				[ 'clean_upgrade_plan_urls', 10, 2 ],
+				[ 'unblur_rows', 11 ],
+			],
 		];
 	}
 
@@ -82,6 +95,24 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		$this->query->prune_old_items( $limit );
+		$this->global_score->reset();
+	}
+
+	/**
+	 * Change blurred rows into unblurred.
+	 *
+	 * @return void
+	 */
+	public function unblur_rows() {
+		if ( ! $this->context->is_allowed() ) {
+			return;
+		}
+
+		if ( $this->context->is_free_user() ) {
+			return;
+		}
+
+		$this->query->unblur_rows();
 		$this->global_score->reset();
 	}
 }
