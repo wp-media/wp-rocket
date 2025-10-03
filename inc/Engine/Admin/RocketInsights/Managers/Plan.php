@@ -40,17 +40,17 @@ class Plan {
 	/**
 	 * Current plan option name.
 	 */
-	const CURRENT_PLAN_OPTION_NAME = 'insights_current_plan';
+	const CURRENT_PLAN_OPTION_NAME = 'rocket_insights_current_plan';
 
 	/**
 	 * Credit option name.
 	 */
-	const CREDIT_OPTION_NAME = 'pm_credit';
+	const CREDIT_OPTION_NAME = 'rocket_insights_credit';
 
 	/**
 	 * Last reset date option name.
 	 */
-	const RESET_CREDIT_OPTION_NAME = 'pm_last_reset';
+	const RESET_CREDIT_OPTION_NAME = 'rocket_insights_credit_last_reset';
 
 	/**
 	 * Constructor.
