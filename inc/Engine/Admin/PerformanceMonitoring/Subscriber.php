@@ -503,7 +503,16 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 
 		$schedule = $this->options->get( 'performance_monitoring_schedule_frequency', 'monthly' );
 
-		wp_schedule_event( time(), $schedule, 'wpr_pma_retest_all_pages' );
+		// Calculate the next run time based on the schedule frequency.
+		$intervals = [
+			'daily'   => DAY_IN_SECONDS,
+			'weekly'  => WEEK_IN_SECONDS,
+			'monthly' => MONTH_IN_SECONDS,
+		];
+
+		$interval = $intervals[ $schedule ] ?? MONTH_IN_SECONDS;
+
+		wp_schedule_event( time() + $interval, $schedule, 'wpr_pma_retest_all_pages' );
 	}
 
 	/**
