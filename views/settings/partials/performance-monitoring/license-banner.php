@@ -11,7 +11,7 @@ defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 <div class="wpr-pma-license-banner">
 	<div class="wpr-pma-banner-header">
 		<h2><?php esc_html_e( 'Unlock Your Site’s True Performance!', 'rocket' ); ?></h2>
-		<p><?php echo esc_html( $data['description'] ); ?></p>
+		<p><?php echo esc_html( $data['subtitle'] ); ?></p>
 	</div>
 	<div class="wpr-pma-banner-content">
 	<div class="wpr-pma-benefits-list-container">
@@ -22,11 +22,12 @@ defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 			</li>
 			<?php endforeach; ?>
 		</ul>
-		<?php if ( $data['price_before_discount'] ) : ?>
 		<p class="wpr-pma-terms">
-			<?php echo esc_html( $data['promo_description'] ); ?>
+			<?php echo esc_html( $data['billing'] ); ?>
+			<?php if ( $data['price_before_discount'] ) : ?>
+				<?php echo esc_html( $data['promo_billing'] ); ?>
+			<?php endif; ?>
 		</p>
-		<?php endif; ?>
 	</div>
 		<div class="wpr-pma-price-box">
 			<?php if ( $data['price_before_discount'] ) : ?>

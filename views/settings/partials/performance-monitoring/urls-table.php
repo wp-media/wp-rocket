@@ -19,7 +19,7 @@ defined( 'ABSPATH' ) || exit;
 </div>
 
 <?php
-$wp_rocket_pm_quota_banner_class = 'wpr-notice wpr-pma-notice wpr-error-notice';
+$wp_rocket_pm_quota_banner_class = 'wpr-notice wpr-pma-notice wpr-pma-free-limit-notice';
 if ( ! isset( $data['show_quota_banner'] ) || ! $data['show_quota_banner'] ) {
 	$wp_rocket_pm_quota_banner_class .= ' hidden';
 }
@@ -30,7 +30,7 @@ if ( ! isset( $data['show_quota_banner'] ) || ! $data['show_quota_banner'] ) {
 			<?php
 			printf(
 			// Translators: %1$s = opening strong tag, %2$s = closing strong tag.
-				esc_html__( 'You\'ve %1$sreached your free limit.%2$s Upgrade to continue.', 'rocket' ),
+				esc_html__( '%1$sCongrats!%2$s You fully enjoyed your free plan. Upgrade to keep testing, or wait for your free limit to reset.', 'rocket' ),
 				'<strong>',
 				'</strong>'
 			);
@@ -79,7 +79,7 @@ if ( ! isset( $data['show_quota_banner'] ) || ! $data['show_quota_banner'] ) {
 			class="wpr-speed-radar-input"
 			placeholder="<?php esc_attr_e( 'Enter a page URL to monitor', 'rocket' ); ?>"
 			id="wpr-speed-radar-url-input" />
-	
+
 	<div id="wpr_rocket_insights_add_page_btn_wrapper">
 		<?php
 		$this->render_add_page_btn( 'rocket-insights', $data );

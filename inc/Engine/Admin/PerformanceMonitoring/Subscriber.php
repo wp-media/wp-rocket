@@ -150,6 +150,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'rocket_dashboard_sidebar'          => 'render_global_score_widget',
 			'rocket_insights_tab_content'       => [
 				[ 'render_license_banner_section', 10 ],
+				[ 'maybe_show_paid_reach_limits_notice', 17 ],
 				[ 'maybe_show_notice', 18 ],
 				[ 'render_performance_urls_table', 20 ],
 			],
@@ -211,6 +212,17 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 
 		$data['pm_ids']               = $this->controller->get_not_finished_ids();
 		$data['pm_no_credit_tooltip'] = __( 'Upgrade your plan to get access to re-test performance or run new tests', 'rocket' );
+		$data['is_free']              = (int) $this->pma_context->is_free_user();
+
+		$global_score_data                   = $this->controller->get_global_score();
+		$global_score_data['status_color']   = $this->render->get_score_color_status( (int) $global_score_data['score'] );
+		$global_score_data['remaining_urls'] = $this->controller->get_remaining_url_count();
+
+		$data['global_score_data'] = [
+			'data'     => $global_score_data,
+			'html'     => $this->render->get_global_score_widget_content( $global_score_data ),
+			'row_html' => $this->render->get_global_score_row( $global_score_data ),
+		];
 
 		return $data;
 	}
@@ -454,6 +466,90 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public function maybe_show_notice() {
 		$this->controller->maybe_show_notice();
+	}
+
+	/**
+	 * Maybe show notice for paid users when reaching limits.
+	 *
+	 * @return void
+	 */
+	public function maybe_show_paid_reach_limits_notice() {
+		$this->controller->maybe_show_paid_reach_limits_notice();
+	}
+
+	/**
+	 * Schedule the next test for performance monitoring under certain conditions.
+	 *
+	 * @since TBD
+	 *
+	 * @return void
+	 */
+	public function maybe_schedule_next_test() {
+		if ( ! $this->should_schedule_next_test() ) {
+			return;
+		}
+
+		$this->schedule_retest_event();
+	}
+
+	/**
+	 * Determines if the next test should be scheduled based on user plan and settings.
+	 *
+	 * @since TBD
+	 *
+	 * @return bool Whether the next test should be scheduled.
+	 */
+	private function should_schedule_next_test(): bool {
+		// Only premium users can schedule tests.
+		if ( $this->pma_context->is_free_user() ) {
+			return false;
+		}
+
+		// Performance monitoring must be enabled.
+		if ( ! $this->options->get( 'performance_monitoring' ) ) {
+			return false;
+		}
+
+		// Don't schedule if already scheduled.
+		return ! $this->is_retest_event_scheduled();
+	}
+
+	/**
+	 * Schedules the daily retest event.
+	 *
+	 * @since TBD
+	 *
+	 * @return void
+	 */
+	private function schedule_retest_event(): void {
+
+		$schedule = $this->options->get( 'performance_monitoring_schedule_frequency', 'monthly' );
+
+		wp_schedule_event( time(), $schedule, 'wpr_pma_retest_all_pages' );
+	}
+
+	/**
+	 * Add monthly schedule to cron schedules.
+	 *
+	 * @param array|mixed $schedules Cron schedules.
+	 *
+	 * @return array|mixed
+	 */
+	public function maybe_add_monthly_schedule( $schedules ) {
+		if ( ! is_array( $schedules ) ) {
+			return $schedules;
+		}
+
+		if ( isset( $schedules['monthly'] ) ) {
+			return $schedules;
+		}
+
+		$schedules['monthly'] = [
+			'interval' => MONTH_IN_SECONDS,
+			'display'  => __( 'Once a month', 'rocket' ),
+		];
+
+		return $schedules;
 	}
 
 	/**
