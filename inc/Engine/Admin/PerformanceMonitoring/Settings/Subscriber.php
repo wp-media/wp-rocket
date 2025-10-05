@@ -34,8 +34,9 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_dashboard_after_account_data' => [ 'display_addon_status', 9 ], // Higher priority than RocketCDN.
-			'rocket_insights_settings_enabled'    => 'disable_for_free_plan',
+			'rocket_dashboard_after_account_data'          => [ 'display_addon_status', 9 ], // Higher priority than RocketCDN.
+			'rocket_insights_settings_enabled'             => 'disable_for_free_plan',
+			'pre_get_rocket_option_performance_monitoring' => 'disable_performance_monitoring_schedule',
 		];
 	}
 
@@ -62,5 +63,19 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		return ! $this->controller->is_free_plan();
+	}
+
+	/**
+	 * Disable performance monitoring schedule option for free users
+	 *
+	 * @param mixed $option_value Option value.
+	 *
+	 * @return int
+	 */
+	public function disable_performance_monitoring_schedule( $option_value ) {
+		if ( ! $this->controller->is_free_plan() ) {
+			return $option_value;
+		}
+		return 0;
 	}
 }
