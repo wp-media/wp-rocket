@@ -240,10 +240,6 @@ class Controller {
 			return $payload;
 		}
 
-		// TODO: Check if url is not excluded.
-
-		// TODO: Check if page is cached.
-
 		// Fetch url body and send to payload.
 		$payload['message'] = $response;
 
