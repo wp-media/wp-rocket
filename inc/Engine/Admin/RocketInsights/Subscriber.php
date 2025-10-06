@@ -171,8 +171,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'cron_schedules'                              => 'maybe_add_monthly_schedule',
 			'rocket_options_changed'                      => 'maybe_cancel_scheduled_jobs',
 			'rocket_rocket_insights_retest_all_pages'     => 'retest_all_pages',
-			'rocket_options_changed'            => 'maybe_cancel_automatic_retest_job',
-			'rocket_insights_retest'            => 'retest_all_pages',
+			'rocket_insights_retest'                      => 'retest_all_pages',
 		];
 	}
 
@@ -279,7 +278,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return void
 	 */
 	private function schedule_retest_task() {
-		if ( ! $this->pma_context->is_schedule_allowed() ) {
+		if ( ! $this->context->is_schedule_allowed() ) {
 			$this->cancel_retest_job();
 			return;
 		}

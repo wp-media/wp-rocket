@@ -87,7 +87,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					new StringArgument( $this->getContainer()->get( 'template_path' ) . '/settings/' ),
 					'ri_plan',
 					'ri_context',
-					'beacon'
+					'beacon',
 				]
 			);
 

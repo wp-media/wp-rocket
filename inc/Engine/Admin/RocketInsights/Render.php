@@ -38,14 +38,14 @@ class Render extends Abstract_Render {
 	 * @param string  $template_path   Path to the template file.
 	 * @param Plan    $plan Plan instance.
 	 * @param Context $context Instance of PerformanceMonitoringContext for managing performance monitoring context.
-	 * @param Beacon                       $beacon          Beacon instance.
+	 * @param Beacon  $beacon          Beacon instance.
 	 */
 	public function __construct( $template_path, Plan $plan, Context $context, Beacon $beacon ) {
 		parent::__construct( $template_path );
 
 		$this->plan    = $plan;
 		$this->context = $context;
-		$this->beacon      = $beacon;
+		$this->beacon  = $beacon;
 	}
 
 	/**
