@@ -1758,9 +1758,9 @@ class Page extends Abstract_Render {
 					'default'           => 'weekly',
 					'sanitize_callback' => 'sanitize_text_field',
 					'choices'           => [
-						'daily'   => __( 'Daily', 'rocket' ),
-						'weekly'  => __( 'Weekly', 'rocket' ),
-						'monthly' => __( 'Monthly', 'rocket' ),
+						DAY_IN_SECONDS   => __( 'Daily', 'rocket' ),
+						WEEK_IN_SECONDS  => __( 'Weekly', 'rocket' ),
+						MONTH_IN_SECONDS => __( 'Monthly', 'rocket' ),
 					],
 					'input_attr'        => [
 						'disabled' => ! $insights_settings_enabled ? 1 : 0,

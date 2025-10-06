@@ -157,20 +157,15 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'admin_init'                        => [
 				[ 'flush_license_cache', 8 ],
 				[ 'check_upgrade' ],
-				[ 'schedule_reset_credit' ],
+				[ 'schedule_jobs', 11 ],
 			],
 			'admin_post_rocket_pm_add_homepage' => 'add_homepage_from_widget',
 			'rocket_deactivation'               => [
 				[ 'cancel_scheduled_jobs' ],
 				[ 'remove_current_plan' ],
 			],
-			'init'                              => [
-				[ 'maybe_cancel_scheduled_jobs' ],
-				[ 'maybe_schedule_next_test' ],
-			],
-			'cron_schedules'                    => 'maybe_add_monthly_schedule',
-			'rocket_options_changed'            => 'maybe_cancel_scheduled_jobs',
-			'wpr_pma_retest_all_pages'          => 'retest_all_pages',
+			'rocket_options_changed'            => 'maybe_cancel_automatic_retest_job',
+			'rocket_insights_retest'            => 'retest_all_pages',
 		];
 	}
 
@@ -219,6 +214,16 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		$data['pm_no_credit_tooltip'] = __( 'Upgrade your plan to get access to re-test performance or run new tests', 'rocket' );
 		$data['is_free']              = (int) $this->pma_context->is_free_user();
 
+		$global_score_data                   = $this->controller->get_global_score();
+		$global_score_data['status_color']   = $this->render->get_score_color_status( (int) $global_score_data['score'] );
+		$global_score_data['remaining_urls'] = $this->controller->get_remaining_url_count();
+
+		$data['global_score_data'] = [
+			'data'     => $global_score_data,
+			'html'     => $this->render->get_global_score_widget_content( $global_score_data ),
+			'row_html' => $this->render->get_global_score_row( $global_score_data ),
+		];
+
 		return $data;
 	}
 
@@ -241,21 +246,48 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	}
 
 	/**
-	 * Schedule reset credit recurring AS task.
+	 * Schedule recurring AS jobs.
 	 *
 	 * @return void
 	 */
-	public function schedule_reset_credit(): void {
+	public function schedule_jobs(): void {
 		if ( ! $this->pma_context->is_allowed() ) {
 			return;
 		}
 
 		if ( ! $this->pma_context->is_free_user() ) {
-			$this->cancel_scheduled_jobs();
+			$this->queue->cancel_credit_reset_job();
+
+			$this->schedule_retest_task();
 			return;
 		}
 
-		$this->queue->schedule_reset_task();
+		$this->queue->schedule_credit_reset_task();
+		$this->cancel_retest_job();
+	}
+
+	/**
+	 * Schedule retest task.
+	 *
+	 * @return void
+	 */
+	private function schedule_retest_task() {
+		if ( ! $this->pma_context->is_schedule_allowed() ) {
+			$this->cancel_retest_job();
+			return;
+		}
+
+		$schedule_frequency = $this->options->get( 'performance_monitoring_schedule_frequency', MONTH_IN_SECONDS );
+		$this->queue->schedule_retest_task( $schedule_frequency );
+	}
+
+	/**
+	 * Cancel retest job.
+	 *
+	 * @return void
+	 */
+	private function cancel_retest_job() {
+		$this->queue->cancel_retest_job();
 	}
 
 	/**
@@ -406,7 +438,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return void
 	 */
 	public function cancel_scheduled_jobs() {
-		$this->queue->cancel_reset_job();
+		$this->queue->cancel_all_tasks();
 	}
 
 	/**
@@ -446,81 +478,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	}
 
 	/**
-	 * Schedule the next test for performance monitoring under certain conditions.
-	 *
-	 * @since TBD
-	 *
-	 * @return void
-	 */
-	public function maybe_schedule_next_test() {
-		if ( ! $this->should_schedule_next_test() ) {
-			return;
-		}
-
-		$this->schedule_retest_event();
-	}
-
-	/**
-	 * Determines if the next test should be scheduled based on user plan and settings.
-	 *
-	 * @since TBD
-	 *
-	 * @return bool Whether the next test should be scheduled.
-	 */
-	private function should_schedule_next_test(): bool {
-		// Only premium users can schedule tests.
-		if ( $this->pma_context->is_free_user() ) {
-			return false;
-		}
-
-		// Performance monitoring must be enabled.
-		if ( ! $this->options->get( 'performance_monitoring' ) ) {
-			return false;
-		}
-
-		// Don't schedule if already scheduled.
-		return ! $this->is_retest_event_scheduled();
-	}
-
-	/**
-	 * Schedules the daily retest event.
-	 *
-	 * @since TBD
-	 *
-	 * @return void
-	 */
-	private function schedule_retest_event(): void {
-
-		$schedule = $this->options->get( 'performance_monitoring_schedule_frequency', 'monthly' );
-
-		wp_schedule_event( time(), $schedule, 'wpr_pma_retest_all_pages' );
-	}
-
-	/**
-	 * Add monthly schedule to cron schedules.
-	 *
-	 * @param array|mixed $schedules Cron schedules.
-	 *
-	 * @return array|mixed
-	 */
-	public function maybe_add_monthly_schedule( $schedules ) {
-		if ( ! is_array( $schedules ) ) {
-			return $schedules;
-		}
-
-		if ( isset( $schedules['monthly'] ) ) {
-			return $schedules;
-		}
-
-		$schedules['monthly'] = [
-			'interval' => MONTH_IN_SECONDS,
-			'display'  => __( 'Once a month', 'rocket' ),
-		];
-
-		return $schedules;
-	}
-
-	/**
 	 * Retest all pages.
 	 *
 	 * @return void
@@ -538,73 +495,18 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 					'report_url' => '',
 					'is_blurred' => 0,
 				]
-				);
+			);
 		}
+		$this->reset_global_score();
 	}
 
 	/**
 	 * Cancels scheduled jobs for performance monitoring if the user is on the free plan
 	 * and performance monitoring is disabled.
 	 *
-	 * @since TBD
-	 *
 	 * @return void
 	 */
-	public function maybe_cancel_scheduled_jobs() {
-		if ( ! $this->should_cancel_scheduled_jobs() ) {
-			return;
-		}
-
-		$this->cancel_retest_scheduled_event();
-	}
-
-	/**
-	 * Determines if scheduled jobs should be cancelled based on user plan and settings.
-	 *
-	 * @since TBD
-	 *
-	 * @return bool Whether scheduled jobs should be cancelled.
-	 */
-	private function should_cancel_scheduled_jobs(): bool {
-		// Only free users might need cancellation.
-		if ( ! $this->pma_context->is_free_user() ) {
-			return false;
-		}
-
-		// If performance monitoring is enabled, don't cancel.
-		if ( $this->options->get( 'performance_monitoring' ) ) {
-			return false;
-		}
-
-		// Only cancel if there's an event scheduled.
-		return $this->is_retest_event_scheduled();
-	}
-
-	/**
-	 * Checks if the retest event is scheduled.
-	 *
-	 * @since TBD
-	 *
-	 * @return bool Whether the retest event is scheduled.
-	 */
-	private function is_retest_event_scheduled(): bool {
-		return (bool) wp_next_scheduled( 'wpr_pma_retest_all_pages' );
-	}
-
-	/**
-	 * Cancels the scheduled retest event.
-	 *
-	 * @since TBD
-	 *
-	 * @return void
-	 */
-	private function cancel_retest_scheduled_event(): void {
-		$next_event = wp_next_scheduled( 'wpr_pma_retest_all_pages' );
-
-		if ( ! $next_event ) {
-			return;
-		}
-
-		wp_unschedule_event( $next_event, 'wpr_pma_retest_all_pages' );
+	public function maybe_cancel_automatic_retest_job() {
+		$this->queue->cancel_retest_job();
 	}
 }

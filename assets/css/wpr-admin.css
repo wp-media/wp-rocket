@@ -3129,23 +3129,33 @@ div.wpr-tutorial-item {
 .wpr-pma-notice .wpr-notice-close {
   top: 16px;
 }
-.wpr-pma-notice.wpr-error-notice {
-  color: #AC2B15;
-  border-left: 4px solid #F56640;
-  background: #FDE0D9;
+.wpr-pma-notice.wpr-error-notice, .wpr-pma-notice.wpr-pma-free-limit-notice {
   font-family: Roboto, Arial, sans-serif;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
   line-height: 130%;
 }
-.wpr-pma-notice.wpr-error-notice .wpr-notice-close {
+.wpr-pma-notice.wpr-error-notice .wpr-notice-close, .wpr-pma-notice.wpr-pma-free-limit-notice .wpr-notice-close {
   font-size: 14px;
   text-decoration: underline;
   font-weight: 600;
-  color: #0C0F1F;
   top: 20px;
   line-height: 130%;
+}
+.wpr-pma-notice.wpr-error-notice {
+  color: #AC2B15;
+  border-left: 4px solid #F56640;
+  background: #FDE0D9;
+}
+.wpr-pma-notice.wpr-error-notice .wpr-notice-close {
+  color: #0C0F1F;
+}
+.wpr-pma-notice.wpr-pma-free-limit-notice {
+  color: #000000;
+}
+.wpr-pma-notice.wpr-pma-free-limit-notice .wpr-notice-close {
+  color: #000000;
 }
 
 .wpr-pma-summary-info {
