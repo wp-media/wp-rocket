@@ -454,14 +454,12 @@ function rocket_thank_you_license() {
 		update_option( WP_ROCKET_SLUG, $options );
 
 		$message = sprintf(
-			/* translators: %1$s = plugin name, %2$s + %3$s = opening links, %4$s = closing link */
-			__( '%1$s is good to go! %2$sTest your load time%4$s, or visit your %3$ssettings%4$s.', 'rocket' ),
-			'<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>',
-			'<a href="https://wp-rocket.me/blog/how-to-test-wordpress-site-performance-measure-speed-results/?utm_source=wp_plugin&utm_medium=wp_rocket" target="_blank">',
-			'<a href="' . admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG ) . '">',
-			'</a>'
+		/* translators: %1$s = plugin name, %2$s = opening link tag, %3$s = closing link tag */
+		__( '%1$s is good to go! Visit your %2$sdashboard%3$s to test your load time.', 'rocket' ),
+		'<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>',
+		'<a href="' . admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG ) . '">',
+		'</a>'
 		);
-
 		rocket_notice_html( [ 'message' => $message ] );
 	}
 }
@@ -662,6 +660,7 @@ function rocket_notice_html( $args ) {
 		'dismiss_button_message' => __( 'Dismiss this notice', 'rocket' ),
 		'readonly_content'       => '',
 		'id'                     => '',
+		'class_prefix'           => '',
 	];
 
 	$args = wp_parse_args( $args, $defaults );
@@ -735,7 +734,7 @@ function rocket_notice_html( $args ) {
 	}
 
 	?>
-	<div class="notice notice-<?php echo esc_attr( $args['status'] ); ?> <?php echo esc_attr( $args['dismissible'] ); ?>"<?php echo $notice_id; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
+	<div class="<?php echo esc_attr( $args['class_prefix'] ); ?>notice notice-<?php echo esc_attr( $args['status'] ); ?> <?php echo esc_attr( $args['dismissible'] ); ?>"<?php echo $notice_id; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
 		<?php
 			$tag = 0 !== strpos( $args['message'], '<p' ) && 0 !== strpos( $args['message'], '<ul' );
 
