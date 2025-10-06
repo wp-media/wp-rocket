@@ -38,23 +38,9 @@ $rocket_manual_preload = (bool) get_rocket_option( 'manual_preload', false );
 		<div class="wpr-notice-container">
 			<div class="wpr-notice-supTitle"><?php esc_html_e( 'Congratulations!', 'rocket' ); ?></div>
 			<h2 class="wpr-notice-title">
-			<?php
-			printf(
-				// translators: %1$s = opening <strong> tag, %2$s = closing </strong> tag.
-				esc_html__( '%1$sWP Rocket%2$s is good to go!', 'rocket' ),
-				'<strong>',
-				'</strong>'
-			);
-			?>
+			<?php esc_html_e( 'WP Rocket is now activated and already working for you.', 'rocket' ); ?>
 			<br>
-			<?php
-			printf(
-				// translators: %1$s = opening link tag, %2$s = closing link tag.
-				esc_html__( 'Visit your %1$sdashboard%2$s to test your load time.', 'rocket' ),
-				'<a href="#rocket_insights">',
-				'</a>'
-			);
-			?>
+			<?php esc_html_e( 'Your website should be loading faster now!', 'rocket' ); ?>
 			</h2>
 		<div class="wpr-notice-description"><?php esc_html_e( 'To guarantee fast websites, WP Rocket automatically applies 80% of web performance best practices.', 'rocket' ); ?><br> <?php esc_html_e( 'We also enable options that provide immediate benefits to your website.', 'rocket' ); ?></div>
 			<div class="wpr-notice-continue">
@@ -67,7 +53,7 @@ $rocket_manual_preload = (bool) get_rocket_option( 'manual_preload', false );
 				);
 				?>
 			</div>
-				<a id="wpr-congratulations-notice" class="wpr-notice-close wpr-icon-close rocket-dismiss" href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box=rocket_activation_notice' ), 'rocket_ignore_rocket_activation_notice' ) ); ?>"><span class="screen-reader-text"><?php esc_html_e( 'Dismiss this notice', 'rocket' ); ?></span></a>
+			<a id="wpr-congratulations-notice" class="wpr-notice-close wpr-icon-close rocket-dismiss" href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box=rocket_activation_notice' ), 'rocket_ignore_rocket_activation_notice' ) ); ?>"><span class="screen-reader-text"><?php esc_html_e( 'Dismiss this notice', 'rocket' ); ?></span></a>
 		</div>
 	</div>
 	<?php endif; ?>
