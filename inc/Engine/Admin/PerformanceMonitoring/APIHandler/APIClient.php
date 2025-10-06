@@ -38,9 +38,6 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 			'key'         => $this->options->get( 'consumer_key', '' ),
 			'url'         => $url,
 			'is_priority' => $options['is_home'] ?? false,
-			// @Todo: Both items are not working because of SaaS.
-			// 'device'  => ! $options['is_mobile'] ? 'desktop' : 'mobile',
-			// 'region' => $options['region'] ?? '',
 		];
 
 		$args = [
