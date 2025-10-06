@@ -1680,9 +1680,11 @@ div.wpr-upgrade-websites.notstacked {
 }
 .wpr-fieldsContainer.pma-settings-container .wpr-field {
   border: none;
+  padding: 0;
 }
 .wpr-fieldsContainer.pma-settings-container .wpr-fieldsContainer-fieldset {
   display: flex;
+  padding: 15px;
 }
 .wpr-fieldsContainer.pma-settings-container .wpr-fieldsContainer-fieldset .wpr-field--checkbox {
   flex: 0 0 50%;
@@ -1871,6 +1873,7 @@ div.wpr-upgrade-websites.notstacked {
   position: absolute;
   right: auto;
   top: auto;
+  font-weight: 400;
 }
 .wpr-btn-with-tool-tip:hover .wpr-tooltip {
   visibility: visible;
@@ -2786,8 +2789,8 @@ div.wpr-tutorial-item {
   margin-top: 10px;
 }
 .wpr-percentage-score-widget .wpr-percentage-indicator .wpr-percentage-circle {
-  border-width: 4px;
-  font-size: 43px;
+  border-width: 3.83px;
+  font-size: 42.17px;
   font-weight: 600;
 }
 .wpr-percentage-score-widget .wpr-percentage-indicator .wpr-percentage-circle .wpr-failed-score {
@@ -2799,6 +2802,9 @@ div.wpr-tutorial-item {
   height: 50px;
   background-size: contain;
   display: inline-block;
+}
+.wpr-percentage-score-widget .wpr-percentage-indicator .wpr-percentage-circle.wpr-centralize-100-score {
+  text-indent: -1px;
 }
 .wpr-percentage-score-widget .wpr-percentage-indicator .wpr-tooltip {
   display: none;
@@ -2844,11 +2850,10 @@ div.wpr-tutorial-item {
   align-items: center;
   width: 92px;
   height: 92px;
-  font-size: 50px;
   font-family: Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-  font-weight: 500;
   border-radius: 50%;
-  border: 3px solid;
+  border: 3.83px solid;
+  line-height: 0;
 }
 .wpr-percentage-indicator .wpr-percentage-circle-sm {
   width: 32px;
@@ -2871,7 +2876,11 @@ div.wpr-tutorial-item {
   background-color: #E8F8EB;
 }
 .wpr-percentage-indicator .wpr-percentage-circle.blurred {
-  filter: blur(4px);
+  filter: blur(10px);
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  pointer-events: none;
 }
 .wpr-percentage-indicator .wpr-percentage-circle .wpr-failed-score {
   width: 21.333px;
@@ -3105,6 +3114,7 @@ div.wpr-tutorial-item {
   background-image: none;
   border-radius: 0;
   border-left: 4px solid #3ECE9D;
+  margin: 15px 0 0 0;
 }
 .wpr-pma-notice .wpr-notice-container, .wpr-pma-notice p:first-child {
   padding: 16px;
@@ -3155,6 +3165,7 @@ div.wpr-tutorial-item {
   font-weight: 400;
   line-height: 130%;
   color: #0C0F1F;
+  margin: 15px 0;
 }
 .wpr-pma-summary-info a {
   color: #F3704D;
@@ -3165,7 +3176,6 @@ div.wpr-tutorial-item {
 }
 
 .wpr-pma-urls-table.widefat {
-  margin-top: 16px;
   border: none;
   border-collapse: separate;
   border-spacing: 0;
@@ -3214,12 +3224,17 @@ div.wpr-tutorial-item {
 .wpr-pma-urls-table .wpr-percentage-indicator .wpr-percentage-circle {
   width: 32px;
   height: 32px;
-  font-size: 14px;
-  border-width: 2px;
+  font-size: 14.67px;
+  border-width: 1.33px;
+  font-weight: 600;
+  line-height: 0;
 }
 .wpr-pma-urls-table .wpr-percentage-indicator .wpr-loading-img {
   width: 32px;
   height: 32px;
+}
+.wpr-pma-urls-table .wpr-percentage-indicator .wpr-percentage-circle.wpr-centralize-100-score {
+  text-indent: -1px;
 }
 .wpr-pma-urls-table .wpr-pma-item {
   background: #F9FAFB;
@@ -3321,10 +3336,9 @@ div.wpr-tutorial-item {
   margin-right: 0;
 }
 .wpr-pma-urls-table .wpr-pma-item-actions .wpr-pma-action:before {
-  font-size: 16px;
   position: relative;
   top: 2px;
-  margin-right: 8px;
+  margin-right: 6px;
 }
 .wpr-pma-urls-table .wpr-pma-item-actions .wpr-pma-action--disabled, .wpr-pma-urls-table .wpr-pma-item-actions .wpr-pma-action:disabled {
   color: rgb(134.5094339623, 150.0566037736, 169.4905660377) !important;
@@ -3334,6 +3348,15 @@ div.wpr-tutorial-item {
 .wpr-pma-urls-table .wpr-pma-item-actions .wpr-pma-action--disabled:focus, .wpr-pma-urls-table .wpr-pma-item-actions .wpr-pma-action:disabled:focus {
   transform: none;
   box-shadow: none;
+}
+.wpr-pma-urls-table .wpr-pma-item-actions .wpr-pma-action.wpr-icon-bold-refresh:before {
+  font-size: 15px;
+}
+.wpr-pma-urls-table .wpr-pma-item-actions .wpr-pma-action.wpr-icon-trash {
+  width: 8%;
+}
+.wpr-pma-urls-table .wpr-pma-item-actions .wpr-pma-action.wpr-icon-trash:before {
+  font-size: 14px;
 }
 .wpr-pma-urls-table .wpr-pma-item-actions .wpr-tooltip {
   width: 280px;
@@ -3352,6 +3375,7 @@ div.wpr-tutorial-item {
   display: flex;
   width: 80%;
   margin-right: 16px;
+  border: 2px solid #C2CAD4;
 }
 .wpr-pma-add-section .wpr-button {
   display: flex;

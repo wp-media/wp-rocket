@@ -29,7 +29,7 @@ if ( ( isset( $data['is_blurred'] ) && $data['is_blurred'] ) || ( isset( $data['
 		<?php echo $rocket_closing_anchor_tag; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 	<?php else : ?>
 		<?php echo $rocket_opening_anchor_tag; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-			<div class="wpr-percentage-circle <?php echo esc_html( $data['status-color'] ?? '' ); ?> <?php echo $rocket_pma_item_is_blurred ? 'blurred' : ''; ?>">
+			<div class="wpr-percentage-circle <?php echo esc_html( $data['status-color'] ?? '' ); ?> <?php echo $rocket_pma_item_is_blurred ? 'blurred' : ''; ?> <?php echo 100 === $data['score'] ? 'wpr-centralize-100-score' : ''; ?>">
 				<?php echo esc_html( $data['score'] ); ?>
 			</div>
 		<?php echo $rocket_closing_anchor_tag; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
