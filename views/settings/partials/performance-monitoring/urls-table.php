@@ -28,7 +28,7 @@ if ( ! isset( $data['show_quota_banner'] ) || ! $data['show_quota_banner'] ) {
 ?>
 <div class="<?php echo esc_attr( $wp_rocket_pm_quota_banner_class ); ?>" id="wpr-pma-quota-banner">
 	<div class="wpr-notice-container">
-		<div class="wpr-notice-description">
+		<div class="wpr-notice-description wpr-notice-70">
 			<?php
 			printf(
 			// Translators: %1$s = opening strong tag, %2$s = closing strong tag.

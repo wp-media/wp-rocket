@@ -3119,6 +3119,9 @@ div.wpr-tutorial-item {
 .wpr-pma-notice .wpr-notice-container, .wpr-pma-notice p:first-child {
   padding: 16px;
 }
+.wpr-pma-notice .wpr-notice-70 {
+  max-width: 70%;
+}
 .wpr-pma-notice .wpr-notice-description, .wpr-pma-notice p {
   margin: 0;
 }
