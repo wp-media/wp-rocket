@@ -87,6 +87,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					new StringArgument( $this->getContainer()->get( 'template_path' ) . '/settings/' ),
 					'pm_plan',
 					'pm_context',
+					'beacon',
 				]
 				);
 

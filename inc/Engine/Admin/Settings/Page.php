@@ -1696,6 +1696,8 @@ class Page extends Abstract_Render {
 			return;
 		}
 
+		$rocket_insights_beacon = $this->beacon->get_suggest( 'rocket_insights' );
+
 		$this->settings->add_page_section(
 			'rocket_insights',
 			[
@@ -1709,8 +1711,8 @@ class Page extends Abstract_Render {
 				'performance_monitoring' => [
 					'title'  => __( 'Settings', 'rocket' ),
 					'help'   => [
-						'id'  => '',
-						'url' => '',
+						'id'  => $rocket_insights_beacon['id'],
+						'url' => $rocket_insights_beacon['url'],
 					],
 					'page'   => 'rocket_insights',
 					'helper' => '',
@@ -1758,9 +1760,9 @@ class Page extends Abstract_Render {
 					'default'           => 'monthly',
 					'sanitize_callback' => 'sanitize_text_field',
 					'choices'           => [
-						'daily'   => __( 'Daily', 'rocket' ),
-						'weekly'  => __( 'Weekly', 'rocket' ),
-						'monthly' => __( 'Monthly', 'rocket' ),
+						DAY_IN_SECONDS   => __( 'Daily', 'rocket' ),
+						WEEK_IN_SECONDS  => __( 'Weekly', 'rocket' ),
+						MONTH_IN_SECONDS => __( 'Monthly', 'rocket' ),
 					],
 					'input_attr'        => [
 						'disabled' => ! $insights_settings_enabled ? 1 : 0,
