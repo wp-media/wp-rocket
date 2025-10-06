@@ -315,7 +315,10 @@ document.addEventListener('DOMContentLoaded', function() {
 		const isFree  = window.rocket_ajax_data?.is_free === '1';
 		const $quotaBanner = isFree ? $('#wpr-pma-quota-banner') : $('#rocket_insights_survey');
 
-		if (canAddPages === false) {
+		// Show banner if URL limit reached OR no credits left (matching PHP logic in Subscriber.php line 398).
+		const shouldShowBanner = canAddPages === false || !hasCredit;
+
+		if (shouldShowBanner) {
 			$summaryInfo.hide();
 			$quotaBanner.removeClass('hidden');
 		} else {
