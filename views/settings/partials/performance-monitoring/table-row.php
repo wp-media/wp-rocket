@@ -108,7 +108,6 @@ defined( 'ABSPATH' ) || exit;
 				'url'        => $data->delete_url(),
 				'attributes' => [
 					'class'      => 'wpr-btn-with-tool-tip wpr-icon-trash wpr-pma-action',
-					'title'      => __( 'Delete', 'rocket' ),
 					'aria-label' => __( 'Delete', 'rocket' ),
 				],
 			]
