@@ -1,20 +1,18 @@
 <?php
-namespace WP_Rocket\Tests\Unit\inc\Engine\Common\JobManager\APIHandler\APIClient;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\RUCSS\APIHandler\APIClient;
 
+use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\Common\JobManager\APIHandler\APIClient;
+use WP_Rocket\Engine\Optimization\RUCSS\APIHandler\APIClient;
 use WP_Rocket\Tests\Unit\TestCase;
-use Brain\Monkey\Functions;
-use WP_Rocket\Tests\Unit\HasLoggerTrait;
 
 /**
- * Test class covering \WP_Rocket\Engine\Common\JobManager\APIHandler\APIClient::add_to_queue
+ * Test class covering WP_Rocket\Engine\Optimization\RUCSS\APIHandler\APIClient::get_queue_job_status
  *
  * @group  SaaS
  */
-class Test_AddToQueue extends TestCase {
-	use HasLoggerTrait;
+class Test_GetQueueJobStatus extends TestCase {
 
 	protected $options;
 	protected $client;
@@ -24,30 +22,21 @@ class Test_AddToQueue extends TestCase {
 		parent::setUp();
 		$this->options = Mockery::mock(Options_Data::class);
 		$this->client = new APIClient($this->options);
-		$this->set_logger($this->client);
 	}
 
 	/**
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnAsExpected($config, $expected) {
-		Functions\expect('add_query_arg')->with([ 'nowprocket' => 1 ], $config['url'])->andReturn($config['url']);
 		Functions\expect('rocket_get_constant')->with('WP_ROCKET_SAAS_API_URL', false)->andReturn($config['api_url']);
 		$this->options->expects()->get('consumer_email', '')->andReturn($config['email']);
 		$this->options->expects()->get('consumer_key', '')->andReturn($config['key']);
 		Functions\expect('wp_remote_request')->with($config['request_uri'], $config['args'])->andReturn($config['response']);
 
 		$this->configureCheckResponse($config);
-		$this->configeAuthorized($config);
-		$this->assertEquals($expected, $this->client->add_to_queue($config['url'], $config['options']));
-	}
 
-	protected function configeAuthorized($config) {
-		if(! $config['is_unauthorized']) {
-			return;
-		}
-		Functions\expect('update_option')->with('wp_rocket_no_licence', true );
-		Functions\expect('update_rocket_option')->with('remove_unused_css', 0);
+		$this->assertEquals($expected, $this->client->get_queue_job_status($config['job_id'], $config['queue_name'],
+			$config['is_home']));
 	}
 
 	protected function configureCheckResponse($config) {

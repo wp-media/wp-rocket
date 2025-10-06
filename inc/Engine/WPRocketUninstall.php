@@ -91,6 +91,7 @@ class WPRocketUninstall {
 		'wpr_user_information_timeout_active',
 		'wpr_user_information_timeout',
 		'rocket_fonts_data_collection',
+		'wpr_global_score_data',
 	];
 
 	/**
@@ -104,6 +105,16 @@ class WPRocketUninstall {
 		'rocket_cache_dir_size_check',
 		'rocketcdn_check_subscription_status_event',
 		'rocket_cron_deactivate_cloudflare_devmode',
+		'rocket_saas_clean_rows_time_event',
+		'rocket_saas_on_submit_jobs',
+		'rocket_saas_pending_jobs',
+		'rocket_remove_saas_failed_jobs',
+		'rocket_performance_hints_cleanup',
+		'action_scheduler_run_queue_rucss',
+		'rocket_update_dynamic_lists',
+		'rocket_preload_clean_rows_time_event',
+		'rocket_preload_process_pending',
+		'rocket_preload_revert_old_failed_rows',
 	];
 
 	/**
@@ -149,35 +160,18 @@ class WPRocketUninstall {
 	/**
 	 * Constructor.
 	 *
-	 * @param string                    $cache_path            Path to the cache folder.
-	 * @param string                    $config_path           Path to the config folder.
-	 * @param UsedCSS                   $rucss_usedcss_table   RUCSS used_css table.
-	 * @param Cache                     $rocket_cache          Preload rocket_cache table.
-	 * @param AboveTheFold              $atf_table             Above the fold table.
-	 * @param LazyRenderContent         $lrc_table Lazy Render content table.
-	 * @param PreloadFonts              $preload_fonts_table   Preload fonts table.
-	 * @param PreconnectExternalDomains $preload_domains_table Preload External Domains content table.
+	 * @param string $cache_path            Path to the cache folder.
+	 * @param string $config_path           Path to the config folder.
+	 * @param array  $tables Array of tables to be dropped.
 	 */
 	public function __construct(
 		$cache_path,
 		$config_path,
-		$rucss_usedcss_table,
-		$rocket_cache,
-		$atf_table,
-		$lrc_table,
-		$preload_fonts_table,
-		$preload_domains_table
+		$tables
 	) {
 		$this->cache_path  = trailingslashit( $cache_path );
 		$this->config_path = $config_path;
-		$this->tables      = [
-			$rucss_usedcss_table,
-			$rocket_cache,
-			$atf_table,
-			$lrc_table,
-			$preload_fonts_table,
-			$preload_domains_table,
-		];
+		$this->tables      = $tables;
 	}
 
 	/**
@@ -246,6 +240,9 @@ class WPRocketUninstall {
 		array_walk( $this->options, 'delete_option' );
 
 		foreach ( $this->events as $event ) {
+			if ( ! wp_next_scheduled( $event ) ) {
+				continue;
+			}
 			wp_clear_scheduled_hook( $event );
 		}
 	}

@@ -6,6 +6,7 @@ use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Engine\Optimization\DelayJS\Admin\SiteList;
 use WP_Rocket\Engine\Optimization\DelayJS\Admin\Settings as DelayJSSettings;
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\Context\PerformanceMonitoringContext;
 use WP_Rocket\Abstract_Render;
 use WP_Rocket\Admin\Options_Data;
 
@@ -101,19 +102,27 @@ class Page extends Abstract_Render {
 	private $options;
 
 	/**
+	 * Performance Monitoring context instance
+	 *
+	 * @var PerformanceMonitoringContext
+	 */
+	private $pm_context;
+
+	/**
 	 * Creates an instance of the Page object.
 	 *
 	 * @since 3.0
 	 *
-	 * @param array        $args        Array of required arguments to add the admin page.
-	 * @param Settings     $settings    Instance of Settings class.
-	 * @param Render       $render      Render instance.
-	 * @param Beacon       $beacon      Beacon instance.
-	 * @param Optimization $optimize    Database optimization instance.
-	 * @param UserClient   $user_client User client instance.
-	 * @param SiteList     $delayjs_sitelist User client instance.
-	 * @param string       $template_path Path to views.
-	 * @param Options_Data $options       WP Rocket options instance.
+	 * @param array                        $args        Array of required arguments to add the admin page.
+	 * @param Settings                     $settings    Instance of Settings class.
+	 * @param Render                       $render      Render instance.
+	 * @param Beacon                       $beacon      Beacon instance.
+	 * @param Optimization                 $optimize    Database optimization instance.
+	 * @param UserClient                   $user_client User client instance.
+	 * @param SiteList                     $delayjs_sitelist User client instance.
+	 * @param string                       $template_path Path to views.
+	 * @param Options_Data                 $options       WP Rocket options instance.
+	 * @param PerformanceMonitoringContext $pm_context Performance Monitoring context instance.
 	 */
 	public function __construct(
 		array $args,
@@ -124,7 +133,8 @@ class Page extends Abstract_Render {
 		UserClient $user_client,
 		SiteList $delayjs_sitelist,
 		$template_path,
-		Options_Data $options
+		Options_Data $options,
+		PerformanceMonitoringContext $pm_context
 	) {
 		parent::__construct( $template_path );
 		$args = array_merge(
@@ -146,6 +156,7 @@ class Page extends Abstract_Render {
 		$this->user_client      = $user_client;
 		$this->delayjs_sitelist = $delayjs_sitelist;
 		$this->options          = $options;
+		$this->pm_context       = $pm_context;
 	}
 
 	/**
@@ -199,6 +210,7 @@ class Page extends Abstract_Render {
 		$rocket_valid_key = rocket_valid_key();
 		if ( $rocket_valid_key ) {
 			$this->dashboard_section();
+			$this->rocket_insights_section();
 			$this->assets_section();
 			$this->media_section();
 			$this->preload_section();
@@ -1674,6 +1686,93 @@ class Page extends Abstract_Render {
 	}
 
 	/**
+	 * Registers Rocket Insights section.
+	 *
+	 * @since 3.20
+	 */
+	public function rocket_insights_section() {
+		// Hide Rocket Insights for reseller accounts and localhost installations.
+		if ( ! $this->pm_context->is_allowed() ) {
+			return;
+		}
+
+		$rocket_insights_beacon = $this->beacon->get_suggest( 'rocket_insights' );
+
+		$this->settings->add_page_section(
+			'rocket_insights',
+			[
+				'title'            => __( 'Rocket Insights', 'rocket' ),
+				'menu_description' => __( 'Get performance insights', 'rocket' ),
+			]
+		);
+
+		$this->settings->add_settings_sections(
+			[
+				'performance_monitoring' => [
+					'title'  => __( 'Settings', 'rocket' ),
+					'help'   => [
+						'id'  => $rocket_insights_beacon['id'],
+						'url' => $rocket_insights_beacon['url'],
+					],
+					'page'   => 'rocket_insights',
+					'helper' => '',
+					'class'  => [ 'pma-settings-container' ],
+				],
+			]
+		);
+
+		/**
+		 * Filters whether to enabled Rocket Insights settings.
+		 *
+		 * @param bool $enabled True to enable settings, false to disable it.
+		 */
+		$insights_settings_enabled = wpm_apply_filters_typed( 'boolean', 'rocket_insights_settings_enabled', true );
+
+		$this->settings->add_settings_fields(
+			[
+				'performance_monitoring' => [
+					'type'              => 'checkbox',
+					'label'             => __( 'Performance Monitoring', 'rocket' ),
+					'description'       => __( 'Enable automatic performance testing for your pages.', 'rocket' ),
+					'section'           => 'performance_monitoring',
+					'page'              => 'rocket_insights',
+					'default'           => 0,
+					'sanitize_callback' => 'sanitize_checkbox',
+					'container_class'   => [
+						! $insights_settings_enabled ? 'wpr-isDisabled' : '',
+					],
+					'input_attr'        => [
+						'disabled' => ! $insights_settings_enabled ? 1 : 0,
+					],
+					'tooltip'           => ! $insights_settings_enabled ? __( 'Upgrade your plan to get access to automatic performance tests', 'rocket' ) : '',
+				],
+				'performance_monitoring_schedule_frequency' => [
+					'container_class'   => [
+						'wpr-field--children',
+						! $insights_settings_enabled ? 'wpr-isDisabled' : '',
+					],
+					'type'              => 'select',
+					'label'             => '',
+					'description'       => '',
+					'parent'            => 'performance_monitoring',
+					'section'           => 'performance_monitoring',
+					'page'              => 'rocket_insights',
+					'default'           => 'weekly',
+					'sanitize_callback' => 'sanitize_text_field',
+					'choices'           => [
+						DAY_IN_SECONDS   => __( 'Daily', 'rocket' ),
+						WEEK_IN_SECONDS  => __( 'Weekly', 'rocket' ),
+						MONTH_IN_SECONDS => __( 'Monthly', 'rocket' ),
+					],
+					'input_attr'        => [
+						'disabled' => ! $insights_settings_enabled ? 1 : 0,
+					],
+				],
+			],
+		);
+	}
+
+	/**
 	 * Registers Add-ons section.
 	 *
 	 * @since 3.0
@@ -2214,51 +2313,5 @@ class Page extends Abstract_Render {
 
 		$this->options->set( 'do_caching_mobile_files', 1 );
 		update_option( rocket_get_constant( 'WP_ROCKET_SLUG', 'wp_rocket_settings' ), $this->options->get_options() );
-	}
-
-	/**
-	 * Display an update notice when the plugin is updated.
-	 *
-	 * @return void
-	 */
-	public function display_update_notice() {
-		if ( ! current_user_can( 'rocket_manage_options' ) ) {
-			return;
-		}
-
-		if ( 'settings_page_wprocket' !== get_current_screen()->id ) {
-			return;
-		}
-
-		$boxes = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
-
-		if ( in_array( 'rocket_update_notice', (array) $boxes, true ) ) {
-			return;
-		}
-
-		$previous_version = $this->options->get( 'previous_version' );
-
-		// Bail-out if previous version is greater than or equal to 3.19.
-		if ( version_compare( $previous_version, '3.19', '>=' ) ) {
-			return;
-		}
-
-		$preconnect_content = $this->beacon->get_suggest( 'preconnect_domains' );
-
-		rocket_notice_html(
-			[
-				'status'         => 'info',
-				'dismissible'    => '',
-				'message'        => sprintf(
-						// translators: %1$s: opening strong tag, %2$s: closing strong tag, %3$s: opening a tag, %4$s: closing a tag.
-						__( '%1$sWP Rocket:%2$s the plugin has been updated to the 3.19 version. New feature: %3$sPreconnect to external domains%4$s. Check out our documentation to learn more about it.', 'rocket' ),
-						'<strong>',
-						'</strong>',
-						'<a href="' . esc_url( $preconnect_content['url'] ) . '" data-beacon-article="' . esc_attr( $preconnect_content['id'] ) . '" target="_blank" rel="noopener noreferrer">',
-						'</a>'
-				),
-				'dismiss_button' => 'rocket_update_notice',
-			]
-		);
 	}
 }

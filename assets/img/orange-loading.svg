@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" width="118" height="118" style="shape-rendering: auto; display: block; background: transparent;" xmlns:xlink="http://www.w3.org/1999/xlink"><g><circle r="10" fill="rgba(243, 112, 77, 0.5)" cy="50" cx="90">
+  <animate begin="-1.8333333333333333s" repeatCount="indefinite" dur="2s" values="6;6;10;6;6" attributeName="r"></animate>
+  <animate begin="-1.8333333333333333s" dur="2s" repeatCount="indefinite" values="rgba(243, 112, 77, 0.5);rgba(243, 112, 77, 0.5);#f3704d;rgba(243, 112, 77, 0.5);rgba(243, 112, 77, 0.5)" attributeName="fill"></animate>
+</circle><circle r="10" fill="rgba(243, 112, 77, 0.5)" cy="70" cx="84.64101615137756">
+  <animate begin="-1.6666666666666667s" repeatCount="indefinite" dur="2s" values="6;6;10;6;6" attributeName="r"></animate>
+  <animate begin="-1.6666666666666667s" dur="2s" repeatCount="indefinite" values="rgba(243, 112, 77, 0.5);rgba(243, 112, 77, 0.5);#f3704d;rgba(243, 112, 77, 0.5);rgba(243, 112, 77, 0.5)" attributeName="fill"></animate>
+</circle><circle r="10" fill="rgba(243, 112, 77, 0.5)" cy="84.64101615137754" cx="70">
+  <animate begin="-1.5s" repeatCount="indefinite" dur="2s" values="6;6;10;6;6" attributeName="r"></animate>
+  <animate begin="-1.5s" dur="2s" repeatCount="indefinite" values="rgba(243, 112, 77, 0.5);rgba(243, 112, 77, 0.5);#f3704d;rgba(243, 112, 77, 0.5);rgba(243, 112, 77, 0.5)" attributeName="fill"></animate>
+</circle><circle r="10" fill="rgba(243, 112, 77, 0.5)" cy="90" cx="50">
+  <animate begin="-1.3333333333333333s" repeatCount="indefinite" dur="2s" values="6;6;10;6;6" attributeName="r"></animate>
+  <animate begin="-1.3333333333333333s" dur="2s" repeatCount="indefinite" values="rgba(243, 112, 77, 0.5);rgba(243, 112, 77, 0.5);#f3704d;rgba(243, 112, 77, 0.5);rgba(243, 112, 77, 0.5)" attributeName="fill"></animate>
+</circle><circle r="10" fill="rgba(243, 112, 77, 0.5)" cy="84.64101615137756" cx="30.000000000000007">
+  <animate begin="-1.1666666666666667s" repeatCount="indefinite" dur="2s" values="6;6;10;6;6" attributeName="r"></animate>
+  <animate begin="-1.1666666666666667s" dur="2s" repeatCount="indefinite" values="rgba(243, 112, 77, 0.5);rgba(243, 112, 77, 0.5);#f3704d;rgba(243, 112, 77, 0.5);rgba(243, 112, 77, 0.5)" attributeName="fill"></animate>
+</circle><circle r="10" fill="rgba(243, 112, 77, 0.5)" cy="70" cx="15.35898384862245">
+  <animate begin="-1s" repeatCount="indefinite" dur="2s" values="6;6;10;6;6" attributeName="r"></animate>
+  <animate begin="-1s" dur="2s" repeatCount="indefinite" values="rgba(243, 112, 77, 0.5);rgba(243, 112, 77, 0.5);#f3704d;rgba(243, 112, 77, 0.5);rgba(243, 112, 77, 0.5)" attributeName="fill"></animate>
+</circle><circle r="10" fill="rgba(243, 112, 77, 0.5)" cy="50.00000000000001" cx="10">
+  <animate begin="-0.8333333333333334s" repeatCount="indefinite" dur="2s" values="6;6;10;6;6" attributeName="r"></animate>
+  <animate begin="-0.8333333333333334s" dur="2s" repeatCount="indefinite" values="rgba(243, 112, 77, 0.5);rgba(243, 112, 77, 0.5);#f3704d;rgba(243, 112, 77, 0.5);rgba(243, 112, 77, 0.5)" attributeName="fill"></animate>
+</circle><circle r="10" fill="rgba(243, 112, 77, 0.5)" cy="30.00000000000001" cx="15.358983848622444">
+  <animate begin="-0.6666666666666666s" repeatCount="indefinite" dur="2s" values="6;6;10;6;6" attributeName="r"></animate>
+  <animate begin="-0.6666666666666666s" dur="2s" repeatCount="indefinite" values="rgba(243, 112, 77, 0.5);rgba(243, 112, 77, 0.5);#f3704d;rgba(243, 112, 77, 0.5);rgba(243, 112, 77, 0.5)" attributeName="fill"></animate>
+</circle><circle r="10" fill="rgba(243, 112, 77, 0.5)" cy="15.358983848622465" cx="29.999999999999982">
+  <animate begin="-0.5s" repeatCount="indefinite" dur="2s" values="6;6;10;6;6" attributeName="r"></animate>
+  <animate begin="-0.5s" dur="2s" repeatCount="indefinite" values="rgba(243, 112, 77, 0.5);rgba(243, 112, 77, 0.5);#f3704d;rgba(243, 112, 77, 0.5);rgba(243, 112, 77, 0.5)" attributeName="fill"></animate>
+</circle><circle r="10" fill="rgba(243, 112, 77, 0.5)" cy="10" cx="49.99999999999999">
+  <animate begin="-0.3333333333333333s" repeatCount="indefinite" dur="2s" values="6;6;10;6;6" attributeName="r"></animate>
+  <animate begin="-0.3333333333333333s" dur="2s" repeatCount="indefinite" values="rgba(243, 112, 77, 0.5);rgba(243, 112, 77, 0.5);#f3704d;rgba(243, 112, 77, 0.5);rgba(243, 112, 77, 0.5)" attributeName="fill"></animate>
+</circle><circle r="10" fill="rgba(243, 112, 77, 0.5)" cy="15.358983848622458" cx="70">
+  <animate begin="-0.16666666666666666s" repeatCount="indefinite" dur="2s" values="6;6;10;6;6" attributeName="r"></animate>
+  <animate begin="-0.16666666666666666s" dur="2s" repeatCount="indefinite" values="rgba(243, 112, 77, 0.5);rgba(243, 112, 77, 0.5);#f3704d;rgba(243, 112, 77, 0.5);rgba(243, 112, 77, 0.5)" attributeName="fill"></animate>
+</circle><circle r="10" fill="rgba(243, 112, 77, 0.5)" cy="29.999999999999982" cx="84.64101615137753">
+  <animate begin="0s" repeatCount="indefinite" dur="2s" values="6;6;10;6;6" attributeName="r"></animate>
+  <animate begin="0s" dur="2s" repeatCount="indefinite" values="rgba(243, 112, 77, 0.5);rgba(243, 112, 77, 0.5);#f3704d;rgba(243, 112, 77, 0.5);rgba(243, 112, 77, 0.5)" attributeName="fill"></animate>
+</circle><g></g></g><!-- [ldio] generated by https://loading.io --></svg>
