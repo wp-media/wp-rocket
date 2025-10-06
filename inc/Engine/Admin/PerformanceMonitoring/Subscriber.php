@@ -518,7 +518,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @param string $old_version Previous plugin version.
 	 * @return void
 	 */
-	public function on_update_reset_credit( $old_version, $new_version ) {
+	public function on_update_reset_credit( $new_version, $old_version ) {
 		if ( version_compare( $old_version, '3.20.0', '<' ) ) {
 			$this->plan->reset_credit();
 		}
