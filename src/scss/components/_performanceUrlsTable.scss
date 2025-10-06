@@ -16,10 +16,8 @@
 	.wpr-notice-close{
 		top: 2*$space;
 	}
-	&.wpr-error-notice{
-		color:#AC2B15;
-		border-left: 4px solid #F56640;
-		background: #FDE0D9;
+
+	&.wpr-error-notice, &.wpr-ri-free-limit-notice{
 		font-family: Roboto, Arial, sans-serif;
 		font-size: 14px;
 		font-style: normal;
@@ -29,9 +27,23 @@
 			font-size: 14px;
 			text-decoration: underline;
 			font-weight: 600;
-			color: #0C0F1F;
 			top: 20px;
 			line-height: 130%;
+		}
+	}
+
+	&.wpr-error-notice{
+		color:#AC2B15;
+		border-left: 4px solid #F56640;
+		background: #FDE0D9;
+		.wpr-notice-close{
+			color: #0C0F1F;
+		}
+	}
+	&.wpr-ri-free-limit-notice{
+		color: #000000;
+		.wpr-notice-close{
+			color: #000000;
 		}
 	}
 }

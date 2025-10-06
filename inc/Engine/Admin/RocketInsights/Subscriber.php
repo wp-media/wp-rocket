@@ -157,7 +157,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'admin_init'                                  => [
 				[ 'flush_license_cache', 8 ],
 				[ 'check_upgrade' ],
-				[ 'schedule_reset_credit' ],
+				[ 'schedule_jobs', 11 ],
 			],
 			'admin_post_rocket_rocket_insights_add_homepage' => 'add_homepage_from_widget',
 			'rocket_deactivation'                         => [
@@ -171,6 +171,8 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'cron_schedules'                              => 'maybe_add_monthly_schedule',
 			'rocket_options_changed'                      => 'maybe_cancel_scheduled_jobs',
 			'rocket_rocket_insights_retest_all_pages'     => 'retest_all_pages',
+			'rocket_options_changed'            => 'maybe_cancel_automatic_retest_job',
+			'rocket_insights_retest'            => 'retest_all_pages',
 		];
 	}
 
@@ -251,21 +253,48 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	}
 
 	/**
-	 * Schedule reset credit recurring AS task.
+	 * Schedule recurring AS jobs.
 	 *
 	 * @return void
 	 */
-	public function schedule_reset_credit(): void {
+	public function schedule_jobs(): void {
 		if ( ! $this->context->is_allowed() ) {
 			return;
 		}
 
 		if ( ! $this->context->is_free_user() ) {
-			$this->cancel_scheduled_jobs();
+			$this->queue->cancel_credit_reset_job();
+
+			$this->schedule_retest_task();
 			return;
 		}
 
-		$this->queue->schedule_reset_task();
+		$this->queue->schedule_credit_reset_task();
+		$this->cancel_retest_job();
+	}
+
+	/**
+	 * Schedule retest task.
+	 *
+	 * @return void
+	 */
+	private function schedule_retest_task() {
+		if ( ! $this->pma_context->is_schedule_allowed() ) {
+			$this->cancel_retest_job();
+			return;
+		}
+
+		$schedule_frequency = $this->options->get( 'performance_monitoring_schedule_frequency', MONTH_IN_SECONDS );
+		$this->queue->schedule_retest_task( $schedule_frequency );
+	}
+
+	/**
+	 * Cancel retest job.
+	 *
+	 * @return void
+	 */
+	private function cancel_retest_job() {
+		$this->queue->cancel_retest_job();
 	}
 
 	/**
@@ -416,7 +445,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return void
 	 */
 	public function cancel_scheduled_jobs() {
-		$this->queue->cancel_reset_job();
+		$this->queue->cancel_all_tasks();
 	}
 
 	/**
@@ -548,15 +577,14 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 					'report_url' => '',
 					'is_blurred' => 0,
 				]
-				);
+			);
 		}
+		$this->reset_global_score();
 	}
 
 	/**
 	 * Cancels scheduled jobs for performance monitoring if the user is on the free plan
 	 * and performance monitoring is disabled.
-	 *
-	 * @since TBD
 	 *
 	 * @return void
 	 */

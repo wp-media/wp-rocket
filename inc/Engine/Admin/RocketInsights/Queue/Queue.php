@@ -24,17 +24,33 @@ class Queue extends AbstractASQueue {
 	 *
 	 * @var string
 	 */
-	private $reset_hook = 'rocket_insights_credit_reset';
+	private $credit_reset_hook = 'rocket_insights_credit_reset';
 
+	/**
+	 * Retest hook.
+	 *
+	 * @var string
+	 */
+	private $retest_hook = 'rocket_insights_retest';
 
 	/**
 	 * Cancel reset job.
 	 */
-	public function cancel_reset_job(): void {
-		if ( ! $this->is_scheduled( $this->reset_hook ) ) {
+	public function cancel_credit_reset_job(): void {
+		if ( ! $this->is_scheduled( $this->credit_reset_hook ) ) {
 			return;
 		}
-		$this->cancel( $this->reset_hook );
+		$this->cancel( $this->credit_reset_hook );
+	}
+
+	/**
+	 * Cancel reset job.
+	 */
+	public function cancel_retest_job(): void {
+		if ( ! $this->is_scheduled( $this->retest_hook ) ) {
+			return;
+		}
+		$this->cancel( $this->retest_hook );
 	}
 
 	/**
@@ -42,14 +58,42 @@ class Queue extends AbstractASQueue {
 	 *
 	 * @return void
 	 */
-	public function schedule_reset_task() {
+	public function schedule_credit_reset_task() {
 		// Schedule weekly cleanup.
 		$this->schedule_recurring(
 			time(),
 			MONTH_IN_SECONDS,
-			$this->reset_hook,
+			$this->credit_reset_hook,
 			[],
 			1
 		);
+	}
+
+	/**
+	 * Schedule retest task.
+	 *
+	 * @param int|null $interval Schedule interval.
+	 *
+	 * @return void
+	 */
+	public function schedule_retest_task( $interval = null ) {
+		// Schedule weekly cleanup.
+		$this->schedule_recurring(
+			time() + $interval,
+			$interval ?? MONTH_IN_SECONDS,
+			$this->retest_hook,
+			[],
+			1
+		);
+	}
+
+	/**
+	 * Cancel all scheduled tasks.
+	 *
+	 * @return void
+	 */
+	public function cancel_all_tasks() {
+		$this->cancel_credit_reset_job();
+		$this->cancel_retest_job();
 	}
 }

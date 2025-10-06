@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Admin\RocketInsights;
 
 use WP_Rocket\Abstract_Render;
+use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\Admin\RocketInsights\Context\Context;
 use WP_Rocket\Engine\Admin\RocketInsights\Managers\Plan;
 
@@ -23,6 +24,13 @@ class Render extends Abstract_Render {
 	private $context;
 
 	/**
+	 * Beacon instance.
+	 *
+	 * @var Beacon
+	 */
+	private $beacon;
+
+	/**
 	 * Constructor for the Render class.
 	 *
 	 * Initializes the Render instance with the provided template path and CreditManager.
@@ -30,12 +38,14 @@ class Render extends Abstract_Render {
 	 * @param string  $template_path   Path to the template file.
 	 * @param Plan    $plan Plan instance.
 	 * @param Context $context Instance of PerformanceMonitoringContext for managing performance monitoring context.
+	 * @param Beacon                       $beacon          Beacon instance.
 	 */
-	public function __construct( $template_path, Plan $plan, Context $context ) {
+	public function __construct( $template_path, Plan $plan, Context $context, Beacon $beacon ) {
 		parent::__construct( $template_path );
 
 		$this->plan    = $plan;
 		$this->context = $context;
+		$this->beacon      = $beacon;
 	}
 
 	/**
@@ -83,9 +93,12 @@ class Render extends Abstract_Render {
 	 * @return void
 	 */
 	public function render_rocket_insights_urls_table( array $data ) {
+		$rocket_insights_beacon = $this->beacon->get_suggest( 'rocket_insights' );
+
 		$data['has_credit']    = $this->plan->has_credit();
 		$data['can_add_url']   = $this->context->is_adding_page_allowed();
 		$data['reach_max_url'] = ! $data['can_add_url'];
+		$data['help']          = $rocket_insights_beacon;
 
 		echo $this->generate( 'partials/rocket-insights/urls-table', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}

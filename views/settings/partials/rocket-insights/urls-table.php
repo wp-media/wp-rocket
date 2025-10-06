@@ -15,11 +15,13 @@ defined( 'ABSPATH' ) || exit;
 ?>
 <div class="wpr-optionHeader">
 	<h3 class="wpr-title2"><?php esc_html_e( 'Performance Summary', 'rocket' ); ?></h3>
-	<button data-beacon-id="<?php echo esc_attr( '' ); ?>" data-wpr_track_button="Need Help" data-wpr_track_context="Addons" class="wpr-infoAction wpr-infoAction--help wpr-icon-help"><?php esc_html_e( 'Need Help?', 'rocket' ); ?></button>
+	<?php if ( ! empty( $data['help'] ) ) : ?>
+	<a href="<?php echo esc_url( $data['help']['url'] ); ?>" data-beacon-id="<?php echo esc_attr( $data['help']['id'] ); ?>" data-wpr_track_button="Need Help" data-wpr_track_context="Addons" class="wpr-infoAction wpr-infoAction--help wpr-icon-help" target="_blank"><?php esc_html_e( 'Need Help?', 'rocket' ); ?></a>
+	<?php endif; ?>
 </div>
 
 <?php
-$rocket_insights_quota_banner_class = 'wpr-notice wpr-ri-notice wpr-error-notice';
+$rocket_insights_quota_banner_class = 'wpr-notice wpr-ri-notice wpr-ri-free-limit-notice';
 if ( ! isset( $data['show_quota_banner'] ) || ! $data['show_quota_banner'] ) {
 	$rocket_insights_quota_banner_class .= ' hidden';
 }
@@ -30,7 +32,7 @@ if ( ! isset( $data['show_quota_banner'] ) || ! $data['show_quota_banner'] ) {
 			<?php
 			printf(
 			// Translators: %1$s = opening strong tag, %2$s = closing strong tag.
-				esc_html__( 'You\'ve %1$sreached your free limit.%2$s Upgrade to continue.', 'rocket' ),
+				esc_html__( '%1$sCongrats!%2$s You fully enjoyed your free plan. Upgrade to keep testing, or wait for your free limit to reset.', 'rocket' ),
 				'<strong>',
 				'</strong>'
 			);
