@@ -15,6 +15,7 @@ class Test_ScheduleCleanNotCommonlyUsedRows extends TestCase {
 
 	public function tear_down() {
 		remove_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
+		remove_filter( 'rocket_performance_monitoring_enabled', '__return_false' );
 		wp_clear_scheduled_hook( 'rocket_saas_clean_rows_time_event' );
 
 		parent::tear_down();
@@ -27,6 +28,7 @@ class Test_ScheduleCleanNotCommonlyUsedRows extends TestCase {
 		$this->input = $input;
 
 		add_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
+		add_filter( 'rocket_performance_monitoring_enabled', '__return_false' );
 
 		self::removeDBHooks();
 		do_action( 'init' );

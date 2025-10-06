@@ -69,7 +69,7 @@ class AbstractTable extends Table implements TableInterface {
 			return false;
 		}
 
-		$prefixed_table_name = $this->apply_prefix( $this->table_name );
+		$prefixed_table_name = $this->get_name();
 		$query               = "DELETE FROM `$prefixed_table_name` WHERE `last_accessed` <= date_sub(now(), interval $delete_interval month)";
 		$rows_affected       = $db->query( $query );
 
@@ -93,7 +93,7 @@ class AbstractTable extends Table implements TableInterface {
 			return [];
 		}
 
-		$prefixed_table_name = $this->apply_prefix( $this->table_name );
+		$prefixed_table_name = $this->get_name();
 		$query               = "SELECT * FROM `$prefixed_table_name` WHERE `last_accessed` <= date_sub(now(), interval 1 month)";
 		$rows_affected       = $db->get_results( $query );
 
@@ -117,7 +117,7 @@ class AbstractTable extends Table implements TableInterface {
 			return false;
 		}
 
-		$prefixed_table_name = $this->apply_prefix( $this->table_name );
+		$prefixed_table_name = $this->get_name();
 		return $db->query( "DELETE FROM `$prefixed_table_name` WHERE status IN ( 'failed', 'completed' )" );
 	}
 

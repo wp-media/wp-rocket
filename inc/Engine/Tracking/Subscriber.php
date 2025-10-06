@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Tracking;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\Engine\Admin\PerformanceMonitoring\Managers\Plan;
 
 class Subscriber implements Subscriber_Interface {
 	/**
@@ -31,11 +32,15 @@ class Subscriber implements Subscriber_Interface {
 		return [
 			'update_option_wp_rocket_settings'    => [ 'track_option_change', 10, 2 ],
 			'wp_rocket_upgrade'                   => [ 'migrate_optin', 10, 2 ],
-			'rocket_dashboard_after_account_data' => [ 'render_optin', 9 ],
+			'rocket_dashboard_after_account_data' => [ 'render_optin', 8 ],
 			'wp_ajax_rocket_toggle_optin'         => [ 'ajax_toggle_optin' ],
 			'admin_enqueue_scripts'               => [ 'localize_optin_status', 15 ],
 			'admin_print_scripts'                 => [ 'inject_mixpanel_script' ],
 			'rocket_mixpanel_optin_changed'       => 'track_optin_change',
+			'rocket_pm_job_added'                 => [ 'track_rocket_insights_url_added', 10, 3 ],
+			'admin_footer-settings_page_wprocket' => 'track_admin_visits',
+			'rocket_pm_job_failed'                => [ 'track_rocket_insights_test', 10, 3 ],
+			'rocket_pm_job_completed'             => [ 'track_rocket_insights_test', 10, 3 ],
 		];
 	}
 
@@ -109,5 +114,44 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function track_optin_change( $status ): void {
 		$this->tracking->track_optin_change( $status );
+	}
+
+	/**
+	 * Track when a URL is added to Rocket Insights (Performance Monitoring).
+	 *
+	 * @since 3.20
+	 *
+	 * @param string $url        The URL that was added for monitoring.
+	 * @param string $plan       Plan name.
+	 * @param int    $urls_count The current number of URLs being monitored.
+	 *
+	 * @return void
+	 */
+	public function track_rocket_insights_url_added( $url, $plan, $urls_count ): void {
+		$this->tracking->track_rocket_insights_url_added( $url, $plan, $urls_count );
+	}
+
+	/**
+	 * Tracks when a performance test is completed or failed in Rocket Insights.
+	 *
+	 * @since 3.20
+	 *
+	 * @param object $row_details Details related to the database row.
+	 * @param array  $job_details Details related to the job.
+	 * @param string $plan Plan name.
+	 *
+	 * @return void
+	 */
+	public function track_rocket_insights_test( $row_details, $job_details, $plan ): void {
+		$this->tracking->track_rocket_insights_test( $row_details, $job_details, $plan );
+	}
+
+	/**
+	 * Tracks visits to settings page
+	 *
+	 * @return void
+	 */
+	public function track_admin_visits(): void {
+		$this->tracking->track_admin_visits();
 	}
 }

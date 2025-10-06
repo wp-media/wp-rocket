@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Common\PerformanceHints\WarmUp;
 
-use WP_Rocket\Engine\Common\JobManager\APIHandler\APIClient as BaseAPIClient;
 use WP_Rocket\Engine\Common\Utils;
+use WP_Rocket\Engine\Optimization\RUCSS\APIHandler\APIClient as BaseAPIClient;
 
 class APIClient extends BaseAPIClient {
 

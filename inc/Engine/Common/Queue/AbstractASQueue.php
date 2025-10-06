@@ -62,9 +62,10 @@ abstract class AbstractASQueue implements QueueInterface {
 	 * @param int    $interval_in_seconds How long to wait between runs.
 	 * @param string $hook The hook to trigger.
 	 * @param array  $args Arguments to pass when the hook triggers.
+	 * @param int    $priority Lower values take precedence over higher values. Defaults to 10, with acceptable values falling in the range 0-255.
 	 * @return int The action ID.
 	 */
-	public function schedule_recurring( $timestamp, $interval_in_seconds, $hook, $args = [] ) {
+	public function schedule_recurring( $timestamp, $interval_in_seconds, $hook, $args = [], $priority = 10 ) {
 		if ( $this->is_scheduled( $hook, $args ) ) {
 			// TODO: When v3.3.0 from Action Scheduler is commonly used use the array notation for status to reduce search queries to one.
 			$pending_actions = $this->search(
@@ -96,7 +97,7 @@ abstract class AbstractASQueue implements QueueInterface {
 		}
 
 		try {
-			return as_schedule_recurring_action( $timestamp, $interval_in_seconds, $hook, $args, $this->group );
+			return as_schedule_recurring_action( $timestamp, $interval_in_seconds, $hook, $args, $this->group, false, $priority );
 		} catch ( Exception $exception ) {
 			Logger::error( $exception->getMessage(), [ 'Action Scheduler Queue' ] );
 

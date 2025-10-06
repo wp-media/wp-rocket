@@ -33,6 +33,11 @@
         box-shadow: 0 7px 14px rgba(50,50,93,.25), 0 3px 6px rgba(0,0,0,.2);
     }
 
+	&--disabled{
+		opacity: 0.5;
+		pointer-events: none;
+	}
+
     &--small{
         padding: 5px 0;
         letter-spacing: -0.08px;
@@ -122,6 +127,25 @@
 		color: #fff;
 		&:hover{
 
+		}
+	}
+}
+.wpr-btn-with-tool-tip{
+	position: relative;
+	display: inline-block;
+
+	.wpr-tooltip{
+		position: absolute;
+		right: auto;
+		top: auto;
+        font-weight: 400;
+	}
+
+	&:hover {
+		.wpr-tooltip {
+			visibility: visible;
+			opacity: 1;
+			z-index: 99;
 		}
 	}
 }
