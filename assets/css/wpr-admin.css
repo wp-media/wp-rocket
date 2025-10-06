@@ -1873,6 +1873,7 @@ div.wpr-upgrade-websites.notstacked {
   position: absolute;
   right: auto;
   top: auto;
+  font-weight: 400;
 }
 .wpr-btn-with-tool-tip:hover .wpr-tooltip {
   visibility: visible;
