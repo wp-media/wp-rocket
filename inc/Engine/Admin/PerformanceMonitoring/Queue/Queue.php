@@ -77,10 +77,12 @@ class Queue extends AbstractASQueue {
 	 * @return void
 	 */
 	public function schedule_retest_task( $interval = null ) {
+		$interval = (int) ( $interval ?? MONTH_IN_SECONDS );
+
 		// Schedule weekly cleanup.
 		$this->schedule_recurring(
 			time() + $interval,
-			$interval ?? MONTH_IN_SECONDS,
+			$interval,
 			$this->retest_hook,
 			[],
 			1
