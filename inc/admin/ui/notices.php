@@ -453,13 +453,14 @@ function rocket_thank_you_license() {
 		$options['ignore']  = true;
 		update_option( WP_ROCKET_SLUG, $options );
 
-	$message = sprintf(
+		$message = sprintf(
 		/* translators: %1$s = plugin name, %2$s = opening link tag, %3$s = closing link tag */
 		__( '%1$s is good to go! Visit your %2$sdashboard%3$s to test your load time.', 'rocket' ),
 		'<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>',
 		'<a href="' . admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG ) . '">',
 		'</a>'
-	);		rocket_notice_html( [ 'message' => $message ] );
+		);
+		rocket_notice_html( [ 'message' => $message ] );
 	}
 }
 add_action( 'admin_notices', 'rocket_thank_you_license' );
