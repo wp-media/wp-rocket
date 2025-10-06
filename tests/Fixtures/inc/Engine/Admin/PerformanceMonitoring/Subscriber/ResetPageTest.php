@@ -170,4 +170,31 @@ return [
 			'error_message' => 'Not valid ID',
 		],
 	],
+	'testShouldReturnCanAddPagesFlag' => [
+		'config' => [
+			'database_entries' => [
+				[
+					'id' => 1,
+					'url' => 'http://example.org/page1',
+					'is_mobile' => false,
+					'job_id' => 'test_123',
+					'status' => 'completed',
+					'score' => 85,
+					'data' => '{"status":"complete","data":{"data":{"performance_score":85}}}',
+				],
+			],
+			'post_data' => [
+				'id' => 1,
+			],
+		],
+		'expected' => [
+			'success' => true,
+			'hook_fired' => true,
+			'hook_fired_id' => 1,
+			'response_keys' => [ 'id', 'html', 'global_score_data', 'remaining_urls', 'has_credit', 'can_add_pages' ],
+			'response_data' => [
+				'id' => 1,
+			],
+		],
+	],
 ];
