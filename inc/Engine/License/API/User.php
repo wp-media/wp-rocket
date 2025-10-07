@@ -242,7 +242,18 @@ class User {
 			return '';
 		}
 
-		return $plan->button->label;
+		$label = $plan->button->label;
+
+		// Translate known button labels.
+		if ( 'Get Advanced' === $label ) {
+			return __( 'Get Advanced', 'rocket' );
+		}
+
+		if ( 'Your plan' === $label ) {
+			return __( 'Your plan', 'rocket' );
+		}
+
+		return $label;
 	}
 
 	/**
