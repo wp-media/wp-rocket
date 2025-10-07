@@ -30,6 +30,7 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 	 * @return array|\WP_Error
 	 */
 	public function add_to_queue( string $url, array $options = [] ) {
+		$url = user_trailingslashit( $url );
 		$url = $this->filter_url( $url, 'rocket_insights' );
 
 		$request_body = [
@@ -37,9 +38,6 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 			'key'         => $this->options->get( 'consumer_key', '' ),
 			'url'         => $url,
 			'is_priority' => $options['is_home'] ?? false,
-			// @Todo: Both items are not working because of SaaS.
-			// 'device'  => ! $options['is_mobile'] ? 'desktop' : 'mobile',
-			// 'region' => $options['region'] ?? '',
 		];
 
 		$args = [
