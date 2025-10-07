@@ -520,7 +520,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public function on_update_reset_credit( $new_version, $old_version ) {
 		if ( version_compare( $old_version, '3.20.0', '<' ) ) {
-			$this->reset_credit_monthly();
+			$this->controller->reset_credit();
 		}
 	}
 }
