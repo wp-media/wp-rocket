@@ -45,7 +45,7 @@ defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 			<?php endif; ?>
 			<?php $this->render_license_banner_plan_price( $data['price'], '$', $data['period'] ); ?>
 			<p class="wpr-ri-vat">
-				<?php esc_html_e( '(excl. VAT)', 'rocket' ); ?>
+				<?php esc_html_e( 'Taxes may apply depending on your country of residence', 'rocket' ); ?>
 			</p>
 			<a href="<?php echo esc_url( $data['btn_url'] ); ?>" class="wpr-ri-cta-button" data-wpr_track_button="Get Performance Monitoring" data-wpr_track_context="Addons">
 				<?php esc_html_e( 'GET STARTED', 'rocket' ); ?>
