@@ -293,12 +293,14 @@ class Render extends Abstract_Render {
 	 */
 	public function truncate_title( string $title ): array {
 		$max_length = 35;
+
 		if ( mb_strlen( $title ) <= $max_length ) {
 			return [
 				'truncated_title' => $title,
 				'is_truncated'    => false,
 			];
 		}
+
 		return [
 			'truncated_title' => mb_substr( $title, 0, $max_length ) . '(...)',
 			'is_truncated'    => true,
