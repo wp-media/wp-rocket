@@ -408,6 +408,48 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 
 	/**
+	 * Broadcasts global score changes to other tabs via localStorage.
+	 * Uses a timestamp to ensure the storage event fires even with identical data.
+	 *
+	 * @param {Object} scoreData - The global score data to broadcast.
+	 */
+	function broadcastGlobalScoreUpdate(scoreData) {
+		try {
+			const payload = {
+				data: scoreData,
+				timestamp: Date.now()
+			};
+			localStorage.setItem('wpr_global_score_update', JSON.stringify(payload));
+		} catch (e) {
+			console.error('Failed to broadcast global score update:', e);
+		}
+	}
+
+	/**
+	 * Updates the global score UI in the current tab.
+	 * Handles both dashboard widget and Rocket Insights table row updates.
+	 *
+	 * @param {Object} newScoreData - The new global score data to display.
+	 */
+	function updateGlobalScoreUI(newScoreData) {
+		// Update local state
+		globalScoreData = newScoreData;
+
+		// Update dashboard widget if visible
+		if (isOnDashboard()) {
+			const $widget = $('#wpr_global_score_widget');
+			if ($widget.length && newScoreData.html) {
+				$widget.html(newScoreData.html);
+			}
+		}
+
+		// Update Rocket Insights table row if visible
+		if (isOnRocketInsights() && newScoreData.row_html) {
+			updateGlobalScoreRow(newScoreData);
+		}
+	}
+
+	/**
 	 * Updates the global score UI widget or table row based on the selected menu.
 	 * When the dashboard or rocket insights menu is clicked, this function updates
 	 * the corresponding global score display after a short delay.
@@ -478,6 +520,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     // Update global score data.
                     globalScoreData = response.data.global_score_data;
 
+					// Broadcast to other tabs
+					broadcastGlobalScoreUpdate(globalScoreData);
+
                     // Update global score widget if on dashboard.
                     if ( isOnDashboard() ) {
                         $('#wpr_global_score_widget').html(response.data.global_score_data.html);
@@ -539,6 +584,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Update global score data.
                 globalScoreData = response.data.global_score_data;
 
+				// Broadcast to other tabs
+				broadcastGlobalScoreUpdate(globalScoreData);
+
 				// Update global score row in table if on Rocket Insights page.
 				updateGlobalScoreRow(globalScoreData);
 
@@ -599,6 +647,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Update global score data.
                 globalScoreData = response.data.global_score_data;
 
+				// Broadcast to other tabs
+				broadcastGlobalScoreUpdate(globalScoreData);
+
 				// Update global score row in table if on Rocket Insights page.
 				updateGlobalScoreRow(globalScoreData);
 				// Start polling if not already running
@@ -613,6 +664,20 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 
 	// ==== Initialization ====
+	// Listen for global score updates from other tabs
+	window.addEventListener('storage', function(e) {
+		if (e.key === 'wpr_global_score_update' && e.newValue) {
+			try {
+				const payload = JSON.parse(e.newValue);
+				if (payload.data) {
+					updateGlobalScoreUI(payload.data);
+				}
+			} catch (error) {
+				console.error('Failed to parse global score update:', error);
+			}
+		}
+	});
+
 	// Bind event
 	$(document).on( 'click', '#wpr-action-add_page_speed_radar', handleAddPage );
 	$(document).on( 'click', '.wpr-action-speed_radar_refresh', handleResetPage );
