@@ -165,7 +165,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 				[ 'remove_current_plan' ],
 			],
 			'rocket_options_changed'                      => 'maybe_cancel_scheduled_jobs',
-			'rocket_rocket_insights_retest_all_pages'     => 'retest_all_pages',
 			'rocket_insights_retest'                      => 'retest_all_pages',
 			'wp_rocket_upgrade'                           => [ 'on_update_reset_credit', 10, 2 ],
 		];
