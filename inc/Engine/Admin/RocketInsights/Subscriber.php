@@ -172,6 +172,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'rocket_options_changed'                      => 'maybe_cancel_scheduled_jobs',
 			'rocket_rocket_insights_retest_all_pages'     => 'retest_all_pages',
 			'rocket_insights_retest'                      => 'retest_all_pages',
+			'wp_rocket_upgrade'                           => [ 'on_update_reset_credit', 10, 2 ],
 		];
 	}
 
@@ -643,5 +644,18 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		}
 
 		wp_unschedule_event( $next_event, 'rocket_rocket_insights_retest_all_pages' );
+	}
+
+	/**
+	 * Callback for the wp_rocket_upgrade action to reset credit on version update.
+	 *
+	 * @param string $new_version New plugin version.
+	 * @param string $old_version Previous plugin version.
+	 * @return void
+	 */
+	public function on_update_reset_credit( $new_version, $old_version ) {
+		if ( version_compare( $old_version, '3.20.0', '<' ) ) {
+			$this->controller->reset_credit();
+		}
 	}
 }
