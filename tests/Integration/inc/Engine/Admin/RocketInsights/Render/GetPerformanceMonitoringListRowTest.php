@@ -1,7 +1,7 @@
 <?php
 declare( strict_types=1 );
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\PerformanceMonitoring\Render;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\RocketInsights\Render;
 
 use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\TestCase;
