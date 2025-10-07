@@ -15,7 +15,7 @@ class GlobalScore {
 	/**
 	 * Transient name for caching global score data.
 	 */
-	private const TRANSIENT_NAME = 'wpr_rocket_insights_global_score_data';
+	private const TRANSIENT_NAME = 'wpr_global_score_data';
 
 	/**
 	 * Cache expiration time in seconds (24 hours).
