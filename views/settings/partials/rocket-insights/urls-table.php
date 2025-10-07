@@ -38,7 +38,7 @@ if ( ! isset( $data['show_quota_banner'] ) || ! $data['show_quota_banner'] ) {
 			);
 			?>
 		</div>
-		<a class="wpr-notice-close" target="_blank" href="<?php echo esc_url( $data['upgrade_url'] ); ?>">
+		<a class="wpr-notice-close" href="<?php echo esc_url( $data['upgrade_url'] ); ?>">
 			<?php esc_html_e( 'Upgrade Now', 'rocket' ); ?>
 		</a>
 	</div>
