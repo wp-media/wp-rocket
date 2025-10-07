@@ -344,7 +344,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			if (!row) return;
 
 			// Get the row ID and check if it's currently being processed
-			const rowId = parseInt(row.dataset.rocketPmId, 10);
+			const rowId = parseInt(row.dataset.rocket-insights-id, 10);
 			const isRunning = rocketInsightsIds.includes(rowId);
 
 			if (!hasCredit || isRunning) {
@@ -574,7 +574,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	function handleResetPage(e) {
 		e.preventDefault();
 
-		let id = $(this).parents('.wpr-ri-item').data('rocketPmId');
+		let id = $(this).parents('.wpr-ri-item').data('rocket-insights-id');
 		if ( ! id ) {
 			return;
 		}
