@@ -1678,25 +1678,25 @@ div.wpr-upgrade-websites.notstacked {
   line-height: 1;
   margin-right: 4px;
 }
-.wpr-fieldsContainer.pma-settings-container .wpr-field {
+.wpr-fieldsContainer.rocket-insights-settings-container .wpr-field {
   border: none;
   padding: 0;
 }
-.wpr-fieldsContainer.pma-settings-container .wpr-fieldsContainer-fieldset {
+.wpr-fieldsContainer.rocket-insights-settings-container .wpr-fieldsContainer-fieldset {
   display: flex;
   padding: 15px;
 }
-.wpr-fieldsContainer.pma-settings-container .wpr-fieldsContainer-fieldset .wpr-field--checkbox {
+.wpr-fieldsContainer.rocket-insights-settings-container .wpr-fieldsContainer-fieldset .wpr-field--checkbox {
   flex: 0 0 50%;
   display: flex;
   flex-direction: column;
 }
-.wpr-fieldsContainer.pma-settings-container .wpr-fieldsContainer-fieldset .wpr-field--select {
+.wpr-fieldsContainer.rocket-insights-settings-container .wpr-fieldsContainer-fieldset .wpr-field--select {
   flex: 0 0 50%;
   display: flex;
   justify-content: flex-end;
 }
-.wpr-fieldsContainer.pma-settings-container .wpr-fieldsContainer-fieldset .wpr-field--select select {
+.wpr-fieldsContainer.rocket-insights-settings-container .wpr-fieldsContainer-fieldset .wpr-field--select select {
   border-radius: 4px;
   text-align: center;
 }

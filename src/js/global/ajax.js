@@ -313,7 +313,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	function updateQuotaBanner(canAddPages) {
 		const $summaryInfo    = $('.wpr-ri-summary-info');
 		const isFree  = window.rocket_ajax_data?.is_free === '1';
-		const $quotaBanner = isFree ? $('#wpr-pma-quota-banner') : $('#rocket_insights_survey');
+		const $quotaBanner = isFree ? $('#wpr-ri-quota-banner') : $('#rocket_insights_survey');
 
 		// Show banner if URL limit reached OR no credits left (matching PHP logic in Subscriber.php line 398).
 		const shouldShowBanner = canAddPages === false || !hasCredit;
