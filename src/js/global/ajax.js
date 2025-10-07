@@ -279,7 +279,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			rocket_insights: ''
 		}
     };
-    
+
     // Initialize globalScoreData from localized script data if available
     if (window.rocket_ajax_data?.global_score_data) {
         globalScoreData = window.rocket_ajax_data.global_score_data;
@@ -313,9 +313,12 @@ document.addEventListener('DOMContentLoaded', function() {
 	function updateQuotaBanner(canAddPages) {
 		const $summaryInfo    = $('.wpr-ri-summary-info');
 		const isFree  = window.rocket_ajax_data?.is_free === '1';
-		const $quotaBanner = isFree ? $('#wpr-ri-quota-banner') : $('#rocket_insights_survey');
+		const $quotaBanner = isFree ? $('#wpr-pma-quota-banner') : $('#rocket_insights_survey');
 
-		if (canAddPages === false) {
+		// Show banner if URL limit reached OR no credits left (matching PHP logic in Subscriber.php line 398).
+		const shouldShowBanner = canAddPages === false || !hasCredit;
+
+		if (shouldShowBanner) {
 			$summaryInfo.hide();
 			$quotaBanner.removeClass('hidden');
 		} else {
@@ -467,6 +470,9 @@ document.addEventListener('DOMContentLoaded', function() {
 				// Update credit status
 				updateCreditState(response.data.has_credit);
 
+				// Update quota banner visibility
+				updateQuotaBanner(response.data.can_add_pages);
+
                 // Update global score data and widget when status || page count changes.
                 if (globalScoreData.data.status !== response.data.global_score_data.data.status || globalScoreData.data.pages_num !== response.data.global_score_data.data.pages_num) {
                     // Update global score data.
@@ -586,6 +592,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
 				// Update credit status
 				updateCreditState(response.data.has_credit);
+
+				// Update quota banner visibility
+				updateQuotaBanner(response.data.can_add_pages);
 
                 // Update global score data.
                 globalScoreData = response.data.global_score_data;

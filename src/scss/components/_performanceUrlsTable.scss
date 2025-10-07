@@ -2,8 +2,12 @@
 	background-image: none ;
 	border-radius: 0;
 	border-left: 4px solid #3ECE9D;
+	margin: 15px 0 0 0;
 	.wpr-notice-container, p:first-child{
 		padding: 2*$space;
+	}
+	.wpr-notice-75 {
+		max-width: 75%;
 	}
 	.wpr-notice-description, p{
 		margin: 0;
@@ -55,6 +59,7 @@
 	font-weight: 400;
 	line-height: 130%;
 	color: #0C0F1F;
+	margin: 15px 0;
 	a{
 		color: #F3704D;
 		font-weight: 600;
@@ -65,7 +70,6 @@
 }
 .wpr-ri-urls-table{
 	&.widefat{
-		margin-top: 2*$space;
 		border:none;
 		border-collapse: separate;
 		border-spacing: 0;
@@ -115,12 +119,17 @@
 		.wpr-percentage-circle{
 			width: 32px;
 			height: 32px;
-			font-size: 14px;
-			border-width: 2px;
+			font-size: 14.67px;
+			border-width: 1.33px;
+			font-weight: 600;
+			line-height: 0;
 		}
 		.wpr-loading-img{
 			width: 32px;
 			height: 32px;
+		}
+		.wpr-percentage-circle.wpr-centralize-100-score {
+			text-indent: -1px;
 		}
 	}
 	.wpr-ri-item{
@@ -230,10 +239,9 @@
 				}
 			}
 			&:before{
-				font-size: 16px;
 				position: relative;
 				top: 2px;
-				margin-right: $space;
+				margin-right: $space - 2;
 			}
 			&--disabled,
 			&:disabled {
@@ -245,7 +253,19 @@
 					box-shadow: none;
 				}
 			}
+
+			&.wpr-icon-bold-refresh:before {
+				font-size: 15px;
+			}
+
+			&.wpr-icon-trash {
+				width: 8%;
+				&:before {
+					font-size:14px;
+				}
+			}
 		}
+
 		.wpr-tooltip{
 			width:280px;
 			@media screen and (max-width: 600px) {
@@ -261,6 +281,7 @@
 		display: flex;
 		width: 80%;
 		margin-right: 2 * $space;
+		border: 2px solid #C2CAD4;
 	}
 	.wpr-button{
 		display: flex;

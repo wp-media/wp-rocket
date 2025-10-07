@@ -59,12 +59,14 @@
             margin-right: calc($space/2);
         }
     }
-	&.rocket-insights-settings-container{
+	&.pma-settings-container{
 		.wpr-field {
 			border: none;
+            padding: 0;
 		}
 		.wpr-fieldsContainer-fieldset{
 			display: flex;
+            padding: 15px;
 			.wpr-field--checkbox{
 				flex: 0 0 50%;
 				display: flex;

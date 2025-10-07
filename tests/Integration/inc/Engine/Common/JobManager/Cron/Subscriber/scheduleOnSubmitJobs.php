@@ -25,7 +25,6 @@ class Test_ScheduleOnSubmitJobs extends TestCase {
 		$this->restoreWpHook( 'init' );
 
 		remove_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'rucss' ] );
-		remove_filter( 'rocket_rocket_insights_enabled', '__return_false' );
 		parent::tear_down();
 	}
 

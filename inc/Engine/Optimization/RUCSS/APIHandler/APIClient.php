@@ -140,4 +140,30 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 	public function validate_add_to_queue_response( array $response ): bool {
 		return isset( $response['contents'], $response['contents']['jobId'], $response['contents']['queueName'] );
 	}
+
+	/**
+	 * Handle SaaS request error.
+	 *
+	 * @param array|\WP_Error $response WP Remote request.
+	 *
+	 * @return bool
+	 */
+	protected function check_response( $response ): bool {
+		$code = is_array( $response )
+			? wp_remote_retrieve_response_code( $response )
+			: (int) $response->get_error_code();
+
+		if ( in_array( $code, [ 200, 201 ], true ) ) {
+			delete_transient( 'wp_rocket_rucss_errors_count' );
+			return parent::check_response( $response );
+		}
+
+		set_transient(
+			'wp_rocket_rucss_errors_count',
+			(int) get_transient( 'wp_rocket_rucss_errors_count' ) + 1,
+			5 * MINUTE_IN_SECONDS
+		);
+
+		return parent::check_response( $response );
+	}
 }

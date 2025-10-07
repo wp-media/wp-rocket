@@ -8,8 +8,8 @@
 		margin-top: 10px;
 		.wpr-percentage-indicator {
 			.wpr-percentage-circle{
-				border-width: 4px;
-				font-size: 43px;
+				border-width: 3.83px;
+				font-size: 42.17px;
 				font-weight: 600;
 				.wpr-failed-score{
 					width: 50px;
@@ -21,6 +21,9 @@
 						display: inline-block;
 					}
 				}
+			}
+			.wpr-percentage-circle.wpr-centralize-100-score {
+				text-indent: -1px;
 			}
 			.wpr-tooltip{
 				display: none;
@@ -68,11 +71,10 @@
 			align-items: center;
 			width: 92px;
 			height: 92px;
-			font-size: 50px;
 			font-family: Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-			font-weight: 500;
 			border-radius: 50%;
-			border: 3px solid;
+			border: 3.83px solid;
+			line-height: 0;
 			&-sm{
 				width: 32px;
 				height: 32px;
@@ -98,7 +100,11 @@
 				background-color:$successLighter;
 			}
 			&.blurred {
-				filter: blur(4px);
+				filter: blur(10px);
+				user-select: none;
+				-webkit-user-select: none;
+				-moz-user-select: none;
+				pointer-events: none;
 			}
 			.wpr-failed-score{
 				width: 21.333px;
