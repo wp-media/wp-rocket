@@ -16,21 +16,34 @@ defined( 'ABSPATH' ) || exit;
 		$this->render_performance_score( $rocket_data_array );
 		?>
 	</td>
-
 	<td class="wpr-ri-item-title">
-		<a href="<?php echo esc_url( $data->url ); ?>" target="_blank" rel="noopener" class="wpr-btn-with-tool-tip">
-			<span class="wpr-ri-title"><?php echo esc_html( $data->title ); ?></span> <span class="wpr-ri-dot">.</span>
-			<span
-				class="wpr-ri-date"><?php echo esc_html( human_time_diff( $data->modified, time() ) . ' ' . __( 'ago', 'rocket' ) ); ?>
+		<?php
+		$rocket_title_data = $this->truncate_title( $data->title );
+		$rocket_css_class  = 'wpr-btn-with-tool-tip';
+		if ( ! $rocket_title_data['is_truncated'] ) {
+			$rocket_css_class = '';
+		}
+		?>
+		<a href="<?php echo esc_url( $data->url ); ?>" target="_blank" rel="noopener" class="<?php echo esc_attr( $rocket_css_class ); ?>">
+			<span class="wpr-ri-title"><?php echo esc_html( $rocket_title_data['truncated_title'] ); ?></span> <span class="wpr-ri-dot">.</span>
+			<span class="wpr-ri-date">
+				<?php
+				if ( $data->is_running() ) {
+					echo esc_html( __( 'Analyzing your page (~1 min)', 'rocket' ) );
+				} else {
+					echo esc_html( human_time_diff( $data->modified, time() ) . ' ' . __( 'ago', 'rocket' ) );
+				}
+				?>
 			</span>
+			<?php if ( $rocket_title_data['is_truncated'] ) : ?>
 			<div class="wpr-tooltip">
 				<div class="wpr-tooltip-content">
-					<?php esc_html_e( 'Open page', 'rocket' ); ?>
+					<?php echo esc_html( $data->title ); ?>
 				</div>
 			</div>
+			<?php endif; ?>
 		</a>
 	</td>
-
 	<td class="wpr-ri-item-actions">
 		<?php
 		$rocket_insights_retest_button_args = [
@@ -93,8 +106,7 @@ defined( 'ABSPATH' ) || exit;
 				'url'        => $data->delete_url(),
 				'attributes' => [
 					'class'      => 'wpr-btn-with-tool-tip wpr-icon-trash wpr-ri-action',
-					'title'      => __( 'Delete', 'rocket' ),
-					'aria-label' => __( 'Delete', 'rocket' ),
+						'aria-label' => __( 'Delete', 'rocket' ),
 				],
 			]
 		);
