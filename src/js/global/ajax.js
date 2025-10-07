@@ -344,7 +344,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			if (!row) return;
 
 			// Get the row ID and check if it's currently being processed
-			const rowId = parseInt(row.dataset.rocket-insights-id, 10);
+			const rowId = parseInt(row.dataset.rocketInsightsId, 10);
 			const isRunning = rocketInsightsIds.includes(rowId);
 
 			if (!hasCredit || isRunning) {
