@@ -446,6 +446,11 @@ document.addEventListener('DOMContentLoaded', function() {
 		// Update Rocket Insights table row if visible
 		if (isOnRocketInsights() && newScoreData.row_html) {
 			updateGlobalScoreRow(newScoreData);
+
+			// Update disabled button state if available
+			if ('disabled_btn_html' in newScoreData && newScoreData.disabled_btn_html.rocket_insights) {
+				$('#wpr_rocket_insights_add_page_btn_wrapper').html(newScoreData.disabled_btn_html.rocket_insights);
+			}
 		}
 	}
 
@@ -517,18 +522,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 // Update global score data and widget when status || page count changes.
                 if (globalScoreData.data.status !== response.data.global_score_data.data.status || globalScoreData.data.pages_num !== response.data.global_score_data.data.pages_num) {
-                    // Update global score data.
-                    globalScoreData = response.data.global_score_data;
-
-					// Broadcast to other tabs
-					broadcastGlobalScoreUpdate(globalScoreData);
-
-                    // Update global score widget if on dashboard.
-                    if ( isOnDashboard() ) {
-                        $('#wpr_global_score_widget').html(response.data.global_score_data.html);
-                    }
-					// Update global score row in table if on Rocket Insights page.
-					updateGlobalScoreRow(globalScoreData);
+                    // Update UI and broadcast to other tabs
+                    updateGlobalScoreUI(response.data.global_score_data);
+                    broadcastGlobalScoreUpdate(response.data.global_score_data);
                 }
 				response.data.results.forEach(result => {
 					const $row = $(`[data-rocket-pm-id="${result.id}"]`);
@@ -581,18 +577,9 @@ document.addEventListener('DOMContentLoaded', function() {
 				// Update credit status
 				updateCreditState(response.data.has_credit);
 
-                // Update global score data.
-                globalScoreData = response.data.global_score_data;
-
-				// Broadcast to other tabs
-				broadcastGlobalScoreUpdate(globalScoreData);
-
-				// Update global score row in table if on Rocket Insights page.
-				updateGlobalScoreRow(globalScoreData);
-
-				if ('disabled_btn_html' in globalScoreData) {
-					$('#wpr_rocket_insights_add_page_btn_wrapper').html(globalScoreData.disabled_btn_html.rocket_insights);
-				}
+                // Update UI and broadcast to other tabs
+                updateGlobalScoreUI(response.data.global_score_data);
+                broadcastGlobalScoreUpdate(response.data.global_score_data);
 
 				// Show/hide quota banner based on can_add_pages
 				updateQuotaBanner(response.data.can_add_pages);
@@ -644,14 +631,9 @@ document.addEventListener('DOMContentLoaded', function() {
 				// Update quota banner visibility
 				updateQuotaBanner(response.data.can_add_pages);
 
-                // Update global score data.
-                globalScoreData = response.data.global_score_data;
-
-				// Broadcast to other tabs
-				broadcastGlobalScoreUpdate(globalScoreData);
-
-				// Update global score row in table if on Rocket Insights page.
-				updateGlobalScoreRow(globalScoreData);
+                // Update UI and broadcast to other tabs
+                updateGlobalScoreUI(response.data.global_score_data);
+                broadcastGlobalScoreUpdate(response.data.global_score_data);
 				// Start polling if not already running
 				if (!pollTimer) {
 					pollInterval = POLL_BASE_INTERVAL;
