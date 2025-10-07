@@ -72,7 +72,7 @@ class Render extends Abstract_Render {
 	 */
 	public function get_global_score_row( array $data ) {
 		$data['status_text'] = $this->get_monitoring_status_text();
-		return $this->generate( 'partials/performance-monitoring/global-score-row', $data );
+		return $this->generate( 'partials/rocket-insights/global-score-row', $data );
 	}
 
 
