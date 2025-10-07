@@ -56,7 +56,7 @@ if ( ! isset( $data['show_quota_banner'] ) || ! $data['show_quota_banner'] ) {
 			esc_html( $data['rocket_insights_addon_limit'] ) // total number of tests available.
 		);
 		?>
-		<a href="<?php echo esc_url( $data['upgrade_url'] ); ?>" target="_blank"><?php esc_html_e( 'Upgrade Now', 'rocket' ); ?></a>
+		<a href="<?php echo esc_url( $data['upgrade_url'] ); ?>"><?php esc_html_e( 'Upgrade Now', 'rocket' ); ?></a>
 	</p>
 <?php endif; ?>
 
