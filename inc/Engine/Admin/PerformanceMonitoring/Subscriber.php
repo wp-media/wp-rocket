@@ -167,6 +167,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'rocket_options_changed'            => 'maybe_cancel_automatic_retest_job',
 			'rocket_insights_retest'            => 'retest_all_pages',
 			'wp_rocket_upgrade'                 => [ 'on_update_reset_credit', 10, 2 ],
+			'rocket_http_referer_tab_hash'      => [ 'append_rocket_insights_tab_hash', 10, 2 ],
 		];
 	}
 
@@ -522,5 +523,24 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		if ( version_compare( $old_version, '3.20.0', '<' ) ) {
 			$this->controller->reset_credit();
 		}
+	}
+
+	/**
+	 * Appends the 'rocket_insights' tab hash for the 'delete_pm' action.
+	 *
+	 * This method is used as a callback for the 'rocket_http_referer_tab_hash' filter.
+	 * It returns 'rocket_insights' as the tab hash only when the action is 'delete_pm'.
+	 * For all other actions, it returns an empty string.
+	 *
+	 * @param string $tab_hash The current tab hash value.
+	 * @param string $action   The current action being performed.
+	 * @return string The tab hash to append, or an empty string if not applicable.
+	 */
+	public function append_rocket_insights_tab_hash( string $tab_hash, string $action ) {
+		if ( 'delete_pm' !== $action ) {
+			return '';
+		}
+		
+		return 'rocket_insights';
 	}
 }
