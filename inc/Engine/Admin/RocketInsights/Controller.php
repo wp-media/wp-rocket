@@ -352,7 +352,7 @@ class Controller {
 
 		rocket_notice_html(
 			[
-				'status'                 => 'rocket_insights wpr-rocket-insights-notice',
+				'status'                 => 'rocket_insights wpr-ri-notice',
 				'dismissible'            => 'is-dismissible',
 				'message'                => sprintf(
 				// Translators: %1$s = opening strong tag, %2$s = closing strong tag, %3$s = number of pages as a limit.
