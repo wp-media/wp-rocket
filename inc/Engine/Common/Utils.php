@@ -91,12 +91,13 @@ class Utils {
 		];
 
 		/**
-		 * Retrieves and filters the tab hash for the admin interface.
+		 * Filters the tab hash for the admin interface.
 		 *
 		 * This filter allows customization of the tab hash value used in admin URLs.
 		 *
 		 * @param string $tab_hash The current tab hash value (default: empty string).
 		 * @param string $action   The current action being performed.
+		 * 
 		 * @return string The filtered tab hash value.
 		 */
 		$tab_hash = wpm_apply_filters_typed( 'string', 'rocket_http_referer_tab_hash', '', $action );
