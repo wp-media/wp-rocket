@@ -60,7 +60,7 @@ class Utils {
 
 		if ( ! empty( $_SERVER['REQUEST_URI'] ) ) {
 			$referer_url               = filter_var( wp_unslash( $_SERVER['REQUEST_URI'] ), FILTER_SANITIZE_URL );
-			$params['wp_http_referer'] = rawurlencode( remove_query_arg( 'fl_builder', $referer_url ) );
+			$params['wp_http_referer'] = rawurlencode( remove_query_arg( 'fl_builder', $referer_url ) . self::get_filtered_tab_hash( $action ) );
 		}
 
 		return wp_nonce_url(
@@ -70,5 +70,47 @@ class Utils {
 			),
 			$action
 		);
+	}
+
+	 private static function get_filtered_tab_hash( string $action ): string {
+		$allowed_tab_hashes = [
+			'dashboard',
+			'rocket_insights',
+			'file_optimization',
+			'media',
+			'preload',
+			'advanced_cache',
+			'database',
+			'page_cdn',
+			'heartbeat',
+			'addons',
+			'imagify',
+			'tools',
+			'tutorials',
+			'plugins',
+		];
+
+		/**
+		 * Retrieves and filters the tab hash for the admin interface.
+		 *
+		 * This filter allows customization of the tab hash value used in admin URLs.
+		 *
+		 * @param string $tab_hash The current tab hash value (default: empty string).
+		 * @param string $action   The current action being performed.
+		 * @return string The filtered tab hash value.
+		 */
+		$tab_hash = wpm_apply_filters_typed( 'string', 'rocket_http_referer_tab_hash', '', $action );
+
+		// Return early for default value.
+		if ( '' === $tab_hash ) {
+			return '';
+		}
+
+		// Return early if not valid tab hash.
+		if ( ! in_array( $tab_hash, $allowed_tab_hashes, true ) ) {
+			return '';
+		}
+
+		return '#' . $tab_hash;
 	}
 }
