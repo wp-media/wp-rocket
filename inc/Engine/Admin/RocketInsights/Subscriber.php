@@ -135,7 +135,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			],
 			'wp_ajax_rocket_rocket_insights_add_new_page' => 'add_new_page',
 			'wp_ajax_rocket_rocket_insights_get_results'  => 'get_results',
-			'admin_post_rocket_rocket_insights_delete'    => 'delete_row',
+			'admin_post_delete_rocket_insights_url'       => 'delete_row',
 			'wp_ajax_rocket_rocket_insights_reset_page'   => 'reset_page',
 			'rocket_localize_admin_script'                => 'add_pending_ids',
 			'rocket_rocket_insights_credit_reset'         => 'reset_credit_monthly',
