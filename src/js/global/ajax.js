@@ -486,7 +486,7 @@ document.addEventListener('DOMContentLoaded', function() {
 					updateGlobalScoreRow(globalScoreData);
                 }
 				response.data.results.forEach(result => {
-					const $row = $(`[data-rocket-pm-id="${result.id}"]`);
+					const $row = $(`[data-rocket-insights-id="${result.id}"]`);
 					$row.replaceWith(result.html);
 
 					if (result.status === 'completed' || result.status === 'failed') {
@@ -587,7 +587,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			if (response.success) {
 				addIds(response.data.id);
 
-				const $row = $(`[data-rocket-pm-id="${response.data.id}"]`);
+				const $row = $(`[data-rocket-insights-id="${response.data.id}"]`);
 				$row.replaceWith(response.data.html);
 
 				// Update credit status
