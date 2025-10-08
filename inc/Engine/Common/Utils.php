@@ -72,7 +72,21 @@ class Utils {
 		);
 	}
 
-	 private static function get_filtered_tab_hash( string $action ): string {
+	/**
+	 * Retrieves the filtered tab hash for the admin interface based on the current action.
+	 *
+	 * This method applies the 'rocket_http_referer_tab_hash' filter to allow customization
+	 * of the tab hash value used in admin URLs. It ensures that the returned tab hash is
+	 * within the list of allowed tab hashes. If the filtered tab hash is not allowed or is empty,
+	 * an empty string is returned. Otherwise, the tab hash is returned prefixed with '#'.
+	 *
+	 * @since 3.20.1
+	 *
+	 * @param string $action The current action being performed.
+	 *
+	 * @return string The filtered and validated tab hash value, prefixed with '#', or an empty string if not valid.
+	 */
+	private static function get_filtered_tab_hash( string $action ): string {
 		$allowed_tab_hashes = [
 			'dashboard',
 			'rocket_insights',
@@ -97,7 +111,7 @@ class Utils {
 		 *
 		 * @param string $tab_hash The current tab hash value (default: empty string).
 		 * @param string $action   The current action being performed.
-		 * 
+		 *
 		 * @return string The filtered tab hash value.
 		 */
 		$tab_hash = wpm_apply_filters_typed( 'string', 'rocket_http_referer_tab_hash', '', $action );

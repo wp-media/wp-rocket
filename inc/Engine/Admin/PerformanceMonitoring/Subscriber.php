@@ -540,7 +540,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		if ( 'delete_pm' !== $action ) {
 			return '';
 		}
-		
+
 		return 'rocket_insights';
 	}
 }
