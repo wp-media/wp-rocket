@@ -114,7 +114,7 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 		}
 
 		$default = [
-			'code'     => 400,
+			'code'     => 401,
 			'status'   => 'failed',
 			'message'  => 'No message. Defaulted in get_queue_job_status',
 			'contents' => [

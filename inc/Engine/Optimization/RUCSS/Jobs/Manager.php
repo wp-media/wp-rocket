@@ -113,11 +113,6 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 			return;
 		}
 
-		if ( ! empty( $job_details['status'] ) && 'failed' === $job_details['status'] ) {
-			$this->make_status_failed( $row_details->url, $row_details->is_mobile, '500', $job_details['message'] );
-			return;
-		}
-
 		/**
 		 * Filters the rocket min rucss css result size.
 		 *
