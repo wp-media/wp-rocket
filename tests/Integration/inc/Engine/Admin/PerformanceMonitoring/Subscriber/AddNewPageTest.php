@@ -139,6 +139,16 @@ class AddNewPageTest extends AjaxTestCase {
 		if ( isset( $expected['database_entries'] ) && $expected['database_entries'] > 0 ) {
 			$items = $this->container->get( 'pm_query' )->query( [] );
 			$this->assertSame( $expected['database_entries'], count( $items ) );
+
+			// Verify URL preservation for non-Latin character tests
+			if ( isset( $expected['verify_url_in_db'] ) && $expected['verify_url_in_db'] ) {
+				$last_item = end( $items );
+				$this->assertStringContainsString( '%', $last_item->url, 'URL should contain percent-encoded characters' );
+				// Verify the percent-encoded parts are preserved
+				if ( isset( $expected['expected_url_pattern'] ) ) {
+					$this->assertMatchesRegularExpression( $expected['expected_url_pattern'], $last_item->url );
+				}
+			}
 		}
 
 		// Check if hook was fired
@@ -196,7 +206,7 @@ class AddNewPageTest extends AjaxTestCase {
 	 */
 	public function mock_http_request( $preempt, $args, $url ) {
 		// Mock successful response for URLs on the test domain (example.org)
-		if ( strpos( $url, 'http://example.org' ) === 0 ) {
+		if ( strpos( $url, 'http://example.org' ) === 0 || strpos( $url, 'https://example.org' ) === 0 ) {
 			return [
 				'response' => [
 					'code' => 200,
@@ -212,16 +222,6 @@ class AddNewPageTest extends AjaxTestCase {
 					'code' => 200,
 				],
 				'body' => '<html><head><title>External Test Page</title></head><body>External test content</body></html>',
-			];
-		}
-
-		// Mock successful response for example.org URL used in tests
-		if ( strpos( $url, 'https://example.org' ) === 0 ) {
-			return [
-				'response' => [
-					'code' => 200,
-				],
-				'body' => '<html><head><title>Example Domain</title></head><body>Example domain content</body></html>',
 			];
 		}
 

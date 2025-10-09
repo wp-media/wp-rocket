@@ -99,7 +99,8 @@ class Controller {
 				);
 		}
 
-		$url = isset( $_POST['page_url'] ) ? untrailingslashit( esc_url_raw( sanitize_text_field( wp_unslash( $_POST['page_url'] ) ) ) ) : '';
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- URL validation happens in get_url_validation_payload(). Using trim() and wp_unslash() only to preserve percent-encoded non-ASCII characters.
+		$url = isset( $_POST['page_url'] ) ? untrailingslashit( trim( wp_unslash( $_POST['page_url'] ) ) ) : '';
 
 		$payload = $this->get_url_validation_payload( $url );
 
