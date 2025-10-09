@@ -246,7 +246,7 @@ class User {
 
 		// Translate known button labels.
 		if ( 'Get Advanced' === $label ) {
-			return __( 'Get Advanced', 'rocket' );
+			return __( 'GET ROCKET INSIGHTS', 'rocket' );
 		}
 
 		if ( 'Your plan' === $label ) {
