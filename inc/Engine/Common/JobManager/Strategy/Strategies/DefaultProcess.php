@@ -33,6 +33,9 @@ class DefaultProcess implements StrategyInterface {
 		0 => 60,   // 1 minutes
 		1 => 120,  // 2 minutes
 		2 => 300,  // 5 minutes
+		3 => 600,  // 10 minutes.
+		4 => 1200, // 20 minutes.
+		5 => 1500, // 25 minutes.
 	];
 
 	/**
