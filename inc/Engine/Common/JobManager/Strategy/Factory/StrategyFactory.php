@@ -51,6 +51,7 @@ class StrategyFactory implements LoggerAwareInterface {
 			case 404:
 			case 401:
 			case 410:
+			case 599:
 				$strategy = new JobSetFail( $manager );
 				break;
 			default:
