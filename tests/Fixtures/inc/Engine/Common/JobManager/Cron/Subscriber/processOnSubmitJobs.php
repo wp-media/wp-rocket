@@ -415,7 +415,7 @@ return [
 			],
 			'max_rows' => 0,
 			'http' => [
-				'http://example.org/3' => [
+				'http://localhostrucss-job' => [
 					'body' => json_encode([
 						'code' => 401,
 						'contents' => [
@@ -425,16 +425,6 @@ return [
 					]),
 					'response' => ['code' => 200 ]
 				],
-				'http://example.org/4' => [
-					'body' => json_encode([
-						'code' => 401,
-						'contents' => [
-							'jobId'     => 'job_id',
-							'queueName' => 'queue_name',
-						],
-					]),
-					'response' => ['code' => 200 ]
-				]
 			]
 		],
 		'expected' => [
