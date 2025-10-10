@@ -386,5 +386,101 @@ return [
 				]
 			]
 		],
+		'410ShouldFail' =>[
+			'config' => [
+				'hash' => 'hash',
+				'optimization_type' => 'rucss',
+				'row' => [
+					'url' => 'https://example.org',
+					'job_id' => '123',
+					'queue_name' => 'queue',
+					'is_mobile' => false,
+				],
+				'request' => [
+					'url' => 'http://localhostrucss-job',
+					'method' => 'GET',
+					'response' => [
+						'response' => [
+							'code' => 410,
+							'message' => 'error'
+						],
+						'body' => $error_response
+					]
+				],
+				'create' => [
+					'url' => 'http://localhostrucss-job',
+					'method' => 'POST',
+					'response' => [
+						'response' => [
+							'code' => 200,
+						],
+						'body' => $success_response_create
+					]
+				]
+			],
+			'expected' => [
+				'rows' => [
+					[
+						'status' => 'failed',
+						'job_id' => '123',
+						'queue_name' => 'queue',
+						'hash' => '',
+					]
+				],
+				'files' => [
+					'/wp-content/cache/used-css/1/h/a/s/h.css.gz' => [
+						'exists' => false,
+					]
+				]
+			]
+		],
+		'599ShouldFail' =>[
+			'config' => [
+				'hash' => 'hash',
+				'optimization_type' => 'rucss',
+				'row' => [
+					'url' => 'https://example.org',
+					'job_id' => '123',
+					'queue_name' => 'queue',
+					'is_mobile' => false,
+				],
+				'request' => [
+					'url' => 'http://localhostrucss-job',
+					'method' => 'GET',
+					'response' => [
+						'response' => [
+							'code' => 599,
+							'message' => 'error'
+						],
+						'body' => $error_response
+					]
+				],
+				'create' => [
+					'url' => 'http://localhostrucss-job',
+					'method' => 'POST',
+					'response' => [
+						'response' => [
+							'code' => 200,
+						],
+						'body' => $success_response_create
+					]
+				]
+			],
+			'expected' => [
+				'rows' => [
+					[
+						'status' => 'failed',
+						'job_id' => '123',
+						'queue_name' => 'queue',
+						'hash' => '',
+					]
+				],
+				'files' => [
+					'/wp-content/cache/used-css/1/h/a/s/h.css.gz' => [
+						'exists' => false,
+					]
+				]
+			]
+		],
 	]
 ];
