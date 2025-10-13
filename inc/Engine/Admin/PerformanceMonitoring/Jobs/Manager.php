@@ -16,7 +16,10 @@ use WP_Rocket\Engine\Common\JobManager\Managers\ManagerInterface;
  */
 class Manager implements ManagerInterface, LoggerAwareInterface {
 	use LoggerAware;
-	use AbstractManager;
+
+	use AbstractManager {
+		make_status_failed as trait_make_status_failed;
+	}
 
 	/**
 	 * Performance Tests Query instance.
@@ -257,5 +260,30 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 	 */
 	public function allow_retry_strategies() {
 		return false;
+	}
+
+	/**
+	 * Change the job status to failed and trigger the relevant action hook.
+	 *
+	 * @param string $url URL of the job row.
+	 * @param bool   $is_mobile Indicates if the job is for mobile.
+	 * @param string $error_code Error code describing the failure.
+	 * @param string $error_message Human-readable error message.
+	 * @param string $optimization_type (Optional) The type of optimization for the job.
+	 *
+	 * @return void
+	 */
+	public function make_status_failed( string $url, bool $is_mobile, string $error_code, string $error_message, string $optimization_type = '' ): void {
+		$this->trait_make_status_failed( $url, $is_mobile, $error_code, $error_message, $optimization_type );
+
+		$job_details = [
+			'status'  => 'failed',
+			'message' => 'To Submit request failed',
+		];
+
+		$row_details = $this->query->get_row( $url, $is_mobile );
+
+		// This action is documented in inc/Engine/Admin/PerformanceMonitoring/Jobs/Manager.php.
+		do_action( 'rocket_pm_job_failed', $row_details, $job_details, $this->plan->get_current_plan() );
 	}
 }
