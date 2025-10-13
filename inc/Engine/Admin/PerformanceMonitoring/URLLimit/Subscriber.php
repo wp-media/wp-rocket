@@ -83,6 +83,7 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 		$this->pm_query->prune_old_items( $limit );
+		$this->global_score->reset();
 	}
 
 	/**
