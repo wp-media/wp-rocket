@@ -50,6 +50,26 @@ return [
 			'error_message' => 'No url provided',
 		],
 	],
+	'testShouldFailWithInvalidUrl' => [
+		'config' => [
+			'post_data' => [
+				'page_url' => 'invalid-url-format',
+			],
+			'rows' => [
+				[
+					'url' => 'http://example.org',
+					'status' => 'completed',
+					'is_mobile' => 1,
+				],
+			],
+			'customer_data' => (new UserDataGenerator()),
+			'mock_http' => false,
+		],
+		'expected' => [
+			'success' => false,
+			'error_message' => 'Invalid URL format',
+		],
+	],
 	'testShouldFailWithUrlLimitReached' => [
 		'config' => [
 			'post_data' => [
