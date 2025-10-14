@@ -285,7 +285,7 @@ class Controller {
 		$data            = [
 			'currency'    => '$',
 			'page_number' => $limit,
-			'period'      => 'month',
+			'period'      => __( 'month', 'rocket' ),
 			'subtitle'    => $this->user->get_pma_addon_subtitle( $upgrade ),
 			'billing'     => $this->user->get_pma_addon_billing( $upgrade ),
 			'highlights'  => $this->user->get_pma_addon_highlights( $upgrade ),
