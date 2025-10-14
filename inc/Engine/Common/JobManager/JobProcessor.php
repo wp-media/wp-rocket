@@ -461,6 +461,9 @@ class JobProcessor implements LoggerAwareInterface {
 		$rows = [];
 
 		foreach ( $this->factories as $factory ) {
+			if ( ! $factory->manager()->is_allowed() ) {
+				continue;
+			}
 			switch ( $type ) {
 				case 'pending':
 					$rows = array_merge( $rows, $factory->manager()->get_pending_jobs( $num_rows ) );
