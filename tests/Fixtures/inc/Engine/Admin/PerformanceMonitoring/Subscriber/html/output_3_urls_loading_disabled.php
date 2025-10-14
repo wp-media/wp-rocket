@@ -1,5 +1,5 @@
 <div class="wpr-optionHeader">
-<h3 class="wpr-title2">Rocket Insights Score</h3>
+<h3 class="wpr-title2"><a href="http://example.org/wp-admin/options-general.php?page=wprocket#rocket_insights">Rocket Insights Score</a></h3>
 </div>
 <div class="wpr-fieldsContainer">
 <fieldset class="wpr-fieldsContainer-fieldset">
