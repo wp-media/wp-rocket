@@ -1,7 +1,7 @@
 .wpr-pma-license-banner {
 	background-color: #f9f9f9;
 	border-radius: 2px;
-	padding: 30px;
+	padding: 24px 30px;
 	margin: 20px 0;
 	max-width: 100%;
 	border: 1px solid #E2E5E9;
@@ -12,12 +12,12 @@
 		h2 {
 			font-size: 18px;
 			font-weight: 600;
-			margin: 0 0 10px;
+			margin: 0 0 8px;
 			color: #0C0F1F;
 		}
 
 		p {
-			font-size: 16px;
+			font-size: 14px;
 			color: #0C0F1F;
 			margin: 0;
 			line-height: 1.5;
@@ -28,8 +28,8 @@
 	.wpr-pma-banner-content {
 		display: flex;
 		justify-content: space-between;
-		gap: 40px;
-		margin-top: 40px;
+		gap: 30px;
+		margin-top: 24px;
 		@media (max-width: 768px) {
 			flex-direction: column;
 			margin-top: 20px;
@@ -53,8 +53,8 @@
 			li {
 				font-family: Roboto, Arial, sans-serif;
 				position: relative;
-				padding-left: 35px;
-				margin-bottom: 20px;
+				padding-left: 28px;
+				margin-bottom: 12px;
 				font-size: 14px;
 				font-weight: 400;
 				line-height: 1.3;
@@ -89,7 +89,7 @@
 			}
 		}
 		.wpr-pma-terms {
-			margin-top: 60px;
+			margin-top: 24px;
 			font-size: 11px;
 			color: #738191;
 			line-height: 1.3;
@@ -102,11 +102,11 @@
 	.wpr-pma-price-box {
 		background-color: white;
 		border-radius: 5px;
-		padding: 40px 24px 24px 24px;
+		padding: 32px 24px 20px 24px;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		min-width: 310px;
+		min-width: 280px;
 		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 		position: relative;
 		height: fit-content;
@@ -158,12 +158,13 @@
 
 		.wpr-price-number {
 			font-size: 46px;
-			font-weight: 500;
+			font-weight: 700;
 			color: #0C0F1F;
 		}
 		.wpr-price-decimal {
 			color: #0C0F1F;
 			font-size: 30px;
+			font-weight: 700;
 			position: relative;
 			top: -(2*$space);
 		}
@@ -202,10 +203,15 @@
 		text-decoration: none;
 		text-transform: uppercase;
 		letter-spacing: 0.5px;
-		transition: background-color 0.2s ease;
+		box-shadow: 0 4px 6px rgba(50,50,93,.11), 0 1px 3px rgba(0,0,0,.08);
+		transition: all 200ms ease;
+		-webkit-backface-visibility: hidden;
+		backface-visibility: hidden;
 
 		&:hover {
 			background-color: darken(#f67954, 5%);
+			transform: translateY(-2px);
+			box-shadow: 0 7px 14px rgba(50,50,93,.25), 0 3px 6px rgba(0,0,0,.2);
 		}
 	}
 }

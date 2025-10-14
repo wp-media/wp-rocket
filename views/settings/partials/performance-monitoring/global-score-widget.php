@@ -8,7 +8,7 @@ defined( 'ABSPATH' ) || exit;
 
 <div class="wpr-optionHeader">
 	<h3 class="wpr-title2">
-		<?php echo esc_html__( 'Rocket Insights Score', 'rocket' ); ?>
+		<a href="<?php echo esc_url( admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG ) . '#rocket_insights' ); ?>"><?php echo esc_html__( 'Rocket Insights Score', 'rocket' ); ?></a>
 	</h3>
 </div>
 <div class="wpr-fieldsContainer">

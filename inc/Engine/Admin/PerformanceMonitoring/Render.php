@@ -302,7 +302,7 @@ class Render extends Abstract_Render {
 		}
 
 		return [
-			'truncated_title' => mb_substr( $title, 0, $max_length ) . '(...)',
+			'truncated_title' => mb_substr( $title, 0, $max_length ) . '...',
 			'is_truncated'    => true,
 		];
 	}

@@ -266,6 +266,16 @@
 			}
 		}
 
+		&.wpr-btn-with-tool-tip {
+			.wpr-tooltip {
+				left: 0;
+				&:before {
+					left: 50%;
+					transform: translateX(-50%);
+				}
+			}
+		}
+
 		.wpr-tooltip{
 			width:280px;
 			@media screen and (max-width: 600px) {
