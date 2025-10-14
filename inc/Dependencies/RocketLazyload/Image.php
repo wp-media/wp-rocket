@@ -523,9 +523,18 @@ class Image {
 				$height = absint( $atts['height'] );
 			}
 
-			$placeholder_atts = preg_replace( '@\ssrc\s*=\s*(\'|")(?<src>.*)\1@iUs', ' src="' . $this->getPlaceholder( $width, $height ) . '"', $image['atts'] );
+			// Only match src attributes with safe values (no spaces, quotes, or angle brackets).
+			$placeholder_atts = preg_replace(
+				'@\ssrc\s*=\s*(\'|")(?<src>[^\s"\'>]+)\1@iUs',
+				' src="' . $this->getPlaceholder( $width, $height ) . '"',
+				$image['atts']
+			);
 
-			$image_lazyload = str_replace( $image['atts'], $placeholder_atts . ' data-lazy-src="' . $image['src'] . '"', $image_lazyload );
+			$image_lazyload = str_replace(
+				$image['atts'],
+				$placeholder_atts . ' data-lazy-src="' . esc_url( $image['src'] ) . '"',
+				$image_lazyload
+			);
 
 			if ( preg_match( $native_pattern, $image_lazyload ) ) {
 				$result = preg_replace( $native_pattern, '', $image_lazyload );
