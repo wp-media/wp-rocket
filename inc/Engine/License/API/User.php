@@ -346,21 +346,25 @@ class User {
 
 		foreach ( $plan->highlights as $highlight ) {
 			if ( 'Up to 10 pages tracked' === $highlight ) {
-				$highlights [] = sprintf( __( 'Up to %1$s%s pages%2$s tracked', 'rocket' ), '<strong>', '10', '</strong>' );
+				// translators: %1$s opening strong tag, %2$s number of pages, %3$s closing strong tag.
+				$highlights [] = sprintf( __( 'Up to %1$s%2$s pages%3$s tracked', 'rocket' ), '<strong>', '10', '</strong>' );
 				continue;
 			}
 
 			if ( 'Automatic performance monitoring' === $highlight ) {
+				// translators: %1$s opening strong tag, %2$s closing strong tag.
 				$highlights [] = sprintf( __( 'Automatic %1$sperformance monitoring%2$s', 'rocket' ), '<strong>', '</strong>' );
 				continue;
 			}
 
 			if ( 'Unlimited on-demand tests' === $highlight ) {
+				// translators: %1$s opening strong tag, %2$s closing strong tag.
 				$highlights [] = sprintf( __( 'Unlimited %1$son-demand tests%2$s', 'rocket' ), '<strong>', '</strong>' );
 				continue;
 			}
 
 			if ( 'Full GTmetrix performance reports' === $highlight ) {
+				// translators: %1$s opening strong tag, %2$s closing strong tag.
 				$highlights [] = sprintf( __( 'Full %1$sGTmetrix performance reports%2$s', 'rocket' ), '<strong>', '</strong>' );
 				continue;
 			}
