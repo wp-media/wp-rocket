@@ -15,8 +15,8 @@ if ( ( isset( $data['is_blurred'] ) && $data['is_blurred'] ) || ( isset( $data['
 
 // Add link for dashboard global score widget.
 if ( isset( $data['is_dashboard'] ) && $data['is_dashboard'] ) {
-	$rocket_opening_anchor_tag  = '<a href="' . esc_url( admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG ) . '#rocket_insights' ) . '">';
-	$rocket_closing_anchor_tag  = '</a>';
+	$rocket_opening_anchor_tag = '<a href="' . esc_url( admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG ) . '#rocket_insights' ) . '">';
+	$rocket_closing_anchor_tag = '</a>';
 }
 
 ?>
