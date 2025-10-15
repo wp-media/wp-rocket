@@ -110,7 +110,7 @@ class DeleteRowTest extends TestCase {
 		ob_start();
 
 		try {
-			do_action( 'admin_post_rocket_rocket_insights_delete' );
+			do_action( 'admin_post_delete_rocket_insights_url' );
 		} catch ( \WPDieException $e ) {
 			// Expected for wp_die() calls
 		}
