@@ -18,7 +18,7 @@ defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 		<ul class="wpr-pma-benefits-list">
 			<?php foreach ( $data['highlights'] as $wp_rocket_highlight ) : ?>
 			<li>
-				<span><?php echo esc_html( $wp_rocket_highlight ); ?></span>
+				<span><?php echo wp_kses_post( $wp_rocket_highlight ); ?></span>
 			</li>
 			<?php endforeach; ?>
 		</ul>

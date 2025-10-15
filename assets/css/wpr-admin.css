@@ -3390,6 +3390,9 @@ div.wpr-tutorial-item {
     width: auto;
   }
 }
+.wpr-pma-urls-table .wpr-pma-item-actions .wpr-tooltip-content {
+  text-align: left;
+}
 
 .wpr-pma-add-section {
   margin: 16px 0;
