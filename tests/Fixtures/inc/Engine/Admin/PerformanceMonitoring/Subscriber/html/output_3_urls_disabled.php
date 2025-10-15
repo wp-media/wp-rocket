@@ -1,5 +1,5 @@
 <div class="wpr-optionHeader">
-<h3 class="wpr-title2"><a href="http://example.org/wp-admin/options-general.php?page=wprocket#rocket_insights">Rocket Insights Score</a></h3>
+<h3 class="wpr-title2">Rocket Insights Score</h3>
 </div>
 <div class="wpr-fieldsContainer">
 <fieldset class="wpr-fieldsContainer-fieldset">
@@ -7,7 +7,7 @@
 <div class="wpr-percentage-score-widget">
 <div>
 <div class="wpr-percentage-indicator">
-<div class="wpr-percentage-circle status-red ">0</div>
+<a href="http://example.org/wp-admin/options-general.php?page=wprocket#rocket_insights"><div class="wpr-percentage-circle status-red ">0</div></a>
 </div>
 </div>
 <p class="wpr-page-num-txt">Tracked Pages: 3</p>
