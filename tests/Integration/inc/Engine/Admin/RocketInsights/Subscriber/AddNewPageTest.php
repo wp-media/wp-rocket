@@ -138,7 +138,7 @@ class AddNewPageTest extends AjaxTestCase {
 		// Check if database entry was created
 		if ( isset( $expected['database_entries'] ) && $expected['database_entries'] > 0 ) {
 			$items = $this->container->get( 'ri_query' )->query( [] );
-			$this->assertSame( $expected['database_entries'], count( $items ) );
+			$this->assertCount( $expected['database_entries'], $items );
 
 			// Verify URL preservation for non-Latin character tests
 			if ( isset( $expected['verify_url_in_db'] ) && $expected['verify_url_in_db'] ) {
