@@ -616,6 +616,13 @@ document.addEventListener('DOMContentLoaded', function() {
 	// Bind event
 	$(document).on( 'click', '#wpr-action-add_page_speed_radar', handleAddPage );
 	$(document).on( 'click', '.wpr-action-speed_radar_refresh', handleResetPage );
+	// Handle Enter key press on page url input.
+	$(document).on( 'keypress', $pageUrlInput, function(e) {
+		if (e.key === 'Enter') {
+		  e.preventDefault();
+		  handleAddPage(e);
+		}
+	});
 
 	// Only poll if on a wpr section that requires polling(dashboard|rocket_insights) (more robust check)
     function isValidPageForPolling() {
