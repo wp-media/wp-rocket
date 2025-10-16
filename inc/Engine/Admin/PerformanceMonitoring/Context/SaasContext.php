@@ -12,7 +12,7 @@ use WP_Rocket\Engine\Common\Context\ContextInterface;
  */
 class SaasContext implements ContextInterface {
 
-    /**
+	/**
 	 * Context instance.
 	 *
 	 * @var PerformanceMonitoringContext
@@ -25,7 +25,7 @@ class SaasContext implements ContextInterface {
 	 * @param PerformanceMonitoringContext $context Context instance.
 	 */
 	public function __construct( PerformanceMonitoringContext $context ) {
-		$this->context  = $context;
+		$this->context = $context;
 	}
 
 	/**
