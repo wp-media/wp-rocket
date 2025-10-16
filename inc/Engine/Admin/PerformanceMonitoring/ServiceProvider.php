@@ -10,6 +10,7 @@ use WP_Rocket\Engine\Admin\PerformanceMonitoring\{
 	Database\Queries\PerformanceMonitoring as PMQuery,
 	APIHandler\APIClient as PMAPIClient,
 	Context\PerformanceMonitoringContext,
+	Context\SaasContext,
 	Jobs\Factory as PMFactory,
 	Jobs\Manager as PMManager,
 	Managers\Plan,
@@ -17,7 +18,7 @@ use WP_Rocket\Engine\Admin\PerformanceMonitoring\{
 	AJAX\Controller as AjaxController,
 	URLLimit\Subscriber as URLLimitSubscriber,
 	Settings\Controller as SettingsController,
-	Settings\Subscriber as SettingsSubscriber,
+	Settings\Subscriber as SettingsSubscriber
 };
 
 class ServiceProvider extends AbstractServiceProvider {
@@ -35,6 +36,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'pm_query',
 		'pm_api_client',
 		'pm_context',
+		'pm_saas_context',
 		'pm_manager',
 		'pm_factory',
 		'pm_queue',
@@ -81,6 +83,9 @@ class ServiceProvider extends AbstractServiceProvider {
 				]
 			);
 
+		$this->getContainer()->add( 'pm_saas_context', SaasContext::class )
+			->addArgument( 'pm_context' );
+
 		$this->getContainer()->add( 'pm_render', Render::class )
 			->addArguments(
 				[
@@ -110,7 +115,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArguments(
 				[
 					'pm_query',
-					'pm_context',
+					'pm_saas_context',
 					'pm_plan',
 				]
 			);
