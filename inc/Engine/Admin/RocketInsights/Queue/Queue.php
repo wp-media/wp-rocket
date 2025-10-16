@@ -96,4 +96,14 @@ class Queue extends AbstractASQueue {
 		$this->cancel_credit_reset_job();
 		$this->cancel_retest_job();
 	}
+
+	/**
+	 * Deprecate old AS actions.
+	 *
+	 * @return void
+	 */
+	public function deprecate_old_actions() {
+		$this->deprecate_action( 'rocket_pma_credit_reset' );
+		$this->deprecate_action( 'rocket_insights_retest' );
+	}
 }

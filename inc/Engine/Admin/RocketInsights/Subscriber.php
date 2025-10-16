@@ -166,7 +166,10 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			],
 			'rocket_options_changed'                      => 'maybe_cancel_automatic_retest_job',
 			'rocket_insights_retest'                      => 'retest_all_pages',
-			'wp_rocket_upgrade'                           => [ 'on_update_reset_credit', 10, 2 ],
+			'wp_rocket_upgrade'                           => [
+				[ 'on_update_reset_credit', 10, 2 ],
+				[ 'on_update_cancel_old_as_jobs', 10, 2 ],
+			],
 		];
 	}
 
@@ -522,5 +525,19 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		if ( version_compare( $old_version, '3.20.0', '<' ) ) {
 			$this->controller->reset_credit();
 		}
+	}
+
+	/**
+	 * Callback for the wp_rocket_upgrade action to cancel deprecated Action Scheduler jobs on version update.
+	 *
+	 * @param string $new_version New plugin version.
+	 * @param string $old_version Previous plugin version.
+	 * @return void
+	 */
+	public function on_update_cancel_old_as_jobs( $new_version, $old_version ) {
+		if ( version_compare( $old_version, '3.20.1', '>=' ) ) {
+			return;
+		}
+		$this->queue->deprecate_old_actions();
 	}
 }
