@@ -266,6 +266,7 @@ tests_add_filter(
 		}
 
 		if ( BootstrapManager::isGroup( 'PerformanceHints' ) ) {
+			add_filter( 'rocket_performance_monitoring_enabled', '__return_false' );
 			add_filter( 'rocket_above_the_fold_optimization', '__return_true' );
 			add_filter( 'rocket_lrc_optimization', '__return_true' );
 			add_filter( 'rocket_preconnect_external_domains_optimization', '__return_true' );
