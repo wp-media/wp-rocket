@@ -306,4 +306,17 @@ class Render extends Abstract_Render {
 			'is_truncated'    => true,
 		];
 	}
+
+	/**
+	 * Renders the Rocket Insights column content for post listing pages.
+	 *
+	 * @since 3.20.1
+	 *
+	 * @param string $url The URL of the post.
+	 *
+	 * @return void
+	 */
+	public function render_rocket_insights_column( string $url ): void {
+		echo $this->generate( 'partials/rocket-insights/rocket-insights-column', [ 'url' => $url ] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	}
 }

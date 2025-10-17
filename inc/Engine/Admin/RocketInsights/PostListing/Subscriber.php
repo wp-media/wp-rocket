@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Admin\RocketInsights\PostListing;
 
+use WP_Rocket\Engine\Admin\RocketInsights\Render;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
@@ -12,6 +13,23 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  */
 class Subscriber implements Subscriber_Interface {
 	/**
+	 * Render instance.
+	 *
+	 * @var Render
+	 */
+	private $render;
+
+	/**
+	 * Constructor.
+	 *
+	 * @since 3.20.1
+	 *
+	 * @param Render $render Render instance.
+	 */
+	public function __construct( Render $render ) {
+		$this->render = $render;
+	}
+	/**
 	 * Returns an array of events that this subscriber wants to listen to.
 	 *
 	 * @since 3.20.1
@@ -19,9 +37,55 @@ class Subscriber implements Subscriber_Interface {
 	 * @return array
 	 */
 	public static function get_subscribed_events(): array {
-		return [
+		$post_types = self::get_public_post_types();
+		$events     = [
 			'admin_enqueue_scripts' => 'enqueue_post_listing_assets',
 		];
+
+		// Register column hooks for each post type.
+		foreach ( $post_types as $post_type ) {
+			$events[ "manage_{$post_type}_posts_columns" ]       = 'add_rocket_insights_column';
+			$events[ "manage_{$post_type}_posts_custom_column" ] = [ 'render_rocket_insights_column', 10, 2 ];
+		}
+
+		return $events;
+	}
+
+	/**
+	 * Gets the list of public post types that WP Rocket caches.
+	 *
+	 * This is a static helper for get_subscribed_events() since it doesn't require instance state.
+	 *
+	 * @since 3.20.1
+	 *
+	 * @return array
+	 */
+	private static function get_public_post_types(): array {
+		$post_types = get_post_types(
+			[
+				'public'             => true,
+				'publicly_queryable' => true,
+			]
+		);
+
+		$post_types[] = 'page';
+
+		/**
+		 * Filters the post types excluded from Rocket Insights on post listing pages.
+		 *
+		 * @since 3.20.1
+		 *
+		 * @param array $excluded_post_types An array of post type names.
+		 *
+		 * @return array
+		 */
+		$excluded_post_types = (array) wpm_apply_filters_typed(
+			'array',
+			'rocket_insights_excluded_post_types',
+			[]
+		);
+
+		return array_diff( $post_types, $excluded_post_types );
 	}
 
 	/**
@@ -74,44 +138,48 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		// Get the list of public post types that WP Rocket caches.
-		$cached_post_types = $this->get_cached_post_types();
+		$cached_post_types = self::get_public_post_types();
 
 		// Check if the current post type is in the cached list.
 		return in_array( $screen->post_type, $cached_post_types, true );
 	}
 
 	/**
-	 * Gets the list of public post types that WP Rocket caches.
+	 * Adds the Rocket Insights column to the post listing table.
 	 *
 	 * @since 3.20.1
 	 *
-	 * @return array
+	 * @param array $columns Existing columns.
+	 *
+	 * @return array Modified columns array with Rocket Insights column.
 	 */
-	private function get_cached_post_types(): array {
-		$post_types = get_post_types(
-			[
-				'public'             => true,
-				'publicly_queryable' => true,
-			]
-		);
+	public function add_rocket_insights_column( array $columns ): array {
+		$columns['rocket_insights'] = __( 'Rocket Insights', 'rocket' );
 
-		$post_types[] = 'page';
+		return $columns;
+	}
 
-		/**
-		 * Filters the post types excluded from Rocket Insights on post listing pages.
-		 *
-		 * @since 3.20.1
-		 *
-		 * @param array $excluded_post_types An array of post type names.
-		 *
-		 * @return array
-		 */
-		$excluded_post_types = (array) wpm_apply_filters_typed(
-			'array',
-			'rocket_insights_excluded_post_types',
-			[]
-		);
+	/**
+	 * Renders the content for the Rocket Insights column.
+	 *
+	 * @since 3.20.1
+	 *
+	 * @param string $column  The name of the column.
+	 * @param int    $post_id The ID of the current post.
+	 *
+	 * @return void
+	 */
+	public function render_rocket_insights_column( string $column, int $post_id ): void {
+		if ( 'rocket_insights' !== $column ) {
+			return;
+		}
 
-		return array_diff( $post_types, $excluded_post_types );
+		$url = get_permalink( $post_id );
+
+		if ( ! $url ) {
+			return;
+		}
+
+		$this->render->render_rocket_insights_column( $url );
 	}
 }

@@ -199,7 +199,8 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( 'ri_settings' );
 
 		// Post Listing Subscriber.
-		$this->getContainer()->addShared( 'ri_post_listing_subscriber', PostListingSubscriber::class );
+		$this->getContainer()->addShared( 'ri_post_listing_subscriber', PostListingSubscriber::class )
+			->addArgument( 'ri_render' );
 
 		// Ensure the table is created.
 		$this->getContainer()->get( 'ri_table' );
