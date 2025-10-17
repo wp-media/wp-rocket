@@ -18,6 +18,7 @@ use WP_Rocket\Engine\Admin\RocketInsights\{
 	URLLimit\Subscriber as URLLimitSubscriber,
 	Settings\Controller as SettingsController,
 	Settings\Subscriber as SettingsSubscriber,
+	PostListing\Subscriber as PostListingSubscriber,
 };
 
 class ServiceProvider extends AbstractServiceProvider {
@@ -48,6 +49,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'ri_settings',
 		'ri_settings_subscriber',
 		'ri_plan',
+		'ri_post_listing_subscriber',
 	];
 
 	/**
@@ -195,6 +197,9 @@ class ServiceProvider extends AbstractServiceProvider {
 			);
 		$this->getContainer()->addShared( 'ri_settings_subscriber', SettingsSubscriber::class )
 			->addArgument( 'ri_settings' );
+
+		// Post Listing Subscriber.
+		$this->getContainer()->addShared( 'ri_post_listing_subscriber', PostListingSubscriber::class );
 
 		// Ensure the table is created.
 		$this->getContainer()->get( 'ri_table' );

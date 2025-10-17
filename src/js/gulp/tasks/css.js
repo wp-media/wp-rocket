@@ -35,6 +35,14 @@ class gulpCss {
 		return this._compileSaas( 'rtl', 'wpr-admin-rtl', true );
 	}
 
+	compileRocketInsightsSaas() {
+		return this._compileSaas( 'rocket-insights', 'rocket-insights' );
+	}
+
+	compileRocketInsightsSaasMin() {
+		return this._compileSaas( 'rocket-insights', 'rocket-insights', true );
+	}
+
 	compileAdminFullSaasUnmin() {
 		return gulp.parallel(
 			() => this.compileAdminSaas(),
@@ -55,6 +63,8 @@ class gulpCss {
 			() => this.compileAdminRtlSaas(),
 			() => this.compileAdminSaasMin(),
 			() => this.compileAdminRtlSaasMin(),
+			() => this.compileRocketInsightsSaas(),
+			() => this.compileRocketInsightsSaasMin(),
 		);
 	}
 
