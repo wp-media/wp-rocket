@@ -106,24 +106,10 @@ class Subscriber implements Subscriber_Interface {
 		 *
 		 * @return array
 		 */
-		$excluded_post_types = (array) apply_filters(
+		$excluded_post_types = (array) wpm_apply_filters_typed(
+			'array',
 			'rocket_insights_excluded_post_types',
-			[
-				'elementor_library',
-				'oceanwp_library',
-				'tbuilder_layout',
-				'tbuilder_layout_part',
-				'slider',
-				'karma-slider',
-				'tt-gallery',
-				'xlwcty_thankyou',
-				'fusion_template',
-				'blocks',
-				'jet-woo-builder',
-				'fl-builder-template',
-				'cms_block',
-				'web-story',
-			]
+			[]
 		);
 
 		return array_diff( $post_types, $excluded_post_types );
