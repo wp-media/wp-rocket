@@ -2,7 +2,7 @@
  * Rocket Insights functionality for post listing pages
  * This script handles performance score display and updates in admin post listing pages
  *
- * @since 3.21
+ * @since 3.20.1
  */
 
 // Export for use with browserify/babelify in gulp

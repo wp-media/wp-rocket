@@ -8,13 +8,13 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
 /**
  * Subscriber for enqueuing Rocket Insights assets on post listing pages
  *
- * @since 3.21
+ * @since 3.20.1
  */
 class Subscriber implements Subscriber_Interface {
 	/**
 	 * Returns an array of events that this subscriber wants to listen to.
 	 *
-	 * @since 3.21
+	 * @since 3.20.1
 	 *
 	 * @return array
 	 */
@@ -27,7 +27,7 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Enqueues Rocket Insights CSS and JS on post listing pages.
 	 *
-	 * @since 3.21
+	 * @since 3.20.1
 	 *
 	 * @return void
 	 */
@@ -57,7 +57,7 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Determines if assets should be enqueued on the current page.
 	 *
-	 * @since 3.21
+	 * @since 3.20.1
 	 *
 	 * @return bool
 	 */
@@ -83,7 +83,7 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Gets the list of public post types that WP Rocket caches.
 	 *
-	 * @since 3.21
+	 * @since 3.20.1
 	 *
 	 * @return array
 	 */
@@ -100,7 +100,7 @@ class Subscriber implements Subscriber_Interface {
 		/**
 		 * Filters the post types excluded from Rocket Insights on post listing pages.
 		 *
-		 * @since 3.21
+		 * @since 3.20.1
 		 *
 		 * @param array $excluded_post_types An array of post type names.
 		 *
