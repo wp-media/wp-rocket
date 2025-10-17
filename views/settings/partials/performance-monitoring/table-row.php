@@ -19,14 +19,15 @@ defined( 'ABSPATH' ) || exit;
 
 	<td class="wpr-pma-item-title">
 		<?php
-		$rocket_title_data = $this->truncate_title( $data->title );
-		$rocket_css_class  = 'wpr-btn-with-tool-tip';
-		if ( ! $rocket_title_data['is_truncated'] ) {
-			$rocket_css_class = '';
-		}
+		$rocket_css_class = $this->is_title_truncated( $data->title ) ? 'wpr-btn-with-tool-tip' : '';
 		?>
 		<a href="<?php echo esc_url( $data->url ); ?>" target="_blank" rel="noopener" class="<?php echo esc_attr( $rocket_css_class ); ?>">
-			<span class="wpr-pma-title"><?php echo esc_html( $rocket_title_data['truncated_title'] ); ?></span> <span class="wpr-pma-dot">.</span>
+			<span class="wpr-pma-title">
+				<span class="wpr-pma-title-truncate">
+					<?php echo esc_html( $data->title ); ?>
+				</span>
+			</span> 
+			<span class="wpr-pma-dot">.</span>
 			<span class="wpr-pma-date">
 				<?php
 				if ( $data->is_running() ) {
@@ -36,7 +37,7 @@ defined( 'ABSPATH' ) || exit;
 				}
 				?>
 			</span>
-			<?php if ( $rocket_title_data['is_truncated'] ) : ?>
+			<?php if ( '' !== $rocket_css_class ) : ?>
 			<div class="wpr-tooltip">
 				<div class="wpr-tooltip-content">
 					<?php echo esc_html( $data->title ); ?>
