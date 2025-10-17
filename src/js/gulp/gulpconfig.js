@@ -14,12 +14,8 @@ module.exports = {
 				method: 'buildAll',
 			},
 			{
-				task: 'build:sass:rocket-insights:unmin',
-				method: 'compileRocketInsightsSaas',
-			},
-			{
-				task: 'build:sass:rocket-insights:min',
-				method: 'compileRocketInsightsSaasMin',
+				task: 'build:sass:rocket-insights:full',
+				method: 'compileRocketInsightsSaasFull',
 			},
 			{
 				task: 'sass:watch',
@@ -42,13 +38,8 @@ module.exports = {
 			},
 
 			{
-				task: 'build:js:rocket-insights:unmin',
-				method: 'buildRocketInsightsUnmin',
-			},
-
-			{
-				task: 'build:js:rocket-insights:min',
-				method: 'buildRocketInsightsMin',
+				task: 'build:js:rocket-insights:full',
+				method: 'buildRocketInsightsFull',
 			},
 
 			{

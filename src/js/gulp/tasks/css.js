@@ -43,6 +43,13 @@ class gulpCss {
 		return this._compileSaas( 'rocket-insights', 'rocket-insights', true );
 	}
 
+	compileRocketInsightsSaasFull() {
+		return gulp.parallel(
+			() => this.compileAdminRtlSaasMin(),
+			() => this.compileRocketInsightsSaasMin()
+		);
+	}
+
 	compileAdminFullSaasUnmin() {
 		return gulp.parallel(
 			() => this.compileAdminSaas(),

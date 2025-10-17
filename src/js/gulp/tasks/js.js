@@ -62,6 +62,13 @@ class gulpJs {
 		return this._compile( './src/js/global/rocket-insights.js', 'rocket-insights', true, true );
 	}
 
+	buildRocketInsightsFull() {
+		return gulp.parallel(
+			() => this.buildRocketInsightsMin(),
+			() => this.buildRocketInsightsUnmin(),
+		);
+	}
+
 	buildLcpBeacon() {
 		return gulp.src(['./node_modules/wp-rocket-scripts/dist/wpr-beacon*'])
 			.pipe(gulp.dest('./assets/js'));
