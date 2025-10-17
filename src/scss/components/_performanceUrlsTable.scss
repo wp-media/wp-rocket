@@ -179,7 +179,16 @@
 			}
 		}
 		.wpr-pma-title{
-			text-decoration: underline;
+			.wpr-pma-title-truncate{
+				max-width: 260px;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				display: inline-block;
+				position: relative;
+    			top: 4px;
+				text-decoration: underline;
+			}
 		}
 		.wpr-pma-dot{
 			color: $cGreyLighter3;
