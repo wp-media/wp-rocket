@@ -9,12 +9,12 @@ use WP_Rocket\Engine\Admin\PerformanceMonitoring\{
 	Managers\Plan,
 	Jobs\Manager,
 	Queue\Queue,
-	AJAX\Controller as AjaxController
 };
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
+use WP_Rocket\Engine\Admin\RocketInsights\REST;
 
 /**
  * Performance Monitoring Subscriber
@@ -39,11 +39,11 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	private $controller;
 
 	/**
-	 * AjaxController object.
+	 * Rest object.
 	 *
-	 * @var AjaxController
+	 * @var Rest
 	 */
-	private $ajax_controller;
+	private $rest;
 
 	/**
 	 * Queue object.
@@ -92,7 +92,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 *
 	 * @param Render                       $render Render object.
 	 * @param Controller                   $controller Controller object.
-	 * @param AjaxController               $ajax_controller AjaxController object.
+	 * @param Rest                         $rest Rest object.
 	 * @param Queue                        $queue Queue object.
 	 * @param PerformanceMonitoringContext $pma_context PMA context.
 	 * @param GlobalScore                  $global_score GlobalScore instance.
@@ -103,7 +103,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	public function __construct(
 		Render $render,
 		Controller $controller,
-		AjaxController $ajax_controller,
+		Rest $rest,
 		Queue $queue,
 		PerformanceMonitoringContext $pma_context,
 		GlobalScore $global_score,
@@ -113,7 +113,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	) {
 		$this->render          = $render;
 		$this->controller      = $controller;
-		$this->ajax_controller = $ajax_controller;
+		$this->rest            = $rest;
 		$this->queue           = $queue;
 		$this->pma_context     = $pma_context;
 		$this->global_score    = $global_score;
@@ -133,10 +133,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 				[ 'reset_credit_monthly', 9 ],
 				[ 'schedule_homepage_tests' ],
 			],
-			'wp_ajax_rocket_pm_add_new_page'    => 'add_new_page',
-			'wp_ajax_rocket_pm_get_results'     => 'get_results',
-			'admin_post_delete_pm'              => 'delete_row',
-			'wp_ajax_rocket_pm_reset_page'      => 'reset_page',
 			'rocket_localize_admin_script'      => 'add_pending_ids',
 			'rocket_pma_credit_reset'           => 'reset_credit_monthly',
 			'rocket_pm_job_completed'           => [
@@ -167,6 +163,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'rocket_options_changed'            => 'maybe_cancel_automatic_retest_job',
 			'rocket_insights_retest'            => 'retest_all_pages',
 			'wp_rocket_upgrade'                 => [ 'on_update_reset_credit', 10, 2 ],
+			'rest_api_init'                     => [ 'register_routes' ],
 		];
 	}
 
@@ -180,24 +177,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public function schedule_homepage_tests(): void {
 		$this->controller->add_homepage();
-	}
-
-	/**
-	 * Handles the AJAX request to add a new page for performance monitoring.
-	 *
-	 * @return void
-	 */
-	public function add_new_page(): void {
-		$this->ajax_controller->add_new_page();
-	}
-
-	/**
-	 * Handles the AJAX request to get results of urls for performance monitoring.
-	 *
-	 * @return void
-	 */
-	public function get_results(): void {
-		$this->ajax_controller->get_results();
 	}
 
 	/**
@@ -226,24 +205,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		];
 
 		return $data;
-	}
-
-	/**
-	 * Delete one row.
-	 *
-	 * @return void
-	 */
-	public function delete_row() {
-		$this->controller->delete_row();
-	}
-
-	/**
-	 * Reset testing a page/url.
-	 *
-	 * @return void
-	 */
-	public function reset_page(): void {
-		$this->ajax_controller->reset_page();
 	}
 
 	/**
@@ -522,5 +483,14 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		if ( version_compare( $old_version, '3.20.0', '<' ) ) {
 			$this->controller->reset_credit();
 		}
+	}
+
+	/**
+	 * Register REST API routes for Rocket Insights.
+	 *
+	 * @return void
+	 */
+	public function register_routes() {
+		$this->rest->register_routes();
 	}
 }
