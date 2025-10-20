@@ -14,7 +14,6 @@ use WP_Rocket\Engine\Admin\RocketInsights\{
 	Jobs\Manager as RIManager,
 	Managers\Plan,
 	Queue\Queue as RIQueue,
-	AJAX\Controller as AjaxController,
 	URLLimit\Subscriber as URLLimitSubscriber,
 	Settings\Controller as SettingsController,
 	Settings\Subscriber as SettingsSubscriber,
@@ -42,7 +41,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'ri_render',
 		'ri_controller',
 		'ri_subscriber',
-		'ri_ajax_controller',
+		'ri_rest',
 		'ri_global_score',
 		'ri_url_limit_subscriber',
 		'ri_settings',
@@ -147,7 +146,7 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		// Queue layer.
 		$this->getContainer()->add( 'ri_queue', RIQueue::class );
-		$this->getContainer()->add( 'ri_ajax_controller', AjaxController::class )
+		$this->getContainer()->add( 'ri_rest', Rest::class )
 			->addArguments(
 				[
 					'ri_query',
@@ -164,7 +163,7 @@ class ServiceProvider extends AbstractServiceProvider {
 				[
 					'ri_render',
 					'ri_controller',
-					'ri_ajax_controller',
+					'ri_rest',
 					'ri_queue',
 					'ri_context',
 					'ri_global_score',
