@@ -14,7 +14,6 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
-use WP_Rocket\Engine\Admin\RocketInsights\REST;
 
 /**
  * Rocket Insights Subscriber
@@ -111,15 +110,15 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		Manager $manager,
 		Plan $plan
 	) {
-		$this->render          = $render;
-		$this->controller      = $controller;
-		$this->rest            = $rest;
-		$this->queue           = $queue;
-		$this->context         = $context;
-		$this->global_score    = $global_score;
-		$this->options         = $options;
-		$this->manager         = $manager;
-		$this->plan            = $plan;
+		$this->render       = $render;
+		$this->controller   = $controller;
+		$this->rest         = $rest;
+		$this->queue        = $queue;
+		$this->context      = $context;
+		$this->global_score = $global_score;
+		$this->options      = $options;
+		$this->manager      = $manager;
+		$this->plan         = $plan;
 	}
 
 	/**
