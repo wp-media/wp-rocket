@@ -466,7 +466,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				path: window.wp.url.addQueryArgs( '/wp-rocket/v1/rocket-insights/pages/progress', { ids: rocketInsightsIds } ),
 			}
 		).then( ( response ) => {
-			if (Array.isArray(response.results)) {
+			if (response.success && Array.isArray(response.results)) {
 				// Update credit status
 				updateCreditState(response.has_credit);
 
