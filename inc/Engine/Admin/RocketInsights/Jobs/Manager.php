@@ -56,11 +56,9 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 
 	/**
 	 * Timeout value in seconds for synchronization operations.
-	 * 
+	 *
 	 * This constant defines the maximum time allowed for sync jobs
 	 * before they are considered to have timed out.
-	 * 
-	 * @var int
 	 */
 	const SYNC_TIMEOUT = 10;
 
