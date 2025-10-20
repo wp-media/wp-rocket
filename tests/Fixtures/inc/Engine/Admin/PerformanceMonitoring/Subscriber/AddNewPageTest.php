@@ -50,6 +50,26 @@ return [
 			'error_message' => 'No url provided',
 		],
 	],
+	'testShouldFailWithInvalidUrl' => [
+		'config' => [
+			'post_data' => [
+				'page_url' => 'invalid-url-format',
+			],
+			'rows' => [
+				[
+					'url' => 'http://example.org',
+					'status' => 'completed',
+					'is_mobile' => 1,
+				],
+			],
+			'customer_data' => (new UserDataGenerator()),
+			'mock_http' => false,
+		],
+		'expected' => [
+			'success' => false,
+			'error_message' => 'Invalid URL format',
+		],
+	],
 	'testShouldFailWithUrlLimitReached' => [
 		'config' => [
 			'post_data' => [
@@ -118,6 +138,102 @@ return [
 				'html' => null, // Will be generated
 				'global_score_data' => null, // Will be generated
 				'remaining_urls' => null, // Will be generated
+				'can_add_pages' => true,
+			],
+		],
+	],
+	'testShouldStoreUrlWithNonLatinCharactersInCyrillic' => [
+		'config' => [
+			'post_data' => [
+				'page_url' => 'http://example.org/new-page-with-special-char-%d0%bf%d1%80%d0%be%d0%b4%d1%83%d0%ba%d1%82%d0%be%d0%b2%d0%b0-%d0%ba%d0%b0%d1%82%d0%b5%d0%b3%d0%be%d1%80%d0%b8%d1%8f',
+			],
+			'rows' => [],
+			'customer_data' => (new UserDataGenerator()),
+			'mock_http' => true,
+		],
+		'expected' => [
+			'success' => true,
+			'database_entries' => 1,
+			'hook_fired' => true,
+			'verify_url_in_db' => true,
+			'expected_url_pattern' => '/%d0%bf%d1%80%d0%be%d0%b4%d1%83%d0%ba%d1%82%d0%be%d0%b2%d0%b0/',
+			'response_data' => [
+				'id' => null,
+				'html' => null,
+				'global_score_data' => null,
+				'remaining_urls' => null,
+				'can_add_pages' => true,
+			],
+		],
+	],
+	'testShouldStoreUrlWithNonLatinCharactersInArabic' => [
+		'config' => [
+			'post_data' => [
+				'page_url' => 'http://example.org/category/%d8%ba%d9%8a%d8%b1-%d9%85%d8%b5%d9%86%d9%81',
+			],
+			'rows' => [],
+			'customer_data' => (new UserDataGenerator()),
+			'mock_http' => true,
+		],
+		'expected' => [
+			'success' => true,
+			'database_entries' => 1,
+			'hook_fired' => true,
+			'verify_url_in_db' => true,
+			'expected_url_pattern' => '/%d8%ba%d9%8a%d8%b1/',
+			'response_data' => [
+				'id' => null,
+				'html' => null,
+				'global_score_data' => null,
+				'remaining_urls' => null,
+				'can_add_pages' => true,
+			],
+		],
+	],
+	'testShouldStoreUrlWithOnlyNonLatinPath' => [
+		'config' => [
+			'post_data' => [
+				'page_url' => 'http://example.org/%D0%BF%D1%80%D0%BE%D0%B4%D1%83%D0%BA%D1%82%D0%BE%D0%B2%D0%B0/3',
+			],
+			'rows' => [],
+			'customer_data' => (new UserDataGenerator()),
+			'mock_http' => true,
+		],
+		'expected' => [
+			'success' => true,
+			'database_entries' => 1,
+			'hook_fired' => true,
+			'verify_url_in_db' => true,
+			'expected_url_pattern' => '/%D0%BF%D1%80%D0%BE%D0%B4%D1%83%D0%BA%D1%82%D0%BE%D0%B2%D0%B0/',
+			'response_data' => [
+				'id' => null,
+				'html' => null,
+				'global_score_data' => null,
+				'remaining_urls' => null,
+				'can_add_pages' => true,
+			],
+		],
+	],
+	'testShouldStoreUrlWithMixedLatinAndNonLatin' => [
+		'config' => [
+			'post_data' => [
+				'page_url' => 'http://example.org/page-%E4%B8%AD%E6%96%87-test',
+			],
+			'rows' => [],
+			'customer_data' => (new UserDataGenerator()),
+			'mock_http' => true,
+		],
+		'expected' => [
+			'success' => true,
+			'database_entries' => 1,
+			'hook_fired' => true,
+			'verify_url_in_db' => true,
+			'expected_url_pattern' => '/%E4%B8%AD%E6%96%87/',
+			'response_data' => [
+				'id' => null,
+				'html' => null,
+				'global_score_data' => null,
+				'remaining_urls' => null,
 				'can_add_pages' => true,
 			],
 		],
