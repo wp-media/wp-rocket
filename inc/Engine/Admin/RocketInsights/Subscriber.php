@@ -132,6 +132,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 				[ 'reset_credit_monthly', 9 ],
 				[ 'schedule_homepage_tests' ],
 			],
+			'admin_post_delete_rocket_insights_url'       => 'delete_row',
 			'rocket_localize_admin_script'                => 'add_pending_ids',
 			'rocket_insights_credit_reset'                => 'reset_credit_monthly',
 			'rocket_rocket_insights_job_completed'        => [
@@ -207,6 +208,15 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		];
 
 		return $data;
+	}
+
+	/**
+	 * Delete one row.
+	 *
+	 * @return void
+	 */
+	public function delete_row() {
+		$this->controller->delete_row();
 	}
 
 	/**
