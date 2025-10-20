@@ -128,13 +128,25 @@ class Controller {
 		} else {
 			$page_title = $this->get_page_title( $payload['message'] );
 		}
-		$row_id = $this->manager->add_to_the_queue(
-			$url,
-			true,
-			[
-				'title' => $page_title,
-			]
-			);
+		$additional_details = [
+			'title' => $page_title,
+		];
+
+		// Try synchronous submission first.
+		$sync_response = $this->manager->try_sync_submission( $url, true, $additional_details );
+
+		if ( $sync_response && ! empty( $sync_response['uuid'] ) ) {
+			// Success! Save directly with pending status.
+			$row_id = $this->manager->add_to_the_queue( $url, true, $additional_details );
+
+			if ( ! empty( $row_id ) ) {
+				// Update to pending status immediately with job ID.
+				$this->query->make_status_pending( $url, $sync_response['uuid'], '', true );
+			}
+		} else {
+			// Fallback to async queue.
+			$row_id = $this->manager->add_to_the_queue( $url, true, $additional_details );
+		}
 
 		if ( empty( $row_id ) ) {
 			wp_send_json_error(
@@ -342,18 +354,32 @@ class Controller {
 				);
 		}
 
-		$this->manager->add_to_the_queue(
-			$row->url, // @phpstan-ignore-line
-			true,
-			[
-				'data'       => [
-					'is_retest' => true,
-				],
-				'score'      => '',
-				'report_url' => '',
-				'is_blurred' => 0,
-			]
-			);
+		$additional_details = [
+			'data'       => [
+				'is_retest' => true,
+			],
+			'score'      => '',
+			'report_url' => '',
+			'is_blurred' => 0,
+		];
+
+		// Try synchronous submission first.
+		$sync_response = $this->manager->try_sync_submission( $row->url, true, $additional_details ); // @phpstan-ignore-line
+
+		if ( $sync_response && ! empty( $sync_response['uuid'] ) ) {
+			// Success! Save with the new data.
+			$this->manager->add_to_the_queue( $row->url, true, $additional_details ); // @phpstan-ignore-line
+
+			// Update to pending status immediately with job ID.
+			$this->query->make_status_pending( $row->url, $sync_response['uuid'], '', true ); // @phpstan-ignore-line
+		} else {
+			// Fallback to async queue.
+			$this->manager->add_to_the_queue(
+				$row->url, // @phpstan-ignore-line
+				true,
+				$additional_details
+				);
+		}
 
 		/**
 		 * Fires when a Rocket Insights job is reset/retested.

@@ -6,6 +6,7 @@ namespace WP_Rocket\Engine\Admin\RocketInsights\Jobs;
 use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
 use WP_Rocket\Engine\Admin\RocketInsights\Database\Queries\RocketInsights as RocketInsightsQuery;
+use WP_Rocket\Engine\Admin\RocketInsights\APIHandler\APIClient;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Engine\Admin\RocketInsights\Managers\Plan;
 use WP_Rocket\Engine\Common\JobManager\Managers\AbstractManager;
@@ -47,20 +48,40 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 	protected $plan;
 
 	/**
+	 * API Client instance.
+	 *
+	 * @var APIClient
+	 */
+	protected $api_client;
+
+	/**
+	 * Timeout value in seconds for synchronization operations.
+	 * 
+	 * This constant defines the maximum time allowed for sync jobs
+	 * before they are considered to have timed out.
+	 * 
+	 * @var int
+	 */
+	const SYNC_TIMEOUT = 10;
+
+	/**
 	 * Instantiate the class.
 	 *
 	 * @param RocketInsightsQuery $query Rocket Insights Query instance.
 	 * @param ContextInterface    $context Rocket Insights Context.
 	 * @param Plan                $plan Plan instance.
+	 * @param APIClient           $api_client API Client instance.
 	 */
 	public function __construct(
 		RocketInsightsQuery $query,
 		ContextInterface $context,
-		Plan $plan
+		Plan $plan,
+		APIClient $api_client
 	) {
-		$this->query   = $query;
-		$this->context = $context;
-		$this->plan    = $plan;
+		$this->query      = $query;
+		$this->context    = $context;
+		$this->plan       = $plan;
+		$this->api_client = $api_client;
 	}
 
 	/**
@@ -228,6 +249,63 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 		}
 
 		return wp_parse_args( $api_response['data']['data'], $defaults );
+	}
+
+	/**
+	 * Attempt synchronous submission to GTMetrix API.
+	 *
+	 * @param string $url URL to test.
+	 * @param bool   $is_mobile Is mobile.
+	 * @param array  $additional_details Additional details.
+	 * @return array|false Returns job data on success, false on failure/timeout.
+	 */
+	public function try_sync_submission( string $url, bool $is_mobile, array $additional_details = [] ) {
+		$options = [
+			'is_home' => $additional_details['is_home'] ?? false,
+		];
+
+		// Set a shorter timeout for synchronous calls (10 seconds).
+		add_filter( 'http_request_timeout', [ $this, 'set_sync_timeout' ], 10 );
+
+		$this->logger::info(
+			'Performance Monitoring: Attempting synchronous submission',
+			[ 'url' => $url ]
+		);
+
+		$response = $this->api_client->add_to_queue( $url, $options );
+
+		remove_filter( 'http_request_timeout', [ $this, 'set_sync_timeout' ], 10 );
+
+		// Check if API call was successful.
+		if ( is_wp_error( $response ) || empty( $response['uuid'] ) ) {
+			$this->logger::info(
+				'Performance Monitoring: Synchronous submission failed, falling back to async',
+				[
+					'url'   => $url,
+					'error' => is_wp_error( $response ) ? $response->get_error_message() : 'No UUID returned',
+				]
+			);
+			return false;
+		}
+
+		$this->logger::info(
+			'Performance Monitoring: Synchronous submission successful',
+			[
+				'url'    => $url,
+				'job_id' => $response['uuid'],
+			]
+		);
+
+		return $response;
+	}
+
+	/**
+	 * Set shorter timeout for synchronous API calls.
+	 *
+	 * @return int
+	 */
+	public function set_sync_timeout() {
+		return self::SYNC_TIMEOUT;
 	}
 
 	/**

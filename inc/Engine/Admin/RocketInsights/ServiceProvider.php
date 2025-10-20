@@ -112,6 +112,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'ri_query',
 					'ri_context',
 					'ri_plan',
+					'ri_api_client',
 				]
 			);
 
