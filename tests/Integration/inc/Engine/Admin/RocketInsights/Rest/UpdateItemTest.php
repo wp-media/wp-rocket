@@ -1,22 +1,40 @@
 <?php
 declare( strict_types=1 );
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\RocketInsights\Subscriber;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\RocketInsights\Rest;
 
 use WP_Rocket\Tests\Integration\DBTrait;
-use WP_Rocket\Tests\Integration\AjaxTestCase;
+use WPMedia\PHPUnit\Integration\RESTfulTestCase;
 
 /**
- * Test class covering WP_Rocket\Engine\Admin\RocketInsights\Subscriber::reset_page
+ * Test class covering WP_Rocket\Engine\Admin\RocketInsights\Rest::update_item
  *
  * @group RocketInsights
  * @group AdminOnly
  */
-class ResetPageTest extends AjaxTestCase {
+class UpdateItemTest extends RESTfulTestCase {
 	use DBTrait;
 
+	private $config;
 	private $hook_fired = false;
 	private $hook_fired_id = null;
+
+	public function configTestData() {
+		if ( empty( $this->config ) ) {
+			$this->loadTestDataConfig();
+		}
+
+		return isset( $this->config['test_data'] )
+			? $this->config['test_data']
+			: $this->config;
+	}
+
+	protected function loadTestDataConfig() {
+		$obj      = new \ReflectionObject( $this );
+		$filename = $obj->getFileName();
+
+		$this->config = $this->getTestData( dirname( $filename ), basename( $filename, '.php' ) );
+	}
 
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
@@ -39,9 +57,6 @@ class ResetPageTest extends AjaxTestCase {
 
 		// Enable Performance Monitoring for the test
 		add_filter( 'rocket_rocket_insights_enabled', '__return_true' );
-
-		// Set the AJAX action
-		$this->action = 'rocket_rocket_insights_reset_page';
 
 		// Add a hook to capture when rocket_rocket_insights_job_retest is fired
 		add_action( 'rocket_rocket_insights_job_retest', [ $this, 'capture_hook_fired' ] );
@@ -69,14 +84,17 @@ class ResetPageTest extends AjaxTestCase {
 	public function testShouldDoAsExpected( $config, $expected ) {
 		$this->setUpTest( $config );
 
-		$this->executeAjaxCall();
+		$response = $this->doRestRequest( 'PATCH', '/wp-rocket/v1/rocket-insights/pages/' . $config['id'] );
 
-		$this->assertResponse( $expected );
+		$this->assertResponse( $response, $expected );
 	}
 
 	private function setUpTest( $config ) {
-		// Set up the nonce
-		$_POST['nonce'] = \wp_create_nonce( 'rocket-ajax' );
+		$role = get_role( 'administrator' );
+		$role->add_cap( 'rocket_manage_options' );
+
+		$user = $this->factory()->user->create( [ 'role' => 'administrator' ] );
+		wp_set_current_user( $user );
 
 		// Set up database entries if provided
 		if ( isset( $config['database_entries'] ) ) {
@@ -84,32 +102,11 @@ class ResetPageTest extends AjaxTestCase {
 				self::addPerformanceMonitoring( $entry );
 			}
 		}
-
-		// Set up POST data if provided
-		if ( isset( $config['post_data'] ) ) {
-			foreach ( $config['post_data'] as $key => $value ) {
-				$_POST[ $key ] = $value;
-			}
-		}
 	}
 
-	private function executeAjaxCall() {
-		// Try to make the AJAX call
-		try {
-			$this->_handleAjax( $this->action );
-		} catch ( \WPAjaxDieContinueException $e ) {
-			// Expected for successful AJAX responses
-		} catch ( \WPAjaxDieStopException $e ) {
-			// Expected for error responses
-		}
-	}
-
-	private function assertResponse( $expected ) {
-		// Get the response
-		$response = json_decode( $this->_last_response, true );
-
+	private function assertResponse( $response, $expected ) {
 		// Assert the expected response type
-		if ( $expected['success'] ) {
+		if ( 200 === $expected['code'] ) {
 			$this->assertSuccessResponse( $response, $expected );
 		} else {
 			$this->assertErrorResponse( $response, $expected );
@@ -131,9 +128,9 @@ class ResetPageTest extends AjaxTestCase {
 		// Check response data if provided
 		if ( isset( $expected['response_data'] ) ) {
 			foreach ( $expected['response_data'] as $key => $value ) {
-				$this->assertArrayHasKey( $key, $response['data'] );
+				$this->assertArrayHasKey( $key, $response );
 				if ( $value !== null ) {
-					$this->assertSame( $value, $response['data'][ $key ] );
+					$this->assertSame( $value, $response[ $key ] );
 				}
 			}
 		}
@@ -141,17 +138,17 @@ class ResetPageTest extends AjaxTestCase {
 		// Check that response contains expected keys
 		if ( isset( $expected['response_keys'] ) ) {
 			foreach ( $expected['response_keys'] as $key ) {
-				$this->assertArrayHasKey( $key, $response['data'] );
+				$this->assertArrayHasKey( $key, $response );
 			}
 		}
 	}
 
 	private function assertErrorResponse( $response, $expected ) {
-		$this->assertFalse( $response['success'] );
+		$this->assertSame( $response['data']['status'], $expected['code'] );
 
 		// Check error message if provided
 		if ( isset( $expected['error_message'] ) ) {
-			$this->assertStringContainsString( $expected['error_message'], $response['data']['message'] );
+			$this->assertStringContainsString( $expected['error_message'], $response['message'] );
 		}
 
 		// Check if hook was NOT fired for error cases
