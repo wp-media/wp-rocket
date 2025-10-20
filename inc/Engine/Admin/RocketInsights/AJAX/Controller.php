@@ -412,4 +412,37 @@ class Controller {
 			get_total_count()
 		);
 	}
+
+	/**
+	 * Handles AJAX request to get column HTML for a specific URL.
+	 *
+	 * @since 3.20.1
+	 *
+	 * @return void
+	 */
+	public function get_column_html(): void {
+		check_ajax_referer( 'rocket-ajax', 'nonce', true );
+
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- URL validation happens via untrailingslashit(). Using trim() and wp_unslash() only to preserve percent-encoded non-ASCII characters.
+		$url = isset( $_POST['url'] ) ? untrailingslashit( trim( wp_unslash( $_POST['url'] ) ) ) : '';
+
+		if ( empty( $url ) ) {
+			wp_send_json_error(
+				[
+					'message' => __( 'Invalid URL.', 'rocket' ),
+				]
+			);
+		}
+
+		// Start output buffering to capture the rendered HTML.
+		ob_start();
+		$this->render->render_rocket_insights_column( $url );
+		$html = ob_get_clean();
+
+		wp_send_json_success(
+			[
+				'html' => $html,
+			]
+		);
+	}
 }

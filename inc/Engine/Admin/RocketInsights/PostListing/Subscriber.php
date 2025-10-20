@@ -116,6 +116,17 @@ class Subscriber implements Subscriber_Interface {
 			rocket_get_constant( 'WP_ROCKET_VERSION' ),
 			true
 		);
+
+		wp_localize_script(
+			'rocket-insights',
+			'rocket_insights_i18n',
+			[
+				'adding'      => __( 'Adding...', 'rocket' ),
+				'test_page'   => __( 'Test the page', 'rocket' ),
+				'error'       => __( 'An error occurred', 'rocket' ),
+				'loading_img' => rocket_get_constant( 'WP_ROCKET_ASSETS_IMG_URL' ) . 'orange-loading.svg',
+			]
+		);
 	}
 
 	/**

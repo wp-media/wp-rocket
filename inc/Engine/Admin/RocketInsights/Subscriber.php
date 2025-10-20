@@ -135,6 +135,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			],
 			'wp_ajax_rocket_rocket_insights_add_new_page' => 'add_new_page',
 			'wp_ajax_rocket_rocket_insights_get_results'  => 'get_results',
+			'wp_ajax_rocket_rocket_insights_get_column_html' => 'get_column_html',
 			'admin_post_delete_rocket_insights_url'       => 'delete_row',
 			'wp_ajax_rocket_rocket_insights_reset_page'   => 'reset_page',
 			'rocket_localize_admin_script'                => 'add_pending_ids',
@@ -201,6 +202,17 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public function get_results(): void {
 		$this->ajax_controller->get_results();
+	}
+
+	/**
+	 * Handles AJAX request to get column HTML for a specific URL.
+	 *
+	 * @since 3.20.1
+	 *
+	 * @return void
+	 */
+	public function get_column_html(): void {
+		$this->ajax_controller->get_column_html();
 	}
 
 	/**

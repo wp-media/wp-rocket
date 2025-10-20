@@ -6,6 +6,7 @@ namespace WP_Rocket\Engine\Admin\RocketInsights;
 use WP_Rocket\Abstract_Render;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\Admin\RocketInsights\Context\Context;
+use WP_Rocket\Engine\Admin\RocketInsights\Database\Queries\RocketInsights as Query;
 use WP_Rocket\Engine\Admin\RocketInsights\Managers\Plan;
 
 class Render extends Abstract_Render {
@@ -31,6 +32,13 @@ class Render extends Abstract_Render {
 	private $beacon;
 
 	/**
+	 * Query instance.
+	 *
+	 * @var Query
+	 */
+	private $query;
+
+	/**
 	 * Constructor for the Render class.
 	 *
 	 * Initializes the Render instance with the provided template path and CreditManager.
@@ -39,13 +47,15 @@ class Render extends Abstract_Render {
 	 * @param Plan    $plan Plan instance.
 	 * @param Context $context Instance of PerformanceMonitoringContext for managing performance monitoring context.
 	 * @param Beacon  $beacon          Beacon instance.
+	 * @param Query   $query           Query instance.
 	 */
-	public function __construct( $template_path, Plan $plan, Context $context, Beacon $beacon ) {
+	public function __construct( $template_path, Plan $plan, Context $context, Beacon $beacon, Query $query ) {
 		parent::__construct( $template_path );
 
 		$this->plan    = $plan;
 		$this->context = $context;
 		$this->beacon  = $beacon;
+		$this->query   = $query;
 	}
 
 	/**
@@ -317,6 +327,38 @@ class Render extends Abstract_Render {
 	 * @return void
 	 */
 	public function render_rocket_insights_column( string $url ): void {
-		echo $this->generate( 'partials/rocket-insights/rocket-insights-column', [ 'url' => $url ] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		// Query for existing row in the database.
+		// Try both with and without trailing slash for compatibility.
+		$url_no_slash   = untrailingslashit( $url );
+		$url_with_slash = trailingslashit( $url );
+		
+		$row     = null;
+		$results = $this->query->query( [ 'url' => $url_no_slash ] );
+
+		// If not found without slash, try with slash.
+		if ( empty( $results ) || ! is_array( $results ) ) {
+			$results = $this->query->query( [ 'url' => $url_with_slash ] );
+		}
+
+		if ( ! empty( $results ) && is_array( $results ) ) {
+			$row = $results[0];
+		}
+
+		// Use normalized URL (without trailing slash) for frontend.
+		$normalized_url = $url_no_slash;
+
+		// Get credit availability.
+		$has_credit = $this->plan->has_credit();
+
+		// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped -- Template handles escaping.
+		echo $this->generate(
+			'partials/rocket-insights/rocket-insights-column',
+			[
+				'url'        => $normalized_url,
+				'row'        => $row,
+				'has_credit' => $has_credit,
+			]
+		);
+		// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 }

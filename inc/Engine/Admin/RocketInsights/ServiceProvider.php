@@ -90,6 +90,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'ri_plan',
 					'ri_context',
 					'beacon',
+					'ri_query',
 				]
 			);
 
