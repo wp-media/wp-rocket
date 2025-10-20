@@ -7,13 +7,13 @@ use WP_Error;
 use WP_REST_Controller;
 use WP_REST_Request;
 use WP_REST_Server;
-use WP_Rocket\Engine\Admin\PerformanceMonitoring\{
+use WP_Rocket\Engine\Admin\RocketInsights\{
 	Render,
 	PageHandlerTrait,
 	GlobalScore,
 	Jobs\Manager,
-	Context\PerformanceMonitoringContext as Context,
-	Database\Queries\PerformanceMonitoring as Query,
+	Context\Context,
+	Database\Queries\RocketInsights as Query,
 	Managers\Plan
 };
 use WP_Rocket\Engine\Common\Utils;
@@ -212,14 +212,17 @@ class REST extends WP_REST_Controller {
 	public function create_item( $request ) {
 		// Check if adding a page is allowed based on URL limits.
 		if ( ! $this->context->is_adding_page_allowed() ) {
-			$data = [
-					'error'          => true,
-					'message'        => __( 'Maximum number of URLs reached for your license.', 'rocket' ),
+			$error = new WP_Error(
+				'rest_forbidden',
+				__( 'Maximum number of URLs reached for your license.', 'rocket' ),
+				[
+					'status'         => 403,
 					'remaining_urls' => 0,
 					'can_add_pages'  => false,
-				];
+				]
+			);
 
-			return rest_ensure_response( $data );
+			return rest_ensure_response( $error );
 		}
 
 		$payload = $this->get_url_validation_payload( $request['page_url'] );
@@ -245,12 +248,13 @@ class REST extends WP_REST_Controller {
 			);
 
 		if ( empty( $row_id ) ) {
-			$data = [
-				'error'   => true,
-				'message' => esc_html__( 'Not valid inputs', 'rocket' ),
-			];
+			$error = new WP_Error(
+				'rest_invalid_input',
+				esc_html__( 'Not valid inputs', 'rocket' ),
+				[ 'status' => 500 ]
+			);
 
-			return rest_ensure_response( $data );
+			return rest_ensure_response( $error );
 		}
 
 		$urls_count   = $this->query->get_total_count();
@@ -265,7 +269,7 @@ class REST extends WP_REST_Controller {
 		 * @param string $plan       Plan name.
 		 * @param int    $urls_count The current number of URLs being monitored.
 		 */
-		do_action( 'rocket_pm_job_added', $url, $current_plan, $urls_count );
+		do_action( 'rocket_rocket_insights_job_added', $url, $current_plan, $urls_count );
 
 		$row_data = $this->query->get_row_by_id( (int) $row_id );
 
@@ -331,7 +335,7 @@ class REST extends WP_REST_Controller {
 		 *
 		 * @param int $id The ID of the deleted performance monitoring job.
 		 */
-		do_action( 'rocket_pm_job_deleted', $request['id'] );
+		do_action( 'rocket_rocket_insights_job_deleted', $request['id'] );
 
 		return rest_ensure_response( $result );
 	}
@@ -393,7 +397,7 @@ class REST extends WP_REST_Controller {
 		 *
 		 * @param int    $id The database row ID of the reset job.
 		 */
-		do_action( 'rocket_pm_job_retest', $request['id'] );
+		do_action( 'rocket_rocket_insights_job_retest', $request['id'] );
 
 		$row = $this->query->get_row_by_id( $request['id'] );
 
@@ -433,10 +437,10 @@ class REST extends WP_REST_Controller {
 		$items = $this->query->get_items();
 
 		if ( empty( $items ) ) {
-			return rest_ensure_response( $items );
-		}
+			$error = new WP_Error( 'rest_not_found', 'No items found.', [ 'status' => 404 ] );
 
-		$data = [];
+			return rest_ensure_response( $error );
+		}
 
 		return rest_ensure_response( $items );
 	}
@@ -467,9 +471,9 @@ class REST extends WP_REST_Controller {
 		$payload = [];
 
 		if ( empty( $request['ids'] ) ) {
-			$payload['results'] = 'ids empty';
+			$error = new WP_Error( 'rest_invalid_param', 'ids empty', [ 'status' => 400 ] );
 
-			return rest_ensure_response( $payload );
+			return rest_ensure_response( $error );
 		}
 
 		$query_params = [
@@ -480,15 +484,16 @@ class REST extends WP_REST_Controller {
 
 		// Result is empty.
 		if ( empty( $results ) ) {
-			$payload['results'] = 'No rows found in DB for ids: ' . implode( ',', $request['ids'] );
+			$error = new WP_Error( 'rest_not_found', 'No rows found in DB for ids: ' . implode( ',', $request['ids'] ), [ 'status' => 404 ] );
 
-			return rest_ensure_response( $payload );
+			return rest_ensure_response( $error );
 		}
 
 		foreach ( $results as $result ) {
 			$result->html = $this->render->get_performance_monitoring_list_row( $result );
 		}
 
+		$payload['success']           = true;
 		$payload['results']           = $results;
 		$payload['global_score_data'] = $this->get_global_score_payload();
 		$payload['has_credit']        = $this->plan->has_credit();
