@@ -151,9 +151,19 @@ $can_access_report = $row->can_access_report();
 		<?php endif; ?>
 	<?php else : ?>
 		<!-- Failed or unknown state -->
-		<div class="wpr-ri-error">
-			<span class="wpr-icon-exclamation"></span>
-			<?php esc_html_e( 'Failed', 'rocket' ); ?>
+		<div class="wpr-ri-score-wrapper">
+			<div class="wpr-btn-with-tool-tip">
+				<div class="wpr-percentage-indicator">
+					<div class="wpr-percentage-circle status-red">
+						<span class="wpr-failed-score wpr-icon-exclamation"></span>
+					</div>
+				</div>
+				<div class="wpr-tooltip">
+					<div class="wpr-tooltip-content">
+						<?php esc_html_e( 'Something went wrong with this URL', 'rocket' ); ?>
+					</div>
+				</div>
+			</div>
 		</div>
 	<?php endif; ?>
 	

@@ -271,7 +271,7 @@
   margin-top: 2px;
 }
 .wpr-ri-column .wpr-ri-loading {
-  text-align: center;
+  text-align: left;
   padding: 8px 0;
 }
 .wpr-ri-column .wpr-ri-loading .wpr-loading-img {
@@ -325,6 +325,7 @@
   margin-bottom: 4px;
 }
 .wpr-ri-column .wpr-ri-score-wrapper .wpr-percentage-indicator {
+  position: relative;
   top: 3px;
 }
 .wpr-ri-column .wpr-ri-score-wrapper .wpr-percentage-indicator .wpr-percentage-circle {
@@ -360,13 +361,18 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 18px;
+  height: 18px;
 }
 .wpr-ri-column .wpr-ri-score-wrapper .wpr-percentage-indicator .wpr-percentage-circle .wpr-failed-score:before {
   position: relative;
   display: inline-block;
+  width: 18px;
+  height: 18px;
   font-size: 18px;
   line-height: 1;
   vertical-align: middle;
+  background-size: contain;
 }
 .wpr-ri-column .wpr-ri-score-wrapper .wpr-percentage-indicator .wpr-percentage-circle.wpr-centralize-100-score {
   padding-left: 2px;
@@ -420,8 +426,7 @@
 .wpr-ri-column .wpr-tooltip {
   position: absolute;
   bottom: calc(100% + 8px);
-  left: 50%;
-  transform: translateX(-50%);
+  left: 0;
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.2s ease, visibility 0.2s ease;
@@ -442,8 +447,7 @@
   content: "";
   position: absolute;
   top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 16px;
   width: 0;
   height: 0;
   border-left: 6px solid transparent;

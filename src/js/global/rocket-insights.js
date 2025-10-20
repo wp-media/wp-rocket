@@ -121,12 +121,12 @@ module.exports = (function() {
 				page_url: url
 			},
 			success: function(response) {
-				if (response.success && response.data.row_id) {
+				if (response.success && response.data.id) {
 					// Update column with loading state.
-					showLoadingState(column, response.data.row_id);
+					showLoadingState(column, response.data.id);
 					
 					// Start polling for results.
-					startPolling(response.data.row_id, url, column);
+					startPolling(response.data.id, url, column);
 				} else {
 					// Show error message.
 					showMessage(column, response.data?.message || 'Error adding page', 'error');
@@ -215,8 +215,9 @@ module.exports = (function() {
 				if (response.success && response.data && response.data.length > 0) {
 					const result = response.data[0];
 					
-					// Check if test is complete.
-					if (result.status === 'completed' || result.status === 'blurred' || result.status === 'failed') {
+					// Check if test is complete or failed.
+					// Stop polling for any status that's not 'in-progress' or explicitly running
+					if (result.status !== 'in-progress' && !result.is_running) {
 						// Stop polling.
 						clearInterval(activePolls[rowId]);
 						delete activePolls[rowId];
@@ -284,6 +285,8 @@ module.exports = (function() {
 	 */
 	function showMessage(column, message, type) {
 		const messageEl = column.find('.wpr-ri-message');
+		// Clear any existing content first
+		messageEl.stop(true, true).empty();
 		messageEl.html('<p class="wpr-ri-message-' + type + '">' + message + '</p>').show();
 		
 		// Auto-hide after 5 seconds.
