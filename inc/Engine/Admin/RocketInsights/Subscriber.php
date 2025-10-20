@@ -128,45 +128,45 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'wp_rocket_first_install'                     => [
+			'wp_rocket_first_install'               => [
 				[ 'reset_credit_monthly', 9 ],
 				[ 'schedule_homepage_tests' ],
 			],
-			'admin_post_delete_rocket_insights_url'       => 'delete_row',
-			'rocket_localize_admin_script'                => 'add_pending_ids',
-			'rocket_insights_credit_reset'                => 'reset_credit_monthly',
-			'rocket_rocket_insights_job_completed'        => [
+			'admin_post_delete_rocket_insights_url' => 'delete_row',
+			'rocket_localize_admin_script'          => 'add_pending_ids',
+			'rocket_insights_credit_reset'          => 'reset_credit_monthly',
+			'rocket_rocket_insights_job_completed'  => [
 				[ 'validate_credit' ],
 				[ 'reset_global_score' ],
 			],
-			'rocket_rocket_insights_job_failed'           => 'reset_global_score',
-			'rocket_rocket_insights_job_added'            => 'reset_global_score',
-			'rocket_rocket_insights_job_retest'           => 'reset_global_score',
-			'rocket_rocket_insights_job_deleted'          => 'reset_global_score',
-			'rocket_dashboard_sidebar'                    => 'render_global_score_widget',
-			'rocket_insights_tab_content'                 => [
+			'rocket_rocket_insights_job_failed'     => 'reset_global_score',
+			'rocket_rocket_insights_job_added'      => 'reset_global_score',
+			'rocket_rocket_insights_job_retest'     => 'reset_global_score',
+			'rocket_rocket_insights_job_deleted'    => 'reset_global_score',
+			'rocket_dashboard_sidebar'              => 'render_global_score_widget',
+			'rocket_insights_tab_content'           => [
 				[ 'render_license_banner_section', 10 ],
 				[ 'maybe_show_paid_reach_limits_notice', 17 ],
 				[ 'maybe_show_notice', 18 ],
 				[ 'render_performance_urls_table', 20 ],
 			],
-			'admin_init'                                  => [
+			'admin_init'                            => [
 				[ 'flush_license_cache', 8 ],
 				[ 'check_upgrade' ],
 				[ 'schedule_jobs', 11 ],
 			],
 			'admin_post_rocket_rocket_insights_add_homepage' => 'add_homepage_from_widget',
-			'rocket_deactivation'                         => [
+			'rocket_deactivation'                   => [
 				[ 'cancel_scheduled_jobs' ],
 				[ 'remove_current_plan' ],
 			],
-			'rocket_options_changed'                      => 'maybe_cancel_automatic_retest_job',
-			'rocket_insights_retest'                      => 'retest_all_pages',
-			'wp_rocket_upgrade'                           => [
+			'rocket_options_changed'                => 'maybe_cancel_automatic_retest_job',
+			'rocket_insights_retest'                => 'retest_all_pages',
+			'wp_rocket_upgrade'                     => [
 				[ 'on_update_reset_credit', 10, 2 ],
 				[ 'on_update_cancel_old_as_jobs', 10, 2 ],
 			],
-			'rest_api_init'                               => [ 'register_routes' ],
+			'rest_api_init'                         => [ 'register_routes' ],
 		];
 	}
 

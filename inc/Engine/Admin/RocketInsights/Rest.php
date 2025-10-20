@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\Admin\RocketInsights;
 
 use WP_Error;
 use WP_REST_Controller;
+use WP_REST_Response;
 use WP_REST_Request;
 use WP_REST_Server;
 use WP_Rocket\Engine\Admin\RocketInsights\{
@@ -18,7 +19,7 @@ use WP_Rocket\Engine\Admin\RocketInsights\{
 };
 use WP_Rocket\Engine\Common\Utils;
 
-class REST extends WP_REST_Controller {
+class Rest extends WP_REST_Controller {
 	use PageHandlerTrait;
 
 	const ROUTE_NAMESPACE = 'wp-rocket/v1';
@@ -106,14 +107,14 @@ class REST extends WP_REST_Controller {
 					'permission_callback' => [ $this, 'create_item_permissions_check' ],
 					'args'                => [
 						'page_url' => [
-							'required' => true,
+							'required'            => true,
 							'validation_callback' => function ( $param ) {
 								$url = untrailingslashit( trim( wp_unslash( $param ) ) );
 								$url = rocket_add_url_protocol( $url );
 
 								return wp_http_validate_url( $url );
 							},
-							'sanitize_callback' => function ( $param ) {
+							'sanitize_callback'   => function ( $param ) {
 								$url = untrailingslashit( trim( wp_unslash( $param ) ) );
 
 								return rocket_add_url_protocol( $url );
@@ -133,7 +134,7 @@ class REST extends WP_REST_Controller {
 				'permission_callback' => [ $this, 'get_progress_permissions_check' ],
 				'args'                => [
 					'ids' => [
-						'required' => true,
+						'required'          => true,
 						'validate_callback' => function ( $param ) {
 							if ( ! is_array( $param ) ) {
 								return false;
@@ -148,7 +149,7 @@ class REST extends WP_REST_Controller {
 							return true;
 						},
 						'sanitize_callback' => function ( $param ) {
-							$ids= array_map( 'intval', $param );
+							$ids = array_map( 'intval', $param );
 							// Remove anything that is not a valid integer > 0.
 							$ids = array_filter( $ids );
 
@@ -167,10 +168,10 @@ class REST extends WP_REST_Controller {
 			self::ROUTE_BASE . '/pages/(?P<id>\d+)',
 			[
 				[
-					'methods'            => WP_REST_Server::DELETABLE,
-					'callback'           => [ $this, 'delete_item' ],
+					'methods'             => WP_REST_Server::DELETABLE,
+					'callback'            => [ $this, 'delete_item' ],
 					'permission_callback' => [ $this, 'delete_item_permissions_check' ],
-					'args'               => [
+					'args'                => [
 						'id' => [
 							'required'          => true,
 							'validate_callback' => function ( $param ) {
@@ -186,7 +187,7 @@ class REST extends WP_REST_Controller {
 					'methods'             => WP_REST_Server::CREATABLE,
 					'callback'            => [ $this, 'update_item' ],
 					'permission_callback' => [ $this, 'update_item_permissions_check' ],
-					'args'               => [
+					'args'                => [
 						'id' => [
 							'required'          => true,
 							'validate_callback' => function ( $param ) {
@@ -197,7 +198,7 @@ class REST extends WP_REST_Controller {
 							},
 						],
 					],
-				]
+				],
 			]
 		);
 	}
@@ -431,10 +432,12 @@ class REST extends WP_REST_Controller {
 	/**
 	 * Retrieves a collection of items.
 	 *
+	 * @param WP_REST_Request $request Full details about the request.
+	 *
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public function get_items( $request ) {
-		$items = $this->query->get_items();
+		$items = $this->query->query();
 
 		if ( empty( $items ) ) {
 			$error = new WP_Error( 'rest_not_found', 'No items found.', [ 'status' => 404 ] );
