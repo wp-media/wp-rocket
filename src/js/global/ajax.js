@@ -586,7 +586,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		window.wp.apiFetch(
 			{
 				path: '/wp-rocket/v1/rocket-insights/pages/' + id,
-				method: 'POST',
+				method: 'PATCH',
 			}
 		).then( ( response ) => {
 			if (response.success) {
