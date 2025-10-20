@@ -6,7 +6,7 @@ use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Engine\Optimization\DelayJS\Admin\SiteList;
 use WP_Rocket\Engine\Optimization\DelayJS\Admin\Settings as DelayJSSettings;
-use WP_Rocket\Engine\Admin\PerformanceMonitoring\Context\PerformanceMonitoringContext;
+use WP_Rocket\Engine\Admin\RocketInsights\Context\Context;
 use WP_Rocket\Abstract_Render;
 use WP_Rocket\Admin\Options_Data;
 
@@ -102,27 +102,27 @@ class Page extends Abstract_Render {
 	private $options;
 
 	/**
-	 * Performance Monitoring context instance
+	 * Rocket Insights context instance
 	 *
-	 * @var PerformanceMonitoringContext
+	 * @var Context
 	 */
-	private $pm_context;
+	private $ri_context;
 
 	/**
 	 * Creates an instance of the Page object.
 	 *
 	 * @since 3.0
 	 *
-	 * @param array                        $args        Array of required arguments to add the admin page.
-	 * @param Settings                     $settings    Instance of Settings class.
-	 * @param Render                       $render      Render instance.
-	 * @param Beacon                       $beacon      Beacon instance.
-	 * @param Optimization                 $optimize    Database optimization instance.
-	 * @param UserClient                   $user_client User client instance.
-	 * @param SiteList                     $delayjs_sitelist User client instance.
-	 * @param string                       $template_path Path to views.
-	 * @param Options_Data                 $options       WP Rocket options instance.
-	 * @param PerformanceMonitoringContext $pm_context Performance Monitoring context instance.
+	 * @param array        $args        Array of required arguments to add the admin page.
+	 * @param Settings     $settings    Instance of Settings class.
+	 * @param Render       $render      Render instance.
+	 * @param Beacon       $beacon      Beacon instance.
+	 * @param Optimization $optimize    Database optimization instance.
+	 * @param UserClient   $user_client User client instance.
+	 * @param SiteList     $delayjs_sitelist User client instance.
+	 * @param string       $template_path Path to views.
+	 * @param Options_Data $options       WP Rocket options instance.
+	 * @param Context      $ri_context   Rocket Insights context instance.
 	 */
 	public function __construct(
 		array $args,
@@ -134,7 +134,7 @@ class Page extends Abstract_Render {
 		SiteList $delayjs_sitelist,
 		$template_path,
 		Options_Data $options,
-		PerformanceMonitoringContext $pm_context
+		Context $ri_context
 	) {
 		parent::__construct( $template_path );
 		$args = array_merge(
@@ -156,7 +156,7 @@ class Page extends Abstract_Render {
 		$this->user_client      = $user_client;
 		$this->delayjs_sitelist = $delayjs_sitelist;
 		$this->options          = $options;
-		$this->pm_context       = $pm_context;
+		$this->ri_context       = $ri_context;
 	}
 
 	/**
@@ -1692,7 +1692,7 @@ class Page extends Abstract_Render {
 	 */
 	public function rocket_insights_section() {
 		// Hide Rocket Insights for reseller accounts and localhost installations.
-		if ( ! $this->pm_context->is_allowed() ) {
+		if ( ! $this->ri_context->is_allowed() ) {
 			return;
 		}
 
@@ -1716,7 +1716,7 @@ class Page extends Abstract_Render {
 					],
 					'page'   => 'rocket_insights',
 					'helper' => '',
-					'class'  => [ 'pma-settings-container' ],
+					'class'  => [ 'rocket-insights-settings-container' ],
 				],
 			]
 		);
