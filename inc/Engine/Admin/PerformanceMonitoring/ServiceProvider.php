@@ -14,11 +14,11 @@ use WP_Rocket\Engine\Admin\PerformanceMonitoring\{
 	Jobs\Manager as PMManager,
 	Managers\Plan,
 	Queue\Queue as PMQueue,
-	AJAX\Controller as AjaxController,
 	URLLimit\Subscriber as URLLimitSubscriber,
 	Settings\Controller as SettingsController,
 	Settings\Subscriber as SettingsSubscriber,
 };
+use WP_Rocket\Engine\Admin\RocketInsights\REST;
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
@@ -42,7 +42,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'pm_render',
 		'pm_controller',
 		'pm_subscriber',
-		'pm_ajax_controller',
+		'ri_rest',
 		'pm_global_score',
 		'pm_url_limit_subscriber',
 		'rocket_insights_settings',
@@ -147,7 +147,7 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		// Queue layer.
 		$this->getContainer()->add( 'pm_queue', PMQueue::class );
-		$this->getContainer()->add( 'pm_ajax_controller', AjaxController::class )
+		$this->getContainer()->add( 'ri_rest', Rest::class )
 			->addArguments(
 				[
 					'pm_query',
@@ -164,7 +164,7 @@ class ServiceProvider extends AbstractServiceProvider {
 				[
 					'pm_render',
 					'pm_controller',
-					'pm_ajax_controller',
+					'ri_rest',
 					'pm_queue',
 					'pm_context',
 					'pm_global_score',
