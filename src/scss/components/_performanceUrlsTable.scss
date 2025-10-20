@@ -1,4 +1,4 @@
-.wpr-pma-notice{
+.wpr-ri-notice{
 	background-image: none ;
 	border-radius: 0;
 	border-left: 4px solid #3ECE9D;
@@ -21,7 +21,7 @@
 		top: 2*$space;
 	}
 
-	&.wpr-error-notice, &.wpr-pma-free-limit-notice{
+	&.wpr-error-notice, &.wpr-ri-free-limit-notice{
 		font-family: Roboto, Arial, sans-serif;
 		font-size: 14px;
 		font-style: normal;
@@ -44,7 +44,7 @@
 			color: #0C0F1F;
 		}
 	}
-	&.wpr-pma-free-limit-notice{
+	&.wpr-ri-free-limit-notice{
 		color: #000000;
 		.wpr-notice-close{
 			color: #000000;
@@ -52,7 +52,7 @@
 	}
 }
 
-.wpr-pma-summary-info{
+.wpr-ri-summary-info{
 	font-family: Roboto, Arial, sans-serif;
 	font-size: 14px;
 	font-style: normal;
@@ -68,7 +68,7 @@
 		font-weight: 600;
 	}
 }
-.wpr-pma-urls-table{
+.wpr-ri-urls-table{
 	&.widefat{
 		border:none;
 		border-collapse: separate;
@@ -132,25 +132,25 @@
 			text-indent: -1px;
 		}
 	}
-	.wpr-pma-item{
+	.wpr-ri-item{
 		background: #F9FAFB;
 		&.wpr-global-score{
 			background: $cWhite;
 			td, th {
 				border: none;
 			}
-			.wpr-pma-item-actions{
+			.wpr-ri-item-actions{
 				min-height: 60px;
 				position: relative;
 				display: block;
 			}
 		}
 	}
-	.wpr-pma-item-score{
+	.wpr-ri-item-score{
 		vertical-align: middle;
 		padding: 0 8px;
 	}
-	.wpr-pma-item-title{
+	.wpr-ri-item-title{
 		font-size: 14px;
 		color: $cBlack;
 		vertical-align: middle;
@@ -178,17 +178,17 @@
 				}
 			}
 		}
-		.wpr-pma-title{
+		.wpr-ri-title{
 			text-decoration: underline;
 		}
-		.wpr-pma-dot{
+		.wpr-ri-dot{
 			color: $cGreyLighter3;
 			display: inline-block;
 			position: relative;
 			top: -$space/2;
 			margin: 0 $space;
 		}
-		.wpr-pma-date{
+		.wpr-ri-date{
 			color: $cGreyLighter3;
 		}
 		&:before{
@@ -201,10 +201,10 @@
 			border-left: 1px solid #D4D9DD;
 		}
 	}
-	.wpr-pma-item-actions{
+	.wpr-ri-item-actions{
 		text-align: right;
 		vertical-align: middle;
-		.wpr-pma-action{
+		.wpr-ri-action{
 			font-family: Roboto, Arial, sans-serif;
 			display: inline-block;
 			font-size: 14px;
@@ -274,7 +274,7 @@
 		}
 	}
 }
-.wpr-pma-add-section{
+.wpr-ri-add-section{
 	margin: 2*$space 0;
 	display: flex;
 	.wpr-speed-radar-input{
@@ -292,7 +292,7 @@
 	}
 }
 
-.wpr-pma-add-url-button{
+.wpr-ri-add-url-button{
 	font-family: "Segoe UI ", Tahoma, Geneva, Verdana, sans-serif;
 	font-size: 12px;
 	font-style: normal;

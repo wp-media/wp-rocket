@@ -1,4 +1,4 @@
-.wpr-pma-license-banner {
+.wpr-ri-license-banner {
 	background-color: #f9f9f9;
 	border-radius: 2px;
 	padding: 30px;
@@ -7,7 +7,7 @@
 	border: 1px solid #E2E5E9;
 
 	// Header section
-	.wpr-pma-banner-header {
+	.wpr-ri-banner-header {
 		font-family: Roboto, Arial, sans-serif;
 		h2 {
 			font-size: 18px;
@@ -25,7 +25,7 @@
 	}
 
 	// Content container with flex layout
-	.wpr-pma-banner-content {
+	.wpr-ri-banner-content {
 		display: flex;
 		justify-content: space-between;
 		gap: 40px;
@@ -37,12 +37,12 @@
 	}
 
 	// Benefits list
-	.wpr-pma-benefits-list-container {
+	.wpr-ri-benefits-list-container {
 		flex: 1;
 		padding: 0;
 		margin: 0;
 		max-width: 60%;
-		.wpr-pma-benefits-list {
+		.wpr-ri-benefits-list {
 			list-style: none;
 			margin: 0;
 
@@ -88,7 +88,7 @@
 				}
 			}
 		}
-		.wpr-pma-terms {
+		.wpr-ri-terms {
 			margin-top: 60px;
 			font-size: 11px;
 			color: #738191;
@@ -99,7 +99,7 @@
 		}
 	}
 	// Price box
-	.wpr-pma-price-box {
+	.wpr-ri-price-box {
 		background-color: white;
 		border-radius: 5px;
 		padding: 40px 24px 24px 24px;
@@ -116,7 +116,7 @@
 			width: 100%;
 		}
 
-		.wpr-pma-offer {
+		.wpr-ri-offer {
 			font-family: Roboto, Arial, sans-serif;
 			position: absolute;
 			top: -14px;
@@ -133,7 +133,7 @@
 	}
 
 	// Price before discount
-	.wpr-pma-price-before-discount {
+	.wpr-ri-price-before-discount {
 		color: #A9B2BC;
 		text-decoration: line-through;
 		font-size: 16px;
@@ -141,7 +141,7 @@
 	}
 
 	// Price display
-	.wpr-pma-price {
+	.wpr-ri-price {
 		display: flex;
 		align-items: baseline;
 		justify-content: center;
@@ -178,14 +178,14 @@
 	}
 
 	// VAT notice
-	.wpr-pma-vat {
+	.wpr-ri-vat {
 		font-size: 12px;
 		color: #738191;
 		margin: 0 0 20px;
 	}
 
 	// CTA button
-	.wpr-pma-cta-button {
+	.wpr-ri-cta-button {
 		font-family: Roboto, Arial, sans-serif;
 		background-color: #F3704D;
 		border: 1px solid #F3704D;

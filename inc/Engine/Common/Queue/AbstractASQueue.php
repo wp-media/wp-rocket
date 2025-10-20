@@ -184,6 +184,20 @@ abstract class AbstractASQueue implements QueueInterface {
 	}
 
 	/**
+	 * Deprecate action without any args or group.
+	 *
+	 * @param string $hook Action hook name.
+	 * @return void
+	 */
+	public function deprecate_action( $hook ) {
+		try {
+			as_unschedule_action( $hook );
+		} catch ( Exception $exception ) {
+			Logger::error( $exception->getMessage(), [ 'Action Scheduler Queue' ] );
+		}
+	}
+
+	/**
 	 * Dequeue all actions with a matching hook (and optionally matching args and group) so no matching actions are ever run.
 	 *
 	 * @param string $hook The hook that the job will trigger.

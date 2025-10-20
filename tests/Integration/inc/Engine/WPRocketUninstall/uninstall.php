@@ -146,7 +146,7 @@ class Test_Uninstall extends FilesystemTestCase {
 		$lrc_table           = $container->get( 'lrc_table' );
 		$preload_fonts_table = $container->get( 'preload_fonts_table' );
 		$preconnect_table    = $container->get( 'preconnect_external_domains_table' );
-		$pm_table            = $container->get( 'pm_table' );
+		$ri_table            = $container->get( 'ri_table' );
 
 		$tables = [
 			$rucss_usedcss_table,
@@ -155,7 +155,7 @@ class Test_Uninstall extends FilesystemTestCase {
 			$lrc_table,
 			$preload_fonts_table,
 			$preconnect_table,
-			$pm_table,
+			$ri_table,
 		];
 
 		$uninstall = new WPRocketUninstall(
