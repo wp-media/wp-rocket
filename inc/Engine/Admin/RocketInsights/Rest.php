@@ -184,7 +184,7 @@ class Rest extends WP_REST_Controller {
 					],
 				],
 				[
-					'methods'             => WP_REST_Server::CREATABLE,
+					'methods'             => WP_REST_Server::EDITABLE,
 					'callback'            => [ $this, 'update_item' ],
 					'permission_callback' => [ $this, 'update_item_permissions_check' ],
 					'args'                => [
@@ -403,6 +403,7 @@ class Rest extends WP_REST_Controller {
 		$row = $this->query->get_row_by_id( $request['id'] );
 
 		$data = [
+			'success'           => true,
 			'id'                => $request['id'],
 			'html'              => $this->render->get_performance_monitoring_list_row( $row ),
 			'global_score_data' => $this->get_global_score_payload(),
@@ -422,7 +423,7 @@ class Rest extends WP_REST_Controller {
 	 * @return true|WP_Error
 	 */
 	public function update_item_permissions_check( $request ) {
-		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+		if ( ! $this->context->is_allowed() ) {
 			return new WP_Error( 'rest_forbidden', __( 'You are not allowed to update this item.', 'rocket' ), [ 'status' => 403 ] );
 		}
 
