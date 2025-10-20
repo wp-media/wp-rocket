@@ -279,7 +279,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			rocket_insights: ''
 		}
     };
-    
+
     // Initialize globalScoreData from localized script data if available
     if (window.rocket_ajax_data?.global_score_data) {
         globalScoreData = window.rocket_ajax_data.global_score_data;
@@ -461,31 +461,31 @@ document.addEventListener('DOMContentLoaded', function() {
 			return;
 		}
 
-		$.get(ajaxurl, {
-			ids: pmIds,
-			action: 'rocket_pm_get_results',
-			_ajax_nonce: rocket_ajax_data.nonce
-		}, function(response) {
-			if (response.success && Array.isArray(response.data.results)) {
+		window.wp.apiFetch(
+			{
+				path: window.wp.url.addQueryArgs( '/wp-rocket/v1/rocket-insights/pages/progress', { ids: pmIds } ),
+			}
+		).then( ( response ) => {
+			if (Array.isArray(response.results)) {
 				// Update credit status
-				updateCreditState(response.data.has_credit);
+				updateCreditState(response.has_credit);
 
 				// Update quota banner visibility
-				updateQuotaBanner(response.data.can_add_pages);
+				updateQuotaBanner(response.can_add_pages);
 
-                // Update global score data and widget when status || page count changes.
-                if (globalScoreData.data.status !== response.data.global_score_data.data.status || globalScoreData.data.pages_num !== response.data.global_score_data.data.pages_num) {
-                    // Update global score data.
-                    globalScoreData = response.data.global_score_data;
+				// Update global score data and widget when status || page count changes.
+				if (globalScoreData.data.status !== response.global_score_data.data.status || globalScoreData.data.pages_num !== response.global_score_data.data.pages_num) {
+					// Update global score data.
+					globalScoreData = response.global_score_data;
 
-                    // Update global score widget if on dashboard.
-                    if ( isOnDashboard() ) {
-                        $('#wpr_global_score_widget').html(response.data.global_score_data.html);
-                    }
+					// Update global score widget if on dashboard.
+					if ( isOnDashboard() ) {
+						$('#wpr_global_score_widget').html(response.global_score_data.html);
+					}
 					// Update global score row in table if on Rocket Insights page.
 					updateGlobalScoreRow(globalScoreData);
-                }
-				response.data.results.forEach(result => {
+				}
+				response.results.forEach(result => {
 					const $row = $(`[data-rocket-pm-id="${result.id}"]`);
 					$row.replaceWith(result.html);
 
@@ -500,9 +500,9 @@ document.addEventListener('DOMContentLoaded', function() {
 				// On error, clear IDs and stop polling
 				pmIds = [];
 				resetPolling();
-				console.error('Polling error:', response.data?.results || response);
+				console.error('Polling error:', response.results || response);
 			}
-		});
+		} );
 	}
 
 	function handleAddPage(e) {
@@ -520,24 +520,28 @@ document.addEventListener('DOMContentLoaded', function() {
 			return;
 		}
 
-		$.post(ajaxurl, {
-			page_url: pageUrl,
-			action: 'rocket_pm_add_new_page',
-			_ajax_nonce: rocket_ajax_data.nonce
-		}, function(response) {
+		window.wp.apiFetch(
+			{
+				path: '/wp-rocket/v1/rocket-insights/pages/',
+				method: 'POST',
+				data: {
+					page_url: pageUrl
+				},
+			}
+		).then( ( response ) => {
 			if (response.success) {
 				$pageUrlInput.val('');
-				$tableBody.append(response.data.html);
+				$tableBody.append(response.html);
 				$table.removeClass('hidden');
-				addIds(response.data.id);
+				addIds(response.id);
 				let pages_num_container = $('#rocket_pma_pages_num');
 				pages_num_container.text( parseInt( pages_num_container.text() ) + 1 );
 
 				// Update credit status
-				updateCreditState(response.data.has_credit);
+				updateCreditState(response.has_credit);
 
                 // Update global score data.
-                globalScoreData = response.data.global_score_data;
+                globalScoreData = response.global_score_data;
 
 				// Update global score row in table if on Rocket Insights page.
 				updateGlobalScoreRow(globalScoreData);
@@ -547,7 +551,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				}
 
 				// Show/hide quota banner based on can_add_pages
-				updateQuotaBanner(response.data.can_add_pages);
+				updateQuotaBanner(response.can_add_pages);
 
 				// Start polling if not already running
 				if (!pollTimer) {
@@ -559,14 +563,14 @@ document.addEventListener('DOMContentLoaded', function() {
 				$pageUrlInput.val('');
 
 				// Handle URL limit reached error
-				if (response.data?.message && response.data.message.includes('Maximum number of URLs reached')) {
+				if (response?.message && response.message.includes('Maximum number of URLs reached')) {
 					// Update UI state to reflect URL limit has been reached
 					disableAddUrlElements();
 					// Show quota banner (can_add_pages = false)
-					updateQuotaBanner(response.data.can_add_pages !== undefined ? response.data.can_add_pages : false);
+					updateQuotaBanner(response.can_add_pages !== undefined ? response.can_add_pages : false);
 				}
 
-				console.error(response.data?.message || response);
+				console.error(response?.message || response);
 			}
 		});
 	}
@@ -579,25 +583,26 @@ document.addEventListener('DOMContentLoaded', function() {
 			return;
 		}
 
-		$.post(ajaxurl, {
-			id,
-			action: 'rocket_pm_reset_page',
-			_ajax_nonce: rocket_ajax_data.nonce
-		}, function(response) {
+		window.wp.apiFetch(
+			{
+				path: '/wp-rocket/v1/rocket-insights/pages/' + id,
+				method: 'POST',
+			}
+		).then( ( response ) => {
 			if (response.success) {
-				addIds(response.data.id);
+				addIds(response.id);
 
-				const $row = $(`[data-rocket-pm-id="${response.data.id}"]`);
-				$row.replaceWith(response.data.html);
+				const $row = $(`[data-rocket-pm-id="${response.id}"]`);
+				$row.replaceWith(response.html);
 
 				// Update credit status
-				updateCreditState(response.data.has_credit);
+				updateCreditState(response.has_credit);
 
 				// Update quota banner visibility
-				updateQuotaBanner(response.data.can_add_pages);
+				updateQuotaBanner(response.can_add_pages);
 
                 // Update global score data.
-                globalScoreData = response.data.global_score_data;
+                globalScoreData = response.global_score_data;
 
 				// Update global score row in table if on Rocket Insights page.
 				updateGlobalScoreRow(globalScoreData);
@@ -607,7 +612,7 @@ document.addEventListener('DOMContentLoaded', function() {
 					schedulePolling();
 				}
 			} else {
-				console.error(response.data?.message || response);
+				console.error(response?.message || response);
 			}
 		});
 	}
