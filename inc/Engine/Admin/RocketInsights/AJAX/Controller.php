@@ -13,6 +13,7 @@ use WP_Rocket\Engine\Admin\RocketInsights\{
 	Managers\Plan
 };
 use WP_Rocket\Engine\Common\Utils;
+use WP_Rocket\Logger\Logger;
 
 class Controller {
 	use PageHandlerTrait;
@@ -142,6 +143,21 @@ class Controller {
 			if ( ! empty( $row_id ) ) {
 				// Update to pending status immediately with job ID.
 				$this->query->make_status_pending( $url, $sync_response['uuid'], '', true );
+			} else {
+				// DB insert failed after successful API submission - log orphaned job.
+				Logger::error(
+					'Rocket Insights: Database insert failed after successful sync submission',
+					[
+						'url'    => $url,
+						'job_id' => $sync_response['uuid'],
+					]
+				);
+				// Fallback to error response since we can't track this job.
+				wp_send_json_error(
+					[
+						'message' => __( 'Unable to save performance test. Please try again.', 'rocket' ),
+					]
+				);
 			}
 		} else {
 			// Fallback to async queue.
@@ -368,10 +384,27 @@ class Controller {
 
 		if ( $sync_response && ! empty( $sync_response['uuid'] ) ) {
 			// Success! Save with the new data.
-			$this->manager->add_to_the_queue( $row->url, true, $additional_details ); // @phpstan-ignore-line
+			$row_id = $this->manager->add_to_the_queue( $row->url, true, $additional_details ); // @phpstan-ignore-line
 
-			// Update to pending status immediately with job ID.
-			$this->query->make_status_pending( $row->url, $sync_response['uuid'], '', true ); // @phpstan-ignore-line
+			if ( ! empty( $row_id ) ) {
+				// Update to pending status immediately with job ID.
+				$this->query->make_status_pending( $row->url, $sync_response['uuid'], '', true ); // @phpstan-ignore-line
+			} else {
+				// DB operation failed after successful API submission - log orphaned job.
+				Logger::error(
+					'Rocket Insights: Database update failed after successful sync submission',
+					[
+						'url'    => $row->url, // @phpstan-ignore-line
+						'job_id' => $sync_response['uuid'],
+					]
+				);
+				// Fallback to error response since we can't track this job.
+				wp_send_json_error(
+					[
+						'message' => __( 'Unable to reset performance test. Please try again.', 'rocket' ),
+					]
+				);
+			}
 		} else {
 			// Fallback to async queue.
 			$this->manager->add_to_the_queue(
