@@ -266,7 +266,7 @@ class Rest extends WP_REST_Controller {
 		$current_plan = $this->plan->get_current_plan();
 
 		/**
-		 * Fires when a performance monitoring job is added via AJAX.
+		 * Fires when a performance monitoring job is added.
 		 *
 		 * @since 3.20
 		 *
@@ -635,8 +635,7 @@ class Rest extends WP_REST_Controller {
 	private function get_remaining_url_count(): int {
 		return max(
 			0,
-			$this->plan->max_urls() - (int) $this->query->
-			get_total_count()
+			$this->plan->max_urls() - (int) $this->query->get_total_count()
 		);
 	}
 }
