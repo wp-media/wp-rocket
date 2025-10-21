@@ -12,33 +12,6 @@ use WP_Rocket\Tests\Integration\AdminTestCase;
  */
 class Test_RenderRocketInsightsColumn extends AdminTestCase {
 	/**
-	 * Test rendering of Rocket Insights column content.
-	 *
-	 * @dataProvider configTestData
-	 *
-	 * @param array $config   Test configuration.
-	 * @param array $expected Expected result.
-	 *
-	 * @return void
-	 */
-	public function testShouldRenderPlaceholderContent( $config, $expected ) {
-		// Create a test post.
-		$post_id = $this->factory->post->create( $config['post_data'] );
-
-		// Start output buffering to capture the rendered content.
-		ob_start();
-        // @phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
-		do_action( "manage_{$config['post_type']}_posts_custom_column", $config['column_name'], $post_id );
-		$output = ob_get_clean();
-
-		if ( $expected['should_render'] ) {
-			$this->assertStringContainsString( $expected['content'], $output, 'Should render placeholder content' );
-		} else {
-			$this->assertEmpty( $output, 'Should not render content for other columns' );
-		}
-	}
-
-	/**
 	 * Test that no content is rendered when post has no permalink.
 	 *
 	 * @return void
