@@ -137,7 +137,7 @@ class GetProgressTest extends RESTfulTestCase {
 	}
 
 	protected function doRestRequest( $method, $route, array $body_params = [] ) {
-		$request = new \WP_Rest_Request( $method, $route );
+		$request = new \WP_REST_Request( $method, $route );
 		$request->set_header( 'Content-Type', 'application/x-www-form-urlencoded' );
 
 		if ( ! empty( $body_params ) ) {
