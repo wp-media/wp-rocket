@@ -82,7 +82,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'ri_query',
 				]
 			);
-		
+
 		$this->getContainer()->add( 'ri_saas_context', SaasContext::class )
 			->addArgument( 'ri_context' );
 
