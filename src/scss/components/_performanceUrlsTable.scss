@@ -291,10 +291,6 @@
 				width: auto;
 			}
 		}
-
-		.wpr-tooltip-content {
-			text-align: left;
-		}
 	}
 }
 .wpr-pma-add-section{
@@ -343,6 +339,19 @@
 			top: -6px;
 			left: 50%;
 			transform: translateX(-50%);
+		}
+	}
+}
+
+.wpr-ri-report.wpr-btn-with-tool-tip {
+	.wpr-tooltip {
+		transform: translateX(-32%);
+		width: 260px;
+		&:before {
+			left: 50%;
+		}
+		.wpr-tooltip-content {
+			text-align:center;
 		}
 	}
 }
