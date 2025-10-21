@@ -123,11 +123,9 @@ class Subscriber implements Subscriber_Interface {
 			return false;
 		}
 
-		// Get the list of public post types that WP Rocket caches.
-		$cached_post_types = self::get_public_post_types();
 
 		// Check if the current post type is in the cached list.
-		return in_array( $screen->post_type, $cached_post_types, true );
+		return in_array( $screen->post_type, $this->get_public_post_types(), true );
 	}
 
 	/**
