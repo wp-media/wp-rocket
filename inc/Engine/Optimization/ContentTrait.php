@@ -20,7 +20,8 @@ trait ContentTrait {
 		);
 		$post_types[] = 'page';
 
-		$excluded_post_types = (array) apply_filters(
+		$excluded_post_types = (array) wpm_apply_filters_typed(
+			'string[]',
 			'rocket_cpcss_excluded_post_types',
 			[
 				'elementor_library',
@@ -118,7 +119,8 @@ trait ContentTrait {
 		 *
 		 * @return array
 		 */
-		$excluded_taxonomies = (array) apply_filters(
+		$excluded_taxonomies = (array) wpm_apply_filters_typed(
+			'string[]'
 			'rocket_cpcss_excluded_taxonomies',
 			[
 				'post_format',
