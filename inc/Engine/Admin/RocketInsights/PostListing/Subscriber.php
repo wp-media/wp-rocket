@@ -14,6 +14,7 @@ use WP_Rocket\Engine\Optimization\ContentTrait;
  */
 class Subscriber implements Subscriber_Interface {
 	use ContentTrait;
+
 	/**
 	 * Render instance.
 	 *
@@ -61,7 +62,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return array<string, string|array> Associative array of hook => callback(s).
 	 */
 	private function get_post_listing_events(): array {
-		$events    = [];
+		$events     = [];
 		$post_types = $this->get_public_post_types();
 
 		foreach ( $post_types as $post_type ) {
