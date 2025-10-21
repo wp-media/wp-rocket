@@ -12,16 +12,25 @@ trait ContentTrait {
 	private static function query_public_post_type_rows(): array {
 		global $wpdb;
 
-		$post_types   = get_post_types(
+		$post_types = get_post_types(
 			[
 				'public'             => true,
 				'publicly_queryable' => true,
 			]
 		);
+
 		$post_types[] = 'page';
 
-		$excluded_post_types = (array) wpm_apply_filters_typed(
-			'string[]',
+		/**
+		 * Filters the post types excluded from critical CSS generation.
+		 *
+		 * @since 2.11
+		 *
+		 * @param array $excluded_post_types An array of post types names.
+		 *
+		 * @return array
+		 */
+		$excluded_post_types = (array) apply_filters(
 			'rocket_cpcss_excluded_post_types',
 			[
 				'elementor_library',
@@ -41,28 +50,21 @@ trait ContentTrait {
 			]
 		);
 
-		$post_types = array_values( array_diff( $post_types, $excluded_post_types ) );
-		if ( empty( $post_types ) ) {
-			return [];
-		}
+		$post_types = array_diff( $post_types, $excluded_post_types );
+		$post_types = esc_sql( $post_types );
+		$post_types = "'" . implode( "','", $post_types ) . "'";
 
-		$esc = esc_sql( $post_types );
-		$in  = "'" . implode( "','", $esc ) . "'";
-
-		// Same semantics as before: one row per post_type, only if there is at least one published post.
-		$sql = "
-			SELECT MAX(ID) AS ID, post_type
-			FROM (
-				SELECT ID, post_type
-				FROM $wpdb->posts
-				WHERE post_type IN ($in)
-				  AND post_status = 'publish'
-				ORDER BY post_date DESC
-			) AS posts
-			GROUP BY post_type
-		";
-
-		return $wpdb->get_results( $sql ) ?: []; // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		return $wpdb->get_results(
+			"SELECT MAX(ID) as ID, post_type
+		    FROM (
+		        SELECT ID, post_type
+		        FROM $wpdb->posts
+				WHERE post_type IN ( $post_types )
+		        AND post_status = 'publish'
+		        ORDER BY post_date DESC
+		    ) AS posts
+		    GROUP BY post_type"
+		);
 	}
 
 	/**
