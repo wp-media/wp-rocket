@@ -18,6 +18,7 @@ return [
 			'mock_http' => true,
 		],
 		'expected' => [
+			'code' => 200,
 			'success' => true,
 			'database_entries' => 2,
 			'hook_fired' => true,
@@ -46,8 +47,8 @@ return [
 			'mock_http' => false,
 		],
 		'expected' => [
-			'success' => false,
-			'error_message' => 'No url provided',
+			'code' => 400,
+			'error_message' => 'Invalid parameter(s): page_url',
 		],
 	],
 	'testShouldFailWithInvalidUrl' => [
@@ -66,8 +67,8 @@ return [
 			'mock_http' => false,
 		],
 		'expected' => [
-			'success' => false,
-			'error_message' => 'Invalid URL format',
+			'code' => 400,
+			'error_message' => 'Invalid parameter(s): page_url',
 		],
 	],
 	'testShouldFailWithUrlLimitReached' => [
@@ -96,7 +97,7 @@ return [
 			'mock_http' => false,
 		],
 		'expected' => [
-			'success' => false,
+			'code' => 403,
 			'error_message' => 'Maximum number of URLs reached',
 		],
 	],
@@ -116,7 +117,7 @@ return [
 			'mock_http' => true,
 		],
 		'expected' => [
-			'success' => false,
+			'code' => 400,
 			'error_message' => 'Url does not resolve to a valid page',
 		],
 	],
@@ -130,6 +131,7 @@ return [
 			'mock_http' => true,
 		],
 		'expected' => [
+			'code' => 200,
 			'success' => true,
 			'database_entries' => 1,
 			'hook_fired' => true,
@@ -152,6 +154,7 @@ return [
 			'mock_http' => true,
 		],
 		'expected' => [
+			'code' => 200,
 			'success' => true,
 			'database_entries' => 1,
 			'hook_fired' => true,
@@ -176,6 +179,7 @@ return [
 			'mock_http' => true,
 		],
 		'expected' => [
+			'code' => 200,
 			'success' => true,
 			'database_entries' => 1,
 			'hook_fired' => true,
@@ -200,6 +204,7 @@ return [
 			'mock_http' => true,
 		],
 		'expected' => [
+			'code' => 200,
 			'success' => true,
 			'database_entries' => 1,
 			'hook_fired' => true,
@@ -224,6 +229,7 @@ return [
 			'mock_http' => true,
 		],
 		'expected' => [
+			'code' => 200,
 			'success' => true,
 			'database_entries' => 1,
 			'hook_fired' => true,
