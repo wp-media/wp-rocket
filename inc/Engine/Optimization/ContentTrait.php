@@ -9,27 +9,17 @@ trait ContentTrait {
 	 * @since 3.9 moved into trait
 	 * @since 2.11
 	 */
-	private function get_public_post_types() {
+	private static function query_public_post_type_rows(): array {
 		global $wpdb;
 
-		$post_types = get_post_types(
+		$post_types   = get_post_types(
 			[
 				'public'             => true,
 				'publicly_queryable' => true,
 			]
 		);
-
 		$post_types[] = 'page';
 
-		/**
-		 * Filters the post types excluded from critical CSS generation.
-		 *
-		 * @since 2.11
-		 *
-		 * @param array $excluded_post_types An array of post types names.
-		 *
-		 * @return array
-		 */
 		$excluded_post_types = (array) apply_filters(
 			'rocket_cpcss_excluded_post_types',
 			[
@@ -50,22 +40,58 @@ trait ContentTrait {
 			]
 		);
 
-		$post_types = array_diff( $post_types, $excluded_post_types );
-		$post_types = esc_sql( $post_types );
-		$post_types = "'" . implode( "','", $post_types ) . "'";
+		$post_types = array_values( array_diff( $post_types, $excluded_post_types ) );
+		if ( empty( $post_types ) ) {
+			return [];
+		}
 
-		return $wpdb->get_results(
-			"SELECT MAX(ID) as ID, post_type
-		    FROM (
-		        SELECT ID, post_type
-		        FROM $wpdb->posts
-				WHERE post_type IN ( $post_types )
-		        AND post_status = 'publish'
-		        ORDER BY post_date DESC
-		    ) AS posts
-		    GROUP BY post_type"
-		);
+		$esc = esc_sql( $post_types );
+		$in  = "'" . implode( "','", $esc ) . "'";
+
+		// Same semantics as before: one row per post_type, only if there is at least one published post.
+		$sql = "
+			SELECT MAX(ID) AS ID, post_type
+			FROM (
+				SELECT ID, post_type
+				FROM $wpdb->posts
+				WHERE post_type IN ($in)
+				  AND post_status = 'publish'
+				ORDER BY post_date DESC
+			) AS posts
+			GROUP BY post_type
+		";
+
+		return $wpdb->get_results( $sql ) ?: []; // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 	}
+
+	/**
+	 * Retrieves all public post types.
+	 *
+	 * This method returns an array of post types that are publicly accessible.
+	 * It is typically used to filter or process content based on post type visibility.
+	 *
+	 * @return array List of public post types.
+	 */
+	private function get_public_post_types() {
+		return self::query_public_post_type_rows();
+	}
+
+
+	/**
+	 * Retrieves the slugs of all public post types.
+	 *
+	 * @return array An array containing the slugs of public post types.
+	 */
+	public static function get_public_post_type_slugs(): array {
+		$rows = self::query_public_post_type_rows();
+		return array_map(
+			static function ( $r ) {
+				return $r->post_type;
+			},
+			$rows
+			);
+	}
+
 
 	/**
 	 * Gets all public taxonomies.
