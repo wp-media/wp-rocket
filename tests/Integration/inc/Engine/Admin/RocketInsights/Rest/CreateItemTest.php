@@ -84,6 +84,8 @@ class CreateItemTest extends RESTfulTestCase {
 		// Remove mock HTTP filter
 		remove_filter( 'pre_http_request', [ $this, 'mock_http_request' ] );
 
+		wp_set_current_user( null );
+
 		parent::tear_down();
 	}
 

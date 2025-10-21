@@ -64,6 +64,8 @@ class GetProgressTest extends RESTfulTestCase {
 		// Remove Performance Monitoring enabled filter
 		remove_filter( 'rocket_rocket_insights_enabled', '__return_true' );
 
+		wp_set_current_user( null );
+
 		parent::tear_down();
 	}
 

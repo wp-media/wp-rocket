@@ -75,6 +75,8 @@ class UpdateItemTest extends RESTfulTestCase {
 		// Remove our test hook
 		remove_action( 'rocket_rocket_insights_job_retest', [ $this, 'capture_hook_fired' ] );
 
+		wp_set_current_user( null );
+
 		parent::tear_down();
 	}
 
