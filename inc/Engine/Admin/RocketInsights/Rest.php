@@ -107,15 +107,19 @@ class Rest extends WP_REST_Controller {
 					'permission_callback' => [ $this, 'create_item_permissions_check' ],
 					'args'                => [
 						'page_url' => [
-							'required'            => true,
-							'validation_callback' => function ( $param ) {
-								$url = untrailingslashit( trim( wp_unslash( $param ) ) );
+							'required'          => true,
+							'validate_callback' => function ( $param ) {
+								if ( empty( $param ) ) {
+									return false;
+								}
+
+								$url = untrailingslashit( trim( $param ) );
 								$url = rocket_add_url_protocol( $url );
 
 								return wp_http_validate_url( $url );
 							},
-							'sanitize_callback'   => function ( $param ) {
-								$url = untrailingslashit( trim( wp_unslash( $param ) ) );
+							'sanitize_callback' => function ( $param ) {
+								$url = untrailingslashit( trim( $param ) );
 
 								return rocket_add_url_protocol( $url );
 							},
@@ -277,6 +281,7 @@ class Rest extends WP_REST_Controller {
 		// Remove message from the response payload.
 		unset( $payload['message'] );
 
+		$payload['success']           = true;
 		$payload['id']                = $row_id;
 		$payload['html']              = $this->render->get_performance_monitoring_list_row( $row_data );
 		$payload['global_score_data'] = $this->get_global_score_payload();
@@ -537,6 +542,9 @@ class Rest extends WP_REST_Controller {
 			'error'         => false,
 			'message'       => '',
 			'processed_url' => '',
+			'data'          => [
+				'status' => 400,
+			],
 		];
 
 		if ( 'local' === wp_get_environment_type() ) {
