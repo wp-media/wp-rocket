@@ -43,10 +43,10 @@ if ( null === $wpr_rocket_row ) :
 endif;
 
 // Determine the state based on row status.
- $wpr_is_running        = $wpr_rocket_row->is_running(); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
- $wpr_has_results       = 'completed' === $wpr_rocket_row->status || 'blurred' === $wpr_rocket_row->status; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
- $wpr_is_blurred        = isset( $wpr_rocket_row->is_blurred ) && $wpr_rocket_row->is_blurred; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
- $wpr_can_access_report = $wpr_rocket_row->can_access_report(); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
+$wpr_is_running        = $wpr_rocket_row->is_running(); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
+$wpr_has_results       = 'completed' === $wpr_rocket_row->status || 'blurred' === $wpr_rocket_row->status; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
+$wpr_is_blurred        = isset( $wpr_rocket_row->is_blurred ) && $wpr_rocket_row->is_blurred; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
+$wpr_can_access_report = $wpr_rocket_row->can_access_report(); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 
 // Prepare data used by both blurred and normal score renderers.
 $score_data = [ // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
