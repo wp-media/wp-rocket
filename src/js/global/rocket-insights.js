@@ -55,27 +55,12 @@ module.exports = (function() {
 	 * Attach click listeners to "Re-test" buttons and links.
 	 */
 	function attachRetestListeners() {
-		// Old button style
-		jQuery(document).on('click', '.wpr-ri-retest:not(.wpr-ri-action--disabled)', function(e) {
+		// Support both button and link styles with one handler.
+		jQuery(document).on('click', '.wpr-ri-retest:not(.wpr-ri-action--disabled), .wpr-ri-retest-link', function(e) {
 			e.preventDefault();
-			const button = jQuery(this);
-			const url = button.data('url');
-			const column = button.closest('.wpr-ri-column');
-			const rowId = column.data('rocket-insights-id');
-
-			if (!rowId) {
-				return;
-			}
-
-			retestPage(rowId, url, column);
-		});
-		
-		// New link style
-		jQuery(document).on('click', '.wpr-ri-retest-link', function(e) {
-			e.preventDefault();
-			const link = jQuery(this);
-			const url = link.data('url');
-			const column = link.closest('.wpr-ri-column');
+			const el = jQuery(this);
+			const url = el.data('url');
+			const column = el.closest('.wpr-ri-column');
 			const rowId = column.data('rocket-insights-id');
 
 			if (!rowId) {
@@ -122,11 +107,8 @@ module.exports = (function() {
 			},
 			success: function(response) {
 				if (response.success && response.data.id) {
-					// Update column with loading state.
-					showLoadingState(column, response.data.id);
-					
-					// Start polling for results.
-					startPolling(response.data.id, url, column);
+					// Begin common loading + polling flow.
+					beginLoadingAndPoll(column, response.data.id, url);
 				} else {
 					// Show error message.
 					showMessage(column, response.data?.message || 'Error adding page', 'error');
@@ -154,15 +136,12 @@ module.exports = (function() {
 			data: {
 				action: 'rocket_rocket_insights_reset_page',
 				nonce: window.rocket_ajax_data?.nonce || '',
-				row_id: rowId
+				id: rowId
 			},
 			success: function(response) {
 				if (response.success) {
-					// Update to loading state.
-					showLoadingState(column, rowId);
-					
-					// Start polling for results.
-					startPolling(rowId, url, column);
+					// Begin common loading + polling flow.
+					beginLoadingAndPoll(column, rowId, url);
 				} else {
 					showMessage(column, response.data?.message || 'Error retesting page', 'error');
 				}
@@ -196,6 +175,19 @@ module.exports = (function() {
 	}
 
 	/**
+	 * Common helper to set loading state and start polling.
+	 *
+	 * @param {jQuery} column The column element.
+	 * @param {number} rowId  The database row ID.
+	 * @param {string} url    The URL being tested.
+	 */
+	function beginLoadingAndPoll(column, rowId, url) {
+		// Update column to loading state and start polling.
+		showLoadingState(column, rowId);
+		startPolling(rowId, url, column);
+	}
+
+	/**
 	 * Check the status of a test.
 	 *
 	 * @param {number} rowId  The database row ID.
@@ -205,25 +197,23 @@ module.exports = (function() {
 	function checkStatus(rowId, url, column) {
 		jQuery.ajax({
 			url: ajaxurl,
-			type: 'POST',
+			type: 'GET',
 			data: {
 				action: 'rocket_rocket_insights_get_results',
 				nonce: window.rocket_ajax_data?.nonce || '',
 				ids: [rowId]
 			},
 			success: function(response) {
-				if (response.success && response.data && response.data.length > 0) {
-					const result = response.data[0];
-					
-					// Check if test is complete or failed.
-					// Stop polling for any status that's not 'in-progress' or explicitly running
-					if (result.status !== 'in-progress' && !result.is_running) {
+				if ( response.success && response.data ) {
+					const result = response.data.results[0];
+
+					if ( result.status === 'completed' || result.status === 'failed' ) {
 						// Stop polling.
-						clearInterval(activePolls[rowId]);
+						clearInterval( activePolls[rowId] );
 						delete activePolls[rowId];
-						
-						// Update the column with results.
-						updateColumnWithResults(column, result);
+
+						// Update the column with results (reload rendered HTML from server).
+						updateColumnWithResults( column, result );
 					}
 				}
 			}

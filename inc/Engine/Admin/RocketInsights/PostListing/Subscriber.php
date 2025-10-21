@@ -127,7 +127,7 @@ class Subscriber implements Subscriber_Interface {
 				'loading_img' => rocket_get_constant( 'WP_ROCKET_ASSETS_IMG_URL' ) . 'orange-loading.svg',
 			]
 		);
-		
+
 		wp_localize_script(
 			'rocket-insights',
 			'rocket_ajax_data',

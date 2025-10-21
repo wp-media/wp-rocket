@@ -331,7 +331,7 @@ class Render extends Abstract_Render {
 		// Try both with and without trailing slash for compatibility.
 		$url_no_slash   = untrailingslashit( $url );
 		$url_with_slash = trailingslashit( $url );
-		
+
 		$row     = null;
 		$results = $this->query->query( [ 'url' => $url_no_slash ] );
 
