@@ -23,13 +23,6 @@ class Subscriber implements Subscriber_Interface {
 	private $render;
 
 	/**
-	 * Cached public post types for the request to avoid recomputing array_diff.
-	 *
-	 * @var array|null
-	 */
-	private static $cached_post_types = null;
-
-	/**
 	 * Constructor.
 	 *
 	 * @since 3.20.1
