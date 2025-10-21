@@ -20,6 +20,13 @@ class Subscriber implements Subscriber_Interface {
 	private $render;
 
 	/**
+	 * Cached public post types for the request to avoid recomputing array_diff.
+	 *
+	 * @var array|null
+	 */
+	private static $cached_post_types = null;
+
+	/**
 	 * Constructor.
 	 *
 	 * @since 3.20.1
@@ -61,6 +68,9 @@ class Subscriber implements Subscriber_Interface {
 	 * @return array
 	 */
 	private static function get_public_post_types(): array {
+		if ( null !== self::$cached_post_types ) {
+			return self::$cached_post_types;
+		}
 		$post_types = get_post_types(
 			[
 				'public'             => true,
@@ -68,8 +78,9 @@ class Subscriber implements Subscriber_Interface {
 			]
 		);
 
-		$post_types[] = 'page';
-
+		if ( ! in_array( 'page', $post_types, true ) ) {
+			$post_types[] = 'page';
+		}
 		/**
 		 * Filters the post types excluded from Rocket Insights on post listing pages.
 		 *
@@ -85,7 +96,9 @@ class Subscriber implements Subscriber_Interface {
 			[]
 		);
 
-		return array_diff( $post_types, $excluded_post_types );
+		self::$cached_post_types = array_diff( $post_types, $excluded_post_types );
+
+		return self::$cached_post_types;
 	}
 
 	/**
