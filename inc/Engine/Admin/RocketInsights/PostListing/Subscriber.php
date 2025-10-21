@@ -57,6 +57,7 @@ class Subscriber implements Subscriber_Interface {
 	private static function get_post_listing_events(): array {
 		$events     = [];
 		$post_types = self::get_public_post_type_slugs();
+		// error_log(var_export($post_types, true));
 		foreach ( $post_types as $post_type ) {
 			$events[ "manage_{$post_type}_posts_columns" ]       = 'add_rocket_insights_column';
 			$events[ "manage_{$post_type}_posts_custom_column" ] = [ 'render_rocket_insights_column', 10, 2 ];
@@ -114,8 +115,8 @@ class Subscriber implements Subscriber_Interface {
 			return false;
 		}
 
-		// Check if the current post type is in the cached list.
-		return in_array( $screen->post_type, $this->get_public_post_types(), true );
+		$post_type_slugs = wp_list_pluck( $this->get_public_post_types(), 'post_type' );
+		return in_array( $screen->post_type, $post_type_slugs, true );
 	}
 
 	/**
