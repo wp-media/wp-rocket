@@ -30,7 +30,8 @@ trait ContentTrait {
 		 *
 		 * @return array
 		 */
-		$excluded_post_types = (array) apply_filters(
+		$excluded_post_types = (array) wpm_apply_filters_typed(
+			'string[]',
 			'rocket_cpcss_excluded_post_types',
 			[
 				'elementor_library',
