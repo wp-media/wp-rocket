@@ -44,12 +44,24 @@ class Subscriber implements Subscriber_Interface {
 	 * @return array
 	 */
 	public static function get_subscribed_events(): array {
-		$post_types = self::get_public_post_types();
-		$events     = [
+		$events = [
 			'admin_enqueue_scripts' => 'enqueue_post_listing_assets',
 		];
 
-		// Register column hooks for each post type.
+		return array_merge( $events, self::get_post_listing_events() );
+	}
+
+	/**
+	 * Build dynamic events for post listing pages based on public post types.
+	 *
+	 * @since 3.20.1
+	 *
+	 * @return array<string, string|array> Associative array of hook => callback(s).
+	 */
+	private static function get_post_listing_events(): array {
+		$events    = [];
+		$post_types = self::get_public_post_types();
+
 		foreach ( $post_types as $post_type ) {
 			$events[ "manage_{$post_type}_posts_columns" ]       = 'add_rocket_insights_column';
 			$events[ "manage_{$post_type}_posts_custom_column" ] = [ 'render_rocket_insights_column', 10, 2 ];
@@ -91,7 +103,7 @@ class Subscriber implements Subscriber_Interface {
 		 * @return array
 		 */
 		$excluded_post_types = (array) wpm_apply_filters_typed(
-			'array',
+			'string[]',
 			'rocket_insights_excluded_post_types',
 			[]
 		);
