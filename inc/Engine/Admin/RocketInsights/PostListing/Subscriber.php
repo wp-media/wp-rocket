@@ -57,7 +57,6 @@ class Subscriber implements Subscriber_Interface {
 	private static function get_post_listing_events(): array {
 		$events     = [];
 		$post_types = self::get_public_post_type_slugs();
-		// error_log(var_export($post_types, true));
 		foreach ( $post_types as $post_type ) {
 			$events[ "manage_{$post_type}_posts_columns" ]       = 'add_rocket_insights_column';
 			$events[ "manage_{$post_type}_posts_custom_column" ] = [ 'render_rocket_insights_column', 10, 2 ];
