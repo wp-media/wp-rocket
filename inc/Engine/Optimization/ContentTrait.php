@@ -120,7 +120,7 @@ trait ContentTrait {
 		 * @return array
 		 */
 		$excluded_taxonomies = (array) wpm_apply_filters_typed(
-			'string[]'
+			'string[]',
 			'rocket_cpcss_excluded_taxonomies',
 			[
 				'post_format',
