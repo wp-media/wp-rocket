@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\Admin\RocketInsights\PostListing;
 
 use WP_Rocket\Engine\Admin\RocketInsights\Render;
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\Engine\Optimization\ContentTrait;
 
 /**
  * Subscriber for enqueuing Rocket Insights assets on post listing pages
@@ -12,12 +13,21 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  * @since 3.20.1
  */
 class Subscriber implements Subscriber_Interface {
+	use ContentTrait;
+
 	/**
 	 * Render instance.
 	 *
 	 * @var Render
 	 */
 	private $render;
+
+	/**
+	 * Cached public post types for the request to avoid recomputing array_diff.
+	 *
+	 * @var array|null
+	 */
+	private static $cached_post_types = null;
 
 	/**
 	 * Constructor.
@@ -37,12 +47,24 @@ class Subscriber implements Subscriber_Interface {
 	 * @return array
 	 */
 	public static function get_subscribed_events(): array {
-		$post_types = self::get_public_post_types();
-		$events     = [
+		$events = [
 			'admin_enqueue_scripts' => 'enqueue_post_listing_assets',
 		];
 
-		// Register column hooks for each post type.
+		return array_merge( $events, self::get_post_listing_events() );
+	}
+
+	/**
+	 * Build dynamic events for post listing pages based on public post types.
+	 *
+	 * @since 3.20.1
+	 *
+	 * @return array<string, string|array> Associative array of hook => callback(s).
+	 */
+	private function get_post_listing_events(): array {
+		$events     = [];
+		$post_types = $this->get_public_post_types();
+
 		foreach ( $post_types as $post_type ) {
 			$events[ "manage_{$post_type}_posts_columns" ]       = 'add_rocket_insights_column';
 			$events[ "manage_{$post_type}_posts_custom_column" ] = [ 'render_rocket_insights_column', 10, 2 ];
@@ -51,42 +73,6 @@ class Subscriber implements Subscriber_Interface {
 		return $events;
 	}
 
-	/**
-	 * Gets the list of public post types that WP Rocket caches.
-	 *
-	 * This is a static helper for get_subscribed_events() since it doesn't require instance state.
-	 *
-	 * @since 3.20.1
-	 *
-	 * @return array
-	 */
-	private static function get_public_post_types(): array {
-		$post_types = get_post_types(
-			[
-				'public'             => true,
-				'publicly_queryable' => true,
-			]
-		);
-
-		$post_types[] = 'page';
-
-		/**
-		 * Filters the post types excluded from Rocket Insights on post listing pages.
-		 *
-		 * @since 3.20.1
-		 *
-		 * @param array $excluded_post_types An array of post type names.
-		 *
-		 * @return array
-		 */
-		$excluded_post_types = (array) wpm_apply_filters_typed(
-			'array',
-			'rocket_insights_excluded_post_types',
-			[]
-		);
-
-		return array_diff( $post_types, $excluded_post_types );
-	}
 
 	/**
 	 * Enqueues Rocket Insights CSS and JS on post listing pages.
