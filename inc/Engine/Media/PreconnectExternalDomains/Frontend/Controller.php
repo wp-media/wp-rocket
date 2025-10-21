@@ -176,7 +176,7 @@ class Controller implements ControllerInterface {
 	 * @return bool
 	 */
 	private function use_prefetch( $domain ) {
-		return wpm_apply_filters_typed( 'boolean', 'rocket_preconnect_external_domains_use_prefetch', false, $domain );
+		return wpm_apply_filters_typed( 'boolean', 'rocket_preconnect_external_domains_use_prefetch', true, $domain );
 	}
 
 	/**

@@ -262,7 +262,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	const POLL_MAX_INTERVAL = 15000;  // Max polling interval (e.g. 15 seconds)
 
 	// ==== State ====
-	let pmIds = Array.isArray(window.rocket_ajax_data?.pm_ids) ? window.rocket_ajax_data.pm_ids.slice() : [];
+	let rocketInsightsIds = Array.isArray(window.rocket_ajax_data?.rocket_insights_ids) ? window.rocket_ajax_data.rocket_insights_ids.slice() : [];
 	let pollInterval = POLL_BASE_INTERVAL;
 	let pollTimer = null;
 	let hasCredit = true; // Track credit status
@@ -279,7 +279,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			rocket_insights: ''
 		}
     };
-    
+
     // Initialize globalScoreData from localized script data if available
     if (window.rocket_ajax_data?.global_score_data) {
         globalScoreData = window.rocket_ajax_data.global_score_data;
@@ -287,8 +287,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	// ==== DOM Selectors ====
 	const $pageUrlInput = $('#wpr-speed-radar-url-input');
-	const $tableBody = $('.wpr-pma-urls-table tbody');
-	const $table = $('.wpr-pma-urls-table');
+	const $tableBody = $('.wpr-ri-urls-table tbody');
+	const $table = $('.wpr-ri-urls-table');
 
 	// ==== Utility Functions ====
 	function isValidUrl(input) {
@@ -301,19 +301,19 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 
 	function addIds(newId) {
-		if (!pmIds.includes(newId)) {
-			pmIds.push(newId);
+		if (!rocketInsightsIds.includes(newId)) {
+			rocketInsightsIds.push(newId);
 		}
 	}
 
 	function removeId(id) {
-		pmIds = pmIds.filter(x => x !== parseInt(id, 10));
+		rocketInsightsIds = rocketInsightsIds.filter(x => x !== parseInt(id, 10));
 	}
 
 	function updateQuotaBanner(canAddPages) {
-		const $summaryInfo    = $('.wpr-pma-summary-info');
+		const $summaryInfo    = $('.wpr-ri-summary-info');
 		const isFree  = window.rocket_ajax_data?.is_free === '1';
-		const $quotaBanner = isFree ? $('#wpr-pma-quota-banner') : $('#rocket_insights_survey');
+		const $quotaBanner = isFree ? $('#wpr-ri-quota-banner') : $('#rocket_insights_survey');
 
 		// Show banner if URL limit reached OR no credits left (matching PHP logic in Subscriber.php line 398).
 		const shouldShowBanner = canAddPages === false || !hasCredit;
@@ -340,26 +340,26 @@ document.addEventListener('DOMContentLoaded', function() {
 		const retestButtons = document.querySelectorAll('.wpr-action-speed_radar_refresh');
 
 		retestButtons.forEach(button => {
-			const row = button.closest('.wpr-pma-item');
+			const row = button.closest('.wpr-ri-item');
 			if (!row) return;
 
 			// Get the row ID and check if it's currently being processed
-			const rowId = parseInt(row.dataset.rocketPmId, 10);
-			const isRunning = pmIds.includes(rowId);
+			const rowId = parseInt(row.dataset.rocketInsightsId, 10);
+			const isRunning = rocketInsightsIds.includes(rowId);
 
 			if (!hasCredit || isRunning) {
 				// Disable button
-				button.classList.add('wpr-pma-action--disabled');
+				button.classList.add('wpr-ri-action--disabled');
 				button.setAttribute('disabled', 'true');
 
 				if (!hasCredit) {
 					// Add tooltip for no credit
 					button.classList.add('wpr-btn-with-tool-tip');
-					button.setAttribute('title', window.rocket_ajax_data?.pm_no_credit_tooltip || 'Upgrade your plan to get access to re-test performance or run new tests');
+					button.setAttribute('title', window.rocket_ajax_data?.rocket_insights_no_credit_tooltip || 'Upgrade your plan to get access to re-test performance or run new tests');
 				}
 			} else {
 				// Enable button
-				button.classList.remove('wpr-pma-action--disabled', 'wpr-btn-with-tool-tip');
+				button.classList.remove('wpr-ri-action--disabled', 'wpr-btn-with-tool-tip');
 				button.removeAttribute('disabled');
 				button.removeAttribute('title');
 			}
@@ -375,7 +375,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 
 	function schedulePolling() {
-		if (pmIds.length > 0) {
+		if (rocketInsightsIds.length > 0) {
 			pollTimer = setTimeout(() => {
 				getResults();
 			}, pollInterval);
@@ -398,7 +398,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	function updateGlobalScoreRow(globalScoreData){
 		if ( isOnRocketInsights() ) {
-			const $tableGlobalScore = $('.wpr-pma-urls-table .wpr-global-score');
+			const $tableGlobalScore = $('.wpr-ri-urls-table .wpr-global-score');
 			if ($tableGlobalScore.length > 0){
 				$tableGlobalScore.replaceWith(globalScoreData.row_html);
 			}else {
@@ -456,14 +456,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	// ==== AJAX Handlers ====
 	function getResults() {
-		if (pmIds.length === 0) {
+		if (rocketInsightsIds.length === 0) {
 			resetPolling();
 			return;
 		}
 
 		$.get(ajaxurl, {
-			ids: pmIds,
-			action: 'rocket_pm_get_results',
+			ids: rocketInsightsIds,
+			action: 'rocket_rocket_insights_get_results',
 			_ajax_nonce: rocket_ajax_data.nonce
 		}, function(response) {
 			if (response.success && Array.isArray(response.data.results)) {
@@ -486,7 +486,7 @@ document.addEventListener('DOMContentLoaded', function() {
 					updateGlobalScoreRow(globalScoreData);
                 }
 				response.data.results.forEach(result => {
-					const $row = $(`[data-rocket-pm-id="${result.id}"]`);
+					const $row = $(`[data-rocket-insights-id="${result.id}"]`);
 					$row.replaceWith(result.html);
 
 					if (result.status === 'completed' || result.status === 'failed') {
@@ -498,7 +498,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				schedulePolling();
 			} else {
 				// On error, clear IDs and stop polling
-				pmIds = [];
+				rocketInsightsIds = [];
 				resetPolling();
 				console.error('Polling error:', response.data?.results || response);
 			}
@@ -522,7 +522,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 		$.post(ajaxurl, {
 			page_url: pageUrl,
-			action: 'rocket_pm_add_new_page',
+			action: 'rocket_rocket_insights_add_new_page',
 			_ajax_nonce: rocket_ajax_data.nonce
 		}, function(response) {
 			if (response.success) {
@@ -530,7 +530,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				$tableBody.append(response.data.html);
 				$table.removeClass('hidden');
 				addIds(response.data.id);
-				let pages_num_container = $('#rocket_pma_pages_num');
+				let pages_num_container = $('#rocket_rocket_insights_pages_num');
 				pages_num_container.text( parseInt( pages_num_container.text() ) + 1 );
 
 				// Update credit status
@@ -574,20 +574,20 @@ document.addEventListener('DOMContentLoaded', function() {
 	function handleResetPage(e) {
 		e.preventDefault();
 
-		let id = $(this).parents('.wpr-pma-item').data('rocketPmId');
+		let id = $(this).parents('.wpr-ri-item').data('rocket-insights-id');
 		if ( ! id ) {
 			return;
 		}
 
 		$.post(ajaxurl, {
 			id,
-			action: 'rocket_pm_reset_page',
+			action: 'rocket_rocket_insights_reset_page',
 			_ajax_nonce: rocket_ajax_data.nonce
 		}, function(response) {
 			if (response.success) {
 				addIds(response.data.id);
 
-				const $row = $(`[data-rocket-pm-id="${response.data.id}"]`);
+				const $row = $(`[data-rocket-insights-id="${response.data.id}"]`);
 				$row.replaceWith(response.data.html);
 
 				// Update credit status
@@ -637,7 +637,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
 	// Resume polling if needed
-	if (isValidPageForPolling() && pmIds.length > 0) {
+	if (isValidPageForPolling() && rocketInsightsIds.length > 0) {
 		pollInterval = POLL_BASE_INTERVAL;
 		schedulePolling();
 	}
@@ -649,7 +649,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	});
 
 	// Handle UI update on the rocket insights tab when "Add Pages" button on the global score widget is clicked.
-	$(document).on('click', '.wpr-percentage-score-widget .wpr-pma-add-url-button', function() {
+	$(document).on('click', '.wpr-percentage-score-widget .wpr-ri-add-url-button', function() {
 		if (!this.textContent.includes('Add Pages')) {
 			return;
 		}
