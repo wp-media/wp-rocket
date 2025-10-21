@@ -64,6 +64,35 @@ class Subscriber implements Subscriber_Interface {
 		return $events;
 	}
 
+	/**
+	 * Gets the list of public post types that WP Rocket caches.
+	 *
+	 * This is a static helper for get_subscribed_events() since it doesn't require instance state.
+	 *
+	 * @since 3.20.1
+	 *
+	 * @return array
+	 */
+	private static function get_public_post_type_slugs(): array {
+		$post_types = get_post_types(
+			[
+				'public'             => true,
+				'publicly_queryable' => true,
+			]
+		);
+
+		if ( ! in_array( 'page', $post_types, true ) ) {
+			$post_types[] = 'page';
+		}
+
+		$excluded_post_types = (array) wpm_apply_filters_typed(
+			'string[]',
+			'rocket_insights_excluded_post_types',
+			[]
+		);
+
+		return array_diff( $post_types, $excluded_post_types );
+	}
 
 	/**
 	 * Enqueues Rocket Insights CSS and JS on post listing pages.
@@ -114,7 +143,7 @@ class Subscriber implements Subscriber_Interface {
 			return false;
 		}
 
-		$post_type_slugs = wp_list_pluck( $this->get_public_post_types(), 'post_type' );
+		$post_type_slugs = self::get_public_post_type_slugs();
 		return in_array( $screen->post_type, $post_type_slugs, true );
 	}
 
