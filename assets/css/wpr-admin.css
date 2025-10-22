@@ -823,7 +823,7 @@ a:focus, button:focus {
   color: #121116;
   padding: 8px 0;
   padding-left: 4px;
-  border-bottom: 1px solid #c2cad4;
+  border-bottom: 1px solid rgb(194.1698113208, 202.0188679245, 211.8301886792);
 }
 .wpr-Popin .wp-rocket-data-table td:not(.column-primary) {
   font-family: "Monaco";
@@ -1265,12 +1265,14 @@ div.wpr-upgrade-websites.notstacked {
 .rocket-promo-banner > div {
   display: flex;
   flex-flow: column;
-  width: 50%;
 }
 @media (max-width: 783px) {
   .rocket-promo-banner > div {
     width: 100%;
   }
+}
+.rocket-promo-banner > div {
+  width: 50%;
 }
 
 .rocket-promo-title {
@@ -1366,12 +1368,14 @@ div.wpr-upgrade-websites.notstacked {
 .rocket-renewal-expired-banner-container > div {
   display: flex;
   flex-flow: column;
-  width: 70%;
 }
 @media (max-width: 783px) {
   .rocket-renewal-expired-banner-container > div {
     width: 100%;
   }
+}
+.rocket-renewal-expired-banner-container > div {
+  width: 70%;
 }
 
 .rocket-renew-message {
@@ -2920,7 +2924,7 @@ div.wpr-tutorial-item {
 .wpr-ri-license-banner {
   background-color: #f9f9f9;
   border-radius: 2px;
-  padding: 30px;
+  padding: 24px 30px;
   margin: 20px 0;
   max-width: 100%;
   border: 1px solid #E2E5E9;
@@ -2931,20 +2935,21 @@ div.wpr-tutorial-item {
 .wpr-ri-license-banner .wpr-ri-banner-header h2 {
   font-size: 18px;
   font-weight: 600;
-  margin: 0 0 10px;
+  margin: 0 0 0px;
   color: #0C0F1F;
 }
 .wpr-ri-license-banner .wpr-ri-banner-header p {
-  font-size: 16px;
+  font-size: 14px;
   color: #0C0F1F;
   margin: 0;
   line-height: 1.5;
+  margin: 0 0 20px;
 }
 .wpr-ri-license-banner .wpr-ri-banner-content {
   display: flex;
   justify-content: space-between;
-  gap: 40px;
-  margin-top: 40px;
+  gap: 30px;
+  margin-top: 24px;
 }
 @media (max-width: 768px) {
   .wpr-ri-license-banner .wpr-ri-banner-content {
@@ -2970,8 +2975,8 @@ div.wpr-tutorial-item {
 .wpr-ri-license-banner .wpr-ri-benefits-list-container .wpr-ri-benefits-list li {
   font-family: Roboto, Arial, sans-serif;
   position: relative;
-  padding-left: 35px;
-  margin-bottom: 20px;
+  padding-left: 28px;
+  margin-bottom: 12px;
   font-size: 14px;
   font-weight: 400;
   line-height: 1.3;
@@ -3002,7 +3007,7 @@ div.wpr-tutorial-item {
   font-weight: 600;
 }
 .wpr-ri-license-banner .wpr-ri-benefits-list-container .wpr-ri-terms {
-  margin-top: 60px;
+  margin-top: 15px;
   font-size: 11px;
   color: #738191;
   line-height: 1.3;
@@ -3015,11 +3020,11 @@ div.wpr-tutorial-item {
 .wpr-ri-license-banner .wpr-ri-price-box {
   background-color: white;
   border-radius: 5px;
-  padding: 40px 24px 24px 24px;
+  padding: 32px 24px 20px 24px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-width: 310px;
+  min-width: 280px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   position: relative;
   height: fit-content;
@@ -3066,12 +3071,13 @@ div.wpr-tutorial-item {
 }
 .wpr-ri-license-banner .wpr-ri-price .wpr-price-number {
   font-size: 46px;
-  font-weight: 500;
+  font-weight: 700;
   color: #0C0F1F;
 }
 .wpr-ri-license-banner .wpr-ri-price .wpr-price-decimal {
   color: #0C0F1F;
   font-size: 30px;
+  font-weight: 700;
   position: relative;
   top: -16px;
 }
@@ -3104,10 +3110,15 @@ div.wpr-tutorial-item {
   text-decoration: none;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  transition: background-color 0.2s ease;
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+  transition: all 200ms ease;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 .wpr-ri-license-banner .wpr-ri-cta-button:hover {
-  background-color: #f5663c;
+  background-color: rgb(244.725, 102.0166666667, 59.775);
+  transform: translateY(-2px);
+  box-shadow: 0 7px 14px rgba(50, 50, 93, 0.25), 0 3px 6px rgba(0, 0, 0, 0.2);
 }
 
 .wpr-ri-notice {
@@ -3183,8 +3194,6 @@ div.wpr-tutorial-item {
   border-collapse: separate;
   border-spacing: 0;
   border-radius: 5px;
-  /* Target the top-left and top-right cells of the first row */
-  /* Target the bottom-left and bottom-right cells of the last row */
 }
 .wpr-ri-urls-table.widefat td, .wpr-ri-urls-table.widefat th {
   border: 1px solid #E2E5E9;
@@ -3205,6 +3214,9 @@ div.wpr-tutorial-item {
 .wpr-ri-urls-table.widefat tr:last-child th {
   border-bottom: 1px solid #E2E5E9;
 }
+.wpr-ri-urls-table.widefat {
+  /* Target the top-left and top-right cells of the first row */
+}
 .wpr-ri-urls-table.widefat tr:nth-child(2) th:first-child,
 .wpr-ri-urls-table.widefat tr:nth-child(2) td:first-child {
   border-top-left-radius: 5px;
@@ -3212,6 +3224,9 @@ div.wpr-tutorial-item {
 .wpr-ri-urls-table.widefat tr:nth-child(2) th:last-child,
 .wpr-ri-urls-table.widefat tr:nth-child(2) td:last-child {
   border-top-right-radius: 5px;
+}
+.wpr-ri-urls-table.widefat {
+  /* Target the bottom-left and bottom-right cells of the last row */
 }
 .wpr-ri-urls-table.widefat tr:last-child th:first-child,
 .wpr-ri-urls-table.widefat tr:last-child td:first-child {
@@ -3281,20 +3296,30 @@ div.wpr-tutorial-item {
   visibility: visible;
   opacity: 1;
 }
-.wpr-ri-urls-table .wpr-ri-item-title .wpr-ri-title {
+.wpr-ri-urls-table .wpr-ri-item-title .wpr-ri-title .wpr-ri-title-truncate {
+  max-width: 260px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  position: relative;
+  top: 4px;
   text-decoration: underline;
 }
-.wpr-ri-urls-table .wpr-ri-item-title .wpr-ri-dot {
+.wpr-ri-urls-table .wpr-ri-item-title .wpr-ri-title .wpr-ri-title {
+  text-decoration: underline;
+}
+.wpr-ri-urls-table .wpr-ri-item-title .wpr-ri-title .wpr-ri-dot {
   color: #738191;
   display: inline-block;
   position: relative;
   top: -4px;
   margin: 0 8px;
 }
-.wpr-ri-urls-table .wpr-ri-item-title .wpr-ri-date {
+.wpr-ri-urls-table .wpr-ri-item-title .wpr-ri-title .wpr-ri-date {
   color: #738191;
 }
-.wpr-ri-urls-table .wpr-ri-item-title:before {
+.wpr-ri-urls-table .wpr-ri-item-title .wpr-ri-title:before {
   position: relative;
   content: "";
   top: 6px;
@@ -3344,7 +3369,7 @@ div.wpr-tutorial-item {
   margin-right: 6px;
 }
 .wpr-ri-urls-table .wpr-ri-item-actions .wpr-ri-action--disabled, .wpr-ri-urls-table .wpr-ri-item-actions .wpr-ri-action:disabled {
-  color: #8796a9 !important;
+  color: rgb(134.5094339623, 150.0566037736, 169.4905660377) !important;
   cursor: not-allowed;
   box-shadow: none;
 }
@@ -3360,6 +3385,13 @@ div.wpr-tutorial-item {
 }
 .wpr-ri-urls-table .wpr-ri-item-actions .wpr-ri-action.wpr-icon-trash:before {
   font-size: 14px;
+}
+.wpr-ri-urls-table .wpr-ri-item-actions.wpr-btn-with-tool-tip .wpr-tooltip {
+  left: 0;
+}
+.wpr-ri-urls-table .wpr-ri-item-actions.wpr-btn-with-tool-tip .wpr-tooltip:before {
+  left: 50%;
+  transform: translateX(-50%);
 }
 .wpr-ri-urls-table .wpr-ri-item-actions .wpr-tooltip {
   width: 280px;
@@ -3418,6 +3450,17 @@ div.wpr-tutorial-item {
   top: -6px;
   left: 50%;
   transform: translateX(-50%);
+}
+
+.wpr-ri-report.wpr-btn-with-tool-tip .wpr-tooltip {
+  transform: translateX(-32%);
+  width: 260px;
+}
+.wpr-ri-report.wpr-btn-with-tool-tip .wpr-tooltip:before {
+  left: 50%;
+}
+.wpr-ri-report.wpr-btn-with-tool-tip .wpr-tooltip .wpr-tooltip-content {
+  text-align: center;
 }
 
 /*-----------------------------------------------*\
@@ -3684,7 +3727,7 @@ div.wpr-tutorial-item {
   font-family: Monaco;
   color: #121116;
   background: #fff;
-  border: 2px solid #c2cad4;
+  border: 2px solid rgb(194.1698113208, 202.0188679245, 211.8301886792);
   border-radius: 3px;
   font-size: 0.8125rem;
   line-height: 1.2307692308;
@@ -3716,7 +3759,7 @@ div.wpr-tutorial-item {
   height: 32px;
   color: #121116;
   background: #fff;
-  border: 2px solid #c2cad4;
+  border: 2px solid rgb(194.1698113208, 202.0188679245, 211.8301886792);
   border-radius: 3px;
   font-family: Monaco;
   font-size: 0.75rem;
@@ -3858,10 +3901,6 @@ div.wpr-tutorial-item {
   padding: 10px;
   margin: 8px 0;
 }
-.wpr-multiple-select .wpr-list .wpr-list-header {
-  display: flex;
-  justify-content: space-between;
-}
 .wpr-multiple-select .wpr-list .wpr-list-header .wpr-multiple-select-exclude_js_ads:before {
   font-family: "wpr-icomoon";
   content: "\e9b7";
@@ -3876,6 +3915,10 @@ div.wpr-tutorial-item {
   font-family: "wpr-icomoon";
   content: "\e927";
   padding-right: 8px;
+}
+.wpr-multiple-select .wpr-list .wpr-list-header {
+  display: flex;
+  justify-content: space-between;
 }
 .wpr-multiple-select .wpr-list .wpr-list-header .wpr-list-header-arrow {
   width: 15px;
