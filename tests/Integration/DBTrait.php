@@ -74,9 +74,9 @@ trait DBTrait {
 
 	public static function addPerformanceMonitoring(array $resource) {
 		$container = apply_filters( 'rocket_container', null );
-		$pm_query = $container->get( 'pm_query' );
+		$ri_query = $container->get( 'ri_query' );
 
-		return $pm_query->add_item( $resource );
+		return $ri_query->add_item( $resource );
 	}
 
 	public static function installFresh() {
@@ -103,8 +103,8 @@ trait DBTrait {
 		$preconnect_external_domains_table = $container->get( 'preconnect_external_domains_table' );
 		$preconnect_external_domains_table->install();
 
-		$pm_table = $container->get( 'pm_table' );
-		$pm_table->install();
+		$ri_table = $container->get( 'ri_table' );
+		$ri_table->install();
 	}
 
 	public static function installUsedCssTable() {
@@ -163,10 +163,10 @@ trait DBTrait {
 
 	public static function installPerformanceMonitoringTable() {
 		$container = apply_filters( 'rocket_container', null );
-		$pm_table = $container->get( 'pm_table' );
+		$ri_table = $container->get( 'ri_table' );
 
-		if ( ! $pm_table->exists() ) {
-			$pm_table->install();
+		if ( ! $ri_table->exists() ) {
+			$ri_table->install();
 		}
 	}
 
@@ -203,12 +203,12 @@ trait DBTrait {
 			$preconnect_external_domains_table->uninstall();
 		}
 
-		if ( ! $container->has( 'pm_table' ) ) {
+		if ( ! $container->has( 'ri_table' ) ) {
 			return;
 		}
-		$pm_table = $container->get( 'pm_table' );
-		if ( $pm_table->exists() ) {
-			$pm_table->uninstall();
+		$ri_table = $container->get( 'ri_table' );
+		if ( $ri_table->exists() ) {
+			$ri_table->uninstall();
 		}
 	}
 
@@ -264,10 +264,10 @@ trait DBTrait {
 
 	public static function uninstallPerformanceMonitoringTable() {
 		$container = apply_filters( 'rocket_container', null );
-		$pm_table = $container->get( 'pm_table' );
+		$ri_table = $container->get( 'ri_table' );
 
-		if ( $pm_table->exists() ) {
-			$pm_table->uninstall();
+		if ( $ri_table->exists() ) {
+			$ri_table->uninstall();
 		}
 	}
 
@@ -282,8 +282,8 @@ trait DBTrait {
 			$container->get( 'preload_fonts_table' ),
 			$container->get( 'preconnect_external_domains_table' ),
 		];
-		if ( $container->has( 'pm_table' ) ) {
-			$tables[] = $container->get( 'pm_table' );
+		if ( $container->has( 'ri_table' ) ) {
+			$tables[] = $container->get( 'ri_table' );
 		}
 
 		foreach ( $tables as $table ) {
@@ -323,10 +323,10 @@ trait DBTrait {
 
 	public static function truncatePerformanceMonitoringTable() {
 		$container           = apply_filters( 'rocket_container', null );
-		$pm_table = $container->get( 'pm_table' );
+		$ri_table = $container->get( 'ri_table' );
 
-		if ( $pm_table->exists() ) {
-			$pm_table->truncate();
+		if ( $ri_table->exists() ) {
+			$ri_table->truncate();
 		}
 
 	}

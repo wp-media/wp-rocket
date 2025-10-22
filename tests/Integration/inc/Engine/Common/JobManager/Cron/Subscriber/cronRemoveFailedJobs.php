@@ -27,7 +27,7 @@ class Test_CronRemoveFailedJobs extends TestCase {
 
 		remove_filter( 'pre_http_request',  [$this, 'edit_http_request' ] );
 		remove_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
-		remove_filter( 'rocket_performance_monitoring_enabled', '__return_false' );
+		remove_filter( 'rocket_rocket_insights_enabled', '__return_false' );
 		parent::tear_down();
 	}
 
@@ -36,7 +36,7 @@ class Test_CronRemoveFailedJobs extends TestCase {
 	 */
 	public function testShouldDoExpected( $input, $expected ){
 		add_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
-		add_filter( 'rocket_performance_monitoring_enabled', '__return_false' );
+		add_filter( 'rocket_rocket_insights_enabled', '__return_false' );
 
 		$this->add_to_queue_response = $input['add_job_to_queue_response'];
 		$container           = apply_filters( 'rocket_container', null );

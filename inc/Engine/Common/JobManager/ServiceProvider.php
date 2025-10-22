@@ -48,8 +48,8 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	public function register(): void {
 		$factories = [
-			'rucss'                  => $this->getContainer()->get( 'rucss_factory' ),
-			'performance_monitoring' => $this->getContainer()->get( 'pm_factory' ),
+			'rucss'           => $this->getContainer()->get( 'rucss_factory' ),
+			'rocket_insights' => $this->getContainer()->get( 'ri_factory' ),
 		];
 
 		$this->getContainer()->add( 'wpr_clock', WPRClock::class );
