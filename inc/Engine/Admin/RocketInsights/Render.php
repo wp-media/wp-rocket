@@ -318,15 +318,15 @@ class Render extends Abstract_Render {
 	}
 
 	/**
-	 * Renders the Rocket Insights column content for post listing pages.
+	 * Generates the Rocket Insights column content for post listing pages.
 	 *
 	 * @since 3.20.1
 	 *
 	 * @param string $url The URL of the post.
 	 *
-	 * @return void
+	 * @return string The rendered HTML for the Rocket Insights column.
 	 */
-	public function render_rocket_insights_column( string $url ): void {
+	public function get_rocket_insights_column( string $url ): string {
 		// Query for existing row in the database.
 		// Try both with and without trailing slash for compatibility.
 		$url_no_slash   = untrailingslashit( $url );
@@ -350,8 +350,7 @@ class Render extends Abstract_Render {
 		// Get credit availability.
 		$has_credit = $this->plan->has_credit();
 
-		// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped -- Template handles escaping.
-		echo $this->generate(
+		return $this->generate(
 			'partials/rocket-insights/rocket-insights-column',
 			[
 				'url'        => $normalized_url,
@@ -359,6 +358,19 @@ class Render extends Abstract_Render {
 				'has_credit' => $has_credit,
 			]
 		);
-		// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped
+	}
+
+	/**
+	 * Renders the Rocket Insights column content for post listing pages.
+	 *
+	 * @since 3.20.1
+	 *
+	 * @param string $url The URL of the post.
+	 *
+	 * @return void
+	 */
+	public function render_rocket_insights_column( string $url ): void {
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Template handles escaping.
+		echo $this->get_rocket_insights_column( $url );
 	}
 }

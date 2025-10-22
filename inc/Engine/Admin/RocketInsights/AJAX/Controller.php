@@ -434,7 +434,8 @@ class Controller {
 				]
 			);
 		}
-		$html = $this->render->render_rocket_insights_column( $url );
+
+		$html = $this->render->get_rocket_insights_column( $url );
 
 		wp_send_json_success(
 			[
