@@ -139,7 +139,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'admin_post_delete_rocket_insights_url'       => 'delete_row',
 			'wp_ajax_rocket_rocket_insights_reset_page'   => 'reset_page',
 			'rocket_localize_admin_script'                => 'add_pending_ids',
-			'rocket_rocket_insights_credit_reset'         => 'reset_credit_monthly',
+			'rocket_insights_credit_reset'                => 'reset_credit_monthly',
 			'rocket_rocket_insights_job_completed'        => [
 				[ 'validate_credit' ],
 				[ 'reset_global_score' ],

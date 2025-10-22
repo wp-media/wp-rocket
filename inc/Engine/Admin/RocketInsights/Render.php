@@ -312,30 +312,34 @@ class Render extends Abstract_Render {
 	}
 
 	/**
-	 * Truncates a title to a maximum of 35 characters and adds ellipsis if needed.
+	 * Determines if the given title exceeds the maximum allowed length.
 	 *
 	 * @since 3.20
 	 *
-	 * @param string $title The original title.
-	 * @return array {
-	 *     @type string $truncated_title The truncated title.
-	 *     @type bool   $is_truncated    Whether the title was truncated.
-	 * }
+	 * @param string $title The title to check.
+	 * @return bool True if the title is truncated, false otherwise.
 	 */
-	public function truncate_title( string $title ): array {
-		$max_length = 35;
+	public function is_title_truncated( string $title ): bool {
+		$max_length = 37;
 
 		if ( mb_strlen( $title ) <= $max_length ) {
-			return [
-				'truncated_title' => $title,
-				'is_truncated'    => false,
-			];
+			return false;
 		}
 
-		return [
-			'truncated_title' => mb_substr( $title, 0, $max_length ) . '(...)',
-			'is_truncated'    => true,
-		];
+		return true;
+	}
+
+	/**
+	 * Renders the Rocket Insights column content for post listing pages.
+	 *
+	 * @since 3.20.1
+	 *
+	 * @param string $url The URL of the post.
+	 *
+	 * @return void
+	 */
+	public function render_rocket_insights_column( string $url ): void {
+		echo $this->generate( 'partials/rocket-insights/rocket-insights-column', [ 'url' => $url ] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	/**

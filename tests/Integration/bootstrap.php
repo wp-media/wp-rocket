@@ -266,6 +266,10 @@ tests_add_filter(
 		}
 
 		if ( BootstrapManager::isGroup( 'PerformanceHints' ) ) {
+			// Disable Rocket Insights for Performance Hints tests group to prevent the test from failing.
+			add_filter( 'rocket_rocket_insights_enabled', '__return_false' );
+
+			// Enable all optimizations for Performance Hints tests group.
 			add_filter( 'rocket_above_the_fold_optimization', '__return_true' );
 			add_filter( 'rocket_lrc_optimization', '__return_true' );
 			add_filter( 'rocket_preconnect_external_domains_optimization', '__return_true' );
