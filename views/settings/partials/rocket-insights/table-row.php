@@ -78,7 +78,7 @@ defined( 'ABSPATH' ) || exit;
 			'url'        => $data->report_url,
 			'attributes' => [
 				'target' => '_blank',
-				'class'  => 'wpr-icon-report wpr-ri-action',
+				'class'  => 'wpr-icon-report wpr-ri-action wpr-ri-report',
 			],
 		];
 
