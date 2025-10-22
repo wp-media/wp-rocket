@@ -41,13 +41,13 @@ if ( null === $wpr_rocket_row ) :
 	?>
 	<div class="wpr-ri-column wpr-ri-not-tracked" data-url="<?php echo esc_attr( $wpr_rocket_insights_url ); ?>">
 		<?php if ( $wpr_has_credit ) : ?>
-			<a href="#" class="wpr-ri-test-page" data-url="<?php echo esc_attr( $wpr_rocket_insights_url ); ?>">
+			<button type="button" class="wpr-ri-test-page" data-url="<?php echo esc_attr( $wpr_rocket_insights_url ); ?>">
 				<?php esc_html_e( 'Test the page', 'rocket' ); ?>
-			</a>
+			</button>
 		<?php else : ?>
-			<a href="#" class="wpr-ri-test-page wpr-ri-no-credit" data-url="<?php echo esc_attr( $wpr_rocket_insights_url ); ?>">
+			<button type="button" class="wpr-ri-test-page wpr-ri-no-credit" data-url="<?php echo esc_attr( $wpr_rocket_insights_url ); ?>">
 				<?php esc_html_e( 'Test the page', 'rocket' ); ?>
-			</a>
+			</button>
 			<div class="wpr-ri-credit-message">
 				<strong><?php esc_html_e( "You've reached your free limit.", 'rocket' ); ?></strong>
 				<?php esc_html_e( 'Upgrade to continue.', 'rocket' ); ?>
@@ -84,9 +84,9 @@ $score_data = prepare_score_data( $wpr_rocket_row ); // phpcs:ignore WordPress.N
 				
 				<div class="wpr-ri-actions-wrapper">
 					<?php if ( $wpr_has_credit ) : ?>
-						<a href="#" class="wpr-ri-retest-link wpr-icon-bold-refresh" data-url="<?php echo esc_attr( $wpr_rocket_insights_url ); ?>">
+						<button type="button" class="wpr-ri-retest-link wpr-icon-bold-refresh" data-url="<?php echo esc_attr( $wpr_rocket_insights_url ); ?>">
 							<?php esc_html_e( 'Re-test', 'rocket' ); ?>
-						</a>
+						</button>
 					<?php else : ?>
 						<span class="wpr-ri-retest-link wpr-icon-bold-refresh wpr-ri-disabled">
 							<?php esc_html_e( 'Re-test', 'rocket' ); ?>
@@ -117,9 +117,9 @@ $score_data = prepare_score_data( $wpr_rocket_row ); // phpcs:ignore WordPress.N
 			
 			<div class="wpr-ri-actions-wrapper">
 				<?php if ( $wpr_has_credit ) : ?>
-					<a href="#" class="wpr-ri-retest-link wpr-icon-bold-refresh" data-url="<?php echo esc_attr( $wpr_rocket_insights_url ); ?>">
+					<button type="button" class="wpr-ri-retest-link wpr-icon-bold-refresh" data-url="<?php echo esc_attr( $wpr_rocket_insights_url ); ?>">
 						<?php esc_html_e( 'Re-test', 'rocket' ); ?>
-					</a>
+					</button>
 				<?php else : ?>
 					<span class="wpr-ri-retest-link wpr-icon-bold-refresh wpr-ri-disabled">
 						<?php esc_html_e( 'Re-test', 'rocket' ); ?>
