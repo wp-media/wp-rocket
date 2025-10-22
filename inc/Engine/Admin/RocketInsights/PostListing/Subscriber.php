@@ -85,6 +85,23 @@ class Subscriber implements Subscriber_Interface {
 			$post_types[] = 'page';
 		}
 
+		/**
+		 * Filters the post types that should be excluded from Rocket Insights functionality.
+		 *
+		 * This filter allows developers to prevent the Rocket Insights column from being displayed
+		 * on specific post type listing pages. The Rocket Insights column provides performance
+		 * testing and scoring for individual posts/pages.
+		 *
+		 * @since 3.20.1
+		 *
+		 * @param string[] $excluded_post_types Array of post type slugs to exclude. Default empty array.
+		 *
+		 * @example
+		 * // Exclude custom post types from Rocket Insights
+		 * add_filter( 'rocket_insights_excluded_post_types', function( $excluded ) {
+		 *     return array_merge( $excluded, [ 'custom_post_type', 'another_cpt' ] );
+		 * } );
+		 */
 		$excluded_post_types = (array) wpm_apply_filters_typed(
 			'string[]',
 			'rocket_insights_excluded_post_types',
