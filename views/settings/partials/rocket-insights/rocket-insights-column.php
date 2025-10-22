@@ -19,6 +19,27 @@ $wpr_rocket_insights_url = $data['url'] ?? ''; // phpcs:ignore WordPress.NamingC
 $wpr_rocket_row          = $data['row'] ?? null; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 $wpr_has_credit          = $data['has_credit'] ?? false; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 
+/**
+ * Prepare score data array for performance score rendering.
+ *
+ * @param object $row Database row object.
+ * @return array Score data array.
+ */
+function prepare_score_data( $row ) {
+	$score_data = [
+		'score'        => $row->score,
+		'status'       => $row->status,
+		'is_blurred'   => $row->is_blurred,
+		'is_dashboard' => false,
+	];
+
+	if ( 'failed' !== $row->status ) {
+		$score_data['status-color'] = $this->get_score_color_status( (int) $row->score ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
+	}
+
+	return $score_data;
+}
+
 // If row doesn't exist, show "Test the page" link.
 if ( null === $wpr_rocket_row ) :
 	?>
@@ -49,16 +70,7 @@ $wpr_is_blurred        = isset( $wpr_rocket_row->is_blurred ) && $wpr_rocket_row
 $wpr_can_access_report = $wpr_rocket_row->can_access_report(); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 
 // Prepare data used by both blurred and normal score renderers.
-$score_data = [ // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
-	'score'        => $wpr_rocket_row->score,
-	'status'       => $wpr_rocket_row->status,
-	'is_blurred'   => $wpr_rocket_row->is_blurred,
-	'is_dashboard' => false,
-];
-
-if ( 'failed' !== $wpr_rocket_row->status ) {
-	$score_data['status-color'] = $this->get_score_color_status( (int) $wpr_rocket_row->score ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
-}
+$score_data = prepare_score_data( $wpr_rocket_row ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 ?>
 
 <div class="wpr-ri-column" data-rocket-insights-id="<?php echo esc_attr( $wpr_rocket_row->id ); ?>" data-url="<?php echo esc_attr( $wpr_rocket_insights_url ); ?>">
@@ -74,16 +86,7 @@ if ( 'failed' !== $wpr_rocket_row->status ) {
 			<div class="wpr-ri-blurred">
 				<div class="wpr-btn-with-tool-tip">
 					<?php
-					$score_data = [ // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
-						'score'        => $wpr_rocket_row->score,
-						'status'       => $wpr_rocket_row->status,
-						'is_blurred'   => $wpr_rocket_row->is_blurred,
-						'is_dashboard' => false,
-					];
-
-					if ( 'failed' !== $wpr_rocket_row->status ) {
-						$score_data['status-color'] = $this->get_score_color_status( (int) $wpr_rocket_row->score ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
-					}
+					$score_data = prepare_score_data( $wpr_rocket_row ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 
 					$this->render_performance_score( $score_data );
 					?>
@@ -116,16 +119,7 @@ if ( 'failed' !== $wpr_rocket_row->status ) {
 			<!-- Normal score with actions -->
 			<div class="wpr-ri-score-wrapper">
 				<?php
-				$score_data = [ // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
-					'score'        => $wpr_rocket_row->score,
-					'status'       => $wpr_rocket_row->status,
-					'is_blurred'   => $wpr_rocket_row->is_blurred,
-					'is_dashboard' => false,
-				];
-
-				if ( 'failed' !== $wpr_rocket_row->status ) {
-					$score_data['status-color'] = $this->get_score_color_status( (int) $wpr_rocket_row->score ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
-				}
+				$score_data = prepare_score_data( $wpr_rocket_row ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 
 				$this->render_performance_score( $score_data );
 				?>
