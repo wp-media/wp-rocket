@@ -394,7 +394,6 @@ class Controller {
 			$row_id = $this->manager->add_to_the_queue( $row->url, true, $additional_details ); // @phpstan-ignore-line
 
 			if ( empty( $row_id ) ) {
-				// DB operation failed after successful API submission - log orphaned job.
 				Logger::error(
 					'Rocket Insights: Database update failed after successful sync submission',
 					[
