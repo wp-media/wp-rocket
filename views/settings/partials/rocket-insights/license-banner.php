@@ -10,11 +10,11 @@ defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 
 <div class="wpr-ri-license-banner">
 	<div class="wpr-ri-banner-header">
-		<h2><?php esc_html_e( 'Unlock Your Site’s True Performance!', 'rocket' ); ?></h2>
 	</div>
 	<div class="wpr-ri-banner-content">
 	<div class="wpr-ri-benefits-list-container">
 		<div class="wpr-ri-banner-header">
+			<h2><?php esc_html_e( 'Unlock Your Site’s True Performance!', 'rocket' ); ?></h2>
 			<p><?php echo esc_html( $data['subtitle'] ); ?></p>
 		</div>
 

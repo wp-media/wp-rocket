@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 
-<p class="wpr-pma-price">
+<p class="wpr-ri-price">
 	<span class="wpr-currency"><strong>$</strong></span>
 	<span class="wpr-price-number"><?php echo esc_html( $data['price_number'] ); ?></span>
 	<span class="wpr-price-decimal"><?php echo esc_html( $data['price_decimal'] ); ?></span>

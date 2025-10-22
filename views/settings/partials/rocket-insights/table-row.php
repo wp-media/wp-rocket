@@ -21,13 +21,13 @@ defined( 'ABSPATH' ) || exit;
 		$rocket_css_class = $this->is_title_truncated( $data->title ) ? 'wpr-btn-with-tool-tip' : '';
 		?>
 		<a href="<?php echo esc_url( $data->url ); ?>" target="_blank" rel="noopener" class="<?php echo esc_attr( $rocket_css_class ); ?>">
-			<span class="wpr-pma-title">
-				<span class="wpr-pma-title-truncate">
+			<span class="wpr-ri-title">
+				<span class="wpr-ri-title-truncate">
 					<?php echo esc_html( $data->title ); ?>
 				</span>
 			</span> 
-			<span class="wpr-pma-dot">.</span>
-			<span class="wpr-pma-date">
+			<span class="wpr-ri-dot">.</span>
+			<span class="wpr-ri-date">
 				<?php
 				if ( $data->is_running() ) {
 					echo esc_html( __( 'Analyzing your page (~1 min)', 'rocket' ) );
