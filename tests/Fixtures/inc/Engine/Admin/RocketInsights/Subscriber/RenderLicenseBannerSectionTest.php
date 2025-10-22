@@ -23,7 +23,10 @@ return [
                 ->generate(),
         ],
         'expected' => '<span class="wpr-currency">
-$</span>
+<strong>
+$
+</strong>
+</span>
 <span class="wpr-price-number">
 0</span>
 <span class="wpr-price-decimal">
@@ -45,7 +48,10 @@ $</span>
 $0.00</p>
 <p class="wpr-ri-price">
 <span class="wpr-currency">
-$</span>
+<strong>
+$
+</strong>
+</span>
 <span class="wpr-price-number">
 10</span>
 <span class="wpr-price-decimal">

@@ -7,7 +7,7 @@
 <div class="wpr-percentage-score-widget">
 <div>
 <div class="wpr-percentage-indicator">
-<div class="wpr-percentage-circle status-red ">0</div>
+<a href="http://example.org/wp-admin/options-general.php?page=wprocket#rocket_insights"><div class="wpr-percentage-circle status-red ">0</div></a>
 </div>
 </div>
 <p class="wpr-page-num-txt">Tracked Pages: 2</p>
