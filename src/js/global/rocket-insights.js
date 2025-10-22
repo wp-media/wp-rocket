@@ -228,12 +228,17 @@ module.exports = (function() {
 	 */
 	function showLoadingState(column, rowId) {
 		column.attr('data-rocket-insights-id', rowId);
-		column.html(
-			'<div class="wpr-ri-loading">' +
-			'<img class="wpr-loading-img" src="' + (window.rocket_insights_i18n?.loading_img || '') + '" alt="Loading..."/>' +
-			'</div>' +
-			'<div class="wpr-ri-message" style="display: none;"></div>'
-		);
+
+		// Create elements safely to prevent XSS
+		const loadingDiv = jQuery('<div>').addClass('wpr-ri-loading');
+		const img = jQuery('<img>').addClass('wpr-loading-img').attr({
+			src: window.rocket_insights_i18n?.loading_img || '',
+			alt: 'Loading...'
+		});
+		const messageDiv = jQuery('<div>').addClass('wpr-ri-message').css('display', 'none');
+
+		loadingDiv.append(img);
+		column.empty().append(loadingDiv).append(messageDiv);
 	}
 
 	/**
