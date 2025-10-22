@@ -434,11 +434,7 @@ class Controller {
 				]
 			);
 		}
-
-		// Start output buffering to capture the rendered HTML.
-		ob_start();
-		$this->render->render_rocket_insights_column( $url );
-		$html = ob_get_clean();
+		$html = $this->render->render_rocket_insights_column( $url );
 
 		wp_send_json_success(
 			[
