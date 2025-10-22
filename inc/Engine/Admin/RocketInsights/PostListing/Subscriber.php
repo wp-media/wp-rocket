@@ -5,7 +5,6 @@ namespace WP_Rocket\Engine\Admin\RocketInsights\PostListing;
 
 use WP_Rocket\Engine\Admin\RocketInsights\Render;
 use WP_Rocket\Event_Management\Subscriber_Interface;
-use WP_Rocket\Engine\Optimization\ContentTrait;
 
 /**
  * Subscriber for enqueuing Rocket Insights assets on post listing pages
@@ -13,7 +12,6 @@ use WP_Rocket\Engine\Optimization\ContentTrait;
  * @since 3.20.1
  */
 class Subscriber implements Subscriber_Interface {
-	use ContentTrait;
 
 	/**
 	 * Render instance.
