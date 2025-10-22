@@ -255,24 +255,19 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 	 * @param string $url URL to test.
 	 * @param bool   $is_mobile Is mobile.
 	 * @param array  $additional_details Additional details.
-	 * @return array|false Returns job data on success, false on failure/timeout.
+	 * @return array|\WP_Error Returns job data on success, WP_Error on failure/timeout.
 	 */
-	public function try_sync_submission( string $url, bool $is_mobile, array $additional_details = [] ) {
+	public function attempt_sync_submission( string $url, bool $is_mobile, array $additional_details = [] ) {
 		$options = [
 			'is_home' => $additional_details['is_home'] ?? false,
 		];
-
-		// Set a shorter timeout for synchronous calls (10 seconds).
-		add_filter( 'http_request_timeout', [ $this, 'set_sync_timeout' ], 10 );
 
 		$this->logger::info(
 			'Performance Monitoring: Attempting synchronous submission',
 			[ 'url' => $url ]
 		);
 
-		$response = $this->api_client->add_to_queue( $url, $options );
-
-		remove_filter( 'http_request_timeout', [ $this, 'set_sync_timeout' ], 10 );
+		$response = $this->api_client->add_to_queue( $url, $options, [ 'timeout' => self::SYNC_TIMEOUT ] );
 
 		// Check if API call was successful.
 		if ( is_wp_error( $response ) || empty( $response['uuid'] ) ) {
@@ -283,7 +278,7 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 					'error' => is_wp_error( $response ) ? $response->get_error_message() : 'No UUID returned',
 				]
 			);
-			return false;
+			return is_wp_error( $response ) ? $response : new \WP_Error( 'sync_submission_failed', 'No UUID returned' );
 		}
 
 		$this->logger::info(
@@ -295,15 +290,6 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 		);
 
 		return $response;
-	}
-
-	/**
-	 * Set shorter timeout for synchronous API calls.
-	 *
-	 * @return int
-	 */
-	public function set_sync_timeout() {
-		return self::SYNC_TIMEOUT;
 	}
 
 	/**

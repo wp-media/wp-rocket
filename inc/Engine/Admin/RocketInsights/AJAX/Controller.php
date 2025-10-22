@@ -134,9 +134,12 @@ class Controller {
 		];
 
 		// Try synchronous submission first.
-		$sync_response = $this->manager->try_sync_submission( $url, true, $additional_details );
+		$sync_response = $this->manager->attempt_sync_submission( $url, true, $additional_details );
 
-		if ( $sync_response && ! empty( $sync_response['uuid'] ) ) {
+		// If sync submission failed or returned WP_Error, fall back to async queue.
+		if ( is_wp_error( $sync_response ) || empty( $sync_response['uuid'] ) ) {
+			$row_id = $this->manager->add_to_the_queue( $url, true, $additional_details );
+		} else {
 			// Success! Save directly with pending status.
 			$row_id = $this->manager->add_to_the_queue( $url, true, $additional_details );
 
@@ -159,9 +162,6 @@ class Controller {
 					]
 				);
 			}
-		} else {
-			// Fallback to async queue.
-			$row_id = $this->manager->add_to_the_queue( $url, true, $additional_details );
 		}
 
 		if ( empty( $row_id ) ) {
@@ -380,16 +380,20 @@ class Controller {
 		];
 
 		// Try synchronous submission first.
-		$sync_response = $this->manager->try_sync_submission( $row->url, true, $additional_details ); // @phpstan-ignore-line
+		$sync_response = $this->manager->attempt_sync_submission( $row->url, true, $additional_details ); // @phpstan-ignore-line
 
-		if ( $sync_response && ! empty( $sync_response['uuid'] ) ) {
+		// If sync submission failed or returned WP_Error, fall back to async queue.
+		if ( is_wp_error( $sync_response ) || empty( $sync_response['uuid'] ) ) {
+			$this->manager->add_to_the_queue(
+				$row->url, // @phpstan-ignore-line
+				true,
+				$additional_details
+			);
+		} else {
 			// Success! Save with the new data.
 			$row_id = $this->manager->add_to_the_queue( $row->url, true, $additional_details ); // @phpstan-ignore-line
 
-			if ( ! empty( $row_id ) ) {
-				// Update to pending status immediately with job ID.
-				$this->query->make_status_pending( $row->url, $sync_response['uuid'], '', true ); // @phpstan-ignore-line
-			} else {
+			if ( empty( $row_id ) ) {
 				// DB operation failed after successful API submission - log orphaned job.
 				Logger::error(
 					'Rocket Insights: Database update failed after successful sync submission',
@@ -405,13 +409,9 @@ class Controller {
 					]
 				);
 			}
-		} else {
-			// Fallback to async queue.
-			$this->manager->add_to_the_queue(
-				$row->url, // @phpstan-ignore-line
-				true,
-				$additional_details
-				);
+
+			// Update to pending status immediately with job ID.
+			$this->query->make_status_pending( $row->url, $sync_response['uuid'], '', true ); // @phpstan-ignore-line
 		}
 
 		/**
