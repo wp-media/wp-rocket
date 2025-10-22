@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\RocketInsights\PostListing\Subscriber;
 
 use WP_Rocket\Tests\Integration\AdminTestCase;
+use WP_Rocket\Tests\Integration\DBTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\Admin\RocketInsights\PostListing\Subscriber::render_rocket_insights_column
@@ -11,24 +12,69 @@ use WP_Rocket\Tests\Integration\AdminTestCase;
  * @group AdminOnly
  */
 class Test_RenderRocketInsightsColumn extends AdminTestCase {
-	/**
-	 * Test that no content is rendered when post has no permalink.
-	 *
-	 * @return void
-	 */
-	public function testShouldNotRenderWhenNoPermalink() {
-		// Create a post but filter get_permalink to return false.
-		$post_id = $this->factory->post->create( [ 'post_status' => 'draft' ] );
+	use DBTrait;
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
 
-		add_filter( 'post_link', '__return_false' );
+		// Install the Performance Monitoring table.
+		self::installPerformanceMonitoringTable();
+	}
+
+	public static function tear_down_after_class() {
+		self::uninstallPerformanceMonitoringTable();
+
+		parent::tear_down_after_class();
+	}
+
+	public function set_up() {
+		parent::set_up();
+	}
+
+	public function tear_down() {
+		parent::tear_down();
+	}
+
+	/**
+	 * @dataProvider configTestData
+	 */
+	public function testShouldReturnAsExpected( $config, $expected) {
+		$post_id = null;
+
+		foreach ( $config['rows'] as $row ) {
+			if ( ! empty($row)) {
+				$this->addPerformanceMonitoring( $row );
+				$post_id = $this->factory->post->create( [
+					'post_title' => 'Test Post',
+					'post_content' => 'Content',
+					'post_status' => 'publish',
+					'post_type' => 'post',
+					'post_name' => 'page-to-test',
+					'meta_input' => [ '_rocket_insights_url' => $row['url'] ]
+				] );
+
+				// Ensure the permalink matches our test URL
+				add_filter( 'post_link', function( $permalink, $post ) use ( $post_id, $row ) {
+					if ( $post->ID === $post_id ) {
+						return $row['url'];
+					}
+					return $permalink;
+				}, 10, 2 );
+			}
+		}
+
+		if ( null === $post_id ) {
+			// Test case with no post
+			ob_start();
+			do_action( 'manage_post_posts_custom_column', 'rocket_insights', 99999 );
+			$output = ob_get_clean();
+			$this->assertSame( $expected['html'], $output );
+			return;
+		}
 
 		ob_start();
-        // @phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 		do_action( 'manage_post_posts_custom_column', 'rocket_insights', $post_id );
 		$output = ob_get_clean();
 
-		remove_filter( 'post_link', '__return_false' );
-
-		$this->assertEmpty( $output, 'Should not render when permalink is not available' );
+		$this->assertStringContainsString( $expected['html'], $output );
 	}
 }

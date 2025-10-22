@@ -2,50 +2,61 @@
 
 return [
 	'test_data' => [
-		'shouldRenderPlaceholderContent' => [
+		'shouldNotRenderWhenNoPost' => [
 			'config' => [
-				'post_type'   => 'post',
-				'column_name' => 'rocket_insights',
-				'post_data'   => [
-					'post_title'  => 'Test Post',
-					'post_status' => 'publish',
-					'post_type'   => 'post',
-				],
+				'rows' => [],
 			],
 			'expected' => [
-				'should_render' => true,
-				'content'       => 'Coming Soon',
-			],
+				'html' => '',
+			]
 		],
-		'shouldNotRenderForOtherColumns' => [
+		'shouldRenderLoadingState' => [
 			'config' => [
-				'post_type'   => 'post',
-				'column_name' => 'author',
-				'post_data'   => [
-					'post_title'  => 'Test Post',
-					'post_status' => 'publish',
-					'post_type'   => 'post',
-				],
+				'rows' => [
+					[
+						'url' 	  	 => 'https://example.com/page-to-test',
+						'status'     => 'pending',
+						'score'      => 0,
+						'is_blurred' => 0,
+					]
+				]
 			],
 			'expected' => [
-				'should_render' => false,
-				'content'       => '',
-			],
+				'html' => '<div class="wpr-ri-loading">',
+			]
 		],
-		'shouldRenderPlaceholderForPages' => [
+		'testShouldRenderBlurredState' => [
 			'config' => [
-				'post_type'   => 'page',
-				'column_name' => 'rocket_insights',
-				'post_data'   => [
-					'post_title'  => 'Test Page',
-					'post_status' => 'publish',
-					'post_type'   => 'page',
-				],
+				'rows' => [
+					[
+						'url' 	  	 => 'https://example.com/page-to-test',
+						'status'     => 'completed',
+						'score'      => 85,
+						'is_blurred' => 1,
+						'report_url' => 'https://example.com/report',
+
+					]
+				]
 			],
 			'expected' => [
-				'should_render' => true,
-				'content'       => 'Coming Soon',
+				'html' => '<div class="wpr-ri-blurred">',
+			]
+		],
+		'testShouldRenderCompletedState' => [
+			'config' => [
+				'rows' => [
+					[
+						'url' 	  	 => 'https://example.com/page-to-test',
+						'status'     => 'completed',
+						'score'      => 90,
+						'is_blurred' => 0,
+						'report_url' => 'https://example.com/report',
+					]
+				]
 			],
+			'expected' => [
+				'html' => '<div class="wpr-ri-score-wrapper">',
+			]
 		],
 	],
 ];
