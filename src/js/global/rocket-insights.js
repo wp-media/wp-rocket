@@ -277,7 +277,8 @@ module.exports = (function() {
 		const messageEl = column.find('.wpr-ri-message');
 		// Clear any existing content first
 		messageEl.stop(true, true).empty();
-		messageEl.html('<p class="wpr-ri-message-' + type + '">' + message + '</p>').show();
+		const p = jQuery('<p>').addClass('wpr-ri-message-' + type).text(message);
+		messageEl.append(p).show();
 		
 		// Auto-hide after 5 seconds.
 		setTimeout(function() {
