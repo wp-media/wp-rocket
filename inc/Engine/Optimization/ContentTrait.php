@@ -9,7 +9,7 @@ trait ContentTrait {
 	 * @since 3.9 moved into trait
 	 * @since 2.11
 	 */
-	private static function query_public_post_type_rows(): array {
+	private function get_public_post_types() {
 		global $wpdb;
 
 		$post_types = get_post_types(
@@ -30,8 +30,7 @@ trait ContentTrait {
 		 *
 		 * @return array
 		 */
-		$excluded_post_types = (array) wpm_apply_filters_typed(
-			'string[]',
+		$excluded_post_types = (array) apply_filters(
 			'rocket_cpcss_excluded_post_types',
 			[
 				'elementor_library',
@@ -69,35 +68,6 @@ trait ContentTrait {
 	}
 
 	/**
-	 * Retrieves all public post types.
-	 *
-	 * This method returns an array of post types that are publicly accessible.
-	 * It is typically used to filter or process content based on post type visibility.
-	 *
-	 * @return array List of public post types.
-	 */
-	private function get_public_post_types() {
-		return self::query_public_post_type_rows();
-	}
-
-
-	/**
-	 * Retrieves the slugs of all public post types.
-	 *
-	 * @return array An array containing the slugs of public post types.
-	 */
-	public static function get_public_post_type_slugs(): array {
-		$rows = self::query_public_post_type_rows();
-		return array_map(
-			static function ( $r ) {
-				return $r->post_type;
-			},
-			$rows
-			);
-	}
-
-
-	/**
 	 * Gets all public taxonomies.
 	 *
 	 * @since 3.9 moved into trait
@@ -122,8 +92,7 @@ trait ContentTrait {
 		 *
 		 * @return array
 		 */
-		$excluded_taxonomies = (array) wpm_apply_filters_typed(
-			'string[]',
+		$excluded_taxonomies = (array) apply_filters(
 			'rocket_cpcss_excluded_taxonomies',
 			[
 				'post_format',
