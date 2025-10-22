@@ -423,8 +423,9 @@ class Controller {
 	public function get_column_html(): void {
 		check_ajax_referer( 'rocket-ajax', 'nonce', true );
 
-		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- URL validation happens via untrailingslashit(). Using trim() and wp_unslash() only to preserve percent-encoded non-ASCII characters.
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- URL validation and sanitization happens via esc_url_raw(). Using trim() and wp_unslash() only to preserve percent-encoded non-ASCII characters.
 		$url = isset( $_POST['url'] ) ? untrailingslashit( trim( wp_unslash( $_POST['url'] ) ) ) : '';
+		$url = esc_url_raw( $url );
 
 		if ( empty( $url ) ) {
 			wp_send_json_error(
