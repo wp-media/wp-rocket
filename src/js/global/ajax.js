@@ -516,7 +516,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		const pageUrl = $pageUrlInput.val().trim();
 
 		if (!isValidUrl(pageUrl)) {
-			alert('Please enter a valid URL with an extension');
+			alert('Please enter a valid URL');
 			return;
 		}
 
