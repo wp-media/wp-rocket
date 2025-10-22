@@ -7,45 +7,24 @@
  * @var array $data {
  *     Template data.
  *
- *     @type string      $wpr_rocket_insights_url        The URL of the post.
- *     @type object|null $wpr_rocket_row        Database row object for the URL (null if not tracked).
- *     @type bool        $wpr_has_credit Whether the user has credit available.
+ *     @type string      $data['wpr_rocket_insights_url']        The URL of the post.
+ *     @type object|null $data['wpr_rocket_row']        Database row object for the URL (null if not tracked).
+ *     @type bool        $data['wpr_has_credit'] Whether the user has credit available.
  * }
  */
 
 defined( 'ABSPATH' ) || exit;
 
-/**
- * Prepare score data array for performance score rendering.
- *
- * @param object $row Database row object.
- * @return array Score data array.
- */
-function prepare_score_data( $row ) {
-	$score_data = [
-		'score'        => $row->score,
-		'status'       => $row->status,
-		'is_blurred'   => $row->is_blurred,
-		'is_dashboard' => false,
-	];
-
-	if ( 'failed' !== $row->status ) {
-		$score_data['status-color'] = $this->get_score_color_status( (int) $row->score ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
-	}
-
-	return $score_data;
-}
-
 // If row doesn't exist, show "Test the page" link.
-if ( null === $wpr_rocket_row ) :
+if ( null === $data['wpr_rocket_row'] ) :
 	?>
-	<div class="wpr-ri-column wpr-ri-not-tracked" data-url="<?php echo esc_attr( $wpr_rocket_insights_url ); ?>">
-		<?php if ( $wpr_has_credit ) : ?>
-			<button type="button" class="wpr-ri-test-page" data-url="<?php echo esc_attr( $wpr_rocket_insights_url ); ?>">
+	<div class="wpr-ri-column wpr-ri-not-tracked" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>">
+		<?php if ( $data['wpr_has_credit'] ) : ?>
+			<button type="button" class="wpr-ri-test-page" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>">
 				<?php esc_html_e( 'Test the page', 'rocket' ); ?>
 			</button>
 		<?php else : ?>
-			<button type="button" class="wpr-ri-test-page wpr-ri-no-credit" data-url="<?php echo esc_attr( $wpr_rocket_insights_url ); ?>">
+			<button type="button" class="wpr-ri-test-page wpr-ri-no-credit" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>">
 				<?php esc_html_e( 'Test the page', 'rocket' ); ?>
 			</button>
 			<div class="wpr-ri-credit-message">
@@ -59,11 +38,9 @@ if ( null === $wpr_rocket_row ) :
 	return;
 endif;
 
-// Prepare data used by both blurred and normal score renderers.
-$score_data = prepare_score_data( $wpr_rocket_row ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 ?>
 
-<div class="wpr-ri-column" data-rocket-insights-id="<?php echo esc_attr( $wpr_rocket_row->id ); ?>" data-url="<?php echo esc_attr( $wpr_rocket_insights_url ); ?>">
+<div class="wpr-ri-column" data-rocket-insights-id="<?php echo esc_attr( $data['wpr_rocket_row']->id ); ?>" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>">
 	<?php if ( $data['wpr_is_running'] ) : ?>
 		<!-- Loading state -->
 		<div class="wpr-ri-loading">
@@ -76,15 +53,14 @@ $score_data = prepare_score_data( $wpr_rocket_row ); // phpcs:ignore WordPress.N
 			<div class="wpr-ri-blurred">
 				<div class="wpr-btn-with-tool-tip">
 					<?php
-					$score_data = prepare_score_data( $wpr_rocket_row ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 
-					$this->render_performance_score( $score_data );
+					$this->render_performance_score( $data['wpr_score_data'] );
 					?>
 				</div>
 				
 				<div class="wpr-ri-actions-wrapper">
-					<?php if ( $wpr_has_credit ) : ?>
-						<button type="button" class="wpr-ri-retest-link wpr-icon-bold-refresh" data-url="<?php echo esc_attr( $wpr_rocket_insights_url ); ?>">
+					<?php if ( $data['wpr_has_credit'] ) : ?>
+						<button type="button" class="wpr-ri-retest-link wpr-icon-bold-refresh" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>">
 							<?php esc_html_e( 'Re-test', 'rocket' ); ?>
 						</button>
 					<?php else : ?>
@@ -97,7 +73,7 @@ $score_data = prepare_score_data( $wpr_rocket_row ); // phpcs:ignore WordPress.N
 						<?php esc_html_e( 'See Report', 'rocket' ); ?>
 					</span>
 					
-					<?php if ( ! $wpr_has_credit ) : ?>
+					<?php if ( ! $data['wpr_has_credit'] ) : ?>
 						<span class="wpr-ri-no-credit-text">
 							<strong><?php esc_html_e( "You've reached your free limit.", 'rocket' ); ?></strong>
 							<?php esc_html_e( 'Upgrade to continue.', 'rocket' ); ?>
@@ -109,15 +85,14 @@ $score_data = prepare_score_data( $wpr_rocket_row ); // phpcs:ignore WordPress.N
 			<!-- Normal score with actions -->
 			<div class="wpr-ri-score-wrapper">
 				<?php
-				$score_data = prepare_score_data( $wpr_rocket_row ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 
-				$this->render_performance_score( $score_data );
+				$this->render_performance_score( $data['wpr_score_data'] );
 				?>
 			</div>
 			
 			<div class="wpr-ri-actions-wrapper">
-				<?php if ( $wpr_has_credit ) : ?>
-					<button type="button" class="wpr-ri-retest-link wpr-icon-bold-refresh" data-url="<?php echo esc_attr( $wpr_rocket_insights_url ); ?>">
+				<?php if ( $data['wpr_has_credit'] ) : ?>
+					<button type="button" class="wpr-ri-retest-link wpr-icon-bold-refresh" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>">
 						<?php esc_html_e( 'Re-test', 'rocket' ); ?>
 					</button>
 				<?php else : ?>
@@ -128,7 +103,7 @@ $score_data = prepare_score_data( $wpr_rocket_row ); // phpcs:ignore WordPress.N
 				
 				<?php
 				// See report link - only show if report_url exists.
-				$wpr_report_url = $wpr_rocket_row->report_url ?? ''; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
+				$wpr_report_url = $data['wpr_rocket_row']->report_url ?? ''; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 
 				if ( ! empty( $wpr_report_url ) && $data['wpr_can_access_report'] ) :
 					?>
@@ -137,7 +112,7 @@ $score_data = prepare_score_data( $wpr_rocket_row ); // phpcs:ignore WordPress.N
 					</a>
 				<?php endif; ?>
 				
-				<?php if ( ! $wpr_has_credit ) : ?>
+				<?php if ( ! $data['wpr_has_credit'] ) : ?>
 					<span class="wpr-ri-no-credit-text">
 						<strong><?php esc_html_e( "You've reached your free limit.", 'rocket' ); ?></strong>
 						<?php esc_html_e( 'Upgrade to continue.', 'rocket' ); ?>

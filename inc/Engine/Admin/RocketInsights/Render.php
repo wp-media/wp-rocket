@@ -59,6 +59,27 @@ class Render extends Abstract_Render {
 	}
 
 	/**
+	 * Prepare score data array for performance score rendering.
+	 *
+	 * @param object $row Database row object.
+	 * @return array Score data array.
+	 */
+	private function prepare_score_data( $row ): array {
+		$score_data = [
+			'score'        => $row->score,
+			'status'       => $row->status,
+			'is_blurred'   => $row->is_blurred,
+			'is_dashboard' => false,
+		];
+
+		if ( 'failed' !== $row->status ) {
+			$score_data['status-color'] = $this->get_score_color_status( (int) $row->score );
+		}
+
+		return $score_data;
+	}
+
+	/**
 	 * Get color status class based on performance score.
 	 *
 	 * @param int $score Performance score (0-100).
@@ -357,12 +378,15 @@ class Render extends Abstract_Render {
 			'wpr_has_credit'          => $has_credit,
 		];
 
-		// If row exists, prepare additional derived variables.
+		// If row exists, prepare additional derived variables and score data.
 		if ( null !== $row ) {
 			$template_data['wpr_is_running']        = $row->is_running();
 			$template_data['wpr_has_results']       = 'completed' === $row->status || 'blurred' === $row->status;
 			$template_data['wpr_is_blurred']        = isset( $row->is_blurred ) && $row->is_blurred;
 			$template_data['wpr_can_access_report'] = $row->can_access_report();
+
+			// Prepare score data for template rendering.
+			$template_data['wpr_score_data'] = $this->prepare_score_data( $row );
 		}
 
 		return $this->generate(

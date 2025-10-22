@@ -389,6 +389,10 @@
   color: #2271b1;
   text-decoration: none;
   font-weight: 400;
+  background: none;
+  border: none;
+  text-align: left;
+  padding: 0 0 0 0;
 }
 .wpr-ri-column .wpr-ri-actions-wrapper .wpr-ri-retest-link:hover,
 .wpr-ri-column .wpr-ri-actions-wrapper .wpr-ri-see-report-link:hover {
