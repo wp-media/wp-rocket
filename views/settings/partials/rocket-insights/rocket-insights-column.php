@@ -15,10 +15,6 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$wpr_rocket_insights_url = $data['url'] ?? ''; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
-$wpr_rocket_row          = $data['row'] ?? null; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
-$wpr_has_credit          = $data['has_credit'] ?? false; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
-
 /**
  * Prepare score data array for performance score rendering.
  *
@@ -63,25 +59,19 @@ if ( null === $wpr_rocket_row ) :
 	return;
 endif;
 
-// Determine the state based on row status.
-$wpr_is_running        = $wpr_rocket_row->is_running(); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
-$wpr_has_results       = 'completed' === $wpr_rocket_row->status || 'blurred' === $wpr_rocket_row->status; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
-$wpr_is_blurred        = isset( $wpr_rocket_row->is_blurred ) && $wpr_rocket_row->is_blurred; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
-$wpr_can_access_report = $wpr_rocket_row->can_access_report(); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
-
 // Prepare data used by both blurred and normal score renderers.
 $score_data = prepare_score_data( $wpr_rocket_row ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 ?>
 
 <div class="wpr-ri-column" data-rocket-insights-id="<?php echo esc_attr( $wpr_rocket_row->id ); ?>" data-url="<?php echo esc_attr( $wpr_rocket_insights_url ); ?>">
-	<?php if ( $wpr_is_running ) : ?>
+	<?php if ( $data['wpr_is_running'] ) : ?>
 		<!-- Loading state -->
 		<div class="wpr-ri-loading">
 			<img class="wpr-loading-img" src="<?php echo esc_url( rocket_get_constant( 'WP_ROCKET_ASSETS_IMG_URL', '' ) . 'orange-loading.svg' ); ?>" alt="<?php esc_attr_e( 'Loading...', 'rocket' ); ?>"/>
 		</div>
-	<?php elseif ( $wpr_has_results ) : ?>
+	<?php elseif ( $data['wpr_has_results'] ) : ?>
 		<!-- Results state -->
-		<?php if ( $wpr_is_blurred ) : ?>
+		<?php if ( $data['wpr_is_blurred'] ) : ?>
 			<!-- Blurred score - show score with tooltip and actions (Re-test clickable, See Report disabled) -->
 			<div class="wpr-ri-blurred">
 				<div class="wpr-btn-with-tool-tip">
@@ -140,7 +130,7 @@ $score_data = prepare_score_data( $wpr_rocket_row ); // phpcs:ignore WordPress.N
 				// See report link - only show if report_url exists.
 				$wpr_report_url = $wpr_rocket_row->report_url ?? ''; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 
-				if ( ! empty( $wpr_report_url ) && $wpr_can_access_report ) :
+				if ( ! empty( $wpr_report_url ) && $data['wpr_can_access_report'] ) :
 					?>
 					<a href="<?php echo esc_url( $wpr_report_url ); ?>" class="wpr-ri-see-report-link wpr-icon-report" target="_blank" rel="noopener">
 						<?php esc_html_e( 'See Report', 'rocket' ); ?>

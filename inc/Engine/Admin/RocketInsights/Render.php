@@ -350,13 +350,24 @@ class Render extends Abstract_Render {
 		// Get credit availability.
 		$has_credit = $this->plan->has_credit();
 
+		// Prepare template variables.
+		$template_data = [
+			'wpr_rocket_insights_url' => $normalized_url,
+			'wpr_rocket_row'          => $row,
+			'wpr_has_credit'          => $has_credit,
+		];
+
+		// If row exists, prepare additional derived variables.
+		if ( null !== $row ) {
+			$template_data['wpr_is_running']        = $row->is_running();
+			$template_data['wpr_has_results']       = 'completed' === $row->status || 'blurred' === $row->status;
+			$template_data['wpr_is_blurred']        = isset( $row->is_blurred ) && $row->is_blurred;
+			$template_data['wpr_can_access_report'] = $row->can_access_report();
+		}
+
 		return $this->generate(
 			'partials/rocket-insights/rocket-insights-column',
-			[
-				'url'        => $normalized_url,
-				'row'        => $row,
-				'has_credit' => $has_credit,
-			]
+			$template_data
 		);
 	}
 
