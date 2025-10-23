@@ -205,6 +205,64 @@ class Rest extends WP_REST_Controller {
 				],
 			]
 		);
+
+		register_rest_route(
+			self::ROUTE_NAMESPACE,
+			self::ROUTE_BASE . '/pages/(?P<url>\S+)',
+			[
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => [ $this, 'get_item' ],
+				'permission_callback' => [ $this, 'get_item_permissions_check' ],
+				'args'                => [
+					'url' => [
+						'required'          => true,
+						'validate_callback' => function ( $param ) {
+							if ( empty( $param ) ) {
+								return false;
+							}
+
+							$url = untrailingslashit( trim( $param ) );
+							$url = rocket_add_url_protocol( $url );
+
+							return wp_http_validate_url( $url );
+						},
+						'sanitize_callback' => function ( $param ) {
+							$url = untrailingslashit( trim( $param ) );
+
+							return rocket_add_url_protocol( $url );
+						},
+					],
+				],
+			]
+		);
+	}
+
+	/**
+	 * Retrieves one item from the collection.
+	 *
+	 * @param WP_REST_Request $request Full details about the request.
+	 *
+	 * @return WP_REST_Response|WP_Error
+	 */
+	public function get_item( $request ) {
+		$item = $this->render->get_rocket_insights_column( $request['url'] );
+
+		return rest_ensure_response( $item );
+	}
+
+	/**
+	 * Checks if a given request has access to get a specific item.
+	 *
+	 * @param WP_REST_Request $request Full details about the request.
+	 *
+	 * @return true|WP_Error
+	 */
+	public function get_item_permissions_check( $request ) {
+		if ( ! $this->context->is_allowed() ) {
+			return new WP_Error( 'rest_forbidden', __( 'You are not allowed to access this item.', 'rocket' ), [ 'status' => 403 ] );
+		}
+
+		return true;
 	}
 
 	/**
