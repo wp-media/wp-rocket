@@ -10,6 +10,7 @@ use WP_Rocket\Engine\Admin\RocketInsights\{
 	Database\Queries\RocketInsights as RIQuery,
 	APIHandler\APIClient as RIAPIClient,
 	Context\Context,
+	Context\SaasContext,
 	Jobs\Factory as RIFactory,
 	Jobs\Manager as RIManager,
 	Managers\Plan,
@@ -34,6 +35,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'ri_query',
 		'ri_api_client',
 		'ri_context',
+		'ri_saas_context',
 		'ri_manager',
 		'ri_factory',
 		'ri_queue',
@@ -80,6 +82,9 @@ class ServiceProvider extends AbstractServiceProvider {
 				]
 			);
 
+		$this->getContainer()->add( 'ri_saas_context', SaasContext::class )
+			->addArgument( 'ri_context' );
+
 		$this->getContainer()->add( 'ri_render', Render::class )
 			->addArguments(
 				[
@@ -109,7 +114,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArguments(
 				[
 					'ri_query',
-					'ri_context',
+					'ri_saas_context',
 					'ri_plan',
 				]
 			);

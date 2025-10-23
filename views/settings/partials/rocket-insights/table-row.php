@@ -18,14 +18,15 @@ defined( 'ABSPATH' ) || exit;
 	</td>
 	<td class="wpr-ri-item-title">
 		<?php
-		$rocket_title_data = $this->truncate_title( $data->title );
-		$rocket_css_class  = 'wpr-btn-with-tool-tip';
-		if ( ! $rocket_title_data['is_truncated'] ) {
-			$rocket_css_class = '';
-		}
+		$rocket_css_class = $this->is_title_truncated( $data->title ) ? 'wpr-btn-with-tool-tip' : '';
 		?>
 		<a href="<?php echo esc_url( $data->url ); ?>" target="_blank" rel="noopener" class="<?php echo esc_attr( $rocket_css_class ); ?>">
-			<span class="wpr-ri-title"><?php echo esc_html( $rocket_title_data['truncated_title'] ); ?></span> <span class="wpr-ri-dot">.</span>
+			<span class="wpr-ri-title">
+				<span class="wpr-ri-title-truncate">
+					<?php echo esc_html( $data->title ); ?>
+				</span>
+			</span> 
+			<span class="wpr-ri-dot">.</span>
 			<span class="wpr-ri-date">
 				<?php
 				if ( $data->is_running() ) {
@@ -35,7 +36,7 @@ defined( 'ABSPATH' ) || exit;
 				}
 				?>
 			</span>
-			<?php if ( $rocket_title_data['is_truncated'] ) : ?>
+			<?php if ( '' !== $rocket_css_class ) : ?>
 			<div class="wpr-tooltip">
 				<div class="wpr-tooltip-content">
 					<?php echo esc_html( $data->title ); ?>
@@ -77,7 +78,7 @@ defined( 'ABSPATH' ) || exit;
 			'url'        => $data->report_url,
 			'attributes' => [
 				'target' => '_blank',
-				'class'  => 'wpr-icon-report wpr-ri-action',
+				'class'  => 'wpr-icon-report wpr-ri-action wpr-ri-report',
 			],
 		];
 
