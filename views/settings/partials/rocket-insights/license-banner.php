@@ -10,15 +10,18 @@ defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 
 <div class="wpr-ri-license-banner">
 	<div class="wpr-ri-banner-header">
-		<h2><?php esc_html_e( 'Unlock Your Site’s True Performance!', 'rocket' ); ?></h2>
-		<p><?php echo esc_html( $data['subtitle'] ); ?></p>
 	</div>
 	<div class="wpr-ri-banner-content">
 	<div class="wpr-ri-benefits-list-container">
+		<div class="wpr-ri-banner-header">
+			<h2><?php esc_html_e( 'Unlock Your Site’s True Performance!', 'rocket' ); ?></h2>
+			<p><?php echo esc_html( $data['subtitle'] ); ?></p>
+		</div>
+
 		<ul class="wpr-ri-benefits-list">
 			<?php foreach ( $data['highlights'] as $wp_rocket_highlight ) : ?>
 			<li>
-				<span><?php echo esc_html( $wp_rocket_highlight ); ?></span>
+				<span><?php echo wp_kses_post( $wp_rocket_highlight ); ?></span>
 			</li>
 			<?php endforeach; ?>
 		</ul>

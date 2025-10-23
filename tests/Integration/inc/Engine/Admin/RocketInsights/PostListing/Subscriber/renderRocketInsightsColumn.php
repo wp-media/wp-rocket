@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\RocketInsights\PostListing\Subscriber;
 
 use WP_Rocket\Tests\Integration\AdminTestCase;
+use WP_Rocket\Tests\Integration\DBTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\Admin\RocketInsights\PostListing\Subscriber::render_rocket_insights_column
@@ -11,51 +12,69 @@ use WP_Rocket\Tests\Integration\AdminTestCase;
  * @group AdminOnly
  */
 class Test_RenderRocketInsightsColumn extends AdminTestCase {
-	/**
-	 * Test rendering of Rocket Insights column content.
-	 *
-	 * @dataProvider configTestData
-	 *
-	 * @param array $config   Test configuration.
-	 * @param array $expected Expected result.
-	 *
-	 * @return void
-	 */
-	public function testShouldRenderPlaceholderContent( $config, $expected ) {
-		// Create a test post.
-		$post_id = $this->factory->post->create( $config['post_data'] );
+	use DBTrait;
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
 
-		// Start output buffering to capture the rendered content.
-		ob_start();
-        // @phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
-		do_action( "manage_{$config['post_type']}_posts_custom_column", $config['column_name'], $post_id );
-		$output = ob_get_clean();
+		// Install the Performance Monitoring table.
+		self::installPerformanceMonitoringTable();
+	}
 
-		if ( $expected['should_render'] ) {
-			$this->assertStringContainsString( $expected['content'], $output, 'Should render placeholder content' );
-		} else {
-			$this->assertEmpty( $output, 'Should not render content for other columns' );
-		}
+	public static function tear_down_after_class() {
+		self::uninstallPerformanceMonitoringTable();
+
+		parent::tear_down_after_class();
+	}
+
+	public function set_up() {
+		parent::set_up();
+	}
+
+	public function tear_down() {
+		parent::tear_down();
 	}
 
 	/**
-	 * Test that no content is rendered when post has no permalink.
-	 *
-	 * @return void
+	 * @dataProvider configTestData
 	 */
-	public function testShouldNotRenderWhenNoPermalink() {
-		// Create a post but filter get_permalink to return false.
-		$post_id = $this->factory->post->create( [ 'post_status' => 'draft' ] );
+	public function testShouldReturnAsExpected( $config, $expected) {
+		$post_id = null;
 
-		add_filter( 'post_link', '__return_false' );
+		foreach ( $config['rows'] as $row ) {
+			if ( ! empty($row)) {
+				$this->addPerformanceMonitoring( $row );
+				$post_id = $this->factory->post->create( [
+					'post_title' => 'Test Post',
+					'post_content' => 'Content',
+					'post_status' => 'publish',
+					'post_type' => 'post',
+					'post_name' => 'page-to-test',
+					'meta_input' => [ '_rocket_insights_url' => $row['url'] ]
+				] );
+
+				// Ensure the permalink matches our test URL
+				add_filter( 'post_link', function( $permalink, $post ) use ( $post_id, $row ) {
+					if ( $post->ID === $post_id ) {
+						return $row['url'];
+					}
+					return $permalink;
+				}, 10, 2 );
+			}
+		}
+
+		if ( null === $post_id ) {
+			// Test case with no post
+			ob_start();
+			do_action( 'manage_post_posts_custom_column', 'rocket_insights', 99999 );
+			$output = ob_get_clean();
+			$this->assertSame( $expected['html'], $output );
+			return;
+		}
 
 		ob_start();
-        // @phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 		do_action( 'manage_post_posts_custom_column', 'rocket_insights', $post_id );
 		$output = ob_get_clean();
 
-		remove_filter( 'post_link', '__return_false' );
-
-		$this->assertEmpty( $output, 'Should not render when permalink is not available' );
+		$this->assertStringContainsString( $expected['html'], $output );
 	}
 }
