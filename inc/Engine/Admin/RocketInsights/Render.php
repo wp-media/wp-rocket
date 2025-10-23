@@ -398,5 +398,6 @@ class Render extends Abstract_Render {
 	public function render_rocket_insights_column( string $url ): void {
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Template handles escaping.
 		echo $this->get_rocket_insights_column( $url );
+		}
 	}
 }
