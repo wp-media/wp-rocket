@@ -63,7 +63,7 @@ class Test_AttemptSyncSubmission extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->query      = $this->createMock( RocketInsightsQuery::class );
+		$this->query      = Mockery::mock( RocketInsightsQuery::class );
 		$this->context    = Mockery::mock( ContextInterface::class );
 		$this->plan       = Mockery::mock( Plan::class );
 		$this->api_client = Mockery::mock( APIClient::class );
