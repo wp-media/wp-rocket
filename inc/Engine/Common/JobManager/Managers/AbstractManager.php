@@ -48,7 +48,7 @@ trait AbstractManager {
 	 * @param bool   $is_mobile page is for mobile.
 	 * @param array  $additional_details Additional details to be saved into DB.
 	 *
-	 * @return bool|void
+	 * @return int|bool|void Row ID on success, false on failure, null if not allowed.
 	 */
 	public function add_url_to_the_queue( string $url, bool $is_mobile, array $additional_details = [] ) {
 		if ( ! $this->is_allowed() ) {

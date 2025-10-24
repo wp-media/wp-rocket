@@ -407,14 +407,14 @@ class Controller {
 	 * @param bool   $is_mobile         Whether this is a mobile test.
 	 * @param array  $additional_details Optional additional data to store with the job.
 	 *
-	 * @return int|false Row ID on success, false on failure.
+	 * @return bool|null Row ID on success, false on failure, null if not allowed.
 	 */
 	private function handle_sync_submission( string $url, bool $is_mobile, array $additional_details = [] ) {
 		// Attempt synchronous API submission.
 		$sync_response = $this->job_processor->send_api( $url, $is_mobile, 'rocket_insights', true );
 
 		// If sync submission failed or returned WP_Error, fall back to async queue.
-		if ( is_wp_error( $sync_response ) || empty( $sync_response['uuid'] ) ) {
+		if ( false === $sync_response || empty( $sync_response['uuid'] ) ) {
 			return $this->manager->add_to_the_queue( $url, $is_mobile, $additional_details );
 		}
 
