@@ -2,12 +2,12 @@
 
 namespace WP_Rocket\Engine\Preload\Database\Queries;
 
+use WP_Rocket\Engine\Common\Database\Queries\AbstractQuery;
 use WP_Rocket\Logger\Logger;
-use WP_Rocket\Dependencies\BerlinDB\Database\Query;
 use WP_Rocket\Engine\Preload\Database\Rows\CacheRow;
 use WP_Rocket\Engine\Preload\Database\Schemas\Cache as Schema;
 
-class Cache extends Query {
+class Cache extends AbstractQuery {
 
 	/**
 	 * Logger instance.

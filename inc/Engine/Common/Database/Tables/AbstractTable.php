@@ -142,4 +142,23 @@ class AbstractTable extends Table implements TableInterface {
 
 		delete_option( $this->db_version_key );
 	}
+
+	/**
+	 * Check if table already exists.
+	 *
+	 * @return bool
+	 */
+	public function exists() {
+		$cached_value = get_transient( $this->name . '_exists' );
+		if ( false !== $cached_value ) {
+			return true;
+		}
+
+		$exists = parent::exists();
+		// Cache only when the table exists.
+		if ( $exists ) {
+			set_transient( $this->name . '_exists', $exists, HOUR_IN_SECONDS );
+		}
+		return $exists;
+	}
 }

@@ -14,6 +14,31 @@ class AbstractQuery extends Query {
 	public static $table_exists = false;
 
 	/**
+	 * Queries the database and retrieves items or counts.
+	 *
+	 * @param string|array $query Array or URL query string of parameters.
+	 * @param bool         $use_cache Use DB cache or not. (custom parameter added by us!).
+	 * @return array|int List of items, or number of items when 'count' is passed as a query var.
+	 */
+	public function query( $query = [], bool $use_cache = true ) {
+		$query_result = parent::query( $query, $use_cache );
+		$last_error   = $this->get_db()->last_error;
+		if ( empty( $last_error ) ) {
+			return $query_result;
+		}
+
+		$db_name        = $this->get_db()->dbname;
+		$prefixed_table = $this->get_db()->prefix . $this->table_name;
+		$pattern        = "/Table [`'\"]?" . preg_quote( $db_name, '/' ) . '\.' . preg_quote( $prefixed_table, '/' ) . "[`'\"]? doesn't exist/i";
+
+		if ( preg_match( $pattern, $last_error ) ) {
+			delete_transient( $this->table_name . '_exists' );
+		}
+
+		return ! empty( $query['count'] ) ? 0 : [];
+	}
+
+	/**
 	 * Get row for specific url.
 	 *
 	 * @param string $url Page Url.
