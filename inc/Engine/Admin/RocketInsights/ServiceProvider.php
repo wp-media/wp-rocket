@@ -117,7 +117,6 @@ class ServiceProvider extends AbstractServiceProvider {
 					'ri_query',
 					'ri_saas_context',
 					'ri_plan',
-					'ri_api_client',
 				]
 			);
 
@@ -162,6 +161,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'ri_global_score',
 					'ri_render',
 					'ri_plan',
+					'job_processor',
 				]
 			);
 		// Subscriber.

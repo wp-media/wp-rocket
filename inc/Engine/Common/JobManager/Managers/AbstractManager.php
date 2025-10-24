@@ -61,6 +61,8 @@ trait AbstractManager {
 			return $this->query->create_new_job( $url, '', '', $is_mobile, $additional_details );
 		}
 		$this->query->reset_job( (int) $row->id, '', $additional_details );
+
+		return (int) $row->id;
 	}
 
 	/**
