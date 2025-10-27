@@ -419,6 +419,7 @@ class Plugin {
 			'preconnect_frontend_subscriber',
 			'ri_subscriber',
 			'ri_url_limit_subscriber',
+			'ri_post_listing_subscriber',
 			'post_subscriber',
 		];
 
