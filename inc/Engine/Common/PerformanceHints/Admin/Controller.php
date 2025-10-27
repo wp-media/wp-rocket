@@ -42,7 +42,7 @@ class Controller {
 				continue;
 			}
 
-			$factory->table()->truncate_table();
+			$factory->table()->truncate();
 		}
 
 		/**

@@ -2,8 +2,8 @@
 
 namespace Engine\Common\PerformanceHints\Database;
 
+use WP_Rocket\Engine\Common\Database\Queries\AbstractQuery;
 use WP_Rocket\Tests\Unit\TestCase;
-use WP_Rocket\Engine\Common\PerformanceHints\Database\Queries\AbstractQueries;
 /**
  * Test class covering WP_Rocket\Engine\Common\PerformanceHints\Database\Queries\AbstractQueries::delete_by_url
  *
@@ -16,7 +16,7 @@ class Test_DeleteByUrl extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->query = $this->createPartialMock( AbstractQueries::class, [ 'table_exists', 'get_rows_by_url', 'delete_item' ] );
+        $this->query = $this->createPartialMock( AbstractQuery::class, [ 'table_exists', 'get_rows_by_url', 'delete_item' ] );
     }
 
     /**

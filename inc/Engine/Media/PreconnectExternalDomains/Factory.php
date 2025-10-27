@@ -4,10 +4,10 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Media\PreconnectExternalDomains;
 
 use WP_Rocket\Engine\Common\Context\ContextInterface;
+use WP_Rocket\Engine\Common\Database\QueryInterface;
+use WP_Rocket\Engine\Common\Database\TableInterface;
 use WP_Rocket\Engine\Common\PerformanceHints\AJAX\ControllerInterface as AjaxControllerInterface;
 use WP_Rocket\Engine\Common\PerformanceHints\Cron\CronTrait;
-use WP_Rocket\Engine\Common\PerformanceHints\Database\Queries\QueriesInterface;
-use WP_Rocket\Engine\Common\PerformanceHints\Database\Table\TableInterface;
 use WP_Rocket\Engine\Common\PerformanceHints\FactoryInterface;
 use WP_Rocket\Engine\Common\PerformanceHints\Frontend\ControllerInterface as FrontendControllerInterface;
 
@@ -38,7 +38,7 @@ class Factory implements FactoryInterface {
 	/**
 	 * Queries instance.
 	 *
-	 * @var QueriesInterface
+	 * @var QueryInterface
 	 */
 	protected $queries;
 
@@ -52,14 +52,14 @@ class Factory implements FactoryInterface {
 	/**
 	 * Instantiate the class.
 	 *
-	 * @param QueriesInterface            $queries Preconnect external domains Queries instance.
+	 * @param QueryInterface              $queries Preconnect external domains Queries instance.
 	 * @param ContextInterface            $context Preconnect external domains Context instance.
 	 * @param AjaxControllerInterface     $ajax_controller Preconnect external domains AJAX Controller instance.
 	 * @param TableInterface              $table Preconnect external domains Table instance.
 	 * @param FrontendControllerInterface $frontend_controller Preconnect external domains Frontend Controller instance.
 	 */
 	public function __construct(
-		QueriesInterface $queries,
+		QueryInterface $queries,
 		ContextInterface $context,
 		AjaxControllerInterface $ajax_controller,
 		TableInterface $table,
@@ -102,9 +102,9 @@ class Factory implements FactoryInterface {
 	/**
 	 * Provides a Queries object.
 	 *
-	 * @return QueriesInterface
+	 * @return QueryInterface
 	 */
-	public function queries(): QueriesInterface {
+	public function queries(): QueryInterface {
 		// Defines the interval for deletion and returns Queries object.
 		return $this->deletion_interval( 'rocket_preconnect_external_domains_cleanup_interval' );
 	}

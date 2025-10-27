@@ -4,14 +4,22 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Common\Database\Queries;
 
 use WP_Rocket\Dependencies\BerlinDB\Database\Query;
+use WP_Rocket\Engine\Common\Database\QueryInterface;
 
-class AbstractQuery extends Query {
+class AbstractQuery extends Query implements QueryInterface {
 	/**
 	 * Table status.
 	 *
 	 * @var boolean
 	 */
 	public static $table_exists = false;
+
+	/**
+	 * Cleanup interval.
+	 *
+	 * @var int
+	 */
+	public $cleanup_interval = 3;
 
 	/**
 	 * Queries the database and retrieves items or counts.
@@ -442,12 +450,16 @@ class AbstractQuery extends Query {
 
 		$items = $this->get_rows_by_url( $url );
 
-		if ( ! $items ) {
+		if ( empty( $items ) ) {
 			return false;
 		}
 
 		$deleted = true;
 		foreach ( $items as $item ) {
+			if ( empty( $item->id ) ) {
+				$deleted = true;
+				continue;
+			}
 			$deleted = $deleted && $this->delete_item( $item->id );
 		}
 
@@ -707,5 +719,18 @@ class AbstractQuery extends Query {
 				'count' => true,
 			]
 		);
+	}
+
+	/**
+	 * Set cleanup interval
+	 *
+	 * @param int $interval The interval duration, usually default to 1.
+	 *
+	 * @return object
+	 */
+	public function set_cleanup_interval( int $interval ): object {
+		$this->cleanup_interval = $interval;
+
+		return $this;
 	}
 }
