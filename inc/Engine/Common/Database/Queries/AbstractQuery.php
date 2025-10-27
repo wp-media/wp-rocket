@@ -21,14 +21,19 @@ class AbstractQuery extends Query {
 	 * @return array|int List of items, or number of items when 'count' is passed as a query var.
 	 */
 	public function query( $query = [], bool $use_cache = true ) {
+		$db = $this->get_db();
+		if ( empty( $db ) ) {
+			return ! empty( $query['count'] ) ? 0 : [];
+		}
+
 		$query_result = parent::query( $query, $use_cache );
-		$last_error   = $this->get_db()->last_error;
+		$last_error   = $db->last_error;
 		if ( empty( $last_error ) ) {
 			return $query_result;
 		}
 
-		$db_name        = $this->get_db()->dbname;
-		$prefixed_table = $this->get_db()->prefix . $this->table_name;
+		$db_name        = $db->dbname;
+		$prefixed_table = $db->prefix . $this->table_name;
 		$pattern        = "/Table [`'\"]?" . preg_quote( $db_name, '/' ) . '\.' . preg_quote( $prefixed_table, '/' ) . "[`'\"]? doesn't exist/i";
 
 		if ( preg_match( $pattern, $last_error ) ) {
