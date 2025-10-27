@@ -161,4 +161,23 @@ class AbstractTable extends Table implements TableInterface {
 		}
 		return $exists;
 	}
+
+	/**
+	 * Uninstall a database table
+	 */
+	public function uninstall() {
+		parent::uninstall();
+		delete_transient( $this->name . '_exists' );
+	}
+
+	/**
+	 * Truncate the database table.
+	 *
+	 * @return bool
+	 */
+	public function truncate() {
+		$truncated = parent::truncate();
+		delete_transient( $this->name . '_exists' );
+		return $truncated;
+	}
 }

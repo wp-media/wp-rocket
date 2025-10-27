@@ -388,7 +388,7 @@ class Cache extends AbstractQuery {
 	 * @param int $id id from the task.
 	 * @return bool
 	 */
-	public function make_status_inprogress( int $id ) {
+	public function make_status_inprogress_by_id( int $id ) {
 		return $this->update_item(
 			$id,
 			[

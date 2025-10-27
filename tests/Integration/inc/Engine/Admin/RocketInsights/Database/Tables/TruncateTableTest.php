@@ -40,11 +40,6 @@ class TruncateTableTest extends TestCase {
 		$ri_query = $container->get( 'ri_query' );
 		$ri_table = $container->get( 'ri_table' );
 
-		// Handle special case where table should be uninstalled.
-		if ( isset( $config['uninstall_table'] ) && $config['uninstall_table'] ) {
-			self::uninstallPerformanceMonitoringTable();
-		}
-
 		// Add test data.
 		foreach ( $config['items'] as $item ) {
 			$item_id = $ri_query->add_item( $item );
