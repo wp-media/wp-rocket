@@ -38,30 +38,38 @@ class Subscriber implements Subscriber_Interface {
 	 * @return array
 	 */
 	public static function get_subscribed_events(): array {
-		$events = [
+		return [
 			'admin_enqueue_scripts' => 'enqueue_post_listing_assets',
+			'init'                  => [ 'register_column_hooks', 20 ],
 		];
-
-		return array_merge( $events, self::get_post_listing_events() );
 	}
 
 	/**
-	 * Build dynamic events for post listing pages based on public post types.
+	 * Registers column hooks for all public post types after they are registered.
+	 *
+	 * This is called on 'init' hook to ensure custom post types have been registered.
 	 *
 	 * @since 3.20.1
 	 *
-	 * @return array<string, string|array> Associative array of hook => callback(s).
+	 * @return void
 	 */
-	private static function get_post_listing_events(): array {
-		$events     = [];
+	public function register_column_hooks(): void {
 		$post_types = self::get_public_post_type_slugs();
-		foreach ( $post_types as $post_type ) {
-			$events[ "manage_{$post_type}_posts_columns" ]       = 'add_rocket_insights_column';
-			$events[ "manage_{$post_type}_posts_custom_column" ] = [ 'render_rocket_insights_column', 10, 2 ];
-		}
-		return $events;
-	}
 
+		foreach ( $post_types as $post_type ) {
+			add_filter(
+				"manage_{$post_type}_posts_columns",
+				[ $this, 'add_rocket_insights_column' ]
+			);
+
+			add_action(
+				"manage_{$post_type}_posts_custom_column",
+				[ $this, 'render_rocket_insights_column' ],
+				10,
+				2
+			);
+		}
+	}
 	/**
 	 * Gets the list of public post types that WP Rocket caches.
 	 *

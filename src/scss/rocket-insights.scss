@@ -10,6 +10,14 @@
 // Import variables for colors
 @import "abstracts/_variables";
 
+// Table column header and cell width
+.wp-list-table {
+	th.column-rocket_insights,
+	td.column-rocket_insights {
+		width: 150px;
+	}
+}
+
 .wpr-ri-column {
 	min-width: 150px;
 	
