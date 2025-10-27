@@ -4,14 +4,24 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Admin\RocketInsights\PostListing;
 
 use WP_Rocket\Engine\Admin\RocketInsights\Render;
-use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\Event_Management\{
+	Event_Manager,
+	Event_Manager_Aware_Subscriber_Interface,
+	Subscriber_Interface
+};
 
 /**
  * Subscriber for enqueuing Rocket Insights assets on post listing pages
  *
  * @since 3.20.1
  */
-class Subscriber implements Subscriber_Interface {
+class Subscriber implements Subscriber_Interface, Event_Manager_Aware_Subscriber_Interface {
+	/**
+	 * Event Manager instance
+	 *
+	 * @var Event_Manager
+	 */
+	protected $event_manager;
 
 	/**
 	 * Render instance.
@@ -30,6 +40,7 @@ class Subscriber implements Subscriber_Interface {
 	public function __construct( Render $render ) {
 		$this->render = $render;
 	}
+
 	/**
 	 * Returns an array of events that this subscriber wants to listen to.
 	 *
@@ -45,6 +56,15 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
+	 * Sets the event manager for the subscriber.
+	 *
+	 * @param Event_Manager $event_manager Event Manager instance.
+	 */
+	public function set_event_manager( Event_Manager $event_manager ) {
+		$this->event_manager = $event_manager;
+	}
+
+	/**
 	 * Registers column hooks for all public post types after they are registered.
 	 *
 	 * This is called on 'init' hook to ensure custom post types have been registered.
@@ -57,12 +77,11 @@ class Subscriber implements Subscriber_Interface {
 		$post_types = self::get_public_post_type_slugs();
 
 		foreach ( $post_types as $post_type ) {
-			add_filter(
+			$this->event_manager->add_callback(
 				"manage_{$post_type}_posts_columns",
 				[ $this, 'add_rocket_insights_column' ]
 			);
-
-			add_action(
+			$this->event_manager->add_callback(
 				"manage_{$post_type}_posts_custom_column",
 				[ $this, 'render_rocket_insights_column' ],
 				10,
@@ -70,6 +89,7 @@ class Subscriber implements Subscriber_Interface {
 			);
 		}
 	}
+
 	/**
 	 * Gets the list of public post types that WP Rocket caches.
 	 *
