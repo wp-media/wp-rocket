@@ -43,19 +43,24 @@ class Test_RenderRocketInsightsColumn extends AdminTestCase {
 		foreach ( $config['rows'] as $row ) {
 			if ( ! empty($row)) {
 				$this->addPerformanceMonitoring( $row );
+			}
+			
+			// Create post if row is not empty OR if explicitly requested
+			if ( ! empty($row) || ( isset($config['create_post']) && $config['create_post'] ) ) {
+				$url = ! empty($row) ? $row['url'] : 'https://example.com/test-page';
 				$post_id = $this->factory->post->create( [
 					'post_title' => 'Test Post',
 					'post_content' => 'Content',
 					'post_status' => 'publish',
 					'post_type' => 'post',
 					'post_name' => 'page-to-test',
-					'meta_input' => [ '_rocket_insights_url' => $row['url'] ]
+					'meta_input' => [ '_rocket_insights_url' => $url ]
 				] );
 
 				// Ensure the permalink matches our test URL
-				add_filter( 'post_link', function( $permalink, $post ) use ( $post_id, $row ) {
+				add_filter( 'post_link', function( $permalink, $post ) use ( $post_id, $url ) {
 					if ( $post->ID === $post_id ) {
-						return $row['url'];
+						return $url;
 					}
 					return $permalink;
 				}, 10, 2 );

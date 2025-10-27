@@ -17,9 +17,10 @@ defined( 'ABSPATH' ) || exit;
 
 // If row doesn't exist, show "Test the page" link.
 if ( null === $data['wpr_rocket_row'] ) :
+	$wpr_can_test = $data['wpr_has_credit'] && $data['wpr_can_add_pages']; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 	?>
 	<div class="wpr-ri-column wpr-ri-not-tracked" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>">
-		<?php if ( $data['wpr_has_credit'] ) : ?>
+		<?php if ( $wpr_can_test ) : ?>
 			<button type="button" class="wpr-ri-test-page" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>">
 				<?php esc_html_e( 'Test the page', 'rocket' ); ?>
 			</button>
@@ -27,10 +28,23 @@ if ( null === $data['wpr_rocket_row'] ) :
 			<button type="button" class="wpr-ri-test-page wpr-ri-no-credit" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>">
 				<?php esc_html_e( 'Test the page', 'rocket' ); ?>
 			</button>
-			<div class="wpr-ri-credit-message">
-				<strong><?php esc_html_e( "You've reached your free limit.", 'rocket' ); ?></strong>
-				<?php esc_html_e( 'Upgrade to continue.', 'rocket' ); ?>
-			</div>
+			<?php if ( ! $data['wpr_can_add_pages'] ) : ?>
+				<?php if ( $data['wpr_is_free'] ) : ?>
+					<div class="wpr-ri-credit-message">
+						<strong><?php esc_html_e( "You've reached your free limit.", 'rocket' ); ?></strong>
+						<?php esc_html_e( 'Upgrade to continue.', 'rocket' ); ?>
+					</div>
+				<?php else : ?>
+					<div class="wpr-ri-credit-message">
+						<?php esc_html_e( "You've reached the page limit. Please remove at least one page to continue.", 'rocket' ); ?>
+					</div>
+				<?php endif; ?>
+			<?php elseif ( ! $data['wpr_has_credit'] ) : ?>
+				<div class="wpr-ri-credit-message">
+					<strong><?php esc_html_e( "You've reached your free limit.", 'rocket' ); ?></strong>
+					<?php esc_html_e( 'Upgrade to continue.', 'rocket' ); ?>
+				</div>
+			<?php endif; ?>
 		<?php endif; ?>
 		<div class="wpr-ri-message" style="display: none;"></div>
 	</div>
