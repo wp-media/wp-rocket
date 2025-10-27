@@ -102,7 +102,7 @@ module.exports = (function() {
 				path: '/wp-rocket/v1/rocket-insights/pages/',
 				method: 'POST',
 				data: {
-					page_url: pageUrl
+					page_url: url
 				},
 			}
 		).then( ( response ) => {
