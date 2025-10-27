@@ -176,6 +176,10 @@ class AbstractTable extends Table implements TableInterface {
 	 * @return bool
 	 */
 	public function truncate() {
+		if ( ! $this->exists() ) {
+			return false;
+		}
+
 		$truncated = parent::truncate();
 		delete_transient( $this->name . '_exists' );
 		return $truncated;
