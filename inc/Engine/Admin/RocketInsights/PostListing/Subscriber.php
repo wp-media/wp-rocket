@@ -74,14 +74,11 @@ class Subscriber implements Subscriber_Interface {
 	private static function get_public_post_type_slugs(): array {
 		$post_types = get_post_types(
 			[
-				'public'             => true,
-				'publicly_queryable' => true,
+				'public' => true,
 			]
 		);
 
-		if ( ! in_array( 'page', $post_types, true ) ) {
-			$post_types[] = 'page';
-		}
+		unset( $post_types['attachment'] );
 
 		/**
 		 * Filters the post types that should be excluded from Rocket Insights functionality.
