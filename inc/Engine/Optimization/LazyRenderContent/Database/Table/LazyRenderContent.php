@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\LazyRenderContent\Database\Table;
 
-use WP_Rocket\Engine\Common\PerformanceHints\Database\Table\AbstractTable;
+use WP_Rocket\Engine\Common\Database\Tables\AbstractTable;
 
 class LazyRenderContent extends AbstractTable {
 	/**
