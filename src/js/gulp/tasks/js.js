@@ -54,6 +54,21 @@ class gulpJs {
 		return this._compile( './src/js/custom/lazyload-css.js', 'lazyload-css', true, false );
 	}
 
+	buildRocketInsightsUnmin() {
+		return this._compile( './src/js/global/rocket-insights.js', 'rocket-insights', false, false );
+	}
+
+	buildRocketInsightsMin() {
+		return this._compile( './src/js/global/rocket-insights.js', 'rocket-insights', true, true );
+	}
+
+	buildRocketInsightsFull() {
+		return gulp.parallel(
+			() => this.buildRocketInsightsMin(),
+			() => this.buildRocketInsightsUnmin(),
+		);
+	}
+
 	buildLcpBeacon() {
 		return gulp.src(['./node_modules/wp-rocket-scripts/dist/wpr-beacon*'])
 			.pipe(gulp.dest('./assets/js'));
@@ -64,6 +79,8 @@ class gulpJs {
 			() => this.buildAppUnmin(),
 			() => this.buildAppMin(),
 			() => this.buildLazyloadCssMin(),
+			() => this.buildRocketInsightsUnmin(),
+			() => this.buildRocketInsightsMin(),
 			() => this.buildLcpBeacon()
 		);
 	}
