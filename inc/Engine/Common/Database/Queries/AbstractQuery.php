@@ -32,7 +32,7 @@ class AbstractQuery extends Query {
 			return $query_result;
 		}
 
-		$db_name        = $db->dbname;
+		$db_name        = rocket_get_constant( 'DB_NAME', '' );
 		$prefixed_table = $db->prefix . $this->table_name;
 		$pattern        = "/Table [`'\"]?" . preg_quote( $db_name, '/' ) . '\.' . preg_quote( $prefixed_table, '/' ) . "[`'\"]? doesn't exist/i";
 
