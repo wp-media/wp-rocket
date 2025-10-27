@@ -275,7 +275,7 @@ class PreloadUrl {
 
 		// Make those hanging jobs failed.
 		foreach ( $stuck_rows as $row ) {
-			$this->query->make_status_failed( (int) $row->id );
+			$this->query->make_status_failed_by_id( (int) $row->id );
 		}
 
 		// Add new jobs in progress.
