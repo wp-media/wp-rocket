@@ -26,7 +26,7 @@ module.exports = (function() {
 		// Attach event listeners.
 		attachTestPageListeners();
 		attachRetestListeners();
-		
+
 		// Start polling for any rows that are already running.
 		startPollingForRunningTests();
 	}
@@ -38,12 +38,12 @@ module.exports = (function() {
 		jQuery(document).on('click', '.wpr-ri-test-page', function(e) {
 			e.preventDefault();
 			const button = jQuery(this);
-			
+
 			// Don't allow click if no credit
 			if (button.hasClass('wpr-ri-no-credit')) {
 				return;
 			}
-			
+
 			const url = button.data('url');
 			const column = button.closest('.wpr-ri-column');
 
@@ -97,29 +97,26 @@ module.exports = (function() {
 		// Disable button and show loading state.
 		button.prop('disabled', true).text(window.rocket_insights_i18n?.adding || 'Adding...');
 
-		jQuery.ajax({
-			url: ajaxurl,
-			type: 'POST',
-			data: {
-				action: 'rocket_rocket_insights_add_new_page',
-				nonce: window.rocket_ajax_data?.nonce || '',
-				page_url: url
-			},
-			success: function(response) {
-				if (response.success && response.data.id) {
-					// Begin common loading + polling flow.
-					beginLoadingAndPoll(column, response.data.id, url);
-				} else {
-					// Show error message.
-					showMessage(column, response.data?.message || 'Error adding page', 'error');
-					button.prop('disabled', false).text(window.rocket_insights_i18n?.test_page || 'Test the page');
-				}
-			},
-			error: function() {
-				showMessage(column, window.rocket_insights_i18n?.error || 'An error occurred', 'error');
+		window.wp.apiFetch(
+			{
+				path: '/wp-rocket/v1/rocket-insights/pages/',
+				method: 'POST',
+				data: {
+					page_url: pageUrl
+				},
+			}
+		).then( ( response ) => {
+			if (response.success && response.id) {
+				// Begin common loading + polling flow.
+				beginLoadingAndPoll(column, response.id, url);
+			} else {
+				// Show error message.
+				showMessage(column, response?.message || 'Error adding page', 'error');
 				button.prop('disabled', false).text(window.rocket_insights_i18n?.test_page || 'Test the page');
 			}
-		});
+		}).catch( ( error ) => {
+			showMessage(column, window.rocket_insights_i18n?.error || 'An error occurred', 'error');
+		} );
 	}
 
 	/**
@@ -130,26 +127,21 @@ module.exports = (function() {
 	 * @param {jQuery} column The column element.
 	 */
 	function retestPage(rowId, url, column) {
-		jQuery.ajax({
-			url: ajaxurl,
-			type: 'POST',
-			data: {
-				action: 'rocket_rocket_insights_reset_page',
-				nonce: window.rocket_ajax_data?.nonce || '',
-				id: rowId
-			},
-			success: function(response) {
-				if (response.success) {
-					// Begin common loading + polling flow.
-					beginLoadingAndPoll(column, rowId, url);
-				} else {
-					showMessage(column, response.data?.message || 'Error retesting page', 'error');
-				}
-			},
-			error: function() {
-				showMessage(column, window.rocket_insights_i18n?.error || 'An error occurred', 'error');
+		window.wp.apiFetch(
+			{
+				path: '/wp-rocket/v1/rocket-insights/pages/' + rowId,
+				method: 'PATCH',
 			}
-		});
+		).then( ( response ) => {
+			if (response.success) {
+				// Begin common loading + polling flow.
+				beginLoadingAndPoll(column, rowId, url);
+			} else {
+				showMessage(column, response?.message || 'Error retesting page', 'error');
+			}
+		} ).catch( ( error ) => {
+			showMessage(column, window.rocket_insights_i18n?.error || 'An error occurred', 'error');
+		} );
 	}
 
 	/**
@@ -195,29 +187,24 @@ module.exports = (function() {
 	 * @param {jQuery} column The column element.
 	 */
 	function checkStatus(rowId, url, column) {
-		jQuery.ajax({
-			url: ajaxurl,
-			type: 'GET',
-			data: {
-				action: 'rocket_rocket_insights_get_results',
-				nonce: window.rocket_ajax_data?.nonce || '',
-				ids: [rowId]
-			},
-			success: function(response) {
-				if ( response.success && response.data ) {
-					const result = response.data.results[0];
+		window.wp.apiFetch(
+			{
+				path: window.wp.url.addQueryArgs( '/wp-rocket/v1/rocket-insights/pages/progress', { ids: rowId } ),
+			}
+		).then( ( response ) => {
+			if ( response.success && Array.isArray( response.results ) ) {
+				const result = response.results[0];
 
-					if ( result.status === 'completed' || result.status === 'failed' ) {
-						// Stop polling.
-						clearInterval( activePolls[rowId] );
-						delete activePolls[rowId];
+				if ( result.status === 'completed' || result.status === 'failed' ) {
+					// Stop polling.
+					clearInterval( activePolls[rowId] );
+					delete activePolls[rowId];
 
-						// Update the column with results (reload rendered HTML from server).
-						updateColumnWithResults( column, result );
-					}
+					// Update the column with results (reload rendered HTML from server).
+					updateColumnWithResults( column, result );
 				}
 			}
-		});
+		} );
 	}
 
 	/**
@@ -250,25 +237,20 @@ module.exports = (function() {
 	function updateColumnWithResults(column, result) {
 		// Reload the entire row from the server to get properly rendered HTML.
 		const url = column.data('url');
-		
-		jQuery.ajax({
-			url: ajaxurl,
-			type: 'POST',
-			data: {
-				action: 'rocket_rocket_insights_get_column_html',
-				nonce: window.rocket_ajax_data?.nonce || '',
-				url: url
-			},
-			success: function(response) {
-				if (response.success && response.data.html) {
-					column.replaceWith(response.data.html);
-					
-					// Re-attach listeners to the new content.
-					attachTestPageListeners();
-					attachRetestListeners();
-				}
+
+		window.wp.apiFetch(
+			{
+				path: '/wp-rocket/v1/rocket-insights/pages/' + url,
 			}
-		});
+		).then( ( response ) => {
+			if (response.success && response.html) {
+				column.replaceWith(response.html);
+
+				// Re-attach listeners to the new content.
+				attachTestPageListeners();
+				attachRetestListeners();
+			}
+		} );
 	}
 
 	/**
@@ -284,7 +266,7 @@ module.exports = (function() {
 		messageEl.stop(true, true).empty();
 		const p = jQuery('<p>').addClass('wpr-ri-message-' + type).text(message);
 		messageEl.append(p).show();
-		
+
 		// Auto-hide after 5 seconds.
 		setTimeout(function() {
 			messageEl.fadeOut();
