@@ -116,6 +116,7 @@ module.exports = (function() {
 			}
 		}).catch( ( error ) => {
 			showMessage(column, window.rocket_insights_i18n?.error || 'An error occurred', 'error');
+			button.prop('disabled', false).text(window.rocket_insights_i18n?.test_page || 'Test the page');
 		} );
 	}
 
