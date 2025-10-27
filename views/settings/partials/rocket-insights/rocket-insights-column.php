@@ -28,17 +28,15 @@ if ( null === $data['wpr_rocket_row'] ) :
 			<button type="button" class="wpr-ri-test-page wpr-ri-no-credit" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>">
 				<?php esc_html_e( 'Test the page', 'rocket' ); ?>
 			</button>
-			<?php if ( ! $data['wpr_can_add_pages'] ) : ?>
-				<?php if ( $data['wpr_is_free'] ) : ?>
-					<div class="wpr-ri-credit-message">
-						<strong><?php esc_html_e( "You've reached your free limit.", 'rocket' ); ?></strong>
-						<?php esc_html_e( 'Upgrade to continue.', 'rocket' ); ?>
-					</div>
-				<?php else : ?>
-					<div class="wpr-ri-credit-message">
-						<?php esc_html_e( "You've reached the page limit. Please remove at least one page to continue.", 'rocket' ); ?>
-					</div>
-				<?php endif; ?>
+			<?php if ( ! $data['wpr_can_add_pages'] && $data['wpr_is_free'] ) : ?>
+				<div class="wpr-ri-credit-message">
+					<strong><?php esc_html_e( "You've reached your free limit.", 'rocket' ); ?></strong>
+					<?php esc_html_e( 'Upgrade to continue.', 'rocket' ); ?>
+				</div>
+			<?php elseif ( ! $data['wpr_can_add_pages'] && ! $data['wpr_is_free'] ) : ?>
+				<div class="wpr-ri-credit-message">
+					<?php esc_html_e( "You've reached the page limit. Please remove at least one page to continue.", 'rocket' ); ?>
+				</div>
 			<?php elseif ( ! $data['wpr_has_credit'] ) : ?>
 				<div class="wpr-ri-credit-message">
 					<strong><?php esc_html_e( "You've reached your free limit.", 'rocket' ); ?></strong>
