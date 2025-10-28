@@ -457,7 +457,6 @@ class AbstractQuery extends Query implements QueryInterface {
 		$deleted = true;
 		foreach ( $items as $item ) {
 			if ( empty( $item->id ) ) {
-				$deleted = true;
 				continue;
 			}
 			$deleted = $deleted && $this->delete_item( $item->id );
