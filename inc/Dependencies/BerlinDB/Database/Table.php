@@ -359,7 +359,7 @@ abstract class Table extends Base {
 		}
 
 		// Query statement to check if table exists.
-		$query    = "SELECT table_name FROM information_schema.TABLES WHERE table_name = %s LIMIT 1";
+		$query    = 'SHOW TABLES LIKE %s';
 		$prepared = $db->prepare( $query, $this->table_name );
 		$result   = $db->get_var( $prepared );
 
