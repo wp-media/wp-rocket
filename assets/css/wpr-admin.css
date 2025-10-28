@@ -2736,6 +2736,7 @@ div.wpr-tutorial-item {
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 100000;
 }
 .wpr-rocketcdn-modal__container {
   max-width: 674px;
