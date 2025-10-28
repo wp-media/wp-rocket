@@ -40,7 +40,6 @@ class Subscriber implements Subscriber_Interface, Event_Manager_Aware_Subscriber
 	public function __construct( Render $render ) {
 		$this->render = $render;
 	}
-
 	/**
 	 * Returns an array of events that this subscriber wants to listen to.
 	 *
