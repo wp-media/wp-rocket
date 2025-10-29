@@ -15,7 +15,8 @@ class AbstractQuery extends Query implements QueryInterface {
 	public static $table_exists = false;
 
 	/**
-	 * Cleanup interval.
+	 * Cleanup interval in months.
+	 * Default is 3 months.
 	 *
 	 * @var int
 	 */
@@ -576,8 +577,15 @@ class AbstractQuery extends Query implements QueryInterface {
 		}
 
 		// Query statement.
-		$query    = 'SELECT table_name FROM information_schema.tables WHERE table_schema = %s AND table_name = %s LIMIT 1';
-		$prepared = $db->prepare( $query, $db->__get( 'dbname' ), $db->{$this->table_name} );
+		$cached_value = get_transient( $this->table_name . '_exists' );
+		if ( false !== $cached_value ) {
+			self::$table_exists = true;
+			return true;
+		}
+
+		$query    = 'SHOW TABLES LIKE %s';
+		$like     = $db->esc_like( $this->table_name );
+		$prepared = $db->prepare( $query, $like );
 		$result   = $db->get_var( $prepared );
 
 		// Does the table exist?
