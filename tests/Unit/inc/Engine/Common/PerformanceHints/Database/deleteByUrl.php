@@ -16,17 +16,13 @@ class Test_DeleteByUrl extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->query = $this->createPartialMock( AbstractQuery::class, [ 'table_exists', 'get_rows_by_url', 'delete_item' ] );
+        $this->query = $this->createPartialMock( AbstractQuery::class, [ 'get_rows_by_url', 'delete_item' ] );
     }
 
     /**
      * @dataProvider configTestData
      */
     public function testShouldReturnAsExpected($config, $expected) {
-        $this->query->expects($this->once())
-            ->method('table_exists')
-            ->willReturn(true);
-
         $this->query->expects(self::once())->method('get_rows_by_url')->with($config['url'])->willReturn($config['results']);
         $this->configureDelete($config, $expected);
 
