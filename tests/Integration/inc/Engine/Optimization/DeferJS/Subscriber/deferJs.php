@@ -24,6 +24,7 @@ class Test_DeferJs extends TestCase {
 
 		set_current_screen( 'front' );
 
+		self::installPreloadCacheTable();
 		self::installAtfTable();
 		self::installLrcTable();
 		self::installPreloadFontsTable();
@@ -35,6 +36,7 @@ class Test_DeferJs extends TestCase {
 		self::uninstallLrcTable();
 		self::uninstallPreloadFontsTable();
 		self::uninstallPreconnectDomainsTable();
+		self::uninstallPreloadCacheTable();
 
 		// Re-enable ATF optimization.
 		remove_filter( 'rocket_above_the_fold_optimization', '__return_false' );

@@ -30,6 +30,7 @@ class Test_DelayJs extends TestCase {
 
 		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'delay_js', 26 );
 
+		self::installPreloadCacheTable();
 		self::installAtfTable();
 		self::installLrcTable();
 		self::installPreloadFontsTable();
@@ -41,6 +42,7 @@ class Test_DelayJs extends TestCase {
 		self::uninstallLrcTable();
 		self::uninstallPreloadFontsTable();
 		self::uninstallPreconnectDomainsTable();
+		self::uninstallPreloadCacheTable();
 
 		unset( $_GET['nowprocket'] );
 

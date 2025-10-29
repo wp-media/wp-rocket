@@ -42,6 +42,7 @@ class Test_InsertCriticalCssBuffer extends FilesystemTestCase {
 		wp_set_current_user( self::$user_id );
 		set_current_screen( 'front' );
 
+		self::installPreloadCacheTable();
 		self::installAtfTable();
 		self::installLrcTable();
 		self::installPreloadFontsTable();
@@ -53,6 +54,7 @@ class Test_InsertCriticalCssBuffer extends FilesystemTestCase {
 		self::uninstallLrcTable();
 		self::uninstallPreloadFontsTable();
 		self::uninstallPreconnectDomainsTable();
+		self::uninstallPreloadCacheTable();
 
 		$this->reset_post_types();
 		$this->reset_taxonomies();
