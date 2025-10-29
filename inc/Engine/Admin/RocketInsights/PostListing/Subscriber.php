@@ -90,15 +90,16 @@ class Subscriber implements Subscriber_Interface, Event_Manager_Aware_Subscriber
 	}
 
 	/**
-	 * Gets the list of public post types that WP Rocket caches.
+	 * Gets the base list of public post types without exclusions.
 	 *
-	 * This is a static helper for get_subscribed_events() since it doesn't require instance state.
+	 * This returns the raw list of public post types that WP Rocket can work with,
+	 * excluding only 'attachment'. Does not apply any custom filters.
 	 *
 	 * @since 3.20.1
 	 *
-	 * @return array
+	 * @return array Array of post type slugs.
 	 */
-	private static function get_public_post_type_slugs(): array {
+	private static function get_base_post_types(): array {
 		$post_types = get_post_types(
 			[
 				'public' => true,
@@ -106,6 +107,22 @@ class Subscriber implements Subscriber_Interface, Event_Manager_Aware_Subscriber
 		);
 
 		unset( $post_types['attachment'] );
+
+		return $post_types;
+	}
+
+	/**
+	 * Gets the list of public post types with exclusions applied.
+	 *
+	 * This applies the 'rocket_insights_excluded_post_types' filter to allow
+	 * developers to exclude specific post types from Rocket Insights functionality.
+	 *
+	 * @since 3.20.1
+	 *
+	 * @return array Array of post type slugs with exclusions applied.
+	 */
+	private static function get_public_post_type_slugs(): array {
+		$post_types = self::get_base_post_types();
 
 		/**
 		 * Filters the post types that should be excluded from Rocket Insights functionality.
