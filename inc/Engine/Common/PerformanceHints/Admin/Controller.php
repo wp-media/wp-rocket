@@ -64,6 +64,10 @@ class Controller {
 	 * @return void
 	 */
 	public function delete_post( $post_id ) {
+		if ( ! $this->is_allowed() ) {
+			return;
+		}
+
 		if ( 'attachment' === get_post_type( $post_id ) ) {
 			return;
 		}

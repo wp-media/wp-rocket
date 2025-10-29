@@ -52,7 +52,7 @@ return [
 			'hook_extra' => [
 				'action' => 'update',
 				'type'   => 'theme',
-				'themes' => [ 'default' ],
+				'themes' => [ 'divi-child' ],
 			],
 			'expected'   => [
 				'cleaned'      => [
