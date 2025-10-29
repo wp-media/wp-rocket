@@ -14,8 +14,8 @@ return [
 	],
 	'testShouldNotAddHomepageWhenUpgradingFromRecentVersion' => [
 		'config'   => [
-			'old_version'    => '3.20.0.2',
-			'new_version'    => '3.20.1',
+			'old_version'    => '3.20.1',
+			'new_version'    => '3.20.2',
 			'existing_pages' => 0,
 		],
 		'expected' => [
@@ -23,15 +23,15 @@ return [
 			'hook_fired'       => false,
 		],
 	],
-	'testShouldNotAddHomepageWhenUpgradingToBelowTargetVersion' => [
+	'testShouldAddHomepageWhenUpgradingToBelowTargetVersion' => [
 		'config'   => [
 			'old_version'    => '3.20.0.1',
 			'new_version'    => '3.20.0.9',
 			'existing_pages' => 0,
 		],
 		'expected' => [
-			'database_entries' => 0,
-			'hook_fired'       => false,
+			'database_entries' => 1,
+			'hook_fired'       => true,
 		],
 	],
 	'testShouldNotAddHomepageWhenExistingPagesPresent' => [
