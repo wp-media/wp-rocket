@@ -164,8 +164,8 @@ class Render extends Abstract_Render {
 	 */
 	public function get_global_score_widget( array $data ): string {
 		return $this->generate(
-			'partials/rocket-insights/global-score-widget',
-			$this->prepare_global_score_widget_data( $data )
+		'partials/rocket-insights/global-score-widget',
+		$this->prepare_global_score_widget_data( $data )
 		);
 	}
 
@@ -177,9 +177,9 @@ class Render extends Abstract_Render {
 	 */
 	public function get_global_score_widget_content( array $data ): string {
 		return $this->render_parts_with_data(
-			'rocket-insights/global-score-widget-content',
-			$this->prepare_global_score_widget_data( $data ),
-			true
+		'rocket-insights/global-score-widget-content',
+		$this->prepare_global_score_widget_data( $data ),
+		true
 		);
 	}
 
@@ -193,13 +193,13 @@ class Render extends Abstract_Render {
 		$is_adding_page_allowed = $this->context->is_adding_page_allowed();
 
 		return array_merge(
-			$data,
-			[
-				'has_credit'    => $this->plan->has_credit(),
-				'can_add_url'   => $is_adding_page_allowed,
-				'reach_max_url' => ! $is_adding_page_allowed,
-				'status_text'   => $this->get_monitoring_status_text(),
-			]
+		$data,
+		[
+			'has_credit'    => $this->plan->has_credit(),
+			'can_add_url'   => $is_adding_page_allowed,
+			'reach_max_url' => ! $is_adding_page_allowed,
+			'status_text'   => $this->get_monitoring_status_text(),
+		]
 		);
 	}
 
