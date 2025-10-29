@@ -41,9 +41,19 @@ class Test_InsertCriticalCssBuffer extends FilesystemTestCase {
 		add_filter( 'pre_get_rocket_option_async_css', [ $this, 'return_1' ] );
 		wp_set_current_user( self::$user_id );
 		set_current_screen( 'front' );
+
+		self::installAtfTable();
+		self::installLrcTable();
+		self::installPreloadFontsTable();
+		self::installPreconnectExternalDomainsTable();
 	}
 
 	public function tear_down() {
+		self::uninstallAtfTable();
+		self::uninstallLrcTable();
+		self::uninstallPreloadFontsTable();
+		self::uninstallPreconnectDomainsTable();
+
 		$this->reset_post_types();
 		$this->reset_taxonomies();
 

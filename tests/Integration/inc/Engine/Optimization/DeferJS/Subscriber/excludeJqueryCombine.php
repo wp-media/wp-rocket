@@ -25,9 +25,19 @@ class Test_ExcludeJqueryCombine extends TestCase {
 
 		set_current_screen( 'front' );
 		$this->setup_lists();
+
+		self::installAtfTable();
+		self::installLrcTable();
+		self::installPreloadFontsTable();
+		self::installPreconnectExternalDomainsTable();
 	}
 
 	public function tear_down() {
+		self::uninstallAtfTable();
+		self::uninstallLrcTable();
+		self::uninstallPreloadFontsTable();
+		self::uninstallPreconnectDomainsTable();
+
 		// Re-enable ATF optimization.
 		remove_filter( 'rocket_above_the_fold_optimization', '__return_false' );
 

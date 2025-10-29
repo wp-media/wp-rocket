@@ -86,22 +86,27 @@ trait DBTrait {
 
 		$rucss_usedcss_table = $container->get( 'rucss_usedcss_table' );
 		$rucss_usedcss_table->install();
-		$container->get( 'rucss_used_css_query' )::$table_exists = true;
+		add_filter( 'pre_transient_' . $rucss_usedcss_table->get_exists_transient_name(), '__return_true' );
 
 		$preload_cache_table = $container->get( 'preload_caches_table' );
 		$preload_cache_table->install();
+		add_filter( 'pre_transient_' . $preload_cache_table->get_exists_transient_name(), '__return_true' );
 
 		$atf_table = $container->get( 'atf_table' );
 		$atf_table->install();
+		add_filter( 'pre_transient_' . $atf_table->get_exists_transient_name(), '__return_true' );
 
 		$lrc_table = $container->get( 'lrc_table' );
 		$lrc_table->install();
+		add_filter( 'pre_transient_' . $lrc_table->get_exists_transient_name(), '__return_true' );
 
 		$preload_fonts_table = $container->get( 'preload_fonts_table' );
 		$preload_fonts_table->install();
+		add_filter( 'pre_transient_' . $preload_fonts_table->get_exists_transient_name(), '__return_true' );
 
 		$preconnect_external_domains_table = $container->get( 'preconnect_external_domains_table' );
 		$preconnect_external_domains_table->install();
+		add_filter( 'pre_transient_' . $preconnect_external_domains_table->get_exists_transient_name(), '__return_true' );
 
 		$ri_table = $container->get( 'ri_table' );
 		$ri_table->install();
@@ -114,6 +119,8 @@ trait DBTrait {
 		if ( ! $rucss_usedcss_table->exists() ) {
 			$rucss_usedcss_table->install();
 		}
+
+		add_filter( 'pre_transient_' . $rucss_usedcss_table->get_exists_transient_name(), '__return_true' );
 	}
 
 	public static function installPreconnectExternalDomainsTable() {
@@ -123,6 +130,8 @@ trait DBTrait {
 		if ( ! $preconnect_external_domains_table->exists() ) {
 			$preconnect_external_domains_table->install();
 		}
+
+		add_filter( 'pre_transient_' . $preconnect_external_domains_table->get_exists_transient_name(), '__return_true' );
 	}
 
 	public static function installPreloadCacheTable() {
@@ -132,6 +141,8 @@ trait DBTrait {
 		if ( ! $preload_cache_table->exists() ) {
 			$preload_cache_table->install();
 		}
+
+		add_filter( 'pre_transient_' . $preload_cache_table->get_exists_transient_name(), '__return_true' );
 	}
 
 	public static function installAtfTable() {
@@ -141,6 +152,8 @@ trait DBTrait {
 		if ( ! $atf_table->exists() ) {
 			$atf_table->install();
 		}
+
+		add_filter( 'pre_transient_' . $atf_table->get_exists_transient_name(), '__return_true' );
 	}
 
 	public static function installLrcTable() {
@@ -150,6 +163,8 @@ trait DBTrait {
 		if ( ! $lrc_table->exists() ) {
 			$lrc_table->install();
 		}
+
+		add_filter( 'pre_transient_' . $lrc_table->get_exists_transient_name(), '__return_true' );
 	}
 
 	public static function installPreloadFontsTable() {
@@ -159,6 +174,8 @@ trait DBTrait {
 		if ( ! $preload_fonts_table->exists() ) {
 			$preload_fonts_table->install();
 		}
+
+		add_filter( 'pre_transient_' . $preload_fonts_table->get_exists_transient_name(), '__return_true' );
 	}
 
 	public static function installPerformanceMonitoringTable() {
@@ -168,6 +185,8 @@ trait DBTrait {
 		if ( ! $ri_table->exists() ) {
 			$ri_table->install();
 		}
+
+		add_filter( 'pre_transient_' . $ri_table->get_exists_transient_name(), '__return_true' );
 	}
 
 	public static function uninstallAll() {
@@ -177,31 +196,37 @@ trait DBTrait {
 		if ( $rucss_usedcss_table->exists() ) {
 			$rucss_usedcss_table->uninstall();
 		}
+		remove_filter( 'pre_transient_' . $rucss_usedcss_table->get_exists_transient_name(), '__return_true' );
 
 		$preload_cache_table = $container->get( 'preload_caches_table' );
 		if ( $preload_cache_table->exists() ) {
 			$preload_cache_table->uninstall();
 		}
+		remove_filter( 'pre_transient_' . $preload_cache_table->get_exists_transient_name(), '__return_true' );
 
 		$atf_table = $container->get( 'atf_table' );
 		if ( $atf_table->exists() ) {
 			$atf_table->uninstall();
 		}
+		remove_filter( 'pre_transient_' . $atf_table->get_exists_transient_name(), '__return_true' );
 
 		$lrc_table = $container->get( 'lrc_table' );
 		if ( $lrc_table->exists() ) {
 			$lrc_table->uninstall();
 		}
+		remove_filter( 'pre_transient_' . $lrc_table->get_exists_transient_name(), '__return_true' );
 
 		$preload_fonts_table = $container->get( 'preload_fonts_table' );
 		if ( $preload_fonts_table->exists() ) {
 			$preload_fonts_table->uninstall();
 		}
+		remove_filter( 'pre_transient_' . $preload_fonts_table->get_exists_transient_name(), '__return_true' );
 
 		$preconnect_external_domains_table = $container->get( 'preconnect_external_domains_table' );
 		if ( $preconnect_external_domains_table->exists() ) {
 			$preconnect_external_domains_table->uninstall();
 		}
+		remove_filter( 'pre_transient_' . $preconnect_external_domains_table->get_exists_transient_name(), '__return_true' );
 
 		if ( ! $container->has( 'ri_table' ) ) {
 			return;
@@ -210,6 +235,7 @@ trait DBTrait {
 		if ( $ri_table->exists() ) {
 			$ri_table->uninstall();
 		}
+		remove_filter( 'pre_transient_' . $ri_table->get_exists_transient_name(), '__return_true' );
 	}
 
 	public static function uninstallPreconnectDomainsTable() {
@@ -219,20 +245,29 @@ trait DBTrait {
 		if ( $preconnect_external_domains_table->exists() ) {
 			$preconnect_external_domains_table->uninstall();
 		}
+		remove_filter( 'pre_transient_' . $preconnect_external_domains_table->get_exists_transient_name(), '__return_true' );
 	}
 
 	public static function uninstallUsedCssTable() {
 		$container           = apply_filters( 'rocket_container', null );
 		$rucss_usedcss_table = $container->get( 'rucss_usedcss_table' );
 
-		$rucss_usedcss_table->uninstall();
+		if ( $rucss_usedcss_table->exists() ) {
+			$rucss_usedcss_table->uninstall();
+		}
+
+		remove_filter( 'pre_transient_' . $rucss_usedcss_table->get_exists_transient_name(), '__return_true' );
 	}
 
 	public static function uninstallPreloadCacheTable() {
 		$container           = apply_filters( 'rocket_container', null );
 		$preload_cache_table = $container->get( 'preload_caches_table' );
 
-		$preload_cache_table->uninstall();
+		if ( $preload_cache_table->exists() ) {
+			$preload_cache_table->uninstall();
+		}
+
+		remove_filter( 'pre_transient_' . $preload_cache_table->get_exists_transient_name(), '__return_true' );
 	}
 
 	public static function uninstallAtfTable() {
@@ -242,6 +277,7 @@ trait DBTrait {
 		if ( $atf_table->exists() ) {
 			$atf_table->uninstall();
 		}
+		remove_filter( 'pre_transient_' . $atf_table->get_exists_transient_name(), '__return_true' );
 	}
 
 	public static function uninstallLrcTable() {
@@ -251,6 +287,8 @@ trait DBTrait {
 		if ( $lrc_table->exists() ) {
 			$lrc_table->uninstall();
 		}
+
+		remove_filter( 'pre_transient_' . $lrc_table->get_exists_transient_name(), '__return_true' );
 	}
 
 	public static function uninstallPreloadFontsTable() {
@@ -260,6 +298,8 @@ trait DBTrait {
 		if ( $preload_fonts_table->exists() ) {
 			$preload_fonts_table->uninstall();
 		}
+
+		remove_filter( 'pre_transient_' . $preload_fonts_table->get_exists_transient_name(), '__return_true' );
 	}
 
 	public static function uninstallPerformanceMonitoringTable() {
@@ -269,6 +309,8 @@ trait DBTrait {
 		if ( $ri_table->exists() ) {
 			$ri_table->uninstall();
 		}
+
+		remove_filter( 'pre_transient_' . $ri_table->get_exists_transient_name(), '__return_true' );
 	}
 
 	public static function removeDBHooks() {

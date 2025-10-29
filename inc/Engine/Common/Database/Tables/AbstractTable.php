@@ -151,7 +151,7 @@ class AbstractTable extends Table implements TableInterface {
 	 * @return bool
 	 */
 	public function exists() {
-		$cached_value = get_transient( $this->table_name . '_exists' );
+		$cached_value = get_transient( $this->get_exists_transient_name() );
 		if ( false !== $cached_value ) {
 			return true;
 		}
@@ -159,7 +159,7 @@ class AbstractTable extends Table implements TableInterface {
 		$exists = parent::exists();
 		// Cache only when the table exists.
 		if ( $exists ) {
-			set_transient( $this->table_name . '_exists', $exists, HOUR_IN_SECONDS );
+			set_transient( $this->get_exists_transient_name(), $exists, HOUR_IN_SECONDS );
 		}
 		return $exists;
 	}
@@ -171,7 +171,7 @@ class AbstractTable extends Table implements TableInterface {
 	 */
 	public function uninstall() {
 		parent::uninstall();
-		delete_transient( $this->table_name . '_exists' );
+		delete_transient( $this->get_exists_transient_name() );
 	}
 
 	/**
@@ -187,7 +187,16 @@ class AbstractTable extends Table implements TableInterface {
 		}
 
 		$truncated = parent::truncate();
-		delete_transient( $this->table_name . '_exists' );
+		delete_transient( $this->get_exists_transient_name() );
 		return $truncated;
+	}
+
+	/**
+	 * Get exists transient name.
+	 *
+	 * @return string
+	 */
+	public function get_exists_transient_name(): string {
+		return $this->name . '_exists';
 	}
 }

@@ -18,6 +18,10 @@ class Test_GetRocketSamePermalink extends TestCase {
 
 		// Install the preload cache table to prevent DB error caused by permalink changed.
 		self::installPreloadCacheTable();
+		self::installAtfTable();
+		self::installLrcTable();
+		self::installPreloadFontsTable();
+		self::installPreconnectExternalDomainsTable();
 
 		$this->did_filter = [ 'editable_slug' => 0 ];
 	}
@@ -25,6 +29,11 @@ class Test_GetRocketSamePermalink extends TestCase {
 	public function tear_down() {
 		// Uninstall the preload cache table.
 		self::uninstallPreloadCacheTable();
+		self::uninstallAtfTable();
+		self::uninstallLrcTable();
+		self::uninstallPreloadFontsTable();
+		self::uninstallPreconnectDomainsTable();
+
 		remove_filter( 'editable_slug', [ $this, 'editable_slug_cb' ] );
 
 		parent::tear_down();

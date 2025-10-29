@@ -18,6 +18,11 @@ class Test_MaybePurgeCacheOnTermChange extends FilesystemTestCase {
 	public function set_up() {
 		parent::set_up();
 
+		self::installAtfTable();
+		self::installLrcTable();
+		self::installPreloadFontsTable();
+		self::installPreconnectExternalDomainsTable();
+
 		register_taxonomy(
 			'not_public',
 			'post',
@@ -32,6 +37,11 @@ class Test_MaybePurgeCacheOnTermChange extends FilesystemTestCase {
 		unregister_taxonomy( 'not_public' );
 		unset( $GLOBALS['sitepress'], $GLOBALS['q_config'], $GLOBALS['polylang'] );
 		unset( $GLOBALS['debug_fs'] );
+
+		self::uninstallAtfTable();
+		self::uninstallLrcTable();
+		self::uninstallPreloadFontsTable();
+		self::uninstallPreconnectDomainsTable();
 
 		parent::tear_down();
 	}

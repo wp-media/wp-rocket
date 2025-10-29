@@ -8,13 +8,6 @@ use WP_Rocket\Engine\Common\Database\QueryInterface;
 
 class AbstractQuery extends Query implements QueryInterface {
 	/**
-	 * Table status.
-	 *
-	 * @var boolean
-	 */
-	public static $table_exists = false;
-
-	/**
 	 * Cleanup interval in months.
 	 * Default is 3 months.
 	 *
@@ -24,6 +17,7 @@ class AbstractQuery extends Query implements QueryInterface {
 
 	/**
 	 * Queries the database and retrieves items or counts.
+	 * We extend this method to check if the query returns 'Table not exists' error to delete the transient and force creating table.
 	 *
 	 * @param string|array $query Array or URL query string of parameters.
 	 * @param bool         $use_cache Use DB cache or not. (custom parameter added by us!).
@@ -61,10 +55,6 @@ class AbstractQuery extends Query implements QueryInterface {
 	 * @return false|mixed
 	 */
 	public function get_row( string $url, bool $is_mobile = false ) {
-		if ( ! self::$table_exists && ! $this->table_exists() ) {
-			return false;
-		}
-
 		$query = $this->query(
 			[
 				'url'       => untrailingslashit( $url ),
@@ -87,10 +77,6 @@ class AbstractQuery extends Query implements QueryInterface {
 	 * @return object|array|false false if no row found, array or object if row found.
 	 */
 	public function get_row_by_id( int $row_id ) {
-		if ( ! self::$table_exists && ! $this->table_exists() ) {
-			return false;
-		}
-
 		$query = $this->query(
 			[
 				'id' => $row_id,
@@ -116,10 +102,6 @@ class AbstractQuery extends Query implements QueryInterface {
 	 * @return array|false
 	 */
 	public function get_rows_by_url( string $url ) {
-		if ( ! self::$table_exists && ! $this->table_exists() ) {
-			return false;
-		}
-
 		$query = $this->query(
 			[
 				'url' => untrailingslashit( $url ),
@@ -140,10 +122,6 @@ class AbstractQuery extends Query implements QueryInterface {
 	 * @return array|int
 	 */
 	public function get_on_submit_jobs( int $count = 100 ) {
-		if ( ! self::$table_exists && ! $this->table_exists() ) {
-			return [];
-		}
-
 		$in_progress_count = (int) $this->query(
 			[
 				'count'  => true,
@@ -188,10 +166,6 @@ class AbstractQuery extends Query implements QueryInterface {
 	 * @return bool
 	 */
 	public function create_new_job( string $url, string $job_id = '', string $queue_name = '', bool $is_mobile = false, array $additional_details = [] ) {
-		if ( ! self::$table_exists && ! $this->table_exists() ) {
-			return false;
-		}
-
 		$item = [
 			'url'           => untrailingslashit( $url ),
 			'is_mobile'     => $is_mobile,
@@ -232,10 +206,6 @@ class AbstractQuery extends Query implements QueryInterface {
 	 * @return array
 	 */
 	public function get_pending_jobs( int $count = 100 ) {
-		if ( ! self::$table_exists && ! $this->table_exists() ) {
-			return [];
-		}
-
 		$inprogress_count = (int) $this->query(
 			[
 				'count'  => true,
@@ -312,10 +282,6 @@ class AbstractQuery extends Query implements QueryInterface {
 	 * @return bool
 	 */
 	public function update_job_id( $id, $new_job_id ) {
-		if ( ! self::$table_exists && ! $this->table_exists() ) {
-			return false;
-		}
-
 		$update_data['job_id'] = $new_job_id;
 		return $this->update_item( $id, $update_data );
 	}
@@ -353,10 +319,6 @@ class AbstractQuery extends Query implements QueryInterface {
 	 * @return bool
 	 */
 	public function reset_job( int $id, string $job_id = '', array $additional_details = [] ) {
-		if ( ! self::$table_exists && ! $this->table_exists() ) {
-			return false;
-		}
-
 		$updates = [
 			'job_id'        => $job_id,
 			'status'        => 'to-submit',
@@ -425,10 +387,6 @@ class AbstractQuery extends Query implements QueryInterface {
 	 * @return bool
 	 */
 	public function update_last_accessed( int $id ): bool {
-		if ( ! self::$table_exists && ! $this->table_exists() ) {
-			return false;
-		}
-
 		return (bool) $this->update_item(
 			$id,
 			[
@@ -445,10 +403,6 @@ class AbstractQuery extends Query implements QueryInterface {
 	 * @return bool
 	 */
 	public function delete_by_url( string $url ) {
-		if ( ! self::$table_exists && ! $this->table_exists() ) {
-			return false;
-		}
-
 		$items = $this->get_rows_by_url( $url );
 
 		if ( empty( $items ) ) {
@@ -472,10 +426,6 @@ class AbstractQuery extends Query implements QueryInterface {
 	 * @return int
 	 */
 	public function get_not_completed_count() {
-		if ( ! self::$table_exists && ! $this->table_exists() ) {
-			return 0;
-		}
-
 		return $this->query(
 			[
 				'count'      => true,
@@ -490,10 +440,6 @@ class AbstractQuery extends Query implements QueryInterface {
 	 * @return int
 	 */
 	public function get_completed_count() {
-		if ( ! self::$table_exists && ! $this->table_exists() ) {
-			return 0;
-		}
-
 		return $this->query(
 			[
 				'count'  => true,
@@ -510,10 +456,6 @@ class AbstractQuery extends Query implements QueryInterface {
 	 * @return array|false
 	 */
 	public function get_failed_rows( float $delay = 3, string $unit = 'days' ) {
-		if ( ! self::$table_exists && ! $this->table_exists() ) {
-			return false;
-		}
-
 		$query = $this->query(
 			[
 				'status'     => 'failed',
@@ -542,10 +484,6 @@ class AbstractQuery extends Query implements QueryInterface {
 	 * @return boolean
 	 */
 	public function revert_to_pending( int $id ): bool {
-		if ( ! self::$table_exists && ! $this->table_exists() ) {
-			return false;
-		}
-
 		return (bool) $this->update_item(
 			$id,
 			[
@@ -556,46 +494,6 @@ class AbstractQuery extends Query implements QueryInterface {
 				'modified'      => current_time( 'mysql', true ),
 			]
 		);
-	}
-
-	/**
-	 * Returns the current status of the table; true if it exists, false otherwise.
-	 *
-	 * @return boolean
-	 */
-	protected function table_exists(): bool {
-		if ( self::$table_exists ) {
-			return true;
-		}
-
-		// Get the database interface.
-		$db = $this->get_db();
-
-		// Bail if no database interface is available.
-		if ( ! $db ) {
-			return false;
-		}
-
-		// Query statement.
-		$cached_value = get_transient( $this->table_name . '_exists' );
-		if ( false !== $cached_value ) {
-			self::$table_exists = true;
-			return true;
-		}
-
-		$query    = 'SHOW TABLES LIKE %s';
-		$like     = $db->esc_like( $this->table_name );
-		$prepared = $db->prepare( $query, $like );
-		$result   = $db->get_var( $prepared );
-
-		// Does the table exist?
-		$exists = $this->is_success( $result );
-
-		if ( $exists ) {
-			self::$table_exists = $exists;
-		}
-
-		return $exists;
 	}
 
 	/**
@@ -703,10 +601,6 @@ class AbstractQuery extends Query implements QueryInterface {
 	 * @return boolean
 	 */
 	private function is_allowed() {
-		if ( ! self::$table_exists && ! $this->table_exists() ) {
-			return false;
-		}
-
 		// Bail if no database interface is available.
 		if ( empty( $this->get_db() ) ) {
 			return false;

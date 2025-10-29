@@ -24,9 +24,19 @@ class Test_DeferInlineJs extends TestCase {
 		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
 
 		set_current_screen( 'front' );
+
+		self::installAtfTable();
+		self::installLrcTable();
+		self::installPreloadFontsTable();
+		self::installPreconnectExternalDomainsTable();
 	}
 
 	public function tear_down() {
+		self::uninstallAtfTable();
+		self::uninstallLrcTable();
+		self::uninstallPreloadFontsTable();
+		self::uninstallPreconnectDomainsTable();
+
 		// Re-enable ATF optimization.
 		remove_filter( 'rocket_above_the_fold_optimization', '__return_false' );
 
