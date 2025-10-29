@@ -71,7 +71,7 @@ class OnUpdateAddHomepageTest extends TestCase {
 		// Add existing pages to the database if specified
 		if ( isset( $config['existing_pages'] ) && $config['existing_pages'] > 0 ) {
 			$container = apply_filters( 'rocket_container', null );
-			$manager   = $container->get( 'rocket_insights_manager' );
+			$manager   = $container->get( 'ri_manager' );
 
 			for ( $i = 0; $i < $config['existing_pages']; $i++ ) {
 				$manager->add_to_the_queue(
