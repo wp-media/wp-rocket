@@ -156,18 +156,15 @@
 					display: flex;
 					align-items: center;
 					justify-content: center;
-					width: 18px;
-					height: 18px;
+					width: 21.33px;
+					height: 21.33px;
 					
 					&:before {
 						position: relative;
-						display: inline-block;
-						width: 18px;
-						height: 18px;
-						font-size: 18px;
-						line-height: 1;
-						vertical-align: middle;
+						width: 21.33px;
+						height: 21.33px;
 						background-size: contain;
+						display: inline-block;
 					}
 				}
 				
