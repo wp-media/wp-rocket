@@ -171,7 +171,7 @@ class AbstractTable extends Table implements TableInterface {
 	 */
 	public function uninstall() {
 		parent::uninstall();
-		delete_transient( $this->name . '_exists' );
+		delete_transient( $this->table_name . '_exists' );
 	}
 
 	/**
@@ -187,7 +187,7 @@ class AbstractTable extends Table implements TableInterface {
 		}
 
 		$truncated = parent::truncate();
-		delete_transient( $this->name . '_exists' );
+		delete_transient( $this->table_name . '_exists' );
 		return $truncated;
 	}
 }

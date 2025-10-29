@@ -105,6 +105,6 @@ class Cache extends AbstractTable {
 			return false;
 		}
 
-		return $this->truncate();
+		return parent::truncate();
 	}
 }
