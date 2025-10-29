@@ -110,11 +110,13 @@ module.exports = (function() {
 					// Begin common loading + polling flow.
 					beginLoadingAndPoll(column, response.data.id, url);
 				} else {
-					// Show error message - use localized message if URL limit reached.
-					let errorMessage = response.data?.message || 'Error adding page';
-					if (response.data?.message && response.data.message.includes('Maximum number of URLs reached')) {
-						errorMessage = window.rocket_insights_i18n?.url_limit_reached || errorMessage;
+					if (response.data?.can_add_pages === false) {
+						button.prop('disabled', false).text(window.rocket_insights_i18n?.test_page || 'Test the page');
+						return;
 					}
+					
+					// Show error message for other errors
+					let errorMessage = response.data?.message || 'Error adding page';
 					showMessage(column, errorMessage, 'error');
 					button.prop('disabled', false).text(window.rocket_insights_i18n?.test_page || 'Test the page');
 				}
