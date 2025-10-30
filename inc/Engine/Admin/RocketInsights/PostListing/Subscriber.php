@@ -68,7 +68,7 @@ class Subscriber implements Subscriber_Interface {
 	 * Add RI column header to posts.
 	 *
 	 * @param string[] $columns Array of column headers.
-	 * @param string $post_type Post type.
+	 * @param string   $post_type Post type.
 	 * @return array
 	 */
 	public function add_column_to_posts( $columns, $post_type ): array {
@@ -85,7 +85,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return bool
 	 */
-	private function is_excluded($post_type ) {
+	private function is_excluded( $post_type ) {
 		$excluded = ! is_post_type_viewable( $post_type );
 
 		/**
@@ -142,8 +142,6 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$this->assets_enqueued = true;
-
 		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
 		wp_enqueue_style(
@@ -152,7 +150,6 @@ class Subscriber implements Subscriber_Interface {
 			[],
 			rocket_get_constant( 'WP_ROCKET_VERSION' )
 		);
-		error_log(rocket_get_constant( 'WP_ROCKET_ASSETS_CSS_URL' ) . 'rocket-insights' . $suffix . '.css');
 
 		wp_enqueue_script(
 			'rocket-insights',
