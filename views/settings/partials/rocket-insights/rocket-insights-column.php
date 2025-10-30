@@ -146,7 +146,7 @@ endif;
 				<?php else : ?>
 					<span class="wpr-ri-see-report-link wpr-icon-report wpr-ri-disabled">
 						<?php esc_html_e( 'See Report', 'rocket' ); ?>
-					</span>?>
+					</span>
 				<?php endif; ?>
 				
 				<?php if ( ! $data['wpr_has_credit'] ) : ?>
