@@ -76,21 +76,21 @@ class Rest extends WP_REST_Controller {
 	/**
 	 * Constructor.
 	 *
-	 * @param Query       $query Query instance.
-	 * @param Manager     $manager Manager instance.
-	 * @param Context     $context Context instance.
-	 * @param GlobalScore $global_score GlobalScore instance.
-	 * @param Render      $render Render instance.
-	 * @param Plan        $plan Plan instance.
+	 * @param Query        $query Query instance.
+	 * @param Manager      $manager Manager instance.
+	 * @param Context      $context Context instance.
+	 * @param GlobalScore  $global_score GlobalScore instance.
+	 * @param Render       $render Render instance.
+	 * @param Plan         $plan Plan instance.
 	 * @param JobProcessor $job_processor JobProcessor instance.
 	 */
 	public function __construct( Query $query, Manager $manager, Context $context, GlobalScore $global_score, Render $render, Plan $plan, JobProcessor $job_processor ) {
-		$this->query        = $query;
-		$this->manager      = $manager;
-		$this->context      = $context;
-		$this->global_score = $global_score;
-		$this->render       = $render;
-		$this->plan         = $plan;
+		$this->query         = $query;
+		$this->manager       = $manager;
+		$this->context       = $context;
+		$this->global_score  = $global_score;
+		$this->render        = $render;
+		$this->plan          = $plan;
 		$this->job_processor = $job_processor;
 	}
 
