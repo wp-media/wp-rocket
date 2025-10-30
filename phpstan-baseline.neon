@@ -206,16 +206,6 @@ parameters:
 			path: inc/Engine/Common/ExtractCSS/ServiceProvider.php
 
 		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: inc/Engine/Common/JobManager/APIHandler/APIClient.php
-
-		-
-			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
-			count: 1
-			path: inc/Engine/Common/JobManager/APIHandler/APIClient.php
-
-		-
 			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: inc/Engine/Common/PerformanceHints/Database/Table/AbstractTable.php
@@ -441,6 +431,11 @@ parameters:
 			path: inc/Engine/Optimization/Minify/JS/Subscriber.php
 
 		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: inc/Engine/Optimization/RUCSS/APIHandler/APIClient.php
+
+		-
 			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: inc/Engine/Optimization/RUCSS/Admin/Database.php
@@ -554,6 +549,11 @@ parameters:
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: inc/ThirdParty/Hostings/Godaddy.php
+
+		-
+			message: "#^Variable \\$urls in empty\\(\\) always exists and is not falsy\\.$#"
+			count: 1
+			path: inc/ThirdParty/Hostings/LiteSpeed.php
 
 		-
 			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
@@ -716,99 +716,9 @@ parameters:
 			path: inc/ThirdParty/Themes/Divi.php
 
 		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 24
-			path: tests/Integration/AjaxTestCase.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 24
-			path: tests/Integration/ApiTestCase.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 24
-			path: tests/Integration/FilesystemTestCase.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 24
-			path: tests/Integration/RESTVfsTestCase.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 24
-			path: tests/Integration/TestCase.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/bootstrap.php
-
-		-
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 5
 			path: tests/Integration/bootstrap.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Addon/Cloudflare/Cloudflare/getCloudflareIps.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Addon/Cloudflare/Cloudflare/getSettings.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Addon/Cloudflare/Cloudflare/hasPageRule.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Addon/Cloudflare/Cloudflare/isAuthValid.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Addon/Cloudflare/Cloudflare/purgeByUrl.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Addon/Cloudflare/Cloudflare/purgeCloudflare.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Addon/Cloudflare/Cloudflare/setBrowserCacheTtl.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Addon/Cloudflare/Cloudflare/setCacheLevel.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Addon/Cloudflare/Cloudflare/setDevMode.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Addon/Cloudflare/Cloudflare/setMinify.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Addon/Cloudflare/Cloudflare/setRocketLoader.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Addon/Cloudflare/Subscriber/addCdnHelperMessage.php
 
 		-
 			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
@@ -816,54 +726,9 @@ parameters:
 			path: tests/Integration/inc/Addon/Cloudflare/Subscriber/deactivateDevMode.php
 
 		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Addon/Cloudflare/Subscriber/protocolRewrite.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Addon/Cloudflare/Subscriber/protocolRewriteSrcset.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Addon/Cloudflare/Subscriber/saveCloudflareOldSettings.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Addon/Cloudflare/Subscriber/setVarnishLocalhost.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Addon/Cloudflare/Subscriber/setVarnishPurgeRequestHost.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Addon/Sucuri/Subscriber/addCdnHelperMessage.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Addon/WebP/Subscriber/convertToWebp.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Admin/Deactivation/DeactivationIntent/activateSafeMode.php
-
-		-
 			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/Admin/Deactivation/DeactivationIntent/activateSafeMode.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Admin/Deactivation/Subscriber/addDataAttribute.php
 
 		-
 			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
@@ -876,19 +741,9 @@ parameters:
 			path: tests/Integration/inc/Engine/Admin/Deactivation/Subscriber/insertDeactivationIntentForm.php
 
 		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
+			message: "#^Property WP_Rocket\\\\Tests\\\\Integration\\\\inc\\\\Engine\\\\Admin\\\\RocketInsights\\\\Subscriber\\\\ResetGlobalScoreTest\\:\\:\\$reset_called is never read, only written\\.$#"
 			count: 1
-			path: tests/Integration/inc/Engine/Admin/DomainChange/Subscriber/addRegenerateConfigurationAction.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 3
-			path: tests/Integration/inc/Engine/Admin/Settings/Settings/sanitizeCallback.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Admin/Settings/Subscriber/asyncWistiaScript.php
+			path: tests/Integration/inc/Engine/Admin/RocketInsights/Subscriber/ResetGlobalScoreTest.php
 
 		-
 			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
@@ -916,19 +771,9 @@ parameters:
 			path: tests/Integration/inc/Engine/CDN/RocketCDN/AdminPageSubscriber/displayRocketcdnStatus.php
 
 		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/CDN/RocketCDN/AdminPageSubscriber/preserveAuthorizationToken.php
-
-		-
 			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/CDN/RocketCDN/AdminPageSubscriber/preserveAuthorizationToken.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/CDN/RocketCDN/AdminPageSubscriber/rocketcdnField.php
 
 		-
 			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
@@ -971,66 +816,6 @@ parameters:
 			path: tests/Integration/inc/Engine/CDN/RocketCDN/RESTSubscriber/enable.php
 
 		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/CDN/Subscriber/getCdnHosts.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/CDN/Subscriber/maybeReplaceUrl.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/CDN/Subscriber/rewrite.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 4
-			path: tests/Integration/inc/Engine/CDN/Subscriber/rewriteCssProperties.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/CDN/Subscriber/rewriteSrcset.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Cache/AdminSubscriber/addPurgeTermLink.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Cache/AdminSubscriber/addWpCacheStatusTest.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Cache/AdminSubscriber/maybeSetWpCache.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Cache/AdminSubscriber/noticeAdvancedCachePermissions.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Cache/AdminSubscriber/noticeWpConfigPermissions.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Cache/AdminSubscriber/registerTermsRowAction.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Cache/Config/ConfigSubscriber/changeCacheRejectUriWithPermalink.php
-
-		-
 			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/Cache/PurgeActionsSubscriber/purgeCacheOnPublicSettingChange.php
@@ -1056,66 +841,6 @@ parameters:
 			path: tests/Integration/inc/Engine/Cache/PurgeExpired/Subscriber/updateLifespanOptionOnUpdate.php
 
 		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Cache/WPCache/findWpconfigPath.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Cache/WPCache/setWpCacheConstant.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Common/ExtractCSS/Subscriber/extractCssFilesFromHtml.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Common/ExtractCSS/Subscriber/extractInlineCssFromHtml.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Common/JobManager/Cron/Subscriber/addInterval.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Common/JobManager/Cron/Subscriber/cronCleanRows.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Common/JobManager/Cron/Subscriber/cronRemoveFailedJobs.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Common/PerformanceHints/Admin/Controller/truncateFromAdmin.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Common/PerformanceHints/Cron/Subscriber/cleanup.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Common/PerformanceHints/Frontend/Subscriber/maybe_apply_optimizations.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/CriticalPath/Admin/Subscriber/addAsyncCssMobileOption.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/CriticalPath/Admin/Subscriber/addHiddenAsyncCssMobile.php
-
-		-
 			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 2
 			path: tests/Integration/inc/Engine/CriticalPath/Admin/Subscriber/enableMobileCpcss.php
@@ -1126,16 +851,6 @@ parameters:
 			path: tests/Integration/inc/Engine/CriticalPath/Admin/Subscriber/setAsyncCssMobileDefaultValue.php
 
 		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/CriticalPath/CriticalCSS/cleanCriticalCss.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/CriticalPath/CriticalCSS/getCriticalCssContent.php
-
-		-
 			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/CriticalPath/CriticalCSS/getCriticalCssContent.php
@@ -1144,11 +859,6 @@ parameters:
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/CriticalPath/CriticalCSS/getCriticalCssContent.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/CriticalPath/CriticalCSS/getCurrentPageCriticalCss.php
 
 		-
 			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
@@ -1161,21 +871,6 @@ parameters:
 			path: tests/Integration/inc/Engine/CriticalPath/CriticalCSSSubscriber/deleteCpcss.php
 
 		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/CriticalPath/CriticalCSSSubscriber/excludeInlineJs.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/CriticalPath/CriticalCSSSubscriber/generateCriticalCssOnActivation.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/CriticalPath/CriticalCSSSubscriber/insertCriticalCssBuffer.php
-
-		-
 			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/CriticalPath/CriticalCSSSubscriber/insertCriticalCssBuffer.php
@@ -1186,16 +881,6 @@ parameters:
 			path: tests/Integration/inc/Engine/CriticalPath/CriticalCSSSubscriber/insertCriticalCssBuffer.php
 
 		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/CriticalPath/CriticalCSSSubscriber/maybeGenerateCpcssMobile.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/CriticalPath/CriticalCSSSubscriber/stopCpcssProcess.php
-
-		-
 			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/CriticalPath/CriticalCSSSubscriber/stopCpcssProcess.php
@@ -1204,146 +889,6 @@ parameters:
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/CriticalPath/CriticalCSSSubscriber/stopCpcssProcess.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/CriticalPath/CriticalCSSSubscriber/switchToRucss.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/CriticalPath/CriticalCSSSubscriber/switchToRucssNotice.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/CriticalPath/ProcessorService/processGenerate.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/License/API/UserClient/getUserData.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 2
-			path: tests/Integration/inc/Engine/License/Subscriber/addExpiredBubble.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 2
-			path: tests/Integration/inc/Engine/License/Subscriber/addLicenseExpireWarning.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 2
-			path: tests/Integration/inc/Engine/License/Subscriber/addLocalizeScriptData.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 2
-			path: tests/Integration/inc/Engine/License/Subscriber/addNotificationBubble.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/License/Subscriber/dismissNotificationBubble.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/License/Subscriber/displayPromoBanner.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/License/Subscriber/displayRenewalExpiredBanner.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/License/Subscriber/displayRenewalSoonBanner.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/License/Subscriber/displayUpgradePopin.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/License/Subscriber/displayUpgradeSection.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 2
-			path: tests/Integration/inc/Engine/License/Subscriber/maybeDisableOcd.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/License/Subscriber/setDashboardSeenTransient.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Media/ImageDimensions/AdminSubscriber/addOption.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Media/ImageDimensions/Subscriber/specifyImageDimensions.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Media/Lazyload/AdminSubscriber/addOption.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Media/Lazyload/AdminSubscriber/sanitizeExcludeLazyload.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Media/Lazyload/CSS/Admin/Subscriber/addMetaBox.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Media/Lazyload/CSS/Admin/Subscriber/addOptionSafemode.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Media/Lazyload/CSS/Subscriber/excludeRocketLazyloadExcludedSrc.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Media/Lazyload/CSS/Subscriber/maybeReplaceCssImages.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Media/Lazyload/Subscriber/addExclusions.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Media/Lazyload/Subscriber/lazyload.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Media/Lazyload/Subscriber/lazyloadResponsive.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Media/Lazyload/Subscriber/maybeDisableCoreLazyload.php
 
 		-
 			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
@@ -1351,29 +896,9 @@ parameters:
 			path: tests/Integration/inc/Engine/Media/PreconnectExternalDomains/Admin/Subscriber/maybeClearDnsPrefetchValues.php
 
 		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 25
-			path: tests/Integration/inc/Engine/Media/PreconnectExternalDomains/Admin/Subscriber/maybeClearPreconnectDomains.php
-
-		-
 			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/Media/PreloadFonts/Admin/Subscriber/MaybeEnableAutoPreloadTest.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 24
-			path: tests/Integration/inc/Engine/Media/PreloadFonts/Frontend/Subscriber/maybeRemoveExistingPreloadedFonts.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Optimization/CacheDynamicResource/cacheDynamicResource.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Optimization/DeferJS/AdminSubscriber/addDeferJsOption.php
 
 		-
 			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
@@ -1391,11 +916,6 @@ parameters:
 			path: tests/Integration/inc/Engine/Optimization/DeferJS/AdminSubscriber/excludeJqueryDefer.php
 
 		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Optimization/DeferJS/Subscriber/deferInlineJs.php
-
-		-
 			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/Optimization/DeferJS/Subscriber/deferInlineJs.php
@@ -1404,11 +924,6 @@ parameters:
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/Optimization/DeferJS/Subscriber/deferInlineJs.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Optimization/DeferJS/Subscriber/deferJs.php
 
 		-
 			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
@@ -1421,11 +936,6 @@ parameters:
 			path: tests/Integration/inc/Engine/Optimization/DeferJS/Subscriber/deferJs.php
 
 		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Optimization/DeferJS/Subscriber/excludeJqueryCombine.php
-
-		-
 			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/Optimization/DeferJS/Subscriber/excludeJqueryCombine.php
@@ -1434,21 +944,6 @@ parameters:
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/Optimization/DeferJS/Subscriber/excludeJqueryCombine.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Optimization/DelayJS/Admin/Subscriber/addOptions.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Optimization/DelayJS/Admin/Subscriber/maybeDisableCombineJs.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 2
-			path: tests/Integration/inc/Engine/Optimization/DelayJS/Admin/Subscriber/sanitizeOptions.php
 
 		-
 			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
@@ -1456,16 +951,6 @@ parameters:
 			path: tests/Integration/inc/Engine/Optimization/DelayJS/Admin/Subscriber/setOptionOnUpdate.php
 
 		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Optimization/DelayJS/Subscriber/addDelayJsScript.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Optimization/DelayJS/Subscriber/delayJs.php
-
-		-
 			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/Optimization/DelayJS/Subscriber/delayJs.php
@@ -1474,56 +959,6 @@ parameters:
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/Optimization/DelayJS/Subscriber/delayJs.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Optimization/DynamicLists/Subscriber/addCacheIgnoredParameters.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Optimization/DynamicLists/Subscriber/addCombineJsExcludedInline.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Optimization/DynamicLists/Subscriber/addDynamicListsScript.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Optimization/DynamicLists/Subscriber/addIncompatiblePluginsToDeactivate.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Optimization/DynamicLists/Subscriber/addJsExcludeFiles.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Optimization/DynamicLists/Subscriber/addMinifyExcludedExternalJs.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Optimization/DynamicLists/Subscriber/addMoveAfterCombineJs.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Optimization/DynamicLists/Subscriber/addPreloadExclusions.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Optimization/DynamicLists/Subscriber/addStagingExclusions.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Optimization/DynamicLists/Subscriber/updateLists.php
 
 		-
 			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
@@ -1534,96 +969,11 @@ parameters:
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/Optimization/GoogleFonts/Admin/Subscriber/enableGoogleFonts.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Optimization/GoogleFonts/Combine/optimize.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Optimization/GoogleFonts/Subscriber/preconnect.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Optimization/IEConditionalSubscriber/TestCase.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Optimization/LazyRenderContent/Frontend/Subscriber/add_hashes.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Optimization/LazyRenderContent/Frontend/Subscriber/add_hashes_when_allowed.php
 
 		-
 			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/Optimization/Minify/CSS/AdminSubscriber/regenerateMinifyCssKey.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Optimization/Minify/CSS/Subscriber/process.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Optimization/Minify/JS/Subscriber/process.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Optimization/RUCSS/Admin/Database/deleteOldUsedCss.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Optimization/RUCSS/Admin/Database/truncateUsedCssTable.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Optimization/RUCSS/Admin/OptionSubscriber/addOptionsFirstTime.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 2
-			path: tests/Integration/inc/Engine/Optimization/RUCSS/Admin/OptionSubscriber/sanitizeOptions.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Optimization/RUCSS/Admin/Subscriber/cleanUsedCssAndCache.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Optimization/RUCSS/Admin/Subscriber/deleteTermUsedCss.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Optimization/RUCSS/Admin/Subscriber/deleteUsedCssOnUpdateOrDelete.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Optimization/RUCSS/Admin/Subscriber/displayNoTableNotice.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Optimization/RUCSS/Admin/Subscriber/maybeDeleteTransient.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Optimization/RUCSS/Admin/Subscriber/truncateUsedCss.php
 
 		-
 			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
@@ -1641,26 +991,6 @@ parameters:
 			path: tests/Integration/inc/Engine/Optimization/RUCSS/Frontend/Subscriber/onUpdate.php
 
 		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Preload/Cron/Subscriber/processPendingUrls.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Preload/Links/AdminSubscriber/addIncompatiblePlugins.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Preload/Links/AdminSubscriber/addOption.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/WPRocketUninstall/uninstall.php
-
-		-
 			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 2
 			path: tests/Integration/inc/Engine/WPRocketUninstall/uninstall.php
@@ -1676,179 +1006,9 @@ parameters:
 			path: tests/Integration/inc/Engine/WPRocketUninstall/uninstall.php
 
 		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Hostings/Cloudways/varnishAddonTitle.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Hostings/Cloudways/varnishIP.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Hostings/Dreampress/removeHtaccessHtmlExpire.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Hostings/Dreampress/setVarnishAddonTitle.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Hostings/Dreampress/setVarnishHost.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Hostings/Godaddy/removeHtmlExpire.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Hostings/Godaddy/varnishField.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Hostings/O2Switch/addPurgeHeaders.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Hostings/O2Switch/removeHtaccessHtmlExpire.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Hostings/O2Switch/removeRegexFromPurgeUrl.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Hostings/O2Switch/varnishAddonTitle.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Hostings/OneCom/disableCDNChange.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Hostings/OneCom/excludeFromCDN.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Hostings/OneCom/maybeSetVarnishAddonTitle.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Hostings/OneCom/maybeUpdateCDNCname.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Hostings/OneCom/maybeUpdateCDNZone.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Hostings/Pressidium/pressidiumVarnishField.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Hostings/ProIsp/maybeSetVarnishAddonTitle.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Hostings/WPEngine/addFootprint.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Hostings/WPEngine/varnishAddonTitle.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Hostings/WPXCloud/appendCacheControlHeader.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Hostings/WPXCloud/varnishAddonTitle.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Hostings/WPXCloud/varnishIP.php
-
-		-
 			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/ThirdParty/Plugins/Ads/Adthrive/addDelayJsExclusion.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Plugins/Ads/Adthrive/maybeAddDelayJsExclusion.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Plugins/CDN/Cloudflare/addCdnHelperMessage.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Plugins/CDN/Cloudflare/disableCloudflareOption.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Plugins/CDN/Cloudflare/hideAddonRadio.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Plugins/CDN/Cloudflare/updateAddonField.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Plugins/ConvertPlug/excludedFromRucss.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Plugins/Ecommerce/WooCommerceSubscriber/reformatShopUrlForPreload.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Plugins/Ecommerce/WooCommerceSubscriber/showNotemptyProductGalleryWithDelayJS.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Plugins/I18n/TranslatePress/detectHomepage.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Plugins/I18n/Weglot/addLangsToReferer.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Plugins/Jetpack/addJetpackSitemap.php
 
 		-
 			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
@@ -1859,16 +1019,6 @@ parameters:
 			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/ThirdParty/Plugins/Optimization/AMP/disableOptionsOnAmp.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Plugins/Optimization/AMP/excludeScriptFromDelayJs.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Plugins/Optimization/AMP/isAmpCompatibleCallback.php
 
 		-
 			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
@@ -1891,16 +1041,6 @@ parameters:
 			path: tests/Integration/inc/ThirdParty/Plugins/Optimization/Autoptimize/warnWhenJsAggregationAndDelayJsActive.php
 
 		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Plugins/Optimization/Ezoic/addConflict.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Plugins/Optimization/Ezoic/addExplanations.php
-
-		-
 			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/ThirdParty/Plugins/Optimization/Hummingbird/warningNotice.php
@@ -1909,21 +1049,6 @@ parameters:
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/ThirdParty/Plugins/Optimization/Hummingbird/warningNotice.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Plugins/Optimization/Perfmatters/disableRucssSetting.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Plugins/Optimization/RapidLoad/disableRucssSetting.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Plugins/Optimization/RocketLazyLoad/excludeRocketLazyLoadScript.php
 
 		-
 			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
@@ -1931,84 +1056,19 @@ parameters:
 			path: tests/Integration/inc/ThirdParty/Plugins/Optimization/WPMeteor/disableDelayJs.php
 
 		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Plugins/Optimization/WPMeteor/maybeDisableDelayJsField.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Plugins/PDFEmbedder/excludePDFEmbedderScripts.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Plugins/PDFEmbedder/excludePDFEmbedderScriptsPremium.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Plugins/PDFEmbedder/excludePDFEmbedderScriptsSecure.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Plugins/PageBuilder/Elementor/addFixAnimationsScript.php
-
-		-
 			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/ThirdParty/Plugins/PageBuilder/Elementor/clearCache.php
 
 		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Plugins/PageBuilder/Elementor/excludeJs.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Plugins/PageBuilder/Elementor/excludePostCss.php
-
-		-
 			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/ThirdParty/Plugins/PageBuilder/Elementor/excludePostCss.php
 
 		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Plugins/RevolutionSlider/excludeDeferJs.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Plugins/SEO/AllInOneSEOPack/addAllInOneSeoSitemap.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Plugins/SEO/RankMathSEO/addSitemap.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Plugins/SEO/SEOPress/addSeopressSitemap.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Plugins/SEO/TheSEOFramework/addTsfSitemapToPreload.php
-
-		-
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/ThirdParty/Plugins/SimpleCustomCss/updateCacheFile.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Plugins/Smush/SmushSubscriberTestCase.php
 
 		-
 			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
@@ -2021,114 +1081,9 @@ parameters:
 			path: tests/Integration/inc/ThirdParty/Plugins/Smush/maybeDeactivateRocketLazyload.php
 
 		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Plugins/TheEventsCalendar/excludeFromPreloadCalendars.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Plugins/WPGeotargeting/addGeotCookies.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Plugins/WPGeotargeting/maybeDisableRules.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Themes/Avada/TestCase.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Themes/Avada/cleanDomain.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Themes/Avada/excludeDeferJs.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Themes/Avada/excludeDelayJs.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 2
-			path: tests/Integration/inc/ThirdParty/Themes/Bridge/maybeClearCache.php
-
-		-
 			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/ThirdParty/Themes/Bridge/maybeClearCache.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Themes/Divi/disableDiviJqueryBody.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 2
-			path: tests/Integration/inc/ThirdParty/Themes/Divi/disableImageDimensionsHeightPercentage.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Themes/Divi/handleDiviAdminNotice.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Themes/Divi/handleSaveTemplate.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Themes/Divi/maybeDisableYoutubePreview.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/ThirdParty/Themes/Divi/removeAssetsGenerated.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 2
-			path: tests/Integration/inc/ThirdParty/Themes/Flatsome/preservePatterns.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 2
-			path: tests/Integration/inc/ThirdParty/Themes/Jevelin/preservePatterns.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 2
-			path: tests/Integration/inc/ThirdParty/Themes/MinimalistBlogger/excludeJqueryFromDelayJs.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 2
-			path: tests/Integration/inc/ThirdParty/Themes/Shoptimizer/excludeJqueryDeferjsWithCartDrawer.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 2
-			path: tests/Integration/inc/ThirdParty/Themes/Uncode/excludeDelayJs.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 2
-			path: tests/Integration/inc/ThirdParty/Themes/Uncode/excludeJs.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 2
-			path: tests/Integration/inc/ThirdParty/Themes/Xstore/excludeInlineContent.php
 
 		-
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
@@ -2154,8 +1109,3 @@ parameters:
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/functions/rocketIsPluginActive.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 5
-			path: tests/Unit/inc/Engine/Optimization/CSSTraitApplyFontDisplaySwap.php

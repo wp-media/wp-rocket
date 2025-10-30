@@ -77,7 +77,7 @@ class Query extends Base {
 	 * @since 1.0.0
 	 * @var   string
 	 */
-	protected $table_schema = '\\WP_Rocket\\Dependencies\\BerlinDB\\Database\\Schema';
+	protected $table_schema = '\\WP_Rocket\Dependencies\BerlinDB\\Database\\Schema';
 
 	/** Item ******************************************************************/
 
@@ -113,7 +113,16 @@ class Query extends Base {
 	 * @since 1.0.0
 	 * @var   mixed
 	 */
-	protected $item_shape = '\\WP_Rocket\\Dependencies\\BerlinDB\\Database\\Row';
+	protected $item_shape = '\\WP_Rocket\Dependencies\BerlinDB\\Database\\Row';
+
+    /**
+     * Name of class used to turn IDs into first-class objects for the current request.
+     *
+     *  This is used when looping through return values to guarantee their shape.
+     *
+     * @var mixed
+     */
+    protected $current_item_shape;
 
 	/** Cache *****************************************************************/
 
@@ -342,7 +351,7 @@ class Query extends Base {
 	 * @since 1.0.0
 	 *
 	 * @param string|array $query Array or URL query string of parameters.
-	 * @param bool         $use_cache Use DB cache or not. (custom parameter added by us!)
+	 * @param bool $use_cache Use DB cache or not. (custom parameter added by us!)
 	 * @return array|int List of items, or number of items when 'count' is passed as a query var.
 	 */
 	public function query( $query = array(), bool $use_cache = true ) {
@@ -421,6 +430,9 @@ class Query extends Base {
 		if ( empty( $this->item_shape ) || ! class_exists( $this->item_shape ) ) {
 			$this->item_shape = __NAMESPACE__ . '\\Row';
 		}
+        if ( empty( $this->current_item_shape ) || ! class_exists( $this->current_item_shape ) ) {
+            $this->current_item_shape = $this->item_shape;
+        }
 	}
 
 	/**
@@ -892,6 +904,7 @@ class Query extends Base {
 			// Set the number of found items
 			$this->set_found_items( $item_ids );
 
+			// Format the cached value
 			if ( $use_cache ) {
 				// Format the cached value
 				$cache_value = array(
@@ -901,6 +914,7 @@ class Query extends Base {
 
 				// Add value to the cache
 				$this->cache_add( $cache_key, $cache_value, $this->cache_group );
+
 			}
 
 		// Value exists in cache
@@ -1452,7 +1466,7 @@ class Query extends Base {
 		$columns   = array_flip( $this->get_column_names() );
 
 		// Get the intersection of allowed column names to groupby columns
-		$intersect = array_intersect( $columns, $groupby );
+		$intersect = array_intersect( $groupby, $columns );
 
 		// Bail if invalid column
 		if ( empty( $intersect ) ) {
@@ -1560,8 +1574,10 @@ class Query extends Base {
 
 		// Force to stdClass if querying for fields
 		if ( ! empty( $this->query_vars['fields'] ) ) {
-			$this->item_shape = 'stdClass';
-		}
+			$this->current_item_shape = 'stdClass';
+		} else {
+            $this->current_item_shape = $this->item_shape;
+        }
 
 		// Default return value
 		$retval = array();
@@ -1772,7 +1788,7 @@ class Query extends Base {
 	 * @since 1.0.0
 	 *
 	 * @param array $data
-	 * @return bool
+	 * @return int|false Item ID if successful, false if not
 	 */
 	public function add_item( $data = array() ) {
 
@@ -1869,7 +1885,7 @@ class Query extends Base {
 	 *
 	 * @param int $item_id
 	 * @param array $data
-	 * @return bool
+	 * @return int|false Item ID if successful, false if not
 	 */
 	public function copy_item( $item_id = 0, $data = array() ) {
 
@@ -2076,13 +2092,13 @@ class Query extends Base {
 		}
 
 		// Return the item if it's already shaped
-		if ( $item instanceof $this->item_shape ) {
+		if ( $item instanceof $this->current_item_shape ) {
 			return $item;
 		}
 
 		// Shape the item as needed
-		$item = ! empty( $this->item_shape )
-			? new $this->item_shape( $item )
+		$item = ! empty( $this->current_item_shape )
+			? new $this->current_item_shape( $item )
 			: (object) $item;
 
 		// Return the item object

@@ -144,10 +144,11 @@ class AbstractQuery extends Query {
 	 * @param string $job_id API job_id.
 	 * @param string $queue_name API Queue name.
 	 * @param bool   $is_mobile if the request is for mobile page.
+	 * @param array  $additional_details Additional details to be saved into DB.
 	 *
 	 * @return bool
 	 */
-	public function create_new_job( string $url, string $job_id = '', string $queue_name = '', bool $is_mobile = false ) {
+	public function create_new_job( string $url, string $job_id = '', string $queue_name = '', bool $is_mobile = false, array $additional_details = [] ) {
 		if ( ! self::$table_exists && ! $this->table_exists() ) {
 			return false;
 		}
@@ -161,6 +162,10 @@ class AbstractQuery extends Query {
 			'retries'       => 0,
 			'last_accessed' => current_time( 'mysql', true ),
 		];
+
+		if ( ! empty( $additional_details ) ) {
+			$item = array_merge( $item, $additional_details );
+		}
 
 		$result = $this->add_item( $item );
 
@@ -304,25 +309,35 @@ class AbstractQuery extends Query {
 	 *
 	 * @param int    $id DB row ID.
 	 * @param string $job_id API job_id.
+	 * @param array  $additional_details Additional details to be saved into DB.
 	 *
 	 * @return bool
 	 */
-	public function reset_job( int $id, string $job_id = '' ) {
+	public function reset_job( int $id, string $job_id = '', array $additional_details = [] ) {
 		if ( ! self::$table_exists && ! $this->table_exists() ) {
 			return false;
 		}
 
+		$updates = [
+			'job_id'        => $job_id,
+			'status'        => 'to-submit',
+			'error_code'    => '',
+			'error_message' => '',
+			'retries'       => 0,
+			'modified'      => current_time( 'mysql', true ),
+			'submitted_at'  => current_time( 'mysql', true ),
+		];
+
+		if ( ! empty( $additional_details ) ) {
+			$updates = wp_parse_args(
+				$updates,
+				$additional_details
+			);
+		}
+
 		return $this->update_item(
 			$id,
-			[
-				'job_id'        => $job_id,
-				'status'        => 'to-submit',
-				'error_code'    => '',
-				'error_message' => '',
-				'retries'       => 0,
-				'modified'      => current_time( 'mysql', true ),
-				'submitted_at'  => current_time( 'mysql', true ),
-			]
+			$updates
 		);
 	}
 
@@ -649,5 +664,18 @@ class AbstractQuery extends Query {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Get total number of rows.
+	 *
+	 * @return int
+	 */
+	public function get_total_count() {
+		return (int) $this->query(
+			[
+				'count' => true,
+			]
+		);
 	}
 }

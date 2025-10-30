@@ -1,0 +1,36 @@
+.pluginfamily-promote-imagify{
+    padding: 20px 32px 20px 60px;
+    border: 1px solid #007CBA;
+    border-radius: 6px;
+    margin: 20px 0;
+    background: url("../imgs/plus.png") no-repeat 20px 20px;
+    position: relative;
+}
+.pluginfamily-promote-imagify p{
+    margin: 0 0 10px;
+}
+
+.pluginfamily-promote-imagify button{
+    font-weight: bold;
+    color: #000;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 0;
+    text-align: left;
+}
+
+.pluginfamily-promote-imagify-dismiss{
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
+.pluginfamily-promote-imagify-dismiss-icon{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}

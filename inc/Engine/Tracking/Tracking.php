@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\Tracking;
 
 use WP_Rocket\Abstract_Render;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Admin\RocketInsights\Database\Rows\RocketInsights;
 use WPMedia\Mixpanel\Optin;
 use WPMedia\Mixpanel\TrackingPlugin as MixpanelTracking;
 
@@ -59,9 +60,19 @@ class Tracking extends Abstract_Render {
 			return;
 		}
 
-		$options_to_track = [
-			'auto_preload_fonts',
-		];
+		/**
+		 * Filters the tracked options.
+		 *
+		 * @since 3.19.2
+		 *
+		 * @param string[] $options Array of options that are tracked by default.
+		 * @return string[] array of strings.
+		 */
+		$options_to_track = wpm_apply_filters_typed(
+			'string[]',
+			'rocket_mixpanel_tracked_options',
+			[]
+		);
 
 		foreach ( $options_to_track as $option_tracked ) {
 			if ( ! isset( $old_value[ $option_tracked ], $value[ $option_tracked ] ) ) {
@@ -73,10 +84,8 @@ class Tracking extends Abstract_Render {
 			}
 
 			$this->mixpanel->track(
-				'WPM Option Changed',
+				'Option Changed',
 				[
-					'brand'          => 'WP Media',
-					'product'        => 'WP Rocket',
 					'context'        => 'wp_plugin',
 					'option_name'    => $option_tracked,
 					'previous_value' => $old_value[ $option_tracked ],
@@ -147,5 +156,156 @@ class Tracking extends Abstract_Render {
 		}
 
 		wp_send_json_error( 'Invalid value parameter.' );
+	}
+
+	/**
+	 * Add opt-in status to admin scripts.
+	 *
+	 * @return void
+	 */
+	public function localize_optin_status(): void {
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			return;
+		}
+
+		// Get the license email and hash it for privacy.
+		$consumer_email = $this->options->get( 'consumer_email', '' );
+		$hashed_email   = ! empty( $consumer_email ) ? $this->mixpanel->hash( $consumer_email ) : '';
+
+		wp_localize_script(
+			'wpr-admin-common',
+			'rocket_mixpanel_data',
+			[
+				'optin_enabled' => $this->optin->is_enabled() ? true : false,
+				'plugin'        => 'wp rocket ' . rocket_get_constant( 'WP_ROCKET_VERSION', '' ),
+				'brand'         => 'wp media',
+				'app'           => 'wp rocket',
+				'context'       => 'wp_plugin',
+				'path'          => isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '',
+				'user_id'       => $hashed_email,
+			]
+		);
+	}
+
+	/**
+	 * Injects Mixpanel JavaScript SDK when opt-in is enabled.
+	 *
+	 * @since 3.19.2
+	 * @return void
+	 */
+	public function inject_mixpanel_script(): void {
+		// Only inject if user has capability and opt-in is enabled.
+		if ( ! current_user_can( 'rocket_manage_options' ) || ! $this->optin->is_enabled() ) {
+			return;
+		}
+
+		$screen = get_current_screen();
+
+		if ( ! $screen || 'settings_page_wprocket' !== $screen->id ) {
+			return;
+		}
+
+		$this->mixpanel->add_script();
+	}
+
+	/**
+	 * Track opt-in change event.
+	 *
+	 * @param bool $status The new opt-in status.
+	 *
+	 * @return void
+	 */
+	public function track_optin_change( $status ): void {
+		$this->mixpanel->track_optin( $status );
+	}
+
+	/**
+	 * Track when a URL is added in Rocket Insights
+	 *
+	 * @param string $url        The URL that was added for monitoring.
+	 * @param String $plan       Plan name.
+	 * @param int    $urls_count The current number of URLs being monitored.
+	 *
+	 * @return void
+	 */
+	public function track_rocket_insights_url_added( $url, $plan, $urls_count ): void {
+		if ( ! $this->optin->is_enabled() ) {
+			return;
+		}
+
+		$this->mixpanel->track(
+			'Rocket Insights Page Added',
+			[
+				'context'       => 'wp_plugin',
+				'plan_type'     => $plan,
+				'tracked_pages' => $urls_count,
+			]
+		);
+	}
+
+	/**
+	 * Tracks when a performance test is completed or failed in Rocket Insights.
+	 *
+	 * @since 3.20
+	 *
+	 * @param RocketInsights $row_details Details related to the database row.
+	 * @param array          $job_details Details related to the job.
+	 * @param string         $plan Plan name.
+	 *
+	 * @return void
+	 */
+	public function track_rocket_insights_test( $row_details, $job_details, $plan ): void {
+		if ( ! $this->optin->is_enabled() ) {
+			return;
+		}
+
+		if ( empty( $row_details->data ) ) {
+			return;
+		}
+
+		$this->mixpanel->track(
+			'Rocket Insights Performance Test',
+			[
+				'context'   => 'wp_plugin',
+				'status'    => $row_details->status,
+				'score'     => $row_details->score,
+				'retest'    => $row_details->data['is_retest'],
+				'duration'  => time() - $row_details->data['start_time'],
+				'plan_type' => $plan,
+			]
+		);
+	}
+
+	/**
+	 * Tracks visits to settings page
+	 *
+	 * @return void
+	 */
+	public function track_admin_visits(): void {
+		if ( ! $this->optin->is_enabled() ) {
+			return;
+		}
+
+		$user      = wp_get_current_user();
+		$transient = 'rocket_tracking_admin_visited_' . $user->ID;
+
+		if ( false !== get_transient( $transient ) ) {
+			return;
+		}
+
+		$screen = get_current_screen();
+
+		if ( ! $screen || 'settings_page_wprocket' !== $screen->id ) {
+			return;
+		}
+
+		$this->mixpanel->track(
+			'Page Viewed',
+			[
+				'path'    => '/wp-admin/options-general.php?page=wprocket',
+				'context' => 'wp_plugin',
+			]
+		);
+		set_transient( $transient, true, WEEK_IN_SECONDS );
 	}
 }

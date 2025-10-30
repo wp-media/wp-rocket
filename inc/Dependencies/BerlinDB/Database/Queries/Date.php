@@ -152,6 +152,13 @@ class Date extends Base {
 		'AND'
 	);
 
+	
+	/**
+	 * @since 2.0.2
+	 * @var string|null Table name
+	 */
+	public $table_name = null;
+
 	/**
 	 * Constructor.
 	 *
@@ -387,6 +394,10 @@ class Date extends Base {
 		$retval = ! empty( $query['column'] )
 			? esc_sql( $this->validate_column( $query['column'] ) )
 			: $this->column;
+
+		if (!empty($this->table_name)) {
+			$retval = $this->table_name . '.' . $retval;
+		}
 
 		return $retval;
 	}
@@ -645,8 +656,9 @@ class Date extends Base {
 	 *
 	 * @return string MySQL WHERE clauses.
 	 */
-	public function get_sql() {
-		$sql = $this->get_sql_clauses();
+	public function get_sql( $type, $primary_table, $primary_id_column, $context = null ) {
+		$this->table_name  = $this->sanitize_table_name( $primary_table );
+		$sql               = $this->get_sql_clauses();
 
 		/**
 		 * Filters the date query clauses.

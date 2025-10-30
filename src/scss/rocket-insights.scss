@@ -1,0 +1,478 @@
+/**
+ * Rocket Insights column styles for post listing pages.
+ *
+ * @since 3.20.1
+ */
+
+// Import base styles for icons
+@import "base/_icons";
+
+// Import variables for colors
+@import "abstracts/_variables";
+
+.wpr-ri-column {
+	min-width: 150px;
+
+	// Not tracked state - show "Test the page" link
+	&.wpr-ri-not-tracked {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+
+		.wpr-ri-test-page {
+			color: #2271b1;
+			text-decoration: none;
+			font-size: 14px;
+			font-weight: 400;
+			background: none;
+			border: none;
+			text-align: left;
+			padding: 0 0 0 0;
+			cursor: pointer;
+
+			&.wpr-ri-no-credit {
+				color: #646970;
+				cursor: not-allowed;
+			}
+		}
+
+		.wpr-ri-credit-message {
+			color: #c01b1b;
+			font-size: 12px;
+			margin-top: 2px;
+		}
+	}
+
+	// Loading state.
+	.wpr-ri-loading {
+		text-align: left;
+		padding: 8px 0;
+
+		.wpr-loading-img {
+			width: 32px;
+			height: 32px;
+		}
+	}
+
+	// Blurred score state (upgrade required).
+	.wpr-ri-blurred {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 4px;
+
+		// Score indicator styles for blurred state
+		.wpr-percentage-indicator {
+			top: 3px;
+
+			.wpr-percentage-circle {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				width: 32px;
+				height: 32px;
+				font-size: 14.67px;
+				border-radius: 50%;
+				border-style: solid;
+				border-width: 1.33px;
+				font-weight: 600;
+				line-height: 0;
+
+				&.status-red {
+					border-color: $errorDark;
+					color: $errorDark;
+					background-color: $errorLighter;
+				}
+
+				&.status-yellow {
+					border-color: $warningDark;
+					color: $warningDark;
+					background-color: $warningLighter;
+				}
+
+				&.status-green {
+					border-color: $successDark;
+					color: $successDark;
+					background-color: $successLighter;
+				}
+
+				&.blurred {
+					filter: blur(4px);
+					-webkit-filter: blur(4px);
+					pointer-events: none;
+				}
+			}
+		}
+	}
+
+	// Score wrapper.
+	.wpr-ri-score-wrapper {
+		margin-bottom: 4px;
+
+		// Score indicator styles
+		.wpr-percentage-indicator {
+			position: relative;
+			top: 3px;
+
+			.wpr-percentage-circle {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				width: 32px;
+				height: 32px;
+				font-size: 14.67px;
+				border-radius: 50%;
+				border-style: solid;
+				border-width: 1.33px;
+				font-weight: 600;
+				line-height: 0;
+
+				&.status-red {
+					border-color: $errorDark;
+					color: $errorDark;
+					background-color: $errorLighter;
+				}
+
+				&.status-yellow {
+					border-color: $warningDark;
+					color: $warningDark;
+					background-color: $warningLighter;
+				}
+
+				&.status-green {
+					border-color: $successDark;
+					color: $successDark;
+					background-color: $successLighter;
+				}
+
+				.wpr-failed-score {
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					width: 21.33px;
+					height: 21.33px;
+					&:before {
+						position: relative;
+						width: 21.33px;
+						height: 21.33px;
+						background-size: contain;
+						display: inline-block;
+					}
+				}
+
+				&.wpr-centralize-100-score {
+					padding-left: 2px;
+				}
+			}
+		}
+	}
+
+	// Actions wrapper (links below score).
+	.wpr-ri-actions-wrapper {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+		font-size: 14px;
+
+		.wpr-ri-retest-link,
+		.wpr-ri-see-report-link {
+			display: block;
+			color: #2271b1;
+			text-decoration: none;
+			font-weight: 400;
+			background: none;
+			border: none;
+			text-align: left;
+			padding: 0 0 0 0;
+			cursor: pointer;
+
+			// Icons before text
+			&:before {
+				margin-right: 4px;
+				font-size: 14px;
+			}
+		}
+
+		.wpr-ri-retest-link.wpr-icon-bold-refresh:before {
+			font-size: 15px;
+		}
+
+		// Disabled state for Re-test and See Report
+		.wpr-ri-retest-link.wpr-ri-disabled,
+		.wpr-ri-see-report-link.wpr-ri-disabled {
+			color: #a7aaad;
+			cursor: not-allowed;
+			pointer-events: none;
+
+			&:hover {
+				text-decoration: none;
+			}
+		}
+
+		.wpr-ri-no-credit-text {
+			color: #c01b1b;
+			font-size: 12px;
+		}
+	}
+
+	// Tooltip styles for column
+	.wpr-btn-with-tool-tip {
+		position: relative;
+
+		&:hover .wpr-tooltip {
+			opacity: 1;
+			visibility: visible;
+		}
+	}
+
+	.wpr-tooltip {
+		position: absolute;
+		bottom: calc(100% + 8px);
+		left: 0;
+		opacity: 0;
+		visibility: hidden;
+		transition: opacity 0.2s ease, visibility 0.2s ease;
+		z-index: 1000;
+		width: 280px;
+
+		.wpr-tooltip-content {
+			background: #1d2327;
+			color: #fff;
+			padding: 8px 12px;
+			border-radius: 4px;
+			font-size: 12px;
+			line-height: 1.4;
+			text-align: center;
+			box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+		}
+
+		// Tooltip arrow
+		&:after {
+			content: '';
+			position: absolute;
+			top: 100%;
+			left: 16px;
+			width: 0;
+			height: 0;
+			border-left: 6px solid transparent;
+			border-right: 6px solid transparent;
+			border-top: 6px solid #1d2327;
+		}
+	}
+
+	// Old results state (keeping for backwards compatibility).
+	.wpr-ri-results {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+
+		// Performance score indicator (match dashboard exactly).
+		.wpr-percentage-indicator {
+			top: 3px;
+
+			.wpr-percentage-circle {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				width: 32px;
+				height: 32px;
+				font-size: 14.67px;
+				border-radius: 50%;
+				border-style: solid;
+				border-width: 1.33px;
+				font-weight: 600;
+				line-height: 0;
+
+				// Color states.
+				&.status-red {
+					border-color: $errorDark;
+					color: $errorDark;
+					background-color: $errorLighter;
+				}
+
+				&.status-yellow {
+					border-color: $warningDark;
+					color: $warningDark;
+					background-color: $warningLighter;
+				}
+
+				&.status-green {
+					border-color: $successDark;
+					color: $successDark;
+					background-color: $successLighter;
+				}
+
+				&.blurred {
+					filter: blur(10px);
+					user-select: none;
+					-webkit-user-select: none;
+					-moz-user-select: none;
+					pointer-events: none;
+				}
+
+				.wpr-failed-score {
+					width: 16px;
+					height: 16px;
+
+					&:before {
+						width: 16px;
+						height: 16px;
+						background-size: contain;
+						display: inline-block;
+					}
+				}
+			}
+
+			.wpr-loading-img {
+				width: 32px;
+				height: 32px;
+			}
+
+			.wpr-percentage-circle.wpr-centralize-100-score {
+				text-indent: -1px;
+			}
+		}
+
+		// Actions container (match dashboard table exactly).
+		.wpr-ri-actions {
+			display: inline-flex;
+			align-items: center;
+			gap: 0;
+			margin-left: 0;
+
+			button,
+			a {
+				font-family: Roboto, Arial, sans-serif;
+				display: inline-block;
+				font-size: 14px;
+				font-weight: 600;
+				line-height: 1.5;
+				padding: 0 8px;
+				margin: 0;
+				color: $cBlack;
+				background: transparent;
+				border: 0;
+				cursor: pointer;
+				text-decoration: none;
+				transition: color 0.2s ease;
+				position: relative;
+
+				&:first-child {
+					padding-left: 0;
+				}
+
+				&:hover:not(.wpr-ri-action--disabled) {
+					color: #135e96;
+				}
+
+				&:focus {
+					outline: 2px solid #2271b1;
+					outline-offset: 2px;
+				}
+
+				&.wpr-ri-action--disabled {
+					color: darken($cGrey, 30%) !important;
+					cursor: not-allowed;
+
+					&:focus {
+						outline: none;
+					}
+				}
+
+				// Icons.
+				&:before {
+					position: relative;
+				}
+
+				&.wpr-icon-bold-refresh:before {
+					font-size: 15px;
+				}
+			}
+
+			// Tooltip styles (reuse existing WP Rocket tooltip).
+			.wpr-btn-with-tool-tip {
+				position: relative;
+
+				&:hover .wpr-tooltip {
+					opacity: 1;
+					visibility: visible;
+				}
+			}
+
+			.wpr-tooltip {
+				position: absolute;
+				bottom: calc(100% + 8px);
+				left: 50%;
+				transform: translateX(-50%);
+				opacity: 0;
+				visibility: hidden;
+				transition: opacity 0.2s ease, visibility 0.2s ease;
+				z-index: 1000;
+				width: 280px;
+
+				.wpr-tooltip-content {
+					background: #1d2327;
+					color: #fff;
+					padding: 8px 12px;
+					border-radius: 4px;
+					font-size: 12px;
+					line-height: 1.4;
+					font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+					font-weight: 400;
+					text-align: left;
+				}
+
+				&:before {
+					content: '';
+					position: absolute;
+					top: 100%;
+					left: 50%;
+					transform: translateX(-50%);
+					border: 6px solid transparent;
+					border-top-color: #1d2327;
+				}
+			}
+		}
+	}
+
+	// Error state.
+	.wpr-ri-error {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		color: #d63638;
+		font-size: 13px;
+
+		.wpr-icon-exclamation {
+			width: 16px;
+			height: 16px;
+
+			&:before {
+				width: 16px;
+				height: 16px;
+			}
+		}
+	}
+
+	// Message container (for error/info messages).
+	.wpr-ri-message {
+		margin-top: 8px;
+		padding: 6px 10px;
+		border-radius: 3px;
+		font-size: 12px;
+		line-height: 1.4;
+
+		&.wpr-ri-message--error {
+			background-color: #fcf0f1;
+			border-left: 4px solid #d63638;
+			color: #2c3338;
+		}
+
+		&.wpr-ri-message--info {
+			background-color: #f0f6fc;
+			border-left: 4px solid #0783be;
+			color: #2c3338;
+		}
+	}
+}
+

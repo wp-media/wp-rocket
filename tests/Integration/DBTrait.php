@@ -72,6 +72,13 @@ trait DBTrait {
 		return $preconnect_external_domains->add_item( $resource );
 	}
 
+	public static function addPerformanceMonitoring(array $resource) {
+		$container = apply_filters( 'rocket_container', null );
+		$ri_query = $container->get( 'ri_query' );
+
+		return $ri_query->add_item( $resource );
+	}
+
 	public static function installFresh() {
 		$container = apply_filters( 'rocket_container', null );
 
@@ -95,6 +102,9 @@ trait DBTrait {
 
 		$preconnect_external_domains_table = $container->get( 'preconnect_external_domains_table' );
 		$preconnect_external_domains_table->install();
+
+		$ri_table = $container->get( 'ri_table' );
+		$ri_table->install();
 	}
 
 	public static function installUsedCssTable() {
@@ -151,6 +161,15 @@ trait DBTrait {
 		}
 	}
 
+	public static function installPerformanceMonitoringTable() {
+		$container = apply_filters( 'rocket_container', null );
+		$ri_table = $container->get( 'ri_table' );
+
+		if ( ! $ri_table->exists() ) {
+			$ri_table->install();
+		}
+	}
+
 	public static function uninstallAll() {
 		$container           = apply_filters( 'rocket_container', null );
 		$rucss_usedcss_table = $container->get( 'rucss_usedcss_table' );
@@ -182,6 +201,14 @@ trait DBTrait {
 		$preconnect_external_domains_table = $container->get( 'preconnect_external_domains_table' );
 		if ( $preconnect_external_domains_table->exists() ) {
 			$preconnect_external_domains_table->uninstall();
+		}
+
+		if ( ! $container->has( 'ri_table' ) ) {
+			return;
+		}
+		$ri_table = $container->get( 'ri_table' );
+		if ( $ri_table->exists() ) {
+			$ri_table->uninstall();
 		}
 	}
 
@@ -235,6 +262,15 @@ trait DBTrait {
 		}
 	}
 
+	public static function uninstallPerformanceMonitoringTable() {
+		$container = apply_filters( 'rocket_container', null );
+		$ri_table = $container->get( 'ri_table' );
+
+		if ( $ri_table->exists() ) {
+			$ri_table->uninstall();
+		}
+	}
+
 	public static function removeDBHooks() {
 		$container           = apply_filters( 'rocket_container', null );
 
@@ -246,6 +282,9 @@ trait DBTrait {
 			$container->get( 'preload_fonts_table' ),
 			$container->get( 'preconnect_external_domains_table' ),
 		];
+		if ( $container->has( 'ri_table' ) ) {
+			$tables[] = $container->get( 'ri_table' );
+		}
 
 		foreach ( $tables as $table ) {
 			self::forceRemoveTableAdminInitHooks( 'init', get_class( $table ), 'maybe_upgrade', 10 );
@@ -280,5 +319,15 @@ trait DBTrait {
 		}
 
 		return false;
+	}
+
+	public static function truncatePerformanceMonitoringTable() {
+		$container           = apply_filters( 'rocket_container', null );
+		$ri_table = $container->get( 'ri_table' );
+
+		if ( $ri_table->exists() ) {
+			$ri_table->truncate();
+		}
+
 	}
 }

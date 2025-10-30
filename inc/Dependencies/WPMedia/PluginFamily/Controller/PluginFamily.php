@@ -8,6 +8,13 @@ namespace WP_Rocket\Dependencies\WPMedia\PluginFamily\Controller;
 class PluginFamily implements PluginFamilyInterface {
 
 	/**
+	 * Plugin family version.
+	 *
+	 * @var string
+	 */
+	private $version = '1.0.6';
+
+	/**
 	 * Error transient.
 	 *
 	 * @var string
@@ -20,8 +27,13 @@ class PluginFamily implements PluginFamilyInterface {
 	 * @return array
 	 */
 	public static function get_subscribed_events(): array {
-		$events                  = self::get_post_install_event();
-		$events['admin_notices'] = 'display_error_notice';
+		$events                                    = self::get_post_install_event();
+		$events['admin_notices']                   = 'display_error_notice';
+		$events['enqueue_block_editor_assets']     = 'enqueue_assets';
+		$events['wp_ajax_install_imagify']         = 'install_imagify';
+		$events['wp_ajax_dismiss_promote_imagify'] = 'dismiss_promote_imagify';
+		$events['admin_enqueue_scripts']           = 'enqueue_admin_assets';
+		$events['admin_footer']                    = 'insert_footer_templates';
 
 		return $events;
 	}
@@ -86,10 +98,11 @@ class PluginFamily implements PluginFamilyInterface {
 	/**
 	 * Install plugin.
 	 *
+	 * @param string $slug Plugin slug if found.
 	 * @return void
 	 */
-	private function install() {
-		if ( $this->is_installed() ) {
+	private function install( $slug = '' ) {
+		if ( $this->is_installed( $slug ) ) {
 			return;
 		}
 
@@ -106,7 +119,7 @@ class PluginFamily implements PluginFamilyInterface {
 		require_once $upgrader_class; // @phpstan-ignore-line
 
 		$upgrader = new \Plugin_Upgrader( new \Automatic_Upgrader_Skin() );
-		$result   = $upgrader->install( $this->get_download_url() );
+		$result   = $upgrader->install( $this->get_download_url( $slug ) );
 
 		if ( is_wp_error( $result ) ) {
 			$this->set_error( $result );
@@ -118,10 +131,11 @@ class PluginFamily implements PluginFamilyInterface {
 	/**
 	 * Check if plugin is installed.
 	 *
+	 * @param string $slug Plugin slug if found.
 	 * @return boolean
 	 */
-	private function is_installed(): bool {
-		return file_exists( WP_PLUGIN_DIR . '/' . $this->get_plugin() );
+	private function is_installed( $slug = '' ): bool {
+		return file_exists( WP_PLUGIN_DIR . '/' . $this->get_plugin( $slug ) );
 	}
 
 	/**
@@ -153,20 +167,26 @@ class PluginFamily implements PluginFamilyInterface {
 	/**
 	 * Get plugin identifier.
 	 *
+	 * @param string $slug Plugin slug if found.
 	 * @return string
 	 */
-	private function get_plugin(): string {
+	private function get_plugin( $slug = '' ): string {
+		if ( 'imagify' === $slug ) {
+			return 'imagify/imagify.php';
+		}
+		if ( empty( $_GET['plugin_to_install'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			return '';
+		}
 		return rawurldecode( sanitize_text_field( wp_unslash( $_GET['plugin_to_install'] ) ) ) . '.php'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotValidated
 	}
 
 	/**
 	 * Get plugin download url.
 	 *
+	 * @param string $slug Plugin slug if found.
 	 * @return string
 	 */
-	private function get_download_url(): string {
-
-		$slug = $this->get_slug();
+	private function get_download_url( $slug = '' ): string {
 
 		$custom_download_url = $this->maybe_get_custom_download_url( $slug );
 
@@ -185,6 +205,10 @@ class PluginFamily implements PluginFamilyInterface {
 		}
 
 		require_once $plugin_install; // @phpstan-ignore-line
+
+		if ( empty( $slug ) ) {
+			$slug = $this->get_slug();
+		}
 
 		$data = [
 			'slug'   => $slug,
@@ -291,5 +315,198 @@ class PluginFamily implements PluginFamilyInterface {
 		$chunks      = explode( '/', $plugin_path );
 
 		return $chunks[0];
+	}
+
+	/**
+	 * Check if imagify is installed or not.
+	 *
+	 * @return bool
+	 */
+	private function is_imagify_installed(): bool {
+		return file_exists( WP_PLUGIN_DIR . '/imagify/imagify.php' );
+	}
+
+	/**
+	 * Check if imagify is activated or not.
+	 *
+	 * @return bool
+	 */
+	private function is_imagify_activated(): bool {
+		return defined( 'IMAGIFY_VERSION' );
+	}
+
+	/**
+	 * Enqueue block editor assets
+	 *
+	 * @return void
+	 */
+	public function enqueue_assets() {
+		if (
+			$this->is_promote_imagify_dismissed()
+			||
+			$this->is_imagify_activated()
+			||
+			wp_script_is( 'plugin-family-script' )
+		) {
+			return;
+		}
+
+		$script_url = plugin_dir_url( __DIR__ ) . 'assets/js/index.js';
+
+		wp_enqueue_script(
+			'plugin-family-script',
+			$script_url,
+			[ 'react-jsx-runtime', 'wp-block-editor', 'wp-components', 'wp-compose', 'wp-element', 'wp-hooks', 'wp-i18n', 'wp-primitives' ],
+			$this->version,
+			[
+				'in_footer' => true,
+			]
+		);
+
+		$this->add_install_imagify_localized_script( 'plugin-family-script' );
+	}
+
+	/**
+	 * Install Imagify using the ajax request.
+	 *
+	 * @return void
+	 */
+	public function install_imagify() {
+		check_ajax_referer( 'install-imagify-nonce' );
+
+		if ( ! current_user_can( is_multisite() ? 'manage_network_plugins' : 'install_plugins' ) ) {
+			wp_send_json_error( __( 'Not Allowed', 'rocket' ) );
+		}
+
+		if ( ! $this->is_imagify_installed() ) {
+			$this->install( 'imagify' );
+		}
+
+		$activated = activate_plugin( $this->get_plugin( 'imagify' ), '', is_multisite() );
+		if ( is_wp_error( $activated ) ) {
+			wp_send_json_error( $activated->get_error_message() );
+		}
+
+		$this->set_imagify_partner( 'wp-rocket' );
+		wp_send_json_success( __( 'Imagify installed! Click here to start using it.', 'rocket' ) );
+	}
+
+	/**
+	 * Set the imagify plugin partner.
+	 *
+	 * @param string $plugin Current plugin.
+	 * @return void
+	 */
+	private function set_imagify_partner( $plugin ) {
+		update_option( 'imagifyp_id', $plugin, false );
+	}
+
+	/**
+	 * Check if we can enqueue admin assets or not.
+	 *
+	 * @param string $page Current page ID if found.
+	 * @return bool
+	 */
+	private function can_enqueue_admin_assets( $page = '' ): bool {
+		if ( $this->is_promote_imagify_dismissed() ) {
+			return false;
+		}
+		if ( empty( $page ) ) {
+			return in_array( get_current_screen()->id, [ 'post', 'upload' ], true );
+		}
+		return in_array( $page, [ 'post.php', 'post-new.php', 'upload.php' ], true );
+	}
+
+	/**
+	 * Add localized script to be used by scripts.
+	 *
+	 * @param string $script_id Script ID.
+	 * @return void
+	 */
+	private function add_install_imagify_localized_script( $script_id ) {
+		$data = [
+			'ajax_url'         => admin_url( 'admin-ajax.php' ),
+			'nonce'            => wp_create_nonce( 'install-imagify-nonce' ),
+			'plugins_page_url' => admin_url( 'plugins.php' ),
+		];
+		wp_add_inline_script(
+			$script_id,
+			'window.wpmedia_pluginfamily = ' . wp_json_encode( $data ) . ';',
+			'before'
+		);
+	}
+
+	/**
+	 * Enqueue Admin assets.
+	 *
+	 * @param string $page Page ID.
+	 * @return void
+	 */
+	public function enqueue_admin_assets( $page ) {
+		if ( ! $this->can_enqueue_admin_assets( $page ) ) {
+			return;
+		}
+
+		if ( $this->is_imagify_activated() || wp_script_is( 'plugin-family-admin-script' ) ) {
+			return;
+		}
+
+		$script_url = plugin_dir_url( __DIR__ ) . 'assets/js/admin.js';
+		wp_enqueue_script(
+			'plugin-family-admin-script',
+			$script_url,
+			[ 'jquery' ], // jQuery as a dependency.
+			$this->version,
+			[
+				'in_footer' => true,
+			]
+		);
+
+		$this->add_install_imagify_localized_script( 'plugin-family-admin-script' );
+
+		$style_url = plugin_dir_url( __DIR__ ) . 'assets/css/style.css';
+		wp_enqueue_style(
+			'plugin-family-admin-style',
+			$style_url,
+			[],
+			$this->version
+		);
+	}
+
+	/**
+	 * Insert admin footer JS templates.
+	 *
+	 * @return void
+	 */
+	public function insert_footer_templates() {
+		if ( ! $this->can_enqueue_admin_assets() ) {
+			return;
+		}
+		include_once __DIR__ . '/../View/promote-imagify-uploader.php';
+	}
+
+	/**
+	 * Dismiss promote Imagify using the ajax request.
+	 *
+	 * @return void
+	 */
+	public function dismiss_promote_imagify() {
+		check_ajax_referer( 'install-imagify-nonce' );
+
+		if ( ! current_user_can( is_multisite() ? 'manage_network_plugins' : 'install_plugins' ) ) {
+			wp_send_json_error( __( 'Not Allowed', 'rocket' ) );
+		}
+
+		update_option( 'plugin_family_dismiss_promote_imagify', true );
+		wp_send_json_success( __( 'Dismissed.', 'rocket' ) );
+	}
+
+	/**
+	 * Check if promote imagify message is dismissed.
+	 *
+	 * @return bool
+	 */
+	private function is_promote_imagify_dismissed() {
+		return ! empty( get_option( 'plugin_family_dismiss_promote_imagify' ) );
 	}
 }

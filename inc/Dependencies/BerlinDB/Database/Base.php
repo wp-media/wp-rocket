@@ -281,7 +281,7 @@ class Base {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return \wpdb|false Database interface, or False if not set
+	 * @return false|\wpdb Database interface, or False if not set
 	 */
 	protected function get_db() {
 

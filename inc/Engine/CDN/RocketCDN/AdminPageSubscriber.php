@@ -216,15 +216,17 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 			[
 				'website'  => home_url(),
 				'callback' => rest_url( 'wp-rocket/v1/rocketcdn/' ),
+				'source'   => 'plugin',
 			],
 			'https://api.wp-rocket.me/cdn/iframe'
 		);
 		?>
 		<div class="wpr-rocketcdn-modal" id="wpr-rocketcdn-modal" aria-hidden="true">
 			<div class="wpr-rocketcdn-modal__overlay" tabindex="-1">
+				<div class="wpr-loader" id="wpr-rocketcdn-modal-loader"></div>
 				<div class="wpr-rocketcdn-modal__container" role="dialog" aria-modal="true" aria-labelledby="wpr-rocketcdn-modal-title">
 					<div id="wpr-rocketcdn-modal-content">
-						<iframe id="rocketcdn-iframe" src="<?php echo esc_url( $iframe_src ); ?>" width="674" height="425"></iframe>
+						<iframe id="rocketcdn-iframe" src="<?php echo esc_url( $iframe_src ); ?>" loading="lazy" width="674" height="425"></iframe>
 					</div>
 				</div>
 			</div>

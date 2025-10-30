@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Tests\Unit\inc\Engine\Tracking\Tracking;
 
 use Brain\Monkey\Functions;
+use Brain\Monkey\Filters;
 use Mockery;
 use WPMedia\Mixpanel\Optin;
 use WPMedia\Mixpanel\TrackingPlugin as MixpanelTracking;
@@ -56,16 +57,19 @@ class TrackOptionChangeTest extends TestCase {
 
 		Functions\when( 'get_site_url' )->justReturn( 'http://example.org' );
 
+		// Mock the filter to return the options that should be tracked
+		Filters\expectApplied( 'rocket_mixpanel_tracked_options' )
+			->with( [] )
+			->andReturn( [ 'auto_preload_fonts' ] );
+
 		if ( ! $expected ) {
 			$this->mixpanel->shouldNotReceive( 'track' );
 		} else {
 			$this->mixpanel->shouldReceive( 'track' )
 				->once()
 				->with(
-					'WPM Option Changed',
+					'Option Changed',
 					[
-						'brand'          => 'WP Media',
-						'product'        => 'WP Rocket',
 						'context'        => 'wp_plugin',
 						'option_name'    => 'auto_preload_fonts',
 						'previous_value' => $config['old_value']['auto_preload_fonts'],

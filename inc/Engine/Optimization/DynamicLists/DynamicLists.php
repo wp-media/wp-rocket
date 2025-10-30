@@ -342,4 +342,27 @@ class DynamicLists extends Abstract_Render {
 
 		return $lists->host_fonts ?? [];
 	}
+
+	/**
+	 * Get the MixPanel tracked options
+	 *
+	 * @return array
+	 */
+	public function get_mixpanel_tracked_options(): array {
+		$lists = $this->providers['defaultlists']->data_manager->get_lists();
+
+		return $lists->mixpanel_tracked_settings ?? [];
+	}
+
+	/**
+	 * Get the external font exclusions
+	 *
+	 * @since 3.19.1
+	 * @return array
+	 */
+	public function get_external_font_exclusions(): array {
+		$lists = $this->providers['defaultlists']->data_manager->get_lists();
+
+		return $lists->external_font_exclusions ?? [];
+	}
 }

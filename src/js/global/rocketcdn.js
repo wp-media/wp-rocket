@@ -14,6 +14,14 @@
 		MicroModal.init( {
 			disableScroll: true
 		} );
+
+		const iframe = document.getElementById('rocketcdn-iframe');
+		const loader = document.getElementById('wpr-rocketcdn-modal-loader');
+		if ( iframe && loader ) {
+			iframe.addEventListener('load', function() {
+				loader.style.display = 'none';
+			});
+		}
 	} );
 
 	window.addEventListener( 'load', () => {
