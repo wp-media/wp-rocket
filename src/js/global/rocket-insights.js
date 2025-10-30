@@ -190,7 +190,7 @@ module.exports = (function() {
 	function checkStatus(rowId, url, column) {
 		window.wp.apiFetch(
 			{
-				path: window.wp.url.addQueryArgs( '/wp-rocket/v1/rocket-insights/pages/progress', { ids: rowId } ),
+				path: window.wp.url.addQueryArgs( '/wp-rocket/v1/rocket-insights/pages/progress', { ids: [rowId] } ),
 			}
 		).then( ( response ) => {
 			if ( response.success && Array.isArray( response.results ) ) {
