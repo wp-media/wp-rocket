@@ -19,7 +19,7 @@ defined( 'ABSPATH' ) || exit;
 
 // If row doesn't exist, show "Test the page" link.
 if ( null === $data['wpr_rocket_row'] ) :
-?>
+	?>
 	<div class="wpr-ri-column wpr-ri-not-tracked" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>">
 		<?php if ( $data['wpr_can_add_pages'] ) : ?>
 			<button type="button" class="wpr-ri-test-page" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>">
@@ -67,7 +67,7 @@ if ( null === $data['wpr_rocket_row'] ) :
 			return;
 endif;
 
-		?>
+?>
 
 <div class="wpr-ri-column" data-rocket-insights-id="<?php echo esc_attr( $data['wpr_rocket_row']->id ); ?>" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>">
 	<?php if ( $data['wpr_is_running'] ) : ?>
