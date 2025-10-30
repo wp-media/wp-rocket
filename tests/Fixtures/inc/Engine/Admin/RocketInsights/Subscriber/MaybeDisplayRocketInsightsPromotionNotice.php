@@ -21,10 +21,21 @@ return [
     HTML,
 
 	'test_data' => [
+        'testShouldNotDisplayNoticeWhenUrlsAreMonitored' => [
+            'config'         => [
+				'role' => 'administrator',
+                'user_meta' => false,
+                'is_monitored' => true,
+			],
+			'expected'       => [
+				'should_display' => false,
+			],
+		],
 		'testShouldNotDisplayNoticeWhenNoCapability' => [
             'config'         => [
 				'role' => 'editor',
                 'user_meta' => false,
+                'is_monitored' => false,
 			],
 			'expected'       => [
 				'should_display' => false,
@@ -34,6 +45,7 @@ return [
             'config'         => [
 				'role'      => 'administrator',
 				'user_meta' => true,
+                'is_monitored' => false,
             ],
 			'expected'       => [
 				'should_display' => false,
@@ -43,6 +55,7 @@ return [
             'config'         => [
                 'role'   => 'administrator',
                 'user_meta' => false,
+                'is_monitored' => false,
             ],
             'expected'       => [
                 'should_display' => true,

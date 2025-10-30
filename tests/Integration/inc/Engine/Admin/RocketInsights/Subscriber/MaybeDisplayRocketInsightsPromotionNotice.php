@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\RocketInsights\Subscriber;
 
 use WP_Rocket\Tests\Integration\TestCase;
+use WP_Rocket\Tests\Integration\DBTrait;
 use Brain\Monkey\Functions;
 
 /**
@@ -12,6 +13,21 @@ use Brain\Monkey\Functions;
  * @group AdminOnly
  */
 class Test_MaybeDisplayRocketInsightsPromotionNotice extends TestCase {
+    use DBTrait;
+
+    public static function set_up_before_class() {
+		parent::set_up_before_class();
+
+		// Install the Performance Monitoring table.
+		self::installPerformanceMonitoringTable();
+	}
+
+	public static function tear_down_after_class() {
+		self::uninstallPerformanceMonitoringTable();
+
+		parent::tear_down_after_class();
+	}
+
 	public function set_up() {
 		parent::set_up();
 
@@ -22,6 +38,9 @@ class Test_MaybeDisplayRocketInsightsPromotionNotice extends TestCase {
 	public function tear_down() {
         delete_user_meta( get_current_user_id(), 'rocket_boxes', [ 'rocket_insights_promotion_notice' ] );
         $this->restoreWpHook( 'admin_notices' );
+
+        // Clean up data after each test
+		self::truncatePerformanceMonitoringTable();
 
 		parent::tear_down();
 	}
@@ -37,6 +56,19 @@ class Test_MaybeDisplayRocketInsightsPromotionNotice extends TestCase {
 		if ( $config['user_meta'] ) {
 			add_user_meta( get_current_user_id(), 'rocket_boxes', [ 'rocket_insights_promotion_notice' ] );
 		}
+
+        if ( $config['is_monitored'] ) {
+            $container = apply_filters( 'rocket_container', null );
+			$manager   = $container->get( 'ri_manager' );
+
+            $manager->add_to_the_queue(
+                home_url( '/test' ),
+                true,
+                [
+                    'title' => 'Test Page ',
+                ]
+            );
+        }
 
 		if ( $expected['should_display'] ) {
 			$this->assertStringContainsStringIgnoringCase(
