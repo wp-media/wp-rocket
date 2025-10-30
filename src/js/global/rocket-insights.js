@@ -110,8 +110,14 @@ module.exports = (function() {
 					// Begin common loading + polling flow.
 					beginLoadingAndPoll(column, response.data.id, url);
 				} else {
-					// Show error message.
-					showMessage(column, response.data?.message || 'Error adding page', 'error');
+					if (response.data?.can_add_pages === false) {
+						button.prop('disabled', false).text(window.rocket_insights_i18n?.test_page || 'Test the page');
+						return;
+					}
+					
+					// Show error message for other errors
+					let errorMessage = response.data?.message || 'Error adding page';
+					showMessage(column, errorMessage, 'error');
 					button.prop('disabled', false).text(window.rocket_insights_i18n?.test_page || 'Test the page');
 				}
 			},
