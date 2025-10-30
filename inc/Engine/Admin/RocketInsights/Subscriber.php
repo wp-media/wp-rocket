@@ -562,6 +562,10 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return void
 	 */
 	public function maybe_display_rocket_insights_promotion_notice() {
+		if ( 0 < $this->controller->get_total_url_count() ) {
+			return;
+		}
+
 		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			return;
 		}
@@ -572,8 +576,8 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			return;
 		}
 
-		// translators: %1$s is WP Rocket plugin name.
 		$message = sprintf(
+			// translators: %1$s is WP Rocket plugin name.
 			__(
 				'<p><strong>New in %1$s: Meet Rocket Insights, your built-in performance tracking tool!</strong></p>
 				<p>Starting from %1$s 3.20, you can track your key pages’ performance directly from your dashboard and get in-depth insights.</p>
