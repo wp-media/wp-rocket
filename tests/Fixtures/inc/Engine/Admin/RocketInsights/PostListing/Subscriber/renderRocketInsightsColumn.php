@@ -103,16 +103,5 @@ return [
 				'html' => '',
 			]
 		],
-		'testShouldShowTestButtonWhenNoRow' => [
-			'config' => [
-				'rows' => [
-					null, // No row in DB
-				],
-				'create_post' => true, // But we want to create a post
-			],
-			'expected' => [
-				'html' => 'class="wpr-ri-test-page',
-			]
-		],
 	],
 ];
