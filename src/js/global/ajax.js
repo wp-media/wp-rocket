@@ -258,8 +258,8 @@ document.addEventListener('DOMContentLoaded', function() {
 	 */
 
 		// ==== Configuration ====
-	const POLL_BASE_INTERVAL = 5000;   // Start polling at 5 seconds
-	const POLL_MAX_INTERVAL = 15000;  // Max polling interval (e.g. 15 seconds)
+	const POLL_BASE_INTERVAL = 2000;   // Start polling at 2 seconds
+	const POLL_MAX_INTERVAL = 5000;   // Max polling interval (5 seconds)
 
 	// ==== State ====
 	let rocketInsightsIds = Array.isArray(window.rocket_ajax_data?.rocket_insights_ids) ? window.rocket_ajax_data.rocket_insights_ids.slice() : [];
