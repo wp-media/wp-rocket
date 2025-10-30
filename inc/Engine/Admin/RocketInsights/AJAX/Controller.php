@@ -13,6 +13,8 @@ use WP_Rocket\Engine\Admin\RocketInsights\{
 	Managers\Plan
 };
 use WP_Rocket\Engine\Common\Utils;
+use WP_Rocket\Engine\Common\JobManager\JobProcessor;
+use WP_Rocket\Logger\Logger;
 
 class Controller {
 	use PageHandlerTrait;
@@ -60,22 +62,31 @@ class Controller {
 	private $plan;
 
 	/**
+	 * JobProcessor instance.
+	 *
+	 * @var JobProcessor
+	 */
+	private $job_processor;
+
+	/**
 	 * Constructor.
 	 *
-	 * @param RIQuery     $query Query instance.
-	 * @param Manager     $manager Manager instance.
-	 * @param Context     $context Context instance.
-	 * @param GlobalScore $global_score GlobalScore instance.
-	 * @param Render      $render Render instance.
-	 * @param Plan        $plan Plan instance.
+	 * @param RIQuery      $query Query instance.
+	 * @param Manager      $manager Manager instance.
+	 * @param Context      $context Context instance.
+	 * @param GlobalScore  $global_score GlobalScore instance.
+	 * @param Render       $render Render instance.
+	 * @param Plan         $plan Plan instance.
+	 * @param JobProcessor $job_processor JobProcessor instance.
 	 */
-	public function __construct( RIQuery $query, Manager $manager, Context $context, GlobalScore $global_score, Render $render, Plan $plan ) {
-		$this->query        = $query;
-		$this->manager      = $manager;
-		$this->context      = $context;
-		$this->global_score = $global_score;
-		$this->render       = $render;
-		$this->plan         = $plan;
+	public function __construct( RIQuery $query, Manager $manager, Context $context, GlobalScore $global_score, Render $render, Plan $plan, JobProcessor $job_processor ) {
+		$this->query         = $query;
+		$this->manager       = $manager;
+		$this->context       = $context;
+		$this->global_score  = $global_score;
+		$this->render        = $render;
+		$this->plan          = $plan;
+		$this->job_processor = $job_processor;
 	}
 
 	/**
@@ -128,13 +139,12 @@ class Controller {
 		} else {
 			$page_title = $this->get_page_title( $payload['message'] );
 		}
-		$row_id = $this->manager->add_to_the_queue(
-			$url,
-			true,
-			[
-				'title' => $page_title,
-			]
-			);
+		$additional_details = [
+			'title' => $page_title,
+		];
+
+		// Handle synchronous submission using shared method.
+		$row_id = $this->handle_sync_submission( $url, true, $additional_details );
 
 		if ( empty( $row_id ) ) {
 			wp_send_json_error(
@@ -342,18 +352,25 @@ class Controller {
 				);
 		}
 
-		$this->manager->add_to_the_queue(
-			$row->url, // @phpstan-ignore-line
-			true,
-			[
-				'data'       => [
-					'is_retest' => true,
-				],
-				'score'      => '',
-				'report_url' => '',
-				'is_blurred' => 0,
-			]
+		$additional_details = [
+			'data'       => [
+				'is_retest' => true,
+			],
+			'score'      => '',
+			'report_url' => '',
+			'is_blurred' => 0,
+		];
+
+		// Handle synchronous submission using shared method.
+		$row_id = $this->handle_sync_submission( $row->url, true, $additional_details ); // @phpstan-ignore-line
+
+		if ( empty( $row_id ) ) {
+			wp_send_json_error(
+				[
+					'message' => __( 'Unable to reset performance test. Please try again.', 'rocket' ),
+				]
 			);
+		}
 
 		/**
 		 * Fires when a Rocket Insights job is reset/retested.
@@ -375,6 +392,51 @@ class Controller {
 				'can_add_pages'     => $this->context->is_adding_page_allowed(),
 			]
 			);
+	}
+
+	/**
+	 * Handle synchronous submission of Rocket Insights job.
+	 *
+	 * This method centralizes the logic for attempting synchronous job submission
+	 * and falling back to async queuing when needed. It uses JobProcessor's send_api
+	 * for the actual API call, then adds Rocket Insights-specific validation and logging.
+	 *
+	 * @since 3.20
+	 *
+	 * @param string $url               The URL to test.
+	 * @param bool   $is_mobile         Whether this is a mobile test.
+	 * @param array  $additional_details Optional additional data to store with the job.
+	 *
+	 * @return bool|null Row ID on success, false on failure, null if not allowed.
+	 */
+	private function handle_sync_submission( string $url, bool $is_mobile, array $additional_details = [] ) {
+		// Attempt synchronous API submission.
+		$sync_response = $this->job_processor->send_api( $url, $is_mobile, 'rocket_insights', true );
+
+		// If sync submission failed or returned WP_Error, fall back to async queue.
+		if ( false === $sync_response || empty( $sync_response['uuid'] ) ) {
+			return $this->manager->add_to_the_queue( $url, $is_mobile, $additional_details );
+		}
+
+		// Success! Save with the new data.
+		$row_id = $this->manager->add_to_the_queue( $url, $is_mobile, $additional_details );
+
+		if ( empty( $row_id ) ) {
+			// DB insert failed after successful API submission - log orphaned job.
+			Logger::error(
+				'Rocket Insights: Database insert failed after successful sync submission',
+				[
+					'url'    => $url,
+					'job_id' => $sync_response['uuid'],
+				]
+			);
+			return false;
+		}
+
+		// Update to pending status immediately with job ID.
+		$this->query->make_status_pending( $url, $sync_response['uuid'], '', $is_mobile );
+
+		return $row_id;
 	}
 
 	/**
