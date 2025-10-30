@@ -136,6 +136,22 @@ endif;
 				</div>
 			</div>
 		</div>
+		
+		<div class="wpr-ri-actions-wrapper">
+			<?php if ( $data['wpr_has_credit'] ) : ?>
+				<button type="button" class="wpr-ri-retest-link wpr-icon-bold-refresh" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>">
+					<?php esc_html_e( 'Re-test', 'rocket' ); ?>
+				</button>
+			<?php else : ?>
+				<span class="wpr-ri-retest-link wpr-icon-bold-refresh wpr-ri-disabled">
+					<?php esc_html_e( 'Re-test', 'rocket' ); ?>
+				</span>
+				<span class="wpr-ri-no-credit-text">
+					<strong><?php esc_html_e( "You've reached your free limit.", 'rocket' ); ?></strong>
+					<?php esc_html_e( 'Upgrade to continue.', 'rocket' ); ?>
+				</span>
+			<?php endif; ?>
+		</div>
 	<?php endif; ?>
 	
 	<div class="wpr-ri-message" style="display: none;"></div>
