@@ -145,7 +145,7 @@ class Subscriber implements Subscriber_Interface {
 		wp_enqueue_script(
 			'rocket-insights',
 			rocket_get_constant( 'WP_ROCKET_ASSETS_JS_URL' ) . 'rocket-insights' . $suffix . '.js',
-			[ 'jquery' ],
+			[ 'jquery', 'wp-api-fetch' ],
 			rocket_get_constant( 'WP_ROCKET_VERSION' ),
 			true
 		);
