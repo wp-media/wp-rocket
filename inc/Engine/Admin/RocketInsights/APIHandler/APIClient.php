@@ -27,9 +27,10 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 	 *
 	 * @param string $url The URL to test.
 	 * @param array  $options Test options (device, location, etc.).
+	 * @param array  $args Additional request arguments (timeout, headers, etc.).
 	 * @return array|\WP_Error
 	 */
-	public function add_to_queue( string $url, array $options = [] ) {
+	public function add_to_queue( string $url, array $options = [], array $args = [] ) {
 		$url = user_trailingslashit( $url );
 		$url = $this->filter_url( $url, 'rocket_insights' );
 
@@ -40,13 +41,16 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 			'is_priority' => $options['is_home'] ?? false,
 		];
 
-		$args = [
-			'json_encode' => true,
-			'body'        => $request_body,
-			'headers'     => [
-				'Content-Type' => 'application/json',
+		$args = array_merge(
+			[
+				'json_encode' => true,
+				'body'        => $request_body,
+				'headers'     => [
+					'Content-Type' => 'application/json',
+				],
 			],
-		];
+			$args
+		);
 
 		$this->logger::debug(
 			'Rocket Insights: Initiating test',
