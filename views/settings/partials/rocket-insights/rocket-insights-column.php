@@ -7,9 +7,11 @@
  * @var array $data {
  *     Template data.
  *
- *     @type string      $data['wpr_rocket_insights_url']        The URL of the post.
- *     @type object|null $data['wpr_rocket_row']        Database row object for the URL (null if not tracked).
- *     @type bool        $data['wpr_has_credit'] Whether the user has credit available.
+ *     @type string      $data['wpr_rocket_insights_url'] The URL of the post.
+ *     @type object|null $data['wpr_rocket_row']          Database row object for the URL (null if not tracked).
+ *     @type bool        $data['wpr_has_credit']          Whether the user has credit available.
+ *     @type bool        $data['wpr_can_add_pages']       Whether the user can add more pages (based on plan limits).
+ *     @type bool        $data['wpr_is_free_user']        Whether the user is on the free plan.
  * }
  */
 
@@ -19,7 +21,14 @@ defined( 'ABSPATH' ) || exit;
 if ( null === $data['wpr_rocket_row'] ) :
 	?>
 	<div class="wpr-ri-column wpr-ri-not-tracked" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>">
-		<?php if ( $data['wpr_has_credit'] ) : ?>
+		<?php
+		// For free users: button enabled if has_credit OR can_add_pages (can reach free limit)
+		// For advanced users: button enabled only if can_add_pages (credit doesn't apply)
+		$button_enabled = $data['wpr_is_free_user']
+			? ( $data['wpr_has_credit'] || $data['wpr_can_add_pages'] )
+			: $data['wpr_can_add_pages'];
+		?>
+		<?php if ( $button_enabled ) : ?>
 			<button type="button" class="wpr-ri-test-page" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>">
 				<?php esc_html_e( 'Test the page', 'rocket' ); ?>
 			</button>

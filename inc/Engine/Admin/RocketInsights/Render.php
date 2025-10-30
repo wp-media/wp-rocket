@@ -362,14 +362,17 @@ class Render extends Abstract_Render {
 		// Get credit availability.
 		$has_credit = $this->plan->has_credit();
 
+		// Check if user can add more pages.
+		$can_add_pages = $this->context->is_adding_page_allowed();
+
 		// Prepare template variables.
 		$template_data = [
 			'wpr_rocket_insights_url' => $normalized_url,
 			'wpr_rocket_row'          => $row,
 			'wpr_has_credit'          => $has_credit,
-		];
-
-		// If row exists, prepare additional derived variables and score data.
+			'wpr_can_add_pages'       => $can_add_pages,
+			'wpr_is_free_user'        => $this->context->is_free_user(),
+		];      // If row exists, prepare additional derived variables and score data.
 		if ( null !== $row ) {
 			$template_data['wpr_is_running']        = $row->is_running();
 			$template_data['wpr_has_results']       = 'completed' === $row->status || 'blurred' === $row->status;
