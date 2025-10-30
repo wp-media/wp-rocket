@@ -455,15 +455,18 @@ function rocket_thank_you_license() {
 
 		$message = sprintf(
 		/* translators: %1$s = plugin name, %2$s = opening link tag, %3$s = closing link tag */
-		__( '%1$s is good to go! Visit your %2$sdashboard%3$s to test your load time.', 'rocket' ),
-		'<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>',
-		'<a href="' . admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG ) . '">',
+		__( '%1$s %2$s is good to go! %3$s Your website is already faster. Visit %4$s Rocket Inisights %5$s to check your homepage\'s performance, add more pages to measure WP Rocket\'s impact, and keep your site fast.', 'rocket' ),
+		'<strong>',
+		WP_ROCKET_PLUGIN_NAME,
+		'</strong>',
+		'<a href="' . admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '#rocket_insights' ) . '">',
 		'</a>'
 		);
 		rocket_notice_html( [ 'message' => $message ] );
 	}
 }
 add_action( 'admin_notices', 'rocket_thank_you_license' );
+
 
 /**
  * Displays a notice for analytics opt-in
@@ -713,6 +716,9 @@ function rocket_notice_html( $args ) {
 
 				$args['action'] = '<a href="' . wp_nonce_url( 'plugins.php?action=deactivate&amp;rocket_nonce=' . $rocket_nonce . '&amp;plugin=' . $plugin_file . '&amp;plugin_status=' . $status . '&amp;paged=' . $page . '&amp;s=' . $s, 'deactivate-plugin_' . $plugin_file ) . '">' . __( 'Force deactivation ', 'rocket' ) . '</a>';
 			}
+			break;
+		case 'rocket_insights_page':
+			$args['action'] = '<a class="button button-primary" href="' . admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '#rocket_insights' ) . '">' . __( 'Go to Rocket Insights', 'rocket' ) . '</a>';
 			break;
 	}
 	/**
