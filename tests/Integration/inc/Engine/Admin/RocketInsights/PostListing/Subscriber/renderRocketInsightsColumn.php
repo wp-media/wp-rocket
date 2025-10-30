@@ -4,6 +4,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\RocketInsights\PostListin
 
 use WP_Rocket\Tests\Integration\AdminTestCase;
 use WP_Rocket\Tests\Integration\DBTrait;
+use Brain\Monkey\Functions;
 
 /**
  * Test class covering \WP_Rocket\Engine\Admin\RocketInsights\PostListing\Subscriber::render_rocket_insights_column
@@ -28,9 +29,15 @@ class Test_RenderRocketInsightsColumn extends AdminTestCase {
 
 	public function set_up() {
 		parent::set_up();
+
+		// Enable Rocket Insights.
+		add_filter( 'rocket_rocket_insights_enabled', '__return_true' );
 	}
 
 	public function tear_down() {
+		// Remove Rocket Insights filter.
+		remove_filter( 'rocket_rocket_insights_enabled', '__return_true' );
+
 		parent::tear_down();
 	}
 
@@ -38,6 +45,11 @@ class Test_RenderRocketInsightsColumn extends AdminTestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnAsExpected( $config, $expected) {
+		$container = apply_filters( 'rocket_container', null ); // @phpstan-ignore-line
+		$container->get( 'user' )->set_user( $config['customer_data'] );
+		
+		Functions\when( 'wp_parse_url' )->justReturn( $config['is_live_site'] );
+
 		$post_id = null;
 
 		foreach ( $config['rows'] as $row ) {

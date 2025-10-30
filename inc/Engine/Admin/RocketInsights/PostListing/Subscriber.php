@@ -3,7 +3,10 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Admin\RocketInsights\PostListing;
 
-use WP_Rocket\Engine\Admin\RocketInsights\Render;
+use WP_Rocket\Engine\Admin\RocketInsights\{
+	Render,
+	Context\Context
+};
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
@@ -21,14 +24,23 @@ class Subscriber implements Subscriber_Interface {
 	private $render;
 
 	/**
+	 * Context instance.
+	 *
+	 * @var Context
+	 */
+	private $context;
+
+	/**
 	 * Constructor.
 	 *
 	 * @since 3.20.1
 	 *
-	 * @param Render $render Render instance.
+	 * @param Render  $render Render instance.
+	 * @param Context $context Context instance.
 	 */
-	public function __construct( Render $render ) {
-		$this->render = $render;
+	public function __construct( Render $render, Context $context ) {
+		$this->render  = $render;
+		$this->context = $context;
 	}
 	/**
 	 * Returns an array of events that this subscriber wants to listen to.
@@ -169,6 +181,10 @@ class Subscriber implements Subscriber_Interface {
 	 * @return bool
 	 */
 	private function should_enqueue_assets(): bool {
+		if ( ! $this->context->is_allowed() ) {
+			return false;
+		}
+
 		$screen = get_current_screen();
 
 		if ( ! $screen ) {
@@ -194,6 +210,10 @@ class Subscriber implements Subscriber_Interface {
 	 * @return array Modified columns array with Rocket Insights column.
 	 */
 	public function add_rocket_insights_column( array $columns ): array {
+		if ( ! $this->context->is_allowed() ) {
+			return $columns;
+		}
+
 		$columns['rocket_insights'] = __( 'Rocket Insights', 'rocket' );
 
 		return $columns;
@@ -210,6 +230,10 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function render_rocket_insights_column( string $column, int $post_id ): void {
+		if ( ! $this->context->is_allowed() ) {
+			return;
+		}
+
 		if ( 'rocket_insights' !== $column ) {
 			return;
 		}

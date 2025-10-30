@@ -258,9 +258,10 @@
   border: none;
   text-align: left;
   padding: 0 0 0 0;
+  cursor: pointer;
 }
 .wpr-ri-column.wpr-ri-not-tracked .wpr-ri-test-page:hover {
-  text-decoration: underline;
+  text-decoration: none;
 }
 .wpr-ri-column.wpr-ri-not-tracked .wpr-ri-test-page.wpr-ri-no-credit {
   color: #646970;
@@ -297,28 +298,27 @@
   align-items: center;
   width: 32px;
   height: 32px;
+  font-size: 14.67px;
   border-radius: 50%;
   border-style: solid;
   border-width: 1.33px;
-  font-size: 14.67px;
   font-weight: 600;
   line-height: 0;
-  font-family: Roboto, Arial, sans-serif;
 }
 .wpr-ri-column .wpr-ri-blurred .wpr-percentage-indicator .wpr-percentage-circle.status-red {
-  color: #F56640;
-  background-color: #fff9f8;
-  border-color: #F56640;
+  border-color: #C01B1B;
+  color: #C01B1B;
+  background-color: #FBE4E4;
 }
 .wpr-ri-column .wpr-ri-blurred .wpr-percentage-indicator .wpr-percentage-circle.status-yellow {
-  color: #F0B429;
-  background-color: #fffcf4;
-  border-color: #F0B429;
+  border-color: #E9AA01;
+  color: #E9AA01;
+  background-color: #FFF7EA;
 }
 .wpr-ri-column .wpr-ri-blurred .wpr-percentage-indicator .wpr-percentage-circle.status-green {
-  color: #00BA38;
-  background-color: #f1fef5;
-  border-color: #00BA38;
+  border-color: #2E8F44;
+  color: #2E8F44;
+  background-color: #E8F8EB;
 }
 .wpr-ri-column .wpr-ri-blurred .wpr-percentage-indicator .wpr-percentage-circle.blurred {
   filter: blur(4px);
@@ -338,45 +338,41 @@
   align-items: center;
   width: 32px;
   height: 32px;
+  font-size: 14.67px;
   border-radius: 50%;
   border-style: solid;
   border-width: 1.33px;
-  font-size: 14.67px;
   font-weight: 600;
   line-height: 0;
-  font-family: Roboto, Arial, sans-serif;
 }
 .wpr-ri-column .wpr-ri-score-wrapper .wpr-percentage-indicator .wpr-percentage-circle.status-red {
-  color: #F56640;
-  background-color: #fff9f8;
-  border-color: #F56640;
+  border-color: #C01B1B;
+  color: #C01B1B;
+  background-color: #FBE4E4;
 }
 .wpr-ri-column .wpr-ri-score-wrapper .wpr-percentage-indicator .wpr-percentage-circle.status-yellow {
-  color: #F0B429;
-  background-color: #fffcf4;
-  border-color: #F0B429;
+  border-color: #E9AA01;
+  color: #E9AA01;
+  background-color: #FFF7EA;
 }
 .wpr-ri-column .wpr-ri-score-wrapper .wpr-percentage-indicator .wpr-percentage-circle.status-green {
-  color: #00BA38;
-  background-color: #f1fef5;
-  border-color: #00BA38;
+  border-color: #2E8F44;
+  color: #2E8F44;
+  background-color: #E8F8EB;
 }
 .wpr-ri-column .wpr-ri-score-wrapper .wpr-percentage-indicator .wpr-percentage-circle .wpr-failed-score {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 18px;
-  height: 18px;
+  width: 21.33px;
+  height: 21.33px;
 }
 .wpr-ri-column .wpr-ri-score-wrapper .wpr-percentage-indicator .wpr-percentage-circle .wpr-failed-score:before {
   position: relative;
-  display: inline-block;
-  width: 18px;
-  height: 18px;
-  font-size: 18px;
-  line-height: 1;
-  vertical-align: middle;
+  width: 21.33px;
+  height: 21.33px;
   background-size: contain;
+  display: inline-block;
 }
 .wpr-ri-column .wpr-ri-score-wrapper .wpr-percentage-indicator .wpr-percentage-circle.wpr-centralize-100-score {
   padding-left: 2px;
@@ -397,10 +393,11 @@
   border: none;
   text-align: left;
   padding: 0 0 0 0;
+  cursor: pointer;
 }
 .wpr-ri-column .wpr-ri-actions-wrapper .wpr-ri-retest-link:hover,
 .wpr-ri-column .wpr-ri-actions-wrapper .wpr-ri-see-report-link:hover {
-  text-decoration: underline;
+  text-decoration: none;
 }
 .wpr-ri-column .wpr-ri-actions-wrapper .wpr-ri-retest-link:before,
 .wpr-ri-column .wpr-ri-actions-wrapper .wpr-ri-see-report-link:before {
@@ -477,9 +474,9 @@
   width: 32px;
   height: 32px;
   font-size: 14.67px;
-  border-width: 1.33px;
   border-radius: 50%;
   border-style: solid;
+  border-width: 1.33px;
   font-weight: 600;
   line-height: 0;
 }
