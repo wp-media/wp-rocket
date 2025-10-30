@@ -164,6 +164,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'ri_global_score',
 					'ri_render',
 					'ri_plan',
+					'job_processor',
 				]
 			);
 		// Subscriber.
@@ -206,7 +207,12 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		// Post Listing Subscriber.
 		$this->getContainer()->addShared( 'ri_post_listing_subscriber', PostListingSubscriber::class )
-			->addArgument( 'ri_render' );
+			->addArguments(
+				[
+					'ri_render',
+					'ri_context',
+				]
+			);
 
 		// Ensure the table is created.
 		$this->getContainer()->get( 'ri_table' );
