@@ -17,9 +17,10 @@ defined( 'ABSPATH' ) || exit;
 
 // If row doesn't exist, show "Test the page" link.
 if ( null === $data['wpr_rocket_row'] ) :
+	$wpr_can_test = $data['wpr_has_credit'] && $data['wpr_can_add_pages']; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 	?>
 	<div class="wpr-ri-column wpr-ri-not-tracked" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>">
-		<?php if ( $data['wpr_has_credit'] ) : ?>
+		<?php if ( $wpr_can_test ) : ?>
 			<button type="button" class="wpr-ri-test-page" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>">
 				<?php esc_html_e( 'Test the page', 'rocket' ); ?>
 			</button>
@@ -27,10 +28,37 @@ if ( null === $data['wpr_rocket_row'] ) :
 			<button type="button" class="wpr-ri-test-page wpr-ri-no-credit" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>">
 				<?php esc_html_e( 'Test the page', 'rocket' ); ?>
 			</button>
-			<div class="wpr-ri-credit-message">
-				<strong><?php esc_html_e( "You've reached your free limit.", 'rocket' ); ?></strong>
-				<?php esc_html_e( 'Upgrade to continue.', 'rocket' ); ?>
-			</div>
+			<?php if ( ! $data['wpr_can_add_pages'] && $data['wpr_is_free'] ) : ?>
+				<div class="wpr-ri-credit-message">
+					<?php
+					printf(
+						/* translators: %s: bolded text "reached your free limit" */
+						esc_html__( "You've %s. Upgrade to continue.", 'rocket' ),
+						'<strong>' . esc_html__( 'reached your free limit', 'rocket' ) . '</strong>'
+					);
+					?>
+				</div>
+			<?php elseif ( ! $data['wpr_can_add_pages'] && ! $data['wpr_is_free'] ) : ?>
+				<div class="wpr-ri-credit-message">
+					<?php
+					printf(
+						/* translators: %s: bolded text "reached the page limit" */
+						esc_html__( "You've %s. Please remove at least one page to continue.", 'rocket' ),
+						'<strong>' . esc_html__( 'reached the page limit', 'rocket' ) . '</strong>'
+					);
+					?>
+				</div>
+			<?php elseif ( ! $data['wpr_has_credit'] ) : ?>
+				<div class="wpr-ri-credit-message">
+					<?php
+					printf(
+						/* translators: %s: bolded text "reached your free limit" */
+						esc_html__( "You've %s. Upgrade to continue.", 'rocket' ),
+						'<strong>' . esc_html__( 'reached your free limit', 'rocket' ) . '</strong>'
+					);
+					?>
+				</div>
+			<?php endif; ?>
 		<?php endif; ?>
 		<div class="wpr-ri-message" style="display: none;"></div>
 	</div>
@@ -75,8 +103,13 @@ endif;
 					
 					<?php if ( ! $data['wpr_has_credit'] ) : ?>
 						<span class="wpr-ri-no-credit-text">
-							<strong><?php esc_html_e( "You've reached your free limit.", 'rocket' ); ?></strong>
-							<?php esc_html_e( 'Upgrade to continue.', 'rocket' ); ?>
+							<?php
+							printf(
+								/* translators: %s: bolded text "reached your free limit" */
+								esc_html__( "You've %s. Upgrade to continue.", 'rocket' ),
+								'<strong>' . esc_html__( 'reached your free limit', 'rocket' ) . '</strong>'
+							);
+							?>
 						</span>
 					<?php endif; ?>
 				</div>
@@ -114,8 +147,13 @@ endif;
 				
 				<?php if ( ! $data['wpr_has_credit'] ) : ?>
 					<span class="wpr-ri-no-credit-text">
-						<strong><?php esc_html_e( "You've reached your free limit.", 'rocket' ); ?></strong>
-						<?php esc_html_e( 'Upgrade to continue.', 'rocket' ); ?>
+						<?php
+						printf(
+							/* translators: %s: bolded text "reached your free limit" */
+							esc_html__( "You've %s. Upgrade to continue.", 'rocket' ),
+							'<strong>' . esc_html__( 'reached your free limit', 'rocket' ) . '</strong>'
+						);
+						?>
 					</span>
 				<?php endif; ?>
 			</div>
