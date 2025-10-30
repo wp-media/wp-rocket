@@ -203,11 +203,23 @@ class CreateItemTest extends RESTfulTestCase {
 	 * @return array|false
 	 */
 	public function mock_http_request( $preempt, $args, $url ) {
+		// Mock successful response for Rocket Insights API requests
+		if ( strpos( $url, 'performance/' ) !== false ) {
+			return [
+				'response' => [
+					'code'    => 200,
+					'message' => 'OK',
+				],
+				'body' => wp_json_encode( [ 'uuid' => 'test-uuid-' . time() ] ),
+			];
+		}
+
 		// Mock successful response for URLs on the test domain (example.org)
 		if ( strpos( $url, 'http://example.org' ) === 0 || strpos( $url, 'https://example.org' ) === 0 ) {
 			return [
 				'response' => [
-					'code' => 200,
+					'code'    => 200,
+					'message' => 'OK',
 				],
 				'body' => '<html><head><title>Test Page Title</title></head><body>Test content</body></html>',
 			];
@@ -217,7 +229,8 @@ class CreateItemTest extends RESTfulTestCase {
 		if ( strpos( $url, 'http://example.org/test-external' ) === 0 ) {
 			return [
 				'response' => [
-					'code' => 200,
+					'code'    => 200,
+					'message' => 'OK',
 				],
 				'body' => '<html><head><title>External Test Page</title></head><body>External test content</body></html>',
 			];
@@ -226,7 +239,8 @@ class CreateItemTest extends RESTfulTestCase {
 		// Mock 404 for invalid URLs
 		return [
 			'response' => [
-				'code' => 404,
+				'code'    => 404,
+				'message' => 'Not Found',
 			],
 			'body' => 'Not found',
 		];
