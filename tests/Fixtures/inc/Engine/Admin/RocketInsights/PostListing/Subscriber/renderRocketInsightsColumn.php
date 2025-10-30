@@ -67,6 +67,24 @@ return [
 				'html' => '<div class="wpr-ri-score-wrapper">',
 			]
 		],
+		'testShouldRenderFailedStateWithRetestButton' => [
+			'config' => [
+				'rows' => [
+					[
+						'url' 	  	 => 'https://example.com/page-to-test',
+						'status'     => 'failed',
+						'score'      => 0,
+						'is_blurred' => 0,
+						'report_url' => '',
+					]
+				],
+				'is_live_site' => true,
+				'customer_data' => (new UserDataGenerator())->with_reseller_status(0)->generate(),
+			],
+			'expected' => [
+				'html' => 'wpr-ri-retest-link',
+			]
+		],
 		'testShouldNotRenderCompletedStateForLocalEnv' => [
 			'config' => [
 				'rows' => [

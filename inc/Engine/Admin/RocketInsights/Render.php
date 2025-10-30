@@ -362,7 +362,6 @@ class Render extends Abstract_Render {
 		// Get credit availability.
 		$has_credit = $this->plan->has_credit();
 
-		// Check if user can add more pages.
 		$can_add_pages = $this->context->is_adding_page_allowed();
 
 		// Prepare template variables.
