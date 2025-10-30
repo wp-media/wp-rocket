@@ -258,9 +258,10 @@
   border: none;
   text-align: left;
   padding: 0 0 0 0;
+  cursor: pointer;
 }
 .wpr-ri-column.wpr-ri-not-tracked .wpr-ri-test-page:hover {
-  text-decoration: underline;
+  text-decoration: none;
 }
 .wpr-ri-column.wpr-ri-not-tracked .wpr-ri-test-page.wpr-ri-no-credit {
   color: #646970;
@@ -397,10 +398,11 @@
   border: none;
   text-align: left;
   padding: 0 0 0 0;
+  cursor: pointer;
 }
 .wpr-ri-column .wpr-ri-actions-wrapper .wpr-ri-retest-link:hover,
 .wpr-ri-column .wpr-ri-actions-wrapper .wpr-ri-see-report-link:hover {
-  text-decoration: underline;
+  text-decoration: none;
 }
 .wpr-ri-column .wpr-ri-actions-wrapper .wpr-ri-retest-link:before,
 .wpr-ri-column .wpr-ri-actions-wrapper .wpr-ri-see-report-link:before {

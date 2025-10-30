@@ -28,9 +28,10 @@
 			border: none;
 			text-align: left;
 			padding: 0 0 0 0;
+			cursor: pointer;
 			
 			&:hover {
-				text-decoration: underline;
+				text-decoration: none;
 			}
 			
 			&.wpr-ri-no-credit {
@@ -197,9 +198,10 @@
 			border: none;
 			text-align: left;
 			padding: 0 0 0 0;
+			cursor: pointer;
 
 			&:hover {
-				text-decoration: underline;
+				text-decoration: none;
 			}
 			
 			// Icons before text
