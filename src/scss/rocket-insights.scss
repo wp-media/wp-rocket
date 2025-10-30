@@ -86,30 +86,29 @@
 				align-items: center;
 				width: 32px;
 				height: 32px;
+				font-size: 14.67px;
 				border-radius: 50%;
 				border-style: solid;
 				border-width: 1.33px;
-				font-size: 14.67px;
 				font-weight: 600;
 				line-height: 0;
-				font-family: Roboto, Arial, sans-serif;
 				
 				&.status-red {
-					color: #F56640;
-					background-color: #fff9f8;
-					border-color: #F56640;
+					border-color: $errorDark;
+					color: $errorDark;
+					background-color: $errorLighter;
 				}
 				
 				&.status-yellow {
-					color: #F0B429;
-					background-color: #fffcf4;
-					border-color: #F0B429;
+					border-color: $warningDark;
+					color: $warningDark;
+					background-color: $warningLighter;
 				}
 				
 				&.status-green {
-					color: #00BA38;
-					background-color: #f1fef5;
-					border-color: #00BA38;
+					border-color: $successDark;
+					color: $successDark;
+					background-color: $successLighter;
 				}
 				
 				&.blurred {
@@ -136,48 +135,44 @@
 				align-items: center;
 				width: 32px;
 				height: 32px;
+				font-size: 14.67px;
 				border-radius: 50%;
 				border-style: solid;
 				border-width: 1.33px;
-				font-size: 14.67px;
 				font-weight: 600;
 				line-height: 0;
-				font-family: Roboto, Arial, sans-serif;
 				
 				&.status-red {
-					color: #F56640;
-					background-color: #fff9f8;
-					border-color: #F56640;
+					border-color: $errorDark;
+					color: $errorDark;
+					background-color: $errorLighter;
 				}
 				
 				&.status-yellow {
-					color: #F0B429;
-					background-color: #fffcf4;
-					border-color: #F0B429;
+					border-color: $warningDark;
+					color: $warningDark;
+					background-color: $warningLighter;
 				}
 				
 				&.status-green {
-					color: #00BA38;
-					background-color: #f1fef5;
-					border-color: #00BA38;
+					border-color: $successDark;
+					color: $successDark;
+					background-color: $successLighter;
 				}
 				
 				.wpr-failed-score {
 					display: flex;
 					align-items: center;
 					justify-content: center;
-					width: 18px;
-					height: 18px;
+					width: 21.33px;
+					height: 21.33px;
 					
 					&:before {
 						position: relative;
-						display: inline-block;
-						width: 18px;
-						height: 18px;
-						font-size: 18px;
-						line-height: 1;
-						vertical-align: middle;
+						width: 21.33px;
+						height: 21.33px;
 						background-size: contain;
+						display: inline-block;
 					}
 				}
 				
@@ -301,9 +296,9 @@
 				width: 32px;
 				height: 32px;
 				font-size: 14.67px;
-				border-width: 1.33px;
 				border-radius: 50%;
 				border-style: solid;
+				border-width: 1.33px;
 				font-weight: 600;
 				line-height: 0;
 				
