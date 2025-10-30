@@ -226,9 +226,7 @@ return [
 			'contains'       => [
 				'Test the page',
 				'wpr-ri-not-tracked',
-			],
-			'not_contains'   => [
-				"reached your free limit",
+				'reached your free limit',
 			],
 		],
 	],
@@ -266,7 +264,7 @@ return [
 				'Test the page',
 				'wpr-ri-not-tracked',
 				'wpr-ri-no-credit',
-				'reached your page limit',
+				'reached the page limit',
 			],
 		],
 	],
@@ -306,7 +304,7 @@ return [
 			],
 			'not_contains'   => [
 				'wpr-ri-no-credit',
-				"You've reached your free limit",
+				"reached your free limit",
 			],
 		],
 	],
