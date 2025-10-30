@@ -201,8 +201,13 @@ endif;
 
 			<?php if ( empty( $data['wpr_has_credit'] ) ) : ?>
 				<span class="wpr-ri-no-credit-text">
-					<strong><?php esc_html_e( "You've reached your free limit.", 'rocket' ); ?></strong>
-					<?php esc_html_e( 'Upgrade to continue.', 'rocket' ); ?>
+				<?php
+				printf(
+						/* translators: %s: bolded text "reached your free limit" */
+						esc_html__( "You've %s. Upgrade to continue.", 'rocket' ),
+						'<strong>' . esc_html__( 'reached your free limit', 'rocket' ) . '</strong>'
+					);
+				?>
 				</span>
 			<?php endif; ?>
 		</div>
