@@ -77,7 +77,9 @@ return [
 						'is_blurred' => 0,
 						'report_url' => '',
 					]
-				]
+				],
+				'is_live_site' => true,
+				'customer_data' => (new UserDataGenerator())->with_reseller_status(0)->generate(),
 			],
 			'expected' => [
 				'html' => 'wpr-ri-retest-link',
