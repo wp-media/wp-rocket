@@ -171,6 +171,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 				[ 'on_update_reset_credit', 10, 2 ],
 				[ 'on_update_cancel_old_as_jobs', 10, 2 ],
 			],
+			'admin_notices'                               => 'maybe_display_rocket_insights_promotion_notice',
 		];
 	}
 
@@ -551,5 +552,45 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			return;
 		}
 		$this->queue->deprecate_old_actions();
+	}
+
+	/**
+	 * Displays a promotion notice for Rocket Insights on the admin dashboard.
+	 *
+	 * @since 3.20.1
+	 *
+	 * @return void
+	 */
+	public function maybe_display_rocket_insights_promotion_notice() {
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			return;
+		}
+
+		$notice_name = 'rocket_insights_promotion_notice';
+
+		if ( in_array( $notice_name, (array) get_user_meta( get_current_user_id(), 'rocket_boxes', true ), true ) ) {
+			return;
+		}
+
+		// translators: %1$s is WP Rocket plugin name.
+		$message = sprintf(
+			__(
+				'<p><strong>New in %1$s: Meet Rocket Insights, your built-in performance tracking tool!</strong></p>
+				<p>Starting from %1$s 3.20, you can track your key pages’ performance directly from your dashboard and get in-depth insights.</p>
+				<p>🚀 You\'ve already been tracking your homepage. Add more pages to check %1$s\'s impact and keep your site fast.</p>',
+				'rocket'
+			),
+			rocket_get_constant( 'WP_ROCKET_PLUGIN_NAME' ),
+		);
+
+		rocket_notice_html(
+			[
+				'status'               => 'success',
+				'message'              => $message,
+				'action'               => 'rocket_insights_page',
+				'dismiss_button'       => $notice_name,
+				'dismiss_button_class' => 'button button-primary',
+			]
+		);
 	}
 }
