@@ -143,6 +143,10 @@ endif;
 					<a href="<?php echo esc_url( $wpr_report_url ); ?>" class="wpr-ri-see-report-link wpr-icon-report" target="_blank" rel="noopener">
 						<?php esc_html_e( 'See Report', 'rocket' ); ?>
 					</a>
+				<?php else : ?>
+					<span class="wpr-ri-see-report-link wpr-icon-report wpr-ri-disabled">
+						<?php esc_html_e( 'See Report', 'rocket' ); ?>
+					</span>
 				<?php endif; ?>
 				
 				<?php if ( ! $data['wpr_has_credit'] ) : ?>
@@ -173,6 +177,33 @@ endif;
 					</div>
 				</div>
 			</div>
+		</div>
+		
+		<div class="wpr-ri-actions-wrapper">
+			<?php if ( ! empty( $data['wpr_has_credit'] ) ) : ?>
+				<button
+					type="button"
+					class="wpr-ri-retest-link wpr-icon-bold-refresh"
+					data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>"
+				>
+					<?php esc_html_e( 'Re-test', 'rocket' ); ?>
+				</button>
+			<?php else : ?>
+				<span class="wpr-ri-retest-link wpr-icon-bold-refresh wpr-ri-disabled">
+					<?php esc_html_e( 'Re-test', 'rocket' ); ?>
+				</span>
+			<?php endif; ?>
+
+			<span class="wpr-ri-see-report-link wpr-icon-report wpr-ri-disabled">
+				<?php esc_html_e( 'See Report', 'rocket' ); ?>
+			</span>
+
+			<?php if ( empty( $data['wpr_has_credit'] ) ) : ?>
+				<span class="wpr-ri-no-credit-text">
+					<strong><?php esc_html_e( "You've reached your free limit.", 'rocket' ); ?></strong>
+					<?php esc_html_e( 'Upgrade to continue.', 'rocket' ); ?>
+				</span>
+			<?php endif; ?>
 		</div>
 	<?php endif; ?>
 	
