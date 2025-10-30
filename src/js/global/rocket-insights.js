@@ -97,27 +97,45 @@ module.exports = (function() {
 		// Disable button and show loading state.
 		button.prop('disabled', true).text(window.rocket_insights_i18n?.adding || 'Adding...');
 
-		window.wp.apiFetch(
-			{
-				path: '/wp-rocket/v1/rocket-insights/pages/',
-				method: 'POST',
-				data: {
-					page_url: url
-				},
-			}
-		).then( ( response ) => {
-			if (response.success && response.id) {
+		// Use REST (HEAD) but keep develop's robust handling.
+		window.wp.apiFetch({
+			path: '/wp-rocket/v1/rocket-insights/pages/',
+			method: 'POST',
+			data: { page_url: url },
+		}).then((response) => {
+			const success   = response?.success === true;
+			const id        = response?.id ?? response?.data?.id ?? null;
+			const canAdd    = (response?.can_add_pages ?? response?.data?.can_add_pages);
+			const message   = response?.message ?? response?.data?.message;
+
+			if (success && id) {
 				// Begin common loading + polling flow.
-				beginLoadingAndPoll(column, response.id, url);
-			} else {
-				// Show error message.
-				showMessage(column, response?.message || 'Error adding page', 'error');
-				button.prop('disabled', false).text(window.rocket_insights_i18n?.test_page || 'Test the page');
+				beginLoadingAndPoll(column, id, url);
+				return;
 			}
-		}).catch( ( error ) => {
-			showMessage(column, window.rocket_insights_i18n?.error || 'An error occurred', 'error');
-			button.prop('disabled', false).text(window.rocket_insights_i18n?.test_page || 'Test the page');
-		} );
+
+			// If backend says we cannot add pages, re-enable and reset label without error banner.
+			if (canAdd === false) {
+				button.prop('disabled', false)
+					.text(window.rocket_insights_i18n?.test_page || 'Test the page');
+				return;
+			}
+
+			// Other errors
+			showMessage(column, message || 'Error adding page', 'error');
+			button.prop('disabled', false)
+				.text(window.rocket_insights_i18n?.test_page || 'Test the page');
+		}).catch((error) => {
+			// wp.apiFetch throws on WP_Error; try to surface a helpful message.
+			const errMsg =
+				error?.message ||
+				error?.data?.message ||
+				window.rocket_insights_i18n?.error ||
+				'An error occurred';
+			showMessage(column, errMsg, 'error');
+			button.prop('disabled', false)
+				.text(window.rocket_insights_i18n?.test_page || 'Test the page');
+		});
 	}
 
 	/**
