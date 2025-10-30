@@ -322,6 +322,15 @@ class Controller {
 	}
 
 	/**
+	 * Get the total count of URLs in Rocket Insights.
+	 *
+	 * @return int Total number of URLs being monitored.
+	 */
+	public function get_total_url_count(): int {
+		return $this->query->get_total_count();
+	}
+
+	/**
 	 * Get Rocket Insights addon limit.
 	 *
 	 * @return int
