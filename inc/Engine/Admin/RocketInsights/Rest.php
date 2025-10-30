@@ -460,6 +460,12 @@ class Rest extends WP_REST_Controller {
 		// Handle synchronous submission using shared method.
 		$row_id = $this->handle_sync_submission( $row->url, true, $additional_details ); // @phpstan-ignore-line
 
+		if ( empty( $row_id ) ) {
+			$error = new WP_Error( 'rest_not_found', __( 'Unable to reset performance test. Please try again.', 'rocket' ), [ 'status' => 404 ] );
+
+			return rest_ensure_response( $error );
+		}
+
 		/**
 		 * Fires when a performance monitoring job is reset/retested.
 		 *

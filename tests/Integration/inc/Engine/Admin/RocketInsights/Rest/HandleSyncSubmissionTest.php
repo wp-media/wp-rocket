@@ -1,17 +1,17 @@
 <?php
 declare( strict_types=1 );
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\RocketInsights\AJAX\Controller;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\RocketInsights\Rest;
 
 use ReflectionMethod;
-use WP_Rocket\Tests\Integration\TestCase;
 use WP_Rocket\Tests\Integration\DBTrait;
-use WP_Rocket\Engine\Admin\RocketInsights\AJAX\Controller;
+use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * Test class covering WP_Rocket\Engine\Admin\RocketInsights\AJAX\Controller::handle_sync_submission
+ * Test class covering WP_Rocket\Engine\Admin\RocketInsights\Rest::handle_sync_submission
  *
  * @group RocketInsights
+ * @group AdminOnly
  */
 class HandleSyncSubmissionTest extends TestCase {
 	use DBTrait;
