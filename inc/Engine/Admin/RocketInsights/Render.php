@@ -372,7 +372,8 @@ class Render extends Abstract_Render {
 			'wpr_has_credit'          => $has_credit,
 			'wpr_can_add_pages'       => $can_add_pages,
 			'wpr_is_free_user'        => $this->context->is_free_user(),
-		];      // If row exists, prepare additional derived variables and score data.
+		];
+
 		if ( null !== $row ) {
 			$template_data['wpr_is_running']        = $row->is_running();
 			$template_data['wpr_has_results']       = 'completed' === $row->status || 'blurred' === $row->status;

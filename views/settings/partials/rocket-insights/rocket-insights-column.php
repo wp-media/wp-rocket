@@ -21,14 +21,7 @@ defined( 'ABSPATH' ) || exit;
 if ( null === $data['wpr_rocket_row'] ) :
 	?>
 	<div class="wpr-ri-column wpr-ri-not-tracked" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>">
-		<?php
-		// For free users: button enabled if has_credit OR can_add_pages (can reach free limit)
-		// For advanced users: button enabled only if can_add_pages (credit doesn't apply)
-		$button_enabled = $data['wpr_is_free_user']
-			? ( $data['wpr_has_credit'] || $data['wpr_can_add_pages'] )
-			: $data['wpr_can_add_pages'];
-		?>
-		<?php if ( $button_enabled ) : ?>
+		<?php if ( $data['wpr_can_add_pages'] ) : ?>
 			<button type="button" class="wpr-ri-test-page" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>">
 				<?php esc_html_e( 'Test the page', 'rocket' ); ?>
 			</button>

@@ -109,6 +109,11 @@ module.exports = (function() {
 				if (response.success && response.data.id) {
 					// Begin common loading + polling flow.
 					beginLoadingAndPoll(column, response.data.id, url);
+					
+					// Check if we've reached the limit and disable all other "Test the page" buttons.
+					if (response.data.can_add_pages === false || response.data.remaining_urls === 0) {
+						disableAllTestPageButtons();
+					}
 				} else {
 					// Show error message.
 					showMessage(column, response.data?.message || 'Error adding page', 'error');
@@ -289,6 +294,31 @@ module.exports = (function() {
 		setTimeout(function() {
 			messageEl.fadeOut();
 		}, 5000);
+	}
+
+	/**
+	 * Disable all "Test the page" buttons when the URL limit is reached.
+	 */
+	function disableAllTestPageButtons() {
+		jQuery('.wpr-ri-test-page:not(.wpr-ri-no-credit)').each(function() {
+			const button = jQuery(this);
+			button.addClass('wpr-ri-no-credit').prop('disabled', true);
+			
+			// Add the "You've reached your limit" message if not already present.
+			const column = button.closest('.wpr-ri-column');
+			const creditMessage = column.find('.wpr-ri-credit-message');
+			
+			if (creditMessage.length === 0) {
+				const messageDiv = jQuery('<div>').addClass('wpr-ri-credit-message');
+				const strongText = jQuery('<strong>').text(
+					window.rocket_insights_i18n?.limit_reached || "You've reached your free limit."
+				);
+				const upgradeText = document.createTextNode(' ' + (window.rocket_insights_i18n?.upgrade_to_continue || 'Upgrade to continue.'));
+				
+				messageDiv.append(strongText).append(upgradeText);
+				button.after(messageDiv);
+			}
+		});
 	}
 
 	// Auto-initialize on DOM ready
