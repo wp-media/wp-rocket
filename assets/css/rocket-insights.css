@@ -326,7 +326,7 @@
   pointer-events: none;
 }
 .wpr-ri-column .wpr-ri-score-wrapper {
-  margin-bottom: 4px;
+  margin-bottom: 12px;
 }
 .wpr-ri-column .wpr-ri-score-wrapper .wpr-percentage-indicator {
   position: relative;
@@ -386,6 +386,9 @@
   flex-direction: column;
   gap: 4px;
   font-size: 14px;
+}
+.wpr-ri-column .wpr-ri-actions-wrapper .wpr-ri-retest-link {
+  margin-bottom: 3px;
 }
 .wpr-ri-column .wpr-ri-actions-wrapper .wpr-ri-retest-link,
 .wpr-ri-column .wpr-ri-actions-wrapper .wpr-ri-see-report-link {
