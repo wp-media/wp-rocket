@@ -14,12 +14,10 @@ return [
 					'data' => '{"status":"complete","data":{"data":{"performance_score":85}}}',
 				],
 			],
-			'post_data' => [
-				'id' => 1,
-			],
+			'id' => 1,
 		],
 		'expected' => [
-			'success' => true,
+			'code' => 200,
 			'hook_fired' => true,
 			'hook_fired_id' => 1,
 			'response_keys' => [ 'id', 'html', 'global_score_data' ],
@@ -41,12 +39,10 @@ return [
 					'data' => '{"status":"failed","message":"Test failed"}',
 				],
 			],
-			'post_data' => [
-				'id' => 5,
-			],
+			'id' => 5,
 		],
 		'expected' => [
-			'success' => true,
+			'code' => 200,
 			'hook_fired' => true,
 			'hook_fired_id' => 5,
 			'response_keys' => [ 'id', 'html', 'global_score_data' ],
@@ -68,14 +64,12 @@ return [
 					'data' => '{"status":"complete","data":{"data":{"performance_score":85}}}',
 				],
 			],
-			'post_data' => [
-				// No ID provided
-			],
+			'id' => null,
 		],
 		'expected' => [
-			'success' => false,
+			'code' => 404,
 			'hook_fired' => false,
-			'error_message' => 'No ID was provided',
+			'error_message' => 'No route was found matching the URL and request method.',
 		],
 	],
 	'testShouldFailWithInvalidId' => [
@@ -91,12 +85,10 @@ return [
 					'data' => '{"status":"complete","data":{"data":{"performance_score":85}}}',
 				],
 			],
-			'post_data' => [
-				'id' => 0, // Invalid ID
-			],
+			'id' => 0, // Invalid ID
 		],
 		'expected' => [
-			'success' => false,
+			'code' => 400,
 			'hook_fired' => false,
 			'error_message' => 'No ID was provided',
 		],
@@ -114,14 +106,12 @@ return [
 					'data' => '{"status":"complete","data":{"data":{"performance_score":85}}}',
 				],
 			],
-			'post_data' => [
-				'id' => 999, // Non-existent ID
-			],
+			'id' => 999, // Non-existent ID
 		],
 		'expected' => [
-			'success' => false,
+			'code' => 404,
 			'hook_fired' => false,
-			'error_message' => 'Not valid ID',
+			'error_message' => 'Item not found.',
 		],
 	],
 	'testShouldFailWithStringId' => [
@@ -137,14 +127,12 @@ return [
 					'data' => '{"status":"complete","data":{"data":{"performance_score":85}}}',
 				],
 			],
-			'post_data' => [
-				'id' => 'invalid_string', // Will be converted to 0 by intval()
-			],
+			'id' => 'invalid_string', // Will be converted to 0 by intval()
 		],
 		'expected' => [
-			'success' => false,
+			'code' => 404,
 			'hook_fired' => false,
-			'error_message' => 'No ID was provided',
+			'error_message' => 'No route was found matching the URL and request method.',
 		],
 	],
 	'testShouldFailWithNegativeId' => [
@@ -160,14 +148,12 @@ return [
 					'data' => '{"status":"complete","data":{"data":{"performance_score":85}}}',
 				],
 			],
-			'post_data' => [
-				'id' => -5, // Negative ID
-			],
+			'id' => -5, // Negative ID
 		],
 		'expected' => [
-			'success' => false,
+			'code' => 404,
 			'hook_fired' => false,
-			'error_message' => 'Not valid ID',
+			'error_message' => 'No route was found matching the URL and request method.',
 		],
 	],
 ];
