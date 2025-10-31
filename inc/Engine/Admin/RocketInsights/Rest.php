@@ -108,15 +108,18 @@ class Rest extends WP_REST_Controller {
 				[
 					'methods'             => WP_REST_Server::READABLE,
 					'callback'            => function ( $request ) {
-						// If 'url' query param is present, return single item, otherwise return all items.
-						if ( ! empty( $request->get_param( 'url' ) ) ) {
+						// If 'url' query param is present and not empty, return single item, otherwise return all items.
+						$url = $request->get_param( 'url' );
+
+						if ( ! empty( $url ) ) {
 							return $this->get_item( $request );
 						}
 						return $this->get_items( $request );
 					},
 					'permission_callback' => function ( $request ) {
-						// If 'url' query param is present, check get_item permissions, otherwise get_items permissions.
-						if ( ! empty( $request->get_param( 'url' ) ) ) {
+						// If 'url' query param is present and not empty, check get_item permissions, otherwise get_items permissions.
+						$url = $request->get_param( 'url' );
+						if ( ! empty( $url ) ) {
 							return $this->get_item_permissions_check( $request );
 						}
 						return $this->get_items_permissions_check( $request );
@@ -125,8 +128,9 @@ class Rest extends WP_REST_Controller {
 						'url' => [
 							'required'          => false,
 							'validate_callback' => function ( $param ) {
+								// Allow empty for optional parameter.
 								if ( empty( $param ) ) {
-									return true; // Optional parameter.
+									return true;
 								}
 
 								$url = untrailingslashit( trim( $param ) );
@@ -135,8 +139,9 @@ class Rest extends WP_REST_Controller {
 								return wp_http_validate_url( $url );
 							},
 							'sanitize_callback' => function ( $param ) {
+								// Don't process empty parameter.
 								if ( empty( $param ) ) {
-									return '';
+									return $param;
 								}
 
 								$url = untrailingslashit( trim( $param ) );
