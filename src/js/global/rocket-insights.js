@@ -38,12 +38,6 @@ module.exports = (function() {
 		jQuery(document).on('click', '.wpr-ri-test-page', function(e) {
 			e.preventDefault();
 			const button = jQuery(this);
-
-			// Don't allow click if no credit
-			if (button.hasClass('wpr-ri-no-credit')) {
-				return;
-			}
-
 			const url = button.data('url');
 			const column = button.closest('.wpr-ri-column');
 
@@ -97,6 +91,10 @@ module.exports = (function() {
 		// Disable button and show loading state.
 		button.prop('disabled', true);
 
+		// Hide any previous messages
+		const messageDiv = column.find('.wpr-ri-message');
+		messageDiv.hide().removeClass('wpr-ri-error').empty();
+
 		// Use REST (HEAD) but keep develop's robust handling.
 		window.wp.apiFetch({
 			path: '/wp-rocket/v1/rocket-insights/pages/',
@@ -114,21 +112,35 @@ module.exports = (function() {
 				return;
 			}
 
-			// If backend says we cannot add pages, re-enable and reset label without error banner.
+			// If backend says we cannot add pages, show error message in the column.
 			if (canAdd === false) {
 				button.prop('disabled', false)
 					.text(window.rocket_insights_i18n?.test_page || 'Test the page');
+				
+				// Display error message
+				if (message) {
+					messageDiv.addClass('wpr-ri-error').html(message).show();
+				}
 				return;
 			}
 
 			// Other errors
 			button.prop('disabled', false)
 				.text(window.rocket_insights_i18n?.test_page || 'Test the page');
+			
+			// Display error message if available
+			if (message) {
+				messageDiv.addClass('wpr-ri-error').html(message).show();
+			}
 		}).catch((error) => {
 			// wp.apiFetch throws on WP_Error; try to surface a helpful message.
 			console.error(error);
 			button.prop('disabled', false)
 				.text(window.rocket_insights_i18n?.test_page || 'Test the page');
+			
+			// Display error message
+			const errorMessage = error?.message || 'An error occurred. Please try again.';
+			messageDiv.addClass('wpr-ri-error').html(errorMessage).show();
 		});
 	}
 

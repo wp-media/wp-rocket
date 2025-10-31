@@ -98,7 +98,7 @@ return [
 		],
 		'expected' => [
 			'code' => 403,
-			'error_message' => 'Maximum number of URLs reached',
+			'error_message' => 'reached your free limit',
 		],
 	],
 	'testShouldFailWithUnreachableUrl' => [

@@ -301,9 +301,27 @@ class Rest extends WP_REST_Controller {
 	public function create_item( $request ) {
 		// Check if adding a page is allowed based on URL limits.
 		if ( ! $this->context->is_adding_page_allowed() ) {
+			// Determine error message based on plan type.
+			if ( $this->context->is_free_user() ) {
+				$upgrade_url   = admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '#rocket_insights' );
+				$error_message = sprintf(
+					/* translators: %1$s: bolded text "reached your free limit", %2$s: opening link tag, %3$s: closing link tag */
+					__( "You've %1\$s. %2\$sUpgrade to continue%3\$s.", 'rocket' ),
+					'<strong>' . __( 'reached your free limit', 'rocket' ) . '</strong>',
+					'<a href="' . esc_url( $upgrade_url ) . '">',
+					'</a>'
+				);
+			} else {
+				$error_message = sprintf(
+					/* translators: %s: bolded text "reached the page limit" */
+					__( "You've %s. Please remove at least one page to continue.", 'rocket' ),
+					'<strong>' . __( 'reached the page limit', 'rocket' ) . '</strong>'
+				);
+			}
+
 			$error = new WP_Error(
 				'rest_forbidden',
-				__( 'Maximum number of URLs reached for your license.', 'rocket' ),
+				$error_message,
 				[
 					'status'         => 403,
 					'remaining_urls' => 0,

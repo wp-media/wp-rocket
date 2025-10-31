@@ -601,9 +601,6 @@
   border-top-color: #1d2327;
 }
 .wpr-ri-column .wpr-ri-error {
-  display: flex;
-  align-items: center;
-  gap: 6px;
   color: #d63638;
   font-size: 13px;
 }
@@ -617,7 +614,6 @@
 }
 .wpr-ri-column .wpr-ri-message {
   margin-top: 8px;
-  padding: 6px 10px;
   border-radius: 3px;
   font-size: 12px;
   line-height: 1.4;
