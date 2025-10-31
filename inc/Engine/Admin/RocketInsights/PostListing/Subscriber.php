@@ -158,17 +158,25 @@ class Subscriber implements Subscriber_Interface {
 				'test_page'          => __( 'Test the page', 'rocket' ),
 				'error'              => __( 'An error occurred', 'rocket' ),
 				'loading_img'        => rocket_get_constant( 'WP_ROCKET_ASSETS_IMG_URL' ) . 'orange-loading.svg',
-				'free_limit_reached' => __( "You've reached your free limit. Upgrade to continue.", 'rocket' ),
-				'paid_limit_reached' => __( "You've reached the page limit. Please remove at least one page to continue.", 'rocket' ),
+				'free_limit_reached' => sprintf(
+						/* translators: %s: bolded text "reached your free limit" */
+						esc_html__( "You've %s. Upgrade to continue.", 'rocket' ),
+						'<strong>' . esc_html__( 'reached your free limit', 'rocket' ) . '</strong>',
+				),
+				'paid_limit_reached' => sprintf(
+					/* translators: %s: bolded text "reached the page limit" */
+					esc_html__( "You've %s. Please remove at least one page to continue.", 'rocket' ),
+					'<strong>' . esc_html__( 'reached the page limit', 'rocket' ) . '</strong>',
+				),
 				'url_limit_reached'  => __( 'Maximum number of URLs reached for your license.', 'rocket' ),
 			]
 		);
-
 		wp_localize_script(
 			'rocket-insights',
 			'rocket_ajax_data',
 			[
-				'nonce' => wp_create_nonce( 'rocket-ajax' ),
+				'nonce'        => wp_create_nonce( 'rocket-ajax' ),
+				'is_free_user' => $this->context->is_free_user(),
 			]
 		);
 	}

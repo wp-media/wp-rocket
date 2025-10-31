@@ -316,12 +316,12 @@ module.exports = (function() {
 			
 			if (creditMessage.length === 0) {
 				const messageDiv = jQuery('<div>').addClass('wpr-ri-credit-message');
-				const strongText = jQuery('<strong>').text(
-					window.rocket_insights_i18n?.limit_reached || "You've reached your free limit."
-				);
-				const upgradeText = document.createTextNode(' ' + (window.rocket_insights_i18n?.upgrade_to_continue || 'Upgrade to continue.'));
+				const isFreeUser = window.rocket_ajax_data?.is_free_user || false;
+				const limitMessage = isFreeUser 
+					? window.rocket_insights_i18n?.free_limit_reached 
+					: window.rocket_insights_i18n?.paid_limit_reached;
 				
-				messageDiv.append(strongText).append(upgradeText);
+				messageDiv.html(limitMessage);
 				button.after(messageDiv);
 			}
 		});
