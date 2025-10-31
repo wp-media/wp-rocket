@@ -10,9 +10,9 @@ use WP_Rocket\Engine\Admin\RocketInsights\Managers\Plan;
 use WP_Rocket\Engine\Admin\RocketInsights\Queue\Queue;
 use WP_Rocket\Engine\Admin\RocketInsights\Subscriber;
 use WP_Rocket\Engine\Admin\RocketInsights\Render;
+use WP_Rocket\Engine\Admin\RocketInsights\Rest;
 use WP_Rocket\Engine\Admin\RocketInsights\Controller;
 use WP_Rocket\Engine\Admin\RocketInsights\GlobalScore;
-use WP_Rocket\Engine\Admin\RocketInsights\AJAX\Controller as AjaxController;
 use WP_Rocket\Tests\Unit\TestCase;
 
 class RenderPerformanceUrlsTableTest extends TestCase {
@@ -63,7 +63,7 @@ class RenderPerformanceUrlsTableTest extends TestCase {
 			->method('render_rocket_insights_urls_table')
 			->with($expected);
 
-		$mock_ajax_controller = $this->createMock(AjaxController::class);
+		$mock_rest = $this->createMock(Rest::class);
 		$mock_queue = $this->createMock(Queue::class);
 		$ri_context = $this->createMock(Context::class);
 		$ri_context->expects($this->once())
@@ -80,7 +80,7 @@ class RenderPerformanceUrlsTableTest extends TestCase {
 
 		$plan_mock = $this->createMock( Plan::class );
 
-		$subscriber = new Subscriber($mock_render, $mock_controller, $mock_ajax_controller, $mock_queue, $ri_context, $mock_global_score, $options, $manager, $plan_mock);
+		$subscriber = new Subscriber($mock_render, $mock_controller, $mock_rest, $mock_queue, $ri_context, $mock_global_score, $options, $manager, $plan_mock);
 		$subscriber->render_performance_urls_table();
 	}
 }

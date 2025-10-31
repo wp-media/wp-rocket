@@ -145,7 +145,7 @@ class Subscriber implements Subscriber_Interface {
 		wp_enqueue_script(
 			'rocket-insights',
 			rocket_get_constant( 'WP_ROCKET_ASSETS_JS_URL' ) . 'rocket-insights' . $suffix . '.js',
-			[ 'jquery' ],
+			[ 'jquery', 'wp-api-fetch', 'wp-polyfill', 'wp-url' ],
 			rocket_get_constant( 'WP_ROCKET_VERSION' ),
 			true
 		);
@@ -154,9 +154,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket-insights',
 			'rocket_insights_i18n',
 			[
-				'adding'             => __( 'Adding...', 'rocket' ),
 				'test_page'          => __( 'Test the page', 'rocket' ),
-				'error'              => __( 'An error occurred', 'rocket' ),
 				'loading_img'        => rocket_get_constant( 'WP_ROCKET_ASSETS_IMG_URL' ) . 'orange-loading.svg',
 				'free_limit_reached' => sprintf(
 						/* translators: %s: bolded text "reached your free limit" */
@@ -175,7 +173,6 @@ class Subscriber implements Subscriber_Interface {
 			'rocket-insights',
 			'rocket_ajax_data',
 			[
-				'nonce'        => wp_create_nonce( 'rocket-ajax' ),
 				'is_free_user' => $this->context->is_free_user(),
 			]
 		);
