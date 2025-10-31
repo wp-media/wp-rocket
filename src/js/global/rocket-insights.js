@@ -200,7 +200,7 @@ module.exports = (function() {
 	 * @param {jQuery} column The column element.
 	 */
 	function showLimitReachedMessage(column) {
-		const isFree = column.data('is-free') === 1 || column.data('is-free') === '1';
+		const isFree = String(column.data('is-free')) === '1';
 		const messageDiv = column.find('.wpr-ri-message');
 		
 		// Determine which message to show based on user type
@@ -211,8 +211,7 @@ module.exports = (function() {
 			message = window.rocket_insights_i18n?.paid_limit_reached || "You've reached the page limit. Please remove at least one page to continue.";
 		}
 		
-		messageDiv
-			.addClass('wpr-ri-message--error')
+		messageDiv.addClass('wpr-ri-message--error')
 			.html(message)
 			.show();
 	}
