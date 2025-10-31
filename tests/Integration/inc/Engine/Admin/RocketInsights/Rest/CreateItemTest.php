@@ -65,7 +65,7 @@ class CreateItemTest extends RESTfulTestCase {
 
 		$this->hook_fired = false;
 
-		$this->container = apply_filters('rocket_container', null);
+		$this->container = apply_filters( 'rocket_container', null );
 	}
 
 	public function tear_down() {
@@ -113,11 +113,22 @@ class CreateItemTest extends RESTfulTestCase {
 			$this->addPerformanceMonitoring( $row );
 		}
 
-		$this->container->get('user')->set_user($config['customer_data']->generate());
+		$this->container->get( 'user' )->set_user( $config['customer_data']->generate() );
 
 		// Mock HTTP requests if needed for URL validation
 		if ( isset( $config['mock_http'] ) && $config['mock_http'] ) {
 			add_filter( 'pre_http_request', [ $this, 'mock_http_request' ], 10, 3 );
+		}
+
+		// Add a concurrent URL to simulate race condition
+		if ( isset( $config['add_concurrent_url'] ) && $config['add_concurrent_url'] ) {
+			$this->addPerformanceMonitoring(
+				[
+					'url'       => 'http://example.org/concurrent-request',
+					'status'    => 'completed',
+					'is_mobile' => 1,
+				]
+				);
 		}
 	}
 
@@ -161,7 +172,7 @@ class CreateItemTest extends RESTfulTestCase {
 
 				// For specific fields, check the expected values
 				if ( $key === 'can_add_pages' && $value !== null ) {
-					$this->assertSame( $value, $response[$key] );
+					$this->assertSame( $value, $response[ $key ] );
 				}
 			}
 		}
@@ -204,8 +215,8 @@ class CreateItemTest extends RESTfulTestCase {
 	 * Mock HTTP requests for URL validation.
 	 *
 	 * @param false|array|\WP_Error $preempt A preemptive return value of an HTTP request.
-	 * @param array                $args HTTP request arguments.
-	 * @param string               $url The request URL.
+	 * @param array                 $args HTTP request arguments.
+	 * @param string                $url The request URL.
 	 * @return array|false
 	 */
 	public function mock_http_request( $preempt, $args, $url ) {
@@ -216,7 +227,7 @@ class CreateItemTest extends RESTfulTestCase {
 					'code'    => 200,
 					'message' => 'OK',
 				],
-				'body' => wp_json_encode( [ 'uuid' => 'test-uuid-' . time() ] ),
+				'body'     => wp_json_encode( [ 'uuid' => 'test-uuid-' . time() ] ),
 			];
 		}
 
@@ -227,7 +238,7 @@ class CreateItemTest extends RESTfulTestCase {
 					'code'    => 200,
 					'message' => 'OK',
 				],
-				'body' => '<html><head><title>Test Page Title</title></head><body>Test content</body></html>',
+				'body'     => '<html><head><title>Test Page Title</title></head><body>Test content</body></html>',
 			];
 		}
 
@@ -238,7 +249,7 @@ class CreateItemTest extends RESTfulTestCase {
 					'code'    => 200,
 					'message' => 'OK',
 				],
-				'body' => '<html><head><title>External Test Page</title></head><body>External test content</body></html>',
+				'body'     => '<html><head><title>External Test Page</title></head><body>External test content</body></html>',
 			];
 		}
 
@@ -248,7 +259,7 @@ class CreateItemTest extends RESTfulTestCase {
 				'code'    => 404,
 				'message' => 'Not Found',
 			],
-			'body' => 'Not found',
+			'body'     => 'Not found',
 		];
 	}
 }
