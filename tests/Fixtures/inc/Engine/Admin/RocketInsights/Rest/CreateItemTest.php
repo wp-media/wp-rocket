@@ -244,4 +244,35 @@ return [
 			],
 		],
 	],
+	'testShouldPreventExceedingLimitAfterInsertion' => [
+		'config' => [
+			'post_data' => [
+				'page_url' => 'http://example.org/test-page-4',
+			],
+			'rows' => [
+				[
+					'url' => 'http://example.org',
+					'status' => 'completed',
+					'is_mobile' => 1,
+				],
+				[
+					'url' => 'http://example.org/page2',
+					'status' => 'completed',
+					'is_mobile' => 1,
+				],
+				[
+					'url' => 'http://example.org/page3',
+					'status' => 'to-submit',
+					'is_mobile' => 1,
+				],
+			],
+			'customer_data' => (new UserDataGenerator()),
+			'mock_http' => true,
+		],
+		'expected' => [
+			'code' => 403,
+			'error_message' => 'Maximum number of URLs reached',
+			'database_entries' => 3, // Should stay at 3, the 4th should be deleted
+		],
+	],
 ];
