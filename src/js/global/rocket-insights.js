@@ -116,8 +116,8 @@ module.exports = (function() {
 			if (canAdd === false) {
 				button.prop('disabled', false)
 					.text(window.rocket_insights_i18n?.test_page || 'Test the page');
-				
-				// Display error message
+
+				// Display error message (server responses are pre-escaped and may contain intentional HTML)
 				if (message) {
 					messageDiv.addClass('wpr-ri-error').html(message).show();
 				}
@@ -127,8 +127,8 @@ module.exports = (function() {
 			// Other errors
 			button.prop('disabled', false)
 				.text(window.rocket_insights_i18n?.test_page || 'Test the page');
-			
-			// Display error message if available
+
+			// Display error message if available (server responses are pre-escaped and may contain intentional HTML)
 			if (message) {
 				messageDiv.addClass('wpr-ri-error').html(message).show();
 			}
@@ -137,10 +137,10 @@ module.exports = (function() {
 			console.error(error);
 			button.prop('disabled', false)
 				.text(window.rocket_insights_i18n?.test_page || 'Test the page');
-			
-			// Display error message
+
+			// Display error message - use text() for untrusted error messages
 			const errorMessage = error?.message || 'An error occurred. Please try again.';
-			messageDiv.addClass('wpr-ri-error').html(errorMessage).show();
+			messageDiv.addClass('wpr-ri-error').text(errorMessage).show();
 		});
 	}
 
@@ -166,7 +166,7 @@ module.exports = (function() {
 				// Begin common loading + polling flow.
 				beginLoadingAndPoll(column, rowId, url);
 			} else {
-				// Display error message if available
+				// Display error message if available (server responses are pre-escaped and may contain intentional HTML)
 				const message = response?.message ?? response?.data?.message;
 				if (message) {
 					messageDiv.addClass('wpr-ri-error').html(message).show();
@@ -175,9 +175,9 @@ module.exports = (function() {
 		} ).catch( ( error ) => {
 			console.error(error);
 
-			// Display error message
+			// Display error message - use text() for untrusted error messages
 			const errorMessage = error?.message || 'An error occurred. Please try again.';
-			messageDiv.addClass('wpr-ri-error').html(errorMessage).show();
+			messageDiv.addClass('wpr-ri-error').text(errorMessage).show();
 		} );
 	}
 
