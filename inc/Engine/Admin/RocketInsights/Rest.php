@@ -345,6 +345,25 @@ class Rest extends WP_REST_Controller {
 			return rest_ensure_response( $error );
 		}
 
+		// Check URL limit again after insertion to handle race conditions.
+		// If the limit is exceeded, remove the newly added URL and return an error.
+		if ( ! $this->context->is_adding_page_allowed() ) {
+			// Delete the newly added URL.
+			$this->query->delete_item( $row_id );
+
+			$error = new WP_Error(
+				'rest_forbidden',
+				__( 'Maximum number of URLs reached for your license.', 'rocket' ),
+				[
+					'status'         => 403,
+					'remaining_urls' => 0,
+					'can_add_pages'  => false,
+				]
+			);
+
+			return rest_ensure_response( $error );
+		}
+
 		$urls_count   = $this->query->get_total_count();
 		$current_plan = $this->plan->get_current_plan();
 
