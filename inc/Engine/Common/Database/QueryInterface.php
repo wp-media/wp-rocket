@@ -11,7 +11,7 @@ interface QueryInterface {
 	 *
 	 * This method sets the interval at which the cleanup process should run.
 	 *
-	 * @param int $interval The interval in seconds.
+	 * @param int $interval The interval in months.
 	 */
 	public function set_cleanup_interval( int $interval );
 }

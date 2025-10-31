@@ -175,23 +175,6 @@ class AbstractTable extends Table implements TableInterface {
 	}
 
 	/**
-	 * Truncate the database table.
-	 * Here we extend the parent method to clear the transient with table truncate
-	 * without touching berlinDB code.
-	 *
-	 * @return bool
-	 */
-	public function truncate() {
-		if ( ! $this->exists() ) {
-			return false;
-		}
-
-		$truncated = parent::truncate();
-		delete_transient( $this->get_exists_transient_name() );
-		return $truncated;
-	}
-
-	/**
 	 * Get exists transient name.
 	 *
 	 * @return string
