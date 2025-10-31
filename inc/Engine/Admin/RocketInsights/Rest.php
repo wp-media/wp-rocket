@@ -100,74 +100,75 @@ class Rest extends WP_REST_Controller {
 	 * @return void
 	 */
 	public function register_routes(): void {
-		// Route: GET /pages (list all items).
+		// Route: GET /pages and GET /pages?url={url}.
 		register_rest_route(
 			self::ROUTE_NAMESPACE,
 			self::ROUTE_BASE . '/pages',
 			[
-				'methods'             => WP_REST_Server::READABLE,
-				'callback'            => [ $this, 'get_items' ],
-				'permission_callback' => [ $this, 'get_items_permissions_check' ],
-			]
-		);
+				[
+					'methods'             => WP_REST_Server::READABLE,
+					'callback'            => function ( $request ) {
+						// If 'url' query param is present, return single item, otherwise return all items.
+						if ( ! empty( $request->get_param( 'url' ) ) ) {
+							return $this->get_item( $request );
+						}
+						return $this->get_items( $request );
+					},
+					'permission_callback' => function ( $request ) {
+						// If 'url' query param is present, check get_item permissions, otherwise get_items permissions.
+						if ( ! empty( $request->get_param( 'url' ) ) ) {
+							return $this->get_item_permissions_check( $request );
+						}
+						return $this->get_items_permissions_check( $request );
+					},
+					'args'                => [
+						'url' => [
+							'required'          => false,
+							'validate_callback' => function ( $param ) {
+								if ( empty( $param ) ) {
+									return true; // Optional parameter.
+								}
 
-		// Route: GET /pages?url={url} (get single item by URL).
-		register_rest_route(
-			self::ROUTE_NAMESPACE,
-			self::ROUTE_BASE . '/pages',
-			[
-				'methods'             => WP_REST_Server::READABLE,
-				'callback'            => [ $this, 'get_item' ],
-				'permission_callback' => [ $this, 'get_item_permissions_check' ],
-				'args'                => [
-					'url' => [
-						'required'          => true,
-						'validate_callback' => function ( $param ) {
-							if ( empty( $param ) ) {
-								return false;
-							}
+								$url = untrailingslashit( trim( $param ) );
+								$url = rocket_add_url_protocol( $url );
 
-							$url = untrailingslashit( trim( $param ) );
-							$url = rocket_add_url_protocol( $url );
+								return wp_http_validate_url( $url );
+							},
+							'sanitize_callback' => function ( $param ) {
+								if ( empty( $param ) ) {
+									return '';
+								}
 
-							return wp_http_validate_url( $url );
-						},
-						'sanitize_callback' => function ( $param ) {
-							$url = untrailingslashit( trim( $param ) );
+								$url = untrailingslashit( trim( $param ) );
 
-							return rocket_add_url_protocol( $url );
-						},
+								return rocket_add_url_protocol( $url );
+							},
+						],
 					],
 				],
-			]
-		);
+				[
+					'methods'             => WP_REST_Server::CREATABLE,
+					'callback'            => [ $this, 'create_item' ],
+					'permission_callback' => [ $this, 'create_item_permissions_check' ],
+					'args'                => [
+						'page_url' => [
+							'required'          => true,
+							'validate_callback' => function ( $param ) {
+								if ( empty( $param ) ) {
+									return false;
+								}
 
-		// Route: POST /pages (create new item).
-		register_rest_route(
-			self::ROUTE_NAMESPACE,
-			self::ROUTE_BASE . '/pages',
-			[
-				'methods'             => WP_REST_Server::CREATABLE,
-				'callback'            => [ $this, 'create_item' ],
-				'permission_callback' => [ $this, 'create_item_permissions_check' ],
-				'args'                => [
-					'page_url' => [
-						'required'          => true,
-						'validate_callback' => function ( $param ) {
-							if ( empty( $param ) ) {
-								return false;
-							}
+								$url = untrailingslashit( trim( $param ) );
+								$url = rocket_add_url_protocol( $url );
 
-							$url = untrailingslashit( trim( $param ) );
-							$url = rocket_add_url_protocol( $url );
+								return wp_http_validate_url( $url );
+							},
+							'sanitize_callback' => function ( $param ) {
+								$url = untrailingslashit( trim( $param ) );
 
-							return wp_http_validate_url( $url );
-						},
-						'sanitize_callback' => function ( $param ) {
-							$url = untrailingslashit( trim( $param ) );
-
-							return rocket_add_url_protocol( $url );
-						},
+								return rocket_add_url_protocol( $url );
+							},
+						],
 					],
 				],
 			]
