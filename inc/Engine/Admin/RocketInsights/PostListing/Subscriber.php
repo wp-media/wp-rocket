@@ -7,11 +7,7 @@ use WP_Rocket\Engine\Admin\RocketInsights\{
 	Render,
 	Context\Context
 };
-use WP_Rocket\Event_Management\{
-	Event_Manager,
-	Event_Manager_Aware_Subscriber_Interface,
-	Subscriber_Interface
-};
+use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
  * Subscriber for enqueuing Rocket Insights assets on post listing pages
