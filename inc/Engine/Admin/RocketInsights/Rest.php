@@ -347,7 +347,7 @@ class Rest extends WP_REST_Controller {
 
 		// Check URL limit again after insertion to handle race conditions.
 		// If the limit is exceeded, remove the newly added URL and return an error.
-		if ( ! $this->context->is_adding_page_allowed() ) {
+		if ( $this->query->get_total_count() > $this->plan->max_urls() ) {
 			// Delete the newly added URL.
 			$this->query->delete_item( $row_id );
 
