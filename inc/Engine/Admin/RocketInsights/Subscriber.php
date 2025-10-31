@@ -165,6 +165,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'wp_rocket_upgrade'                     => [
 				[ 'on_update_reset_credit', 10, 2 ],
 				[ 'on_update_cancel_old_as_jobs', 10, 2 ],
+				[ 'on_update_add_homepage', 10, 2 ],
 			],
 			'rest_api_init'                         => [ 'register_routes' ],
 		];
@@ -518,5 +519,31 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			return;
 		}
 		$this->queue->deprecate_old_actions();
+	}
+
+	/**
+	 * Callback for the wp_rocket_upgrade action to add homepage on version update if no pages exist.
+	 *
+	 * This method adds the homepage to Rocket Insights when:
+	 * - Updating from a version lower than 3.20.1
+	 * - No pages are currently added to Rocket Insights
+	 *
+	 * @param string $new_version New plugin version.
+	 * @param string $old_version Previous plugin version.
+	 * @return void
+	 */
+	public function on_update_add_homepage( $new_version, $old_version ) {
+		// Only run if updating from a version lower than 3.20.1.
+		if ( version_compare( $old_version, '3.20.1', '>=' ) ) {
+			return;
+		}
+
+		// Only add homepage if no pages are currently in Rocket Insights.
+		$total_count = $this->controller->get_total_url_count();
+		if ( $total_count > 0 ) {
+			return;
+		}
+
+		$this->controller->add_homepage();
 	}
 }
