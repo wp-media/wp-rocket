@@ -1,22 +1,40 @@
 <?php
 declare( strict_types=1 );
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\RocketInsights\Subscriber;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\RocketInsights\Rest;
 
 use WP_Rocket\Tests\Integration\DBTrait;
-use WP_Rocket\Tests\Integration\AjaxTestCase;
+use WPMedia\PHPUnit\Integration\RESTfulTestCase;
 
 /**
- * Test class covering WP_Rocket\Engine\Admin\RocketInsights\Subscriber::add_new_page
+ * Test class covering WP_Rocket\Engine\Admin\RocketInsights\Rest::create_item
  *
  * @group RocketInsights
  * @group AdminOnly
  */
-class AddNewPageTest extends AjaxTestCase {
+class CreateItemTest extends RESTfulTestCase {
 	use DBTrait;
 
 	private $hook_fired = false;
 	private $container;
+	private $config;
+
+	public function configTestData() {
+		if ( empty( $this->config ) ) {
+			$this->loadTestDataConfig();
+		}
+
+		return isset( $this->config['test_data'] )
+			? $this->config['test_data']
+			: $this->config;
+	}
+
+	protected function loadTestDataConfig() {
+		$obj      = new \ReflectionObject( $this );
+		$filename = $obj->getFileName();
+
+		$this->config = $this->getTestData( dirname( $filename ), basename( $filename, '.php' ) );
+	}
 
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
@@ -42,9 +60,6 @@ class AddNewPageTest extends AjaxTestCase {
 		// Enable Performance Monitoring for the test
 		add_filter( 'rocket_rocket_insights_enabled', '__return_true' );
 
-		// Set the AJAX action
-		$this->action = 'rocket_rocket_insights_add_new_page';
-
 		// Add a hook to capture when rocket_rocket_insights_job_added is fired
 		add_action( 'rocket_rocket_insights_job_added', [ $this, 'capture_hook_fired' ] );
 
@@ -69,6 +84,8 @@ class AddNewPageTest extends AjaxTestCase {
 		// Remove mock HTTP filter
 		remove_filter( 'pre_http_request', [ $this, 'mock_http_request' ] );
 
+		wp_set_current_user( null );
+
 		parent::tear_down();
 	}
 
@@ -78,14 +95,19 @@ class AddNewPageTest extends AjaxTestCase {
 	public function testShouldDoAsExpected( $config, $expected ) {
 		$this->setUpTest( $config );
 
-		$this->executeAjaxCall();
+		$response = $this->doRestRequest( 'POST', '/wp-rocket/v1/rocket-insights/pages', $config['post_data'] );
 
-		$this->assertResponse( $expected );
+		$this->assertResponse( $response, $expected );
 
 		$this->cleanUpTest( $config );
 	}
 
 	private function setUpTest( $config ) {
+		$role = get_role( 'administrator' );
+		$role->add_cap( 'rocket_manage_options' );
+
+		$user = $this->factory()->user->create( [ 'role' => 'administrator' ] );
+		wp_set_current_user( $user );
 
 		foreach ( $config['rows'] as $row ) {
 			$this->addPerformanceMonitoring( $row );
@@ -93,39 +115,15 @@ class AddNewPageTest extends AjaxTestCase {
 
 		$this->container->get('user')->set_user($config['customer_data']->generate());
 
-		// Set up the nonce
-		$_POST['nonce'] = \wp_create_nonce( 'rocket-ajax' );
-
-		// Set up POST data if provided
-		if ( isset( $config['post_data'] ) ) {
-			foreach ( $config['post_data'] as $key => $value ) {
-				$_POST[ $key ] = $value;
-			}
-		}
-
 		// Mock HTTP requests if needed for URL validation
 		if ( isset( $config['mock_http'] ) && $config['mock_http'] ) {
 			add_filter( 'pre_http_request', [ $this, 'mock_http_request' ], 10, 3 );
 		}
 	}
 
-	private function executeAjaxCall() {
-		// Try to make the AJAX call
-		try {
-			$this->_handleAjax( $this->action );
-		} catch ( \WPAjaxDieContinueException $e ) {
-			// Expected for successful AJAX responses
-		} catch ( \WPAjaxDieStopException $e ) {
-			// Expected for error responses
-		}
-	}
-
-	private function assertResponse( $expected ) {
-		// Get the response
-		$response = json_decode( $this->_last_response, true );
-
+	private function assertResponse( $response, $expected ) {
 		// Assert the expected response type
-		if ( $expected['success'] ) {
+		if ( 200 === $expected['code'] ) {
 			$this->assertSuccessResponse( $response, $expected );
 		} else {
 			$this->assertErrorResponse( $response, $expected );
@@ -159,22 +157,22 @@ class AddNewPageTest extends AjaxTestCase {
 		// Check response data if provided
 		if ( isset( $expected['response_data'] ) ) {
 			foreach ( $expected['response_data'] as $key => $value ) {
-				$this->assertArrayHasKey( $key, $response['data'] );
+				$this->assertArrayHasKey( $key, $response );
 
 				// For specific fields, check the expected values
 				if ( $key === 'can_add_pages' && $value !== null ) {
-					$this->assertSame( $value, $response['data'][$key] );
+					$this->assertSame( $value, $response[$key] );
 				}
 			}
 		}
 	}
 
 	private function assertErrorResponse( $response, $expected ) {
-		$this->assertFalse( $response['success'] );
+		$this->assertSame( $response['data']['status'], $expected['code'] );
 
 		// Check error message if provided
 		if ( isset( $expected['error_message'] ) ) {
-			$this->assertStringContainsString( $expected['error_message'], $response['data']['message'] );
+			$this->assertStringContainsString( $expected['error_message'], $response['message'] );
 		}
 	}
 

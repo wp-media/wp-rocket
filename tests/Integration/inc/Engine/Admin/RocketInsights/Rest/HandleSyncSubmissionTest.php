@@ -1,17 +1,18 @@
 <?php
 declare( strict_types=1 );
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\RocketInsights\AJAX\Controller;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\RocketInsights\Rest;
 
 use ReflectionMethod;
-use WP_Rocket\Tests\Integration\TestCase;
+use WP_Rocket\Engine\Admin\RocketInsights\Rest;
 use WP_Rocket\Tests\Integration\DBTrait;
-use WP_Rocket\Engine\Admin\RocketInsights\AJAX\Controller;
+use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * Test class covering WP_Rocket\Engine\Admin\RocketInsights\AJAX\Controller::handle_sync_submission
+ * Test class covering WP_Rocket\Engine\Admin\RocketInsights\Rest::handle_sync_submission
  *
  * @group RocketInsights
+ * @group AdminOnly
  */
 class HandleSyncSubmissionTest extends TestCase {
 	use DBTrait;
@@ -39,7 +40,7 @@ class HandleSyncSubmissionTest extends TestCase {
 		self::truncatePerformanceMonitoringTable();
 
 		$this->container  = apply_filters( 'rocket_container', null );
-		$this->controller = $this->container->get( 'ri_ajax_controller' );
+		$this->controller = $this->container->get( 'ri_rest' );
 
 		// Mock HTTP requests for API calls
 		add_filter( 'pre_http_request', [ $this, 'mock_http_request' ], 10, 3 );
@@ -60,7 +61,7 @@ class HandleSyncSubmissionTest extends TestCase {
 	 */
 	public function testShouldDoAsExpected( $config, $expected ) {
 		// Use reflection to access the private method
-		$method = new ReflectionMethod( Controller::class, 'handle_sync_submission' );
+		$method = new ReflectionMethod( Rest::class, 'handle_sync_submission' );
 		$method->setAccessible( true );
 
 		// Call the method
