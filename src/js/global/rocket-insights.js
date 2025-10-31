@@ -259,7 +259,7 @@ module.exports = (function() {
 
 		window.wp.apiFetch(
 			{
-				path: '/wp-rocket/v1/rocket-insights/pages/' + url,
+				path: window.wp.url.addQueryArgs( '/wp-rocket/v1/rocket-insights/pages', { url: url } ),
 			}
 		).then( ( response ) => {
 			if (response.success && response.html) {

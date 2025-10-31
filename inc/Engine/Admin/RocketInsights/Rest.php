@@ -100,38 +100,74 @@ class Rest extends WP_REST_Controller {
 	 * @return void
 	 */
 	public function register_routes(): void {
+		// Route: GET /pages (list all items).
 		register_rest_route(
 			self::ROUTE_NAMESPACE,
 			self::ROUTE_BASE . '/pages',
 			[
-				[
-					'methods'             => WP_REST_Server::READABLE,
-					'callback'            => [ $this, 'get_items' ],
-					'permission_callback' => [ $this, 'get_items_permissions_check' ],
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => [ $this, 'get_items' ],
+				'permission_callback' => [ $this, 'get_items_permissions_check' ],
+			]
+		);
+
+		// Route: GET /pages?url={url} (get single item by URL).
+		register_rest_route(
+			self::ROUTE_NAMESPACE,
+			self::ROUTE_BASE . '/pages',
+			[
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => [ $this, 'get_item' ],
+				'permission_callback' => [ $this, 'get_item_permissions_check' ],
+				'args'                => [
+					'url' => [
+						'required'          => true,
+						'validate_callback' => function ( $param ) {
+							if ( empty( $param ) ) {
+								return false;
+							}
+
+							$url = untrailingslashit( trim( $param ) );
+							$url = rocket_add_url_protocol( $url );
+
+							return wp_http_validate_url( $url );
+						},
+						'sanitize_callback' => function ( $param ) {
+							$url = untrailingslashit( trim( $param ) );
+
+							return rocket_add_url_protocol( $url );
+						},
+					],
 				],
-				[
-					'methods'             => WP_REST_Server::CREATABLE,
-					'callback'            => [ $this, 'create_item' ],
-					'permission_callback' => [ $this, 'create_item_permissions_check' ],
-					'args'                => [
-						'page_url' => [
-							'required'          => true,
-							'validate_callback' => function ( $param ) {
-								if ( empty( $param ) ) {
-									return false;
-								}
+			]
+		);
 
-								$url = untrailingslashit( trim( $param ) );
-								$url = rocket_add_url_protocol( $url );
+		// Route: POST /pages (create new item).
+		register_rest_route(
+			self::ROUTE_NAMESPACE,
+			self::ROUTE_BASE . '/pages',
+			[
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => [ $this, 'create_item' ],
+				'permission_callback' => [ $this, 'create_item_permissions_check' ],
+				'args'                => [
+					'page_url' => [
+						'required'          => true,
+						'validate_callback' => function ( $param ) {
+							if ( empty( $param ) ) {
+								return false;
+							}
 
-								return wp_http_validate_url( $url );
-							},
-							'sanitize_callback' => function ( $param ) {
-								$url = untrailingslashit( trim( $param ) );
+							$url = untrailingslashit( trim( $param ) );
+							$url = rocket_add_url_protocol( $url );
 
-								return rocket_add_url_protocol( $url );
-							},
-						],
+							return wp_http_validate_url( $url );
+						},
+						'sanitize_callback' => function ( $param ) {
+							$url = untrailingslashit( trim( $param ) );
+
+							return rocket_add_url_protocol( $url );
+						},
 					],
 				],
 			]
@@ -213,36 +249,6 @@ class Rest extends WP_REST_Controller {
 				],
 			]
 		);
-
-		register_rest_route(
-			self::ROUTE_NAMESPACE,
-			self::ROUTE_BASE . '/pages/(?P<url>\S+)',
-			[
-				'methods'             => WP_REST_Server::READABLE,
-				'callback'            => [ $this, 'get_item' ],
-				'permission_callback' => [ $this, 'get_item_permissions_check' ],
-				'args'                => [
-					'url' => [
-						'required'          => true,
-						'validate_callback' => function ( $param ) {
-							if ( empty( $param ) ) {
-								return false;
-							}
-
-							$url = untrailingslashit( trim( $param ) );
-							$url = rocket_add_url_protocol( $url );
-
-							return wp_http_validate_url( $url );
-						},
-						'sanitize_callback' => function ( $param ) {
-							$url = untrailingslashit( trim( $param ) );
-
-							return rocket_add_url_protocol( $url );
-						},
-					],
-				],
-			]
-		);
 	}
 
 	/**
@@ -253,9 +259,14 @@ class Rest extends WP_REST_Controller {
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public function get_item( $request ) {
-		$item = $this->render->get_rocket_insights_column( $request['url'] );
+		$html = $this->render->get_rocket_insights_column( $request['url'] );
 
-		return rest_ensure_response( $item );
+		$payload = [
+			'success' => true,
+			'html'    => $html,
+		];
+
+		return rest_ensure_response( $payload );
 	}
 
 	/**
@@ -266,6 +277,7 @@ class Rest extends WP_REST_Controller {
 	 * @return true|WP_Error
 	 */
 	public function get_item_permissions_check( $request ) {
+
 		if ( ! $this->context->is_allowed() ) {
 			return new WP_Error( 'rest_forbidden', __( 'You are not allowed to access this item.', 'rocket' ), [ 'status' => 403 ] );
 		}
