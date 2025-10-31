@@ -152,6 +152,10 @@ module.exports = (function() {
 	 * @param {jQuery} column The column element.
 	 */
 	function retestPage(rowId, url, column) {
+		// Hide any previous messages
+		const messageDiv = column.find('.wpr-ri-message');
+		messageDiv.hide().removeClass('wpr-ri-error').empty();
+
 		window.wp.apiFetch(
 			{
 				path: '/wp-rocket/v1/rocket-insights/pages/' + rowId,
@@ -161,9 +165,19 @@ module.exports = (function() {
 			if (response.success) {
 				// Begin common loading + polling flow.
 				beginLoadingAndPoll(column, rowId, url);
+			} else {
+				// Display error message if available
+				const message = response?.message ?? response?.data?.message;
+				if (message) {
+					messageDiv.addClass('wpr-ri-error').html(message).show();
+				}
 			}
 		} ).catch( ( error ) => {
 			console.error(error);
+
+			// Display error message
+			const errorMessage = error?.message || 'An error occurred. Please try again.';
+			messageDiv.addClass('wpr-ri-error').html(errorMessage).show();
 		} );
 	}
 
