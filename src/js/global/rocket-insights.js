@@ -38,12 +38,6 @@ module.exports = (function() {
 		jQuery(document).on('click', '.wpr-ri-test-page', function(e) {
 			e.preventDefault();
 			const button = jQuery(this);
-
-			// Don't allow click if no credit
-			if (button.hasClass('wpr-ri-no-credit')) {
-				return;
-			}
-
 			const url = button.data('url');
 			const column = button.closest('.wpr-ri-column');
 
@@ -114,10 +108,11 @@ module.exports = (function() {
 				return;
 			}
 
-			// If backend says we cannot add pages, re-enable and reset label without error banner.
+			// If backend says we cannot add pages, re-enable button and show error message.
 			if (canAdd === false) {
 				button.prop('disabled', false)
 					.text(window.rocket_insights_i18n?.test_page || 'Test the page');
+				showLimitReachedMessage(column);
 				return;
 			}
 
@@ -127,6 +122,15 @@ module.exports = (function() {
 		}).catch((error) => {
 			// wp.apiFetch throws on WP_Error; try to surface a helpful message.
 			console.error(error);
+			
+			// Check if this is a limit reached error
+			if (error?.data?.can_add_pages === false) {
+				button.prop('disabled', false)
+					.text(window.rocket_insights_i18n?.test_page || 'Test the page');
+				showLimitReachedMessage(column);
+				return;
+			}
+			
 			button.prop('disabled', false)
 				.text(window.rocket_insights_i18n?.test_page || 'Test the page');
 		});
@@ -188,6 +192,29 @@ module.exports = (function() {
 		// Update column to loading state and start polling.
 		showLoadingState(column, rowId);
 		startPolling(rowId, url, column);
+	}
+
+	/**
+	 * Show limit reached message in the column.
+	 *
+	 * @param {jQuery} column The column element.
+	 */
+	function showLimitReachedMessage(column) {
+		const isFree = column.data('is-free') === 1 || column.data('is-free') === '1';
+		const messageDiv = column.find('.wpr-ri-message');
+		
+		// Determine which message to show based on user type
+		let message;
+		if (isFree) {
+			message = window.rocket_insights_i18n?.free_limit_reached || "You've reached your free limit. Upgrade to continue.";
+		} else {
+			message = window.rocket_insights_i18n?.paid_limit_reached || "You've reached the page limit. Please remove at least one page to continue.";
+		}
+		
+		messageDiv
+			.addClass('wpr-ri-message--error')
+			.html(message)
+			.show();
 	}
 
 	/**
