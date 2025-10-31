@@ -116,7 +116,7 @@ trait DBTrait {
 		$container           = apply_filters( 'rocket_container', null );
 		$rucss_usedcss_table = $container->get( 'rucss_usedcss_table' );
 
-		if ( ! $rucss_usedcss_table->exists() ) {
+		if ( $rucss_usedcss_table && ! $rucss_usedcss_table->exists() ) {
 			$rucss_usedcss_table->install();
 		}
 
@@ -127,7 +127,7 @@ trait DBTrait {
 		$container = apply_filters( 'rocket_container', null );
 		$preconnect_external_domains_table = $container->get( 'preconnect_external_domains_table' );
 
-		if ( ! $preconnect_external_domains_table->exists() ) {
+		if ( $preconnect_external_domains_table && ! $preconnect_external_domains_table->exists() ) {
 			$preconnect_external_domains_table->install();
 		}
 
@@ -138,7 +138,7 @@ trait DBTrait {
 		$container           = apply_filters( 'rocket_container', null );
 		$preload_cache_table = $container->get( 'preload_caches_table' );
 
-		if ( ! $preload_cache_table->exists() ) {
+		if ( $preload_cache_table && ! $preload_cache_table->exists() ) {
 			$preload_cache_table->install();
 		}
 
@@ -149,7 +149,7 @@ trait DBTrait {
 		$container = apply_filters( 'rocket_container', null );
 		$atf_table = $container->get( 'atf_table' );
 
-		if ( ! $atf_table->exists() ) {
+		if ( $atf_table && ! $atf_table->exists() ) {
 			$atf_table->install();
 		}
 
@@ -160,7 +160,7 @@ trait DBTrait {
 		$container = apply_filters( 'rocket_container', null );
 		$lrc_table = $container->get( 'lrc_table' );
 
-		if ( ! $lrc_table->exists() ) {
+		if ( $lrc_table && ! $lrc_table->exists() ) {
 			$lrc_table->install();
 		}
 
@@ -171,7 +171,7 @@ trait DBTrait {
 		$container = apply_filters( 'rocket_container', null );
 		$preload_fonts_table = $container->get( 'preload_fonts_table' );
 
-		if ( ! $preload_fonts_table->exists() ) {
+		if ( $preload_fonts_table && ! $preload_fonts_table->exists() ) {
 			$preload_fonts_table->install();
 		}
 
@@ -182,7 +182,7 @@ trait DBTrait {
 		$container = apply_filters( 'rocket_container', null );
 		$ri_table = $container->get( 'ri_table' );
 
-		if ( ! $ri_table->exists() ) {
+		if ( $ri_table && ! $ri_table->exists() ) {
 			$ri_table->install();
 		}
 
@@ -242,7 +242,7 @@ trait DBTrait {
 		$container = apply_filters( 'rocket_container', null );
 		$preconnect_external_domains_table = $container->get( 'preconnect_external_domains_table' );
 
-		if ( $preconnect_external_domains_table->exists() ) {
+		if ( $preconnect_external_domains_table && $preconnect_external_domains_table->exists() ) {
 			$preconnect_external_domains_table->uninstall();
 		}
 		remove_filter( 'pre_transient_' . $preconnect_external_domains_table->get_exists_transient_name(), '__return_true' );
@@ -252,7 +252,7 @@ trait DBTrait {
 		$container           = apply_filters( 'rocket_container', null );
 		$rucss_usedcss_table = $container->get( 'rucss_usedcss_table' );
 
-		if ( $rucss_usedcss_table->exists() ) {
+		if ( $rucss_usedcss_table && $rucss_usedcss_table->exists() ) {
 			$rucss_usedcss_table->uninstall();
 		}
 
@@ -263,7 +263,7 @@ trait DBTrait {
 		$container           = apply_filters( 'rocket_container', null );
 		$preload_cache_table = $container->get( 'preload_caches_table' );
 
-		if ( $preload_cache_table->exists() ) {
+		if ( $preload_cache_table && $preload_cache_table->exists() ) {
 			$preload_cache_table->uninstall();
 		}
 
@@ -274,7 +274,7 @@ trait DBTrait {
 		$container = apply_filters( 'rocket_container', null );
 		$atf_table = $container->get( 'atf_table' );
 
-		if ( $atf_table->exists() ) {
+		if ( $atf_table && $atf_table->exists() ) {
 			$atf_table->uninstall();
 		}
 		remove_filter( 'pre_transient_' . $atf_table->get_exists_transient_name(), '__return_true' );
@@ -284,7 +284,7 @@ trait DBTrait {
 		$container = apply_filters( 'rocket_container', null );
 		$lrc_table = $container->get( 'lrc_table' );
 
-		if ( $lrc_table->exists() ) {
+		if ( $lrc_table && $lrc_table->exists() ) {
 			$lrc_table->uninstall();
 		}
 
@@ -295,7 +295,7 @@ trait DBTrait {
 		$container = apply_filters( 'rocket_container', null );
 		$preload_fonts_table = $container->get( 'preload_fonts_table' );
 
-		if ( $preload_fonts_table->exists() ) {
+		if ( $preload_fonts_table && $preload_fonts_table->exists() ) {
 			$preload_fonts_table->uninstall();
 		}
 
@@ -306,7 +306,7 @@ trait DBTrait {
 		$container = apply_filters( 'rocket_container', null );
 		$ri_table = $container->get( 'ri_table' );
 
-		if ( $ri_table->exists() ) {
+		if ( $ri_table && $ri_table->exists() ) {
 			$ri_table->uninstall();
 		}
 
@@ -367,7 +367,7 @@ trait DBTrait {
 		$container           = apply_filters( 'rocket_container', null );
 		$ri_table = $container->get( 'ri_table' );
 
-		if ( $ri_table->exists() ) {
+		if ( $ri_table && $ri_table->exists() ) {
 			$ri_table->truncate();
 		}
 
