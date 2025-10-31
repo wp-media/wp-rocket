@@ -154,10 +154,12 @@ return [
 			],
 		],
 		'expected' => [
-			'button_enabled' => false,
+			'button_enabled' => true,
 			'contains'       => [
 				'Test the page',
 				'wpr-ri-not-tracked',
+			],
+			'not_contains'   => [
 				'wpr-ri-no-credit',
 				'You&#039;ve reached your free limit.',
 			],
@@ -222,12 +224,13 @@ return [
 			],
 		],
 		'expected' => [
-			'button_enabled' => false,
+			'button_enabled' => true,
 			'contains'       => [
 				'Test the page',
 				'wpr-ri-not-tracked',
 			],
 			'not_contains'   => [
+				'wpr-ri-no-credit',
 				"You've reached your free limit.",
 			],
 		],
@@ -261,10 +264,12 @@ return [
 			),
 		],
 		'expected' => [
-			'button_enabled' => false,
+			'button_enabled' => true,
 			'contains'       => [
 				'Test the page',
 				'wpr-ri-not-tracked',
+			],
+			'not_contains'   => [
 				'wpr-ri-no-credit',
 				'You&#039;ve reached your free limit.',
 			],
