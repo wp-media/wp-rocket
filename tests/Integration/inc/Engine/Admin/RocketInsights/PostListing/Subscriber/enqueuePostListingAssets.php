@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\RocketInsights\PostListing\Subscriber;
 
 use WP_Rocket\Tests\Integration\AdminTestCase;
+use Brain\Monkey\Functions;
 
 /**
  * Test class covering \WP_Rocket\Engine\Admin\RocketInsights\PostListing\Subscriber::enqueue_post_listing_assets
@@ -19,6 +20,9 @@ class Test_EnqueuePostListingAssets extends AdminTestCase {
 	public function set_up() {
 		parent::set_up();
 
+		// Enable Rocket Insights.
+		add_filter( 'rocket_rocket_insights_enabled', '__return_true' );
+
 		$this->setRoleCap( 'administrator', 'rocket_manage_options' );
 	}
 
@@ -29,6 +33,9 @@ class Test_EnqueuePostListingAssets extends AdminTestCase {
 	 */
 	public function tear_down() {
 		set_current_screen( 'front' );
+
+		// Remove Rocket Insights filter.
+		remove_filter( 'rocket_rocket_insights_enabled', '__return_true' );
 
 		$this->removeRoleCap( 'administrator', 'rocket_manage_options' );
 
@@ -46,6 +53,11 @@ class Test_EnqueuePostListingAssets extends AdminTestCase {
 	 * @return void
 	 */
 	public function testShouldEnqueueAssetsOnPostListingPages( $config, $expected ) {
+		$container = apply_filters( 'rocket_container', null ); // @phpstan-ignore-line
+		$container->get( 'user' )->set_user( $config['customer_data'] );
+
+		Functions\when( 'wp_parse_url' )->justReturn( $config['is_live_site'] );
+
 		$this->setCurrentUser( 'administrator' );
 
 		// Reset scripts and styles.

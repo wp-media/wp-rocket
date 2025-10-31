@@ -263,19 +263,14 @@
   border: none;
   text-align: left;
   padding: 0 0 0 0;
-}
-.wpr-ri-column.wpr-ri-not-tracked .wpr-ri-test-page:hover {
-  text-decoration: underline;
+  cursor: pointer;
 }
 .wpr-ri-column.wpr-ri-not-tracked .wpr-ri-test-page.wpr-ri-no-credit {
   color: #646970;
   cursor: not-allowed;
 }
-.wpr-ri-column.wpr-ri-not-tracked .wpr-ri-test-page.wpr-ri-no-credit:hover {
-  text-decoration: none;
-}
 .wpr-ri-column.wpr-ri-not-tracked .wpr-ri-credit-message {
-  color: #d63638;
+  color: #c01b1b;
   font-size: 12px;
   margin-top: 2px;
 }
@@ -397,10 +392,7 @@
   border: none;
   text-align: left;
   padding: 0 0 0 0;
-}
-.wpr-ri-column .wpr-ri-actions-wrapper .wpr-ri-retest-link:hover,
-.wpr-ri-column .wpr-ri-actions-wrapper .wpr-ri-see-report-link:hover {
-  text-decoration: underline;
+  cursor: pointer;
 }
 .wpr-ri-column .wpr-ri-actions-wrapper .wpr-ri-retest-link:before,
 .wpr-ri-column .wpr-ri-actions-wrapper .wpr-ri-see-report-link:before {
@@ -421,7 +413,7 @@
   text-decoration: none;
 }
 .wpr-ri-column .wpr-ri-actions-wrapper .wpr-ri-no-credit-text {
-  color: #d63638;
+  color: #c01b1b;
   font-size: 12px;
 }
 .wpr-ri-column .wpr-btn-with-tool-tip {
