@@ -95,7 +95,7 @@ module.exports = (function() {
 	 */
 	function addNewPage(url, column, button) {
 		// Disable button and show loading state.
-		button.prop('disabled', true).text(window.rocket_insights_i18n?.adding || 'Adding...');
+		button.prop('disabled', true);
 
 		// Use REST (HEAD) but keep develop's robust handling.
 		window.wp.apiFetch({
@@ -122,17 +122,11 @@ module.exports = (function() {
 			}
 
 			// Other errors
-			showMessage(column, message || 'Error adding page', 'error');
 			button.prop('disabled', false)
 				.text(window.rocket_insights_i18n?.test_page || 'Test the page');
 		}).catch((error) => {
 			// wp.apiFetch throws on WP_Error; try to surface a helpful message.
-			const errMsg =
-				error?.message ||
-				error?.data?.message ||
-				window.rocket_insights_i18n?.error ||
-				'An error occurred';
-			showMessage(column, errMsg, 'error');
+			console.error(error);
 			button.prop('disabled', false)
 				.text(window.rocket_insights_i18n?.test_page || 'Test the page');
 		});
@@ -155,11 +149,9 @@ module.exports = (function() {
 			if (response.success) {
 				// Begin common loading + polling flow.
 				beginLoadingAndPoll(column, rowId, url);
-			} else {
-				showMessage(column, response?.message || 'Error retesting page', 'error');
 			}
 		} ).catch( ( error ) => {
-			showMessage(column, window.rocket_insights_i18n?.error || 'An error occurred', 'error');
+			console.error(error);
 		} );
 	}
 
@@ -270,26 +262,6 @@ module.exports = (function() {
 				attachRetestListeners();
 			}
 		} );
-	}
-
-	/**
-	 * Show a message in the column.
-	 *
-	 * @param {jQuery} column  The column element.
-	 * @param {string} message The message to display.
-	 * @param {string} type    The message type ('error' or 'success').
-	 */
-	function showMessage(column, message, type) {
-		const messageEl = column.find('.wpr-ri-message');
-		// Clear any existing content first
-		messageEl.stop(true, true).empty();
-		const p = jQuery('<p>').addClass('wpr-ri-message-' + type).text(message);
-		messageEl.append(p).show();
-
-		// Auto-hide after 5 seconds.
-		setTimeout(function() {
-			messageEl.fadeOut();
-		}, 5000);
 	}
 
 	// Auto-initialize on DOM ready

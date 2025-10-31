@@ -154,9 +154,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket-insights',
 			'rocket_insights_i18n',
 			[
-				'adding'             => __( 'Adding...', 'rocket' ),
 				'test_page'          => __( 'Test the page', 'rocket' ),
-				'error'              => __( 'An error occurred', 'rocket' ),
 				'loading_img'        => rocket_get_constant( 'WP_ROCKET_ASSETS_IMG_URL' ) . 'orange-loading.svg',
 				'free_limit_reached' => __( "You've reached your free limit. Upgrade to continue.", 'rocket' ),
 				'paid_limit_reached' => __( "You've reached the page limit. Please remove at least one page to continue.", 'rocket' ),
