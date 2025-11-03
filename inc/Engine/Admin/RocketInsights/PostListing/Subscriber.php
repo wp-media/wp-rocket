@@ -15,7 +15,6 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  * @since 3.20.1
  */
 class Subscriber implements Subscriber_Interface {
-
 	/**
 	 * Render instance.
 	 *
@@ -29,6 +28,28 @@ class Subscriber implements Subscriber_Interface {
 	 * @var Context
 	 */
 	private $context;
+
+	/**
+	 * Excluded post types list.
+	 *
+	 * @var string[]
+	 */
+	private $excluded_post_types = [
+		'elementor_library',
+		'oceanwp_library',
+		'tbuilder_layout',
+		'tbuilder_layout_part',
+		'slider',
+		'karma-slider',
+		'tt-gallery',
+		'xlwcty_thankyou',
+		'fusion_template',
+		'blocks',
+		'jet-woo-builder',
+		'fl-builder-template',
+		'cms_block',
+		'web-story',
+	];
 
 	/**
 	 * Constructor.
@@ -50,81 +71,103 @@ class Subscriber implements Subscriber_Interface {
 	 * @return array
 	 */
 	public static function get_subscribed_events(): array {
-		$events = [
-			'admin_enqueue_scripts' => 'enqueue_post_listing_assets',
+		return [
+			'admin_enqueue_scripts'      => 'enqueue_post_listing_assets',
+			'manage_pages_columns'       => 'add_column_to_pages',
+			'manage_posts_columns'       => [ 'add_column_to_posts', 10, 2 ],
+			'manage_pages_custom_column' => [ 'render_rocket_insights_column', 10, 2 ],
+			'manage_posts_custom_column' => [ 'render_rocket_insights_column', 10, 2 ],
 		];
-
-		return array_merge( $events, self::get_post_listing_events() );
 	}
 
 	/**
-	 * Build dynamic events for post listing pages based on public post types.
+	 * Add RI column header to pages.
 	 *
-	 * @since 3.20.1
-	 *
-	 * @return array<string, string|array> Associative array of hook => callback(s).
-	 */
-	private static function get_post_listing_events(): array {
-		$events     = [];
-		$post_types = self::get_public_post_type_slugs();
-		foreach ( $post_types as $post_type ) {
-			$events[ "manage_{$post_type}_posts_columns" ]       = 'add_rocket_insights_column';
-			$events[ "manage_{$post_type}_posts_custom_column" ] = [ 'render_rocket_insights_column', 10, 2 ];
-		}
-		return $events;
-	}
-
-	/**
-	 * Gets the list of public post types that WP Rocket caches.
-	 *
-	 * This is a static helper for get_subscribed_events() since it doesn't require instance state.
-	 *
-	 * @since 3.20.1
+	 * @param string[] $columns Array of column headers.
 	 *
 	 * @return array
 	 */
-	private static function get_public_post_type_slugs(): array {
-		$post_types = get_post_types(
-			[
-				'public'             => true,
-				'publicly_queryable' => true,
-			]
-		);
-
-		if ( ! in_array( 'page', $post_types, true ) ) {
-			$post_types[] = 'page';
+	public function add_column_to_pages( $columns ): array {
+		if ( $this->is_excluded( 'page' ) ) {
+			return $columns;
 		}
+		return $this->add_rocket_insights_column( $columns );
+	}
+
+	/**
+	 * Add RI column header to posts.
+	 *
+	 * @param string[] $columns Array of column headers.
+	 * @param string   $post_type Post type.
+	 * @return array
+	 */
+	public function add_column_to_posts( $columns, $post_type ): array {
+		if ( $this->is_excluded( $post_type ) ) {
+			return $columns;
+		}
+		return $this->add_rocket_insights_column( $columns );
+	}
+
+	/**
+	 * Check if post type is excluded or not.
+	 *
+	 * @param string $post_type Post type.
+	 *
+	 * @return bool
+	 */
+	private function is_excluded( $post_type ) {
+		$excluded = ! is_post_type_viewable( $post_type ) || in_array( $post_type, $this->excluded_post_types, true );
 
 		/**
-		 * Filters the post types that should be excluded from Rocket Insights functionality.
+		 * Filters the current post type if it should be excluded from Rocket Insights functionality.
 		 *
 		 * This filter allows developers to prevent the Rocket Insights column from being displayed
 		 * on specific post type listing pages. The Rocket Insights column provides performance
 		 * testing and scoring for individual posts/pages.
 		 *
-		 * @since 3.20.1
-		 *
-		 * @param string[] $excluded_post_types Array of post type slugs to exclude. Default empty array.
+		 * @param boolean $excluded Exclusion status, defaulted to if post type is not public.
+		 * @param string  $post_type Current post type to be tested.
 		 *
 		 * @example
 		 * // Exclude custom post types from Rocket Insights
-		 * add_filter( 'rocket_insights_excluded_post_types', function( $excluded ) {
-		 *     return array_merge( $excluded, [ 'custom_post_type', 'another_cpt' ] );
-		 * } );
+		 * add_filter( 'rocket_insights_excluded_post_type', function( $excluded, $post_type ) {
+		 *     return $excluded || $post_type === 'test';
+		 * }, 10, 2 );
 		 */
-		$excluded_post_types = (array) wpm_apply_filters_typed(
-			'string[]',
-			'rocket_insights_excluded_post_types',
-			[]
+		return (bool) wpm_apply_filters_typed(
+			'boolean',
+			'rocket_insights_excluded_post_type',
+			$excluded,
+			$post_type
 		);
+	}
 
-		return array_diff( $post_types, $excluded_post_types );
+	/**
+	 * Determines if assets should be enqueued on the current page.
+	 *
+	 * @return bool
+	 */
+	private function should_enqueue_assets(): bool {
+		if ( ! $this->context->is_allowed() ) {
+			return false;
+		}
+
+		$screen = get_current_screen();
+
+		if ( ! $screen ) {
+			return false;
+		}
+
+		// Check if we're on a post listing page (edit.php).
+		if ( 'edit' !== $screen->base ) {
+			return false;
+		}
+
+		return ! $this->is_excluded( $screen->post_type );
 	}
 
 	/**
 	 * Enqueues Rocket Insights CSS and JS on post listing pages.
-	 *
-	 * @since 3.20.1
 	 *
 	 * @return void
 	 */
@@ -164,36 +207,7 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Determines if assets should be enqueued on the current page.
-	 *
-	 * @since 3.20.1
-	 *
-	 * @return bool
-	 */
-	private function should_enqueue_assets(): bool {
-		if ( ! $this->context->is_allowed() ) {
-			return false;
-		}
-
-		$screen = get_current_screen();
-
-		if ( ! $screen ) {
-			return false;
-		}
-
-		// Check if we're on a post listing page (edit.php).
-		if ( 'edit' !== $screen->base ) {
-			return false;
-		}
-
-		$post_type_slugs = self::get_public_post_type_slugs();
-		return in_array( $screen->post_type, $post_type_slugs, true );
-	}
-
-	/**
 	 * Adds the Rocket Insights column to the post listing table.
-	 *
-	 * @since 3.20.1
 	 *
 	 * @param array $columns Existing columns.
 	 *
@@ -211,8 +225,6 @@ class Subscriber implements Subscriber_Interface {
 
 	/**
 	 * Renders the content for the Rocket Insights column.
-	 *
-	 * @since 3.20.1
 	 *
 	 * @param string $column  The name of the column.
 	 * @param int    $post_id The ID of the current post.
