@@ -335,7 +335,7 @@ class Render extends Abstract_Render {
 	 * @since 3.20.1
 	 *
 	 * @param string $url The URL of the post.
-	 * @param int $post_id Post ID of post.
+	 * @param int    $post_id Post ID of post.
 	 *
 	 * @return string The rendered HTML for the Rocket Insights column.
 	 */
@@ -373,7 +373,7 @@ class Render extends Abstract_Render {
 			'wpr_has_credit'          => $has_credit,
 			'wpr_can_add_pages'       => $can_add_pages,
 			'wpr_is_free'             => $this->context->is_free_user(),
-			'is_draft'			      => get_post_status( $post_id ) === 'draft',
+			'is_draft'                => get_post_status( $post_id ) === 'draft',
 		];
 
 		// If row exists, prepare additional derived variables and score data.
@@ -399,7 +399,7 @@ class Render extends Abstract_Render {
 	 * @since 3.20.1
 	 *
 	 * @param string $url The URL of the post.
-	 * @param int $post_id Post ID of post.
+	 * @param int    $post_id Post ID of post.
 	 *
 	 * @return void
 	 */

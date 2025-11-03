@@ -154,11 +154,11 @@ class Subscriber implements Subscriber_Interface {
 			'rocket-insights',
 			'rocket_insights_i18n',
 			[
-				'test_page'          => __( 'Test the page', 'rocket' ),
-				'loading_img'        => rocket_get_constant( 'WP_ROCKET_ASSETS_IMG_URL' ) . 'orange-loading.svg',
-				'free_limit_reached' => __( "You've reached your free limit. Upgrade to continue.", 'rocket' ),
-				'paid_limit_reached' => __( "You've reached the page limit. Please remove at least one page to continue.", 'rocket' ),
-				'url_limit_reached'  => __( 'Maximum number of URLs reached for your license.', 'rocket' ),
+				'test_page'           => __( 'Test the page', 'rocket' ),
+				'loading_img'         => rocket_get_constant( 'WP_ROCKET_ASSETS_IMG_URL' ) . 'orange-loading.svg',
+				'free_limit_reached'  => __( "You've reached your free limit. Upgrade to continue.", 'rocket' ),
+				'paid_limit_reached'  => __( "You've reached the page limit. Please remove at least one page to continue.", 'rocket' ),
+				'url_limit_reached'   => __( 'Maximum number of URLs reached for your license.', 'rocket' ),
 				'estimated_time_text' => __( 'Analyzing your page (~1 min).', 'rocket' ),
 			]
 		);
