@@ -20,13 +20,13 @@ defined( 'ABSPATH' ) || exit;
 // If row doesn't exist, show "Test the page" link.
 if ( null === $data['wpr_rocket_row'] ) :
 	?>
-	<div class="wpr-ri-column wpr-ri-not-tracked" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>">
+	<div class="wpr-ri-column wpr-ri-not-tracked" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>" data-post-id="<?php echo esc_attr( $data['wpr_post_id'] ); ?>">
 		<?php if ( $data['wpr_can_add_pages'] && ! $data['is_draft'] ) : ?>
-			<button type="button" class="wpr-ri-test-page" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>">
+			<button type="button" class="wpr-ri-test-page" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>" data-post-id="<?php echo esc_attr( $data['wpr_post_id'] ); ?>">
 				<?php esc_html_e( 'Test the page', 'rocket' ); ?>
 			</button>
 		<?php else : ?>
-			<button type="button" class="wpr-ri-test-page wpr-ri-no-credit" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>">
+			<button type="button" class="wpr-ri-test-page wpr-ri-no-credit" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>" data-post-id="<?php echo esc_attr( $data['wpr_post_id'] ); ?>">
 				<?php esc_html_e( 'Test the page', 'rocket' ); ?>
 			</button>
 			<?php if ( ! $data['wpr_can_add_pages'] && $data['wpr_is_free_user'] ) : ?>
@@ -69,7 +69,7 @@ endif;
 
 ?>
 
-<div class="wpr-ri-column" data-rocket-insights-id="<?php echo esc_attr( $data['wpr_rocket_row']->id ); ?>" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>">
+<div class="wpr-ri-column" data-rocket-insights-id="<?php echo esc_attr( $data['wpr_rocket_row']->id ); ?>" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>" data-post-id="<?php echo esc_attr( $data['wpr_post_id'] ); ?>">
 	<?php if ( $data['wpr_is_running'] ) : ?>
 		<!-- Loading state -->
 		<div class="wpr-ri-loading wpr-btn-with-tool-tip">
@@ -101,7 +101,7 @@ endif;
 				
 				<div class="wpr-ri-actions-wrapper">
 					<?php if ( $data['wpr_has_credit'] ) : ?>
-						<button type="button" class="wpr-ri-retest-link wpr-icon-bold-refresh" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>">
+						<button type="button" class="wpr-ri-retest-link wpr-icon-bold-refresh" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>" data-post-id="<?php echo esc_attr( $data['wpr_post_id'] ); ?>">
 							<?php esc_html_e( 'Re-test', 'rocket' ); ?>
 						</button>
 					<?php else : ?>
@@ -145,7 +145,7 @@ endif;
 			
 			<div class="wpr-ri-actions-wrapper">
 				<?php if ( $data['wpr_has_credit'] ) : ?>
-					<button type="button" class="wpr-ri-retest-link wpr-icon-bold-refresh" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>">
+					<button type="button" class="wpr-ri-retest-link wpr-icon-bold-refresh" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>" data-post-id="<?php echo esc_attr( $data['wpr_post_id'] ); ?>">
 						<?php esc_html_e( 'Re-test', 'rocket' ); ?>
 					</button>
 				<?php else : ?>
@@ -205,6 +205,7 @@ endif;
 					type="button"
 					class="wpr-ri-retest-link wpr-icon-bold-refresh"
 					data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>"
+					data-post-id="<?php echo esc_attr( $data['wpr_post_id'] ); ?>"
 				>
 					<?php esc_html_e( 'Re-test', 'rocket' ); ?>
 				</button>
