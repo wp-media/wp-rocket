@@ -20,6 +20,16 @@ module.exports = (function() {
 	const activePolls = {};
 
 	/**
+	 * Track credit availability state.
+	 */
+	let hasCredit = true;
+
+	/**
+	 * Track whether adding pages is allowed.
+	 */
+	let canAddPages = true;
+
+	/**
 	 * Initialize Rocket Insights on post listing pages
 	 */
 	function init() {
@@ -107,6 +117,10 @@ module.exports = (function() {
 			const id        = response?.id ?? response?.data?.id ?? null;
 			const canAdd    = (response?.can_add_pages ?? response?.data?.can_add_pages);
 			const message   = response?.message ?? response?.data?.message;
+			const hasCredit = response?.has_credit ?? response?.data?.has_credit;
+
+			// Update credit state from response
+			updateCreditState(hasCredit, canAdd);
 
 			if (success && id) {
 				// Begin common loading + polling flow.
@@ -147,6 +161,9 @@ module.exports = (function() {
 			}
 		).then( ( response ) => {
 			if (response.success) {
+				// Update credit state from response
+				updateCreditState(response.has_credit, response.can_add_pages);
+
 				// Begin common loading + polling flow.
 				beginLoadingAndPoll(column, rowId, url);
 			}
@@ -211,6 +228,9 @@ module.exports = (function() {
 					clearInterval( activePolls[rowId] );
 					delete activePolls[rowId];
 
+					// Update credit state from response
+					updateCreditState(response.has_credit, response.can_add_pages);
+
 					// Update the column with results (reload rendered HTML from server).
 					updateColumnWithResults( column, result );
 				}
@@ -262,6 +282,101 @@ module.exports = (function() {
 				attachRetestListeners();
 			}
 		} );
+	}
+
+	/**
+	 * Update credit and page limit state.
+	 *
+	 * @param {boolean} responseHasCredit Whether the user has credit.
+	 * @param {boolean} responseCanAddPages Whether the user can add pages.
+	 */
+	function updateCreditState(responseHasCredit, responseCanAddPages) {
+		// Track if state actually changed
+		const creditChanged = responseHasCredit !== undefined && hasCredit !== responseHasCredit;
+		const canAddChanged = responseCanAddPages !== undefined && canAddPages !== responseCanAddPages;
+
+		if (creditChanged) {
+			hasCredit = responseHasCredit;
+		}
+
+		if (canAddChanged) {
+			canAddPages = responseCanAddPages;
+		}
+
+		// If credit or page limit state changed, update all buttons
+		if (creditChanged || canAddChanged) {
+			updateAllRetestButtons();
+		}
+	}
+
+	/**
+	 * Update all Re-test buttons based on current credit state.
+	 */
+	function updateAllRetestButtons() {
+		// Update all Re-test button links
+		jQuery('.wpr-ri-retest-link').each(function() {
+			const button = jQuery(this);
+			const column = button.closest('.wpr-ri-column');
+			const rowId = column.data('rocket-insights-id');
+
+			// Check if this row is currently being processed
+			const isRunning = rowId && activePolls[rowId];
+
+			if (!hasCredit || isRunning) {
+				// Disable the button
+				if (button.is('button')) {
+					button.prop('disabled', true);
+					button.addClass('wpr-ri-disabled');
+				} else {
+					// It's a span, already styled as disabled in PHP
+					button.addClass('wpr-ri-disabled');
+				}
+
+				// Show the no-credit message if it exists in the same actions wrapper
+				const actionsWrapper = button.closest('.wpr-ri-actions-wrapper');
+				const noCreditText = actionsWrapper.find('.wpr-ri-no-credit-text');
+				if (noCreditText.length && !hasCredit) {
+					noCreditText.show();
+				}
+			} else {
+				// Re-enable the button
+				if (button.is('button')) {
+					button.prop('disabled', false);
+					button.removeClass('wpr-ri-disabled');
+				} else {
+					// Convert span to button if credit is restored
+					const newButton = jQuery('<button>')
+						.attr('type', 'button')
+						.attr('class', button.attr('class'))
+						.attr('data-url', button.data('url'))
+						.removeClass('wpr-ri-disabled')
+						.html(button.html());
+					button.replaceWith(newButton);
+				}
+
+				// Hide the no-credit message
+				const actionsWrapper = button.closest('.wpr-ri-actions-wrapper');
+				const noCreditText = actionsWrapper.find('.wpr-ri-no-credit-text');
+				if (noCreditText.length) {
+					noCreditText.hide();
+				}
+			}
+		});
+
+		// Update all "Test the page" buttons
+		jQuery('.wpr-ri-test-page').each(function() {
+			const button = jQuery(this);
+
+			if (!hasCredit || !canAddPages) {
+				// Disable test button and add no-credit class
+				button.addClass('wpr-ri-no-credit');
+				button.prop('disabled', true);
+			} else {
+				// Enable test button
+				button.removeClass('wpr-ri-no-credit');
+				button.prop('disabled', false);
+			}
+		});
 	}
 
 	// Auto-initialize on DOM ready
