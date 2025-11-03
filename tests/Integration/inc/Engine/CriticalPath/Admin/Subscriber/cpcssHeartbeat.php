@@ -90,7 +90,12 @@ class Test_CpcssHeartbeat extends AjaxTestCase {
 		$this->expectProcessGenerate( $config, $expected );
 
 		$_POST['_nonce'] = wp_create_nonce( 'cpcss_heartbeat_nonce' );
-		$response        = $this->callAjaxAction();
+
+		$this->expectException( 'WPAjaxDieContinueException' );
+
+		$this->_handleAjax( $this->action );
+
+		$response = json_decode( $this->_last_response );
 
 		if ( $expected['bailout'] ) {
 			$this->assertFalse( $response->success );

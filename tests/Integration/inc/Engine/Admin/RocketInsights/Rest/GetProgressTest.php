@@ -1,19 +1,38 @@
 <?php
 declare( strict_types=1 );
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\RocketInsights\Subscriber;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\RocketInsights\Rest;
 
 use WP_Rocket\Tests\Integration\DBTrait;
-use WP_Rocket\Tests\Integration\AjaxTestCase;
+use WPMedia\PHPUnit\Integration\RESTfulTestCase;
 
 /**
- * Test class covering WP_Rocket\Engine\Admin\RocketInsights\Subscriber::get_results
+ * Test class covering WP_Rocket\Engine\Admin\RocketInsights\Rest::get_progress
  *
  * @group RocketInsights
  * @group AdminOnly
  */
-class GetResultsTest extends AjaxTestCase {
+class GetProgressTest extends RESTfulTestCase {
 	use DBTrait;
+
+	private $config;
+
+	public function configTestData() {
+		if ( empty( $this->config ) ) {
+			$this->loadTestDataConfig();
+		}
+
+		return isset( $this->config['test_data'] )
+			? $this->config['test_data']
+			: $this->config;
+	}
+
+	protected function loadTestDataConfig() {
+		$obj      = new \ReflectionObject( $this );
+		$filename = $obj->getFileName();
+
+		$this->config = $this->getTestData( dirname( $filename ), basename( $filename, '.php' ) );
+	}
 
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
@@ -36,9 +55,6 @@ class GetResultsTest extends AjaxTestCase {
 
 		// Enable Performance Monitoring for the test
 		add_filter( 'rocket_rocket_insights_enabled', '__return_true' );
-
-		// Set the AJAX action
-		$this->action = 'rocket_rocket_insights_get_results';
 	}
 
 	public function tear_down() {
@@ -47,6 +63,8 @@ class GetResultsTest extends AjaxTestCase {
 
 		// Remove Performance Monitoring enabled filter
 		remove_filter( 'rocket_rocket_insights_enabled', '__return_true' );
+
+		wp_set_current_user( null );
 
 		parent::tear_down();
 	}
@@ -57,14 +75,17 @@ class GetResultsTest extends AjaxTestCase {
 	public function testShouldDoAsExpected( $config, $expected ) {
 		$this->setUpTest( $config );
 
-		$this->executeAjaxCall();
+		$response = $this->doRestRequest( 'GET', '/wp-rocket/v1/rocket-insights/pages/progress', $config['get_data'] );
 
-		$this->assertResponse( $expected );
+		$this->assertResponse( $response, $expected );
 	}
 
 	private function setUpTest( $config ) {
-		// Set up the nonce
-		$_GET['nonce'] = \wp_create_nonce( 'rocket-ajax' );
+		$role = get_role( 'administrator' );
+		$role->add_cap( 'rocket_manage_options' );
+
+		$user = $this->factory()->user->create( [ 'role' => 'administrator' ] );
+		wp_set_current_user( $user );
 
 		// Set up database entries if provided
 		if ( isset( $config['database_entries'] ) ) {
@@ -72,32 +93,11 @@ class GetResultsTest extends AjaxTestCase {
 				self::addPerformanceMonitoring( $entry );
 			}
 		}
-
-		// Set up GET data if provided
-		if ( isset( $config['get_data'] ) ) {
-			foreach ( $config['get_data'] as $key => $value ) {
-				$_GET[ $key ] = $value;
-			}
-		}
 	}
 
-	private function executeAjaxCall() {
-		// Try to make the AJAX call
-		try {
-			$this->_handleAjax( $this->action );
-		} catch ( \WPAjaxDieContinueException $e ) {
-			// Expected for successful AJAX responses
-		} catch ( \WPAjaxDieStopException $e ) {
-			// Expected for error responses
-		}
-	}
-
-	private function assertResponse( $expected ) {
-		// Get the response
-		$response = json_decode( $this->_last_response, true );
-
+	private function assertResponse( $response, $expected ) {
 		// Assert the expected response type
-		if ( $expected['success'] ) {
+		if ( 200 === $expected['code'] ) {
 			$this->assertSuccessResponse( $response, $expected );
 		} else {
 			$this->assertErrorResponse( $response, $expected );
@@ -109,18 +109,18 @@ class GetResultsTest extends AjaxTestCase {
 
 		// Check if results are returned
 		if ( isset( $expected['results_count'] ) ) {
-			$this->assertArrayHasKey( 'results', $response['data'] );
-			$this->assertCount( $expected['results_count'], $response['data']['results'] );
+			$this->assertArrayHasKey( 'results', $response );
+			$this->assertCount( $expected['results_count'], $response['results'] );
 		}
 
 		// Check if global_score_data is present
 		if ( isset( $expected['has_global_score_data'] ) && $expected['has_global_score_data'] ) {
-			$this->assertArrayHasKey( 'global_score_data', $response['data'] );
+			$this->assertArrayHasKey( 'global_score_data', $response );
 		}
 
 		// Check if each result has HTML
 		if ( isset( $expected['results_have_html'] ) && $expected['results_have_html'] ) {
-			foreach ( $response['data']['results'] as $result ) {
+			foreach ( $response['results'] as $result ) {
 				// Convert to array if it's an object
 				$result_array = (array) $result;
 				$this->assertArrayHasKey( 'html', $result_array );
@@ -130,11 +130,22 @@ class GetResultsTest extends AjaxTestCase {
 	}
 
 	private function assertErrorResponse( $response, $expected ) {
-		$this->assertFalse( $response['success'] );
+		$this->assertSame( $response['data']['status'], $expected['code'] );
 
 		// Check error message if provided
 		if ( isset( $expected['error_message'] ) ) {
-			$this->assertStringContainsString( $expected['error_message'], $response['data']['results'] );
+			$this->assertStringContainsString( $expected['error_message'], $response['message'] );
 		}
+	}
+
+	protected function doRestRequest( $method, $route, array $body_params = [] ) {
+		$request = new \WP_REST_Request( $method, $route );
+		$request->set_header( 'Content-Type', 'application/x-www-form-urlencoded' );
+
+		if ( ! empty( $body_params ) ) {
+			$request->set_query_params( $body_params );
+		}
+
+		return rest_do_request( $request )->get_data();
 	}
 }
