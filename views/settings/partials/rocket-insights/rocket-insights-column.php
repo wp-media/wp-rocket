@@ -75,7 +75,7 @@ endif;
 			<img class="wpr-loading-img" src="<?php echo esc_url( rocket_get_constant( 'WP_ROCKET_ASSETS_IMG_URL', '' ) . 'orange-loading.svg' ); ?>" alt="<?php esc_attr_e( 'Loading...', 'rocket' ); ?>"/>
 			<div class="wpr-tooltip">
 				<div class="wpr-tooltip-content">
-					<?php echo __( 'Analyzing your page (~1 min).', 'rocket' ); ?>
+					<?php echo esc_html__( 'Analyzing your page (~1 min).', 'rocket' ); ?>
 				</div>
 			</div>
 		</div>
@@ -90,7 +90,10 @@ endif;
 					?>
 					<div class="wpr-tooltip">
 						<div class="wpr-tooltip-content">
-							<?php printf( esc_html__( 'Tested %s ago', 'rocket' ), human_time_diff( $data['wpr_rocket_row']->modified, time() ) ) ?>
+							<?php
+							// translators: %s = human-readable time difference (e.g., "5 minutes").
+							printf( esc_html__( 'Tested %s ago', 'rocket' ), esc_html( human_time_diff( $data['wpr_rocket_row']->modified, time() ) ) );
+							?>
 						</div>
 					</div>
 				</div>
@@ -131,7 +134,10 @@ endif;
 				?>
 				<div class="wpr-tooltip">
 					<div class="wpr-tooltip-content">
-						<?php printf( esc_html__( 'Tested %s ago', 'rocket' ), human_time_diff( $data['wpr_rocket_row']->modified, time() ) ) ?>
+						<?php
+						// translators: %s = human-readable time difference (e.g., "5 minutes").
+						printf( esc_html__( 'Tested %s ago', 'rocket' ), esc_html( human_time_diff( $data['wpr_rocket_row']->modified, time() ) ) );
+						?>
 					</div>
 				</div>
 			</div>
