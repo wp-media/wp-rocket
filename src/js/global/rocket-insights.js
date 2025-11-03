@@ -236,7 +236,7 @@ module.exports = (function() {
 		column.attr('data-rocket-insights-id', rowId);
 
 		// Create elements safely to prevent XSS
-		const loadingDiv = jQuery('<div>').addClass('wpr-ri-loading');
+		const loadingDiv = jQuery('<div>').addClass('wpr-ri-loading wpr-btn-with-tool-tip');
 		const img = jQuery('<img>').addClass('wpr-loading-img').attr({
 			src: window.rocket_insights_i18n?.loading_img || '',
 			alt: 'Loading...'
@@ -244,6 +244,7 @@ module.exports = (function() {
 		const messageDiv = jQuery('<div>').addClass('wpr-ri-message').css('display', 'none');
 
 		loadingDiv.append(img);
+		loadingDiv.append(`<div class="wpr-tooltip"><div class="wpr-tooltip-content">${window.rocket_insights_i18n?.estimated_time_text || 'Analyzing your page (~1 min).'}</div></div>`)
 		column.empty().append(loadingDiv).append(messageDiv);
 	}
 
