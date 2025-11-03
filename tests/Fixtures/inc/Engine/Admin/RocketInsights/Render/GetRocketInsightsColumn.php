@@ -308,4 +308,23 @@ return [
 			],
 		],
 	],
+	'freeUserWithCreditAnd0URLsAndDraftPost' => [
+		'config' => [
+			'customer_data' => ( new UserDataGenerator() ),
+			'credit'        => 3,
+			'url'           => 'http://example.com/test-page-1',
+			'existing_urls' => [],
+			'post_status' => 'draft',
+		],
+		'expected' => [
+			'button_enabled' => false,
+			'contains'       => [
+				'Test the page',
+				'wpr-ri-no-credit',
+			],
+			'not_contains'   => [
+				"reached your free limit",
+			],
+		],
+	],
 ];

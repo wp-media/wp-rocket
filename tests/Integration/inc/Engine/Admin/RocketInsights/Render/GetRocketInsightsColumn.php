@@ -56,7 +56,7 @@ class Test_GetRocketInsightsColumn extends TestCase {
 		self::truncatePerformanceMonitoringTable();
 
 		// Clean up credit option
-		delete_option( 'pm_credit' );
+		delete_option( 'wp_rocket_pm_credit' );
 
 		// Remove Performance Monitoring enabled filter
 		remove_filter( 'rocket_rocket_insights_enabled', '__return_true' );
@@ -73,7 +73,7 @@ class Test_GetRocketInsightsColumn extends TestCase {
 
 		// Set credit if specified
 		if ( isset( $config['credit'] ) ) {
-			update_option( 'pm_credit', $config['credit'] );
+			update_option( 'wp_rocket_pm_credit', $config['credit'] );
 		}
 
 		// Add existing URLs if specified
@@ -82,9 +82,20 @@ class Test_GetRocketInsightsColumn extends TestCase {
 				$this->addPerformanceMonitoring( $url_data );
 			}
 		}
+		$post_id = 1;
+
+		if ( isset( $config['post_status'] ) ) {
+			$post_id = $this->factory->post->create( [
+				'post_title' => 'Test Post',
+				'post_content' => 'Content',
+				'post_status' => 'draft',
+				'post_type' => 'post',
+				'post_name' => 'page-to-test',
+			] );
+		}
 
 		// Generate the HTML for the column
-		$html = $this->render->get_rocket_insights_column( $config['url'] );
+		$html = $this->render->get_rocket_insights_column( $config['url'], $post_id );
 
 		// Check for button state (enabled/disabled)
 		if ( isset( $expected['button_enabled'] ) ) {
