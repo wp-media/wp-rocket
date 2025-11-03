@@ -94,8 +94,11 @@ module.exports = (function() {
 	 * @param {jQuery} button The button that was clicked.
 	 */
 	function addNewPage(url, column, button) {
-		// Disable button and show loading state.
+		// Disable button and show loading state immediately.
 		button.prop('disabled', true);
+
+		// Show loading spinner immediately before API call
+		showLoadingState(column, null);
 
 		// Use REST (HEAD) but keep develop's robust handling.
 		window.wp.apiFetch({
@@ -109,8 +112,9 @@ module.exports = (function() {
 			const message   = response?.message ?? response?.data?.message;
 
 			if (success && id) {
-				// Begin common loading + polling flow.
-				beginLoadingAndPoll(column, id, url);
+				// Update column with the row ID and start polling
+				column.attr('data-rocket-insights-id', id);
+				startPolling(id, url, column);
 
 				// Check if we've reached the limit and disable all other "Test the page" buttons.
 				if (canAdd === false || response?.data?.remaining_urls === 0) {
@@ -119,21 +123,13 @@ module.exports = (function() {
 				return;
 			}
 
-			// If backend says we cannot add pages, re-enable and reset label without error banner.
-			if (canAdd === false) {
-				button.prop('disabled', false)
-					.text(window.rocket_insights_i18n?.test_page || 'Test the page');
-				return;
-			}
-
-			// Other errors
-			button.prop('disabled', false)
-				.text(window.rocket_insights_i18n?.test_page || 'Test the page');
+			// If backend says we cannot add pages or other errors, restore original state
+			// Reload the column HTML from server to restore the button
+			reloadColumnFromServer(column, url);
 		}).catch((error) => {
-			// wp.apiFetch throws on WP_Error; try to surface a helpful message.
+			// wp.apiFetch throws on WP_Error; reload column to restore button
 			console.error(error);
-			button.prop('disabled', false)
-				.text(window.rocket_insights_i18n?.test_page || 'Test the page');
+			reloadColumnFromServer(column, url);
 		});
 	}
 
@@ -145,6 +141,9 @@ module.exports = (function() {
 	 * @param {jQuery} column The column element.
 	 */
 	function retestPage(rowId, url, column) {
+		// Show loading spinner immediately before API call
+		showLoadingState(column, rowId);
+
 		window.wp.apiFetch(
 			{
 				path: '/wp-rocket/v1/rocket-insights/pages/' + rowId,
@@ -152,11 +151,16 @@ module.exports = (function() {
 			}
 		).then( ( response ) => {
 			if (response.success) {
-				// Begin common loading + polling flow.
-				beginLoadingAndPoll(column, rowId, url);
+				// Start polling for results
+				startPolling(rowId, url, column);
+			} else {
+				// If not successful, reload the column to restore previous state
+				reloadColumnFromServer(column, url);
 			}
 		} ).catch( ( error ) => {
 			console.error(error);
+			// Reload the column to restore previous state
+			reloadColumnFromServer(column, url);
 		} );
 	}
 
@@ -227,10 +231,12 @@ module.exports = (function() {
 	 * Show loading state in the column.
 	 *
 	 * @param {jQuery} column The column element.
-	 * @param {number} rowId  The database row ID.
+	 * @param {number} rowId  The database row ID (can be null when initially showing loading).
 	 */
 	function showLoadingState(column, rowId) {
-		column.attr('data-rocket-insights-id', rowId);
+		if (rowId) {
+			column.attr('data-rocket-insights-id', rowId);
+		}
 
 		// Create elements safely to prevent XSS
 		const loadingDiv = jQuery('<div>').addClass('wpr-ri-loading');
@@ -245,15 +251,12 @@ module.exports = (function() {
 	}
 
 	/**
-	 * Update column with test results.
+	 * Reload column HTML from server.
 	 *
 	 * @param {jQuery} column The column element.
-	 * @param {Object} result The test result data.
+	 * @param {string} url    The URL for the column.
 	 */
-	function updateColumnWithResults(column, result) {
-		// Reload the entire row from the server to get properly rendered HTML.
-		const url = column.data('url');
-
+	function reloadColumnFromServer(column, url) {
 		window.wp.apiFetch(
 			{
 				path: window.wp.url.addQueryArgs( '/wp-rocket/v1/rocket-insights/pages', { url: url } ),
@@ -266,7 +269,21 @@ module.exports = (function() {
 				attachTestPageListeners();
 				attachRetestListeners();
 			}
+		} ).catch( ( error ) => {
+			console.error('Failed to reload column:', error);
 		} );
+	}
+
+	/**
+	 * Update column with test results.
+	 *
+	 * @param {jQuery} column The column element.
+	 * @param {Object} result The test result data.
+	 */
+	function updateColumnWithResults(column, result) {
+		// Reload the entire row from the server to get properly rendered HTML.
+		const url = column.data('url');
+		reloadColumnFromServer(column, url);
 	}
 
 	/**
