@@ -53,6 +53,38 @@ return [
 				'column_label' => 'Rocket Insights',
 			],
 		],
+		'shouldAddRocketInsightsColumnToProduct' => [
+			'config' => [
+				'post_type' => 'product',
+				'columns'   => [
+					'cb'     => '<input type="checkbox" />',
+					'title'  => 'Product',
+					'sku'    => 'SKU',
+					'price'  => 'Price',
+					'date'   => 'Date',
+				],
+				'is_live_site' => true,
+				'customer_data' => (new UserDataGenerator())->with_reseller_status(0)->generate()
+			],
+			'expected' => [
+				'column_label' => 'Rocket Insights',
+			],
+		],
+		'shouldAddRocketInsightsColumnToCustomPostType' => [
+			'config' => [
+				'post_type' => 'custom_cpt',
+				'columns'   => [
+					'cb'     => '<input type="checkbox" />',
+					'title'  => 'Title',
+					'date'   => 'Date',
+				],
+				'is_live_site' => true,
+				'customer_data' => (new UserDataGenerator())->with_reseller_status(0)->generate()
+			],
+			'expected' => [
+				'column_label' => 'Rocket Insights',
+			],
+		],
 		'shouldNotAddRocketInsightsColumnForLocalEnv' => [
 			'config' => [
 				'post_type' => 'post',

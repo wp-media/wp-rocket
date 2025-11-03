@@ -82,14 +82,14 @@ class Test_RenderRocketInsightsColumn extends AdminTestCase {
 		if ( null === $post_id ) {
 			// Test case with no post
 			ob_start();
-			do_action( 'manage_post_posts_custom_column', 'rocket_insights', 99999 );
+			do_action( 'manage_posts_custom_column', 'rocket_insights', 99999 );
 			$output = ob_get_clean();
 			$this->assertSame( $expected['html'], $output );
 			return;
 		}
 
 		ob_start();
-		do_action( 'manage_post_posts_custom_column', 'rocket_insights', $post_id );
+		do_action( 'manage_posts_custom_column', 'rocket_insights', $post_id );
 		$output = ob_get_clean();
 
 		$this->assertStringContainsString( $expected['html'], $output );

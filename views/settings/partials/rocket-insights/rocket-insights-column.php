@@ -7,9 +7,11 @@
  * @var array $data {
  *     Template data.
  *
- *     @type string      $data['wpr_rocket_insights_url']        The URL of the post.
- *     @type object|null $data['wpr_rocket_row']        Database row object for the URL (null if not tracked).
- *     @type bool        $data['wpr_has_credit'] Whether the user has credit available.
+ *     @type string      $data['wpr_rocket_insights_url'] The URL of the post.
+ *     @type object|null $data['wpr_rocket_row']          Database row object for the URL (null if not tracked).
+ *     @type bool        $data['wpr_has_credit']          Whether the user has credit available.
+ *     @type bool        $data['wpr_can_add_pages']       Whether the user can add more pages (based on plan limits).
+ *     @type bool        $data['wpr_is_free_user']        Whether the user is on the free plan.
  * }
  */
 
@@ -17,10 +19,9 @@ defined( 'ABSPATH' ) || exit;
 
 // If row doesn't exist, show "Test the page" link.
 if ( null === $data['wpr_rocket_row'] ) :
-	$wpr_can_test = $data['wpr_has_credit'] && $data['wpr_can_add_pages'] && ! $data['is_draft']; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 	?>
 	<div class="wpr-ri-column wpr-ri-not-tracked" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>">
-		<?php if ( $wpr_can_test ) : ?>
+		<?php if ( $data['wpr_can_add_pages'] && ! $data['is_draft'] ) : ?>
 			<button type="button" class="wpr-ri-test-page" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>">
 				<?php esc_html_e( 'Test the page', 'rocket' ); ?>
 			</button>
@@ -28,7 +29,7 @@ if ( null === $data['wpr_rocket_row'] ) :
 			<button type="button" class="wpr-ri-test-page wpr-ri-no-credit" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>">
 				<?php esc_html_e( 'Test the page', 'rocket' ); ?>
 			</button>
-			<?php if ( ! $data['wpr_can_add_pages'] && $data['wpr_is_free'] ) : ?>
+			<?php if ( ! $data['wpr_can_add_pages'] && $data['wpr_is_free_user'] ) : ?>
 				<div class="wpr-ri-credit-message">
 					<?php
 					printf(
@@ -38,7 +39,7 @@ if ( null === $data['wpr_rocket_row'] ) :
 					);
 					?>
 				</div>
-			<?php elseif ( ! $data['wpr_can_add_pages'] && ! $data['wpr_is_free'] ) : ?>
+			<?php elseif ( ! $data['wpr_can_add_pages'] && ! $data['wpr_is_free_user'] ) : ?>
 				<div class="wpr-ri-credit-message">
 					<?php
 					printf(
@@ -62,8 +63,8 @@ if ( null === $data['wpr_rocket_row'] ) :
 		<?php endif; ?>
 		<div class="wpr-ri-message" style="display: none;"></div>
 	</div>
-	<?php
-	return;
+			<?php
+			return;
 endif;
 
 ?>
@@ -219,8 +220,13 @@ endif;
 
 			<?php if ( empty( $data['wpr_has_credit'] ) ) : ?>
 				<span class="wpr-ri-no-credit-text">
-					<strong><?php esc_html_e( "You've reached your free limit.", 'rocket' ); ?></strong>
-					<?php esc_html_e( 'Upgrade to continue.', 'rocket' ); ?>
+				<?php
+				printf(
+						/* translators: %s: bolded text "reached your free limit" */
+						esc_html__( "You've %s. Upgrade to continue.", 'rocket' ),
+						'<strong>' . esc_html__( 'reached your free limit', 'rocket' ) . '</strong>'
+					);
+				?>
 				</span>
 			<?php endif; ?>
 		</div>
