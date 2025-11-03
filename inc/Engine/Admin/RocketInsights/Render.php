@@ -335,10 +335,11 @@ class Render extends Abstract_Render {
 	 * @since 3.20.1
 	 *
 	 * @param string $url The URL of the post.
+	 * @param int $post_id Post ID of post.
 	 *
 	 * @return string The rendered HTML for the Rocket Insights column.
 	 */
-	public function get_rocket_insights_column( string $url ): string {
+	public function get_rocket_insights_column( string $url, int $post_id ): string {
 		// Query for existing row in the database.
 		// Try both with and without trailing slash for compatibility.
 		$url_no_slash   = untrailingslashit( $url );
@@ -372,6 +373,7 @@ class Render extends Abstract_Render {
 			'wpr_has_credit'          => $has_credit,
 			'wpr_can_add_pages'       => $can_add_pages,
 			'wpr_is_free'             => $this->context->is_free_user(),
+			'is_draft'			      => get_post_status( $post_id ) === 'draft',
 		];
 
 		// If row exists, prepare additional derived variables and score data.
@@ -397,11 +399,12 @@ class Render extends Abstract_Render {
 	 * @since 3.20.1
 	 *
 	 * @param string $url The URL of the post.
+	 * @param int $post_id Post ID of post.
 	 *
 	 * @return void
 	 */
-	public function render_rocket_insights_column( string $url ): void {
+	public function render_rocket_insights_column( string $url, int $post_id ): void {
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Template handles escaping.
-		echo $this->get_rocket_insights_column( $url );
+		echo $this->get_rocket_insights_column( $url, $post_id );
 	}
 }
