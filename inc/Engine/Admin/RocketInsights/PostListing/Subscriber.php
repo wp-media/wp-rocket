@@ -30,6 +30,28 @@ class Subscriber implements Subscriber_Interface {
 	private $context;
 
 	/**
+	 * Excluded post types list.
+	 *
+	 * @var string[]
+	 */
+	private $excluded_post_types = [
+		'elementor_library',
+		'oceanwp_library',
+		'tbuilder_layout',
+		'tbuilder_layout_part',
+		'slider',
+		'karma-slider',
+		'tt-gallery',
+		'xlwcty_thankyou',
+		'fusion_template',
+		'blocks',
+		'jet-woo-builder',
+		'fl-builder-template',
+		'cms_block',
+		'web-story',
+	];
+
+	/**
 	 * Constructor.
 	 *
 	 * @since 3.20.1
@@ -94,7 +116,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return bool
 	 */
 	private function is_excluded( $post_type ) {
-		$excluded = ! is_post_type_viewable( $post_type );
+		$excluded = ! is_post_type_viewable( $post_type ) || in_array( $post_type, $this->excluded_post_types, true );
 
 		/**
 		 * Filters the current post type if it should be excluded from Rocket Insights functionality.
