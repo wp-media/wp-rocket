@@ -197,19 +197,19 @@ class Subscriber implements Subscriber_Interface {
 			'rocket-insights',
 			'rocket_insights_i18n',
 			[
-				'test_page'          => __( 'Test the page', 'rocket' ),
-				'loading_img'        => rocket_get_constant( 'WP_ROCKET_ASSETS_IMG_URL' ) . 'orange-loading.svg',
-				'free_limit_reached' => sprintf(
+				'test_page'           => __( 'Test the page', 'rocket' ),
+				'loading_img'         => rocket_get_constant( 'WP_ROCKET_ASSETS_IMG_URL' ) . 'orange-loading.svg',
+				'free_limit_reached'  => sprintf(
 						/* translators: %s: bolded text "reached your free limit" */
 						esc_html__( "You've %s. Upgrade to continue.", 'rocket' ),
 						'<strong>' . esc_html__( 'reached your free limit', 'rocket' ) . '</strong>',
 				),
-				'paid_limit_reached' => sprintf(
+				'paid_limit_reached'  => sprintf(
 					/* translators: %s: bolded text "reached the page limit" */
 					esc_html__( "You've %s. Please remove at least one page to continue.", 'rocket' ),
 					'<strong>' . esc_html__( 'reached the page limit', 'rocket' ) . '</strong>',
 				),
-				'url_limit_reached'  => __( 'Maximum number of URLs reached for your license.', 'rocket' ),
+				'url_limit_reached'   => __( 'Maximum number of URLs reached for your license.', 'rocket' ),
 				'estimated_time_text' => __( 'Analyzing your page (~1 min).', 'rocket' ),
 			]
 		);
