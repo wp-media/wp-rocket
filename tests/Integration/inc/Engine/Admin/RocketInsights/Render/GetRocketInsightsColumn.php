@@ -13,6 +13,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  * whether the user can add more pages (wpr_can_add_pages) or has credit (wpr_has_credit).
  *
  * @group RocketInsights
+ * @group AdminOnly
  */
 class Test_GetRocketInsightsColumn extends TestCase {
 	use DBTrait;
