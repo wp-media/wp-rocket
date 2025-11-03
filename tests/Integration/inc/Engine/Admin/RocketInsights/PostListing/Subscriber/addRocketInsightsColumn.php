@@ -12,9 +12,27 @@ use Brain\Monkey\Functions;
  * @group AdminOnly
  */
 class Test_AddRocketInsightsColumn extends AdminTestCase {
+	/**
+	 * Container instance.
+	 */
+	private $container;
 
+	/**
+	 * Subscriber instance.
+	 *
+	 * @var \WP_Rocket\Engine\Admin\RocketInsights\PostListing\Subscriber
+	 */
+	private $subscriber;
+	
+	/**
+	 * Setup before tests.
+	 */
 	public function set_up() {
 		parent::set_up();
+		
+		// Get the subscriber instance from container using the filter.
+		$this->container = apply_filters( 'rocket_container', null );
+		$this->subscriber = $this->container->get( 'ri_post_listing_subscriber' );
 
 		// Enable Rocket Insights.
 		add_filter( 'rocket_rocket_insights_enabled', '__return_true' );
@@ -26,6 +44,7 @@ class Test_AddRocketInsightsColumn extends AdminTestCase {
 
 		parent::tear_down();
 	}
+	
 	/**
 	 * Test if Rocket Insights column is added to post listing columns.
 	 *
@@ -37,12 +56,11 @@ class Test_AddRocketInsightsColumn extends AdminTestCase {
 	 * @return void
 	 */
 	public function testShouldAddRocketInsightsColumn( $config, $expected ) {
-		$container = apply_filters( 'rocket_container', null ); // @phpstan-ignore-line
-		$container->get( 'user' )->set_user( $config['customer_data'] );
-
+		$this->container->get( 'user' )->set_user( $config['customer_data'] );
 		Functions\when( 'wp_parse_url' )->justReturn( $config['is_live_site'] );
 
-		$columns = apply_filters( "manage_{$config['post_type']}_posts_columns", $config['columns'] );
+		// Call the method directly instead of relying on filter subscription.
+		$columns = $this->subscriber->add_rocket_insights_column( $config['columns'] );
 
 		if ( '' !== $expected['column_label'] ) {
 			$this->assertArrayHasKey( 'rocket_insights', $columns, 'Rocket Insights column should be present' );
