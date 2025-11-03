@@ -6,7 +6,7 @@
  */
 
 // Export for use with browserify/babelify in gulp
-module.exports = (function() {
+module.exports = (function () {
 	'use strict';
 
 	/**
@@ -35,7 +35,7 @@ module.exports = (function() {
 	 * Attach click listeners to "Test the page" buttons.
 	 */
 	function attachTestPageListeners() {
-		jQuery(document).on('click', '.wpr-ri-test-page', function(e) {
+		jQuery(document).on('click', '.wpr-ri-test-page', function (e) {
 			e.preventDefault();
 			const button = jQuery(this);
 
@@ -56,7 +56,7 @@ module.exports = (function() {
 	 */
 	function attachRetestListeners() {
 		// Support both button and link styles with one handler.
-		jQuery(document).on('click', '.wpr-ri-retest:not(.wpr-ri-action--disabled), .wpr-ri-retest-link', function(e) {
+		jQuery(document).on('click', '.wpr-ri-retest:not(.wpr-ri-action--disabled), .wpr-ri-retest-link', function (e) {
 			e.preventDefault();
 			const el = jQuery(this);
 			const url = el.data('url');
@@ -75,7 +75,7 @@ module.exports = (function() {
 	 * Start polling for rows that are currently running tests.
 	 */
 	function startPollingForRunningTests() {
-		jQuery('.wpr-ri-loading').each(function() {
+		jQuery('.wpr-ri-loading').each(function () {
 			const column = jQuery(this).closest('.wpr-ri-column');
 			const rowId = column.data('rocket-insights-id');
 			const url = column.data('url');
@@ -103,10 +103,10 @@ module.exports = (function() {
 			method: 'POST',
 			data: { page_url: url },
 		}).then((response) => {
-			const success   = response?.success === true;
-			const id        = response?.id ?? response?.data?.id ?? null;
-			const canAdd    = (response?.can_add_pages ?? response?.data?.can_add_pages);
-			const message   = response?.message ?? response?.data?.message;
+			const success = response?.success === true;
+			const id = response?.id ?? response?.data?.id ?? null;
+			const canAdd = (response?.can_add_pages ?? response?.data?.can_add_pages);
+			const message = response?.message ?? response?.data?.message;
 
 			if (success && id) {
 				// Begin common loading + polling flow.
@@ -150,14 +150,14 @@ module.exports = (function() {
 				path: '/wp-rocket/v1/rocket-insights/pages/' + rowId,
 				method: 'PATCH',
 			}
-		).then( ( response ) => {
+		).then((response) => {
 			if (response.success) {
 				// Begin common loading + polling flow.
 				beginLoadingAndPoll(column, rowId, url);
 			}
-		} ).catch( ( error ) => {
+		}).catch((error) => {
 			console.error(error);
-		} );
+		});
 	}
 
 	/**
@@ -174,7 +174,7 @@ module.exports = (function() {
 		}
 
 		// Set up new polling interval.
-		activePolls[rowId] = setInterval(function() {
+		activePolls[rowId] = setInterval(function () {
 			checkStatus(rowId, url, column);
 		}, POLLING_INTERVAL);
 
@@ -205,22 +205,22 @@ module.exports = (function() {
 	function checkStatus(rowId, url, column) {
 		window.wp.apiFetch(
 			{
-				path: window.wp.url.addQueryArgs( '/wp-rocket/v1/rocket-insights/pages/progress', { ids: [rowId] } ),
+				path: window.wp.url.addQueryArgs('/wp-rocket/v1/rocket-insights/pages/progress', { ids: [rowId] }),
 			}
-		).then( ( response ) => {
-			if ( response.success && Array.isArray( response.results ) ) {
+		).then((response) => {
+			if (response.success && Array.isArray(response.results)) {
 				const result = response.results[0];
 
-				if ( result.status === 'completed' || result.status === 'failed' ) {
+				if (result.status === 'completed' || result.status === 'failed') {
 					// Stop polling.
-					clearInterval( activePolls[rowId] );
+					clearInterval(activePolls[rowId]);
 					delete activePolls[rowId];
 
 					// Update the column with results (reload rendered HTML from server).
-					updateColumnWithResults( column, result );
+					updateColumnWithResults(column, result);
 				}
 			}
-		} );
+		});
 	}
 
 	/**
@@ -254,12 +254,13 @@ module.exports = (function() {
 	function updateColumnWithResults(column, result) {
 		// Reload the entire row from the server to get properly rendered HTML.
 		const url = column.data('url');
+		const postId = column.data('post-id');
 
 		window.wp.apiFetch(
 			{
-				path: window.wp.url.addQueryArgs( '/wp-rocket/v1/rocket-insights/pages', { url: url } ),
+				path: window.wp.url.addQueryArgs('/wp-rocket/v1/rocket-insights/pages', { url: url, post_id: postId }),
 			}
-		).then( ( response ) => {
+		).then((response) => {
 			if (response.success && response.html) {
 				column.replaceWith(response.html);
 
@@ -267,14 +268,14 @@ module.exports = (function() {
 				attachTestPageListeners();
 				attachRetestListeners();
 			}
-		} );
+		});
 	}
 
 	/**
 	 * Disable all "Test the page" buttons when the URL limit is reached.
 	 */
 	function disableAllTestPageButtons() {
-		jQuery('.wpr-ri-test-page:not(.wpr-ri-no-credit)').each(function() {
+		jQuery('.wpr-ri-test-page:not(.wpr-ri-no-credit)').each(function () {
 			const button = jQuery(this);
 			button.addClass('wpr-ri-no-credit').prop('disabled', true);
 
