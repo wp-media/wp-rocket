@@ -305,17 +305,19 @@ class Rest extends WP_REST_Controller {
 			if ( $this->context->is_free_user() ) {
 				$upgrade_url   = admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '#rocket_insights' );
 				$error_message = sprintf(
-					/* translators: %1$s: bolded text "reached your free limit", %2$s: opening link tag, %3$s: closing link tag */
-					__( "You've %1\$s. %2\$sUpgrade to continue%3\$s.", 'rocket' ),
-					'<strong>' . __( 'reached your free limit', 'rocket' ) . '</strong>',
+					/* translators: %1$s: opening <strong> tag, %2$s: closing </strong> tag, %3$s: opening link tag, %4$s: closing link tag */
+					__( "You've %1\$sreached your free limit%2\$s. %3\$sUpgrade to continue%4\$s.", 'rocket' ),
+					'<strong>',
+					'</strong>',
 					'<a href="' . esc_url( $upgrade_url ) . '">',
 					'</a>'
 				);
 			} else {
 				$error_message = sprintf(
-					/* translators: %s: bolded text "reached the page limit" */
-					__( "You've %s. Please remove at least one page to continue.", 'rocket' ),
-					'<strong>' . __( 'reached the page limit', 'rocket' ) . '</strong>'
+					/* translators: %1$s: opening <strong> tag, %2$s: closing </strong> tag */
+					__( "You've %1\$sreached the page limit%2\$s. Please remove at least one page to continue.", 'rocket' ),
+					'<strong>',
+					'</strong>'
 				);
 			}
 
@@ -490,17 +492,19 @@ class Rest extends WP_REST_Controller {
 			if ( $this->context->is_free_user() ) {
 				$upgrade_url   = admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '#rocket_insights' );
 				$error_message = sprintf(
-					/* translators: %1$s: bolded text "reached your free limit", %2$s: opening link tag, %3$s: closing link tag */
-					__( "You've %1\$s. %2\$sUpgrade to continue%3\$s.", 'rocket' ),
-					'<strong>' . __( 'reached your free limit', 'rocket' ) . '</strong>',
+					/* translators: %1$s: opening <strong> tag, %2$s: closing </strong> tag, %3$s: opening link tag, %4$s: closing link tag */
+					__( "You've %1\$sreached your free limit%2\$s. %3\$sUpgrade to continue%4\$s.", 'rocket' ),
+					'<strong>',
+					'</strong>',
 					'<a href="' . esc_url( $upgrade_url ) . '">',
 					'</a>'
 				);
 			} else {
 				$error_message = sprintf(
-					/* translators: %s: bolded text "reached the page limit" */
-					__( "You've %s. Please remove at least one page to continue.", 'rocket' ),
-					'<strong>' . __( 'reached the page limit', 'rocket' ) . '</strong>'
+					/* translators: %1$s: opening <strong> tag, %2$s: closing </strong> tag */
+					__( "You've %1\$sreached the page limit%2\$s. Please remove at least one page to continue.", 'rocket' ),
+					'<strong>',
+					'</strong>'
 				);
 			}
 
