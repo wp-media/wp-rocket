@@ -17,7 +17,7 @@ defined( 'ABSPATH' ) || exit;
 
 // If row doesn't exist, show "Test the page" link.
 if ( null === $data['wpr_rocket_row'] ) :
-	$wpr_can_test = $data['wpr_has_credit'] && $data['wpr_can_add_pages']; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
+	$wpr_can_test = $data['wpr_has_credit'] && $data['wpr_can_add_pages'] && ! $data['is_draft']; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 	?>
 	<div class="wpr-ri-column wpr-ri-not-tracked" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>">
 		<?php if ( $wpr_can_test ) : ?>
@@ -71,8 +71,13 @@ endif;
 <div class="wpr-ri-column" data-rocket-insights-id="<?php echo esc_attr( $data['wpr_rocket_row']->id ); ?>" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>">
 	<?php if ( $data['wpr_is_running'] ) : ?>
 		<!-- Loading state -->
-		<div class="wpr-ri-loading">
+		<div class="wpr-ri-loading wpr-btn-with-tool-tip">
 			<img class="wpr-loading-img" src="<?php echo esc_url( rocket_get_constant( 'WP_ROCKET_ASSETS_IMG_URL', '' ) . 'orange-loading.svg' ); ?>" alt="<?php esc_attr_e( 'Loading...', 'rocket' ); ?>"/>
+			<div class="wpr-tooltip">
+				<div class="wpr-tooltip-content">
+					<?php echo __( 'Analyzing your page (~1 min).', 'rocket' ); ?>
+				</div>
+			</div>
 		</div>
 	<?php elseif ( $data['wpr_has_results'] ) : ?>
 		<!-- Results state -->
@@ -81,9 +86,13 @@ endif;
 			<div class="wpr-ri-blurred">
 				<div class="wpr-btn-with-tool-tip">
 					<?php
-
 					$this->render_performance_score( $data['wpr_score_data'] );
 					?>
+					<div class="wpr-tooltip">
+						<div class="wpr-tooltip-content">
+							<?php printf( esc_html__( 'Tested %s ago', 'rocket' ), human_time_diff( $data['wpr_rocket_row']->modified, time() ) ) ?>
+						</div>
+					</div>
 				</div>
 				
 				<div class="wpr-ri-actions-wrapper">
@@ -116,11 +125,15 @@ endif;
 			</div>
 		<?php else : ?>
 			<!-- Normal score with actions -->
-			<div class="wpr-ri-score-wrapper">
+			<div class="wpr-ri-score-wrapper wpr-btn-with-tool-tip">
 				<?php
-
 				$this->render_performance_score( $data['wpr_score_data'] );
 				?>
+				<div class="wpr-tooltip">
+					<div class="wpr-tooltip-content">
+						<?php printf( esc_html__( 'Tested %s ago', 'rocket' ), human_time_diff( $data['wpr_rocket_row']->modified, time() ) ) ?>
+					</div>
+				</div>
 			</div>
 			
 			<div class="wpr-ri-actions-wrapper">
