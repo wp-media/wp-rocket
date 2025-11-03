@@ -362,7 +362,6 @@ class Render extends Abstract_Render {
 		// Get credit availability.
 		$has_credit = $this->plan->has_credit();
 
-		// Get URL limit availability.
 		$can_add_pages = $this->context->is_adding_page_allowed();
 
 		// Prepare template variables.
@@ -371,10 +370,9 @@ class Render extends Abstract_Render {
 			'wpr_rocket_row'          => $row,
 			'wpr_has_credit'          => $has_credit,
 			'wpr_can_add_pages'       => $can_add_pages,
-			'wpr_is_free'             => $this->context->is_free_user(),
+			'wpr_is_free_user'        => $this->context->is_free_user(),
 		];
 
-		// If row exists, prepare additional derived variables and score data.
 		if ( null !== $row ) {
 			$template_data['wpr_is_running']        = $row->is_running();
 			$template_data['wpr_has_results']       = 'completed' === $row->status || 'blurred' === $row->status;

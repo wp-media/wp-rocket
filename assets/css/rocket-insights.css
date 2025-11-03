@@ -241,6 +241,11 @@
   background-position: center center;
 }
 
+.wp-list-table th.column-rocket_insights,
+.wp-list-table td.column-rocket_insights {
+  width: 150px;
+}
+
 .wpr-ri-column {
   min-width: 150px;
 }

@@ -741,6 +741,21 @@ parameters:
 			path: tests/Integration/inc/Engine/Admin/Deactivation/Subscriber/insertDeactivationIntentForm.php
 
 		-
+			message: "#^Property WP_Rocket\\\\Tests\\\\Integration\\\\inc\\\\Engine\\\\Admin\\\\RocketInsights\\\\Render\\\\Test_GetRocketInsightsColumn\\:\\:\\$query is never read, only written\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Admin/RocketInsights/Render/GetRocketInsightsColumn.php
+
+		-
+			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Admin/RocketInsights/Render/GetRocketInsightsColumn.php
+
+		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Admin/RocketInsights/Render/GetRocketInsightsColumn.php
+
+		-
 			message: "#^Property WP_Rocket\\\\Tests\\\\Integration\\\\inc\\\\Engine\\\\Admin\\\\RocketInsights\\\\Subscriber\\\\ResetGlobalScoreTest\\:\\:\\$reset_called is never read, only written\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/Admin/RocketInsights/Subscriber/ResetGlobalScoreTest.php

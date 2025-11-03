@@ -7,9 +7,11 @@
  * @var array $data {
  *     Template data.
  *
- *     @type string      $data['wpr_rocket_insights_url']        The URL of the post.
- *     @type object|null $data['wpr_rocket_row']        Database row object for the URL (null if not tracked).
- *     @type bool        $data['wpr_has_credit'] Whether the user has credit available.
+ *     @type string      $data['wpr_rocket_insights_url'] The URL of the post.
+ *     @type object|null $data['wpr_rocket_row']          Database row object for the URL (null if not tracked).
+ *     @type bool        $data['wpr_has_credit']          Whether the user has credit available.
+ *     @type bool        $data['wpr_can_add_pages']       Whether the user can add more pages (based on plan limits).
+ *     @type bool        $data['wpr_is_free_user']        Whether the user is on the free plan.
  * }
  */
 
@@ -19,13 +21,50 @@ defined( 'ABSPATH' ) || exit;
 if ( null === $data['wpr_rocket_row'] ) :
 	?>
 	<div class="wpr-ri-column wpr-ri-not-tracked" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>">
-		<button type="button" class="wpr-ri-test-page" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>">
-			<?php esc_html_e( 'Test the page', 'rocket' ); ?>
-		</button>
+		<?php if ( $data['wpr_can_add_pages'] ) : ?>
+			<button type="button" class="wpr-ri-test-page" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>">
+				<?php esc_html_e( 'Test the page', 'rocket' ); ?>
+			</button>
+		<?php else : ?>
+			<button type="button" class="wpr-ri-test-page wpr-ri-no-credit" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>">
+				<?php esc_html_e( 'Test the page', 'rocket' ); ?>
+			</button>
+			<?php if ( ! $data['wpr_can_add_pages'] && $data['wpr_is_free_user'] ) : ?>
+				<div class="wpr-ri-credit-message">
+					<?php
+					printf(
+						/* translators: %s: bolded text "reached your free limit" */
+						esc_html__( "You've %s. Upgrade to continue.", 'rocket' ),
+						'<strong>' . esc_html__( 'reached your free limit', 'rocket' ) . '</strong>'
+					);
+					?>
+				</div>
+			<?php elseif ( ! $data['wpr_can_add_pages'] && ! $data['wpr_is_free_user'] ) : ?>
+				<div class="wpr-ri-credit-message">
+					<?php
+					printf(
+						/* translators: %s: bolded text "reached the page limit" */
+						esc_html__( "You've %s. Please remove at least one page to continue.", 'rocket' ),
+						'<strong>' . esc_html__( 'reached the page limit', 'rocket' ) . '</strong>'
+					);
+					?>
+				</div>
+			<?php elseif ( ! $data['wpr_has_credit'] ) : ?>
+				<div class="wpr-ri-credit-message">
+					<?php
+					printf(
+						/* translators: %s: bolded text "reached your free limit" */
+						esc_html__( "You've %s. Upgrade to continue.", 'rocket' ),
+						'<strong>' . esc_html__( 'reached your free limit', 'rocket' ) . '</strong>'
+					);
+					?>
+				</div>
+			<?php endif; ?>
+		<?php endif; ?>
 		<div class="wpr-ri-message" style="display: none;"></div>
 	</div>
-	<?php
-	return;
+			<?php
+			return;
 endif;
 
 ?>
@@ -162,8 +201,13 @@ endif;
 
 			<?php if ( empty( $data['wpr_has_credit'] ) ) : ?>
 				<span class="wpr-ri-no-credit-text">
-					<strong><?php esc_html_e( "You've reached your free limit.", 'rocket' ); ?></strong>
-					<?php esc_html_e( 'Upgrade to continue.', 'rocket' ); ?>
+				<?php
+				printf(
+						/* translators: %s: bolded text "reached your free limit" */
+						esc_html__( "You've %s. Upgrade to continue.", 'rocket' ),
+						'<strong>' . esc_html__( 'reached your free limit', 'rocket' ) . '</strong>'
+					);
+				?>
 				</span>
 			<?php endif; ?>
 		</div>
