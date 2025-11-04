@@ -265,7 +265,7 @@ class Rest extends WP_REST_Controller {
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public function get_item( $request ) {
-		$html = $this->render->get_rocket_insights_column( $request['url'], $request['post_id'] );
+		$html = $this->render->get_rocket_insights_column( $request['url'], (int) $request['post_id'] );
 
 		$payload = [
 			'success' => true,
@@ -699,12 +699,12 @@ class Rest extends WP_REST_Controller {
 			],
 		];
 
-		if ( 'local' === wp_get_environment_type() ) {
-			$payload['error']   = true;
-			$payload['message'] = 'Performance monitoring is disabled for local environment';
+		// if ( 'local' === wp_get_environment_type() ) {
+		// 	$payload['error']   = true;
+		// 	$payload['message'] = 'Performance monitoring is disabled for local environment';
 
-			return $payload;
-		}
+		// 	return $payload;
+		// }
 
 		// Validate that performance monitoring is not disabled.
 		if ( ! $this->context->is_allowed() ) {
