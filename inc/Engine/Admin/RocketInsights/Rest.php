@@ -149,6 +149,12 @@ class Rest extends WP_REST_Controller {
 								return rocket_add_url_protocol( $url );
 							},
 						],
+						'post_id' => [
+							'required'          => false,
+							'validate_callback' => function ( $param ) {
+								return is_numeric( $param );
+							},
+						],
 					],
 				],
 				[
