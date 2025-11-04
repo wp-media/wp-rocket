@@ -323,65 +323,71 @@ module.exports = (function() {
 			const button = jQuery(this);
 			const column = button.closest('.wpr-ri-column');
 			const rowId = column.data('rocket-insights-id');
-
-			// Check if this row is currently being processed
 			const isRunning = rowId && activePolls[rowId];
-
+			const actionsWrapper = button.closest('.wpr-ri-actions-wrapper');
+			const noCreditText = actionsWrapper.find('.wpr-ri-no-credit-text');
+			
+			// Handle disabled state - early return
 			if (!hasCredit || isRunning) {
-				// Disable the button
-				if (button.is('button')) {
-					button.prop('disabled', true);
-					button.addClass('wpr-ri-disabled');
-				} else {
-					// It's a span, already styled as disabled in PHP
-					button.addClass('wpr-ri-disabled');
-				}
-
-				// Show the no-credit message if it exists in the same actions wrapper
-				const actionsWrapper = button.closest('.wpr-ri-actions-wrapper');
-				const noCreditText = actionsWrapper.find('.wpr-ri-no-credit-text');
+				disableRetestButton(button);
+				
 				if (noCreditText.length && !hasCredit) {
 					noCreditText.show();
 				}
-			} else {
-				// Re-enable the button
-				if (button.is('button')) {
-					button.prop('disabled', false);
-					button.removeClass('wpr-ri-disabled');
-				} else {
-					// Convert span to button if credit is restored
-					const newButton = jQuery('<button>')
-						.attr('type', 'button')
-						.attr('class', button.attr('class'))
-						.attr('data-url', button.data('url'))
-						.removeClass('wpr-ri-disabled')
-						.html(button.html());
-					button.replaceWith(newButton);
-				}
-
-				// Hide the no-credit message
-				const actionsWrapper = button.closest('.wpr-ri-actions-wrapper');
-				const noCreditText = actionsWrapper.find('.wpr-ri-no-credit-text');
-				if (noCreditText.length) {
-					noCreditText.hide();
-				}
+				return;
+			}
+			
+			// Handle enabled state
+			enableRetestButton(button);
+			
+			if (noCreditText.length) {
+				noCreditText.hide();
 			}
 		});
-
+		
 		// Update all "Test the page" buttons
 		jQuery('.wpr-ri-test-page').each(function() {
 			const button = jQuery(this);
-
-			if (!hasCredit || !canAddPages) {
-				// Disable test button and add no-credit class
-				button.addClass('wpr-ri-no-credit');
-				button.prop('disabled', true);
-			} else {
-				// Enable test button
-				button.removeClass('wpr-ri-no-credit');
-				button.prop('disabled', false);
-			}
+			const shouldDisable = !hasCredit || !canAddPages;
+			
+			button.toggleClass('wpr-ri-no-credit', shouldDisable);
+			button.prop('disabled', shouldDisable);
 		});
+	}
+
+	/**
+	 * Disable a retest button.
+	 *
+	 * @param {jQuery} button The button element to disable.
+	 */
+	function disableRetestButton(button) {
+		if (button.is('button')) {
+			button.prop('disabled', true);
+		}
+		button.addClass('wpr-ri-disabled');
+	}
+
+	/**
+	 * Enable a retest button, converting from span to button if needed.
+	 *
+	 * @param {jQuery} button The button element to enable.
+	 */
+	function enableRetestButton(button) {
+		// Convert span to button if needed
+		if (!button.is('button')) {
+			const newButton = jQuery('<button>')
+				.attr('type', 'button')
+				.attr('class', button.attr('class'))
+				.attr('data-url', button.data('url'))
+				.removeClass('wpr-ri-disabled')
+				.html(button.html());
+			button.replaceWith(newButton);
+			return;
+		}
+		
+		// Re-enable existing button
+		button.prop('disabled', false)
+			.removeClass('wpr-ri-disabled');
 	}
 
 	/**
