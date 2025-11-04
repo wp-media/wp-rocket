@@ -127,9 +127,10 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		foreach ( $this->factories as $factory ) {
-			if ( $factory->manager()->is_allowed() ) {
-				$factory->table()->delete_old_rows();
+			if ( ! $factory->manager()->is_allowed() || ! $factory->manager()->allow_clean_rows() ) {
+				continue;
 			}
+			$factory->table()->delete_old_rows();
 		}
 	}
 
