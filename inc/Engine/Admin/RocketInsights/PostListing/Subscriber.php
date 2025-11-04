@@ -233,9 +233,24 @@ class Subscriber implements Subscriber_Interface {
 			return $columns;
 		}
 
-		$columns['rocket_insights'] = __( 'Rocket Insights', 'rocket' );
+		// Insert Rocket Insights column before the Date column.
+		$new_columns = [];
+		$inserted    = false;
 
-		return $columns;
+		foreach ( $columns as $key => $value ) {
+			if ( 'date' === $key ) {
+				$new_columns['rocket_insights'] = __( 'Rocket Insights', 'rocket' );
+				$inserted                       = true;
+			}
+			$new_columns[ $key ] = $value;
+		}
+
+		// Fallback: If no date column exists, add at the end.
+		if ( ! $inserted ) {
+			$new_columns['rocket_insights'] = __( 'Rocket Insights', 'rocket' );
+		}
+
+		return $new_columns;
 	}
 
 	/**
