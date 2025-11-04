@@ -125,7 +125,7 @@ class Rest extends WP_REST_Controller {
 						return $this->get_items_permissions_check( $request );
 					},
 					'args'                => [
-						'url' => [
+						'url'     => [
 							'required'          => false,
 							'validate_callback' => function ( $param ) {
 								// Allow empty for optional parameter.
