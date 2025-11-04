@@ -187,19 +187,6 @@ module.exports = (function() {
 	}
 
 	/**
-	 * Common helper to set loading state and start polling.
-	 *
-	 * @param {jQuery} column The column element.
-	 * @param {number} rowId  The database row ID.
-	 * @param {string} url    The URL being tested.
-	 */
-	function beginLoadingAndPoll(column, rowId, url) {
-		// Update column to loading state and start polling.
-		showLoadingState(column, rowId);
-		startPolling(rowId, url, column);
-	}
-
-	/**
 	 * Check the status of a test.
 	 *
 	 * @param {number} rowId  The database row ID.
