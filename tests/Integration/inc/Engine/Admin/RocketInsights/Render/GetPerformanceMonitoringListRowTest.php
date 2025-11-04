@@ -14,7 +14,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  *
  * @group RocketInsights
  */
-class GetPerformanceMonitoringListRowTest extends TestCase {
+class Test_GetPerformanceMonitoringListRow extends TestCase {
 	use DBTrait;
 
 	protected static $container;
