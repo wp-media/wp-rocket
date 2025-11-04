@@ -9,7 +9,6 @@ use WP_Rocket\Engine\Admin\RocketInsights\{
 	Managers\Plan,
 	Jobs\Manager,
 	Queue\Queue,
-	AJAX\Controller as AjaxController
 };
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
@@ -39,11 +38,11 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	private $controller;
 
 	/**
-	 * AjaxController object.
+	 * Rest object.
 	 *
-	 * @var AjaxController
+	 * @var Rest
 	 */
-	private $ajax_controller;
+	private $rest;
 
 	/**
 	 * Queue object.
@@ -90,20 +89,20 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	/**
 	 * Constructor.
 	 *
-	 * @param Render         $render Render object.
-	 * @param Controller     $controller Controller object.
-	 * @param AjaxController $ajax_controller AjaxController object.
-	 * @param Queue          $queue Queue object.
-	 * @param Context        $context Rocket Insights context.
-	 * @param GlobalScore    $global_score GlobalScore instance.
-	 * @param Options_Data   $options Options instance.
-	 * @param Manager        $manager Manager instance.
-	 * @param Plan           $plan Plan manager.
+	 * @param Render       $render Render object.
+	 * @param Controller   $controller Controller object.
+	 * @param Rest         $rest Rest object.
+	 * @param Queue        $queue Queue object.
+	 * @param Context      $context Rocket Insights context.
+	 * @param GlobalScore  $global_score GlobalScore instance.
+	 * @param Options_Data $options Options instance.
+	 * @param Manager      $manager Manager instance.
+	 * @param Plan         $plan Plan manager.
 	 */
 	public function __construct(
 		Render $render,
 		Controller $controller,
-		AjaxController $ajax_controller,
+		Rest $rest,
 		Queue $queue,
 		Context $context,
 		GlobalScore $global_score,
@@ -111,15 +110,15 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		Manager $manager,
 		Plan $plan
 	) {
-		$this->render          = $render;
-		$this->controller      = $controller;
-		$this->ajax_controller = $ajax_controller;
-		$this->queue           = $queue;
-		$this->context         = $context;
-		$this->global_score    = $global_score;
-		$this->options         = $options;
-		$this->manager         = $manager;
-		$this->plan            = $plan;
+		$this->render       = $render;
+		$this->controller   = $controller;
+		$this->rest         = $rest;
+		$this->queue        = $queue;
+		$this->context      = $context;
+		$this->global_score = $global_score;
+		$this->options      = $options;
+		$this->manager      = $manager;
+		$this->plan         = $plan;
 	}
 
 	/**
@@ -129,49 +128,47 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'wp_rocket_first_install'                     => [
+			'wp_rocket_first_install'               => [
 				[ 'reset_credit_monthly', 9 ],
 				[ 'schedule_homepage_tests' ],
 			],
-			'wp_ajax_rocket_rocket_insights_add_new_page' => 'add_new_page',
-			'wp_ajax_rocket_rocket_insights_get_results'  => 'get_results',
-			'wp_ajax_rocket_rocket_insights_get_column_html' => 'get_column_html',
-			'admin_post_delete_rocket_insights_url'       => 'delete_row',
-			'wp_ajax_rocket_rocket_insights_reset_page'   => 'reset_page',
-			'rocket_localize_admin_script'                => 'add_pending_ids',
-			'rocket_insights_credit_reset'                => 'reset_credit_monthly',
-			'rocket_rocket_insights_job_completed'        => [
+			'admin_post_delete_rocket_insights_url' => 'delete_row',
+			'rocket_localize_admin_script'          => 'add_pending_ids',
+			'rocket_insights_credit_reset'          => 'reset_credit_monthly',
+			'rocket_rocket_insights_job_completed'  => [
 				[ 'validate_credit' ],
 				[ 'reset_global_score' ],
 			],
-			'rocket_rocket_insights_job_failed'           => 'reset_global_score',
-			'rocket_rocket_insights_job_added'            => 'reset_global_score',
-			'rocket_rocket_insights_job_retest'           => 'reset_global_score',
-			'rocket_rocket_insights_job_deleted'          => 'reset_global_score',
-			'rocket_dashboard_sidebar'                    => 'render_global_score_widget',
-			'rocket_insights_tab_content'                 => [
+			'rocket_rocket_insights_job_failed'     => 'reset_global_score',
+			'rocket_rocket_insights_job_added'      => 'reset_global_score',
+			'rocket_rocket_insights_job_retest'     => 'reset_global_score',
+			'rocket_rocket_insights_job_deleted'    => 'reset_global_score',
+			'rocket_dashboard_sidebar'              => 'render_global_score_widget',
+			'rocket_insights_tab_content'           => [
 				[ 'render_license_banner_section', 10 ],
 				[ 'maybe_show_paid_reach_limits_notice', 17 ],
 				[ 'maybe_show_notice', 18 ],
 				[ 'render_performance_urls_table', 20 ],
 			],
-			'admin_init'                                  => [
+			'admin_init'                            => [
 				[ 'flush_license_cache', 8 ],
 				[ 'check_upgrade' ],
 				[ 'schedule_jobs', 11 ],
 			],
 			'admin_post_rocket_rocket_insights_add_homepage' => 'add_homepage_from_widget',
-			'rocket_deactivation'                         => [
+			'rocket_deactivation'                   => [
 				[ 'cancel_scheduled_jobs' ],
 				[ 'remove_current_plan' ],
 			],
-			'rocket_options_changed'                      => 'maybe_cancel_automatic_retest_job',
-			'rocket_insights_retest'                      => 'retest_all_pages',
-			'wp_rocket_upgrade'                           => [
+			'rocket_options_changed'                => 'maybe_cancel_automatic_retest_job',
+			'rocket_insights_retest'                => 'retest_all_pages',
+			'wp_rocket_upgrade'                     => [
 				[ 'on_update_reset_credit', 10, 2 ],
 				[ 'on_update_cancel_old_as_jobs', 10, 2 ],
+				[ 'on_update_add_homepage', 10, 2 ],
 			],
-			'admin_notices'                               => 'maybe_display_rocket_insights_promotion_notice',
+			'admin_notices'                         => 'maybe_display_rocket_insights_promotion_notice',
+			'rest_api_init'                         => [ 'register_routes' ],
 		];
 	}
 
@@ -185,35 +182,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public function schedule_homepage_tests(): void {
 		$this->controller->add_homepage();
-	}
-
-	/**
-	 * Handles the AJAX request to add a new page for performance monitoring.
-	 *
-	 * @return void
-	 */
-	public function add_new_page(): void {
-		$this->ajax_controller->add_new_page();
-	}
-
-	/**
-	 * Handles the AJAX request to get results of urls for performance monitoring.
-	 *
-	 * @return void
-	 */
-	public function get_results(): void {
-		$this->ajax_controller->get_results();
-	}
-
-	/**
-	 * Handles AJAX request to get column HTML for a specific URL.
-	 *
-	 * @since 3.20.1
-	 *
-	 * @return void
-	 */
-	public function get_column_html(): void {
-		$this->ajax_controller->get_column_html();
 	}
 
 	/**
@@ -251,15 +219,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public function delete_row() {
 		$this->controller->delete_row();
-	}
-
-	/**
-	 * Reset testing a page/url.
-	 *
-	 * @return void
-	 */
-	public function reset_page(): void {
-		$this->ajax_controller->reset_page();
 	}
 
 	/**
@@ -541,6 +500,15 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	}
 
 	/**
+	 * Register REST API routes for Rocket Insights.
+	 *
+	 * @return void
+	 */
+	public function register_routes() {
+		$this->rest->register_routes();
+	}
+
+	/**
 	 * Callback for the wp_rocket_upgrade action to cancel deprecated Action Scheduler jobs on version update.
 	 *
 	 * @param string $new_version New plugin version.
@@ -552,6 +520,32 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			return;
 		}
 		$this->queue->deprecate_old_actions();
+	}
+
+	/**
+	 * Callback for the wp_rocket_upgrade action to add homepage on version update if no pages exist.
+	 *
+	 * This method adds the homepage to Rocket Insights when:
+	 * - Updating from a version lower than 3.20.1
+	 * - No pages are currently added to Rocket Insights
+	 *
+	 * @param string $new_version New plugin version.
+	 * @param string $old_version Previous plugin version.
+	 * @return void
+	 */
+	public function on_update_add_homepage( $new_version, $old_version ) {
+		// Only run if updating from a version lower than 3.20.1.
+		if ( version_compare( $old_version, '3.20.1', '>=' ) ) {
+			return;
+		}
+
+		// Only add homepage if no pages are currently in Rocket Insights.
+		$total_count = $this->controller->get_total_url_count();
+		if ( $total_count > 0 ) {
+			return;
+		}
+
+		$this->controller->add_homepage();
 	}
 
 	/**
