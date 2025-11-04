@@ -619,17 +619,7 @@
 }
 .wpr-ri-column .wpr-ri-message {
   margin-top: 8px;
-  border-radius: 3px;
   font-size: 12px;
   line-height: 1.4;
-}
-.wpr-ri-column .wpr-ri-message.wpr-ri-message--error {
-  background-color: #fcf0f1;
-  border-left: 4px solid #d63638;
-  color: #2c3338;
-}
-.wpr-ri-column .wpr-ri-message.wpr-ri-message--info {
-  background-color: #f0f6fc;
-  border-left: 4px solid #0783be;
-  color: #2c3338;
+  color: #C01B1B;
 }

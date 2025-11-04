@@ -41,6 +41,13 @@ module.exports = (function() {
 			const url = button.data('url');
 			const column = button.closest('.wpr-ri-column');
 
+			const canAddPages = column.attr('data-can-add-pages') === '1';
+
+			if ( ! canAddPages ) {
+				showLimitMessage( column, button );
+				return;
+			}
+
 			addNewPage(url, column, button);
 		});
 	}
@@ -58,6 +65,14 @@ module.exports = (function() {
 			const rowId = column.data('rocket-insights-id');
 
 			if (!rowId) {
+				return;
+			}
+
+			// Retest should only proceed when the user has credit for the test.
+			const hasCredit = column.attr('data-has-credit') === '1';
+
+			if ( ! hasCredit ) {
+				showLimitMessage( column, el );
 				return;
 			}
 
@@ -222,6 +237,28 @@ module.exports = (function() {
 	}
 
 	/**
+	 * Show the per-row limit message (only in the clicked row).
+	 * Disables the clicked element momentarily while showing the message.
+	 *
+	 * @param {jQuery} column The column element.
+	 * @param {jQuery} clickedEl The element that triggered the action.
+	 */
+	function showLimitMessage(column, clickedEl) {
+		const messageHtml = column.find('.wpr-ri-limit-html').html() || window.rocket_insights_i18n?.limit_reached || '';
+
+		const messageDiv = column.find('.wpr-ri-message');
+		messageDiv.html(messageHtml).show();
+
+		// Disable only the clicked element briefly to prevent spam clicks, then re-enable.
+		if (clickedEl && clickedEl.prop) {
+			clickedEl.prop('disabled', true);
+			setTimeout(function() {
+				clickedEl.prop('disabled', false);
+			}, 3000);
+		}
+	}
+
+	/**
 	 * Check the status of a test.
 	 *
 	 * @param {number} rowId  The database row ID.
@@ -296,27 +333,17 @@ module.exports = (function() {
 	}
 
 	/**
-	 * Disable all "Test the page" buttons when the URL limit is reached.
+	 * Mark all remaining "Test the page" buttons as having reached the limit.
+	 * Updates data attributes so future clicks will show the limit message per-row.
+	 * Does NOT display any message immediately on all rows.
 	 */
 	function disableAllTestPageButtons() {
-		jQuery('.wpr-ri-test-page:not(.wpr-ri-no-credit)').each(function() {
+		jQuery('.wpr-ri-test-page').each(function() {
 			const button = jQuery(this);
-			button.addClass('wpr-ri-no-credit').prop('disabled', true);
-
-			// Add the "You've reached your limit" message if not already present.
 			const column = button.closest('.wpr-ri-column');
-			const creditMessage = column.find('.wpr-ri-credit-message');
-
-			if (creditMessage.length === 0) {
-				const messageDiv = jQuery('<div>').addClass('wpr-ri-credit-message');
-				const isFreeUser = window.rocket_ajax_data?.is_free_user || false;
-				const limitMessage = isFreeUser
-					? window.rocket_insights_i18n?.free_limit_reached
-					: window.rocket_insights_i18n?.paid_limit_reached;
-
-				messageDiv.html(limitMessage);
-				button.after(messageDiv);
-			}
+			
+			// Update the data attribute so future clicks will trigger the limit message.
+			column.attr('data-can-add-pages', '0');
 		});
 	}
 
