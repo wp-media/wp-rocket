@@ -43,7 +43,7 @@ endif;
 <div class="wpr-ri-column" data-rocket-insights-id="<?php echo esc_attr( $data['wpr_rocket_row']->id ); ?>" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>" data-has-credit="<?php echo esc_attr( $data['wpr_has_credit'] ? '1' : '0' ); ?>" data-can-add-pages="<?php echo esc_attr( $data['wpr_can_add_pages'] ? '1' : '0' ); ?>">
 	<?php
 	// Helper: always render the re-test button (JS will handle credit checks on click).
-	$render_retest_button = function() use ( $data ) {
+	$render_retest_button = function () use ( $data ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 		?>
 		<button type="button" class="wpr-ri-retest-link wpr-icon-bold-refresh" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>">
 			<?php esc_html_e( 'Re-test', 'rocket' ); ?>
@@ -53,7 +53,7 @@ endif;
 
 	// We keep the credit message HTML available (hidden) for JS to show it on click
 	// for the specific row only. Do not render it on page load.
-	$render_credit_message = function() use ( $data ) {
+	$render_credit_message = function () use ( $data ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 		?>
 		<div class="wpr-ri-limit-html" style="display: none;">
 			<?php echo wp_kses_post( $data['wpr_limit_reached_message'] ); ?>
@@ -109,7 +109,7 @@ endif;
 					<span class="wpr-ri-see-report-link wpr-icon-report wpr-ri-disabled">
 						<?php esc_html_e( 'See Report', 'rocket' ); ?>
 					</span>
-				<?php
+					<?php
 				endif;
 
 				$render_credit_message();
