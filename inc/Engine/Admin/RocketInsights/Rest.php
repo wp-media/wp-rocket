@@ -303,7 +303,7 @@ class Rest extends WP_REST_Controller {
 		if ( ! $this->context->is_adding_page_allowed() ) {
 			$error = new WP_Error(
 				'rest_forbidden',
-				__( 'Maximum number of URLs reached for your license.', 'rocket' ),
+				$this->get_page_limit_error_message(),
 				[
 					'status'         => 403,
 					'remaining_urls' => 0,
@@ -481,6 +481,21 @@ class Rest extends WP_REST_Controller {
 
 		if ( ! $row ) {
 			$error = new WP_Error( 'rest_not_found', __( 'Item not found.', 'rocket' ), [ 'status' => 404 ] );
+
+			return rest_ensure_response( $error );
+		}
+
+		// Check if adding a page is allowed based on URL limits.
+		if ( ! $this->context->is_adding_page_allowed() ) {
+			$error = new WP_Error(
+				'rest_forbidden',
+				$this->get_page_limit_error_message(),
+				[
+					'status'         => 403,
+					'remaining_urls' => 0,
+					'can_add_pages'  => false,
+				]
+			);
 
 			return rest_ensure_response( $error );
 		}
@@ -787,6 +802,35 @@ class Rest extends WP_REST_Controller {
 		return max(
 			0,
 			$this->plan->max_urls() - (int) $this->query->get_total_count()
+		);
+	}
+
+	/**
+	 * Get the error message for when page limit is reached.
+	 *
+	 * @since 3.17
+	 *
+	 * @return string The formatted error message.
+	 */
+	private function get_page_limit_error_message(): string {
+		if ( $this->context->is_free_user() ) {
+			$upgrade_url = admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '#rocket_insights' );
+
+			return sprintf(
+				/* translators: %1$s: opening <strong> tag, %2$s: closing </strong> tag, %3$s: opening link tag, %4$s: closing link tag */
+				__( "You've %1\$sreached your free limit%2\$s. %3\$sUpgrade to continue%4\$s.", 'rocket' ),
+				'<strong>',
+				'</strong>',
+				'<a href="' . esc_url( $upgrade_url ) . '">',
+				'</a>'
+			);
+		}
+
+		return sprintf(
+			/* translators: %1$s: opening <strong> tag, %2$s: closing </strong> tag */
+			__( "You've %1\$sreached the page limit%2\$s. Please remove at least one page to continue.", 'rocket' ),
+			'<strong>',
+			'</strong>'
 		);
 	}
 }

@@ -325,7 +325,7 @@
   pointer-events: none;
 }
 .wpr-ri-column .wpr-ri-score-wrapper {
-  margin-bottom: 4px;
+  margin-bottom: 12px;
 }
 .wpr-ri-column .wpr-ri-score-wrapper .wpr-percentage-indicator {
   position: relative;
@@ -381,6 +381,9 @@
   flex-direction: column;
   gap: 4px;
   font-size: 14px;
+}
+.wpr-ri-column .wpr-ri-actions-wrapper .wpr-ri-retest-link {
+  margin-bottom: 3px;
 }
 .wpr-ri-column .wpr-ri-actions-wrapper .wpr-ri-retest-link,
 .wpr-ri-column .wpr-ri-actions-wrapper .wpr-ri-see-report-link {
@@ -606,9 +609,6 @@
   border-top-color: #1d2327;
 }
 .wpr-ri-column .wpr-ri-error {
-  display: flex;
-  align-items: center;
-  gap: 6px;
   color: #d63638;
   font-size: 13px;
 }
@@ -622,18 +622,7 @@
 }
 .wpr-ri-column .wpr-ri-message {
   margin-top: 8px;
-  padding: 6px 10px;
-  border-radius: 3px;
   font-size: 12px;
   line-height: 1.4;
-}
-.wpr-ri-column .wpr-ri-message.wpr-ri-message--error {
-  background-color: #fcf0f1;
-  border-left: 4px solid #d63638;
-  color: #2c3338;
-}
-.wpr-ri-column .wpr-ri-message.wpr-ri-message--info {
-  background-color: #f0f6fc;
-  border-left: 4px solid #0783be;
-  color: #2c3338;
+  color: #C01B1B;
 }
