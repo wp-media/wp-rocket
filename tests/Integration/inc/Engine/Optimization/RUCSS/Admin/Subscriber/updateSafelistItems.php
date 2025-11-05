@@ -12,8 +12,6 @@ use WP_Rocket\Tests\Integration\TestCase;
  */
 class Test_UpdateSafelistItems extends TestCase {
 	public function set_up() {
-		parent::set_up();
-
 		/**
 		 * Temporarily install Used CSS table to avoid error in test run
 		 *
@@ -23,18 +21,18 @@ class Test_UpdateSafelistItems extends TestCase {
 		 */
 		self::installUsedCssTable();
 
-		$this->setUpSettings();
+		parent::set_up();
+
 		$this->unregisterAllCallbacksExcept( 'wp_rocket_upgrade', 'update_safelist_items', 15 );
 	}
 
 	public function tear_down() {
-		// Delete the table after the test run.
-		self::uninstallUsedCssTable();
-
 		$this->tearDownSettings();
 		$this->restoreWpHook( 'wp_rocket_upgrade' );
 
 		parent::tear_down();
+		// Delete the table after the test run.
+		self::uninstallUsedCssTable();
 	}
 
 	/**

@@ -44,9 +44,19 @@ class Test_Delete extends RESTVfsTestCase {
 
 	public function set_up() {
 		parent::set_up();
+
+		self::installAtfTable();
+		self::installLrcTable();
+		self::installPreloadFontsTable();
+		self::installPreconnectExternalDomainsTable();
 	}
 
 	public function tear_down() {
+		self::uninstallAtfTable();
+		self::uninstallLrcTable();
+		self::uninstallPreloadFontsTable();
+		self::uninstallPreconnectDomainsTable();
+
 		remove_filter( 'pre_get_rocket_option_async_css_mobile', [ $this, 'async_css_mobile_cb' ] );
 
 		$admin = get_role( 'administrator' );

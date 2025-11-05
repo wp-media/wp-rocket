@@ -31,6 +31,11 @@ class Test_ProcessHandler extends FilesystemTestCase {
 	public function set_up() {
 		parent::set_up();
 
+		self::installAtfTable();
+		self::installLrcTable();
+		self::installPreloadFontsTable();
+		self::installPreconnectExternalDomainsTable();
+
 		$this->to_be_removed  = [
 			'filters'    => [],
 			'transients' => [],
@@ -50,6 +55,10 @@ class Test_ProcessHandler extends FilesystemTestCase {
 	}
 
 	public function tear_down() {
+		self::uninstallAtfTable();
+		self::uninstallLrcTable();
+		self::uninstallPreloadFontsTable();
+		self::uninstallPreconnectDomainsTable();
 
 		foreach ( $this->to_be_removed as $item_name => $item ) {
 			switch ( $item_name ) {

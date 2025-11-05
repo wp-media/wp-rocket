@@ -33,13 +33,6 @@ class RocketInsights extends AbstractQuery {
 	 */
 	protected $table_schema = RocketInsightsSchema::class;
 
-	/**
-	 * Cleanup interval in months.
-	 *
-	 * @var   int
-	 */
-	protected $cleanup_interval = 3;
-
 	/** Item ******************************************************************/
 
 	/**

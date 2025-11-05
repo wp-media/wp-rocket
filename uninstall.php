@@ -26,8 +26,6 @@ require_once __DIR__ . '/inc/Engine/Common/Database/TableInterface.php';
 require_once __DIR__ . '/inc/Engine/Common/Database/Tables/AbstractTable.php';
 require_once __DIR__ . '/inc/Engine/Optimization/RUCSS/Database/Tables/UsedCSS.php';
 require_once __DIR__ . '/inc/Engine/Preload/Database/Tables/Cache.php';
-require_once __DIR__ . '/inc/Engine/Common/PerformanceHints/Database/Table/TableInterface.php';
-require_once __DIR__ . '/inc/Engine/Common/PerformanceHints/Database/Table/AbstractTable.php';
 require_once __DIR__ . '/inc/Engine/Media/AboveTheFold/Database/Tables/AboveTheFold.php';
 require_once __DIR__ . '/inc/Engine/Optimization/LazyRenderContent/Database/Table/LazyRenderContent.php';
 require_once __DIR__ . '/inc/Engine/Media/PreloadFonts/Database/Table/PreloadFonts.php';
