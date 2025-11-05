@@ -26,9 +26,19 @@ class Test_DisableImageDimensionsHeightPercentage extends WPThemeTestcase {
 
 		add_filter( 'rocket_specify_image_dimensions', '__return_true' );
 		add_filter( 'rocket_disable_meta_generator', '__return_true' );
+
+		self::installAtfTable();
+		self::installLrcTable();
+		self::installPreloadFontsTable();
+		self::installPreconnectExternalDomainsTable();
 	}
 
 	public function tear_down() {
+		self::uninstallAtfTable();
+		self::uninstallLrcTable();
+		self::uninstallPreloadFontsTable();
+		self::uninstallPreconnectDomainsTable();
+
 		$this->event->remove_subscriber( $this->subscriber );
 
 		$this->restoreWpHook( 'rocket_buffer' );

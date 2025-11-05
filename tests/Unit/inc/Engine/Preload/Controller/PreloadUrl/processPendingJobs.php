@@ -52,14 +52,14 @@ class TestProcessPendingJobs extends TestCase {
 			->with()
 			->willReturn( $config['outdated_jobs'] );
 		$this->query->expects( self::atLeastOnce() )
-			->method( 'make_status_failed' )
+			->method( 'make_status_failed_by_id' )
 			->withConsecutive( ...$expected['outdated_jobs_id'] );
 		$this->query->expects( self::once() )
 			->method( 'get_pending_jobs' )
 			->with( $config['rows'] )
 			->willReturn( $config['jobs'] );
 		$this->query->expects( self::atLeastOnce() )
-			->method( 'make_status_inprogress' )
+			->method( 'make_status_inprogress_by_id' )
 			->withConsecutive( ...$expected['job_ids'] );
 		$this->query->expects( self::atLeast( 0 ) )
 			->method( 'delete_by_url' )

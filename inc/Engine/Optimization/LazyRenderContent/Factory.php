@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\LazyRenderContent;
 
+use WP_Rocket\Engine\Common\Database\QueryInterface;
+use WP_Rocket\Engine\Common\Database\TableInterface;
 use WP_Rocket\Engine\Common\PerformanceHints\Cron\CronTrait;
 use WP_Rocket\Engine\Common\PerformanceHints\FactoryInterface;
 use WP_Rocket\Engine\Common\PerformanceHints\AJAX\ControllerInterface as AjaxControllerInterface;
 use WP_Rocket\Engine\Common\PerformanceHints\Frontend\ControllerInterface as FrontendControllerInterface;
-use WP_Rocket\Engine\Common\PerformanceHints\Database\Table\TableInterface;
-use WP_Rocket\Engine\Common\PerformanceHints\Database\Queries\QueriesInterface;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
 
 class Factory implements FactoryInterface {
@@ -39,7 +39,7 @@ class Factory implements FactoryInterface {
 	/**
 	 * Queries instance.
 	 *
-	 * @var QueriesInterface
+	 * @var QueryInterface
 	 */
 	protected $queries;
 
@@ -55,11 +55,11 @@ class Factory implements FactoryInterface {
 	 *
 	 * @param ContextInterface            $context LRC Context instance.
 	 * @param TableInterface              $table LRC Table instance.
-	 * @param QueriesInterface            $queries LRC Queries instance.
+	 * @param QueryInterface              $queries LRC Queries instance.
 	 * @param AjaxControllerInterface     $ajax_controller LRC AJAX Controller instance.
 	 * @param FrontendControllerInterface $frontend_controller LRC Frontend Controller instance.
 	 */
-	public function __construct( ContextInterface $context, TableInterface $table, QueriesInterface $queries, AjaxControllerInterface $ajax_controller, FrontendControllerInterface $frontend_controller ) {
+	public function __construct( ContextInterface $context, TableInterface $table, QueryInterface $queries, AjaxControllerInterface $ajax_controller, FrontendControllerInterface $frontend_controller ) {
 		$this->context             = $context;
 		$this->table               = $table;
 		$this->queries             = $queries;
@@ -97,9 +97,9 @@ class Factory implements FactoryInterface {
 	/**
 	 * Provides a Queries object.
 	 *
-	 * @return QueriesInterface
+	 * @return QueryInterface
 	 */
-	public function queries(): QueriesInterface {
+	public function queries(): QueryInterface {
 		// Defines the interval for deletion and returns Queries object.
 		return $this->deletion_interval( 'rocket_lrc_cleanup_interval' );
 	}

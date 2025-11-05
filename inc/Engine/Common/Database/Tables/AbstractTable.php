@@ -142,4 +142,44 @@ class AbstractTable extends Table implements TableInterface {
 
 		delete_option( $this->db_version_key );
 	}
+
+	/**
+	 * Check if table already exists.
+	 * Here we extend the parent exists method to add a layer of caching
+	 * by creating a transient based on the table exists or not.
+	 *
+	 * @return bool
+	 */
+	public function exists() {
+		$cached_value = get_transient( $this->get_exists_transient_name() );
+		if ( false !== $cached_value ) {
+			return true;
+		}
+
+		$exists = parent::exists();
+		// Cache only when the table exists.
+		if ( $exists ) {
+			set_transient( $this->get_exists_transient_name(), $exists, HOUR_IN_SECONDS );
+		}
+		return $exists;
+	}
+
+	/**
+	 * Uninstall a database table
+	 * Here we extend the parent method to clear the transient with table uninstall
+	 * without touching berlinDB code.
+	 */
+	public function uninstall() {
+		parent::uninstall();
+		delete_transient( $this->get_exists_transient_name() );
+	}
+
+	/**
+	 * Get exists transient name.
+	 *
+	 * @return string
+	 */
+	public function get_exists_transient_name(): string {
+		return $this->name . '_exists';
+	}
 }

@@ -42,11 +42,6 @@ class DeleteOldRowsTest extends TestCase {
 		$container = apply_filters( 'rocket_container', null );
 		$ri_query = $container->get( 'ri_query' );
 
-		// Handle special case where table should be uninstalled.
-		if ( isset( $config['uninstall_table'] ) && $config['uninstall_table'] ) {
-			self::uninstallPerformanceMonitoringTable();
-		}
-
 		// Add test data.
 		$item_ids = [];
 		foreach ( $config['items'] as $item ) {
