@@ -28,6 +28,7 @@ return [
 			],
 		],
 		'expected' => [
+			'code' => 200,
 			'success' => true,
 			'results_count' => 2,
 			'has_global_score_data' => true,
@@ -52,6 +53,7 @@ return [
 			],
 		],
 		'expected' => [
+			'code' => 200,
 			'success' => true,
 			'results_count' => 1,
 			'has_global_score_data' => true,
@@ -63,8 +65,8 @@ return [
 			'get_data' => [],
 		],
 		'expected' => [
-			'success' => false,
-			'error_message' => 'No ids param available or ids not array',
+			'code' => 400,
+			'error_message' => 'Missing parameter(s): ids',
 		],
 	],
 	'testShouldFailWithEmptyIds' => [
@@ -74,8 +76,8 @@ return [
 			],
 		],
 		'expected' => [
-			'success' => false,
-			'error_message' => 'No ids param available or ids not array',
+			'code' => 400,
+			'error_message' => 'ids empty',
 		],
 	],
 	'testShouldFailWithInvalidIdValues' => [
@@ -85,7 +87,7 @@ return [
 			],
 		],
 		'expected' => [
-			'success' => false,
+			'code' => 404,
 			'error_message' => 'No rows found in DB for ids: -1',
 		],
 	],
@@ -97,7 +99,7 @@ return [
 			],
 		],
 		'expected' => [
-			'success' => false,
+			'code' => 404,
 			'error_message' => 'No rows found in DB for ids: 999,1000',
 		],
 	],
@@ -119,6 +121,7 @@ return [
 			],
 		],
 		'expected' => [
+			'code' => 200,
 			'success' => true,
 			'results_count' => 1, // Only the existing one should be returned
 			'has_global_score_data' => true,

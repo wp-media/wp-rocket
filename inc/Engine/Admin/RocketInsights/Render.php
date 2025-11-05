@@ -362,14 +362,18 @@ class Render extends Abstract_Render {
 		// Get credit availability.
 		$has_credit = $this->plan->has_credit();
 
+		$can_add_pages = $this->context->is_adding_page_allowed();
+
 		// Prepare template variables.
 		$template_data = [
-			'wpr_rocket_insights_url' => $normalized_url,
-			'wpr_rocket_row'          => $row,
-			'wpr_has_credit'          => $has_credit,
+			'wpr_rocket_insights_url'   => $normalized_url,
+			'wpr_rocket_row'            => $row,
+			'wpr_has_credit'            => $has_credit,
+			'wpr_can_add_pages'         => $can_add_pages,
+			'wpr_is_free_user'          => $this->context->is_free_user(),
+			'wpr_limit_reached_message' => $this->get_page_limit_error_message(),
 		];
 
-		// If row exists, prepare additional derived variables and score data.
 		if ( null !== $row ) {
 			$template_data['wpr_is_running']        = $row->is_running();
 			$template_data['wpr_has_results']       = 'completed' === $row->status || 'blurred' === $row->status;
@@ -398,5 +402,34 @@ class Render extends Abstract_Render {
 	public function render_rocket_insights_column( string $url ): void {
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Template handles escaping.
 		echo $this->get_rocket_insights_column( $url );
+	}
+
+	/**
+	 * Get the error message for when page limit is reached.
+	 *
+	 * @since 3.17
+	 *
+	 * @return string The formatted error message.
+	 */
+	public function get_page_limit_error_message(): string {
+		if ( $this->context->is_free_user() ) {
+			$upgrade_url = admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '#rocket_insights' );
+
+			return sprintf(
+				/* translators: %1$s: opening <strong> tag, %2$s: closing </strong> tag, %3$s: opening link tag, %4$s: closing link tag */
+				__( "You've %1\$sreached your free limit%2\$s. %3\$sUpgrade to continue%4\$s.", 'rocket' ),
+				'<strong>',
+				'</strong>',
+				'<a href="' . esc_url( $upgrade_url ) . '">',
+				'</a>'
+			);
+		}
+
+		return sprintf(
+			/* translators: %1$s: opening <strong> tag, %2$s: closing </strong> tag */
+			__( "You've %1\$sreached the page limit%2\$s. Please remove at least one page to continue.", 'rocket' ),
+			'<strong>',
+			'</strong>'
+		);
 	}
 }

@@ -7,9 +7,11 @@
  * @var array $data {
  *     Template data.
  *
- *     @type string      $data['wpr_rocket_insights_url']        The URL of the post.
- *     @type object|null $data['wpr_rocket_row']        Database row object for the URL (null if not tracked).
- *     @type bool        $data['wpr_has_credit'] Whether the user has credit available.
+ *     @type string      $data['wpr_rocket_insights_url'] The URL of the post.
+ *     @type object|null $data['wpr_rocket_row']          Database row object for the URL (null if not tracked).
+ *     @type bool        $data['wpr_has_credit']          Whether the user has credit available.
+ *     @type bool        $data['wpr_can_add_pages']       Whether the user can add more pages (based on plan limits).
+ *     @type bool        $data['wpr_is_free_user']        Whether the user is on the free plan.
  * }
  */
 
@@ -17,21 +19,19 @@ defined( 'ABSPATH' ) || exit;
 
 // If row doesn't exist, show "Test the page" link.
 if ( null === $data['wpr_rocket_row'] ) :
+	// For not-tracked rows always render the button.
+	// The click handler will decide whether to show the limit message or proceed.
 	?>
-	<div class="wpr-ri-column wpr-ri-not-tracked" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>">
-		<?php if ( $data['wpr_has_credit'] ) : ?>
-			<button type="button" class="wpr-ri-test-page" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>">
-				<?php esc_html_e( 'Test the page', 'rocket' ); ?>
-			</button>
-		<?php else : ?>
-			<button type="button" class="wpr-ri-test-page wpr-ri-no-credit" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>">
-				<?php esc_html_e( 'Test the page', 'rocket' ); ?>
-			</button>
-			<div class="wpr-ri-credit-message">
-				<strong><?php esc_html_e( "You've reached your free limit.", 'rocket' ); ?></strong>
-				<?php esc_html_e( 'Upgrade to continue.', 'rocket' ); ?>
-			</div>
-		<?php endif; ?>
+	<div class="wpr-ri-column wpr-ri-not-tracked" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>" data-has-credit="<?php echo esc_attr( $data['wpr_has_credit'] ? '1' : '0' ); ?>" data-can-add-pages="<?php echo esc_attr( $data['wpr_can_add_pages'] ? '1' : '0' ); ?>">
+		<button type="button" class="wpr-ri-test-page" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>">
+			<?php esc_html_e( 'Test the page', 'rocket' ); ?>
+		</button>
+
+		<?php // Store the limit message HTML hidden in the column for per-row usage by JS. ?>
+		<div class="wpr-ri-limit-html" style="display: none;">
+			<?php echo wp_kses_post( $data['wpr_limit_reached_message'] ); ?>
+		</div>
+
 		<div class="wpr-ri-message" style="display: none;"></div>
 	</div>
 	<?php
@@ -40,7 +40,27 @@ endif;
 
 ?>
 
-<div class="wpr-ri-column" data-rocket-insights-id="<?php echo esc_attr( $data['wpr_rocket_row']->id ); ?>" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>">
+<div class="wpr-ri-column" data-rocket-insights-id="<?php echo esc_attr( $data['wpr_rocket_row']->id ); ?>" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>" data-has-credit="<?php echo esc_attr( $data['wpr_has_credit'] ? '1' : '0' ); ?>" data-can-add-pages="<?php echo esc_attr( $data['wpr_can_add_pages'] ? '1' : '0' ); ?>">
+	<?php
+	// Helper: always render the re-test button (JS will handle credit checks on click).
+	$render_retest_button = function () use ( $data ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
+		?>
+		<button type="button" class="wpr-ri-retest-link wpr-icon-bold-refresh" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>">
+			<?php esc_html_e( 'Re-test', 'rocket' ); ?>
+		</button>
+		<?php
+	};
+
+	// We keep the credit message HTML available (hidden) for JS to show it on click
+	// for the specific row only. Do not render it on page load.
+	$render_credit_message = function () use ( $data ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
+		?>
+		<div class="wpr-ri-limit-html" style="display: none;">
+			<?php echo wp_kses_post( $data['wpr_limit_reached_message'] ); ?>
+		</div>
+		<?php
+	};
+	?>
 	<?php if ( $data['wpr_is_running'] ) : ?>
 		<!-- Loading state -->
 		<div class="wpr-ri-loading">
@@ -52,56 +72,31 @@ endif;
 			<!-- Blurred score - show score with tooltip and actions (Re-test clickable, See Report disabled) -->
 			<div class="wpr-ri-blurred">
 				<div class="wpr-btn-with-tool-tip">
-					<?php
-
-					$this->render_performance_score( $data['wpr_score_data'] );
-					?>
+					<?php $this->render_performance_score( $data['wpr_score_data'] ); ?>
 				</div>
 				
 				<div class="wpr-ri-actions-wrapper">
-					<?php if ( $data['wpr_has_credit'] ) : ?>
-						<button type="button" class="wpr-ri-retest-link wpr-icon-bold-refresh" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>">
-							<?php esc_html_e( 'Re-test', 'rocket' ); ?>
-						</button>
-					<?php else : ?>
-						<span class="wpr-ri-retest-link wpr-icon-bold-refresh wpr-ri-disabled">
-							<?php esc_html_e( 'Re-test', 'rocket' ); ?>
-						</span>
-					<?php endif; ?>
-					
+					<?php
+					$render_retest_button();
+					?>
 					<span class="wpr-ri-see-report-link wpr-icon-report wpr-ri-disabled">
 						<?php esc_html_e( 'See Report', 'rocket' ); ?>
 					</span>
-					
-					<?php if ( ! $data['wpr_has_credit'] ) : ?>
-						<span class="wpr-ri-no-credit-text">
-							<strong><?php esc_html_e( "You've reached your free limit.", 'rocket' ); ?></strong>
-							<?php esc_html_e( 'Upgrade to continue.', 'rocket' ); ?>
-						</span>
-					<?php endif; ?>
+					<?php
+					$render_credit_message();
+					?>
 				</div>
 			</div>
 		<?php else : ?>
 			<!-- Normal score with actions -->
 			<div class="wpr-ri-score-wrapper">
-				<?php
-
-				$this->render_performance_score( $data['wpr_score_data'] );
-				?>
+				<?php $this->render_performance_score( $data['wpr_score_data'] ); ?>
 			</div>
 			
 			<div class="wpr-ri-actions-wrapper">
-				<?php if ( $data['wpr_has_credit'] ) : ?>
-					<button type="button" class="wpr-ri-retest-link wpr-icon-bold-refresh" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>">
-						<?php esc_html_e( 'Re-test', 'rocket' ); ?>
-					</button>
-				<?php else : ?>
-					<span class="wpr-ri-retest-link wpr-icon-bold-refresh wpr-ri-disabled">
-						<?php esc_html_e( 'Re-test', 'rocket' ); ?>
-					</span>
-				<?php endif; ?>
-				
 				<?php
+				$render_retest_button();
+
 				// See report link - only show if report_url exists.
 				$wpr_report_url = $data['wpr_rocket_row']->report_url ?? ''; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 
@@ -110,14 +105,15 @@ endif;
 					<a href="<?php echo esc_url( $wpr_report_url ); ?>" class="wpr-ri-see-report-link wpr-icon-report" target="_blank" rel="noopener">
 						<?php esc_html_e( 'See Report', 'rocket' ); ?>
 					</a>
-				<?php endif; ?>
-				
-				<?php if ( ! $data['wpr_has_credit'] ) : ?>
-					<span class="wpr-ri-no-credit-text">
-						<strong><?php esc_html_e( "You've reached your free limit.", 'rocket' ); ?></strong>
-						<?php esc_html_e( 'Upgrade to continue.', 'rocket' ); ?>
+				<?php else : ?>
+					<span class="wpr-ri-see-report-link wpr-icon-report wpr-ri-disabled">
+						<?php esc_html_e( 'See Report', 'rocket' ); ?>
 					</span>
-				<?php endif; ?>
+					<?php
+				endif;
+
+				$render_credit_message();
+				?>
 			</div>
 		<?php endif; ?>
 	<?php else : ?>
@@ -135,6 +131,16 @@ endif;
 					</div>
 				</div>
 			</div>
+		</div>
+		
+		<div class="wpr-ri-actions-wrapper">
+			<?php
+			$render_retest_button();
+			?>
+			<span class="wpr-ri-see-report-link wpr-icon-report wpr-ri-disabled">
+				<?php esc_html_e( 'See Report', 'rocket' ); ?>
+			</span>
+			<?php $render_credit_message(); ?>
 		</div>
 	<?php endif; ?>
 	
