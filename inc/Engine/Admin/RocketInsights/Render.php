@@ -373,8 +373,8 @@ class Render extends Abstract_Render {
 			'wpr_can_add_pages'         => $can_add_pages,
 			'wpr_is_free_user'          => $this->context->is_free_user(),
 			'wpr_limit_reached_message' => $this->get_page_limit_error_message(),
-			'is_draft'                => get_post_status( $post_id ) === 'draft',
-			'wpr_post_id'             => $post_id,
+			'is_draft'                  => get_post_status( $post_id ) === 'draft',
+			'wpr_post_id'               => $post_id,
 		];
 
 		if ( null !== $row ) {
