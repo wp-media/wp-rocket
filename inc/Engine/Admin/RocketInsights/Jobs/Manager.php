@@ -258,4 +258,13 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 	public function allow_retry_strategies() {
 		return false;
 	}
+
+	/**
+	 * Check if we need to allow cleaning old urls or not.
+	 *
+	 * @return bool
+	 */
+	public function allow_clean_rows() {
+		return false;
+	}
 }

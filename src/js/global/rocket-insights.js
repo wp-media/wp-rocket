@@ -26,7 +26,7 @@ module.exports = (function() {
 		// Attach event listeners.
 		attachTestPageListeners();
 		attachRetestListeners();
-		
+
 		// Start polling for any rows that are already running.
 		startPollingForRunningTests();
 	}
@@ -38,14 +38,15 @@ module.exports = (function() {
 		jQuery(document).on('click', '.wpr-ri-test-page', function(e) {
 			e.preventDefault();
 			const button = jQuery(this);
-			
-			// Don't allow click if no credit
-			if (button.hasClass('wpr-ri-no-credit')) {
-				return;
-			}
-			
 			const url = button.data('url');
 			const column = button.closest('.wpr-ri-column');
+
+			const canAddPages = column.attr('data-can-add-pages') === '1';
+
+			if ( ! canAddPages ) {
+				showLimitMessage( column, button );
+				return;
+			}
 
 			addNewPage(url, column, button);
 		});
@@ -64,6 +65,14 @@ module.exports = (function() {
 			const rowId = column.data('rocket-insights-id');
 
 			if (!rowId) {
+				return;
+			}
+
+			// Retest should only proceed when the user has credit for the test.
+			const hasCredit = column.attr('data-has-credit') === '1';
+
+			if ( ! hasCredit ) {
+				showLimitMessage( column, el );
 				return;
 			}
 
@@ -94,31 +103,42 @@ module.exports = (function() {
 	 * @param {jQuery} button The button that was clicked.
 	 */
 	function addNewPage(url, column, button) {
-		// Disable button and show loading state.
-		button.prop('disabled', true).text(window.rocket_insights_i18n?.adding || 'Adding...');
+		// Disable button and show loading state immediately.
+		button.prop('disabled', true);
 
-		jQuery.ajax({
-			url: ajaxurl,
-			type: 'POST',
-			data: {
-				action: 'rocket_rocket_insights_add_new_page',
-				nonce: window.rocket_ajax_data?.nonce || '',
-				page_url: url
-			},
-			success: function(response) {
-				if (response.success && response.data.id) {
-					// Begin common loading + polling flow.
-					beginLoadingAndPoll(column, response.data.id, url);
-				} else {
-					// Show error message.
-					showMessage(column, response.data?.message || 'Error adding page', 'error');
-					button.prop('disabled', false).text(window.rocket_insights_i18n?.test_page || 'Test the page');
+		// Show loading spinner immediately before API call
+		showLoadingState(column, null);
+
+		// Use REST (HEAD) but keep develop's robust handling.
+		window.wp.apiFetch({
+			path: '/wp-rocket/v1/rocket-insights/pages/',
+			method: 'POST',
+			data: { page_url: url },
+		}).then((response) => {
+			const success   = response?.success === true;
+			const id        = response?.id ?? response?.data?.id ?? null;
+			const canAdd    = (response?.can_add_pages ?? response?.data?.can_add_pages);
+			const message   = response?.message ?? response?.data?.message;
+
+			if (success && id) {
+				// Update column with the row ID and start polling
+				column.attr('data-rocket-insights-id', id);
+				startPolling(id, url, column);
+
+				// Check if we've reached the limit and disable all other "Test the page" buttons.
+				if (canAdd === false || response?.data?.remaining_urls === 0) {
+					disableAllTestPageButtons();
 				}
-			},
-			error: function() {
-				showMessage(column, window.rocket_insights_i18n?.error || 'An error occurred', 'error');
-				button.prop('disabled', false).text(window.rocket_insights_i18n?.test_page || 'Test the page');
+				return;
 			}
+
+			// If backend says we cannot add pages or other errors, restore original state
+			// Reload the column HTML from server to restore the button
+			reloadColumnFromServer(column, url);
+		}).catch((error) => {
+			// wp.apiFetch throws on WP_Error; reload column to restore button
+			console.error(error);
+			reloadColumnFromServer(column, url);
 		});
 	}
 
@@ -130,26 +150,27 @@ module.exports = (function() {
 	 * @param {jQuery} column The column element.
 	 */
 	function retestPage(rowId, url, column) {
-		jQuery.ajax({
-			url: ajaxurl,
-			type: 'POST',
-			data: {
-				action: 'rocket_rocket_insights_reset_page',
-				nonce: window.rocket_ajax_data?.nonce || '',
-				id: rowId
-			},
-			success: function(response) {
-				if (response.success) {
-					// Begin common loading + polling flow.
-					beginLoadingAndPoll(column, rowId, url);
-				} else {
-					showMessage(column, response.data?.message || 'Error retesting page', 'error');
-				}
-			},
-			error: function() {
-				showMessage(column, window.rocket_insights_i18n?.error || 'An error occurred', 'error');
+		// Show loading spinner immediately before API call
+		showLoadingState(column, rowId);
+
+		window.wp.apiFetch(
+			{
+				path: '/wp-rocket/v1/rocket-insights/pages/' + rowId,
+				method: 'PATCH',
 			}
-		});
+		).then( ( response ) => {
+			if (response.success) {
+				// Start polling for results
+				startPolling(rowId, url, column);
+			} else {
+				// If not successful, reload the column to restore previous state
+				reloadColumnFromServer(column, url);
+			}
+		} ).catch( ( error ) => {
+			console.error(error);
+			// Reload the column to restore previous state
+			reloadColumnFromServer(column, url);
+		} );
 	}
 
 	/**
@@ -175,16 +196,25 @@ module.exports = (function() {
 	}
 
 	/**
-	 * Common helper to set loading state and start polling.
+	 * Show the per-row limit message (only in the clicked row).
+	 * Disables the clicked element momentarily while showing the message.
 	 *
 	 * @param {jQuery} column The column element.
-	 * @param {number} rowId  The database row ID.
-	 * @param {string} url    The URL being tested.
+	 * @param {jQuery} clickedEl The element that triggered the action.
 	 */
-	function beginLoadingAndPoll(column, rowId, url) {
-		// Update column to loading state and start polling.
-		showLoadingState(column, rowId);
-		startPolling(rowId, url, column);
+	function showLimitMessage(column, clickedEl) {
+		const messageHtml = column.find('.wpr-ri-limit-html').html() || window.rocket_insights_i18n?.limit_reached || '';
+
+		const messageDiv = column.find('.wpr-ri-message');
+		messageDiv.html(messageHtml).show();
+
+		// Disable only the clicked element briefly to prevent spam clicks, then re-enable.
+		if (clickedEl && clickedEl.prop) {
+			clickedEl.prop('disabled', true);
+			setTimeout(function() {
+				clickedEl.prop('disabled', false);
+			}, 3000);
+		}
 	}
 
 	/**
@@ -195,39 +225,36 @@ module.exports = (function() {
 	 * @param {jQuery} column The column element.
 	 */
 	function checkStatus(rowId, url, column) {
-		jQuery.ajax({
-			url: ajaxurl,
-			type: 'GET',
-			data: {
-				action: 'rocket_rocket_insights_get_results',
-				nonce: window.rocket_ajax_data?.nonce || '',
-				ids: [rowId]
-			},
-			success: function(response) {
-				if ( response.success && response.data ) {
-					const result = response.data.results[0];
+		window.wp.apiFetch(
+			{
+				path: window.wp.url.addQueryArgs( '/wp-rocket/v1/rocket-insights/pages/progress', { ids: [rowId] } ),
+			}
+		).then( ( response ) => {
+			if ( response.success && Array.isArray( response.results ) ) {
+				const result = response.results[0];
 
-					if ( result.status === 'completed' || result.status === 'failed' ) {
-						// Stop polling.
-						clearInterval( activePolls[rowId] );
-						delete activePolls[rowId];
+				if ( result.status === 'completed' || result.status === 'failed' ) {
+					// Stop polling.
+					clearInterval( activePolls[rowId] );
+					delete activePolls[rowId];
 
-						// Update the column with results (reload rendered HTML from server).
-						updateColumnWithResults( column, result );
-					}
+					// Update the column with results (reload rendered HTML from server).
+					updateColumnWithResults( column, result );
 				}
 			}
-		});
+		} );
 	}
 
 	/**
 	 * Show loading state in the column.
 	 *
 	 * @param {jQuery} column The column element.
-	 * @param {number} rowId  The database row ID.
+	 * @param {number} rowId  The database row ID (can be null when initially showing loading).
 	 */
 	function showLoadingState(column, rowId) {
-		column.attr('data-rocket-insights-id', rowId);
+		if (rowId) {
+			column.attr('data-rocket-insights-id', rowId);
+		}
 
 		// Create elements safely to prevent XSS
 		const loadingDiv = jQuery('<div>').addClass('wpr-ri-loading');
@@ -242,6 +269,30 @@ module.exports = (function() {
 	}
 
 	/**
+	 * Reload column HTML from server.
+	 *
+	 * @param {jQuery} column The column element.
+	 * @param {string} url    The URL for the column.
+	 */
+	function reloadColumnFromServer(column, url) {
+		window.wp.apiFetch(
+			{
+				path: window.wp.url.addQueryArgs( '/wp-rocket/v1/rocket-insights/pages', { url: url } ),
+			}
+		).then( ( response ) => {
+			if (response.success && response.html) {
+				column.replaceWith(response.html);
+
+				// Re-attach listeners to the new content.
+				attachTestPageListeners();
+				attachRetestListeners();
+			}
+		} ).catch( ( error ) => {
+			console.error('Failed to reload column:', error);
+		} );
+	}
+
+	/**
 	 * Update column with test results.
 	 *
 	 * @param {jQuery} column The column element.
@@ -250,45 +301,22 @@ module.exports = (function() {
 	function updateColumnWithResults(column, result) {
 		// Reload the entire row from the server to get properly rendered HTML.
 		const url = column.data('url');
-		
-		jQuery.ajax({
-			url: ajaxurl,
-			type: 'POST',
-			data: {
-				action: 'rocket_rocket_insights_get_column_html',
-				nonce: window.rocket_ajax_data?.nonce || '',
-				url: url
-			},
-			success: function(response) {
-				if (response.success && response.data.html) {
-					column.replaceWith(response.data.html);
-					
-					// Re-attach listeners to the new content.
-					attachTestPageListeners();
-					attachRetestListeners();
-				}
-			}
-		});
+		reloadColumnFromServer(column, url);
 	}
 
 	/**
-	 * Show a message in the column.
-	 *
-	 * @param {jQuery} column  The column element.
-	 * @param {string} message The message to display.
-	 * @param {string} type    The message type ('error' or 'success').
+	 * Mark all remaining "Test the page" buttons as having reached the limit.
+	 * Updates data attributes so future clicks will show the limit message per-row.
+	 * Does NOT display any message immediately on all rows.
 	 */
-	function showMessage(column, message, type) {
-		const messageEl = column.find('.wpr-ri-message');
-		// Clear any existing content first
-		messageEl.stop(true, true).empty();
-		const p = jQuery('<p>').addClass('wpr-ri-message-' + type).text(message);
-		messageEl.append(p).show();
-		
-		// Auto-hide after 5 seconds.
-		setTimeout(function() {
-			messageEl.fadeOut();
-		}, 5000);
+	function disableAllTestPageButtons() {
+		jQuery('.wpr-ri-test-page').each(function() {
+			const button = jQuery(this);
+			const column = button.closest('.wpr-ri-column');
+			
+			// Update the data attribute so future clicks will trigger the limit message.
+			column.attr('data-can-add-pages', '0');
+		});
 	}
 
 	// Auto-initialize on DOM ready
