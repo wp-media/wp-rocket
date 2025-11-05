@@ -38,14 +38,15 @@ module.exports = (function() {
 		jQuery(document).on('click', '.wpr-ri-test-page', function(e) {
 			e.preventDefault();
 			const button = jQuery(this);
-
-			// Don't allow click if no credit
-			if (button.hasClass('wpr-ri-no-credit')) {
-				return;
-			}
-
 			const url = button.data('url');
 			const column = button.closest('.wpr-ri-column');
+
+			const canAddPages = column.attr('data-can-add-pages') === '1';
+
+			if ( ! canAddPages ) {
+				showLimitMessage( column, button );
+				return;
+			}
 
 			addNewPage(url, column, button);
 		});
@@ -64,6 +65,14 @@ module.exports = (function() {
 			const rowId = column.data('rocket-insights-id');
 
 			if (!rowId) {
+				return;
+			}
+
+			// Retest should only proceed when the user has credit for the test.
+			const hasCredit = column.attr('data-has-credit') === '1';
+
+			if ( ! hasCredit ) {
+				showLimitMessage( column, el );
 				return;
 			}
 
@@ -97,6 +106,10 @@ module.exports = (function() {
 		// Disable button and show loading state.
 		button.prop('disabled', true);
 
+		// Hide any previous messages
+		const messageDiv = column.find('.wpr-ri-message');
+		messageDiv.hide().removeClass('wpr-ri-error').empty();
+
 		// Use REST (HEAD) but keep develop's robust handling.
 		window.wp.apiFetch({
 			path: '/wp-rocket/v1/rocket-insights/pages/',
@@ -119,21 +132,35 @@ module.exports = (function() {
 				return;
 			}
 
-			// If backend says we cannot add pages, re-enable and reset label without error banner.
+			// If backend says we cannot add pages, show error message in the column.
 			if (canAdd === false) {
 				button.prop('disabled', false)
 					.text(window.rocket_insights_i18n?.test_page || 'Test the page');
+
+				// Display error message (server responses are pre-escaped and may contain intentional HTML)
+				if (message) {
+					messageDiv.addClass('wpr-ri-error').html(message).show();
+				}
 				return;
 			}
 
 			// Other errors
 			button.prop('disabled', false)
 				.text(window.rocket_insights_i18n?.test_page || 'Test the page');
+
+			// Display error message if available (server responses are pre-escaped and may contain intentional HTML)
+			if (message) {
+				messageDiv.addClass('wpr-ri-error').html(message).show();
+			}
 		}).catch((error) => {
 			// wp.apiFetch throws on WP_Error; try to surface a helpful message.
 			console.error(error);
 			button.prop('disabled', false)
 				.text(window.rocket_insights_i18n?.test_page || 'Test the page');
+
+			// Display error message - use text() for untrusted error messages
+			const errorMessage = error?.message || 'An error occurred. Please try again.';
+			messageDiv.addClass('wpr-ri-error').text(errorMessage).show();
 		});
 	}
 
@@ -145,6 +172,10 @@ module.exports = (function() {
 	 * @param {jQuery} column The column element.
 	 */
 	function retestPage(rowId, url, column) {
+		// Hide any previous messages
+		const messageDiv = column.find('.wpr-ri-message');
+		messageDiv.hide().removeClass('wpr-ri-error').empty();
+
 		window.wp.apiFetch(
 			{
 				path: '/wp-rocket/v1/rocket-insights/pages/' + rowId,
@@ -154,9 +185,19 @@ module.exports = (function() {
 			if (response.success) {
 				// Begin common loading + polling flow.
 				beginLoadingAndPoll(column, rowId, url);
+			} else {
+				// Display error message if available (server responses are pre-escaped and may contain intentional HTML)
+				const message = response?.message ?? response?.data?.message;
+				if (message) {
+					messageDiv.addClass('wpr-ri-error').html(message).show();
+				}
 			}
 		} ).catch( ( error ) => {
 			console.error(error);
+
+			// Display error message - use text() for untrusted error messages
+			const errorMessage = error?.message || 'An error occurred. Please try again.';
+			messageDiv.addClass('wpr-ri-error').text(errorMessage).show();
 		} );
 	}
 
@@ -193,6 +234,28 @@ module.exports = (function() {
 		// Update column to loading state and start polling.
 		showLoadingState(column, rowId);
 		startPolling(rowId, url, column);
+	}
+
+	/**
+	 * Show the per-row limit message (only in the clicked row).
+	 * Disables the clicked element momentarily while showing the message.
+	 *
+	 * @param {jQuery} column The column element.
+	 * @param {jQuery} clickedEl The element that triggered the action.
+	 */
+	function showLimitMessage(column, clickedEl) {
+		const messageHtml = column.find('.wpr-ri-limit-html').html() || window.rocket_insights_i18n?.limit_reached || '';
+
+		const messageDiv = column.find('.wpr-ri-message');
+		messageDiv.html(messageHtml).show();
+
+		// Disable only the clicked element briefly to prevent spam clicks, then re-enable.
+		if (clickedEl && clickedEl.prop) {
+			clickedEl.prop('disabled', true);
+			setTimeout(function() {
+				clickedEl.prop('disabled', false);
+			}, 3000);
+		}
 	}
 
 	/**
@@ -270,27 +333,17 @@ module.exports = (function() {
 	}
 
 	/**
-	 * Disable all "Test the page" buttons when the URL limit is reached.
+	 * Mark all remaining "Test the page" buttons as having reached the limit.
+	 * Updates data attributes so future clicks will show the limit message per-row.
+	 * Does NOT display any message immediately on all rows.
 	 */
 	function disableAllTestPageButtons() {
-		jQuery('.wpr-ri-test-page:not(.wpr-ri-no-credit)').each(function() {
+		jQuery('.wpr-ri-test-page').each(function() {
 			const button = jQuery(this);
-			button.addClass('wpr-ri-no-credit').prop('disabled', true);
-
-			// Add the "You've reached your limit" message if not already present.
 			const column = button.closest('.wpr-ri-column');
-			const creditMessage = column.find('.wpr-ri-credit-message');
-
-			if (creditMessage.length === 0) {
-				const messageDiv = jQuery('<div>').addClass('wpr-ri-credit-message');
-				const isFreeUser = window.rocket_ajax_data?.is_free_user || false;
-				const limitMessage = isFreeUser
-					? window.rocket_insights_i18n?.free_limit_reached
-					: window.rocket_insights_i18n?.paid_limit_reached;
-
-				messageDiv.html(limitMessage);
-				button.after(messageDiv);
-			}
+			
+			// Update the data attribute so future clicks will trigger the limit message.
+			column.attr('data-can-add-pages', '0');
 		});
 	}
 
