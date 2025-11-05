@@ -230,4 +230,13 @@ trait AbstractManager {
 	public function allow_retry_strategies() {
 		return true;
 	}
+
+	/**
+	 * Check if we need to allow cleaning old urls or not.
+	 *
+	 * @return bool
+	 */
+	public function allow_clean_rows() {
+		return true;
+	}
 }
