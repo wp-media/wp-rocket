@@ -25,8 +25,8 @@ defined( 'ABSPATH' ) || exit;
 				<span class="wpr-ri-title-truncate">
 					<?php echo esc_html( $data->title ); ?>
 				</span>
-				<span class="wpr-ri-dot">.</span>
 			</span>
+			<span class="wpr-ri-dot">.</span>
 			<span class="wpr-ri-date">
 				<?php
 				if ( $data->is_running() ) {

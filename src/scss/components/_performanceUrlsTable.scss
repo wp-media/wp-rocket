@@ -192,16 +192,6 @@
 			.wpr-ri-title{
 				text-decoration: underline;
 			}
-			.wpr-ri-dot{
-				color: $cGreyLighter3;
-				display: inline-block;
-				position: relative;
-				top: -$space/2;
-				margin: 0 $space;
-			}
-			.wpr-ri-date{
-				color: $cGreyLighter3;
-			}
 			&:before{
 				position: relative;
 				content: "";
@@ -211,6 +201,17 @@
 				display: inline-block;
 				border-left: 1px solid #D4D9DD;
 			}
+		}
+
+		.wpr-ri-dot{
+			color: $cGreyLighter3;
+			display: inline-block;
+			position: relative;
+			top: -$space/2;
+			margin: 0 $space;
+		}
+		.wpr-ri-date{
+			color: $cGreyLighter3;
 		}
 	}
 	.wpr-ri-item-actions{

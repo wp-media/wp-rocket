@@ -1265,14 +1265,12 @@ div.wpr-upgrade-websites.notstacked {
 .rocket-promo-banner > div {
   display: flex;
   flex-flow: column;
+  width: 50%;
 }
 @media (max-width: 783px) {
   .rocket-promo-banner > div {
     width: 100%;
   }
-}
-.rocket-promo-banner > div {
-  width: 50%;
 }
 
 .rocket-promo-title {
@@ -1368,14 +1366,12 @@ div.wpr-upgrade-websites.notstacked {
 .rocket-renewal-expired-banner-container > div {
   display: flex;
   flex-flow: column;
+  width: 70%;
 }
 @media (max-width: 783px) {
   .rocket-renewal-expired-banner-container > div {
     width: 100%;
   }
-}
-.rocket-renewal-expired-banner-container > div {
-  width: 70%;
 }
 
 .rocket-renew-message {
@@ -3195,6 +3191,8 @@ div.wpr-tutorial-item {
   border-collapse: separate;
   border-spacing: 0;
   border-radius: 5px;
+  /* Target the top-left and top-right cells of the first row */
+  /* Target the bottom-left and bottom-right cells of the last row */
 }
 .wpr-ri-urls-table.widefat td, .wpr-ri-urls-table.widefat th {
   border: 1px solid #E2E5E9;
@@ -3215,9 +3213,6 @@ div.wpr-tutorial-item {
 .wpr-ri-urls-table.widefat tr:last-child th {
   border-bottom: 1px solid #E2E5E9;
 }
-.wpr-ri-urls-table.widefat {
-  /* Target the top-left and top-right cells of the first row */
-}
 .wpr-ri-urls-table.widefat tr:nth-child(2) th:first-child,
 .wpr-ri-urls-table.widefat tr:nth-child(2) td:first-child {
   border-top-left-radius: 5px;
@@ -3225,9 +3220,6 @@ div.wpr-tutorial-item {
 .wpr-ri-urls-table.widefat tr:nth-child(2) th:last-child,
 .wpr-ri-urls-table.widefat tr:nth-child(2) td:last-child {
   border-top-right-radius: 5px;
-}
-.wpr-ri-urls-table.widefat {
-  /* Target the bottom-left and bottom-right cells of the last row */
 }
 .wpr-ri-urls-table.widefat tr:last-child th:first-child,
 .wpr-ri-urls-table.widefat tr:last-child td:first-child {
@@ -3310,16 +3302,6 @@ div.wpr-tutorial-item {
 .wpr-ri-urls-table .wpr-ri-item-title .wpr-ri-title .wpr-ri-title {
   text-decoration: underline;
 }
-.wpr-ri-urls-table .wpr-ri-item-title .wpr-ri-title .wpr-ri-dot {
-  color: #738191;
-  display: inline-block;
-  position: relative;
-  top: -4px;
-  margin: 0 8px;
-}
-.wpr-ri-urls-table .wpr-ri-item-title .wpr-ri-title .wpr-ri-date {
-  color: #738191;
-}
 .wpr-ri-urls-table .wpr-ri-item-title .wpr-ri-title:before {
   position: relative;
   content: "";
@@ -3328,6 +3310,16 @@ div.wpr-tutorial-item {
   height: 18px;
   display: inline-block;
   border-left: 1px solid #D4D9DD;
+}
+.wpr-ri-urls-table .wpr-ri-item-title .wpr-ri-dot {
+  color: #738191;
+  display: inline-block;
+  position: relative;
+  top: -4px;
+  margin: 0 8px;
+}
+.wpr-ri-urls-table .wpr-ri-item-title .wpr-ri-date {
+  color: #738191;
 }
 .wpr-ri-urls-table .wpr-ri-item-actions {
   text-align: right;
@@ -3902,6 +3894,10 @@ div.wpr-tutorial-item {
   padding: 10px;
   margin: 8px 0;
 }
+.wpr-multiple-select .wpr-list .wpr-list-header {
+  display: flex;
+  justify-content: space-between;
+}
 .wpr-multiple-select .wpr-list .wpr-list-header .wpr-multiple-select-exclude_js_ads:before {
   font-family: "wpr-icomoon";
   content: "\e9b7";
@@ -3916,10 +3912,6 @@ div.wpr-tutorial-item {
   font-family: "wpr-icomoon";
   content: "\e927";
   padding-right: 8px;
-}
-.wpr-multiple-select .wpr-list .wpr-list-header {
-  display: flex;
-  justify-content: space-between;
 }
 .wpr-multiple-select .wpr-list .wpr-list-header .wpr-list-header-arrow {
   width: 15px;
