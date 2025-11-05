@@ -154,6 +154,10 @@ class Rest extends WP_REST_Controller {
 							'validate_callback' => function ( $param ) {
 								return is_numeric( $param );
 							},
+							'sanitize_callback' => function ( $param ) {
+								// Type cast post id to int.
+								return (int) $param;
+							},
 						],
 					],
 				],
@@ -271,7 +275,7 @@ class Rest extends WP_REST_Controller {
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public function get_item( $request ) {
-		$html = $this->render->get_rocket_insights_column( $request['url'], (int) $request['post_id'] );
+		$html = $this->render->get_rocket_insights_column( $request['url'], $request['post_id'] );
 
 		$payload = [
 			'success' => true,
