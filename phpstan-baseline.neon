@@ -206,11 +206,6 @@ parameters:
 			path: inc/Engine/Common/ExtractCSS/ServiceProvider.php
 
 		-
-			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
-			count: 1
-			path: inc/Engine/Common/PerformanceHints/Database/Table/AbstractTable.php
-
-		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 2
 			path: inc/Engine/Common/Queue/Cleaner.php
@@ -551,11 +546,6 @@ parameters:
 			path: inc/ThirdParty/Hostings/Godaddy.php
 
 		-
-			message: "#^Variable \\$urls in empty\\(\\) always exists and is not falsy\\.$#"
-			count: 1
-			path: inc/ThirdParty/Hostings/LiteSpeed.php
-
-		-
 			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 2
 			path: inc/ThirdParty/Hostings/OneCom.php
@@ -754,6 +744,11 @@ parameters:
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/Admin/RocketInsights/Render/GetRocketInsightsColumn.php
+
+		-
+			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Admin/RocketInsights/Rest/UpdateItemTest.php
 
 		-
 			message: "#^Property WP_Rocket\\\\Tests\\\\Integration\\\\inc\\\\Engine\\\\Admin\\\\RocketInsights\\\\Subscriber\\\\ResetGlobalScoreTest\\:\\:\\$reset_called is never read, only written\\.$#"
