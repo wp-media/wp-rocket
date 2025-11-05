@@ -115,8 +115,8 @@
 
 	// Score wrapper.
 	.wpr-ri-score-wrapper {
-		margin-bottom: 4px;
-
+		margin-bottom: 12px;
+		
 		// Score indicator styles
 		.wpr-percentage-indicator {
 			position: relative;
@@ -181,6 +181,10 @@
 		flex-direction: column;
 		gap: 4px;
 		font-size: 14px;
+		
+		.wpr-ri-retest-link {
+			margin-bottom: 3px;
+		}
 
 		.wpr-ri-retest-link,
 		.wpr-ri-see-report-link {
