@@ -551,6 +551,11 @@ parameters:
 			path: inc/ThirdParty/Hostings/OneCom.php
 
 		-
+			message: "#^Variable \\$urls in empty\\(\\) always exists and is not falsy\\.$#"
+			count: 1
+			path: inc/ThirdParty/Hostings/LiteSpeed.php
+
+		-
 			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: inc/ThirdParty/Hostings/ProIsp.php
