@@ -100,15 +100,16 @@ class Test_GetRocketInsightsColumn extends TestCase {
 
 		// Check for button state (enabled/disabled)
 		if ( isset( $expected['button_enabled'] ) ) {
+			$this->assertStringContainsString( 'type="button"', $html );
 			if ( $expected['button_enabled'] ) {
 				// Button should be clickable (not have wpr-ri-no-credit class)
 				$this->assertStringContainsString( 'wpr-ri-test-page', $html );
 				$this->assertStringNotContainsString( 'wpr-ri-no-credit', $html );
-				$this->assertStringContainsString( '<button type="button" class="wpr-ri-test-page"', $html );
+				$this->assertStringContainsString( 'class="wpr-ri-test-page "', $html );
 			} else {
 				// Button should be disabled (has wpr-ri-no-credit class)
 				$this->assertStringContainsString( 'wpr-ri-test-page wpr-ri-no-credit', $html );
-				$this->assertStringContainsString( '<button type="button" class="wpr-ri-test-page wpr-ri-no-credit"', $html );
+				$this->assertStringContainsString( 'class="wpr-ri-test-page wpr-ri-no-credit"', $html );
 			}
 		}
 

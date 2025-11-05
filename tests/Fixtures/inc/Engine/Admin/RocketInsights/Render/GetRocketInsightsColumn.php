@@ -328,9 +328,7 @@ return [
 			'contains'       => [
 				'Test the page',
 				'wpr-ri-no-credit',
-			],
-			'not_contains'   => [
-				"reached your free limit",
+				'disabled',
 			],
 		],
 	],
