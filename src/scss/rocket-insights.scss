@@ -445,9 +445,6 @@
 
 	// Error state.
 	.wpr-ri-error {
-		display: flex;
-		align-items: center;
-		gap: 6px;
 		color: #d63638;
 		font-size: 13px;
 
@@ -465,22 +462,9 @@
 	// Message container (for error/info messages).
 	.wpr-ri-message {
 		margin-top: 8px;
-		padding: 6px 10px;
-		border-radius: 3px;
 		font-size: 12px;
 		line-height: 1.4;
-
-		&.wpr-ri-message--error {
-			background-color: #fcf0f1;
-			border-left: 4px solid #d63638;
-			color: #2c3338;
-		}
-
-		&.wpr-ri-message--info {
-			background-color: #f0f6fc;
-			border-left: 4px solid #0783be;
-			color: #2c3338;
-		}
+		color: $errorDark;
 	}
 }
 
