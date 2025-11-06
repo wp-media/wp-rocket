@@ -156,7 +156,7 @@
 		vertical-align: middle;
 		padding-left: 16px;
 		a{
-			display: inline-block;
+			display: block;
 			vertical-align: middle;
 			box-sizing: border-box;
 
@@ -179,28 +179,18 @@
 			}
 		}
 		.wpr-ri-title{
+			display: inline-block;
+
 			.wpr-ri-title-truncate{
 				max-width: 260px;
 				white-space: nowrap;
 				overflow: hidden;
 				text-overflow: ellipsis;
-				display: inline-block;
 				position: relative;
-    			top: 4px;
 				text-decoration: underline;
 			}
 			.wpr-ri-title{
 				text-decoration: underline;
-			}
-			.wpr-ri-dot{
-				color: $cGreyLighter3;
-				display: inline-block;
-				position: relative;
-				top: -$space/2;
-				margin: 0 $space;
-			}
-			.wpr-ri-date{
-				color: $cGreyLighter3;
 			}
 			&:before{
 				position: relative;
@@ -211,6 +201,17 @@
 				display: inline-block;
 				border-left: 1px solid #D4D9DD;
 			}
+		}
+
+		.wpr-ri-dot{
+			color: $cGreyLighter3;
+			display: inline-block;
+			position: relative;
+			margin: 0 $space;
+		}
+		.wpr-ri-date{
+			color: $cGreyLighter3;
+			position: relative;
 		}
 	}
 	.wpr-ri-item-actions{

@@ -19,6 +19,10 @@ class Test_DeleteTermUsedCss extends TestCase {
 
 		self::installPreloadCacheTable();
 		self::installUsedCssTable();
+		self::installAtfTable();
+		self::installLrcTable();
+		self::installPreloadFontsTable();
+		self::installPreconnectExternalDomainsTable();
 
 		// Disable ATF optimization to prevent DB request (unrelated to the test).
 		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
@@ -27,6 +31,10 @@ class Test_DeleteTermUsedCss extends TestCase {
 	public function tear_down() {
 		self::uninstallPreloadCacheTable();
 		self::uninstallUsedCssTable();
+		self::uninstallAtfTable();
+		self::uninstallLrcTable();
+		self::uninstallPreloadFontsTable();
+		self::uninstallPreconnectDomainsTable();
 
 		// Re-enable ATF optimization.
 		remove_filter( 'rocket_above_the_fold_optimization', '__return_false' );

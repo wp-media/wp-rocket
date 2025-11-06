@@ -25,8 +25,8 @@ defined( 'ABSPATH' ) || exit;
 				<span class="wpr-ri-title-truncate">
 					<?php echo esc_html( $data->title ); ?>
 				</span>
-			</span> 
-			<span class="wpr-ri-dot">.</span>
+			</span>
+			<span class="wpr-ri-dot">&middot;</span>
 			<span class="wpr-ri-date">
 				<?php
 				if ( $data->is_running() ) {
@@ -34,8 +34,7 @@ defined( 'ABSPATH' ) || exit;
 				} else {
 					echo esc_html( human_time_diff( $data->modified, time() ) . ' ' . __( 'ago', 'rocket' ) );
 				}
-				?>
-			</span>
+				?></span><?php // phpcs:ignore Squiz.PHP.EmbeddedPhp.ContentAfterEnd ?>
 			<?php if ( '' !== $rocket_css_class ) : ?>
 			<div class="wpr-tooltip">
 				<div class="wpr-tooltip-content">

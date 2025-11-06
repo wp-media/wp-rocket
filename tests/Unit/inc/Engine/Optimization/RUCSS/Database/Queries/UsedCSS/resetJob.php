@@ -31,8 +31,6 @@ class Test_resetJob extends TestCase {
     {
 		Functions\when('current_time')->justReturn($config['now']);
 
-		$this->usedcss::$table_exists = true;
-
 		/* @phpstan-ignore-next-line */
 		$this->usedcss->expects(self::once())->method('update_item')->with($expected['id'], $expected['data'])->willReturn($config['updated']);
 

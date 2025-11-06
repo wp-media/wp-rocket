@@ -19,6 +19,7 @@ class Test_CleanMinify extends TestCase {
 	protected $path_to_test_data = '/inc/Engine/Optimization/Minify/CSS/AdminSubscriber/cleanMinify.php';
 
 	public function set_up() {
+		self::installPreconnectExternalDomainsTable();
 		parent::set_up();
 
 		$this->unregisterAllCallbacksExcept( 'update_option_wp_rocket_settings', 'clean_minify' );
@@ -26,6 +27,7 @@ class Test_CleanMinify extends TestCase {
 
 	public function tear_down() {
 		parent::tear_down();
+		self::uninstallPreconnectDomainsTable();
 
 		$this->restoreWpHook( 'update_option_wp_rocket_settings' );
 	}
