@@ -66,6 +66,7 @@ class UpdateItemTest extends RESTfulTestCase {
 	}
 
 	public function tear_down() {
+		delete_option( 'wp_rocket_pm_credit' );
 		// Clean up data after each test
 		self::truncatePerformanceMonitoringTable();
 
@@ -92,6 +93,9 @@ class UpdateItemTest extends RESTfulTestCase {
 	}
 
 	private function setUpTest( $config ) {
+		if ( ! empty( $config['credit'] ) ) {
+			add_option( 'wp_rocket_pm_credit', $config['credit'] );
+		}
 		$role = get_role( 'administrator' );
 		$role->add_cap( 'rocket_manage_options' );
 

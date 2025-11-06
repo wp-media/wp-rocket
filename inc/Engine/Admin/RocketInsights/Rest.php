@@ -486,10 +486,10 @@ class Rest extends WP_REST_Controller {
 		}
 
 		// Check if adding a page is allowed based on URL limits.
-		if ( ! $this->context->is_adding_page_allowed() ) {
+		if ( ! $this->plan->has_credit() ) {
 			$error = new WP_Error(
 				'rest_forbidden',
-				$this->get_page_limit_error_message(),
+				esc_html__( 'Upgrade your plan to get access to re-test performance or run new tests', 'rocket' ),
 				[
 					'status'         => 403,
 					'remaining_urls' => 0,

@@ -15,6 +15,7 @@ return [
 				],
 			],
 			'id' => 1,
+			'credit' => 1,
 		],
 		'expected' => [
 			'code' => 200,
@@ -40,6 +41,7 @@ return [
 				],
 			],
 			'id' => 5,
+			'credit' => 1,
 		],
 		'expected' => [
 			'code' => 200,
@@ -49,6 +51,27 @@ return [
 			'response_data' => [
 				'id' => 5,
 			],
+		],
+	],
+	'testShouldFailWithNoCredit' => [
+		'config' => [
+			'database_entries' => [
+				[
+					'id' => 1,
+					'url' => 'http://example.org/page1',
+					'is_mobile' => false,
+					'job_id' => 'test_123',
+					'status' => 'completed',
+					'score' => 85,
+					'data' => '{"status":"complete","data":{"data":{"performance_score":85}}}',
+				],
+			],
+			'id' => 1,
+		],
+		'expected' => [
+			'code' => 403,
+			'hook_fired' => false,
+			'error_message' => 'Upgrade your plan to get access to re-test performance or run new tests',
 		],
 	],
 	'testShouldFailWithMissingId' => [
