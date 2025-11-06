@@ -626,3 +626,7 @@
   line-height: 1.4;
   color: #C01B1B;
 }
+.wpr-ri-column .wpr-ri-message a {
+  color: #C01B1B;
+  text-decoration: underline;
+}
