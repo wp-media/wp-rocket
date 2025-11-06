@@ -3295,6 +3295,8 @@ div.wpr-tutorial-item {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  display: inline-block;
+  line-height: 100%;
   position: relative;
   text-decoration: underline;
 }
