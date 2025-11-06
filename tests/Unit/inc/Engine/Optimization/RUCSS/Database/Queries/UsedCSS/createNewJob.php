@@ -30,7 +30,6 @@ class Test_createNewJob extends TestCase {
     public function testShouldReturnAsExpected( $config, $expected )
     {
 		Functions\when('current_time')->justReturn($config['now']);
-		$this->usedcss::$table_exists = true;
 
 		/* @phpstan-ignore-next-line */
 		$this->usedcss->expects(self::once())->method('add_item')->with($expected['item'])->willReturn($config['result']);

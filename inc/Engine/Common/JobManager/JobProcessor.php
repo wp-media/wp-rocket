@@ -329,9 +329,10 @@ class JobProcessor implements LoggerAwareInterface {
 	 * @param string $url URL to work on.
 	 * @param bool   $is_mobile Is the page for mobile.
 	 * @param string $optimization_type The type of optimization request to send.
+	 * @param bool   $with_timeout Whether to use custom timeout for synchronous requests.
 	 * @return array|false
 	 */
-	protected function send_api( string $url, bool $is_mobile, string $optimization_type ) {
+	public function send_api( string $url, bool $is_mobile, string $optimization_type, bool $with_timeout = false ) {
 		$config = [
 			'is_mobile' => $is_mobile,
 			'is_home'   => Utils::is_home( $url ),
@@ -340,7 +341,8 @@ class JobProcessor implements LoggerAwareInterface {
 		$config = array_merge( $config, $this->set_request_params( $optimization_type ) );
 
 		$job_factory           = $this->factories[ $optimization_type ] ?? $this->factories['rucss'];
-		$add_to_queue_response = $job_factory->api()->add_to_queue( $url, $config );
+		$api_args              = $with_timeout ? [ 'timeout' => 10 ] : [];
+		$add_to_queue_response = $job_factory->api()->add_to_queue( $url, $config, $api_args );
 
 		if ( ! in_array( (int) $add_to_queue_response['code'], [ 200, 201 ], true ) ) {
 			$this->logger::error(

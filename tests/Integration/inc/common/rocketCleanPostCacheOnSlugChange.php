@@ -39,6 +39,10 @@ class TestRocketCleanPostCacheOnSlugChange extends TestCase {
 
 		// Install the preload cache table to prevent DB error caused by permalink changed.
 		self::installPreloadCacheTable();
+		self::installAtfTable();
+		self::installLrcTable();
+		self::installPreloadFontsTable();
+		self::installPreconnectExternalDomainsTable();
 
 		wp_set_current_user( self::$user_id );
 		$this->original_post = self::factory()->post->create_and_get(
@@ -55,6 +59,10 @@ class TestRocketCleanPostCacheOnSlugChange extends TestCase {
 	public function tear_down() {
 		// Uninstall the preload cache table.
 		self::uninstallPreloadCacheTable();
+		self::uninstallAtfTable();
+		self::uninstallLrcTable();
+		self::uninstallPreloadFontsTable();
+		self::uninstallPreconnectDomainsTable();
 
 		parent::tear_down();
 	}

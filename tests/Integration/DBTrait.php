@@ -74,9 +74,9 @@ trait DBTrait {
 
 	public static function addPerformanceMonitoring(array $resource) {
 		$container = apply_filters( 'rocket_container', null );
-		$pm_query = $container->get( 'pm_query' );
+		$ri_query = $container->get( 'ri_query' );
 
-		return $pm_query->add_item( $resource );
+		return $ri_query->add_item( $resource );
 	}
 
 	public static function installFresh() {
@@ -86,189 +86,232 @@ trait DBTrait {
 
 		$rucss_usedcss_table = $container->get( 'rucss_usedcss_table' );
 		$rucss_usedcss_table->install();
-		$container->get( 'rucss_used_css_query' )::$table_exists = true;
+		self::add_exists_filter( $rucss_usedcss_table );
 
 		$preload_cache_table = $container->get( 'preload_caches_table' );
 		$preload_cache_table->install();
+		self::add_exists_filter( $preload_cache_table );
 
 		$atf_table = $container->get( 'atf_table' );
 		$atf_table->install();
+		self::add_exists_filter( $atf_table );
 
 		$lrc_table = $container->get( 'lrc_table' );
 		$lrc_table->install();
+		self::add_exists_filter( $lrc_table );
 
 		$preload_fonts_table = $container->get( 'preload_fonts_table' );
 		$preload_fonts_table->install();
+		self::add_exists_filter( $preload_fonts_table );
 
 		$preconnect_external_domains_table = $container->get( 'preconnect_external_domains_table' );
 		$preconnect_external_domains_table->install();
+		self::add_exists_filter( $preconnect_external_domains_table );
 
-		$pm_table = $container->get( 'pm_table' );
-		$pm_table->install();
+		$ri_table = $container->get( 'ri_table' );
+		$ri_table->install();
+		self::add_exists_filter( $ri_table );
 	}
 
 	public static function installUsedCssTable() {
 		$container           = apply_filters( 'rocket_container', null );
 		$rucss_usedcss_table = $container->get( 'rucss_usedcss_table' );
 
-		if ( ! $rucss_usedcss_table->exists() ) {
+		if ( $rucss_usedcss_table && ! $rucss_usedcss_table->exists() ) {
 			$rucss_usedcss_table->install();
 		}
+
+		self::add_exists_filter( $rucss_usedcss_table );
 	}
 
 	public static function installPreconnectExternalDomainsTable() {
 		$container = apply_filters( 'rocket_container', null );
 		$preconnect_external_domains_table = $container->get( 'preconnect_external_domains_table' );
 
-		if ( ! $preconnect_external_domains_table->exists() ) {
+		if ( $preconnect_external_domains_table && ! $preconnect_external_domains_table->exists() ) {
 			$preconnect_external_domains_table->install();
 		}
+
+		self::add_exists_filter( $preconnect_external_domains_table );
 	}
 
 	public static function installPreloadCacheTable() {
 		$container           = apply_filters( 'rocket_container', null );
 		$preload_cache_table = $container->get( 'preload_caches_table' );
 
-		if ( ! $preload_cache_table->exists() ) {
+		if ( $preload_cache_table && ! $preload_cache_table->exists() ) {
 			$preload_cache_table->install();
 		}
+
+		self::add_exists_filter( $preload_cache_table );
 	}
 
 	public static function installAtfTable() {
 		$container = apply_filters( 'rocket_container', null );
 		$atf_table = $container->get( 'atf_table' );
 
-		if ( ! $atf_table->exists() ) {
+		if ( $atf_table && ! $atf_table->exists() ) {
 			$atf_table->install();
 		}
+
+		self::add_exists_filter( $atf_table );
 	}
 
 	public static function installLrcTable() {
 		$container = apply_filters( 'rocket_container', null );
 		$lrc_table = $container->get( 'lrc_table' );
 
-		if ( ! $lrc_table->exists() ) {
+		if ( $lrc_table && ! $lrc_table->exists() ) {
 			$lrc_table->install();
 		}
+
+		self::add_exists_filter( $lrc_table );
 	}
 
 	public static function installPreloadFontsTable() {
 		$container = apply_filters( 'rocket_container', null );
 		$preload_fonts_table = $container->get( 'preload_fonts_table' );
 
-		if ( ! $preload_fonts_table->exists() ) {
+		if ( $preload_fonts_table && ! $preload_fonts_table->exists() ) {
 			$preload_fonts_table->install();
 		}
+
+		self::add_exists_filter( $preload_fonts_table );
 	}
 
 	public static function installPerformanceMonitoringTable() {
 		$container = apply_filters( 'rocket_container', null );
-		$pm_table = $container->get( 'pm_table' );
+		$ri_table = $container->get( 'ri_table' );
 
-		if ( ! $pm_table->exists() ) {
-			$pm_table->install();
+		if ( $ri_table && ! $ri_table->exists() ) {
+			$ri_table->install();
 		}
+
+		self::add_exists_filter( $ri_table );
 	}
 
 	public static function uninstallAll() {
 		$container           = apply_filters( 'rocket_container', null );
 		$rucss_usedcss_table = $container->get( 'rucss_usedcss_table' );
 
-		if ( $rucss_usedcss_table->exists() ) {
+		if ( $rucss_usedcss_table && $rucss_usedcss_table->exists() ) {
 			$rucss_usedcss_table->uninstall();
 		}
+		self::remove_exists_filter( $rucss_usedcss_table );
 
 		$preload_cache_table = $container->get( 'preload_caches_table' );
-		if ( $preload_cache_table->exists() ) {
+		if ( $preload_cache_table && $preload_cache_table->exists() ) {
 			$preload_cache_table->uninstall();
 		}
+		self::remove_exists_filter( $preload_cache_table );
 
 		$atf_table = $container->get( 'atf_table' );
-		if ( $atf_table->exists() ) {
+		if ( $atf_table && $atf_table->exists() ) {
 			$atf_table->uninstall();
 		}
+		self::remove_exists_filter( $atf_table );
 
 		$lrc_table = $container->get( 'lrc_table' );
-		if ( $lrc_table->exists() ) {
+		if ( $atf_table && $lrc_table->exists() ) {
 			$lrc_table->uninstall();
 		}
+		self::remove_exists_filter( $lrc_table );
 
 		$preload_fonts_table = $container->get( 'preload_fonts_table' );
-		if ( $preload_fonts_table->exists() ) {
+		if ( $preload_fonts_table && $preload_fonts_table->exists() ) {
 			$preload_fonts_table->uninstall();
 		}
+		self::remove_exists_filter( $preload_fonts_table );
 
 		$preconnect_external_domains_table = $container->get( 'preconnect_external_domains_table' );
-		if ( $preconnect_external_domains_table->exists() ) {
+		if ( $preconnect_external_domains_table && $preconnect_external_domains_table->exists() ) {
 			$preconnect_external_domains_table->uninstall();
 		}
+		self::remove_exists_filter( $preconnect_external_domains_table );
 
-		if ( ! $container->has( 'pm_table' ) ) {
+		if ( ! $container->has( 'ri_table' ) ) {
 			return;
 		}
-		$pm_table = $container->get( 'pm_table' );
-		if ( $pm_table->exists() ) {
-			$pm_table->uninstall();
+		$ri_table = $container->get( 'ri_table' );
+		if ( $ri_table && $ri_table->exists() ) {
+			$ri_table->uninstall();
 		}
+		self::remove_exists_filter( $ri_table );
 	}
 
 	public static function uninstallPreconnectDomainsTable() {
 		$container = apply_filters( 'rocket_container', null );
 		$preconnect_external_domains_table = $container->get( 'preconnect_external_domains_table' );
 
-		if ( $preconnect_external_domains_table->exists() ) {
+		if ( $preconnect_external_domains_table && $preconnect_external_domains_table->exists() ) {
 			$preconnect_external_domains_table->uninstall();
 		}
+		self::remove_exists_filter( $preconnect_external_domains_table );
 	}
 
 	public static function uninstallUsedCssTable() {
 		$container           = apply_filters( 'rocket_container', null );
 		$rucss_usedcss_table = $container->get( 'rucss_usedcss_table' );
 
-		$rucss_usedcss_table->uninstall();
+		if ( $rucss_usedcss_table && $rucss_usedcss_table->exists() ) {
+			$rucss_usedcss_table->uninstall();
+		}
+
+		self::remove_exists_filter( $rucss_usedcss_table );
 	}
 
 	public static function uninstallPreloadCacheTable() {
 		$container           = apply_filters( 'rocket_container', null );
 		$preload_cache_table = $container->get( 'preload_caches_table' );
 
-		$preload_cache_table->uninstall();
+		if ( $preload_cache_table && $preload_cache_table->exists() ) {
+			$preload_cache_table->uninstall();
+		}
+
+		self::remove_exists_filter( $preload_cache_table );
 	}
 
 	public static function uninstallAtfTable() {
 		$container = apply_filters( 'rocket_container', null );
 		$atf_table = $container->get( 'atf_table' );
 
-		if ( $atf_table->exists() ) {
+		if ( $atf_table && $atf_table->exists() ) {
 			$atf_table->uninstall();
 		}
+		self::remove_exists_filter( $atf_table );
 	}
 
 	public static function uninstallLrcTable() {
 		$container = apply_filters( 'rocket_container', null );
 		$lrc_table = $container->get( 'lrc_table' );
 
-		if ( $lrc_table->exists() ) {
+		if ( $lrc_table && $lrc_table->exists() ) {
 			$lrc_table->uninstall();
 		}
+
+		self::remove_exists_filter( $lrc_table );
 	}
 
 	public static function uninstallPreloadFontsTable() {
 		$container = apply_filters( 'rocket_container', null );
 		$preload_fonts_table = $container->get( 'preload_fonts_table' );
 
-		if ( $preload_fonts_table->exists() ) {
+		if ( $preload_fonts_table && $preload_fonts_table->exists() ) {
 			$preload_fonts_table->uninstall();
 		}
+
+		self::remove_exists_filter( $preload_fonts_table );
 	}
 
 	public static function uninstallPerformanceMonitoringTable() {
 		$container = apply_filters( 'rocket_container', null );
-		$pm_table = $container->get( 'pm_table' );
+		$ri_table = $container->get( 'ri_table' );
 
-		if ( $pm_table->exists() ) {
-			$pm_table->uninstall();
+		if ( $ri_table && $ri_table->exists() ) {
+			$ri_table->uninstall();
 		}
+
+		self::remove_exists_filter( $ri_table );
 	}
 
 	public static function removeDBHooks() {
@@ -282,8 +325,8 @@ trait DBTrait {
 			$container->get( 'preload_fonts_table' ),
 			$container->get( 'preconnect_external_domains_table' ),
 		];
-		if ( $container->has( 'pm_table' ) ) {
-			$tables[] = $container->get( 'pm_table' );
+		if ( $container->has( 'ri_table' ) ) {
+			$tables[] = $container->get( 'ri_table' );
 		}
 
 		foreach ( $tables as $table ) {
@@ -323,11 +366,25 @@ trait DBTrait {
 
 	public static function truncatePerformanceMonitoringTable() {
 		$container           = apply_filters( 'rocket_container', null );
-		$pm_table = $container->get( 'pm_table' );
+		$ri_table = $container->get( 'ri_table' );
 
-		if ( $pm_table->exists() ) {
-			$pm_table->truncate();
+		if ( $ri_table && $ri_table->exists() ) {
+			$ri_table->truncate();
 		}
 
+	}
+
+	private static function add_exists_filter( $table ) {
+		if ( ! $table ) {
+			return;
+		}
+		add_filter( 'pre_transient_' . $table->get_exists_transient_name(), '__return_true' );
+	}
+
+	private static function remove_exists_filter( $table ) {
+		if ( ! $table ) {
+			return;
+		}
+		remove_filter( 'pre_transient_' . $table->get_exists_transient_name(), '__return_true' );
 	}
 }

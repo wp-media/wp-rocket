@@ -11,7 +11,7 @@ use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\Admin\Settings\{Page, Render, Settings};
 use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Engine\Optimization\DelayJS\Admin\SiteList;
-use WP_Rocket\Engine\Admin\PerformanceMonitoring\Context\PerformanceMonitoringContext;
+use WP_Rocket\Engine\Admin\RocketInsights\Context\Context;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
@@ -47,7 +47,7 @@ class TestEnableMobileCache extends TestCase {
 			Mockery::mock( SiteList::class ),
 			$template_path,
 			$this->options,
-			Mockery::mock( PerformanceMonitoringContext::class )
+			Mockery::mock( Context::class )
 		);
 
 		Functions\when( 'check_ajax_referer' )->justReturn( true );

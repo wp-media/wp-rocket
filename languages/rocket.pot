@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the WP Rocket plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.20-beta5\n"
+"Project-Id-Version: WP Rocket 3.20.1-alpha4\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
 "Last-Translator: WP Media (http://wp-rocket.me/)\n"
 "Language-Team: WP Media (http://www.transifex.com/projects/p/wp-media/) <contact@wp-media.me>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-10-06T12:30:42+00:00\n"
+"POT-Creation-Date: 2025-11-06T14:05:39+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: rocket\n"
@@ -431,7 +431,7 @@ msgid "More info"
 msgstr ""
 
 #: inc/admin/ui/meta-boxes.php:37
-#: inc/admin/ui/notices.php:670
+#: inc/admin/ui/notices.php:673
 msgid "Clear cache"
 msgstr ""
 
@@ -484,14 +484,14 @@ msgstr ""
 
 #. translators: This is a doc title! %1$s = opening link; %2$s = closing link
 #: inc/admin/ui/notices.php:303
-#: inc/admin/ui/notices.php:787
+#: inc/admin/ui/notices.php:793
 #, php-format
 msgid "Troubleshoot: %1$sHow to make system files writeable%2$s"
 msgstr ""
 
 #. translators: Documentation exists in EN, DE, FR, ES, IT; use loaclised URL if applicable
 #: inc/admin/ui/notices.php:305
-#: inc/admin/ui/notices.php:789
+#: inc/admin/ui/notices.php:795
 msgid "https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
 msgstr ""
 
@@ -506,69 +506,69 @@ msgstr ""
 #. translators: %1$s = plugin name, %2$s = opening link tag, %3$s = closing link tag
 #: inc/admin/ui/notices.php:458
 #, php-format
-msgid "%1$s is good to go! Visit your %2$sdashboard%3$s to test your load time."
+msgid "%1$s %2$s is good to go! %3$s Your website is already faster. Visit %4$s Rocket Insights %5$s to check your homepage's performance, add more pages to measure WP Rocket's impact, and keep your site fast."
 msgstr ""
 
-#: inc/admin/ui/notices.php:497
+#: inc/admin/ui/notices.php:500
 msgid "Would you allow WP Rocket to collect non-sensitive diagnostic data from this website?"
 msgstr ""
 
-#: inc/admin/ui/notices.php:498
+#: inc/admin/ui/notices.php:501
 msgid "This would help us to improve WP Rocket for you in the future."
 msgstr ""
 
 #. translators: button text, click will expand data collection preview
-#: inc/admin/ui/notices.php:504
+#: inc/admin/ui/notices.php:507
 msgid "What info will we collect?"
 msgstr ""
 
-#: inc/admin/ui/notices.php:509
+#: inc/admin/ui/notices.php:512
 msgid "Below is a detailed view of all data WP Rocket will collect if granted permission. WP Rocket will never transmit any domain names or email addresses (except for license validation), IP addresses, or third-party API keys."
 msgstr ""
 
 #. translators: button text for data collection opt-in
-#: inc/admin/ui/notices.php:518
+#: inc/admin/ui/notices.php:521
 msgid "Yes, allow"
 msgstr ""
 
 #. translators: button text for data collection opt-in
-#: inc/admin/ui/notices.php:521
+#: inc/admin/ui/notices.php:524
 msgid "No, thanks"
 msgstr ""
 
-#: inc/admin/ui/notices.php:560
+#: inc/admin/ui/notices.php:563
 msgid "Thank you!"
 msgstr ""
 
-#: inc/admin/ui/notices.php:565
+#: inc/admin/ui/notices.php:568
 msgid "WP Rocket now collects these metrics from your website:"
 msgstr ""
 
 #. translators: %s = plugin name.
-#: inc/admin/ui/notices.php:603
+#: inc/admin/ui/notices.php:606
 #, php-format
 msgid "%s: Cache cleared."
 msgstr ""
 
 #. translators: %s = plugin name.
-#: inc/admin/ui/notices.php:610
+#: inc/admin/ui/notices.php:613
 #, php-format
 msgid "%s: Post cache cleared."
 msgstr ""
 
 #. translators: %s = plugin name.
-#: inc/admin/ui/notices.php:617
+#: inc/admin/ui/notices.php:620
 #, php-format
 msgid "%s: Term cache cleared."
 msgstr ""
 
 #. translators: %s = plugin name).
-#: inc/admin/ui/notices.php:624
+#: inc/admin/ui/notices.php:627
 #, php-format
 msgid "%s: User cache cleared."
 msgstr ""
 
-#: inc/admin/ui/notices.php:660
+#: inc/admin/ui/notices.php:663
 #: inc/Engine/License/views/promo-banner.php:38
 #: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:38
 #: inc/Engine/License/views/renewal-expired-banner-ocd.php:48
@@ -577,39 +577,43 @@ msgstr ""
 msgid "Dismiss this notice"
 msgstr ""
 
-#: inc/admin/ui/notices.php:681
+#: inc/admin/ui/notices.php:684
 #: inc/Engine/Saas/Admin/AdminBar.php:51
 msgid "Clear Used CSS"
 msgstr ""
 
-#: inc/admin/ui/notices.php:684
+#: inc/admin/ui/notices.php:687
 msgid "Stop Preload"
 msgstr ""
 
-#: inc/admin/ui/notices.php:690
+#: inc/admin/ui/notices.php:693
 msgid "Turn on Remove Unused CSS"
 msgstr ""
 
-#: inc/admin/ui/notices.php:696
+#: inc/admin/ui/notices.php:699
 msgid "Enable “Separate Cache Files for Mobile Devices” now"
 msgstr ""
 
-#: inc/admin/ui/notices.php:714
+#: inc/admin/ui/notices.php:717
 msgid "Force deactivation "
 msgstr ""
 
-#: inc/admin/ui/notices.php:744
+#: inc/admin/ui/notices.php:721
+msgid "Go to Rocket Insights"
+msgstr ""
+
+#: inc/admin/ui/notices.php:750
 msgid "The following code should have been written to this file:"
 msgstr ""
 
 #. translators: %s = plugin name.
-#: inc/admin/ui/notices.php:775
+#: inc/admin/ui/notices.php:781
 #, php-format
 msgid "%s cannot configure itself due to missing writing permissions."
 msgstr ""
 
 #. translators: %s = file/folder name
-#: inc/admin/ui/notices.php:781
+#: inc/admin/ui/notices.php:787
 #, php-format
 msgid "Affected file/folder: %s"
 msgstr ""
@@ -1214,64 +1218,134 @@ msgstr ""
 msgid "Regenerate WP Rocket configuration files now"
 msgstr ""
 
-#: inc/Engine/Admin/PerformanceMonitoring/AJAX/Controller.php:95
-msgid "Maximum number of URLs reached for your license."
-msgstr ""
-
-#: inc/Engine/Admin/PerformanceMonitoring/AJAX/Controller.php:113
-#: inc/Engine/Admin/PerformanceMonitoring/Controller.php:120
+#: inc/Engine/Admin/RocketInsights/Controller.php:120
+#: inc/Engine/Admin/RocketInsights/Rest.php:336
 msgid "Homepage"
 msgstr ""
 
-#: inc/Engine/Admin/PerformanceMonitoring/AJAX/Controller.php:129
-msgid "Not valid inputs"
-msgstr ""
-
-#: inc/Engine/Admin/PerformanceMonitoring/AJAX/Controller.php:316
-msgid "No ID was provided."
-msgstr ""
-
-#: inc/Engine/Admin/PerformanceMonitoring/AJAX/Controller.php:326
-msgid "Not valid ID"
+#: inc/Engine/Admin/RocketInsights/Controller.php:290
+msgid "month"
 msgstr ""
 
 #. Translators: %1$s = opening strong tag, %2$s = closing strong tag, %3$s = number of pages as a limit.
-#: inc/Engine/Admin/PerformanceMonitoring/Controller.php:357
+#: inc/Engine/Admin/RocketInsights/Controller.php:368
 #, php-format
 msgid "%1$sCongrats!%2$s You can now monitor up to %3$s pages, run unlimited on-demand tests, and schedule them to run automatically."
 msgstr ""
 
 #. Translators: %1$s = number of pages as a limit, %2$s anchor tag opening, %3$s anchor tag closing.
-#: inc/Engine/Admin/PerformanceMonitoring/Controller.php:386
+#: inc/Engine/Admin/RocketInsights/Controller.php:397
 #, php-format
 msgid "Wow, you’ve already added %1$s pages! That's the limit for now. Help shape what’s next by %2$ssharing your feedback%3$s."
 msgstr ""
 
-#: inc/Engine/Admin/PerformanceMonitoring/Render.php:238
-msgid "Monitored Pages"
+#: inc/Engine/Admin/RocketInsights/PostListing/Subscriber.php:219
+#: views/settings/partials/rocket-insights/rocket-insights-column.php:35
+msgid "Test the page"
 msgstr ""
 
-#: inc/Engine/Admin/PerformanceMonitoring/Render.php:241
-msgid "Tracked Pages"
+#: inc/Engine/Admin/RocketInsights/PostListing/Subscriber.php:222
+#: inc/Engine/Admin/RocketInsights/Rest.php:366
+msgid "Maximum number of URLs reached for your license."
 msgstr ""
 
-#: inc/Engine/Admin/PerformanceMonitoring/Settings/Controller.php:57
-#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:103
-msgid "No Subscription"
+#: inc/Engine/Admin/RocketInsights/PostListing/Subscriber.php:223
+#: views/settings/partials/rocket-insights/rocket-insights-column.php:77
+msgid "Analyzing your page (~1 min)."
 msgstr ""
 
-#: inc/Engine/Admin/PerformanceMonitoring/Settings/Controller.php:58
+#: inc/Engine/Admin/RocketInsights/PostListing/Subscriber.php:253
+#: inc/Engine/Admin/RocketInsights/PostListing/Subscriber.php:261
+#: inc/Engine/Admin/RocketInsights/Settings/Controller.php:58
 #: inc/Engine/Admin/Settings/Page.php:1704
 msgid "Rocket Insights"
 msgstr ""
 
-#: inc/Engine/Admin/PerformanceMonitoring/Settings/Controller.php:64
+#: inc/Engine/Admin/RocketInsights/Render.php:269
+msgid "Monitored Pages"
+msgstr ""
+
+#: inc/Engine/Admin/RocketInsights/Render.php:272
+msgid "Tracked Pages"
+msgstr ""
+
+#. translators: %1$s: opening <strong> tag, %2$s: closing </strong> tag, %3$s: opening link tag, %4$s: closing link tag
+#: inc/Engine/Admin/RocketInsights/Render.php:424
+#: inc/Engine/Admin/RocketInsights/Rest.php:831
+#, php-format
+msgid "You've %1$sreached your free limit%2$s. %3$sUpgrade to continue%4$s."
+msgstr ""
+
+#. translators: %1$s: opening <strong> tag, %2$s: closing </strong> tag
+#: inc/Engine/Admin/RocketInsights/Render.php:434
+#: inc/Engine/Admin/RocketInsights/Rest.php:841
+#, php-format
+msgid "You've %1$sreached the page limit%2$s. Please remove at least one page to continue."
+msgstr ""
+
+#: inc/Engine/Admin/RocketInsights/Rest.php:298
+msgid "You are not allowed to access this item."
+msgstr ""
+
+#: inc/Engine/Admin/RocketInsights/Rest.php:351
+msgid "Not valid inputs"
+msgstr ""
+
+#: inc/Engine/Admin/RocketInsights/Rest.php:427
+msgid "You are not allowed to create this item."
+msgstr ""
+
+#: inc/Engine/Admin/RocketInsights/Rest.php:442
+msgid "Invalid item ID."
+msgstr ""
+
+#: inc/Engine/Admin/RocketInsights/Rest.php:470
+msgid "You are not allowed to delete this item."
+msgstr ""
+
+#: inc/Engine/Admin/RocketInsights/Rest.php:485
+msgid "No ID was provided."
+msgstr ""
+
+#: inc/Engine/Admin/RocketInsights/Rest.php:493
+msgid "Item not found."
+msgstr ""
+
+#: inc/Engine/Admin/RocketInsights/Rest.php:502
+#: inc/Engine/Admin/RocketInsights/Subscriber.php:199
+msgid "Upgrade your plan to get access to re-test performance or run new tests"
+msgstr ""
+
+#: inc/Engine/Admin/RocketInsights/Rest.php:526
+msgid "Unable to reset performance test. Please try again."
+msgstr ""
+
+#: inc/Engine/Admin/RocketInsights/Rest.php:609
+msgid "You are not allowed to update this item."
+msgstr ""
+
+#: inc/Engine/Admin/RocketInsights/Rest.php:643
+#: inc/Engine/Admin/RocketInsights/Rest.php:700
+msgid "You are not allowed to access items."
+msgstr ""
+
+#: inc/Engine/Admin/RocketInsights/Settings/Controller.php:57
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:103
+msgid "No Subscription"
+msgstr ""
+
+#: inc/Engine/Admin/RocketInsights/Settings/Controller.php:64
 #: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:96
 msgid "Next Billing Date"
 msgstr ""
 
-#: inc/Engine/Admin/PerformanceMonitoring/Subscriber.php:214
-msgid "Upgrade your plan to get access to re-test performance or run new tests"
+#. translators: %1$s is WP Rocket plugin name.
+#: inc/Engine/Admin/RocketInsights/Subscriber.php:575
+#, php-format
+msgid ""
+"<p><strong>New in %1$s: Meet Rocket Insights, your built-in performance tracking tool!</strong></p>\n"
+"\t\t\t\t<p>Starting from %1$s 3.20, you can track your key pages’ performance directly from your dashboard and get in-depth insights.</p>\n"
+"\t\t\t\t<p>🚀 You've already been tracking your homepage. Add more pages to check %1$s's impact and keep your site fast.</p>"
 msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:234
@@ -2463,15 +2537,15 @@ msgstr ""
 msgid "Speed up your website with RocketCDN, WP Rocket’s Content Delivery Network!"
 msgstr ""
 
-#: inc/Engine/Common/JobManager/Cron/Subscriber.php:188
+#: inc/Engine/Common/JobManager/Cron/Subscriber.php:190
 msgid "WP Rocket process pending jobs"
 msgstr ""
 
-#: inc/Engine/Common/JobManager/Cron/Subscriber.php:207
+#: inc/Engine/Common/JobManager/Cron/Subscriber.php:209
 msgid "WP Rocket clear failed jobs"
 msgstr ""
 
-#: inc/Engine/Common/JobManager/Cron/Subscriber.php:224
+#: inc/Engine/Common/JobManager/Cron/Subscriber.php:226
 msgid "WP Rocket process on submit jobs"
 msgstr ""
 
@@ -2498,7 +2572,7 @@ msgid "Reset stored optimizations related to Automatic Lazy Rendering, Critical 
 msgstr ""
 
 #. translators: %1$s = plugin name.
-#: inc/Engine/Common/PerformanceHints/Admin/Controller.php:140
+#: inc/Engine/Common/PerformanceHints/Admin/Controller.php:144
 #, php-format
 msgid "%1$s: Stored optimization data for Automatic Lazy Rendering, Critical Images, Preconnect to External Domains, and Preload Fonts has been cleared! New data will be generated as needed."
 msgstr ""
@@ -2750,35 +2824,51 @@ msgstr ""
 msgid "Critical Path CSS Generation Process"
 msgstr ""
 
-#: inc/Engine/License/API/User.php:303
+#: inc/Engine/License/API/User.php:249
+msgid "Get Rocket Insights"
+msgstr ""
+
+#: inc/Engine/License/API/User.php:253
+msgid "Your plan"
+msgstr ""
+
+#: inc/Engine/License/API/User.php:314
 msgid "See how your top pages perform and quickly spot and optimize what slows your site down."
 msgstr ""
 
-#: inc/Engine/License/API/User.php:324
+#: inc/Engine/License/API/User.php:335
 msgid "* Billed monthly. You can cancel at any time, each month started is due."
 msgstr ""
 
-#: inc/Engine/License/API/User.php:349
-msgid "Up to 10 pages tracked"
+#. translators: %1$s opening strong tag, %2$s number of pages, %3$s closing strong tag.
+#: inc/Engine/License/API/User.php:361
+#, php-format
+msgid "Up to %1$s%2$s pages%3$s tracked"
 msgstr ""
 
-#: inc/Engine/License/API/User.php:354
-msgid "Automatic performance monitoring"
+#. translators: %1$s opening strong tag, %2$s closing strong tag.
+#: inc/Engine/License/API/User.php:367
+#, php-format
+msgid "Automatic %1$sperformance monitoring%2$s"
 msgstr ""
 
-#: inc/Engine/License/API/User.php:359
-msgid "Unlimited on-demand tests"
+#. translators: %1$s opening strong tag, %2$s closing strong tag.
+#: inc/Engine/License/API/User.php:373
+#, php-format
+msgid "Unlimited %1$son-demand tests%2$s"
 msgstr ""
 
-#: inc/Engine/License/API/User.php:364
-msgid "Full GTmetrix performance reports"
+#. translators: %1$s opening strong tag, %2$s closing strong tag.
+#: inc/Engine/License/API/User.php:379
+#, php-format
+msgid "Full %1$sGTmetrix performance reports%2$s"
 msgstr ""
 
-#: inc/Engine/License/API/User.php:434
+#: inc/Engine/License/API/User.php:449
 msgid "Launch Offer"
 msgstr ""
 
-#: inc/Engine/License/API/User.php:454
+#: inc/Engine/License/API/User.php:469
 msgid " Launch price valid for the first 12 months, after which standard pricing applies."
 msgstr ""
 
@@ -4078,107 +4168,124 @@ msgstr ""
 msgid "What WP Rocket Does For You By Default"
 msgstr ""
 
-#: views/settings/partials/performance-monitoring/buttons/global-score-widget.php:9
+#: views/settings/partials/rocket-insights/buttons/global-score-widget.php:9
 msgid "Add Pages"
 msgstr ""
 
-#: views/settings/partials/performance-monitoring/buttons/global-score-widget.php:9
+#: views/settings/partials/rocket-insights/buttons/global-score-widget.php:9
 msgid "Add Homepage"
 msgstr ""
 
-#: views/settings/partials/performance-monitoring/buttons/global-score-widget.php:24
-#: views/settings/partials/performance-monitoring/buttons/rocket-insights-panel.php:19
+#: views/settings/partials/rocket-insights/buttons/global-score-widget.php:24
+#: views/settings/partials/rocket-insights/buttons/rocket-insights-panel.php:19
 msgid "You have reached your maximum page limit"
 msgstr ""
 
-#: views/settings/partials/performance-monitoring/buttons/rocket-insights-panel.php:9
+#: views/settings/partials/rocket-insights/buttons/rocket-insights-panel.php:9
 msgid "Add page +"
 msgstr ""
 
-#: views/settings/partials/performance-monitoring/global-score-widget.php:11
+#: views/settings/partials/rocket-insights/global-score-widget.php:11
 msgid "Rocket Insights Score"
 msgstr ""
 
-#: views/settings/partials/performance-monitoring/license-banner.php:13
+#: views/settings/partials/rocket-insights/license-banner.php:17
 msgid "Unlock Your Site’s True Performance!"
 msgstr ""
 
-#: views/settings/partials/performance-monitoring/license-banner.php:48
+#: views/settings/partials/rocket-insights/license-banner.php:51
 msgid "Taxes may apply depending on your country of residence"
 msgstr ""
 
-#: views/settings/partials/performance-monitoring/license-banner.php:51
+#: views/settings/partials/rocket-insights/license-banner.php:54
 msgid "GET STARTED"
 msgstr ""
 
-#: views/settings/partials/performance-monitoring/performance-score.php:40
+#: views/settings/partials/rocket-insights/performance-score.php:38
+#: views/settings/partials/rocket-insights/rocket-insights-column.php:158
 msgid "Something went wrong with this URL"
 msgstr ""
 
-#: views/settings/partials/performance-monitoring/performance-score.php:40
+#: views/settings/partials/rocket-insights/performance-score.php:38
 msgid "Upgrade your plan to see your score"
 msgstr ""
 
-#: views/settings/partials/performance-monitoring/table-row.php:33
-msgid "Analyzing your page (~1 min)"
-msgstr ""
-
-#: views/settings/partials/performance-monitoring/table-row.php:35
-msgid "ago"
-msgstr ""
-
-#: views/settings/partials/performance-monitoring/table-row.php:52
-msgid "Re-Test"
-msgstr ""
-
-#: views/settings/partials/performance-monitoring/table-row.php:55
+#: views/settings/partials/rocket-insights/rocket-insights-column.php:56
+#: views/settings/partials/rocket-insights/table-row.php:53
 msgid "Re-test"
 msgstr ""
 
-#: views/settings/partials/performance-monitoring/table-row.php:67
-msgid "You’ve reached your free monthly plan limit. Upgrade now to unlock unlimited on-demand tests."
+#: views/settings/partials/rocket-insights/rocket-insights-column.php:74
+msgid "Loading..."
 msgstr ""
 
-#: views/settings/partials/performance-monitoring/table-row.php:78
+#. translators: %s = human-readable time difference (e.g., "5 minutes").
+#: views/settings/partials/rocket-insights/rocket-insights-column.php:92
+#: views/settings/partials/rocket-insights/rocket-insights-column.php:118
+#, php-format
+msgid "Tested %s ago"
+msgstr ""
+
+#: views/settings/partials/rocket-insights/rocket-insights-column.php:103
+#: views/settings/partials/rocket-insights/rocket-insights-column.php:134
+#: views/settings/partials/rocket-insights/rocket-insights-column.php:138
+#: views/settings/partials/rocket-insights/rocket-insights-column.php:169
+#: views/settings/partials/rocket-insights/table-row.php:76
 msgid "See Report"
 msgstr ""
 
-#: views/settings/partials/performance-monitoring/table-row.php:93
+#: views/settings/partials/rocket-insights/table-row.php:33
+msgid "Analyzing your page (~1 min)"
+msgstr ""
+
+#: views/settings/partials/rocket-insights/table-row.php:35
+msgid "ago"
+msgstr ""
+
+#: views/settings/partials/rocket-insights/table-row.php:50
+msgid "Re-Test"
+msgstr ""
+
+#: views/settings/partials/rocket-insights/table-row.php:65
+msgid "You’ve reached your free monthly plan limit. Upgrade now to unlock unlimited on-demand tests."
+msgstr ""
+
+#: views/settings/partials/rocket-insights/table-row.php:91
 msgid "Upgrade your plan to see the report"
 msgstr ""
 
-#: views/settings/partials/performance-monitoring/table-row.php:111
+#: views/settings/partials/rocket-insights/table-row.php:109
 msgid "Delete"
 msgstr ""
 
-#: views/settings/partials/performance-monitoring/urls-table.php:17
+#: views/settings/partials/rocket-insights/urls-table.php:17
 msgid "Performance Summary"
 msgstr ""
 
-#: views/settings/partials/performance-monitoring/urls-table.php:19
+#: views/settings/partials/rocket-insights/urls-table.php:19
 #: views/settings/sections/addons-container.php:24
 #: views/settings/sections/fields-container.php:28
 msgid "Need Help?"
 msgstr ""
 
 #. Translators: %1$s = opening strong tag, %2$s = closing strong tag.
-#: views/settings/partials/performance-monitoring/urls-table.php:35
+#: views/settings/partials/rocket-insights/urls-table.php:35
 #, php-format
 msgid "%1$sCongrats!%2$s You fully enjoyed your free plan. Upgrade to keep testing, or wait for your free limit to reset."
 msgstr ""
 
-#: views/settings/partials/performance-monitoring/urls-table.php:42
-#: views/settings/partials/performance-monitoring/urls-table.php:59
+#: views/settings/partials/rocket-insights/urls-table.php:42
+#: views/settings/partials/rocket-insights/urls-table.php:59
 msgid "Upgrade Now"
 msgstr ""
 
 #. Translators: %1$s = opening strong tag, %2$s: number of pages, %3$s = closing strong tag, %4$s: number of tests available.
-#: views/settings/partials/performance-monitoring/urls-table.php:52
+#: views/settings/partials/rocket-insights/urls-table.php:52
 #, php-format
 msgid "You can analyze up to %1$s%2$s pages%3$s and run %1$s%4$s tests per month%3$s. Want more?"
 msgstr ""
 
-#: views/settings/partials/performance-monitoring/urls-table.php:82
+#: views/settings/partials/rocket-insights/urls-table.php:82
 msgid "Enter a page URL to monitor"
 msgstr ""
 

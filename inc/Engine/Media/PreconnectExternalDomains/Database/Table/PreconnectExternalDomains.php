@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Media\PreconnectExternalDomains\Database\Table;
 
-use WP_Rocket\Engine\Common\PerformanceHints\Database\Table\AbstractTable;
+use WP_Rocket\Engine\Common\Database\Tables\AbstractTable;
 
 class PreconnectExternalDomains extends AbstractTable {
 	/**

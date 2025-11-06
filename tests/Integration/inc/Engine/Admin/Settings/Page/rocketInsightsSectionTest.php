@@ -9,7 +9,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  * Test class covering \WP_Rocket\Engine\Admin\Settings\Page::rocket_insights_section
  *
  * @group AdminOnly
- * @group PerformanceMonitoring
+ * @group RocketInsights
  */
 class RocketInsightsSectionTest extends TestCase {
 
@@ -34,7 +34,7 @@ class RocketInsightsSectionTest extends TestCase {
 	public function testShouldHideWhenReseller( $config, $expected ) {
 		$container = apply_filters( 'rocket_container', null );
 		$user      = $container->get( 'user' );
-		
+
 		// Try to get the settings page - may not be available in integration tests
 		try {
 			$page = $container->get( 'settings_page' );
