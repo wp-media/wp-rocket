@@ -75,7 +75,7 @@ class Subscriber implements Subscriber_Interface {
 			'admin_enqueue_scripts'        => 'enqueue_post_listing_assets',
 			'manage_pages_columns'         => 'add_column_to_pages',
 			'manage_posts_columns'         => [ 'add_column_to_posts', 10, 2 ],
-			'manage_product_posts_columns' => [ 'add_column_to_pages', 22 ],
+			'manage_product_posts_columns' => [ 'add_column_to_products', 22 ],
 			'manage_pages_custom_column'   => [ 'render_rocket_insights_column', 10, 2 ],
 			'manage_posts_custom_column'   => [ 'render_rocket_insights_column', 10, 2 ],
 		];
@@ -96,6 +96,20 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
+	 * Add RI column header to products.
+	 *
+	 * @param string[] $columns Array of column headers.
+	 * @param string   $post_type Post type.
+	 * @return array
+	 */
+	public function add_column_to_products( $columns ): array {
+		if ( $this->is_excluded( 'product' ) ) {
+			return $columns;
+		}
+		return $this->add_rocket_insights_column( $columns );
+	}
+
+	/**
 	 * Add RI column header to posts.
 	 *
 	 * @param string[] $columns Array of column headers.
@@ -103,6 +117,11 @@ class Subscriber implements Subscriber_Interface {
 	 * @return array
 	 */
 	public function add_column_to_posts( $columns, $post_type ): array {
+		// Don't add for products again, because it's added above.
+		if ( 'product' === $post_type ) {
+			return $columns;
+		}
+
 		if ( $this->is_excluded( $post_type ) ) {
 			return $columns;
 		}
