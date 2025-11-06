@@ -184,7 +184,7 @@
 			.wpr-ri-title-truncate{
 				max-width: 260px;
 				white-space: nowrap;
-				overflow: hidden;
+				overflow: clip;
 				text-overflow: ellipsis;
 				display: inline-block;
 				line-height: 100%;
