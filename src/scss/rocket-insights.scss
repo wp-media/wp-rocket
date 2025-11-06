@@ -245,7 +245,7 @@
 		visibility: hidden;
 		transition: opacity 0.2s ease, visibility 0.2s ease;
 		z-index: 1000;
-		width: 280px;
+		width: 240px;
 
 		.wpr-tooltip-content {
 			background: #1d2327;
@@ -254,7 +254,7 @@
 			border-radius: 4px;
 			font-size: 12px;
 			line-height: 1.4;
-			text-align: center;
+			text-align: left;
 			box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 		}
 
