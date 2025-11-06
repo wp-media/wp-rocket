@@ -402,8 +402,9 @@
   margin-right: 4px;
   font-size: 14px;
 }
-.wpr-ri-column .wpr-ri-actions-wrapper .wpr-ri-retest-link:focus-visible,
-.wpr-ri-column .wpr-ri-actions-wrapper .wpr-ri-see-report-link:focus-visible {
+.wpr-ri-column .wpr-ri-actions-wrapper .wpr-ri-retest-link:focus-visible, .wpr-ri-column .wpr-ri-actions-wrapper .wpr-ri-retest-link:focus,
+.wpr-ri-column .wpr-ri-actions-wrapper .wpr-ri-see-report-link:focus-visible,
+.wpr-ri-column .wpr-ri-actions-wrapper .wpr-ri-see-report-link:focus {
   outline: none;
   box-shadow: 0 0 0 0 rgba(106, 90, 205, 0.18);
   border-radius: 2px;

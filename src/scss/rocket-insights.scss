@@ -204,7 +204,7 @@
 				font-size: 14px;
 			}
 
-			&:focus-visible {
+			&:focus-visible, &:focus {
 				outline: none;
 				box-shadow: 0 0 0 0 rgba(106,90,205,0.18);
 				border-radius: 2px;
