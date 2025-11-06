@@ -99,7 +99,6 @@ class Subscriber implements Subscriber_Interface {
 	 * Add RI column header to products.
 	 *
 	 * @param string[] $columns Array of column headers.
-	 * @param string   $post_type Post type.
 	 * @return array
 	 */
 	public function add_column_to_products( $columns ): array {
