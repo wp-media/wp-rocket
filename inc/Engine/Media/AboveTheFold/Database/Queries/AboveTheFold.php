@@ -3,13 +3,11 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Media\AboveTheFold\Database\Queries;
 
-use WP_Rocket\Engine\Common\PerformanceHints\Database\Queries\AbstractQueries;
-use WP_Rocket\Engine\Common\PerformanceHints\Database\Queries\QueriesInterface;
-
+use WP_Rocket\Engine\Common\Database\Queries\AbstractQuery;
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Schemas\AboveTheFold as AboveTheFoldSchema;
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Rows\AboveTheFold as AboveTheFoldRow;
 
-class AboveTheFold extends AbstractQueries implements QueriesInterface {
+class AboveTheFold extends AbstractQuery {
 
 	/**
 	 * Name of the database table to query.

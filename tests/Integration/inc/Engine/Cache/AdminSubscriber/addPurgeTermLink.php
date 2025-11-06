@@ -15,10 +15,24 @@ use WP_Rocket\Tests\Integration\AdminTestCase;
 class Test_AddPurgeTermLink extends AdminTestCase {
 	private $tag;
 
+	public function set_up() {
+		self::installAtfTable();
+		self::installLrcTable();
+		self::installPreloadFontsTable();
+		self::installPreconnectExternalDomainsTable();
+
+		parent::set_up();
+	}
+
 	public function tear_down() {
 		wp_delete_term( $this->tag->term_id, 'post_tag' );
 
 		parent::tear_down();
+
+		self::uninstallAtfTable();
+		self::uninstallLrcTable();
+		self::uninstallPreloadFontsTable();
+		self::uninstallPreconnectDomainsTable();
 	}
 
 	/**

@@ -3,12 +3,11 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Media\PreconnectExternalDomains\Database\Queries;
 
-use WP_Rocket\Engine\Common\PerformanceHints\Database\Queries\AbstractQueries;
-use WP_Rocket\Engine\Common\PerformanceHints\Database\Queries\QueriesInterface;
+use WP_Rocket\Engine\Common\Database\Queries\AbstractQuery;
 use WP_Rocket\Engine\Media\PreconnectExternalDomains\Database\Schema\PreconnectExternalDomains as PreconnectExternalDomainsSchema;
 use WP_Rocket\Engine\Media\PreconnectExternalDomains\Database\Row\PreconnectExternalDomains as PreconnectExternalDomainsRow;
 
-class PreconnectExternalDomains extends AbstractQueries implements QueriesInterface {
+class PreconnectExternalDomains extends AbstractQuery {
 
 	/**
 	 * Name of the database table to query.

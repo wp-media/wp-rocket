@@ -29,9 +29,21 @@ class Test_DelayJs extends TestCase {
 		add_filter( 'rocket_disable_meta_generator', '__return_true' );
 
 		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'delay_js', 26 );
+
+		self::installPreloadCacheTable();
+		self::installAtfTable();
+		self::installLrcTable();
+		self::installPreloadFontsTable();
+		self::installPreconnectExternalDomainsTable();
 	}
 
 	public function tear_down() {
+		self::uninstallAtfTable();
+		self::uninstallLrcTable();
+		self::uninstallPreloadFontsTable();
+		self::uninstallPreconnectDomainsTable();
+		self::uninstallPreloadCacheTable();
+
 		unset( $_GET['nowprocket'] );
 
 		// Re-enable ATF optimization.
