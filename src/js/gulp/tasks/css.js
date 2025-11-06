@@ -45,7 +45,7 @@ class gulpCss {
 
 	compileRocketInsightsSaasFull() {
 		return gulp.parallel(
-			() => this.compileAdminRtlSaasMin(),
+			() => this.compileRocketInsightsSaas(),
 			() => this.compileRocketInsightsSaasMin()
 		);
 	}

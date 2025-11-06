@@ -13,6 +13,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  * whether the user can add more pages (wpr_can_add_pages) or has credit (wpr_has_credit).
  *
  * @group RocketInsights
+ * @group AdminOnly
  */
 class Test_GetRocketInsightsColumn extends TestCase {
 	use DBTrait;
@@ -56,7 +57,7 @@ class Test_GetRocketInsightsColumn extends TestCase {
 		self::truncatePerformanceMonitoringTable();
 
 		// Clean up credit option
-		delete_option( 'pm_credit' );
+		delete_option( 'wp_rocket_pm_credit' );
 
 		// Remove Performance Monitoring enabled filter
 		remove_filter( 'rocket_rocket_insights_enabled', '__return_true' );
@@ -73,7 +74,7 @@ class Test_GetRocketInsightsColumn extends TestCase {
 
 		// Set credit if specified
 		if ( isset( $config['credit'] ) ) {
-			update_option( 'pm_credit', $config['credit'] );
+			update_option( 'wp_rocket_pm_credit', $config['credit'] );
 		}
 
 		// Add existing URLs if specified
@@ -82,21 +83,33 @@ class Test_GetRocketInsightsColumn extends TestCase {
 				$this->addPerformanceMonitoring( $url_data );
 			}
 		}
+		$post_id = 1;
+
+		if ( isset( $config['post_status'] ) ) {
+			$post_id = $this->factory->post->create( [
+				'post_title' => 'Test Post',
+				'post_content' => 'Content',
+				'post_status' => 'draft',
+				'post_type' => 'post',
+				'post_name' => 'page-to-test',
+			] );
+		}
 
 		// Generate the HTML for the column
-		$html = $this->render->get_rocket_insights_column( $config['url'] );
+		$html = $this->render->get_rocket_insights_column( $config['url'], $post_id );
 
 		// Check for button state (enabled/disabled)
 		if ( isset( $expected['button_enabled'] ) ) {
+			$this->assertStringContainsString( 'type="button"', $html );
 			if ( $expected['button_enabled'] ) {
 				// Button should be clickable (not have wpr-ri-no-credit class)
 				$this->assertStringContainsString( 'wpr-ri-test-page', $html );
 				$this->assertStringNotContainsString( 'wpr-ri-no-credit', $html );
-				$this->assertStringContainsString( '<button type="button" class="wpr-ri-test-page"', $html );
+				$this->assertStringContainsString( 'class="wpr-ri-test-page "', $html );
 			} else {
 				// Button should be disabled (has wpr-ri-no-credit class)
 				$this->assertStringContainsString( 'wpr-ri-test-page wpr-ri-no-credit', $html );
-				$this->assertStringContainsString( '<button type="button" class="wpr-ri-test-page wpr-ri-no-credit"', $html );
+				$this->assertStringContainsString( 'class="wpr-ri-test-page wpr-ri-no-credit"', $html );
 			}
 		}
 

@@ -402,6 +402,13 @@
   margin-right: 4px;
   font-size: 14px;
 }
+.wpr-ri-column .wpr-ri-actions-wrapper .wpr-ri-retest-link:focus-visible, .wpr-ri-column .wpr-ri-actions-wrapper .wpr-ri-retest-link:focus,
+.wpr-ri-column .wpr-ri-actions-wrapper .wpr-ri-see-report-link:focus-visible,
+.wpr-ri-column .wpr-ri-actions-wrapper .wpr-ri-see-report-link:focus {
+  outline: none;
+  box-shadow: 0 0 0 0 rgba(106, 90, 205, 0.18);
+  border-radius: 2px;
+}
 .wpr-ri-column .wpr-ri-actions-wrapper .wpr-ri-retest-link.wpr-icon-bold-refresh:before {
   font-size: 15px;
 }
@@ -434,7 +441,7 @@
   visibility: hidden;
   transition: opacity 0.2s ease, visibility 0.2s ease;
   z-index: 1000;
-  width: 280px;
+  width: 240px;
 }
 .wpr-ri-column .wpr-tooltip .wpr-tooltip-content {
   background: #1d2327;
@@ -443,7 +450,7 @@
   border-radius: 4px;
   font-size: 12px;
   line-height: 1.4;
-  text-align: center;
+  text-align: left;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 .wpr-ri-column .wpr-tooltip:after {
@@ -625,4 +632,8 @@
   font-size: 12px;
   line-height: 1.4;
   color: #C01B1B;
+}
+.wpr-ri-column .wpr-ri-message a {
+  color: #C01B1B;
+  text-decoration: underline;
 }

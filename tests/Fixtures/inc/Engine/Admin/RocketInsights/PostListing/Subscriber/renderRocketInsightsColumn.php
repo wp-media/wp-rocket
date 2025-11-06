@@ -27,7 +27,7 @@ return [
 				'customer_data' => (new UserDataGenerator())->with_reseller_status(0)->generate(),
 			],
 			'expected' => [
-				'html' => '<div class="wpr-ri-loading">',
+				'html' => '<div class="wpr-ri-loading wpr-btn-with-tool-tip">',
 			]
 		],
 		'testShouldRenderBlurredState' => [
@@ -64,7 +64,7 @@ return [
 				'customer_data' => (new UserDataGenerator())->with_reseller_status(0)->generate(),
 			],
 			'expected' => [
-				'html' => '<div class="wpr-ri-score-wrapper">',
+				'html' => '<div class="wpr-ri-score-wrapper wpr-btn-with-tool-tip">',
 			]
 		],
 		'testShouldRenderFailedStateWithRetestButton' => [

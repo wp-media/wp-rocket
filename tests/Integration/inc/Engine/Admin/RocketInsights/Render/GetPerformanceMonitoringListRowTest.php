@@ -13,6 +13,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  * instead of "xx seconds ago" when a URL is being tested.
  *
  * @group RocketInsights
+ * @group AdminOnly
  */
 class Test_GetPerformanceMonitoringListRow extends TestCase {
 	use DBTrait;

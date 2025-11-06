@@ -6,7 +6,7 @@
  */
 
 // Export for use with browserify/babelify in gulp
-module.exports = (function() {
+module.exports = (function () {
 	'use strict';
 
 	/**
@@ -35,7 +35,7 @@ module.exports = (function() {
 	 * Attach click listeners to "Test the page" buttons.
 	 */
 	function attachTestPageListeners() {
-		jQuery(document).on('click', '.wpr-ri-test-page', function(e) {
+		jQuery(document).on('click', '.wpr-ri-test-page', function (e) {
 			e.preventDefault();
 			const button = jQuery(this);
 			const url = button.data('url');
@@ -57,7 +57,7 @@ module.exports = (function() {
 	 */
 	function attachRetestListeners() {
 		// Support both button and link styles with one handler.
-		jQuery(document).on('click', '.wpr-ri-retest:not(.wpr-ri-action--disabled), .wpr-ri-retest-link', function(e) {
+		jQuery(document).on('click', '.wpr-ri-retest:not(.wpr-ri-action--disabled), .wpr-ri-retest-link', function (e) {
 			e.preventDefault();
 			const el = jQuery(this);
 			const url = el.data('url');
@@ -84,7 +84,7 @@ module.exports = (function() {
 	 * Start polling for rows that are currently running tests.
 	 */
 	function startPollingForRunningTests() {
-		jQuery('.wpr-ri-loading').each(function() {
+		jQuery('.wpr-ri-loading').each(function () {
 			const column = jQuery(this).closest('.wpr-ri-column');
 			const rowId = column.data('rocket-insights-id');
 			const url = column.data('url');
@@ -115,10 +115,10 @@ module.exports = (function() {
 			method: 'POST',
 			data: { page_url: url },
 		}).then((response) => {
-			const success   = response?.success === true;
-			const id        = response?.id ?? response?.data?.id ?? null;
-			const canAdd    = (response?.can_add_pages ?? response?.data?.can_add_pages);
-			const message   = response?.message ?? response?.data?.message;
+			const success = response?.success === true;
+			const id = response?.id ?? response?.data?.id ?? null;
+			const canAdd = (response?.can_add_pages ?? response?.data?.can_add_pages);
+			const message = response?.message ?? response?.data?.message;
 
 			if (success && id) {
 				// Update column with the row ID and start polling
@@ -158,7 +158,7 @@ module.exports = (function() {
 				path: '/wp-rocket/v1/rocket-insights/pages/' + rowId,
 				method: 'PATCH',
 			}
-		).then( ( response ) => {
+		).then((response) => {
 			if (response.success) {
 				// Start polling for results
 				startPolling(rowId, url, column);
@@ -166,7 +166,7 @@ module.exports = (function() {
 				// If not successful, reload the column to restore previous state
 				reloadColumnFromServer(column, url);
 			}
-		} ).catch( ( error ) => {
+		}).catch((error) => {
 			console.error(error);
 			// Reload the column to restore previous state
 			reloadColumnFromServer(column, url);
@@ -187,7 +187,7 @@ module.exports = (function() {
 		}
 
 		// Set up new polling interval.
-		activePolls[rowId] = setInterval(function() {
+		activePolls[rowId] = setInterval(function () {
 			checkStatus(rowId, url, column);
 		}, POLLING_INTERVAL);
 
@@ -227,22 +227,22 @@ module.exports = (function() {
 	function checkStatus(rowId, url, column) {
 		window.wp.apiFetch(
 			{
-				path: window.wp.url.addQueryArgs( '/wp-rocket/v1/rocket-insights/pages/progress', { ids: [rowId] } ),
+				path: window.wp.url.addQueryArgs('/wp-rocket/v1/rocket-insights/pages/progress', { ids: [rowId] }),
 			}
-		).then( ( response ) => {
-			if ( response.success && Array.isArray( response.results ) ) {
+		).then((response) => {
+			if (response.success && Array.isArray(response.results)) {
 				const result = response.results[0];
 
-				if ( result.status === 'completed' || result.status === 'failed' ) {
+				if (result.status === 'completed' || result.status === 'failed') {
 					// Stop polling.
-					clearInterval( activePolls[rowId] );
+					clearInterval(activePolls[rowId]);
 					delete activePolls[rowId];
 
 					// Update the column with results (reload rendered HTML from server).
-					updateColumnWithResults( column, result );
+					updateColumnWithResults(column, result);
 				}
 			}
-		} );
+		});
 	}
 
 	/**
@@ -257,7 +257,7 @@ module.exports = (function() {
 		}
 
 		// Create elements safely to prevent XSS
-		const loadingDiv = jQuery('<div>').addClass('wpr-ri-loading');
+		const loadingDiv = jQuery('<div>').addClass('wpr-ri-loading wpr-btn-with-tool-tip');
 		const img = jQuery('<img>').addClass('wpr-loading-img').attr({
 			src: window.rocket_insights_i18n?.loading_img || '',
 			alt: 'Loading...'
@@ -265,6 +265,7 @@ module.exports = (function() {
 		const messageDiv = jQuery('<div>').addClass('wpr-ri-message').css('display', 'none');
 
 		loadingDiv.append(img);
+		loadingDiv.append(`<div class="wpr-tooltip"><div class="wpr-tooltip-content">${window.rocket_insights_i18n?.estimated_time_text || 'Analyzing your page (~1 min).'}</div></div>`)
 		column.empty().append(loadingDiv).append(messageDiv);
 	}
 
@@ -275,11 +276,12 @@ module.exports = (function() {
 	 * @param {string} url    The URL for the column.
 	 */
 	function reloadColumnFromServer(column, url) {
+		const postId = column.data('post-id');
 		window.wp.apiFetch(
 			{
-				path: window.wp.url.addQueryArgs( '/wp-rocket/v1/rocket-insights/pages', { url: url } ),
+				path: window.wp.url.addQueryArgs('/wp-rocket/v1/rocket-insights/pages', { url: url, post_id: postId }),
 			}
-		).then( ( response ) => {
+		).then((response) => {
 			if (response.success && response.html) {
 				column.replaceWith(response.html);
 

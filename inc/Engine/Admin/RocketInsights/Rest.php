@@ -125,7 +125,7 @@ class Rest extends WP_REST_Controller {
 						return $this->get_items_permissions_check( $request );
 					},
 					'args'                => [
-						'url' => [
+						'url'     => [
 							'required'          => false,
 							'validate_callback' => function ( $param ) {
 								// Allow empty for optional parameter.
@@ -147,6 +147,16 @@ class Rest extends WP_REST_Controller {
 								$url = untrailingslashit( trim( $param ) );
 
 								return rocket_add_url_protocol( $url );
+							},
+						],
+						'post_id' => [
+							'required'          => false,
+							'validate_callback' => function ( $param ) {
+								return is_numeric( $param );
+							},
+							'sanitize_callback' => function ( $param ) {
+								// Type cast post id to int.
+								return (int) $param;
 							},
 						],
 					],
@@ -265,7 +275,7 @@ class Rest extends WP_REST_Controller {
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public function get_item( $request ) {
-		$html = $this->render->get_rocket_insights_column( $request['url'] );
+		$html = $this->render->get_rocket_insights_column( $request['url'], $request['post_id'] );
 
 		$payload = [
 			'success' => true,
