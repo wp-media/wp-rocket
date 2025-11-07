@@ -718,7 +718,7 @@ function rocket_notice_html( $args ) {
 			}
 			break;
 		case 'rocket_insights_page':
-			$args['action'] = '<a class="button button-primary" href="' . admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '#rocket_insights' ) . '">' . __( 'Go to Rocket Insights', 'rocket' ) . '</a>';
+			$args['action'] = '<a class="button button-primary" href="' . admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '#rocket_insights' ) . '">' . __( 'Run the test now!', 'rocket' ) . '</a>';
 			break;
 	}
 	/**
