@@ -420,7 +420,7 @@ class Plugin {
 		// This prevents crashes when WP Rocket is installed on servers without cURL support.
 		if ( function_exists( 'curl_init' ) ) {
 			$this->container->addServiceProvider( new TrackingServiceProvider() );
-			$subscribers[] = 'tracking_subscriber';
+			$common_subscribers[] = 'tracking_subscriber';
 		}
 
 		$host_type = HostResolver::get_host_service();
