@@ -90,6 +90,27 @@ class AjaxToggleOptinTest extends TestCase {
 				->andThrow( new \Exception( $expected['message'] ) );
 		}
 
+		switch ( $expected['message'] ) {
+			case 'Opt-in enabled.':
+				Functions\expect( 'update_option' )
+					->once()
+					->with( 'rocket_analytics_notice_displayed', 1 );
+
+				Functions\expect( 'set_transient' )
+					->once()
+					->with( 'rocket_analytics_optin', 1 );
+				break;
+
+			case 'Opt-in disabled.':
+				Functions\expect( 'update_option' )
+					->once()
+					->with( 'rocket_analytics_notice_displayed', 0 );
+
+				Functions\expect( 'set_transient' )
+					->never();
+				break;
+		}
+
 		$this->expectException( \Exception::class );
 		$this->expectExceptionMessage( $expected['message'] );
 
