@@ -542,6 +542,11 @@ parameters:
 
 		-
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 2
+			path: inc/Engine/Tracking/Tracking.php
+
+		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: inc/ThirdParty/Hostings/Godaddy.php
 
