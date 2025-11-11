@@ -156,8 +156,6 @@ class Tracking extends Abstract_Render {
 			wp_send_json_success( 'Opt-in enabled.' );
 		} elseif ( '0' === $value ) {
 			$this->optin->disable();
-			// Update the legacy option to allow the notice to be displayed again after the opt-in is disabled.
-			update_option( 'rocket_analytics_notice_displayed', 0 );
 			wp_send_json_success( 'Opt-in disabled.' );
 		}
 
