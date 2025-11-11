@@ -103,8 +103,7 @@ class AjaxToggleOptinTest extends TestCase {
 
 			case 'Opt-in disabled.':
 				Functions\expect( 'update_option' )
-					->once()
-					->with( 'rocket_analytics_notice_displayed', 0 );
+					->never();
 
 				Functions\expect( 'set_transient' )
 					->never();
