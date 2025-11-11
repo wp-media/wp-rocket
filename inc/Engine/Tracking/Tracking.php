@@ -149,9 +149,15 @@ class Tracking extends Abstract_Render {
 
 		if ( '1' === $value ) {
 			$this->optin->enable();
+			// Update the legacy option to prevent the notice from being displayed again after the opt-in is enabled.
+			update_option( 'rocket_analytics_notice_displayed', 1 );
+			// Set the thank-you transient to prevent the thank-you notice from being displayed again after the opt-in is enabled.
+			set_transient( 'rocket_analytics_optin', 1 );
 			wp_send_json_success( 'Opt-in enabled.' );
 		} elseif ( '0' === $value ) {
 			$this->optin->disable();
+			// Update the legacy option to allow the notice to be displayed again after the opt-in is disabled.
+			update_option( 'rocket_analytics_notice_displayed', 0 );
 			wp_send_json_success( 'Opt-in disabled.' );
 		}
 
