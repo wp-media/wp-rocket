@@ -267,7 +267,7 @@ class Tracking extends Abstract_Render {
 			return;
 		}
 
-		$this->mixpanel->track(
+		$this->mixpanel->track_direct(
 			'Rocket Insights Performance Test',
 			[
 				'context'   => 'wp_plugin',
@@ -276,9 +276,7 @@ class Tracking extends Abstract_Render {
 				'retest'    => $row_details->data['is_retest'],
 				'duration'  => time() - $row_details->data['start_time'],
 				'plan_type' => $plan,
-			],
-			'',
-			true
+			]
 		);
 	}
 
