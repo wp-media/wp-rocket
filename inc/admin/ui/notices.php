@@ -490,9 +490,7 @@ function rocket_analytics_optin_notice() {
 		return;
 	}
 
-	// The new option being maintained is rocket_mixpanel_optin.
-	// analytics_enabled is still kept and checked for backward compatibility.
-	if ( get_rocket_option( 'analytics_enabled' ) || get_option( 'rocket_mixpanel_optin' ) ) {
+	if ( get_option( 'rocket_mixpanel_optin' ) ) {
 		return;
 	}
 
