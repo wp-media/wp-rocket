@@ -165,7 +165,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'wp_rocket_upgrade'                     => [
 				[ 'on_update_reset_credit', 10, 2 ],
 				[ 'on_update_cancel_old_as_jobs', 10, 2 ],
-				[ 'on_update_add_homepage', 10, 2 ],
 			],
 			'admin_notices'                         => 'maybe_display_rocket_insights_promotion_notice',
 			'rest_api_init'                         => [ 'register_routes' ],
@@ -523,32 +522,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	}
 
 	/**
-	 * Callback for the wp_rocket_upgrade action to add homepage on version update if no pages exist.
-	 *
-	 * This method adds the homepage to Rocket Insights when:
-	 * - Updating from a version lower than 3.20.1
-	 * - No pages are currently added to Rocket Insights
-	 *
-	 * @param string $new_version New plugin version.
-	 * @param string $old_version Previous plugin version.
-	 * @return void
-	 */
-	public function on_update_add_homepage( $new_version, $old_version ) {
-		// Only run if updating from a version lower than 3.20.1.
-		if ( version_compare( $old_version, '3.20.1', '>=' ) ) {
-			return;
-		}
-
-		// Only add homepage if no pages are currently in Rocket Insights.
-		$total_count = $this->controller->get_total_url_count();
-		if ( $total_count > 0 ) {
-			return;
-		}
-
-		$this->controller->add_homepage();
-	}
-
-	/**
 	 * Displays a promotion notice for Rocket Insights on the admin dashboard.
 	 *
 	 * @since 3.20.1
@@ -575,7 +548,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			__(
 				'<p><strong>New in %1$s: Meet Rocket Insights, your built-in performance tracking tool!</strong></p>
 				<p>Starting from %1$s 3.20, you can track your key pages’ performance directly from your dashboard and get in-depth insights.</p>
-				<p>🚀 You\'ve already been tracking your homepage. Add more pages to check %1$s\'s impact and keep your site fast.</p>',
+				<p>🚀 Add your first page, run the test, and keep your site fast.</p>',
 				'rocket'
 			),
 			rocket_get_constant( 'WP_ROCKET_PLUGIN_NAME' ),

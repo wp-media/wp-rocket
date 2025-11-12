@@ -622,7 +622,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	$(document).on( 'click', '#wpr-action-add_page_speed_radar', handleAddPage );
 	$(document).on( 'click', '.wpr-action-speed_radar_refresh', handleResetPage );
 	// Handle Enter key press on page url input.
-	$(document).on( 'keypress', $pageUrlInput, function(e) {
+	$(document).on( 'keypress', '#wpr-speed-radar-url-input', function(e) {
 		if (e.key === 'Enter') {
 		  e.preventDefault();
 		  handleAddPage(e);

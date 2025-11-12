@@ -25,6 +25,7 @@ class Test_Uninstall extends FilesystemTestCase {
 		'wp_rocket_no_licence'              => null,
 		'wp_rocket_last_option_hash'        => null,
 		'wp_rocket_debug'                   => null,
+		'rocket_mixpanel_optin'             => null,
 	];
 
 	protected static $transients = [
