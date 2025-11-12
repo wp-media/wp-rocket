@@ -490,7 +490,7 @@ function rocket_analytics_optin_notice() {
 		return;
 	}
 
-	if ( get_rocket_option( 'analytics_enabled' ) ) {
+	if ( get_option( 'rocket_mixpanel_optin' ) ) {
 		return;
 	}
 
