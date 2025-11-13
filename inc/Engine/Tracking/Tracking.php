@@ -229,21 +229,29 @@ class Tracking extends Abstract_Render {
 	 * @param string $url        The URL that was added for monitoring.
 	 * @param string $plan       Plan name.
 	 * @param int    $urls_count The current number of URLs being monitored.
+	 * @param string $source     The source of the request.
 	 *
 	 * @return void
 	 */
-	public function track_rocket_insights_url_added( $url, $plan, $urls_count ): void {
+	public function track_rocket_insights_url_added( $url, $plan, $urls_count, $source = '' ): void {
 		if ( ! $this->optin->can_track() ) {
 			return;
 		}
 
+		$mixpanel_data = [
+			'context'       => 'wp_plugin',
+			'plan_type'     => $plan,
+			'tracked_pages' => $urls_count,
+		];
+
+		// Add source if provided
+		if ( ! empty( $source ) ) {
+			$mixpanel_data['source'] = $source;
+		}
+
 		$this->mixpanel->track(
 			'Rocket Insights Page Added',
-			[
-				'context'       => 'wp_plugin',
-				'plan_type'     => $plan,
-				'tracked_pages' => $urls_count,
-			]
+			$mixpanel_data
 		);
 	}
 
@@ -267,16 +275,23 @@ class Tracking extends Abstract_Render {
 			return;
 		}
 
+		$mixpanel_data = [
+			'context'   => 'wp_plugin',
+			'status'    => $row_details->status,
+			'score'     => $row_details->score,
+			'retest'    => $row_details->data['is_retest'],
+			'duration'  => time() - $row_details->data['start_time'],
+			'plan_type' => $plan,
+		];
+
+		// Add source if available in the data
+		if ( ! empty( $row_details->data['source'] ) ) {
+			$mixpanel_data['source'] = $row_details->data['source'];
+		}
+
 		$this->mixpanel->track_direct(
 			'Rocket Insights Performance Test',
-			[
-				'context'   => 'wp_plugin',
-				'status'    => $row_details->status,
-				'score'     => $row_details->score,
-				'retest'    => $row_details->data['is_retest'],
-				'duration'  => time() - $row_details->data['start_time'],
-				'plan_type' => $plan,
-			]
+			$mixpanel_data
 		);
 	}
 
