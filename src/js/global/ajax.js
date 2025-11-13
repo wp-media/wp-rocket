@@ -514,6 +514,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 
 		const pageUrl = $pageUrlInput.val().trim();
+		const source = $(this).data('source') || 'addon_page';
 
 		if (!isValidUrl(pageUrl)) {
 			alert('Please enter a valid URL');
@@ -525,7 +526,8 @@ document.addEventListener('DOMContentLoaded', function() {
 				path: '/wp-rocket/v1/rocket-insights/pages/',
 				method: 'POST',
 				data: {
-					page_url: pageUrl
+					page_url: pageUrl,
+					source: source
 				},
 			}
 		).then( ( response ) => {

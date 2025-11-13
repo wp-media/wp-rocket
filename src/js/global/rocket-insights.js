@@ -39,6 +39,7 @@ module.exports = (function () {
 			e.preventDefault();
 			const button = jQuery(this);
 			const url = button.data('url');
+			const source = button.data('source') || column.data('source') || 'post_listing';
 			const column = button.closest('.wpr-ri-column');
 
 			const canAddPages = column.attr('data-can-add-pages') === '1';
@@ -48,7 +49,7 @@ module.exports = (function () {
 				return;
 			}
 
-			addNewPage(url, column, button);
+			addNewPage(url, column, button, source);
 		});
 	}
 
@@ -101,8 +102,9 @@ module.exports = (function () {
 	 * @param {string} url    The URL to test.
 	 * @param {jQuery} column The column element.
 	 * @param {jQuery} button The button that was clicked.
+	 * @param {string} source The source of the request.
 	 */
-	function addNewPage(url, column, button) {
+	function addNewPage(url, column, button, source) {
 		// Disable button and show loading state immediately.
 		button.prop('disabled', true);
 
@@ -113,7 +115,10 @@ module.exports = (function () {
 		window.wp.apiFetch({
 			path: '/wp-rocket/v1/rocket-insights/pages/',
 			method: 'POST',
-			data: { page_url: url },
+			data: { 
+				page_url: url,
+				source: source || 'post_listing'
+			},
 		}).then((response) => {
 			const success = response?.success === true;
 			const id = response?.id ?? response?.data?.id ?? null;
