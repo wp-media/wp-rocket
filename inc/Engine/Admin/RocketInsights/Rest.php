@@ -184,6 +184,21 @@ class Rest extends WP_REST_Controller {
 								return rocket_add_url_protocol( $url );
 							},
 						],
+						'source'   => [
+							'required'          => false,
+							'validate_callback' => function ( $param ) {
+								if ( empty( $param ) ) {
+									return true; // Optional parameter
+								}
+
+								$allowed_sources = [ 'dashboard', 'post type listing', 'add-on page', 'auto-added homepage', 'performance monitoring' ];
+								return in_array( $param, $allowed_sources, true );
+							},
+							'sanitize_callback' => function ( $param ) {
+								return sanitize_text_field( $param );
+							},
+							'default'           => 'addon_page',
+						],
 					],
 				],
 			]
@@ -330,7 +345,8 @@ class Rest extends WP_REST_Controller {
 			return rest_ensure_response( $payload );
 		}
 
-		$url = $payload['processed_url'];
+		$url    = $payload['processed_url'];
+		$source = $request->get_param( 'source' ) ?: 'addon_page';
 
 		if ( Utils::is_home( $url ) ) {
 			$page_title = __( 'Homepage', 'rocket' );
@@ -340,6 +356,9 @@ class Rest extends WP_REST_Controller {
 
 		$additional_details = [
 			'title' => $page_title,
+			'data'  => [
+				'source' => $source,
+			],
 		];
 
 		// Handle synchronous submission using shared method.
@@ -385,8 +404,9 @@ class Rest extends WP_REST_Controller {
 		 * @param string $url        The URL that was added for monitoring.
 		 * @param string $plan       Plan name.
 		 * @param int    $urls_count The current number of URLs being monitored.
+		 * @param string $source     The source of the request.
 		 */
-		do_action( 'rocket_rocket_insights_job_added', $url, $current_plan, $urls_count );
+		do_action( 'rocket_rocket_insights_job_added', $url, $current_plan, $urls_count, $source );
 
 		$row_data = $this->query->get_row_by_id( (int) $row_id );
 
