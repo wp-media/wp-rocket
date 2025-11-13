@@ -514,7 +514,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 
 		const pageUrl = $pageUrlInput.val().trim();
-		const source = $(this).data('source') || 'addon_page';
+		const source = $(this).data('source') || 'add-on page';
 
 		if (!isValidUrl(pageUrl)) {
 			alert('Please enter a valid URL');

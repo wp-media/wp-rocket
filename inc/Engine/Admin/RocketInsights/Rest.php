@@ -197,7 +197,7 @@ class Rest extends WP_REST_Controller {
 							'sanitize_callback' => function ( $param ) {
 								return sanitize_text_field( $param );
 							},
-							'default'           => 'addon_page',
+							'default'           => 'add-on page',
 						],
 					],
 				],
@@ -346,7 +346,7 @@ class Rest extends WP_REST_Controller {
 		}
 
 		$url    = $payload['processed_url'];
-		$source = $request->get_param( 'source' ) ?: 'addon_page';
+		$source = $request->get_param( 'source' ) ?: 'add-on page';
 
 		if ( Utils::is_home( $url ) ) {
 			$page_title = __( 'Homepage', 'rocket' );

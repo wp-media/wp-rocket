@@ -39,8 +39,8 @@ module.exports = (function () {
 			e.preventDefault();
 			const button = jQuery(this);
 			const url = button.data('url');
-			const source = button.data('source') || column.data('source') || 'post_listing';
 			const column = button.closest('.wpr-ri-column');
+			const source = button.data('source') || column.data('source') || 'post type listing';
 
 			const canAddPages = column.attr('data-can-add-pages') === '1';
 
@@ -117,7 +117,7 @@ module.exports = (function () {
 			method: 'POST',
 			data: { 
 				page_url: url,
-				source: source || 'post_listing'
+				source: source || 'post type listing'
 			},
 		}).then((response) => {
 			const success = response?.success === true;
