@@ -12,7 +12,7 @@
 </div>
 <p class="wpr-page-num-txt">Tracked Pages: 3</p>
 <div id="wpr_global_score_widget_add_page_btn_wrapper">
-<a href="javascript:void(0);" class="wpr-button wpr-button--icon wpr-button--small wpr-button--purple wpr-icon-plus wpr-button--no-min-width wpr-ri-add-url-button wpr-ri-global-score-add-url-button wpr-btn-with-tool-tip disabled" disabled="disabled">Add Pages <div class="wpr-tooltip"> <div class="wpr-tooltip-content"> You have reached your maximum page limit </div> </div> </a>
+<a href="javascript:void(0);" class="wpr-button wpr-button--icon wpr-button--small wpr-button--purple wpr-icon-plus wpr-button--no-min-width wpr-ri-add-url-button wpr-ri-global-score-add-url-button wpr-btn-with-tool-tip disabled" data-source="dashboard" disabled="disabled">Add Pages <div class="wpr-tooltip"> <div class="wpr-tooltip-content"> You have reached your maximum page limit </div> </div> </a>
 </div>
 </div>
 </div>

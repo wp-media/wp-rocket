@@ -12,7 +12,7 @@
 </div>
 <p class="wpr-page-num-txt">Tracked Pages: 2</p>
 <div id="wpr_global_score_widget_add_page_btn_wrapper">
-<a href="#rocket_insights" class="wpr-button wpr-button--icon wpr-button--small wpr-button--purple wpr-icon-plus wpr-button--no-min-width wpr-ri-add-url-button wpr-ri-global-score-add-url-button">Add Pages </a>
+<a href="#rocket_insights" class="wpr-button wpr-button--icon wpr-button--small wpr-button--purple wpr-icon-plus wpr-button--no-min-width wpr-ri-add-url-button wpr-ri-global-score-add-url-button" data-source="dashboard">Add Pages </a>
 </div>
 </div>
 </div>
