@@ -198,16 +198,24 @@ class Controller implements ControllerInterface {
 			return $html;
 		}
 
-		// One regex to skip scripts and remove any <link rel=preload as=font…> tag (entire line, including indentation and newline):.
-		$html = preg_replace(
+		// One regex to skip scripts and remove any <link rel=preload as=font…> tag (entire line, including indentation and newline).
+		$result = preg_replace(
 			'#<script\b[^>]*>[\s\S]*?<\/script\b[^>]*>(*SKIP)(*FAIL)'    // skip <script> blocks.
-			. '|^[ \t]*<link\b'                                           // OR match a <link at line start (with optional indent).
-			. '(?=[^>]*\brel\s*=\s*(["\']?)preload\1)'                 // lookahead rel=preload.
-			. '(?=[^>]*\bas\s*=\s*(["\']?)font\2)'                     // lookahead as=font.
-			. '[^>]*?\/?>[ \t]*(?:\r?\n|$)#im',                        // up to /> or >, then trim whitespace and newline.
+			. '|^[ \t]*<link\b'                                         // OR match a <link at line start (with optional indent).
+			. '(?=[^>]*\brel\s*=\s*(["\']?)preload\1)'                  // lookahead rel=preload.
+			. '(?=[^>]*\bas\s*=\s*(["\']?)font\2)'                      // lookahead as=font.
+			. '[^>]*?\/?>[ \t]*(?:\r?\n|$)#im',                         // up to /> or >, then trim whitespace and newline.
 			'',
 			$html
 		);
+
+		// If the regex fails (e.g. backtrack limit), preg_replace() returns null in PHP 8+.
+		// In that case, keep the original HTML to avoid a TypeError from the string return type.
+		if ( null === $result ) {
+			return $html;
+		}
+
+		$html = $result;
 
 		return $html;
 	}
