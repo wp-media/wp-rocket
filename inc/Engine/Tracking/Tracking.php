@@ -244,7 +244,6 @@ class Tracking extends Abstract_Render {
 			'tracked_pages' => $urls_count,
 		];
 
-		// Add source if provided
 		if ( ! empty( $source ) ) {
 			$mixpanel_data['source'] = $source;
 		}
@@ -284,7 +283,6 @@ class Tracking extends Abstract_Render {
 			'plan_type' => $plan,
 		];
 
-		// Add source if available in the data
 		if ( ! empty( $row_details->data['source'] ) ) {
 			$mixpanel_data['source'] = $row_details->data['source'];
 		}

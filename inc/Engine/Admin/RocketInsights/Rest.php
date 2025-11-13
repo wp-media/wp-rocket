@@ -188,7 +188,7 @@ class Rest extends WP_REST_Controller {
 							'required'          => false,
 							'validate_callback' => function ( $param ) {
 								if ( empty( $param ) ) {
-									return true; // Optional parameter
+									return true;
 								}
 
 								$allowed_sources = [ 'dashboard', 'post type listing', 'add-on page', 'auto-added homepage', 'performance monitoring' ];

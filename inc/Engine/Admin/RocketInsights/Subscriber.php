@@ -459,7 +459,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public function retest_all_pages() {
 		foreach ( $this->controller->get_items() as $item ) {
-			// Get original source from existing data, or use 'performance monitoring' for scheduled retests
+			// Get original source from existing data, or use 'performance monitoring' for scheduled retests.
 			$original_data   = json_decode( $item->data, true ) ?? [];
 			$original_source = $original_data['source'] ?? 'performance monitoring';
 			$this->manager->add_to_the_queue(
