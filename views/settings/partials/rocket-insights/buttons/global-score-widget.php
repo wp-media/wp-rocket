@@ -12,7 +12,8 @@ $rocket_insights_add_button_args = [
 	],
 	'url'        => '#rocket_insights',
 	'attributes' => [
-		'class' => 'wpr-button wpr-button--icon wpr-button--small wpr-button--purple wpr-icon-plus wpr-button--no-min-width wpr-ri-add-url-button wpr-ri-global-score-add-url-button',
+		'class'       => 'wpr-button wpr-button--icon wpr-button--small wpr-button--purple wpr-icon-plus wpr-button--no-min-width wpr-ri-add-url-button wpr-ri-global-score-add-url-button',
+		'data-source' => 'dashboard',
 	],
 ];
 

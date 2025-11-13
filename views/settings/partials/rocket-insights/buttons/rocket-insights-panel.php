@@ -8,8 +8,9 @@ defined( 'ABSPATH' ) || exit;
 $rocket_insights_add_page_button_args = [
 	'label'      => __( 'Add page +', 'rocket' ),
 	'attributes' => [
-		'class' => 'wpr-button wpr-button--icon wpr-button--small wpr-button--purple wpr-ri-add-url-button',
-		'id'    => 'add_page_speed_radar',
+		'class'       => 'wpr-button wpr-button--icon wpr-button--small wpr-button--purple wpr-ri-add-url-button',
+		'id'          => 'add_page_speed_radar',
+		'data-source' => 'add-on page',
 	],
 ];
 if ( $data['reach_max_url'] ) {
