@@ -108,9 +108,10 @@ class Controller {
 	/**
 	 * Add homepage to the database to be queued.
 	 *
+	 * @param string $source The source of the request. Default 'auto-added homepage'.
 	 * @return void
 	 */
-	public function add_homepage() {
+	public function add_homepage( $source = 'auto-added homepage' ) {
 		if ( ! $this->context->is_allowed() ) {
 			return;
 		}
@@ -124,6 +125,9 @@ class Controller {
 			true,
 			[
 				'title' => $page_title,
+				'data'  => [
+					'source' => $source,
+				],
 			]
 		);
 
@@ -138,8 +142,9 @@ class Controller {
 		 * @param string $url          The URL that was added for monitoring.
 		 * @param string $current_plan The current plan of the user.
 		 * @param int    $urls_count   The current number of URLs being monitored.
+		 * @param string $source       The source of the request.
 		 */
-		do_action( 'rocket_rocket_insights_job_added', $url, $current_plan, $urls_count );
+		do_action( 'rocket_rocket_insights_job_added', $url, $current_plan, $urls_count, $source );
 	}
 
 	/**
@@ -204,7 +209,7 @@ class Controller {
 			wp_nonce_ays( 'rocket_rocket_insights_add_homepage' );
 		}
 
-		$this->add_homepage();
+		$this->add_homepage( 'dashboard' );
 
 		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
 	}
