@@ -91,17 +91,4 @@ class RUCSSQueueRunner extends AbstractQueueRunner {
 	protected function get_group(): string {
 		return 'rocket-rucss';
 	}
-
-	/**
-	 * Process a batch of jobs.
-	 *
-	 * @param int    $size    The maximum number of actions to process.
-	 * @param string $context Optional identifer for the context in which this action is being processed, e.g. 'WP CLI'.
-	 *
-	 * @return int The number of actions processed.
-	 */
-	protected function do_batch( $size = 100, $context = '' ) {
-		$processed = parent::do_batch( $size, $context );
-		return $processed;
-	}
 }

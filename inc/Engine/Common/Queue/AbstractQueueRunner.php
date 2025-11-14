@@ -59,7 +59,8 @@ abstract class AbstractQueueRunner extends ActionScheduler_Abstract_QueueRunner 
 			 */
 			$batch_size = wpm_apply_filters_typed( 'integer', 'rocket_action_scheduler_clean_batch_size', 100, $this->get_group() );
 			$cleaner    = new Cleaner( $store, $batch_size, $this->get_group() );
-		}       parent::__construct( $store, $monitor, $cleaner );
+		}
+		parent::__construct( $store, $monitor, $cleaner );
 
 		if ( is_null( $async_request ) ) {
 			$async_request = new \ActionScheduler_AsyncRequest_QueueRunner( $this->store );
@@ -217,28 +218,42 @@ abstract class AbstractQueueRunner extends ActionScheduler_Abstract_QueueRunner 
 			$this->store->set_claim_filter( 'group', $this->get_group() );
 		}
 
-		$claim = $this->store->stake_claim( $size );
-		$this->monitor->attach( $claim );
+		$claim             = null;
 		$processed_actions = 0;
 
-		foreach ( $claim->get_actions() as $action_id ) {
-			// bail if we lost the claim
-			if ( ! in_array( $action_id, $this->store->find_actions_by_claim_id( $claim->get_id() ), true ) ) {
-				break;
-			}
-			$this->process_action( $action_id, $context );
-			++$processed_actions;
+		try {
+			$claim = $this->store->stake_claim( $size );
+			$this->monitor->attach( $claim );
 
-			if ( $this->batch_limits_exceeded( $processed_actions ) ) {
-				break;
+			foreach ( $claim->get_actions() as $action_id ) {
+				// bail if we lost the claim.
+				if ( ! in_array( $action_id, $this->store->find_actions_by_claim_id( $claim->get_id() ), true ) ) {
+					break;
+				}
+				$this->process_action( $action_id, $context );
+				++$processed_actions;
+
+				if ( $this->batch_limits_exceeded( $processed_actions ) ) {
+					break;
+				}
 			}
+		} catch ( \Throwable $e ) {
+			// Log the exception if Logger is available
+			if ( class_exists( '\WP_Rocket\Logger\Logger' ) ) {
+				Logger::error( 'Exception in do_batch: ' . $e->getMessage(), [ 'exception' => $e ] );
+			}
+			// Re-throw to maintain existing error handling behavior.
+			throw $e;
+		} finally {
+			if ( $claim ) {
+				$this->store->release_claim( $claim );
+			}
+			$this->monitor->detach();
+			// Reset group filter
+			$this->reset_group();
+			// Clear caches to prevent memory issues.
+			$this->clear_caches();
 		}
-
-		$this->store->release_claim( $claim );
-		$this->monitor->detach();
-
-		// Reset group filter
-		$this->reset_group();
 
 		return $processed_actions;
 	}

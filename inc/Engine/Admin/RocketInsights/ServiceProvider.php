@@ -181,7 +181,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'ri_manager',
 					'ri_plan',
 				]
-			);        // URL Limit subscriber.
+			); // URL Limit subscriber.
 		$this->getContainer()->addShared( 'ri_url_limit_subscriber', URLLimitSubscriber::class )
 			->addArguments(
 				[
