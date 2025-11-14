@@ -117,7 +117,7 @@ module.exports = (function () {
 			method: 'POST',
 			data: { 
 				page_url: url,
-				source: source || 'post type listing'
+				source: source
 			},
 		}).then((response) => {
 			const success = response?.success === true;
