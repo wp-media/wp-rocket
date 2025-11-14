@@ -34,7 +34,6 @@ class RUCSSQueueRunner extends AbstractQueueRunner {
 	 */
 	public static function instance() {
 		if ( null === self::$runner ) {
-			error_log( print_r( 'RUCSS Queue Runner: Creating new instance', true ) );
 			self::$runner = new RUCSSQueueRunner();
 		}
 		return self::$runner;
@@ -102,9 +101,7 @@ class RUCSSQueueRunner extends AbstractQueueRunner {
 	 * @return int The number of actions processed.
 	 */
 	protected function do_batch( $size = 100, $context = '' ) {
-		error_log( print_r( 'RUCSS Queue Runner: Starting batch processing for group: ' . $this->get_group(), true ) );
 		$processed = parent::do_batch( $size, $context );
-		error_log( print_r( 'RUCSS Queue Runner: Completed batch processing. Processed ' . $processed . ' jobs.', true ) );
 		return $processed;
 	}
 }
