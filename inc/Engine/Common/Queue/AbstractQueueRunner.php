@@ -48,16 +48,6 @@ abstract class AbstractQueueRunner extends ActionScheduler_Abstract_QueueRunner 
 	public function __construct( ?ActionScheduler_Store $store = null, ?ActionScheduler_FatalErrorMonitor $monitor = null, ?Cleaner $cleaner = null, ?ActionScheduler_AsyncRequest_QueueRunner $async_request = null ) {
 		if ( is_null( $cleaner ) ) {
 			/**
-			 * Filters the clean batch size.
-			 *
-			 * @since 3.11.0.5
-			 *
-			 * @param int    $batch_size Batch size.
-			 * @param string $group The group name.
-			 *
-			 * @return int
-			 */
-						/**
 			 * Filters the batch size for cleaning action scheduler.
 			 *
 			 * @since 3.20
@@ -69,9 +59,7 @@ abstract class AbstractQueueRunner extends ActionScheduler_Abstract_QueueRunner 
 			 */
 			$batch_size = wpm_apply_filters_typed( 'integer', 'rocket_action_scheduler_clean_batch_size', 100, $this->get_group() );
 			$cleaner    = new Cleaner( $store, $batch_size, $this->get_group() );
-		}
-
-		parent::__construct( $store, $monitor, $cleaner );
+		}       parent::__construct( $store, $monitor, $cleaner );
 
 		if ( is_null( $async_request ) ) {
 			$async_request = new \ActionScheduler_AsyncRequest_QueueRunner( $this->store );
@@ -180,7 +168,7 @@ abstract class AbstractQueueRunner extends ActionScheduler_Abstract_QueueRunner 
 	 *
 	 * @since 3.20
 	 *
-	 * @param string $context Optional identifier for the context in which this action is being processed, e.g. 'WP CLI' or 'WP Cron'
+	 * @param mixed $context Optional identifier for the context in which this action is being processed, e.g. 'WP CLI' or 'WP Cron'
 	 *        Generally, this should be capitalised and not localised as it's a proper noun.
 	 *
 	 * @return int The number of actions processed.
@@ -214,20 +202,45 @@ abstract class AbstractQueueRunner extends ActionScheduler_Abstract_QueueRunner 
 	}
 
 	/**
-	 * Process a batch of actions.
+	 * Process a batch of actions pending in the queue.
 	 *
 	 * @since 3.20
 	 *
-	 * @param array $actions Array of actions to process.
+	 * @param int    $size The maximum number of actions to process.
+	 * @param string $context Optional identifier for the context in which this action is being processed.
+	 *
+	 * @return int Number of actions processed.
 	 */
-	protected function do_batch( array $actions ) {
-		if ( empty( $actions ) ) {
-			return;
+	protected function do_batch( $size = 100, $context = '' ) {
+		// Set group filter if the store supports it
+		if ( method_exists( $this->store, 'set_claim_filter' ) ) {
+			$this->store->set_claim_filter( 'group', $this->get_group() );
 		}
 
-		foreach ( $actions as $action_id => $action ) {
-			$this->process_action( $action_id, $action->get_hook(), $action->get_args() );
+		$claim = $this->store->stake_claim( $size );
+		$this->monitor->attach( $claim );
+		$processed_actions = 0;
+
+		foreach ( $claim->get_actions() as $action_id ) {
+			// bail if we lost the claim
+			if ( ! in_array( $action_id, $this->store->find_actions_by_claim_id( $claim->get_id() ), true ) ) {
+				break;
+			}
+			$this->process_action( $action_id, $context );
+			++$processed_actions;
+
+			if ( $this->batch_limits_exceeded( $processed_actions ) ) {
+				break;
+			}
 		}
+
+		$this->store->release_claim( $claim );
+		$this->monitor->detach();
+
+		// Reset group filter
+		$this->reset_group();
+
+		return $processed_actions;
 	}
 
 	/**

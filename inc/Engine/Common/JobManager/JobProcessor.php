@@ -21,13 +21,6 @@ class JobProcessor implements LoggerAwareInterface {
 	private $factories;
 
 	/**
-	 * Queue instance.
-	 *
-	 * @var Queue
-	 */
-	private $queue;
-
-	/**
 	 * Retry Strategy Factory
 	 *
 	 * @var StrategyFactory
@@ -45,18 +38,15 @@ class JobProcessor implements LoggerAwareInterface {
 	 * Instantiate the class.
 	 *
 	 * @param array           $factories Array of factories.
-	 * @param Queue           $queue Queue instance.
 	 * @param StrategyFactory $strategy_factory Strategy Factory.
 	 * @param WPRClock        $clock Clock object instance.
 	 */
 	public function __construct(
 		array $factories,
-		Queue $queue,
 		StrategyFactory $strategy_factory,
 		WPRClock $clock
 	) {
 		$this->factories        = $factories;
-		$this->queue            = $queue;
 		$this->strategy_factory = $strategy_factory;
 		$this->wpr_clock        = $clock;
 	}
