@@ -15,6 +15,7 @@ use WP_Rocket\Engine\Admin\RocketInsights\{
 	Jobs\Manager as RIManager,
 	Managers\Plan,
 	Queue\Queue as RIQueue,
+	Queue\QueueRunner as RIQueueRunner,
 	URLLimit\Subscriber as URLLimitSubscriber,
 	Settings\Controller as SettingsController,
 	Settings\Subscriber as SettingsSubscriber,
@@ -180,9 +181,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'ri_manager',
 					'ri_plan',
 				]
-			);
-
-		// URL Limit subscriber.
+			);        // URL Limit subscriber.
 		$this->getContainer()->addShared( 'ri_url_limit_subscriber', URLLimitSubscriber::class )
 			->addArguments(
 				[
