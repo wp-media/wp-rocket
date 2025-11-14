@@ -9,6 +9,7 @@ use WP_Rocket\Engine\Admin\RocketInsights\{
 	Managers\Plan,
 	Jobs\Manager,
 	Queue\Queue,
+	Queue\QueueRunner as RIQueueRunner,
 };
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
@@ -85,7 +86,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @var Plan
 	 */
 	private $plan;
-
 	/**
 	 * Constructor.
 	 *
@@ -153,6 +153,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'admin_init'                            => [
 				[ 'flush_license_cache', 8 ],
 				[ 'check_upgrade' ],
+				[ 'initialize_ri_queue_runner', 10 ],
 				[ 'schedule_jobs', 11 ],
 			],
 			'admin_post_rocket_rocket_insights_add_homepage' => 'add_homepage_from_widget',
@@ -423,6 +424,21 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public function check_upgrade() {
 		$this->plan->check_upgrade();
+	}
+
+	/**
+	 * Initialize the queue runner for Rocket Insights.
+	 *
+	 * @since 3.20
+	 *
+	 * @return void
+	 */
+	public function initialize_ri_queue_runner() {
+		if ( ! $this->context->is_allowed() ) {
+			return;
+		}
+
+		RIQueueRunner::instance()->init();
 	}
 
 	/**
