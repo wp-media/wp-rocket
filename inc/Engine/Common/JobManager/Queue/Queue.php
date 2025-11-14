@@ -22,6 +22,16 @@ class Queue extends AbstractASQueue {
 	protected $group = 'rocket-rucss';
 
 	/**
+	 * Constructor.
+	 *
+	 * @param string $group Queue group name.
+	 */
+	public function __construct( string $group = 'rocket-rucss' ) {
+		error_log( '[WP Rocket] Queue::__construct() - Setting group to: ' . $group );
+		$this->group = $group;
+	}
+
+	/**
 	 * Pending jobs cron hook.
 	 *
 	 * @var string
@@ -67,6 +77,7 @@ class Queue extends AbstractASQueue {
 	 * @return int
 	 */
 	public function add_job_status_check_async( string $url, bool $is_mobile, string $optimization_type ) {
+		error_log( '[WP Rocket] Queue::add_job_status_check_async() - Adding job to group: ' . $this->group . ' for optimization_type: ' . $optimization_type . ' url: ' . $url );
 		return $this->add_async(
 			'rocket_saas_job_check_status',
 			[
@@ -75,5 +86,43 @@ class Queue extends AbstractASQueue {
 				$optimization_type,
 			]
 		);
+	}
+
+	/**
+	 * Create a queue instance for RUCSS optimization.
+	 *
+	 * @return Queue
+	 */
+	public static function create_for_rucss(): Queue {
+		error_log( '[WP Rocket] Queue::create_for_rucss() - Creating RUCSS queue with rocket-rucss group' );
+		return new Queue( 'rocket-rucss' );
+	}
+
+	/**
+	 * Create a queue instance for Rocket Insights optimization.
+	 *
+	 * @return Queue
+	 */
+	public static function create_for_rocket_insights(): Queue {
+		error_log( '[WP Rocket] Queue::create_for_rocket_insights() - Creating Rocket Insights queue with rocket-insights group' );
+		return new Queue( 'rocket-insights' );
+	}
+
+	/**
+	 * Get the appropriate queue instance for an optimization type.
+	 *
+	 * @param string $optimization_type The optimization type.
+	 *
+	 * @return Queue
+	 */
+	public static function get_for_optimization_type( string $optimization_type ): Queue {
+		error_log( '[WP Rocket] Queue::get_for_optimization_type() - optimization_type: ' . $optimization_type );
+		switch ( $optimization_type ) {
+			case 'rocket_insights':
+				return self::create_for_rocket_insights();
+			case 'rucss':
+			default:
+				return self::create_for_rucss();
+		}
 	}
 }
