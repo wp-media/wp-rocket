@@ -233,24 +233,19 @@ class Tracking extends Abstract_Render {
 	 *
 	 * @return void
 	 */
-	public function track_rocket_insights_url_added( $url, $plan, $urls_count, $source = '' ): void {
+	public function track_rocket_insights_url_added( $url, $plan, $urls_count, $source ): void {
 		if ( ! $this->optin->can_track() ) {
 			return;
 		}
 
-		$mixpanel_data = [
-			'context'       => 'wp_plugin',
-			'plan_type'     => $plan,
-			'tracked_pages' => $urls_count,
-		];
-
-		if ( ! empty( $source ) ) {
-			$mixpanel_data['source'] = $source;
-		}
-
 		$this->mixpanel->track(
 			'Rocket Insights Page Added',
-			$mixpanel_data
+			[
+				'context'       => 'wp_plugin',
+				'plan_type'     => $plan,
+				'tracked_pages' => $urls_count,
+				'source'        => $source,
+			]
 		);
 	}
 
@@ -274,22 +269,17 @@ class Tracking extends Abstract_Render {
 			return;
 		}
 
-		$mixpanel_data = [
-			'context'   => 'wp_plugin',
-			'status'    => $row_details->status,
-			'score'     => $row_details->score,
-			'retest'    => $row_details->data['is_retest'],
-			'duration'  => time() - $row_details->data['start_time'],
-			'plan_type' => $plan,
-		];
-
-		if ( ! empty( $row_details->data['source'] ) ) {
-			$mixpanel_data['source'] = $row_details->data['source'];
-		}
-
 		$this->mixpanel->track_direct(
 			'Rocket Insights Performance Test',
-			$mixpanel_data
+			[
+				'context'   => 'wp_plugin',
+				'status'    => $row_details->status,
+				'score'     => $row_details->score,
+				'retest'    => $row_details->data['is_retest'],
+				'duration'  => time() - $row_details->data['start_time'],
+				'plan_type' => $plan,
+				'source'    => $row_details->data['source'],
+			]
 		);
 	}
 

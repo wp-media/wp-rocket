@@ -125,7 +125,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return void
 	 */
-	public function track_rocket_insights_url_added( $url, $plan, $urls_count, $source = '' ): void {
+	public function track_rocket_insights_url_added( $url, $plan, $urls_count, $source ): void {
 		$this->tracking->track_rocket_insights_url_added( $url, $plan, $urls_count, $source );
 	}
 	/**
