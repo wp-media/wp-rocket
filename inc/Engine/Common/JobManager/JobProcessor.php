@@ -132,7 +132,6 @@ class JobProcessor implements LoggerAwareInterface {
 			$current_time = $this->wpr_clock->current_time( 'timestamp', true );
 			if ( $row->next_retry_time < $current_time ) {
 				$optimization_type = $this->get_optimization_type( $row );
-				error_log( '[WP Rocket] JobProcessor::process_pending_jobs() - Processing job for optimization_type: ' . $optimization_type . ' url: ' . $row->url );
 				// Change status to in-progress.
 				$this->make_status_inprogress( $row->url, $row->is_mobile, $optimization_type );
 				// Use the appropriate queue for the optimization type to ensure correct group assignment.
