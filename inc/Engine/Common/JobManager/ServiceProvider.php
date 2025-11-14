@@ -62,7 +62,6 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArguments(
 				[
 					$factories,
-					'queue',
 					'retry_strategy_factory',
 					'wpr_clock',
 				]
