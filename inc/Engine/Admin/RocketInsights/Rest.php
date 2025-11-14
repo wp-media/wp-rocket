@@ -185,19 +185,14 @@ class Rest extends WP_REST_Controller {
 							},
 						],
 						'source'   => [
-							'required'          => false,
+							'required'          => true,
 							'validate_callback' => function ( $param ) {
-								if ( empty( $param ) ) {
-									return true;
-								}
-
 								$allowed_sources = [ 'dashboard', 'post type listing', 'add-on page', 'auto-added homepage', 'performance monitoring' ];
 								return in_array( $param, $allowed_sources, true );
 							},
 							'sanitize_callback' => function ( $param ) {
 								return sanitize_text_field( $param );
 							},
-							'default'           => 'add-on page',
 						],
 					],
 				],
@@ -346,7 +341,7 @@ class Rest extends WP_REST_Controller {
 		}
 
 		$url    = $payload['processed_url'];
-		$source = $request->get_param( 'source' ) ?: 'add-on page';
+		$source = $request->get_param( 'source' );
 
 		if ( Utils::is_home( $url ) ) {
 			$page_title = __( 'Homepage', 'rocket' );
