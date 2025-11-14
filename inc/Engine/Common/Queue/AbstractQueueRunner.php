@@ -210,10 +210,12 @@ abstract class AbstractQueueRunner extends ActionScheduler_Abstract_QueueRunner 
 	 * @param int    $size The maximum number of actions to process.
 	 * @param string $context Optional identifier for the context in which this action is being processed.
 	 *
+	 * @throws \Throwable When an exception occurs during batch processing.
+	 *
 	 * @return int Number of actions processed.
 	 */
 	protected function do_batch( $size = 100, $context = '' ) {
-		// Set group filter if the store supports it
+		// Set group filter if the store supports it.
 		if ( method_exists( $this->store, 'set_claim_filter' ) ) {
 			$this->store->set_claim_filter( 'group', $this->get_group() );
 		}
@@ -238,7 +240,7 @@ abstract class AbstractQueueRunner extends ActionScheduler_Abstract_QueueRunner 
 				}
 			}
 		} catch ( \Throwable $e ) {
-			// Log the exception if Logger is available
+			// Log the exception if Logger is available.
 			if ( class_exists( '\WP_Rocket\Logger\Logger' ) ) {
 				Logger::error( 'Exception in do_batch: ' . $e->getMessage(), [ 'exception' => $e ] );
 			}
@@ -249,7 +251,7 @@ abstract class AbstractQueueRunner extends ActionScheduler_Abstract_QueueRunner 
 				$this->store->release_claim( $claim );
 			}
 			$this->monitor->detach();
-			// Reset group filter
+			// Reset group filter.
 			$this->reset_group();
 			// Clear caches to prevent memory issues.
 			$this->clear_caches();
