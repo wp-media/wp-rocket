@@ -22,6 +22,7 @@ class Test_Treeshake extends FilesystemTestCase {
 		$this->unregisterAllCallbacksExceptMulti('rocket_buffer', [ 1000 => 'treeshake', 100000 => 'insert_rocket_head' ] );
 		add_filter('pre_get_rocket_option_remove_unused_css', [$this, 'rucss']);
 		add_filter('rocket_exclude_rucss_fonts_preload', [$this, 'exclude_fonts_preload']);
+		add_filter('rocket_enable_rucss_fonts_preload', [$this, 'enable_rucss_fonts_preload']);
 		add_filter('rocket_used_css_dir_level', [$this, 'used_css_dir_level']);
 		add_filter( 'rocket_disable_meta_generator', '__return_true' );
 	}
@@ -31,6 +32,7 @@ class Test_Treeshake extends FilesystemTestCase {
 
 		remove_filter('pre_get_rocket_option_remove_unused_css', [$this, 'rucss']);
 		remove_filter('rocket_exclude_rucss_fonts_preload', [$this, 'exclude_fonts_preload']);
+		remove_filter('rocket_enable_rucss_fonts_preload', [$this, 'enable_rucss_fonts_preload']);
 		remove_filter('rocket_used_css_dir_level', [$this, 'used_css_dir_level']);
 		remove_filter( 'rocket_disable_meta_generator', '__return_true' );
 
@@ -68,6 +70,10 @@ class Test_Treeshake extends FilesystemTestCase {
 
 	public function exclude_fonts_preload() {
 		return $this->config['font_excluded'];
+	}
+
+	public function enable_rucss_fonts_preload() {
+		return $this->config['enable_rucss_fonts_preload'] ?? false;
 	}
 
 	public function used_css_dir_level() {
