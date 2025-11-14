@@ -3,6 +3,7 @@ declare( strict_types=1 );
 
 namespace WP_Rocket\Engine\Common\Queue;
 
+use WP_Rocket\Engine\Common\Queue\Cleaner;
 use WP_Rocket\Logger\Logger;
 use ActionScheduler_Abstract_QueueRunner;
 use ActionScheduler_Store;
@@ -185,6 +186,7 @@ abstract class AbstractQueueRunner extends ActionScheduler_Abstract_QueueRunner 
 	 * @return int The number of actions processed.
 	 */
 	public function run( $context = 'WP Cron' ) {
+		error_log( print_r( 'Queue Runner [' . $this->get_group() . ']: Starting run with context: ' . $context, true ) );
 		\ActionScheduler_Compatibility::raise_memory_limit();
 		\ActionScheduler_Compatibility::raise_time_limit( $this->get_time_limit() );
 		do_action( 'action_scheduler_before_process_queue' );// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
@@ -208,6 +210,7 @@ abstract class AbstractQueueRunner extends ActionScheduler_Abstract_QueueRunner 
 		}
 
 		do_action( 'action_scheduler_after_process_queue' );// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+		error_log( print_r( 'Queue Runner [' . $this->get_group() . ']: Run completed. Total processed: ' . $processed_actions, true ) );
 
 		return $processed_actions;
 	}
@@ -227,19 +230,24 @@ abstract class AbstractQueueRunner extends ActionScheduler_Abstract_QueueRunner 
 	 */
 	protected function do_batch( $size = 100, $context = '' ) {
 		try {
-			$claim = $this->store->stake_claim( $size, null, [], $this->get_group() );
+			$claim         = $this->store->stake_claim( $size, null, [], $this->get_group() );
+			$actions_count = count( $claim->get_actions() );
+			error_log( print_r( 'Queue Runner: Found ' . $actions_count . ' jobs for group: ' . $this->get_group(), true ) );
 			$this->monitor->attach( $claim );
 			$processed_actions = 0;
 
 			foreach ( $claim->get_actions() as $action_id ) {
 				// bail if we lost the claim.
 				if ( ! in_array( $action_id, $this->store->find_actions_by_claim_id( $claim->get_id() ), true ) ) {
+					error_log( print_r( 'Queue Runner [' . $this->get_group() . ']: Lost claim for action ID: ' . $action_id, true ) );
 					break;
 				}
+				error_log( print_r( 'Queue Runner [' . $this->get_group() . ']: Processing action ID: ' . $action_id, true ) );
 				$this->process_action( $action_id, $context );
 				++$processed_actions;
 
 				if ( $this->batch_limits_exceeded( $processed_actions ) ) {
+					error_log( print_r( 'Queue Runner [' . $this->get_group() . ']: Batch limit exceeded at ' . $processed_actions . ' actions', true ) );
 					break;
 				}
 			}
@@ -247,8 +255,10 @@ abstract class AbstractQueueRunner extends ActionScheduler_Abstract_QueueRunner 
 			$this->monitor->detach();
 			$this->clear_caches();
 			$this->reset_group();
+			error_log( print_r( 'Queue Runner [' . $this->get_group() . ']: Batch completed successfully. Processed: ' . $processed_actions . ' actions', true ) );
 			return $processed_actions;
 		} catch ( \Exception $exception ) {
+			error_log( print_r( 'Queue Runner [' . $this->get_group() . ']: Exception occurred: ' . $exception->getMessage(), true ) );
 			Logger::debug( $exception->getMessage() );
 			$this->reset_group();
 			return 0;

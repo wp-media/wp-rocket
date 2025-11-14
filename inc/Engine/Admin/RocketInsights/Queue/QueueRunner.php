@@ -45,12 +45,13 @@ class QueueRunner extends AbstractQueueRunner {
 	 */
 	public static function instance() {
 		if ( null === self::$runner ) {
+			error_log( print_r( 'Rocket Insights Queue Runner: Creating new instance', true ) );
 			self::$runner = new QueueRunner();
 		}
 		return self::$runner;
 	}
 
-	/** /**
+	/**
 	 * Add the cron schedule for Rocket Insights (every 30 seconds).
 	 *
 	 * @since 3.20
@@ -103,5 +104,20 @@ class QueueRunner extends AbstractQueueRunner {
 	 */
 	protected function get_group(): string {
 		return 'rocket-insights';
+	}
+
+	/**
+	 * Process a batch of jobs.
+	 *
+	 * @param int    $size    The maximum number of actions to process.
+	 * @param string $context Optional identifer for the context in which this action is being processed, e.g. 'WP CLI'.
+	 *
+	 * @return int The number of actions processed.
+	 */
+	protected function do_batch( $size = 100, $context = '' ) {
+		error_log( print_r( 'Rocket Insights Queue Runner: Starting batch processing for group: ' . $this->get_group(), true ) );
+		$processed = parent::do_batch( $size, $context );
+		error_log( print_r( 'Rocket Insights Queue Runner: Completed batch processing. Processed ' . $processed . ' jobs.', true ) );
+		return $processed;
 	}
 }
