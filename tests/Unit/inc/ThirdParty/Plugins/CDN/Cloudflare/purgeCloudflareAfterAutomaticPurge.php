@@ -54,7 +54,32 @@ class Test_purgeCloudflareAfterAutomaticPurge extends TestCase {
         $this->cloudflare = new Cloudflare($this->options, $this->option_api, $this->beacon, $this->facade);
     }
 
-    public function testShouldPurgeWhenPluginActive()
+    public function testShouldNotPurgeWhenPluginInactive()
+    {
+        // Mock plugin active check
+        Functions\expect('is_plugin_active')
+            ->with('cloudflare/cloudflare.php')
+            ->once()
+            ->andReturn(false);
+
+        // Expect no purge when plugin is not active
+        $this->facade->shouldNotReceive('purge_urls');
+        $this->facade->shouldNotReceive('purge_everything');
+
+        $this->cloudflare->purge_cloudflare_after_automatic_purge(
+            [
+                [
+                    'home_url' => 'https://example.com',
+                    'home_path' => '/path/to/cache/wp-rocket/example.com',
+                    'logged_in' => false,
+                    'files' => ['/path/to/cache/wp-rocket/example.com/page1/index.html']
+                ]
+            ],
+            ['lifespan' => 86400, 'file_age_limit' => 3600]
+        );
+    }
+
+    public function testShouldPurgeSpecificUrlsWhenValidCacheData()
     {
         // Mock plugin active check
         Functions\expect('is_plugin_active')
@@ -62,7 +87,7 @@ class Test_purgeCloudflareAfterAutomaticPurge extends TestCase {
             ->once()
             ->andReturn(true);
 
-        // Mock Cloudflare credentials to simulate proper setup
+        // Mock Cloudflare credentials
         Functions\when('get_option')->alias(function ($option_name, $default = false) {
             if ($option_name === 'cloudflare_api_email') {
                 return 'test@example.com';
@@ -76,43 +101,121 @@ class Test_purgeCloudflareAfterAutomaticPurge extends TestCase {
             return $default;
         });
 
-        // Expect purge_everything to be called when plugin is active
-        $this->facade->shouldReceive('purge_everything')
+        // Mock wp_parse_url
+        Functions\expect('wp_parse_url')
+            ->with('https://example.com')
+            ->once()
+            ->andReturn(['host' => 'example.com']);
+
+        // Mock url_to_postid
+        Functions\expect('url_to_postid')
+            ->with('https://example.com/page1')
+            ->once()
+            ->andReturn(123);
+
+        // Expect purge_urls to be called with specific post IDs
+        $this->facade->shouldReceive('purge_urls')
+            ->with([123])
             ->once();
 
+        $this->facade->shouldNotReceive('purge_everything');
+
         $this->cloudflare->purge_cloudflare_after_automatic_purge(
-            ['/path/to/cache/file1.html'],
+            [
+                [
+                    'home_url' => 'https://example.com',
+                    'home_path' => '/path/to/cache/wp-rocket/example.com',
+                    'logged_in' => false,
+                    'files' => ['/path/to/cache/wp-rocket/example.com/page1/index.html']
+                ]
+            ],
             ['lifespan' => 86400, 'file_age_limit' => 3600]
         );
     }
 
-    public function testShouldNotPurgeWhenPluginInactive()
+    public function testShouldPurgeEverythingWhenNoValidUrls()
     {
         // Mock plugin active check
         Functions\expect('is_plugin_active')
             ->with('cloudflare/cloudflare.php')
             ->once()
-            ->andReturn(false);
+            ->andReturn(true);
 
-        // Mock empty credentials 
+        // Mock Cloudflare credentials
         Functions\when('get_option')->alias(function ($option_name, $default = false) {
             if ($option_name === 'cloudflare_api_email') {
-                return '';
+                return 'test@example.com';
             }
             if ($option_name === 'cloudflare_api_key') {
-                return '';
+                return 'test-api-key';
             }
             if ($option_name === 'cloudflare_cached_domain_name') {
-                return '';
+                return 'example.com';
             }
             return $default;
         });
 
-        // Expect no purge when plugin is not active
-        $this->facade->shouldNotReceive('purge_everything');
+        // Expect purge_everything as fallback when no valid cache data
+        $this->facade->shouldReceive('purge_everything')
+            ->once();
+
+        $this->facade->shouldNotReceive('purge_urls');
 
         $this->cloudflare->purge_cloudflare_after_automatic_purge(
-            ['/path/to/cache/file1.html'],
+            [], // Empty deleted array
+            ['lifespan' => 86400, 'file_age_limit' => 3600]
+        );
+    }
+
+    public function testShouldPurgeEverythingWhenNoValidPostIds()
+    {
+        // Mock plugin active check
+        Functions\expect('is_plugin_active')
+            ->with('cloudflare/cloudflare.php')
+            ->once()
+            ->andReturn(true);
+
+        // Mock Cloudflare credentials
+        Functions\when('get_option')->alias(function ($option_name, $default = false) {
+            if ($option_name === 'cloudflare_api_email') {
+                return 'test@example.com';
+            }
+            if ($option_name === 'cloudflare_api_key') {
+                return 'test-api-key';
+            }
+            if ($option_name === 'cloudflare_cached_domain_name') {
+                return 'example.com';
+            }
+            return $default;
+        });
+
+        // Mock wp_parse_url
+        Functions\expect('wp_parse_url')
+            ->with('https://example.com')
+            ->once()
+            ->andReturn(['host' => 'example.com']);
+
+        // Mock url_to_postid returning 0 (no valid post ID)
+        Functions\expect('url_to_postid')
+            ->with('https://example.com/page1')
+            ->once()
+            ->andReturn(0);
+
+        // Expect purge_everything as fallback when no valid post IDs
+        $this->facade->shouldReceive('purge_everything')
+            ->once();
+
+        $this->facade->shouldNotReceive('purge_urls');
+
+        $this->cloudflare->purge_cloudflare_after_automatic_purge(
+            [
+                [
+                    'home_url' => 'https://example.com',
+                    'home_path' => '/path/to/cache/wp-rocket/example.com',
+                    'logged_in' => false,
+                    'files' => ['/path/to/cache/wp-rocket/example.com/page1/index.html']
+                ]
+            ],
             ['lifespan' => 86400, 'file_age_limit' => 3600]
         );
     }
