@@ -87,6 +87,7 @@ return [
 					]
 				],
 				'font_excluded' => ['https://domaina.com'],
+				'enable_rucss_fonts_preload' => true,
 				'files' => [
 					'wp-content/cache/used-css/1/1/2/3/4abcd.css.gz' => gzencode( file_get_contents(__DIR__ . '/CSS/test.css') )
 				],
@@ -125,6 +126,7 @@ return [
 					]
 				],
 				'font_excluded' => [],
+				'enable_rucss_fonts_preload' => true,
 				'files' => [
 					'wp-content/cache/used-css/1/1/2/3/4abcd.css.gz' => gzencode( file_get_contents(__DIR__ . '/CSS/FontPreloaded.css') )
 				],
@@ -163,6 +165,7 @@ return [
 					]
 				],
 				'font_excluded' => [''],
+				'enable_rucss_fonts_preload' => true,
 				'files' => [
 					'wp-content/cache/used-css/1/1/2/3/4abcd.css.gz' => gzencode( file_get_contents(__DIR__ . '/CSS/FontPreloaded.css') )
 				],
