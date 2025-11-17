@@ -30,7 +30,7 @@ class Test_getSubscribedEvents extends TestCase {
             'rocket_after_clean_domain'           => 'purge_cloudflare',
             'after_rocket_clean_files'            => 'purge_cloudflare_partial',
             'after_rocket_clean_home'             => 'purge_cloudflare',
-            'rocket_after_automatic_cache_purge'  => 'purge_cloudflare_after_automatic_purge',
+            'rocket_after_automatic_cache_purge'  => [ 'purge_cloudflare_after_automatic_purge', 10, 2 ],
             'rocket_saas_complete_job_status'     => 'purge_cloudflare_after_usedcss',
             'rocket_rucss_after_clearing_usedcss' => 'purge_cloudflare_after_usedcss',
             'admin_post_rocket_enable_separate_mobile_cache' => 'enable_separate_mobile_cache',
