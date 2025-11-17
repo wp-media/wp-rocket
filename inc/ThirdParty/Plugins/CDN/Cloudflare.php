@@ -72,6 +72,8 @@ class Cloudflare implements Subscriber_Interface, DeactivationInterface {
 			'pre_get_rocket_option_do_cloudflare' => 'disable_cloudflare_option',
 			'rocket_after_clean_domain'           => 'purge_cloudflare',
 			'after_rocket_clean_files'            => 'purge_cloudflare_partial',
+			'after_rocket_clean_home'             => 'purge_cloudflare',
+			'rocket_after_automatic_cache_purge'  => 'purge_cloudflare_after_automatic_purge',
 			'rocket_saas_complete_job_status'     => 'purge_cloudflare_after_usedcss',
 			'rocket_rucss_after_clearing_usedcss' => 'purge_cloudflare_after_usedcss',
 			'admin_post_rocket_enable_separate_mobile_cache' => 'enable_separate_mobile_cache',
@@ -356,6 +358,25 @@ class Cloudflare implements Subscriber_Interface, DeactivationInterface {
 		$post_ids = array_filter( array_map( 'url_to_postid', $urls ) );
 
 		$this->facade->purge_urls( $post_ids );
+	}
+
+	/**
+	 * Purges Cloudflare cache after automatic cache purge (cache lifespan)
+	 *
+	 * @since 3.20.2
+	 *
+	 * @param array $deleted Array of deleted cache data.
+	 * @param array $args    Array with lifespan and file_age_limit data.
+	 *
+	 * @return void
+	 */
+	public function purge_cloudflare_after_automatic_purge( $deleted, $args ) {
+		if ( ! $this->is_plugin_active() ) {
+			return;
+		}
+
+		// For cache lifespan purge, we do a full cache purge since it affects the entire site.
+		$this->facade->purge_everything();
 	}
 
 	/**
