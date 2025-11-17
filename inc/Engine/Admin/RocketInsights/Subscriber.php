@@ -160,6 +160,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'rocket_deactivation'                   => [
 				[ 'cancel_scheduled_jobs' ],
 				[ 'remove_current_plan' ],
+				[ 'cleanup_queue_runner_cron' ],
 			],
 			'rocket_options_changed'                => 'maybe_cancel_automatic_retest_job',
 			'rocket_insights_retest'                => 'retest_all_pages',
@@ -435,6 +436,10 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public function initialize_ri_queue_runner() {
 		if ( ! $this->context->is_allowed() ) {
+			// Clean up cron event when disabled.
+			if ( wp_next_scheduled( 'action_scheduler_run_queue_rocket_insights', [ 'WP Cron' ] ) ) {
+				wp_clear_scheduled_hook( 'action_scheduler_run_queue_rocket_insights', [ 'WP Cron' ] );
+			}
 			return;
 		}
 
@@ -448,6 +453,17 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public function remove_current_plan() {
 		$this->plan->remove_current_plan();
+	}
+
+	/**
+	 * Clean up queue runner cron on deactivation.
+	 *
+	 * @since 3.20
+	 *
+	 * @return void
+	 */
+	public function cleanup_queue_runner_cron() {
+		wp_clear_scheduled_hook( 'action_scheduler_run_queue_rocket_insights', [ 'WP Cron' ] );
 	}
 
 	/**
