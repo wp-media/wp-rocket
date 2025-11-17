@@ -430,10 +430,11 @@ class Cloudflare implements Subscriber_Interface, DeactivationInterface {
 
 		if ( ! empty( $post_ids ) ) {
 			$this->facade->purge_urls( $post_ids );
-		} else {
-			// If no valid post IDs found, fall back to purging everything.
-			$this->facade->purge_everything();
+			return;
 		}
+
+		// If no valid post IDs found, fall back to purging everything.
+		$this->facade->purge_everything();
 	}
 
 	/**
