@@ -72,7 +72,7 @@ class Cloudflare implements Subscriber_Interface, DeactivationInterface {
 			'pre_get_rocket_option_do_cloudflare' => 'disable_cloudflare_option',
 			'rocket_after_clean_domain'           => 'purge_cloudflare',
 			'after_rocket_clean_files'            => 'purge_cloudflare_partial',
-			'after_rocket_clean_home'             => 'purge_cloudflare',
+			'after_rocket_clean_home'             => [ 'purge_cloudflare_home', 10, 2 ],
 			'rocket_after_automatic_cache_purge'  => [ 'purge_cloudflare_after_automatic_purge', 10, 2 ],
 			'rocket_saas_complete_job_status'     => 'purge_cloudflare_after_usedcss',
 			'rocket_rucss_after_clearing_usedcss' => 'purge_cloudflare_after_usedcss',
@@ -344,6 +344,47 @@ class Cloudflare implements Subscriber_Interface, DeactivationInterface {
 	}
 
 	/**
+	 * Purge home page on Cloudflare
+	 *
+	 * @since 3.17
+	 *
+	 * @param string $root WP Rocket root cache path.
+	 * @param string $lang Current language.
+	 *
+	 * @return void
+	 */
+	public function purge_cloudflare_home( $root = '', $lang = '' ) {
+		if ( ! $this->is_plugin_active() ) {
+			return;
+		}
+
+		// Get the home URL for the specific language.
+		$home_url = get_rocket_i18n_home_url( $lang );
+
+		// Try to get post ID from home URL.
+		$post_id = url_to_postid( $home_url );
+
+		// If we have a valid post ID, purge that specific URL.
+		if ( $post_id > 0 ) {
+			$this->facade->purge_urls( $post_id );
+			return;
+		}
+
+		// If no post ID found, check if we have a static front page.
+		if ( 'page' === get_option( 'show_on_front' ) ) {
+			$page_on_front = get_option( 'page_on_front' );
+			if ( $page_on_front && get_post( $page_on_front ) instanceof \WP_Post ) {
+				$this->facade->purge_urls( (int) $page_on_front );
+				return;
+			}
+		}
+
+		// If we can't determine specific post ID, fall back to purging everything.
+		// This ensures we don't miss anything important.
+		$this->facade->purge_everything();
+	}
+
+	/**
 	 * Purges posts when using purge this URL button
 	 *
 	 * @param array $urls Array of URLs.
@@ -375,8 +416,24 @@ class Cloudflare implements Subscriber_Interface, DeactivationInterface {
 			return;
 		}
 
-		// For cache lifespan purge, we do a full cache purge since it affects the entire site.
-		$this->facade->purge_everything();
+		// Extract URLs from deleted cache data and purge only those specific URLs.
+		$urls_to_purge = $this->extract_urls_from_deleted_cache( $deleted );
+
+		if ( empty( $urls_to_purge ) ) {
+			// If no specific URLs found, fall back to purging everything as safety measure.
+			$this->facade->purge_everything();
+			return;
+		}
+
+		// Convert URLs to post IDs for Cloudflare purging.
+		$post_ids = array_filter( array_map( 'url_to_postid', $urls_to_purge ) );
+
+		if ( ! empty( $post_ids ) ) {
+			$this->facade->purge_urls( $post_ids );
+		} else {
+			// If no valid post IDs found, fall back to purging everything.
+			$this->facade->purge_everything();
+		}
 	}
 
 	/**
@@ -456,6 +513,88 @@ class Cloudflare implements Subscriber_Interface, DeactivationInterface {
 		}
 
 		return (bool) $is_apo_enabled['value'];
+	}
+
+	/**
+	 * Extract URLs from deleted cache data
+	 *
+	 * @since 3.17
+	 *
+	 * @param array $deleted Array of deleted cache data from automatic purge.
+	 *
+	 * @return array Array of URLs that were deleted from cache.
+	 */
+	private function extract_urls_from_deleted_cache( array $deleted ): array {
+		$urls = [];
+
+		foreach ( $deleted as $cache_data ) {
+			if ( empty( $cache_data['home_url'] ) || empty( $cache_data['files'] ) ) {
+				continue;
+			}
+
+			$home_url = untrailingslashit( $cache_data['home_url'] );
+
+			foreach ( $cache_data['files'] as $file_path ) {
+				// Extract relative path from cache file path.
+				$url = $this->cache_file_path_to_url( $file_path, $home_url );
+
+				if ( ! empty( $url ) ) {
+					$urls[] = $url;
+				}
+			}
+		}
+
+		return array_unique( $urls );
+	}
+
+	/**
+	 * Convert cache file path to URL
+	 *
+	 * @since 3.17
+	 *
+	 * @param string $file_path Cache file path.
+	 * @param string $home_url  Home URL for the site.
+	 *
+	 * @return string|null URL if successfully extracted, null otherwise.
+	 */
+	private function cache_file_path_to_url( string $file_path, string $home_url ): ?string {
+		// Remove index.html, index-mobile.html, index-https.html etc from the file path.
+		$dir_path = dirname( $file_path );
+
+		// Get the host from home URL.
+		$parsed_home = wp_parse_url( $home_url );
+		$host        = $parsed_home['host'] ?? '';
+
+		if ( empty( $host ) ) {
+			return null;
+		}
+
+		// Find the position after the host in the cache path.
+		$host_pos = strpos( $dir_path, $host );
+
+		if ( false === $host_pos ) {
+			return null;
+		}
+
+		// Extract the URL path part (everything after the host).
+		$url_path = substr( $dir_path, $host_pos + strlen( $host ) );
+
+		// Clean up any cache-specific directories or logged-in user paths.
+		// Remove patterns like "-user-hash" for logged-in cache.
+		$url_path = preg_replace( '/-[a-f0-9]{32,}$/', '', $url_path );
+
+		// Ensure path starts with /.
+		$url_path = '/' . ltrim( $url_path, '/' );
+
+		// Handle home page (empty path or just /).
+		if ( empty( $url_path ) || '/' === $url_path ) {
+			return $home_url;
+		}
+
+		// Decode any URL encoding in the path.
+		$url_path = rawurldecode( $url_path );
+
+		return $home_url . $url_path;
 	}
 
 	/**
