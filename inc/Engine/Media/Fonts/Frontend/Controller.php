@@ -394,6 +394,17 @@ class Controller {
 	}
 
 	/**
+	 * Check if preload google fonts is enabled or not using WP Rocket settings.
+	 *
+	 * @since 3.20.2
+	 *
+	 * @return bool
+	 */
+	private function is_preload_enabled(): bool {
+		return (bool) get_rocket_option( 'auto_preload_fonts', false );
+	}
+
+	/**
 	 * Rewrite fonts in head items.
 	 *
 	 * @param array $items Head items.
@@ -426,6 +437,17 @@ class Controller {
 
 			$item['href']                          = $local_font_url;
 			$item['data-wpr-hosted-gf-parameters'] = $gf_parameters;
+
+			// Apply non-render blocking attributes when preload is enabled.
+			if ( $this->is_preload_enabled() ) {
+				$item['media']  = 'print';
+				$item['onload'] = "this.media='all'";
+
+				// Add noscript fallback for users without JavaScript
+				$items[] = $this->noscript_tag(
+					sprintf( '<link rel="stylesheet" href="%1$s">', esc_url( $local_font_url ) ) // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
+				);
+			}
 		}
 		return $items;
 	}
