@@ -116,6 +116,7 @@ class WPRocketUninstall {
 		'rocket_preload_clean_rows_time_event',
 		'rocket_preload_process_pending',
 		'rocket_preload_revert_old_failed_rows',
+		'action_scheduler_run_queue_rocket_insights',
 	];
 
 	/**
