@@ -587,8 +587,8 @@ class Cloudflare implements Subscriber_Interface, DeactivationInterface {
 		// Ensure path starts with /.
 		$url_path = '/' . ltrim( $url_path, '/' );
 
-		// Handle home page (empty path or just /).
-		if ( empty( $url_path ) || '/' === $url_path ) {
+		// Handle home page (just /).
+		if ( '/' === $url_path ) {
 			return $home_url;
 		}
 
