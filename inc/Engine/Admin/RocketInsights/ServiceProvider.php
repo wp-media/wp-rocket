@@ -41,6 +41,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'ri_manager',
 		'ri_factory',
 		'ri_queue',
+		'ri_queue_runner',
 		'ri_processor',
 		'ri_render',
 		'ri_controller',
@@ -155,6 +156,7 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		// Queue layer.
 		$this->getContainer()->add( 'ri_queue', RIQueue::class );
+		$this->getContainer()->addShared( 'ri_queue_runner', RIQueueRunner::class );
 		$this->getContainer()->add( 'ri_rest', Rest::class )
 			->addArguments(
 				[
