@@ -346,7 +346,7 @@ class Cloudflare implements Subscriber_Interface, DeactivationInterface {
 	/**
 	 * Purge home page on Cloudflare
 	 *
-	 * @since 3.17
+	 * @since 3.20.2
 	 *
 	 * @param string $root WP Rocket root cache path.
 	 * @param string $lang Current language.
@@ -518,7 +518,7 @@ class Cloudflare implements Subscriber_Interface, DeactivationInterface {
 	/**
 	 * Extract URLs from deleted cache data
 	 *
-	 * @since 3.17
+	 * @since 3.20.2
 	 *
 	 * @param array $deleted Array of deleted cache data from automatic purge.
 	 *
@@ -550,7 +550,7 @@ class Cloudflare implements Subscriber_Interface, DeactivationInterface {
 	/**
 	 * Convert cache file path to URL
 	 *
-	 * @since 3.17
+	 * @since 3.20.2
 	 *
 	 * @param string $file_path Cache file path.
 	 * @param string $home_url  Home URL for the site.
