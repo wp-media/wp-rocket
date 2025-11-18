@@ -40,7 +40,6 @@ module.exports = (function () {
 			const button = jQuery(this);
 			const url = button.data('url');
 			const column = button.closest('.wpr-ri-column');
-			const source = button.data('source') || column.data('source') || 'post type listing';
 
 			const canAddPages = column.attr('data-can-add-pages') === '1';
 
@@ -49,7 +48,7 @@ module.exports = (function () {
 				return;
 			}
 
-			addNewPage(url, column, button, source);
+			addNewPage(url, column, button);
 		});
 	}
 
@@ -64,6 +63,7 @@ module.exports = (function () {
 			const url = el.data('url');
 			const column = el.closest('.wpr-ri-column');
 			const rowId = column.data('rocket-insights-id');
+			const source = el.data('source') || column.data('source');
 
 			if (!rowId) {
 				return;
@@ -77,7 +77,7 @@ module.exports = (function () {
 				return;
 			}
 
-			retestPage(rowId, url, column);
+			retestPage(rowId, url, column, source);
 		});
 	}
 
@@ -102,9 +102,8 @@ module.exports = (function () {
 	 * @param {string} url    The URL to test.
 	 * @param {jQuery} column The column element.
 	 * @param {jQuery} button The button that was clicked.
-	 * @param {string} source The source of the request.
 	 */
-	function addNewPage(url, column, button, source) {
+	function addNewPage(url, column, button) {
 		// Disable button and show loading state immediately.
 		button.prop('disabled', true);
 
@@ -117,7 +116,7 @@ module.exports = (function () {
 			method: 'POST',
 			data: { 
 				page_url: url,
-				source: source
+				source: 'post type listing'
 			},
 		}).then((response) => {
 			const success = response?.success === true;
@@ -153,8 +152,9 @@ module.exports = (function () {
 	 * @param {number} rowId  The database row ID.
 	 * @param {string} url    The URL being tested.
 	 * @param {jQuery} column The column element.
+	 * @param {string} source The source of the request.
 	 */
-	function retestPage(rowId, url, column) {
+	function retestPage(rowId, url, column, source) {
 		// Show loading spinner immediately before API call
 		showLoadingState(column, rowId);
 
@@ -162,6 +162,9 @@ module.exports = (function () {
 			{
 				path: '/wp-rocket/v1/rocket-insights/pages/' + rowId,
 				method: 'PATCH',
+				data: {
+					source: source
+				}
 			}
 		).then((response) => {
 			if (response.success) {

@@ -24,13 +24,12 @@ if ( null === $data['wpr_rocket_row'] ) :
 	// For not-tracked rows always render the button.
 	// The click handler will decide whether to show the limit message or proceed.
 	?>
-	<div class="wpr-ri-column wpr-ri-not-tracked" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>" data-has-credit="<?php echo esc_attr( $data['wpr_has_credit'] ? '1' : '0' ); ?>" data-can-add-pages="<?php echo esc_attr( $data['wpr_can_add_pages'] ? '1' : '0' ); ?>" data-post-id="<?php echo esc_attr( $data['wpr_post_id'] ); ?>" data-source="post type listing">
+	<div class="wpr-ri-column wpr-ri-not-tracked" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>" data-has-credit="<?php echo esc_attr( $data['wpr_has_credit'] ? '1' : '0' ); ?>" data-can-add-pages="<?php echo esc_attr( $data['wpr_can_add_pages'] ? '1' : '0' ); ?>" data-post-id="<?php echo esc_attr( $data['wpr_post_id'] ); ?>">
 		<button 
 			type="button"
 			class="wpr-ri-test-page <?php echo ! $data['is_draft'] ? '' : 'wpr-ri-no-credit'; ?>"
 			data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>"
 			data-post-id="<?php echo esc_attr( $data['wpr_post_id'] ); ?>"
-			data-source="post type listing"
 			<?php echo ! $data['is_draft'] ? '' : 'disabled'; ?>
 		>
 			<?php esc_html_e( 'Test the page', 'rocket' ); ?>
@@ -53,7 +52,7 @@ endif;
 	// Helper: always render the re-test button (JS will handle credit checks on click).
 	$render_retest_button = function () use ( $data ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 		?>
-		<button type="button" class="wpr-ri-retest-link wpr-icon-bold-refresh" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>" data-post-id="<?php echo esc_attr( $data['wpr_post_id'] ); ?>" data-source="post type listing">
+		<button type="button" class="wpr-ri-retest-link wpr-icon-bold-refresh" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>" data-post-id="<?php echo esc_attr( $data['wpr_post_id'] ); ?>" data-source="re-test post type listing">
 			<?php esc_html_e( 'Re-test', 'rocket' ); ?>
 		</button>
 		<?php

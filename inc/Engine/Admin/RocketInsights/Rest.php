@@ -187,7 +187,7 @@ class Rest extends WP_REST_Controller {
 						'source'   => [
 							'required'          => true,
 							'validate_callback' => function ( $param ) {
-								$allowed_sources = [ 'dashboard', 'post type listing', 'add-on page', 'auto-added homepage', 'performance monitoring' ];
+								$allowed_sources = [ 'dashboard', 'post type listing', 'add-on page', 'auto-added homepage', 'performance monitoring', 're-test post type listing', 're-test add-on page' ];
 								return in_array( $param, $allowed_sources, true );
 							},
 							'sanitize_callback' => function ( $param ) {
@@ -262,13 +262,23 @@ class Rest extends WP_REST_Controller {
 					'callback'            => [ $this, 'update_item' ],
 					'permission_callback' => [ $this, 'update_item_permissions_check' ],
 					'args'                => [
-						'id' => [
+						'id'     => [
 							'required'          => true,
 							'validate_callback' => function ( $param ) {
 								return is_numeric( $param );
 							},
 							'sanitize_callback' => function ( $param ) {
 								return intval( $param );
+							},
+						],
+						'source' => [
+							'required'          => true,
+							'validate_callback' => function ( $param ) {
+								$allowed_sources = [ 'dashboard', 'post type listing', 'add-on page', 'auto-added homepage', 'performance monitoring', 're-test post type listing', 're-test add-on page' ];
+								return in_array( $param, $allowed_sources, true );
+							},
+							'sanitize_callback' => function ( $param ) {
+								return sanitize_text_field( $param );
 							},
 						],
 					],
@@ -340,8 +350,7 @@ class Rest extends WP_REST_Controller {
 			return rest_ensure_response( $payload );
 		}
 
-		$url    = $payload['processed_url'];
-		$source = $request->get_param( 'source' );
+		$url = $payload['processed_url'];
 
 		if ( Utils::is_home( $url ) ) {
 			$page_title = __( 'Homepage', 'rocket' );
@@ -351,9 +360,6 @@ class Rest extends WP_REST_Controller {
 
 		$additional_details = [
 			'title' => $page_title,
-			'data'  => [
-				'source' => $source,
-			],
 		];
 
 		// Handle synchronous submission using shared method.
@@ -390,6 +396,7 @@ class Rest extends WP_REST_Controller {
 
 		$urls_count   = $this->query->get_total_count();
 		$current_plan = $this->plan->get_current_plan();
+		$source       = $request->get_param( 'source' );
 
 		/**
 		 * Fires when a performance monitoring job is added.
@@ -525,9 +532,12 @@ class Rest extends WP_REST_Controller {
 			return rest_ensure_response( $error );
 		}
 
+		$source = $request->get_param( 'source' );
+
 		$additional_details = [
 			'data'       => [
 				'is_retest' => true,
+				'source'    => $source,
 			],
 			'score'      => '',
 			'report_url' => '',
