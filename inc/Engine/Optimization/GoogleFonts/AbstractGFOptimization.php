@@ -108,7 +108,7 @@ abstract class AbstractGFOptimization {
 	}
 
 	/**
-	 * Check if preload google fonts is enabled or not using WP Rocket settings.
+	 * Check if preload google fonts is enabled or not using filter.
 	 *
 	 * @since 3.20.2
 	 *
