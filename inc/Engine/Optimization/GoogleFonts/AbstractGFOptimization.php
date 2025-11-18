@@ -115,7 +115,7 @@ abstract class AbstractGFOptimization {
 	 * @return bool
 	 */
 	protected function is_preload_enabled() {
-		return (bool) get_rocket_option( 'auto_preload_fonts', true );
+		return ! wpm_apply_filters_typed( 'boolean', 'rocket_disable_google_fonts_preload', false );
 	}
 
 	/**
