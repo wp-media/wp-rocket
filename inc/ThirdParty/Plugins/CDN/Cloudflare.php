@@ -72,8 +72,8 @@ class Cloudflare implements Subscriber_Interface, DeactivationInterface {
 			'pre_get_rocket_option_do_cloudflare' => 'disable_cloudflare_option',
 			'rocket_after_clean_domain'           => 'purge_cloudflare',
 			'after_rocket_clean_files'            => 'purge_cloudflare_partial',
-			'after_rocket_clean_home'             => [ 'purge_cloudflare_home', 10, 2 ],
-			'rocket_after_automatic_cache_purge'  => [ 'purge_cloudflare_after_automatic_purge', 10, 2 ],
+			'after_rocket_clean_home'             => 'purge_cloudflare_home',
+			'rocket_after_automatic_cache_purge'  => 'purge_cloudflare_after_automatic_purge',
 			'rocket_saas_complete_job_status'     => 'purge_cloudflare_after_usedcss',
 			'rocket_rucss_after_clearing_usedcss' => 'purge_cloudflare_after_usedcss',
 			'admin_post_rocket_enable_separate_mobile_cache' => 'enable_separate_mobile_cache',
@@ -348,12 +348,11 @@ class Cloudflare implements Subscriber_Interface, DeactivationInterface {
 	 *
 	 * @since 3.20.2
 	 *
-	 * @param string $root WP Rocket root cache path.
 	 * @param string $lang Current language.
 	 *
 	 * @return void
 	 */
-	public function purge_cloudflare_home( $root = '', $lang = '' ) {
+	public function purge_cloudflare_home( $lang = '' ) {
 		if ( ! $this->is_plugin_active() ) {
 			return;
 		}
@@ -375,13 +374,8 @@ class Cloudflare implements Subscriber_Interface, DeactivationInterface {
 			$page_on_front = get_option( 'page_on_front' );
 			if ( $page_on_front && get_post( $page_on_front ) instanceof \WP_Post ) {
 				$this->facade->purge_urls( (int) $page_on_front );
-				return;
 			}
 		}
-
-		// If we can't determine specific post ID, fall back to purging everything.
-		// This ensures we don't miss anything important.
-		$this->facade->purge_everything();
 	}
 
 	/**
@@ -407,21 +401,42 @@ class Cloudflare implements Subscriber_Interface, DeactivationInterface {
 	 * @since 3.20.2
 	 *
 	 * @param array $deleted Array of deleted cache data.
-	 * @param array $args    Array with lifespan and file_age_limit data.
 	 *
 	 * @return void
 	 */
-	public function purge_cloudflare_after_automatic_purge( $deleted, $args ) {
+	public function purge_cloudflare_after_automatic_purge( $deleted ) {
 		if ( ! $this->is_plugin_active() ) {
 			return;
 		}
 
-		// Extract URLs from deleted cache data and purge only those specific URLs.
-		$urls_to_purge = $this->extract_urls_from_deleted_cache( $deleted );
+		$urls_to_purge = [];
+
+		foreach ( $deleted as $data ) {
+			if ( $data['logged_in'] ) {
+				// Logged in user: no need to purge those since we would need the corresponding cookies.
+				continue;
+			}
+
+			foreach ( $data['files'] as $file_path ) {
+				if ( strpos( $file_path, '#' ) ) {
+					// URL with query string.
+					$file_path = preg_replace( '/#/', '?', $file_path, 1 );
+				} else {
+					$file_path         = untrailingslashit( $file_path );
+					$data['home_path'] = untrailingslashit( $data['home_path'] );
+					$data['home_url']  = untrailingslashit( $data['home_url'] );
+					if ( '/' === substr( get_option( 'permalink_structure' ), -1 ) ) {
+						$file_path         .= '/';
+						$data['home_path'] .= '/';
+						$data['home_url']  .= '/';
+					}
+				}
+
+				$urls_to_purge[] = str_replace( $data['home_path'], $data['home_url'], $file_path );
+			}
+		}
 
 		if ( empty( $urls_to_purge ) ) {
-			// If no specific URLs found, fall back to purging everything as safety measure.
-			$this->facade->purge_everything();
 			return;
 		}
 
@@ -430,11 +445,7 @@ class Cloudflare implements Subscriber_Interface, DeactivationInterface {
 
 		if ( ! empty( $post_ids ) ) {
 			$this->facade->purge_urls( $post_ids );
-			return;
 		}
-
-		// If no valid post IDs found, fall back to purging everything.
-		$this->facade->purge_everything();
 	}
 
 	/**
@@ -514,88 +525,6 @@ class Cloudflare implements Subscriber_Interface, DeactivationInterface {
 		}
 
 		return (bool) $is_apo_enabled['value'];
-	}
-
-	/**
-	 * Extract URLs from deleted cache data
-	 *
-	 * @since 3.20.2
-	 *
-	 * @param array $deleted Array of deleted cache data from automatic purge.
-	 *
-	 * @return array Array of URLs that were deleted from cache.
-	 */
-	private function extract_urls_from_deleted_cache( array $deleted ): array {
-		$urls = [];
-
-		foreach ( $deleted as $cache_data ) {
-			if ( empty( $cache_data['home_url'] ) || empty( $cache_data['files'] ) ) {
-				continue;
-			}
-
-			$home_url = untrailingslashit( $cache_data['home_url'] );
-
-			foreach ( $cache_data['files'] as $file_path ) {
-				// Extract relative path from cache file path.
-				$url = $this->cache_file_path_to_url( $file_path, $home_url );
-
-				if ( ! empty( $url ) ) {
-					$urls[] = $url;
-				}
-			}
-		}
-
-		return array_unique( $urls );
-	}
-
-	/**
-	 * Convert cache file path to URL
-	 *
-	 * @since 3.20.2
-	 *
-	 * @param string $file_path Cache file path.
-	 * @param string $home_url  Home URL for the site.
-	 *
-	 * @return string|null URL if successfully extracted, null otherwise.
-	 */
-	private function cache_file_path_to_url( string $file_path, string $home_url ): ?string {
-		// Remove index.html, index-mobile.html, index-https.html etc from the file path.
-		$dir_path = dirname( $file_path );
-
-		// Get the host from home URL.
-		$parsed_home = wp_parse_url( $home_url );
-		$host        = $parsed_home['host'] ?? '';
-
-		if ( empty( $host ) ) {
-			return null;
-		}
-
-		// Find the position after the host in the cache path.
-		$host_pos = strpos( $dir_path, $host );
-
-		if ( false === $host_pos ) {
-			return null;
-		}
-
-		// Extract the URL path part (everything after the host).
-		$url_path = substr( $dir_path, $host_pos + strlen( $host ) );
-
-		// Clean up any cache-specific directories or logged-in user paths.
-		// Remove patterns like "-user-hash" for logged-in cache.
-		$url_path = preg_replace( '/-[a-f0-9]{32,}$/', '', $url_path );
-
-		// Ensure path starts with /.
-		$url_path = '/' . ltrim( $url_path, '/' );
-
-		// Handle home page (just /).
-		if ( '/' === $url_path ) {
-			return $home_url;
-		}
-
-		// Decode any URL encoding in the path.
-		$url_path = rawurldecode( $url_path );
-
-		return $home_url . $url_path;
 	}
 
 	/**

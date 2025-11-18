@@ -23,10 +23,10 @@ class Test_purgeCloudflareHome extends TestCase {
      */
     protected $options;
 
-	/**
-	 * @var Beacon
-	 */
-	protected $beacon;
+    /**
+     * @var Beacon
+     */
+    protected $beacon;
 
     /**
      * @var Options
@@ -47,8 +47,8 @@ class Test_purgeCloudflareHome extends TestCase {
         parent::set_up();
         
         $this->options = Mockery::mock(Options_Data::class);
-		$this->option_api = Mockery::mock(Options::class);
-		$this->beacon = Mockery::mock(Beacon::class);
+        $this->option_api = Mockery::mock(Options::class);
+        $this->beacon = Mockery::mock(Beacon::class);
         $this->facade = Mockery::mock(CloudflareFacade::class);
 
         $this->cloudflare = new Cloudflare($this->options, $this->option_api, $this->beacon, $this->facade);
@@ -64,9 +64,8 @@ class Test_purgeCloudflareHome extends TestCase {
 
         // Expect no purge when plugin is not active
         $this->facade->shouldNotReceive('purge_urls');
-        $this->facade->shouldNotReceive('purge_everything');
 
-        $this->cloudflare->purge_cloudflare_home('/cache/path', 'en');
+        $this->cloudflare->purge_cloudflare_home('en');
     }
 
     public function testShouldPurgeSpecificPostIdWhenFound()
@@ -107,9 +106,7 @@ class Test_purgeCloudflareHome extends TestCase {
             ->with(123)
             ->once();
 
-        $this->facade->shouldNotReceive('purge_everything');
-
-        $this->cloudflare->purge_cloudflare_home('/cache/path', 'en');
+        $this->cloudflare->purge_cloudflare_home('en');
     }
 
     public function testShouldPurgeStaticFrontPageWhenUrlToPostIdReturnsZero()
@@ -161,56 +158,10 @@ class Test_purgeCloudflareHome extends TestCase {
             ->with(5)
             ->once();
 
-        $this->facade->shouldNotReceive('purge_everything');
-
-        $this->cloudflare->purge_cloudflare_home('/cache/path', '');
+        $this->cloudflare->purge_cloudflare_home('');
     }
 
-    public function testShouldPurgeEverythingAsFallback()
-    {
-        // Mock plugin active check
-        Functions\expect('is_plugin_active')
-            ->with('cloudflare/cloudflare.php')
-            ->once()
-            ->andReturn(true);
-
-        // Mock Cloudflare credentials
-        Functions\when('get_option')->alias(function ($option_name, $default = false) {
-            switch ($option_name) {
-                case 'cloudflare_api_email':
-                    return 'test@example.com';
-                case 'cloudflare_api_key':
-                    return 'test-api-key';
-                case 'cloudflare_cached_domain_name':
-                    return 'example.com';
-                case 'show_on_front':
-                    return 'posts'; // Not using static page
-                default:
-                    return $default;
-            }
-        });
-
-        // Mock getting home URL and url_to_postid returning 0
-        Functions\expect('get_rocket_i18n_home_url')
-            ->with('')
-            ->once()
-            ->andReturn('https://example.com/');
-
-        Functions\expect('url_to_postid')
-            ->with('https://example.com/')
-            ->once()
-            ->andReturn(0);
-
-        // Expect purge_everything to be called as fallback
-        $this->facade->shouldReceive('purge_everything')
-            ->once();
-
-        $this->facade->shouldNotReceive('purge_urls');
-
-        $this->cloudflare->purge_cloudflare_home('/cache/path', '');
-    }
-
-    public function testShouldPurgeEverythingWhenStaticPageNotFound()
+    public function testShouldNotPurgeWhenStaticPageNotFound()
     {
         // Mock plugin active check
         Functions\expect('is_plugin_active')
@@ -253,12 +204,9 @@ class Test_purgeCloudflareHome extends TestCase {
             ->once()
             ->andReturn(null);
 
-        // Expect purge_everything to be called as fallback
-        $this->facade->shouldReceive('purge_everything')
-            ->once();
-
+        // Expect no purge when static page is not found
         $this->facade->shouldNotReceive('purge_urls');
 
-        $this->cloudflare->purge_cloudflare_home('/cache/path', '');
+        $this->cloudflare->purge_cloudflare_home('');
     }
 }

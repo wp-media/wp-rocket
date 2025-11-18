@@ -23,10 +23,10 @@ class Test_purgeCloudflareAfterAutomaticPurge extends TestCase {
      */
     protected $options;
 
-	/**
-	 * @var Beacon
-	 */
-	protected $beacon;
+    /**
+     * @var Beacon
+     */
+    protected $beacon;
 
     /**
      * @var Options
@@ -47,8 +47,8 @@ class Test_purgeCloudflareAfterAutomaticPurge extends TestCase {
         parent::set_up();
         
         $this->options = Mockery::mock(Options_Data::class);
-		$this->option_api = Mockery::mock(Options::class);
-		$this->beacon = Mockery::mock(Beacon::class);
+        $this->option_api = Mockery::mock(Options::class);
+        $this->beacon = Mockery::mock(Beacon::class);
         $this->facade = Mockery::mock(CloudflareFacade::class);
 
         $this->cloudflare = new Cloudflare($this->options, $this->option_api, $this->beacon, $this->facade);
@@ -64,7 +64,6 @@ class Test_purgeCloudflareAfterAutomaticPurge extends TestCase {
 
         // Expect no purge when plugin is not active
         $this->facade->shouldNotReceive('purge_urls');
-        $this->facade->shouldNotReceive('purge_everything');
 
         $this->cloudflare->purge_cloudflare_after_automatic_purge(
             [
@@ -74,8 +73,7 @@ class Test_purgeCloudflareAfterAutomaticPurge extends TestCase {
                     'logged_in' => false,
                     'files' => ['/path/to/cache/wp-rocket/example.com/page1/index.html']
                 ]
-            ],
-            ['lifespan' => 86400, 'file_age_limit' => 3600]
+            ]
         );
     }
 
@@ -98,18 +96,15 @@ class Test_purgeCloudflareAfterAutomaticPurge extends TestCase {
             if ($option_name === 'cloudflare_cached_domain_name') {
                 return 'example.com';
             }
+            if ($option_name === 'permalink_structure') {
+                return '/%postname%/';
+            }
             return $default;
         });
 
-        // Mock wp_parse_url
-        Functions\expect('wp_parse_url')
-            ->with('https://example.com')
-            ->once()
-            ->andReturn(['host' => 'example.com']);
-
         // Mock url_to_postid
         Functions\expect('url_to_postid')
-            ->with('https://example.com/page1')
+            ->with('https://example.com/page1/')
             ->once()
             ->andReturn(123);
 
@@ -118,8 +113,6 @@ class Test_purgeCloudflareAfterAutomaticPurge extends TestCase {
             ->with([123])
             ->once();
 
-        $this->facade->shouldNotReceive('purge_everything');
-
         $this->cloudflare->purge_cloudflare_after_automatic_purge(
             [
                 [
@@ -128,12 +121,11 @@ class Test_purgeCloudflareAfterAutomaticPurge extends TestCase {
                     'logged_in' => false,
                     'files' => ['/path/to/cache/wp-rocket/example.com/page1/index.html']
                 ]
-            ],
-            ['lifespan' => 86400, 'file_age_limit' => 3600]
+            ]
         );
     }
 
-    public function testShouldPurgeEverythingWhenNoValidUrls()
+    public function testShouldNotPurgeWhenNoValidUrls()
     {
         // Mock plugin active check
         Functions\expect('is_plugin_active')
@@ -155,19 +147,15 @@ class Test_purgeCloudflareAfterAutomaticPurge extends TestCase {
             return $default;
         });
 
-        // Expect purge_everything as fallback when no valid cache data
-        $this->facade->shouldReceive('purge_everything')
-            ->once();
-
+        // Expect no purge when no valid cache data
         $this->facade->shouldNotReceive('purge_urls');
 
         $this->cloudflare->purge_cloudflare_after_automatic_purge(
-            [], // Empty deleted array
-            ['lifespan' => 86400, 'file_age_limit' => 3600]
+            [] // Empty deleted array
         );
     }
 
-    public function testShouldPurgeEverythingWhenNoValidPostIds()
+    public function testShouldNotPurgeWhenNoValidPostIds()
     {
         // Mock plugin active check
         Functions\expect('is_plugin_active')
@@ -186,25 +174,19 @@ class Test_purgeCloudflareAfterAutomaticPurge extends TestCase {
             if ($option_name === 'cloudflare_cached_domain_name') {
                 return 'example.com';
             }
+            if ($option_name === 'permalink_structure') {
+                return '/%postname%/';
+            }
             return $default;
         });
-
-        // Mock wp_parse_url
-        Functions\expect('wp_parse_url')
-            ->with('https://example.com')
-            ->once()
-            ->andReturn(['host' => 'example.com']);
 
         // Mock url_to_postid returning 0 (no valid post ID)
         Functions\expect('url_to_postid')
-            ->with('https://example.com/page1')
+            ->with('https://example.com/page1/')
             ->once()
             ->andReturn(0);
 
-        // Expect purge_everything as fallback when no valid post IDs
-        $this->facade->shouldReceive('purge_everything')
-            ->once();
-
+        // Expect no purge when no valid post IDs
         $this->facade->shouldNotReceive('purge_urls');
 
         $this->cloudflare->purge_cloudflare_after_automatic_purge(
@@ -215,8 +197,7 @@ class Test_purgeCloudflareAfterAutomaticPurge extends TestCase {
                     'logged_in' => false,
                     'files' => ['/path/to/cache/wp-rocket/example.com/page1/index.html']
                 ]
-            ],
-            ['lifespan' => 86400, 'file_age_limit' => 3600]
+            ]
         );
     }
 }
