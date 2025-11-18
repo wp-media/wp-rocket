@@ -110,8 +110,6 @@ abstract class AbstractGFOptimization {
 	/**
 	 * Check if preload google fonts is enabled or not using filter.
 	 *
-	 * @since 3.20.2
-	 *
 	 * @return bool
 	 */
 	protected function is_preload_enabled() {
