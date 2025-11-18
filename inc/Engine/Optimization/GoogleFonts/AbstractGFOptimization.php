@@ -108,12 +108,14 @@ abstract class AbstractGFOptimization {
 	}
 
 	/**
-	 * Check if preload google fonts is enabled or not using filter.
+	 * Check if preload google fonts is enabled or not using WP Rocket settings.
+	 *
+	 * @since 3.20.2
 	 *
 	 * @return bool
 	 */
 	protected function is_preload_enabled() {
-		return ! wpm_apply_filters_typed( 'boolean', 'rocket_disable_google_fonts_preload', false );
+		return (bool) get_rocket_option( 'auto_preload_fonts', false );
 	}
 
 	/**
