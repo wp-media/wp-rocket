@@ -298,21 +298,6 @@ class Controller {
 	}
 
 	/**
-	 * Disables the preload of Google Fonts.
-	 *
-	 * @param bool $disable Whether to disable the preload of Google Fonts.
-	 *
-	 * @return bool
-	 */
-	public function disable_google_fonts_preload( $disable ): bool {
-		if ( ! $this->optimization_context->is_allowed() ) {
-			return $disable;
-		}
-
-		return true;
-	}
-
-	/**
 	 * Gets the font inline css.
 	 *
 	 * @param string $local_css_path CSS file path.
