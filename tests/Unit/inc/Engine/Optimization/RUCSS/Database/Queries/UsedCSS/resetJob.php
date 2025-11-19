@@ -34,6 +34,7 @@ class Test_resetJob extends TestCase {
 		/* @phpstan-ignore-next-line */
 		$this->usedcss->expects(self::once())->method('update_item')->with($expected['id'], $expected['data'])->willReturn($config['updated']);
 
-        $this->assertSame($expected['result'], $this->usedcss->reset_job($config['id'], $config['job_id']));
+		$additional_details = $config['additional_details'] ?? [];
+        $this->assertSame($expected['result'], $this->usedcss->reset_job($config['id'], $config['job_id'], $additional_details));
     }
 }
