@@ -520,12 +520,15 @@ document.addEventListener('DOMContentLoaded', function() {
 			return;
 		}
 
+		const source = $(this).data('source');
+
 		window.wp.apiFetch(
 			{
 				path: '/wp-rocket/v1/rocket-insights/pages/',
 				method: 'POST',
 				data: {
-					page_url: pageUrl
+					page_url: pageUrl,
+					source: source
 				},
 			}
 		).then( ( response ) => {
