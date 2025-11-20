@@ -164,6 +164,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'ri_render',
 					'ri_plan',
 					'job_processor',
+					'ri_queue',
 				]
 			);
 		// Subscriber.
