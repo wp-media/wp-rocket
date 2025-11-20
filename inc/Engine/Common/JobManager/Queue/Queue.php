@@ -87,7 +87,7 @@ class Queue extends AbstractASQueue {
 	 *
 	 * @return int The action ID.
 	 */
-	public function schedule_single_job( int $time, string $url, bool $is_mobile, string $optimization_type ) {
+	public function schedule_single_task( int $time, string $url, bool $is_mobile, string $optimization_type ) {
 		return $this->schedule_single(
 			$optimization_type,
 			'rocket_saas_job_check_status',

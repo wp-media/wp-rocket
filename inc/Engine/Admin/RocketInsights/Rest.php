@@ -627,7 +627,7 @@ class Rest extends WP_REST_Controller {
 
 		// Update to in-progress status immediately.
 		$this->query->make_status_inprogress( $url, $is_mobile );
-		$this->queue->schedule_single_job( time() + 30, $url, $is_mobile, 'rocket_insights' );
+		$this->queue->schedule_single_task( time() + 30, $url, $is_mobile, 'rocket_insights' );
 
 		return $row_id;
 	}
