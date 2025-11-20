@@ -78,7 +78,7 @@ class Queue extends AbstractASQueue {
 	}
 
 	/**
-	 * Schedule a single job to check the status of an optimization request.
+	 * Schedule a single task to check the status of an optimization request.
 	 *
 	 * @param int    $time The timestamp when the job will run.
 	 * @param string $url The URL from the DB row.
