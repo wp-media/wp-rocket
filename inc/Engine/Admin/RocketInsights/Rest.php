@@ -358,8 +358,11 @@ class Rest extends WP_REST_Controller {
 			$page_title = $this->get_page_title( $payload['message'] );
 		}
 
+		$source = $request->get_param( 'source' );
+
 		$additional_details = [
-			'title' => $page_title,
+			'title'  => $page_title,
+			'source' => $source,
 		];
 
 		// Handle synchronous submission using shared method.
@@ -396,7 +399,6 @@ class Rest extends WP_REST_Controller {
 
 		$urls_count   = $this->query->get_total_count();
 		$current_plan = $this->plan->get_current_plan();
-		$source       = $request->get_param( 'source' );
 
 		/**
 		 * Fires when a performance monitoring job is added.
