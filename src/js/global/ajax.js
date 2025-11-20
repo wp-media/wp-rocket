@@ -520,12 +520,15 @@ document.addEventListener('DOMContentLoaded', function() {
 			return;
 		}
 
+		const source = $(this).data('source');
+
 		window.wp.apiFetch(
 			{
 				path: '/wp-rocket/v1/rocket-insights/pages/',
 				method: 'POST',
 				data: {
-					page_url: pageUrl
+					page_url: pageUrl,
+					source: source
 				},
 			}
 		).then( ( response ) => {
@@ -578,15 +581,21 @@ document.addEventListener('DOMContentLoaded', function() {
 	function handleResetPage(e) {
 		e.preventDefault();
 
-		let id = $(this).parents('.wpr-ri-item').data('rocket-insights-id');
+		const $button = $(this);
+		let id = $button.parents('.wpr-ri-item').data('rocket-insights-id');
 		if ( ! id ) {
 			return;
 		}
+
+		const source = $button.data('source');
 
 		window.wp.apiFetch(
 			{
 				path: '/wp-rocket/v1/rocket-insights/pages/' + id,
 				method: 'PATCH',
+				data: {
+					source: source
+				}
 			}
 		).then( ( response ) => {
 			if (response.success) {

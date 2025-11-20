@@ -87,7 +87,8 @@ class UpdateItemTest extends RESTfulTestCase {
 	public function testShouldDoAsExpected( $config, $expected ) {
 		$this->setUpTest( $config );
 
-		$response = $this->doRestRequest( 'PATCH', '/wp-rocket/v1/rocket-insights/pages/' . $config['id'] );
+		$body = isset( $config['body'] ) ? $config['body'] : [ 'source' => 're-test add-on page' ];
+		$response = $this->doRestRequest( 'PATCH', '/wp-rocket/v1/rocket-insights/pages/' . $config['id'], $body );
 
 		$this->assertResponse( $response, $expected );
 	}

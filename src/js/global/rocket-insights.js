@@ -63,6 +63,7 @@ module.exports = (function () {
 			const url = el.data('url');
 			const column = el.closest('.wpr-ri-column');
 			const rowId = column.data('rocket-insights-id');
+			const source = el.data('source') || column.data('source');
 
 			if (!rowId) {
 				return;
@@ -76,7 +77,7 @@ module.exports = (function () {
 				return;
 			}
 
-			retestPage(rowId, url, column);
+			retestPage(rowId, url, column, source);
 		});
 	}
 
@@ -113,7 +114,10 @@ module.exports = (function () {
 		window.wp.apiFetch({
 			path: '/wp-rocket/v1/rocket-insights/pages/',
 			method: 'POST',
-			data: { page_url: url },
+			data: { 
+				page_url: url,
+				source: 'post type listing'
+			},
 		}).then((response) => {
 			const success = response?.success === true;
 			const id = response?.id ?? response?.data?.id ?? null;
@@ -148,8 +152,9 @@ module.exports = (function () {
 	 * @param {number} rowId  The database row ID.
 	 * @param {string} url    The URL being tested.
 	 * @param {jQuery} column The column element.
+	 * @param {string} source The source of the request.
 	 */
-	function retestPage(rowId, url, column) {
+	function retestPage(rowId, url, column, source) {
 		// Show loading spinner immediately before API call
 		showLoadingState(column, rowId);
 
@@ -157,6 +162,9 @@ module.exports = (function () {
 			{
 				path: '/wp-rocket/v1/rocket-insights/pages/' + rowId,
 				method: 'PATCH',
+				data: {
+					source: source
+				}
 			}
 		).then((response) => {
 			if (response.success) {
