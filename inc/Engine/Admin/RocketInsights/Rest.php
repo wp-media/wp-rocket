@@ -361,8 +361,10 @@ class Rest extends WP_REST_Controller {
 		$source = $request->get_param( 'source' );
 
 		$additional_details = [
-			'title'  => $page_title,
-			'source' => $source,
+			'title' => $page_title,
+			'data'  => [
+				'source' => $source,
+			],
 		];
 
 		// Handle synchronous submission using shared method.
