@@ -16,7 +16,7 @@ use WP_Rocket\Engine\Admin\RocketInsights\{
 };
 use WP_Rocket\Engine\Common\{
 	JobManager\JobProcessor,
-	JobManager\Queue,
+	JobManager\Queue\Queue,
 	Utils
 };
 use WP_Rocket\Logger\Logger;
