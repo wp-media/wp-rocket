@@ -306,8 +306,7 @@ class AbstractQuery extends Query implements QueryInterface {
 			'url'       => untrailingslashit( $url ),
 			'is_mobile' => $is_mobile,
 		];
-
-		$additional_update_fields           = ! empty( $additional_update_fields ) && is_array( $additional_update_fields ) ? $additional_update_fields : [];
+		
 		$additional_update_fields['status'] = 'in-progress';
 
 		return $db->update( $prefixed_table_name, $additional_update_fields, $where );
