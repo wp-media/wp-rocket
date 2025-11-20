@@ -31,6 +31,10 @@ class Test_resetJob extends TestCase {
     {
 		Functions\when('current_time')->justReturn($config['now']);
 
+		Functions\when( 'wp_parse_args' )->alias( function ( $args, $defaults ) {
+			return array_merge( $defaults, $args );
+		} );
+
 		/* @phpstan-ignore-next-line */
 		$this->usedcss->expects(self::once())->method('update_item')->with($expected['id'], $expected['data'])->willReturn($config['updated']);
 
