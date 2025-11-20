@@ -76,4 +76,26 @@ class Queue extends AbstractASQueue {
 			]
 		);
 	}
+
+	/**
+	 * Schedule a single job to check the status of an optimization request.
+	 *
+	 * @param int    $time The timestamp when the job will run.
+	 * @param string $url The URL from the DB row.
+	 * @param bool   $is_mobile Whether the request is for mobile.
+	 * @param string $optimization_type The type of optimization request to schedule.
+	 *
+	 * @return int The action ID.
+	 */
+	public function schedule_single_job( int $time, string $url, bool $is_mobile, string $optimization_type ) {
+		return $this->schedule_single(
+			$optimization_type,
+			'rocket_saas_job_check_status',
+			[
+				$url,
+				$is_mobile,
+				$optimization_type,
+			]
+		);
+	}
 }
