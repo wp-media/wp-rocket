@@ -14,8 +14,11 @@ use WP_Rocket\Engine\Admin\RocketInsights\{
 	Database\Queries\RocketInsights as Query,
 	Managers\Plan
 };
-use WP_Rocket\Engine\Common\JobManager\JobProcessor;
-use WP_Rocket\Engine\Common\Utils;
+use WP_Rocket\Engine\Common\{
+	JobManager\JobProcessor,
+	JobManager\Queue,
+	Utils
+};
 use WP_Rocket\Logger\Logger;
 
 class Rest extends WP_REST_Controller {
@@ -74,6 +77,13 @@ class Rest extends WP_REST_Controller {
 	private $job_processor;
 
 	/**
+	 * Queue instance for managing jobs.
+	 *
+	 * @var Queue
+	 */
+	private $queue;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param Query        $query Query instance.
@@ -83,8 +93,18 @@ class Rest extends WP_REST_Controller {
 	 * @param Render       $render Render instance.
 	 * @param Plan         $plan Plan instance.
 	 * @param JobProcessor $job_processor JobProcessor instance.
+	 * @param Queue        $queue Queue instance.
 	 */
-	public function __construct( Query $query, Manager $manager, Context $context, GlobalScore $global_score, Render $render, Plan $plan, JobProcessor $job_processor ) {
+	public function __construct(
+		Query $query,
+		Manager $manager,
+		Context $context,
+		GlobalScore $global_score,
+		Render $render,
+		Plan $plan,
+		JobProcessor $job_processor,
+		Queue $queue
+	) {
 		$this->query         = $query;
 		$this->manager       = $manager;
 		$this->context       = $context;
@@ -92,6 +112,7 @@ class Rest extends WP_REST_Controller {
 		$this->render        = $render;
 		$this->plan          = $plan;
 		$this->job_processor = $job_processor;
+		$this->queue         = $queue;
 	}
 
 	/**
@@ -573,6 +594,12 @@ class Rest extends WP_REST_Controller {
 
 		// If sync submission failed or returned WP_Error, fall back to async queue.
 		if ( false === $sync_response || empty( $sync_response['uuid'] ) ) {
+			Logger::error(
+				'Rocket Insights: Synchronous Submission failed, Now falling back to Async Queue.',
+				[
+					'url' => $url,
+				]
+			);
 			return $this->manager->add_to_the_queue( $url, $is_mobile, $additional_details );
 		}
 
@@ -591,8 +618,16 @@ class Rest extends WP_REST_Controller {
 			return false;
 		}
 
-		// Update to pending status immediately with job ID.
-		$this->query->make_status_pending( $url, $sync_response['uuid'], '', $is_mobile );
+		Logger::error(
+			'Rocket Insights: Synchronous Submission successful, Now scheduling single job to run in 30 seconds.',
+			[
+				'url' => $url,
+			]
+		);
+
+		// Update to in-progress status immediately.
+		$this->query->make_status_inprogress( $url, $is_mobile );
+		$this->queue->schedule_single_job( time() + 30, $url, $is_mobile, 'rocket_insights' );
 
 		return $row_id;
 	}
