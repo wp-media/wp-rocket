@@ -29,6 +29,13 @@ class Queue extends AbstractASQueue {
 	private $pending_job_cron = 'rocket_saas_pending_jobs_cron';
 
 	/**
+	 * Cron hook name for checking the status of jobs asynchronously.
+	 *
+	 * @var string
+	 */
+	private $check_job_status_hook = 'rocket_saas_job_check_status';
+
+	/**
 	 * Check if pending jobs cron is scheduled.
 	 *
 	 * @return bool
@@ -68,7 +75,7 @@ class Queue extends AbstractASQueue {
 	 */
 	public function add_job_status_check_async( string $url, bool $is_mobile, string $optimization_type ) {
 		return $this->add_async(
-			'rocket_saas_job_check_status',
+			$this->check_job_status_hook,
 			[
 				$url,
 				$is_mobile,
@@ -90,7 +97,7 @@ class Queue extends AbstractASQueue {
 	public function schedule_single_task( int $time, string $url, bool $is_mobile, string $optimization_type ) {
 		return $this->schedule_single(
 			$optimization_type,
-			'rocket_saas_job_check_status',
+			$this->check_job_status_hook,
 			[
 				$url,
 				$is_mobile,
