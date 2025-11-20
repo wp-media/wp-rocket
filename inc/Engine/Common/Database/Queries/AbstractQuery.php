@@ -331,8 +331,8 @@ class AbstractQuery extends Query implements QueryInterface {
 
 		if ( ! empty( $additional_details ) ) {
 			$updates = wp_parse_args(
-				$updates,
-				$additional_details
+				$additional_details,
+				$updates
 			);
 		}
 

@@ -465,6 +465,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 				[
 					'data'       => [
 						'is_retest' => true,
+						'source'    => 'performance monitoring',
 					],
 					'score'      => '',
 					'report_url' => '',
