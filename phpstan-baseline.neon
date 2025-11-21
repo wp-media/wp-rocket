@@ -216,6 +216,11 @@ parameters:
 			path: inc/Engine/Common/Queue/RUCSSQueueRunner.php
 
 		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: inc/Engine/Common/Utils.php
+
+		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
 			path: inc/Engine/CriticalPath/APIClient.php
@@ -528,11 +533,6 @@ parameters:
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 2
-			path: inc/Engine/Preload/Subscriber.php
-
-		-
-			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
-			count: 1
 			path: inc/Engine/Preload/Subscriber.php
 
 		-
