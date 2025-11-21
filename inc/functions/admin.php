@@ -325,9 +325,9 @@ function rocket_check_json_filetype( $wp_check_filetype_and_ext, $file, $filenam
 		return $wp_check_filetype_and_ext;
 	}
 
-	$finfo     = finfo_open( FILEINFO_MIME_TYPE ); // phpcs:ignore PHPCompatibility.FunctionUse.RemovedFunctions.finfo_openDeprecated
+	$finfo     = finfo_open( FILEINFO_MIME_TYPE );
 	$real_mime = finfo_file( $finfo, $file );
-	finfo_close( $finfo );
+	finfo_close( $finfo ); // phpcs:ignore Generic.PHP.DeprecatedFunctions.Deprecated
 
 	if ( 'text/plain' !== $real_mime ) {
 		return $wp_check_filetype_and_ext;
