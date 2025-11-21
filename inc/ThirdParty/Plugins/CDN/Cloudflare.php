@@ -7,6 +7,7 @@ use WP_Rocket\Admin\{Options, Options_Data};
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\Deactivation\DeactivationInterface;
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\Engine\Common\Utils;
 
 /**
  * Compatibility class for cloudflare.
@@ -409,32 +410,7 @@ class Cloudflare implements Subscriber_Interface, DeactivationInterface {
 			return;
 		}
 
-		$urls_to_purge = [];
-
-		foreach ( $deleted as $data ) {
-			if ( $data['logged_in'] ) {
-				// Logged in user: no need to purge those since we would need the corresponding cookies.
-				continue;
-			}
-
-			foreach ( $data['files'] as $file_path ) {
-				if ( strpos( $file_path, '#' ) ) {
-					// URL with query string.
-					$file_path = preg_replace( '/#/', '?', $file_path, 1 );
-				} else {
-					$file_path         = untrailingslashit( $file_path );
-					$data['home_path'] = untrailingslashit( $data['home_path'] );
-					$data['home_url']  = untrailingslashit( $data['home_url'] );
-					if ( '/' === substr( get_option( 'permalink_structure' ), -1 ) ) {
-						$file_path         .= '/';
-						$data['home_path'] .= '/';
-						$data['home_url']  .= '/';
-					}
-				}
-
-				$urls_to_purge[] = str_replace( $data['home_path'], $data['home_url'], $file_path );
-			}
-		}
+		$urls_to_purge = Utils::process_deleted_cache_urls( $deleted );
 
 		if ( empty( $urls_to_purge ) ) {
 			return;
