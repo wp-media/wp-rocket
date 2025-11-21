@@ -399,7 +399,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			return;
 		}
 
-		Utils::process_deleted_cache_files(
+		Utils::process_deleted_cache_urls(
 			$deleted,
 			function ( $url ) {
 				$this->clear_cache->partial_clean( [ $url ] );
