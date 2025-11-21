@@ -94,7 +94,7 @@ class Queue extends AbstractASQueue {
 	 *
 	 * @return int The action ID.
 	 */
-	public function schedule_single_task( int $time, string $url, bool $is_mobile, string $optimization_type ) {
+	public function schedule_job_status_single_task( int $time, string $url, bool $is_mobile, string $optimization_type ) {
 		return $this->schedule_single(
 			$time,
 			$this->check_job_status_hook,
