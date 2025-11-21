@@ -325,7 +325,7 @@ function rocket_check_json_filetype( $wp_check_filetype_and_ext, $file, $filenam
 		return $wp_check_filetype_and_ext;
 	}
 
-	$finfo     = finfo_open( FILEINFO_MIME_TYPE );
+	$finfo     = finfo_open( FILEINFO_MIME_TYPE ); // phpcs:ignore PHPCompatibility.FunctionUse.Deprecated
 	$real_mime = finfo_file( $finfo, $file );
 	finfo_close( $finfo );
 
