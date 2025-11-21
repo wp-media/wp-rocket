@@ -139,4 +139,9 @@
 	</rule>
 	<!-- Enforce short array syntax: `[]` in place of `array()`. -->
 	<rule ref="Generic.Arrays.DisallowLongArraySyntax" />
+
+	<!-- Temporarily ignore phpcs deprecated error for PHP 8.5 on function finfo_open -->
+	<rule ref="Generic.PHP.DeprecatedFunctions.Deprecated">
+        <exclude-pattern>inc/functions/admin.php</exclude-pattern>
+    </rule>
 </ruleset>
