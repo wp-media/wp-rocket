@@ -184,6 +184,16 @@ class Rest extends WP_REST_Controller {
 								return rocket_add_url_protocol( $url );
 							},
 						],
+						'source'   => [
+							'required'          => true,
+							'validate_callback' => function ( $param ) {
+								$allowed_sources = [ 'dashboard', 'post type listing', 'add-on page', 'auto-added homepage', 'performance monitoring', 're-test post type listing', 're-test add-on page' ];
+								return in_array( $param, $allowed_sources, true );
+							},
+							'sanitize_callback' => function ( $param ) {
+								return sanitize_text_field( $param );
+							},
+						],
 					],
 				],
 			]
@@ -252,13 +262,23 @@ class Rest extends WP_REST_Controller {
 					'callback'            => [ $this, 'update_item' ],
 					'permission_callback' => [ $this, 'update_item_permissions_check' ],
 					'args'                => [
-						'id' => [
+						'id'     => [
 							'required'          => true,
 							'validate_callback' => function ( $param ) {
 								return is_numeric( $param );
 							},
 							'sanitize_callback' => function ( $param ) {
 								return intval( $param );
+							},
+						],
+						'source' => [
+							'required'          => true,
+							'validate_callback' => function ( $param ) {
+								$allowed_sources = [ 'dashboard', 'post type listing', 'add-on page', 'auto-added homepage', 'performance monitoring', 're-test post type listing', 're-test add-on page' ];
+								return in_array( $param, $allowed_sources, true );
+							},
+							'sanitize_callback' => function ( $param ) {
+								return sanitize_text_field( $param );
 							},
 						],
 					],
@@ -338,8 +358,13 @@ class Rest extends WP_REST_Controller {
 			$page_title = $this->get_page_title( $payload['message'] );
 		}
 
+		$source = $request->get_param( 'source' );
+
 		$additional_details = [
 			'title' => $page_title,
+			'data'  => [
+				'source' => $source,
+			],
 		];
 
 		// Handle synchronous submission using shared method.
@@ -385,8 +410,9 @@ class Rest extends WP_REST_Controller {
 		 * @param string $url        The URL that was added for monitoring.
 		 * @param string $plan       Plan name.
 		 * @param int    $urls_count The current number of URLs being monitored.
+		 * @param string $source     The source of the request.
 		 */
-		do_action( 'rocket_rocket_insights_job_added', $url, $current_plan, $urls_count );
+		do_action( 'rocket_rocket_insights_job_added', $url, $current_plan, $urls_count, $source );
 
 		$row_data = $this->query->get_row_by_id( (int) $row_id );
 
@@ -510,9 +536,12 @@ class Rest extends WP_REST_Controller {
 			return rest_ensure_response( $error );
 		}
 
+		$source = $request->get_param( 'source' );
+
 		$additional_details = [
 			'data'       => [
 				'is_retest' => true,
+				'source'    => $source,
 			],
 			'score'      => '',
 			'report_url' => '',

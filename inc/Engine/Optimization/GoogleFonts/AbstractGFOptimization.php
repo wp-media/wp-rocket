@@ -163,7 +163,10 @@ abstract class AbstractGFOptimization {
 			$items[]        = $item;
 
 			$items[] = $this->noscript_tag(
-				sprintf( '<link rel="stylesheet" href="%1$s">', $font_url ) // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
+				sprintf( '<link rel="stylesheet" href="%1$s">', $font_url ), // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
+				[
+					'data-wpr-hosted-gf-parameters' => '',
+				]
 			);
 		}
 

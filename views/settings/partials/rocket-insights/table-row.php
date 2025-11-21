@@ -49,8 +49,9 @@ defined( 'ABSPATH' ) || exit;
 		$rocket_insights_retest_button_args = [
 			'label'      => __( 'Re-Test', 'rocket' ),
 			'attributes' => [
-				'class'      => 'wpr-icon-bold-refresh wpr-ri-action wpr-action-speed_radar_refresh',
-				'aria-label' => __( 'Re-test', 'rocket' ),
+				'class'       => 'wpr-icon-bold-refresh wpr-ri-action wpr-action-speed_radar_refresh',
+				'aria-label'  => __( 'Re-test', 'rocket' ),
+				'data-source' => 're-test add-on page',
 			],
 		];
 

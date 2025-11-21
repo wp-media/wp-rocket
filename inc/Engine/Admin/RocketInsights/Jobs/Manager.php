@@ -97,6 +97,7 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 			[
 				'start_time' => time(),
 				'is_retest'  => false,
+				'source'     => 'performance monitoring',
 			]
 			);
 		$additional_details['data'] = wp_json_encode( $additional_details['data'] );
