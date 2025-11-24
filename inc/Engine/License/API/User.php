@@ -274,7 +274,7 @@ class User {
 			return '';
 		}
 
-		$url = admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '&rocket_insights_upgrade=true#rocket_insights' );
+		$url = admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '&rocket_insights_upgrade=true&rocket_source=purchase_redirect#rocket_insights' );
 
 		return add_query_arg( 'dashboard_url', rawurlencode( $url ), $plan->button->url );
 	}
