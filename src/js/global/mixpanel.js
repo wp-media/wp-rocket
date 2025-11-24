@@ -116,15 +116,6 @@ class RocketMixpanel {
 	}
 
 	_sendPageViewedEvent(source, newHash) {
-		console.log('Page Viewed', {
-			path: `/wp-admin/options-general.php?page=wprocket#${newHash}`,
-			page_name: newHash.replace('_', ' '),
-			source: source,
-			plugin: rocket_mixpanel_data.plugin,
-			brand: rocket_mixpanel_data.brand,
-			application: rocket_mixpanel_data.app,
-			context: rocket_mixpanel_data.context
-		});
 		mixpanel.track('Page Viewed', {
 			path: `/wp-admin/options-general.php?page=wprocket#${newHash}`,
 			page_name: newHash.replace('_', ' '),
