@@ -39,7 +39,6 @@ class RocketMixpanel {
 	 * @param Event event Event instance.
 	 */
 	_onHashChange( event ) {
-		console.log('asa_1');
 		const oldHash = this._cleanHash(new URL(event.oldURL).hash);
 		const newHash = this._cleanHash(new URL(event.newURL).hash);
 
@@ -52,7 +51,6 @@ class RocketMixpanel {
 
 	_onPageLoad() {
 		const newHash = this._cleanHash(window.location.hash);
-		console.log('on page load: ' + newHash);
 		if ( !this._canTrackTab(newHash) ) {
 			return;
 		}
@@ -109,10 +107,13 @@ class RocketMixpanel {
 
 	_getSourceFromReferrer() {
 		const referrer = document.referrer;
-		if (referrer && !referrer.includes(window.location.hostname)) {
+		if (!referrer) {
+			return 'noreferrer';
+		}
+		if (!referrer.includes(window.location.hostname)) {
 			return 'external';
 		}
-		return '';
+		return 'internal';
 	}
 
 	_sendPageViewedEvent(source, newHash) {
