@@ -520,7 +520,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			return;
 		}
 
-		const source = $(this).data('source');
+		const source = $(this).data('source') || 'add-on page';
 
 		window.wp.apiFetch(
 			{
