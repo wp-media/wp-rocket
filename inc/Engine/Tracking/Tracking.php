@@ -282,37 +282,4 @@ class Tracking extends Abstract_Render {
 			]
 		);
 	}
-
-	/**
-	 * Tracks visits to settings page
-	 *
-	 * @return void
-	 */
-	public function track_admin_visits(): void {
-		if ( ! $this->optin->is_enabled() ) {
-			return;
-		}
-
-		$user      = wp_get_current_user();
-		$transient = 'rocket_tracking_admin_visited_' . $user->ID;
-
-		if ( false !== get_transient( $transient ) ) {
-			return;
-		}
-
-		$screen = get_current_screen();
-
-		if ( ! $screen || 'settings_page_wprocket' !== $screen->id ) {
-			return;
-		}
-
-		$this->mixpanel->track(
-			'Page Viewed',
-			[
-				'path'    => '/wp-admin/options-general.php?page=wprocket',
-				'context' => 'wp_plugin',
-			]
-		);
-		set_transient( $transient, true, WEEK_IN_SECONDS );
-	}
 }
