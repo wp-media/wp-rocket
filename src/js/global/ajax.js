@@ -520,7 +520,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			return;
 		}
 
-		const source = $(this).data('source') || 'add-on page';
+		const source = $(this).data('source');
 
 		window.wp.apiFetch(
 			{
@@ -634,7 +634,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	$(document).on( 'keypress', '#wpr-speed-radar-url-input', function(e) {
 		if (e.key === 'Enter') {
 		  e.preventDefault();
-		  handleAddPage(e);
+		  $('#wpr-action-add_page_speed_radar').click();
 		}
 	});
 

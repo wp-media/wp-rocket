@@ -55,7 +55,7 @@ class RocketMixpanel {
 			return;
 		}
 
-		this._sendPageViewedEvent(this._getSource(''), newHash);
+		this._sendPageViewedEvent(this._getSource(), newHash);
 	}
 
 	_cleanHash( tabHash ) {
@@ -69,7 +69,7 @@ class RocketMixpanel {
 		return this.trackedTabs.includes(tabHash);
 	}
 
-	_getSource( oldHash ) {
+	_getSource( oldHash = '' ) {
 		if ( oldHash ) {
 			return `settings_${oldHash}`;
 		}
