@@ -417,7 +417,7 @@ class Render extends Abstract_Render {
 	 */
 	public function get_page_limit_error_message(): string {
 		if ( $this->context->is_free_user() ) {
-			$upgrade_url = admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '#rocket_insights' );
+			$upgrade_url = admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '&rocket_source=wp_posts_list#rocket_insights' );
 
 			return sprintf(
 				/* translators: %1$s: opening <strong> tag, %2$s: closing </strong> tag, %3$s: opening link tag, %4$s: closing link tag */

@@ -404,7 +404,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		$this->plan->remove_customer_data_cache();
 		rocket_renew_box( 'insights_upgrade' );
 
-		wp_safe_redirect( admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '#rocket_insights' ) );
+		wp_safe_redirect( admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '&rocket_source=purchase_redirect#rocket_insights' ) );
 	}
 
 	/**

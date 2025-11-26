@@ -459,7 +459,7 @@ function rocket_thank_you_license() {
 		'<strong>',
 		WP_ROCKET_PLUGIN_NAME,
 		'</strong>',
-		'<a href="' . admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '#rocket_insights' ) . '">',
+		'<a href="' . admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '&rocket_source=notice_thankyou_license#rocket_insights' ) . '">',
 		'</a>'
 		);
 		rocket_notice_html( [ 'message' => $message ] );
@@ -718,7 +718,7 @@ function rocket_notice_html( $args ) {
 			}
 			break;
 		case 'rocket_insights_page':
-			$args['action'] = '<a class="button button-primary" href="' . admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '#rocket_insights' ) . '">' . __( 'Run the test now!', 'rocket' ) . '</a>';
+			$args['action'] = '<a class="button button-primary" href="' . admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '&rocket_source=notice_insights_promotion_notice#rocket_insights' ) . '">' . __( 'Run the test now!', 'rocket' ) . '</a>';
 			break;
 	}
 	/**
