@@ -434,10 +434,11 @@ class Page extends Abstract_Render {
 		$this->settings->add_page_section(
 			'dashboard',
 			[
-				'title'            => __( 'Dashboard', 'rocket' ),
-				'menu_description' => __( 'Get help, account info', 'rocket' ),
-				'faq'              => $this->beacon->get_suggest( 'faq' ),
-				'customer_data'    => $this->customer_data(),
+				'title'                   => __( 'Dashboard', 'rocket' ),
+				'menu_description'        => __( 'Get help, account info', 'rocket' ),
+				'faq'                     => $this->beacon->get_suggest( 'faq' ),
+				'customer_data'           => $this->customer_data(),
+				'rocket_insights_enabled' => $this->ri_context->is_allowed(),
 			]
 		);
 	}
