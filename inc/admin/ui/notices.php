@@ -457,7 +457,7 @@ function rocket_thank_you_license() {
 		 * Filters Rocket Insights addon enable status.
 		 *
 		 * @since 3.20
-		 * 
+		 *
 		 * @param bool $enabled Current status, default is true.
 		 * @return bool
 		 */
@@ -482,7 +482,7 @@ function rocket_thank_you_license() {
 			'</strong>'
 			);
 		}
-		
+
 		rocket_notice_html( [ 'message' => $message ] );
 	}
 }

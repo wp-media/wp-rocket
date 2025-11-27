@@ -17,6 +17,14 @@ class DisplayAddonStatusTest extends TestCase {
      * @dataProvider configTestData
      */
     public function testShouldReturnExpected( $config, $expected ) {
+		// Set up admin user with rocket_manage_options capability.
+		$admin = get_role( 'administrator' );
+		if ( ! $admin->has_cap( 'rocket_manage_options' ) ) {
+			$admin->add_cap( 'rocket_manage_options' );
+		}
+		$user_id = $this->factory->user->create( [ 'role' => 'administrator' ] );
+		wp_set_current_user( $user_id );
+
 		$container = apply_filters( 'rocket_container', null ); // @phpstan-ignore-line
 
 		$container->get( 'user' )->set_user( $config['customer_data'] );
