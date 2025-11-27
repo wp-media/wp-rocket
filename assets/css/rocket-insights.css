@@ -373,9 +373,6 @@
   background-size: contain;
   display: inline-block;
 }
-.wpr-ri-column .wpr-ri-score-wrapper .wpr-percentage-indicator .wpr-percentage-circle.wpr-centralize-100-score {
-  padding-left: 2px;
-}
 .wpr-ri-column .wpr-ri-actions-wrapper {
   display: flex;
   flex-direction: column;
