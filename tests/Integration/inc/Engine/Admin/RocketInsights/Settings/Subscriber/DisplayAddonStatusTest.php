@@ -12,6 +12,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group AdminOnly
  */
 class DisplayAddonStatusTest extends TestCase {
+
     /**
      * @dataProvider configTestData
      */
@@ -23,6 +24,12 @@ class DisplayAddonStatusTest extends TestCase {
         if ( isset( $config['date_format'] ) ) {
             update_option( 'date_format', $config['date_format'] ); // @phpstan-ignore-line
         }
+
+		if ( isset( $config['rocket_insights_enabled'] ) ) {
+			add_filter( 'rocket_rocket_insights_enabled', function() use ( $config ) {
+				return $config['rocket_insights_enabled'];
+			} );
+		}
 
         ob_start();
         do_action( 'rocket_dashboard_after_account_data' );
