@@ -453,14 +453,15 @@ function rocket_thank_you_license() {
 		$options['ignore']  = true;
 		update_option( WP_ROCKET_SLUG, $options );
 
-		/**
-		 * Filters Rocket Insights addon enable status.
-		 *
-		 * @since 3.20
-		 *
-		 * @param bool $enabled Current status, default is true.
-		 * @return bool
-		 */
+		$message = sprintf(
+		/* translators: %1$s = <strong>, %2$s = plugin name, %3$s = </strong> */
+		__( '%1$s %2$s is good to go! %3$s Your website is already faster.', 'rocket' ),
+		'<strong>',
+		WP_ROCKET_PLUGIN_NAME,
+		'</strong>'
+		);
+
+		// This filter is documented in inc/Engine/Admin/RocketInsights/Context/Context.php.
 		$rocket_insights_enabled = wpm_apply_filters_typed( 'boolean', 'rocket_rocket_insights_enabled', true );
 
 		if ( $rocket_insights_enabled ) {
@@ -472,14 +473,6 @@ function rocket_thank_you_license() {
 			'</strong>',
 			'<a href="' . admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '&rocket_source=notice_thankyou_license#rocket_insights' ) . '">',
 			'</a>'
-			);
-		} else {
-			$message = sprintf(
-			/* translators: %1$s = plugin name */
-			__( '%1$s %2$s is good to go! %3$s Your website is already faster.', 'rocket' ),
-			'<strong>',
-			WP_ROCKET_PLUGIN_NAME,
-			'</strong>'
 			);
 		}
 
