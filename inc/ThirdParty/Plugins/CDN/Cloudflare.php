@@ -7,6 +7,7 @@ use WP_Rocket\Admin\{Options, Options_Data};
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\Deactivation\DeactivationInterface;
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\Engine\Common\Utils;
 
 /**
  * Compatibility class for cloudflare.
@@ -72,6 +73,8 @@ class Cloudflare implements Subscriber_Interface, DeactivationInterface {
 			'pre_get_rocket_option_do_cloudflare' => 'disable_cloudflare_option',
 			'rocket_after_clean_domain'           => 'purge_cloudflare',
 			'after_rocket_clean_files'            => 'purge_cloudflare_partial',
+			'after_rocket_clean_home'             => 'purge_cloudflare_home',
+			'rocket_after_automatic_cache_purge'  => 'purge_cloudflare_after_automatic_purge',
 			'rocket_saas_complete_job_status'     => 'purge_cloudflare_after_usedcss',
 			'rocket_rucss_after_clearing_usedcss' => 'purge_cloudflare_after_usedcss',
 			'admin_post_rocket_enable_separate_mobile_cache' => 'enable_separate_mobile_cache',
@@ -342,6 +345,41 @@ class Cloudflare implements Subscriber_Interface, DeactivationInterface {
 	}
 
 	/**
+	 * Purge home page on Cloudflare
+	 *
+	 * @since 3.20.2
+	 *
+	 * @param string $lang Current language.
+	 *
+	 * @return void
+	 */
+	public function purge_cloudflare_home( $lang = '' ) {
+		if ( ! $this->is_plugin_active() ) {
+			return;
+		}
+
+		// Get the home URL for the specific language.
+		$home_url = get_rocket_i18n_home_url( $lang );
+
+		// Try to get post ID from home URL.
+		$post_id = url_to_postid( $home_url );
+
+		// If we have a valid post ID, purge that specific URL.
+		if ( $post_id > 0 ) {
+			$this->facade->purge_urls( $post_id );
+			return;
+		}
+
+		// If no post ID found, check if we have a static front page.
+		if ( 'page' === get_option( 'show_on_front' ) ) {
+			$page_on_front = get_option( 'page_on_front' );
+			if ( $page_on_front && get_post( $page_on_front ) instanceof \WP_Post ) {
+				$this->facade->purge_urls( (int) $page_on_front );
+			}
+		}
+	}
+
+	/**
 	 * Purges posts when using purge this URL button
 	 *
 	 * @param array $urls Array of URLs.
@@ -356,6 +394,34 @@ class Cloudflare implements Subscriber_Interface, DeactivationInterface {
 		$post_ids = array_filter( array_map( 'url_to_postid', $urls ) );
 
 		$this->facade->purge_urls( $post_ids );
+	}
+
+	/**
+	 * Purges Cloudflare cache after automatic cache purge (cache lifespan)
+	 *
+	 * @since 3.20.2
+	 *
+	 * @param array $deleted Array of deleted cache data.
+	 *
+	 * @return void
+	 */
+	public function purge_cloudflare_after_automatic_purge( $deleted ) {
+		if ( ! $this->is_plugin_active() ) {
+			return;
+		}
+
+		$urls_to_purge = Utils::process_deleted_cache_urls( $deleted );
+
+		if ( empty( $urls_to_purge ) ) {
+			return;
+		}
+
+		// Convert URLs to post IDs for Cloudflare purging.
+		$post_ids = array_filter( array_map( 'url_to_postid', $urls_to_purge ) );
+
+		if ( ! empty( $post_ids ) ) {
+			$this->facade->purge_urls( $post_ids );
+		}
 	}
 
 	/**
