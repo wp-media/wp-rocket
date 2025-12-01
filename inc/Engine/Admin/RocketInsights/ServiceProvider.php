@@ -20,6 +20,7 @@ use WP_Rocket\Engine\Admin\RocketInsights\{
 	Settings\Subscriber as SettingsSubscriber,
 	PostListing\Subscriber as PostListingSubscriber,
 };
+use WP_Rocket\Engine\Common\JobManager\Queue\Queue as JobManagerQueue;
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
@@ -51,6 +52,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'ri_settings_subscriber',
 		'ri_plan',
 		'ri_post_listing_subscriber',
+		'job_manager_queue',
 	];
 
 	/**
@@ -154,6 +156,7 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		// Queue layer.
 		$this->getContainer()->add( 'ri_queue', RIQueue::class );
+		$this->getContainer()->add( 'job_manager_queue', JobManagerQueue::class );
 		$this->getContainer()->add( 'ri_rest', Rest::class )
 			->addArguments(
 				[
@@ -164,6 +167,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'ri_render',
 					'ri_plan',
 					'job_processor',
+					'job_manager_queue',
 				]
 			);
 		// Subscriber.

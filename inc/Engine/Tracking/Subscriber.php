@@ -38,7 +38,6 @@ class Subscriber implements Subscriber_Interface {
 			'admin_print_scripts'                  => [ 'inject_mixpanel_script' ],
 			'rocket_mixpanel_optin_changed'        => 'track_optin_change',
 			'rocket_rocket_insights_job_added'     => [ 'track_rocket_insights_url_added', 10, 4 ],
-			'admin_footer-settings_page_wprocket'  => 'track_admin_visits',
 			'rocket_rocket_insights_job_failed'    => [ 'track_rocket_insights_test', 10, 3 ],
 			'rocket_rocket_insights_job_completed' => [ 'track_rocket_insights_test', 10, 3 ],
 		];
@@ -141,14 +140,5 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function track_rocket_insights_test( $row_details, $job_details, $plan ): void {
 		$this->tracking->track_rocket_insights_test( $row_details, $job_details, $plan );
-	}
-
-	/**
-	 * Tracks visits to settings page
-	 *
-	 * @return void
-	 */
-	public function track_admin_visits(): void {
-		$this->tracking->track_admin_visits();
 	}
 }
