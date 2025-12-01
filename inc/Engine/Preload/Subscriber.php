@@ -15,6 +15,7 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket_Mobile_Detect;
 use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
+use WP_Rocket\Engine\Common\Utils;
 
 class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 
@@ -398,29 +399,12 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			return;
 		}
 
-		foreach ( $deleted as $data ) {
-			if ( $data['logged_in'] ) {
-				// Logged in user: no need to preload those since we would need the corresponding cookies.
-				continue;
+		Utils::process_deleted_cache_urls(
+			$deleted,
+			function ( $url ) {
+				$this->clear_cache->partial_clean( [ $url ] );
 			}
-			foreach ( $data['files'] as $file_path ) {
-				if ( strpos( $file_path, '#' ) ) {
-					// URL with query string.
-					$file_path = preg_replace( '/#/', '?', $file_path, 1 );
-				} else {
-					$file_path         = untrailingslashit( $file_path );
-					$data['home_path'] = untrailingslashit( $data['home_path'] );
-					$data['home_url']  = untrailingslashit( $data['home_url'] );
-					if ( '/' === substr( get_option( 'permalink_structure' ), -1 ) ) {
-						$file_path         .= '/';
-						$data['home_path'] .= '/';
-						$data['home_url']  .= '/';
-					}
-				}
-
-				$this->clear_cache->partial_clean( [ str_replace( $data['home_path'], $data['home_url'], $file_path ) ] );
-			}
-		}
+		);
 	}
 
 	/**

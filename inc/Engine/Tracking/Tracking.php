@@ -149,6 +149,10 @@ class Tracking extends Abstract_Render {
 
 		if ( '1' === $value ) {
 			$this->optin->enable();
+			// Update the legacy option to prevent the notice from being displayed again after the opt-in is enabled.
+			update_option( 'rocket_analytics_notice_displayed', 1 );
+			// Set the thank-you transient to display the thank-you notice after the opt-in is enabled.
+			set_transient( 'rocket_analytics_optin', 1 );
 			wp_send_json_success( 'Opt-in enabled.' );
 		} elseif ( '0' === $value ) {
 			$this->optin->disable();
@@ -223,13 +227,14 @@ class Tracking extends Abstract_Render {
 	 * Track when a URL is added in Rocket Insights
 	 *
 	 * @param string $url        The URL that was added for monitoring.
-	 * @param String $plan       Plan name.
+	 * @param string $plan       Plan name.
 	 * @param int    $urls_count The current number of URLs being monitored.
+	 * @param string $source     The source of the request.
 	 *
 	 * @return void
 	 */
-	public function track_rocket_insights_url_added( $url, $plan, $urls_count ): void {
-		if ( ! $this->optin->is_enabled() ) {
+	public function track_rocket_insights_url_added( $url, $plan, $urls_count, $source ): void {
+		if ( ! $this->optin->can_track() ) {
 			return;
 		}
 
@@ -239,6 +244,7 @@ class Tracking extends Abstract_Render {
 				'context'       => 'wp_plugin',
 				'plan_type'     => $plan,
 				'tracked_pages' => $urls_count,
+				'source'        => $source,
 			]
 		);
 	}
@@ -255,7 +261,7 @@ class Tracking extends Abstract_Render {
 	 * @return void
 	 */
 	public function track_rocket_insights_test( $row_details, $job_details, $plan ): void {
-		if ( ! $this->optin->is_enabled() ) {
+		if ( ! $this->optin->can_track() ) {
 			return;
 		}
 
@@ -263,7 +269,7 @@ class Tracking extends Abstract_Render {
 			return;
 		}
 
-		$this->mixpanel->track(
+		$this->mixpanel->track_direct(
 			'Rocket Insights Performance Test',
 			[
 				'context'   => 'wp_plugin',
@@ -272,40 +278,8 @@ class Tracking extends Abstract_Render {
 				'retest'    => $row_details->data['is_retest'],
 				'duration'  => time() - $row_details->data['start_time'],
 				'plan_type' => $plan,
+				'source'    => $row_details->data['source'],
 			]
 		);
-	}
-
-	/**
-	 * Tracks visits to settings page
-	 *
-	 * @return void
-	 */
-	public function track_admin_visits(): void {
-		if ( ! $this->optin->is_enabled() ) {
-			return;
-		}
-
-		$user      = wp_get_current_user();
-		$transient = 'rocket_tracking_admin_visited_' . $user->ID;
-
-		if ( false !== get_transient( $transient ) ) {
-			return;
-		}
-
-		$screen = get_current_screen();
-
-		if ( ! $screen || 'settings_page_wprocket' !== $screen->id ) {
-			return;
-		}
-
-		$this->mixpanel->track(
-			'Page Viewed',
-			[
-				'path'    => '/wp-admin/options-general.php?page=wprocket',
-				'context' => 'wp_plugin',
-			]
-		);
-		set_transient( $transient, true, WEEK_IN_SECONDS );
 	}
 }

@@ -520,12 +520,15 @@ document.addEventListener('DOMContentLoaded', function() {
 			return;
 		}
 
+		const source = $(this).data('source');
+
 		window.wp.apiFetch(
 			{
 				path: '/wp-rocket/v1/rocket-insights/pages/',
 				method: 'POST',
 				data: {
-					page_url: pageUrl
+					page_url: pageUrl,
+					source: source
 				},
 			}
 		).then( ( response ) => {
@@ -578,15 +581,21 @@ document.addEventListener('DOMContentLoaded', function() {
 	function handleResetPage(e) {
 		e.preventDefault();
 
-		let id = $(this).parents('.wpr-ri-item').data('rocket-insights-id');
+		const $button = $(this);
+		let id = $button.parents('.wpr-ri-item').data('rocket-insights-id');
 		if ( ! id ) {
 			return;
 		}
+
+		const source = $button.data('source');
 
 		window.wp.apiFetch(
 			{
 				path: '/wp-rocket/v1/rocket-insights/pages/' + id,
 				method: 'PATCH',
+				data: {
+					source: source
+				}
 			}
 		).then( ( response ) => {
 			if (response.success) {
@@ -622,10 +631,10 @@ document.addEventListener('DOMContentLoaded', function() {
 	$(document).on( 'click', '#wpr-action-add_page_speed_radar', handleAddPage );
 	$(document).on( 'click', '.wpr-action-speed_radar_refresh', handleResetPage );
 	// Handle Enter key press on page url input.
-	$(document).on( 'keypress', $pageUrlInput, function(e) {
+	$(document).on( 'keypress', '#wpr-speed-radar-url-input', function(e) {
 		if (e.key === 'Enter') {
 		  e.preventDefault();
-		  handleAddPage(e);
+		  $('#wpr-action-add_page_speed_radar').click();
 		}
 	});
 

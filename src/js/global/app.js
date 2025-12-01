@@ -13,3 +13,4 @@ import '../global/beacon.js';
 import '../global/ajax.js';
 import '../global/rocketcdn.js';
 import '../global/countdown.js';
+import '../global/mixpanel.js'

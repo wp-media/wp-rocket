@@ -3129,8 +3129,8 @@ div.wpr-tutorial-item {
 .wpr-ri-notice .wpr-notice-container, .wpr-ri-notice p:first-child {
   padding: 16px;
 }
-.wpr-ri-notice .wpr-notice-75 {
-  max-width: 75%;
+.wpr-ri-notice .wpr-notice-70 {
+  max-width: 70%;
 }
 .wpr-ri-notice .wpr-notice-description, .wpr-ri-notice p {
   margin: 0;

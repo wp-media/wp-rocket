@@ -373,9 +373,6 @@
   background-size: contain;
   display: inline-block;
 }
-.wpr-ri-column .wpr-ri-score-wrapper .wpr-percentage-indicator .wpr-percentage-circle.wpr-centralize-100-score {
-  padding-left: 2px;
-}
 .wpr-ri-column .wpr-ri-actions-wrapper {
   display: flex;
   flex-direction: column;
@@ -436,7 +433,7 @@
 .wpr-ri-column .wpr-tooltip {
   position: absolute;
   bottom: calc(100% + 8px);
-  left: 0;
+  left: -125%;
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.2s ease, visibility 0.2s ease;
@@ -450,14 +447,14 @@
   border-radius: 4px;
   font-size: 12px;
   line-height: 1.4;
-  text-align: left;
+  text-align: center;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 .wpr-ri-column .wpr-tooltip:after {
   content: "";
   position: absolute;
   top: 100%;
-  left: 16px;
+  left: 83%;
   width: 0;
   height: 0;
   border-left: 6px solid transparent;

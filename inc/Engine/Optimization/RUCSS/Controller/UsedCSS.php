@@ -500,7 +500,7 @@ class UsedCSS {
 		 *
 		 * @param bool $enable True to enable, false to disable.
 		 */
-		if ( ! apply_filters( 'rocket_enable_rucss_fonts_preload', true ) ) {
+		if ( ! apply_filters( 'rocket_enable_rucss_fonts_preload', false ) ) {
 			return;
 		}
 

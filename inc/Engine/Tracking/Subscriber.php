@@ -37,8 +37,7 @@ class Subscriber implements Subscriber_Interface {
 			'admin_enqueue_scripts'                => [ 'localize_optin_status', 15 ],
 			'admin_print_scripts'                  => [ 'inject_mixpanel_script' ],
 			'rocket_mixpanel_optin_changed'        => 'track_optin_change',
-			'rocket_rocket_insights_job_added'     => [ 'track_rocket_insights_url_added', 10, 3 ],
-			'admin_footer-settings_page_wprocket'  => 'track_admin_visits',
+			'rocket_rocket_insights_job_added'     => [ 'track_rocket_insights_url_added', 10, 4 ],
 			'rocket_rocket_insights_job_failed'    => [ 'track_rocket_insights_test', 10, 3 ],
 			'rocket_rocket_insights_job_completed' => [ 'track_rocket_insights_test', 10, 3 ],
 		];
@@ -115,22 +114,19 @@ class Subscriber implements Subscriber_Interface {
 	public function track_optin_change( $status ): void {
 		$this->tracking->track_optin_change( $status );
 	}
-
 	/**
-	 * Track when a URL is added to Rocket Insights (Performance Monitoring).
+	 * Tracks when a URL is added to Rocket Insights.
 	 *
-	 * @since 3.20
-	 *
-	 * @param string $url        The URL that was added for monitoring.
+	 * @param string $url        URL that was added.
 	 * @param string $plan       Plan name.
 	 * @param int    $urls_count The current number of URLs being monitored.
+	 * @param string $source     The source of the request.
 	 *
 	 * @return void
 	 */
-	public function track_rocket_insights_url_added( $url, $plan, $urls_count ): void {
-		$this->tracking->track_rocket_insights_url_added( $url, $plan, $urls_count );
+	public function track_rocket_insights_url_added( $url, $plan, $urls_count, $source ): void {
+		$this->tracking->track_rocket_insights_url_added( $url, $plan, $urls_count, $source );
 	}
-
 	/**
 	 * Tracks when a performance test is completed or failed in Rocket Insights.
 	 *
@@ -144,14 +140,5 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function track_rocket_insights_test( $row_details, $job_details, $plan ): void {
 		$this->tracking->track_rocket_insights_test( $row_details, $job_details, $plan );
-	}
-
-	/**
-	 * Tracks visits to settings page
-	 *
-	 * @return void
-	 */
-	public function track_admin_visits(): void {
-		$this->tracking->track_admin_visits();
 	}
 }

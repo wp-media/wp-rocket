@@ -14,8 +14,11 @@ use WP_Rocket\Engine\Admin\RocketInsights\{
 	Database\Queries\RocketInsights as Query,
 	Managers\Plan
 };
-use WP_Rocket\Engine\Common\JobManager\JobProcessor;
-use WP_Rocket\Engine\Common\Utils;
+use WP_Rocket\Engine\Common\{
+	JobManager\JobProcessor,
+	JobManager\Queue\Queue,
+	Utils
+};
 use WP_Rocket\Logger\Logger;
 
 class Rest extends WP_REST_Controller {
@@ -74,6 +77,13 @@ class Rest extends WP_REST_Controller {
 	private $job_processor;
 
 	/**
+	 * Queue instance for managing jobs.
+	 *
+	 * @var Queue
+	 */
+	private $queue;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param Query        $query Query instance.
@@ -83,8 +93,18 @@ class Rest extends WP_REST_Controller {
 	 * @param Render       $render Render instance.
 	 * @param Plan         $plan Plan instance.
 	 * @param JobProcessor $job_processor JobProcessor instance.
+	 * @param Queue        $queue Queue instance.
 	 */
-	public function __construct( Query $query, Manager $manager, Context $context, GlobalScore $global_score, Render $render, Plan $plan, JobProcessor $job_processor ) {
+	public function __construct(
+		Query $query,
+		Manager $manager,
+		Context $context,
+		GlobalScore $global_score,
+		Render $render,
+		Plan $plan,
+		JobProcessor $job_processor,
+		Queue $queue
+	) {
 		$this->query         = $query;
 		$this->manager       = $manager;
 		$this->context       = $context;
@@ -92,6 +112,7 @@ class Rest extends WP_REST_Controller {
 		$this->render        = $render;
 		$this->plan          = $plan;
 		$this->job_processor = $job_processor;
+		$this->queue         = $queue;
 	}
 
 	/**
@@ -184,6 +205,16 @@ class Rest extends WP_REST_Controller {
 								return rocket_add_url_protocol( $url );
 							},
 						],
+						'source'   => [
+							'required'          => true,
+							'validate_callback' => function ( $param ) {
+								$allowed_sources = [ 'dashboard', 'post type listing', 'add-on page', 'auto-added homepage', 'performance monitoring', 're-test post type listing', 're-test add-on page' ];
+								return in_array( $param, $allowed_sources, true );
+							},
+							'sanitize_callback' => function ( $param ) {
+								return sanitize_text_field( $param );
+							},
+						],
 					],
 				],
 			]
@@ -252,13 +283,23 @@ class Rest extends WP_REST_Controller {
 					'callback'            => [ $this, 'update_item' ],
 					'permission_callback' => [ $this, 'update_item_permissions_check' ],
 					'args'                => [
-						'id' => [
+						'id'     => [
 							'required'          => true,
 							'validate_callback' => function ( $param ) {
 								return is_numeric( $param );
 							},
 							'sanitize_callback' => function ( $param ) {
 								return intval( $param );
+							},
+						],
+						'source' => [
+							'required'          => true,
+							'validate_callback' => function ( $param ) {
+								$allowed_sources = [ 'dashboard', 'post type listing', 'add-on page', 'auto-added homepage', 'performance monitoring', 're-test post type listing', 're-test add-on page' ];
+								return in_array( $param, $allowed_sources, true );
+							},
+							'sanitize_callback' => function ( $param ) {
+								return sanitize_text_field( $param );
 							},
 						],
 					],
@@ -338,8 +379,13 @@ class Rest extends WP_REST_Controller {
 			$page_title = $this->get_page_title( $payload['message'] );
 		}
 
+		$source = $request->get_param( 'source' );
+
 		$additional_details = [
 			'title' => $page_title,
+			'data'  => [
+				'source' => $source,
+			],
 		];
 
 		// Handle synchronous submission using shared method.
@@ -385,8 +431,9 @@ class Rest extends WP_REST_Controller {
 		 * @param string $url        The URL that was added for monitoring.
 		 * @param string $plan       Plan name.
 		 * @param int    $urls_count The current number of URLs being monitored.
+		 * @param string $source     The source of the request.
 		 */
-		do_action( 'rocket_rocket_insights_job_added', $url, $current_plan, $urls_count );
+		do_action( 'rocket_rocket_insights_job_added', $url, $current_plan, $urls_count, $source );
 
 		$row_data = $this->query->get_row_by_id( (int) $row_id );
 
@@ -510,9 +557,12 @@ class Rest extends WP_REST_Controller {
 			return rest_ensure_response( $error );
 		}
 
+		$source = $request->get_param( 'source' );
+
 		$additional_details = [
 			'data'       => [
 				'is_retest' => true,
+				'source'    => $source,
 			],
 			'score'      => '',
 			'report_url' => '',
@@ -573,6 +623,12 @@ class Rest extends WP_REST_Controller {
 
 		// If sync submission failed or returned WP_Error, fall back to async queue.
 		if ( false === $sync_response || empty( $sync_response['uuid'] ) ) {
+			Logger::error(
+				'Rocket Insights: Synchronous Submission failed, Now falling back to Async Queue.',
+				[
+					'url' => $url,
+				]
+			);
 			return $this->manager->add_to_the_queue( $url, $is_mobile, $additional_details );
 		}
 
@@ -591,8 +647,16 @@ class Rest extends WP_REST_Controller {
 			return false;
 		}
 
-		// Update to pending status immediately with job ID.
-		$this->query->make_status_pending( $url, $sync_response['uuid'], '', $is_mobile );
+		Logger::error(
+			'Rocket Insights: Synchronous Submission successful, Now scheduling single job to run in 30 seconds.',
+			[
+				'url' => $url,
+			]
+		);
+
+		// Update to in-progress status immediately with job_id.
+		$this->manager->make_status_inprogress( $url, $is_mobile, 'rocket_insights', [ 'job_id' => $sync_response['uuid'] ] );
+		$this->queue->schedule_job_status_single_task( time() + 30, $url, $is_mobile, 'rocket_insights' );
 
 		return $row_id;
 	}
@@ -824,7 +888,7 @@ class Rest extends WP_REST_Controller {
 	 */
 	private function get_page_limit_error_message(): string {
 		if ( $this->context->is_free_user() ) {
-			$upgrade_url = admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '#rocket_insights' );
+			$upgrade_url = admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '&rocket_source=notice_free_page_limit_reached#rocket_insights' );
 
 			return sprintf(
 				/* translators: %1$s: opening <strong> tag, %2$s: closing </strong> tag, %3$s: opening link tag, %4$s: closing link tag */
