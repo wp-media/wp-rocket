@@ -104,7 +104,7 @@ public function process_data( $data ) {
 
 **PHPDoc Blocks:**
 - All public methods MUST have complete PHPDoc
-- Include `@since`, `@param`, `@return`, and `@throws` when applicable
+- Include `@since`, `@param`, and `@throws` when applicable
 - Document complex private methods
 - Keep inline comments minimal and meaningful
 
@@ -417,13 +417,13 @@ gulp js:watch         # Watch mode
 
 ### Code Quality
 ```bash
-composer run phpcs          # Code standards check (WordPress Coding Standards)
-composer run run-stan       # PHPStan static analysis
+composer phpcs          # Code standards check (WordPress Coding Standards)
+composer run-stan       # PHPStan static analysis
 ```
 
 **Before Committing:**
-1. Run `composer run phpcs` and fix all violations
-2. Run `composer run run-stan` and address type issues
+1. Run `composer phpcs` and fix all violations
+2. Run `composer run-stan` and address type issues
 3. Run relevant test suites (unit and integration)
 4. Verify no tests are broken
 
@@ -443,8 +443,8 @@ We follow **Test-Driven Development (TDD)**:
 - Fixtures: `tests/Fixtures/` (same path as test file)
 
 **Naming Conventions:**
-- Test files: `path/to/class/ClassName/methodName.php`
-- Test class: `Test_MethodName` (e.g., `Test_ProcessData`)
+- Test files: `path/to/class/ClassName/methodNameTest.php`
+- Test class: `MethodNameTest` (e.g., `ProcessDataTest`)
 - Test methods: `testShouldBehaviorExpected` (e.g., `testShouldProcessDataCorrectly`)
 - Fixture scenarios: `shouldHandleValidInput`, `shouldReturnErrorForInvalidData`
 
@@ -466,7 +466,7 @@ tests/Fixtures/inc/Engine/MyFeature/Controller/processData.php
 
 **Example:**
 ```php
-class Test_ProcessData extends TestCase {
+class ProcessDataTest extends TestCase {
     private $dependency_mock;
     private $service;
     
@@ -517,7 +517,7 @@ use WPRocketMe\Tests\Integration\DBTrait;
  * @group PerformanceMonitoring
  * @group AdminOnly
  */
-class Test_ProcessData extends TestCase {
+class ProcessDataTest extends TestCase {
     use DBTrait;
     
     public function set_up() {
@@ -775,7 +775,6 @@ Every `wpm_apply_filters_typed()` call MUST have a docblock that includes:
 - Description of what the filter does
 - `@since` version tag
 - `@param` for all parameters with types
-- `@return` with the return type
 
 **Real Example:**
 ```php
