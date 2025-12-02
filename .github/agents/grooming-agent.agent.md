@@ -1,4 +1,3 @@
-
 ---
 name: grooming_agent
 description: Expert at issue refinement and technical planning for WP Rocket - analyzes problems, scopes solutions, identifies risks
