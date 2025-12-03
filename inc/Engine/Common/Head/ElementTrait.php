@@ -137,6 +137,13 @@ trait ElementTrait {
 		return $this->prepare_element( $element );
 	}
 
+	/**
+	 * Prepare element by adding any additional attributes.
+	 *
+	 * @param array $element Current element.
+	 *
+	 * @return array
+	 */
 	private function prepare_element( array $element ): array {
 		if ( ! rocket_get_constant( 'WP_ROCKET_DEBUG', false ) ) {
 			return $element;
