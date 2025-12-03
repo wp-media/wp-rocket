@@ -3642,7 +3642,7 @@ msgstr "Offre de lancement"
 
 #: inc/Engine/License/API/User.php:469
 msgid ""
-" Launch price valid for the first 12 months, after which standard pricing "
+"Launch price valid for the first 12 months, after which standard pricing "
 "applies."
 msgstr ""
 "Prix de lancement valable pendant les 12 premiers mois, après quoi les "

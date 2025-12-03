@@ -3608,7 +3608,7 @@ msgstr "Oferta de Lançamento"
 
 #: inc/Engine/License/API/User.php:469
 msgid ""
-" Launch price valid for the first 12 months, after which standard pricing "
+"Launch price valid for the first 12 months, after which standard pricing "
 "applies."
 msgstr ""
 "Preço de lançamento válido para os primeiros 12 meses, após os quais os "
