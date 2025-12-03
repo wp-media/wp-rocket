@@ -18,6 +18,13 @@ class Controller implements ControllerInterface {
 	use ElementTrait;
 
 	/**
+	 * Used for debugging head elements.
+	 *
+	 * @var string
+	 */
+	private $feature = 'preload_fonts';
+
+	/**
 	 * Options instance
 	 *
 	 * @var Options_Data

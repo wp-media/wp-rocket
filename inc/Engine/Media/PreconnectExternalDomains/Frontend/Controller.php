@@ -15,6 +15,13 @@ class Controller implements ControllerInterface {
 	use ElementTrait;
 
 	/**
+	 * Used for debugging head elements.
+	 *
+	 * @var string
+	 */
+	private $feature = 'preconnect_external_domains';
+
+	/**
 	 * Queries instance
 	 *
 	 * @var PreconnectDomains
