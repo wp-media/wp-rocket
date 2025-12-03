@@ -400,7 +400,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		const $tableGlobalScore = $('.wpr-ri-urls-table .wpr-global-score');
 		if ($tableGlobalScore.length > 0){
 			$tableGlobalScore.replaceWith(globalScoreData.row_html);
-		}else {
+		}else if ($tableBody.length > 0) {
 			$tableBody.prepend(globalScoreData.row_html);
 		}
 	}
