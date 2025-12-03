@@ -5,9 +5,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.20.2-alpha\n"
+"Project-Id-Version: WP Rocket 3.20.2-beta5\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2025-12-01T10:36:33+00:00\n"
+"POT-Creation-Date: 2025-12-03T15:25:06+00:00\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Pedro Mendonça <ped.gaspar@gmail.com>, 2025\n"
 "Language-Team: Portuguese (Portugal) (https://app.transifex.com/wp-media/teams/18133/pt_PT/)\n"
@@ -1495,7 +1495,7 @@ msgstr "A analisar a sua página (~1 min)."
 #: inc/Engine/Admin/RocketInsights/Settings/Controller.php:58
 #: inc/Engine/Admin/Settings/Page.php:1704
 msgid "Rocket Insights"
-msgstr "Informações do Rocket"
+msgstr "Rocket Insights"
 
 #: inc/Engine/Admin/RocketInsights/Render.php:269
 msgid "Monitored Pages"
@@ -1584,17 +1584,35 @@ msgstr "Sem subscrição"
 msgid "Next Billing Date"
 msgstr "Data da próxima facturação"
 
-#. translators: %1$s is WP Rocket plugin name.
+#. translators: %1$s opening tag, %2$s is WP Rocket plugin name, %3$s closing
+#. tag.
 #: inc/Engine/Admin/RocketInsights/Subscriber.php:549
 #, php-format
 msgid ""
-"<p><strong>New in %1$s: Meet Rocket Insights, your built-in performance tracking tool!</strong></p>\n"
-"\t\t\t\t<p>Starting from %1$s 3.20, you can track your key pages’ performance directly from your dashboard and get in-depth insights.</p>\n"
-"\t\t\t\t<p>🚀 Add your first page, run the test, and keep your site fast.</p>"
+"%1$sNew in %2$s: Meet Rocket Insights, your built-in performance tracking "
+"tool!%3$s"
 msgstr ""
-"<p><strong>Novidade do %1$s: Conheça os Rocket Insights, a sua ferramenta de rastreio de desempenho!</strong></p>\n"
-"\t\t\t\t<p>A partir do %1$s 3.20, pode acompanhar o desempenho das suas principais páginas directamente no seu painel e obter informações aprofundadas.</p>\n"
-"\t\t\t\t<p>🚀 Adicione a sua primeira página, execute o teste, e mantenha o seu site rápido.</p>"
+"%1$sNovidade do %2$s: Conheça os Rocket Insights, a sua ferramenta "
+"incorporada de rastreio de desempenho!%3$s"
+
+#. translators: %1$s opening tag, %2$s is WP Rocket plugin name, %3$s closing
+#. tag.
+#: inc/Engine/Admin/RocketInsights/Subscriber.php:560
+#, php-format
+msgid ""
+"%1$sStarting from %2$s 3.20, you can track your key pages’ performance "
+"directly from your dashboard and get in-depth insights.%3$s"
+msgstr ""
+"%1$sA partir do %2$s 3.20, pode rastrear o desempenho das suas páginas "
+"principais directamente no seu painel e obter informações detalhadas.%3$s"
+
+#. translators: %1$s opening tag, %3$s closing tag.
+#: inc/Engine/Admin/RocketInsights/Subscriber.php:571
+#, php-format
+msgid "%1$sAdd your first page, run the test, and keep your site fast.%2$s"
+msgstr ""
+"%1$sAdicione a sua primeira página, execute o teste, e mantenha o seu site "
+"rápido.%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:234
 msgid "Save Changes"
@@ -3606,8 +3624,8 @@ msgid ""
 "Launch price valid for the first 12 months, after which standard pricing "
 "applies."
 msgstr ""
-"Preço de lançamento válido para os primeiros 12 meses, após os quais serão "
-"aplicado os preços normais."
+"Preço de lançamento válido durante os primeiros 12 meses, após os quais se "
+"aplica o preço normal."
 
 #. translators: %1$s WP Rocket plugin name.
 #: inc/Engine/License/Renewal.php:76
@@ -4911,8 +4929,8 @@ msgid ""
 "Check the %1$sRocket Insights%2$s tab to track your top pages, quickly spot "
 "issues, and get in-depth insights to further optimize your website speed."
 msgstr ""
-"Consulte o separador das %1$sInformações do Rocket%2$s para rastrear as suas"
-" páginas mais importantes, encontrar problemas rapidamente, e obter "
+"Consulte o separador das %1$sRocket Insights%2$s para rastrear as suas "
+"páginas mais importantes, encontrar problemas rapidamente, e obter "
 "informações detalhadas para optimizar a velocidade do seu site."
 
 #: views/settings/page-sections/dashboard.php:72
@@ -5307,7 +5325,7 @@ msgstr "Adicionar página +"
 
 #: views/settings/partials/rocket-insights/global-score-widget.php:11
 msgid "Rocket Insights Score"
-msgstr "Classificação das informações do Rocket"
+msgstr "Classificação do Rocket Insights"
 
 #: views/settings/partials/rocket-insights/license-banner.php:17
 msgid "Unlock Your Site’s True Performance!"
