@@ -71,4 +71,58 @@ class Utils {
 			$action
 		);
 	}
+
+	/**
+	 * Processes deleted cache file paths and return an array of processed urls.
+	 *
+	 * Iterates through deleted cache file metadata, converts file paths to URLs, and passes each URL to an optional callback.
+	 *
+	 * @param array         $deleted  An array of deleted file data arrays. Each array should include:
+	 *                                - 'home_url'   (string): The site's home URL.
+	 *                                - 'home_path'  (string): The site's home path.
+	 *                                - 'logged_in'  (bool): Whether the user was logged in.
+	 *                                - 'files'      (array): List of file paths that have been deleted.
+	 * @param callable|null $callback Optional. Callback function to execute for each URL. Receives the URL (string) as the only argument.
+	 *
+	 * @return array Array of URLs that were processed.
+	 */
+	public static function process_deleted_cache_urls( array $deleted, ?callable $callback = null ): array {
+		// Initialize an array to store the processed URLs.
+		$urls = [];
+
+		foreach ( $deleted as $data ) {
+			if ( $data['logged_in'] ) {
+				// Logged in user: no need to preload those since we would need the corresponding cookies.
+				continue;
+			}
+			foreach ( $data['files'] as $file_path ) {
+				if ( false !== strpos( $file_path, '#' ) ) {
+					// URL with query string.
+					$file_path = preg_replace( '/#/', '?', $file_path, 1 );
+				} else {
+					$file_path         = untrailingslashit( $file_path );
+					$data['home_path'] = untrailingslashit( $data['home_path'] );
+					$data['home_url']  = untrailingslashit( $data['home_url'] );
+					if ( '/' === substr( get_option( 'permalink_structure' ), -1 ) ) {
+						$file_path         .= '/';
+						$data['home_path'] .= '/';
+						$data['home_url']  .= '/';
+					}
+				}
+
+				// Convert file path to URL.
+				$url = str_replace( $data['home_path'], $data['home_url'], $file_path );
+
+				// Add the processed URL to the array that will be returned.
+				$urls[] = $url;
+
+				// If callback provided, execute it; otherwise collect URLs.
+				if ( null !== $callback ) {
+					call_user_func( $callback, $url );
+				}
+			}
+		}
+
+		return $urls;
+	}
 }

@@ -455,11 +455,11 @@ function rocket_thank_you_license() {
 
 		$message = sprintf(
 		/* translators: %1$s = plugin name, %2$s = opening link tag, %3$s = closing link tag */
-		__( '%1$s %2$s is good to go! %3$s Your website is already faster. Visit %4$s Rocket Insights %5$s to check your homepage\'s performance, add more pages to measure WP Rocket\'s impact, and keep your site fast.', 'rocket' ),
+		__( '%1$s %2$s is good to go! %3$s Your website is already faster. Visit %4$sRocket Insights%5$s to check your homepage\'s performance, add more pages to measure WP Rocket\'s impact, and keep your site fast.', 'rocket' ),
 		'<strong>',
 		WP_ROCKET_PLUGIN_NAME,
 		'</strong>',
-		'<a href="' . admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '#rocket_insights' ) . '">',
+		'<a href="' . admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '&rocket_source=notice_thankyou_license#rocket_insights' ) . '">',
 		'</a>'
 		);
 		rocket_notice_html( [ 'message' => $message ] );
@@ -718,7 +718,7 @@ function rocket_notice_html( $args ) {
 			}
 			break;
 		case 'rocket_insights_page':
-			$args['action'] = '<a class="button button-primary" href="' . admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '#rocket_insights' ) . '">' . __( 'Run the test now!', 'rocket' ) . '</a>';
+			$args['action'] = '<a class="button button-primary" href="' . admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '&rocket_source=notice_insights_promotion_notice#rocket_insights' ) . '">' . __( 'Run the test now!', 'rocket' ) . '</a>';
 			break;
 	}
 	/**

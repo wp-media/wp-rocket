@@ -404,7 +404,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		$this->plan->remove_customer_data_cache();
 		rocket_renew_box( 'insights_upgrade' );
 
-		wp_safe_redirect( admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '#rocket_insights' ) );
+		wp_safe_redirect( admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '&rocket_source=purchase_redirect#rocket_insights' ) );
 	}
 
 	/**
@@ -465,6 +465,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 				[
 					'data'       => [
 						'is_retest' => true,
+						'source'    => 'performance monitoring',
 					],
 					'score'      => '',
 					'report_url' => '',
@@ -544,14 +545,35 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		}
 
 		$message = sprintf(
-			// translators: %1$s is WP Rocket plugin name.
-			__(
-				'<p><strong>New in %1$s: Meet Rocket Insights, your built-in performance tracking tool!</strong></p>
-				<p>Starting from %1$s 3.20, you can track your key pages’ performance directly from your dashboard and get in-depth insights.</p>
-				<p>🚀 Add your first page, run the test, and keep your site fast.</p>',
+		// translators: %1$s opening tag, %2$s is WP Rocket plugin name, %3$s closing tag.
+			esc_html__(
+				'%1$sNew in %2$s: Meet Rocket Insights, your built-in performance tracking tool!%3$s',
 				'rocket'
 			),
+			'<p><strong>',
 			rocket_get_constant( 'WP_ROCKET_PLUGIN_NAME' ),
+			'</strong></p>'
+		);
+
+		$message .= sprintf(
+		// translators: %1$s opening tag, %2$s is WP Rocket plugin name, %3$s closing tag.
+			esc_html__(
+				'%1$sStarting from %2$s 3.20, you can track your key pages’ performance directly from your dashboard and get in-depth insights.%3$s',
+				'rocket'
+			),
+			'<p>',
+			rocket_get_constant( 'WP_ROCKET_PLUGIN_NAME' ),
+			'</p>'
+		);
+
+		$message .= sprintf(
+		// translators: %1$s opening tag, %3$s closing tag.
+			esc_html__(
+				'%1$sAdd your first page, run the test, and keep your site fast.%2$s',
+				'rocket'
+			),
+			'<p>🚀',
+			'</p>'
 		);
 
 		rocket_notice_html(

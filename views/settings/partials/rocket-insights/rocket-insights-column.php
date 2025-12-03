@@ -52,7 +52,7 @@ endif;
 	// Helper: always render the re-test button (JS will handle credit checks on click).
 	$render_retest_button = function () use ( $data ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 		?>
-		<button type="button" class="wpr-ri-retest-link wpr-icon-bold-refresh" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>" data-post-id="<?php echo esc_attr( $data['wpr_post_id'] ); ?>">
+		<button type="button" class="wpr-ri-retest-link wpr-icon-bold-refresh" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>" data-post-id="<?php echo esc_attr( $data['wpr_post_id'] ); ?>" data-source="re-test post type listing">
 			<?php esc_html_e( 'Re-test', 'rocket' ); ?>
 		</button>
 		<?php

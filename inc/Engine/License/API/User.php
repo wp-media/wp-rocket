@@ -465,8 +465,8 @@ class User {
 			return '';
 		}
 
-		if ( ' Launch price valid for the first 12 months, after which standard pricing applies.' === $promo->billing ) {
-			return __( ' Launch price valid for the first 12 months, after which standard pricing applies.', 'rocket' );
+		if ( 'Launch price valid for the first 12 months, after which standard pricing applies.' === $promo->billing ) {
+			return __( 'Launch price valid for the first 12 months, after which standard pricing applies.', 'rocket' );
 		}
 
 		return $promo->billing;

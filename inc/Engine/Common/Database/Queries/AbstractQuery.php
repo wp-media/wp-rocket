@@ -291,9 +291,10 @@ class AbstractQuery extends Query implements QueryInterface {
 	 *
 	 * @param string  $url Url from DB row.
 	 * @param boolean $is_mobile Is mobile from DB row.
+	 * @param array   $additional_update_fields Additional fields to update in the database.
 	 * @return bool|int
 	 */
-	public function make_status_inprogress( string $url, bool $is_mobile ) {
+	public function make_status_inprogress( string $url, bool $is_mobile, $additional_update_fields = [] ) {
 		if ( ! $this->is_allowed() ) {
 			return false;
 		}
@@ -306,7 +307,9 @@ class AbstractQuery extends Query implements QueryInterface {
 			'is_mobile' => $is_mobile,
 		];
 
-		return $db->update( $prefixed_table_name, [ 'status' => 'in-progress' ], $where );
+		$additional_update_fields['status'] = 'in-progress';
+
+		return $db->update( $prefixed_table_name, $additional_update_fields, $where );
 	}
 
 	/**
@@ -331,8 +334,8 @@ class AbstractQuery extends Query implements QueryInterface {
 
 		if ( ! empty( $additional_details ) ) {
 			$updates = wp_parse_args(
-				$updates,
-				$additional_details
+				$additional_details,
+				$updates
 			);
 		}
 

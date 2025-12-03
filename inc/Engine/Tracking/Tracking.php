@@ -229,10 +229,11 @@ class Tracking extends Abstract_Render {
 	 * @param string $url        The URL that was added for monitoring.
 	 * @param string $plan       Plan name.
 	 * @param int    $urls_count The current number of URLs being monitored.
+	 * @param string $source     The source of the request.
 	 *
 	 * @return void
 	 */
-	public function track_rocket_insights_url_added( $url, $plan, $urls_count ): void {
+	public function track_rocket_insights_url_added( $url, $plan, $urls_count, $source ): void {
 		if ( ! $this->optin->can_track() ) {
 			return;
 		}
@@ -243,6 +244,7 @@ class Tracking extends Abstract_Render {
 				'context'       => 'wp_plugin',
 				'plan_type'     => $plan,
 				'tracked_pages' => $urls_count,
+				'source'        => $source,
 			]
 		);
 	}
@@ -276,40 +278,8 @@ class Tracking extends Abstract_Render {
 				'retest'    => $row_details->data['is_retest'],
 				'duration'  => time() - $row_details->data['start_time'],
 				'plan_type' => $plan,
+				'source'    => $row_details->data['source'],
 			]
 		);
-	}
-
-	/**
-	 * Tracks visits to settings page
-	 *
-	 * @return void
-	 */
-	public function track_admin_visits(): void {
-		if ( ! $this->optin->is_enabled() ) {
-			return;
-		}
-
-		$user      = wp_get_current_user();
-		$transient = 'rocket_tracking_admin_visited_' . $user->ID;
-
-		if ( false !== get_transient( $transient ) ) {
-			return;
-		}
-
-		$screen = get_current_screen();
-
-		if ( ! $screen || 'settings_page_wprocket' !== $screen->id ) {
-			return;
-		}
-
-		$this->mixpanel->track(
-			'Page Viewed',
-			[
-				'path'    => '/wp-admin/options-general.php?page=wprocket',
-				'context' => 'wp_plugin',
-			]
-		);
-		set_transient( $transient, true, WEEK_IN_SECONDS );
 	}
 }
