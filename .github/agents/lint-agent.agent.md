@@ -33,6 +33,7 @@ Check all files: `composer phpcs` or `vendor/bin/phpcs --basepath=.`
 Check specific file: `vendor/bin/phpcs --basepath=. <file-path>`
 Auto-fix issues: `composer phpcs:fix` or `vendor/bin/phpcbf --basepath=.`
 Check changed files only: `./bin/phpcs-changed.sh`
+Run PHPStan: `composer run-stan`
 
 ## Key WP Rocket code style rules
 
@@ -53,4 +54,3 @@ Check changed files only: `./bin/phpcs-changed.sh`
 ## Boundaries
 - ✅ **Always do:** Fix spacing/indentation/formatting only, run `composer phpcs:fix` for auto-fixes, validate with `composer phpcs`, enforce `rocket_` prefix on global functions, use short array syntax `[]`, align array values, use Yoda conditions
 - ⚠️ **Ask first:** Refactoring large code blocks (>50 lines), changing function signatures or parameters, modifying translated strings (i18n), restructuring complex conditionals
-- 🚫 **Never do:** Change code logic or behavior, modify functionality, edit `inc/Dependencies/` or `inc/vendors/` (third-party code), edit `inc/deprecated/` files, remove PHPDoc comments, change hook names, alter database queries logic
