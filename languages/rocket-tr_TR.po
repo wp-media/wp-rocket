@@ -3578,7 +3578,7 @@ msgstr "Başlangıç Teklifi"
 
 #: inc/Engine/License/API/User.php:469
 msgid ""
-" Launch price valid for the first 12 months, after which standard pricing "
+"Launch price valid for the first 12 months, after which standard pricing "
 "applies."
 msgstr ""
 " Başlangıç fiyatı ilk 12 ay için geçerlidir, bundan sonra standart "
