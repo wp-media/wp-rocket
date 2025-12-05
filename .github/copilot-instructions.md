@@ -104,7 +104,8 @@ public function process_data( $data ) {
 
 **PHPDoc Blocks:**
 - All public methods MUST have complete PHPDoc
-- Include `@since`, `@param`, and `@throws` when applicable
+- Include `@param`, `@return`, and `@throws` when applicable
+- `@since` is optional
 - Document complex private methods
 - Keep inline comments minimal and meaningful
 
@@ -754,8 +755,6 @@ $expiration = apply_filters( 'rocket_cache_expiration', 3600 );
 // ✅ GOOD: Type-safe filter with documentation
 /**
  * Filters the cache expiration time.
- *
- * @since 3.0
  * 
  * @param int $expiration Cache expiration in seconds.
  * @return int
@@ -773,8 +772,9 @@ $expiration = wpm_apply_filters_typed( 'integer', 'rocket_cache_expiration', 360
 **Documentation Requirements:**
 Every `wpm_apply_filters_typed()` call MUST have a docblock that includes:
 - Description of what the filter does
-- `@since` version tag
 - `@param` for all parameters with types
+- `@return` for the return type
+- `@since` is optional
 
 **Real Example:**
 ```php
