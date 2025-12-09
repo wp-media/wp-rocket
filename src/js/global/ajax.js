@@ -397,13 +397,11 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 
 	function updateGlobalScoreRow(globalScoreData){
-		if ( isOnRocketInsights() ) {
-			const $tableGlobalScore = $('.wpr-ri-urls-table .wpr-global-score');
-			if ($tableGlobalScore.length > 0){
-				$tableGlobalScore.replaceWith(globalScoreData.row_html);
-			}else {
-				$tableBody.prepend(globalScoreData.row_html);
-			}
+		const $tableGlobalScore = $('.wpr-ri-urls-table .wpr-global-score');
+		if ($tableGlobalScore.length > 0){
+			$tableGlobalScore.replaceWith(globalScoreData.row_html);
+		}else if ($tableBody.length > 0) {
+			$tableBody.prepend(globalScoreData.row_html);
 		}
 	}
 
