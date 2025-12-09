@@ -28,7 +28,7 @@ return [
 			'HTTP_X_APPLICATION' => 'HTTP_X_APPLICATION',
 		],
 		'expected'      => [
-			'127.0.0.1:8080',
+			'127.0.0.1:80',
 		],
 	],
 	'testWhenArrayWithData' => [
@@ -41,7 +41,7 @@ return [
 		],
 		'expected'      => [
 			'localhost',
-			'127.0.0.1:8080',
+			'127.0.0.1:80',
 		],
 	],
 	'testWhenString' => [
@@ -52,7 +52,7 @@ return [
 		],
 		'expected'      => [
 			'localhost',
-			'127.0.0.1:8080',
+			'127.0.0.1:80',
 		],
 	],
 	'testWhenBool' => [
@@ -63,7 +63,7 @@ return [
 		],
 		'expected'      => [
 			false,
-			'127.0.0.1:8080',
+			'127.0.0.1:80',
 		],
 	],
 ];

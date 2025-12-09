@@ -25,6 +25,7 @@ class Cloudways extends NullSubscriber implements Subscriber_Interface {
 			'do_rocket_varnish_http_purge'            => 'should_purge',
 			'rocket_varnish_field_settings'           => 'varnish_addon_title',
 			'rocket_varnish_ip'                       => 'varnish_ip',
+			'rocket_varnish_purge_headers'            => 'add_purge_headers',
 		];
 	}
 
@@ -111,8 +112,26 @@ class Cloudways extends NullSubscriber implements Subscriber_Interface {
 			$varnish_ip = (array) $varnish_ip;
 		}
 
-		$varnish_ip[] = '127.0.0.1:8080';
+		$varnish_ip[] = '127.0.0.1:80';
 
 		return $varnish_ip;
+	}
+
+	/**
+	 * Add X-Real-IP header to Varnish purge requests.
+	 *
+	 * @since 3.21.0
+	 *
+	 * @param array $headers Headers to send with the purge request.
+	 * @return array Modified headers array.
+	 */
+	public function add_purge_headers( array $headers ): array {
+		if ( ! self::is_varnish_running() ) {
+			return $headers;
+		}
+
+		$headers['X-Real-IP'] = '127.0.0.1';
+
+		return $headers;
 	}
 }
