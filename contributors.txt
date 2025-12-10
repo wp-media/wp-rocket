@@ -9,7 +9,7 @@ Developers:
 
 QA:
 	Piotr Bąk <piotr@wp-media.me>
-	Mai Saad <mai@wp-media.me>\
+	Mai Saad <mai@wp-media.me>
 	Hanna-Meda Talos <hanna@wp-media.me>
 
 Previous contributors:
