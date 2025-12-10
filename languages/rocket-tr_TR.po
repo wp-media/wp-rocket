@@ -8,9 +8,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.20.1-alpha4\n"
+"Project-Id-Version: WP Rocket 3.20.2-alpha\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2025-11-06T14:05:39+00:00\n"
+"POT-Creation-Date: 2025-12-01T10:36:33+00:00\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: BouRock, 2025\n"
 "Language-Team: Turkish (Turkey) (https://app.transifex.com/wp-media/teams/18133/tr_TR/)\n"
@@ -602,14 +602,14 @@ msgstr ""
 #: inc/admin/ui/notices.php:458
 #, php-format
 msgid ""
-"%1$s %2$s is good to go! %3$s Your website is already faster. Visit %4$s "
-"Rocket Insights %5$s to check your homepage's performance, add more pages to"
-" measure WP Rocket's impact, and keep your site fast."
+"%1$s %2$s is good to go! %3$s Your website is already faster. Visit "
+"%4$sRocket Insights%5$s to check your homepage's performance, add more pages"
+" to measure WP Rocket's impact, and keep your site fast."
 msgstr ""
 "%1$s %2$s hazır! %3$s Web siteniz zaten daha hızlı. Ana sayfanızın "
 "performansını gözzden geçirmek, WP Rocket’ın etkisini ölçmek amacıyla daha "
-"fazla sayfa eklemek ve sitenizi hızlı tutmak için %4$s Rocket Insights’ı "
-"%5$s ziyaret edin."
+"fazla sayfa eklemek ve sitenizi hızlı tutmak için %4$sRocket Insights’ı%5$s "
+"ziyaret edin."
 
 #: inc/admin/ui/notices.php:500
 msgid ""
@@ -712,8 +712,8 @@ msgid "Force deactivation "
 msgstr "Devre dışı bırakmaya zorla"
 
 #: inc/admin/ui/notices.php:721
-msgid "Go to Rocket Insights"
-msgstr "Rocket Insights’a Gidin"
+msgid "Run the test now!"
+msgstr "Denemeyi şimdi çalıştır!"
 
 #: inc/admin/ui/notices.php:750
 msgid "The following code should have been written to this file:"
@@ -1433,18 +1433,18 @@ msgstr ""
 msgid "Regenerate WP Rocket configuration files now"
 msgstr "WP Rocket yapılandırma dosyalarını şimdi yeniden oluştur"
 
-#: inc/Engine/Admin/RocketInsights/Controller.php:120
-#: inc/Engine/Admin/RocketInsights/Rest.php:336
+#: inc/Engine/Admin/RocketInsights/Controller.php:121
+#: inc/Engine/Admin/RocketInsights/Rest.php:377
 msgid "Homepage"
 msgstr "Ana sayfa"
 
-#: inc/Engine/Admin/RocketInsights/Controller.php:290
+#: inc/Engine/Admin/RocketInsights/Controller.php:295
 msgid "month"
 msgstr "ay"
 
 #. Translators: %1$s = opening strong tag, %2$s = closing strong tag, %3$s =
 #. number of pages as a limit.
-#: inc/Engine/Admin/RocketInsights/Controller.php:368
+#: inc/Engine/Admin/RocketInsights/Controller.php:373
 #, php-format
 msgid ""
 "%1$sCongrats!%2$s You can now monitor up to %3$s pages, run unlimited on-"
@@ -1456,7 +1456,7 @@ msgstr ""
 
 #. Translators: %1$s = number of pages as a limit, %2$s anchor tag opening,
 #. %3$s anchor tag closing.
-#: inc/Engine/Admin/RocketInsights/Controller.php:397
+#: inc/Engine/Admin/RocketInsights/Controller.php:402
 #, php-format
 msgid ""
 "Wow, you’ve already added %1$s pages! That's the limit for now. Help shape "
@@ -1471,7 +1471,7 @@ msgid "Test the page"
 msgstr "Sayfayı dene"
 
 #: inc/Engine/Admin/RocketInsights/PostListing/Subscriber.php:222
-#: inc/Engine/Admin/RocketInsights/Rest.php:366
+#: inc/Engine/Admin/RocketInsights/Rest.php:412
 msgid "Maximum number of URLs reached for your license."
 msgstr "Lisansınız için ulaşılan en fazla URL sayısı."
 
@@ -1498,7 +1498,7 @@ msgstr "Takip Edilen Sayfalar"
 #. translators: %1$s: opening <strong> tag, %2$s: closing </strong> tag, %3$s:
 #. opening link tag, %4$s: closing link tag
 #: inc/Engine/Admin/RocketInsights/Render.php:424
-#: inc/Engine/Admin/RocketInsights/Rest.php:831
+#: inc/Engine/Admin/RocketInsights/Rest.php:895
 #, php-format
 msgid "You've %1$sreached your free limit%2$s. %3$sUpgrade to continue%4$s."
 msgstr ""
@@ -1506,7 +1506,7 @@ msgstr ""
 
 #. translators: %1$s: opening <strong> tag, %2$s: closing </strong> tag
 #: inc/Engine/Admin/RocketInsights/Render.php:434
-#: inc/Engine/Admin/RocketInsights/Rest.php:841
+#: inc/Engine/Admin/RocketInsights/Rest.php:905
 #, php-format
 msgid ""
 "You've %1$sreached the page limit%2$s. Please remove at least one page to "
@@ -1515,52 +1515,52 @@ msgstr ""
 "%1$sSayfa sınırına ulaştınız%2$s. Devam etmek için lütfen en az bir sayfayı "
 "kaldırın."
 
-#: inc/Engine/Admin/RocketInsights/Rest.php:298
+#: inc/Engine/Admin/RocketInsights/Rest.php:339
 msgid "You are not allowed to access this item."
 msgstr "Bu öğeye erişmenize izin verilmiyor."
 
-#: inc/Engine/Admin/RocketInsights/Rest.php:351
+#: inc/Engine/Admin/RocketInsights/Rest.php:397
 msgid "Not valid inputs"
 msgstr "Geçerli girdi değil"
 
-#: inc/Engine/Admin/RocketInsights/Rest.php:427
+#: inc/Engine/Admin/RocketInsights/Rest.php:474
 msgid "You are not allowed to create this item."
 msgstr "Bu öğeyi oluşturmanıza izin verilmiyor."
 
-#: inc/Engine/Admin/RocketInsights/Rest.php:442
+#: inc/Engine/Admin/RocketInsights/Rest.php:489
 msgid "Invalid item ID."
 msgstr "Geçersiz öğe kimliği."
 
-#: inc/Engine/Admin/RocketInsights/Rest.php:470
+#: inc/Engine/Admin/RocketInsights/Rest.php:517
 msgid "You are not allowed to delete this item."
 msgstr "Bu öğeyi silmenize izin verilmiyor."
 
-#: inc/Engine/Admin/RocketInsights/Rest.php:485
+#: inc/Engine/Admin/RocketInsights/Rest.php:532
 msgid "No ID was provided."
 msgstr "Hiç kimlik sağlanmadı."
 
-#: inc/Engine/Admin/RocketInsights/Rest.php:493
+#: inc/Engine/Admin/RocketInsights/Rest.php:540
 msgid "Item not found."
 msgstr "Öğe bulunamadı."
 
-#: inc/Engine/Admin/RocketInsights/Rest.php:502
-#: inc/Engine/Admin/RocketInsights/Subscriber.php:199
+#: inc/Engine/Admin/RocketInsights/Rest.php:549
+#: inc/Engine/Admin/RocketInsights/Subscriber.php:198
 msgid ""
 "Upgrade your plan to get access to re-test performance or run new tests"
 msgstr ""
 "Performansı yeniden denemeye erişmek veya yeni denemeler çalıştırmak için "
 "planınızı yükseltin"
 
-#: inc/Engine/Admin/RocketInsights/Rest.php:526
+#: inc/Engine/Admin/RocketInsights/Rest.php:576
 msgid "Unable to reset performance test. Please try again."
 msgstr "Performans denemesi sıfırlanamıyor. Lütfen tekrar deneyin."
 
-#: inc/Engine/Admin/RocketInsights/Rest.php:609
+#: inc/Engine/Admin/RocketInsights/Rest.php:673
 msgid "You are not allowed to update this item."
 msgstr "Bu öğeyi güncellemenize izin verilmiyor."
 
-#: inc/Engine/Admin/RocketInsights/Rest.php:643
-#: inc/Engine/Admin/RocketInsights/Rest.php:700
+#: inc/Engine/Admin/RocketInsights/Rest.php:707
+#: inc/Engine/Admin/RocketInsights/Rest.php:764
 msgid "You are not allowed to access items."
 msgstr "Öğelere erişmenize izin verilmiyor."
 
@@ -1575,16 +1575,16 @@ msgid "Next Billing Date"
 msgstr "Sonraki Fatura Tarihi"
 
 #. translators: %1$s is WP Rocket plugin name.
-#: inc/Engine/Admin/RocketInsights/Subscriber.php:575
+#: inc/Engine/Admin/RocketInsights/Subscriber.php:549
 #, php-format
 msgid ""
 "<p><strong>New in %1$s: Meet Rocket Insights, your built-in performance tracking tool!</strong></p>\n"
 "\t\t\t\t<p>Starting from %1$s 3.20, you can track your key pages’ performance directly from your dashboard and get in-depth insights.</p>\n"
-"\t\t\t\t<p>🚀 You've already been tracking your homepage. Add more pages to check %1$s's impact and keep your site fast.</p>"
+"\t\t\t\t<p>🚀 Add your first page, run the test, and keep your site fast.</p>"
 msgstr ""
 "<p><strong>%1$s’daki yenilik: Yerleşik performans izleme aracınız Rocket Insights ile tanışın!</strong></p>\n"
 "\t\t\t\t<p>%1$s 3.20’den başlayarak, önemli sayfalarınızın performansını doğrudan panelinizden takip edebilir ve derinlemesine içgörüler edinebilirsiniz.</p>\n"
-"\t\t\t\t<p>🚀 Ana sayfanızı zaten izliyordunuz. %1$s’ın etkisini denetlemek ve sitenizi hızlı tutmak için daha fazla sayfa ekleyin.</p>"
+"\t\t\t\t<p>🚀 İlk sayfanızı ekleyin, denemeyi çalıştırın ve sitenizi hızlı tutun.</p>"
 
 #: inc/Engine/Admin/Settings/Page.php:234
 msgid "Save Changes"
@@ -3578,7 +3578,7 @@ msgstr "Başlangıç Teklifi"
 
 #: inc/Engine/License/API/User.php:469
 msgid ""
-" Launch price valid for the first 12 months, after which standard pricing "
+"Launch price valid for the first 12 months, after which standard pricing "
 "applies."
 msgstr ""
 " Başlangıç fiyatı ilk 12 ay için geçerlidir, bundan sonra standart "
@@ -4300,7 +4300,7 @@ msgstr ""
 "%1$sMyKinsta%2$s hesabınız aracılığıyla Kinsta desteği ile temasa geçin."
 
 #. translators: %1$s = plugin name.
-#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:127
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:130
 #, php-format
 msgid ""
 "%1$s: Cloudflare's HTTP/2 Server Push is incompatible with the features of "
@@ -4310,7 +4310,7 @@ msgstr ""
 "CSS Dosyalarını Birleştir’in özellikleriyle uyumlu değil. "
 "Etkisizleştirmenizi şiddetle öneririz."
 
-#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:170
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:173
 msgid ""
 "Your site is using the official Cloudflare plugin. We have enabled "
 "Cloudflare auto-purge for compatibility. If you have APO activated, it is "
@@ -4320,7 +4320,7 @@ msgstr ""
 "otomatik temizlemeyi etkinleştirdik. Eğer APO’nuzu aktif ettiyseniz, o da "
 "uyumludur."
 
-#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:171
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:174
 msgid ""
 "Cloudflare cache will be purged each time WP Rocket clears its cache to "
 "ensure content is always up-to-date."
@@ -4329,7 +4329,7 @@ msgstr ""
 "zaman güncel olmasını sağlamak için temizlenecektir."
 
 #. Translators: %1$s = strong opening tag, %2$s = strong closing tag.
-#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:215
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:218
 #, php-format
 msgid ""
 "%1$sWP Rocket:%2$s You are using \"Dynamic Cookies Cache\". Cloudflare APO "
@@ -4339,7 +4339,7 @@ msgstr ""
 "kullanıyorsunuz. Cloudflare APO henüz bu özellikle uyumlu değil."
 
 #. Translators:%1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:221
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:224
 #, php-format
 msgid ""
 "You should either disable Cloudflare APO or check with the theme/plugin "
@@ -4353,7 +4353,7 @@ msgstr ""
 
 #. Translators: %1$s = strong opening tag, %2$s = strong closing tag, %3$s =
 #. opening <a> tag, %4$s = closing </a> tag, %5$s = opening <a> tag.
-#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:272
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:275
 #, php-format
 msgid ""
 "%1$sWP Rocket:%2$s You are using \"Separate cache files for mobile "
@@ -4366,7 +4366,7 @@ msgstr ""
 "gerek.%4$sDaha fazla bilgi%5$s"
 
 #. Translators: %1$s = strong opening tag, %2$s = strong closing tag.
-#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:293
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:296
 #, php-format
 msgid ""
 "%1$sWP Rocket:%2$s You have \"Cache by Device Type\" enabled on Cloudflare "
@@ -5266,8 +5266,8 @@ msgstr "Sayfalar Ekle"
 msgid "Add Homepage"
 msgstr "Ana Sayfa Ekle"
 
-#: views/settings/partials/rocket-insights/buttons/global-score-widget.php:24
-#: views/settings/partials/rocket-insights/buttons/rocket-insights-panel.php:19
+#: views/settings/partials/rocket-insights/buttons/global-score-widget.php:25
+#: views/settings/partials/rocket-insights/buttons/rocket-insights-panel.php:20
 msgid "You have reached your maximum page limit"
 msgstr "En fazla sayfa sınırınıza ulaştınız"
 
@@ -5320,7 +5320,7 @@ msgstr "%s önce denendi"
 #: views/settings/partials/rocket-insights/rocket-insights-column.php:134
 #: views/settings/partials/rocket-insights/rocket-insights-column.php:138
 #: views/settings/partials/rocket-insights/rocket-insights-column.php:169
-#: views/settings/partials/rocket-insights/table-row.php:76
+#: views/settings/partials/rocket-insights/table-row.php:77
 msgid "See Report"
 msgstr "Rapora Bak"
 
@@ -5336,7 +5336,7 @@ msgstr "önce"
 msgid "Re-Test"
 msgstr "Yeniden Dene"
 
-#: views/settings/partials/rocket-insights/table-row.php:65
+#: views/settings/partials/rocket-insights/table-row.php:66
 msgid ""
 "You’ve reached your free monthly plan limit. Upgrade now to unlock unlimited"
 " on-demand tests."
@@ -5344,11 +5344,11 @@ msgstr ""
 "Ücretsiz aylık plan sınırınıza ulaştınız. Sınırsız isteğe bağlı denemelerin "
 "kilidini açmak için şimdi yükseltin."
 
-#: views/settings/partials/rocket-insights/table-row.php:91
+#: views/settings/partials/rocket-insights/table-row.php:92
 msgid "Upgrade your plan to see the report"
 msgstr "Raporu görmek için planınızı yükseltin"
 
-#: views/settings/partials/rocket-insights/table-row.php:109
+#: views/settings/partials/rocket-insights/table-row.php:110
 msgid "Delete"
 msgstr "Sil"
 

@@ -3216,7 +3216,7 @@ msgstr "پیشنهاد ویژه"
 
 #: inc/Engine/License/API/User.php:454
 msgid ""
-" Launch price valid for the first 12 months, after which standard pricing "
+"Launch price valid for the first 12 months, after which standard pricing "
 "applies."
 msgstr ""
 "قیمت اولیه برای 12 ماه اول معتبر است و پس از آن قیمت‌های استاندارد اعمال "
