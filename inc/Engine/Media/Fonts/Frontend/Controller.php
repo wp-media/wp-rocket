@@ -17,6 +17,13 @@ class Controller {
 	use ElementTrait;
 
 	/**
+	 * Used for debugging head elements.
+	 *
+	 * @var string
+	 */
+	private $feature = 'host_google_fonts_locally';
+
+	/**
 	 * Optimization Context instance.
 	 *
 	 * @var OptimizationContext
