@@ -66,7 +66,7 @@ class Settings {
 		];
 		foreach ( $keys as $key ) {
 			if ( $this->did_setting_change( $key, $old_settings, $new_settings ) ) {
-				$this->table->truncate_table();
+				$this->table->truncate();
 				break;
 			}
 		}

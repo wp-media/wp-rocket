@@ -20,6 +20,8 @@ class LocalizeOptinStatusTest extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoExpected( $config, $expected ) {
+		$this->rocket_version = '3.19';
+
 		$optin    = Mockery::mock( Optin::class );
 		$mixpanel = Mockery::mock( MixpanelTracking::class );
 		$options  = Mockery::mock( Options_Data::class );
@@ -37,7 +39,7 @@ class LocalizeOptinStatusTest extends TestCase {
 		if ( ! empty( $config['consumer_email'] ) ) {
 			$mixpanel->shouldReceive( 'hash' )
 				->with( $config['consumer_email'] )
-				->andReturn( hash( 'sha256', $config['consumer_email'] ) );
+				->andReturn( hash( 'sha224', $config['consumer_email'] ) );
 		}
 
 		$tracking = new Tracking( $options, $optin, $mixpanel, '' );
@@ -68,9 +70,5 @@ class LocalizeOptinStatusTest extends TestCase {
 		}
 
 		$tracking->localize_optin_status();
-	}
-
-	public function configTestData() {
-		return $this->getTestData( __DIR__, 'LocalizeOptinStatusTest' );
 	}
 }

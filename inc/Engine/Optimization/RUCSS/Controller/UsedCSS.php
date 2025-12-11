@@ -20,6 +20,13 @@ class UsedCSS {
 	use ElementTrait;
 
 	/**
+	 * Used for debugging head elements.
+	 *
+	 * @var string
+	 */
+	private $feature = 'rucss';
+
+	/**
 	 * UsedCss Query instance.
 	 *
 	 * @var UsedCSS_Query
@@ -500,7 +507,7 @@ class UsedCSS {
 		 *
 		 * @param bool $enable True to enable, false to disable.
 		 */
-		if ( ! apply_filters( 'rocket_enable_rucss_fonts_preload', true ) ) {
+		if ( ! apply_filters( 'rocket_enable_rucss_fonts_preload', false ) ) {
 			return;
 		}
 

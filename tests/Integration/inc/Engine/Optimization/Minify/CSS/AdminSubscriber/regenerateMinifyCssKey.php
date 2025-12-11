@@ -16,6 +16,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  */
 class Test_RegenerateMinifyCssKey extends TestCase {
 	public function set_up() {
+		self::installPreconnectExternalDomainsTable();
 		parent::set_up();
 
 		$this->unregisterAllCallbacksExcept( 'pre_update_option_wp_rocket_settings', 'regenerate_minify_css_key' );
@@ -25,6 +26,7 @@ class Test_RegenerateMinifyCssKey extends TestCase {
 		$this->restoreWpHook( 'pre_update_option_wp_rocket_settings' );
 
 		parent::tear_down();
+		self::uninstallPreconnectDomainsTable();
 	}
 
 	/**

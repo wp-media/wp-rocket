@@ -2,11 +2,10 @@
 
 namespace WP_Rocket\Engine\Media\PreloadFonts\Database\Queries;
 
-use WP_Rocket\Engine\Common\PerformanceHints\Database\Queries\AbstractQueries;
-use WP_Rocket\Engine\Common\PerformanceHints\Database\Queries\QueriesInterface;
+use WP_Rocket\Engine\Common\Database\Queries\AbstractQuery;
 use WP_Rocket\Engine\Media\PreloadFonts\Database\Schema\PreloadFonts as PreloadFontsSchema;
 use WP_Rocket\Engine\Media\PreloadFonts\Database\Rows\PreloadFonts as PreloadFontsRows;
-class PreloadFonts extends AbstractQueries implements QueriesInterface {
+class PreloadFonts extends AbstractQuery {
 
 	/**
 	 * Name of the database table to query.

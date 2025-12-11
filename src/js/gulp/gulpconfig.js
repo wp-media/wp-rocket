@@ -14,6 +14,10 @@ module.exports = {
 				method: 'buildAll',
 			},
 			{
+				task: 'build:sass:rocket-insights:full',
+				method: 'compileRocketInsightsSaasFull',
+			},
+			{
 				task: 'sass:watch',
 				method: 'watch',
 			},
@@ -31,6 +35,11 @@ module.exports = {
 			{
 				task: 'build:js:lazyloadcss:min',
 				method: 'buildLazyloadCssMin',
+			},
+
+			{
+				task: 'build:js:rocket-insights:full',
+				method: 'buildRocketInsightsFull',
 			},
 
 			{

@@ -79,10 +79,6 @@ class UsedCSS extends AbstractQuery {
 	 * @return bool
 	 */
 	public function make_status_completed( string $url, bool $is_mobile, string $hash = '' ) {
-		if ( ! self::$table_exists && ! $this->table_exists() ) {
-			return false;
-		}
-
 		// Get the database interface.
 		$db = $this->get_db();
 
@@ -114,10 +110,6 @@ class UsedCSS extends AbstractQuery {
 	 * @return int
 	 */
 	public function count_rows_by_hash( string $hash ): int {
-		if ( ! self::$table_exists && ! $this->table_exists() ) {
-			return 0;
-		}
-
 		return $this->query(
 			[
 				'hash'  => $hash,

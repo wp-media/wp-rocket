@@ -74,6 +74,15 @@ class UserClient extends AbstractSafeAPIClient {
 	}
 
 	/**
+	 * Flushes the user data cache.
+	 *
+	 * @return void
+	 */
+	public function flush_cache() {
+		delete_transient( 'wp_rocket_customer_data' );
+	}
+
+	/**
 	 * Gets the user data from the user endpoint
 	 *
 	 * @since 3.7.3

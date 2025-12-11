@@ -11,6 +11,7 @@ requireDir('./src/js/gulp/tasks', { recurse: true });
 * gulp build:saas:min   => Builds Full admin CSS, the minified version (wpr-admin.min.css)
 * gulp build:sass:all   => Builds all admin CSS files (wpr-admin.css, wpr-admin.min.css, wpr-admin-rtl.css, wpr-admin-rtl.min.css)
 * gulp sass:watch       => Watches all admin CSS files mentioned above and builds them again with any change.
+* gulp build:sass:rocket-insights:full => build rocket insights CSS files.
 *
 * JS Tasks:
 *
@@ -20,5 +21,6 @@ requireDir('./src/js/gulp/tasks', { recurse: true });
 * gulp build:js:all             => Builds all js files mentioned above (wpr-admin.js, wpr-admin.min.js, lazyload-css.min.js, wpr-beacon.min.js)
 * gulp build:js:beacon          => Builds lcp beacon script, the minified version (wpr-beacon.min.js, source file, and map file)
 * gulp js:watch                 => Watches all js files changes and build them again with any change.
+* gulp build:js:rocket-insights:full => build rocket insights JS files.
 *
  */

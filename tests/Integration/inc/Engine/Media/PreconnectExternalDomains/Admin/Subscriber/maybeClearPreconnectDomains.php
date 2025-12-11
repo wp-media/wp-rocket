@@ -27,6 +27,18 @@ class MaybeClearPreconnectDomains extends TestCase {
 		parent::tear_down_after_class();
 	}
 
+	public function set_up() {
+		parent::set_up();
+
+		$this->unregisterAllCallbacksExcept( 'update_option_wp_rocket_settings', 'maybe_clear_preconnect_domains', 12 );
+	}
+
+	public function tear_down() {
+		$this->restoreWpHook( 'update_option_wp_rocket_settings' );
+
+		parent::tear_down();
+	}
+
 	/**
 	 * @dataProvider configTestData
 	 */

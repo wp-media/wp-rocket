@@ -34,6 +34,7 @@ class Test_Optimize extends TestCase {
 	}
 
 	public function tear_down() {
+		$this->wp_rocket_debug = false;
 		remove_filter( 'pre_get_rocket_option_minify_google_fonts', [ $this, 'return_true' ] );
 		remove_filter( 'rocket_combined_google_fonts_display', [ $this, 'set_display_value' ] );
 		remove_filter( 'rocket_disable_google_fonts_preload', [ $this, 'set_disable_preload' ] );
@@ -49,6 +50,7 @@ class Test_Optimize extends TestCase {
      */
 	public function testShouldCombineGoogleFontsV1( $config, $original, $combined ) {
 		$this->config = $config;
+		$this->wp_rocket_debug = ! empty( $config['wp_rocket_debug'] );
 		$this->doTest( $config, $original, $combined );
 	}
 

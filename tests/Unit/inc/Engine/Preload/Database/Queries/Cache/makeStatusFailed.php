@@ -25,6 +25,6 @@ class Test_MakeStatusFailed extends TestCase
 			'status' => 'failed',
 			'modified' => $config['current_time'],
 		])->willReturn($config['update_status']);
-		$this->assertSame($expected, $this->query->make_status_failed($config['task_id']));
+		$this->assertSame($expected, $this->query->make_status_failed_by_id($config['task_id']));
 	}
 }

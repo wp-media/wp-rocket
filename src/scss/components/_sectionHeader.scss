@@ -19,7 +19,7 @@
         height: 2px;
         bottom: -1px;
         left: 0;
-        background: $cOrange;
+        background-color: $cOrange;
     }
 
     .wpr-title1{
@@ -30,10 +30,12 @@
             width: $space*6;
             height: $space*6;
             margin-right: $space*3;
-            background: $cOrangeLight4;
+            background-color: $cOrangeLight4;
+			background-size: 65%;
             color: $cOrange;
             text-align: center;
             border-radius: 3px;
+			vertical-align: middle;
         }
     }
 

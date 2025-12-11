@@ -82,6 +82,17 @@
 	color: $cRed;
 	margin-left: $space * 2;
 }
-	.wpr-checkbox-warning::before {
-		margin-right: $space;
-	}
+.wpr-checkbox-warning::before {
+    margin-right: $space;
+}
+
+.wpr-isDisabled {
+  .wpr-checkbox {
+    [type=checkbox] {
+      &:not(:checked) + label:before,
+      &:checked + label:before {
+        border: 2px solid #9d9e9e;
+      }
+    }
+  }
+}

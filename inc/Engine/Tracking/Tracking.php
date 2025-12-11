@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\Tracking;
 
 use WP_Rocket\Abstract_Render;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Admin\RocketInsights\Database\Rows\RocketInsights;
 use WPMedia\Mixpanel\Optin;
 use WPMedia\Mixpanel\TrackingPlugin as MixpanelTracking;
 
@@ -59,7 +60,7 @@ class Tracking extends Abstract_Render {
 			return;
 		}
 
-		/*
+		/**
 		 * Filters the tracked options.
 		 *
 		 * @since 3.19.2
@@ -83,10 +84,8 @@ class Tracking extends Abstract_Render {
 			}
 
 			$this->mixpanel->track(
-				'WPM Option Changed',
+				'Option Changed',
 				[
-					'brand'          => 'WP Media',
-					'product'        => 'WP Rocket',
 					'context'        => 'wp_plugin',
 					'option_name'    => $option_tracked,
 					'previous_value' => $old_value[ $option_tracked ],
@@ -150,6 +149,10 @@ class Tracking extends Abstract_Render {
 
 		if ( '1' === $value ) {
 			$this->optin->enable();
+			// Update the legacy option to prevent the notice from being displayed again after the opt-in is enabled.
+			update_option( 'rocket_analytics_notice_displayed', 1 );
+			// Set the thank-you transient to display the thank-you notice after the opt-in is enabled.
+			set_transient( 'rocket_analytics_optin', 1 );
 			wp_send_json_success( 'Opt-in enabled.' );
 		} elseif ( '0' === $value ) {
 			$this->optin->disable();
@@ -178,8 +181,9 @@ class Tracking extends Abstract_Render {
 			'rocket_mixpanel_data',
 			[
 				'optin_enabled' => $this->optin->is_enabled() ? true : false,
-				'brand'         => 'WP Media',
-				'product'       => 'WP Rocket',
+				'plugin'        => 'wp rocket ' . rocket_get_constant( 'WP_ROCKET_VERSION', '' ),
+				'brand'         => 'wp media',
+				'app'           => 'wp rocket',
 				'context'       => 'wp_plugin',
 				'path'          => isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '',
 				'user_id'       => $hashed_email,
@@ -199,15 +203,83 @@ class Tracking extends Abstract_Render {
 			return;
 		}
 
-		?>
-		<!-- start Mixpanel --><script type="text/javascript">const MIXPANEL_CUSTOM_LIB_URL = "<?php echo esc_js( rocket_get_constant( 'WP_ROCKET_ASSETS_JS_URL' ) . 'mixpanel-2-latest.min.js' ); ?>";(function(e,a){if(!a.__SV){var b=window;try{var c,l,i,j=b.location,g=j.hash;c=function(a,b){return(l=a.match(RegExp(b+"=([^&]*)")))?l[1]:null};g&&c(g,"state")&&(i=JSON.parse(decodeURIComponent(c(g,"state"))),"mpeditor"===i.action&&(b.sessionStorage.setItem("_mpcehash",g),history.replaceState(i.desiredHash||"",e.title,j.pathname+j.search)))}catch(m){}var k,h;window.mixpanel=a;a._i=[];a.init=function(b,c,f){function e(b,a){var c=a.split(".");2==c.length&&(b=b[c[0]],a=c[1]);b[a]=function(){b.push([a].concat(Array.prototype.slice.call(arguments,
-0)))}}var d=a;"undefined"!==typeof f?d=a[f]=[]:f="mixpanel";d.people=d.people||[];d.toString=function(b){var a="mixpanel";"mixpanel"!==f&&(a+="."+f);b||(a+=" (stub)");return a};d.people.toString=function(){return d.toString(1)+".people (stub)"};k="disable time_event track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config reset people.set people.set_once people.increment people.append people.union people.track_charge people.clear_charges people.delete_user".split(" ");
-for(h=0;h<k.length;h++)e(d,k[h]);a._i.push([b,c,f])};a.__SV=1.2;b=e.createElement("script");b.type="text/javascript";b.async=!0;b.src="undefined"!==typeof MIXPANEL_CUSTOM_LIB_URL?MIXPANEL_CUSTOM_LIB_URL:"file:"===e.location.protocol&&"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js".match(/^\/\//)?"https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js":"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";c=e.getElementsByTagName("script")[0];c.parentNode.insertBefore(b,c)}})(document,window.mixpanel||[]);
-		mixpanel.init("<?php echo $this->mixpanel->get_token(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>", {
-			'ip':false,
-			'property_blacklist': ['$initial_referrer', '$current_url', '$initial_referring_domain', '$referrer', '$referring_domain']
-		} );
-		</script><!-- end Mixpanel -->
-		<?php
+		$screen = get_current_screen();
+
+		if ( ! $screen || 'settings_page_wprocket' !== $screen->id ) {
+			return;
+		}
+
+		$this->mixpanel->add_script();
+	}
+
+	/**
+	 * Track opt-in change event.
+	 *
+	 * @param bool $status The new opt-in status.
+	 *
+	 * @return void
+	 */
+	public function track_optin_change( $status ): void {
+		$this->mixpanel->track_optin( $status );
+	}
+
+	/**
+	 * Track when a URL is added in Rocket Insights
+	 *
+	 * @param string $url        The URL that was added for monitoring.
+	 * @param string $plan       Plan name.
+	 * @param int    $urls_count The current number of URLs being monitored.
+	 * @param string $source     The source of the request.
+	 *
+	 * @return void
+	 */
+	public function track_rocket_insights_url_added( $url, $plan, $urls_count, $source ): void {
+		if ( ! $this->optin->can_track() ) {
+			return;
+		}
+
+		$this->mixpanel->track(
+			'Rocket Insights Page Added',
+			[
+				'context'       => 'wp_plugin',
+				'plan_type'     => $plan,
+				'tracked_pages' => $urls_count,
+				'source'        => $source,
+			]
+		);
+	}
+
+	/**
+	 * Tracks when a performance test is completed or failed in Rocket Insights.
+	 *
+	 * @since 3.20
+	 *
+	 * @param RocketInsights $row_details Details related to the database row.
+	 * @param array          $job_details Details related to the job.
+	 * @param string         $plan Plan name.
+	 *
+	 * @return void
+	 */
+	public function track_rocket_insights_test( $row_details, $job_details, $plan ): void {
+		if ( ! $this->optin->can_track() ) {
+			return;
+		}
+
+		if ( empty( $row_details->data ) ) {
+			return;
+		}
+
+		$this->mixpanel->track_direct(
+			'Rocket Insights Performance Test',
+			[
+				'context'   => 'wp_plugin',
+				'status'    => $row_details->status,
+				'score'     => $row_details->score,
+				'retest'    => $row_details->data['is_retest'],
+				'duration'  => time() - $row_details->data['start_time'],
+				'plan_type' => $plan,
+				'source'    => $row_details->data['source'],
+			]
+		);
 	}
 }

@@ -17,6 +17,13 @@ class Controller {
 	use ElementTrait;
 
 	/**
+	 * Used for debugging head elements.
+	 *
+	 * @var string
+	 */
+	private $feature = 'host_google_fonts_locally';
+
+	/**
 	 * Optimization Context instance.
 	 *
 	 * @var OptimizationContext
@@ -295,21 +302,6 @@ class Controller {
 		$html = preg_replace( $pattern, '', $html );
 
 		return $html;
-	}
-
-	/**
-	 * Disables the preload of Google Fonts.
-	 *
-	 * @param bool $disable Whether to disable the preload of Google Fonts.
-	 *
-	 * @return bool
-	 */
-	public function disable_google_fonts_preload( $disable ): bool {
-		if ( ! $this->optimization_context->is_allowed() ) {
-			return $disable;
-		}
-
-		return true;
 	}
 
 	/**

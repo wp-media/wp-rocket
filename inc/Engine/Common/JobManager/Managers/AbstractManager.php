@@ -46,10 +46,11 @@ trait AbstractManager {
 	 *
 	 * @param string $url page URL.
 	 * @param bool   $is_mobile page is for mobile.
+	 * @param array  $additional_details Additional details to be saved into DB.
 	 *
-	 * @return void
+	 * @return int|bool|void Row ID on success, false on failure, null if not allowed.
 	 */
-	public function add_url_to_the_queue( string $url, bool $is_mobile ): void {
+	public function add_url_to_the_queue( string $url, bool $is_mobile, array $additional_details = [] ) {
 		if ( ! $this->is_allowed() ) {
 			return;
 		}
@@ -57,10 +58,11 @@ trait AbstractManager {
 		$row = $this->query->get_row( $url, (bool) $is_mobile );
 
 		if ( empty( $row ) ) {
-			$this->query->create_new_job( $url, '', '', $is_mobile );
-			return;
+			return $this->query->create_new_job( $url, '', '', $is_mobile, $additional_details );
 		}
-		$this->query->reset_job( (int) $row->id );
+		$this->query->reset_job( (int) $row->id, '', $additional_details );
+
+		return (int) $row->id;
 	}
 
 	/**
@@ -100,14 +102,15 @@ trait AbstractManager {
 	 * @param string  $url Url from DB row.
 	 * @param boolean $is_mobile Is mobile from DB row.
 	 * @param string  $optimization_type The type of optimization applied for the current job.
+	 * @param array   $additional_update_fields Additional fields to update in the database.
 	 * @return void
 	 */
-	public function make_status_inprogress( string $url, bool $is_mobile, string $optimization_type ): void {
+	public function make_status_inprogress( string $url, bool $is_mobile, string $optimization_type, array $additional_update_fields = [] ): void {
 		if ( ! $this->is_allowed( $optimization_type ) ) {
 			return;
 		}
 
-		$this->query->make_status_inprogress( $url, $is_mobile );
+		$this->query->make_status_inprogress( $url, $is_mobile, $additional_update_fields );
 	}
 
 	/**
@@ -163,7 +166,6 @@ trait AbstractManager {
 		if ( ! $this->is_allowed( $optimization_type ) ) {
 			return;
 		}
-
 		$this->query->make_status_pending( $url, $job_id, $queue_name, $is_mobile );
 	}
 
@@ -219,5 +221,23 @@ trait AbstractManager {
 		}
 
 		$this->query->update_next_retry_time( $url, $is_mobile, $next_retry_time );
+	}
+
+	/**
+	 * Check if we need to allow retry strategies or send job to failed directly based on the feature.
+	 *
+	 * @return bool
+	 */
+	public function allow_retry_strategies() {
+		return true;
+	}
+
+	/**
+	 * Check if we need to allow cleaning old urls or not.
+	 *
+	 * @return bool
+	 */
+	public function allow_clean_rows() {
+		return true;
 	}
 }

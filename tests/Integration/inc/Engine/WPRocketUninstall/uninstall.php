@@ -25,6 +25,7 @@ class Test_Uninstall extends FilesystemTestCase {
 		'wp_rocket_no_licence'              => null,
 		'wp_rocket_last_option_hash'        => null,
 		'wp_rocket_debug'                   => null,
+		'rocket_mixpanel_optin'             => null,
 	];
 
 	protected static $transients = [
@@ -146,16 +147,22 @@ class Test_Uninstall extends FilesystemTestCase {
 		$lrc_table           = $container->get( 'lrc_table' );
 		$preload_fonts_table = $container->get( 'preload_fonts_table' );
 		$preconnect_table    = $container->get( 'preconnect_external_domains_table' );
+		$ri_table            = $container->get( 'ri_table' );
 
-		$uninstall = new WPRocketUninstall(
-			$cache_path,
-			$config_path,
+		$tables = [
 			$rucss_usedcss_table,
 			$preload_table,
 			$atf_table,
 			$lrc_table,
 			$preload_fonts_table,
-			$preconnect_table
+			$preconnect_table,
+			$ri_table,
+		];
+
+		$uninstall = new WPRocketUninstall(
+			$cache_path,
+			$config_path,
+			$tables
 		);
 
 		$uninstall->uninstall();

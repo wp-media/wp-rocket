@@ -12,7 +12,7 @@ function rocket_add_admin_css_js() {
 
 	wp_enqueue_style( 'wpr-admin', WP_ROCKET_ASSETS_CSS_URL . 'wpr-admin' . $suffix . '.css', null, WP_ROCKET_VERSION );
 	wp_enqueue_script( 'micromodal', WP_ROCKET_ASSETS_JS_URL . 'micromodal.min.js', null, '0.4.10', true );
-	wp_enqueue_script( 'wpr-admin', WP_ROCKET_ASSETS_JS_URL . 'wpr-admin' . $suffix . '.js', [ 'micromodal' ], WP_ROCKET_VERSION, true );
+	wp_enqueue_script( 'wpr-admin', WP_ROCKET_ASSETS_JS_URL . 'wpr-admin' . $suffix . '.js', [ 'micromodal', 'wp-api-fetch', 'wp-polyfill', 'wp-url' ], WP_ROCKET_VERSION, true );
 
 	wp_localize_script(
 		'wpr-admin',

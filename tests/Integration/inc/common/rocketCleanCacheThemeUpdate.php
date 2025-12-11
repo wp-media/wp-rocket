@@ -21,6 +21,7 @@ class Test_RocketCleanCacheThemeUpdate extends FilesystemTestCase {
 		parent::set_up();
 
 		$this->unregisterAllCallbacksExcept( 'upgrader_process_complete', 'rocket_clean_cache_theme_update' );
+		switch_theme( 'default/style.css' );
 	}
 
 	public function tear_down() {

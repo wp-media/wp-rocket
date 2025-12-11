@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\CriticalCSSSubscriber;
 
 use Brain\Monkey\Functions;
+use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
@@ -11,6 +12,8 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group AdminOnly
  */
 class Test_SwitchToRucss extends TestCase {
+	use DBTrait;
+
 	protected static $user_id;
 	protected static $options;
 	protected static $options_api;
@@ -29,10 +32,13 @@ class Test_SwitchToRucss extends TestCase {
 		self::$options          = $container->get( 'options' );
 		self::$original_options = self::$options->get_options();
 		self::$options_api      = $container->get( 'options_api' );
+
+		self::installPreloadCacheTable();
 	}
 
 	public static function tear_down_after_class() {
 		self::$options_api->set( 'settings', self::$original_options );
+		self::uninstallPreloadCacheTable();
 
 		parent::tear_down_after_class();
 	}

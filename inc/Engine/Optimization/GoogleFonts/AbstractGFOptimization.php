@@ -16,6 +16,13 @@ abstract class AbstractGFOptimization {
 	use ElementTrait;
 
 	/**
+	 * Used for debugging head elements.
+	 *
+	 * @var string
+	 */
+	private $feature = 'google_fonts_combine';
+
+	/**
 	 * Allowed display values.
 	 *
 	 * @since 3.8
@@ -163,7 +170,10 @@ abstract class AbstractGFOptimization {
 			$items[]        = $item;
 
 			$items[] = $this->noscript_tag(
-				sprintf( '<link rel="stylesheet" href="%1$s">', $font_url ) // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
+				sprintf( '<link rel="stylesheet" href="%1$s">', $font_url ), // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
+				[
+					'data-wpr-hosted-gf-parameters' => '',
+				]
 			);
 		}
 

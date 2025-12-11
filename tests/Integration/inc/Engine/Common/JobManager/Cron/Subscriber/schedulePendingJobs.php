@@ -23,6 +23,7 @@ class Test_SchedulePendingJobs extends TestCase {
 		$this->restoreWpHook( 'init' );
 
 		remove_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
+		remove_filter( 'rocket_rocket_insights_enabled', '__return_false' );
 
 		wp_clear_scheduled_hook( 'rocket_saas_pending_jobs' );
 
@@ -36,6 +37,7 @@ class Test_SchedulePendingJobs extends TestCase {
 		$this->rucss = $config['remove_unused_css'];
 
 		add_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
+		add_filter( 'rocket_rocket_insights_enabled', '__return_false' );
 
 		if ( $config['scheduled'] ) {
 			wp_schedule_event( time(), 'rocket_saas_pending_jobs', 'rocket_saas_pending_jobs' );

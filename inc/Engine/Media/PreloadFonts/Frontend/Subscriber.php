@@ -46,6 +46,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_head_items'                   => [ 'add_preload_fonts_in_head', 30 ],
 			'rocket_enable_rucss_fonts_preload'   => 'disable_rucss_preload_fonts',
 			'rocket_preload_fonts_excluded_fonts' => 'get_exclusions',
+			'rocket_external_font_exclusions'     => 'get_external_font_exclusions',
 			'rocket_buffer'                       => 'maybe_remove_existing_preloaded_fonts',
 		];
 	}
@@ -85,6 +86,21 @@ class Subscriber implements Subscriber_Interface {
 		 * Merge exclusions and lists.
 		 * Handle empty arrays gracefully.
 		 */
+		return array_merge( $exclusions, (array) $lists );
+	}
+
+	/**
+	 * Get external font exclusions for beacon configuration
+	 *
+	 * @since 3.19.1
+	 *
+	 * @param array $exclusions Array of domains to exclude from external font processing.
+	 * @return array
+	 */
+	public function get_external_font_exclusions( array $exclusions ): array {
+		// Merge with dynamic lists exclusions.
+		$lists = $this->data_manager->get_lists()->external_font_exclusions ?? [];
+
 		return array_merge( $exclusions, (array) $lists );
 	}
 

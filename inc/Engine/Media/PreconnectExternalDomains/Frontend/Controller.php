@@ -15,6 +15,13 @@ class Controller implements ControllerInterface {
 	use ElementTrait;
 
 	/**
+	 * Used for debugging head elements.
+	 *
+	 * @var string
+	 */
+	private $feature = 'preconnect_external_domains';
+
+	/**
 	 * Queries instance
 	 *
 	 * @var PreconnectDomains
@@ -176,7 +183,7 @@ class Controller implements ControllerInterface {
 	 * @return bool
 	 */
 	private function use_prefetch( $domain ) {
-		return wpm_apply_filters_typed( 'boolean', 'rocket_preconnect_external_domains_use_prefetch', false, $domain );
+		return wpm_apply_filters_typed( 'boolean', 'rocket_preconnect_external_domains_use_prefetch', true, $domain );
 	}
 
 	/**
