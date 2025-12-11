@@ -22,8 +22,8 @@ class Test_ConstantDefinitions extends TestCase {
 		} );
 
 		// Create a test constant name to avoid conflicts
-		$test_name_const = 'TEST_ROCKET_NAME_' . time();
-		$test_slug_const = 'TEST_ROCKET_SLUG_' . time();
+		$test_name_const = 'TEST_ROCKET_NAME_' . uniqid();
+		$test_slug_const = 'TEST_ROCKET_SLUG_' . uniqid();
 
 		// Simulate the logic from main.php
 		if ( ! defined( $test_name_const ) ) {
@@ -50,8 +50,8 @@ class Test_ConstantDefinitions extends TestCase {
 		} );
 
 		// Create test constants with custom values (simulating wp-config.php)
-		$test_name_const = 'TEST_ROCKET_NAME_PREDEFINED_' . time();
-		$test_slug_const = 'TEST_ROCKET_SLUG_PREDEFINED_' . time();
+		$test_name_const = 'TEST_ROCKET_NAME_PREDEFINED_' . uniqid();
+		$test_slug_const = 'TEST_ROCKET_SLUG_PREDEFINED_' . uniqid();
 		
 		define( $test_name_const, 'Site Cache' );
 		define( $test_slug_const, 'site-cache' );
