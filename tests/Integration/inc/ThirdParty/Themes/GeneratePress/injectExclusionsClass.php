@@ -1,0 +1,22 @@
+<?php
+namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Themes\GeneratePress;
+
+use WP_Rocket\Tests\Integration\TestCase;
+
+/**
+ * Test class covering \WP_Rocket\ThirdParty\Themes\GeneratePress::inject_exclusions_class
+ *
+ * @group Themes
+ * @group GeneratePress
+ */
+class Test_injectExclusionsClass extends TestCase {
+	/**
+	 * @dataProvider configTestData
+	 */
+	public function testShouldReturnExpected( $config, $expected ) {
+		$this->assertSame(
+			$expected,
+			apply_filters( 'generate_footer_class', $config['default_class'] )
+		);
+	}
+}
