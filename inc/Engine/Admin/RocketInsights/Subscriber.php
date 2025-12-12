@@ -167,6 +167,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 				[ 'on_update_cancel_old_as_jobs', 10, 2 ],
 			],
 			'admin_notices'                         => 'maybe_display_rocket_insights_promotion_notice',
+			'rocket_rocket_insights_enabled'        => 'maybe_disable_for_reseller_or_non_live',
 			'rest_api_init'                         => [ 'register_routes' ],
 		];
 	}
@@ -530,6 +531,11 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return void
 	 */
 	public function maybe_display_rocket_insights_promotion_notice() {
+		// Hide Rocket Insights notice if the feature is disabled.
+		if ( ! $this->context->is_allowed() ) {
+			return;
+		}
+
 		if ( 0 < $this->controller->get_total_url_count() ) {
 			return;
 		}
@@ -585,5 +591,21 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 				'dismiss_button_class' => 'button button-primary',
 			]
 		);
+	}
+
+	/**
+	 * Filters the rocket_rocket_insights_enabled value to disable for resellers and non-live sites.
+	 *
+	 * @since 3.20.2
+	 *
+	 * @param bool $enabled Whether Rocket Insights is enabled.
+	 * @return bool
+	 */
+	public function maybe_disable_for_reseller_or_non_live( bool $enabled ): bool {
+		if ( ! $enabled ) {
+			return $enabled;
+		}
+
+		return ! $this->context->is_reseller_or_non_live();
 	}
 }

@@ -1,18 +1,16 @@
 This file contains a list of people who have made large contributions to WP Rocket.
 
 Developers:
-	Jonathan Buttigieg <jonathan@wp-media.me>
 	Remy Perona <remy@wp-media.me>
 	Ahmed Saeed <ahmed@wp-media.me>
-	Alfonso Catron <alfonso@wp-media.me>
-	COQUARD Cyrille <cyrille@wp-media.me>
 	Mike <michael@wp-media.me>
+	Gaël Robin <gael@wp-media.me>
 	Mostafa Hisham <mostafa@wp-media.me>
 
 QA:
 	Piotr Bąk <piotr@wp-media.me>
 	Mai Saad <mai@wp-media.me>
-	Vasilis Manthos <vasilis@wp-media.me>
+	Hanna-Meda Talos <hanna@wp-media.me>
 
 Previous contributors:
 	Julio Potier
@@ -25,3 +23,8 @@ Previous contributors:
 	Cristina Soponar
 	Caspar Green
 	Natalia Drause
+	Vasilis Manthos
+	Jonathan Buttigieg
+	COQUARD Cyrille
+	Opeyemi Ibrahim
+	Alfonso Catron
