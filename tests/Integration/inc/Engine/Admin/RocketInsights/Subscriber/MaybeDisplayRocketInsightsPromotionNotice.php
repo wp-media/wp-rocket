@@ -73,6 +73,12 @@ class Test_MaybeDisplayRocketInsightsPromotionNotice extends TestCase {
             );
         }
 
+		if ( isset( $config['rocket_insights_enabled'] ) ) {
+			add_filter( 'rocket_rocket_insights_enabled', function() use ( $config ) {
+				return $config['rocket_insights_enabled'];
+			} );
+		}
+
 		if ( $expected['should_display'] ) {
 			$this->assertStringContainsStringIgnoringCase(
 				$this->format_the_html( $this->config['notice'] ),
