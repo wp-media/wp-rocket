@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Admin\RocketInsights;
 
+use WP_Rocket\Admin\Options;
+use WP_Rocket\Engine\Admin\RocketInsights\APIHandler\GlobalScoreSaaSAPIClient;
 use WP_Rocket\Engine\Admin\RocketInsights\Database\Queries\RocketInsights as Query;
 
 /**
@@ -23,6 +25,11 @@ class GlobalScore {
 	private const CACHE_EXPIRATION = DAY_IN_SECONDS;
 
 	/**
+	 * Last sent global score option name.
+	 */
+	private const LAST_SENT_OPTION_NAME = 'sent_global_score';
+
+	/**
 	 * Rocket Insights Query instance.
 	 *
 	 * @var Query
@@ -30,12 +37,30 @@ class GlobalScore {
 	private $query;
 
 	/**
+	 * Global score SaaS API Client instance.
+	 *
+	 * @var GlobalScoreSaaSAPIClient
+	 */
+	private $client;
+
+	/**
+	 * Options instance.
+	 *
+	 * @var Options
+	 */
+	private $options;
+
+	/**
 	 * Constructor.
 	 *
-	 * @param Query $query Rocket Insights Query instance.
+	 * @param Query                    $query Rocket Insights Query instance.
+	 * @param Options                  $options Options instance.
+	 * @param GlobalScoreSaaSAPIClient $client Global score SaaS API Client instance.
 	 */
-	public function __construct( Query $query ) {
-		$this->query = $query;
+	public function __construct( Query $query, Options $options, GlobalScoreSaaSAPIClient $client ) {
+		$this->query   = $query;
+		$this->client  = $client;
+		$this->options = $options;
 	}
 
 	/**
@@ -176,5 +201,22 @@ class GlobalScore {
 
 		// All tests are complete and none are blurred.
 		return 'complete';
+	}
+
+	private function get_last_sent_global_score() {
+		return $this->options->get( static::LAST_SENT_OPTION_NAME );
+	}
+
+	public function maybe_send_request_to_saas(): void {
+		$global_score = $this->get_global_score_data();
+		if ( $global_score['score'] === $this->get_last_sent_global_score() ) {
+			return;
+		}
+		$this->client->send_to_saas(
+			[
+				'average_score' => $global_score['score'],
+				'blurred'       => 'blurred' === $global_score['status'],
+			]
+			);
 	}
 }

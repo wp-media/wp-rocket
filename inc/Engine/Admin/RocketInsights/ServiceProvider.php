@@ -5,7 +5,7 @@ namespace WP_Rocket\Engine\Admin\RocketInsights;
 
 use WP_Rocket\Dependencies\League\Container\Argument\Literal\StringArgument;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
-use WP_Rocket\Engine\Admin\RocketInsights\{
+use WP_Rocket\Engine\Admin\RocketInsights\{APIHandler\GlobalScoreSaaSAPIClient,
 	Database\Tables\RocketInsights as RITable,
 	Database\Queries\RocketInsights as RIQuery,
 	APIHandler\APIClient as RIAPIClient,
@@ -18,8 +18,7 @@ use WP_Rocket\Engine\Admin\RocketInsights\{
 	URLLimit\Subscriber as URLLimitSubscriber,
 	Settings\Controller as SettingsController,
 	Settings\Subscriber as SettingsSubscriber,
-	PostListing\Subscriber as PostListingSubscriber,
-};
+	PostListing\Subscriber as PostListingSubscriber};
 use WP_Rocket\Engine\Common\JobManager\Queue\Queue as JobManagerQueue;
 
 class ServiceProvider extends AbstractServiceProvider {
@@ -36,6 +35,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'ri_table',
 		'ri_query',
 		'ri_api_client',
+		'ri_global_score_saas_api_client',
 		'ri_context',
 		'ri_saas_context',
 		'ri_manager',
@@ -104,6 +104,9 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'ri_api_client', RIAPIClient::class )
 			->addArgument( 'options' );
 
+		$this->getContainer()->add( 'ri_global_score_saas_api_client', GlobalScoreSaaSAPIClient::class )
+			->addArgument( 'options' );
+
 		$this->getContainer()->add( 'ri_plan', Plan::class )
 			->addArguments(
 				[
@@ -129,6 +132,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArguments(
 				[
 					'ri_query',
+					'ri_global_score_saas_api_client',
 				]
 			);
 
