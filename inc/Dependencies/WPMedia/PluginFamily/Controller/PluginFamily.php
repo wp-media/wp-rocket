@@ -479,7 +479,7 @@ class PluginFamily implements PluginFamilyInterface {
 		 *
 		 * @param bool $can_enqueue Whether to enqueue the admin assets and show the banner.
 		 */
-		return wpm_apply_filters_typed( 'bool', 'wpmedia_plugin_family_show_imagify_banner', $can_enqueue );
+		return wpm_apply_filters_typed( 'boolean', 'wpmedia_plugin_family_show_imagify_banner', $can_enqueue );
 	}
 
 	/**
