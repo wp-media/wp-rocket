@@ -9,13 +9,19 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group Themes
  * @group GeneratePress
  */
-class Test_injectExclusionsClass extends TestCase {
+class Test_InjectExclusionsClass extends TestCase {
 	/**
+	 * Test that the exclusion class is added to footer classes.
+	 *
 	 * @dataProvider configTestData
+	 *
+	 * @param array $config   Test configuration.
+	 * @param array $expected Expected result.
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
 		$this->assertSame(
 			$expected,
+			// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Third-party hook from GeneratePress theme.
 			apply_filters( 'generate_footer_class', $config['default_class'] )
 		);
 	}
