@@ -165,9 +165,12 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'wp_rocket_upgrade'                     => [
 				[ 'on_update_reset_credit', 10, 2 ],
 				[ 'on_update_cancel_old_as_jobs', 10, 2 ],
+				[ 'on_update_send_global_score', 10, 2 ],
 			],
 			'admin_notices'                         => 'maybe_display_rocket_insights_promotion_notice',
 			'rest_api_init'                         => [ 'register_routes' ],
+			'rocket_insights_global_score_saas_args' => 'add_global_score_saas_args',
+			'set_transient_wpr_global_score_data' => 'send_global_score_saas_request',
 		];
 	}
 
@@ -523,6 +526,20 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	}
 
 	/**
+	 * Callback for the wp_rocket_upgrade action to send global score to saas with upgrading from a version before 3.20.3.
+	 *
+	 * @param string $new_version New plugin version.
+	 * @param string $old_version Previous plugin version.
+	 * @return void
+	 */
+	public function on_update_send_global_score( $new_version, $old_version ) {
+		if ( version_compare( $old_version, '3.20.3', '>=' ) ) {
+			return;
+		}
+		$this->global_score->maybe_send_request_to_saas();
+	}
+
+	/**
 	 * Displays a promotion notice for Rocket Insights on the admin dashboard.
 	 *
 	 * @since 3.20.1
@@ -585,5 +602,15 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 				'dismiss_button_class' => 'button button-primary',
 			]
 		);
+	}
+	public function add_global_score_saas_args( $args ) {
+		$args['credits_left'] = $this->plan->get_credit();
+		$args['license'] = $this->context->is_free_user() ? 'free' : 'paid';
+		$args['wpr_user_id'] = $this->context->get_user_id();
+		return $args;
+	}
+
+	public function send_global_score_saas_request() {
+		$this->global_score->maybe_send_request_to_saas();
 	}
 }

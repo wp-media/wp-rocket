@@ -123,4 +123,8 @@ class Context implements ContextInterface {
 		$max_urls          = $this->user->get_rocket_insights_addon_limit( $this->user->get_rocket_insights_addon_sku_active() );
 		return $current_url_count < $max_urls;
 	}
+
+	public function get_user_id() {
+		return $this->user->get_user_id();
+	}
 }

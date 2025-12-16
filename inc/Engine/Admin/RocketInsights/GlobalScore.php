@@ -212,11 +212,21 @@ class GlobalScore {
 		if ( $global_score['score'] === $this->get_last_sent_global_score() ) {
 			return;
 		}
-		$this->client->send_to_saas(
-			[
-				'average_score' => $global_score['score'],
-				'blurred'       => 'blurred' === $global_score['status'],
-			]
-			);
+
+		/**
+		 * Filters Rocket Insights global score SaaS args.
+		 *
+		 * @param array $args Array of args.
+		 */
+		$args = wpm_apply_filters_typed( 'array', 'rocket_insights_global_score_saas_args', [
+			'average_score' => $global_score['score'],
+			'blurred'       => 'blurred' === $global_score['status'],
+		] );
+
+		$sent = $this->client->send_to_saas( $args );
+		if ( is_wp_error( $sent ) || empty( $sent ) || 200 !== $sent['code'] ) {
+			return;
+		}
+		$this->options->set( static::LAST_SENT_OPTION_NAME, $global_score['score'] );
 	}
 }

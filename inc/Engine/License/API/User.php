@@ -528,4 +528,11 @@ class User {
 		}
 		return null;
 	}
+
+	public function get_user_id() {
+		if ( empty( $this->user->id ) ) {
+			return null;
+		}
+		return $this->user->id;
+	}
 }
