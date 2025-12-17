@@ -11,6 +11,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  */
 class Test_AddHashes extends TestCase {
   private $max_hashes;
+  protected $donotrocketoptimize;
 
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
@@ -29,6 +30,7 @@ class Test_AddHashes extends TestCase {
 		parent::set_up();
 
 		$this->max_hashes = null;
+		$this->donotrocketoptimize = null;
 		$this->unregisterAllCallbacksExcept( 'rocket_performance_hints_buffer', 'add_hashes', 16 );
 
 	}
@@ -45,6 +47,8 @@ class Test_AddHashes extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldWorkAsExpected( $config, $expected ) {
+		$this->donotrocketoptimize = $config['donotrocketoptimize'] ?? null;
+
 		self::addLrc( $config['row'] );
 
 		add_filter( 'rocket_lrc_optimization', '__return_true' );
@@ -57,6 +61,14 @@ class Test_AddHashes extends TestCase {
 			$this->max_hashes = $config['max_hashes'];
 			add_filter( 'rocket_lrc_max_hashes', [ $this, 'set_lrc_max_hashes' ] );
 		}
+
+		\Brain\Monkey\Functions\when( 'rocket_get_constant' )
+			->alias( function( $constant ) {
+				if ( 'DONOTROCKETOPTIMIZE' === $constant ) {
+					return $this->donotrocketoptimize;
+				}
+				return false;
+			} );
 
 
 		$this->assertSame(

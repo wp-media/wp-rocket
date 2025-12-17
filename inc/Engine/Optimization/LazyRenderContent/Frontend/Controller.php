@@ -140,6 +140,10 @@ class Controller implements ControllerInterface {
 	 * @return string
 	 */
 	public function add_hashes( $html ) {
+		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) ) {
+			return $html;
+		}
+
 		if ( empty( $html ) ) {
 			return $html;
 		}

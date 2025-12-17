@@ -48,8 +48,6 @@ class Test_AddHashesWhenAllowed extends TestCase {
 
 		self::addLrc( $config['row'] );
 
-		add_filter( 'rocket_lrc_optimization', '__return_true' );
-
 		$this->assertSame(
 			$expected['html'],
 			apply_filters( 'rocket_buffer', $config['html'] )
