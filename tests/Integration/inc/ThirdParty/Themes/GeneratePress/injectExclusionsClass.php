@@ -21,7 +21,6 @@ class Test_InjectExclusionsClass extends TestCase {
 	public function testShouldReturnExpected( $config, $expected ) {
 		$this->assertSame(
 			$expected,
-			// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Third-party hook from GeneratePress theme.
 			apply_filters( 'generate_footer_class', $config['default_class'] )
 		);
 	}
