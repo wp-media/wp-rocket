@@ -25,15 +25,26 @@ if ( null === $data['wpr_rocket_row'] ) :
 	// The click handler will decide whether to show the limit message or proceed.
 	?>
 	<div class="wpr-ri-column wpr-ri-not-tracked" data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>" data-has-credit="<?php echo esc_attr( $data['wpr_has_credit'] ? '1' : '0' ); ?>" data-can-add-pages="<?php echo esc_attr( $data['wpr_can_add_pages'] ? '1' : '0' ); ?>" data-post-id="<?php echo esc_attr( $data['wpr_post_id'] ); ?>">
+		<?php if ( $data['is_draft'] ) : ?>
+			<div class="wpr-btn-with-tool-tip">
+		<?php endif; ?>
 		<button 
 			type="button"
-			class="wpr-ri-test-page <?php echo ! $data['is_draft'] ? '' : 'wpr-ri-no-credit'; ?>"
+			class="wpr-ri-test-page <?php echo $data['is_draft'] ? 'wpr-ri-no-credit' : ''; ?>"
 			data-url="<?php echo esc_attr( $data['wpr_rocket_insights_url'] ); ?>"
 			data-post-id="<?php echo esc_attr( $data['wpr_post_id'] ); ?>"
-			<?php echo ! $data['is_draft'] ? '' : 'disabled'; ?>
+			<?php echo $data['is_draft'] ? 'disabled' : ''; ?>
 		>
 			<?php esc_html_e( 'Test the page', 'rocket' ); ?>
 		</button>
+		<?php if ( $data['is_draft'] ) : ?>
+				<div class="wpr-tooltip">
+					<div class="wpr-tooltip-content">
+						<?php esc_html_e( 'This page is a draft and cannot be tested.', 'rocket' ); ?>
+					</div>
+				</div>
+			</div>
+		<?php endif; ?>
 		<?php // Store the limit message HTML hidden in the column for per-row usage by JS. ?>
 		<div class="wpr-ri-limit-html" style="display: none;">
 			<?php echo wp_kses_post( $data['wpr_limit_reached_message'] ); ?>
