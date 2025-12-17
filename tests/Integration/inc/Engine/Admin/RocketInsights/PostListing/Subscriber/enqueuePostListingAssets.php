@@ -13,8 +13,20 @@ use ReflectionClass;
  * @group AdminOnly
  */
 class Test_EnqueuePostListingAssets extends AdminTestCase {
+	/**
+	 * Name of the transient used for storing remote settings data.
+	 *
+	 * @var string
+	 */
 	private $remote_settings_transient = 'wp_rocket_remote_settings';
-	
+
+	/**
+	 * Remote settings response.
+	 *
+	 * @var array
+	 */
+	private $response;
+
 	/**
 	 * Set up test environment.
 	 *

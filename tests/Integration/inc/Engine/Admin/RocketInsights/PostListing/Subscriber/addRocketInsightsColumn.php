@@ -13,8 +13,6 @@ use ReflectionClass;
  * @group AdminOnly
  */
 class Test_AddRocketInsightsColumn extends AdminTestCase {
-	private $remote_settings_transient = 'wp_rocket_remote_settings';
-
 	/**
 	 * Container instance.
 	 */
@@ -27,6 +25,13 @@ class Test_AddRocketInsightsColumn extends AdminTestCase {
 	 */
 	private $subscriber;
 	
+	/**
+	 * Name of the transient used for storing remote settings data.
+	 *
+	 * @var string
+	 */
+	private $remote_settings_transient = 'wp_rocket_remote_settings';
+
 	/**
 	 * Remote settings response.
 	 *

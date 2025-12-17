@@ -14,7 +14,19 @@ use ReflectionClass;
  * @group AdminOnly
  */
 class Test_RenderRocketInsightsColumn extends AdminTestCase {
+	/**
+	 * Name of the transient used for storing remote settings data.
+	 *
+	 * @var string
+	 */
 	private $remote_settings_transient = 'wp_rocket_remote_settings';
+
+	/**
+	 * Remote settings response.
+	 *
+	 * @var array
+	 */
+	private $response;
 
 	use DBTrait;
 	public static function set_up_before_class() {
