@@ -78,6 +78,7 @@ class Test_EnqueuePostListingAssets extends AdminTestCase {
 	 * @return void
 	 */
 	public function testShouldEnqueueAssetsOnPostListingPages( $config, $expected ) {
+		$this->rocket_version = '3.20.3';
 		$container = apply_filters( 'rocket_container', null ); // @phpstan-ignore-line
 		$container->get( 'user' )->set_user( $config['customer_data'] );
 

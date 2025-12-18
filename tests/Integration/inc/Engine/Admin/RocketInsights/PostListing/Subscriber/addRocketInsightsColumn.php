@@ -44,7 +44,7 @@ class Test_AddRocketInsightsColumn extends AdminTestCase {
 	 */
 	public function set_up() {
 		parent::set_up();
-		
+		$this->constants['WP_ROCKET_VERSION'] = '3.20.3';
 		// Get the subscriber instance from container using the filter.
 		$this->container = apply_filters( 'rocket_container', null );
 		$this->subscriber = $this->container->get( 'ri_post_listing_subscriber' );
@@ -80,6 +80,7 @@ class Test_AddRocketInsightsColumn extends AdminTestCase {
 	 * @return void
 	 */
 	public function testShouldAddRocketInsightsColumn( $config, $expected ) {
+		$this->rocket_version = '3.20.3';
 		$this->container->get( 'user' )->set_user( $config['customer_data'] );
 		Functions\when( 'wp_parse_url' )->justReturn( $config['is_live_site'] );
 

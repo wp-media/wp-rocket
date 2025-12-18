@@ -69,6 +69,7 @@ class Test_RenderRocketInsightsColumn extends AdminTestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnAsExpected( $config, $expected) {
+		$this->rocket_version = '3.20.3';
 		$container = apply_filters( 'rocket_container', null ); // @phpstan-ignore-line
 		$container->get( 'user' )->set_user( $config['customer_data'] );
 		
