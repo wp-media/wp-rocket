@@ -29,25 +29,26 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rest_api_init'                      => 'register_rest_route',
-			'rocket_localize_admin_script'       => [ 'add_dynamic_lists_script', 11 ],
-			'init'                               => 'schedule_lists_update',
-			'rocket_update_dynamic_lists'        => 'update_lists',
-			'rocket_deactivation'                => 'clear_schedule_lists_update',
-			'rocket_settings_tools_content'      => 'display_update_lists_section',
-			'rocket_cache_ignored_parameters'    => 'add_cache_ignored_parameters',
-			'rocket_minify_excluded_external_js' => 'add_minify_excluded_external_js',
-			'rocket_move_after_combine_js'       => 'add_move_after_combine_js',
-			'rocket_excluded_inline_js_content'  => 'add_combine_js_excluded_inline',
-			'rocket_preload_exclude_urls'        => 'add_preload_exclusions',
-			'rocket_exclude_js'                  => 'add_js_exclude_files',
-			'rocket_plugins_to_deactivate'       => 'add_incompatible_plugins_to_deactivate',
-			'rocket_staging_list'                => 'add_staging_exclusions',
-			'rocket_lrc_exclusions'              => 'add_lrc_exclusions',
-			'rocket_mixpanel_tracked_options'    => 'add_mixpanel_tracked_options',
-			'wp_rocket_upgrade'                  => 'update_lists_from_files',
-			'rocket_before_rollback'             => 'maybe_update_lists',
-			'rocket_exclude_locally_host_fonts'  => 'add_media_fonts_exclusions',
+			'rest_api_init'                                => 'register_rest_route',
+			'rocket_localize_admin_script'                 => [ 'add_dynamic_lists_script', 11 ],
+			'init'                                         => 'schedule_lists_update',
+			'rocket_update_dynamic_lists'                  => 'update_lists',
+			'rocket_deactivation'                          => 'clear_schedule_lists_update',
+			'rocket_settings_tools_content'                => 'display_update_lists_section',
+			'rocket_cache_ignored_parameters'              => 'add_cache_ignored_parameters',
+			'rocket_minify_excluded_external_js'           => 'add_minify_excluded_external_js',
+			'rocket_move_after_combine_js'                 => 'add_move_after_combine_js',
+			'rocket_excluded_inline_js_content'            => 'add_combine_js_excluded_inline',
+			'rocket_preload_exclude_urls'                  => 'add_preload_exclusions',
+			'rocket_exclude_js'                            => 'add_js_exclude_files',
+			'rocket_plugins_to_deactivate'                 => 'add_incompatible_plugins_to_deactivate',
+			'rocket_staging_list'                          => 'add_staging_exclusions',
+			'rocket_lrc_exclusions'                        => 'add_lrc_exclusions',
+			'rocket_mixpanel_tracked_options'              => 'add_mixpanel_tracked_options',
+			'wp_rocket_upgrade'                            => 'update_lists_from_files',
+			'rocket_before_rollback'                       => 'maybe_update_lists',
+			'rocket_exclude_locally_host_fonts'            => 'add_media_fonts_exclusions',
+			'rocket_insights_add_homepage_expiry_interval' => 'add_rocket_insights_add_homepage_expiry_interval',
 		];
 	}
 
@@ -249,5 +250,17 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function add_mixpanel_tracked_options( array $options ): array {
 		return array_unique( array_merge( (array) $options, $this->dynamic_lists->get_mixpanel_tracked_options() ) );
+	}
+
+	/**
+	 * Add the Rocket Insights auto-add homepage expiry interval.
+	 *
+	 * @since 3.20.3
+	 *
+	 * @param int $interval Number of days before license expiry.
+	 * @return int
+	 */
+	public function add_rocket_insights_add_homepage_expiry_interval( int $interval ): int {
+		return $this->dynamic_lists->get_rocket_insights_add_homepage_expiry_interval();
 	}
 }
