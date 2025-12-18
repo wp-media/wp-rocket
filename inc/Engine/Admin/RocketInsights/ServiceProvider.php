@@ -183,6 +183,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'options',
 					'ri_manager',
 					'ri_plan',
+					'renewal',
 				]
 			);
 
