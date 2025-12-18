@@ -387,7 +387,7 @@ class PluginFamily implements PluginFamilyInterface {
 		 *
 		 * @param bool $show_banner Whether to enqueue the block editor assets and show the banner.
 		 */
-		if ( ! wpm_apply_filters_typed( 'bool', 'wpmedia_plugin_family_show_imagify_banner', true ) ) {
+		if ( ! wpm_apply_filters_typed( 'boolean', 'wpmedia_plugin_family_show_imagify_banner', true ) ) {
 			return;
 		}
 
