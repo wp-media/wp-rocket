@@ -380,6 +380,17 @@ class PluginFamily implements PluginFamilyInterface {
 			return;
 		}
 
+		/**
+		 * Filters whether to show the Imagify banner on Media gallery components.
+		 *
+		 * @since 1.0.8
+		 *
+		 * @param bool $show_banner Whether to enqueue the block editor assets and show the banner.
+		 */
+		if ( ! wpm_apply_filters_typed( 'bool', 'wpmedia_plugin_family_show_imagify_banner', true ) ) {
+			return;
+		}
+
 		$script_url = plugin_dir_url( __DIR__ ) . 'assets/js/index.js';
 
 		wp_enqueue_script(
@@ -475,7 +486,7 @@ class PluginFamily implements PluginFamilyInterface {
 		/**
 		 * Filters whether to show the Imagify banner on Media gallery components.
 		 *
-		 * @since 1.0.7
+		 * @since 1.0.8
 		 *
 		 * @param bool $can_enqueue Whether to enqueue the admin assets and show the banner.
 		 */
