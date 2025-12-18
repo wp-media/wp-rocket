@@ -1,9 +1,9 @@
 <?php
 
-namespace WPRocketMe\Tests\Integration\inc\Engine\Admin\RocketInsights\Subscriber;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\RocketInsights\Subscriber;
 
-use WPRocketMe\Tests\Integration\DBTrait;
-use WPRocketMe\Tests\Integration\TestCase;
+use WP_Rocket\Tests\Integration\DBTrait;
+use WP_Rocket\Tests\Integration\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\Admin\RocketInsights\Subscriber::on_update_schedule_auto_add_task
