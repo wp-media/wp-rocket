@@ -36,9 +36,17 @@ class IsExpiringIn extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
-		$this->user->shouldReceive( 'get_license_expiration' )
+		$is_auto_renew = $config['is_auto_renew'] ?? false;
+
+		$this->user->shouldReceive( 'is_auto_renew' )
 			->once()
-			->andReturn( $config['license_expiration'] );
+			->andReturn( $is_auto_renew );
+
+		if ( ! $is_auto_renew ) {
+			$this->user->shouldReceive( 'get_license_expiration' )
+				->once()
+				->andReturn( $config['license_expiration'] );
+		}
 
 		$result = $this->renewal->is_expiring_in( $config['duration_in_days'] );
 

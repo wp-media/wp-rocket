@@ -54,6 +54,14 @@ return [
 			],
 			'expected' => true,
 		],
+		'shouldReturnFalseWhenAutoRenewEnabled' => [
+			'config'   => [
+				'license_expiration' => $now + ( 1 * DAY_IN_SECONDS ), // Expires in 1 day.
+				'duration_in_days'   => 7,
+				'is_auto_renew'      => true,
+			],
+			'expected' => false, // Auto-renew enabled always returns false.
+		],
 	],
 ];
 
