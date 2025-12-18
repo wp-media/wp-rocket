@@ -10,7 +10,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group RocketInsights
  * @group AdminOnly
  */
-class OnUpdateScheduleAutoAddTaskTest extends TestCase {
+class Test_OnUpdateScheduleAutoAddTask extends TestCase {
 	use DBTrait;
 
 	protected $subscriber;
@@ -20,7 +20,7 @@ class OnUpdateScheduleAutoAddTaskTest extends TestCase {
 
 		$this->installPerformanceMonitoringTable();
 
-		$this->subscriber = $this->container->get( 'ri_subscriber' );
+		$this->subscriber = $this->container->get( 'ri_subscriber' ); // @phpstan-ignore-line
 
 		$this->unregisterAllCallbacksExcept( 'wp_rocket_upgrade', 'on_update_schedule_auto_add_task', 10 );
 	}
@@ -38,12 +38,12 @@ class OnUpdateScheduleAutoAddTaskTest extends TestCase {
 	public function testShouldBehaveLikeExpected( $config, $expected ) {
 		// Set up options.
 		foreach ( $config['options'] as $key => $value ) {
-			update_option( $key, $value );
+			update_option( $key, $value ); // @phpstan-ignore-line
 		}
 
 		// Set up license data.
 		if ( isset( $config['license_data'] ) ) {
-			update_option( 'wp_rocket_settings', [ 'consumer_key' => 'test_key' ] );
+			update_option( 'wp_rocket_settings', [ 'consumer_key' => 'test_key' ] ); // @phpstan-ignore-line
 			set_transient( 'wp_rocket_customer_data', $config['license_data'] );
 		}
 
