@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace WP_Rocket\Engine\License\API;
 
@@ -42,7 +43,7 @@ class RemoteSettingsClient extends AbstractSafeAPIClient {
 	 *
 	 * @return string The transient key for remote settings data.
 	 */
-	protected function get_transient_key() {
+	protected function get_transient_key(): string {
 		return 'wp_rocket_remote_settings';
 	}
 
@@ -55,14 +56,14 @@ class RemoteSettingsClient extends AbstractSafeAPIClient {
 	 *
 	 * @return string The API URL for remote settings.
 	 */
-	protected function get_api_url() {
+	protected function get_api_url(): string {
 		return self::REMOTE_SETTINGS_ENDPOINT;
 	}
 
 	/**
 	 * Retrieves remote settings data from cache if available; otherwise, fetches it from the remote settings API endpoint.
 	 *
-	 * The remote settings data is cached in a transient for 6 hours.
+	 * The remote settings data is cached in a transient for 24 hours.
 	 *
 	 * @since 3.20.3
 	 *
@@ -121,7 +122,7 @@ class RemoteSettingsClient extends AbstractSafeAPIClient {
 	 *
 	 * @return void
 	 */
-	public function flush_cache() {
+	public function flush_cache(): void {
 		delete_transient( $this->get_transient_key() );
 	}
 }

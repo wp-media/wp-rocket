@@ -11,7 +11,7 @@ trait CustomerDataTrait {
 	 *
 	 * @return array
 	 */
-	public function get_customer_data() {
+	public function get_customer_data(): array {
 		return [
 			'key'   => sanitize_key( $this->get_customer_key() ),
 			'email' => rawurlencode( $this->get_customer_email() ),
@@ -27,7 +27,7 @@ trait CustomerDataTrait {
 	 *
 	 * @return string Customer key.
 	 */
-	protected function get_customer_key() {
+	protected function get_customer_key(): string {
 		return ! empty( $this->options->get( 'consumer_key', '' ) )
 			? $this->options->get( 'consumer_key', '' )
 			: rocket_get_constant( 'WP_ROCKET_KEY', '' );
@@ -42,7 +42,7 @@ trait CustomerDataTrait {
 	 *
 	 * @return string Customer email.
 	 */
-	protected function get_customer_email() {
+	protected function get_customer_email(): string {
 		return ! empty( $this->options->get( 'consumer_email', '' ) )
 			? $this->options->get( 'consumer_email', '' )
 			: rocket_get_constant( 'WP_ROCKET_EMAIL', '' );

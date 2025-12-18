@@ -89,7 +89,7 @@ class Test_AddRocketInsightsColumn extends AdminTestCase {
 		$remote_settings_data = $this->container->get( 'remote_settings_client' )->get_remote_settings_data();
 		$remoteSettings = $this->container->get( 'remote_settings' );
     
-		// Use reflection to mock private property
+		// Use reflection to mock private property.
 		$reflection = new ReflectionClass( $remoteSettings );
 		$property = $reflection->getProperty( 'remote_settings' );
 		$property->setAccessible( true );
@@ -124,5 +124,7 @@ class Test_AddRocketInsightsColumn extends AdminTestCase {
 		if ( false !== strpos( $url, 'plugin-settings.php' ) ) {
 			return $this->response;
 		}
+
+		return $preempt;
 	}
 }

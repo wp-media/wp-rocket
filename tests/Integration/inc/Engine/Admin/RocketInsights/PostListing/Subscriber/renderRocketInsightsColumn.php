@@ -147,5 +147,7 @@ class Test_RenderRocketInsightsColumn extends AdminTestCase {
 		if ( false !== strpos( $url, 'plugin-settings.php' ) ) {
 			return $this->response;
 		}
+
+		return $preempt;
 	}
 }
