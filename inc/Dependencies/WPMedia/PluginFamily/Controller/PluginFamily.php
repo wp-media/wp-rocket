@@ -380,14 +380,7 @@ class PluginFamily implements PluginFamilyInterface {
 			return;
 		}
 
-		/**
-		 * Filters whether to show the Imagify banner on Media gallery components.
-		 *
-		 * @since 1.0.8
-		 *
-		 * @param bool $show_banner Whether to enqueue the block editor assets and show the banner.
-		 */
-		if ( ! wpm_apply_filters_typed( 'boolean', 'wpmedia_plugin_family_show_imagify_banner', true ) ) {
+		if ( ! $this->should_show_imagify_banner() ) {
 			return;
 		}
 
@@ -483,14 +476,7 @@ class PluginFamily implements PluginFamilyInterface {
 			$can_enqueue = in_array( get_current_screen()->id, $allowed_screen_ids, true );
 		}
 
-		/**
-		 * Filters whether to show the Imagify banner on Media gallery components.
-		 *
-		 * @since 1.0.8
-		 *
-		 * @param bool $can_enqueue Whether to enqueue the admin assets and show the banner.
-		 */
-		return wpm_apply_filters_typed( 'boolean', 'wpmedia_plugin_family_show_imagify_banner', $can_enqueue );
+		return $this->should_show_imagify_banner( $can_enqueue );
 	}
 
 	/**
@@ -594,5 +580,26 @@ class PluginFamily implements PluginFamilyInterface {
 	 */
 	private function is_promote_imagify_dismissed() {
 		return ! empty( get_option( 'plugin_family_dismiss_promote_imagify' ) );
+	}
+
+	/**
+	 * Check if the Imagify banner should be shown.
+	 *
+	 * Applies the filter to allow developers to control banner visibility.
+	 *
+	 * @since 1.0.8
+	 *
+	 * @param bool $default_value The default value to filter.
+	 * @return bool Whether to show the Imagify banner.
+	 */
+	private function should_show_imagify_banner( bool $default_value = true ): bool {
+		/**
+		 * Filters whether to show the Imagify banner on Media gallery components.
+		 *
+		 * @since 1.0.8
+		 *
+		 * @param bool $show_banner Whether to show the Imagify banner.
+		 */
+		return wpm_apply_filters_typed( 'boolean', 'wpmedia_plugin_family_show_imagify_banner', $default_value );
 	}
 }
