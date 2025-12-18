@@ -97,11 +97,15 @@ class MaybeAddHomepageAutomaticallyTest extends TestCase {
 
 		// Setup: Configure the interval filter.
 		if ( isset( $config['interval'] ) ) {
+			// Remove any existing filters first to avoid conflicts.
+			remove_all_filters( 'rocket_insights_add_homepage_expiry_interval' );
+			
 			add_filter(
 				'rocket_insights_add_homepage_expiry_interval',
 				function() use ( $config ) {
 					return $config['interval'];
-				}
+				},
+				10
 			);
 		}
 
@@ -116,7 +120,7 @@ class MaybeAddHomepageAutomaticallyTest extends TestCase {
 
 		// Assert: Check if homepage was added.
 		if ( $expected['homepage_added'] ) {
-			$homepage_url = home_url( '/' );
+			$homepage_url = home_url(); // Without trailing slash - matches Controller.
 			$found        = false;
 
 			foreach ( $items as $item ) {
