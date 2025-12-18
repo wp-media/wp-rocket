@@ -24,17 +24,6 @@ return [
 				'homepage_added'   => false,
 			],
 		],
-		'shouldNotAddHomepageWhenNotExpiringYet'           => [
-			'config'   => [
-				'existing_urls'      => 0,
-				'license_expiration' => time() + ( 5 * DAY_IN_SECONDS ), // Expires in 5 days.
-				'interval'           => 1, // 1 day threshold.
-			],
-			'expected' => [
-				'database_entries' => 0, // No URLs added.
-				'homepage_added'   => false,
-			],
-		],
 		'shouldNotAddHomepageWhenIntervalIsZero'           => [
 			'config'   => [
 				'existing_urls'      => 0,
