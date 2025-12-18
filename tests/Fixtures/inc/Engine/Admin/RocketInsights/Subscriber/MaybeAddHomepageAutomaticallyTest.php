@@ -68,5 +68,17 @@ return [
 				'homepage_added'   => true,
 			],
 		],
+		'shouldNotAddHomepageWhenRocketInsightsDisabled'   => [
+			'config'   => [
+				'existing_urls'       => 0,
+				'license_expiration'  => time() + ( 12 * HOUR_IN_SECONDS ), // Expires in 12 hours.
+				'interval'            => 1, // 1 day.
+				'ri_enabled'          => false, // Rocket Insights disabled.
+			],
+			'expected' => [
+				'database_entries' => 0, // No URLs added.
+				'homepage_added'   => false,
+			],
+		],
 	],
 ];

@@ -61,13 +61,13 @@ class DynamicLists extends Abstract_Render {
 	 */
 	public function register_rest_route() {
 		register_rest_route(
-		self::ROUTE_NAMESPACE,
-		'dynamic_lists/update',
-		[
-			'methods'             => 'PUT',
-			'callback'            => [ $this, 'rest_update_response' ],
-			'permission_callback' => [ $this, 'check_permissions' ],
-		]
+			self::ROUTE_NAMESPACE,
+			'dynamic_lists/update',
+			[
+				'methods'             => 'PUT',
+				'callback'            => [ $this, 'rest_update_response' ],
+				'permission_callback' => [ $this, 'check_permissions' ],
+			]
 		);
 	}
 	/**

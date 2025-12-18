@@ -282,6 +282,29 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	}
 
 	/**
+	 * Get the expiry interval for auto-add homepage feature.
+	 *
+	 * @since 3.20.3
+	 *
+	 * @return int Number of days before expiry, or 0 to disable.
+	 */
+	private function get_expiry_interval(): int {
+		/**
+		 * Filters the number of days before license expiry to automatically add homepage.
+		 *
+		 * @since 3.20.3
+		 *
+		 * @param int $interval Number of days before expiry. Set to 0 to disable auto-add.
+		 * @return int
+		 */
+		return (int) wpm_apply_filters_typed(
+			'integer',
+			'rocket_insights_add_homepage_expiry_interval',
+			1
+		);
+	}
+
+	/**
 	 * Schedule auto-add homepage task.
 	 *
 	 * Schedules the task only when:
@@ -293,19 +316,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return void
 	 */
 	private function schedule_auto_add_homepage_task(): void {
-		/**
-		 * Filters the number of days before license expiry to automatically add homepage.
-		 *
-		 * @since 3.20.3
-		 *
-		 * @param int $interval Number of days before expiry. Set to 0 to disable auto-add.
-		 * @return int
-		 */
-		$interval = (int) wpm_apply_filters_typed(
-			'integer',
-			'rocket_insights_add_homepage_expiry_interval',
-			1
-		);
+		$interval = $this->get_expiry_interval();
 
 		// Don't schedule if feature is disabled.
 		if ( 0 === $interval ) {
@@ -514,6 +525,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * Maybe add homepage automatically when license is expiring and no URLs are tracked.
 	 *
 	 * This method is called daily by the scheduled cron task. It checks if:
+	 * - Rocket Insights is enabled
 	 * - The feature is not disabled (interval > 0)
 	 * - No URLs are currently tracked
 	 * - License is expiring within the configured interval
@@ -525,19 +537,13 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return void
 	 */
 	public function maybe_add_homepage_automatically(): void {
-		/**
-		 * Filters the number of days before license expiry to automatically add homepage.
-		 *
-		 * @since 3.20.3
-		 *
-		 * @param int $interval Number of days before expiry. Set to 0 to disable auto-add.
-		 * @return int
-		 */
-		$interval = (int) wpm_apply_filters_typed(
-			'integer',
-			'rocket_insights_add_homepage_expiry_interval',
-			1
-		);
+		// Guard: Rocket Insights disabled.
+		if ( ! $this->context->is_allowed() ) {
+			$this->queue->cancel_auto_add_homepage_task();
+			return;
+		}
+
+		$interval = $this->get_expiry_interval();
 
 		// Guard: Feature disabled.
 		if ( 0 === $interval ) {

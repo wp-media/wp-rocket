@@ -278,6 +278,10 @@ class Renewal extends Abstract_Render {
 	 * @return bool True if license expires within the specified duration, false otherwise.
 	 */
 	public function is_expiring_in( int $duration_in_days ): bool {
+		if ( $this->user->is_auto_renew() ) {
+			return false;
+		}
+
 		$expiration_delay = $this->user->get_license_expiration() - time();
 
 		return $duration_in_days * DAY_IN_SECONDS >= $expiration_delay;
