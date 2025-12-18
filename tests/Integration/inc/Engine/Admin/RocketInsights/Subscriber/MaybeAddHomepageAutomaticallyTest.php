@@ -58,6 +58,13 @@ class MaybeAddHomepageAutomaticallyTest extends TestCase {
 		$container = apply_filters( 'rocket_container', null );
 		$ri_query  = $container->get( 'ri_query' );
 
+		// Setup: Handle Rocket Insights enabled/disabled state.
+		$ri_enabled = $config['ri_enabled'] ?? true;
+		if ( ! $ri_enabled ) {
+			remove_filter( 'rocket_rocket_insights_enabled', '__return_true' );
+			add_filter( 'rocket_rocket_insights_enabled', '__return_false' );
+		}
+
 		// Setup: Add existing URLs if specified.
 		if ( $config['existing_urls'] > 0 ) {
 			for ( $i = 0; $i < $config['existing_urls']; $i++ ) {
@@ -83,6 +90,7 @@ class MaybeAddHomepageAutomaticallyTest extends TestCase {
 			function() use ( $config ) {
 				return (object) [
 					'licence_expiration' => $config['license_expiration'],
+					'auto_renew'         => false, // Auto-renew disabled for testing.
 				];
 			}
 		);

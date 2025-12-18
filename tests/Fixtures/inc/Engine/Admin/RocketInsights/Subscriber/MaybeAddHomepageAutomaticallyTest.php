@@ -9,7 +9,7 @@ return [
 				'interval'           => 1, // 1 day.
 			],
 			'expected' => [
-				'database_entries' => 2, // Desktop + Mobile.
+				'database_entries' => 1, // Only one entry (desktop OR mobile, not both).
 				'homepage_added'   => true,
 			],
 		],
@@ -53,7 +53,7 @@ return [
 				'interval'           => 7, // 7 day threshold.
 			],
 			'expected' => [
-				'database_entries' => 2, // Desktop + Mobile.
+				'database_entries' => 1, // Only one entry.
 				'homepage_added'   => true,
 			],
 		],
@@ -64,7 +64,7 @@ return [
 				'interval'           => 1, // 1 day.
 			],
 			'expected' => [
-				'database_entries' => 2, // Desktop + Mobile.
+				'database_entries' => 1, // Only one entry.
 				'homepage_added'   => true,
 			],
 		],
