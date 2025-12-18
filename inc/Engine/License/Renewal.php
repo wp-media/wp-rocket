@@ -280,7 +280,7 @@ class Renewal extends Abstract_Render {
 	public function is_expiring_in( int $duration_in_days ): bool {
 		$expiration_delay = $this->user->get_license_expiration() - time();
 
-		return $duration_in_days * DAY_IN_SECONDS > $expiration_delay;
+		return $duration_in_days * DAY_IN_SECONDS >= $expiration_delay;
 	}
 
 	/**
