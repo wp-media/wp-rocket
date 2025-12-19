@@ -177,7 +177,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'wp_rocket_upgrade'                     => [
 				[ 'on_update_reset_credit', 10, 2 ],
 				[ 'on_update_cancel_old_as_jobs', 10, 2 ],
-				[ 'on_update_schedule_auto_add_task', 10, 2 ],
 			],
 			'admin_notices'                         => 'maybe_display_rocket_insights_promotion_notice',
 			'rocket_rocket_insights_enabled'        => 'maybe_disable_for_reseller_or_non_live',
@@ -244,17 +243,17 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			return;
 		}
 
+		$this->schedule_auto_add_homepage_task();
+
 		if ( ! $this->context->is_free_user() ) {
 			$this->queue->cancel_credit_reset_job();
-
 			$this->schedule_retest_task();
-			$this->schedule_auto_add_homepage_task();
+
 			return;
 		}
 
 		$this->queue->schedule_credit_reset_task();
 		$this->cancel_retest_job();
-		$this->schedule_auto_add_homepage_task();
 	}
 
 	/**
@@ -319,13 +318,13 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		$interval = $this->get_expiry_interval();
 
 		// Don't schedule if feature is disabled.
-		if ( 0 === $interval ) {
+		if ( empty( $interval ) ) {
 			$this->queue->cancel_auto_add_homepage_task();
 			return;
 		}
 
 		// Don't schedule if URLs already exist.
-		if ( $this->controller->get_total_url_count() > 0 ) {
+		if ( 0 < $this->controller->get_total_url_count() ) {
 			$this->queue->cancel_auto_add_homepage_task();
 			return;
 		}
@@ -621,34 +620,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public function register_routes() {
 		$this->rest->register_routes();
-	}
-
-	/**
-	 * Callback for the wp_rocket_upgrade action to schedule auto-add homepage task on version update.
-	 *
-	 * Schedules the daily cron when upgrading from version < 3.20.3,
-	 * if Rocket Insights is active and no URLs are tracked.
-	 *
-	 * @since 3.20.3
-	 *
-	 * @param string $new_version New plugin version.
-	 * @param string $old_version Previous plugin version.
-	 * @return void
-	 */
-	public function on_update_schedule_auto_add_task( $new_version, $old_version ): void {
-		if ( version_compare( $old_version, '3.20.3', '>=' ) ) {
-			return;
-		}
-
-		if ( ! $this->context->is_allowed() ) {
-			return;
-		}
-
-		if ( $this->controller->get_total_url_count() > 0 ) {
-			return;
-		}
-
-		$this->schedule_auto_add_homepage_task();
 	}
 
 	/**
