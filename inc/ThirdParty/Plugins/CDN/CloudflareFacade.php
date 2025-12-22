@@ -26,7 +26,6 @@ class CloudflareFacade {
 		// Fall back to old namespace (Cloudflare plugin < v4.14.0).
 		if ( class_exists( '\\CF\\WordPress\\Hooks' ) ) {
 			$this->hooks = new \CF\WordPress\Hooks();
-			return;
 		}
 
 		// If neither class exists, hooks will remain null.
