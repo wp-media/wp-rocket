@@ -270,6 +270,24 @@ class Renewal extends Abstract_Render {
 	}
 
 	/**
+	 * Checks if the license is expiring within the specified number of days.
+	 *
+	 * @since 3.20.3
+	 *
+	 * @param int $duration_in_days Number of days to check against license expiration.
+	 * @return bool True if license expires within the specified duration, false otherwise.
+	 */
+	public function is_expiring_in( int $duration_in_days ): bool {
+		if ( $this->user->is_auto_renew() ) {
+			return false;
+		}
+
+		$expiration_delay = $this->user->get_license_expiration() - time();
+
+		return $duration_in_days * DAY_IN_SECONDS >= $expiration_delay;
+	}
+
+	/**
 	 * Gets the discount corresponding to the current user status
 	 *
 	 * @since 3.7.5

@@ -47,7 +47,7 @@ class SubscriberFactory {
 					'class'     => Jevelin::class,
 					'arguments' => [],
 				];
-			case 'minimalist_blogger':
+			case 'minimalistblogger':
 				return [
 					'class'     => MinimalistBlogger::class,
 					'arguments' => [],
@@ -77,6 +77,11 @@ class SubscriberFactory {
 			case 'shoptimizer':
 				return [
 					'class'     => Shoptimizer::class,
+					'arguments' => [],
+				];
+			case 'generatepress':
+				return [
+					'class'     => GeneratePress::class,
 					'arguments' => [],
 				];
 			default:
