@@ -12,12 +12,19 @@ class RemoteSettings {
 	private $remote_settings;
 
 	/**
+	 * The remote settings API Client
+	 *
+	 * @var RemoteSettingsClient
+	 */
+	private $api_client;
+
+	/**
 	 * Instantiate the class
 	 *
-	 * @param object $remote_settings The remote settings object.
+	 * @param RemoteSettingsClient $api_client The remote settings API Client.
 	 */
-	public function __construct( $remote_settings ) {
-		$this->remote_settings = $remote_settings;
+	public function __construct( RemoteSettingsClient $api_client ) {
+		$this->api_client = $api_client;
 	}
 
 	/**
@@ -31,10 +38,14 @@ class RemoteSettings {
 	 * @return bool True if the remote setting is enabled or not set, false otherwise.
 	 */
 	public function is_rocket_insights_remote_setting_enabled() {
-		if ( ! isset( $this->remote_settings->rocket_insights_remote_setting ) ) {
+		if ( is_null( $this->remote_settings ) ) {
+			$this->remote_settings = $this->api_client->get_remote_settings_data();
+		}
+
+		if ( ! isset( $this->remote_settings->rocket_insights_display_post_column ) ) {
 			return true;
 		}
 
-		return (bool) $this->remote_settings->rocket_insights_remote_setting;
+		return (bool) $this->remote_settings->rocket_insights_display_post_column;
 	}
 }

@@ -78,11 +78,11 @@ class RemoteSettingsClient extends AbstractSafeAPIClient {
 
 		$data = $this->get_raw_remote_settings_data();
 
-		if ( false === $data ) {
+		if ( empty( $data->success ) || empty( $data->data ) ) {
 			return false;
 		}
 
-		set_transient( $this->get_transient_key(), $data, DAY_IN_SECONDS );
+		set_transient( $this->get_transient_key(), $data->data, DAY_IN_SECONDS );
 
 		return $data;
 	}

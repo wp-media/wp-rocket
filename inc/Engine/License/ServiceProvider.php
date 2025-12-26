@@ -65,7 +65,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'remote_settings_client', RemoteSettingsClient::class )
 			->addArgument( 'options' );
 		$this->getContainer()->addShared( 'remote_settings', RemoteSettings::class )
-			->addArgument( $this->getContainer()->get( 'remote_settings_client' )->get_remote_settings_data() );
+			->addArgument( 'remote_settings_client' );
 		$this->getContainer()->add( 'upgrade', Upgrade::class )
 			->addArguments(
 				[
