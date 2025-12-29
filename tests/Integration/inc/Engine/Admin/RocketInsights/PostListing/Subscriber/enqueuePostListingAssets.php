@@ -25,7 +25,7 @@ class Test_EnqueuePostListingAssets extends AdminTestCase {
 	 *
 	 * @var array
 	 */
-	private $response;
+	private $transient;
 
 	/**
 	 * Set up test environment.
@@ -58,7 +58,7 @@ class Test_EnqueuePostListingAssets extends AdminTestCase {
 
 		$this->removeRoleCap( 'administrator', 'rocket_manage_options' );
 
-		remove_filter( 'pre_http_request', [ $this, 'mock_remote_settings_response' ] );
+		remove_filter( 'pre_transient_wp_rocket_remote_settings', [ $this, 'mock_transient' ] );
 
 		delete_transient( $this->remote_settings_transient );
 		delete_transient( $this->remote_settings_transient . '_timeout' );
@@ -86,17 +86,8 @@ class Test_EnqueuePostListingAssets extends AdminTestCase {
 
 		$this->setCurrentUser( 'administrator' );
 
-		$this->response = $config['response'];
-		add_filter( 'pre_http_request', [ $this, 'mock_remote_settings_response' ], 10, 3 );
-
-		$remote_settings_data = $container->get( 'remote_settings_client' )->get_remote_settings_data();
-		$remoteSettings = $container->get( 'remote_settings' );
-    
-		// Use reflection to mock private property.
-		$reflection = new ReflectionClass( $remoteSettings );
-		$property = $reflection->getProperty( 'remote_settings' );
-		$property->setAccessible( true );
-		$property->setValue( $remoteSettings, $remote_settings_data );
+		$this->transient = $config['transient'];
+		add_filter( 'pre_transient_wp_rocket_remote_settings', [ $this, 'mock_transient' ] );
 
 		// Reset scripts and styles.
 		global $wp_scripts, $wp_styles;
@@ -129,22 +120,11 @@ class Test_EnqueuePostListingAssets extends AdminTestCase {
 	}
 
 	/**
-	 * Mocks the HTTP response for remote settings requests to the plugin-settings.php endpoint.
-	 *
-	 * This method is intended to be used as a callback for the 'pre_http_request' filter in tests.
-	 * It returns a mocked response if the request URL contains 'plugin-settings.php'.
-	 *
-	 * @param mixed  $preempt Whether to preempt the default HTTP request. Default false.
-	 * @param array  $args    HTTP request arguments.
-	 * @param string $url     The request URL.
+	 * Mock the transient value.
 	 *
 	 * @return mixed Mocked response when URL matches, otherwise null.
 	 */
-	public function mock_remote_settings_response( $preempt, $args, $url ) {
-		if ( false !== strpos( $url, 'plugin-settings.php' ) ) {
-			return $this->response;
-		}
-
-		return $preempt;
+	public function mock_transient( ) {
+		return $this->transient;
 	}
 }

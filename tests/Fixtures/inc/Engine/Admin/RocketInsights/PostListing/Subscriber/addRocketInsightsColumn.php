@@ -14,13 +14,7 @@ return [
 				],
 				'is_live_site' => 'example.org',
 				'customer_data' => (new UserDataGenerator())->with_reseller_status(0)->generate(),
-				'response' => [
-					'response' => [
-						'code' => 200,
-						'message' => 'OK',
-					],
-					'body' => wp_json_encode( (object) [ 'rocket_insights_remote_setting' => true ] ),
-				],
+				'transient' => (object) [ 'rocket_insights_display_post_column' => true ],
 			],
 			'expected' => [
 				'column_label' => 'Rocket Insights',
@@ -37,13 +31,7 @@ return [
 				],
 				'is_live_site' => 'example.org',
 				'customer_data' => (new UserDataGenerator())->with_reseller_status(0)->generate(),
-				'response' => [
-					'response' => [
-						'code' => 200,
-						'message' => 'OK',
-					],
-					'body' => wp_json_encode( (object) [ 'rocket_insights_remote_setting' => true ] ),
-				],
+				'transient' => (object) [ 'rocket_insights_display_post_column' => true ],
 			],
 			'expected' => [
 				'column_label' => 'Rocket Insights',
@@ -62,13 +50,7 @@ return [
 				],
 				'is_live_site' => 'example.org',
 				'customer_data' => (new UserDataGenerator())->with_reseller_status(0)->generate(),
-				'response' => [
-					'response' => [
-						'code' => 200,
-						'message' => 'OK',
-					],
-					'body' => wp_json_encode( (object) [ 'rocket_insights_remote_setting' => true ] ),
-				],
+				'transient' => (object) [ 'rocket_insights_display_post_column' => true ],
 			],
 			'expected' => [
 				'column_label' => 'Rocket Insights',
@@ -86,13 +68,7 @@ return [
 				],
 				'is_live_site' => 'example.org',
 				'customer_data' => (new UserDataGenerator())->with_reseller_status(0)->generate(),
-				'response' => [
-					'response' => [
-						'code' => 200,
-						'message' => 'OK',
-					],
-					'body' => wp_json_encode( (object) [ 'rocket_insights_remote_setting' => true ] ),
-				],
+				'transient' => (object) [ 'rocket_insights_display_post_column' => true ],
 			],
 			'expected' => [
 				'column_label' => 'Rocket Insights',
@@ -108,13 +84,7 @@ return [
 				],
 				'is_live_site' => 'example.org',
 				'customer_data' => (new UserDataGenerator())->with_reseller_status(0)->generate(),
-				'response' => [
-					'response' => [
-						'code' => 200,
-						'message' => 'OK',
-					],
-					'body' => wp_json_encode( (object) [ 'rocket_insights_remote_setting' => true ] ),
-				],
+				'transient' => (object) [ 'rocket_insights_display_post_column' => true ],
 			],
 			'expected' => [
 				'column_label' => 'Rocket Insights',
@@ -131,13 +101,7 @@ return [
 				],
 				'is_live_site' => 'localhost',
 				'customer_data' => (new UserDataGenerator())->with_reseller_status(0)->generate(),
-				'response' => [
-					'response' => [
-						'code' => 200,
-						'message' => 'OK',
-					],
-					'body' => wp_json_encode( (object) [ 'rocket_insights_remote_setting' => true ] ),
-				],
+				'transient' => (object) [ 'rocket_insights_display_post_column' => true ],
 			],
 			'expected' => [
 				'column_label' => '',
@@ -154,13 +118,7 @@ return [
 				],
 				'is_live_site' => 'example.org',
 				'customer_data' => (new UserDataGenerator())->with_reseller_status(1)->generate(),
-				'response' => [
-					'response' => [
-						'code' => 200,
-						'message' => 'OK',
-					],
-					'body' => wp_json_encode( (object) [ 'rocket_insights_remote_setting' => true ] ),
-				],
+				'transient' => (object) [ 'rocket_insights_display_post_column' => true ],
 			],
 			'expected' => [
 				'column_label' => '',
@@ -177,13 +135,7 @@ return [
 				],
 				'is_live_site' => 'example.org',
 				'customer_data' => (new UserDataGenerator())->with_reseller_status(0)->generate(),
-				'response' => [
-					'response' => [
-						'code' => 200,
-						'message' => 'OK',
-					],
-					'body' => wp_json_encode( (object) [ 'rocket_insights_remote_setting' => false ] ),
-				],
+				'transient' => (object) [ 'rocket_insights_display_post_column' => false ],
 			],
 			'expected' => [
 				'column_label' => '',
