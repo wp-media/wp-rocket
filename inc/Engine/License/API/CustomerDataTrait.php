@@ -14,7 +14,7 @@ trait CustomerDataTrait {
 	public function get_customer_data(): array {
 		return [
 			'key'   => sanitize_key( $this->get_customer_key() ),
-			'email' => rawurlencode( $this->get_customer_email() ),
+			'email' => $this->get_customer_email(),
 		];
 	}
 
