@@ -58,13 +58,12 @@ class GetUserData extends TestCase {
 				->andReturn( self::getApiCredential( 'ROCKET_EMAIL' ) );
 
 			Functions\when( 'sanitize_key' )->returnArg();
-
 			Functions\expect( 'wp_safe_remote_post' )
 				->once()
 				->with(
 					UserClient::USER_ENDPOINT,
 					[
-						'body' => 'user_id=' . rawurlencode( self::getApiCredential( 'ROCKET_EMAIL' ) ) . '&consumer_key=' . self::getApiCredential( 'ROCKET_KEY' ),
+						'body' => 'user_id=' . self::getApiCredential( 'ROCKET_EMAIL' ) . '&consumer_key=' . self::getApiCredential( 'ROCKET_KEY' ),
 					]
 				)
 				->andReturn( $config['response'] );
