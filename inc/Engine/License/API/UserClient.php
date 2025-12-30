@@ -99,7 +99,7 @@ class UserClient extends AbstractSafeAPIClient {
 
 		$response = $this->send_post_request(
 			[
-				'body' => 'user_id=' . $customer_data['email'] . '&consumer_key=' . $customer_data['key'],
+				'body' => 'user_id=' . rawurlencode( $customer_data['email'] ) . '&consumer_key=' . $customer_data['key'],
 			],
 			true
 		);
