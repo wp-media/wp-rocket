@@ -98,7 +98,7 @@ class RemoteSettingsClient extends AbstractSafeAPIClient {
 		// Build the body parameters.
 		$body_params                      = $this->get_customer_data();
 		$body_params['domain']            = rawurlencode( wp_parse_url( home_url(), PHP_URL_HOST ) );
-		$body_params['wp_rocket_version'] = rawurlencode( rocket_get_constant( 'WP_ROCKET_VERSION', '' ) );
+		$body_params['wp_rocket_version'] = rawurlencode( rocket_get_constant( 'WP_ROCKET_VERSION', '3.20.3' ) );
 
 		// Send the request to the remote settings API endpoint.
 		$response = $this->send_post_request(
@@ -126,3 +126,5 @@ class RemoteSettingsClient extends AbstractSafeAPIClient {
 		delete_transient( $this->get_transient_key() );
 	}
 }
+
+

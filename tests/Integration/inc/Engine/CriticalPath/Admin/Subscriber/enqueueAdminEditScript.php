@@ -31,7 +31,13 @@ class Test_EnqueueAdminEditScript extends TestCase {
 		self::$user_id = static::factory()->user->create( [ 'role' => 'administrator' ] );
 	}
 
+	public function set_up() {
+		parent::set_up();
+		add_filter( 'rocket_rocket_insights_enabled', '__return_false' );
+	}
+
 	public function tear_down() {
+		remove_filter( 'rocket_rocket_insights_enabled', '__return_false' );
 		remove_filter( 'pre_get_rocket_option_async_css', [ $this, 'setCPCSSOption' ] );
 		delete_post_meta( $this->post_id, '_rocket_exclude_async_css' );
 		unset( $GLOBALS['post'] );
