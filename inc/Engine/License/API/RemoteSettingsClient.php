@@ -126,5 +126,3 @@ class RemoteSettingsClient extends AbstractSafeAPIClient {
 		delete_transient( $this->get_transient_key() );
 	}
 }
-
-
