@@ -80,13 +80,7 @@ return [
 			'post_type' => 'post',
 			'is_live_site' => 'example.org',
 			'customer_data' => (new UserDataGenerator())->with_reseller_status(1)->generate(),
-			'response' => [
-				'response' => [
-					'code' => 200,
-					'message' => 'OK',
-				],
-				'body' => wp_json_encode( (object) [ 'rocket_insights_display_post_column' => true ] ),
-			],
+			'transient' => (object) [ 'rocket_insights_display_post_column' => true ],
 		],
 		'expected' => [
 			'should_enqueue' => false,
