@@ -8,9 +8,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.20.2-alpha\n"
+"Project-Id-Version: WP Rocket 3.20.2-beta5\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2025-12-01T10:36:33+00:00\n"
+"POT-Creation-Date: 2025-12-03T15:25:06+00:00\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: BouRock, 2025\n"
 "Language-Team: Turkish (Turkey) (https://app.transifex.com/wp-media/teams/18133/tr_TR/)\n"
@@ -1574,17 +1574,35 @@ msgstr "Abonelik Yok"
 msgid "Next Billing Date"
 msgstr "Sonraki Fatura Tarihi"
 
-#. translators: %1$s is WP Rocket plugin name.
+#. translators: %1$s opening tag, %2$s is WP Rocket plugin name, %3$s closing
+#. tag.
 #: inc/Engine/Admin/RocketInsights/Subscriber.php:549
 #, php-format
 msgid ""
-"<p><strong>New in %1$s: Meet Rocket Insights, your built-in performance tracking tool!</strong></p>\n"
-"\t\t\t\t<p>Starting from %1$s 3.20, you can track your key pages’ performance directly from your dashboard and get in-depth insights.</p>\n"
-"\t\t\t\t<p>🚀 Add your first page, run the test, and keep your site fast.</p>"
+"%1$sNew in %2$s: Meet Rocket Insights, your built-in performance tracking "
+"tool!%3$s"
 msgstr ""
-"<p><strong>%1$s’daki yenilik: Yerleşik performans izleme aracınız Rocket Insights ile tanışın!</strong></p>\n"
-"\t\t\t\t<p>%1$s 3.20’den başlayarak, önemli sayfalarınızın performansını doğrudan panelinizden takip edebilir ve derinlemesine içgörüler edinebilirsiniz.</p>\n"
-"\t\t\t\t<p>🚀 İlk sayfanızı ekleyin, denemeyi çalıştırın ve sitenizi hızlı tutun.</p>"
+"%1$s%2$s eklentisinde yeni: Yerleşik performans izleme aracınız Rocket "
+"Insights ile tanışın!%3$s"
+
+#. translators: %1$s opening tag, %2$s is WP Rocket plugin name, %3$s closing
+#. tag.
+#: inc/Engine/Admin/RocketInsights/Subscriber.php:560
+#, php-format
+msgid ""
+"%1$sStarting from %2$s 3.20, you can track your key pages’ performance "
+"directly from your dashboard and get in-depth insights.%3$s"
+msgstr ""
+"%1$s%2$s 3.20 sürümünden itibaren, önemli sayfalarınızın performansını "
+"doğrudan panelinizden takip edebilir ve derinlemesine içgörüler "
+"alabilirsiniz.%3$s"
+
+#. translators: %1$s opening tag, %3$s closing tag.
+#: inc/Engine/Admin/RocketInsights/Subscriber.php:571
+#, php-format
+msgid "%1$sAdd your first page, run the test, and keep your site fast.%2$s"
+msgstr ""
+"%1$sİlk sayfanızı ekleyin, denemeyi çalıştırın ve sitenizi hızlı tutun.%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:234
 msgid "Save Changes"
@@ -3581,7 +3599,7 @@ msgid ""
 "Launch price valid for the first 12 months, after which standard pricing "
 "applies."
 msgstr ""
-" Başlangıç fiyatı ilk 12 ay için geçerlidir, bundan sonra standart "
+" Başlangıç fiyatı ilk 12 ay için geçerlidir, sonrasında standart "
 "fiyatlandırma uygulanır."
 
 #. translators: %1$s WP Rocket plugin name.
