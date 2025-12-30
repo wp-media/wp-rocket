@@ -63,7 +63,7 @@ class GetUserData extends TestCase {
 				->with(
 					UserClient::USER_ENDPOINT,
 					[
-						'body' => 'user_id=' . self::getApiCredential( 'ROCKET_EMAIL' ) . '&consumer_key=' . self::getApiCredential( 'ROCKET_KEY' ),
+						'body' => 'user_id=' . rawurlencode( self::getApiCredential( 'ROCKET_EMAIL' ) ) . '&consumer_key=' . self::getApiCredential( 'ROCKET_KEY' ),
 					]
 				)
 				->andReturn( $config['response'] );
