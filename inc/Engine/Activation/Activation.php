@@ -69,8 +69,12 @@ class Activation {
 		}
 
 		// Last constants.
-		define( 'WP_ROCKET_PLUGIN_NAME', 'WP Rocket' );
-		define( 'WP_ROCKET_PLUGIN_SLUG', sanitize_key( WP_ROCKET_PLUGIN_NAME ) );
+		if ( ! defined( 'WP_ROCKET_PLUGIN_NAME' ) ) {
+			define( 'WP_ROCKET_PLUGIN_NAME', 'WP Rocket' );
+		}
+		if ( ! defined( 'WP_ROCKET_PLUGIN_SLUG' ) ) {
+			define( 'WP_ROCKET_PLUGIN_SLUG', sanitize_key( WP_ROCKET_PLUGIN_NAME ) );
+		}
 
 		if ( defined( 'SUNRISE' ) && SUNRISE === 'on' && function_exists( 'domain_mapping_siteurl' ) ) {
 			require WP_ROCKET_INC_PATH . 'domain-mapping.php';

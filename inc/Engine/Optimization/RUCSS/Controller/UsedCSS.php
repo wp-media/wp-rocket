@@ -20,6 +20,13 @@ class UsedCSS {
 	use ElementTrait;
 
 	/**
+	 * Used for debugging head elements.
+	 *
+	 * @var string
+	 */
+	private $feature = 'rucss';
+
+	/**
 	 * UsedCss Query instance.
 	 *
 	 * @var UsedCSS_Query

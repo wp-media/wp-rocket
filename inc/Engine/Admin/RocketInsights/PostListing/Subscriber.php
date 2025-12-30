@@ -167,7 +167,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return bool
 	 */
 	private function should_enqueue_assets(): bool {
-		if ( ! $this->context->is_allowed() ) {
+		if ( ! $this->can_display_column() ) {
 			return false;
 		}
 
@@ -240,7 +240,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return array Modified columns array with Rocket Insights column.
 	 */
 	public function add_rocket_insights_column( array $columns ): array {
-		if ( ! $this->context->is_allowed() ) {
+		if ( ! $this->can_display_column() ) {
 			return $columns;
 		}
 
@@ -273,7 +273,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function render_rocket_insights_column( string $column, int $post_id ): void {
-		if ( ! $this->context->is_allowed() ) {
+		if ( ! $this->can_display_column() ) {
 			return;
 		}
 
@@ -288,5 +288,19 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		$this->render->render_rocket_insights_column( $url, $post_id );
+	}
+
+	/**
+	 * Determines if the Rocket Insights column can be displayed.
+	 *
+	 * The column is displayed if Rocket Insights is allowed for current context
+	 * and if the remote setting is enabled.
+	 *
+	 * @since 3.20.3
+	 *
+	 * @return bool True if the column can be displayed, false otherwise.
+	 */
+	protected function can_display_column(): bool {
+		return $this->context->is_allowed() && $this->context->is_remote_setting_enabled();
 	}
 }

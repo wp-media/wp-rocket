@@ -22,6 +22,13 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 	use ElementTrait;
 
 	/**
+	 * Used for debugging head elements.
+	 *
+	 * @var string
+	 */
+	private $feature = 'cpcss';
+
+	/**
 	 * Instance of Critical CSS.
 	 *
 	 * @var CriticalCSS

@@ -4,6 +4,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\RocketInsights\PostListin
 
 use WP_Rocket\Tests\Integration\AdminTestCase;
 use Brain\Monkey\Functions;
+use ReflectionClass;
 
 /**
  * Test class covering \WP_Rocket\Engine\Admin\RocketInsights\PostListing\Subscriber::enqueue_post_listing_assets
@@ -12,6 +13,20 @@ use Brain\Monkey\Functions;
  * @group AdminOnly
  */
 class Test_EnqueuePostListingAssets extends AdminTestCase {
+	/**
+	 * Name of the transient used for storing remote settings data.
+	 *
+	 * @var string
+	 */
+	private $remote_settings_transient = 'wp_rocket_remote_settings';
+
+	/**
+	 * Remote settings response.
+	 *
+	 * @var array
+	 */
+	private $transient;
+
 	/**
 	 * Set up test environment.
 	 *
@@ -24,6 +39,10 @@ class Test_EnqueuePostListingAssets extends AdminTestCase {
 		add_filter( 'rocket_rocket_insights_enabled', '__return_true' );
 
 		$this->setRoleCap( 'administrator', 'rocket_manage_options' );
+
+		delete_transient( $this->remote_settings_transient );
+		delete_transient( $this->remote_settings_transient . '_timeout' );
+		delete_transient( $this->remote_settings_transient . '_timeout_active' );
 	}
 
 	/**
@@ -39,6 +58,12 @@ class Test_EnqueuePostListingAssets extends AdminTestCase {
 
 		$this->removeRoleCap( 'administrator', 'rocket_manage_options' );
 
+		remove_filter( 'pre_transient_wp_rocket_remote_settings', [ $this, 'mock_transient' ] );
+
+		delete_transient( $this->remote_settings_transient );
+		delete_transient( $this->remote_settings_transient . '_timeout' );
+		delete_transient( $this->remote_settings_transient . '_timeout_active' );
+
 		parent::tear_down();
 	}
 
@@ -53,6 +78,7 @@ class Test_EnqueuePostListingAssets extends AdminTestCase {
 	 * @return void
 	 */
 	public function testShouldEnqueueAssetsOnPostListingPages( $config, $expected ) {
+		$this->rocket_version = '3.20.3';
 		$container = apply_filters( 'rocket_container', null ); // @phpstan-ignore-line
 		$container->get( 'user' )->set_user( $config['customer_data'] );
 
@@ -60,12 +86,13 @@ class Test_EnqueuePostListingAssets extends AdminTestCase {
 
 		$this->setCurrentUser( 'administrator' );
 
+		$this->transient = $config['transient'];
+		add_filter( 'pre_transient_wp_rocket_remote_settings', [ $this, 'mock_transient' ] );
+
 		// Reset scripts and styles.
-		// phpcs:disable WordPress.WP.GlobalVariablesOverride.Prohibited
 		global $wp_scripts, $wp_styles;
 		$wp_scripts = null;
 		$wp_styles  = null;
-		// phpcs:enable WordPress.WP.GlobalVariablesOverride.Prohibited
 
 		// Set the current screen.
 		set_current_screen( $config['screen_id'] );
@@ -75,13 +102,10 @@ class Test_EnqueuePostListingAssets extends AdminTestCase {
 			$screen->post_type = $config['post_type'];
 		}
 
-		// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 		do_action( 'admin_enqueue_scripts' );
 
-		// phpcs:disable WordPress.WP.GlobalVariablesOverride.Prohibited
 		$wp_scripts = wp_scripts();
 		$wp_styles  = wp_styles();
-		// phpcs:enable WordPress.WP.GlobalVariablesOverride.Prohibited
 
 		if ( $expected['should_enqueue'] ) {
 			$this->assertArrayHasKey( 'rocket-insights', $wp_scripts->registered, 'rocket-insights JS should be registered' );
@@ -93,5 +117,14 @@ class Test_EnqueuePostListingAssets extends AdminTestCase {
 			$this->assertArrayNotHasKey( 'rocket-insights', $wp_scripts->registered, 'rocket-insights JS should NOT be registered' );
 			$this->assertArrayNotHasKey( 'rocket-insights', $wp_styles->registered, 'rocket-insights CSS should NOT be registered' );
 		}
+	}
+
+	/**
+	 * Mock the transient value.
+	 *
+	 * @return mixed Mocked response when URL matches, otherwise null.
+	 */
+	public function mock_transient( ) {
+		return $this->transient;
 	}
 }

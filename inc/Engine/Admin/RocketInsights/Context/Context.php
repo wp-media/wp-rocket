@@ -7,6 +7,7 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Engine\Admin\RocketInsights\Database\Queries\RocketInsights as RIQuery;
+use WP_Rocket\Engine\License\API\RemoteSettings;
 
 /**
  * Rocket Insights Context
@@ -36,16 +37,25 @@ class Context implements ContextInterface {
 	private $ri_query;
 
 	/**
+	 * Remote settings instance.
+	 *
+	 * @var RemoteSettings
+	 */
+	private $remote_settings;
+
+	/**
 	 * Constructor.
 	 *
-	 * @param Options_Data $options Options instance.
-	 * @param User         $user User client API instance.
-	 * @param RIQuery      $ri_query    Performance monitoring query instance.
+	 * @param Options_Data   $options Options instance.
+	 * @param User           $user User client API instance.
+	 * @param RIQuery        $ri_query    Performance monitoring query instance.
+	 * @param RemoteSettings $remote_settings Remote settings instance.
 	 */
-	public function __construct( Options_Data $options, User $user, RIQuery $ri_query ) {
-		$this->options  = $options;
-		$this->user     = $user;
-		$this->ri_query = $ri_query;
+	public function __construct( Options_Data $options, User $user, RIQuery $ri_query, RemoteSettings $remote_settings ) {
+		$this->options         = $options;
+		$this->user            = $user;
+		$this->ri_query        = $ri_query;
+		$this->remote_settings = $remote_settings;
 	}
 
 	/**
@@ -122,5 +132,14 @@ class Context implements ContextInterface {
 		$current_url_count = $this->ri_query->get_total_count();
 		$max_urls          = $this->user->get_rocket_insights_addon_limit( $this->user->get_rocket_insights_addon_sku_active() );
 		return $current_url_count < $max_urls;
+	}
+
+	/**
+	 * Checks if remote setting is enabled.
+	 *
+	 * @return bool True if remote setting is enabled, false otherwise.
+	 */
+	public function is_remote_setting_enabled(): bool {
+		return $this->remote_settings->is_rocket_insights_remote_setting_enabled();
 	}
 }

@@ -16,7 +16,6 @@ define( 'WP_ROCKET_IS_TESTING', true );
 tests_add_filter(
 	'muplugins_loaded',
 	function () {
-
 		// Disable ATF, LRC, Preload fonts, and Preconnect external domains optimizations to prevent DB requests (unrelated to other tests).
 		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
 		add_filter( 'rocket_lrc_optimization', '__return_false' );
@@ -274,6 +273,15 @@ tests_add_filter(
 			add_filter( 'rocket_lrc_optimization', '__return_true' );
 			add_filter( 'rocket_preconnect_external_domains_optimization', '__return_true' );
 			add_filter( 'pre_get_rocket_option_auto_preload_fonts', '__return_true' );
+		}
+
+		// Load theme definitions for test groups.
+		$themes = require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Themes/themes.php';
+
+		foreach ( $themes as $theme_group => $theme_slug ) {
+			if ( BootstrapManager::isGroup( $theme_group ) ) {
+				switch_theme( $theme_slug );
+			}
 		}
 
 		// Load the plugin.

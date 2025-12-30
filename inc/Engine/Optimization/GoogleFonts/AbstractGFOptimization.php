@@ -16,6 +16,13 @@ abstract class AbstractGFOptimization {
 	use ElementTrait;
 
 	/**
+	 * Used for debugging head elements.
+	 *
+	 * @var string
+	 */
+	private $feature = 'google_fonts_combine';
+
+	/**
 	 * Allowed display values.
 	 *
 	 * @since 3.8
