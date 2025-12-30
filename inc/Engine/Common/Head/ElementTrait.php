@@ -92,7 +92,7 @@ trait ElementTrait {
 		);
 		$element['close_tag'] = '</style>';
 
-		return $element;
+		return $this->prepare_element( $element );
 	}
 
 	/**
@@ -114,7 +114,7 @@ trait ElementTrait {
 			);
 		$element['close_tag'] = '</noscript>';
 
-		return $element;
+		return $this->prepare_element( $element );
 	}
 
 	/**
@@ -134,6 +134,21 @@ trait ElementTrait {
 			]
 		);
 
+		return $this->prepare_element( $element );
+	}
+
+	/**
+	 * Prepare element by adding any additional attributes.
+	 *
+	 * @param array $element Current element.
+	 *
+	 * @return array
+	 */
+	private function prepare_element( array $element ): array {
+		if ( ! rocket_get_constant( 'WP_ROCKET_DEBUG', false ) ) {
+			return $element;
+		}
+		$element['data-rocket-feature'] = $this->feature;
 		return $element;
 	}
 }

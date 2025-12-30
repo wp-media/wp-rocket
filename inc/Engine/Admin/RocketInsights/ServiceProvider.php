@@ -83,6 +83,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'options',
 					'user',
 					'ri_query',
+					'remote_settings',
 				]
 			);
 
@@ -111,6 +112,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'ri_context',
 					'user',
 					'user_client',
+					'remote_settings_client',
 				]
 			);
 
@@ -183,6 +185,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'options',
 					'ri_manager',
 					'ri_plan',
+					'renewal',
 				]
 			);
 

@@ -51,6 +51,17 @@ return [
 				'should_display' => false,
 			],
 		],
+		'testShouldNotDisplayNoticeWhenRocketInsightsDisabled' => [
+            'config'         => [
+				'role' => 'administrator',
+				'user_meta' => false,
+				'is_monitored' => false,
+				'rocket_insights_enabled' => false,
+			],
+			'expected'       => [
+				'should_display' => false,
+			],
+		],
 		'testShouldDisplayNotice' => [
             'config'         => [
                 'role'   => 'administrator',

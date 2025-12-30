@@ -6,6 +6,11 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Common\JobManager\APIHandler\AbstractSafeAPIClient;
 
 class UserClient extends AbstractSafeAPIClient {
+	/**
+	 * Use the CustomerDataTrait
+	 */
+	use CustomerDataTrait;
+
 	const USER_ENDPOINT = 'https://api.wp-rocket.me/stat/1.0/wp-rocket/user.php';
 
 	/**
@@ -90,16 +95,11 @@ class UserClient extends AbstractSafeAPIClient {
 	 * @return bool|object
 	 */
 	private function get_raw_user_data() {
-		$customer_key   = ! empty( $this->options->get( 'consumer_key', '' ) )
-			? $this->options->get( 'consumer_key', '' )
-			: rocket_get_constant( 'WP_ROCKET_KEY', '' );
-		$customer_email = ! empty( $this->options->get( 'consumer_email', '' ) )
-			? $this->options->get( 'consumer_email', '' )
-			: rocket_get_constant( 'WP_ROCKET_EMAIL', '' );
+		$customer_data = $this->get_customer_data();
 
 		$response = $this->send_post_request(
 			[
-				'body' => 'user_id=' . rawurlencode( $customer_email ) . '&consumer_key=' . sanitize_key( $customer_key ),
+				'body' => 'user_id=' . rawurlencode( $customer_data['email'] ) . '&consumer_key=' . $customer_data['key'],
 			],
 			true
 		);

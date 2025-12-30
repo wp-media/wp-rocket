@@ -47,8 +47,8 @@ class Controller extends Abstract_Render {
 			return;
 		}
 
-		// Hide Rocket Insights status for reseller accounts and non-live installations.
-		if ( $this->context->is_reseller_or_non_live() ) {
+		// Hide Rocket Insights status if the feature is disabled.
+		if ( ! $this->context->is_allowed() ) {
 			return;
 		}
 

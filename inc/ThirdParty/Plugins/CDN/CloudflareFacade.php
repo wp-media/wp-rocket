@@ -3,13 +3,11 @@ declare(strict_types=1);
 
 namespace WP_Rocket\ThirdParty\Plugins\CDN;
 
-use CF\WordPress\Hooks;
-
 class CloudflareFacade {
 	/**
 	 * Hooks class instance
 	 *
-	 * @var null|Hooks
+	 * @var null|object
 	 */
 	private $hooks = null;
 
@@ -19,7 +17,18 @@ class CloudflareFacade {
 	 * @return void
 	 */
 	private function set_hooks() {
-		$this->hooks = new Hooks();
+		// Prioritize new namespace (Cloudflare plugin v4.13.0+).
+		if ( class_exists( '\\Cloudflare\\APO\\WordPress\\Hooks' ) ) {
+			$this->hooks = new \Cloudflare\APO\WordPress\Hooks();
+			return;
+		}
+
+		// Fall back to old namespace (Cloudflare plugin < v4.14.0).
+		if ( class_exists( '\\CF\\WordPress\\Hooks' ) ) {
+			$this->hooks = new \CF\WordPress\Hooks();
+		}
+
+		// If neither class exists, hooks will remain null.
 	}
 
 	/**
@@ -30,6 +39,10 @@ class CloudflareFacade {
 	public function purge_everything() {
 		if ( is_null( $this->hooks ) ) {
 			$this->set_hooks();
+		}
+
+		if ( is_null( $this->hooks ) ) {
+			return;
 		}
 
 		$this->hooks->purgeCacheEverything();
@@ -45,6 +58,10 @@ class CloudflareFacade {
 	public function purge_urls( $post_ids ) {
 		if ( is_null( $this->hooks ) ) {
 			$this->set_hooks();
+		}
+
+		if ( is_null( $this->hooks ) ) {
+			return;
 		}
 
 		$this->hooks->purgeCacheByRelevantURLs( $post_ids );
