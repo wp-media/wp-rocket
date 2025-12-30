@@ -7,6 +7,7 @@ use WP_Rocket\Admin\Options;
 use WP_Rocket\Engine\Admin\RocketInsights\Context\Context;
 use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Engine\License\API\UserClient;
+use WP_Rocket\Engine\License\API\RemoteSettingsClient;
 
 class Plan {
 	/**
@@ -38,6 +39,13 @@ class Plan {
 	private $user_client;
 
 	/**
+	 * Remote settings client API instance.
+	 *
+	 * @var RemoteSettingsClient
+	 */
+	private $remote_settings_client;
+
+	/**
 	 * Current plan option name.
 	 */
 	const CURRENT_PLAN_OPTION_NAME = 'insights_current_plan';
@@ -55,16 +63,18 @@ class Plan {
 	/**
 	 * Constructor.
 	 *
-	 * @param Options    $options Options instance.
-	 * @param Context    $context Context instance.
-	 * @param User       $user User instance.
-	 * @param UserClient $user_client  User client API instance.
+	 * @param Options              $options Options instance.
+	 * @param Context              $context Context instance.
+	 * @param User                 $user User instance.
+	 * @param UserClient           $user_client  User client API instance.
+	 * @param RemoteSettingsClient $remote_settings_client Remote settings client API instance.
 	 */
-	public function __construct( Options $options, Context $context, User $user, UserClient $user_client ) {
-		$this->options     = $options;
-		$this->context     = $context;
-		$this->user        = $user;
-		$this->user_client = $user_client;
+	public function __construct( Options $options, Context $context, User $user, UserClient $user_client, RemoteSettingsClient $remote_settings_client ) {
+		$this->options                = $options;
+		$this->context                = $context;
+		$this->user                   = $user;
+		$this->user_client            = $user_client;
+		$this->remote_settings_client = $remote_settings_client;
 	}
 
 	/**
@@ -139,6 +149,7 @@ class Plan {
 	 */
 	public function remove_customer_data_cache() {
 		$this->user_client->flush_cache();
+		$this->remote_settings_client->flush_cache();
 	}
 
 	/**

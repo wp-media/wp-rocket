@@ -5,7 +5,14 @@ namespace WP_Rocket\Engine\License;
 
 use WP_Rocket\Dependencies\League\Container\Argument\Literal\StringArgument;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
-use WP_Rocket\Engine\License\API\{PricingClient, Pricing, UserClient, User};
+use WP_Rocket\Engine\License\API\{
+	PricingClient,
+	Pricing,
+	UserClient,
+	User,
+	RemoteSettingsClient,
+	RemoteSettings,
+};
 use WP_Rocket\Engine\License\{Renewal, Upgrade, Subscriber};
 
 /**
@@ -25,6 +32,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		'upgrade',
 		'renewal',
 		'license_subscriber',
+		'remote_settings_client',
+		'remote_settings',
 	];
 
 	/**
@@ -53,6 +62,10 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'pricing_client' )->get_pricing_data() );
 		$this->getContainer()->addShared( 'user', User::class )
 			->addArgument( $this->getContainer()->get( 'user_client' )->get_user_data() );
+		$this->getContainer()->add( 'remote_settings_client', RemoteSettingsClient::class )
+			->addArgument( 'options' );
+		$this->getContainer()->addShared( 'remote_settings', RemoteSettings::class )
+			->addArgument( 'remote_settings_client' );
 		$this->getContainer()->add( 'upgrade', Upgrade::class )
 			->addArguments(
 				[
