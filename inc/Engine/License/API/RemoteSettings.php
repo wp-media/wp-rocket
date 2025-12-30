@@ -38,9 +38,7 @@ class RemoteSettings {
 	 * @return bool True if the remote setting is enabled or not set, false otherwise.
 	 */
 	public function is_rocket_insights_remote_setting_enabled() {
-		if ( is_null( $this->remote_settings ) ) {
-			$this->remote_settings = $this->api_client->get_remote_settings_data();
-		}
+		$this->remote_settings = $this->api_client->get_remote_settings_data();
 
 		if ( ! isset( $this->remote_settings->rocket_insights_display_post_column ) ) {
 			return true;
