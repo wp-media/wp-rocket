@@ -154,6 +154,9 @@ class Logger {
 	 * @return Logger A Logger instance.
 	 */
 	public static function get_logger() {
+		// Automatically delete the log file if it exceeds the maximum allowed size.
+		static::auto_delete_log_file();
+
 		$logger_name = static::LOGGER_NAME;
 		$log_level   = Monologger::DEBUG;
 
@@ -273,11 +276,12 @@ class Logger {
 
 		$entries  = $entries ? number_format_i18n( count( $entries ) ) : '0';
 		$bytes    = $filesystem->size( $file_path );
+		$raw_size = $bytes;
 		$decimals = $bytes > pow( 1024, 3 ) ? 1 : 0;
 		$bytes    = @size_format( $bytes, $decimals ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 		$bytes    = str_replace( ' ', ' ', $bytes ); // Non-breaking space character.
 
-		return compact( 'entries', 'bytes' );
+		return compact( 'entries', 'bytes', 'raw_size' );
 	}
 
 	/**
@@ -504,5 +508,34 @@ class Logger {
 		}
 
 		return $cookies;
+	}
+
+	/**
+	 * Automatically deletes the log file if it exceeds a maximum file size.
+	 *
+	 * The maximum file size before deletion is controlled by the 'rocket_debug_log_auto_delete_max_file_size' filter,
+	 * with a default of 30,000,000 bytes (approximately 30MB).
+	 *
+	 * @since 3.20.4
+	 *
+	 * @return void
+	 */
+	private static function auto_delete_log_file(): void {
+		$log_file_stats = static::get_log_file_stats();
+
+		/**
+		 * Filters the maximum file size (in bytes) before the log file is automatically deleted.
+		 *
+		 * @param int $max_file_size The maximum file size in bytes. Default is 30,000,000 (30MB).
+		 *
+		 * @since 3.20.4
+		 */
+		$max_file_size = wpm_apply_filters_typed( 'integer', 'rocket_debug_log_auto_delete_max_file_size', 30000000 );
+
+		if ( $log_file_stats['raw_size'] < $max_file_size ) {
+			return;
+		}
+
+		static::delete_log_file();
 	}
 }
