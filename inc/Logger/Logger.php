@@ -154,9 +154,6 @@ class Logger {
 	 * @return Logger A Logger instance.
 	 */
 	public static function get_logger() {
-		// Automatically delete the log file if it exceeds the maximum allowed size.
-		static::auto_delete_log_file();
-
 		$logger_name = static::LOGGER_NAME;
 		$log_level   = Monologger::DEBUG;
 
@@ -388,7 +385,18 @@ class Logger {
 	 * @return bool
 	 */
 	public static function debug_enabled() {
-		return defined( 'WP_ROCKET_DEBUG' ) && WP_ROCKET_DEBUG;
+		$debug_enabled = defined( 'WP_ROCKET_DEBUG' ) && WP_ROCKET_DEBUG;
+
+		/**
+		 * Fires before checking if debug is enabled for the logger.
+		 * 
+		 * @param boolean $debug_status Returns if debug is enabled.
+		 *
+		 * @since 3.20.4
+		 */
+		do_action( 'rocket_before_debug_status_check', $debug_enabled );
+
+		return $debug_enabled;
 	}
 
 	/**
@@ -516,12 +524,27 @@ class Logger {
 	 * The maximum file size before deletion is controlled by the 'rocket_debug_log_auto_delete_max_file_size' filter,
 	 * with a default of 30,000,000 bytes (approximately 30MB).
 	 *
-	 * @since 3.20.4
-	 *
+	 * @param bool $debug_enabled Whether debug is enabled and log file auto-delete should proceed.
 	 * @return void
 	 */
-	private static function auto_delete_log_file(): void {
-		$log_file_stats = static::get_log_file_stats();
+	public static function maybe_delete_log_file( $debug_enabled ): void {
+		// Bail out if debug is not enabled.
+		if ( ! $debug_enabled ) {
+			return;
+		}
+
+		// Bail out if debug.log file does not exist.
+		if ( ! rocket_direct_filesystem()->exists( self::get_log_file_path() ) ) {
+			return;
+		}
+
+		// Bail out if transient cache is still valid.
+		if ( get_transient( 'wp_rocket_log_file_size_check' ) ) {
+			return;
+		}
+
+		// Do transient cache for one hour.
+		set_transient( 'wp_rocket_log_file_size_check', true, HOUR_IN_SECONDS );
 
 		/**
 		 * Filters the maximum file size (in bytes) before the log file is automatically deleted.
@@ -532,10 +555,12 @@ class Logger {
 		 */
 		$max_file_size = wpm_apply_filters_typed( 'integer', 'rocket_debug_log_auto_delete_max_file_size', 30000000 );
 
-		if ( $log_file_stats['raw_size'] < $max_file_size ) {
+		$log_file_size = self::get_log_file_stats()['raw_size'];
+
+		if ( $log_file_size < $max_file_size ) {
 			return;
 		}
 
-		static::delete_log_file();
+		self::delete_log_file();
 	}
 }
