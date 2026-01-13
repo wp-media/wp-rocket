@@ -558,7 +558,7 @@ class Logger {
 		$log_file_stats = self::get_log_file_stats();
 
 		// Bail out if there is an error getting the log file stats.
-		if ( is_wp_error( $log_file_size ) ) {
+		if ( is_wp_error( $log_file_stats ) ) {
 			return;
 		}
 
