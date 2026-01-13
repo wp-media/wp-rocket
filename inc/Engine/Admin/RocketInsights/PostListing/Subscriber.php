@@ -115,7 +115,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @param string   $post_type Post type.
 	 * @return array
 	 */
-	public function add_column_to_posts( $columns, $post_type ): array {
+	public function add_column_to_posts( $columns, $post_type = 'post' ): array {
 		// Don't add for products again, because it's added above.
 		if ( 'product' === $post_type ) {
 			return $columns;
