@@ -555,7 +555,14 @@ class Logger {
 		 */
 		$max_file_size = wpm_apply_filters_typed( 'integer', 'rocket_debug_log_auto_delete_max_file_size', 30000000 );
 
-		$log_file_size = self::get_log_file_stats()['raw_size'];
+		$log_file_stats = self::get_log_file_stats();
+
+		// Bail out if there is an error getting the log file stats.
+		if ( is_wp_error( $log_file_size ) ) {
+			return;
+		}
+
+		$log_file_size = $log_file_stats['raw_size'];
 
 		if ( $log_file_size < $max_file_size ) {
 			return;
