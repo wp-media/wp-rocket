@@ -20,8 +20,8 @@ class Subscriber implements Subscriber_Interface {
 
 	/**
 	 * Automatically deletes the log file if it exceeds a maximum file size.
-     * 
-     * @param bool $debug_enabled Whether debug is enabled and log file auto-delete should proceed.
+	 *
+	 * @param bool $debug_enabled Whether debug is enabled and log file auto-delete should proceed.
 	 * @return void
 	 */
 	public function maybe_delete_log_file( $debug_enabled ): void {

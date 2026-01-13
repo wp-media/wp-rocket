@@ -389,7 +389,7 @@ class Logger {
 
 		/**
 		 * Fires before checking if debug is enabled for the logger.
-		 * 
+		 *
 		 * @param boolean $debug_status Returns if debug is enabled.
 		 *
 		 * @since 3.20.4
