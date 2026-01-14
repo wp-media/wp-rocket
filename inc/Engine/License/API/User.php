@@ -528,4 +528,22 @@ class User {
 		}
 		return null;
 	}
+
+	/**
+	 * Check if the current website is banned or not.
+	 *
+	 * @return bool
+	 */
+	public function is_banned() {
+		return $this->user->licence->is_banned ?? false;
+	}
+
+	/**
+	 * Get ban reason if the website is banned.
+	 *
+	 * @return string
+	 */
+	public function ban_reason() {
+		return $this->user->licence->ban_reason ?? '';
+	}
 }
