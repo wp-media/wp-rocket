@@ -415,6 +415,7 @@ class Plugin {
 			'ri_post_listing_subscriber',
 			'post_subscriber',
 			'tracking_subscriber',
+			'logger_subscriber',
 		];
 
 		$host_type = HostResolver::get_host_service();
