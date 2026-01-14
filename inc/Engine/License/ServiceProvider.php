@@ -13,7 +13,7 @@ use WP_Rocket\Engine\License\API\{
 	RemoteSettingsClient,
 	RemoteSettings,
 };
-use WP_Rocket\Engine\License\{Renewal, Upgrade, Subscriber};
+use WP_Rocket\Engine\License\{Renewal, Upgrade, Subscriber, Banned};
 
 /**
  * Service Provider for the License module
@@ -34,6 +34,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'license_subscriber',
 		'remote_settings_client',
 		'remote_settings',
+		'banned',
 	];
 
 	/**
@@ -83,11 +84,19 @@ class ServiceProvider extends AbstractServiceProvider {
 					$views,
 				]
 			);
-		$this->getContainer()->addShared( 'license_subscriber', Subscriber::class )
+		$this->getContainer()->add( 'banned', Banned::class )
+			->addArguments(
+				[
+					'user',
+					$views,
+				]
+			);
+		$this->getContainer()->add( 'license_subscriber', Subscriber::class )
 			->addArguments(
 				[
 					'upgrade',
 					'renewal',
+					'banned',
 				]
 			);
 	}
