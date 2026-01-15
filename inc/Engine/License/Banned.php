@@ -14,12 +14,12 @@ class Banned extends Abstract_Render {
 	 */
 	private $user;
 
-    /**
-     * URL to purchase a WP Rocket license.
-     *
-     * @var string
-     */
-    private $purchase_url = '';
+	/**
+	 * URL to purchase a WP Rocket license.
+	 *
+	 * @var string
+	 */
+	private $purchase_url = '';
 
 	/**
 	 * Constructor.
@@ -49,7 +49,7 @@ class Banned extends Abstract_Render {
 			return;
 		}
 
-		$message      = sprintf(
+		$message = sprintf(
 			// translators: %1$s = <strong>, %2$s = </strong>, %3$s = <strong>, %4$s = </strong>.
 			esc_html__( 'As your license is no longer active, you lost access to WP Rocket\'s powerful features to %1$sboost speed%2$s and deliver a %3$stop-notch user experience%4$s.', 'rocket' ),
 			'<strong>',
@@ -91,13 +91,13 @@ class Banned extends Abstract_Render {
 			[
 				'dismissible' => '',
 				'status'      => 'error',
-                // translators: %1$s = <strong>, %2$s = WP Rocket plugin name, %3$s = </strong>, %4$s = <a>, %5$s = </a>.
+				// translators: %1$s = <strong>, %2$s = WP Rocket plugin name, %3$s = </strong>, %4$s = <a>, %5$s = </a>.
 				'message'     => sprintf( __( '%1$s%2$s%3$s: Your license has been revoked and your site is no longer optimized for speed. %4$sGet WP Rocket at 20%% off%5$s', 'rocket' ), '<strong>', WP_ROCKET_PLUGIN_NAME, '</strong>', '<a href="' . $this->purchase_url . '" target="_blank" rel="noopener noreferrer">', '</a>' ),
 			]
 		);
 	}
 
-    /**
+	/**
 	 * Adds a banned license notification bubble to the WP Rocket menu item.
 	 *
 	 * Displays a notification bubble in the WP Rocket menu title when the website's license is banned.
@@ -106,7 +106,7 @@ class Banned extends Abstract_Render {
 	 * @return string Modified menu title with banned notification bubble if applicable.
 	 */
 	public function maybe_add_banned_bubble( $menu_title ): string {
-        if ( ! $this->can_display_notice() ) {
+		if ( ! $this->can_display_notice() ) {
 			return $menu_title;
 		}
 
