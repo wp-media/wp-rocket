@@ -9,7 +9,7 @@ defined( 'ABSPATH' ) || exit;
 
 $data = isset( $data ) ? $data : []; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 ?>
-<section class="rocket-renewal-expired-banner" id="rocket-renewal-banner">
+<section class="rocket-renewal-expired-banner banned-website-banner" id="rocket-renewal-banner">
 	<div class="banner-copy">
 		<h3 class="rocket-expired-title"><?php esc_html_e( 'Your WP Rocket license has been revoked!', 'rocket' ); ?></h3>
 		<div class="rocket-renewal-expired-banner-container">
