@@ -66,7 +66,6 @@ class Banned extends Abstract_Render {
 				'message'      => $message,
 			]
 		);
-        // phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	/**
