@@ -41,7 +41,7 @@ class Banned extends Abstract_Render {
 	 * @return void
 	 */
 	public function maybe_display_banned_banner(): void {
-		if ( ! $this->can_display_notice() ) {
+		if ( ! $this->can_display() ) {
 			return;
 		}
 
@@ -79,7 +79,7 @@ class Banned extends Abstract_Render {
 	 * @return void
 	 */
 	public function maybe_display_banned_notice(): void {
-		if ( ! $this->can_display_notice() ) {
+		if ( ! $this->can_display() ) {
 			return;
 		}
 
@@ -106,7 +106,7 @@ class Banned extends Abstract_Render {
 	 * @return string Modified menu title with banned notification bubble if applicable.
 	 */
 	public function maybe_add_banned_bubble( $menu_title ): string {
-		if ( ! $this->can_display_notice() ) {
+		if ( ! $this->can_display() ) {
 			return $menu_title;
 		}
 
@@ -121,7 +121,7 @@ class Banned extends Abstract_Render {
 	 *
 	 * @return bool True if the notice can be displayed, false otherwise.
 	 */
-	private function can_display_notice(): bool {
+	private function can_display(): bool {
 		if ( $this->user->is_license_expired() ) {
 			return false;
 		}
