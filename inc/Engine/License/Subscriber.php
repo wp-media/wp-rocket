@@ -52,6 +52,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_menu_title'                   => [
 				[ 'add_notification_bubble' ],
 				[ 'add_notification_bubble_expired' ],
+				[ 'maybe_add_banned_bubble' ],
 			],
 			'admin_footer-settings_page_wprocket' => [
 				[ 'dismiss_notification_bubble' ],
@@ -280,5 +281,17 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function maybe_display_banned_notice() {
 		$this->banned->maybe_display_banned_notice();
+	}
+
+	/**
+	 * Adds a banned license notification bubble to the WP Rocket menu item title if the website's license is banned.
+	 *
+	 * @since 3.20.4
+	 *
+	 * @param string $menu_title The current menu title.
+	 * @return string Modified menu title with banned notification bubble if applicable.
+	 */
+	public function maybe_add_banned_bubble( $menu_title ) {
+		return $this->banned->maybe_add_banned_bubble( $menu_title );
 	}
 }
