@@ -8,7 +8,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  * Test class covering \WP_Rocket\Engine\License\Subscriber::maybe_add_banned_bubble
  *
  * @group License
- * @group newtest
+ * @group AdminOnly
  */
 class MaybeAddBannedBubble extends TestCase {
 	private static $user;
