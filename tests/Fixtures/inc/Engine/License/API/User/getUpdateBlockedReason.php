@@ -27,7 +27,7 @@ return [
 				'is_banned' => true,
 			],
 		] ) ),
-		'expected' => 'There was an error updating the plugin because your website has been suspended.',
+		'expected' => 'There was an error updating the plugin.',
 	],
 	'testShouldReturnExpiredMessageWhenLicenseExpired' => [
 		'data'     => json_decode( json_encode( [
@@ -36,7 +36,7 @@ return [
 				'is_banned' => false,
 			],
 		] ) ),
-		'expected' => 'There was an error updating the plugin because your license has expired.',
+		'expected' => 'There was an error updating the plugin.',
 	],
 	'testShouldReturnBanReasonWhenBothBannedAndExpired' => [
 		'data'     => json_decode( json_encode( [
@@ -53,5 +53,15 @@ return [
 			'licence_expiration' => strtotime( 'next year' ),
 		] ) ),
 		'expected' => '',
+	],
+	'testShouldReturnErrorMessageWhenLicenseRevoked' => [
+		'data'     => json_decode( json_encode( [
+			'licence_expiration' => strtotime( 'next year' ),
+			'licence' => [
+				'is_banned'  => false,
+				'is_revoked' => true,
+			],
+		] ) ),
+		'expected' => 'There was an error updating the plugin.',
 	],
 ];

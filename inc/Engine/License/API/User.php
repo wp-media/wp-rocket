@@ -530,7 +530,7 @@ class User {
 	}
 
 	/**
-	 * Check if the current website is banned or not.
+	 * Checks if the current website is banned or not.
 	 *
 	 * @return bool
 	 */
@@ -539,12 +539,21 @@ class User {
 	}
 
 	/**
-	 * Get ban reason if the website is banned.
+	 * Gets the ban reason if the website is banned.
 	 *
 	 * @return string
 	 */
 	public function ban_reason() {
 		return $this->user->licence->ban_reason ?? '';
+	}
+
+	/**
+	 * Checks if the license is revoked.
+	 *
+	 * @return bool
+	 */
+	public function is_revoked() {
+		return $this->user->licence->is_revoked ?? false;
 	}
 
 	/**
@@ -555,6 +564,11 @@ class User {
 	public function can_update_plugin() {
 		// Check if website is banned.
 		if ( $this->is_banned() ) {
+			return false;
+		}
+
+		// Check if license is revoked.
+		if ( $this->is_revoked() ) {
 			return false;
 		}
 
@@ -582,12 +596,17 @@ class User {
 					$reason
 				);
 			}
-			return __( 'There was an error updating the plugin because your website has been suspended.', 'rocket' );
+			return __( 'There was an error updating the plugin.', 'rocket' );
+		}
+
+		// Check if license is revoked.
+		if ( $this->is_revoked() ) {
+			return __( 'There was an error updating the plugin.', 'rocket' );
 		}
 
 		// Check if license is expired.
 		if ( $this->is_license_expired() ) {
-			return __( 'There was an error updating the plugin because your license has expired.', 'rocket' );
+			return __( 'There was an error updating the plugin.', 'rocket' );
 		}
 
 		return '';
