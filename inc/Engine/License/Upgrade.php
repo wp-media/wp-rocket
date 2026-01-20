@@ -283,6 +283,10 @@ class Upgrade extends Abstract_Render {
 			return false;
 		}
 
+		if ( $this->user->is_banned() ) {
+			return false;
+		}
+
 		return $this->pricing->is_promo_active();
 	}
 
