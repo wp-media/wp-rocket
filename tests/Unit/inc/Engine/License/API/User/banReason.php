@@ -17,7 +17,7 @@ class BanReason extends TestCase {
 	public function testShouldReturnExpected( $data, $expected ) {
 		$user = new User( $data );
 
-		$this->assertEquals(
+		$this->assertSame(
 			$expected,
 			$user->ban_reason()
 		);

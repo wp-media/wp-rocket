@@ -3,20 +3,20 @@
 return [
 	'testShouldReturnEmptyStringWhenNotObject' => [
 		'data'     => [],
-		'expected' => false,
+		'expected' => '',
 	],
 	'testShouldReturnEmptyStringWhenLicencePropertyNotSet' => [
 		'data'     => json_decode( json_encode( [
 			'ID' => 1,
 		] ) ),
-		'expected' => false,
+		'expected' => '',
 	],
 	'testShouldReturnEmptyStringWhenBannedPropertyNotSet' => [
 		'data'     => json_decode( json_encode( [
 			'ID' => 1,
 			'licence' => (object) [],
 		] ) ),
-		'expected' => false,
+		'expected' => '',
 	],
 	'testShouldReturnNotEmptyString' => [
 		'data'     => json_decode( json_encode( [
@@ -25,6 +25,6 @@ return [
 				'ban_reason' => 'ANY_REASON',
 			],
 		] ) ),
-		'expected' => true,
+		'expected' => 'ANY_REASON',
 	],
 ];
