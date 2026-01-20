@@ -91,7 +91,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					$views,
 				]
 			);
-		$this->getContainer()->add( 'license_subscriber', Subscriber::class )
+		$this->getContainer()->addShared( 'license_subscriber', Subscriber::class )
 			->addArguments(
 				[
 					'upgrade',
