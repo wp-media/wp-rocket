@@ -546,4 +546,50 @@ class User {
 	public function ban_reason() {
 		return $this->user->licence->ban_reason ?? '';
 	}
+
+	/**
+	 * Checks if plugin updates are available.
+	 *
+	 * @return bool
+	 */
+	public function can_update_plugin() {
+		// Check if website is banned.
+		if ( $this->is_banned() ) {
+			return false;
+		}
+
+		// Check if license is expired.
+		if ( $this->is_license_expired() ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Gets the reason why plugin updates are blocked.
+	 *
+	 * @return string Empty string if updates are available, otherwise the reason.
+	 */
+	public function get_update_blocked_reason() {
+		// Check if website is banned first.
+		if ( $this->is_banned() ) {
+			$reason = $this->ban_reason();
+			if ( ! empty( $reason ) ) {
+				return sprintf(
+					/* translators: %s: ban reason */
+					__( 'There was an error updating the plugin because %s', 'rocket' ),
+					$reason
+				);
+			}
+			return __( 'There was an error updating the plugin because your website has been suspended.', 'rocket' );
+		}
+
+		// Check if license is expired.
+		if ( $this->is_license_expired() ) {
+			return __( 'There was an error updating the plugin because your license has expired.', 'rocket' );
+		}
+
+		return '';
+	}
 }
