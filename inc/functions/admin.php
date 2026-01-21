@@ -560,7 +560,7 @@ function rocket_get_license_type( $customer_data ) {
 	}
 
 	if ( isset( $customer_data->licence->is_banned ) && $customer_data->licence->is_banned ) {
-		return __( 'Banned', 'rocket' );
+		return __( 'Revoked', 'rocket' );
 	}
 
 	// The licence name directly from User endpoint.

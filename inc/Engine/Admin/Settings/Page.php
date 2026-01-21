@@ -307,7 +307,9 @@ class Page extends Abstract_Render {
 			$data['license_class'] = ( time() < $user_data->licence_expiration && ! $user->is_banned() ) ? 'wpr-isValid' : 'wpr-isInvalid';
 		}
 
-		if ( ! empty( $user_data->licence_expiration ) && ! $user->is_banned() ) {
+		if ( $user->is_banned() ) {
+			$data['license_expiration'] = __( 'Ended', 'rocket' );
+		} else if ( ! empty( $user_data->licence_expiration ) ) {
 			$data['license_expiration'] = date_i18n( get_option( 'date_format' ), (int) $user_data->licence_expiration );
 		}
 
