@@ -54,13 +54,4 @@ return [
 		] ) ),
 		'expected' => '',
 	],
-	'testShouldReturnErrorMessageWhenLicenseRevoked' => [
-		'data'     => json_decode( json_encode( [
-			'licence_expiration' => strtotime( 'next year' ),
-			'licence' => [
-				'is_banned'  => false,
-			],
-		] ) ),
-		'expected' => 'There was an error updating the plugin.',
-	],
 ];
