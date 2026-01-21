@@ -309,7 +309,7 @@ class Page extends Abstract_Render {
 
 		if ( $user->is_banned() ) {
 			$data['license_expiration'] = __( 'Ended', 'rocket' );
-		} else if ( ! empty( $user_data->licence_expiration ) ) {
+		} elseif ( ! empty( $user_data->licence_expiration ) ) {
 			$data['license_expiration'] = date_i18n( get_option( 'date_format' ), (int) $user_data->licence_expiration );
 		}
 
