@@ -544,16 +544,7 @@ class User {
 	 * @return string
 	 */
 	public function ban_reason() {
-		return $this->user->licence->ban_reason ?? '';
-	}
-
-	/**
-	 * Checks if the license is revoked.
-	 *
-	 * @return bool
-	 */
-	public function is_revoked() {
-		return $this->user->licence->is_revoked ?? false;
+		return $this->user->licence->plugin_updates_ban_reason ?? '';
 	}
 
 	/**
@@ -564,11 +555,6 @@ class User {
 	public function can_update_plugin() {
 		// Check if website is banned.
 		if ( $this->is_banned() ) {
-			return false;
-		}
-
-		// Check if license is revoked.
-		if ( $this->is_revoked() ) {
 			return false;
 		}
 
@@ -588,19 +574,14 @@ class User {
 	public function get_update_blocked_reason() {
 		// Check if website is banned first.
 		if ( $this->is_banned() ) {
-			$reason = $this->ban_reason();
-			if ( ! empty( $reason ) ) {
+			$reason_text = $this->get_ban_reason_text( $this->ban_reason() );
+			if ( ! empty( $reason_text ) ) {
 				return sprintf(
 					/* translators: %s: ban reason */
 					__( 'There was an error updating the plugin because %s', 'rocket' ),
-					$reason
+					$reason_text
 				);
 			}
-			return __( 'There was an error updating the plugin.', 'rocket' );
-		}
-
-		// Check if license is revoked.
-		if ( $this->is_revoked() ) {
 			return __( 'There was an error updating the plugin.', 'rocket' );
 		}
 
@@ -610,5 +591,15 @@ class User {
 		}
 
 		return '';
+	}
+
+	private function get_ban_reason_text( $ban_reason ) {
+		$reasons = [
+			'BANNED_WEBSITE' => __( 'your website is banned', 'rocket' ),
+		];
+		if ( empty( $ban_reason ) || ! isset( $reasons[ $ban_reason ] ) ) {
+			return '';
+		}
+		return $reasons[ $ban_reason ];
 	}
 }

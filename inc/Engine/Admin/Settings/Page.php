@@ -287,8 +287,9 @@ class Page extends Abstract_Render {
 	 */
 	public function customer_data() {
 		$user_data = $this->user_client->get_user_data();
-		$data      = [
-			'license_type'          => __( 'Unavailable', 'rocket' ),
+		$user      = new User( $user_data );
+
+		$data = [
 			'license_expiration'    => __( 'Unavailable', 'rocket' ),
 			'license_class'         => 'wpr-isInvalid',
 			'is_from_one_dot_com'   => false,
@@ -303,10 +304,10 @@ class Page extends Abstract_Render {
 		}
 
 		if ( ! empty( $user_data->licence_expiration ) ) {
-			$data['license_class'] = time() < $user_data->licence_expiration ? 'wpr-isValid' : 'wpr-isInvalid';
+			$data['license_class'] = ( time() < $user_data->licence_expiration && ! $user->is_banned() ) ? 'wpr-isValid' : 'wpr-isInvalid';
 		}
 
-		if ( ! empty( $user_data->licence_expiration ) ) {
+		if ( ! empty( $user_data->licence_expiration ) && ! $user->is_banned() ) {
 			$data['license_expiration'] = date_i18n( get_option( 'date_format' ), (int) $user_data->licence_expiration );
 		}
 
@@ -315,7 +316,6 @@ class Page extends Abstract_Render {
 		}
 
 		// Get plugin update status.
-		$user                          = new User( $user_data );
 		$data['can_update_plugin']     = $user->can_update_plugin();
 		$data['update_blocked_reason'] = $user->get_update_blocked_reason();
 
