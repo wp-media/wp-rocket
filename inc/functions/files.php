@@ -591,6 +591,10 @@ function rocket_clean_files( $urls, $filesystem = null, $run_actions = true ) {
 
 		$parsed_url = get_rocket_parse_url( $url );
 
+		$structure = get_option( 'permalink_structure' );
+
+		$is_permalink = !empty($structure) && $parsed_url['path'] === rtrim('/' . trim(strstr($structure, '%', true) ?: '', '/'), '/');
+
 		if ( ! empty( $parsed_url['host'] ) ) {
 			foreach ( _rocket_get_cache_dirs( $parsed_url['host'], $cache_path ) as $dir ) {
 				// Decode url path.
@@ -611,6 +615,10 @@ function rocket_clean_files( $urls, $filesystem = null, $run_actions = true ) {
 				}
 
 				$entry = $dir . $parsed_url['path'];
+
+				if ( ! empty( $parsed_url['query'] ) ) {
+					$entry = trailingslashit( $entry ) . '#' . str_replace( '&', '#', $parsed_url['query'] );
+				}
 
 				// For regex we use it for file names only, and it should include the * character.
 				if ( str_contains( $entry, '*' ) ) {
@@ -634,7 +642,20 @@ function rocket_clean_files( $urls, $filesystem = null, $run_actions = true ) {
 				}
 
 				if ( $filesystem->is_dir( $entry ) ) {
-					rocket_rrmdir( $entry, [], $filesystem );
+					if ( $is_permalink ) {
+						// Delete only cache files inside the directory
+						$cache_files = glob( $entry . '/index*.*' );
+						if ( ! $cache_files ) {
+							$cache_files = [];
+						}
+						foreach ( $cache_files as $cache_file ) {
+							if ( $filesystem->exists( $cache_file ) ) {
+								$filesystem->delete( $cache_file );
+							}
+						}
+					} else {
+						rocket_rrmdir( $entry, [], $filesystem );
+					}
 				} else {
 					$filesystem->delete( $entry );
 				}
