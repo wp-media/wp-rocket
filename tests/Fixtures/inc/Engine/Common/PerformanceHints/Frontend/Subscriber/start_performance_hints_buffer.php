@@ -2,19 +2,28 @@
 return [
 	'shouldStartBufferWithWprImagedimensions' => [
 		'config' => [
-			'wpr_imagedimensions' => '1',
+			'get' => [
+				'wpr_imagedimensions' => '1',
+			],
+			'server' => [
+				'HTTP_WPR_OPT_LIST' => true,
+			],
 		],
 		'expected' => 1,
 	],
 	'shouldStartBufferWithWprLazyrendercontent' => [
 		'config' => [
-			'wpr_lazyrendercontent' => '1',
+			'get' => [
+				'wpr_lazyrendercontent' => '1',
+			],
 		],
 		'expected' => 1,
 	],
 	'shouldNotStartBufferWithNoRelevantGETParams' => [
 		'config' => [
-			'unrelated_param' => '1',
+			'get' => [
+				'unrelated_param' => '1',
+			],
 		],
 		'expected' => 0,
 	],

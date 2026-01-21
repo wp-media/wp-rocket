@@ -42,12 +42,13 @@
 	],
 	"require": {
 		"php": ">=7.3",
-		"berlindb/core": "^2.0",
+		"berlindb/core": "dev-master",
 		"cloudflare/cf-ip-rewrite": "^1.0",
 		"composer/installers": "^1.0 || ^2.0",
 		"voku/simple_html_dom": "^4.8",
 		"wp-media/apply-filters-typed": "^1.0",
-		"wp-media/plugin-family": "^1.0"
+		"wp-media/plugin-family": "1.0.8",
+		"wp-media/wp-mixpanel": "^1.0"
 	},
 	"require-dev": {
 		"php": "^7 || ^8",
@@ -58,7 +59,7 @@
 		"mikey179/vfsstream": "1.6.11",
 		"mnsami/composer-custom-directory-installer": "^2.0",
 		"mobiledetect/mobiledetectlib": "^2.8",
-		"php-stubs/wordpress-tests-stubs": "^6.5",
+		"php-stubs/wordpress-tests-stubs": "^6.8",
 		"phpcompatibility/phpcompatibility-wp": "^2.0",
 		"phpstan/extension-installer": "^1.3",
 		"phpstan/phpstan-mockery": "^1.1",
@@ -72,7 +73,7 @@
 		"wp-media/background-processing": "^1.3",
 		"wp-media/monolog": "^0.0",
 		"wp-media/phpunit": "^3",
-		"wp-media/rocket-lazyload-common": "^3.0.17",
+		"wp-media/rocket-lazyload-common": "^3.0.18",
 		"wp-media/wp-imagify-partner": "^1.0",
 		"wpackagist-plugin/cloudflare":"4.12.7",
 		"wpackagist-plugin/amp": "^1.1.4",
@@ -126,13 +127,14 @@
 				"wp-media/plugin-family"
 			]
 		},
-		"plugin_domain": "rocket"
+		"plugin_domain": "rocket",
+		"imagify_partner": "wp-rocket"
 	},
 	"scripts": {
 		"test-unit": "\"vendor/bin/phpunit\" --testsuite unit --colors=always --configuration tests/Unit/phpunit.xml.dist",
 		"test-unit-coverage": "\"vendor/bin/phpunit\" --testsuite unit --colors=always --configuration tests/Unit/phpunit.xml.dist --coverage-php tests/report/unit.cov",
-		"test-integration": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --exclude-group AdminOnly,BeaverBuilder,Elementor,Hummingbird,WithSmush,WithWoo,WithAmp,WithAmpAndCloudflare,WithSCCSS,Cloudways,Dreampress,Cloudflare,CloudflareAdmin,Multisite,WPEngine,SpinUpWP,WordPressCom,O2Switch,PDFEmbedder,PDFEmbedderPremium,PDFEmbedderSecure,Godaddy,LiteSpeed,RevolutionSlider,WordFence,ConvertPlug,Kinsta,Jetpack,RankMathSEO,AllInOneSeoPack,SEOPress,TheSEOFramework,OneCom,RocketLazyLoad,WPXCloud,TheEventsCalendar,Perfmatters,RapidLoad,ProIsp,TranslatePress,WPGeotargeting,Weglot,Pressidium,PerformanceHints",
-		"test-integration-coverage": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --exclude-group AdminOnly,BeaverBuilder,Elementor,Hummingbird,WithSmush,WithWoo,WithAmp,WithAmpAndCloudflare,WithSCCSS,Cloudways,Dreampress,Cloudflare,CloudflareAdmin,Multisite,WPEngine,SpinUpWP,WordPressCom,O2Switch,PDFEmbedder,PDFEmbedderPremium,PDFEmbedderSecure,Godaddy,LiteSpeed,RevolutionSlider,WordFence,ConvertPlug,Kinsta,Jetpack,RankMathSEO,AllInOneSeoPack,SEOPress,TheSEOFramework,OneCom,RocketLazyLoad,WPXCloud,TheEventsCalendar,Perfmatters,RapidLoad,ProIsp,TranslatePress,WPGeotargeting,Weglot,Pressidium,PerformanceHints --coverage-php tests/report/integration.cov",
+		"test-integration": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --exclude-group AdminOnly,BeaverBuilder,Elementor,Hummingbird,WithSmush,WithWoo,WithAmp,WithAmpAndCloudflare,WithSCCSS,Cloudways,Dreampress,Cloudflare,CloudflareAdmin,Multisite,WPEngine,SpinUpWP,WordPressCom,O2Switch,PDFEmbedder,PDFEmbedderPremium,PDFEmbedderSecure,Godaddy,LiteSpeed,RevolutionSlider,WordFence,ConvertPlug,Kinsta,Jetpack,RankMathSEO,AllInOneSeoPack,SEOPress,TheSEOFramework,OneCom,RocketLazyLoad,WPXCloud,TheEventsCalendar,Perfmatters,RapidLoad,ProIsp,TranslatePress,WPGeotargeting,Weglot,Pressidium,PerformanceHints,GeneratePress",
+		"test-integration-coverage": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --exclude-group AdminOnly,BeaverBuilder,Elementor,Hummingbird,WithSmush,WithWoo,WithAmp,WithAmpAndCloudflare,WithSCCSS,Cloudways,Dreampress,Cloudflare,CloudflareAdmin,Multisite,WPEngine,SpinUpWP,WordPressCom,O2Switch,PDFEmbedder,PDFEmbedderPremium,PDFEmbedderSecure,Godaddy,LiteSpeed,RevolutionSlider,WordFence,ConvertPlug,Kinsta,Jetpack,RankMathSEO,AllInOneSeoPack,SEOPress,TheSEOFramework,OneCom,RocketLazyLoad,WPXCloud,TheEventsCalendar,Perfmatters,RapidLoad,ProIsp,TranslatePress,WPGeotargeting,Weglot,Pressidium,PerformanceHints,GeneratePress --coverage-php tests/report/integration.cov",
 		"test-integration-adminonly": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group AdminOnly",
 		"test-integration-adminonly-coverage": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group AdminOnly --coverage-php tests/report/integration-adminonly.cov",
 		"test-integration-performancehints": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group PerformanceHints",
@@ -179,6 +181,7 @@
         "test-integration-translatepress": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group TranslatePress",
         "test-integration-weglot": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group Weglot",
 		"test-integration-pressidium": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group Pressidium",
+		"test-integration-generatepress": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group GeneratePress",
 		"run-tests": [
 			"@test-unit",
 			"@test-integration",
@@ -232,7 +235,8 @@
 			"@test-integration-wp-geotargeting",
       "@test-integration-translatepress",
       "@test-integration-weglot",
-			"@test-integration-pressidium"
+			"@test-integration-pressidium",
+			"@test-integration-generatepress"
 		],
 		"run-stan": "vendor/bin/phpstan analyze --memory-limit=2G --no-progress",
 		"run-stan-reset-baseline": "vendor/bin/phpstan analyze --memory-limit=2G --no-progress --generate-baseline",

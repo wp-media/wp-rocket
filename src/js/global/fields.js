@@ -420,4 +420,9 @@ $(document).ready(function(){
 
 		} );
 	}
+
+	$(document).on( 'click', '.wpr-confirm-delete', function (e) {
+		return confirm( $(this).data('wpr_confirm_msg') );
+	} );
+
 });

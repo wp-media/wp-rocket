@@ -54,17 +54,35 @@
 	</rule>
     <rule ref="WordPress.WP.I18n">
         <properties>
-            <property name="text_domain" type="array" value="rocket" />
+            <property name="text_domain" type="array">
+				<element value="rocket" />
+			</property>
         </properties>
     </rule>
     <rule ref="WordPress.NamingConventions.PrefixAllGlobals">
         <properties>
-            <property name="prefixes" type="array" value="rocket,wp_rocket,WPMedia,WPRocket" />
+            <property name="prefixes" type="array">
+				<element value="rocket" />
+				<element value="wp_rocket" />
+				<element value="WPMedia" />
+				<element value="WPRocket" />
+			</property>
         </properties>
     </rule>
 	<rule ref="WordPress.WP.Capabilities">
         <properties>
-            <property name="custom_capabilities" type="array" value="rocket_manage_options,rocket_remove_unused_css,rocket_purge_sucuri_cache,rocket_preload_cache,rocket_purge_cache,rocket_purge_cloudflare_cache,rocket_purge_posts,rocket_regenerate_critical_css,rocket_purge_terms,rocket_purge_users" />
+            <property name="custom_capabilities" type="array">
+				<element value="rocket_manage_options" />
+				<element value="rocket_remove_unused_css" />
+				<element value="rocket_purge_sucuri_cache" />
+				<element value="rocket_preload_cache" />
+				<element value="rocket_purge_cache" />
+				<element value="rocket_purge_cloudflare_cache" />
+				<element value="rocket_purge_posts" />
+				<element value="rocket_regenerate_critical_css" />
+				<element value="rocket_purge_terms" />
+				<element value="rocket_purge_users" />
+			</property>
         </properties>
     </rule>
     <rule ref="WordPress.Files.FileName">

@@ -42,7 +42,7 @@ class Controller {
 				continue;
 			}
 
-			$factory->table()->truncate_table();
+			$factory->table()->truncate();
 		}
 
 		/**
@@ -64,6 +64,10 @@ class Controller {
 	 * @return void
 	 */
 	public function delete_post( $post_id ) {
+		if ( ! $this->is_allowed() ) {
+			return;
+		}
+
 		if ( 'attachment' === get_post_type( $post_id ) ) {
 			return;
 		}
@@ -137,7 +141,7 @@ class Controller {
 			'status'  => 'success',
 			'message' => sprintf(
 				// translators: %1$s = plugin name.
-				__( '%1$s: Critical images and Lazy Render data was cleared!', 'rocket' ),
+				__( '%1$s: Stored optimization data for Automatic Lazy Rendering, Critical Images, Preconnect to External Domains, and Preload Fonts has been cleared! New data will be generated as needed.', 'rocket' ),
 				'<strong>WP Rocket</strong>'
 			),
 		];

@@ -21,8 +21,10 @@ defined( 'ABSPATH' ) || exit;
 		[
 			'label'      => __( 'Read the documentation', 'rocket' ),
 			'attributes' => [
-				'target' => '_blank',
-				'class'  => 'wpr-button wpr-button--small wpr-button--blueDark',
+				'target'                 => '_blank',
+				'class'                  => 'wpr-button wpr-button--small wpr-button--blueDark',
+				'data-wpr_track_help'    => 'Documentation',
+				'data-wpr_track_context' => 'Sidebar',
 			],
 		]
 	);

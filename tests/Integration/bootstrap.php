@@ -16,10 +16,11 @@ define( 'WP_ROCKET_IS_TESTING', true );
 tests_add_filter(
 	'muplugins_loaded',
 	function () {
-
-		// Disable ATF & LRC optimizations to prevent DB requests (unrelated to other tests).
+		// Disable ATF, LRC, Preload fonts, and Preconnect external domains optimizations to prevent DB requests (unrelated to other tests).
 		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
 		add_filter( 'rocket_lrc_optimization', '__return_false' );
+		add_filter( 'pre_get_rocket_option_auto_preload_fonts', '__return_false' );
+		add_filter( 'rocket_preconnect_external_domains_optimization', '__return_false' );
 
 		if ( BootstrapManager::isGroup( 'TranslatePress' ) ) {
 			require WP_ROCKET_TESTS_FIXTURES_DIR . '/classes/TRP_Translate_Press.php';
@@ -264,8 +265,23 @@ tests_add_filter(
 		}
 
 		if ( BootstrapManager::isGroup( 'PerformanceHints' ) ) {
+			// Disable Rocket Insights for Performance Hints tests group to prevent the test from failing.
+			add_filter( 'rocket_rocket_insights_enabled', '__return_false' );
+
+			// Enable all optimizations for Performance Hints tests group.
 			add_filter( 'rocket_above_the_fold_optimization', '__return_true' );
 			add_filter( 'rocket_lrc_optimization', '__return_true' );
+			add_filter( 'rocket_preconnect_external_domains_optimization', '__return_true' );
+			add_filter( 'pre_get_rocket_option_auto_preload_fonts', '__return_true' );
+		}
+
+		// Load theme definitions for test groups.
+		$themes = require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Themes/themes.php';
+
+		foreach ( $themes as $theme_group => $theme_slug ) {
+			if ( BootstrapManager::isGroup( $theme_group ) ) {
+				switch_theme( $theme_slug );
+			}
 		}
 
 		// Load the plugin.
@@ -286,6 +302,12 @@ tests_add_filter(
 
 		$lrc_table = $container->get( 'lrc_table' );
 		$lrc_table->uninstall();
+
+		$preload_fonts_table = $container->get( 'preload_fonts_table' );
+		$preload_fonts_table->uninstall();
+
+		$preconnect_external_domains_table = $container->get( 'preconnect_external_domains_table' );
+		$preconnect_external_domains_table->uninstall();
 	}
 );
 

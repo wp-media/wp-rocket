@@ -3,11 +3,11 @@ declare( strict_types=1 );
 
 namespace WP_Rocket\Engine\Common\PerformanceHints;
 
+use WP_Rocket\Engine\Common\Database\QueryInterface;
+use WP_Rocket\Engine\Common\Database\TableInterface;
 use WP_Rocket\Engine\Common\PerformanceHints\AJAX\ControllerInterface as AjaxControllerInterface;
 use WP_Rocket\Engine\Common\PerformanceHints\Frontend\ControllerInterface as FrontendControllerInterface;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
-use WP_Rocket\Engine\Common\PerformanceHints\Database\Queries\QueriesInterface;
-use WP_Rocket\Engine\Common\PerformanceHints\Database\Table\TableInterface;
 
 interface FactoryInterface {
 	/**
@@ -34,9 +34,9 @@ interface FactoryInterface {
 	/**
 	 * Provides a Queries interface.
 	 *
-	 * @return QueriesInterface
+	 * @return QueryInterface
 	 */
-	public function queries(): QueriesInterface;
+	public function queries(): QueryInterface;
 
 	/**
 	 * Provides a Context interface

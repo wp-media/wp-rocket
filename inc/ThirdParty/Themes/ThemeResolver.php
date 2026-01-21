@@ -15,12 +15,13 @@ class ThemeResolver {
 		'divi',
 		'flatsome',
 		'jevelin',
-		'minimalist_blogger',
+		'minimalistblogger',
 		'polygon',
 		'uncode',
 		'xstore',
 		'themify',
 		'shoptimizer',
+		'generatepress',
 	];
 
 	/**

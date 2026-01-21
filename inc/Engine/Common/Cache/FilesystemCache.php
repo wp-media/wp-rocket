@@ -41,7 +41,7 @@ class FilesystemCache implements CacheInterface {
 	 *
 	 * @return mixed The value of the item from the cache, or $default in case of cache miss.
 	 */
-	public function get( $key, $default = null ) {
+	public function get( string $key, $default = null ) {
 		$path = $this->generate_path( $key );
 
 		if ( ! $this->filesystem->exists( $path ) ) {
@@ -62,7 +62,7 @@ class FilesystemCache implements CacheInterface {
 	 *
 	 * @return bool True on success and false on failure.
 	 */
-	public function set( $key, $value, $ttl = null ) {
+	public function set( string $key, $value, $ttl = null ): bool {
 		$path      = $this->generate_path( $key );
 		$directory = dirname( $path );
 		rocket_mkdir_p( $directory, $this->filesystem );
@@ -76,7 +76,7 @@ class FilesystemCache implements CacheInterface {
 	 *
 	 * @return bool True if the item was successfully removed. False if there was an error.
 	 */
-	public function delete( $key ) {
+	public function delete( string $key ): bool {
 		$path = $this->generate_path( $key );
 		if ( ! $this->filesystem->exists( $path ) ) {
 			return false;
@@ -94,7 +94,7 @@ class FilesystemCache implements CacheInterface {
 	 *
 	 * @return bool True on success and false on failure.
 	 */
-	public function clear() {
+	public function clear(): bool {
 		$root_path = $this->get_root_path();
 		if ( ! $this->filesystem->exists( $root_path ) ) {
 			return false;
@@ -137,7 +137,7 @@ class FilesystemCache implements CacheInterface {
 	 *
 	 * @return iterable A list of key => value pairs. Cache keys that do not exist or are stale will have $default as value.
 	 */
-	public function getMultiple( $keys, $default = null ) {
+	public function getMultiple( iterable $keys, $default = null ): iterable {
 		$results = [];
 		foreach ( $keys as $key ) {
 			$results[ $key ] = $this->get( $key, $default );
@@ -155,7 +155,7 @@ class FilesystemCache implements CacheInterface {
 	 *
 	 * @return bool True on success and false on failure.
 	 */
-	public function setMultiple( $values, $ttl = null ) {
+	public function setMultiple( iterable $values, $ttl = null ): bool {
 		$result = true;
 		foreach ( $values as $key => $value ) {
 			$result &= $this->set( $key, $value, $ttl );
@@ -170,7 +170,7 @@ class FilesystemCache implements CacheInterface {
 	 *
 	 * @return bool True if the items were successfully removed. False if there was an error.
 	 */
-	public function deleteMultiple( $keys ) {
+	public function deleteMultiple( iterable $keys ): bool {
 		$result = true;
 		foreach ( $keys as $key ) {
 			$result &= $this->delete( $key );
@@ -190,7 +190,7 @@ class FilesystemCache implements CacheInterface {
 	 *
 	 * @return bool
 	 */
-	public function has( $key ) {
+	public function has( string $key ): bool {
 		$path = $this->generate_path( $key );
 
 		return $this->filesystem->exists( $path );

@@ -12,11 +12,13 @@ use WP_Rocket\Tests\Integration\AdminTestCase;
 class Test_EnqueueRocketScripts extends AdminTestCase {
     public function set_up() {
         parent::set_up();
+		add_filter( 'rocket_rocket_insights_enabled', '__return_false' );
 
         $this->setRoleCap( 'administrator', 'rocket_manage_options' );
     }
 
     public function tear_down() {
+		remove_filter( 'rocket_rocket_insights_enabled', '__return_true' );
         set_current_screen( 'front' );
 
         $this->removeRoleCap( 'administrator', 'rocket_manage_options' );

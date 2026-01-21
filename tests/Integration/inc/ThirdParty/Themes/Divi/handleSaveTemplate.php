@@ -48,9 +48,19 @@ class Test_handleSaveTemplate extends WPThemeTestcase {
 		$this->event = $this->container->get( 'event_manager' );
 
 		add_filter( 'pre_option_stylesheet', [ $this, 'set_stylesheet' ] );
+
+		self::installAtfTable();
+		self::installLrcTable();
+		self::installPreloadFontsTable();
+		self::installPreconnectExternalDomainsTable();
 	}
 
 	public function tear_down() {
+		self::uninstallAtfTable();
+		self::uninstallLrcTable();
+		self::uninstallPreloadFontsTable();
+		self::uninstallPreconnectDomainsTable();
+
 		$this->event->remove_subscriber( $this->subscriber );
 
 		remove_filter( 'pre_option_stylesheet', [ $this, 'set_stylesheet' ] );

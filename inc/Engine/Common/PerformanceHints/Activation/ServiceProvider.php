@@ -9,6 +9,7 @@ use WP_Rocket\Engine\Media\AboveTheFold\Context\Context as ATFContext;
 use WP_Rocket\Engine\Media\AboveTheFold\Activation\ActivationFactory as ATFActivationFactory;
 use WP_Rocket\Engine\Optimization\LazyRenderContent\Activation\ActivationFactory as LRCActivationFactory;
 use WP_Rocket\Engine\Optimization\LazyRenderContent\Context\Context as LRCContext;
+use WP_Rocket\Engine\Media\PreconnectExternalDomains\Context\Context as PreconnectContext;
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
@@ -30,6 +31,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'atf_activation_factory',
 		'lrc_context',
 		'lrc_activation_factory',
+		'preconnect_external_domains_context',
 	];
 
 	/**
@@ -67,6 +69,8 @@ class ServiceProvider extends AbstractServiceProvider {
 					'lrc_context',
 				]
 			);
+
+		$this->getContainer()->add( 'preconnect_external_domains_context', PreconnectContext::class );
 
 		$factories = [];
 

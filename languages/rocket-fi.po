@@ -8,9 +8,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.18.1-beta1\n"
+"Project-Id-Version: WP Rocket 3.18.2-alpha\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2025-01-29T13:05:38+00:00\n"
+"POT-Creation-Date: 2025-02-17T11:30:03+00:00\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: filippa.loikkanen, 2025\n"
 "Language-Team: Finnish (https://app.transifex.com/wp-media/teams/18133/fi/)\n"
@@ -35,7 +35,7 @@ msgstr "https://wp-rocket.me"
 #. Description of the plugin
 #: wp-rocket.php
 msgid "The best WordPress performance plugin."
-msgstr "Paras suorituskyky lisäosa WordPressille."
+msgstr "Paras suorituskykyä parantava lisäosa WordPressille."
 
 #. Author of the plugin
 #: wp-rocket.php
@@ -65,7 +65,7 @@ msgid ""
 "compatibility."
 msgstr ""
 "Sivustosi palveluntarjoaja on %s. Olemme kytkeneet päälle Varnishin "
-"automaattisen tyhjennyksen yhteensopivuuden takaamiseksi."
+"automaattisen puhdistuksen yhteensopivuuden takaamiseksi."
 
 #: inc/Addon/Cloudflare/API/Client.php:129
 msgid "Cloudflare did not provide any reply. Please try again later."
@@ -123,7 +123,7 @@ msgid ""
 "Cloudflare email and/or API key are not set. Read the %1$sdocumentation%2$s "
 "for further guidance."
 msgstr ""
-"Cloudfare sähköpostia ja/tai API-avainta ei ole määritetty. Lue "
+"Cloudfare-sähköpostia ja/tai API-avainta ei ole määritetty. Lue "
 "%1$sdokumentaatio%2$s saadaksesi lisätietoja."
 
 #: inc/Addon/Cloudflare/Cloudflare.php:71 inc/deprecated/3.5.php:88
@@ -165,17 +165,17 @@ msgstr "%1$sWP Rocket:%2$s Cloudfare-välimuisti puhdistettiin onnistuneesti."
 #. translators: %s is the message returned by the CloudFlare API.
 #: inc/Addon/Cloudflare/Subscriber.php:311
 msgid "Cloudflare development mode error: %s"
-msgstr "Cloudflare development -tilan virhe: %s"
+msgstr "Cloudflare-kehitystilan virhe: %s"
 
 #. translators: %s is the message returned by the CloudFlare API.
 #: inc/Addon/Cloudflare/Subscriber.php:318
 msgid "Cloudflare development mode %s"
-msgstr "Cloudflare development -tila %s"
+msgstr "Cloudflare-kehitystila %s"
 
 #. translators: %s is the message returned by the CloudFlare API.
 #: inc/Addon/Cloudflare/Subscriber.php:337
 msgid "Cloudflare cache level error: %s"
-msgstr "Cloudflare cache level -virhe: %s"
+msgstr "Cloudflare välimuistitason virhe: %s"
 
 #: inc/Addon/Cloudflare/Subscriber.php:344
 msgctxt "Cloudflare caching level"
@@ -185,7 +185,7 @@ msgstr "standardi"
 #. translators: %s is the caching level returned by the CloudFlare API.
 #: inc/Addon/Cloudflare/Subscriber.php:350
 msgid "Cloudflare cache level set to %s"
-msgstr "Cloudfrale cache level asetettu: %s"
+msgstr "Cloudfare-välimuistin tasoksi asetettu: %s"
 
 #. translators: %s is the message returned by the CloudFlare API.
 #: inc/Addon/Cloudflare/Subscriber.php:368
@@ -200,12 +200,12 @@ msgstr "Cloudflare rocket loader %s"
 #. translators: %s is the message returned by the CloudFlare API.
 #: inc/Addon/Cloudflare/Subscriber.php:393
 msgid "Cloudflare browser cache error: %s"
-msgstr "Cloudflare browser cache -virhe: %s"
+msgstr "Cloudflare-selainvälimuistin virhe: %s"
 
 #. translators: %s is the message returned by the CloudFlare API.
 #: inc/Addon/Cloudflare/Subscriber.php:400
 msgid "Cloudflare browser cache set to %s"
-msgstr "Cloudfare-selaimen välimuisti asetettiin arvoon %s"
+msgstr "Cloudfare-selainvälimuisti asetettu arvoon %s"
 
 #. translators: %1$s = strong opening tag, %2$s = strong closing tag.
 #: inc/Addon/Cloudflare/Subscriber.php:507
@@ -229,42 +229,41 @@ msgstr "WP Rocket:"
 #. translators: %s is the error message returned by the API.
 #: inc/Addon/Sucuri/Subscriber.php:96
 msgid "Sucuri cache purge error: %s"
-msgstr "Sucurin välimuistin tyhjennysvirhe: %s"
+msgstr "Sucuri-välimuistin puhdistusvirhe: %s"
 
 #: inc/Addon/Sucuri/Subscriber.php:101
 msgid ""
 "The Sucuri cache is being cleared. Note that it may take up to two minutes "
 "for it to be fully flushed."
 msgstr ""
-"Sucurin välimuistia tyhjennetään. Huomioi, että operaatio voi kestää pari "
+"Sucurin välimuistia tyhjennetään. Huomaa, että tämä voi kestää pari "
 "minuuttia."
 
 #: inc/Addon/Sucuri/Subscriber.php:218
 msgid "Sucuri firewall API key was not found."
-msgstr "Sucurin palomuurin API-avainta ei löytynyt."
+msgstr "Sucuri-palomuurin API-avainta ei löytynyt."
 
 #: inc/Addon/Sucuri/Subscriber.php:231
 msgid "Sucuri firewall API key is invalid."
-msgstr "Sucurin palomuurin API-avain on virheellinen."
+msgstr "Sucuri-palomuurin API-avain on virheellinen."
 
 #. translators: %s is an error message.
 #: inc/Addon/Sucuri/Subscriber.php:286
 msgid "Error when contacting Sucuri firewall API. Error message was: %s"
 msgstr ""
-"Tapahtui virhe otettaessa yhteyttä Sucurin palomuurin rajapintaan. "
-"Virheilmoitus oli: %s"
+"Virhe otettaessa yhteyttä Sucurin palomuurin API:in. Virheilmoitus: %s"
 
 #: inc/Addon/Sucuri/Subscriber.php:301
 msgid "Could not get a response from the Sucuri firewall API."
-msgstr "Sucurin palomuurin rajapinnalta ei saatu vastausta."
+msgstr "Sucurin palomuurin API ei antanut vastausta."
 
 #: inc/Addon/Sucuri/Subscriber.php:316
 msgid "Got an invalid response from the Sucuri firewall API."
-msgstr "Sucurin palomuurin rajapinta palautti virheellisen vastauksen."
+msgstr "Sucurin palomuurin API palautti virheellisen vastauksen."
 
 #: inc/Addon/Sucuri/Subscriber.php:330
 msgid "The Sucuri firewall API returned an unknown error."
-msgstr "Sucurin palomuurin rajapinta palautti tuntemattoman virheen."
+msgstr "Sucurin palomuurin API palautti tuntemattoman virheen."
 
 #. translators: %s is an error message.
 #: inc/Addon/Sucuri/Subscriber.php:334
@@ -285,13 +284,15 @@ msgid_plural ""
 "option. %2$sMore info%3$s %4$s If you prefer to have WP Rocket serve WebP "
 "for you instead, please disable WebP display in %1$s."
 msgstr[0] ""
-"Käytät tällä hetkellä %1$s WebP-kuvien tarjoamiseen, joten sinun ei tarvitse"
-" käyttää tätä vaihtoehtoa. %2$sLisätietoja%3$s%4$s Jos haluat, että WP "
-"Rocket tarjoaa Webp-kuvat, poista WebP-näyttö käytöstä täällä: %1$s."
+"Käytät tällä hetkellä lisäosaa %1$s WebP-kuvien tarjoamiseen, joten sinun ei"
+" tarvitse ottaa tätä ominaisuutta käyttöön. %2$sLisätietoja%3$s%4$s Jos "
+"haluat, että WP Rocket tarjoaa Webp-kuvat, poista WebP-näyttö käytöstä "
+"lisäosassa %1$s."
 msgstr[1] ""
-"Käytät tällä hetkellä %1$s WebP-kuvien tarjoamiseen, joten sinun ei tarvitse"
-" käyttää tätä vaihtoehtoa. %2$sLisätietoja%3$s%4$s Jos haluat, että WP "
-"Rocket tarjoaa Webp-kuvat, poista WebP-näyttö käytöstä täällä: %1$s."
+"Käytät tällä hetkellä lisäosaa %1$s WebP-kuvien tarjoamiseen, joten sinun ei"
+" tarvitse ottaa tätä ominaisuutta käyttöön. %2$sLisätietoja%3$s%4$s Jos "
+"haluat, että WP Rocket tarjoaa Webp-kuvat, poista WebP-näyttö käytöstä "
+"lisäosassa %1$s."
 
 #: inc/Addon/WebP/AdminSubscriber.php:105
 msgid "WebP cache is disabled by filter."
@@ -308,10 +309,10 @@ msgid_plural ""
 "You are using %1$s to convert images to WebP. If you want WP Rocket to serve"
 " them for you, activate this option. %2$sMore info%3$s"
 msgstr[0] ""
-"Käytät palvelua %1$s kuvien muuntamiseen WebP-muotoon. Jos haluat, että WP "
+"Käytät lisäosaa %1$s kuvien muuntamiseen WebP-muotoon. Jos haluat, että WP "
 "Rocket huolehtii siitä, ota käyttöön tämä vaihtoehto. %2$sLisätietoja%3$s"
 msgstr[1] ""
-"Käytät palvelua %1$s kuvien muuntamiseen WebP-muotoon. Jos haluat, että WP "
+"Käytät lisäosia %1$s kuvien muuntamiseen WebP-muotoon. Jos haluat, että WP "
 "Rocket huolehtii siitä, ota käyttöön tämä vaihtoehto. %2$sLisätietoja%3$s"
 
 #. Translators: %1$s = plugin name(s), %2$s = opening <a> tag, %3$s = closing
@@ -325,10 +326,10 @@ msgid_plural ""
 "You are using %1$s to convert images to WebP. WP Rocket will create separate"
 " cache files to serve your WebP images. %2$sMore info%3$s"
 msgstr[0] ""
-"Käytät palvelua %1$s kuvien muuntamiseen WebP-muotoon. WP Rocket luo "
+"Käytät lisäosaa %1$s kuvien muuntamiseen WebP-muotoon. WP Rocket luo "
 "erilliset välimuistitiedostot tarjotakseen WebP-kuvasi. %2$sLisätietoja%3$s"
 msgstr[1] ""
-"Käytät palvelua %1$s kuvien muuntamiseen WebP-muotoon. WP Rocket luo "
+"Käytät lisäosia %1$s kuvien muuntamiseen WebP-muotoon. WP Rocket luo "
 "erilliset välimuistitiedostot tarjotakseen WebP-kuvasi. %2$sLisätietoja%3$s"
 
 #. Translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
@@ -339,10 +340,10 @@ msgid ""
 "another supported plugin. %1$sMore info%2$s %4$s If you are not using WebP "
 "do not enable this option."
 msgstr ""
-"%5$sEmme havainneet yhtään yhteensopivaa WebP-lisäosaa!%6$s%4$sJos sinulla "
-"ei jo ole WebP-kuvia sivustollasi, harkitse%3$sImagifyn%2$s tai jonkin muun "
-"tuetun lisäosan käyttämistä. %1$sLisätietoja%2$s%4$sJos et käytä WebP-kuvia,"
-" älä ota tätä asetusta käyttöön."
+"%5$sEmme havainneet yhtään yhteensopivaa WebP-lisäosaa!%6$s%4$s Jos sinulla "
+"ei jo ole WebP-kuvia sivustollasi, harkitse %3$sImagifyn%2$s tai jonkin muun"
+" tuetun lisäosan käyttämistä. %1$sLisätietoja%2$s%4$s Jos et käytä WebP-"
+"kuvia, älä ota tätä asetusta käyttöön."
 
 #: inc/Addon/WebP/AdminSubscriber.php:185
 msgid "WP Rocket will create separate cache files to serve your WebP images."
@@ -380,11 +381,11 @@ msgstr "Asetusten tuonti epäonnistui: ei ladattua tiedostoa."
 
 #: inc/admin/admin.php:416
 msgid "Settings import failed: incorrect filename."
-msgstr "Asetusten tuonti epäonnistui: epäkelpo tiedostonimi."
+msgstr "Asetusten tuonti epäonnistui: virheellinen tiedostonimi."
 
 #: inc/admin/admin.php:427
 msgid "Settings import failed: incorrect filetype."
-msgstr "Asetusten tuonti epäonnistui: epäkelpo tiedostotyyppi."
+msgstr "Asetusten tuonti epäonnistui: väärä tiedostotyyppi."
 
 #: inc/admin/admin.php:437
 msgid "Settings import failed: "
@@ -392,7 +393,7 @@ msgstr "Asetusten tuonti epäonnistui:"
 
 #: inc/admin/admin.php:453
 msgid "Settings import failed: unexpected file content."
-msgstr "Asetusten tuonti epäonnistui: epäkelpo tiedostosisältö."
+msgstr "Asetusten tuonti epäonnistui: tiedoston sisältö ei kelpaa."
 
 #: inc/admin/admin.php:498
 msgid "Settings imported and saved."
@@ -400,7 +401,7 @@ msgstr "Asetukset tuotu ja tallennettu."
 
 #: inc/admin/options.php:102 inc/Engine/Admin/Settings/Page.php:549
 msgid "Excluded CSS Files"
-msgstr "Poissuljetut CSS -tiedostot"
+msgstr "Poissuljetut CSS-tiedostot"
 
 #: inc/admin/options.php:103 inc/Engine/Admin/Settings/Page.php:697
 msgid "Excluded Inline JavaScript"
@@ -410,7 +411,7 @@ msgstr "Sulje pois inline-JavaScript"
 #: inc/Engine/Admin/Settings/Page.php:748
 #: inc/Engine/Admin/Settings/Page.php:798
 msgid "Excluded JavaScript Files"
-msgstr "Pois suljetut JavaScript -tiedostot"
+msgstr "Poissuljetut JavaScript-tiedostot"
 
 #: inc/admin/options.php:105
 msgid "Defer JavaScript Files"
@@ -418,15 +419,15 @@ msgstr "Lykkää JavaScript-tiedostot"
 
 #: inc/admin/options.php:106
 msgid "Excluded Delay JavaScript Files"
-msgstr "Poissuljetut Lykkää JavaScript-tiedostot"
+msgstr "Poissuljetut Lykkää JavaScript -tiedostot"
 
 #: inc/admin/options.php:107 inc/Engine/Admin/Settings/Page.php:1243
 msgid "Never Cache URL(s)"
-msgstr "Välimuistista pois suljettavat URL-osoitteet"
+msgstr "Välimuistista poissuljettavat URL-osoitteet"
 
 #: inc/admin/options.php:108 inc/Engine/Admin/Settings/Page.php:1257
 msgid "Never Cache User Agent(s)"
-msgstr "Välimuistista pois suljettavat selain-agentit"
+msgstr "Välimuistista poissuljettavat käyttäjäagentit"
 
 #: inc/admin/options.php:109 inc/Engine/Admin/Settings/Page.php:1263
 msgid "Always Purge URL(s)"
@@ -434,7 +435,7 @@ msgstr "Tyhjennä aina välimuisti -osoitteet"
 
 #: inc/admin/options.php:110 inc/Engine/Admin/Settings/Page.php:1544
 msgid "Exclude files from CDN"
-msgstr "Sulje pois CDN:stä"
+msgstr "Poissulje tiedostot CDN:stä"
 
 #. translators: 1 and 2 can be anything.
 #: inc/admin/options.php:131
@@ -461,9 +462,10 @@ msgid ""
 "<strong>%1$s</strong> has not been deactivated due to missing writing permissions.<br>\n"
 "Make <strong>%2$s</strong> writeable and retry deactivation, or force deactivation now:"
 msgstr ""
-"<strong>%1$s</strong> ei ole aktivoitu riittämättömien kirjoitusoikeuksien "
-"vuoksi.<br>Tee <strong>%2$s</strong> kirjoitettavaksi ja yritä deaktivointia"
-" uudelleen, tai pakota deaktivointi nyt:"
+"Lisäosaa <strong>%1$s</strong> ei ole poistettu käytöstä riittämättömien "
+"kirjoitusoikeuksien vuoksi.<br>Aseta tiedosto <strong>%2$s</strong> "
+"kirjoitettavaksi ja yritä poistaa lisäosa käytöstä uudelleen, tai pakota "
+"käytöstä poistaminen nyt:"
 
 #. translators: %s is WP Rocket plugin name.
 #: inc/admin/ui/notices.php:97
@@ -472,7 +474,7 @@ msgid ""
 "clear the cache if they affect the front end of your site."
 msgstr ""
 "<strong>%s</strong>: Yksi tai useampi lisäosa on otettu käyttöön tai "
-"postettu käytöstä. Tyhjennä välimuisti mikäli ne vaikuttavat sivustosi "
+"poistettu käytöstä. Tyhjennä välimuisti jos ne vaikuttavat sivustosi "
 "ulkoasuun."
 
 #. translators: %s is WP Rocket plugin name.
@@ -482,11 +484,11 @@ msgid ""
 "plugin and may cause unexpected results:"
 msgstr ""
 "<strong>%s</strong>: Seuraavat lisäosat eivät ole yhteensopivia tämän "
-"lisäosan kanssa ja saattavat aiheuttaa erikoisia tilanteita:"
+"lisäosan kanssa ja saattavat aiheuttaa ongelmia:"
 
 #: inc/admin/ui/notices.php:147
 msgid "Deactivate"
-msgstr "Ota pois käytöstä"
+msgstr "Poista käytöstä"
 
 #: inc/admin/ui/notices.php:189
 msgid ""
@@ -494,8 +496,8 @@ msgid ""
 "WP Rocket from working correctly. Please deactivate it if you have problems."
 msgstr ""
 "WP Rocket Footer JS ei ole virallinen lisäosa. Se estää joitakin WP "
-"Rocket:in ominaisuuksia toimimasta oikein. Ole hyvä ja poista se käytöstä "
-"mikäli törmäät ongelmiin."
+"Rocket:in ominaisuuksia toimimasta oikein. Poista se käytöstä, jos se "
+"aiheuttaa ongelmia."
 
 #. translators: %1$s = opening link tag, %2$s = closing link tag.
 #: inc/admin/ui/notices.php:229
@@ -505,8 +507,8 @@ msgid ""
 "%1$sSettings > General%2$s page to prevent any issues."
 msgstr ""
 "Endurance Cache on tällä hetkellä käytössä, mikä aiheuttaa ristiriidan WP "
-"Rocket -välimuistin kanssa. Aseta Endurance Cachen tasoksi 0 (Pois päältä) "
-"sivulla %1$sAsetukset > Yleiset%2$s välttääksesi mahdolliset ongelmat."
+"Rocket -välimuistin kanssa. Aseta Endurance Cachen tasoksi Pois päältä (Taso"
+" 0) sivulla %1$sAsetukset > Yleiset%2$s välttääksesi mahdolliset ongelmat."
 
 #. translators: %1$s WP Rocket plugin name; %2$s = opening link; %3$s =
 #. closing link
@@ -515,8 +517,8 @@ msgid ""
 "%1$s: A custom permalink structure is required for the plugin to work "
 "properly. %2$sGo to permalinks settings%3$s"
 msgstr ""
-"%1$s: Mukautettu osoiterakenne on pakollinen, jotta tämä lisäosa toimisi "
-"oikein. %2$sMene osoiterakenteen asetuksiin %3$s"
+"%1$s: Mukautettu permalink-rakenne on pakollinen, jotta tämä lisäosa toimisi"
+" oikein. %2$sMene permalink-asetuksiin %3$s"
 
 #. translators: %s = plugin name.
 #: inc/admin/ui/notices.php:297
@@ -529,7 +531,8 @@ msgstr ""
 #: inc/admin/ui/notices.php:303 inc/admin/ui/notices.php:788
 msgid "Troubleshoot: %1$sHow to make system files writeable%2$s"
 msgstr ""
-"Vianetsintä: %1$sKuinka antaa järjestelmän tiedostoille kirjoitusoikeus %2$s"
+"Ongelmanratkaisu: %1$sKuinka antaa järjestelmän tiedostoille kirjoitusoikeus"
+" %2$s"
 
 #. translators: Documentation exists in EN, DE, FR, ES, IT; use loaclised URL
 #. if applicable
@@ -563,7 +566,7 @@ msgid ""
 "%1$s is good to go! %2$sTest your load time%4$s, or visit your "
 "%3$ssettings%4$s."
 msgstr ""
-"%1$s on käyttövalmisvalmis! %2$sTestaa sivusilatausaika %4$s, tai tsekkaa "
+"%1$s on valmis käytettäväksi! %2$sTestaa sivuston latausaika%4$s, tai katso "
 "%3$s asetukset %4$s."
 
 #: inc/admin/ui/notices.php:499
@@ -591,10 +594,10 @@ msgid ""
 "addresses (except for license validation), IP addresses, or third-party API "
 "keys."
 msgstr ""
-"Alla näet yksityiskohtaisesti kaiken datan jota WP Rocket kerää mikäli "
-"sallit sen. WP Rocket ei koskaan siirrä domainin nimitietoja, "
-"sähköpostiosoitteita (paitsi lisenssin vahvistuksen yhteydessä), IP-"
-"osoitteita, tai kolmannen osapuolen API-avaimia."
+"Alla näet kaiken datan, jota WP Rocket kerää, jos sallit sen. WP Rocket ei "
+"koskaan siirrä verkkotunnuksia, sähköpostiosoitteita (paitsi lisenssin "
+"vahvistuksen yhteydessä), IP-osoitteita, tai kolmannen osapuolen API-"
+"avaimia."
 
 #. translators: button text for data collection opt-in
 #: inc/admin/ui/notices.php:520
@@ -612,7 +615,7 @@ msgstr "Kiitos!"
 
 #: inc/admin/ui/notices.php:567
 msgid "WP Rocket now collects these metrics from your website:"
-msgstr "WP Rocket kerää nyt seuraavat tiedot verkkosivustasi:"
+msgstr "WP Rocket kerää nyt seuraavia tietoja sivustoltasi:"
 
 #. translators: %s = plugin name.
 #: inc/admin/ui/notices.php:605
@@ -622,7 +625,7 @@ msgstr "%s: Välimuisti tyhjennetty."
 #. translators: %s = plugin name.
 #: inc/admin/ui/notices.php:612
 msgid "%s: Post cache cleared."
-msgstr "%s: Postauksen välimuisti tyhjennetty."
+msgstr "%s: Artikkelin välimuisti tyhjennetty."
 
 #. translators: %s = plugin name.
 #: inc/admin/ui/notices.php:619
@@ -660,16 +663,17 @@ msgstr "Ota käyttöön \"Erilliset välimuistitiedostot mobiililaitteille\" nyt
 
 #: inc/admin/ui/notices.php:715
 msgid "Force deactivation "
-msgstr "Pakota deaktivointi"
+msgstr "Pakota käytöstä poistaminen"
 
 #: inc/admin/ui/notices.php:745
 msgid "The following code should have been written to this file:"
-msgstr "Alla olevan koodin olisi pitänyt päätyä tähän tiedostoon:"
+msgstr ""
+"Alla olevan koodin olisi pitänyt tulla kirjoitetuksi tähän tiedostoon:"
 
 #. translators: %s = plugin name.
 #: inc/admin/ui/notices.php:776
 msgid "%s cannot configure itself due to missing writing permissions."
-msgstr "%s konfigurointi ei onnistunut puuttuvien kirjoitusoikeuksien vuoksi."
+msgstr "%s ei voi tehdä määrityksiä puuttuvien kirjoitusoikeuksien vuoksi."
 
 #. translators: %s = file/folder name
 #: inc/admin/ui/notices.php:782
@@ -678,12 +682,12 @@ msgstr "Tiedosto/kansio: %s"
 
 #: inc/classes/admin/class-logs.php:124
 msgid "The debug file could not be deleted."
-msgstr "Debug -tiedostoa ei voitu poistaa."
+msgstr "Debug-tiedostoa ei voitu poistaa."
 
 #. Translators: %1$s = Plugin name, %2$s = Plugin version.
 #: inc/classes/class-wp-rocket-requirements-check.php:147
 msgid "To function properly, %1$s %2$s requires at least:"
-msgstr "Jotta tämä toimisi, %1$s %2$s vaatii vähintään:"
+msgstr "Toimiakseen oikein %1$s %2$s vaatii vähintään:"
 
 #. Translators: %1$s = PHP version required.
 #: inc/classes/class-wp-rocket-requirements-check.php:151
@@ -691,8 +695,9 @@ msgid ""
 "PHP %1$s. To use this WP Rocket version, please ask your web host how to "
 "upgrade your server to PHP %1$s or higher."
 msgstr ""
-"PHP %1$s. Käyttääksesi tätä WP Rocket:in versiota, pyydä web-hostaajaasi "
-"päivittämään palvelimesi PHP-versio PHP %1$s tai uudempaan."
+"PHP %1$s. Jotta voit käyttää tätä WP Rocket -versiota, pyydä hosting-"
+"palveluntarjoajaasi päivittämään palvelimesi PHP-versioksi PHP %1$s tai "
+"uudempi."
 
 #. Translators: %1$s = WordPress version required.
 #: inc/classes/class-wp-rocket-requirements-check.php:156
@@ -700,22 +705,22 @@ msgid ""
 "WordPress %1$s. To use this WP Rocket version, please upgrade WordPress to "
 "version %1$s or higher."
 msgstr ""
-"WordPress %1$s. Käyttääksesi tätä WP Rocket:in versiota, ole hyvä ja päivitä"
-" WordPress vähintään versioon %1$s."
+"WordPress %1$s. Käyttääksesi tätä WP Rocket -versiota päivitä WordPress "
+"vähintään versioon %1$s."
 
 #: inc/classes/class-wp-rocket-requirements-check.php:159
 msgid ""
 "If you are not able to upgrade, you can rollback to the previous version by "
 "using the button below."
 msgstr ""
-"Päivitys ei ole sallittu sinulle. Voit palata edelliseen versioon alla "
-"olevasta painikkeesta."
+"Jos et voi päivittää, voit palata edelliseen versioon alla olevasta "
+"painikkeesta."
 
 #. Translators: %s = Previous plugin version.
 #: inc/classes/class-wp-rocket-requirements-check.php:161
 #: inc/deprecated/deprecated.php:1947
 msgid "Re-install version %s"
-msgstr "Uudelleenasenna versio %s"
+msgstr "Uudelleen asenna versio %s"
 
 #. translators: %s is the plugin name.
 #: inc/classes/class-wp-rocket-requirements-check.php:203
@@ -733,9 +738,9 @@ msgid ""
 msgid_plural ""
 "Failed to detect the following requirements in your theme: closing %1$s."
 msgstr[0] ""
-"Seuraavan vaatimusten havaitseminen teemassasi epäonnistui: closing %1$s."
+"Seuraavan vaatimusten havaitseminen teemassasi epäonnistui: sulkeva %1$s."
 msgstr[1] ""
-"Seuraavien vaatimusten havaitseminen teemassasi epäonnistui: closing %1$s."
+"Seuraavien vaatimusten havaitseminen teemassasi epäonnistui: sulkeva %1$s."
 
 #. translators: Documentation exists in EN, FR; use localized URL if
 #. applicable.
@@ -761,15 +766,15 @@ msgstr "Kaikki kielet"
 
 #: inc/common/admin-bar.php:178
 msgid "Clear this post"
-msgstr "Tyhjennä tämä sivu"
+msgstr "Puhdista tämä artikkeli"
 
 #: inc/common/admin-bar.php:192
 msgid "Purge this URL"
-msgstr "Tyhjennä tämä osoite"
+msgstr "Puhdista tämä osoite"
 
 #: inc/common/admin-bar.php:212
 msgid "Purge Sucuri cache"
-msgstr "Tyhjennä Sucuri-välimuisti"
+msgstr "Puhdista Sucuri-välimuisti"
 
 #: inc/common/admin-bar.php:236 views/settings/fields/rocket-cdn.php:55
 msgid "Purge RocketCDN cache"
@@ -789,7 +794,7 @@ msgstr "Asenna"
 
 #: inc/Dependencies/WPMedia/PluginFamily/Model/PluginFamily.php:118
 msgid "Get it Now"
-msgstr "Hanki se nyt"
+msgstr "Tilaa nyt"
 
 #: inc/Dependencies/WPMedia/PluginFamily/Model/PluginFamily.php:127
 msgid "Activate"
@@ -809,8 +814,9 @@ msgid ""
 " your Google PageSpeed score. Get more traffic, better engagement, and "
 "higher conversions effortlessly."
 msgstr ""
-"WP Rocket on helpoin tapa nopeuttaa WordPress-sivustoasi ja parantaa Google "
-"PageSpeed -pisteitä. Enemmän liikennettä ja parempi konversio helposti."
+"WP Rocket on helpoin tapa nopeuttaa WordPress-sivustoa ja parantaa sen "
+"Google PageSpeed -pisteitä. Enemmän liikennettä ja parempi konversio "
+"helposti."
 
 #: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:24
 msgid "Speed Up Your Website With Lighter Images"
@@ -823,8 +829,8 @@ msgid ""
 "resize and optimize with just one click!"
 msgstr ""
 "Imagify on helppokäyttöisin WordPress-lisäosa kuvien optimointiin. Se pakkaa"
-" kuvat automaattisesti pienemmiksi, muuntaa ne WebP- ja AVIF-muotoihin ja "
-"antaa sinun muuttaa niiden kokoa ja optimoida ne vain yhdellä klikkauksella!"
+" kuvat automaattisesti pienemmiksi ja muuntaa ne WebP- ja AVIF-muotoihin, ja"
+" voit muuttaa niiden kokoa sekä optimoida ne vain yhdellä klikkauksella!"
 
 #: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:31
 msgid "Boost Traffic"
@@ -845,7 +851,7 @@ msgstr ""
 
 #: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:45
 msgid "Protect & Secure"
-msgstr "Parempi tietoturva"
+msgstr "Paranna tietoturvaa"
 
 #: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:52
 msgid "The Easiest Way to Protect Your Website"
@@ -858,8 +864,8 @@ msgid ""
 "restore with just a few clicks!"
 msgstr ""
 "BackWPup on kattavin ja käyttäjäystävällisin Varmuuskopiointi-lisäosa "
-"WordPressille. Aikatauluta automaattiset varmuuskopioinnit helposti, säilytä"
-" niitä turvallisesti ja palauta niitä vain muutamalla klikkauksella!"
+"WordPressille. Aikatauluta automaattiset varmuuskopiot helposti, säilytä "
+"niitä turvallisesti ja palauta ne vain muutamalla klikkauksella!"
 
 #: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:61
 msgid "GDPR/CCPA Cookie Consent Banner"
@@ -881,15 +887,15 @@ msgstr "Aktivoi Imagify"
 
 #: inc/deprecated/3.2.php:52
 msgid "Install Imagify for Free"
-msgstr "Asenna ilmainen Imagify"
+msgstr "Asenna Imagify ilmaiseksi"
 
 #: inc/deprecated/3.2.php:67
 msgid ""
 "Speed up your website and boost your SEO by reducing image file sizes "
 "without losing quality with Imagify."
 msgstr ""
-"Nopeuta sivustoasi ja paranna SEO-tuloksiasi pienemtämällä kuviesi kokoa "
-"tinkimättä laadusta Imagifyn avulla."
+"Nopeuta sivustoasi ja paranna SEO-tuloksiasi pienentämällä kuvien kokoa "
+"laadusta tinkimättä Imagifyn avulla."
 
 #: inc/deprecated/3.2.php:72
 msgid "More details"
@@ -898,7 +904,7 @@ msgstr "Lisätietoja"
 #. translators: %d is the number of pages preloaded.
 #: inc/deprecated/3.2.php:228
 msgid "Sitemap preload: %d pages have been cached."
-msgstr "Sivukartan esilataus: %d sivua on välimuistissa."
+msgstr "Sivukartan esilataus: %d sivua on tallennettu välimuistiin."
 
 #. translators: %d = Number of pages preloaded.
 #: inc/deprecated/3.2.php:261
@@ -906,8 +912,8 @@ msgid ""
 "Sitemap preload: %d uncached pages have now been preloaded. (refresh to see "
 "progress)"
 msgstr ""
-"Sivukartan esilataus: %d sivua on nyt esiladattu. (päivitä sivua nähdäksesi "
-"etenemisen)"
+"Sivukartan esilataus: %d sivua on nyt esiladattu. (päivitä sivu nähdäksesi "
+"tilanteen)"
 
 #. translators: %s is an URL.
 #: inc/deprecated/3.3.php:761 inc/deprecated/3.3.php:770
@@ -917,8 +923,8 @@ msgid ""
 "this server&#8217;s configuration. If you continue to have problems, <a "
 "href=\"%s\">contact support</a>."
 msgstr ""
-"Odottamaton virhe. Vika voi olla joko WP-Rocket.me:n päässä tai tämän "
-"palvelimen asetuksissa. Jos ongelmat jatkuvat, <a href=\"%s\">ota yhteys "
+"Odottamaton virhe. Virheen syy voi olla joko WP-Rocket.me tai tämän "
+"palvelimen asetukset. Jos ongelma jatkuu, <a href=\"%s\">ota yhteyttä "
 "tukeen</a>."
 
 #: inc/deprecated/3.4.php:18
@@ -927,7 +933,7 @@ msgstr "Valitse verkkotunnus listalta"
 
 #: inc/deprecated/3.4.php:31
 msgid "No domain available in your Cloudflare account"
-msgstr "Cloudflare -tililtäsi ei löytynyt yhtään verkkotunnusta"
+msgstr "Cloudflare-tililtäsi ei löytynyt yhtään verkkotunnusta"
 
 #: inc/deprecated/3.5.php:71 inc/deprecated/3.5.php:195
 msgid ""
@@ -943,7 +949,7 @@ msgid ""
 "Cloudflare email, API key and Zone ID are not set. Read the "
 "%1$sdocumentation%2$s for further guidance."
 msgstr ""
-"Cloudflare-sähköposti, -API-avain ja Zone ID ovat määrittämättä. Lue "
+"Cloudflare-sähköposti, API-avain ja Zone ID ovat määrittämättä. Lue "
 "%1$sdokumentaatio%2$s saadaksesi lisätietoja."
 
 #. translators: %1$s = opening link; %2$s = closing link
@@ -957,7 +963,7 @@ msgstr ""
 
 #: inc/deprecated/3.5.php:271
 msgid "Connection to Cloudflare failed"
-msgstr "Yhteys Cloudflareen epäonnistui"
+msgstr "Yhteyden muodostaminen Cloudflareen epäonnistui"
 
 #. translators: %s = CloudFare API return message.
 #: inc/deprecated/3.5.php:587
@@ -1013,14 +1019,13 @@ msgid ""
 "We automatically detected the sitemap generated by the %s plugin. You can "
 "check the option to preload it."
 msgstr ""
-"Havaitsimme sivukartan, jonka on generoinut %s -lisäosa. Voit valita tämän "
-"option esiladataksesi sen."
+"Havaitsimme automaattisesti lisäosan %s generoiman sivukartan. Voit valita "
+"tämän vaihtoehdon esiladataksesi sen."
 
 #. translators: 1 and 3 are link openings, 2 is a link closing.
 #: inc/deprecated/3.11.php:279 inc/Engine/Plugin/UpdaterSubscriber.php:514
 msgid "%1$sReturn to WP Rocket%2$s or %3$sgo to Plugins page%2$s"
-msgstr ""
-"%1$s Palataksesi WP Rocket %2$s tai %3$s, siirry lisäosat-sivulle %2$s"
+msgstr "%1$s Palaa WP Rocketiin %2$s tai %3$s, siirry Lisäosat-sivulle %2$s"
 
 #: inc/deprecated/3.12.php:56
 msgid "All in One SEO XML sitemap"
@@ -1053,11 +1058,11 @@ msgstr "WP Rocket -asetukset"
 
 #: inc/deprecated/3.15.php:57 views/metaboxes/post_edit_options.php:19
 msgid "Never cache this page"
-msgstr "Ei välimuistia tälle sivulle"
+msgstr "Älä tallenna tätä sivua koskaan välimuistiin"
 
 #: inc/deprecated/3.15.php:61 views/metaboxes/post_edit_options.php:23
 msgid "Activate these options on this post:"
-msgstr "Aktivoi nämä asetukset tälle postaukselle:"
+msgstr "Aktivoi nämä asetukset tälle artikkelille:"
 
 #. translators: %s is the name of the option.
 #: inc/deprecated/3.15.php:81
@@ -1071,16 +1076,16 @@ msgid ""
 "%1$sNote:%2$s None of these options will be applied if this post has been "
 "excluded from cache in the global cache settings."
 msgstr ""
-"%1$sHuomio: %2$s Mikään näistä asetuksista ei pure, mikäli tämä postaus on "
-"suljettu pois välimuistista yleisissä välimuistin asetuksissa."
+"%1$sHuomaa: %2$s Mitään näistä asetuksista ei käytetä, mikäli tämä artikkeli"
+" on suljettu pois välimuistista yleisissä välimuistin asetuksissa."
 
 #: inc/deprecated/deprecated.php:240
 msgid "<strong>JS</strong> files with Deferred Loading JavaScript"
-msgstr "<strong>JS</strong> -tiedostot jotka on puskuroitu"
+msgstr "<strong>JS</strong> -tiedostot, joilla on lykätty JavaScriptin lataus"
 
 #: inc/deprecated/deprecated.php:293
 msgid "Add URL"
-msgstr "Lisää osoite"
+msgstr "Lisää URL-osoite"
 
 #: inc/deprecated/deprecated.php:1245
 #: inc/Engine/Admin/Settings/Settings.php:453
@@ -1092,13 +1097,13 @@ msgid ""
 "Before you can upload your import file, you will need to fix the following "
 "error:"
 msgstr ""
-"Ennen kuin voit tallentaa tuontitiedoston, sinun pitää korjata seuraavat "
-"virheet:"
+"Ennen kuin voit tallentaa tuontitiedoston, sinun on korjattava seuraava "
+"virhe:"
 
 #. translators: %s is the maximum upload size set on the current server.
 #: inc/deprecated/deprecated.php:1288 views/settings/fields/import-form.php:35
 msgid "Choose a file from your computer (maximum size: %s)"
-msgstr "Valitse tiedosto koneeltasi (maksimi tiedostokoko: %s)"
+msgstr "Valitse tiedosto koneeltasi (tiedoston enimmäiskoko: %s)"
 
 #: inc/deprecated/deprecated.php:1294 inc/Engine/Admin/Settings/Render.php:499
 msgid "Upload file and import settings"
@@ -1147,13 +1152,13 @@ msgstr "Latausasetukset"
 
 #: inc/deprecated/deprecated.php:1531
 msgid "Replace site's hostname with:"
-msgstr "Korvaa sivuston osoite:"
+msgstr "Korvaa sivuston palvelimen nimi tällä:"
 
 #: inc/deprecated/deprecated.php:1550 inc/deprecated/deprecated.php:1587
 #: inc/deprecated/deprecated.php:1615 views/settings/fields/cnames.php:41
 #: views/settings/fields/cnames.php:75 views/settings/fields/cnames.php:105
 msgid "reserved for"
-msgstr "varattu"
+msgstr "varattu kohteelle"
 
 #: inc/deprecated/deprecated.php:1552 inc/deprecated/deprecated.php:1589
 #: inc/deprecated/deprecated.php:1617 views/settings/fields/cnames.php:44
@@ -1177,7 +1182,7 @@ msgstr "Katso video"
 
 #: inc/deprecated/deprecated.php:1771
 msgid "Basic"
-msgstr "Perus"
+msgstr "Perustaso"
 
 #: inc/deprecated/deprecated.php:1772
 msgid "Static Files"
@@ -1191,7 +1196,7 @@ msgstr "CDN"
 
 #: inc/deprecated/deprecated.php:1774
 msgid "Advanced"
-msgstr "Edistynyt"
+msgstr "Edistyneet"
 
 #: inc/deprecated/deprecated.php:1775 inc/Engine/Admin/Settings/Page.php:1359
 msgid "Database"
@@ -1221,10 +1226,10 @@ msgid ""
 "higher. If you are not able to upgrade, you can rollback to the previous "
 "version by using the button below."
 msgstr ""
-"%1$s%2$s tarvitsee vähintään PHP:n version %3$s toimiakseen. Käyttääksesi "
-"tätä versiota, pyydä palvelimesi ylläpitäjältä ohjeita kuinka saat "
-"päivitettyä PHP:n vähintään versioon %3$s. Jos et pysty päivittämään PHP:ta,"
-" voit palata edelliseen versioon alla olevalla painikkeella."
+"%1$s%2$s tarvitsee vähintään PHP:n version %3$s toimiakseen oikein. "
+"Käyttääksesi tätä versiota, kysy palvelimesi ylläpitäjältä ohjeita kuinka "
+"voit päivittää PHP:n vähintään versioon %3$s. Jos et pysty päivittämään "
+"PHP:ta, voit palata edelliseen versioon alla olevalla painikkeella."
 
 #. translators: 1: PHP class name, 2: version number, 3: replacement class
 #. name.
@@ -1248,7 +1253,7 @@ msgstr ""
 #: inc/deprecated/Engine/Addon/GoogleTracking/Subscriber.php:137
 #: inc/Engine/Admin/Database/Subscriber.php:79
 msgid "weekly"
-msgstr "viikottain"
+msgstr "viikoittain"
 
 #: inc/Engine/Admin/Database/Optimization.php:33
 #: inc/Engine/Admin/Settings/Page.php:1403
@@ -1263,7 +1268,7 @@ msgstr "Automaattiset luonnokset"
 #: inc/Engine/Admin/Database/Optimization.php:35
 #: inc/Engine/Admin/Settings/Page.php:1423
 msgid "Trashed Posts"
-msgstr "Postaukset roskakorissa"
+msgstr "Roskakoriin siirretyt artikkelit"
 
 #: inc/Engine/Admin/Database/Optimization.php:36
 #: inc/Engine/Admin/Settings/Page.php:1433
@@ -1273,7 +1278,7 @@ msgstr "Roskapostikommentit"
 #: inc/Engine/Admin/Database/Optimization.php:37
 #: inc/Engine/Admin/Settings/Page.php:1443
 msgid "Trashed Comments"
-msgstr "Kommentit roskakorissa"
+msgstr "Roskakoriin siirretyt kommentit"
 
 #: inc/Engine/Admin/Database/Optimization.php:38
 msgid "Transients"
@@ -1281,7 +1286,7 @@ msgstr "Transientit"
 
 #: inc/Engine/Admin/Database/Optimization.php:39
 msgid "Tables"
-msgstr "Taulut"
+msgstr "Taulukot"
 
 #: inc/Engine/Admin/Database/Subscriber.php:85
 msgid "monthly"
@@ -1344,7 +1349,7 @@ msgstr "Sähköpostiosoite"
 
 #: inc/Engine/Admin/Settings/Page.php:426
 msgid "Dashboard"
-msgstr "Kojelauta"
+msgstr "Hallintapaneeli"
 
 #: inc/Engine/Admin/Settings/Page.php:427
 msgid "Get help, account info"
@@ -1365,17 +1370,17 @@ msgid ""
 "%1$s Minification is currently activated in <strong>Autoptimize</strong>. If"
 " you want to use %2$s’s minification, disable this option in Autoptimize."
 msgstr ""
-"%1$s Minimointi on tällä hetkellä käytössä ominaisuudessa "
-"<strong>Autoptimize</strong>. Jos haluat käyttää palvelun %2$s minimointia, "
-"ota tämä ominaisuus pois käytöstä Autoptimize-asetuksissa."
+"%1$s Minimointi on tällä hetkellä käytössä lisäosassa "
+"<strong>Autoptimize</strong>. Jos haluat käyttää %2$s minimointia, ota tämä "
+"ominaisuus pois käytöstä Autoptimizen asetuksissa."
 
 #: inc/Engine/Admin/Settings/Page.php:494
 msgid "CSS Files"
-msgstr "CSS -tiedostot"
+msgstr "CSS-tiedostot"
 
 #: inc/Engine/Admin/Settings/Page.php:503
 msgid "JavaScript Files"
-msgstr "JavaScript -tiedostot"
+msgstr "JavaScript-tiedostot"
 
 #. translators: %1$s = type of minification (HTML, CSS or JS), %2$s = “WP
 #. Rocket”.
@@ -1384,8 +1389,9 @@ msgid ""
 "%1$s Minification is currently activated in <strong>Autoptimize</strong>. If"
 " you want to use %2$s’s minification, disable those options in Autoptimize."
 msgstr ""
-"%1$s Kutistus on aktivoitu <strong>Autoptimize</strong>:ssä. Jos haluat "
-"käyttää %2$s -kutistusta, poista kyseiset asetukset Autoptimize:stä."
+"%1$s Minimointi on aktivoitu lisäosassa <strong>Autoptimize</strong>. Jos "
+"haluat käyttää %2$s -minimointia, poista kyseiset asetukset käytöstä "
+"Autoptimizen asetuksissa."
 
 #. translators: %1$s = opening </a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:517
@@ -1414,19 +1420,19 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:534
 msgid "Minify CSS files"
-msgstr "Kutista CSS -tiedostot"
+msgstr "Minimoi CSS-tiedostot"
 
 #: inc/Engine/Admin/Settings/Page.php:535
 msgid "Minify CSS removes whitespace and comments to reduce the file size."
 msgstr ""
-"CSS -tiedstojen kutistaminen poistaa turhat välilyönnit ja kommentit "
+"CSS-tiedostojen minimointi poistaa turhat välilyönnit ja kommentit "
 "pienentääkseen tiedoston kokoa."
 
 #: inc/Engine/Admin/Settings/Page.php:550
 msgid ""
 "Specify URLs of CSS files to be excluded from minification (one per line)."
 msgstr ""
-"Määritä niden CSS-tiedostojen URL-osoitteet, jotka suljetaan pois "
+"Määritä niiden CSS-tiedostojen URL-osoitteet, jotka suljetaan pois "
 "minimonnista (yksi per rivi)."
 
 #: inc/Engine/Admin/Settings/Page.php:551
@@ -1459,10 +1465,10 @@ msgid ""
 "one method can be selected. Remove Unused CSS is recommended for optimal "
 "performance, but limited only to the users with active license."
 msgstr ""
-"Optimoi CSS-toimitus eliminoi renderöinnin estävän CSS:n verkkosivustoltasi."
-" Vain yksi menetelmä voidaan valita. Käyttämättömän CSS:n poistaminen on "
-"suositeltavaa optimaalisen suorituskyvyn saavuttamiseksi, mutta rajoitettu "
-"vain käyttäjille, joilla on aktiivinen lisenssi."
+"”Optimoi CSS-toimitus” eliminoi renderöinnin estävän CSS:n "
+"verkkosivustoltasi. Vain yksi menetelmä voidaan valita. Käyttämättömän CSS:n"
+" poistaminen on suositeltavaa optimaalisen suorituskyvyn saavuttamiseksi, "
+"mutta rajoitettu vain käyttäjille, joilla on aktiivinen lisenssi."
 
 #: inc/Engine/Admin/Settings/Page.php:571
 msgid ""
@@ -1501,7 +1507,7 @@ msgstr ""
 #: inc/Engine/Admin/Settings/Page.php:606
 #: inc/Engine/Admin/Settings/Page.php:690
 msgid "This could break things!"
-msgstr "Tämä saattaa rikkoa asioita!"
+msgstr "Tämä saattaa rikkoa jotakin sivustollasi!"
 
 #: inc/Engine/Admin/Settings/Page.php:607
 #: inc/Engine/Admin/Settings/Page.php:691
@@ -1510,7 +1516,7 @@ msgid ""
 "setting, just deactivate it again, and your site will be back to normal."
 msgstr ""
 "Jos huomaat virheitä sivustollasi tämän asetuksen aktivoinnin jälkeen, "
-"poista tämä asetus käytöstä ja sivustosi toiminta palaa normaaliksi."
+"poista tämä asetus käytöstä, niin sivustosi palautuu ennalleen."
 
 #: inc/Engine/Admin/Settings/Page.php:608
 msgid "Activate Remove Unused CSS"
@@ -1525,8 +1531,8 @@ msgid ""
 "Specify CSS filenames, IDs or classes that should not be removed (one per "
 "line)."
 msgstr ""
-"Määritä CSS-tiedostonimet, IDt tai luokat joita ei pitäisi poistaa (yksi per"
-" rivi)."
+"Määritä CSS-tiedostonimet, IDt tai luokat, joita ei pitäisi poistaa (yksi "
+"per rivi)."
 
 #: inc/Engine/Admin/Settings/Page.php:630
 #: inc/Engine/CriticalPath/Admin/Subscriber.php:201
@@ -1540,9 +1546,9 @@ msgid ""
 "Load CSS asynchronously is currently handled by the %1$s plugin. If you want"
 " to use WP Rocket’s load CSS asynchronously option, disable the %1$s plugin."
 msgstr ""
-"Lataa CSS asynkronisesti tällä hetkellä %1$s-laajennus käsittelee. Jos "
-"haluat käyttää WP Rocketin lataus CSS:n asynkronisesti -vaihtoehtoa, poista "
-"%1$s-laajennus käytöstä."
+"”Lataa CSS asynkronisesti” -ominaisuudesta huolehtii tällä hetkellä %1$s "
+"-lisäosa. Jos haluat käyttää WP Rocketin Lataa CSS asynkronisesti "
+"-ominaisuutta, poista %1$s-lisäosa käytöstä."
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:635
@@ -1562,25 +1568,25 @@ msgid ""
 "Provides a fallback if auto-generated critical path CSS is incomplete. "
 "%1$sMore info%2$s"
 msgstr ""
-"Tarjoaa turvaverkon mikäli automaattisesti luotu kriittinen CSS on "
+"Tarjoaa turvaverkon mikäli automaattisesti luotu kriittinen CSS polku on "
 "virheellinen. %1$sLisätietoja%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:658
 msgid "Minify JavaScript files"
-msgstr "Kutista JavaScript -tiedostot"
+msgstr "Minimoi JavaScript-tiedostot"
 
 #: inc/Engine/Admin/Settings/Page.php:659
 msgid ""
 "Minify JavaScript removes whitespace and comments to reduce the file size."
 msgstr ""
-"JavaScript -tiedostojen kutistaminen poistaa turhat välilyönnit ja kommentit"
-" pienentääkseen tiedoston kokoa."
+"JavaScript-tiedostojen minimoiminen poistaa turhat välilyönnit ja kommentit "
+"pienentääkseen tiedoston kokoa."
 
 #: inc/Engine/Admin/Settings/Page.php:673
 msgid ""
 "Combine JavaScript files <em>(Enable Minify JavaScript files to select)</em>"
 msgstr ""
-"Yhdistä JavaScript -tiedstot <em>(salli JavaScript:in kutistaminen "
+"Yhdistä JavaScript-tiedostot <em>(salli JavaScriptin minimoiminen "
 "ensin)</em>"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
@@ -1590,9 +1596,9 @@ msgid ""
 " JS reducing HTTP requests. Not recommended if your site uses HTTP/2. "
 "%1$sMore info%2$s"
 msgstr ""
-"JavaScript:in yhdistäminen yhdistää sivustosi sisäiset, ulkoiset ja inline-"
-"JavaScript -koodit yhteen vähentäen HTTP-pyyntöjä. Ei suositeltavaa jos "
-"käytössäsi on HTTP/2. %1$sLisätietoja%2$s"
+"JavaScriptin yhdistäminen yhdistää sivustosi sisäiset, ulkoiset ja inline-"
+"JavaScript-koodit vähentäen HTTP-pyyntöjä. Ei suositella, jos sivustosi "
+"käytössä on HTTP/2. %1$sLisätietoja%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:676
 msgid ""
@@ -1600,11 +1606,11 @@ msgid ""
 "javascript execution is enabled."
 msgstr ""
 "Yhteensopivuuden ja parhaiden tulosten vuoksi tämä vaihtoehto on poistettu "
-"käytöstä, kun JavaScript-suorituksen viive on käytössä."
+"käytöstä, kun JavaScript-suorituksen lykkäys on käytössä."
 
 #: inc/Engine/Admin/Settings/Page.php:692
 msgid "Activate combine JavaScript"
-msgstr "Aktivoi JavaScript:in yhdistäminen"
+msgstr "Aktivoi JavaScriptin yhdistäminen"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:699
@@ -1612,16 +1618,16 @@ msgid ""
 "Specify patterns of inline JavaScript to be excluded from concatenation (one"
 " per line). %1$sMore info%2$s"
 msgstr ""
-"Määritä sopivat kaaviot inline-JavaScriptille, jonka haluat sulkea pois "
-"yhdistämisestä (yksi per rivi). %1$sLisätietoa%2$s"
+"Määritä inline-JavaScriptin patternit, jonka haluat sulkea pois "
+"yhdistämisestä (yksi per rivi). %1$sLisätietoja%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:716
 msgid ""
 "Specify URLs of JavaScript files to be excluded from minification and "
 "concatenation (one per line)."
 msgstr ""
-"Määritä verkko-osoitteet pois suljettaville JavaScript -tiedostoille, joita "
-"et halua mukaan kutistukseen ja yhdistämiseen (yksi per rivi)."
+"Määritä URL-osoitteet pois suljettaville JavaScript -tiedostoille, joita et "
+"halua mukaan minimointiin ja yhdistämiseen (yksi per rivi)."
 
 #: inc/Engine/Admin/Settings/Page.php:717
 msgid ""
@@ -1629,9 +1635,9 @@ msgid ""
 "automatically. Use (.*).js wildcards to exclude all JS files located at a "
 "specific path."
 msgstr ""
-"<strong>Sisäiset:</strong> Verkko-osoitteen domain-osuus osoitteesta "
-"jätetään automaattisesti pois. Käytä (.*).js -jokerimerkkiä sulkeaksesi pois"
-" kaikki JS-tiedostot tietystä kansiosta."
+"<strong>Sisäiset:</strong> URL-osoitteen verkkotunnus-osuus jätetään "
+"automaattisesti pois osoitteesta. Käytä (.*).js -jokerimerkkiä sulkeaksesi "
+"pois kaikki JS-tiedostot tietystä kansiosta."
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:719
@@ -1639,13 +1645,14 @@ msgid ""
 "<strong>3rd Party:</strong> Use either the full URL path or only the domain "
 "name, to exclude external JS. %1$sMore info%2$s"
 msgstr ""
-"<strong>Ulkoiset:</strong> Anna joko kokonainen URL, tai pelkkä domain-nimi "
-"sulkeaksesi pois ulkoiset JS-tiedostot. %1$sLisätietoa%2$s"
+"<strong>Ulkoiset:</strong> Anna joko kokonainen URL tai pelkkä "
+"verkkotunnuksen nimi sulkeaksesi pois ulkoiset JS-tiedostot. "
+"%1$sLisätietoja%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:735
 #: inc/Engine/Optimization/DeferJS/AdminSubscriber.php:76
 msgid "Load JavaScript deferred"
-msgstr "Lataa JavaScript puskuroidusti"
+msgstr "Lataa JavaScript lykätysti"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:737
@@ -1653,8 +1660,8 @@ msgid ""
 "Load JavaScript deferred eliminates render-blocking JS on your site and can "
 "improve load time. %1$sMore info%2$s"
 msgstr ""
-"JavaScript:in lataaminen puskuroidusti poistaa renderöinnin estävän JS:n "
-"lataamisen ja voi parantaa sivusi latausaikaa. %1$sLisätietoa%2$s"
+"JavaScriptin lataaminen lykätysti poistaa renderöinnin estävän JS:n "
+"lataamisen ja voi parantaa latausaikaa. %1$sLisätietoja%2$s"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:750
@@ -1677,7 +1684,8 @@ msgid ""
 "interaction (e.g. scroll, click). %1$sMore info%2$s"
 msgstr ""
 "Parantaa suorituskykyä lykkäämällä JavaScript-tiedostojen lataamista kunnes "
-"käyttäjä suorittaa toiminnon (esim. srollaus, klikkaus). %1$sLisätietoja%2$s"
+"käyttäjä suorittaa toiminnon (esim. skrollaus, klikkaus). "
+"%1$sLisätietoja%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:777
 msgid "One-click exclusions"
@@ -1688,8 +1696,8 @@ msgid ""
 "When using the Delay JavaScript feature, you might notice that some elements"
 " in the viewport take time to appear."
 msgstr ""
-"Kun käytät Delay JavaScript -ominaisuutta, saatat huomata, että joidenkin "
-"elementtien näkyminen näkymässä kestää jonkin aikaa."
+"Kun käytät Lykkää JavaScript -ominaisuutta, saatat huomata, että joidenkin "
+"elementtien näkyviin tuleminen voi kestää jonkin aikaa."
 
 #: inc/Engine/Admin/Settings/Page.php:779
 msgid ""
@@ -1697,8 +1705,8 @@ msgid ""
 "themes, or services below to ensure they appear without delay."
 msgstr ""
 "Jos haluat, että nämä elementit latautuvat välittömästi, valitse niihin "
-"liittyvät laajennukset, teemat tai palvelut alta varmistaaksesi, että ne "
-"tulevat näkyviin viipymättä."
+"liittyvät lisäosat, teemat tai palvelut alta varmistaaksesi, että ne tulevat"
+" näkyviin viipymättä."
 
 #: inc/Engine/Admin/Settings/Page.php:799
 msgid ""
@@ -1706,12 +1714,12 @@ msgid ""
 "excluded from delaying execution (one per line)."
 msgstr ""
 "Määritä URL-osoitteet tai avainsanat, jotka voivat tunnistaa sisäisiä tai "
-"JavaScript-tiedostoja, jotka suljetaan pois viivästyttävistä suorituksista "
-"(yksi per rivi)."
+"JavaScript-tiedostoja, jotka suljetaan pois lykätyistä suorituksista (yksi "
+"per rivi)."
 
 #: inc/Engine/Admin/Settings/Page.php:813
 msgid "Safe Mode for Delay JavaScript Execution"
-msgstr "Vikasietotila viivästyttää JavaScript-suoritusta"
+msgstr "Safe Mode Lykätylle JavaScriptin suorittamiselle"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:815
@@ -1731,7 +1739,7 @@ msgid ""
 msgstr ""
 "Ottamalla käyttöön Sade Mode -tilan heikennät huomattavasti parannuksia "
 "sivustosi suorituskyvyssä. Suosittelemme käyttämään sitä vain tilapäisenä "
-"ratkaisuna. Jos Delay JavaScript -ominaisuus aiheuttaa ongelmia, "
+"ratkaisuna. Jos Lykkää JavaScript -ominaisuus aiheuttaa ongelmia, "
 "tukitiimimme voi auttaa niiden selvittämisessä."
 
 #: inc/Engine/Admin/Settings/Page.php:833
@@ -1748,7 +1756,7 @@ msgstr "LazyLoad, kuvien mittasuhteet, fontin optimointi"
 
 #: inc/Engine/Admin/Settings/Page.php:864
 msgid "Autoptimize"
-msgstr "Automatisoi"
+msgstr "Autoptimize"
 
 #: inc/Engine/Admin/Settings/Page.php:918
 msgid "LazyLoad"
@@ -1761,9 +1769,9 @@ msgid ""
 "videos will be loaded only as they enter (or about to enter) the viewport "
 "and reduces the number of HTTP requests. %1$sMore Info%2$s"
 msgstr ""
-"Voi parantaa näkyvää ja todellista latausaikaa, sillä kuvat, iframet ja "
+"Se voi parantaa näkyvää ja todellista latausaikaa, sillä kuvat, iframet ja "
 "videot ladataan vasta kun ne ilmestyvät (tai ovat juuri ilmestymässä) "
-"näkyviin. Tämä vähentää HTTP-pyyntöjen määrää. %1$sLisätietoja%2$s"
+"näytölle. Tämä vähentää HTTP-pyyntöjen määrää. %1$sLisätietoja%2$s"
 
 #. translators: %1$s = “WP Rocket”, %2$s = a list of plugin names.
 #: inc/Engine/Admin/Settings/Page.php:928
@@ -1771,8 +1779,8 @@ msgid ""
 "LazyLoad is currently activated in %2$s. If you want to use WP Rocket’s "
 "LazyLoad, disable this option in %2$s."
 msgstr ""
-"LazyLoad on tällä hetkellä aktivoitu täällä: %2$s. Jos haluat käyttää WP "
-"Rocketin LazyLoadia, poista tämä ominaisuus käytöstä täällä: %2$s."
+"LazyLoad on tällä hetkellä aktivoitu lisäosassa %2$s. Jos haluat käyttää WP "
+"Rocketin LazyLoadia, poista se käytöstä lisäosassa %2$s."
 
 #: inc/Engine/Admin/Settings/Page.php:931
 msgid "Image Dimensions"
@@ -1786,7 +1794,7 @@ msgid ""
 "info%2$s"
 msgstr ""
 "Lisää kuviin puuttuvat leveys- ja korkeusmääritteet. Auttaa estämään "
-"asettelun siirtymistä ja parantamaan vierailijoiden lukukokemusta. "
+"asettelun siirtymistä ja parantaa vierailijoiden lukukokemusta. "
 "%1$sLisätietoja%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:939
@@ -1799,12 +1807,12 @@ msgid ""
 "Download and serve fonts directly from your server. Reduces connections to "
 "external servers and minimizes font shifts. %1$sMore info%2$s"
 msgstr ""
-"Lataa ja tarjoa kirjasimia suoraan palvelimeltasi. Vähentää yhteyksiä "
-"ulkoisiin palvelimiin ja minimoi kirjasinten siirrot. %1$sLisätietoja%2$s"
+"Lataa ja tarjoa fontteja suoraan palvelimeltasi. Vähentää yhteyksiä "
+"ulkoisiin palvelimiin ja minimoi fonttien muutokset. %1$sLisätietoja%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:961
 msgid "Enable for images"
-msgstr "Käytä kuviin"
+msgstr "Ota käyttöön kuville"
 
 #. translators: %1$s = “WP Rocket”, %2$s = a list of plugin names.
 #: inc/Engine/Admin/Settings/Page.php:973
@@ -1812,8 +1820,8 @@ msgid ""
 "LazyLoad for images is currently activated in %2$s. If you want to use "
 "%1$s’s LazyLoad, disable this option in %2$s."
 msgstr ""
-"LazyLoad kuville on tällä hetkellä aktivoitu kohteessa %2$s. Jos haluat "
-"käyttää %1$s:n LazyLoadia, poista tämä asetus käytöstä %2$s:ssa."
+"LazyLoad kuville on tällä hetkellä aktivoitu lisäosassa %2$s. Jos haluat "
+"käyttää %1$sin LazyLoadia, poista tämä asetus käytöstä lisäosassa %2$s."
 
 #: inc/Engine/Admin/Settings/Page.php:981
 msgid "Enable for CSS background images"
@@ -1831,7 +1839,7 @@ msgstr "Korvaa YouTuben iframe esikatselukuvalla"
 #: inc/Engine/Admin/Settings/Page.php:1013
 msgid "Replace YouTube iframe with preview image is not compatible with %2$s."
 msgstr ""
-"YouTuben iframen korvaaminen esikatselukuvalla ei ole yhteensopiva kohteen "
+"YouTuben iframen korvaaminen esikatselukuvalla ei ole yhteensopiva lisäosan "
 "%2$s kanssa."
 
 #. translators: %1$s = “WP Rocket”, %2$s = a list of plugin or themes names.
@@ -1840,8 +1848,8 @@ msgid ""
 "This can significantly improve your loading time if you have a lot of "
 "YouTube videos on a page."
 msgstr ""
-"Tämä voi parantaa sivusi latausaikaa merkittävästi, jos sivullasi on paljon "
-"YouTube -videoita."
+"Tämä voi parantaa sivun latausaikaa merkittävästi, jos se sisältää useita "
+"YouTube-videoita."
 
 #: inc/Engine/Admin/Settings/Page.php:1028
 msgid "Excluded images or iframes"
@@ -1863,7 +1871,7 @@ msgstr "Lisää puuttuvat kuvan mittasuhteet"
 
 #: inc/Engine/Admin/Settings/Page.php:1046
 msgid "Self-host Google Fonts"
-msgstr "Itseisännöivät Google-kirjasimet"
+msgstr "Lataa Google-fontit omaan levytilaasi"
 
 #: inc/Engine/Admin/Settings/Page.php:1066
 msgid "Generate cache files, preload fonts"
@@ -1880,8 +1888,8 @@ msgid ""
 " and save all URLs to the database. The plugin will make sure that your "
 "cache is always preloaded."
 msgstr ""
-"Jos esilataus on käytössä, WP Rocket havaitses automaattisesti "
-"sivustokarttasi ja tallentaaa kaikki URL-osoitteet tietokantaan. Lisäosa "
+"Jos esilataus on käytössä, WP Rocket havaitsee automaattisesti "
+"sivustokarttasi ja tallentaa kaikki URL-osoitteet tietokantaan. Lisäosa "
 "varmistaa, että välimuistisi on aina esiladattu."
 
 #: inc/Engine/Admin/Settings/Page.php:1089
@@ -1895,18 +1903,18 @@ msgid ""
 "a user hovers over the link. %1$sMore info%2$s"
 msgstr ""
 "Linkkien esilataus parantaa havaittua latausaikaa lataamalla sivun, kun "
-"käyttäjä pitää hiiren osoitinta linkin päällä.  %1$sLisätietoja%2$s"
+"käyttäjä pitää hiiren osoitinta linkin päällä. %1$sLisätietoja%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:1100
 msgid "Prefetch DNS Requests"
-msgstr "Ennakkohae DNS-kyselyjä"
+msgstr "Esilataa DNS-kyselyjä"
 
 #: inc/Engine/Admin/Settings/Page.php:1102
 msgid ""
 "DNS prefetching can make external files load faster, especially on mobile "
 "networks"
 msgstr ""
-"DNS-kyselyjen esilataaminen voi nopeuttaa ulkoisten tiedostojen lataamisen "
+"DNS-kyselyjen esilataaminen voi nopeuttaa ulkoisten tiedostojen lataamista "
 "etenkin mobiiliverkoissa"
 
 #: inc/Engine/Admin/Settings/Page.php:1107
@@ -1941,15 +1949,15 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:1151
 msgid "URLs to prefetch"
-msgstr "URL-osoitteet esilataukseen"
+msgstr "Esiladattavat URL-osoitteet"
 
 #: inc/Engine/Admin/Settings/Page.php:1152
 msgid ""
 "Specify external hosts to be prefetched (no <code>http:</code>, one per "
 "line)"
 msgstr ""
-"Määritä verkko-isännät jotka esiladataan (ei <code>http:</code>, yksi isäntä"
-" per rivi)"
+"Määritä ulkoiset osoitteet, jotka esiladataan (ei <code>http:</code>, yksi "
+"per rivi)"
 
 #: inc/Engine/Admin/Settings/Page.php:1161
 msgid "Fonts to preload"
@@ -1961,7 +1969,7 @@ msgid ""
 " hosted on your own domain, or the domain you have specified on the CDN tab."
 msgstr ""
 "Määritä esiladattavien fonttitiedostojen URL-osoitteet (yksi per rivi). "
-"Fontit on ylläpidettävä omassa verkkotunnuksessasi tai verkkotunnuksessa, "
+"Fonttien on sijaittava omassa verkkotunnuksessasi tai verkkotunnuksessa, "
 "jonka olet määrittänyt CDN-välilehdellä."
 
 #: inc/Engine/Admin/Settings/Page.php:1163
@@ -1969,12 +1977,12 @@ msgid ""
 "The domain part of the URL will be stripped automatically.<br/>Allowed font "
 "extensions: otf, ttf, svg, woff, woff2."
 msgstr ""
-"URL-osoitteen verkkotunnus poistetaan automaattisesti.<br/>Sallitut "
-"kirjasinlaajennukset: otf, ttf, svg, woff, woff2."
+"URL-osoitteen verkkotunnus-osa poistetaan automaattisesti.<br/>Sallitut "
+"fonttilaajennukset: otf, ttf, svg, woff, woff2."
 
 #: inc/Engine/Admin/Settings/Page.php:1172
 msgid "Enable link preloading"
-msgstr "Ota linkin esilataus käyttöön"
+msgstr "Ota linkkien esilataus käyttöön"
 
 #: inc/Engine/Admin/Settings/Page.php:1191
 msgid "Advanced Rules"
@@ -1988,7 +1996,7 @@ msgstr "Hienosäädä välimuistisääntöjä"
 msgid ""
 "Sensitive pages like custom login/logout URLs should be excluded from cache."
 msgstr ""
-"Arkaluontoiset sivut, kuten räätälöidyt kirjautumis-sivut tulisi poissulkea "
+"Arkaluontoiset sivut, kuten mukautetut kirjautumissivut tulisi poissulkea "
 "välimuistista."
 
 #: inc/Engine/Admin/Settings/Page.php:1208
@@ -2023,7 +2031,7 @@ msgid ""
 "<br>Cart, checkout and \"my account\" pages set in "
 "<strong>%1$s%2$s%3$s</strong> will be detected and never cached by default."
 msgstr ""
-"<br>Ostoskori, kassa ja \"Oma tili\" -sivut, jotka on asetettu kohdassa "
+"<br>Ostoskori, kassa ja \"Oma tili\" -sivut, jotka on asetettu lisäosassa "
 "<strong>%1$s%2$s%3$s</strong> tunnistetaan automaattisesti eikä niitä ladata"
 " välimuistiin."
 
@@ -2038,17 +2046,17 @@ msgid ""
 "%1$spreloading%2$s for the cache to be rebuilt automatically after lifespan "
 "expiration."
 msgstr ""
-"Määritettyä käyttöikää vanhemmat välimuistitiedostot poistetaan.<br>Ota "
-"%1$spreloading%2$s käyttöön, jotta välimuisti rakennetaan automaattisesti "
+"Määritettyä elinikää vanhemmat välimuistitiedostot poistetaan.<br>Ota "
+"%1$sesilataus%2$s käyttöön, jotta välimuisti rakennetaan automaattisesti "
 "uudelleen käyttöiän umpeutumisen jälkeen."
 
 #: inc/Engine/Admin/Settings/Page.php:1251
 msgid "Never Cache Cookies"
-msgstr "Välimuistista pois suljettavat evästeet"
+msgstr "Evästeet, joita ei koskaan tallenneta välimuistiin"
 
 #: inc/Engine/Admin/Settings/Page.php:1269
 msgid "Cache Query String(s)"
-msgstr "Muuttujat välimuistiin"
+msgstr "Tallenna kyselyiden merkkijonot välimuistiin"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:1272
@@ -2056,8 +2064,8 @@ msgid ""
 "%1$sCache for query strings%2$s enables you to force caching for specific "
 "GET parameters."
 msgstr ""
-"%1$sMuuttujat välimuistiin -optio%2$s mahdollistaa sinut pakottamaan tietyt "
-"GET-parametrit välimuistiin."
+"%1$sKyselyiden merkkijonojen välimuisti%2$s mahdollistaa välimuistiin "
+"tallentamisen pakottamisen tietyille GET-parametreille."
 
 #: inc/Engine/Admin/Settings/Page.php:1283
 msgid ""
@@ -2073,7 +2081,7 @@ msgid ""
 " periodically. %1$sWhy?%2$s"
 msgstr ""
 "Pienennä elinikä kymmeneen tuntiin tai pienemmäksi, jos huomaat ongelmia "
-"jotka tuntuvat katoavan säännöllisin väliajoin. %1$sMiksi?%2$s"
+"jotka ilmenevät säännöllisin väliajoin. %1$sMiksi?%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:1291
 #: inc/Engine/License/views/promo-banner.php:32
@@ -2091,8 +2099,8 @@ msgstr "Päivää"
 msgid ""
 "Specify URLs of pages or posts that should never be cached (one per line)"
 msgstr ""
-"Määritä URL-osoitteet sivuista tai postauksista jotka aluat sulkea pois "
-"välimuistista (yksi per rivi)"
+"Määritä niiden sivujen tai artikkeleiden URL-osoitteet, joita ei tule "
+"koskaan tallentaa välimuistiin (yksi per rivi)"
 
 #: inc/Engine/Admin/Settings/Page.php:1298
 #: inc/Engine/Admin/Settings/Page.php:1326
@@ -2100,35 +2108,37 @@ msgid ""
 "The domain part of the URL will be stripped automatically.<br>Use (.*) "
 "wildcards to address multiple URLs under a given path."
 msgstr ""
-"Domain-osuus osoitteesta riisutaan automaattisesti. <br>Käytä (.*) "
-"-jokerimerkkiä sulkeaksesi pois useamman osoitteen samasta polusta."
+"URL-osoitteesta poistetaan verkkotunnus automaattisesti. <br>Käytä (.*) "
+"-jokerimerkkiä merkitäksesi useamman osoitteen samasta polusta."
 
 #: inc/Engine/Admin/Settings/Page.php:1307
 msgid ""
 "Specify full or partial IDs of cookies that, when set in the visitor's "
 "browser, should prevent a page from getting cached (one per line)"
 msgstr ""
-"Määritä evästeiden täydelliset tai osittaiset tunnukset, jotka vierailijan "
-"selaimessa asetettuina estävät sivua pääsemästä välimuistiin (yksi per rivi)"
+"Määritä sellaisten evästeiden täydelliset tai osittaiset IDt, jotka "
+"vierailijan selaimeen asetettuina estävät sivun tallentamisen välimuistiin "
+"(yksi per rivi)"
 
 #: inc/Engine/Admin/Settings/Page.php:1315
 msgid ""
 "Specify user agent strings that should never see cached pages (one per line)"
 msgstr ""
-"Määritä selain-agentit joille ei näytetä koskaan välimuistissa olevaa sivua "
-"(yksi per rivi)"
+"Määritä käyttäjäagentit, joille ei koskaan näytetä välimuistissa olevaa "
+"sivua (yksi per rivi)"
 
 #: inc/Engine/Admin/Settings/Page.php:1316
 msgid "Use (.*) wildcards to detect parts of UA strings."
-msgstr "Käytä (.*) -jokerimerkkiä tunnistaaksesi osan selain-agentista."
+msgstr ""
+"Käytä (.*) -jokerimerkkiä tunnistaaksesi osia käyttäjäagenttistringeistä."
 
 #: inc/Engine/Admin/Settings/Page.php:1325
 msgid ""
 "Specify URLs you always want purged from cache whenever you update any post "
 "or page (one per line)"
 msgstr ""
-"Määritä ereityiset verkko-osoitteet joiden välimuistin haluat aina tyhjentää"
-" kun päivität jonkun sivun tai postauksen (yksi per rivi)"
+"Määritä ne URL-osoitteet, jotka haluat aina puhdistaa välimuistista, kun "
+"päivität minkä tahansa sivun tai artikkelin (yksi per rivi)"
 
 #: inc/Engine/Admin/Settings/Page.php:1334
 msgid "Specify query strings for caching (one per line)"
@@ -2136,23 +2146,23 @@ msgstr "Määritä osoitteen muuttujat välimuistia varten (yksi per rivi)"
 
 #: inc/Engine/Admin/Settings/Page.php:1360
 msgid "Optimize, reduce bloat"
-msgstr "Optimoi, vähennä turhaa bloattia"
+msgstr "Optimoi, vähennä turhaa paisumista"
 
 #: inc/Engine/Admin/Settings/Page.php:1367
 msgid "Post Cleanup"
-msgstr "Postauksien putsaus"
+msgstr "Artikkelien siivous"
 
 #: inc/Engine/Admin/Settings/Page.php:1369
 msgid ""
 "Post revisions and drafts will be permanently deleted. Do not use this "
 "option if you need to retain revisions or drafts."
 msgstr ""
-"Postauksien versiot ja luonnokset poistetaan pysyvästi. Älä käytä tätä "
-"toimintoa jos haluat säilyttää eri versiot tai luonnokset."
+"Artikkelien versiot ja luonnokset poistetaan pysyvästi. Älä käytä tätä "
+"toimintoa, jos haluat säilyttää eri versiot tai luonnokset."
 
 #: inc/Engine/Admin/Settings/Page.php:1374
 msgid "Comments Cleanup"
-msgstr "Kommentien siivous"
+msgstr "Kommenttien siivous"
 
 #: inc/Engine/Admin/Settings/Page.php:1376
 msgid "Spam and trashed comments will be permanently deleted."
@@ -2167,9 +2177,9 @@ msgid ""
 "Transients are temporary options; they are safe to remove. They will be "
 "automatically regenerated as your plugins require them."
 msgstr ""
-"Transientit ovat väliaikaisia \"asetuksia\"; ne on turvallista poistaa. "
-"Transientit luodaan automaattisesti uudestaan niitä käyttävien lisäosien "
-"toimesta."
+"Transientit ovat väliaikaisia \"asetuksia\", ja ne voi poistaa "
+"turvallisesti. Transientit luodaan automaattisesti uudestaan, jos lisäosat "
+"tarvitsevat niitä."
 
 #: inc/Engine/Admin/Settings/Page.php:1386
 msgid "Database Cleanup"
@@ -2181,7 +2191,7 @@ msgstr "Vähentää tietokantataulujen hävikkiä"
 
 #: inc/Engine/Admin/Settings/Page.php:1392
 msgid "Automatic Cleanup"
-msgstr "Automaattinen putsaus"
+msgstr "Automaattinen siivous"
 
 #. translators: %s is the number of revisions found in the database. It's a
 #. formatted number, don't use %d.
@@ -2237,7 +2247,7 @@ msgstr[1] "%s transienttia tietokannassasi."
 
 #: inc/Engine/Admin/Settings/Page.php:1463
 msgid "Optimize Tables"
-msgstr "Optimoi taulut"
+msgstr "Optimoi taulukot"
 
 #. translators: %s is the number of revisions found in the database. It's a
 #. formatted number, don't use %d.
@@ -2261,7 +2271,7 @@ msgstr "Päivittäin"
 
 #: inc/Engine/Admin/Settings/Page.php:1497
 msgid "Weekly"
-msgstr "Viikottain"
+msgstr "Viikoittain"
 
 #: inc/Engine/Admin/Settings/Page.php:1498
 msgid "Monthly"
@@ -2285,8 +2295,8 @@ msgid ""
 "Not required for services like Cloudflare and Sucuri. Please see our "
 "available %1$sAdd-ons%2$s."
 msgstr ""
-"Ei vaadittu tietyissä palveluissa kuten Cloudflare ja Sucuri. Ole hyvä ja "
-"katso saatavilla olevat %1$slisäosat%2$s."
+"Ei pakollinen tietyissä palveluissa kuten Cloudflare ja Sucuri. Katso "
+"saatavilla olevat %1$slisäosamme%2$s."
 
 #. translators: %1$s = opening em tag, %2$l = list of add-on name(s), %3$s =
 #. closing em tag.
@@ -2322,8 +2332,8 @@ msgstr "Määritä CNAME(t) alle"
 msgid ""
 "Specify URL(s) of files that should not get served via CDN (one per line)."
 msgstr ""
-"Määritä URL-osoitteet joiden tiedostoja ei tarjoilla CDN-palvelusta (yksi "
-"per rivi)."
+"Määritä URL-osoitteet, joiden tiedostoja ei tarjota CDN:n kautta (yksi per "
+"rivi)."
 
 #: inc/Engine/Admin/Settings/Page.php:1613
 msgid ""
@@ -2331,43 +2341,45 @@ msgid ""
 "wildcards to exclude all files of a given file type located at a specific "
 "path."
 msgstr ""
-"Domain-osuus URL-osoitteesta poistetaan automaattisesti.<br>Käytä (.*) "
-"-jokeria sulkeaksesi pois kaikki tiedostotyypit annetusta polusta."
+"URL-osoitteesta poistetaan automaattisesti verkkotunnusosuus.<br>Käytä (.*) "
+"-jokeria sulkeaksesi pois kaikki tietyntyyppiset tiedostot annetusta "
+"polusta."
 
 #: inc/Engine/Admin/Settings/Page.php:1636
 #: inc/Engine/Admin/Settings/Page.php:1644
 msgid "Heartbeat"
-msgstr "Sydämen syke"
+msgstr "Heartbeat"
 
 #: inc/Engine/Admin/Settings/Page.php:1637
 msgid "Control WordPress Heartbeat API"
-msgstr "Kontrolloi WordPressin Sydämen sykkeen rajapintaa"
+msgstr "Kontrolloi WordPress Heartbeatin rajapintaa"
 
 #: inc/Engine/Admin/Settings/Page.php:1645
 msgid ""
 "Reducing or disabling the Heartbeat API’s activity can help save some of "
 "your server’s resources."
 msgstr ""
-"Vähennä tai poista kokonaan käytöstä Sydämen sykkeen rajapinta "
-"helpottaaksesi palvelimesi kuormaa."
+"Heartbeat API:n toiminnan vähentäminen tai poistaminen käytöstä voi säästää "
+"palvelimesi resursseja."
 
 #: inc/Engine/Admin/Settings/Page.php:1651
 msgid "Reduce or disable Heartbeat activity"
-msgstr "Vähennä tai poista Sydämen syke"
+msgstr "Vähennä Heartbeatin toimintaa tai poista se käytöstä"
 
 #: inc/Engine/Admin/Settings/Page.php:1652
 msgid ""
 "Reducing activity will change Heartbeat frequency from one hit each minute "
 "to one hit every 2 minutes."
 msgstr ""
-"Sykkeen harvennus muuttaa yhden kyselyn minuutista joka toiseen minuuttiin."
+"Heartbeatin toiminnan vähentäminen muuttaa yhden kyselyn minuutista joka "
+"toiseen minuuttiin."
 
 #: inc/Engine/Admin/Settings/Page.php:1652
 msgid ""
 "Disabling Heartbeat entirely may break plugins and themes using this API."
 msgstr ""
-"Jos poistat Sykkeen kokonaan käytöstä, saatat rikkoa muiden lisäosien "
-"toimivuuden."
+"Jos poistat Heartbeatin kokonaan käytöstä, saatat rikkoa sen rajapintaa "
+"käyttäviä lisäosia tai teemoja."
 
 #: inc/Engine/Admin/Settings/Page.php:1666
 msgid "Do not limit"
@@ -2375,7 +2387,7 @@ msgstr "Älä rajoita"
 
 #: inc/Engine/Admin/Settings/Page.php:1667
 msgid "Reduce activity"
-msgstr "Vähennetty syke"
+msgstr "Vähennetty toiminta"
 
 #: inc/Engine/Admin/Settings/Page.php:1668
 msgid "Disable"
@@ -2383,19 +2395,19 @@ msgstr "Poista käytöstä"
 
 #: inc/Engine/Admin/Settings/Page.php:1676
 msgid "Control Heartbeat"
-msgstr "Kontrolloi Sydämen sykettä"
+msgstr "Kontrolloi Heartbeatin toimintaa"
 
 #: inc/Engine/Admin/Settings/Page.php:1685
 msgid "Behavior in backend"
-msgstr "Syke hallintasivulla"
+msgstr "Toiminta taustajärjestelmässä"
 
 #: inc/Engine/Admin/Settings/Page.php:1692
 msgid "Behavior in post editor"
-msgstr "Syke postauksen editorissa"
+msgstr "Toiminta artikkelin editorissa"
 
 #: inc/Engine/Admin/Settings/Page.php:1698
 msgid "Behavior in frontend"
-msgstr "Syke julkisivulla"
+msgstr "Toiminta näkyvällä sivustolla"
 
 #: inc/Engine/Admin/Settings/Page.php:1717
 #: views/settings/page-sections/tutorials.php:39
@@ -2408,7 +2420,7 @@ msgstr "Lisää uusia ominaisuuksia"
 
 #: inc/Engine/Admin/Settings/Page.php:1725
 msgid "One-click Rocket Add-ons"
-msgstr "Yhden klikkauksen Rocket -lisäosat"
+msgstr "Yhden klikkauksen Rocket-lisäosat"
 
 #: inc/Engine/Admin/Settings/Page.php:1726
 msgid ""
@@ -2421,12 +2433,12 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:1736
 msgid "Rocket Add-ons"
-msgstr "Rocket -lisäosat"
+msgstr "Rocket-lisäosat"
 
 #: inc/Engine/Admin/Settings/Page.php:1737
 msgid "Rocket Add-ons are complementary features extending available options."
 msgstr ""
-"Rocket -lisäosat ovat täydentäviä ominaisuuksia, jotka laajentavat "
+"Rocket-lisäosat ovat täydentäviä ominaisuuksia, jotka laajentavat "
 "käytettävissä olevia ominaisuuksia."
 
 #: inc/Engine/Admin/Settings/Page.php:1748
@@ -2457,7 +2469,7 @@ msgstr "Cloudflare"
 
 #: inc/Engine/Admin/Settings/Page.php:1775
 msgid "Integrate your Cloudflare account with this add-on."
-msgstr "Integroi Cloudflare -tilisi tällä lisäosalla."
+msgstr "Integroi Cloudflare-tilisi tällä lisäosalla."
 
 #: inc/Engine/Admin/Settings/Page.php:1776
 msgid ""
@@ -2465,9 +2477,9 @@ msgid ""
 "as clearing the Cloudflare cache and enabling optimal settings with WP "
 "Rocket."
 msgstr ""
-"Syötä tilisi sähköposti, globaali API-avain, sekä domain jotta voit käyttää "
-"omainsuuksia kuten Cloudflaren välimusitin tyhjennus, sekä optimaaliset "
-"asetukset WP Rocket:ille."
+"Syötä tilisi sähköposti, globaali API-avain ja verkkotunnus, jotta voit "
+"käyttää Cloudflare-välimuistin siivousta, WP Rocketin optimaalisia asetuksia"
+" sekä muita ominaisuuksia."
 
 #. translators: %1$s = opening span tag, %2$s = closing span tag.
 #: inc/Engine/Admin/Settings/Page.php:1779
@@ -2486,9 +2498,7 @@ msgstr "Varnish"
 
 #: inc/Engine/Admin/Settings/Page.php:1833
 msgid "If Varnish runs on your server, you must activate this add-on."
-msgstr ""
-"Jos sinulla on Varnish asennettuna palvelimellesi, ota tämä ominaisuus "
-"käyttöön."
+msgstr "Jos Varnish on käytössä palvelimellasi, ota tämä ominaisuus käyttöön."
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:1835
@@ -2496,7 +2506,7 @@ msgid ""
 "Varnish cache will be purged each time WP Rocket clears its cache to ensure "
 "content is always up-to-date.<br>%1$sLearn more%2$s"
 msgstr ""
-"Varnish-välimuisti tyhjennetään automaattisesti aina kun WP Rocket:in "
+"Varnish-välimuisti tyhjennetään automaattisesti aina kun WP Rocketin "
 "välimuisti tyhjennetään.<br>%1$sLue lisää%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:1870
@@ -2517,20 +2527,20 @@ msgid ""
 msgstr ""
 "Ota tämä vaihtoehto käyttöön, jos haluat WP Rocketin tarjoavan WebP-kuvia "
 "yhteensopiville selaimille. Huomaa, että WP Rocket ei voi luoda WebP-kuvia "
-"puolestasi. WebP-kuvien luomiseen suosittelemme %1$sImagify%2$s. "
+"puolestasi. WebP-kuvien luomiseen suosittelemme lisäosaa %1$sImagify%2$s. "
 "%3$sLisätietoja%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:1900
 msgid "Clear the Sucuri cache when WP Rocket’s cache is cleared."
-msgstr ""
-"Tyhjennä Sucuri:n välimuisti kun WP Rocket:in välimuisti tyhjennetään."
+msgstr "Tyhjennä Sucuri-välimuisti kun WP Rocketin välimuisti tyhjennetään."
 
 #: inc/Engine/Admin/Settings/Page.php:1903
 msgid ""
 "Provide your API key to clear the Sucuri cache when WP Rocket’s cache is "
 "cleared."
 msgstr ""
-"Syötä API-avaimesi tyhjentääksesi Sucuri:n välimuistin automaattisesti."
+"Syötä API-avaimesi tyhjentääksesi Sucurin välimuistin automaattisesti, kun "
+"WP Rocketin välimuisti tyhjennetään."
 
 #: inc/Engine/Admin/Settings/Page.php:1911
 #: inc/Engine/Admin/Settings/Page.php:2055
@@ -2539,15 +2549,15 @@ msgstr "Sucuri"
 
 #: inc/Engine/Admin/Settings/Page.php:1917
 msgid "Synchronize Sucuri cache with this add-on."
-msgstr "Synkronoi Sucuri:n välimuisti tällä lisäosalla."
+msgstr "Synkronoi Sucurin välimuisti tällä lisäosalla."
 
 #: inc/Engine/Admin/Settings/Page.php:1955
 msgid "Cloudflare credentials"
-msgstr "Cloudflare -tunnukset"
+msgstr "Cloudflare-tunnukset"
 
 #: inc/Engine/Admin/Settings/Page.php:1964
 msgid "Cloudflare settings"
-msgstr "Cloudflare -asetukset"
+msgstr "Cloudflare-asetukset"
 
 #: inc/Engine/Admin/Settings/Page.php:1978
 msgctxt "Cloudflare"
@@ -2579,8 +2589,8 @@ msgid ""
 "Temporarily activate development mode on your website. This setting will "
 "automatically turn off after 3 hours. %1$sLearn more%2$s"
 msgstr ""
-"Aktivoi väliaikaisesti kehitystila. Tämä asetus poistetaan automaattiseesti "
-"kolmen tunnin kuluttua. %1$sLue lisää%2$s"
+"Aktivoi väliaikaisesti kehitystila verkkosivustollasi. Tämä asetus poistuu "
+"käytöstä automaattisesti kolmen tunnin kuluttua. %1$sLue lisää%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:2020
 msgid "Optimal settings"
@@ -2591,8 +2601,8 @@ msgid ""
 "Automatically enhances your Cloudflare configuration for speed, performance "
 "grade and compatibility."
 msgstr ""
-"Automaattisesti paranna Cloudflare:n asetuksia nopeuden ja yhteensopivuuden "
-"suhteen."
+"Parantaa automaattisesti Cloudflare-määrityksiä nopeuden, suorituskyvyn ja "
+"yhteensopivuuden suhteen."
 
 #: inc/Engine/Admin/Settings/Page.php:2029
 msgid "Relative protocol"
@@ -2605,12 +2615,13 @@ msgid ""
 "https://."
 msgstr ""
 "Tätä tulisi käyttää vain yhdessä Cloudflaren \"flexible SSL\" -ominaisuuden "
-"kanssa. Staattisten tiedostojen (CSS, JS, kuvat) osoitteet "
-"uudelleenkirjoitetaan muotoon //."
+"kanssa. Staattisten tiedostojen (CSS, JS, kuvat) osoitteet uudelleen "
+"kirjoitetaan muotoon // sen sijaan, että ne käyttäisivät muotoja http:// tai"
+" https://."
 
 #: inc/Engine/Admin/Settings/Page.php:2068
 msgid "Sucuri credentials"
-msgstr "Sucuri -tunnukset"
+msgstr "Sucuri-tunnukset"
 
 #: inc/Engine/Admin/Settings/Page.php:2081
 msgctxt "Sucuri"
@@ -2618,7 +2629,7 @@ msgid ""
 "Firewall API key (for plugin), must be in format {32 characters}/{32 "
 "characters}:"
 msgstr ""
-"Palomuurin API-avain (laajennukselle), on oltava muodossa {32 merkkiä}/{32 "
+"Palomuurin API-avain (lisäosalle), on oltava muodossa {32 merkkiä}/{32 "
 "merkkiä}:"
 
 #: inc/Engine/Admin/Settings/Page.php:2082
@@ -2634,25 +2645,25 @@ msgid ""
 "feature: %3$sAutomatic Lazy Rendering%4$s. Check out our documentation to "
 "learn more about it."
 msgstr ""
-"%1$sWP Rocket:%2$s laajennus on päivitetty versioon 3.17. Uusi ominaisuus: "
+"%1$sWP Rocket:%2$s-lisäosa on päivitetty versioon 3.17. Uusi ominaisuus: "
 "%3$sAutomaattinen laiska renderöinti%4$s. Tutustu dokumentaatioomme "
-"saadaksesi lisätietoja siitä."
+"saadaksesi lisätietoja."
 
 #: inc/Engine/Admin/Settings/Settings.php:363
 msgid ""
 "Sucuri Add-on: The API key for the Sucuri firewall must be in format "
 "<code>{32 characters}/{32 characters}</code>."
 msgstr ""
-"Sucuri -lisäosa: API-avain täytyy olla muodossa <code>{32 characters}/{32 "
-"characters}</code>."
+"Sucuri-lisäosa: Sucuri-palomuurin API-avaimen on oltava muodossa <code>{32 "
+"merkkiä}/{32 merkkiä}</code>."
 
 #: inc/Engine/Admin/Settings/Settings.php:661
 msgid ""
 "Sorry! Adding /(.*) in Advanced Rules > Never Cache URL(s) was not saved "
 "because it disables caching and optimizations for every page on your site."
 msgstr ""
-"Anteeksi! /(.*) lisäystä kohtaan Lisäsäännöt > Älä koskaan tallenna URL-"
-"osoitteita välimuistiin ei tallennettu, koska se poistaa käytöstä "
+"Pahoittelut! /(.*) lisäystä kohtaan Lisäasetukset > ”Älä koskaan tallenna "
+"URL-osoitteita välimuistiin” ei tallennettu, koska se poistaa käytöstä "
 "välimuistin ja optimoinnit sivustosi jokaiselta sivulta."
 
 #: inc/Engine/Admin/Settings/Subscriber.php:189
@@ -2671,11 +2682,11 @@ msgstr "Pakkaa kuvat"
 #: inc/Engine/Admin/Settings/Subscriber.php:232
 #: views/settings/page-sections/tutorials.php:48
 msgid "Tutorials"
-msgstr "Ohjeet"
+msgstr "Ohjeita"
 
 #: inc/Engine/Admin/Settings/Subscriber.php:233
 msgid "Getting started and how to videos"
-msgstr "Miten aloittaa ja muita ohjevideoita"
+msgstr "Aloita näin ja muita ohjevideoita"
 
 #: inc/Engine/Admin/Settings/Subscriber.php:308
 #: views/settings/page-sections/plugins.php:13
@@ -2759,7 +2770,7 @@ msgstr ""
 #: inc/Engine/CDN/RocketCDN/APIClient.php:177
 msgid "RocketCDN cache purge failed: Missing identifier parameter."
 msgstr ""
-"RocketCDN-välimuistin puhdistus epäonnistui: Missing identifier parameter."
+"RocketCDN-välimuistin puhdistus epäonnistui: Puuttuva identifier-parametri."
 
 #: inc/Engine/CDN/RocketCDN/APIClient.php:186
 msgid "RocketCDN cache purge failed: Missing user token."
@@ -2791,7 +2802,7 @@ msgstr "RocketCDN välimuistin puhdistus epäonnistui: %s."
 
 #: inc/Engine/CDN/RocketCDN/APIClient.php:247
 msgid "RocketCDN cache purge successful."
-msgstr "RocketCDN -välimuistin puhdistus onnistui."
+msgstr "RocketCDN välimuistin puhdistus onnistui."
 
 #. translators: %1$s = Old CName, %2$s = New CName.
 #: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:398
@@ -2899,7 +2910,7 @@ msgstr ""
 
 #: inc/Engine/CDN/RocketCDN/views/dashboard-status.php:33
 msgid "Get RocketCDN"
-msgstr "Hanki RocketCDN"
+msgstr "Tilaa RocketCDN"
 
 #: inc/Engine/CDN/RocketCDN/views/promote-notice.php:11
 msgid "New!"
@@ -2912,11 +2923,11 @@ msgstr "Nopeuta sivustoasi RocketCDN:llä, WP Rocketin sisällönjakeluverkolla!
 
 #: inc/Engine/Common/JobManager/Cron/Subscriber.php:185
 msgid "WP Rocket process pending jobs"
-msgstr "WP Rocket process pending jobs"
+msgstr "WP Rocket -prosessin odottavat työt"
 
 #: inc/Engine/Common/JobManager/Cron/Subscriber.php:204
 msgid "WP Rocket clear failed jobs"
-msgstr "WP Rocket poista epäonnistuneet työt"
+msgstr "WP Rocket tyhjennä epäonnistuneet työt"
 
 #: inc/Engine/Common/JobManager/Cron/Subscriber.php:221
 msgid "WP Rocket process on submit jobs"
@@ -2944,25 +2955,25 @@ msgstr "Tyhjennä"
 msgid ""
 "This action will clear the Critical Images and Lazily Rendered Content."
 msgstr ""
-"Tämä toiminto poistaa kriittiset kuvat ja laiskasti renderoidun sisällön."
+"Tämä toiminto tyhjentää kriittiset kuvat ja laiskasti renderöidyn sisällön."
 
 #. translators: %1$s = plugin name.
-#: inc/Engine/Common/PerformanceHints/Admin/Controller.php:136
+#: inc/Engine/Common/PerformanceHints/Admin/Controller.php:140
 msgid "%1$s: Critical images and Lazy Render data was cleared!"
 msgstr "%1$s: Kriittiset kuvat ja Lazy Render -tiedot tyhjennettiin!"
 
 #: inc/Engine/Common/PerformanceHints/AJAX/AJAXControllerTrait.php:19
 msgid "Script error"
-msgstr "Skriptivirhe"
+msgstr "Komentosarjavirhe"
 
 #: inc/Engine/Common/PerformanceHints/AJAX/AJAXControllerTrait.php:22
 msgid "Script timeout"
-msgstr "Skriptin aikakatkaisu"
+msgstr "Komentosarjan aikakatkaisu"
 
 #. Translators: %s is the exception message.
 #: inc/Engine/Common/Queue/Cleaner.php:87
 msgid "It was not possible to determine a valid cut-off time: %s."
-msgstr "Ei voitu määrittää kelvollista katkaisuaikaa: %s."
+msgstr "Kelvollista katkaisuaikaa ei voitu määrittää: %s."
 
 #: inc/Engine/Common/Queue/RUCSSQueueRunner.php:272
 msgid "Every minute"
@@ -2970,7 +2981,7 @@ msgstr "Jokainen minuutti"
 
 #: inc/Engine/CriticalPath/Admin/Admin.php:261
 msgid "Regenerate Critical Path CSS"
-msgstr "Uudellenluo kriittinen CSS"
+msgstr "Luo uudelleen kriittinen CSS"
 
 #: inc/Engine/CriticalPath/Admin/Post.php:144
 #: views/cpcss/metabox/generate.php:47
@@ -3016,7 +3027,7 @@ msgid ""
 "Critical CSS for %1$s on mobile not generated. Error: The API returned an "
 "empty response."
 msgstr ""
-"Kriittinen CSS ei generoitunut mobiilisivulle %1$s. Virhe: API palatti "
+"Kriittinen CSS ei generoitunut mobiilisivulle %1$s. Virhe: API palautti "
 "tyhjän vastauksen."
 
 #. translators: %s = item URL.
@@ -3025,7 +3036,7 @@ msgid ""
 "Critical CSS for %1$s not generated. Error: The API returned an empty "
 "response."
 msgstr ""
-"Kriittinen CSS ei generoitunut sivulle %1$s. Virhe: API palatti tyhjän "
+"Kriittinen CSS ei generoitunut sivulle %1$s. Virhe: API palautti tyhjän "
 "vastauksen."
 
 #. translators: %s = item URL.
@@ -3092,7 +3103,7 @@ msgstr "Kriittisen CSS:n generointi valmistunut %1$d / %2$d sivutyypille."
 
 #: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:482
 msgid "Critical CSS generation encountered one or more errors."
-msgstr "Kriittisen CSS:n generoinnissa tapahtui virhe."
+msgstr "Kriittisen CSS:n generoinnissa tapahtui virhe(itä)."
 
 #: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:482
 msgid "Learn more."
@@ -3158,16 +3169,16 @@ msgstr "Kriittinen CSS sivulle %s on kesken."
 #. translators: %1$s = Item URL or item type.
 #: inc/Engine/CriticalPath/ProcessorService.php:239
 msgid "Mobile Critical CSS for %s generated."
-msgstr "Mobiilikriittinen CSS:lle %s luotu."
+msgstr "Mobiilikriittinen CSS sivulle %s luotu."
 
 #. translators: %1$s = Item URL or item type.
 #: inc/Engine/CriticalPath/ProcessorService.php:250
 msgid "Critical CSS for %s generated."
-msgstr "Kriittinen CSS sivulle %s generoitu."
+msgstr "Kriittinen CSS sivulle %s luotu."
 
 #: inc/Engine/CriticalPath/ProcessorService.php:272
 msgid "Critical CSS file deleted successfully."
-msgstr "Kriittinen CSS -tiedosto poistettiin onnistuneesti"
+msgstr "Kriittinen CSS-tiedosto poistettiin onnistuneesti"
 
 #. translators: %1$s = Item URL or item type.
 #: inc/Engine/CriticalPath/ProcessorService.php:294
@@ -3308,7 +3319,7 @@ msgstr "%s alennus"
 #. translators: %s = promotion name.
 #: inc/Engine/License/views/promo-banner.php:23
 msgid "%s promotion is live!"
-msgstr "%s -alennus on saatavilla!"
+msgstr "%s tarjous on saatavilla!"
 
 #: inc/Engine/License/views/promo-banner.php:29
 msgid "Hurry Up! Deal ends in:"
@@ -3327,11 +3338,11 @@ msgstr "Sekuntia"
 #: inc/Engine/License/views/promo-banner.php:36
 #: inc/Engine/License/views/upgrade-section.php:11
 msgid "Upgrade now"
-msgstr "Päivitä paketti nyt"
+msgstr "Päivitä pakettisi nyt"
 
 #: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:13
 msgid "The Optimize CSS Delivery feature is disabled."
-msgstr "Optimoi CSS Delivery -ominaisuus on poistettu käytöstä."
+msgstr "Optimoi CSS:n tomitus -ominaisuus on poistettu käytöstä."
 
 #: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:17
 msgid ""
@@ -3470,7 +3481,7 @@ msgstr "LazyLoad iframeille/videoille"
 
 #: inc/Engine/Media/Lazyload/CSS/Admin/Subscriber.php:49
 msgid "LazyLoad CSS backgrounds"
-msgstr "LazyLoad CSS -taustat"
+msgstr "LazyLoad CSS-taustat"
 
 #: inc/Engine/Media/Lazyload/Subscriber.php:262
 msgid "Play Youtube video"
@@ -3505,7 +3516,7 @@ msgid ""
 "You need an active license to get the latest version of the lists from our "
 "server."
 msgstr ""
-"Tarvitset aktiivisen lisenssin saadaksesi viimeisimmään version listoista "
+"Tarvitset aktiivisen lisenssin saadaksesi viimeisimmän version listoista "
 "palvelimeltamme."
 
 #: inc/Engine/Optimization/DynamicLists/DynamicLists.php:109
@@ -3514,7 +3525,7 @@ msgstr "Oletuslistat"
 
 #: inc/Engine/Optimization/DynamicLists/DynamicLists.php:110
 msgid "Delay JavaScript Execution Exclusion Lists"
-msgstr "Viive JavaScript-suorituksen poissulkemisluettelot"
+msgstr "Lykkää JavaScriptin suoritus - poissulkemisluettelot"
 
 #: inc/Engine/Optimization/DynamicLists/DynamicLists.php:111
 msgid "Incompatible plugins Lists"
@@ -3552,14 +3563,14 @@ msgid ""
 " the Remove Unused CSS feature to work. Please check our "
 "%3$sdocumentation%4$s."
 msgstr ""
-"%1$s: Ei voitu luoda %2$s-taulukkoa tietokantaan, mikä on tarpeen Poista "
-"käyttämätön CSS -ominaisuuden toimimiseksi. Tarkista "
+"%1$s: Ei voitu luoda %2$s-taulukkoa tietokantaan, mikä on edellytys ”Poista "
+"käyttämätön CSS” -ominaisuuden toimimiseksi. Tarkista "
 "%3$sdokumentaatiomme%4$s."
 
 #. translators: %1$s = plugin name.
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:275
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:279
 msgid "%1$s: Used CSS cache cleared!"
-msgstr "%1$s: käytetty CSS-välimuisti tyhjennetty!"
+msgstr "%1$s: Käytetty CSS -välimuisti tyhjennetty!"
 
 #. translators: %1$s = plugin name.
 #: inc/Engine/Preload/Admin/Settings.php:76
@@ -3569,16 +3580,16 @@ msgid ""
 " is needed."
 msgstr ""
 "%1$s: Esilatauspalvelu on nyt aktiivinen. Ensimmäisen esilatauksen jälkeen "
-"se jatkaa kaikkien sivujesi välimuistia aina, kun ne tyhjennetään. "
-"Lisätoimia ei tarvita."
+"se jatkaa kaikkien sivujesi tallentamista välimuistiin aina, kun ne "
+"puhdistetaan. Lisätoimia ei tarvita."
 
 #: inc/Engine/Preload/Cron/Subscriber.php:138
 msgid "WP Rocket Preload pending jobs"
-msgstr "WP Rocket Esilataus odottavat tehtävät"
+msgstr "WP Rocket Esilataus - odottavat tehtävät"
 
 #: inc/Engine/Preload/Cron/Subscriber.php:166
 msgid "WP Rocket Preload revert stuck failed jobs"
-msgstr "WP Rocket Preload palauttaa jumissa epäonnistuneet työt"
+msgstr "WP Rocket Esilataus - palauta jumiin jääneet epäonnistuneet työt"
 
 #: inc/Engine/Saas/Admin/AdminBar.php:106
 msgid "Clear Used CSS of this URL"
@@ -3590,7 +3601,7 @@ msgstr "Käytetty CSS"
 
 #: inc/Engine/Saas/Admin/AdminBar.php:136
 msgid "This action will clear the used CSS files."
-msgstr "Tämä toiminto tyhjentää kätetyt CSS tiedostot."
+msgstr "Tämä toiminto tyhjentää käytetyt CSS tiedostot."
 
 #. translators: %1$s = plugin name, %2$s = number of seconds.
 #: inc/Engine/Saas/Admin/Notices.php:91
@@ -3599,7 +3610,7 @@ msgid ""
 "your pages, the plugin is optimizing LCP and the images above the fold."
 msgstr ""
 "%1$s: Odota %2$s sekuntia. Poista käyttämätön CSS -palvelu käsittelee "
-"sivujasi, laajennus optimoi LCP:tä ja sivun yläpuolella olevia kuvia."
+"sivujasi, lisäosa optimoi LCP:tä ja sivun yläpuolella olevia kuvia."
 
 #. translators: %1$s = plugin name, %2$s = number of URLs, %3$s = number of
 #. seconds.
@@ -3609,8 +3620,8 @@ msgid ""
 "\t\t\t WP Rocket will continue to generate Used CSS for up to %2$s URLs per %3$s second(s)."
 msgstr ""
 "%1$s: LCP-elementti on optimoitu, ja sivun yläpuolella olevat kuvat on "
-"jätetty pois laiskuudesta. Kotisivusi käytetty CSS on käsitelty.\t\t\t WP "
-"Rocket jatkaa käytetyn CSS:n luomista enintään %2$s URL-osoitetta %3$s "
+"jätetty pois LazyLoadista. Kotisivusi käytetty CSS on käsitelty.\t\t\t WP "
+"Rocket jatkaa käytetyn CSS:n luomista enintään %2$s URL-osoitteelle %3$s "
 "sekunnissa."
 
 #. translators: %1$s = opening link tag, %2$s = closing link tag.
@@ -3624,7 +3635,7 @@ msgstr ""
 #: inc/Engine/Saas/Admin/Notices.php:167
 msgid "To learn more about the process check our %1$sdocumentation%2$s."
 msgstr ""
-"Jos haluat oppia lisää tästä prosessista, lue %1$sdokumentaatiomme%2$s."
+"Jos haluat tietää lisää tästä prosessista, lue %1$sdokumentaatiomme%2$s."
 
 #: inc/Engine/Saas/Admin/Notices.php:225
 msgid ""
@@ -3655,7 +3666,7 @@ msgstr ""
 
 #: inc/Engine/Saas/Admin/Notices.php:286
 msgid "- In the security plugin, if you are using one"
-msgstr "- Tietuturvalisäosassa, jos käytät sellaista"
+msgstr "- Tietoturvalisäosassa, jos käytät sellaista"
 
 #: inc/Engine/Saas/Admin/Notices.php:287
 msgid "- In the server's firewall. Your host can help you with this"
@@ -3681,11 +3692,11 @@ msgstr "Palvelimen tyyppi:"
 
 #: inc/functions/admin.php:370
 msgid "PHP version number:"
-msgstr "PHP:n versio:"
+msgstr "PHP-versio:"
 
 #: inc/functions/admin.php:379
 msgid "WordPress version number:"
-msgstr "WordPress:in versio:"
+msgstr "WordPress-versio:"
 
 #: inc/functions/admin.php:388
 msgid "WordPress multisite:"
@@ -3797,7 +3808,7 @@ msgstr ""
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
 #: inc/functions/options.php:515
 msgid "To resolve, please contact support."
-msgstr "Ratkaistaksesi ongelma, ota yhteys tukeemme."
+msgstr "Ratkaistaksesi ongelman ota yhteyttä tukeemme."
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
 #: inc/functions/options.php:523
@@ -3822,7 +3833,7 @@ msgstr ""
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
 #: inc/functions/options.php:543
 msgid "Your license is not valid."
-msgstr "Lisenssi ei ole validi."
+msgstr "Lisenssi ei kelpaa."
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
 #: inc/functions/options.php:543
@@ -3835,7 +3846,7 @@ msgstr ""
 #. opening link tag.
 #: inc/functions/options.php:545
 msgid "You have added as many sites as your current license allows."
-msgstr "Olet lisännyt maksimimäärän sivuja jonka lisenssisi sallii."
+msgstr "Olet lisännyt nykyisen lisenssisi salliman enimmäismäärän sivustoja."
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag, %3$s =
 #. opening link tag.
@@ -3855,7 +3866,7 @@ msgstr "Tämä verkkosivusto ei ole sallittu."
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
 #: inc/functions/options.php:547
 msgid "Please %1$scontact support%2$s."
-msgstr "Ole hyvä ja %1$sota yhteys tukeen%2$s."
+msgstr "Ole hyvä ja %1$sota yhteyttä tukeen%2$s."
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
 #: inc/functions/options.php:549
@@ -3865,7 +3876,7 @@ msgstr "Lisenssiavainta ei tunnistettu."
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
 #: inc/functions/options.php:549
 msgid "If the issue persists, please %1$scontact support%2$s."
-msgstr "Jos ongelma jatkuu, ole hyvä ja %1$sota yhteys tukeen%2$s."
+msgstr "Jos ongelma jatkuu, ole hyvä ja %1$sota yhteyttä tukeen%2$s."
 
 #. Translators: %s = error message returned.
 #: inc/functions/options.php:555
@@ -3882,7 +3893,7 @@ msgstr "Lokitiedostoa ei pystytty lukemaan."
 
 #: inc/Logger/Logger.php:250
 msgid "The logs are not saved into a file."
-msgstr "Lokeja ei talleneta tiedostoon."
+msgstr "Lokeja ei tallenneta tiedostoon."
 
 #. Translators: %s = Hosting name.
 #: inc/ThirdParty/Hostings/Cloudways.php:82
@@ -3890,7 +3901,7 @@ msgid ""
 "Varnish auto-purge will be automatically enabled once Varnish is enabled on "
 "your %s server."
 msgstr ""
-"Varnish auto-purge otetaan käyttöön automaattisesti kun Varnish on otettu "
+"Varnish auto-purge otetaan käyttöön automaattisesti, kun Varnish on otettu "
 "käyttöön %s palvelimellasi."
 
 #. translators: %1$s = opening link tag, %2$s = closing link tag.
@@ -3912,9 +3923,9 @@ msgid ""
 "%1$s: Cloudflare's HTTP/2 Server Push is incompatible with the features of "
 "Remove Unused CSS and Combine CSS files. We strongly recommend disabling it."
 msgstr ""
-"%1$s: Cloudflaren HTTP/2 Server Push ei ole yhteensopiva Poista "
-"käyttämättömät CSS- ja Yhdistä CSS-tiedostot -toimintojen kanssa. "
-"Suosittelemme sen poistamista käytöstä."
+"%1$s: Cloudflaren HTTP/2 Server Push ei ole yhteensopiva Poista käyttämätön "
+"CSS ja Yhdistä CSS-tiedostot -toimintojen kanssa. Suosittelemme sen "
+"poistamista käytöstä."
 
 #: inc/ThirdParty/Plugins/CDN/Cloudflare.php:170
 msgid ""
@@ -3977,7 +3988,7 @@ msgid ""
 msgstr ""
 "%1$sWP Rocket:%2$s \"Cache by Device Type\" -ominaisuus on käytössä "
 "Cloudflare APO:ssa. Jos sivustollasi on tärkeää olla eri välimuisti "
-"tietokoneille ja mobiililaitteille, suosittelemme, että otat käytöön "
+"tietokoneille ja mobiililaitteille, suosittelemme, että otat käyttöön "
 "“Separate Cache Files for Mobiles Devices” -ominaisuutemme varmistaaksesi, "
 "että luotu välimuisti on ajan tasainen."
 
@@ -4052,8 +4063,8 @@ msgctxt "Hummingbird notice"
 msgid ""
 "%1$s %2$sdisable emoji%3$s conflicts with WP Rockets %2$sdisable emoji%3$s"
 msgstr ""
-"%1$s %2$s poista emoji%3$s on ristiriidassa WP Rocketin %2$spoista emoji%3$s"
-" kanssa"
+"%1$s %2$s poista emoji%3$s on ristiriidassa WP Rocketin %2$spoista "
+"emojin%3$s kanssa"
 
 #. Translators: %1$s = Plugin name, %2$s = <em>, %3$s = </em>.
 #: inc/ThirdParty/Plugins/Optimization/Hummingbird.php:192
@@ -4081,8 +4092,8 @@ msgctxt "Hummingbird notice"
 msgid ""
 "%1$s %2$spage caching%3$s conflicts with WP Rocket %2$spage caching%3$s"
 msgstr ""
-"%1$s %2$ssivujen välimuisti%3$s on ristiriidassa WP Rocketin %2$ssivujen "
-"välimuistin%3$s kanssa"
+"%1$s %2$ssivuvälimuisti%3$s on ristiriidassa WP Rocketin "
+"%2$ssivuvälimuistin%3$s kanssa"
 
 #. Translators: %1$s = Plugin name, %2$s = <em>, %3$s = </em>.
 #: inc/ThirdParty/Plugins/Optimization/Hummingbird.php:294
@@ -4181,7 +4192,7 @@ msgstr "Luo mobiilikohtainen CPCSS"
 
 #: views/cpcss/metabox/container.php:19
 msgid "Critical Path CSS"
-msgstr "Critical Path CSS"
+msgstr "Kriittinen CSS"
 
 #. translators: %1$s = opening link tag, %2$s = closing link tag.
 #: views/cpcss/metabox/generate.php:23
@@ -4278,9 +4289,10 @@ msgid ""
 "and enhancements of this major version. You need an active license to use "
 "them on your website, don’t miss out! %6$sRenew Now%5$s"
 msgstr ""
-" %1$sWP-raketti %2$s%3$s on saatavilla. %4$sLisätietoja%5$s tämän suuren "
+" %1$sWP Rocket %2$s%3$s on saatavilla. %4$sLue lisää%5$s tämän suuren "
 "version päivityksistä ja parannuksista. Tarvitset aktiivisen lisenssin "
-"käyttääksesi niitä verkkosivustollasi, älä missaa! %6$sUusi nyt%5$s"
+"käyttääksesi niitä verkkosivustollasi, älä jää paitsi! %6$sUusi tilauksesi "
+"nyt%5$s"
 
 #: views/settings/dynamic-lists-update.php:14
 msgid "Update Inclusion and Exclusion Lists"
@@ -4308,7 +4320,7 @@ msgid ""
 "Improves font performance and combines multiple font requests to reduce the "
 "number of HTTP requests."
 msgstr ""
-"Parantaa kirjasinten suorituskykyä ja yhdistää useita kirjasinpyyntöjä HTTP-"
+"Parantaa fonttien suorituskykyä ja yhdistää useita fonttipyyntöjä HTTP-"
 "pyyntöjen määrän vähentämiseksi."
 
 #. translators: %1$s = opening link tag, %2$s = closing link tag.
@@ -4316,7 +4328,7 @@ msgstr ""
 msgid ""
 "Google Fonts Optimization is now enabled for your site. %1$sMore info%2$s"
 msgstr ""
-"Google Fonts Optimization on nyt otettu käyttöön sivustossasi. "
+"Google-fonttien optimointi on nyt otettu käyttöön sivustollasi. "
 "%1$sLisätietoja%2$s"
 
 #: views/settings/enable-google-fonts.php:38
@@ -4325,7 +4337,7 @@ msgstr "Optimoi Google-fontit"
 
 #: views/settings/fields/cache-lifespan.php:26
 msgid "Clear cache after"
-msgstr "Tyhjennä välimuisti"
+msgstr "Tyhjennä välimuisti jälkeen"
 
 #: views/settings/fields/categorized_multiselect.php:54
 msgid "3rd parties"
@@ -4377,7 +4389,7 @@ msgstr "CDN CNAME"
 #: views/settings/fields/rocket-cdn.php:62
 msgid "Purges RocketCDN cached resources for your website. %s"
 msgstr ""
-"Tyhjentää RocketCDN-välimuistissa olevat resurssit verkkosivustollesi. %s"
+"Tyhjentää RocketCDN-välimuistissa olevat resurssit verkkosivustollasi. %s"
 
 #: views/settings/fields/rocket-cdn.php:63
 #: views/settings/page-sections/cloudflare.php:36
@@ -4391,7 +4403,7 @@ msgstr "Tyhjennä kaikki RocketCDN välimuistitiedostot"
 
 #: views/settings/mobile-cache.php:11
 msgid "Mobile Cache"
-msgstr "Mobiillivälimuisti"
+msgstr "Mobiilivälimuisti"
 
 #: views/settings/mobile-cache.php:14
 msgid "Speed your site for mobile visitors."
@@ -4407,13 +4419,13 @@ msgstr "Ota käyttöön Mobiilivälimuisti"
 
 #: views/settings/page-sections/cloudflare.php:27
 msgid "Cloudflare Cache"
-msgstr "Cloudflare -välimuisti"
+msgstr "Cloudflare-välimuisti"
 
 #. translators: %s is a "Learn more" link.
 #: views/settings/page-sections/cloudflare.php:35
 #: views/settings/page-sections/sucuri.php:36
 msgid "Purges cached resources for your website. %s"
-msgstr "Tyhjentää välimuistiin ladatut resurssit. %s"
+msgstr "Tyhjentää välimuistiin ladatut resurssit sivustoltasi. %s"
 
 #: views/settings/page-sections/cloudflare.php:36
 msgid "https://support.cloudflare.com/hc/en-us/articles/200169246"
@@ -4421,7 +4433,7 @@ msgstr "https://support.cloudflare.com/hc/en-us/articles/200169246"
 
 #: views/settings/page-sections/cloudflare.php:45
 msgid "Clear all Cloudflare cache files"
-msgstr "Tyhjennä kaikki Cloudflaren välimuistin tiedostot"
+msgstr "Tyhjennä kaikki Cloudflare-välimuistin tiedostot"
 
 #: views/settings/page-sections/dashboard.php:39
 msgid "Congratulations!"
@@ -4451,7 +4463,7 @@ msgstr ""
 
 #: views/settings/page-sections/dashboard.php:46
 msgid "Continue to the options to further optimize your site!"
-msgstr "Jatka asetuksiin optimoidaksesi sivuasi vielä enemmän!"
+msgstr "Jatka asetuksiin optimoidaksesi sivustoasi vielä enemmän!"
 
 #: views/settings/page-sections/dashboard.php:63
 msgid "My Account"
@@ -4467,7 +4479,7 @@ msgstr "kanssa"
 
 #: views/settings/page-sections/dashboard.php:101
 msgid "Expiration Date"
-msgstr "Päättymisaika"
+msgstr "Vanhenee"
 
 #: views/settings/page-sections/dashboard.php:111
 msgid "View my account"
@@ -4484,7 +4496,7 @@ msgid ""
 " Rocket. %1$sWhat info will we collect?%2$s"
 msgstr ""
 "Annan luvan jakaa anonymisoitua dataani kehitystiimille auttaakseni WP "
-"Rocket parentelua. %1$sMitä tietoja keräämme?%2$s"
+"Rocketin kehittämistä. %1$sMitä tietoja keräämme?%2$s"
 
 #: views/settings/page-sections/dashboard.php:155
 msgid "Quick Actions"
@@ -4523,8 +4535,8 @@ msgstr "Etkö löytänyt ratkaisua?"
 msgid ""
 "Submit a ticket and get help from our friendly and knowledgeable Rocketeers."
 msgstr ""
-"Lähetä meille tukitiketti ja saa apua ystävälliseltä ja ammattitaitoiselta "
-"Rakettiryhmältämme."
+"Lähetä meille tukipyyntö, niin saa apua ystävälliseltä ja ammattitaitoiselta"
+" asiakaspalvelultamme."
 
 #: views/settings/page-sections/dashboard.php:238
 msgid "Ask support"
@@ -4642,7 +4654,7 @@ msgstr ""
 
 #: views/settings/page-sections/sucuri.php:46
 msgid "Clear all Sucuri cache files"
-msgstr "Tyhjennä Sucuri:n välimuisti"
+msgstr "Tyhjennä Sucurin välimuisti"
 
 #. translators: %1$s = formatted file size, %2$s = formatted number of entries
 #. (don't use %2$d).
@@ -4679,7 +4691,7 @@ msgstr "Palauta"
 #. translators: %s = WP Rocket version number.
 #: views/settings/page-sections/tools.php:64
 msgid "Has version %s caused an issue on your website?"
-msgstr "Onko versio %s aiheuttanut ongelmia?"
+msgstr "Onko versio %s aiheuttanut ongelmia sivustollasi?"
 
 #. translators: %s = <br>.
 #: views/settings/page-sections/tools.php:69
@@ -4725,7 +4737,7 @@ msgstr "Kuinka tarkistaa, tallentaako WP Rocket sivustosi välimuistiin"
 #: views/settings/page-sections/tutorials.php:18
 #: views/settings/partials/getting-started.php:14
 msgid "How to Measure the Speed of Your Site"
-msgstr "Kuinka mitata sivustosi nopeutta"
+msgstr "Kuinka mitata sivustosi nopeuden"
 
 #: views/settings/page-sections/tutorials.php:19
 msgid "How Preloading Works"
@@ -4733,7 +4745,7 @@ msgstr "Miten esilataus toimii"
 
 #: views/settings/page-sections/tutorials.php:23
 msgid "Passing the Core Web vitals"
-msgstr "Core Web vitals -pisteet"
+msgstr "Core Web Vitals -pisteet"
 
 #: views/settings/page-sections/tutorials.php:25
 msgid "How to improve LCP with WP Rocket"
@@ -4753,7 +4765,7 @@ msgstr "Vianmääritys"
 
 #: views/settings/page-sections/tutorials.php:33
 msgid "Troubleshooting Display Issues with File Optimization"
-msgstr "Näyttöongelmien vianmääritys tiedostooptimoinnin avulla"
+msgstr "Näyttöongelmien vianmääritys tiedosto-optimoinnin avulla"
 
 #: views/settings/page-sections/tutorials.php:34
 msgid "How to Find the Right JavaScript to Exclude"
@@ -4794,17 +4806,17 @@ msgid ""
 "WP Rocket will never transmit any domain names or email addresses (except "
 "for license validation), IP addresses, or third-party API keys."
 msgstr ""
-"WP Rocket ei koskaan lähetä tietoja verkkotunnuksista, sähköposteista "
+"WP Rocket ei koskaan välitä tietoja verkkotunnuksista, sähköposteista "
 "(paitsi lisenssin varmistuksen yhteydessä), IP-osoitteista tai kolmannen "
 "osapuolen API-avaimista."
 
 #: views/settings/page.php:91
 msgid "Activate Rocket analytics"
-msgstr "Aktivoi Rocket -analytiikka"
+msgstr "Aktivoi Rocket-analytiikka"
 
 #: views/settings/partials/documentation.php:15
 msgid "It is a great starting point to fix some of the most common issues."
-msgstr "Tämä on hyvä lähtökohta korjataksesi useimmat ongelmat."
+msgstr "Tämä on hyvä lähtökohta yleisimpien ongelmien korjaamiseen."
 
 #: views/settings/partials/documentation.php:22
 msgid "Read the documentation"
@@ -4816,11 +4828,11 @@ msgstr "Mitä WP Rocket tekee puolestasi oletuksena"
 
 #: views/settings/partials/sidebar.php:12
 msgid "How to correctly measure your website’s loading time"
-msgstr "Kuinka mittaat sivustosi nopeuden oikeaoppisesti"
+msgstr "Kuinka mittaat sivustosi nopeuden oikein"
 
 #: views/settings/partials/sidebar.php:14
 msgid "Check our tutorial and learn how to measure the speed of your site."
-msgstr "Katso ohjeemme ja opi, kuinka voi mitata sivustosi nopeuttta."
+msgstr "Katso ohjeemme ja opi, kuinka voi mitata sivustosi nopeuden."
 
 #: views/settings/partials/sidebar.php:15
 #: views/settings/partials/sidebar.php:24

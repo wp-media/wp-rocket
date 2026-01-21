@@ -32,6 +32,7 @@ return [
 				'delay' => 1,
 				'deletion_activated' => true,
 				'is_allowed' => true,
+				'allow_clean_rows' => true,
 			]
 		],
 		'shouldNotDeleteOnDisabled' => [
@@ -41,6 +42,7 @@ return [
 				'delay' => 0,
 				'deletion_activated' => false,
 				'is_allowed' => true,
+				'allow_clean_rows' => true,
 			]
 		],
 		'shouldNotDeleteIfNotAllowed' => [
@@ -50,6 +52,17 @@ return [
 				'delay' => 1,
 				'deletion_activated' => true,
 				'is_allowed' => false,
+				'allow_clean_rows' => true,
+			]
+		],
+		'shouldNotDeleteIfCleanRowsAreNotAllowed' => [
+			'input' => [
+				'used_css' => $used_css,
+				'has_delay' => true,
+				'delay' => 1,
+				'deletion_activated' => true,
+				'is_allowed' => true,
+				'allow_clean_rows' => false,
 			]
 		],
 	],

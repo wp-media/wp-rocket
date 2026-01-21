@@ -35,6 +35,10 @@ class DisplayRenewalSoonBanner extends TestCase {
 			]
 		);
 
+		if(! defined('WP_ROCKET_PLUGIN_NAME')) {
+			define('WP_ROCKET_PLUGIN_NAME', 'WP Rocket');
+		}
+
 		$this->stubEscapeFunctions();
 		$this->stubTranslationFunctions();
 	}

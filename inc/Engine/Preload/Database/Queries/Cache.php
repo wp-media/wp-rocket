@@ -2,12 +2,12 @@
 
 namespace WP_Rocket\Engine\Preload\Database\Queries;
 
+use WP_Rocket\Engine\Common\Database\Queries\AbstractQuery;
 use WP_Rocket\Logger\Logger;
-use WP_Rocket\Dependencies\BerlinDB\Database\Query;
 use WP_Rocket\Engine\Preload\Database\Rows\CacheRow;
 use WP_Rocket\Engine\Preload\Database\Schemas\Cache as Schema;
 
-class Cache extends Query {
+class Cache extends AbstractQuery {
 
 	/**
 	 * Logger instance.
@@ -119,7 +119,7 @@ class Cache extends Query {
 	 *
 	 * @param array $resource Resource array.
 	 *
-	 * @return bool
+	 * @return bool|int
 	 */
 	public function create_or_update( array $resource ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.resourceFound
 
@@ -156,7 +156,7 @@ class Cache extends Query {
 				]
 			);
 
-			if ( $resource_id ) {
+			if ( ! empty( $resource_id ) ) {
 				return $resource_id;
 			}
 
@@ -194,7 +194,7 @@ class Cache extends Query {
 	 *
 	 * @param array $resource Resource array.
 	 *
-	 * @return bool
+	 * @return bool|int
 	 */
 	public function create_or_nothing( array $resource ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.resourceFound
 
@@ -234,7 +234,7 @@ class Cache extends Query {
 			]
 		);
 
-		if ( $resource_id ) {
+		if ( ! empty( $resource_id ) ) {
 			return $resource_id;
 		}
 
@@ -388,7 +388,7 @@ class Cache extends Query {
 	 * @param int $id id from the task.
 	 * @return bool
 	 */
-	public function make_status_inprogress( int $id ) {
+	public function make_status_inprogress_by_id( int $id ) {
 		return $this->update_item(
 			$id,
 			[
@@ -653,7 +653,7 @@ class Cache extends Query {
 	 * @param int $id id from the task.
 	 * @return bool
 	 */
-	public function make_status_failed( int $id ) {
+	public function make_status_failed_by_id( int $id ) {
 		return $this->update_item(
 			$id,
 			[

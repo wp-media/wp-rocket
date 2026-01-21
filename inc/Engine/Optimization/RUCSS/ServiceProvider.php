@@ -7,6 +7,7 @@ use WP_Rocket\Dependencies\League\Container\Argument\Literal\StringArgument;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\{Database, OptionSubscriber, Settings};
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber as AdminSubscriber;
+use WP_Rocket\Engine\Optimization\RUCSS\APIHandler\APIClient;
 use WP_Rocket\Engine\Optimization\RUCSS\Context\RUCSSContext;
 use WP_Rocket\Engine\Optimization\RUCSS\Context\RUCSSOptimizeContext;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\Filesystem;
@@ -107,11 +108,14 @@ class ServiceProvider extends AbstractServiceProvider {
 					'options',
 				]
 				);
+		$this->getContainer()->add( 'rucss_api_client', APIClient::class )
+			->addArgument( 'options' );
 		$this->getContainer()->addShared( 'rucss_factory', Factory::class )
 			->addArguments(
 					[
 						'rucss_manager',
 						'rucss_usedcss_table',
+						'rucss_api_client',
 					]
 				);
 		$this->getContainer()->add( 'rucss_used_css_controller', UsedCSSController::class )

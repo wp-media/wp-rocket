@@ -52,10 +52,15 @@ class Test_Optimize extends TestCase {
 
 
 		$combine = new Combine();
+		$optimized_html = $combine->optimize( $html );
 
-		$this->assertSame(
-			$this->format_the_html( $expected ),
-			$this->format_the_html( $combine->optimize( $html ) )
-		);
+		if ( is_string( $expected ) ) {
+			$this->assertSame(
+				$this->format_the_html( $expected ),
+				$this->format_the_html( $optimized_html )
+			);
+		} else if ( is_array( $expected ) ) {
+			$this->assertSame( $expected['fonts'], $combine->get_font_urls() );
+		}
 	}
 }

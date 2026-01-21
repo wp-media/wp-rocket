@@ -58,7 +58,6 @@ class GetUserData extends TestCase {
 				->andReturn( self::getApiCredential( 'ROCKET_EMAIL' ) );
 
 			Functions\when( 'sanitize_key' )->returnArg();
-
 			Functions\expect( 'wp_safe_remote_post' )
 				->once()
 				->with(

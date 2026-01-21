@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\Common\PerformanceHints\Frontend;
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Filesystem_Direct;
+use WP_Rocket\Engine\Common\Utils;
 
 class Processor {
 
@@ -95,7 +96,7 @@ class Processor {
 	 * @return string The modified HTML content with the beacon script injected just before the closing body tag.
 	 */
 	private function inject_beacon( $html, $url, $is_mobile ): string {
-		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) && empty( $_GET['wpr_imagedimensions'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) && ! Utils::is_saas_visit() ) {
 			return $html;
 		}
 

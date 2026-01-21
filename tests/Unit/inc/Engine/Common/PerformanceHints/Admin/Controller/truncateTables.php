@@ -52,7 +52,7 @@ class Test_TruncateTables extends TestCase {
 					->method( 'remove_all_completed_rows' );
 			} elseif ( 'truncate' === $expected ) {
 				$this->table->expects( $this->once() )
-					->method( 'truncate_table' );
+					->method( 'truncate' );
 			}
 		}
 

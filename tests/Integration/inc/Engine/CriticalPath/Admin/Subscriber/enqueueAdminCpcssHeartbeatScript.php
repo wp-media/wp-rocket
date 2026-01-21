@@ -28,8 +28,14 @@ class Test_EnqueueAdminCpcssHeartbeatScript extends TestCase {
 		self::$user_id = static::factory()->user->create( [ 'role' => 'administrator' ] );
 	}
 
+	public function set_up() {
+		parent::set_up();
+		add_filter( 'rocket_rocket_insights_enabled', '__return_false' );
+	}
+
 	public function tear_down() {
 		remove_filter( 'pre_get_rocket_option_async_css', [ $this, 'setCPCSSOption' ] );
+		remove_filter( 'rocket_rocket_insights_enabled', '__return_false' );
 
 		parent::tear_down();
 	}

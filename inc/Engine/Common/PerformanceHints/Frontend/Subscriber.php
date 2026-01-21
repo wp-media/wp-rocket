@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Common\PerformanceHints\Frontend;
 
 use WP_Rocket\Buffer\Tests;
+use WP_Rocket\Engine\Common\Utils;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 class Subscriber implements Subscriber_Interface {
@@ -54,10 +55,9 @@ class Subscriber implements Subscriber_Interface {
 	 * @return string
 	 */
 	public function maybe_apply_optimizations( $html ): string {
-		if ( empty( $html ) || ( ! isset( $_GET['wpr_imagedimensions'] ) && isset( $_GET['wpr_lazyrendercontent'] ) ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( empty( $html ) || ( ! Utils::is_saas_visit() && Utils::is_inspector_visit() ) ) {
 			return $html;
 		}
-
 		return $this->processor->maybe_apply_optimizations( $html );
 	}
 
@@ -67,7 +67,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function start_performance_hints_buffer() {
-		if ( ! isset( $_GET['wpr_imagedimensions'] ) && ! isset( $_GET['wpr_lazyrendercontent'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( ! Utils::is_saas_visit() && ! Utils::is_inspector_visit() ) {
 			return;
 		}
 
@@ -91,7 +91,7 @@ class Subscriber implements Subscriber_Interface {
 		 *
 		 * @since 3.17
 		 *
-		 * @param $buffer Page HTML content.
+		 * @param $buffer string HTML content.
 		 */
 		return wpm_apply_filters_typed( 'string', 'rocket_performance_hints_buffer', $buffer );
 	}

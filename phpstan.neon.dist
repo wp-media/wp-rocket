@@ -54,6 +54,10 @@ parameters:
 		 # These need plugin stubs!
 		 - %currentWorkingDirectory%/inc/classes/subscriber/third-party/
 		 - %currentWorkingDirectory%/inc/3rd-party/
+	ignoreErrors:
+		-
+			identifier: custom.rules.discourageApplyFilters
+			path: tests/*
 rules:
 	- WP_Rocket\Tests\phpstan\Rules\DiscourageWPOptionUsage
 	- WP_Rocket\Tests\phpstan\Rules\DiscourageApplyFilters

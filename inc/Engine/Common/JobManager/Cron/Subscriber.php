@@ -70,6 +70,9 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function schedule_clean_not_commonly_used_rows() {
 		if ( ! $this->job_processor->is_allowed() ) {
+			if ( wp_next_scheduled( 'rocket_saas_clean_rows_time_event' ) ) {
+				wp_clear_scheduled_hook( 'rocket_saas_clean_rows_time_event' );
+			}
 			return;
 		}
 
@@ -124,9 +127,11 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		foreach ( $this->factories as $factory ) {
-			if ( $factory->manager()->is_allowed() ) {
-				$factory->table()->delete_old_rows();
+			$manager = $factory->manager();
+			if ( ! $manager->is_allowed() || ! $manager->allow_clean_rows() ) {
+				continue;
 			}
+			$factory->table()->delete_old_rows();
 		}
 	}
 

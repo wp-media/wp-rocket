@@ -40,7 +40,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		'preload_subscriber',
 		'preload_front_subscriber',
 		'preload_cron_subscriber',
-		'fonts_preload_subscriber',
 		'preload_activation',
 	];
 
@@ -152,13 +151,6 @@ class ServiceProvider extends AbstractServiceProvider {
 					'preload_settings',
 					'preload_caches_query',
 					'preload_url_controller',
-				]
-			);
-		$this->getContainer()->addShared( 'fonts_preload_subscriber', Fonts::class )
-			->addArguments(
-				[
-					'options',
-					'cdn',
 				]
 			);
 		$this->getContainer()->addShared( 'preload_admin_subscriber', AdminSubscriber::class )

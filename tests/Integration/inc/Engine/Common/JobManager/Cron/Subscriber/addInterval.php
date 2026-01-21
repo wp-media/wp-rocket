@@ -21,7 +21,7 @@ class Test_AddInterval extends TestCase {
 		remove_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
 		remove_filter( 'rocket_saas_pending_jobs_cron_interval', [ $this, 'set_interval'] );
 		remove_filter( 'rocket_remove_saas_failed_jobs_cron_interval', [ $this, 'set_interval'] );
-
+		remove_filter( 'rocket_rocket_insights_enabled', '__return_false' );
 
 		parent::tear_down();
 	}
@@ -34,6 +34,7 @@ class Test_AddInterval extends TestCase {
 		$this->interval = $config['interval'];
 
 		add_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
+		add_filter( 'rocket_rocket_insights_enabled', '__return_false' );
 
 		if ( null !== $this->interval ) {
 			add_filter( 'rocket_saas_pending_jobs_cron_interval', [ $this, 'set_interval'] );

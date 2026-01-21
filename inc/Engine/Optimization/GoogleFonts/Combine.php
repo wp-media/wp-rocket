@@ -33,6 +33,13 @@ class Combine extends AbstractGFOptimization {
 	protected $subsets = '';
 
 	/**
+	 * Font urls.
+	 *
+	 * @var array
+	 */
+	protected $font_urls = [];
+
+	/**
 	 * Combines multiple Google Fonts links into one
 	 *
 	 * @since  3.1
@@ -42,6 +49,7 @@ class Combine extends AbstractGFOptimization {
 	 * @return string
 	 */
 	public function optimize( $html ): string {
+		$this->font_urls = [];
 		Logger::info( 'GOOGLE FONTS COMBINE PROCESS STARTED.', [ 'GF combine process' ] );
 
 		$html_nocomments = $this->hide_comments( $html );
@@ -64,7 +72,7 @@ class Combine extends AbstractGFOptimization {
 			function ( $font ) use ( $exclusions ) {
 				return ! $this->is_excluded( $font[0], $exclusions );
 			}
-			);
+		);
 
 		$num_fonts = count( $filtered_fonts );
 
@@ -84,7 +92,7 @@ class Combine extends AbstractGFOptimization {
 			return $html;
 		}
 
-		$html = preg_replace( '@<\/title>@i', '$0' . $this->get_optimized_markup( $this->get_combined_url() ), $html, 1 );
+		$this->font_urls[] = $this->get_combined_url();
 
 		foreach ( $filtered_fonts as $font ) {
 			$html = str_replace( $font[0], '', $html );
@@ -151,5 +159,48 @@ class Combine extends AbstractGFOptimization {
 		$display = $this->get_font_display_value();
 
 		return esc_url( "https://fonts.googleapis.com/css?family={$this->fonts}{$this->subsets}&display={$display}" );
+	}
+
+	/**
+	 * Get font urls, getter method for font_urls property.
+	 *
+	 * @return array
+	 */
+	public function get_font_urls(): array {
+		return $this->font_urls;
+	}
+
+	/**
+	 * Insert font stylesheets into head.
+	 *
+	 * @param array $items Head elements.
+	 * @return mixed
+	 */
+	public function insert_font_stylesheet_into_head( $items ) {
+		$font_urls = $this->get_font_urls();
+		if ( empty( $font_urls ) ) {
+			return $items;
+		}
+
+		return $this->prepare_stylesheet_fonts_to_head( $font_urls, $items );
+	}
+
+	/**
+	 * Insert font preloads into head.
+	 *
+	 * @param array $items Head elements.
+	 * @return mixed
+	 */
+	public function insert_font_preload_into_head( $items ) {
+		$font_urls = $this->get_font_urls();
+		if ( empty( $font_urls ) ) {
+			return $items;
+		}
+
+		if ( ! $this->is_preload_enabled() ) {
+			return $items;
+		}
+
+		return $this->prepare_preload_fonts_to_head( $font_urls, $items );
 	}
 }

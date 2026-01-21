@@ -29,16 +29,16 @@ class Test_Optimize extends TestCase {
 			],
         ];
 
-        $this->unregisterAllCallbacksExcept('rocket_buffer', 'process', 17 );
+        $this->unregisterAllCallbacksExceptMulti('rocket_buffer', [ 17 => 'process', 100000 => 'insert_rocket_head' ] );
 		add_filter('rocket_exclude_locally_host_fonts', [ $this, 'exclude_locally_host_fonts' ] ); // @phpstan-ignore-line
 	}
 
 	public function tear_down() {
+		$this->wp_rocket_debug = false;
 		remove_filter( 'pre_get_rocket_option_minify_google_fonts', [ $this, 'return_true' ] );
 		remove_filter( 'rocket_combined_google_fonts_display', [ $this, 'set_display_value' ] );
 		remove_filter( 'rocket_disable_google_fonts_preload', [ $this, 'set_disable_preload' ] );
 		remove_filter('rocket_exclude_locally_host_fonts', [ $this, 'exclude_locally_host_fonts' ] );
-
 
 		$this->restoreWpHook('rocket_buffer');
 
@@ -50,6 +50,7 @@ class Test_Optimize extends TestCase {
      */
 	public function testShouldCombineGoogleFontsV1( $config, $original, $combined ) {
 		$this->config = $config;
+		$this->wp_rocket_debug = ! empty( $config['wp_rocket_debug'] );
 		$this->doTest( $config, $original, $combined );
 	}
 
@@ -84,7 +85,7 @@ class Test_Optimize extends TestCase {
 		$actual = apply_filters( 'rocket_buffer', $original );
 
 		$this->assertSame(
-			$this->format_the_html( $expected ),
+			$this->format_the_html( is_string( $expected ) ? $expected : $expected['html'] ),
 			$this->format_the_html( $actual )
 		);
 	}

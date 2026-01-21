@@ -14,6 +14,8 @@ abstract class TestCase extends BaseTestCase {
 	use IsolateHookTrait;
 	use DBTrait;
 
+	private $request_time_float;
+
 	protected static $use_settings_trait = true;
 	protected static $transients         = [];
 
@@ -67,9 +69,13 @@ abstract class TestCase extends BaseTestCase {
 		if ( static::$use_settings_trait ) {
 			$this->setUpSettings();
 		}
+
+		$this->request_time_float = $_SERVER['REQUEST_TIME_FLOAT'];
 	}
 
 	public function tear_down() {
+		$_SERVER['REQUEST_TIME_FLOAT'] = $this->request_time_float;
+
 		$this->resetStubProperties();
 
 		if ( static::$use_settings_trait ) {

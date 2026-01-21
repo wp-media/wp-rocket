@@ -39,6 +39,8 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 	private $dicontainer;
 
 	public function set_up() {
+		self::installPreconnectExternalDomainsTable();
+
 		parent::set_up();
 
 		// Unhook to avoid triggering when storing the configured settings.
@@ -66,6 +68,7 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 
 	public function tear_down() {
 		parent::tear_down();
+		self::uninstallPreconnectDomainsTable();
 
 		$this->dicontainer->tearDown();
 

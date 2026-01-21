@@ -46,9 +46,12 @@ class Test_EnableMobileCache extends AjaxTestCase {
 		}
 
 		$_POST['nonce'] = wp_create_nonce( 'rocket-ajax' );
-		$_POST['action'] = 'rocket_enable_mobile_cache';
 
-		$response       = $this->callAjaxAction();
+		$this->expectException( 'WPAjaxDieContinueException' );
+
+		$this->_handleAjax( $this->action );
+
+		$response = json_decode( $this->_last_response );
 
 		$options   = get_option( 'wp_rocket_settings' );
 		$cache_mobile = $options['cache_mobile'];

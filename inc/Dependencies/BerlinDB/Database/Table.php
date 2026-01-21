@@ -358,7 +358,7 @@ abstract class Table extends Base {
 			return false;
 		}
 
-		// Query statement
+		// Query statement to check if table exists.
 		$query    = "SHOW TABLES LIKE %s";
 		$like     = $db->esc_like( $this->table_name );
 		$prepared = $db->prepare( $query, $like );
