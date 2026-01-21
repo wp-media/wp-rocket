@@ -593,6 +593,12 @@ class User {
 		return '';
 	}
 
+	/**
+	 * Convert ban reason code to human-readable text.
+	 *
+	 * @param string $ban_reason Ban reason code.
+	 * @return string
+	 */
 	private function get_ban_reason_text( $ban_reason ) {
 		$reasons = [
 			'BANNED_WEBSITE' => __( 'your website is banned', 'rocket' ),
