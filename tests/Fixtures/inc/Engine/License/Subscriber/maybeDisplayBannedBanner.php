@@ -84,7 +84,7 @@ return [
 		</div>
 	</div>
 	<div class="rocket-expired-cta-container">
-		<a href="" class="rocket-renew-cta" target="_blank" rel="noopener noreferrer">GET WP ROCKET AT 20% OFF</a>
+		<a href="https://wp-rocket.me/order/?add-to-cart=191&#038;coupon_code=back2rocket" class="rocket-renew-cta" target="_blank" rel="noopener noreferrer">GET WP ROCKET AT 20% OFF</a>
 	</div>
 </section>',
     ],

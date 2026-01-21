@@ -75,6 +75,6 @@ return [
             'current_screen' => 'settings_page_wp-crontrol-schedules',
         ],
         'expected' => '<div class="notice notice-error ">
-		<p><strong>WP Rocket</strong>: Your license has been revoked and your site is no longer optimized for speed. <a href="" target="_blank" rel="noopener noreferrer">Get WP Rocket at 20% off</a></p>			</div>',
+		<p><strong>WP Rocket</strong>: Your license has been revoked and your site is no longer optimized for speed. <a href="https://wp-rocket.me/order/?add-to-cart=191&coupon_code=back2rocket" target="_blank" rel="noopener noreferrer">Get WP Rocket at 20% off</a></p>			</div>',
     ],
 ];
