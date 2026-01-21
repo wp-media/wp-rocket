@@ -19,7 +19,7 @@ class Banned extends Abstract_Render {
 	 *
 	 * @var string
 	 */
-	private $purchase_url = '';
+	private $purchase_url = 'https://wp-rocket.me/order/?add-to-cart=191&coupon_code=back2rocket';
 
 	/**
 	 * Constructor.
