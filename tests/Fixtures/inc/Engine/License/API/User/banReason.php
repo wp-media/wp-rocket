@@ -22,7 +22,7 @@ return [
 		'data'     => json_decode( json_encode( [
 			'ID'         => 1,
 			'licence' => (object) [
-				'ban_reason' => 'ANY_REASON',
+				'plugin_updates_ban_reason' => 'ANY_REASON',
 			],
 		] ) ),
 		'expected' => 'ANY_REASON',

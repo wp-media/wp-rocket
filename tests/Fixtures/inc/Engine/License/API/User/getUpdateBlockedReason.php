@@ -15,10 +15,10 @@ return [
 			'licence_expiration' => strtotime( 'next year' ),
 			'licence' => [
 				'is_banned'  => true,
-				'ban_reason' => 'Payment failed',
+				'plugin_updates_ban_reason' => 'BANNED_WEBSITE',
 			],
 		] ) ),
-		'expected' => 'There was an error updating the plugin because Payment failed',
+		'expected' => 'There was an error updating the plugin because your website is banned',
 	],
 	'testShouldReturnDefaultBanMessageWhenBannedWithoutReason' => [
 		'data'     => json_decode( json_encode( [
@@ -43,10 +43,10 @@ return [
 			'licence_expiration' => strtotime( 'last year' ),
 			'licence' => [
 				'is_banned'  => true,
-				'ban_reason' => 'Fraud detected',
+				'plugin_updates_ban_reason' => 'BANNED_WEBSITE',
 			],
 		] ) ),
-		'expected' => 'There was an error updating the plugin because Fraud detected',
+		'expected' => 'There was an error updating the plugin because your website is banned',
 	],
 	'testShouldReturnEmptyStringWhenBannedNotSet' => [
 		'data'     => json_decode( json_encode( [
