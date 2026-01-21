@@ -103,6 +103,63 @@ return [
 		],
 		'expected' => '',
 	],
+	'testShouldReturnNullWhenUserIsBanned' => [
+		'config' => [
+			'user'   => json_decode( json_encode( [
+				'licence_account'    => 1,
+				'licence_expiration' => strtotime( 'next year' ),
+				'date_created'      => strtotime( 'last year' ),
+				'licence' => (object) [
+					'prices' => [
+						'upgrades' => [
+							(object) [
+								'name' => 'Growth',
+								'slug' => 'growth',
+								'saving' => 150,
+								'upgrade_url' => "https://growthupgradeurl.com/",
+								'regular_price' => 200,
+								'websites' => "3",
+								'stack' => false,
+							]
+						],
+					],
+                    'is_banned' => true,
+                ],
+			] ) ),
+			'pricing' => json_decode( json_encode( [
+				'licenses' => [
+					'single'   => [
+						'websites' => 1,
+					],
+					'plus'     => [
+						'prices'      => [
+							'from_single' => [
+								'regular' => 50,
+							],
+						],
+						'websites'    => 3,
+
+					],
+					'infinite' => [
+						'prices'       => [
+							'from_single' => [
+								'regular' => 200,
+							],
+						],
+						'websites'    => -1,
+					],
+				],
+				'promo' => [
+					'name' => 'Halloween',
+					'discount_percent' => 20,
+					'start_date' => strtotime( 'last week' ),
+					'end_date' => strtotime( 'next week' ),
+				],
+			] ) ),
+			'transient' => false,
+		],
+		'expected' => '',
+	],
 	'testShouldDisplayBannerForSingleWhenPromoNotDismissed' => [
 		'config' => [
 			'user'   => json_decode( json_encode( [

@@ -21,14 +21,23 @@ class Subscriber implements Subscriber_Interface {
 	private $renewal;
 
 	/**
+	 * Banned instance
+	 *
+	 * @var Banned
+	 */
+	private $banned;
+
+	/**
 	 * Instantiate the class
 	 *
 	 * @param Upgrade $upgrade Upgrade instance.
 	 * @param Renewal $renewal Renewal instance.
+	 * @param Banned  $banned Banned instance.
 	 */
-	public function __construct( Upgrade $upgrade, Renewal $renewal ) {
+	public function __construct( Upgrade $upgrade, Renewal $renewal, Banned $banned ) {
 		$this->upgrade = $upgrade;
 		$this->renewal = $renewal;
+		$this->banned  = $banned;
 	}
 
 	/**
@@ -43,6 +52,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_menu_title'                   => [
 				[ 'add_notification_bubble' ],
 				[ 'add_notification_bubble_expired' ],
+				[ 'maybe_add_banned_bubble' ],
 			],
 			'admin_footer-settings_page_wprocket' => [
 				[ 'dismiss_notification_bubble' ],
@@ -52,6 +62,7 @@ class Subscriber implements Subscriber_Interface {
 				[ 'display_promo_banner' ],
 				[ 'display_renewal_soon_banner', 11 ],
 				[ 'display_renewal_expired_banner', 12 ],
+				[ 'maybe_display_banned_banner', 13 ],
 			],
 			'wp_ajax_rocket_dismiss_promo'        => 'dismiss_promo_banner',
 			'wp_ajax_rocket_dismiss_renewal'      => 'dismiss_renewal_banner',
@@ -63,6 +74,7 @@ class Subscriber implements Subscriber_Interface {
 			],
 			'get_rocket_option_remove_unused_css' => [ 'maybe_disable_option', PHP_INT_MAX ],
 			'get_rocket_option_async_css'         => [ 'maybe_disable_option', PHP_INT_MAX ],
+			'admin_notices'                       => 'maybe_display_banned_notice',
 		];
 	}
 
@@ -249,5 +261,37 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function maybe_disable_option( $value ) {
 		return $this->renewal->maybe_disable_option( $value );
+	}
+
+	/**
+	 * Displays the banned website banner in the dashboard if the site's license is revoked.
+	 *
+	 * @since 3.20.4
+	 * @return void
+	 */
+	public function maybe_display_banned_banner() {
+		$this->banned->maybe_display_banned_banner();
+	}
+
+	/**
+	 * Displays a banned notice in the admin area if the website license is banned.
+	 *
+	 * @since 3.20.4
+	 * @return void
+	 */
+	public function maybe_display_banned_notice() {
+		$this->banned->maybe_display_banned_notice();
+	}
+
+	/**
+	 * Adds a banned license notification bubble to the WP Rocket menu item title if the website's license is banned.
+	 *
+	 * @since 3.20.4
+	 *
+	 * @param string $menu_title The current menu title.
+	 * @return string Modified menu title with banned notification bubble if applicable.
+	 */
+	public function maybe_add_banned_bubble( $menu_title ) {
+		return $this->banned->maybe_add_banned_bubble( $menu_title );
 	}
 }
