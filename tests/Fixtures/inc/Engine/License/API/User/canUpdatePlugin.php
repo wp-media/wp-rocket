@@ -48,7 +48,6 @@ return [
 			'licence_expiration' => strtotime( 'next year' ),
 			'licence' => [
 				'is_banned'  => false,
-				'is_revoked' => true,
 			],
 		] ) ),
 		'expected' => false,

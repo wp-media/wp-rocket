@@ -59,7 +59,6 @@ return [
 			'licence_expiration' => strtotime( 'next year' ),
 			'licence' => [
 				'is_banned'  => false,
-				'is_revoked' => true,
 			],
 		] ) ),
 		'expected' => 'There was an error updating the plugin.',
