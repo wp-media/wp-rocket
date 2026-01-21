@@ -56,9 +56,14 @@ class AddNotificationBubble extends TestCase {
 			->andReturn( $config['licence_expiration'] );
 
 		$this->user->shouldReceive( 'get_creation_date' )
-		           ->atMost()
-		           ->once()
-		           ->andReturn( $config['date_created'] );
+			->atMost()
+			->once()
+			->andReturn( $config['date_created'] );
+		
+		$this->user->shouldReceive( 'is_banned' )
+			->atMost()
+			->once()
+			->andReturn( $config['is_banned'] ?? false );
 
 		$this->pricing->shouldReceive( 'is_promo_active' )
 			->atMost()
