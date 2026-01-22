@@ -576,7 +576,7 @@ class User {
 
 		// Check if website is banned first.
 		if ( $this->is_banned() ) {
-			$reason_text = $this->get_ban_reason_text( $this->ban_reason() );
+			$reason_text = $this->get_blocked_reason_text( $this->ban_reason() );
 			if ( ! empty( $reason_text ) ) {
 				return rtrim( $message, '.' ) . ' ' . sprintf(
 					/* translators: %s: ban reason */
@@ -596,18 +596,18 @@ class User {
 	}
 
 	/**
-	 * Convert ban reason code to human-readable text.
+	 * Converts a blocked reason code to human-readable text.
 	 *
-	 * @param string $ban_reason Ban reason code.
-	 * @return string
+	 * @param string $reason_code Reason code from the API.
+	 * @return string Human-readable reason text, empty string if code is unknown.
 	 */
-	private function get_ban_reason_text( $ban_reason ) {
+	private function get_blocked_reason_text( $reason_code ) {
 		$reasons = [
 			'BANNED_WEBSITE' => __( 'your website is banned', 'rocket' ),
 		];
-		if ( empty( $ban_reason ) || ! isset( $reasons[ $ban_reason ] ) ) {
+		if ( empty( $reason_code ) || ! isset( $reasons[ $reason_code ] ) ) {
 			return '';
 		}
-		return $reasons[ $ban_reason ];
+		return $reasons[ $reason_code ];
 	}
 }
