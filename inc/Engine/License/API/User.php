@@ -572,22 +572,39 @@ class User {
 	 * @return string Empty string if updates are available, otherwise the reason.
 	 */
 	public function get_update_blocked_reason() {
+		$base_message = __( 'There was an error updating the plugin.', 'rocket' );
+
 		// Check if website is banned first.
 		if ( $this->is_banned() ) {
+<<<<<<< HEAD
 			$reason_text = $this->get_ban_reason_text( $this->ban_reason() );
 			if ( ! empty( $reason_text ) ) {
 				return sprintf(
 					/* translators: %s: ban reason */
 					__( 'There was an error updating the plugin because %s', 'rocket' ),
 					$reason_text
+=======
+			$reason = $this->ban_reason();
+			if ( ! empty( $reason ) ) {
+				return rtrim( $base_message, '.' ) . ' ' . sprintf(
+					/* translators: %s: specific reason */
+					__( 'because %s', 'rocket' ),
+					$reason
+>>>>>>> 1358c93e2 (Apply DRY principle to update blocked reason message)
 				);
 			}
-			return __( 'There was an error updating the plugin.', 'rocket' );
+			return $base_message;
 		}
 
+<<<<<<< HEAD
 		// Check if license is expired.
 		if ( $this->is_license_expired() ) {
 			return __( 'There was an error updating the plugin.', 'rocket' );
+=======
+		// Check if license is revoked or expired.
+		if ( $this->is_revoked() || $this->is_license_expired() ) {
+			return $base_message;
+>>>>>>> 1358c93e2 (Apply DRY principle to update blocked reason message)
 		}
 
 		return '';
