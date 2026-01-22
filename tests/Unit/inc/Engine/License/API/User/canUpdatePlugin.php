@@ -6,11 +6,11 @@ use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * Test class covering \WP_Rocket\Engine\License\API\User::ban_reason
+ * Test class covering \WP_Rocket\Engine\License\API\User::can_update_plugin
  *
  * @group License
  */
-class BanReason extends TestCase {
+class CanUpdatePlugin extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
@@ -19,7 +19,7 @@ class BanReason extends TestCase {
 
 		$this->assertSame(
 			$expected,
-			$user->ban_reason()
+			$user->can_update_plugin()
 		);
 	}
 }
