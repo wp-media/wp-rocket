@@ -125,40 +125,40 @@ class Page extends Abstract_Render {
 	 * @param Options_Data $options       WP Rocket options instance.
 	 * @param Context      $ri_context   Rocket Insights context instance.
 	 */
-	public function __construct(
-		array $args,
-		Settings $settings,
-		Render $render,
-		Beacon $beacon,
-		Optimization $optimize,
-		UserClient $user_client,
-		SiteList $delayjs_sitelist,
-		$template_path,
-		Options_Data $options,
-		Context $ri_context
-	) {
-		parent::__construct( $template_path );
-		$args = array_merge(
-			[
-				'slug'       => 'wprocket',
-				'title'      => 'WP Rocket',
-				'capability' => 'rocket_manage_options',
-			],
-			$args
-		);
+public function __construct(
+	array $args,
+	Settings $settings,
+	Render $render,
+	Beacon $beacon,
+	Optimization $optimize,
+	UserClient $user_client,
+	SiteList $delayjs_sitelist,
+	$template_path,
+	Options_Data $options,
+	Context $ri_context
+) {
+	parent::__construct( $template_path );
+	$args = array_merge(
+		[
+			'slug'       => 'wprocket',
+			'title'      => 'WP Rocket',
+			'capability' => 'rocket_manage_options',
+		],
+		$args
+	);
 
-		$this->slug             = $args['slug'];
-		$this->title            = $args['title'];
-		$this->capability       = $args['capability'];
-		$this->settings         = $settings;
-		$this->render           = $render;
-		$this->beacon           = $beacon;
-		$this->optimize         = $optimize;
-		$this->user_client      = $user_client;
-		$this->delayjs_sitelist = $delayjs_sitelist;
-		$this->options          = $options;
-		$this->ri_context       = $ri_context;
-	}
+	$this->slug             = $args['slug'];
+	$this->title            = $args['title'];
+	$this->capability       = $args['capability'];
+	$this->settings         = $settings;
+	$this->render           = $render;
+	$this->beacon           = $beacon;
+	$this->optimize         = $optimize;
+	$this->user_client      = $user_client;
+	$this->delayjs_sitelist = $delayjs_sitelist;
+	$this->options          = $options;
+	$this->ri_context       = $ri_context;
+}
 
 	/**
 	 * Returns the settings page title.
@@ -167,9 +167,9 @@ class Page extends Abstract_Render {
 	 *
 	 * @return string
 	 */
-	public function get_title() {
-		return $this->title;
-	}
+public function get_title() {
+	return $this->title;
+}
 
 	/**
 	 * Returns the settings page slug.
@@ -178,9 +178,9 @@ class Page extends Abstract_Render {
 	 *
 	 * @return string
 	 */
-	public function get_slug() {
-		return $this->slug;
-	}
+public function get_slug() {
+	return $this->slug;
+}
 
 	/**
 	 * Returns the settings page capability.
@@ -189,58 +189,58 @@ class Page extends Abstract_Render {
 	 *
 	 * @return string
 	 */
-	public function get_capability() {
-		return $this->capability;
-	}
+public function get_capability() {
+	return $this->capability;
+}
 
 	/**
 	 * Registers the settings, page sections, fields sections and fields.
 	 *
 	 * @since 3.0
 	 */
-	public function configure() {
-		register_setting( $this->slug, WP_ROCKET_SLUG, [ $this->settings, 'sanitize_callback' ] );
-	}
+public function configure() {
+	register_setting( $this->slug, WP_ROCKET_SLUG, [ $this->settings, 'sanitize_callback' ] );
+}
 
 	/**
 	 * Renders the settings page.
 	 *
 	 * @since 3.0
 	 */
-	public function render_page() {
-		$rocket_valid_key = rocket_valid_key();
-		if ( $rocket_valid_key ) {
-			$this->dashboard_section();
-			$this->rocket_insights_section();
-			$this->assets_section();
-			$this->media_section();
-			$this->preload_section();
-			$this->advanced_cache_section();
-			$this->database_section();
-			$this->cdn_section();
-			$this->heartbeat_section();
-			$this->addons_section();
-			$this->cloudflare_section();
-			$this->sucuri_section();
-		} else {
-			$this->license_section();
-		}
-
-		$this->render->set_settings( $this->settings->get_settings() );
-
-		$this->hidden_fields();
-
-		$this->render->set_hidden_settings( $this->settings->get_hidden_settings() );
-
-		$btn_submit_text = $rocket_valid_key ? __( 'Save Changes', 'rocket' ) : __( 'Validate License', 'rocket' );
-		echo $this->render->generate( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
-			'page',
-			[
-				'slug'            => $this->slug, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
-				'btn_submit_text' => $btn_submit_text, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
-			]
-		);
+public function render_page() {
+	$rocket_valid_key = rocket_valid_key();
+	if ( $rocket_valid_key ) {
+		$this->dashboard_section();
+		$this->rocket_insights_section();
+		$this->assets_section();
+		$this->media_section();
+		$this->preload_section();
+		$this->advanced_cache_section();
+		$this->database_section();
+		$this->cdn_section();
+		$this->heartbeat_section();
+		$this->addons_section();
+		$this->cloudflare_section();
+		$this->sucuri_section();
+	} else {
+		$this->license_section();
 	}
+
+	$this->render->set_settings( $this->settings->get_settings() );
+
+	$this->hidden_fields();
+
+	$this->render->set_hidden_settings( $this->settings->get_hidden_settings() );
+
+	$btn_submit_text = $rocket_valid_key ? __( 'Save Changes', 'rocket' ) : __( 'Validate License', 'rocket' );
+	echo $this->render->generate( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+		'page',
+		[
+			'slug'            => $this->slug, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+			'btn_submit_text' => $btn_submit_text, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+		]
+	);
+}
 
 	/**
 	 * Enqueues WP Rocket scripts on the settings page
@@ -251,13 +251,13 @@ class Page extends Abstract_Render {
 	 *
 	 * @return void
 	 */
-	public function enqueue_rocket_scripts( $hook ) {
-		if ( 'settings_page_wprocket' !== $hook ) {
-			return;
-		}
-
-		wp_enqueue_script( 'wistia-e-v1', 'https://fast.wistia.com/assets/external/E-v1.js', [], null, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
+public function enqueue_rocket_scripts( $hook ) {
+	if ( 'settings_page_wprocket' !== $hook ) {
+		return;
 	}
+
+	wp_enqueue_script( 'wistia-e-v1', 'https://fast.wistia.com/assets/external/E-v1.js', [], null, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
+}
 
 	/**
 	 * Adds the async attribute to the Wistia script
@@ -269,13 +269,13 @@ class Page extends Abstract_Render {
 	 *
 	 * @return string
 	 */
-	public function async_wistia_script( $tag, $handle ) {
-		if ( 'wistia-e-v1' !== $handle ) {
-			return $tag;
-		}
-
-		return str_replace( ' src', ' async src', $tag );
+public function async_wistia_script( $tag, $handle ) {
+	if ( 'wistia-e-v1' !== $handle ) {
+		return $tag;
 	}
+
+	return str_replace( ' src', ' async src', $tag );
+}
 
 	/**
 	 * Returns the customer data to display on the dashboard
@@ -285,50 +285,47 @@ class Page extends Abstract_Render {
 	 *
 	 * @return array
 	 */
-	public function customer_data() {
-		$user_data = $this->user_client->get_user_data();
-		$user      = new User( $user_data );
+public function customer_data() {
+	$user_data = $this->user_client->get_user_data();
+	$user      = new User( $user_data );
 
-		$data = [
-			'license_expiration'    => __( 'Unavailable', 'rocket' ),
-			'license_class'         => 'wpr-isInvalid',
-			'is_from_one_dot_com'   => false,
-			'can_update_plugin'     => false,
-			'update_blocked_reason' => '',
-		];
+	$data = [
+		'license_expiration'    => __( 'Unavailable', 'rocket' ),
+		'license_class'         => 'wpr-isInvalid',
+		'is_from_one_dot_com'   => false,
+		'can_update_plugin'     => false,
+		'update_blocked_reason' => '',
+	];
 
-		$data['license_type'] = rocket_get_license_type( $user_data );
+	$data['license_type'] = rocket_get_license_type( $user_data );
 
-		if ( ! is_object( $user_data ) ) {
-			return $data;
-		}
-
-		if ( ! empty( $user_data->licence_expiration ) ) {
-			$data['license_class'] = ( time() < $user_data->licence_expiration && ! $user->is_banned() ) ? 'wpr-isValid' : 'wpr-isInvalid';
-		}
-
-		if ( $user->is_banned() ) {
-			$data['license_expiration'] = __( 'Ended', 'rocket' );
-		} elseif ( ! empty( $user_data->licence_expiration ) ) {
-			$data['license_expiration'] = date_i18n( get_option( 'date_format' ), (int) $user_data->licence_expiration );
-		}
-
-		if ( isset( $user_data->{'has_one-com_account'} ) ) {
-			$data['is_from_one_dot_com'] = (bool) $user_data->{'has_one-com_account'};
-		}
-
-		// Get plugin update status.
-		$data['can_update_plugin']     = $user->can_update_plugin();
-		$data['update_blocked_reason'] = $user->get_update_blocked_reason();
-
+	if ( ! is_object( $user_data ) ) {
 		return $data;
 	}
 
-	/**
-	 * Toggle sliding checkboxes option value.
-	 *
-	 * @since 3.0
-	 */
+	$user = new User( $user_data );
+
+	if ( ! empty( $user_data->licence_expiration ) ) {
+		$data['license_class']      = ( time() < $user_data->licence_expiration && ! $user->is_banned() ) ? 'wpr-isValid' : 'wpr-isInvalid';
+		$data['license_expiration'] = date_i18n( get_option( 'date_format' ), (int) $user_data->licence_expiration );
+	}
+
+	if ( $user->is_banned() ) {
+		$data['license_expiration'] = __( 'Ended', 'rocket' );
+	}
+
+	if ( isset( $user_data->{'has_one-com_account'} ) ) {
+		$data['is_from_one_dot_com'] = (bool) $user_data->{'has_one-com_account'};
+	}
+
+	// Get plugin update status.
+	$data['can_update_plugin']     = $user->can_update_plugin();
+	$data['update_blocked_reason'] = $user->get_update_blocked_reason();
+
+	return $data;
+	*
+	* @since 3.0
+	* /
 	public function toggle_option() {
 		check_ajax_referer( 'rocket-ajax' );
 
