@@ -58,6 +58,10 @@ class Renewal extends Abstract_Render {
 			return;
 		}
 
+		if ( $this->user->is_banned() ) {
+			return;
+		}
+
 		if ( $this->user->is_license_expired() ) {
 			return;
 		}
