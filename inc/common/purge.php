@@ -131,18 +131,6 @@ if ( ! function_exists( 'rocket_get_purge_urls' ) ) {
 			$purge_urls[] = $author_url;
 		}
 
-		$post_name = get_post_field( 'post_name', $post_id );
-		// If the slug has changed, add all children pages with the new slug.
-		if ( $post_name != $post_data['post_name'] ) {
-			// Add all children.
-			$children = rocket_get_all_descendant( $post_id );
-			if ( (bool) $children ) {
-				foreach ( $children as $child_id ) {
-					$purge_urls[] = get_permalink( $child_id );
-				}
-			}
-		}
-
 		// Remove entries with empty values in array.
 		$purge_urls = array_filter( $purge_urls, 'is_string' );
 
