@@ -545,11 +545,15 @@ function rocket_maybe_find_right_trash_url( array $parsed_url, int $post_id ) {
  * @param string $url The URL (absolute or relative) to analyze.
  * @return int Number of segments in the URL path (0 if empty or no path).
  */
-function rocket_count_path_segments(string $url): int {
-    $path = parse_url($url, PHP_URL_PATH) ?? '';
-    $path = trim($path, '/');              // "/" -> ""
-    if ($path === '') return 0;
-    return count(explode('/', $path));     // "a/b/c" -> 3
+function rocket_count_path_segments( string $url ): int {
+	$path = parse_url( $url, PHP_URL_PATH ) ?? '';
+	$path = trim( $path, '/' );              // "/" -> ""
+
+	if ( '' === $path ) {
+		return 0;
+	}
+
+	return count( explode( '/', $path ) );   // "a/b/c" -> 3
 }
 
 /**
