@@ -55,6 +55,11 @@ class DisplayRenewalExpiredBanner extends TestCase {
 		$this->user->shouldReceive( 'is_auto_renew' )
 			->andReturn( $config['user']['auto_renew'] );
 
+		$this->user->shouldReceive( 'is_banned' )
+			->atMost()
+			->once()
+			->andReturn( $config['user']['is_banned'] ?? false );
+
 		$this->options->shouldReceive( 'get' )
 			->with( 'optimize_css_delivery', 0 )
 			->andReturn( $config['ocd'] );

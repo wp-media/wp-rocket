@@ -1,20 +1,6 @@
 <?php
 
 return [
-    'testShouldNotAddBubbleWhenLicenseIsExpired' => [
-        'config' => [
-            'user' => json_decode( json_encode( [
-				'licence_account'    => 1,
-				'has_auto_renew'     => false,
-				'licence_expiration' => strtotime( 'last year' ),
-                'licence' => (object) [
-                    'is_banned' => true,
-                ],
-			] ) ),
-            'current_user_can' => true,
-        ],
-        'expected' => 'WP Rocket',
-    ],
     'testShouldNotAddBubbleWhenUserIsNotBanned' => [
         'config' => [
             'user' => json_decode( json_encode( [
@@ -48,7 +34,7 @@ return [
             'user' => json_decode( json_encode( [
 				'licence_account'    => 1,
 				'has_auto_renew'     => false,
-				'licence_expiration' => strtotime( 'next year' ),
+				'licence_expiration' => strtotime( 'last year' ),
                 'licence' => (object) [
                     'is_banned' => true,
                 ],

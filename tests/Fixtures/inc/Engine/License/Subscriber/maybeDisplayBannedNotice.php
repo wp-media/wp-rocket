@@ -1,21 +1,6 @@
 <?php
 
 return [
-    'testShouldNotDisplayNoticeWhenLicenseIsExpired' => [
-        'config' => [
-            'user' => json_decode( json_encode( [
-				'licence_account'    => 1,
-				'has_auto_renew'     => false,
-				'licence_expiration' => strtotime( 'last year' ),
-                'licence' => (object) [
-                    'is_banned' => true,
-                ],
-			] ) ),
-            'current_user_can' => true,
-            'current_screen' => 'settings_page_wp-crontrol-schedules',
-        ],
-        'expected' => '',
-    ],
     'testShouldNotDisplayNoticeWhenUserIsNotBanned' => [
         'config' => [
             'user' => json_decode( json_encode( [
@@ -66,7 +51,7 @@ return [
             'user' => json_decode( json_encode( [
 				'licence_account'    => 1,
 				'has_auto_renew'     => false,
-				'licence_expiration' => strtotime( 'next year' ),
+				'licence_expiration' => strtotime( 'last year' ),
                 'licence' => (object) [
                     'is_banned' => true,
                 ],
