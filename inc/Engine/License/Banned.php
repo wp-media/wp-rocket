@@ -121,10 +121,6 @@ class Banned extends Abstract_Render {
 	 * @return bool True if the notice can be displayed, false otherwise.
 	 */
 	private function can_display(): bool {
-		if ( $this->user->is_license_expired() ) {
-			return false;
-		}
-
 		if ( ! $this->user->is_banned() ) {
 			return false;
 		}
