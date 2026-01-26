@@ -111,7 +111,7 @@ class Renewal extends Abstract_Render {
 		if ( false !== get_transient( 'rocket_renewal_banner_' . get_current_user_id() ) ) {
 			return;
 		}
-		
+
 		if ( $this->user->is_banned() ) {
 			return;
 		}
