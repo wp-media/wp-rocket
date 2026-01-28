@@ -81,6 +81,20 @@ return [
 		],
 		'expected' => '',
 	],
+	'testShouldReturnNullWhenLicenseIsBanned' => [
+		'config'   => [
+			'user' => json_decode( json_encode( [
+				'licence_account'    => 1,
+				'has_auto_renew'     => false,
+				'licence_expiration' => strtotime( 'next week' ),
+				'licence' => (object) [
+                    'is_banned' => true,
+                ],
+			] ) ),
+			'pricing' => $pricing,
+		],
+		'expected' => '',
+	],
 	'testShouldReturnDataWhenLicenseAndSingleAndNotGrandfathered' => [
 		'config'   => [
 			'user' => json_decode( json_encode( [

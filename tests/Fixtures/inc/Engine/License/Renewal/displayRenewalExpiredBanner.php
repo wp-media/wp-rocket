@@ -61,6 +61,22 @@ return [
 		],
 		'expected' => null,
 	],
+	'shouldReturnNullWhenUserIsBanned' => [
+		'config'   => [
+			'user' => [
+				'licence_account'    => 1,
+				'licence_expired'    => false,
+				'licence_expiration' => strtotime( 'last year' ),
+				'auto_renew' => false,
+				'is_banned' => true,
+			],
+			'ocd' => false,
+			'transient' => false,
+			'pricing' => $pricing,
+			'disabled_date' => '',
+		],
+		'expected' => null,
+	],
 	'shouldReturnNullWhenBannerDismissed' => [
 		'config'   => [
 			'user' => [

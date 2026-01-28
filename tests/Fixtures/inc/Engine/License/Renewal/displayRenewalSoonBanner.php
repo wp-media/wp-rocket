@@ -86,6 +86,18 @@ return [
 		],
 		'expected' => null,
 	],
+	'testShouldReturnNullWhenLicenseIsBanned' => [
+		'config'   => [
+			'user' => [
+				'licence_account'    => 1,
+				'licence_expired'    => false,
+				'auto_renew'         => false,
+				'licence_expiration' => strtotime( 'next week' ),
+				'is_banned'			 => true,
+			],
+		],
+		'expected' => null,
+	],
 	'testShouldReturnDataWhenLicenseAndSingleAndNotGrandfathered' => [
 		'config'   => [
 			'user' => [
