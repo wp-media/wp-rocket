@@ -559,7 +559,7 @@ function rocket_get_license_type( $customer_data ) {
 		return __( 'Unavailable', 'rocket' );
 	}
 
-	if ( isset( $customer_data->licence->is_banned ) && $customer_data->licence->is_banned ) {
+	if ( isset( $customer_data->licence->is_revoked ) && $customer_data->licence->is_revoked ) {
 		return __( 'Revoked', 'rocket' );
 	}
 

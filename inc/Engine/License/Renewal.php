@@ -58,7 +58,7 @@ class Renewal extends Abstract_Render {
 			return;
 		}
 
-		if ( $this->user->is_banned() ) {
+		if ( $this->user->is_revoked() ) {
 			return;
 		}
 
@@ -112,7 +112,7 @@ class Renewal extends Abstract_Render {
 			return;
 		}
 
-		if ( $this->user->is_banned() ) {
+		if ( $this->user->is_revoked() ) {
 			return;
 		}
 

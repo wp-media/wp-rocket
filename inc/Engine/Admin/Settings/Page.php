@@ -304,10 +304,10 @@ class Page extends Abstract_Render {
 		}
 
 		if ( ! empty( $user_data->licence_expiration ) ) {
-			$data['license_class'] = ( time() < $user_data->licence_expiration && ! $user->is_banned() ) ? 'wpr-isValid' : 'wpr-isInvalid';
+			$data['license_class'] = ( time() < $user_data->licence_expiration && ! $user->is_revoked() ) ? 'wpr-isValid' : 'wpr-isInvalid';
 		}
 
-		if ( $user->is_banned() ) {
+		if ( $user->is_revoked() ) {
 			$data['license_expiration'] = __( 'Ended', 'rocket' );
 		} elseif ( ! empty( $user_data->licence_expiration ) ) {
 			$data['license_expiration'] = date_i18n( get_option( 'date_format' ), (int) $user_data->licence_expiration );
