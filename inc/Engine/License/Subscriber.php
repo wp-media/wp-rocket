@@ -21,23 +21,23 @@ class Subscriber implements Subscriber_Interface {
 	private $renewal;
 
 	/**
-	 * Banned instance
+	 * Revoked instance
 	 *
-	 * @var Banned
+	 * @var Revoked
 	 */
-	private $banned;
+	private $revoked;
 
 	/**
 	 * Instantiate the class
 	 *
 	 * @param Upgrade $upgrade Upgrade instance.
 	 * @param Renewal $renewal Renewal instance.
-	 * @param Banned  $banned Banned instance.
+	 * @param Revoked $revoked Revoked instance.
 	 */
-	public function __construct( Upgrade $upgrade, Renewal $renewal, Banned $banned ) {
+	public function __construct( Upgrade $upgrade, Renewal $renewal, Revoked $revoked ) {
 		$this->upgrade = $upgrade;
 		$this->renewal = $renewal;
-		$this->banned  = $banned;
+		$this->revoked = $revoked;
 	}
 
 	/**
@@ -52,7 +52,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_menu_title'                   => [
 				[ 'add_notification_bubble' ],
 				[ 'add_notification_bubble_expired' ],
-				[ 'maybe_add_banned_bubble' ],
+				[ 'maybe_add_revoked_bubble' ],
 			],
 			'admin_footer-settings_page_wprocket' => [
 				[ 'dismiss_notification_bubble' ],
@@ -62,7 +62,7 @@ class Subscriber implements Subscriber_Interface {
 				[ 'display_promo_banner' ],
 				[ 'display_renewal_soon_banner', 11 ],
 				[ 'display_renewal_expired_banner', 12 ],
-				[ 'maybe_display_banned_banner', 13 ],
+				[ 'maybe_display_revoked_banner', 13 ],
 			],
 			'wp_ajax_rocket_dismiss_promo'        => 'dismiss_promo_banner',
 			'wp_ajax_rocket_dismiss_renewal'      => 'dismiss_renewal_banner',
@@ -74,7 +74,7 @@ class Subscriber implements Subscriber_Interface {
 			],
 			'get_rocket_option_remove_unused_css' => [ 'maybe_disable_option', PHP_INT_MAX ],
 			'get_rocket_option_async_css'         => [ 'maybe_disable_option', PHP_INT_MAX ],
-			'admin_notices'                       => 'maybe_display_banned_notice',
+			'admin_notices'                       => 'maybe_display_revoked_notice',
 		];
 	}
 
@@ -264,34 +264,34 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Displays the banned website banner in the dashboard if the site's license is revoked.
+	 * Displays the revoked website banner in the dashboard if the site's license is revoked.
 	 *
 	 * @since 3.20.4
 	 * @return void
 	 */
-	public function maybe_display_banned_banner() {
-		$this->banned->maybe_display_banned_banner();
+	public function maybe_display_revoked_banner() {
+		$this->revoked->maybe_display_revoked_banner();
 	}
 
 	/**
-	 * Displays a banned notice in the admin area if the website license is banned.
+	 * Displays a revoked notice in the admin area if the website license is revoked.
 	 *
 	 * @since 3.20.4
 	 * @return void
 	 */
-	public function maybe_display_banned_notice() {
-		$this->banned->maybe_display_banned_notice();
+	public function maybe_display_revoked_notice() {
+		$this->revoked->maybe_display_revoked_notice();
 	}
 
 	/**
-	 * Adds a banned license notification bubble to the WP Rocket menu item title if the website's license is banned.
+	 * Adds a revoked license notification bubble to the WP Rocket menu item title if the website's license is revoked.
 	 *
 	 * @since 3.20.4
 	 *
 	 * @param string $menu_title The current menu title.
-	 * @return string Modified menu title with banned notification bubble if applicable.
+	 * @return string Modified menu title with revoked notification bubble if applicable.
 	 */
-	public function maybe_add_banned_bubble( $menu_title ) {
-		return $this->banned->maybe_add_banned_bubble( $menu_title );
+	public function maybe_add_revoked_bubble( $menu_title ) {
+		return $this->revoked->maybe_add_revoked_bubble( $menu_title );
 	}
 }
