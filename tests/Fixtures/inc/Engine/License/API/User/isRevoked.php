@@ -11,45 +11,45 @@ return [
 		] ) ),
 		'expected' => false,
 	],
-	'testShouldReturnFalseWhenBannedPropertyNotSet' => [
+	'testShouldReturnFalseWhenRevokedPropertyNotSet' => [
 		'data'     => json_decode( json_encode( [
 			'ID' => 1,
 			'licence' => (object) [],
 		] ) ),
 		'expected' => false,
 	],
-	'testShouldReturnFalseWhenNotBanned' => [
+	'testShouldReturnFalseWhenNotRevoked' => [
 		'data'     => json_decode( json_encode( [
 			'ID'         => 1,
 			'licence' => (object) [
-				'is_banned' => false,
+				'is_revoked' => false,
 			],
 		] ) ),
 		'expected' => false,
 	],
-	'testShouldReturnFalseWhenBannedIsZero' => [
+	'testShouldReturnFalseWhenRevokedIsZero' => [
 		'data'     => json_decode( json_encode( [
 			'ID'         => 1,
 			'licence' => (object) [
-				'is_banned' => 0,
+				'is_revoked' => 0,
 			],
 		] ) ),
 		'expected' => false,
 	],
-	'testShouldReturnTrueWhenBanned' => [
+	'testShouldReturnTrueWhenRevoked' => [
 		'data'     => json_decode( json_encode( [
 			'ID'         => 1,
 			'licence' => (object) [
-				'is_banned' => true,
+				'is_revoked' => true,
 			],
 		] ) ),
 		'expected' => true,
 	],
-	'testShouldReturnTrueWhenBannedIsOne' => [
+	'testShouldReturnTrueWhenRevokedIsOne' => [
 		'data'     => json_decode( json_encode( [
 			'ID'         => 1,
 			'licence' => (object) [
-				'is_banned' => 1,
+				'is_revoked' => 1,
 			],
 		] ) ),
 		'expected' => true,

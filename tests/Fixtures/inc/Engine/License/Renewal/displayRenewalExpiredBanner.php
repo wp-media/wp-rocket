@@ -61,14 +61,14 @@ return [
 		],
 		'expected' => null,
 	],
-	'shouldReturnNullWhenUserIsBanned' => [
+	'shouldReturnNullWhenUserIsRevoked' => [
 		'config'   => [
 			'user' => [
 				'licence_account'    => 1,
 				'licence_expired'    => false,
 				'licence_expiration' => strtotime( 'last year' ),
 				'auto_renew' => false,
-				'is_banned' => true,
+				'is_revoked' => true,
 			],
 			'ocd' => false,
 			'transient' => false,

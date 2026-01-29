@@ -45,12 +45,12 @@ return [
 		],
 		'expected' => false,
 	],
-	'testShouldDoNothingWhenUserIsBanned' => [
+	'testShouldDoNothingWhenUserIsRevoked' => [
 		'config'   => [
 			'licence_account'    => 1,
 			'licence_expired'    => false,
 			'licence_expiration' => strtotime( 'next year' ),
-			'is_banned' => true,
+			'is_revoked' => true,
 			'promo_active'       => true,
 			'transient'          => false,
 			'date_created'          => strtotime( 'last year' ),

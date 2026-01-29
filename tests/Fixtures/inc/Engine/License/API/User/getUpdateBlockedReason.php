@@ -1,30 +1,30 @@
 <?php
 
 return [
-	'testShouldReturnEmptyStringWhenNotBannedAndLicenseNotExpired' => [
+	'testShouldReturnEmptyStringWhenNotRevokedAndLicenseNotExpired' => [
 		'data'     => json_decode( json_encode( [
 			'licence_expiration' => strtotime( 'next year' ),
 			'licence' => [
-				'is_banned' => false,
+				'is_revoked' => false,
 			],
 		] ) ),
 		'expected' => '',
 	],
-	'testShouldReturnBanReasonWhenBannedWithReason' => [
+	'testShouldReturnBanReasonWhenRevokedWithReason' => [
 		'data'     => json_decode( json_encode( [
 			'licence_expiration' => strtotime( 'next year' ),
 			'licence' => [
-				'is_banned'  => true,
+				'is_revoked'  => true,
 				'plugin_updates_ban_reason' => 'BANNED_WEBSITE',
 			],
 		] ) ),
 		'expected' => 'There was an error updating the plugin because your website is banned',
 	],
-	'testShouldReturnDefaultBanMessageWhenBannedWithoutReason' => [
+	'testShouldReturnDefaultBanMessageWhenRevokedWithoutReason' => [
 		'data'     => json_decode( json_encode( [
 			'licence_expiration' => strtotime( 'next year' ),
 			'licence' => [
-				'is_banned' => true,
+				'is_revoked' => true,
 			],
 		] ) ),
 		'expected' => 'There was an error updating the plugin.',
@@ -33,22 +33,22 @@ return [
 		'data'     => json_decode( json_encode( [
 			'licence_expiration' => strtotime( 'last year' ),
 			'licence' => [
-				'is_banned' => false,
+				'is_revoked' => false,
 			],
 		] ) ),
 		'expected' => 'There was an error updating the plugin.',
 	],
-	'testShouldReturnBanReasonWhenBothBannedAndExpired' => [
+	'testShouldReturnBanReasonWhenBothRevokedAndExpired' => [
 		'data'     => json_decode( json_encode( [
 			'licence_expiration' => strtotime( 'last year' ),
 			'licence' => [
-				'is_banned'  => true,
+				'is_revoked'  => true,
 				'plugin_updates_ban_reason' => 'BANNED_WEBSITE',
 			],
 		] ) ),
 		'expected' => 'There was an error updating the plugin because your website is banned',
 	],
-	'testShouldReturnEmptyStringWhenBannedNotSet' => [
+	'testShouldReturnEmptyStringWhenRevokedNotSet' => [
 		'data'     => json_decode( json_encode( [
 			'licence_expiration' => strtotime( 'next year' ),
 		] ) ),

@@ -1,14 +1,14 @@
 <?php
 
 return [
-    'testShouldNotDisplayNoticeWhenUserIsNotBanned' => [
+    'testShouldNotDisplayNoticeWhenUserIsNotRevoked' => [
         'config' => [
             'user' => json_decode( json_encode( [
 				'licence_account'    => 1,
 				'has_auto_renew'     => false,
 				'licence_expiration' => strtotime( 'next year' ),
                 'licence' => (object) [
-                    'is_banned' => false,
+                    'is_revoked' => false,
                 ],
 			] ) ),
             'current_user_can' => true,
@@ -23,7 +23,7 @@ return [
 				'has_auto_renew'     => false,
 				'licence_expiration' => strtotime( 'next year' ),
                 'licence' => (object) [
-                    'is_banned' => true,
+                    'is_revoked' => true,
                 ],
 			] ) ),
             'current_user_can' => false,
@@ -38,7 +38,7 @@ return [
 				'has_auto_renew'     => false,
 				'licence_expiration' => strtotime( 'next year' ),
                 'licence' => (object) [
-                    'is_banned' => true,
+                    'is_revoked' => true,
                 ],
 			] ) ),
             'current_user_can' => true,
@@ -53,7 +53,7 @@ return [
 				'has_auto_renew'     => false,
 				'licence_expiration' => strtotime( 'last year' ),
                 'licence' => (object) [
-                    'is_banned' => true,
+                    'is_revoked' => true,
                 ],
 			] ) ),
             'current_user_can' => true,
