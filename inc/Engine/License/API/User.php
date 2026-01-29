@@ -603,7 +603,7 @@ class User {
 	 */
 	private function get_blocked_reason_text( $reason_code ) {
 		$reasons = [
-			'BANNED_WEBSITE' => __( 'your website is revoked', 'rocket' ),
+			'BANNED_WEBSITE' => __( 'your website is banned', 'rocket' ),
 		];
 		if ( empty( $reason_code ) || ! isset( $reasons[ $reason_code ] ) ) {
 			return '';
