@@ -15,11 +15,11 @@ return [
 		],
 		'expected' => null,
 	],
-	'testShouldReturnNullWhenUserIsBanned' => [
+	'testShouldReturnNullWhenUserIsRevoked' => [
 		'config'   => [
 			'license_account'    => 1,
 			'licence_expiration' => false,
-			'is_banned'          => true,
+			'is_revoked'          => true,
 			'upgrades' => [
 				(object) [
 					'name' => 'Growth',

@@ -86,14 +86,14 @@ return [
 		],
 		'expected' => null,
 	],
-	'testShouldReturnNullWhenLicenseIsBanned' => [
+	'testShouldReturnNullWhenLicenseIsRevoked' => [
 		'config'   => [
 			'user' => [
 				'licence_account'    => 1,
 				'licence_expired'    => false,
 				'auto_renew'         => false,
 				'licence_expiration' => strtotime( 'next week' ),
-				'is_banned'			 => true,
+				'is_revoked'			 => true,
 			],
 		],
 		'expected' => null,

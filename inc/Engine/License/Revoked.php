@@ -6,7 +6,7 @@ namespace WP_Rocket\Engine\License;
 use WP_Rocket\Abstract_Render;
 use WP_Rocket\Engine\License\API\User;
 
-class Banned extends Abstract_Render {
+class Revoked extends Abstract_Render {
 	/**
 	 * User client API instance.
 	 *
@@ -33,14 +33,14 @@ class Banned extends Abstract_Render {
 	}
 
 	/**
-	 * Displays the banned website banner on the WP Rocket settings page.
+	 * Displays the revoked website banner on the WP Rocket settings page.
 	 *
-	 * This method checks whether the banned banner should be shown, confirms the user is viewing the settings page,
+	 * This method checks whether the revoked banner should be shown, confirms the user is viewing the settings page,
 	 * constructs a message identifying loss of access to features, and renders the banner template.
 	 *
 	 * @return void
 	 */
-	public function maybe_display_banned_banner(): void {
+	public function maybe_display_revoked_banner(): void {
 		if ( ! $this->can_display() ) {
 			return;
 		}
@@ -60,7 +60,7 @@ class Banned extends Abstract_Render {
 
         // phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo $this->generate(
-			'banned-website-banner',
+			'revoked-website-banner',
 			[
 				'purchase_url' => $this->purchase_url,
 				'message'      => $message,
@@ -69,15 +69,15 @@ class Banned extends Abstract_Render {
 	}
 
 	/**
-	 * Displays a banned license notice on admin pages except the WP Rocket settings page.
+	 * Displays a revoked license notice on admin pages except the WP Rocket settings page.
 	 *
-	 * This method checks if the current user should see the banned site notice,
+	 * This method checks if the current user should see the revoked site notice,
 	 * ensures it is not the WP Rocket settings page, and then displays a dismissible
-	 * error notice informing the user of the banned state.
+	 * error notice informing the user of the revoked state.
 	 *
 	 * @return void
 	 */
-	public function maybe_display_banned_notice(): void {
+	public function maybe_display_revoked_notice(): void {
 		if ( ! $this->can_display() ) {
 			return;
 		}
@@ -97,31 +97,31 @@ class Banned extends Abstract_Render {
 	}
 
 	/**
-	 * Adds a banned license notification bubble to the WP Rocket menu item.
+	 * Adds a revoked license notification bubble to the WP Rocket menu item.
 	 *
-	 * Displays a notification bubble in the WP Rocket menu title when the website's license is banned.
+	 * Displays a notification bubble in the WP Rocket menu title when the website's license is revoked.
 	 *
 	 * @param string $menu_title The current menu title.
-	 * @return string Modified menu title with banned notification bubble if applicable.
+	 * @return string Modified menu title with revoked notification bubble if applicable.
 	 */
-	public function maybe_add_banned_bubble( $menu_title ): string {
+	public function maybe_add_revoked_bubble( $menu_title ): string {
 		if ( ! $this->can_display() ) {
 			return $menu_title;
 		}
 
-		return $menu_title . ' <span class="rocket-banned-bubble"></span>';
+		return $menu_title . ' <span class="rocket-revoked-bubble"></span>';
 	}
 
 	/**
-	 * Determines whether the banned notice can be displayed to the current user.
+	 * Determines whether the revoked notice can be displayed to the current user.
 	 *
-	 * Checks if the user's license is not expired, the site/user is banned,
+	 * Checks if the user's license is not expired, the site/user is revoked,
 	 * and the current user has the 'rocket_manage_options' capability.
 	 *
 	 * @return bool True if the notice can be displayed, false otherwise.
 	 */
 	private function can_display(): bool {
-		if ( ! $this->user->is_banned() ) {
+		if ( ! $this->user->is_revoked() ) {
 			return false;
 		}
 

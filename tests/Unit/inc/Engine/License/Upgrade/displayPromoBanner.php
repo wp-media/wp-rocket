@@ -63,10 +63,10 @@ class DisplayPromoBanner extends TestCase {
 		           ->once()
 		           ->andReturn( $config['date_created'] );
 
-		$this->user->shouldReceive( 'is_banned' )
+		$this->user->shouldReceive( 'is_revoked' )
 		           ->atMost()
 		           ->once()
-		           ->andReturn( $config['is_banned'] ?? false );
+		           ->andReturn( $config['is_revoked'] ?? false );
 
 		$this->pricing->shouldReceive( 'is_promo_active' )
 			->atMost()

@@ -1,20 +1,20 @@
 <?php
 
 return [
-	'testShouldReturnTrueWhenNotBannedAndLicenseNotExpired' => [
+	'testShouldReturnTrueWhenNotRevokedAndLicenseNotExpired' => [
 		'data'     => json_decode( json_encode( [
 			'licence_expiration' => strtotime( 'next year' ),
 			'licence' => [
-				'is_banned' => false,
+				'is_revoked' => false,
 			],
 		] ) ),
 		'expected' => true,
 	],
-	'testShouldReturnFalseWhenBanned' => [
+	'testShouldReturnFalseWhenRevoked' => [
 		'data'     => json_decode( json_encode( [
 			'licence_expiration' => strtotime( 'next year' ),
 			'licence' => [
-				'is_banned' => true,
+				'is_revoked' => true,
 			],
 		] ) ),
 		'expected' => false,
@@ -23,21 +23,21 @@ return [
 		'data'     => json_decode( json_encode( [
 			'licence_expiration' => strtotime( 'last year' ),
 			'licence' => [
-				'is_banned' => false,
+				'is_revoked' => false,
 			],
 		] ) ),
 		'expected' => false,
 	],
-	'testShouldReturnFalseWhenBannedAndLicenseExpired' => [
+	'testShouldReturnFalseWhenRevokedAndLicenseExpired' => [
 		'data'     => json_decode( json_encode( [
 			'licence_expiration' => strtotime( 'last year' ),
 			'licence' => [
-				'is_banned' => true,
+				'is_revoked' => true,
 			],
 		] ) ),
 		'expected' => false,
 	],
-	'testShouldReturnTrueWhenBannedNotSet' => [
+	'testShouldReturnTrueWhenRevokedNotSet' => [
 		'data'     => json_decode( json_encode( [
 			'licence_expiration' => strtotime( 'next year' ),
 		] ) ),

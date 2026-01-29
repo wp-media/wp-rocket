@@ -41,7 +41,7 @@ class Upgrade extends Abstract_Render {
 	 * @return void
 	 */
 	public function display_upgrade_section() {
-		if ( $this->user->is_banned() ) {
+		if ( $this->user->is_revoked() ) {
 			return;
 		}
 
@@ -62,7 +62,7 @@ class Upgrade extends Abstract_Render {
 			return;
 		}
 
-		if ( $this->user->is_banned() ) {
+		if ( $this->user->is_revoked() ) {
 			return;
 		}
 
@@ -291,7 +291,7 @@ class Upgrade extends Abstract_Render {
 			return false;
 		}
 
-		if ( $this->user->is_banned() ) {
+		if ( $this->user->is_revoked() ) {
 			return false;
 		}
 

@@ -11,7 +11,7 @@ return [
 		] ) ),
 		'expected' => '',
 	],
-	'testShouldReturnEmptyStringWhenBannedPropertyNotSet' => [
+	'testShouldReturnEmptyStringWhenRevokedPropertyNotSet' => [
 		'data'     => json_decode( json_encode( [
 			'ID' => 1,
 			'licence' => (object) [],

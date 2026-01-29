@@ -23,7 +23,7 @@
 	text-align: center;
 	z-index: 26;
 }
-#wpadminbar #wp-admin-bar-wp-rocket .ab-item .rocket-banned-bubble {
+#wpadminbar #wp-admin-bar-wp-rocket .ab-item .rocket-revoked-bubble {
 	position: relative;
 	box-sizing: border-box;
 	margin: 1px 0 0px 2px;
@@ -31,7 +31,7 @@
 	height: 18px;
 	border-radius: 9px;
 }
-.rocket-banned-bubble {
+.rocket-revoked-bubble {
 	display: inline-block;
 	vertical-align: -4px;
 	box-sizing: border-box;

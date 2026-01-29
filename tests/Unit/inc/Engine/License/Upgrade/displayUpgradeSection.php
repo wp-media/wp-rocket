@@ -38,10 +38,10 @@ class DisplayUpgradeSection extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
-		$this->user->shouldReceive( 'is_banned' )
+		$this->user->shouldReceive( 'is_revoked' )
 			->atMost()
 			->times( 1 )
-			->andReturn( $config['is_banned'] ?? false );
+			->andReturn( $config['is_revoked'] ?? false );
 
 		$this->user->shouldReceive( 'is_license_expired' )
 			->atMost()

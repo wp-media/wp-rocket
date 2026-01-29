@@ -1,14 +1,14 @@
 <?php
 
 return [
-    'testShouldNotDisplayBannerWhenUserIsNotBanned' => [
+    'testShouldNotDisplayBannerWhenUserIsNotRevoked' => [
         'config' => [
             'user' => json_decode( json_encode( [
 				'licence_account'    => 1,
 				'has_auto_renew'     => false,
 				'licence_expiration' => strtotime( 'next year' ),
                 'licence' => (object) [
-                    'is_banned' => false,
+                    'is_revoked' => false,
                 ],
 			] ) ),
             'current_user_can' => true,
@@ -23,7 +23,7 @@ return [
 				'has_auto_renew'     => false,
 				'licence_expiration' => strtotime( 'next year' ),
                 'licence' => (object) [
-                    'is_banned' => true,
+                    'is_revoked' => true,
                 ],
 			] ) ),
             'current_user_can' => false,
@@ -38,7 +38,7 @@ return [
 				'has_auto_renew'     => false,
 				'licence_expiration' => strtotime( 'next year' ),
                 'licence' => (object) [
-                    'is_banned' => true,
+                    'is_revoked' => true,
                 ],
 			] ) ),
             'current_user_can' => true,
@@ -53,13 +53,13 @@ return [
 				'has_auto_renew'     => false,
 				'licence_expiration' => strtotime( 'last year' ),
                 'licence' => (object) [
-                    'is_banned' => true,
+                    'is_revoked' => true,
                 ],
 			] ) ),
             'current_user_can' => true,
             'current_screen' => 'settings_page_wprocket',
         ],
-        'expected' => '<section class="rocket-renewal-expired-banner banned-website-banner" id="rocket-renewal-banner">
+        'expected' => '<section class="rocket-renewal-expired-banner revoked-website-banner" id="rocket-renewal-banner">
 	<div class="banner-copy">
 		<h3 class="rocket-expired-title">Your WP Rocket license has been revoked!</h3>
 		<div class="rocket-renewal-expired-banner-container">

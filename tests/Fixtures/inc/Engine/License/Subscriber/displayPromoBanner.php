@@ -103,7 +103,7 @@ return [
 		],
 		'expected' => '',
 	],
-	'testShouldReturnNullWhenUserIsBanned' => [
+	'testShouldReturnNullWhenUserIsRevoked' => [
 		'config' => [
 			'user'   => json_decode( json_encode( [
 				'licence_account'    => 1,
@@ -123,7 +123,7 @@ return [
 							]
 						],
 					],
-                    'is_banned' => true,
+                    'is_revoked' => true,
                 ],
 			] ) ),
 			'pricing' => json_decode( json_encode( [
