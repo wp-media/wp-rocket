@@ -5,12 +5,12 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\License\Subscriber;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * Test class covering \WP_Rocket\Engine\License\Subscriber::maybe_add_banned_bubble
+ * Test class covering \WP_Rocket\Engine\License\Subscriber::maybe_add_revoked_bubble
  *
  * @group License
  * @group AdminOnly
  */
-class MaybeAddBannedBubble extends TestCase {
+class MaybeAddRevokedBubble extends TestCase {
 	private static $user;
 	private $original_user;
 
@@ -24,7 +24,7 @@ class MaybeAddBannedBubble extends TestCase {
 	public function set_up() {
 		parent::set_up();
 
-		$this->unregisterAllCallbacksExcept( 'rocket_menu_title', 'maybe_add_banned_bubble' );
+		$this->unregisterAllCallbacksExcept( 'rocket_menu_title', 'maybe_add_revoked_bubble' );
 
 		$this->original_user = $this->getNonPublicPropertyValue( 'user', self::$user, self::$user );
 	}

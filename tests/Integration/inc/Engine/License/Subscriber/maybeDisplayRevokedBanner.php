@@ -5,12 +5,12 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\License\Subscriber;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * Test class covering \WP_Rocket\Engine\License\Subscriber::maybe_display_banned_banner
+ * Test class covering \WP_Rocket\Engine\License\Subscriber::maybe_display_revoked_banner
  *
  * @group License
  * @group AdminOnly
  */
-class MaybeDisplayBannedBanner extends TestCase {
+class MaybeDisplayRevokedBanner extends TestCase {
 	private static $user;
 	private $original_user;
 
@@ -24,7 +24,7 @@ class MaybeDisplayBannedBanner extends TestCase {
 	public function set_up() {
 		parent::set_up();
 
-		$this->unregisterAllCallbacksExcept( 'rocket_before_dashboard_content', 'maybe_display_banned_banner', 13 );
+		$this->unregisterAllCallbacksExcept( 'rocket_before_dashboard_content', 'maybe_display_revoked_banner', 13 );
 
 		$this->original_user = $this->getNonPublicPropertyValue( 'user', self::$user, self::$user );
 	}
