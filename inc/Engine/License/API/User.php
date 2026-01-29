@@ -530,16 +530,16 @@ class User {
 	}
 
 	/**
-	 * Checks if the current website is banned or not.
+	 * Checks if the current website is revoked or not.
 	 *
 	 * @return bool
 	 */
-	public function is_banned() {
-		return $this->user->licence->is_banned ?? false;
+	public function is_revoked() {
+		return $this->user->licence->is_revoked ?? false;
 	}
 
 	/**
-	 * Gets the ban reason if the website is banned.
+	 * Gets the ban reason if the website is revoked.
 	 *
 	 * @return string
 	 */
@@ -553,8 +553,8 @@ class User {
 	 * @return bool
 	 */
 	public function can_update_plugin() {
-		// Check if website is banned.
-		if ( $this->is_banned() ) {
+		// Check if website is revoked.
+		if ( $this->is_revoked() ) {
 			return false;
 		}
 
@@ -574,8 +574,8 @@ class User {
 	public function get_update_blocked_reason() {
 		$message = __( 'There was an error updating the plugin.', 'rocket' );
 
-		// Check if website is banned first.
-		if ( $this->is_banned() ) {
+		// Check if website is revoked first.
+		if ( $this->is_revoked() ) {
 			$reason_text = $this->get_blocked_reason_text( $this->ban_reason() );
 			if ( ! empty( $reason_text ) ) {
 				return rtrim( $message, '.' ) . ' ' . sprintf(
@@ -603,7 +603,7 @@ class User {
 	 */
 	private function get_blocked_reason_text( $reason_code ) {
 		$reasons = [
-			'BANNED_WEBSITE' => __( 'your website is banned', 'rocket' ),
+			'BANNED_WEBSITE' => __( 'your website is revoked', 'rocket' ),
 		];
 		if ( empty( $reason_code ) || ! isset( $reasons[ $reason_code ] ) ) {
 			return '';
