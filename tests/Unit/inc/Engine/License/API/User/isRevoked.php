@@ -6,11 +6,11 @@ use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * Test class covering \WP_Rocket\Engine\License\API\User::is_banned
+ * Test class covering \WP_Rocket\Engine\License\API\User::is_revoked
  *
  * @group License
  */
-class IsBanned extends TestCase {
+class IsRevoked extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
@@ -19,7 +19,7 @@ class IsBanned extends TestCase {
 
 		$this->assertEquals(
 			$expected,
-			$user->is_banned()
+			$user->is_revoked()
 		);
 	}
 }
