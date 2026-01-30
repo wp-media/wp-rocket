@@ -134,6 +134,13 @@ class RocketInsights extends Row {
 	public $is_blurred;
 
 	/**
+	 * Metric data column (JSON).
+	 *
+	 * @var string|null
+	 */
+	public $metric_data;
+
+	/**
 	 * Constructor
 	 *
 	 * @param mixed $item Object Row.
@@ -157,6 +164,7 @@ class RocketInsights extends Row {
 		$this->score           = (int) $this->score;
 		$this->report_url      = (string) $this->report_url;
 		$this->is_blurred      = (bool) $this->is_blurred;
+		$this->metric_data     = ! empty( $item->metric_data ) ? $item->metric_data : null;
 		$this->error_code      = (string) $this->error_code;
 		$this->error_message   = (string) $this->error_message;
 	}
