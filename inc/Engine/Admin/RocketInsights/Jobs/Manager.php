@@ -251,12 +251,14 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 			'ttfb' => $data['time_to_first_byte'] ?? null,
 		];
 
-		// Return null if all metrics are null.
-		if ( empty( array_filter( $metrics ) ) ) {
-			return null;
+		// Return null if all metrics are null (but preserve zero values).
+		foreach ( $metrics as $value ) {
+			if ( null !== $value ) {
+				return $metrics;
+			}
 		}
 
-		return $metrics;
+		return null;
 	}
 
 	/**

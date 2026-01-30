@@ -120,5 +120,48 @@ return [
 				],
 			],
 		],
+		'shouldSaveMetricDataWithZeroValues' => [
+			'config'   => [
+				'initial_data' => [
+					'url'             => 'http://example.com/test4',
+					'title'           => 'Test Page 4',
+					'is_mobile'       => 0,
+					'job_id'          => 'job-000',
+					'queue_name'      => 'rocket-performance-monitoring',
+					'retries'         => 0,
+					'data'            => '{}',
+					'status'          => 'pending',
+					'score'           => 0,
+					'report_url'      => '',
+					'error_message'   => '',
+					'submitted_at'    => gmdate( 'Y-m-d H:i:s' ),
+					'last_accessed'   => gmdate( 'Y-m-d H:i:s' ),
+					'modified'        => gmdate( 'Y-m-d H:i:s' ),
+					'next_retry_time' => gmdate( 'Y-m-d H:i:s' ),
+				],
+				'status'       => 'completed',
+				'test_data'    => [
+					'performance_score' => 95,
+					'report_url'        => 'http://gtmetrix.com/report/000',
+					'metric_data'       => [
+						'lcp'  => 1.2,
+						'tbt'  => 0,
+						'cls'  => 0.0,
+						'ttfb' => 0.5,
+					],
+				],
+			],
+			'expected' => [
+				'status'      => 'completed',
+				'score'       => 95,
+				'report_url'  => 'http://gtmetrix.com/report/000',
+				'metric_data' => [
+					'lcp'  => 1.2,
+					'tbt'  => 0,
+					'cls'  => 0.0,
+					'ttfb' => 0.5,
+				],
+			],
+		],
 	],
 ];

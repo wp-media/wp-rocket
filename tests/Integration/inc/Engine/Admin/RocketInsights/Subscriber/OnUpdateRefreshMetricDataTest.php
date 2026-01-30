@@ -46,7 +46,7 @@ class OnUpdateRefreshMetricDataTest extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldBehavAsExpected( $config, $expected ) {
+	public function testShouldBehaveAsExpected( $config, $expected ) {
 		// Add test data to database.
 		foreach ( $config['database_entries'] as $entry ) {
 			self::addPerformanceMonitoring( $entry );
