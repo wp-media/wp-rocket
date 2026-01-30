@@ -25,7 +25,7 @@ class RocketInsights extends AbstractTable {
 	 *
 	 * @var int
 	 */
-	protected $version = 20250130;
+	protected $version = 20260130;
 
 	/**
 	 * Upgrades array.
@@ -35,7 +35,7 @@ class RocketInsights extends AbstractTable {
 	 */
 	protected $upgrades = [
 		20250909 => 'add_is_blurred_column',
-		20250130 => 'add_metric_data_column',
+		20260130 => 'add_metric_data_column',
 	];
 
 	/**
