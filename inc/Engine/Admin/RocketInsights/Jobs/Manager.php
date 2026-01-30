@@ -223,12 +223,40 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 		$defaults = [
 			'report_url'        => '',
 			'performance_score' => 0,
+			'metric_data'       => null,
 		];
 		if ( ! isset( $api_response['data']['data'] ) ) {
 			return $defaults;
 		}
 
-		return wp_parse_args( $api_response['data']['data'], $defaults );
+		$parsed_data = wp_parse_args( $api_response['data']['data'], $defaults );
+
+		// Extract metric data for detailed view.
+		$parsed_data['metric_data'] = $this->extract_metric_data( $api_response['data']['data'] );
+
+		return $parsed_data;
+	}
+
+	/**
+	 * Extract metric data from API response.
+	 *
+	 * @param array $data API response data.
+	 * @return array|null Extracted metrics or null if not available.
+	 */
+	private function extract_metric_data( array $data ): ?array {
+		$metrics = [
+			'lcp'  => $data['largest_contentful_paint'] ?? null,
+			'tbt'  => $data['total_blocking_time'] ?? null,
+			'cls'  => $data['cumulative_layout_shift'] ?? null,
+			'ttfb' => $data['time_to_first_byte'] ?? null,
+		];
+
+		// Return null if all metrics are null.
+		if ( empty( array_filter( $metrics ) ) ) {
+			return null;
+		}
+
+		return $metrics;
 	}
 
 	/**
@@ -267,5 +295,14 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 	 */
 	public function allow_clean_rows() {
 		return false;
+	}
+
+	/**
+	 * Get the query instance.
+	 *
+	 * @return RocketInsightsQuery
+	 */
+	public function get_query(): RocketInsightsQuery {
+		return $this->query;
 	}
 }
