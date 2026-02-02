@@ -671,4 +671,102 @@ document.addEventListener('DOMContentLoaded', function() {
 			updateGlobalScoreRow(globalScoreData);
 		}, 30);
 	});
+
+	// Handle Expand/Collapse for RI.
+	if ($('.details-section-td').is(':visible')) {
+		var $detailsCells = $('.details-section-td');
+		var $toggleButtons = $('.wpr-ri-item-toggle-single');
+		var $lastToggle = $('.wpr-ri-item-toggle').last();
+		var $lastActions = $('.wpr-ri-item-actions').last();
+		var imgUrl = window.rocket_ajax_data.assets_img_url;
+		var caretDown = imgUrl + 'ri-caret-down.svg';
+		var caretRight = imgUrl + 'ri-caret-right.svg';
+
+		// Initial state
+		$detailsCells.not(':first').hide();
+		$toggleButtons.first().find('img').attr('src', caretDown);
+
+		// Toggle single item
+		$toggleButtons.on('click', function() {
+			var insightsId = $(this).closest('.wpr-ri-item').data('rocket-insights-id');
+			var $details = $(`#ri_details_${insightsId} .details-section-td`);
+			var $img = $(this).find('img');
+			var isVisible = $details.is(':visible');
+			var isLast = $(this).is($toggleButtons.last());
+
+			// Toggle visibility
+			if (isVisible) {
+				$details.hide('fast');
+				$img.attr('src', caretRight);
+				
+				// Manipulate styling for last elements when details cell is visible.
+				if (isLast) {
+					// Restore border radius for main cells when item is collapsed.
+					$lastToggle.css('border-bottom-left-radius', 5);
+					$lastActions.css('border-bottom-right-radius', 5);
+
+					// Remove border radius for details cell when item is collapsed.
+					$detailsCells.last().css('border-bottom-left-radius', 0);
+					$detailsCells.last().css('border-bottom-right-radius', 0);
+
+					// Remove bottom border for details cell when item is collapsed.
+					$detailsCells.last().css('border-bottom', 0);
+				}
+
+				return;
+			}
+
+			$details.show('fast');
+			$img.attr('src', caretDown);
+			
+			// Manipulate styling for last elements when details cell is not visible.
+			if (isLast) {
+				// Remove border radius for main cells when item is expanded.
+				$lastToggle.css('border-bottom-left-radius', 0);
+				$lastActions.css('border-bottom-right-radius', 0);
+
+				// Restore border radius for details cell when item is expanded.
+				$detailsCells.last().css('border-bottom-left-radius', 5);
+				$detailsCells.last().css('border-bottom-right-radius', 5);
+
+				// Restore bottom border for details cell when item is expanded.
+				$detailsCells.last().css('border-bottom', '1px solid #E2E5E9');
+			}
+		});
+
+		// Toggle all items
+		$('.wpr-ri-item-toggle-all').on('click', function() {        
+			if ($detailsCells.is(':visible')) {
+				$detailsCells.hide('fast');
+				$('.wpr-ri-item-toggle-single img').attr('src', caretRight);
+
+				// Restore border radius when all collapsed
+				$lastToggle.css('border-bottom-left-radius', 5);
+				$lastActions.css('border-bottom-right-radius', 5);
+
+				// Remove border radius for details cell when item is collapsed.
+				$detailsCells.last().css('border-bottom-left-radius', 0);
+				$detailsCells.last().css('border-bottom-right-radius', 0);
+
+				// Remove bottom border for details cell when item is collapsed.
+				$detailsCells.last().css('border-bottom', 0);
+
+				return;
+			}
+
+			$detailsCells.show('fast');
+			$('.wpr-ri-item-toggle-single img').attr('src', caretDown);
+
+			// Remove border radius when all expanded
+			$lastToggle.css('border-bottom-left-radius', 0);
+			$lastActions.css('border-bottom-right-radius', 0);
+
+			// Restore border radius for details cell when item is expanded.
+			$detailsCells.last().css('border-bottom-left-radius', 5);
+			$detailsCells.last().css('border-bottom-right-radius', 5);
+
+			// Restore bottom border for details cell when item is expanded.
+			$detailsCells.last().css('border-bottom', '1px solid #E2E5E9');
+		});
+	}
 });
