@@ -17,7 +17,7 @@ $rocket_img_url                    = esc_url( WP_ROCKET_ASSETS_IMG_URL );
 <tr class="wpr-ri-item wpr-ri-item-result" data-rocket-insights-id="<?php echo esc_attr( $data->id ); ?>" >
 	<td class="wpr-ri-item-toggle">
 		<div class="icon-frame wpr-ri-item-toggle-single">
-			<img src="<?php echo $img_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>ri-caret-right.svg" alt="">
+			<img src="<?php echo $rocket_img_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>ri-caret-right.svg" alt="">
 		</div>
 	</td>
 	<td class="wpr-ri-item-score">
@@ -128,7 +128,7 @@ $rocket_img_url                    = esc_url( WP_ROCKET_ASSETS_IMG_URL );
 					<div class="metric-label">
 						<p>LCP</p>
 						<div class="info-icon">
-							<img src="<?php echo $img_url;// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>ri-info.svg" alt="">
+							<img src="<?php echo $rocket_img_url;// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>ri-info.svg" alt="">
 							<div class="wpr-tooltip">
 								<div class="wpr-tooltip-content">
 									<?php echo esc_html__( 'Time for the largest visible element to render, showing when the main content loads.', 'rocket' ); ?>
@@ -139,7 +139,7 @@ $rocket_img_url                    = esc_url( WP_ROCKET_ASSETS_IMG_URL );
 					<div class="metric-label">
 						<p>TBT</p>
 						<div class="info-icon">
-							<img src="<?php echo $img_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>ri-info.svg" alt="">
+							<img src="<?php echo $rocket_img_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>ri-info.svg" alt="">
 							<div class="wpr-tooltip">
 								<div class="wpr-tooltip-content">
 									<?php echo esc_html__( 'Total time the main thread is blocked before the page becomes interactive.', 'rocket' ); ?>
@@ -150,7 +150,7 @@ $rocket_img_url                    = esc_url( WP_ROCKET_ASSETS_IMG_URL );
 					<div class="metric-label">
 						<p>TTFB</p>
 						<div class="info-icon">
-							<img src="<?php echo $img_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>ri-info.svg" alt="">
+							<img src="<?php echo $rocket_img_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>ri-info.svg" alt="">
 							<div class="wpr-tooltip">
 								<div class="wpr-tooltip-content">
 									<?php echo esc_html__( 'Time from request to the first byte received from the server.', 'rocket' ); ?>
@@ -161,7 +161,7 @@ $rocket_img_url                    = esc_url( WP_ROCKET_ASSETS_IMG_URL );
 					<div class="metric-label">
 						<p>CLS</p>
 						<div class="info-icon">
-							<img src="<?php echo $img_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>ri-info.svg" alt="">
+							<img src="<?php echo $rocket_img_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>ri-info.svg" alt="">
 							<div class="wpr-tooltip">
 								<div class="wpr-tooltip-content">
 									<?php echo esc_html__( 'Measures unexpected layout shifts during loading.', 'rocket' ); ?>
