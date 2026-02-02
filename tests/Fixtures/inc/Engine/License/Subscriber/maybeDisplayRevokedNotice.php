@@ -46,6 +46,22 @@ return [
         ],
         'expected' => '',
     ],
+    'testShouldNotDisplayNoticeWhenWhiteLabel' => [
+        'config' => [
+            'user' => json_decode( json_encode( [
+				'licence_account'    => 1,
+				'has_auto_renew'     => false,
+				'licence_expiration' => strtotime( 'last year' ),
+                'licence' => (object) [
+                    'is_revoked' => true,
+                ],
+			] ) ),
+            'current_user_can' => true,
+            'current_screen' => 'settings_page_wp-crontrol-schedules',
+            'white_label' => true,
+        ],
+        'expected' => '',
+    ],
     'testShouldDisplayNotice' => [
         'config' => [
             'user' => json_decode( json_encode( [

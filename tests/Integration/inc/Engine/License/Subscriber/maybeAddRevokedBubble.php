@@ -51,6 +51,10 @@ class MaybeAddRevokedBubble extends TestCase {
 			$this->assertFalse( current_user_can( 'rocket_manage_options' ) );
 		}
 
+		if ( isset( $config['white_label'] ) && $config['white_label'] ) {
+			$this->white_label = true;
+		}
+
 		$this->assertSame( $expected, apply_filters( 'rocket_menu_title', 'WP Rocket' ) );
 	}
 
