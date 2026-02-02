@@ -741,6 +741,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		$this->logger::info( 'Rocket Insights: Setting existing tests to pending to refresh metric data' );
 
 		// Update all completed tests to pending so they get re-processed.
-		$this->manager->get_query()->update_existing_tests_to_pending();
+		$this->manager->get_query()->update_completed_tests_to_pending();
 	}
 }

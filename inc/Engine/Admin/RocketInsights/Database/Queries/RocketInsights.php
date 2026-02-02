@@ -194,11 +194,11 @@ class RocketInsights extends AbstractQuery {
 	}
 
 	/**
-	 * Update existing completed tests to pending to refresh metric data.
+	 * Update completed tests to pending to refresh metric data.
 	 *
 	 * @return bool|int
 	 */
-	public function update_existing_tests_to_pending() {
+	public function update_completed_tests_to_pending() {
 		// Get the database interface.
 		$db = $this->get_db();
 

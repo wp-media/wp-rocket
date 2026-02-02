@@ -231,34 +231,10 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 
 		$parsed_data = wp_parse_args( $api_response['data']['data'], $defaults );
 
-		// Extract metric data for detailed view.
-		$parsed_data['metric_data'] = $this->extract_metric_data( $api_response['data']['data'] );
+		// Save entire API response data for future extensibility.
+		$parsed_data['metric_data'] = $api_response['data']['data'] ?? null;
 
 		return $parsed_data;
-	}
-
-	/**
-	 * Extract metric data from API response.
-	 *
-	 * @param array $data API response data.
-	 * @return array|null Extracted metrics or null if not available.
-	 */
-	private function extract_metric_data( array $data ): ?array {
-		$metrics = [
-			'lcp'  => $data['largest_contentful_paint'] ?? null,
-			'tbt'  => $data['total_blocking_time'] ?? null,
-			'cls'  => $data['cumulative_layout_shift'] ?? null,
-			'ttfb' => $data['time_to_first_byte'] ?? null,
-		];
-
-		// Return null if all metrics are null (but preserve zero values).
-		foreach ( $metrics as $value ) {
-			if ( null !== $value ) {
-				return $metrics;
-			}
-		}
-
-		return null;
 	}
 
 	/**
