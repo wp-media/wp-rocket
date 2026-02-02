@@ -546,7 +546,7 @@ function rocket_maybe_find_right_trash_url( array $parsed_url, int $post_id ) {
  * @return int Number of segments in the URL path (0 if empty or no path).
  */
 function rocket_count_path_segments( string $url ): int {
-	$path = parse_url( $url, PHP_URL_PATH ) ?? '';
+	$path = wp_parse_url( $url, PHP_URL_PATH ) ?? '';
 	$path = trim( $path, '/' );              // "/" -> ""
 
 	if ( '' === $path ) {
