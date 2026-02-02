@@ -29,6 +29,21 @@ return [
         ],
         'expected' => 'WP Rocket',
     ],
+    'testShouldNotAddBubbleWhenWhiteLabel' => [
+        'config' => [
+            'user' => json_decode( json_encode( [
+				'licence_account'    => 1,
+				'has_auto_renew'     => false,
+				'licence_expiration' => strtotime( 'last year' ),
+                'licence' => (object) [
+                    'is_revoked' => true,
+                ],
+			] ) ),
+            'current_user_can' => true,
+            'white_label' => true,
+        ],
+        'expected' => 'WP Rocket',
+    ],
     'testShouldAddBubble' => [
         'config' => [
             'user' => json_decode( json_encode( [

@@ -46,6 +46,22 @@ return [
         ],
         'expected' => '',
     ],
+    'testShouldNotDisplayBannerWhenWhiteLabel' => [
+        'config' => [
+            'user' => json_decode( json_encode( [
+				'licence_account'    => 1,
+				'has_auto_renew'     => false,
+				'licence_expiration' => strtotime( 'last year' ),
+                'licence' => (object) [
+                    'is_revoked' => true,
+                ],
+			] ) ),
+            'current_user_can' => true,
+            'current_screen' => 'settings_page_wprocket',
+            'white_label' => true,
+        ],
+        'expected' => '',
+    ],
     'testShouldDisplayBanner' => [
         'config' => [
             'user' => json_decode( json_encode( [

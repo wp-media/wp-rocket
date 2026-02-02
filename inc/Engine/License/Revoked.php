@@ -121,6 +121,10 @@ class Revoked extends Abstract_Render {
 	 * @return bool True if the notice can be displayed, false otherwise.
 	 */
 	private function can_display(): bool {
+		if ( rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) ) {
+			return false;
+		}
+
 		if ( ! $this->user->is_revoked() ) {
 			return false;
 		}

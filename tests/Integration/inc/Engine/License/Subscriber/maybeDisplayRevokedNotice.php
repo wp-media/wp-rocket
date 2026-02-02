@@ -17,6 +17,10 @@ class MaybeDisplayRevokedNotice extends TestCase {
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
 
+		if ( ! function_exists( 'rocket_notice_html' ) ) {
+			require_once WP_ROCKET_INC_PATH . 'admin/ui/notices.php';
+		}
+
 		$container  = apply_filters( 'rocket_container', null );
 		self::$user = $container->get( 'user' );
 	}
@@ -49,6 +53,10 @@ class MaybeDisplayRevokedNotice extends TestCase {
 		} else {
 			$this->createUser( 'contributor' );
 			$this->assertFalse( current_user_can( 'rocket_manage_options' ) );
+		}
+
+		if ( isset( $config['white_label'] ) && $config['white_label'] ) {
+			$this->white_label = true;
 		}
 		
         set_current_screen( $config['current_screen'] );

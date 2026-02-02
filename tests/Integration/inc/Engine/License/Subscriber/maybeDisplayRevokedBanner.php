@@ -50,6 +50,10 @@ class MaybeDisplayRevokedBanner extends TestCase {
 			$this->createUser( 'contributor' );
 			$this->assertFalse( current_user_can( 'rocket_manage_options' ) );
 		}
+
+		if ( isset( $config['white_label'] ) && $config['white_label'] ) {
+			$this->white_label = true;
+		}
 		
         set_current_screen( $config['current_screen'] );
 
