@@ -75,7 +75,17 @@ defined( 'ABSPATH' ) || exit;
 	</div>
 	<?php if ( $data ) : ?>
 		<div class="wpr-imagify-plugin-tile">
-			<img src="<?php echo esc_url( $data->icons['svg'] ); ?>" alt="Imagify logo" width="65" height="65"> 
+			<?php
+			$icon_url = '';
+			if ( ! empty( $data->icons['svg'] ) ) {
+				$icon_url = $data->icons['svg'];
+			} elseif ( ! empty( $data->icons['1x'] ) ) {
+				$icon_url = $data->icons['1x'];
+			}
+			if ( ! empty( $icon_url ) ) :
+			?>
+			<img src="<?php echo esc_url( $icon_url ); ?>" alt="Imagify logo" width="65" height="65">
+			<?php endif; ?>
 			<div class="wpr-imagify-plugin-tile-info">
 				<h4 class="wpr-imagify-plugin-tile-title">
 					<?php
