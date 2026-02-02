@@ -221,6 +221,8 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'row_html' => $this->render->get_global_score_row( $global_score_data ),
 		];
 
+		$data['assets_img_url'] = WP_ROCKET_ASSETS_IMG_URL;
+
 		return $data;
 	}
 
