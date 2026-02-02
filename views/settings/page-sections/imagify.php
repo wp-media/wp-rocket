@@ -76,7 +76,7 @@ defined( 'ABSPATH' ) || exit;
 	<?php if ( $data ) : ?>
 		<div class="wpr-imagify-plugin-tile">
 			<?php
-			$icon_url = '';
+			$icon_url = ''; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 			if ( ! empty( $data->icons['svg'] ) ) {
 				$icon_url = $data->icons['svg'];
 			} elseif ( ! empty( $data->icons['1x'] ) ) {
