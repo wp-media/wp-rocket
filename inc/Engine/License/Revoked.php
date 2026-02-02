@@ -115,7 +115,7 @@ class Revoked extends Abstract_Render {
 	/**
 	 * Determines whether the revoked notice can be displayed to the current user.
 	 *
-	 * Checks if the user's license is not expired, the site/user is revoked,
+	 * Checks if white-label mode is disabled, the user's license is revoked,
 	 * and the current user has the 'rocket_manage_options' capability.
 	 *
 	 * @return bool True if the notice can be displayed, false otherwise.
