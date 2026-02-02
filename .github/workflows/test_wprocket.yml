@@ -72,9 +72,6 @@ jobs:
         key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
         restore-keys: ${{ runner.os }}-composer-
 
-    - name: Require PHPUnit 7.5 for WP compatibility
-      run: composer require --dev --no-scripts phpunit/phpunit "^7.5" -W
-
     - name: Require WooCommerce 7 for WP compatibility
       run: composer require --dev --no-scripts wpackagist-plugin/woocommerce "^7" -W
 
