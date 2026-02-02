@@ -74,8 +74,8 @@ class MakeStatusCompletedWithMetricsTest extends TestCase {
 			$this->assertNull( $row->metric_data );
 		} else {
 			$this->assertNotNull( $row->metric_data );
-			$decoded_metrics = json_decode( $row->metric_data, true );
-			$this->assertEquals( $expected['metric_data'], $decoded_metrics );
+			// metric_data is already decoded by the Row constructor.
+			$this->assertEquals( $expected['metric_data'], $row->metric_data );
 		}
 	}
 }
