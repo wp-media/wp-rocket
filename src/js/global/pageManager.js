@@ -94,6 +94,7 @@ function PageManager(aElem) {
 */
 PageManager.prototype.detectID = function() {
     this.pageId = window.location.hash.split('#')[1];
+    this.pageId = this.pageId.includes('=') ? this.pageId.split('=')[0] : this.pageId;
     localStorage.setItem('wpr-hash', this.pageId);
 
     this.$page = document.querySelector('.wpr-Page#' + this.pageId);
