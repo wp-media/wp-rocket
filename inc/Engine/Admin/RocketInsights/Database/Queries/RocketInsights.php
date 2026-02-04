@@ -104,10 +104,11 @@ class RocketInsights extends AbstractQuery {
 	 */
 	public function make_status_completed( int $db_id, string $status, array $test_data ): bool {
 		$update_data = [
-			'status'     => $status,
-			'modified'   => gmdate( 'Y-m-d H:i:s' ),
-			'score'      => $test_data['performance_score'],
-			'report_url' => $test_data['report_url'],
+			'status'      => $status,
+			'modified'    => gmdate( 'Y-m-d H:i:s' ),
+			'score'       => $test_data['performance_score'],
+			'report_url'  => $test_data['report_url'],
+			'metric_data' => isset( $test_data['metric_data'] ) ? wp_json_encode( $test_data['metric_data'] ) : null,
 		];
 
 		return (bool) $this->update_item( $db_id, $update_data );
@@ -190,5 +191,29 @@ class RocketInsights extends AbstractQuery {
 		}
 
 		return $db->query( "UPDATE `$prefixed_table_name` SET is_blurred = '0' WHERE status = 'completed' AND is_blurred = '1'" );
+	}
+
+	/**
+	 * Update completed tests to pending to refresh metric data.
+	 *
+	 * @return bool|int
+	 */
+	public function update_completed_tests_to_pending() {
+		// Get the database interface.
+		$db = $this->get_db();
+
+		// Bail if no database interface is available.
+		if ( ! $db ) {
+			return false;
+		}
+
+		// Use table class naming helper for consistency with prefixes.
+		$prefixed_table_name = $this->table_name;
+		// @phpstan-ignore-next-line
+		if ( ! empty( $db->prefix ) ) {
+			$prefixed_table_name = $db->prefix . $this->table_name;
+		}
+
+		return $db->query( "UPDATE `$prefixed_table_name` SET status = 'pending' WHERE status = 'completed'" );
 	}
 }
