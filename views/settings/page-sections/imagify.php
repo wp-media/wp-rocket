@@ -75,7 +75,17 @@ defined( 'ABSPATH' ) || exit;
 	</div>
 	<?php if ( $data ) : ?>
 		<div class="wpr-imagify-plugin-tile">
-			<img src="<?php echo esc_url( $data->icons['svg'] ); ?>" alt="Imagify logo" width="65" height="65"> 
+			<?php
+			$icon_url = ''; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
+			if ( ! empty( $data->icons['svg'] ) ) {
+				$icon_url = $data->icons['svg']; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
+			} elseif ( ! empty( $data->icons['1x'] ) ) {
+				$icon_url = $data->icons['1x']; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
+			}
+			if ( ! empty( $icon_url ) ) : // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
+				?>
+			<img src="<?php echo esc_url( $icon_url ); ?>" alt="Imagify logo" width="65" height="65">
+			<?php endif; ?>
 			<div class="wpr-imagify-plugin-tile-info">
 				<h4 class="wpr-imagify-plugin-tile-title">
 					<?php
