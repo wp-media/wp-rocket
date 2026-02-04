@@ -728,6 +728,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 *
 	 * This will set existing completed tests to pending status so they get re-processed
 	 * and the metric_data column gets populated via the normal job processing flow.
+	 * Also deletes the global score transient to ensure the UI reflects the in-progress state.
 	 *
 	 * @param string $new_version New plugin version.
 	 * @param string $old_version Previous plugin version.
@@ -742,5 +743,8 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 
 		// Update all completed tests to pending so they get re-processed.
 		$this->manager->get_query()->update_completed_tests_to_pending();
+
+		// Delete the global score transient to refresh the UI state.
+		$this->global_score->reset();
 	}
 }
