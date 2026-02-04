@@ -199,23 +199,23 @@ $rocket_metric_data = $data->metric_data;
 								if ( null === $value || '' === $value ) {
 									return 'ri-na';
 								}
-								// Thresholds from Web Vitals.
+								// Thresholds from Web Vitals (values are in seconds for lcp/tbt/ttfb).
 								$thresholds = [
-									'lcp_ms'    => [
-										'good' => 2500,
-										'poor' => 4000,
+									'lcp'  => [
+										'good' => 2.5,
+										'poor' => 4.0,
 									],
-									'tbt_ms'    => [
-										'good' => 200,
-										'poor' => 600,
+									'tbt'  => [
+										'good' => 0.2,
+										'poor' => 0.6,
 									],
-									'cls'       => [
+									'cls'  => [
 										'good' => 0.1,
 										'poor' => 0.25,
 									],
-									'server_ms' => [
-										'good' => 800,
-										'poor' => 1800,
+									'ttfb' => [
+										'good' => 0.8,
+										'poor' => 1.8,
 									],
 								];
 								if ( ! isset( $thresholds[ $metric_key ] ) ) {
@@ -239,27 +239,28 @@ $rocket_metric_data = $data->metric_data;
 								if ( 'cls' === $metric_key ) {
 									return number_format( floatval( $value ), 3 );
 								}
-								// Convert milliseconds to seconds if >= 1000.
-								$ms_value = floatval( $value );
-								if ( $ms_value >= 1000 ) {
-									return number_format( $ms_value / 1000, 1 ) . 's';
+								// Values are in seconds, format accordingly.
+								$seconds = floatval( $value );
+								if ( $seconds < 1 ) {
+									// Convert to milliseconds for display.
+									return round( $seconds * 1000 ) . 'ms';
 								}
-								return round( $ms_value ) . 'ms';
+								return number_format( $seconds, 1 ) . 's';
 							};
 
 							// Render metrics: LCP, TBT, TTFB, CLS.
 							$metrics = [ // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 								[
-									'key'   => 'lcp_ms',
-									'value' => $rocket_metric_data['lcp_ms'] ?? null,
+									'key'   => 'lcp',
+									'value' => $rocket_metric_data['lcp'] ?? null,
 								],
 								[
-									'key'   => 'tbt_ms',
-									'value' => $rocket_metric_data['tbt_ms'] ?? null,
+									'key'   => 'tbt',
+									'value' => $rocket_metric_data['tbt'] ?? null,
 								],
 								[
-									'key'   => 'server_ms',
-									'value' => $rocket_metric_data['server_ms'] ?? null,
+									'key'   => 'ttfb',
+									'value' => $rocket_metric_data['ttfb'] ?? null,
 								],
 								[
 									'key'   => 'cls',
