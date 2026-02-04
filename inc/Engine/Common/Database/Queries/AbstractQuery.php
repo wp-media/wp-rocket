@@ -454,7 +454,7 @@ class AbstractQuery extends Query implements QueryInterface {
 	/**
 	 * Get completed rows IDs.
 	 *
-	 * @return int
+	 * @return int[]|array
 	 */
 	public function get_completed_ids() {
 		return $this->query(
@@ -498,6 +498,8 @@ class AbstractQuery extends Query implements QueryInterface {
 	 * Revert status to pending.
 	 *
 	 * @param integer $id Used CSS id.
+	 * @param array   $additional_details Additional details to be saved into DB.
+	 *
 	 * @return boolean
 	 */
 	public function revert_to_pending( int $id, array $additional_details = [] ): bool {
