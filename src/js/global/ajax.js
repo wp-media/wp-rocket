@@ -778,6 +778,18 @@ document.addEventListener('DOMContentLoaded', function() {
 		// Toggle single item.
 		$toggleButtons.on('click', function() {
 			var insightsId = $(this).closest('.wpr-ri-item').data('rocket-insights-id');
+			var $details = $('#ri_details_' + insightsId + ' .details-section-td');
+			var isCurrentlyVisible = $details.is(':visible');
+			
+			// Track expand/collapse if Mixpanel is available.
+			if (window.rocket_mixpanel_data && window.rocket_mixpanel_data.optin_enabled && window.mixpanel) {
+				window.mixpanel.track('Rocket Insights Metrics Expanded', {
+					context: 'wp_plugin',
+					row_id: insightsId,
+					action: isCurrentlyVisible ? 'collapse' : 'expand'
+				});
+			}
+			
 			toggleSingleRowVisibility(this, insightsId);
 		});
 
