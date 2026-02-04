@@ -192,28 +192,4 @@ class RocketInsights extends AbstractQuery {
 
 		return $db->query( "UPDATE `$prefixed_table_name` SET is_blurred = '0' WHERE status = 'completed' AND is_blurred = '1'" );
 	}
-
-	/**
-	 * Update completed tests to pending to refresh metric data.
-	 *
-	 * @return bool|int
-	 */
-	public function update_completed_tests_to_pending() {
-		// Get the database interface.
-		$db = $this->get_db();
-
-		// Bail if no database interface is available.
-		if ( ! $db ) {
-			return false;
-		}
-
-		// Use table class naming helper for consistency with prefixes.
-		$prefixed_table_name = $this->table_name;
-		// @phpstan-ignore-next-line
-		if ( ! empty( $db->prefix ) ) {
-			$prefixed_table_name = $db->prefix . $this->table_name;
-		}
-
-		return $db->query( "UPDATE `$prefixed_table_name` SET status = 'pending' WHERE status = 'completed'" );
-	}
 }
