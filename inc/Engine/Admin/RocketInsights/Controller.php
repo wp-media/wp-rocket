@@ -417,7 +417,7 @@ class Controller {
 			return;
 		}
 		foreach ( $completed_rows as $completed_row_id ) {
-			$this->query->revert_to_pending( $completed_row_id, [
+			$this->query->revert_to_pending( (int) $completed_row_id, [
 				'start_time' => time(),
 				'is_retest'  => false,
 				'source'     => '3.20.4 update',
