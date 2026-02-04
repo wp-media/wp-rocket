@@ -410,4 +410,19 @@ class Controller {
 			]
 		);
 	}
+
+	public function update_completed_tests_to_pending() {
+		$completed_rows = $this->query->get_completed_ids();
+		if ( empty( $completed_rows ) ) {
+			return;
+		}
+		foreach ( $completed_rows as $completed_row_id ) {
+			$this->query->revert_to_pending( $completed_row_id, [
+				'start_time' => time(),
+				'is_retest'  => false,
+				'source'     => '3.20.4 update',
+				'skip_credit' => true,
+			] );
+		}
+	}
 }
