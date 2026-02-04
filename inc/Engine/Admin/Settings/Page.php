@@ -3,6 +3,7 @@ namespace WP_Rocket\Engine\Admin\Settings;
 
 use WP_Rocket\Engine\Admin\Database\Optimization;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
+use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Engine\Optimization\DelayJS\Admin\SiteList;
 use WP_Rocket\Engine\Optimization\DelayJS\Admin\Settings as DelayJSSettings;
@@ -285,31 +286,40 @@ class Page extends Abstract_Render {
 	 * @return array
 	 */
 	public function customer_data() {
-		$user = $this->user_client->get_user_data();
+		$user_data = $this->user_client->get_user_data();
+		$user      = new User( $user_data );
+
 		$data = [
-			'license_type'        => __( 'Unavailable', 'rocket' ),
-			'license_expiration'  => __( 'Unavailable', 'rocket' ),
-			'license_class'       => 'wpr-isInvalid',
-			'is_from_one_dot_com' => false,
+			'license_expiration'    => __( 'Unavailable', 'rocket' ),
+			'license_class'         => 'wpr-isInvalid',
+			'is_from_one_dot_com'   => false,
+			'can_update_plugin'     => false,
+			'update_blocked_reason' => '',
 		];
 
-		$data['license_type'] = rocket_get_license_type( $user );
+		$data['license_type'] = rocket_get_license_type( $user_data );
 
-		if ( ! is_object( $user ) ) {
+		if ( ! is_object( $user_data ) ) {
 			return $data;
 		}
 
-		if ( ! empty( $user->licence_expiration ) ) {
-			$data['license_class'] = time() < $user->licence_expiration ? 'wpr-isValid' : 'wpr-isInvalid';
+		if ( ! empty( $user_data->licence_expiration ) ) {
+			$data['license_class'] = ( time() < $user_data->licence_expiration && ! $user->is_revoked() ) ? 'wpr-isValid' : 'wpr-isInvalid';
 		}
 
-		if ( ! empty( $user->licence_expiration ) ) {
-			$data['license_expiration'] = date_i18n( get_option( 'date_format' ), (int) $user->licence_expiration );
+		if ( $user->is_revoked() ) {
+			$data['license_expiration'] = __( 'Ended', 'rocket' );
+		} elseif ( ! empty( $user_data->licence_expiration ) ) {
+			$data['license_expiration'] = date_i18n( get_option( 'date_format' ), (int) $user_data->licence_expiration );
 		}
 
-		if ( isset( $user->{'has_one-com_account'} ) ) {
-			$data['is_from_one_dot_com'] = (bool) $user->{'has_one-com_account'};
+		if ( isset( $user_data->{'has_one-com_account'} ) ) {
+			$data['is_from_one_dot_com'] = (bool) $user_data->{'has_one-com_account'};
 		}
+
+		// Get plugin update status.
+		$data['can_update_plugin']     = $user->can_update_plugin();
+		$data['update_blocked_reason'] = $user->get_update_blocked_reason();
 
 		return $data;
 	}

@@ -1360,6 +1360,10 @@ div.wpr-upgrade-websites.notstacked {
   width: 75%;
 }
 
+.revoked-website-banner .banner-copy {
+  width: 72%;
+}
+
 @media (max-width: 783px) {
   .rocket-renewal-expired-banner-container {
     flex-flow: column;
