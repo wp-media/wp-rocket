@@ -199,23 +199,23 @@ $rocket_metric_data = $data->metric_data;
 								if ( null === $value || '' === $value ) {
 									return 'ri-na';
 								}
-								// Thresholds from Web Vitals (values are in seconds for lcp/tbt/ttfb).
+								// Thresholds from Web Vitals (values are in milliseconds except CLS).
 								$thresholds = [
-									'lcp'  => [
-										'good' => 2.5,
-										'poor' => 4.0,
+									'largest_contentful_paint' => [
+										'good' => 2500,
+										'poor' => 4000,
 									],
-									'tbt'  => [
-										'good' => 0.2,
-										'poor' => 0.6,
+									'total_blocking_time' => [
+										'good' => 200,
+										'poor' => 600,
 									],
-									'cls'  => [
+									'cumulative_layout_shift' => [
 										'good' => 0.1,
 										'poor' => 0.25,
 									],
-									'ttfb' => [
-										'good' => 0.8,
-										'poor' => 1.8,
+									'time_to_first_byte'  => [
+										'good' => 800,
+										'poor' => 1800,
 									],
 								];
 								if ( ! isset( $thresholds[ $metric_key ] ) ) {
@@ -236,35 +236,34 @@ $rocket_metric_data = $data->metric_data;
 								if ( null === $value || '' === $value ) {
 									return 'N/A';
 								}
-								if ( 'cls' === $metric_key ) {
+								if ( 'cumulative_layout_shift' === $metric_key ) {
 									return number_format( floatval( $value ), 3 );
 								}
-								// Values are in seconds, format accordingly.
-								$seconds = floatval( $value );
-								if ( $seconds < 1 ) {
-									// Convert to milliseconds for display.
-									return round( $seconds * 1000 ) . 'ms';
+								// Values are in milliseconds from GTmetrix API.
+								$ms_value = floatval( $value );
+								if ( $ms_value >= 1000 ) {
+									return number_format( $ms_value / 1000, 1 ) . 's';
 								}
-								return number_format( $seconds, 1 ) . 's';
+								return round( $ms_value ) . 'ms';
 							};
 
 							// Render metrics: LCP, TBT, TTFB, CLS.
 							$metrics = [ // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 								[
-									'key'   => 'lcp',
-									'value' => $rocket_metric_data['lcp'] ?? null,
+									'key'   => 'largest_contentful_paint',
+									'value' => $rocket_metric_data['largest_contentful_paint'] ?? null,
 								],
 								[
-									'key'   => 'tbt',
-									'value' => $rocket_metric_data['tbt'] ?? null,
+									'key'   => 'total_blocking_time',
+									'value' => $rocket_metric_data['total_blocking_time'] ?? null,
 								],
 								[
-									'key'   => 'ttfb',
-									'value' => $rocket_metric_data['ttfb'] ?? null,
+									'key'   => 'time_to_first_byte',
+									'value' => $rocket_metric_data['time_to_first_byte'] ?? null,
 								],
 								[
-									'key'   => 'cls',
-									'value' => $rocket_metric_data['cls'] ?? null,
+									'key'   => 'cumulative_layout_shift',
+									'value' => $rocket_metric_data['cumulative_layout_shift'] ?? null,
 								],
 							];
 
