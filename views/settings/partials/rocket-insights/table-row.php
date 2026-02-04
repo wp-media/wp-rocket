@@ -13,10 +13,13 @@ $rocket_data_array['is_dashboard'] = false;
 $rocket_ri_blurred                 = ( isset( $rocket_data_array['is_blurred'] ) && $rocket_data_array['is_blurred'] ) || ( isset( $rocket_data_array['status'] ) && 'blurred' === $rocket_data_array['status'] ) ? 'blurred' : '';
 $rocket_can_show_dropdown          = ! $rocket_data_array['is_running'] && 'failed' !== $rocket_data_array['status'];
 $rocket_img_url                    = esc_url( WP_ROCKET_ASSETS_IMG_URL );
+
+// Parse metric data.
+$rocket_metric_data = $data->metric_data;
 ?>
 <tr class="wpr-ri-item wpr-ri-item-result" data-rocket-insights-id="<?php echo esc_attr( $data->id ); ?>" >
 	<td class="wpr-ri-item-toggle">
-		<div class="icon-frame wpr-ri-item-toggle-single">
+		<div class="icon-frame wpr-ri-item-toggle-single <?php echo $rocket_can_show_dropdown ? '' : 'hide'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>">
 			<img src="<?php echo $rocket_img_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>ri-caret-right.svg" alt="">
 		</div>
 	</td>
@@ -118,17 +121,18 @@ $rocket_img_url                    = esc_url( WP_ROCKET_ASSETS_IMG_URL );
 		?>
 	</td>
 </tr>
+<?php if ( $rocket_can_show_dropdown ) : ?>
 <tr id="ri_details_<?php echo $rocket_data_array['id']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>">
 	<td colspan="4" class="details-section-td">
 		<div class="details-section">
 			<div class="details-header">
-				<p class="details-label">Details</p>
+				<p class="details-label"><?php echo esc_html__( 'Details', 'rocket' ); ?></p>
 				<div>
 				<div class="metrics-header">
 					<div class="metric-label">
-						<p>LCP</p>
+						<p><?php echo esc_html__( 'LCP', 'rocket' ); ?></p>
 						<div class="info-icon">
-							<img src="<?php echo $rocket_img_url;// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>ri-info.svg" alt="">
+							<img src="<?php echo $rocket_img_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>ri-info.svg" alt="">
 							<div class="wpr-tooltip">
 								<div class="wpr-tooltip-content">
 									<?php echo esc_html__( 'Time for the largest visible element to render, showing when the main content loads.', 'rocket' ); ?>
@@ -137,7 +141,7 @@ $rocket_img_url                    = esc_url( WP_ROCKET_ASSETS_IMG_URL );
 						</div>
 					</div>
 					<div class="metric-label">
-						<p>TBT</p>
+						<p><?php echo esc_html__( 'TBT', 'rocket' ); ?></p>
 						<div class="info-icon">
 							<img src="<?php echo $rocket_img_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>ri-info.svg" alt="">
 							<div class="wpr-tooltip">
@@ -148,7 +152,7 @@ $rocket_img_url                    = esc_url( WP_ROCKET_ASSETS_IMG_URL );
 						</div>
 					</div>
 					<div class="metric-label">
-						<p>TTFB</p>
+						<p><?php echo esc_html__( 'TTFB', 'rocket' ); ?></p>
 						<div class="info-icon">
 							<img src="<?php echo $rocket_img_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>ri-info.svg" alt="">
 							<div class="wpr-tooltip">
@@ -159,7 +163,7 @@ $rocket_img_url                    = esc_url( WP_ROCKET_ASSETS_IMG_URL );
 						</div>
 					</div>
 					<div class="metric-label">
-						<p>CLS</p>
+						<p><?php echo esc_html__( 'CLS', 'rocket' ); ?></p>
 						<div class="info-icon">
 							<img src="<?php echo $rocket_img_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>ri-info.svg" alt="">
 							<div class="wpr-tooltip">
@@ -187,20 +191,92 @@ $rocket_img_url                    = esc_url( WP_ROCKET_ASSETS_IMG_URL );
 							<div class="icon-frame"></div>
 						</div>
 					</div>
-					<div class="row-right">
-						<div class="metric-values">
-							<div class="metric-value ri-error">
-								<p>3.2s</p>
-							</div>
-							<div class="metric-value ri-warning">
-								<p>1.4s</p>
-							</div>
-							<div class="metric-value ri-success">
-								<p>700ms</p>
-							</div>
-							<div class="metric-value ri-warning">
-								<p>0.145s</p>
-							</div>
+					<div class="row-right <?php echo esc_attr( $rocket_ri_blurred ); ?>">
+						<div class="metric-values <?php echo esc_attr( $rocket_ri_blurred ); ?>">
+							<?php
+							// Helper function to get metric class based on thresholds.
+							$get_metric_class = function ( $metric_key, $value ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
+								if ( null === $value || '' === $value ) {
+									return 'ri-na';
+								}
+								// Thresholds from Web Vitals.
+								$thresholds = [
+									'lcp_ms'    => [
+										'good' => 2500,
+										'poor' => 4000,
+									],
+									'tbt_ms'    => [
+										'good' => 200,
+										'poor' => 600,
+									],
+									'cls'       => [
+										'good' => 0.1,
+										'poor' => 0.25,
+									],
+									'server_ms' => [
+										'good' => 800,
+										'poor' => 1800,
+									],
+								];
+								if ( ! isset( $thresholds[ $metric_key ] ) ) {
+									return '';
+								}
+								$value = floatval( $value );
+								if ( $value <= $thresholds[ $metric_key ]['good'] ) {
+									return 'ri-success';
+								}
+								if ( $value >= $thresholds[ $metric_key ]['poor'] ) {
+									return 'ri-error';
+								}
+								return 'ri-warning';
+							};
+
+							// Helper to format metric value.
+							$format_metric = function ( $metric_key, $value ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
+								if ( null === $value || '' === $value ) {
+									return 'N/A';
+								}
+								if ( 'cls' === $metric_key ) {
+									return number_format( floatval( $value ), 3 );
+								}
+								// Convert milliseconds to seconds if >= 1000.
+								$ms_value = floatval( $value );
+								if ( $ms_value >= 1000 ) {
+									return number_format( $ms_value / 1000, 1 ) . 's';
+								}
+								return round( $ms_value ) . 'ms';
+							};
+
+							// Render metrics: LCP, TBT, TTFB, CLS.
+							$metrics = [ // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
+								[
+									'key'   => 'lcp_ms',
+									'value' => $rocket_metric_data['lcp_ms'] ?? null,
+								],
+								[
+									'key'   => 'tbt_ms',
+									'value' => $rocket_metric_data['tbt_ms'] ?? null,
+								],
+								[
+									'key'   => 'server_ms',
+									'value' => $rocket_metric_data['server_ms'] ?? null,
+								],
+								[
+									'key'   => 'cls',
+									'value' => $rocket_metric_data['cls'] ?? null,
+								],
+							];
+
+							foreach ( $metrics as $metric ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
+								$class           = $get_metric_class( $metric['key'], $metric['value'] ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
+								$formatted_value = $format_metric( $metric['key'], $metric['value'] ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
+								?>
+								<div class="metric-value <?php echo esc_attr( $class ); ?>">
+									<p><?php echo esc_html( $formatted_value ); ?></p>
+								</div>
+								<?php
+							}
+							?>
 						</div>
 					</div>
 				</div>
@@ -208,3 +284,4 @@ $rocket_img_url                    = esc_url( WP_ROCKET_ASSETS_IMG_URL );
 		</div>
 	</td>
 </tr>
+<?php endif; ?>

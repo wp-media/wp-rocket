@@ -282,4 +282,49 @@ class Tracking extends Abstract_Render {
 			]
 		);
 	}
+
+	/**
+	 * Track when Rocket Insights metrics are expanded or collapsed.
+	 *
+	 * @since 3.20.4
+	 *
+	 * @param int    $row_id The database row ID of the test.
+	 * @param string $action The action performed: 'expand' or 'collapse'.
+	 *
+	 * @return void
+	 */
+	public function track_rocket_insights_metrics_expanded( int $row_id, string $action ): void {
+		if ( ! $this->optin->can_track() ) {
+			return;
+		}
+
+		$this->mixpanel->track(
+			'Rocket Insights Metrics Expanded',
+			[
+				'context' => 'wp_plugin',
+				'row_id'  => $row_id,
+				'action'  => $action,
+			]
+		);
+	}
+
+	/**
+	 * Track when a user clicks "See Report" in Rocket Insights.
+	 *
+	 * @since 3.20.4
+	 *
+	 * @return void
+	 */
+	public function track_rocket_insights_see_report(): void {
+		if ( ! $this->optin->can_track() ) {
+			return;
+		}
+
+		$this->mixpanel->track(
+			'Rocket Insights See Report',
+			[
+				'context' => 'wp_plugin',
+			]
+		);
+	}
 }

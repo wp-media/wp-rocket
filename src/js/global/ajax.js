@@ -796,4 +796,14 @@ document.addEventListener('DOMContentLoaded', function() {
 			updateRowStylingForLastItem($selectors);
 		});
 	}
+
+	// Track "See Report" clicks in Rocket Insights.
+	$(document).on('click', '.wpr-ri-report', function(e) {
+		// Only track if link is not disabled and mixpanel is available.
+		if (!$(this).hasClass('wpr-ri-action--disabled') && window.rocket_mixpanel_data && window.rocket_mixpanel_data.optin_enabled && window.mixpanel) {
+			window.mixpanel.track('Rocket Insights See Report', {
+				context: 'wp_plugin'
+			});
+		}
+	});
 });
