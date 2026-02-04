@@ -2,6 +2,36 @@
 # Pull Request Guidelines
 Instructions for creating and reviewing pull requests in wp-rocket
 
+## Branch Naming Convention
+
+### Required Format
+Branch names MUST follow these patterns based on the type of work:
+
+- **Bug fixes**: `fix/{GitHub-issue-ID}-{description}`
+- Example: `fix/1234-resolve-cache-clearing-issue`
+
+- **Enhancements**: `enhancement/{GitHub-issue-ID}-{GitHub-issue-title}`
+- Example: `enhancement/5678-improve-css-minification-performance`
+
+- **Tests**: `test/{GitHub-issue-ID}-{GitHub-issue-title}`
+- Example: `test/9012-add-unit-tests-for-lazyload-module`
+
+### Branch Naming Rules
+- Use lowercase letters
+- Replace spaces with hyphens (`-`)
+- Keep descriptions concise but descriptive
+- Always include the GitHub issue ID
+- For bug fixes, use a brief description of what's being fixed
+- For enhancements and tests, use the GitHub issue title (or abbreviated version)
+
+### Examples
+- ✅ `fix/3421-cdn-url-generation-error`
+- ✅ `enhancement/2890-add-webp-support`
+- ✅ `test/4567-critical-css-generation`
+- ❌ `bugfix-cache` (missing issue ID and wrong prefix)
+- ❌ `Fix/123-Cache-Issue` (wrong capitalization)
+- ❌ `enhancement-new-feature` (missing issue ID)
+
 ## When Creating Pull Requests
 
 ### Template Reference
