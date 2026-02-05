@@ -26,6 +26,7 @@ module.exports = (function () {
 		// Attach event listeners.
 		attachTestPageListeners();
 		attachRetestListeners();
+		attachViewDetailsListeners();
 
 		// Start polling for any rows that are already running.
 		startPollingForRunningTests();
@@ -78,6 +79,23 @@ module.exports = (function () {
 			}
 
 			retestPage(rowId, url, column, source);
+		});
+	}
+
+	/**
+	 * Attach click listeners to "View Details" links.
+	 */
+	function attachViewDetailsListeners() {
+		jQuery(document).on('click', '.wpr-ri-view-details-link:not(.wpr-ri-disabled)', function (e) {
+			const link = jQuery(this);
+			const rowId = link.data('rocket-insights-id');
+
+			if (!rowId) {
+				return;
+			}
+
+			// Track the View Details click
+			trackViewDetailsClick(rowId, 'post type listing');
 		});
 	}
 
@@ -326,6 +344,33 @@ module.exports = (function () {
 			
 			// Update the data attribute so future clicks will trigger the limit message.
 			column.attr('data-can-add-pages', '0');
+		});
+	}
+
+	/**
+	 * Track View Details click via AJAX.
+	 *
+	 * @param {number} rowId  The database row ID.
+	 * @param {string} context The context (e.g., 'post type listing').
+	 */
+	function trackViewDetailsClick(rowId, context) {
+		// Only track if AJAX URL is available
+		if (!window.ajaxurl) {
+			return;
+		}
+
+		jQuery.ajax({
+			url: window.ajaxurl,
+			type: 'POST',
+			data: {
+				action: 'rocket_track_view_details',
+				row_id: rowId,
+				context: context,
+				nonce: window.rocket_ajax_data?.nonce || ''
+			}
+		}).catch(function(error) {
+			// Silently fail tracking - don't interrupt user experience
+			console.debug('Tracking failed:', error);
 		});
 	}
 
