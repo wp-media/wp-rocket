@@ -671,4 +671,129 @@ document.addEventListener('DOMContentLoaded', function() {
 			updateGlobalScoreRow(globalScoreData);
 		}, 30);
 	});
+
+	// Handle Expand/Collapse for RI.
+	if ($('.details-section-td').is(':visible')) {
+		var $detailsCells = $('.details-section-td');
+		var $toggleButtons = $('.wpr-ri-item-toggle-single');
+		var $lastToggle = $('.wpr-ri-item-toggle').last();
+		var $lastActions = $('.wpr-ri-item-actions').last();
+		var imgUrl = window.rocket_ajax_data.assets_img_url;
+		var carets = {
+			down: imgUrl + 'ri-caret-down.svg',
+			right: imgUrl + 'ri-caret-right.svg'
+		}
+
+		var $selectors = {
+			lastToggle: $lastToggle,
+			lastActions: $lastActions,
+			detailsCells: $detailsCells
+		};
+
+		// Handles initial expand state: opens a specific test from the hash if present, otherwise collapses all but the first.
+		function handleInitialExpandState() {
+			var pageId = window.location.hash.split('#')[1];
+			// Check if id was passed in hash to open specific test.
+			if (pageId.includes('=')) {
+				var testId = pageId.split('=')[1];
+
+				// If the test ID exists and is visible, show its details.
+				if ('' !== testId && $(`[data-rocket-insights-id="${testId}"]`).is(':visible')) {
+				$detailsCells.hide();
+				toggleSingleRowVisibility(`[data-rocket-insights-id="${testId}"] .wpr-ri-item-toggle-single`, testId)
+				return;
+				}
+			}
+
+			// No specific test to open, collapse all but the first.
+			$detailsCells.not(':first').hide();
+			$toggleButtons.first().find('img').attr('src', carets.down);
+		}
+
+		// Toggles the visibility of a single test details row, switches the caret icon, and updates styling for the last item.
+		function toggleSingleRowVisibility(el, insightsId) {
+			var $details = $(`#ri_details_${insightsId} .details-section-td`);
+			var $img = $(el).find('img');
+			var isVisible = $details.is(':visible');
+			var isLast = $(el).is($toggleButtons.last());
+
+			// Toggle visibility
+			if (isVisible) {
+				$details.hide('fast');
+				$img.attr('src', carets.right);
+				
+				// Manipulate styling for last elements when details cell is visible.
+				if (isLast) {
+					updateRowStylingForLastItem($selectors, false);
+				}
+				return;
+			}
+
+			$details.show('fast');
+			$img.attr('src', carets.down);
+			
+			// Manipulate styling for last elements when details cell is not visible.
+			if (isLast) {
+				updateRowStylingForLastItem($selectors);
+			}
+		}
+
+    	/**
+		 * Updates the border styling for the last row item in the Rocket Insights table.
+		 * 
+		 * Manages border radius and bottom border styling based on whether the details
+		 * cell is expanded or collapsed to maintain proper visual appearance.
+		 */
+		function updateRowStylingForLastItem($selectors, reverseStyle = true) {
+			if (!reverseStyle) {
+				// Restore border radius for main cells when item is collapsed.
+				$selectors.lastToggle.css('border-bottom-left-radius', 5);
+				$selectors.lastActions.css('border-bottom-right-radius', 5);
+
+				// Remove border radius for details cell when item is collapsed.
+				$selectors.detailsCells.last().css('border-bottom-left-radius', 0);
+				$selectors.detailsCells.last().css('border-bottom-right-radius', 0);
+
+				// Remove bottom border for details cell when item is collapsed.
+				$selectors.detailsCells.last().css('border-bottom', 0);
+
+				return
+			}
+
+			// Remove border radius for main cells when item is expanded.
+			$selectors.lastToggle.css('border-bottom-left-radius', 0);
+			$selectors.lastActions.css('border-bottom-right-radius', 0);
+
+			// Restore border radius for details cell when item is expanded.
+			$selectors.detailsCells.last().css('border-bottom-left-radius', 5);
+			$selectors.detailsCells.last().css('border-bottom-right-radius', 5);
+
+			// Restore bottom border for details cell when item is expanded.
+			$selectors.detailsCells.last().css('border-bottom', '1px solid #E2E5E9');
+		}
+
+		// Set initial expand/collapse state.
+		handleInitialExpandState();
+
+		// Toggle single item.
+		$toggleButtons.on('click', function() {
+			var insightsId = $(this).closest('.wpr-ri-item').data('rocket-insights-id');
+			toggleSingleRowVisibility(this, insightsId);
+		});
+
+		// Toggle all items.
+		$('.wpr-ri-item-toggle-all').on('click', function() {        
+			if ($detailsCells.is(':visible')) {
+				$detailsCells.hide('fast');
+				$('.wpr-ri-item-toggle-single img').attr('src', carets.right);
+				updateRowStylingForLastItem($selectors, false);
+
+				return;
+			}
+
+			$detailsCells.show('fast');
+			$('.wpr-ri-item-toggle-single img').attr('src', carets.down);
+			updateRowStylingForLastItem($selectors);
+		});
+	}
 });
