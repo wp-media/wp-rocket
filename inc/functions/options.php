@@ -494,6 +494,11 @@ function rocket_check_key() {
 			return $return;
 		}
 
+		// Strip 'OK:' prefix if present for backward compatibility with new API format.
+		if ( str_starts_with( $body, 'OK:' ) ) {
+			$body = substr( $body, 3 );
+		}
+
 		Logger::error(
 			'License validation failed.',
 			[
