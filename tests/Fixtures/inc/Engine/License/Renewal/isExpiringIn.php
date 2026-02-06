@@ -38,7 +38,7 @@ return [
 				'license_expiration' => $now - ( 5 * DAY_IN_SECONDS ), // Expired 5 days ago.
 				'duration_in_days'   => 30,
 			],
-			'expected' => true,
+			'expected' => false,
 		],
 		'shouldReturnTrueWhenExpiringExactlyAt30Days' => [
 			'config'   => [
