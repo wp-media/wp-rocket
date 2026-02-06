@@ -332,7 +332,7 @@ class Render extends Abstract_Render {
 	/**
 	 * Generates the URL for the View Details link pointing to RI settings page with expanded metrics.
 	 *
-	 * @since 3.20.2
+	 * @since 3.20.5
 	 *
 	 * @param int $row_id The database row ID for the test.
 	 * @return string The URL to the RI settings page with the test expanded.
