@@ -316,7 +316,7 @@ class Tracking extends Abstract_Render {
 	 * @return void
 	 */
 	public function ajax_track_view_details(): void {
-		check_ajax_referer( 'rocket-ajax' );
+		check_ajax_referer( 'rocket-ajax', 'nonce', true );
 
 		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			wp_send_json_error( 'Missing capability' );
