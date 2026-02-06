@@ -15,7 +15,7 @@ class MetricFormatter {
 	 *
 	 * Values are in milliseconds except CLS which is unitless.
 	 *
-	 * @var array<string, array{good: float, poor: float}>
+	 * @var array<string, array{good: int|float, poor: int|float}>
 	 */
 	private const THRESHOLDS = [
 		'largest_contentful_paint' => [
