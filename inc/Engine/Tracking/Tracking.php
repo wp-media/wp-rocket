@@ -286,7 +286,7 @@ class Tracking extends Abstract_Render {
 	/**
 	 * Track when "View Details" is clicked from the Rocket Insights column.
 	 *
-	 * @since 3.20.2
+	 * @since 3.20.5
 	 *
 	 * @param int    $row_id  The database row ID of the test.
 	 * @param string $context The context where the button was clicked (e.g., 'post type listing').
@@ -306,31 +306,5 @@ class Tracking extends Abstract_Render {
 				'test_id' => $row_id,
 			]
 		);
-	}
-
-	/**
-	 * Handle AJAX request to track View Details clicks.
-	 *
-	 * @since 3.20.2
-	 *
-	 * @return void
-	 */
-	public function ajax_track_view_details(): void {
-		check_ajax_referer( 'rocket-ajax', 'nonce', true );
-
-		if ( ! current_user_can( 'rocket_manage_options' ) ) {
-			wp_send_json_error( 'Insufficient permissions to track view details.' );
-		}
-
-		if ( ! isset( $_POST['row_id'], $_POST['context'] ) ) {
-			wp_send_json_error( 'Missing parameters' );
-		}
-
-		$row_id  = absint( wp_unslash( $_POST['row_id'] ) );
-		$context = sanitize_text_field( wp_unslash( $_POST['context'] ) );
-
-		$this->track_rocket_insights_view_details( $row_id, $context );
-
-		wp_send_json_success();
 	}
 }

@@ -34,7 +34,6 @@ class Subscriber implements Subscriber_Interface {
 			'wp_rocket_upgrade'                    => [ 'migrate_optin', 10, 2 ],
 			'rocket_dashboard_after_account_data'  => [ 'render_optin', 8 ],
 			'wp_ajax_rocket_toggle_optin'          => [ 'ajax_toggle_optin' ],
-			'wp_ajax_rocket_track_view_details'    => [ 'ajax_track_view_details' ],
 			'admin_enqueue_scripts'                => [ 'localize_optin_status', 15 ],
 			'admin_print_scripts'                  => [ 'inject_mixpanel_script' ],
 			'rocket_mixpanel_optin_changed'        => 'track_optin_change',
@@ -141,16 +140,5 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function track_rocket_insights_test( $row_details, $job_details, $plan ): void {
 		$this->tracking->track_rocket_insights_test( $row_details, $job_details, $plan );
-	}
-
-	/**
-	 * Handle AJAX request to track View Details clicks.
-	 *
-	 * @since 3.20.2
-	 *
-	 * @return void
-	 */
-	public function ajax_track_view_details(): void {
-		$this->tracking->ajax_track_view_details();
 	}
 }
