@@ -732,6 +732,14 @@ document.addEventListener('DOMContentLoaded', function() {
 			$details.show('fast');
 			$img.attr('src', carets.down);
 			
+			// Track expand only (not collapse) if Mixpanel is available.
+			if (window.rocket_mixpanel_data && window.rocket_mixpanel_data.optin_enabled && window.mixpanel) {
+				window.mixpanel.track('Rocket Insights Metrics Expanded', {
+					context: 'wp_plugin',
+					row_id: insightsId
+				});
+			}
+			
 			// Manipulate styling for last elements when details cell is not visible.
 			if (isLast) {
 				updateRowStylingForLastItem($selectors);
@@ -778,18 +786,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		// Toggle single item.
 		$toggleButtons.on('click', function() {
 			var insightsId = $(this).closest('.wpr-ri-item').data('rocket-insights-id');
-			var $details = $('#ri_details_' + insightsId + ' .details-section-td');
-			var isCurrentlyVisible = $details.is(':visible');
-			
-			// Track expand/collapse if Mixpanel is available.
-			if (window.rocket_mixpanel_data && window.rocket_mixpanel_data.optin_enabled && window.mixpanel) {
-				window.mixpanel.track('Rocket Insights Metrics Expanded', {
-					context: 'wp_plugin',
-					row_id: insightsId,
-					action: isCurrentlyVisible ? 'collapse' : 'expand'
-				});
-			}
-			
 			toggleSingleRowVisibility(this, insightsId);
 		});
 
@@ -813,8 +809,10 @@ document.addEventListener('DOMContentLoaded', function() {
 	$(document).on('click', '.wpr-ri-report', function(e) {
 		// Only track if link is not disabled and mixpanel is available.
 		if (!$(this).hasClass('wpr-ri-action--disabled') && window.rocket_mixpanel_data && window.rocket_mixpanel_data.optin_enabled && window.mixpanel) {
+			var insightsId = $(this).closest('.wpr-ri-item').data('rocket-insights-id');
 			window.mixpanel.track('Rocket Insights See Report', {
-				context: 'wp_plugin'
+				context: 'wp_plugin',
+				row_id: insightsId
 			});
 		}
 	});

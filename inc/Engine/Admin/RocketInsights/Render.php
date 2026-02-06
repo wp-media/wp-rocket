@@ -8,6 +8,7 @@ use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\Admin\RocketInsights\Context\Context;
 use WP_Rocket\Engine\Admin\RocketInsights\Database\Queries\RocketInsights as Query;
 use WP_Rocket\Engine\Admin\RocketInsights\Managers\Plan;
+use WP_Rocket\Engine\Admin\RocketInsights\MetricFormatter;
 
 class Render extends Abstract_Render {
 	/**
@@ -39,23 +40,32 @@ class Render extends Abstract_Render {
 	private $query;
 
 	/**
+	 * MetricFormatter instance.
+	 *
+	 * @var MetricFormatter
+	 */
+	private $metric_formatter;
+
+	/**
 	 * Constructor for the Render class.
 	 *
 	 * Initializes the Render instance with the provided template path and CreditManager.
 	 *
-	 * @param string  $template_path   Path to the template file.
-	 * @param Plan    $plan Plan instance.
-	 * @param Context $context Instance of PerformanceMonitoringContext for managing performance monitoring context.
-	 * @param Beacon  $beacon          Beacon instance.
-	 * @param Query   $query           Query instance.
+	 * @param string          $template_path    Path to the template file.
+	 * @param Plan            $plan             Plan instance.
+	 * @param Context         $context          Instance of PerformanceMonitoringContext for managing performance monitoring context.
+	 * @param Beacon          $beacon           Beacon instance.
+	 * @param Query           $query            Query instance.
+	 * @param MetricFormatter $metric_formatter MetricFormatter instance.
 	 */
-	public function __construct( $template_path, Plan $plan, Context $context, Beacon $beacon, Query $query ) {
+	public function __construct( $template_path, Plan $plan, Context $context, Beacon $beacon, Query $query, MetricFormatter $metric_formatter ) {
 		parent::__construct( $template_path );
 
-		$this->plan    = $plan;
-		$this->context = $context;
-		$this->beacon  = $beacon;
-		$this->query   = $query;
+		$this->plan             = $plan;
+		$this->context          = $context;
+		$this->beacon           = $beacon;
+		$this->query            = $query;
+		$this->metric_formatter = $metric_formatter;
 	}
 
 	/**
@@ -210,7 +220,8 @@ class Render extends Abstract_Render {
 	 * @return string The rendered HTML for the performance monitoring row.
 	 */
 	public function get_performance_monitoring_list_row( object $data ): string {
-		$data->has_credit = $this->plan->has_credit();
+		$data->has_credit        = $this->plan->has_credit();
+		$data->formatted_metrics = $this->metric_formatter->get_formatted_metrics( $data->metric_data );
 
 		return $this->generate( 'partials/rocket-insights/table-row', $data );
 	}

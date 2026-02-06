@@ -14,8 +14,8 @@ $rocket_ri_blurred                 = ( isset( $rocket_data_array['is_blurred'] )
 $rocket_can_show_dropdown          = ! $rocket_data_array['is_running'] && 'failed' !== $rocket_data_array['status'];
 $rocket_img_url                    = esc_url( WP_ROCKET_ASSETS_IMG_URL );
 
-// Parse metric data.
-$rocket_metric_data = $data->metric_data;
+// Get pre-formatted metrics from Render class.
+$rocket_formatted_metrics = $data->formatted_metrics ?? [];
 ?>
 <tr class="wpr-ri-item wpr-ri-item-result" data-rocket-insights-id="<?php echo esc_attr( $data->id ); ?>" >
 	<td class="wpr-ri-item-toggle">
@@ -191,92 +191,13 @@ $rocket_metric_data = $data->metric_data;
 							<div class="icon-frame"></div>
 						</div>
 					</div>
-					<div class="row-right <?php echo esc_attr( $rocket_ri_blurred ); ?>">
+					<div class="row-right">
 						<div class="metric-values <?php echo esc_attr( $rocket_ri_blurred ); ?>">
-							<?php
-							// Helper function to get metric class based on thresholds.
-							$get_metric_class = function ( $metric_key, $value ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
-								if ( null === $value || '' === $value ) {
-									return 'ri-na';
-								}
-								// Thresholds from Web Vitals (values are in milliseconds except CLS).
-								$thresholds = [
-									'largest_contentful_paint' => [
-										'good' => 2500,
-										'poor' => 4000,
-									],
-									'total_blocking_time' => [
-										'good' => 200,
-										'poor' => 600,
-									],
-									'cumulative_layout_shift' => [
-										'good' => 0.1,
-										'poor' => 0.25,
-									],
-									'time_to_first_byte'  => [
-										'good' => 800,
-										'poor' => 1800,
-									],
-								];
-								if ( ! isset( $thresholds[ $metric_key ] ) ) {
-									return '';
-								}
-								$value = floatval( $value );
-								if ( $value <= $thresholds[ $metric_key ]['good'] ) {
-									return 'ri-success';
-								}
-								if ( $value >= $thresholds[ $metric_key ]['poor'] ) {
-									return 'ri-error';
-								}
-								return 'ri-warning';
-							};
-
-							// Helper to format metric value.
-							$format_metric = function ( $metric_key, $value ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
-								if ( null === $value || '' === $value ) {
-									return 'N/A';
-								}
-								if ( 'cumulative_layout_shift' === $metric_key ) {
-									return number_format( floatval( $value ), 3 );
-								}
-								// Values are in milliseconds from GTmetrix API.
-								$ms_value = floatval( $value );
-								if ( $ms_value >= 1000 ) {
-									return number_format( $ms_value / 1000, 1 ) . 's';
-								}
-								return round( $ms_value ) . 'ms';
-							};
-
-							// Render metrics: LCP, TBT, TTFB, CLS.
-							$metrics = [ // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
-								[
-									'key'   => 'largest_contentful_paint',
-									'value' => $rocket_metric_data['largest_contentful_paint'] ?? null,
-								],
-								[
-									'key'   => 'total_blocking_time',
-									'value' => $rocket_metric_data['total_blocking_time'] ?? null,
-								],
-								[
-									'key'   => 'time_to_first_byte',
-									'value' => $rocket_metric_data['time_to_first_byte'] ?? null,
-								],
-								[
-									'key'   => 'cumulative_layout_shift',
-									'value' => $rocket_metric_data['cumulative_layout_shift'] ?? null,
-								],
-							];
-
-							foreach ( $metrics as $metric ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
-								$class           = $get_metric_class( $metric['key'], $metric['value'] ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
-								$formatted_value = $format_metric( $metric['key'], $metric['value'] ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
-								?>
-								<div class="metric-value <?php echo esc_attr( $class ); ?>">
-									<p><?php echo esc_html( $formatted_value ); ?></p>
+							<?php foreach ( $rocket_formatted_metrics as $rocket_metric ) : ?>
+								<div class="metric-value <?php echo esc_attr( $rocket_metric['class'] ); ?>">
+									<p><?php echo esc_html( $rocket_metric['formatted'] ); ?></p>
 								</div>
-								<?php
-							}
-							?>
+							<?php endforeach; ?>
 						</div>
 					</div>
 				</div>
