@@ -19,7 +19,7 @@ $rocket_formatted_metrics = $data->formatted_metrics ?? [];
 ?>
 <tr class="wpr-ri-item wpr-ri-item-result" data-rocket-insights-id="<?php echo esc_attr( $data->id ); ?>" >
 	<td class="wpr-ri-item-toggle">
-		<div class="icon-frame wpr-ri-item-toggle-single <?php echo $rocket_can_show_dropdown ? '' : 'hide'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>">
+		<div class="icon-frame wpr-ri-item-toggle-single">
 			<img src="<?php echo $rocket_img_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>ri-caret-right.svg" alt="">
 		</div>
 	</td>
@@ -121,18 +121,17 @@ $rocket_formatted_metrics = $data->formatted_metrics ?? [];
 		?>
 	</td>
 </tr>
-<?php if ( $rocket_can_show_dropdown ) : ?>
 <tr id="ri_details_<?php echo $rocket_data_array['id']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>">
 	<td colspan="4" class="details-section-td">
 		<div class="details-section">
 			<div class="details-header">
-				<p class="details-label"><?php echo esc_html__( 'Details', 'rocket' ); ?></p>
+				<p class="details-label">Details</p>
 				<div>
 				<div class="metrics-header">
 					<div class="metric-label">
-						<p><?php echo esc_html__( 'LCP', 'rocket' ); ?></p>
+						<p>LCP</p>
 						<div class="info-icon">
-							<img src="<?php echo $rocket_img_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>ri-info.svg" alt="">
+							<img src="<?php echo $rocket_img_url;// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>ri-info.svg" alt="">
 							<div class="wpr-tooltip">
 								<div class="wpr-tooltip-content">
 									<?php echo esc_html__( 'Time for the largest visible element to render, showing when the main content loads.', 'rocket' ); ?>
@@ -141,7 +140,7 @@ $rocket_formatted_metrics = $data->formatted_metrics ?? [];
 						</div>
 					</div>
 					<div class="metric-label">
-						<p><?php echo esc_html__( 'TBT', 'rocket' ); ?></p>
+						<p>TBT</p>
 						<div class="info-icon">
 							<img src="<?php echo $rocket_img_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>ri-info.svg" alt="">
 							<div class="wpr-tooltip">
@@ -152,7 +151,7 @@ $rocket_formatted_metrics = $data->formatted_metrics ?? [];
 						</div>
 					</div>
 					<div class="metric-label">
-						<p><?php echo esc_html__( 'TTFB', 'rocket' ); ?></p>
+						<p>TTFB</p>
 						<div class="info-icon">
 							<img src="<?php echo $rocket_img_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>ri-info.svg" alt="">
 							<div class="wpr-tooltip">
@@ -163,7 +162,7 @@ $rocket_formatted_metrics = $data->formatted_metrics ?? [];
 						</div>
 					</div>
 					<div class="metric-label">
-						<p><?php echo esc_html__( 'CLS', 'rocket' ); ?></p>
+						<p>CLS</p>
 						<div class="info-icon">
 							<img src="<?php echo $rocket_img_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>ri-info.svg" alt="">
 							<div class="wpr-tooltip">
@@ -205,4 +204,3 @@ $rocket_formatted_metrics = $data->formatted_metrics ?? [];
 		</div>
 	</td>
 </tr>
-<?php endif; ?>

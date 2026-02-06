@@ -691,7 +691,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		};
 
 		// Handles initial expand state: opens a specific test from the hash if present, otherwise collapses all but the first.
-		var handleInitialExpandState = function() {
+		function handleInitialExpandState() {
 			var pageId = window.location.hash.split('#')[1];
 			// Check if id was passed in hash to open specific test.
 			if (pageId.includes('=')) {
@@ -708,10 +708,10 @@ document.addEventListener('DOMContentLoaded', function() {
 			// No specific test to open, collapse all but the first.
 			$detailsCells.not(':first').hide();
 			$toggleButtons.first().find('img').attr('src', carets.down);
-		};
+		}
 
 		// Toggles the visibility of a single test details row, switches the caret icon, and updates styling for the last item.
-		var toggleSingleRowVisibility = function(el, insightsId) {
+		function toggleSingleRowVisibility(el, insightsId) {
 			var $details = $(`#ri_details_${insightsId} .details-section-td`);
 			var $img = $(el).find('img');
 			var isVisible = $details.is(':visible');
@@ -744,7 +744,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			if (isLast) {
 				updateRowStylingForLastItem($selectors);
 			}
-		};
+		}
 
     	/**
 		 * Updates the border styling for the last row item in the Rocket Insights table.
@@ -752,7 +752,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		 * Manages border radius and bottom border styling based on whether the details
 		 * cell is expanded or collapsed to maintain proper visual appearance.
 		 */
-		var updateRowStylingForLastItem = function($selectors, reverseStyle = true) {
+		function updateRowStylingForLastItem($selectors, reverseStyle = true) {
 			if (!reverseStyle) {
 				// Restore border radius for main cells when item is collapsed.
 				$selectors.lastToggle.css('border-bottom-left-radius', 5);
@@ -778,7 +778,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 			// Restore bottom border for details cell when item is expanded.
 			$selectors.detailsCells.last().css('border-bottom', '1px solid #E2E5E9');
-		};
+		}
 
 		// Set initial expand/collapse state.
 		handleInitialExpandState();
