@@ -78,9 +78,9 @@ class Subscriber implements Subscriber_Interface {
 	 * @param Tracking $tracking The tracking service.
 	 */
 	public function __construct( Render $render, Context $context, Query $query, Tracking $tracking ) {
-		$this->render  = $render;
-		$this->context = $context;
-		$this->query   = $query;
+		$this->render   = $render;
+		$this->context  = $context;
+		$this->query    = $query;
 		$this->tracking = $tracking;
 	}
 	/**
@@ -92,12 +92,12 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'admin_enqueue_scripts'        => 'enqueue_post_listing_assets',
-			'manage_pages_columns'         => 'add_column_to_pages',
-			'manage_posts_columns'         => [ 'add_column_to_posts', 10, 2 ],
-			'manage_product_posts_columns' => [ 'add_column_to_products', 22 ],
-			'manage_pages_custom_column'   => [ 'render_rocket_insights_column', 10, 2 ],
-			'manage_posts_custom_column'   => [ 'render_rocket_insights_column', 10, 2 ],
+			'admin_enqueue_scripts'             => 'enqueue_post_listing_assets',
+			'manage_pages_columns'              => 'add_column_to_pages',
+			'manage_posts_columns'              => [ 'add_column_to_posts', 10, 2 ],
+			'manage_product_posts_columns'      => [ 'add_column_to_products', 22 ],
+			'manage_pages_custom_column'        => [ 'render_rocket_insights_column', 10, 2 ],
+			'manage_posts_custom_column'        => [ 'render_rocket_insights_column', 10, 2 ],
 			'wp_ajax_rocket_track_view_details' => 'ajax_track_view_details',
 		];
 	}
