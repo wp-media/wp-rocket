@@ -319,7 +319,7 @@ class Tracking extends Abstract_Render {
 		check_ajax_referer( 'rocket-ajax', 'nonce', true );
 
 		if ( ! current_user_can( 'rocket_manage_options' ) ) {
-			wp_send_json_error( 'Missing capability' );
+			wp_send_json_error( 'Insufficient permissions to track view details.' );
 		}
 
 		if ( ! isset( $_POST['row_id'], $_POST['context'] ) ) {
