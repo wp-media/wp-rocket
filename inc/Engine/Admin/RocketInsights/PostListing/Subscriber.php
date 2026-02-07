@@ -249,6 +249,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_ajax_data',
 			[
 				'is_free_user' => $this->context->is_free_user(),
+				'nonce'        => wp_create_nonce( 'rocket-ajax' ),
 			]
 		);
 	}
@@ -332,7 +333,7 @@ class Subscriber implements Subscriber_Interface {
 		$row_id  = absint( wp_unslash( $_POST['row_id'] ) );
 		$context = sanitize_text_field( wp_unslash( $_POST['context'] ) );
 
-		if ( ! $this->query->get_row_by_id() ) {
+		if ( ! $this->query->get_row_by_id( $row_id ) ) {
 			wp_send_json_error( 'Invalid row ID' );
 		}
 
