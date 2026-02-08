@@ -41,6 +41,10 @@ class Upgrade extends Abstract_Render {
 	 * @return void
 	 */
 	public function display_upgrade_section() {
+		if ( $this->user->is_revoked() ) {
+			return;
+		}
+
 		if ( ! $this->can_upgrade() ) {
 			return;
 		}
@@ -55,6 +59,10 @@ class Upgrade extends Abstract_Render {
 	 */
 	public function display_upgrade_popin() {
 		if ( rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) ) {
+			return;
+		}
+
+		if ( $this->user->is_revoked() ) {
 			return;
 		}
 
@@ -280,6 +288,10 @@ class Upgrade extends Abstract_Render {
 		}
 
 		if ( $this->is_new_user() ) {
+			return false;
+		}
+
+		if ( $this->user->is_revoked() ) {
 			return false;
 		}
 
