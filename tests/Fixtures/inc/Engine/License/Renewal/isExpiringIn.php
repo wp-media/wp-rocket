@@ -33,7 +33,7 @@ return [
 			],
 			'expected' => false,
 		],
-		'shouldReturnTrueWhenAlreadyExpired'       => [
+		'shouldReturnFalseWhenAlreadyExpired'       => [
 			'config'   => [
 				'license_expiration' => $now - ( 5 * DAY_IN_SECONDS ), // Expired 5 days ago.
 				'duration_in_days'   => 30,
