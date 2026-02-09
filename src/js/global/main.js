@@ -157,7 +157,13 @@ $(document).ready(function(){
 	function wprActivateAnalytics(){
 		wprCloseAnalytics();
 		$('#analytics_enabled').prop('checked', true);
-		document.getElementById('analytics_enabled').dispatchEvent(new Event('change'));
+
+		var analyticsEnabled = document.getElementById('analytics_enabled');
+
+		if ( analyticsEnabled ) {
+			var changeEvent = new Event('change', { bubbles: true });
+			analyticsEnabled.dispatchEvent(changeEvent);
+		}
 	}
 
 	// Display CTA within the popin `What info will we collect?`
