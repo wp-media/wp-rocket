@@ -279,6 +279,7 @@ class Renewal extends Abstract_Render {
 
 	/**
 	 * Checks if the license is expiring within the specified number of days.
+	 * Skip expired users.
 	 *
 	 * @since 3.20.3
 	 *
@@ -291,6 +292,9 @@ class Renewal extends Abstract_Render {
 		}
 
 		$expiration_delay = $this->user->get_license_expiration() - time();
+		if ( 0 >= $expiration_delay ) {
+			return false;
+		}
 
 		return $duration_in_days * DAY_IN_SECONDS >= $expiration_delay;
 	}
