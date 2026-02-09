@@ -25,7 +25,7 @@ class RocketInsights extends AbstractTable {
 	 *
 	 * @var int
 	 */
-	protected $version = 20250909;
+	protected $version = 20260130;
 
 	/**
 	 * Upgrades array.
@@ -35,6 +35,7 @@ class RocketInsights extends AbstractTable {
 	 */
 	protected $upgrades = [
 		20250909 => 'add_is_blurred_column',
+		20260130 => 'add_metric_data_column',
 	];
 
 	/**
@@ -59,6 +60,7 @@ class RocketInsights extends AbstractTable {
 		score            tinyint(3)          NULL default 0,
 		report_url       varchar(255)        NULL default '',
 		is_blurred       tinyint(1)          NOT NULL default 0,
+		metric_data      longtext                NULL default NULL,
 		error_code       varchar(32)             NULL default NULL,
 		error_message    longtext                NULL default NULL,
 		PRIMARY KEY (id),
@@ -94,6 +96,23 @@ class RocketInsights extends AbstractTable {
 
 		if ( ! $column_exists ) {
 			$created &= $this->get_db()->query( "ALTER TABLE {$this->table_name} ADD COLUMN is_blurred tinyint(1) NULL default 0 AFTER report_url, ADD INDEX is_blurred (is_blurred) " );
+		}
+
+		return $this->is_success( $created );
+	}
+
+	/**
+	 * Add metric_data column.
+	 *
+	 * @return bool
+	 */
+	protected function add_metric_data_column() {
+		$column_exists = $this->column_exists( 'metric_data' );
+
+		$created = true;
+
+		if ( ! $column_exists ) {
+			$created &= $this->get_db()->query( "ALTER TABLE {$this->table_name} ADD COLUMN metric_data longtext NULL default NULL AFTER is_blurred" );
 		}
 
 		return $this->is_success( $created );

@@ -134,6 +134,13 @@ class RocketInsights extends Row {
 	public $is_blurred;
 
 	/**
+	 * Metric data column (decoded from JSON).
+	 *
+	 * @var array|null
+	 */
+	public $metric_data;
+
+	/**
 	 * Constructor
 	 *
 	 * @param mixed $item Object Row.
@@ -157,6 +164,7 @@ class RocketInsights extends Row {
 		$this->score           = (int) $this->score;
 		$this->report_url      = (string) $this->report_url;
 		$this->is_blurred      = (bool) $this->is_blurred;
+		$this->metric_data     = $this->parse_metric_data( $item->metric_data ?? null );
 		$this->error_code      = (string) $this->error_code;
 		$this->error_message   = (string) $this->error_message;
 	}
@@ -217,5 +225,25 @@ class RocketInsights extends Row {
 	 */
 	public function can_re_test(): bool {
 		return ! $this->is_running() && ! $this->is_blurred;
+	}
+
+	/**
+	 * Parse metric data from database or test fixture.
+	 *
+	 * @param mixed $metric_data The metric data (JSON string or array).
+	 * @return array|null Parsed metric data or null.
+	 */
+	private function parse_metric_data( $metric_data ): ?array {
+		if ( empty( $metric_data ) ) {
+			return null;
+		}
+
+		// If already an array (from test fixtures), return as is.
+		if ( is_array( $metric_data ) ) {
+			return $metric_data;
+		}
+
+		// Otherwise, decode JSON string from database.
+		return json_decode( $metric_data, true );
 	}
 }
