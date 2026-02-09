@@ -45,6 +45,11 @@ class DisplayUpgradePopin extends TestCase {
 			->twice()
 			->andReturn( $config['license_account'] );
 
+		$this->user->shouldReceive( 'is_revoked' )
+			->atMost()
+			->times( 1 )
+			->andReturn( $config['is_revoked'] ?? false );
+
 		$this->user->shouldReceive( 'is_license_expired' )
 			->atMost()
 			->once()

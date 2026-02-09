@@ -104,10 +104,11 @@ class RocketInsights extends AbstractQuery {
 	 */
 	public function make_status_completed( int $db_id, string $status, array $test_data ): bool {
 		$update_data = [
-			'status'     => $status,
-			'modified'   => gmdate( 'Y-m-d H:i:s' ),
-			'score'      => $test_data['performance_score'],
-			'report_url' => $test_data['report_url'],
+			'status'      => $status,
+			'modified'    => gmdate( 'Y-m-d H:i:s' ),
+			'score'       => $test_data['performance_score'],
+			'report_url'  => $test_data['report_url'],
+			'metric_data' => isset( $test_data['metric_data'] ) ? wp_json_encode( $test_data['metric_data'] ) : null,
 		];
 
 		return (bool) $this->update_item( $db_id, $update_data );

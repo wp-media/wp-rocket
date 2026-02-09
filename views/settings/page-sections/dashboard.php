@@ -112,6 +112,16 @@ $rocket_manual_preload = (bool) get_rocket_option( 'manual_preload', false );
 							<span class="wpr-title3"><?php esc_html_e( 'Expiration Date', 'rocket' ); ?></span>
 							<span class="wpr-infoAccount <?php echo esc_attr( $data['customer_data']['license_class'] ); ?>" id="wpr-expiration-data"><?php echo esc_html( $data['customer_data']['license_expiration'] ); ?></span>
 						</p>
+						<?php if ( ! defined( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) || ! WP_ROCKET_WHITE_LABEL_ACCOUNT ) : ?>
+						<p>
+							<span class="wpr-title3"><?php esc_html_e( 'Plugin Updates', 'rocket' ); ?></span>
+							<?php if ( ! empty( $data['customer_data']['can_update_plugin'] ) ) : ?>
+								<span class="wpr-infoAccount wpr-isValid wpr-icon-check" id="wpr-plugin-updates-data"></span>
+							<?php else : ?>
+								<span class="wpr-infoAccount wpr-isInvalid" id="wpr-plugin-updates-data"><?php echo esc_html( $data['customer_data']['update_blocked_reason'] ); ?></span>
+							<?php endif; ?>
+						</p>
+						<?php endif; ?>
 					</div>
 					<div>
 						<?php

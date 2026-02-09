@@ -174,6 +174,16 @@ class RocketInsights extends Schema {
 			'sortable'   => true,
 		],
 
+		// METRIC_DATA column.
+		[
+			'name'       => 'metric_data',
+			'type'       => 'longtext',
+			'default'    => null,
+			'cache_key'  => false,
+			'searchable' => false,
+			'sortable'   => false,
+		],
+
 		// error_code column.
 		[
 			'name'       => 'error_code',

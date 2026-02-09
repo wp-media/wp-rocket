@@ -60,6 +60,21 @@ return [
 		],
 		'expected' => '',
 	],
+	'testShouldReturnNullWhenUserIsRevoked' => [
+		'config'   => [
+			'user' => json_decode( json_encode( [
+				'licence_account'    => 1,
+				'licence_expiration' => strtotime( 'last year' ),
+				'is_auto_renew' => false,
+				'licence' => (object) [
+                    'is_revoked' => true,
+                ],
+			] ) ),
+			'pricing' => $pricing,
+			'transient' => false,
+		],
+		'expected' => '',
+	],
 	'testShouldReturnNullWhenBannerDismissed' => [
 		'config'   => [
 			'user' => json_decode( json_encode( [

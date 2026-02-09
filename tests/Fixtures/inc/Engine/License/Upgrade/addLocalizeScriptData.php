@@ -116,6 +116,30 @@ return [
 			'promo_end'  => strtotime( 'next week' ),
 		],
 	],
+	'testShouldReturnDefaultWhenUserIsRevoked' => [
+		'config'   => [
+			'licence_account'    => 1,
+			'licence_expired'    => false,
+			'licence_expiration' => strtotime( 'next year' ),
+			'is_revoked' => true,
+			'promo_active'       => true,
+			'promo_end'          => strtotime( 'next week' ),
+			'date_created'          => strtotime( 'last year' ),
+			'upgrades' => [
+				(object) [
+					"name"=> "Growth",
+				]
+			],
+		],
+		'data'    => [
+			'nonce'      => 12345,
+			'origin_url' => 'https://api.wp-rocket.me',
+		],
+		'expected' => [
+			'nonce'      => 12345,
+			'origin_url' => 'https://api.wp-rocket.me',
+		],
+	],
 	'testShouldReturnDefaultWhenLicenceBoughtLessThan14daysAgo' => [
 		'config'   => [
 			'licence_account'    => 1,
