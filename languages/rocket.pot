@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the WP Rocket plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.20.4-alpha2\n"
+"Project-Id-Version: WP Rocket 3.20.4-beta\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
 "Last-Translator: WP Media (http://wp-rocket.me/)\n"
 "Language-Team: WP Media (http://www.transifex.com/projects/p/wp-media/) <contact@wp-media.me>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-02-10T10:43:36+00:00\n"
+"POT-Creation-Date: 2026-02-10T10:59:57+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: rocket\n"
@@ -2950,7 +2950,7 @@ msgstr ""
 msgid "As your license is no longer active, you lost access to WP Rocket's powerful features to %1$sboost speed%2$s and deliver a %3$stop-notch user experience%4$s."
 msgstr ""
 
-#. translators: %1$s = <strong>, %2$s = WP Rocket plugin name, %3$s = </strong>, %4$s = <a>, %5$s = %, %6$s = </a>.
+#. translators: %1$s = <strong>, %2$s = WP Rocket plugin name, %3$s = </strong>, %4$s = <a>, %5$s = percentage, %6$s = </a>.
 #: inc/Engine/License/Revoked.php:95
 #, php-format
 msgid "%1$s%2$s%3$s: Your license has been revoked and your site is no longer optimized for speed. %4$sGet WP Rocket at %5$s off%6$s"
