@@ -91,7 +91,7 @@ class Revoked extends Abstract_Render {
 				'dismissible' => '',
 				'status'      => 'error',
 				'message'     => sprintf(
-					// translators: %1$s = <strong>, %2$s = WP Rocket plugin name, %3$s = </strong>, %4$s = <a>, %5$s = %, %6$s = </a>.
+					// translators: %1$s = <strong>, %2$s = WP Rocket plugin name, %3$s = </strong>, %4$s = <a>, %5$s = percentage, %6$s = </a>.
 					__( '%1$s%2$s%3$s: Your license has been revoked and your site is no longer optimized for speed. %4$sGet WP Rocket at %5$s off%6$s', 'rocket' ),
 					'<strong>',
 					WP_ROCKET_PLUGIN_NAME,
