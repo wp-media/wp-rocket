@@ -559,7 +559,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			return;
 		}
 
-		// Guard: Not expiring soon.
+		// Guard: Not expiring soon OR already expired.
 		if ( ! $this->renewal->is_expiring_in( $interval ) ) {
 			return;
 		}
