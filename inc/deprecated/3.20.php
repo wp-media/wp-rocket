@@ -10,6 +10,8 @@
  * @return bool True if we should send them, false otherwise
  */
 function rocket_send_analytics_data() {
+	_deprecated_function( __FUNCTION__, '3.20.5' );
+
 	if ( ! get_rocket_option( 'analytics_enabled' ) ) {
 		return false;
 	}
