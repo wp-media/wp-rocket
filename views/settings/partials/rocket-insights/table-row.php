@@ -89,9 +89,9 @@ $rocket_formatted_metrics = $data->formatted_metrics ?? [];
 			'label'      => __( 'See Report', 'rocket' ),
 			'url'        => $data->report_url,
 			'attributes' => [
-				'target' => '_blank',
-				'class'  => 'wpr-ri-action wpr-ri-report',
-				'data-rocket-insights-id' => $data->id
+				'target'                  => '_blank',
+				'class'                   => 'wpr-ri-action wpr-ri-report',
+				'data-rocket-insights-id' => $data->id,
 			],
 		];
 		$rocket_report_url_icon_state         = '';
@@ -122,7 +122,7 @@ $rocket_formatted_metrics = $data->formatted_metrics ?? [];
 		?>
 	</td>
 </tr>
-<?php if ( $rocket_can_show_dropdown ): ?>
+<?php if ( $rocket_can_show_dropdown ) : ?>
 <tr id="ri_details_<?php echo $rocket_data_array['id']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>">
 	<td colspan="4" class="details-section-td">
 		<div class="details-section">

@@ -80,7 +80,7 @@ class Controller {
 	 * @param GlobalScore  $global_score GlobalScore instance.
 	 * @param User         $user User client API instance.
 	 * @param Options_Data $options Plugin options instance.
-	 * @param Tracking $tracking The tracking service.
+	 * @param Tracking     $tracking The tracking service.
 	 */
 	public function __construct(
 		Query $query,
@@ -454,7 +454,7 @@ class Controller {
 	 */
 	public function track_metric_actions() {
 		$events = [
-			'expand' => 'Rocket Insights Metrics Expanded',
+			'expand'     => 'Rocket Insights Metrics Expanded',
 			'see_report' => 'Rocket Insights See Report',
 		];
 
@@ -471,9 +471,9 @@ class Controller {
 		if ( ! isset( $_POST['row_id'], $_POST['event'] ) ) {
 			wp_send_json_error( 'Missing parameters' );
 		}
-		
-		$row_id  = absint( wp_unslash( $_POST['row_id'] ) );
-		$event = sanitize_text_field( wp_unslash( $_POST['event'] ) );
+
+		$row_id = absint( wp_unslash( $_POST['row_id'] ) );
+		$event  = sanitize_text_field( wp_unslash( $_POST['event'] ) );
 
 		if ( ! $this->query->get_row_by_id( $row_id ) ) {
 			wp_send_json_error( 'Invalid row ID' );
