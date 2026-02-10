@@ -225,7 +225,7 @@ class HTML {
 		}
 
 		if ( empty( $matches['attr'] ) ) {
-			return '<script type="rocketlazyloadscript">' . $matches['content'] . '</script>';
+			return '<script type="text/rocketlazyloadscript">' . $matches['content'] . '</script>';
 		}
 
 		$type_regex = '/type\s*=\s*(["\'])(?<type>.*)\1/i';
@@ -248,7 +248,7 @@ class HTML {
 		$src_regex       = '/src\s*=\s*(["\'])(.*)\1/i';
 		$matches['attr'] = preg_replace( $src_regex, 'data-rocket-src=$1$2$1', $matches['attr'] );
 
-		return '<script type="rocketlazyloadscript" ' . trim( $matches['attr'] ) . '>' . $matches['content'] . '</script>';
+		return '<script type="text/rocketlazyloadscript" ' . trim( $matches['attr'] ) . '>' . $matches['content'] . '</script>';
 	}
 
 
