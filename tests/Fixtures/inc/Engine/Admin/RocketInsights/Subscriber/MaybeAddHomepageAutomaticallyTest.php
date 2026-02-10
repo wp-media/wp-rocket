@@ -46,15 +46,15 @@ return [
 				'homepage_added'   => true,
 			],
 		],
-		'shouldAddHomepageWhenAlreadyExpired'              => [
+		'shouldNotAddHomepageWhenAlreadyExpired'              => [
 			'config'   => [
 				'existing_urls'      => 0,
 				'license_expiration' => time() - ( 2 * DAY_IN_SECONDS ), // Expired 2 days ago.
 				'interval'           => 1, // 1 day.
 			],
 			'expected' => [
-				'database_entries' => 1, // Only one entry.
-				'homepage_added'   => true,
+				'database_entries' => 0, // No URLs added.
+				'homepage_added'   => false,
 			],
 		],
 		'shouldNotAddHomepageWhenRocketInsightsDisabled'   => [
