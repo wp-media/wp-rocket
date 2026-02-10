@@ -3753,8 +3753,8 @@ msgid ""
 "%1$s%2$s%3$s: Your license has been revoked and your site is no longer "
 "optimized for speed. %4$sGet WP Rocket at 20%% off%5$s"
 msgstr ""
-"%1$s%2$s%3$s: Your license has been revoked and your site is no longer "
-"optimized for speed. %4$sGet WP Rocket at 20%% off%5$s"
+"%1$s%2$s%3$s: Votre licence a été résiliée et votre site n'est plus optimisé"
+" pour la vitesse. %4$sObtenez WP Rocket avec 20%% de réduction%5$s"
 
 #. translators: %1$s = promotion name, %2$s = <br>, %3$s = <strong>, %4$s =
 #. promotion discount percentage, %5$s = </strong>, %6$s = Growth or Multi.
