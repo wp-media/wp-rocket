@@ -19,7 +19,7 @@ $rocket_formatted_metrics = $data->formatted_metrics ?? [];
 ?>
 <tr class="wpr-ri-item wpr-ri-item-result" data-rocket-insights-id="<?php echo esc_attr( $data->id ); ?>" >
 	<td class="wpr-ri-item-toggle">
-		<div class="icon-frame wpr-ri-item-toggle-single">
+		<div class="icon-frame wpr-ri-item-toggle-single <?php echo ! $rocket_can_show_dropdown ? 'hide' : ''; ?>">
 			<img src="<?php echo $rocket_img_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>ri-caret-right.svg" alt="">
 		</div>
 	</td>
@@ -91,6 +91,7 @@ $rocket_formatted_metrics = $data->formatted_metrics ?? [];
 			'attributes' => [
 				'target' => '_blank',
 				'class'  => 'wpr-ri-action wpr-ri-report',
+				'data-rocket-insights-id' => $data->id
 			],
 		];
 		$rocket_report_url_icon_state         = '';
@@ -121,6 +122,7 @@ $rocket_formatted_metrics = $data->formatted_metrics ?? [];
 		?>
 	</td>
 </tr>
+<?php if ( $rocket_can_show_dropdown ): ?>
 <tr id="ri_details_<?php echo $rocket_data_array['id']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>">
 	<td colspan="4" class="details-section-td">
 		<div class="details-section">
@@ -204,3 +206,4 @@ $rocket_formatted_metrics = $data->formatted_metrics ?? [];
 		</div>
 	</td>
 </tr>
+<?php endif; ?>
