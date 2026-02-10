@@ -452,7 +452,7 @@ class Controller {
 	 *
 	 * @return void
 	 */
-	public function track_metric_actions() {
+	public function track_metric_actions(): void {
 		$events = [
 			'expand'     => 'Rocket Insights Metrics Expanded',
 			'see_report' => 'Rocket Insights See Report',

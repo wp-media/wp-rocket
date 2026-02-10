@@ -759,7 +759,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 *
 	 * @return void
 	 */
-	public function track_metric_actions() {
+	public function track_metric_actions(): void {
 		$this->controller->track_metric_actions();
 	}
 }
