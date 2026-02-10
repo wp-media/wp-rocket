@@ -570,6 +570,7 @@
 			  width: 32px;
 			  align-items: flex-start;
 			  justify-content: center;
+			  position: relative;
   
 			  p {
 				font-family: "Roboto", sans-serif;
@@ -589,10 +590,30 @@
 			  &.ri-success p {
 				color: #2e8f44;
 			  }
+			  .wpr-tooltip{
+				top: 14px;
+				left: -84px;
+				min-width: 200px;
+				max-width: 230px;
+				&:before {
+					top: -6px;
+					left: 89px;
+					border-left: 8px solid transparent;
+					border-right: 8px solid transparent;
+					border-bottom: 8px solid #0e1428;
+				}
+			  }
+		
+			  &:hover {
+				.wpr-tooltip {
+					visibility: visible;
+					opacity: 1;
+				}
+			  }
 			}
 
-			&.blurred {
-				.metric-value {
+			&.blurred .metric-value {
+				p {
 					filter: blur(3px);
 					user-select: none;
 					-webkit-user-select: none;

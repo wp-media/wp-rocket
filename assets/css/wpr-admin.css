@@ -3640,6 +3640,7 @@ div.wpr-tutorial-item {
   width: 32px;
   align-items: flex-start;
   justify-content: center;
+  position: relative;
 }
 .details-section .details-content .detail-row .row-right .metric-values .metric-value p {
   font-family: "Roboto", sans-serif;
@@ -3656,7 +3657,24 @@ div.wpr-tutorial-item {
 .details-section .details-content .detail-row .row-right .metric-values .metric-value.ri-success p {
   color: #2e8f44;
 }
-.details-section .details-content .detail-row .row-right .metric-values.blurred .metric-value {
+.details-section .details-content .detail-row .row-right .metric-values .metric-value .wpr-tooltip {
+  top: 14px;
+  left: -84px;
+  min-width: 200px;
+  max-width: 230px;
+}
+.details-section .details-content .detail-row .row-right .metric-values .metric-value .wpr-tooltip:before {
+  top: -6px;
+  left: 89px;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid #0e1428;
+}
+.details-section .details-content .detail-row .row-right .metric-values .metric-value:hover .wpr-tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+.details-section .details-content .detail-row .row-right .metric-values.blurred .metric-value p {
   filter: blur(3px);
   user-select: none;
   -webkit-user-select: none;
