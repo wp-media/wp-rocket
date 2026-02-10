@@ -182,6 +182,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'admin_notices'                         => 'maybe_display_rocket_insights_promotion_notice',
 			'rocket_rocket_insights_enabled'        => 'maybe_disable_for_reseller_or_non_live',
 			'rest_api_init'                         => [ 'register_routes' ],
+			'wp_ajax_rocket_insight_track_metric_actions'		 	=> 'track_metric_actions',
 		];
 	}
 
@@ -749,5 +750,16 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 
 		// Delete the global score transient to refresh the UI state.
 		$this->global_score->reset();
+	}
+
+	/**
+	 * Track user actions in Rocket Insights via AJAX.
+	 *
+	 * Handles tracking for events like expanding metrics or viewing reports.
+	 *
+	 * @return void
+	 */
+	public function track_metric_actions() {
+		$this->controller->track_metric_actions();
 	}
 }

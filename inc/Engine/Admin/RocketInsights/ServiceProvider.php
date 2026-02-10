@@ -148,6 +148,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'ri_global_score',
 					'user',
 					'options',
+					'tracking',
 				]
 			);
 
