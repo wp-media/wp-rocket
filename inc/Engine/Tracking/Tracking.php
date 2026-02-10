@@ -282,4 +282,26 @@ class Tracking extends Abstract_Render {
 			]
 		);
 	}
+
+	/**
+	 * Tracks a Rocket Insights details action event.
+	 *
+	 * @param string $event_name The name of the event to track.
+	 * @param int    $row_id     The ID of the test row.
+	 *
+	 * @return void
+	 */
+	public function track_rocket_insights_details_action( $event_name, $row_id ): void {
+		if ( ! $this->optin->can_track() ) {
+			return;
+		}
+
+		$this->mixpanel->track_direct(
+			$event_name,
+			[
+				'context'   => 'wp_plugin',
+				'test_id'   => $row_id,
+			]
+		);
+	}
 }
