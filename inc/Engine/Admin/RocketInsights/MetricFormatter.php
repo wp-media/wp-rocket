@@ -6,7 +6,7 @@ namespace WP_Rocket\Engine\Admin\RocketInsights;
 /**
  * Handles formatting and classification of performance metrics for Rocket Insights.
  *
- * @since 3.20.4
+ * @since 3.20.5
  */
 class MetricFormatter {
 
