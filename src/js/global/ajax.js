@@ -768,26 +768,26 @@ document.addEventListener('DOMContentLoaded', function() {
 		function updateRowStylingForLastItem($selectors, reverseStyle = true) {
 			if (!reverseStyle) {
 				// Restore border radius for main cells when item is collapsed.
-				$selectors.lastToggle.css('border-bottom-left-radius', 5);
-				$selectors.lastActions.css('border-bottom-right-radius', 5);
+				$selectors.lastToggle.css('border-bottom-left-radius', '5px');
+				$selectors.lastActions.css('border-bottom-right-radius', '5px');
 
 				// Remove border radius for details cell when item is collapsed.
-				$selectors.detailsCells.last().css('border-bottom-left-radius', 0);
-				$selectors.detailsCells.last().css('border-bottom-right-radius', 0);
+				$selectors.detailsCells.last().css('border-bottom-left-radius', '0');
+				$selectors.detailsCells.last().css('border-bottom-right-radius', '0');
 
 				// Remove bottom border for details cell when item is collapsed.
-				$selectors.detailsCells.last().css('border-bottom', 0);
+				$selectors.detailsCells.last().css('border-bottom', '0');
 
 				return
 			}
 
 			// Remove border radius for main cells when item is expanded.
-			$selectors.lastToggle.css('border-bottom-left-radius', 0);
-			$selectors.lastActions.css('border-bottom-right-radius', 0);
+			$selectors.lastToggle.css('border-bottom-left-radius', '0');
+			$selectors.lastActions.css('border-bottom-right-radius', '0');
 
 			// Restore border radius for details cell when item is expanded.
-			$selectors.detailsCells.last().css('border-bottom-left-radius', 5);
-			$selectors.detailsCells.last().css('border-bottom-right-radius', 5);
+			$selectors.detailsCells.last().css('border-bottom-left-radius', '5px');
+			$selectors.detailsCells.last().css('border-bottom-right-radius', '5px');
 
 			// Restore bottom border for details cell when item is expanded.
 			$selectors.detailsCells.last().css('border-bottom', '1px solid #E2E5E9');
