@@ -10,6 +10,7 @@
 		} );
 
 		maybeOpenModal();
+		maybeOpenModalFromURL();
 
 		MicroModal.init( {
 			disableScroll: true
@@ -96,6 +97,19 @@
 				}
 			}
 		};
+	}
+
+	function maybeOpenModalFromURL() {
+		const urlParams = new URLSearchParams( window.location.search );
+
+		if ( urlParams.has( 'rocketcdn_open_iframe' ) && '1' === urlParams.get( 'rocketcdn_open_iframe' ) ) {
+			MicroModal.show( 'wpr-rocketcdn-modal' );
+
+			// Clean up the URL to prevent re-triggering on refresh
+			urlParams.delete( 'rocketcdn_open_iframe' );
+			const newURL = window.location.pathname + '?' + urlParams.toString() + window.location.hash;
+			window.history.replaceState( {}, '', newURL );
+		}
 	}
 
 	function closeModal( data ) {
