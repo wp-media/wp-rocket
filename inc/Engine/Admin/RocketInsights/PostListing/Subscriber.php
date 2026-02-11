@@ -5,9 +5,11 @@ namespace WP_Rocket\Engine\Admin\RocketInsights\PostListing;
 
 use WP_Rocket\Engine\Admin\RocketInsights\{
 	Render,
-	Context\Context
+	Context\Context,
+	Database\Queries\RocketInsights as Query,
 };
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\Engine\Tracking\Tracking;
 
 /**
  * Subscriber for enqueuing Rocket Insights assets on post listing pages
@@ -52,16 +54,34 @@ class Subscriber implements Subscriber_Interface {
 	];
 
 	/**
+	 * Query object.
+	 *
+	 * @var Query
+	 */
+	private $query;
+
+	/**
+	 * The tracking service.
+	 *
+	 * @var Tracking
+	 */
+	private $tracking;
+
+	/**
 	 * Constructor.
 	 *
 	 * @since 3.20.1
 	 *
-	 * @param Render  $render Render instance.
-	 * @param Context $context Context instance.
+	 * @param Render   $render Render instance.
+	 * @param Context  $context Context instance.
+	 * @param Query    $query Query instance.
+	 * @param Tracking $tracking The tracking service.
 	 */
-	public function __construct( Render $render, Context $context ) {
-		$this->render  = $render;
-		$this->context = $context;
+	public function __construct( Render $render, Context $context, Query $query, Tracking $tracking ) {
+		$this->render   = $render;
+		$this->context  = $context;
+		$this->query    = $query;
+		$this->tracking = $tracking;
 	}
 	/**
 	 * Returns an array of events that this subscriber wants to listen to.
@@ -72,12 +92,13 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'admin_enqueue_scripts'        => 'enqueue_post_listing_assets',
-			'manage_pages_columns'         => 'add_column_to_pages',
-			'manage_posts_columns'         => [ 'add_column_to_posts', 10, 2 ],
-			'manage_product_posts_columns' => [ 'add_column_to_products', 22 ],
-			'manage_pages_custom_column'   => [ 'render_rocket_insights_column', 10, 2 ],
-			'manage_posts_custom_column'   => [ 'render_rocket_insights_column', 10, 2 ],
+			'admin_enqueue_scripts'             => 'enqueue_post_listing_assets',
+			'manage_pages_columns'              => 'add_column_to_pages',
+			'manage_posts_columns'              => [ 'add_column_to_posts', 10, 2 ],
+			'manage_product_posts_columns'      => [ 'add_column_to_products', 22 ],
+			'manage_pages_custom_column'        => [ 'render_rocket_insights_column', 10, 2 ],
+			'manage_posts_custom_column'        => [ 'render_rocket_insights_column', 10, 2 ],
+			'wp_ajax_rocket_track_view_details' => 'ajax_track_view_details',
 		];
 	}
 
@@ -228,6 +249,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_ajax_data',
 			[
 				'is_free_user' => $this->context->is_free_user(),
+				'nonce'        => wp_create_nonce( 'rocket-ajax' ),
 			]
 		);
 	}
@@ -288,6 +310,36 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		$this->render->render_rocket_insights_column( $url, $post_id );
+	}
+
+	/**
+	 * Handle AJAX request to track View Details clicks from post view.
+	 *
+	 * @since 3.20.5
+	 *
+	 * @return void
+	 */
+	public function ajax_track_view_details(): void {
+		check_ajax_referer( 'rocket-ajax', 'nonce', true );
+
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			wp_send_json_error( 'Insufficient permissions to track view details.' );
+		}
+
+		if ( ! isset( $_POST['row_id'], $_POST['context'] ) ) {
+			wp_send_json_error( 'Missing parameters' );
+		}
+
+		$row_id  = absint( wp_unslash( $_POST['row_id'] ) );
+		$context = sanitize_text_field( wp_unslash( $_POST['context'] ) );
+
+		if ( ! $this->query->get_row_by_id( $row_id ) ) {
+			wp_send_json_error( 'Invalid row ID' );
+		}
+
+		$this->tracking->track_rocket_insights_view_details( $row_id, $context );
+
+		wp_send_json_success();
 	}
 
 	/**
