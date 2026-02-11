@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\DataManagerSubscriber;
 
-use WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\TestCase;
+use WP_Rocket\Tests\Integration\AdminTestCase;
 
 /**
  * Test class covering \WP_Rocket\Engine\CDN\RocketCDN\DataManagerSubscriber::handle_rocketcdn_checkout_parameter
@@ -10,7 +10,7 @@ use WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\TestCase;
  * @group AdminOnly
  * @group RocketCDN
  */
-class Test_HandleRocketcdnCheckoutParameter extends TestCase {
+class Test_HandleRocketcdnCheckoutParameter extends AdminTestCase {
 
 	/**
 	 * Original $_GET superglobal.
