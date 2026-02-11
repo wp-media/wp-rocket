@@ -961,7 +961,10 @@ class Page extends Abstract_Render {
 				'font_optimization_section' => [
 					'title' => __( 'Fonts', 'rocket' ),
 					'type'  => 'fields_container',
-					'help'  => $fonts,
+					'help'  => [
+						'id'  => $this->beacon->get_suggest( 'fonts_section' ),
+						'url' => $fonts['url'],
+					],
 					'page'  => 'media',
 				],
 			]
