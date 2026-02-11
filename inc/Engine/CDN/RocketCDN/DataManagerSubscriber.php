@@ -45,18 +45,27 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	private $options;
 
 	/**
+	 * UserClient instance
+	 *
+	 * @var \WP_Rocket\Engine\License\API\UserClient
+	 */
+	private $user_client;
+
+	/**
 	 * Constructor
 	 *
-	 * @param APIClient         $api_client  RocketCDN API Client instance.
-	 * @param CDNOptionsManager $cdn_options CDNOptionsManager instance.
-	 * @param Options_Data      $options Options instance.
-	 * @param Options           $options_api Options API instance.
+	 * @param APIClient                                $api_client  RocketCDN API Client instance.
+	 * @param CDNOptionsManager                        $cdn_options CDNOptionsManager instance.
+	 * @param Options_Data                             $options Options instance.
+	 * @param Options                                  $options_api Options API instance.
+	 * @param \WP_Rocket\Engine\License\API\UserClient $user_client UserClient instance.
 	 */
-	public function __construct( APIClient $api_client, CDNOptionsManager $cdn_options, Options_Data $options, Options $options_api ) {
+	public function __construct( APIClient $api_client, CDNOptionsManager $cdn_options, Options_Data $options, Options $options_api, \WP_Rocket\Engine\License\API\UserClient $user_client ) {
 		$this->api_client  = $api_client;
 		$this->cdn_options = $cdn_options;
 		$this->options     = $options;
 		$this->options_api = $options_api;
+		$this->user_client = $user_client;
 	}
 
 	/**
@@ -64,6 +73,7 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
+			'admin_init'                             => 'handle_rocketcdn_checkout_parameter',
 			'wp_ajax_save_rocketcdn_token'           => 'update_user_token',
 			'wp_ajax_rocketcdn_enable'               => 'enable',
 			'wp_ajax_rocketcdn_disable'              => 'disable',
@@ -108,6 +118,65 @@ class DataManagerSubscriber implements Subscriber_Interface {
 		update_option( 'rocketcdn_user_token', $token );
 
 		wp_send_json_success( 'user_token_saved' );
+	}
+
+	/**
+	 * Handles the rocketcdn_checkout URL parameter after express checkout.
+	 *
+	 * Detects the URL parameter, refreshes user data to get new RocketCDN credentials,
+	 * enables RocketCDN, and redirects to clean URL.
+	 *
+	 * @since 3.18
+	 *
+	 * @return void
+	 */
+	public function handle_rocketcdn_checkout_parameter(): void {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Checking URL parameter for redirect, not processing form data.
+		if ( ! isset( $_GET['rocketcdn_checkout'] ) ) {
+			return;
+		}
+
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			return;
+		}
+
+		// Guard clause: bail if token already exists.
+		$current_token = get_option( 'rocketcdn_user_token' );
+		if ( ! empty( $current_token ) ) {
+			$this->remove_query_parameter_and_redirect();
+			return;
+		}
+
+		// Refresh user data to get fresh RocketCDN credentials.
+		$this->user_client->flush_cache();
+		$user_data = $this->user_client->get_user_data();
+
+		if ( false === $user_data || empty( $user_data->cdn_token ) || empty( $user_data->cdn_url ) ) {
+			$this->remove_query_parameter_and_redirect();
+			return;
+		}
+
+		// Store the token and enable RocketCDN.
+		update_option( 'rocketcdn_user_token', sanitize_key( $user_data->cdn_token ) );
+		$this->cdn_options->enable( esc_url_raw( $user_data->cdn_url ) );
+
+		// Schedule subscription check.
+		$subscription = $this->api_client->get_subscription_data();
+		$this->schedule_subscription_check( $subscription );
+
+		$this->remove_query_parameter_and_redirect();
+	}
+
+	/**
+	 * Removes the query parameter and redirects to clean URL.
+	 *
+	 * @since 3.18
+	 *
+	 * @return void
+	 */
+	private function remove_query_parameter_and_redirect(): void {
+		$redirect_url = remove_query_arg( 'rocketcdn_checkout' );
+		wp_safe_redirect( $redirect_url );
 	}
 
 	/**
