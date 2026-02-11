@@ -127,7 +127,7 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	 * Detects the URL parameter, refreshes user data to get new RocketCDN credentials,
 	 * enables RocketCDN, and redirects to clean URL.
 	 *
-	 * @since 3.18
+	 * @since 3.20.5
 	 *
 	 * @return void
 	 */
@@ -171,7 +171,7 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	/**
 	 * Removes the query parameter and redirects to clean URL.
 	 *
-	 * @since 3.18
+	 * @since 3.20.5
 	 *
 	 * @return void
 	 */
