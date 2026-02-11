@@ -53,7 +53,8 @@ function rocket_admin_bar( $wp_admin_bar ) {
 		$wp_admin_bar->add_menu(
 			[
 				'id'    => 'wp-rocket',
-				'title' => WP_ROCKET_PLUGIN_NAME,
+				// This filter is documented in inc/Engine/Admin/Settings/Subscriber.php.
+				'title' => wpm_apply_filters_typed( 'string', 'rocket_menu_title', WP_ROCKET_PLUGIN_NAME ),
 				'href'  => current_user_can( 'rocket_manage_options' ) ? admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG ) : false,
 			]
 		);

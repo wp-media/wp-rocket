@@ -528,4 +528,86 @@ class User {
 		}
 		return null;
 	}
+
+	/**
+	 * Checks if the current website is revoked or not.
+	 *
+	 * @return bool
+	 */
+	public function is_revoked() {
+		return $this->user->licence->is_revoked ?? false;
+	}
+
+	/**
+	 * Gets the ban reason if the website is revoked.
+	 *
+	 * @return string
+	 */
+	public function ban_reason() {
+		return $this->user->licence->plugin_updates_ban_reason ?? '';
+	}
+
+	/**
+	 * Checks if plugin updates are available.
+	 *
+	 * @return bool
+	 */
+	public function can_update_plugin() {
+		// Check if website is revoked.
+		if ( $this->is_revoked() ) {
+			return false;
+		}
+
+		// Check if license is expired.
+		if ( $this->is_license_expired() ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Gets the reason why plugin updates are blocked.
+	 *
+	 * @return string Empty string if updates are available, otherwise the reason.
+	 */
+	public function get_update_blocked_reason() {
+		$message = __( 'There was an error updating the plugin.', 'rocket' );
+
+		// Check if website is revoked first.
+		if ( $this->is_revoked() ) {
+			$reason_text = $this->get_blocked_reason_text( $this->ban_reason() );
+			if ( ! empty( $reason_text ) ) {
+				return rtrim( $message, '.' ) . ' ' . sprintf(
+					/* translators: %s: ban reason */
+					__( 'because %s', 'rocket' ),
+					$reason_text
+				);
+			}
+			return $message;
+		}
+
+		// Check if license is expired.
+		if ( $this->is_license_expired() ) {
+			return $message;
+		}
+
+		return '';
+	}
+
+	/**
+	 * Converts a blocked reason code to human-readable text.
+	 *
+	 * @param string $reason_code Reason code from the API.
+	 * @return string Human-readable reason text, empty string if code is unknown.
+	 */
+	private function get_blocked_reason_text( $reason_code ) {
+		$reasons = [
+			'BANNED_WEBSITE' => __( 'your website is banned', 'rocket' ),
+		];
+		if ( empty( $reason_code ) || ! isset( $reasons[ $reason_code ] ) ) {
+			return '';
+		}
+		return $reasons[ $reason_code ];
+	}
 }

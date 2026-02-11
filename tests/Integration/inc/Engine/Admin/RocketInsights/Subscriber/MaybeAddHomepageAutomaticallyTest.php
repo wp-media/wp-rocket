@@ -58,6 +58,25 @@ class MaybeAddHomepageAutomaticallyTest extends TestCase {
 		$container = apply_filters( 'rocket_container', null );
 		$ri_query  = $container->get( 'ri_query' );
 
+		// Get the User instance
+		$user = $container->get( 'user' );
+
+		// Use reflection to replace the internal data
+		$reflection = new \ReflectionClass( $user );
+
+		// Find the property that stores user data (check User class)
+		// It might be $data, $user_data, etc.
+		if ( $reflection->hasProperty( 'user' ) ) {
+			$property = $reflection->getProperty( 'user' );
+			$property->setAccessible( true );
+
+			// Set the new license data
+			$property->setValue( $user, (object) [
+				'licence_expiration' => $config['license_expiration'],
+				'auto_renew'         => false,
+			]);
+		}
+
 		// Setup: Handle Rocket Insights enabled/disabled state.
 		$ri_enabled = $config['ri_enabled'] ?? true;
 		if ( ! $ri_enabled ) {
@@ -99,7 +118,7 @@ class MaybeAddHomepageAutomaticallyTest extends TestCase {
 		if ( isset( $config['interval'] ) ) {
 			// Remove any existing filters first to avoid conflicts.
 			remove_all_filters( 'rocket_insights_add_homepage_expiry_interval' );
-			
+
 			add_filter(
 				'rocket_insights_add_homepage_expiry_interval',
 				function() use ( $config ) {
