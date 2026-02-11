@@ -330,6 +330,19 @@ class Render extends Abstract_Render {
 	}
 
 	/**
+	 * Generates the URL for the View Details link pointing to RI settings page with expanded metrics.
+	 *
+	 * @since 3.20.5
+	 *
+	 * @param int $row_id The database row ID for the test.
+	 * @return string The URL to the RI settings page with the test expanded.
+	 */
+	public function get_view_details_url( int $row_id ): string {
+		$settings_url = admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '#rocket_insights' );
+		return $settings_url . '=' . $row_id;
+	}
+
+	/**
 	 * Generates the Rocket Insights column content for post listing pages.
 	 *
 	 * @since 3.20.1
@@ -382,6 +395,7 @@ class Render extends Abstract_Render {
 			$template_data['wpr_has_results']       = 'completed' === $row->status || 'blurred' === $row->status;
 			$template_data['wpr_is_blurred']        = isset( $row->is_blurred ) && $row->is_blurred;
 			$template_data['wpr_can_access_report'] = $row->can_access_report();
+			$template_data['wpr_view_details_url']  = $this->get_view_details_url( (int) $row->id );
 
 			// Prepare score data for template rendering.
 			$template_data['wpr_score_data'] = $this->prepare_score_data( $row );

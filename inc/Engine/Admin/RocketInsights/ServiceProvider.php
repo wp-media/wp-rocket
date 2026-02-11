@@ -217,6 +217,8 @@ class ServiceProvider extends AbstractServiceProvider {
 				[
 					'ri_render',
 					'ri_context',
+					'ri_query',
+					'tracking',
 				]
 			);
 
