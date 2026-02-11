@@ -500,7 +500,7 @@ function get_rocket_htaccess_mod_deflate() { // phpcs:ignore WordPress.NamingCon
 		                          image/svg+xml \
 		                          image/x-icon \
 		                          text/css \
-								  text/javascript \
+		                          text/javascript \
 		                          text/html \
 		                          text/plain \
 		                          text/x-component \
