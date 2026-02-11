@@ -6,9 +6,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.20.4-alpha\n"
+"Project-Id-Version: WP Rocket 3.20.4-alpha2\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2026-02-09T14:09:35+00:00\n"
+"POT-Creation-Date: 2026-02-10T10:43:36+00:00\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Romain • WP Rocket <contact@wp-rocket.me>, 2026\n"
 "Language-Team: French (France) (https://app.transifex.com/wp-media/teams/18133/fr_FR/)\n"
@@ -3746,15 +3746,15 @@ msgstr ""
 "%3$sune expérience utilisateur haut de gamme%4$s."
 
 #. translators: %1$s = <strong>, %2$s = WP Rocket plugin name, %3$s =
-#. </strong>, %4$s = <a>, %5$s = </a>.
-#: inc/Engine/License/Revoked.php:94
+#. </strong>, %4$s = <a>, %5$s = %, %6$s = </a>.
+#: inc/Engine/License/Revoked.php:95
 #, php-format
 msgid ""
 "%1$s%2$s%3$s: Your license has been revoked and your site is no longer "
-"optimized for speed. %4$sGet WP Rocket at 20%% off%5$s"
+"optimized for speed. %4$sGet WP Rocket at %5$s off%6$s"
 msgstr ""
 "%1$s%2$s%3$s: Votre licence a été résiliée et votre site n'est plus optimisé"
-" pour la vitesse. %4$sObtenez WP Rocket avec 20%% de réduction%5$s"
+" pour la vitesse. %4$sObtenez WP Rocket avec %5$s de réduction%6$s"
 
 #. translators: %1$s = promotion name, %2$s = <br>, %3$s = <strong>, %4$s =
 #. promotion discount percentage, %5$s = </strong>, %6$s = Growth or Multi.
