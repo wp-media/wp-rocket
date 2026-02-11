@@ -3,6 +3,7 @@ namespace WP_Rocket\Engine\CDN\RocketCDN;
 
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
@@ -47,20 +48,20 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	/**
 	 * UserClient instance
 	 *
-	 * @var \WP_Rocket\Engine\License\API\UserClient
+	 * @var UserClient
 	 */
 	private $user_client;
 
 	/**
 	 * Constructor
 	 *
-	 * @param APIClient                                $api_client  RocketCDN API Client instance.
-	 * @param CDNOptionsManager                        $cdn_options CDNOptionsManager instance.
-	 * @param Options_Data                             $options Options instance.
-	 * @param Options                                  $options_api Options API instance.
-	 * @param \WP_Rocket\Engine\License\API\UserClient $user_client UserClient instance.
+	 * @param APIClient         $api_client  RocketCDN API Client instance.
+	 * @param CDNOptionsManager $cdn_options CDNOptionsManager instance.
+	 * @param Options_Data      $options Options instance.
+	 * @param Options           $options_api Options API instance.
+	 * @param UserClient        $user_client UserClient instance.
 	 */
-	public function __construct( APIClient $api_client, CDNOptionsManager $cdn_options, Options_Data $options, Options $options_api, \WP_Rocket\Engine\License\API\UserClient $user_client ) {
+	public function __construct( APIClient $api_client, CDNOptionsManager $cdn_options, Options_Data $options, Options $options_api, UserClient $user_client ) {
 		$this->api_client  = $api_client;
 		$this->cdn_options = $cdn_options;
 		$this->options     = $options;
