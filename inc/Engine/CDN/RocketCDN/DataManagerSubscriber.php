@@ -152,7 +152,18 @@ class DataManagerSubscriber implements Subscriber_Interface {
 		$this->user_client->flush_cache();
 		$user_data = $this->user_client->get_user_data();
 
-		if ( false === $user_data || empty( $user_data->cdn_token ) || empty( $user_data->cdn_url ) ) {
+		if ( false === $user_data || empty( $user_data->cdn_token ) || empty( $user_data->cdn_url ) || empty( $user_data->rocketcdn_website_id ) ) {
+			$this->remove_query_parameter_and_redirect();
+			return;
+		}
+
+		// Activate the subscription via RocketCDN API.
+		$activation_result = $this->api_client->activate_subscription(
+			sanitize_key( $user_data->cdn_token ),
+			(int) $user_data->rocketcdn_website_id
+		);
+
+		if ( is_wp_error( $activation_result ) ) {
 			$this->remove_query_parameter_and_redirect();
 			return;
 		}
