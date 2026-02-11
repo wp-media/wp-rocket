@@ -12,6 +12,7 @@ use WP_Rocket\Engine\Admin\RocketInsights\Credit\Manager as CreditManager;
 use WP_Rocket\Engine\Admin\RocketInsights\GlobalScore;
 use WP_Rocket\Engine\Admin\RocketInsights\Managers\Plan;
 use WP_Rocket\Engine\License\API\User;
+use WP_Rocket\Engine\Tracking\Tracking;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
@@ -39,8 +40,9 @@ class GetItemsTest extends TestCase {
 		$user = $this->createMock(User::class);
 		$global_score = $this->createMock(GlobalScore::class);
 		$options = $this->createMock(Options_Data::class);
+		$tracking = $this->createMock(Tracking::class);
 
-		$controller = new Controller($mock_query, $mock_manager, $mock_context, $mock_plan, $global_score, $user, $options);
+		$controller = new Controller($mock_query, $mock_manager, $mock_context, $mock_plan, $global_score, $user, $options, $tracking);
 		$result = $controller->get_items();
 
 		$this->assertEquals(['foo'], $result);

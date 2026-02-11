@@ -732,10 +732,31 @@ document.addEventListener('DOMContentLoaded', function() {
 			$details.show('fast');
 			$img.attr('src', carets.down);
 			
+			// Track expand only expand metric action.
+			handleMetricActionTracking('expand', insightsId);
+			
 			// Manipulate styling for last elements when details cell is not visible.
 			if (isLast) {
 				updateRowStylingForLastItem($selectors);
 			}
+		}
+
+		// Tracks user interactions with metric actions in Rocket Insights via AJAX.
+		function handleMetricActionTracking(event, rowId) {
+			$.post(
+				ajaxurl,
+				{
+					action: 'rocket_insight_track_metric_actions',
+					_ajax_nonce: rocket_ajax_data.nonce,
+					event: event,
+					row_id: rowId
+				},
+				function(response) {
+					if (!response.success) {
+						console.error('Metric action tracking failed:', response?.data || response);
+					}
+				}
+			);
 		}
 
     	/**
@@ -794,6 +815,18 @@ document.addEventListener('DOMContentLoaded', function() {
 			$detailsCells.show('fast');
 			$('.wpr-ri-item-toggle-single img').attr('src', carets.down);
 			updateRowStylingForLastItem($selectors);
+		});
+
+		// Track "See Report" clicks in Rocket Insights.
+		$(document).on('click', '.wpr-ri-report', function(e) {
+			// Only track if link is not disabled and mixpanel is available.
+			if ($(this).hasClass('wpr-ri-action--disabled')) {
+				return;
+			}
+
+			var insightsId = $(this).data('rocket-insights-id');
+
+			handleMetricActionTracking('see_report', insightsId);
 		});
 	}
 });
