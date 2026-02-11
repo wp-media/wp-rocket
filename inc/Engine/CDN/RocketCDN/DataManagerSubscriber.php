@@ -157,18 +157,18 @@ class DataManagerSubscriber implements Subscriber_Interface {
 			return;
 		}
 
+		// Validate token length (must be 40 characters).
+		if ( 40 !== strlen( $user_data->cdn_token ) ) {
+			$this->remove_query_parameter_and_redirect();
+			return;
+		}
+
 		// Activate the subscription via RocketCDN API.
 		$activation_result = $this->api_client->activate_subscription(
 			sanitize_key( $user_data->cdn_token ),
 			(int) $user_data->rocketcdn_website_id
 		);
 
-		if ( is_wp_error( $activation_result ) ) {
-			$this->remove_query_parameter_and_redirect();
-			return;
-		}
-
-		// Store the token and enable RocketCDN.
 		update_option( 'rocketcdn_user_token', sanitize_key( $user_data->cdn_token ) );
 		$this->cdn_options->enable( esc_url_raw( $user_data->cdn_url ) );
 
