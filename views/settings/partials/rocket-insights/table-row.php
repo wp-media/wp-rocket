@@ -127,7 +127,7 @@ $rocket_formatted_metrics = $data->formatted_metrics ?? [];
 	<td colspan="4" class="details-section-td">
 		<div class="details-section">
 			<div class="details-header">
-				<p class="details-label">Details</p>
+				<p class="details-label"><?php echo esc_html__( 'Details', 'rocket' ); ?></p>
 				<div>
 				<div class="metrics-header">
 					<div class="metric-label">
@@ -197,6 +197,13 @@ $rocket_formatted_metrics = $data->formatted_metrics ?? [];
 							<?php foreach ( $rocket_formatted_metrics as $rocket_metric ) : ?>
 								<div class="metric-value <?php echo esc_attr( $rocket_metric['class'] ); ?>">
 									<p><?php echo esc_html( $rocket_metric['formatted'] ); ?></p>
+									<?php if ( '' !== $rocket_ri_blurred ) : ?>
+									<div class="wpr-tooltip">
+										<div class="wpr-tooltip-content">
+											<?php echo esc_html__( 'Upgrade your plan to see more details.', 'rocket' ); ?>
+										</div>
+									</div>
+									<?php endif; ?>
 								</div>
 							<?php endforeach; ?>
 						</div>
