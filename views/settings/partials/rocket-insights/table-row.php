@@ -197,7 +197,7 @@ $rocket_formatted_metrics = $data->formatted_metrics ?? [];
 							<?php foreach ( $rocket_formatted_metrics as $rocket_metric ) : ?>
 								<div class="metric-value <?php echo esc_attr( $rocket_metric['class'] ); ?>">
 									<p><?php echo esc_html( $rocket_metric['formatted'] ); ?></p>
-									<?php if ( '' !== $rocket_ri_blurred ): ?>
+									<?php if ( '' !== $rocket_ri_blurred ) : ?>
 									<div class="wpr-tooltip">
 										<div class="wpr-tooltip-content">
 											<?php echo esc_html__( 'Upgrade your plan to see more details.', 'rocket' ); ?>
