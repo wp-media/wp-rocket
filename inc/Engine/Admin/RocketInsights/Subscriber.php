@@ -177,6 +177,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'wp_rocket_upgrade'                     => [
 				[ 'on_update_reset_credit', 10, 2 ],
 				[ 'on_update_cancel_old_as_jobs', 10, 2 ],
+				[ 'on_update_refresh_metric_data', 10, 2 ],
 			],
 			'admin_notices'                         => 'maybe_display_rocket_insights_promotion_notice',
 			'rocket_rocket_insights_enabled'        => 'maybe_disable_for_reseller_or_non_live',
@@ -353,7 +354,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return void
 	 */
 	public function validate_credit( $row ) {
-		if ( ! $this->context->is_allowed() || ! $this->context->is_free_user() ) {
+		if ( ! $this->context->is_allowed() || ! $this->context->is_free_user() || ! empty( $row->data['skip_credit'] ) ) {
 			return;
 		}
 		$this->controller->validate_credit( $row->id );
@@ -556,7 +557,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			return;
 		}
 
-		// Guard: Not expiring soon.
+		// Guard: Not expiring soon OR already expired.
 		if ( ! $this->renewal->is_expiring_in( $interval ) ) {
 			return;
 		}
@@ -720,5 +721,30 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		}
 
 		return ! $this->context->is_reseller_or_non_live();
+	}
+
+	/**
+	 * Callback for the wp_rocket_upgrade action to refresh metric data for existing tests.
+	 *
+	 * This will set existing completed tests to pending status so they get re-processed
+	 * and the metric_data column gets populated via the normal job processing flow.
+	 * Also deletes the global score transient to ensure the UI reflects the in-progress state.
+	 *
+	 * @param string $new_version New plugin version.
+	 * @param string $old_version Previous plugin version.
+	 * @return void
+	 */
+	public function on_update_refresh_metric_data( $new_version, $old_version ) {
+		if ( version_compare( $old_version, '3.20.4', '>=' ) ) {
+			return;
+		}
+
+		$this->logger::info( 'Rocket Insights: Setting existing tests to pending to refresh metric data' );
+
+		// Update all completed tests to pending so they get re-processed.
+		$this->controller->update_completed_tests_to_pending();
+
+		// Delete the global score transient to refresh the UI state.
+		$this->global_score->reset();
 	}
 }

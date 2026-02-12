@@ -223,12 +223,18 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 		$defaults = [
 			'report_url'        => '',
 			'performance_score' => 0,
+			'metric_data'       => null,
 		];
 		if ( ! isset( $api_response['data']['data'] ) ) {
 			return $defaults;
 		}
 
-		return wp_parse_args( $api_response['data']['data'], $defaults );
+		$parsed_data = wp_parse_args( $api_response['data']['data'], $defaults );
+
+		// Save entire API response data for future extensibility.
+		$parsed_data['metric_data'] = $api_response['data']['data'] ?? null;
+
+		return $parsed_data;
 	}
 
 	/**
@@ -267,5 +273,14 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 	 */
 	public function allow_clean_rows() {
 		return false;
+	}
+
+	/**
+	 * Get the query instance.
+	 *
+	 * @return RocketInsightsQuery
+	 */
+	public function get_query(): RocketInsightsQuery {
+		return $this->query;
 	}
 }
