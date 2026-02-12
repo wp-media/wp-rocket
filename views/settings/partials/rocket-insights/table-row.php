@@ -89,8 +89,8 @@ $rocket_formatted_metrics = $data->formatted_metrics ?? [];
 			'label'      => __( 'See Report', 'rocket' ),
 			'url'        => $data->report_url,
 			'attributes' => [
-				'target'                  => '_blank',
-				'class'                   => 'wpr-ri-action wpr-ri-report',
+				'target'                      => '_blank',
+				'class'                       => 'wpr-ri-action wpr-ri-report',
 				'data-rocket-insights-row-id' => $data->id,
 			],
 		];
