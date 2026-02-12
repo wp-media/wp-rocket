@@ -214,9 +214,10 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 
 		$iframe_src = add_query_arg(
 			[
-				'website'  => home_url(),
-				'callback' => rest_url( 'wp-rocket/v1/rocketcdn/' ),
-				'source'   => 'plugin',
+				'website'       => home_url(),
+				'callback'      => rest_url( 'wp-rocket/v1/rocketcdn/' ),
+				'dashboard_url' => admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '&rocketcdn_checkout=true' ),
+				'source'        => 'plugin',
 			],
 			'https://api.wp-rocket.me/cdn/iframe'
 		);
