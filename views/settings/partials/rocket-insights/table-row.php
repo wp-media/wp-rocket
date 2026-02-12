@@ -91,7 +91,7 @@ $rocket_formatted_metrics = $data->formatted_metrics ?? [];
 			'attributes' => [
 				'target'                  => '_blank',
 				'class'                   => 'wpr-ri-action wpr-ri-report',
-				'data-rocket-insights-id' => $data->id,
+				'data-rocket-insights-row-id' => $data->id,
 			],
 		];
 		$rocket_report_url_icon_state         = '';

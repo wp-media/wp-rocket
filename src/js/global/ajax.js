@@ -606,6 +606,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			if (response.success) {
 				addIds(response.id);
 
+				$(`#ri_details_${response.id} .details-section-td`).remove();
 				const $row = $(`[data-rocket-insights-id="${response.id}"]`);
 				$row.replaceWith(response.html);
 
@@ -727,7 +728,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		if (isVisible) {
 			$details.hide('fast');
 			$img.attr('src', carets.right);
-			
+
 			// Manipulate styling for last elements when details cell is visible.
 			if (isLast) {
 				updateRowStylingForLastItem($selectors, false);
@@ -737,10 +738,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 		$details.show('fast');
 		$img.attr('src', carets.down);
-		
+
 		// Track expand only expand metric action.
 		handleMetricActionTracking('expand', insightsId);
-		
+
 		// Manipulate styling for last elements when details cell is not visible.
 		if (isLast) {
 			updateRowStylingForLastItem($selectors);
@@ -767,7 +768,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	/**
 	 * Updates the border styling for the last row item in the Rocket Insights table.
-	 * 
+	 *
 	 * Manages border radius and bottom border styling based on whether the details
 	 * cell is expanded or collapsed to maintain proper visual appearance.
 	 */
@@ -831,7 +832,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			return;
 		}
 
-		var insightsId = $(this).data('rocket-insights-id');
+		var insightsId = $(this).data('rocket-insights-row-id');
 
 		handleMetricActionTracking('see_report', insightsId);
 	});
