@@ -3310,9 +3310,9 @@ msgid ""
 "Images, Preconnect to External Domains, and Preload Fonts has been cleared! "
 "New data will be generated as needed."
 msgstr ""
-"%1$sRestablecer las optimizaciones almacenadas relacionadas con la "
-"representación diferida automática, las imágenes críticas, la conexión "
-"previa a dominios externos y la precarga de fuentes. "
+"%1$sRestablecer las optimizaciones almacenadas relacionadas con el "
+"renderizado diferido automático, las imágenes críticas, la conexión previa a"
+" dominios externos y la precarga de fuentes. "
 
 #: inc/Engine/Common/PerformanceHints/AJAX/AJAXControllerTrait.php:19
 msgid "Script error"
