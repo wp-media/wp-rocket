@@ -31,14 +31,15 @@ class Smush implements Subscriber_Interface {
 	/**
 	 * Subscribed events for Smush.
 	 *
-	 * @since  3.4.2
-	 * @author Soponar Cristina
-	 * @inheritDoc
+	 * @since 3.4.2
+	 *
+	 * @return array
 	 */
 	public static function get_subscribed_events() {
 		if ( ! rocket_has_constant( 'WP_SMUSH_VERSION' ) ) {
 			return [
 				'activate_wp-smushit/wp-smush.php' => [ 'maybe_deactivate_rocket_lazyload', 10 ],
+				'wpmedia_plugin_family_show_imagify_banner' => 'hide_imagify_banner',
 			];
 		}
 
@@ -68,8 +69,7 @@ class Smush implements Subscriber_Interface {
 	/**
 	 * Disable WP Rocket lazyload when activating WP Smush and values are already in the database.
 	 *
-	 * @since  3.4.2
-	 * @author Soponar Cristina
+	 * @since 3.4.2
 	 */
 	public function maybe_deactivate_rocket_lazyload() {
 		$enabled = $this->is_smush_lazyload_enabled();
@@ -95,8 +95,7 @@ class Smush implements Subscriber_Interface {
 	/**
 	 * Add "Smush" to the provided array if WP Smush lazyload is enabled for images.
 	 *
-	 * @since  3.4.2
-	 * @author Soponar Cristina
+	 * @since 3.4.2
 	 *
 	 * @param  array $disable_images_lazyload Array with plugins which disable lazyload functionality.
 	 * @return array                          A list of plugin names.
@@ -188,5 +187,16 @@ class Smush implements Subscriber_Interface {
 		}
 
 		return $enabled;
+	}
+
+	/**
+	 * Hides the Imagify banner when Smush is enabled
+	 *
+	 * @since 3.20.5
+	 *
+	 * @return false False to hide the banner.
+	 */
+	public function hide_imagify_banner() {
+		return false;
 	}
 }
