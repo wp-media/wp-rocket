@@ -3298,9 +3298,9 @@ msgid ""
 "Reset stored optimizations related to Automatic Lazy Rendering, Critical "
 "Images, Preconnect to External Domains, and Preload Fonts."
 msgstr ""
-"Restablecer las optimizaciones almacenadas relacionadas con la "
-"representación diferida automática, las imágenes críticas, la conexión "
-"previa a dominios externos y la precarga de fuentes. "
+"Restablecer las optimizaciones almacenadas relacionadas con el renderizado "
+"diferido automático, las imágenes críticas, la conexión previa a dominios "
+"externos y la precarga de fuentes. "
 
 #. translators: %1$s = plugin name.
 #: inc/Engine/Common/PerformanceHints/Admin/Controller.php:144
