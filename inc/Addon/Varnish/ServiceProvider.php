@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace WP_Rocket\Addon\Varnish;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
@@ -36,7 +38,11 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function register(): void {
 		$this->getContainer()->add( 'varnish', Varnish::class );
 		$this->getContainer()->addShared( 'varnish_subscriber', Subscriber::class )
-			->addArgument( $this->getContainer()->get( 'varnish' ) )
-			->addArgument( $this->getContainer()->get( 'options' ) );
+			->addArguments(
+				[
+					'varnish',
+					'options',
+				]
+			);
 	}
 }

@@ -7,7 +7,7 @@ return [
 		],
         'expected' => [
 			'output' => true,
-			'path' => '/cache/background-css/'
+			'path' => '/cache/background-css/1/'
 		]
     ],
 	'notExistsShouldReturnFalse' => [
@@ -17,7 +17,7 @@ return [
 		],
 		'expected' => [
 			'output' => true,
-			'path' => '/cache/background-css/'
+			'path' => '/cache/background-css/1/'
 		]
 	],
 

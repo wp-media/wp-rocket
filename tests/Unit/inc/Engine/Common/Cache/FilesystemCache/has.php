@@ -31,6 +31,7 @@ class TestHas extends TestCase {
 		Functions\expect('get_rocket_parse_url')->with($expected['url'])->andReturn($config['parsed_url']);
 		Functions\when('rocket_get_constant')->justReturn($config['root']);
 		Functions\when('home_url')->justReturn($config['home_url']);
+		Functions\when('get_current_blog_id')->justReturn( 1 );
 
 		$this->filesystem->shouldReceive('exists')->with($expected['path'])->andReturn($config['exists']);
 

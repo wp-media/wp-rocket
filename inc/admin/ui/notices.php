@@ -454,18 +454,33 @@ function rocket_thank_you_license() {
 		update_option( WP_ROCKET_SLUG, $options );
 
 		$message = sprintf(
-			/* translators: %1$s = plugin name, %2$s + %3$s = opening links, %4$s = closing link */
-			__( '%1$s is good to go! %2$sTest your load time%4$s, or visit your %3$ssettings%4$s.', 'rocket' ),
-			'<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>',
-			'<a href="https://wp-rocket.me/blog/how-to-test-wordpress-site-performance-measure-speed-results/?utm_source=wp_plugin&utm_medium=wp_rocket" target="_blank">',
-			'<a href="' . admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG ) . '">',
-			'</a>'
+		/* translators: %1$s = <strong>, %2$s = plugin name, %3$s = </strong> */
+		__( '%1$s %2$s is good to go! %3$s Your website is already faster.', 'rocket' ),
+		'<strong>',
+		WP_ROCKET_PLUGIN_NAME,
+		'</strong>'
 		);
+
+		// This filter is documented in inc/Engine/Admin/RocketInsights/Context/Context.php.
+		$rocket_insights_enabled = wpm_apply_filters_typed( 'boolean', 'rocket_rocket_insights_enabled', true );
+
+		if ( $rocket_insights_enabled ) {
+			$message = sprintf(
+			/* translators: %1$s = plugin name, %2$s = opening link tag, %3$s = closing link tag */
+			__( '%1$s %2$s is good to go! %3$s Your website is already faster. Visit %4$s Rocket Insights %5$s to check your homepage\'s performance, add more pages to measure WP Rocket\'s impact, and keep your site fast.', 'rocket' ),
+			'<strong>',
+			WP_ROCKET_PLUGIN_NAME,
+			'</strong>',
+			'<a href="' . admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '&rocket_source=notice_thankyou_license#rocket_insights' ) . '">',
+			'</a>'
+			);
+		}
 
 		rocket_notice_html( [ 'message' => $message ] );
 	}
 }
 add_action( 'admin_notices', 'rocket_thank_you_license' );
+
 
 /**
  * Displays a notice for analytics opt-in
@@ -489,7 +504,7 @@ function rocket_analytics_optin_notice() {
 		return;
 	}
 
-	if ( get_rocket_option( 'analytics_enabled' ) ) {
+	if ( get_option( 'rocket_mixpanel_optin' ) ) {
 		return;
 	}
 
@@ -662,6 +677,7 @@ function rocket_notice_html( $args ) {
 		'dismiss_button_message' => __( 'Dismiss this notice', 'rocket' ),
 		'readonly_content'       => '',
 		'id'                     => '',
+		'class_prefix'           => '',
 	];
 
 	$args = wp_parse_args( $args, $defaults );
@@ -672,7 +688,7 @@ function rocket_notice_html( $args ) {
 			break;
 		case 'clear_used_css':
 			$params = [
-				'action' => 'rocket_clear_usedcss',
+				'action' => 'rocket_clean_saas',
 			];
 
 			if ( ! empty( $_SERVER['REQUEST_URI'] ) ) {
@@ -715,6 +731,9 @@ function rocket_notice_html( $args ) {
 				$args['action'] = '<a href="' . wp_nonce_url( 'plugins.php?action=deactivate&amp;rocket_nonce=' . $rocket_nonce . '&amp;plugin=' . $plugin_file . '&amp;plugin_status=' . $status . '&amp;paged=' . $page . '&amp;s=' . $s, 'deactivate-plugin_' . $plugin_file ) . '">' . __( 'Force deactivation ', 'rocket' ) . '</a>';
 			}
 			break;
+		case 'rocket_insights_page':
+			$args['action'] = '<a class="button button-primary" href="' . admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '&rocket_source=notice_insights_promotion_notice#rocket_insights' ) . '">' . __( 'Run the test now!', 'rocket' ) . '</a>';
+			break;
 	}
 	/**
 	 * Notice arguments.
@@ -735,7 +754,7 @@ function rocket_notice_html( $args ) {
 	}
 
 	?>
-	<div class="notice notice-<?php echo esc_attr( $args['status'] ); ?> <?php echo esc_attr( $args['dismissible'] ); ?>"<?php echo $notice_id; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
+	<div class="<?php echo esc_attr( $args['class_prefix'] ); ?>notice notice-<?php echo esc_attr( $args['status'] ); ?> <?php echo esc_attr( $args['dismissible'] ); ?>"<?php echo $notice_id; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
 		<?php
 			$tag = 0 !== strpos( $args['message'], '<p' ) && 0 !== strpos( $args['message'], '<ul' );
 

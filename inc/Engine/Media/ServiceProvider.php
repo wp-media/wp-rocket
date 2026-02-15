@@ -1,8 +1,10 @@
 <?php
+declare(strict_types=1);
+
 namespace WP_Rocket\Engine\Media;
 
-use WP_Rocket\Buffer\Config;
-use WP_Rocket\Buffer\Tests;
+use WP_Rocket\Buffer\{Config, Tests};
+use WP_Rocket\Dependencies\League\Container\Argument\Literal\ArrayArgument;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Dependencies\RocketLazyload\{Assets, Iframe, Image};
 use WP_Rocket\Engine\Media\Emojis\EmojisSubscriber;
@@ -56,30 +58,42 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register(): void {
-		$options = $this->getContainer()->get( 'options' );
-
 		$this->getContainer()->add( 'config', Config::class )
-			->addArgument( [ 'config_dir_path' => rocket_get_constant( 'WP_ROCKET_CONFIG_PATH' ) ] );
+			->addArgument(
+				new ArrayArgument(
+					[
+						'config_dir_path' => rocket_get_constant( 'WP_ROCKET_CONFIG_PATH' ),
+					]
+				)
+			);
 		$this->getContainer()->add( 'tests', Tests::class )
-			->addArgument( $this->getContainer()->get( 'config' ) );
+			->addArgument( 'config' );
 
 		$this->getContainer()->add( 'lazyload_assets', Assets::class );
 		$this->getContainer()->add( 'lazyload_image', Image::class );
 		$this->getContainer()->add( 'lazyload_iframe', Iframe::class );
 		$this->getContainer()->addShared( 'lazyload_subscriber', Subscriber::class )
-			->addArgument( $options )
-			->addArgument( $this->getContainer()->get( 'lazyload_assets' ) )
-			->addArgument( $this->getContainer()->get( 'lazyload_image' ) )
-			->addArgument( $this->getContainer()->get( 'lazyload_iframe' ) );
+			->addArguments(
+				[
+					'options',
+					'lazyload_assets',
+					'lazyload_image',
+					'lazyload_iframe',
+				]
+			);
 		$this->getContainer()->addShared( 'lazyload_admin_subscriber', LazyloadAdminSubscriber::class );
 		$this->getContainer()->addShared( 'emojis_subscriber', EmojisSubscriber::class )
-			->addArgument( $options );
+			->addArgument( 'options' );
 		$this->getContainer()->add( 'image_dimensions', ImageDimensions::class )
-			->addArgument( $options );
+			->addArgument( 'options' );
 		$this->getContainer()->addShared( 'image_dimensions_subscriber', ImageDimensionsSubscriber::class )
-			->addArgument( $this->getContainer()->get( 'image_dimensions' ) )
-			->addArgument( $this->getContainer()->get( 'tests' ) );
+			->addArguments(
+				[
+					'image_dimensions',
+					'tests',
+				]
+			);
 		$this->getContainer()->addShared( 'image_dimensions_admin_subscriber', ImageDimensionsAdminSubscriber::class )
-			->addArgument( $this->getContainer()->get( 'image_dimensions' ) );
+			->addArgument( 'image_dimensions' );
 	}
 }

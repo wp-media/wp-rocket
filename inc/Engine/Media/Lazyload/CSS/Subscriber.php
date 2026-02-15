@@ -118,7 +118,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @param LazyloadCSSContentFactory $lazyloaded_content_factory Make LazyloadedContent instance.
 	 * @param WP_Filesystem_Direct|null $filesystem WordPress filesystem.
 	 */
-	public function __construct( Extractor $extractor, RuleFormatter $rule_formatter, FileResolver $file_resolver, CacheInterface $cache, MappingFormatter $mapping_formatter, TagGenerator $tag_generator, ContentFetcher $fetcher, ContextInterface $context, Options_Data $options, LazyloadCSSContentFactory $lazyloaded_content_factory, WP_Filesystem_Direct $filesystem = null ) {
+	public function __construct( Extractor $extractor, RuleFormatter $rule_formatter, FileResolver $file_resolver, CacheInterface $cache, MappingFormatter $mapping_formatter, TagGenerator $tag_generator, ContentFetcher $fetcher, ContextInterface $context, Options_Data $options, LazyloadCSSContentFactory $lazyloaded_content_factory, ?WP_Filesystem_Direct $filesystem = null ) {
 		$this->extractor                  = $extractor;
 		$this->cache                      = $cache;
 		$this->rule_formatter             = $rule_formatter;
@@ -144,7 +144,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 				[ 'create_lazy_inline_css', 21 ],
 				[ 'add_lazy_tag', 24 ],
 			],
-			'rocket_buffer'                         => [ 'maybe_replace_css_images', 1002 ],
+			'rocket_buffer'                         => [ 'maybe_replace_css_images', 110000 ],
 			'rocket_after_clean_domain'             => 'clear_generated_css',
 			'wp_enqueue_scripts'                    => 'insert_lazyload_script',
 			'rocket_css_image_lazyload_images_load' => [ 'exclude_rocket_lazyload_excluded_src', 10, 2 ],

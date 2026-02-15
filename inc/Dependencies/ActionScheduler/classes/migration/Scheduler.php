@@ -14,10 +14,10 @@ namespace Action_Scheduler\Migration;
  */
 class Scheduler {
 	/** Migration action hook. */
-	const HOOK            = 'action_scheduler/migration_hook';
+	const HOOK = 'action_scheduler/migration_hook';
 
 	/** Migration action group. */
-	const GROUP           = 'action-scheduler-migration';
+	const GROUP = 'action-scheduler-migration';
 
 	/**
 	 * Set up the callback for the scheduled job.
@@ -40,7 +40,7 @@ class Scheduler {
 		$migration_runner = $this->get_migration_runner();
 		$count            = $migration_runner->run( $this->get_batch_size() );
 
-		if ( $count === 0 ) {
+		if ( 0 === $count ) {
 			$this->mark_complete();
 		} else {
 			$this->schedule_migration( time() + $this->get_schedule_interval() );
@@ -54,7 +54,7 @@ class Scheduler {
 		$this->unschedule_migration();
 
 		\ActionScheduler_DataController::mark_migration_complete();
-		do_action( 'action_scheduler/migration_complete' );
+		do_action( 'action_scheduler/migration_complete' ); // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 	}
 
 	/**
@@ -102,7 +102,7 @@ class Scheduler {
 	 * @return int Seconds between migration runs. Defaults to 0 seconds to allow chaining migration via Async Runners.
 	 */
 	private function get_schedule_interval() {
-		return (int) apply_filters( 'action_scheduler/migration_interval', 0 );
+		return (int) apply_filters( 'action_scheduler/migration_interval', 0 ); // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 	}
 
 	/**
@@ -111,7 +111,7 @@ class Scheduler {
 	 * @return int Number of actions to migrate in each batch. Defaults to 250.
 	 */
 	private function get_batch_size() {
-		return (int) apply_filters( 'action_scheduler/migration_batch_size', 250 );
+		return (int) apply_filters( 'action_scheduler/migration_batch_size', 250 ); // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 	}
 
 	/**

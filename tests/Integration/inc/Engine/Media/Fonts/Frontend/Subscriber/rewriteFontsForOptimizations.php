@@ -24,6 +24,7 @@ class Test_RewriteFontsForOptimizations extends FilesystemTestCase {
 		add_filter( 'pre_get_rocket_option_host_fonts_locally', [ $this, 'host_fonts_locally' ] );
 		add_filter( 'rocket_host_fonts_locally_inline_css', [ $this, 'locally_inline_css' ] );
 		add_filter('rocket_exclude_locally_host_fonts', [ $this, 'exclude_locally_host_fonts' ] );
+		add_filter('rocket_disable_meta_generator', '__return_true');
 		$this->setup_http();
 
 	}
@@ -32,6 +33,7 @@ class Test_RewriteFontsForOptimizations extends FilesystemTestCase {
 		remove_filter('pre_get_rocket_option_host_fonts_locally', [$this, 'host_fonts_locally']);
 		remove_filter('rocket_host_fonts_locally_inline_css', [$this, 'locally_inline_css']);
 		remove_filter('rocket_exclude_locally_host_fonts', [ $this, 'exclude_locally_host_fonts' ] );
+		remove_filter('rocket_disable_meta_generator', '__return_true');
 
 		$this->restoreWpHook('rocket_buffer');
 		$this->tear_down_http();

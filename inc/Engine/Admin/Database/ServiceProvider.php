@@ -1,6 +1,9 @@
 <?php
+declare(strict_types=1);
+
 namespace WP_Rocket\Engine\Admin\Database;
 
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 
 /**
@@ -37,9 +40,13 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function register(): void {
 		$this->getContainer()->add( 'db_optimization_process', OptimizationProcess::class );
 		$this->getContainer()->add( 'db_optimization', Optimization::class )
-			->addArgument( $this->getContainer()->get( 'db_optimization_process' ) );
+			->addArgument( 'db_optimization_process' );
 		$this->getContainer()->addShared( 'db_optimization_subscriber', Subscriber::class )
-			->addArgument( $this->getContainer()->get( 'db_optimization' ) )
-			->addArgument( $this->getContainer()->get( 'options' ) );
+			->addArguments(
+				[
+					'db_optimization',
+					'options',
+				]
+			);
 	}
 }

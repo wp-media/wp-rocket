@@ -50,26 +50,26 @@ return [
 			'expected' => [
 				'output' => $html_filtered,
 				'files' => [
-					'/wp-content/cache/background-css/example.org/wp-content/rocket-test-data/styles/lazyload_css_background_images.css' => [
+					'/wp-content/cache/background-css/1/example.org/wp-content/rocket-test-data/styles/lazyload_css_background_images.css' => [
 						'exists' => true,
 						'content' => file_get_contents(__DIR__ . '/CSS/lazyloaded.css')
 					],
-					'/wp-content/cache/background-css/example.org/wp-content/rocket-test-data/styles/lazyload_css_background_images.css.json' => [
+					'/wp-content/cache/background-css/1/example.org/wp-content/rocket-test-data/styles/lazyload_css_background_images.css.json' => [
 						'exists' => true,
 						'content' => file_get_contents(__DIR__ . '/CSS/lazyload.css.json')
 					],
-					'/wp-content/cache/background-css/new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/lazyload_css_background_images.min.css' => [
+					'/wp-content/cache/background-css/1/new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/lazyload_css_background_images.min.css' => [
 						'exists' => true,
 						'content' => file_get_contents(__DIR__ . '/CSS/external_lazyloaded.css')
 					],
-					'/wp-content/cache/background-css/new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/lazyload_css_background_images.min.css.json' => [
+					'/wp-content/cache/background-css/1/new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/lazyload_css_background_images.min.css.json' => [
 						'exists' => true,
 						'content' => file_get_contents(__DIR__ . '/CSS/external.css.json')
 					],
-					'/wp-content/cache/background-css/new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/no_background.css' => [
+					'/wp-content/cache/background-css/1/new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/no_background.css' => [
 						'exists' => false,
 					],
-					'/wp-content/cache/background-css/new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/no_background.css.json' => [
+					'/wp-content/cache/background-css/1/new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/no_background.css.json' => [
 						'exists' => false,
 					],
 				]
@@ -110,26 +110,26 @@ return [
 			'expected' => [
 				'output' => $html_excluded,
 				'files' => [
-					'/wp-content/cache/background-css/example.org/wp-content/rocket-test-data/styles/lazyload_css_background_images.css' => [
+					'/wp-content/cache/background-css/1/example.org/wp-content/rocket-test-data/styles/lazyload_css_background_images.css' => [
 						'exists' => true,
 						'content' => file_get_contents(__DIR__ . '/CSS/lazyloaded.css')
 					],
-					'/wp-content/cache/background-css/example.org/wp-content/rocket-test-data/styles/lazyload_css_background_images.css.json' => [
+					'/wp-content/cache/background-css/1/example.org/wp-content/rocket-test-data/styles/lazyload_css_background_images.css.json' => [
 						'exists' => true,
 						'content' => file_get_contents(__DIR__ . '/CSS/lazyload.css.json')
 					],
-					'/wp-content/cache/background-css/new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/lazyload_css_background_images.min.css' => [
+					'/wp-content/cache/background-css/1/new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/lazyload_css_background_images.min.css' => [
 						'exists' => true,
 						'content' => file_get_contents(__DIR__ . '/CSS/external_lazyloaded.css')
 					],
-					'/wp-content/cache/background-css/new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/lazyload_css_background_images.min.css.json' => [
+					'/wp-content/cache/background-css/1/new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/lazyload_css_background_images.min.css.json' => [
 						'exists' => true,
 						'content' => file_get_contents(__DIR__ . '/CSS/external.css.json')
 					],
-					'/wp-content/cache/background-css/new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/no_background.css' => [
+					'/wp-content/cache/background-css/1/new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/no_background.css' => [
 						'exists' => false,
 					],
-					'/wp-content/cache/background-css/new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/no_background.css.json' => [
+					'/wp-content/cache/background-css/1/new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/no_background.css.json' => [
 						'exists' => false,
 					],
 				]

@@ -147,7 +147,7 @@ class Controller implements ControllerInterface {
 		 *
 		 * @param string $processor The processor to use.
 		 */
-		$processor = wpm_apply_filters_typed( 'string', 'rocket_lrc_processor', 'dom' );
+		$processor = wpm_apply_filters_typed( 'string', 'rocket_lrc_processor', extension_loaded( 'dom' ) ? 'dom' : 'regex' );
 
 		$this->processor->set_processor( $processor );
 		$this->processor->get_processor()->set_exclusions( $this->get_exclusions() );

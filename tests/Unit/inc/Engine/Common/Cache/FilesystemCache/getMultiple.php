@@ -35,6 +35,7 @@ class TestGetMultiple extends TestCase {
 			return $config['parsed_url'][$url];
 		});
 		Functions\when('home_url')->justReturn($config['home_url']);
+		Functions\when('get_current_blog_id')->justReturn( 1 );
 
 		Functions\when('rocket_get_constant')->justReturn($config['root']);
 

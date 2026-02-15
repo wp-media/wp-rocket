@@ -4,14 +4,47 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Common\Database\Queries;
 
 use WP_Rocket\Dependencies\BerlinDB\Database\Query;
+use WP_Rocket\Engine\Common\Database\QueryInterface;
 
-class AbstractQuery extends Query {
+class AbstractQuery extends Query implements QueryInterface {
 	/**
-	 * Table status.
+	 * Cleanup interval in months.
+	 * Default is 3 months.
 	 *
-	 * @var boolean
+	 * @var int
 	 */
-	public static $table_exists = false;
+	public $cleanup_interval = 3;
+
+	/**
+	 * Queries the database and retrieves items or counts.
+	 * We extend this method to check if the query returns 'Table not exists' error to delete the transient and force creating table.
+	 *
+	 * @param string|array $query Array or URL query string of parameters.
+	 * @param bool         $use_cache Use DB cache or not. (custom parameter added by us!).
+	 * @return array|int List of items, or number of items when 'count' is passed as a query var.
+	 */
+	public function query( $query = [], bool $use_cache = true ) {
+		$db = $this->get_db();
+		if ( empty( $db ) ) {
+			return ! empty( $query['count'] ) ? 0 : [];
+		}
+
+		$query_result = parent::query( $query, $use_cache );
+		$last_error   = $db->last_error;
+		if ( empty( $last_error ) ) {
+			return $query_result;
+		}
+
+		$db_name        = rocket_get_constant( 'DB_NAME', '' );
+		$prefixed_table = $db->prefix . $this->table_name;
+		$pattern        = "/Table [`'\"]?" . preg_quote( $db_name, '/' ) . '\.' . preg_quote( $prefixed_table, '/' ) . "[`'\"]? doesn't exist/i";
+
+		if ( preg_match( $pattern, $last_error ) ) {
+			delete_transient( $this->table_name . '_exists' );
+		}
+
+		return ! empty( $query['count'] ) ? 0 : [];
+	}
 
 	/**
 	 * Get row for specific url.
@@ -22,10 +55,6 @@ class AbstractQuery extends Query {
 	 * @return false|mixed
 	 */
 	public function get_row( string $url, bool $is_mobile = false ) {
-		if ( ! self::$table_exists && ! $this->table_exists() ) {
-			return false;
-		}
-
 		$query = $this->query(
 			[
 				'url'       => untrailingslashit( $url ),
@@ -48,10 +77,6 @@ class AbstractQuery extends Query {
 	 * @return object|array|false false if no row found, array or object if row found.
 	 */
 	public function get_row_by_id( int $row_id ) {
-		if ( ! self::$table_exists && ! $this->table_exists() ) {
-			return false;
-		}
-
 		$query = $this->query(
 			[
 				'id' => $row_id,
@@ -77,10 +102,6 @@ class AbstractQuery extends Query {
 	 * @return array|false
 	 */
 	public function get_rows_by_url( string $url ) {
-		if ( ! self::$table_exists && ! $this->table_exists() ) {
-			return false;
-		}
-
 		$query = $this->query(
 			[
 				'url' => untrailingslashit( $url ),
@@ -101,10 +122,6 @@ class AbstractQuery extends Query {
 	 * @return array|int
 	 */
 	public function get_on_submit_jobs( int $count = 100 ) {
-		if ( ! self::$table_exists && ! $this->table_exists() ) {
-			return [];
-		}
-
 		$in_progress_count = (int) $this->query(
 			[
 				'count'  => true,
@@ -144,14 +161,11 @@ class AbstractQuery extends Query {
 	 * @param string $job_id API job_id.
 	 * @param string $queue_name API Queue name.
 	 * @param bool   $is_mobile if the request is for mobile page.
+	 * @param array  $additional_details Additional details to be saved into DB.
 	 *
 	 * @return bool
 	 */
-	public function create_new_job( string $url, string $job_id = '', string $queue_name = '', bool $is_mobile = false ) {
-		if ( ! self::$table_exists && ! $this->table_exists() ) {
-			return false;
-		}
-
+	public function create_new_job( string $url, string $job_id = '', string $queue_name = '', bool $is_mobile = false, array $additional_details = [] ) {
 		$item = [
 			'url'           => untrailingslashit( $url ),
 			'is_mobile'     => $is_mobile,
@@ -161,6 +175,10 @@ class AbstractQuery extends Query {
 			'retries'       => 0,
 			'last_accessed' => current_time( 'mysql', true ),
 		];
+
+		if ( ! empty( $additional_details ) ) {
+			$item = array_merge( $item, $additional_details );
+		}
 
 		$result = $this->add_item( $item );
 
@@ -188,10 +206,6 @@ class AbstractQuery extends Query {
 	 * @return array
 	 */
 	public function get_pending_jobs( int $count = 100 ) {
-		if ( ! self::$table_exists && ! $this->table_exists() ) {
-			return [];
-		}
-
 		$inprogress_count = (int) $this->query(
 			[
 				'count'  => true,
@@ -268,10 +282,6 @@ class AbstractQuery extends Query {
 	 * @return bool
 	 */
 	public function update_job_id( $id, $new_job_id ) {
-		if ( ! self::$table_exists && ! $this->table_exists() ) {
-			return false;
-		}
-
 		$update_data['job_id'] = $new_job_id;
 		return $this->update_item( $id, $update_data );
 	}
@@ -281,9 +291,10 @@ class AbstractQuery extends Query {
 	 *
 	 * @param string  $url Url from DB row.
 	 * @param boolean $is_mobile Is mobile from DB row.
+	 * @param array   $additional_update_fields Additional fields to update in the database.
 	 * @return bool|int
 	 */
-	public function make_status_inprogress( string $url, bool $is_mobile ) {
+	public function make_status_inprogress( string $url, bool $is_mobile, $additional_update_fields = [] ) {
 		if ( ! $this->is_allowed() ) {
 			return false;
 		}
@@ -296,7 +307,9 @@ class AbstractQuery extends Query {
 			'is_mobile' => $is_mobile,
 		];
 
-		return $db->update( $prefixed_table_name, [ 'status' => 'in-progress' ], $where );
+		$additional_update_fields['status'] = 'in-progress';
+
+		return $db->update( $prefixed_table_name, $additional_update_fields, $where );
 	}
 
 	/**
@@ -304,25 +317,31 @@ class AbstractQuery extends Query {
 	 *
 	 * @param int    $id DB row ID.
 	 * @param string $job_id API job_id.
+	 * @param array  $additional_details Additional details to be saved into DB.
 	 *
 	 * @return bool
 	 */
-	public function reset_job( int $id, string $job_id = '' ) {
-		if ( ! self::$table_exists && ! $this->table_exists() ) {
-			return false;
+	public function reset_job( int $id, string $job_id = '', array $additional_details = [] ) {
+		$updates = [
+			'job_id'        => $job_id,
+			'status'        => 'to-submit',
+			'error_code'    => '',
+			'error_message' => '',
+			'retries'       => 0,
+			'modified'      => current_time( 'mysql', true ),
+			'submitted_at'  => current_time( 'mysql', true ),
+		];
+
+		if ( ! empty( $additional_details ) ) {
+			$updates = wp_parse_args(
+				$additional_details,
+				$updates
+			);
 		}
 
 		return $this->update_item(
 			$id,
-			[
-				'job_id'        => $job_id,
-				'status'        => 'to-submit',
-				'error_code'    => '',
-				'error_message' => '',
-				'retries'       => 0,
-				'modified'      => current_time( 'mysql', true ),
-				'submitted_at'  => current_time( 'mysql', true ),
-			]
+			$updates
 		);
 	}
 
@@ -371,10 +390,6 @@ class AbstractQuery extends Query {
 	 * @return bool
 	 */
 	public function update_last_accessed( int $id ): bool {
-		if ( ! self::$table_exists && ! $this->table_exists() ) {
-			return false;
-		}
-
 		return (bool) $this->update_item(
 			$id,
 			[
@@ -391,18 +406,17 @@ class AbstractQuery extends Query {
 	 * @return bool
 	 */
 	public function delete_by_url( string $url ) {
-		if ( ! self::$table_exists && ! $this->table_exists() ) {
-			return false;
-		}
-
 		$items = $this->get_rows_by_url( $url );
 
-		if ( ! $items ) {
+		if ( empty( $items ) ) {
 			return false;
 		}
 
 		$deleted = true;
 		foreach ( $items as $item ) {
+			if ( empty( $item->id ) ) {
+				continue;
+			}
 			$deleted = $deleted && $this->delete_item( $item->id );
 		}
 
@@ -415,10 +429,6 @@ class AbstractQuery extends Query {
 	 * @return int
 	 */
 	public function get_not_completed_count() {
-		if ( ! self::$table_exists && ! $this->table_exists() ) {
-			return 0;
-		}
-
 		return $this->query(
 			[
 				'count'      => true,
@@ -433,13 +443,23 @@ class AbstractQuery extends Query {
 	 * @return int
 	 */
 	public function get_completed_count() {
-		if ( ! self::$table_exists && ! $this->table_exists() ) {
-			return 0;
-		}
-
 		return $this->query(
 			[
 				'count'  => true,
+				'status' => 'completed',
+			]
+		);
+	}
+
+	/**
+	 * Get completed rows IDs.
+	 *
+	 * @return int[]|array
+	 */
+	public function get_completed_ids() {
+		return $this->query(
+			[
+				'fields' => 'ids',
 				'status' => 'completed',
 			]
 		);
@@ -453,10 +473,6 @@ class AbstractQuery extends Query {
 	 * @return array|false
 	 */
 	public function get_failed_rows( float $delay = 3, string $unit = 'days' ) {
-		if ( ! self::$table_exists && ! $this->table_exists() ) {
-			return false;
-		}
-
 		$query = $this->query(
 			[
 				'status'     => 'failed',
@@ -482,56 +498,27 @@ class AbstractQuery extends Query {
 	 * Revert status to pending.
 	 *
 	 * @param integer $id Used CSS id.
+	 * @param array   $additional_details Additional details to be saved into DB.
+	 *
 	 * @return boolean
 	 */
-	public function revert_to_pending( int $id ): bool {
-		if ( ! self::$table_exists && ! $this->table_exists() ) {
-			return false;
+	public function revert_to_pending( int $id, array $additional_details = [] ): bool {
+		$item_details = [
+			'error_code'    => '',
+			'error_message' => '',
+			'retries'       => 0,
+			'status'        => 'pending',
+			'modified'      => current_time( 'mysql', true ),
+		];
+
+		if ( ! empty( $additional_details ) ) {
+			$item_details['data'] = wp_json_encode( $additional_details );
 		}
 
 		return (bool) $this->update_item(
 			$id,
-			[
-				'error_code'    => '',
-				'error_message' => '',
-				'retries'       => 0,
-				'status'        => 'pending',
-				'modified'      => current_time( 'mysql', true ),
-			]
+			$item_details
 		);
-	}
-
-	/**
-	 * Returns the current status of the table; true if it exists, false otherwise.
-	 *
-	 * @return boolean
-	 */
-	protected function table_exists(): bool {
-		if ( self::$table_exists ) {
-			return true;
-		}
-
-		// Get the database interface.
-		$db = $this->get_db();
-
-		// Bail if no database interface is available.
-		if ( ! $db ) {
-			return false;
-		}
-
-		// Query statement.
-		$query    = 'SELECT table_name FROM information_schema.tables WHERE table_schema = %s AND table_name = %s LIMIT 1';
-		$prepared = $db->prepare( $query, $db->__get( 'dbname' ), $db->{$this->table_name} );
-		$result   = $db->get_var( $prepared );
-
-		// Does the table exist?
-		$exists = $this->is_success( $result );
-
-		if ( $exists ) {
-			self::$table_exists = $exists;
-		}
-
-		return $exists;
 	}
 
 	/**
@@ -639,15 +626,37 @@ class AbstractQuery extends Query {
 	 * @return boolean
 	 */
 	private function is_allowed() {
-		if ( ! self::$table_exists && ! $this->table_exists() ) {
-			return false;
-		}
-
 		// Bail if no database interface is available.
 		if ( empty( $this->get_db() ) ) {
 			return false;
 		}
 
 		return true;
+	}
+
+	/**
+	 * Get total number of rows.
+	 *
+	 * @return int
+	 */
+	public function get_total_count() {
+		return (int) $this->query(
+			[
+				'count' => true,
+			]
+		);
+	}
+
+	/**
+	 * Set cleanup interval
+	 *
+	 * @param int $interval The interval duration, usually default to 1.
+	 *
+	 * @return object
+	 */
+	public function set_cleanup_interval( int $interval ): object {
+		$this->cleanup_interval = $interval;
+
+		return $this;
 	}
 }

@@ -3,13 +3,11 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Media\AboveTheFold\Database\Queries;
 
-use WP_Rocket\Engine\Common\PerformanceHints\Database\Queries\AbstractQueries;
-use WP_Rocket\Engine\Common\PerformanceHints\Database\Queries\QueriesInterface;
-
+use WP_Rocket\Engine\Common\Database\Queries\AbstractQuery;
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Schemas\AboveTheFold as AboveTheFoldSchema;
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Rows\AboveTheFold as AboveTheFoldRow;
 
-class AboveTheFold extends AbstractQueries implements QueriesInterface {
+class AboveTheFold extends AbstractQuery {
 
 	/**
 	 * Name of the database table to query.
@@ -93,17 +91,7 @@ class AboveTheFold extends AbstractQueries implements QueriesInterface {
 			return false;
 		}
 
-		/**
-		 * Filters the interval (in months) to determine when an Above The Fold (ATF) entry is considered 'old'.
-		 * Old ATF entries are eligible for deletion. By default, an ATF entry is considered old if it hasn't been accessed in the last month.
-		 *
-		 * @param int $delete_interval The interval in months after which an ATF entry is considered old. Default is 1 month.
-		 */
-		$delete_interval = (int) apply_filters( 'rocket_atf_cleanup_interval', 1 );
-
-		if ( $delete_interval <= 0 ) {
-			return false;
-		}
+		$delete_interval = $this->cleanup_interval;
 
 		$prefixed_table_name = $db->prefix . $this->table_name;
 		$query               = "DELETE FROM `$prefixed_table_name` WHERE status = 'failed' OR `last_accessed` <= date_sub(now(), interval $delete_interval month)";

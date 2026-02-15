@@ -125,6 +125,9 @@
     &-heartbeat { @extend .wpr-icon-heartbeat; }
     &-heartbeat:hover { @extend .wpr-icon-heartbeat-hover; }
     &-heartbeat.isActive { @extend .wpr-icon-heartbeat-hover; }
+    &-rocket_insights { @extend .wpr-icon-rocket-insights; }
+    &-rocket_insights:hover { @extend .wpr-icon-rocket-insights-hover; }
+    &-rocket_insights.isActive { @extend .wpr-icon-rocket-insights-hover; }
     &-imagify{ @extend .wpr-icon-imagify; }
     &-imagify:hover{ @extend .wpr-icon-imagify-hover; }
     &-imagify.isActive{ @extend .wpr-icon-imagify-hover; }

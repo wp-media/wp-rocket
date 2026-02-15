@@ -327,7 +327,7 @@ function rocket_check_json_filetype( $wp_check_filetype_and_ext, $file, $filenam
 
 	$finfo     = finfo_open( FILEINFO_MIME_TYPE );
 	$real_mime = finfo_file( $finfo, $file );
-	finfo_close( $finfo );
+	finfo_close( $finfo ); // phpcs:ignore Generic.PHP.DeprecatedFunctions.Deprecated
 
 	if ( 'text/plain' !== $real_mime ) {
 		return $wp_check_filetype_and_ext;
@@ -557,6 +557,10 @@ function rocket_get_license_type( $customer_data ) {
 		! isset( $customer_data->licence_account )
 	) {
 		return __( 'Unavailable', 'rocket' );
+	}
+
+	if ( isset( $customer_data->licence->is_revoked ) && $customer_data->licence->is_revoked ) {
+		return __( 'Revoked', 'rocket' );
 	}
 
 	// The licence name directly from User endpoint.

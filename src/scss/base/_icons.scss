@@ -169,4 +169,37 @@
 .wpr-icons-plugins-hover:before {
   content: url('../img/plugins-hover.png');
 }
+.wpr-icon-rocket-insights:before {
+	content: '';
+	background-image: url('../img/rocket-insights.svg');
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+.wpr-icon-rocket-insights-hover:before {
+	content: '';
+	background-image: url('../img/rocket-insights-hover.svg');
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+.wpr-icon-bold-refresh:before {
+	content: '\e923' ;
+}
+.wpr-icon-report:before {
+	content: '\e924';
+}
+
+.wpr-Header-nav{
+	.wpr-icon-rocket-insights:before{
+		width: 30px;
+		height: 24px;
+		right: 15px;
+	}
+}
+
+.wpr-icon-exclamation:before{
+	content: '';
+	background-image: url('../img/exclamation.svg');
+	background-repeat: no-repeat;
+	background-position: center center;
+}
 

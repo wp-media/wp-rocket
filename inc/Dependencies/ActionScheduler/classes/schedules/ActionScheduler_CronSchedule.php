@@ -7,23 +7,27 @@ class ActionScheduler_CronSchedule extends ActionScheduler_Abstract_RecurringSch
 
 	/**
 	 * Deprecated property @see $this->__wakeup() for details.
-	 **/
-	private $start_timestamp = NULL;
+	 *
+	 * @var null
+	 */
+	private $start_timestamp = null;
 
 	/**
 	 * Deprecated property @see $this->__wakeup() for details.
-	 **/
-	private $cron = NULL;
+	 *
+	 * @var null
+	 */
+	private $cron = null;
 
 	/**
 	 * Wrapper for parent constructor to accept a cron expression string and map it to a CronExpression for this
 	 * objects $recurrence property.
 	 *
-	 * @param DateTime $start The date & time to run the action at or after. If $start aligns with the CronSchedule passed via $recurrence, it will be used. If it does not align, the first matching date after it will be used.
+	 * @param DateTime              $start The date & time to run the action at or after. If $start aligns with the CronSchedule passed via $recurrence, it will be used. If it does not align, the first matching date after it will be used.
 	 * @param CronExpression|string $recurrence The CronExpression used to calculate the schedule's next instance.
-	 * @param DateTime|null $first (Optional) The date & time the first instance of this interval schedule ran. Default null, meaning this is the first instance.
+	 * @param DateTime|null         $first (Optional) The date & time the first instance of this interval schedule ran. Default null, meaning this is the first instance.
 	 */
-	public function __construct( DateTime $start, $recurrence, DateTime $first = null ) {
+	public function __construct( DateTime $start, $recurrence, ?DateTime $first = null ) {
 		if ( ! is_a( $recurrence, 'CronExpression' ) ) {
 			$recurrence = CronExpression::factory( $recurrence );
 		}
@@ -41,7 +45,7 @@ class ActionScheduler_CronSchedule extends ActionScheduler_Abstract_RecurringSch
 	 * Calculate when an instance of this schedule would start based on a given
 	 * date & time using its the CronExpression.
 	 *
-	 * @param DateTime $after
+	 * @param DateTime $after Timestamp.
 	 * @return DateTime
 	 */
 	protected function calculate_next( DateTime $after ) {
@@ -49,6 +53,8 @@ class ActionScheduler_CronSchedule extends ActionScheduler_Abstract_RecurringSch
 	}
 
 	/**
+	 * Get the schedule's recurrence.
+	 *
 	 * @return string
 	 */
 	public function get_recurrence() {
@@ -75,10 +81,13 @@ class ActionScheduler_CronSchedule extends ActionScheduler_Abstract_RecurringSch
 		$this->start_timestamp = $this->scheduled_timestamp;
 		$this->cron            = $this->recurrence;
 
-		return array_merge( $sleep_params, array(
-			'start_timestamp',
-			'cron'
-		) );
+		return array_merge(
+			$sleep_params,
+			array(
+				'start_timestamp',
+				'cron',
+			)
+		);
 	}
 
 	/**

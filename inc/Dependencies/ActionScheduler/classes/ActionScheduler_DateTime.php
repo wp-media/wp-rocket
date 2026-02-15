@@ -15,7 +15,7 @@ class ActionScheduler_DateTime extends DateTime {
 	 *
 	 * @var int
 	 */
-	protected $utcOffset = 0;
+	protected $utcOffset = 0; // phpcs:ignore WordPress.NamingConventions.ValidVariableName.PropertyNotSnakeCase
 
 	/**
 	 * Get the unix timestamp of the current object.
@@ -34,10 +34,10 @@ class ActionScheduler_DateTime extends DateTime {
 	 *
 	 * This represents a fixed offset instead of a timezone setting.
 	 *
-	 * @param $offset
+	 * @param string|int $offset UTC offset value.
 	 */
 	public function setUtcOffset( $offset ) {
-		$this->utcOffset = intval( $offset );
+		$this->utcOffset = intval( $offset ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 	}
 
 	/**
@@ -48,20 +48,20 @@ class ActionScheduler_DateTime extends DateTime {
 	 */
 	#[\ReturnTypeWillChange]
 	public function getOffset() {
-		return $this->utcOffset ? $this->utcOffset : parent::getOffset();
+		return $this->utcOffset ? $this->utcOffset : parent::getOffset(); // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 	}
 
 	/**
 	 * Set the TimeZone associated with the DateTime
 	 *
-	 * @param DateTimeZone $timezone
+	 * @param DateTimeZone $timezone Timezone object.
 	 *
 	 * @return static
 	 * @link http://php.net/manual/en/datetime.settimezone.php
 	 */
 	#[\ReturnTypeWillChange]
 	public function setTimezone( $timezone ) {
-		$this->utcOffset = 0;
+		$this->utcOffset = 0; // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 		parent::setTimezone( $timezone );
 
 		return $this;

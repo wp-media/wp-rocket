@@ -9,6 +9,7 @@ use WP_Rocket\Engine\Media\AboveTheFold\Context\Context as ATFContext;
 use WP_Rocket\Engine\Media\AboveTheFold\Activation\ActivationFactory as ATFActivationFactory;
 use WP_Rocket\Engine\Optimization\LazyRenderContent\Activation\ActivationFactory as LRCActivationFactory;
 use WP_Rocket\Engine\Optimization\LazyRenderContent\Context\Context as LRCContext;
+use WP_Rocket\Engine\Media\PreconnectExternalDomains\Context\Context as PreconnectContext;
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
@@ -30,6 +31,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'atf_activation_factory',
 		'lrc_context',
 		'lrc_activation_factory',
+		'preconnect_external_domains_context',
 	];
 
 	/**
@@ -55,7 +57,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->addShared( 'atf_activation_factory', ATFActivationFactory::class )
 			->addArguments(
 				[
-					$this->getContainer()->get( 'atf_context' ),
+					'atf_context',
 				]
 			);
 
@@ -64,9 +66,11 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->addShared( 'lrc_activation_factory', LRCActivationFactory::class )
 			->addArguments(
 				[
-					$this->getContainer()->get( 'lrc_context' ),
+					'lrc_context',
 				]
 			);
+
+		$this->getContainer()->add( 'preconnect_external_domains_context', PreconnectContext::class );
 
 		$factories = [];
 
@@ -83,7 +87,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		}
 
 		$this->getContainer()->add( 'performance_hints_warmup_apiclient', APIClient::class )
-			->addArgument( $this->getContainer()->get( 'options' ) );
+			->addArgument( 'options' );
 
 		$this->getContainer()->add( 'performance_hints_warmup_queue', Queue::class );
 
@@ -91,20 +95,20 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArguments(
 				[
 					$factories,
-					$this->getContainer()->get( 'options' ),
-					$this->getContainer()->get( 'performance_hints_warmup_apiclient' ),
-					$this->getContainer()->get( 'user' ),
-					$this->getContainer()->get( 'performance_hints_warmup_queue' ),
+					'options',
+					'performance_hints_warmup_apiclient',
+					'user',
+					'performance_hints_warmup_queue',
 				]
 			);
 
 		$this->getContainer()->addShared( 'performance_hints_warmup_subscriber', WarmUpSubscriber::class )
-			->addArgument( $this->getContainer()->get( 'performance_hints_warmup_controller' ) );
+			->addArgument( 'performance_hints_warmup_controller' );
 
 		$this->getContainer()->add( 'performance_hints_activation', Activation::class )
 			->addArguments(
 				[
-					$this->getContainer()->get( 'performance_hints_warmup_controller' ),
+					'performance_hints_warmup_controller',
 					$factories,
 				]
 			);

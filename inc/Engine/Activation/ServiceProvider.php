@@ -1,6 +1,9 @@
 <?php
+declare(strict_types=1);
+
 namespace WP_Rocket\Engine\Activation;
 
+use WP_Rocket\Dependencies\League\Container\Argument\Literal\StringArgument;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\BootableServiceProviderInterface;
 use WP_Rocket\Engine\Cache\AdvancedCache;
@@ -53,8 +56,12 @@ class ServiceProvider extends AbstractServiceProvider implements BootableService
 		$filesystem = rocket_direct_filesystem();
 
 		$this->getContainer()->add( 'advanced_cache', AdvancedCache::class )
-			->addArgument( $this->getContainer()->get( 'template_path' ) . '/cache/' )
-			->addArgument( $filesystem );
+			->addArguments(
+				[
+					new StringArgument( $this->getContainer()->get( 'template_path' ) . '/cache/' ),
+					$filesystem,
+				]
+			);
 		$this->getContainer()->add( 'capabilities_manager', Manager::class );
 		$this->getContainer()->add( 'wp_cache', WPCache::class )
 			->addArgument( $filesystem );

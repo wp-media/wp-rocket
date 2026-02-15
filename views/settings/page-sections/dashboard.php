@@ -42,9 +42,20 @@ $rocket_manual_preload = (bool) get_rocket_option( 'manual_preload', false );
 			<br>
 			<?php esc_html_e( 'Your website should be loading faster now!', 'rocket' ); ?>
 			</h2>
-				<div class="wpr-notice-description"><?php esc_html_e( 'To guarantee fast websites, WP Rocket automatically applies 80% of web performance best practices.', 'rocket' ); ?><br> <?php esc_html_e( 'We also enable options that provide immediate benefits to your website.', 'rocket' ); ?></div>
-				<div class="wpr-notice-continue"><?php esc_html_e( 'Continue to the options to further optimize your site!', 'rocket' ); ?></div>
-				<a id="wpr-congratulations-notice" class="wpr-notice-close wpr-icon-close rocket-dismiss" href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box=rocket_activation_notice' ), 'rocket_ignore_rocket_activation_notice' ) ); ?>"><span class="screen-reader-text"><?php esc_html_e( 'Dismiss this notice', 'rocket' ); ?></span></a>
+		<div class="wpr-notice-description"><?php esc_html_e( 'To guarantee fast websites, WP Rocket automatically applies 80% of web performance best practices.', 'rocket' ); ?><br> <?php esc_html_e( 'We also enable options that provide immediate benefits to your website.', 'rocket' ); ?></div>
+			<?php if ( ! empty( $data['rocket_insights_enabled'] ) ) : ?>
+			<div class="wpr-notice-continue">
+				<?php
+				printf(
+					// translators: %1$s = opening <strong> tag, %2$s = closing </strong> tag.
+					esc_html__( 'Check the %1$sRocket Insights%2$s tab to track your top pages, quickly spot issues, and get in-depth insights to further optimize your website speed.', 'rocket' ),
+					'<strong>',
+					'</strong>'
+				);
+				?>
+			</div>
+			<?php endif; ?>
+			<a id="wpr-congratulations-notice" class="wpr-notice-close wpr-icon-close rocket-dismiss" href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box=rocket_activation_notice' ), 'rocket_ignore_rocket_activation_notice' ) ); ?>"><span class="screen-reader-text"><?php esc_html_e( 'Dismiss this notice', 'rocket' ); ?></span></a>
 		</div>
 	</div>
 	<?php endif; ?>
@@ -101,6 +112,16 @@ $rocket_manual_preload = (bool) get_rocket_option( 'manual_preload', false );
 							<span class="wpr-title3"><?php esc_html_e( 'Expiration Date', 'rocket' ); ?></span>
 							<span class="wpr-infoAccount <?php echo esc_attr( $data['customer_data']['license_class'] ); ?>" id="wpr-expiration-data"><?php echo esc_html( $data['customer_data']['license_expiration'] ); ?></span>
 						</p>
+						<?php if ( ! defined( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) || ! WP_ROCKET_WHITE_LABEL_ACCOUNT ) : ?>
+						<p>
+							<span class="wpr-title3"><?php esc_html_e( 'Plugin Updates', 'rocket' ); ?></span>
+							<?php if ( ! empty( $data['customer_data']['can_update_plugin'] ) ) : ?>
+								<span class="wpr-infoAccount wpr-isValid wpr-icon-check" id="wpr-plugin-updates-data"></span>
+							<?php else : ?>
+								<span class="wpr-infoAccount wpr-isInvalid" id="wpr-plugin-updates-data"><?php echo esc_html( $data['customer_data']['update_blocked_reason'] ); ?></span>
+							<?php endif; ?>
+						</p>
+						<?php endif; ?>
 					</div>
 					<div>
 						<?php
@@ -119,28 +140,8 @@ $rocket_manual_preload = (bool) get_rocket_option( 'manual_preload', false );
 					</div>
 				</div>
 			</div>
-			<?php endif; ?>
-			<div class="wpr-fieldsContainer">
-				<fieldset class="wpr-fieldsContainer-fieldset">
-					<div class="wpr-field wpr-field--radio">
-						<div class="wpr-radio">
-							<input type="checkbox" id="analytics_enabled" class="" name="wp_rocket_settings[analytics_enabled]" value="1" <?php checked( get_rocket_option( 'analytics_enabled', 0 ), 1 ); ?>>
-							<label for="analytics_enabled" class="">
-								<span data-l10n-active="On"
-									data-l10n-inactive="Off" class="wpr-radio-ui"></span>
-								<?php esc_html_e( 'Rocket Analytics', 'rocket' ); ?>
-							</label>
-						</div>
-						<div class="wpr-field-description">
-							<?php
-							// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-							printf( esc_html__( 'I agree to share anonymous data with the development team to help improve WP Rocket. %1$sWhat info will we collect?%2$s', 'rocket' ), '<button class="wpr-js-popin">', '</button>' );
-							?>
-						</div>
-					</div>
-				</fieldset>
-			</div>
-			<?php
+				<?php
+			endif;
 			/**
 			 * Fires after the account data section on the WP Rocket settings dashboard
 			 *
@@ -151,6 +152,12 @@ $rocket_manual_preload = (bool) get_rocket_option( 'manual_preload', false );
 		</div>
 
 		<div class="wpr-Page-col wpr-Page-col--fixed">
+			<?php
+			/**
+			 * Fires in the dashboard sidebar
+			 */
+			do_action( 'rocket_dashboard_sidebar' );
+			?>
 			<div class="wpr-optionHeader">
 				<h3 class="wpr-title2"><?php esc_html_e( 'Quick Actions', 'rocket' ); ?></h3>
 			</div>
@@ -159,8 +166,8 @@ $rocket_manual_preload = (bool) get_rocket_option( 'manual_preload', false );
 				<fieldset class="wpr-fieldsContainer-fieldset">
 					<?php if ( current_user_can( 'rocket_purge_cache' ) ) : ?>
 					<div class="wpr-field">
-						<h4 class="wpr-title3"><?php esc_html_e( 'Cache files', 'rocket' ); ?></h4>
-						<p><?php echo $rocket_manual_preload ? esc_html__( 'This action will clear and preload all the cache files.', 'rocket' ) : esc_html__( 'This action will clear all the cache files.', 'rocket' ); ?></p>
+						<h4 class="wpr-title3"><?php esc_html_e( 'Cache Files', 'rocket' ); ?></h4>
+						<p><?php echo $rocket_manual_preload ? esc_html__( 'Clear and preload all the cache files.', 'rocket' ) : esc_html__( 'Clear all the cache files.', 'rocket' ); ?></p>
 						<?php
 						$this->render_action_button(
 							'link',

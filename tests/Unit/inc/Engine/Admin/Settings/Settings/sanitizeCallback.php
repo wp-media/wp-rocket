@@ -83,24 +83,6 @@ class Test_SanitizeCallback extends TestCase {
 	}
 
 	/**
-	 * @dataProvider addFontPreloadProvider
-	 */
-	public function testShouldSanitizeFontPreloadEntries( $input, $expected ) {
-		Functions\when( 'rocket_valid_key' )->justReturn( true );
-		$this->stubWpParseUrl();
-		Functions\expect( 'home_url' )
-			->andReturn( 'http://example.org' );
-
-		$output = $this->settings->sanitize_callback( $input );
-
-		$this->assertArrayHasKey( 'preload_fonts', $output );
-		$this->assertSame(
-			$expected['preload_fonts'],
-			array_values( $output['preload_fonts'] )
-		);
-	}
-
-	/**
 	 * @dataProvider addExcludeCSSProvider
 	 */
 	public function testShouldSanitizeExcludeCSS( $original, $sanitized ) {

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace WP_Rocket\Engine\Capabilities;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
@@ -36,6 +38,6 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function register(): void {
 		$this->getContainer()->add( 'capabilities_manager', Manager::class );
 		$this->getContainer()->addShared( 'capabilities_subscriber', Subscriber::class )
-			->addArgument( $this->getContainer()->get( 'capabilities_manager' ) );
+			->addArgument( 'capabilities_manager' );
 	}
 }

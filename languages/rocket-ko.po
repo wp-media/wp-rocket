@@ -1,0 +1,4444 @@
+# Copyright (C) 2025 WP Media
+# This file is distributed under the same license as the WP Rocket plugin.
+# Translators:
+# Romain • WP Rocket <contact@wp-rocket.me>, 2025
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: WP Rocket 3.18.2-alpha\n"
+"Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
+"POT-Creation-Date: 2025-02-17T11:30:03+00:00\n"
+"PO-Revision-Date: 2019-08-26 15:14+0000\n"
+"Last-Translator: Romain • WP Rocket <contact@wp-rocket.me>, 2025\n"
+"Language-Team: Korean (https://app.transifex.com/wp-media/teams/18133/ko/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ko\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Domain: rocket\n"
+"X-Generator: WP-CLI 2.11.0\n"
+
+#. Plugin Name of the plugin
+#: wp-rocket.php
+msgid "WP Rocket"
+msgstr "WP Rocket"
+
+#. Plugin URI of the plugin
+#: wp-rocket.php
+msgid "https://wp-rocket.me"
+msgstr "https://wp-rocket.me"
+
+#. Description of the plugin
+#: wp-rocket.php
+msgid "The best WordPress performance plugin."
+msgstr "최고의 워드프레스 성능 플러그인."
+
+#. Author of the plugin
+#: wp-rocket.php
+msgid "WP Media"
+msgstr "WP Media"
+
+#. Author URI of the plugin
+#: wp-rocket.php
+msgid "https://wp-media.me"
+msgstr "https://wp-media.me"
+
+#. Translators: %s = Hosting name.
+#: inc/3rd-party/hosting/flywheel.php:18
+#: inc/3rd-party/hosting/wp-serveur.php:27 inc/deprecated/3.6.php:697
+#: inc/deprecated/3.6.php:997 inc/deprecated/3.9.php:22
+#: inc/ThirdParty/Hostings/Cloudways.php:90
+#: inc/ThirdParty/Hostings/Dreampress.php:44
+#: inc/ThirdParty/Hostings/Godaddy.php:63
+#: inc/ThirdParty/Hostings/O2Switch.php:49
+#: inc/ThirdParty/Hostings/OneCom.php:137
+#: inc/ThirdParty/Hostings/Pressidium.php:50
+#: inc/ThirdParty/Hostings/ProIsp.php:51 inc/ThirdParty/Hostings/Savvii.php:50
+#: inc/ThirdParty/Hostings/WPEngine.php:46
+#: inc/ThirdParty/Hostings/WPXCloud.php:51
+msgid ""
+"Your site is hosted on %s, we have enabled Varnish auto-purge for "
+"compatibility."
+msgstr "귀하의 사이트는 %s에 호스팅되며, 호환성을 위해 Varnish 자동 제거를 활성화했습니다."
+
+#: inc/Addon/Cloudflare/API/Client.php:129
+msgid "Cloudflare did not provide any reply. Please try again later."
+msgstr "Cloudflare는 아무런 답변도 제공하지 않았습니다. 나중에 다시 시도하세요."
+
+#: inc/Addon/Cloudflare/API/Client.php:135
+msgid "Cloudflare unexpected response"
+msgstr "Cloudflare 예상치 못한 응답"
+
+#: inc/Addon/Cloudflare/API/Client.php:143
+msgid "Missing Cloudflare result."
+msgstr "Cloudflare 결과가 없습니다."
+
+#: inc/Addon/Cloudflare/API/Client.php:194 inc/deprecated/3.5.php:112
+#: inc/deprecated/3.5.php:169
+msgid "Incorrect Cloudflare email address or API key."
+msgstr "Cloudflare 이메일 주소 또는 API 키가 잘못되었습니다."
+
+#. translators: %1$s = opening link; %2$s = closing link
+#: inc/Addon/Cloudflare/API/Client.php:198
+#: inc/Addon/Cloudflare/API/Client.php:212
+#: inc/Addon/Cloudflare/Cloudflare.php:75
+#: inc/Addon/Cloudflare/Cloudflare.php:108
+#: inc/classes/subscriber/Tools/class-detect-missing-tags-subscriber.php:157
+#: inc/deprecated/3.5.php:92 inc/deprecated/3.5.php:116
+#: inc/deprecated/3.5.php:129 inc/deprecated/3.5.php:157
+#: inc/deprecated/3.5.php:173
+msgid "Read the %1$sdocumentation%2$s for further guidance."
+msgstr "자세한 내용은 %1$s문서%2$s를 읽어보세요."
+
+#. translators: Documentation exists in EN, FR; use localized URL if
+#. applicable.
+#: inc/Addon/Cloudflare/API/Client.php:200
+#: inc/Addon/Cloudflare/API/Client.php:214
+#: inc/Addon/Cloudflare/Auth/APIKey.php:63
+#: inc/Addon/Cloudflare/Cloudflare.php:77
+#: inc/Addon/Cloudflare/Cloudflare.php:110 inc/deprecated/3.5.php:81
+#: inc/deprecated/3.5.php:94 inc/deprecated/3.5.php:118
+#: inc/deprecated/3.5.php:131 inc/deprecated/3.5.php:159
+#: inc/deprecated/3.5.php:175 inc/deprecated/3.5.php:208
+msgid ""
+"https://docs.wp-rocket.me/article/18-using-wp-rocket-with-"
+"cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket#add-on"
+msgstr ""
+"https://docs.wp-rocket.me/article/18-using-wp-rocket-with-"
+"cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket#add-on"
+
+#: inc/Addon/Cloudflare/API/Client.php:208 inc/deprecated/3.5.php:125
+msgid "Incorrect Cloudflare Zone ID."
+msgstr "잘못된 Cloudflare Zone ID입니다."
+
+#. translators: %1$s = opening link; %2$s = closing link
+#: inc/Addon/Cloudflare/Auth/APIKey.php:61
+msgid ""
+"Cloudflare email and/or API key are not set. Read the %1$sdocumentation%2$s "
+"for further guidance."
+msgstr "Cloudflare 이메일 및/또는 API 키가 설정되지 않았습니다. 자세한 지침은 %1$s문서%2$s를 읽어보세요."
+
+#: inc/Addon/Cloudflare/Cloudflare.php:71 inc/deprecated/3.5.php:88
+msgid "Missing Cloudflare Zone ID."
+msgstr "Cloudflare Zone ID가 없습니다."
+
+#: inc/Addon/Cloudflare/Cloudflare.php:104 inc/deprecated/3.5.php:153
+msgid "It looks like your domain is not set up on Cloudflare."
+msgstr "귀하의 도메인이 Cloudflare에 설정되지 않은 것 같습니다."
+
+#: inc/Addon/Cloudflare/Cloudflare.php:200
+msgid "days"
+msgstr "일"
+
+#: inc/Addon/Cloudflare/Cloudflare.php:203
+msgid "seconds"
+msgstr "초"
+
+#: inc/Addon/Cloudflare/Cloudflare.php:205
+msgid "minutes"
+msgstr "분"
+
+#: inc/Addon/Cloudflare/Cloudflare.php:207
+msgid "hours"
+msgstr "시간"
+
+#. translators: %1$s = <strong>, %2$s = </strong>, %3$s = CloudFare API return
+#. message.
+#: inc/Addon/Cloudflare/Subscriber.php:232
+#: inc/Addon/Cloudflare/Subscriber.php:261
+msgid "%1$sWP Rocket:%2$s %3$s"
+msgstr "%1$sWP Rocket:%2$s %3$s"
+
+#. translators: %1$s = <strong>, %2$s = </strong>.
+#: inc/Addon/Cloudflare/Subscriber.php:250
+msgid "%1$sWP Rocket:%2$s Cloudflare cache successfully purged."
+msgstr "%1$sWP Rocket:%2$s Cloudflare 캐시가 성공적으로 제거되었습니다."
+
+#. translators: %s is the message returned by the CloudFlare API.
+#: inc/Addon/Cloudflare/Subscriber.php:311
+msgid "Cloudflare development mode error: %s"
+msgstr "Cloudflare 개발 모드 오류: %s"
+
+#. translators: %s is the message returned by the CloudFlare API.
+#: inc/Addon/Cloudflare/Subscriber.php:318
+msgid "Cloudflare development mode %s"
+msgstr "Cloudflare 개발 모드 %s"
+
+#. translators: %s is the message returned by the CloudFlare API.
+#: inc/Addon/Cloudflare/Subscriber.php:337
+msgid "Cloudflare cache level error: %s"
+msgstr "Cloudflare 캐시 수준 오류: %s"
+
+#: inc/Addon/Cloudflare/Subscriber.php:344
+msgctxt "Cloudflare caching level"
+msgid "standard"
+msgstr "기준"
+
+#. translators: %s is the caching level returned by the CloudFlare API.
+#: inc/Addon/Cloudflare/Subscriber.php:350
+msgid "Cloudflare cache level set to %s"
+msgstr "Cloudflare 캐시 수준이 %s로 설정되었습니다."
+
+#. translators: %s is the message returned by the CloudFlare API.
+#: inc/Addon/Cloudflare/Subscriber.php:368
+msgid "Cloudflare rocket loader error: %s"
+msgstr "Cloudflare 로켓 로더 오류: %s"
+
+#. translators: %s is the message returned by the CloudFlare API.
+#: inc/Addon/Cloudflare/Subscriber.php:375
+msgid "Cloudflare rocket loader %s"
+msgstr "Cloudflare 로켓 로더 %s"
+
+#. translators: %s is the message returned by the CloudFlare API.
+#: inc/Addon/Cloudflare/Subscriber.php:393
+msgid "Cloudflare browser cache error: %s"
+msgstr "Cloudflare 브라우저 캐시 오류: %s"
+
+#. translators: %s is the message returned by the CloudFlare API.
+#: inc/Addon/Cloudflare/Subscriber.php:400
+msgid "Cloudflare browser cache set to %s"
+msgstr "Cloudflare 브라우저 캐시가 %s(으)로 설정되었습니다."
+
+#. translators: %1$s = strong opening tag, %2$s = strong closing tag.
+#: inc/Addon/Cloudflare/Subscriber.php:507
+msgid "%1$sWP Rocket:%2$s Optimal settings activated for Cloudflare:"
+msgstr "%1$sWP Rocket:%2$s Cloudflare에 대한 최적 설정이 활성화되었습니다."
+
+#. translators: %1$s = strong opening tag, %2$s = strong closing tag.
+#: inc/Addon/Cloudflare/Subscriber.php:516
+msgid ""
+"%1$sWP Rocket:%2$s Optimal settings deactivated for Cloudflare, reverted to "
+"previous settings:"
+msgstr "%1$sWP Rocket:%2$s Cloudflare에 대한 최적 설정이 비활성화되어 이전 설정으로 되돌려졌습니다."
+
+#: inc/Addon/Cloudflare/Subscriber.php:632 inc/admin/options.php:165
+#: inc/classes/subscriber/Tools/class-detect-missing-tags-subscriber.php:148
+msgid "WP Rocket: "
+msgstr "WP Rocket:"
+
+#. translators: %s is the error message returned by the API.
+#: inc/Addon/Sucuri/Subscriber.php:96
+msgid "Sucuri cache purge error: %s"
+msgstr "Sucuri 캐시 제거 오류: %s"
+
+#: inc/Addon/Sucuri/Subscriber.php:101
+msgid ""
+"The Sucuri cache is being cleared. Note that it may take up to two minutes "
+"for it to be fully flushed."
+msgstr "Sucuri 캐시가 지워지고 있습니다. 완전히 플러시되는 데 최대 2분이 걸릴 수 있습니다."
+
+#: inc/Addon/Sucuri/Subscriber.php:218
+msgid "Sucuri firewall API key was not found."
+msgstr "Sucuri 방화벽 API 키를 찾을 수 없습니다."
+
+#: inc/Addon/Sucuri/Subscriber.php:231
+msgid "Sucuri firewall API key is invalid."
+msgstr "Sucuri 방화벽 API 키가 잘못되었습니다."
+
+#. translators: %s is an error message.
+#: inc/Addon/Sucuri/Subscriber.php:286
+msgid "Error when contacting Sucuri firewall API. Error message was: %s"
+msgstr "Sucuri 방화벽 API에 연락하는 중 오류가 발생했습니다. 오류 메시지는 다음과 같습니다: %s"
+
+#: inc/Addon/Sucuri/Subscriber.php:301
+msgid "Could not get a response from the Sucuri firewall API."
+msgstr "Sucuri 방화벽 API에서 응답을 받을 수 없습니다."
+
+#: inc/Addon/Sucuri/Subscriber.php:316
+msgid "Got an invalid response from the Sucuri firewall API."
+msgstr "Sucuri 방화벽 API에서 잘못된 응답을 받았습니다."
+
+#: inc/Addon/Sucuri/Subscriber.php:330
+msgid "The Sucuri firewall API returned an unknown error."
+msgstr "Sucuri 방화벽 API가 알 수 없는 오류를 반환했습니다."
+
+#. translators: %s is an error message.
+#: inc/Addon/Sucuri/Subscriber.php:334
+msgid "The Sucuri firewall API returned the following error: %s"
+msgid_plural "The Sucuri firewall API returned the following errors: %s"
+msgstr[0] "Sucuri 방화벽 API가 다음 오류를 반환했습니다: %s"
+
+#. Translators: %1$s = plugin name(s), %2$s = opening <a> tag, %3$s = closing
+#. </a> tag.
+#: inc/Addon/WebP/AdminSubscriber.php:93
+msgid ""
+"You are using %1$s to serve WebP images so you do not need to enable this "
+"option. %2$sMore info%3$s %4$s If you prefer to have WP Rocket serve WebP "
+"for you instead, please disable WebP display in %1$s."
+msgid_plural ""
+"You are using %1$s to serve WebP images so you do not need to enable this "
+"option. %2$sMore info%3$s %4$s If you prefer to have WP Rocket serve WebP "
+"for you instead, please disable WebP display in %1$s."
+msgstr[0] ""
+"%1$s를 사용하여 WebP 이미지를 제공하고 있으므로 이 옵션을 활성화할 필요가 없습니다. %2$s자세한 정보%3$s %4$s 대신 "
+"WP Rocket이 WebP를 제공하도록 하려면 %1$s에서 WebP 표시를 비활성화하세요."
+
+#: inc/Addon/WebP/AdminSubscriber.php:105
+msgid "WebP cache is disabled by filter."
+msgstr "WebP 캐시가 필터에 의해 비활성화되었습니다."
+
+#. Translators: %1$s = plugin name(s), %2$s = opening <a> tag, %3$s = closing
+#. </a> tag.
+#: inc/Addon/WebP/AdminSubscriber.php:115
+#: inc/Addon/WebP/AdminSubscriber.php:141
+msgid ""
+"You are using %1$s to convert images to WebP. If you want WP Rocket to serve"
+" them for you, activate this option. %2$sMore info%3$s"
+msgid_plural ""
+"You are using %1$s to convert images to WebP. If you want WP Rocket to serve"
+" them for you, activate this option. %2$sMore info%3$s"
+msgstr[0] ""
+"%1$s를 사용하여 이미지를 WebP로 변환하고 있습니다. WP Rocket에서 이미지를 제공하려면 이 옵션을 활성화하세요. "
+"%2$s자세한 정보%3$s"
+
+#. Translators: %1$s = plugin name(s), %2$s = opening <a> tag, %3$s = closing
+#. </a> tag.
+#: inc/Addon/WebP/AdminSubscriber.php:127
+#: inc/Addon/WebP/AdminSubscriber.php:153
+msgid ""
+"You are using %1$s to convert images to WebP. WP Rocket will create separate"
+" cache files to serve your WebP images. %2$sMore info%3$s"
+msgid_plural ""
+"You are using %1$s to convert images to WebP. WP Rocket will create separate"
+" cache files to serve your WebP images. %2$sMore info%3$s"
+msgstr[0] ""
+"%1$s를 사용하여 이미지를 WebP로 변환하고 있습니다. WP Rocket은 WebP 이미지를 제공하기 위해 별도의 캐시 파일을 "
+"생성합니다. %2$s자세한 정보%3$s"
+
+#. Translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Addon/WebP/AdminSubscriber.php:173
+msgid ""
+"%5$sWe have not detected any compatible WebP plugin!%6$s%4$s If you don’t "
+"already have WebP images on your site consider using %3$sImagify%2$s or "
+"another supported plugin. %1$sMore info%2$s %4$s If you are not using WebP "
+"do not enable this option."
+msgstr ""
+"%5$s호환되는 WebP 플러그인을 감지하지 못했습니다!%6$s%4$s 사이트에 아직 WebP 이미지가 없는 경우 "
+"%3$sImagify%2$s 또는 다른 지원되는 플러그인을 사용하는 것을 고려하세요. %1$s상세 정보%2$s %4$s WebP를 "
+"사용하지 않는 경우 이 옵션을 활성화하지 마세요."
+
+#: inc/Addon/WebP/AdminSubscriber.php:185
+msgid "WP Rocket will create separate cache files to serve your WebP images."
+msgstr "WP Rocket은 WebP 이미지를 제공하기 위해 별도의 캐시 파일을 생성합니다."
+
+#: inc/admin/admin.php:18 inc/common/admin-bar.php:273
+#: inc/deprecated/deprecated.php:1787
+msgid "Support"
+msgstr "지원"
+
+#: inc/admin/admin.php:20
+msgid "Docs"
+msgstr "문서"
+
+#: inc/admin/admin.php:22 inc/common/admin-bar.php:261
+msgid "FAQ"
+msgstr "자주 묻는 질문"
+
+#: inc/admin/admin.php:24 inc/common/admin-bar.php:70
+msgid "Settings"
+msgstr "설정"
+
+#: inc/admin/admin.php:96 inc/admin/admin.php:117 inc/deprecated/3.5.php:898
+#: inc/Engine/Cache/AdminSubscriber.php:135
+msgid "Clear this cache"
+msgstr "이 캐시 지우기"
+
+#: inc/admin/admin.php:408
+msgid "Settings import failed: you do not have the permissions to do this."
+msgstr "설정 가져오기에 실패했습니다. 이 작업을 수행할 권한이 없습니다."
+
+#: inc/admin/admin.php:412
+msgid "Settings import failed: no file uploaded."
+msgstr "설정 가져오기에 실패했습니다. 업로드된 파일이 없습니다."
+
+#: inc/admin/admin.php:416
+msgid "Settings import failed: incorrect filename."
+msgstr "설정 가져오기에 실패했습니다: 파일 이름이 잘못되었습니다."
+
+#: inc/admin/admin.php:427
+msgid "Settings import failed: incorrect filetype."
+msgstr "설정 가져오기에 실패했습니다: 파일 형식이 잘못되었습니다."
+
+#: inc/admin/admin.php:437
+msgid "Settings import failed: "
+msgstr "설정 가져오기에 실패했습니다:"
+
+#: inc/admin/admin.php:453
+msgid "Settings import failed: unexpected file content."
+msgstr "설정 가져오기에 실패했습니다: 예상치 못한 파일 콘텐츠입니다."
+
+#: inc/admin/admin.php:498
+msgid "Settings imported and saved."
+msgstr "설정을 가져오고 저장했습니다."
+
+#: inc/admin/options.php:102 inc/Engine/Admin/Settings/Page.php:549
+msgid "Excluded CSS Files"
+msgstr "제외된 CSS 파일"
+
+#: inc/admin/options.php:103 inc/Engine/Admin/Settings/Page.php:697
+msgid "Excluded Inline JavaScript"
+msgstr "제외된 인라인 JavaScript"
+
+#: inc/admin/options.php:104 inc/Engine/Admin/Settings/Page.php:715
+#: inc/Engine/Admin/Settings/Page.php:748
+#: inc/Engine/Admin/Settings/Page.php:798
+msgid "Excluded JavaScript Files"
+msgstr "제외된 JavaScript 파일"
+
+#: inc/admin/options.php:105
+msgid "Defer JavaScript Files"
+msgstr "JavaScript 파일 연기"
+
+#: inc/admin/options.php:106
+msgid "Excluded Delay JavaScript Files"
+msgstr "제외된 JavaScript 파일 지연"
+
+#: inc/admin/options.php:107 inc/Engine/Admin/Settings/Page.php:1243
+msgid "Never Cache URL(s)"
+msgstr "캐시에서 제외할 URL"
+
+#: inc/admin/options.php:108 inc/Engine/Admin/Settings/Page.php:1257
+msgid "Never Cache User Agent(s)"
+msgstr "캐시에서 제외할 사용자 에이전트"
+
+#: inc/admin/options.php:109 inc/Engine/Admin/Settings/Page.php:1263
+msgid "Always Purge URL(s)"
+msgstr "항상 제거할 URL"
+
+#: inc/admin/options.php:110 inc/Engine/Admin/Settings/Page.php:1544
+msgid "Exclude files from CDN"
+msgstr "CDN에서 파일 제외"
+
+#. translators: 1 and 2 can be anything.
+#: inc/admin/options.php:131
+msgid "%1$s: <em>%2$s</em>"
+msgstr "%1$s: <em>%2$s</em>"
+
+#: inc/admin/options.php:141
+msgid "The following pattern is invalid and has been removed:"
+msgid_plural "The following patterns are invalid and have been removed:"
+msgstr[0] "다음 패턴은 잘못되었으므로 제거되었습니다."
+
+#: inc/admin/options.php:157
+msgid "More info"
+msgstr "상세 정보"
+
+#: inc/admin/ui/meta-boxes.php:37 inc/admin/ui/notices.php:671
+msgid "Clear cache"
+msgstr "캐시 지우기"
+
+#. translators: %1$s WP Rocket plugin name; %2$s = file name.
+#: inc/admin/ui/notices.php:30 inc/admin/ui/notices.php:43
+msgid ""
+"<strong>%1$s</strong> has not been deactivated due to missing writing permissions.<br>\n"
+"Make <strong>%2$s</strong> writeable and retry deactivation, or force deactivation now:"
+msgstr ""
+"<strong>%1$s</strong>는 쓰기 권한이 없어서 비활성화되지 않았습니다.<br>\n"
+"<strong>%2$s</strong>를 쓰기 가능하게 만들고 비활성화를 다시 시도하거나 지금 강제로 비활성화하세요:"
+
+#. translators: %s is WP Rocket plugin name.
+#: inc/admin/ui/notices.php:97
+msgid ""
+"<strong>%s</strong>: One or more plugins have been enabled or disabled, "
+"clear the cache if they affect the front end of your site."
+msgstr ""
+"<strong>%s</strong>: 하나 이상의 플러그인이 활성화 또는 비활성화되었습니다. 사이트 프런트엔드에 영향을 미치는 경우 "
+"캐시를 지우세요."
+
+#. translators: %s is WP Rocket plugin name.
+#: inc/admin/ui/notices.php:141
+msgid ""
+"<strong>%s</strong>: The following plugins are not compatible with this "
+"plugin and may cause unexpected results:"
+msgstr "<strong>%s</strong>: 다음 플러그인은 이 플러그인과 호환되지 않으며 예상치 못한 결과가 발생할 수 있습니다:"
+
+#: inc/admin/ui/notices.php:147
+msgid "Deactivate"
+msgstr "비활성화"
+
+#: inc/admin/ui/notices.php:189
+msgid ""
+"WP Rocket Footer JS is not an official add-on. It prevents some options in "
+"WP Rocket from working correctly. Please deactivate it if you have problems."
+msgstr ""
+"WP Rocket Footer JS는 공식 추가 기능이 아닙니다. WP Rocket의 일부 옵션이 제대로 작동하지 못하게 합니다. 문제가"
+" 있으면 비활성화해 주세요."
+
+#. translators: %1$s = opening link tag, %2$s = closing link tag.
+#: inc/admin/ui/notices.php:229
+msgid ""
+"Endurance Cache is currently enabled, which will conflict with WP Rocket "
+"Cache. Please set the Endurance Cache cache level to Off (Level 0) on the "
+"%1$sSettings > General%2$s page to prevent any issues."
+msgstr ""
+"현재 Endurance Cache가 활성화되어 있어 WP Rocket Cache와 충돌합니다. 문제가 발생하지 않도록 %1$s설정 > "
+"일반%2$s 페이지에서 Endurance Cache 캐시 레벨을 Off(레벨 0)로 설정하세요."
+
+#. translators: %1$s WP Rocket plugin name; %2$s = opening link; %3$s =
+#. closing link
+#: inc/admin/ui/notices.php:250
+msgid ""
+"%1$s: A custom permalink structure is required for the plugin to work "
+"properly. %2$sGo to permalinks settings%3$s"
+msgstr "%1$s: 플러그인이 제대로 작동하려면 사용자 정의 고유주소 구조가 필요합니다. %2$s고유주소 설정으로 이동%3$s"
+
+#. translators: %s = plugin name.
+#: inc/admin/ui/notices.php:297
+msgid ""
+"%s could not modify the .htaccess file due to missing writing permissions."
+msgstr "%s는 쓰기 권한이 없어 .htaccess 파일을 수정할 수 없습니다."
+
+#. translators: This is a doc title! %1$s = opening link; %2$s = closing link
+#: inc/admin/ui/notices.php:303 inc/admin/ui/notices.php:788
+msgid "Troubleshoot: %1$sHow to make system files writeable%2$s"
+msgstr "문제 해결: %1$s시스템 파일을 쓰기 가능하게 만드는 방법%2$s"
+
+#. translators: Documentation exists in EN, DE, FR, ES, IT; use loaclised URL
+#. if applicable
+#: inc/admin/ui/notices.php:305 inc/admin/ui/notices.php:790
+msgid ""
+"https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
+"config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
+msgstr ""
+"https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
+"config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
+
+#: inc/admin/ui/notices.php:311
+msgid ""
+"Don’t worry, WP Rocket’s page caching and settings will still function "
+"correctly."
+msgstr "걱정하지 마세요. WP Rocket의 페이지 캐싱 및 설정은 여전히 올바르게 작동합니다."
+
+#: inc/admin/ui/notices.php:311
+msgid ""
+"For optimal performance, adding the following lines into your .htaccess is "
+"recommended (not required):"
+msgstr "최적의 성능을 위해 다음 줄을 .htaccess에 추가하는 것이 좋습니다(필수는 아님):"
+
+#. translators: %1$s = plugin name, %2$s + %3$s = opening links, %4$s =
+#. closing link
+#: inc/admin/ui/notices.php:458
+msgid ""
+"%1$s is good to go! %2$sTest your load time%4$s, or visit your "
+"%3$ssettings%4$s."
+msgstr "%1$s이(가) 사용 가능합니다! %2$s로딩 시간을 테스트하세요%4$s 또는 %3$s설정%4$s을 방문하세요."
+
+#: inc/admin/ui/notices.php:499
+msgid ""
+"Would you allow WP Rocket to collect non-sensitive diagnostic data from this"
+" website?"
+msgstr "WP Rocket이 이 웹사이트에서 민감하지 않은 진단 데이터를 수집하는 것을 허용하시겠습니까?"
+
+#: inc/admin/ui/notices.php:500
+msgid "This would help us to improve WP Rocket for you in the future."
+msgstr "귀하의 의견은 앞으로 WP Rocket을 개선하는 데 도움이 될 것입니다."
+
+#. translators: button text, click will expand data collection preview
+#: inc/admin/ui/notices.php:506
+msgid "What info will we collect?"
+msgstr "어떤 정보를 수집합니까?"
+
+#: inc/admin/ui/notices.php:511
+msgid ""
+"Below is a detailed view of all data WP Rocket will collect if granted "
+"permission. WP Rocket will never transmit any domain names or email "
+"addresses (except for license validation), IP addresses, or third-party API "
+"keys."
+msgstr ""
+"아래는 WP Rocket이 허가를 받으면 수집하는 모든 데이터의 상세 내용 화면입니다. WP Rocket은 도메인 이름이나 이메일 "
+"주소(라이선스 검증 제외), IP 주소 또는 타사 API 키를 전송하지 않습니다."
+
+#. translators: button text for data collection opt-in
+#: inc/admin/ui/notices.php:520
+msgid "Yes, allow"
+msgstr "네, 허용합니다"
+
+#. translators: button text for data collection opt-in
+#: inc/admin/ui/notices.php:523
+msgid "No, thanks"
+msgstr "괜찮습니다"
+
+#: inc/admin/ui/notices.php:562
+msgid "Thank you!"
+msgstr "감사합니다!"
+
+#: inc/admin/ui/notices.php:567
+msgid "WP Rocket now collects these metrics from your website:"
+msgstr "WP Rocket은 이제 귀하의 웹사이트에서 다음과 같은 측정 항목을 수집합니다."
+
+#. translators: %s = plugin name.
+#: inc/admin/ui/notices.php:605
+msgid "%s: Cache cleared."
+msgstr "%s: 캐시가 지워졌습니다."
+
+#. translators: %s = plugin name.
+#: inc/admin/ui/notices.php:612
+msgid "%s: Post cache cleared."
+msgstr "%s: 글 캐시가 지워졌습니다."
+
+#. translators: %s = plugin name.
+#: inc/admin/ui/notices.php:619
+msgid "%s: Term cache cleared."
+msgstr "%s: 용어 캐시가 지워졌습니다."
+
+#. translators: %s = plugin name).
+#: inc/admin/ui/notices.php:626
+msgid "%s: User cache cleared."
+msgstr "%s: 사용자 캐시가 지워졌습니다."
+
+#: inc/admin/ui/notices.php:662 inc/Engine/License/views/promo-banner.php:38
+#: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:34
+#: inc/Engine/License/views/renewal-expired-banner-ocd.php:44
+#: inc/Engine/License/views/renewal-expired-banner.php:32
+#: views/settings/page-sections/dashboard.php:47
+msgid "Dismiss this notice"
+msgstr "이 알림 해제"
+
+#: inc/admin/ui/notices.php:682 inc/Engine/Saas/Admin/AdminBar.php:51
+msgid "Clear Used CSS"
+msgstr "사용된 CSS 지우기"
+
+#: inc/admin/ui/notices.php:685
+msgid "Stop Preload"
+msgstr "사전 로드 중지"
+
+#: inc/admin/ui/notices.php:691
+msgid "Turn on Remove Unused CSS"
+msgstr "사용하지 않는 CSS 제거 켜기"
+
+#: inc/admin/ui/notices.php:697
+msgid "Enable “Separate Cache Files for Mobile Devices” now"
+msgstr "지금 \"모바일 기기용 별도 캐시 파일\"을 활성화하세요"
+
+#: inc/admin/ui/notices.php:715
+msgid "Force deactivation "
+msgstr "강제 비활성화"
+
+#: inc/admin/ui/notices.php:745
+msgid "The following code should have been written to this file:"
+msgstr "다음 코드는 이 파일에 작성되어야 합니다."
+
+#. translators: %s = plugin name.
+#: inc/admin/ui/notices.php:776
+msgid "%s cannot configure itself due to missing writing permissions."
+msgstr "%s는 쓰기 권한이 없어 자체를 구성할 수 없습니다."
+
+#. translators: %s = file/folder name
+#: inc/admin/ui/notices.php:782
+msgid "Affected file/folder: %s"
+msgstr "영향을 받는 파일/폴더: %s"
+
+#: inc/classes/admin/class-logs.php:124
+msgid "The debug file could not be deleted."
+msgstr "디버그 파일을 삭제할 수 없습니다."
+
+#. Translators: %1$s = Plugin name, %2$s = Plugin version.
+#: inc/classes/class-wp-rocket-requirements-check.php:147
+msgid "To function properly, %1$s %2$s requires at least:"
+msgstr "%1$s %2$s이(가) 제대로 작동하려면 최소한 다음이 필요합니다."
+
+#. Translators: %1$s = PHP version required.
+#: inc/classes/class-wp-rocket-requirements-check.php:151
+msgid ""
+"PHP %1$s. To use this WP Rocket version, please ask your web host how to "
+"upgrade your server to PHP %1$s or higher."
+msgstr ""
+"PHP %1$s. 이 WP Rocket 버전을 사용하려면 웹 호스트에게 서버를 PHP %1$s 이상으로 업그레이드하는 방법을 문의하세요."
+
+#. Translators: %1$s = WordPress version required.
+#: inc/classes/class-wp-rocket-requirements-check.php:156
+msgid ""
+"WordPress %1$s. To use this WP Rocket version, please upgrade WordPress to "
+"version %1$s or higher."
+msgstr "워드프레스 %1$s. 이 WP Rocket 버전을 사용하려면 워드프레스를 %1$s 이상으로 업그레이드하세요."
+
+#: inc/classes/class-wp-rocket-requirements-check.php:159
+msgid ""
+"If you are not able to upgrade, you can rollback to the previous version by "
+"using the button below."
+msgstr "업그레이드할 수 없는 경우 아래 버튼을 사용하여 이전 버전으로 되돌릴 수 있습니다."
+
+#. Translators: %s = Previous plugin version.
+#: inc/classes/class-wp-rocket-requirements-check.php:161
+#: inc/deprecated/deprecated.php:1947
+msgid "Re-install version %s"
+msgstr "버전 %s 다시 설치"
+
+#. translators: %s is the plugin name.
+#: inc/classes/class-wp-rocket-requirements-check.php:203
+#: inc/classes/class-wp-rocket-requirements-check.php:214
+#: inc/deprecated/3.11.php:236 inc/deprecated/3.11.php:251
+#: inc/Engine/Plugin/UpdaterSubscriber.php:477
+#: inc/Engine/Plugin/UpdaterSubscriber.php:491
+msgid "%s Update Rollback"
+msgstr "%s 업데이트 되돌리기"
+
+#. translators: %1$s = missing tags;
+#: inc/classes/subscriber/Tools/class-detect-missing-tags-subscriber.php:151
+msgid ""
+"Failed to detect the following requirement in your theme: closing %1$s."
+msgid_plural ""
+"Failed to detect the following requirements in your theme: closing %1$s."
+msgstr[0] "테마에서 다음 요구 사항을 감지하지 못했습니다: %1$s 닫기."
+
+#. translators: Documentation exists in EN, FR; use localized URL if
+#. applicable.
+#: inc/classes/subscriber/Tools/class-detect-missing-tags-subscriber.php:159
+msgid ""
+"https://docs.wp-rocket.me/article/99-pages-not-cached-or-minify-cssjs-not-"
+"working/?utm_source=wp_plugin&utm_medium=wp_rocket#theme"
+msgstr ""
+"https://docs.wp-rocket.me/article/99-pages-not-cached-or-minify-cssjs-not-"
+"working/?utm_source=wp_plugin&utm_medium=wp_rocket#theme"
+
+#: inc/common/admin-bar.php:91 inc/common/admin-bar.php:154
+msgid "Clear and Preload Cache"
+msgstr "캐시 지우기 및 사전 로드"
+
+#: inc/common/admin-bar.php:91 inc/common/admin-bar.php:154
+msgid "Clear Cache"
+msgstr "캐시 지우기"
+
+#: inc/common/admin-bar.php:131 inc/functions/i18n.php:20
+msgid "All languages"
+msgstr "모든 언어"
+
+#: inc/common/admin-bar.php:178
+msgid "Clear this post"
+msgstr "이 글을 삭제하세요"
+
+#: inc/common/admin-bar.php:192
+msgid "Purge this URL"
+msgstr "이 URL 제거"
+
+#: inc/common/admin-bar.php:212
+msgid "Purge Sucuri cache"
+msgstr "Sucuri 캐시 제거"
+
+#: inc/common/admin-bar.php:236 views/settings/fields/rocket-cdn.php:55
+msgid "Purge RocketCDN cache"
+msgstr "RocketCDN 캐시 제거"
+
+#: inc/common/admin-bar.php:249 views/settings/partials/documentation.php:14
+msgid "Documentation"
+msgstr "문서"
+
+#: inc/Dependencies/WPMedia/PluginFamily/Model/PluginFamily.php:66
+msgid "Activated"
+msgstr "활성화됨"
+
+#: inc/Dependencies/WPMedia/PluginFamily/Model/PluginFamily.php:109
+msgid "Install"
+msgstr "설치"
+
+#: inc/Dependencies/WPMedia/PluginFamily/Model/PluginFamily.php:118
+msgid "Get it Now"
+msgstr "지금 얻기"
+
+#: inc/Dependencies/WPMedia/PluginFamily/Model/PluginFamily.php:127
+msgid "Activate"
+msgstr "활성화"
+
+#: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:8
+msgid "Optimize Performance"
+msgstr "성능 최적"
+
+#: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:15
+msgid "Speed Up Your Website, Instantly"
+msgstr "웹사이트 속도를 즉시 높이세요"
+
+#: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:16
+msgid ""
+"WP Rocket is the easiest way to make your WordPress website faster and boost"
+" your Google PageSpeed score. Get more traffic, better engagement, and "
+"higher conversions effortlessly."
+msgstr ""
+"WP Rocket은 워드프레스 웹사이트를 더 빠르게 만들고 Google PageSpeed 점수를 높이는 가장 쉬운 방법입니다. 더 많은 "
+"트래픽, 더 나은 참여, 더 높은 전환을 손쉽게 얻으세요."
+
+#: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:24
+msgid "Speed Up Your Website With Lighter Images"
+msgstr "더 가벼운 이미지로 웹사이트 속도 높이기"
+
+#: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:25
+msgid ""
+"Imagify is the easiest WordPress image optimizer. It automatically "
+"compresses images, converts them to WebP and AVIF formats, and lets you "
+"resize and optimize with just one click!"
+msgstr ""
+"Imagify는 가장 쉬운 워드프레스 이미지 최적화 도구입니다. 이미지를 자동으로 압축하고 WebP 및 AVIF 형식으로 변환하며, 클릭"
+" 한 번으로 크기를 조정하고 최적화할 수 있습니다!"
+
+#: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:31
+msgid "Boost Traffic"
+msgstr "트래픽 증대"
+
+#: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:38
+msgid "The Swiss Army Knife of SEO Tools"
+msgstr "SEO에 대한 만능 도구"
+
+#: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:39
+msgid ""
+"Rank Math SEO is the Best WordPress SEO plugin with the features of many SEO"
+" and AI SEO tools in a single package to help multiply your SEO traffic."
+msgstr ""
+"Rank Math SEO는 여러 SEO 및 AI SEO 도구의 기능을 단일 패키지로 제공하여 SEO 트래픽을 늘리는 데 도움이 되는 "
+"최고의 워드프레스 SEO 플러그인입니다."
+
+#: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:45
+msgid "Protect & Secure"
+msgstr "보호 & 보안"
+
+#: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:52
+msgid "The Easiest Way to Protect Your Website"
+msgstr "웹사이트를 보호하는 가장 쉬운 방법"
+
+#: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:53
+msgid ""
+"BackWPup is the most comprehensive and user-friendly backup & restore plugin"
+" for WordPress. Easily schedule automatic backups, securely store and "
+"restore with just a few clicks!"
+msgstr ""
+"BackWPup은 워드프레스를 위한 가장 포괄적이고 사용자 친화적인 백업 및 복원 플러그인입니다. 자동 백업을 쉽게 예약하고, 몇 번의 "
+"클릭만으로 안전하게 저장하고 복원하세요!"
+
+#: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:61
+msgid "GDPR/CCPA Cookie Consent Banner"
+msgstr "GDPR/CCPA 쿠키 동의 배너"
+
+#: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:62
+msgid ""
+"One of the easiest, most comprehensive, and popular cookie consent plugins "
+"available. Google Gold Certified Partner to quickly comply with data privacy"
+" laws from around the world."
+msgstr ""
+"가장 쉽고, 가장 포괄적이며, 가장 인기 있는 쿠키 동의 플러그인 중 하나입니다. 전 세계의 데이터 개인정보 보호법을 신속하게 준수하는 "
+"Google Gold Certified Partner입니다."
+
+#: inc/deprecated/3.2.php:52 views/settings/page-sections/imagify.php:107
+msgid "Activate Imagify"
+msgstr "Imagify 활성화"
+
+#: inc/deprecated/3.2.php:52
+msgid "Install Imagify for Free"
+msgstr "Imagify 무료 설치"
+
+#: inc/deprecated/3.2.php:67
+msgid ""
+"Speed up your website and boost your SEO by reducing image file sizes "
+"without losing quality with Imagify."
+msgstr "Imagify를 사용하여 품질을 손상시키지 않고 이미지 파일 크기를 줄여 웹사이트 속도를 높이고 SEO를 강화하세요."
+
+#: inc/deprecated/3.2.php:72
+msgid "More details"
+msgstr "상세 내용"
+
+#. translators: %d is the number of pages preloaded.
+#: inc/deprecated/3.2.php:228
+msgid "Sitemap preload: %d pages have been cached."
+msgstr "사이트맵 사전 로드: %d 페이지가 캐시되었습니다."
+
+#. translators: %d = Number of pages preloaded.
+#: inc/deprecated/3.2.php:261
+msgid ""
+"Sitemap preload: %d uncached pages have now been preloaded. (refresh to see "
+"progress)"
+msgstr "사이트맵 사전 로드: 캐시되지 않은 %d 페이지가 사전 로드되었습니다. (진행 상황을 보려면 새로고침 하세요)"
+
+#. translators: %s is an URL.
+#: inc/deprecated/3.3.php:761 inc/deprecated/3.3.php:770
+#: inc/Engine/Plugin/UpdaterApiTools.php:32
+msgid ""
+"An unexpected error occurred. Something may be wrong with WP-Rocket.me or "
+"this server&#8217;s configuration. If you continue to have problems, <a "
+"href=\"%s\">contact support</a>."
+msgstr ""
+"예상치 못한 오류가 발생했습니다. WP-Rocket.me 또는 이 서버의 구성에 문제가 있을 수 있습니다. 문제가 계속되면 <a "
+"href=\"%s\">지원에 문의하세요</a> ."
+
+#: inc/deprecated/3.4.php:18
+msgid "Choose a domain from the list"
+msgstr "목록에서 도메인을 선택하세요"
+
+#: inc/deprecated/3.4.php:31
+msgid "No domain available in your Cloudflare account"
+msgstr "Cloudflare 계정에서 사용 가능한 도메인이 없습니다."
+
+#: inc/deprecated/3.5.php:71 inc/deprecated/3.5.php:195
+msgid ""
+"Curl is disabled on your server. Please ask your host to enable it. This is "
+"required for the Cloudflare Add-on to work correctly."
+msgstr ""
+"서버에서 Curl이 비활성화되었습니다. 호스트에게 활성화해 달라고 요청하세요. 이는 Cloudflare Add-on이 제대로 작동하려면 "
+"필요합니다."
+
+#. translators: %1$s = opening link; %2$s = closing link
+#: inc/deprecated/3.5.php:79
+msgid ""
+"Cloudflare email, API key and Zone ID are not set. Read the "
+"%1$sdocumentation%2$s for further guidance."
+msgstr ""
+"Cloudflare 이메일, API 키 및 Zone ID가 설정되지 않았습니다. 자세한 지침은 %1$s문서%2$s를 참조하세요."
+
+#. translators: %1$s = opening link; %2$s = closing link
+#: inc/deprecated/3.5.php:206
+msgid ""
+"Cloudflare email and API key are not set. Read the %1$sdocumentation%2$s for"
+" further guidance."
+msgstr "Cloudflare 이메일과 API 키가 설정되지 않았습니다. 자세한 지침은 %1$s문서%2$s를 참조하세요."
+
+#: inc/deprecated/3.5.php:271
+msgid "Connection to Cloudflare failed"
+msgstr "Cloudflare에 연결에 실패했습니다."
+
+#. translators: %s = CloudFare API return message.
+#: inc/deprecated/3.5.php:587
+msgid "<strong>WP Rocket:</strong> %s"
+msgstr "<strong>WP Rocket:</strong> %s"
+
+#: inc/deprecated/3.5.php:592
+msgid "<strong>WP Rocket:</strong> Cloudflare cache successfully purged."
+msgstr "<strong>WP Rocket:</strong> Cloudflare 캐시가 성공적으로 제거되었습니다."
+
+#: inc/deprecated/3.5.php:858 inc/Engine/HealthCheck/HealthCheck.php:73
+msgid ""
+"The following scheduled event failed to run. This may indicate the CRON "
+"system is not running properly, which can prevent some WP Rocket features "
+"from working as intended:"
+msgid_plural ""
+"The following scheduled events failed to run. This may indicate the CRON "
+"system is not running properly, which can prevent some WP Rocket features "
+"from working as intended:"
+msgstr[0] ""
+"다음 예약된 이벤트가 실행되지 않았습니다. 이는 CRON 시스템이 제대로 실행되지 않음을 나타낼 수 있으며, 이로 인해 일부 WP "
+"Rocket 기능이 의도한 대로 작동하지 않을 수 있습니다."
+
+#: inc/deprecated/3.5.php:867 inc/Engine/HealthCheck/HealthCheck.php:80
+msgid "Please contact your host to check if CRON is working."
+msgstr "CRON이 작동하는지 확인하려면 호스트에 문의하세요."
+
+#: inc/deprecated/3.10.php:163
+msgid "OPcache purge failed."
+msgstr "OPcache 제거에 실패했습니다."
+
+#: inc/deprecated/3.10.php:168
+msgid "OPcache successfully purged"
+msgstr "OPcache가 성공적으로 제거되었습니다."
+
+#: inc/deprecated/3.11.php:81
+msgid "Yoast SEO XML sitemap"
+msgstr "Yoast SEO XML 사이트맵"
+
+#. translators: %s = Name of the plugin.
+#. translators: %s = plugin name, e.g. Yoast SEO.
+#: inc/deprecated/3.11.php:83 inc/deprecated/3.12.php:58
+#: inc/deprecated/3.12.php:87 inc/deprecated/3.12.php:186
+#: inc/deprecated/3.12.php:253 inc/deprecated/3.12.php:342
+msgid ""
+"We automatically detected the sitemap generated by the %s plugin. You can "
+"check the option to preload it."
+msgstr "%s 플러그인에서 생성된 사이트맵을 자동으로 감지했습니다. 사전 로드 옵션을 체크할 수 있습니다."
+
+#. translators: 1 and 3 are link openings, 2 is a link closing.
+#: inc/deprecated/3.11.php:279 inc/Engine/Plugin/UpdaterSubscriber.php:514
+msgid "%1$sReturn to WP Rocket%2$s or %3$sgo to Plugins page%2$s"
+msgstr "%1$sWP Rocket으로 돌아가기%2$s 또는 %3$s플러그인 페이지로 이동하기%2$s"
+
+#: inc/deprecated/3.12.php:56
+msgid "All in One SEO XML sitemap"
+msgstr "All in One SEO XML 사이트맵"
+
+#: inc/deprecated/3.12.php:85
+msgid "Rank Math XML sitemap"
+msgstr "Rank Math XML 사이트맵"
+
+#: inc/deprecated/3.12.php:184
+msgid "SEOPress XML sitemap"
+msgstr "SEOPress XML 사이트맵"
+
+#: inc/deprecated/3.12.php:251
+msgid "The SEO Framework XML sitemap"
+msgstr "SEO 프레임워크 XML 사이트맵"
+
+#: inc/deprecated/3.12.php:332
+msgid "Jetpack XML Sitemaps"
+msgstr "Jetpack XML 사이트맵"
+
+#: inc/deprecated/3.12.php:334
+msgid "Preload the sitemap from the Jetpack plugin"
+msgstr "Jetpack 플러그인에서 사이트맵을 미리 로드합니다."
+
+#: inc/deprecated/3.15.php:28
+#: inc/Engine/Admin/Metaboxes/PostEditOptionsSubscriber.php:74
+msgid "WP Rocket Options"
+msgstr "WP Rocket 옵션"
+
+#: inc/deprecated/3.15.php:57 views/metaboxes/post_edit_options.php:19
+msgid "Never cache this page"
+msgstr "캐시에서 제외할 페이지"
+
+#: inc/deprecated/3.15.php:61 views/metaboxes/post_edit_options.php:23
+msgid "Activate these options on this post:"
+msgstr "이 글에서 다음 옵션을 활성화하세요:"
+
+#. translators: %s is the name of the option.
+#: inc/deprecated/3.15.php:81
+#: inc/Engine/Admin/Metaboxes/PostEditOptionsSubscriber.php:117
+msgid "Activate first the %s option."
+msgstr "먼저 %s 옵션을 활성화하세요."
+
+#. translators: %1$s = opening strong tag, %2$s = closing strong tag.
+#: inc/deprecated/3.15.php:97 views/metaboxes/post_edit_options.php:38
+msgid ""
+"%1$sNote:%2$s None of these options will be applied if this post has been "
+"excluded from cache in the global cache settings."
+msgstr "%1$s참고:%2$s 전역 캐시 설정에서 이 글이 캐시에서 제외된 경우 이러한 옵션은 적용되지 않습니다."
+
+#: inc/deprecated/deprecated.php:240
+msgid "<strong>JS</strong> files with Deferred Loading JavaScript"
+msgstr "지연된 로딩 JavaScript가 포함된 <strong>JS</strong> 파일"
+
+#: inc/deprecated/deprecated.php:293
+msgid "Add URL"
+msgstr "URL 추가"
+
+#: inc/deprecated/deprecated.php:1245
+#: inc/Engine/Admin/Settings/Settings.php:453
+msgid "Settings saved."
+msgstr "설정이 저장되었습니다."
+
+#: inc/deprecated/deprecated.php:1277 views/settings/fields/import-form.php:22
+msgid ""
+"Before you can upload your import file, you will need to fix the following "
+"error:"
+msgstr "가져온 파일을 업로드하기 전에 다음 오류를 수정해야 합니다:"
+
+#. translators: %s is the maximum upload size set on the current server.
+#: inc/deprecated/deprecated.php:1288 views/settings/fields/import-form.php:35
+msgid "Choose a file from your computer (maximum size: %s)"
+msgstr "컴퓨터에서 파일을 선택하세요 (최대 크기: %s)"
+
+#: inc/deprecated/deprecated.php:1294 inc/Engine/Admin/Settings/Render.php:499
+msgid "Upload file and import settings"
+msgstr "파일 업로드 및 설정 가져오기"
+
+#: inc/deprecated/deprecated.php:1385
+msgid "Your Cloudflare credentials are valid."
+msgstr "Cloudflare 자격 증명이 유효합니다."
+
+#: inc/deprecated/deprecated.php:1389
+msgid "Your Cloudflare credentials are invalid!"
+msgstr "Cloudflare 자격 증명이 잘못되었습니다!"
+
+#: inc/deprecated/deprecated.php:1453
+msgid "Save and optimize"
+msgstr "저장 및 최적화"
+
+#: inc/deprecated/deprecated.php:1453
+msgid "Optimize"
+msgstr "최적화"
+
+#: inc/deprecated/deprecated.php:1464 inc/deprecated/deprecated.php:1666
+msgctxt "screen-reader-text"
+msgid "Note:"
+msgstr "메모:"
+
+#: inc/deprecated/deprecated.php:1470
+msgctxt "screen-reader-text"
+msgid "Performance tip:"
+msgstr "성능 팁:"
+
+#: inc/deprecated/deprecated.php:1476
+msgctxt "screen-reader-text"
+msgid "Third-party feature detected:"
+msgstr "타사 기능이 감지되었습니다:"
+
+#: inc/deprecated/deprecated.php:1488 inc/deprecated/deprecated.php:1672
+msgctxt "screen-reader-text"
+msgid "Warning:"
+msgstr "경고:"
+
+#: inc/deprecated/deprecated.php:1501
+msgctxt "button text"
+msgid "Download settings"
+msgstr "설정 다운로드"
+
+#: inc/deprecated/deprecated.php:1531
+msgid "Replace site's hostname with:"
+msgstr "사이트의 호스트 이름을 다음으로 바꾸세요:"
+
+#: inc/deprecated/deprecated.php:1550 inc/deprecated/deprecated.php:1587
+#: inc/deprecated/deprecated.php:1615 views/settings/fields/cnames.php:41
+#: views/settings/fields/cnames.php:75 views/settings/fields/cnames.php:105
+msgid "reserved for"
+msgstr "다음을 위해 준비됨"
+
+#: inc/deprecated/deprecated.php:1552 inc/deprecated/deprecated.php:1589
+#: inc/deprecated/deprecated.php:1617 views/settings/fields/cnames.php:44
+#: views/settings/fields/cnames.php:78 views/settings/fields/cnames.php:108
+msgid "All files"
+msgstr "모든 파일"
+
+#: inc/deprecated/deprecated.php:1564 inc/deprecated/deprecated.php:1594
+#: inc/deprecated/deprecated.php:1622 views/settings/fields/cnames.php:56
+#: views/settings/fields/cnames.php:90 views/settings/fields/cnames.php:120
+msgid "Images"
+msgstr "이미지"
+
+#: inc/deprecated/deprecated.php:1635 views/settings/fields/cnames.php:132
+msgid "Add CNAME"
+msgstr "CNAME 추가"
+
+#: inc/deprecated/deprecated.php:1706
+msgid "Watch the video"
+msgstr "비디오를 보세요"
+
+#: inc/deprecated/deprecated.php:1771
+msgid "Basic"
+msgstr "기초"
+
+#: inc/deprecated/deprecated.php:1772
+msgid "Static Files"
+msgstr "정적 파일"
+
+#: inc/deprecated/deprecated.php:1773 inc/Engine/Admin/Settings/Page.php:1514
+#: inc/Engine/Admin/Settings/Page.php:1525
+#: inc/Engine/CDN/Admin/Subscriber.php:28
+msgid "CDN"
+msgstr "CDN"
+
+#: inc/deprecated/deprecated.php:1774
+msgid "Advanced"
+msgstr "고급"
+
+#: inc/deprecated/deprecated.php:1775 inc/Engine/Admin/Settings/Page.php:1359
+msgid "Database"
+msgstr "데이터베이스"
+
+#: inc/deprecated/deprecated.php:1776 inc/Engine/Admin/Settings/Page.php:1065
+msgid "Preload"
+msgstr "사전 로드"
+
+#: inc/deprecated/deprecated.php:1786
+#: inc/Engine/Admin/Settings/Subscriber.php:188
+#: views/settings/page-sections/tools.php:33
+msgid "Tools"
+msgstr "도구"
+
+#: inc/deprecated/deprecated.php:1789 inc/Engine/Admin/Settings/Page.php:368
+#: views/settings/page-sections/dashboard.php:81
+msgid "License"
+msgstr "라이선스"
+
+#. Translators: %1$s = Plugin name, %2$s = Plugin version, %3$s = PHP version
+#. required.
+#: inc/deprecated/deprecated.php:1944
+msgid ""
+"%1$s %2$s requires at least PHP %3$s to function properly. To use this "
+"version, please ask your web host how to upgrade your server to PHP %3$s or "
+"higher. If you are not able to upgrade, you can rollback to the previous "
+"version by using the button below."
+msgstr ""
+"%1$s %2$s는 제대로 작동하려면 최소 PHP %3$s가 필요합니다. 이 버전을 사용하려면 웹 호스트에 서버를 PHP %3$s "
+"이상으로 업그레이드하는 방법을 문의하세요. 업그레이드할 수 없는 경우 아래 버튼을 사용하여 이전 버전으로 되돌릴 수 있습니다."
+
+#. translators: 1: PHP class name, 2: version number, 3: replacement class
+#. name.
+#: inc/deprecated/DeprecatedClassTrait.php:54
+msgid ""
+"The called class %1$s is <strong>deprecated</strong> since version %2$s! Use"
+" %3$s instead."
+msgstr ""
+"호출된 클래스 %1$s는 버전 %2$s부터 <strong>더 이상 사용되지 않습니다</strong>! 대신 %3$s를 사용하세요."
+
+#. translators: 1: PHP class name, 2: version number.
+#: inc/deprecated/DeprecatedClassTrait.php:65
+msgid ""
+"The called class %1$s is <strong>deprecated</strong> since version %2$s!"
+msgstr "호출된 클래스 %1$s은 버전 %2$s부터 <strong>더 이상 사용되지 않습니다</strong>!"
+
+#: inc/deprecated/Engine/Addon/FacebookTracking/Subscriber.php:92
+#: inc/deprecated/Engine/Addon/GoogleTracking/Subscriber.php:137
+#: inc/Engine/Admin/Database/Subscriber.php:79
+msgid "weekly"
+msgstr "매주"
+
+#: inc/Engine/Admin/Database/Optimization.php:33
+#: inc/Engine/Admin/Settings/Page.php:1403
+msgid "Revisions"
+msgstr "개정판"
+
+#: inc/Engine/Admin/Database/Optimization.php:34
+#: inc/Engine/Admin/Settings/Page.php:1413
+msgid "Auto Drafts"
+msgstr "자동 초안"
+
+#: inc/Engine/Admin/Database/Optimization.php:35
+#: inc/Engine/Admin/Settings/Page.php:1423
+msgid "Trashed Posts"
+msgstr "휴지통에 버린 글"
+
+#: inc/Engine/Admin/Database/Optimization.php:36
+#: inc/Engine/Admin/Settings/Page.php:1433
+msgid "Spam Comments"
+msgstr "스팸 댓글"
+
+#: inc/Engine/Admin/Database/Optimization.php:37
+#: inc/Engine/Admin/Settings/Page.php:1443
+msgid "Trashed Comments"
+msgstr "삭제된 댓글"
+
+#: inc/Engine/Admin/Database/Optimization.php:38
+msgid "Transients"
+msgstr "임시 파일"
+
+#: inc/Engine/Admin/Database/Optimization.php:39
+msgid "Tables"
+msgstr "테이블"
+
+#: inc/Engine/Admin/Database/Subscriber.php:85
+msgid "monthly"
+msgstr "매월"
+
+#: inc/Engine/Admin/Database/Subscriber.php:194
+msgid "Database optimization process is running"
+msgstr "데이터베이스 최적화 프로세스가 실행 중입니다."
+
+#: inc/Engine/Admin/Database/Subscriber.php:224
+msgid ""
+"Database optimization process is complete. Everything was already optimized!"
+msgstr "데이터베이스 최적화 프로세스가 완료되었습니다. 모든 것이 이미 최적화되었습니다!"
+
+#: inc/Engine/Admin/Database/Subscriber.php:227
+msgid ""
+"Database optimization process is complete. List of optimized items below:"
+msgstr "데이터베이스 최적화 프로세스가 완료되었습니다. 아래는 최적화된 항목 목록입니다."
+
+#. translators: %1$d = number of items optimized, %2$s = type of optimization
+#: inc/Engine/Admin/Database/Subscriber.php:235
+msgid "%1$d %2$s optimized."
+msgstr "%1$d %2$s이 최적화되었습니다."
+
+#. translators: %1$s = <strong>, %2$s = </strong>, %3$s = <a>, %4$s = </a>.
+#: inc/Engine/Admin/DomainChange/Subscriber.php:143
+msgid ""
+"%1$sWP Rocket:%2$s We detected that the website domain has changed. The "
+"configuration files must be regenerated for the page cache and all other "
+"optimizations to work as intended. %3$sLearn More%4$s"
+msgstr ""
+"%1$sWP Rocket:%2$s 웹사이트 도메인이 변경되었음을 감지했습니다. 페이지 캐시와 다른 모든 최적화가 의도한 대로 작동하려면 "
+"구성 파일을 다시 생성해야 합니다. %3$s자세히 알아보기%4$s"
+
+#: inc/Engine/Admin/DomainChange/Subscriber.php:171
+msgid "Regenerate WP Rocket configuration files now"
+msgstr "지금 WP Rocket 구성 파일을 재생성하세요"
+
+#: inc/Engine/Admin/Settings/Page.php:222
+msgid "Save Changes"
+msgstr "변경 사항 저장"
+
+#: inc/Engine/Admin/Settings/Page.php:222
+msgid "Validate License"
+msgstr "라이선스 확인"
+
+#: inc/Engine/Admin/Settings/Page.php:278
+#: inc/Engine/Admin/Settings/Page.php:279 inc/functions/admin.php:559
+msgid "Unavailable"
+msgstr "없는"
+
+#: inc/Engine/Admin/Settings/Page.php:385
+msgid "API key"
+msgstr "API 키"
+
+#: inc/Engine/Admin/Settings/Page.php:400
+msgid "Email address"
+msgstr "이메일 주소"
+
+#: inc/Engine/Admin/Settings/Page.php:426
+msgid "Dashboard"
+msgstr "대시보드"
+
+#: inc/Engine/Admin/Settings/Page.php:427
+msgid "Get help, account info"
+msgstr "도움 얻기, 계정 정보"
+
+#: inc/Engine/Admin/Settings/Page.php:475
+msgid "File Optimization"
+msgstr "파일 최적화"
+
+#: inc/Engine/Admin/Settings/Page.php:476
+msgid "Optimize CSS & JS"
+msgstr "CSS 및 JS 최적화"
+
+#. translators: %1$s = type of minification (HTML, CSS or JS), %2$s = “WP
+#. Rocket”.
+#: inc/Engine/Admin/Settings/Page.php:484
+msgid ""
+"%1$s Minification is currently activated in <strong>Autoptimize</strong>. If"
+" you want to use %2$s’s minification, disable this option in Autoptimize."
+msgstr ""
+"%1$s 축소는 현재 <strong>Autoptimize</strong>에서 활성화되어 있습니다. %2$s의 축소를 사용하려면 "
+"Autoptimize에서 이 옵션을 비활성화하세요."
+
+#: inc/Engine/Admin/Settings/Page.php:494
+msgid "CSS Files"
+msgstr "CSS 파일"
+
+#: inc/Engine/Admin/Settings/Page.php:503
+msgid "JavaScript Files"
+msgstr "JavaScript 파일"
+
+#. translators: %1$s = type of minification (HTML, CSS or JS), %2$s = “WP
+#. Rocket”.
+#: inc/Engine/Admin/Settings/Page.php:510
+msgid ""
+"%1$s Minification is currently activated in <strong>Autoptimize</strong>. If"
+" you want to use %2$s’s minification, disable those options in Autoptimize."
+msgstr ""
+"%1$s 축소는 현재 <strong>Autoptimize</strong>에서 활성화되어 있습니다. %2$s의 축소를 사용하려면 "
+"Autoptimize에서 해당 옵션을 비활성화하세요."
+
+#. translators: %1$s = opening </a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:517
+msgid ""
+"Also, please check our %1$sdocumentation%2$s for a list of compatibility "
+"exclusions."
+msgstr "또한, 호환성 제외 항목 목록은 %1$s문서%2$s에서 확인하세요."
+
+#: inc/Engine/Admin/Settings/Page.php:522
+msgid ""
+"Internal scripts are excluded by default to prevent issues. Remove them to "
+"take full advantage of this option."
+msgstr "내부 스크립트는 문제를 방지하기 위해 기본적으로 제외됩니다. 이 옵션을 최대한 활용하려면 제거하세요."
+
+#. translators: %1$s = opening </a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:525
+msgid ""
+"If this causes trouble, restore the default exclusions, found %1$shere%2$s"
+msgstr "이것이 문제를 일으키는 경우 %1$s여기%2$s에서 찾은 기본 제외 항목을 복원하세요."
+
+#: inc/Engine/Admin/Settings/Page.php:534
+msgid "Minify CSS files"
+msgstr "CSS 파일 최소화"
+
+#: inc/Engine/Admin/Settings/Page.php:535
+msgid "Minify CSS removes whitespace and comments to reduce the file size."
+msgstr "CSS 최소화는 공백과 주석을 제거하여 파일 크기를 줄입니다."
+
+#: inc/Engine/Admin/Settings/Page.php:550
+msgid ""
+"Specify URLs of CSS files to be excluded from minification (one per line)."
+msgstr "최소화에서 제외할 CSS 파일의 URL을 지정하세요(한 줄에 하나씩)."
+
+#: inc/Engine/Admin/Settings/Page.php:551
+msgid ""
+"<strong>Internal:</strong> The domain part of the URL will be stripped "
+"automatically. Use (.*).css wildcards to exclude all CSS files located at a "
+"specific path."
+msgstr ""
+"<strong>내부:</strong> URL의 도메인 부분은 자동으로 제거됩니다. (.*).css 와일드카드를 사용하여 특정 경로에 있는"
+" 모든 CSS 파일을 제외합니다."
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:553
+msgid ""
+"<strong>3rd Party:</strong> Use either the full URL path or only the domain "
+"name, to exclude external CSS. %1$sMore info%2$s"
+msgstr ""
+"<strong>타사:</strong> 외부 CSS를 제외하려면 전체 URL 경로나 도메인 이름만 사용하세요. %1$s상세 정보%2$s"
+
+#: inc/Engine/Admin/Settings/Page.php:566
+#: inc/Engine/Admin/Settings/Page.php:588
+msgid "Optimize CSS delivery"
+msgstr "CSS 전달 최적화"
+
+#: inc/Engine/Admin/Settings/Page.php:571
+msgid ""
+"Optimize CSS delivery eliminates render-blocking CSS on your website. Only "
+"one method can be selected. Remove Unused CSS is recommended for optimal "
+"performance, but limited only to the users with active license."
+msgstr ""
+"CSS 전달 최적화는 웹사이트에서 렌더링 차단 CSS를 제거합니다. 한 가지 방법만 선택할 수 있습니다. 사용하지 않는 CSS 제거는 "
+"최적의 성능을 위해 권장되지만, 활성 라이선스가 있는 사용자에게만 제한됩니다."
+
+#: inc/Engine/Admin/Settings/Page.php:571
+msgid ""
+"Optimize CSS delivery eliminates render-blocking CSS on your website. Only "
+"one method can be selected. Remove Unused CSS is recommended for optimal "
+"performance."
+msgstr ""
+"CSS 전달 최적화는 웹사이트에서 렌더링 차단 CSS를 제거합니다. 한 가지 방법만 선택할 수 있습니다. 최적의 성능을 위해 사용되지 "
+"않는 CSS 제거가 권장됩니다."
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:581
+msgid ""
+"Optimize CSS Delivery features are disabled on local environments. %1$sLearn"
+" more%2$s"
+msgstr "로컬 환경에서는 CSS 전송 최적화 기능이 비활성화되었습니다. %1$s자세히 알아보기%2$s"
+
+#: inc/Engine/Admin/Settings/Page.php:601
+#: inc/Engine/Optimization/RUCSS/Admin/OptionSubscriber.php:74
+msgid "Remove Unused CSS"
+msgstr "사용하지 않는 CSS 제거"
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:604
+msgid ""
+"Removes unused CSS per page and helps to reduce page size and HTTP requests."
+" Recommended for best performance. Test thoroughly! %1$sMore info%2$s"
+msgstr ""
+"페이지당 사용되지 않는 CSS를 제거하고 페이지 크기와 HTTP 요청을 줄이는 데 도움이 됩니다. 최상의 성능을 위해 권장됩니다. 철저히"
+" 테스트하세요! %1$s상세 정보%2$s"
+
+#: inc/Engine/Admin/Settings/Page.php:606
+#: inc/Engine/Admin/Settings/Page.php:690
+msgid "This could break things!"
+msgstr "사이트가 망가질 수도 있어요!"
+
+#: inc/Engine/Admin/Settings/Page.php:607
+#: inc/Engine/Admin/Settings/Page.php:691
+msgid ""
+"If you notice any errors on your website after having activated this "
+"setting, just deactivate it again, and your site will be back to normal."
+msgstr ""
+"이 설정을 활성화한 후에 귀하의 웹사이트에 오류가 발견되면, 이 설정을 다시 비활성화하시면 귀하의 사이트는 정상으로 돌아올 것입니다."
+
+#: inc/Engine/Admin/Settings/Page.php:608
+msgid "Activate Remove Unused CSS"
+msgstr "사용하지 않는 CSS 제거 활성화"
+
+#: inc/Engine/Admin/Settings/Page.php:614
+msgid "CSS safelist"
+msgstr "CSS 안전 목록"
+
+#: inc/Engine/Admin/Settings/Page.php:615
+msgid ""
+"Specify CSS filenames, IDs or classes that should not be removed (one per "
+"line)."
+msgstr "제거하면 안될 CSS 파일 이름, ID 또는 클래스를 지정하세요(한 줄에 하나씩)."
+
+#: inc/Engine/Admin/Settings/Page.php:630
+#: inc/Engine/CriticalPath/Admin/Subscriber.php:201
+msgid "Load CSS asynchronously"
+msgstr "CSS 비동기 로드"
+
+#. translators: %1$s = plugin name.
+#: inc/Engine/Admin/Settings/Page.php:633
+msgctxt "WP Critical CSS compatibility"
+msgid ""
+"Load CSS asynchronously is currently handled by the %1$s plugin. If you want"
+" to use WP Rocket’s load CSS asynchronously option, disable the %1$s plugin."
+msgstr ""
+"CSS 비동기 로드는 현재 %1$s 플러그인에서 처리합니다. WP Rocket의 CSS 비동기 로드 옵션을 사용하려면 %1$s 플러그인을"
+" 비활성화하세요."
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:635
+msgid ""
+"Generates critical path CSS and loads CSS asynchronously. %1$sMore info%2$s"
+msgstr "중요 경로 CSS를 생성하고 CSS를 비동기적으로 로드합니다. %1$s상세 정보%2$s"
+
+#: inc/Engine/Admin/Settings/Page.php:641
+msgid "Fallback critical CSS"
+msgstr "폴백 중요 CSS"
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:643
+msgid ""
+"Provides a fallback if auto-generated critical path CSS is incomplete. "
+"%1$sMore info%2$s"
+msgstr "자동 생성된 중요 경로 CSS가 완료되지 않은 경우 대체 방법을 제공합니다. %1$s상세 정보%2$s"
+
+#: inc/Engine/Admin/Settings/Page.php:658
+msgid "Minify JavaScript files"
+msgstr "JavaScript 파일 최소화"
+
+#: inc/Engine/Admin/Settings/Page.php:659
+msgid ""
+"Minify JavaScript removes whitespace and comments to reduce the file size."
+msgstr "JavaScript를 최소화하면 공백과 주석을 제거하여 파일 크기를 줄일 수 있습니다."
+
+#: inc/Engine/Admin/Settings/Page.php:673
+msgid ""
+"Combine JavaScript files <em>(Enable Minify JavaScript files to select)</em>"
+msgstr "JavaScript 파일 결합 <em>(JavaScript 파일 최소화를 활성화하여 선택)</em>"
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:675
+msgid ""
+"Combine JavaScript files combines your site’s internal, 3rd party and inline"
+" JS reducing HTTP requests. Not recommended if your site uses HTTP/2. "
+"%1$sMore info%2$s"
+msgstr ""
+"JavaScript 파일 결합은 사이트의 내부, 타사 및 인라인 JS를 결합하여 HTTP 요청을 줄입니다. 사이트에서 HTTP/2를 "
+"사용하는 경우 권장하지 않습니다. %1$s상세 정보%2$s"
+
+#: inc/Engine/Admin/Settings/Page.php:676
+msgid ""
+"For compatibility and best results, this option is disabled when delay "
+"javascript execution is enabled."
+msgstr "호환성과 최상의 결과를 위해 JavaScript 실행 지연이 활성화된 경우 이 옵션은 비활성화됩니다."
+
+#: inc/Engine/Admin/Settings/Page.php:692
+msgid "Activate combine JavaScript"
+msgstr "JavaScript 결합 활성화"
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:699
+msgid ""
+"Specify patterns of inline JavaScript to be excluded from concatenation (one"
+" per line). %1$sMore info%2$s"
+msgstr "연결에서 제외할 인라인 JavaScript 패턴을 지정하세요(한 줄에 하나씩). %%1$s상세 정보%2$s"
+
+#: inc/Engine/Admin/Settings/Page.php:716
+msgid ""
+"Specify URLs of JavaScript files to be excluded from minification and "
+"concatenation (one per line)."
+msgstr "최소화 및 연결에서 제외할 JavaScript 파일의 URL을 지정하세요(한 줄에 하나씩)."
+
+#: inc/Engine/Admin/Settings/Page.php:717
+msgid ""
+"<strong>Internal:</strong> The domain part of the URL will be stripped "
+"automatically. Use (.*).js wildcards to exclude all JS files located at a "
+"specific path."
+msgstr ""
+"<strong>내부:</strong> URL의 도메인 부분은 자동으로 제거됩니다. (.*).js 와일드카드를 사용하여 특정 경로에 있는 "
+"모든 JS 파일을 제외합니다."
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:719
+msgid ""
+"<strong>3rd Party:</strong> Use either the full URL path or only the domain "
+"name, to exclude external JS. %1$sMore info%2$s"
+msgstr ""
+"<strong>타사:</strong> 외부 JS를 제외하려면 전체 URL 경로나 도메인 이름만 사용하세요. %1$s상세 정보%2$s"
+
+#: inc/Engine/Admin/Settings/Page.php:735
+#: inc/Engine/Optimization/DeferJS/AdminSubscriber.php:76
+msgid "Load JavaScript deferred"
+msgstr "JavaScript 지연 로드"
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:737
+msgid ""
+"Load JavaScript deferred eliminates render-blocking JS on your site and can "
+"improve load time. %1$sMore info%2$s"
+msgstr ""
+"JavaScript 지연 로드는 사이트에서 렌더링을 차단하는 JS를 제거하고 로드 시간을 개선할 수 있습니다. %1$s상세 정보%2$s"
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:750
+msgid ""
+"Specify URLs or keywords of JavaScript files to be excluded from defer (one "
+"per line). %1$sMore info%2$s"
+msgstr "defer에서 제외할 JavaScript 파일의 URL이나 키워드를 지정하세요(한 줄에 하나씩). %1$s상세 정보%2$s"
+
+#: inc/Engine/Admin/Settings/Page.php:766
+#: inc/Engine/Optimization/DelayJS/Admin/Subscriber.php:210
+msgid "Delay JavaScript execution"
+msgstr "JavaScript 실행 지연"
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:768
+msgid ""
+"Improves performance by delaying the loading of JavaScript files until user "
+"interaction (e.g. scroll, click). %1$sMore info%2$s"
+msgstr ""
+"사용자 상호작용(예: 스크롤, 클릭)이 있을 때까지 JavaScript 파일 로딩을 지연시켜 성능을 향상시킵니다. %1$s상세 "
+"정보%2$s"
+
+#: inc/Engine/Admin/Settings/Page.php:777
+msgid "One-click exclusions"
+msgstr "원클릭 제외"
+
+#: inc/Engine/Admin/Settings/Page.php:778
+msgid ""
+"When using the Delay JavaScript feature, you might notice that some elements"
+" in the viewport take time to appear."
+msgstr "JavaScript 지연 기능을 사용할 때 뷰포트의 일부 요소가 나타나는 데 시간이 걸리는 것을 알 수 있습니다."
+
+#: inc/Engine/Admin/Settings/Page.php:779
+msgid ""
+"If you need these elements to load immediately, select the related plugins, "
+"themes, or services below to ensure they appear without delay."
+msgstr "이러한 요소를 즉시 로드해야 하는 경우 아래에서 관련 플러그인, 테마 또는 서비스를 선택하여 지연 없이 표시되도록 하세요."
+
+#: inc/Engine/Admin/Settings/Page.php:799
+msgid ""
+"Specify URLs or keywords that can identify inline or JavaScript files to be "
+"excluded from delaying execution (one per line)."
+msgstr ""
+"실행 지연에서 제외할 인라인 또는 JavaScript 파일을 식별할 수 있는 URL이나 키워드를 지정하세요(한 줄에 하나씩)."
+
+#: inc/Engine/Admin/Settings/Page.php:813
+msgid "Safe Mode for Delay JavaScript Execution"
+msgstr "JavaScript 지연 행을 위한 안전 모드"
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:815
+msgid "The Safe Mode mode prevents all internal scripts from being delayed."
+msgstr "안전 모드는 모든 내부 스크립트가 지연되는 것을 방지합니다."
+
+#: inc/Engine/Admin/Settings/Page.php:831
+msgid "Performance impact"
+msgstr "성능 영향"
+
+#: inc/Engine/Admin/Settings/Page.php:832
+msgid ""
+"By enabling Safe Mode, you significantly reduce your website performance "
+"improvements. We recommend using it only as a temporary solution. If you’re "
+"experiencing issues with the Delay JavaScript feature, our support team can "
+"help you troubleshoot."
+msgstr ""
+"안전 모드를 활성화하면 웹사이트 성능 개선이 크게 줄어듭니다. 임시 솔루션으로만 사용하는 것이 좋습니다. Delay JavaScript "
+"기능에 문제가 있는 경우 지원팀에서 문제 해결을 도와드릴 수 있습니다."
+
+#: inc/Engine/Admin/Settings/Page.php:833
+msgid "ACTIVATE SAFE MODE"
+msgstr "안전 모드 활성화"
+
+#: inc/Engine/Admin/Settings/Page.php:854
+msgid "Media"
+msgstr "미디어"
+
+#: inc/Engine/Admin/Settings/Page.php:855
+msgid "LazyLoad, image dimensions, font optimization"
+msgstr "지연 로드, 이미지 크기, 글꼴 최적화"
+
+#: inc/Engine/Admin/Settings/Page.php:864
+msgid "Autoptimize"
+msgstr "자동 최적화"
+
+#: inc/Engine/Admin/Settings/Page.php:918
+msgid "LazyLoad"
+msgstr "지연 로드"
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:921
+msgid ""
+"It can improve actual and perceived loading time as images, iframes, and "
+"videos will be loaded only as they enter (or about to enter) the viewport "
+"and reduces the number of HTTP requests. %1$sMore Info%2$s"
+msgstr ""
+"이미지, iframe 및 비디오가 뷰포트에 들어오거나 들어오려고 할 때만 로드되므로 실제 및 인식되는 로딩 시간이 개선될 수 있으며 "
+"HTTP 요청 수가 줄어듭니다. %1$s상세 정보%2$s"
+
+#. translators: %1$s = “WP Rocket”, %2$s = a list of plugin names.
+#: inc/Engine/Admin/Settings/Page.php:928
+msgid ""
+"LazyLoad is currently activated in %2$s. If you want to use WP Rocket’s "
+"LazyLoad, disable this option in %2$s."
+msgstr ""
+"지연 로드는 현재 %2$s에서 활성화되어 있습니다. WP Rocket의 지연 로드를 사용하려면 %2$s에서 이 옵션을 비활성화하세요."
+
+#: inc/Engine/Admin/Settings/Page.php:931
+msgid "Image Dimensions"
+msgstr "이미지 크기"
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:934
+msgid ""
+"Add missing width and height attributes to images. Helps prevent layout "
+"shifts and improve the reading experience for your visitors. %1$sMore "
+"info%2$s"
+msgstr ""
+"이미지에 누락된 너비 및 높이 속성을 추가하세요. 레이아웃 변경을 방지하고 방문자의 읽기 환경을 개선하는 데 도움이 됩니다. %1$s상세"
+" 정보%2$s"
+
+#: inc/Engine/Admin/Settings/Page.php:939
+msgid "Fonts"
+msgstr "글꼴"
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:942
+msgid ""
+"Download and serve fonts directly from your server. Reduces connections to "
+"external servers and minimizes font shifts. %1$sMore info%2$s"
+msgstr ""
+"서버에서 직접 글꼴을 다운로드하고 제공하세요. 외부 서버와의 연결을 줄이고 글꼴 이동을 최소화합니다. %1$s상세 정보%2$s"
+
+#: inc/Engine/Admin/Settings/Page.php:961
+msgid "Enable for images"
+msgstr "이미지에 대해 활성화"
+
+#. translators: %1$s = “WP Rocket”, %2$s = a list of plugin names.
+#: inc/Engine/Admin/Settings/Page.php:973
+msgid ""
+"LazyLoad for images is currently activated in %2$s. If you want to use "
+"%1$s’s LazyLoad, disable this option in %2$s."
+msgstr ""
+"이미지에 대한 지연 로드가 현재 %2$s에서 활성화되어 있습니다. %1$s의 지연 로드를 사용하려면 %2$s에서 이 옵션을 "
+"비활성화하세요."
+
+#: inc/Engine/Admin/Settings/Page.php:981
+msgid "Enable for CSS background images"
+msgstr "CSS 배경 이미지에 대해 활성화"
+
+#: inc/Engine/Admin/Settings/Page.php:996
+msgid "Enable for iframes and videos"
+msgstr "iframe 및 비디오에 대해 활성화"
+
+#: inc/Engine/Admin/Settings/Page.php:1011
+msgid "Replace YouTube iframe with preview image"
+msgstr "YouTube iframe을 미리보기 이미지로 교체"
+
+#. translators: %1$s = “WP Rocket”, %2$s = a list of plugin or themes names.
+#: inc/Engine/Admin/Settings/Page.php:1013
+msgid "Replace YouTube iframe with preview image is not compatible with %2$s."
+msgstr "YouTube iframe을 미리보기 이미지로 바꾸는 것은 %2$s와 호환되지 않습니다."
+
+#. translators: %1$s = “WP Rocket”, %2$s = a list of plugin or themes names.
+#: inc/Engine/Admin/Settings/Page.php:1013
+msgid ""
+"This can significantly improve your loading time if you have a lot of "
+"YouTube videos on a page."
+msgstr "페이지에 YouTube 동영상이 많은 경우 이 기능을 사용하면 로딩 시간이 크게 개선될 수 있습니다."
+
+#: inc/Engine/Admin/Settings/Page.php:1028
+msgid "Excluded images or iframes"
+msgstr "제외된 이미지 또는 iframe"
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:1030
+msgid ""
+"Specify keywords (e.g. image filename, CSS filename, CSS class, domain) from"
+" the image or iframe code to be excluded (one per line). %1$sMore info%2$s"
+msgstr ""
+"제외할 이미지나 iframe 코드에서 키워드(예: 이미지 파일 이름, CSS 파일 이름, CSS 클래스, 도메인)를 지정하세요(한 줄에 "
+"하나씩). %1$s상세 정보%2$s"
+
+#: inc/Engine/Admin/Settings/Page.php:1038
+msgid "Add missing image dimensions"
+msgstr "누락된 이미지 크기 추가"
+
+#: inc/Engine/Admin/Settings/Page.php:1046
+msgid "Self-host Google Fonts"
+msgstr "Google Fonts 자체 호스팅"
+
+#: inc/Engine/Admin/Settings/Page.php:1066
+msgid "Generate cache files, preload fonts"
+msgstr "캐시 파일 생성, 글꼴 사전 로드"
+
+#: inc/Engine/Admin/Settings/Page.php:1078
+msgid "Preload Cache"
+msgstr "캐시 사전 로드"
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:1081
+msgid ""
+"When you enable preloading WP Rocket will automatically detect your sitemaps"
+" and save all URLs to the database. The plugin will make sure that your "
+"cache is always preloaded."
+msgstr ""
+"사전 로드를 활성화하면 WP Rocket이 자동으로 사이트맵을 감지하고 모든 URL을 데이터베이스에 저장합니다. 이 플러그인은 캐시가 "
+"항상 사전 로드되도록 합니다."
+
+#: inc/Engine/Admin/Settings/Page.php:1089
+msgid "Preload Links"
+msgstr " 링크 사전 로드"
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:1092
+msgid ""
+"Link preloading improves the perceived load time by downloading a page when "
+"a user hovers over the link. %1$sMore info%2$s"
+msgstr ""
+"링크 사전 로드는 사용자가 링크 위에 마우스를 올려 놓았을 때 페이지를 다운로드함으로써 인식되는 로드 시간을 개선합니다. %1$s상세 "
+"정보%2$s"
+
+#: inc/Engine/Admin/Settings/Page.php:1100
+msgid "Prefetch DNS Requests"
+msgstr "DNS 요청 미리 가져오기"
+
+#: inc/Engine/Admin/Settings/Page.php:1102
+msgid ""
+"DNS prefetching can make external files load faster, especially on mobile "
+"networks"
+msgstr "DNS 미리 가져오기를 사용하면 특히 모바일 네트워크에서 외부 파일을 더 빨리 로드할 수 있습니다."
+
+#: inc/Engine/Admin/Settings/Page.php:1107
+msgid "Preload Fonts"
+msgstr "글꼴 사전 로드"
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:1110
+msgid ""
+"Improves performance by helping browsers discover fonts in CSS files. "
+"%1$sMore info%2$s"
+msgstr "CSS 파일에서 브라우저가 글꼴을 검색하도록 도와 성능을 향상시킵니다. %1$s상세 정보%2$s"
+
+#: inc/Engine/Admin/Settings/Page.php:1124
+msgid "Activate Preloading"
+msgstr "사전 로드 활성화"
+
+#: inc/Engine/Admin/Settings/Page.php:1135
+msgid "Exclude URLs"
+msgstr "URL 제외"
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:1140
+msgid ""
+"Specify URLs to be excluded from the preload feature (one per line). "
+"%1$sMore info%2$s"
+msgstr "사전 로드 기능에서 제외할 URL을 지정하세요(한 줄에 하나씩). %1$s상세 정보%2$s"
+
+#: inc/Engine/Admin/Settings/Page.php:1151
+msgid "URLs to prefetch"
+msgstr "미리 가져올 URL"
+
+#: inc/Engine/Admin/Settings/Page.php:1152
+msgid ""
+"Specify external hosts to be prefetched (no <code>http:</code>, one per "
+"line)"
+msgstr "미리 가져올 외부 호스트를 지정하세요 (<code>http:</code> 없음, 한 줄에 하나씩)"
+
+#: inc/Engine/Admin/Settings/Page.php:1161
+msgid "Fonts to preload"
+msgstr "사전 로드할 글꼴"
+
+#: inc/Engine/Admin/Settings/Page.php:1162
+msgid ""
+"Specify urls of the font files to be preloaded (one per line). Fonts must be"
+" hosted on your own domain, or the domain you have specified on the CDN tab."
+msgstr ""
+"사전 로드할 글꼴 파일의 URL을 지정하세요(한 줄에 하나씩). 글꼴은 귀하의 도메인이나 CDN 탭에서 지정한 도메인에 호스팅되어야 "
+"합니다."
+
+#: inc/Engine/Admin/Settings/Page.php:1163
+msgid ""
+"The domain part of the URL will be stripped automatically.<br/>Allowed font "
+"extensions: otf, ttf, svg, woff, woff2."
+msgstr "URL의 도메인 부분은 자동으로 제거됩니다.<br/>허용되는 글꼴 확장자: otf, ttf, svg, woff, woff2."
+
+#: inc/Engine/Admin/Settings/Page.php:1172
+msgid "Enable link preloading"
+msgstr "링크 사전 로드 활성화"
+
+#: inc/Engine/Admin/Settings/Page.php:1191
+msgid "Advanced Rules"
+msgstr "고급 규칙"
+
+#: inc/Engine/Admin/Settings/Page.php:1192
+msgid "Fine-tune cache rules"
+msgstr "캐시 규칙 미세 조정"
+
+#: inc/Engine/Admin/Settings/Page.php:1205
+msgid ""
+"Sensitive pages like custom login/logout URLs should be excluded from cache."
+msgstr "사용자 정의 로그인/로그아웃 URL과 같은 민감한 페이지는 캐시에서 제외해야 합니다."
+
+#: inc/Engine/Admin/Settings/Page.php:1208
+msgctxt "plugin name"
+msgid "WooCommerce"
+msgstr "우커머스"
+
+#: inc/Engine/Admin/Settings/Page.php:1210
+msgctxt "plugin name"
+msgid "Easy Digital Downloads"
+msgstr "Easy Digital Downloads"
+
+#: inc/Engine/Admin/Settings/Page.php:1212
+msgctxt "plugin name"
+msgid "iThemes Exchange"
+msgstr "iThemes Exchange"
+
+#: inc/Engine/Admin/Settings/Page.php:1214
+msgctxt "plugin name"
+msgid "Jigoshop"
+msgstr "Jigoshop"
+
+#: inc/Engine/Admin/Settings/Page.php:1216
+msgctxt "plugin name"
+msgid "WP-Shop"
+msgstr "WP-Shop"
+
+#. translators: %1$s = opening <a> tag, %2$s = plugin name, %3$s closing </a>
+#. tag.
+#: inc/Engine/Admin/Settings/Page.php:1222
+msgid ""
+"<br>Cart, checkout and \"my account\" pages set in "
+"<strong>%1$s%2$s%3$s</strong> will be detected and never cached by default."
+msgstr ""
+"<br><strong>%1$s%2$s%3$s</strong>에 설정된 장바구니, 결제 및 \"내 계정\" 페이지는 감지되지만 기본적으로 "
+"캐시되지 않습니다."
+
+#: inc/Engine/Admin/Settings/Page.php:1232
+msgid "Cache Lifespan"
+msgstr "캐시 수명"
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:1235
+msgid ""
+"Cache files older than the specified lifespan will be deleted.<br>Enable "
+"%1$spreloading%2$s for the cache to be rebuilt automatically after lifespan "
+"expiration."
+msgstr ""
+"지정된 수명보다 오래된 캐시 파일은 삭제됩니다.<br>수명 만료 후 캐시가 자동으로 다시 작성되도록 하려면 %1$s사전 로드%2$s를 "
+"활성화하세요."
+
+#: inc/Engine/Admin/Settings/Page.php:1251
+msgid "Never Cache Cookies"
+msgstr "캐시에서 제외할 쿠키"
+
+#: inc/Engine/Admin/Settings/Page.php:1269
+msgid "Cache Query String(s)"
+msgstr "캐시될 쿼리 문자열"
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:1272
+msgid ""
+"%1$sCache for query strings%2$s enables you to force caching for specific "
+"GET parameters."
+msgstr "%1$s쿼리 문자열 캐시%2$s를 사용하면 특정 GET 매개변수에 대한 캐싱을 강제로 수행할 수 있습니다."
+
+#: inc/Engine/Admin/Settings/Page.php:1283
+msgid ""
+"Specify time after which the global cache is cleared<br>(0 = unlimited )"
+msgstr "전역 캐시가 지워지는 시간을 지정하세요 (0 = 무제한)"
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:1285
+msgid ""
+"Reduce lifespan to 10 hours or less if you notice issues that seem to appear"
+" periodically. %1$sWhy?%2$s"
+msgstr "주기적으로 나타나는 문제가 발견되면 수명을 10시간 이하로 줄이세요. %1$s이유?%2$s"
+
+#: inc/Engine/Admin/Settings/Page.php:1291
+#: inc/Engine/License/views/promo-banner.php:32
+#: inc/Engine/License/views/renewal-soon-banner.php:15
+msgid "Hours"
+msgstr "시간"
+
+#: inc/Engine/Admin/Settings/Page.php:1292
+#: inc/Engine/License/views/promo-banner.php:31
+#: inc/Engine/License/views/renewal-soon-banner.php:14
+msgid "Days"
+msgstr "일"
+
+#: inc/Engine/Admin/Settings/Page.php:1297
+msgid ""
+"Specify URLs of pages or posts that should never be cached (one per line)"
+msgstr "캐시에 포함되어서는 안될 페이지나 글의 URL을 지정하세요 (한 줄에 하나씩)"
+
+#: inc/Engine/Admin/Settings/Page.php:1298
+#: inc/Engine/Admin/Settings/Page.php:1326
+msgid ""
+"The domain part of the URL will be stripped automatically.<br>Use (.*) "
+"wildcards to address multiple URLs under a given path."
+msgstr ""
+"URL의 도메인 부분은 자동으로 제거됩니다. 주어진 경로 아래에 있는 여러 URL을 주소로 지정하려면 (.*) 와일드카드를 사용하세요."
+
+#: inc/Engine/Admin/Settings/Page.php:1307
+msgid ""
+"Specify full or partial IDs of cookies that, when set in the visitor's "
+"browser, should prevent a page from getting cached (one per line)"
+msgstr ""
+"방문자의 브라우저에 설정될 때 페이지가 캐시되는 것을 방지해야 하는 쿠키의 전체 또는 부분 ID를 지정하세요 (한 줄에 하나씩)"
+
+#: inc/Engine/Admin/Settings/Page.php:1315
+msgid ""
+"Specify user agent strings that should never see cached pages (one per line)"
+msgstr "캐시된 페이지를 절대 보지 않아야 하는 사용자 에이전트 문자열을 지정하세요 (한 줄에 하나씩)"
+
+#: inc/Engine/Admin/Settings/Page.php:1316
+msgid "Use (.*) wildcards to detect parts of UA strings."
+msgstr "(.*) 와일드카드를 사용하여 UA 문자열의 일부를 감지합니다."
+
+#: inc/Engine/Admin/Settings/Page.php:1325
+msgid ""
+"Specify URLs you always want purged from cache whenever you update any post "
+"or page (one per line)"
+msgstr "글이나 페이지를 업데이트할 때마다 캐시에서 항상 제거하려는 URL을 지정하세요 (한 줄에 하나씩)"
+
+#: inc/Engine/Admin/Settings/Page.php:1334
+msgid "Specify query strings for caching (one per line)"
+msgstr "캐싱을 위한 쿼리 문자열을 지정하세요 (한 줄에 하나씩)"
+
+#: inc/Engine/Admin/Settings/Page.php:1360
+msgid "Optimize, reduce bloat"
+msgstr "불필요함 최적화 및 감소"
+
+#: inc/Engine/Admin/Settings/Page.php:1367
+msgid "Post Cleanup"
+msgstr "글 청소"
+
+#: inc/Engine/Admin/Settings/Page.php:1369
+msgid ""
+"Post revisions and drafts will be permanently deleted. Do not use this "
+"option if you need to retain revisions or drafts."
+msgstr "글 수정 및 초안은 영구적으로 삭제됩니다. 수정 또는 초안을 보관해야 하는 경우 이 옵션을 사용하지 마십시오."
+
+#: inc/Engine/Admin/Settings/Page.php:1374
+msgid "Comments Cleanup"
+msgstr "댓글 정리"
+
+#: inc/Engine/Admin/Settings/Page.php:1376
+msgid "Spam and trashed comments will be permanently deleted."
+msgstr "스팸과 휴지통에 버린 댓글은 영구적으로 삭제됩니다."
+
+#: inc/Engine/Admin/Settings/Page.php:1380
+msgid "Transients Cleanup"
+msgstr "임시 파일 정리"
+
+#: inc/Engine/Admin/Settings/Page.php:1382
+msgid ""
+"Transients are temporary options; they are safe to remove. They will be "
+"automatically regenerated as your plugins require them."
+msgstr "임시 파일은 일시적인 옵션이므로 안전하게 제거할 수 있습니다. 플러그인에 필요하면 자동으로 재생성됩니다."
+
+#: inc/Engine/Admin/Settings/Page.php:1386
+msgid "Database Cleanup"
+msgstr "데이터베이스 정리"
+
+#: inc/Engine/Admin/Settings/Page.php:1388
+msgid "Reduces overhead of database tables"
+msgstr "데이터베이스 테이블의 오버헤드를 줄입니다."
+
+#: inc/Engine/Admin/Settings/Page.php:1392
+msgid "Automatic Cleanup"
+msgstr "자동 정리"
+
+#. translators: %s is the number of revisions found in the database. It's a
+#. formatted number, don't use %d.
+#: inc/Engine/Admin/Settings/Page.php:1405
+msgid "%s revision in your database."
+msgid_plural "%s revisions in your database."
+msgstr[0] "%s개의 개정판이 데이터베이스에 있음."
+
+#. translators: %s is the number of revisions found in the database. It's a
+#. formatted number, don't use %d.
+#: inc/Engine/Admin/Settings/Page.php:1415
+msgid "%s draft in your database."
+msgid_plural "%s drafts in your database."
+msgstr[0] "%s개의 초안이 데이터베이스에 있음."
+
+#. translators: %s is the number of revisions found in the database. It's a
+#. formatted number, don't use %d.
+#: inc/Engine/Admin/Settings/Page.php:1425
+msgid "%s trashed post in your database."
+msgid_plural "%s trashed posts in your database."
+msgstr[0] "%s개의 휴지통에 버린 글이 데이터베이스에 있음."
+
+#. translators: %s is the number of revisions found in the database. It's a
+#. formatted number, don't use %d.
+#: inc/Engine/Admin/Settings/Page.php:1435
+msgid "%s spam comment in your database."
+msgid_plural "%s spam comments in your database."
+msgstr[0] "%s개의 스팸 댓글이 데이터베이스에 있음."
+
+#. translators: %s is the number of revisions found in the database. It's a
+#. formatted number, don't use %d.
+#: inc/Engine/Admin/Settings/Page.php:1445
+msgid "%s trashed comment in your database."
+msgid_plural "%s trashed comments in your database."
+msgstr[0] "%s개의 휴지통에 버린 댓글이 데이터베이스에 있음."
+
+#: inc/Engine/Admin/Settings/Page.php:1453
+msgid "All transients"
+msgstr "모든 임시 파일"
+
+#. translators: %s is the number of revisions found in the database. It's a
+#. formatted number, don't use %d.
+#: inc/Engine/Admin/Settings/Page.php:1455
+msgid "%s transient in your database."
+msgid_plural "%s transients in your database."
+msgstr[0] "%s개의 임시 파일이 데이터베이스에 있음."
+
+#: inc/Engine/Admin/Settings/Page.php:1463
+msgid "Optimize Tables"
+msgstr "테이블 최적화"
+
+#. translators: %s is the number of revisions found in the database. It's a
+#. formatted number, don't use %d.
+#: inc/Engine/Admin/Settings/Page.php:1465
+msgid "%s table to optimize in your database."
+msgid_plural "%s tables to optimize in your database."
+msgstr[0] "%s개의 최적화 대상 테이블이 데이터베이스에 있음."
+
+#: inc/Engine/Admin/Settings/Page.php:1476
+msgid "Schedule Automatic Cleanup"
+msgstr "자동 정리 일정"
+
+#: inc/Engine/Admin/Settings/Page.php:1488
+msgid "Frequency"
+msgstr "실행"
+
+#: inc/Engine/Admin/Settings/Page.php:1496
+msgid "Daily"
+msgstr "매일"
+
+#: inc/Engine/Admin/Settings/Page.php:1497
+msgid "Weekly"
+msgstr "매주"
+
+#: inc/Engine/Admin/Settings/Page.php:1498
+msgid "Monthly"
+msgstr "매월"
+
+#: inc/Engine/Admin/Settings/Page.php:1515
+msgid "Integrate your CDN"
+msgstr "귀하의 CDN을 통합하세요"
+
+#: inc/Engine/Admin/Settings/Page.php:1527
+msgid ""
+"All URLs of static files (CSS, JS, images) will be rewritten to the CNAME(s)"
+" you provide."
+msgstr "모든 정적 파일(CSS, JS, 이미지)의 URL은 귀하가 제공한 CNAME으로 다시 작성됩니다."
+
+#. translators: %1$s = opening link tag, %2$s = closing link tag.
+#: inc/Engine/Admin/Settings/Page.php:1529
+msgid ""
+"Not required for services like Cloudflare and Sucuri. Please see our "
+"available %1$sAdd-ons%2$s."
+msgstr "Cloudflare 및 Sucuri와 같은 서비스에는 필요하지 않습니다. 사용 가능한 %1$s추가 기능%2$s을 참조하세요."
+
+#. translators: %1$s = opening em tag, %2$l = list of add-on name(s), %3$s =
+#. closing em tag.
+#: inc/Engine/Admin/Settings/Page.php:1569
+msgid ""
+"%1$s%2$l Add-on%3$s is currently enabled. Configuration of the CDN settings "
+"is not required for %2$l to work on your site."
+msgid_plural ""
+"%1$s%2$l Add-ons%3$s are currently enabled. Configuration of the CDN "
+"settings is not required for %2$l to work on your site."
+msgstr[0] ""
+"%1$s%2$l 추가 기능%3$s이 현재 활성화되어 있습니다. CDN 설정 구성은 %2$l이 귀하의 사이트에서 작동하도록 하는 데 "
+"필요하지 않습니다."
+
+#: inc/Engine/Admin/Settings/Page.php:1595
+msgid "Enable Content Delivery Network"
+msgstr "콘텐츠 전송 네트워크 활성화"
+
+#: inc/Engine/Admin/Settings/Page.php:1604
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:162
+msgid "CDN CNAME(s)"
+msgstr "CDN CNAME(들)"
+
+#: inc/Engine/Admin/Settings/Page.php:1605
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:163
+msgid "Specify the CNAME(s) below"
+msgstr "아래의 CNAME을 지정하세요"
+
+#: inc/Engine/Admin/Settings/Page.php:1612
+msgid ""
+"Specify URL(s) of files that should not get served via CDN (one per line)."
+msgstr "CDN을 통해 제공되면 안될 파일의 URL을 지정하세요(한 줄에 하나씩)."
+
+#: inc/Engine/Admin/Settings/Page.php:1613
+msgid ""
+"The domain part of the URL will be stripped automatically.<br>Use (.*) "
+"wildcards to exclude all files of a given file type located at a specific "
+"path."
+msgstr ""
+"URL의 도메인 부분은 자동으로 제거됩니다.<br>(.*) 와일드카드를 사용하여 특정 경로에 있는 주어진 파일 유형의 모든 파일을 "
+"제외합니다."
+
+#: inc/Engine/Admin/Settings/Page.php:1636
+#: inc/Engine/Admin/Settings/Page.php:1644
+msgid "Heartbeat"
+msgstr "Heartbeat"
+
+#: inc/Engine/Admin/Settings/Page.php:1637
+msgid "Control WordPress Heartbeat API"
+msgstr "워드프레스 Heartbeat API 제어"
+
+#: inc/Engine/Admin/Settings/Page.php:1645
+msgid ""
+"Reducing or disabling the Heartbeat API’s activity can help save some of "
+"your server’s resources."
+msgstr "Heartbeat API의 활동을 줄이거나 비활성화하면 서버 리소스를 일부 절약하는 데 도움이 될 수 있습니다."
+
+#: inc/Engine/Admin/Settings/Page.php:1651
+msgid "Reduce or disable Heartbeat activity"
+msgstr "Heartbeat 활동 감소 또는 비활성화"
+
+#: inc/Engine/Admin/Settings/Page.php:1652
+msgid ""
+"Reducing activity will change Heartbeat frequency from one hit each minute "
+"to one hit every 2 minutes."
+msgstr "활동을 줄이면 Heartbeat 빈도가 1분에 한 번에서 2분에 한 번으로 변경됩니다."
+
+#: inc/Engine/Admin/Settings/Page.php:1652
+msgid ""
+"Disabling Heartbeat entirely may break plugins and themes using this API."
+msgstr "Heartbeat를 완전히 비활성화하면 이 API를 사용하는 플러그인과 테마가 손상될 수 있습니다."
+
+#: inc/Engine/Admin/Settings/Page.php:1666
+msgid "Do not limit"
+msgstr "제한 안함"
+
+#: inc/Engine/Admin/Settings/Page.php:1667
+msgid "Reduce activity"
+msgstr "동작 줄임"
+
+#: inc/Engine/Admin/Settings/Page.php:1668
+msgid "Disable"
+msgstr "비활성화"
+
+#: inc/Engine/Admin/Settings/Page.php:1676
+msgid "Control Heartbeat"
+msgstr "Heartbeat 제어"
+
+#: inc/Engine/Admin/Settings/Page.php:1685
+msgid "Behavior in backend"
+msgstr "백엔드에서의 동작"
+
+#: inc/Engine/Admin/Settings/Page.php:1692
+msgid "Behavior in post editor"
+msgstr "글 편집기에서의 동작"
+
+#: inc/Engine/Admin/Settings/Page.php:1698
+msgid "Behavior in frontend"
+msgstr "프런트엔드에서의 동작"
+
+#: inc/Engine/Admin/Settings/Page.php:1717
+#: views/settings/page-sections/tutorials.php:39
+msgid "Add-ons"
+msgstr "추가 기능"
+
+#: inc/Engine/Admin/Settings/Page.php:1718
+msgid "Add more features"
+msgstr "더 많은 기능 추가"
+
+#: inc/Engine/Admin/Settings/Page.php:1725
+msgid "One-click Rocket Add-ons"
+msgstr "원클릭 Rocket 추가 기능"
+
+#: inc/Engine/Admin/Settings/Page.php:1726
+msgid ""
+"One-Click Add-ons are features extending available options without "
+"configuration needed. Switch the option \"on\" to enable from this screen."
+msgstr ""
+"원클릭 추가 기능은 구성이 필요 없이 사용 가능한 옵션을 확장하는 기능입니다. 이 화면에서 활성화하려면 \"ON\" 옵션으로 전환하세요."
+
+#: inc/Engine/Admin/Settings/Page.php:1736
+msgid "Rocket Add-ons"
+msgstr "Rocket 추가 기능"
+
+#: inc/Engine/Admin/Settings/Page.php:1737
+msgid "Rocket Add-ons are complementary features extending available options."
+msgstr "Rocket 추가 기능은 기존 옵션을 확장하는 보완 기능입니다."
+
+#: inc/Engine/Admin/Settings/Page.php:1748
+msgid "User Cache"
+msgstr "사용자 캐시"
+
+#: inc/Engine/Admin/Settings/Page.php:1754
+msgid ""
+"If you need to create a dedicated set of cache files for each logged-in "
+"WordPress user, you must activate this add-on."
+msgstr "로그인한 워드프레스 사용자마다 전용 캐시 파일 세트를 만들어야 하는 경우, 이 추가 기능을 활성화해야 합니다."
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:1756
+msgid ""
+"User cache is great when you have user-specific or restricted content on "
+"your website.<br>%1$sLearn more%2$s"
+msgstr "웹사이트에 사용자별 또는 제한된 콘텐츠가 있는 경우 사용자 캐시가 매우 유용합니다.<br>%1$s자세히 알아보기%2$s"
+
+#: inc/Engine/Admin/Settings/Page.php:1769
+#: inc/Engine/Admin/Settings/Page.php:1938
+msgid "Cloudflare"
+msgstr "Cloudflare"
+
+#: inc/Engine/Admin/Settings/Page.php:1775
+msgid "Integrate your Cloudflare account with this add-on."
+msgstr "이 추가 기능으로 Cloudflare 계정을 통합하세요."
+
+#: inc/Engine/Admin/Settings/Page.php:1776
+msgid ""
+"Provide your account email, global API key, and domain to use options such "
+"as clearing the Cloudflare cache and enabling optimal settings with WP "
+"Rocket."
+msgstr ""
+"WP Rocket에서 Cloudflare 캐시를 지우고 최적의 설정을 활성화하는 등의 옵션을 사용하려면 계정 이메일, 글로벌 API 키,"
+" 도메인을 제공하세요."
+
+#. translators: %1$s = opening span tag, %2$s = closing span tag.
+#: inc/Engine/Admin/Settings/Page.php:1779
+msgid ""
+"%1$sPlanning on using Automatic Platform Optimization (APO)?%2$s Just "
+"activate the official Cloudflare plugin and configure it. WP Rocket will "
+"automatically enable compatibility."
+msgstr ""
+"%1$sAPO(자동 플랫폼 최적화)를 사용할 계획이신가요?%2$s 공식 Cloudflare 플러그인을 활성화하고 구성하기만 하면 됩니다."
+" WP Rocket이 자동으로 호환성을 활성화합니다."
+
+#: inc/Engine/Admin/Settings/Page.php:1827
+msgid "Varnish"
+msgstr "Varnish"
+
+#: inc/Engine/Admin/Settings/Page.php:1833
+msgid "If Varnish runs on your server, you must activate this add-on."
+msgstr "서버에서 Varnish를 실행하는 경우 이 추가 기능을 활성화해야 합니다."
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:1835
+msgid ""
+"Varnish cache will be purged each time WP Rocket clears its cache to ensure "
+"content is always up-to-date.<br>%1$sLearn more%2$s"
+msgstr ""
+"WP Rocket이 캐시를 지울 때마다 Varnish 캐시가 삭제되어 콘텐츠가 항상 최신 상태로 유지됩니다.<br>%1$s자세히 "
+"알아보기%2$s"
+
+#: inc/Engine/Admin/Settings/Page.php:1870
+msgid "WebP Compatibility"
+msgstr "WebP 호환성"
+
+#: inc/Engine/Admin/Settings/Page.php:1876
+msgid "Improve browser compatibility for WebP images."
+msgstr "WebP 이미지에 대한 브라우저 호환성을 개선하세요."
+
+#. translators: %1$s and %3$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:1880
+msgid ""
+"Enable this option if you would like WP Rocket to serve WebP images to "
+"compatible browsers. Please note that WP Rocket cannot create WebP images "
+"for you. To create WebP images we recommend %1$sImagify%2$s. %3$sMore "
+"info%2$s"
+msgstr ""
+"WP Rocket이 호환 브라우저에 WebP 이미지를 제공하도록 하려면 이 옵션을 활성화하세요. WP Rocket이 사용자를 대신하여 "
+"WebP 이미지를 만들 수 없다는 점에 유의하세요. WebP 이미지를 만들려면 %1$sImagify%2$s를 권장합니다. %3$s자세한 "
+"정보%2$s"
+
+#: inc/Engine/Admin/Settings/Page.php:1900
+msgid "Clear the Sucuri cache when WP Rocket’s cache is cleared."
+msgstr "WP Rocket의 캐시가 지워지면 Sucuri 캐시도 지워집니다."
+
+#: inc/Engine/Admin/Settings/Page.php:1903
+msgid ""
+"Provide your API key to clear the Sucuri cache when WP Rocket’s cache is "
+"cleared."
+msgstr "WP Rocket의 캐시가 지워질 때 Sucuri 캐시를 지우려면 API 키를 제공하세요."
+
+#: inc/Engine/Admin/Settings/Page.php:1911
+#: inc/Engine/Admin/Settings/Page.php:2055
+msgid "Sucuri"
+msgstr "Sucuri"
+
+#: inc/Engine/Admin/Settings/Page.php:1917
+msgid "Synchronize Sucuri cache with this add-on."
+msgstr "이 추가 기능으로 Sucuri 캐시를 동기화하세요."
+
+#: inc/Engine/Admin/Settings/Page.php:1955
+msgid "Cloudflare credentials"
+msgstr "Cloudflare 자격 증명"
+
+#: inc/Engine/Admin/Settings/Page.php:1964
+msgid "Cloudflare settings"
+msgstr "Cloudflare 설정"
+
+#: inc/Engine/Admin/Settings/Page.php:1978
+msgctxt "Cloudflare"
+msgid "Global API key:"
+msgstr "글로벌 API 키:"
+
+#: inc/Engine/Admin/Settings/Page.php:1979
+msgctxt "Cloudflare"
+msgid "Find your API key"
+msgstr "API 키 찾기"
+
+#: inc/Engine/Admin/Settings/Page.php:1991
+msgctxt "Cloudflare"
+msgid "Account email"
+msgstr "계정 이메일"
+
+#: inc/Engine/Admin/Settings/Page.php:2000
+msgctxt "Cloudflare"
+msgid "Zone ID"
+msgstr "존 ID"
+
+#: inc/Engine/Admin/Settings/Page.php:2010
+msgid "Development mode"
+msgstr "개발 모드"
+
+#. translators: %1$s = link opening tag, %2$s = link closing tag.
+#: inc/Engine/Admin/Settings/Page.php:2012
+msgid ""
+"Temporarily activate development mode on your website. This setting will "
+"automatically turn off after 3 hours. %1$sLearn more%2$s"
+msgstr "웹사이트에서 개발 모드를 일시적으로 활성화합니다. 이 설정은 3시간 후에 자동으로 꺼집니다. %1$s자세히 알아보기%2$s"
+
+#: inc/Engine/Admin/Settings/Page.php:2020
+msgid "Optimal settings"
+msgstr "최적 설정"
+
+#: inc/Engine/Admin/Settings/Page.php:2021
+msgid ""
+"Automatically enhances your Cloudflare configuration for speed, performance "
+"grade and compatibility."
+msgstr "속도, 성능 등급 및 호환성을 위해 Cloudflare 구성을 자동으로 향상시킵니다."
+
+#: inc/Engine/Admin/Settings/Page.php:2029
+msgid "Relative protocol"
+msgstr "상대 프로토콜"
+
+#: inc/Engine/Admin/Settings/Page.php:2030
+msgid ""
+"Should only be used with Cloudflare's flexible SSL feature. URLs of static "
+"files (CSS, JS, images) will be rewritten to use // instead of http:// or "
+"https://."
+msgstr ""
+"Cloudflare의 유연한 SSL 기능과 함께 사용해야 합니다. 정적 파일(CSS, JS, 이미지)의 URL은 http:// 또는 "
+"https:// 대신 //를 사용하도록 다시 작성됩니다."
+
+#: inc/Engine/Admin/Settings/Page.php:2068
+msgid "Sucuri credentials"
+msgstr "Sucuri 자격 증명"
+
+#: inc/Engine/Admin/Settings/Page.php:2081
+msgctxt "Sucuri"
+msgid ""
+"Firewall API key (for plugin), must be in format {32 characters}/{32 "
+"characters}:"
+msgstr "방화벽 API 키(플러그인용)는 {32자}/{32자} 형식이어야 합니다."
+
+#: inc/Engine/Admin/Settings/Page.php:2082
+msgctxt "Sucuri"
+msgid "Find your API key"
+msgstr "API 키 찾기"
+
+#. translators: %1$s: opening strong tag, %2$s: closing strong tag, %3$s:
+#. opening a tag, %4$s: opening a tag.
+#: inc/Engine/Admin/Settings/Page.php:2287
+msgid ""
+"%1$sWP Rocket:%2$s the plugin has been updated to the 3.17 version. New "
+"feature: %3$sAutomatic Lazy Rendering%4$s. Check out our documentation to "
+"learn more about it."
+msgstr ""
+"%1$sWP Rocket:%2$s 플러그인이 3.17 버전으로 업데이트되었습니다. 새로운 기능: %3$s자동 지연 렌더링%4$s. 상세 "
+"내용은 문서를 확인하세요."
+
+#: inc/Engine/Admin/Settings/Settings.php:363
+msgid ""
+"Sucuri Add-on: The API key for the Sucuri firewall must be in format "
+"<code>{32 characters}/{32 characters}</code>."
+msgstr "Sucuri 추가 기능: Sucuri 방화벽의 API 키는 <code>{32자}/{32자}</code> 형식이어야 합니다."
+
+#: inc/Engine/Admin/Settings/Settings.php:661
+msgid ""
+"Sorry! Adding /(.*) in Advanced Rules > Never Cache URL(s) was not saved "
+"because it disables caching and optimizations for every page on your site."
+msgstr ""
+"죄송합니다! 고급 규칙 > 캐시에서 제외할 URL에 /(.*)를 추가하면 사이트의 모든 페이지에 대한 캐싱 및 최적화가 비활성화되므로 "
+"저장되지 않았습니다."
+
+#: inc/Engine/Admin/Settings/Subscriber.php:189
+msgid "Import, Export, Rollback"
+msgstr "가져오기, 내보내기, 되돌리기"
+
+#: inc/Engine/Admin/Settings/Subscriber.php:214
+#: views/settings/page-sections/imagify.php:14
+msgid "Image Optimization"
+msgstr "이미지 최적화"
+
+#: inc/Engine/Admin/Settings/Subscriber.php:215
+msgid "Compress your images"
+msgstr "귀하의 이미지를 압축하세요"
+
+#: inc/Engine/Admin/Settings/Subscriber.php:232
+#: views/settings/page-sections/tutorials.php:48
+msgid "Tutorials"
+msgstr "튜토리얼"
+
+#: inc/Engine/Admin/Settings/Subscriber.php:233
+msgid "Getting started and how to videos"
+msgstr "시작하기 및 사용 방법 동영상"
+
+#: inc/Engine/Admin/Settings/Subscriber.php:308
+#: views/settings/page-sections/plugins.php:13
+msgid "Our Plugins"
+msgstr "저희 플러그인"
+
+#: inc/Engine/Admin/Settings/Subscriber.php:309
+msgid "Build Better, Faster, Safer"
+msgstr "더 나은, 더 빠른, 더 안전한 구축"
+
+#: inc/Engine/Cache/PurgeExpired/Subscriber.php:75
+msgid "WP Rocket Expired Cache Interval"
+msgstr "WP Rocket 만료된 캐시 간격"
+
+#: inc/Engine/Cache/WPCache.php:338
+msgid "WP_CACHE value"
+msgstr "WP_CACHE 값"
+
+#: inc/Engine/Cache/WPCache.php:355
+msgid "Cache"
+msgstr "은닉처"
+
+#: inc/Engine/Cache/WPCache.php:359
+msgid ""
+"The WP_CACHE constant needs to be set to true for WP Rocket cache to work "
+"properly"
+msgstr "WP Rocket 캐시가 제대로 작동하려면 WP_CACHE 상수를 true로 설정해야 합니다."
+
+#: inc/Engine/Cache/WPCache.php:368
+msgid "WP_CACHE is set to true"
+msgstr "WP_CACHE가 true로 설정되었습니다"
+
+#: inc/Engine/Cache/WPCache.php:376
+msgid "WP_CACHE is not set"
+msgstr "WP_CACHE가 설정되지 않았습니다"
+
+#: inc/Engine/Cache/WPCache.php:384
+msgid "WP_CACHE is set to false"
+msgstr "WP_CACHE가 false로 설정되었습니다"
+
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:96
+msgid "Next Billing Date"
+msgstr "다음 청구 날짜"
+
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:103
+msgid "No Subscription"
+msgstr "구독 없음"
+
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:138
+msgid "Your RocketCDN subscription is currently active."
+msgstr "귀하의 RocketCDN 구독은 현재 활성화되어 있습니다."
+
+#. translators: %1$s = opening <code> tag, %2$s = CDN URL, %3$s = closing
+#. </code> tag.
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:144
+msgid "To use RocketCDN, replace your CNAME with %1$s%2$s%3$s."
+msgstr "RocketCDN을 사용하려면 CNAME을 %1$s%2$s%3$s로 바꾸세요."
+
+#. translators: %1$is = opening link tag, %2$s = closing link tag.
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:155
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:229
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:329
+msgid "%1$sMore Info%2$s"
+msgstr "%1$s상세 정보%2$s"
+
+#: inc/Engine/CDN/RocketCDN/APIClient.php:134
+msgid ""
+"We could not fetch the current price because RocketCDN API returned an "
+"unexpected error code."
+msgstr "RocketCDN API가 예기치 않은 오류 코드를 반환했기 때문에 현재 가격을 가져올 수 없습니다."
+
+#: inc/Engine/CDN/RocketCDN/APIClient.php:140
+msgid "RocketCDN is not available at the moment. Please retry later."
+msgstr "RocketCDN은 현재 사용할 수 없습니다. 나중에 다시 시도하세요."
+
+#: inc/Engine/CDN/RocketCDN/APIClient.php:177
+msgid "RocketCDN cache purge failed: Missing identifier parameter."
+msgstr "RocketCDN 캐시 정리에 실패했습니다: 식별자 매개변수가 없습니다."
+
+#: inc/Engine/CDN/RocketCDN/APIClient.php:186
+msgid "RocketCDN cache purge failed: Missing user token."
+msgstr "RocketCDN 캐시 정리에 실패했습니다. 사용자 토큰이 없습니다."
+
+#: inc/Engine/CDN/RocketCDN/APIClient.php:212
+msgid ""
+"RocketCDN cache purge failed: The API returned an unexpected response code."
+msgstr "RocketCDN 캐시 제거에 실패했습니다. API가 예기치 않은 응답 코드를 반환했습니다."
+
+#: inc/Engine/CDN/RocketCDN/APIClient.php:221
+msgid "RocketCDN cache purge failed: The API returned an empty response."
+msgstr "RocketCDN 캐시 제거에 실패했습니다. API가 빈 응답을 반환했습니다."
+
+#: inc/Engine/CDN/RocketCDN/APIClient.php:230
+msgid "RocketCDN cache purge failed: The API returned an unexpected response."
+msgstr "RocketCDN 캐시 제거에 실패했습니다. API가 예기치 않은 응답을 반환했습니다."
+
+#. translators: %s = message returned by the API.
+#: inc/Engine/CDN/RocketCDN/APIClient.php:239
+msgid "RocketCDN cache purge failed: %s."
+msgstr "RocketCDN 캐시 정리에 실패했습니다: %s."
+
+#: inc/Engine/CDN/RocketCDN/APIClient.php:247
+msgid "RocketCDN cache purge successful."
+msgstr "RocketCDN 캐시 정리가 성공했습니다."
+
+#. translators: %1$s = Old CName, %2$s = New CName.
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:398
+msgid "We've updated your RocketCDN CNAME from %1$s to %2$s."
+msgstr "RocketCDN CNAME을 %1$s에서 %2$s(으)로 업데이트했습니다."
+
+#. translators: %1$s = New CName.
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:400
+msgid ""
+"The change is already applied to the plugin settings. If you were using the "
+"CNAME in your code, make sure to update it to: %1$s."
+msgstr "변경 사항은 이미 플러그인 설정에 적용되었습니다. 코드에서 CNAME을 사용 중이었다면 다음으로 업데이트하세요:  %1$s."
+
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:409
+msgid "contact support"
+msgstr "지원 요청"
+
+#: inc/Engine/CDN/RocketCDN/RESTSubscriber.php:137
+msgid "RocketCDN enabled"
+msgstr "RocketCDN 활성화됨"
+
+#: inc/Engine/CDN/RocketCDN/RESTSubscriber.php:160
+msgid "RocketCDN disabled"
+msgstr "RocketCDN 비활성화됨"
+
+#. Translators: %s = date formatted using date_i18n() and get_option(
+#. 'date_format' ).
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:29
+msgid "Valid until %s only!"
+msgstr "%s까지만 유효합니다!"
+
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:38
+msgid "Speed up your website thanks to:"
+msgstr "다음을 통해 웹사이트 속도를 높이세요:"
+
+#. translators: %1$s = opening strong tag, %2$s = closing strong tag.
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:44
+msgid ""
+"High performance Content Delivery Network (CDN) with %1$sunlimited "
+"bandwidth%2$s"
+msgstr "%1$s무제한 대역폭%2$s을 갖춘 고성능 콘텐츠 전송 네트워크(CDN)"
+
+#. translators: %1$s = opening strong tag, %2$s = closing strong tag.
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:50
+msgid ""
+"Easy configuration: the %1$sbest CDN settings%2$s are automatically applied"
+msgstr "간편한 구성: %1$s최상의 CDN 설정%2$s이 자동으로 적용됩니다."
+
+#. translators: %1$s = opening strong tag, %2$s = closing strong tag.
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:56
+msgid ""
+"WP Rocket integration: the CDN option is %1$sautomatically configured%2$s in"
+" our plugin"
+msgstr "WP Rocket 통합: CDN 옵션은 플러그인에서 %1$s자동으로 구성%2$s됩니다."
+
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:60
+msgid "Learn more about RocketCDN"
+msgstr "RocketCDN에 대해 자세히 알아보세요"
+
+#. translators: %1$s = discounted price, %2$s = regular price.
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:67
+msgid ""
+"*$%1$s/month for 12 months then $%2$s/month. You can cancel your "
+"subscription at any time."
+msgstr "*$%1$s/월 12개월 후 $%2$s/월. 언제든지 구독을 취소할 수 있습니다."
+
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:88
+msgid "Billed monthly"
+msgstr "월별 청구"
+
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:89
+msgid "Get Started"
+msgstr "시작하기"
+
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:94
+msgid "Reduce this banner"
+msgstr "이 배너 줄이기"
+
+#: inc/Engine/CDN/RocketCDN/views/cta-small.php:19
+msgid ""
+"Speed up your website with RocketCDN, WP Rocket’s Content Delivery Network."
+msgstr "WP Rocket의 콘텐츠 전송 네트워크인 RocketCDN으로 웹사이트 속도를 높이세요."
+
+#: inc/Engine/CDN/RocketCDN/views/cta-small.php:22
+#: inc/Engine/CDN/RocketCDN/views/promote-notice.php:13
+#: views/settings/page-sections/plugins.php:60
+msgid "Learn More"
+msgstr "자세히 알아보기"
+
+#: inc/Engine/CDN/RocketCDN/views/dashboard-status.php:24
+msgid "RocketCDN is unavailable on local domains and staging sites."
+msgstr "RocketCDN은 로컬 도메인과 스테이징 사이트에서는 사용할 수 없습니다."
+
+#: inc/Engine/CDN/RocketCDN/views/dashboard-status.php:33
+msgid "Get RocketCDN"
+msgstr "RocketCDN 받기"
+
+#: inc/Engine/CDN/RocketCDN/views/promote-notice.php:11
+msgid "New!"
+msgstr "신규!"
+
+#: inc/Engine/CDN/RocketCDN/views/promote-notice.php:12
+msgid ""
+"Speed up your website with RocketCDN, WP Rocket’s Content Delivery Network!"
+msgstr "RocketCDN, WP Rocket의 콘텐츠 전송 네트워크로 웹사이트 속도를 높이세요!"
+
+#: inc/Engine/Common/JobManager/Cron/Subscriber.php:185
+msgid "WP Rocket process pending jobs"
+msgstr "WP Rocket 프로세스 보류 중인 작업"
+
+#: inc/Engine/Common/JobManager/Cron/Subscriber.php:204
+msgid "WP Rocket clear failed jobs"
+msgstr "WP Rocket 실패한 작업 지우기"
+
+#: inc/Engine/Common/JobManager/Cron/Subscriber.php:221
+msgid "WP Rocket process on submit jobs"
+msgstr "WP Rocket 작업 제출 프로세스"
+
+#: inc/Engine/Common/PerformanceHints/Admin/AdminBar.php:44
+msgid "Clear Priority Elements"
+msgstr "우선 순위 요소 지우기"
+
+#: inc/Engine/Common/PerformanceHints/Admin/AdminBar.php:79
+msgid "Clear Priority Elements of this URL"
+msgstr "이 URL의 우선 순위 요소 지우기"
+
+#: inc/Engine/Common/PerformanceHints/Admin/AdminBar.php:100
+msgid "Priority Elements"
+msgstr "우선 순위 요소"
+
+#: inc/Engine/Common/PerformanceHints/Admin/AdminBar.php:101
+#: inc/Engine/Saas/Admin/AdminBar.php:134
+#: views/settings/page-sections/dashboard.php:169
+msgid "Clear"
+msgstr "지우기"
+
+#: inc/Engine/Common/PerformanceHints/Admin/AdminBar.php:103
+msgid ""
+"This action will clear the Critical Images and Lazily Rendered Content."
+msgstr "이 작업을 수행하면 중요한 이미지와 느리게 렌더링된 콘텐츠가 지워집니다."
+
+#. translators: %1$s = plugin name.
+#: inc/Engine/Common/PerformanceHints/Admin/Controller.php:140
+msgid "%1$s: Critical images and Lazy Render data was cleared!"
+msgstr "%1$s: 중요한 이미지와 Lazy Render 데이터가 지워졌습니다!"
+
+#: inc/Engine/Common/PerformanceHints/AJAX/AJAXControllerTrait.php:19
+msgid "Script error"
+msgstr "스크립트 오류"
+
+#: inc/Engine/Common/PerformanceHints/AJAX/AJAXControllerTrait.php:22
+msgid "Script timeout"
+msgstr "스크립트 시간 초과"
+
+#. Translators: %s is the exception message.
+#: inc/Engine/Common/Queue/Cleaner.php:87
+msgid "It was not possible to determine a valid cut-off time: %s."
+msgstr "유효한 마감 시간을 결정할 수 없습니다: %s."
+
+#: inc/Engine/Common/Queue/RUCSSQueueRunner.php:272
+msgid "Every minute"
+msgstr "매 분마다"
+
+#: inc/Engine/CriticalPath/Admin/Admin.php:261
+msgid "Regenerate Critical Path CSS"
+msgstr "중요 경로 CSS 재생성"
+
+#: inc/Engine/CriticalPath/Admin/Post.php:144
+#: views/cpcss/metabox/generate.php:47
+msgid "Generate Specific CPCSS"
+msgstr "특정 CPCSS 생성"
+
+#: inc/Engine/CriticalPath/Admin/Post.php:145
+#: views/cpcss/metabox/generate.php:45
+msgid "Regenerate specific CPCSS"
+msgstr "특정 CPCSS 재생성"
+
+#: inc/Engine/CriticalPath/Admin/Post.php:216
+msgid "This feature is not available for non-public post types."
+msgstr "이 기능은 비공개 글 유형에는 사용할 수 없습니다."
+
+#: inc/Engine/CriticalPath/Admin/Post.php:219
+msgid "%l to use this feature."
+msgstr "이 기능을 사용하려면 %l하세요."
+
+#. translators: %s = post type.
+#: inc/Engine/CriticalPath/Admin/Post.php:222
+msgid "Publish the %s"
+msgstr "%s 게시"
+
+#: inc/Engine/CriticalPath/Admin/Post.php:223
+msgid "Enable Load CSS asynchronously in WP Rocket settings"
+msgstr "WP Rocket 설정에서 CSS 비동기 로드 활성화"
+
+#: inc/Engine/CriticalPath/Admin/Post.php:224
+msgid "Enable Load CSS asynchronously in the options above"
+msgstr "위 옵션에서 CSS 비동기 로드를 활성화하세요."
+
+#. translators: %1$s = type of content, %2$s = error message.
+#: inc/Engine/CriticalPath/APIClient.php:64
+msgid "Critical CSS for %1$s not generated. Error: %2$s"
+msgstr "%1$s에 대한 중요 CSS가 생성되지 않았습니다. 오류: %2$s"
+
+#. translators: %s = item URL.
+#: inc/Engine/CriticalPath/APIClient.php:172
+msgid ""
+"Critical CSS for %1$s on mobile not generated. Error: The API returned an "
+"empty response."
+msgstr "모바일에서 %1$s에 대한 중요 CSS가 생성되지 않았습니다. 오류: API가 빈 응답을 반환했습니다."
+
+#. translators: %s = item URL.
+#: inc/Engine/CriticalPath/APIClient.php:175
+msgid ""
+"Critical CSS for %1$s not generated. Error: The API returned an empty "
+"response."
+msgstr "%1$s에 대한 중요 CSS가 생성되지 않았습니다. 오류: API가 빈 응답을 반환했습니다."
+
+#. translators: %s = item URL.
+#: inc/Engine/CriticalPath/APIClient.php:187
+msgid "Critical CSS for %1$s on mobile not generated."
+msgstr "모바일에서 %1$s에 대한 중요 CSS가 생성되지 않았습니다."
+
+#. translators: %s = item URL.
+#. translators: %1$s = item URL or item type.
+#: inc/Engine/CriticalPath/APIClient.php:189
+#: inc/Engine/CriticalPath/ProcessorService.php:171
+msgid "Critical CSS for %1$s not generated."
+msgstr "%1$s에 대한 중요 CSS가 생성되지 않았습니다."
+
+#. translators: %s = URL.
+#: inc/Engine/CriticalPath/APIClient.php:197
+msgid ""
+"Critical CSS for %1$s on mobile not generated. Error: The API returned an "
+"invalid response code."
+msgstr "모바일에서 %1$s에 대한 중요 CSS가 생성되지 않았습니다. 오류: API가 잘못된 응답 코드를 반환했습니다."
+
+#. translators: %s = URL.
+#: inc/Engine/CriticalPath/APIClient.php:199
+msgid ""
+"Critical CSS for %1$s not generated. Error: The API returned an invalid "
+"response code."
+msgstr "%1$s에 대한 중요 CSS가 생성되지 않았습니다. 오류: API가 잘못된 응답 코드를 반환했습니다."
+
+#. translators: %1$s = error message.
+#: inc/Engine/CriticalPath/APIClient.php:207
+#: inc/Engine/CriticalPath/ProcessorService.php:178
+msgid "Error: %1$s"
+msgstr "오류: %1$s"
+
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:179
+msgid "Critical CSS generation is currently running."
+msgstr "현재 중요 CSS 생성이 진행 중입니다."
+
+#. Translators: %1$s = opening link tag, %2$s = closing link tag.
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:184
+msgid "Go to the %1$sWP Rocket settings%2$s page to track progress."
+msgstr "진행 상황을 추적하려면 %1$sWP Rocket 설정%2$s 페이지로 이동하세요."
+
+#. Translators: %1$d = number of critical CSS generated, %2$d = total number
+#. of critical CSS to generate.
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:399
+msgid ""
+"Critical CSS generation is currently running: %1$d of %2$d page types "
+"completed. (Refresh this page to view progress)"
+msgstr ""
+"중요 CSS 생성이 현재 진행 중입니다. %1$d/%2$d 페이지 유형이 완료되었습니다. (진행 상황을 보려면 이 페이지를 새로고침 "
+"하세요)"
+
+#. Translators: %1$d = number of critical CSS generated, %2$d = total number
+#. of critical CSS to generate.
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:475
+msgid "Critical CSS generation finished for %1$d of %2$d page types."
+msgstr "%2$d개 페이지 유형 중 %1$d개에 대한 중요 CSS 생성이 완료되었습니다."
+
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:482
+msgid "Critical CSS generation encountered one or more errors."
+msgstr "중요 CSS 생성 중에 하나 이상의 오류가 발생했습니다."
+
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:482
+msgid "Learn more."
+msgstr "자세히 알아보세요."
+
+#. translators: %1$ = opening bold tag, %2$ = closing bold tag.
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:846
+msgid ""
+"We highly recommend the %1$supdated Remove Unused CSS%2$s for a better CSS "
+"optimization. Load CSS Asynchronously is always available as a back-up."
+msgstr ""
+"더 나은 CSS 최적화를 위해 %1$s업데이트된 사용하지 않는 CSS 제거%2$s를 적극 권장합니다. CSS 비동기 로드는 항상 백업으로"
+" 사용할 수 있습니다."
+
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:851
+msgid "Stay with the old option"
+msgstr "기존 옵션 유지"
+
+#. translators: %s = item URL.
+#: inc/Engine/CriticalPath/DataManager.php:68
+msgid ""
+"Critical CSS for %1$s on mobile not generated. Error: The destination folder"
+" could not be created."
+msgstr "모바일에서 %1$s에 대한 중요 CSS가 생성되지 않았습니다. 오류: 대상 폴더를 만들 수 없습니다."
+
+#. translators: %s = item URL.
+#: inc/Engine/CriticalPath/DataManager.php:71
+msgid ""
+"Critical CSS for %1$s not generated. Error: The destination folder could not"
+" be created."
+msgstr "%1$s에 대한 중요 CSS가 생성되지 않았습니다. 오류: 대상 폴더를 만들 수 없습니다."
+
+#: inc/Engine/CriticalPath/DataManager.php:106
+msgid "Critical CSS file for mobile does not exist"
+msgstr "모바일용 중요 CSS 파일이 존재하지 않습니다."
+
+#: inc/Engine/CriticalPath/DataManager.php:108
+msgid "Critical CSS file does not exist"
+msgstr "중요 CSS 파일이 존재하지 않습니다"
+
+#: inc/Engine/CriticalPath/DataManager.php:120
+msgid "Critical CSS file for mobile cannot be deleted"
+msgstr "모바일용 중요 CSS 파일을 삭제할 수 없습니다."
+
+#: inc/Engine/CriticalPath/DataManager.php:122
+msgid "Critical CSS file cannot be deleted"
+msgstr "중요 CSS 파일을 삭제할 수 없습니다."
+
+#. translators: %1$s = item URL or item type.
+#: inc/Engine/CriticalPath/ProcessorService.php:164
+msgid "Mobile Critical CSS for %1$s not generated."
+msgstr "%1$s에 대한 모바일 중요 CSS가 생성되지 않았습니다."
+
+#. translators: %1$s = Item URL or item type.
+#: inc/Engine/CriticalPath/ProcessorService.php:205
+msgid "Critical CSS for %s in progress."
+msgstr "%s에 대한 중요 CSS가 진행 중입니다."
+
+#. translators: %1$s = Item URL or item type.
+#: inc/Engine/CriticalPath/ProcessorService.php:239
+msgid "Mobile Critical CSS for %s generated."
+msgstr "%s에 대한 모바일 중요 CSS가 생성되었습니다."
+
+#. translators: %1$s = Item URL or item type.
+#: inc/Engine/CriticalPath/ProcessorService.php:250
+msgid "Critical CSS for %s generated."
+msgstr "%s에 대한 중요 CSS가 생성되었습니다."
+
+#: inc/Engine/CriticalPath/ProcessorService.php:272
+msgid "Critical CSS file deleted successfully."
+msgstr "중요 CSS 파일이 성공적으로 삭제되었습니다."
+
+#. translators: %1$s = Item URL or item type.
+#: inc/Engine/CriticalPath/ProcessorService.php:294
+msgid "Mobile Critical CSS for %1$s timeout. Please retry a little later."
+msgstr "%1$s에 대한 모바일 중요 CSS 시간 초과. 잠시 후에 다시 시도하세요."
+
+#. translators: %1$s = Item URL or item type.
+#: inc/Engine/CriticalPath/ProcessorService.php:307
+msgid "Critical CSS for %1$s timeout. Please retry a little later."
+msgstr "%1$s에 대한 중요 CSS 시간 초과. 잠시 후에 다시 시도하세요."
+
+#: inc/Engine/CriticalPath/RESTWP.php:141
+msgid "Mobile CPCSS generation not enabled."
+msgstr "모바일 CPCSS 생성이 활성화되지 않았습니다."
+
+#: inc/Engine/CriticalPath/RESTWPPost.php:36
+#: inc/Engine/CriticalPath/RESTWPPost.php:69
+msgid "Requested post does not exist."
+msgstr "요청하신 글이 존재하지 않습니다."
+
+#: inc/Engine/CriticalPath/RESTWPPost.php:46
+msgid "Cannot generate CPCSS for unpublished post."
+msgstr "공개되지 않은 글에 대한 CPCSS를 생성할 수 없습니다."
+
+#: inc/Engine/HealthCheck/HealthCheck.php:134
+msgid "Scheduled Cache Purge"
+msgstr "예약된 캐시 제거"
+
+#: inc/Engine/HealthCheck/HealthCheck.php:135
+msgid "Scheduled Database Optimization"
+msgstr "예약된 데이터베이스 최적화"
+
+#: inc/Engine/HealthCheck/HealthCheck.php:136
+msgid "Database Optimization Process"
+msgstr "데이터베이스 최적화 프로세스"
+
+#: inc/Engine/HealthCheck/HealthCheck.php:137
+msgctxt "noun"
+msgid "Preload"
+msgstr "사전 로드"
+
+#: inc/Engine/HealthCheck/HealthCheck.php:138
+msgid "Critical Path CSS Generation Process"
+msgstr "중요 경로 CSS 생성 프로세스"
+
+#. translators: %1$s = <strong>, %2$s = price, %3$s = </strong>.
+#: inc/Engine/License/Renewal.php:76
+msgid "Renew before it is too late, you will only pay %1$s%2$s%3$s!"
+msgstr "너무 늦기 전에 갱신하세요. 비용은 %1$s%2$s%3$s뿐입니다!"
+
+#. translators: %1$s = <strong>, %2$s = discount, %3$s = </strong>,%4$s =
+#. <strong>, %5$s = price, %6$s=</strong>.
+#: inc/Engine/License/Renewal.php:85
+msgid ""
+"Renew with a %1$s%2$s discount%3$s before it is too late, you will only pay "
+"%4$s%5$s%6$s!"
+msgstr "너무 늦기 전에 %1$s%2$s 할인%3$s 받고 갱신하세요. 지불해야 하는 비용은 %4$s%5$s%6$s뿐입니다!"
+
+#. translators: %1$s = <strong>, %2$s = </strong>, %3$s = price.
+#: inc/Engine/License/Renewal.php:139
+msgid "Renew your license for 1 year now at %1$s%3$s%2$s."
+msgstr "지금 %1$s%3$s%2$s에서 라이선스를 1년 동안 갱신하세요."
+
+#. translators: %1$s = <strong>, %2$s = </strong>, %3$s = discount percentage,
+#. %4$s = price.
+#: inc/Engine/License/Renewal.php:152
+msgid ""
+"Renew your license for 1 year now and get %1$s%3$s OFF%2$s immediately: you "
+"will only pay %1$s%4$s%2$s!"
+msgstr ""
+"지금 1년 동안 라이선스를 갱신하고 즉시 %1$s%3$s 할인%2$s 받으세요: 지불해야 하는 비용은 %1$s%4$s%2$s뿐입니다!"
+
+#. translators: %1$s = <strong>, %2$s = </strong>, %3$s = discount price.
+#: inc/Engine/License/Renewal.php:218
+msgid "Renew before it is too late, you will pay %1$s%3$s%2$s."
+msgstr "너무 늦기 전에 갱신하세요. %1$s%3$s%2$s을 지불해야 합니다."
+
+#. translators: %1$s = <strong>, %2$s = discount percentage, %3$s = </strong>,
+#. %4$s = discount price.
+#: inc/Engine/License/Renewal.php:227
+msgid ""
+"Renew with a %1$s%2$s discount%3$s before it is too late, you will only pay "
+"%1$s%4$s%3$s!"
+msgstr "너무 늦기 전에 %1$s%2$s 할인%3$s 받고 갱신하세요. 지불해야 하는 비용은 %1$s%4$s%3$s뿐입니다!"
+
+#. translators: %1$s = <a>, %2$s = </a>.
+#: inc/Engine/License/Renewal.php:526
+msgid ""
+"You need a valid license to continue using this feature. %1$sRenew now%2$s "
+"before losing access."
+msgstr "이 기능을 계속 사용하려면 유효한 라이선스가 필요합니다. 액세스 권한을 잃기 전에 %1$s지금 갱신하세요%2$s."
+
+#. translators: %1$s = <a>, %2$s = </a>.
+#: inc/Engine/License/Renewal.php:547
+msgid "You need an active license to enable this option. %1$sRenew now%2$s."
+msgstr "이 옵션을 사용하려면 활성 라이선스가 필요합니다. %1$s지금 갱신%2$s."
+
+#. translators: %1$s = <a>, %2$s = </a>.
+#: inc/Engine/License/Renewal.php:575
+msgid "You need an active license to enable this option. %1$sMore info%2$s."
+msgstr "이 옵션을 사용하려면 활성 라이선스가 필요합니다. %1$s상세 정보%2$s"
+
+#. translators: %1$s = promotion name, %2$s = <br>, %3$s = <strong>, %4$s =
+#. promotion discount percentage, %5$s = </strong>, %6$s = Growth or Multi.
+#: inc/Engine/License/Upgrade.php:249
+msgid ""
+"Take advantage of %1$s to speed up more websites:%2$s get a %3$s%4$s off%5$s"
+" for %3$supgrading your license to %6$s!%5$s"
+msgstr ""
+"%1$s을(를) 활용하여 더 많은 웹사이트 속도를 높이세요:%2$s 라이선스를 %6$s(으)로 업그레이드하면서 %3$s%4$s "
+"할인%5$s을 받으세요!%5$s"
+
+#: inc/Engine/License/Upgrade.php:258
+msgid "or"
+msgstr "또는"
+
+#. translators: %s = promotion discount percentage.
+#: inc/Engine/License/views/promo-banner.php:18
+msgid "%s off"
+msgstr "%s 할인"
+
+#. translators: %s = promotion name.
+#: inc/Engine/License/views/promo-banner.php:23
+msgid "%s promotion is live!"
+msgstr "%s 프로모션이 진행 중입니다!"
+
+#: inc/Engine/License/views/promo-banner.php:29
+msgid "Hurry Up! Deal ends in:"
+msgstr "서두르세요! 딜 종료 시간:"
+
+#: inc/Engine/License/views/promo-banner.php:33
+#: inc/Engine/License/views/renewal-soon-banner.php:16
+msgid "Minutes"
+msgstr "분"
+
+#: inc/Engine/License/views/promo-banner.php:34
+#: inc/Engine/License/views/renewal-soon-banner.php:17
+msgid "Seconds"
+msgstr "초"
+
+#: inc/Engine/License/views/promo-banner.php:36
+#: inc/Engine/License/views/upgrade-section.php:11
+msgid "Upgrade now"
+msgstr "지금 업그레이드하기"
+
+#: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:13
+msgid "The Optimize CSS Delivery feature is disabled."
+msgstr "CSS 전송 최적화 기능이 비활성화되었습니다."
+
+#: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:17
+msgid ""
+"You can no longer use the Remove Unused CSS or Load CSS asynchronously "
+"options."
+msgstr "사용하지 않는 CSS 제거 또는 CSS 비동기 로드 옵션을 사용할 수 없습니다."
+
+#. translators: %1$s = <strong>, %2$s = </strong>.
+#: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:22
+msgid ""
+"You need an %1$sactive license%2$s to keep optimizing your CSS delivery, "
+"which addresses a PageSpeed Insights recommendation and improves your page "
+"performance."
+msgstr ""
+"CSS 전달을 최적화하려면 %1$s활성 라이선스%2$s가 필요합니다. 이를 통해 PageSpeed Insights 권장 사항을 충족하고 "
+"페이지 성능이 개선됩니다."
+
+#: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:31
+#: inc/Engine/License/views/renewal-expired-banner-ocd.php:41
+#: inc/Engine/License/views/renewal-expired-banner.php:29
+#: inc/Engine/License/views/renewal-soon-banner.php:33
+msgid "Renew now"
+msgstr "지금 갱신하세요"
+
+#: inc/Engine/License/views/renewal-expired-banner-ocd.php:13
+msgid "You will soon lose access to some features."
+msgstr "곧 일부 기능을 사용할 수 없게 됩니다."
+
+#. translators: %1$s = <strong>, %2$s = </strong>.
+#: inc/Engine/License/views/renewal-expired-banner-ocd.php:20
+msgid ""
+"You need an %1$sactive license to continue optimizing your CSS delivery%2$s."
+msgstr "CSS 전달을 계속 최적화하려면 %1$s활성 라이선스가 필요합니다%2$s."
+
+#: inc/Engine/License/views/renewal-expired-banner-ocd.php:26
+msgid ""
+"The Remove Unused CSS and Load CSS asynchronously features are great options"
+" to address the PageSpeed Insights recommendations and improve your website "
+"performance."
+msgstr ""
+"사용하지 않는 CSS 제거 및 CSS 비동기 로드 기능은 PageSpeed Insights 권장 사항을 충족하고 웹사이트 성능을 개선하는"
+" 데 유용한 옵션입니다."
+
+#. translators: %1$s = <strong>, %2$s = </strong>, %3$s = date.
+#: inc/Engine/License/views/renewal-expired-banner-ocd.php:31
+msgid "These features will be %1$sautomatically disabled on %3$s%2$s."
+msgstr "이 기능은 %1$s%3$s%2$s에서 자동으로 비활성화됩니다."
+
+#: inc/Engine/License/views/renewal-expired-banner.php:13
+msgid "Your WP Rocket license is expired!"
+msgstr "WP Rocket 라이선스가 만료되었습니다!"
+
+#. translators: %1$s = <strong>, %2$s = </strong>.
+#: inc/Engine/License/views/renewal-expired-banner.php:20
+msgid ""
+"Your website could be much faster if it could take advantage of our %1$snew "
+"features and enhancements%2$s. 🚀"
+msgstr "귀하의 웹사이트가 %1$s새로운 기능과 향상된 기능%2$s을 활용한다면 훨씬 더 빨라질 수 있습니다. 🚀"
+
+#. translators: %1$s = <strong>, %2$s = </strong>.
+#: inc/Engine/License/views/renewal-soon-banner.php:24
+msgid ""
+"Your %1$sWP Rocket license is about to expire%2$s: you will soon lose access"
+" to product updates and support."
+msgstr "%1$sWP Rocket 라이선스가 곧 만료됩니다%2$s: 곧 제품 업데이트와 지원을 받을 수 없게 됩니다."
+
+#. translators: %1$s = span opening tag, %2$s = price, %3$s = span closing
+#. tag.
+#: inc/Engine/License/views/upgrade-item.php:17
+msgid "Save $%1$s%2$s%3$s"
+msgstr "$%1$s%2$s%3$s 절약하세요"
+
+#: inc/Engine/License/views/upgrade-item.php:35
+#: inc/Engine/License/views/upgrade-item.php:50
+msgid "Websites"
+msgstr "웹사이트"
+
+#. translators: %s = number of websites.
+#: inc/Engine/License/views/upgrade-item.php:58
+msgid "%s websites"
+msgstr "%s 웹사이트"
+
+#. translators: %s = license name.
+#: inc/Engine/License/views/upgrade-item.php:66
+msgid "Upgrade to %s"
+msgstr "%s로 업그레이드하기"
+
+#: inc/Engine/License/views/upgrade-popin.php:15
+msgid "Speed Up More Websites"
+msgstr "더 많은 웹사이트 속도 향상"
+
+#. translators: %1$s = opening strong tag, %2$s = closing strong tag.
+#: inc/Engine/License/views/upgrade-popin.php:22
+msgid ""
+"You can use WP Rocket on more websites by upgrading your license. To "
+"upgrade, simply pay the %1$sprice difference%2$s between your current and "
+"new licenses, as shown below."
+msgstr ""
+"라이선스를 업그레이드하면 더 많은 웹사이트에서 WP Rocket을 사용할 수 있습니다. 업그레이드하려면 아래에 표시된 대로 현재 "
+"라이선스와 새 라이선스 간의 %1$s가격 차이%2$s를 지불하기만 하면 됩니다."
+
+#. translators: %1$s = opening strong tag, %2$s = closing strong tag.
+#: inc/Engine/License/views/upgrade-popin.php:28
+msgid ""
+"%1$sN.B.%2$s: Upgrading your license does not change your expiration date"
+msgstr "%1$s중요%2$s: 라이선스를 업그레이드해도 만료 날짜는 변경되지 않습니다."
+
+#: inc/Engine/License/views/upgrade-section.php:11
+msgid ""
+"You can use WP Rocket on more websites by upgrading your license (you will "
+"only pay the price difference between your current and new licenses)."
+msgstr ""
+"라이선스를 업그레이드하면 더 많은 웹사이트에서 WP Rocket을 사용할 수 있습니다(현재 라이선스와 새 라이선스 간의 차액만 지불하면 "
+"됩니다)."
+
+#: inc/Engine/Media/Lazyload/AdminSubscriber.php:62
+msgid "LazyLoad for images"
+msgstr "이미지에 대한 지연 로드"
+
+#: inc/Engine/Media/Lazyload/AdminSubscriber.php:63
+msgid "LazyLoad for iframes/videos"
+msgstr "iframe/비디오에 대한 지연 로드"
+
+#: inc/Engine/Media/Lazyload/CSS/Admin/Subscriber.php:49
+msgid "LazyLoad CSS backgrounds"
+msgstr "CSS 배경 지연 로드"
+
+#: inc/Engine/Media/Lazyload/Subscriber.php:262
+msgid "Play Youtube video"
+msgstr "YouTube 동영상 재생"
+
+#: inc/Engine/Optimization/DelayJS/Admin/SiteList.php:244
+msgid "Analytics & Trackers"
+msgstr "분석 & 추적기"
+
+#: inc/Engine/Optimization/DelayJS/Admin/SiteList.php:249
+msgid "Ad Networks"
+msgstr "광고 네트워크"
+
+#: inc/Engine/Optimization/DelayJS/Admin/SiteList.php:254
+msgid "Payment Processors"
+msgstr "결제 처리업체"
+
+#: inc/Engine/Optimization/DelayJS/Admin/SiteList.php:259
+msgid "Other Services"
+msgstr "기타 서비스"
+
+#: inc/Engine/Optimization/DelayJS/Admin/SiteList.php:267
+msgid "Themes"
+msgstr "테마"
+
+#: inc/Engine/Optimization/DelayJS/Admin/SiteList.php:272
+msgid "Plugins"
+msgstr "플러그인"
+
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:101
+msgid ""
+"You need an active license to get the latest version of the lists from our "
+"server."
+msgstr "서버에서 최신 버전의 목록을 받으려면 활성 라이선스가 필요합니다."
+
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:109
+msgid "Default Lists"
+msgstr "기본 목록"
+
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:110
+msgid "Delay JavaScript Execution Exclusion Lists"
+msgstr "JavaScript 실행 지연 제외 목록"
+
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:111
+msgid "Incompatible plugins Lists"
+msgstr "호환되지 않는 플러그인 목록"
+
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:121
+msgid "Could not get updated lists from server."
+msgstr "서버에서 업데이트된 목록을 가져올 수 없습니다."
+
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:130
+msgid "Lists are up to date."
+msgstr "목록은 최신 상태입니다."
+
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:139
+msgid "Could not update lists."
+msgstr "목록을 업데이트할 수 없습니다."
+
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:149
+msgid "Lists are successfully updated."
+msgstr "목록이 성공적으로 업데이트되었습니다."
+
+#: inc/Engine/Optimization/Minify/AdminSubscriber.php:65
+msgid "Minify/combine JavaScript"
+msgstr "JavaScript 최소화/결합"
+
+#: inc/Engine/Optimization/Minify/CSS/AdminSubscriber.php:144
+msgid "Minify CSS"
+msgstr "CSS 최소화"
+
+#. translators: %1$s = plugin name, %2$s = table name, %3$s = <a> open tag,
+#. %4$s = </a> closing tag.
+#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:253
+msgid ""
+"%1$s: Could not create the %2$s table in the database which is necessary for"
+" the Remove Unused CSS feature to work. Please check our "
+"%3$sdocumentation%4$s."
+msgstr ""
+"%1$s: 사용하지 않는 CSS 제거 기능이 작동하려면 데이터베이스에 %2$s 테이블을 만들 수 없습니다. %3$s문서%4$s를 "
+"확인하세요."
+
+#. translators: %1$s = plugin name.
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:279
+msgid "%1$s: Used CSS cache cleared!"
+msgstr "%1$s: 사용된 CSS 캐시가 지워졌습니다!"
+
+#. translators: %1$s = plugin name.
+#: inc/Engine/Preload/Admin/Settings.php:76
+msgid ""
+"%1$s: The preload service is now active. After the initial preload it will "
+"continue to cache all your pages whenever they are purged. No further action"
+" is needed."
+msgstr ""
+"%1$s: 사전 로드 서비스가 활성화되었습니다. 초기 사전 로드 후에는 모든 페이지가 제거될 때마다 캐시를 계속합니다. 추가 작업이 "
+"필요하지 않습니다."
+
+#: inc/Engine/Preload/Cron/Subscriber.php:138
+msgid "WP Rocket Preload pending jobs"
+msgstr "WP Rocket Preload 보류 중인 작업"
+
+#: inc/Engine/Preload/Cron/Subscriber.php:166
+msgid "WP Rocket Preload revert stuck failed jobs"
+msgstr "WP Rocket 사전 로드 되돌리기 실패한 작업 중단"
+
+#: inc/Engine/Saas/Admin/AdminBar.php:106
+msgid "Clear Used CSS of this URL"
+msgstr "이 URL의 사용된 CSS 지우기"
+
+#: inc/Engine/Saas/Admin/AdminBar.php:133
+msgid "Used CSS"
+msgstr "사용된 CSS"
+
+#: inc/Engine/Saas/Admin/AdminBar.php:136
+msgid "This action will clear the used CSS files."
+msgstr "이 작업을 수행하면 사용된 CSS 파일이 지워집니다."
+
+#. translators: %1$s = plugin name, %2$s = number of seconds.
+#: inc/Engine/Saas/Admin/Notices.php:91
+msgid ""
+"%1$s: Please wait %2$s seconds. The Remove Unused CSS service is processing "
+"your pages, the plugin is optimizing LCP and the images above the fold."
+msgstr ""
+"%1$s: %2$s초 동안 기다려 주세요. 사용하지 않는 CSS 제거 서비스가 페이지를 처리하고 있으며, 플러그인이 LCP와 폴드 위의 "
+"이미지를 최적화하고 있습니다."
+
+#. translators: %1$s = plugin name, %2$s = number of URLs, %3$s = number of
+#. seconds.
+#: inc/Engine/Saas/Admin/Notices.php:134
+msgid ""
+"%1$s: The LCP element has been optimized, and the images above the fold were excluded from lazyload. The Used CSS of your homepage has been processed.\n"
+"\t\t\t WP Rocket will continue to generate Used CSS for up to %2$s URLs per %3$s second(s)."
+msgstr ""
+"%1$s: LCP 요소가 최적화되었고, 폴드 위의 이미지는 지연 로드에서 제외되었습니다. 홈페이지의 사용된 CSS가 처리되었습니다.\n"
+"WP Rocket은 %3$s초당 최대 %2$s개의 URL에 대한 사용된 CSS를 계속 생성합니다."
+
+#. translators: %1$s = opening link tag, %2$s = closing link tag.
+#: inc/Engine/Saas/Admin/Notices.php:157
+msgid "We suggest enabling %1$sPreload%2$s for the fastest results."
+msgstr "가장 빠른 결과를 얻으려면 %1$sPreload%2$s를 활성화하는 것이 좋습니다."
+
+#. translators: %1$s = opening link tag, %2$s = closing link tag.
+#: inc/Engine/Saas/Admin/Notices.php:167
+msgid "To learn more about the process check our %1$sdocumentation%2$s."
+msgstr "프로세스에 대해 자세히 알아보려면 %1$s문서%2$s를 확인하세요."
+
+#: inc/Engine/Saas/Admin/Notices.php:225
+msgid ""
+"We couldn't generate the used CSS because you're using a nulled version of "
+"WP Rocket. You need an active license to use the Remove Unused CSS feature "
+"and further improve your website's performance."
+msgstr ""
+"WP Rocket의 nulled 버전을 사용하고 있기 때문에 사용된 CSS를 생성할 수 없습니다. Remove Unused CSS 기능을"
+" 사용하고 웹사이트 성능을 더욱 개선하려면 활성 라이선스가 필요합니다."
+
+#. translators: %1$s = promo percentage.
+#: inc/Engine/Saas/Admin/Notices.php:228
+msgid "Click here to get a WP Rocket single license at %1$s off!"
+msgstr "여기를 클릭하면 WP Rocket 단일 라이선스를 %1$s 할인된 가격으로 받으실 수 있습니다!"
+
+#. translators: %1$s = <a> open tag, %2$s = </a> closing tag.
+#: inc/Engine/Saas/Admin/Notices.php:281
+msgid ""
+"It seems a security plugin or the server's firewall prevents WP Rocket from "
+"accessing the SaaS features. IPs listed %1$shere in our documentation%2$s "
+"should be added to your allowlists:"
+msgstr ""
+"보안 플러그인이나 서버 방화벽이 WP Rocket이 SaaS 기능에 대한 액세스를 막는 것 같습니다. 문서 %1$s여기%2$s에 나열된 "
+"IP를 허용 목록에 추가해야 합니다."
+
+#: inc/Engine/Saas/Admin/Notices.php:286
+msgid "- In the security plugin, if you are using one"
+msgstr "- 보안 플러그인에서, 사용하는 경우"
+
+#: inc/Engine/Saas/Admin/Notices.php:287
+msgid "- In the server's firewall. Your host can help you with this"
+msgstr "- 서버의 방화벽에서. 호스트가 이 문제를 도울 수 있습니다"
+
+#: inc/functions/admin.php:21
+msgid ""
+"There seems to be an issue validating your license. Please see the error "
+"message below."
+msgid_plural ""
+"There seems to be an issue validating your license. You can see the error "
+"messages below."
+msgstr[0] "라이선스를 검증하는 데 문제가 있는 듯합니다. 아래의 오류 메시지를 참조하세요."
+
+#: inc/functions/admin.php:361
+msgid "Server type:"
+msgstr "서버 유형:"
+
+#: inc/functions/admin.php:370
+msgid "PHP version number:"
+msgstr "PHP 버전 숫자:"
+
+#: inc/functions/admin.php:379
+msgid "WordPress version number:"
+msgstr "워드프레스 버전 숫자:"
+
+#: inc/functions/admin.php:388
+msgid "WordPress multisite:"
+msgstr "워드프레스 멀티사이트:"
+
+#: inc/functions/admin.php:397
+msgid "Current theme:"
+msgstr "현재 주제:"
+
+#: inc/functions/admin.php:406
+msgid "Current site language:"
+msgstr "현재 사이트 언어:"
+
+#: inc/functions/admin.php:415
+msgid "Active plugins:"
+msgstr "활성 플러그인:"
+
+#: inc/functions/admin.php:418
+msgid "Plugin names of all active plugins"
+msgstr "모든 활성 플러그인의 플러그인 이름"
+
+#: inc/functions/admin.php:424
+msgid "Anonymized WP Rocket settings:"
+msgstr "익명화된 WP Rocket 설정:"
+
+#: inc/functions/admin.php:427
+msgid "Which WP Rocket settings are active"
+msgstr "어떤 WP Rocket 설정이 활성화되어 있나요?"
+
+#: inc/functions/admin.php:433
+msgid "Anonymized WP Rocket statistics:"
+msgstr "익명화된 WP Rocket 통계:"
+
+#: inc/functions/admin.php:436
+msgid "How WP Rocket features function and perform."
+msgstr "WP Rocket의 기능과 성능은 어떤가요?"
+
+#: inc/functions/admin.php:442
+msgid "WP Rocket license type"
+msgstr "WP Rocket 라이선스 유형"
+
+#: inc/functions/options.php:429
+msgid "The provided license data are not valid."
+msgstr "제공된 라이선스 데이터가 유효하지 않습니다."
+
+#. Translators: %1$s = opening link tag, %2$s = closing link tag.
+#: inc/functions/options.php:432
+msgid "To resolve, please %1$scontact support%2$s."
+msgstr "해결하려면 %1$s지원팀에 문의하세요%2$s."
+
+#. Translators: %1$s = opening em tag, %2$s = closing em tag, %3$s = opening
+#. link tag, %4$s closing link tag.
+#: inc/functions/options.php:491 inc/functions/options.php:530
+msgid ""
+"License validation failed. Our server could not resolve the request from "
+"your website."
+msgstr "라이선스 검증에 실패했습니다. 당사 서버가 귀하의 웹사이트에서 요청을 해결할 수 없습니다."
+
+#. Translators: %1$s = opening em tag, %2$s = closing em tag, %3$s = opening
+#. link tag, %4$s closing link tag.
+#: inc/functions/options.php:491
+msgid ""
+"Try clicking %1$sValidate License%2$s below. If the error persists, follow "
+"%3$sthis guide%4$s."
+msgstr "아래 %1$s라이선스 검증%2$s을 클릭해 보세요. 오류가 지속되면 %3$s이 가이드%4$s를 따르세요."
+
+#. Translators: %1$s = opening link tag, %2$s = closing link tag.
+#: inc/functions/options.php:507
+msgid ""
+"License validation failed. You may be using a nulled version of the plugin. "
+"Please do the following:"
+msgstr "라이선스 검증에 실패했습니다. 플러그인의 무효화된 버전을 사용하고 있을 수 있습니다. 다음을 수행하세요."
+
+#. Translators: %1$s = opening link tag, %2$s = closing link tag.
+#: inc/functions/options.php:507 inc/functions/options.php:549
+msgid "Login to your WP Rocket %1$saccount%2$s"
+msgstr "WP Rocket %1$s계정%2$s에 로그인하세요"
+
+#. Translators: %1$s = opening link tag, %2$s = closing link tag.
+#: inc/functions/options.php:507 inc/functions/options.php:549
+msgid "Download the zip file"
+msgstr "zip 파일을 다운로드하세요"
+
+#. Translators: %1$s = opening link tag, %2$s = closing link tag.
+#: inc/functions/options.php:507 inc/functions/options.php:549
+msgid "Reinstall"
+msgstr "재설치"
+
+#. Translators: %1$s = opening link tag, %2$s = closing link tag.
+#: inc/functions/options.php:507
+msgid ""
+"If you do not have a WP Rocket account, please %1$spurchase a license%2$s."
+msgstr "WP Rocket 계정이 없으신 경우 %1$s라이선스를 구매하세요%2$s."
+
+#. Translators: %1$s = opening link tag, %2$s = closing link tag.
+#: inc/functions/options.php:515
+msgid ""
+"License validation failed. This user account does not exist in our database."
+msgstr "라이선스 검증에 실패했습니다. 이 사용자 계정은 저희 데이터베이스에 존재하지 않습니다."
+
+#. Translators: %1$s = opening link tag, %2$s = closing link tag.
+#: inc/functions/options.php:515
+msgid "To resolve, please contact support."
+msgstr "해결하려면 지원팀에 문의하세요."
+
+#. Translators: %1$s = opening link tag, %2$s = closing link tag.
+#: inc/functions/options.php:523
+msgid "License validation failed. This user account is blocked."
+msgstr "라이선스 검증에 실패했습니다. 이 사용자 계정은 차단되었습니다."
+
+#. Translators: %1$s = opening link tag, %2$s = closing link tag.
+#: inc/functions/options.php:523
+msgid "Please see %1$sthis guide%2$s for more info."
+msgstr "상세 정보는 %1$s이 가이드%2$s를 참조하세요."
+
+#. Translators: %1$s = opening em tag, %2$s = closing em tag, %3$s = opening
+#. link tag, %4$s closing link tag.
+#: inc/functions/options.php:530
+msgid ""
+"Try clicking %1$sSave Changes%2$s below. If the error persists, follow "
+"%3$sthis guide%4$s."
+msgstr "아래 %1$s변경 사항 저장%2$s을 클릭해 보세요. 오류가 지속되면 %3$s이 가이드%4$s를 따르세요."
+
+#. Translators: %1$s = opening link tag, %2$s = closing link tag.
+#: inc/functions/options.php:543
+msgid "Your license is not valid."
+msgstr "라이선스가 유효하지 않습니다."
+
+#. Translators: %1$s = opening link tag, %2$s = closing link tag.
+#: inc/functions/options.php:543
+msgid "Make sure you have an active %1$sWP Rocket license%2$s."
+msgstr "활성화된 %1$sWP Rocket 라이선스%2$s가 있는지 확인하세요."
+
+#. Translators: %1$s = opening link tag, %2$s = closing link tag, %3$s =
+#. opening link tag.
+#: inc/functions/options.php:545
+msgid "You have added as many sites as your current license allows."
+msgstr "현재 라이선스가 허용하는 한도 내에서 사이트를 추가했습니다."
+
+#. Translators: %1$s = opening link tag, %2$s = closing link tag, %3$s =
+#. opening link tag.
+#: inc/functions/options.php:545
+msgid ""
+"Upgrade your %1$saccount%2$s or %3$stransfer your license%2$s to this "
+"domain."
+msgstr "%1$s계정%2$s을 업그레이드하거나 %3$s라이선스를 이 도메인으로 이전%2$s하세요."
+
+#. Translators: %1$s = opening link tag, %2$s = closing link tag.
+#: inc/functions/options.php:547
+msgid "This website is not allowed."
+msgstr "이 웹사이트는 허용되지 않습니다."
+
+#. Translators: %1$s = opening link tag, %2$s = closing link tag.
+#: inc/functions/options.php:547
+msgid "Please %1$scontact support%2$s."
+msgstr "%1$s지원팀에 문의%2$s해 주세요."
+
+#. Translators: %1$s = opening link tag, %2$s = closing link tag.
+#: inc/functions/options.php:549
+msgid "This license key is not recognized."
+msgstr "이 라이선스 키를 인식할 수 없습니다."
+
+#. Translators: %1$s = opening link tag, %2$s = closing link tag.
+#: inc/functions/options.php:549
+msgid "If the issue persists, please %1$scontact support%2$s."
+msgstr "문제가 지속되면 %1$s지원팀에 문의%2$s하세요."
+
+#. Translators: %s = error message returned.
+#: inc/functions/options.php:555
+msgid "License validation failed: %s"
+msgstr "라이선스 검증에 실패했습니다: %s"
+
+#: inc/Logger/Logger.php:227 inc/Logger/Logger.php:257
+msgid "The log file does not exist."
+msgstr "로그 파일이 존재하지 않습니다."
+
+#: inc/Logger/Logger.php:233 inc/Logger/Logger.php:263
+msgid "The log file could not be read."
+msgstr "로그 파일을 읽을 수 없습니다."
+
+#: inc/Logger/Logger.php:250
+msgid "The logs are not saved into a file."
+msgstr "로그는 파일에 저장되지 않습니다."
+
+#. Translators: %s = Hosting name.
+#: inc/ThirdParty/Hostings/Cloudways.php:82
+msgid ""
+"Varnish auto-purge will be automatically enabled once Varnish is enabled on "
+"your %s server."
+msgstr "%s 서버에서 Varnish가 활성화되면 Varnish 자동 제거가 자동으로 활성화됩니다."
+
+#. translators: %1$s = opening link tag, %2$s = closing link tag.
+#: inc/ThirdParty/Hostings/Kinsta.php:159
+msgid ""
+"Your installation seems to be missing core Kinsta files managing Cache "
+"clearing, which will prevent your Kinsta installation and WP Rocket from "
+"working correctly. Please get in touch with Kinsta support through your "
+"%1$sMyKinsta%2$s account to resolve this issue."
+msgstr ""
+"설치에 캐시 지우기를 관리하는 핵심 Kinsta 파일이 없는 듯하여 Kinsta 설치와 WP Rocket이 제대로 작동하지 않습니다. 이"
+" 문제를 해결하려면 %1$sMyKinsta%2$s 계정을 통해 Kinsta 지원팀에 문의하세요."
+
+#. translators: %1$s = plugin name.
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:127
+msgid ""
+"%1$s: Cloudflare's HTTP/2 Server Push is incompatible with the features of "
+"Remove Unused CSS and Combine CSS files. We strongly recommend disabling it."
+msgstr ""
+"%1$s: Cloudflare의 HTTP/2 Server Push는 사용하지 않는 CSS 제거 및 CSS 파일 결합 기능과 호환되지 "
+"않습니다. 비활성화할 것을 강력히 권장합니다."
+
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:170
+msgid ""
+"Your site is using the official Cloudflare plugin. We have enabled "
+"Cloudflare auto-purge for compatibility. If you have APO activated, it is "
+"also compatible."
+msgstr ""
+"귀하의 사이트는 공식 Cloudflare 플러그인을 사용하고 있습니다. 호환성을 위해 Cloudflare 자동 정리를 활성화했습니다. "
+"APO를 활성화한 경우에도 호환됩니다."
+
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:171
+msgid ""
+"Cloudflare cache will be purged each time WP Rocket clears its cache to "
+"ensure content is always up-to-date."
+msgstr "WP Rocket이 캐시를 지울 때마다 Cloudflare 캐시도 삭제되어 콘텐츠가 항상 최신 상태로 유지됩니다."
+
+#. Translators: %1$s = strong opening tag, %2$s = strong closing tag.
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:215
+msgid ""
+"%1$sWP Rocket:%2$s You are using \"Dynamic Cookies Cache\". Cloudflare APO "
+"is not yet compatible with that feature."
+msgstr ""
+"%1$sWP Rocket:%2$s \"동적 쿠키 캐시\"를 사용하고 있습니다. Cloudflare APO는 아직 해당 기능과 호환되지 "
+"않습니다."
+
+#. Translators:%1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:221
+msgid ""
+"You should either disable Cloudflare APO or check with the theme/plugin "
+"requiring the use of “Dynamic Cookies Cache” developers for an alternative "
+"way to be page-cache friendly. %1$sMore info%2$s"
+msgstr ""
+"Cloudflare APO를 비활성화하거나 \"동적 쿠키 캐시\" 개발자를 사용해야 하는 테마/플러그인에 페이지 캐시 친화적인 대체 "
+"방법을 문의해야 합니다. %1$s상세 정보%2$s"
+
+#. Translators: %1$s = strong opening tag, %2$s = strong closing tag, %3$s =
+#. opening <a> tag, %4$s = closing </a> tag, %5$s = opening <a> tag.
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:272
+msgid ""
+"%1$sWP Rocket:%2$s You are using \"Separate cache files for mobile "
+"devices\". You need to activate \"Cache by Device Type\" %3$ssetting%5$s on "
+"Cloudflare APO to serve the right version of the cache. %4$sMore info%5$s"
+msgstr ""
+"%1$sWP Rocket:%2$s \"모바일 기기용 별도 캐시 파일\"을 사용하고 있습니다. 올바른 버전의 캐시를 제공하려면 "
+"Cloudflare APO에서 \"기기 유형별 캐시\" %3$s설정%5$s을 활성화해야 합니다. %4$s자세한 정보%5$s"
+
+#. Translators: %1$s = strong opening tag, %2$s = strong closing tag.
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:293
+msgid ""
+"%1$sWP Rocket:%2$s You have \"Cache by Device Type\" enabled on Cloudflare "
+"APO. If you judge it necessary for the website to have a different cache on "
+"mobile and desktop, we suggest you enable our “Separate Cache Files for "
+"Mobiles Devices” to ensure the generated cache is accurate."
+msgstr ""
+"%1$sWP Rocket:%2$s Cloudflare APO에서 \"디바이스 유형별 캐시\"를 활성화했습니다. 웹사이트에서 모바일과 "
+"데스크톱에 다른 캐시를 사용해야 한다고 판단하는 경우, 생성된 캐시가 정확한지 확인하기 위해 \"모바일 기기에 대한 별도의 캐시 "
+"파일\"을 활성화하는 것이 좋습니다."
+
+#. translators: %1$s is WP Rocket plugin name, %2$s is opening <a> tag, %3$s
+#. is closing </a> tag.
+#: inc/ThirdParty/Plugins/ModPagespeed.php:102
+msgid ""
+"<strong>%1$s</strong>: Mod PageSpeed is not compatible with this plugin and "
+"may cause unexpected results. %2$sMore Info%3$s"
+msgstr ""
+"<strong>%1$s</strong>: Mod PageSpeed는 이 플러그인과 호환되지 않으며 예상치 못한 결과가 발생할 수 "
+"있습니다. %2$s자세한 정보%3$s"
+
+#. Translators: %1$s is an opening <strong> tag; %2$s is a closing </strong>
+#. tag
+#: inc/ThirdParty/Plugins/Optimization/Autoptimize.php:75
+msgid ""
+"%1$sWP Rocket: %2$sWe have detected that Autoptimize's JavaScript "
+"Aggregation feature is enabled. WP Rocket's Delay JavaScript Execution will "
+"not be applied to the file it creates. We suggest disabling %1$sJavaScript "
+"Aggregation%2$s to take full advantage of Delay JavaScript Execution."
+msgstr ""
+"%1$sWP Rocket: %2$sAutoptimize의 JavaScript Aggregation 기능이 활성화되어 있는 것을 "
+"감지했습니다. WP Rocket의 Delay JavaScript Execution은 생성한 파일에 적용되지 않습니다. Delay "
+"JavaScript Execution을 최대한 활용하려면 %1$sJavaScript Aggregation%2$s을 비활성화하는 것이 "
+"좋습니다."
+
+#. Translators: %1$s is an opening <strong> tag; %2$s is a closing </strong>
+#. tag
+#: inc/ThirdParty/Plugins/Optimization/Autoptimize.php:130
+msgid ""
+"%1$sWP Rocket: %2$sWe have detected that Autoptimize's Aggregate Inline CSS "
+"feature is enabled. WP Rocket's Load CSS Asynchronously will not work "
+"correctly. We suggest disabling %1$sAggregate Inline CSS%2$s to take full "
+"advantage of Load CSS Asynchronously Execution."
+msgstr ""
+"%1$sWP Rocket: %2$sAutoptimize의 Aggregate Inline CSS 기능이 활성화되어 있는 것을 감지했습니다."
+" WP Rocket의 Load CSS Asynchronously가 제대로 작동하지 않습니다. Load CSS Asynchronously "
+"Execution을 최대한 활용하려면 %1$sAggregate Inline CSS%2$s를 비활성화하는 것이 좋습니다."
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/ThirdParty/Plugins/Optimization/Ezoic.php:45
+msgid ""
+"This plugin blocks WP Rocket's caching and optimizations. Deactivate it and "
+"use %1$sEzoic's nameserver integration%2$s instead."
+msgstr ""
+"이 플러그인은 WP Rocket의 캐싱 및 최적화를 차단합니다. 비활성화하고 대신 %1$sEzoic의 네임서버 통합%2$s을 사용하세요."
+
+#. Translators: %s = Plugin name.
+#: inc/ThirdParty/Plugins/Optimization/Hummingbird.php:78
+msgctxt "Hummingbird notice"
+msgid ""
+"Please deactivate the following %s option which conflicts with WP Rocket "
+"features:"
+msgid_plural ""
+"Please deactivate the following %s options which conflict with WP Rocket "
+"features:"
+msgstr[0] "WP Rocket 기능과 충돌하는 다음 %s 옵션을 비활성화하세요:"
+
+#. Translators: %1$s = Plugin name, %2$s = <em>, %3$s = </em>.
+#: inc/ThirdParty/Plugins/Optimization/Hummingbird.php:156
+msgctxt "Hummingbird notice"
+msgid ""
+"%1$s %2$sdisable emoji%3$s conflicts with WP Rockets %2$sdisable emoji%3$s"
+msgstr "%1$s %2$s이모지 비활성화%3$s가 WP Rockets %2$s이모지 비활성화%3$s와 충돌합니다."
+
+#. Translators: %1$s = Plugin name, %2$s = <em>, %3$s = </em>.
+#: inc/ThirdParty/Plugins/Optimization/Hummingbird.php:192
+msgctxt "Hummingbird notice"
+msgid ""
+"%1$s %2$sGZIP compression%3$s conflicts with WP Rocket %2$sGZIP "
+"compression%3$s"
+msgstr "%1$s %2$sGZIP 압축%3$s이 WP Rocket %2$sGZIP 압축%3$s과 충돌합니다."
+
+#. Translators: %1$s = Plugin name, %2$s = <em>, %3$s = </em>.
+#: inc/ThirdParty/Plugins/Optimization/Hummingbird.php:228
+msgctxt "Hummingbird notice"
+msgid ""
+"%1$s %2$sbrowser caching%3$s conflicts with WP Rocket %2$sbrowser "
+"caching%3$s"
+msgstr "%1$s %2$s브라우저 캐싱%3$s이 WP Rocket %2$s브라우저 캐싱%3$s과 충돌합니다."
+
+#. Translators: %1$s = Plugin name, %2$s = <em>, %3$s = </em>.
+#: inc/ThirdParty/Plugins/Optimization/Hummingbird.php:260
+msgctxt "Hummingbird notice"
+msgid ""
+"%1$s %2$spage caching%3$s conflicts with WP Rocket %2$spage caching%3$s"
+msgstr "%1$s %2$s페이지 캐싱%3$s이 WP Rocket %2$s페이지 캐싱%3$s과 충돌합니다."
+
+#. Translators: %1$s = Plugin name, %2$s = <em>, %3$s = </em>.
+#: inc/ThirdParty/Plugins/Optimization/Hummingbird.php:294
+msgctxt "Hummingbird notice"
+msgid ""
+"%1$s %2$sasset optimization%3$s conflicts with WP Rocket %2$sfile "
+"optimization%3$s"
+msgstr "%1$s %2$s자산 최적화%3$s가 WP Rocket %2$s파일 최적화%3$s와 충돌합니다."
+
+#: inc/ThirdParty/Plugins/Optimization/Perfmatters.php:38
+msgid ""
+"Remove Unused CSS is currently activated in Perfmatters. If you want to use "
+"WP Rocket's Remove Unused CSS feature, disable this option in Perfmatters."
+msgstr ""
+"사용하지 않는 CSS는 제거는 현재 Perfmatters에서 활성화되어 있습니다. WP Rocket의 사용하지 않는 CSS 제거 기능을 "
+"사용하려면 Perfmatters에서 이 옵션을 비활성화하세요."
+
+#: inc/ThirdParty/Plugins/Optimization/RapidLoad.php:39
+msgid ""
+"Automated unused CSS removal is currently activated in RapidLoad Power-Up "
+"for Autoptimize. If you want to use WP Rocket's Remove Unused CSS feature, "
+"disable the  RapidLoad Power-Up for Autoptimize plugin."
+msgstr ""
+"자동화된 사용하지 않는 CSS 제거는 현재 Autoptimize용 RapidLoad Power-Up에서 활성화되어 있습니다. WP "
+"Rocket의 사용하지 않는 CSS 제거 기능을 사용하려면 RapidLoad Power-Up for Autoptimize 플러그인을 "
+"비활성화하세요."
+
+#. translators: %1$s = plugin name.
+#: inc/ThirdParty/Plugins/Optimization/WPMeteor.php:42
+msgid ""
+"Delay JS is currently activated in %1$s. If you want to use WP Rocket’s "
+"delay JS, disable %1$s"
+msgstr ""
+"Delay JS는 현재 %1$s에서 활성화되어 있습니다. WP Rocket의 Delay JS를 사용하려면 %1$s를 비활성화하세요."
+
+#: inc/ThirdParty/Plugins/Smush.php:108 inc/ThirdParty/Plugins/Smush.php:126
+msgid "Smush"
+msgstr "스머쉬"
+
+#: inc/ThirdParty/Themes/Avada.php:107
+msgid "Avada"
+msgstr "Avada"
+
+#: inc/ThirdParty/Themes/Divi.php:293
+msgid ""
+"Your Divi template was updated. Clear the Used CSS if the layout, design or "
+"CSS styles were changed."
+msgstr "Divi 템플릿이 업데이트되었습니다. 레이아웃, 디자인 또는 CSS 스타일이 변경된 경우 사용된 CSS를 지우세요."
+
+#: views/cpcss/activate-cpcss-mobile.php:13
+msgid "Load CSS asynchronously for mobile"
+msgstr "모바일에서 CSS 비동기 로드"
+
+#: views/cpcss/activate-cpcss-mobile.php:14
+msgid ""
+"Your website currently uses the same Critical Path CSS for both desktop and "
+"mobile."
+msgstr "현재 귀하의 웹사이트는 데스크톱과 모바일에서 동일한 Critical Path CSS를 사용하고 있습니다."
+
+#: views/cpcss/activate-cpcss-mobile.php:15
+msgid "Click the button to enable mobile-specific CPCSS for your site."
+msgstr "사이트에서 모바일 전용 CPCSS를 활성화하려면 버튼을 클릭하세요."
+
+#. translators: %1$s = opening link tag, %2$s = closing link tag.
+#: views/cpcss/activate-cpcss-mobile.php:20
+#: views/settings/enable-google-fonts.php:19
+#: views/settings/mobile-cache.php:20
+msgid ""
+"This is a one-time action and this button will be removed afterwards. "
+"%1$sMore info%2$s"
+msgstr "이 작업은 한 번만 수행되며 이 버튼은 그 후 제거됩니다. %1$s상세 정보%2$s"
+
+#. translators: %1$s = opening link tag, %2$s = closing link tag.
+#: views/cpcss/activate-cpcss-mobile.php:30
+msgid ""
+"Your site is now using mobile-specific critical path CSS. %1$sMore info%2$s"
+msgstr "귀하의 사이트는 이제 모바일 전용 중요 경로 CSS를 사용하고 있습니다. %1$s상세 정보%2$s"
+
+#: views/cpcss/activate-cpcss-mobile.php:39
+msgid "Generate Mobile Specific CPCSS"
+msgstr "모바일 전용 CPCSS 생성"
+
+#: views/cpcss/metabox/container.php:19
+msgid "Critical Path CSS"
+msgstr "중요 경로 CSS"
+
+#. translators: %1$s = opening link tag, %2$s = closing link tag.
+#: views/cpcss/metabox/generate.php:23
+msgid "Generate specific Critical Path CSS for this post. %1$sMore info%2$s"
+msgstr "이 글에 대한 특정 중요 경로 CSS를 생성합니다. %1$s상세 정보%2$s"
+
+#. translators: %1$s = opening link tag, %2$s = closing link tag.
+#: views/cpcss/metabox/generate.php:33
+msgid "This post uses specific Critical Path CSS. %1$sMore info%2$s"
+msgstr "이 글은 특정 중요 경로 CSS를 사용합니다. %1$s상세 정보%2$s"
+
+#: views/cpcss/metabox/generate.php:56
+msgid "Revert back to the default CPCSS"
+msgstr "기본 CPCSS로 되돌리기"
+
+#: views/deactivation-intent/form.php:21
+msgid "Facing an issue?"
+msgstr "문제가 발생하셨나요?"
+
+#: views/deactivation-intent/form.php:24
+msgid ""
+"It is not always necessary to deactivate WP Rocket when facing any issues. "
+"Most of them can be fixed by deactivating only some options."
+msgstr ""
+"문제가 발생했을 때 WP Rocket을 비활성화할 필요는 없습니다. 대부분의 문제는 일부 옵션만 비활성화하면 해결할 수 있습니다."
+
+#. translators: %1$s = opening strong tag, %2$s = closing strong tag.
+#: views/deactivation-intent/form.php:29
+msgid ""
+"Our advice? Instead of deactivating WP Rocket, use our %1$sSafe Mode%2$s to "
+"quickly disable LazyLoad, File Optimization, and CDN options. Then check to "
+"see if your issue is resolved."
+msgstr ""
+"저희 조언이요? WP Rocket을 비활성화하는 대신 %1$s안전 모드%2$s를 사용하여 LazyLoad, 파일 최적화 및 CDN 옵션을"
+" 빠르게 비활성화하세요. 그런 다음 문제가 해결되었는지 확인하세요."
+
+#: views/deactivation-intent/form.php:35
+msgid "Do you want to use our Safe Mode to troubleshoot WP Rocket?"
+msgstr "WP Rocket 문제를 해결하기 위해 안전 모드를 사용하시겠습니까?"
+
+#. translators: %1$s = opening strong tag, %2$s = closing strong tag.
+#: views/deactivation-intent/form.php:55
+msgid "Yes, apply \"%1$sSafe Mode%2$s\""
+msgstr "예, \"%1$s안전 모드%2$s\"를 적용합니다."
+
+#. translators: %1$s = opening strong tag, %2$s = closing strong tag.
+#: views/deactivation-intent/form.php:68
+msgid ""
+"and export WP Rocket settings %1$s(Recommended as current settings will be "
+"deleted)%2$s"
+msgstr "WP Rocket 설정 내보내기 %1$s(현재 설정이 삭제되므로 권장)%2$s"
+
+#: views/deactivation-intent/form.php:76
+msgid "No, deactivate and snooze this message for"
+msgstr "아니요, 이 메시지를 비활성화하고 일시 중지합니다."
+
+#: views/deactivation-intent/form.php:78
+msgid "1 day"
+msgstr "1일"
+
+#: views/deactivation-intent/form.php:79
+msgid "7 days"
+msgstr "7일"
+
+#: views/deactivation-intent/form.php:80
+msgid "30 days"
+msgstr "30일"
+
+#: views/deactivation-intent/form.php:81
+msgid "Forever"
+msgstr "영구"
+
+#: views/deactivation-intent/form.php:87
+msgid "Cancel"
+msgstr "취소"
+
+#: views/deactivation-intent/form.php:88
+msgid "Confirm"
+msgstr "확인하다"
+
+#. translators: %1$s = <strong>, %2$s = plugin version, %3$s = </strong>, %4$s
+#. = <a>, %5$s = </a>, %6$s = <a>.
+#: views/plugins/update-renewal-expired-notice.php:27
+msgid ""
+" %1$sWP Rocket %2$s%3$s is available. %4$sLearn more%5$s about the updates "
+"and enhancements of this major version. You need an active license to use "
+"them on your website, don’t miss out! %6$sRenew Now%5$s"
+msgstr ""
+"%1$sWP Rocket %2$s%3$s을 사용할 수 있습니다. 이 주요 버전의 업데이트 및 개선 사항에 대해 %4$s자세히 "
+"알아보세요%5$s. 웹사이트에서 사용하려면 활성 라이선스가 필요합니다. 놓치지 마세요! %6$s지금 갱신하세요%5$s"
+
+#: views/settings/dynamic-lists-update.php:14
+msgid "Update Inclusion and Exclusion Lists"
+msgstr "포함 및 제외 목록 업데이트"
+
+#. translators: %1$s = opening link tag, %2$s = closing link tag.
+#: views/settings/dynamic-lists-update.php:19
+msgid ""
+"Compatibility lists are downloaded automatically every week. Click the "
+"button if you want to update them manually. %1$sMore info%2$s"
+msgstr "호환성 목록은 매주 자동으로 다운로드됩니다. 수동으로 업데이트하려면 버튼을 클릭하세요. %1$s상세 정보%2$s"
+
+#: views/settings/dynamic-lists-update.php:29
+msgid "Update lists"
+msgstr "목록 업데이트"
+
+#: views/settings/enable-google-fonts.php:13
+msgid "Enable Google Font Optimization"
+msgstr "Google 글꼴 최적화 활성화"
+
+#: views/settings/enable-google-fonts.php:14
+msgid ""
+"Improves font performance and combines multiple font requests to reduce the "
+"number of HTTP requests."
+msgstr "글꼴 성능을 개선하고 여러 글꼴 요청을 결합하여 HTTP 요청 수를 줄입니다."
+
+#. translators: %1$s = opening link tag, %2$s = closing link tag.
+#: views/settings/enable-google-fonts.php:29
+msgid ""
+"Google Fonts Optimization is now enabled for your site. %1$sMore info%2$s"
+msgstr "이제 귀하의 사이트에서 Google Fonts Optimization이 활성화되었습니다. %1$s상세 정보%2$s"
+
+#: views/settings/enable-google-fonts.php:38
+msgid "Optimize Google Fonts"
+msgstr "Google 글꼴 최적화"
+
+#: views/settings/fields/cache-lifespan.php:26
+msgid "Clear cache after"
+msgstr "캐시를 지운 후"
+
+#: views/settings/fields/categorized_multiselect.php:54
+msgid "3rd parties"
+msgstr "제3자"
+
+#: views/settings/fields/categorized_multiselect.php:82
+#: views/settings/fields/categorized_multiselect.php:142
+msgid "Select all"
+msgstr "모두 선택"
+
+#: views/settings/fields/categorized_multiselect.php:114
+msgid "WordPress"
+msgstr "워드프레스"
+
+#: views/settings/fields/cnames.php:58 views/settings/fields/cnames.php:92
+#: views/settings/fields/cnames.php:122
+msgid "CSS & JavaScript"
+msgstr "CSS & JavaScript"
+
+#: views/settings/fields/cnames.php:59 views/settings/fields/cnames.php:93
+#: views/settings/fields/cnames.php:123
+msgid "JavaScript"
+msgstr "JavaScript"
+
+#: views/settings/fields/cnames.php:60 views/settings/fields/cnames.php:94
+#: views/settings/fields/cnames.php:124
+msgid "CSS"
+msgstr "CSS"
+
+#: views/settings/fields/import-form.php:29
+msgid "Import settings"
+msgstr "설정 가져오기"
+
+#: views/settings/fields/one-click-addon.php:43
+#: views/settings/fields/rocket-addon.php:43
+msgid "Add-on status"
+msgstr "추가 기능 상태"
+
+#: views/settings/fields/rocket-addon.php:72
+msgid "Modify options"
+msgstr "옵션 수정"
+
+#: views/settings/fields/rocket-cdn.php:29
+#: views/settings/fields/rocket-cdn.php:41
+msgid "CDN CNAME"
+msgstr "CDN 이름"
+
+#. translators: %s is a "Learn more" link.
+#: views/settings/fields/rocket-cdn.php:62
+msgid "Purges RocketCDN cached resources for your website. %s"
+msgstr "귀하의 웹사이트에 대한 RocketCDN 캐시 리소스를 제거합니다. %s"
+
+#: views/settings/fields/rocket-cdn.php:63
+#: views/settings/page-sections/cloudflare.php:36
+#: views/settings/page-sections/sucuri.php:37
+msgid "Learn more"
+msgstr "자세히 알아보기"
+
+#: views/settings/fields/rocket-cdn.php:72
+msgid "Clear all RocketCDN cache files"
+msgstr "모든 RocketCDN 캐시 파일을 지웁니다."
+
+#: views/settings/mobile-cache.php:11
+msgid "Mobile Cache"
+msgstr "모바일 캐시"
+
+#: views/settings/mobile-cache.php:14
+msgid "Speed your site for mobile visitors."
+msgstr "모바일 방문자를 위해 사이트 속도를 높이세요."
+
+#: views/settings/mobile-cache.php:28
+msgid "Mobile Cache is now enabled for your site."
+msgstr "이제 귀하의 사이트에서 모바일 캐시가 활성화되었습니다."
+
+#: views/settings/mobile-cache.php:34
+msgid "Enable Mobile Cache"
+msgstr "모바일 캐시 활성화"
+
+#: views/settings/page-sections/cloudflare.php:27
+msgid "Cloudflare Cache"
+msgstr "Cloudflare 캐시"
+
+#. translators: %s is a "Learn more" link.
+#: views/settings/page-sections/cloudflare.php:35
+#: views/settings/page-sections/sucuri.php:36
+msgid "Purges cached resources for your website. %s"
+msgstr "귀하의 웹사이트에 대한 캐시된 리소스를 제거합니다. %s"
+
+#: views/settings/page-sections/cloudflare.php:36
+msgid "https://support.cloudflare.com/hc/en-us/articles/200169246"
+msgstr "https://support.cloudflare.com/hc/en-us/articles/200169246"
+
+#: views/settings/page-sections/cloudflare.php:45
+msgid "Clear all Cloudflare cache files"
+msgstr "모든 Cloudflare 캐시 파일 지우기"
+
+#: views/settings/page-sections/dashboard.php:39
+msgid "Congratulations!"
+msgstr "축하해요!"
+
+#: views/settings/page-sections/dashboard.php:41
+msgid "WP Rocket is now activated and already working for you."
+msgstr "WP Rocket이 이제 활성화되어 정상적으로 작동하고 있습니다."
+
+#: views/settings/page-sections/dashboard.php:43
+msgid "Your website should be loading faster now!"
+msgstr "이제 귀하의 웹사이트가 더 빨리 로딩될 것입니다!"
+
+#: views/settings/page-sections/dashboard.php:45
+msgid ""
+"To guarantee fast websites, WP Rocket automatically applies 80% of web "
+"performance best practices."
+msgstr "빠른 웹사이트를 보장하기 위해 WP Rocket은 자동으로 80%의 웹 성능 모범 사례를 적용합니다."
+
+#: views/settings/page-sections/dashboard.php:45
+msgid ""
+"We also enable options that provide immediate benefits to your website."
+msgstr "또한 귀하의 웹사이트에 즉각적인 이점을 제공하는 옵션도 제공합니다."
+
+#: views/settings/page-sections/dashboard.php:46
+msgid "Continue to the options to further optimize your site!"
+msgstr "사이트를 더욱 최적화할 수 있는 옵션을 계속 사용해 보세요!"
+
+#: views/settings/page-sections/dashboard.php:63
+msgid "My Account"
+msgstr "내 계정"
+
+#: views/settings/page-sections/dashboard.php:69
+msgid "Refresh info"
+msgstr "정보 새로고침"
+
+#: views/settings/page-sections/dashboard.php:87
+msgid "with"
+msgstr "~와 함께"
+
+#: views/settings/page-sections/dashboard.php:101
+msgid "Expiration Date"
+msgstr "유효기간"
+
+#: views/settings/page-sections/dashboard.php:111
+msgid "View my account"
+msgstr "내 계정 보기"
+
+#: views/settings/page-sections/dashboard.php:131 views/settings/page.php:76
+msgid "Rocket Analytics"
+msgstr "Rocket 분석"
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: views/settings/page-sections/dashboard.php:137
+msgid ""
+"I agree to share anonymous data with the development team to help improve WP"
+" Rocket. %1$sWhat info will we collect?%2$s"
+msgstr "WP Rocket 개선을 위해 개발팀과 익명의 데이터를 공유하는 데 동의합니다. %1$s어떤 정보를 수집합니까?%2$s"
+
+#: views/settings/page-sections/dashboard.php:155
+msgid "Quick Actions"
+msgstr "빠른 작업"
+
+#: views/settings/page-sections/dashboard.php:162
+msgid "Cache files"
+msgstr "캐시 파일"
+
+#: views/settings/page-sections/dashboard.php:163
+msgid "This action will clear and preload all the cache files."
+msgstr "이 작업을 수행하면 모든 캐시 파일이 지워지고 미리 로드됩니다."
+
+#: views/settings/page-sections/dashboard.php:163
+msgid "This action will clear all the cache files."
+msgstr "이 작업을 수행하면 모든 캐시 파일이 지워집니다."
+
+#: views/settings/page-sections/dashboard.php:169
+msgid "Clear and preload"
+msgstr "지우기 및 사전 로드"
+
+#: views/settings/page-sections/dashboard.php:183
+#: views/settings/page-sections/dashboard.php:189
+msgid "Regenerate Critical CSS"
+msgstr "중요 CSS 재생성"
+
+#: views/settings/page-sections/dashboard.php:215
+msgid "Frequently Asked Questions"
+msgstr "자주 묻는 질문"
+
+#: views/settings/page-sections/dashboard.php:229
+msgid "Still cannot find a solution?"
+msgstr "아직도 해결책을 찾지 못하셨나요?"
+
+#: views/settings/page-sections/dashboard.php:230
+msgid ""
+"Submit a ticket and get help from our friendly and knowledgeable Rocketeers."
+msgstr "티켓을 제출하여 친절하고 지식이 풍부한 Rocket 담당자로부터 도움을 받으세요."
+
+#: views/settings/page-sections/dashboard.php:238
+msgid "Ask support"
+msgstr "지원 요청"
+
+#: views/settings/page-sections/database.php:25
+msgid "Backup your database before you run a cleanup!"
+msgstr "정리를 실행하기 전에 데이터베이스를 백업하세요!"
+
+#: views/settings/page-sections/database.php:26
+msgid ""
+"Once a database optimization has been performed, there is no way to undo it."
+msgstr "데이터베이스 최적화가 수행되면 실행 취소할 방법이 없습니다."
+
+#: views/settings/page-sections/database.php:28
+msgid "Save Changes and Optimize"
+msgstr "변경 사항 저장 및 최적화"
+
+#. Translators: %1$s = <strong>, %2$s = </strong>.
+#: views/settings/page-sections/imagify.php:22
+msgid ""
+"%1$sWP Rocket created IMAGIFY to give your website an extra speed boost!%2$s"
+msgstr "%1$sWP Rocket은 귀하의 웹사이트 속도를 더욱 높이기 위해 IMAGIFY를 만들었습니다!%2$s"
+
+#: views/settings/page-sections/imagify.php:28
+msgid "Images can account for 50% of your loading time!"
+msgstr "로딩 시간의 50%는 이미지에 소모됩니다!"
+
+#: views/settings/page-sections/imagify.php:31
+msgid ""
+"Imagify automatically optimizes all your images, helping your website gain "
+"precious seconds while saving you time. With just one click, it resizes, "
+"compresses, and converts your images to WebP and AVIF formats without "
+"sacrificing quality."
+msgstr ""
+"Imagify는 모든 이미지를 자동으로 최적화하여 웹사이트가 귀중한 몇 초를 얻는 동시에 시간을 절약할 수 있도록 도와줍니다. 클릭 한 "
+"번으로 품질을 희생하지 않고 이미지 크기를 조정하고 압축하고 WebP 및 AVIF 형식으로 변환합니다."
+
+#. Translators: %1$s = <strong>, %2$s = </strong>.
+#: views/settings/page-sections/imagify.php:41
+msgid "%1$sCompress%2$s all your images in one click"
+msgstr "한 번의 클릭으로 모든 이미지를 %1$s압축%2$s"
+
+#. Translators: %1$s = <strong>, %2$s = </strong>.
+#: views/settings/page-sections/imagify.php:49
+msgid "%1$sConvert%2$s images to WebP and Avif"
+msgstr "%1$s이미지를 WebP 및 Avif로 변환%2$s"
+
+#. Translators: %1$s = <strong>, %2$s = </strong>.
+#: views/settings/page-sections/imagify.php:57
+msgid "%1$sResize%2$s your images on the fly"
+msgstr "%1$s즉시 이미지 크기 조정%2$s"
+
+#. Translators: %1$s = <strong>, %2$s = </strong>.
+#: views/settings/page-sections/imagify.php:65
+msgid "%1$sFree plan%2$s includes 20MB/month (around 200 images)"
+msgstr "%1$s무료 플랜%2$s에는 월 20MB(약 200개 이미지)가 포함됩니다."
+
+#. Translators: %1$s = <strong>, %2$s = </strong>.
+#: views/settings/page-sections/imagify.php:83
+msgid "%1$sInstall Imagify, the Easiest WordPress Image Optimizer%2$s"
+msgstr "%1$s가장 쉬운 워드프레스 이미지 최적화 도구 Imagify 설치%2$s"
+
+#: views/settings/page-sections/imagify.php:110
+msgid "Install Imagify"
+msgstr "Imagify 설치"
+
+#: views/settings/page-sections/license.php:22
+msgid "WP Rocket was not able to automatically validate your license."
+msgstr "WP Rocket이 귀하의 라이선스를 자동으로 검증하지 못했습니다."
+
+#. translators: %1$s = tutorial URL, %2$s = support URL.
+#: views/settings/page-sections/license.php:29
+msgid "Follow this %1$s, or contact %2$s to get the engine started."
+msgstr "%1$s을 따르거나 %2$s에 연락하여 엔진을 시동하세요."
+
+#. translators: %1$s = <a href=", %2$s =  tutorial href,  %3$s =  "
+#. target="_blank">,  %4$s =  </a>.
+#: views/settings/page-sections/license.php:32
+msgid "%1$s%2$s%3$stutorial%4$s"
+msgstr "%1$s%2$s%3$s튜토리얼%4$s"
+
+#: views/settings/page-sections/license.php:34
+msgid ""
+"https://docs.wp-rocket.me/article/100-resolving-problems-with-license-"
+"validation/?utm_source=wp_plugin&utm_medium=wp_rocket"
+msgstr ""
+"https://docs.wp-rocket.me/article/100-resolving-problems-with-license-"
+"validation/?utm_source=wp_plugin&utm_medium=wp_rocket"
+
+#. translators: %1$s = <a href=", %2$s =  support href,  %3$s =  "
+#. target="_blank">,  %4$s =  </a>.
+#: views/settings/page-sections/license.php:40
+msgid "%1$s%2$s%3$ssupport%4$s"
+msgstr "%1$s%2$s%3$s지원%4$s"
+
+#: views/settings/page-sections/plugins.php:18
+msgid ""
+"Beyond WP Rocket, there's a whole family of plugins designed to help you "
+"build better, faster, and safer websites. Each one is crafted with our "
+"unique blend of expertise, simplicity, and outstanding support."
+msgstr ""
+"WP Rocket 외에도 더 나은, 더 빠르고 더 안전한 웹사이트를 구축하는 데 도움이 되는 플러그인 제품군이 있습니다. 각 플러그인은 "
+"전문성, 단순성, 뛰어난 지원의 고유한 조합으로 제작되었습니다."
+
+#: views/settings/page-sections/plugins.php:22
+msgid "Combine our plugins below to build incredible WordPress websites!"
+msgstr "아래의 플러그인을 결합하여 놀라운 워드프레스 웹사이트를 만들어 보세요!"
+
+#: views/settings/page-sections/sucuri.php:46
+msgid "Clear all Sucuri cache files"
+msgstr "모든 Sucuri 캐시 파일을 지웁니다"
+
+#. translators: %1$s = formatted file size, %2$s = formatted number of entries
+#. (don't use %2$d).
+#: views/settings/page-sections/tools.php:20
+msgid "Files size: %1$s. Number of entries: %2$s."
+msgstr "파일 크기: %1$s. 항목 수: %2$s."
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: views/settings/page-sections/tools.php:23
+msgid "%1$sDownload the file%2$s."
+msgstr "%1$s파일 다운로드%2$s."
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: views/settings/page-sections/tools.php:26
+msgid "%1$sDelete the file%2$s."
+msgstr "%1$s파일 삭제%2$s."
+
+#: views/settings/page-sections/tools.php:37
+msgid "Export settings"
+msgstr "설정 내보내기"
+
+#: views/settings/page-sections/tools.php:38
+msgid "Download a backup file of your settings"
+msgstr "설정의 백업 파일을 다운로드하세요"
+
+#: views/settings/page-sections/tools.php:46
+msgid "Download settings"
+msgstr "설정 다운로드"
+
+#: views/settings/page-sections/tools.php:60
+msgid "Rollback"
+msgstr "되돌리기"
+
+#. translators: %s = WP Rocket version number.
+#: views/settings/page-sections/tools.php:64
+msgid "Has version %s caused an issue on your website?"
+msgstr "%s 버전으로 인해 웹사이트에 문제가 발생했나요?"
+
+#. translators: %s = <br>.
+#: views/settings/page-sections/tools.php:69
+msgid ""
+"You can rollback to the previous major version here.%sThen send us a support"
+" request."
+msgstr "여기에서 이전 주요 버전으로 되돌릴 수 있습니다.%s 그런 다음 지원 요청을 보내주세요."
+
+#. translators: %s = WP Rocket previous version.
+#: views/settings/page-sections/tools.php:80
+msgid "Reinstall version %s"
+msgstr "버전 %s 재설치"
+
+#: views/settings/page-sections/tools.php:106
+msgid "Debug mode"
+msgstr "디버그 모드"
+
+#: views/settings/page-sections/tools.php:111
+msgid "Create a debug log file."
+msgstr "디버그 로그 파일을 만듭니다."
+
+#: views/settings/page-sections/tutorials.php:13
+#: views/settings/partials/getting-started.php:18
+msgid "Getting Started"
+msgstr "시작하기"
+
+#: views/settings/page-sections/tutorials.php:15
+msgid "Getting Started with WP Rocket"
+msgstr "WP Rocket 시작하기"
+
+#: views/settings/page-sections/tutorials.php:16
+#: views/settings/partials/getting-started.php:12
+msgid "Finding the Best Settings for Your Site"
+msgstr "귀하의 사이트에 가장 적합한 설정 찾기"
+
+#: views/settings/page-sections/tutorials.php:17
+#: views/settings/partials/getting-started.php:13
+msgid "How to Check if WP Rocket is Caching Your Site"
+msgstr "WP Rocket이 사이트를 캐싱하는지 확인하는 방법"
+
+#: views/settings/page-sections/tutorials.php:18
+#: views/settings/partials/getting-started.php:14
+msgid "How to Measure the Speed of Your Site"
+msgstr "사이트 속도를 측정하는 방법"
+
+#: views/settings/page-sections/tutorials.php:19
+msgid "How Preloading Works"
+msgstr "사전 로드 작동 방식"
+
+#: views/settings/page-sections/tutorials.php:23
+msgid "Passing the Core Web vitals"
+msgstr "코어 웹 바이탈 전달"
+
+#: views/settings/page-sections/tutorials.php:25
+msgid "How to improve LCP with WP Rocket"
+msgstr "WP Rocket으로 LCP를 개선하는 방법"
+
+#: views/settings/page-sections/tutorials.php:26
+msgid "How to improve INP with WP Rocket"
+msgstr "WP Rocket으로 INP를 개선하는 방법"
+
+#: views/settings/page-sections/tutorials.php:27
+msgid "How to improve CLS with WP Rocket"
+msgstr "WP Rocket으로 CLS를 개선하는 방법"
+
+#: views/settings/page-sections/tutorials.php:31
+msgid "Troubleshooting"
+msgstr "문제 해결"
+
+#: views/settings/page-sections/tutorials.php:33
+msgid "Troubleshooting Display Issues with File Optimization"
+msgstr "파일 최적화를 통한 디스플레이 문제 해결"
+
+#: views/settings/page-sections/tutorials.php:34
+msgid "How to Find the Right JavaScript to Exclude"
+msgstr "제외할 올바른 JavaScript를 찾는 방법"
+
+#: views/settings/page-sections/tutorials.php:35
+msgid "How External Content Slows Your Site"
+msgstr "외부 콘텐츠가 사이트를 느리게 만드는 방법"
+
+#: views/settings/page-sections/tutorials.php:41
+msgid "Set Up the Cloudflare Add-on"
+msgstr "Cloudflare 추가 기능 설정"
+
+#: views/settings/page.php:16
+msgid "WP Rocket Settings"
+msgstr "WP Rocket 설정"
+
+#. translators: %s = Plugin version number.
+#: views/settings/page.php:30
+msgid "version %s"
+msgstr "버전 %s"
+
+#: views/settings/page.php:61
+msgid "Show Sidebar"
+msgstr "사이드바 표시"
+
+#. translators: %1$s = <strong>, %2$s = </strong>.
+#: views/settings/page.php:83
+msgid ""
+"Below is a detailed view of all data WP Rocket will collect %1$sif granted "
+"permission.%2$s"
+msgstr "아래는 WP Rocket이 %1$s권한을 부여 받았을 경우%2$s 수집하는 모든 데이터의 상세 내용입니다."
+
+#: views/settings/page.php:89
+msgid ""
+"WP Rocket will never transmit any domain names or email addresses (except "
+"for license validation), IP addresses, or third-party API keys."
+msgstr "WP Rocket은 도메인 이름이나 이메일 주소(라이선스 검증 제외), IP 주소 또는 타사 API 키를 전송하지 않습니다."
+
+#: views/settings/page.php:91
+msgid "Activate Rocket analytics"
+msgstr "Rocket 분석 활성화"
+
+#: views/settings/partials/documentation.php:15
+msgid "It is a great starting point to fix some of the most common issues."
+msgstr "이는 가장 흔한 문제 중 일부를 해결하는 데 좋은 시작점입니다."
+
+#: views/settings/partials/documentation.php:22
+msgid "Read the documentation"
+msgstr "문서 보기"
+
+#: views/settings/partials/getting-started.php:11
+msgid "What WP Rocket Does For You By Default"
+msgstr "WP Rocket이 기본적으로 제공하는 기능"
+
+#: views/settings/partials/sidebar.php:12
+msgid "How to correctly measure your website’s loading time"
+msgstr "웹사이트 로딩 시간을 올바르게 측정하는 방법"
+
+#: views/settings/partials/sidebar.php:14
+msgid "Check our tutorial and learn how to measure the speed of your site."
+msgstr "튜토리얼을 확인하고 사이트 속도를 측정하는 방법을 알아보세요."
+
+#: views/settings/partials/sidebar.php:15
+#: views/settings/partials/sidebar.php:24
+msgid "Read our guide"
+msgstr "가이드 보기"
+
+#: views/settings/partials/sidebar.php:18
+msgid "Learn about optimal WP Rocket settings for mobile."
+msgstr "모바일에 적합한 WP Rocket 설정에 대해 알아보세요."
+
+#: views/settings/partials/sidebar.php:27
+msgid "Test and Improve Google Core Web Vitals for WordPress."
+msgstr "워드프레스용 Google Core Web Vitals를 테스트하고 개선하세요."
+
+#: views/settings/partials/sidebar.php:28
+msgid "Read more"
+msgstr "더 보기"
+
+#: views/settings/partials/sidebar.php:33
+msgid "You have not activated logged-in user cache."
+msgstr "로그인된 사용자 캐시를 활성화하지 않았습니다."
+
+#: views/settings/partials/sidebar.php:34
+msgid ""
+"Use a private browser to check your website's speed and visual appearance."
+msgstr "개인 브라우저를 사용하여 웹사이트의 속도와 시각적 모양을 확인하세요."
+
+#: views/settings/sections/addons-container.php:24
+#: views/settings/sections/fields-container.php:28
+msgid "Need Help?"
+msgstr "도움이 필요하신가요?"

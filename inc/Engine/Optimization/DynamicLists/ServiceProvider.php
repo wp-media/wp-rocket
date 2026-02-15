@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\DynamicLists;
 
@@ -55,14 +56,14 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function register(): void {
 		$this->getContainer()->add( 'dynamic_lists_defaultlists_data_manager', DefaultListsDataManager::class );
 		$this->getContainer()->add( 'dynamic_lists_defaultlists_api_client', DefaultListsAPIClient::class )
-			->addArgument( $this->getContainer()->get( 'options' ) );
+			->addArgument( 'options' );
 		$this->getContainer()->add( 'dynamic_lists_delayjslists_data_manager', DelayJSListsDataManager::class );
 		$this->getContainer()->add( 'dynamic_lists_delayjslists_api_client', DelayJSListsAPIClient::class )
-			->addArgument( $this->getContainer()->get( 'options' ) );
+			->addArgument( 'options' );
 		$this->getContainer()->add( 'dynamic_lists_incompatible_plugins_lists_data_manager', IncompatiblePluginsListsDataManager::class )
-			->addArgument( $this->getContainer()->get( 'options' ) );
+			->addArgument( 'options' );
 		$this->getContainer()->add( 'dynamic_lists_incompatible_plugins_lists_api_client', IncompatiblePluginsListsAPIClient::class )
-			->addArgument( $this->getContainer()->get( 'options' ) );
+			->addArgument( 'options' );
 
 		$providers = [
 			'defaultlists'         =>
@@ -84,12 +85,15 @@ class ServiceProvider extends AbstractServiceProvider {
 		];
 
 		$this->getContainer()->add( 'dynamic_lists', DynamicLists::class )
-			->addArgument( $providers )
-			->addArgument( $this->getContainer()->get( 'user' ) )
-			->addArgument( $this->getContainer()->get( 'template_path' ) )
-			->addArgument( $this->getContainer()->get( 'beacon' ) );
-
+			->addArguments(
+				[
+					$providers,
+					'user',
+					'template_path',
+					'beacon',
+				]
+			);
 		$this->getContainer()->addShared( 'dynamic_lists_subscriber', Subscriber::class )
-			->addArgument( $this->getContainer()->get( 'dynamic_lists' ) );
+			->addArgument( 'dynamic_lists' );
 	}
 }

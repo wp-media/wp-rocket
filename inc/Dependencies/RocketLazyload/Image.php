@@ -67,7 +67,7 @@ class Image {
 	 * @return string
 	 */
 	public function lazyloadBackgroundImages( $html, $buffer ) {
-		if ( ! preg_match_all( '#<(?<tag>div|figure|section|span|li|a)\s+(?<before>[^>]+[\'"\s])?style\s*=\s*([\'"])(?<styles>.*?)\3(?<after>[^>]*)>#is', $buffer, $elements, PREG_SET_ORDER ) ) {
+		if ( ! preg_match_all( '#<(?<tag>div|figure|section|aside|span|li|a)\s+(?<before>[^>]+[\'"\s])?style\s*=\s*([\'"])(?<styles>.*?)\3(?<after>[^>]*)>#is', $buffer, $elements, PREG_SET_ORDER ) ) {
 			return $html;
 		}
 
@@ -132,7 +132,7 @@ class Image {
 		$class = $this->getClasses( $element );
 
 		if ( ! $class ) {
-			$result = preg_replace( '#<(img|div|figure|section|li|span|a)([^>]*)>#is', '<\1 class="rocket-lazyload"\2>', $element );
+			$result = preg_replace( '#<(img|div|figure|section|aside|li|span|a)([^>]*)>#is', '<\1 class="rocket-lazyload"\2>', $element );
 
 			if ( ! $result ) {
 				return $element;
@@ -523,9 +523,18 @@ class Image {
 				$height = absint( $atts['height'] );
 			}
 
-			$placeholder_atts = preg_replace( '@\ssrc\s*=\s*(\'|")(?<src>.*)\1@iUs', ' src="' . $this->getPlaceholder( $width, $height ) . '"', $image['atts'] );
+			// Only match src attributes with safe values (no spaces, quotes, or angle brackets).
+			$placeholder_atts = preg_replace(
+				'@\ssrc\s*=\s*(\'|")(?<src>[^\s"\'>]+)\1@iUs',
+				' src="' . $this->getPlaceholder( $width, $height ) . '"',
+				$image['atts']
+			);
 
-			$image_lazyload = str_replace( $image['atts'], $placeholder_atts . ' data-lazy-src="' . $image['src'] . '"', $image_lazyload );
+			$image_lazyload = str_replace(
+				$image['atts'],
+				$placeholder_atts . ' data-lazy-src="' . esc_url( $image['src'] ) . '"',
+				$image_lazyload
+			);
 
 			if ( preg_match( $native_pattern, $image_lazyload ) ) {
 				$result = preg_replace( $native_pattern, '', $image_lazyload );

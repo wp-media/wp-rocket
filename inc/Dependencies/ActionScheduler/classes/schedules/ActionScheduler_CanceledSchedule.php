@@ -7,11 +7,15 @@ class ActionScheduler_CanceledSchedule extends ActionScheduler_SimpleSchedule {
 
 	/**
 	 * Deprecated property @see $this->__wakeup() for details.
-	 **/
-	private $timestamp = NULL;
+	 *
+	 * @var null
+	 */
+	private $timestamp = null;
 
 	/**
-	 * @param DateTime $after
+	 * Calculate when the next instance of this schedule would run based on a given date & time.
+	 *
+	 * @param DateTime $after Timestamp.
 	 *
 	 * @return DateTime|null
 	 */
@@ -23,7 +27,7 @@ class ActionScheduler_CanceledSchedule extends ActionScheduler_SimpleSchedule {
 	 * Cancelled actions should never have a next schedule, even if get_next()
 	 * is called with $after < $this->scheduled_date.
 	 *
-	 * @param DateTime $after
+	 * @param DateTime $after Timestamp.
 	 * @return DateTime|null
 	 */
 	public function get_next( DateTime $after ) {
@@ -31,6 +35,8 @@ class ActionScheduler_CanceledSchedule extends ActionScheduler_SimpleSchedule {
 	}
 
 	/**
+	 * Action is not recurring.
+	 *
 	 * @return bool
 	 */
 	public function is_recurring() {

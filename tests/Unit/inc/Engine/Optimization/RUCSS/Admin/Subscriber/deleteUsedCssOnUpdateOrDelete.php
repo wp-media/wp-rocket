@@ -42,6 +42,9 @@ class Test_DeleteUsedCssOnUpdateOrDelete extends \WP_Rocket\Tests\Unit\TestCase 
 		Functions\when( 'get_permalink' )
 			->justReturn( $config['url'] );
 
+		Functions\when( 'get_post_type' )
+			->justReturn( $config['post_type'] );
+
 		$this->configureDeletion($config);
 
 		$this->subscriber->delete_used_css_on_update_or_delete( $config['post_id'] );

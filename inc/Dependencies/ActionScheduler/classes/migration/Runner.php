@@ -13,28 +13,60 @@ namespace Action_Scheduler\Migration;
  * @codeCoverageIgnore
  */
 class Runner {
-	/** @var ActionScheduler_Store */
+	/**
+	 * Source store instance.
+	 *
+	 * @var ActionScheduler_Store
+	 */
 	private $source_store;
 
-	/** @var ActionScheduler_Store */
+	/**
+	 * Destination store instance.
+	 *
+	 * @var ActionScheduler_Store
+	 */
 	private $destination_store;
 
-	/** @var ActionScheduler_Logger */
+	/**
+	 * Source logger instance.
+	 *
+	 * @var ActionScheduler_Logger
+	 */
 	private $source_logger;
 
-	/** @var ActionScheduler_Logger */
+	/**
+	 * Destination logger instance.
+	 *
+	 * @var ActionScheduler_Logger
+	 */
 	private $destination_logger;
 
-	/** @var BatchFetcher */
+	/**
+	 * Batch fetcher instance.
+	 *
+	 * @var BatchFetcher
+	 */
 	private $batch_fetcher;
 
-	/** @var ActionMigrator */
+	/**
+	 * Action migrator instance.
+	 *
+	 * @var ActionMigrator
+	 */
 	private $action_migrator;
 
-	/** @var LogMigrator */
+	/**
+	 * Log migrator instance.
+	 *
+	 * @var LogMigrator
+	 */
 	private $log_migrator;
 
-	/** @var ProgressBar */
+	/**
+	 * Progress bar instance.
+	 *
+	 * @var ProgressBar
+	 */
 	private $progress_bar;
 
 	/**
@@ -70,7 +102,7 @@ class Runner {
 	 * @return int Size of batch processed.
 	 */
 	public function run( $batch_size = 10 ) {
-		$batch = $this->batch_fetcher->fetch( $batch_size );
+		$batch      = $this->batch_fetcher->fetch( $batch_size );
 		$batch_size = count( $batch );
 
 		if ( ! $batch_size ) {
@@ -94,7 +126,7 @@ class Runner {
 	 * @param array $action_ids List of action IDs to migrate.
 	 */
 	public function migrate_actions( array $action_ids ) {
-		do_action( 'action_scheduler/migration_batch_starting', $action_ids );
+		do_action( 'action_scheduler/migration_batch_starting', $action_ids ); // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 
 		\ActionScheduler::logger()->unhook_stored_action();
 		$this->destination_logger->unhook_stored_action();
@@ -102,14 +134,17 @@ class Runner {
 		foreach ( $action_ids as $source_action_id ) {
 			$destination_action_id = $this->action_migrator->migrate( $source_action_id );
 			if ( $destination_action_id ) {
-				$this->destination_logger->log( $destination_action_id, sprintf(
-					/* translators: 1: source action ID 2: source store class 3: destination action ID 4: destination store class */
-					__( 'Migrated action with ID %1$d in %2$s to ID %3$d in %4$s', 'action-scheduler' ),
-					$source_action_id,
-					get_class( $this->source_store ),
+				$this->destination_logger->log(
 					$destination_action_id,
-					get_class( $this->destination_store )
-				) );
+					sprintf(
+						/* translators: 1: source action ID 2: source store class 3: destination action ID 4: destination store class */
+						__( 'Migrated action with ID %1$d in %2$s to ID %3$d in %4$s', 'action-scheduler' ),
+						$source_action_id,
+						get_class( $this->source_store ),
+						$destination_action_id,
+						get_class( $this->destination_store )
+					)
+				);
 			}
 
 			if ( $this->progress_bar ) {
@@ -123,7 +158,7 @@ class Runner {
 
 		\ActionScheduler::logger()->hook_stored_action();
 
-		do_action( 'action_scheduler/migration_batch_complete', $action_ids );
+		do_action( 'action_scheduler/migration_batch_complete', $action_ids ); // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 	}
 
 	/**

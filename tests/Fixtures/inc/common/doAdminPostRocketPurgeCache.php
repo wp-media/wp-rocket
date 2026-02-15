@@ -46,6 +46,25 @@ return [
 				],
 				'config' => [
 					'type'      => 'post',
+					'rocket_clean_home_after_clean_post' => true,
+					'post_id'   => 123, // Auto populated in integration tests.
+					'lang'      => 'en',
+					'file'      => 'lorem-ipsum-dolor',
+					'post_data' => [
+						'post_name'  => 'lorem-ipsum-dolor',
+						'post_title' => 'Lorem ipsum dolor',
+					],
+				],
+			],
+			[
+				'$_GET'  => [
+					'type'     => 'post-123',
+					'_wpnonce' => 'post-123',
+					'lang'     => 'en',
+				],
+				'config' => [
+					'type'      => 'post',
+					'rocket_clean_home_after_clean_post' => false,
 					'post_id'   => 123, // Auto populated in integration tests.
 					'lang'      => 'en',
 					'file'      => 'lorem-ipsum-dolor',
@@ -63,6 +82,7 @@ return [
 				],
 				'config' => [
 					'type'    => 'all',
+					'rocket_clean_home_after_clean_post' => true,
 					'lang'    => 'en',
 				],
 			],

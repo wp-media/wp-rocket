@@ -3,8 +3,8 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Common\JobManager\Cron\Subscriber;
 
 use Brain\Monkey\Functions;
 use Mockery;
+use WP_Rocket\Engine\Admin\RocketInsights\Jobs\Factory as RIFactory;
 use WP_Rocket\Engine\Common\JobManager\Cron\Subscriber;
-use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 use WP_Rocket\Engine\Common\JobManager\JobProcessor;
 use WP_Rocket\Engine\Common\Database\Tables\AbstractTable;
 use WP_Rocket\Engine\Optimization\RUCSS\Jobs\Factory as RUCSSFactory;
@@ -47,12 +47,15 @@ class Test_CronCleanRows extends TestCase {
 			foreach ( $this->factories as $factory ) {
 				$manager = Mockery::mock( Manager::class );
 				$manager->expects()->is_allowed()->once()->andReturn( $config['is_allowed'] );
+				if ( $config['is_allowed'] ) {
+					$manager->expects()->allow_clean_rows()->andReturn( $config['allow_clean_rows'] );
+				}
 
 				$factory->expects()
 					->manager()
 					->andReturn( $manager );
 
-				if ( $config['is_allowed'] ) {
+				if ( $config['is_allowed'] && $config['allow_clean_rows'] ) {
 					$table = $this->getMockBuilder( AbstractTable::class )
 						->disableOriginalConstructor()
 						->getMock();
@@ -63,6 +66,9 @@ class Test_CronCleanRows extends TestCase {
 
 					$table->expects( $this->once() )
 						->method( 'delete_old_rows' );
+				} else {
+					$factory->expects()->manager()->never();
+					$factory->expects()->table()->never();
 				}
 			}
 		} else {

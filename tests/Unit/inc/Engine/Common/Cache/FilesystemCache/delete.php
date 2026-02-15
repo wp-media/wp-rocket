@@ -29,6 +29,7 @@ class TestDelete extends TestCase {
 	 */
 	public function testShouldReturnAsExpected( $config, $expected ) {
 		Functions\when('rocket_get_constant')->justReturn($config['root']);
+		Functions\when('get_current_blog_id')->justReturn( 1 );
 		Functions\expect('get_rocket_parse_url')->with($config['key'])->andReturn($config['parsed_url']);
 		Functions\when('home_url')->justReturn($config['home_url']);
 		$this->filesystem->shouldReceive('exists')->with($expected['path'])->andReturn($config['exists']);

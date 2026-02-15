@@ -20,6 +20,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @var array
 	 */
 	protected $provides = [
+		'cloudflare_api_key_factory',
 		'cloudflare_client',
 		'cloudflare_endpoints',
 		'cloudflare',
@@ -42,26 +43,29 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * Registers items with the container
 	 */
 	public function register(): void {
-		$options = $this->getContainer()->get( 'options' );
-
-		$this->getContainer()->add( 'cloudflare_auth_factory', APIKeyFactory::class )->addArgument( $options );
+		$this->getContainer()->add( 'cloudflare_api_key_factory', APIKeyFactory::class )->addArgument( 'options' );
 
 		$this->getContainer()->add( 'cloudflare_client', Client::class )
-			->addArgument( $this->getContainer()->get( 'cloudflare_auth_factory' )->create() );
+			->addArgument( $this->getContainer()->get( 'cloudflare_api_key_factory' )->create() );
 		$this->getContainer()->add( 'cloudflare_endpoints', Endpoints::class )
-			->addArgument( $this->getContainer()->get( 'cloudflare_client' ) );
+			->addArgument( 'cloudflare_client' );
 
 		$this->getContainer()->add( 'cloudflare', Cloudflare::class )
-			->addArgument( $options )
-			->addArgument( $this->getContainer()->get( 'cloudflare_endpoints' ) );
+			->addArguments(
+				[
+					'options',
+					'cloudflare_endpoints',
+				]
+			);
 		$this->getContainer()->addShared( 'cloudflare_subscriber', CloudflareSubscriber::class )
-			->addArgument( $this->getContainer()->get( 'cloudflare' ) )
-			->addArgument( $options )
-			->addArgument( $this->getContainer()->get( 'options_api' ) )
-			->addArgument( $this->getContainer()->get( 'cloudflare_auth_factory' ) );
-		$this->getContainer()->addShared(
-			'cloudflare_admin_subscriber',
-			CloudflareAdminSubscriber::class
-		);
+			->addArguments(
+				[
+					'cloudflare',
+					'options',
+					'options_api',
+					'cloudflare_api_key_factory',
+				]
+			);
+		$this->getContainer()->addShared( 'cloudflare_admin_subscriber', CloudflareAdminSubscriber::class );
 	}
 }

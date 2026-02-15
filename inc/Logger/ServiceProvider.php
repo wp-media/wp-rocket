@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace WP_Rocket\Logger;
 
@@ -12,6 +13,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	protected $provides = [
 		'logger',
+		'logger_subscriber',
 	];
 
 	/**
@@ -33,5 +35,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()
 			->inflector( LoggerAwareInterface::class )
 			->invokeMethod( 'set_logger', [ $this->getContainer()->get( 'logger' ) ] );
+		$this->getContainer()->addShared( 'logger_subscriber', Subscriber::class );
 	}
 }

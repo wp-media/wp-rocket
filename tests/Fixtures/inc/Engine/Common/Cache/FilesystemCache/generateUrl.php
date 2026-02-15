@@ -19,8 +19,8 @@ return [
         ],
         'expected' => [
 			'url' => 'http://example.org/blog/test/file.css',
-			'path' => '/var/html/wp-content/cache/background-css/example.org/blog/test/file.css',
-			'output' => 'http://example.org/wp-content/cache/background-css/example.org/blog/test/file.css',
+			'path' => '/var/html/wp-content/cache/background-css/1/example.org/blog/test/file.css',
+			'output' => 'http://example.org/wp-content/cache/background-css/1/example.org/blog/test/file.css',
 			'home_url' => 'http://example.org',
 		]
     ],
@@ -43,8 +43,8 @@ return [
 		],
 		'expected' => [
 			'url' => '/blog/test/file.css',
-			'path' => '/var/html/wp-content/cache/background-css/example.org/blog/test/file.css',
-			'output' => 'http://example.org/wp-content/cache/background-css/example.org/blog/test/file.css',
+			'path' => '/var/html/wp-content/cache/background-css/1/example.org/blog/test/file.css',
+			'output' => 'http://example.org/wp-content/cache/background-css/1/example.org/blog/test/file.css',
 			'home_url' => 'http://example.org',
 		]
 	],
@@ -67,8 +67,8 @@ return [
 		],
 		'expected' => [
 			'url' => 'http://example.org/blog/test/file.css',
-			'path' => '/var/html/wp-content/cache/background-css/example.org/blog/test/file.css',
-			'output' => 'http://example.org/wp-content/cache/background-css/example.org/blog/test/file.css',
+			'path' => '/var/html/wp-content/cache/background-css/1/example.org/blog/test/file.css',
+			'output' => 'http://example.org/wp-content/cache/background-css/1/example.org/blog/test/file.css',
 			'home_url' => 'http://example.org',
 		]
 	],

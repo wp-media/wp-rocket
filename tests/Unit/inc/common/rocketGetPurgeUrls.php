@@ -106,10 +106,6 @@ class Test_RocketGetPurgeUrls extends FilesystemTestCase {
 				->andReturn( $archive_url );
 
 			if ( $archive_url ) {
-				Functions\expect('is_ssl')
-					->once()
-					->andReturn( $config['is_ssl'] );
-
 				$GLOBALS['wp_rewrite'] = (object) [
 					'pagination_base' => 'page'
 				];

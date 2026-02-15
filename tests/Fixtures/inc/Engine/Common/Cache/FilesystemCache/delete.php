@@ -13,7 +13,7 @@ return [
 			  ]
 		],
         'expected' => [
-			'path' => '/cache/background-css/example.org/blog/test/file.css',
+			'path' => '/cache/background-css/1/example.org/blog/test/file.css',
 			'output' => true
 		]
     ],
@@ -30,7 +30,7 @@ return [
 			]
 		],
 		'expected' => [
-			'path' => '/cache/background-css/example.org/blog/test',
+			'path' => '/cache/background-css/1/example.org/blog/test',
 			'output' => true
 		]
 	],
@@ -47,7 +47,7 @@ return [
 			]
 		],
 		'expected' => [
-			'path' => '/cache/background-css/example.org/blog/test/file.css',
+			'path' => '/cache/background-css/1/example.org/blog/test/file.css',
 			'output' => false
 		]
 	],

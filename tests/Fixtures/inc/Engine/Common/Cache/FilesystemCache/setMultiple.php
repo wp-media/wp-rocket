@@ -21,11 +21,11 @@ return [
 			'home_url' => 'http://example.org',
 			'root' => '/var/html/wp-content/cache',
 			'saved' => [
-				'/var/html/wp-content/cache/background-css/example.org/blog/test/file.css' => [
+				'/var/html/wp-content/cache/background-css/1/example.org/blog/test/file.css' => [
 					'content' => 'content',
 					'output' => true,
 				],
-				'/var/html/wp-content/cache/background-css/example.org/blog/test/file2.css' => [
+				'/var/html/wp-content/cache/background-css/1/example.org/blog/test/file2.css' => [
 					'content' => 'content2',
 					'output' => true,
 				],
@@ -56,11 +56,11 @@ return [
 			'home_url' => 'http://example.org',
 			'root' => '/var/html/wp-content/cache',
 			'saved' => [
-				'/var/html/wp-content/cache/background-css/example.org/blog/test/file.css' => [
+				'/var/html/wp-content/cache/background-css/1/example.org/blog/test/file.css' => [
 					'content' => 'content',
 					'output' => true,
 				],
-				'/var/html/wp-content/cache/background-css/example.org/blog/test/file2.css' => [
+				'/var/html/wp-content/cache/background-css/1/example.org/blog/test/file2.css' => [
 					'content' => 'content2',
 					'output' => false,
 				],

@@ -56,6 +56,7 @@ class Test_generateUrl extends TestCase {
 		});
 
 		Functions\when('home_url')->justReturn($config['home_url']);
+		Functions\when('get_current_blog_id')->justReturn( 1 );
 
 		Functions\when('rocket_get_constant')->alias(function ($name, $default = false) use ($config) {
 			if('WP_CONTENT_URL' === $name) {

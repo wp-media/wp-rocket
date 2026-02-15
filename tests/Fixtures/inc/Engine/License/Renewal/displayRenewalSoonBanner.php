@@ -86,6 +86,18 @@ return [
 		],
 		'expected' => null,
 	],
+	'testShouldReturnNullWhenLicenseIsRevoked' => [
+		'config'   => [
+			'user' => [
+				'licence_account'    => 1,
+				'licence_expired'    => false,
+				'auto_renew'         => false,
+				'licence_expiration' => strtotime( 'next week' ),
+				'is_revoked'			 => true,
+			],
+		],
+		'expected' => null,
+	],
 	'testShouldReturnDataWhenLicenseAndSingleAndNotGrandfathered' => [
 		'config'   => [
 			'user' => [
@@ -100,8 +112,9 @@ return [
 		],
 		'expected' => [
 			'countdown'        => $countdown,
-			'message' => 'Renew before it is too late, you will only pay <strong>$34.3</strong>!',
+			'message' => 'Renew before it is too late, you will pay <strong>$34.3</strong>.',
 			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+			'more_info' => true
 		],
 	],
 	'testShouldReturnDataWhenLicenseAndSingleAndGrandmothered' => [
@@ -118,10 +131,12 @@ return [
 		],
 		'expected' => [
 			'countdown'        => $countdown,
-			'message' => 'Renew before it is too late, you will only pay <strong>$34.3</strong>!',
+			'message' => 'Renew before it is too late, you will pay <strong>$34.3</strong>.',
 			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+			'more_info' => true
 		],
 	],
+
 	'testShouldReturnDataWhenLicenseSingleAndGrandfathered' => [
 		'config'   => [
 			'user' => [
@@ -136,9 +151,9 @@ return [
 		],
 		'expected' => [
 			'message' => 'Renew with a <strong>20% discount</strong> before it is too late, you will only pay <strong>$24.5</strong>!',
-
-			'countdown'        => $countdown,
-			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+			'more_info' => true,
+			'countdown' => $countdown,
+			'renewal_url' => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
 		],
 	],
 	'testShouldReturnDataWhenLicensePlusAndNotGrandfathered' => [
@@ -154,9 +169,10 @@ return [
 			'pricing'   => $pricing,
 		],
 		'expected' => [
-			'countdown'        => $countdown,
-			'message' => 'Renew before it is too late, you will only pay <strong>$69.3</strong>!',
-			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+			'more_info' => true,
+			'countdown' => $countdown,
+			'message' => 'Renew before it is too late, you will pay <strong>$69.3</strong>.',
+			'renewal_url' => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
 		],
 	],
 	'testShouldReturnDataWhenLicensePlusAndGrandfathered' => [
@@ -175,6 +191,7 @@ return [
 			'countdown'        => $countdown,
 			'message' => 'Renew with a <strong>20% discount</strong> before it is too late, you will only pay <strong>$49.5</strong>!',
 			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+			'more_info' => true,
 		],
 	],
 	'testShouldReturnDataWhenLicenseInfiniteAndGrandmothered' => [
@@ -191,8 +208,9 @@ return [
 		],
 		'expected' => [
 			'countdown'        => $countdown,
-			'message' => 'Renew before it is too late, you will only pay <strong>$174.3</strong>!',
+			'message' => 'Your <strong>WP Rocket license is about to expire</strong>: you will soon lose access to product updates and support.',
 			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+			'more_info' => false,
 		],
 	],
 	'testShouldReturnDataWhenLicenseInfiniteAndNotGrandfathered' => [
@@ -209,8 +227,9 @@ return [
 		],
 		'expected' => [
 			'countdown'        => $countdown,
-			'message' => 'Renew before it is too late, you will only pay <strong>$174.3</strong>!',
+			'message' => 'Your <strong>WP Rocket license is about to expire</strong>: you will soon lose access to product updates and support.',
 			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+			'more_info' => false,
 		],
 	],
 	'testShouldReturnDataWhenLicenseInfiniteAndGrandfathered' => [
@@ -227,8 +246,10 @@ return [
 		],
 		'expected' => [
 			'countdown'        => $countdown,
-			'message' => 'Renew with a <strong>20% discount</strong> before it is too late, you will only pay <strong>$124.5</strong>!',
+			'message' => 'Your <strong>WP Rocket license is about to expire</strong>: you will soon lose access to product updates and support.',
 			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+			'more_info' => false,
 		],
 	],
+
 ];

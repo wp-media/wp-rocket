@@ -1,6 +1,10 @@
 <?php
+declare(strict_types=1);
+
 namespace WP_Rocket\Engine\Plugin;
 
+use WP_Rocket\Dependencies\League\Container\Argument\Literal\ArrayArgument;
+use WP_Rocket\Dependencies\League\Container\Argument\Literal\StringArgument;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 
 /**
@@ -37,38 +41,47 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	public function register(): void {
 		$this->getContainer()->add( 'plugin_renewal_notice', RenewalNotice::class )
-			->addArgument( $this->getContainer()->get( 'user' ) )
-			->addArgument( $this->getContainer()->get( 'template_path' ) . '/plugins/' );
-
+			->addArguments(
+				[
+					'user',
+					new StringArgument( $this->getContainer()->get( 'template_path' ) . '/plugins/' ),
+				]
+			);
 		$this->getContainer()->addShared( 'plugin_updater_common_subscriber', UpdaterApiCommonSubscriber::class )
 			->addArgument(
-				[
-					'site_url'           => home_url(),
-					'plugin_version'     => WP_ROCKET_VERSION,
-					'settings_slug'      => WP_ROCKET_SLUG,
-					'settings_nonce_key' => WP_ROCKET_PLUGIN_SLUG,
-					'plugin_options'     => $this->getContainer()->get( 'options' ),
-				]
+				new ArrayArgument(
+					[
+						'site_url'           => home_url(),
+						'plugin_version'     => WP_ROCKET_VERSION,
+						'settings_slug'      => WP_ROCKET_SLUG,
+						'settings_nonce_key' => WP_ROCKET_PLUGIN_SLUG,
+						'plugin_options'     => $this->getContainer()->get( 'options' ),
+					]
+				)
 			);
-
 		$this->getContainer()->addShared( 'plugin_information_subscriber', InformationSubscriber::class )
 			->addArgument(
-				[
-					'plugin_file' => WP_ROCKET_FILE,
-				]
+				new ArrayArgument(
+					[
+						'plugin_file' => WP_ROCKET_FILE,
+					]
+				)
 			);
-
 		$this->getContainer()->addShared( 'plugin_updater_subscriber', UpdaterSubscriber::class )
-			->addArgument( $this->getContainer()->get( 'plugin_renewal_notice' ) )
-			->addArgument(
+			->addArguments(
 				[
-					'plugin_file'    => WP_ROCKET_FILE,
-					'plugin_version' => WP_ROCKET_VERSION,
-					'vendor_url'     => WP_ROCKET_WEB_MAIN,
-					'icons'          => [
-						'2x' => WP_ROCKET_ASSETS_IMG_URL . 'icon-256x256.png',
-						'1x' => WP_ROCKET_ASSETS_IMG_URL . 'icon-128x128.png',
-					],
+					'plugin_renewal_notice',
+					new ArrayArgument(
+						[
+							'plugin_file'    => WP_ROCKET_FILE,
+							'plugin_version' => WP_ROCKET_VERSION,
+							'vendor_url'     => WP_ROCKET_WEB_MAIN,
+							'icons'          => [
+								'2x' => WP_ROCKET_ASSETS_IMG_URL . 'icon-256x256.png',
+								'1x' => WP_ROCKET_ASSETS_IMG_URL . 'icon-128x128.png',
+							],
+						]
+					),
 				]
 			);
 	}

@@ -81,6 +81,20 @@ return [
 		],
 		'expected' => '',
 	],
+	'testShouldReturnNullWhenLicenseIsRevoked' => [
+		'config'   => [
+			'user' => json_decode( json_encode( [
+				'licence_account'    => 1,
+				'has_auto_renew'     => false,
+				'licence_expiration' => strtotime( 'next week' ),
+				'licence' => (object) [
+                    'is_revoked' => true,
+                ],
+			] ) ),
+			'pricing' => $pricing,
+		],
+		'expected' => '',
+	],
 	'testShouldReturnDataWhenLicenseAndSingleAndNotGrandfathered' => [
 		'config'   => [
 			'user' => json_decode( json_encode( [
@@ -103,7 +117,7 @@ return [
 			<p>
 				Your <strong>WP Rocket license is about to expire</strong>: you will soon lose access to product updates and support.
 			</p>
-			<p>Renew before it is too late, you will only pay <strong>$34.30</strong>!</p>
+			<p>Renew before it is too late, you will pay <strong>$34.30</strong>.</p>
 		</div>
 		<div class="rocket-renew-cta-container">
 			<a href="https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/" class="rocket-renew-cta" target="_blank" rel="noopener noreferrer">Renew now</a>
@@ -163,7 +177,7 @@ return [
 			<p>
 				Your <strong>WP Rocket license is about to expire</strong>: you will soon lose access to product updates and support.
 			</p>
-			<p>Renew before it is too late, you will only pay <strong>$69.30</strong>!</p>
+			<p>Renew before it is too late, you will pay <strong>$69.30</strong>.</p>
 		</div>
 		<div class="rocket-renew-cta-container">
 			<a href="https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/" class="rocket-renew-cta" target="_blank" rel="noopener noreferrer">Renew now</a>
@@ -223,8 +237,6 @@ return [
 			<p>
 				Your <strong>WP Rocket license is about to expire</strong>: you will soon lose access to product updates and support.
 			</p>
-			<p>
-			Renew before it is too late, you will only pay <strong>$174.30</strong>!</p>
 		</div>
 		<div class="rocket-renew-cta-container">
 			<a href="https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/" class="rocket-renew-cta" target="_blank" rel="noopener noreferrer">Renew now</a>
@@ -252,9 +264,6 @@ return [
 		<div class="rocket-renew-message">
 			<p>
 				Your <strong>WP Rocket license is about to expire</strong>: you will soon lose access to product updates and support.
-			</p>
-			<p>
-			Renew with a <strong>20% discount</strong> before it is too late, you will only pay <strong>$124.50</strong>!
 			</p>
 		</div>
 		<div class="rocket-renew-cta-container">

@@ -51,10 +51,19 @@ class Test_OptimizeV2 extends TestCase {
 			->andReturn( $config['exclude_locally_host_fonts'] ?? [] );
 
 		$combiner = new CombineV2();
+		$optimized_html = $combiner->optimize( $html );
 
-		$this->assertSame(
-			$this->format_the_html( $expected ),
-			$this->format_the_html( $combiner->optimize( $html ) )
-		);
+		if ( is_string( $expected ) ) {
+			$this->assertSame(
+				$this->format_the_html( $expected ),
+				$this->format_the_html( $optimized_html )
+			);
+		} else if ( is_array( $expected ) ) {
+			$this->assertSame(
+				$expected['fonts'],
+				$combiner->get_font_urls()
+			);
+		}
+
 	}
 }

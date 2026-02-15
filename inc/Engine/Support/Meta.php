@@ -93,52 +93,45 @@ class Meta {
 	 * @return string
 	 */
 	private function get_meta_tag( array $features = [] ): string {
-		if ( $this->options->get( 'do_caching_mobile_files', 0 ) ) {
+		$options = $this->options;
+
+		// Feature mapping for meta tags.
+		$features_to_check = [
+			'wpr_preload_links'      => 'preload_links',
+			'wpr_host_fonts_locally' => 'host_fonts_locally',
+		];
+
+		foreach ( $features_to_check as $meta_name => $option_name ) {
+			if ( $options->get( $option_name, false ) ) {
+				$features[] = $meta_name;
+			}
+		}
+
+		// Mobile/Desktop caching.
+		if ( $options->get( 'do_caching_mobile_files', false ) ) {
 			$features[] = $this->mobile_detect->isMobile() ? 'wpr_mobile' : 'wpr_desktop';
 		}
 
+		// CDN & DNS prefetch check.
 		$dns_prefetch = rocket_get_dns_prefetch_domains();
-
-		if (
-				(
-					! $this->options->get( 'cdn', 0 )
-					&&
-					! empty( $dns_prefetch )
-				)
-				||
-				(
-					$this->options->get( 'cdn', 0 )
-					&&
-					count( $dns_prefetch ) > 1
-				)
-			) {
+		if ( $dns_prefetch && ( ! $options->get( 'cdn', false ) || count( $dns_prefetch ) > 1 ) ) {
 			$features[] = 'wpr_dns_prefetch';
 		}
 
-		if ( (bool) $this->options->get( 'preload_links', 0 ) ) {
-			$features[] = 'wpr_preload_links';
-		}
-
-		if ( empty( $features ) ) {
+		if ( ! $features ) {
 			return '';
 		}
 
-		$version = '';
+		// Check if WP Rocket version should be included.
+		$version = wpm_apply_filters_typed( 'boolean', 'rocket_display_meta_generator_content_version', true )
+			? ' ' . rocket_get_constant( 'WP_ROCKET_VERSION', '' )
+			: '';
 
-		/**
-		 * Filters the display of WP Rocket version in the content attribute of the meta generator tag.
-		 *
-		 * @since 3.17.2
-		 *
-		 * @param bool $display True to display, false otherwise.
-		 */
-		if ( wpm_apply_filters_typed( 'boolean', 'rocket_display_meta_generator_content_version', true ) ) {
-			$version = ' ' . rocket_get_constant( 'WP_ROCKET_VERSION', '' );
-		}
-
-		$meta = '<meta name="generator" content="WP Rocket' . $version . '" data-wpr-features="' . implode( ' ', $features ) . '" />';
-
-		return $meta;
+		return sprintf(
+			'<meta name="generator" content="WP Rocket%s" data-wpr-features="%s" />',
+			$version,
+			implode( ' ', $features )
+		);
 	}
 
 	/**

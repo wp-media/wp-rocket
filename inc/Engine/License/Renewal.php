@@ -58,6 +58,10 @@ class Renewal extends Abstract_Render {
 			return;
 		}
 
+		if ( $this->user->is_revoked() ) {
+			return;
+		}
+
 		if ( $this->user->is_license_expired() ) {
 			return;
 		}
@@ -68,28 +72,17 @@ class Renewal extends Abstract_Render {
 
 		$data              = $this->get_banner_data();
 		$data['countdown'] = $this->get_countdown_data();
-		$discount          = esc_html( $this->get_discount_percent() . '%' );
-		$price             = esc_html( '$' . number_format_i18n( $this->get_price(), 2 ) );
+		$data['more_info'] = true;
 
-				$data['message'] = sprintf(
-			// translators: %1$s = <strong>, %2$s = price, %3$s = </strong>.
-			esc_html__( 'Renew before it is too late, you will only pay %1$s%2$s%3$s!', 'rocket' ),
-				'<strong>',
-				$price,
-				'</strong>'
-			);
-
-		if ( $this->get_discount_percent() ) {
+		if ( -1 === $this->user->get_license_type() ) {
 			$data['message'] = sprintf(
-			// translators: %1$s = <strong>, %2$s = discount, %3$s = </strong>,%4$s = <strong>, %5$s = price, %6$s=</strong>.
-			esc_html__( 'Renew with a %1$s%2$s discount%3$s before it is too late, you will only pay %4$s%5$s%6$s!', 'rocket' ),
+			// translators: %1$s WP Rocket plugin name.
+				esc_html__( 'Your %1$s%2$s license is about to expire%3$s: you will soon lose access to product updates and support.', 'rocket' ),
 				'<strong>',
-				$discount,
-				'</strong>',
-				'<strong>',
-				$price,
+				WP_ROCKET_PLUGIN_NAME,
 				'</strong>'
 			);
+			$data['more_info'] = false;
 		}
 
 		echo $this->generate( 'renewal-soon-banner', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
@@ -119,6 +112,10 @@ class Renewal extends Abstract_Render {
 			return;
 		}
 
+		if ( $this->user->is_revoked() ) {
+			return;
+		}
+
 		$expiration    = $this->user->get_license_expiration();
 		$expired_since = ( time() - $expiration ) / DAY_IN_SECONDS;
 
@@ -132,30 +129,8 @@ class Renewal extends Abstract_Render {
 
 		$ocd_enabled = $this->options->get( 'optimize_css_delivery', 0 );
 		$renewal_url = $this->user->get_renewal_url();
-		$price       = esc_html( '$' . number_format_i18n( $this->get_price(), 2 ) );
 
-		$message = sprintf(
-			// translators: %1$s = <strong>, %2$s = </strong>, %3$s = price.
-			esc_html__( 'Renew your license for 1 year now at %1$s%3$s%2$s.', 'rocket' ),
-			'<strong>',
-			'</strong>',
-			$price
-		);
-
-		if (
-			( $this->is_grandfather() || $this->has_grandmother() )
-			&&
-			$expired_since < 15
-		) {
-			$message = sprintf(
-				// translators: %1$s = <strong>, %2$s = </strong>, %3$s = discount percentage, %4$s = price.
-				esc_html__( 'Renew your license for 1 year now and get %1$s%3$s OFF%2$s immediately: you will only pay %1$s%4$s%2$s!', 'rocket' ),
-				'<strong>',
-				'</strong>',
-				esc_html( $this->get_discount_percent() . '%' ),
-				$price
-			);
-		}
+		$message = null;
 
 		if ( $ocd_enabled ) {
 			if ( 15 > $expired_since ) {
@@ -223,10 +198,10 @@ class Renewal extends Abstract_Render {
 
 		if ( $this->is_grandfather() ) {
 			$message = sprintf(
-				// translators: %1$s = <strong>, %2$s = discount percentage, %3$s = </strong>, %4$s = discount price.
+			// translators: %1$s = <strong>, %2$s = discount percentage, %3$s = </strong>, %4$s = discount price.
 				esc_html__( 'Renew with a %1$s%2$s discount%3$s before it is too late, you will only pay %1$s%4$s%3$s!', 'rocket' ),
 				'<strong>',
-				esc_html( '$' . number_format_i18n( $this->get_discount_percent(), 2 ) ),
+				esc_html( $this->get_discount_percent() . '%' ),
 				'</strong>',
 				$price
 			);
@@ -303,11 +278,34 @@ class Renewal extends Abstract_Render {
 	}
 
 	/**
+	 * Checks if the license is expiring within the specified number of days.
+	 * Skip expired users.
+	 *
+	 * @since 3.20.3
+	 *
+	 * @param int $duration_in_days Number of days to check against license expiration.
+	 * @return bool True if license expires within the specified duration, false otherwise.
+	 */
+	public function is_expiring_in( int $duration_in_days ): bool {
+		if ( $this->user->is_auto_renew() ) {
+			return false;
+		}
+
+		$expiration_delay = $this->user->get_license_expiration() - time();
+		if ( 0 >= $expiration_delay ) {
+			return false;
+		}
+
+		return $duration_in_days * DAY_IN_SECONDS >= $expiration_delay;
+	}
+
+	/**
 	 * Gets the discount corresponding to the current user status
 	 *
 	 * @since 3.7.5
 	 *
 	 * @return int
+	 * @phpstan-ignore-next-line
 	 */
 	private function get_discount_percent() {
 		$prices = $this->get_license_pricing_data();
@@ -337,10 +335,12 @@ class Renewal extends Abstract_Render {
 
 		return key_exists( 'is_grandfather', $renewals ) && $renewals['is_grandfather'];
 	}
+
 	/**
 	 * Is user grandmothered
 	 *
 	 * @return bool
+	 * @phpstan-ignore-next-line
 	 */
 	private function has_grandmother(): bool {
 		$renewals = $this->get_user_renewal_status();

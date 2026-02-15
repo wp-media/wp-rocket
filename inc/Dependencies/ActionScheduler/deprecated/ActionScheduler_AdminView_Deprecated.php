@@ -10,6 +10,11 @@
  */
 class ActionScheduler_AdminView_Deprecated {
 
+	/**
+	 * Adjust parameters for custom post type.
+	 *
+	 * @param array $args Args.
+	 */
 	public function action_scheduler_post_type_args( $args ) {
 		_deprecated_function( __METHOD__, '2.0.0' );
 		return $args;
@@ -68,7 +73,7 @@ class ActionScheduler_AdminView_Deprecated {
 	 * Print the content for our custom columns.
 	 *
 	 * @param string $column_name The key for the column for which we should output our content.
-	 * @param int $post_id The ID of the 'scheduled-action' post for which this row relates.
+	 * @param int    $post_id The ID of the 'scheduled-action' post for which this row relates.
 	 */
 	public static function list_table_column_content( $column_name, $post_id ) {
 		_deprecated_function( __METHOD__, '2.0.0' );
@@ -79,7 +84,8 @@ class ActionScheduler_AdminView_Deprecated {
 	 *
 	 * Hooked to the 'post_row_actions' filter.
 	 *
-	 * @param array $actions An associative array of actions which can be performed on the 'scheduled-action' post type.
+	 * @param array   $actions An associative array of actions which can be performed on the 'scheduled-action' post type.
+	 * @param WP_Post $post The 'scheduled-action' post object.
 	 * @return array $actions An associative array of actions which can be performed on the 'scheduled-action' post type.
 	 */
 	public static function row_actions( $actions, $post ) {
@@ -105,8 +111,7 @@ class ActionScheduler_AdminView_Deprecated {
 	 *
 	 * Based on Crontrol::interval() function by Edward Dale: https://wordpress.org/plugins/wp-crontrol/
 	 *
-	 * @param int $interval A interval in seconds.
-	 * @return string A human friendly string representation of the interval.
+	 * @return void
 	 */
 	public static function admin_notices() {
 		_deprecated_function( __METHOD__, '2.0.0' );
@@ -115,20 +120,20 @@ class ActionScheduler_AdminView_Deprecated {
 	/**
 	 * Filter search queries to allow searching by Claim ID (i.e. post_password).
 	 *
-	 * @param string $orderby MySQL orderby string.
-	 * @param WP_Query $query Instance of a WP_Query object
-	 * @return string MySQL orderby string.
+	 * @param string   $orderby MySQL orderby string.
+	 * @param WP_Query $query Instance of a WP_Query object.
+	 * @return void
 	 */
-	public function custom_orderby( $orderby, $query ){
+	public function custom_orderby( $orderby, $query ) {
 		_deprecated_function( __METHOD__, '2.0.0' );
 	}
 
 	/**
 	 * Filter search queries to allow searching by Claim ID (i.e. post_password).
 	 *
-	 * @param string $search MySQL search string.
-	 * @param WP_Query $query Instance of a WP_Query object
-	 * @return string MySQL search string.
+	 * @param string   $search MySQL search string.
+	 * @param WP_Query $query Instance of a WP_Query object.
+	 * @return void
 	 */
 	public function search_post_password( $search, $query ) {
 		_deprecated_function( __METHOD__, '2.0.0' );
@@ -137,11 +142,12 @@ class ActionScheduler_AdminView_Deprecated {
 	/**
 	 * Change messages when a scheduled action is updated.
 	 *
-	 * @param  array $messages
+	 * @param  array $messages Messages.
 	 * @return array
 	 */
 	public function post_updated_messages( $messages ) {
 		_deprecated_function( __METHOD__, '2.0.0' );
 		return $messages;
 	}
+
 }

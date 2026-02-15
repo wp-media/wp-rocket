@@ -57,7 +57,7 @@ class Test_TruncateOnUpdate extends TestCase {
 				->willReturn( $config['not_completed'] );
 
 			$this->table->expects( $this->once() )
-				->method( 'truncate_table' );
+				->method( 'truncate' );
 		}
 
 		$controller->truncate_on_update( $config['new_version'], $config['old_version'] );

@@ -1,7 +1,10 @@
 <?php
+declare(strict_types=1);
+
 namespace WP_Rocket\Engine\Admin;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Dependencies\League\Container\Argument\Literal\StringArgument;
 use WP_Rocket\Engine\Admin\Deactivation\{DeactivationIntent, Subscriber};
 use WP_Rocket\Engine\Admin\Metaboxes\PostEditOptionsSubscriber;
 use WP_Rocket\ThirdParty\Plugins\Optimization\Hummingbird;
@@ -40,19 +43,25 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register(): void {
-		$options = $this->getContainer()->get( 'options' );
-
 		$this->getContainer()->add( 'deactivation_intent', DeactivationIntent::class )
-			->addArgument( $this->getContainer()->get( 'template_path' ) . '/deactivation-intent' )
-			->addArgument( $this->getContainer()->get( 'options_api' ) )
-			->addArgument( $options );
+			->addArguments(
+				[
+					new StringArgument( $this->getContainer()->get( 'template_path' ) . '/deactivation-intent' ),
+					'options_api',
+					'options',
+				]
+			);
 		$this->getContainer()->addShared( 'deactivation_intent_subscriber', Subscriber::class )
 			->addArgument( $this->getContainer()->get( 'deactivation_intent' ) );
 		$this->getContainer()->addShared( 'hummingbird_subscriber', Hummingbird::class )
-			->addArgument( $options );
+			->addArgument( 'options' );
 		$this->getContainer()->addShared( 'actionscheduler_admin_subscriber', ActionSchedulerSubscriber::class );
 		$this->getContainer()->addShared( 'post_edit_options_subscriber', PostEditOptionsSubscriber::class )
-			->addArgument( $options )
-			->addArgument( $this->getContainer()->get( 'template_path' ) . '/metaboxes' );
+			->addArguments(
+				[
+					'options',
+					new StringArgument( $this->getContainer()->get( 'template_path' ) . '/metaboxes' ),
+				]
+			);
 	}
 }

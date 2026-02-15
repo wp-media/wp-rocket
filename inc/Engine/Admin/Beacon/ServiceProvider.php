@@ -1,6 +1,9 @@
 <?php
+declare(strict_types=1);
+
 namespace WP_Rocket\Engine\Admin\Beacon;
 
+use WP_Rocket\Dependencies\League\Container\Argument\Literal\StringArgument;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 
 /**
@@ -34,8 +37,12 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	public function register(): void {
 		$this->getContainer()->addShared( 'beacon', Beacon::class )
-			->addArgument( $this->getContainer()->get( 'options' ) )
-			->addArgument( $this->getContainer()->get( 'template_path' ) . '/settings' )
-			->addArgument( $this->getContainer()->get( 'support_data' ) );
+			->addArguments(
+				[
+					'options',
+					new StringArgument( $this->getContainer()->get( 'template_path' ) . '/settings' ),
+					'support_data',
+				]
+			);
 	}
 }

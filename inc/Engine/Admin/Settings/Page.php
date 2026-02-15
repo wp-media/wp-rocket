@@ -3,9 +3,11 @@ namespace WP_Rocket\Engine\Admin\Settings;
 
 use WP_Rocket\Engine\Admin\Database\Optimization;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
+use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Engine\Optimization\DelayJS\Admin\SiteList;
 use WP_Rocket\Engine\Optimization\DelayJS\Admin\Settings as DelayJSSettings;
+use WP_Rocket\Engine\Admin\RocketInsights\Context\Context;
 use WP_Rocket\Abstract_Render;
 use WP_Rocket\Admin\Options_Data;
 
@@ -101,6 +103,13 @@ class Page extends Abstract_Render {
 	private $options;
 
 	/**
+	 * Rocket Insights context instance
+	 *
+	 * @var Context
+	 */
+	private $ri_context;
+
+	/**
 	 * Creates an instance of the Page object.
 	 *
 	 * @since 3.0
@@ -114,6 +123,7 @@ class Page extends Abstract_Render {
 	 * @param SiteList     $delayjs_sitelist User client instance.
 	 * @param string       $template_path Path to views.
 	 * @param Options_Data $options       WP Rocket options instance.
+	 * @param Context      $ri_context   Rocket Insights context instance.
 	 */
 	public function __construct(
 		array $args,
@@ -124,7 +134,8 @@ class Page extends Abstract_Render {
 		UserClient $user_client,
 		SiteList $delayjs_sitelist,
 		$template_path,
-		Options_Data $options
+		Options_Data $options,
+		Context $ri_context
 	) {
 		parent::__construct( $template_path );
 		$args = array_merge(
@@ -146,6 +157,7 @@ class Page extends Abstract_Render {
 		$this->user_client      = $user_client;
 		$this->delayjs_sitelist = $delayjs_sitelist;
 		$this->options          = $options;
+		$this->ri_context       = $ri_context;
 	}
 
 	/**
@@ -199,6 +211,7 @@ class Page extends Abstract_Render {
 		$rocket_valid_key = rocket_valid_key();
 		if ( $rocket_valid_key ) {
 			$this->dashboard_section();
+			$this->rocket_insights_section();
 			$this->assets_section();
 			$this->media_section();
 			$this->preload_section();
@@ -273,31 +286,40 @@ class Page extends Abstract_Render {
 	 * @return array
 	 */
 	public function customer_data() {
-		$user = $this->user_client->get_user_data();
+		$user_data = $this->user_client->get_user_data();
+		$user      = new User( $user_data );
+
 		$data = [
-			'license_type'        => __( 'Unavailable', 'rocket' ),
-			'license_expiration'  => __( 'Unavailable', 'rocket' ),
-			'license_class'       => 'wpr-isInvalid',
-			'is_from_one_dot_com' => false,
+			'license_expiration'    => __( 'Unavailable', 'rocket' ),
+			'license_class'         => 'wpr-isInvalid',
+			'is_from_one_dot_com'   => false,
+			'can_update_plugin'     => false,
+			'update_blocked_reason' => '',
 		];
 
-		$data['license_type'] = rocket_get_license_type( $user );
+		$data['license_type'] = rocket_get_license_type( $user_data );
 
-		if ( ! is_object( $user ) ) {
+		if ( ! is_object( $user_data ) ) {
 			return $data;
 		}
 
-		if ( ! empty( $user->licence_expiration ) ) {
-			$data['license_class'] = time() < $user->licence_expiration ? 'wpr-isValid' : 'wpr-isInvalid';
+		if ( ! empty( $user_data->licence_expiration ) ) {
+			$data['license_class'] = ( time() < $user_data->licence_expiration && ! $user->is_revoked() ) ? 'wpr-isValid' : 'wpr-isInvalid';
 		}
 
-		if ( ! empty( $user->licence_expiration ) ) {
-			$data['license_expiration'] = date_i18n( get_option( 'date_format' ), (int) $user->licence_expiration );
+		if ( $user->is_revoked() ) {
+			$data['license_expiration'] = __( 'Ended', 'rocket' );
+		} elseif ( ! empty( $user_data->licence_expiration ) ) {
+			$data['license_expiration'] = date_i18n( get_option( 'date_format' ), (int) $user_data->licence_expiration );
 		}
 
-		if ( isset( $user->{'has_one-com_account'} ) ) {
-			$data['is_from_one_dot_com'] = (bool) $user->{'has_one-com_account'};
+		if ( isset( $user_data->{'has_one-com_account'} ) ) {
+			$data['is_from_one_dot_com'] = (bool) $user_data->{'has_one-com_account'};
 		}
+
+		// Get plugin update status.
+		$data['can_update_plugin']     = $user->can_update_plugin();
+		$data['update_blocked_reason'] = $user->get_update_blocked_reason();
 
 		return $data;
 	}
@@ -315,7 +337,6 @@ class Page extends Abstract_Render {
 		}
 
 		$allowed = [
-			'analytics_enabled'           => 1,
 			'debug_enabled'               => 1,
 			'varnish_auto_purge'          => 1,
 			'do_cloudflare'               => 1,
@@ -423,10 +444,11 @@ class Page extends Abstract_Render {
 		$this->settings->add_page_section(
 			'dashboard',
 			[
-				'title'            => __( 'Dashboard', 'rocket' ),
-				'menu_description' => __( 'Get help, account info', 'rocket' ),
-				'faq'              => $this->beacon->get_suggest( 'faq' ),
-				'customer_data'    => $this->customer_data(),
+				'title'                   => __( 'Dashboard', 'rocket' ),
+				'menu_description'        => __( 'Get help, account info', 'rocket' ),
+				'faq'                     => $this->beacon->get_suggest( 'faq' ),
+				'customer_data'           => $this->customer_data(),
+				'rocket_insights_enabled' => $this->ri_context->is_allowed(),
 			]
 		);
 	}
@@ -847,6 +869,7 @@ class Page extends Abstract_Render {
 		$exclude_lazyload = $this->beacon->get_suggest( 'exclude_lazyload' );
 		$dimensions       = $this->beacon->get_suggest( 'image_dimensions' );
 		$fonts            = $this->beacon->get_suggest( 'host_fonts_locally' );
+		$fonts_preload    = $this->beacon->get_suggest( 'fonts_preload' );
 
 		$this->settings->add_page_section(
 			'media',
@@ -936,12 +959,13 @@ class Page extends Abstract_Render {
 					'page'        => 'media',
 				],
 				'font_optimization_section' => [
-					'title'       => __( 'Fonts', 'rocket' ),
-					'type'        => 'fields_container',
-					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description' => sprintf( __( 'Download and serve fonts directly from your server. Reduces connections to external servers and minimizes font shifts. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $fonts['url'] ) . '" data-beacon-article="' . esc_attr( $fonts['id'] ) . '" target="_blank" rel="noopener noreferrer">', '</a>' ),
-					'help'        => $fonts,
-					'page'        => 'media',
+					'title' => __( 'Fonts', 'rocket' ),
+					'type'  => 'fields_container',
+					'help'  => [
+						'id'  => $this->beacon->get_suggest( 'fonts_section' ),
+						'url' => $fonts['url'],
+					],
+					'page'  => 'media',
 				],
 			]
 		);
@@ -1041,9 +1065,21 @@ class Page extends Abstract_Render {
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
 				],
+				'auto_preload_fonts'  => [
+					'type'              => 'checkbox',
+					'label'             => __( 'Preload fonts', 'rocket' ),
+					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+					'description'       => sprintf( __( 'Preload above-the-fold fonts to enhance layout stability and optimize text-based LCP elements. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $fonts_preload['url'] ) . '" data-beacon-article="' . esc_attr( $fonts_preload['id'] ) . '" target="_blank" rel="noopener noreferrer">', '</a>' ),
+					'section'           => 'font_optimization_section',
+					'page'              => 'media',
+					'default'           => 0,
+					'sanitize_callback' => 'sanitize_checkbox',
+				],
 				'host_fonts_locally'  => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Self-host Google Fonts', 'rocket' ),
+					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+					'description'       => sprintf( __( 'Download and serve fonts directly from your server. Reduces connections to external servers and minimizes font shifts. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $fonts['url'] ) . '" data-beacon-article="' . esc_attr( $fonts['id'] ) . '" target="_blank" rel="noopener noreferrer">', '</a>' ),
 					'section'           => 'font_optimization_section',
 					'page'              => 'media',
 					'default'           => 0,
@@ -1063,7 +1099,7 @@ class Page extends Abstract_Render {
 			'preload',
 			[
 				'title'            => __( 'Preload', 'rocket' ),
-				'menu_description' => __( 'Generate cache files, preload fonts', 'rocket' ),
+				'menu_description' => __( 'Generate cache files', 'rocket' ),
 			]
 		);
 
@@ -1096,24 +1132,6 @@ class Page extends Abstract_Render {
 					],
 					'page'        => 'preload',
 				],
-				'dns_prefetch_section'  => [
-					'title'       => __( 'Prefetch DNS Requests', 'rocket' ),
-					'type'        => 'fields_container',
-					'description' => __( 'DNS prefetching can make external files load faster, especially on mobile networks', 'rocket' ),
-					'help'        => $this->beacon->get_suggest( 'dns_prefetch' ),
-					'page'        => 'preload',
-				],
-				'preload_fonts_section' => [
-					'title'       => __( 'Preload Fonts', 'rocket' ),
-					'type'        => 'fields_container',
-					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description' => sprintf( __( 'Improves performance by helping browsers discover fonts in CSS files. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $fonts_preload['url'] ) . '" data-beacon-article="' . esc_attr( $fonts_preload['id'] ) . '" target="_blank">', '</a>' ),
-					'help'        => [
-						'id'  => $fonts_preload['id'],
-						'url' => $fonts_preload['url'],
-					],
-					'page'        => 'preload',
-				],
 			]
 		);
 
@@ -1142,27 +1160,6 @@ class Page extends Abstract_Render {
 					'helper'            => 'Use (.*) wildcards to address multiple URLs under a given path.',
 					'parent'            => 'manual_preload',
 					'section'           => 'preload_section',
-					'page'              => 'preload',
-					'default'           => [],
-					'sanitize_callback' => 'sanitize_textarea',
-				],
-				'dns_prefetch'         => [
-					'type'              => 'textarea',
-					'label'             => __( 'URLs to prefetch', 'rocket' ),
-					'description'       => __( 'Specify external hosts to be prefetched (no <code>http:</code>, one per line)', 'rocket' ),
-					'placeholder'       => '//example.com',
-					'section'           => 'dns_prefetch_section',
-					'page'              => 'preload',
-					'default'           => [],
-					'sanitize_callback' => 'sanitize_textarea',
-				],
-				'preload_fonts'        => [
-					'type'              => 'textarea',
-					'label'             => __( 'Fonts to preload', 'rocket' ),
-					'description'       => __( 'Specify urls of the font files to be preloaded (one per line). Fonts must be hosted on your own domain, or the domain you have specified on the CDN tab.', 'rocket' ),
-					'helper'            => __( 'The domain part of the URL will be stripped automatically.<br/>Allowed font extensions: otf, ttf, svg, woff, woff2.', 'rocket' ),
-					'placeholder'       => '/wp-content/themes/your-theme/assets/fonts/font-file.woff',
-					'section'           => 'preload_fonts_section',
 					'page'              => 'preload',
 					'default'           => [],
 					'sanitize_callback' => 'sanitize_textarea',
@@ -1703,6 +1700,93 @@ class Page extends Abstract_Render {
 	}
 
 	/**
+	 * Registers Rocket Insights section.
+	 *
+	 * @since 3.20
+	 */
+	public function rocket_insights_section() {
+		// Hide Rocket Insights for reseller accounts and localhost installations.
+		if ( ! $this->ri_context->is_allowed() ) {
+			return;
+		}
+
+		$rocket_insights_beacon = $this->beacon->get_suggest( 'rocket_insights' );
+
+		$this->settings->add_page_section(
+			'rocket_insights',
+			[
+				'title'            => __( 'Rocket Insights', 'rocket' ),
+				'menu_description' => __( 'Get performance insights', 'rocket' ),
+			]
+		);
+
+		$this->settings->add_settings_sections(
+			[
+				'performance_monitoring' => [
+					'title'  => __( 'Settings', 'rocket' ),
+					'help'   => [
+						'id'  => $rocket_insights_beacon['id'],
+						'url' => $rocket_insights_beacon['url'],
+					],
+					'page'   => 'rocket_insights',
+					'helper' => '',
+					'class'  => [ 'rocket-insights-settings-container' ],
+				],
+			]
+		);
+
+		/**
+		 * Filters whether to enabled Rocket Insights settings.
+		 *
+		 * @param bool $enabled True to enable settings, false to disable it.
+		 */
+		$insights_settings_enabled = wpm_apply_filters_typed( 'boolean', 'rocket_insights_settings_enabled', true );
+
+		$this->settings->add_settings_fields(
+			[
+				'performance_monitoring' => [
+					'type'              => 'checkbox',
+					'label'             => __( 'Performance Monitoring', 'rocket' ),
+					'description'       => __( 'Enable automatic performance testing for your pages.', 'rocket' ),
+					'section'           => 'performance_monitoring',
+					'page'              => 'rocket_insights',
+					'default'           => 0,
+					'sanitize_callback' => 'sanitize_checkbox',
+					'container_class'   => [
+						! $insights_settings_enabled ? 'wpr-isDisabled' : '',
+					],
+					'input_attr'        => [
+						'disabled' => ! $insights_settings_enabled ? 1 : 0,
+					],
+					'tooltip'           => ! $insights_settings_enabled ? __( 'Upgrade your plan to get access to automatic performance tests', 'rocket' ) : '',
+				],
+				'performance_monitoring_schedule_frequency' => [
+					'container_class'   => [
+						'wpr-field--children',
+						! $insights_settings_enabled ? 'wpr-isDisabled' : '',
+					],
+					'type'              => 'select',
+					'label'             => '',
+					'description'       => '',
+					'parent'            => 'performance_monitoring',
+					'section'           => 'performance_monitoring',
+					'page'              => 'rocket_insights',
+					'default'           => 'weekly',
+					'sanitize_callback' => 'sanitize_text_field',
+					'choices'           => [
+						DAY_IN_SECONDS   => __( 'Daily', 'rocket' ),
+						WEEK_IN_SECONDS  => __( 'Weekly', 'rocket' ),
+						MONTH_IN_SECONDS => __( 'Monthly', 'rocket' ),
+					],
+					'input_attr'        => [
+						'disabled' => ! $insights_settings_enabled ? 1 : 0,
+					],
+				],
+			],
+		);
+	}
+
+	/**
 	 * Registers Add-ons section.
 	 *
 	 * @since 3.0
@@ -2116,6 +2200,7 @@ class Page extends Abstract_Render {
 			'minify_concatenate_css',
 			'cloudflare_api_key',
 			'cloudflare_zone_id',
+			'dns_prefetch',
 		];
 
 		$this->settings->add_hidden_settings_fields(
@@ -2242,56 +2327,5 @@ class Page extends Abstract_Render {
 
 		$this->options->set( 'do_caching_mobile_files', 1 );
 		update_option( rocket_get_constant( 'WP_ROCKET_SLUG', 'wp_rocket_settings' ), $this->options->get_options() );
-	}
-
-	/**
-	 * Display an update notice when the plugin is updated.
-	 *
-	 * @return void
-	 */
-	public function display_update_notice() {
-		if ( ! current_user_can( 'rocket_manage_options' ) ) {
-			return;
-		}
-
-		if ( 'settings_page_wprocket' !== get_current_screen()->id ) {
-			return;
-		}
-
-		$boxes = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
-
-		if ( in_array( 'rocket_update_notice', (array) $boxes, true ) ) {
-			return;
-		}
-
-		$previous_version = $this->options->get( 'previous_version' );
-
-		// Bail-out for fresh install.
-		if ( empty( $previous_version ) ) {
-			return;
-		}
-
-		// Bail-out if previous version is greater than 3.17.
-		if ( $previous_version > '3.17' ) {
-			return;
-		}
-
-		$lazy_render_content = $this->beacon->get_suggest( 'lazy_render_content' );
-
-		rocket_notice_html(
-			[
-				'status'         => 'info',
-				'dismissible'    => '',
-				'message'        => sprintf(
-					// translators: %1$s: opening strong tag, %2$s: closing strong tag, %3$s: opening a tag, %4$s: opening a tag.
-					__( '%1$sWP Rocket:%2$s the plugin has been updated to the 3.17 version. New feature: %3$sAutomatic Lazy Rendering%4$s. Check out our documentation to learn more about it.', 'rocket' ),
-					'<strong>',
-					'</strong>',
-					'<a href="' . esc_url( $lazy_render_content['url'] ) . '" data-beacon-article="' . esc_attr( $lazy_render_content['id'] ) . '" target="_blank" rel="noopener noreferrer">',
-					'</a>'
-				),
-				'dismiss_button' => 'rocket_update_notice',
-			]
-		);
 	}
 }

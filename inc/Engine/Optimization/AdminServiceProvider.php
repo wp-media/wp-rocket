@@ -1,7 +1,12 @@
 <?php
+declare(strict_types=1);
+
 namespace WP_Rocket\Engine\Optimization;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Engine\Optimization\GoogleFonts\Admin\{Settings, Subscriber};
+use WP_Rocket\Engine\Optimization\Minify\AdminSubscriber as MinifyAdminSubscriber;
+use WP_Rocket\Engine\Optimization\Minify\CSS\AdminSubscriber as MinifyCssAdminSubscriber;
 
 /**
  * Service provider for the WP Rocket optimizations
@@ -36,14 +41,14 @@ class AdminServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register(): void {
-		$this->getContainer()->addShared( 'minify_css_admin_subscriber', 'WP_Rocket\Engine\Optimization\Minify\CSS\AdminSubscriber' );
-		$this->getContainer()->add( 'google_fonts_settings', 'WP_Rocket\Engine\Optimization\GoogleFonts\Admin\Settings' )
-			->addArgument( $this->getContainer()->get( 'options' ) )
-			->addArgument( $this->getContainer()->get( 'beacon' ) )
-			->addArgument( $this->getContainer()->get( 'template_path' ) );
-		$this->getContainer()->addShared( 'google_fonts_admin_subscriber', 'WP_Rocket\Engine\Optimization\GoogleFonts\Admin\Subscriber' )
-			->addArgument( $this->getContainer()->get( 'google_fonts_settings' ) );
-		$this->getContainer()->addShared( 'minify_admin_subscriber', 'WP_Rocket\Engine\Optimization\Minify\AdminSubscriber' )
-			->addArgument( $this->getContainer()->get( 'options' ) );
+		$this->getContainer()->addShared( 'minify_css_admin_subscriber', MinifyCssAdminSubscriber::class );
+		$this->getContainer()->add( 'google_fonts_settings', Settings::class )
+			->addArgument( 'options' )
+			->addArgument( 'beacon' )
+			->addArgument( 'template_path' );
+		$this->getContainer()->addShared( 'google_fonts_admin_subscriber', Subscriber::class )
+			->addArgument( 'google_fonts_settings' );
+		$this->getContainer()->addShared( 'minify_admin_subscriber', MinifyAdminSubscriber::class )
+			->addArgument( 'options' );
 	}
 }

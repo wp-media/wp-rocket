@@ -342,4 +342,43 @@ class DynamicLists extends Abstract_Render {
 
 		return $lists->host_fonts ?? [];
 	}
+
+	/**
+	 * Get the MixPanel tracked options
+	 *
+	 * @return array
+	 */
+	public function get_mixpanel_tracked_options(): array {
+		$lists = $this->providers['defaultlists']->data_manager->get_lists();
+
+		return $lists->mixpanel_tracked_settings ?? [];
+	}
+
+	/**
+	 * Get the external font exclusions
+	 *
+	 * @since 3.19.1
+	 * @return array
+	 */
+	public function get_external_font_exclusions(): array {
+		$lists = $this->providers['defaultlists']->data_manager->get_lists();
+
+		return $lists->external_font_exclusions ?? [];
+	}
+
+	/**
+	 * Get the Rocket Insights auto-add homepage expiry interval.
+	 *
+	 * Returns the number of days before license expiry to automatically
+	 * add homepage to Rocket Insights. Value of 0 disables the feature.
+	 *
+	 * @since 3.20.3
+	 *
+	 * @return int Number of days before expiry, or 0 to disable.
+	 */
+	public function get_rocket_insights_add_homepage_expiry_interval(): int {
+		$lists = $this->providers['defaultlists']->data_manager->get_lists();
+
+		return $lists->rocket_insights_add_homepage_expiry_interval ?? 1;
+	}
 }

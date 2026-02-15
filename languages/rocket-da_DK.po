@@ -1,0 +1,4816 @@
+# Copyright (C) 2025 WP Media
+# This file is distributed under the same license as the WP Rocket plugin.
+# Translators:
+# Carl Andersen, 2024
+# annsofie.madsen, 2025
+# Romain • WP Rocket <contact@wp-rocket.me>, 2025
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: WP Rocket 3.18.3-beta\n"
+"Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
+"POT-Creation-Date: 2025-03-17T10:01:29+00:00\n"
+"PO-Revision-Date: 2019-08-26 15:14+0000\n"
+"Last-Translator: Romain • WP Rocket <contact@wp-rocket.me>, 2025\n"
+"Language-Team: Danish (Denmark) (https://app.transifex.com/wp-media/teams/18133/da_DK/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: da_DK\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Domain: rocket\n"
+"X-Generator: WP-CLI 2.11.0\n"
+
+#. Plugin Name of the plugin
+#: wp-rocket.php
+msgid "WP Rocket"
+msgstr "WP Rocket"
+
+#. Plugin URI of the plugin
+#: wp-rocket.php
+msgid "https://wp-rocket.me"
+msgstr "https://wp-rocket.me"
+
+#. Description of the plugin
+#: wp-rocket.php
+msgid "The best WordPress performance plugin."
+msgstr "Det bedste WordPress performance-plugin."
+
+#. Author of the plugin
+#: wp-rocket.php
+msgid "WP Media"
+msgstr "WP Media"
+
+#. Author URI of the plugin
+#: wp-rocket.php
+msgid "https://wp-media.me"
+msgstr "https://wp-media.me"
+
+#. Translators: %s = Hosting name.
+#: inc/3rd-party/hosting/flywheel.php:18
+#: inc/3rd-party/hosting/wp-serveur.php:27 inc/deprecated/3.6.php:697
+#: inc/deprecated/3.6.php:997 inc/deprecated/3.9.php:22
+#: inc/ThirdParty/Hostings/Cloudways.php:90
+#: inc/ThirdParty/Hostings/Dreampress.php:44
+#: inc/ThirdParty/Hostings/Godaddy.php:63
+#: inc/ThirdParty/Hostings/O2Switch.php:49
+#: inc/ThirdParty/Hostings/OneCom.php:137
+#: inc/ThirdParty/Hostings/Pressidium.php:50
+#: inc/ThirdParty/Hostings/ProIsp.php:51 inc/ThirdParty/Hostings/Savvii.php:50
+#: inc/ThirdParty/Hostings/WPEngine.php:46
+#: inc/ThirdParty/Hostings/WPXCloud.php:51
+msgid ""
+"Your site is hosted on %s, we have enabled Varnish auto-purge for "
+"compatibility."
+msgstr ""
+"Din hjemmeside er hostet hos %s. Vi har aktiveret automatisk rensning af "
+"Varnish for kompatibilitet."
+
+#: inc/Addon/Cloudflare/API/Client.php:129
+msgid "Cloudflare did not provide any reply. Please try again later."
+msgstr "Cloudflare gav ikke noget svar. Prøv igen senere."
+
+#: inc/Addon/Cloudflare/API/Client.php:135
+msgid "Cloudflare unexpected response"
+msgstr "Uventet svar fra Cloudflare"
+
+#: inc/Addon/Cloudflare/API/Client.php:143
+msgid "Missing Cloudflare result."
+msgstr "Manglende Cloudflare-resultat."
+
+#: inc/Addon/Cloudflare/API/Client.php:194 inc/deprecated/3.5.php:112
+#: inc/deprecated/3.5.php:169
+msgid "Incorrect Cloudflare email address or API key."
+msgstr "Forkert Cloudflare-e-mailadresse eller API-nøgle."
+
+#. translators: %1$s = opening link; %2$s = closing link
+#: inc/Addon/Cloudflare/API/Client.php:198
+#: inc/Addon/Cloudflare/API/Client.php:212
+#: inc/Addon/Cloudflare/Cloudflare.php:75
+#: inc/Addon/Cloudflare/Cloudflare.php:108
+#: inc/classes/subscriber/Tools/class-detect-missing-tags-subscriber.php:157
+#: inc/deprecated/3.5.php:92 inc/deprecated/3.5.php:116
+#: inc/deprecated/3.5.php:129 inc/deprecated/3.5.php:157
+#: inc/deprecated/3.5.php:173
+msgid "Read the %1$sdocumentation%2$s for further guidance."
+msgstr "Læs %1$sdokumentationen%2$s for yderligere vejledning."
+
+#. translators: Documentation exists in EN, FR; use localized URL if
+#. applicable.
+#: inc/Addon/Cloudflare/API/Client.php:200
+#: inc/Addon/Cloudflare/API/Client.php:214
+#: inc/Addon/Cloudflare/Auth/APIKey.php:63
+#: inc/Addon/Cloudflare/Cloudflare.php:77
+#: inc/Addon/Cloudflare/Cloudflare.php:110 inc/deprecated/3.5.php:81
+#: inc/deprecated/3.5.php:94 inc/deprecated/3.5.php:118
+#: inc/deprecated/3.5.php:131 inc/deprecated/3.5.php:159
+#: inc/deprecated/3.5.php:175 inc/deprecated/3.5.php:208
+msgid ""
+"https://docs.wp-rocket.me/article/18-using-wp-rocket-with-"
+"cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket#add-on"
+msgstr ""
+"https://docs.wp-rocket.me/article/18-using-wp-rocket-with-"
+"cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket#add-on"
+
+#: inc/Addon/Cloudflare/API/Client.php:208 inc/deprecated/3.5.php:125
+msgid "Incorrect Cloudflare Zone ID."
+msgstr "Ugyldigt Cloudflare Zone-ID."
+
+#. translators: %1$s = opening link; %2$s = closing link
+#: inc/Addon/Cloudflare/Auth/APIKey.php:61
+msgid ""
+"Cloudflare email and/or API key are not set. Read the %1$sdocumentation%2$s "
+"for further guidance."
+msgstr ""
+"Cloudflare-e-mail og/eller API-nøgle er ikke indstillet. Læs "
+"%1$sdokumentation%2$s for yderligere vejledning."
+
+#: inc/Addon/Cloudflare/Cloudflare.php:71 inc/deprecated/3.5.php:88
+msgid "Missing Cloudflare Zone ID."
+msgstr "Mangler Cloudflare Zone-ID."
+
+#: inc/Addon/Cloudflare/Cloudflare.php:104 inc/deprecated/3.5.php:153
+msgid "It looks like your domain is not set up on Cloudflare."
+msgstr "Det ser ud til, at dit domæne ikke er konfigureret hos Cloudflare."
+
+#: inc/Addon/Cloudflare/Cloudflare.php:200
+msgid "days"
+msgstr "dage"
+
+#: inc/Addon/Cloudflare/Cloudflare.php:203
+msgid "seconds"
+msgstr "sekunder"
+
+#: inc/Addon/Cloudflare/Cloudflare.php:205
+msgid "minutes"
+msgstr "minutter"
+
+#: inc/Addon/Cloudflare/Cloudflare.php:207
+msgid "hours"
+msgstr "timer"
+
+#. translators: %1$s = <strong>, %2$s = </strong>, %3$s = CloudFare API return
+#. message.
+#: inc/Addon/Cloudflare/Subscriber.php:232
+#: inc/Addon/Cloudflare/Subscriber.php:261
+msgid "%1$sWP Rocket:%2$s %3$s"
+msgstr "%1$sWP Rocket:%2$s %3$s"
+
+#. translators: %1$s = <strong>, %2$s = </strong>.
+#: inc/Addon/Cloudflare/Subscriber.php:250
+msgid "%1$sWP Rocket:%2$s Cloudflare cache successfully purged."
+msgstr "%1$sWP Rocket:%2$s Cloudflare-cachen blev slettet."
+
+#. translators: %s is the message returned by the CloudFlare API.
+#: inc/Addon/Cloudflare/Subscriber.php:311
+msgid "Cloudflare development mode error: %s"
+msgstr "Cloudflare udviklingstilstand-fejl: %s"
+
+#. translators: %s is the message returned by the CloudFlare API.
+#: inc/Addon/Cloudflare/Subscriber.php:318
+msgid "Cloudflare development mode %s"
+msgstr "Cloudflare udviklingstilstand %s"
+
+#. translators: %s is the message returned by the CloudFlare API.
+#: inc/Addon/Cloudflare/Subscriber.php:337
+msgid "Cloudflare cache level error: %s"
+msgstr "Cloudflare cacheniveau-fejl: %s"
+
+#: inc/Addon/Cloudflare/Subscriber.php:344
+msgctxt "Cloudflare caching level"
+msgid "standard"
+msgstr "standard"
+
+#. translators: %s is the caching level returned by the CloudFlare API.
+#: inc/Addon/Cloudflare/Subscriber.php:350
+msgid "Cloudflare cache level set to %s"
+msgstr " Cloudflare-cacheniveau indstillet til %s"
+
+#. translators: %s is the message returned by the CloudFlare API.
+#: inc/Addon/Cloudflare/Subscriber.php:368
+msgid "Cloudflare rocket loader error: %s"
+msgstr "Cloudflare rocket loader-fejl: %s"
+
+#. translators: %s is the message returned by the CloudFlare API.
+#: inc/Addon/Cloudflare/Subscriber.php:375
+msgid "Cloudflare rocket loader %s"
+msgstr "Cloudflare rocket loader %s"
+
+#. translators: %s is the message returned by the CloudFlare API.
+#: inc/Addon/Cloudflare/Subscriber.php:393
+msgid "Cloudflare browser cache error: %s"
+msgstr "Cloudflare browsercache-fejl: %s"
+
+#. translators: %s is the message returned by the CloudFlare API.
+#: inc/Addon/Cloudflare/Subscriber.php:400
+msgid "Cloudflare browser cache set to %s"
+msgstr "Cloudflare-browsercache sat til %s"
+
+#. translators: %1$s = strong opening tag, %2$s = strong closing tag.
+#: inc/Addon/Cloudflare/Subscriber.php:507
+msgid "%1$sWP Rocket:%2$s Optimal settings activated for Cloudflare:"
+msgstr "%1$sWP Rocket:%2$s Optimale indstillinger aktiveret for Cloudflare:"
+
+#. translators: %1$s = strong opening tag, %2$s = strong closing tag.
+#: inc/Addon/Cloudflare/Subscriber.php:516
+msgid ""
+"%1$sWP Rocket:%2$s Optimal settings deactivated for Cloudflare, reverted to "
+"previous settings:"
+msgstr ""
+"%1$sWP Rocket:%2$s Optimale indstillinger deaktiveret for Cloudflare. Sat "
+"tilbage til tidligere indstillinger:"
+
+#: inc/Addon/Cloudflare/Subscriber.php:632 inc/admin/options.php:165
+#: inc/classes/subscriber/Tools/class-detect-missing-tags-subscriber.php:148
+msgid "WP Rocket: "
+msgstr "WP Rocket: "
+
+#. translators: %s is the error message returned by the API.
+#: inc/Addon/Sucuri/Subscriber.php:96
+msgid "Sucuri cache purge error: %s"
+msgstr "Rensningsfejl for Sucuri-cache : %s"
+
+#: inc/Addon/Sucuri/Subscriber.php:101
+msgid ""
+"The Sucuri cache is being cleared. Note that it may take up to two minutes "
+"for it to be fully flushed."
+msgstr ""
+"Sucuri-cachen ryddes. Bemærk, at det kan tage op til to minutter, før den er"
+" helt renset."
+
+#: inc/Addon/Sucuri/Subscriber.php:218
+msgid "Sucuri firewall API key was not found."
+msgstr "Sucuri firewall API-nøgle blev ikke fundet."
+
+#: inc/Addon/Sucuri/Subscriber.php:231
+msgid "Sucuri firewall API key is invalid."
+msgstr "Sucuri firewall API-nøgle er ugyldig."
+
+#. translators: %s is an error message.
+#: inc/Addon/Sucuri/Subscriber.php:286
+msgid "Error when contacting Sucuri firewall API. Error message was: %s"
+msgstr ""
+"Fejl ved etablering af kontakt til Sucuri firewall API. Fejlmeddelelse: %s"
+
+#: inc/Addon/Sucuri/Subscriber.php:301
+msgid "Could not get a response from the Sucuri firewall API."
+msgstr "Kunne ikke få et svar fra Sucuri firewall API."
+
+#: inc/Addon/Sucuri/Subscriber.php:316
+msgid "Got an invalid response from the Sucuri firewall API."
+msgstr "Fik et ugyldigt svar fra Sucuri firewall API."
+
+#: inc/Addon/Sucuri/Subscriber.php:330
+msgid "The Sucuri firewall API returned an unknown error."
+msgstr "Sucuri firewall API returnerede en ukendt fejl."
+
+#. translators: %s is an error message.
+#: inc/Addon/Sucuri/Subscriber.php:334
+msgid "The Sucuri firewall API returned the following error: %s"
+msgid_plural "The Sucuri firewall API returned the following errors: %s"
+msgstr[0] "Sucuri firewall API returnerede følgende fejl: %s"
+msgstr[1] "Sucuri firewall API returnerede følgende fejl: %s"
+
+#. Translators: %1$s = plugin name(s), %2$s = opening <a> tag, %3$s = closing
+#. </a> tag.
+#: inc/Addon/WebP/AdminSubscriber.php:93
+msgid ""
+"You are using %1$s to serve WebP images so you do not need to enable this "
+"option. %2$sMore info%3$s %4$s If you prefer to have WP Rocket serve WebP "
+"for you instead, please disable WebP display in %1$s."
+msgid_plural ""
+"You are using %1$s to serve WebP images so you do not need to enable this "
+"option. %2$sMore info%3$s %4$s If you prefer to have WP Rocket serve WebP "
+"for you instead, please disable WebP display in %1$s."
+msgstr[0] ""
+"Du bruger %1$s til at vise WebP-billeder, så du behøver ikke at aktivere "
+"denne indstilling. %2$sMere information%3$s%4$s  Hvis du foretrækker at have"
+" WP Rocket til at betjene WebP for dig i stedet, skal du deaktivere WebP-"
+"visning i %1$s."
+msgstr[1] ""
+"Du bruger %1$s til at vise WebP-billeder, så du behøver ikke at aktivere "
+"denne indstilling. %2$sMere information%3$s%4$s  Hvis du foretrækker at have"
+" WP Rocket til at betjene WebP for dig i stedet, skal du deaktivere WebP-"
+"visning i %1$s."
+
+#: inc/Addon/WebP/AdminSubscriber.php:105
+msgid "WebP cache is disabled by filter."
+msgstr "WebP-cache er deaktiveret af filter."
+
+#. Translators: %1$s = plugin name(s), %2$s = opening <a> tag, %3$s = closing
+#. </a> tag.
+#: inc/Addon/WebP/AdminSubscriber.php:115
+#: inc/Addon/WebP/AdminSubscriber.php:141
+msgid ""
+"You are using %1$s to convert images to WebP. If you want WP Rocket to serve"
+" them for you, activate this option. %2$sMore info%3$s"
+msgid_plural ""
+"You are using %1$s to convert images to WebP. If you want WP Rocket to serve"
+" them for you, activate this option. %2$sMore info%3$s"
+msgstr[0] ""
+"Du bruger %1$s til at konvertere billeder til WebP. Hvis du vil have, at WP "
+"Rocket skal behandle dem til dig, skal du aktivere denne indstilling. "
+"%2$sMere info%3$s"
+msgstr[1] ""
+"Du bruger %1$s til at konvertere billeder til WebP. Hvis du vil have, at WP "
+"Rocket skal behandle dem til dig, skal du aktivere denne indstilling. "
+"%2$sMere info%3$s"
+
+#. Translators: %1$s = plugin name(s), %2$s = opening <a> tag, %3$s = closing
+#. </a> tag.
+#: inc/Addon/WebP/AdminSubscriber.php:127
+#: inc/Addon/WebP/AdminSubscriber.php:153
+msgid ""
+"You are using %1$s to convert images to WebP. WP Rocket will create separate"
+" cache files to serve your WebP images. %2$sMore info%3$s"
+msgid_plural ""
+"You are using %1$s to convert images to WebP. WP Rocket will create separate"
+" cache files to serve your WebP images. %2$sMore info%3$s"
+msgstr[0] ""
+"Du bruger %1$s til at konvertere billeder til WebP. WP Rocket vil oprette "
+"separate cachefiler til behandling af dine WebP-billeder. %2$sMere info%3$s"
+msgstr[1] ""
+"Du bruger %1$s til at konvertere billeder til WebP. WP Rocket vil oprette "
+"separate cachefiler til behandling af dine WebP-billeder. %2$sMere info%3$s"
+
+#. Translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Addon/WebP/AdminSubscriber.php:173
+msgid ""
+"%5$sWe have not detected any compatible WebP plugin!%6$s%4$s If you don’t "
+"already have WebP images on your site consider using %3$sImagify%2$s or "
+"another supported plugin. %1$sMore info%2$s %4$s If you are not using WebP "
+"do not enable this option."
+msgstr ""
+"%5$sVi har ikke fundet noget kompatibelt WebP-plugin!%6$s%4$s Hvis du ikke "
+"allerede har WebP-billeder på din hjemmeside, kan du overveje at bruge "
+"%3$sImagify%2$s eller et andet understøttet plugin. %1$sMere info%2$s%4$s "
+"Hvis du ikke bruger WebP, skal du ikke aktivere denne indstilling."
+
+#: inc/Addon/WebP/AdminSubscriber.php:185
+msgid "WP Rocket will create separate cache files to serve your WebP images."
+msgstr ""
+"WP Rocket vil oprette separate cachefiler til behandling af dine WebP-"
+"billeder."
+
+#: inc/admin/admin.php:18 inc/common/admin-bar.php:273
+#: inc/deprecated/deprecated.php:1787
+msgid "Support"
+msgstr "Support"
+
+#: inc/admin/admin.php:20
+msgid "Docs"
+msgstr "Docs"
+
+#: inc/admin/admin.php:22 inc/common/admin-bar.php:261
+msgid "FAQ"
+msgstr "FAQ"
+
+#: inc/admin/admin.php:24 inc/common/admin-bar.php:70
+msgid "Settings"
+msgstr "Indstillinger"
+
+#: inc/admin/admin.php:96 inc/admin/admin.php:117 inc/deprecated/3.5.php:898
+#: inc/Engine/Cache/AdminSubscriber.php:135
+msgid "Clear this cache"
+msgstr "Ryd denne cache"
+
+#: inc/admin/admin.php:408
+msgid "Settings import failed: you do not have the permissions to do this."
+msgstr ""
+"Import af indstillinger mislykkedes: Du har ikke tilladelserne til at gøre "
+"dette."
+
+#: inc/admin/admin.php:412
+msgid "Settings import failed: no file uploaded."
+msgstr "Import af indstillinger mislykkedes: Ingen fil blev uploadet."
+
+#: inc/admin/admin.php:416
+msgid "Settings import failed: incorrect filename."
+msgstr "Import af indstillinger mislykkedes: Forkert filnavn."
+
+#: inc/admin/admin.php:427
+msgid "Settings import failed: incorrect filetype."
+msgstr "Import af indstillinger mislykkedes: Forkert filtype."
+
+#: inc/admin/admin.php:437
+msgid "Settings import failed: "
+msgstr "Import af indstillinger mislykkedes:"
+
+#: inc/admin/admin.php:453
+msgid "Settings import failed: unexpected file content."
+msgstr "Import af indstillinger mislykkedes: Uventet filindhold."
+
+#: inc/admin/admin.php:498
+msgid "Settings imported and saved."
+msgstr "Indstillinger importeret og gemt."
+
+#: inc/admin/options.php:102 inc/Engine/Admin/Settings/Page.php:549
+msgid "Excluded CSS Files"
+msgstr "Ekskluderede CSS-filer"
+
+#: inc/admin/options.php:103 inc/Engine/Admin/Settings/Page.php:697
+msgid "Excluded Inline JavaScript"
+msgstr "Ekskluderet Inline JavaScript"
+
+#: inc/admin/options.php:104 inc/Engine/Admin/Settings/Page.php:715
+#: inc/Engine/Admin/Settings/Page.php:748
+#: inc/Engine/Admin/Settings/Page.php:798
+msgid "Excluded JavaScript Files"
+msgstr "Ekskluderede JavaScript-filer"
+
+#: inc/admin/options.php:105
+msgid "Defer JavaScript Files"
+msgstr "Udskyd JavaScript-filer"
+
+#: inc/admin/options.php:106
+msgid "Excluded Delay JavaScript Files"
+msgstr "Ekskluderede Delay JavaScript-filer"
+
+#: inc/admin/options.php:107 inc/Engine/Admin/Settings/Page.php:1243
+msgid "Never Cache URL(s)"
+msgstr "Cache aldrig-URL(er)"
+
+#: inc/admin/options.php:108 inc/Engine/Admin/Settings/Page.php:1257
+msgid "Never Cache User Agent(s)"
+msgstr "Cache aldrig-brugeragent(er)"
+
+#: inc/admin/options.php:109 inc/Engine/Admin/Settings/Page.php:1263
+msgid "Always Purge URL(s)"
+msgstr "Ryd altid-URL(er)"
+
+#: inc/admin/options.php:110 inc/Engine/Admin/Settings/Page.php:1544
+msgid "Exclude files from CDN"
+msgstr "Ekskluder filer fra CDN"
+
+#. translators: 1 and 2 can be anything.
+#: inc/admin/options.php:131
+msgid "%1$s: <em>%2$s</em>"
+msgstr "%1$s: <em>%2$s</em>"
+
+#: inc/admin/options.php:141
+msgid "The following pattern is invalid and has been removed:"
+msgid_plural "The following patterns are invalid and have been removed:"
+msgstr[0] "Følgende mønster er ugyldigt og er blevet fjernet:"
+msgstr[1] "Følgende mønstre er ugyldige og er blevet fjernet:"
+
+#: inc/admin/options.php:157
+msgid "More info"
+msgstr "Mere info"
+
+#: inc/admin/ui/meta-boxes.php:37 inc/admin/ui/notices.php:671
+msgid "Clear cache"
+msgstr "Ryd cache"
+
+#. translators: %1$s WP Rocket plugin name; %2$s = file name.
+#: inc/admin/ui/notices.php:30 inc/admin/ui/notices.php:43
+msgid ""
+"<strong>%1$s</strong> has not been deactivated due to missing writing permissions.<br>\n"
+"Make <strong>%2$s</strong> writeable and retry deactivation, or force deactivation now:"
+msgstr ""
+"<strong>%1$s</strong> er ikke blevet deaktiveret på grund af manglende "
+"skriverettigheder.<br> Gør <strong>%2$s</strong> skrivbar og prøv at "
+"deaktivere igen, eller tving deaktiveringen igennem nu:"
+
+#. translators: %s is WP Rocket plugin name.
+#: inc/admin/ui/notices.php:97
+msgid ""
+"<strong>%s</strong>: One or more plugins have been enabled or disabled, "
+"clear the cache if they affect the front end of your site."
+msgstr ""
+"<strong>%s</strong>: Et eller flere plugins er blevet aktiveret eller "
+"deaktiveret. Ryd cachen, hvis de påvirker frontend-delen af din hjemmeside."
+
+#. translators: %s is WP Rocket plugin name.
+#: inc/admin/ui/notices.php:141
+msgid ""
+"<strong>%s</strong>: The following plugins are not compatible with this "
+"plugin and may cause unexpected results:"
+msgstr ""
+"<strong>%s</strong>: Følgende plugins er ikke kompatible med dette plugin og"
+" kan forårsage uventede resultater:"
+
+#: inc/admin/ui/notices.php:147
+msgid "Deactivate"
+msgstr "Deaktiver"
+
+#: inc/admin/ui/notices.php:189
+msgid ""
+"WP Rocket Footer JS is not an official add-on. It prevents some options in "
+"WP Rocket from working correctly. Please deactivate it if you have problems."
+msgstr ""
+"WP Rocket Footer JS er ikke et officielt add-on. Det forhindrer nogle af WP "
+"Rockets muligheder i at fungere korrekt. Deaktiver det, hvis du oplever "
+"problemer."
+
+#. translators: %1$s = opening link tag, %2$s = closing link tag.
+#: inc/admin/ui/notices.php:229
+msgid ""
+"Endurance Cache is currently enabled, which will conflict with WP Rocket "
+"Cache. Please set the Endurance Cache cache level to Off (Level 0) on the "
+"%1$sSettings > General%2$s page to prevent any issues."
+msgstr ""
+"Endurance Cache er i øjeblikket aktiveret, hvilket vil være i konflikt med "
+"WP Rocket Cache. Indstil venligst cacheniveauet for Endurance Cache til Off "
+"(Niveau 0) under  %1$sIndstillinger > Generelt%2$s for at forhindre "
+"problemer."
+
+#. translators: %1$s WP Rocket plugin name; %2$s = opening link; %3$s =
+#. closing link
+#: inc/admin/ui/notices.php:250
+msgid ""
+"%1$s: A custom permalink structure is required for the plugin to work "
+"properly. %2$sGo to permalinks settings%3$s"
+msgstr ""
+"%1$s: Der kræves en tilpasset permalink-struktur for at pluginet fungerer "
+"korrekt. %2$sGå til indstillinger for permalinks %3$s"
+
+#. translators: %s = plugin name.
+#: inc/admin/ui/notices.php:297
+msgid ""
+"%s could not modify the .htaccess file due to missing writing permissions."
+msgstr ""
+"%s kunne ikke ændre .htaccess-filen på grund af manglende skrivetilladelser."
+
+#. translators: This is a doc title! %1$s = opening link; %2$s = closing link
+#: inc/admin/ui/notices.php:303 inc/admin/ui/notices.php:788
+msgid "Troubleshoot: %1$sHow to make system files writeable%2$s"
+msgstr "Fejlfinding: %1$sSådan gør du systemfiler skrivbare%2$s"
+
+#. translators: Documentation exists in EN, DE, FR, ES, IT; use loaclised URL
+#. if applicable
+#: inc/admin/ui/notices.php:305 inc/admin/ui/notices.php:790
+msgid ""
+"https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
+"config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
+msgstr ""
+"https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
+"config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
+
+#: inc/admin/ui/notices.php:311
+msgid ""
+"Don’t worry, WP Rocket’s page caching and settings will still function "
+"correctly."
+msgstr ""
+"Bare rolig, WP Rockets sidecaching og indstillinger vil stadig fungere "
+"korrekt."
+
+#: inc/admin/ui/notices.php:311
+msgid ""
+"For optimal performance, adding the following lines into your .htaccess is "
+"recommended (not required):"
+msgstr ""
+"For optimal ydeevne anbefales det at tilføje følgende linjer i din .htaccess"
+" (ikke påkrævet):"
+
+#. translators: %1$s = plugin name, %2$s + %3$s = opening links, %4$s =
+#. closing link
+#: inc/admin/ui/notices.php:458
+msgid ""
+"%1$s is good to go! %2$sTest your load time%4$s, or visit your "
+"%3$ssettings%4$s."
+msgstr ""
+"%1$ser klar! %2$sTest din indlæsningstid%4$s, eller gå til dine "
+"%3$sindstillinger%4$s."
+
+#: inc/admin/ui/notices.php:499
+msgid ""
+"Would you allow WP Rocket to collect non-sensitive diagnostic data from this"
+" website?"
+msgstr ""
+"Vil du tillade, at WP Rocket indsamler ikke-følsomme diagnostiske data fra "
+"denne hjemmeside?"
+
+#: inc/admin/ui/notices.php:500
+msgid "This would help us to improve WP Rocket for you in the future."
+msgstr "Dette vil hjælpe os med at forbedre WP Rocket for dig i fremtiden."
+
+#. translators: button text, click will expand data collection preview
+#: inc/admin/ui/notices.php:506
+msgid "What info will we collect?"
+msgstr "Hvilke oplysninger vil vi indsamle?"
+
+#: inc/admin/ui/notices.php:511
+msgid ""
+"Below is a detailed view of all data WP Rocket will collect if granted "
+"permission. WP Rocket will never transmit any domain names or email "
+"addresses (except for license validation), IP addresses, or third-party API "
+"keys."
+msgstr ""
+"Nedenfor er en detaljeret visning af alle data, WP Rocket vil indsamle, hvis"
+" der gives tilladelse. WP Rocket sender aldrig domænenavne eller "
+"e-mailadresser (undtagen til licensvalidering), IP-adresser eller API-nøgler"
+" fra tredjeparter."
+
+#. translators: button text for data collection opt-in
+#: inc/admin/ui/notices.php:520
+msgid "Yes, allow"
+msgstr "Ja, tillad"
+
+#. translators: button text for data collection opt-in
+#: inc/admin/ui/notices.php:523
+msgid "No, thanks"
+msgstr "Nej tak"
+
+#: inc/admin/ui/notices.php:562
+msgid "Thank you!"
+msgstr "Tak skal du have!"
+
+#: inc/admin/ui/notices.php:567
+msgid "WP Rocket now collects these metrics from your website:"
+msgstr "WP Rocket indsamler nu disse målinger fra din hjemmeside:"
+
+#. translators: %s = plugin name.
+#: inc/admin/ui/notices.php:605
+msgid "%s: Cache cleared."
+msgstr "%s: Cache ryddet."
+
+#. translators: %s = plugin name.
+#: inc/admin/ui/notices.php:612
+msgid "%s: Post cache cleared."
+msgstr "%s: Indlægscachen er ryddet."
+
+#. translators: %s = plugin name.
+#: inc/admin/ui/notices.php:619
+msgid "%s: Term cache cleared."
+msgstr "%s: Term-cache ryddet."
+
+#. translators: %s = plugin name).
+#: inc/admin/ui/notices.php:626
+msgid "%s: User cache cleared."
+msgstr "%s: Brugercache ryddet."
+
+#: inc/admin/ui/notices.php:662 inc/Engine/License/views/promo-banner.php:38
+#: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:38
+#: inc/Engine/License/views/renewal-expired-banner-ocd.php:48
+#: inc/Engine/License/views/renewal-expired-banner.php:37
+#: views/settings/page-sections/dashboard.php:47
+msgid "Dismiss this notice"
+msgstr "Afvis denne meddelelse"
+
+#: inc/admin/ui/notices.php:682 inc/Engine/Saas/Admin/AdminBar.php:51
+msgid "Clear Used CSS"
+msgstr "Ryd brugt CSS"
+
+#: inc/admin/ui/notices.php:685
+msgid "Stop Preload"
+msgstr "Stop Forudindlæsning"
+
+#: inc/admin/ui/notices.php:691
+msgid "Turn on Remove Unused CSS"
+msgstr "Slå Fjern ubrugt CSS til"
+
+#: inc/admin/ui/notices.php:697
+msgid "Enable “Separate Cache Files for Mobile Devices” now"
+msgstr "Aktivér \"Separate cachefiler til mobilenheder\" nu"
+
+#: inc/admin/ui/notices.php:715
+msgid "Force deactivation "
+msgstr "Gennemtving deaktivering"
+
+#: inc/admin/ui/notices.php:745
+msgid "The following code should have been written to this file:"
+msgstr "Følgende kode skulle have været skrevet til denne fil:"
+
+#. translators: %s = plugin name.
+#: inc/admin/ui/notices.php:776
+msgid "%s cannot configure itself due to missing writing permissions."
+msgstr ""
+"%s kan ikke konfigurere sig selv på grund af manglende skriverettigheder."
+
+#. translators: %s = file/folder name
+#: inc/admin/ui/notices.php:782
+msgid "Affected file/folder: %s"
+msgstr "Berørt fil/mappe: %s"
+
+#: inc/classes/admin/class-logs.php:124
+msgid "The debug file could not be deleted."
+msgstr "Debug-filen kunne ikke slettes."
+
+#. Translators: %1$s = Plugin name, %2$s = Plugin version.
+#: inc/classes/class-wp-rocket-requirements-check.php:147
+msgid "To function properly, %1$s %2$s requires at least:"
+msgstr "For at fungere korrekt kræver %1$s %2$s mindst:"
+
+#. Translators: %1$s = PHP version required.
+#: inc/classes/class-wp-rocket-requirements-check.php:151
+msgid ""
+"PHP %1$s. To use this WP Rocket version, please ask your web host how to "
+"upgrade your server to PHP %1$s or higher."
+msgstr ""
+"PHP %1$s. Hvis du vil bruge denne version af WP Rocket, skal du spørge din "
+"webhost, hvordan du opgraderer din server til PHP %1$s eller nyere."
+
+#. Translators: %1$s = WordPress version required.
+#: inc/classes/class-wp-rocket-requirements-check.php:156
+msgid ""
+"WordPress %1$s. To use this WP Rocket version, please upgrade WordPress to "
+"version %1$s or higher."
+msgstr ""
+"WordPress %1$s. Hvis du vil bruge denne version af WP Rocket, skal du "
+"opgradere WordPress til version %1$s eller højere."
+
+#: inc/classes/class-wp-rocket-requirements-check.php:159
+msgid ""
+"If you are not able to upgrade, you can rollback to the previous version by "
+"using the button below."
+msgstr ""
+"Hvis du ikke kan opgradere, kan du rulle tilbage til den tidligere version "
+"ved hjælp af knappen nedenfor."
+
+#. Translators: %s = Previous plugin version.
+#: inc/classes/class-wp-rocket-requirements-check.php:161
+#: inc/deprecated/deprecated.php:1947
+msgid "Re-install version %s"
+msgstr "Geninstaller version %s"
+
+#. translators: %s is the plugin name.
+#: inc/classes/class-wp-rocket-requirements-check.php:203
+#: inc/classes/class-wp-rocket-requirements-check.php:214
+#: inc/deprecated/3.11.php:236 inc/deprecated/3.11.php:251
+#: inc/Engine/Plugin/UpdaterSubscriber.php:477
+#: inc/Engine/Plugin/UpdaterSubscriber.php:491
+msgid "%s Update Rollback"
+msgstr "%s Opdatering Rollback"
+
+#. translators: %1$s = missing tags;
+#: inc/classes/subscriber/Tools/class-detect-missing-tags-subscriber.php:151
+msgid ""
+"Failed to detect the following requirement in your theme: closing %1$s."
+msgid_plural ""
+"Failed to detect the following requirements in your theme: closing %1$s."
+msgstr[0] ""
+"Det lykkedes ikke at registrere følgende krav i dit tema: lukning %1$s."
+msgstr[1] ""
+"Det lykkedes ikke at registrere følgende krav i dit tema: lukning %1$s."
+
+#. translators: Documentation exists in EN, FR; use localized URL if
+#. applicable.
+#: inc/classes/subscriber/Tools/class-detect-missing-tags-subscriber.php:159
+msgid ""
+"https://docs.wp-rocket.me/article/99-pages-not-cached-or-minify-cssjs-not-"
+"working/?utm_source=wp_plugin&utm_medium=wp_rocket#theme"
+msgstr ""
+"https://docs.wp-rocket.me/article/99-pages-not-cached-or-minify-cssjs-not-"
+"working/?utm_source=wp_plugin&utm_medium=wp_rocket#theme"
+
+#: inc/common/admin-bar.php:91 inc/common/admin-bar.php:154
+msgid "Clear and Preload Cache"
+msgstr "Ryd og forudindlæs cache"
+
+#: inc/common/admin-bar.php:91 inc/common/admin-bar.php:154
+msgid "Clear Cache"
+msgstr "Ryd cache"
+
+#: inc/common/admin-bar.php:131 inc/functions/i18n.php:20
+msgid "All languages"
+msgstr "Alle sprog"
+
+#: inc/common/admin-bar.php:178
+msgid "Clear this post"
+msgstr "Fjern dette indlæg"
+
+#: inc/common/admin-bar.php:192
+msgid "Purge this URL"
+msgstr "Fjern denne URL"
+
+#: inc/common/admin-bar.php:212
+msgid "Purge Sucuri cache"
+msgstr "Ryd Sucuri-cache"
+
+#: inc/common/admin-bar.php:236 views/settings/fields/rocket-cdn.php:55
+msgid "Purge RocketCDN cache"
+msgstr "Ryd RocketCDN-cache"
+
+#: inc/common/admin-bar.php:249 views/settings/partials/documentation.php:14
+msgid "Documentation"
+msgstr "Dokumentation"
+
+#: inc/Dependencies/WPMedia/PluginFamily/Model/PluginFamily.php:66
+msgid "Activated"
+msgstr "Aktiveret"
+
+#: inc/Dependencies/WPMedia/PluginFamily/Model/PluginFamily.php:109
+msgid "Install"
+msgstr "Installer"
+
+#: inc/Dependencies/WPMedia/PluginFamily/Model/PluginFamily.php:118
+msgid "Get it Now"
+msgstr "Få det nu"
+
+#: inc/Dependencies/WPMedia/PluginFamily/Model/PluginFamily.php:127
+msgid "Activate"
+msgstr "Aktivér"
+
+#: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:8
+msgid "Optimize Performance"
+msgstr "Optimering af ydeevne"
+
+#: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:15
+msgid "Speed Up Your Website, Instantly"
+msgstr "Gør din hjemmeside hurtigere med det samme"
+
+#: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:16
+msgid ""
+"WP Rocket is the easiest way to make your WordPress website faster and boost"
+" your Google PageSpeed score. Get more traffic, better engagement, and "
+"higher conversions effortlessly."
+msgstr ""
+"Med WP Rocket kan du nemt gøre din WordPress-hjemmeside hurtigere og øge din"
+" Google PageSpeed-score. Få mere trafik, bedre engagement og højere "
+"konverteringer uden besvær."
+
+#: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:24
+msgid "Speed Up Your Website With Lighter Images"
+msgstr "Gør din hjemmeside hurtigere med lettere billeder"
+
+#: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:25
+msgid ""
+"Imagify is the easiest WordPress image optimizer. It automatically "
+"compresses images, converts them to WebP and AVIF formats, and lets you "
+"resize and optimize with just one click!"
+msgstr ""
+"Imagify er det nemmeste WordPress-værktøj til billedoptimering. Det "
+"komprimerer automatisk billeder, konverterer dem til WebP- og AVIF-formater,"
+" og lader dig ændre størrelse og optimere med blot ét klik!"
+
+#: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:31
+msgid "Boost Traffic"
+msgstr "Boost trafikken"
+
+#: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:38
+msgid "The Swiss Army Knife of SEO Tools"
+msgstr "Alt-i-én-løsningen til SEO"
+
+#: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:39
+msgid ""
+"Rank Math SEO is the Best WordPress SEO plugin with the features of many SEO"
+" and AI SEO tools in a single package to help multiply your SEO traffic."
+msgstr ""
+"Rank Math SEO er det bedste WordPress SEO-plugin, med funktioner fra mange "
+"SEO- og AI SEO-værktøjer i én enkelt pakke til at hjælpe med at øge din SEO-"
+"trafik."
+
+#: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:45
+msgid "Protect & Secure"
+msgstr "Beskyt"
+
+#: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:52
+msgid "The Easiest Way to Protect Your Website"
+msgstr "Den nemmeste måde at beskytte din hjemmeside på"
+
+#: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:53
+msgid ""
+"BackWPup is the most comprehensive and user-friendly backup & restore plugin"
+" for WordPress. Easily schedule automatic backups, securely store and "
+"restore with just a few clicks!"
+msgstr ""
+"BackWPup er det mest omfattende og brugervenlige backup & restore-plugin til"
+" WordPress. Du kan nemt planlægge automatiske backups, samt sikkert opbevare"
+" og gendanne dem med blot et par klik!"
+
+#: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:61
+msgid "GDPR/CCPA Cookie Consent Banner"
+msgstr "GDPR/CCPA Cookie samtykkebanner"
+
+#: inc/Dependencies/WPMedia/PluginFamily/Model/wp_media_plugins.php:62
+msgid ""
+"One of the easiest, most comprehensive, and popular cookie consent plugins "
+"available. Google Gold Certified Partner to quickly comply with data privacy"
+" laws from around the world."
+msgstr ""
+"Et af de nemmeste, mest omfattende og populære plugins til cookie-"
+"samtykkebannere på markedet. Google Gold Certified Partner, der hurtigt "
+"hjælper dig med at overholde databeskyttelseslove fra hele verden."
+
+#: inc/deprecated/3.2.php:52 views/settings/page-sections/imagify.php:107
+msgid "Activate Imagify"
+msgstr "Aktivér Imagify"
+
+#: inc/deprecated/3.2.php:52
+msgid "Install Imagify for Free"
+msgstr "Installer Imagify gratis"
+
+#: inc/deprecated/3.2.php:67
+msgid ""
+"Speed up your website and boost your SEO by reducing image file sizes "
+"without losing quality with Imagify."
+msgstr ""
+"Gør din hjemmeside hurtigere, og boost din SEO ved at reducere størrelser på"
+" billedfiler uden at miste kvalitet med Imagify."
+
+#: inc/deprecated/3.2.php:72
+msgid "More details"
+msgstr "Flere detaljer"
+
+#. translators: %d is the number of pages preloaded.
+#: inc/deprecated/3.2.php:228
+msgid "Sitemap preload: %d pages have been cached."
+msgstr "Sitemap forudindlæsning: %d sider er blevet cachet."
+
+#. translators: %d = Number of pages preloaded.
+#: inc/deprecated/3.2.php:261
+msgid ""
+"Sitemap preload: %d uncached pages have now been preloaded. (refresh to see "
+"progress)"
+msgstr ""
+"Sitemap forudindlæsning: %d ikke-cachede sider er nu blevet forudindlæst. "
+"(genindlæs  for at se fremskridt)"
+
+#. translators: %s is an URL.
+#: inc/deprecated/3.3.php:761 inc/deprecated/3.3.php:770
+#: inc/Engine/Plugin/UpdaterApiTools.php:32
+msgid ""
+"An unexpected error occurred. Something may be wrong with WP-Rocket.me or "
+"this server&#8217;s configuration. If you continue to have problems, <a "
+"href=\"%s\">contact support</a>."
+msgstr ""
+"Der er opstået en uventet fejl. Der kan være noget galt med WP-Rocket.me "
+"eller denne server&#8217;s konfiguration. Hvis du fortsætter med at have "
+"problemer, skal du <a href=\"%s\">kontakte supporten</a>."
+
+#: inc/deprecated/3.4.php:18
+msgid "Choose a domain from the list"
+msgstr "Vælg et domæne fra listen"
+
+#: inc/deprecated/3.4.php:31
+msgid "No domain available in your Cloudflare account"
+msgstr "Intet domæne er tilgængeligt på din Cloudflare-konto"
+
+#: inc/deprecated/3.5.php:71 inc/deprecated/3.5.php:195
+msgid ""
+"Curl is disabled on your server. Please ask your host to enable it. This is "
+"required for the Cloudflare Add-on to work correctly."
+msgstr ""
+"Curl er deaktiveret på din server. Bed din hostingudbyder om at aktivere "
+"det. Dette er nødvendigt for at få Cloudflare-add-on'et til at fungere "
+"korrekt."
+
+#. translators: %1$s = opening link; %2$s = closing link
+#: inc/deprecated/3.5.php:79
+msgid ""
+"Cloudflare email, API key and Zone ID are not set. Read the "
+"%1$sdocumentation%2$s for further guidance."
+msgstr ""
+"Cloudflare-mail, API-nøgle og Zone ID er ikke angivet. Læs "
+"%1$sdokumentationen%2$s for yderligere vejledning."
+
+#. translators: %1$s = opening link; %2$s = closing link
+#: inc/deprecated/3.5.php:206
+msgid ""
+"Cloudflare email and API key are not set. Read the %1$sdocumentation%2$s for"
+" further guidance."
+msgstr ""
+"Cloudflare-mail og API-nøgle er ikke angivet. Læs %1$sdokumentationen%2$s "
+"for yderligere vejledning."
+
+#: inc/deprecated/3.5.php:271
+msgid "Connection to Cloudflare failed"
+msgstr "Kunne ikke forbinde til Cloudflare"
+
+#. translators: %s = CloudFare API return message.
+#: inc/deprecated/3.5.php:587
+msgid "<strong>WP Rocket:</strong> %s"
+msgstr "<strong>WP Rocket:</strong> %s"
+
+#: inc/deprecated/3.5.php:592
+msgid "<strong>WP Rocket:</strong> Cloudflare cache successfully purged."
+msgstr "<strong>WP Rocket:</strong> Cloudflare-cache er blevet ryddet."
+
+#: inc/deprecated/3.5.php:858 inc/Engine/HealthCheck/HealthCheck.php:73
+msgid ""
+"The following scheduled event failed to run. This may indicate the CRON "
+"system is not running properly, which can prevent some WP Rocket features "
+"from working as intended:"
+msgid_plural ""
+"The following scheduled events failed to run. This may indicate the CRON "
+"system is not running properly, which can prevent some WP Rocket features "
+"from working as intended:"
+msgstr[0] ""
+"Følgende planlagte handling kunne ikke udføres. Dette kan indikere, at CRON-"
+"systemet ikke kører korrekt, hvilket kan forhindre, at nogle WP Rocket-"
+"funktioner fungerer efter hensigten:"
+msgstr[1] ""
+"Følgende planlagte handlinger kunne ikke udføres. Dette kan indikere, at "
+"CRON-systemet ikke kører korrekt, hvilket kan forhindre, at nogle WP Rocket-"
+"funktioner fungerer efter hensigten:"
+
+#: inc/deprecated/3.5.php:867 inc/Engine/HealthCheck/HealthCheck.php:80
+msgid "Please contact your host to check if CRON is working."
+msgstr ""
+"Kontakt venligst din hostingudbyder for at kontrollere, om CRON fungerer."
+
+#: inc/deprecated/3.10.php:163
+msgid "OPcache purge failed."
+msgstr "OPcache-rydning mislykkedes."
+
+#: inc/deprecated/3.10.php:168
+msgid "OPcache successfully purged"
+msgstr "OPcache ryddet"
+
+#: inc/deprecated/3.11.php:81
+msgid "Yoast SEO XML sitemap"
+msgstr "Yoast SEO XML sitemap"
+
+#. translators: %s = Name of the plugin.
+#. translators: %s = plugin name, e.g. Yoast SEO.
+#: inc/deprecated/3.11.php:83 inc/deprecated/3.12.php:58
+#: inc/deprecated/3.12.php:87 inc/deprecated/3.12.php:186
+#: inc/deprecated/3.12.php:253 inc/deprecated/3.12.php:342
+msgid ""
+"We automatically detected the sitemap generated by the %s plugin. You can "
+"check the option to preload it."
+msgstr ""
+"Vi har registreret et sitemap genereret af %s-pluginet. Du kan tjekke "
+"indstillingen for at indlæse det."
+
+#. translators: 1 and 3 are link openings, 2 is a link closing.
+#: inc/deprecated/3.11.php:279 inc/Engine/Plugin/UpdaterSubscriber.php:514
+msgid "%1$sReturn to WP Rocket%2$s or %3$sgo to Plugins page%2$s"
+msgstr "%1$sGå tilbage til WP Rocket%2$s eller %3$sgå til Plugins-siden%2$s"
+
+#: inc/deprecated/3.12.php:56
+msgid "All in One SEO XML sitemap"
+msgstr "Alt-i-ét SEO XML sitemap"
+
+#: inc/deprecated/3.12.php:85
+msgid "Rank Math XML sitemap"
+msgstr "Rank Math XML sitemap"
+
+#: inc/deprecated/3.12.php:184
+msgid "SEOPress XML sitemap"
+msgstr "SEOPress XML sitemap"
+
+#: inc/deprecated/3.12.php:251
+msgid "The SEO Framework XML sitemap"
+msgstr "Sitemap fra SEO Framework XML"
+
+#: inc/deprecated/3.12.php:332
+msgid "Jetpack XML Sitemaps"
+msgstr "Jetpack XML Sitemaps"
+
+#: inc/deprecated/3.12.php:334
+msgid "Preload the sitemap from the Jetpack plugin"
+msgstr "Forudindlæs sitemap fra Jetpack-pluginet"
+
+#: inc/deprecated/3.15.php:28
+#: inc/Engine/Admin/Metaboxes/PostEditOptionsSubscriber.php:74
+msgid "WP Rocket Options"
+msgstr "WP Rocket-muligheder"
+
+#: inc/deprecated/3.15.php:57 views/metaboxes/post_edit_options.php:19
+msgid "Never cache this page"
+msgstr "Cache aldrig denne side"
+
+#: inc/deprecated/3.15.php:61 views/metaboxes/post_edit_options.php:23
+msgid "Activate these options on this post:"
+msgstr "Aktivér disse muligheder for dette indlæg:"
+
+#. translators: %s is the name of the option.
+#: inc/deprecated/3.15.php:81
+#: inc/Engine/Admin/Metaboxes/PostEditOptionsSubscriber.php:117
+msgid "Activate first the %s option."
+msgstr "Aktiver først indstillingen %s."
+
+#. translators: %1$s = opening strong tag, %2$s = closing strong tag.
+#: inc/deprecated/3.15.php:97 views/metaboxes/post_edit_options.php:38
+msgid ""
+"%1$sNote:%2$s None of these options will be applied if this post has been "
+"excluded from cache in the global cache settings."
+msgstr ""
+"%1$sBemærk:%2$s Ingen af disse indstillinger anvendes, hvis dette indlæg er "
+"blevet udelukket fra cache i de globale cacheindstillinger."
+
+#: inc/deprecated/deprecated.php:240
+msgid "<strong>JS</strong> files with Deferred Loading JavaScript"
+msgstr "<strong>JS</strong>- filer med Deferred Loading JavaScript"
+
+#: inc/deprecated/deprecated.php:293
+msgid "Add URL"
+msgstr "Tilføj URL"
+
+#: inc/deprecated/deprecated.php:1245
+#: inc/Engine/Admin/Settings/Settings.php:453
+msgid "Settings saved."
+msgstr "Indstillinger gemt."
+
+#: inc/deprecated/deprecated.php:1277 views/settings/fields/import-form.php:22
+msgid ""
+"Before you can upload your import file, you will need to fix the following "
+"error:"
+msgstr "Inden du kan uploade din importfil, skal du rette følgende fejl:"
+
+#. translators: %s is the maximum upload size set on the current server.
+#: inc/deprecated/deprecated.php:1288 views/settings/fields/import-form.php:35
+msgid "Choose a file from your computer (maximum size: %s)"
+msgstr "Vælg en fil fra din computer (maksimal størrelse: %s)"
+
+#: inc/deprecated/deprecated.php:1294 inc/Engine/Admin/Settings/Render.php:499
+msgid "Upload file and import settings"
+msgstr "Upload fil og importér indstillinger"
+
+#: inc/deprecated/deprecated.php:1385
+msgid "Your Cloudflare credentials are valid."
+msgstr "Dine Cloudflare-oplysninger er gyldige."
+
+#: inc/deprecated/deprecated.php:1389
+msgid "Your Cloudflare credentials are invalid!"
+msgstr "Dine Cloudflare-oplysninger er ugyldige."
+
+#: inc/deprecated/deprecated.php:1453
+msgid "Save and optimize"
+msgstr "Gem og optimer"
+
+#: inc/deprecated/deprecated.php:1453
+msgid "Optimize"
+msgstr "Optimer"
+
+#: inc/deprecated/deprecated.php:1464 inc/deprecated/deprecated.php:1666
+msgctxt "screen-reader-text"
+msgid "Note:"
+msgstr "Bemærk:"
+
+#: inc/deprecated/deprecated.php:1470
+msgctxt "screen-reader-text"
+msgid "Performance tip:"
+msgstr "Tip til ydeevne:"
+
+#: inc/deprecated/deprecated.php:1476
+msgctxt "screen-reader-text"
+msgid "Third-party feature detected:"
+msgstr "Tredjepartsfunktion registreret:"
+
+#: inc/deprecated/deprecated.php:1488 inc/deprecated/deprecated.php:1672
+msgctxt "screen-reader-text"
+msgid "Warning:"
+msgstr "Advarsel:"
+
+#: inc/deprecated/deprecated.php:1501
+msgctxt "button text"
+msgid "Download settings"
+msgstr "Download-indstillinger"
+
+#: inc/deprecated/deprecated.php:1531
+msgid "Replace site's hostname with:"
+msgstr "Erstat hjemmesidenavnet med:"
+
+#: inc/deprecated/deprecated.php:1550 inc/deprecated/deprecated.php:1587
+#: inc/deprecated/deprecated.php:1615 views/settings/fields/cnames.php:41
+#: views/settings/fields/cnames.php:75 views/settings/fields/cnames.php:105
+msgid "reserved for"
+msgstr "reserveret til"
+
+#: inc/deprecated/deprecated.php:1552 inc/deprecated/deprecated.php:1589
+#: inc/deprecated/deprecated.php:1617 views/settings/fields/cnames.php:44
+#: views/settings/fields/cnames.php:78 views/settings/fields/cnames.php:108
+msgid "All files"
+msgstr "Alle filer"
+
+#: inc/deprecated/deprecated.php:1564 inc/deprecated/deprecated.php:1594
+#: inc/deprecated/deprecated.php:1622 views/settings/fields/cnames.php:56
+#: views/settings/fields/cnames.php:90 views/settings/fields/cnames.php:120
+msgid "Images"
+msgstr "Billeder"
+
+#: inc/deprecated/deprecated.php:1635 views/settings/fields/cnames.php:132
+msgid "Add CNAME"
+msgstr "Tilføj CNAME"
+
+#: inc/deprecated/deprecated.php:1706
+msgid "Watch the video"
+msgstr "Se videoen"
+
+#: inc/deprecated/deprecated.php:1771
+msgid "Basic"
+msgstr "Basic"
+
+#: inc/deprecated/deprecated.php:1772
+msgid "Static Files"
+msgstr "Statiske filer"
+
+#: inc/deprecated/deprecated.php:1773 inc/Engine/Admin/Settings/Page.php:1514
+#: inc/Engine/Admin/Settings/Page.php:1525
+#: inc/Engine/CDN/Admin/Subscriber.php:28
+msgid "CDN"
+msgstr "CDN"
+
+#: inc/deprecated/deprecated.php:1774
+msgid "Advanced"
+msgstr "Avanceret"
+
+#: inc/deprecated/deprecated.php:1775 inc/Engine/Admin/Settings/Page.php:1359
+msgid "Database"
+msgstr "Database"
+
+#: inc/deprecated/deprecated.php:1776 inc/Engine/Admin/Settings/Page.php:1065
+msgid "Preload"
+msgstr "Forudindlæs"
+
+#: inc/deprecated/deprecated.php:1786
+#: inc/Engine/Admin/Settings/Subscriber.php:188
+#: views/settings/page-sections/tools.php:33
+msgid "Tools"
+msgstr "Værktøjer"
+
+#: inc/deprecated/deprecated.php:1789 inc/Engine/Admin/Settings/Page.php:368
+#: views/settings/page-sections/dashboard.php:81
+msgid "License"
+msgstr "Licens"
+
+#. Translators: %1$s = Plugin name, %2$s = Plugin version, %3$s = PHP version
+#. required.
+#: inc/deprecated/deprecated.php:1944
+msgid ""
+"%1$s %2$s requires at least PHP %3$s to function properly. To use this "
+"version, please ask your web host how to upgrade your server to PHP %3$s or "
+"higher. If you are not able to upgrade, you can rollback to the previous "
+"version by using the button below."
+msgstr ""
+"%1$s %2$s kræver mindst PHP %3$s for at kunne fungere korrekt. Hvis du vil "
+"bruge denne version, bedes du spørge din webhost om, hvordan du opgraderer "
+"din server til PHP %3$s eller nyere. Hvis du ikke kan opgradere, kan du "
+"rulle tilbage til den tidligere version ved at bruge knappen nedenfor."
+
+#. translators: 1: PHP class name, 2: version number, 3: replacement class
+#. name.
+#: inc/deprecated/DeprecatedClassTrait.php:54
+msgid ""
+"The called class %1$s is <strong>deprecated</strong> since version %2$s! Use"
+" %3$s instead."
+msgstr ""
+"Den kaldte klasse %1$s har været <strong>forældet</strong> siden version "
+"%2$s! Brug %3$s i stedet."
+
+#. translators: 1: PHP class name, 2: version number.
+#: inc/deprecated/DeprecatedClassTrait.php:65
+msgid ""
+"The called class %1$s is <strong>deprecated</strong> since version %2$s!"
+msgstr ""
+"Den kaldte klasse %1$s har været <strong>forældet</strong> siden version "
+"%2$s!"
+
+#: inc/deprecated/Engine/Addon/FacebookTracking/Subscriber.php:92
+#: inc/deprecated/Engine/Addon/GoogleTracking/Subscriber.php:137
+#: inc/Engine/Admin/Database/Subscriber.php:79
+msgid "weekly"
+msgstr "ugentligt"
+
+#: inc/Engine/Admin/Database/Optimization.php:33
+#: inc/Engine/Admin/Settings/Page.php:1403
+msgid "Revisions"
+msgstr "Revisioner"
+
+#: inc/Engine/Admin/Database/Optimization.php:34
+#: inc/Engine/Admin/Settings/Page.php:1413
+msgid "Auto Drafts"
+msgstr "Automatiske udkast"
+
+#: inc/Engine/Admin/Database/Optimization.php:35
+#: inc/Engine/Admin/Settings/Page.php:1423
+msgid "Trashed Posts"
+msgstr "Kasserede indlæg"
+
+#: inc/Engine/Admin/Database/Optimization.php:36
+#: inc/Engine/Admin/Settings/Page.php:1433
+msgid "Spam Comments"
+msgstr "Spam-kommentarer"
+
+#: inc/Engine/Admin/Database/Optimization.php:37
+#: inc/Engine/Admin/Settings/Page.php:1443
+msgid "Trashed Comments"
+msgstr "Kasserede kommentarer"
+
+#: inc/Engine/Admin/Database/Optimization.php:38
+msgid "Transients"
+msgstr "Forbigående"
+
+#: inc/Engine/Admin/Database/Optimization.php:39
+msgid "Tables"
+msgstr "Tabeller"
+
+#: inc/Engine/Admin/Database/Subscriber.php:85
+msgid "monthly"
+msgstr "månedligt"
+
+#: inc/Engine/Admin/Database/Subscriber.php:194
+msgid "Database optimization process is running"
+msgstr "Databaseoptimeringsprocessen kører"
+
+#: inc/Engine/Admin/Database/Subscriber.php:224
+msgid ""
+"Database optimization process is complete. Everything was already optimized!"
+msgstr ""
+"Databaseoptimeringsprocessen er afsluttet. Alt var allerede optimeret!"
+
+#: inc/Engine/Admin/Database/Subscriber.php:227
+msgid ""
+"Database optimization process is complete. List of optimized items below:"
+msgstr ""
+"Databaseoptimeringsprocessen er afsluttet. Se listen over optimerede "
+"elementer nedenfor:"
+
+#. translators: %1$d = number of items optimized, %2$s = type of optimization
+#: inc/Engine/Admin/Database/Subscriber.php:235
+msgid "%1$d %2$s optimized."
+msgstr "%1$d %2$s optimeret."
+
+#. translators: %1$s = <strong>, %2$s = </strong>, %3$s = <a>, %4$s = </a>.
+#: inc/Engine/Admin/DomainChange/Subscriber.php:143
+msgid ""
+"%1$sWP Rocket:%2$s We detected that the website domain has changed. The "
+"configuration files must be regenerated for the page cache and all other "
+"optimizations to work as intended. %3$sLearn More%4$s"
+msgstr ""
+"%1$sWP Rocket:%2$s Vi har opdaget, at hjemmesidedomænet er ændret. "
+"Konfigurationsfilerne skal genoprettes for at sidecachen og alle andre "
+"optimeringer kan fungere efter hensigten. %3$sLær mere%4$s"
+
+#: inc/Engine/Admin/DomainChange/Subscriber.php:171
+msgid "Regenerate WP Rocket configuration files now"
+msgstr "Genopret WP Rocket-konfigurationsfiler nu"
+
+#: inc/Engine/Admin/Settings/Page.php:222
+msgid "Save Changes"
+msgstr "Gem ændringer"
+
+#: inc/Engine/Admin/Settings/Page.php:222
+msgid "Validate License"
+msgstr "Valider licens"
+
+#: inc/Engine/Admin/Settings/Page.php:278
+#: inc/Engine/Admin/Settings/Page.php:279 inc/functions/admin.php:559
+msgid "Unavailable"
+msgstr "Ikke tilgængelig"
+
+#: inc/Engine/Admin/Settings/Page.php:385
+msgid "API key"
+msgstr "API-nøgle"
+
+#: inc/Engine/Admin/Settings/Page.php:400
+msgid "Email address"
+msgstr "E-mailadresse "
+
+#: inc/Engine/Admin/Settings/Page.php:426
+msgid "Dashboard"
+msgstr "Dashboard"
+
+#: inc/Engine/Admin/Settings/Page.php:427
+msgid "Get help, account info"
+msgstr "Få hjælp, kontoinformation"
+
+#: inc/Engine/Admin/Settings/Page.php:475
+msgid "File Optimization"
+msgstr "Filoptimering"
+
+#: inc/Engine/Admin/Settings/Page.php:476
+msgid "Optimize CSS & JS"
+msgstr "Optimer CSS & JS"
+
+#. translators: %1$s = type of minification (HTML, CSS or JS), %2$s = “WP
+#. Rocket”.
+#: inc/Engine/Admin/Settings/Page.php:484
+msgid ""
+"%1$s Minification is currently activated in <strong>Autoptimize</strong>. If"
+" you want to use %2$s’s minification, disable this option in Autoptimize."
+msgstr ""
+"%1$s-minificering er i øjeblikket aktiveret under "
+"<strong>Autoptimering</strong>. Hvis du vil bruge   %2$ss minificering, skal"
+" du deaktivere denne indstilling i Autoptimering."
+
+#: inc/Engine/Admin/Settings/Page.php:494
+msgid "CSS Files"
+msgstr "CSS-filer"
+
+#: inc/Engine/Admin/Settings/Page.php:503
+msgid "JavaScript Files"
+msgstr "JavaScript-filer"
+
+#. translators: %1$s = type of minification (HTML, CSS or JS), %2$s = “WP
+#. Rocket”.
+#: inc/Engine/Admin/Settings/Page.php:510
+msgid ""
+"%1$s Minification is currently activated in <strong>Autoptimize</strong>. If"
+" you want to use %2$s’s minification, disable those options in Autoptimize."
+msgstr ""
+"%1$s-minificering er i øjeblikket aktiveret under "
+"<strong>Autoptimering</strong>. Hvis du vil bruge %2$s-minificering, skal du"
+" deaktivere disse indstillinger i Autoptimering."
+
+#. translators: %1$s = opening </a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:517
+msgid ""
+"Also, please check our %1$sdocumentation%2$s for a list of compatibility "
+"exclusions."
+msgstr ""
+"Se også vores %1$sdokumentation%2$s, hvor du finder en liste over "
+"kompatibilitetsudelukkelser."
+
+#: inc/Engine/Admin/Settings/Page.php:522
+msgid ""
+"Internal scripts are excluded by default to prevent issues. Remove them to "
+"take full advantage of this option."
+msgstr ""
+"Interne scripts udelukkes som standard for at forhindre problemer. Fjern dem"
+" for at drage fuld fordel af dette valg."
+
+#. translators: %1$s = opening </a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:525
+msgid ""
+"If this causes trouble, restore the default exclusions, found %1$shere%2$s"
+msgstr ""
+"Hvis dette forårsager problemer, kan du gendanne standard-udelukkelserne, "
+"som kan findes %1$sher%2$s"
+
+#: inc/Engine/Admin/Settings/Page.php:534
+msgid "Minify CSS files"
+msgstr "Minify CSS-filer"
+
+#: inc/Engine/Admin/Settings/Page.php:535
+msgid "Minify CSS removes whitespace and comments to reduce the file size."
+msgstr ""
+"Minify CSS fjerner blanktegn og mellemrum (whitespace) og kommentarer for at"
+" reducere filstørrelsen."
+
+#: inc/Engine/Admin/Settings/Page.php:550
+msgid ""
+"Specify URLs of CSS files to be excluded from minification (one per line)."
+msgstr ""
+"Angiv URL'er for CSS-filer, der skal udelukkes fra minificering (én per "
+"linje)."
+
+#: inc/Engine/Admin/Settings/Page.php:551
+msgid ""
+"<strong>Internal:</strong> The domain part of the URL will be stripped "
+"automatically. Use (.*).css wildcards to exclude all CSS files located at a "
+"specific path."
+msgstr ""
+"<strong>Internt:</strong> Domænet i URL'en fjernes automatisk. Brug (.*).css"
+" wildcards til at udelukke alle CSS-filer placeret på en bestemt sti."
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:553
+msgid ""
+"<strong>3rd Party:</strong> Use either the full URL path or only the domain "
+"name, to exclude external CSS. %1$sMore info%2$s"
+msgstr ""
+"<strong>Tredjepart:</strong> Brug enten hele URL-stien eller kun "
+"domænenavnet for at udelukke ekstern CSS. %1$sMere info%2$s"
+
+#: inc/Engine/Admin/Settings/Page.php:566
+#: inc/Engine/Admin/Settings/Page.php:588
+msgid "Optimize CSS delivery"
+msgstr "Optimering af CSS-levering"
+
+#: inc/Engine/Admin/Settings/Page.php:571
+msgid ""
+"Optimize CSS delivery eliminates render-blocking CSS on your website. Only "
+"one method can be selected. Remove Unused CSS is recommended for optimal "
+"performance, but limited only to the users with active license."
+msgstr ""
+"Optimering af CSS-levering eliminerer render-blokering af CSS på din "
+"hjemmeside. Kun én metode kan vælges. Fjern ubrugt CSS anbefales for optimal"
+" ydeevne, men begrænses til brugere med aktiv licens."
+
+#: inc/Engine/Admin/Settings/Page.php:571
+msgid ""
+"Optimize CSS delivery eliminates render-blocking CSS on your website. Only "
+"one method can be selected. Remove Unused CSS is recommended for optimal "
+"performance."
+msgstr ""
+"Optimering af CSS-levering eliminerer render-blokering af CSS på din "
+"hjemmeside. Kun én metode kan vælges. Fjern ubrugt CSS anbefales for optimal"
+" ydeevne."
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:581
+msgid ""
+"Optimize CSS Delivery features are disabled on local environments. %1$sLearn"
+" more%2$s"
+msgstr ""
+"Funktioner for Optimering af CSS-levering er deaktiveret på lokale miljøer. "
+"%1$sLær mere%2$s"
+
+#: inc/Engine/Admin/Settings/Page.php:601
+#: inc/Engine/Optimization/RUCSS/Admin/OptionSubscriber.php:74
+msgid "Remove Unused CSS"
+msgstr "Fjern ubrugt CSS"
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:604
+msgid ""
+"Removes unused CSS per page and helps to reduce page size and HTTP requests."
+" Recommended for best performance. Test thoroughly! %1$sMore info%2$s"
+msgstr ""
+"Fjerner ubrugt CSS pr. side og hjælper med at reducere sidestørrelse og "
+"HTTP-anmodninger. Anbefalet til bedste ydeevne. Test grundigt! %1$sMere "
+"info%2$s"
+
+#: inc/Engine/Admin/Settings/Page.php:606
+#: inc/Engine/Admin/Settings/Page.php:690
+msgid "This could break things!"
+msgstr "Dette kan ødelægge ting!"
+
+#: inc/Engine/Admin/Settings/Page.php:607
+#: inc/Engine/Admin/Settings/Page.php:691
+msgid ""
+"If you notice any errors on your website after having activated this "
+"setting, just deactivate it again, and your site will be back to normal."
+msgstr ""
+"Hvis du opdager fejl på din hjemmeside efter at have aktiveret denne "
+"indstilling, skal du blot deaktivere den igen. Så vil din hjemmeside gå "
+"tilbage til det normale."
+
+#: inc/Engine/Admin/Settings/Page.php:608
+msgid "Activate Remove Unused CSS"
+msgstr "Aktivér Fjern ubrugt CSS"
+
+#: inc/Engine/Admin/Settings/Page.php:614
+msgid "CSS safelist"
+msgstr "CSS-sikkerhedsliste"
+
+#: inc/Engine/Admin/Settings/Page.php:615
+msgid ""
+"Specify CSS filenames, IDs or classes that should not be removed (one per "
+"line)."
+msgstr ""
+"Angiv CSS-filnavne, ID'er eller klasser, der ikke bør fjernes (ét element "
+"per linje)."
+
+#: inc/Engine/Admin/Settings/Page.php:630
+#: inc/Engine/CriticalPath/Admin/Subscriber.php:201
+msgid "Load CSS asynchronously"
+msgstr "Indlæs CSS asynkront"
+
+#. translators: %1$s = plugin name.
+#: inc/Engine/Admin/Settings/Page.php:633
+msgctxt "WP Critical CSS compatibility"
+msgid ""
+"Load CSS asynchronously is currently handled by the %1$s plugin. If you want"
+" to use WP Rocket’s load CSS asynchronously option, disable the %1$s plugin."
+msgstr ""
+"Indlæs CSS asynkront håndteres i øjeblikket af  %1$s-pluginet. Hvis du vil "
+"bruge WP Rockets indlæs-CSS-asynkront-indstilling, skal du deaktivere "
+"%1$s-pluginet."
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:635
+msgid ""
+"Generates critical path CSS and loads CSS asynchronously. %1$sMore info%2$s"
+msgstr ""
+"Genererer kritisk CSS-sti og indlæser CSS asynkront. %1$sMere info%2$s"
+
+#: inc/Engine/Admin/Settings/Page.php:641
+msgid "Fallback critical CSS"
+msgstr "Fallback for kritisk CSS"
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:643
+msgid ""
+"Provides a fallback if auto-generated critical path CSS is incomplete. "
+"%1$sMore info%2$s"
+msgstr ""
+"Giver en fallback, hvis den automatisk genererede kritiske CSS-sti er "
+"ufuldkommen. %1$sMere info%2$s"
+
+#: inc/Engine/Admin/Settings/Page.php:658
+msgid "Minify JavaScript files"
+msgstr "Minificer JavaScript-filer"
+
+#: inc/Engine/Admin/Settings/Page.php:659
+msgid ""
+"Minify JavaScript removes whitespace and comments to reduce the file size."
+msgstr ""
+"Minificer JavaScript fjerner blanktegn og mellemrum (whitepsace) og "
+"kommentarer for at reducere filstørrelsen."
+
+#: inc/Engine/Admin/Settings/Page.php:673
+msgid ""
+"Combine JavaScript files <em>(Enable Minify JavaScript files to select)</em>"
+msgstr ""
+"Kombiner JavaScript-filer <em>(Aktivér Minificer JavaScript-filer for at "
+"vælge)</em>"
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:675
+msgid ""
+"Combine JavaScript files combines your site’s internal, 3rd party and inline"
+" JS reducing HTTP requests. Not recommended if your site uses HTTP/2. "
+"%1$sMore info%2$s"
+msgstr ""
+"Kombiner JavaScript-filer kombinerer dit hjemmesides interne, tredjeparts- "
+"og inline JS for at reducere HTTP-anmodninger. Anbefales ikke, hvis din "
+"hjemmeside bruger HTTP/2. %1$sMere info%2$s"
+
+#: inc/Engine/Admin/Settings/Page.php:676
+msgid ""
+"For compatibility and best results, this option is disabled when delay "
+"javascript execution is enabled."
+msgstr ""
+"Af hensyn til kompatibilitet og bedste resultater, er denne indstilling "
+"deaktiveret, når delay javascript-udførelse er aktiveret."
+
+#: inc/Engine/Admin/Settings/Page.php:692
+msgid "Activate combine JavaScript"
+msgstr "Aktivér Kombiner JavaScript"
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:699
+msgid ""
+"Specify patterns of inline JavaScript to be excluded from concatenation (one"
+" per line). %1$sMore info%2$s"
+msgstr ""
+"Angiv mønstre for inline JavaScript, der skal udelukkes fra sammenkobling "
+"(et pr. linje). %1$sMere info%2$s"
+
+#: inc/Engine/Admin/Settings/Page.php:716
+msgid ""
+"Specify URLs of JavaScript files to be excluded from minification and "
+"concatenation (one per line)."
+msgstr ""
+"Angiv URL'er for JavaScript-filer, der skal udelukkes fra minificering og "
+"sammenkobling (en pr. linje)."
+
+#: inc/Engine/Admin/Settings/Page.php:717
+msgid ""
+"<strong>Internal:</strong> The domain part of the URL will be stripped "
+"automatically. Use (.*).js wildcards to exclude all JS files located at a "
+"specific path."
+msgstr ""
+"<strong> Internt:</strong> Domænedelen af URL'en vil blive fjernet "
+"automatisk. Brug (.*).js wildcards til at udelukke alle JS-filer placeret på"
+" én bestemt sti."
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:719
+msgid ""
+"<strong>3rd Party:</strong> Use either the full URL path or only the domain "
+"name, to exclude external JS. %1$sMore info%2$s"
+msgstr ""
+"<strong>Tredjepart:</strong> Brug enten hele URL-stien eller kun "
+"domænenavnet for at udelukke ekstern JS. %1$sMere info%2$s"
+
+#: inc/Engine/Admin/Settings/Page.php:735
+#: inc/Engine/Optimization/DeferJS/AdminSubscriber.php:76
+msgid "Load JavaScript deferred"
+msgstr "Indlæs JavaScript udskudt"
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:737
+msgid ""
+"Load JavaScript deferred eliminates render-blocking JS on your site and can "
+"improve load time. %1$sMore info%2$s"
+msgstr ""
+"Indlæs JavaScript udskudt eliminerer render-blokering af JS på din "
+"hjemmeside og kan forbedre indlæsningstiden. %1$sMere info%2$s"
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:750
+msgid ""
+"Specify URLs or keywords of JavaScript files to be excluded from defer (one "
+"per line). %1$sMore info%2$s"
+msgstr ""
+"Angiv URL'er eller søgeord for JavaScript-filer, der skal udelukkes fra "
+"udsættelse (en pr. linje). %1$sMere info%2$s"
+
+#: inc/Engine/Admin/Settings/Page.php:766
+#: inc/Engine/Optimization/DelayJS/Admin/Subscriber.php:210
+msgid "Delay JavaScript execution"
+msgstr "Delay JavaScript-udførelse"
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:768
+msgid ""
+"Improves performance by delaying the loading of JavaScript files until user "
+"interaction (e.g. scroll, click). %1$sMore info%2$s"
+msgstr ""
+"Forbedrer ydeevnen ved at forsinke indlæsningen af JavaScript-filer indtil "
+"brugerinteraktion (f.eks. scroll, klik). %1$sMere info%2$s"
+
+#: inc/Engine/Admin/Settings/Page.php:777
+msgid "One-click exclusions"
+msgstr "Et-klik-udelukkelser"
+
+#: inc/Engine/Admin/Settings/Page.php:778
+msgid ""
+"When using the Delay JavaScript feature, you might notice that some elements"
+" in the viewport take time to appear."
+msgstr ""
+"Når du bruger Delay JavaScript-funktionen, vil du måske opleve, at visse "
+"elementer i viewport er længe om at blive vist."
+
+#: inc/Engine/Admin/Settings/Page.php:779
+msgid ""
+"If you need these elements to load immediately, select the related plugins, "
+"themes, or services below to ensure they appear without delay."
+msgstr ""
+"Hvis du har brug for at indlæse disse elementer med det samme, skal du vælge"
+" de relaterede plugins, temaer eller tjenester nedenfor for at sikre, at de "
+"vises uden forsinkelse."
+
+#: inc/Engine/Admin/Settings/Page.php:799
+msgid ""
+"Specify URLs or keywords that can identify inline or JavaScript files to be "
+"excluded from delaying execution (one per line)."
+msgstr ""
+"Angiv URL'er eller søgeord, der kan identificere inline- eller JavaScript-"
+"filer, der skal udelukkes fra forsinket udførelse (én/et per linje)."
+
+#: inc/Engine/Admin/Settings/Page.php:813
+msgid "Safe Mode for Delay JavaScript Execution"
+msgstr "Sikker tilstand til Delay JavaScript Execution"
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:815
+msgid "The Safe Mode mode prevents all internal scripts from being delayed."
+msgstr "Sikker tilstand forhindrer alle interne scripts i at blive forsinket."
+
+#: inc/Engine/Admin/Settings/Page.php:831
+msgid "Performance impact"
+msgstr "Indvirkning på ydeevne"
+
+#: inc/Engine/Admin/Settings/Page.php:832
+msgid ""
+"By enabling Safe Mode, you significantly reduce your website performance "
+"improvements. We recommend using it only as a temporary solution. If you’re "
+"experiencing issues with the Delay JavaScript feature, our support team can "
+"help you troubleshoot."
+msgstr ""
+"Ved at aktivere Sikker tilstand reducerer du betydeligt forbedringer af din "
+"hjemmesides ydeevne. Vi anbefaler kun at bruge det som en midlertidig "
+"løsning. Hvis du oplever problemer med Delay JavaScript-funktionen, kan "
+"vores supportteam hjælpe dig med fejlfinding."
+
+#: inc/Engine/Admin/Settings/Page.php:833
+msgid "ACTIVATE SAFE MODE"
+msgstr "AKTIVÉR SIKKER TILSTAND"
+
+#: inc/Engine/Admin/Settings/Page.php:854
+msgid "Media"
+msgstr "Medier"
+
+#: inc/Engine/Admin/Settings/Page.php:855
+msgid "LazyLoad, image dimensions, font optimization"
+msgstr "LazyLoad, billeddimensioner, skrifttypeoptimering"
+
+#: inc/Engine/Admin/Settings/Page.php:864
+msgid "Autoptimize"
+msgstr "Autoptimering"
+
+#: inc/Engine/Admin/Settings/Page.php:918
+msgid "LazyLoad"
+msgstr "LazyLoad"
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:921
+msgid ""
+"It can improve actual and perceived loading time as images, iframes, and "
+"videos will be loaded only as they enter (or about to enter) the viewport "
+"and reduces the number of HTTP requests. %1$sMore Info%2$s"
+msgstr ""
+"Det kan forbedre den faktiske og opfattede indlæsningstid, da billeder, "
+"iframes og videoer kun indlæses, når de kommer ind i (eller er ved at komme "
+"ind i) viewport, og reducerer antallet af HTTP-anmodninger. %1$sMere "
+"info%2$s"
+
+#. translators: %1$s = “WP Rocket”, %2$s = a list of plugin names.
+#: inc/Engine/Admin/Settings/Page.php:928
+msgid ""
+"LazyLoad is currently activated in %2$s. If you want to use WP Rocket’s "
+"LazyLoad, disable this option in %2$s."
+msgstr ""
+"LazyLoad er i øjeblikket aktiveret i %2$s. Hvis du vil bruge WP Rockets "
+"LazyLoad, skal du deaktivere denne indstilling i %2$s."
+
+#: inc/Engine/Admin/Settings/Page.php:931
+msgid "Image Dimensions"
+msgstr "Billeddimensioner"
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:934
+msgid ""
+"Add missing width and height attributes to images. Helps prevent layout "
+"shifts and improve the reading experience for your visitors. %1$sMore "
+"info%2$s"
+msgstr ""
+"Tilføj manglende bredde- og højde-attributter til billeder. Dette hjælper "
+"med at forhindre layout-forskydninger og forbedrer læseoplevelsen for dine "
+"besøgende. %1$sMere info%2$s"
+
+#: inc/Engine/Admin/Settings/Page.php:939
+msgid "Fonts"
+msgstr "Skrifttyper"
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:942
+msgid ""
+"Download and serve fonts directly from your server. Reduces connections to "
+"external servers and minimizes font shifts. %1$sMore info%2$s"
+msgstr ""
+"Hent og brug skrifttyper direkte fra din server. Dette reducerer "
+"forbindelser til eksterne servere og minimerer skrifttype-skift. %1$sMere "
+"info%2$s"
+
+#: inc/Engine/Admin/Settings/Page.php:961
+msgid "Enable for images"
+msgstr "Aktivér for billeder"
+
+#. translators: %1$s = “WP Rocket”, %2$s = a list of plugin names.
+#: inc/Engine/Admin/Settings/Page.php:973
+msgid ""
+"LazyLoad for images is currently activated in %2$s. If you want to use "
+"%1$s’s LazyLoad, disable this option in %2$s."
+msgstr ""
+"LazyLoad for billeder er i øjeblikket aktiveret for %2$s. Hvis du vil bruge "
+"%1$s-LazyLoad, skal du deaktivere denne indstilling i %2$s."
+
+#: inc/Engine/Admin/Settings/Page.php:981
+msgid "Enable for CSS background images"
+msgstr "Aktivér for CSS-baggrundsbilleder"
+
+#: inc/Engine/Admin/Settings/Page.php:996
+msgid "Enable for iframes and videos"
+msgstr "Aktivér for iframes og videoer"
+
+#: inc/Engine/Admin/Settings/Page.php:1011
+msgid "Replace YouTube iframe with preview image"
+msgstr "Erstat YouTube-iframe med forhåndsvisning af billedet"
+
+#. translators: %1$s = “WP Rocket”, %2$s = a list of plugin or themes names.
+#: inc/Engine/Admin/Settings/Page.php:1013
+msgid "Replace YouTube iframe with preview image is not compatible with %2$s."
+msgstr ""
+"Erstatning af YouTube-iframe med forhåndsvisning af billedet er ikke "
+"kompatibelt med %2$s."
+
+#. translators: %1$s = “WP Rocket”, %2$s = a list of plugin or themes names.
+#: inc/Engine/Admin/Settings/Page.php:1013
+msgid ""
+"This can significantly improve your loading time if you have a lot of "
+"YouTube videos on a page."
+msgstr ""
+"Dette kan forbedre din indlæsningstid betydeligt, hvis du har en masse "
+"YouTube-videoer på én side."
+
+#: inc/Engine/Admin/Settings/Page.php:1028
+msgid "Excluded images or iframes"
+msgstr "Ekskluderede billeder eller iframes"
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:1030
+msgid ""
+"Specify keywords (e.g. image filename, CSS filename, CSS class, domain) from"
+" the image or iframe code to be excluded (one per line). %1$sMore info%2$s"
+msgstr ""
+"Angiv nøgleord (f.eks. billedfilnavn, CSS-filnavn, CSS-klasse, domæne) fra "
+"billedet eller iframe-koden, der skal udelukkes (et pr. linje). %1$sMere "
+"info%2$s"
+
+#: inc/Engine/Admin/Settings/Page.php:1038
+msgid "Add missing image dimensions"
+msgstr "Tilføj manglende billeddimensioner"
+
+#: inc/Engine/Admin/Settings/Page.php:1046
+msgid "Self-host Google Fonts"
+msgstr "Selvhosting af Google Fonts"
+
+#: inc/Engine/Admin/Settings/Page.php:1066
+msgid "Generate cache files, preload fonts"
+msgstr "Generer cachefiler, forudindlæs skrifttyper"
+
+#: inc/Engine/Admin/Settings/Page.php:1078
+msgid "Preload Cache"
+msgstr "Forudindlæs cache"
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:1081
+msgid ""
+"When you enable preloading WP Rocket will automatically detect your sitemaps"
+" and save all URLs to the database. The plugin will make sure that your "
+"cache is always preloaded."
+msgstr ""
+"Når du aktiverer forudindlæsning, vil WP Rocket automatisk registrere dine "
+"sitemaps og gemme alle URL'er i databasen. Pluginet vil sikre, at din cache "
+"altid er forudindlæst."
+
+#: inc/Engine/Admin/Settings/Page.php:1089
+msgid "Preload Links"
+msgstr "Forudindlæs links"
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:1092
+msgid ""
+"Link preloading improves the perceived load time by downloading a page when "
+"a user hovers over the link. %1$sMore info%2$s"
+msgstr ""
+"Forudindlæsning af links forbedrer den opfattede indlæsningstid ved at "
+"downloade en side, når en bruger holder markøren over linket. %1$sMere "
+"info%2$s"
+
+#: inc/Engine/Admin/Settings/Page.php:1100
+msgid "Prefetch DNS Requests"
+msgstr "Prefetch DNS-anmodninger"
+
+#: inc/Engine/Admin/Settings/Page.php:1102
+msgid ""
+"DNS prefetching can make external files load faster, especially on mobile "
+"networks"
+msgstr ""
+"DNS prefetching kan gøre, at eksterne filer indlæses hurtigere, især på "
+"mobilnetværk"
+
+#: inc/Engine/Admin/Settings/Page.php:1107
+msgid "Preload Fonts"
+msgstr "Forudindlæs skrifttyper"
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:1110
+msgid ""
+"Improves performance by helping browsers discover fonts in CSS files. "
+"%1$sMore info%2$s"
+msgstr ""
+"Forbedrer ydeevnen ved at hjælpe browsere med at finde skrifttyper i CSS-"
+"filer. %1$sMere info%2$s"
+
+#: inc/Engine/Admin/Settings/Page.php:1124
+msgid "Activate Preloading"
+msgstr "Aktivér Forudindlæsning"
+
+#: inc/Engine/Admin/Settings/Page.php:1135
+msgid "Exclude URLs"
+msgstr "Ekskluder URL'er"
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:1140
+msgid ""
+"Specify URLs to be excluded from the preload feature (one per line). "
+"%1$sMore info%2$s"
+msgstr ""
+"Angiv de URL'er, der skal udelukkes fra forudindlæsningsfunktionen (en pr. "
+"linje). %1$sMere info%2$s"
+
+#: inc/Engine/Admin/Settings/Page.php:1151
+msgid "URLs to prefetch"
+msgstr "URL'er, der skal prefetches"
+
+#: inc/Engine/Admin/Settings/Page.php:1152
+msgid ""
+"Specify external hosts to be prefetched (no <code>http:</code>, one per "
+"line)"
+msgstr ""
+"Angiv eksterne værter, der skal prefetches (intet <code>http:</code>, en pr."
+" linje)"
+
+#: inc/Engine/Admin/Settings/Page.php:1161
+msgid "Fonts to preload"
+msgstr "Skrifttyper, der skal forudindlæses"
+
+#: inc/Engine/Admin/Settings/Page.php:1162
+msgid ""
+"Specify urls of the font files to be preloaded (one per line). Fonts must be"
+" hosted on your own domain, or the domain you have specified on the CDN tab."
+msgstr ""
+"Angiv URL'er for de skrifttypefiler, der skal forudindlæses (en pr. linje). "
+"Skrifttyper skal være hostet på dit eget domæne, eller det domæne, du har "
+"angivet i CDN-fanen."
+
+#: inc/Engine/Admin/Settings/Page.php:1163
+msgid ""
+"The domain part of the URL will be stripped automatically.<br/>Allowed font "
+"extensions: otf, ttf, svg, woff, woff2."
+msgstr ""
+"Domænedelen af URL'en vil blive fjernet automatisk. <br/>Tilladte "
+"skrifttype-endelser: otf, ttf, svg, woff, woff2."
+
+#: inc/Engine/Admin/Settings/Page.php:1172
+msgid "Enable link preloading"
+msgstr "Aktivér forudindlæsning af links"
+
+#: inc/Engine/Admin/Settings/Page.php:1191
+msgid "Advanced Rules"
+msgstr "Avancerede regler"
+
+#: inc/Engine/Admin/Settings/Page.php:1192
+msgid "Fine-tune cache rules"
+msgstr "Finjuster cacheregler"
+
+#: inc/Engine/Admin/Settings/Page.php:1205
+msgid ""
+"Sensitive pages like custom login/logout URLs should be excluded from cache."
+msgstr ""
+"Følsomme sider som brugerdefinerede login/logout-adresser bør udelukkes fra "
+"cachen."
+
+#: inc/Engine/Admin/Settings/Page.php:1208
+msgctxt "plugin name"
+msgid "WooCommerce"
+msgstr "WooCommerce"
+
+#: inc/Engine/Admin/Settings/Page.php:1210
+msgctxt "plugin name"
+msgid "Easy Digital Downloads"
+msgstr "Nemme digitale downloads"
+
+#: inc/Engine/Admin/Settings/Page.php:1212
+msgctxt "plugin name"
+msgid "iThemes Exchange"
+msgstr "iThemes Exchange"
+
+#: inc/Engine/Admin/Settings/Page.php:1214
+msgctxt "plugin name"
+msgid "Jigoshop"
+msgstr "Jigoshop"
+
+#: inc/Engine/Admin/Settings/Page.php:1216
+msgctxt "plugin name"
+msgid "WP-Shop"
+msgstr "WP-Shop"
+
+#. translators: %1$s = opening <a> tag, %2$s = plugin name, %3$s closing </a>
+#. tag.
+#: inc/Engine/Admin/Settings/Page.php:1222
+msgid ""
+"<br>Cart, checkout and \"my account\" pages set in "
+"<strong>%1$s%2$s%3$s</strong> will be detected and never cached by default."
+msgstr ""
+"<br>Kurv-, betalings- og \"min konto\"-sider indstillet i "
+"<strong>%1$s%2$s%3$s</strong> vil blive registreret og caches aldrig som "
+"standard."
+
+#: inc/Engine/Admin/Settings/Page.php:1232
+msgid "Cache Lifespan"
+msgstr "Cache-levetid"
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:1235
+msgid ""
+"Cache files older than the specified lifespan will be deleted.<br>Enable "
+"%1$spreloading%2$s for the cache to be rebuilt automatically after lifespan "
+"expiration."
+msgstr ""
+"Cachefiler, der er ældre end den angivne levetid, slettes.<br>Aktivér "
+"%1$sforudindlæsning%2$s for automatisk at genopbygge cachen efter levetidens"
+" udløb."
+
+#: inc/Engine/Admin/Settings/Page.php:1251
+msgid "Never Cache Cookies"
+msgstr "Cache aldrig cookies"
+
+#: inc/Engine/Admin/Settings/Page.php:1269
+msgid "Cache Query String(s)"
+msgstr "Streng(e) til cacheforespørgsler"
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:1272
+msgid ""
+"%1$sCache for query strings%2$s enables you to force caching for specific "
+"GET parameters."
+msgstr ""
+"%1$sCache for forespørgselsstrenge%2$s gør det muligt at gennemtvinge "
+"caching for specifikke GET-parametre."
+
+#: inc/Engine/Admin/Settings/Page.php:1283
+msgid ""
+"Specify time after which the global cache is cleared<br>(0 = unlimited )"
+msgstr ""
+"Angiv den tid, efter hvilken den globale cache renses<br> (0 = ubegrænset )"
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:1285
+msgid ""
+"Reduce lifespan to 10 hours or less if you notice issues that seem to appear"
+" periodically. %1$sWhy?%2$s"
+msgstr ""
+"Reducer levetiden til 10 timer eller mindre, hvis du bemærker problemer, der"
+" synes at forekomme med jævne mellemrum. %1$sHvorfor?%2$s"
+
+#: inc/Engine/Admin/Settings/Page.php:1291
+#: inc/Engine/License/views/promo-banner.php:32
+#: inc/Engine/License/views/renewal-soon-banner.php:15
+msgid "Hours"
+msgstr "Timer"
+
+#: inc/Engine/Admin/Settings/Page.php:1292
+#: inc/Engine/License/views/promo-banner.php:31
+#: inc/Engine/License/views/renewal-soon-banner.php:14
+msgid "Days"
+msgstr "Dage"
+
+#: inc/Engine/Admin/Settings/Page.php:1297
+msgid ""
+"Specify URLs of pages or posts that should never be cached (one per line)"
+msgstr ""
+"Angiv URL'er for sider eller indlæg, der aldrig bør caches (én per linje)"
+
+#: inc/Engine/Admin/Settings/Page.php:1298
+#: inc/Engine/Admin/Settings/Page.php:1326
+msgid ""
+"The domain part of the URL will be stripped automatically.<br>Use (.*) "
+"wildcards to address multiple URLs under a given path."
+msgstr ""
+"Domænedelen af URL'en vil blive fjernet automatisk.<br>Brug (.*) wildcards "
+"til at adressere flere URL'er under en given sti."
+
+#: inc/Engine/Admin/Settings/Page.php:1307
+msgid ""
+"Specify full or partial IDs of cookies that, when set in the visitor's "
+"browser, should prevent a page from getting cached (one per line)"
+msgstr ""
+"Angiv fuldstændige eller delvise ID'er for cookies, som, når de er "
+"indstillet i den besøgendes browser, skal forhindre en side i at blive "
+"cachet (en per linje)"
+
+#: inc/Engine/Admin/Settings/Page.php:1315
+msgid ""
+"Specify user agent strings that should never see cached pages (one per line)"
+msgstr ""
+"Angiv brugeragentstrenge, der aldrig bør se cachede sider (én per linje)"
+
+#: inc/Engine/Admin/Settings/Page.php:1316
+msgid "Use (.*) wildcards to detect parts of UA strings."
+msgstr "Brug (.*) wildcards til at registrere dele af UA-strenge."
+
+#: inc/Engine/Admin/Settings/Page.php:1325
+msgid ""
+"Specify URLs you always want purged from cache whenever you update any post "
+"or page (one per line)"
+msgstr ""
+"Angiv de webadresser (URL'er), du altid vil have renset fra cachen, når du "
+"opdaterer et indlæg eller en side (en per linje)"
+
+#: inc/Engine/Admin/Settings/Page.php:1334
+msgid "Specify query strings for caching (one per line)"
+msgstr "Angiv forespørgselsstrenge til caching (én per linje)"
+
+#: inc/Engine/Admin/Settings/Page.php:1360
+msgid "Optimize, reduce bloat"
+msgstr "Optimer, reducer bloat"
+
+#: inc/Engine/Admin/Settings/Page.php:1367
+msgid "Post Cleanup"
+msgstr "Ryd op i indlæg"
+
+#: inc/Engine/Admin/Settings/Page.php:1369
+msgid ""
+"Post revisions and drafts will be permanently deleted. Do not use this "
+"option if you need to retain revisions or drafts."
+msgstr ""
+"Indlægsrevisioner og -udkast vil blive slettet permanent. Brug ikke denne "
+"indstilling, hvis du har brug for at beholde revisioner eller udkast."
+
+#: inc/Engine/Admin/Settings/Page.php:1374
+msgid "Comments Cleanup"
+msgstr "Ryd op i kommentarer"
+
+#: inc/Engine/Admin/Settings/Page.php:1376
+msgid "Spam and trashed comments will be permanently deleted."
+msgstr "Spam og kasserede kommentarer vil blive slettet permanent."
+
+#: inc/Engine/Admin/Settings/Page.php:1380
+msgid "Transients Cleanup"
+msgstr "Ryd op i transienter"
+
+#: inc/Engine/Admin/Settings/Page.php:1382
+msgid ""
+"Transients are temporary options; they are safe to remove. They will be "
+"automatically regenerated as your plugins require them."
+msgstr ""
+"Transienter er midlertidige indstillinger, der er sikre at fjerne. De vil "
+"automatisk blive regenereret, når dine plugins kræver dem."
+
+#: inc/Engine/Admin/Settings/Page.php:1386
+msgid "Database Cleanup"
+msgstr "Databaseoprydning"
+
+#: inc/Engine/Admin/Settings/Page.php:1388
+msgid "Reduces overhead of database tables"
+msgstr "Reducerer overhead i databasetabeller"
+
+#: inc/Engine/Admin/Settings/Page.php:1392
+msgid "Automatic Cleanup"
+msgstr "Automatisk oprydning"
+
+#. translators: %s is the number of revisions found in the database. It's a
+#. formatted number, don't use %d.
+#: inc/Engine/Admin/Settings/Page.php:1405
+msgid "%s revision in your database."
+msgid_plural "%s revisions in your database."
+msgstr[0] "%s revision i din database."
+msgstr[1] "%s revisioner i din database."
+
+#. translators: %s is the number of revisions found in the database. It's a
+#. formatted number, don't use %d.
+#: inc/Engine/Admin/Settings/Page.php:1415
+msgid "%s draft in your database."
+msgid_plural "%s drafts in your database."
+msgstr[0] "%s udkast i din database."
+msgstr[1] "%s udkast i din database."
+
+#. translators: %s is the number of revisions found in the database. It's a
+#. formatted number, don't use %d.
+#: inc/Engine/Admin/Settings/Page.php:1425
+msgid "%s trashed post in your database."
+msgid_plural "%s trashed posts in your database."
+msgstr[0] "%s kasseret indlæg i din database."
+msgstr[1] "%s kasserede indlæg i din database."
+
+#. translators: %s is the number of revisions found in the database. It's a
+#. formatted number, don't use %d.
+#: inc/Engine/Admin/Settings/Page.php:1435
+msgid "%s spam comment in your database."
+msgid_plural "%s spam comments in your database."
+msgstr[0] "%s spam-kommentar i din database."
+msgstr[1] "%s spam-kommentarer i din database."
+
+#. translators: %s is the number of revisions found in the database. It's a
+#. formatted number, don't use %d.
+#: inc/Engine/Admin/Settings/Page.php:1445
+msgid "%s trashed comment in your database."
+msgid_plural "%s trashed comments in your database."
+msgstr[0] "%s kasseret kommentar i din database."
+msgstr[1] "%s kasserede kommentarer i din database."
+
+#: inc/Engine/Admin/Settings/Page.php:1453
+msgid "All transients"
+msgstr "Alle transienter"
+
+#. translators: %s is the number of revisions found in the database. It's a
+#. formatted number, don't use %d.
+#: inc/Engine/Admin/Settings/Page.php:1455
+msgid "%s transient in your database."
+msgid_plural "%s transients in your database."
+msgstr[0] "%s transient i din database."
+msgstr[1] "%s transienter i din database."
+
+#: inc/Engine/Admin/Settings/Page.php:1463
+msgid "Optimize Tables"
+msgstr "Optimering af tabeller"
+
+#. translators: %s is the number of revisions found in the database. It's a
+#. formatted number, don't use %d.
+#: inc/Engine/Admin/Settings/Page.php:1465
+msgid "%s table to optimize in your database."
+msgid_plural "%s tables to optimize in your database."
+msgstr[0] "%s tabel til optimering i din database."
+msgstr[1] "%s tabeller til optimering i din database."
+
+#: inc/Engine/Admin/Settings/Page.php:1476
+msgid "Schedule Automatic Cleanup"
+msgstr "Planlæg automatisk oprydning"
+
+#: inc/Engine/Admin/Settings/Page.php:1488
+msgid "Frequency"
+msgstr "Hyppighed"
+
+#: inc/Engine/Admin/Settings/Page.php:1496
+msgid "Daily"
+msgstr "Daglig"
+
+#: inc/Engine/Admin/Settings/Page.php:1497
+msgid "Weekly"
+msgstr "Ugentligt"
+
+#: inc/Engine/Admin/Settings/Page.php:1498
+msgid "Monthly"
+msgstr "Månedligt"
+
+#: inc/Engine/Admin/Settings/Page.php:1515
+msgid "Integrate your CDN"
+msgstr "Integrer dit CDN"
+
+#: inc/Engine/Admin/Settings/Page.php:1527
+msgid ""
+"All URLs of static files (CSS, JS, images) will be rewritten to the CNAME(s)"
+" you provide."
+msgstr ""
+"Alle URL'er for statiske filer (CSS, JS, billeder) vil blive omskrevet til "
+"de CNAME(s), du giver."
+
+#. translators: %1$s = opening link tag, %2$s = closing link tag.
+#: inc/Engine/Admin/Settings/Page.php:1529
+msgid ""
+"Not required for services like Cloudflare and Sucuri. Please see our "
+"available %1$sAdd-ons%2$s."
+msgstr ""
+"Ikke påkrævet for tjenester som Cloudflare og Sucuri. Se vores tilgængelige "
+"%1$sAdd-ons%2$s."
+
+#. translators: %1$s = opening em tag, %2$l = list of add-on name(s), %3$s =
+#. closing em tag.
+#: inc/Engine/Admin/Settings/Page.php:1569
+msgid ""
+"%1$s%2$l Add-on%3$s is currently enabled. Configuration of the CDN settings "
+"is not required for %2$l to work on your site."
+msgid_plural ""
+"%1$s%2$l Add-ons%3$s are currently enabled. Configuration of the CDN "
+"settings is not required for %2$l to work on your site."
+msgstr[0] ""
+"%1$s%2$l Add-on%3$s er aktiveret. Konfiguration af CDN-indstillinger er ikke"
+" påkrævet for at %2$l kan fungere på dit websted."
+msgstr[1] ""
+"%1$s%2$l Add-ons%3$s er aktiveret i øjeblikket. Konfiguration af CDN-"
+"indstillinger er ikke påkrævet for at %2$l kan fungere på din hjemmeside."
+
+#: inc/Engine/Admin/Settings/Page.php:1595
+msgid "Enable Content Delivery Network"
+msgstr "Aktivér indholdsleveringsnetværk (CDN)"
+
+#: inc/Engine/Admin/Settings/Page.php:1604
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:162
+msgid "CDN CNAME(s)"
+msgstr "CDN-CNAME(s)"
+
+#: inc/Engine/Admin/Settings/Page.php:1605
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:163
+msgid "Specify the CNAME(s) below"
+msgstr "Angiv CNAME(s) nedenfor"
+
+#: inc/Engine/Admin/Settings/Page.php:1612
+msgid ""
+"Specify URL(s) of files that should not get served via CDN (one per line)."
+msgstr ""
+"Angiv URL(er) for filer, der ikke skal behandles via CDN (én per linje)."
+
+#: inc/Engine/Admin/Settings/Page.php:1613
+msgid ""
+"The domain part of the URL will be stripped automatically.<br>Use (.*) "
+"wildcards to exclude all files of a given file type located at a specific "
+"path."
+msgstr ""
+"Domænedelen af URL'en vil blive fjernet automatisk.<br>Brug (.*) wildcards "
+"til at udelukke alle filer af en given filtype placeret på en bestemt sti."
+
+#: inc/Engine/Admin/Settings/Page.php:1636
+#: inc/Engine/Admin/Settings/Page.php:1644
+msgid "Heartbeat"
+msgstr "Heartbeat"
+
+#: inc/Engine/Admin/Settings/Page.php:1637
+msgid "Control WordPress Heartbeat API"
+msgstr "Kontrollér WordPress Heartbeat API"
+
+#: inc/Engine/Admin/Settings/Page.php:1645
+msgid ""
+"Reducing or disabling the Heartbeat API’s activity can help save some of "
+"your server’s resources."
+msgstr ""
+"At reducere eller deaktivere Heartbeat API's aktivitet kan hjælpe med at "
+"spare på nogle af serverens ressourcer."
+
+#: inc/Engine/Admin/Settings/Page.php:1651
+msgid "Reduce or disable Heartbeat activity"
+msgstr "Reducer eller deaktiver Heartbeat-aktivitet"
+
+#: inc/Engine/Admin/Settings/Page.php:1652
+msgid ""
+"Reducing activity will change Heartbeat frequency from one hit each minute "
+"to one hit every 2 minutes."
+msgstr ""
+"Reducering af aktiviteten vil ændre Heartbeat-frekvensen fra ét slag pr. "
+"minut til ét slag hvert andet minut."
+
+#: inc/Engine/Admin/Settings/Page.php:1652
+msgid ""
+"Disabling Heartbeat entirely may break plugins and themes using this API."
+msgstr ""
+"En fuld deaktivering af Heartbeat kan afbryde plugins og temaer, der bruger "
+"denne API."
+
+#: inc/Engine/Admin/Settings/Page.php:1666
+msgid "Do not limit"
+msgstr "Begræns ikke"
+
+#: inc/Engine/Admin/Settings/Page.php:1667
+msgid "Reduce activity"
+msgstr "Reducer aktivitet"
+
+#: inc/Engine/Admin/Settings/Page.php:1668
+msgid "Disable"
+msgstr "Deaktivér"
+
+#: inc/Engine/Admin/Settings/Page.php:1676
+msgid "Control Heartbeat"
+msgstr "Kontrollér Heartbeat"
+
+#: inc/Engine/Admin/Settings/Page.php:1685
+msgid "Behavior in backend"
+msgstr "Adfærd i backend"
+
+#: inc/Engine/Admin/Settings/Page.php:1692
+msgid "Behavior in post editor"
+msgstr "Adfærd i indlægseditor"
+
+#: inc/Engine/Admin/Settings/Page.php:1698
+msgid "Behavior in frontend"
+msgstr "Adfærd i frontend"
+
+#: inc/Engine/Admin/Settings/Page.php:1717
+#: views/settings/page-sections/tutorials.php:39
+msgid "Add-ons"
+msgstr "Add-ons"
+
+#: inc/Engine/Admin/Settings/Page.php:1718
+msgid "Add more features"
+msgstr "Tilføj flere funktioner"
+
+#: inc/Engine/Admin/Settings/Page.php:1725
+msgid "One-click Rocket Add-ons"
+msgstr "Et-klik Rocket Add-ons"
+
+#: inc/Engine/Admin/Settings/Page.php:1726
+msgid ""
+"One-Click Add-ons are features extending available options without "
+"configuration needed. Switch the option \"on\" to enable from this screen."
+msgstr ""
+"Et-klik Rocket Add-ons er funktioner, der udvider tilgængelige muligheder "
+"uden behov for konfiguration. Skift indstillingen til \"til\" for at "
+"aktivere fra denne skærm."
+
+#: inc/Engine/Admin/Settings/Page.php:1736
+msgid "Rocket Add-ons"
+msgstr "Rocket Add-ons"
+
+#: inc/Engine/Admin/Settings/Page.php:1737
+msgid "Rocket Add-ons are complementary features extending available options."
+msgstr ""
+"Rocket Add-ons er komplementære funktioner, der udvider de tilgængelige "
+"muligheder."
+
+#: inc/Engine/Admin/Settings/Page.php:1748
+msgid "User Cache"
+msgstr "Brugercache"
+
+#: inc/Engine/Admin/Settings/Page.php:1754
+msgid ""
+"If you need to create a dedicated set of cache files for each logged-in "
+"WordPress user, you must activate this add-on."
+msgstr ""
+"Hvis du skal oprette et dedikeret sæt cachefiler til hver indlogget "
+"WordPress-bruger, skal du aktivere dette add-on."
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:1756
+msgid ""
+"User cache is great when you have user-specific or restricted content on "
+"your website.<br>%1$sLearn more%2$s"
+msgstr ""
+"Brugercache er fantastisk, når du har brugerspecifikt eller begrænset "
+"indhold på din hjemmeside.<br>%1$sLær mere%2$s"
+
+#: inc/Engine/Admin/Settings/Page.php:1769
+#: inc/Engine/Admin/Settings/Page.php:1938
+msgid "Cloudflare"
+msgstr "Cloudflare"
+
+#: inc/Engine/Admin/Settings/Page.php:1775
+msgid "Integrate your Cloudflare account with this add-on."
+msgstr "Integrer din Cloudflare-konto med dette add-on."
+
+#: inc/Engine/Admin/Settings/Page.php:1776
+msgid ""
+"Provide your account email, global API key, and domain to use options such "
+"as clearing the Cloudflare cache and enabling optimal settings with WP "
+"Rocket."
+msgstr ""
+"Angiv din konto-e-mail, global API-nøgle og dit domæne for at bruge "
+"muligheder som f.eks. at rydde Cloudflare-cachen og aktivere optimale "
+"indstillinger for WP Rocket."
+
+#. translators: %1$s = opening span tag, %2$s = closing span tag.
+#: inc/Engine/Admin/Settings/Page.php:1779
+msgid ""
+"%1$sPlanning on using Automatic Platform Optimization (APO)?%2$s Just "
+"activate the official Cloudflare plugin and configure it. WP Rocket will "
+"automatically enable compatibility."
+msgstr ""
+"%1$sPlanlægger du at bruge Automatisk Platformoptimering (APO)?%2$s Så skal "
+"du blot aktivere det officielle Cloudflare-plugin og konfigurere det. WP "
+"Rocket aktiverer automatisk kompatibilitet."
+
+#: inc/Engine/Admin/Settings/Page.php:1827
+msgid "Varnish"
+msgstr "Varnish"
+
+#: inc/Engine/Admin/Settings/Page.php:1833
+msgid "If Varnish runs on your server, you must activate this add-on."
+msgstr "Hvis Varnish kører på din server, skal du aktivere dette add-on."
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:1835
+msgid ""
+"Varnish cache will be purged each time WP Rocket clears its cache to ensure "
+"content is always up-to-date.<br>%1$sLearn more%2$s"
+msgstr ""
+"Varnish-cache vil blive renset hver gang WP Rocket renser sin cache for at "
+"sikre, at indholdet altid er opdateret.<br>%1$sLær mere%2$s"
+
+#: inc/Engine/Admin/Settings/Page.php:1870
+msgid "WebP Compatibility"
+msgstr "WebP-kompatibilitet"
+
+#: inc/Engine/Admin/Settings/Page.php:1876
+msgid "Improve browser compatibility for WebP images."
+msgstr "Øg browserkompatibilitet for WebP-billeder."
+
+#. translators: %1$s and %3$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/Engine/Admin/Settings/Page.php:1880
+msgid ""
+"Enable this option if you would like WP Rocket to serve WebP images to "
+"compatible browsers. Please note that WP Rocket cannot create WebP images "
+"for you. To create WebP images we recommend %1$sImagify%2$s. %3$sMore "
+"info%2$s"
+msgstr ""
+"Aktivér denne indstilling, hvis du ønsker, at WP Rocket skal levere WebP-"
+"billeder til kompatible browsere. Bemærk, at WP Rocket ikke kan oprette "
+"WebP-billeder til dig. Til oprettelse af WebP-billeder anbefaler vi "
+"%1$sImagify%2$s. %3$sMere info%2$s"
+
+#: inc/Engine/Admin/Settings/Page.php:1900
+msgid "Clear the Sucuri cache when WP Rocket’s cache is cleared."
+msgstr "Fjern Sucuri-cachen, når WP Rockets cache er renset."
+
+#: inc/Engine/Admin/Settings/Page.php:1903
+msgid ""
+"Provide your API key to clear the Sucuri cache when WP Rocket’s cache is "
+"cleared."
+msgstr ""
+"Angiv din API-nøgle for at rydde Sucuri-cachen, når WP Rockets cache er "
+"ryddet."
+
+#: inc/Engine/Admin/Settings/Page.php:1911
+#: inc/Engine/Admin/Settings/Page.php:2055
+msgid "Sucuri"
+msgstr "Sucuri"
+
+#: inc/Engine/Admin/Settings/Page.php:1917
+msgid "Synchronize Sucuri cache with this add-on."
+msgstr "Synkroniser Sucuri-cache med dette add-on."
+
+#: inc/Engine/Admin/Settings/Page.php:1955
+msgid "Cloudflare credentials"
+msgstr "Cloudflare-oplysninger"
+
+#: inc/Engine/Admin/Settings/Page.php:1964
+msgid "Cloudflare settings"
+msgstr "Cloudflare-indstillinger"
+
+#: inc/Engine/Admin/Settings/Page.php:1978
+msgctxt "Cloudflare"
+msgid "Global API key:"
+msgstr "Global API-nøgle:"
+
+#: inc/Engine/Admin/Settings/Page.php:1979
+msgctxt "Cloudflare"
+msgid "Find your API key"
+msgstr "Find din API-nøgle"
+
+#: inc/Engine/Admin/Settings/Page.php:1991
+msgctxt "Cloudflare"
+msgid "Account email"
+msgstr "Konto-e-mail"
+
+#: inc/Engine/Admin/Settings/Page.php:2000
+msgctxt "Cloudflare"
+msgid "Zone ID"
+msgstr "Zone-ID"
+
+#: inc/Engine/Admin/Settings/Page.php:2010
+msgid "Development mode"
+msgstr "Udviklingstilstand"
+
+#. translators: %1$s = link opening tag, %2$s = link closing tag.
+#: inc/Engine/Admin/Settings/Page.php:2012
+msgid ""
+"Temporarily activate development mode on your website. This setting will "
+"automatically turn off after 3 hours. %1$sLearn more%2$s"
+msgstr ""
+"Aktivér udviklingstilstand midlertidigt på din hjemmeside. Denne indstilling"
+" slukkes automatisk efter 3 timer. %1$sLær mere%2$s"
+
+#: inc/Engine/Admin/Settings/Page.php:2020
+msgid "Optimal settings"
+msgstr "Optimale indstillinger"
+
+#: inc/Engine/Admin/Settings/Page.php:2021
+msgid ""
+"Automatically enhances your Cloudflare configuration for speed, performance "
+"grade and compatibility."
+msgstr ""
+"Forbedrer automatisk din Cloudflare-konfiguration på hastighed, ydeevne og "
+"kompatibilitet."
+
+#: inc/Engine/Admin/Settings/Page.php:2029
+msgid "Relative protocol"
+msgstr "Relativ protokol"
+
+#: inc/Engine/Admin/Settings/Page.php:2030
+msgid ""
+"Should only be used with Cloudflare's flexible SSL feature. URLs of static "
+"files (CSS, JS, images) will be rewritten to use // instead of http:// or "
+"https://."
+msgstr ""
+"Bør kun bruges med Cloudflares fleksible SSL-funktion. URL'er af statiske "
+"filer (CSS, JS, billeder) vil blive omskrevet til at bruge // i stedet for "
+"http:// eller https://."
+
+#: inc/Engine/Admin/Settings/Page.php:2068
+msgid "Sucuri credentials"
+msgstr "Sucuri-oplysninger"
+
+#: inc/Engine/Admin/Settings/Page.php:2081
+msgctxt "Sucuri"
+msgid ""
+"Firewall API key (for plugin), must be in format {32 characters}/{32 "
+"characters}:"
+msgstr ""
+"Firewall API-nøgle (til pluginet) skal være i formatet {32 tegn} / {32 "
+"tegn}:"
+
+#: inc/Engine/Admin/Settings/Page.php:2082
+msgctxt "Sucuri"
+msgid "Find your API key"
+msgstr "Find din API-nøgle"
+
+#. translators: %1$s: opening strong tag, %2$s: closing strong tag, %3$s:
+#. opening a tag, %4$s: opening a tag.
+#: inc/Engine/Admin/Settings/Page.php:2287
+msgid ""
+"%1$sWP Rocket:%2$s the plugin has been updated to the 3.17 version. New "
+"feature: %3$sAutomatic Lazy Rendering%4$s. Check out our documentation to "
+"learn more about it."
+msgstr ""
+"%1$sWP Rocket:%2$s Pluginet er blevet opdateret til version 3.17. Ny "
+"funktion: %3$sAutomatic Lazy Rendering%4$s. Se vores dokumentation for at "
+"lære mere om det."
+
+#: inc/Engine/Admin/Settings/Settings.php:363
+msgid ""
+"Sucuri Add-on: The API key for the Sucuri firewall must be in format "
+"<code>{32 characters}/{32 characters}</code>."
+msgstr ""
+"Sucuri add-on: API-nøglen til Sucuri-firewall skal være i formatet <code>{32"
+" tegn}/{32 tegn}</code>."
+
+#: inc/Engine/Admin/Settings/Settings.php:661
+msgid ""
+"Sorry! Adding /(.*) in Advanced Rules > Never Cache URL(s) was not saved "
+"because it disables caching and optimizations for every page on your site."
+msgstr ""
+"Beklager! Tilføjelse af /(.*) i Avancerede regler > Cache aldrig URL'er blev"
+" ikke gemt, fordi det deaktiverer caching og optimeringer for hver side på "
+"din hjemmeside."
+
+#: inc/Engine/Admin/Settings/Subscriber.php:189
+msgid "Import, Export, Rollback"
+msgstr "Import, eksport, rollback"
+
+#: inc/Engine/Admin/Settings/Subscriber.php:214
+#: views/settings/page-sections/imagify.php:14
+msgid "Image Optimization"
+msgstr "Billedoptimering"
+
+#: inc/Engine/Admin/Settings/Subscriber.php:215
+msgid "Compress your images"
+msgstr "Komprimer dine billeder"
+
+#: inc/Engine/Admin/Settings/Subscriber.php:232
+#: views/settings/page-sections/tutorials.php:48
+msgid "Tutorials"
+msgstr "Tutorials"
+
+#: inc/Engine/Admin/Settings/Subscriber.php:233
+msgid "Getting started and how to videos"
+msgstr "\"Kom i gang\"- og \"Hvordan\"-videoer"
+
+#: inc/Engine/Admin/Settings/Subscriber.php:308
+#: views/settings/page-sections/plugins.php:13
+msgid "Our Plugins"
+msgstr "Vores plugins"
+
+#: inc/Engine/Admin/Settings/Subscriber.php:309
+msgid "Build Better, Faster, Safer"
+msgstr "Byg bedre, hurtigere og mere sikkert"
+
+#: inc/Engine/Cache/PurgeExpired/Subscriber.php:75
+msgid "WP Rocket Expired Cache Interval"
+msgstr "WP Rocket udløbet cache-interval"
+
+#: inc/Engine/Cache/WPCache.php:338
+msgid "WP_CACHE value"
+msgstr "WP_CACHE-værdi"
+
+#: inc/Engine/Cache/WPCache.php:355
+msgid "Cache"
+msgstr "Cache"
+
+#: inc/Engine/Cache/WPCache.php:359
+msgid ""
+"The WP_CACHE constant needs to be set to true for WP Rocket cache to work "
+"properly"
+msgstr ""
+"WP_CACHE-konstanten skal indstilles til \"true\" for at WP Rocket-cachen kan"
+" fungere korrekt"
+
+#: inc/Engine/Cache/WPCache.php:368
+msgid "WP_CACHE is set to true"
+msgstr "WP_CACHE er sat til true"
+
+#: inc/Engine/Cache/WPCache.php:376
+msgid "WP_CACHE is not set"
+msgstr "WP_CACHE er ikke indstillet"
+
+#: inc/Engine/Cache/WPCache.php:384
+msgid "WP_CACHE is set to false"
+msgstr "WP_CACHE er sat til false"
+
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:96
+msgid "Next Billing Date"
+msgstr "Næste faktureringsdato"
+
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:103
+msgid "No Subscription"
+msgstr "Intet abonnement"
+
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:138
+msgid "Your RocketCDN subscription is currently active."
+msgstr "Dit RocketCDN-abonnement er i øjeblikket aktivt."
+
+#. translators: %1$s = opening <code> tag, %2$s = CDN URL, %3$s = closing
+#. </code> tag.
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:144
+msgid "To use RocketCDN, replace your CNAME with %1$s%2$s%3$s."
+msgstr ""
+"Hvis du vil bruge RocketCDN, skal du erstatte din CNAME med %1$s%2$s%3$s."
+
+#. translators: %1$is = opening link tag, %2$s = closing link tag.
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:155
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:229
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:329
+msgid "%1$sMore Info%2$s"
+msgstr "%1$sMere info%2$s"
+
+#: inc/Engine/CDN/RocketCDN/APIClient.php:134
+msgid ""
+"We could not fetch the current price because RocketCDN API returned an "
+"unexpected error code."
+msgstr ""
+"Vi kunne ikke hente den aktuelle pris, fordi RocketCDN API returnerede en "
+"uventet fejlkode."
+
+#: inc/Engine/CDN/RocketCDN/APIClient.php:140
+msgid "RocketCDN is not available at the moment. Please retry later."
+msgstr "RocketCDN er i øjeblikket ikke tilgængeligt. Prøv igen senere."
+
+#: inc/Engine/CDN/RocketCDN/APIClient.php:177
+msgid "RocketCDN cache purge failed: Missing identifier parameter."
+msgstr ""
+"RocketCDN cacherydning mislykkedes: Manglende identifikator-parameter."
+
+#: inc/Engine/CDN/RocketCDN/APIClient.php:186
+msgid "RocketCDN cache purge failed: Missing user token."
+msgstr "RocketCDN cacherydning mislykkedes: Manglende user token."
+
+#: inc/Engine/CDN/RocketCDN/APIClient.php:212
+msgid ""
+"RocketCDN cache purge failed: The API returned an unexpected response code."
+msgstr ""
+"RocketCDN cacherydning mislykkedes: API'en returnerede en uventet "
+"responskode."
+
+#: inc/Engine/CDN/RocketCDN/APIClient.php:221
+msgid "RocketCDN cache purge failed: The API returned an empty response."
+msgstr "RocketCDN cacherydning mislykkedes: API'en returnerede et tomt svar."
+
+#: inc/Engine/CDN/RocketCDN/APIClient.php:230
+msgid "RocketCDN cache purge failed: The API returned an unexpected response."
+msgstr ""
+"RocketCDN cacherydning mislykkedes: API'en returnerede en uventet respons."
+
+#. translators: %s = message returned by the API.
+#: inc/Engine/CDN/RocketCDN/APIClient.php:239
+msgid "RocketCDN cache purge failed: %s."
+msgstr "RocketCDN-cacherydning mislykkedes: %s."
+
+#: inc/Engine/CDN/RocketCDN/APIClient.php:247
+msgid "RocketCDN cache purge successful."
+msgstr "RocketCDN cacherydning udført."
+
+#. translators: %1$s = Old CName, %2$s = New CName.
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:398
+msgid "We've updated your RocketCDN CNAME from %1$s to %2$s."
+msgstr "Vi har opdateret din RocketCDN CNAME fra %1$s til %2$s."
+
+#. translators: %1$s = New CName.
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:400
+msgid ""
+"The change is already applied to the plugin settings. If you were using the "
+"CNAME in your code, make sure to update it to: %1$s."
+msgstr ""
+"Ændringen er allerede blevet anvendt til plugin-indstillingerne. Hvis du "
+"brugte CNAME i din kode, skal du opdatere den til: %1$s."
+
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:409
+msgid "contact support"
+msgstr "kontakt supporten"
+
+#: inc/Engine/CDN/RocketCDN/RESTSubscriber.php:137
+msgid "RocketCDN enabled"
+msgstr "RocketCDN aktiveret"
+
+#: inc/Engine/CDN/RocketCDN/RESTSubscriber.php:160
+msgid "RocketCDN disabled"
+msgstr "RocketCDN deaktiveret"
+
+#. Translators: %s = date formatted using date_i18n() and get_option(
+#. 'date_format' ).
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:29
+msgid "Valid until %s only!"
+msgstr "Kun gyldigt indtil %s!"
+
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:38
+msgid "Speed up your website thanks to:"
+msgstr "Gør din hjemmeside hurtigere ved hjælp af:"
+
+#. translators: %1$s = opening strong tag, %2$s = closing strong tag.
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:44
+msgid ""
+"High performance Content Delivery Network (CDN) with %1$sunlimited "
+"bandwidth%2$s"
+msgstr ""
+"Højtydende Content Delivery Network (CDN) med %1$subegrænset båndbredde%2$s"
+
+#. translators: %1$s = opening strong tag, %2$s = closing strong tag.
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:50
+msgid ""
+"Easy configuration: the %1$sbest CDN settings%2$s are automatically applied"
+msgstr ""
+"Nem konfiguration: de %1$sbedste CDN-indstillinger%2$s anvendes automatisk"
+
+#. translators: %1$s = opening strong tag, %2$s = closing strong tag.
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:56
+msgid ""
+"WP Rocket integration: the CDN option is %1$sautomatically configured%2$s in"
+" our plugin"
+msgstr ""
+"WP Rocket-integration: CDN-indstillingen er %1$sautomatisk konfigureret%2$s "
+"i vores plugin"
+
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:60
+msgid "Learn more about RocketCDN"
+msgstr "Læs mere om RocketCDN"
+
+#. translators: %1$s = discounted price, %2$s = regular price.
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:67
+msgid ""
+"*$%1$s/month for 12 months then $%2$s/month. You can cancel your "
+"subscription at any time."
+msgstr ""
+"*$%1$s/måned i 12 måneder og derefter $%2$s/måned. Du kan opsige dit "
+"abonnement når som helst."
+
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:88
+msgid "Billed monthly"
+msgstr "Faktureres månedligt"
+
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:89
+msgid "Get Started"
+msgstr "Kom i gang"
+
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:94
+msgid "Reduce this banner"
+msgstr "Reducer dette banner"
+
+#: inc/Engine/CDN/RocketCDN/views/cta-small.php:19
+msgid ""
+"Speed up your website with RocketCDN, WP Rocket’s Content Delivery Network."
+msgstr ""
+"Gør din hjemmeside hurtigere med RocketCDN, WP Rockets Content Delivery "
+"Network."
+
+#: inc/Engine/CDN/RocketCDN/views/cta-small.php:22
+#: inc/Engine/CDN/RocketCDN/views/promote-notice.php:13
+#: views/settings/page-sections/plugins.php:60
+msgid "Learn More"
+msgstr "Lær mere"
+
+#: inc/Engine/CDN/RocketCDN/views/dashboard-status.php:24
+msgid "RocketCDN is unavailable on local domains and staging sites."
+msgstr "RocketCDN er ikke tilgængeligt på lokale domæner og stagingsider."
+
+#: inc/Engine/CDN/RocketCDN/views/dashboard-status.php:33
+msgid "Get RocketCDN"
+msgstr "Få RocketCDN"
+
+#: inc/Engine/CDN/RocketCDN/views/promote-notice.php:11
+msgid "New!"
+msgstr "Nyhed!"
+
+#: inc/Engine/CDN/RocketCDN/views/promote-notice.php:12
+msgid ""
+"Speed up your website with RocketCDN, WP Rocket’s Content Delivery Network!"
+msgstr ""
+"Gør din hjemmeside hurtigere med RocketCDN, WP Rockets Content Delivery "
+"Network!"
+
+#: inc/Engine/Common/JobManager/Cron/Subscriber.php:185
+msgid "WP Rocket process pending jobs"
+msgstr "WP Rocket-processering af afventende jobs"
+
+#: inc/Engine/Common/JobManager/Cron/Subscriber.php:204
+msgid "WP Rocket clear failed jobs"
+msgstr "WP Rocket-rydning af mislykkede jobs"
+
+#: inc/Engine/Common/JobManager/Cron/Subscriber.php:221
+msgid "WP Rocket process on submit jobs"
+msgstr "WP Rocket-processering på indsendte jobs"
+
+#: inc/Engine/Common/PerformanceHints/Admin/AdminBar.php:44
+msgid "Clear Priority Elements"
+msgstr "Fjern prioriterede elementer"
+
+#: inc/Engine/Common/PerformanceHints/Admin/AdminBar.php:79
+msgid "Clear Priority Elements of this URL"
+msgstr "Fjern prioriterede elementer i denne URL"
+
+#: inc/Engine/Common/PerformanceHints/Admin/AdminBar.php:100
+msgid "Priority Elements"
+msgstr "Prioriterede elementer"
+
+#: inc/Engine/Common/PerformanceHints/Admin/AdminBar.php:101
+#: inc/Engine/Saas/Admin/AdminBar.php:134
+#: views/settings/page-sections/dashboard.php:169
+msgid "Clear"
+msgstr "Ryd"
+
+#: inc/Engine/Common/PerformanceHints/Admin/AdminBar.php:103
+msgid ""
+"This action will clear the Critical Images and Lazily Rendered Content."
+msgstr ""
+"Denne handling vil rydde de kritiske billeder og Lazily Rendered indhold."
+
+#. translators: %1$s = plugin name.
+#: inc/Engine/Common/PerformanceHints/Admin/Controller.php:140
+msgid "%1$s: Critical images and Lazy Render data was cleared!"
+msgstr "%1$s: Kritiske billeder og Lazy Render-data er blevet fjernet."
+
+#: inc/Engine/Common/PerformanceHints/AJAX/AJAXControllerTrait.php:19
+msgid "Script error"
+msgstr "Scriptfejl"
+
+#: inc/Engine/Common/PerformanceHints/AJAX/AJAXControllerTrait.php:22
+msgid "Script timeout"
+msgstr "Script-timeout"
+
+#. Translators: %s is the exception message.
+#: inc/Engine/Common/Queue/Cleaner.php:87
+msgid "It was not possible to determine a valid cut-off time: %s."
+msgstr "Det var ikke muligt at bestemme en gyldig afbrydelsestid: %s."
+
+#: inc/Engine/Common/Queue/RUCSSQueueRunner.php:272
+msgid "Every minute"
+msgstr "Hvert minut"
+
+#: inc/Engine/CriticalPath/Admin/Admin.php:261
+msgid "Regenerate Critical Path CSS"
+msgstr "Regenerer kritisk sti CSS"
+
+#: inc/Engine/CriticalPath/Admin/Post.php:144
+#: views/cpcss/metabox/generate.php:47
+msgid "Generate Specific CPCSS"
+msgstr "Generer specifik CPCSS"
+
+#: inc/Engine/CriticalPath/Admin/Post.php:145
+#: views/cpcss/metabox/generate.php:45
+msgid "Regenerate specific CPCSS"
+msgstr "Regenerer specifik CPCSS"
+
+#: inc/Engine/CriticalPath/Admin/Post.php:216
+msgid "This feature is not available for non-public post types."
+msgstr "Denne funktion er ikke tilgængelig for ikke-offentlige indlægstyper."
+
+#: inc/Engine/CriticalPath/Admin/Post.php:219
+msgid "%l to use this feature."
+msgstr "%l for at bruge denne funktion."
+
+#. translators: %s = post type.
+#: inc/Engine/CriticalPath/Admin/Post.php:222
+msgid "Publish the %s"
+msgstr "Udgiv %s"
+
+#: inc/Engine/CriticalPath/Admin/Post.php:223
+msgid "Enable Load CSS asynchronously in WP Rocket settings"
+msgstr "Aktivér Indlæs CSS asynkront i WP Rocket-indstillinger"
+
+#: inc/Engine/CriticalPath/Admin/Post.php:224
+msgid "Enable Load CSS asynchronously in the options above"
+msgstr "Aktivér Indlæs CSS asynkront i ovennævnte indstillinger"
+
+#. translators: %1$s = type of content, %2$s = error message.
+#: inc/Engine/CriticalPath/APIClient.php:64
+msgid "Critical CSS for %1$s not generated. Error: %2$s"
+msgstr "Kritisk CSS for %1$s blev ikke genereret. Fejl: %2$s"
+
+#. translators: %s = item URL.
+#: inc/Engine/CriticalPath/APIClient.php:172
+msgid ""
+"Critical CSS for %1$s on mobile not generated. Error: The API returned an "
+"empty response."
+msgstr ""
+"Kritisk CSS for %1$s på mobil blev ikke genereret. Fejl: API'en returnerede "
+"et tomt svar."
+
+#. translators: %s = item URL.
+#: inc/Engine/CriticalPath/APIClient.php:175
+msgid ""
+"Critical CSS for %1$s not generated. Error: The API returned an empty "
+"response."
+msgstr ""
+"Kritisk CSS for %1$s blev ikke genereret. Fejl: API'en returnerede et tomt "
+"svar."
+
+#. translators: %s = item URL.
+#: inc/Engine/CriticalPath/APIClient.php:187
+msgid "Critical CSS for %1$s on mobile not generated."
+msgstr "Kritisk CSS for %1$s på mobil ikke genereret."
+
+#. translators: %s = item URL.
+#. translators: %1$s = item URL or item type.
+#: inc/Engine/CriticalPath/APIClient.php:189
+#: inc/Engine/CriticalPath/ProcessorService.php:171
+msgid "Critical CSS for %1$s not generated."
+msgstr "Kritisk CSS for %1$s er ikke genereret."
+
+#. translators: %s = URL.
+#: inc/Engine/CriticalPath/APIClient.php:197
+msgid ""
+"Critical CSS for %1$s on mobile not generated. Error: The API returned an "
+"invalid response code."
+msgstr ""
+"Kritisk CSS for %1$s på mobil blev ikke genereret. Fejl: API'en returnerede "
+"en ugyldig responskode."
+
+#. translators: %s = URL.
+#: inc/Engine/CriticalPath/APIClient.php:199
+msgid ""
+"Critical CSS for %1$s not generated. Error: The API returned an invalid "
+"response code."
+msgstr ""
+"Kritisk CSS for %1$s blev ikke genereret. Fejl: API'en returnerede en "
+"ugyldig responskode."
+
+#. translators: %1$s = error message.
+#: inc/Engine/CriticalPath/APIClient.php:207
+#: inc/Engine/CriticalPath/ProcessorService.php:178
+msgid "Error: %1$s"
+msgstr "Fejl: %1$s"
+
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:179
+msgid "Critical CSS generation is currently running."
+msgstr "Kritisk CSS-generering kører i øjeblikket."
+
+#. Translators: %1$s = opening link tag, %2$s = closing link tag.
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:184
+msgid "Go to the %1$sWP Rocket settings%2$s page to track progress."
+msgstr ""
+"Gå til siden for %1$sWP Rocket-indstillinger%2$s for at spore fremskridt."
+
+#. Translators: %1$d = number of critical CSS generated, %2$d = total number
+#. of critical CSS to generate.
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:399
+msgid ""
+"Critical CSS generation is currently running: %1$d of %2$d page types "
+"completed. (Refresh this page to view progress)"
+msgstr ""
+"Kritisk CSS-generering kører i øjeblikket: %1$d af %2$d sidetyper er "
+"afsluttet. (Opdater denne side for at se fremskridt)"
+
+#. Translators: %1$d = number of critical CSS generated, %2$d = total number
+#. of critical CSS to generate.
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:475
+msgid "Critical CSS generation finished for %1$d of %2$d page types."
+msgstr "Kritisk CSS-generering er afsluttet for %1$d af %2$d sidetyper."
+
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:482
+msgid "Critical CSS generation encountered one or more errors."
+msgstr "Kritisk CSS-generering stødte på en eller flere fejl."
+
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:482
+msgid "Learn more."
+msgstr "Lær mere"
+
+#. translators: %1$ = opening bold tag, %2$ = closing bold tag.
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:846
+msgid ""
+"We highly recommend the %1$supdated Remove Unused CSS%2$s for a better CSS "
+"optimization. Load CSS Asynchronously is always available as a back-up."
+msgstr ""
+"Vi anbefaler stærkt det %1$sopdaterede Fjern ubrugt CSS%2$s for en bedre "
+"CSS-optimering. Indlæs CSS asynkront er altid tilgængeligt som en backup."
+
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:851
+msgid "Stay with the old option"
+msgstr "Behold den gamle mulighed"
+
+#. translators: %s = item URL.
+#: inc/Engine/CriticalPath/DataManager.php:68
+msgid ""
+"Critical CSS for %1$s on mobile not generated. Error: The destination folder"
+" could not be created."
+msgstr ""
+"Kritisk CSS for %1$s på mobil blev ikke genereret. Fejl: Målmappen kunne "
+"ikke oprettes."
+
+#. translators: %s = item URL.
+#: inc/Engine/CriticalPath/DataManager.php:71
+msgid ""
+"Critical CSS for %1$s not generated. Error: The destination folder could not"
+" be created."
+msgstr ""
+"Kritisk CSS for %1$s blev ikke genereret. Fejl: Målmappen kunne ikke "
+"oprettes."
+
+#: inc/Engine/CriticalPath/DataManager.php:106
+msgid "Critical CSS file for mobile does not exist"
+msgstr "Kritisk CSS-fil til mobil findes ikke"
+
+#: inc/Engine/CriticalPath/DataManager.php:108
+msgid "Critical CSS file does not exist"
+msgstr "Kritisk CSS-fil eksisterer ikke"
+
+#: inc/Engine/CriticalPath/DataManager.php:120
+msgid "Critical CSS file for mobile cannot be deleted"
+msgstr "Kritisk CSS-fil til mobil kan ikke slettes"
+
+#: inc/Engine/CriticalPath/DataManager.php:122
+msgid "Critical CSS file cannot be deleted"
+msgstr "Kritisk CSS-fil kan ikke slettes"
+
+#. translators: %1$s = item URL or item type.
+#: inc/Engine/CriticalPath/ProcessorService.php:164
+msgid "Mobile Critical CSS for %1$s not generated."
+msgstr "Kritisk CSS til mobil for %1$s er ikke genereret."
+
+#. translators: %1$s = Item URL or item type.
+#: inc/Engine/CriticalPath/ProcessorService.php:205
+msgid "Critical CSS for %s in progress."
+msgstr "Kritisk CSS for %s i gang."
+
+#. translators: %1$s = Item URL or item type.
+#: inc/Engine/CriticalPath/ProcessorService.php:239
+msgid "Mobile Critical CSS for %s generated."
+msgstr "Kritisk CSS til mobil for %s genereret."
+
+#. translators: %1$s = Item URL or item type.
+#: inc/Engine/CriticalPath/ProcessorService.php:250
+msgid "Critical CSS for %s generated."
+msgstr "Kritisk CSS for %s genereret."
+
+#: inc/Engine/CriticalPath/ProcessorService.php:272
+msgid "Critical CSS file deleted successfully."
+msgstr "Kritisk CSS-fil slettet."
+
+#. translators: %1$s = Item URL or item type.
+#: inc/Engine/CriticalPath/ProcessorService.php:294
+msgid "Mobile Critical CSS for %1$s timeout. Please retry a little later."
+msgstr "Kritisk CSS til mobil for %1$s timeout. Prøv igen senere."
+
+#. translators: %1$s = Item URL or item type.
+#: inc/Engine/CriticalPath/ProcessorService.php:307
+msgid "Critical CSS for %1$s timeout. Please retry a little later."
+msgstr "Kritisk CSS for %1$s timeout. Prøv igen senere."
+
+#: inc/Engine/CriticalPath/RESTWP.php:141
+msgid "Mobile CPCSS generation not enabled."
+msgstr "Generering af mobil-CPCSS ikke aktiveret."
+
+#: inc/Engine/CriticalPath/RESTWPPost.php:36
+#: inc/Engine/CriticalPath/RESTWPPost.php:69
+msgid "Requested post does not exist."
+msgstr "Det ønskede indlæg findes ikke."
+
+#: inc/Engine/CriticalPath/RESTWPPost.php:46
+msgid "Cannot generate CPCSS for unpublished post."
+msgstr "Kan ikke generere CPCSS for upubliceret indlæg."
+
+#: inc/Engine/HealthCheck/HealthCheck.php:134
+msgid "Scheduled Cache Purge"
+msgstr "Planlagt cacherydning"
+
+#: inc/Engine/HealthCheck/HealthCheck.php:135
+msgid "Scheduled Database Optimization"
+msgstr "Planlagt databaseoptimering"
+
+#: inc/Engine/HealthCheck/HealthCheck.php:136
+msgid "Database Optimization Process"
+msgstr "Databaseoptimeringsproces"
+
+#: inc/Engine/HealthCheck/HealthCheck.php:137
+msgctxt "noun"
+msgid "Preload"
+msgstr "Forudindlæs"
+
+#: inc/Engine/HealthCheck/HealthCheck.php:138
+msgid "Critical Path CSS Generation Process"
+msgstr "Genereringsproces for kritisk CSS-sti"
+
+#. translators: %1$s WP Rocket plugin name.
+#: inc/Engine/License/Renewal.php:76
+msgid ""
+"Your %1$s%2$s license is about to expire%3$s: you will soon lose access to "
+"product updates and support."
+msgstr ""
+"Din %1$s %2$s licens er ved at udløbe %3$s: du vil snart miste adgang til "
+"produktopdateringer og support."
+
+#. translators: %1$s = <strong>, %2$s = </strong>, %3$s = discount price.
+#: inc/Engine/License/Renewal.php:185
+msgid "Renew before it is too late, you will pay %1$s%3$s%2$s."
+msgstr "Forny, før det er for sent. Du betaler %1$s%3$s%2$s."
+
+#. translators: %1$s = <strong>, %2$s = discount percentage, %3$s = </strong>,
+#. %4$s = discount price.
+#: inc/Engine/License/Renewal.php:194
+msgid ""
+"Renew with a %1$s%2$s discount%3$s before it is too late, you will only pay "
+"%1$s%4$s%3$s!"
+msgstr ""
+"Forny med %1$s%2$s rabat%3$s, før det er for sent. Du betaler kun "
+"%1$s%4$s%3$s!"
+
+#. translators: %1$s = <a>, %2$s = </a>.
+#: inc/Engine/License/Renewal.php:496
+msgid ""
+"You need a valid license to continue using this feature. %1$sRenew now%2$s "
+"before losing access."
+msgstr ""
+"Du skal have en gyldig licens for at fortsætte med at bruge denne funktion. "
+"%1$sForny nu%2$s, før du mister adgang."
+
+#. translators: %1$s = <a>, %2$s = </a>.
+#: inc/Engine/License/Renewal.php:517
+msgid "You need an active license to enable this option. %1$sRenew now%2$s."
+msgstr ""
+"Du skal have en aktiv licens for at aktivere denne indstilling. %1$sForny "
+"nu%2$s."
+
+#. translators: %1$s = <a>, %2$s = </a>.
+#: inc/Engine/License/Renewal.php:545
+msgid "You need an active license to enable this option. %1$sMore info%2$s."
+msgstr ""
+"Du skal have en aktiv licens for at aktivere denne indstilling. %1$sMere "
+"info%2$s."
+
+#. translators: %1$s = promotion name, %2$s = <br>, %3$s = <strong>, %4$s =
+#. promotion discount percentage, %5$s = </strong>, %6$s = Growth or Multi.
+#: inc/Engine/License/Upgrade.php:249
+msgid ""
+"Take advantage of %1$s to speed up more websites:%2$s get a %3$s%4$s off%5$s"
+" for %3$supgrading your license to %6$s!%5$s"
+msgstr ""
+"Udnyt %1$s, og gør flere hjemmesider hurtigere:%2$s Få %3$s%4$s rabat%5$s "
+"når du %3$s opgraderer din licens til %6$s!%5$s"
+
+#: inc/Engine/License/Upgrade.php:258
+msgid "or"
+msgstr "eller"
+
+#. translators: %s = promotion discount percentage.
+#: inc/Engine/License/views/promo-banner.php:18
+msgid "%s off"
+msgstr "%s rabat"
+
+#. translators: %s = promotion name.
+#: inc/Engine/License/views/promo-banner.php:23
+msgid "%s promotion is live!"
+msgstr "%s-kampagne er live!"
+
+#: inc/Engine/License/views/promo-banner.php:29
+msgid "Hurry Up! Deal ends in:"
+msgstr "Skynd dig! Tilbuddet slutter om:"
+
+#: inc/Engine/License/views/promo-banner.php:33
+#: inc/Engine/License/views/renewal-soon-banner.php:16
+msgid "Minutes"
+msgstr "Minutter"
+
+#: inc/Engine/License/views/promo-banner.php:34
+#: inc/Engine/License/views/renewal-soon-banner.php:17
+msgid "Seconds"
+msgstr " sekunder"
+
+#: inc/Engine/License/views/promo-banner.php:36
+#: inc/Engine/License/views/upgrade-section.php:11
+msgid "Upgrade now"
+msgstr "Opgrader nu"
+
+#: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:14
+msgid "The Optimize CSS Delivery feature is disabled."
+msgstr "Funktionen Optimer CSS-levering er deaktiveret."
+
+#: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:18
+msgid ""
+"You can no longer use the Remove Unused CSS or Load CSS asynchronously "
+"options."
+msgstr ""
+"Du kan ikke længere bruge indstillingerne Fjern ubrugt CSS eller Indlæs CSS "
+"asynkront."
+
+#. translators: %1$s = <strong>, %2$s = </strong>.
+#: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:23
+msgid ""
+"You need an %1$sactive license%2$s to keep optimizing your CSS delivery, "
+"which addresses a PageSpeed Insights recommendation and improves your page "
+"performance."
+msgstr ""
+"Du har brug for en %1$s aktiv licens%2$s for at fortsætte med at optimere "
+"din CSS-levering, der adresserer en PageSpeed Insights-anbefaling og "
+"forbedrer din sides ydeevne."
+
+#: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:36
+#: inc/Engine/License/views/renewal-expired-banner-ocd.php:46
+#: inc/Engine/License/views/renewal-expired-banner.php:34
+#: inc/Engine/License/views/renewal-soon-banner.php:35
+msgid "Renew now"
+msgstr "Forny nu"
+
+#: inc/Engine/License/views/renewal-expired-banner-ocd.php:14
+msgid "You will soon lose access to some features."
+msgstr "Du vil snart miste adgang til nogle funktioner."
+
+#. translators: %1$s = <strong>, %2$s = </strong>.
+#: inc/Engine/License/views/renewal-expired-banner-ocd.php:21
+msgid ""
+"You need an %1$sactive license to continue optimizing your CSS delivery%2$s."
+msgstr ""
+"Du har brug for en %1$saktiv licens for at fortsætte med at optimere din "
+"CSS-levering%2$s."
+
+#: inc/Engine/License/views/renewal-expired-banner-ocd.php:27
+msgid ""
+"The Remove Unused CSS and Load CSS asynchronously features are great options"
+" to address the PageSpeed Insights recommendations and improve your website "
+"performance."
+msgstr ""
+"\"Fjern ubrugt CSS\"- og \"Indlæs CSS asynkront\"-funktioner er gode "
+"muligheder for at imødekomme PageSpeed Insights-anbefalinger og forbedre din"
+" hjemmesides ydeevne."
+
+#. translators: %1$s = <strong>, %2$s = </strong>, %3$s = date.
+#: inc/Engine/License/views/renewal-expired-banner-ocd.php:32
+msgid "These features will be %1$sautomatically disabled on %3$s%2$s."
+msgstr "Disse funktioner bliver %1$sautomatisk deaktiveret den %3$s%2$s."
+
+#: inc/Engine/License/views/renewal-expired-banner.php:14
+msgid "Your WP Rocket license is expired!"
+msgstr "Din WP Rocket-licens er udløbet!"
+
+#. translators: %1$s = <strong>, %2$s = </strong>.
+#: inc/Engine/License/views/renewal-expired-banner.php:21
+msgid ""
+"Your website could be much faster if it could take advantage of our %1$snew "
+"features and enhancements%2$s. 🚀"
+msgstr ""
+"Din hjemmeside kunne være meget hurtigere, hvis den kunne drage fordel af "
+"vores %1$snye funktioner og forbedringer%2$s. 🚀"
+
+#. translators: %1$s = <strong>, %2$s = </strong>.
+#: inc/Engine/License/views/renewal-soon-banner.php:24
+msgid ""
+"Your %1$sWP Rocket license is about to expire%2$s: you will soon lose access"
+" to product updates and support."
+msgstr ""
+"Din %1$sWP Rocket-licens er ved at udløbe%2$s: Du vil snart miste adgang til"
+" produktopdateringer og support."
+
+#. translators: %1$s = span opening tag, %2$s = price, %3$s = span closing
+#. tag.
+#: inc/Engine/License/views/upgrade-item.php:17
+msgid "Save $%1$s%2$s%3$s"
+msgstr "Spar $%1$s%2$s%3$s"
+
+#: inc/Engine/License/views/upgrade-item.php:35
+#: inc/Engine/License/views/upgrade-item.php:50
+msgid "Websites"
+msgstr "Hjemmesider"
+
+#. translators: %s = number of websites.
+#: inc/Engine/License/views/upgrade-item.php:58
+msgid "%s websites"
+msgstr "%s hjemmesider"
+
+#. translators: %s = license name.
+#: inc/Engine/License/views/upgrade-item.php:66
+msgid "Upgrade to %s"
+msgstr "Opgrader til %s"
+
+#: inc/Engine/License/views/upgrade-popin.php:15
+msgid "Speed Up More Websites"
+msgstr "Gør flere hjemmesider hurtigere"
+
+#. translators: %1$s = opening strong tag, %2$s = closing strong tag.
+#: inc/Engine/License/views/upgrade-popin.php:22
+msgid ""
+"You can use WP Rocket on more websites by upgrading your license. To "
+"upgrade, simply pay the %1$sprice difference%2$s between your current and "
+"new licenses, as shown below."
+msgstr ""
+"Du kan bruge WP Rocket på flere hjemmesider ved at opgradere din licens. For"
+" at opgradere skal du blot be %1$s tale prisforskellen%2$s mellem din "
+"nuværende og nye licens, som vist nedenfor."
+
+#. translators: %1$s = opening strong tag, %2$s = closing strong tag.
+#: inc/Engine/License/views/upgrade-popin.php:28
+msgid ""
+"%1$sN.B.%2$s: Upgrading your license does not change your expiration date"
+msgstr "%1$sN.B.%2$s: Opgraderingen af licensen ændrer ikke udløbsdatoen"
+
+#: inc/Engine/License/views/upgrade-section.php:11
+msgid ""
+"You can use WP Rocket on more websites by upgrading your license (you will "
+"only pay the price difference between your current and new licenses)."
+msgstr ""
+"Du kan bruge WP Rocket på flere hjemmesider ved at opgradere din licens (du "
+"betaler kun prisforskellen mellem din nuværende og nye licens)."
+
+#: inc/Engine/Media/Lazyload/AdminSubscriber.php:62
+msgid "LazyLoad for images"
+msgstr "LazyLoad til billeder"
+
+#: inc/Engine/Media/Lazyload/AdminSubscriber.php:63
+msgid "LazyLoad for iframes/videos"
+msgstr "LazyLoad til iframes/videoer"
+
+#: inc/Engine/Media/Lazyload/CSS/Admin/Subscriber.php:49
+msgid "LazyLoad CSS backgrounds"
+msgstr "LazyLoad CSS-baggrunde"
+
+#: inc/Engine/Media/Lazyload/Subscriber.php:262
+msgid "Play Youtube video"
+msgstr "Afspil Youtube-video"
+
+#: inc/Engine/Optimization/DelayJS/Admin/SiteList.php:244
+msgid "Analytics & Trackers"
+msgstr "Analytics & tracking"
+
+#: inc/Engine/Optimization/DelayJS/Admin/SiteList.php:249
+msgid "Ad Networks"
+msgstr "Annoncenetværk"
+
+#: inc/Engine/Optimization/DelayJS/Admin/SiteList.php:254
+msgid "Payment Processors"
+msgstr "Betalingsprocessorer"
+
+#: inc/Engine/Optimization/DelayJS/Admin/SiteList.php:259
+msgid "Other Services"
+msgstr "Andre ydelser"
+
+#: inc/Engine/Optimization/DelayJS/Admin/SiteList.php:267
+msgid "Themes"
+msgstr "Temaer"
+
+#: inc/Engine/Optimization/DelayJS/Admin/SiteList.php:272
+msgid "Plugins"
+msgstr "Plugins"
+
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:101
+msgid ""
+"You need an active license to get the latest version of the lists from our "
+"server."
+msgstr ""
+"Du har brug for en aktiv licens for at få den seneste version af listerne "
+"fra vores server."
+
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:109
+msgid "Default Lists"
+msgstr "Standardlister"
+
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:110
+msgid "Delay JavaScript Execution Exclusion Lists"
+msgstr "Delay JavaScript Execution Exclusion-lister"
+
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:111
+msgid "Incompatible plugins Lists"
+msgstr "Lister over inkompatible plugins"
+
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:121
+msgid "Could not get updated lists from server."
+msgstr "Kunne ikke få opdaterede lister fra serveren."
+
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:130
+msgid "Lists are up to date."
+msgstr "Listerne er opdaterede."
+
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:139
+msgid "Could not update lists."
+msgstr "Kunne ikke opdatere lister."
+
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:149
+msgid "Lists are successfully updated."
+msgstr "Listerne er blevet opdateret."
+
+#: inc/Engine/Optimization/Minify/AdminSubscriber.php:65
+msgid "Minify/combine JavaScript"
+msgstr "Minificer/kombinér JavaScript"
+
+#: inc/Engine/Optimization/Minify/CSS/AdminSubscriber.php:144
+msgid "Minify CSS"
+msgstr "Minificer CSS"
+
+#. translators: %1$s = plugin name, %2$s = table name, %3$s = <a> open tag,
+#. %4$s = </a> closing tag.
+#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:253
+msgid ""
+"%1$s: Could not create the %2$s table in the database which is necessary for"
+" the Remove Unused CSS feature to work. Please check our "
+"%3$sdocumentation%4$s."
+msgstr ""
+"%1$s: Kunne ikke oprette den %2$s-tabel i databasen, som er nødvendig for, "
+"at funktionen Fjern ubrugt CSS kan fungere. Se vores %3$s-dokumentation%4$s."
+
+#. translators: %1$s = plugin name.
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:279
+msgid "%1$s: Used CSS cache cleared!"
+msgstr "%1$s: Brugt CSS-cache ryddet!"
+
+#. translators: %1$s = plugin name.
+#: inc/Engine/Preload/Admin/Settings.php:76
+msgid ""
+"%1$s: The preload service is now active. After the initial preload it will "
+"continue to cache all your pages whenever they are purged. No further action"
+" is needed."
+msgstr ""
+"%1$s: Forudindlæs-tjenesten er nu aktiv. Efter den indledende "
+"forudindlæsning vil den fortsætte med at cache alle dine sider, når de "
+"bliver renset. Ingen yderligere handling er nødvendig."
+
+#: inc/Engine/Preload/Cron/Subscriber.php:138
+msgid "WP Rocket Preload pending jobs"
+msgstr " Afventende jobs for WP Rocket-forudindlæsning"
+
+#: inc/Engine/Preload/Cron/Subscriber.php:166
+msgid "WP Rocket Preload revert stuck failed jobs"
+msgstr "Tilbagerul fastlåste mislykkede jobs for WP Rocket-forudindlæsning"
+
+#: inc/Engine/Saas/Admin/AdminBar.php:106
+msgid "Clear Used CSS of this URL"
+msgstr "Fjern brugt CSS for denne URL"
+
+#: inc/Engine/Saas/Admin/AdminBar.php:133
+msgid "Used CSS"
+msgstr "Brugt CSS"
+
+#: inc/Engine/Saas/Admin/AdminBar.php:136
+msgid "This action will clear the used CSS files."
+msgstr "Denne handling vil rydde de anvendte CSS-filer."
+
+#. translators: %1$s = plugin name, %2$s = number of seconds.
+#: inc/Engine/Saas/Admin/Notices.php:91
+msgid ""
+"%1$s: Please wait %2$s seconds. The Remove Unused CSS service is processing "
+"your pages, the plugin is optimizing LCP and the images above the fold."
+msgstr ""
+"%1$s: Vent %2$s sekunder. Tjenesten Fjern ubrugt CSS behandler dine sider. "
+"Pluginet optimerer LCP og billederne på den øverste del af siden."
+
+#. translators: %1$s = plugin name, %2$s = number of URLs, %3$s = number of
+#. seconds.
+#: inc/Engine/Saas/Admin/Notices.php:134
+msgid ""
+"%1$s: The LCP element has been optimized, and the images above the fold were excluded from lazyload. The Used CSS of your homepage has been processed.\n"
+"\t\t\t WP Rocket will continue to generate Used CSS for up to %2$s URLs per %3$s second(s)."
+msgstr ""
+"%1$s: LCP-elementet er blevet optimeret, og billederne øverst på siden blev udelukket fra lazyload. Brugt CSS på din startside er blevet behandlet. \n"
+"\t\t\t WP Rocket vil fortsætte med at generere Brugt CSS for op til %2$s URL'er pr. %3$s sekund(er)."
+
+#. translators: %1$s = opening link tag, %2$s = closing link tag.
+#: inc/Engine/Saas/Admin/Notices.php:157
+msgid "We suggest enabling %1$sPreload%2$s for the fastest results."
+msgstr ""
+"Vi foreslår at aktivere %1$sForudindlæsning%2$s for at få de hurtigste "
+"resultater."
+
+#. translators: %1$s = opening link tag, %2$s = closing link tag.
+#: inc/Engine/Saas/Admin/Notices.php:167
+msgid "To learn more about the process check our %1$sdocumentation%2$s."
+msgstr ""
+"Hvis du vil vide mere om processen, kan du læse vores %1$sdokumentation%2$s."
+
+#: inc/Engine/Saas/Admin/Notices.php:225
+msgid ""
+"We couldn't generate the used CSS because you're using a nulled version of "
+"WP Rocket. You need an active license to use the Remove Unused CSS feature "
+"and further improve your website's performance."
+msgstr ""
+"Vi kunne ikke generere den brugte CSS, fordi du bruger en udløbet version af"
+" WP Rocket. Du har brug for en aktiv licens til at bruge Fjern ubrugt CSS-"
+"funktionen og yderligere forbedre din hjemmesides ydeevne."
+
+#. translators: %1$s = promo percentage.
+#: inc/Engine/Saas/Admin/Notices.php:228
+msgid "Click here to get a WP Rocket single license at %1$s off!"
+msgstr "Klik her for at få en enkelt WP Rocket-licens med %1$s rabat!"
+
+#. translators: %1$s = <a> open tag, %2$s = </a> closing tag.
+#: inc/Engine/Saas/Admin/Notices.php:281
+msgid ""
+"It seems a security plugin or the server's firewall prevents WP Rocket from "
+"accessing the SaaS features. IPs listed %1$shere in our documentation%2$s "
+"should be added to your allowlists:"
+msgstr ""
+"Det ser ud til, at et sikkerhedsplugin eller serverens firewall forhindrer "
+"WP Rocket i at få adgang til SaaS-funktionerne. IP'er, der er listet %1$sher"
+"  i vores dokumentation%2$s, bør føjes til dine tilladelseslister:"
+
+#: inc/Engine/Saas/Admin/Notices.php:286
+msgid "- In the security plugin, if you are using one"
+msgstr "- I sikkerhedspluginet, hvis du bruger et"
+
+#: inc/Engine/Saas/Admin/Notices.php:287
+msgid "- In the server's firewall. Your host can help you with this"
+msgstr "- I serverens firewall. Din host kan hjælpe dig med dette"
+
+#: inc/functions/admin.php:21
+msgid ""
+"There seems to be an issue validating your license. Please see the error "
+"message below."
+msgid_plural ""
+"There seems to be an issue validating your license. You can see the error "
+"messages below."
+msgstr[0] ""
+"Der synes at være et problem med at validere din licens. Se fejlmeddelelsen "
+"nedenfor."
+msgstr[1] ""
+"Der ser ud til at være et problem med at validere din licens. Du kan se "
+"fejlmeddelelserne nedenfor."
+
+#: inc/functions/admin.php:361
+msgid "Server type:"
+msgstr "Servertype:"
+
+#: inc/functions/admin.php:370
+msgid "PHP version number:"
+msgstr "PHP-versionsnummer:"
+
+#: inc/functions/admin.php:379
+msgid "WordPress version number:"
+msgstr "WordPress-versionsnummer:"
+
+#: inc/functions/admin.php:388
+msgid "WordPress multisite:"
+msgstr "WordPress-multisite:"
+
+#: inc/functions/admin.php:397
+msgid "Current theme:"
+msgstr "Aktuelt tema:"
+
+#: inc/functions/admin.php:406
+msgid "Current site language:"
+msgstr "Aktuelt hjemmesidesprog:"
+
+#: inc/functions/admin.php:415
+msgid "Active plugins:"
+msgstr "Aktive plugins:"
+
+#: inc/functions/admin.php:418
+msgid "Plugin names of all active plugins"
+msgstr "Navn på alle aktive plugins"
+
+#: inc/functions/admin.php:424
+msgid "Anonymized WP Rocket settings:"
+msgstr "Anonymiserede WP Rocket-indstillinger:"
+
+#: inc/functions/admin.php:427
+msgid "Which WP Rocket settings are active"
+msgstr "Hvilke WP Rocket-indstillinger er aktive"
+
+#: inc/functions/admin.php:433
+msgid "Anonymized WP Rocket statistics:"
+msgstr "Anonymiseret WP Rocket-statistik:"
+
+#: inc/functions/admin.php:436
+msgid "How WP Rocket features function and perform."
+msgstr "Hvordan WP Rocket-funktioner fungerer og performer."
+
+#: inc/functions/admin.php:442
+msgid "WP Rocket license type"
+msgstr "WP Rocket-licenstype"
+
+#: inc/functions/options.php:429
+msgid "The provided license data are not valid."
+msgstr "De angivne licensdata er ikke gyldige."
+
+#. Translators: %1$s = opening link tag, %2$s = closing link tag.
+#: inc/functions/options.php:432
+msgid "To resolve, please %1$scontact support%2$s."
+msgstr "For at løse problemet bedes du  %1$skontakte supporten%2$s."
+
+#. Translators: %1$s = opening em tag, %2$s = closing em tag, %3$s = opening
+#. link tag, %4$s closing link tag.
+#: inc/functions/options.php:491 inc/functions/options.php:530
+msgid ""
+"License validation failed. Our server could not resolve the request from "
+"your website."
+msgstr ""
+"Licensvalidering mislykkedes. Vores server kunne ikke løse anmodningen fra "
+"din hjemmeside."
+
+#. Translators: %1$s = opening em tag, %2$s = closing em tag, %3$s = opening
+#. link tag, %4$s closing link tag.
+#: inc/functions/options.php:491
+msgid ""
+"Try clicking %1$sValidate License%2$s below. If the error persists, follow "
+"%3$sthis guide%4$s."
+msgstr ""
+"Prøv at klikke på %1$sValider licens%2$s nedenfor. Hvis fejlen fortsætter, "
+"skal du følge %3$sdenne vejledning%4$s."
+
+#. Translators: %1$s = opening link tag, %2$s = closing link tag.
+#: inc/functions/options.php:507
+msgid ""
+"License validation failed. You may be using a nulled version of the plugin. "
+"Please do the following:"
+msgstr ""
+"Licensvalidering mislykkedes. Du bruger muligvis en udløbet version af "
+"pluginet. Gør følgende:"
+
+#. Translators: %1$s = opening link tag, %2$s = closing link tag.
+#: inc/functions/options.php:507 inc/functions/options.php:549
+msgid "Login to your WP Rocket %1$saccount%2$s"
+msgstr "Log ind på din WP Rocket-%1$skonto%2$s"
+
+#. Translators: %1$s = opening link tag, %2$s = closing link tag.
+#: inc/functions/options.php:507 inc/functions/options.php:549
+msgid "Download the zip file"
+msgstr "Download zip-filen"
+
+#. Translators: %1$s = opening link tag, %2$s = closing link tag.
+#: inc/functions/options.php:507 inc/functions/options.php:549
+msgid "Reinstall"
+msgstr "Geninstallér"
+
+#. Translators: %1$s = opening link tag, %2$s = closing link tag.
+#: inc/functions/options.php:507
+msgid ""
+"If you do not have a WP Rocket account, please %1$spurchase a license%2$s."
+msgstr "Hvis du ikke har en WP Rocket-konto, skal du %1$skøbe en licens%2$s."
+
+#. Translators: %1$s = opening link tag, %2$s = closing link tag.
+#: inc/functions/options.php:515
+msgid ""
+"License validation failed. This user account does not exist in our database."
+msgstr ""
+"Licensvalidering mislykkedes. Denne brugerkonto eksisterer ikke i vores "
+"database."
+
+#. Translators: %1$s = opening link tag, %2$s = closing link tag.
+#: inc/functions/options.php:515
+msgid "To resolve, please contact support."
+msgstr "For at løse problemet bedes du kontakte support."
+
+#. Translators: %1$s = opening link tag, %2$s = closing link tag.
+#: inc/functions/options.php:523
+msgid "License validation failed. This user account is blocked."
+msgstr "Licensvalidering mislykkedes. Denne brugerkonto er blokeret."
+
+#. Translators: %1$s = opening link tag, %2$s = closing link tag.
+#: inc/functions/options.php:523
+msgid "Please see %1$sthis guide%2$s for more info."
+msgstr "Se %1$sdenne vejledning%2$s for mere information."
+
+#. Translators: %1$s = opening em tag, %2$s = closing em tag, %3$s = opening
+#. link tag, %4$s closing link tag.
+#: inc/functions/options.php:530
+msgid ""
+"Try clicking %1$sSave Changes%2$s below. If the error persists, follow "
+"%3$sthis guide%4$s."
+msgstr ""
+"Prøv at klikke på %1$sGem ændringer%2$s nedenfor. Hvis fejlen fortsætter, "
+"skal du følge %3$sdenne vejledning%4$s."
+
+#. Translators: %1$s = opening link tag, %2$s = closing link tag.
+#: inc/functions/options.php:543
+msgid "Your license is not valid."
+msgstr "Din licens er ikke gyldig."
+
+#. Translators: %1$s = opening link tag, %2$s = closing link tag.
+#: inc/functions/options.php:543
+msgid "Make sure you have an active %1$sWP Rocket license%2$s."
+msgstr "Sørg for, at du har en aktiv %1$sWP Rocket-licens%2$s."
+
+#. Translators: %1$s = opening link tag, %2$s = closing link tag, %3$s =
+#. opening link tag.
+#: inc/functions/options.php:545
+msgid "You have added as many sites as your current license allows."
+msgstr ""
+"Du har tilføjet så mange hjemmesider, som din nuværende licens tillader."
+
+#. Translators: %1$s = opening link tag, %2$s = closing link tag, %3$s =
+#. opening link tag.
+#: inc/functions/options.php:545
+msgid ""
+"Upgrade your %1$saccount%2$s or %3$stransfer your license%2$s to this "
+"domain."
+msgstr ""
+"Opgrader din %1$skonto%2$s eller %3$s overfør din licens%2$s til dette "
+"domæne."
+
+#. Translators: %1$s = opening link tag, %2$s = closing link tag.
+#: inc/functions/options.php:547
+msgid "This website is not allowed."
+msgstr "Denne hjemmeside er ikke tilladt."
+
+#. Translators: %1$s = opening link tag, %2$s = closing link tag.
+#: inc/functions/options.php:547
+msgid "Please %1$scontact support%2$s."
+msgstr "%1$sKontakt supporten%2$s."
+
+#. Translators: %1$s = opening link tag, %2$s = closing link tag.
+#: inc/functions/options.php:549
+msgid "This license key is not recognized."
+msgstr "Kan ikke genkende denne licensnøgle."
+
+#. Translators: %1$s = opening link tag, %2$s = closing link tag.
+#: inc/functions/options.php:549
+msgid "If the issue persists, please %1$scontact support%2$s."
+msgstr "Hvis problemet fortsætter, bedes du %1$skontakte supporten%2$s."
+
+#. Translators: %s = error message returned.
+#: inc/functions/options.php:555
+msgid "License validation failed: %s"
+msgstr "Licensvalidering mislykkedes: %s"
+
+#: inc/Logger/Logger.php:227 inc/Logger/Logger.php:257
+msgid "The log file does not exist."
+msgstr "Logfilen eksisterer ikke."
+
+#: inc/Logger/Logger.php:233 inc/Logger/Logger.php:263
+msgid "The log file could not be read."
+msgstr "Logfilen kunne ikke læses."
+
+#: inc/Logger/Logger.php:250
+msgid "The logs are not saved into a file."
+msgstr "Logfilerne gemmes ikke i en fil."
+
+#. Translators: %s = Hosting name.
+#: inc/ThirdParty/Hostings/Cloudways.php:82
+msgid ""
+"Varnish auto-purge will be automatically enabled once Varnish is enabled on "
+"your %s server."
+msgstr ""
+"Varnish auto-purge aktiveres automatisk, når Varnish er aktiveret på din %s "
+"server."
+
+#. translators: %1$s = opening link tag, %2$s = closing link tag.
+#: inc/ThirdParty/Hostings/Kinsta.php:159
+msgid ""
+"Your installation seems to be missing core Kinsta files managing Cache "
+"clearing, which will prevent your Kinsta installation and WP Rocket from "
+"working correctly. Please get in touch with Kinsta support through your "
+"%1$sMyKinsta%2$s account to resolve this issue."
+msgstr ""
+"Din installation synes at mangle Kinsta-kernefiler, der administrerer Cache-"
+"rydning, hvilket vil forhindre din Kinsta-installation og WP Rocket i at "
+"fungere korrekt. Kontakt Kinsta-support via din %1$sMyKinsta%2$s-konto for "
+"at løse dette problem."
+
+#. translators: %1$s = plugin name.
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:127
+msgid ""
+"%1$s: Cloudflare's HTTP/2 Server Push is incompatible with the features of "
+"Remove Unused CSS and Combine CSS files. We strongly recommend disabling it."
+msgstr ""
+"%1$s: Cloudflares HTTP/2 Server Push er ikke kompatibel med funktionerne i "
+"Fjern ubrugt CSS og Kombiner CSS-filer. Vi anbefaler stærkt at deaktivere "
+"det."
+
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:170
+msgid ""
+"Your site is using the official Cloudflare plugin. We have enabled "
+"Cloudflare auto-purge for compatibility. If you have APO activated, it is "
+"also compatible."
+msgstr ""
+"Din hjemmeside bruger det officielle Cloudflare-plugin. Vi har aktiveret "
+"Cloudflare-autopurge til kompatibilitet. Hvis du har aktiveret APO, er det "
+"også kompatibelt."
+
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:171
+msgid ""
+"Cloudflare cache will be purged each time WP Rocket clears its cache to "
+"ensure content is always up-to-date."
+msgstr ""
+"Cloudflare-cache vil blive ryddet hver gang WP Rocket rydder sin cache for "
+"at sikre, at indholdet altid er opdateret."
+
+#. Translators: %1$s = strong opening tag, %2$s = strong closing tag.
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:215
+msgid ""
+"%1$sWP Rocket:%2$s You are using \"Dynamic Cookies Cache\". Cloudflare APO "
+"is not yet compatible with that feature."
+msgstr ""
+"%1$sWP Rocket:%2$s Du bruger \"Dynamic Cookies Cache\". Cloudflare APO er "
+"endnu ikke kompatibel med denne funktion."
+
+#. Translators:%1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:221
+msgid ""
+"You should either disable Cloudflare APO or check with the theme/plugin "
+"requiring the use of “Dynamic Cookies Cache” developers for an alternative "
+"way to be page-cache friendly. %1$sMore info%2$s"
+msgstr ""
+"Du bør enten deaktivere Cloudflare APO eller tjekke med udviklerne af det "
+"tema/plugin, der kræver brug af \"Dynamic Cookies Cache\", om der findes en "
+"alternativ løsning til side-caching. %1$sMere info%2$s"
+
+#. Translators: %1$s = strong opening tag, %2$s = strong closing tag, %3$s =
+#. opening <a> tag, %4$s = closing </a> tag, %5$s = opening <a> tag.
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:272
+msgid ""
+"%1$sWP Rocket:%2$s You are using \"Separate cache files for mobile "
+"devices\". You need to activate \"Cache by Device Type\" %3$ssetting%5$s on "
+"Cloudflare APO to serve the right version of the cache. %4$sMore info%5$s"
+msgstr ""
+"%1$sWP Rocket:%2$s Du bruger \"Separate cachefiler for mobilenheder\". Du "
+"skal aktivere \"Cache ud fra enhedstype\" %3$s-indstillingen%5$s i "
+"Cloudflare APO for at betjene den rigtige version af cachen. %4$sMere "
+"info%5$s"
+
+#. Translators: %1$s = strong opening tag, %2$s = strong closing tag.
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:293
+msgid ""
+"%1$sWP Rocket:%2$s You have \"Cache by Device Type\" enabled on Cloudflare "
+"APO. If you judge it necessary for the website to have a different cache on "
+"mobile and desktop, we suggest you enable our “Separate Cache Files for "
+"Mobiles Devices” to ensure the generated cache is accurate."
+msgstr ""
+"%1$sWP Rocket:%2$s Du har \"Cache ud fra enhedstype\" aktiveret på "
+"Cloudflare APO. Hvis du finder det nødvendigt for hjemmesiden at have "
+"forskellig cache på mobil og desktop, foreslår vi, at du aktiverer vores "
+"\"Separate cachefiler for mobilenheder\" for at sikre, at den genererede "
+"cache er nøjagtig."
+
+#. translators: %1$s is WP Rocket plugin name, %2$s is opening <a> tag, %3$s
+#. is closing </a> tag.
+#: inc/ThirdParty/Plugins/ModPagespeed.php:102
+msgid ""
+"<strong>%1$s</strong>: Mod PageSpeed is not compatible with this plugin and "
+"may cause unexpected results. %2$sMore Info%3$s"
+msgstr ""
+"<strong>%1$s</strong>: Mod PageSpeed er ikke kompatibel med dette plugin og "
+"kan give uventede resultater. %2$sMere info%3$s"
+
+#. Translators: %1$s is an opening <strong> tag; %2$s is a closing </strong>
+#. tag
+#: inc/ThirdParty/Plugins/Optimization/Autoptimize.php:75
+msgid ""
+"%1$sWP Rocket: %2$sWe have detected that Autoptimize's JavaScript "
+"Aggregation feature is enabled. WP Rocket's Delay JavaScript Execution will "
+"not be applied to the file it creates. We suggest disabling %1$sJavaScript "
+"Aggregation%2$s to take full advantage of Delay JavaScript Execution."
+msgstr ""
+"%1$sWP Rocket: %2$sVi har opdaget, at Autoptimizes JavaScript Aggregation-"
+"funktion er aktiveret. WP Rockets Delay JavaScript Execution vil ikke blive "
+"anvendt på den fil, den opretter. Vi foreslår at deaktivere %1$sJavaScript "
+"Aggregation%2$s for at drage fuld fordel af Delay JavaScript Execution."
+
+#. Translators: %1$s is an opening <strong> tag; %2$s is a closing </strong>
+#. tag
+#: inc/ThirdParty/Plugins/Optimization/Autoptimize.php:130
+msgid ""
+"%1$sWP Rocket: %2$sWe have detected that Autoptimize's Aggregate Inline CSS "
+"feature is enabled. WP Rocket's Load CSS Asynchronously will not work "
+"correctly. We suggest disabling %1$sAggregate Inline CSS%2$s to take full "
+"advantage of Load CSS Asynchronously Execution."
+msgstr ""
+"%1$sWP Rocket: %2$sVi har opdaget, at Autoptimizes Aggregate Inline CSS-"
+"funktion er aktiveret. WP Rockets Indlæs CSS asynkront fungerer ikke "
+"korrekt. Vi foreslår at deaktivere %1$sAggregate Inline CSS%2$s for at drage"
+" fuld fordel af Indlæs CSS asynkront-udførelse."
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: inc/ThirdParty/Plugins/Optimization/Ezoic.php:45
+msgid ""
+"This plugin blocks WP Rocket's caching and optimizations. Deactivate it and "
+"use %1$sEzoic's nameserver integration%2$s instead."
+msgstr ""
+"Dette plugin blokerer WP Rockets caching og optimeringer. Deaktiver det og "
+"brug %1$sEzoics navneserverintegration%2$s i stedet."
+
+#. Translators: %s = Plugin name.
+#: inc/ThirdParty/Plugins/Optimization/Hummingbird.php:78
+msgctxt "Hummingbird notice"
+msgid ""
+"Please deactivate the following %s option which conflicts with WP Rocket "
+"features:"
+msgid_plural ""
+"Please deactivate the following %s options which conflict with WP Rocket "
+"features:"
+msgstr[0] ""
+"Deaktiver venligst følgende indstilling %s, som er i konflikt med WP Rocket "
+"funktioner:"
+msgstr[1] ""
+"Deaktiver venligst følgende %s indstillinger, der er i konflikt med WP "
+"Rocket-funktioner:"
+
+#. Translators: %1$s = Plugin name, %2$s = <em>, %3$s = </em>.
+#: inc/ThirdParty/Plugins/Optimization/Hummingbird.php:156
+msgctxt "Hummingbird notice"
+msgid ""
+"%1$s %2$sdisable emoji%3$s conflicts with WP Rockets %2$sdisable emoji%3$s"
+msgstr ""
+"%1$s %2$sdisable emoji%3$s konflikter med WP Rockets %2$sdisable emoji%3$s"
+
+#. Translators: %1$s = Plugin name, %2$s = <em>, %3$s = </em>.
+#: inc/ThirdParty/Plugins/Optimization/Hummingbird.php:192
+msgctxt "Hummingbird notice"
+msgid ""
+"%1$s %2$sGZIP compression%3$s conflicts with WP Rocket %2$sGZIP "
+"compression%3$s"
+msgstr ""
+"%1$s %2$sGZIP-kompression%3$s er i konflikt med WP Rockets %2$sGZIP-"
+"kompression%3$s"
+
+#. Translators: %1$s = Plugin name, %2$s = <em>, %3$s = </em>.
+#: inc/ThirdParty/Plugins/Optimization/Hummingbird.php:228
+msgctxt "Hummingbird notice"
+msgid ""
+"%1$s %2$sbrowser caching%3$s conflicts with WP Rocket %2$sbrowser "
+"caching%3$s"
+msgstr ""
+"%1$s %2$s browser-caching%3$s konflikter med WP Rockets %2$s browser-"
+"caching%3$s"
+
+#. Translators: %1$s = Plugin name, %2$s = <em>, %3$s = </em>.
+#: inc/ThirdParty/Plugins/Optimization/Hummingbird.php:260
+msgctxt "Hummingbird notice"
+msgid ""
+"%1$s %2$spage caching%3$s conflicts with WP Rocket %2$spage caching%3$s"
+msgstr ""
+"%1$s %2$ssidecaching%3$s konflikter med WP Rockets %2$ssidecaching%3$s"
+
+#. Translators: %1$s = Plugin name, %2$s = <em>, %3$s = </em>.
+#: inc/ThirdParty/Plugins/Optimization/Hummingbird.php:294
+msgctxt "Hummingbird notice"
+msgid ""
+"%1$s %2$sasset optimization%3$s conflicts with WP Rocket %2$sfile "
+"optimization%3$s"
+msgstr ""
+"%1$s %2$sasset optimization%3$s er i konflikt med WP Rockets %2$s "
+"filoptimering%3$s"
+
+#: inc/ThirdParty/Plugins/Optimization/Perfmatters.php:38
+msgid ""
+"Remove Unused CSS is currently activated in Perfmatters. If you want to use "
+"WP Rocket's Remove Unused CSS feature, disable this option in Perfmatters."
+msgstr ""
+"Fjern ubrugt CSS er for øjeblikket aktiveret i Perfmatters. Hvis du vil "
+"bruge WP Rockets Fjern ubrugt CSS-funktion, skal du deaktivere denne "
+"indstilling i Perfmatters."
+
+#: inc/ThirdParty/Plugins/Optimization/RapidLoad.php:39
+msgid ""
+"Automated unused CSS removal is currently activated in RapidLoad Power-Up "
+"for Autoptimize. If you want to use WP Rocket's Remove Unused CSS feature, "
+"disable the  RapidLoad Power-Up for Autoptimize plugin."
+msgstr ""
+"Automatisk fjernelse af ubrugt CSS er for øjeblikket aktiveret i RapidLoad "
+"Power-Up for Autoptimize. Hvis du vil bruge WP Rockets Fjern ubrugt CSS-"
+"funktion, skal du deaktivere RapidLoad Power-Up for Autoptimize-pluginet."
+
+#. translators: %1$s = plugin name.
+#: inc/ThirdParty/Plugins/Optimization/WPMeteor.php:42
+msgid ""
+"Delay JS is currently activated in %1$s. If you want to use WP Rocket’s "
+"delay JS, disable %1$s"
+msgstr ""
+"Delay JS er i øjeblikket aktiveret i %1$s. Hvis du vil bruge WP Rockets "
+"delay JS, skal du deaktivere %1$s"
+
+#: inc/ThirdParty/Plugins/Smush.php:108 inc/ThirdParty/Plugins/Smush.php:126
+msgid "Smush"
+msgstr "Smush"
+
+#: inc/ThirdParty/Themes/Avada.php:107
+msgid "Avada"
+msgstr "Avada"
+
+#: inc/ThirdParty/Themes/Divi.php:293
+msgid ""
+"Your Divi template was updated. Clear the Used CSS if the layout, design or "
+"CSS styles were changed."
+msgstr ""
+"Din Divi-skabelon er blevet opdateret. Ryd Brugt CSS, hvis layoutet, "
+"designet eller CSS-stil er blevet ændret."
+
+#: views/cpcss/activate-cpcss-mobile.php:13
+msgid "Load CSS asynchronously for mobile"
+msgstr "Indlæs CSS asynkront til mobil"
+
+#: views/cpcss/activate-cpcss-mobile.php:14
+msgid ""
+"Your website currently uses the same Critical Path CSS for both desktop and "
+"mobile."
+msgstr ""
+"Din hjemmeside bruger i øjeblikket den samme kritiske CSS-sti til både "
+"desktop og mobil."
+
+#: views/cpcss/activate-cpcss-mobile.php:15
+msgid "Click the button to enable mobile-specific CPCSS for your site."
+msgstr ""
+"Klik på knappen for at aktivere mobilspecifik CPCSS til dn hjemmeside."
+
+#. translators: %1$s = opening link tag, %2$s = closing link tag.
+#: views/cpcss/activate-cpcss-mobile.php:20
+#: views/settings/enable-google-fonts.php:19
+#: views/settings/mobile-cache.php:20
+msgid ""
+"This is a one-time action and this button will be removed afterwards. "
+"%1$sMore info%2$s"
+msgstr ""
+"Dette er en engangshandling, og denne knap fjernes efterfølgende. %1$sMere "
+"info%2$s"
+
+#. translators: %1$s = opening link tag, %2$s = closing link tag.
+#: views/cpcss/activate-cpcss-mobile.php:30
+msgid ""
+"Your site is now using mobile-specific critical path CSS. %1$sMore info%2$s"
+msgstr ""
+"Din hjemmeside bruger nu mobilspecifik kritisk CSS-sti. %1$sMere info%2$s"
+
+#: views/cpcss/activate-cpcss-mobile.php:39
+msgid "Generate Mobile Specific CPCSS"
+msgstr "Generer mobilspecifik CPCSS"
+
+#: views/cpcss/metabox/container.php:19
+msgid "Critical Path CSS"
+msgstr "Kritisk CSS-sti"
+
+#. translators: %1$s = opening link tag, %2$s = closing link tag.
+#: views/cpcss/metabox/generate.php:23
+msgid "Generate specific Critical Path CSS for this post. %1$sMore info%2$s"
+msgstr "Generer specifik kritisk CSS-sti til dette indlæg.%1$sMere info%2$s"
+
+#. translators: %1$s = opening link tag, %2$s = closing link tag.
+#: views/cpcss/metabox/generate.php:33
+msgid "This post uses specific Critical Path CSS. %1$sMore info%2$s"
+msgstr "Dette indlæg bruger en specifik kritisk CSS-sti. %1$sMere info%2$s"
+
+#: views/cpcss/metabox/generate.php:56
+msgid "Revert back to the default CPCSS"
+msgstr "Tilbage til standard CPCSS"
+
+#: views/deactivation-intent/form.php:21
+msgid "Facing an issue?"
+msgstr "Oplever du problemer?"
+
+#: views/deactivation-intent/form.php:24
+msgid ""
+"It is not always necessary to deactivate WP Rocket when facing any issues. "
+"Most of them can be fixed by deactivating only some options."
+msgstr ""
+"Det er ikke altid nødvendigt at deaktivere WP Rocket, når der er problemer. "
+"De fleste problemer kan rettes ved kun at deaktivere nogle af "
+"indstillingerne."
+
+#. translators: %1$s = opening strong tag, %2$s = closing strong tag.
+#: views/deactivation-intent/form.php:29
+msgid ""
+"Our advice? Instead of deactivating WP Rocket, use our %1$sSafe Mode%2$s to "
+"quickly disable LazyLoad, File Optimization, and CDN options. Then check to "
+"see if your issue is resolved."
+msgstr ""
+"I stedet for at deaktivere WP Rocket kan du bruge %1$sSikker tilstand%2$s "
+"til hurtigt at deaktivere LazyLoad, Filoptimering og CDN-indstillinger. "
+"Kontrollér derefter, om problemet er løst."
+
+#: views/deactivation-intent/form.php:35
+msgid "Do you want to use our Safe Mode to troubleshoot WP Rocket?"
+msgstr "Vil du bruge Sikker tilstand til fejlfinding for WP Rocket?"
+
+#. translators: %1$s = opening strong tag, %2$s = closing strong tag.
+#: views/deactivation-intent/form.php:55
+msgid "Yes, apply \"%1$sSafe Mode%2$s\""
+msgstr "Ja, anvend \"%1$sSikker tilstand%2$s\""
+
+#. translators: %1$s = opening strong tag, %2$s = closing strong tag.
+#: views/deactivation-intent/form.php:68
+msgid ""
+"and export WP Rocket settings %1$s(Recommended as current settings will be "
+"deleted)%2$s"
+msgstr ""
+"og eksportér WP Rocket-indstillinger%1$s (anbefales, da de aktuelle "
+"indstillinger vil blive slettet)%2$s"
+
+#: views/deactivation-intent/form.php:76
+msgid "No, deactivate and snooze this message for"
+msgstr "Nej, deaktiver og snooze denne besked i"
+
+#: views/deactivation-intent/form.php:78
+msgid "1 day"
+msgstr "1 dag"
+
+#: views/deactivation-intent/form.php:79
+msgid "7 days"
+msgstr "7 dage"
+
+#: views/deactivation-intent/form.php:80
+msgid "30 days"
+msgstr "30 dage"
+
+#: views/deactivation-intent/form.php:81
+msgid "Forever"
+msgstr "For evigt."
+
+#: views/deactivation-intent/form.php:87
+msgid "Cancel"
+msgstr "Annuller"
+
+#: views/deactivation-intent/form.php:88
+msgid "Confirm"
+msgstr "Bekræft"
+
+#. translators: %1$s = <strong>, %2$s = plugin version, %3$s = </strong>, %4$s
+#. = <a>, %5$s = </a>, %6$s = <a>.
+#: views/plugins/update-renewal-expired-notice.php:27
+msgid ""
+" %1$sWP Rocket %2$s%3$s is available. %4$sLearn more%5$s about the updates "
+"and enhancements of this major version. You need an active license to use "
+"them on your website, don’t miss out! %6$sRenew Now%5$s"
+msgstr ""
+"%1$sWP Rocket %2$s%3$s er tilgængeligt. %4$sLær mere%5$s om opdateringer og "
+"forbedringer i denne store version. Du har brug for en aktiv licens for at "
+"bruge dem på din hjemmeside - gå ikke glip af det! %6$sForny nu%5$s"
+
+#: views/settings/dynamic-lists-update.php:14
+msgid "Update Inclusion and Exclusion Lists"
+msgstr "Opdater inklusions- og eksklusionslister"
+
+#. translators: %1$s = opening link tag, %2$s = closing link tag.
+#: views/settings/dynamic-lists-update.php:19
+msgid ""
+"Compatibility lists are downloaded automatically every week. Click the "
+"button if you want to update them manually. %1$sMore info%2$s"
+msgstr ""
+"Kompatibilitetslister downloades automatisk hver uge. Klik på knappen, hvis "
+"du vil opdatere dem manuelt. %1$sMere info%2$s"
+
+#: views/settings/dynamic-lists-update.php:29
+msgid "Update lists"
+msgstr "Opdateringslister"
+
+#: views/settings/enable-google-fonts.php:13
+msgid "Enable Google Font Optimization"
+msgstr "Aktivér Google Font-optimering"
+
+#: views/settings/enable-google-fonts.php:14
+msgid ""
+"Improves font performance and combines multiple font requests to reduce the "
+"number of HTTP requests."
+msgstr ""
+"Forbedrer skrifttypeydelsen og kombinerer flere skrifttypeanmodninger for at"
+" reducere antallet af HTTP-anmodninger."
+
+#. translators: %1$s = opening link tag, %2$s = closing link tag.
+#: views/settings/enable-google-fonts.php:29
+msgid ""
+"Google Fonts Optimization is now enabled for your site. %1$sMore info%2$s"
+msgstr ""
+"Google Font-optimering er nu aktiveret for din hjemmeside. %1$sMere info%2$s"
+
+#: views/settings/enable-google-fonts.php:38
+msgid "Optimize Google Fonts"
+msgstr "Optimer Google Fonts"
+
+#: views/settings/fields/cache-lifespan.php:26
+msgid "Clear cache after"
+msgstr "Fjern cache fra"
+
+#: views/settings/fields/categorized_multiselect.php:54
+msgid "3rd parties"
+msgstr "tredjeparter"
+
+#: views/settings/fields/categorized_multiselect.php:82
+#: views/settings/fields/categorized_multiselect.php:142
+msgid "Select all"
+msgstr "Vælg alle"
+
+#: views/settings/fields/categorized_multiselect.php:114
+msgid "WordPress"
+msgstr "WordPress"
+
+#: views/settings/fields/cnames.php:58 views/settings/fields/cnames.php:92
+#: views/settings/fields/cnames.php:122
+msgid "CSS & JavaScript"
+msgstr "CSS & JavaScript"
+
+#: views/settings/fields/cnames.php:59 views/settings/fields/cnames.php:93
+#: views/settings/fields/cnames.php:123
+msgid "JavaScript"
+msgstr "JavaScript"
+
+#: views/settings/fields/cnames.php:60 views/settings/fields/cnames.php:94
+#: views/settings/fields/cnames.php:124
+msgid "CSS"
+msgstr "CSS"
+
+#: views/settings/fields/import-form.php:29
+msgid "Import settings"
+msgstr "Importindstillinger"
+
+#: views/settings/fields/one-click-addon.php:43
+#: views/settings/fields/rocket-addon.php:43
+msgid "Add-on status"
+msgstr "Status for add-on"
+
+#: views/settings/fields/rocket-addon.php:72
+msgid "Modify options"
+msgstr "Rediger muligheder"
+
+#: views/settings/fields/rocket-cdn.php:29
+#: views/settings/fields/rocket-cdn.php:41
+msgid "CDN CNAME"
+msgstr "CDN-CNAME"
+
+#. translators: %s is a "Learn more" link.
+#: views/settings/fields/rocket-cdn.php:62
+msgid "Purges RocketCDN cached resources for your website. %s"
+msgstr "Rydder RocketCDN-cachede ressourcer til din hjemmeside. %s"
+
+#: views/settings/fields/rocket-cdn.php:63
+#: views/settings/page-sections/cloudflare.php:36
+#: views/settings/page-sections/sucuri.php:37
+msgid "Learn more"
+msgstr "Lær mere"
+
+#: views/settings/fields/rocket-cdn.php:72
+msgid "Clear all RocketCDN cache files"
+msgstr "Slet alle RocketCDN cachefiler"
+
+#: views/settings/mobile-cache.php:11
+msgid "Mobile Cache"
+msgstr "Mobilcache"
+
+#: views/settings/mobile-cache.php:14
+msgid "Speed your site for mobile visitors."
+msgstr "Gør din hjemmeside hurtigere for mobilbesøgende."
+
+#: views/settings/mobile-cache.php:28
+msgid "Mobile Cache is now enabled for your site."
+msgstr "Mobilcache er nu aktiveret for din hjemmeside."
+
+#: views/settings/mobile-cache.php:34
+msgid "Enable Mobile Cache"
+msgstr "Aktivér mobilcache"
+
+#: views/settings/page-sections/cloudflare.php:27
+msgid "Cloudflare Cache"
+msgstr "Cloudflare-cache"
+
+#. translators: %s is a "Learn more" link.
+#: views/settings/page-sections/cloudflare.php:35
+#: views/settings/page-sections/sucuri.php:36
+msgid "Purges cached resources for your website. %s"
+msgstr "Rydder cachede ressourcer til din hjemmeside. %s"
+
+#: views/settings/page-sections/cloudflare.php:36
+msgid "https://support.cloudflare.com/hc/en-us/articles/200169246"
+msgstr "https://support.cloudflare.com/hc/en-us/articles/200169246"
+
+#: views/settings/page-sections/cloudflare.php:45
+msgid "Clear all Cloudflare cache files"
+msgstr "Slet alle Cloudflare-cachefiler"
+
+#: views/settings/page-sections/dashboard.php:39
+msgid "Congratulations!"
+msgstr "Tillykke!"
+
+#: views/settings/page-sections/dashboard.php:41
+msgid "WP Rocket is now activated and already working for you."
+msgstr "WP Rocket er nu aktiveret og arbejder allerede for dig."
+
+#: views/settings/page-sections/dashboard.php:43
+msgid "Your website should be loading faster now!"
+msgstr "Din hjemmeside bør blive indlæst hurtigere nu!"
+
+#: views/settings/page-sections/dashboard.php:45
+msgid ""
+"To guarantee fast websites, WP Rocket automatically applies 80% of web "
+"performance best practices."
+msgstr ""
+"WP Rocket anvender automatisk 80% af de bedste metoder til optimal "
+"webperformance."
+
+#: views/settings/page-sections/dashboard.php:45
+msgid ""
+"We also enable options that provide immediate benefits to your website."
+msgstr ""
+"Vi aktiverer også muligheder, der giver umiddelbare fordele til din "
+"hjemmeside."
+
+#: views/settings/page-sections/dashboard.php:46
+msgid "Continue to the options to further optimize your site!"
+msgstr "Fortsæt til mulighederne for at optimere din hjemmeside yderligere!"
+
+#: views/settings/page-sections/dashboard.php:63
+msgid "My Account"
+msgstr "Min konto"
+
+#: views/settings/page-sections/dashboard.php:69
+msgid "Refresh info"
+msgstr "Genindlæs info"
+
+#: views/settings/page-sections/dashboard.php:87
+msgid "with"
+msgstr "med"
+
+#: views/settings/page-sections/dashboard.php:101
+msgid "Expiration Date"
+msgstr "Udløbsdato"
+
+#: views/settings/page-sections/dashboard.php:111
+msgid "View my account"
+msgstr "Se min konto"
+
+#: views/settings/page-sections/dashboard.php:131 views/settings/page.php:76
+msgid "Rocket Analytics"
+msgstr "Rocket Analytics"
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: views/settings/page-sections/dashboard.php:137
+msgid ""
+"I agree to share anonymous data with the development team to help improve WP"
+" Rocket. %1$sWhat info will we collect?%2$s"
+msgstr ""
+"Jeg accepterer at dele anonym data med udviklingsteamet for at hjælpe med at"
+" forbedre WP Rocket. %1$sHvilke oplysninger vil vi indsamle?%2$s"
+
+#: views/settings/page-sections/dashboard.php:155
+msgid "Quick Actions"
+msgstr "Hurtige handlinger"
+
+#: views/settings/page-sections/dashboard.php:162
+msgid "Cache files"
+msgstr "Cachefiler"
+
+#: views/settings/page-sections/dashboard.php:163
+msgid "This action will clear and preload all the cache files."
+msgstr "Denne handling vil rydde og forudindlæse alle cachedata."
+
+#: views/settings/page-sections/dashboard.php:163
+msgid "This action will clear all the cache files."
+msgstr "Denne handling vil rydde alle cachedata."
+
+#: views/settings/page-sections/dashboard.php:169
+msgid "Clear and preload"
+msgstr "Ryd og forudindlæs"
+
+#: views/settings/page-sections/dashboard.php:183
+#: views/settings/page-sections/dashboard.php:189
+msgid "Regenerate Critical CSS"
+msgstr "Regenerer kritisk CSS"
+
+#: views/settings/page-sections/dashboard.php:215
+msgid "Frequently Asked Questions"
+msgstr "Ofte stillede spørgsmål"
+
+#: views/settings/page-sections/dashboard.php:229
+msgid "Still cannot find a solution?"
+msgstr "Kan du stadig ikke finde en løsning?"
+
+#: views/settings/page-sections/dashboard.php:230
+msgid ""
+"Submit a ticket and get help from our friendly and knowledgeable Rocketeers."
+msgstr ""
+"Indsend en billet og få hjælp fra vores venlige og vidende Rocketeers."
+
+#: views/settings/page-sections/dashboard.php:238
+msgid "Ask support"
+msgstr "Spørg supporten"
+
+#: views/settings/page-sections/database.php:25
+msgid "Backup your database before you run a cleanup!"
+msgstr "Lav en backup af din database, før du kører en oprydning!"
+
+#: views/settings/page-sections/database.php:26
+msgid ""
+"Once a database optimization has been performed, there is no way to undo it."
+msgstr "Når en databaseoptimering er udført, kan den ikke fortrydes."
+
+#: views/settings/page-sections/database.php:28
+msgid "Save Changes and Optimize"
+msgstr "Gem ændringer og optimer"
+
+#. Translators: %1$s = <strong>, %2$s = </strong>.
+#: views/settings/page-sections/imagify.php:22
+msgid ""
+"%1$sWP Rocket created IMAGIFY to give your website an extra speed boost!%2$s"
+msgstr ""
+"%1$sWP Rocket skabte IMAGIFY for at give din hjemmeside en ekstra "
+"hastighedsforøgelse!%2$s"
+
+#: views/settings/page-sections/imagify.php:28
+msgid "Images can account for 50% of your loading time!"
+msgstr "Billeder kan udgøre 50% af din indlæsningstid!"
+
+#: views/settings/page-sections/imagify.php:31
+msgid ""
+"Imagify automatically optimizes all your images, helping your website gain "
+"precious seconds while saving you time. With just one click, it resizes, "
+"compresses, and converts your images to WebP and AVIF formats without "
+"sacrificing quality."
+msgstr ""
+"Imagify optimerer automatisk alle dine billeder, hvilket hjælper din "
+"hjemmeside med at vinde dyrebare sekunder, samtidig med at du sparer tid. "
+"Med blot ét klik ændres størrelsen, og dine billeder komprimeres og "
+"konverteres til WebP- og AVIF-formater uden at ofre kvalitet."
+
+#. Translators: %1$s = <strong>, %2$s = </strong>.
+#: views/settings/page-sections/imagify.php:41
+msgid "%1$sCompress%2$s all your images in one click"
+msgstr "%1$sKomprimer%2$s alle dine billeder med ét klik"
+
+#. Translators: %1$s = <strong>, %2$s = </strong>.
+#: views/settings/page-sections/imagify.php:49
+msgid "%1$sConvert%2$s images to WebP and Avif"
+msgstr "%1$sKonverter%2$s billeder til WebP og Avif"
+
+#. Translators: %1$s = <strong>, %2$s = </strong>.
+#: views/settings/page-sections/imagify.php:57
+msgid "%1$sResize%2$s your images on the fly"
+msgstr "%1$sJuster størrelsen%2$s på dine billeder på farten"
+
+#. Translators: %1$s = <strong>, %2$s = </strong>.
+#: views/settings/page-sections/imagify.php:65
+msgid "%1$sFree plan%2$s includes 20MB/month (around 200 images)"
+msgstr "%1$sGratis pakke%2$s indeholder 20MB/måned (ca. 200 billeder)"
+
+#. Translators: %1$s = <strong>, %2$s = </strong>.
+#: views/settings/page-sections/imagify.php:83
+msgid "%1$sInstall Imagify, the Easiest WordPress Image Optimizer%2$s"
+msgstr ""
+"%1$sInstaller Imagify, det nemmeste WordPress-værktøj til "
+"billedoptimering%2$s"
+
+#: views/settings/page-sections/imagify.php:110
+msgid "Install Imagify"
+msgstr "Installer Imagify"
+
+#: views/settings/page-sections/license.php:22
+msgid "WP Rocket was not able to automatically validate your license."
+msgstr "WP Rocket kunne ikke automatisk validere din licens."
+
+#. translators: %1$s = tutorial URL, %2$s = support URL.
+#: views/settings/page-sections/license.php:29
+msgid "Follow this %1$s, or contact %2$s to get the engine started."
+msgstr "Følg denne %1$s, eller kontakt %2$s for at starte værktøjet."
+
+#. translators: %1$s = <a href=", %2$s =  tutorial href,  %3$s =  "
+#. target="_blank">,  %4$s =  </a>.
+#: views/settings/page-sections/license.php:32
+msgid "%1$s%2$s%3$stutorial%4$s"
+msgstr "%1$s%2$s%3$stutorial%4$s"
+
+#: views/settings/page-sections/license.php:34
+msgid ""
+"https://docs.wp-rocket.me/article/100-resolving-problems-with-license-"
+"validation/?utm_source=wp_plugin&utm_medium=wp_rocket"
+msgstr ""
+"https://docs.wp-rocket.me/article/100-resolving-problems-with-license-"
+"validation/?utm_source=wp_plugin&utm_medium=wp_rocket"
+
+#. translators: %1$s = <a href=", %2$s =  support href,  %3$s =  "
+#. target="_blank">,  %4$s =  </a>.
+#: views/settings/page-sections/license.php:40
+msgid "%1$s%2$s%3$ssupport%4$s"
+msgstr "%1$s%2$s%3$ssupport%4$s"
+
+#: views/settings/page-sections/plugins.php:18
+msgid ""
+"Beyond WP Rocket, there's a whole family of plugins designed to help you "
+"build better, faster, and safer websites. Each one is crafted with our "
+"unique blend of expertise, simplicity, and outstanding support."
+msgstr ""
+"Ud over WP Rocket er der en hel familie af plugins, der er designet til at "
+"hjælpe dig med at opbygge bedre, hurtigere og mere sikre hjemmesider. Hver "
+"af dem er skabt ud fra vores unikke blanding af ekspertise, enkelhed og "
+"fremragende support."
+
+#: views/settings/page-sections/plugins.php:22
+msgid "Combine our plugins below to build incredible WordPress websites!"
+msgstr ""
+"Kombiner vores plugins nedenfor for at opbygge utrolige WordPress-"
+"hjemmesider!"
+
+#: views/settings/page-sections/sucuri.php:46
+msgid "Clear all Sucuri cache files"
+msgstr "Slet alle Sucuri-cachefiler"
+
+#. translators: %1$s = formatted file size, %2$s = formatted number of entries
+#. (don't use %2$d).
+#: views/settings/page-sections/tools.php:20
+msgid "Files size: %1$s. Number of entries: %2$s."
+msgstr "Filstørrelse: %1$s. Antal poster: %2$s"
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: views/settings/page-sections/tools.php:23
+msgid "%1$sDownload the file%2$s."
+msgstr "%1$sDownload filen%2$s."
+
+#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+#: views/settings/page-sections/tools.php:26
+msgid "%1$sDelete the file%2$s."
+msgstr "%1$sSlet filen%2$s."
+
+#: views/settings/page-sections/tools.php:37
+msgid "Export settings"
+msgstr "Eksportindstillinger"
+
+#: views/settings/page-sections/tools.php:38
+msgid "Download a backup file of your settings"
+msgstr "Download en backupfil af dine indstillinger"
+
+#: views/settings/page-sections/tools.php:46
+msgid "Download settings"
+msgstr "Downloadindstillinger"
+
+#: views/settings/page-sections/tools.php:60
+msgid "Rollback"
+msgstr "Rollback"
+
+#. translators: %s = WP Rocket version number.
+#: views/settings/page-sections/tools.php:64
+msgid "Has version %s caused an issue on your website?"
+msgstr "Har version %s forårsaget et problem på din hjemmeside?"
+
+#. translators: %s = <br>.
+#: views/settings/page-sections/tools.php:69
+msgid ""
+"You can rollback to the previous major version here.%sThen send us a support"
+" request."
+msgstr ""
+"Du kan rulle tilbage til den tidligere hovedversion her.%sSend derefter en "
+"supportanmodning til os."
+
+#. translators: %s = WP Rocket previous version.
+#: views/settings/page-sections/tools.php:80
+msgid "Reinstall version %s"
+msgstr "Geninstaller version %s"
+
+#: views/settings/page-sections/tools.php:106
+msgid "Debug mode"
+msgstr "Debug-tilstand"
+
+#: views/settings/page-sections/tools.php:111
+msgid "Create a debug log file."
+msgstr "Opret en debug-logfil."
+
+#: views/settings/page-sections/tutorials.php:13
+#: views/settings/partials/getting-started.php:18
+msgid "Getting Started"
+msgstr "Kom i gang"
+
+#: views/settings/page-sections/tutorials.php:15
+msgid "Getting Started with WP Rocket"
+msgstr "Kom i gang med WP Rocket"
+
+#: views/settings/page-sections/tutorials.php:16
+#: views/settings/partials/getting-started.php:12
+msgid "Finding the Best Settings for Your Site"
+msgstr "Find de bedste indstillinger til din hjemmeside"
+
+#: views/settings/page-sections/tutorials.php:17
+#: views/settings/partials/getting-started.php:13
+msgid "How to Check if WP Rocket is Caching Your Site"
+msgstr "Sådan kontrollerer du, om WP Rocket cacher din hjemmeside"
+
+#: views/settings/page-sections/tutorials.php:18
+#: views/settings/partials/getting-started.php:14
+msgid "How to Measure the Speed of Your Site"
+msgstr "Sådan måler du hastigheden på din hjemmeside"
+
+#: views/settings/page-sections/tutorials.php:19
+msgid "How Preloading Works"
+msgstr "Sådan fungerer forudindlæsning"
+
+#: views/settings/page-sections/tutorials.php:23
+msgid "Passing the Core Web vitals"
+msgstr "Gennemgang af Core Web Vitals"
+
+#: views/settings/page-sections/tutorials.php:25
+msgid "How to improve LCP with WP Rocket"
+msgstr "Sådan forbedres LCP med WP Rocket"
+
+#: views/settings/page-sections/tutorials.php:26
+msgid "How to improve INP with WP Rocket"
+msgstr "Sådan forbedres INP med WP Rocket"
+
+#: views/settings/page-sections/tutorials.php:27
+msgid "How to improve CLS with WP Rocket"
+msgstr "Sådan forbedres CLS med WP Rocket"
+
+#: views/settings/page-sections/tutorials.php:31
+msgid "Troubleshooting"
+msgstr "Fejlfinding"
+
+#: views/settings/page-sections/tutorials.php:33
+msgid "Troubleshooting Display Issues with File Optimization"
+msgstr "Fejlfinding af visningsproblemer med filoptimering"
+
+#: views/settings/page-sections/tutorials.php:34
+msgid "How to Find the Right JavaScript to Exclude"
+msgstr "Sådan finder du det rigtige JavaScript til udelukkelse"
+
+#: views/settings/page-sections/tutorials.php:35
+msgid "How External Content Slows Your Site"
+msgstr "Hvordan eksternt indhold bremser din hjemmeside"
+
+#: views/settings/page-sections/tutorials.php:41
+msgid "Set Up the Cloudflare Add-on"
+msgstr "Opsætning af Cloudflare-add-on"
+
+#: views/settings/page.php:16
+msgid "WP Rocket Settings"
+msgstr "WP Rocket-indstillinger"
+
+#. translators: %s = Plugin version number.
+#: views/settings/page.php:30
+msgid "version %s"
+msgstr "version %s"
+
+#: views/settings/page.php:61
+msgid "Show Sidebar"
+msgstr "Vis sidemenu"
+
+#. translators: %1$s = <strong>, %2$s = </strong>.
+#: views/settings/page.php:83
+msgid ""
+"Below is a detailed view of all data WP Rocket will collect %1$sif granted "
+"permission.%2$s"
+msgstr ""
+"Nedenfor er en detaljeret visning af alle data WP Rocket vil indsamle "
+"%1$shvis der gives tilladelse til det.%2$s"
+
+#: views/settings/page.php:89
+msgid ""
+"WP Rocket will never transmit any domain names or email addresses (except "
+"for license validation), IP addresses, or third-party API keys."
+msgstr ""
+"WP Rocket vil aldrig overføre domænenavne eller e-mailadresser (bortset fra "
+"ved licensvalidering), IP-adresser eller API-nøgler fra tredjeparter."
+
+#: views/settings/page.php:91
+msgid "Activate Rocket analytics"
+msgstr "Aktivér Rocket Analytics"
+
+#: views/settings/partials/documentation.php:15
+msgid "It is a great starting point to fix some of the most common issues."
+msgstr ""
+"Det er et godt udgangspunkt for at løse nogle af de mest almindelige "
+"problemer."
+
+#: views/settings/partials/documentation.php:22
+msgid "Read the documentation"
+msgstr "Læs dokumentationen"
+
+#: views/settings/partials/getting-started.php:11
+msgid "What WP Rocket Does For You By Default"
+msgstr "Hvad WP Rocket som standard gør for dig"
+
+#: views/settings/partials/sidebar.php:12
+msgid "How to correctly measure your website’s loading time"
+msgstr "Sådan måler du korrekt din hjemmesides indlæsningstider"
+
+#: views/settings/partials/sidebar.php:14
+msgid "Check our tutorial and learn how to measure the speed of your site."
+msgstr ""
+"Se vores tutorial og lær, hvordan du måler hastigheden på din hjemmeside."
+
+#: views/settings/partials/sidebar.php:15
+#: views/settings/partials/sidebar.php:24
+msgid "Read our guide"
+msgstr "Læs vores vejledning"
+
+#: views/settings/partials/sidebar.php:18
+msgid "Learn about optimal WP Rocket settings for mobile."
+msgstr "Lær om optimale WP Rocket-indstillinger til mobil."
+
+#: views/settings/partials/sidebar.php:27
+msgid "Test and Improve Google Core Web Vitals for WordPress."
+msgstr "Test og forbedring af Google Core Web Vitals for WordPress."
+
+#: views/settings/partials/sidebar.php:28
+msgid "Read more"
+msgstr "Læs mere"
+
+#: views/settings/partials/sidebar.php:33
+msgid "You have not activated logged-in user cache."
+msgstr "Du har ikke aktiveret indlogget brugercache."
+
+#: views/settings/partials/sidebar.php:34
+msgid ""
+"Use a private browser to check your website's speed and visual appearance."
+msgstr ""
+"Brug en privat browser til at kontrollere din hjemmesides hastighed og "
+"visuelle udseende."
+
+#: views/settings/sections/addons-container.php:24
+#: views/settings/sections/fields-container.php:28
+msgid "Need Help?"
+msgstr "Brug for hjælp?"

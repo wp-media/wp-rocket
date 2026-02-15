@@ -35,6 +35,10 @@ class DisplayRenewalSoonBanner extends TestCase {
 			]
 		);
 
+		if(! defined('WP_ROCKET_PLUGIN_NAME')) {
+			define('WP_ROCKET_PLUGIN_NAME', 'WP Rocket');
+		}
+
 		$this->stubEscapeFunctions();
 		$this->stubTranslationFunctions();
 	}
@@ -52,6 +56,11 @@ class DisplayRenewalSoonBanner extends TestCase {
 			->atMost()
 			->once()
 			->andReturn( $config['user']['auto_renew'] );
+
+		$this->user->shouldReceive( 'is_revoked' )
+			->atMost()
+			->once()
+			->andReturn( $config['user']['is_revoked'] ?? false );
 
 		$this->user->shouldReceive( 'get_license_expiration' )
 			->andReturn( $config['user']['licence_expiration'] );
