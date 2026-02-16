@@ -7,7 +7,6 @@ use WP_Rocket\Dependencies\League\Container\Argument\Literal\StringArgument;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Imagify_Subscriber;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Optimus_Subscriber;
-use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\ShortPixel_Subscriber;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Mobile_Subscriber;
 use WP_Rocket\Subscriber\Third_Party\Plugins\NGG_Subscriber;
 use WP_Rocket\Subscriber\Third_Party\Plugins\SyntaxHighlighter_Subscriber;
