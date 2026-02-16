@@ -39,7 +39,6 @@ class Smush implements Subscriber_Interface {
 		if ( ! rocket_has_constant( 'WP_SMUSH_VERSION' ) ) {
 			return [
 				'activate_wp-smushit/wp-smush.php' => [ 'maybe_deactivate_rocket_lazyload', 10 ],
-				'wpmedia_plugin_family_show_imagify_banner' => 'hide_imagify_banner',
 			];
 		}
 
@@ -50,6 +49,7 @@ class Smush implements Subscriber_Interface {
 			'update_site_option_wp-smush-lazy_load'        => [ 'maybe_deactivate_rocket_lazyload', 11 ],
 			'rocket_maybe_disable_lazyload_helper'         => 'is_smush_lazyload_active',
 			'rocket_maybe_disable_iframes_lazyload_helper' => 'is_smush_iframes_lazyload_active',
+			'wpmedia_plugin_family_show_imagify_banner'    => 'hide_imagify_banner',
 		];
 	}
 
