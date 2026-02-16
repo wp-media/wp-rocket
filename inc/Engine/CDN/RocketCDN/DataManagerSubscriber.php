@@ -152,25 +152,24 @@ class DataManagerSubscriber implements Subscriber_Interface {
 		$this->user_client->flush_cache();
 		$user_data = $this->user_client->get_user_data();
 
-		if ( false === $user_data || empty( $user_data->cdn_token ) || empty( $user_data->cdn_url ) || empty( $user_data->rocketcdn_website_id ) ) {
+		if ( false === $user_data || empty( $user_data->rocketcdn->cdn_token ) || empty( $user_data->rocketcdn->cdn_url ) || empty( $user_data->rocketcdn->rocketcdn_website_id ) ) {
 			$this->remove_query_parameter_and_redirect();
 			return;
 		}
 
 		// Validate token length (must be 40 characters).
-		if ( 40 !== strlen( $user_data->cdn_token ) ) {
+		if ( 40 !== strlen( $user_data->rocketcdn->cdn_token ) ) {
 			$this->remove_query_parameter_and_redirect();
 			return;
 		}
 
 		// Activate the subscription via RocketCDN API.
 		$activation_result = $this->api_client->activate_subscription(
-			sanitize_key( $user_data->cdn_token ),
-			(int) $user_data->rocketcdn_website_id
+			sanitize_key( $user_data->rocketcdn->cdn_token ),
+			(int) $user_data->rocketcdn->rocketcdn_website_id
 		);
-
-		update_option( 'rocketcdn_user_token', sanitize_key( $user_data->cdn_token ) );
-		$this->cdn_options->enable( esc_url_raw( $user_data->cdn_url ) );
+		update_option( 'rocketcdn_user_token', sanitize_key( $user_data->rocketcdn->cdn_token ) );
+		$this->cdn_options->enable( esc_url_raw( $user_data->rocketcdn->cdn_url ) );
 
 		// Schedule subscription check.
 		$subscription = $this->api_client->get_subscription_data();
