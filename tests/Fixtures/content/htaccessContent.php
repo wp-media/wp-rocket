@@ -112,6 +112,7 @@ Header append Cache-Control "public"
 	ExpiresByType application/vnd.ms-fontobject "access plus 1 month"
 	# CSS and JavaScript
 	ExpiresByType text/css                      "access plus 1 year"
+	ExpiresByType text/javascript               "access plus 1 year"
 	ExpiresByType application/javascript        "access plus 1 year"
 </IfModule>
 # Gzip compression
@@ -142,6 +143,7 @@ AddOutputFilterByType DEFLATE application/atom+xml \
 		                          image/svg+xml \
 		                          image/x-icon \
 		                          text/css \
+								  text/javascript \
 		                          text/html \
 		                          text/plain \
 		                          text/x-component \

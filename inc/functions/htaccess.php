@@ -500,6 +500,7 @@ function get_rocket_htaccess_mod_deflate() { // phpcs:ignore WordPress.NamingCon
 		                          image/svg+xml \
 		                          image/x-icon \
 		                          text/css \
+		                          text/javascript \
 		                          text/html \
 		                          text/plain \
 		                          text/x-component \
@@ -574,6 +575,7 @@ function get_rocket_htaccess_mod_expires() { // phpcs:ignore WordPress.NamingCon
 	ExpiresByType application/vnd.ms-fontobject "access plus 1 month"
 	# CSS and JavaScript
 	ExpiresByType text/css                      "access plus 1 year"
+	ExpiresByType text/javascript               "access plus 1 year"
 	ExpiresByType application/javascript        "access plus 1 year"
 </IfModule>
 
