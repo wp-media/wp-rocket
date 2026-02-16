@@ -99,7 +99,7 @@ class Test_HandleRocketcdnCheckoutParameter extends AdminTestCase {
 
 		// Mock API responses if needed.
 		if ( isset( $config['api_activation_success'] ) ) {
-			$website_id = $config['user_data']['rocketcdn_website_id'];
+			$website_id = $config['user_data']['rocketcdn']['rocketcdn_website_id'];
 
 			add_filter(
 				'pre_http_request',

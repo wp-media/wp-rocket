@@ -37,7 +37,9 @@ return [
             'parameter_set' => true,
             'user_role'     => 'administrator',
             'user_data'     => [
-                'cdn_url' => 'https://example.rocketcdn.me',
+                'rocketcdn' => [
+                    'cdn_url' => 'https://example.rocketcdn.me',
+                ],
             ],
         ],
         'expected' => [
@@ -50,9 +52,11 @@ return [
             'parameter_set' => true,
             'user_role'     => 'administrator',
             'user_data'     => [
-                'cdn_token'            => 'short_token',
-                'cdn_url'              => 'https://example.rocketcdn.me',
-                'rocketcdn_website_id' => 12345,
+                'rocketcdn' => [
+                    'cdn_token'            => 'short_token',
+                    'cdn_url'              => 'https://example.rocketcdn.me',
+                    'rocketcdn_website_id' => 12345,
+                ],
             ],
         ],
         'expected' => [
@@ -65,9 +69,11 @@ return [
             'parameter_set' => true,
             'user_role'     => 'administrator',
             'user_data'     => [
-                'cdn_token'            => '1234567890123456789012345678901234567890',
-                'cdn_url'              => 'https://example.rocketcdn.me',
-                'rocketcdn_website_id' => 12345,
+                'rocketcdn' => [
+                    'cdn_token'            => '1234567890123456789012345678901234567890',
+                    'cdn_url'              => 'https://example.rocketcdn.me',
+                    'rocketcdn_website_id' => 12345,
+                ],
             ],
             'api_activation_success' => true,
             'api_subscription_data'  => [
