@@ -540,6 +540,10 @@ document.addEventListener('DOMContentLoaded', function() {
 			if (response.success) {
 				$pageUrlInput.val('');
 				$tableBody.append(response.html);
+
+				// Custom event when new page is added.
+        		$(document).trigger('rocket-insights-page-added');
+
 				$table.removeClass('hidden');
 				addIds(response.id);
 				let pages_num_container = $('#rocket_rocket_insights_pages_num');
@@ -609,6 +613,9 @@ document.addEventListener('DOMContentLoaded', function() {
 				$(`#ri_details_${response.id} .details-section-td`).remove();
 				const $row = $(`[data-rocket-insights-id="${response.id}"]`);
 				$row.replaceWith(response.html);
+
+				// Custom event when page is retested.
+        		$(document).trigger('rocket-insights-page-retest', [response.id]);
 
 				// Update credit status
 				updateCreditState(response.has_credit);
@@ -683,22 +690,29 @@ document.addEventListener('DOMContentLoaded', function() {
 	// Handle Expand/Collapse for RI.
 	var $detailsCells = $('.details-section-td');
 	var $toggleButtons = $('.wpr-ri-item-toggle-single');
-	var $lastToggle = $('.wpr-ri-item-toggle').last();
-	var $lastActions = $('.wpr-ri-item-actions').last();
 	var imgUrl = window.rocket_ajax_data.assets_img_url;
 	var carets = {
-		down: imgUrl + 'ri-caret-down.svg',
-		right: imgUrl + 'ri-caret-right.svg'
+		down: `${imgUrl}ri-caret-down.svg`,
+		right: `${imgUrl}ri-caret-right.svg`
 	}
 
-	var $selectors = {
-		lastToggle: $lastToggle,
-		lastActions: $lastActions,
-		detailsCells: $detailsCells
-	};
+	// Handle collapseed styling for first load or dynamic row addition.
+	function addCollapsedStylingToLastRow(onLoad = false) {
+		$('.wpr-ri-item').last().find('td').addClass('border-bottom');
+	
+		if ($('.wpr-ri-item-result').length === 1 && onLoad) {
+			$('.details-section-td').addClass('wpr-last-expanded');
+			return 
+		}
+		$('.wpr-ri-item-toggle').last().addClass('wpr-last-collapsed');
+		$('.wpr-ri-item-actions').last().addClass('wpr-last-collapsed');
+	}
 
 	// Handles initial expand state: opens a specific test from the hash if present, otherwise collapses all but the first.
-	function handleInitialExpandState() {
+	function handleInitialTableState() {
+		// Add collapsed styling to the last row on initial load.
+    	addCollapsedStylingToLastRow(true);
+	
 		var pageId = window.location.hash.split('#')[1];
 		// Check if id was passed in hash to open specific test.
 		if (pageId.includes('=')) {
@@ -706,9 +720,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
 			// If the test ID exists and is visible, show its details.
 			if ('' !== testId && $(`[data-rocket-insights-id="${testId}"]`).is(':visible')) {
-			$detailsCells.hide();
-			toggleSingleRowVisibility(`[data-rocket-insights-id="${testId}"] .wpr-ri-item-toggle-single`, testId)
-			return;
+				$detailsCells.hide();
+				toggleSingleRowVisibility(`[data-rocket-insights-id="${testId}"] .wpr-ri-item-toggle-single`, testId)
+				return;
 			}
 		}
 
@@ -722,7 +736,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		var $details = $(`#ri_details_${insightsId} .details-section-td`);
 		var $img = $(el).find('img');
 		var isVisible = $details.is(':visible');
-		var isLast = $(el).is($toggleButtons.last());
+		var isLast = $(el).is($('.wpr-ri-item-toggle-single').last());
 
 		// Toggle visibility
 		if (isVisible) {
@@ -731,7 +745,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 			// Manipulate styling for last elements when details cell is visible.
 			if (isLast) {
-				updateRowStylingForLastItem($selectors, false);
+				updateRowStylingForLastItem(false);
 			}
 			return;
 		}
@@ -744,7 +758,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 		// Manipulate styling for last elements when details cell is not visible.
 		if (isLast) {
-			updateRowStylingForLastItem($selectors);
+			updateRowStylingForLastItem();
 		}
 	}
 
@@ -772,37 +786,31 @@ document.addEventListener('DOMContentLoaded', function() {
 	 * Manages border radius and bottom border styling based on whether the details
 	 * cell is expanded or collapsed to maintain proper visual appearance.
 	 */
-	function updateRowStylingForLastItem($selectors, reverseStyle = true) {
-		if (!reverseStyle) {
-			// Restore border radius for main cells when item is collapsed.
-			$selectors.lastToggle.css('border-bottom-left-radius', '5px');
-			$selectors.lastActions.css('border-bottom-right-radius', '5px');
+	function updateRowStylingForLastItem(isExpanded = true) {
+		const addState = isExpanded ? 'wpr-last-expanded' : 'wpr-last-collapsed';
+		const removeState = isExpanded ? 'wpr-last-collapsed' : 'wpr-last-expanded';
+		
+		var $selectors = {
+			lastToggle: $('.wpr-ri-item-toggle').last(),
+			lastActions: $('.wpr-ri-item-actions').last()
+		};
 
-			// Remove border radius for details cell when item is collapsed.
-			$selectors.detailsCells.last().css('border-bottom-left-radius', '0');
-			$selectors.detailsCells.last().css('border-bottom-right-radius', '0');
+		$selectors.lastToggle
+			.removeClass(removeState)
+			.addClass(addState);
 
-			// Remove bottom border for details cell when item is collapsed.
-			$selectors.detailsCells.last().css('border-bottom', '0');
+		$selectors.lastActions
+			.removeClass(removeState)
+			.addClass(addState);
 
-			return
-		}
-
-		// Remove border radius for main cells when item is expanded.
-		$selectors.lastToggle.css('border-bottom-left-radius', '0');
-		$selectors.lastActions.css('border-bottom-right-radius', '0');
-
-		// Restore border radius for details cell when item is expanded.
-		$selectors.detailsCells.last().css('border-bottom-left-radius', '5px');
-		$selectors.detailsCells.last().css('border-bottom-right-radius', '5px');
-
-		// Restore bottom border for details cell when item is expanded.
-		$selectors.detailsCells.last().css('border-bottom', '1px solid #E2E5E9');
+		$('.details-section-td').last()
+			.removeClass(removeState)
+			.addClass(addState);
 	}
 
 
 	// Set initial expand/collapse state.
-	handleInitialExpandState();
+	handleInitialTableState();
 
 	// Toggle single item.
 	$(document).on('click', '.wpr-ri-item-toggle-single', function() {
@@ -815,14 +823,14 @@ document.addEventListener('DOMContentLoaded', function() {
 		if ($('.details-section-td').is(':visible')) {
 			$('.details-section-td').hide('fast');
 			$('.wpr-ri-item-toggle-single img').attr('src', carets.right);
-			updateRowStylingForLastItem($selectors, false);
+			updateRowStylingForLastItem(false);
 
 			return;
 		}
 
 		$('.details-section-td').show('fast');
 		$('.wpr-ri-item-toggle-single img').attr('src', carets.down);
-		updateRowStylingForLastItem($selectors);
+		updateRowStylingForLastItem();
 	});
 
 	// Track "See Report" clicks in Rocket Insights.
@@ -837,8 +845,36 @@ document.addEventListener('DOMContentLoaded', function() {
 		handleMetricActionTracking('see_report', insightsId);
 	});
 
-	// Hide metric section when test is finished.
+	// Update table styling after new page is added.
 	$(document).on('rocket-insights-page-test-completed', function (e, insightsId) {
-		$(`#ri_details_${insightsId} .details-section-td`).hide('fast');
+		var $detailsCell = $(`#ri_details_${insightsId} .details-section-td`);
+
+		// Hide metric section when test is finished.
+		$detailsCell.hide('fast');
+
+		// Check if the element we just hid is the last .details-section-td
+		var isLast = $detailsCell.is($('.details-section-td').last());
+		
+		if (isLast) {
+			addCollapsedStylingToLastRow();
+		}
+	});
+
+	// Update table styling after new page is added.
+	$(document).on('rocket-insights-page-added', function (e) {
+		// Remove dynamic class for last item if exists when new page is added.
+		$('.wpr-last-collapsed').removeClass('wpr-last-collapsed');
+		$('.wpr-last-expanded').removeClass('wpr-last-expanded');
+		$('.border-bottom').removeClass('border-bottom');
+	});
+
+	// Update table styling after retest.
+	$(document).on('rocket-insights-page-retest', function (e, insightsId) {
+		// Check if item retested is the last.
+		var isLast = $(`[data-rocket-insights-id="${insightsId}"]`).is($('.wpr-ri-item-result').last());
+		
+		if (isLast) {
+			addCollapsedStylingToLastRow();
+		}
 	});
 });
