@@ -119,6 +119,11 @@ class RocketInsights extends AbstractTable {
 		return $this->is_success( $created );
 	}
 
+	/**
+	 * Add unique key for url and is_mobile columns.
+	 *
+	 * @return bool
+	 */
 	protected function add_url_ismobile_unique_key() {
 		$key_exists = $this->index_exists( 'url_is_mobile' );
 
