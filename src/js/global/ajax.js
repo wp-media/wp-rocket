@@ -306,6 +306,10 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 	}
 
+	function hasId(id) {
+		return rocketInsightsIds.includes(id);
+	}
+
 	function removeId(id) {
 		// Ensure that the id to be removed is an integer for accurate comparison.
 		const idToRemove = parseInt(id, 10);
@@ -538,34 +542,37 @@ document.addEventListener('DOMContentLoaded', function() {
 			}
 		).then( ( response ) => {
 			if (response.success) {
-				$pageUrlInput.val('');
-				$tableBody.append(response.html);
-				$table.removeClass('hidden');
-				addIds(response.id);
-				let pages_num_container = $('#rocket_rocket_insights_pages_num');
-				pages_num_container.text( parseInt( pages_num_container.text() ) + 1 );
+				if ( ! hasId(response.id) ) {
+					$pageUrlInput.val('');
+					$tableBody.append(response.html);
+					$table.removeClass('hidden');
+					addIds(response.id);
+					let pages_num_container = $('#rocket_rocket_insights_pages_num');
+					pages_num_container.text( parseInt( pages_num_container.text() ) + 1 );
 
-				// Update credit status
-				updateCreditState(response.has_credit);
+					// Update credit status
+					updateCreditState(response.has_credit);
 
-                // Update global score data.
-                globalScoreData = response.global_score_data;
+					// Update global score data.
+					globalScoreData = response.global_score_data;
 
-				// Update global score row in table if on Rocket Insights page.
-				updateGlobalScoreRow(globalScoreData);
+					// Update global score row in table if on Rocket Insights page.
+					updateGlobalScoreRow(globalScoreData);
 
-				if ('disabled_btn_html' in globalScoreData) {
-					$('#wpr_rocket_insights_add_page_btn_wrapper').html(globalScoreData.disabled_btn_html.rocket_insights);
+					if ('disabled_btn_html' in globalScoreData) {
+						$('#wpr_rocket_insights_add_page_btn_wrapper').html(globalScoreData.disabled_btn_html.rocket_insights);
+					}
+
+					// Show/hide quota banner based on can_add_pages
+					updateQuotaBanner(response.can_add_pages);
+
+					// Start polling if not already running
+					if (!pollTimer) {
+						pollInterval = POLL_BASE_INTERVAL;
+						schedulePolling();
+					}
 				}
 
-				// Show/hide quota banner based on can_add_pages
-				updateQuotaBanner(response.can_add_pages);
-
-				// Start polling if not already running
-				if (!pollTimer) {
-					pollInterval = POLL_BASE_INTERVAL;
-					schedulePolling();
-				}
 			} else {
 				// Clear the input field on error
 				$pageUrlInput.val('');
