@@ -136,7 +136,7 @@ $rocket_formatted_metrics = $data->formatted_metrics ?? [];
 							<img src="<?php echo $rocket_img_url;// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>ri-info.svg" alt="">
 							<div class="wpr-tooltip">
 								<div class="wpr-tooltip-content">
-									<?php echo esc_html__( 'Time for the largest visible element to render, showing when the main content loads.', 'rocket' ); ?>
+									<?php echo esc_html__( 'Time until the largest visible content element renders and the main content becomes visible.', 'rocket' ); ?>
 								</div>
 							</div>
 						</div>
@@ -147,7 +147,7 @@ $rocket_formatted_metrics = $data->formatted_metrics ?? [];
 							<img src="<?php echo $rocket_img_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>ri-info.svg" alt="">
 							<div class="wpr-tooltip">
 								<div class="wpr-tooltip-content">
-									<?php echo esc_html__( 'Total time the main thread is blocked before the page becomes interactive.', 'rocket' ); ?>
+									<?php echo esc_html__( 'Total time the main thread is blocked before the page becomes interactive during loading.', 'rocket' ); ?>
 								</div>
 							</div>
 						</div>
@@ -158,7 +158,7 @@ $rocket_formatted_metrics = $data->formatted_metrics ?? [];
 							<img src="<?php echo $rocket_img_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>ri-info.svg" alt="">
 							<div class="wpr-tooltip">
 								<div class="wpr-tooltip-content">
-									<?php echo esc_html__( 'Time from request to the first byte received from the server.', 'rocket' ); ?>
+									<?php echo esc_html__( 'Time from the request until the server responds, determining how soon the page starts loading.', 'rocket' ); ?>
 								</div>
 							</div>
 						</div>
@@ -169,7 +169,7 @@ $rocket_formatted_metrics = $data->formatted_metrics ?? [];
 							<img src="<?php echo $rocket_img_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>ri-info.svg" alt="">
 							<div class="wpr-tooltip">
 								<div class="wpr-tooltip-content">
-									<?php echo esc_html__( 'Measures unexpected layout shifts during loading.', 'rocket' ); ?>
+									<?php echo esc_html__( 'Total amount of unexpected layout shifts during page loading, affecting visual stability.', 'rocket' ); ?>
 								</div>
 							</div>
 						</div>
