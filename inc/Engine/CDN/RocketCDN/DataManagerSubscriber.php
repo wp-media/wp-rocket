@@ -141,13 +141,6 @@ class DataManagerSubscriber implements Subscriber_Interface {
 			return;
 		}
 
-		// Guard clause: bail if token already exists.
-		$current_token = get_option( 'rocketcdn_user_token' );
-		if ( ! empty( $current_token ) ) {
-			$this->remove_query_parameter_and_redirect();
-			return;
-		}
-
 		// Refresh user data to get fresh RocketCDN credentials.
 		$this->user_client->flush_cache();
 		$user_data = $this->user_client->get_user_data();

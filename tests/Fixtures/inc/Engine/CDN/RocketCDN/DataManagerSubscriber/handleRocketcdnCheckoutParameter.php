@@ -21,17 +21,6 @@ return [
         ],
     ],
 
-    'shouldBailOutAndRedirectWhenTokenAlreadyExists' => [
-        'config'   => [
-            'parameter_set'   => true,
-            'user_role'       => 'administrator',
-            'existing_token'  => 'existing_token_12345678901234567890',
-        ],
-        'expected' => [
-            'token_value' => 'existing_token_12345678901234567890',
-        ],
-    ],
-
     'shouldBailOutWhenUserDataMissing' => [
         'config'   => [
             'parameter_set' => true,
