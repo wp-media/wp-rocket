@@ -81,7 +81,6 @@ class DataManagerSubscriber implements Subscriber_Interface {
 			'wp_ajax_rocketcdn_process_set'          => 'set_process_status',
 			'wp_ajax_rocketcdn_process_status'       => 'get_process_status',
 			'wp_ajax_rocketcdn_validate_token_cname' => 'validate_token_cname',
-			'wp_ajax_rocketcdn_get_button_url'       => 'get_rocketcdn_button_url',
 			self::CRON_EVENT                         => 'maybe_disable_cdn',
 			'wp_rocket_upgrade'                      => [ 'refresh_cdn_cname', 10, 2 ],
 		];
@@ -403,38 +402,6 @@ class DataManagerSubscriber implements Subscriber_Interface {
 
 		$data['message'] = 'token_updated_successfully';
 		wp_send_json_success( $data );
-	}
-
-	/**
-	 * Gets the RocketCDN button URL from user data if available.
-	 *
-	 * @since 3.20.5
-	 *
-	 * @return void
-	 */
-	public function get_rocketcdn_button_url() {
-		check_ajax_referer( 'rocket-ajax', 'nonce', true );
-
-		if ( ! current_user_can( 'rocket_manage_options' ) ) {
-			wp_send_json_error( [ 'message' => 'unauthorized_user' ] );
-		}
-
-		$user_data = $this->user_client->get_user_data();
-
-		if ( false === $user_data || ! isset( $user_data->rocketcdn->button->url ) || empty( $user_data->rocketcdn->button->url ) ) {
-			wp_send_json_success( [ 'has_button_url' => false ] );
-			return;
-		}
-
-		$dashboard_url = admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '&rocketcdn_checkout=true' );
-		$button_url    = add_query_arg( 'dashboard_url', rawurlencode( $dashboard_url ), $user_data->rocketcdn->button->url );
-
-		wp_send_json_success(
-			[
-				'has_button_url' => true,
-				'button_url'     => esc_url_raw( $button_url ),
-			]
-			);
 	}
 
 	/**

@@ -82,26 +82,14 @@
 	};
 
 	function checkButtonUrlAndOpen() {
-		let postData = '';
-
-		postData += 'action=rocketcdn_get_button_url';
-		postData += '&nonce=' + rocket_ajax_data.nonce;
-
-		const request = sendHTTPRequest( postData );
-
-		request.onreadystatechange = () => {
-			if ( request.readyState === XMLHttpRequest.DONE && 200 === request.status ) {
-				let responseTxt = JSON.parse(request.responseText);
-
-				if ( true === responseTxt.success && responseTxt.data.has_button_url ) {
-					// Open button URL in new tab
-					window.open( responseTxt.data.button_url, '_blank' );
-				} else {
-					// Show iframe modal as usual
-					MicroModal.show( 'wpr-rocketcdn-modal' );
-				}
-			}
-		};
+		// Check if button URL was injected by PHP
+		if ( window.rocketcdnButtonUrl && window.rocketcdnButtonUrl !== '' ) {
+			// Open button URL in new tab
+			window.open( window.rocketcdnButtonUrl, '_blank' );
+		} else {
+			// Show iframe modal as usual
+			MicroModal.show( 'wpr-rocketcdn-modal' );
+		}
 	}
 
 	function maybeOpenModal() {
