@@ -489,6 +489,8 @@ document.addEventListener('DOMContentLoaded', function() {
 					const $row = $(`.wpr-ri-item[data-rocket-insights-id="${result.id}"]`);
 					$row.replaceWith(result.html);
 
+					$(document).trigger('rocket-insights-page-test-polling', [result.id]);
+
 					// Trigger custom event only when test is completed and not failed, so we don't target an element that might be removed from the DOM after test completion.
 					if (result.status === 'completed') {
 						$(document).trigger('rocket-insights-page-test-completed', [result.id]);
@@ -868,9 +870,9 @@ document.addEventListener('DOMContentLoaded', function() {
 		$('.border-bottom').removeClass('border-bottom');
 	});
 
-	// Update table styling after retest.
-	$(document).on('rocket-insights-page-retest', function (e, insightsId) {
-		// Check if item retested is the last.
+	// Update table styling after retest or polling update for last row.
+	$(document).on('rocket-insights-page-retest rocket-insights-page-test-polling', function (e, insightsId) {
+		// Check if item is the last.
 		var isLast = $(`[data-rocket-insights-id="${insightsId}"]`).is($('.wpr-ri-item-result').last());
 		
 		if (isLast) {
