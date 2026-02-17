@@ -125,7 +125,7 @@ return [
 			'job_id' => 10,
 			'queue_name' => 'EU',
 			'is_home' => false,
-			'api_url' => 'https://api.example.comrucss-job',
+			'api_url' => 'https://api.example.com',
 			'email' => 'example@email.com',
 			'key' => 'key',
 			'response' => [
@@ -136,12 +136,14 @@ return [
 			'is_succeed' => true,
 			'code' => 200,
 			'message' => 'message',
-			'request_uri' => 'https://api.example.com',
+			'request_uri' => 'https://api.example.comrucss-job',
 			'errors_count' => 1,
 			'args' => [
 				'body' => [
-					'wpr_email' => 'example@email.com',
-					'wpr_key' => 'key',
+					'credentials' => [
+						'wpr_email' => 'example@email.com',
+						'wpr_key' => 'key',
+					],
 					'id'          => 10,
 					'force_queue' => 'EU',
 					'is_home'     => false,
