@@ -737,6 +737,9 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 
 		$details.show('fast');
+		$('html, body').animate({
+			scrollTop: $details.offset().top
+		}, 'slow');
 		$img.attr('src', carets.down);
 
 		// Track expand only expand metric action.
