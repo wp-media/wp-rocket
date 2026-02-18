@@ -51,6 +51,11 @@ class DebugEnabledTest extends TestCase {
 		$_SERVER['REQUEST_URI'] = $config['REQUEST_URI'] ?? '/';
 
 		Functions\when( 'home_url' )->justReturn( 'http://example.org' );
+		Functions\when( 'wp_unslash' )->alias(
+			function ( $value ) {
+				return stripslashes( $value );
+			}
+		);
 
 		$result = Logger::debug_enabled();
 
