@@ -370,6 +370,8 @@
 			setImageAttributes(sourceTag, settings);
 		});
 		setOriginalsObject(imgEl, attrsSrcSrcsetSizes);
+		// Remove decoding="async" before setting sources to prevent render stall
+		imgEl.removeAttribute('decoding');
 		setImageAttributes(imgEl, settings);
 	};
 	var setSourcesIframe = function setSourcesIframe(iframe, settings) {
@@ -516,6 +518,16 @@
 		doneHandler(element, settings, instance);
 		addClass(element, settings.class_loaded);
 		setStatus(element, statusLoaded);
+
+		// Force browser repaint after programmatic src change.
+		// Fixes rendering issues where the image is loaded but not painted.
+		if (element.tagName === 'IMG') {
+			element.removeAttribute('decoding');
+			element.style.display = 'none';
+			void element.offsetHeight;
+			element.style.display = '';
+		}
+
 		safeCallback(settings.callback_loaded, element, instance);
 		if (!goingNative) checkFinish(settings, instance);
 	};
