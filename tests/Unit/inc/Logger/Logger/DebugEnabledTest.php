@@ -56,6 +56,11 @@ class DebugEnabledTest extends TestCase {
 				return stripslashes( $value );
 			}
 		);
+		Functions\when( 'sanitize_text_field' )->alias(
+			function ( $value ) {
+				return is_string( $value ) ? strip_tags( $value ) : $value;
+			}
+		);
 
 		$result = Logger::debug_enabled();
 
