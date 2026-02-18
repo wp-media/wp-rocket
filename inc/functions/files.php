@@ -596,16 +596,15 @@ function rocket_clean_files( $urls, $filesystem = null, $run_actions = true ) {
 			$da = rocket_count_path_segments( (string) $a );
 			$db = rocket_count_path_segments( (string) $b );
 
-			// First by depth (descending)
+			// First by depth (descending).
 			if ( $da !== $db ) {
 				return $db <=> $da;
 			}
 
-			// If depth is equal, alphabetically
+			// If depth is equal, alphabetically.
 			return strcmp( (string) $a, (string) $b );
 		}
 	);
-
 
 	if ( $run_actions ) {
 		/**
