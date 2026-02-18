@@ -37,6 +37,12 @@ class Logger {
 	 */
 	private static $thread_id;
 
+	/**
+	 * Cached debug enabled status for the current request.
+	 *
+	 * @var bool|null
+	 */
+	private static $debug_enabled_cache = null;
 
 	/** ----------------------------------------------------------------------------------------- */
 	/** LOG ===================================================================================== */
@@ -380,12 +386,47 @@ class Logger {
 	/**
 	 * Tell if debug is enabled.
 	 *
+	 * Supports multiple formats for WP_ROCKET_DEBUG:
+	 * - Boolean: true enables logging for all URLs (backward compatible)
+	 *   Example: define( 'WP_ROCKET_DEBUG', true );
+	 *
+	 * - String: Logs only the specified URL
+	 *   Example: define( 'WP_ROCKET_DEBUG', 'https://example.com/page' );
+	 *   Example: define( 'WP_ROCKET_DEBUG', '/page' ); // Relative path
+	 *
+	 * - Array: Logs URLs matching any pattern in the array
+	 *   Example: define( 'WP_ROCKET_DEBUG', [ '/page-1/', '/page-2/', '/page-3/' ] );
+	 *
+	 * URL matching behavior:
+	 * - Trailing slashes are ignored: '/page' matches '/page/'
+	 * - Query strings are ignored: '/page' matches '/page?param=value'
+	 * - Case-insensitive: '/Page' matches '/page'
+	 * - Homepage can be matched with '/' or full site URL
+	 * - Works with both relative and absolute URLs
+	 *
 	 * @since 3.1.4
 	 *
 	 * @return bool
 	 */
 	public static function debug_enabled() {
-		$debug_enabled = defined( 'WP_ROCKET_DEBUG' ) && WP_ROCKET_DEBUG;
+		if ( null !== self::$debug_enabled_cache ) {
+			return self::$debug_enabled_cache;
+		}
+
+		$debug_enabled = false;
+
+		$debug_config = rocket_get_constant( 'WP_ROCKET_DEBUG', false );
+
+		if ( true === $debug_config ) {
+			$debug_enabled = true;
+		} elseif ( is_string( $debug_config ) || is_array( $debug_config ) ) {
+			// URL-based filtering.
+			$current_url   = self::get_current_request_url();
+			$debug_enabled = self::url_matches_debug_patterns( $current_url, $debug_config );
+		}
+
+		// Cache the result.
+		self::$debug_enabled_cache = $debug_enabled;
 
 		/**
 		 * Fires before checking if debug is enabled for the logger.
@@ -397,6 +438,116 @@ class Logger {
 		do_action( 'rocket_before_debug_status_check', $debug_enabled );
 
 		return $debug_enabled;
+	}
+
+	/**
+	 * Normalize a URL for comparison.
+	 *
+	 * Strips trailing slashes, query strings, fragments, and converts to lowercase.
+	 * Handles both relative and absolute URLs.
+	 *
+	 * @param string $url URL to normalize.
+	 * @return array Array with 'path' and 'host' keys.
+	 */
+	private static function normalize_url( $url ) {
+		if ( empty( $url ) || ! is_string( $url ) ) {
+			return [
+				'path' => '',
+				'host' => '',
+			];
+		}
+
+		$parsed = wp_parse_url( $url );
+
+		if ( ! $parsed ) {
+			return [
+				'path' => '',
+				'host' => '',
+			];
+		}
+
+		// Extract path, defaulting to '/' for homepage.
+		$path = isset( $parsed['path'] ) ? $parsed['path'] : '/';
+
+		// Remove trailing slash (except for root).
+		$path = '/' === $path ? $path : rtrim( $path, '/' );
+
+		$path = strtolower( $path );
+
+		// Extract and normalize host.
+		$host = isset( $parsed['host'] ) ? strtolower( $parsed['host'] ) : '';
+
+		return [
+			'path' => $path,
+			'host' => $host,
+		];
+	}
+
+	/**
+	 * Get the current request URL.
+	 *
+	 * Builds URL from REQUEST_URI and home_url(), normalizes it.
+	 *
+	 * @return array Normalized current request URL with 'path' and 'host'.
+	 */
+	private static function get_current_request_url() {
+		$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '/';
+
+		// Get the current site's host from home_url().
+		$home_url  = home_url();
+		$home_host = wp_parse_url( $home_url, PHP_URL_HOST );
+		$home_host = $home_host ? strtolower( $home_host ) : '';
+
+		// Normalize the request URI.
+		$normalized = self::normalize_url( $request_uri );
+
+		return [
+			'path' => $normalized['path'],
+			'host' => $home_host,
+		];
+	}
+
+	/**
+	 * Check if current URL matches debug patterns.
+	 *
+	 * @param array        $current_url Current request URL with 'path' and 'host'.
+	 * @param string|array $patterns    Debug pattern(s) to match against.
+	 * @return bool True if URL matches any pattern, false otherwise.
+	 */
+	private static function url_matches_debug_patterns( $current_url, $patterns ) {
+		// Handle empty patterns.
+		if ( empty( $patterns ) ) {
+			return false;
+		}
+
+		// Convert single string to array for uniform processing.
+		if ( ! is_array( $patterns ) ) {
+			$patterns = [ $patterns ];
+		}
+
+		// Check each pattern.
+		foreach ( $patterns as $pattern ) {
+			if ( ! is_string( $pattern ) || '' === $pattern ) {
+				continue;
+			}
+
+			$normalized_pattern = self::normalize_url( $pattern );
+
+			// If pattern has a host (absolute URL), validate domain matches.
+			if ( ! empty( $normalized_pattern['host'] ) ) {
+				// Domain must match current site's domain.
+				if ( $normalized_pattern['host'] !== $current_url['host'] ) {
+					continue;
+				}
+			}
+
+			// Compare paths.
+			if ( $current_url['path'] === $normalized_pattern['path'] ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**
