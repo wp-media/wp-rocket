@@ -133,7 +133,7 @@ if ( ! function_exists( 'rocket_get_purge_urls' ) ) {
 
 		$post_name = get_post_field( 'post_name', $post_id );
 		// If the slug has changed, add all children pages with the new slug.
-		if ( $post_name !== $post['post_name'] ) {
+		if ( $post_name !== $post->post_name ) {
 			// Add all children.
 			$children = rocket_get_all_descendant( $post_id );
 			if ( (bool) $children ) {
