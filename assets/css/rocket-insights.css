@@ -324,6 +324,9 @@
   -webkit-filter: blur(4px);
   pointer-events: none;
 }
+.wpr-ri-column .wpr-ri-blurred .wpr-btn-with-tool-tip {
+  width: 100%;
+}
 .wpr-ri-column .wpr-ri-score-wrapper {
   margin-bottom: 12px;
 }
