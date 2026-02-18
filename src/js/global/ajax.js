@@ -697,36 +697,18 @@ document.addEventListener('DOMContentLoaded', function() {
 		detailsCells: $detailsCells
 	};
 
-	// Handles initial expand state: opens a specific test from the hash if present, otherwise collapses all but the first.
-	function handleInitialExpandState() {
-		var pageId = window.location.hash.split('#')[1];
-		// Check if id was passed in hash to open specific test.
-		if (pageId.includes('=')) {
-			var testId = pageId.split('=')[1];
-
-			// If the test ID exists and is visible, show its details.
-			if ('' !== testId && $(`[data-rocket-insights-id="${testId}"]`).is(':visible')) {
-			$detailsCells.hide();
-			toggleSingleRowVisibility(`[data-rocket-insights-id="${testId}"] .wpr-ri-item-toggle-single`, testId)
-			return;
-			}
-		}
-
-		// No specific test to open, collapse all but the first.
-		$detailsCells.not(':first').hide();
-		$toggleButtons.first().find('img').attr('src', carets.down);
-	}
-
 	// Toggles the visibility of a single test details row, switches the caret icon, and updates styling for the last item.
-	function toggleSingleRowVisibility(el, insightsId) {
-		var $details = $(`#ri_details_${insightsId} .details-section-td`);
-		var $img = $(el).find('img');
+	function toggleSingleRowVisibility($element, insightsId) {
+		$('.wpr-ri-details--expanded').removeClass('wpr-ri-details--expanded');
+		$element.addClass('wpr-ri-details--expanded');
+
+		var $details = $element.find(`.details-section-td`);
+		var $img = $element.find('img');
 		var isVisible = $details.is(':visible');
-		var isLast = $(el).is($toggleButtons.last());
+		var isLast = $element.is($toggleButtons.last());
 
 		// Toggle visibility
 		if (isVisible) {
-			$details.hide('fast');
 			$img.attr('src', carets.right);
 
 			// Manipulate styling for last elements when details cell is visible.
@@ -735,12 +717,6 @@ document.addEventListener('DOMContentLoaded', function() {
 			}
 			return;
 		}
-
-		$details.show('fast');
-		$('html, body').animate({
-			scrollTop: $details.offset().top
-		}, 'slow');
-		$img.attr('src', carets.down);
 
 		// Track expand only expand metric action.
 		handleMetricActionTracking('expand', insightsId);
@@ -803,14 +779,10 @@ document.addEventListener('DOMContentLoaded', function() {
 		$selectors.detailsCells.last().css('border-bottom', '1px solid #E2E5E9');
 	}
 
-
-	// Set initial expand/collapse state.
-	handleInitialExpandState();
-
 	// Toggle single item.
 	$(document).on('click', '.wpr-ri-item-toggle-single', function() {
 		var insightsId = $(this).closest('.wpr-ri-item').data('rocket-insights-id');
-		toggleSingleRowVisibility(this, insightsId);
+		$('#ri_details_' + insightsId).toggleClass('wpr-ri-details--expanded');
 	});
 
 	// Toggle all items.
@@ -843,5 +815,24 @@ document.addEventListener('DOMContentLoaded', function() {
 	// Hide metric section when test is finished.
 	$(document).on('rocket-insights-page-test-completed', function (e, insightsId) {
 		$(`#ri_details_${insightsId} .details-section-td`).hide('fast');
+	});
+
+	$(window).load(() => {
+		if ( ! isOnRocketInsights() ) {
+			return;
+		}
+		// Set initial expand/collapse state.
+		const urlParams = new URLSearchParams(window.location.search);
+		const testId = urlParams.get('ri_id');
+
+		// Check if ri_id was passed in query string to open specific test.
+		if (!testId || testId === '') {
+			return;
+		}
+
+		// Remove ri_id from URL without page reload
+		urlParams.delete('ri_id');
+		const newUrl = window.location.pathname + '?' + urlParams.toString() + window.location.hash;
+		window.history.replaceState({}, '', newUrl);
 	});
 });

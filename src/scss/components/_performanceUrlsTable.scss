@@ -335,7 +335,18 @@
 		height: 100%;
 	}
 
+	.wpr-ri-details .details-section {
+		max-height: 0;
+		transition: all 0.5s ease-in-out;
+		overflow: hidden;
+	}
+
+	.wpr-ri-details.wpr-ri-details--expanded .details-section {
+		max-height: 300px;
+	}
+
 	.details-section {
+
 		.report-link {
 			&.wpr-ri-action--disabled, .wpr-ri-action--disabled {
 				color: darken($cGrey, 30%) !important;
@@ -426,15 +437,15 @@
 	display: flex;
 	flex-direction: column;
 	gap: 12px;
-	padding: 16px 50px 16px 50px;
 	width: 100%;
-  
+
 	.details-header {
+		padding: 16px 50px 0 50px;
 	  display: flex;
 	  align-items: center;
 	  justify-content: space-between;
 	  width: 100%;
-  
+
 	  .details-label {
 		font-family: "Roboto", sans-serif;
 		font-weight: 600;
@@ -442,19 +453,19 @@
 		color: #464f59;
 		line-height: 1.3;
 	  }
-  
+
 	  .metrics-header {
 		display: flex;
 		gap: 32px;
 		align-items: center;
-  
+
 		.metric-label {
 		  display: flex;
 		  gap: 2px;
 		  align-items: center;
 		  width: 32px;
 		  justify-content: flex-start;
-  
+
 		  p {
 			font-family: "Roboto", sans-serif;
 			font-weight: 600;
@@ -462,13 +473,13 @@
 			color: #464f59;
 			line-height: 1.3;
 		  }
-  
+
 		  .info-icon {
 			width: 12px;
 			height: 12px;
 			flex-shrink: 0;
 			position: relative;
-  
+
 			img {
 			  width: 100%;
 			  height: 100%;
@@ -488,7 +499,7 @@
 					border-right: 8px solid #0e1428;
 				}
 			}
-	
+
 			&:hover {
 				.wpr-tooltip {
 					visibility: visible;
@@ -499,36 +510,37 @@
 		}
 	  }
 	}
-  
+
 	.details-content {
+		padding: 0 50px 16px 50px;
 	  display: flex;
 	  flex-direction: column;
 	  gap: 8px;
 	  width: 100%;
-  
+
 	  .detail-row {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		width: 100%;
-  
+
 		.row-left {
 		  display: flex;
 		  gap: 8px;
 		  align-items: center;
-  
+
 		  &.disabled {
 			opacity: 0.5;
 		  }
-  
+
 		  .report-link {
 			display: flex;
 			gap: 4px;
-  
+
 			&:hover {
 			  opacity: 0.8;
 			}
-  
+
 			a {
 			  font-family: "Roboto", sans-serif;
 			  font-weight: 600;
@@ -553,17 +565,17 @@
 			}
 		  }
 		}
-  
+
 		.row-right {
 		  &.blurred {
 			filter: blur(2.667px);
 		  }
-  
+
 		  .metric-values {
 			display: flex;
 			gap: 32px;
 			align-items: center;
-  
+
 			.metric-value {
 			  display: flex;
 			  flex-direction: column;
@@ -571,22 +583,22 @@
 			  align-items: flex-start;
 			  justify-content: center;
 			  position: relative;
-  
+
 			  p {
 				font-family: "Roboto", sans-serif;
 				font-weight: 600;
 				font-size: 11px;
 				line-height: 1.3;
 			  }
-  
+
 			  &.ri-error p {
 				color: #c01b1b;
 			  }
-  
+
 			  &.ri-warning p {
 				color: #e9aa01;
 			  }
-  
+
 			  &.ri-success p {
 				color: #2e8f44;
 			  }
@@ -603,7 +615,7 @@
 					border-bottom: 8px solid #0e1428;
 				}
 			  }
-		
+
 			  &:hover {
 				.wpr-tooltip {
 					visibility: visible;

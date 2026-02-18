@@ -123,7 +123,7 @@ $rocket_formatted_metrics = $data->formatted_metrics ?? [];
 	</td>
 </tr>
 <?php if ( $rocket_can_show_dropdown ) : ?>
-<tr id="ri_details_<?php echo $rocket_data_array['id']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>">
+<tr class="<?php echo esc_attr( $rocket_data_array['class'] ?? '' ) ?>" id="ri_details_<?php echo $rocket_data_array['id']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>">
 	<td colspan="4" class="details-section-td">
 		<div class="details-section">
 			<div class="details-header">

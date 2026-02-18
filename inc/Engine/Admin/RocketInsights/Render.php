@@ -9,6 +9,7 @@ use WP_Rocket\Engine\Admin\RocketInsights\Context\Context;
 use WP_Rocket\Engine\Admin\RocketInsights\Database\Queries\RocketInsights as Query;
 use WP_Rocket\Engine\Admin\RocketInsights\Managers\Plan;
 use WP_Rocket\Engine\Admin\RocketInsights\MetricFormatter;
+use WP_Rocket\Engine\Common\Utils;
 
 class Render extends Abstract_Render {
 	/**
@@ -222,8 +223,24 @@ class Render extends Abstract_Render {
 	public function get_performance_monitoring_list_row( object $data ): string {
 		$data->has_credit        = $this->plan->has_credit();
 		$data->formatted_metrics = $this->metric_formatter->get_formatted_metrics( $data->metric_data );
+		$data->class             = $this->get_row_classes( $data );
 
 		return $this->generate( 'partials/rocket-insights/table-row', $data );
+	}
+
+	private function get_row_classes( $row ) {
+		$ri_get_id = intval( $_GET['ri_id'] ?? null );
+		$classes = [ 'wpr-ri-details' ];
+
+		if (
+			( $ri_get_id && $ri_get_id === (int) $row->id )
+			||
+			Utils::is_home( $row->url )
+		) {
+			$classes[] = 'wpr-ri-details--expanded';
+		}
+
+		return implode( ' ', $classes );
 	}
 
 	/**
@@ -349,8 +366,14 @@ class Render extends Abstract_Render {
 	 * @return string The URL to the RI settings page with the test expanded.
 	 */
 	public function get_view_details_url( int $row_id ): string {
-		$settings_url = admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '#rocket_insights' );
-		return $settings_url . '=' . $row_id;
+		$settings_url = add_query_arg(
+			[
+				'page'  => WP_ROCKET_PLUGIN_SLUG,
+				'ri_id' => $row_id,
+			],
+			admin_url( 'options-general.php' )
+		);
+		return $settings_url . '#rocket_insights';
 	}
 
 	/**
