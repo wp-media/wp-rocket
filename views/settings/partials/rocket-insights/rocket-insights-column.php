@@ -99,7 +99,6 @@ endif;
 					<div class="wpr-tooltip">
 						<div class="wpr-tooltip-content">
 							<?php
-							// translators: %s = human-readable time difference (e.g., "5 minutes").
 							esc_html_e( 'Upgrade your plan to see your score', 'rocket' );
 							?>
 						</div>
