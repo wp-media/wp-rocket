@@ -74,22 +74,26 @@
 		border-collapse: separate;
 		border-spacing: 0;
 		border-radius: 5px;
+
 		td, th {
 			border: 1px solid $cGreyLighter1;
 			border-bottom: none;
 		}
+
 		td:not(:first-child):not(:last-child),
 		th:not(:first-child):not(:last-child) {
 			border-left: none;
 			border-right: none;
 		}
-		td:first-child{
-			border-right: none ;
+
+		td:first-child {
+			border-right: none;
 		}
-		td:last-child{
-			border-left: none ;
+
+		td:last-child {
+			border-left: none;
 		}
-		tr:nth-last-child(2) td,
+
 		tr:last-child th {
 			border-bottom: 1px solid $cGreyLighter1;
 		}
@@ -98,24 +102,41 @@
 			border-top: 0;
 		}
 
-		/* Target the top-left and top-right cells of the first row */
-		tr:nth-child(2) th:first-child,
-		tr:nth-child(2) td:first-child {
-			border-top-left-radius: 5px;
-		}
-		tr:nth-child(2) th:last-child,
-		tr:nth-child(2) td:last-child {
-			border-top-right-radius: 5px;
+		// Reset all border-radius
+		td {
+			border-radius: 0;
 		}
 
-		/* Target the bottom-left and bottom-right cells of the last row */
-		tr:last-child th:first-child,
-		tr:nth-last-child(2) td:first-child {
-			border-bottom-left-radius: 5px;
+		// First data row (after global score) - top border and corners
+		tr.wpr-ri-item-result td {
+			border-top: 1px solid $cGreyLighter1;
+			&.border-bottom {
+				border-bottom: 1px solid $cGreyLighter1;
+			}
 		}
-		tr:last-child th:last-child,
-		tr:nth-last-child(2) td:last-child {
-			border-bottom-right-radius: 5px;
+
+		tr.wpr-global-score + tr.wpr-ri-item-result {
+			td:first-child {
+				border-top-left-radius: 5px;
+			}
+			td:last-child {
+				border-top-right-radius: 5px;
+			}
+		}
+
+		// Last row (details row) - bottom border
+		tbody > tr:last-child td {
+			border-bottom: 1px solid $cGreyLighter1;
+		}
+
+		// When the last row IS a result row (no details shown)
+		tbody > tr.wpr-ri-item-result:last-child {
+			td:first-child {
+				border-bottom-left-radius: 5px;
+			}
+			td:last-child {
+				border-bottom-right-radius: 5px;
+			}
 		}
 
 		.details-section-td:last-child {
@@ -124,6 +145,34 @@
 
 		.details-section-td:first-child {
 			border-right: 1px solid #e2e5e9;
+		}
+		
+		.wpr-ri-item-toggle.wpr-last-expanded {
+			border-bottom-left-radius: 0;
+		}
+
+		.wpr-ri-item-actions.wpr-last-expanded {
+			border-bottom-right-radius: 0;
+		}
+
+		.wpr-ri-item-toggle.wpr-last-collapsed {
+			border-bottom-left-radius: 5px;
+		}
+
+		.wpr-ri-item-actions.wpr-last-collapsed {
+			border-bottom-right-radius: 5px;
+		}
+
+		.details-section-td.wpr-last-expanded {
+			border-bottom-left-radius: 5px;
+			border-bottom-right-radius: 5px;
+			border-bottom: 1px solid #E2E5E9;
+		}
+
+		.details-section-td.wpr-last-collapsed {
+			border-bottom-left-radius: 0;
+			border-bottom-right-radius: 0;
+			border-bottom: 0;
 		}
 	}
 	.wpr-percentage-indicator{
