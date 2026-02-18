@@ -12,15 +12,14 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group Logger
  */
 class DebugEnabledTest extends TestCase {
-	public function tear_down() {
-		// Clear the cache between tests
-		$reflection = new \ReflectionClass( Logger::class );
+	public function set_up() {
+		parent::set_up();
 
-		if ( $reflection->hasProperty( 'debug_enabled_cache' ) ) {
-			$cache_property = $reflection->getProperty( 'debug_enabled_cache' );
-			$cache_property->setAccessible( true );
-			$cache_property->setValue( null, null );
-		}
+		$this->reset_logger_cache();
+	}
+
+	public function tear_down() {
+		$this->reset_logger_cache();
 
 		unset( $_SERVER['REQUEST_URI'] );
 
@@ -28,9 +27,22 @@ class DebugEnabledTest extends TestCase {
 	}
 
 	/**
+	 * Reset Logger static cache properties using reflection
+	 */
+	private function reset_logger_cache() {
+		$reflection = new \ReflectionClass( Logger::class );
+
+		if ( $reflection->hasProperty( 'debug_enabled_cache' ) ) {
+			$cache_property = $reflection->getProperty( 'debug_enabled_cache' );
+			$cache_property->setAccessible( true );
+			$cache_property->setValue( null, null );
+		}
+	}
+
+	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldReturnCorrectDebugStatus( $config, $expected ) {
+	public function testShouldReturnExpected( $config, $expected ) {
 		$this->wp_rocket_debug = $config['WP_ROCKET_DEBUG'] ?? null;
 
 		$_SERVER['REQUEST_URI'] = $config['REQUEST_URI'] ?? '/';

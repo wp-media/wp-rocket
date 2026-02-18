@@ -18,12 +18,12 @@ class DebugEnabledTest extends TestCase {
 
 		$this->stubWpParseUrl();
 
-		// Reset static cache before each test
 		$this->reset_logger_cache();
 	}
 
 	protected function tearDown(): void {
 		$this->reset_logger_cache();
+
 		unset( $_SERVER['REQUEST_URI'] );
 
 		parent::tearDown();
