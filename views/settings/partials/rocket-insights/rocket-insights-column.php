@@ -100,7 +100,7 @@ endif;
 						<div class="wpr-tooltip-content">
 							<?php
 							// translators: %s = human-readable time difference (e.g., "5 minutes").
-							printf( esc_html__( 'Tested %s ago', 'rocket' ), esc_html( human_time_diff( $data['wpr_rocket_row']->modified, time() ) ) );
+							esc_html_e( 'Upgrade your plan to see your score', 'rocket' );
 							?>
 						</div>
 					</div>
