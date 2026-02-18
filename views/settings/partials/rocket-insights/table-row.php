@@ -153,23 +153,23 @@ $rocket_formatted_metrics = $data->formatted_metrics ?? [];
 						</div>
 					</div>
 					<div class="metric-label">
-						<p>TTFB</p>
-						<div class="info-icon">
-							<img src="<?php echo $rocket_img_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>ri-info.svg" alt="">
-							<div class="wpr-tooltip">
-								<div class="wpr-tooltip-content">
-									<?php echo esc_html__( 'Time from the request until the server responds, determining how soon the page starts loading.', 'rocket' ); ?>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="metric-label">
 						<p>CLS</p>
 						<div class="info-icon">
 							<img src="<?php echo $rocket_img_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>ri-info.svg" alt="">
 							<div class="wpr-tooltip">
 								<div class="wpr-tooltip-content">
 									<?php echo esc_html__( 'Total amount of unexpected layout shifts during page loading, affecting visual stability.', 'rocket' ); ?>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="metric-label">
+						<p>TTFB</p>
+						<div class="info-icon">
+							<img src="<?php echo $rocket_img_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>ri-info.svg" alt="">
+							<div class="wpr-tooltip">
+								<div class="wpr-tooltip-content">
+									<?php echo esc_html__( 'Time from the request until the server responds, determining how soon the page starts loading.', 'rocket' ); ?>
 								</div>
 							</div>
 						</div>
