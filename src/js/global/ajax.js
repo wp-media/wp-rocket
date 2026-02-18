@@ -707,7 +707,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			// If the test ID exists and is visible, show its details.
 			if ('' !== testId && $(`[data-rocket-insights-id="${testId}"]`).is(':visible')) {
 			$detailsCells.hide();
-			toggleSingleRowVisibility(`[data-rocket-insights-id="${testId}"] .wpr-ri-item-toggle-single`, testId)
+			toggleSingleRowVisibility(`[data-rocket-insights-id="${testId}"] .wpr-ri-item-toggle-single`, testId, 'hash_navigation')
 			return;
 			}
 		}
@@ -715,10 +715,16 @@ document.addEventListener('DOMContentLoaded', function() {
 		// No specific test to open, collapse all but the first.
 		$detailsCells.not(':first').hide();
 		$toggleButtons.first().find('img').attr('src', carets.down);
+		
+		// Track auto-expand of first completed URL (typically homepage after fresh install).
+		var firstRowId = $toggleButtons.first().closest('.wpr-ri-item').data('rocket-insights-id');
+		if (firstRowId) {
+			handleMetricActionTracking('expand', firstRowId, 'auto_expand_homepage');
+		}
 	}
 
 	// Toggles the visibility of a single test details row, switches the caret icon, and updates styling for the last item.
-	function toggleSingleRowVisibility(el, insightsId) {
+	function toggleSingleRowVisibility(el, insightsId, source) {
 		var $details = $(`#ri_details_${insightsId} .details-section-td`);
 		var $img = $(el).find('img');
 		var isVisible = $details.is(':visible');
@@ -740,7 +746,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		$img.attr('src', carets.down);
 
 		// Track expand only expand metric action.
-		handleMetricActionTracking('expand', insightsId);
+		handleMetricActionTracking('expand', insightsId, source || 'url_expand');
 
 		// Manipulate styling for last elements when details cell is not visible.
 		if (isLast) {
@@ -749,14 +755,15 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 
 	// Tracks user interactions with metric actions in Rocket Insights via AJAX.
-	function handleMetricActionTracking(event, rowId) {
+	function handleMetricActionTracking(event, rowId, source) {
 		$.post(
 			ajaxurl,
 			{
 				action: 'rocket_insight_track_metric_actions',
 				_ajax_nonce: rocket_ajax_data.nonce,
 				event: event,
-				row_id: rowId
+				row_id: rowId,
+				source: source || 'unknown'
 			},
 			function(response) {
 				if (!response.success) {
@@ -807,7 +814,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	// Toggle single item.
 	$(document).on('click', '.wpr-ri-item-toggle-single', function() {
 		var insightsId = $(this).closest('.wpr-ri-item').data('rocket-insights-id');
-		toggleSingleRowVisibility(this, insightsId);
+		toggleSingleRowVisibility(this, insightsId, 'url_expand');
 	});
 
 	// Toggle all items.
@@ -823,6 +830,14 @@ document.addEventListener('DOMContentLoaded', function() {
 		$('.details-section-td').show('fast');
 		$('.wpr-ri-item-toggle-single img').attr('src', carets.down);
 		updateRowStylingForLastItem($selectors);
+		
+		// Track expand for each visible row when global expand is clicked.
+		$('.wpr-ri-item:visible').each(function() {
+			var rowId = $(this).data('rocket-insights-id');
+			if (rowId) {
+				handleMetricActionTracking('expand', rowId, 'global_expand');
+			}
+		});
 	});
 
 	// Track "See Report" clicks in Rocket Insights.
@@ -834,7 +849,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 		var insightsId = $(this).data('rocket-insights-row-id');
 
-		handleMetricActionTracking('see_report', insightsId);
+		handleMetricActionTracking('see_report', insightsId, 'see_report_button');
 	});
 
 	// Hide metric section when test is finished.

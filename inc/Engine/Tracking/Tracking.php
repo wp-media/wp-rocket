@@ -313,10 +313,11 @@ class Tracking extends Abstract_Render {
 	 *
 	 * @param string $event_name The name of the event to track.
 	 * @param int    $row_id     The ID of the test row.
+	 * @param string $source     The source of the action (e.g., 'url_expand', 'global_expand', 'auto_expand_homepage', 'hash_navigation').
 	 *
 	 * @return void
 	 */
-	public function track_rocket_insights_details_action( $event_name, $row_id ): void {
+	public function track_rocket_insights_details_action( $event_name, $row_id, $source = 'unknown' ): void {
 		if ( ! $this->optin->can_track() ) {
 			return;
 		}
@@ -326,6 +327,7 @@ class Tracking extends Abstract_Render {
 			[
 				'context' => 'wp_plugin',
 				'test_id' => $row_id,
+				'source'  => $source,
 			]
 		);
 	}
