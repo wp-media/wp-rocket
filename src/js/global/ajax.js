@@ -805,9 +805,15 @@ document.addEventListener('DOMContentLoaded', function() {
 			.removeClass(removeState)
 			.addClass(addState);
 
-		$('.details-section-td').last()
-			.removeClass(removeState)
-			.addClass(addState);
+		
+		// Check if last detail row is not the last row in the table so as not to apply improper styling with border radius between rows.
+		var $lastDetailsCell = $('.details-section-td').last();
+		if ($lastDetailsCell.closest('tr').next('tr').length !== 0) {
+			return;
+		}
+
+		$lastDetailsCell.removeClass(removeState)
+		.addClass(addState);
 	}
 
 
