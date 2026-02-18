@@ -159,7 +159,7 @@ if ( ! function_exists( 'rocket_get_purge_urls' ) ) {
 function rocket_get_all_descendant( $parent_id ) {
 	// 'child_of' retrieves all descendants, not just direct children.
 	$all_descendants = get_pages(
-		[ 'child_of' => $parent_id ] 
+		[ 'child_of' => $parent_id ]
 	);
 
 	if ( empty( $all_descendants ) ) {
