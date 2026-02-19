@@ -55,14 +55,14 @@ $(document).ready(function(){
 	/***
 	* Help Button Tracking
 	***/
-	
+
 	// Track clicks on various help elements with data attributes
 	$(document).on('click', '[data-wpr_track_help]', function(e) {
 		if (typeof window.wprTrackHelpButton === 'function') {
 			var $el = $(this);
 			var button = $el.data('wpr_track_help');
 			var context = $el.data('wpr_track_context') || '';
-			
+
 			window.wprTrackHelpButton(button, context);
 		}
 	});
@@ -75,12 +75,12 @@ $(document).ready(function(){
 		}
 	});
 
-	// Track FAQ links 
+	// Track FAQ links
 	$(document).on('click', 'a[data-beacon-article]', function() {
 		if (typeof window.wprTrackHelpButton === 'function') {
 			var href = $(this).attr('href');
 			var text = $(this).text();
-			
+
 			// Check if it's in FAQ section or sidebar documentation
 			if ($(this).closest('.wpr-fieldsContainer-fieldset').prev('.wpr-optionHeader').find('.wpr-title2').text().includes('Frequently Asked Questions')) {
 				window.wprTrackHelpButton('FAQ - ' + text, 'Dashboard');
@@ -91,7 +91,7 @@ $(document).ready(function(){
 			}
 		}
 	});
-	
+
 	// Track "How to measure loading time" link
 	$(document).on('click', 'a[href*="how-to-test-wordpress-site-performance"]', function() {
 		if (typeof window.wprTrackHelpButton === 'function') {
@@ -157,7 +157,13 @@ $(document).ready(function(){
 	function wprActivateAnalytics(){
 		wprCloseAnalytics();
 		$('#analytics_enabled').prop('checked', true);
-		$('#analytics_enabled').trigger('change');
+
+		var analyticsEnabled = document.getElementById('analytics_enabled');
+
+		if ( analyticsEnabled ) {
+			var changeEvent = new Event('change', { bubbles: true });
+			analyticsEnabled.dispatchEvent(changeEvent);
+		}
 	}
 
 	// Display CTA within the popin `What info will we collect?`
