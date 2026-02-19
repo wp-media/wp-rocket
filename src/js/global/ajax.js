@@ -306,6 +306,10 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 	}
 
+	function hasId(id) {
+		return rocketInsightsIds.includes(id);
+	}
+
 	function removeId(id) {
 		// Ensure that the id to be removed is an integer for accurate comparison.
 		const idToRemove = parseInt(id, 10);
@@ -540,38 +544,41 @@ document.addEventListener('DOMContentLoaded', function() {
 			}
 		).then( ( response ) => {
 			if (response.success) {
-				$pageUrlInput.val('');
-				$tableBody.append(response.html);
+				if ( ! hasId(response.id) ) {
+					$pageUrlInput.val('');
+					$tableBody.append(response.html);
 
-				// Custom event when new page is added.
-        		$(document).trigger('rocket-insights-page-added');
+					// Custom event when new page is added.
+					$(document).trigger('rocket-insights-page-added');
 
-				$table.removeClass('hidden');
-				addIds(response.id);
-				let pages_num_container = $('#rocket_rocket_insights_pages_num');
-				pages_num_container.text( parseInt( pages_num_container.text() ) + 1 );
+					$table.removeClass('hidden');
+					addIds(response.id);
+					let pages_num_container = $('#rocket_rocket_insights_pages_num');
+					pages_num_container.text( parseInt( pages_num_container.text() ) + 1 );
 
-				// Update credit status
-				updateCreditState(response.has_credit);
+					// Update credit status
+					updateCreditState(response.has_credit);
 
-                // Update global score data.
-                globalScoreData = response.global_score_data;
+					// Update global score data.
+					globalScoreData = response.global_score_data;
 
-				// Update global score row in table if on Rocket Insights page.
-				updateGlobalScoreRow(globalScoreData);
+					// Update global score row in table if on Rocket Insights page.
+					updateGlobalScoreRow(globalScoreData);
 
-				if ('disabled_btn_html' in globalScoreData) {
-					$('#wpr_rocket_insights_add_page_btn_wrapper').html(globalScoreData.disabled_btn_html.rocket_insights);
+					if ('disabled_btn_html' in globalScoreData) {
+						$('#wpr_rocket_insights_add_page_btn_wrapper').html(globalScoreData.disabled_btn_html.rocket_insights);
+					}
+
+					// Show/hide quota banner based on can_add_pages
+					updateQuotaBanner(response.can_add_pages);
+
+					// Start polling if not already running
+					if (!pollTimer) {
+						pollInterval = POLL_BASE_INTERVAL;
+						schedulePolling();
+					}
 				}
 
-				// Show/hide quota banner based on can_add_pages
-				updateQuotaBanner(response.can_add_pages);
-
-				// Start polling if not already running
-				if (!pollTimer) {
-					pollInterval = POLL_BASE_INTERVAL;
-					schedulePolling();
-				}
 			} else {
 				// Clear the input field on error
 				$pageUrlInput.val('');
@@ -701,10 +708,10 @@ document.addEventListener('DOMContentLoaded', function() {
 	// Handle collapseed styling for first load or dynamic row addition.
 	function addCollapsedStylingToLastRow(onLoad = false) {
 		$('.wpr-ri-item').last().find('td').addClass('border-bottom');
-	
+
 		if ($('.wpr-ri-item-result').length === 1 && onLoad) {
 			$('.details-section-td').addClass('wpr-last-expanded');
-			return 
+			return
 		}
 		$('.wpr-ri-item-toggle').last().addClass('wpr-last-collapsed');
 		$('.wpr-ri-item-actions').last().addClass('wpr-last-collapsed');
@@ -714,7 +721,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	function handleInitialTableState() {
 		// Add collapsed styling to the last row on initial load.
     	addCollapsedStylingToLastRow(true);
-	
+
 		var pageId = window.location.hash.split('#')[1];
 		// Check if id was passed in hash to open specific test.
 		if (pageId.includes('=')) {
@@ -798,7 +805,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	function updateRowStylingForLastItem(isExpanded = true) {
 		const addState = isExpanded ? 'wpr-last-expanded' : 'wpr-last-collapsed';
 		const removeState = isExpanded ? 'wpr-last-collapsed' : 'wpr-last-expanded';
-		
+
 		var $selectors = {
 			lastToggle: $('.wpr-ri-item-toggle').last(),
 			lastActions: $('.wpr-ri-item-actions').last()
@@ -812,7 +819,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			.removeClass(removeState)
 			.addClass(addState);
 
-		
+
 		// Check if last detail row is not the last row in the table so as not to apply improper styling with border radius between rows.
 		var $lastDetailsCell = $('.details-section-td').last();
 		if ($lastDetailsCell.closest('tr').next('tr').length !== 0) {
@@ -877,7 +884,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 		// Check if the element we just hid is the last .details-section-td
 		var isLast = $detailsCell.is($('.details-section-td').last());
-		
+
 		if (isLast) {
 			addCollapsedStylingToLastRow();
 		}
@@ -895,7 +902,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	$(document).on('rocket-insights-page-retest rocket-insights-page-test-polling', function (e, insightsId) {
 		// Check if item is the last.
 		var isLast = $(`[data-rocket-insights-id="${insightsId}"]`).is($('.wpr-ri-item-result').last());
-		
+
 		if (isLast) {
 			addCollapsedStylingToLastRow();
 		}
