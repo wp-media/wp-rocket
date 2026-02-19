@@ -701,6 +701,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		$('.wpr-ri-item').last().find('td').addClass('border-bottom');
 
 		if (onLoad) {
+			// Bail early if last item is already expanded on load so as not to have conflicting styles.
 			if($('.details-section-td').last().hasClass('wpr-last-expanded')) {
 				return;
 			}
