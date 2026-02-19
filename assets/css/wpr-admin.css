@@ -3634,6 +3634,9 @@ div.wpr-tutorial-item {
   display: flex;
   gap: 4px;
 }
+.details-section .details-content .detail-row .row-left .report-link:hover {
+  opacity: 0.8;
+}
 .details-section .details-content .detail-row .row-left .report-link a {
   font-family: "Roboto", sans-serif;
   font-weight: 600;
