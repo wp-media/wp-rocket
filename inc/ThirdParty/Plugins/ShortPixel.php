@@ -4,9 +4,11 @@ namespace WP_Rocket\ThirdParty\Plugins;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\{Webp_Common, Webp_Interface};
+use WP_Rocket\ThirdParty\ReturnTypesTrait;
 
 class ShortPixel implements Webp_Interface, Subscriber_Interface {
 	use Webp_Common;
+	use ReturnTypesTrait;
 
 	/**
 	 * Options_Data instance.
@@ -61,7 +63,7 @@ class ShortPixel implements Webp_Interface, Subscriber_Interface {
 		];
 
 		if ( rocket_has_constant( 'SHORTPIXEL_IMAGE_OPTIMISER_VERSION' ) ) {
-			$events['wpmedia_plugin_family_show_imagify_banner'] = 'hide_imagify_banner';
+			$events['wpmedia_plugin_family_show_imagify_banner'] = 'return_false';
 		}
 
 		return $events;
@@ -249,16 +251,5 @@ class ShortPixel implements Webp_Interface, Subscriber_Interface {
 		}
 
 		return $this->plugin_basename;
-	}
-
-	/**
-	 * Hides the Imagify banner when ShortPixel is enabled
-	 *
-	 * @since 3.20.5
-	 *
-	 * @return false False to hide the banner.
-	 */
-	public function hide_imagify_banner() {
-		return false;
 	}
 }
