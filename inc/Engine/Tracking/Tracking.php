@@ -313,7 +313,7 @@ class Tracking extends Abstract_Render {
 	 *
 	 * @param string $event_name The name of the event to track.
 	 * @param int    $row_id     The ID of the test row.
-	 * @param string $source     The source of the action (e.g., 'url_expand', 'global_expand', 'auto_expand_homepage', 'hash_navigation').
+	 * @param string $source     The source of the action (e.g., 'url_expand', 'global_expand', 'hash_navigation', `auto_expand_url`).
 	 *
 	 * @return void
 	 */

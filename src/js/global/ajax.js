@@ -742,7 +742,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		// Track auto-expand of first completed URL (typically homepage after fresh install).
 		var firstRowId = $toggleButtons.first().closest('.wpr-ri-item').data('rocket-insights-id');
 		if (firstRowId) {
-			handleMetricActionTracking('expand', firstRowId, 'auto_expand_homepage');
+			handleMetricActionTracking('expand', firstRowId, 'auto_expand_url');
 		}
 	}
 
