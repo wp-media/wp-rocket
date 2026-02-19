@@ -225,6 +225,13 @@ class HTML {
 		}
 
 		if ( empty( $matches['attr'] ) ) {
+			// This filter is documented in inc/Engine/Optimization/DelayJS/Subscriber.php.
+			$version = wpm_apply_filters_typesafe( 'rocket_delay_js_version_js_script', '' );
+
+			if ( ! empty( $version ) ) {
+				return '<script type="rocketlazyloadscript">' . $matches['content'] . '</script>';
+			}
+
 			return '<script type="text/rocketlazyloadscript">' . $matches['content'] . '</script>';
 		}
 
