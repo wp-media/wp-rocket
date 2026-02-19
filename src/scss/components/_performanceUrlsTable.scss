@@ -194,6 +194,21 @@
 	}
 	.wpr-ri-item{
 		background: #F9FAFB;
+
+		.wpr-ri-item-toggle-single:after {
+			content: "";
+			width: 14px;
+			height: 14px;
+			background: url("../img/ri-caret-right.svg") no-repeat center center;
+			display: block;
+		}
+
+		&--expanded {
+			.wpr-ri-item-toggle-single:after {
+				background-image: url("../img/ri-caret-down.svg");
+			}
+		}
+
 		&.wpr-global-score{
 			background: $cWhite;
 			td, th {

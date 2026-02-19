@@ -696,15 +696,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		}, 30);
 	});
 
-	// Handle Expand/Collapse for RI.
-	var $detailsCells = $('.details-section-td');
-	var $toggleButtons = $('.wpr-ri-item-toggle-single');
-	var imgUrl = window.rocket_ajax_data.assets_img_url;
-	var carets = {
-		down: `${imgUrl}ri-caret-down.svg`,
-		right: `${imgUrl}ri-caret-right.svg`
-	}
-
 	// Handle collapseed styling for first load or dynamic row addition.
 	function addCollapsedStylingToLastRow(onLoad = false) {
 		$('.wpr-ri-item').last().find('td').addClass('border-bottom');
@@ -719,28 +710,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	// Toggles the visibility of a single test details row, switches the caret icon, and updates styling for the last item.
 	function toggleSingleRowVisibility($element, insightsId) {
-		$('.wpr-ri-details--expanded').removeClass('wpr-ri-details--expanded');
-		$element.addClass('wpr-ri-details--expanded');
+		let isVisible = $element.hasClass('wpr-ri-details--expanded');
+		if ( isVisible ) {
+			$element.removeClass('wpr-ri-details--expanded');
+			$('[data-rocket-insights-id="' + insightsId + '"]').removeClass('wpr-ri-item--expanded');
 
-		var $details = $element.find(`.details-section-td`);
-		var $img = $element.find('img');
-		var isVisible = $details.is(':visible');
-		var isLast = $element.is($('.wpr-ri-item-toggle-single').last());
+		} else {
+			$element.addClass('wpr-ri-details--expanded');
+			$('[data-rocket-insights-id="' + insightsId + '"]').addClass('wpr-ri-item--expanded');
 
-		// Toggle visibility
-		if (isVisible) {
-			$img.attr('src', carets.right);
-
-			// Manipulate styling for last elements when details cell is visible.
-			if (isLast) {
-				updateRowStylingForLastItem(false);
-			}
-			return;
+			// Track expand only expand metric action.
+			handleMetricActionTracking('expand', insightsId);
 		}
-
-		// Track expand only expand metric action.
-		handleMetricActionTracking('expand', insightsId);
-
 		// Manipulate styling for last elements when details cell is not visible.
 		if (isLast) {
 			updateRowStylingForLastItem();
@@ -809,14 +790,14 @@ document.addEventListener('DOMContentLoaded', function() {
 	$(document).on('click', '.wpr-ri-item-toggle-all', function () {
 		if ($('.wpr-ri-details--expanded').length > 0) {
 			$('.wpr-ri-details').removeClass('wpr-ri-details--expanded');
-			$('.wpr-ri-item-toggle-single img').attr('src', carets.right);
+			$('.wpr-ri-item').removeClass('wpr-ri-item--expanded');
 			updateRowStylingForLastItem(false);
 
 			return;
 		}
 
 		$('.wpr-ri-details').addClass('wpr-ri-details--expanded');
-		$('.wpr-ri-item-toggle-single img').attr('src', carets.down);
+		$('.wpr-ri-item').addClass('wpr-ri-item--expanded');
 		updateRowStylingForLastItem();
 	});
 

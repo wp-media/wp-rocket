@@ -223,9 +223,23 @@ class Render extends Abstract_Render {
 	public function get_performance_monitoring_list_row( object $data ): string {
 		$data->has_credit        = $this->plan->has_credit();
 		$data->formatted_metrics = $this->metric_formatter->get_formatted_metrics( $data->metric_data );
-		$data->class             = $this->get_details_row_classes( $data );
+		$data->details_classes   = $this->get_details_row_classes( $data );
+		$data->item_classes   = $this->get_item_row_classes( $data );
 
 		return $this->generate( 'partials/rocket-insights/table-row', $data );
+	}
+
+	/**
+	 * Check if this row should be expanded based on the current GET parameters and the row's URL compared to the home URL.
+	 *
+	 * @param object $row The data object representing a single row (page) in the rocket insights list.
+	 * @return bool
+	 */
+	private function is_expanded_row($row ) {
+		$ri_get_id = intval( $_GET['ri_id'] ?? null ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		return ( $ri_get_id && $ri_get_id === (int) $row->id )
+			||
+			( empty( $ri_get_id ) && Utils::is_home( $row->url ) );
 	}
 
 	/**
@@ -235,15 +249,26 @@ class Render extends Abstract_Render {
 	 * @return string
 	 */
 	private function get_details_row_classes( $row ) {
-		$ri_get_id = intval( $_GET['ri_id'] ?? null ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		$classes   = [ 'wpr-ri-details' ];
 
-		if (
-			( $ri_get_id && $ri_get_id === (int) $row->id )
-			||
-			( empty( $ri_get_id ) && Utils::is_home( $row->url ) )
-		) {
+		if ( $this->is_expanded_row( $row ) ) {
 			$classes[] = 'wpr-ri-details--expanded';
+		}
+
+		return implode( ' ', $classes );
+	}
+
+	/**
+	 * Get item row classes based on the current row and GET parameters to determine if it should be expanded or not.
+	 *
+	 * @param object $row The data object representing a single row (page) in the rocket insights list.
+	 * @return string
+	 */
+	private function get_item_row_classes( $row ) {
+		$classes   = [];
+
+		if ( $this->is_expanded_row( $row ) ) {
+			$classes[] = 'wpr-ri-item--expanded';
 		}
 
 		return implode( ' ', $classes );

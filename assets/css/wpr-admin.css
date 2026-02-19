@@ -3289,6 +3289,16 @@ div.wpr-tutorial-item {
 .wpr-ri-urls-table .wpr-ri-item {
   background: #F9FAFB;
 }
+.wpr-ri-urls-table .wpr-ri-item .wpr-ri-item-toggle-single:after {
+  content: "";
+  width: 14px;
+  height: 14px;
+  background: url("../img/ri-caret-right.svg") no-repeat center center;
+  display: block;
+}
+.wpr-ri-urls-table .wpr-ri-item--expanded .wpr-ri-item-toggle-single:after {
+  background-image: url("../img/ri-caret-down.svg");
+}
 .wpr-ri-urls-table .wpr-ri-item.wpr-global-score {
   background: #fff;
 }

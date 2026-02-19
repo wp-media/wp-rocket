@@ -17,10 +17,9 @@ $rocket_img_url                    = esc_url( WP_ROCKET_ASSETS_IMG_URL );
 // Get pre-formatted metrics from Render class.
 $rocket_formatted_metrics = $data->formatted_metrics ?? [];
 ?>
-<tr class="wpr-ri-item wpr-ri-item-result" data-rocket-insights-id="<?php echo esc_attr( $data->id ); ?>" >
+<tr class="wpr-ri-item wpr-ri-item-result <?php echo esc_attr( $rocket_data_array['item_classes'] ?? '' ); ?>" data-rocket-insights-id="<?php echo esc_attr( $data->id ); ?>" >
 	<td class="wpr-ri-item-toggle">
 		<div class="icon-frame wpr-ri-item-toggle-single <?php echo ! $rocket_can_show_dropdown ? 'hide' : ''; ?>">
-			<img src="<?php echo $rocket_img_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>ri-caret-right.svg" alt="">
 		</div>
 	</td>
 	<td class="wpr-ri-item-score">
@@ -123,7 +122,7 @@ $rocket_formatted_metrics = $data->formatted_metrics ?? [];
 	</td>
 </tr>
 <?php if ( $rocket_can_show_dropdown ) : ?>
-<tr class="<?php echo esc_attr( $rocket_data_array['class'] ?? '' ); ?>" id="ri_details_<?php echo $rocket_data_array['id']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>">
+<tr class="<?php echo esc_attr( $rocket_data_array['details_classes'] ?? '' ); ?>" id="ri_details_<?php echo $rocket_data_array['id']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>">
 	<td colspan="4" class="details-section-td">
 		<div class="details-section">
 			<div class="details-header">
