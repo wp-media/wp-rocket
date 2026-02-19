@@ -128,7 +128,7 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 		];
 
 		$result = json_decode( $this->response_body, true );
-		return (array) wp_parse_args( ( $result && $result['returnvalue'] ) ? (array) $result['returnvalue'] : [], $default );
+		return (array) wp_parse_args( ( is_array( $result ) && ! empty( $result['returnvalue'] ) ) ? (array) $result['returnvalue'] : [], $default );
 	}
 
 	/**

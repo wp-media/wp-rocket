@@ -119,5 +119,81 @@ return [
 				'shakedCSS' => 'css',
 			],
 		]
+	],
+	'testSucceedRequestWithMissingReturnvalueShouldReturnDefaults' => [
+		'config' => [
+			'job_id' => 10,
+			'queue_name' => 'EU',
+			'is_home' => false,
+			'api_url' => 'https://api.example.com',
+			'email' => 'example@email.com',
+			'key' => 'key',
+			'response' => [
+				'code' => 200,
+				'message' => 'message',
+				'body' => 'body',
+			],
+			'is_succeed' => true,
+			'code' => 200,
+			'message' => 'message',
+			'request_uri' => 'https://api.example.comrucss-job',
+			'errors_count' => 1,
+			'args' => [
+				'body' => [
+					'credentials' => [
+						'wpr_email' => 'example@email.com',
+						'wpr_key' => 'key',
+					],
+					'id'          => 10,
+					'force_queue' => 'EU',
+					'is_home'     => false,
+				],
+				'timeout' => 5,
+				'method' => 'GET'
+			],
+			'body' => json_encode([
+				'code' => 200,
+			]),
+			'to_merge' => [],
+			'default' => [
+				'code'     => 400,
+				'status'   => 'failed',
+				'message'  => 'No message. Defaulted in get_queue_job_status',
+				'contents' => [
+					'success'   => false,
+					'shakedCSS' => '',
+					'above_the_fold_result' => [
+						'lcp'               => [],
+						'images_above_fold' => [],
+					],
+				],
+			],
+			'merged' => [
+				'code'     => 400,
+				'status'   => 'failed',
+				'message'  => 'No message. Defaulted in get_queue_job_status',
+				'contents' => [
+					'success'   => false,
+					'shakedCSS' => '',
+					'above_the_fold_result' => [
+						'lcp'               => [],
+						'images_above_fold' => [],
+					],
+				],
+			]
+		],
+		'expected' => [
+			'code'     => 400,
+			'status'   => 'failed',
+			'message'  => 'No message. Defaulted in get_queue_job_status',
+			'contents' => [
+				'success'   => false,
+				'shakedCSS' => '',
+				'above_the_fold_result' => [
+					'lcp'               => [],
+					'images_above_fold' => [],
+				],
+			],
+		]
 	]
 ];
