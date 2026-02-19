@@ -84,8 +84,8 @@
 	function checkButtonUrlAndOpen() {
 		// Check if button URL was injected by PHP
 		if ( window.rocketcdnButtonUrl && window.rocketcdnButtonUrl !== '' ) {
-			// Open button URL in new tab
-			window.open( window.rocketcdnButtonUrl, '_blank' );
+			// Navigate to button URL in same tab
+			window.location.href = window.rocketcdnButtonUrl;
 		} else {
 			// Show iframe modal as usual
 			MicroModal.show( 'wpr-rocketcdn-modal' );
