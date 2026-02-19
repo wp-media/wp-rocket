@@ -25,7 +25,7 @@ class RocketInsights extends AbstractTable {
 	 *
 	 * @var int
 	 */
-	protected $version = 20260130;
+	protected $version = 20260212;
 
 	/**
 	 * Upgrades array.
@@ -36,6 +36,7 @@ class RocketInsights extends AbstractTable {
 	protected $upgrades = [
 		20250909 => 'add_is_blurred_column',
 		20260130 => 'add_metric_data_column',
+		20260212 => 'add_url_ismobile_unique_key',
 	];
 
 	/**
@@ -64,7 +65,7 @@ class RocketInsights extends AbstractTable {
 		error_code       varchar(32)             NULL default NULL,
 		error_message    longtext                NULL default NULL,
 		PRIMARY KEY (id),
-		KEY url (url(150), is_mobile),
+		UNIQUE KEY url_is_mobile (url(150), is_mobile),
 		KEY modified (modified),
 		KEY last_accessed (last_accessed),
 		INDEX `status_index` (`status`(191)),
@@ -113,6 +114,24 @@ class RocketInsights extends AbstractTable {
 
 		if ( ! $column_exists ) {
 			$created &= $this->get_db()->query( "ALTER TABLE {$this->table_name} ADD COLUMN metric_data longtext NULL default NULL AFTER is_blurred" );
+		}
+
+		return $this->is_success( $created );
+	}
+
+	/**
+	 * Add unique key for url and is_mobile columns.
+	 *
+	 * @return bool
+	 */
+	protected function add_url_ismobile_unique_key() {
+		$key_exists = $this->index_exists( 'url_is_mobile' );
+
+		$created = true;
+
+		if ( ! $key_exists ) {
+			$created &= $this->get_db()->query( "ALTER TABLE {$this->table_name} DROP KEY url" );
+			$created &= $this->get_db()->query( "ALTER TABLE {$this->table_name} ADD UNIQUE KEY url_is_mobile (url(150), is_mobile)" );
 		}
 
 		return $this->is_success( $created );

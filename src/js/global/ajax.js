@@ -306,6 +306,10 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 	}
 
+	function hasId(id) {
+		return rocketInsightsIds.includes(id);
+	}
+
 	function removeId(id) {
 		// Ensure that the id to be removed is an integer for accurate comparison.
 		const idToRemove = parseInt(id, 10);
@@ -489,6 +493,8 @@ document.addEventListener('DOMContentLoaded', function() {
 					const $row = $(`.wpr-ri-item[data-rocket-insights-id="${result.id}"]`);
 					$row.replaceWith(result.html);
 
+					$(document).trigger('rocket-insights-page-test-polling', [result.id]);
+
 					// Trigger custom event only when test is completed and not failed, so we don't target an element that might be removed from the DOM after test completion.
 					if (result.status === 'completed') {
 						$(document).trigger('rocket-insights-page-test-completed', [result.id]);
@@ -538,34 +544,41 @@ document.addEventListener('DOMContentLoaded', function() {
 			}
 		).then( ( response ) => {
 			if (response.success) {
-				$pageUrlInput.val('');
-				$tableBody.append(response.html);
-				$table.removeClass('hidden');
-				addIds(response.id);
-				let pages_num_container = $('#rocket_rocket_insights_pages_num');
-				pages_num_container.text( parseInt( pages_num_container.text() ) + 1 );
+				if ( ! hasId(response.id) ) {
+					$pageUrlInput.val('');
+					$tableBody.append(response.html);
 
-				// Update credit status
-				updateCreditState(response.has_credit);
+					// Custom event when new page is added.
+					$(document).trigger('rocket-insights-page-added');
 
-                // Update global score data.
-                globalScoreData = response.global_score_data;
+					$table.removeClass('hidden');
+					addIds(response.id);
+					let pages_num_container = $('#rocket_rocket_insights_pages_num');
+					pages_num_container.text( parseInt( pages_num_container.text() ) + 1 );
 
-				// Update global score row in table if on Rocket Insights page.
-				updateGlobalScoreRow(globalScoreData);
+					// Update credit status
+					updateCreditState(response.has_credit);
 
-				if ('disabled_btn_html' in globalScoreData) {
-					$('#wpr_rocket_insights_add_page_btn_wrapper').html(globalScoreData.disabled_btn_html.rocket_insights);
+					// Update global score data.
+					globalScoreData = response.global_score_data;
+
+					// Update global score row in table if on Rocket Insights page.
+					updateGlobalScoreRow(globalScoreData);
+
+					if ('disabled_btn_html' in globalScoreData) {
+						$('#wpr_rocket_insights_add_page_btn_wrapper').html(globalScoreData.disabled_btn_html.rocket_insights);
+					}
+
+					// Show/hide quota banner based on can_add_pages
+					updateQuotaBanner(response.can_add_pages);
+
+					// Start polling if not already running
+					if (!pollTimer) {
+						pollInterval = POLL_BASE_INTERVAL;
+						schedulePolling();
+					}
 				}
 
-				// Show/hide quota banner based on can_add_pages
-				updateQuotaBanner(response.can_add_pages);
-
-				// Start polling if not already running
-				if (!pollTimer) {
-					pollInterval = POLL_BASE_INTERVAL;
-					schedulePolling();
-				}
 			} else {
 				// Clear the input field on error
 				$pageUrlInput.val('');
@@ -609,6 +622,9 @@ document.addEventListener('DOMContentLoaded', function() {
 				$(`#ri_details_${response.id} .details-section-td`).remove();
 				const $row = $(`[data-rocket-insights-id="${response.id}"]`);
 				$row.replaceWith(response.html);
+
+				// Custom event when page is retested.
+        		$(document).trigger('rocket-insights-page-retest', [response.id]);
 
 				// Update credit status
 				updateCreditState(response.has_credit);
@@ -683,19 +699,23 @@ document.addEventListener('DOMContentLoaded', function() {
 	// Handle Expand/Collapse for RI.
 	var $detailsCells = $('.details-section-td');
 	var $toggleButtons = $('.wpr-ri-item-toggle-single');
-	var $lastToggle = $('.wpr-ri-item-toggle').last();
-	var $lastActions = $('.wpr-ri-item-actions').last();
 	var imgUrl = window.rocket_ajax_data.assets_img_url;
 	var carets = {
-		down: imgUrl + 'ri-caret-down.svg',
-		right: imgUrl + 'ri-caret-right.svg'
+		down: `${imgUrl}ri-caret-down.svg`,
+		right: `${imgUrl}ri-caret-right.svg`
 	}
 
-	var $selectors = {
-		lastToggle: $lastToggle,
-		lastActions: $lastActions,
-		detailsCells: $detailsCells
-	};
+	// Handle collapseed styling for first load or dynamic row addition.
+	function addCollapsedStylingToLastRow(onLoad = false) {
+		$('.wpr-ri-item').last().find('td').addClass('border-bottom');
+
+		if ($('.wpr-ri-item-result').length === 1 && onLoad) {
+			$('.details-section-td').addClass('wpr-last-expanded');
+			return
+		}
+		$('.wpr-ri-item-toggle').last().addClass('wpr-last-collapsed');
+		$('.wpr-ri-item-actions').last().addClass('wpr-last-collapsed');
+	}
 
 	// Toggles the visibility of a single test details row, switches the caret icon, and updates styling for the last item.
 	function toggleSingleRowVisibility($element, insightsId) {
@@ -705,7 +725,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		var $details = $element.find(`.details-section-td`);
 		var $img = $element.find('img');
 		var isVisible = $details.is(':visible');
-		var isLast = $element.is($toggleButtons.last());
+		var isLast = $element.is($('.wpr-ri-item-toggle-single').last());
 
 		// Toggle visibility
 		if (isVisible) {
@@ -713,7 +733,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 			// Manipulate styling for last elements when details cell is visible.
 			if (isLast) {
-				updateRowStylingForLastItem($selectors, false);
+				updateRowStylingForLastItem(false);
 			}
 			return;
 		}
@@ -723,7 +743,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 		// Manipulate styling for last elements when details cell is not visible.
 		if (isLast) {
-			updateRowStylingForLastItem($selectors);
+			updateRowStylingForLastItem();
 		}
 	}
 
@@ -751,32 +771,32 @@ document.addEventListener('DOMContentLoaded', function() {
 	 * Manages border radius and bottom border styling based on whether the details
 	 * cell is expanded or collapsed to maintain proper visual appearance.
 	 */
-	function updateRowStylingForLastItem($selectors, reverseStyle = true) {
-		if (!reverseStyle) {
-			// Restore border radius for main cells when item is collapsed.
-			$selectors.lastToggle.css('border-bottom-left-radius', '5px');
-			$selectors.lastActions.css('border-bottom-right-radius', '5px');
+	function updateRowStylingForLastItem(isExpanded = true) {
+		const addState = isExpanded ? 'wpr-last-expanded' : 'wpr-last-collapsed';
+		const removeState = isExpanded ? 'wpr-last-collapsed' : 'wpr-last-expanded';
 
-			// Remove border radius for details cell when item is collapsed.
-			$selectors.detailsCells.last().css('border-bottom-left-radius', '0');
-			$selectors.detailsCells.last().css('border-bottom-right-radius', '0');
+		var $selectors = {
+			lastToggle: $('.wpr-ri-item-toggle').last(),
+			lastActions: $('.wpr-ri-item-actions').last()
+		};
 
-			// Remove bottom border for details cell when item is collapsed.
-			$selectors.detailsCells.last().css('border-bottom', '0');
+		$selectors.lastToggle
+			.removeClass(removeState)
+			.addClass(addState);
 
-			return
+		$selectors.lastActions
+			.removeClass(removeState)
+			.addClass(addState);
+
+
+		// Check if last detail row is not the last row in the table so as not to apply improper styling with border radius between rows.
+		var $lastDetailsCell = $('.details-section-td').last();
+		if ($lastDetailsCell.closest('tr').next('tr').length !== 0) {
+			return;
 		}
 
-		// Remove border radius for main cells when item is expanded.
-		$selectors.lastToggle.css('border-bottom-left-radius', '0');
-		$selectors.lastActions.css('border-bottom-right-radius', '0');
-
-		// Restore border radius for details cell when item is expanded.
-		$selectors.detailsCells.last().css('border-bottom-left-radius', '5px');
-		$selectors.detailsCells.last().css('border-bottom-right-radius', '5px');
-
-		// Restore bottom border for details cell when item is expanded.
-		$selectors.detailsCells.last().css('border-bottom', '1px solid #E2E5E9');
+		$lastDetailsCell.removeClass(removeState)
+		.addClass(addState);
 	}
 
 	// Toggle single item.
@@ -790,14 +810,14 @@ document.addEventListener('DOMContentLoaded', function() {
 		if ($('.details-section-td').is(':visible')) {
 			$('.details-section-td').hide('fast');
 			$('.wpr-ri-item-toggle-single img').attr('src', carets.right);
-			updateRowStylingForLastItem($selectors, false);
+			updateRowStylingForLastItem(false);
 
 			return;
 		}
 
 		$('.details-section-td').show('fast');
 		$('.wpr-ri-item-toggle-single img').attr('src', carets.down);
-		updateRowStylingForLastItem($selectors);
+		updateRowStylingForLastItem();
 	});
 
 	// Track "See Report" clicks in Rocket Insights.
@@ -812,15 +832,47 @@ document.addEventListener('DOMContentLoaded', function() {
 		handleMetricActionTracking('see_report', insightsId);
 	});
 
-	// Hide metric section when test is finished.
+	// Update table styling after new page is added.
 	$(document).on('rocket-insights-page-test-completed', function (e, insightsId) {
-		$(`#ri_details_${insightsId} .details-section-td`).hide('fast');
+		var $detailsCell = $(`#ri_details_${insightsId} .details-section-td`);
+
+		// Hide metric section when test is finished.
+		$detailsCell.hide('fast');
+
+		// Check if the element we just hid is the last .details-section-td
+		var isLast = $detailsCell.is($('.details-section-td').last());
+
+		if (isLast) {
+			addCollapsedStylingToLastRow();
+		}
+	});
+
+	// Update table styling after new page is added.
+	$(document).on('rocket-insights-page-added', function (e) {
+		// Remove dynamic class for last item if exists when new page is added.
+		$('.wpr-last-collapsed').removeClass('wpr-last-collapsed');
+		$('.wpr-last-expanded').removeClass('wpr-last-expanded');
+		$('.border-bottom').removeClass('border-bottom');
+	});
+
+	// Update table styling after retest or polling update for last row.
+	$(document).on('rocket-insights-page-retest rocket-insights-page-test-polling', function (e, insightsId) {
+		// Check if item is the last.
+		var isLast = $(`[data-rocket-insights-id="${insightsId}"]`).is($('.wpr-ri-item-result').last());
+
+		if (isLast) {
+			addCollapsedStylingToLastRow();
+		}
 	});
 
 	$(window).load(() => {
 		if ( ! isOnRocketInsights() ) {
 			return;
 		}
+
+		// Add collapsed styling to the last row on initial load.
+		addCollapsedStylingToLastRow(true);
+
 		// Set initial expand/collapse state.
 		const urlParams = new URLSearchParams(window.location.search);
 		const testId = urlParams.get('ri_id');
