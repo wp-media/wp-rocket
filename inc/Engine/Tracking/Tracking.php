@@ -317,7 +317,7 @@ class Tracking extends Abstract_Render {
 	 *
 	 * @return void
 	 */
-	public function track_rocket_insights_details_action( $event_name, $row_id, $source = 'unknown' ): void {
+	public function track_rocket_insights_details_action( $event_name, $row_id, $source ): void {
 		if ( ! $this->optin->can_track() ) {
 			return;
 		}

@@ -769,7 +769,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		$img.attr('src', carets.down);
 
 		// Track expand only expand metric action.
-		handleMetricActionTracking('expand', insightsId, source || 'url_expand');
+		handleMetricActionTracking('expand', insightsId, source);
 
 		// Manipulate styling for last elements when details cell is not visible.
 		if (isLast) {
@@ -786,7 +786,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				_ajax_nonce: rocket_ajax_data.nonce,
 				event: event,
 				row_id: rowId,
-				source: source || 'unknown'
+				source: source
 			},
 			function(response) {
 				if (!response.success) {
