@@ -730,7 +730,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			// If the test ID exists and is visible, show its details.
 			if ('' !== testId && $(`[data-rocket-insights-id="${testId}"]`).is(':visible')) {
 			$detailsCells.hide();
-			toggleSingleRowVisibility(`[data-rocket-insights-id="${testId}"] .wpr-ri-item-toggle-single`, testId, 'hash_navigation')
+			toggleSingleRowVisibility(`[data-rocket-insights-id="${testId}"] .wpr-ri-item-toggle-single`, testId, 'post type listing')
 			return;
 			}
 		}
