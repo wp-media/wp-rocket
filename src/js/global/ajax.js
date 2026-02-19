@@ -802,7 +802,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	// Toggle single item.
 	$(document).on('click', '.wpr-ri-item-toggle-single', function() {
 		var insightsId = $(this).closest('.wpr-ri-item').data('rocket-insights-id');
-		$('#ri_details_' + insightsId).toggleClass('wpr-ri-details--expanded');
+		toggleSingleRowVisibility($('#ri_details_' + insightsId), insightsId);
 	});
 
 	// Toggle all items.
@@ -836,8 +836,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	$(document).on('rocket-insights-page-test-completed', function (e, insightsId) {
 		var $detailsCell = $(`#ri_details_${insightsId} .details-section-td`);
 
-		// Hide metric section when test is finished.
-		$detailsCell.hide('fast');
+		toggleSingleRowVisibility($(`#ri_details_${insightsId}`), insightsId);
 
 		// Check if the element we just hid is the last .details-section-td
 		var isLast = $detailsCell.is($('.details-section-td').last());
@@ -881,6 +880,10 @@ document.addEventListener('DOMContentLoaded', function() {
 		if (!testId || testId === '') {
 			return;
 		}
+
+		$('html, body').animate({
+			scrollTop: $(`[data-rocket-insights-id="${testId}"]`).offset().top - 100
+		}, 500);
 
 		// Remove ri_id from URL without page reload
 		urlParams.delete('ri_id');

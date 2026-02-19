@@ -235,7 +235,7 @@ class Render extends Abstract_Render {
 		if (
 			( $ri_get_id && $ri_get_id === (int) $row->id )
 			||
-			Utils::is_home( $row->url )
+			( empty( $ri_get_id ) && Utils::is_home( $row->url ) )
 		) {
 			$classes[] = 'wpr-ri-details--expanded';
 		}
