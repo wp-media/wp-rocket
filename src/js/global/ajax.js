@@ -714,7 +714,10 @@ document.addEventListener('DOMContentLoaded', function() {
 		if ( isVisible ) {
 			$element.removeClass('wpr-ri-details--expanded');
 			$('[data-rocket-insights-id="' + insightsId + '"]').removeClass('wpr-ri-item--expanded');
-
+			// Manipulate styling for last elements when details cell is not visible.
+			if ($element.is($('.wpr-ri-item-toggle-single').last())) {
+				updateRowStylingForLastItem();
+			}
 		} else {
 			$element.addClass('wpr-ri-details--expanded');
 			$('[data-rocket-insights-id="' + insightsId + '"]').addClass('wpr-ri-item--expanded');
@@ -722,10 +725,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			// Track expand only expand metric action.
 			handleMetricActionTracking('expand', insightsId);
 		}
-		// Manipulate styling for last elements when details cell is not visible.
-		if (isLast) {
-			updateRowStylingForLastItem();
-		}
+
 	}
 
 	// Tracks user interactions with metric actions in Rocket Insights via AJAX.
@@ -852,6 +852,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 		// Add collapsed styling to the last row on initial load.
 		addCollapsedStylingToLastRow(true);
+		updateRowStylingForLastItem();
 
 		// Set initial expand/collapse state.
 		const urlParams = new URLSearchParams(window.location.search);
