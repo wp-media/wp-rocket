@@ -472,16 +472,18 @@ class Controller {
 			wp_send_json_error( 'Missing parameters' );
 		}
 
-		$row_id = absint( wp_unslash( $_POST['row_id'] ) );
-		$event  = sanitize_text_field( wp_unslash( $_POST['event'] ) );
-		$source = sanitize_text_field( wp_unslash( $_POST['source'] ) );
+		$row_id_raw = sanitize_text_field( wp_unslash( $_POST['row_id'] ) );
+		$event      = sanitize_text_field( wp_unslash( $_POST['event'] ) );
+		$source     = sanitize_text_field( wp_unslash( $_POST['source'] ) );
 
-		if ( ! $this->query->get_row_by_id( $row_id ) ) {
-			wp_send_json_error( 'Invalid row ID' );
-		}
-
-		if ( ! isset( $events[ $event ] ) ) {
-			wp_send_json_error( 'Invalid event' );
+		// Handle special case for 'all' (used by "Expand All" action).
+		if ( 'all' === $row_id_raw ) {
+			$row_id = 'all';
+		} else {
+			$row_id = absint( $row_id_raw );
+			if ( ! $this->query->get_row_by_id( $row_id ) ) {
+				wp_send_json_error( 'Invalid row ID' );
+			}
 		}
 
 		$this->tracking->track_rocket_insights_details_action( $events[ $event ], $row_id, $source );

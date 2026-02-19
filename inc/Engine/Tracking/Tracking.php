@@ -311,9 +311,9 @@ class Tracking extends Abstract_Render {
 	/**
 	 * Tracks a Rocket Insights details action event.
 	 *
-	 * @param string $event_name The name of the event to track.
-	 * @param int    $row_id     The ID of the test row.
-	 * @param string $source     The source of the action (e.g., 'url_expand', 'global_expand', 'hash_navigation', `auto_expand_url`).
+	 * @param string     $event_name The name of the event to track.
+	 * @param int|string $row_id     The ID of the test row, or 'all' for global actions.
+	 * @param string     $source     The source of the action (e.g., 'url_expand', 'global_expand', 'hash_navigation', 'auto_expand_url').
 	 *
 	 * @return void
 	 */

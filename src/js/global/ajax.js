@@ -854,24 +854,17 @@ document.addEventListener('DOMContentLoaded', function() {
 		$('.wpr-ri-item-toggle-single img').attr('src', carets.down);
 		updateRowStylingForLastItem();
 		
-		// Track expand for each visible row when global expand is clicked.
-		$('.wpr-ri-item:visible').each(function() {
-			var rowId = $(this).data('rocket-insights-id');
-			if (rowId) {
-				handleMetricActionTracking('expand', rowId, 'global_expand');
-			}
-		});
+		// Track single expand event for "Expand All" action with test_id as 'all'.
+		handleMetricActionTracking('expand', 'all', 'global_expand');
 	});
 
 	// Track "See Report" clicks in Rocket Insights.
-	$(document).on('click', '.wpr-ri-report', function(e) {
-		// Only track if link is not disabled and mixpanel is available.
+	$(document).on('click', '.wpr-ri-report', function(e) {	// Only track if link is not disabled and mixpanel is available.
 		if ($(this).hasClass('wpr-ri-action--disabled')) {
 			return;
 		}
 
 		var insightsId = $(this).data('rocket-insights-row-id');
-
 		handleMetricActionTracking('see_report', insightsId, 'see_report_button');
 	});
 
