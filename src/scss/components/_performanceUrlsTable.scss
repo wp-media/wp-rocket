@@ -399,17 +399,33 @@
 		height: 100%;
 	}
 
-	.wpr-ri-details .details-section {
-		max-height: 0;
-		transition: all 0.5s ease-in-out;
-		overflow: hidden;
+	.wpr-ri-details {
+		.details-section {
+			max-height: 0;
+			transition: all 0.5s ease-in-out;
+			overflow: hidden;
+		}
+
+		.details-section-td {
+			border-top: 0;
+		}
+
+		&--expanded {
+			.details-section {
+				max-height: 300px;
+			}
+
+			.details-section-td {
+				border-top: 1px solid #e2e5e9;
+			}
+		}
+
+		tr.wpr-ri-details--expanded:last-of-type {
+			.details-section-td:last-of-type {
+				border-top: 0;
+			}
+		}
 	}
-
-	.wpr-ri-details.wpr-ri-details--expanded .details-section {
-		max-height: 300px;
-	}
-
-
 
 	.details-section {
 

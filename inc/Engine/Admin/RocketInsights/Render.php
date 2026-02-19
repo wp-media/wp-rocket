@@ -223,8 +223,8 @@ class Render extends Abstract_Render {
 	public function get_performance_monitoring_list_row( object $data ): string {
 		$data->has_credit        = $this->plan->has_credit();
 		$data->formatted_metrics = $this->metric_formatter->get_formatted_metrics( $data->metric_data );
-		$data->details_classes   = $this->get_details_row_classes( $data );
-		$data->item_classes   = $this->get_item_row_classes( $data );
+		$data->details_classes   = $this->get_details_classes( $data );
+		$data->item_classes      = $this->get_item_classes( $data );
 
 		return $this->generate( 'partials/rocket-insights/table-row', $data );
 	}
@@ -235,7 +235,7 @@ class Render extends Abstract_Render {
 	 * @param object $row The data object representing a single row (page) in the rocket insights list.
 	 * @return bool
 	 */
-	private function is_expanded_row($row ) {
+	private function is_expanded_row( $row ) {
 		$ri_get_id = intval( $_GET['ri_id'] ?? null ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		return ( $ri_get_id && $ri_get_id === (int) $row->id )
 			||
@@ -246,32 +246,44 @@ class Render extends Abstract_Render {
 	 * Get details row classes based on the current row and GET parameters to determine if it should be expanded or not.
 	 *
 	 * @param object $row The data object representing a single row (page) in the rocket insights list.
-	 * @return string
+	 * @return array
 	 */
-	private function get_details_row_classes( $row ) {
-		$classes   = [ 'wpr-ri-details' ];
+	private function get_details_classes( $row ): array {
+		$classes = [
+			'row' => '',
+			'td'  => '',
+		];
 
-		if ( $this->is_expanded_row( $row ) ) {
-			$classes[] = 'wpr-ri-details--expanded';
+		if ( ! $this->is_expanded_row( $row ) ) {
+			return $classes;
 		}
 
-		return implode( ' ', $classes );
+		$classes['row'] = 'wpr-ri-details--expanded';
+		$classes['td']  = 'wpr-last-expanded';
+
+		return $classes;
 	}
 
 	/**
 	 * Get item row classes based on the current row and GET parameters to determine if it should be expanded or not.
 	 *
 	 * @param object $row The data object representing a single row (page) in the rocket insights list.
-	 * @return string
+	 * @return array
 	 */
-	private function get_item_row_classes( $row ) {
-		$classes   = [];
+	private function get_item_classes( $row ): array {
+		$classes = [
+			'row' => '',
+			'td'  => '',
+		];
 
-		if ( $this->is_expanded_row( $row ) ) {
-			$classes[] = 'wpr-ri-item--expanded';
+		if ( ! $this->is_expanded_row( $row ) ) {
+			return $classes;
 		}
 
-		return implode( ' ', $classes );
+		$classes['row'] = 'wpr-ri-item--expanded';
+		$classes['td']  = 'wpr-last-expanded';
+
+		return $classes;
 	}
 
 	/**

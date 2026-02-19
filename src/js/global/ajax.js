@@ -700,32 +700,42 @@ document.addEventListener('DOMContentLoaded', function() {
 	function addCollapsedStylingToLastRow(onLoad = false) {
 		$('.wpr-ri-item').last().find('td').addClass('border-bottom');
 
-		if ($('.wpr-ri-item-result').length === 1 && onLoad) {
-			$('.details-section-td').addClass('wpr-last-expanded');
-			return
+		if (onLoad) {
+			if($('.details-section-td').last().hasClass('wpr-last-expanded')) {
+				return;
+			}
 		}
 		$('.wpr-ri-item-toggle').last().addClass('wpr-last-collapsed');
 		$('.wpr-ri-item-actions').last().addClass('wpr-last-collapsed');
+		$('.details-section-td').last().addClass('wpr-last-collapsed');
 	}
 
 	// Toggles the visibility of a single test details row, switches the caret icon, and updates styling for the last item.
-	function toggleSingleRowVisibility($element, insightsId) {
+	function toggleSingleRowVisibility(insightsId) {
+		let $element = $(`#ri_details_${insightsId}`);
 		let isVisible = $element.hasClass('wpr-ri-details--expanded');
+		let isLast = $(`[data-rocket-insights-id="${insightsId}"] .wpr-ri-item-toggle-single`).is($('.wpr-ri-item-toggle-single').last());
+
 		if ( isVisible ) {
 			$element.removeClass('wpr-ri-details--expanded');
-			$('[data-rocket-insights-id="' + insightsId + '"]').removeClass('wpr-ri-item--expanded');
+			$(`[data-rocket-insights-id="${insightsId}"]`).removeClass('wpr-ri-item--expanded');
 			// Manipulate styling for last elements when details cell is not visible.
-			if ($element.is($('.wpr-ri-item-toggle-single').last())) {
-				updateRowStylingForLastItem();
+			if (isLast) {
+				updateRowStylingForLastItem(false);
 			}
-		} else {
-			$element.addClass('wpr-ri-details--expanded');
-			$('[data-rocket-insights-id="' + insightsId + '"]').addClass('wpr-ri-item--expanded');
 
-			// Track expand only expand metric action.
-			handleMetricActionTracking('expand', insightsId);
+			return;
+		} 
+
+		$element.addClass('wpr-ri-details--expanded');
+		$(`[data-rocket-insights-id="${insightsId}"]`).addClass('wpr-ri-item--expanded');
+
+		// Track expand only expand metric action.
+		handleMetricActionTracking('expand', insightsId);
+
+		if (isLast) {
+			updateRowStylingForLastItem();
 		}
-
 	}
 
 	// Tracks user interactions with metric actions in Rocket Insights via AJAX.
@@ -783,7 +793,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	// Toggle single item.
 	$(document).on('click', '.wpr-ri-item-toggle-single', function() {
 		var insightsId = $(this).closest('.wpr-ri-item').data('rocket-insights-id');
-		toggleSingleRowVisibility($('#ri_details_' + insightsId), insightsId);
+		toggleSingleRowVisibility(insightsId);
 	});
 
 	// Toggle all items.
@@ -815,16 +825,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	// Update table styling after new page is added.
 	$(document).on('rocket-insights-page-test-completed', function (e, insightsId) {
-		var $detailsCell = $(`#ri_details_${insightsId} .details-section-td`);
-
-		toggleSingleRowVisibility($(`#ri_details_${insightsId}`), insightsId);
-
-		// Check if the element we just hid is the last .details-section-td
-		var isLast = $detailsCell.is($('.details-section-td').last());
-
-		if (isLast) {
-			addCollapsedStylingToLastRow();
-		}
+		toggleSingleRowVisibility(insightsId);
 	});
 
 	// Update table styling after new page is added.
@@ -852,7 +853,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 		// Add collapsed styling to the last row on initial load.
 		addCollapsedStylingToLastRow(true);
-		updateRowStylingForLastItem();
 
 		// Set initial expand/collapse state.
 		const urlParams = new URLSearchParams(window.location.search);
@@ -862,6 +862,8 @@ document.addEventListener('DOMContentLoaded', function() {
 		if (!testId || testId === '') {
 			return;
 		}
+
+		toggleSingleRowVisibility(testId);
 
 		$('html, body').animate({
 			scrollTop: $(`[data-rocket-insights-id="${testId}"]`).offset().top - 100

@@ -3471,8 +3471,17 @@ div.wpr-tutorial-item {
   transition: all 0.5s ease-in-out;
   overflow: hidden;
 }
-.wpr-ri-urls-table .wpr-ri-details.wpr-ri-details--expanded .details-section {
+.wpr-ri-urls-table .wpr-ri-details .details-section-td {
+  border-top: 0;
+}
+.wpr-ri-urls-table .wpr-ri-details--expanded .details-section {
   max-height: 300px;
+}
+.wpr-ri-urls-table .wpr-ri-details--expanded .details-section-td {
+  border-top: 1px solid #e2e5e9;
+}
+.wpr-ri-urls-table .wpr-ri-details tr.wpr-ri-details--expanded:last-of-type .details-section-td:last-of-type {
+  border-top: 0;
 }
 .wpr-ri-urls-table .details-section .report-link.wpr-ri-action--disabled, .wpr-ri-urls-table .details-section .report-link .wpr-ri-action--disabled {
   color: rgb(134.5094339623, 150.0566037736, 169.4905660377) !important;
