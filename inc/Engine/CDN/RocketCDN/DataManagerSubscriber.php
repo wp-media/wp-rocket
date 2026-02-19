@@ -164,6 +164,9 @@ class DataManagerSubscriber implements Subscriber_Interface {
 		update_option( 'rocketcdn_user_token', sanitize_key( $user_data->rocketcdn->cdn_token ) );
 		$this->cdn_options->enable( esc_url_raw( $user_data->rocketcdn->cdn_url ) );
 
+		// Clear cached subscription status to reflect the newly activated subscription.
+		delete_transient( 'rocketcdn_status' );
+
 		// Schedule subscription check.
 		$subscription = $this->api_client->get_subscription_data();
 		$this->schedule_subscription_check( $subscription );

@@ -10,19 +10,22 @@
 			} );
 		} );
 
-		maybeOpenModal();
-		maybeOpenModalFromURL();
+		// Only initialize modal if there's no direct button URL
+		if ( ! window.rocketcdnButtonUrl || window.rocketcdnButtonUrl === '' ) {
+			maybeOpenModal();
+			maybeOpenModalFromURL();
 
-		MicroModal.init( {
-			disableScroll: true
-		} );
+			MicroModal.init( {
+				disableScroll: true
+			} );
 
-		const iframe = document.getElementById('rocketcdn-iframe');
-		const loader = document.getElementById('wpr-rocketcdn-modal-loader');
-		if ( iframe && loader ) {
-			iframe.addEventListener('load', function() {
-				loader.style.display = 'none';
-			});
+			const iframe = document.getElementById('rocketcdn-iframe');
+			const loader = document.getElementById('wpr-rocketcdn-modal-loader');
+			if ( iframe && loader ) {
+				iframe.addEventListener('load', function() {
+					loader.style.display = 'none';
+				});
+			}
 		}
 	} );
 
