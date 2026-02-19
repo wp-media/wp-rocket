@@ -807,15 +807,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	// Toggle all items.
 	$(document).on('click', '.wpr-ri-item-toggle-all', function () {
-		if ($('.details-section-td').is(':visible')) {
-			$('.details-section-td').hide('fast');
+		if ($('.wpr-ri-details--expanded').length > 0) {
+			$('.wpr-ri-details').removeClass('wpr-ri-details--expanded');
 			$('.wpr-ri-item-toggle-single img').attr('src', carets.right);
 			updateRowStylingForLastItem(false);
 
 			return;
 		}
 
-		$('.details-section-td').show('fast');
+		$('.wpr-ri-details').addClass('wpr-ri-details--expanded');
 		$('.wpr-ri-item-toggle-single img').attr('src', carets.down);
 		updateRowStylingForLastItem();
 	});
