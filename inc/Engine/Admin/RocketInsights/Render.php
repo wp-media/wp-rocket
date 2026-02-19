@@ -223,14 +223,20 @@ class Render extends Abstract_Render {
 	public function get_performance_monitoring_list_row( object $data ): string {
 		$data->has_credit        = $this->plan->has_credit();
 		$data->formatted_metrics = $this->metric_formatter->get_formatted_metrics( $data->metric_data );
-		$data->class             = $this->get_row_classes( $data );
+		$data->class             = $this->get_details_row_classes( $data );
 
 		return $this->generate( 'partials/rocket-insights/table-row', $data );
 	}
 
-	private function get_row_classes( $row ) {
-		$ri_get_id = intval( $_GET['ri_id'] ?? null );
-		$classes = [ 'wpr-ri-details' ];
+	/**
+	 * Get details row classes based on the current row and GET parameters to determine if it should be expanded or not.
+	 *
+	 * @param object $row The data object representing a single row (page) in the rocket insights list.
+	 * @return string
+	 */
+	private function get_details_row_classes( $row ) {
+		$ri_get_id = intval( $_GET['ri_id'] ?? null ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$classes   = [ 'wpr-ri-details' ];
 
 		if (
 			( $ri_get_id && $ri_get_id === (int) $row->id )
