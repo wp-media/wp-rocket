@@ -519,13 +519,12 @@
 		addClass(element, settings.class_loaded);
 		setStatus(element, statusLoaded);
 
-		// Force browser repaint after programmatic src change.
-		// Fixes rendering issues where the image is loaded but not painted.
 		if (element.tagName === 'IMG') {
 			element.removeAttribute('decoding');
-			element.style.display = 'none';
-			void element.offsetHeight;
-			element.style.display = '';
+			element.style.opacity = '0.99';
+			requestAnimationFrame(function () {
+				element.style.opacity = '';
+			});
 		}
 
 		safeCallback(settings.callback_loaded, element, instance);
