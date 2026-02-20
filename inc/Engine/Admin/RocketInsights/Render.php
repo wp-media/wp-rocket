@@ -48,6 +48,13 @@ class Render extends Abstract_Render {
 	private $metric_formatter;
 
 	/**
+	 * Rows counter to keep track of the number of rows rendered, used for auto-expand the first row for now.
+	 *
+	 * @var int
+	 */
+	private $rows_counter = 0;
+
+	/**
 	 * Constructor for the Render class.
 	 *
 	 * Initializes the Render instance with the provided template path and CreditManager.
@@ -221,6 +228,7 @@ class Render extends Abstract_Render {
 	 * @return string The rendered HTML for the performance monitoring row.
 	 */
 	public function get_performance_monitoring_list_row( object $data ): string {
+		$this->rows_counter++;
 		$data->has_credit        = $this->plan->has_credit();
 		$data->formatted_metrics = $this->metric_formatter->get_formatted_metrics( $data->metric_data );
 		$data->details_classes   = $this->get_details_classes( $data );
@@ -239,7 +247,7 @@ class Render extends Abstract_Render {
 		$ri_get_id = intval( $_GET['ri_id'] ?? null ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		return ( $ri_get_id && $ri_get_id === (int) $row->id )
 			||
-			( empty( $ri_get_id ) && Utils::is_home( $row->url ) );
+			( empty( $ri_get_id ) && 1 === $this->rows_counter );
 	}
 
 	/**
