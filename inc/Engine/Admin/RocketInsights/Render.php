@@ -230,7 +230,7 @@ class Render extends Abstract_Render {
 	public function get_performance_monitoring_list_row( object $data ): string {
 		$data->has_credit                          = $this->plan->has_credit();
 		$data->formatted_metrics                   = $this->metric_formatter->get_formatted_metrics( $data->metric_data );
-		$data->rocket_can_show_advanced_indicators = ! $data->is_running && 'failed' !== $data->status;
+		$data->rocket_can_show_advanced_indicators = ! $data->is_running() && 'failed' !== $data->status;
 
 		if ( $data->rocket_can_show_advanced_indicators ) {
 			++$this->rows_counter;
