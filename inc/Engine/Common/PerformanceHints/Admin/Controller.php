@@ -215,6 +215,10 @@ class Controller {
 	 * @return mixed
 	 */
 	public function clean_on_logo_change( $value, $old_value ) {
+		if ( ! $this->is_allowed() ) {
+			return $value;
+		}
+
 		if ( $value === $old_value ) {
 			return $value;
 		}
