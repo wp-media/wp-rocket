@@ -834,6 +834,17 @@ document.addEventListener('DOMContentLoaded', function() {
 	});
 
 	// Update table styling after new page is added.
+	$(document).on('rocket-insights-page-test-completed', function (e, insightsId) {
+		// Bail out if there is more than 1 result.
+		if ($('.wpr-ri-item-result').length > 1) {
+			return;
+		}
+
+		// Remove dynamic class when only one item exist in table.
+		$('.wpr-last-collapsed').removeClass('wpr-last-collapsed');
+	});
+
+	// Update table styling after new page is added.
 	$(document).on('rocket-insights-page-added', function (e) {
 		// Remove dynamic class for last item if exists when new page is added.
 		$('.wpr-last-collapsed').removeClass('wpr-last-collapsed');
