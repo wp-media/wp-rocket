@@ -827,11 +827,6 @@ document.addEventListener('DOMContentLoaded', function() {
 	});
 
 	// Update table styling after new page is added.
-	$(document).on('rocket-insights-page-test-completed', function (e, insightsId) {
-		toggleSingleRowVisibility(insightsId);
-	});
-
-	// Update table styling after new page is added.
 	$(document).on('rocket-insights-page-added', function (e) {
 		// Remove dynamic class for last item if exists when new page is added.
 		$('.wpr-last-collapsed').removeClass('wpr-last-collapsed');
@@ -847,6 +842,11 @@ document.addEventListener('DOMContentLoaded', function() {
 		if (isLast) {
 			addCollapsedStylingToLastRow();
 		}
+	});
+
+	$(document).on('rocket-insights-page-retest', function (e, insightsId) {
+		$(`#ri_details_${insightsId}`).removeClass('wpr-ri-details--expanded');
+		$(`[data-rocket-insights-id="${insightsId}"]`).removeClass('wpr-ri-item--expanded');
 	});
 
 	$(window).load(() => {
