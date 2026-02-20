@@ -15,7 +15,7 @@ network:
 engine: claude
 name: PR Release Documentation Generator
 strict: true
-timeout-minutes: 60
+timeout-minutes: 20
 tools:
   bash:
     - grep -r 'apply_filters\|add_filter\|do_action\|add_action' inc/
