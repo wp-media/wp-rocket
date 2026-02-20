@@ -57,6 +57,9 @@ class APIClient {
 				'Authorization' => 'Token ' . $token,
 			],
 		];
+		error_log( 'Making API request to RocketCDN with arguments:' );
+		error_log( 'URL of request : ' . self::ROCKETCDN_API . 'website/search/?url=' . home_url() );
+		error_log( print_r( $args, true ) );
 
 		$response = wp_remote_get(
 			self::ROCKETCDN_API . 'website/search/?url=' . home_url(),
