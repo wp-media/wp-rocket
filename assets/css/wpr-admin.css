@@ -2851,7 +2851,6 @@ div.wpr-tutorial-item {
   display: flex;
   justify-content: center;
   align-items: center;
-  position: relative;
 }
 .wpr-percentage-indicator .wpr-percentage-circle {
   display: flex;
@@ -3289,6 +3288,16 @@ div.wpr-tutorial-item {
 .wpr-ri-urls-table .wpr-ri-item {
   background: #F9FAFB;
 }
+.wpr-ri-urls-table .wpr-ri-item .wpr-ri-item-toggle-single:after {
+  content: "";
+  width: 14px;
+  height: 14px;
+  background: url("../img/ri-caret-right.svg") no-repeat center center;
+  display: block;
+}
+.wpr-ri-urls-table .wpr-ri-item--expanded .wpr-ri-item-toggle-single:after {
+  background-image: url("../img/ri-caret-down.svg");
+}
 .wpr-ri-urls-table .wpr-ri-item.wpr-global-score {
   background: #fff;
 }
@@ -3456,6 +3465,25 @@ div.wpr-tutorial-item {
   width: 100%;
   height: 100%;
 }
+.wpr-ri-urls-table .wpr-ri-details .details-section {
+  max-height: 0;
+  transition: max-height 0.5s ease-in-out 0.2s, opacity 0.3s ease-in-out 0s; /* Starts after 0.5s (after max-height) */
+  opacity: 0;
+}
+.wpr-ri-urls-table .wpr-ri-details .details-section-td {
+  border-top: 0;
+}
+.wpr-ri-urls-table .wpr-ri-details--expanded .details-section {
+  max-height: 80px;
+  opacity: 1;
+  transition: max-height 0.5s ease-in-out 0s, opacity 0.3s ease-in-out 0.2s;
+}
+.wpr-ri-urls-table .wpr-ri-details--expanded .details-section-td {
+  border-top: 1px solid #e2e5e9;
+}
+.wpr-ri-urls-table .wpr-ri-details tr.wpr-ri-details--expanded:last-of-type .details-section-td:last-of-type {
+  border-top: 0;
+}
 .wpr-ri-urls-table .details-section .report-link.wpr-ri-action--disabled, .wpr-ri-urls-table .details-section .report-link .wpr-ri-action--disabled {
   color: rgb(134.5094339623, 150.0566037736, 169.4905660377) !important;
   cursor: not-allowed;
@@ -3538,10 +3566,10 @@ div.wpr-tutorial-item {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  padding: 16px 50px 16px 50px;
   width: 100%;
 }
 .details-section .details-header {
+  padding: 16px 50px 0 50px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -3602,6 +3630,7 @@ div.wpr-tutorial-item {
   opacity: 1;
 }
 .details-section .details-content {
+  padding: 0 50px 16px 50px;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -3624,6 +3653,9 @@ div.wpr-tutorial-item {
 .details-section .details-content .detail-row .row-left .report-link {
   display: flex;
   gap: 4px;
+}
+.details-section .details-content .detail-row .row-left .report-link:hover {
+  opacity: 0.8;
 }
 .details-section .details-content .detail-row .row-left .report-link a {
   font-family: "Roboto", sans-serif;
