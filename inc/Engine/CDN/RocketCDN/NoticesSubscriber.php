@@ -201,7 +201,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 		}
 
 		$subscription_data = $this->api_client->get_subscription_data();
-
+		error_log( print_r( $subscription_data, true ) );
 		if ( 'running' === $subscription_data['subscription_status'] ) {
 			return;
 		}

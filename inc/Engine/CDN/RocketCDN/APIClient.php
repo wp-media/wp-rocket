@@ -20,7 +20,8 @@ class APIClient {
 	 */
 	public function get_subscription_data() {
 		$status = get_transient( 'rocketcdn_status' );
-
+		error_log( 'Retrieved RocketCDN subscription data from cache:' );
+		error_log( print_r( $status, true ) );
 		if ( false !== $status ) {
 			return $status;
 		}
@@ -36,6 +37,7 @@ class APIClient {
 	 * @return array
 	 */
 	private function get_remote_subscription_data() {
+		error_log( 'Fetching fresh RocketCDN subscription data from API.' );
 		$default = [
 			'id'                            => 0,
 			'is_active'                     => false,
@@ -63,12 +65,14 @@ class APIClient {
 
 		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
 			$this->set_status_transient( $default, 3 * MINUTE_IN_SECONDS );
+			error_log( 'Failed to fetch RocketCDN subscription data from API. Response code: ' . wp_remote_retrieve_response_code( $response ) );
 
 			return $default;
 		}
 
 		$data = wp_remote_retrieve_body( $response );
-
+		error_log( 'Raw response body from RocketCDN API:' );
+		error_log( print_r( $data, true ) );
 		if ( empty( $data ) ) {
 			$this->set_status_transient( $default, 3 * MINUTE_IN_SECONDS );
 
