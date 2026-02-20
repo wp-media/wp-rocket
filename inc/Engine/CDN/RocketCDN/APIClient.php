@@ -47,7 +47,7 @@ class APIClient {
 		];
 
 		$token = get_option( 'rocketcdn_user_token' );
-
+		error_log( 'Retrieved RocketCDN user token: ' . $token );
 		if ( empty( $token ) ) {
 			return $default;
 		}
