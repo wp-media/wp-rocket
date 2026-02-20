@@ -125,71 +125,58 @@ $rocket_formatted_metrics = $data->formatted_metrics ?? [];
 	<td colspan="4" class="details-section-td <?php echo esc_attr( $rocket_data_array['details_classes']['td'] ); ?>">
 		<div class="details-section">
 			<div class="details-header">
-				<p class="details-label"><?php echo esc_html__( 'Details', 'rocket' ); ?></p>
 				<div>
-				<div class="metrics-header">
-					<div class="metric-label">
-						<p>LCP</p>
-						<div class="info-icon">
-							<img src="<?php echo $rocket_img_url;// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>ri-info.svg" alt="">
-							<div class="wpr-tooltip">
-								<div class="wpr-tooltip-content">
-									<?php echo esc_html__( 'Time until the largest visible content element renders and the main content becomes visible.', 'rocket' ); ?>
+					<div class="metrics-header">
+						<div class="metric-label">
+							<p>LCP</p>
+							<div class="info-icon">
+								<img src="<?php echo $rocket_img_url;// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>ri-info.svg" alt="">
+								<div class="wpr-tooltip">
+									<div class="wpr-tooltip-content">
+										<?php echo esc_html__( 'Time until the largest visible content element renders and the main content becomes visible.', 'rocket' ); ?>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="metric-label">
+							<p>TBT</p>
+							<div class="info-icon">
+								<img src="<?php echo $rocket_img_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>ri-info.svg" alt="">
+								<div class="wpr-tooltip">
+									<div class="wpr-tooltip-content">
+										<?php echo esc_html__( 'Total time the main thread is blocked before the page becomes interactive during loading.', 'rocket' ); ?>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="metric-label">
+							<p>CLS</p>
+							<div class="info-icon">
+								<img src="<?php echo $rocket_img_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>ri-info.svg" alt="">
+								<div class="wpr-tooltip">
+									<div class="wpr-tooltip-content">
+										<?php echo esc_html__( 'Total amount of unexpected layout shifts during page loading, affecting visual stability.', 'rocket' ); ?>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="metric-label">
+							<p>TTFB</p>
+							<div class="info-icon">
+								<img src="<?php echo $rocket_img_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>ri-info.svg" alt="">
+								<div class="wpr-tooltip">
+									<div class="wpr-tooltip-content">
+										<?php echo esc_html__( 'Time from the request until the server responds, determining how soon the page starts loading.', 'rocket' ); ?>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-					<div class="metric-label">
-						<p>TBT</p>
-						<div class="info-icon">
-							<img src="<?php echo $rocket_img_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>ri-info.svg" alt="">
-							<div class="wpr-tooltip">
-								<div class="wpr-tooltip-content">
-									<?php echo esc_html__( 'Total time the main thread is blocked before the page becomes interactive during loading.', 'rocket' ); ?>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="metric-label">
-						<p>CLS</p>
-						<div class="info-icon">
-							<img src="<?php echo $rocket_img_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>ri-info.svg" alt="">
-							<div class="wpr-tooltip">
-								<div class="wpr-tooltip-content">
-									<?php echo esc_html__( 'Total amount of unexpected layout shifts during page loading, affecting visual stability.', 'rocket' ); ?>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="metric-label">
-						<p>TTFB</p>
-						<div class="info-icon">
-							<img src="<?php echo $rocket_img_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>ri-info.svg" alt="">
-							<div class="wpr-tooltip">
-								<div class="wpr-tooltip-content">
-									<?php echo esc_html__( 'Time from the request until the server responds, determining how soon the page starts loading.', 'rocket' ); ?>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
 				</div>
 			</div>
 
 			<div class="details-content">
 				<div class="detail-row">
-					<div class="row-left">
-						<div class="report-link <?php echo esc_attr( $rocket_report_url_icon_state ); ?>">
-							<?php
-							$this->render_action_button(
-								'link',
-								'gtmetrix_open',
-								$rocket_insights_show_report_btn_args
-							);
-							?>
-							<div class="icon-frame"></div>
-						</div>
-					</div>
 					<div class="row-right">
 						<div class="metric-values <?php echo esc_attr( $rocket_ri_blurred ); ?>">
 							<?php foreach ( $rocket_formatted_metrics as $rocket_metric ) : ?>
@@ -206,6 +193,18 @@ $rocket_formatted_metrics = $data->formatted_metrics ?? [];
 							<?php endforeach; ?>
 						</div>
 					</div>
+				</div>
+			</div>
+			<div class="row-left">
+				<div class="report-link <?php echo esc_attr( $rocket_report_url_icon_state ); ?>">
+					<?php
+					$this->render_action_button(
+						'link',
+						'gtmetrix_open',
+						$rocket_insights_show_report_btn_args
+					);
+					?>
+					<div class="icon-frame"></div>
 				</div>
 			</div>
 		</div>
