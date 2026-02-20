@@ -11,7 +11,6 @@ $rocket_data_array                 = (array) $data;
 $rocket_data_array['is_running']   = $data->is_running();
 $rocket_data_array['is_dashboard'] = false;
 $rocket_ri_blurred                 = ( isset( $rocket_data_array['is_blurred'] ) && $rocket_data_array['is_blurred'] ) || ( isset( $rocket_data_array['status'] ) && 'blurred' === $rocket_data_array['status'] ) ? 'blurred' : '';
-$rocket_can_show_dropdown          = ! $rocket_data_array['is_running'] && 'failed' !== $rocket_data_array['status'];
 $rocket_img_url                    = esc_url( WP_ROCKET_ASSETS_IMG_URL );
 
 // Get pre-formatted metrics from Render class.
@@ -19,7 +18,7 @@ $rocket_formatted_metrics = $data->formatted_metrics ?? [];
 ?>
 <tr class="wpr-ri-item wpr-ri-item-result <?php echo esc_attr( $rocket_data_array['item_classes']['row'] ); ?>" data-rocket-insights-id="<?php echo esc_attr( $data->id ); ?>" >
 	<td class="wpr-ri-item-toggle <?php echo esc_attr( $rocket_data_array['item_classes']['td'] ); ?>">
-		<div class="icon-frame wpr-ri-item-toggle-single <?php echo ! $rocket_can_show_dropdown ? 'hide' : ''; ?>">
+		<div class="icon-frame wpr-ri-item-toggle-single <?php echo ! $rocket_data_array['rocket_can_show_advanced_indicators'] ? 'hide' : ''; ?>">
 		</div>
 	</td>
 	<td class="wpr-ri-item-score">
@@ -121,7 +120,7 @@ $rocket_formatted_metrics = $data->formatted_metrics ?? [];
 		?>
 	</td>
 </tr>
-<?php if ( $rocket_can_show_dropdown ) : ?>
+<?php if ( $rocket_data_array['rocket_can_show_advanced_indicators'] ) : ?>
 <tr class="wpr-ri-details <?php echo esc_attr( $rocket_data_array['details_classes']['row'] ); ?>" id="ri_details_<?php echo $rocket_data_array['id']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>">
 	<td colspan="4" class="details-section-td <?php echo esc_attr( $rocket_data_array['details_classes']['td'] ); ?>">
 		<div class="details-section">
