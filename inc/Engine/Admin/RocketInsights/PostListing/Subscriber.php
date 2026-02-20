@@ -58,12 +58,12 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @since 3.20.1
 	 *
-	 * @param Render   $render Render instance.
-	 * @param Context  $context Context instance.
+	 * @param Render  $render Render instance.
+	 * @param Context $context Context instance.
 	 */
 	public function __construct( Render $render, Context $context ) {
-		$this->render   = $render;
-		$this->context  = $context;
+		$this->render  = $render;
+		$this->context = $context;
 	}
 	/**
 	 * Returns an array of events that this subscriber wants to listen to.
@@ -74,12 +74,12 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'admin_enqueue_scripts'             => 'enqueue_post_listing_assets',
-			'manage_pages_columns'              => 'add_column_to_pages',
-			'manage_posts_columns'              => [ 'add_column_to_posts', 10, 2 ],
-			'manage_product_posts_columns'      => [ 'add_column_to_products', 22 ],
-			'manage_pages_custom_column'        => [ 'render_rocket_insights_column', 10, 2 ],
-			'manage_posts_custom_column'        => [ 'render_rocket_insights_column', 10, 2 ],
+			'admin_enqueue_scripts'        => 'enqueue_post_listing_assets',
+			'manage_pages_columns'         => 'add_column_to_pages',
+			'manage_posts_columns'         => [ 'add_column_to_posts', 10, 2 ],
+			'manage_product_posts_columns' => [ 'add_column_to_products', 22 ],
+			'manage_pages_custom_column'   => [ 'render_rocket_insights_column', 10, 2 ],
+			'manage_posts_custom_column'   => [ 'render_rocket_insights_column', 10, 2 ],
 		];
 	}
 
