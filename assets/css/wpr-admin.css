@@ -2851,7 +2851,6 @@ div.wpr-tutorial-item {
   display: flex;
   justify-content: center;
   align-items: center;
-  position: relative;
 }
 .wpr-percentage-indicator .wpr-percentage-circle {
   display: flex;
@@ -3468,14 +3467,15 @@ div.wpr-tutorial-item {
 }
 .wpr-ri-urls-table .wpr-ri-details .details-section {
   max-height: 0;
-  transition: all 0.5s ease-in-out;
-  overflow: hidden;
+  transition: max-height 0.5s ease-in-out;
+  opacity: 0;
 }
 .wpr-ri-urls-table .wpr-ri-details .details-section-td {
   border-top: 0;
 }
 .wpr-ri-urls-table .wpr-ri-details--expanded .details-section {
-  max-height: 300px;
+  max-height: 80px;
+  opacity: 1;
 }
 .wpr-ri-urls-table .wpr-ri-details--expanded .details-section-td {
   border-top: 1px solid #e2e5e9;

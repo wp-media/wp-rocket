@@ -403,7 +403,7 @@
 		.details-section {
 			max-height: 0;
 			transition: all 0.5s ease-in-out;
-			overflow: hidden;
+			opacity: 0;
 		}
 
 		.details-section-td {
@@ -412,7 +412,8 @@
 
 		&--expanded {
 			.details-section {
-				max-height: 300px;
+				max-height: 80px;
+				opacity: 1;
 			}
 
 			.details-section-td {
