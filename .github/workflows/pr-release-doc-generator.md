@@ -212,17 +212,17 @@ add_filter( 'rocket_filter_name', function( $value ) {
 
 ### Step 5 — Write the File
 
-Write the full generated document to a file named `release-notes-pr-[NUMBER].md` (replace [NUMBER] with the actual PR number) using bash. Use a heredoc to avoid quoting issues:
+Write the full generated document to `/tmp/gh-aw/agent/release-notes-pr-[NUMBER].md` (replace [NUMBER] with the actual PR number) using bash. Use a heredoc to avoid quoting issues:
 
 ```bash
-cat > release-notes-pr-NUMBER.md << 'RELEASE_NOTES_EOF'
+cat > /tmp/gh-aw/agent/release-notes-pr-NUMBER.md << 'RELEASE_NOTES_EOF'
 [full markdown content here]
 RELEASE_NOTES_EOF
 ```
 
-Verify the file was written successfully.
+Verify the file was written correctly with `cat /tmp/gh-aw/agent/release-notes-pr-NUMBER.md`.
 
-This file will be automatically captured in the `agent-artifacts` artifact that gh-aw uploads after the agent completes.
+**Important**: the file must go to `/tmp/gh-aw/agent/` — this is the only directory gh-aw includes in the `agent-artifacts` artifact upload. Files written to the workspace or anywhere else will not be captured.
 
 ### Step 6 — Edge Case Handling
 
@@ -231,7 +231,7 @@ Before writing the file, assess whether this PR has meaningful release-worthy co
 - **Skip documentation if** the PR only touches: `.github/`, `tests/`, `languages/`, `bin/`, `*.yml`, `*.json` config files, `README.md`, `CONTRIBUTING.md`, or similar non-functional files.
 - **Still document if** even a single PHP, JS, or CSS file with user-facing impact is changed.
 
-If no meaningful content exists, write a file named `release-notes-pr-[NUMBER].md` containing only:
+If no meaningful content exists, write a file at `/tmp/gh-aw/agent/release-notes-pr-[NUMBER].md` containing only:
 
 ```
 NO_RELEASE_NOTES
