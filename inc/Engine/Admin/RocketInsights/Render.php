@@ -228,11 +228,16 @@ class Render extends Abstract_Render {
 	 * @return string The rendered HTML for the performance monitoring row.
 	 */
 	public function get_performance_monitoring_list_row( object $data ): string {
-		++$this->rows_counter;
-		$data->has_credit        = $this->plan->has_credit();
-		$data->formatted_metrics = $this->metric_formatter->get_formatted_metrics( $data->metric_data );
-		$data->details_classes   = $this->get_details_classes( $data );
-		$data->item_classes      = $this->get_item_classes( $data );
+		$data->has_credit                          = $this->plan->has_credit();
+		$data->formatted_metrics                   = $this->metric_formatter->get_formatted_metrics( $data->metric_data );
+		$data->rocket_can_show_advanced_indicators = ! $data->is_running() && 'failed' !== $data->status;
+
+		if ( $data->rocket_can_show_advanced_indicators ) {
+			++$this->rows_counter;
+		}
+
+		$data->details_classes = $this->get_details_classes( $data );
+		$data->item_classes    = $this->get_item_classes( $data );
 
 		return $this->generate( 'partials/rocket-insights/table-row', $data );
 	}

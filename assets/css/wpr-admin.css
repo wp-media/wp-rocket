@@ -2851,6 +2851,7 @@ div.wpr-tutorial-item {
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
 }
 .wpr-percentage-indicator .wpr-percentage-circle {
   display: flex;
