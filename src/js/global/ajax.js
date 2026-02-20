@@ -861,13 +861,18 @@ document.addEventListener('DOMContentLoaded', function() {
 		const urlParams = new URLSearchParams(window.location.search);
 		const testId = urlParams.get('ri_id');
 
+		// Send mixpanel event for auto expanded row.
+		let firstRowId = $('.wpr-ri-item--expanded')?.first()?.data('rocket-insights-id');
+
 		// Check if ri_id was passed in query string to open specific test.
 		if (!testId || testId === '') {
+			if (firstRowId) {
+				handleMetricActionTracking('expand', firstRowId, 'auto_expand_url');
+			}
 			return;
 		}
 
-		toggleSingleRowVisibility(testId, 'post type listing');
-		//handleMetricActionTracking('expand', firstRowId, 'auto_expand_url');
+		handleMetricActionTracking('expand', testId, 'post type listing');
 
 		$('html, body').animate({
 			scrollTop: $(`[data-rocket-insights-id="${testId}"]`).offset().top - 100
