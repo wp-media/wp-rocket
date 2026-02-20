@@ -3310,6 +3310,16 @@ div.wpr-tutorial-item {
   position: relative;
   display: block;
 }
+.wpr-ri-urls-table .wpr-ri-item.wpr-global-score .wpr-ri-item-toggle-all {
+  content: "";
+  width: 14px;
+  height: 14px;
+  background: url("../img/ri-caret-all-collapsed.svg") no-repeat center center;
+  display: block;
+}
+.wpr-ri-urls-table .wpr-ri-item.wpr-global-score .wpr-ri-item-toggle-all--expanded {
+  background-image: url("../img/ri-caret-all-expanded.svg");
+}
 .wpr-ri-urls-table .wpr-ri-item-score {
   vertical-align: middle;
   padding: 0 8px;
