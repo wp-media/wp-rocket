@@ -93,9 +93,6 @@ module.exports = (function () {
 			if (!rowId) {
 				return;
 			}
-
-			// Track the View Details click
-			trackViewDetailsClick(rowId, 'post type listing');
 		});
 	}
 
@@ -132,7 +129,7 @@ module.exports = (function () {
 		window.wp.apiFetch({
 			path: '/wp-rocket/v1/rocket-insights/pages/',
 			method: 'POST',
-			data: { 
+			data: {
 				page_url: url,
 				source: 'post type listing'
 			},
@@ -341,36 +338,9 @@ module.exports = (function () {
 		jQuery('.wpr-ri-test-page').each(function() {
 			const button = jQuery(this);
 			const column = button.closest('.wpr-ri-column');
-			
+
 			// Update the data attribute so future clicks will trigger the limit message.
 			column.attr('data-can-add-pages', '0');
-		});
-	}
-
-	/**
-	 * Track View Details click via AJAX.
-	 *
-	 * @param {number} rowId  The database row ID.
-	 * @param {string} context The context (e.g., 'post type listing').
-	 */
-	function trackViewDetailsClick(rowId, context) {
-		// Only track if AJAX URL is available
-		if (!window.ajaxurl) {
-			return;
-		}
-
-		jQuery.ajax({
-			url: window.ajaxurl,
-			type: 'POST',
-			data: {
-				action: 'rocket_track_view_details',
-				row_id: rowId,
-				context: context,
-				nonce: window.rocket_ajax_data?.nonce || ''
-			}
-		}).catch(function(error) {
-			// Silently fail tracking - don't interrupt user experience
-			console.debug('Tracking failed:', error);
 		});
 	}
 
