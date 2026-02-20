@@ -16,8 +16,6 @@ engine: claude
 name: PR Release Documentation Generator
 strict: true
 timeout-minutes: 60
-env:
-  SLACK_BOT_TOKEN: ${{ secrets.DOC_WORKFLOW_SLACK_TOKEN }}
 tools:
   bash:
     - grep -r 'apply_filters\|add_filter\|do_action\|add_action' inc/
@@ -26,10 +24,6 @@ tools:
     - git diff HEAD
     - git log --oneline -20
     - git show
-    - curl -s -X POST https://slack.com/api/chat.postMessage
-    - curl -s -X POST https://slack.com/api/files.upload
-    - curl -s -X POST https://slack.com/api/files.getUploadURLExternal
-    - curl -s -X POST https://slack.com/api/files.completeUploadExternal
     - cat
   github:
     toolsets:
@@ -230,68 +224,20 @@ Verify the file was written successfully.
 
 This file will be automatically captured in the `agent-artifacts` artifact that gh-aw uploads after the agent completes.
 
-### Step 6 — Post to Slack
+### Step 6 — Edge Case Handling
 
-Use the Slack Web API with the bot token from the `SLACK_BOT_TOKEN` environment variable to notify the team.
-
-**6a — Post a summary message:**
-
-```bash
-curl -s -X POST https://slack.com/api/chat.postMessage \
-  -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "channel": "#wpmedia_wprocket-log",
-    "text": "📋 *Release notes generated for PR #[NUMBER]: [TITLE]*\n\n[2-3 sentence summary of what this PR brings]\n\n<https://github.com/wp-media/wp-rocket/pull/NUMBER|View PR>"
-  }'
-```
-
-**6b — Upload the markdown file:**
-
-Slack's current file upload API uses a two-step process. First get an upload URL, then complete the upload:
-
-```bash
-# Step 1: Get upload URL
-UPLOAD_RESPONSE=$(curl -s -X POST https://slack.com/api/files.getUploadURLExternal \
-  -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
-  -H "Content-Type: application/x-www-form-urlencoded" \
-  --data-urlencode "filename=release-notes-pr-NUMBER.md" \
-  --data-urlencode "length=$(wc -c < release-notes-pr-NUMBER.md)")
-
-UPLOAD_URL=$(echo "$UPLOAD_RESPONSE" | grep -o '"upload_url":"[^"]*"' | cut -d'"' -f4)
-FILE_ID=$(echo "$UPLOAD_RESPONSE" | grep -o '"file_id":"[^"]*"' | cut -d'"' -f4)
-
-# Step 2: Upload file content to the URL
-curl -s -X POST "$UPLOAD_URL" \
-  -F "file=@release-notes-pr-NUMBER.md"
-
-# Step 3: Complete upload and share to channel
-curl -s -X POST https://slack.com/api/files.completeUploadExternal \
-  -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d "{
-    \"files\": [{\"id\": \"$FILE_ID\"}],
-    \"channel_id\": \"#wpmedia_wprocket-log\",
-    \"initial_comment\": \"Full release notes for PR #NUMBER\"
-  }"
-```
-
-Check the response JSON for `"ok": true` to confirm success. If posting fails, log the error but do not abort — the artifact is still available.
-
-### Step 7 — Edge Case Handling
-
-Before writing the file and posting to Slack, assess whether this PR has meaningful release-worthy content:
+Before writing the file, assess whether this PR has meaningful release-worthy content:
 
 - **Skip documentation if** the PR only touches: `.github/`, `tests/`, `languages/`, `bin/`, `*.yml`, `*.json` config files, `README.md`, `CONTRIBUTING.md`, or similar non-functional files.
 - **Still document if** even a single PHP, JS, or CSS file with user-facing impact is changed.
 
-If no meaningful content exists, post a brief Slack message:
+If no meaningful content exists, write a file named `release-notes-pr-[NUMBER].md` containing only:
 
 ```
-ℹ️ PR #[NUMBER] was opened targeting trunk but contains no release-worthy code changes. No release notes generated.
+NO_RELEASE_NOTES
 ```
 
-Then exit.
+Then exit. A separate pipeline step will read this marker and skip the Slack notification.
 
 ## Documentation Quality Guidelines
 
@@ -306,5 +252,5 @@ Then exit.
 
 - The PR number and title are available from the `get_pull_request` tool response.
 - You have bash available to grep the codebase for additional context when the diff alone is insufficient.
-- The `SLACK_BOT_TOKEN` env var contains the Slack bot token. Never log or expose it.
-- The generated file will be automatically included in the GitHub Actions artifact — you do not need to explicitly upload it to GitHub.
+- The generated file will be automatically captured in the `agent-artifacts` artifact that gh-aw uploads after you complete — you do not need to do anything to upload it to GitHub.
+- Slack notification is handled by a separate pipeline step after the agent finishes. Your only responsibility is to write the file.
