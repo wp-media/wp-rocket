@@ -701,6 +701,11 @@ document.addEventListener('DOMContentLoaded', function() {
 		$('.wpr-ri-item').last().find('td').addClass('border-bottom');
 
 		if (onLoad) {
+			// On load, remove wpr-last-expanded from elements that are not the last after being added from backend.
+			$('.wpr-ri-item-toggle').not(':last').removeClass('wpr-last-expanded');
+			$('.wpr-ri-item-actions').not(':last').removeClass('wpr-last-expanded');
+			$('.details-section-td').not(':last').removeClass('wpr-last-expanded');
+
 			// Bail early if last item is already expanded on load so as not to have conflicting styles.
 			if($('.details-section-td').last().hasClass('wpr-last-expanded')) {
 				return;
@@ -803,6 +808,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		if ($('.wpr-ri-details--expanded').length > 0) {
 			$('.wpr-ri-details').removeClass('wpr-ri-details--expanded');
 			$('.wpr-ri-item').removeClass('wpr-ri-item--expanded');
+			$(this).removeClass('wpr-ri-item-toggle-all--expanded');
 			updateRowStylingForLastItem(false);
 
 			return;
@@ -810,6 +816,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 		$('.wpr-ri-details').addClass('wpr-ri-details--expanded');
 		$('.wpr-ri-item').addClass('wpr-ri-item--expanded');
+		$(this).addClass('wpr-ri-item-toggle-all--expanded');
 		updateRowStylingForLastItem();
 
 		// Track single expand event for "Expand All" action with test_id as 'all'.
