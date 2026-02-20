@@ -9,6 +9,7 @@ use WP_Rocket\Engine\Admin\RocketInsights\Context\Context;
 use WP_Rocket\Engine\Admin\RocketInsights\Database\Queries\RocketInsights as Query;
 use WP_Rocket\Engine\Admin\RocketInsights\Managers\Plan;
 use WP_Rocket\Engine\Admin\RocketInsights\MetricFormatter;
+use WP_Rocket\Engine\Common\Utils;
 
 class Render extends Abstract_Render {
 	/**
@@ -45,6 +46,13 @@ class Render extends Abstract_Render {
 	 * @var MetricFormatter
 	 */
 	private $metric_formatter;
+
+	/**
+	 * Rows counter to keep track of the number of rows rendered, used for auto-expand the first row for now.
+	 *
+	 * @var int
+	 */
+	private $rows_counter = 0;
 
 	/**
 	 * Constructor for the Render class.
@@ -220,10 +228,70 @@ class Render extends Abstract_Render {
 	 * @return string The rendered HTML for the performance monitoring row.
 	 */
 	public function get_performance_monitoring_list_row( object $data ): string {
+		++$this->rows_counter;
 		$data->has_credit        = $this->plan->has_credit();
 		$data->formatted_metrics = $this->metric_formatter->get_formatted_metrics( $data->metric_data );
+		$data->details_classes   = $this->get_details_classes( $data );
+		$data->item_classes      = $this->get_item_classes( $data );
 
 		return $this->generate( 'partials/rocket-insights/table-row', $data );
+	}
+
+	/**
+	 * Check if this row should be expanded based on the current GET parameters and the row's URL compared to the home URL.
+	 *
+	 * @param object $row The data object representing a single row (page) in the rocket insights list.
+	 * @return bool
+	 */
+	private function is_expanded_row( $row ) {
+		$ri_get_id = intval( $_GET['ri_id'] ?? null ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		return ( $ri_get_id && $ri_get_id === (int) $row->id )
+			||
+			( empty( $ri_get_id ) && 1 === $this->rows_counter );
+	}
+
+	/**
+	 * Get details row classes based on the current row and GET parameters to determine if it should be expanded or not.
+	 *
+	 * @param object $row The data object representing a single row (page) in the rocket insights list.
+	 * @return array
+	 */
+	private function get_details_classes( $row ): array {
+		$classes = [
+			'row' => '',
+			'td'  => '',
+		];
+
+		if ( ! $this->is_expanded_row( $row ) ) {
+			return $classes;
+		}
+
+		$classes['row'] = 'wpr-ri-details--expanded';
+		$classes['td']  = 'wpr-last-expanded';
+
+		return $classes;
+	}
+
+	/**
+	 * Get item row classes based on the current row and GET parameters to determine if it should be expanded or not.
+	 *
+	 * @param object $row The data object representing a single row (page) in the rocket insights list.
+	 * @return array
+	 */
+	private function get_item_classes( $row ): array {
+		$classes = [
+			'row' => '',
+			'td'  => '',
+		];
+
+		if ( ! $this->is_expanded_row( $row ) ) {
+			return $classes;
+		}
+
+		$classes['row'] = 'wpr-ri-item--expanded';
+		$classes['td']  = 'wpr-last-expanded';
+
+		return $classes;
 	}
 
 	/**
@@ -349,8 +417,14 @@ class Render extends Abstract_Render {
 	 * @return string The URL to the RI settings page with the test expanded.
 	 */
 	public function get_view_details_url( int $row_id ): string {
-		$settings_url = admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '#rocket_insights' );
-		return $settings_url . '=' . $row_id;
+		$settings_url = add_query_arg(
+			[
+				'page'  => WP_ROCKET_PLUGIN_SLUG,
+				'ri_id' => $row_id,
+			],
+			admin_url( 'options-general.php' )
+		);
+		return $settings_url . '#rocket_insights';
 	}
 
 	/**

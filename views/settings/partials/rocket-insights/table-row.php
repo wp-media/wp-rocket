@@ -17,10 +17,9 @@ $rocket_img_url                    = esc_url( WP_ROCKET_ASSETS_IMG_URL );
 // Get pre-formatted metrics from Render class.
 $rocket_formatted_metrics = $data->formatted_metrics ?? [];
 ?>
-<tr class="wpr-ri-item wpr-ri-item-result" data-rocket-insights-id="<?php echo esc_attr( $data->id ); ?>" >
-	<td class="wpr-ri-item-toggle">
+<tr class="wpr-ri-item wpr-ri-item-result <?php echo esc_attr( $rocket_data_array['item_classes']['row'] ); ?>" data-rocket-insights-id="<?php echo esc_attr( $data->id ); ?>" >
+	<td class="wpr-ri-item-toggle <?php echo esc_attr( $rocket_data_array['item_classes']['td'] ); ?>">
 		<div class="icon-frame wpr-ri-item-toggle-single <?php echo ! $rocket_can_show_dropdown ? 'hide' : ''; ?>">
-			<img src="<?php echo $rocket_img_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>ri-caret-right.svg" alt="">
 		</div>
 	</td>
 	<td class="wpr-ri-item-score">
@@ -56,7 +55,7 @@ $rocket_formatted_metrics = $data->formatted_metrics ?? [];
 			<?php endif; ?>
 		</a>
 	</td>
-	<td class="wpr-ri-item-actions">
+	<td class="wpr-ri-item-actions <?php echo esc_attr( $rocket_data_array['item_classes']['td'] ); ?>">
 		<?php
 		$rocket_insights_retest_button_args = [
 			'label'      => __( 'Re-Test', 'rocket' ),
@@ -123,8 +122,8 @@ $rocket_formatted_metrics = $data->formatted_metrics ?? [];
 	</td>
 </tr>
 <?php if ( $rocket_can_show_dropdown ) : ?>
-<tr id="ri_details_<?php echo $rocket_data_array['id']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>">
-	<td colspan="4" class="details-section-td">
+<tr class="wpr-ri-details <?php echo esc_attr( $rocket_data_array['details_classes']['row'] ); ?>" id="ri_details_<?php echo $rocket_data_array['id']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>">
+	<td colspan="4" class="details-section-td <?php echo esc_attr( $rocket_data_array['details_classes']['td'] ); ?>">
 		<div class="details-section">
 			<div class="details-header">
 				<p class="details-label"><?php echo esc_html__( 'Details', 'rocket' ); ?></p>
