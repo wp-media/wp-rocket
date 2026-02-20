@@ -54,34 +54,16 @@ class Subscriber implements Subscriber_Interface {
 	];
 
 	/**
-	 * Query object.
-	 *
-	 * @var Query
-	 */
-	private $query;
-
-	/**
-	 * The tracking service.
-	 *
-	 * @var Tracking
-	 */
-	private $tracking;
-
-	/**
 	 * Constructor.
 	 *
 	 * @since 3.20.1
 	 *
 	 * @param Render   $render Render instance.
 	 * @param Context  $context Context instance.
-	 * @param Query    $query Query instance.
-	 * @param Tracking $tracking The tracking service.
 	 */
-	public function __construct( Render $render, Context $context, Query $query, Tracking $tracking ) {
+	public function __construct( Render $render, Context $context ) {
 		$this->render   = $render;
 		$this->context  = $context;
-		$this->query    = $query;
-		$this->tracking = $tracking;
 	}
 	/**
 	 * Returns an array of events that this subscriber wants to listen to.
@@ -98,7 +80,6 @@ class Subscriber implements Subscriber_Interface {
 			'manage_product_posts_columns'      => [ 'add_column_to_products', 22 ],
 			'manage_pages_custom_column'        => [ 'render_rocket_insights_column', 10, 2 ],
 			'manage_posts_custom_column'        => [ 'render_rocket_insights_column', 10, 2 ],
-			'wp_ajax_rocket_track_view_details' => 'ajax_track_view_details',
 		];
 	}
 
@@ -310,36 +291,6 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		$this->render->render_rocket_insights_column( $url, $post_id );
-	}
-
-	/**
-	 * Handle AJAX request to track View Details clicks from post view.
-	 *
-	 * @since 3.20.5
-	 *
-	 * @return void
-	 */
-	public function ajax_track_view_details(): void {
-		check_ajax_referer( 'rocket-ajax', 'nonce', true );
-
-		if ( ! current_user_can( 'rocket_manage_options' ) ) {
-			wp_send_json_error( 'Insufficient permissions to track view details.' );
-		}
-
-		if ( ! isset( $_POST['row_id'], $_POST['context'] ) ) {
-			wp_send_json_error( 'Missing parameters' );
-		}
-
-		$row_id  = absint( wp_unslash( $_POST['row_id'] ) );
-		$context = sanitize_text_field( wp_unslash( $_POST['context'] ) );
-
-		if ( ! $this->query->get_row_by_id( $row_id ) ) {
-			wp_send_json_error( 'Invalid row ID' );
-		}
-
-		$this->tracking->track_rocket_insights_view_details( $row_id, $context );
-
-		wp_send_json_success();
 	}
 
 	/**
