@@ -234,16 +234,23 @@ class Render extends Abstract_Render {
 	 * Generates the HTML for a single performance monitoring list row.
 	 *
 	 * @param object $data The data object representing a single row (page) in the performance monitoring list.
+	 * @param bool   $is_ajax Indicates if the rendering is happening in an AJAX context, which may affect how the row is rendered.
 	 * @return string The rendered HTML for the performance monitoring row.
 	 */
-	public function get_performance_monitoring_list_row( object $data ): string {
+	public function get_performance_monitoring_list_row( object $data, bool $is_ajax = true ): string {
 		$data->has_credit                          = $this->plan->has_credit();
 		$data->formatted_metrics                   = $this->metric_formatter->get_formatted_metrics( $data->metric_data );
 		$data->rocket_can_show_advanced_indicators = ! $data->is_running() && 'failed' !== $data->status;
-		$data->is_first_completed_test             = $data->rocket_can_show_advanced_indicators && $this->is_first_completed_test( $data->id );
-
-		$data->details_classes = $this->get_details_classes( $data );
-		$data->item_classes    = $this->get_item_classes( $data );
+		if ( $data->rocket_can_show_advanced_indicators ) {
+			++$this->rows_counter;
+		}
+		$data->is_first_completed_test = $data->rocket_can_show_advanced_indicators && (
+			( $is_ajax && $this->is_first_completed_test( $data->id ) )
+			||
+			( ! $is_ajax && 1 === $this->rows_counter )
+		);
+		$data->details_classes         = $this->get_details_classes( $data );
+		$data->item_classes            = $this->get_item_classes( $data );
 
 		return $this->generate( 'partials/rocket-insights/table-row', $data );
 	}
@@ -309,10 +316,11 @@ class Render extends Abstract_Render {
 	 * Render the HTML for a single performance monitoring list row.
 	 *
 	 * @param object $data The data object representing a single row (page) in the performance monitoring list.
+	 * @param bool   $is_ajax Indicates if the rendering is happening in an AJAX context, which may affect how the row is rendered.
 	 * @return void
 	 */
-	public function render_performance_monitoring_list_row( object $data ) {
-		echo $this->get_performance_monitoring_list_row( $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	public function render_performance_monitoring_list_row( object $data, bool $is_ajax = true ) {
+		echo $this->get_performance_monitoring_list_row( $data, $is_ajax ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	/**
