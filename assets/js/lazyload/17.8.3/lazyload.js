@@ -27,6 +27,7 @@
 	var supportsIntersectionObserver = runningOnBrowser && "IntersectionObserver" in window;
 	var supportsClassList = runningOnBrowser && "classList" in document.createElement("p");
 	var isHiDpi = runningOnBrowser && window.devicePixelRatio > 1;
+	var isWebKit = runningOnBrowser && /webkit/i.test(navigator.userAgent);
 
 	var defaultSettings = {
 		elements_selector: ".lazy",
@@ -519,7 +520,7 @@
 		addClass(element, settings.class_loaded);
 		setStatus(element, statusLoaded);
 
-		if (element.tagName === 'IMG') {
+		if (element.tagName === 'IMG' && isWebKit) {
 			element.removeAttribute('decoding');
 			element.style.opacity = '0.99';
 			requestAnimationFrame(function () {
