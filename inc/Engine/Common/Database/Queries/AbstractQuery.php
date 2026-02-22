@@ -452,6 +452,23 @@ class AbstractQuery extends Query implements QueryInterface {
 	}
 
 	/**
+	 * Check if the completed row is the first one by checking if there is any other completed row except itself.
+	 *
+	 * @param int $id DB row ID.
+	 * @return bool
+	 */
+	public function is_first_completed( $id ): bool {
+		$count = $this->query(
+			[
+				'count'      => true,
+				'status'     => 'completed',
+				'id__not_in' => [ $id ],
+			]
+		);
+		return 0 === $count;
+	}
+
+	/**
 	 * Get completed rows IDs.
 	 *
 	 * @return int[]|array

@@ -8,8 +8,6 @@ use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\Admin\RocketInsights\Context\Context;
 use WP_Rocket\Engine\Admin\RocketInsights\Database\Queries\RocketInsights as Query;
 use WP_Rocket\Engine\Admin\RocketInsights\Managers\Plan;
-use WP_Rocket\Engine\Admin\RocketInsights\MetricFormatter;
-use WP_Rocket\Engine\Common\Utils;
 
 class Render extends Abstract_Render {
 	/**
@@ -222,6 +220,17 @@ class Render extends Abstract_Render {
 	}
 
 	/**
+	 * Check if the given test ID corresponds to the first completed test in the database,
+	 * used to determine if the row should be auto-expanded.
+	 *
+	 * @param int $id Row ID of the test to check.
+	 * @return bool
+	 */
+	private function is_first_completed_test( int $id ): bool {
+		return $this->query->is_first_completed( $id );
+	}
+
+	/**
 	 * Generates the HTML for a single performance monitoring list row.
 	 *
 	 * @param object $data The data object representing a single row (page) in the performance monitoring list.
@@ -231,10 +240,7 @@ class Render extends Abstract_Render {
 		$data->has_credit                          = $this->plan->has_credit();
 		$data->formatted_metrics                   = $this->metric_formatter->get_formatted_metrics( $data->metric_data );
 		$data->rocket_can_show_advanced_indicators = ! $data->is_running() && 'failed' !== $data->status;
-
-		if ( $data->rocket_can_show_advanced_indicators ) {
-			++$this->rows_counter;
-		}
+		$data->is_first_completed_test             = $data->rocket_can_show_advanced_indicators && $this->is_first_completed_test( $data->id );
 
 		$data->details_classes = $this->get_details_classes( $data );
 		$data->item_classes    = $this->get_item_classes( $data );
@@ -252,7 +258,7 @@ class Render extends Abstract_Render {
 		$ri_get_id = intval( $_GET['ri_id'] ?? null ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		return ( $ri_get_id && $ri_get_id === (int) $row->id )
 			||
-			( empty( $ri_get_id ) && 1 === $this->rows_counter );
+			( empty( $ri_get_id ) && $row->is_first_completed_test );
 	}
 
 	/**
