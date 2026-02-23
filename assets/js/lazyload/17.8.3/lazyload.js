@@ -27,7 +27,7 @@
 	var supportsIntersectionObserver = runningOnBrowser && "IntersectionObserver" in window;
 	var supportsClassList = runningOnBrowser && "classList" in document.createElement("p");
 	var isHiDpi = runningOnBrowser && window.devicePixelRatio > 1;
-	var isWebKit = runningOnBrowser && /webkit/i.test(navigator.userAgent);
+	var isWebKit = runningOnBrowser && /AppleWebKit/.test(navigator.userAgent) && !/Chrome|Chromium/.test(navigator.userAgent);
 
 	var defaultSettings = {
 		elements_selector: ".lazy",
