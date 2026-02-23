@@ -572,11 +572,10 @@ document.addEventListener('DOMContentLoaded', function() {
 					// Show/hide quota banner based on can_add_pages
 					updateQuotaBanner(response.can_add_pages);
 
-					// Start polling if not already running
-					if (!pollTimer) {
-						pollInterval = POLL_BASE_INTERVAL;
-						schedulePolling();
+					if (pollTimer) {
+						resetPolling();
 					}
+					schedulePolling();
 				}
 
 			} else {
