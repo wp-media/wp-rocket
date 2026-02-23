@@ -418,6 +418,7 @@
 				max-height 0.5s ease-in-out 0.2s,      /* Starts immediately */
 				opacity 0.3s ease-in-out 0s;       /* Starts after 0.5s (after max-height) */
 			opacity: 0;
+			visibility: hidden;
 		}
 
 		.details-section-td {
@@ -431,6 +432,7 @@
 				transition:
 					max-height 0.5s ease-in-out 0s,
 					opacity 0.3s ease-in-out 0.2s;
+				visibility: visible;
 			}
 
 			.details-section-td {

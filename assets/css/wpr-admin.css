@@ -3480,6 +3480,7 @@ div.wpr-tutorial-item {
   max-height: 0;
   transition: max-height 0.5s ease-in-out 0.2s, opacity 0.3s ease-in-out 0s; /* Starts after 0.5s (after max-height) */
   opacity: 0;
+  visibility: hidden;
 }
 .wpr-ri-urls-table .wpr-ri-details .details-section-td {
   border-top: 0;
@@ -3488,6 +3489,7 @@ div.wpr-tutorial-item {
   max-height: 80px;
   opacity: 1;
   transition: max-height 0.5s ease-in-out 0s, opacity 0.3s ease-in-out 0.2s;
+  visibility: visible;
 }
 .wpr-ri-urls-table .wpr-ri-details--expanded .details-section-td {
   border-top: 1px solid #e2e5e9;
