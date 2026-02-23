@@ -92,15 +92,14 @@ endif;
 	<?php elseif ( $data['wpr_has_results'] ) : ?>
 		<!-- Results state -->
 		<?php if ( $data['wpr_is_blurred'] ) : ?>
-			<!-- Blurred score - show score with tooltip and actions (Re-test clickable, See Report disabled) -->
+			<!-- Blurred score - show score with tooltip and actions (Re-test clickable, View Details disabled with tooltip) -->
 			<div class="wpr-ri-blurred">
 				<div class="wpr-btn-with-tool-tip">
 					<?php $this->render_performance_score( $data['wpr_score_data'] ); ?>
 					<div class="wpr-tooltip">
 						<div class="wpr-tooltip-content">
 							<?php
-							// translators: %s = human-readable time difference (e.g., "5 minutes").
-							printf( esc_html__( 'Tested %s ago', 'rocket' ), esc_html( human_time_diff( $data['wpr_rocket_row']->modified, time() ) ) );
+							esc_html_e( 'Upgrade your plan to see your score', 'rocket' );
 							?>
 						</div>
 					</div>
@@ -110,9 +109,16 @@ endif;
 					<?php
 					$render_retest_button();
 					?>
-					<span class="wpr-ri-see-report-link wpr-icon-report wpr-ri-disabled">
-						<?php esc_html_e( 'See Report', 'rocket' ); ?>
-					</span>
+					<div class="wpr-btn-with-tool-tip">
+						<span class="wpr-ri-view-details-link wpr-icon-report wpr-ri-disabled">
+							<?php esc_html_e( 'View Details', 'rocket' ); ?>
+						</span>
+						<div class="wpr-tooltip">
+							<div class="wpr-tooltip-content">
+								<?php esc_html_e( 'Upgrade to view detailed metrics', 'rocket' ); ?>
+							</div>
+						</div>
+					</div>
 					<?php
 					$render_credit_message();
 					?>
@@ -136,17 +142,15 @@ endif;
 				<?php
 				$render_retest_button();
 
-				// See report link - only show if report_url exists.
-				$wpr_report_url = $data['wpr_rocket_row']->report_url ?? ''; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
-
-				if ( ! empty( $wpr_report_url ) && $data['wpr_can_access_report'] ) :
+				// View details link - only show if test is completed successfully.
+				if ( ! empty( $data['wpr_rocket_row']->id ) && $data['wpr_can_access_report'] ) :
 					?>
-					<a href="<?php echo esc_url( $wpr_report_url ); ?>" class="wpr-ri-see-report-link wpr-icon-report" target="_blank" rel="noopener">
-						<?php esc_html_e( 'See Report', 'rocket' ); ?>
+					<a href="<?php echo esc_url( $data['wpr_view_details_url'] ); ?>" class="wpr-ri-view-details-link wpr-icon-report" target="_blank" rel="noopener" data-rocket-insights-id="<?php echo esc_attr( $data['wpr_rocket_row']->id ); ?>">
+						<?php esc_html_e( 'View Details', 'rocket' ); ?>
 					</a>
 				<?php else : ?>
-					<span class="wpr-ri-see-report-link wpr-icon-report wpr-ri-disabled">
-						<?php esc_html_e( 'See Report', 'rocket' ); ?>
+					<span class="wpr-ri-view-details-link wpr-icon-report wpr-ri-disabled">
+						<?php esc_html_e( 'View Details', 'rocket' ); ?>
 					</span>
 					<?php
 				endif;
@@ -176,9 +180,16 @@ endif;
 			<?php
 			$render_retest_button();
 			?>
-			<span class="wpr-ri-see-report-link wpr-icon-report wpr-ri-disabled">
-				<?php esc_html_e( 'See Report', 'rocket' ); ?>
-			</span>
+			<div class="wpr-btn-with-tool-tip">
+				<span class="wpr-ri-view-details-link wpr-icon-report wpr-ri-disabled">
+					<?php esc_html_e( 'View Details', 'rocket' ); ?>
+				</span>
+				<div class="wpr-tooltip">
+					<div class="wpr-tooltip-content">
+						<?php esc_html_e( 'Test failed - no details available', 'rocket' ); ?>
+					</div>
+				</div>
+			</div>
 			<?php $render_credit_message(); ?>
 		</div>
 	<?php endif; ?>

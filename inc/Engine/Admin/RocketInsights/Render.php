@@ -39,23 +39,39 @@ class Render extends Abstract_Render {
 	private $query;
 
 	/**
+	 * MetricFormatter instance.
+	 *
+	 * @var MetricFormatter
+	 */
+	private $metric_formatter;
+
+	/**
+	 * Rows counter to keep track of the number of rows rendered, used for auto-expand the first row for now.
+	 *
+	 * @var int
+	 */
+	private $rows_counter = 0;
+
+	/**
 	 * Constructor for the Render class.
 	 *
 	 * Initializes the Render instance with the provided template path and CreditManager.
 	 *
-	 * @param string  $template_path   Path to the template file.
-	 * @param Plan    $plan Plan instance.
-	 * @param Context $context Instance of PerformanceMonitoringContext for managing performance monitoring context.
-	 * @param Beacon  $beacon          Beacon instance.
-	 * @param Query   $query           Query instance.
+	 * @param string          $template_path    Path to the template file.
+	 * @param Plan            $plan             Plan instance.
+	 * @param Context         $context          Instance of PerformanceMonitoringContext for managing performance monitoring context.
+	 * @param Beacon          $beacon           Beacon instance.
+	 * @param Query           $query            Query instance.
+	 * @param MetricFormatter $metric_formatter MetricFormatter instance.
 	 */
-	public function __construct( $template_path, Plan $plan, Context $context, Beacon $beacon, Query $query ) {
+	public function __construct( $template_path, Plan $plan, Context $context, Beacon $beacon, Query $query, MetricFormatter $metric_formatter ) {
 		parent::__construct( $template_path );
 
-		$this->plan    = $plan;
-		$this->context = $context;
-		$this->beacon  = $beacon;
-		$this->query   = $query;
+		$this->plan             = $plan;
+		$this->context          = $context;
+		$this->beacon           = $beacon;
+		$this->query            = $query;
+		$this->metric_formatter = $metric_formatter;
 	}
 
 	/**
@@ -204,25 +220,107 @@ class Render extends Abstract_Render {
 	}
 
 	/**
+	 * Check if the given test ID corresponds to the first completed test in the database,
+	 * used to determine if the row should be auto-expanded.
+	 *
+	 * @param int $id Row ID of the test to check.
+	 * @return bool
+	 */
+	private function is_first_completed_test( int $id ): bool {
+		return $this->query->is_first_completed( $id );
+	}
+
+	/**
 	 * Generates the HTML for a single performance monitoring list row.
 	 *
 	 * @param object $data The data object representing a single row (page) in the performance monitoring list.
+	 * @param bool   $is_ajax Indicates if the rendering is happening in an AJAX context, which may affect how the row is rendered.
 	 * @return string The rendered HTML for the performance monitoring row.
 	 */
-	public function get_performance_monitoring_list_row( object $data ): string {
-		$data->has_credit = $this->plan->has_credit();
+	public function get_performance_monitoring_list_row( object $data, bool $is_ajax = true ): string {
+		$data->has_credit                          = $this->plan->has_credit();
+		$data->formatted_metrics                   = $this->metric_formatter->get_formatted_metrics( $data->metric_data );
+		$data->rocket_can_show_advanced_indicators = ! $data->is_running() && 'failed' !== $data->status;
+		if ( $data->rocket_can_show_advanced_indicators ) {
+			++$this->rows_counter;
+		}
+		$data->is_first_completed_test = $data->rocket_can_show_advanced_indicators && (
+			( $is_ajax && $this->is_first_completed_test( $data->id ) )
+			||
+			( ! $is_ajax && 1 === $this->rows_counter )
+		);
+		$data->details_classes         = $this->get_details_classes( $data );
+		$data->item_classes            = $this->get_item_classes( $data );
 
 		return $this->generate( 'partials/rocket-insights/table-row', $data );
+	}
+
+	/**
+	 * Check if this row should be expanded based on the current GET parameters and the row's URL compared to the home URL.
+	 *
+	 * @param object $row The data object representing a single row (page) in the rocket insights list.
+	 * @return bool
+	 */
+	private function is_expanded_row( $row ) {
+		$ri_get_id = intval( $_GET['ri_id'] ?? null ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		return ( $ri_get_id && $ri_get_id === (int) $row->id )
+			||
+			( empty( $ri_get_id ) && $row->is_first_completed_test );
+	}
+
+	/**
+	 * Get details row classes based on the current row and GET parameters to determine if it should be expanded or not.
+	 *
+	 * @param object $row The data object representing a single row (page) in the rocket insights list.
+	 * @return array
+	 */
+	private function get_details_classes( $row ): array {
+		$classes = [
+			'row' => '',
+			'td'  => '',
+		];
+
+		if ( ! $this->is_expanded_row( $row ) ) {
+			return $classes;
+		}
+
+		$classes['row'] = 'wpr-ri-details--expanded';
+		$classes['td']  = 'wpr-last-expanded';
+
+		return $classes;
+	}
+
+	/**
+	 * Get item row classes based on the current row and GET parameters to determine if it should be expanded or not.
+	 *
+	 * @param object $row The data object representing a single row (page) in the rocket insights list.
+	 * @return array
+	 */
+	private function get_item_classes( $row ): array {
+		$classes = [
+			'row' => '',
+			'td'  => '',
+		];
+
+		if ( ! $this->is_expanded_row( $row ) ) {
+			return $classes;
+		}
+
+		$classes['row'] = 'wpr-ri-item--expanded';
+		$classes['td']  = 'wpr-last-expanded';
+
+		return $classes;
 	}
 
 	/**
 	 * Render the HTML for a single performance monitoring list row.
 	 *
 	 * @param object $data The data object representing a single row (page) in the performance monitoring list.
+	 * @param bool   $is_ajax Indicates if the rendering is happening in an AJAX context, which may affect how the row is rendered.
 	 * @return void
 	 */
-	public function render_performance_monitoring_list_row( object $data ) {
-		echo $this->get_performance_monitoring_list_row( $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	public function render_performance_monitoring_list_row( object $data, bool $is_ajax = true ) {
+		echo $this->get_performance_monitoring_list_row( $data, $is_ajax ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	/**
@@ -330,6 +428,25 @@ class Render extends Abstract_Render {
 	}
 
 	/**
+	 * Generates the URL for the View Details link pointing to RI settings page with expanded metrics.
+	 *
+	 * @since 3.20.5
+	 *
+	 * @param int $row_id The database row ID for the test.
+	 * @return string The URL to the RI settings page with the test expanded.
+	 */
+	public function get_view_details_url( int $row_id ): string {
+		$settings_url = add_query_arg(
+			[
+				'page'  => WP_ROCKET_PLUGIN_SLUG,
+				'ri_id' => $row_id,
+			],
+			admin_url( 'options-general.php' )
+		);
+		return $settings_url . '#rocket_insights';
+	}
+
+	/**
 	 * Generates the Rocket Insights column content for post listing pages.
 	 *
 	 * @since 3.20.1
@@ -382,6 +499,7 @@ class Render extends Abstract_Render {
 			$template_data['wpr_has_results']       = 'completed' === $row->status || 'blurred' === $row->status;
 			$template_data['wpr_is_blurred']        = isset( $row->is_blurred ) && $row->is_blurred;
 			$template_data['wpr_can_access_report'] = $row->can_access_report();
+			$template_data['wpr_view_details_url']  = $this->get_view_details_url( (int) $row->id );
 
 			// Prepare score data for template rendering.
 			$template_data['wpr_score_data'] = $this->prepare_score_data( $row );

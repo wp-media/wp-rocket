@@ -282,4 +282,53 @@ class Tracking extends Abstract_Render {
 			]
 		);
 	}
+
+	/**
+	 * Track when "View Details" is clicked from the Rocket Insights column.
+	 *
+	 * @since 3.20.5
+	 *
+	 * @param int    $row_id  The database row ID of the test.
+	 * @param string $context The context where the button was clicked (e.g., 'post type listing').
+	 *
+	 * @return void
+	 */
+	public function track_rocket_insights_view_details( int $row_id, string $context ): void {
+		if ( ! $this->optin->can_track() ) {
+			return;
+		}
+
+		$this->mixpanel->track(
+			'Rocket Insights View Details',
+			[
+				'context' => 'wp_plugin',
+				'source'  => $context,
+				'test_id' => $row_id,
+			]
+		);
+	}
+
+	/**
+	 * Tracks a Rocket Insights details action event.
+	 *
+	 * @param string     $event_name The name of the event to track.
+	 * @param int|string $row_id     The ID of the test row, or 'all' for global actions.
+	 * @param string     $source     The source of the action (e.g., 'url_expand', 'global_expand', 'post type listing', 'auto_expand_url').
+	 *
+	 * @return void
+	 */
+	public function track_rocket_insights_details_action( $event_name, $row_id, $source ): void {
+		if ( ! $this->optin->can_track() ) {
+			return;
+		}
+
+		$this->mixpanel->track_direct(
+			$event_name,
+			[
+				'context' => 'wp_plugin',
+				'test_id' => $row_id,
+				'source'  => $source,
+			]
+		);
+	}
 }

@@ -306,8 +306,14 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 	}
 
+	function hasId(id) {
+		return rocketInsightsIds.includes(id);
+	}
+
 	function removeId(id) {
-		rocketInsightsIds = rocketInsightsIds.filter(x => x !== parseInt(id, 10));
+		// Ensure that the id to be removed is an integer for accurate comparison.
+		const idToRemove = parseInt(id, 10);
+		rocketInsightsIds = rocketInsightsIds.filter(x => parseInt(x, 10) !== idToRemove);
 	}
 
 	function updateQuotaBanner(canAddPages) {
@@ -484,8 +490,15 @@ document.addEventListener('DOMContentLoaded', function() {
 					updateGlobalScoreRow(globalScoreData);
 				}
 				response.results.forEach(result => {
-					const $row = $(`[data-rocket-insights-id="${result.id}"]`);
+					const $row = $(`.wpr-ri-item[data-rocket-insights-id="${result.id}"]`);
 					$row.replaceWith(result.html);
+
+					$(document).trigger('rocket-insights-page-test-polling', [result.id]);
+
+					// Trigger custom event only when test is completed and not failed, so we don't target an element that might be removed from the DOM after test completion.
+					if (result.status === 'completed') {
+						$(document).trigger('rocket-insights-page-test-completed', [result.id]);
+					}
 
 					if (result.status === 'completed' || result.status === 'failed') {
 						removeId(result.id);
@@ -531,34 +544,41 @@ document.addEventListener('DOMContentLoaded', function() {
 			}
 		).then( ( response ) => {
 			if (response.success) {
-				$pageUrlInput.val('');
-				$tableBody.append(response.html);
-				$table.removeClass('hidden');
-				addIds(response.id);
-				let pages_num_container = $('#rocket_rocket_insights_pages_num');
-				pages_num_container.text( parseInt( pages_num_container.text() ) + 1 );
+				if ( ! hasId(response.id) ) {
+					$pageUrlInput.val('');
+					$tableBody.append(response.html);
 
-				// Update credit status
-				updateCreditState(response.has_credit);
+					// Custom event when new page is added.
+					$(document).trigger('rocket-insights-page-added');
 
-                // Update global score data.
-                globalScoreData = response.global_score_data;
+					$table.removeClass('hidden');
+					addIds(response.id);
+					let pages_num_container = $('#rocket_rocket_insights_pages_num');
+					pages_num_container.text( parseInt( pages_num_container.text() ) + 1 );
 
-				// Update global score row in table if on Rocket Insights page.
-				updateGlobalScoreRow(globalScoreData);
+					// Update credit status
+					updateCreditState(response.has_credit);
 
-				if ('disabled_btn_html' in globalScoreData) {
-					$('#wpr_rocket_insights_add_page_btn_wrapper').html(globalScoreData.disabled_btn_html.rocket_insights);
+					// Update global score data.
+					globalScoreData = response.global_score_data;
+
+					// Update global score row in table if on Rocket Insights page.
+					updateGlobalScoreRow(globalScoreData);
+
+					if ('disabled_btn_html' in globalScoreData) {
+						$('#wpr_rocket_insights_add_page_btn_wrapper').html(globalScoreData.disabled_btn_html.rocket_insights);
+					}
+
+					// Show/hide quota banner based on can_add_pages
+					updateQuotaBanner(response.can_add_pages);
+
+					// Start polling if not already running
+					if (!pollTimer) {
+						pollInterval = POLL_BASE_INTERVAL;
+						schedulePolling();
+					}
 				}
 
-				// Show/hide quota banner based on can_add_pages
-				updateQuotaBanner(response.can_add_pages);
-
-				// Start polling if not already running
-				if (!pollTimer) {
-					pollInterval = POLL_BASE_INTERVAL;
-					schedulePolling();
-				}
 			} else {
 				// Clear the input field on error
 				$pageUrlInput.val('');
@@ -599,8 +619,12 @@ document.addEventListener('DOMContentLoaded', function() {
 			if (response.success) {
 				addIds(response.id);
 
+				$(`#ri_details_${response.id} .details-section-td`).remove();
 				const $row = $(`[data-rocket-insights-id="${response.id}"]`);
 				$row.replaceWith(response.html);
+
+				// Custom event when page is retested.
+        		$(document).trigger('rocket-insights-page-retest', [response.id]);
 
 				// Update credit status
 				updateCreditState(response.has_credit);
@@ -670,5 +694,211 @@ document.addEventListener('DOMContentLoaded', function() {
 		setTimeout(() => {
 			updateGlobalScoreRow(globalScoreData);
 		}, 30);
+	});
+
+	// Handle collapseed styling for first load or dynamic row addition.
+	function addCollapsedStylingToLastRow(onLoad = false) {
+		$('.wpr-ri-item').last().find('td').addClass('border-bottom');
+
+		if (onLoad) {
+			// On load, remove wpr-last-expanded from elements that are not the last after being added from backend.
+			$('.wpr-ri-item-toggle').not(':last').removeClass('wpr-last-expanded');
+			$('.wpr-ri-item-actions').not(':last').removeClass('wpr-last-expanded');
+			$('.details-section-td').not(':last').removeClass('wpr-last-expanded');
+
+			// Bail early if last item is already expanded on load so as not to have conflicting styles.
+			if($('.details-section-td').last().hasClass('wpr-last-expanded')) {
+				return;
+			}
+		}
+		$('.wpr-ri-item-toggle').last().addClass('wpr-last-collapsed');
+		$('.wpr-ri-item-actions').last().addClass('wpr-last-collapsed');
+		$('.details-section-td').last().addClass('wpr-last-collapsed');
+	}
+
+	// Toggles the visibility of a single test details row, switches the caret icon, and updates styling for the last item.
+	function toggleSingleRowVisibility(insightsId, source) {
+		let $element = $(`#ri_details_${insightsId}`);
+		let isVisible = $element.hasClass('wpr-ri-details--expanded');
+		let isLast = $(`[data-rocket-insights-id="${insightsId}"] .wpr-ri-item-toggle-single`).is($('.wpr-ri-item-toggle-single').last());
+
+		if ( isVisible ) {
+			$element.removeClass('wpr-ri-details--expanded');
+			$(`[data-rocket-insights-id="${insightsId}"]`).removeClass('wpr-ri-item--expanded');
+			// Manipulate styling for last elements when details cell is not visible.
+			if (isLast) {
+				updateRowStylingForLastItem(false);
+			}
+
+			return;
+		}
+
+		$element.addClass('wpr-ri-details--expanded');
+		$(`[data-rocket-insights-id="${insightsId}"]`).addClass('wpr-ri-item--expanded');
+
+		// Track expand only expand metric action.
+		handleMetricActionTracking('expand', insightsId, source);
+
+		if (isLast) {
+			updateRowStylingForLastItem();
+		}
+	}
+
+	// Tracks user interactions with metric actions in Rocket Insights via AJAX.
+	function handleMetricActionTracking(event, rowId, source) {
+		$.post(
+			ajaxurl,
+			{
+				action: 'rocket_insight_track_metric_actions',
+				_ajax_nonce: rocket_ajax_data.nonce,
+				event: event,
+				row_id: rowId,
+				source: source
+			},
+			function(response) {
+				if (!response.success) {
+					console.error('Metric action tracking failed:', response?.data || response);
+				}
+			}
+		);
+	}
+
+	/**
+	 * Updates the border styling for the last row item in the Rocket Insights table.
+	 *
+	 * Manages border radius and bottom border styling based on whether the details
+	 * cell is expanded or collapsed to maintain proper visual appearance.
+	 */
+	function updateRowStylingForLastItem(isExpanded = true) {
+		const addState = isExpanded ? 'wpr-last-expanded' : 'wpr-last-collapsed';
+		const removeState = isExpanded ? 'wpr-last-collapsed' : 'wpr-last-expanded';
+
+		var $selectors = {
+			lastToggle: $('.wpr-ri-item-toggle').last(),
+			lastActions: $('.wpr-ri-item-actions').last()
+		};
+
+		$selectors.lastToggle
+			.removeClass(removeState)
+			.addClass(addState);
+
+		$selectors.lastActions
+			.removeClass(removeState)
+			.addClass(addState);
+
+
+		// Check if last detail row is not the last row in the table so as not to apply improper styling with border radius between rows.
+		var $lastDetailsCell = $('.details-section-td').last();
+		if ($lastDetailsCell.closest('tr').next('tr').length !== 0) {
+			return;
+		}
+
+		$lastDetailsCell.removeClass(removeState)
+		.addClass(addState);
+	}
+
+	// Toggle single item.
+	$(document).on('click', '.wpr-ri-item-toggle-single', function() {
+		var insightsId = $(this).closest('.wpr-ri-item').data('rocket-insights-id');
+		toggleSingleRowVisibility(insightsId, 'url_expand');
+	});
+
+	// Toggle all items.
+	$(document).on('click', '.wpr-ri-item-toggle-all', function () {
+		if ($('.wpr-ri-details--expanded').length > 0) {
+			$('.wpr-ri-details').removeClass('wpr-ri-details--expanded');
+			$('.wpr-ri-item').removeClass('wpr-ri-item--expanded');
+			$(this).removeClass('wpr-ri-item-toggle-all--expanded');
+			updateRowStylingForLastItem(false);
+
+			return;
+		}
+
+		$('.wpr-ri-details').addClass('wpr-ri-details--expanded');
+		$('.wpr-ri-item').addClass('wpr-ri-item--expanded');
+		$(this).addClass('wpr-ri-item-toggle-all--expanded');
+		updateRowStylingForLastItem();
+
+		// Track single expand event for "Expand All" action with test_id as 'all'.
+		handleMetricActionTracking('expand', 'all', 'global_expand');
+	});
+
+	// Track "See Report" clicks in Rocket Insights.
+	$(document).on('click', '.wpr-ri-report', function(e) {	// Only track if link is not disabled and mixpanel is available.
+		if ($(this).hasClass('wpr-ri-action--disabled')) {
+			return;
+		}
+
+		var insightsId = $(this).data('rocket-insights-row-id');
+		handleMetricActionTracking('see_report', insightsId, 'see_report_button');
+	});
+
+	// Update table styling after new page is added.
+	$(document).on('rocket-insights-page-test-completed', function (e, insightsId) {
+		// Bail out if there is more than 1 result.
+		if ($('.wpr-ri-item-result').length > 1) {
+			return;
+		}
+
+		// Remove dynamic class when only one item exist in table.
+		$('.wpr-last-collapsed').removeClass('wpr-last-collapsed');
+	});
+
+	// Update table styling after new page is added.
+	$(document).on('rocket-insights-page-added', function (e) {
+		// Remove dynamic class for last item if exists when new page is added.
+		$('.wpr-last-collapsed').removeClass('wpr-last-collapsed');
+		$('.wpr-last-expanded').removeClass('wpr-last-expanded');
+		$('.border-bottom').removeClass('border-bottom');
+	});
+
+	// Update table styling after retest or polling update for last row.
+	$(document).on('rocket-insights-page-retest rocket-insights-page-test-polling', function (e, insightsId) {
+		// Check if item is the last.
+		var isLast = $(`[data-rocket-insights-id="${insightsId}"]`).is($('.wpr-ri-item-result').last());
+
+		if (isLast) {
+			addCollapsedStylingToLastRow();
+		}
+	});
+
+	$(document).on('rocket-insights-page-retest', function (e, insightsId) {
+		$(`#ri_details_${insightsId}`).removeClass('wpr-ri-details--expanded');
+		$(`[data-rocket-insights-id="${insightsId}"]`).removeClass('wpr-ri-item--expanded');
+	});
+
+	$(window).load(() => {
+		if ( ! isOnRocketInsights() ) {
+			return;
+		}
+
+		// Add collapsed styling to the last row on initial load.
+		addCollapsedStylingToLastRow(true);
+
+		// Set initial expand/collapse state.
+		const urlParams = new URLSearchParams(window.location.search);
+		const testId = urlParams.get('ri_id');
+
+		// Send mixpanel event for auto expanded row.
+		let firstRowId = $('.wpr-ri-item--expanded')?.first()?.data('rocket-insights-id');
+
+		// Check if ri_id was passed in query string to open specific test.
+		if (!testId || testId === '') {
+			if (firstRowId) {
+				handleMetricActionTracking('expand', firstRowId, 'auto_expand_url');
+			}
+			return;
+		}
+
+		handleMetricActionTracking('expand', testId, 'post type listing');
+
+		$('html, body').animate({
+			scrollTop: $(`[data-rocket-insights-id="${testId}"]`).offset().top - 100
+		}, 500);
+
+		// Remove ri_id from URL without page reload
+		urlParams.delete('ri_id');
+		const newUrl = window.location.pathname + '?' + urlParams.toString() + window.location.hash;
+		window.history.replaceState({}, '', newUrl);
 	});
 });
