@@ -324,6 +324,9 @@
   -webkit-filter: blur(4px);
   pointer-events: none;
 }
+.wpr-ri-column .wpr-ri-blurred .wpr-btn-with-tool-tip {
+  width: 100%;
+}
 .wpr-ri-column .wpr-ri-score-wrapper {
   margin-bottom: 12px;
 }
@@ -383,7 +386,8 @@
   margin-bottom: 3px;
 }
 .wpr-ri-column .wpr-ri-actions-wrapper .wpr-ri-retest-link,
-.wpr-ri-column .wpr-ri-actions-wrapper .wpr-ri-see-report-link {
+.wpr-ri-column .wpr-ri-actions-wrapper .wpr-ri-see-report-link,
+.wpr-ri-column .wpr-ri-actions-wrapper .wpr-ri-view-details-link {
   display: block;
   color: #2271b1;
   text-decoration: none;
@@ -395,13 +399,16 @@
   cursor: pointer;
 }
 .wpr-ri-column .wpr-ri-actions-wrapper .wpr-ri-retest-link:before,
-.wpr-ri-column .wpr-ri-actions-wrapper .wpr-ri-see-report-link:before {
+.wpr-ri-column .wpr-ri-actions-wrapper .wpr-ri-see-report-link:before,
+.wpr-ri-column .wpr-ri-actions-wrapper .wpr-ri-view-details-link:before {
   margin-right: 4px;
   font-size: 14px;
 }
 .wpr-ri-column .wpr-ri-actions-wrapper .wpr-ri-retest-link:focus-visible, .wpr-ri-column .wpr-ri-actions-wrapper .wpr-ri-retest-link:focus,
 .wpr-ri-column .wpr-ri-actions-wrapper .wpr-ri-see-report-link:focus-visible,
-.wpr-ri-column .wpr-ri-actions-wrapper .wpr-ri-see-report-link:focus {
+.wpr-ri-column .wpr-ri-actions-wrapper .wpr-ri-see-report-link:focus,
+.wpr-ri-column .wpr-ri-actions-wrapper .wpr-ri-view-details-link:focus-visible,
+.wpr-ri-column .wpr-ri-actions-wrapper .wpr-ri-view-details-link:focus {
   outline: none;
   box-shadow: 0 0 0 0 rgba(106, 90, 205, 0.18);
   border-radius: 2px;
@@ -410,13 +417,15 @@
   font-size: 15px;
 }
 .wpr-ri-column .wpr-ri-actions-wrapper .wpr-ri-retest-link.wpr-ri-disabled,
-.wpr-ri-column .wpr-ri-actions-wrapper .wpr-ri-see-report-link.wpr-ri-disabled {
+.wpr-ri-column .wpr-ri-actions-wrapper .wpr-ri-see-report-link.wpr-ri-disabled,
+.wpr-ri-column .wpr-ri-actions-wrapper .wpr-ri-view-details-link.wpr-ri-disabled {
   color: #a7aaad;
   cursor: not-allowed;
   pointer-events: none;
 }
 .wpr-ri-column .wpr-ri-actions-wrapper .wpr-ri-retest-link.wpr-ri-disabled:hover,
-.wpr-ri-column .wpr-ri-actions-wrapper .wpr-ri-see-report-link.wpr-ri-disabled:hover {
+.wpr-ri-column .wpr-ri-actions-wrapper .wpr-ri-see-report-link.wpr-ri-disabled:hover,
+.wpr-ri-column .wpr-ri-actions-wrapper .wpr-ri-view-details-link.wpr-ri-disabled:hover {
   text-decoration: none;
 }
 .wpr-ri-column .wpr-ri-actions-wrapper .wpr-ri-no-credit-text {
