@@ -8,9 +8,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.20.4-alpha\n"
+"Project-Id-Version: WP Rocket 3.20.4-beta2\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2026-02-09T14:09:35+00:00\n"
+"POT-Creation-Date: 2026-02-10T13:18:06+00:00\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: BouRock, 2026\n"
 "Language-Team: Turkish (Turkey) (https://app.transifex.com/wp-media/teams/18133/tr_TR/)\n"
@@ -3700,15 +3700,15 @@ msgstr ""
 " erişiminizi kaybettiniz."
 
 #. translators: %1$s = <strong>, %2$s = WP Rocket plugin name, %3$s =
-#. </strong>, %4$s = <a>, %5$s = </a>.
-#: inc/Engine/License/Revoked.php:94
+#. </strong>, %4$s = <a>, %5$s = percentage, %6$s = </a>.
+#: inc/Engine/License/Revoked.php:95
 #, php-format
 msgid ""
 "%1$s%2$s%3$s: Your license has been revoked and your site is no longer "
-"optimized for speed. %4$sGet WP Rocket at 20%% off%5$s"
+"optimized for speed. %4$sGet WP Rocket at %5$s off%6$s"
 msgstr ""
 "%1$s%2$s%3$s: Lisansınız iptal edildi ve siteniz artık hız açısından en iyi "
-"hale getirilmiyor. %4$sWP Rocket’ı %%20 indirimli alın%5$s"
+"hale getirilmiyor. %4$sWP Rocket’ı %5$s indirimli alın%6$s"
 
 #. translators: %1$s = promotion name, %2$s = <br>, %3$s = <strong>, %4$s =
 #. promotion discount percentage, %5$s = </strong>, %6$s = Growth or Multi.
@@ -4206,7 +4206,7 @@ msgstr "Çözmek için lütfen %1$sdestek ile iletişime geçin%2$s."
 
 #. Translators: %1$s = opening em tag, %2$s = closing em tag, %3$s = opening
 #. link tag, %4$s closing link tag.
-#: inc/functions/options.php:491 inc/functions/options.php:536
+#: inc/functions/options.php:491 inc/functions/options.php:537
 msgid ""
 "License validation failed. Our server could not resolve the request from "
 "your website."
@@ -4235,18 +4235,18 @@ msgstr ""
 " Lütfen aşağıdakini yapın:"
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
-#: inc/functions/options.php:507 inc/functions/options.php:555
+#: inc/functions/options.php:507 inc/functions/options.php:556
 #, php-format
 msgid "Login to your WP Rocket %1$saccount%2$s"
 msgstr "WP Rocket %1$shesabınıza%2$s oturum açın"
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
-#: inc/functions/options.php:507 inc/functions/options.php:555
+#: inc/functions/options.php:507 inc/functions/options.php:556
 msgid "Download the zip file"
 msgstr "Zip dosyasını indir"
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
-#: inc/functions/options.php:507 inc/functions/options.php:555
+#: inc/functions/options.php:507 inc/functions/options.php:556
 msgid "Reinstall"
 msgstr "Yeniden Yükle"
 
@@ -4288,7 +4288,7 @@ msgstr "Lisans doğrulama başarısız oldu. Bu web sitesi iptal edildi."
 
 #. Translators: %1$s = opening em tag, %2$s = closing em tag, %3$s = opening
 #. link tag, %4$s closing link tag.
-#: inc/functions/options.php:536
+#: inc/functions/options.php:537
 #, php-format
 msgid ""
 "Try clicking %1$sSave Changes%2$s below. If the error persists, follow "
@@ -4298,25 +4298,25 @@ msgstr ""
 " devam ederse, %3$sbu kılavuzu%4$s takip edin."
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
-#: inc/functions/options.php:549
+#: inc/functions/options.php:550
 msgid "Your license is not valid."
 msgstr "Lisansınız geçerli değil."
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
-#: inc/functions/options.php:549
+#: inc/functions/options.php:550
 #, php-format
 msgid "Make sure you have an active %1$sWP Rocket license%2$s."
 msgstr "Aktif bir %1$sWP Rocket lisansına%2$s sahip olduğunuzdan emin olun."
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag, %3$s =
 #. opening link tag.
-#: inc/functions/options.php:551
+#: inc/functions/options.php:552
 msgid "You have added as many sites as your current license allows."
 msgstr "Şu anki lisansınızın izin verdiği kadar çok site eklediniz."
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag, %3$s =
 #. opening link tag.
-#: inc/functions/options.php:551
+#: inc/functions/options.php:552
 #, php-format
 msgid ""
 "Upgrade your %1$saccount%2$s or %3$stransfer your license%2$s to this "
@@ -4326,29 +4326,29 @@ msgstr ""
 "aktarın%2$s."
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
-#: inc/functions/options.php:553
+#: inc/functions/options.php:554
 msgid "This website is not allowed."
 msgstr "Bu web sitesine izin verilmedi."
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
-#: inc/functions/options.php:553
+#: inc/functions/options.php:554
 #, php-format
 msgid "Please %1$scontact support%2$s."
 msgstr "Lütfen %1$sdestek ile iletişime geçin%2$s."
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
-#: inc/functions/options.php:555
+#: inc/functions/options.php:556
 msgid "This license key is not recognized."
 msgstr "Bu lisans anahtarı tanınmadı."
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
-#: inc/functions/options.php:555
+#: inc/functions/options.php:556
 #, php-format
 msgid "If the issue persists, please %1$scontact support%2$s."
 msgstr "Eğer sorun devam ederse, lütfen %1$sdestek ile iletişime geçin%2$s."
 
 #. Translators: %s = error message returned.
-#: inc/functions/options.php:561
+#: inc/functions/options.php:562
 #, php-format
 msgid "License validation failed: %s"
 msgstr "Lisans doğrulama başarısız oldu: %s"
