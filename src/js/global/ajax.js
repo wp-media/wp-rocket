@@ -636,11 +636,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
 				// Update global score row in table if on Rocket Insights page.
 				updateGlobalScoreRow(globalScoreData);
-				// Start polling if not already running
-				if (!pollTimer) {
-					pollInterval = POLL_BASE_INTERVAL;
-					schedulePolling();
+
+				if (pollTimer) {
+					resetPolling();
 				}
+				schedulePolling();
 			} else {
 				console.error(response?.message || response);
 			}
@@ -673,7 +673,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	// Resume polling if needed
 	if (isValidPageForPolling() && rocketInsightsIds.length > 0) {
-		pollInterval = POLL_BASE_INTERVAL;
+		if (pollTimer) {
+			resetPolling();
+		}
 		schedulePolling();
 	}
 
