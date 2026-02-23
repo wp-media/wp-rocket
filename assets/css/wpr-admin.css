@@ -3355,7 +3355,7 @@ div.wpr-tutorial-item {
 .wpr-ri-urls-table .wpr-ri-item-title .wpr-ri-title .wpr-ri-title-truncate {
   max-width: 260px;
   white-space: nowrap;
-  overflow: clip;
+  overflow-x: clip;
   text-overflow: ellipsis;
   display: inline-block;
   line-height: 100%;
