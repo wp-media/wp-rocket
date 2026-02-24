@@ -10,7 +10,6 @@ use WP_Rocket\Engine\Admin\RocketInsights\{
 	Jobs\Manager,
 	Queue\Queue,
 };
-use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\License\Renewal;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Logger\LoggerAware;
@@ -67,13 +66,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	private $global_score;
 
 	/**
-	 * Plugin options.
-	 *
-	 * @var Options_Data
-	 */
-	private $options;
-
-	/**
 	 * Manager instance.
 	 *
 	 * @var Manager
@@ -103,7 +95,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @param Queue        $queue Queue object.
 	 * @param Context      $context Rocket Insights context.
 	 * @param GlobalScore  $global_score GlobalScore instance.
-	 * @param Options_Data $options Options instance.
 	 * @param Manager      $manager Manager instance.
 	 * @param Plan         $plan Plan manager.
 	 * @param Renewal      $renewal Renewal instance.
@@ -115,7 +106,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		Queue $queue,
 		Context $context,
 		GlobalScore $global_score,
-		Options_Data $options,
 		Manager $manager,
 		Plan $plan,
 		Renewal $renewal
@@ -126,7 +116,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		$this->queue        = $queue;
 		$this->context      = $context;
 		$this->global_score = $global_score;
-		$this->options      = $options;
 		$this->manager      = $manager;
 		$this->plan         = $plan;
 		$this->renewal      = $renewal;
@@ -140,15 +129,12 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	public static function get_subscribed_events(): array {
 		return [
 			'wp_rocket_first_install'                     => [
-				[ 'reset_credit_monthly', 9 ],
 				[ 'schedule_homepage_tests' ],
 			],
 			'admin_post_delete_rocket_insights_url'       => 'delete_row',
 			'rocket_localize_admin_script'                => 'add_pending_ids',
-			'rocket_insights_credit_reset'                => 'reset_credit_monthly',
 			'rocket_insights_auto_add_homepage'           => 'maybe_add_homepage_automatically',
 			'rocket_rocket_insights_job_completed'        => [
-				[ 'validate_credit' ],
 				[ 'reset_global_score' ],
 			],
 			'rocket_rocket_insights_job_failed'           => 'reset_global_score',
@@ -157,9 +143,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'rocket_rocket_insights_job_deleted'          => 'reset_global_score',
 			'rocket_dashboard_sidebar'                    => 'render_global_score_widget',
 			'rocket_insights_tab_content'                 => [
-				[ 'render_license_banner_section', 10 ],
 				[ 'maybe_show_paid_reach_limits_notice', 17 ],
-				[ 'maybe_show_notice', 18 ],
 				[ 'render_performance_urls_table', 20 ],
 			],
 			'admin_init'                                  => [
@@ -179,7 +163,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 				[ 'on_update_cancel_old_as_jobs', 10, 2 ],
 				[ 'on_update_refresh_metric_data', 10, 2 ],
 			],
-			'admin_notices'                               => 'maybe_display_rocket_insights_promotion_notice',
 			'rocket_rocket_insights_enabled'              => 'maybe_disable_for_reseller_or_non_live',
 			'rest_api_init'                               => [ 'register_routes' ],
 			'wp_ajax_rocket_insight_track_metric_actions' => 'track_metric_actions',
@@ -211,7 +194,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 
 		$data['rocket_insights_ids']               = $this->controller->get_not_finished_ids();
 		$data['rocket_insights_no_credit_tooltip'] = __( 'Upgrade your plan to get access to re-test performance or run new tests', 'rocket' );
-		$data['is_free']                           = (int) $this->context->is_free_user();
+		$data['is_free']                           = false;
 		$data['assets_img_url']                    = WP_ROCKET_ASSETS_IMG_URL;
 
 		$global_score_data                   = $this->controller->get_global_score();
@@ -250,30 +233,8 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 
 		$this->schedule_auto_add_homepage_task();
 
-		if ( ! $this->context->is_free_user() ) {
-			$this->queue->cancel_credit_reset_job();
-			$this->schedule_retest_task();
-
-			return;
-		}
-
 		$this->queue->schedule_credit_reset_task();
 		$this->cancel_retest_job();
-	}
-
-	/**
-	 * Schedule retest task.
-	 *
-	 * @return void
-	 */
-	private function schedule_retest_task() {
-		if ( ! $this->context->is_schedule_allowed() ) {
-			$this->cancel_retest_job();
-			return;
-		}
-
-		$schedule_frequency = $this->options->get( 'performance_monitoring_schedule_frequency', MONTH_IN_SECONDS );
-		$this->queue->schedule_retest_task( $schedule_frequency );
 	}
 
 	/**
@@ -422,28 +383,10 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 				'rocket_insights_addon_limit' => $this->controller->get_rocket_insights_addon_limit(),
 				'upgrade_url'                 => $license_data['btn_url'] ?? '',
 				'can_add_pages'               => $this->context->is_adding_page_allowed(),
-				'show_quota_banner'           => $this->should_show_quota_banner(),
-				'is_free'                     => $this->context->is_free_user(),
+				'show_quota_banner'           => false, // No quota banner as Rocket Insights is free for all users.
+				'is_free'                     => false,
 			]
 		);
-	}
-
-	/**
-	 * Determine if the quota banner should be displayed.
-	 *
-	 * Shows banner when free users have reached URL limit OR exhausted credits.
-	 *
-	 * @return bool True if the quota banner should be shown.
-	 */
-	private function should_show_quota_banner(): bool {
-		if ( ! $this->context->is_free_user() ) {
-			return false;
-		}
-
-		$remaining_url_count = $this->controller->get_remaining_url_count();
-
-		// Show banner if URL limit reached OR no credits left.
-		return empty( $remaining_url_count ) || ! $this->controller->has_credit();
 	}
 
 	/**
