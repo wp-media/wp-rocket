@@ -96,7 +96,7 @@ jobs:
             -H "Content-Type: application/json" \
             -d "{
               \"files\": [{\"id\": \"$FILE_ID\"}],
-              \"channel_id\": \"#wpmedia_wprocket-log\",
+              \"channel_id\": \"C08EFUHEFT4\",
               \"initial_comment\": \"Full release notes for PR #${PR_NUMBER}\"
             }")
 
