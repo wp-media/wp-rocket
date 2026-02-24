@@ -21,21 +21,66 @@ return [
 </div>
 <div class="wpr-rocketcdn-cta " id="wpr-rocketcdn-cta">
 	<section class="wpr-rocketcdn-cta-content--no-promo">
-		<h3 class="wpr-title2">RocketCDN</h3>
-		<p class="wpr-rocketcdn-cta-subtitle">Speed up your website thanks to:</p>
 		<div class="wpr-flex">
-			<ul class="wpr-rocketcdn-features">
-				<li class="wpr-rocketcdn-feature wpr-rocketcdn-bandwidth">High performance Content Delivery Network (CDN) with <strong>unlimited bandwidth</strong></li>
-				<li class="wpr-rocketcdn-feature wpr-rocketcdn-configuration">Easy configuration: the <strong>best CDN settings</strong> are automatically applied</li>
-				<li class="wpr-rocketcdn-feature wpr-rocketcdn-automatic">WP Rocket integration: the CDN option is <strong>automatically configured</strong> in our plugin</li>
-				<li class="wpr-rocketcdn-cta-footer">
-					<a href="https://wp-rocket.me/rocketcdn/" target="_blank" rel="noopener noreferrer">Learn more about RocketCDN</a>
-				</li>
-			</ul>
-			<div class="wpr-rocketcdn-pricing">
-				<h4 class="wpr-rocketcdn-pricing-current"><span class="wpr-title1">$7.99</span> / month</h4>
-				<p class="wpr-rocketcdn-cta-billing-detail">Billed monthly</p>
-				<button class="wpr-button wpr-rocketcdn-open" data-micromodal-trigger="wpr-rocketcdn-modal">Get Started</button>
+			<div class="wpr-rocketcdn-card-left">
+				<div class="wpr-rocketcdn-header">
+					<h2 class="wpr-rocketcdn-header--title">Propel your Content at the Speed of Light!</h2>
+					<p class="wpr-rocketcdn-header--subtitle">RocketCDN delivers your content from servers around the world for a faster website.</p>
+				</div>
+				<ul class="wpr-rocketcdn-features">
+					<li class="wpr-rocketcdn-feature wpr-rocketcdn-bandwidth">
+						<div class="wpr-rocketcdn-feature--content">
+							<h3 class="wpr-rocketcdn-feature--title">Unlimited Performance</h3>
+							<p class="wpr-rocketcdn-feature--description">Experience blazing-fast content delivery through 120 edge locations with unlimited bandwidth.</p>
+						</div>
+					</li>
+					<li class="wpr-rocketcdn-feature wpr-rocketcdn-configuration">
+						<div class="wpr-rocketcdn-feature--content">
+							<h3 class="wpr-rocketcdn-feature--title">Pre-Tuned for Speed</h3>
+							<p class="wpr-rocketcdn-feature--description">Enjoy pre-configured settings tailored for maximum speed and performance.</p>
+						</div>
+					</li>
+					<li class="wpr-rocketcdn-feature wpr-rocketcdn-automatic">
+						<div class="wpr-rocketcdn-feature--content">
+							<h3 class="wpr-rocketcdn-feature--title">Effortless Setup</h3>
+							<p class="wpr-rocketcdn-feature--description">Benefit from automatic configuration of the CDN option in WP Rocket, making setup effortless.</p>
+						</div>
+					</li>
+					<li class="wpr-rocketcdn-cta-footer">
+						<div class="wpr-rocketcdn-cta-footer--cancel-notice">
+							<span>You can cancel anytime!</span>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div class="wpr-rocketcdn-pricing ">
+				<div class="wpr-rocketcdn-pricing--logo">
+					<img src="http://example.org/wp-content/plugins/home/runner/work/wp-rocket/wp-rocket/assets/img/rocketcdn-logo.svg" alt="Rocket Logo" class="wpr-rocketcdn-pricing--logo-icon">
+					<img src="http://example.org/wp-content/plugins/home/runner/work/wp-rocket/wp-rocket/assets/img/rocketcdn-text.svg" alt="RocketCDN Text" class="wpr-rocketcdn-pricing--logo-text">
+				</div>
+				<div class="wpr-rocketcdn-pricing--content">
+					<div class="wpr-rocketcdn-pricing--toggle">
+						<span class="wpr-rocketcdn-pricing--toggle-label wpr-rocketcdn-pricing--toggle-label--inactive">Monthly</span>
+						<label class="wpr-rocketcdn-toggle">
+							<input type="checkbox" class="wpr-rocketcdn-toggle--input" checked>
+							<span class="wpr-rocketcdn-toggle--slider"></span>
+						</label>
+						<span class="wpr-rocketcdn-pricing--toggle-label wpr-rocketcdn-pricing--toggle-label--active">Yearly</span>
+					</div>
+					<div class="wpr-rocketcdn-pricing--badge">2 Months Free!</div>
+					<div class="wpr-rocketcdn-pricing--price-container">
+						<div class="wpr-rocketcdn-pricing--price">
+							<span class="wpr-rocketcdn-pricing--currency">$</span>
+							<span class="wpr-rocketcdn-pricing--amount">7</span>
+							<span class="wpr-rocketcdn-pricing--cents">.99</span>
+						</div>
+						<div class="wpr-rocketcdn-pricing--billing">
+							<span class="wpr-rocketcdn-pricing--billing-period">per month, billed yearly</span>
+							<span class="wpr-rocketcdn-pricing--billing-vat">(excl. VAT)</span>
+						</div>
+					</div>
+					<button class="wpr-rocketcdn-pricing--cta wpr-rocketcdn-open" data-micromodal-trigger="wpr-rocketcdn-modal">Get Started</button>
+				</div>
 			</div>
 		</div>
 	</section>
@@ -72,21 +117,53 @@ HTML
 </div>
 <div class="wpr-rocketcdn-cta " id="wpr-rocketcdn-cta">
 	<section class="wpr-rocketcdn-cta-content--no-promo">
-		<h3 class="wpr-title2">RocketCDN</h3>
-		<p class="wpr-rocketcdn-cta-subtitle">Speed up your website thanks to:</p>
 		<div class="wpr-flex">
-			<ul class="wpr-rocketcdn-features">
-				<li class="wpr-rocketcdn-feature wpr-rocketcdn-bandwidth">High performance Content Delivery Network (CDN) with <strong>unlimited bandwidth</strong></li>
-				<li class="wpr-rocketcdn-feature wpr-rocketcdn-configuration">Easy configuration: the <strong>best CDN settings</strong> are automatically applied</li>
-				<li class="wpr-rocketcdn-feature wpr-rocketcdn-automatic">WP Rocket integration: the CDN option is <strong>automatically configured</strong> in our plugin</li>
-				<li class="wpr-rocketcdn-cta-footer">
-					<a href="https://wp-rocket.me/rocketcdn/" target="_blank" rel="noopener noreferrer">Learn more about RocketCDN</a>
-				</li>
-			</ul>
-			<div class="wpr-rocketcdn-pricing">
-				<h4 class="wpr-rocketcdn-pricing-current"><span class="wpr-title1">$7.99</span> / month</h4>
-				<p class="wpr-rocketcdn-cta-billing-detail">Billed monthly</p>
-				<button class="wpr-button wpr-rocketcdn-open" data-micromodal-trigger="wpr-rocketcdn-modal">Get Started</button>
+			<div class="wpr-rocketcdn-card-left">
+				<div class="wpr-rocketcdn-header">
+					<h2 class="wpr-rocketcdn-header--title">Propel your Content at the Speed of Light!</h2>
+					<p class="wpr-rocketcdn-header--subtitle">RocketCDN delivers your content from servers around the world for a faster website.</p>
+				</div>
+				<ul class="wpr-rocketcdn-features">
+					<li class="wpr-rocketcdn-feature wpr-rocketcdn-bandwidth">
+						<div class="wpr-rocketcdn-feature--content">
+							<h3 class="wpr-rocketcdn-feature--title">Unlimited Performance</h3>
+							<p class="wpr-rocketcdn-feature--description">Experience blazing-fast content delivery through 120 edge locations with unlimited bandwidth.</p>
+						</div>
+					</li>
+					<li class="wpr-rocketcdn-feature wpr-rocketcdn-configuration">
+						<div class="wpr-rocketcdn-feature--content">
+							<h3 class="wpr-rocketcdn-feature--title">Pre-Tuned for Speed</h3>
+							<p class="wpr-rocketcdn-feature--description">Enjoy pre-configured settings tailored for maximum speed and performance.</p>
+						</div>
+					</li>
+					<li class="wpr-rocketcdn-feature wpr-rocketcdn-automatic">
+						<div class="wpr-rocketcdn-feature--content">
+							<h3 class="wpr-rocketcdn-feature--title">Effortless Setup</h3>
+							<p class="wpr-rocketcdn-feature--description">Benefit from automatic configuration of the CDN option in WP Rocket, making setup effortless.</p>
+						</div>
+					</li>
+					<li class="wpr-rocketcdn-cta-footer">
+						<div class="wpr-rocketcdn-cta-footer--cancel-notice">
+							<span>You can cancel anytime!</span>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div class="wpr-rocketcdn-pricing ">
+				<div class="wpr-rocketcdn-pricing--content">
+					<div class="wpr-rocketcdn-pricing--price-container">
+						<div class="wpr-rocketcdn-pricing--price">
+							<span class="wpr-rocketcdn-pricing--currency">$</span>
+							<span class="wpr-rocketcdn-pricing--amount">7</span>
+							<span class="wpr-rocketcdn-pricing--cents">.99</span>
+						</div>
+						<div class="wpr-rocketcdn-pricing--billing">
+							<span class="wpr-rocketcdn-pricing--billing-period">per month, billed yearly</span>
+							<span class="wpr-rocketcdn-pricing--billing-vat">(excl. VAT)</span>
+						</div>
+					</div>
+					<button class="wpr-rocketcdn-pricing--cta wpr-rocketcdn-open" data-micromodal-trigger="wpr-rocketcdn-modal">Get Started</button>
+				</div>
 			</div>
 		</div>
 	</section>
@@ -165,39 +242,103 @@ HTML
 <div class="wpr-rocketcdn-cta-small notice-alt notice-warning wpr-isHidden" id="wpr-rocketcdn-cta-small">
 	<div class="wpr-flex">
 		<section>
-			<h3 class="notice-title">Speed up your website with RocketCDN, WP Rocket’s Content Delivery Network.</strong></h3>
+			<h3 class="notice-title">
+				Speed up your website with RocketCDN, WP Rocket's Content Delivery Network.</strong>
+			</h3>
 		</section>
 		<div>
-			<button class="wpr-button" id="wpr-rocketcdn-open-cta">Learn More</button>
+			<button class="wpr-button" id="wpr-rocketcdn-open-cta">
+				Learn More</button>
 		</div>
 	</div>
 </div>
 <div class="wpr-rocketcdn-cta " id="wpr-rocketcdn-cta">
 	<section class="wpr-rocketcdn-cta-content--no-promo">
-		<h3 class="wpr-title2">RocketCDN</h3>
-		<p class="wpr-rocketcdn-cta-subtitle">Speed up your website thanks to:</p>
 		<div class="wpr-flex">
-			<ul class="wpr-rocketcdn-features">
-				<li class="wpr-rocketcdn-feature wpr-rocketcdn-bandwidth">High performance Content Delivery Network (CDN) with <strong>unlimited bandwidth</strong></li>
-				<li class="wpr-rocketcdn-feature wpr-rocketcdn-configuration">Easy configuration: the <strong>best CDN settings</strong> are automatically applied</li>
-				<li class="wpr-rocketcdn-feature wpr-rocketcdn-automatic">WP Rocket integration: the CDN option is <strong>automatically configured</strong> in our plugin</li>
-				<li class="wpr-rocketcdn-cta-footer">
-					<a href="https://wp-rocket.me/rocketcdn/" target="_blank" rel="noopener noreferrer">Learn more about RocketCDN</a>
-				</li>
-			</ul>
-			<div class="wpr-rocketcdn-pricing">
-				<h4 class="wpr-rocketcdn-pricing-current">
-					<span class="wpr-rocketcdn-cta-currency-minor">$</span>
-					<span class="wpr-rocketcdn-cta-currency-major">7</span>
-					<span class="wpr-rocketcdn-cta-currency-minor">.99</span>
-				</h4>
-				<p class="wpr-rocketcdn-cta-billing-detail">Billed monthly</p>
-				<button class="wpr-button wpr-rocketcdn-open" data-micromodal-trigger="wpr-rocketcdn-modal">Get Started</button>
+			<div class="wpr-rocketcdn-card-left">
+				<div class="wpr-rocketcdn-header">
+					<h2 class="wpr-rocketcdn-header--title">
+						Propel your Content at the Speed of Light!</h2>
+					<p class="wpr-rocketcdn-header--subtitle">
+						RocketCDN delivers your content from servers around the world for a faster website.</p>
+				</div>
+				<ul class="wpr-rocketcdn-features">
+					<li class="wpr-rocketcdn-feature wpr-rocketcdn-bandwidth">
+						<div class="wpr-rocketcdn-feature--content">
+							<h3 class="wpr-rocketcdn-feature--title">
+								Unlimited Performance</h3>
+							<p class="wpr-rocketcdn-feature--description">
+								Experience blazing-fast content delivery through 120 edge locations with unlimited bandwidth.</p>
+						</div>
+					</li>
+					<li class="wpr-rocketcdn-feature wpr-rocketcdn-configuration">
+						<div class="wpr-rocketcdn-feature--content">
+							<h3 class="wpr-rocketcdn-feature--title">
+								Pre-Tuned for Speed</h3>
+							<p class="wpr-rocketcdn-feature--description">
+								Enjoy pre-configured settings tailored for maximum speed and performance.</p>
+						</div>
+					</li>
+					<li class="wpr-rocketcdn-feature wpr-rocketcdn-automatic">
+						<div class="wpr-rocketcdn-feature--content">
+							<h3 class="wpr-rocketcdn-feature--title">
+								Effortless Setup</h3>
+							<p class="wpr-rocketcdn-feature--description">
+								Benefit from automatic configuration of the CDN option in WP Rocket, making setup effortless.</p>
+						</div>
+					</li>
+					<li class="wpr-rocketcdn-cta-footer">
+						<div class="wpr-rocketcdn-cta-footer--cancel-notice">
+							<span>
+								You can cancel anytime!</span>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div class="wpr-rocketcdn-pricing ">
+				<div class="wpr-rocketcdn-pricing--logo">
+					<img src="http://example.org/wp-content/plugins/home/runner/work/wp-rocket/wp-rocket/assets/img/rocketcdn-logo.svg" alt="Rocket Logo" class="wpr-rocketcdn-pricing--logo-icon">
+					<img src="http://example.org/wp-content/plugins/home/runner/work/wp-rocket/wp-rocket/assets/img/rocketcdn-text.svg" alt="RocketCDN Text" class="wpr-rocketcdn-pricing--logo-text">
+				</div>
+				<div class="wpr-rocketcdn-pricing--content">
+					<div class="wpr-rocketcdn-pricing--toggle">
+						<span class="wpr-rocketcdn-pricing--toggle-label wpr-rocketcdn-pricing--toggle-label--inactive">
+							Monthly</span>
+						<label class="wpr-rocketcdn-toggle">
+							<input type="checkbox" class="wpr-rocketcdn-toggle--input" checked>
+							<span class="wpr-rocketcdn-toggle--slider">
+							</span>
+						</label>
+						<span class="wpr-rocketcdn-pricing--toggle-label wpr-rocketcdn-pricing--toggle-label--active">
+							Yearly</span>
+					</div>
+					<div class="wpr-rocketcdn-pricing--badge">
+						2 Months Free!</div>
+					<div class="wpr-rocketcdn-pricing--price-container">
+						<div class="wpr-rocketcdn-pricing--price">
+							<span class="wpr-rocketcdn-pricing--currency">
+								$</span>
+							<span class="wpr-rocketcdn-pricing--amount">
+								7</span>
+							<span class="wpr-rocketcdn-pricing--cents">
+								.99</span>
+						</div>
+						<div class="wpr-rocketcdn-pricing--billing">
+							<span class="wpr-rocketcdn-pricing--billing-period">
+								per month, billed yearly</span>
+							<span class="wpr-rocketcdn-pricing--billing-vat">
+								(excl. VAT)</span>
+						</div>
+					</div>
+					<button class="wpr-rocketcdn-pricing--cta wpr-rocketcdn-open" data-micromodal-trigger="wpr-rocketcdn-modal">
+						Get Started</button>
+				</div>
 			</div>
 		</div>
 	</section>
 	<button class="wpr-rocketcdn-cta-close--no-promo" id="wpr-rocketcdn-close-cta">
-		<span class="screen-reader-text">Reduce this banner</span>
+		<span class="screen-reader-text">
+			Reduce this banner</span>
 	</button>
 </div>
 HTML
@@ -245,41 +386,106 @@ HTML
 <div class="wpr-rocketcdn-cta-small notice-alt notice-warning wpr-isHidden" id="wpr-rocketcdn-cta-small">
 	<div class="wpr-flex">
 		<section>
-			<h3 class="notice-title">Speed up your website with RocketCDN, WP Rocket’s Content Delivery Network.</strong></h3>
+			<h3 class="notice-title">
+				Speed up your website with RocketCDN, WP Rocket's Content Delivery Network.</strong>
+			</h3>
 		</section>
 		<div>
-			<button class="wpr-button" id="wpr-rocketcdn-open-cta">Learn More</button>
+			<button class="wpr-button" id="wpr-rocketcdn-open-cta">
+				Learn More</button>
 		</div>
 	</div>
 </div>
 <div class="wpr-rocketcdn-cta " id="wpr-rocketcdn-cta">
 	<section class="wpr-rocketcdn-cta-content--no-promo">
-		<h3 class="wpr-title2">RocketCDN</h3>
-		<p class="wpr-rocketcdn-cta-subtitle">Speed up your website thanks to:</p>
 		<div class="wpr-flex">
-			<ul class="wpr-rocketcdn-features">
-				<li class="wpr-rocketcdn-feature wpr-rocketcdn-bandwidth">High performance Content Delivery Network (CDN) with <strong>unlimited bandwidth</strong></li>
-				<li class="wpr-rocketcdn-feature wpr-rocketcdn-configuration">Easy configuration: the <strong>best CDN settings</strong> are automatically applied</li>
-				<li class="wpr-rocketcdn-feature wpr-rocketcdn-automatic">WP Rocket integration: the CDN option is <strong>automatically configured</strong> in our plugin</li>
-				<li class="wpr-rocketcdn-cta-footer">
-					<a href="https://wp-rocket.me/rocketcdn/" target="_blank" rel="noopener noreferrer">Learn more about RocketCDN</a>
-				</li>
-			</ul>
-			<div class="wpr-rocketcdn-pricing">
-				<h4 class="wpr-rocketcdn-pricing-current">
-					<span class="wpr-rocketcdn-cta-currency-minor">$</span>
-					<span class="wpr-rocketcdn-cta-currency-major">7</span>
-					<span class="wpr-rocketcdn-cta-currency-minor">.99</span>
-				</h4>
-				<p class="wpr-rocketcdn-cta-billing-detail">Billed monthly</p>
-				<button class="wpr-button wpr-rocketcdn-open" data-micromodal-trigger="wpr-rocketcdn-modal">Get Started</button>
+			<div class="wpr-rocketcdn-card-left">
+				<div class="wpr-rocketcdn-header">
+					<h2 class="wpr-rocketcdn-header--title">
+						Propel your Content at the Speed of Light!</h2>
+					<p class="wpr-rocketcdn-header--subtitle">
+						RocketCDN delivers your content from servers around the world for a faster website.</p>
+				</div>
+				<ul class="wpr-rocketcdn-features">
+					<li class="wpr-rocketcdn-feature wpr-rocketcdn-bandwidth">
+						<div class="wpr-rocketcdn-feature--content">
+							<h3 class="wpr-rocketcdn-feature--title">
+								Unlimited Performance</h3>
+							<p class="wpr-rocketcdn-feature--description">
+								Experience blazing-fast content delivery through 120 edge locations with unlimited bandwidth.</p>
+						</div>
+					</li>
+					<li class="wpr-rocketcdn-feature wpr-rocketcdn-configuration">
+						<div class="wpr-rocketcdn-feature--content">
+							<h3 class="wpr-rocketcdn-feature--title">
+								Pre-Tuned for Speed</h3>
+							<p class="wpr-rocketcdn-feature--description">
+								Enjoy pre-configured settings tailored for maximum speed and performance.</p>
+						</div>
+					</li>
+					<li class="wpr-rocketcdn-feature wpr-rocketcdn-automatic">
+						<div class="wpr-rocketcdn-feature--content">
+							<h3 class="wpr-rocketcdn-feature--title">
+								Effortless Setup</h3>
+							<p class="wpr-rocketcdn-feature--description">
+								Benefit from automatic configuration of the CDN option in WP Rocket, making setup effortless.</p>
+						</div>
+					</li>
+					<li class="wpr-rocketcdn-cta-footer">
+						<div class="wpr-rocketcdn-cta-footer--cancel-notice">
+							<span>
+								You can cancel anytime!</span>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div class="wpr-rocketcdn-pricing ">
+				<div class="wpr-rocketcdn-pricing--logo">
+					<img src="http://example.org/wp-content/plugins/home/runner/work/wp-rocket/wp-rocket/assets/img/rocketcdn-logo.svg" alt="Rocket Logo" class="wpr-rocketcdn-pricing--logo-icon">
+					<img src="http://example.org/wp-content/plugins/home/runner/work/wp-rocket/wp-rocket/assets/img/rocketcdn-text.svg" alt="RocketCDN Text" class="wpr-rocketcdn-pricing--logo-text">
+				</div>
+				<div class="wpr-rocketcdn-pricing--content">
+					<div class="wpr-rocketcdn-pricing--toggle">
+						<span class="wpr-rocketcdn-pricing--toggle-label wpr-rocketcdn-pricing--toggle-label--inactive">
+							Monthly</span>
+						<label class="wpr-rocketcdn-toggle">
+							<input type="checkbox" class="wpr-rocketcdn-toggle--input" checked>
+							<span class="wpr-rocketcdn-toggle--slider">
+							</span>
+						</label>
+						<span class="wpr-rocketcdn-pricing--toggle-label wpr-rocketcdn-pricing--toggle-label--active">
+							Yearly</span>
+					</div>
+					<div class="wpr-rocketcdn-pricing--badge">
+						2 Months Free!</div>
+					<div class="wpr-rocketcdn-pricing--price-container">
+						<div class="wpr-rocketcdn-pricing--price">
+							<span class="wpr-rocketcdn-pricing--currency">
+								$</span>
+							<span class="wpr-rocketcdn-pricing--amount">
+								7</span>
+							<span class="wpr-rocketcdn-pricing--cents">
+								.99</span>
+						</div>
+						<div class="wpr-rocketcdn-pricing--billing">
+							<span class="wpr-rocketcdn-pricing--billing-period">
+								per month, billed yearly</span>
+							<span class="wpr-rocketcdn-pricing--billing-vat">
+								(excl. VAT)</span>
+						</div>
+					</div>
+					<button class="wpr-rocketcdn-pricing--cta wpr-rocketcdn-open" data-micromodal-trigger="wpr-rocketcdn-modal">
+						Get Started</button>
+				</div>
 			</div>
 		</div>
 	</section>
 	<button class="wpr-rocketcdn-cta-close--no-promo" id="wpr-rocketcdn-close-cta">
-		<span class="screen-reader-text">Reduce this banner</span>
+		<span class="screen-reader-text">
+			Reduce this banner</span>
 	</button>
 </div>
+
 HTML
 			,
 		],
@@ -325,39 +531,103 @@ HTML
 <div class="wpr-rocketcdn-cta-small notice-alt notice-warning wpr-isHidden" id="wpr-rocketcdn-cta-small">
 	<div class="wpr-flex">
 		<section>
-			<h3 class="notice-title">Speed up your website with RocketCDN, WP Rocket’s Content Delivery Network.</strong></h3>
+			<h3 class="notice-title">
+				Speed up your website with RocketCDN, WP Rocket's Content Delivery Network.</strong>
+			</h3>
 		</section>
 		<div>
-			<button class="wpr-button" id="wpr-rocketcdn-open-cta">Learn More</button>
+			<button class="wpr-button" id="wpr-rocketcdn-open-cta">
+				Learn More</button>
 		</div>
 	</div>
 </div>
 <div class="wpr-rocketcdn-cta " id="wpr-rocketcdn-cta">
 	<section class="wpr-rocketcdn-cta-content--no-promo">
-		<h3 class="wpr-title2">RocketCDN</h3>
-		<p class="wpr-rocketcdn-cta-subtitle">Speed up your website thanks to:</p>
 		<div class="wpr-flex">
-			<ul class="wpr-rocketcdn-features">
-				<li class="wpr-rocketcdn-feature wpr-rocketcdn-bandwidth">High performance Content Delivery Network (CDN) with <strong>unlimited bandwidth</strong></li>
-				<li class="wpr-rocketcdn-feature wpr-rocketcdn-configuration">Easy configuration: the <strong>best CDN settings</strong> are automatically applied</li>
-				<li class="wpr-rocketcdn-feature wpr-rocketcdn-automatic">WP Rocket integration: the CDN option is <strong>automatically configured</strong> in our plugin</li>
-				<li class="wpr-rocketcdn-cta-footer">
-					<a href="https://wp-rocket.me/rocketcdn/" target="_blank" rel="noopener noreferrer">Learn more about RocketCDN</a>
-				</li>
-			</ul>
-			<div class="wpr-rocketcdn-pricing">
-				<h4 class="wpr-rocketcdn-pricing-current">
-					<span class="wpr-rocketcdn-cta-currency-minor">$</span>
-					<span class="wpr-rocketcdn-cta-currency-major">7</span>
-					<span class="wpr-rocketcdn-cta-currency-minor">.99</span>
-				</h4>
-				<p class="wpr-rocketcdn-cta-billing-detail">Billed monthly</p>
-				<button class="wpr-button wpr-rocketcdn-open" data-micromodal-trigger="wpr-rocketcdn-modal">Get Started</button>
+			<div class="wpr-rocketcdn-card-left">
+				<div class="wpr-rocketcdn-header">
+					<h2 class="wpr-rocketcdn-header--title">
+						Propel your Content at the Speed of Light!</h2>
+					<p class="wpr-rocketcdn-header--subtitle">
+						RocketCDN delivers your content from servers around the world for a faster website.</p>
+				</div>
+				<ul class="wpr-rocketcdn-features">
+					<li class="wpr-rocketcdn-feature wpr-rocketcdn-bandwidth">
+						<div class="wpr-rocketcdn-feature--content">
+							<h3 class="wpr-rocketcdn-feature--title">
+								Unlimited Performance</h3>
+							<p class="wpr-rocketcdn-feature--description">
+								Experience blazing-fast content delivery through 120 edge locations with unlimited bandwidth.</p>
+						</div>
+					</li>
+					<li class="wpr-rocketcdn-feature wpr-rocketcdn-configuration">
+						<div class="wpr-rocketcdn-feature--content">
+							<h3 class="wpr-rocketcdn-feature--title">
+								Pre-Tuned for Speed</h3>
+							<p class="wpr-rocketcdn-feature--description">
+								Enjoy pre-configured settings tailored for maximum speed and performance.</p>
+						</div>
+					</li>
+					<li class="wpr-rocketcdn-feature wpr-rocketcdn-automatic">
+						<div class="wpr-rocketcdn-feature--content">
+							<h3 class="wpr-rocketcdn-feature--title">
+								Effortless Setup</h3>
+							<p class="wpr-rocketcdn-feature--description">
+								Benefit from automatic configuration of the CDN option in WP Rocket, making setup effortless.</p>
+						</div>
+					</li>
+					<li class="wpr-rocketcdn-cta-footer">
+						<div class="wpr-rocketcdn-cta-footer--cancel-notice">
+							<span>
+								You can cancel anytime!</span>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div class="wpr-rocketcdn-pricing ">
+				<div class="wpr-rocketcdn-pricing--logo">
+					<img src="http://example.org/wp-content/plugins/home/runner/work/wp-rocket/wp-rocket/assets/img/rocketcdn-logo.svg" alt="Rocket Logo" class="wpr-rocketcdn-pricing--logo-icon">
+					<img src="http://example.org/wp-content/plugins/home/runner/work/wp-rocket/wp-rocket/assets/img/rocketcdn-text.svg" alt="RocketCDN Text" class="wpr-rocketcdn-pricing--logo-text">
+				</div>
+				<div class="wpr-rocketcdn-pricing--content">
+					<div class="wpr-rocketcdn-pricing--toggle">
+						<span class="wpr-rocketcdn-pricing--toggle-label wpr-rocketcdn-pricing--toggle-label--inactive">
+							Monthly</span>
+						<label class="wpr-rocketcdn-toggle">
+							<input type="checkbox" class="wpr-rocketcdn-toggle--input" checked>
+							<span class="wpr-rocketcdn-toggle--slider">
+							</span>
+						</label>
+						<span class="wpr-rocketcdn-pricing--toggle-label wpr-rocketcdn-pricing--toggle-label--active">
+							Yearly</span>
+					</div>
+					<div class="wpr-rocketcdn-pricing--badge">
+						2 Months Free!</div>
+					<div class="wpr-rocketcdn-pricing--price-container">
+						<div class="wpr-rocketcdn-pricing--price">
+							<span class="wpr-rocketcdn-pricing--currency">
+								$</span>
+							<span class="wpr-rocketcdn-pricing--amount">
+								7</span>
+							<span class="wpr-rocketcdn-pricing--cents">
+								.99</span>
+						</div>
+						<div class="wpr-rocketcdn-pricing--billing">
+							<span class="wpr-rocketcdn-pricing--billing-period">
+								per month, billed yearly</span>
+							<span class="wpr-rocketcdn-pricing--billing-vat">
+								(excl. VAT)</span>
+						</div>
+					</div>
+					<button class="wpr-rocketcdn-pricing--cta wpr-rocketcdn-open" data-micromodal-trigger="wpr-rocketcdn-modal">
+						Get Started</button>
+				</div>
 			</div>
 		</div>
 	</section>
 	<button class="wpr-rocketcdn-cta-close--no-promo" id="wpr-rocketcdn-close-cta">
-		<span class="screen-reader-text">Reduce this banner</span>
+		<span class="screen-reader-text">
+			Reduce this banner</span>
 	</button>
 </div>
 HTML
@@ -402,42 +672,106 @@ HTML
 				],
 			],
 			'integration' => <<<HTML
-<div class="wpr-rocketcdn-cta-small notice-alt notice-warning " id="wpr-rocketcdn-cta-small">
+<div class="wpr-rocketcdn-cta-small notice-alt notice-warning wpr-isHidden" id="wpr-rocketcdn-cta-small">
 	<div class="wpr-flex">
 		<section>
-			<h3 class="notice-title">Speed up your website with RocketCDN, WP Rocket’s Content Delivery Network.</strong></h3>
+			<h3 class="notice-title">
+				Speed up your website with RocketCDN, WP Rocket's Content Delivery Network.</strong>
+			</h3>
 		</section>
 		<div>
-			<button class="wpr-button" id="wpr-rocketcdn-open-cta">Learn More</button>
+			<button class="wpr-button" id="wpr-rocketcdn-open-cta">
+				Learn More</button>
 		</div>
 	</div>
 </div>
-<div class="wpr-rocketcdn-cta wpr-isHidden" id="wpr-rocketcdn-cta">
+<div class="wpr-rocketcdn-cta " id="wpr-rocketcdn-cta">
 	<section class="wpr-rocketcdn-cta-content--no-promo">
-		<h3 class="wpr-title2">RocketCDN</h3>
-		<p class="wpr-rocketcdn-cta-subtitle">Speed up your website thanks to:</p>
 		<div class="wpr-flex">
-			<ul class="wpr-rocketcdn-features">
-				<li class="wpr-rocketcdn-feature wpr-rocketcdn-bandwidth">High performance Content Delivery Network (CDN) with <strong>unlimited bandwidth</strong></li>
-				<li class="wpr-rocketcdn-feature wpr-rocketcdn-configuration">Easy configuration: the <strong>best CDN settings</strong> are automatically applied</li>
-				<li class="wpr-rocketcdn-feature wpr-rocketcdn-automatic">WP Rocket integration: the CDN option is <strong>automatically configured</strong> in our plugin</li>
-				<li class="wpr-rocketcdn-cta-footer">
-					<a href="https://wp-rocket.me/rocketcdn/" target="_blank" rel="noopener noreferrer">Learn more about RocketCDN</a>
-				</li>
-			</ul>
-			<div class="wpr-rocketcdn-pricing">
-			<h4 class="wpr-rocketcdn-pricing-current">
-					<span class="wpr-rocketcdn-cta-currency-minor">$</span>
-					<span class="wpr-rocketcdn-cta-currency-major">7</span>
-					<span class="wpr-rocketcdn-cta-currency-minor">.99</span>
-				</h4>
-				<p class="wpr-rocketcdn-cta-billing-detail">Billed monthly</p>
-				<button class="wpr-button wpr-rocketcdn-open" data-micromodal-trigger="wpr-rocketcdn-modal">Get Started</button>
+			<div class="wpr-rocketcdn-card-left">
+				<div class="wpr-rocketcdn-header">
+					<h2 class="wpr-rocketcdn-header--title">
+						Propel your Content at the Speed of Light!</h2>
+					<p class="wpr-rocketcdn-header--subtitle">
+						RocketCDN delivers your content from servers around the world for a faster website.</p>
+				</div>
+				<ul class="wpr-rocketcdn-features">
+					<li class="wpr-rocketcdn-feature wpr-rocketcdn-bandwidth">
+						<div class="wpr-rocketcdn-feature--content">
+							<h3 class="wpr-rocketcdn-feature--title">
+								Unlimited Performance</h3>
+							<p class="wpr-rocketcdn-feature--description">
+								Experience blazing-fast content delivery through 120 edge locations with unlimited bandwidth.</p>
+						</div>
+					</li>
+					<li class="wpr-rocketcdn-feature wpr-rocketcdn-configuration">
+						<div class="wpr-rocketcdn-feature--content">
+							<h3 class="wpr-rocketcdn-feature--title">
+								Pre-Tuned for Speed</h3>
+							<p class="wpr-rocketcdn-feature--description">
+								Enjoy pre-configured settings tailored for maximum speed and performance.</p>
+						</div>
+					</li>
+					<li class="wpr-rocketcdn-feature wpr-rocketcdn-automatic">
+						<div class="wpr-rocketcdn-feature--content">
+							<h3 class="wpr-rocketcdn-feature--title">
+								Effortless Setup</h3>
+							<p class="wpr-rocketcdn-feature--description">
+								Benefit from automatic configuration of the CDN option in WP Rocket, making setup effortless.</p>
+						</div>
+					</li>
+					<li class="wpr-rocketcdn-cta-footer">
+						<div class="wpr-rocketcdn-cta-footer--cancel-notice">
+							<span>
+								You can cancel anytime!</span>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div class="wpr-rocketcdn-pricing ">
+				<div class="wpr-rocketcdn-pricing--logo">
+					<img src="http://example.org/wp-content/plugins/home/runner/work/wp-rocket/wp-rocket/assets/img/rocketcdn-logo.svg" alt="Rocket Logo" class="wpr-rocketcdn-pricing--logo-icon">
+					<img src="http://example.org/wp-content/plugins/home/runner/work/wp-rocket/wp-rocket/assets/img/rocketcdn-text.svg" alt="RocketCDN Text" class="wpr-rocketcdn-pricing--logo-text">
+				</div>
+				<div class="wpr-rocketcdn-pricing--content">
+					<div class="wpr-rocketcdn-pricing--toggle">
+						<span class="wpr-rocketcdn-pricing--toggle-label wpr-rocketcdn-pricing--toggle-label--inactive">
+							Monthly</span>
+						<label class="wpr-rocketcdn-toggle">
+							<input type="checkbox" class="wpr-rocketcdn-toggle--input" checked>
+							<span class="wpr-rocketcdn-toggle--slider">
+							</span>
+						</label>
+						<span class="wpr-rocketcdn-pricing--toggle-label wpr-rocketcdn-pricing--toggle-label--active">
+							Yearly</span>
+					</div>
+					<div class="wpr-rocketcdn-pricing--badge">
+						2 Months Free!</div>
+					<div class="wpr-rocketcdn-pricing--price-container">
+						<div class="wpr-rocketcdn-pricing--price">
+							<span class="wpr-rocketcdn-pricing--currency">
+								$</span>
+							<span class="wpr-rocketcdn-pricing--amount">
+								7</span>
+							<span class="wpr-rocketcdn-pricing--cents">
+								.99</span>
+						</div>
+						<div class="wpr-rocketcdn-pricing--billing">
+							<span class="wpr-rocketcdn-pricing--billing-period">
+								per month, billed yearly</span>
+							<span class="wpr-rocketcdn-pricing--billing-vat">
+								(excl. VAT)</span>
+						</div>
+					</div>
+					<button class="wpr-rocketcdn-pricing--cta wpr-rocketcdn-open" data-micromodal-trigger="wpr-rocketcdn-modal">
+						Get Started</button>
+				</div>
 			</div>
 		</div>
 	</section>
 	<button class="wpr-rocketcdn-cta-close--no-promo" id="wpr-rocketcdn-close-cta">
-		<span class="screen-reader-text">Reduce this banner</span>
+		<span class="screen-reader-text">
+			Reduce this banner</span>
 	</button>
 </div>
 HTML
@@ -497,27 +831,68 @@ HTML
 		<p class="wpr-title2 wpr-rocketcdn-promo-date">Valid until '. date( 'Y-m-d', strtotime( 'tomorrow', time() ) ) .' only!</p>
 	</div>
 	<section class="wpr-rocketcdn-cta-content">
-		<h3 class="wpr-title2">RocketCDN</h3>
-		<p class="wpr-rocketcdn-cta-subtitle">Speed up your website thanks to:</p>
 		<div class="wpr-flex">
-			<ul class="wpr-rocketcdn-features">
-				<li class="wpr-rocketcdn-feature wpr-rocketcdn-bandwidth">High performance Content Delivery Network (CDN) with <strong>unlimited bandwidth</strong></li>
-				<li class="wpr-rocketcdn-feature wpr-rocketcdn-configuration">Easy configuration: the <strong>best CDN settings</strong> are automatically applied</li>
-				<li class="wpr-rocketcdn-feature wpr-rocketcdn-automatic">WP Rocket integration: the CDN option is <strong>automatically configured</strong> in our plugin</li>
-				<li class="wpr-rocketcdn-cta-footer">
-					<a href="https://wp-rocket.me/rocketcdn/" target="_blank" rel="noopener noreferrer">Learn more about RocketCDN</a>
-				</li>
-				<li class="wpr-rocketcdn-cta-promo-footer">*$5.99/month for 12 months then $7.99/month. You can cancel your subscription at any time.</li>
-			</ul>
-			<div class="wpr-rocketcdn-pricing">
-				<h4 class="wpr-title2 wpr-rocketcdn-pricing-regular"><del>$7.99</del></h4>
-				<h4 class="wpr-rocketcdn-pricing-current">
-					<span class="wpr-rocketcdn-cta-currency-minor">$</span>
-					<span class="wpr-rocketcdn-cta-currency-major">5</span>
-					<span class="wpr-rocketcdn-cta-currency-minor">.99*</span>
-				</h4>
-				<p class="wpr-rocketcdn-cta-billing-detail">Billed monthly</p>
-				<button class="wpr-button wpr-rocketcdn-open" data-micromodal-trigger="wpr-rocketcdn-modal">Get Started</button>
+			<div class="wpr-rocketcdn-card-left">
+				<div class="wpr-rocketcdn-header">
+					<h2 class="wpr-rocketcdn-header--title">Propel your Content at the Speed of Light!</h2>
+					<p class="wpr-rocketcdn-header--subtitle">RocketCDN delivers your content from servers around the world for a faster website.</p>
+				</div>
+				<ul class="wpr-rocketcdn-features">
+					<li class="wpr-rocketcdn-feature wpr-rocketcdn-bandwidth">
+						<div class="wpr-rocketcdn-feature--content">
+							<h3 class="wpr-rocketcdn-feature--title">Unlimited Performance</h3>
+							<p class="wpr-rocketcdn-feature--description">Experience blazing-fast content delivery through 120 edge locations with unlimited bandwidth.</p>
+						</div>
+					</li>
+					<li class="wpr-rocketcdn-feature wpr-rocketcdn-configuration">
+						<div class="wpr-rocketcdn-feature--content">
+							<h3 class="wpr-rocketcdn-feature--title">Pre-Tuned for Speed</h3>
+							<p class="wpr-rocketcdn-feature--description">Enjoy pre-configured settings tailored for maximum speed and performance.</p>
+						</div>
+					</li>
+					<li class="wpr-rocketcdn-feature wpr-rocketcdn-automatic">
+						<div class="wpr-rocketcdn-feature--content">
+							<h3 class="wpr-rocketcdn-feature--title">Effortless Setup</h3>
+							<p class="wpr-rocketcdn-feature--description">Benefit from automatic configuration of the CDN option in WP Rocket, making setup effortless.</p>
+						</div>
+					</li>
+					<li class="wpr-rocketcdn-cta-footer">
+						<div class="wpr-rocketcdn-cta-footer--cancel-notice">
+							<span>You can cancel anytime!</span>
+						</div>
+					</li>
+					<li class="wpr-rocketcdn-cta-promo-footer">*$5.99/month for 12 months then $7.99/month. You can cancel your subscription at any time.</li>
+				</ul>
+			</div>
+			<div class="wpr-rocketcdn-pricing has-regular-price">
+				<div class="wpr-rocketcdn-pricing--logo">
+					<img src="http://example.org/wp-content/plugins/home/runner/work/wp-rocket/wp-rocket/assets/img/rocketcdn-logo.svg" alt="Rocket Logo" class="wpr-rocketcdn-pricing--logo-icon">
+					<img src="http://example.org/wp-content/plugins/home/runner/work/wp-rocket/wp-rocket/assets/img/rocketcdn-text.svg" alt="RocketCDN Text" class="wpr-rocketcdn-pricing--logo-text">
+				</div>
+				<div class="wpr-rocketcdn-pricing--content">
+					<div class="wpr-rocketcdn-pricing--toggle">
+						<span class="wpr-rocketcdn-pricing--toggle-label wpr-rocketcdn-pricing--toggle-label--inactive">Monthly</span>
+						<label class="wpr-rocketcdn-toggle">
+							<input type="checkbox" class="wpr-rocketcdn-toggle--input" checked>
+							<span class="wpr-rocketcdn-toggle--slider"></span>
+						</label>
+						<span class="wpr-rocketcdn-pricing--toggle-label wpr-rocketcdn-pricing--toggle-label--active">Yearly</span>
+					</div>
+					<div class="wpr-rocketcdn-pricing--badge">2 Months Free!</div>
+					<div class="wpr-rocketcdn-pricing--price-container">
+						<h4 class="wpr-title2 wpr-rocketcdn-pricing-regular"><del>$7.99</del></h4>
+						<div class="wpr-rocketcdn-pricing--price">
+							<span class="wpr-rocketcdn-pricing--currency">$</span>
+							<span class="wpr-rocketcdn-pricing--amount">5</span>
+							<span class="wpr-rocketcdn-pricing--cents">.99*</span>
+						</div>
+						<div class="wpr-rocketcdn-pricing--billing">
+							<span class="wpr-rocketcdn-pricing--billing-period">per month, billed yearly</span>
+							<span class="wpr-rocketcdn-pricing--billing-vat">(excl. VAT)</span>
+						</div>
+					</div>
+					<button class="wpr-rocketcdn-pricing--cta wpr-rocketcdn-open" data-micromodal-trigger="wpr-rocketcdn-modal">Get Started</button>
+				</div>
 			</div>
 		</div>
 	</section>
@@ -557,36 +932,71 @@ HTML
 			],
 			'integration' => <<<HTML
 <div class="wpr-rocketcdn-cta-small notice-alt notice-warning wpr-isHidden" id="wpr-rocketcdn-cta-small">
-	<div class="wpr-flex">
-		<section>
-			<h3 class="notice-title">Speed up your website with RocketCDN, WP Rocket’s Content Delivery Network.</strong></h3>
-		</section>
-		<div>
-			<button class="wpr-button" id="wpr-rocketcdn-open-cta">Learn More</button>
-		</div>
-	</div>
+    <div class="wpr-flex">
+        <section>
+            <h3 class="notice-title">Speed up your website with RocketCDN, WP Rocket’s Content Delivery Network.</h3>
+        </section>
+        <div>
+            <button class="wpr-button" id="wpr-rocketcdn-open-cta">
+                Learn More</button>
+        </div>
+    </div>
 </div>
 <div class="wpr-rocketcdn-cta " id="wpr-rocketcdn-cta">
-	<section class="wpr-rocketcdn-cta-content--no-promo">
-		<h3 class="wpr-title2">RocketCDN</h3>
-		<p class="wpr-rocketcdn-cta-subtitle">Speed up your website thanks to:</p>
-		<div class="wpr-flex">
-			<ul class="wpr-rocketcdn-features">
-				<li class="wpr-rocketcdn-feature wpr-rocketcdn-bandwidth">High performance Content Delivery Network (CDN) with <strong>unlimited bandwidth</strong></li>
-				<li class="wpr-rocketcdn-feature wpr-rocketcdn-configuration">Easy configuration: the <strong>best CDN settings</strong> are automatically applied</li>
-				<li class="wpr-rocketcdn-feature wpr-rocketcdn-automatic">WP Rocket integration: the CDN option is <strong>automatically configured</strong> in our plugin</li>
-				<li class="wpr-rocketcdn-cta-footer">
-					<a href="https://wp-rocket.me/rocketcdn/" target="_blank" rel="noopener noreferrer">Learn more about RocketCDN</a>
-				</li>
-			</ul>
-			<div class="wpr-rocketcdn-pricing">
-				<p>RocketCDN is not available at the moment. Please retry later. <a href="https://docs.wp-rocket.me/article/1608-error-notices-during-the-rocketcdn-subscription-process/?utm_source=wp_plugin&#038;utm_medium=wp_rocket" data-beacon-article="60ddc72d9e87cb3d01249270" rel="noopener noreferrer" target="_blank">More Info</a></p>
-			</div>
-		</div>
-	</section>
-	<button class="wpr-rocketcdn-cta-close--no-promo" id="wpr-rocketcdn-close-cta">
-		<span class="screen-reader-text">Reduce this banner</span>
-	</button>
+    <section class="wpr-rocketcdn-cta-content--no-promo">
+        <div class="wpr-flex">
+            <div class="wpr-rocketcdn-card-left">
+                <div class="wpr-rocketcdn-header">
+                    <h2 class="wpr-rocketcdn-header--title">
+                    Propel your Content at the Speed of Light!</h2>
+                    <p class="wpr-rocketcdn-header--subtitle">
+                    RocketCDN delivers your content from servers around the world for a faster website.</p>
+                </div>
+                <ul class="wpr-rocketcdn-features">
+                    <li class="wpr-rocketcdn-feature wpr-rocketcdn-bandwidth">
+                        <div class="wpr-rocketcdn-feature--content">
+                            <h3 class="wpr-rocketcdn-feature--title">
+                            Unlimited Performance</h3>
+                            <p class="wpr-rocketcdn-feature--description">
+                            Experience blazing-fast content delivery through 120 edge locations with unlimited bandwidth.</p>
+                        </div>
+                    </li>
+                    <li class="wpr-rocketcdn-feature wpr-rocketcdn-configuration">
+                        <div class="wpr-rocketcdn-feature--content">
+                            <h3 class="wpr-rocketcdn-feature--title">
+                            Pre-Tuned for Speed</h3>
+                            <p class="wpr-rocketcdn-feature--description">
+                            Enjoy pre-configured settings tailored for maximum speed and performance.</p>
+                        </div>
+                    </li>
+                    <li class="wpr-rocketcdn-feature wpr-rocketcdn-automatic">
+                        <div class="wpr-rocketcdn-feature--content">
+                            <h3 class="wpr-rocketcdn-feature--title">
+                            Effortless Setup</h3>
+                            <p class="wpr-rocketcdn-feature--description">
+                            Benefit from automatic configuration of the CDN option in WP Rocket, making setup effortless.</p>
+                        </div>
+                    </li>
+                    <li class="wpr-rocketcdn-cta-footer">
+                        <div class="wpr-rocketcdn-cta-footer--cancel-notice">
+                            <span>
+                            You can cancel anytime!</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="wpr-rocketcdn-pricing ">
+                <p>
+                RocketCDN is not available at the moment. Please retry later.<a href="https://docs.wp-rocket.me/article/1608-error-notices-during-the-rocketcdn-subscription-process/?utm_source=wp_plugin&#038;utm_medium=wp_rocket" data-beacon-article="60ddc72d9e87cb3d01249270" rel="noopener noreferrer" target="_blank">
+                More Info</a>
+                </p>
+            </div>
+            <button class="wpr-rocketcdn-cta-close--no-promo" id="wpr-rocketcdn-close-cta">
+                <span class="screen-reader-text">
+                Reduce this banner</span>
+            </button>
+        </div>
+    </section>
 </div>
 HTML
 			,
