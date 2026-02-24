@@ -60,14 +60,16 @@ return [
 				</div>
 				<div class="wpr-rocketcdn-pricing--content">
 					<div class="wpr-rocketcdn-pricing--toggle">
-						<span class="wpr-rocketcdn-pricing--toggle-label wpr-rocketcdn-pricing--toggle-label--inactive">Monthly</span>
 						<label class="wpr-rocketcdn-toggle">
 							<input type="checkbox" class="wpr-rocketcdn-toggle--input" checked>
 							<span class="wpr-rocketcdn-toggle--slider"></span>
+
+							<span class="wpr-rocketcdn-pricing--toggle-label wpr-rocketcdn-pricing--toggle-label--inactive">Monthly</span>
+							<span class="wpr-rocketcdn-pricing--toggle-label wpr-rocketcdn-pricing--toggle-label--active">Yearly</span>
+
+							<div class="wpr-rocketcdn-pricing--badge">2 Months Free!</div>
 						</label>
-						<span class="wpr-rocketcdn-pricing--toggle-label wpr-rocketcdn-pricing--toggle-label--active">Yearly</span>
 					</div>
-					<div class="wpr-rocketcdn-pricing--badge">2 Months Free!</div>
 					<div class="wpr-rocketcdn-pricing--price-container">
 						<div class="wpr-rocketcdn-pricing--price">
 							<span class="wpr-rocketcdn-pricing--currency">$</span>
@@ -302,18 +304,16 @@ HTML
 				</div>
 				<div class="wpr-rocketcdn-pricing--content">
 					<div class="wpr-rocketcdn-pricing--toggle">
-						<span class="wpr-rocketcdn-pricing--toggle-label wpr-rocketcdn-pricing--toggle-label--inactive">
-							Monthly</span>
 						<label class="wpr-rocketcdn-toggle">
 							<input type="checkbox" class="wpr-rocketcdn-toggle--input" checked>
-							<span class="wpr-rocketcdn-toggle--slider">
-							</span>
+							<span class="wpr-rocketcdn-toggle--slider"></span>
+
+							<span class="wpr-rocketcdn-pricing--toggle-label wpr-rocketcdn-pricing--toggle-label--inactive">Monthly</span>
+							<span class="wpr-rocketcdn-pricing--toggle-label wpr-rocketcdn-pricing--toggle-label--active">Yearly</span>
+
+							<div class="wpr-rocketcdn-pricing--badge">2 Months Free!</div>
 						</label>
-						<span class="wpr-rocketcdn-pricing--toggle-label wpr-rocketcdn-pricing--toggle-label--active">
-							Yearly</span>
 					</div>
-					<div class="wpr-rocketcdn-pricing--badge">
-						2 Months Free!</div>
 					<div class="wpr-rocketcdn-pricing--price-container">
 						<div class="wpr-rocketcdn-pricing--price">
 							<span class="wpr-rocketcdn-pricing--currency">
@@ -445,18 +445,16 @@ HTML
 				</div>
 				<div class="wpr-rocketcdn-pricing--content">
 					<div class="wpr-rocketcdn-pricing--toggle">
-						<span class="wpr-rocketcdn-pricing--toggle-label wpr-rocketcdn-pricing--toggle-label--inactive">
-							Monthly</span>
 						<label class="wpr-rocketcdn-toggle">
 							<input type="checkbox" class="wpr-rocketcdn-toggle--input" checked>
-							<span class="wpr-rocketcdn-toggle--slider">
-							</span>
+							<span class="wpr-rocketcdn-toggle--slider"></span>
+
+							<span class="wpr-rocketcdn-pricing--toggle-label wpr-rocketcdn-pricing--toggle-label--inactive">Monthly</span>
+							<span class="wpr-rocketcdn-pricing--toggle-label wpr-rocketcdn-pricing--toggle-label--active">Yearly</span>
+
+							<div class="wpr-rocketcdn-pricing--badge">2 Months Free!</div>
 						</label>
-						<span class="wpr-rocketcdn-pricing--toggle-label wpr-rocketcdn-pricing--toggle-label--active">
-							Yearly</span>
 					</div>
-					<div class="wpr-rocketcdn-pricing--badge">
-						2 Months Free!</div>
 					<div class="wpr-rocketcdn-pricing--price-container">
 						<div class="wpr-rocketcdn-pricing--price">
 							<span class="wpr-rocketcdn-pricing--currency">
@@ -589,18 +587,16 @@ HTML
 				</div>
 				<div class="wpr-rocketcdn-pricing--content">
 					<div class="wpr-rocketcdn-pricing--toggle">
-						<span class="wpr-rocketcdn-pricing--toggle-label wpr-rocketcdn-pricing--toggle-label--inactive">
-							Monthly</span>
 						<label class="wpr-rocketcdn-toggle">
 							<input type="checkbox" class="wpr-rocketcdn-toggle--input" checked>
-							<span class="wpr-rocketcdn-toggle--slider">
-							</span>
+							<span class="wpr-rocketcdn-toggle--slider"></span>
+
+							<span class="wpr-rocketcdn-pricing--toggle-label wpr-rocketcdn-pricing--toggle-label--inactive">Monthly</span>
+							<span class="wpr-rocketcdn-pricing--toggle-label wpr-rocketcdn-pricing--toggle-label--active">Yearly</span>
+
+							<div class="wpr-rocketcdn-pricing--badge">2 Months Free!</div>
 						</label>
-						<span class="wpr-rocketcdn-pricing--toggle-label wpr-rocketcdn-pricing--toggle-label--active">
-							Yearly</span>
 					</div>
-					<div class="wpr-rocketcdn-pricing--badge">
-						2 Months Free!</div>
 					<div class="wpr-rocketcdn-pricing--price-container">
 						<div class="wpr-rocketcdn-pricing--price">
 							<span class="wpr-rocketcdn-pricing--currency">
@@ -732,18 +728,16 @@ HTML
 				</div>
 				<div class="wpr-rocketcdn-pricing--content">
 					<div class="wpr-rocketcdn-pricing--toggle">
-						<span class="wpr-rocketcdn-pricing--toggle-label wpr-rocketcdn-pricing--toggle-label--inactive">
-							Monthly</span>
 						<label class="wpr-rocketcdn-toggle">
 							<input type="checkbox" class="wpr-rocketcdn-toggle--input" checked>
-							<span class="wpr-rocketcdn-toggle--slider">
-							</span>
+							<span class="wpr-rocketcdn-toggle--slider"></span>
+
+							<span class="wpr-rocketcdn-pricing--toggle-label wpr-rocketcdn-pricing--toggle-label--inactive">Monthly</span>
+							<span class="wpr-rocketcdn-pricing--toggle-label wpr-rocketcdn-pricing--toggle-label--active">Yearly</span>
+
+							<div class="wpr-rocketcdn-pricing--badge">2 Months Free!</div>
 						</label>
-						<span class="wpr-rocketcdn-pricing--toggle-label wpr-rocketcdn-pricing--toggle-label--active">
-							Yearly</span>
 					</div>
-					<div class="wpr-rocketcdn-pricing--badge">
-						2 Months Free!</div>
 					<div class="wpr-rocketcdn-pricing--price-container">
 						<div class="wpr-rocketcdn-pricing--price">
 							<span class="wpr-rocketcdn-pricing--currency">
@@ -867,14 +861,16 @@ HTML
 				</div>
 				<div class="wpr-rocketcdn-pricing--content">
 					<div class="wpr-rocketcdn-pricing--toggle">
-						<span class="wpr-rocketcdn-pricing--toggle-label wpr-rocketcdn-pricing--toggle-label--inactive">Monthly</span>
 						<label class="wpr-rocketcdn-toggle">
 							<input type="checkbox" class="wpr-rocketcdn-toggle--input" checked>
 							<span class="wpr-rocketcdn-toggle--slider"></span>
+
+							<span class="wpr-rocketcdn-pricing--toggle-label wpr-rocketcdn-pricing--toggle-label--inactive">Monthly</span>
+							<span class="wpr-rocketcdn-pricing--toggle-label wpr-rocketcdn-pricing--toggle-label--active">Yearly</span>
+
+							<div class="wpr-rocketcdn-pricing--badge">2 Months Free!</div>
 						</label>
-						<span class="wpr-rocketcdn-pricing--toggle-label wpr-rocketcdn-pricing--toggle-label--active">Yearly</span>
 					</div>
-					<div class="wpr-rocketcdn-pricing--badge">2 Months Free!</div>
 					<div class="wpr-rocketcdn-pricing--price-container">
 						<h4 class="wpr-title2 wpr-rocketcdn-pricing-regular"><del>$7.99</del></h4>
 						<div class="wpr-rocketcdn-pricing--price">
