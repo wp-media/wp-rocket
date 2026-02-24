@@ -294,9 +294,17 @@
         flex-shrink: 0;
         max-height: 370px;
 
+        &.has-regular-price {
+            max-height: 400px;
+        }
+
 
         @include respond-to('xs') {
             width: auto;
+        }
+
+        &-regular {
+            color: $cGreyDark3;
         }
 
         &--logo {
