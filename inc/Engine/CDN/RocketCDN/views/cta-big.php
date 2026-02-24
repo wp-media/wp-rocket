@@ -78,7 +78,7 @@ $data = isset( $data ) && is_array( $data ) ? $data : []; // phpcs:ignore WordPr
 						<?php endif; ?>
 					</ul>
 			</div>
-			<div class="wpr-rocketcdn-pricing">
+			<div class="wpr-rocketcdn-pricing <?php echo ! empty( $data['regular_price'] ) ? 'has-regular-price' : ''; ?>">
 				<?php if ( ! empty( $data['error'] ) ) : ?>
 					<p><?php echo $data['message']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
 				<?php else : ?>
@@ -102,6 +102,10 @@ $data = isset( $data ) && is_array( $data ) ? $data : []; // phpcs:ignore WordPr
 					<div class="wpr-rocketcdn-pricing--badge"><?php esc_html_e( '2 Months Free!', 'rocket' ); ?></div>
 
 					<div class="wpr-rocketcdn-pricing--price-container">
+						<?php if ( ! empty( $data['regular_price'] ) ) : ?>
+						<h4 class="wpr-title2 wpr-rocketcdn-pricing-regular"><del>$<?php echo esc_html( $data['regular_price'] ); ?></del></h4>
+						<?php endif; ?>
+
 						<div class="wpr-rocketcdn-pricing--price">
 							<span class="wpr-rocketcdn-pricing--currency">$</span>
 							<span class="wpr-rocketcdn-pricing--amount"><?php echo esc_html( substr( $data['current_price'], 0, strpos( $data['current_price'], '.' ) ) ); ?></span>
