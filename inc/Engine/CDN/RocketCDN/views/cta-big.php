@@ -84,8 +84,8 @@ $data = isset( $data ) && is_array( $data ) ? $data : []; // phpcs:ignore WordPr
 				<?php else : ?>
 
 				<div class="wpr-rocketcdn-pricing--logo">
-					<img src="<?php echo esc_url( WP_ROCKET_ASSETS_IMG_URL . 'rocketcdn-logo.svg' ); ?>" alt="Rocket Logo" class="wpr-rocketcdn-pricing--logo-icon">
-					<img src="<?php echo esc_url( WP_ROCKET_ASSETS_IMG_URL . 'rocketcdn-text.svg' ); ?>" alt="RocketCDN Text" class="wpr-rocketcdn-pricing--logo-text">
+					<img src="<?php echo esc_url( rocket_get_constant( 'WP_ROCKET_ASSETS_IMG_URL' ) . 'rocketcdn-logo.svg' ); ?>" alt="Rocket Logo" class="wpr-rocketcdn-pricing--logo-icon">
+					<img src="<?php echo esc_url( rocket_get_constant( 'WP_ROCKET_ASSETS_IMG_URL' ) . 'rocketcdn-text.svg' ); ?>" alt="RocketCDN Text" class="wpr-rocketcdn-pricing--logo-text">
 				</div>
 
 				<div class="wpr-rocketcdn-pricing--content">

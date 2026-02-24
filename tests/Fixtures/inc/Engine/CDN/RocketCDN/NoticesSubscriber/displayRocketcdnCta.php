@@ -12,7 +12,7 @@ return [
 <div class="wpr-rocketcdn-cta-small notice-alt notice-warning wpr-isHidden" id="wpr-rocketcdn-cta-small">
 	<div class="wpr-flex">
 		<section>
-			<h3 class="notice-title">Speed up your website with RocketCDN, WP Rocket’s Content Delivery Network.</strong></h3>
+			<h3 class="notice-title">Speed up your website with RocketCDN, WP Rocket’s Content Delivery Network.</h3>
 		</section>
 		<div>
 			<button class="wpr-button" id="wpr-rocketcdn-open-cta">Learn More</button>
@@ -55,8 +55,8 @@ return [
 			</div>
 			<div class="wpr-rocketcdn-pricing ">
 				<div class="wpr-rocketcdn-pricing--logo">
-					<img src="http://example.org/wp-content/plugins/home/runner/work/wp-rocket/wp-rocket/assets/img/rocketcdn-logo.svg" alt="Rocket Logo" class="wpr-rocketcdn-pricing--logo-icon">
-					<img src="http://example.org/wp-content/plugins/home/runner/work/wp-rocket/wp-rocket/assets/img/rocketcdn-text.svg" alt="RocketCDN Text" class="wpr-rocketcdn-pricing--logo-text">
+					<img src="http://example.org/wp-content/plugins/wp-rocket/assets/img/rocketcdn-logo.svg" alt="Rocket Logo" class="wpr-rocketcdn-pricing--logo-icon">
+					<img src="http://example.org/wp-content/plugins/wp-rocket/assets/img/rocketcdn-text.svg" alt="RocketCDN Text" class="wpr-rocketcdn-pricing--logo-text">
 				</div>
 				<div class="wpr-rocketcdn-pricing--content">
 					<div class="wpr-rocketcdn-pricing--toggle">
@@ -82,11 +82,11 @@ return [
 					<button class="wpr-rocketcdn-pricing--cta wpr-rocketcdn-open" data-micromodal-trigger="wpr-rocketcdn-modal">Get Started</button>
 				</div>
 			</div>
+			<button class="wpr-rocketcdn-cta-close--no-promo" id="wpr-rocketcdn-close-cta">
+				<span class="screen-reader-text">Reduce this banner</span>
+			</button>
 		</div>
 	</section>
-	<button class="wpr-rocketcdn-cta-close--no-promo" id="wpr-rocketcdn-close-cta">
-		<span class="screen-reader-text">Reduce this banner</span>
-	</button>
 </div>
 HTML
 				,
@@ -108,7 +108,7 @@ HTML
 <div class="wpr-rocketcdn-cta-small notice-alt notice-warning wpr-isHidden" id="wpr-rocketcdn-cta-small">
 	<div class="wpr-flex">
 		<section>
-			<h3 class="notice-title">Speed up your website with RocketCDN, WP Rocket’s Content Delivery Network.</strong></h3>
+			<h3 class="notice-title">Speed up your website with RocketCDN, WP Rocket’s Content Delivery Network.</h3>
 		</section>
 		<div>
 			<button class="wpr-button" id="wpr-rocketcdn-open-cta">Learn More</button>
@@ -165,11 +165,11 @@ HTML
 					<button class="wpr-rocketcdn-pricing--cta wpr-rocketcdn-open" data-micromodal-trigger="wpr-rocketcdn-modal">Get Started</button>
 				</div>
 			</div>
+			<button class="wpr-rocketcdn-cta-close--no-promo" id="wpr-rocketcdn-close-cta">
+				<span class="screen-reader-text">Reduce this banner</span>
+			</button>
 		</div>
 	</section>
-	<button class="wpr-rocketcdn-cta-close--no-promo" id="wpr-rocketcdn-close-cta">
-		<span class="screen-reader-text">Reduce this banner</span>
-	</button>
 </div>
 HTML
 				,
@@ -243,7 +243,7 @@ HTML
 	<div class="wpr-flex">
 		<section>
 			<h3 class="notice-title">
-				Speed up your website with RocketCDN, WP Rocket's Content Delivery Network.</strong>
+				Speed up your website with RocketCDN, WP Rocket’s Content Delivery Network.
 			</h3>
 		</section>
 		<div>
@@ -297,8 +297,8 @@ HTML
 			</div>
 			<div class="wpr-rocketcdn-pricing ">
 				<div class="wpr-rocketcdn-pricing--logo">
-					<img src="http://example.org/wp-content/plugins/home/runner/work/wp-rocket/wp-rocket/assets/img/rocketcdn-logo.svg" alt="Rocket Logo" class="wpr-rocketcdn-pricing--logo-icon">
-					<img src="http://example.org/wp-content/plugins/home/runner/work/wp-rocket/wp-rocket/assets/img/rocketcdn-text.svg" alt="RocketCDN Text" class="wpr-rocketcdn-pricing--logo-text">
+					<img src="http://example.org/wp-content/plugins/wp-rocket/assets/img/rocketcdn-logo.svg" alt="Rocket Logo" class="wpr-rocketcdn-pricing--logo-icon">
+					<img src="http://example.org/wp-content/plugins/wp-rocket/assets/img/rocketcdn-text.svg" alt="RocketCDN Text" class="wpr-rocketcdn-pricing--logo-text">
 				</div>
 				<div class="wpr-rocketcdn-pricing--content">
 					<div class="wpr-rocketcdn-pricing--toggle">
@@ -334,12 +334,11 @@ HTML
 						Get Started</button>
 				</div>
 			</div>
+			<button class="wpr-rocketcdn-cta-close--no-promo" id="wpr-rocketcdn-close-cta">
+				<span class="screen-reader-text">Reduce this banner</span>
+			</button>
 		</div>
 	</section>
-	<button class="wpr-rocketcdn-cta-close--no-promo" id="wpr-rocketcdn-close-cta">
-		<span class="screen-reader-text">
-			Reduce this banner</span>
-	</button>
 </div>
 HTML
 			,
@@ -387,7 +386,7 @@ HTML
 	<div class="wpr-flex">
 		<section>
 			<h3 class="notice-title">
-				Speed up your website with RocketCDN, WP Rocket's Content Delivery Network.</strong>
+				Speed up your website with RocketCDN, WP Rocket’s Content Delivery Network.
 			</h3>
 		</section>
 		<div>
@@ -441,8 +440,8 @@ HTML
 			</div>
 			<div class="wpr-rocketcdn-pricing ">
 				<div class="wpr-rocketcdn-pricing--logo">
-					<img src="http://example.org/wp-content/plugins/home/runner/work/wp-rocket/wp-rocket/assets/img/rocketcdn-logo.svg" alt="Rocket Logo" class="wpr-rocketcdn-pricing--logo-icon">
-					<img src="http://example.org/wp-content/plugins/home/runner/work/wp-rocket/wp-rocket/assets/img/rocketcdn-text.svg" alt="RocketCDN Text" class="wpr-rocketcdn-pricing--logo-text">
+					<img src="http://example.org/wp-content/plugins/wp-rocket/assets/img/rocketcdn-logo.svg" alt="Rocket Logo" class="wpr-rocketcdn-pricing--logo-icon">
+					<img src="http://example.org/wp-content/plugins/wp-rocket/assets/img/rocketcdn-text.svg" alt="RocketCDN Text" class="wpr-rocketcdn-pricing--logo-text">
 				</div>
 				<div class="wpr-rocketcdn-pricing--content">
 					<div class="wpr-rocketcdn-pricing--toggle">
@@ -478,12 +477,11 @@ HTML
 						Get Started</button>
 				</div>
 			</div>
+			<button class="wpr-rocketcdn-cta-close--no-promo" id="wpr-rocketcdn-close-cta">
+				<span class="screen-reader-text">Reduce this banner</span>
+			</button>
 		</div>
 	</section>
-	<button class="wpr-rocketcdn-cta-close--no-promo" id="wpr-rocketcdn-close-cta">
-		<span class="screen-reader-text">
-			Reduce this banner</span>
-	</button>
 </div>
 
 HTML
@@ -532,7 +530,7 @@ HTML
 	<div class="wpr-flex">
 		<section>
 			<h3 class="notice-title">
-				Speed up your website with RocketCDN, WP Rocket's Content Delivery Network.</strong>
+				Speed up your website with RocketCDN, WP Rocket’s Content Delivery Network.
 			</h3>
 		</section>
 		<div>
@@ -586,8 +584,8 @@ HTML
 			</div>
 			<div class="wpr-rocketcdn-pricing ">
 				<div class="wpr-rocketcdn-pricing--logo">
-					<img src="http://example.org/wp-content/plugins/home/runner/work/wp-rocket/wp-rocket/assets/img/rocketcdn-logo.svg" alt="Rocket Logo" class="wpr-rocketcdn-pricing--logo-icon">
-					<img src="http://example.org/wp-content/plugins/home/runner/work/wp-rocket/wp-rocket/assets/img/rocketcdn-text.svg" alt="RocketCDN Text" class="wpr-rocketcdn-pricing--logo-text">
+					<img src="http://example.org/wp-content/plugins/wp-rocket/assets/img/rocketcdn-logo.svg" alt="Rocket Logo" class="wpr-rocketcdn-pricing--logo-icon">
+					<img src="http://example.org/wp-content/plugins/wp-rocket/assets/img/rocketcdn-text.svg" alt="RocketCDN Text" class="wpr-rocketcdn-pricing--logo-text">
 				</div>
 				<div class="wpr-rocketcdn-pricing--content">
 					<div class="wpr-rocketcdn-pricing--toggle">
@@ -623,12 +621,11 @@ HTML
 						Get Started</button>
 				</div>
 			</div>
+			<button class="wpr-rocketcdn-cta-close--no-promo" id="wpr-rocketcdn-close-cta">
+				<span class="screen-reader-text">Reduce this banner</span>
+			</button>
 		</div>
 	</section>
-	<button class="wpr-rocketcdn-cta-close--no-promo" id="wpr-rocketcdn-close-cta">
-		<span class="screen-reader-text">
-			Reduce this banner</span>
-	</button>
 </div>
 HTML
 			,
@@ -672,11 +669,11 @@ HTML
 				],
 			],
 			'integration' => <<<HTML
-<div class="wpr-rocketcdn-cta-small notice-alt notice-warning wpr-isHidden" id="wpr-rocketcdn-cta-small">
+<div class="wpr-rocketcdn-cta-small notice-alt notice-warning " id="wpr-rocketcdn-cta-small">
 	<div class="wpr-flex">
 		<section>
 			<h3 class="notice-title">
-				Speed up your website with RocketCDN, WP Rocket's Content Delivery Network.</strong>
+				Speed up your website with RocketCDN, WP Rocket’s Content Delivery Network.
 			</h3>
 		</section>
 		<div>
@@ -685,7 +682,7 @@ HTML
 		</div>
 	</div>
 </div>
-<div class="wpr-rocketcdn-cta " id="wpr-rocketcdn-cta">
+<div class="wpr-rocketcdn-cta wpr-isHidden" id="wpr-rocketcdn-cta">
 	<section class="wpr-rocketcdn-cta-content--no-promo">
 		<div class="wpr-flex">
 			<div class="wpr-rocketcdn-card-left">
@@ -730,8 +727,8 @@ HTML
 			</div>
 			<div class="wpr-rocketcdn-pricing ">
 				<div class="wpr-rocketcdn-pricing--logo">
-					<img src="http://example.org/wp-content/plugins/home/runner/work/wp-rocket/wp-rocket/assets/img/rocketcdn-logo.svg" alt="Rocket Logo" class="wpr-rocketcdn-pricing--logo-icon">
-					<img src="http://example.org/wp-content/plugins/home/runner/work/wp-rocket/wp-rocket/assets/img/rocketcdn-text.svg" alt="RocketCDN Text" class="wpr-rocketcdn-pricing--logo-text">
+					<img src="http://example.org/wp-content/plugins/wp-rocket/assets/img/rocketcdn-logo.svg" alt="Rocket Logo" class="wpr-rocketcdn-pricing--logo-icon">
+					<img src="http://example.org/wp-content/plugins/wp-rocket/assets/img/rocketcdn-text.svg" alt="RocketCDN Text" class="wpr-rocketcdn-pricing--logo-text">
 				</div>
 				<div class="wpr-rocketcdn-pricing--content">
 					<div class="wpr-rocketcdn-pricing--toggle">
@@ -767,12 +764,11 @@ HTML
 						Get Started</button>
 				</div>
 			</div>
+			<button class="wpr-rocketcdn-cta-close--no-promo" id="wpr-rocketcdn-close-cta">
+				<span class="screen-reader-text">Reduce this banner</span>
+			</button>
 		</div>
 	</section>
-	<button class="wpr-rocketcdn-cta-close--no-promo" id="wpr-rocketcdn-close-cta">
-		<span class="screen-reader-text">
-			Reduce this banner</span>
-	</button>
 </div>
 HTML
 			,
@@ -818,7 +814,7 @@ HTML
 <div class="wpr-rocketcdn-cta-small notice-alt notice-warning wpr-isHidden" id="wpr-rocketcdn-cta-small">
 	<div class="wpr-flex">
 		<section>
-			<h3 class="notice-title">Speed up your website with RocketCDN, WP Rocket’s Content Delivery Network.</strong></h3>
+			<h3 class="notice-title">Speed up your website with RocketCDN, WP Rocket’s Content Delivery Network.</h3>
 		</section>
 		<div>
 			<button class="wpr-button" id="wpr-rocketcdn-open-cta">Learn More</button>
@@ -866,8 +862,8 @@ HTML
 			</div>
 			<div class="wpr-rocketcdn-pricing has-regular-price">
 				<div class="wpr-rocketcdn-pricing--logo">
-					<img src="http://example.org/wp-content/plugins/home/runner/work/wp-rocket/wp-rocket/assets/img/rocketcdn-logo.svg" alt="Rocket Logo" class="wpr-rocketcdn-pricing--logo-icon">
-					<img src="http://example.org/wp-content/plugins/home/runner/work/wp-rocket/wp-rocket/assets/img/rocketcdn-text.svg" alt="RocketCDN Text" class="wpr-rocketcdn-pricing--logo-text">
+					<img src="http://example.org/wp-content/plugins/wp-rocket/assets/img/rocketcdn-logo.svg" alt="Rocket Logo" class="wpr-rocketcdn-pricing--logo-icon">
+					<img src="http://example.org/wp-content/plugins/wp-rocket/assets/img/rocketcdn-text.svg" alt="RocketCDN Text" class="wpr-rocketcdn-pricing--logo-text">
 				</div>
 				<div class="wpr-rocketcdn-pricing--content">
 					<div class="wpr-rocketcdn-pricing--toggle">
@@ -894,11 +890,11 @@ HTML
 					<button class="wpr-rocketcdn-pricing--cta wpr-rocketcdn-open" data-micromodal-trigger="wpr-rocketcdn-modal">Get Started</button>
 				</div>
 			</div>
+			<button class="wpr-rocketcdn-cta-close" id="wpr-rocketcdn-close-cta">
+				<span class="screen-reader-text">Reduce this banner</span>
+			</button>
 		</div>
 	</section>
-	<button class="wpr-rocketcdn-cta-close" id="wpr-rocketcdn-close-cta">
-		<span class="screen-reader-text">Reduce this banner</span>
-	</button>
 </div>'
 			,
 		],
