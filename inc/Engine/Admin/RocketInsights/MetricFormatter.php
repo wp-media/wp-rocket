@@ -44,8 +44,8 @@ class MetricFormatter {
 	private const METRIC_KEYS = [
 		'largest_contentful_paint',
 		'total_blocking_time',
-		'time_to_first_byte',
 		'cumulative_layout_shift',
+		'time_to_first_byte',
 	];
 
 	/**
