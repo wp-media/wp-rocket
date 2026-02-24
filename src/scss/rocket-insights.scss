@@ -111,6 +111,10 @@
 				}
 			}
 		}
+
+		.wpr-btn-with-tool-tip {
+			width: 100%;
+		}
 	}
 
 	// Score wrapper.
@@ -183,7 +187,8 @@
 		}
 
 		.wpr-ri-retest-link,
-		.wpr-ri-see-report-link {
+		.wpr-ri-see-report-link,
+		.wpr-ri-view-details-link {
 			display: block;
 			color: #2271b1;
 			text-decoration: none;
@@ -211,9 +216,10 @@
 			font-size: 15px;
 		}
 
-		// Disabled state for Re-test and See Report
+		// Disabled state for Re-test, See Report, and View Details
 		.wpr-ri-retest-link.wpr-ri-disabled,
-		.wpr-ri-see-report-link.wpr-ri-disabled {
+		.wpr-ri-see-report-link.wpr-ri-disabled,
+		.wpr-ri-view-details-link.wpr-ri-disabled {
 			color: #a7aaad;
 			cursor: not-allowed;
 			pointer-events: none;
