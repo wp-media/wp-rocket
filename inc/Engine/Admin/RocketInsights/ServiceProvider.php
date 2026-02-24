@@ -97,7 +97,6 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArguments(
 				[
 					new StringArgument( $this->getContainer()->get( 'template_path' ) . '/settings/' ),
-					'ri_plan',
 					'ri_context',
 					'beacon',
 					'ri_query',
@@ -187,7 +186,6 @@ class ServiceProvider extends AbstractServiceProvider {
 					'ri_queue',
 					'ri_context',
 					'ri_global_score',
-					'options',
 					'ri_manager',
 					'ri_plan',
 					'renewal',
