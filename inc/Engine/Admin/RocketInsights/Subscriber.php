@@ -89,15 +89,15 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	/**
 	 * Constructor.
 	 *
-	 * @param Render       $render Render object.
-	 * @param Controller   $controller Controller object.
-	 * @param Rest         $rest Rest object.
-	 * @param Queue        $queue Queue object.
-	 * @param Context      $context Rocket Insights context.
-	 * @param GlobalScore  $global_score GlobalScore instance.
-	 * @param Manager      $manager Manager instance.
-	 * @param Plan         $plan Plan manager.
-	 * @param Renewal      $renewal Renewal instance.
+	 * @param Render      $render Render object.
+	 * @param Controller  $controller Controller object.
+	 * @param Rest        $rest Rest object.
+	 * @param Queue       $queue Queue object.
+	 * @param Context     $context Rocket Insights context.
+	 * @param GlobalScore $global_score GlobalScore instance.
+	 * @param Manager     $manager Manager instance.
+	 * @param Plan        $plan Plan manager.
+	 * @param Renewal     $renewal Renewal instance.
 	 */
 	public function __construct(
 		Render $render,
