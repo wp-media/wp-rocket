@@ -1121,10 +1121,16 @@ a:focus, button:focus {
   flex-shrink: 0;
   max-height: 370px;
 }
+.wpr-rocketcdn-cta .wpr-rocketcdn-pricing.has-regular-price {
+  max-height: 400px;
+}
 @media (max-width: 783px) {
   .wpr-rocketcdn-cta .wpr-rocketcdn-pricing {
     width: auto;
   }
+}
+.wpr-rocketcdn-cta .wpr-rocketcdn-pricing-regular {
+  color: #72777C;
 }
 .wpr-rocketcdn-cta .wpr-rocketcdn-pricing--logo {
   display: flex;
