@@ -32,7 +32,8 @@ return [
             ],
         ],
         'expected' => [
-            'token_stored' => false,
+            'token_stored'     => false,
+            'expects_redirect' => true,
         ],
     ],
 
@@ -49,7 +50,8 @@ return [
             ],
         ],
         'expected' => [
-            'token_stored' => false,
+            'token_stored'     => false,
+            'expects_redirect' => true,
         ],
     ],
 
@@ -73,9 +75,10 @@ return [
             ],
         ],
         'expected' => [
-            'token_value' => '1234567890123456789012345678901234567890',
-            'cdn_enabled' => true,
-            'cdn_url'     => 'https://example.rocketcdn.me',
+            'token_value'      => '1234567890123456789012345678901234567890',
+            'cdn_enabled'      => true,
+            'cdn_url'          => 'https://example.rocketcdn.me',
+            'expects_redirect' => true,
         ],
     ],
 ];

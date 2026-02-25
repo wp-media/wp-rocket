@@ -146,6 +146,11 @@ class Test_HandleRocketcdnCheckoutParameter extends AdminTestCase {
 			);
 		}
 
+		// Expect WPDieException for cases that trigger redirects.
+		if ( isset( $expected['expects_redirect'] ) && $expected['expects_redirect'] ) {
+			$this->expectException( \WPDieException::class );
+		}
+
 		// Execute the method.
 		$this->subscriber->handle_rocketcdn_checkout_parameter();
 
