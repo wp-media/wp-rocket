@@ -208,10 +208,11 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 
 		$pricing = $this->api_client->get_pricing_data();
 
-		$regular_price   = '';
-		$nopromo_variant = '--no-promo';
-		$cta_small_class = 'wpr-isHidden';
-		$cta_big_class   = '';
+		$regular_price_monthly = '';
+		$regular_price_annual  = '';
+		$nopromo_variant       = '--no-promo';
+		$cta_small_class       = 'wpr-isHidden';
+		$cta_big_class         = '';
 
 		if ( get_user_meta( get_current_user_id(), 'rocket_rocketcdn_cta_hidden', true ) ) {
 			$cta_small_class = '';
@@ -240,30 +241,35 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 				'message'         => $message,
 			];
 		} else {
-			$current_price      = number_format_i18n( $pricing['monthly_price'], 2 );
-			$promotion_campaign = '';
-			$end_date           = strtotime( $pricing['end_date'] );
-			$promotion_end_date = '';
+			$current_price_monthly = number_format_i18n( $pricing['monthly_price'], 2 );
+			$current_price_annual  = number_format_i18n( $pricing['annual_price'], 2 );
+			$promotion_campaign    = '';
+			$end_date              = strtotime( $pricing['end_date'] );
+			$promotion_end_date    = '';
 
 			if (
 				$pricing['is_discount_active']
 				&&
 				$end_date > time()
 			) {
-				$promotion_campaign = $pricing['discount_campaign_name'];
-				$regular_price      = $current_price;
-				$current_price      = number_format_i18n( $pricing['discounted_price_monthly'], 2 ) . '*';
-				$nopromo_variant    = '';
-				$promotion_end_date = date_i18n( get_option( 'date_format' ), $end_date );
+				$promotion_campaign    = $pricing['discount_campaign_name'];
+				$regular_price_monthly = $current_price_monthly;
+				$regular_price_annual  = $current_price_annual;
+				$current_price_monthly = number_format_i18n( $pricing['discounted_price_monthly'], 2 ) . '*';
+				$current_price_annual  = number_format_i18n( $pricing['discounted_price_yearly'], 2 ) . '*';
+				$nopromo_variant       = '';
+				$promotion_end_date    = date_i18n( get_option( 'date_format' ), $end_date );
 			}
 
 			$big_cta_data = [
-				'container_class'    => $cta_big_class,
-				'promotion_campaign' => $promotion_campaign,
-				'promotion_end_date' => $promotion_end_date,
-				'nopromo_variant'    => $nopromo_variant,
-				'regular_price'      => $regular_price,
-				'current_price'      => $current_price,
+				'container_class'       => $cta_big_class,
+				'promotion_campaign'    => $promotion_campaign,
+				'promotion_end_date'    => $promotion_end_date,
+				'nopromo_variant'       => $nopromo_variant,
+				'regular_price_monthly' => $regular_price_monthly,
+				'regular_price_annual'  => $regular_price_annual,
+				'current_price_monthly' => $current_price_monthly,
+				'current_price_annual'  => $current_price_annual,
 			];
 		}
 

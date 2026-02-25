@@ -70,15 +70,15 @@ $data = isset( $data ) && is_array( $data ) ? $data : []; // phpcs:ignore WordPr
 								printf(
 								// translators: %1$s = discounted price, %2$s = regular price.
 									esc_html__( '*$%1$s/month for 12 months then $%2$s/month. You can cancel your subscription at any time.', 'rocket' ),
-									esc_html( str_replace( '*', '', $data['current_price'] ) ),
-									esc_html( $data['regular_price'] )
+									esc_html( str_replace( '*', '', $data['current_price_monthly'] ) ),
+									esc_html( $data['regular_price_monthly'] )
 								);
 								?>
 							</li>
 						<?php endif; ?>
 					</ul>
 			</div>
-			<div class="wpr-rocketcdn-pricing <?php echo ! empty( $data['regular_price'] ) ? 'has-regular-price' : ''; ?>">
+			<div class="wpr-rocketcdn-pricing <?php echo ! empty( $data['regular_price_monthly'] ) ? 'has-regular-price' : ''; ?>">
 				<?php if ( ! empty( $data['error'] ) ) : ?>
 					<p><?php echo $data['message']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
 				<?php else : ?>
@@ -91,7 +91,7 @@ $data = isset( $data ) && is_array( $data ) ? $data : []; // phpcs:ignore WordPr
 				<div class="wpr-rocketcdn-pricing--content">
 					<div class="wpr-rocketcdn-pricing--toggle">
 						<label class="wpr-rocketcdn-toggle">
-							<input type="checkbox" class="wpr-rocketcdn-toggle--input" checked>
+							<input type="checkbox" class="wpr-rocketcdn-toggle--input">
 							<span class="wpr-rocketcdn-toggle--slider"></span>
 
 							<span class="wpr-rocketcdn-pricing--toggle-label wpr-rocketcdn-pricing--toggle-label--inactive"><?php esc_html_e( 'Monthly', 'rocket' ); ?></span>
@@ -102,14 +102,23 @@ $data = isset( $data ) && is_array( $data ) ? $data : []; // phpcs:ignore WordPr
 					</div>
 
 					<div class="wpr-rocketcdn-pricing--price-container">
-						<?php if ( ! empty( $data['regular_price'] ) ) : ?>
-						<h4 class="wpr-title2 wpr-rocketcdn-pricing-regular"><del>$<?php echo esc_html( $data['regular_price'] ); ?></del></h4>
+						<?php if ( ! empty( $data['regular_price_monthly'] ) ) : ?>
+						<h4 class="wpr-title2 wpr-rocketcdn-pricing-regular">
+							<del>
+								<span class="wpr-rocketcdn-pricing-regular-price wpr-rocketcdn-pricing-regular-price--monthly">$<?php echo esc_html( $data['regular_price_monthly'] ); ?></span>
+								<span class="wpr-rocketcdn-pricing-regular-price wpr-rocketcdn-pricing-regular-price--yearly wpr-isHidden">$<?php echo esc_html( $data['regular_price_annual'] ); ?></span>
+							</del>
+						</h4>
 						<?php endif; ?>
 
 						<div class="wpr-rocketcdn-pricing--price">
 							<span class="wpr-rocketcdn-pricing--currency">$</span>
-							<span class="wpr-rocketcdn-pricing--amount"><?php echo esc_html( substr( $data['current_price'], 0, strpos( $data['current_price'], '.' ) ) ); ?></span>
-							<span class="wpr-rocketcdn-pricing--cents"><?php echo esc_html( substr( $data['current_price'], strpos( $data['current_price'], '.' ) ) ); ?></span>
+
+							<span class="wpr-rocketcdn-pricing--amount wpr-rocketcdn-pricing--monthly"><?php echo esc_html( substr( $data['current_price_monthly'], 0, strpos( $data['current_price_monthly'], '.' ) ) ); ?></span>
+							<span class="wpr-rocketcdn-pricing--cents wpr-rocketcdn-pricing--monthly"><?php echo esc_html( substr( $data['current_price_monthly'], strpos( $data['current_price_monthly'], '.' ) ) ); ?></span>
+
+							<span class="wpr-rocketcdn-pricing--amount wpr-rocketcdn-pricing--annual wpr-isHidden"><?php echo esc_html( substr( $data['current_price_annual'], 0, strpos( $data['current_price_annual'], '.' ) ) ); ?></span>
+							<span class="wpr-rocketcdn-pricing--cents wpr-rocketcdn-pricing--annual wpr-isHidden"><?php echo esc_html( substr( $data['current_price_annual'], strpos( $data['current_price_annual'], '.' ) ) ); ?></span>
 						</div>
 						<div class="wpr-rocketcdn-pricing--billing">
 							<span class="wpr-rocketcdn-pricing--billing-period"><?php esc_html_e( 'per month, billed yearly', 'rocket' ); ?></span>
