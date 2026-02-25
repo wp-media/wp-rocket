@@ -29,7 +29,20 @@
 		let openCTA = document.querySelector( '#wpr-rocketcdn-open-cta' ),
 			closeCTA = document.querySelector( '#wpr-rocketcdn-close-cta' ),
 			smallCTA = document.querySelector( '#wpr-rocketcdn-cta-small' ),
-			bigCTA = document.querySelector( '#wpr-rocketcdn-cta' );
+			bigCTA = document.querySelector( '#wpr-rocketcdn-cta' ),
+			inputToggle = document.querySelector('.wpr-rocketcdn-toggle--input');
+
+		// Prices selectors for toggling visibility based on the billing cycle toggle state.
+		const prices = {
+			monthly: {
+				regular: document.querySelectorAll('.wpr-rocketcdn-pricing-regular-price--monthly'),
+				current: document.querySelectorAll('.wpr-rocketcdn-pricing--monthly')
+			},
+			yearly: {
+				regular: document.querySelectorAll('.wpr-rocketcdn-pricing-regular-price--yearly'),
+				current: document.querySelectorAll('.wpr-rocketcdn-pricing--annual')
+			}
+		}
 
 		if ( null !== openCTA && null !== smallCTA && null !== bigCTA ) {
 			openCTA.addEventListener( 'click', ( e ) => {
@@ -62,6 +75,20 @@
 
 			return postData;
 		}
+
+		// Display the correct prices on page based on billing cycle toggle state.
+		inputToggle.addEventListener('change', function() {
+			if (this.checked) {
+				Object.values(prices.monthly).forEach(list => list.forEach(el => el.classList.add('wpr-isHidden')));
+				Object.values(prices.yearly).forEach(list => list.forEach(el => el.classList.remove('wpr-isHidden')));
+
+				return;
+			}
+
+			Object.values(prices.monthly).forEach(list => list.forEach(el => el.classList.remove('wpr-isHidden')));
+			Object.values(prices.yearly).forEach(list => list.forEach(el => el.classList.add('wpr-isHidden')));
+		});
+
 	} );
 
 	window.onmessage = ( e ) => {
