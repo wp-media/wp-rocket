@@ -116,6 +116,11 @@ parameters:
 			path: inc/Engine/CDN/RocketCDN/CDNOptionsManager.php
 
 		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: inc/Engine/CDN/RocketCDN/CDNOptionsManager.php
+
+		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
 			path: inc/Engine/CDN/RocketCDN/DataManagerSubscriber.php
