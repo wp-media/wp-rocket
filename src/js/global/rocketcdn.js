@@ -6,22 +6,26 @@
 		document.querySelectorAll( '.wpr-rocketcdn-open' ).forEach( ( el ) => {
 			el.addEventListener( 'click', ( e ) => {
 				e.preventDefault();
+				checkButtonUrlAndOpen();
 			} );
 		} );
 
-		maybeOpenModal();
-		maybeOpenModalFromURL();
+		// Only initialize modal if there's no direct button URL
+		if ( ! window.rocketcdnButtonUrl || window.rocketcdnButtonUrl === '' ) {
+			maybeOpenModal();
+			maybeOpenModalFromURL();
 
-		MicroModal.init( {
-			disableScroll: true
-		} );
+			MicroModal.init( {
+				disableScroll: true
+			} );
 
-		const iframe = document.getElementById('rocketcdn-iframe');
-		const loader = document.getElementById('wpr-rocketcdn-modal-loader');
-		if ( iframe && loader ) {
-			iframe.addEventListener('load', function() {
-				loader.style.display = 'none';
-			});
+			const iframe = document.getElementById('rocketcdn-iframe');
+			const loader = document.getElementById('wpr-rocketcdn-modal-loader');
+			if ( iframe && loader ) {
+				iframe.addEventListener('load', function() {
+					loader.style.display = 'none';
+				});
+			}
 		}
 	} );
 
@@ -106,6 +110,17 @@
 		disableCDN( e.data, iframeURL );
 		validateTokenAndCNAME( e.data );
 	};
+
+	function checkButtonUrlAndOpen() {
+		// Check if button URL was injected by PHP
+		if ( window.rocketcdnButtonUrl && window.rocketcdnButtonUrl !== '' ) {
+			// Navigate to button URL in same tab
+			window.location.href = window.rocketcdnButtonUrl;
+		} else {
+			// Show iframe modal as usual
+			MicroModal.show( 'wpr-rocketcdn-modal' );
+		}
+	}
 
 	function maybeOpenModal() {
 		let postData = '';
