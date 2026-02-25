@@ -305,6 +305,10 @@
 
         &-regular {
             color: $cGreyDark3;
+
+            &-price.wpr-isHidden {
+                display: none;
+            }
         }
 
         &--logo {
@@ -356,10 +360,6 @@
                     margin: 0;
                     position: absolute;
 
-                    &:checked + .wpr-rocketcdn-toggle--slider {
-                        background-color: #f3704d;
-                    }
-
                     &:checked + .wpr-rocketcdn-toggle--slider::before {
                         transform: translateX(26px);
                     }
@@ -384,7 +384,7 @@
                     left: 0;
                     right: 0;
                     bottom: 0;
-                    background-color: #a9b2bc;
+                    background-color: #f3704d;
                     transition: all 0.3s ease;
                     border-radius: 16px;
                     order: 2;
@@ -462,11 +462,19 @@
         &--amount {
             font-size: 46px;
             line-height: 1.2;
+
+            &.wpr-isHidden {
+                display: none;
+            }
         }
 
         &--cents {
             font-size: 29.67px;
             line-height: 1.2;
+
+            &.wpr-isHidden {
+                display: none;
+            }
         }
 
         &--billing {
