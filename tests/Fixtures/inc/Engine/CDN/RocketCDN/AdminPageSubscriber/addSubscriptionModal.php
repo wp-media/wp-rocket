@@ -23,7 +23,7 @@ return [
 		],
 		'expected' => <<<HTML
 <script type="text/javascript">
-	window.rocketcdnButtonUrl = "";
+	window.rocketcdnButtonUrl = '';
 </script>
 <div class="wpr-rocketcdn-modal" id="wpr-rocketcdn-modal" aria-hidden="true">
 	<div class="wpr-rocketcdn-modal__overlay" tabindex="-1">
