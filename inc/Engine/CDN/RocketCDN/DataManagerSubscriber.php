@@ -150,22 +150,23 @@ class DataManagerSubscriber implements Subscriber_Interface {
 			return;
 		}
 
+		// Sanitize and store values to avoid multiple sanitization.
+		$token      = sanitize_key( $user_data->rocketcdn->cdn_token );
+		$cdn_url    = esc_url_raw( $user_data->rocketcdn->cdn_url );
+		$website_id = (int) $user_data->rocketcdn->rocketcdn_website_id;
+
 		// Validate token length (must be 40 characters).
-		if ( 40 !== strlen( $user_data->rocketcdn->cdn_token ) ) {
+		if ( 40 !== strlen( $token ) ) {
 			$this->remove_query_parameter_and_redirect();
 			return;
 		}
 
 		// Activate the subscription via RocketCDN API.
-		$activation_result = $this->api_client->activate_subscription(
-			sanitize_key( $user_data->rocketcdn->cdn_token ),
-			(int) $user_data->rocketcdn->rocketcdn_website_id
-		);
-		update_option( 'rocketcdn_user_token', sanitize_key( $user_data->rocketcdn->cdn_token ) );
-		$this->cdn_options->enable( esc_url_raw( $user_data->rocketcdn->cdn_url ) );
+		$activation_result = $this->api_client->activate_subscription( $token, $website_id );
 
-		// Clear cached subscription status to reflect the newly activated subscription.
-		delete_transient( 'rocketcdn_status' );
+		// Save token and enable CDN.
+		$this->cdn_options->save_token( $token );
+		$this->cdn_options->enable( $cdn_url );
 
 		// Schedule subscription check.
 		$subscription = $this->api_client->get_subscription_data();
@@ -184,6 +185,7 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	private function remove_query_parameter_and_redirect(): void {
 		$redirect_url = remove_query_arg( 'rocketcdn_checkout' );
 		wp_safe_redirect( $redirect_url );
+		rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
 	}
 
 	/**
