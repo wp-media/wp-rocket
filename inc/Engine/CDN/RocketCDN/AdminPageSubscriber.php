@@ -226,8 +226,11 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 		$user_data  = $this->user_client->get_user_data();
 
 		if ( false !== $user_data && isset( $user_data->rocketcdn->button->url ) && ! empty( $user_data->rocketcdn->button->url ) ) {
-			$dashboard_url = admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '&rocketcdn_checkout=true' );
-			$button_url    = add_query_arg( 'dashboard_url', rawurlencode( $dashboard_url ), $user_data->rocketcdn->button->url );
+			$button_url = add_query_arg(
+				'dashboard_url',
+				rawurlencode( admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '&rocketcdn_checkout=true' ) ),
+				$user_data->rocketcdn->button->url
+			);
 		}
 
 		$iframe_src = add_query_arg(
@@ -240,7 +243,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 		);
 		?>
 		<script type="text/javascript">
-			window.rocketcdnButtonUrl = <?php echo wp_json_encode( $button_url ); ?>;
+			window.rocketcdnButtonUrl = '<?php echo esc_js( $button_url ); ?>';
 		</script>
 		<div class="wpr-rocketcdn-modal" id="wpr-rocketcdn-modal" aria-hidden="true">
 			<div class="wpr-rocketcdn-modal__overlay" tabindex="-1">
