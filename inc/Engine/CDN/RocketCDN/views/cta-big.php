@@ -9,8 +9,10 @@
  *      @type string $promotion_campaign Promotion campaign title.
  *      @type string $promotion_end_date Promotion end date.
  *      @type string $nopromo_variant CSS modifier for the no promotion display.
- *      @type string $regular_price RocketCDN regular price.
- *      @type string $current_price RocketCDN current price.
+ *      @type string $regular_price_monthly RocketCDN regular monthly price.
+ *      @type string $regular_price_annual RocketCDN regular annual price.
+ *      @type string $current_price_monthly RocketCDN current monthly price.
+ *      @type string $current_price_annual RocketCDN current annual price.
  * }
  */
 
