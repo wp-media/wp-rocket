@@ -1132,6 +1132,9 @@ a:focus, button:focus {
 .wpr-rocketcdn-cta .wpr-rocketcdn-pricing-regular {
   color: #72777C;
 }
+.wpr-rocketcdn-cta .wpr-rocketcdn-pricing-regular-price.wpr-isHidden {
+  display: none;
+}
 .wpr-rocketcdn-cta .wpr-rocketcdn-pricing--logo {
   display: flex;
   flex-direction: row;
@@ -1176,9 +1179,6 @@ a:focus, button:focus {
   margin: 0;
   position: absolute;
 }
-.wpr-rocketcdn-cta .wpr-rocketcdn-pricing--toggle .wpr-rocketcdn-toggle--input:checked + .wpr-rocketcdn-toggle--slider {
-  background-color: #f3704d;
-}
 .wpr-rocketcdn-cta .wpr-rocketcdn-pricing--toggle .wpr-rocketcdn-toggle--input:checked + .wpr-rocketcdn-toggle--slider::before {
   transform: translateX(26px);
 }
@@ -1199,7 +1199,7 @@ a:focus, button:focus {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #a9b2bc;
+  background-color: #f3704d;
   transition: all 0.3s ease;
   border-radius: 16px;
   order: 2;
@@ -1268,9 +1268,15 @@ a:focus, button:focus {
   font-size: 46px;
   line-height: 1.2;
 }
+.wpr-rocketcdn-cta .wpr-rocketcdn-pricing--amount.wpr-isHidden {
+  display: none;
+}
 .wpr-rocketcdn-cta .wpr-rocketcdn-pricing--cents {
   font-size: 29.67px;
   line-height: 1.2;
+}
+.wpr-rocketcdn-cta .wpr-rocketcdn-pricing--cents.wpr-isHidden {
+  display: none;
 }
 .wpr-rocketcdn-cta .wpr-rocketcdn-pricing--billing {
   display: flex;
