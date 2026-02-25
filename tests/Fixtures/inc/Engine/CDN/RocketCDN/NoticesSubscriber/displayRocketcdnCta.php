@@ -61,7 +61,7 @@ return [
 				<div class="wpr-rocketcdn-pricing--content">
 					<div class="wpr-rocketcdn-pricing--toggle">
 						<label class="wpr-rocketcdn-toggle">
-							<input type="checkbox" class="wpr-rocketcdn-toggle--input" checked>
+							<input type="checkbox" class="wpr-rocketcdn-toggle--input">
 							<span class="wpr-rocketcdn-toggle--slider"></span>
 
 							<span class="wpr-rocketcdn-pricing--toggle-label wpr-rocketcdn-pricing--toggle-label--inactive">Monthly</span>
@@ -73,8 +73,11 @@ return [
 					<div class="wpr-rocketcdn-pricing--price-container">
 						<div class="wpr-rocketcdn-pricing--price">
 							<span class="wpr-rocketcdn-pricing--currency">$</span>
-							<span class="wpr-rocketcdn-pricing--amount">7</span>
-							<span class="wpr-rocketcdn-pricing--cents">.99</span>
+							<span class="wpr-rocketcdn-pricing--amount wpr-rocketcdn-pricing--monthly">7</span>
+							<span class="wpr-rocketcdn-pricing--cents wpr-rocketcdn-pricing--monthly">.99</span>
+
+							<span class="wpr-rocketcdn-pricing--amount wpr-rocketcdn-pricing--annual wpr-isHidden">79</span>
+							<span class="wpr-rocketcdn-pricing--cents wpr-rocketcdn-pricing--annual wpr-isHidden">.99</span>
 						</div>
 						<div class="wpr-rocketcdn-pricing--billing">
 							<span class="wpr-rocketcdn-pricing--billing-period">per month, billed yearly</span>
@@ -156,8 +159,11 @@ HTML
 					<div class="wpr-rocketcdn-pricing--price-container">
 						<div class="wpr-rocketcdn-pricing--price">
 							<span class="wpr-rocketcdn-pricing--currency">$</span>
-							<span class="wpr-rocketcdn-pricing--amount">7</span>
-							<span class="wpr-rocketcdn-pricing--cents">.99</span>
+							<span class="wpr-rocketcdn-pricing--amount wpr-rocketcdn-pricing--monthly">7</span>
+							<span class="wpr-rocketcdn-pricing--cents wpr-rocketcdn-pricing--monthly">.99</span>
+
+							<span class="wpr-rocketcdn-pricing--amount wpr-rocketcdn-pricing--annual wpr-isHidden">79</span>
+							<span class="wpr-rocketcdn-pricing--cents wpr-rocketcdn-pricing--annual wpr-isHidden">.99</span>
 						</div>
 						<div class="wpr-rocketcdn-pricing--billing">
 							<span class="wpr-rocketcdn-pricing--billing-period">per month, billed yearly</span>
@@ -222,7 +228,7 @@ HTML
 				'discount_campaign_name'   => '',
 				'end_date'                 => '2019-11-03',
 				'monthly_price'            => 7.99,
-				'annual_price'             => 79.0,
+				'annual_price'             => 79.99,
 			],
 		],
 
@@ -236,8 +242,10 @@ HTML
 					'promotion_campaign' => '',
 					'promotion_end_date' => '',
 					'nopromo_variant'    => '--no-promo',
-					'regular_price'      => '',
-					'current_price'      => 7.99,
+					'regular_price_monthly'      => '',
+					'regular_price_annual'       => '',
+					'current_price_monthly'      => 7.99,
+					'current_price_annual'      => 79.99,
 				],
 			],
 			'integration' => <<<HTML
@@ -305,7 +313,7 @@ HTML
 				<div class="wpr-rocketcdn-pricing--content">
 					<div class="wpr-rocketcdn-pricing--toggle">
 						<label class="wpr-rocketcdn-toggle">
-							<input type="checkbox" class="wpr-rocketcdn-toggle--input" checked>
+							<input type="checkbox" class="wpr-rocketcdn-toggle--input">
 							<span class="wpr-rocketcdn-toggle--slider"></span>
 
 							<span class="wpr-rocketcdn-pricing--toggle-label wpr-rocketcdn-pricing--toggle-label--inactive">Monthly</span>
@@ -316,12 +324,12 @@ HTML
 					</div>
 					<div class="wpr-rocketcdn-pricing--price-container">
 						<div class="wpr-rocketcdn-pricing--price">
-							<span class="wpr-rocketcdn-pricing--currency">
-								$</span>
-							<span class="wpr-rocketcdn-pricing--amount">
-								7</span>
-							<span class="wpr-rocketcdn-pricing--cents">
-								.99</span>
+							<span class="wpr-rocketcdn-pricing--currency">$</span>
+							<span class="wpr-rocketcdn-pricing--amount wpr-rocketcdn-pricing--monthly">7</span>
+							<span class="wpr-rocketcdn-pricing--cents wpr-rocketcdn-pricing--monthly">.99</span>
+
+							<span class="wpr-rocketcdn-pricing--amount wpr-rocketcdn-pricing--annual wpr-isHidden">79</span>
+							<span class="wpr-rocketcdn-pricing--cents wpr-rocketcdn-pricing--annual wpr-isHidden">.99</span>
 						</div>
 						<div class="wpr-rocketcdn-pricing--billing">
 							<span class="wpr-rocketcdn-pricing--billing-period">
@@ -363,7 +371,7 @@ HTML
 				'discount_campaign_name'   => 'halloween',
 				'end_date'                 => '2022-11-03',
 				'monthly_price'            => 7.99,
-				'annual_price'             => 79.0,
+				'annual_price'             => 79.99,
 			],
 		],
 
@@ -377,8 +385,10 @@ HTML
 					'promotion_campaign' => '',
 					'promotion_end_date' => '',
 					'nopromo_variant'    => '--no-promo',
-					'regular_price'      => '',
-					'current_price'      => 7.99,
+					'regular_price_monthly'      => '',
+					'regular_price_annual'       => '',
+					'current_price_monthly'      => 7.99,
+					'current_price_annual'      => 79.99,
 				],
 			],
 			'integration' => <<<HTML
@@ -446,7 +456,7 @@ HTML
 				<div class="wpr-rocketcdn-pricing--content">
 					<div class="wpr-rocketcdn-pricing--toggle">
 						<label class="wpr-rocketcdn-toggle">
-							<input type="checkbox" class="wpr-rocketcdn-toggle--input" checked>
+							<input type="checkbox" class="wpr-rocketcdn-toggle--input">
 							<span class="wpr-rocketcdn-toggle--slider"></span>
 
 							<span class="wpr-rocketcdn-pricing--toggle-label wpr-rocketcdn-pricing--toggle-label--inactive">Monthly</span>
@@ -457,12 +467,12 @@ HTML
 					</div>
 					<div class="wpr-rocketcdn-pricing--price-container">
 						<div class="wpr-rocketcdn-pricing--price">
-							<span class="wpr-rocketcdn-pricing--currency">
-								$</span>
-							<span class="wpr-rocketcdn-pricing--amount">
-								7</span>
-							<span class="wpr-rocketcdn-pricing--cents">
-								.99</span>
+							<span class="wpr-rocketcdn-pricing--currency">$</span>
+							<span class="wpr-rocketcdn-pricing--amount wpr-rocketcdn-pricing--monthly">7</span>
+							<span class="wpr-rocketcdn-pricing--cents wpr-rocketcdn-pricing--monthly">.99</span>
+
+							<span class="wpr-rocketcdn-pricing--amount wpr-rocketcdn-pricing--annual wpr-isHidden">79</span>
+							<span class="wpr-rocketcdn-pricing--cents wpr-rocketcdn-pricing--annual wpr-isHidden">.99</span>
 						</div>
 						<div class="wpr-rocketcdn-pricing--billing">
 							<span class="wpr-rocketcdn-pricing--billing-period">
@@ -505,7 +515,7 @@ HTML
 				'discount_campaign_name'   => 'halloween',
 				'end_date'                 => '2019-11-03',
 				'monthly_price'            => 7.99,
-				'annual_price'             => 79.0,
+				'annual_price'             => 79.99,
 			],
 		],
 
@@ -519,8 +529,10 @@ HTML
 					'promotion_campaign' => '',
 					'promotion_end_date' => '',
 					'nopromo_variant'    => '--no-promo',
-					'regular_price'      => '',
-					'current_price'      => 7.99,
+					'regular_price_monthly'      => '',
+					'regular_price_annual'       => '',
+					'current_price_monthly'      => 7.99,
+					'current_price_annual'      => 79.99,
 				],
 			],
 			'integration' => <<<HTML
@@ -588,7 +600,7 @@ HTML
 				<div class="wpr-rocketcdn-pricing--content">
 					<div class="wpr-rocketcdn-pricing--toggle">
 						<label class="wpr-rocketcdn-toggle">
-							<input type="checkbox" class="wpr-rocketcdn-toggle--input" checked>
+							<input type="checkbox" class="wpr-rocketcdn-toggle--input">
 							<span class="wpr-rocketcdn-toggle--slider"></span>
 
 							<span class="wpr-rocketcdn-pricing--toggle-label wpr-rocketcdn-pricing--toggle-label--inactive">Monthly</span>
@@ -599,12 +611,12 @@ HTML
 					</div>
 					<div class="wpr-rocketcdn-pricing--price-container">
 						<div class="wpr-rocketcdn-pricing--price">
-							<span class="wpr-rocketcdn-pricing--currency">
-								$</span>
-							<span class="wpr-rocketcdn-pricing--amount">
-								7</span>
-							<span class="wpr-rocketcdn-pricing--cents">
-								.99</span>
+							<span class="wpr-rocketcdn-pricing--currency">$</span>
+							<span class="wpr-rocketcdn-pricing--amount wpr-rocketcdn-pricing--monthly">7</span>
+							<span class="wpr-rocketcdn-pricing--cents wpr-rocketcdn-pricing--monthly">.99</span>
+
+							<span class="wpr-rocketcdn-pricing--amount wpr-rocketcdn-pricing--annual wpr-isHidden">79</span>
+							<span class="wpr-rocketcdn-pricing--cents wpr-rocketcdn-pricing--annual wpr-isHidden">.99</span>
 						</div>
 						<div class="wpr-rocketcdn-pricing--billing">
 							<span class="wpr-rocketcdn-pricing--billing-period">
@@ -646,7 +658,7 @@ HTML
 				'discount_campaign_name'   => '',
 				'end_date'                 => '2019-11-03',
 				'monthly_price'            => 7.99,
-				'annual_price'             => 79.0,
+				'annual_price'             => 79.99,
 			],
 		],
 
@@ -660,8 +672,10 @@ HTML
 					'promotion_campaign' => '',
 					'promotion_end_date' => '',
 					'nopromo_variant'    => '--no-promo',
-					'regular_price'      => '',
-					'current_price'      => 7.99,
+					'regular_price_monthly'      => '',
+					'regular_price_annual'       => '',
+					'current_price_monthly'      => 7.99,
+					'current_price_annual'      => 79.99,
 				],
 			],
 			'integration' => <<<HTML
@@ -729,7 +743,7 @@ HTML
 				<div class="wpr-rocketcdn-pricing--content">
 					<div class="wpr-rocketcdn-pricing--toggle">
 						<label class="wpr-rocketcdn-toggle">
-							<input type="checkbox" class="wpr-rocketcdn-toggle--input" checked>
+							<input type="checkbox" class="wpr-rocketcdn-toggle--input">
 							<span class="wpr-rocketcdn-toggle--slider"></span>
 
 							<span class="wpr-rocketcdn-pricing--toggle-label wpr-rocketcdn-pricing--toggle-label--inactive">Monthly</span>
@@ -740,12 +754,12 @@ HTML
 					</div>
 					<div class="wpr-rocketcdn-pricing--price-container">
 						<div class="wpr-rocketcdn-pricing--price">
-							<span class="wpr-rocketcdn-pricing--currency">
-								$</span>
-							<span class="wpr-rocketcdn-pricing--amount">
-								7</span>
-							<span class="wpr-rocketcdn-pricing--cents">
-								.99</span>
+							<span class="wpr-rocketcdn-pricing--currency">$</span>
+							<span class="wpr-rocketcdn-pricing--amount wpr-rocketcdn-pricing--monthly">7</span>
+							<span class="wpr-rocketcdn-pricing--cents wpr-rocketcdn-pricing--monthly">.99</span>
+
+							<span class="wpr-rocketcdn-pricing--amount wpr-rocketcdn-pricing--annual wpr-isHidden">79</span>
+							<span class="wpr-rocketcdn-pricing--cents wpr-rocketcdn-pricing--annual wpr-isHidden">.99</span>
 						</div>
 						<div class="wpr-rocketcdn-pricing--billing">
 							<span class="wpr-rocketcdn-pricing--billing-period">
@@ -782,11 +796,11 @@ HTML
 			'rocketcdn_pricing' => [
 				'is_discount_active'       => true,
 				'discounted_price_monthly' => 5.99,
-				'discounted_price_yearly'  => 59.0,
+				'discounted_price_yearly'  => 59.99,
 				'discount_campaign_name'   => 'Launch',
 				'end_date'                 => date( 'Y-m-d', strtotime( 'tomorrow', time() ) ),
 				'monthly_price'            => 7.99,
-				'annual_price'             => 79.0,
+				'annual_price'             => 79.99,
 			],
 		],
 
@@ -800,8 +814,10 @@ HTML
 					'promotion_campaign' => 'Launch',
 					'promotion_end_date' => date( 'Y-m-d', strtotime( 'tomorrow', time() ) ),
 					'nopromo_variant'    => '',
-					'regular_price'      => 7.99,
-					'current_price'      => 5.99,
+					'regular_price_monthly'      => 7.99,
+					'regular_price_annual'       => 79.99,
+					'current_price_monthly'      => 5.99,
+					'current_price_annual'      => 59.99,
 				],
 			],
 			'integration' => '
@@ -862,7 +878,7 @@ HTML
 				<div class="wpr-rocketcdn-pricing--content">
 					<div class="wpr-rocketcdn-pricing--toggle">
 						<label class="wpr-rocketcdn-toggle">
-							<input type="checkbox" class="wpr-rocketcdn-toggle--input" checked>
+							<input type="checkbox" class="wpr-rocketcdn-toggle--input">
 							<span class="wpr-rocketcdn-toggle--slider"></span>
 
 							<span class="wpr-rocketcdn-pricing--toggle-label wpr-rocketcdn-pricing--toggle-label--inactive">Monthly</span>
@@ -872,11 +888,19 @@ HTML
 						</label>
 					</div>
 					<div class="wpr-rocketcdn-pricing--price-container">
-						<h4 class="wpr-title2 wpr-rocketcdn-pricing-regular"><del>$7.99</del></h4>
+						<h4 class="wpr-title2 wpr-rocketcdn-pricing-regular">
+						<del>
+							<span class="wpr-rocketcdn-pricing-regular-price wpr-rocketcdn-pricing-regular-price--monthly">$7.99</span>
+							<span class="wpr-rocketcdn-pricing-regular-price wpr-rocketcdn-pricing-regular-price--yearly wpr-isHidden">$79.99</span>
+						</del>
+						</h4>
 						<div class="wpr-rocketcdn-pricing--price">
 							<span class="wpr-rocketcdn-pricing--currency">$</span>
-							<span class="wpr-rocketcdn-pricing--amount">5</span>
-							<span class="wpr-rocketcdn-pricing--cents">.99*</span>
+							<span class="wpr-rocketcdn-pricing--amount wpr-rocketcdn-pricing--monthly">5</span>
+							<span class="wpr-rocketcdn-pricing--cents wpr-rocketcdn-pricing--monthly">.99*</span>
+
+							<span class="wpr-rocketcdn-pricing--amount wpr-rocketcdn-pricing--annual wpr-isHidden">59</span>
+							<span class="wpr-rocketcdn-pricing--cents wpr-rocketcdn-pricing--annual wpr-isHidden">.99*</span>
 						</div>
 						<div class="wpr-rocketcdn-pricing--billing">
 							<span class="wpr-rocketcdn-pricing--billing-period">per month, billed yearly</span>
