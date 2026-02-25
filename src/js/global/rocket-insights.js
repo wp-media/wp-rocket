@@ -26,6 +26,7 @@ module.exports = (function () {
 		// Attach event listeners.
 		attachTestPageListeners();
 		attachRetestListeners();
+		attachViewDetailsListeners();
 
 		// Start polling for any rows that are already running.
 		startPollingForRunningTests();
@@ -82,6 +83,20 @@ module.exports = (function () {
 	}
 
 	/**
+	 * Attach click listeners to "View Details" links.
+	 */
+	function attachViewDetailsListeners() {
+		jQuery(document).on('click', '.wpr-ri-view-details-link:not(.wpr-ri-disabled)', function (e) {
+			const link = jQuery(this);
+			const rowId = link.data('rocket-insights-id');
+
+			if (!rowId) {
+				return;
+			}
+		});
+	}
+
+	/**
 	 * Start polling for rows that are currently running tests.
 	 */
 	function startPollingForRunningTests() {
@@ -114,7 +129,7 @@ module.exports = (function () {
 		window.wp.apiFetch({
 			path: '/wp-rocket/v1/rocket-insights/pages/',
 			method: 'POST',
-			data: { 
+			data: {
 				page_url: url,
 				source: 'post type listing'
 			},
@@ -323,7 +338,7 @@ module.exports = (function () {
 		jQuery('.wpr-ri-test-page').each(function() {
 			const button = jQuery(this);
 			const column = button.closest('.wpr-ri-column');
-			
+
 			// Update the data attribute so future clicks will trigger the limit message.
 			column.attr('data-can-add-pages', '0');
 		});

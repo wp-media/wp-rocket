@@ -6,6 +6,9 @@
 defined( 'ABSPATH' ) || exit;
 ?>
 <tr class="wpr-ri-item wpr-global-score">
+	<td class="wpr-ri-item-toggle">
+		<div class="icon-frame wpr-ri-item-toggle-all wpr-ri-item-toggle-all--expanded"></div>
+	</td>
 	<td class="wpr-ri-item-score">
 		<?php
 		$data['is_dashboard'] = false; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
