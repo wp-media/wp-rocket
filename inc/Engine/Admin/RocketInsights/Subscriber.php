@@ -232,8 +232,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		}
 
 		$this->schedule_auto_add_homepage_task();
-
-		$this->queue->schedule_credit_reset_task();
 		$this->cancel_retest_job();
 	}
 
