@@ -227,8 +227,10 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 
 		if ( false !== $user_data && isset( $user_data->rocketcdn->button->url ) && ! empty( $user_data->rocketcdn->button->url ) ) {
 			$button_url = add_query_arg(
-				'dashboard_url',
-				rawurlencode( admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '&rocketcdn_checkout=true' ) ),
+				[
+					'dashboard_url' => rawurlencode( admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '&rocketcdn_checkout=true' ) ),
+					'is_monthly'    => 0,
+				],
 				$user_data->rocketcdn->button->url
 			);
 		}

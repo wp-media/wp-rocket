@@ -82,15 +82,18 @@
 
 		// Display the correct prices on page based on billing cycle toggle state.
 		inputToggle.addEventListener('change', function() {
-			if (this.checked) {
+			const isYearly = this.checked;
+
+			if (isYearly) {
 				Object.values(prices.monthly).forEach(list => list.forEach(el => el.classList.add('wpr-isHidden')));
 				Object.values(prices.yearly).forEach(list => list.forEach(el => el.classList.remove('wpr-isHidden')));
-
-				return;
+			} else {
+				Object.values(prices.monthly).forEach(list => list.forEach(el => el.classList.remove('wpr-isHidden')));
+				Object.values(prices.yearly).forEach(list => list.forEach(el => el.classList.add('wpr-isHidden')));
 			}
 
-			Object.values(prices.monthly).forEach(list => list.forEach(el => el.classList.remove('wpr-isHidden')));
-			Object.values(prices.yearly).forEach(list => list.forEach(el => el.classList.add('wpr-isHidden')));
+			// Update the button URL with the correct is_monthly parameter.
+			updateButtonUrlBillingCycle(isYearly);
 		});
 
 	} );
@@ -120,6 +123,21 @@
 			// Show iframe modal as usual
 			MicroModal.show( 'wpr-rocketcdn-modal' );
 		}
+	}
+
+	/**
+	 * Updates the button URL with the correct is_monthly parameter based on billing cycle toggle.
+	 *
+	 * @param {boolean} isYearly - True if yearly billing is selected, false for monthly.
+	 */
+	function updateButtonUrlBillingCycle( isYearly ) {
+		if ( ! window.rocketcdnButtonUrl || window.rocketcdnButtonUrl === '' ) {
+			return;
+		}
+
+		const url = new URL( window.rocketcdnButtonUrl );
+		url.searchParams.set( 'is_monthly', isYearly ? '0' : '1' );
+		window.rocketcdnButtonUrl = url.toString();
 	}
 
 	function maybeOpenModal() {
