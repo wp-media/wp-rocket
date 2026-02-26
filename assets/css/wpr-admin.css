@@ -894,6 +894,13 @@ a:focus, button:focus {
   border: 0;
   color: rgba(255, 255, 255, 0.5);
 }
+@media (max-width: 1083px) {
+  .wpr-rocketcdn-cta-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+  }
+}
 .wpr-rocketcdn-cta-close--no-promo {
   position: relative;
   border: none;
@@ -907,6 +914,13 @@ a:focus, button:focus {
   flex-shrink: 0;
   top: 0;
   right: 0;
+}
+@media (max-width: 1083px) {
+  .wpr-rocketcdn-cta-close--no-promo {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+  }
 }
 .wpr-rocketcdn-cta-close--no-promo:before {
   content: url(../img/wpr-close.svg);
@@ -1292,6 +1306,9 @@ a:focus, button:focus {
   font-size: 14px;
   font-weight: 600;
   line-height: 1.3;
+}
+.wpr-rocketcdn-cta .wpr-rocketcdn-pricing--billing-period span.wpr-isHidden {
+  display: none;
 }
 .wpr-rocketcdn-cta .wpr-rocketcdn-pricing--billing-vat {
   font-family: "Roboto", sans-serif;
