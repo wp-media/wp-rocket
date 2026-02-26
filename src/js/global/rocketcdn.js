@@ -40,11 +40,13 @@
 		const prices = {
 			monthly: {
 				regular: document.querySelectorAll('.wpr-rocketcdn-pricing-regular-price--monthly'),
-				current: document.querySelectorAll('.wpr-rocketcdn-pricing--monthly')
+				current: document.querySelectorAll('.wpr-rocketcdn-pricing--monthly'),
+				period: document.querySelectorAll('.wpr-rocketcdn-pricing--billing-period--monthly')
 			},
 			yearly: {
 				regular: document.querySelectorAll('.wpr-rocketcdn-pricing-regular-price--yearly'),
-				current: document.querySelectorAll('.wpr-rocketcdn-pricing--annual')
+				current: document.querySelectorAll('.wpr-rocketcdn-pricing--annual'),
+				period: document.querySelectorAll('.wpr-rocketcdn-pricing--billing-period--yearly')
 			}
 		}
 
