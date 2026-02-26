@@ -123,7 +123,10 @@ $data = isset( $data ) && is_array( $data ) ? $data : []; // phpcs:ignore WordPr
 							<span class="wpr-rocketcdn-pricing--cents wpr-rocketcdn-pricing--annual wpr-isHidden"><?php echo esc_html( substr( $data['current_price_annual'], strpos( $data['current_price_annual'], '.' ) ) ); ?></span>
 						</div>
 						<div class="wpr-rocketcdn-pricing--billing">
-							<span class="wpr-rocketcdn-pricing--billing-period"><?php esc_html_e( 'per month, billed yearly', 'rocket' ); ?></span>
+							<div class="wpr-rocketcdn-pricing--billing-period">
+								<span class="wpr-rocketcdn-pricing--billing-period--monthly"><?php esc_html_e( 'Billed Monthly.', 'rocket' ); ?></span>
+								<span class="wpr-rocketcdn-pricing--billing-period--yearly wpr-isHidden"><?php esc_html_e( 'per month, billed yearly', 'rocket' ); ?></span>
+							</div>
 							<span class="wpr-rocketcdn-pricing--billing-vat">(<?php esc_html_e( 'excl. VAT', 'rocket' ); ?>)</span>
 						</div>
 					</div>
