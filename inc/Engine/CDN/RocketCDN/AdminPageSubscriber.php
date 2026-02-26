@@ -237,7 +237,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 							admin_url( 'options-general.php' )
 						)
 					),
-					'is_monthly'    => 0,
+					'is_monthly'    => 1,
 				],
 				$user_data->rocketcdn->button->url
 			);
@@ -256,7 +256,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 			window.rocketcdnButtonUrl = '<?php echo esc_js( $button_url ); ?>';
 		</script>
 		<div class="wpr-rocketcdn-modal" id="wpr-rocketcdn-modal" aria-hidden="true">
-			<div class="wpr-rocketcdn-modal__overlay" tabindex="-1">
+			<div class="wpr-rocketcdn-modal__overlay" tabindex="-1" data-micromodal-close>
 				<div class="wpr-loader" id="wpr-rocketcdn-modal-loader"></div>
 				<div class="wpr-rocketcdn-modal__container" role="dialog" aria-modal="true" aria-labelledby="wpr-rocketcdn-modal-title">
 					<div id="wpr-rocketcdn-modal-content">
