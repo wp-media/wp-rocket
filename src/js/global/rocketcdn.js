@@ -138,9 +138,7 @@
 			return;
 		}
 
-		const url = new URL( window.rocketcdnButtonUrl );
-		url.searchParams.set( 'is_monthly', isYearly ? '0' : '1' );
-		window.rocketcdnButtonUrl = url.toString();
+		window.rocketcdnButtonUrl = setIsMonthlyParam(window.rocketcdnButtonUrl, isYearly);
 	}
 
 	function maybeOpenModal() {
@@ -243,6 +241,15 @@
 				);
 			}
 		};
+	}
+
+	function setIsMonthlyParam(url, isYearly) {
+		// Remove any existing is_monthly param
+		let newUrl = url.replace(/([?&])is_monthly=[^&]*/g, '');
+		// Add the new param
+		const sep = newUrl.includes('?') ? '&' : '?';
+		newUrl += sep + 'is_monthly=' + (isYearly ? '0' : '1');
+		return newUrl;
 	}
 
 	function disableCDN( data, iframeURL ) {
