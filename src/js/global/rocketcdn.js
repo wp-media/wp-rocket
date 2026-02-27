@@ -139,7 +139,6 @@
 		}
 
 		window.rocketcdnButtonUrl = setIsMonthlyParam(window.rocketcdnButtonUrl, isYearly);
-		console.log( 'Updated button URL:', window.rocketcdnButtonUrl );
 	}
 
 	function maybeOpenModal() {
