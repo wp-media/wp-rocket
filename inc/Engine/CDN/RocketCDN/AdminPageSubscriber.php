@@ -237,7 +237,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 						admin_url( 'options-general.php' )
 					)
 				),
-				html_entity_decode( $user_data->rocketcdn->button->url )
+				esc_url_raw( $user_data->rocketcdn->button->url )
 			);
 		}
 
