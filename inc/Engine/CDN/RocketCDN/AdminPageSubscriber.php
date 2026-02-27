@@ -239,7 +239,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 					),
 					'is_monthly'    => 1,
 				],
-				$user_data->rocketcdn->button->url
+				esc_url_raw( $user_data->rocketcdn->button->url )
 			);
 		}
 
