@@ -18,12 +18,13 @@
 			} );
 		} );
 
-		// Only initialize modal if there's no direct button URL
+		// Always initialize MicroModal to set up close handlers
+		MicroModal.init( modalConfig );
+
+		// Only auto-open modal if there's no direct button URL
 		if ( ! window.rocketcdnButtonUrl || window.rocketcdnButtonUrl === '' ) {
 			maybeOpenModal();
 			maybeOpenModalFromURL();
-
-			MicroModal.init( modalConfig );
 
 			const iframe = document.getElementById('rocketcdn-iframe');
 			const loader = document.getElementById('wpr-rocketcdn-modal-loader');
@@ -190,6 +191,8 @@
 		}
 
 		MicroModal.close( 'wpr-rocketcdn-modal' );
+		// Ensure scroll is restored
+		document.body.style.overflow = '';
 
 		let pages = [ 'iframe-payment-success', 'iframe-unsubscribe-success' ];
 
