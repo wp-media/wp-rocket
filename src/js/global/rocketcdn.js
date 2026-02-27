@@ -2,14 +2,6 @@
 ( ( document, window ) => {
 	'use strict';
 
-	// Shared modal config to ensure scroll is always restored on close
-	const modalConfig = {
-		disableScroll: true,
-		onClose: () => {
-			document.body.style.overflow = '';
-		}
-	};
-
 	document.addEventListener( 'DOMContentLoaded', () => {
 		document.querySelectorAll( '.wpr-rocketcdn-open' ).forEach( ( el ) => {
 			el.addEventListener( 'click', ( e ) => {
@@ -19,7 +11,9 @@
 		} );
 
 		// Always initialize MicroModal to set up close handlers
-		MicroModal.init( modalConfig );
+		MicroModal.init( {
+			disableScroll: true
+		} );
 
 		// Only auto-open modal if there's no direct button URL
 		if ( ! window.rocketcdnButtonUrl || window.rocketcdnButtonUrl === '' ) {
@@ -130,7 +124,7 @@
 			window.location.href = window.rocketcdnButtonUrl;
 		} else {
 			// Show iframe modal as usual
-			MicroModal.show( 'wpr-rocketcdn-modal', modalConfig );
+			MicroModal.show( 'wpr-rocketcdn-modal' );
 		}
 	}
 
@@ -162,7 +156,7 @@
 				let responseTxt = JSON.parse(request.responseText);
 
 				if ( true === responseTxt.success ) {
-					MicroModal.show( 'wpr-rocketcdn-modal', modalConfig );
+					MicroModal.show( 'wpr-rocketcdn-modal' );
 				}
 			}
 		};
@@ -175,7 +169,7 @@
 			// Set hash to page_cdn to show CDN tab behind modal
 			window.location.hash = '#page_cdn';
 			
-			MicroModal.show( 'wpr-rocketcdn-modal', modalConfig );
+			MicroModal.show( 'wpr-rocketcdn-modal' );
 
 			// Clean up the URL to prevent re-triggering on refresh
 			urlParams.delete( 'rocketcdn_open_iframe' );
