@@ -234,6 +234,9 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 			'container_class' => $cta_small_class,
 		];
 
+		// Get button URL for one-click checkout.
+		$button_url = $this->get_express_checkout_url();
+
 		if ( is_wp_error( $pricing ) ) {
 			$beacon    = $this->beacon->get_suggest( 'rocketcdn_error' );
 			$more_info = sprintf(
@@ -250,6 +253,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 				'nopromo_variant' => $nopromo_variant,
 				'error'           => true,
 				'message'         => $message,
+				'button_url'      => $button_url,
 			];
 		} else {
 			$current_price_monthly = number_format_i18n( $pricing['monthly_price'], 2 );
@@ -281,6 +285,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 				'regular_price_annual'  => $regular_price_annual,
 				'current_price_monthly' => $current_price_monthly,
 				'current_price_annual'  => $current_price_annual,
+				'button_url'            => $button_url,
 			];
 		}
 
