@@ -470,10 +470,6 @@ class DataManagerSubscriber implements Subscriber_Interface {
 		$subscription = $this->api_client->get_subscription_data();
 
 		// Guard: only enable CDN and schedule check when subscription is active with a valid CDN URL.
-		if ( is_wp_error( $subscription ) ) {
-			return;
-		}
-
 		if ( empty( $subscription['is_active'] ) || empty( $subscription['cdn_url'] ) ) {
 			return;
 		}
