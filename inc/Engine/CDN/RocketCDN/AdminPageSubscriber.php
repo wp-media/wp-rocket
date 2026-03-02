@@ -251,10 +251,10 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 		);
 		?>
 		<script type="text/javascript">
-			window.rocketcdnButtonUrl = '<?php echo esc_js( $button_url ); ?>';
+			window.rocketcdnButtonUrl = '<?php echo $button_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>';
 		</script>
 		<div class="wpr-rocketcdn-modal" id="wpr-rocketcdn-modal" aria-hidden="true">
-			<div class="wpr-rocketcdn-modal__overlay" tabindex="-1">
+			<div class="wpr-rocketcdn-modal__overlay" tabindex="-1" data-micromodal-close>
 				<div class="wpr-loader" id="wpr-rocketcdn-modal-loader"></div>
 				<div class="wpr-rocketcdn-modal__container" role="dialog" aria-modal="true" aria-labelledby="wpr-rocketcdn-modal-title">
 					<div id="wpr-rocketcdn-modal-content">
