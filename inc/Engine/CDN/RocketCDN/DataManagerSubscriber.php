@@ -74,7 +74,10 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'admin_init'                             => 'handle_rocketcdn_checkout_parameter',
+			'admin_init'                             => [
+				[ 'handle_rocketcdn_checkout_parameter' ],
+				[ 'maybe_retry_activation' ],
+			],
 			'wp_ajax_save_rocketcdn_token'           => 'update_user_token',
 			'wp_ajax_rocketcdn_enable'               => 'enable',
 			'wp_ajax_rocketcdn_disable'              => 'disable',
@@ -416,6 +419,55 @@ class DataManagerSubscriber implements Subscriber_Interface {
 		if ( ! wp_next_scheduled( self::CRON_EVENT ) ) {
 			wp_schedule_single_event( $timestamp, self::CRON_EVENT );
 		}
+	}
+
+	/**
+	 * Retries RocketCDN activation when subscription is inactive but has a cdn_url.
+	 *
+	 * This handles the case where site activation failed after checkout.
+	 * When is_active is false but cdn_url is not empty, it means the subscription
+	 * exists but this website isn't activated. We retry the activation automatically.
+	 *
+	 * @return void
+	 */
+	public function maybe_retry_activation(): void {
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			return;
+		}
+
+		$token = get_option( 'rocketcdn_user_token' );
+
+		if ( empty( $token ) ) {
+			return;
+		}
+
+		// Refresh the subscription status from API.
+		delete_transient( 'rocketcdn_status' );
+		$subscription_data = $this->api_client->get_subscription_data();
+
+		// Only retry when: is_active is false AND cdn_url is not empty.
+		if ( $subscription_data['is_active'] || empty( $subscription_data['cdn_url'] ) ) {
+			return;
+		}
+
+		if ( empty( $subscription_data['id'] ) ) {
+			return;
+		}
+
+		// Retry the activation.
+		$activation_result = $this->api_client->activate_subscription( $token, $subscription_data['id'] );
+
+		if ( is_wp_error( $activation_result ) ) {
+			return;
+		}
+
+		// Refresh subscription data after successful activation.
+		delete_transient( 'rocketcdn_status' );
+		$subscription = $this->api_client->get_subscription_data();
+
+		// Enable CDN and schedule check.
+		$this->cdn_options->enable( $subscription['cdn_url'] );
+		$this->schedule_subscription_check( $subscription );
 	}
 
 	/**

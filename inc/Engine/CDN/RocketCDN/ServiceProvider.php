@@ -76,6 +76,7 @@ class ServiceProvider extends AbstractServiceProvider {
 				[
 					'rocketcdn_api_client',
 					'beacon',
+					'user_client',
 					new StringArgument( __DIR__ . '/views' ),
 				]
 			);
