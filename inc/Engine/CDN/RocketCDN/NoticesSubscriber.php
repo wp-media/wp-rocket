@@ -3,6 +3,7 @@ namespace WP_Rocket\Engine\CDN\RocketCDN;
 
 use WP_Rocket\Abstract_Render;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
+use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
@@ -26,17 +27,26 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	private $beacon;
 
 	/**
+	 * UserClient instance
+	 *
+	 * @var UserClient
+	 */
+	private $user_client;
+
+	/**
 	 * Constructor
 	 *
-	 * @param APIClient $api_client RocketCDN API Client instance.
-	 * @param Beacon    $beacon  Beacon instance.
-	 * @param string    $template_path Path to the templates.
+	 * @param APIClient  $api_client    RocketCDN API Client instance.
+	 * @param Beacon     $beacon        Beacon instance.
+	 * @param UserClient $user_client   UserClient instance.
+	 * @param string     $template_path Path to the templates.
 	 */
-	public function __construct( APIClient $api_client, Beacon $beacon, $template_path ) {
+	public function __construct( APIClient $api_client, Beacon $beacon, UserClient $user_client, $template_path ) {
 		parent::__construct( $template_path );
 
-		$this->api_client = $api_client;
-		$this->beacon     = $beacon;
+		$this->api_client  = $api_client;
+		$this->beacon      = $beacon;
+		$this->user_client = $user_client;
 	}
 
 	/**
@@ -419,6 +429,33 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 				'id'             => 'rocketcdn_change_cname_notice',
 				'action'         => sprintf( '<a href="%1$s" target="_blank" rel="noopener" class="wpr-button" id="rocketcdn-change-cname-button">%2$s</a>', $support_url, esc_html__( 'contact support', 'rocket' ) ),
 			]
+		);
+	}
+	/**
+	 * Gets the express checkout URL for RocketCDN.
+	 *
+	 * @return string Express checkout URL or empty string if not available.
+	 */
+	private function get_express_checkout_url(): string {
+		$user_data = $this->user_client->get_user_data();
+
+		if ( false === $user_data || ! isset( $user_data->rocketcdn->button->url ) || empty( $user_data->rocketcdn->button->url ) ) {
+			return '';
+		}
+
+		return add_query_arg(
+			[
+				'dashboard_url' => rawurlencode(
+					add_query_arg(
+						[
+							'page'               => WP_ROCKET_PLUGIN_SLUG,
+							'rocketcdn_checkout' => 'true',
+						],
+						admin_url( 'options-general.php' )
+					)
+				),
+			],
+			esc_url_raw( $user_data->rocketcdn->button->url )
 		);
 	}
 }
