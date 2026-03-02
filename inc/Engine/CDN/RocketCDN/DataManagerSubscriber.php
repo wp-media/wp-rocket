@@ -441,8 +441,12 @@ class DataManagerSubscriber implements Subscriber_Interface {
 			return;
 		}
 
-		// Refresh the subscription status from API.
-		delete_transient( 'rocketcdn_status' );
+		// Validate token length (should be exactly 40 chars).
+		if ( 40 !== strlen( (string) $token ) ) {
+			return;
+		}
+
+		// Check cached subscription data first to avoid unnecessary API calls.
 		$subscription_data = $this->api_client->get_subscription_data();
 
 		// Only retry when: is_active is false AND cdn_url is not empty.
@@ -464,6 +468,15 @@ class DataManagerSubscriber implements Subscriber_Interface {
 		// Refresh subscription data after successful activation.
 		delete_transient( 'rocketcdn_status' );
 		$subscription = $this->api_client->get_subscription_data();
+
+		// Guard: only enable CDN and schedule check when subscription is active with a valid CDN URL.
+		if ( is_wp_error( $subscription ) ) {
+			return;
+		}
+
+		if ( empty( $subscription['is_active'] ) || empty( $subscription['cdn_url'] ) ) {
+			return;
+		}
 
 		// Enable CDN and schedule check.
 		$this->cdn_options->enable( $subscription['cdn_url'] );

@@ -10,6 +10,20 @@ return [
 		],
 	],
 
+	'shouldBailWhenNoTokenExists' => [
+		'config'   => [
+			'user_role'         => 'administrator',
+			'subscription_data' => [
+				'is_active' => false,
+				'cdn_url'   => '',
+			],
+			// No token set - user never checked out
+		],
+		'expected' => [
+			'should_display' => false,
+		],
+	],
+
 	'shouldBailWhenNotOnSettingsPage' => [
 		'config'   => [
 			'user_role'      => 'administrator',
@@ -79,6 +93,7 @@ return [
 	'shouldDisplayNoticeWhenInactiveAndNoCdnUrlAndHasExpressCheckoutUrl' => [
 		'config'   => [
 			'user_role'         => 'administrator',
+			'token'             => '1234567890123456789012345678901234567890',
 			'subscription_data' => [
 				'is_active' => false,
 				'cdn_url'   => '',

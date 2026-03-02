@@ -44,6 +44,7 @@ class Test_ActivationFailedNotice extends TestCase {
 
 	public function tear_down() {
 		wp_set_current_user( $this->original_user_id );
+		delete_option( 'rocketcdn_user_token' );
 		delete_transient( 'rocketcdn_status' );
 		delete_transient( 'wp_rocket_customer_data' );
 		remove_all_filters( 'pre_http_request' );
@@ -76,6 +77,11 @@ class Test_ActivationFailedNotice extends TestCase {
 			}
 		}
 
+		// Set up token if specified in config.
+		if ( isset( $config['token'] ) ) {
+			update_option( 'rocketcdn_user_token', $config['token'] );
+		}
+
 		// Set up screen.
 		if ( isset( $config['current_screen'] ) ) {
 			set_current_screen( $config['current_screen'] );
@@ -101,8 +107,8 @@ class Test_ActivationFailedNotice extends TestCase {
 			add_filter(
 				'pre_http_request',
 				function ( $preempt, $args, $url ) use ( $config ) {
-					// Mock subscription endpoint.
-					if ( false !== strpos( $url, 'https://rocketcdn.me/api/subscription' ) && isset( $config['subscription_data'] ) ) {
+					// Mock RocketCDN website search (subscription lookup) endpoint.
+					if ( false !== strpos( $url, 'https://rocketcdn.me/api/website/search/' ) && isset( $config['subscription_data'] ) ) {
 						return [
 							'response' => [ 'code' => 200 ],
 							'body'     => wp_json_encode( $config['subscription_data'] ),
