@@ -134,8 +134,8 @@ class Test_ActivationFailedNotice extends TestCase {
 
 		if ( isset( $expected['should_display'] ) && $expected['should_display'] ) {
 			$this->assertStringContainsString( 'rocketcdn_activation_failed_notice', $actual );
-			$this->assertStringContainsString( 'RocketCDN activation failed', $actual );
-			$this->assertStringContainsString( 'Activate RocketCDN', $actual );
+			$this->assertStringContainsString( 'RocketCDN activation incomplete', $actual );
+			$this->assertStringContainsString( 'Complete activation', $actual );
 
 			if ( isset( $expected['express_checkout_url_contains'] ) ) {
 				$this->assertStringContainsString( $expected['express_checkout_url_contains'], $actual );
