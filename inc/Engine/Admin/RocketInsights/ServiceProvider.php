@@ -15,10 +15,11 @@ use WP_Rocket\Engine\Admin\RocketInsights\{
 	Jobs\Manager as RIManager,
 	Managers\Plan,
 	Queue\Queue as RIQueue,
+	Recommendations\APIClient as RecommendationsAPIClient,
 	URLLimit\Subscriber as URLLimitSubscriber,
 	Settings\Controller as SettingsController,
 	Settings\Subscriber as SettingsSubscriber,
-	PostListing\Subscriber as PostListingSubscriber,
+	PostListing\Subscriber as PostListingSubscriber
 };
 use WP_Rocket\Engine\Common\JobManager\Queue\Queue as JobManagerQueue;
 
@@ -227,5 +228,8 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		// Ensure the table is created.
 		$this->getContainer()->get( 'ri_table' );
+
+		// Recommendations API Client
+		$this->getContainer()->add( 'recommendations_api_client', RecommendationsAPIClient::class );
 	}
 }
