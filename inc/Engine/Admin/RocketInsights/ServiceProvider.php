@@ -55,6 +55,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'ri_post_listing_subscriber',
 		'ri_metric_formatter',
 		'job_manager_queue',
+		'ri_recommendations_api_client',
 	];
 
 	/**
@@ -178,6 +179,11 @@ class ServiceProvider extends AbstractServiceProvider {
 					'job_manager_queue',
 				]
 			);
+
+		// Recommendations API Client
+		$this->getContainer()->add( 'ri_recommendations_api_client', RecommendationsAPIClient::class )
+			->addArgument( 'options' );
+
 		// Subscriber.
 		$this->getContainer()->addShared( 'ri_subscriber', Subscriber::class )
 			->addArguments(
@@ -228,8 +234,5 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		// Ensure the table is created.
 		$this->getContainer()->get( 'ri_table' );
-
-		// Recommendations API Client
-		$this->getContainer()->add( 'recommendations_api_client', RecommendationsAPIClient::class );
 	}
 }
