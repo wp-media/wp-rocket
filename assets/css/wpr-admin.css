@@ -1331,10 +1331,6 @@ a:focus, button:focus {
   transition: all 0.3s ease;
   text-transform: uppercase;
 }
-.wpr-rocketcdn-cta .wpr-rocketcdn-pricing--cta:hover {
-  background-color: rgb(240.4231578947, 81.2926315789, 38.7768421053);
-  border-color: rgb(240.4231578947, 81.2926315789, 38.7768421053);
-}
 .wpr-rocketcdn-cta .wpr-rocketcdn-pricing--cta:active {
   transform: translateY(1px);
 }

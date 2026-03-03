@@ -131,7 +131,7 @@ $data = isset( $data ) && is_array( $data ) ? $data : []; // phpcs:ignore WordPr
 						</div>
 					</div>
 
-					<button class="wpr-rocketcdn-pricing--cta wpr-rocketcdn-open"<?php echo empty( $data['button_url'] ) ? ' data-micromodal-trigger="wpr-rocketcdn-modal"' : ''; ?>><?php esc_html_e( 'Get Started', 'rocket' ); ?></button>
+					<button class="wpr-button wpr-rocketcdn-pricing--cta wpr-rocketcdn-open"<?php echo empty( $data['button_url'] ) ? ' data-micromodal-trigger="wpr-rocketcdn-modal"' : ''; ?>><?php esc_html_e( 'Get Started', 'rocket' ); ?></button>
 				</div>
 				<?php endif; ?>
 			</div>

@@ -532,11 +532,6 @@
             transition: all 0.3s ease;
             text-transform: uppercase;
 
-            &:hover {
-                background-color: rgb(240.4231578947, 81.2926315789, 38.7768421053);
-                border-color: rgb(240.4231578947, 81.2926315789, 38.7768421053);
-            }
-
             &:active {
                 transform: translateY(1px);
             }
