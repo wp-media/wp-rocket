@@ -116,7 +116,7 @@ class Calculator {
 			// TTFB: milliseconds → seconds.
 			'ttfb' => round( ( $totals['time_to_first_byte'] / $test_count ) / 1000, 3 ),
 			// CLS: unitless decimal.
-			'cls'  => round( $totals['cumulative_layout_shift'] / $test_count, 3 ),
+			'cls'  => round ( $totals['cumulative_layout_shift'] / $test_count, 3 ),
 			// TBT: keep in milliseconds (integer).
 			'tbt'  => (int) round( $totals['total_blocking_time'] / $test_count ),
 		];
