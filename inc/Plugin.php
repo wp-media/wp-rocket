@@ -413,6 +413,7 @@ class Plugin {
 			'ri_subscriber',
 			'ri_url_limit_subscriber',
 			'ri_post_listing_subscriber',
+			'global_metrics_subscriber',
 			'post_subscriber',
 			'tracking_subscriber',
 			'logger_subscriber',
