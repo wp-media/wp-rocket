@@ -112,9 +112,9 @@ class Calculator {
 		// Calculate averages and format for Recommendations API.
 		return [
 			// LCP: milliseconds → seconds.
-			'lcp'  => $totals['largest_contentful_paint'] / $test_count / 1000,
+			'lcp'  => ( $totals['largest_contentful_paint'] / $test_count ) / 1000,
 			// TTFB: milliseconds → seconds.
-			'ttfb' => $totals['time_to_first_byte'] / $test_count / 1000,
+			'ttfb' => ( $totals['time_to_first_byte'] / $test_count ) / 1000,
 			// CLS: unitless decimal.
 			'cls'  => $totals['cumulative_layout_shift'] / $test_count,
 			// TBT: keep in milliseconds (integer).
