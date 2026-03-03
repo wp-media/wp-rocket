@@ -24,21 +24,24 @@ class Test_GetCompletedMetrics extends TestCase {
 	 */
 	private $query;
 
-	/**
-	 * Set up test fixtures.
-	 */
-	public function set_up() {
-		parent::set_up();
-		$this->installRocketInsightsTable();
-		$this->query = new Query();
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
+
+		// Install the Performance Monitoring table.
+		self::installPerformanceMonitoringTable();
 	}
 
-	/**
-	 * Tear down test fixtures.
-	 */
-	public function tear_down() {
-		$this->truncateRocketInsightsTable();
-		parent::tear_down();
+	public static function tear_down_after_class() {
+		self::uninstallPerformanceMonitoringTable();
+
+		parent::tear_down_after_class();
+	}
+
+	public function set_up() {
+		parent::set_up();
+
+		// Clean up data and cache before each test
+		self::truncatePerformanceMonitoringTable();
 	}
 
 	/**
