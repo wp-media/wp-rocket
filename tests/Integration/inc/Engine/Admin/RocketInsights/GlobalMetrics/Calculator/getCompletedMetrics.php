@@ -42,25 +42,18 @@ class Test_GetCompletedMetrics extends TestCase {
 
 		// Clean up data and cache before each test
 		self::truncatePerformanceMonitoringTable();
+
+		$container   = apply_filters( 'rocket_container', null );
+		$this->query = $container->get( 'ri_query' );
 	}
 
 	/**
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnAsExpected( $config, $expected ) {
-		global $wpdb;
-
-		// Insert test data
+		// Insert test data using Query::add_item()
 		foreach ( $config['rows'] as $row ) {
-			$wpdb->insert(
-				$wpdb->prefix . 'wpr_rocket_insights',
-				[
-					'url'         => $row['url'],
-					'status'      => $row['status'],
-					'metric_data' => $row['metric_data'],
-					'score'       => $row['score'],
-				]
-			);
+			$this->query->add_item( $row );
 		}
 
 		// Execute query
@@ -69,14 +62,21 @@ class Test_GetCompletedMetrics extends TestCase {
 		// Assert count
 		$this->assertCount( $expected['count'], $result );
 
-		// Assert each result is a JSON string
-		foreach ( $result as $metric_data ) {
-			$this->assertIsString( $metric_data );
+		// If we expect results, validate structure
+		if ( $expected['count'] > 0 ) {
+			foreach ( $result as $metric_data ) {
+				// Each result should be a JSON string (the metric_data column)
+				$this->assertIsString( $metric_data );
 
-			// Verify it's valid JSON
-			$decoded = json_decode( $metric_data, true );
-			$this->assertIsArray( $decoded );
-			$this->assertArrayHasKey( 'largest_contentful_paint', $decoded );
+				// Verify it's valid JSON
+				$decoded = json_decode( $metric_data, true );
+				$this->assertIsArray( $decoded );
+
+				// Verify expected metric keys exist
+				foreach ( $expected['expected_keys'] as $key ) {
+					$this->assertArrayHasKey( $key, $decoded );
+				}
+			}
 		}
 	}
 }
