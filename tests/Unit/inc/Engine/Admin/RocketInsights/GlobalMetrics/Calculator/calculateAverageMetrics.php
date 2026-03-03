@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Admin\RocketInsights\GlobalMetrics\Calculator;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use WP_Rocket\Engine\Admin\RocketInsights\Database\Queries\RocketInsights;
 use WP_Rocket\Engine\Admin\RocketInsights\Database\Queries\RocketInsights as Query;
 use WP_Rocket\Engine\Admin\RocketInsights\GlobalMetrics\Calculator;
@@ -19,7 +20,7 @@ class Test_CalculateAverageMetrics extends TestCase {
 	/**
 	 * Query mock.
 	 *
-	 * @var Query
+	 * @var MockObject|Query
 	 */
 	private $query_mock;
 
