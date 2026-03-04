@@ -1,0 +1,107 @@
+name: PR Release Doc — Slack Notifier
+
+on:
+  workflow_run:
+    workflows: ["PR Release Documentation Generator"]
+    types: [completed]
+
+permissions:
+  actions: read
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: Download agent artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: agent-artifacts
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ github.event.workflow_run.id }}
+          path: agent-artifacts
+
+      - name: Find release notes file
+        id: find
+        run: |
+          FILE=$(find agent-artifacts -name 'release-notes-pr-*.md' | head -n 1)
+          echo "file=$FILE" >> "$GITHUB_OUTPUT"
+
+      - name: Check for skip marker
+        id: check
+        run: |
+          FILE="${{ steps.find.outputs.file }}"
+          if [ -z "$FILE" ]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "No release notes file found in artifacts — skipping Slack notification."
+          elif grep -qx 'NO_RELEASE_NOTES' "$FILE"; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "Agent wrote NO_RELEASE_NOTES marker — skipping Slack notification."
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Post summary to Slack
+        if: steps.check.outputs.skip == 'false'
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.DOC_WORKFLOW_SLACK_TOKEN }}
+          FILE: ${{ steps.find.outputs.file }}
+          PR_NUMBER: ${{ github.event.workflow_run.pull_requests[0].number }}
+          PR_URL: ${{ github.event.workflow_run.pull_requests[0].url }}
+          RUN_URL: ${{ github.event.workflow_run.html_url }}
+        run: |
+          # Extract first non-heading, non-empty line from the Summary section as a brief teaser
+          SUMMARY=$(awk '/^## Summary/{found=1; next} found && /^## /{exit} found && /^[^[:space:]]/{print; exit}' "$FILE")
+
+          curl -s -X POST https://slack.com/api/chat.postMessage \
+            -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"channel\": \"#wpmedia_wprocket-log\",
+              \"text\": \"📋 *Release notes generated for PR #${PR_NUMBER}*\n${SUMMARY}\n\n<${PR_URL}|View PR> · <${RUN_URL}|View workflow run>\"
+            }"
+
+      - name: Upload release notes to Slack
+        if: steps.check.outputs.skip == 'false'
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.DOC_WORKFLOW_SLACK_TOKEN }}
+          FILE: ${{ steps.find.outputs.file }}
+          PR_NUMBER: ${{ github.event.workflow_run.pull_requests[0].number }}
+        run: |
+          FILENAME=$(basename "$FILE")
+          FILESIZE=$(wc -c < "$FILE")
+
+          # Step 1: Get an external upload URL from Slack
+          UPLOAD_RESPONSE=$(curl -s -X POST https://slack.com/api/files.getUploadURLExternal \
+            -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
+            -H "Content-Type: application/x-www-form-urlencoded" \
+            --data-urlencode "filename=$FILENAME" \
+            --data-urlencode "length=$FILESIZE")
+
+          UPLOAD_URL=$(echo "$UPLOAD_RESPONSE" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('upload_url',''))")
+          FILE_ID=$(echo "$UPLOAD_RESPONSE"   | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('file_id',''))")
+
+          if [ -z "$UPLOAD_URL" ] || [ -z "$FILE_ID" ]; then
+            echo "Failed to get Slack upload URL: $UPLOAD_RESPONSE"
+            exit 1
+          fi
+
+          # Step 2: Upload the file content
+          curl -s -X POST "$UPLOAD_URL" \
+            --data-binary "@$FILE"
+
+          # Step 3: Complete the upload and share to channel
+          COMPLETE_RESPONSE=$(curl -s -X POST https://slack.com/api/files.completeUploadExternal \
+            -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"files\": [{\"id\": \"$FILE_ID\"}],
+              \"channel_id\": \"C08EFUHEFT4\",
+              \"initial_comment\": \"Full release notes for PR #${PR_NUMBER}\"
+            }")
+
+          OK=$(echo "$COMPLETE_RESPONSE" | python3 -c "import sys,json; print(json.load(sys.stdin).get('ok'))")
+          if [ "$OK" != "True" ]; then
+            echo "Slack upload failed: $COMPLETE_RESPONSE"
+            exit 1
+          fi

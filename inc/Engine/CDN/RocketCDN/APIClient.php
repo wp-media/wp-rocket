@@ -117,6 +117,57 @@ class APIClient {
 	}
 
 	/**
+	 * Activates the RocketCDN subscription via API.
+	 *
+	 * @since 3.20.5
+	 *
+	 * @param string $token      RocketCDN API token.
+	 * @param int    $website_id RocketCDN website ID.
+	 * @return true|WP_Error True on success, WP_Error on failure.
+	 */
+	public function activate_subscription( string $token, int $website_id ) {
+		if ( empty( $token ) || empty( $website_id ) ) {
+			return $this->get_wp_error( __( 'Missing required parameters for subscription activation.', 'rocket' ) );
+		}
+
+		$args = [
+			'headers' => [
+				'Authorization' => 'Token ' . $token,
+				'Content-Type'  => 'application/json',
+			],
+			'body'    => wp_json_encode(
+				[
+					'is_active' => true,
+				]
+			),
+			'method'  => 'PATCH',
+		];
+
+		$response = wp_remote_request(
+			self::ROCKETCDN_API . 'website/' . $website_id . '/',
+			$args
+		);
+
+		if ( is_wp_error( $response ) ) {
+			return $response;
+		}
+
+		$response_code = wp_remote_retrieve_response_code( $response );
+
+		if ( 200 !== $response_code ) {
+			return $this->get_wp_error(
+				sprintf(
+					/* translators: %d: HTTP response code */
+					__( 'Failed to activate RocketCDN subscription. API returned %d.', 'rocket' ),
+					$response_code
+				)
+			);
+		}
+
+		return true;
+	}
+
+	/**
 	 * Gets fresh pricing & promotion data for RocketCDN
 	 *
 	 * @since 3.5

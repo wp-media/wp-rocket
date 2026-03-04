@@ -52,6 +52,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'ri_settings_subscriber',
 		'ri_plan',
 		'ri_post_listing_subscriber',
+		'ri_metric_formatter',
 		'job_manager_queue',
 	];
 
@@ -90,6 +91,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'ri_saas_context', SaasContext::class )
 			->addArgument( 'ri_context' );
 
+		$this->getContainer()->add( 'ri_metric_formatter', MetricFormatter::class );
+
 		$this->getContainer()->add( 'ri_render', Render::class )
 			->addArguments(
 				[
@@ -98,6 +101,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'ri_context',
 					'beacon',
 					'ri_query',
+					'ri_metric_formatter',
 				]
 			);
 
@@ -144,6 +148,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'ri_global_score',
 					'user',
 					'options',
+					'tracking',
 				]
 			);
 

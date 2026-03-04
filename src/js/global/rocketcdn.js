@@ -6,21 +6,27 @@
 		document.querySelectorAll( '.wpr-rocketcdn-open' ).forEach( ( el ) => {
 			el.addEventListener( 'click', ( e ) => {
 				e.preventDefault();
+				checkButtonUrlAndOpen();
 			} );
 		} );
 
-		maybeOpenModal();
-
+		// Always initialize MicroModal to set up close handlers
 		MicroModal.init( {
 			disableScroll: true
 		} );
 
-		const iframe = document.getElementById('rocketcdn-iframe');
-		const loader = document.getElementById('wpr-rocketcdn-modal-loader');
-		if ( iframe && loader ) {
-			iframe.addEventListener('load', function() {
-				loader.style.display = 'none';
-			});
+		// Only auto-open modal if there's no direct button URL
+		if ( ! window.rocketcdnButtonUrl || window.rocketcdnButtonUrl === '' ) {
+			maybeOpenModal();
+			maybeOpenModalFromURL();
+
+			const iframe = document.getElementById('rocketcdn-iframe');
+			const loader = document.getElementById('wpr-rocketcdn-modal-loader');
+			if ( iframe && loader ) {
+				iframe.addEventListener('load', function() {
+					loader.style.display = 'none';
+				});
+			}
 		}
 	} );
 
@@ -28,7 +34,22 @@
 		let openCTA = document.querySelector( '#wpr-rocketcdn-open-cta' ),
 			closeCTA = document.querySelector( '#wpr-rocketcdn-close-cta' ),
 			smallCTA = document.querySelector( '#wpr-rocketcdn-cta-small' ),
-			bigCTA = document.querySelector( '#wpr-rocketcdn-cta' );
+			bigCTA = document.querySelector( '#wpr-rocketcdn-cta' ),
+			inputToggle = document.querySelector('.wpr-rocketcdn-toggle--input');
+
+		// Prices selectors for toggling visibility based on the billing cycle toggle state.
+		const prices = {
+			monthly: {
+				regular: document.querySelectorAll('.wpr-rocketcdn-pricing-regular-price--monthly'),
+				current: document.querySelectorAll('.wpr-rocketcdn-pricing--monthly'),
+				period: document.querySelectorAll('.wpr-rocketcdn-pricing--billing-period--monthly')
+			},
+			yearly: {
+				regular: document.querySelectorAll('.wpr-rocketcdn-pricing-regular-price--yearly'),
+				current: document.querySelectorAll('.wpr-rocketcdn-pricing--annual'),
+				period: document.querySelectorAll('.wpr-rocketcdn-pricing--billing-period--yearly')
+			}
+		}
 
 		if ( null !== openCTA && null !== smallCTA && null !== bigCTA ) {
 			openCTA.addEventListener( 'click', ( e ) => {
@@ -61,6 +82,23 @@
 
 			return postData;
 		}
+
+		// Display the correct prices on page based on billing cycle toggle state.
+		inputToggle.addEventListener('change', function() {
+			const isYearly = this.checked;
+
+			if (isYearly) {
+				Object.values(prices.monthly).forEach(list => list.forEach(el => el.classList.add('wpr-isHidden')));
+				Object.values(prices.yearly).forEach(list => list.forEach(el => el.classList.remove('wpr-isHidden')));
+			} else {
+				Object.values(prices.monthly).forEach(list => list.forEach(el => el.classList.remove('wpr-isHidden')));
+				Object.values(prices.yearly).forEach(list => list.forEach(el => el.classList.add('wpr-isHidden')));
+			}
+
+			// Update the button URL with the correct is_monthly parameter.
+			updateButtonUrlBillingCycle(isYearly);
+		});
+
 	} );
 
 	window.onmessage = ( e ) => {
@@ -78,6 +116,30 @@
 		disableCDN( e.data, iframeURL );
 		validateTokenAndCNAME( e.data );
 	};
+
+	function checkButtonUrlAndOpen() {
+		// Check if button URL was injected by PHP
+		if ( window.rocketcdnButtonUrl && window.rocketcdnButtonUrl !== '' ) {
+			// Navigate to button URL in same tab
+			window.location.href = window.rocketcdnButtonUrl;
+		} else {
+			// Show iframe modal as usual
+			MicroModal.show( 'wpr-rocketcdn-modal' );
+		}
+	}
+
+	/**
+	 * Updates the button URL with the correct is_monthly parameter based on billing cycle toggle.
+	 *
+	 * @param {boolean} isYearly - True if yearly billing is selected, false for monthly.
+	 */
+	function updateButtonUrlBillingCycle( isYearly ) {
+		if ( ! window.rocketcdnButtonUrl || window.rocketcdnButtonUrl === '' ) {
+			return;
+		}
+
+		window.rocketcdnButtonUrl = setIsMonthlyParam(window.rocketcdnButtonUrl, isYearly);
+	}
 
 	function maybeOpenModal() {
 		let postData = '';
@@ -98,12 +160,31 @@
 		};
 	}
 
+	function maybeOpenModalFromURL() {
+		const urlParams = new URLSearchParams( window.location.search );
+
+		if ( urlParams.has( 'rocketcdn_open_iframe' ) && '1' === urlParams.get( 'rocketcdn_open_iframe' ) ) {
+			// Set hash to page_cdn to show CDN tab behind modal
+			window.location.hash = '#page_cdn';
+			
+			MicroModal.show( 'wpr-rocketcdn-modal' );
+
+			// Clean up the URL to prevent re-triggering on refresh
+			urlParams.delete( 'rocketcdn_open_iframe' );
+			const search = urlParams.toString();
+			const newURL = window.location.pathname + ( search ? '?' + search : '' ) + window.location.hash;
+			window.history.replaceState( {}, '', newURL );
+		}
+	}
+
 	function closeModal( data ) {
 		if ( ! data.hasOwnProperty( 'cdnFrameClose' ) ) {
 			return;
 		}
 
 		MicroModal.close( 'wpr-rocketcdn-modal' );
+		// Ensure scroll is restored
+		document.body.style.overflow = '';
 
 		let pages = [ 'iframe-payment-success', 'iframe-unsubscribe-success' ];
 
@@ -160,6 +241,15 @@
 				);
 			}
 		};
+	}
+
+	function setIsMonthlyParam(url, isYearly) {
+		// Remove any existing is_monthly param
+		let newUrl = url.replace(/([?&])is_monthly=[^&]*/g, '');
+		// Add the new param
+		const sep = newUrl.includes('?') ? '&' : '?';
+		newUrl += sep + 'is_monthly=' + (isYearly ? '0' : '1');
+		return newUrl;
 	}
 
 	function disableCDN( data, iframeURL ) {
