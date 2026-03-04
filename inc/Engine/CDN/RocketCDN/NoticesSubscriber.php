@@ -3,6 +3,7 @@ namespace WP_Rocket\Engine\CDN\RocketCDN;
 
 use WP_Rocket\Abstract_Render;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
+use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
@@ -26,17 +27,26 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	private $beacon;
 
 	/**
+	 * UserClient instance
+	 *
+	 * @var UserClient
+	 */
+	private $user_client;
+
+	/**
 	 * Constructor
 	 *
-	 * @param APIClient $api_client RocketCDN API Client instance.
-	 * @param Beacon    $beacon  Beacon instance.
-	 * @param string    $template_path Path to the templates.
+	 * @param APIClient  $api_client    RocketCDN API Client instance.
+	 * @param Beacon     $beacon        Beacon instance.
+	 * @param UserClient $user_client   UserClient instance.
+	 * @param string     $template_path Path to the templates.
 	 */
-	public function __construct( APIClient $api_client, Beacon $beacon, $template_path ) {
+	public function __construct( APIClient $api_client, Beacon $beacon, UserClient $user_client, $template_path ) {
 		parent::__construct( $template_path );
 
-		$this->api_client = $api_client;
-		$this->beacon     = $beacon;
+		$this->api_client  = $api_client;
+		$this->beacon      = $beacon;
+		$this->user_client = $user_client;
 	}
 
 	/**
@@ -208,10 +218,11 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 
 		$pricing = $this->api_client->get_pricing_data();
 
-		$regular_price   = '';
-		$nopromo_variant = '--no-promo';
-		$cta_small_class = 'wpr-isHidden';
-		$cta_big_class   = '';
+		$regular_price_monthly = '';
+		$regular_price_annual  = '';
+		$nopromo_variant       = '--no-promo';
+		$cta_small_class       = 'wpr-isHidden';
+		$cta_big_class         = '';
 
 		if ( get_user_meta( get_current_user_id(), 'rocket_rocketcdn_cta_hidden', true ) ) {
 			$cta_small_class = '';
@@ -221,6 +232,9 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 		$small_cta_data = [
 			'container_class' => $cta_small_class,
 		];
+
+		// Get button URL for one-click checkout.
+		$button_url = $this->get_express_checkout_url();
 
 		if ( is_wp_error( $pricing ) ) {
 			$beacon    = $this->beacon->get_suggest( 'rocketcdn_error' );
@@ -238,32 +252,39 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 				'nopromo_variant' => $nopromo_variant,
 				'error'           => true,
 				'message'         => $message,
+				'button_url'      => $button_url,
 			];
 		} else {
-			$current_price      = number_format_i18n( $pricing['monthly_price'], 2 );
-			$promotion_campaign = '';
-			$end_date           = strtotime( $pricing['end_date'] );
-			$promotion_end_date = '';
+			$current_price_monthly = number_format_i18n( $pricing['monthly_price'], 2 );
+			$current_price_annual  = number_format_i18n( $pricing['annual_price'] / 12, 2 );
+			$promotion_campaign    = '';
+			$end_date              = strtotime( $pricing['end_date'] );
+			$promotion_end_date    = '';
 
 			if (
 				$pricing['is_discount_active']
 				&&
 				$end_date > time()
 			) {
-				$promotion_campaign = $pricing['discount_campaign_name'];
-				$regular_price      = $current_price;
-				$current_price      = number_format_i18n( $pricing['discounted_price_monthly'], 2 ) . '*';
-				$nopromo_variant    = '';
-				$promotion_end_date = date_i18n( get_option( 'date_format' ), $end_date );
+				$promotion_campaign    = $pricing['discount_campaign_name'];
+				$regular_price_monthly = $current_price_monthly;
+				$regular_price_annual  = $current_price_annual;
+				$current_price_monthly = number_format_i18n( $pricing['discounted_price_monthly'], 2 ) . '*';
+				$current_price_annual  = number_format_i18n( $pricing['discounted_price_yearly'] / 12, 2 ) . '*';
+				$nopromo_variant       = '';
+				$promotion_end_date    = date_i18n( get_option( 'date_format' ), $end_date );
 			}
 
 			$big_cta_data = [
-				'container_class'    => $cta_big_class,
-				'promotion_campaign' => $promotion_campaign,
-				'promotion_end_date' => $promotion_end_date,
-				'nopromo_variant'    => $nopromo_variant,
-				'regular_price'      => $regular_price,
-				'current_price'      => $current_price,
+				'container_class'       => $cta_big_class,
+				'promotion_campaign'    => $promotion_campaign,
+				'promotion_end_date'    => $promotion_end_date,
+				'nopromo_variant'       => $nopromo_variant,
+				'regular_price_monthly' => $regular_price_monthly,
+				'regular_price_annual'  => $regular_price_annual,
+				'current_price_monthly' => $current_price_monthly,
+				'current_price_annual'  => $current_price_annual,
+				'button_url'            => $button_url,
 			];
 		}
 
@@ -408,6 +429,33 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 				'id'             => 'rocketcdn_change_cname_notice',
 				'action'         => sprintf( '<a href="%1$s" target="_blank" rel="noopener" class="wpr-button" id="rocketcdn-change-cname-button">%2$s</a>', $support_url, esc_html__( 'contact support', 'rocket' ) ),
 			]
+		);
+	}
+	/**
+	 * Gets the express checkout URL for RocketCDN.
+	 *
+	 * @return string Express checkout URL or empty string if not available.
+	 */
+	private function get_express_checkout_url(): string {
+		$user_data = $this->user_client->get_user_data();
+
+		if ( false === $user_data || ! isset( $user_data->rocketcdn->button->url ) || empty( $user_data->rocketcdn->button->url ) ) {
+			return '';
+		}
+
+		return add_query_arg(
+			[
+				'dashboard_url' => rawurlencode(
+					add_query_arg(
+						[
+							'page'               => WP_ROCKET_PLUGIN_SLUG,
+							'rocketcdn_checkout' => 'true',
+						],
+						admin_url( 'options-general.php' )
+					)
+				),
+			],
+			esc_url_raw( $user_data->rocketcdn->button->url )
 		);
 	}
 }
