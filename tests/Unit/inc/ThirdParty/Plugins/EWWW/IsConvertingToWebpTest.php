@@ -1,23 +1,22 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\classes\third_party\plugins\Images\Webp\EwwwSubscriber;
+namespace WP_Rocket\Tests\Unit\ThirdParty\Plugins\EWWW;
 
 use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber;
-use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\ThirdParty\Plugins\EWWW;
+use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * Test class covering \WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber::is_converting_to_webp
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\EWWW::is_converting_to_webp
  * @group  ThirdParty
  * @group  Webp
  */
-class Test_IsConvertingToWebp extends TestCase {
-
+class IsConvertingToWebpTest extends TestCase {
 	public function testShouldReturnFalseWhenEwwwOptionNotEnabled() {
 		$optionsData = Mockery::mock( Options_Data::class );
-		$subscriber  = new EWWW_Subscriber( $optionsData );
+		$subscriber  = new EWWW( $optionsData );
 
 		Functions\expect( 'ewww_image_optimizer_get_option' )
 			->once()
@@ -28,7 +27,7 @@ class Test_IsConvertingToWebp extends TestCase {
 
 	public function testShouldReturnTrueWhenEwwwOptionIsEnabled() {
 		$optionsData = Mockery::mock( Options_Data::class );
-		$subscriber  = new EWWW_Subscriber( $optionsData );
+		$subscriber  = new EWWW( $optionsData );
 
 		Functions\expect( 'ewww_image_optimizer_get_option' )
 			->once()

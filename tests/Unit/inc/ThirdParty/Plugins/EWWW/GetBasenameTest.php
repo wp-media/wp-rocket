@@ -1,24 +1,25 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\classes\third_party\plugins\Images\Webp\EwwwSubscriber;
+namespace WP_Rocket\Tests\Unit\ThirdParty\Plugins\EWWW;
 
 use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber;
-use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\ThirdParty\Plugins\EWWW;
+use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * Test class covering \WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber::get_basename
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\EWWW::get_basename
  * @group  ThirdParty
  * @group  Webp
  */
-class Test_GetBasename extends TestCase {
+class GetBasenameTest extends TestCase {
+	protected $mock_rocket_get_constant = false;
 
 	private function getSubscriber() {
 		$optionsData = Mockery::mock( Options_Data::class );
 
-		return new EWWW_Subscriber( $optionsData );
+		return new EWWW( $optionsData );
 	}
 
 	public function testShouldReturnBasenameWhenEwwwNotEnabled() {
@@ -36,7 +37,7 @@ class Test_GetBasename extends TestCase {
 	}
 
 	/**
-	 * Test EWWW_Subscriber->get_basename() should return a plugin basename when EWWW is enabled.
+	 * Test EWWW->get_basename() should return a plugin basename when EWWW is enabled.
 	 */
 	public function testShouldReturnBasenameWhenEwwwIsEnabled() {
 		$subscriber = $this->getSubscriber();
