@@ -251,7 +251,7 @@
     &-footer {
 	    color: $cGreyDark4;
         font-weight: 600;
-        padding: $space * 2 $space 0;
+        padding: 0 $space 0 $space;
 	    @include font-size(14,22);
 
         & a {
@@ -285,6 +285,7 @@
                 position: absolute;
                 content: url(../img/icon-i-circle.svg);
                 margin-left: 4px;
+                margin-top: 1px;
             }
         }
     }
@@ -304,7 +305,7 @@
         border-radius: 4px;
         width: 310px;
         flex-shrink: 0;
-        max-height: 370px;
+        align-self: flex-start;
 
         &.has-regular-price {
             max-height: 400px;
@@ -446,6 +447,10 @@
             color: #A9B2BC;
             padding: 4px 8px;
             border-radius: 4px;
+
+            @include respond-to('sm') {
+                right: -16px;
+            }
         }
 
         &--price {
@@ -461,7 +466,7 @@
                 flex-direction: column;
                 justify-content: flex-start;
                 align-items: center;
-                gap: 16px;
+                gap: 5px;
                 width: 100%;
             }
         }
@@ -531,11 +536,6 @@
             cursor: pointer;
             transition: all 0.3s ease;
             text-transform: uppercase;
-
-            &:hover {
-                background-color: rgb(240.4231578947, 81.2926315789, 38.7768421053);
-                border-color: rgb(240.4231578947, 81.2926315789, 38.7768421053);
-            }
 
             &:active {
                 transform: translateY(1px);

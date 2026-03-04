@@ -1084,7 +1084,7 @@ a:focus, button:focus {
 .wpr-rocketcdn-cta-footer {
   color: #121116;
   font-weight: 600;
-  padding: 16px 8px 0;
+  padding: 0 8px 0 8px;
   font-size: 0.875rem;
   line-height: 1.5714285714;
 }
@@ -1117,6 +1117,7 @@ a:focus, button:focus {
   position: absolute;
   content: url(../img/icon-i-circle.svg);
   margin-left: 4px;
+  margin-top: 1px;
 }
 .wpr-rocketcdn-cta-promo-footer {
   color: #121116;
@@ -1133,7 +1134,7 @@ a:focus, button:focus {
   border-radius: 4px;
   width: 310px;
   flex-shrink: 0;
-  max-height: 370px;
+  align-self: flex-start;
 }
 .wpr-rocketcdn-cta .wpr-rocketcdn-pricing.has-regular-price {
   max-height: 400px;
@@ -1258,6 +1259,11 @@ a:focus, button:focus {
   padding: 4px 8px;
   border-radius: 4px;
 }
+@media (max-width: 1083px) {
+  .wpr-rocketcdn-cta .wpr-rocketcdn-pricing--badge {
+    right: -16px;
+  }
+}
 .wpr-rocketcdn-cta .wpr-rocketcdn-pricing--price {
   display: flex;
   flex-direction: row;
@@ -1271,7 +1277,7 @@ a:focus, button:focus {
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  gap: 16px;
+  gap: 5px;
   width: 100%;
 }
 .wpr-rocketcdn-cta .wpr-rocketcdn-pricing--currency {
@@ -1330,10 +1336,6 @@ a:focus, button:focus {
   cursor: pointer;
   transition: all 0.3s ease;
   text-transform: uppercase;
-}
-.wpr-rocketcdn-cta .wpr-rocketcdn-pricing--cta:hover {
-  background-color: rgb(240.4231578947, 81.2926315789, 38.7768421053);
-  border-color: rgb(240.4231578947, 81.2926315789, 38.7768421053);
 }
 .wpr-rocketcdn-cta .wpr-rocketcdn-pricing--cta:active {
   transform: translateY(1px);
