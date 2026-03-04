@@ -198,13 +198,20 @@ $rocket_formatted_metrics = $data->formatted_metrics ?? [];
 			<div class="row-left">
 				<div class="report-link <?php echo esc_attr( $rocket_report_url_icon_state ); ?>">
 					<?php
-					$this->render_action_button(
-						'link',
-						'gtmetrix_open',
-						$rocket_insights_show_report_btn_args
+					$rocket_link_tag   = ! empty( $rocket_insights_show_report_btn_args['url'] ) ? 'a' : 'span';
+					$rocket_link_href  = ! empty( $rocket_insights_show_report_btn_args['url'] ) ? 'href="' . esc_url( $rocket_insights_show_report_btn_args['url'] ) . '" ' : '';
+					$rocket_attributes = '';
+					foreach ( $rocket_insights_show_report_btn_args['attributes'] as $key => $value ) {
+						$rocket_attributes .= ' ' . esc_attr( $key ) . ( true === $value ? '' : '="' . esc_attr( $value ) . '"' );
+					}
+					printf(
+						'<%1$s %2$s%3$s>%4$s<div class="icon-frame"></div></%1$s>',
+						$rocket_link_tag,
+						$rocket_link_href,
+						$rocket_attributes,
+						esc_html( $rocket_insights_show_report_btn_args['label'] )
 					);
 					?>
-					<div class="icon-frame"></div>
 				</div>
 			</div>
 		</div>
