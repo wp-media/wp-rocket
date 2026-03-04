@@ -11,8 +11,6 @@ use WP_Rocket\Logger\LoggerAwareInterface;
  * Recommendations API Client.
  *
  * Handles communication with the SaaS Director API for fetching performance recommendations.
- *
- * @since 3.20.5
  */
 class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 	use LoggerAware;
@@ -45,7 +43,7 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 	 * @return array|\WP_Error Response data or error array.
 	 */
 	public function get_recommendations( array $params, array $args = [] ) {
-		// Validate required parameter
+		// Validate required parameter.
 		if ( empty( $params['email'] ) ) {
 			$error_data = [
 				'code'    => 400,
@@ -60,10 +58,10 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 			return $error_data;
 		}
 
-		// Build query parameters (remove null/empty values)
+		// Build query parameters (remove null/empty values).
 		$query_params = $this->build_query_params( $params );
 
-		// Merge custom args with defaults
+		// Merge custom args with defaults.
 		$args = array_merge(
 			[
 				'body'    => $query_params,
@@ -79,7 +77,7 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 			]
 		);
 
-		// Use AbstractAPIClient's handle_get method
+		// Use AbstractAPIClient's handle_get method.
 		$sent = $this->handle_get( $args );
 
 		if ( ! $sent ) {
@@ -96,10 +94,10 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 			return $error_data;
 		}
 
-		// Decode JSON response
+		// Decode JSON response.
 		$response_data = json_decode( $this->response_body, true );
 
-		// Check for JSON decode error
+		// Check for JSON decode error.
 		if ( ! $response_data ) {
 			$error_data = [
 				'code'    => 400,
@@ -114,7 +112,7 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 			return $error_data;
 		}
 
-		// Validate response structure
+		// Validate response structure.
 		if ( ! $this->validate_response( $response_data ) ) {
 			$error_data = [
 				'code'    => 400,
@@ -150,7 +148,7 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 	 * @return array Filtered parameters.
 	 */
 	private function build_query_params( array $params ): array {
-		// Map of allowed parameters
+		// Map of allowed parameters.
 		$allowed_params = [
 			'email',
 			'lcp',
@@ -182,12 +180,11 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 	 * @return bool True if valid, false otherwise.
 	 */
 	public function validate_response( array $response ): bool {
-		// Must have 'recommendations' key (array)
 		if ( ! isset( $response['recommendations'] ) || ! is_array( $response['recommendations'] ) ) {
 			return false;
 		}
 
-		// Must have 'metadata' key (array)
+		// Must have 'metadata' key (array).
 		if ( ! isset( $response['metadata'] ) || ! is_array( $response['metadata'] ) ) {
 			return false;
 		}
@@ -195,7 +192,13 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 		return true;
 	}
 
-	public function validate_add_to_queue_response(array $response): bool {
+	/**
+	 * Force this value to be true for the Job Manager to consider the request successful because this APIClient won't be used in queue.
+	 *
+	 * @param array $response Response data.
+	 * @return bool
+	 */
+	public function validate_add_to_queue_response( array $response ): bool {
 		return true;
 	}
 }

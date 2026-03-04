@@ -180,7 +180,7 @@ class ServiceProvider extends AbstractServiceProvider {
 				]
 			);
 
-		// Recommendations API Client
+		// Recommendations API Client.
 		$this->getContainer()->add( 'ri_recommendations_api_client', RecommendationsAPIClient::class )
 			->addArgument( 'options' );
 
