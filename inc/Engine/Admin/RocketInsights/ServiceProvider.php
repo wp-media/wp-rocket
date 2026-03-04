@@ -11,6 +11,7 @@ use WP_Rocket\Engine\Admin\RocketInsights\{
 	APIHandler\APIClient as RIAPIClient,
 	Context\Context,
 	Context\SaasContext,
+	GlobalMetrics\Calculator,
 	Jobs\Factory as RIFactory,
 	Jobs\Manager as RIManager,
 	Managers\Plan,
@@ -19,7 +20,8 @@ use WP_Rocket\Engine\Admin\RocketInsights\{
 	URLLimit\Subscriber as URLLimitSubscriber,
 	Settings\Controller as SettingsController,
 	Settings\Subscriber as SettingsSubscriber,
-	PostListing\Subscriber as PostListingSubscriber
+	PostListing\Subscriber as PostListingSubscriber,
+	GlobalMetrics\Subscriber as GlobalMetricsSubscriber
 };
 use WP_Rocket\Engine\Common\JobManager\Queue\Queue as JobManagerQueue;
 
@@ -56,6 +58,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		'ri_metric_formatter',
 		'job_manager_queue',
 		'ri_recommendations_api_client',
+		'ri_global_metrics_calculator',
+		'ri_global_metrics_subscriber',
 	];
 
 	/**
@@ -131,6 +135,14 @@ class ServiceProvider extends AbstractServiceProvider {
 					'ri_plan',
 				]
 			);
+
+		// Global Metrics Calculator.
+		$this->getContainer()->add( 'ri_global_metrics_calculator', Calculator::class )
+			->addArgument( 'ri_query' );
+
+		// Global Metrics Subscriber.
+		$this->getContainer()->addShared( 'ri_global_metrics_subscriber', GlobalMetricsSubscriber::class )
+			->addArgument( 'ri_global_metrics_calculator' );
 
 		// Global Score layer.
 		$this->getContainer()->add( 'ri_global_score', GlobalScore::class )

@@ -37,6 +37,12 @@ return [
 				'pages_num' => 3,
 				'status' => 'complete',
 				'is_running' => false,
+				'average_metrics' => [
+					'lcp'  => null,
+					'ttfb' => null,
+					'cls'  => null,
+					'tbt'  => null,
+				],
 			]
 		]
 	],
@@ -68,6 +74,12 @@ return [
 				'pages_num' => 2,
 				'status' => 'in-progress',
 				'is_running' => true,
+				'average_metrics' => [
+					'lcp'  => null,
+					'ttfb' => null,
+					'cls'  => null,
+					'tbt'  => null,
+				],
 			]
 		]
 	],

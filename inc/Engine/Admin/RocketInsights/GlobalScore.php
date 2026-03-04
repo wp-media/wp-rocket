@@ -86,6 +86,24 @@ class GlobalScore {
 			'is_running' => $this->calculate_current_status() === 'in-progress',
 		];
 
+		/**
+		 * Filters the global score data before caching.
+		 *
+		 * Allows other features (e.g., recommendations) to inject additional data
+		 * into the global score transient without tight coupling.
+		 *
+		 * @param array $data {
+		 *     Global score data.
+		 *
+		 *     @type int    $score      Global score (0-100).
+		 *     @type int    $pages_num  Number of monitored pages.
+		 *     @type string $status     Current system status.
+		 *     @type bool   $is_running Whether tests are in progress.
+		 * }
+		 * @return array Filtered global score data.
+		 */
+		$data = wpm_apply_filters_typed( 'array',  'rocket_insights_global_score_data', $data );
+
 		set_transient( self::TRANSIENT_NAME, $data, self::CACHE_EXPIRATION );
 
 		return $data;
