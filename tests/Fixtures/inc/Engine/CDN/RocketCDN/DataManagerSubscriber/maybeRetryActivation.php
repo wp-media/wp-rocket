@@ -136,7 +136,7 @@ return [
 		'config'   => [
 			'user_role'                         => 'administrator',
 			// No token saved locally.
-			'user_data'                         => [
+			'user_data'                         => (object) [
 				'rocketcdn' => (object) [
 					'cdn_token' => '1234567890123456789012345678901234567890',
 				],
