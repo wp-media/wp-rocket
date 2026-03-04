@@ -201,15 +201,35 @@ $rocket_formatted_metrics = $data->formatted_metrics ?? [];
 					$rocket_link_tag   = ! empty( $rocket_insights_show_report_btn_args['url'] ) ? 'a' : 'span';
 					$rocket_link_href  = ! empty( $rocket_insights_show_report_btn_args['url'] ) ? 'href="' . esc_url( $rocket_insights_show_report_btn_args['url'] ) . '" ' : '';
 					$rocket_attributes = '';
-					foreach ( $rocket_insights_show_report_btn_args['attributes'] as $key => $value ) {
-						$rocket_attributes .= ' ' . esc_attr( $key ) . ( true === $value ? '' : '="' . esc_attr( $value ) . '"' );
+					foreach ( $rocket_insights_show_report_btn_args['attributes'] as $rocket_attr_key => $rocket_attr_value ) {
+						$rocket_attributes .= ' ' . esc_attr( $rocket_attr_key ) . ( true === $rocket_attr_value ? '' : '="' . esc_attr( $rocket_attr_value ) . '"' );
 					}
-					printf(
+
+					$rocket_link_html = sprintf(
 						'<%1$s %2$s%3$s>%4$s<div class="icon-frame"></div></%1$s>',
 						$rocket_link_tag,
 						$rocket_link_href,
 						$rocket_attributes,
 						esc_html( $rocket_insights_show_report_btn_args['label'] )
+					);
+
+					echo wp_kses(
+						$rocket_link_html,
+						array(
+							'a'    => array(
+								'href'   => true,
+								'target' => true,
+								'class'  => true,
+								'data-*' => true,
+							),
+							'span' => array(
+								'class'  => true,
+								'data-*' => true,
+							),
+							'div'  => array(
+								'class' => true,
+							),
+						)
 					);
 					?>
 				</div>
