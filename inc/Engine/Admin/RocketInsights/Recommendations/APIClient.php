@@ -165,7 +165,7 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 		$query_params = [];
 
 		foreach ( $allowed_params as $key ) {
-			if ( isset( $params[ $key ] ) && null !== $params[ $key ] && '' !== $params[ $key ] ) {
+			if ( isset( $params[ $key ] ) && '' !== $params[ $key ] ) {
 				$query_params[ $key ] = $params[ $key ];
 			}
 		}
