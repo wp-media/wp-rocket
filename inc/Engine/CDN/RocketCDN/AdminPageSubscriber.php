@@ -106,7 +106,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 			$status_class = ' wpr-isValid';
 			$status_text  = date_i18n( get_option( 'date_format' ), strtotime( $subscription_data['subscription_next_date_update'] ) );
 			$is_active    = true;
-		} elseif ( 'cancelled' === $subscription_data['subscription_status'] ) {
+		} elseif ( in_array( $subscription_data['subscription_status'], [ 'cancelled', 'refunded' ], true ) ) {
 			$status_class    = ' wpr-isInvalid';
 			$container_class = ' wpr-flex--egal';
 			$status_text     = __( 'No Subscription', 'rocket' );
