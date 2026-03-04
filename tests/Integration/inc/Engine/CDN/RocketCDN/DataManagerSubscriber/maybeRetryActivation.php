@@ -195,7 +195,7 @@ class Test_MaybeRetryActivation extends AdminTestCase {
 		if ( isset( $config['user_data'] ) && isset( $expected['cdn_enabled'] ) && $expected['cdn_enabled'] ) {
 			$saved_token = get_option( 'rocketcdn_user_token' );
 			$this->assertNotEmpty( $saved_token, 'Token should be saved after successful activation' );
-			$this->assertSame( $config['user_data']['rocketcdn']->cdn_token, $saved_token );
+			$this->assertSame( $config['user_data']->rocketcdn->cdn_token, $saved_token );
 		}
 	}
 }

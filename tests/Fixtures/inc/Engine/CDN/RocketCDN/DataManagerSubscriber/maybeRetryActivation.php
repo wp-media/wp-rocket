@@ -136,11 +136,11 @@ return [
 		'config'   => [
 			'user_role'                         => 'administrator',
 			// No token saved locally.
-			'user_data'                         => (object) [
-				'rocketcdn' => (object) [
+			'user_data'                         => json_decode( wp_json_encode( [
+				'rocketcdn' => [
 					'cdn_token' => '1234567890123456789012345678901234567890',
 				],
-			],
+			] ) ),
 			'subscription_data'                 => [
 				'id'                            => 12345,
 				'is_active'                     => false,
