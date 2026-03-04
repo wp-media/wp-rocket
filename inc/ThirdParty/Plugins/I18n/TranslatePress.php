@@ -366,7 +366,7 @@ class TranslatePress implements Subscriber_Interface {
 		return preg_replace_callback(
 			$href_pattern,
 			function ( $matches ) use ( $ignored_params ) {
-				$url      = $matches[1];
+				$url       = $matches[1];
 				$cleaned_url = $this->clean_url_query_string( $url, $ignored_params );
 				return 'href="' . esc_attr( $cleaned_url ) . '"';
 			},
