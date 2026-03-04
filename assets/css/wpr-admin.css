@@ -1117,6 +1117,7 @@ a:focus, button:focus {
   position: absolute;
   content: url(../img/icon-i-circle.svg);
   margin-left: 4px;
+  margin-top: 1px;
 }
 .wpr-rocketcdn-cta-promo-footer {
   color: #121116;
