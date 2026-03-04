@@ -270,7 +270,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 				$regular_price_monthly = $current_price_monthly;
 				$regular_price_annual  = $current_price_annual;
 				$current_price_monthly = number_format_i18n( $pricing['discounted_price_monthly'], 2 ) . '*';
-				$current_price_annual  = number_format_i18n( $pricing['discounted_price_yearly'], 2 ) . '*';
+				$current_price_annual  = number_format_i18n( $pricing['discounted_price_yearly'] / 12, 2 ) . '*';
 				$nopromo_variant       = '';
 				$promotion_end_date    = date_i18n( get_option( 'date_format' ), $end_date );
 			}
@@ -283,7 +283,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 				'regular_price_monthly' => $regular_price_monthly,
 				'regular_price_annual'  => $regular_price_annual,
 				'current_price_monthly' => $current_price_monthly,
-				'current_price_annual'  => round( $current_price_annual / 12, 2 ),
+				'current_price_annual'  => $current_price_annual,
 				'button_url'            => $button_url,
 			];
 		}
