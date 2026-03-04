@@ -665,7 +665,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			return $enabled;
 		}
 
-		return ! $this->context->is_reseller_or_non_live();
+		return ! rocket_is_live_site();
 	}
 
 	/**

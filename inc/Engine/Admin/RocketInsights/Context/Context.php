@@ -74,8 +74,8 @@ class Context implements ContextInterface {
 		 */
 		$enabled = wpm_apply_filters_typed( 'boolean', 'rocket_rocket_insights_enabled', $enabled );
 
-		// Block for reseller accounts and non-live installations.
-		if ( $enabled && $this->is_reseller_or_non_live() ) {
+		// Block for non-live installations.
+		if ( $enabled && ! rocket_is_live_site() ) {
 			return false;
 		}
 

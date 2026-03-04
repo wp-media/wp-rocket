@@ -40,7 +40,7 @@ class SaasContext implements ContextInterface {
 		$enabled = wpm_apply_filters_typed( 'boolean', 'rocket_rocket_insights_enabled', true );
 
 		// Block for non-live installations.
-		if ( $enabled && $this->context->is_reseller_or_non_live() ) {
+		if ( $enabled && ! rocket_is_live_site() ) {
 			return false;
 		}
 
