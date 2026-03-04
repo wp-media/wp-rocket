@@ -437,8 +437,15 @@ class DataManagerSubscriber implements Subscriber_Interface {
 
 		$token = get_option( 'rocketcdn_user_token' );
 
+		// If token is not saved locally, try to get it from user endpoint.
 		if ( empty( $token ) ) {
-			return;
+			$user_data = $this->user_client->get_user_data();
+
+			if ( false === $user_data || empty( $user_data->rocketcdn->cdn_token ) ) {
+				return;
+			}
+
+			$token = sanitize_key( $user_data->rocketcdn->cdn_token );
 		}
 
 		// Validate token length (should be exactly 40 chars).
@@ -472,6 +479,12 @@ class DataManagerSubscriber implements Subscriber_Interface {
 		// Guard: only enable CDN and schedule check when subscription is active with a valid CDN URL.
 		if ( empty( $subscription['is_active'] ) || empty( $subscription['cdn_url'] ) ) {
 			return;
+		}
+
+		// Save token if not already saved (handles case where token came from user endpoint).
+		$saved_token = get_option( 'rocketcdn_user_token' );
+		if ( empty( $saved_token ) ) {
+			$this->cdn_options->save_token( $token );
 		}
 
 		// Enable CDN and schedule check.

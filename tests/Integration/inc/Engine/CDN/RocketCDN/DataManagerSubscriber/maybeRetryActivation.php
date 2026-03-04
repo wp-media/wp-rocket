@@ -48,6 +48,7 @@ class Test_MaybeRetryActivation extends AdminTestCase {
 		// Clean state.
 		delete_option( 'rocketcdn_user_token' );
 		delete_transient( 'rocketcdn_status' );
+		delete_transient( 'wp_rocket_customer_data' );
 		$this->reset_wp_rocket_settings();
 
 		// Reset counters.
@@ -63,6 +64,7 @@ class Test_MaybeRetryActivation extends AdminTestCase {
 		wp_set_current_user( $this->original_user_id );
 		delete_option( 'rocketcdn_user_token' );
 		delete_transient( 'rocketcdn_status' );
+		delete_transient( 'wp_rocket_customer_data' );
 		remove_all_filters( 'pre_http_request' );
 		$this->reset_wp_rocket_settings();
 
@@ -100,11 +102,27 @@ class Test_MaybeRetryActivation extends AdminTestCase {
 		}
 
 		// Mock API responses.
-		if ( isset( $config['subscription_data'] ) || isset( $config['activation_success'] ) ) {
+		if ( isset( $config['subscription_data'] ) || isset( $config['activation_success'] ) || isset( $config['user_data'] ) ) {
 			$test = $this;
 			add_filter(
 				'pre_http_request',
 				function ( $preempt, $args, $url ) use ( $config, $test ) {
+					// Mock user endpoint (WP Rocket user.php).
+					if ( false !== strpos( $url, 'https://api.wp-rocket.me/stat/1.0/wp-rocket/user.php' ) ) {
+						if ( isset( $config['user_data'] ) ) {
+							return [
+								'response' => [ 'code' => 200 ],
+								'body'     => wp_json_encode( $config['user_data'] ),
+							];
+						}
+
+						// Return empty response if no user_data is configured.
+						return [
+							'response' => [ 'code' => 404 ],
+							'body'     => '',
+						];
+					}
+
 					// Mock subscription endpoint (website/search/).
 					if ( false !== strpos( $url, 'https://rocketcdn.me/api/website/search/' ) ) {
 						$test->subscription_api_call_count++;
@@ -171,6 +189,13 @@ class Test_MaybeRetryActivation extends AdminTestCase {
 			// CDN should NOT be enabled.
 			$cdn_enabled = isset( $settings['cdn'] ) && 1 === (int) $settings['cdn'];
 			$this->assertFalse( $cdn_enabled, 'CDN should not be enabled in this scenario' );
+		}
+
+		// Assert token was saved when it came from user endpoint and activation succeeded.
+		if ( isset( $config['user_data'] ) && isset( $expected['cdn_enabled'] ) && $expected['cdn_enabled'] ) {
+			$saved_token = get_option( 'rocketcdn_user_token' );
+			$this->assertNotEmpty( $saved_token, 'Token should be saved after successful activation' );
+			$this->assertSame( $config['user_data']['rocketcdn']->cdn_token, $saved_token );
 		}
 	}
 }
