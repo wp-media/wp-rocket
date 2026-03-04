@@ -198,7 +198,7 @@ class RocketInsights extends AbstractQuery {
 	 *
 	 * @return array
 	 */
-	public function get_completed_metrics() {
+	public function get_completed_metrics(): array {
 		return $this->query(
 			[
 				'fields' => 'metric_data',

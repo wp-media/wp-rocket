@@ -100,6 +100,7 @@ class GlobalScore {
 		 *     @type string $status     Current system status.
 		 *     @type bool   $is_running Whether tests are in progress.
 		 * }
+		 * @return array Filtered global score data.
 		 */
 		$data = wpm_apply_filters_typed( 'array',  'rocket_insights_global_score_data', $data );
 

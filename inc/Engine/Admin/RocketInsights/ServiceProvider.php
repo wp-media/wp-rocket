@@ -56,6 +56,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		'ri_post_listing_subscriber',
 		'ri_metric_formatter',
 		'job_manager_queue',
+		'ri_global_metrics_calculator',
+		'ri_global_metrics_subscriber',
 	];
 
 	/**
@@ -133,12 +135,12 @@ class ServiceProvider extends AbstractServiceProvider {
 			);
 
 		// Global Metrics Calculator.
-		$this->getContainer()->add( 'global_metrics_calculator', Calculator::class )
+		$this->getContainer()->add( 'ri_global_metrics_calculator', Calculator::class )
 			->addArgument( 'ri_query' );
 
 		// Global Metrics Subscriber.
-		$this->getContainer()->addShared( 'global_metrics_subscriber', GlobalMetricsSubscriber::class )
-			->addArgument( 'global_metrics_calculator' );
+		$this->getContainer()->addShared( 'ri_global_metrics_subscriber', GlobalMetricsSubscriber::class )
+			->addArgument( 'ri_global_metrics_calculator' );
 
 		// Global Score layer.
 		$this->getContainer()->add( 'ri_global_score', GlobalScore::class )

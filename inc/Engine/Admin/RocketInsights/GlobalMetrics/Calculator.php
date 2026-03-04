@@ -7,8 +7,6 @@ use WP_Rocket\Engine\Admin\RocketInsights\Database\Queries\RocketInsights as Que
 
 /**
  * Calculates average performance metrics across all completed tests.
- *
- * @since 3.20.5
  */
 class Calculator {
 	/**

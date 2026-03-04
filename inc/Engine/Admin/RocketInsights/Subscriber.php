@@ -779,6 +779,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 
 		$this->logger::info( 'Rocket Insights: Clear global score to insert average metrics when updating from a WP Rocket version less than 3.20.6' );
 
-		$this->reset_global_score();
+		$this->global_score->reset();
 	}
 }
