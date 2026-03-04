@@ -256,7 +256,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 			];
 		} else {
 			$current_price_monthly = number_format_i18n( $pricing['monthly_price'], 2 );
-			$current_price_annual  = number_format_i18n( $pricing['annual_price'], 2 );
+			$current_price_annual  = number_format_i18n( $pricing['annual_price'] / 12, 2 );
 			$promotion_campaign    = '';
 			$end_date              = strtotime( $pricing['end_date'] );
 			$promotion_end_date    = '';
