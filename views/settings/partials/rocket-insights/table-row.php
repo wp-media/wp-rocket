@@ -215,21 +215,21 @@ $rocket_formatted_metrics = $data->formatted_metrics ?? [];
 
 					echo wp_kses(
 						$rocket_link_html,
-						array(
-							'a'    => array(
+						[
+							'a'    => [
 								'href'   => true,
 								'target' => true,
 								'class'  => true,
 								'data-*' => true,
-							),
-							'span' => array(
+							],
+							'span' => [
 								'class'  => true,
 								'data-*' => true,
-							),
-							'div'  => array(
+							],
+							'div'  => [
 								'class' => true,
-							),
-						)
+							],
+						]
 					);
 					?>
 				</div>
