@@ -4,6 +4,7 @@ namespace WP_Rocket\Engine\CDN\RocketCDN;
 use WP_Rocket\Abstract_Render;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\License\API\UserClient;
+use WP_Rocket\Engine\Tracking\Tracking;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
@@ -34,19 +35,28 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	private $user_client;
 
 	/**
+	 * Tracking instance
+	 *
+	 * @var Tracking
+	 */
+	private $tracking;
+
+	/**
 	 * Constructor
 	 *
 	 * @param APIClient  $api_client    RocketCDN API Client instance.
 	 * @param Beacon     $beacon        Beacon instance.
 	 * @param UserClient $user_client   UserClient instance.
+	 * @param Tracking   $tracking      Tracking instance.
 	 * @param string     $template_path Path to the templates.
 	 */
-	public function __construct( APIClient $api_client, Beacon $beacon, UserClient $user_client, $template_path ) {
+	public function __construct( APIClient $api_client, Beacon $beacon, UserClient $user_client, Tracking $tracking, $template_path ) {
 		parent::__construct( $template_path );
 
 		$this->api_client  = $api_client;
 		$this->beacon      = $beacon;
 		$this->user_client = $user_client;
+		$this->tracking    = $tracking;
 	}
 
 	/**
@@ -465,6 +475,9 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 			return;
 		}
 
+		// Track banner view.
+		$this->tracking->track_rocketcdn_activation_failed_banner_viewed();
+
 		$message = sprintf(
 			'<strong>%1$s</strong><br>%2$s<br><br>%3$s',
 			esc_html__( 'RocketCDN activation incomplete', 'rocket' ),
@@ -478,7 +491,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 				'message' => $message,
 				'id'      => 'rocketcdn_activation_failed_notice',
 				'action'  => sprintf(
-					'<a href="%1$s" target="_blank" rel="noopener" class="wpr-button">%2$s</a>',
+					'<a href="%1$s" target="_blank" rel="noopener" class="wpr-button" id="wpr-rocketcdn-activation-cta">%2$s</a>',
 					esc_url( $express_checkout_url ),
 					esc_html__( 'Complete activation', 'rocket' )
 				),
