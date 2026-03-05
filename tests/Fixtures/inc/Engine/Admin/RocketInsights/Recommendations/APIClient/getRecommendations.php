@@ -28,6 +28,10 @@ return [
 						'global_score' => 65,
 						'language'     => 'en',
 						'limit'        => 5,
+						'credentials'   => [
+							'wpr_email' => 'test@example.org',
+							'wpr_key'  => 'xxxxxx',
+						],
 					],
 					'timeout' => 15,
 				],
@@ -54,7 +58,14 @@ return [
 				'custom_args'  => [],
 				'api_url'      => '',
 				'request_uri'  => '',
-				'request_args' => [],
+				'request_args' => [
+					'body' => [
+						'credentials'   => [
+							'wpr_email' => 'test@example.org',
+							'wpr_key'  => 'xxxxxx',
+						],
+					],
+				],
 				'response'     => null,
 				'is_wp_error'  => false,
 			],
@@ -76,6 +87,10 @@ return [
 					'method'  => 'GET',
 					'body'    => [
 						'email' => 'user@example.com',
+						'credentials'   => [
+							'wpr_email' => 'test@example.org',
+							'wpr_key'  => 'xxxxxx',
+						],
 					],
 					'timeout' => 15,
 				],
@@ -106,6 +121,10 @@ return [
 					'method'  => 'GET',
 					'body'    => [
 						'email' => 'user@example.com',
+						'credentials'   => [
+							'wpr_email' => 'test@example.org',
+							'wpr_key'  => 'xxxxxx',
+						],
 					],
 					'timeout' => 15,
 				],
@@ -136,6 +155,10 @@ return [
 					'method'  => 'GET',
 					'body'    => [
 						'email' => 'user@example.com',
+						'credentials'   => [
+							'wpr_email' => 'test@example.org',
+							'wpr_key'  => 'xxxxxx',
+						],
 					],
 					'timeout' => 15,
 				],
@@ -170,6 +193,10 @@ return [
 					'body'    => [
 						'email'        => 'user@example.com',
 						'global_score' => 65,
+						'credentials'   => [
+							'wpr_email' => 'test@example.org',
+							'wpr_key'  => 'xxxxxx',
+						],
 					],
 					'timeout' => 15,
 				],
