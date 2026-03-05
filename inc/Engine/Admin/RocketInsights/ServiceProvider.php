@@ -5,8 +5,7 @@ namespace WP_Rocket\Engine\Admin\RocketInsights;
 
 use WP_Rocket\Dependencies\League\Container\Argument\Literal\StringArgument;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
-use WP_Rocket\Engine\Admin\RocketInsights\{
-	Database\Tables\RocketInsights as RITable,
+use WP_Rocket\Engine\Admin\RocketInsights\{Database\Tables\RocketInsights as RITable,
 	Database\Queries\RocketInsights as RIQuery,
 	APIHandler\APIClient as RIAPIClient,
 	Context\Context,
@@ -17,12 +16,12 @@ use WP_Rocket\Engine\Admin\RocketInsights\{
 	Managers\Plan,
 	Queue\Queue as RIQueue,
 	Recommendations\APIClient as RecommendationsAPIClient,
+	Recommendations\DataManager,
 	URLLimit\Subscriber as URLLimitSubscriber,
 	Settings\Controller as SettingsController,
 	Settings\Subscriber as SettingsSubscriber,
 	PostListing\Subscriber as PostListingSubscriber,
-	GlobalMetrics\Subscriber as GlobalMetricsSubscriber
-};
+	GlobalMetrics\Subscriber as GlobalMetricsSubscriber};
 use WP_Rocket\Engine\Common\JobManager\Queue\Queue as JobManagerQueue;
 
 class ServiceProvider extends AbstractServiceProvider {
@@ -60,6 +59,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'ri_recommendations_api_client',
 		'ri_global_metrics_calculator',
 		'ri_global_metrics_subscriber',
+		'ri_recommendations_data_manager',
 	];
 
 	/**
@@ -195,6 +195,16 @@ class ServiceProvider extends AbstractServiceProvider {
 		// Recommendations API Client.
 		$this->getContainer()->add( 'ri_recommendations_api_client', RecommendationsAPIClient::class )
 			->addArgument( 'options' );
+
+		// Recommendations Data Manager.
+		$this->getContainer()->add( 'ri_recommendations_data_manager', DataManager::class )
+			->addArguments(
+				[
+					'ri_recommendations_api_client',
+					'options',
+					'ri_global_score',
+				]
+			);
 
 		// Subscriber.
 		$this->getContainer()->addShared( 'ri_subscriber', Subscriber::class )
