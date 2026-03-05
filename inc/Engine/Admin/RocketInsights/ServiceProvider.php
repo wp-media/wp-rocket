@@ -16,6 +16,7 @@ use WP_Rocket\Engine\Admin\RocketInsights\{
 	Jobs\Manager as RIManager,
 	Managers\Plan,
 	Queue\Queue as RIQueue,
+	Recommendations\APIClient as RecommendationsAPIClient,
 	URLLimit\Subscriber as URLLimitSubscriber,
 	Settings\Controller as SettingsController,
 	Settings\Subscriber as SettingsSubscriber,
@@ -56,6 +57,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'ri_post_listing_subscriber',
 		'ri_metric_formatter',
 		'job_manager_queue',
+		'ri_recommendations_api_client',
 		'ri_global_metrics_calculator',
 		'ri_global_metrics_subscriber',
 	];
@@ -189,6 +191,11 @@ class ServiceProvider extends AbstractServiceProvider {
 					'job_manager_queue',
 				]
 			);
+
+		// Recommendations API Client.
+		$this->getContainer()->add( 'ri_recommendations_api_client', RecommendationsAPIClient::class )
+			->addArgument( 'options' );
+
 		// Subscriber.
 		$this->getContainer()->addShared( 'ri_subscriber', Subscriber::class )
 			->addArguments(
