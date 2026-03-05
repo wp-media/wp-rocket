@@ -77,7 +77,7 @@ class DataManager implements LoggerAwareInterface {
 			return false;
 		}
 
-		// Validate structure
+		// Validate structure.
 		if ( ! isset( $data['status'] ) || ! isset( $data['timestamp'] ) ) {
 			$this->logger::warning( 'Recommendations: Invalid cached data structure, clearing cache' );
 			$this->clear_recommendations();
@@ -101,53 +101,48 @@ class DataManager implements LoggerAwareInterface {
 	 * @return bool True on success, false on failure.
 	 */
 	public function fetch_recommendations(): bool {
-		// Set loading status immediately
+		// Set loading status immediately.
 		$this->set_loading_status();
 
 		$this->logger::debug( 'Recommendations: Starting fetch from API' );
 
-		// Get average metrics from global score data
+		// Get average metrics from global score data.
 		$average_metrics = $this->get_average_metrics();
 
-		// Get enabled WP Rocket options
+		// Get enabled WP Rocket options.
 		$enabled_options = $this->get_enabled_options();
 
-		// Build API parameters
+		// Build API parameters.
 		$params = [
 			'email'           => $this->options->get( 'consumer_email', '' ),
 			'language'        => $this->get_language(),
-			'limit'           => 20, // Get all recommendations
+			'limit'           => 20, // Get all recommendations.
 			'version'         => rocket_get_constant( 'WP_ROCKET_VERSION' ),
 			'enabled_options' => implode( ',', $enabled_options ),
 		];
 
-		// Add metrics if available
 		if ( ! empty( $average_metrics ) ) {
-			if ( isset( $average_metrics['lcp'] ) ) {
-				$params['lcp'] = $average_metrics['lcp'];
-			}
-			if ( isset( $average_metrics['ttfb'] ) ) {
-				$params['ttfb'] = $average_metrics['ttfb'];
-			}
-			if ( isset( $average_metrics['cls'] ) ) {
-				$params['cls'] = $average_metrics['cls'];
-			}
-			if ( isset( $average_metrics['tbt'] ) ) {
-				$params['tbt'] = $average_metrics['tbt'];
-			}
+			$params = array_merge( $params, $average_metrics );
 		}
 
-		// Add global score if available
+		// Add global score if available.
 		$global_score_data = $this->global_score->get_global_score_data();
 		if ( ! empty( $global_score_data['score'] ) ) {
 			$params['global_score'] = $global_score_data['score'];
 		}
 
-		// Call API
+		/**
+		 * Filters the parameters sent to the Recommendations API.
+		 *
+		 * @param array $params API parameters.
+		 */
+		$params = wpm_apply_filters_typed( 'array', 'rocket_insights_api_recommendations_params', $params );
+
+		// Call API.
 		$response = $this->api_client->get_recommendations( $params );
 
-		// Handle error response
-		if ( isset( $response['message'] ) && ! isset( $response['data'] ) ) {
+		// Handle error response.
+		if ( is_wp_error( $response ) ) {
 			$this->logger::error(
 				'Recommendations: API request failed',
 				$response
@@ -159,14 +154,14 @@ class DataManager implements LoggerAwareInterface {
 					'recommendations' => [],
 					'metadata'        => [],
 					'timestamp'       => time(),
-					'error'           => $response['message'],
+					'error'           => $response->get_error_message(),
 				]
 			);
 
 			return false;
 		}
 
-		// Handle success response
+		// Handle success response.
 		if ( isset( $response['code'] ) && 200 === $response['code'] && isset( $response['data'] ) ) {
 			$this->logger::info(
 				'Recommendations: Successfully fetched from API',
@@ -187,7 +182,7 @@ class DataManager implements LoggerAwareInterface {
 			return true;
 		}
 
-		// Unexpected response format
+		// Unexpected response format.
 		$this->logger::error(
 			'Recommendations: Unexpected API response format',
 			[ 'response' => $response ]
@@ -225,11 +220,11 @@ class DataManager implements LoggerAwareInterface {
 	public function get_status(): string {
 		$data = $this->get_recommendations();
 
-		if ( false === $data ) {
+		if ( false === $data || empty( $data['status'] ) ) {
 			return 'pending';
 		}
 
-		return $data['status'] ?? 'pending';
+		return $data['status'];
 	}
 
 	/**
@@ -293,35 +288,35 @@ class DataManager implements LoggerAwareInterface {
 	private function get_enabled_options(): array {
 		$enabled = [];
 
-		// Map of WP Rocket option keys to recommendation option slugs
+		// Map of WP Rocket option keys to recommendation option slugs.
 		$option_map = [
-			'minify_css'               => 'minify_css',
-			'minify_js'                => 'minify_js',
-			'minify_concatenate_css'   => 'combine_css',
-			'minify_concatenate_js'    => 'combine_js',
-			'defer_all_js'             => 'defer_js',
-			'delay_js'                 => 'delay_js',
-			'async_css'                => 'async_css',
-			'critical_css'             => 'critical_css',
-			'remove_unused_css'        => 'remove_unused_css',
-			'lazyload'                 => 'lazyload_images',
-			'lazyload_iframes'         => 'lazyload_iframes',
-			'lazyload_youtube'         => 'lazyload_youtube',
-			'image_dimensions'         => 'add_missing_image_dimensions',
-			'cdn'                      => 'cdn',
-			'do_caching_mobile_files'  => 'separate_cache_mobile',
-			'cache_logged_user'        => 'cache_logged_in_users',
-			'cache_webp'               => 'cache_webp',
-			'manual_preload'           => 'preload',
-			'sitemap_preload'          => 'sitemap_preload',
-			'control_heartbeat'        => 'control_heartbeat',
-			'minify_google_fonts'      => 'optimize_google_fonts',
+			'minify_css'              => 'minify_css',
+			'minify_js'               => 'minify_js',
+			'minify_concatenate_css'  => 'combine_css',
+			'minify_concatenate_js'   => 'combine_js',
+			'defer_all_js'            => 'defer_js',
+			'delay_js'                => 'delay_js',
+			'async_css'               => 'async_css',
+			'critical_css'            => 'critical_css',
+			'remove_unused_css'       => 'remove_unused_css',
+			'lazyload'                => 'lazyload_images',
+			'lazyload_iframes'        => 'lazyload_iframes',
+			'lazyload_youtube'        => 'lazyload_youtube',
+			'image_dimensions'        => 'add_missing_image_dimensions',
+			'cdn'                     => 'cdn',
+			'do_caching_mobile_files' => 'separate_cache_mobile',
+			'cache_logged_user'       => 'cache_logged_in_users',
+			'cache_webp'              => 'cache_webp',
+			'manual_preload'          => 'preload',
+			'sitemap_preload'         => 'sitemap_preload',
+			'control_heartbeat'       => 'control_heartbeat',
+			'minify_google_fonts'     => 'optimize_google_fonts',
 		];
 
 		foreach ( $option_map as $option_key => $option_slug ) {
 			$value = $this->options->get( $option_key, false );
 
-			// Check if option is enabled
+			// Check if option is enabled.
 			if ( $this->is_option_enabled( $option_key, $value ) ) {
 				$enabled[] = $option_slug;
 			}
@@ -343,7 +338,7 @@ class DataManager implements LoggerAwareInterface {
 	 * @return bool True if enabled, false otherwise.
 	 */
 	private function is_option_enabled( string $option_key, $value ): bool {
-		// Boolean options
+		// Boolean options.
 		return ! empty( $value ) && 1 === (int) $value;
 	}
 
@@ -353,10 +348,10 @@ class DataManager implements LoggerAwareInterface {
 	 * @return string ISO language code (e.g., 'en', 'fr').
 	 */
 	private function get_language(): string {
-		// Get WordPress locale (e.g., 'en_US', 'fr_FR')
+		// Get WordPress locale (e.g., 'en_US', 'fr_FR').
 		$locale = get_locale();
 
-		// Extract language code (first 2 characters)
+		// Extract language code (first 2 characters).
 		$language = substr( $locale, 0, 2 );
 
 		return $language;

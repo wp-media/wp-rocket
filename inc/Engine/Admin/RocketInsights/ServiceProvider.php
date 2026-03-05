@@ -195,7 +195,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'ri_recommendations_api_client', RecommendationsAPIClient::class )
 			->addArgument( 'options' );
 
-		// Recommendations Data Manager
+		// Recommendations Data Manager.
 		$this->getContainer()->add( 'recommendations_data_manager', DataManager::class )
 			->addArguments(
 				[
