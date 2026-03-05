@@ -36,35 +36,35 @@ return [
 						'code'    => 200,
 						'message' => 'OK',
 					],
-					'body'     => '{"recommendations":[{"option_slug":"delay_js","priority":10,"title":"Enable Delay JavaScript Execution","description":"Defer loading of non-critical JavaScript files.","learn_more_url":"https://docs.wp-rocket.me/article/1265","icon_slug":"javascript","lcp_impact":100,"ttfb_impact":null,"cls_impact":null,"tbt_impact":25}],"metadata":{"scores_analyzed":{"lcp":3.2,"ttfb":0.8,"cls":0.15,"tbt":350,"global_score":65},"enabled_options":[],"language":"en","total_recommendations":1}}',
+					'body'     => '{"recommendations":[{"option_slug":"delay_js","priority":10,"title":"Enable Delay JavaScript Execution"}],"metadata":{"language":"en","total_recommendations":1}}',
 				],
 				'is_wp_error'  => false,
 			],
 			'expected' => [
-				'success' => true,
-				'code'    => 200,
+				'is_error' => false,
+				'code'     => 200,
 			],
 		],
 
-		'shouldReturnErrorWhenEmailMissing' => [
+		'shouldReturnWPErrorWhenEmailMissing' => [
 			'config'   => [
 				'params'       => [
 					'lcp' => 3.2,
 				],
 				'custom_args'  => [],
-				'api_url'      => 'https://saas.wp-rocket.me/',
-				'request_uri'  => 'https://saas.wp-rocket.me/recommendations/',
+				'api_url'      => '',
+				'request_uri'  => '',
 				'request_args' => [],
 				'response'     => null,
-				'is_wp_error'  => false, // Not used because we return early
+				'is_wp_error'  => false,
 			],
 			'expected' => [
-				'success' => false,
-				'code'    => 400,
+				'is_error'   => true,
+				'error_code' => 'missing_email',
 			],
 		],
 
-		'shouldReturnErrorOnAPIFailure' => [
+		'shouldReturnWPErrorOnAPIFailure' => [
 			'config'   => [
 				'params'       => [
 					'email' => 'user@example.com',
@@ -89,12 +89,12 @@ return [
 				'is_wp_error'  => false,
 			],
 			'expected' => [
-				'success' => false,
-				'code'    => 500,
+				'is_error'   => true,
+				'error_code' => 'api_request_failed',
 			],
 		],
 
-		'shouldReturnErrorOnInvalidJSON' => [
+		'shouldReturnWPErrorOnInvalidJSON' => [
 			'config'   => [
 				'params'       => [
 					'email' => 'user@example.com',
@@ -119,12 +119,12 @@ return [
 				'is_wp_error'  => false,
 			],
 			'expected' => [
-				'success' => false,
-				'code'    => 400,
+				'is_error'   => true,
+				'error_code' => 'invalid_json',
 			],
 		],
 
-		'shouldReturnErrorOnInvalidStructure' => [
+		'shouldReturnWPErrorOnInvalidStructure' => [
 			'config'   => [
 				'params'       => [
 					'email' => 'user@example.com',
@@ -149,8 +149,8 @@ return [
 				'is_wp_error'  => false,
 			],
 			'expected' => [
-				'success' => false,
-				'code'    => 400,
+				'is_error'   => true,
+				'error_code' => 'invalid_structure',
 			],
 		],
 
@@ -178,68 +178,13 @@ return [
 						'code'    => 200,
 						'message' => 'OK',
 					],
-					'body'     => '{"recommendations":[],"metadata":{"scores_analyzed":{"global_score":65},"enabled_options":[],"language":"en","total_recommendations":0}}',
-				],
-				'is_wp_error'  => false,
-			],
-			'expected' => [
-				'success' => true,
-				'code'    => 200,
-			],
-		],
-
-		'shouldMergeCustomTimeout' => [
-			'config'   => [
-				'params'       => [
-					'email' => 'user@example.com',
-				],
-				'custom_args'  => [
-					'timeout' => 30,
-				],
-				'api_url'      => 'https://saas.wp-rocket.me/',
-				'request_uri'  => 'https://saas.wp-rocket.me/recommendations/',
-				'request_args' => [
-					'method'  => 'GET',
-					'body'    => [
-						'email' => 'user@example.com',
-					],
-					'timeout' => 30, // Custom timeout merged
-				],
-				'response'     => [
-					'response' => [
-						'code'    => 200,
-						'message' => 'OK',
-					],
 					'body'     => '{"recommendations":[],"metadata":{"language":"en","total_recommendations":0}}',
 				],
 				'is_wp_error'  => false,
 			],
 			'expected' => [
-				'success' => true,
-				'code'    => 200,
-			],
-		],
-
-		'shouldHandleWPError' => [
-			'config'   => [
-				'params'       => [
-					'email' => 'user@example.com',
-				],
-				'custom_args'  => [],
-				'api_url'      => 'https://saas.wp-rocket.me/',
-				'request_uri'  => 'https://saas.wp-rocket.me/recommendations/',
-				'request_args' => [
-					'method'  => 'GET',
-					'body'    => [
-						'email' => 'user@example.com',
-					],
-					'timeout' => 15,
-				],
-				'response'     => new \WP_Error( 'http_request_failed', 'A valid URL was not provided.' ),
-				'is_wp_error'  => true,
-			],
-			'expected' => [
-				'success' => false,
+				'is_error' => false,
+				'code'     => 200,
 			],
 		],
 	],

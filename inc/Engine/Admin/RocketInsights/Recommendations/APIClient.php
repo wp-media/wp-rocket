@@ -50,7 +50,10 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 				'Recommendations API: Missing required email parameter'
 			);
 
-			return new WP_Error( 400, 'Email parameter is required for recommendations API.' );
+			return new WP_Error(
+				'missing_email',
+				'Email parameter is required for recommendations API.'
+			);
 		}
 
 		// Build query parameters (remove null/empty values).
@@ -84,7 +87,11 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 				]
 			);
 
-			return new WP_Error( $this->response_code, $this->error_message );
+			return new WP_Error(
+				'api_request_failed',
+				$this->error_message,
+				[ 'status' => $this->response_code ]
+			);
 		}
 
 		// Decode JSON response.
@@ -93,7 +100,10 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 		// Check for JSON decode error.
 		if ( JSON_ERROR_NONE !== json_last_error() || null === $response_data ) {
 			$this->logger::error( 'Recommendations API: Invalid JSON response' );
-			return new WP_Error( 400, 'Invalid API response - malformed JSON' );
+			return new WP_Error(
+				'invalid_json',
+				'Invalid API response - malformed JSON'
+			);
 		}
 
 		// Validate response structure.
@@ -103,7 +113,10 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 				[ 'response' => $response_data ]
 			);
 
-			return new WP_Error( 400, 'Invalid API response structure' );
+			return new WP_Error(
+				'invalid_structure',
+				'Invalid API response structure'
+			);
 		}
 
 		$this->logger::info(

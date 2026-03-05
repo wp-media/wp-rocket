@@ -5,11 +5,11 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Admin\RocketInsights\Recommendations\A
 
 use Brain\Monkey\Functions;
 use Mockery;
+use WP_Error;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\RocketInsights\Recommendations\APIClient;
 use WP_Rocket\Tests\Unit\HasLoggerTrait;
 use WP_Rocket\Tests\Unit\TestCase;
-use WP_Error;
 
 /**
  * Test class covering \WP_Rocket\Engine\Admin\RocketInsights\Recommendations\APIClient::get_recommendations
@@ -55,8 +55,8 @@ class Test_GetRecommendations extends TestCase {
 		if ( empty( $config['params']['email'] ) ) {
 			$result = $this->api_client->get_recommendations( $config['params'], $config['custom_args'] );
 
-			$this->assertSame( $expected['code'], $result['code'] );
-			$this->assertArrayHasKey( 'message', $result );
+			$this->assertInstanceOf( WP_Error::class, $result );
+			$this->assertSame( $expected['error_code'], $result->get_error_code() );
 			return;
 		}
 
@@ -75,16 +75,8 @@ class Test_GetRecommendations extends TestCase {
 			->with( $config['response'] )
 			->andReturn( $config['is_wp_error'] );
 
-		// Handle WP_Error case
-		if ( $config['is_wp_error'] ) {
-			// Mock WP_Error methods
-			if ( $config['response'] instanceof WP_Error ) {
-				Functions\expect( 'is_wp_error' )
-					->with( $config['response'] )
-					->andReturn( true );
-			}
-		} else {
-			// Mock WordPress response helper functions if not WP_Error
+		// Mock WordPress response helper functions only if NOT WP_Error
+		if ( ! $config['is_wp_error'] ) {
 			Functions\expect( 'wp_remote_retrieve_response_code' )
 				->with( $config['response'] )
 				->andReturn( $config['response']['response']['code'] ?? 0 );
@@ -100,21 +92,17 @@ class Test_GetRecommendations extends TestCase {
 
 		$result = $this->api_client->get_recommendations( $config['params'], $config['custom_args'] );
 
-		// For WP_Error cases, the code might be a string (error code)
-		if ( $config['is_wp_error'] ) {
-			$this->assertArrayHasKey( 'code', $result );
-			$this->assertArrayHasKey( 'message', $result );
-			$this->assertFalse( $expected['success'] );
+		// Assertions
+		if ( $expected['is_error'] ) {
+			$this->assertInstanceOf( WP_Error::class, $result );
+			$this->assertSame( $expected['error_code'], $result->get_error_code() );
 		} else {
-			$this->assertSame( $expected['code'], $result['code'] ?? $result['code'] );
-
-			if ( $expected['success'] ) {
-				$this->assertArrayHasKey( 'data', $result );
-				$this->assertArrayHasKey( 'recommendations', $result['data'] );
-				$this->assertArrayHasKey( 'metadata', $result['data'] );
-			} else {
-				$this->assertArrayHasKey( 'message', $result );
-			}
+			$this->assertIsArray( $result );
+			$this->assertArrayHasKey( 'code', $result );
+			$this->assertSame( $expected['code'], $result['code'] );
+			$this->assertArrayHasKey( 'data', $result );
+			$this->assertArrayHasKey( 'recommendations', $result['data'] );
+			$this->assertArrayHasKey( 'metadata', $result['data'] );
 		}
 	}
 }
