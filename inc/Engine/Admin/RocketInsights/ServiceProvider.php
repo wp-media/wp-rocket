@@ -59,6 +59,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'ri_recommendations_api_client',
 		'ri_global_metrics_calculator',
 		'ri_global_metrics_subscriber',
+		'ri_recommendations_data_manager',
 	];
 
 	/**
@@ -196,10 +197,10 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( 'options' );
 
 		// Recommendations Data Manager.
-		$this->getContainer()->add( 'recommendations_data_manager', DataManager::class )
+		$this->getContainer()->add( 'ri_recommendations_data_manager', DataManager::class )
 			->addArguments(
 				[
-					'recommendations_api_client',
+					'ri_recommendations_api_client',
 					'options',
 					'ri_global_score',
 				]
