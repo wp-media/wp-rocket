@@ -105,11 +105,23 @@ class Test_FetchRecommendations extends TestCase {
 			)
 			->andReturn( $config['api_response'] );
 
-		// Mock transient functions.
+		// Mock set_transient - verify it's called with correct status but don't check timestamp.
 		Functions\expect( 'set_transient' )
+			->with(
+				'wpr_ri_recommendations',
+				Mockery::on(
+					function ( $data ) use ( $expected ) {
+						if ( ! isset( $data['status'] ) ) {
+							return false;
+						}
+						// Verify status matches expected final status.
+						return in_array( $data['status'], [ 'loading', $expected['final_status'] ], true );
+					}
+				),
+				86400 // DAY_IN_SECONDS
+			)
 			->times( $config['transient_set_times'] );
 
-		Functions\expect( 'time' )->andReturn( 1234567890 );
 		Functions\expect( 'delete_transient' )->zeroOrMoreTimes();
 
 		$result = $this->data_manager->fetch_recommendations();

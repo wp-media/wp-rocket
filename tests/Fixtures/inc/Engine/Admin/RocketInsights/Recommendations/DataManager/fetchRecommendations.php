@@ -40,7 +40,8 @@ return [
 				'transient_set_times' => 2, // loading + completed
 			],
 			'expected' => [
-				'result' => true,
+				'result'       => true,
+				'final_status' => 'completed',
 			],
 		],
 
@@ -61,7 +62,8 @@ return [
 				'transient_set_times' => 2, // loading + failed
 			],
 			'expected' => [
-				'result' => false,
+				'result'       => false,
+				'final_status' => 'failed',
 			],
 		],
 
@@ -84,7 +86,40 @@ return [
 				'transient_set_times' => 2, // loading + failed
 			],
 			'expected' => [
-				'result' => false,
+				'result'       => false,
+				'final_status' => 'failed',
+			],
+		],
+
+		'shouldHandleNoAverageMetrics' => [
+			'config'   => [
+				'version'             => '3.20.5',
+				'locale'              => 'fr_FR',
+				'options'             => [
+					'consumer_email' => 'user@example.com',
+				],
+				'global_score_data'   => [
+					'score' => 80,
+					// No average_metrics
+				],
+				'expected_params'     => [
+					'email' => 'user@example.com',
+				],
+				'api_response'        => [
+					'code' => 200,
+					'data' => [
+						'recommendations' => [],
+						'metadata'        => [
+							'language'              => 'fr',
+							'total_recommendations' => 0,
+						],
+					],
+				],
+				'transient_set_times' => 2, // loading + completed
+			],
+			'expected' => [
+				'result'       => true,
+				'final_status' => 'completed',
 			],
 		],
 	],

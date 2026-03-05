@@ -52,7 +52,7 @@ class Test_GetStatus extends TestCase {
 			->andReturn( $config['transient_data'] );
 
 		// Mock delete_transient if needed for invalid structure
-		if ( isset( $config['transient_data']['status'] ) && empty( $config['transient_data']['timestamp'] ) ) {
+		if ( false !== $config['transient_data'] && ( ! isset( $config['transient_data']['status'] ) || ! isset( $config['transient_data']['timestamp'] ) ) ) {
 			Functions\expect( 'delete_transient' )
 				->with( 'wpr_ri_recommendations' )
 				->once();

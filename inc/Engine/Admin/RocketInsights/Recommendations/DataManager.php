@@ -145,7 +145,11 @@ class DataManager implements LoggerAwareInterface {
 		if ( is_wp_error( $response ) ) {
 			$this->logger::error(
 				'Recommendations: API request failed',
-				$response
+				[
+					'code'    => $response->get_error_code(),
+					'message' => $response->get_error_message(),
+					'params'  => $params,
+				]
 			);
 
 			$this->save_recommendations(
