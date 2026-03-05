@@ -67,16 +67,16 @@ class Test_FetchRecommendations extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnAsExpected( $config, $expected ) {
-		// Mock constants
+		// Mock constants.
 		Functions\expect( 'rocket_get_constant' )
 			->with( 'WP_ROCKET_VERSION' )
 			->andReturn( $config['version'] );
 
-		// Mock get_locale
+		// Mock get_locale.
 		Functions\expect( 'get_locale' )
 			->andReturn( $config['locale'] );
 
-		// Mock Options_Data::get
+		// Mock Options_Data::get.
 		$this->options->shouldReceive( 'get' )
 			->andReturnUsing(
 				function ( $key, $default ) use ( $config ) {
@@ -84,24 +84,32 @@ class Test_FetchRecommendations extends TestCase {
 				}
 			);
 
-		// Mock GlobalScore::get_global_score_data
+		// Mock GlobalScore::get_global_score_data.
 		$this->global_score->shouldReceive( 'get_global_score_data' )
 			->andReturn( $config['global_score_data'] );
 
-		// Mock API Client response
+		// Mock is_wp_error.
+		Functions\expect( 'is_wp_error' )
+			->with( $config['api_response'] )
+			->andReturn( $config['api_response'] instanceof \WP_Error );
+
+		// Mock API Client response.
 		$this->api_client->shouldReceive( 'get_recommendations' )
 			->once()
-			->with( Mockery::on(
-				function ( $params ) use ( $config ) {
-					return $params['email'] === $config['expected_params']['email'];
-				}
-			) )
+			->with(
+				Mockery::on(
+					function ( $params ) use ( $config ) {
+						return $params['email'] === $config['expected_params']['email'];
+					}
+				)
+			)
 			->andReturn( $config['api_response'] );
 
-		// Mock transient functions
+		// Mock transient functions.
 		Functions\expect( 'set_transient' )
 			->times( $config['transient_set_times'] );
 
+		Functions\expect( 'time' )->andReturn( 1234567890 );
 		Functions\expect( 'delete_transient' )->zeroOrMoreTimes();
 
 		$result = $this->data_manager->fetch_recommendations();
