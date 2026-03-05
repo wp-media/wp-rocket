@@ -126,15 +126,20 @@ class DataManager implements LoggerAwareInterface {
 		}
 
 		// Add global score if available.
-		$global_score_data = $this->global_score->get_global_score_data();
-		if ( ! empty( $global_score_data['score'] ) ) {
-			$params['global_score'] = $global_score_data['score'];
+		$global_score = $average_metrics['global_score'] ?? null;
+		if ( empty( $global_score ) ) {
+			$global_score_data = $this->global_score->get_global_score_data();
+			$global_score      = $global_score_data['score'] ?? null;
+		}
+		if ( ! empty( $global_score ) ) {
+			$params['global_score'] = $global_score;
 		}
 
 		/**
 		 * Filters the parameters sent to the Recommendations API.
 		 *
 		 * @param array $params API parameters.
+		 * @return array Modified API parameters.
 		 */
 		$params = wpm_apply_filters_typed( 'array', 'rocket_insights_api_recommendations_params', $params );
 
