@@ -6,6 +6,7 @@ namespace WP_Rocket\Engine\Admin\RocketInsights\Recommendations;
 use WP_Rocket\Engine\Common\JobManager\APIHandler\AbstractAPIClient;
 use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
+use WP_Error;
 
 /**
  * Recommendations API Client.
@@ -40,22 +41,16 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 	 *     @type string|null $version         WP Rocket version (e.g., "3.20.4").
 	 * }
 	 * @param array $args Additional request arguments (timeout, headers, etc.).
-	 * @return array|\WP_Error Response data or error array.
+	 * @return array|WP_Error Response data or error array.
 	 */
 	public function get_recommendations( array $params, array $args = [] ) {
 		// Validate required parameter.
 		if ( empty( $params['email'] ) ) {
-			$error_data = [
-				'code'    => 400,
-				'message' => 'Email parameter is required for recommendations API.',
-			];
-
 			$this->logger::error(
-				'Recommendations API: Missing required email parameter',
-				$error_data
+				'Recommendations API: Missing required email parameter'
 			);
 
-			return $error_data;
+			return new WP_Error( 400, 'Email parameter is required for recommendations API.' );
 		}
 
 		// Build query parameters (remove null/empty values).
@@ -81,50 +76,34 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 		$sent = $this->handle_get( $args );
 
 		if ( ! $sent ) {
-			$error_data = [
-				'code'    => $this->response_code,
-				'message' => $this->error_message,
-			];
-
 			$this->logger::error(
 				'Recommendations API: Request failed',
-				$error_data
+				[
+					'code'    => $this->response_code,
+					'message' => $this->error_message,
+				]
 			);
 
-			return $error_data;
+			return new WP_Error( $this->response_code, $this->error_message );
 		}
 
 		// Decode JSON response.
 		$response_data = json_decode( $this->response_body, true );
 
 		// Check for JSON decode error.
-		if ( ! $response_data ) {
-			$error_data = [
-				'code'    => 400,
-				'message' => 'Invalid API response - malformed JSON',
-			];
-
-			$this->logger::error(
-				'Recommendations API: Invalid JSON response',
-				$error_data
-			);
-
-			return $error_data;
+		if ( JSON_ERROR_NONE !== json_last_error() || null === $response_data ) {
+			$this->logger::error( 'Recommendations API: Invalid JSON response' );
+			return new WP_Error( 400, 'Invalid API response - malformed JSON' );
 		}
 
 		// Validate response structure.
 		if ( ! $this->validate_response( $response_data ) ) {
-			$error_data = [
-				'code'    => 400,
-				'message' => 'Invalid API response structure',
-			];
-
 			$this->logger::error(
 				'Recommendations API: Invalid response structure',
-				array_merge( $error_data, [ 'response' => $response_data ] )
+				[ 'response' => $response_data ]
 			);
 
-			return $error_data;
+			return new WP_Error( 400, 'Invalid API response structure' );
 		}
 
 		$this->logger::info(
