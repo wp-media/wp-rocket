@@ -660,12 +660,12 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @param bool $enabled Whether Rocket Insights is enabled.
 	 * @return bool
 	 */
-	public function maybe_disable_for_reseller_or_non_live( bool $enabled ): bool {
+	public function maybe_disable_for_reseller_or_non_live( $enabled ) {
 		if ( ! $enabled ) {
 			return $enabled;
 		}
 
-		return ! rocket_is_live_site();
+		return rocket_is_live_site();
 	}
 
 	/**
