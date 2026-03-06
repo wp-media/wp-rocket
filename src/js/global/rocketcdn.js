@@ -1,4 +1,5 @@
-/*eslint-env es6*/
+/*eslint-env es6, browser*/
+/* global MicroModal, mixpanel, rocket_mixpanel_data, rocket_ajax_data, ajaxurl */
 ( ( document, window ) => {
 	'use strict';
 
@@ -6,7 +7,8 @@
 		document.querySelectorAll( '.wpr-rocketcdn-open' ).forEach( ( el ) => {
 			el.addEventListener( 'click', ( e ) => {
 				e.preventDefault();
-				checkButtonUrlAndOpen();
+				const isCTA = el.classList.contains( 'wpr-rocketcdn-pricing--cta' );
+				checkButtonUrlAndOpen( isCTA );
 			} );
 		} );
 
@@ -86,14 +88,6 @@
 			return postData;
 		}
 
-		// Track RocketCDN upsell CTA click
-		const upsellCTA = document.querySelector('.wpr-rocketcdn-pricing--cta');
-		if (upsellCTA) {
-			upsellCTA.addEventListener('click', () => {
-				trackRocketCDNUpsellCTAClicked();
-			});
-		}
-
 		// Display the correct prices on page based on billing cycle toggle state.
 		inputToggle.addEventListener('change', function() {
 			const isYearly = this.checked;
@@ -128,11 +122,18 @@
 		validateTokenAndCNAME( e.data );
 	};
 
-	function checkButtonUrlAndOpen() {
+	function checkButtonUrlAndOpen( isCTA ) {
+		// Track CTA click if this is the pricing CTA button.
+		if ( isCTA ) {
+			trackRocketCDNUpsellCTAClicked();
+		}
+
 		// Check if button URL was injected by PHP
 		if ( window.rocketcdnButtonUrl && window.rocketcdnButtonUrl !== '' ) {
-			// Navigate to button URL in same tab
-			window.location.href = window.rocketcdnButtonUrl;
+			// Small delay to ensure Mixpanel event is sent before navigation
+			setTimeout( function() {
+				window.location.href = window.rocketcdnButtonUrl;
+			}, 100 );
 		} else {
 			// Show iframe modal as usual
 			MicroModal.show( 'wpr-rocketcdn-modal' );
@@ -365,54 +366,56 @@
 	}
 
 	/**
-	 * Tracks RocketCDN upsell banner view with Mixpanel.
+	 * Tracks a RocketCDN upsell event with Mixpanel.
+	 *
+	 * @param {string} eventName   The Mixpanel event name.
+	 * @param {Object} [extraProps] Optional additional properties to merge.
 	 */
-	function trackRocketCDNUpsellBannerViewed() {
-		if (typeof mixpanel === 'undefined' || !mixpanel.track) {
+	function trackRocketCDNUpsellMixpanelEvent( eventName, extraProps ) {
+		if ( typeof mixpanel === 'undefined' || ! mixpanel.track ) {
 			return;
 		}
 
-		// Check if user has opted in
-		if (typeof rocket_mixpanel_data === 'undefined' || !rocket_mixpanel_data.optin_enabled || rocket_mixpanel_data.optin_enabled === '0') {
+		// Check if user has opted in.
+		if ( typeof rocket_mixpanel_data === 'undefined' || ! rocket_mixpanel_data.optin_enabled || rocket_mixpanel_data.optin_enabled === '0' ) {
 			return;
 		}
 
-		// Identify user if available
-		if (rocket_mixpanel_data.user_id && typeof mixpanel.identify === 'function') {
-			mixpanel.identify(rocket_mixpanel_data.user_id);
+		// Identify user if available.
+		if ( rocket_mixpanel_data.user_id && typeof mixpanel.identify === 'function' ) {
+			mixpanel.identify( rocket_mixpanel_data.user_id );
 		}
 
-		mixpanel.track('RocketCDN Upsell Banner Viewed', {
+		var props = {
 			context: rocket_mixpanel_data.context,
 			plugin: rocket_mixpanel_data.plugin,
 			brand: rocket_mixpanel_data.brand,
-			application: rocket_mixpanel_data.app
-		});
+			application: rocket_mixpanel_data.app,
+			path: rocket_mixpanel_data.path
+		};
+
+		if ( extraProps && typeof extraProps === 'object' ) {
+			for ( var key in extraProps ) {
+				if ( Object.prototype.hasOwnProperty.call( extraProps, key ) ) {
+					props[ key ] = extraProps[ key ];
+				}
+			}
+		}
+
+		mixpanel.track( eventName, props );
+	}
+
+	/**
+	 * Tracks RocketCDN upsell banner view with Mixpanel.
+	 */
+	function trackRocketCDNUpsellBannerViewed() {
+		trackRocketCDNUpsellMixpanelEvent( 'RocketCDN Upsell Banner Viewed' );
 	}
 
 	/**
 	 * Tracks RocketCDN upsell CTA click with Mixpanel.
 	 */
 	function trackRocketCDNUpsellCTAClicked() {
-		if (typeof mixpanel === 'undefined' || !mixpanel.track) {
-			return;
-		}
-
-		// Check if user has opted in
-		if (typeof rocket_mixpanel_data === 'undefined' || !rocket_mixpanel_data.optin_enabled || rocket_mixpanel_data.optin_enabled === '0') {
-			return;
-		}
-
-		// Identify user if available
-		if (rocket_mixpanel_data.user_id && typeof mixpanel.identify === 'function') {
-			mixpanel.identify(rocket_mixpanel_data.user_id);
-		}
-
-		mixpanel.track('RocketCDN Upsell CTA Clicked', {
-			context: rocket_mixpanel_data.context,
-			plugin: rocket_mixpanel_data.plugin,
-			brand: rocket_mixpanel_data.brand,
-			application: rocket_mixpanel_data.app
-		});
+		trackRocketCDNUpsellMixpanelEvent( 'RocketCDN Upsell CTA Clicked' );
 	}
 } )( document, window );
