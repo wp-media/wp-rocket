@@ -58,6 +58,9 @@
 				smallCTA.classList.add( 'wpr-isHidden' );
 				bigCTA.classList.remove( 'wpr-isHidden' );
 
+				// Track upsell banner view.
+				trackRocketCDNUpsellBannerViewed();
+
 				sendHTTPRequest( getPostData( 'big' ) );
 			} );
 		}
@@ -81,6 +84,14 @@
 			postData += '&nonce=' + rocket_ajax_data.nonce;
 
 			return postData;
+		}
+
+		// Track RocketCDN upsell CTA click
+		const upsellCTA = document.querySelector('.wpr-rocketcdn-pricing--cta');
+		if (upsellCTA) {
+			upsellCTA.addEventListener('click', () => {
+				trackRocketCDNUpsellCTAClicked();
+			});
 		}
 
 		// Display the correct prices on page based on billing cycle toggle state.
@@ -351,5 +362,57 @@
 		postData += '&nonce=' + rocket_ajax_data.nonce;
 
 		const request = sendHTTPRequest( postData );
+	}
+
+	/**
+	 * Tracks RocketCDN upsell banner view with Mixpanel.
+	 */
+	function trackRocketCDNUpsellBannerViewed() {
+		if (typeof mixpanel === 'undefined' || !mixpanel.track) {
+			return;
+		}
+
+		// Check if user has opted in
+		if (typeof rocket_mixpanel_data === 'undefined' || !rocket_mixpanel_data.optin_enabled || rocket_mixpanel_data.optin_enabled === '0') {
+			return;
+		}
+
+		// Identify user if available
+		if (rocket_mixpanel_data.user_id && typeof mixpanel.identify === 'function') {
+			mixpanel.identify(rocket_mixpanel_data.user_id);
+		}
+
+		mixpanel.track('RocketCDN Upsell Banner Viewed', {
+			context: rocket_mixpanel_data.context,
+			plugin: rocket_mixpanel_data.plugin,
+			brand: rocket_mixpanel_data.brand,
+			application: rocket_mixpanel_data.app
+		});
+	}
+
+	/**
+	 * Tracks RocketCDN upsell CTA click with Mixpanel.
+	 */
+	function trackRocketCDNUpsellCTAClicked() {
+		if (typeof mixpanel === 'undefined' || !mixpanel.track) {
+			return;
+		}
+
+		// Check if user has opted in
+		if (typeof rocket_mixpanel_data === 'undefined' || !rocket_mixpanel_data.optin_enabled || rocket_mixpanel_data.optin_enabled === '0') {
+			return;
+		}
+
+		// Identify user if available
+		if (rocket_mixpanel_data.user_id && typeof mixpanel.identify === 'function') {
+			mixpanel.identify(rocket_mixpanel_data.user_id);
+		}
+
+		mixpanel.track('RocketCDN Upsell CTA Clicked', {
+			context: rocket_mixpanel_data.context,
+			plugin: rocket_mixpanel_data.plugin,
+			brand: rocket_mixpanel_data.brand,
+			application: rocket_mixpanel_data.app
+		});
 	}
 } )( document, window );
