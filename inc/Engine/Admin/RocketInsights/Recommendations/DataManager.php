@@ -185,6 +185,7 @@ class DataManager implements LoggerAwareInterface {
 					'recommendations' => $response['data']['recommendations'] ?? [],
 					'metadata'        => $response['data']['metadata'] ?? [],
 					'timestamp'       => time(),
+					'metrics_hash'    => $this->calculate_metrics_hash(),
 				]
 			);
 
@@ -237,6 +238,71 @@ class DataManager implements LoggerAwareInterface {
 	}
 
 	/**
+	 * Check if required metrics are available for recommendations.
+	 *
+	 * @return bool True if metrics exist, false otherwise.
+	 */
+	public function has_required_metrics(): bool {
+		$average_metrics = $this->get_average_metrics();
+
+		if ( null === $average_metrics ) {
+			return false;
+		}
+
+		// Verify core metrics exist.
+		$required = [ 'lcp', 'ttfb', 'cls', 'tbt' ];
+		foreach ( $required as $metric ) {
+			if ( ! isset( $average_metrics[ $metric ] ) ) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Determine if recommendations should be fetched.
+	 *
+	 * Compares current metrics hash with cached hash.
+	 *
+	 * @return bool True if should fetch, false if cache is valid.
+	 */
+	public function should_fetch_recommendations(): bool {
+		$recommendations = $this->get_recommendations();
+
+		// No cache = should fetch.
+		if ( false === $recommendations ) {
+			return true;
+		}
+
+		// Calculate current hash.
+		$current_hash = $this->calculate_metrics_hash();
+		$cached_hash  = $recommendations['metrics_hash'] ?? '';
+
+		// Fetch if hash changed.
+		return $current_hash !== $cached_hash;
+	}
+
+	/**
+	 * Extend transient expiration without fetching.
+	 *
+	 * Used when data hasn't changed but transient is expiring.
+	 *
+	 * @return void
+	 */
+	public function extend_transient(): void {
+		$data = $this->get_recommendations();
+
+		if ( false === $data ) {
+			return;
+		}
+
+		set_transient( self::TRANSIENT_NAME, $data, self::CACHE_EXPIRATION );
+
+		$this->logger::debug( 'Recommendations: Transient extended (no changes detected)' );
+	}
+
+	/**
 	 * Set loading status in transient.
 	 *
 	 * @return void
@@ -269,6 +335,24 @@ class DataManager implements LoggerAwareInterface {
 				'status' => $data['status'],
 			]
 		);
+	}
+
+	/**
+	 * Calculate hash of current metrics and settings.
+	 *
+	 * @return string MD5 hash.
+	 */
+	private function calculate_metrics_hash(): string {
+		$global_score_data = $this->global_score->get_global_score_data();
+		$enabled_options   = $this->get_enabled_options();
+
+		$data = [
+			'score'           => $global_score_data['score'] ?? 0,
+			'average_metrics' => $global_score_data['average_metrics'] ?? [],
+			'enabled_options' => $enabled_options,
+		];
+
+		return md5( (string) wp_json_encode( $data ) );
 	}
 
 	/**
