@@ -74,7 +74,10 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'admin_init'                             => 'handle_rocketcdn_checkout_parameter',
+			'admin_init'                             => [
+				[ 'handle_rocketcdn_checkout_parameter' ],
+				[ 'maybe_retry_activation' ],
+			],
 			'wp_ajax_save_rocketcdn_token'           => 'update_user_token',
 			'wp_ajax_rocketcdn_enable'               => 'enable',
 			'wp_ajax_rocketcdn_disable'              => 'disable',
@@ -416,6 +419,77 @@ class DataManagerSubscriber implements Subscriber_Interface {
 		if ( ! wp_next_scheduled( self::CRON_EVENT ) ) {
 			wp_schedule_single_event( $timestamp, self::CRON_EVENT );
 		}
+	}
+
+	/**
+	 * Retries RocketCDN activation when subscription is inactive but has a cdn_url.
+	 *
+	 * This handles the case where site activation failed after checkout.
+	 * When is_active is false but cdn_url is not empty, it means the subscription
+	 * exists but this website isn't activated. We retry the activation automatically.
+	 *
+	 * @return void
+	 */
+	public function maybe_retry_activation(): void {
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			return;
+		}
+
+		$token = get_option( 'rocketcdn_user_token' );
+
+		// If token is not saved locally, try to get it from user endpoint.
+		if ( empty( $token ) ) {
+			$user_data = $this->user_client->get_user_data();
+
+			if ( false === $user_data || empty( $user_data->rocketcdn->cdn_token ) ) {
+				return;
+			}
+
+			$token = sanitize_key( $user_data->rocketcdn->cdn_token );
+		}
+
+		// Validate token length (should be exactly 40 chars).
+		if ( 40 !== strlen( (string) $token ) ) {
+			return;
+		}
+
+		// Check cached subscription data first to avoid unnecessary API calls.
+		$subscription_data = $this->api_client->get_subscription_data();
+
+		// Only retry when: is_active is false AND cdn_url is not empty.
+		if ( $subscription_data['is_active'] || empty( $subscription_data['cdn_url'] ) ) {
+			return;
+		}
+
+		if ( empty( $subscription_data['id'] ) ) {
+			return;
+		}
+
+		// Retry the activation.
+		$activation_result = $this->api_client->activate_subscription( $token, $subscription_data['id'] );
+
+		if ( is_wp_error( $activation_result ) ) {
+			return;
+		}
+
+		// Refresh subscription data after successful activation.
+		delete_transient( 'rocketcdn_status' );
+		$subscription = $this->api_client->get_subscription_data();
+
+		// Guard: only enable CDN and schedule check when subscription is active with a valid CDN URL.
+		if ( empty( $subscription['is_active'] ) || empty( $subscription['cdn_url'] ) ) {
+			return;
+		}
+
+		// Save token if not already saved (handles case where token came from user endpoint).
+		$saved_token = get_option( 'rocketcdn_user_token' );
+		if ( empty( $saved_token ) ) {
+			$this->cdn_options->save_token( $token );
+		}
+
+		// Enable CDN and schedule check.
+		$this->cdn_options->enable( $subscription['cdn_url'] );
+		$this->schedule_subscription_check( $subscription );
 	}
 
 	/**
