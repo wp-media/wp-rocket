@@ -479,7 +479,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 		$this->tracking->track_rocketcdn_activation_failed_banner_viewed();
 
 		$message = sprintf(
-			'<strong>%1$s</strong><br>%2$s<br><br>%3$s',
+			'<strong>%1$s</strong><br><br>%2$s<br>%3$s',
 			esc_html__( 'RocketCDN activation incomplete', 'rocket' ),
 			esc_html__( 'RocketCDN isn’t active on this website yet.', 'rocket' ),
 			esc_html__( 'Click below to complete the activation. You’ll be redirected to checkout to confirm your subscription.', 'rocket' )
@@ -487,10 +487,11 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 
 		rocket_notice_html(
 			[
-				'status'  => 'error',
-				'message' => $message,
-				'id'      => 'rocketcdn_activation_failed_notice',
-				'action'  => sprintf(
+				'status'      => 'error',
+				'message'     => $message,
+				'dismissible' => false,
+				'id'          => 'rocketcdn_activation_failed_notice',
+				'action'      => sprintf(
 					'<a href="%1$s" target="_blank" rel="noopener" class="wpr-button" id="wpr-rocketcdn-activation-cta">%2$s</a>',
 					esc_url( $express_checkout_url ),
 					esc_html__( 'Complete activation', 'rocket' )
