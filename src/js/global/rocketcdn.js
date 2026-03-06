@@ -382,9 +382,11 @@
 		}
 
 		// Identify user if available.
-		if ( rocket_mixpanel_data.user_id && typeof mixpanel.identify === 'function' ) {
-			mixpanel.identify( rocket_mixpanel_data.user_id );
+		if ( ! rocket_mixpanel_data.user_id || typeof mixpanel.identify !== 'function' ) {
+			return;
 		}
+
+		mixpanel.identify( rocket_mixpanel_data.user_id );
 
 		var props = {
 			context: rocket_mixpanel_data.context,
@@ -394,11 +396,13 @@
 			path: rocket_mixpanel_data.path
 		};
 
-		if ( extraProps && typeof extraProps === 'object' ) {
-			for ( var key in extraProps ) {
-				if ( Object.prototype.hasOwnProperty.call( extraProps, key ) ) {
-					props[ key ] = extraProps[ key ];
-				}
+		if ( ! extraProps || typeof extraProps !== 'object' ) {
+			return;
+		}
+
+		for ( var key in extraProps ) {
+			if ( Object.prototype.hasOwnProperty.call( extraProps, key ) ) {
+				props[ key ] = extraProps[ key ];
 			}
 		}
 
