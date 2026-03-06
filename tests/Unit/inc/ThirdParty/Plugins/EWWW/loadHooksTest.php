@@ -1,27 +1,26 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\classes\third_party\plugins\Images\Webp\EwwwSubscriber;
+namespace WP_Rocket\Tests\Unit\ThirdParty\Plugins\EWWW;
 
 use Brain\Monkey\{Actions, Filters, Functions};
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber;
+use WP_Rocket\ThirdParty\Plugins\EWWW;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * Test class covering \WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber::load_hooks
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\EWWW::load_hooks
  * @group  ThirdParty
  * @group  Webp
  */
-class Test_LoadHooks extends TestCase {
-
+class LoadHooksTest extends TestCase {
 	public function testShouldRegisterHooksWhenCacheIsDisabledByOption() {
 		$optionsData = Mockery::mock( Options_Data::class );
 		$optionsData->expects()->get( 'cache_webp' )
 			->once()
 			->andReturns( 0 );
 
-		$subscriber = new EWWW_Subscriber( $optionsData );
+		$subscriber = new EWWW( $optionsData );
 
 		Actions\expectAdded( 'activate_ewww-image-optimizer/ewww-image-optimizer.php' )->never();
 
@@ -34,7 +33,7 @@ class Test_LoadHooks extends TestCase {
 			->once()
 			->andReturn( 1 );
 
-		$subscriber = new EWWW_Subscriber( $optionsData );
+		$subscriber = new EWWW( $optionsData );
 
 		Actions\expectAdded( 'activate_ewww-image-optimizer/ewww-image-optimizer.php' )
 			->once()
@@ -60,7 +59,7 @@ class Test_LoadHooks extends TestCase {
 			->once()
 			->andReturn( 1 );
 
-		$subscriber = new EWWW_Subscriber( $optionsData );
+		$subscriber = new EWWW( $optionsData );
 
 		Functions\When( 'plugin_basename' )->justReturn( 'ewww-image-optimizer/ewww-image-optimizer.php' );
 		Functions\When( 'is_multisite' )->justReturn( false );
@@ -84,7 +83,7 @@ class Test_LoadHooks extends TestCase {
 		Functions\when( 'is_multisite' )->justReturn( false );
 
 		$ewww_get_option = true;
-		$subscriber      = new EWWW_Subscriber( $optionsData );
+		$subscriber      = new EWWW( $optionsData );
 
 		Filters\expectAdded( 'rocket_cdn_cnames' )
 			->once()
