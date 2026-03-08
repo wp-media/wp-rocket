@@ -119,8 +119,6 @@ class GlobalScore {
 			/**
 			 * Fires when global score status changes.
 			 *
-			 * @since 3.20.5
-			 *
 			 * @param string $new_status      New status.
 			 * @param string $previous_status Previous status.
 			 */
