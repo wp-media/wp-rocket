@@ -9,6 +9,29 @@ defined( 'ABSPATH' ) || exit;
 
 ?>
 
+<h3 class="wpr-title2"><?php esc_html_e( 'How to correctly measure your website\'s loading time', 'rocket' ); ?></h3>
+
+<div class="wpr-Sidebar-notice">
+	<p>
+		<?php esc_html_e( 'Check our tutorial and learn how to measure the speed of your site.', 'rocket' ); ?>
+	</p>
+	<a class="wpr-Sidebar-notice-link" href="https://docs.wp-rocket.me/article/100-testing-your-site-with-and-without-wp-rocket/?utm_source=wp_plugin&utm_medium=wp_rocket" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Read our guide', 'rocket' ); ?></a>
+</div>
+
+<div class="wpr-Sidebar-notice">
+	<p>
+		<?php esc_html_e( 'Learn about optimal WP Rocket settings for mobile.', 'rocket' ); ?>
+	</p>
+	<a class="wpr-Sidebar-notice-link" href="https://docs.wp-rocket.me/article/1259-mobile-cache-how-to-apply-the-best-mobile-settings-to-increase-your-page-speed/?utm_source=wp_plugin&utm_medium=wp_rocket" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Read our guide', 'rocket' ); ?></a>
+</div>
+
+<div class="wpr-Sidebar-notice">
+	<p>
+		<?php esc_html_e( 'Test and Improve Google Core Web Vitals for WordPress.', 'rocket' ); ?>
+	</p>
+	<a class="wpr-Sidebar-notice-link" href="https://wp-rocket.me/blog/core-web-vitals-wordpress/?utm_source=wp_plugin&utm_medium=wp_rocket" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Read more', 'rocket' ); ?></a>
+</div>
+
 <?php
 /**
  * Fires after sidebar content before quick actions
