@@ -132,12 +132,12 @@ parameters:
 
 		-
 			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
-			count: 3
+			count: 4
 			path: inc/Engine/CDN/RocketCDN/DataManagerSubscriber.php
 
 		-
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
-			count: 4
+			count: 3
 			path: inc/Engine/CDN/RocketCDN/DataManagerSubscriber.php
 
 		-
@@ -147,7 +147,7 @@ parameters:
 
 		-
 			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
-			count: 2
+			count: 3
 			path: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php
 
 		-
@@ -834,6 +834,31 @@ parameters:
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/CDN/RocketCDN/DataManagerSubscriber/handleRocketcdnCheckoutParameter.php
+
+		-
+			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 2
+			path: tests/Integration/inc/Engine/CDN/RocketCDN/DataManagerSubscriber/maybeRetryActivation.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 3
+			path: tests/Integration/inc/Engine/CDN/RocketCDN/DataManagerSubscriber/maybeRetryActivation.php
+
+		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 2
+			path: tests/Integration/inc/Engine/CDN/RocketCDN/DataManagerSubscriber/maybeRetryActivation.php
+
+		-
+			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/CDN/RocketCDN/NoticesSubscriber/activationFailedNotice.php
+
+		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/CDN/RocketCDN/NoticesSubscriber/activationFailedNotice.php
 
 		-
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
