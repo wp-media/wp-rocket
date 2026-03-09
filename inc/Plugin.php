@@ -418,6 +418,7 @@ class Plugin {
 			'post_subscriber',
 			'tracking_subscriber',
 			'logger_subscriber',
+			'optimole_subscriber',
 		];
 
 		$host_type = HostResolver::get_host_service();

@@ -106,7 +106,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 			$status_class = ' wpr-isValid';
 			$status_text  = date_i18n( get_option( 'date_format' ), strtotime( $subscription_data['subscription_next_date_update'] ) );
 			$is_active    = true;
-		} elseif ( 'cancelled' === $subscription_data['subscription_status'] ) {
+		} else {
 			$status_class    = ' wpr-isInvalid';
 			$container_class = ' wpr-flex--egal';
 			$status_text     = __( 'No Subscription', 'rocket' );
@@ -237,7 +237,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 						admin_url( 'options-general.php' )
 					)
 				),
-				$user_data->rocketcdn->button->url
+				esc_url_raw( $user_data->rocketcdn->button->url )
 			);
 		}
 
@@ -251,10 +251,10 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 		);
 		?>
 		<script type="text/javascript">
-			window.rocketcdnButtonUrl = '<?php echo esc_js( $button_url ); ?>';
+			window.rocketcdnButtonUrl = '<?php echo $button_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>';
 		</script>
 		<div class="wpr-rocketcdn-modal" id="wpr-rocketcdn-modal" aria-hidden="true">
-			<div class="wpr-rocketcdn-modal__overlay" tabindex="-1">
+			<div class="wpr-rocketcdn-modal__overlay" tabindex="-1" data-micromodal-close>
 				<div class="wpr-loader" id="wpr-rocketcdn-modal-loader"></div>
 				<div class="wpr-rocketcdn-modal__container" role="dialog" aria-modal="true" aria-labelledby="wpr-rocketcdn-modal-title">
 					<div id="wpr-rocketcdn-modal-content">
