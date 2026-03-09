@@ -104,6 +104,14 @@
 			updateButtonUrlBillingCycle(isYearly);
 		});
 
+		// Track RocketCDN activation failed CTA click
+		const activationCTA = document.querySelector('#wpr-rocketcdn-activation-cta');
+		if (activationCTA) {
+			activationCTA.addEventListener('click', () => {
+				trackRocketCDNActivationCTA();
+			});
+		}
+
 	} );
 
 	window.onmessage = ( e ) => {
@@ -178,7 +186,7 @@
 		if ( urlParams.has( 'rocketcdn_open_iframe' ) && '1' === urlParams.get( 'rocketcdn_open_iframe' ) ) {
 			// Set hash to page_cdn to show CDN tab behind modal
 			window.location.hash = '#page_cdn';
-			
+
 			MicroModal.show( 'wpr-rocketcdn-modal' );
 
 			// Clean up the URL to prevent re-triggering on refresh
@@ -363,6 +371,32 @@
 		postData += '&nonce=' + rocket_ajax_data.nonce;
 
 		const request = sendHTTPRequest( postData );
+	}
+
+	/**
+	 * Tracks RocketCDN activation failed CTA click with Mixpanel.
+	 */
+	function trackRocketCDNActivationCTA() {
+		if (typeof mixpanel === 'undefined' || !mixpanel.track) {
+			return;
+		}
+
+		// Check if user has opted in
+		if (typeof rocket_mixpanel_data === 'undefined' || !rocket_mixpanel_data.optin_enabled || rocket_mixpanel_data.optin_enabled === '0') {
+			return;
+		}
+
+		// Identify user if available
+		if (rocket_mixpanel_data.user_id && typeof mixpanel.identify === 'function') {
+			mixpanel.identify(rocket_mixpanel_data.user_id);
+		}
+
+		mixpanel.track('RocketCDN Activation Failed CTA Clicked', {
+			context: rocket_mixpanel_data.context,
+			plugin: rocket_mixpanel_data.plugin,
+			brand: rocket_mixpanel_data.brand,
+			application: rocket_mixpanel_data.app
+		});
 	}
 
 	/**
