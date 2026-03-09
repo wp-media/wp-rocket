@@ -79,6 +79,6 @@ class Test_HandleStatusChange extends TestCase {
 			$this->data_manager->shouldReceive( 'extend_transient' )->never();
 		}
 
-		$this->subscriber->handle_status_change( $config['new_status'], $config['previous_status'] );
+		$this->subscriber->handle_status_change( $config['new_status'] );
 	}
 }
