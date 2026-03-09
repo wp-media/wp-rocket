@@ -39,6 +39,15 @@
 			bigCTA = document.querySelector( '#wpr-rocketcdn-cta' ),
 			inputToggle = document.querySelector('.wpr-rocketcdn-toggle--input');
 
+		// Track banner view on page load if banner is visible.
+		if ( bigCTA && ! bigCTA.classList.contains( 'wpr-isHidden' ) ) {
+			// Big banner is visible on load.
+			trackRocketCDNUpsellBannerViewed();
+		} else if ( smallCTA && ! smallCTA.classList.contains( 'wpr-isHidden' ) ) {
+			// Small banner is visible on load.
+			trackRocketCDNUpsellBannerViewed();
+		}
+
 		// Prices selectors for toggling visibility based on the billing cycle toggle state.
 		const prices = {
 			monthly: {
@@ -430,13 +439,12 @@
 			path: rocket_mixpanel_data.path
 		};
 
-		if ( ! extraProps || typeof extraProps !== 'object' ) {
-			return;
-		}
-
-		for ( var key in extraProps ) {
-			if ( Object.prototype.hasOwnProperty.call( extraProps, key ) ) {
-				props[ key ] = extraProps[ key ];
+		// Merge extra properties if provided and valid.
+		if ( extraProps && typeof extraProps === 'object' ) {
+			for ( var key in extraProps ) {
+				if ( Object.prototype.hasOwnProperty.call( extraProps, key ) ) {
+					props[ key ] = extraProps[ key ];
+				}
 			}
 		}
 
