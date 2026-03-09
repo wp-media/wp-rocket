@@ -1,42 +1,33 @@
 <?php
-namespace WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp;
+namespace WP_Rocket\ThirdParty\Plugins;
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\{Webp_Common, Webp_Interface};
+use WP_Rocket\ThirdParty\ReturnTypesTrait;
 
-/**
- * Subscriber for the WebP support with EWWW.
- *
- * @since  3.4
- * @author Grégory Viguier
- */
-class EWWW_Subscriber implements Webp_Interface, Subscriber_Interface {
+class EWWW implements Webp_Interface, Subscriber_Interface {
 	use Webp_Common;
+	use ReturnTypesTrait;
 
 	/**
 	 * Options_Data instance.
 	 *
-	 * @var    Options_Data
-	 * @access private
-	 * @author Remy Perona
+	 * @var Options_Data
 	 */
 	private $options;
 
 	/**
 	 * EWWW basename.
 	 *
-	 * @var    string
-	 * @access private
-	 * @author Grégory Viguier
+	 * @var string
 	 */
 	private $plugin_basename;
 
 	/**
 	 * Constructor.
 	 *
-	 * @since  3.4
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.4
 	 *
 	 * @param Options_Data $options Options instance.
 	 */
@@ -48,22 +39,22 @@ class EWWW_Subscriber implements Webp_Interface, Subscriber_Interface {
 	 * {@inheritdoc}
 	 */
 	public static function get_subscribed_events() {
-		return [
+		$events = [
 			'rocket_webp_plugins' => 'register',
 			'wp_rocket_loaded'    => 'load_hooks',
 		];
-	}
 
-	/** ----------------------------------------------------------------------------------------- */
-	/** HOOKS =================================================================================== */
-	/** ----------------------------------------------------------------------------------------- */
+		if ( rocket_has_constant( 'EWWW_IMAGE_OPTIMIZER_VERSION' ) ) {
+			$events['wpmedia_plugin_family_show_imagify_banner'] = 'return_false';
+		}
+
+		return $events;
+	}
 
 	/**
 	 * Launch filters.
 	 *
-	 * @since  3.4
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.4
 	 */
 	public function load_hooks() {
 		if ( ! $this->options->get( 'cache_webp' ) ) {
@@ -115,9 +106,7 @@ class EWWW_Subscriber implements Webp_Interface, Subscriber_Interface {
 	/**
 	 * Remove CDN hosts for images if EWWW uses ExactDN.
 	 *
-	 * @since  3.4
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.4
 	 *
 	 * @param  array $hosts List of CDN URLs.
 	 * @param  array $zones List of zones. Default is [ 'all' ].
@@ -181,9 +170,7 @@ class EWWW_Subscriber implements Webp_Interface, Subscriber_Interface {
 	/**
 	 * Maybe remove the images option from the CDN dropdown.
 	 *
-	 * @since  3.4
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.4
 	 *
 	 * @param  bool $allow true to add the option, false otherwise.
 	 * @return bool
@@ -200,16 +187,10 @@ class EWWW_Subscriber implements Webp_Interface, Subscriber_Interface {
 		return false;
 	}
 
-	/** ----------------------------------------------------------------------------------------- */
-	/** PUBLIC TOOLS ============================================================================ */
-	/** ----------------------------------------------------------------------------------------- */
-
 	/**
 	 * Get the plugin name.
 	 *
-	 * @since  3.4
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.4
 	 *
 	 * @return string
 	 */
@@ -220,9 +201,7 @@ class EWWW_Subscriber implements Webp_Interface, Subscriber_Interface {
 	/**
 	 * Get the plugin identifier.
 	 *
-	 * @since  3.4
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.4
 	 *
 	 * @return string
 	 */
@@ -233,9 +212,7 @@ class EWWW_Subscriber implements Webp_Interface, Subscriber_Interface {
 	/**
 	 * Tell if the plugin converts images to webp.
 	 *
-	 * @since  3.4
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.4
 	 *
 	 * @return bool
 	 */
@@ -251,9 +228,7 @@ class EWWW_Subscriber implements Webp_Interface, Subscriber_Interface {
 	/**
 	 * Tell if the plugin serves webp images on frontend.
 	 *
-	 * @since  3.4
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.4
 	 *
 	 * @return bool
 	 */
@@ -280,11 +255,11 @@ class EWWW_Subscriber implements Webp_Interface, Subscriber_Interface {
 		}
 
 		if ( ! function_exists( 'get_home_path' ) ) {
-			require_once ABSPATH . 'wp-admin/includes/file.php';
+			require_once ABSPATH . 'wp-admin/includes/file.php'; // @phpstan-ignore-line
 		}
 
 		if ( ! function_exists( 'extract_from_markers' ) ) {
-			require_once ABSPATH . 'wp-admin/includes/misc.php';
+			require_once ABSPATH . 'wp-admin/includes/misc.php'; // @phpstan-ignore-line
 		}
 
 		/**
@@ -298,20 +273,17 @@ class EWWW_Subscriber implements Webp_Interface, Subscriber_Interface {
 		/**
 		 * Filter whether EWW is using rewrite rules for webp.
 		 *
-		 * @since  3.4
-		 * @author Grégory Viguier
+		 * @since 3.4
 		 *
 		 * @param bool $use_rewrite_rules True when EWWW uses rewrite rules. False otherwise.
 		 */
-		return (bool) apply_filters( 'rocket_webp_ewww_use_rewrite_rules', $use_rewrite_rules );
+		return (bool) wpm_apply_filters_typed( 'boolean', 'rocket_webp_ewww_use_rewrite_rules', $use_rewrite_rules );
 	}
 
 	/**
 	 * Tell if the plugin uses a CDN-compatible technique to serve webp images on frontend.
 	 *
-	 * @since  3.4
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.4
 	 *
 	 * @return bool
 	 */
@@ -338,11 +310,9 @@ class EWWW_Subscriber implements Webp_Interface, Subscriber_Interface {
 	/**
 	 * Get the plugin basename.
 	 *
-	 * @since  3.4
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.4
 	 *
-	 * @return bool
+	 * @return string
 	 */
 	public function get_basename() {
 		if ( empty( $this->plugin_basename ) ) {
@@ -354,16 +324,10 @@ class EWWW_Subscriber implements Webp_Interface, Subscriber_Interface {
 		return $this->plugin_basename;
 	}
 
-	/** ----------------------------------------------------------------------------------------- */
-	/** PRIVATE TOOLS =========================================================================== */
-	/** ----------------------------------------------------------------------------------------- */
-
 	/**
 	 * Tell if EWWW is active for network.
 	 *
-	 * @since  3.4
-	 * @access private
-	 * @author Grégory Viguier
+	 * @since 3.4
 	 *
 	 * @return bool
 	 */
@@ -380,7 +344,7 @@ class EWWW_Subscriber implements Webp_Interface, Subscriber_Interface {
 		}
 
 		if ( ! function_exists( 'is_plugin_active_for_network' ) ) {
-			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+			require_once ABSPATH . 'wp-admin/includes/plugin.php'; // @phpstan-ignore-line
 		}
 
 		$is = is_plugin_active_for_network( $this->get_basename() ) && ! get_site_option( 'ewww_image_optimizer_allow_multisite_override' );

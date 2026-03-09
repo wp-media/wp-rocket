@@ -1,20 +1,20 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\classes\third_party\plugins\Images\Webp\EwwwSubscriber;
+namespace WP_Rocket\Tests\Unit\ThirdParty\Plugins\EWWW;
 
 use Brain\Monkey\Functions;
 use Mockery;
 use SebastianBergmann\Exporter\Exporter;
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber;
-use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\ThirdParty\Plugins\EWWW;
+use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * Test class covering \WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber::maybe_remove_images_cnames
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\EWWW::maybe_remove_images_cnames
  * @group  ThirdParty
  * @group  Webp
  */
-class Test_MaybeRemoveImagesCnames extends TestCase {
+class MaybeRemoveImagesCnamesTest extends TestCase {
 
 	public function testShouldReturnIdenticalWhenExactdnNotEnabled() {
 		$optionsData = Mockery::mock( Options_Data::class );
@@ -22,7 +22,7 @@ class Test_MaybeRemoveImagesCnames extends TestCase {
 		Functions\when( 'ewww_image_optimizer_get_option' )
 			->justReturn( false );
 
-		$subscriber = new EWWW_Subscriber( $optionsData );
+		$subscriber = new EWWW( $optionsData );
 
 		$hosts  = [ 'foo.com', 'bar.com' ];
 		$result = $subscriber->maybe_remove_images_cnames( $hosts, [ 'all', 'images' ] );
@@ -39,7 +39,7 @@ class Test_MaybeRemoveImagesCnames extends TestCase {
 		Functions\when( 'ewww_image_optimizer_get_option' )
 			->justReturn( true );
 
-		$subscriber = new EWWW_Subscriber( $optionsData );
+		$subscriber = new EWWW( $optionsData );
 
 		$hosts  = [ 'foo.com', 'bar.com' ];
 		$result = $subscriber->maybe_remove_images_cnames( $hosts, [ 'all' ] );
@@ -56,7 +56,7 @@ class Test_MaybeRemoveImagesCnames extends TestCase {
 		Functions\when( 'ewww_image_optimizer_get_option' )
 			->justReturn( true );
 
-		$subscriber = new EWWW_Subscriber( $optionsData );
+		$subscriber = new EWWW( $optionsData );
 
 		$hosts  = [ 'foo.com', 'bar.com' ];
 		$result = $subscriber->maybe_remove_images_cnames( $hosts, [ 'all', 'images' ] );
@@ -98,7 +98,7 @@ class Test_MaybeRemoveImagesCnames extends TestCase {
 		Functions\when( 'ewww_image_optimizer_get_option' )
 			->justReturn( true );
 
-		$subscriber = new EWWW_Subscriber( $optionsData );
+		$subscriber = new EWWW( $optionsData );
 
 		$hosts  = [ 'foo.com', 'bar.com' ];
 		$result = $subscriber->maybe_remove_images_cnames( $hosts, [ 'all', 'images', 'js' ] );
@@ -121,7 +121,7 @@ class Test_MaybeRemoveImagesCnames extends TestCase {
 		Functions\when( 'ewww_image_optimizer_get_option' )
 			->justReturn( true );
 
-		$subscriber = new EWWW_Subscriber( $optionsData );
+		$subscriber = new EWWW( $optionsData );
 
 		$hosts  = [ 'dns.example.com', 'evil.example.com' ];
 		$result = $subscriber->maybe_remove_images_cnames( $hosts, [ 'all', 'images', 'js' ] );
@@ -148,7 +148,7 @@ class Test_MaybeRemoveImagesCnames extends TestCase {
 		Functions\when( 'ewww_image_optimizer_get_option' )
 			->justReturn( true );
 
-		$subscriber = new EWWW_Subscriber( $optionsData );
+		$subscriber = new EWWW( $optionsData );
 
 		$hosts  = [ 'dns.example.com', 'evil.example.com' ];
 		$result = $subscriber->maybe_remove_images_cnames( $hosts, [ 'all', 'images', 'js' ] );
@@ -179,7 +179,7 @@ class Test_MaybeRemoveImagesCnames extends TestCase {
 		Functions\when( 'ewww_image_optimizer_get_option' )
 			->justReturn( true );
 
-		$subscriber = new EWWW_Subscriber( $optionsData );
+		$subscriber = new EWWW( $optionsData );
 
 		$hosts    = [ 'dns.example.com', 'images.example.com', 'evil.example.com' ];
 		$expected = [ 'dns.example.com', 'evil.example.com' ];
@@ -204,7 +204,7 @@ class Test_MaybeRemoveImagesCnames extends TestCase {
 				[ 'all', 'images', 'js' ]
 			);
 
-		$subscriber = new EWWW_Subscriber( $optionsData );
+		$subscriber = new EWWW( $optionsData );
 
 		$expected = [ 'evil.example.com' ];
 		$result   = $subscriber->maybe_remove_images_cnames( $hosts, [ 'all', 'images', 'js' ] );

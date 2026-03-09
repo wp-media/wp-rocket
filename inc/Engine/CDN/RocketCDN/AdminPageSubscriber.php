@@ -35,19 +35,28 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	private $beacon;
 
 	/**
+	 * UserClient instance
+	 *
+	 * @var \WP_Rocket\Engine\License\API\UserClient
+	 */
+	private $user_client;
+
+	/**
 	 * Constructor
 	 *
-	 * @param APIClient    $api_client    RocketCDN API Client instance.
-	 * @param Options_Data $options       WP Rocket options instance.
-	 * @param Beacon       $beacon        Beacon instance.
-	 * @param string       $template_path Path to the templates.
+	 * @param APIClient                                $api_client    RocketCDN API Client instance.
+	 * @param Options_Data                             $options       WP Rocket options instance.
+	 * @param Beacon                                   $beacon        Beacon instance.
+	 * @param \WP_Rocket\Engine\License\API\UserClient $user_client   UserClient instance.
+	 * @param string                                   $template_path Path to the templates.
 	 */
-	public function __construct( APIClient $api_client, Options_Data $options, Beacon $beacon, $template_path ) {
+	public function __construct( APIClient $api_client, Options_Data $options, Beacon $beacon, $user_client, $template_path ) {
 		parent::__construct( $template_path );
 
-		$this->api_client = $api_client;
-		$this->options    = $options;
-		$this->beacon     = $beacon;
+		$this->api_client  = $api_client;
+		$this->options     = $options;
+		$this->beacon      = $beacon;
+		$this->user_client = $user_client;
 	}
 
 	/**
@@ -97,7 +106,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 			$status_class = ' wpr-isValid';
 			$status_text  = date_i18n( get_option( 'date_format' ), strtotime( $subscription_data['subscription_next_date_update'] ) );
 			$is_active    = true;
-		} elseif ( 'cancelled' === $subscription_data['subscription_status'] ) {
+		} else {
 			$status_class    = ' wpr-isInvalid';
 			$container_class = ' wpr-flex--egal';
 			$status_text     = __( 'No Subscription', 'rocket' );
@@ -212,6 +221,26 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 			return;
 		}
 
+		// Check if user data has button URL.
+		$button_url = '';
+		$user_data  = $this->user_client->get_user_data();
+
+		if ( false !== $user_data && isset( $user_data->rocketcdn->button->url ) && ! empty( $user_data->rocketcdn->button->url ) ) {
+			$button_url = add_query_arg(
+				'dashboard_url',
+				rawurlencode(
+					add_query_arg(
+						[
+							'page'               => WP_ROCKET_PLUGIN_SLUG,
+							'rocketcdn_checkout' => 'true',
+						],
+						admin_url( 'options-general.php' )
+					)
+				),
+				esc_url_raw( $user_data->rocketcdn->button->url )
+			);
+		}
+
 		$iframe_src = add_query_arg(
 			[
 				'website'  => home_url(),
@@ -221,8 +250,11 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 			'https://api.wp-rocket.me/cdn/iframe'
 		);
 		?>
+		<script type="text/javascript">
+			window.rocketcdnButtonUrl = '<?php echo $button_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>';
+		</script>
 		<div class="wpr-rocketcdn-modal" id="wpr-rocketcdn-modal" aria-hidden="true">
-			<div class="wpr-rocketcdn-modal__overlay" tabindex="-1">
+			<div class="wpr-rocketcdn-modal__overlay" tabindex="-1" data-micromodal-close>
 				<div class="wpr-loader" id="wpr-rocketcdn-modal-loader"></div>
 				<div class="wpr-rocketcdn-modal__container" role="dialog" aria-modal="true" aria-labelledby="wpr-rocketcdn-modal-title">
 					<div id="wpr-rocketcdn-modal-content">
