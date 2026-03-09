@@ -33,6 +33,10 @@ function PageManager(aElem) {
     this.$content = document.querySelector('.wpr-Content');
     this.$tips = document.querySelector('.wpr-Content-tips');
     this.$links = document.querySelectorAll('.wpr-body a');
+    this.$quickActionsHeader = document.querySelector('.wpr-quick-actions-header');
+    this.$quickActionsContainer = document.querySelector('.wpr-quick-actions-container');
+    this.$globalScoreWidget = document.querySelector('.wpr-global-score-widget-wrapper');
+    this.$dashboardSidebar = document.querySelector('.wpr-Page#dashboard .wpr-Page-col--fixed');
     this.$menuItem = null;
     this.$page = null;
     this.pageId = null;
@@ -167,6 +171,31 @@ PageManager.prototype.change = function() {
         this.$sidebar.style.display = 'none';
         this.$tips.style.display = 'none';
         this.$content.classList.remove('isNotFull');
+        
+        // Move global score widget and quick actions to dashboard sidebar and show them
+        if (this.$globalScoreWidget && this.$dashboardSidebar) {
+            this.$dashboardSidebar.appendChild(this.$globalScoreWidget);
+            this.$globalScoreWidget.style.display = 'block';
+        }
+        if (this.$quickActionsHeader && this.$quickActionsContainer && this.$dashboardSidebar) {
+            this.$dashboardSidebar.appendChild(this.$quickActionsHeader);
+            this.$dashboardSidebar.appendChild(this.$quickActionsContainer);
+            this.$quickActionsHeader.style.display = 'block';
+            this.$quickActionsContainer.style.display = 'block';
+        }
+    } else {
+        // Move global score widget back to main sidebar at the top and show it
+        if (this.$globalScoreWidget && this.$sidebar) {
+            this.$sidebar.prepend(this.$globalScoreWidget);
+            this.$globalScoreWidget.style.display = 'block';
+        }
+        // Move quick actions back to main sidebar and hide them
+        if (this.$quickActionsHeader && this.$quickActionsContainer && this.$sidebar) {
+            this.$sidebar.appendChild(this.$quickActionsHeader);
+            this.$sidebar.appendChild(this.$quickActionsContainer);
+            this.$quickActionsHeader.style.display = 'none';
+            this.$quickActionsContainer.style.display = 'none';
+        }
     }
 
     if (this.pageId == "imagify") {
