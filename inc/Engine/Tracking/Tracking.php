@@ -331,4 +331,24 @@ class Tracking extends Abstract_Render {
 			]
 		);
 	}
+
+	/**
+	 * Tracks when the RocketCDN activation failed banner is viewed.
+	 *
+	 * @since 3.17.3
+	 *
+	 * @return void
+	 */
+	public function track_rocketcdn_activation_failed_banner_viewed(): void {
+		if ( ! $this->optin->can_track() ) {
+			return;
+		}
+
+		$this->mixpanel->track(
+			'RocketCDN Activation Failed Banner Viewed',
+			[
+				'context' => 'wp_plugin',
+			]
+		);
+	}
 }

@@ -4,6 +4,7 @@ namespace WP_Rocket\Engine\CDN\RocketCDN;
 use WP_Rocket\Abstract_Render;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\License\API\UserClient;
+use WP_Rocket\Engine\Tracking\Tracking;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
@@ -34,19 +35,28 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	private $user_client;
 
 	/**
+	 * Tracking instance
+	 *
+	 * @var Tracking
+	 */
+	private $tracking;
+
+	/**
 	 * Constructor
 	 *
 	 * @param APIClient  $api_client    RocketCDN API Client instance.
 	 * @param Beacon     $beacon        Beacon instance.
 	 * @param UserClient $user_client   UserClient instance.
+	 * @param Tracking   $tracking      Tracking instance.
 	 * @param string     $template_path Path to the templates.
 	 */
-	public function __construct( APIClient $api_client, Beacon $beacon, UserClient $user_client, $template_path ) {
+	public function __construct( APIClient $api_client, Beacon $beacon, UserClient $user_client, Tracking $tracking, $template_path ) {
 		parent::__construct( $template_path );
 
 		$this->api_client  = $api_client;
 		$this->beacon      = $beacon;
 		$this->user_client = $user_client;
+		$this->tracking    = $tracking;
 	}
 
 	/**
@@ -58,6 +68,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 				[ 'promote_rocketcdn_notice' ],
 				[ 'purge_cache_notice' ],
 				[ 'change_cname_notice' ],
+				[ 'activation_failed_notice' ],
 			],
 			'rocket_before_cdn_sections'       => 'display_rocketcdn_cta',
 			'wp_ajax_toggle_rocketcdn_cta'     => 'toggle_cta',
@@ -431,6 +442,82 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 			]
 		);
 	}
+
+	/**
+	 * Displays an admin notice when RocketCDN activation failed.
+	 *
+	 * Shows a notice with express checkout URL when:
+	 * - is_active is false
+	 * - cdn_url is empty
+	 *
+	 * @return void
+	 */
+	public function activation_failed_notice(): void {
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			return;
+		}
+
+		if ( 'settings_page_wprocket' !== get_current_screen()->id ) {
+			return;
+		}
+
+		if ( $this->is_white_label_account() ) {
+			return;
+		}
+
+		if ( ! $this->should_display_activation_failed_notice() ) {
+			return;
+		}
+
+		$express_checkout_url = $this->get_express_checkout_url();
+
+		if ( empty( $express_checkout_url ) ) {
+			return;
+		}
+
+		// Track banner view.
+		$this->tracking->track_rocketcdn_activation_failed_banner_viewed();
+
+		$message = sprintf(
+			'<strong>%1$s</strong><br><br>%2$s<br>%3$s',
+			esc_html__( 'RocketCDN activation incomplete', 'rocket' ),
+			esc_html__( 'RocketCDN isn’t active on this website yet.', 'rocket' ),
+			esc_html__( 'Click below to complete the activation. You’ll be redirected to checkout to confirm your subscription.', 'rocket' )
+		);
+
+		rocket_notice_html(
+			[
+				'status'      => 'error',
+				'message'     => $message,
+				'dismissible' => false,
+				'id'          => 'rocketcdn_activation_failed_notice',
+				'action'      => sprintf(
+					'<a href="%1$s" target="_blank" rel="noopener" class="wpr-button" id="wpr-rocketcdn-activation-cta">%2$s</a>',
+					esc_url( $express_checkout_url ),
+					esc_html__( 'Complete activation', 'rocket' )
+				),
+			]
+		);
+	}
+
+	/**
+	 * Checks if the activation failed notice should be displayed.
+	 *
+	 * @return bool True if notice should be displayed, false otherwise.
+	 */
+	private function should_display_activation_failed_notice(): bool {
+		// Do not show the notice if there is no RocketCDN user token saved:
+		// this usually means the user never went through the checkout/activation flow.
+		if ( empty( get_option( 'rocketcdn_user_token', '' ) ) ) {
+			return false;
+		}
+
+		$subscription_data = $this->api_client->get_subscription_data();
+
+		// Show notice when is_active is false AND cdn_url is empty.
+		return ! $subscription_data['is_active'] && empty( $subscription_data['cdn_url'] );
+	}
+
 	/**
 	 * Gets the express checkout URL for RocketCDN.
 	 *
