@@ -1,60 +1,47 @@
 <?php
-namespace WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp;
+namespace WP_Rocket\ThirdParty\Plugins;
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\{Webp_Common, Webp_Interface};
+use WP_Rocket\ThirdParty\ReturnTypesTrait;
 
-/**
- * Subscriber for the WebP support with ShortPixel.
- *
- * @since  3.4
- * @author Grégory Viguier
- */
-class ShortPixel_Subscriber implements Webp_Interface, Subscriber_Interface {
+class ShortPixel implements Webp_Interface, Subscriber_Interface {
 	use Webp_Common;
+	use ReturnTypesTrait;
 
 	/**
 	 * Options_Data instance.
 	 *
-	 * @var    Options_Data
-	 * @access private
-	 * @author Remy Perona
+	 * @var Options_Data
 	 */
 	private $options;
 
 	/**
 	 * ShortPixel basename.
 	 *
-	 * @var    string
-	 * @access private
-	 * @author Grégory Viguier
+	 * @var string
 	 */
 	private $plugin_basename;
 
 	/**
 	 * ShortPixel’s "serve webp" option name.
 	 *
-	 * @var    string
-	 * @access private
-	 * @author Grégory Viguier
+	 * @var string
 	 */
 	private $plugin_option_name_to_serve_webp = 'wp-short-pixel-create-webp-markup';
 
 	/**
 	 * Temporarily store the result of $this->is_serving_webp().
 	 *
-	 * @var    bool
-	 * @access private
-	 * @author Grégory Viguier
+	 * @var bool
 	 */
 	private $tmp_is_serving_webp;
 
 	/**
 	 * Constructor.
 	 *
-	 * @since  3.4
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.4
 	 *
 	 * @param Options_Data $options Options instance.
 	 */
@@ -65,29 +52,27 @@ class ShortPixel_Subscriber implements Webp_Interface, Subscriber_Interface {
 	/**
 	 * Returns an array of events that this subscriber wants to listen to.
 	 *
-	 * @since  3.4
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.4
 	 *
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
-		return [
+		$events = [
 			'rocket_webp_plugins' => 'register',
 			'wp_rocket_loaded'    => 'load_hooks',
 		];
-	}
 
-	/** ----------------------------------------------------------------------------------------- */
-	/** HOOKS =================================================================================== */
-	/** ----------------------------------------------------------------------------------------- */
+		if ( rocket_has_constant( 'SHORTPIXEL_IMAGE_OPTIMISER_VERSION' ) ) {
+			$events['wpmedia_plugin_family_show_imagify_banner'] = 'return_false';
+		}
+
+		return $events;
+	}
 
 	/**
 	 * Launch filters.
 	 *
-	 * @since  3.4
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.4
 	 */
 	public function load_hooks() {
 		if ( ! $this->options->get( 'cache_webp' ) ) {
@@ -128,9 +113,7 @@ class ShortPixel_Subscriber implements Webp_Interface, Subscriber_Interface {
 	/**
 	 * Maybe deactivate webp cache after ShortPixel option has been successfully added.
 	 *
-	 * @since  3.4
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.4
 	 *
 	 * @param string $option Name of the option to add.
 	 * @param mixed  $value  Value of the option.
@@ -144,9 +127,7 @@ class ShortPixel_Subscriber implements Webp_Interface, Subscriber_Interface {
 	/**
 	 * Maybe activate or deactivate webp cache after ShortPixel option has been modified.
 	 *
-	 * @since  3.4
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.4
 	 *
 	 * @param mixed $old_value The old option value.
 	 * @param mixed $value     The new option value.
@@ -169,9 +150,7 @@ class ShortPixel_Subscriber implements Webp_Interface, Subscriber_Interface {
 	/**
 	 * Store the ShortPixel option value before it is deleted.
 	 *
-	 * @since  3.4
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.4
 	 *
 	 * @param string $option Name of the option to delete.
 	 */
@@ -184,9 +163,7 @@ class ShortPixel_Subscriber implements Webp_Interface, Subscriber_Interface {
 	/**
 	 * Maybe activate webp cache after ShortPixel option has been deleted.
 	 *
-	 * @since  3.4
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.4
 	 */
 	public function sync_on_option_delete() {
 		if ( false !== $this->tmp_is_serving_webp ) {
@@ -194,16 +171,10 @@ class ShortPixel_Subscriber implements Webp_Interface, Subscriber_Interface {
 		}
 	}
 
-	/** ----------------------------------------------------------------------------------------- */
-	/** PUBLIC TOOLS ============================================================================ */
-	/** ----------------------------------------------------------------------------------------- */
-
 	/**
 	 * Get the plugin name.
 	 *
-	 * @since  3.4
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.4
 	 *
 	 * @return string
 	 */
@@ -214,9 +185,7 @@ class ShortPixel_Subscriber implements Webp_Interface, Subscriber_Interface {
 	/**
 	 * Get the plugin identifier.
 	 *
-	 * @since  3.4
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.4
 	 *
 	 * @return string
 	 */
@@ -227,40 +196,34 @@ class ShortPixel_Subscriber implements Webp_Interface, Subscriber_Interface {
 	/**
 	 * Tell if the plugin converts images to webp.
 	 *
-	 * @since  3.4
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.4
 	 *
 	 * @return bool
 	 */
 	public function is_converting_to_webp() {
-		return (bool) get_option( 'wp-short-create-webp' );
+		return (bool) get_option( 'wp-short-create-webp' ); // @phpstan-ignore-line
 	}
 
 	/**
 	 * Tell if the plugin serves webp images on frontend.
 	 *
-	 * @since  3.4
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.4
 	 *
 	 * @return bool
 	 */
 	public function is_serving_webp() {
-		return (bool) get_option( $this->plugin_option_name_to_serve_webp );
+		return (bool) get_option( $this->plugin_option_name_to_serve_webp ); // @phpstan-ignore-line
 	}
 
 	/**
 	 * Tell if the plugin uses a CDN-compatible technique to serve webp images on frontend.
 	 *
-	 * @since  3.4
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.4
 	 *
 	 * @return bool
 	 */
 	public function is_serving_webp_compatible_with_cdn() {
-		$display = (int) get_option( $this->plugin_option_name_to_serve_webp );
+		$display = (int) get_option( $this->plugin_option_name_to_serve_webp ); // @phpstan-ignore-line
 
 		if ( ! $display ) {
 			// The option is not enabled, no webp.
@@ -278,11 +241,9 @@ class ShortPixel_Subscriber implements Webp_Interface, Subscriber_Interface {
 	/**
 	 * Get the plugin basename.
 	 *
-	 * @since  3.4
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.4
 	 *
-	 * @return bool
+	 * @return string
 	 */
 	public function get_basename() {
 		if ( empty( $this->plugin_basename ) ) {
