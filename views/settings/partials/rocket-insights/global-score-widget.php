@@ -6,6 +6,7 @@
 defined( 'ABSPATH' ) || exit;
 ?>
 
+<div class="wpr-global-score-widget-wrapper">
 <div class="wpr-optionHeader">
 	<h3 class="wpr-title2">
 		<?php echo esc_html__( 'Rocket Insights Score', 'rocket' ); ?>
@@ -17,4 +18,5 @@ defined( 'ABSPATH' ) || exit;
 			<?php $this->render_parts_with_data( 'rocket-insights/global-score-widget-content', $data ); ?>
 		</div>
 	</fieldset>
+</div>
 </div>

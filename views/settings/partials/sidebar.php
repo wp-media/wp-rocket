@@ -9,24 +9,20 @@ defined( 'ABSPATH' ) || exit;
 
 ?>
 
-<h3 class="wpr-Sidebar-title wpr-title2"><?php esc_html_e( 'How to correctly measure your website’s loading time', 'rocket' ); ?></h3>
-<div class="wpr-Sidebar-notice">
-	<p><?php esc_html_e( 'Check our tutorial and learn how to measure the speed of your site.', 'rocket' ); ?></p>
-	<a href="<?php echo esc_url( 'https://wp-rocket.me/blog/how-to-test-wordpress-site-performance-measure-speed-results/?utm_source=wp_plugin&utm_medium=wp_rocket' ); ?>" target="_blank" rel="noopener" class="wpr-Sidebar-notice-link"><?php esc_html_e( 'Read our guide', 'rocket' ); ?></a>
-</div>
-<div class="wpr-Sidebar-notice">
-	<p><?php esc_html_e( 'Learn about optimal WP Rocket settings for mobile.', 'rocket' ); ?></p>
-	<?php
-	$rocket_mobile_doc_url = false !== strpos( get_locale(), 'fr' )
-			? 'https://fr.docs.wp-rocket.me/article/1432-comment-ameliorer-score-mobile-pagespeed/?utm_source=wp_plugin&utm_medium=wp_rocket'
-			: 'https://docs.wp-rocket.me/article/1402-how-to-improve-your-mobile-pagespeed-score/?utm_source=wp_plugin&utm_medium=wp_rocket'
-	?>
-	<a href="<?php echo esc_url( $rocket_mobile_doc_url ); ?>" target="_blank" class="wpr-Sidebar-notice-link"><?php esc_html_e( 'Read our guide', 'rocket' ); ?></a>
-</div>
-<div class="wpr-Sidebar-notice">
-	<p><?php esc_html_e( 'Test and Improve Google Core Web Vitals for WordPress.', 'rocket' ); ?></p>
-	<a href="<?php echo esc_url( 'https://wp-rocket.me/google-core-web-vitals-wordpress/?utm_source=wp_plugin&utm_medium=wp_rocket' ); ?>" target="_blank" class="wpr-Sidebar-notice-link"><?php esc_html_e( 'Read more', 'rocket' ); ?></a>
-</div>
+<?php
+/**
+ * Fires after sidebar content before quick actions
+ *
+ * This hook is used to display widgets like the Global Score widget
+ * on all WP Rocket admin pages.
+ *
+ * @since 3.17
+ */
+do_action( 'rocket_after_sidebar_content' );
+?>
+
+<?php $this->render_part( 'quick-actions' ); ?>
+
 <?php if ( ! get_rocket_option( 'cache_logged_user', 0 ) ) : ?>
 <div class="wpr-Sidebar-info">
 	<i class="wpr-icon-information2"></i>
