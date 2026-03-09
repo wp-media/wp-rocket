@@ -40,7 +40,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_rocket_insights_job_added'     => [ 'track_rocket_insights_url_added', 10, 4 ],
 			'rocket_rocket_insights_job_failed'    => [ 'track_rocket_insights_test', 10, 3 ],
 			'rocket_rocket_insights_job_completed' => [ 'track_rocket_insights_test', 10, 3 ],
-			'rocket_track_event'                   => [ 'track_event', 10, 2 ],
+			'rocket_mixpanel_track_event'          => [ 'track_event', 10, 2 ],
 		];
 	}
 

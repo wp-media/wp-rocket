@@ -16,6 +16,6 @@ trait TrackingTrait {
 		 * @param string $event_name Event name.
 		 * @param string $event_data Event data.
 		 */
-		do_action( 'rocket_track_event', $event_name, $event_data );
+		do_action( 'rocket_mixpanel_track_event', $event_name, $event_data );
 	}
 }
