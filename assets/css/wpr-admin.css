@@ -2789,6 +2789,10 @@ div.wpr-tutorial-item {
   color: #00A66B;
 }
 
+.wpr-global-score-widget-wrapper {
+  margin-bottom: 16px;
+}
+
 #wpr_global_score_widget .wpr-fieldsContainer-fieldset {
   padding: 20px 15px;
 }
