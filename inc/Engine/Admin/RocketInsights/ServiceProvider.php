@@ -186,6 +186,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'ri_queue',
 					'ri_context',
 					'ri_global_score',
+					'options',
 					'ri_manager',
 					'ri_plan',
 					'renewal',

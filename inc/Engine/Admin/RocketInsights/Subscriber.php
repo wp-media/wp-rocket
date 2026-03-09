@@ -10,6 +10,7 @@ use WP_Rocket\Engine\Admin\RocketInsights\{
 	Jobs\Manager,
 	Queue\Queue,
 };
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\License\Renewal;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Logger\LoggerAware;
@@ -66,6 +67,13 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	private $global_score;
 
 	/**
+	 * Plugin options.
+	 *
+	 * @var Options_Data
+	 */
+	private $options;
+
+	/**
 	 * Manager instance.
 	 *
 	 * @var Manager
@@ -89,15 +97,16 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	/**
 	 * Constructor.
 	 *
-	 * @param Render      $render Render object.
-	 * @param Controller  $controller Controller object.
-	 * @param Rest        $rest Rest object.
-	 * @param Queue       $queue Queue object.
-	 * @param Context     $context Rocket Insights context.
-	 * @param GlobalScore $global_score GlobalScore instance.
-	 * @param Manager     $manager Manager instance.
-	 * @param Plan        $plan Plan manager.
-	 * @param Renewal     $renewal Renewal instance.
+	 * @param Render       $render Render object.
+	 * @param Controller   $controller Controller object.
+	 * @param Rest         $rest Rest object.
+	 * @param Queue        $queue Queue object.
+	 * @param Context      $context Rocket Insights context.
+	 * @param GlobalScore  $global_score GlobalScore instance.
+	 * @param Options_Data $options Options instance.
+	 * @param Manager      $manager Manager instance.
+	 * @param Plan         $plan Plan manager.
+	 * @param Renewal      $renewal Renewal instance.
 	 */
 	public function __construct(
 		Render $render,
@@ -106,6 +115,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		Queue $queue,
 		Context $context,
 		GlobalScore $global_score,
+		Options_Data $options,
 		Manager $manager,
 		Plan $plan,
 		Renewal $renewal
@@ -116,6 +126,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		$this->queue        = $queue;
 		$this->context      = $context;
 		$this->global_score = $global_score;
+		$this->options      = $options;
 		$this->manager      = $manager;
 		$this->plan         = $plan;
 		$this->renewal      = $renewal;
@@ -232,7 +243,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		}
 
 		$this->schedule_auto_add_homepage_task();
-		$this->cancel_retest_job();
+		$this->schedule_retest_task();
 	}
 
 	/**
@@ -295,6 +306,21 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 
 		// Schedule the task.
 		$this->queue->schedule_auto_add_homepage_task();
+	}
+
+	/**
+	 * Schedule retest task.
+	 *
+	 * @return void
+	 */
+	private function schedule_retest_task() {
+		if ( ! $this->context->is_schedule_allowed() ) {
+			$this->cancel_retest_job();
+			return;
+		}
+
+		$schedule_frequency = $this->options->get( 'performance_monitoring_schedule_frequency', MONTH_IN_SECONDS );
+		$this->queue->schedule_retest_task( $schedule_frequency );
 	}
 
 	/**
