@@ -69,7 +69,7 @@ class RenderGlobalScoreWidgetTest extends TestCase {
 
 		// Capture output
 		ob_start();
-		do_action( 'rocket_after_sidebar_content' );
+		do_action( 'rocket_before_sidebar_content' );
 		$output = ob_get_clean();
 
 		$this->assertOutput( $output, $expected );

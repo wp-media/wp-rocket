@@ -155,7 +155,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'rocket_rocket_insights_job_added'            => 'reset_global_score',
 			'rocket_rocket_insights_job_retest'           => 'reset_global_score',
 			'rocket_rocket_insights_job_deleted'          => 'reset_global_score',
-			'rocket_after_sidebar_content'                => 'render_global_score_widget',
+			'rocket_before_sidebar_content'               => 'render_global_score_widget',
 			'rocket_insights_tab_content'                 => [
 				[ 'render_license_banner_section', 10 ],
 				[ 'maybe_show_paid_reach_limits_notice', 17 ],
