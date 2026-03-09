@@ -143,8 +143,15 @@ class Subscriber implements Subscriber_Interface {
 		$this->tracking->track_rocket_insights_test( $row_details, $job_details, $plan );
 	}
 
-	public function track_event( $event_name, $event_data = [] ): void {
+	/**
+	 * Track generic event with Mixpanel.
+	 *
+	 * @param string $event_name Event name to track.
+	 * @param array  $event_data Additional data to send with the event.
+	 *
+	 * @return void
+	 */
+	public function track_event( string $event_name, array $event_data = [] ): void {
 		$this->tracking->track_event( $event_name, $event_data );
-
 	}
 }

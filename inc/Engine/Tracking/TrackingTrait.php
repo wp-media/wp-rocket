@@ -18,5 +18,4 @@ trait TrackingTrait {
 		 */
 		do_action( 'rocket_track_event', $event_name, $event_data );
 	}
-
 }

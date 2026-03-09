@@ -354,7 +354,7 @@ class Tracking extends Abstract_Render {
 	 * Track event dynamically.
 	 *
 	 * @param string $event_name The name of the event to track.
-	 * @param array $event_data An associative array of event data to send with the event.
+	 * @param array  $event_data An associative array of event data to send with the event.
 	 * @return void
 	 */
 	public function track_event( $event_name, $event_data = [] ): void {
@@ -362,9 +362,12 @@ class Tracking extends Abstract_Render {
 			return;
 		}
 
-		$event_data = wp_parse_args( $event_data, [
-			'context' => 'wp_plugin',
-		] );
+		$event_data = wp_parse_args(
+			$event_data,
+			[
+				'context' => 'wp_plugin',
+			]
+			);
 
 		$this->mixpanel->track( $event_name, $event_data );
 	}
