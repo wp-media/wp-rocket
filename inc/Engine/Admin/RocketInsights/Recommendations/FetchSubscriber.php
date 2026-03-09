@@ -33,7 +33,7 @@ class FetchSubscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'rocket_insights_global_score_status_changed' => 'handle_status_change',
+			'rocket_insights_global_score_status_changed' => [ 'handle_status_change', 10, 2 ],
 		];
 	}
 
@@ -41,9 +41,10 @@ class FetchSubscriber implements Subscriber_Interface {
 	 * Handle global score status changes.
 	 *
 	 * @param string $new_status      New status.
+	 * @param string $previous_status Previous status.
 	 * @return void
 	 */
-	public function handle_status_change( string $new_status ): void {
+	public function handle_status_change( string $new_status, string $previous_status = '' ): void {
 		// Clear when tests start.
 		if ( 'in-progress' === $new_status ) {
 			$this->data_manager->clear_recommendations();
