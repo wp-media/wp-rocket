@@ -88,8 +88,7 @@ class ServiceProvider extends AbstractServiceProvider {
 				]
 			);
 
-		$this->getContainer()->add( 'ri_saas_context', SaasContext::class )
-			->addArgument( 'ri_context' );
+		$this->getContainer()->add( 'ri_saas_context', SaasContext::class );
 
 		$this->getContainer()->add( 'ri_metric_formatter', MetricFormatter::class );
 
