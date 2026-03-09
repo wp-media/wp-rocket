@@ -551,6 +551,11 @@ parameters:
 			path: inc/Engine/Tracking/Tracking.php
 
 		-
+			message: "#^Trait WP_Rocket\\\\Engine\\\\Tracking\\\\TrackingTrait is used zero times and is not analysed\\.$#"
+			count: 1
+			path: inc/Engine/Tracking/TrackingTrait.php
+
+		-
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: inc/ThirdParty/Hostings/Godaddy.php
