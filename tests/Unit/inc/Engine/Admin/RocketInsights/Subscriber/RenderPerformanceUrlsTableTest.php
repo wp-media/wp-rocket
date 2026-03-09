@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Admin\RocketInsights\Subscriber;
 
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\RocketInsights\Context\Context;
 use WP_Rocket\Engine\Admin\RocketInsights\Jobs\Manager;
 use WP_Rocket\Engine\Admin\RocketInsights\Managers\Plan;
@@ -65,12 +66,13 @@ class RenderPerformanceUrlsTableTest extends TestCase {
 		$ri_context->expects($this->any())
 			->method('is_adding_page_allowed')
 			->willReturn(count( $config['items'] ) < $config['rocket_insights_addon_limit']);
+		$options = $this->createMock(Options_Data::class);
 		$manager = $this->createMock(Manager::class);
 
 		$plan_mock = $this->createMock( Plan::class );
 		$renewal_mock = $this->createMock( Renewal::class );
 
-		$subscriber = new Subscriber($mock_render, $mock_controller, $mock_rest, $mock_queue, $ri_context, $mock_global_score, $manager, $plan_mock, $renewal_mock);
+		$subscriber = new Subscriber($mock_render, $mock_controller, $mock_rest, $mock_queue, $ri_context, $mock_global_score, $options, $manager, $plan_mock, $renewal_mock);
 		$subscriber->render_performance_urls_table();
 	}
 }

@@ -11,23 +11,6 @@ use WP_Rocket\Engine\Common\Context\ContextInterface;
  * Provides context for Rocket Insights SaaS operations.
  */
 class SaasContext implements ContextInterface {
-
-	/**
-	 * Context instance.
-	 *
-	 * @var Context
-	 */
-	private $context;
-
-	/**
-	 * Constructor.
-	 *
-	 * @param Context $context Context instance.
-	 */
-	public function __construct( Context $context ) {
-		$this->context = $context;
-	}
-
 	/**
 	 * Check if Rocket Insights is enabled.
 	 *
