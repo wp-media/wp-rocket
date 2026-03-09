@@ -1,3 +1,4 @@
+<div class="wpr-global-score-widget-wrapper">
 <div class="wpr-optionHeader">
 <h3 class="wpr-title2">Rocket Insights Score</h3>
 </div>
@@ -17,4 +18,5 @@
 </div>
 </div>
 </fieldset>
+</div>
 </div>
