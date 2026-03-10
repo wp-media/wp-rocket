@@ -12,15 +12,10 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group AdminOnly
  */
 class MaybeFetchAfterSettingsChangeTest extends TestCase {
-	private $fetch_called = false;
+protected $path_to_test_data = '/inc/Engine/Admin/RocketInsights/Recommendations/SettingsSubscriber/MaybeFetchAfterSettingsChangeIntegrationTest.php';
 
 	public function set_up() {
 		parent::set_up();
-
-		$this->fetch_called = false;
-
-		// Hook into fetch_recommendations to track if it was called.
-		add_filter( 'pre_transient_wpr_ri_recommendations', [ $this, 'track_fetch_call' ], 10, 1 );
 	}
 
 	public function tear_down() {
@@ -28,24 +23,7 @@ class MaybeFetchAfterSettingsChangeTest extends TestCase {
 		delete_transient( 'wpr_ri_recommendations' );
 		delete_transient( 'wpr_ri_global_score' );
 
-		// Remove our tracking filter.
-		remove_filter( 'pre_transient_wpr_ri_recommendations', [ $this, 'track_fetch_call' ] );
-
 		parent::tear_down();
-	}
-
-	/**
-	 * Track if fetch was called by checking transient operations.
-	 *
-	 * @param mixed $value Transient value.
-	 * @return mixed
-	 */
-	public function track_fetch_call( $value ) {
-		// If we're checking during the test, capture that fetch was called.
-		if ( doing_action( 'rocket_after_save_options' ) ) {
-			$this->fetch_called = true;
-		}
-		return $value;
 	}
 
 	/**
@@ -62,8 +40,17 @@ class MaybeFetchAfterSettingsChangeTest extends TestCase {
 			set_transient( 'wpr_ri_global_score', $config['global_score_data'], DAY_IN_SECONDS );
 		}
 
-		// Trigger the settings save action.
-		do_action( 'rocket_after_save_options', $config['old_options'], $config['new_options'] );
+		// Set up initial WP Rocket options (simulating the old options state).
+		update_option( WP_ROCKET_SLUG, $config['old_options'] );
+
+		// Store initial state for comparison.
+		$initial_recommendations = get_transient( 'wpr_ri_recommendations' );
+		$initial_timestamp       = isset( $initial_recommendations['timestamp'] ) ? $initial_recommendations['timestamp'] : 0;
+		$initial_hash            = isset( $initial_recommendations['metrics_hash'] ) ? $initial_recommendations['metrics_hash'] : '';
+
+		// Trigger the real settings save flow by updating option to new value.
+		// This will fire update_option_wp_rocket_settings → rocket_after_save_options() → do_action('rocket_after_save_options').
+		update_option( WP_ROCKET_SLUG, $config['new_options'] );
 
 		// Get the updated recommendations transient.
 		$recommendations = get_transient( 'wpr_ri_recommendations' );
@@ -71,12 +58,21 @@ class MaybeFetchAfterSettingsChangeTest extends TestCase {
 		// Verify expectations.
 		if ( $expected['should_trigger_fetch'] ) {
 			$this->assertNotFalse( $recommendations, 'Recommendations should exist after fetch' );
-			// In a real scenario, status might be 'loading' or 'completed'.
-			// For testing purposes, we just verify the transient was updated.
+			
+			// Verify that a fetch actually occurred by checking if timestamp or metrics_hash changed.
+			if ( $initial_timestamp > 0 ) {
+				$new_timestamp = isset( $recommendations['timestamp'] ) ? $recommendations['timestamp'] : 0;
+				$new_hash      = isset( $recommendations['metrics_hash'] ) ? $recommendations['metrics_hash'] : '';
+				
+				// At least one of these should have changed if a fetch occurred.
+				$has_changed = ( $new_timestamp !== $initial_timestamp ) || ( $new_hash !== $initial_hash );
+				$this->assertTrue( $has_changed, 'Fetch should update timestamp or metrics_hash' );
+			}
 		} else {
 			// If initial recommendations existed, they should remain unchanged.
 			if ( isset( $config['initial_recommendations'] ) ) {
-				$this->assertSame( $config['initial_recommendations'], $recommendations, 'Recommendations should not change' );
+				$this->assertSame( $initial_timestamp, isset( $recommendations['timestamp'] ) ? $recommendations['timestamp'] : 0, 'Timestamp should not change when fetch is not triggered' );
+				$this->assertSame( $initial_hash, isset( $recommendations['metrics_hash'] ) ? $recommendations['metrics_hash'] : '', 'Hash should not change when fetch is not triggered' );
 			}
 		}
 	}

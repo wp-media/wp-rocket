@@ -20,6 +20,16 @@ function rocket_after_save_options( $oldvalue, $value ) {
 		return;
 	}
 
+	/**
+	 * Fires after WP Rocket settings are saved, before any cache operations
+	 *
+	 * @since 3.20.5
+	 *
+	 * @param array $oldvalue An array of previous values for the settings.
+	 * @param array $value    An array of submitted values for the settings.
+	 */
+	do_action( 'rocket_after_save_options', $oldvalue, $value );
+
 	// phpcs:ignore WordPress.Security.NonceVerification.Missing
 	if ( ( array_key_exists( 'minify_js', $oldvalue ) && array_key_exists( 'minify_js', $value ) && $oldvalue['minify_js'] !== $value['minify_js'] )
 		||

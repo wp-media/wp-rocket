@@ -27,12 +27,6 @@ class MaybeFetchAfterSettingsChangeTest extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldHandleSettingsChange( $config, $expected ) {
-		// Skip integration test scenarios (they have different structure).
-		if ( ! isset( $config['status'] ) ) {
-			$this->markTestSkipped( 'Integration test scenario, skip for unit tests' );
-			return;
-		}
-
 		// Mock get_status.
 		$this->data_manager_mock->shouldReceive( 'get_status' )
 			->once()
