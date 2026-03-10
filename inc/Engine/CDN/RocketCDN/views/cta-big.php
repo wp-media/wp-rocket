@@ -92,15 +92,14 @@ $data = isset( $data ) && is_array( $data ) ? $data : []; // phpcs:ignore WordPr
 
 				<div class="wpr-rocketcdn-pricing--content">
 					<div class="wpr-rocketcdn-pricing--toggle">
-						<label class="wpr-rocketcdn-toggle">
-							<input type="checkbox" class="wpr-rocketcdn-toggle--input">
+						<input type="checkbox" class="wpr-rocketcdn-toggle--input" id="wpr-rocketcdn-toggle-input">
+						<label class="wpr-rocketcdn-toggle" for="wpr-rocketcdn-toggle-input">
 							<span class="wpr-rocketcdn-toggle--slider"></span>
 
 							<span class="wpr-rocketcdn-pricing--toggle-label wpr-rocketcdn-pricing--toggle-label--inactive"><?php esc_html_e( 'Monthly', 'rocket' ); ?></span>
 							<span class="wpr-rocketcdn-pricing--toggle-label wpr-rocketcdn-pricing--toggle-label--active"><?php esc_html_e( 'Yearly', 'rocket' ); ?></span>
-
-							<div class="wpr-rocketcdn-pricing--badge"><?php esc_html_e( '2 Months Free!', 'rocket' ); ?></div>
 						</label>
+						<div class="wpr-rocketcdn-pricing--badge"><?php esc_html_e( '2 Months Free!', 'rocket' ); ?></div>
 					</div>
 
 					<div class="wpr-rocketcdn-pricing--price-container">
