@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the WP Rocket plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.20.6-alpha2\n"
+"Project-Id-Version: WP Rocket 3.20.6-beta\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
 "Last-Translator: WP Media (http://wp-rocket.me/)\n"
 "Language-Team: WP Media (http://www.transifex.com/projects/p/wp-media/) <contact@wp-media.me>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-03-09T15:50:23+00:00\n"
+"POT-Creation-Date: 2026-03-10T07:34:16+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: rocket\n"
@@ -2566,23 +2566,23 @@ msgstr ""
 msgid "2 Months Free!"
 msgstr ""
 
-#: inc/Engine/CDN/RocketCDN/views/cta-big.php:127
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:132
 msgid "Billed Monthly."
 msgstr ""
 
-#: inc/Engine/CDN/RocketCDN/views/cta-big.php:128
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:133
 msgid "per month, billed yearly"
 msgstr ""
 
-#: inc/Engine/CDN/RocketCDN/views/cta-big.php:130
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:135
 msgid "excl. VAT"
 msgstr ""
 
-#: inc/Engine/CDN/RocketCDN/views/cta-big.php:134
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:139
 msgid "Get Started"
 msgstr ""
 
-#: inc/Engine/CDN/RocketCDN/views/cta-big.php:138
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:143
 msgid "Reduce this banner"
 msgstr ""
 
