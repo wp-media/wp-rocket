@@ -4311,6 +4311,7 @@ div.wpr-tutorial-item {
   line-height: 1.2727272727;
   font-weight: 600;
   color: #738191;
+  text-transform: uppercase;
 }
 
 .wpr-recommendations__load-more {
