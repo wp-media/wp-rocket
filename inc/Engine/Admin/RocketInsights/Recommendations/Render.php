@@ -99,7 +99,7 @@ class Render extends Abstract_Render {
 			'failed'    => 'failed',
 		];
 
-		return $status_map[ $status ] ?? 'loading';
+		return $status_map[ $status ];
 	}
 
 	/**
@@ -113,12 +113,12 @@ class Render extends Abstract_Render {
 
 		foreach ( $recommendations as $recommendation ) {
 			$formatted[] = [
-				'option_slug'    => $recommendation['option_slug'] ?? '',
-				'title'          => $recommendation['title'] ?? '',
-				'description'    => $recommendation['description'] ?? '',
-				'learn_more_url' => $recommendation['learn_more_url'] ?? '',
-				'icon_slug'      => $recommendation['icon_slug'] ?? '',
-				'priority'       => $recommendation['priority'] ?? 0,
+				'option_slug'    => $recommendation['option_slug'],
+				'title'          => $recommendation['title'],
+				'description'    => $recommendation['description'],
+				'learn_more_url' => $recommendation['learn_more_url'],
+				'icon_slug'      => $recommendation['icon_slug'],
+				'priority'       => $recommendation['priority'],
 				'impact_tags'    => $this->extract_impact_tags( $recommendation ),
 			];
 		}
@@ -136,10 +136,10 @@ class Render extends Abstract_Render {
 	 */
 	private function extract_impact_tags( array $recommendation ): array {
 		$impact_metrics = [
-			'lcp'  => $recommendation['lcp_impact'] ?? null,
-			'ttfb' => $recommendation['ttfb_impact'] ?? null,
-			'cls'  => $recommendation['cls_impact'] ?? null,
-			'tbt'  => $recommendation['tbt_impact'] ?? null,
+			'lcp'  => $recommendation['lcp_impact'],
+			'ttfb' => $recommendation['ttfb_impact'],
+			'cls'  => $recommendation['cls_impact'],
+			'tbt'  => $recommendation['tbt_impact'],
 		];
 
 		// Filter out null values - only include metrics with actual impact.
