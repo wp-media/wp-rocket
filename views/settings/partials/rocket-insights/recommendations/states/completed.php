@@ -16,21 +16,21 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$recommendations = $data['recommendations'] ?? [];
-$show_load_more  = $data['show_load_more'] ?? false;
+$rocket_ri_recommendations = $data['recommendations'];
+$rocket_ri_show_load_more  = $data['show_load_more'];
 ?>
 <div class="wpr-recommendations__list">
 	<?php
-	foreach ( $recommendations as $recommendation ) :
+	foreach ( $rocket_ri_recommendations as $rocket_ri_recommendation ) :
 		$this->render_parts_with_data(
 			'rocket-insights/recommendations/item',
-			$recommendation
+			$rocket_ri_recommendation
 		);
 	endforeach;
 	?>
 </div>
 
-<?php if ( $show_load_more ) : ?>
+<?php if ( $rocket_ri_show_load_more ) : ?>
 	<button type="button" class="wpr-recommendations__load-more" id="wpr-recommendations-load-more">
 		<span class="wpr-recommendations__load-more-text">
 			<?php esc_html_e( 'Load More', 'rocket' ); ?>

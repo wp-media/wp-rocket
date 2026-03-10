@@ -17,11 +17,11 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$state           = $data['state'];
-$recommendations = $data['recommendations'];
-$show_load_more  = $data['show_load_more'];
+$rocket_ri_state           = $data['state'];
+$rocket_ri_recommendations = $data['recommendations'];
+$rocket_ri_show_load_more  = $data['show_load_more'];
 ?>
-<div class="wpr-recommendations" data-state="<?php echo esc_attr( $state ); ?>">
+<div class="wpr-recommendations" data-state="<?php echo esc_attr( $rocket_ri_state ); ?>">
 	<div class="wpr-recommendations__header">
 		<h3 class="wpr-recommendations__title">
 			<?php esc_html_e( 'Recommendations', 'rocket' ); ?>
@@ -30,24 +30,24 @@ $show_load_more  = $data['show_load_more'];
 
 	<div class="wpr-recommendations__content">
 		<?php
-		switch ( $state ) {
+		switch ( $rocket_ri_state ) {
 			case 'loading':
 				$this->render_part( 'rocket-insights/recommendations/states/loading' );
 				break;
 
 			case 'failed':
-				$this->render_parts_with_data( 'rocket-insights/recommendations/states/failed', $data );
+				$this->render_part( 'rocket-insights/recommendations/states/failed' );
 				break;
 
 			case 'completed':
-				if ( empty( $recommendations ) ) {
+				if ( empty( $rocket_ri_recommendations ) ) {
 					$this->render_part( 'rocket-insights/recommendations/states/success' );
 				} else {
 					$this->render_parts_with_data(
 						'rocket-insights/recommendations/states/completed',
 						[
-							'recommendations' => $recommendations,
-							'show_load_more'  => $show_load_more,
+							'recommendations' => $rocket_ri_recommendations,
+							'show_load_more'  => $rocket_ri_show_load_more,
 						]
 					);
 				}

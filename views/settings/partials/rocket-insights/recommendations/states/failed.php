@@ -5,7 +5,6 @@
  * Shown when recommendations fetch failed.
  *
  * @since 3.21
- *
  */
 
 defined( 'ABSPATH' ) || exit;
