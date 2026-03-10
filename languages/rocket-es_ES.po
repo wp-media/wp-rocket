@@ -3252,7 +3252,7 @@ msgid ""
 "Benefit from automatic configuration of the CDN option in WP Rocket, making "
 "setup effortless."
 msgstr ""
-"  Aprovecha la configuración automática de CDN en WP Rocket y logra una "
+"Aprovecha la configuración automática de CDN en WP Rocket y logra una "
 "configuración muy fácil."
 
 #: inc/Engine/CDN/RocketCDN/views/cta-big.php:66
