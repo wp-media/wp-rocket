@@ -43,19 +43,19 @@ class Render extends Abstract_Render {
 		echo $this->get_recommendations_widget(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 
-    /**
-     * Retrieves the recommendations widget component.
-     *
-     * This method fetches the widget data and generates the HTML output
-     * for the recommendations widget using the specified template.
-     *
-     * @return string The rendered HTML of the recommendations widget.
-     */
-    public function get_recommendations_widget(): string {
-        $widget_data = $this->get_widget_data();
+	/**
+	 * Retrieves the recommendations widget component.
+	 *
+	 * This method fetches the widget data and generates the HTML output
+	 * for the recommendations widget using the specified template.
+	 *
+	 * @return string The rendered HTML of the recommendations widget.
+	 */
+	public function get_recommendations_widget(): string {
+		$widget_data = $this->get_widget_data();
 
-        return $this->generate( 'partials/rocket-insights/recommendations/widget', $widget_data );
-    }
+		return $this->generate( 'partials/rocket-insights/recommendations/widget', $widget_data );
+	}
 
 	/**
 	 * Get widget data based on current recommendation status.
