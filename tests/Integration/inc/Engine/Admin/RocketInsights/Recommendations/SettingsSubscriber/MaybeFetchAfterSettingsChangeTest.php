@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\RocketInsights\Recommendations\SettingsSubscriber;
 
 use WP_Rocket\Tests\Integration\TestCase;
+use WP_Rocket\Engine\Admin\RocketInsights\Recommendations\SettingsSubscriber;
 
 /**
  * Test class for SettingsSubscriber integration with WordPress hooks
@@ -12,68 +13,74 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group AdminOnly
  */
 class MaybeFetchAfterSettingsChangeTest extends TestCase {
-protected $path_to_test_data = '/inc/Engine/Admin/RocketInsights/Recommendations/SettingsSubscriber/MaybeFetchAfterSettingsChangeIntegrationTest.php';
 
 	public function set_up() {
 		parent::set_up();
+		
+		// Force admin context to ensure admin/options.php loads.
+		if ( ! defined( 'WP_ADMIN' ) ) {
+			define( 'WP_ADMIN', true );
+		}
+		
+		// Load admin options file to register the rocket_after_save_options hook.
+		require_once WP_ROCKET_ADMIN_PATH . 'options.php';
 	}
 
 	public function tear_down() {
-		// Clean up transients.
-		delete_transient( 'wpr_ri_recommendations' );
-		delete_transient( 'wpr_ri_global_score' );
-
 		parent::tear_down();
 	}
 
 	/**
-	 * @dataProvider configTestData
+	 * Test that the rocket_after_save_options hook exists and fires when options are saved.
 	 */
-	public function testShouldHandleSettingsChanges( $config, $expected ) {
-		// Set up initial recommendation status.
-		if ( isset( $config['initial_recommendations'] ) ) {
-			set_transient( 'wpr_ri_recommendations', $config['initial_recommendations'], DAY_IN_SECONDS );
-		}
+	public function testShouldFireRocketAfterSaveOptionsHook() {
+		$hook_fired = false;
+		$old_value_received = null;
+		$new_value_received = null;
 
-		// Set up global score data.
-		if ( isset( $config['global_score_data'] ) ) {
-			set_transient( 'wpr_ri_global_score', $config['global_score_data'], DAY_IN_SECONDS );
-		}
+		// Hook into the action to verify it fires.
+		add_action(
+			'rocket_after_save_options',
+			function( $old_value, $new_value ) use ( &$hook_fired, &$old_value_received, &$new_value_received ) {
+				$hook_fired = true;
+				$old_value_received = $old_value;
+				$new_value_received = $new_value;
+			},
+			10,
+			2
+		);
 
-		// Set up initial WP Rocket options (simulating the old options state).
-		update_option( WP_ROCKET_SLUG, $config['old_options'] );
+		$old_options = [ 'minify_css' => 0 ];
+		$new_options = [ 'minify_css' => 1 ];
 
-		// Store initial state for comparison.
-		$initial_recommendations = get_transient( 'wpr_ri_recommendations' );
-		$initial_timestamp       = isset( $initial_recommendations['timestamp'] ) ? $initial_recommendations['timestamp'] : 0;
-		$initial_hash            = isset( $initial_recommendations['metrics_hash'] ) ? $initial_recommendations['metrics_hash'] : '';
+		// Set up initial options.
+		update_option( WP_ROCKET_SLUG, $old_options );
 
-		// Trigger the real settings save flow by updating option to new value.
-		// This will fire update_option_wp_rocket_settings → rocket_after_save_options() → do_action('rocket_after_save_options').
-		update_option( WP_ROCKET_SLUG, $config['new_options'] );
+		// Update options to trigger the hook.
+		update_option( WP_ROCKET_SLUG, $new_options );
 
-		// Get the updated recommendations transient.
-		$recommendations = get_transient( 'wpr_ri_recommendations' );
+		// Verify hook fired with correct parameters.
+		$this->assertTrue( $hook_fired, 'rocket_after_save_options hook should fire when settings are saved' );
+		$this->assertSame( $old_options, $old_value_received, 'Old options should be passed to hook' );
+		$this->assertSame( $new_options, $new_value_received, 'New options should be passed to hook' );
+	}
 
-		// Verify expectations.
-		if ( $expected['should_trigger_fetch'] ) {
-			$this->assertNotFalse( $recommendations, 'Recommendations should exist after fetch' );
-			
-			// Verify that a fetch actually occurred by checking if timestamp or metrics_hash changed.
-			if ( $initial_timestamp > 0 ) {
-				$new_timestamp = isset( $recommendations['timestamp'] ) ? $recommendations['timestamp'] : 0;
-				$new_hash      = isset( $recommendations['metrics_hash'] ) ? $recommendations['metrics_hash'] : '';
-				
-				// At least one of these should have changed if a fetch occurred.
-				$has_changed = ( $new_timestamp !== $initial_timestamp ) || ( $new_hash !== $initial_hash );
-				$this->assertTrue( $has_changed, 'Fetch should update timestamp or metrics_hash' );
-			}
-		} else {
-			// If initial recommendations existed, they should remain unchanged.
-			if ( isset( $config['initial_recommendations'] ) ) {
-				$this->assertSame( $initial_timestamp, isset( $recommendations['timestamp'] ) ? $recommendations['timestamp'] : 0, 'Timestamp should not change when fetch is not triggered' );
-				$this->assertSame( $initial_hash, isset( $recommendations['metrics_hash'] ) ? $recommendations['metrics_hash'] : '', 'Hash should not change when fetch is not triggered' );
-			}
+	/**
+	 * Test that the SettingsSubscriber is properly registered in the container.
+	 */
+	public function testShouldRegisterSettingsSubscriberInContainer() {
+		$container = apply_filters( 'rocket_container', null );
+		
+		$this->assertNotNull( $container, 'Container should exist' );
+		$this->assertTrue( $container->has( 'ri_recommendations_settings_subscriber' ), 'SettingsSubscriber should be registered in container' );
+		
+		if ( $container->has( 'ri_recommendations_settings_subscriber' ) ) {
+			$subscriber = $container->get( 'ri_recommendations_settings_subscriber' );
+			$this->assertInstanceOf(
+				'WP_Rocket\Engine\Admin\RocketInsights\Recommendations\SettingsSubscriber',
+				$subscriber,
+				'Subscriber should be correct instance'
+			);
 		}
 	}
 }

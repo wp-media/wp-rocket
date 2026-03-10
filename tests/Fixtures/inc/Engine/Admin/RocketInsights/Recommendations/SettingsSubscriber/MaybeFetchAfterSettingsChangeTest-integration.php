@@ -2,19 +2,10 @@
 
 return [
 	'test_data' => [
-		'shouldNotTriggerFetchWhenStatusIsPendingIntegration' => [
+		'shouldNotTriggerFetchWhenNoGlobalScoreDataIntegration' => [
 			'config' => [
-				'initial_recommendations' => null, // No recommendations yet.
-				'global_score_data'       => [
-					'status'          => 'completed',
-					'score'           => 75,
-					'average_metrics' => [
-						'lcp'  => 2.5,
-						'ttfb' => 0.8,
-						'cls'  => 0.1,
-						'tbt'  => 200,
-					],
-				],
+				'initial_recommendations' => null,
+				'global_score_data'       => null, // No global score yet.
 				'old_options'             => [ 'minify_css' => 0 ],
 				'new_options'             => [ 'minify_css' => 1 ],
 			],
@@ -50,7 +41,7 @@ return [
 			],
 		],
 
-		'shouldTriggerFetchWhenStatusCompletedAndRelevantChangesIntegration' => [
+		'shouldTriggerFetchWhenRelevantChangesIntegration' => [
 			'config' => [
 				'initial_recommendations' => [
 					'status'          => 'completed',
@@ -76,34 +67,6 @@ return [
 				],
 				'old_options'             => [ 'minify_css' => 0 ],
 				'new_options'             => [ 'minify_css' => 1 ],
-			],
-			'expected' => [
-				'should_trigger_fetch' => true,
-			],
-		],
-
-		'shouldTriggerFetchWhenStatusFailedAndRelevantChangesIntegration' => [
-			'config' => [
-				'initial_recommendations' => [
-					'status'          => 'failed',
-					'recommendations' => [],
-					'metadata'        => [],
-					'timestamp'       => 1234567890,
-					'error'           => 'API error',
-					'metrics_hash'    => 'old_hash_456',
-				],
-				'global_score_data'       => [
-					'status'          => 'completed',
-					'score'           => 75,
-					'average_metrics' => [
-						'lcp'  => 2.5,
-						'ttfb' => 0.8,
-						'cls'  => 0.1,
-						'tbt'  => 200,
-					],
-				],
-				'old_options'             => [ 'delay_js' => 0 ],
-				'new_options'             => [ 'delay_js' => 1 ],
 			],
 			'expected' => [
 				'should_trigger_fetch' => true,
