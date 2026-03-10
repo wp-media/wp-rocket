@@ -5534,7 +5534,7 @@ msgstr "Analizando tu página (~1 min)"
 
 #: views/settings/partials/rocket-insights/table-row.php:45
 msgid "ago"
-msgstr "antes"
+msgstr "atrás"
 
 #: views/settings/partials/rocket-insights/table-row.php:60
 msgid "Re-Test"
