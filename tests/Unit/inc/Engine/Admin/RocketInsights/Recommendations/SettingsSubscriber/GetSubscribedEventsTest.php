@@ -13,10 +13,10 @@ class GetSubscribedEventsTest extends TestCase {
 	public function testGetSubscribedEvents() {
 		$events = SettingsSubscriber::get_subscribed_events();
 
-		$this->assertArrayHasKey( 'rocket_after_save_options', $events );
-		$this->assertIsArray( $events['rocket_after_save_options'] );
-		$this->assertSame( 'maybe_fetch_after_settings_change', $events['rocket_after_save_options'][0] );
-		$this->assertSame( 10, $events['rocket_after_save_options'][1] );
-		$this->assertSame( 2, $events['rocket_after_save_options'][2] );
+		$this->assertArrayHasKey( 'update_option_wp_rocket_settings', $events );
+		$this->assertIsArray( $events['update_option_wp_rocket_settings'] );
+		$this->assertSame( 'maybe_fetch_after_settings_change', $events['update_option_wp_rocket_settings'][0] );
+		$this->assertSame( 10, $events['update_option_wp_rocket_settings'][1] );
+		$this->assertSame( 2, $events['update_option_wp_rocket_settings'][2] );
 	}
 }
