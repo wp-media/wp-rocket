@@ -1,19 +1,19 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\classes\third_party\plugins\Images\Webp\EwwwSubscriber;
+namespace WP_Rocket\Tests\Unit\ThirdParty\Plugins\EWWW;
 
 use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
-use WPMedia\PHPUnit\Unit\TestCase;
-use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber;
+use WP_Rocket\ThirdParty\Plugins\EWWW;
+use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * Test class covering \WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber::maybe_remove_images_from_cdn_dropdown
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\EWWW::maybe_remove_images_from_cdn_dropdown
  * @group  ThirdParty
  * @group  Webp
  */
-class Test_MaybeRemoveImagesFromCdnDropdown extends TestCase {
+class MaybeRemoveImagesFromCdnDropdownTest extends TestCase {
 
 	public function testShouldReturnIdenticalWhenExactdnNotEnabled() {
 		$optionsData = Mockery::mock( Options_Data::class );
@@ -21,7 +21,7 @@ class Test_MaybeRemoveImagesFromCdnDropdown extends TestCase {
 		Functions\when( 'ewww_image_optimizer_get_option' )
 			->justReturn( false );
 
-		$subscriber = new EWWW_Subscriber( $optionsData );
+		$subscriber = new EWWW( $optionsData );
 
 		$this->assertFalse( $subscriber->maybe_remove_images_from_cdn_dropdown( false ) );
 		$this->assertTrue( $subscriber->maybe_remove_images_from_cdn_dropdown( true ) );
@@ -33,7 +33,7 @@ class Test_MaybeRemoveImagesFromCdnDropdown extends TestCase {
 		Functions\when( 'ewww_image_optimizer_get_option' )
 			->justReturn( true );
 
-		$subscriber = new EWWW_Subscriber( $optionsData );
+		$subscriber = new EWWW( $optionsData );
 
 		$this->assertFalse( $subscriber->maybe_remove_images_from_cdn_dropdown( false ) );
 		$this->assertFalse( $subscriber->maybe_remove_images_from_cdn_dropdown( true ) );
