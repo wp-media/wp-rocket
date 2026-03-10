@@ -115,12 +115,18 @@ $data = isset( $data ) && is_array( $data ) ? $data : []; // phpcs:ignore WordPr
 
 						<div class="wpr-rocketcdn-pricing--price">
 							<span class="wpr-rocketcdn-pricing--currency">$</span>
+							<?php
+							// Handle both period and comma as decimal separators for i18n.
+							// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- Template variable, not a global.
+							$monthly_decimal_pos = max( (int) strpos( $data['current_price_monthly'], '.' ), (int) strpos( $data['current_price_monthly'], ',' ) );
+							// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- Template variable, not a global.
+							$annual_decimal_pos = max( (int) strpos( $data['current_price_annual'], '.' ), (int) strpos( $data['current_price_annual'], ',' ) );
+							?>
+							<span class="wpr-rocketcdn-pricing--amount wpr-rocketcdn-pricing--monthly"><?php echo esc_html( substr( $data['current_price_monthly'], 0, $monthly_decimal_pos ) ); ?></span>
+							<span class="wpr-rocketcdn-pricing--cents wpr-rocketcdn-pricing--monthly"><?php echo esc_html( substr( $data['current_price_monthly'], $monthly_decimal_pos ) ); ?></span>
 
-							<span class="wpr-rocketcdn-pricing--amount wpr-rocketcdn-pricing--monthly"><?php echo esc_html( substr( $data['current_price_monthly'], 0, strpos( $data['current_price_monthly'], '.' ) ) ); ?></span>
-							<span class="wpr-rocketcdn-pricing--cents wpr-rocketcdn-pricing--monthly"><?php echo esc_html( substr( $data['current_price_monthly'], strpos( $data['current_price_monthly'], '.' ) ) ); ?></span>
-
-							<span class="wpr-rocketcdn-pricing--amount wpr-rocketcdn-pricing--annual wpr-isHidden"><?php echo esc_html( substr( $data['current_price_annual'], 0, strpos( $data['current_price_annual'], '.' ) ) ); ?></span>
-							<span class="wpr-rocketcdn-pricing--cents wpr-rocketcdn-pricing--annual wpr-isHidden"><?php echo esc_html( substr( $data['current_price_annual'], strpos( $data['current_price_annual'], '.' ) ) ); ?></span>
+							<span class="wpr-rocketcdn-pricing--amount wpr-rocketcdn-pricing--annual wpr-isHidden"><?php echo esc_html( substr( $data['current_price_annual'], 0, $annual_decimal_pos ) ); ?></span>
+							<span class="wpr-rocketcdn-pricing--cents wpr-rocketcdn-pricing--annual wpr-isHidden"><?php echo esc_html( substr( $data['current_price_annual'], $annual_decimal_pos ) ); ?></span>
 						</div>
 						<div class="wpr-rocketcdn-pricing--billing">
 							<div class="wpr-rocketcdn-pricing--billing-period">
