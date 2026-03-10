@@ -38,19 +38,7 @@ return [
 			],
 		],
 
-		'shouldNotFetchWhenHashUnchanged' => [
-			'config' => [
-				'status'                => 'completed',
-				'has_relevant_changes'  => true,
-				'old_options'           => [ 'minify_css' => 0 ],
-				'new_options'           => [ 'minify_css' => 1 ],
-			],
-			'expected' => [
-				'should_fetch' => false,
-			],
-		],
-
-		'shouldFetchWhenStatusCompletedAndRelevantChangesAndHashChanged' => [
+		'shouldFetchWhenStatusCompletedAndRelevantChanges' => [
 			'config' => [
 				'status'                => 'completed',
 				'has_relevant_changes'  => true,

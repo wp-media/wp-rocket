@@ -48,7 +48,6 @@ class SettingsSubscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * Only fetches if:
 	 * - Status is completed or failed
 	 * - Changed settings affect recommendations
-	 * - Metrics hash would change
 	 *
 	 * @param array $old_options Previous settings.
 	 * @param array $new_options New settings.
@@ -70,12 +69,6 @@ class SettingsSubscriber implements Subscriber_Interface, LoggerAwareInterface {
 		// Check if relevant settings changed.
 		if ( ! $this->has_relevant_changes( $old_options, $new_options ) ) {
 			$this->logger::debug( 'Recommendations: Settings changed but none affect recommendations' );
-			return;
-		}
-
-		// Check if hash would change (prevents redundant fetch).
-		if ( ! $this->data_manager->should_fetch_recommendations() ) {
-			$this->logger::debug( 'Recommendations: Settings changed but hash unchanged' );
 			return;
 		}
 

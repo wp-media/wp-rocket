@@ -32,9 +32,8 @@ class MaybeFetchAfterSettingsChangeTest extends TestCase {
 			->once()
 			->andReturn( $config['status'] );
 
-		// If status is not ready, should bail early without checking hash or fetching.
+		// If status is not ready, should bail early without fetching.
 		if ( ! in_array( $config['status'], [ 'completed', 'failed' ], true ) ) {
-			$this->data_manager_mock->shouldNotReceive( 'should_fetch_recommendations' );
 			$this->data_manager_mock->shouldNotReceive( 'fetch_recommendations' );
 
 			$this->subscriber->maybe_fetch_after_settings_change(
@@ -46,26 +45,8 @@ class MaybeFetchAfterSettingsChangeTest extends TestCase {
 			return;
 		}
 
-		// If no relevant changes, should bail without checking hash or fetching.
+		// If no relevant changes, should bail without fetching.
 		if ( ! $config['has_relevant_changes'] ) {
-			$this->data_manager_mock->shouldNotReceive( 'should_fetch_recommendations' );
-			$this->data_manager_mock->shouldNotReceive( 'fetch_recommendations' );
-
-			$this->subscriber->maybe_fetch_after_settings_change(
-				$config['old_options'],
-				$config['new_options']
-			);
-
-			$this->addToAssertionCount( Mockery::getContainer()->mockery_getExpectationCount() );
-			return;
-		}
-
-		// If hash hasn't changed, should not fetch.
-		if ( ! $expected['should_fetch'] ) {
-			$this->data_manager_mock->shouldReceive( 'should_fetch_recommendations' )
-				->once()
-				->andReturn( false );
-
 			$this->data_manager_mock->shouldNotReceive( 'fetch_recommendations' );
 
 			$this->subscriber->maybe_fetch_after_settings_change(
@@ -78,10 +59,6 @@ class MaybeFetchAfterSettingsChangeTest extends TestCase {
 		}
 
 		// Should fetch when all conditions met.
-		$this->data_manager_mock->shouldReceive( 'should_fetch_recommendations' )
-			->once()
-			->andReturn( true );
-
 		$this->data_manager_mock->shouldReceive( 'fetch_recommendations' )
 			->once()
 			->andReturn( true );
