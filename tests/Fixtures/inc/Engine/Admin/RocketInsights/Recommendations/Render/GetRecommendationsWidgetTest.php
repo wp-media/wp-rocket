@@ -1,13 +1,4 @@
 <?php
-/**
- * Test data for GetRecommendationsWidgetTest.
- *
- * Tests the various states of the recommendations widget:
- * - Loading: No transient data
- * - Completed: Has recommendations to display
- * - Failed: API returned an error
- * - Success: All recommendations have been applied (empty list)
- */
 
 return [
 	'testShouldDisplayLoadingStateWhenNoTransientData' => [
@@ -127,8 +118,8 @@ return [
 				'Activate',
 			],
 			'impact_tags'          => [
-				'LCP',
-				'TBT',
+				'lcp',
+				'tbt',
 			],
 			'show_load_more'       => false,
 			'not_contains'         => [
@@ -291,10 +282,10 @@ return [
 		'expected' => [
 			'state'       => 'completed',
 			'impact_tags' => [
-				'LCP',
-				'TTFB',
-				'CLS',
-				'TBT',
+				'lcp',
+				'ttfb',
+				'cls',
+				'tbt',
 			],
 		],
 	],
