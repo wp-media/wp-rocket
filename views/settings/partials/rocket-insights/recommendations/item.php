@@ -19,14 +19,14 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$rocket_option_slug    = $data['option_slug'] ?? '';
-$rocket_title          = $data['title'] ?? '';
-$rocket_description    = $data['description'] ?? '';
-$rocket_learn_more_url = $data['learn_more_url'] ?? '';
-$rocket_icon_slug      = $data['icon_slug'] ?? '';
-$rocket_impact_tags    = $data['impact_tags'] ?? [];
+$rocket_option_slug    = $data['option_slug'];
+$rocket_title          = $data['title'];
+$rocket_description    = $data['description'];
+$rocket_learn_more_url = $data['learn_more_url'];
+$rocket_icon_slug      = $data['icon_slug'];
+$rocket_impact_tags    = $data['impact_tags'];
 ?>
-<div class="wpr-recommendation-item" data-option-slug="<?php echo esc_attr( $rocket_option_slug ); ?>">
+<div class="wpr-recommendation-item">
 	<div class="wpr-recommendation-item__inner">
 		<div class="wpr-recommendation-item__wrapper">
 			<div class="wpr-recommendation-item__header">
@@ -50,7 +50,7 @@ $rocket_impact_tags    = $data['impact_tags'] ?? [];
 						<div class="wpr-recommendation-item__impact-tags">
 							<?php foreach ( $rocket_impact_tags as $rocket_metric => $rocket_value ) : ?>
 								<span class="wpr-impact-tag" data-impact-value="<?php echo esc_attr( $rocket_value ); ?>">
-									<?php echo esc_html( strtoupper( $rocket_metric ) ); ?>
+									<?php echo esc_html( $rocket_metric ); ?>
 								</span>
 							<?php endforeach; ?>
 						</div>
