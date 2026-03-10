@@ -38,7 +38,7 @@ class SettingsSubscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'rocket_after_save_options' => [ 'maybe_fetch_after_settings_change', 10, 2 ],
+			'update_option_wp_rocket_settings' => [ 'maybe_fetch_after_settings_change', 10, 2 ],
 		];
 	}
 
@@ -93,30 +93,8 @@ class SettingsSubscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return bool True if relevant changes detected.
 	 */
 	private function has_relevant_changes( array $old_options, array $new_options ): bool {
-		// Get list of recommendation-related options.
-		$relevant_keys = [
-			'minify_css',
-			'minify_js',
-			'minify_concatenate_css',
-			'minify_concatenate_js',
-			'defer_all_js',
-			'delay_js',
-			'async_css',
-			'critical_css',
-			'remove_unused_css',
-			'lazyload',
-			'lazyload_iframes',
-			'lazyload_youtube',
-			'image_dimensions',
-			'cdn',
-			'do_caching_mobile_files',
-			'cache_logged_user',
-			'cache_webp',
-			'manual_preload',
-			'sitemap_preload',
-			'control_heartbeat',
-			'minify_google_fonts',
-		];
+		// Get list of recommendation-related options from DataManager.
+		$relevant_keys = DataManager::get_tracked_option_keys();
 
 		// Check if any relevant setting changed.
 		foreach ( $relevant_keys as $key ) {

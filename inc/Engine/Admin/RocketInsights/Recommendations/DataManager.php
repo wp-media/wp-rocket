@@ -31,6 +31,37 @@ class DataManager implements LoggerAwareInterface {
 	private const CACHE_EXPIRATION = DAY_IN_SECONDS;
 
 	/**
+	 * Map of WP Rocket option keys to recommendation option slugs.
+	 *
+	 * These options affect recommendations and should trigger a refresh when changed.
+	 *
+	 * @var array<string, string>
+	 */
+	private const TRACKED_OPTIONS = [
+		'minify_css'              => 'minify_css',
+		'minify_js'               => 'minify_js',
+		'minify_concatenate_css'  => 'combine_css',
+		'minify_concatenate_js'   => 'combine_js',
+		'defer_all_js'            => 'defer_js',
+		'delay_js'                => 'delay_js',
+		'async_css'               => 'async_css',
+		'critical_css'            => 'critical_css',
+		'remove_unused_css'       => 'remove_unused_css',
+		'lazyload'                => 'lazyload_images',
+		'lazyload_iframes'        => 'lazyload_iframes',
+		'lazyload_youtube'        => 'lazyload_youtube',
+		'image_dimensions'        => 'add_missing_image_dimensions',
+		'cdn'                     => 'cdn',
+		'do_caching_mobile_files' => 'separate_cache_mobile',
+		'cache_logged_user'       => 'cache_logged_in_users',
+		'cache_webp'              => 'cache_webp',
+		'manual_preload'          => 'preload',
+		'sitemap_preload'         => 'sitemap_preload',
+		'control_heartbeat'       => 'control_heartbeat',
+		'minify_google_fonts'     => 'optimize_google_fonts',
+	];
+
+	/**
 	 * Recommendations API Client instance.
 	 *
 	 * @var APIClient
@@ -222,6 +253,15 @@ class DataManager implements LoggerAwareInterface {
 	}
 
 	/**
+	 * Get list of WP Rocket option keys that affect recommendations.
+	 *
+	 * @return array<string> Array of option keys.
+	 */
+	public static function get_tracked_option_keys(): array {
+		return array_keys( self::TRACKED_OPTIONS );
+	}
+
+	/**
 	 * Get current recommendation status.
 	 *
 	 * @return string Status: 'pending', 'loading', 'completed', 'failed'.
@@ -385,32 +425,7 @@ class DataManager implements LoggerAwareInterface {
 	private function get_enabled_options(): array {
 		$enabled = [];
 
-		// Map of WP Rocket option keys to recommendation option slugs.
-		$option_map = [
-			'minify_css'              => 'minify_css',
-			'minify_js'               => 'minify_js',
-			'minify_concatenate_css'  => 'combine_css',
-			'minify_concatenate_js'   => 'combine_js',
-			'defer_all_js'            => 'defer_js',
-			'delay_js'                => 'delay_js',
-			'async_css'               => 'async_css',
-			'critical_css'            => 'critical_css',
-			'remove_unused_css'       => 'remove_unused_css',
-			'lazyload'                => 'lazyload_images',
-			'lazyload_iframes'        => 'lazyload_iframes',
-			'lazyload_youtube'        => 'lazyload_youtube',
-			'image_dimensions'        => 'add_missing_image_dimensions',
-			'cdn'                     => 'cdn',
-			'do_caching_mobile_files' => 'separate_cache_mobile',
-			'cache_logged_user'       => 'cache_logged_in_users',
-			'cache_webp'              => 'cache_webp',
-			'manual_preload'          => 'preload',
-			'sitemap_preload'         => 'sitemap_preload',
-			'control_heartbeat'       => 'control_heartbeat',
-			'minify_google_fonts'     => 'optimize_google_fonts',
-		];
-
-		foreach ( $option_map as $option_key => $option_slug ) {
+		foreach ( self::TRACKED_OPTIONS as $option_key => $option_slug ) {
 			$value = $this->options->get( $option_key, false );
 
 			// Check if option is enabled.
