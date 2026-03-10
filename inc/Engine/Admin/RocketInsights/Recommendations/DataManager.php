@@ -237,6 +237,90 @@ class DataManager implements LoggerAwareInterface {
 	}
 
 	/**
+	 * Check if required metrics are available for recommendations.
+	 *
+	 * @return bool True if metrics exist, false otherwise.
+	 */
+	public function has_required_metrics(): bool {
+		$average_metrics = $this->get_average_metrics();
+
+		if ( null === $average_metrics ) {
+			return false;
+		}
+
+		// Verify core metrics exist.
+		$required = [ 'lcp', 'ttfb', 'cls', 'tbt' ];
+		foreach ( $required as $metric ) {
+			if ( ! isset( $average_metrics[ $metric ] ) ) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Determine if recommendations should be fetched.
+	 *
+	 * Compares current metrics hash with cached hash.
+	 *
+	 * @return bool True if should fetch, false if cache is valid.
+	 */
+	public function should_fetch_recommendations(): bool {
+		// Get cached data.
+		$cached_data = $this->get_recommendations();
+
+		// If no cache, always fetch.
+		if ( false === $cached_data ) {
+			return true;
+		}
+
+		// Calculate current hash.
+		$current_hash = $this->calculate_metrics_hash();
+
+		// Get cached hash.
+		$cached_hash = $cached_data['metrics_hash'] ?? null;
+
+		// If hash differs or doesn't exist, fetch new recommendations.
+		if ( null === $cached_hash || $current_hash !== $cached_hash ) {
+			$this->logger::debug(
+				'Recommendations: Metrics hash changed',
+				[
+					'cached_hash'  => $cached_hash,
+					'current_hash' => $current_hash,
+				]
+			);
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Calculate hash from current metrics and enabled options.
+	 *
+	 * @return string Hash of current state.
+	 */
+	private function calculate_metrics_hash(): string {
+		// Get global score data.
+		$global_score_data = $this->global_score->get_global_score_data();
+		$score             = $global_score_data['score'] ?? 0;
+		$average_metrics   = $global_score_data['average_metrics'] ?? [];
+
+		// Get enabled options.
+		$enabled_options = $this->get_enabled_options();
+
+		// Combine all data that affects recommendations.
+		$hash_data = [
+			'score'           => $score,
+			'average_metrics' => $average_metrics,
+			'enabled_options' => $enabled_options,
+		];
+
+		return md5( (string) wp_json_encode( $hash_data ) );
+	}
+
+	/**
 	 * Set loading status in transient.
 	 *
 	 * @return void
@@ -261,12 +345,16 @@ class DataManager implements LoggerAwareInterface {
 	 * @return void
 	 */
 	private function save_recommendations( array $data ): void {
+		// Add current metrics hash.
+		$data['metrics_hash'] = $this->calculate_metrics_hash();
+
 		set_transient( self::TRANSIENT_NAME, $data, self::CACHE_EXPIRATION );
 
 		$this->logger::debug(
 			'Recommendations: Saved to cache',
 			[
-				'status' => $data['status'],
+				'status'       => $data['status'],
+				'metrics_hash' => $data['metrics_hash'],
 			]
 		);
 	}
