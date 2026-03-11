@@ -70,6 +70,10 @@
 			border-bottom: 1px solid $cGreyLighter1;
 			padding-bottom: $space * 2;
 		}
+
+		.wpr-recommendation-item:last-child {
+			border-bottom: none;
+		}
 	}
 
 	// Loading state
