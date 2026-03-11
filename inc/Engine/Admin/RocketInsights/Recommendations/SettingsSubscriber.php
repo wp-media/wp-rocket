@@ -57,6 +57,11 @@ class SettingsSubscriber implements Subscriber_Interface, LoggerAwareInterface {
 		// Check current status.
 		$status = $this->data_manager->get_status();
 
+		// If status is expired, fetch new recommendations immediately.
+		if ( 'expired' === $status ) {
+			$this->fetch_recommendations();
+		}
+
 		// Only proceed if recommendations exist.
 		if ( ! in_array( $status, [ 'completed', 'failed' ], true ) ) {
 			$this->logger::debug(
@@ -72,10 +77,7 @@ class SettingsSubscriber implements Subscriber_Interface, LoggerAwareInterface {
 			return;
 		}
 
-		$this->logger::info( 'Recommendations: Relevant settings changed, fetching new recommendations' );
-
-		// Fetch new recommendations.
-		$this->data_manager->fetch_recommendations();
+		$this->fetch_recommendations();
 	}
 
 	/**
@@ -100,5 +102,17 @@ class SettingsSubscriber implements Subscriber_Interface, LoggerAwareInterface {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Fetch new recommendations and log the action.
+	 *
+	 * @return void
+	 */
+	private function fetch_recommendations() {
+		$this->logger::info( 'Recommendations: Relevant settings changed, fetching new recommendations' );
+
+		// Fetch new recommendations.
+		$this->data_manager->fetch_recommendations();
 	}
 }
