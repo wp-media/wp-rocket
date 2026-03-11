@@ -33,7 +33,7 @@ $rocket_ri_show_load_more  = $data['show_load_more'];
 <?php if ( $rocket_ri_show_load_more ) : ?>
 	<button type="button" class="wpr-recommendations__load-more" id="wpr-recommendations-load-more">
 		<span class="wpr-recommendations__load-more-text">
-			<?php esc_html_e( 'Load More', 'rocket' ); ?>
+			<?php esc_html_e( 'More Recommendations', 'rocket' ); ?>
 		</span>
 	</button>
 <?php endif; ?>

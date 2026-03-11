@@ -240,7 +240,7 @@ return [
 				'Remove Unused CSS',
 				'Enable LazyLoad for Images',
 				'Minify CSS Files',
-				'Load More',
+				'More Recommendations',
 			],
 			'show_load_more'       => true,
 		],
