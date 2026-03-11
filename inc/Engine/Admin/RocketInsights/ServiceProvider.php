@@ -78,7 +78,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	}
 
 	/**
-	 * Registers the classes in the container
+	 * Registers the classes in the container.
 	 *
 	 * @return void
 	 */
@@ -263,7 +263,6 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArguments(
 				[
 					new StringArgument( $this->getContainer()->get( 'template_path' ) . '/settings/' ),
-					'ri_recommendations_data_manager',
 				]
 			);
 
@@ -273,6 +272,7 @@ class ServiceProvider extends AbstractServiceProvider {
 				[
 					'ri_recommendations_render',
 					'ri_context',
+					'ri_recommendations_data_manager',
 				]
 			);
 
