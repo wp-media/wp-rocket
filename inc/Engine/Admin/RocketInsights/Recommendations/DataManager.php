@@ -230,7 +230,7 @@ class DataManager implements LoggerAwareInterface {
 	public function get_status(): string {
 		$data = $this->get_recommendations();
 
-		if ( false === $data || empty( $data['status'] ) ) {
+		if ( false === $data ) {
 			return 'expired';
 		}
 
