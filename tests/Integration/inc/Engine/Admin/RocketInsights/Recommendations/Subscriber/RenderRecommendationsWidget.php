@@ -121,13 +121,11 @@ class Test_RenderRecommendationsWidget extends TestCase {
 		}
 
 		// Check the data-state attribute on the container.
-		if ( isset( $expected['state'] ) ) {
-			$this->assertStringContainsString(
-				'data-state="' . $expected['state'] . '"',
-				$output,
-				"Expected data-state='{$expected['state']}' attribute not found in output."
-			);
-		}
+		$this->assertStringContainsString(
+			'data-state="' . $expected['state'] . '"',
+			$output,
+			"Expected data-state='{$expected['state']}' attribute not found in output."
+		);
 
 		// Check for specific strings that should be present.
 		if ( isset( $expected['contains'] ) ) {
