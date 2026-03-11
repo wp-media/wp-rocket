@@ -17,9 +17,9 @@ class Render extends Abstract_Render {
 	/**
 	 * Constructor.
 	 *
-	 * @param string      $template_path Path to the template file.
+	 * @param string $template_path Path to the template file.
 	 */
-	public function __construct( string $template_path ) {
+	public function __construct( string $template_path ) { // phpcs:ignore Generic.CodeAnalysis.UselessOverridingMethod.Found
 		parent::__construct( $template_path );
 	}
 
@@ -27,8 +27,8 @@ class Render extends Abstract_Render {
 	 * Render the recommendations widget.
 	 *
 	 * Determines the current state and renders the appropriate partial.
-	 * 
-	 * @param array|false Recommendations data or false if not cached.
+	 *
+	 * @param array|false $recommendations Recommendations data or false if not cached.
 	 * @return void
 	 */
 	public function render_recommendations_widget( $recommendations ): void {
@@ -41,12 +41,12 @@ class Render extends Abstract_Render {
 	 * This method fetches the widget data and generates the HTML output
 	 * for the recommendations widget using the specified template.
 	 *
-	 * @param array|false Recommendations data or false if not cached.
+	 * @param array|false $cached_data Recommendations data or false if not cached.
 	 * @return string The rendered HTML of the recommendations widget.
 	 */
 	public function get_recommendations_widget( $cached_data ): string {
 		$recommendations = $this->format_recommendations( $cached_data['recommendations'] );
-		
+
 		$widget_data = [
 			'state'           => $this->map_status_to_state( $cached_data['status'] ),
 			'recommendations' => $recommendations,

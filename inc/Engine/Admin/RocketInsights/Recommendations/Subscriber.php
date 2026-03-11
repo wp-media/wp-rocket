@@ -38,13 +38,13 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Constructor.
 	 *
-	 * @param Render  $render  Render instance.
-	 * @param Context $context Context instance.
+	 * @param Render      $render  Render instance.
+	 * @param Context     $context Context instance.
 	 * @param DataManager $data_manager Recommendations data manager instance.
 	 */
 	public function __construct( Render $render, Context $context, DataManager $data_manager ) {
-		$this->render  = $render;
-		$this->context = $context;
+		$this->render       = $render;
+		$this->context      = $context;
 		$this->data_manager = $data_manager;
 	}
 
@@ -55,7 +55,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'rocket_sidebar' => 'render_recommendations_widget',
+			'rocket_sidebar'                              => 'render_recommendations_widget',
 			'rocket_insights_global_score_status_changed' => 'handle_status_change',
 		];
 	}
@@ -74,7 +74,7 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		$recommendations = $this->data_manager->get_recommendations();
-		
+
 		// Bail early if no cached recommendations.
 		if ( false === $recommendations ) {
 			return;
