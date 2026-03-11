@@ -13,34 +13,26 @@ use WP_Rocket\Abstract_Render;
  * @since 3.21
  */
 class Render extends Abstract_Render {
-	/**
-	 * DataManager instance.
-	 *
-	 * @var DataManager
-	 */
-	private $data_manager;
 
 	/**
 	 * Constructor.
 	 *
 	 * @param string      $template_path Path to the template file.
-	 * @param DataManager $data_manager  DataManager instance.
 	 */
-	public function __construct( string $template_path, DataManager $data_manager ) {
+	public function __construct( string $template_path ) {
 		parent::__construct( $template_path );
-
-		$this->data_manager = $data_manager;
 	}
 
 	/**
 	 * Render the recommendations widget.
 	 *
 	 * Determines the current state and renders the appropriate partial.
-	 *
+	 * 
+	 * @param array|false Recommendations data or false if not cached.
 	 * @return void
 	 */
-	public function render_recommendations_widget(): void {
-		echo $this->get_recommendations_widget(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+	public function render_recommendations_widget( $recommendations ): void {
+		echo $this->get_recommendations_widget( $recommendations ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 
 	/**
@@ -49,40 +41,19 @@ class Render extends Abstract_Render {
 	 * This method fetches the widget data and generates the HTML output
 	 * for the recommendations widget using the specified template.
 	 *
+	 * @param array|false Recommendations data or false if not cached.
 	 * @return string The rendered HTML of the recommendations widget.
 	 */
-	public function get_recommendations_widget(): string {
-		$widget_data = $this->get_widget_data();
-
-		return $this->generate( 'partials/rocket-insights/recommendations/widget', $widget_data );
-	}
-
-	/**
-	 * Get widget data based on current recommendation status.
-	 *
-	 * @return array Widget data including state and recommendations.
-	 */
-	private function get_widget_data(): array {
-		// Default widget data.
+	public function get_recommendations_widget( $cached_data ): string {
+		$recommendations = $this->format_recommendations( $cached_data['recommendations'] );
+		
 		$widget_data = [
-			'state'           => 'loading',
-			'recommendations' => [],
-			'show_load_more'  => false,
+			'state'           => $this->map_status_to_state( $cached_data['status'] ),
+			'recommendations' => $recommendations,
+			'show_load_more'  => count( $recommendations ) > 3,
 		];
 
-		$cached_data = $this->data_manager->get_recommendations();
-
-		if ( ! $cached_data ) {
-			// If no cached data, return default data.
-			return $widget_data;
-		}
-
-		$widget_data['state']           = $this->map_status_to_state( $cached_data['status'] );
-		$recommendations                = $this->format_recommendations( $cached_data['recommendations'] );
-		$widget_data['recommendations'] = $recommendations;
-		$widget_data['show_load_more']  = count( $recommendations ) > 3;
-
-		return $widget_data;
+		return $this->generate( 'partials/rocket-insights/recommendations/widget', $widget_data );
 	}
 
 	/**
