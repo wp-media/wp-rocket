@@ -9,6 +9,7 @@ use WP_Rocket\Engine\Admin\RocketInsights\{
 	Managers\Plan,
 	Jobs\Manager,
 	Queue\Queue,
+	Recommendations\Rest as RecommendationsRest,
 };
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\License\Renewal;
@@ -95,18 +96,26 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	private $renewal;
 
 	/**
+	 * Recommendations REST controller.
+	 *
+	 * @var RecommendationsRest
+	 */
+	private $recommendations_rest;
+
+	/**
 	 * Constructor.
 	 *
-	 * @param Render       $render Render object.
-	 * @param Controller   $controller Controller object.
-	 * @param Rest         $rest Rest object.
-	 * @param Queue        $queue Queue object.
-	 * @param Context      $context Rocket Insights context.
-	 * @param GlobalScore  $global_score GlobalScore instance.
-	 * @param Options_Data $options Options instance.
-	 * @param Manager      $manager Manager instance.
-	 * @param Plan         $plan Plan manager.
-	 * @param Renewal      $renewal Renewal instance.
+	 * @param Render              $render Render object.
+	 * @param Controller          $controller Controller object.
+	 * @param Rest                $rest Rest object.
+	 * @param Queue               $queue Queue object.
+	 * @param Context             $context Rocket Insights context.
+	 * @param GlobalScore         $global_score GlobalScore instance.
+	 * @param Options_Data        $options Options instance.
+	 * @param Manager             $manager Manager instance.
+	 * @param Plan                $plan Plan manager.
+	 * @param Renewal             $renewal Renewal instance.
+	 * @param RecommendationsRest $recommendations_rest Recommendations REST controller.
 	 */
 	public function __construct(
 		Render $render,
@@ -118,18 +127,20 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		Options_Data $options,
 		Manager $manager,
 		Plan $plan,
-		Renewal $renewal
+		Renewal $renewal,
+		RecommendationsRest $recommendations_rest
 	) {
-		$this->render       = $render;
-		$this->controller   = $controller;
-		$this->rest         = $rest;
-		$this->queue        = $queue;
-		$this->context      = $context;
-		$this->global_score = $global_score;
-		$this->options      = $options;
-		$this->manager      = $manager;
-		$this->plan         = $plan;
-		$this->renewal      = $renewal;
+		$this->render               = $render;
+		$this->controller           = $controller;
+		$this->rest                 = $rest;
+		$this->queue                = $queue;
+		$this->context              = $context;
+		$this->global_score         = $global_score;
+		$this->options              = $options;
+		$this->manager              = $manager;
+		$this->plan                 = $plan;
+		$this->renewal              = $renewal;
+		$this->recommendations_rest = $recommendations_rest;
 	}
 
 	/**
@@ -626,6 +637,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public function register_routes() {
 		$this->rest->register_routes();
+		$this->recommendations_rest->register_routes();
 	}
 
 	/**
