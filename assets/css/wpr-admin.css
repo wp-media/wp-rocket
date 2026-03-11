@@ -4085,9 +4085,6 @@ div.wpr-tutorial-item {
 .wpr-recommendations__list .wpr-recommendation-item:nth-child(3) {
   border-bottom: none;
 }
-.wpr-recommendations__list.is-expanded .wpr-recommendation-item:nth-child(n+4) {
-  display: flex;
-}
 .wpr-recommendations__list.is-expanded .wpr-recommendation-item:nth-child(3) {
   border-bottom: 1px solid #E2E5E9;
   padding-bottom: 16px;
@@ -4349,6 +4346,15 @@ div.wpr-tutorial-item {
   font-weight: 600;
   color: #121116;
   text-transform: uppercase;
+}
+.wpr-recommendations__load-more span:nth-child(2) {
+  display: none;
+}
+.wpr-recommendations__load-more.is-expanded span:first-child {
+  display: none;
+}
+.wpr-recommendations__load-more.is-expanded span:nth-child(2) {
+  display: flex;
 }
 
 /*-----------------------------------------------*\
