@@ -30,9 +30,6 @@ module.exports = (function () {
 
 		// Start polling for any rows that are already running.
 		startPollingForRunningTests();
-
-		// Attach listener for "Load More" button in recommendations widget.
-		toggleMoreRecommendations();
 	}
 
 	/**
@@ -344,19 +341,6 @@ module.exports = (function () {
 
 			// Update the data attribute so future clicks will trigger the limit message.
 			column.attr('data-can-add-pages', '0');
-		});
-	}
-
-	function toggleMoreRecommendations() {
-		jQuery(document).on('click', '#wpr-recommendations-load-more', function() {
-			let list = $('.wpr-recommendations__list')
-			if (list.hasClass('is-expanded')) {
-				list.removeClass('is-expanded');
-
-				return;
-			}
-
-			list.addClass('is-expanded');
 		});
 	}
 
