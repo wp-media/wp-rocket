@@ -2,13 +2,13 @@
 
 return [
 	'test_data' => [
-		'shouldReturnPendingStatusWhenNoCache' => [
+		'shouldReturnExpiredStatusWhenNoCache' => [
 			'config'   => [
 				'user_role'      => 'administrator',
 				'transient_data' => false, // No cached data
 			],
 			'expected' => [
-				'status'               => 'pending',
+				'status'               => 'expired',
 				'recommendations_count' => 0,
 			],
 		],
