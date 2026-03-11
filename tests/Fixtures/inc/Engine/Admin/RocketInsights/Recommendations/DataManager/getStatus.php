@@ -6,7 +6,7 @@ return [
 			'config'   => [
 				'transient_data' => false,
 			],
-			'expected' => 'pending',
+			'expected' => 'expired',
 		],
 
 		'shouldReturnCompletedStatus' => [
@@ -50,14 +50,14 @@ return [
 			'expected' => 'failed',
 		],
 
-		'shouldReturnPendingWhenStatusMissing' => [
+		'shouldReturnExpiredWhenStatusMissing' => [
 			'config'   => [
 				'transient_data' => [
 					'recommendations' => [],
 					'timestamp'       => 1234567890,
 				],
 			],
-			'expected' => 'pending',
+			'expected' => 'expired',
 		],
 	],
 ];

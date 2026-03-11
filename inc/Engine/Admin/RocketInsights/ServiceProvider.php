@@ -18,6 +18,7 @@ use WP_Rocket\Engine\Admin\RocketInsights\{Database\Tables\RocketInsights as RIT
 	Recommendations\APIClient as RecommendationsAPIClient,
 	Recommendations\DataManager,
 	Recommendations\Rest as RecommendationsRest,
+	Recommendations\FetchSubscriber as RecommendationsFetchSubscriber,
 	URLLimit\Subscriber as URLLimitSubscriber,
 	Settings\Controller as SettingsController,
 	Settings\Subscriber as SettingsSubscriber,
@@ -62,6 +63,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'ri_global_metrics_subscriber',
 		'ri_recommendations_data_manager',
 		'ri_recommendations_rest',
+		'ri_recommendations_fetch_subscriber',
 	];
 
 	/**
@@ -76,7 +78,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	}
 
 	/**
-	 * Registers the classes in the container
+	 * Registers the classes in the container.
 	 *
 	 * @return void
 	 */
@@ -210,6 +212,9 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		// Recommendations REST Controller.
 		$this->getContainer()->add( 'ri_recommendations_rest', RecommendationsRest::class )
+			->addArgument( 'ri_recommendations_data_manager' );
+		// Recommendations Fetch Subscriber.
+		$this->getContainer()->addShared( 'ri_recommendations_fetch_subscriber', RecommendationsFetchSubscriber::class )
 			->addArgument( 'ri_recommendations_data_manager' );
 
 		// Subscriber.

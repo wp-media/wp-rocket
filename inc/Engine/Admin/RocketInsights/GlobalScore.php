@@ -79,11 +79,13 @@ class GlobalScore {
 	 * @return array Calculated data containing score, pages_num, and status.
 	 */
 	private function calculate_and_cache_data(): array {
+		$status = $this->calculate_current_status();
+
 		$data = [
 			'score'      => $this->calculate_global_score(),
 			'pages_num'  => $this->calculate_pages_number(),
-			'status'     => $this->calculate_current_status(),
-			'is_running' => $this->calculate_current_status() === 'in-progress',
+			'status'     => $status,
+			'is_running' => 'in-progress' === $status,
 		];
 
 		/**
@@ -102,9 +104,26 @@ class GlobalScore {
 		 * }
 		 * @return array Filtered global score data.
 		 */
-		$data = wpm_apply_filters_typed( 'array',  'rocket_insights_global_score_data', $data );
+		$data = wpm_apply_filters_typed( 'array', 'rocket_insights_global_score_data', $data );
+
+		// Get previous status before overwriting the transient.
+		$previous_data   = get_transient( self::TRANSIENT_NAME );
+		$previous_status = is_array( $previous_data ) && isset( $previous_data['status'] )
+			? $previous_data['status']
+			: null;
 
 		set_transient( self::TRANSIENT_NAME, $data, self::CACHE_EXPIRATION );
+
+		// Fire event if status changed.
+		if ( null !== $previous_status && $previous_status !== $status ) {
+			/**
+			 * Fires when global score status changes.
+			 *
+			 * @param string $new_status      New status.
+			 * @param string $previous_status Previous status.
+			 */
+			do_action( 'rocket_insights_global_score_status_changed', $status, $previous_status );
+		}
 
 		return $data;
 	}
@@ -121,7 +140,7 @@ class GlobalScore {
 				'status'        => 'completed',
 				'score__not_in' => [ 0 ],
 			]
-			);
+		);
 
 		if ( empty( $scores ) ) {
 			return 0;
@@ -161,7 +180,7 @@ class GlobalScore {
 				'count'      => true,
 				'status__in' => [ 'to-submit', 'pending', 'in-progress' ],
 			]
-			);
+		);
 
 		if ( (int) $in_progress_count > 0 ) {
 			return 'in-progress';
@@ -169,11 +188,11 @@ class GlobalScore {
 
 		// Check if any URLs are blurred.
 		$blurred_count = $this->query->query(
-		[
-			'count'      => true,
-			'status__in' => [ 'completed' ],
-			'is_blurred' => 1,
-		]
+			[
+				'count'      => true,
+				'status__in' => [ 'completed' ],
+				'is_blurred' => 1,
+			]
 		);
 
 		if ( (int) $blurred_count > 0 ) {
