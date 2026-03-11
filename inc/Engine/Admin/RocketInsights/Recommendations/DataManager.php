@@ -225,13 +225,13 @@ class DataManager implements LoggerAwareInterface {
 	/**
 	 * Get current recommendation status.
 	 *
-	 * @return string Status: 'pending', 'loading', 'completed', 'failed'.
+	 * @return string Status: 'expired', 'pending', 'loading', 'completed', 'failed'.
 	 */
 	public function get_status(): string {
 		$data = $this->get_recommendations();
 
 		if ( false === $data || empty( $data['status'] ) ) {
-			return 'pending';
+			return 'expired';
 		}
 
 		return $data['status'];
