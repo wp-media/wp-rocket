@@ -1,18 +1,18 @@
 <?php
 declare( strict_types=1 );
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\RocketInsights\Recommendations\Render;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\RocketInsights\Recommendations\Subscriber;
 
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * Test class covering WP_Rocket\Engine\Admin\RocketInsights\Recommendations\Render::get_recommendations_widget
+ * Test class covering WP_Rocket\Engine\Admin\RocketInsights\Recommendations\Subscriber::render_recommendations_widget
  *
  * @group RocketInsights
  * @group Recommendations
  * @group AdminOnly
  */
-class GetRecommendationsWidgetTest extends TestCase {
+class Test_RenderRecommendationsWidget extends TestCase {
 	/**
 	 * Transient name for recommendations.
 	 *
@@ -107,10 +107,19 @@ class GetRecommendationsWidgetTest extends TestCase {
 	 * Assert the output matches expected values.
 	 *
 	 * @param string $output   The rendered HTML output.
-	 * @param array  $expected Expected values.
+	 * @param array|string  $expected Expected values.
 	 * @return void
 	 */
-	private function assertOutput( string $output, array $expected ): void {
+	private function assertOutput( string $output, $expected ): void {
+		if ( ! isset( $expected['state']) ) {
+			$this->assertEquals(
+				$output,
+				$expected,
+				'Expected no output, but some HTML was rendered.'
+			);
+			return;
+		}
+
 		// Check the data-state attribute on the container.
 		if ( isset( $expected['state'] ) ) {
 			$this->assertStringContainsString(
