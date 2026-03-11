@@ -9,7 +9,7 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
 /**
  * Recommendations Subscriber.
  *
- * Handles events and hooks for the Recommendations widget.
+ * Handles events and hooks for the Rocket Insights Recommendations.
  *
  * @since 3.21
  */
