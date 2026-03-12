@@ -5,7 +5,15 @@ return [
 		'config'   => [
 			'transient_data' => null,
 		],
-		'expected' => '',
+		'expected' => [
+			'state'        => 'loading',
+			'contains'     => [
+				'wpr-recommendations__loading',
+			],
+			'not_contains' => [
+				'wpr-recommendations__list',
+			],
+		],
 	],
 
 	'testShouldDisplayLoadingStateWhenStatusIsPending' => [

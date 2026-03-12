@@ -73,18 +73,8 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$status = $this->data_manager->get_status();
-
-		// Bail early if no cached recommendations.
-		if ( 'expired' === $status ) {
-			$this->maybe_fetch_recommendations();
-		}
-
-		$status = $this->data_manager->get_status();
-
-		$recommendations = $this->data_manager->get_recommendations();
-
-		$this->render->render_recommendations_widget( $status, $recommendations );
+		$recommendations = $this->maybe_fetch_recommendations_on_page_load();
+		$this->render->render_recommendations_widget( $recommendations );
 	}
 
 	/**
@@ -109,6 +99,23 @@ class Subscriber implements Subscriber_Interface {
 				// No action for other statuses.
 				break;
 		}
+	}
+
+	/**
+	 * Fetches recommendations on page load.
+	 *
+	 * Checks if recommendations are available in the cache. If not, initiates fetching of recommendations.
+	 * Returns the recommendations from the data manager.
+	 *
+	 * @return array|false
+	 */
+	private function maybe_fetch_recommendations_on_page_load() {
+		// Bail early if no cached recommendations.
+		if ( false === $this->data_manager->get_recommendations() ) {
+			$this->maybe_fetch_recommendations();
+		}
+
+		return $this->data_manager->get_recommendations();
 	}
 
 	/**
