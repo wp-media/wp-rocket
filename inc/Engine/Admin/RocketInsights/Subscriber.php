@@ -155,7 +155,8 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'rocket_rocket_insights_job_added'            => 'reset_global_score',
 			'rocket_rocket_insights_job_retest'           => 'reset_global_score',
 			'rocket_rocket_insights_job_deleted'          => 'reset_global_score',
-			'rocket_dashboard_sidebar'                    => 'render_global_score_widget',
+			'rocket_before_sidebar_content'               => 'render_global_score_widget_sidebar',
+			'rocket_dashboard_sidebar'                    => 'render_global_score_widget_dashboard',
 			'rocket_insights_tab_content'                 => [
 				[ 'render_license_banner_section', 10 ],
 				[ 'maybe_show_paid_reach_limits_notice', 17 ],
@@ -380,16 +381,32 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	}
 
 	/**
-	 * Render the global performance score widget in the dashboard sidebar.
+	 * Render the global performance score widget in the main sidebar.
 	 *
 	 * @return void
 	 */
-	public function render_global_score_widget(): void {
+	public function render_global_score_widget_sidebar(): void {
 		if ( ! $this->context->is_allowed() ) {
 			return;
 		}
 		$data                   = $this->controller->get_global_score();
 		$data['remaining_urls'] = $this->controller->get_remaining_url_count();
+		$data['context']        = 'sidebar';
+		$this->render->render_global_score_widget( $data );
+	}
+
+	/**
+	 * Render the global performance score widget in the dashboard sidebar.
+	 *
+	 * @return void
+	 */
+	public function render_global_score_widget_dashboard(): void {
+		if ( ! $this->context->is_allowed() ) {
+			return;
+		}
+		$data                   = $this->controller->get_global_score();
+		$data['remaining_urls'] = $this->controller->get_remaining_url_count();
+		$data['context']        = 'dashboard';
 		$this->render->render_global_score_widget( $data );
 	}
 
