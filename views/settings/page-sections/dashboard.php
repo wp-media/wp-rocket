@@ -157,6 +157,8 @@ $rocket_manual_preload = (bool) get_rocket_option( 'manual_preload', false );
 			 * Fires in the dashboard sidebar
 			 */
 			do_action( 'rocket_dashboard_sidebar' );
+
+			$this->render_part( 'quick-actions' );
 			?>
 		</div>
 	</div>

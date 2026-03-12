@@ -33,8 +33,6 @@ function PageManager(aElem) {
     this.$content = document.querySelector('.wpr-Content');
     this.$tips = document.querySelector('.wpr-Content-tips');
     this.$links = document.querySelectorAll('.wpr-body a');
-    this.$quickActionsHeader = document.querySelector('.wpr-quick-actions-header');
-    this.$quickActionsContainer = document.querySelector('.wpr-quick-actions-container');
     this.$menuItem = null;
     this.$page = null;
     this.pageId = null;
@@ -169,18 +167,7 @@ PageManager.prototype.change = function() {
         this.$sidebar.style.display = 'none';
         this.$tips.style.display = 'none';
         this.$content.classList.remove('isNotFull');
-        
-        // Show/hide quick actions for dashboard
-        if (this.$quickActionsHeader && this.$quickActionsContainer) {
-            this.$quickActionsHeader.style.display = 'block';
-            this.$quickActionsContainer.style.display = 'block';
-        }
-    } else {
-        // Hide quick actions on other pages
-        if (this.$quickActionsHeader && this.$quickActionsContainer) {
-            this.$quickActionsHeader.style.display = 'none';
-            this.$quickActionsContainer.style.display = 'none';
-        }
+
     }
 
     if (this.pageId == "imagify") {

@@ -9,11 +9,11 @@ defined( 'ABSPATH' ) || exit;
 
 $rocket_manual_preload = (bool) get_rocket_option( 'manual_preload', false );
 ?>
-<div class="wpr-optionHeader wpr-quick-actions-header" style="display: none;">
+<div class="wpr-optionHeader wpr-quick-actions-header">
 	<h3 class="wpr-title2"><?php esc_html_e( 'Quick Actions', 'rocket' ); ?></h3>
 </div>
 
-<div class="wpr-fieldsContainer wpr-quick-actions-container" style="display: none;">
+<div class="wpr-fieldsContainer wpr-quick-actions-container">
 	<fieldset class="wpr-fieldsContainer-fieldset">
 		<?php if ( current_user_can( 'rocket_purge_cache' ) ) : ?>
 		<div class="wpr-field">
