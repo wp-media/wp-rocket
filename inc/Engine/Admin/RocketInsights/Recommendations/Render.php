@@ -31,8 +31,8 @@ class Render extends Abstract_Render {
 	 * @param array|false $recommendations Recommendations data or false if not cached.
 	 * @return void
 	 */
-	public function render_recommendations_widget( $status, $recommendations = [] ): void {
-		echo $this->get_recommendations_widget( $status, $recommendations ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+	public function render_recommendations_widget( $recommendations ): void {
+		echo $this->get_recommendations_widget( $recommendations ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 
 	/**
@@ -44,14 +44,18 @@ class Render extends Abstract_Render {
 	 * @param array|false $cached_data Recommendations data or false if not cached.
 	 * @return string The rendered HTML of the recommendations widget.
 	 */
-	public function get_recommendations_widget( $status, $recommendations ): string {
-		$recommendations = $this->format_recommendations( $recommendations );
-
+	public function get_recommendations_widget( $cached_data ): string {
 		$widget_data = [
-			'state'           => $this->map_status_to_state( $status ),
-			'recommendations' => $recommendations,
-			'show_load_more'  => count( $recommendations ) > 3,
+			'state'           => 'loading',
+			'recommendations' => [],
+			'show_load_more'  => false,
 		];
+
+		if ( false !== $cached_data ) {
+			$widget_data['state'] = $this->map_status_to_state( $cached_data['status'] );
+			$widget_data['recommendations'] = $this->format_recommendations( $cached_data['recommendations'] );
+			$widget_data['show_load_more'] = count( $cached_data['recommendations'] ) > 3;
+		}
 
 		return $this->generate( 'partials/rocket-insights/recommendations/widget', $widget_data );
 	}
@@ -64,7 +68,6 @@ class Render extends Abstract_Render {
 	 */
 	private function map_status_to_state( string $status ): string {
 		$status_map = [
-			'expired'   => 'loading',
 			'pending'   => 'loading',
 			'loading'   => 'loading',
 			'completed' => 'completed',
@@ -81,13 +84,9 @@ class Render extends Abstract_Render {
 	 * @return array Formatted recommendations.
 	 */
 	private function format_recommendations( $recommendations ): array {
-		if ( empty( $recommendations ) || ! isset( $recommendations['recommendations'] ) || ! is_array( $recommendations['recommendations'] ) ) {
-			return [];
-		}
-
 		$formatted = [];
 
-		foreach ( $recommendations['recommendations'] as $recommendation ) {
+		foreach ( $recommendations as $recommendation ) {
 			$formatted[] = [
 				'option_slug'    => $recommendation['option_slug'],
 				'title'          => $recommendation['title'],
