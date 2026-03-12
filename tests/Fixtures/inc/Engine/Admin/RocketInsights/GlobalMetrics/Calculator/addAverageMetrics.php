@@ -2,9 +2,9 @@
 
 return [
 	'test_data' => [
-		'shouldAddMetricsWhenTestsExist' => [
+		'shouldAddMetricsWhenStatusCompleted' => [
 			'config'   => [
-				'has_tests'  => true,
+				'status'  => 'completed',
 				'metrics'    => [
 					'lcp'  => 2.5,
 					'ttfb' => 0.8,
@@ -32,9 +32,9 @@ return [
 			],
 		],
 
-		'shouldNotAddMetricsWhenNoTests' => [
+		'shouldNotAddMetricsWhenStatusInProgress' => [
 			'config'   => [
-				'has_tests'  => false,
+				'status'  => 'completed',
 				'metrics'    => [],
 				'input_data' => [
 					'score'      => 0,
@@ -48,38 +48,7 @@ return [
 				'pages_num'  => 0,
 				'status'     => 'pending',
 				'is_running' => false,
-			],
-		],
-
-		'shouldPreserveExistingData' => [
-			'config'   => [
-				'has_tests'  => true,
-				'metrics'    => [
-					'lcp'  => 3.2,
-					'ttfb' => 1.0,
-					'cls'  => 0.15,
-					'tbt'  => 450,
-				],
-				'input_data' => [
-					'score'      => 75,
-					'pages_num'  => 10,
-					'status'     => 'complete',
-					'is_running' => false,
-					'custom_key' => 'custom_value',
-				],
-			],
-			'expected' => [
-				'score'           => 75,
-				'pages_num'       => 10,
-				'status'          => 'complete',
-				'is_running'      => false,
-				'custom_key'      => 'custom_value',
-				'average_metrics' => [
-					'lcp'  => 3.2,
-					'ttfb' => 1.0,
-					'cls'  => 0.15,
-					'tbt'  => 450,
-				],
+				'average_metrics' => [],
 			],
 		],
 	],
