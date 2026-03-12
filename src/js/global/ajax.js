@@ -468,6 +468,15 @@ document.addEventListener('DOMContentLoaded', function() {
 					$('.wpr-global-score-widget').html(response.global_score_data.html);
 					// Update global score row in table if on Rocket Insights page.
 					updateGlobalScoreRow(globalScoreData);
+
+					// Fire custom event for other widgets (like recommendations)
+					document.dispatchEvent(new CustomEvent('wprGlobalScoreUpdated', {
+						detail: {
+							score: globalScoreData.data.score,
+							status: globalScoreData.data.status,
+							pages_num: globalScoreData.data.pages_num
+						}
+					}));
 				}
 				response.results.forEach(result => {
 					const $row = $(`.wpr-ri-item[data-rocket-insights-id="${result.id}"]`);
