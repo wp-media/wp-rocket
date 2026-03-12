@@ -52,9 +52,9 @@ class Render extends Abstract_Render {
 		];
 
 		if ( false !== $cached_data ) {
-			$widget_data['state'] = $this->map_status_to_state( $cached_data['status'] );
+			$widget_data['state']           = $this->map_status_to_state( $cached_data['status'] );
 			$widget_data['recommendations'] = $this->format_recommendations( $cached_data['recommendations'] );
-			$widget_data['show_load_more'] = count( $cached_data['recommendations'] ) > 3;
+			$widget_data['show_load_more']  = count( $cached_data['recommendations'] ) > 3;
 		}
 
 		return $this->generate( 'partials/rocket-insights/recommendations/widget', $widget_data );
