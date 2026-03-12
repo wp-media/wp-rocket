@@ -22,7 +22,7 @@ defined( 'ABSPATH' ) || exit;
 	printf( '%1$s: %2$s', esc_html( $data['status_text'] ), intval( $data['pages_num'] ) );
 	?>
 	</p>
-	<div id="wpr_global_score_widget_add_page_btn_wrapper">
+	<div class="wpr-global-score-widget-btn-wrapper">
 		<?php
 		$this->render_add_page_btn( 'global-score-widget', $data );
 		?>

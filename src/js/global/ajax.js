@@ -428,21 +428,21 @@ document.addEventListener('DOMContentLoaded', function() {
 					if ('' === globalScoreData.html) {
 						return;
 					}
-					let globalScoreWidget = $('#wpr_global_score_widget');
+					let globalScoreWidgets = $('.wpr-global-score-widget');
 
-					if (!globalScoreWidget.is(':visible')) {
+					if (globalScoreWidgets.length === 0) {
 						return;
 					}
 
-					// Update global score widget.
-					globalScoreWidget.html(globalScoreData.html);
+					// Update all global score widget instances.
+					globalScoreWidgets.html(globalScoreData.html);
 
 					// Disable "Add Pages" button on global score widget.
 					if (!('disabled_btn_html' in globalScoreData)) {
 						return;
 					}
 
-					$('#wpr_global_score_widget_add_page_btn_wrapper').html(globalScoreData.disabled_btn_html.global_score_widget);
+					$('.wpr-global-score-widget .wpr-global-score-widget-btn-wrapper').html(globalScoreData.disabled_btn_html.global_score_widget);
 					break;
 
 				// Handle action when rocket insights menu is clicked.
@@ -482,10 +482,8 @@ document.addEventListener('DOMContentLoaded', function() {
 					// Update global score data.
 					globalScoreData = response.global_score_data;
 
-					// Update global score widget if on dashboard.
-					if ( isOnDashboard() ) {
-						$('#wpr_global_score_widget').html(response.global_score_data.html);
-					}
+				// Update all global score widget instances.
+				$('.wpr-global-score-widget').html(response.global_score_data.html);
 					// Update global score row in table if on Rocket Insights page.
 					updateGlobalScoreRow(globalScoreData);
 				}
