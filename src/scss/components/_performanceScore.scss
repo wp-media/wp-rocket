@@ -1,4 +1,24 @@
-#wpr_global_score_widget {
+.wpr-global-score-widget-wrapper {
+	margin-bottom: 16px;
+
+	// Hide dashboard widget when not on dashboard
+	&[data-context="dashboard"] {
+		display: none;
+	}
+}
+
+// Show dashboard widget only on dashboard page
+.wpr-Page#dashboard {
+	.wpr-global-score-widget-wrapper[data-context="dashboard"] {
+		display: block;
+	}
+
+	.wpr-global-score-widget-wrapper[data-context="sidebar"] {
+		display: none;
+	}
+}
+
+.wpr-global-score-widget {
 	.wpr-fieldsContainer-fieldset{
 		padding: 20px 15px;
 	}

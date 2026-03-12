@@ -74,12 +74,7 @@ return [
 				'pages_num' => 2,
 				'status' => 'in-progress',
 				'is_running' => true,
-				'average_metrics' => [
-					'lcp'  => null,
-					'ttfb' => null,
-					'cls'  => null,
-					'tbt'  => null,
-				],
+				'average_metrics' => null,
 			]
 		]
 	],
@@ -92,7 +87,8 @@ return [
 				'score' => 0,
 				'pages_num' => 0,
 				'status' => 'no-url',
-				'is_running' => false
+				'is_running' => false,
+				'average_metrics' => null,
 			]
 		]
 	],

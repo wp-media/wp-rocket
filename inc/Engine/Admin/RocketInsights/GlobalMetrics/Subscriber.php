@@ -42,7 +42,8 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function add_average_metrics( array $data ): array {
 		// Only add metrics if there are completed tests.
-		if ( ! $this->calculator->has_completed_tests() ) {
+		if ( in_array( $data['status'], [ 'in-progress', 'no-url' ], true ) ) {
+			$data['average_metrics'] = null;
 			return $data;
 		}
 
