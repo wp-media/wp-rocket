@@ -115,7 +115,7 @@ class GlobalScore {
 		set_transient( self::TRANSIENT_NAME, $data, self::CACHE_EXPIRATION );
 
 		// Fire event if status changed.
-		if ( null !== $previous_status && $previous_status !== $status ) {
+		if ( $previous_status !== $status ) {
 			/**
 			 * Fires when global score status changes.
 			 *
