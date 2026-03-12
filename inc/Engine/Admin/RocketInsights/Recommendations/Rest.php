@@ -73,11 +73,6 @@ class Rest extends WP_REST_Controller {
 		if ( false !== $recommendations && isset( $recommendations['recommendations'] ) ) {
 			$response_data['recommendations'] = $recommendations['recommendations'];
 
-			// Include metadata if available.
-			if ( isset( $recommendations['metadata'] ) ) {
-				$response_data['metadata'] = $recommendations['metadata'];
-			}
-
 			// Include error if in failed status.
 			if ( 'failed' === $status && isset( $recommendations['error'] ) ) {
 				$response_data['error'] = $recommendations['error'];
