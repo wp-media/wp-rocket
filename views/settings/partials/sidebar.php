@@ -6,14 +6,6 @@
  */
 
 defined( 'ABSPATH' ) || exit;
-/**
- * Fires at the top of the sidebar.
- *
- * Used by Recommendations widget to display personalized recommendations.
- *
- * @since 3.21
- */
-do_action( 'rocket_sidebar' );
 
 /**
  * Fires before any sidebar content is rendered.
@@ -31,4 +23,14 @@ do_action( 'rocket_before_sidebar_content' );
  * @deprecated 3.17 Use 'rocket_before_sidebar_content' instead.
  */
 do_action( 'rocket_after_sidebar_content' );
+
+/**
+ * Fires at the top of the sidebar.
+ *
+ * Used by Recommendations widget to display personalized recommendations.
+ *
+ * @since 3.21
+ */
+do_action( 'rocket_sidebar' );
+
 $this->render_part( 'documentation' );
