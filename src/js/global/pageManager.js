@@ -167,7 +167,6 @@ PageManager.prototype.change = function() {
         this.$sidebar.style.display = 'none';
         this.$tips.style.display = 'none';
         this.$content.classList.remove('isNotFull');
-
     }
 
     if (this.pageId == "imagify") {
