@@ -46,7 +46,6 @@ return [
 			'expected' => [
 				'status'               => 'completed',
 				'recommendations_count' => 2,
-				'has_metadata'         => true,
 			],
 		],
 

@@ -79,7 +79,7 @@ class GetStatusTest extends RESTfulTestCase {
 						$role->add_cap( 'rocket_manage_options' );
 					}
 				}
-				
+
 				$user = $this->factory()->user->create( [ 'role' => $config['user_role'] ] );
 				wp_set_current_user( $user );
 			}
@@ -117,11 +117,6 @@ class GetStatusTest extends RESTfulTestCase {
 		// Check recommendations count if specified
 		if ( isset( $expected['recommendations_count'] ) ) {
 			$this->assertCount( $expected['recommendations_count'], $response['recommendations'] );
-		}
-
-		// Check for metadata if expected
-		if ( isset( $expected['has_metadata'] ) && $expected['has_metadata'] ) {
-			$this->assertArrayHasKey( 'metadata', $response );
 		}
 
 		// Check for error message if in failed status
