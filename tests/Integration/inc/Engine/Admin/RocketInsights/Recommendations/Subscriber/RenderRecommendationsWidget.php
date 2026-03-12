@@ -21,6 +21,13 @@ class Test_RenderRecommendationsWidget extends TestCase {
 	private const TRANSIENT_NAME = 'wpr_ri_recommendations';
 
 	/**
+	 * Transient name for global score data.
+	 *
+	 * @var string
+	 */
+	private const GLOBAL_SCORE_TRANSIENT = 'wpr_global_score_data';
+
+	/**
 	 * Set up before each test.
 	 *
 	 * @return void
@@ -28,8 +35,9 @@ class Test_RenderRecommendationsWidget extends TestCase {
 	public function set_up() {
 		parent::set_up();
 
-		// Clear transient before each test.
+		// Clear transients before each test.
 		delete_transient( self::TRANSIENT_NAME );
+		delete_transient( self::GLOBAL_SCORE_TRANSIENT );
 
 		// Enable Rocket Insights for the test.
 		add_filter( 'rocket_rocket_insights_enabled', '__return_true' );
@@ -43,8 +51,9 @@ class Test_RenderRecommendationsWidget extends TestCase {
 	 * @return void
 	 */
 	public function tear_down() {
-		// Clear transient after each test.
+		// Clear transients after each test.
 		delete_transient( self::TRANSIENT_NAME );
+		delete_transient( self::GLOBAL_SCORE_TRANSIENT );
 
 		// Remove Rocket Insights enabled filter.
 		remove_filter( 'rocket_rocket_insights_enabled', '__return_true' );
@@ -111,21 +120,14 @@ class Test_RenderRecommendationsWidget extends TestCase {
 	 * @return void
 	 */
 	private function assertOutput( string $output, $expected ): void {
-		if ( ! isset( $expected['state']) ) {
-			$this->assertEquals(
-				$output,
-				$expected,
-				'Expected no output, but some HTML was rendered.'
-			);
-			return;
-		}
-
 		// Check the data-state attribute on the container.
-		$this->assertStringContainsString(
-			'data-state="' . $expected['state'] . '"',
-			$output,
-			"Expected data-state='{$expected['state']}' attribute not found in output."
-		);
+		if ( isset( $expected['state'] ) ) {
+			$this->assertStringContainsString(
+				'data-state="' . $expected['state'] . '"',
+				$output,
+				"Expected data-state='{$expected['state']}' attribute not found in output."
+			);
+		}
 
 		// Check for specific strings that should be present.
 		if ( isset( $expected['contains'] ) ) {

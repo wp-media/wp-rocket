@@ -45,13 +45,17 @@ class Render extends Abstract_Render {
 	 * @return string The rendered HTML of the recommendations widget.
 	 */
 	public function get_recommendations_widget( $cached_data ): string {
-		$recommendations = $this->format_recommendations( $cached_data['recommendations'] );
-
 		$widget_data = [
-			'state'           => $this->map_status_to_state( $cached_data['status'] ),
-			'recommendations' => $recommendations,
-			'show_load_more'  => count( $recommendations ) > 3,
+			'state'           => 'loading',
+			'recommendations' => [],
+			'show_load_more'  => false,
 		];
+
+		if ( false !== $cached_data ) {
+			$widget_data['state']           = $this->map_status_to_state( $cached_data['status'] );
+			$widget_data['recommendations'] = $this->format_recommendations( $cached_data['recommendations'] );
+			$widget_data['show_load_more']  = count( $cached_data['recommendations'] ) > 3;
+		}
 
 		return $this->generate( 'partials/rocket-insights/recommendations/widget', $widget_data );
 	}
@@ -79,7 +83,7 @@ class Render extends Abstract_Render {
 	 * @param array $recommendations Raw recommendations from API.
 	 * @return array Formatted recommendations.
 	 */
-	private function format_recommendations( array $recommendations ): array {
+	private function format_recommendations( $recommendations ): array {
 		$formatted = [];
 
 		foreach ( $recommendations as $recommendation ) {
