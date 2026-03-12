@@ -80,7 +80,7 @@ class Render extends Abstract_Render {
 	 * @param array $recommendations Raw recommendations from API.
 	 * @return array Formatted recommendations.
 	 */
-	private function format_recommendations( array $recommendations ): array {
+	private function format_recommendations( $recommendations ): array {
 		if ( empty( $recommendations ) || ! isset( $recommendations['recommendations'] ) || ! is_array( $recommendations['recommendations'] ) ) {
 			return [];
 		}

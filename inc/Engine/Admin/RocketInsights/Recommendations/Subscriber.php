@@ -80,6 +80,8 @@ class Subscriber implements Subscriber_Interface {
 			$this->maybe_fetch_recommendations();
 		}
 
+		$status = $this->data_manager->get_status();
+
 		$recommendations = $this->data_manager->get_recommendations();
 
 		$this->render->render_recommendations_widget( $status, $recommendations );
