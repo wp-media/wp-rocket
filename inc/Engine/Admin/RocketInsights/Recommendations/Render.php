@@ -31,8 +31,8 @@ class Render extends Abstract_Render {
 	 * @param array|false $recommendations Recommendations data or false if not cached.
 	 * @return void
 	 */
-	public function render_recommendations_widget( $recommendations ): void {
-		echo $this->get_recommendations_widget( $recommendations ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+	public function render_recommendations_widget( $status, $recommendations = [] ): void {
+		echo $this->get_recommendations_widget( $status, $recommendations ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 
 	/**
@@ -44,11 +44,11 @@ class Render extends Abstract_Render {
 	 * @param array|false $cached_data Recommendations data or false if not cached.
 	 * @return string The rendered HTML of the recommendations widget.
 	 */
-	public function get_recommendations_widget( $cached_data ): string {
-		$recommendations = $this->format_recommendations( $cached_data['recommendations'] );
+	public function get_recommendations_widget( $status, $recommendations ): string {
+		$recommendations = $this->format_recommendations( $recommendations );
 
 		$widget_data = [
-			'state'           => $this->map_status_to_state( $cached_data['status'] ),
+			'state'           => $this->map_status_to_state( $status ),
 			'recommendations' => $recommendations,
 			'show_load_more'  => count( $recommendations ) > 3,
 		];
@@ -64,6 +64,7 @@ class Render extends Abstract_Render {
 	 */
 	private function map_status_to_state( string $status ): string {
 		$status_map = [
+			'expired'   => 'loading',
 			'pending'   => 'loading',
 			'loading'   => 'loading',
 			'completed' => 'completed',
@@ -80,9 +81,13 @@ class Render extends Abstract_Render {
 	 * @return array Formatted recommendations.
 	 */
 	private function format_recommendations( array $recommendations ): array {
+		if ( empty( $recommendations ) || ! isset( $recommendations['recommendations'] ) || ! is_array( $recommendations['recommendations'] ) ) {
+			return [];
+		}
+
 		$formatted = [];
 
-		foreach ( $recommendations as $recommendation ) {
+		foreach ( $recommendations['recommendations'] as $recommendation ) {
 			$formatted[] = [
 				'option_slug'    => $recommendation['option_slug'],
 				'title'          => $recommendation['title'],
