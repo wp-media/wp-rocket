@@ -215,8 +215,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			);
 
 		// Recommendations REST Controller.
-		$this->getContainer()->add( 'ri_recommendations_rest', RecommendationsRest::class )
-			->addArgument( 'ri_recommendations_data_manager' );
+		$this->getContainer()->add( 'ri_recommendations_rest', RecommendationsRest::class );
 
 		// Recommendations Settings Subscriber.
 		$this->getContainer()->addShared( 'ri_recommendations_settings_subscriber', RecommendationsSettingsSubscriber::class )
