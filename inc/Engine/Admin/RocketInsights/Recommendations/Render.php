@@ -122,7 +122,7 @@ class Render extends Abstract_Render {
 			'lcp'  => $recommendation['lcp_impact'] ?? null,
 			'ttfb' => $recommendation['ttfb_impact'] ?? null,
 			'cls'  => $recommendation['cls_impact'] ?? null,
-			'tbt'  => $recommendation['tbt_impact']	?? null,
+			'tbt'  => $recommendation['tbt_impact'] ?? null,
 		];
 
 		// Filter out null values - only include metrics with actual impact.
