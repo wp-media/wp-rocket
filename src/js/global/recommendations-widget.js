@@ -64,8 +64,7 @@ $(document).ready(function(){
 	 * Listen for Global Score update event.
 	 * This is fired by ajax.js when the Global Score polling detects a change.
 	 */
-	document.addEventListener('wprGlobalScoreUpdated', function (event) {
-		console.log('Global Score updated, fetching recommendations status');
+	$(document).on('wprGlobalScoreUpdated rocket-insights-page-added rocket-insights-page-retest', () => {
 		fetchRecommendationsStatus();
 	});
 });
