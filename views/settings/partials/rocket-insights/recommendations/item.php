@@ -68,9 +68,9 @@ $rocket_impact_tags    = $data['impact_tags'];
 			<p class="wpr-recommendation-item__description">
 				<?php echo esc_html( $rocket_description ); ?>
 				<?php if ( ! empty( $rocket_learn_more_url ) ) : ?>
-					<a href="<?php echo esc_url( $rocket_learn_more_url ); ?>" 
-						target="_blank" 
-						rel="noopener noreferrer" 
+					<a href="<?php echo esc_url( $rocket_learn_more_url ); ?>"
+						target="_blank"
+						rel="noopener noreferrer"
 						class="wpr-recommendation-item__more-info">
 						<?php esc_html_e( 'More info', 'rocket' ); ?>
 					</a>

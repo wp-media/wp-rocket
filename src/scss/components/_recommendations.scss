@@ -2,9 +2,9 @@
 
 /**
  * Recommendations Panel Component
- * 
+ *
  * A panel displaying optimization recommendations for Rocket Insights.
- * 
+ *
  * @since 3.20
  */
 
@@ -50,7 +50,7 @@
 		flex-direction: column;
 		gap: $space * 2; // 16px
 		width: 100%;
-		
+
 		// Show only first 3 items by default
 		.wpr-recommendation-item:nth-child(n + 4) {
 			display: none;
