@@ -259,4 +259,21 @@ $(document).ready(function(){
 		;
 	}
 
+	// Handle expand/collapse of recommendations list.
+	$(document).on('click', '#wpr-recommendations-load-more', function() {
+		let $list = $('.wpr-recommendations__list');
+		let $hiddenItems = $list.find('.wpr-recommendation-item:gt(2)');
+
+		if ($list.hasClass('is-expanded')) {
+			$hiddenItems.slideUp(300, function() {
+				$list.removeClass('is-expanded');
+			});
+			$(this).removeClass('is-expanded');
+			return;
+		}
+
+		$list.addClass('is-expanded');
+		$hiddenItems.slideDown(300);
+		$(this).addClass('is-expanded');
+	});
 });

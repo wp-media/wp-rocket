@@ -35,5 +35,8 @@ $rocket_ri_show_load_more  = $data['show_load_more'];
 		<span class="wpr-recommendations__load-more-text">
 			<?php esc_html_e( 'More Recommendations', 'rocket' ); ?>
 		</span>
+		<span class="wpr-recommendations__load-more-text">
+			<?php esc_html_e( 'Less Recommendations', 'rocket' ); ?>
+		</span>
 	</button>
 <?php endif; ?>

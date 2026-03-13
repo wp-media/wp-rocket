@@ -50,8 +50,8 @@
 		flex-direction: column;
 		gap: $space * 2; // 16px
 		width: 100%;
-
-		// Show only first 3 items by default, hide the rest
+		
+		// Show only first 3 items by default
 		.wpr-recommendation-item:nth-child(n + 4) {
 			display: none;
 		}
@@ -61,14 +61,14 @@
 			border-bottom: none;
 		}
 
-		// When expanded, show all items and restore 3rd item border
-		&.is-expanded .wpr-recommendation-item:nth-child(n + 4) {
-			display: flex;
-		}
-
+		// When expanded, restore 3rd item border
 		&.is-expanded .wpr-recommendation-item:nth-child(3) {
 			border-bottom: 1px solid $cGreyLighter1;
 			padding-bottom: $space * 2;
+		}
+
+		.wpr-recommendation-item:last-child {
+			border-bottom: none;
 		}
 	}
 
@@ -352,5 +352,19 @@
 		font-weight: 600;
 		color: $cBlack;
 		text-transform: uppercase;
+	}
+
+	span:nth-child(2) {
+		display: none;
+	}
+
+	&.is-expanded {
+		span:first-child {
+			display: none;
+		}
+
+		span:nth-child(2) {
+			display: flex;
+		}
 	}
 }
