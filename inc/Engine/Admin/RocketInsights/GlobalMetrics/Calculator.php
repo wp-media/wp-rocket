@@ -71,7 +71,12 @@ class Calculator {
 		}
 
 		// Initialize accumulators.
-		$totals = array_map( fn() => 0, $default_metric );
+		$totals = array_map(
+			function () {
+				return 0;
+			},
+			$default_metric
+		);
 
 		$test_count = 0;
 
