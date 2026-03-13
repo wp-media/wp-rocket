@@ -38,27 +38,45 @@ class DataManager implements LoggerAwareInterface {
 	 * @var array<string, string>
 	 */
 	private const TRACKED_OPTIONS = [
-		'minify_css'              => 'minify_css',
-		'minify_js'               => 'minify_js',
-		'minify_concatenate_css'  => 'combine_css',
-		'minify_concatenate_js'   => 'combine_js',
-		'defer_all_js'            => 'defer_js',
-		'delay_js'                => 'delay_js',
-		'async_css'               => 'async_css',
-		'critical_css'            => 'critical_css',
-		'remove_unused_css'       => 'remove_unused_css',
-		'lazyload'                => 'lazyload_images',
-		'lazyload_iframes'        => 'lazyload_iframes',
-		'lazyload_youtube'        => 'lazyload_youtube',
-		'image_dimensions'        => 'add_missing_image_dimensions',
-		'cdn'                     => 'cdn',
-		'do_caching_mobile_files' => 'separate_cache_mobile',
-		'cache_logged_user'       => 'cache_logged_in_users',
-		'cache_webp'              => 'cache_webp',
-		'manual_preload'          => 'preload',
-		'sitemap_preload'         => 'sitemap_preload',
-		'control_heartbeat'       => 'control_heartbeat',
-		'minify_google_fonts'     => 'optimize_google_fonts',
+		'image_dimensions'             => 'add_missing_image_dimensions',
+		'defer_all_js'                 => 'deferred_js',
+		'delay_js'                     => 'delay_js',
+		'lazyload_css_bg_img'          => 'lazy_load_css',
+		'lazyload_iframes'             => 'lazyload_iframes',
+		'lazyload'                     => 'lazyload_images',
+		'minify_css'                   => 'minify_css',
+		'minify_js'                    => 'minify_js',
+		'manual_preload'               => 'preload_cache',
+		'auto_preload_fonts'           => 'auto_preload_fonts',
+		'preload_links'                => 'preload_links',
+		'remove_unused_css'            => 'rucss',
+		'host_fonts_locally'           => 'selfhost_fonts',
+
+		'performance_monitoring'       => 'performance_monitoring',
+		'optimize_css_delivery'        => 'optimize_css_delivery',
+		'delay_js_execution_safe_mode' => 'delay_js_execution_safe_mode',
+		'lazyload_youtube'             => 'lazyload_youtube',
+		'database_revisions'           => 'database_revisions',
+		'database_auto_drafts'         => 'database_auto_drafts',
+		'database_trashed_posts'       => 'database_trashed_posts',
+		'database_spam_comments'       => 'database_spam_comments',
+		'database_trashed_comments'    => 'database_trashed_comments',
+		'database_optimize_tables'     => 'database_optimize_tables',
+		'schedule_automatic_cleanup'   => 'schedule_automatic_cleanup',
+		'cdn'                          => 'cdn',
+		'control_heartbeat'            => 'control_heartbeat',
+		'cache_ssl'                    => 'cache_ssl',
+		'minify_google_fonts'          => 'minify_google_fonts',
+		'emoji'                        => 'emoji',
+		'async_css'                    => 'async_css',
+		'cache_mobile'                 => 'cache_mobile',
+		'do_caching_mobile_files'      => 'do_caching_mobile_files',
+		'async_css_mobile'             => 'async_css_mobile',
+		'cache_logged_user'            => 'cache_logged_user',
+		'minify_concatenate_js'        => 'minify_concatenate_js',
+		'database_all_transients'      => 'database_all_transients',
+		'sucury_waf_cache_sync'        => 'sucury_waf_cache_sync',
+		'varnish_auto_purge'           => 'varnish_auto_purge',
 	];
 
 	/**
@@ -129,9 +147,10 @@ class DataManager implements LoggerAwareInterface {
 	/**
 	 * Fetch recommendations from API and store in transient.
 	 *
+	 * @param array $options New settings to consider when fetching recommendations if available.
 	 * @return bool True on success, false on failure.
 	 */
-	public function fetch_recommendations(): bool {
+	public function fetch_recommendations( array $options = [] ): bool {
 		// Set loading status immediately.
 		$this->set_loading_status();
 
@@ -141,7 +160,7 @@ class DataManager implements LoggerAwareInterface {
 		$average_metrics = $this->get_average_metrics();
 
 		// Get enabled WP Rocket options.
-		$enabled_options = $this->get_enabled_options();
+		$enabled_options = $this->get_enabled_options( $options );
 
 		// Build API parameters.
 		$params = [
@@ -416,13 +435,14 @@ class DataManager implements LoggerAwareInterface {
 	 *
 	 * Returns array of option slugs that are currently enabled.
 	 *
+	 * @param array $options Optional array of new settings to check instead of current options.
 	 * @return array Enabled option slugs.
 	 */
-	private function get_enabled_options(): array {
+	private function get_enabled_options( array $options = [] ): array {
 		$enabled = [];
 
 		foreach ( self::TRACKED_OPTIONS as $option_key => $option_slug ) {
-			$value = $this->options->get( $option_key, false );
+			$value = $options[ $option_key ] ?? $this->options->get( $option_key, false );
 
 			// Check if option is enabled.
 			if ( $this->is_option_enabled( $option_key, $value ) ) {

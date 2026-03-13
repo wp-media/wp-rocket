@@ -77,7 +77,8 @@ class SettingsSubscriber implements Subscriber_Interface, LoggerAwareInterface {
 			return;
 		}
 
-		$this->fetch_recommendations();
+		// Fetch new recommendations, we pass new options array here because at this moment options class doesn't have those new options.
+		$this->fetch_recommendations( $new_options );
 	}
 
 	/**
@@ -107,12 +108,13 @@ class SettingsSubscriber implements Subscriber_Interface, LoggerAwareInterface {
 	/**
 	 * Fetch new recommendations and log the action.
 	 *
+	 * @param array $new_options New settings to consider when fetching recommendations.
 	 * @return void
 	 */
-	private function fetch_recommendations() {
+	private function fetch_recommendations( array $new_options = [] ) {
 		$this->logger::info( 'Recommendations: Relevant settings changed, fetching new recommendations' );
 
 		// Fetch new recommendations.
-		$this->data_manager->fetch_recommendations();
+		$this->data_manager->fetch_recommendations( $new_options );
 	}
 }
