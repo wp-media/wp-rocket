@@ -107,7 +107,7 @@ class Subscriber implements Subscriber_Interface {
 
 			case 'complete':
 				// Maybe fetch recommendations when tests complete.
-				$this->maybe_fetch_recommendations();
+				$this->data_manager->maybe_fetch_recommendations();
 				break;
 
 			default:
@@ -127,40 +127,9 @@ class Subscriber implements Subscriber_Interface {
 	private function maybe_fetch_recommendations_on_page_load() {
 		// Bail early if no cached recommendations.
 		if ( false === $this->data_manager->get_recommendations() ) {
-			$this->maybe_fetch_recommendations();
+			$this->data_manager->maybe_fetch_recommendations();
 		}
 
 		return $this->data_manager->get_recommendations();
-	}
-
-	/**
-	 * Maybe fetch recommendations with validation.
-	 *
-	 * Checks:
-	 * 1. Average metrics are available
-	 * 2. Hash has changed (data is different)
-	 * 3. Not already loading
-	 *
-	 * @return void
-	 */
-	private function maybe_fetch_recommendations(): void {
-		// Bail if already loading.
-		if ( 'loading' === $this->data_manager->get_status() ) {
-			return;
-		}
-
-		// Bail if metrics not ready.
-		if ( ! $this->data_manager->has_required_metrics() ) {
-			return;
-		}
-
-		// Bail if data hasn't changed.
-		if ( ! $this->data_manager->should_fetch_recommendations() ) {
-			$this->data_manager->extend_transient(); // Extend for another 24h.
-			return;
-		}
-
-		// Fetch new recommendations.
-		$this->data_manager->fetch_recommendations();
 	}
 }

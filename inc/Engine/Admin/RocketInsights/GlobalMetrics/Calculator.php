@@ -14,7 +14,7 @@ class Calculator {
 	 *
 	 * @var string[]
 	 */
-	private const METRIC_KEYS = [
+	public const METRIC_KEYS = [
 		'largest_contentful_paint',
 		'total_blocking_time',
 		'cumulative_layout_shift',
