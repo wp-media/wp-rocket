@@ -4277,6 +4277,7 @@ div.wpr-tutorial-item {
   line-height: 1.2857142857;
   transition: color 0.2s ease-out;
   -webkit-transition: color 0.2s ease-out;
+  text-decoration: none;
 }
 .wpr-recommendation-item__activate:hover {
   color: #AC2B15;
