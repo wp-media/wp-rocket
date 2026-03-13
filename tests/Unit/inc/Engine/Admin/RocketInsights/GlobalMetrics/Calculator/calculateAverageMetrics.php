@@ -44,6 +44,8 @@ class Test_CalculateAverageMetrics extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnAsExpected( $config, $expected ) {
+		$this->stubTranslationFunctions();
+
 		// Mock get_completed_metrics
 		$this->query_mock->expects( $this->once() )
 			->method( 'get_completed_metrics' )
@@ -51,9 +53,32 @@ class Test_CalculateAverageMetrics extends TestCase {
 
 		$result = $this->calculator->calculate_average_metrics();
 
-		$this->assertSame( $expected['lcp'], $result['lcp'] );
-		$this->assertSame( $expected['ttfb'], $result['ttfb'] );
-		$this->assertSame( $expected['cls'], $result['cls'] );
-		$this->assertSame( $expected['tbt'], $result['tbt'] );
+		// Check largest_contentful_paint (LCP)
+		if ( null === $expected['largest_contentful_paint'] ) {
+			$this->assertNull( $result['largest_contentful_paint'] );
+		} else {
+			$this->assertSame( $expected['largest_contentful_paint'], $result['largest_contentful_paint']['value'] );
+		}
+
+		// Check time_to_first_byte (TTFB)
+		if ( null === $expected['time_to_first_byte'] ) {
+			$this->assertNull( $result['time_to_first_byte'] );
+		} else {
+			$this->assertSame( $expected['time_to_first_byte'], $result['time_to_first_byte']['value'] );
+		}
+
+		// Check cumulative_layout_shift (CLS)
+		if ( null === $expected['cumulative_layout_shift'] ) {
+			$this->assertNull( $result['cumulative_layout_shift'] );
+		} else {
+			$this->assertSame( $expected['cumulative_layout_shift'], $result['cumulative_layout_shift']['value'] );
+		}
+
+		// Check total_blocking_time (TBT)
+		if ( null === $expected['total_blocking_time'] ) {
+			$this->assertNull( $result['total_blocking_time'] );
+		} else {
+			$this->assertSame( $expected['total_blocking_time'], $result['total_blocking_time']['value'] );
+		}
 	}
 }
