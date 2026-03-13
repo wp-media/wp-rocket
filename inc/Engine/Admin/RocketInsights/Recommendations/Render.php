@@ -29,12 +29,13 @@ class Render extends Abstract_Render {
 	 * Determines the current state and renders the appropriate partial.
 	 *
 	 * @param array|false $recommendations Recommendations data or false if not cached.
+	 * @param bool        $echo_output Whether to echo the output or return it as a string.
 	 * @return void|string
 	 */
-	public function render_recommendations_widget( $recommendations, $echo = true ) {
+	public function render_recommendations_widget( $recommendations, bool $echo_output = true ) {
 		$html = $this->get_recommendations_widget( $recommendations );
 
-		if ( $echo ) {
+		if ( $echo_output ) {
 			echo $html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 			return;
 		}
