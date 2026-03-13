@@ -43,13 +43,8 @@ class Test_AddAverageMetrics extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnAsExpected( $config, $expected ) {
-		// Mock has_completed_tests
-		$this->calculator_mock->shouldReceive( 'has_completed_tests' )
-			->once()
-			->andReturn( $config['has_tests'] );
-
 		// Mock calculate_average_metrics (only if tests exist)
-		if ( $config['has_tests'] ) {
+		if ( 'in-progress' !== $config['status'] ) {
 			$this->calculator_mock->shouldReceive( 'calculate_average_metrics' )
 				->once()
 				->andReturn( $config['metrics'] );

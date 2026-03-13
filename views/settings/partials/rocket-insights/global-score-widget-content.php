@@ -5,7 +5,7 @@
 
 defined( 'ABSPATH' ) || exit;
 ?>
-<div class="wpr-ri-score-widget">
+<div class="wpr-percentage-score-widget wpr-ri-score-widget">
 	<div class="wpr-ri-score-widget__score-section">
 		<?php
 		if ( isset( $data['status'] ) && 'no-url' !== $data['status'] ) :
@@ -15,9 +15,11 @@ defined( 'ABSPATH' ) || exit;
 		<?php else : ?>
 			<div class="wpr-score-no-urls"></div>
 		<?php endif; ?>
-		<p class="wpr-ri-score-widget__tracked-pages">
-			<span class="wpr-ri-score-widget__tracked-label"><?php esc_html_e( 'Tracked pages:', 'rocket' ); ?></span>
-			<span class="wpr-ri-score-widget__tracked-count"><?php echo intval( $data['pages_num'] ?? 0 ); ?></span>
+		<p class="wpr-page-num-txt">
+			<?php
+			// translators: %1$s is the status text, %2$s is the number of pages tracked/monitored.
+			printf( '%1$s: %2$s', esc_html( $data['status_text'] ), intval( $data['pages_num'] ) );
+		?>
 		</p>
 	</div>
 
@@ -36,7 +38,7 @@ defined( 'ABSPATH' ) || exit;
 						</span>
 					</div>
 					<span class="wpr-ri-score-widget__metric-value wpr-ri-score-widget__metric-value--<?php echo esc_attr( str_replace( 'ri-', '', $this->metric_formatter->get_metric_class( $rocket_metric_key, $rocket_metric['value'] ) ) ); ?>">
-						<?php echo esc_html( $rocket_metric['value'] ); ?>
+						<?php echo esc_html( $this->metric_formatter->format_metric( $rocket_metric_key, $rocket_metric['value'] ) ); ?>
 					</span>
 				</div>
 			<?php endforeach; ?>
@@ -44,7 +46,7 @@ defined( 'ABSPATH' ) || exit;
 	</div>
 	<?php endif; ?>
 
-	<div id="wpr_global_score_widget_add_page_btn_wrapper" class="wpr-ri-score-widget__add-page">
+	<div class="wpr-global-score-widget-btn-wrapper">
 		<?php
 		$this->render_add_page_btn( 'global-score-widget', $data );
 		?>

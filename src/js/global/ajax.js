@@ -409,6 +409,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		}else if ($tableBody.length > 0) {
 			$tableBody.prepend(globalScoreData.row_html);
 		}
+		decideGlobalScoreToUpdate();
 	}
 
 	/**
@@ -418,44 +419,25 @@ document.addEventListener('DOMContentLoaded', function() {
 	 *
 	 * @param {string} id - The ID of the clicked menu item.
 	 */
-	function decideGlobalScoreToUpdate(id) {
-		// Delay UI update a bit till element is visible.
-		setTimeout(() => {
-			switch (id) {
-				// Handle action when dashboard menu is clicked.
-				case 'wpr-nav-dashboard':
+	function decideGlobalScoreToUpdate() {
+		if ('' === globalScoreData.html) {
+			return;
+		}
+		let globalScoreWidgets = $('.wpr-global-score-widget');
 
-					if ('' === globalScoreData.html) {
-						return;
-					}
-					let globalScoreWidget = $('#wpr_global_score_widget');
+		if (globalScoreWidgets.length === 0) {
+			return;
+		}
 
-					if (!globalScoreWidget.is(':visible')) {
-						return;
-					}
+		// Update all global score widget instances.
+		globalScoreWidgets.html(globalScoreData.html);
 
-					// Update global score widget.
-					globalScoreWidget.html(globalScoreData.html);
+		// Disable "Add Pages" button on global score widget.
+		if (!('disabled_btn_html' in globalScoreData)) {
+			return;
+		}
 
-					// Disable "Add Pages" button on global score widget.
-					if (!('disabled_btn_html' in globalScoreData)) {
-						return;
-					}
-
-					$('#wpr_global_score_widget_add_page_btn_wrapper').html(globalScoreData.disabled_btn_html.global_score_widget);
-					break;
-
-				// Handle action when rocket insights menu is clicked.
-				case 'wpr-nav-rocket_insights':
-
-					if ('' === globalScoreData.row_html) {
-						return;
-					}
-
-					updateGlobalScoreRow(globalScoreData);
-					break;
-			}
-		}, 30);
+		$('.wpr-global-score-widget .wpr-global-score-widget-btn-wrapper').html(globalScoreData.disabled_btn_html.global_score_widget);
 	}
 
 	// ==== AJAX Handlers ====
@@ -482,12 +464,19 @@ document.addEventListener('DOMContentLoaded', function() {
 					// Update global score data.
 					globalScoreData = response.global_score_data;
 
-					// Update global score widget if on dashboard.
-					if ( isOnDashboard() ) {
-						$('#wpr_global_score_widget').html(response.global_score_data.html);
-					}
+					// Update all global score widget instances.
+					$('.wpr-global-score-widget').html(response.global_score_data.html);
 					// Update global score row in table if on Rocket Insights page.
 					updateGlobalScoreRow(globalScoreData);
+
+					// Fire custom event for other widgets (like recommendations)
+					document.dispatchEvent(new CustomEvent('wprGlobalScoreUpdated', {
+						detail: {
+							score: globalScoreData.data.score,
+							status: globalScoreData.data.status,
+							pages_num: globalScoreData.data.pages_num
+						}
+					}));
 				}
 				response.results.forEach(result => {
 					const $row = $(`.wpr-ri-item[data-rocket-insights-id="${result.id}"]`);
@@ -662,13 +651,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	// Only poll if on a wpr section that requires polling(dashboard|rocket_insights) (more robust check)
     function isValidPageForPolling() {
         const urlParams = new URLSearchParams(window.location.search);
-        switch (window.location.hash) {
-            case '#dashboard':
-            case '#rocket_insights':
-                return urlParams.get('page') === 'wprocket';
-            default:
-                return false;
-        }
+		return 'wprocket' === urlParams.get('page');
     }
 
 	// Resume polling if needed
@@ -678,12 +661,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 		schedulePolling();
 	}
-
-    // Handle UI update when menu(dashboard|rocket_insights) is clicked.
-	$('.wpr-Header-nav a').on('click', function() {
-		const id = this.id;
-		decideGlobalScoreToUpdate(id);
-	});
 
 	// Handle UI update on the rocket insights tab when "Add Pages" button on the global score widget is clicked.
 	$(document).on('click', '.wpr-percentage-score-widget .wpr-ri-add-url-button', function() {

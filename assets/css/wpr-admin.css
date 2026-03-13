@@ -3077,8 +3077,56 @@ div.wpr-tutorial-item {
   color: #00A66B;
 }
 
-#wpr_global_score_widget .wpr-fieldsContainer-fieldset {
+#dashboard .wpr-global-score-widget-wrapper {
+  margin-top: 34px;
+  background: #F9FAFB;
+}
+#dashboard .wpr-global-score-widget-wrapper .wpr-ri-score-widget__metrics {
+  background: #F9FAFB;
+}
+#dashboard .wpr-global-score-widget-wrapper .wpr-ri-score-widget__metrics .wpr-ri-score-widget__metrics-row {
+  gap: 24px;
+}
+#dashboard .wpr-global-score-widget-wrapper .wpr-fieldsContainer-fieldset {
+  background: #F9FAFB;
+}
+
+.wpr-global-score-widget-wrapper {
+  margin-bottom: 16px;
+  background: #fff;
+  border-radius: 2px;
   padding: 16px;
+}
+.wpr-global-score-widget-wrapper[data-context=dashboard] {
+  display: none;
+}
+.wpr-global-score-widget-wrapper .wpr-optionHeader {
+  margin-top: 0;
+  border-bottom: 1px solid #E2E5E9;
+}
+.wpr-global-score-widget-wrapper .wpr-optionHeader .wpr-title2 {
+  font-family: "Roboto", sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: #0C0F1F;
+  padding: 0;
+}
+.wpr-global-score-widget-wrapper .wpr-fieldsContainer {
+  margin-top: 0;
+}
+.wpr-global-score-widget-wrapper .wpr-fieldsContainer-fieldset {
+  margin-top: 0;
+  border: none;
+  padding: 0;
+  background: #fff;
+}
+
+.wpr-Page#dashboard .wpr-global-score-widget-wrapper[data-context=dashboard] {
+  display: block;
+}
+.wpr-Page#dashboard .wpr-global-score-widget-wrapper[data-context=sidebar] {
+  display: none;
 }
 
 .wpr-ri-score-widget-container {
@@ -3113,7 +3161,6 @@ div.wpr-tutorial-item {
   flex-direction: column;
   gap: 8px;
   width: 100%;
-  background: #fff;
   border-radius: 8px;
 }
 .wpr-ri-score-widget__score-section {
@@ -3178,11 +3225,14 @@ div.wpr-tutorial-item {
   width: 100%;
   padding: 8px;
   background: #F6F7F8;
-  border-radius: 2px;
+  border-radius: 4px;
+  align-self: stretch;
+  align-items: center;
+  justify-content: center;
 }
 .wpr-ri-score-widget__metrics-row {
   display: flex;
-  gap: 24px;
+  gap: 16px;
   align-items: center;
   justify-content: center;
 }
@@ -3208,17 +3258,10 @@ div.wpr-tutorial-item {
   gap: 2px;
   align-items: center;
 }
-.wpr-ri-score-widget__metric-item {
-  display: flex;
-  gap: 2px;
-  align-items: center;
-  min-width: 32px;
-}
 .wpr-ri-score-widget__metric-label {
   font-family: "Roboto", sans-serif;
   font-size: 11px;
   font-weight: 600;
-  line-height: 10px;
   color: #464F59;
 }
 .wpr-ri-score-widget__metric-info {
@@ -3272,12 +3315,13 @@ div.wpr-tutorial-item {
 .wpr-ri-score-widget__metric-value--success {
   color: #2E8F44;
 }
-.wpr-ri-score-widget__add-page {
+
+.wpr-global-score-widget-btn-wrapper {
   display: flex;
   justify-content: center;
   margin-top: 8px;
 }
-.wpr-ri-score-widget__add-page .wpr-ri-global-score-add-url-button {
+.wpr-global-score-widget-btn-wrapper .wpr-ri-global-score-add-url-button {
   padding: 10px 30px 10px 16px;
   font-family: Roboto, Arial, sans-serif;
   font-size: 11px;
@@ -3286,8 +3330,11 @@ div.wpr-tutorial-item {
   line-height: 1.3;
   margin: 0;
 }
-.wpr-ri-score-widget__add-page .wpr-ri-global-score-add-url-button:before {
+.wpr-global-score-widget-btn-wrapper .wpr-ri-global-score-add-url-button:before {
   bottom: 6px;
+}
+.wpr-global-score-widget-btn-wrapper.wpr-isHidden {
+  display: none;
 }
 
 .wpr-percentage-score-widget {
@@ -3316,9 +3363,11 @@ div.wpr-tutorial-item {
   display: none;
 }
 .wpr-percentage-score-widget .wpr-page-num-txt {
-  margin: 24px 0 12px 0;
-  font-size: 14px;
+  margin: 4px 0 0 0;
+  font-size: 11px;
+  font-weight: 400;
   line-height: 1.3;
+  color: #738191;
 }
 .wpr-percentage-score-widget .wpr-score-no-urls {
   background-image: url(../img/pma-light-pulp.svg);
