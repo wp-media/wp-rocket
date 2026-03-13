@@ -23,7 +23,7 @@ defined( 'ABSPATH' ) || exit;
 		</p>
 	</div>
 
-	<?php if ( ! empty( $data['average_metrics'] ) && is_array( $data['average_metrics']['largest_contentful_paint'] ) ) : ?>
+	<?php if ( ! empty( $data['average_metrics'] ) && isset( $data['average_metrics']['largest_contentful_paint'] ) && is_array( $data['average_metrics']['largest_contentful_paint'] ) ) : ?>
 	<div class="wpr-ri-score-widget__metrics">
 		<div class="wpr-ri-score-widget__metrics-row">
 			<?php foreach ( $data['average_metrics'] as $rocket_metric_key => $rocket_metric ) : ?>
