@@ -34,12 +34,19 @@ $rocket_impact_tags    = $data['impact_tags'];
 					<span class="wpr-recommendation-item__title">
 						<?php echo esc_html( $rocket_title ); ?>
 					</span>
-					<button type="button" 
-						class="wpr-recommendation-item__activate" 
-						data-option-slug="<?php echo esc_attr( $rocket_option_slug ); ?>"
-					>
-						<?php esc_html_e( 'Activate', 'rocket' ); ?>
-					</button>
+					<?php
+					$this->render_action_button(
+						'link',
+						'',
+						[
+							'label'      => __( 'Activate', 'rocket' ),
+							'url'        => esc_url( $data['section'] ),
+							'attributes' => [
+								'class' => 'wpr-recommendation-item__activate',
+							],
+						]
+					);
+					?>
 				</div>
 
 				<?php if ( ! empty( $rocket_impact_tags ) ) : ?>
