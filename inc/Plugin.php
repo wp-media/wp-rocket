@@ -60,6 +60,7 @@ use WP_Rocket\Engine\Media\PreloadFonts\ServiceProvider as PreloadFontsServicePr
 use WP_Rocket\Engine\Media\PreconnectExternalDomains\ServiceProvider as PreconnectExternalDomainsServiceProvider;
 use WP_Rocket\Engine\Tracking\ServiceProvider as TrackingServiceProvider;
 use WP_Rocket\Engine\Admin\RocketInsights\ServiceProvider as RocketInsightsServiceProvider;
+use WP_Rocket\Engine\Abilities\ServiceProvider as AbilitiesServiceProvider;
 
 /**
  * Plugin Manager.
@@ -310,6 +311,7 @@ class Plugin {
 		$this->container->addServiceProvider( new PreconnectExternalDomainsServiceProvider() );
 		$this->container->addServiceProvider( new RocketInsightsServiceProvider() );
 		$this->container->addServiceProvider( new TrackingServiceProvider() );
+		$this->container->addServiceProvider( new AbilitiesServiceProvider() );
 
 		$common_subscribers = [
 			'license_subscriber',
@@ -423,6 +425,7 @@ class Plugin {
 			'tracking_subscriber',
 			'logger_subscriber',
 			'optimole_subscriber',
+			'abilities_subscriber',
 		];
 
 		$host_type = HostResolver::get_host_service();
