@@ -35,7 +35,7 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 	 *     @type float|null  $cls             Cumulative Layout Shift.
 	 *     @type int|null    $tbt             Total Blocking Time in milliseconds.
 	 *     @type int|null    $global_score    Overall performance score (0-100).
-	 *     @type string|null $enabled_options Comma-separated list of enabled WP Rocket options.
+	 *     @type array|null  $enabled_options List of enabled WP Rocket options.
 	 *     @type string|null $language        ISO language code (e.g., "en", "fr").
 	 *     @type int|null    $limit           Maximum number of recommendations (1-20).
 	 *     @type string|null $version         WP Rocket version (e.g., "3.20.4").

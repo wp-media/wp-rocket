@@ -149,7 +149,7 @@ class DataManager implements LoggerAwareInterface {
 			'language'        => $this->get_language(),
 			'limit'           => 20, // Get all recommendations.
 			'version'         => rocket_get_constant( 'WP_ROCKET_VERSION' ),
-			'enabled_options' => implode( ',', $enabled_options ),
+			'enabled_options' => $enabled_options,
 		];
 
 		if ( ! empty( $average_metrics ) ) {

@@ -13,6 +13,7 @@ use WP_Rocket\Engine\Admin\RocketInsights\Render;
 use WP_Rocket\Engine\Admin\RocketInsights\Rest;
 use WP_Rocket\Engine\Admin\RocketInsights\Controller;
 use WP_Rocket\Engine\Admin\RocketInsights\GlobalScore;
+use WP_Rocket\Engine\Admin\RocketInsights\Recommendations\Rest as RecommendationsRest;
 use WP_Rocket\Engine\License\Renewal;
 use WP_Rocket\Tests\Unit\TestCase;
 
@@ -81,8 +82,9 @@ class RenderPerformanceUrlsTableTest extends TestCase {
 
 		$plan_mock = $this->createMock( Plan::class );
 		$renewal_mock = $this->createMock( Renewal::class );
+		$recommendations_rest_mock = $this->createMock( RecommendationsRest::class );
 
-		$subscriber = new Subscriber($mock_render, $mock_controller, $mock_rest, $mock_queue, $ri_context, $mock_global_score, $options, $manager, $plan_mock, $renewal_mock);
+		$subscriber = new Subscriber($mock_render, $mock_controller, $mock_rest, $mock_queue, $ri_context, $mock_global_score, $options, $manager, $plan_mock, $renewal_mock, $recommendations_rest_mock);
 		$subscriber->render_performance_urls_table();
 	}
 }
