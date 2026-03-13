@@ -3124,6 +3124,7 @@ div.wpr-tutorial-item {
 
 .wpr-Page#dashboard .wpr-global-score-widget-wrapper[data-context=dashboard] {
   display: block;
+  border: 1px solid #E8EBEE;
 }
 .wpr-Page#dashboard .wpr-global-score-widget-wrapper[data-context=sidebar] {
   display: none;

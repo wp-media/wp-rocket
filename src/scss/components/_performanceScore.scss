@@ -59,6 +59,7 @@
 .wpr-Page#dashboard {
 	.wpr-global-score-widget-wrapper[data-context="dashboard"] {
 		display: block;
+		border: 1px solid $cGreyLight1;
 	}
 
 	.wpr-global-score-widget-wrapper[data-context="sidebar"] {
