@@ -12,7 +12,7 @@ class Options {
 		$this->options = $options;
 	}
 
-	public function get_options() {
+	public function get_options_ability() {
 		wp_register_ability(
 			'wp-media/get-options',
 			[
