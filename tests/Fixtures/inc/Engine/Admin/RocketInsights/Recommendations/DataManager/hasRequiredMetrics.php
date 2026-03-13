@@ -6,10 +6,10 @@ return [
 				'global_score_data' => [
 					'score'           => 75,
 					'average_metrics' => [
-						'lcp'  => 3.2,
-						'ttfb' => 0.8,
-						'cls'  => 0.15,
-						'tbt'  => 350,
+						'largest_contentful_paint'  => 3.2,
+						'time_to_first_byte' => 0.8,
+						'cumulative_layout_shift'  => 0.15,
+						'total_blocking_time'  => 350,
 					],
 				],
 			],
@@ -40,9 +40,9 @@ return [
 				'global_score_data' => [
 					'score'           => 75,
 					'average_metrics' => [
-						'ttfb' => 0.8,
-						'cls'  => 0.15,
-						'tbt'  => 350,
+						'time_to_first_byte' => 0.8,
+						'cumulative_layout_shift'  => 0.15,
+						'total_blocking_time'  => 350,
 					],
 				],
 			],
@@ -54,9 +54,9 @@ return [
 				'global_score_data' => [
 					'score'           => 75,
 					'average_metrics' => [
-						'lcp' => 3.2,
-						'cls' => 0.15,
-						'tbt' => 350,
+						'largest_contentful_paint' => 3.2,
+						'cumulative_layout_shift' => 0.15,
+						'total_blocking_time' => 350,
 					],
 				],
 			],
@@ -68,9 +68,9 @@ return [
 				'global_score_data' => [
 					'score'           => 75,
 					'average_metrics' => [
-						'lcp'  => 3.2,
-						'ttfb' => 0.8,
-						'tbt'  => 350,
+						'largest_contentful_paint'  => 3.2,
+						'time_to_first_byte' => 0.8,
+						'total_blocking_time'  => 350,
 					],
 				],
 			],
@@ -82,9 +82,9 @@ return [
 				'global_score_data' => [
 					'score'           => 75,
 					'average_metrics' => [
-						'lcp'  => 3.2,
-						'ttfb' => 0.8,
-						'cls'  => 0.15,
+						'largest_contentful_paint'  => 3.2,
+						'time_to_first_byte' => 0.8,
+						'cumulative_layout_shift'  => 0.15,
 					],
 				],
 			],
@@ -96,10 +96,10 @@ return [
 				'global_score_data' => [
 					'score'           => 75,
 					'average_metrics' => [
-						'lcp'          => 3.2,
-						'ttfb'         => 0.8,
-						'cls'          => 0.15,
-						'tbt'          => 350,
+						'largest_contentful_paint'          => 3.2,
+						'time_to_first_byte'         => 0.8,
+						'cumulative_layout_shift'          => 0.15,
+						'total_blocking_time'          => 350,
 						'global_score' => 75,
 					],
 				],

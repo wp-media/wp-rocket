@@ -38,10 +38,10 @@ return [
 				'status' => 'complete',
 				'is_running' => false,
 				'average_metrics' => [
-					'lcp'  => null,
-					'ttfb' => null,
-					'cls'  => null,
-					'tbt'  => null,
+					'largest_contentful_paint' => null,
+					'total_blocking_time'      => null,
+					'cumulative_layout_shift'  => null,
+					'time_to_first_byte'       => null,
 				],
 			]
 		]

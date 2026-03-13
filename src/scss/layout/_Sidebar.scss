@@ -10,9 +10,9 @@
     position: relative;
     display: none;
     flex: 0 0 290px;
-    padding: 0 $space*2;
-    flex-direction: column;
-    gap: $space*2;
+	padding: 0 $space*2;
+	flex-direction: column;
+	gap: $space*2;
 
     @include respond-to('md') {
         flex: 0 0 260px;

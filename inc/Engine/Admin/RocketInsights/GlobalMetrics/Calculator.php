@@ -14,7 +14,7 @@ class Calculator {
 	 *
 	 * @var string[]
 	 */
-	private const METRIC_KEYS = [
+	public const METRIC_KEYS = [
 		'largest_contentful_paint',
 		'total_blocking_time',
 		'cumulative_layout_shift',
@@ -55,26 +55,28 @@ class Calculator {
 	 * }
 	 */
 	public function calculate_average_metrics(): array {
+		$default_metric = [
+			'largest_contentful_paint' => null,
+			'total_blocking_time'      => null,
+			'cumulative_layout_shift'  => null,
+			'time_to_first_byte'       => null,
+		];
+
 		// Get all completed tests with metric_data.
 		$tests = $this->query->get_completed_metrics();
 
 		// No completed tests - return null for all metrics.
 		if ( empty( $tests ) ) {
-			return [
-				'lcp'  => null,
-				'ttfb' => null,
-				'cls'  => null,
-				'tbt'  => null,
-			];
+			return $default_metric;
 		}
 
 		// Initialize accumulators.
-		$totals = [
-			'largest_contentful_paint' => 0,
-			'total_blocking_time'      => 0,
-			'cumulative_layout_shift'  => 0,
-			'time_to_first_byte'       => 0,
-		];
+		$totals = array_map(
+			function () {
+				return 0;
+			},
+			$default_metric
+		);
 
 		$test_count = 0;
 
@@ -99,24 +101,31 @@ class Calculator {
 
 		// No valid tests found.
 		if ( 0 === $test_count ) {
-			return [
-				'lcp'  => null,
-				'ttfb' => null,
-				'cls'  => null,
-				'tbt'  => null,
-			];
+			return $default_metric;
 		}
 
 		// Calculate averages and format for Recommendations API.
 		return [
-			// LCP: milliseconds → seconds.
-			'lcp'  => round( ( $totals['largest_contentful_paint'] / $test_count ) / 1000, 3 ),
-			// TTFB: milliseconds → seconds.
-			'ttfb' => round( ( $totals['time_to_first_byte'] / $test_count ) / 1000, 3 ),
-			// CLS: unitless decimal.
-			'cls'  => round( $totals['cumulative_layout_shift'] / $test_count, 3 ),
-			// TBT: keep in milliseconds (integer).
-			'tbt'  => (int) round( $totals['total_blocking_time'] / $test_count ),
+			'largest_contentful_paint' => [
+				'label'   => 'LCP',
+				'value'   => round( ( $totals['largest_contentful_paint'] / $test_count ) / 1000, 3 ),
+				'tooltip' => __( 'Time until the largest visible content element renders and the main content becomes visible.', 'rocket' ),
+			],
+			'total_blocking_time'      => [
+				'label'   => 'TBT',
+				'value'   => (int) round( $totals['total_blocking_time'] / $test_count ),
+				'tooltip' => __( 'Total time the main thread is blocked before the page becomes interactive during loading.', 'rocket' ),
+			],
+			'cumulative_layout_shift'  => [
+				'label'   => 'CLS',
+				'value'   => round( $totals['cumulative_layout_shift'] / $test_count, 3 ),
+				'tooltip' => __( 'Total amount of unexpected layout shifts during page loading, affecting visual stability.', 'rocket' ),
+			],
+			'time_to_first_byte'       => [
+				'label'   => 'TTFB',
+				'value'   => round( ( $totals['time_to_first_byte'] / $test_count ) / 1000, 3 ),
+				'tooltip' => __( 'Time from the request until the server responds, determining how soon the page starts loading.', 'rocket' ),
+			],
 		];
 	}
 

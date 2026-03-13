@@ -43,7 +43,7 @@ class Render extends Abstract_Render {
 	 *
 	 * @var MetricFormatter
 	 */
-	private $metric_formatter;
+	protected $metric_formatter;
 
 	/**
 	 * Rows counter to keep track of the number of rows rendered, used for auto-expand the first row for now.

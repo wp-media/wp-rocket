@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Admin\RocketInsights\Recommendations;
 
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Admin\RocketInsights\GlobalMetrics\Calculator;
 use WP_Rocket\Engine\Admin\RocketInsights\GlobalScore;
 use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
@@ -311,7 +312,7 @@ class DataManager implements LoggerAwareInterface {
 		}
 
 		// Verify core metrics exist.
-		$required = [ 'lcp', 'ttfb', 'cls', 'tbt' ];
+		$required = Calculator::METRIC_KEYS;
 		foreach ( $required as $metric ) {
 			if ( ! isset( $average_metrics[ $metric ] ) ) {
 				return false;
@@ -483,5 +484,36 @@ class DataManager implements LoggerAwareInterface {
 		$language = substr( $locale, 0, 2 );
 
 		return $language;
+	}
+
+	/**
+	 * Maybe fetch recommendations with validation.
+	 *
+	 * Checks:
+	 * 1. Average metrics are available
+	 * 2. Hash has changed (data is different)
+	 * 3. Not already loading
+	 *
+	 * @return void
+	 */
+	public function maybe_fetch_recommendations(): void {
+		// Bail if already loading.
+		if ( 'loading' === $this->get_status() ) {
+			return;
+		}
+
+		// Bail if metrics not ready.
+		if ( ! $this->has_required_metrics() ) {
+			return;
+		}
+
+		// Bail if data hasn't changed.
+		if ( ! $this->should_fetch_recommendations() ) {
+			$this->extend_transient(); // Extend for another 24h.
+			return;
+		}
+
+		// Fetch new recommendations.
+		$this->fetch_recommendations();
 	}
 }

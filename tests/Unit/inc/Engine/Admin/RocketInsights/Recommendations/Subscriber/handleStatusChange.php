@@ -54,27 +54,9 @@ class Test_HandleStatusChange extends TestCase {
 		}
 
 		if ( $expected['fetches_recommendations'] ) {
-			$this->data_manager->shouldReceive( 'get_status' )
+			$this->data_manager->shouldReceive( 'maybe_fetch_recommendations' )
 				->once()
-				->andReturn( $config['status'] );
-
-			if ( 'loading' !== $config['status'] ) {
-				$this->data_manager->shouldReceive( 'has_required_metrics' )
-					->once()
-					->andReturn( $config['has_required_metrics'] );
-
-				if ( $config['has_required_metrics'] ) {
-					$this->data_manager->shouldReceive( 'should_fetch_recommendations' )
-						->once()
-						->andReturn( $config['should_fetch'] );
-
-					if ( $config['should_fetch'] ) {
-						$this->data_manager->shouldReceive( 'fetch_recommendations' )->once();
-					} else {
-						$this->data_manager->shouldReceive( 'extend_transient' )->once();
-					}
-				}
-			}
+				->andReturn( 'loading' !== $config['status'] && $config['has_required_metrics'] && $config['should_fetch'] );
 		} else {
 			$this->data_manager->shouldReceive( 'get_status' )->never();
 			$this->data_manager->shouldReceive( 'has_required_metrics' )->never();
