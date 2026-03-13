@@ -29,10 +29,17 @@ class Render extends Abstract_Render {
 	 * Determines the current state and renders the appropriate partial.
 	 *
 	 * @param array|false $recommendations Recommendations data or false if not cached.
-	 * @return void
+	 * @return void|string
 	 */
-	public function render_recommendations_widget( $recommendations ): void {
-		echo $this->get_recommendations_widget( $recommendations ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+	public function render_recommendations_widget( $recommendations, $echo = true ) {
+		$html = $this->get_recommendations_widget( $recommendations );
+
+		if ( $echo ) {
+			echo $html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+			return;
+		}
+
+		return $html;
 	}
 
 	/**

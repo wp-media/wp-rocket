@@ -55,8 +55,9 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'rocket_sidebar'                              => 'render_recommendations_widget',
-			'rocket_insights_global_score_status_changed' => 'handle_status_change',
+			'rocket_sidebar'                                => 'render_recommendations_widget',
+			'rocket_insights_global_score_status_changed'   => 'handle_status_change',
+			'rocket_insights_recommendations_rest_response' => 'output_recommendations_rest_response',
 		];
 	}
 
@@ -75,6 +76,19 @@ class Subscriber implements Subscriber_Interface {
 
 		$recommendations = $this->maybe_fetch_recommendations_on_page_load();
 		$this->render->render_recommendations_widget( $recommendations );
+	}
+
+	/**
+	 * Output recommendations in the REST API response.
+	 *
+	 * @param array $response_data Existing response data.
+	 * @return array Modified response data with recommendations.
+	 */	public function output_recommendations_rest_response( array $response_data ): array {
+		$recommendations = $this->data_manager->get_recommendations();
+		$response_data['recommendations'] = [
+			'html' => $this->render->render_recommendations_widget( $recommendations, false ),
+		];
+		return $response_data;
 	}
 
 	/**
