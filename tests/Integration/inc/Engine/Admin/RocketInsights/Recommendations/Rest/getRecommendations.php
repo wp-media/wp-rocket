@@ -98,9 +98,6 @@ class getRecommendations extends RESTfulTestCase {
 			// or they can have 'data' with 'status' inside
 			if ( isset( $response['code'] ) ) {
 				$this->assertSame( $expected['error_code'], $response['code'] );
-			} elseif ( isset( $response['data']['status'] ) ) {
-				// Some errors have the code in data.status
-				$this->assertTrue( true ); // Just ensure we got an error response
 			} else {
 				$this->fail( 'Expected error response but got: ' . print_r( $response, true ) );
 			}
