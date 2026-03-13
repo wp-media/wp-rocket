@@ -255,6 +255,7 @@
 		text-transform: uppercase;
 		@include font-size(14, 18);
 		@include transition(color, 0.2s);
+		text-decoration: none;
 
 		&:hover {
 			color: $cOrangeDark1;
