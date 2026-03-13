@@ -17,8 +17,9 @@ use WP_Rocket\Engine\Admin\RocketInsights\{Database\Tables\RocketInsights as RIT
 	Queue\Queue as RIQueue,
 	Recommendations\APIClient as RecommendationsAPIClient,
 	Recommendations\DataManager,
+	Recommendations\Render as RecommendationsRender,
+	Recommendations\Subscriber as RecommendationsSubscriber,
 	Recommendations\Rest as RecommendationsRest,
-	Recommendations\FetchSubscriber as RecommendationsFetchSubscriber,
 	Recommendations\SettingsSubscriber as RecommendationsSettingsSubscriber,
 	URLLimit\Subscriber as URLLimitSubscriber,
 	Settings\Controller as SettingsController,
@@ -63,8 +64,9 @@ class ServiceProvider extends AbstractServiceProvider {
 		'ri_global_metrics_calculator',
 		'ri_global_metrics_subscriber',
 		'ri_recommendations_data_manager',
+		'ri_recommendations_render',
 		'ri_recommendations_rest',
-		'ri_recommendations_fetch_subscriber',
+		'ri_recommendations_subscriber',
 		'ri_recommendations_settings_subscriber',
 	];
 
@@ -213,11 +215,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			);
 
 		// Recommendations REST Controller.
-		$this->getContainer()->add( 'ri_recommendations_rest', RecommendationsRest::class )
-			->addArgument( 'ri_recommendations_data_manager' );
-		// Recommendations Fetch Subscriber.
-		$this->getContainer()->addShared( 'ri_recommendations_fetch_subscriber', RecommendationsFetchSubscriber::class )
-			->addArgument( 'ri_recommendations_data_manager' );
+		$this->getContainer()->add( 'ri_recommendations_rest', RecommendationsRest::class );
 
 		// Recommendations Settings Subscriber.
 		$this->getContainer()->addShared( 'ri_recommendations_settings_subscriber', RecommendationsSettingsSubscriber::class )
@@ -269,6 +267,24 @@ class ServiceProvider extends AbstractServiceProvider {
 				[
 					'ri_render',
 					'ri_context',
+				]
+			);
+
+		// Recommendations Render.
+		$this->getContainer()->add( 'ri_recommendations_render', RecommendationsRender::class )
+			->addArguments(
+				[
+					new StringArgument( $this->getContainer()->get( 'template_path' ) . '/settings/' ),
+				]
+			);
+
+		// Recommendations Subscriber.
+		$this->getContainer()->addShared( 'ri_recommendations_subscriber', RecommendationsSubscriber::class )
+			->addArguments(
+				[
+					'ri_recommendations_render',
+					'ri_context',
+					'ri_recommendations_data_manager',
 				]
 			);
 

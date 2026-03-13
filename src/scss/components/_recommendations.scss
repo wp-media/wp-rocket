@@ -1,0 +1,370 @@
+// main: ../main.scss
+
+/**
+ * Recommendations Panel Component
+ * 
+ * A panel displaying optimization recommendations for Rocket Insights.
+ * 
+ * @since 3.20
+ */
+
+.wpr-recommendations {
+	display: flex;
+	flex-direction: column;
+	gap: $space * 2; // 16px
+	padding: $space * 2; // 16px
+	background: $cWhite;
+	border-radius: 2px;
+	width: 290px;
+
+	// Header with "Recommendations" title
+	&__header {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding-bottom: 6px;
+		border-bottom: 1px solid $cGreyLighter1;
+		width: 100%;
+	}
+
+	&__title {
+		flex: 1 0 0;
+		@include font-size(16, 21);
+		font-weight: 600;
+		color: $cBlack;
+		margin: 0;
+	}
+
+	// Content container
+	&__content {
+		display: flex;
+		flex-direction: column;
+		gap: $space; // 8px
+		width: 100%;
+		border-radius: 4px;
+	}
+
+	// List of recommendation items
+	&__list {
+		display: flex;
+		flex-direction: column;
+		gap: $space * 2; // 16px
+		width: 100%;
+		
+		// Show only first 3 items by default
+		.wpr-recommendation-item:nth-child(n + 4) {
+			display: none;
+		}
+
+		// When collapsed, 3rd item is visually last (remove its border)
+		.wpr-recommendation-item:nth-child(3) {
+			border-bottom: none;
+		}
+
+		// When expanded, restore 3rd item border
+		&.is-expanded .wpr-recommendation-item:nth-child(3) {
+			border-bottom: 1px solid $cGreyLighter1;
+			padding-bottom: $space * 2;
+		}
+
+		.wpr-recommendation-item:last-child {
+			border-bottom: none;
+		}
+	}
+
+	// Loading state
+	&__loading {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: $space;
+		padding: $space * 2;
+		background: $cWhite;
+		border-radius: 2px;
+		text-align: center;
+
+        &:before {
+          display: block;
+          content: "";
+          background: url("../img/orange-loading.svg") no-repeat center center;
+          background-size: contain;
+          width: 22.857px;
+          height: 24px;
+          aspect-ratio: 20/21;
+        }
+	}
+
+	&__loading-spinner {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	&__loading-text {
+		@include font-size(14, 18);
+		font-weight: 600;
+		color: $cGreyLighter3;
+		margin: 0;
+	}
+
+	// Success state (all recommendations applied) - green left border box
+	&__success {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		justify-content: center;
+		padding: $space $space * 2; // 8px 16px
+		background: $cGreenLight4;
+		border-left: 4px solid $successDark;
+		border-radius: 0;
+	}
+
+	&__success-title {
+		@include font-size(14, 18);
+		font-weight: 600;
+		color: $cBlack;
+		margin: 0;
+	}
+
+	&__success-message {
+		@include font-size(14, 18);
+		font-weight: 400;
+		color: $cBlack;
+		margin: 0;
+	}
+
+	// Failed state - red left border box
+	&__failed {
+		display: flex;
+		flex-direction: column;
+		gap: $space;
+		align-items: flex-start;
+		justify-content: center;
+		padding: $space $space * 2; // 8px 16px
+		background: $errorLighter;
+		border-left: 4px solid $errorDark;
+		border-radius: 0;
+	}
+
+	&__failed-title {
+		@include font-size(14, 18);
+		font-weight: 600;
+		color: $cBlack;
+		margin: 0;
+	}
+
+	&__failed-message {
+		@include font-size(14, 18);
+		font-weight: 400;
+		color: $cBlack;
+		margin: 0;
+	}
+
+	&__failed-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 4px;
+		@include font-size(14, 18);
+		font-weight: 600;
+		color: $cBlack;
+		text-decoration: underline;
+
+		&:hover {
+			color: $cBlueDark1;
+		}
+
+		.wpr-icon-external-link {
+			width: 18px;
+			height: 18px;
+		}
+	}
+}
+
+// Spin animation for loading state
+@keyframes wpr-spin {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+// Individual recommendation item
+.wpr-recommendation-item {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	justify-content: center;
+	padding-bottom: $space * 2; // 16px
+	border-bottom: 1px solid $cGreyLighter1;
+	background: $cWhite;
+	width: 100%;
+
+	&__inner {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+		width: 100%;
+	}
+
+	&__wrapper {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+		align-items: flex-start;
+		justify-content: center;
+		width: 100%;
+	}
+
+	// Header row with title and activate button
+	&__header {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+		align-items: flex-start;
+		justify-content: center;
+		width: 100%;
+	}
+
+	&__title-row {
+		display: flex;
+		gap: $space; // 8px
+		align-items: center;
+		width: 100%;
+		@include font-size(14, 18);
+		font-weight: 600;
+	}
+
+	&__title {
+		flex: 1 0 0;
+		color: $cBlack;
+		margin: 0;
+	}
+
+	&__activate {
+		flex-shrink: 0;
+		color: $jaffa;
+		text-align: center;
+		font-weight: 600;
+		background: none;
+		border: none;
+		padding: 0;
+		cursor: pointer;
+		text-transform: uppercase;
+		@include font-size(14, 18);
+		@include transition(color, 0.2s);
+
+		&:hover {
+			color: $cOrangeDark1;
+		}
+
+		&:focus {
+			outline: 2px solid $cBlue;
+			outline-offset: 2px;
+		}
+	}
+
+	// Impact tags section
+	&__impact {
+		display: flex;
+		gap: 4px;
+		align-items: center;
+	}
+
+	&__impact-label {
+		@include font-size(11, 14);
+		font-weight: 400;
+		color: $cGreyLighter3;
+	}
+
+	&__impact-tags {
+		display: flex;
+		gap: 6px;
+		align-items: center;
+	}
+
+	// Description text
+	&__description {
+		@include font-size(14, 18);
+		font-weight: 400;
+		color: $cBlack;
+		width: 100%;
+		margin: 0;
+	}
+
+	&__more-info {
+		font-weight: 600;
+		text-decoration: underline;
+		color: $cBlack;
+		cursor: pointer;
+
+		&:hover {
+			color: $cBlueDark1;
+		}
+	}
+}
+
+// Impact tag badge (CLS, LCP, TBT, etc.)
+.wpr-impact-tag {
+	display: flex;
+	align-items: center;
+	padding: 2px 4px;
+	background: $cGreyLight2;
+	border-radius: 2px;
+	@include font-size(11, 14);
+	font-weight: 600;
+	color: $cGreyLighter3;
+    text-transform: uppercase;
+}
+
+// Load more button
+.wpr-recommendations__load-more {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 12px $space * 2; // 12px 16px
+	border: 1px solid $cGreyLighter2;
+	border-radius: 4px;
+	width: 100%;
+	overflow: hidden;
+	background: $cWhite;
+	cursor: pointer;
+	@include transition(all, 0.2s);
+
+	&:hover {
+		background: $cGreyLight3;
+		border-color: $cGreyLighter3;
+	}
+
+	&:focus {
+		outline: 2px solid $cBlue;
+		outline-offset: 2px;
+	}
+
+	&-text {
+		display: flex;
+		gap: $space * 2; // 16px
+		align-items: center;
+		overflow: hidden;
+		@include font-size(14, 18);
+		font-weight: 600;
+		color: $cBlack;
+		text-transform: uppercase;
+	}
+
+	span:nth-child(2) {
+		display: none;
+	}
+
+	&.is-expanded {
+		span:first-child {
+			display: none;
+		}
+
+		span:nth-child(2) {
+			display: flex;
+		}
+	}
+}

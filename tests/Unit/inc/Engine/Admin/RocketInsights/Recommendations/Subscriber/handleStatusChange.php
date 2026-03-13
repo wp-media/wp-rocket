@@ -1,15 +1,19 @@
 <?php
 declare(strict_types=1);
 
-namespace WP_Rocket\Tests\Unit\inc\Engine\Admin\RocketInsights\Recommendations\FetchSubscriber;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Admin\RocketInsights\Recommendations\Subscriber;
 
 use Mockery;
-use WP_Rocket\Engine\Admin\RocketInsights\Recommendations\DataManager;
-use WP_Rocket\Engine\Admin\RocketInsights\Recommendations\FetchSubscriber;
+use WP_Rocket\Engine\Admin\RocketInsights\Recommendations\{
+	DataManager,
+	Render,
+	Subscriber
+};
+use WP_Rocket\Engine\Admin\RocketInsights\Context\Context;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * Test class covering \WP_Rocket\Engine\Admin\RocketInsights\Recommendations\FetchSubscriber::handle_status_change
+ * Test class covering \WP_Rocket\Engine\Admin\RocketInsights\Recommendations\Subscriber::handle_status_change
  *
  * @group RocketInsights
  * @group Recommendations
@@ -23,9 +27,9 @@ class Test_HandleStatusChange extends TestCase {
 	private $data_manager;
 
 	/**
-	 * FetchSubscriber instance.
+	 * Subscriber instance.
 	 *
-	 * @var FetchSubscriber
+	 * @var Subscriber
 	 */
 	private $subscriber;
 
@@ -36,7 +40,7 @@ class Test_HandleStatusChange extends TestCase {
 		parent::setUp();
 
 		$this->data_manager = Mockery::mock( DataManager::class );
-		$this->subscriber   = new FetchSubscriber( $this->data_manager );
+		$this->subscriber   = new Subscriber( Mockery::mock( Render::class ), Mockery::mock( Context::class ), $this->data_manager );
 	}
 
 	/**

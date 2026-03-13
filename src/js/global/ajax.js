@@ -416,8 +416,6 @@ document.addEventListener('DOMContentLoaded', function() {
 	 * Updates the global score UI widget or table row based on the selected menu.
 	 * When the dashboard or rocket insights menu is clicked, this function updates
 	 * the corresponding global score display after a short delay.
-	 *
-	 * @param {string} id - The ID of the clicked menu item.
 	 */
 	function decideGlobalScoreToUpdate() {
 		if ('' === globalScoreData.html) {
@@ -470,13 +468,7 @@ document.addEventListener('DOMContentLoaded', function() {
 					updateGlobalScoreRow(globalScoreData);
 
 					// Fire custom event for other widgets (like recommendations)
-					document.dispatchEvent(new CustomEvent('wprGlobalScoreUpdated', {
-						detail: {
-							score: globalScoreData.data.score,
-							status: globalScoreData.data.status,
-							pages_num: globalScoreData.data.pages_num
-						}
-					}));
+					document.dispatchEvent(new CustomEvent('wprGlobalScoreUpdated', { detail: globalScoreData.data }));
 				}
 				response.results.forEach(result => {
 					const $row = $(`.wpr-ri-item[data-rocket-insights-id="${result.id}"]`);

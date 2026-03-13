@@ -766,11 +766,6 @@ parameters:
 			path: tests/Integration/inc/Engine/Admin/RocketInsights/Rest/UpdateItemTest.php
 
 		-
-			message: "#^Call to method PHPUnit\\\\Framework\\\\Assert\\:\\:assertTrue\\(\\) with true will always evaluate to true\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Admin/RocketInsights/Recommendations/Rest/GetStatusTest.php
-
-		-
 			message: "#^Property WP_Rocket\\\\Tests\\\\Integration\\\\inc\\\\Engine\\\\Admin\\\\RocketInsights\\\\Subscriber\\\\ResetGlobalScoreTest\\:\\:\\$reset_called is never read, only written\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/Admin/RocketInsights/Subscriber/ResetGlobalScoreTest.php
@@ -1189,8 +1184,3 @@ parameters:
 			message: "#^If condition is always true\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/Admin/RocketInsights/Recommendations/SettingsSubscriber/MaybeFetchAfterSettingsChangeTest.php
-
-		-
-			message: "#^Call to method PHPUnit\\\\Framework\\\\Assert\\:\\:assertTrue\\(\\) with true will always evaluate to true\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Admin/RocketInsights/Recommendations/Rest/GetStatusTest.php
