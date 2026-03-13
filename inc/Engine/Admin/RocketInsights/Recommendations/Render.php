@@ -103,6 +103,7 @@ class Render extends Abstract_Render {
 				'icon_slug'      => $recommendation['icon_slug'] ?? '',
 				'priority'       => $recommendation['priority'] ?? '',
 				'impact_tags'    => $this->extract_impact_tags( $recommendation ),
+				'section'        => '#' . $this->return_section_from_option_slug( $recommendation['option_slug'] ),
 			];
 		}
 
@@ -132,5 +133,38 @@ class Render extends Abstract_Render {
 				return null !== $value;
 			}
 		);
+	}
+
+	/**
+	 * Returns the section anchor corresponding to a given option slug.
+	 *
+	 * This method maps a provided option slug to its associated section anchor,
+	 * which is used for navigation within the admin interface. If the option slug
+	 * does not exist in the mapping, it defaults to 'dashboard'.
+	 *
+	 * @param string $option_slug The slug of the option to map.
+	 * @return string
+	 */
+	private function return_section_from_option_slug( string $option_slug ): string {
+		$mapping = [
+			'add_missing_image_dimensions' => 'media',
+			'delay_js'                     => 'file_optimization',
+			'plugin_imagify'               => 'imagify',
+			'lazy_load_css'                => 'media',
+			'lazyload_iframes'             => 'media',
+			'lazyload_images'              => 'media',
+			'deferred_js'                  => 'file_optimization',
+			'minify_css'                   => 'file_optimization',
+			'minify_js'                    => 'file_optimization',
+			'prefetch_dns'                 => 'dashboard',
+			'preload_cache'                => 'preload',
+			'preload_fonts'                => 'media',
+			'preload_links'                => 'preload',
+			'rucss'                        => 'file_optimization',
+			'selfhost_fonts'               => 'media',
+			'plugin_rocketcdn'             => 'page_cdn',
+		];
+
+		return $mapping[ $option_slug ] ?? 'dashboard';
 	}
 }

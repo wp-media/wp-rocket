@@ -415,6 +415,7 @@ class Plugin {
 			'ri_post_listing_subscriber',
 			'ri_global_metrics_subscriber',
 			'ri_recommendations_subscriber',
+			'ri_recommendations_subscriber',
 			'ri_recommendations_settings_subscriber',
 			'post_subscriber',
 			'tracking_subscriber',
