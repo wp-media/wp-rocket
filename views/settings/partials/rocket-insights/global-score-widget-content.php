@@ -29,7 +29,7 @@ defined( 'ABSPATH' ) || exit;
 					<div class="wpr-ri-score-widget__metric-label-row">
 						<span class="wpr-ri-score-widget__metric-label"><?php echo esc_html( $rocket_metric['label'] ); ?></span>
 						<span class="wpr-ri-score-widget__metric-info">
-							<img src="<?php echo esc_url( rocket_get_constant( 'WP_ROCKET_ASSETS_IMG_URL', '' ) . 'ri-info.svg' ); ?>" alt="<?php esc_attr_e( 'Info', 'rocket' ); ?>" />
+							<span class="wpr-ri-score-widget__metric-info-icon"></span>
 							<span class="wpr-tooltip">
 								<span class="wpr-tooltip-content"><?php echo esc_html( $rocket_metric['tooltip'] ); ?></span>
 							</span>
