@@ -1619,8 +1619,8 @@ msgid ""
 "%1$sNew in %2$s: Meet Rocket Insights, your built-in performance tracking "
 "tool!%3$s"
 msgstr ""
-"%3$s%1$sNuevo en %2$s: ¡Conoce Rocket Insights, tu herramienta integrada de "
-"seguimiento del rendimiento! "
+"%1$sNuevo en %2$s: ¡Conoce Rocket Insights, tu herramienta integrada de "
+"seguimiento del rendimiento! %3$s"
 
 #. translators: %1$s opening tag, %2$s is WP Rocket plugin name, %3$s closing
 #. tag.
