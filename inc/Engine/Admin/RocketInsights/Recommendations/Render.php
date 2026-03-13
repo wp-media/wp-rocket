@@ -103,7 +103,7 @@ class Render extends Abstract_Render {
 				'icon_slug'      => $recommendation['icon_slug'] ?? '',
 				'priority'       => $recommendation['priority'] ?? '',
 				'impact_tags'    => $this->extract_impact_tags( $recommendation ),
-				'section'        => $this->return_section_from_option_slug( $recommendation['option_slug'] ),
+				'section'        => '#' . $this->return_section_from_option_slug( $recommendation['option_slug'] ),
 			];
 		}
 
@@ -147,22 +147,22 @@ class Render extends Abstract_Render {
 	 */
 	private function return_section_from_option_slug( string $option_slug ): string {
 		$mapping = [
-			'add_missing_image_dimensions' => '#media',
-			'delay_js'                     => '#file_optimization',
-			'plugin_imagify'               => '#imagify',
-			'lazy_load_css'                => '#media',
-			'lazyload_iframes'             => '#media',
-			'lazyload_images'              => '#media',
-			'deferred_js'                  => '#file_optimization',
-			'minify_css'                   => '#file_optimization',
-			'minify_js'                    => '#file_optimization',
-			'prefetch_dns'                 => '#dashboard',
-			'preload_cache'                => '#preload',
-			'preload_fonts'                => '#media',
-			'preload_links'                => '#preload',
-			'rucss'                        => '#file_optimization',
-			'selfhost_fonts'               => '#media',
-			'plugin_rocketcdn'             => '#page_cdn',
+			'add_missing_image_dimensions' => 'media',
+			'delay_js'                     => 'file_optimization',
+			'plugin_imagify'               => 'imagify',
+			'lazy_load_css'                => 'media',
+			'lazyload_iframes'             => 'media',
+			'lazyload_images'              => 'media',
+			'deferred_js'                  => 'file_optimization',
+			'minify_css'                   => 'file_optimization',
+			'minify_js'                    => 'file_optimization',
+			'prefetch_dns'                 => 'dashboard',
+			'preload_cache'                => 'preload',
+			'preload_fonts'                => 'media',
+			'preload_links'                => 'preload',
+			'rucss'                        => 'file_optimization',
+			'selfhost_fonts'               => 'media',
+			'plugin_rocketcdn'             => 'page_cdn',
 		];
 
 		return $mapping[ $option_slug ] ?? 'dashboard';
