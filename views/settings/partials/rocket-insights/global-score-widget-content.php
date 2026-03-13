@@ -19,11 +19,10 @@ defined( 'ABSPATH' ) || exit;
 			<?php
 			// translators: %1$s is the status text, %2$s is the number of pages tracked/monitored.
 			printf( '%1$s: <span>%2$s</span>', esc_html( $data['status_text'] ), intval( $data['pages_num'] ) );
-		?>
-		</p>
+			?>
 	</div>
 
-	<?php if ( ! empty( $data['average_metrics'] ) ) : ?>
+	<?php if ( ! empty( $data['average_metrics'] ) && is_array( $data['average_metrics']['largest_contentful_paint'] ) ) : ?>
 	<div class="wpr-ri-score-widget__metrics">
 		<div class="wpr-ri-score-widget__metrics-row">
 			<?php foreach ( $data['average_metrics'] as $rocket_metric_key => $rocket_metric ) : ?>
