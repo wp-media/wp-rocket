@@ -38,7 +38,6 @@ function PageManager(aElem) {
     this.pageId = null;
     this.bodyTop = 0;
     this.buttonText = this.$submitButton.value;
-    this.globalScoreAddUrlButton = document.querySelector('.wpr-global-score-widget-wrapper[data-context="sidebar"] .wpr-global-score-widget-btn-wrapper');
 
     refThis.getBodyTop();
 
@@ -151,14 +150,6 @@ PageManager.prototype.change = function() {
     this.$menuItem.classList.add('isActive');
     this.$submitButton.value = this.buttonText;
     this.$content.classList.add('isNotFull');
-
-    if (this.globalScoreAddUrlButton) {
-        this.globalScoreAddUrlButton.classList.add('wpr-isHidden');
-
-        if (this.pageId == "dashboard") {
-            this.globalScoreAddUrlButton.classList.remove('wpr-isHidden');
-        }
-    }
 
     const pagesWithoutSubmit = [
         'dashboard',
