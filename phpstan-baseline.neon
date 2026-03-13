@@ -1181,6 +1181,16 @@ parameters:
 			path: tests/Integration/inc/functions/rocketIsPluginActive.php
 
 		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 2
+			path: tests/Integration/inc/Engine/Admin/RocketInsights/Recommendations/SettingsSubscriber/MaybeFetchAfterSettingsChangeTest.php
+
+		-
+			message: "#^If condition is always true\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Admin/RocketInsights/Recommendations/SettingsSubscriber/MaybeFetchAfterSettingsChangeTest.php
+
+		-
 			message: "#^Call to method PHPUnit\\\\Framework\\\\Assert\\:\\:assertTrue\\(\\) with true will always evaluate to true\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/Admin/RocketInsights/Recommendations/Rest/GetStatusTest.php
