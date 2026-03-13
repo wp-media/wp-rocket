@@ -6,7 +6,6 @@ namespace WP_Rocket\Engine\Admin\RocketInsights\Recommendations;
 use WP_Error;
 use WP_REST_Controller;
 use WP_REST_Response;
-use WP_REST_Request;
 use WP_REST_Server;
 
 /**
@@ -20,22 +19,6 @@ class Rest extends WP_REST_Controller {
 	const ROUTE_BASE      = 'recommendations';
 
 	/**
-	 * DataManager instance.
-	 *
-	 * @var DataManager
-	 */
-	private $data_manager;
-
-	/**
-	 * Constructor.
-	 *
-	 * @param DataManager $data_manager DataManager instance.
-	 */
-	public function __construct( DataManager $data_manager ) {
-		$this->data_manager = $data_manager;
-	}
-
-	/**
 	 * Registers the routes for the objects of the controller.
 	 *
 	 * @return void
@@ -43,7 +26,7 @@ class Rest extends WP_REST_Controller {
 	public function register_routes(): void {
 		register_rest_route(
 			self::ROUTE_NAMESPACE,
-			self::ROUTE_BASE . '/status',
+			self::ROUTE_BASE,
 			[
 				[
 					'methods'             => WP_REST_Server::READABLE,

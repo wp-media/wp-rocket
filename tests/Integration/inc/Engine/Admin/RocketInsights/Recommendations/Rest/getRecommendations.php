@@ -12,7 +12,7 @@ use WPMedia\PHPUnit\Integration\RESTfulTestCase;
  * @group Recommendations
  * @group AdminOnly
  */
-class GetStatusTest extends RESTfulTestCase {
+class getRecommendations extends RESTfulTestCase {
 
 	private $config;
 
@@ -61,7 +61,7 @@ class GetStatusTest extends RESTfulTestCase {
 	public function testShouldDoAsExpected( $config, $expected ) {
 		$this->setUpTest( $config );
 
-		$response = $this->doRestRequest( 'GET', '/wp-rocket/v1/recommendations/status', [] );
+		$response = $this->doRestRequest( 'GET', '/wp-rocket/v1/recommendations', [] );
 
 		$this->assertResponse( $response, $expected );
 	}
@@ -107,21 +107,12 @@ class GetStatusTest extends RESTfulTestCase {
 			return;
 		}
 
-		// Assert status field
-		$this->assertArrayHasKey( 'status', $response );
-		$this->assertSame( $expected['status'], $response['status'] );
-
 		// Assert recommendations field exists
 		$this->assertArrayHasKey( 'recommendations', $response );
 
-		// Check recommendations count if specified
-		if ( isset( $expected['recommendations_count'] ) ) {
-			$this->assertCount( $expected['recommendations_count'], $response['recommendations'] );
-		}
-
 		// Check for error message if in failed status
-		if ( 'failed' === $expected['status'] && isset( $expected['has_error'] ) && $expected['has_error'] ) {
-			$this->assertArrayHasKey( 'error', $response );
+		if ( isset( $expected['has_error'] ) && $expected['has_error'] ) {
+			$this->assertStringContainsString( 'We’re sorry, recommendations are currently unavailable.', $response['recommendations']['html'] );
 		}
 	}
 

@@ -30,7 +30,7 @@ $(document).ready(function(){
 		// Use WordPress REST API client if available
 		if (window.wp && window.wp.apiFetch) {
 			window.wp.apiFetch({
-				path: '/wp-rocket/v1/recommendations/status'
+				path: '/wp-rocket/v1/recommendations'
 			})
 				.then(function (data) {
 					updateRecommendationsWidget(data);
@@ -40,7 +40,7 @@ $(document).ready(function(){
 				});
 		} else {
 			// Fallback to fetch API
-			fetch(window.wpApiSettings?.root + 'wp-rocket/v1/recommendations/status', {
+			fetch(window.wpApiSettings?.root + 'wp-rocket/v1/recommendations', {
 				headers: {
 					'X-WP-Nonce': window.wpApiSettings?.nonce || ''
 				}
