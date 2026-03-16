@@ -435,7 +435,7 @@ class DataManager implements LoggerAwareInterface {
 	private function get_enabled_options( array $options = [] ): array {
 		$enabled = [];
 
-		foreach ( self::TRACKED_OPTIONS as $option_key ) {
+		foreach ( self::TRACKED_OPTIONS as $option_key => $option_tab ) {
 			$value = $options[ $option_key ] ?? $this->options->get( $option_key, false );
 
 			// Check if option is enabled.

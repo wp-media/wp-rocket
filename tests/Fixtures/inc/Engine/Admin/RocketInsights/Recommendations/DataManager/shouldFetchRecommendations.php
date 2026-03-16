@@ -64,7 +64,7 @@ return [
 									'cls'  => 0.15,
 									'tbt'  => 350,
 								],
-								'enabled_options' => [ 'delay_js', 'lazyload_images' ],
+								'enabled_options' => [ 'delay_js', 'lazyload' ],
 							]
 						)
 					),
