@@ -32,52 +32,45 @@ class DataManager implements LoggerAwareInterface {
 	private const CACHE_EXPIRATION = DAY_IN_SECONDS;
 
 	/**
-	 * Map of WP Rocket option keys to recommendation option slugs.
+	 * Map of WP Rocket option keys to their tab IDs in dashboard.
 	 *
 	 * These options affect recommendations and should trigger a refresh when changed.
 	 *
 	 * @var array<string, string>
 	 */
 	private const TRACKED_OPTIONS = [
-		'image_dimensions',
-		'defer_all_js',
-		'delay_js',
-		'lazyload_css_bg_img',
-		'lazyload_iframes',
-		'lazyload',
-		'minify_css',
-		'minify_js',
-		'manual_preload',
-		'auto_preload_fonts',
-		'preload_links',
-		'remove_unused_css',
-		'host_fonts_locally',
+		'image_dimensions'             => 'media',
+		'defer_all_js'                 => 'file_optimization',
+		'delay_js'                     => 'file_optimization',
+		'lazyload_css_bg_img'          => 'media',
+		'lazyload_iframes'             => 'media',
+		'lazyload'                     => 'media',
+		'minify_css'                   => 'file_optimization',
+		'minify_js'                    => 'file_optimization',
+		'manual_preload'               => 'preload',
+		'auto_preload_fonts'           => 'media',
+		'preload_links'                => 'preload',
+		'remove_unused_css'            => 'file_optimization',
+		'host_fonts_locally'           => 'media',
 
-		'performance_monitoring',
-		'optimize_css_delivery',
-		'delay_js_execution_safe_mode',
-		'lazyload_youtube',
-		'database_revisions',
-		'database_auto_drafts',
-		'database_trashed_posts',
-		'database_spam_comments',
-		'database_trashed_comments',
-		'database_optimize_tables',
-		'schedule_automatic_cleanup',
-		'cdn',
-		'control_heartbeat',
-		'cache_ssl',
-		'minify_google_fonts',
-		'emoji',
-		'async_css',
-		'cache_mobile',
-		'do_caching_mobile_files',
-		'async_css_mobile',
-		'cache_logged_user',
-		'minify_concatenate_js',
-		'database_all_transients',
-		'sucury_waf_cache_sync',
-		'varnish_auto_purge',
+		'performance_monitoring'       => 'rocket_insights',
+		'optimize_css_delivery'        => 'file_optimization',
+		'delay_js_execution_safe_mode' => 'file_optimization',
+		'lazyload_youtube'             => 'media',
+		'database_revisions'           => 'database',
+		'database_auto_drafts'         => 'database',
+		'database_trashed_posts'       => 'database',
+		'database_spam_comments'       => 'database',
+		'database_trashed_comments'    => 'database',
+		'database_optimize_tables'     => 'database',
+		'schedule_automatic_cleanup'   => 'database',
+		'cdn'                          => 'page_cdn',
+		'control_heartbeat'            => 'heartbeat',
+		'cache_logged_user'            => 'addons',
+		'minify_concatenate_js'        => 'file_optimization',
+		'database_all_transients'      => 'database',
+		'sucury_waf_cache_sync'        => 'addons',
+		'varnish_auto_purge'           => 'addons',
 	];
 
 	/**
@@ -279,7 +272,7 @@ class DataManager implements LoggerAwareInterface {
 	 * @return array<string> Array of option keys.
 	 */
 	public static function get_tracked_option_keys(): array {
-		return self::TRACKED_OPTIONS;
+		return array_keys( self::TRACKED_OPTIONS );
 	}
 
 	/**
@@ -515,5 +508,19 @@ class DataManager implements LoggerAwareInterface {
 
 		// Fetch new recommendations.
 		$this->fetch_recommendations();
+	}
+
+	/**
+	 * Returns the section anchor corresponding to a given option slug.
+	 *
+	 * This method maps a provided option slug to its associated section anchor,
+	 * which is used for navigation within the admin interface. If the option slug
+	 * does not exist in the mapping, it defaults to 'dashboard'.
+	 *
+	 * @param string $option_slug The slug of the option to map.
+	 * @return string
+	 */
+	public function get_section_from_option_slug( string $option_slug ): string {
+		return self::TRACKED_OPTIONS[ $option_slug ] ?? 'dashboard';
 	}
 }
