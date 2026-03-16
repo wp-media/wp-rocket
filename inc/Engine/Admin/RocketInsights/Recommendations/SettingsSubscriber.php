@@ -57,11 +57,6 @@ class SettingsSubscriber implements Subscriber_Interface, LoggerAwareInterface {
 		// Check current status.
 		$status = $this->data_manager->get_status();
 
-		// If status is expired, fetch new recommendations immediately.
-		if ( 'expired' === $status ) {
-			$this->fetch_recommendations();
-		}
-
 		// Only proceed if recommendations exist.
 		if ( ! in_array( $status, [ 'completed', 'failed' ], true ) ) {
 			$this->logger::debug(
