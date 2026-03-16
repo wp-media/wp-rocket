@@ -28,6 +28,10 @@ class Options {
 	 * @return void
 	 */
 	public function register_options_category(): void {
+		if ( ! function_exists( 'wp_register_ability_category' ) ) {
+			return;
+		}
+
 		wp_register_ability_category(
 			'wp-rocket-options',
 			[
@@ -43,6 +47,10 @@ class Options {
 	 * @return void
 	 */
 	public function register_get_options_ability(): void {
+		if ( ! function_exists( 'wp_register_ability' ) ) {
+			return;
+		}
+
 		wp_register_ability(
 			'wp-media/get-options',
 			[

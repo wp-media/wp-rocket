@@ -46,6 +46,10 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function init_mcp(): void {
+		if ( ! function_exists( 'wp_get_abilities' ) ) {
+			return;
+		}
+
 		if ( ! class_exists( McpAdapter::class ) ) {
 			return;
 		}
