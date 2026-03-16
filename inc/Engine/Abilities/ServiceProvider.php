@@ -27,6 +27,11 @@ class ServiceProvider extends AbstractServiceProvider {
 		return in_array( $id, $this->provides, true );
 	}
 
+	/**
+	 * Register the services provided by this service provider.
+	 *
+	 * @return void
+	 */
 	public function register(): void {
 		$this->getContainer()->add( 'abilities_options', Options::class )
 			->addArgument( 'options' );
