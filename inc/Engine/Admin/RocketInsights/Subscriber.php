@@ -139,49 +139,50 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'wp_rocket_first_install'               => [
+			'wp_rocket_first_install'                     => [
 				[ 'reset_credit_monthly', 9 ],
 				[ 'schedule_homepage_tests' ],
 			],
-			'admin_post_delete_rocket_insights_url' => 'delete_row',
-			'rocket_localize_admin_script'          => 'add_pending_ids',
-			'rocket_insights_credit_reset'          => 'reset_credit_monthly',
-			'rocket_insights_auto_add_homepage'     => 'maybe_add_homepage_automatically',
-			'rocket_rocket_insights_job_completed'  => [
+			'admin_post_delete_rocket_insights_url'       => 'delete_row',
+			'rocket_localize_admin_script'                => 'add_pending_ids',
+			'rocket_insights_credit_reset'                => 'reset_credit_monthly',
+			'rocket_insights_auto_add_homepage'           => 'maybe_add_homepage_automatically',
+			'rocket_rocket_insights_job_completed'        => [
 				[ 'validate_credit' ],
 				[ 'reset_global_score' ],
 			],
-			'rocket_rocket_insights_job_failed'     => 'reset_global_score',
-			'rocket_rocket_insights_job_added'      => 'reset_global_score',
-			'rocket_rocket_insights_job_retest'     => 'reset_global_score',
-			'rocket_rocket_insights_job_deleted'    => 'reset_global_score',
-			'rocket_dashboard_sidebar'              => 'render_global_score_widget',
-			'rocket_insights_tab_content'           => [
+			'rocket_rocket_insights_job_failed'           => 'reset_global_score',
+			'rocket_rocket_insights_job_added'            => 'reset_global_score',
+			'rocket_rocket_insights_job_retest'           => 'reset_global_score',
+			'rocket_rocket_insights_job_deleted'          => 'reset_global_score',
+			'rocket_dashboard_sidebar'                    => 'render_global_score_widget',
+			'rocket_insights_tab_content'                 => [
 				[ 'render_license_banner_section', 10 ],
 				[ 'maybe_show_paid_reach_limits_notice', 17 ],
 				[ 'maybe_show_notice', 18 ],
 				[ 'render_performance_urls_table', 20 ],
 			],
-			'admin_init'                            => [
+			'admin_init'                                  => [
 				[ 'flush_license_cache', 8 ],
 				[ 'check_upgrade' ],
 				[ 'schedule_jobs', 11 ],
 			],
 			'admin_post_rocket_rocket_insights_add_homepage' => 'add_homepage_from_widget',
-			'rocket_deactivation'                   => [
+			'rocket_deactivation'                         => [
 				[ 'cancel_scheduled_jobs' ],
 				[ 'remove_current_plan' ],
 			],
-			'rocket_options_changed'                => 'maybe_cancel_automatic_retest_job',
-			'rocket_insights_retest'                => 'retest_all_pages',
-			'wp_rocket_upgrade'                     => [
+			'rocket_options_changed'                      => 'maybe_cancel_automatic_retest_job',
+			'rocket_insights_retest'                      => 'retest_all_pages',
+			'wp_rocket_upgrade'                           => [
 				[ 'on_update_reset_credit', 10, 2 ],
 				[ 'on_update_cancel_old_as_jobs', 10, 2 ],
 				[ 'on_update_refresh_metric_data', 10, 2 ],
 			],
-			'admin_notices'                         => 'maybe_display_rocket_insights_promotion_notice',
-			'rocket_rocket_insights_enabled'        => 'maybe_disable_for_reseller_or_non_live',
-			'rest_api_init'                         => [ 'register_routes' ],
+			'admin_notices'                               => 'maybe_display_rocket_insights_promotion_notice',
+			'rocket_rocket_insights_enabled'              => 'maybe_disable_for_reseller_or_non_live',
+			'rest_api_init'                               => [ 'register_routes' ],
+			'wp_ajax_rocket_insight_track_metric_actions' => 'track_metric_actions',
 		];
 	}
 
@@ -211,6 +212,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		$data['rocket_insights_ids']               = $this->controller->get_not_finished_ids();
 		$data['rocket_insights_no_credit_tooltip'] = __( 'Upgrade your plan to get access to re-test performance or run new tests', 'rocket' );
 		$data['is_free']                           = (int) $this->context->is_free_user();
+		$data['assets_img_url']                    = WP_ROCKET_ASSETS_IMG_URL;
 
 		$global_score_data                   = $this->controller->get_global_score();
 		$global_score_data['status_color']   = $this->render->get_score_color_status( (int) $global_score_data['score'] );
@@ -221,6 +223,8 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'html'     => $this->render->get_global_score_widget_content( $global_score_data ),
 			'row_html' => $this->render->get_global_score_row( $global_score_data ),
 		];
+
+		$data['assets_img_url'] = WP_ROCKET_ASSETS_IMG_URL;
 
 		return $data;
 	}
@@ -746,5 +750,16 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 
 		// Delete the global score transient to refresh the UI state.
 		$this->global_score->reset();
+	}
+
+	/**
+	 * Track user actions in Rocket Insights via AJAX.
+	 *
+	 * Handles tracking for events like expanding metrics or viewing reports.
+	 *
+	 * @return void
+	 */
+	public function track_metric_actions(): void {
+		$this->controller->track_metric_actions();
 	}
 }

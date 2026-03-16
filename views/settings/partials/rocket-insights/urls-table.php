@@ -68,7 +68,7 @@ if ( ! isset( $data['show_quota_banner'] ) || ! $data['show_quota_banner'] ) {
 			$this->render_global_score_row( $data['global_score'] );
 		// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 			foreach ( $data['items'] as $rocket_insights_record ) {
-				$this->render_performance_monitoring_list_row( $rocket_insights_record );
+				$this->render_performance_monitoring_list_row( $rocket_insights_record, false );
 			}
 			?>
 		<?php endif; ?>

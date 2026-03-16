@@ -5,10 +5,8 @@ namespace WP_Rocket\ThirdParty;
 
 use WP_Rocket\Dependencies\League\Container\Argument\Literal\StringArgument;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
-use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Imagify_Subscriber;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Optimus_Subscriber;
-use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\ShortPixel_Subscriber;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Mobile_Subscriber;
 use WP_Rocket\Subscriber\Third_Party\Plugins\NGG_Subscriber;
 use WP_Rocket\Subscriber\Third_Party\Plugins\SyntaxHighlighter_Subscriber;
@@ -17,6 +15,7 @@ use WP_Rocket\ThirdParty\Plugins\ConvertPlug;
 use WP_Rocket\ThirdParty\Plugins\Cookie\Termly;
 use WP_Rocket\ThirdParty\Plugins\Ecommerce\BigCommerce;
 use WP_Rocket\ThirdParty\Plugins\Ecommerce\WooCommerceSubscriber;
+use WP_Rocket\ThirdParty\Plugins\EWWW;
 use WP_Rocket\ThirdParty\Plugins\I18n\TranslatePress;
 use WP_Rocket\ThirdParty\Plugins\I18n\WPML;
 use WP_Rocket\ThirdParty\Plugins\InlineRelatedPosts;
@@ -25,12 +24,14 @@ use WP_Rocket\ThirdParty\Plugins\Optimization\AMP;
 use WP_Rocket\ThirdParty\Plugins\Optimization\Autoptimize;
 use WP_Rocket\ThirdParty\Plugins\Optimization\Ezoic;
 use WP_Rocket\ThirdParty\Plugins\Optimization\WPMeteor;
+use WP_Rocket\ThirdParty\Plugins\Optimole;
 use WP_Rocket\ThirdParty\Plugins\PageBuilder\BeaverBuilder;
 use WP_Rocket\ThirdParty\Plugins\PageBuilder\Elementor;
 use WP_Rocket\ThirdParty\Plugins\PDFEmbedder;
 use WP_Rocket\ThirdParty\Plugins\PWA;
 use WP_Rocket\ThirdParty\Plugins\RevolutionSlider;
 use WP_Rocket\ThirdParty\Plugins\Security\WordFenceCompatibility;
+use WP_Rocket\ThirdParty\Plugins\ShortPixel;
 use WP_Rocket\ThirdParty\Plugins\SEO\Yoast;
 use WP_Rocket\ThirdParty\Plugins\SimpleCustomCss;
 use WP_Rocket\ThirdParty\Plugins\Smush;
@@ -103,6 +104,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'weglot',
 		'contactform7',
 		'termly_subscriber',
+		'optimole_subscriber',
 	];
 
 	/**
@@ -146,9 +148,9 @@ class ServiceProvider extends AbstractServiceProvider {
 			);
 		$this->getContainer()->addShared( 'imagify_webp_subscriber', Imagify_Subscriber::class )
 			->addArgument( 'options' );
-		$this->getContainer()->addShared( 'shortpixel_webp_subscriber', ShortPixel_Subscriber::class )
+		$this->getContainer()->addShared( 'shortpixel_webp_subscriber', ShortPixel::class )
 			->addArgument( 'options' );
-		$this->getContainer()->addShared( 'ewww_webp_subscriber', EWWW_Subscriber::class )
+		$this->getContainer()->addShared( 'ewww_webp_subscriber', EWWW::class )
 			->addArgument( 'options' );
 		$this->getContainer()->addShared( 'optimus_webp_subscriber', Optimus_Subscriber::class );
 		$this->getContainer()->addShared( 'bigcommerce_subscriber', BigCommerce::class );
@@ -207,5 +209,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->addShared( 'wpgeotargeting', WPGeotargeting::class );
 		$this->getContainer()->addShared( 'contactform7', ContactForm7::class );
 		$this->getContainer()->addShared( 'termly_subscriber', Termly::class );
+		$this->getContainer()->addShared( 'optimole_subscriber', Optimole::class );
 	}
 }

@@ -55,6 +55,18 @@ class CDNOptionsManager {
 	}
 
 	/**
+	 * Save RocketCDN user token.
+	 *
+	 * @since 3.20.5
+	 *
+	 * @param string $token RocketCDN user token.
+	 * @return void
+	 */
+	public function save_token( string $token ): void {
+		update_option( 'rocketcdn_user_token', $token );
+	}
+
+	/**
 	 * Disable CDN option, remove CDN URL & user token, delete RocketCDN status transient
 	 *
 	 * @since 3.5

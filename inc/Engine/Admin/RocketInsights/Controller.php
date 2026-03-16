@@ -11,6 +11,7 @@ use WP_Rocket\Engine\Admin\RocketInsights\{GlobalScore,
 };
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\License\API\User;
+use WP_Rocket\Engine\Tracking\Tracking;
 
 class Controller {
 	/**
@@ -63,6 +64,13 @@ class Controller {
 	protected $options;
 
 	/**
+	 * The tracking service.
+	 *
+	 * @var Tracking
+	 */
+	private $tracking;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param Query        $query Query instance.
@@ -72,6 +80,7 @@ class Controller {
 	 * @param GlobalScore  $global_score GlobalScore instance.
 	 * @param User         $user User client API instance.
 	 * @param Options_Data $options Plugin options instance.
+	 * @param Tracking     $tracking The tracking service.
 	 */
 	public function __construct(
 		Query $query,
@@ -80,7 +89,8 @@ class Controller {
 		Plan $plan,
 		GlobalScore $global_score,
 		User $user,
-		Options_Data $options
+		Options_Data $options,
+		Tracking $tracking
 	) {
 		$this->query        = $query;
 		$this->manager      = $manager;
@@ -89,6 +99,7 @@ class Controller {
 		$this->global_score = $global_score;
 		$this->user         = $user;
 		$this->options      = $options;
+		$this->tracking     = $tracking;
 	}
 
 	/**
@@ -432,5 +443,51 @@ class Controller {
 				]
 				);
 		}
+	}
+
+	/**
+	 * Track user actions in Rocket Insights via AJAX.
+	 *
+	 * Handles tracking for events like expanding metrics or viewing reports.
+	 *
+	 * @return void
+	 */
+	public function track_metric_actions(): void {
+		$events = [
+			'expand'     => 'Rocket Insights Metrics Expanded',
+			'see_report' => 'Rocket Insights See Report',
+		];
+
+		check_ajax_referer( 'rocket-ajax' );
+
+		if ( ! $this->context->is_allowed() ) {
+			wp_send_json_error( 'Not allowed' );
+		}
+
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			wp_send_json_error( 'Insufficient permissions to track view details.' );
+		}
+
+		if ( ! isset( $_POST['row_id'], $_POST['event'], $_POST['source'] ) ) {
+			wp_send_json_error( 'Missing parameters' );
+		}
+
+		$row_id_raw = sanitize_text_field( wp_unslash( $_POST['row_id'] ) );
+		$event      = sanitize_text_field( wp_unslash( $_POST['event'] ) );
+		$source     = sanitize_text_field( wp_unslash( $_POST['source'] ) );
+
+		// Handle special case for 'all' (used by "Expand All" action).
+		if ( 'all' === $row_id_raw ) {
+			$row_id = 'all';
+		} else {
+			$row_id = absint( $row_id_raw );
+			if ( ! $this->query->get_row_by_id( $row_id ) ) {
+				wp_send_json_error( 'Invalid row ID' );
+			}
+		}
+
+		$this->tracking->track_rocket_insights_details_action( $events[ $event ], $row_id, $source );
+
+		wp_send_json_success();
 	}
 }
