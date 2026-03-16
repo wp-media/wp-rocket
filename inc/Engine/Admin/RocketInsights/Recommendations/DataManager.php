@@ -155,6 +155,9 @@ class DataManager implements LoggerAwareInterface {
 		// Set loading status immediately.
 		$this->set_loading_status();
 
+		// Track start time for performance measurement.
+		$start_time = microtime( true );
+
 		$this->logger::debug( 'Recommendations: Starting fetch from API' );
 
 		// Get average metrics from global score data.
@@ -199,6 +202,9 @@ class DataManager implements LoggerAwareInterface {
 
 		// Handle error response.
 		if ( is_wp_error( $response ) ) {
+			// Calculate duration in milliseconds.
+			$duration = round( ( microtime( true ) - $start_time ) * 1000 );
+
 			$this->logger::error(
 				'Recommendations: API request failed',
 				[
@@ -215,6 +221,11 @@ class DataManager implements LoggerAwareInterface {
 					'metadata'        => [],
 					'timestamp'       => time(),
 					'error'           => $response->get_error_message(),
+					'tracking'        => [
+						'status'   => 'error',
+						'quantity' => 0,
+						'duration' => $duration,
+					],
 				]
 			);
 
@@ -223,10 +234,14 @@ class DataManager implements LoggerAwareInterface {
 
 		// Handle success response.
 		if ( isset( $response['code'] ) && 200 === $response['code'] && isset( $response['data'] ) ) {
+			// Calculate duration in milliseconds.
+			$duration = round( ( microtime( true ) - $start_time ) * 1000 );
+			$quantity = count( $response['data']['recommendations'] ?? [] );
+
 			$this->logger::info(
 				'Recommendations: Successfully fetched from API',
 				[
-					'total' => count( $response['data']['recommendations'] ?? [] ),
+					'total' => $quantity,
 				]
 			);
 
@@ -237,6 +252,11 @@ class DataManager implements LoggerAwareInterface {
 					'metadata'        => $response['data']['metadata'] ?? [],
 					'timestamp'       => time(),
 					'metrics_hash'    => $this->calculate_metrics_hash(),
+					'tracking'        => [
+						'status'   => 'success',
+						'quantity' => $quantity,
+						'duration' => $duration,
+					],
 				]
 			);
 
