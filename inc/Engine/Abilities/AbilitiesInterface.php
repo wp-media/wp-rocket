@@ -7,18 +7,14 @@ interface AbilitiesInterface {
 	/**
 	 * Check if the current user has permission to execute this ability
 	 *
-	 * @param mixed|null $input_data Optional input data for this ability. The argument is required when the input schema is defined.
-	 *
 	 * @return bool
 	 */
-	public function check_permissions( $input_data = null ): bool;
+	public function check_permissions(): bool;
 
 	/**
 	 * Execute the ability
 	 *
-	 * @param mixed|null $input_data Optional input data for this ability. The argument is required when the input schema is defined.
-	 *
-	 * @return void
+	 * @return mixed
 	 */
-	public function execute( $input_data = null ): void;
+	public function execute();
 }
