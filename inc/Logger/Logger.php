@@ -415,7 +415,7 @@ class Logger {
 
 		$debug_enabled = false;
 
-		$debug_config = defined( 'WP_ROCKET_DEBUG' ) && WP_ROCKET_DEBUG;
+		$debug_config = defined( 'WP_ROCKET_DEBUG' ) ? WP_ROCKET_DEBUG : false;
 
 		if ( true === $debug_config ) {
 			$debug_enabled = true;
