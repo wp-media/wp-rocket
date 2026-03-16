@@ -464,7 +464,15 @@ class DataManager implements LoggerAwareInterface {
 		return ! empty( $value ) && 1 === (int) $value;
 	}
 
-	private function get_option_value( $option_key, $options = [] ) {
+	/**
+	 * Get option value from either provided options array or current options instance.
+	 *
+	 * @param string         $option_key Option key to retrieve.
+	 * @param array|string[] $options Optional array of new settings to check instead of current options. If empty, will use current options instance.
+	 *
+	 * @return mixed
+	 */
+	private function get_option_value( string $option_key, $options = [] ) {
 		if ( ! empty( $options ) ) {
 			return $options[ $option_key ] ?? false;
 		}
