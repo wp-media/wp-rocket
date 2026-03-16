@@ -39,45 +39,45 @@ class DataManager implements LoggerAwareInterface {
 	 * @var array<string, string>
 	 */
 	private const TRACKED_OPTIONS = [
-		'image_dimensions'             => 'add_missing_image_dimensions',
-		'defer_all_js'                 => 'deferred_js',
-		'delay_js'                     => 'delay_js',
-		'lazyload_css_bg_img'          => 'lazy_load_css',
-		'lazyload_iframes'             => 'lazyload_iframes',
-		'lazyload'                     => 'lazyload_images',
-		'minify_css'                   => 'minify_css',
-		'minify_js'                    => 'minify_js',
-		'manual_preload'               => 'preload_cache',
-		'auto_preload_fonts'           => 'auto_preload_fonts',
-		'preload_links'                => 'preload_links',
-		'remove_unused_css'            => 'rucss',
-		'host_fonts_locally'           => 'selfhost_fonts',
+		'image_dimensions',
+		'defer_all_js',
+		'delay_js',
+		'lazyload_css_bg_img',
+		'lazyload_iframes',
+		'lazyload',
+		'minify_css',
+		'minify_js',
+		'manual_preload',
+		'auto_preload_fonts',
+		'preload_links',
+		'remove_unused_css',
+		'host_fonts_locally',
 
-		'performance_monitoring'       => 'performance_monitoring',
-		'optimize_css_delivery'        => 'optimize_css_delivery',
-		'delay_js_execution_safe_mode' => 'delay_js_execution_safe_mode',
-		'lazyload_youtube'             => 'lazyload_youtube',
-		'database_revisions'           => 'database_revisions',
-		'database_auto_drafts'         => 'database_auto_drafts',
-		'database_trashed_posts'       => 'database_trashed_posts',
-		'database_spam_comments'       => 'database_spam_comments',
-		'database_trashed_comments'    => 'database_trashed_comments',
-		'database_optimize_tables'     => 'database_optimize_tables',
-		'schedule_automatic_cleanup'   => 'schedule_automatic_cleanup',
-		'cdn'                          => 'cdn',
-		'control_heartbeat'            => 'control_heartbeat',
-		'cache_ssl'                    => 'cache_ssl',
-		'minify_google_fonts'          => 'minify_google_fonts',
-		'emoji'                        => 'emoji',
-		'async_css'                    => 'async_css',
-		'cache_mobile'                 => 'cache_mobile',
-		'do_caching_mobile_files'      => 'do_caching_mobile_files',
-		'async_css_mobile'             => 'async_css_mobile',
-		'cache_logged_user'            => 'cache_logged_user',
-		'minify_concatenate_js'        => 'minify_concatenate_js',
-		'database_all_transients'      => 'database_all_transients',
-		'sucury_waf_cache_sync'        => 'sucury_waf_cache_sync',
-		'varnish_auto_purge'           => 'varnish_auto_purge',
+		'performance_monitoring',
+		'optimize_css_delivery',
+		'delay_js_execution_safe_mode',
+		'lazyload_youtube',
+		'database_revisions',
+		'database_auto_drafts',
+		'database_trashed_posts',
+		'database_spam_comments',
+		'database_trashed_comments',
+		'database_optimize_tables',
+		'schedule_automatic_cleanup',
+		'cdn',
+		'control_heartbeat',
+		'cache_ssl',
+		'minify_google_fonts',
+		'emoji',
+		'async_css',
+		'cache_mobile',
+		'do_caching_mobile_files',
+		'async_css_mobile',
+		'cache_logged_user',
+		'minify_concatenate_js',
+		'database_all_transients',
+		'sucury_waf_cache_sync',
+		'varnish_auto_purge',
 	];
 
 	/**
@@ -279,7 +279,7 @@ class DataManager implements LoggerAwareInterface {
 	 * @return array<string> Array of option keys.
 	 */
 	public static function get_tracked_option_keys(): array {
-		return array_keys( self::TRACKED_OPTIONS );
+		return self::TRACKED_OPTIONS;
 	}
 
 	/**
@@ -442,12 +442,12 @@ class DataManager implements LoggerAwareInterface {
 	private function get_enabled_options( array $options = [] ): array {
 		$enabled = [];
 
-		foreach ( self::TRACKED_OPTIONS as $option_key => $option_slug ) {
+		foreach ( self::TRACKED_OPTIONS as $option_key ) {
 			$value = $options[ $option_key ] ?? $this->options->get( $option_key, false );
 
 			// Check if option is enabled.
 			if ( $this->is_option_enabled( $option_key, $value ) ) {
-				$enabled[] = $option_slug;
+				$enabled[] = $option_key;
 			}
 		}
 
