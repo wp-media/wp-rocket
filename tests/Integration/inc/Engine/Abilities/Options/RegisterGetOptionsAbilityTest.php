@@ -63,7 +63,6 @@ class RegisterGetOptionsAbilityTest extends TestCase {
 			$this->assertInstanceOf( 'WP_Error', $result, 'Should return WP_Error when user lacks permission.' );
 		} else {
 			$this->assertIsArray( $result, 'Should return array when user has permission.' );
-			$this->assertNotInstanceOf( 'WP_Error', $result );
 			$this->assertSame( $expected['data'], $result, 'Returned options should match expected.' );
 		}
 	}
