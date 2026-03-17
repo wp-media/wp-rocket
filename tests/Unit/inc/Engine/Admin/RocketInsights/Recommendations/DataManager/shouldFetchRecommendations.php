@@ -7,6 +7,7 @@ use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\RocketInsights\GlobalScore;
+use WP_Rocket\Engine\Admin\RocketInsights\MetricFormatter;
 use WP_Rocket\Engine\Admin\RocketInsights\Recommendations\APIClient;
 use WP_Rocket\Engine\Admin\RocketInsights\Recommendations\DataManager;
 use WP_Rocket\Tests\Unit\HasLoggerTrait;
@@ -51,8 +52,9 @@ class Test_ShouldFetchRecommendations extends TestCase {
 		$api_client         = Mockery::mock( APIClient::class );
 		$this->options      = Mockery::mock( Options_Data::class );
 		$this->global_score = Mockery::mock( GlobalScore::class );
+		$metric_formatter = Mockery::mock( MetricFormatter::class );
 
-		$this->data_manager = new DataManager( $api_client, $this->options, $this->global_score );
+		$this->data_manager = new DataManager( $api_client, $this->options, $this->global_score, $metric_formatter );
 		$this->set_logger( $this->data_manager );
 	}
 

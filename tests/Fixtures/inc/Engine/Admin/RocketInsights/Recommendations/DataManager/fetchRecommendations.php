@@ -13,11 +13,17 @@ return [
 				'global_score_data'   => [
 					'score'           => 75,
 					'average_metrics' => [
-						'lcp'  => 3.2,
-						'ttfb' => 0.8,
-						'cls'  => 0.15,
-						'tbt'  => 350,
+						'largest_contentful_paint'  => 3200,
+						'time_to_first_byte' => 800,
+						'cumulative_layout_shift'  => 0.15,
+						'total_blocking_time'  => 350,
 					],
+				],
+				'formatted_metric' => [
+					'largest_contentful_paint' => 0,
+					'time_to_first_byte'      => 0,
+					'cumulative_layout_shift' => 0,
+					'total_blocking_time'     => 0,
 				],
 				'expected_params'     => [
 					'email' => 'user@example.com',

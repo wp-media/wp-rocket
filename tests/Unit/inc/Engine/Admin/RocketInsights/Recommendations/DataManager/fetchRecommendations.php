@@ -7,6 +7,7 @@ use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\RocketInsights\GlobalScore;
+use WP_Rocket\Engine\Admin\RocketInsights\MetricFormatter;
 use WP_Rocket\Engine\Admin\RocketInsights\Recommendations\APIClient;
 use WP_Rocket\Engine\Admin\RocketInsights\Recommendations\DataManager;
 use WP_Rocket\Tests\Unit\HasLoggerTrait;
@@ -50,16 +51,24 @@ class Test_FetchRecommendations extends TestCase {
 	private $data_manager;
 
 	/**
+	 * Metric Formatter mock.
+	 *
+	 * @var Mockery\MockInterface|MetricFormatter
+	 */
+	private $metric_formatter;
+
+	/**
 	 * Set up test fixtures.
 	 */
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->api_client   = Mockery::mock( APIClient::class );
-		$this->options      = Mockery::mock( Options_Data::class );
-		$this->global_score = Mockery::mock( GlobalScore::class );
+		$this->api_client       = Mockery::mock( APIClient::class );
+		$this->options          = Mockery::mock( Options_Data::class );
+		$this->global_score     = Mockery::mock( GlobalScore::class );
+		$this->metric_formatter = Mockery::mock( MetricFormatter::class );
 
-		$this->data_manager = new DataManager( $this->api_client, $this->options, $this->global_score );
+		$this->data_manager = new DataManager( $this->api_client, $this->options, $this->global_score, $this->metric_formatter );
 		$this->set_logger( $this->data_manager );
 	}
 
@@ -123,6 +132,14 @@ class Test_FetchRecommendations extends TestCase {
 			->times( $config['transient_set_times'] );
 
 		Functions\expect( 'delete_transient' )->zeroOrMoreTimes();
+
+		if ( $expected['result'] && ! empty( $config['global_score_data']['average_metrics'] ) ) {
+			$this->metric_formatter->shouldReceive( 'format_metric' )
+				->times(4)
+				->andReturnUsing( function ( $metric_key, $value ) use ( $config ) {
+					return $config['formatted_metric'][$metric_key];
+				} );
+		}
 
 		$result = $this->data_manager->fetch_recommendations();
 

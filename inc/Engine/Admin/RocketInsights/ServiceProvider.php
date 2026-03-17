@@ -209,6 +209,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'ri_recommendations_api_client',
 					'options',
 					'ri_global_score',
+					'ri_metric_formatter',
 				]
 			);
 

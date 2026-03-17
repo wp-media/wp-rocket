@@ -108,22 +108,22 @@ class Calculator {
 		return [
 			'largest_contentful_paint' => [
 				'label'   => 'LCP',
-				'value'   => round( ( $totals['largest_contentful_paint'] / $test_count ) / 1000, 3 ),
+				'value'   => $totals['largest_contentful_paint'] / $test_count,
 				'tooltip' => __( 'Time until the largest visible content element renders and the main content becomes visible.', 'rocket' ),
 			],
 			'total_blocking_time'      => [
 				'label'   => 'TBT',
-				'value'   => (int) round( $totals['total_blocking_time'] / $test_count ),
+				'value'   => $totals['total_blocking_time'] / $test_count,
 				'tooltip' => __( 'Total time the main thread is blocked before the page becomes interactive during loading.', 'rocket' ),
 			],
 			'cumulative_layout_shift'  => [
 				'label'   => 'CLS',
-				'value'   => round( $totals['cumulative_layout_shift'] / $test_count, 3 ),
+				'value'   => $totals['cumulative_layout_shift'] / $test_count,
 				'tooltip' => __( 'Total amount of unexpected layout shifts during page loading, affecting visual stability.', 'rocket' ),
 			],
 			'time_to_first_byte'       => [
 				'label'   => 'TTFB',
-				'value'   => round( ( $totals['time_to_first_byte'] / $test_count ) / 1000, 3 ),
+				'value'   => $totals['time_to_first_byte'] / $test_count,
 				'tooltip' => __( 'Time from the request until the server responds, determining how soon the page starts loading.', 'rocket' ),
 			],
 		];
