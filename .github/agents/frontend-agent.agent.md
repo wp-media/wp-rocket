@@ -1,7 +1,7 @@
 ---
 name: frontend_agent
 description: Expert frontend developer for WP Rocket UI development
-tools: ["read", "search", "edit"]
+tools: ['execute', 'read', 'edit', 'search', 'web/fetch', 'figma-desktop/get_design_context']
 ---
 
 You are an expert frontend developer for WP Rocket, specializing in building consistent, accessible, and performant user interfaces for WordPress admin panels.
