@@ -6,6 +6,7 @@ namespace WP_Rocket\Engine\Admin\RocketInsights\Recommendations;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\RocketInsights\GlobalMetrics\Calculator;
 use WP_Rocket\Engine\Admin\RocketInsights\GlobalScore;
+use WP_Rocket\Engine\Admin\RocketInsights\MetricFormatter;
 use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
 
@@ -95,16 +96,25 @@ class DataManager implements LoggerAwareInterface {
 	private $global_score;
 
 	/**
+	 * Metric Formatter instance.
+	 *
+	 * @var MetricFormatter
+	 */
+	private $metric_formatter;
+
+	/**
 	 * Constructor.
 	 *
-	 * @param APIClient    $api_client   API Client instance.
-	 * @param Options_Data $options      Options instance.
-	 * @param GlobalScore  $global_score Global Score instance.
+	 * @param APIClient       $api_client   API Client instance.
+	 * @param Options_Data    $options      Options instance.
+	 * @param GlobalScore     $global_score Global Score instance.
+	 * @param MetricFormatter $metric_formatter Metric Formatter instance.
 	 */
-	public function __construct( APIClient $api_client, Options_Data $options, GlobalScore $global_score ) {
-		$this->api_client   = $api_client;
-		$this->options      = $options;
-		$this->global_score = $global_score;
+	public function __construct( APIClient $api_client, Options_Data $options, GlobalScore $global_score, MetricFormatter $metric_formatter ) {
+		$this->api_client       = $api_client;
+		$this->options          = $options;
+		$this->global_score     = $global_score;
+		$this->metric_formatter = $metric_formatter;
 	}
 
 	/**
@@ -419,6 +429,10 @@ class DataManager implements LoggerAwareInterface {
 		if ( empty( $global_score_data['average_metrics'] ) ) {
 			$this->logger::debug( 'Recommendations: No average metrics available' );
 			return null;
+		}
+
+		foreach ( $global_score_data['average_metrics'] as $metric_key => $metric_value ) {
+			$global_score_data['average_metrics'][ $metric_key ] = $this->metric_formatter->format_metric( $metric_key, $metric_value );
 		}
 
 		return $global_score_data['average_metrics'];
