@@ -53,7 +53,7 @@ class Test_FetchRecommendations extends TestCase {
 	/**
 	 * Metric Formatter mock.
 	 *
-	 * @var MetricFormatter
+	 * @var Mockery\MockInterface|MetricFormatter
 	 */
 	private $metric_formatter;
 

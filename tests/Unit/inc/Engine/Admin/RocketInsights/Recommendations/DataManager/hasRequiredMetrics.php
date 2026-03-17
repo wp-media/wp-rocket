@@ -38,7 +38,7 @@ class Test_HasRequiredMetrics extends TestCase {
 	/**
 	 * MetricFormatter mock instance.
 	 *
-	 * @var MetricFormatter
+	 * @var Mockery\MockInterface|MetricFormatter
 	 */
 	private $metric_formatter;
 
