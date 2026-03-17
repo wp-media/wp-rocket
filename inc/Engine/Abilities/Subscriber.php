@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Abilities;
 
-use WP\MCP\Core\McpAdapter;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 class Subscriber implements Subscriber_Interface {
@@ -30,7 +29,6 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'plugins_loaded'                   => [ 'init_mcp', 99 ],
 			'wp_abilities_api_categories_init' => [
 				[ 'register_options_category' ],
 			],
@@ -38,23 +36,6 @@ class Subscriber implements Subscriber_Interface {
 				[ 'register_get_options_ability' ],
 			],
 		];
-	}
-
-	/**
-	 * Initialize the MCP adapter if the class exists.
-	 *
-	 * @return void
-	 */
-	public function init_mcp(): void {
-		if ( ! function_exists( 'wp_get_abilities' ) ) {
-			return;
-		}
-
-		if ( ! class_exists( McpAdapter::class ) ) {
-			return;
-		}
-
-		McpAdapter::instance();
 	}
 
 	/**
