@@ -9,10 +9,6 @@ $rocket_insights_item_is_blurred = false;
 $rocket_opening_anchor_tag       = $data['is_dashboard'] ? '<a href="' . esc_url( admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG ) . '#rocket_insights' ) . '">' : '';
 $rocket_closing_anchor_tag       = $data['is_dashboard'] ? '</a>' : '';
 
-if ( ( isset( $data['is_blurred'] ) && $data['is_blurred'] ) || ( isset( $data['status'] ) && 'blurred' === $data['status'] ) ) {
-	$rocket_insights_item_is_blurred = true;
-}
-
 ?>
 <div class="wpr-percentage-indicator">
 	<?php if ( ( isset( $data['status'] ) && 'in-progress' === $data['status'] ) || ! empty( $data['is_running'] ) ) : ?>
