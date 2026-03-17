@@ -163,6 +163,17 @@ abstract class Abstract_Render implements Render_Interface {
 	}
 
 	/**
+	 * Displays a partial template.
+	 *
+	 * @since 3.0
+	 *
+	 * @param string $part Partial template name.
+	 */
+	public function render_part( $part ) {
+		echo $this->generate( 'partials/' . $part ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+	}
+
+	/**
 	 * Displays or returns a partial template with provided data.
 	 *
 	 * @since 3.20

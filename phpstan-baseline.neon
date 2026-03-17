@@ -551,6 +551,11 @@ parameters:
 			path: inc/Engine/Tracking/Tracking.php
 
 		-
+			message: "#^Trait WP_Rocket\\\\Engine\\\\Tracking\\\\TrackingTrait is used zero times and is not analysed\\.$#"
+			count: 1
+			path: inc/Engine/Tracking/TrackingTrait.php
+
+		-
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: inc/ThirdParty/Hostings/Godaddy.php
@@ -1174,3 +1179,13 @@ parameters:
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/functions/rocketIsPluginActive.php
+
+		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 2
+			path: tests/Integration/inc/Engine/Admin/RocketInsights/Recommendations/SettingsSubscriber/MaybeFetchAfterSettingsChangeTest.php
+
+		-
+			message: "#^If condition is always true\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Admin/RocketInsights/Recommendations/SettingsSubscriber/MaybeFetchAfterSettingsChangeTest.php

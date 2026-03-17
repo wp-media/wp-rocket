@@ -259,4 +259,53 @@ $(document).ready(function(){
 		;
 	}
 
+	// Handle expand/collapse of recommendations list.
+	$(document).on('click', '#wpr-recommendations-load-more', function() {
+		let $list = $('.wpr-recommendations__list');
+		let $hiddenItems = $list.find('.wpr-recommendation-item:gt(2)');
+
+		// Track Load More button click
+		if (typeof window.wprTrackHelpButton === 'function') {
+			window.wprTrackHelpButton('rocket insights recommendations load more', 'load_more');
+		}
+
+		if ($list.hasClass('is-expanded')) {
+			$hiddenItems.slideUp(300, function() {
+				$list.removeClass('is-expanded');
+			});
+			$(this).removeClass('is-expanded');
+			return;
+		}
+
+		$list.addClass('is-expanded');
+		$hiddenItems.slideDown(300);
+		$(this).addClass('is-expanded');
+	});
+
+	// Track Rocket Insights Recommendation Activate button clicks
+	$(document).on('click', '.wpr-recommendation-item__activate', function() {
+		var recommendation = $(this).data('recommendation') || 'unknown';
+		
+		// Track directly with Mixpanel
+		if (typeof mixpanel !== 'undefined' && mixpanel.track) {
+			// Check if user has opted in
+			if (typeof rocket_mixpanel_data !== 'undefined' && rocket_mixpanel_data.optin_enabled && rocket_mixpanel_data.optin_enabled !== '0') {
+				// Identify user if available
+				if (rocket_mixpanel_data.user_id && typeof mixpanel.identify === 'function') {
+					mixpanel.identify(rocket_mixpanel_data.user_id);
+				}
+				
+				// Track the Button Clicked event
+				mixpanel.track('Button Clicked', {
+					'button': 'rocket insights recommendation',
+					'recommendation': recommendation,
+					'plugin': rocket_mixpanel_data.plugin,
+					'brand': rocket_mixpanel_data.brand,
+					'application': rocket_mixpanel_data.app,
+					'context': rocket_mixpanel_data.context,
+					'path': rocket_mixpanel_data.path
+				});
+			}
+		}
+	});
 });
