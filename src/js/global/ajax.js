@@ -237,6 +237,11 @@ document.addEventListener('DOMContentLoaded', function() {
 		analyticsCheckbox.addEventListener('change', function() {
 			const isChecked = this.checked;
 
+			// Update the global mixpanel data optin state immediately
+			if (typeof rocket_mixpanel_data !== 'undefined') {
+				rocket_mixpanel_data.optin_enabled = isChecked ? '1' : '0';
+			}
+
 			fetch(ajaxurl, {
 				method: 'POST',
 				headers: {

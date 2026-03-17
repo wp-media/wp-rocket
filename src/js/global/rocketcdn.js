@@ -1,4 +1,5 @@
-/*eslint-env es6*/
+/*eslint-env es6, browser*/
+/* global MicroModal, mixpanel, rocket_mixpanel_data, rocket_ajax_data, ajaxurl */
 ( ( document, window ) => {
 	'use strict';
 
@@ -6,7 +7,8 @@
 		document.querySelectorAll( '.wpr-rocketcdn-open' ).forEach( ( el ) => {
 			el.addEventListener( 'click', ( e ) => {
 				e.preventDefault();
-				checkButtonUrlAndOpen();
+				const isCTA = el.classList.contains( 'wpr-rocketcdn-pricing--cta' );
+				checkButtonUrlAndOpen( isCTA );
 			} );
 		} );
 
@@ -37,6 +39,15 @@
 			bigCTA = document.querySelector( '#wpr-rocketcdn-cta' ),
 			inputToggle = document.querySelector('.wpr-rocketcdn-toggle--input');
 
+		// Track banner view on page load if banner is visible.
+		if ( bigCTA && ! bigCTA.classList.contains( 'wpr-isHidden' ) ) {
+			// Big banner is visible on load.
+			trackRocketCDNUpsellBannerViewed();
+		} else if ( smallCTA && ! smallCTA.classList.contains( 'wpr-isHidden' ) ) {
+			// Small banner is visible on load.
+			trackRocketCDNUpsellBannerViewed();
+		}
+
 		// Prices selectors for toggling visibility based on the billing cycle toggle state.
 		const prices = {
 			monthly: {
@@ -57,6 +68,9 @@
 
 				smallCTA.classList.add( 'wpr-isHidden' );
 				bigCTA.classList.remove( 'wpr-isHidden' );
+
+				// Track upsell banner view.
+				trackRocketCDNUpsellBannerViewed();
 
 				sendHTTPRequest( getPostData( 'big' ) );
 			} );
@@ -125,11 +139,18 @@
 		validateTokenAndCNAME( e.data );
 	};
 
-	function checkButtonUrlAndOpen() {
+	function checkButtonUrlAndOpen( isCTA ) {
+		// Track CTA click if this is the pricing CTA button.
+		if ( isCTA ) {
+			trackRocketCDNUpsellCTAClicked();
+		}
+
 		// Check if button URL was injected by PHP
 		if ( window.rocketcdnButtonUrl && window.rocketcdnButtonUrl !== '' ) {
-			// Navigate to button URL in same tab
-			window.location.href = window.rocketcdnButtonUrl;
+			// Small delay to ensure Mixpanel event is sent before navigation
+			setTimeout( function() {
+				window.location.href = window.rocketcdnButtonUrl;
+			}, 100 );
 		} else {
 			// Show iframe modal as usual
 			MicroModal.show( 'wpr-rocketcdn-modal' );
@@ -174,7 +195,7 @@
 		if ( urlParams.has( 'rocketcdn_open_iframe' ) && '1' === urlParams.get( 'rocketcdn_open_iframe' ) ) {
 			// Set hash to page_cdn to show CDN tab behind modal
 			window.location.hash = '#page_cdn';
-			
+
 			MicroModal.show( 'wpr-rocketcdn-modal' );
 
 			// Clean up the URL to prevent re-triggering on refresh
@@ -385,5 +406,62 @@
 			brand: rocket_mixpanel_data.brand,
 			application: rocket_mixpanel_data.app
 		});
+	}
+
+	/**
+	 * Tracks a RocketCDN upsell event with Mixpanel.
+	 *
+	 * @param {string} eventName   The Mixpanel event name.
+	 * @param {Object} [extraProps] Optional additional properties to merge.
+	 */
+	function trackRocketCDNUpsellMixpanelEvent( eventName, extraProps ) {
+		if ( typeof mixpanel === 'undefined' || ! mixpanel.track ) {
+			return;
+		}
+
+		// Check if user has opted in.
+		if ( typeof rocket_mixpanel_data === 'undefined' || ! rocket_mixpanel_data.optin_enabled || rocket_mixpanel_data.optin_enabled === '0' ) {
+			return;
+		}
+
+		// Identify user if available.
+		if ( ! rocket_mixpanel_data.user_id || typeof mixpanel.identify !== 'function' ) {
+			return;
+		}
+
+		mixpanel.identify( rocket_mixpanel_data.user_id );
+
+		var props = {
+			context: rocket_mixpanel_data.context,
+			plugin: rocket_mixpanel_data.plugin,
+			brand: rocket_mixpanel_data.brand,
+			application: rocket_mixpanel_data.app,
+			path: rocket_mixpanel_data.path
+		};
+
+		// Merge extra properties if provided and valid.
+		if ( extraProps && typeof extraProps === 'object' ) {
+			for ( var key in extraProps ) {
+				if ( Object.prototype.hasOwnProperty.call( extraProps, key ) ) {
+					props[ key ] = extraProps[ key ];
+				}
+			}
+		}
+
+		mixpanel.track( eventName, props );
+	}
+
+	/**
+	 * Tracks RocketCDN upsell banner view with Mixpanel.
+	 */
+	function trackRocketCDNUpsellBannerViewed() {
+		trackRocketCDNUpsellMixpanelEvent( 'RocketCDN Upsell Banner Viewed' );
+	}
+
+	/**
+	 * Tracks RocketCDN upsell CTA click with Mixpanel.
+	 */
+	function trackRocketCDNUpsellCTAClicked() {
+		trackRocketCDNUpsellMixpanelEvent( 'RocketCDN Upsell CTA Clicked' );
 	}
 } )( document, window );
