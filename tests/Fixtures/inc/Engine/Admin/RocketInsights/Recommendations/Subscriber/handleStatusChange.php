@@ -95,7 +95,8 @@ return [
 			],
 			'expected' => [
 				'clears_recommendations' => false,
-				'fetches_recommendations' => true,
+				'fetches_recommendations' => false,
+				'failed_recommendations' => true,
 			],
 		],
 	],

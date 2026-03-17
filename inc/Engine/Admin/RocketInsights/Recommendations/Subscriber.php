@@ -107,9 +107,12 @@ class Subscriber implements Subscriber_Interface {
 				break;
 
 			case 'complete':
-			case 'failed':
 				// Maybe fetch recommendations when tests complete.
 				$this->data_manager->maybe_fetch_recommendations();
+				break;
+
+			case 'failed':
+				$this->data_manager->set_recommendations_failed( 'Global score failed' );
 				break;
 
 			default:

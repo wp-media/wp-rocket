@@ -533,7 +533,6 @@ class DataManager implements LoggerAwareInterface {
 
 		// Bail if metrics not ready.
 		if ( ! $this->has_required_metrics() ) {
-			$this->set_recommendations_failed( 'Average advanced metrics are not available' );
 			return;
 		}
 
