@@ -186,19 +186,6 @@ class GlobalScore {
 			return 'in-progress';
 		}
 
-		// Check if any URLs are blurred.
-		$blurred_count = $this->query->query(
-			[
-				'count'      => true,
-				'status__in' => [ 'completed' ],
-				'is_blurred' => 1,
-			]
-		);
-
-		if ( (int) $blurred_count > 0 ) {
-			return 'blurred';
-		}
-
 		// Check if *all* URLs have failed.
 		$failed_count = $this->query->query(
 			[
@@ -211,7 +198,7 @@ class GlobalScore {
 			return 'failed';
 		}
 
-		// All tests are complete and none are blurred.
+		// All tests are complete.
 		return 'complete';
 	}
 }

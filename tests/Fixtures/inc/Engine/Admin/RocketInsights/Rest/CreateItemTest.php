@@ -102,7 +102,7 @@ return [
 		],
 		'expected' => [
 			'code' => 403,
-			'error_message' => 'reached your free limit',
+			'error_message' => 'reached the page limit',
 		],
 	],
 	'testShouldFailWithUnreachableUrl'                   => [
@@ -282,7 +282,7 @@ return [
 		],
 		'expected' => [
 			'code'             => 403,
-			'error_message'    => 'reached your free limit',
+			'error_message'    => 'reached the page limit',
 			'database_entries' => 3, // Should stay at 3, the 4th should be deleted
 		],
 	],
@@ -340,7 +340,7 @@ return [
 		],
 		'expected' => [
 			'code'             => 403,
-			'error_message'    => 'reached your free limit',
+			'error_message'    => 'reached the page limit',
 			'database_entries' => 2, // Should rollback to 2 (the concurrent one + original, not the failed one)
 		],
 	],

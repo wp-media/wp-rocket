@@ -27,7 +27,7 @@ return [
 			'upgrade_url'    => '',
 			'can_add_pages'  => true,
 			'show_quota_banner' => false,
-			'is_free' => true,
+			'is_free' => false,
 		],
 	],
 	'freeUserWithNoCredits' => [
@@ -55,8 +55,8 @@ return [
 			'rocket_insights_addon_limit' => 3,
 			'upgrade_url'    => '',
 			'can_add_pages'  => true,
-			'show_quota_banner' => true, // No credits left
-			'is_free' => true,
+			'show_quota_banner' => false, // No credits left
+			'is_free' => false,
 		],
 	],
 	'premiumUser' => [

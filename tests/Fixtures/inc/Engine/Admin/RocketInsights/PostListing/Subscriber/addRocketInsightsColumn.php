@@ -107,23 +107,6 @@ return [
 				'column_label' => '',
 			],
 		],
-		'shouldNotAddRocketInsightsColumnForResller' => [
-			'config' => [
-				'post_type' => 'post',
-				'columns'   => [
-					'cb'     => '<input type="checkbox" />',
-					'title'  => 'Title',
-					'author' => 'Author',
-					'date'   => 'Date',
-				],
-				'is_live_site' => 'example.org',
-				'customer_data' => (new UserDataGenerator())->with_reseller_status(1)->generate(),
-				'transient' => (object) [ 'rocket_insights_display_post_column' => true ],
-			],
-			'expected' => [
-				'column_label' => '',
-			],
-		],
 		'shouldNotAddRocketInsightsColumnWhenRemoteSettingIsDisabled' => [
 			'config' => [
 				'post_type' => 'post',

@@ -149,21 +149,6 @@ $rocket_manual_preload = (bool) get_rocket_option( 'manual_preload', false );
 			 */
 			do_action( 'rocket_dashboard_after_account_data' );
 			?>
-		</div>
-
-		<div class="wpr-Page-col wpr-Page-col--fixed">
-			<?php
-			/**
-			 * Fires in the dashboard sidebar
-			 */
-			do_action( 'rocket_dashboard_sidebar' );
-
-			$this->render_part( 'quick-actions' );
-			?>
-		</div>
-	</div>
-	<div class="wpr-Page-row">
-		<div class="wpr-Page-col">
 			<?php $this->render_part( 'getting-started' ); ?>
 			<div class="wpr-optionHeader">
 				<h3 class="wpr-title2"><?php esc_html_e( 'Frequently Asked Questions', 'rocket' ); ?></h3>
@@ -205,7 +190,16 @@ $rocket_manual_preload = (bool) get_rocket_option( 'manual_preload', false );
 		</div>
 
 		<div class="wpr-Page-col wpr-Page-col--fixed">
-			<?php $this->render_part( 'documentation' ); ?>
+			<?php
+			/**
+			 * Fires in the dashboard sidebar
+			 */
+			do_action( 'rocket_dashboard_sidebar' );
+
+			$this->render_part( 'quick-actions' );
+
+			$this->render_part( 'documentation' );
+			?>
 		</div>
 	</div>
 </div>
