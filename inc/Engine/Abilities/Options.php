@@ -395,9 +395,9 @@ class Options {
 				],
 				'execute_callback'    => [ $this, 'execute' ],
 				'permission_callback' => [ $this, 'check_permissions' ],
-				'show_in_rest'        => true,
 				'meta'                => [
-					'mcp' => [
+					'show_in_rest' => true,
+					'mcp'          => [
 						'public' => true,
 					],
 				],
