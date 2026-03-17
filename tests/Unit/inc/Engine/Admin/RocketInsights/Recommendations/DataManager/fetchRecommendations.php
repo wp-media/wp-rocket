@@ -133,7 +133,7 @@ class Test_FetchRecommendations extends TestCase {
 
 		Functions\expect( 'delete_transient' )->zeroOrMoreTimes();
 
-		if ( $expected['result'] ) {
+		if ( $expected['result'] && ! empty( $config['global_score_data']['average_metrics'] ) ) {
 			$this->metric_formatter->shouldReceive( 'format_metric' )
 				->times(4)
 				->andReturnUsing( function ( $metric_key, $value ) use ( $config ) {
