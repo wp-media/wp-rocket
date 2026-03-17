@@ -38,6 +38,19 @@ class RegisterGetOptionsAbilityTest extends TestCase {
 		if ( ! function_exists( 'wp_get_ability' ) ) {
 			$this->markTestSkipped( 'WordPress Abilities API is not available.' );
 		}
+
+		add_filter( 'pre_get_rocket_options', [ $this, 'set_settings' ] );
+	}
+
+	/**
+	 * Tear down the test.
+	 *
+	 * @return void
+	 */
+	public function tear_down() {
+		remove_filter( 'pre_get_rocket_options', [ $this, 'set_settings' ] );
+
+		parent::tear_down();
 	}
 
 	/**
@@ -65,6 +78,15 @@ class RegisterGetOptionsAbilityTest extends TestCase {
 			$this->assertIsArray( $result, 'Should return array when user has permission.' );
 			$this->assertSame( $expected['data'], $result, 'Returned options should match expected.' );
 		}
+	}
+
+	/**
+	 * Set WP Rocket settings
+	 *
+	 * @return array
+	 */
+	public function set_settings() {
+		return $this->config['settings'];
 	}
 
 	/**
