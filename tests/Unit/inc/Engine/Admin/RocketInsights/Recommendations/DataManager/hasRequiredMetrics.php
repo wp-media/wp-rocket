@@ -65,7 +65,6 @@ class Test_HasRequiredMetrics extends TestCase {
 			->andReturn( $config['global_score_data'] );
 
 		$this->metric_formatter->shouldReceive( 'format_metric' )
-			->atLeast(1)
 			->andReturnUsing( function ( $metric_key, $value ) {
 				return $value;
 			} );
