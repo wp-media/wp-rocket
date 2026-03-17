@@ -42,7 +42,8 @@ $rocket_impact_tags    = $data['impact_tags'];
 							'label'      => __( 'Activate', 'rocket' ),
 							'url'        => esc_url( $data['section'] ),
 							'attributes' => [
-								'class' => 'wpr-recommendation-item__activate',
+								'class'               => 'wpr-recommendation-item__activate',
+								'data-recommendation' => esc_attr( $rocket_option_slug ),
 							],
 						]
 					);
