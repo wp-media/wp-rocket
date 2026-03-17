@@ -10,7 +10,7 @@ defined( 'ABSPATH' ) || exit;
 $rocket_data_array                 = (array) $data;
 $rocket_data_array['is_running']   = $data->is_running();
 $rocket_data_array['is_dashboard'] = false;
-$rocket_ri_blurred                 = ( isset( $rocket_data_array['is_blurred'] ) && $rocket_data_array['is_blurred'] ) || ( isset( $rocket_data_array['status'] ) && 'blurred' === $rocket_data_array['status'] ) ? 'blurred' : '';
+$rocket_ri_blurred                 = '';
 $rocket_img_url                    = esc_url( WP_ROCKET_ASSETS_IMG_URL );
 
 // Get pre-formatted metrics from Render class.
