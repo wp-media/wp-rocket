@@ -291,7 +291,7 @@ $(document).ready(function(){
 		// If the element is visible, scroll to the element with id matching the recommendation value.
 		// Delay scroll by 500ms to allow navigation to the section to complete and ensure the target element is in view.
 		setTimeout(function() {
-			var $target = $('#' + recommendation);
+			var $target = $(`#${recommendation}`);
 			
 			if ($target.length && $target.is(':visible')) {
 				$target[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
