@@ -5,6 +5,8 @@ namespace WP_Rocket\Engine\Admin\RocketInsights\Recommendations;
 
 use WP_Rocket\Engine\Admin\RocketInsights\Context\Context;
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\Logger\LoggerAware;
+use WP_Rocket\Logger\LoggerAwareInterface;
 
 /**
  * Recommendations Subscriber.
@@ -13,7 +15,9 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  *
  * @since 3.21
  */
-class Subscriber implements Subscriber_Interface {
+class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
+	use LoggerAware;
+
 	/**
 	 * Render instance.
 	 *
@@ -58,6 +62,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_sidebar'                              => 'render_recommendations_widget',
 			'rocket_insights_global_score_status_changed' => 'handle_status_change',
 			'rocket_insights_recommendations_rest_response' => 'output_recommendations_rest_response',
+			'wp_rocket_upgrade'                           => [ 'force_global_metrics_recalculation', 10, 2 ],
 		];
 	}
 
@@ -119,6 +124,25 @@ class Subscriber implements Subscriber_Interface {
 				// No action for other statuses.
 				break;
 		}
+	}
+
+	/**
+	 * Forces global metrics recalculation when upgrading from a version older than 3.21, but not older than 3.20.
+	 *
+	 * @since 3.21
+	 *
+	 * @param string $new_version New plugin version.
+	 * @param string $old_version Previously installed plugin version.
+	 * @return void
+	 */
+	public function force_global_metrics_recalculation( string $new_version, string $old_version ): void {
+		if ( version_compare( $old_version, '3.21', '>=' ) || version_compare( $old_version, '3.20', '<' ) ) {
+			return;
+		}
+
+		$this->logger->info( 'Rocket Insights: Clear global score to insert average metrics when updating from a WP Rocket version less than 3.21 but not less than 3.20' );
+
+		$this->data_manager->force_global_metrics_recalculation();
 	}
 
 	/**
