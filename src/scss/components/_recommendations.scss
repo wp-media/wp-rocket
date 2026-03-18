@@ -335,11 +335,6 @@
 		border-color: $cGreyLighter3;
 	}
 
-	&:focus {
-		outline: 2px solid $cBlue;
-		outline-offset: 2px;
-	}
-
 	&-text {
 		display: flex;
 		gap: $space * 2; // 16px

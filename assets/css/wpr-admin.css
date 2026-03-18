@@ -4529,10 +4529,6 @@ div.wpr-tutorial-item {
   background: #F9FAFB;
   border-color: #738191;
 }
-.wpr-recommendations__load-more:focus {
-  outline: 2px solid #1EADBF;
-  outline-offset: 2px;
-}
 .wpr-recommendations__load-more-text {
   display: flex;
   gap: 16px;
