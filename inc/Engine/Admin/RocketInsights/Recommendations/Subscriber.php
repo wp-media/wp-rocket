@@ -15,8 +15,9 @@ use WP_Rocket\Logger\LoggerAwareInterface;
  *
  * @since 3.21
  */
-class Subscriber implements Subscriber_Interface {
+class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	use LoggerAware;
+
 	/**
 	 * Render instance.
 	 *
