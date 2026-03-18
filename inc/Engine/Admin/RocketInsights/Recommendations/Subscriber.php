@@ -65,6 +65,7 @@ class Subscriber implements Subscriber_Interface {
 	 * Render the recommendations widget in the sidebar.
 	 *
 	 * Only renders if Rocket Insights is enabled and not on the dashboard tab.
+	 * Fetching is handled asynchronously via JavaScript to avoid blocking page load.
 	 *
 	 * @return void
 	 */
@@ -74,17 +75,25 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$recommendations = $this->maybe_fetch_recommendations_on_page_load();
+		// Render from cache only - fetching is handled by JavaScript
+		$recommendations = $this->data_manager->get_recommendations();
 		$this->render->render_recommendations_widget( $recommendations );
 	}
 
 	/**
 	 * Output recommendations in the REST API response.
 	 *
+	 * Triggers fetch if recommendations are not cached yet.
+	 *
 	 * @param array $response_data Existing response data.
 	 * @return array Modified response data with recommendations.
 	 */
 	public function output_recommendations_rest_response( array $response_data ): array {
+		// Check if recommendations need to be fetched
+		if ( false === $this->data_manager->get_recommendations() ) {
+			$this->data_manager->maybe_fetch_recommendations();
+		}
+
 		$recommendations                  = $this->data_manager->get_recommendations();
 		$response_data['recommendations'] = [
 			'html'     => $this->render->render_recommendations_widget( $recommendations, false ),
@@ -119,22 +128,5 @@ class Subscriber implements Subscriber_Interface {
 				// No action for other statuses.
 				break;
 		}
-	}
-
-	/**
-	 * Fetches recommendations on page load.
-	 *
-	 * Checks if recommendations are available in the cache. If not, initiates fetching of recommendations.
-	 * Returns the recommendations from the data manager.
-	 *
-	 * @return array|false
-	 */
-	private function maybe_fetch_recommendations_on_page_load() {
-		// Bail early if no cached recommendations.
-		if ( false === $this->data_manager->get_recommendations() ) {
-			$this->data_manager->maybe_fetch_recommendations();
-		}
-
-		return $this->data_manager->get_recommendations();
 	}
 }

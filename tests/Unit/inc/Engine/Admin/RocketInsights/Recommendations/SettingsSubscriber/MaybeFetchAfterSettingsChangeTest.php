@@ -32,9 +32,9 @@ class MaybeFetchAfterSettingsChangeTest extends TestCase {
 			->once()
 			->andReturn( $config['status'] );
 
-		// If status is not ready, should bail early without fetching.
+		// If status is not ready, should bail early without clearing.
 		if ( ! in_array( $config['status'], [ 'completed', 'failed' ], true ) ) {
-			$this->data_manager_mock->shouldNotReceive( 'fetch_recommendations' );
+			$this->data_manager_mock->shouldNotReceive( 'clear_recommendations' );
 
 			$this->subscriber->maybe_fetch_after_settings_change(
 				$config['old_options'],
@@ -45,9 +45,9 @@ class MaybeFetchAfterSettingsChangeTest extends TestCase {
 			return;
 		}
 
-		// If no relevant changes, should bail without fetching.
+		// If no relevant changes, should bail without clearing.
 		if ( ! $config['has_relevant_changes'] ) {
-			$this->data_manager_mock->shouldNotReceive( 'fetch_recommendations' );
+			$this->data_manager_mock->shouldNotReceive( 'clear_recommendations' );
 
 			$this->subscriber->maybe_fetch_after_settings_change(
 				$config['old_options'],
@@ -58,10 +58,10 @@ class MaybeFetchAfterSettingsChangeTest extends TestCase {
 			return;
 		}
 
-		// Should fetch when all conditions met.
-		$this->data_manager_mock->shouldReceive( 'fetch_recommendations' )
+		// Should clear recommendations when all conditions met.
+		$this->data_manager_mock->shouldReceive( 'clear_recommendations' )
 			->once()
-			->andReturn( true );
+			->andReturnNull();
 
 		$this->subscriber->maybe_fetch_after_settings_change(
 			$config['old_options'],

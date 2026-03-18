@@ -2,7 +2,7 @@
 
 return [
 	'test_data' => [
-		'shouldNotFetchWhenStatusIsPending' => [
+		'shouldNotClearWhenStatusIsPending' => [
 			'config' => [
 				'status'                => 'pending',
 				'has_relevant_changes'  => true,
@@ -10,11 +10,11 @@ return [
 				'new_options'           => [ 'minify_css' => 1 ],
 			],
 			'expected' => [
-				'should_fetch' => false,
+				'should_clear' => false,
 			],
 		],
 
-		'shouldNotFetchWhenStatusIsLoading' => [
+		'shouldNotClearWhenStatusIsLoading' => [
 			'config' => [
 				'status'                => 'loading',
 				'has_relevant_changes'  => true,
@@ -22,11 +22,11 @@ return [
 				'new_options'           => [ 'minify_css' => 1 ],
 			],
 			'expected' => [
-				'should_fetch' => false,
+				'should_clear' => false,
 			],
 		],
 
-		'shouldNotFetchWhenNoRelevantChanges' => [
+		'shouldNotClearWhenNoRelevantChanges' => [
 			'config' => [
 				'status'                => 'completed',
 				'has_relevant_changes'  => false,
@@ -34,11 +34,11 @@ return [
 				'new_options'           => [ 'cache_lifespan' => 20 ],
 			],
 			'expected' => [
-				'should_fetch' => false,
+				'should_clear' => false,
 			],
 		],
 
-		'shouldFetchWhenStatusCompletedAndRelevantChanges' => [
+		'shouldClearWhenStatusCompletedAndRelevantChanges' => [
 			'config' => [
 				'status'                => 'completed',
 				'has_relevant_changes'  => true,
@@ -46,11 +46,11 @@ return [
 				'new_options'           => [ 'minify_css' => 1 ],
 			],
 			'expected' => [
-				'should_fetch' => true,
+				'should_clear' => true,
 			],
 		],
 
-		'shouldFetchWhenStatusFailedAndRelevantChanges' => [
+		'shouldClearWhenStatusFailedAndRelevantChanges' => [
 			'config' => [
 				'status'                => 'failed',
 				'has_relevant_changes'  => true,
@@ -58,7 +58,7 @@ return [
 				'new_options'           => [ 'delay_js' => 1 ],
 			],
 			'expected' => [
-				'should_fetch' => true,
+				'should_clear' => true,
 			],
 		],
 
@@ -78,7 +78,7 @@ return [
 				],
 			],
 			'expected' => [
-				'should_fetch' => true,
+				'should_clear' => true,
 			],
 		],
 
@@ -96,7 +96,7 @@ return [
 				],
 			],
 			'expected' => [
-				'should_fetch' => true,
+				'should_clear' => true,
 			],
 		],
 	],

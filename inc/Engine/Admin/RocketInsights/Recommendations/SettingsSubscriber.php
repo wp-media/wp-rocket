@@ -43,11 +43,13 @@ class SettingsSubscriber implements Subscriber_Interface, LoggerAwareInterface {
 	}
 
 	/**
-	 * Maybe fetch recommendations after settings change.
+	 * Maybe reset recommendations after settings change.
 	 *
-	 * Only fetches if:
+	 * Only resets if:
 	 * - Status is completed or failed
 	 * - Changed settings affect recommendations
+	 *
+	 * Recommendations will be re-fetched asynchronously via AJAX on frontend.
 	 *
 	 * @param array $old_options Previous settings.
 	 * @param array $new_options New settings.
@@ -72,8 +74,9 @@ class SettingsSubscriber implements Subscriber_Interface, LoggerAwareInterface {
 			return;
 		}
 
-		// Fetch new recommendations, we pass new options array here because at this moment options class doesn't have those new options.
-		$this->fetch_recommendations( $new_options );
+		// Reset recommendations to trigger async re-fetch via frontend.
+		$this->logger::info( 'Recommendations: Relevant settings changed, clearing recommendations for async re-fetch' );
+		$this->data_manager->clear_recommendations();
 	}
 
 	/**
@@ -98,18 +101,5 @@ class SettingsSubscriber implements Subscriber_Interface, LoggerAwareInterface {
 		}
 
 		return false;
-	}
-
-	/**
-	 * Fetch new recommendations and log the action.
-	 *
-	 * @param array $new_options New settings to consider when fetching recommendations.
-	 * @return void
-	 */
-	private function fetch_recommendations( array $new_options = [] ) {
-		$this->logger::info( 'Recommendations: Relevant settings changed, fetching new recommendations' );
-
-		// Fetch new recommendations.
-		$this->data_manager->fetch_recommendations( $new_options );
 	}
 }

@@ -102,10 +102,24 @@ $(document).ready(function(){
 	}
 
 	/**
+	 * Check if recommendations widget is in loading state and trigger fetch if needed.
+	 */
+	function checkAndFetchIfLoading() {
+		const widget = $('.wpr-recommendations');
+		if (widget && widget.attr('data-state') === 'loading') {
+			// Delay fetch slightly to avoid blocking page render
+			setTimeout(fetchRecommendationsStatus, 500);
+		}
+	}
+
+	/**
 	 * Listen for Global Score update event.
 	 * This is fired by ajax.js when the Global Score polling detects a change.
 	 */
 	$(document).on('wprGlobalScoreUpdated rocket-insights-page-added rocket-insights-page-retest', () => {
 		fetchRecommendationsStatus();
 	});
+
+	// Check if recommendations need to be fetched on page load
+	checkAndFetchIfLoading();
 });
