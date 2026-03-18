@@ -293,9 +293,11 @@ $(document).ready(function(){
 		setTimeout(function() {
 			var $target = $(`#${recommendation}`);
 			
-			if ($target.length && $target.is(':visible')) {
-				$target[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+			if (!$target.length && !$target.is(':visible')) {
+				return;
 			}
+
+			$target[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
 		}, 100);
 		
 		// Track directly with Mixpanel
