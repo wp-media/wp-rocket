@@ -217,20 +217,7 @@ class DataManager implements LoggerAwareInterface {
 				]
 			);
 
-			$this->save_recommendations(
-				[
-					'status'          => 'failed',
-					'recommendations' => [],
-					'metadata'        => [],
-					'timestamp'       => time(),
-					'error'           => $response->get_error_message(),
-					'tracking'        => [
-						'status'   => 'error',
-						'quantity' => 0,
-						'duration' => $duration,
-					],
-				]
-			);
+			$this->set_recommendations_failed( $response->get_error_message(), $duration );
 
 			return false;
 		}
@@ -337,7 +324,7 @@ class DataManager implements LoggerAwareInterface {
 		// Verify core metrics exist.
 		$required = Calculator::METRIC_KEYS;
 		foreach ( $required as $metric ) {
-			if ( ! isset( $average_metrics[ $metric ] ) ) {
+			if ( ! isset( $average_metrics[ $metric ] ) || 'N/A' === $average_metrics[ $metric ] ) {
 				return false;
 			}
 		}
@@ -571,5 +558,29 @@ class DataManager implements LoggerAwareInterface {
 	 */
 	public function get_section_from_option_slug( string $option_slug ): string {
 		return self::TRACKED_OPTIONS[ $option_slug ] ?? 'dashboard';
+	}
+
+	/**
+	 * Set recommendations to failed status with error message and tracking info.
+	 *
+	 * @param string $error_message Error message to store (default: 'Failed to fetch recommendations').
+	 * @param float  $duration Duration of the failed fetch attempt in milliseconds (default: 0).
+	 * @return void
+	 */
+	public function set_recommendations_failed( string $error_message = 'Failed to fetch recommendations', float $duration = 0 ): void {
+		$this->save_recommendations(
+			[
+				'status'          => 'failed',
+				'recommendations' => [],
+				'metadata'        => [],
+				'timestamp'       => time(),
+				'error'           => $error_message,
+				'tracking'        => [
+					'status'   => 'error',
+					'quantity' => 0,
+					'duration' => $duration,
+				],
+			]
+		);
 	}
 }

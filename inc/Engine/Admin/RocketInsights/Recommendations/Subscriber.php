@@ -111,6 +111,10 @@ class Subscriber implements Subscriber_Interface {
 				$this->data_manager->maybe_fetch_recommendations();
 				break;
 
+			case 'failed':
+				$this->data_manager->set_recommendations_failed( 'Global score failed' );
+				break;
+
 			default:
 				// No action for other statuses.
 				break;

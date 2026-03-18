@@ -85,7 +85,7 @@ return [
 			],
 		],
 
-		'shouldDoNothingWhenStatusIsFailed' => [
+		'shouldFailRecommendationsWhenStatusIsFailed' => [
 			'config'   => [
 				'new_status'           => 'failed',
 				'previous_status'      => 'in-progress',
@@ -96,6 +96,7 @@ return [
 			'expected' => [
 				'clears_recommendations' => false,
 				'fetches_recommendations' => false,
+				'failed_recommendations' => true,
 			],
 		],
 	],

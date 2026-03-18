@@ -65,6 +65,10 @@ class Test_HandleStatusChange extends TestCase {
 			$this->data_manager->shouldReceive( 'extend_transient' )->never();
 		}
 
+		if ( ! empty( $expected['failed_recommendations'] ) ){
+			$this->data_manager->shouldReceive( 'set_recommendations_failed' )->once();
+		}
+
 		$this->subscriber->handle_status_change( $config['new_status'] );
 	}
 }
