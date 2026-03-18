@@ -136,11 +136,6 @@ class Render extends Abstract_Render {
 		];
 
 		// Filter out null values - only include metrics with actual impact.
-		return array_filter(
-			$impact_metrics,
-			function ( $value ) {
-				return null !== $value;
-			}
-		);
+		return array_filter( $impact_metrics );
 	}
 }

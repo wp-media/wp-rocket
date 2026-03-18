@@ -292,7 +292,7 @@ class DataManager implements LoggerAwareInterface {
 				continue;
 			}
 			$param_key            = self::METRICS_MAPPING[ $metric_key ];
-			$params[ $param_key ] = 'cls' === $param_key ? $metric_value : $metric_value / 1000;
+			$params[ $param_key ] = in_array( $param_key, [ 'cls', 'tbt' ], true ) ? $metric_value : $metric_value / 1000;
 		}
 
 		return $params;
