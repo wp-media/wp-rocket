@@ -1,3 +1,5 @@
+const { set } = require("lodash");
+
 var $ = jQuery;
 $(document).ready(function(){
 
@@ -285,6 +287,17 @@ $(document).ready(function(){
 	// Track Rocket Insights Recommendation Activate button clicks
 	$(document).on('click', '.wpr-recommendation-item__activate', function() {
 		var recommendation = $(this).data('recommendation') || 'unknown';
+
+		// If the element is visible, scroll to the element with id matching the recommendation value.
+		// Delay scroll by 500ms to allow navigation to the section to complete and ensure the target element is in view.
+		setTimeout(function() {
+			var $target = $('#' + recommendation);
+			
+			if ($target.length && $target.is(':visible')) {
+				console.log('Scrolling to recommendation:', recommendation);
+				$target[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+			}
+		}, 500);
 		
 		// Track directly with Mixpanel
 		if (typeof mixpanel !== 'undefined' && mixpanel.track) {
