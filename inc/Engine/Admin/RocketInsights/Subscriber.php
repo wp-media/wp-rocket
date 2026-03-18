@@ -185,7 +185,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 				[ 'on_update_reset_credit', 10, 2 ],
 				[ 'on_update_cancel_old_as_jobs', 10, 2 ],
 				[ 'on_update_refresh_metric_data', 10, 2 ],
-				[ 'on_update_clear_global_score', 10, 2 ],
 			],
 			'rocket_rocket_insights_enabled'              => 'maybe_disable_for_reseller_or_non_live',
 			'rest_api_init'                               => [ 'register_routes' ],
