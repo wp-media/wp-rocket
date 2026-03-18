@@ -294,7 +294,6 @@ $(document).ready(function(){
 			var $target = $('#' + recommendation);
 			
 			if ($target.length && $target.is(':visible')) {
-				console.log('Scrolling to recommendation:', recommendation);
 				$target[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
 			}
 		}, 100);
