@@ -133,14 +133,6 @@ class Test_FetchRecommendations extends TestCase {
 
 		Functions\expect( 'delete_transient' )->zeroOrMoreTimes();
 
-		if ( $expected['result'] && ! empty( $config['global_score_data']['average_metrics'] ) ) {
-			$this->metric_formatter->shouldReceive( 'format_metric' )
-				->times(4)
-				->andReturnUsing( function ( $metric_key, $value ) use ( $config ) {
-					return $config['formatted_metric'][$metric_key];
-				} );
-		}
-
 		$result = $this->data_manager->fetch_recommendations();
 
 		$this->assertSame( $expected['result'], $result );

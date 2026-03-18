@@ -281,6 +281,9 @@ class DataManager implements LoggerAwareInterface {
 
 		// Get average metrics from global score data.
 		$average_metrics = $this->get_average_metrics( false );
+		if ( empty( $average_metrics ) || ! is_array( $average_metrics ) ) {
+			return [];
+		}
 
 		if ( isset( $average_metrics['global_score'] ) ) {
 			$params['global_score'] = $average_metrics['global_score'];
@@ -466,6 +469,10 @@ class DataManager implements LoggerAwareInterface {
 		}
 
 		foreach ( $global_score_data['average_metrics'] as $metric_key => $metric ) {
+			if ( ! is_array( $metric ) ) {
+				continue;
+			}
+
 			$global_score_data['average_metrics'][ $metric_key ] = $formatted ? $this->metric_formatter->format_metric( $metric_key, $metric['value'] ) : $metric['value'];
 		}
 
