@@ -281,7 +281,7 @@ class DataManager implements LoggerAwareInterface {
 
 		// Get average metrics from global score data.
 		$average_metrics = $this->get_average_metrics( false );
-		if ( empty( $average_metrics ) || ! is_array( $average_metrics ) ) {
+		if ( ! is_array( $average_metrics ) || empty( $average_metrics ) ) {
 			return [];
 		}
 
@@ -455,7 +455,7 @@ class DataManager implements LoggerAwareInterface {
 	}
 
 	/**
-	 * Get average metrics from global score data (from Task 1.1).
+	 * Get average metrics from global score data.
 	 *
 	 * @param bool $formatted Whether to return formatted metrics (default: true).
 	 * @return array|null Average metrics or null if not available.
