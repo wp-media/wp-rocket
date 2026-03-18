@@ -12,7 +12,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group Recommendations
  * @group AdminOnly
  */
-class ForceGlobalMetricsRecalculationTest extends TestCase {
+class Test_ForceGlobalMetricsRecalculation extends TestCase {
 	/**
 	 * Transient name for global score data.
 	 *
