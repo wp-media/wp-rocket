@@ -5,6 +5,8 @@ namespace WP_Rocket\Engine\Admin\RocketInsights\Recommendations;
 
 use WP_Rocket\Engine\Admin\RocketInsights\Context\Context;
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\Logger\LoggerAware;
+use WP_Rocket\Logger\LoggerAwareInterface;
 
 /**
  * Recommendations Subscriber.
@@ -14,6 +16,7 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  * @since 3.21
  */
 class Subscriber implements Subscriber_Interface {
+	use LoggerAware;
 	/**
 	 * Render instance.
 	 *
@@ -135,6 +138,8 @@ class Subscriber implements Subscriber_Interface {
 		if ( version_compare( $old_version, '3.21', '>=' ) || version_compare( $old_version, '3.20', '<' ) ) {
 			return;
 		}
+
+		$this->logger->info( 'Rocket Insights: Clear global score to insert average metrics when updating from a WP Rocket version less than 3.21 but not less than 3.20' );
 
 		$this->data_manager->force_global_metrics_recalculation();
 	}
