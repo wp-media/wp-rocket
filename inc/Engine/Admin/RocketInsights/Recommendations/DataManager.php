@@ -583,4 +583,13 @@ class DataManager implements LoggerAwareInterface {
 			]
 		);
 	}
+
+	/**
+	 * Forces the recalculation of global metrics.
+	 *
+	 * @return void
+	 */
+	public function force_global_metrics_recalculation(): void {
+		$this->global_score->reset();
+	}
 }
