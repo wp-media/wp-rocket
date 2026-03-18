@@ -22,17 +22,18 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		padding-bottom: 6px;
+		padding-bottom: 9px;
 		border-bottom: 1px solid $cGreyLighter1;
 		width: 100%;
 	}
 
 	&__title {
 		flex: 1 0 0;
-		@include font-size(16, 21);
+		font-size: 16px;
 		font-weight: 600;
 		color: $cBlack;
-		margin: 0;
+		font-family: "Roboto", sans-serif;
+		line-height: 1.3;
 	}
 
 	// Content container
@@ -260,11 +261,6 @@
 		&:hover {
 			color: $cOrangeDark1;
 		}
-
-		&:focus {
-			outline: 2px solid $cBlue;
-			outline-offset: 2px;
-		}
 	}
 
 	// Impact tags section
@@ -337,11 +333,6 @@
 	&:hover {
 		background: $cGreyLight3;
 		border-color: $cGreyLighter3;
-	}
-
-	&:focus {
-		outline: 2px solid $cBlue;
-		outline-offset: 2px;
 	}
 
 	&-text {

@@ -9,9 +9,9 @@
  * @param array $data {
  *     Data for recommendations widget.
  *
- *     @type string $state            Current state: 'loading', 'completed', 'failed', 'success'.
- *     @type array  $recommendations  List of recommendation items (for completed state).
- *     @type bool   $show_load_more   Whether to show the "Load More" button.
+ *     @type string $state             Current state: 'loading', 'completed', 'failed', 'success'.
+ *     @type array  $recommendations   List of recommendation items (for completed state).
+ *     @type bool   $show_load_more    Whether to show the "Load More" button.
  * }
  */
 

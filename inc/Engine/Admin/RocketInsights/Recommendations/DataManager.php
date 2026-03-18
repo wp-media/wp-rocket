@@ -7,6 +7,7 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\RocketInsights\GlobalMetrics\Calculator;
 use WP_Rocket\Engine\Admin\RocketInsights\GlobalScore;
 use WP_Rocket\Engine\Admin\RocketInsights\MetricFormatter;
+use WP_Rocket\Engine\Tracking\TrackingTrait;
 use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
 
@@ -17,6 +18,7 @@ use WP_Rocket\Logger\LoggerAwareInterface;
  */
 class DataManager implements LoggerAwareInterface {
 	use LoggerAware;
+	use TrackingTrait;
 
 	/**
 	 * Transient name for storing recommendations.
@@ -72,6 +74,16 @@ class DataManager implements LoggerAwareInterface {
 		'database_all_transients'      => 'database',
 		'sucury_waf_cache_sync'        => 'addons',
 		'varnish_auto_purge'           => 'addons',
+	];
+
+	/**
+	 * Mapping of average metric keys to API parameter keys.
+	 */
+	private const METRICS_MAPPING = [
+		'largest_contentful_paint' => 'lcp',
+		'time_to_first_byte'       => 'ttfb',
+		'cumulative_layout_shift'  => 'cls',
+		'total_blocking_time'      => 'tbt',
 	];
 
 	/**
@@ -163,9 +175,6 @@ class DataManager implements LoggerAwareInterface {
 
 		$this->logger::debug( 'Recommendations: Starting fetch from API' );
 
-		// Get average metrics from global score data.
-		$average_metrics = $this->get_average_metrics();
-
 		// Get enabled WP Rocket options.
 		$enabled_options = $this->get_enabled_options( $options );
 
@@ -178,18 +187,10 @@ class DataManager implements LoggerAwareInterface {
 			'enabled_options' => $enabled_options,
 		];
 
-		if ( ! empty( $average_metrics ) ) {
-			$params = array_merge( $params, $average_metrics );
-		}
-
-		// Add global score if available.
-		$global_score = $average_metrics['global_score'] ?? null;
-		if ( empty( $global_score ) ) {
-			$global_score_data = $this->global_score->get_global_score_data();
-			$global_score      = $global_score_data['score'] ?? null;
-		}
-		if ( ! empty( $global_score ) ) {
-			$params['global_score'] = $global_score;
+		// Add metrics to parameters.
+		$metrics_params = $this->prepare_metrics_to_api();
+		if ( ! empty( $metrics_params ) ) {
+			$params = array_merge( $params, $metrics_params );
 		}
 
 		/**
@@ -217,20 +218,7 @@ class DataManager implements LoggerAwareInterface {
 				]
 			);
 
-			$this->save_recommendations(
-				[
-					'status'          => 'failed',
-					'recommendations' => [],
-					'metadata'        => [],
-					'timestamp'       => time(),
-					'error'           => $response->get_error_message(),
-					'tracking'        => [
-						'status'   => 'error',
-						'quantity' => 0,
-						'duration' => $duration,
-					],
-				]
-			);
+			$this->set_recommendations_failed( $response->get_error_message(), $duration );
 
 			return false;
 		}
@@ -263,6 +251,16 @@ class DataManager implements LoggerAwareInterface {
 				]
 			);
 
+			// Track Mixpanel event immediately.
+			$this->track_event(
+				'Rocket Insights Recommendation',
+				[
+					'status'   => 'success',
+					'quantity' => $quantity,
+					'duration' => $duration,
+				]
+			);
+
 			return true;
 		}
 
@@ -272,6 +270,9 @@ class DataManager implements LoggerAwareInterface {
 			[ 'response' => $response ]
 		);
 
+		// Calculate duration for tracking.
+		$duration = round( ( microtime( true ) - $start_time ) * 1000 );
+
 		$this->save_recommendations(
 			[
 				'status'          => 'failed',
@@ -279,10 +280,55 @@ class DataManager implements LoggerAwareInterface {
 				'metadata'        => [],
 				'timestamp'       => time(),
 				'error'           => 'Unexpected API response format',
+				'tracking'        => [
+					'status'   => 'error',
+					'quantity' => 0,
+					'duration' => $duration,
+				],
+			]
+		);
+
+		// Track Mixpanel event immediately.
+		$this->track_event(
+			'Rocket Insights Recommendation',
+			[
+				'status'   => 'error',
+				'quantity' => 0,
+				'duration' => $duration,
 			]
 		);
 
 		return false;
+	}
+
+	/**
+	 * Prepare average metrics for API parameters.
+	 *
+	 * @return array
+	 */
+	private function prepare_metrics_to_api(): array {
+		$params = [];
+
+		// Get average metrics from global score data.
+		$average_metrics = $this->get_average_metrics( false );
+		if ( ! is_array( $average_metrics ) || empty( $average_metrics ) ) {
+			return [];
+		}
+
+		if ( isset( $average_metrics['global_score'] ) ) {
+			$params['global_score'] = $average_metrics['global_score'];
+			unset( $average_metrics['global_score'] );
+		}
+
+		foreach ( $average_metrics as $metric_key => $metric_value ) {
+			if ( ! isset( self::METRICS_MAPPING[ $metric_key ] ) ) {
+				continue;
+			}
+			$param_key            = self::METRICS_MAPPING[ $metric_key ];
+			$params[ $param_key ] = in_array( $param_key, [ 'cls', 'tbt' ], true ) ? $metric_value : $metric_value / 1000;
+		}
+
+		return $params;
 	}
 
 	/**
@@ -337,7 +383,7 @@ class DataManager implements LoggerAwareInterface {
 		// Verify core metrics exist.
 		$required = Calculator::METRIC_KEYS;
 		foreach ( $required as $metric ) {
-			if ( ! isset( $average_metrics[ $metric ] ) ) {
+			if ( ! isset( $average_metrics[ $metric ] ) || 'N/A' === $average_metrics[ $metric ] ) {
 				return false;
 			}
 		}
@@ -439,11 +485,12 @@ class DataManager implements LoggerAwareInterface {
 	}
 
 	/**
-	 * Get average metrics from global score data (from Task 1.1).
+	 * Get average metrics from global score data.
 	 *
+	 * @param bool $formatted Whether to return formatted metrics (default: true).
 	 * @return array|null Average metrics or null if not available.
 	 */
-	private function get_average_metrics(): ?array {
+	private function get_average_metrics( bool $formatted = true ): ?array {
 		$global_score_data = $this->global_score->get_global_score_data();
 
 		if ( empty( $global_score_data['average_metrics'] ) ) {
@@ -451,10 +498,15 @@ class DataManager implements LoggerAwareInterface {
 			return null;
 		}
 
-		foreach ( $global_score_data['average_metrics'] as $metric_key => $metric_value ) {
-			$global_score_data['average_metrics'][ $metric_key ] = $this->metric_formatter->format_metric( $metric_key, $metric_value );
+		foreach ( $global_score_data['average_metrics'] as $metric_key => $metric ) {
+			if ( empty( $metric ) || ! isset( $metric['value'] ) ) {
+				continue;
+			}
+
+			$global_score_data['average_metrics'][ $metric_key ] = $formatted ? $this->metric_formatter->format_metric( $metric_key, $metric['value'] ) : $metric['value'];
 		}
 
+		$global_score_data['average_metrics']['global_score'] = $global_score_data['score'];
 		return $global_score_data['average_metrics'];
 	}
 
@@ -571,5 +623,48 @@ class DataManager implements LoggerAwareInterface {
 	 */
 	public function get_section_from_option_slug( string $option_slug ): string {
 		return self::TRACKED_OPTIONS[ $option_slug ] ?? 'dashboard';
+	}
+
+	/**
+	 * Set recommendations to failed status with error message and tracking info.
+	 *
+	 * @param string $error_message Error message to store (default: 'Failed to fetch recommendations').
+	 * @param float  $duration Duration of the failed fetch attempt in milliseconds (default: 0).
+	 * @return void
+	 */
+	public function set_recommendations_failed( string $error_message = 'Failed to fetch recommendations', float $duration = 0 ): void {
+		$this->save_recommendations(
+			[
+				'status'          => 'failed',
+				'recommendations' => [],
+				'metadata'        => [],
+				'timestamp'       => time(),
+				'error'           => $error_message,
+				'tracking'        => [
+					'status'   => 'error',
+					'quantity' => 0,
+					'duration' => $duration,
+				],
+			]
+		);
+
+		// Track Mixpanel event immediately.
+		$this->track_event(
+			'Rocket Insights Recommendation',
+			[
+				'status'   => 'error',
+				'quantity' => 0,
+				'duration' => $duration,
+			]
+		);
+	}
+
+	/**
+	 * Forces the recalculation of global metrics.
+	 *
+	 * @return void
+	 */
+	public function force_global_metrics_recalculation(): void {
+		$this->global_score->reset();
 	}
 }
