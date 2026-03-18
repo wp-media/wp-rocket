@@ -469,7 +469,7 @@ class DataManager implements LoggerAwareInterface {
 		}
 
 		foreach ( $global_score_data['average_metrics'] as $metric_key => $metric ) {
-			if ( ! is_array( $metric ) ) {
+			if ( empty( $metric ) || ! is_array( $metric ) ) {
 				continue;
 			}
 
