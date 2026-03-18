@@ -5508,7 +5508,7 @@ msgstr "Öneriler yükleniyor..."
 
 #: views/settings/partials/rocket-insights/recommendations/states/loading.php:17
 msgid "Almost there!"
-msgstr "Neredeyse vardık!"
+msgstr "Bitmek üzere!"
 
 #: views/settings/partials/rocket-insights/recommendations/states/success.php:15
 msgid "All done!"
