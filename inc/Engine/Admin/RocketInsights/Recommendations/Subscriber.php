@@ -75,7 +75,7 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		// Render from cache only - fetching is handled by JavaScript
+		// Render from cache only - fetching is handled by JavaScript.
 		$recommendations = $this->data_manager->get_recommendations();
 		$this->render->render_recommendations_widget( $recommendations );
 	}
@@ -89,7 +89,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return array Modified response data with recommendations.
 	 */
 	public function output_recommendations_rest_response( array $response_data ): array {
-		// Check if recommendations need to be fetched
+		// Check if recommendations need to be fetched.
 		if ( false === $this->data_manager->get_recommendations() ) {
 			$this->data_manager->maybe_fetch_recommendations();
 		}
