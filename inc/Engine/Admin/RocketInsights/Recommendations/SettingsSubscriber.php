@@ -109,7 +109,7 @@ class SettingsSubscriber implements Subscriber_Interface, LoggerAwareInterface {
 	private function fetch_recommendations( array $new_options = [] ) {
 		$this->logger::info( 'Recommendations: Relevant settings changed, fetching new recommendations' );
 
-		// Fetch new recommendations.
+		// Fetch new recommendations - Mixpanel tracking happens automatically in DataManager.
 		$this->data_manager->fetch_recommendations( $new_options );
 	}
 }
