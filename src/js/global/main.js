@@ -297,7 +297,7 @@ $(document).ready(function(){
 				console.log('Scrolling to recommendation:', recommendation);
 				$target[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
 			}
-		}, 500);
+		}, 100);
 		
 		// Track directly with Mixpanel
 		if (typeof mixpanel !== 'undefined' && mixpanel.track) {
