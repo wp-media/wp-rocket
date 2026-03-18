@@ -185,7 +185,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 				[ 'on_update_reset_credit', 10, 2 ],
 				[ 'on_update_cancel_old_as_jobs', 10, 2 ],
 				[ 'on_update_refresh_metric_data', 10, 2 ],
-				[ 'on_update_clear_global_score', 10, 2 ],
 			],
 			'rocket_rocket_insights_enabled'              => 'maybe_disable_for_reseller_or_non_live',
 			'rest_api_init'                               => [ 'register_routes' ],
@@ -758,23 +757,5 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public function track_metric_actions(): void {
 		$this->controller->track_metric_actions();
-	}
-
-	/**
-	 * Callback for the wp_rocket_upgrade action to clear global score cache when updating from a version before 3.20.6.
-	 *
-	 * @param string $new_version New plugin version.
-	 * @param string $old_version Previous plugin version.
-	 *
-	 * @return void
-	 */
-	public function on_update_clear_global_score( $new_version, $old_version ) {
-		if ( version_compare( $old_version, '3.20.6', '>=' ) ) {
-			return;
-		}
-
-		$this->logger::info( 'Rocket Insights: Clear global score to insert average metrics when updating from a WP Rocket version less than 3.20.6' );
-
-		$this->global_score->reset();
 	}
 }

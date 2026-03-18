@@ -32,6 +32,39 @@
 		}
 	} );
 
+	/**
+	 * Checks if the user is currently on the CDN tab.
+	 *
+	 * @return {boolean} True if on CDN tab, false otherwise.
+	 */
+	function isOnCDNTab() {
+		return window.location.hash === '#page_cdn';
+	}
+
+	/**
+	 * Tracks when a visible RocketCDN upsell banner is viewed.
+	 * Only tracks once per page session.
+	 */
+	let bannerViewTracked = false;
+
+	function maybeTrackBannerView() {
+		if ( bannerViewTracked || ! isOnCDNTab() ) {
+			return;
+		}
+
+		const smallCTA = document.querySelector( '#wpr-rocketcdn-cta-small' );
+		const bigCTA = document.querySelector( '#wpr-rocketcdn-cta' );
+
+		// Only track if one of the banners is visible.
+		if ( bigCTA && ! bigCTA.classList.contains( 'wpr-isHidden' ) ) {
+			trackRocketCDNUpsellBannerViewed();
+			bannerViewTracked = true;
+		} else if ( smallCTA && ! smallCTA.classList.contains( 'wpr-isHidden' ) ) {
+			trackRocketCDNUpsellBannerViewed();
+			bannerViewTracked = true;
+		}
+	}
+
 	window.addEventListener( 'load', () => {
 		let openCTA = document.querySelector( '#wpr-rocketcdn-open-cta' ),
 			closeCTA = document.querySelector( '#wpr-rocketcdn-close-cta' ),
@@ -39,14 +72,13 @@
 			bigCTA = document.querySelector( '#wpr-rocketcdn-cta' ),
 			inputToggle = document.querySelector('.wpr-rocketcdn-toggle--input');
 
-		// Track banner view on page load if banner is visible.
-		if ( bigCTA && ! bigCTA.classList.contains( 'wpr-isHidden' ) ) {
-			// Big banner is visible on load.
-			trackRocketCDNUpsellBannerViewed();
-		} else if ( smallCTA && ! smallCTA.classList.contains( 'wpr-isHidden' ) ) {
-			// Small banner is visible on load.
-			trackRocketCDNUpsellBannerViewed();
-		}
+		// Track banner view on page load if banner is visible and user is on CDN tab.
+		maybeTrackBannerView();
+
+		// Track banner view when user navigates to CDN tab.
+		window.addEventListener( 'hashchange', () => {
+			maybeTrackBannerView();
+		} );
 
 		// Prices selectors for toggling visibility based on the billing cycle toggle state.
 		const prices = {
@@ -69,8 +101,11 @@
 				smallCTA.classList.add( 'wpr-isHidden' );
 				bigCTA.classList.remove( 'wpr-isHidden' );
 
-				// Track upsell banner view.
-				trackRocketCDNUpsellBannerViewed();
+				// Track upsell banner view only if on CDN tab.
+				if ( isOnCDNTab() && ! bannerViewTracked ) {
+					trackRocketCDNUpsellBannerViewed();
+					bannerViewTracked = true;
+				}
 
 				sendHTTPRequest( getPostData( 'big' ) );
 			} );
