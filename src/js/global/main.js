@@ -1,5 +1,3 @@
-const { set } = require("lodash");
-
 var $ = jQuery;
 $(document).ready(function(){
 
@@ -289,7 +287,7 @@ $(document).ready(function(){
 		var recommendation = $(this).data('recommendation') || 'unknown';
 
 		// If the element is visible, scroll to the element with id matching the recommendation value.
-		// Delay scroll by 500ms to allow navigation to the section to complete and ensure the target element is in view.
+		// Delay scroll by 100ms to allow navigation to the section to complete and ensure the target element is in view.
 		setTimeout(function() {
 			var $target = $(`#${recommendation}`);
 			
