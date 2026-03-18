@@ -75,6 +75,16 @@ class DataManager implements LoggerAwareInterface {
 	];
 
 	/**
+	 * Mapping of average metric keys to API parameter keys.
+	 */
+	private const METRICS_MAPPING = [
+		'largest_contentful_paint' => 'lcp',
+		'time_to_first_byte'       => 'ttfb',
+		'cumulative_layout_shift'  => 'cls',
+		'total_blocking_time'      => 'tbt',
+	];
+
+	/**
 	 * Recommendations API Client instance.
 	 *
 	 * @var APIClient
@@ -163,9 +173,6 @@ class DataManager implements LoggerAwareInterface {
 
 		$this->logger::debug( 'Recommendations: Starting fetch from API' );
 
-		// Get average metrics from global score data.
-		$average_metrics = $this->get_average_metrics();
-
 		// Get enabled WP Rocket options.
 		$enabled_options = $this->get_enabled_options( $options );
 
@@ -178,18 +185,10 @@ class DataManager implements LoggerAwareInterface {
 			'enabled_options' => $enabled_options,
 		];
 
-		if ( ! empty( $average_metrics ) ) {
-			$params = array_merge( $params, $average_metrics );
-		}
-
-		// Add global score if available.
-		$global_score = $average_metrics['global_score'] ?? null;
-		if ( empty( $global_score ) ) {
-			$global_score_data = $this->global_score->get_global_score_data();
-			$global_score      = $global_score_data['score'] ?? null;
-		}
-		if ( ! empty( $global_score ) ) {
-			$params['global_score'] = $global_score;
+		// Add metrics to parameters.
+		$metrics_params = $this->prepare_metrics_to_api();
+		if ( ! empty( $metrics_params ) ) {
+			$params = array_merge( $params, $metrics_params );
 		}
 
 		/**
@@ -270,6 +269,33 @@ class DataManager implements LoggerAwareInterface {
 		);
 
 		return false;
+	}
+
+	/**
+	 * Prepare average metrics for API parameters.
+	 *
+	 * @return array
+	 */
+	private function prepare_metrics_to_api(): array {
+		$params = [];
+
+		// Get average metrics from global score data.
+		$average_metrics = $this->get_average_metrics( false );
+
+		if ( isset( $average_metrics['global_score'] ) ) {
+			$params['global_score'] = $average_metrics['global_score'];
+			unset( $average_metrics['global_score'] );
+		}
+
+		foreach ( $average_metrics as $metric_key => $metric_value ) {
+			if ( ! isset( self::METRICS_MAPPING[ $metric_key ] ) ) {
+				continue;
+			}
+			$param_key            = self::METRICS_MAPPING[ $metric_key ];
+			$params[ $param_key ] = 'cls' === $param_key ? $metric_value : $metric_value / 1000;
+		}
+
+		return $params;
 	}
 
 	/**
@@ -428,9 +454,10 @@ class DataManager implements LoggerAwareInterface {
 	/**
 	 * Get average metrics from global score data (from Task 1.1).
 	 *
+	 * @param bool $formatted Whether to return formatted metrics (default: true).
 	 * @return array|null Average metrics or null if not available.
 	 */
-	private function get_average_metrics(): ?array {
+	private function get_average_metrics( bool $formatted = true ): ?array {
 		$global_score_data = $this->global_score->get_global_score_data();
 
 		if ( empty( $global_score_data['average_metrics'] ) ) {
@@ -438,10 +465,11 @@ class DataManager implements LoggerAwareInterface {
 			return null;
 		}
 
-		foreach ( $global_score_data['average_metrics'] as $metric_key => $metric_value ) {
-			$global_score_data['average_metrics'][ $metric_key ] = $this->metric_formatter->format_metric( $metric_key, $metric_value );
+		foreach ( $global_score_data['average_metrics'] as $metric_key => $metric ) {
+			$global_score_data['average_metrics'][ $metric_key ] = $formatted ? $this->metric_formatter->format_metric( $metric_key, $metric['value'] ) : $metric['value'];
 		}
 
+		$global_score_data['average_metrics']['global_score'] = $global_score_data['score'];
 		return $global_score_data['average_metrics'];
 	}
 
