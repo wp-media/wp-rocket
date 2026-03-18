@@ -7,6 +7,7 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\RocketInsights\GlobalMetrics\Calculator;
 use WP_Rocket\Engine\Admin\RocketInsights\GlobalScore;
 use WP_Rocket\Engine\Admin\RocketInsights\MetricFormatter;
+use WP_Rocket\Engine\Tracking\TrackingTrait;
 use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
 
@@ -17,6 +18,7 @@ use WP_Rocket\Logger\LoggerAwareInterface;
  */
 class DataManager implements LoggerAwareInterface {
 	use LoggerAware;
+	use TrackingTrait;
 
 	/**
 	 * Transient name for storing recommendations.
@@ -250,6 +252,16 @@ class DataManager implements LoggerAwareInterface {
 				]
 			);
 
+			// Track Mixpanel event immediately.
+			$this->track_event(
+				'Rocket Insights Recommendation',
+				[
+					'status'   => 'success',
+					'quantity' => $quantity,
+					'duration' => $duration,
+				]
+			);
+
 			return true;
 		}
 
@@ -259,6 +271,9 @@ class DataManager implements LoggerAwareInterface {
 			[ 'response' => $response ]
 		);
 
+		// Calculate duration for tracking.
+		$duration = round( ( microtime( true ) - $start_time ) * 1000 );
+
 		$this->save_recommendations(
 			[
 				'status'          => 'failed',
@@ -266,6 +281,21 @@ class DataManager implements LoggerAwareInterface {
 				'metadata'        => [],
 				'timestamp'       => time(),
 				'error'           => 'Unexpected API response format',
+				'tracking'        => [
+					'status'   => 'error',
+					'quantity' => 0,
+					'duration' => $duration,
+				],
+			]
+		);
+
+		// Track Mixpanel event immediately.
+		$this->track_event(
+			'Rocket Insights Recommendation',
+			[
+				'status'   => 'error',
+				'quantity' => 0,
+				'duration' => $duration,
 			]
 		);
 
@@ -580,6 +610,16 @@ class DataManager implements LoggerAwareInterface {
 					'quantity' => 0,
 					'duration' => $duration,
 				],
+			]
+		);
+
+		// Track Mixpanel event immediately.
+		$this->track_event(
+			'Rocket Insights Recommendation',
+			[
+				'status'   => 'error',
+				'quantity' => 0,
+				'duration' => $duration,
 			]
 		);
 	}
