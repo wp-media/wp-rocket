@@ -35,6 +35,9 @@ class Test_RenderRecommendationsWidget extends TestCase {
 	public function set_up() {
 		parent::set_up();
 
+		// Install Performance Monitoring table to avoid database errors.
+		$this->installPerformanceMonitoringTable();
+
 		// Clear transients before each test.
 		delete_transient( self::TRANSIENT_NAME );
 		delete_transient( self::GLOBAL_SCORE_TRANSIENT );
@@ -57,6 +60,9 @@ class Test_RenderRecommendationsWidget extends TestCase {
 
 		// Remove Rocket Insights enabled filter.
 		remove_filter( 'rocket_rocket_insights_enabled', '__return_true' );
+
+		// Clean up Performance Monitoring table.
+		$this->truncatePerformanceMonitoringTable();
 
         $this->restoreWpHook( 'rocket_sidebar' );
 
