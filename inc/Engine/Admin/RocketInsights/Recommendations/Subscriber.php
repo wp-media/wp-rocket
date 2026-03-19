@@ -63,6 +63,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'rocket_insights_global_score_status_changed' => 'handle_status_change',
 			'rocket_insights_recommendations_rest_response' => 'output_recommendations_rest_response',
 			'wp_rocket_upgrade'                           => [ 'force_global_metrics_recalculation', 10, 2 ],
+			'rocket_rocket_insights_job_deleted'          => 'maybe_clear_recommendations_on_delete',
 		];
 	}
 
@@ -124,6 +125,19 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 				// No action for other statuses.
 				break;
 		}
+	}
+
+	/**
+	 * Update recommendations when a page is deleted.
+	 *
+	 * If no metrics remain after deletion, saves an empty state to prevent
+	 * the widget from showing an infinite loading spinner.
+	 *
+	 * @return void
+	 */
+	public function maybe_clear_recommendations_on_delete(): void {
+		// Trigger recommendations refresh after deletion.
+		$this->data_manager->maybe_fetch_recommendations();
 	}
 
 	/**

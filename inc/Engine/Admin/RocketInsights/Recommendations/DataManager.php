@@ -596,8 +596,9 @@ class DataManager implements LoggerAwareInterface {
 			return;
 		}
 
-		// Bail if metrics not ready.
+		// Save empty state if metrics not ready (e.g., no pages tested).
 		if ( ! $this->has_required_metrics() ) {
+			$this->save_empty_recommendations();
 			return;
 		}
 
@@ -623,6 +624,27 @@ class DataManager implements LoggerAwareInterface {
 	 */
 	public function get_section_from_option_slug( string $option_slug ): string {
 		return self::TRACKED_OPTIONS[ $option_slug ] ?? 'dashboard';
+	}
+
+	/**
+	 * Save empty recommendations state when no metrics are available.
+	 *
+	 * This prevents the widget from showing a loading spinner when there are no pages to test.
+	 *
+	 * @return void
+	 */
+	private function save_empty_recommendations(): void {
+		$this->save_recommendations(
+			[
+				'status'          => 'failed',
+				'recommendations' => [],
+				'metadata'        => [],
+				'timestamp'       => time(),
+				'error'           => 'No pages tested yet',
+			]
+		);
+
+		$this->logger::debug( 'Recommendations: Saved failed state (no metrics available)' );
 	}
 
 	/**
