@@ -596,7 +596,23 @@ class DataManager implements LoggerAwareInterface {
 			return;
 		}
 
-		// Save empty state if metrics not ready (e.g., no pages tested).
+		// Get global score data to check for URLs.
+		$global_score_data = $this->global_score->get_global_score_data();
+		$status            = $global_score_data['status'] ?? 'complete';
+
+		// If no URLs in Performance Monitoring, save failed state.
+		// There's nothing to analyze yet, so show failed state.
+		if ( 'no-url' === $status ) {
+			$this->save_empty_recommendations();
+			return;
+		}
+
+		// If tests are in progress, bail early to show loading state.
+		if ( 'in-progress' === $status ) {
+			return;
+		}
+
+		// Save empty state if metrics not ready (e.g., all tests failed).
 		if ( ! $this->has_required_metrics() ) {
 			$this->save_empty_recommendations();
 			return;
@@ -627,9 +643,12 @@ class DataManager implements LoggerAwareInterface {
 	}
 
 	/**
-	 * Save empty recommendations state when no metrics are available.
+	 * Save empty recommendations state when metrics are not available.
 	 *
-	 * This prevents the widget from showing a loading spinner when there are no pages to test.
+	 * This displays the failed state when:
+	 * - No URLs exist in Performance Monitoring yet
+	 * - All tests have failed
+	 * - Metrics are incomplete
 	 *
 	 * @return void
 	 */
@@ -640,11 +659,11 @@ class DataManager implements LoggerAwareInterface {
 				'recommendations' => [],
 				'metadata'        => [],
 				'timestamp'       => time(),
-				'error'           => 'No pages tested yet',
+				'error'           => 'Recommendations unavailable',
 			]
 		);
 
-		$this->logger::debug( 'Recommendations: Saved failed state (no metrics available)' );
+		$this->logger::debug( 'Recommendations: Saved failed state (no recommendations available)' );
 	}
 
 	/**
