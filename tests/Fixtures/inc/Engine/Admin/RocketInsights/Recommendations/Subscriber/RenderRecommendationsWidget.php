@@ -4,6 +4,14 @@ return [
 	'testShouldDisplayLoadingStateWhenNoTransientData' => [
 		'config'   => [
 			'transient_data' => null,
+			'pm_data'        => [
+				[
+					'url'       => 'http://example.org',
+					'status'    => 'in-progress',
+					'is_mobile' => 0,
+					'job_id'    => 'test_job_123',
+				],
+			],
 		],
 		'expected' => [
 			'state'        => 'loading',

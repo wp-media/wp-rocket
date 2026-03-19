@@ -112,10 +112,55 @@ class Test_RenderRecommendationsWidget extends TestCase {
 	 * @return void
 	 */
 	private function setUpTest( array $config ): void {
+		// Set up Performance Monitoring data if provided.
+		if ( isset( $config['pm_data'] ) && is_array( $config['pm_data'] ) ) {
+			foreach ( $config['pm_data'] as $pm_row ) {
+				$this->addPmRow( $pm_row );
+			}
+		}
+
 		// Set up transient data if provided.
 		if ( isset( $config['transient_data'] ) ) {
 			set_transient( self::TRANSIENT_NAME, $config['transient_data'], DAY_IN_SECONDS );
 		}
+	}
+
+	/**
+	 * Add a row to the Performance Monitoring table.
+	 *
+	 * @param array $data Row data.
+	 * @return void
+	 */
+	private function addPmRow( array $data ): void {
+		global $wpdb;
+
+		$table_name = $wpdb->prefix . 'wpr_performance_monitoring';
+
+		$defaults = [
+			'url'            => '',
+			'title'          => '',
+			'is_mobile'      => 0,
+			'job_id'         => '',
+			'queue_name'     => '',
+			'retries'        => 1,
+			'status'         => null,
+			'data'           => '',
+			'modified'       => current_time( 'mysql', true ),
+			'last_accessed'  => current_time( 'mysql', true ),
+			'submitted_at'   => null,
+			'next_retry_time' => '0000-00-00 00:00:00',
+			'score'          => 0,
+			'report_url'     => '',
+			'is_blurred'     => 0,
+			'metric_data'    => null,
+			'error_code'     => null,
+			'error_message'  => null,
+		];
+
+		$data = wp_parse_args( $data, $defaults );
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery
+		$wpdb->insert( $table_name, $data );
 	}
 
 	/**
