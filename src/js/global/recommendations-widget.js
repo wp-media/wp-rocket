@@ -11,7 +11,6 @@ $(document).ready(function(){
 	 * @param {Object} data - The recommendations data from the API.
 	 * @param {Array} data.recommendations - Array of recommendations details.
 	 * @param {string} data.recommendations.html - Recommendations HTML.
-	 * @param {Object} data.recommendations.tracking - Tracking data for Mixpanel.
 	 */
 	function updateRecommendationsWidget(data) {
 		const widget = $('.wpr-recommendations');
@@ -22,47 +21,9 @@ $(document).ready(function(){
 
 		// Update the widget content with the new recommendations HTML
 		widget.replaceWith(data?.recommendations?.html);
-
-		// Track recommendations API response with Mixpanel
-		if (data?.recommendations?.tracking) {
-			trackRecommendationsEvent(data.recommendations.tracking);
-		}
 	}
 
-	/**
-	 * Track Rocket Insights Recommendation event with Mixpanel.
-	 *
-	 * @param {Object} tracking - Tracking data.
-	 * @param {string} tracking.status - success or error.
-	 * @param {number} tracking.quantity - Number of recommendations returned.
-	 * @param {number} tracking.duration - Duration in milliseconds.
-	 */
-	function trackRecommendationsEvent(tracking) {
-		if (typeof mixpanel === 'undefined' || !mixpanel.track) {
-			return;
-		}
 
-		// Check if user has opted in
-		if (typeof rocket_mixpanel_data === 'undefined' || !rocket_mixpanel_data.optin_enabled || rocket_mixpanel_data.optin_enabled === '0') {
-			return;
-		}
-
-		// Identify user if available
-		if (rocket_mixpanel_data.user_id && typeof mixpanel.identify === 'function') {
-			mixpanel.identify(rocket_mixpanel_data.user_id);
-		}
-
-		// Track the event
-		mixpanel.track('Rocket Insights Recommendation', {
-			'status': tracking.status,
-			'quantity': tracking.quantity,
-			'duration': tracking.duration,
-			'plugin': rocket_mixpanel_data.plugin,
-			'brand': rocket_mixpanel_data.brand,
-			'application': rocket_mixpanel_data.app,
-			'context': rocket_mixpanel_data.context
-		});
-	}
 
 	/**
 	 * Fetches the current recommendations status from the REST API.

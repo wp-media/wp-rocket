@@ -4254,17 +4254,17 @@ div.wpr-tutorial-item {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-bottom: 6px;
+  padding-bottom: 9px;
   border-bottom: 1px solid #E2E5E9;
   width: 100%;
 }
 .wpr-recommendations__title {
   flex: 1 0 0;
-  font-size: 1rem;
-  line-height: 1.3125;
+  font-size: 16px;
   font-weight: 600;
   color: #121116;
-  margin: 0;
+  font-family: "Roboto", sans-serif;
+  line-height: 1.3;
 }
 .wpr-recommendations__content {
   display: flex;
@@ -4464,10 +4464,6 @@ div.wpr-tutorial-item {
 .wpr-recommendation-item__activate:hover {
   color: #AC2B15;
 }
-.wpr-recommendation-item__activate:focus {
-  outline: 2px solid #1EADBF;
-  outline-offset: 2px;
-}
 .wpr-recommendation-item__impact {
   display: flex;
   gap: 4px;
@@ -4532,10 +4528,6 @@ div.wpr-tutorial-item {
 .wpr-recommendations__load-more:hover {
   background: #F9FAFB;
   border-color: #738191;
-}
-.wpr-recommendations__load-more:focus {
-  outline: 2px solid #1EADBF;
-  outline-offset: 2px;
 }
 .wpr-recommendations__load-more-text {
   display: flex;
