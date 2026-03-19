@@ -598,7 +598,7 @@ class DataManager implements LoggerAwareInterface {
 
 		// Get global score data to check for URLs.
 		$global_score_data = $this->global_score->get_global_score_data();
-		$status            = $global_score_data['status'] ?? 'complete';
+		$status            = $global_score_data['status'];
 
 		// If no URLs in Performance Monitoring, save failed state.
 		// There's nothing to analyze yet, so show failed state.
@@ -606,7 +606,6 @@ class DataManager implements LoggerAwareInterface {
 			$this->save_empty_recommendations();
 			return;
 		}
-
 		// If tests are in progress, bail early to show loading state.
 		if ( 'in-progress' === $status ) {
 			return;
