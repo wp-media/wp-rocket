@@ -596,7 +596,18 @@ class DataManager implements LoggerAwareInterface {
 			return;
 		}
 
-		// Bail if metrics not ready.
+		// Get global score data to check for URLs.
+		$global_score_data = $this->global_score->get_global_score_data();
+		$status            = $global_score_data['status'];
+
+		// If no URLs in Performance Monitoring, save failed state.
+		// There's nothing to analyze yet, so show failed state.
+		if ( 'no-url' === $status ) {
+			$this->save_empty_recommendations();
+			return;
+		}
+
+		// Save empty state if metrics not ready (e.g., all tests failed).
 		if ( ! $this->has_required_metrics() ) {
 			return;
 		}
@@ -623,6 +634,30 @@ class DataManager implements LoggerAwareInterface {
 	 */
 	public function get_section_from_option_slug( string $option_slug ): string {
 		return self::TRACKED_OPTIONS[ $option_slug ] ?? 'dashboard';
+	}
+
+	/**
+	 * Save empty recommendations state when metrics are not available.
+	 *
+	 * This displays the failed state when:
+	 * - No URLs exist in Performance Monitoring yet
+	 * - All tests have failed
+	 * - Metrics are incomplete
+	 *
+	 * @return void
+	 */
+	private function save_empty_recommendations(): void {
+		$this->save_recommendations(
+			[
+				'status'          => 'failed',
+				'recommendations' => [],
+				'metadata'        => [],
+				'timestamp'       => time(),
+				'error'           => 'Recommendations unavailable',
+			]
+		);
+
+		$this->logger::debug( 'Recommendations: Saved failed state (no recommendations available)' );
 	}
 
 	/**
