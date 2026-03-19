@@ -606,10 +606,6 @@ class DataManager implements LoggerAwareInterface {
 			$this->save_empty_recommendations();
 			return;
 		}
-		// If tests are in progress, bail early to show loading state.
-		if ( 'in-progress' === $status ) {
-			return;
-		}
 
 		// Save empty state if metrics not ready (e.g., all tests failed).
 		if ( ! $this->has_required_metrics() ) {
