@@ -192,4 +192,18 @@ class RocketInsights extends AbstractQuery {
 
 		return $db->query( "UPDATE `$prefixed_table_name` SET is_blurred = '0' WHERE status = 'completed' AND is_blurred = '1'" );
 	}
+
+	/**
+	 * Get metrics_data for completed tests.
+	 *
+	 * @return array
+	 */
+	public function get_completed_metrics(): array {
+		return $this->query(
+			[
+				'fields' => 'metric_data',
+				'status' => 'completed',
+			]
+		);
+	}
 }

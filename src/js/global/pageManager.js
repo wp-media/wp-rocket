@@ -140,7 +140,7 @@ PageManager.prototype.change = function() {
     }
 
     if ( 'on' === localStorage.getItem('wpr-show-sidebar') ) {
-        this.$sidebar.style.display = 'block';
+        this.$sidebar.style.display = 'flex';
     } else if ( 'off' === localStorage.getItem('wpr-show-sidebar') ) {
         this.$sidebar.style.display = 'none';
         document.querySelector('#wpr-js-tips').removeAttribute( 'checked' );

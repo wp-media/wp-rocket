@@ -40,6 +40,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_rocket_insights_job_added'     => [ 'track_rocket_insights_url_added', 10, 4 ],
 			'rocket_rocket_insights_job_failed'    => [ 'track_rocket_insights_test', 10, 3 ],
 			'rocket_rocket_insights_job_completed' => [ 'track_rocket_insights_test', 10, 3 ],
+			'rocket_mixpanel_track_event'          => [ 'track_event', 10, 2 ],
 		];
 	}
 
@@ -140,5 +141,17 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function track_rocket_insights_test( $row_details, $job_details, $plan ): void {
 		$this->tracking->track_rocket_insights_test( $row_details, $job_details, $plan );
+	}
+
+	/**
+	 * Track generic event with Mixpanel.
+	 *
+	 * @param string $event_name Event name to track.
+	 * @param array  $event_data Additional data to send with the event.
+	 *
+	 * @return void
+	 */
+	public function track_event( string $event_name, array $event_data = [] ): void {
+		$this->tracking->track_event( $event_name, $event_data );
 	}
 }
