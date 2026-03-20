@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\Abilities\Options;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Abilities\GetOptions\Options;
 
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * Integration tests for wp-media/get-options ability execution.
+ * Integration tests for wp-rocket/get-options ability execution.
  *
  * @group Abilities
  */
@@ -19,7 +19,7 @@ class RegisterGetOptionsAbilityTest extends TestCase {
 	/**
 	 * Ability ID.
 	 */
-	private const ABILITY_ID = 'wp-media/get-options';
+	private const ABILITY_ID = 'wp-rocket/get-options';
 
 	/**
 	 * Set up the test.

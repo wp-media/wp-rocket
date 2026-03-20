@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace WP_Rocket\Tests\Unit\inc\Engine\Abilities\Options;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Abilities\Options\GetOptions;
 
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\Abilities\Options;
+use WP_Rocket\Engine\Abilities\Options\GetOptions;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * Tests for WP_Rocket\Engine\Abilities\Options::execute()
+ * Tests for WP_Rocket\Engine\Abilities\Options\GetOptions::execute()
  *
  * @group Abilities
  */
@@ -24,9 +24,9 @@ class ExecuteTest extends TestCase {
 	/**
 	 * Options instance under test.
 	 *
-	 * @var Options
+	 * @var GetOptions
 	 */
-	private $options;
+	private $get_options;
 
 	/**
 	 * Set up the test.
@@ -37,7 +37,7 @@ class ExecuteTest extends TestCase {
 		parent::setUp();
 
 		$this->options_data = Mockery::mock( Options_Data::class );
-		$this->options      = new Options( $this->options_data );
+		$this->get_options  = new GetOptions( $this->options_data );
 	}
 
 	/**
@@ -56,7 +56,7 @@ class ExecuteTest extends TestCase {
 			->once()
 			->andReturn( $config['options'] );
 
-		$result = $this->options->execute();
+		$result = $this->get_options->execute();
 
 		$this->assertSame( $expected, $result );
 	}

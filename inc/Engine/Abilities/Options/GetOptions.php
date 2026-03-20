@@ -1,11 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace WP_Rocket\Engine\Abilities;
+namespace WP_Rocket\Engine\Abilities\Options;
 
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Abilities\AbilitiesInterface;
 
-class Options {
+class GetOptions implements AbilitiesInterface {
 	/**
 	 * Options data instance.
 	 *
@@ -23,25 +24,6 @@ class Options {
 	}
 
 	/**
-	 * Register the WP Rocket options ability category.
-	 *
-	 * @return void
-	 */
-	public function register_options_category(): void {
-		if ( ! function_exists( 'wp_register_ability_category' ) ) {
-			return;
-		}
-
-		wp_register_ability_category(
-			'wp-rocket-options',
-			[
-				'label'       => __( 'WP Rocket Options', 'rocket' ),
-				'description' => __( 'Abilities that retrieve or update WP Rocket options', 'rocket' ),
-			]
-		);
-	}
-
-	/**
 	 * Registers the ability to get WP Rocket options.
 	 *
 	 * @return void
@@ -52,7 +34,7 @@ class Options {
 		}
 
 		wp_register_ability(
-			'wp-media/get-options',
+			'wp-rocket/get-options',
 			[
 				'label'               => __( 'Get WP Rocket options', 'rocket' ),
 				'description'         => __( 'Get all WP Rocket options and their current values.', 'rocket' ),
