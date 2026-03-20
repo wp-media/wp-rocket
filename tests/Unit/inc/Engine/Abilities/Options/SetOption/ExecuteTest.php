@@ -48,31 +48,30 @@ class ExecuteTest extends TestCase {
 	public function testShouldReturnExpected( array $config, array $expected ): void {
 		$input = $config['input'];
 
-		// Only set up mocks if we expect the validation to pass.
+		$option_name    = $input['option_name'];
+		$previous_value = $config['previous_value'];
+
+		Functions\when( 'rocket_sanitize_textarea_field' )->returnArg();
+		Functions\when( 'sanitize_text_field' )->returnArg();
+		Functions\when( 'wp_strip_all_tags' )->alias( function ( $string, $remove_breaks ) {
+			$string = preg_replace( '@<(script|style)[^>]*?>.*?</\\1>@si', '', $string );
+			$string = strip_tags( $string );
+
+			if ( $remove_breaks ) {
+				$string = preg_replace( '/[\r\n\t ]+/', ' ', $string );
+			}
+
+			return trim( $string );
+		} );
+
 		if ( $expected['success'] ) {
-			$option_name    = $input['option_name'];
-			$previous_value = $config['previous_value'];
+		Functions\expect( 'get_rocket_option' )
+			->with( $option_name )
+			->andReturn( $previous_value );
 
-			Functions\expect( 'get_rocket_option' )
-				->with( $option_name )
-				->andReturn( $previous_value );
-
-			Functions\expect( 'update_rocket_option' )
-				->once()
-				->with( $option_name, $expected['new_value'] );
-
-			Functions\when( 'rocket_sanitize_textarea_field' )->returnArg();
-			Functions\when( 'sanitize_text_field' )->returnArg();
-			Functions\when( 'wp_strip_all_tags' )->alias( function ( $string, $remove_breaks ) {
-				$string = preg_replace( '@<(script|style)[^>]*?>.*?</\\1>@si', '', $string );
-				$string = strip_tags( $string );
-
-				if ( $remove_breaks ) {
-					$string = preg_replace( '/[\r\n\t ]+/', ' ', $string );
-				}
-
-				return trim( $string );
-			} );
+		Functions\expect( 'update_rocket_option' )
+			->once()
+			->with( $option_name, $expected['new_value'] );
 		}
 
 		$result = $this->set_option->execute( $input );

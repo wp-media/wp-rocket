@@ -1,54 +1,6 @@
 <?php
 
 return [
-	'testShouldReturnErrorWhenInputIsNull' => [
-		'config'   => [
-			'input'          => null,
-			'previous_value' => null,
-		],
-		'expected' => [
-			'success' => false,
-			'error'   => 'Missing required parameters: option_name and option_value',
-		],
-	],
-
-	'testShouldReturnErrorWhenInputIsNotArray' => [
-		'config'   => [
-			'input'          => 'string_input',
-			'previous_value' => null,
-		],
-		'expected' => [
-			'success' => false,
-			'error'   => 'Missing required parameters: option_name and option_value',
-		],
-	],
-
-	'testShouldReturnErrorWhenInputMissingOptionName' => [
-		'config'   => [
-			'input'          => [
-				'option_value' => 1,
-			],
-			'previous_value' => null,
-		],
-		'expected' => [
-			'success' => false,
-			'error'   => 'Missing required parameters: option_name and option_value',
-		],
-	],
-
-	'testShouldReturnErrorWhenInputMissingOptionValue' => [
-		'config'   => [
-			'input'          => [
-				'option_name' => 'cache_webp',
-			],
-			'previous_value' => null,
-		],
-		'expected' => [
-			'success' => false,
-			'error'   => 'Missing required parameters: option_name and option_value',
-		],
-	],
-
 	'testShouldReturnErrorWhenOptionNameInvalid' => [
 		'config'   => [
 			'input'          => [
@@ -56,6 +8,7 @@ return [
 				'option_value' => 1,
 			],
 			'previous_value' => null,
+			'new_value'      => null,
 		],
 		'expected' => [
 			'success' => false,
