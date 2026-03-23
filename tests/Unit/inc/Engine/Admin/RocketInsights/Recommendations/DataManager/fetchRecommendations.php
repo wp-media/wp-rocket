@@ -82,7 +82,7 @@ class Test_FetchRecommendations extends TestCase {
 			->andReturn( $config['version'] );
 
 		// Mock get_locale.
-		Functions\expect( 'get_locale' )
+		Functions\expect( 'get_user_locale' )
 			->andReturn( $config['locale'] );
 
 		// Mock Options_Data::get.
