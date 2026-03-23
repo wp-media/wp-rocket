@@ -80,6 +80,7 @@ class Subscriber implements Subscriber_Interface {
 			'admin_post_rocket_clean_performance_hints' => 'clean_performance_hints',
 			'admin_post_rocket_clean_performance_hints_url' => 'clean_url_performance_hints',
 			'pre_set_theme_mod_custom_logo'             => [ 'clean_performance_hints_on_logo_change', 10, 2 ],
+			'pre_update_option_site_logo'               => [ 'clean_performance_hints_on_logo_change', 10, 2 ],
 		];
 	}
 
