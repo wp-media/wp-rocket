@@ -64,7 +64,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'rocket_insights_recommendations_rest_response' => 'output_recommendations_rest_response',
 			'wp_rocket_upgrade'                           => [ 'force_global_metrics_recalculation', 10, 2 ],
 			'rocket_rocket_insights_job_deleted'          => 'maybe_clear_recommendations_on_delete',
-			'updated_user_meta'                           => [ 'fetch_recommendations_on_locale_change', 10, 3 ],
+			'updated_user_meta'                           => [ 'clear_recommendations_on_lang_change', 10, 3 ],
 		];
 	}
 
@@ -161,21 +161,21 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	}
 
 	/**
-	 * Fetches updated recommendations when the locale changes.
+	 * Clears the recommendations when the user's language (locale) is changed.
 	 *
-	 * @param int    $meta_id    The ID of the metadata entry.
-	 * @param int    $object_id  The ID of the object (e.g., user) the metadata is associated with.
-	 * @param string $meta_key   The metadata key.
+	 * @param int    $meta_id   ID of the meta entry.
+	 * @param int    $object_id ID of the object the metadata is for (user ID).
+	 * @param string $meta_key  Meta key being updated.
 	 *
 	 * @return void
 	 */
-	public function fetch_recommendations_on_locale_change( $meta_id, $object_id, $meta_key ): void {
+	public function clear_recommendations_on_lang_change( $meta_id, $object_id, $meta_key ): void {
 		if ( 'locale' !== $meta_key ) {
 			return;
 		}
 
-		$this->logger->info( 'Rocket Insights: User language changed, fetching recommendations for new language' );
-		$this->data_manager->fetch_recommendations();
+		$this->logger->info( 'Rocket Insights: User language changed, clear recommendations to force fetch.' );
+		$this->data_manager->clear_recommendations();
 	}
 
 	/**
