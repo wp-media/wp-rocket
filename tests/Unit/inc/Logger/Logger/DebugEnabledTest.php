@@ -16,7 +16,7 @@ class DebugEnabledTest extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->stubWpParseUrl();
+		$_SERVER['HTTP_HOST'] = 'example.org';
 
 		$this->reset_logger_cache();
 	}
@@ -24,7 +24,7 @@ class DebugEnabledTest extends TestCase {
 	protected function tearDown(): void {
 		$this->reset_logger_cache();
 
-		unset( $_SERVER['REQUEST_URI'] );
+		unset( $_SERVER['REQUEST_URI'], $_SERVER['HTTP_HOST'] );
 
 		parent::tearDown();
 	}
@@ -43,24 +43,16 @@ class DebugEnabledTest extends TestCase {
 	}
 
 	/**
+	 * @runInSeparateProcess
+	 * @preserveGlobalState disabled
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
-		$this->wp_rocket_debug = $config['WP_ROCKET_DEBUG'] ?? null;
+		if ( isset( $config['WP_ROCKET_DEBUG'] ) ) {
+			define( 'WP_ROCKET_DEBUG', $config['WP_ROCKET_DEBUG'] );
+		}
 
 		$_SERVER['REQUEST_URI'] = $config['REQUEST_URI'] ?? '/';
-
-		Functions\when( 'home_url' )->justReturn( 'http://example.org' );
-		Functions\when( 'wp_unslash' )->alias(
-			function ( $value ) {
-				return stripslashes( $value );
-			}
-		);
-		Functions\when( 'sanitize_text_field' )->alias(
-			function ( $value ) {
-				return is_string( $value ) ? strip_tags( $value ) : $value;
-			}
-		);
 
 		$result = Logger::debug_enabled();
 
