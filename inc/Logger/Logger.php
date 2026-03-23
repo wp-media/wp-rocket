@@ -415,7 +415,7 @@ class Logger {
 
 		$debug_enabled = false;
 
-		$debug_config = defined( 'WP_ROCKET_DEBUG' ) ? WP_ROCKET_DEBUG : false;
+		$debug_config = defined( 'WP_ROCKET_DEBUG' ) ? constant( 'WP_ROCKET_DEBUG' ) : false;
 
 		if ( true === $debug_config ) {
 			$debug_enabled = true;
@@ -457,7 +457,7 @@ class Logger {
 			];
 		}
 
-		$parsed = wp_parse_url( $url );
+		$parsed = parse_url( $url ); // phpcs:ignore WordPress.WP.AlternativeFunctions.parse_url_parse_url
 
 		if ( ! $parsed ) {
 			return [
@@ -491,19 +491,25 @@ class Logger {
 	 * @return array Normalized current request URL with 'path' and 'host'.
 	 */
 	private static function get_current_request_url() {
-		$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '/';
+		// Sanitize REQUEST_URI without WordPress functions.
+		$request_uri = isset( $_SERVER['REQUEST_URI'] )
+			? strip_tags( stripslashes_deep( $_SERVER['REQUEST_URI'] ) ) // phpcs:ignore WordPress.WP.AlternativeFunctions.strip_tags_strip_tags, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			: '/';
 
-		// Get the current site's host from home_url().
-		$home_url  = home_url();
-		$home_host = wp_parse_url( $home_url, PHP_URL_HOST );
-		$home_host = $home_host ? strtolower( $home_host ) : '';
+		// Get host from server variables (portable, no WordPress dependency).
+		$host = '';
+		if ( isset( $_SERVER['HTTP_HOST'] ) ) {
+			$host = strtolower( stripslashes_deep( $_SERVER['HTTP_HOST'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		} elseif ( isset( $_SERVER['SERVER_NAME'] ) ) {
+			$host = strtolower( stripslashes_deep( $_SERVER['SERVER_NAME'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		}
 
 		// Normalize the request URI.
 		$normalized = self::normalize_url( $request_uri );
 
 		return [
 			'path' => $normalized['path'],
-			'host' => $home_host,
+			'host' => $host,
 		];
 	}
 
