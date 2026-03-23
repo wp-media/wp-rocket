@@ -8,9 +8,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.20.5-alpha\n"
+"Project-Id-Version: WP Rocket 3.20.6-beta\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2026-02-23T07:15:11+00:00\n"
+"POT-Creation-Date: 2026-03-10T07:34:16+00:00\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: BouRock, 2026\n"
 "Language-Team: Turkish (Turkey) (https://app.transifex.com/wp-media/teams/18133/tr_TR/)\n"
@@ -1579,12 +1579,12 @@ msgid "You are not allowed to access items."
 msgstr "Öğelere erişmenize izin verilmiyor."
 
 #: inc/Engine/Admin/RocketInsights/Settings/Controller.php:57
-#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:103
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:112
 msgid "No Subscription"
 msgstr "Abonelik Yok"
 
 #: inc/Engine/Admin/RocketInsights/Settings/Controller.php:64
-#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:96
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:105
 msgid "Next Billing Date"
 msgstr "Sonraki Fatura Tarihi"
 
@@ -2565,6 +2565,7 @@ msgstr "Haftalık"
 
 #: inc/Engine/Admin/Settings/Page.php:1495
 #: inc/Engine/Admin/Settings/Page.php:1779
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:99
 msgid "Monthly"
 msgstr "Aylık"
 
@@ -2612,12 +2613,12 @@ msgid "Enable Content Delivery Network"
 msgstr "İçerik Dağıtım Ağını (CDN) etkinleştir"
 
 #: inc/Engine/Admin/Settings/Page.php:1601
-#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:162
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:171
 msgid "CDN CNAME(s)"
 msgstr "CDN CNAME(ler)"
 
 #: inc/Engine/Admin/Settings/Page.php:1602
-#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:163
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:172
 msgid "Specify the CNAME(s) below"
 msgstr "Aşağıda CNAME(leri) belirtin"
 
@@ -3031,26 +3032,37 @@ msgstr "WP_CACHE ayarlı değil"
 msgid "WP_CACHE is set to false"
 msgstr "WP_CACHE, false olarak ayarlı"
 
-#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:138
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:147
 msgid "Your RocketCDN subscription is currently active."
 msgstr "RocketCDN aboneliğiniz şu anda etkin."
 
 #. translators: %1$s = opening <code> tag, %2$s = CDN URL, %3$s = closing
 #. </code> tag.
-#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:144
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:153
 #, php-format
 msgid "To use RocketCDN, replace your CNAME with %1$s%2$s%3$s."
 msgstr "RocketCDN’yi kullanmak için CNAME’nizi %1$s%2$s%3$s ile değiştirin."
 
 #. translators: %1$is = opening link tag, %2$s = closing link tag.
-#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:155
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:229
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:329
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:164
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:254
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:361
 #, php-format
 msgid "%1$sMore Info%2$s"
 msgstr "%1$sDaha Fazla Bilgi%2$s"
 
-#: inc/Engine/CDN/RocketCDN/APIClient.php:134
+#: inc/Engine/CDN/RocketCDN/APIClient.php:130
+msgid "Missing required parameters for subscription activation."
+msgstr "Abonelik etkinleştirmesi için gerekli parametreler eksik."
+
+#. translators: %d: HTTP response code
+#: inc/Engine/CDN/RocketCDN/APIClient.php:161
+#, php-format
+msgid "Failed to activate RocketCDN subscription. API returned %d."
+msgstr ""
+"RocketCDN aboneliğini etkinleştirme başarısız. API, %d değerini döndürdü."
+
+#: inc/Engine/CDN/RocketCDN/APIClient.php:185
 msgid ""
 "We could not fetch the current price because RocketCDN API returned an "
 "unexpected error code."
@@ -3058,57 +3070,57 @@ msgstr ""
 "RocketCDN API beklenmeyen bir hata kodu döndürdüğünden şu anki fiyatı "
 "getiremedik."
 
-#: inc/Engine/CDN/RocketCDN/APIClient.php:140
+#: inc/Engine/CDN/RocketCDN/APIClient.php:191
 msgid "RocketCDN is not available at the moment. Please retry later."
 msgstr ""
 "RocketCDN şu anda kullanılabilir değil. Lütfen daha sonra yeniden deneyin."
 
-#: inc/Engine/CDN/RocketCDN/APIClient.php:177
+#: inc/Engine/CDN/RocketCDN/APIClient.php:228
 msgid "RocketCDN cache purge failed: Missing identifier parameter."
 msgstr ""
 "RocketCDN önbellek temizleme başarısız oldu: Eksik tanımlayıcı parametresi."
 
-#: inc/Engine/CDN/RocketCDN/APIClient.php:186
+#: inc/Engine/CDN/RocketCDN/APIClient.php:237
 msgid "RocketCDN cache purge failed: Missing user token."
 msgstr ""
 "RocketCDN önbellek temizleme başarısız oldu: Eksik kullanıcı belirteci."
 
-#: inc/Engine/CDN/RocketCDN/APIClient.php:212
+#: inc/Engine/CDN/RocketCDN/APIClient.php:263
 msgid ""
 "RocketCDN cache purge failed: The API returned an unexpected response code."
 msgstr ""
 "RocketCDN önbellek temizleme başarısız oldu: API beklenmeyen bir yanıt kodu "
 "döndürdü."
 
-#: inc/Engine/CDN/RocketCDN/APIClient.php:221
+#: inc/Engine/CDN/RocketCDN/APIClient.php:272
 msgid "RocketCDN cache purge failed: The API returned an empty response."
 msgstr ""
 "RocketCDN önbellek temizleme başarısız oldu: API boş bir yanıt döndürdü."
 
-#: inc/Engine/CDN/RocketCDN/APIClient.php:230
+#: inc/Engine/CDN/RocketCDN/APIClient.php:281
 msgid "RocketCDN cache purge failed: The API returned an unexpected response."
 msgstr ""
 "RocketCDN önbellek temizleme başarısız oldu: API beklenmeyen bir yanıt "
 "döndürdü."
 
 #. translators: %s = message returned by the API.
-#: inc/Engine/CDN/RocketCDN/APIClient.php:239
+#: inc/Engine/CDN/RocketCDN/APIClient.php:290
 #, php-format
 msgid "RocketCDN cache purge failed: %s."
 msgstr "RocketCDN önbellek temizleme başarısız oldu: %s"
 
-#: inc/Engine/CDN/RocketCDN/APIClient.php:247
+#: inc/Engine/CDN/RocketCDN/APIClient.php:298
 msgid "RocketCDN cache purge successful."
 msgstr "RocketCDN önbellek temizleme başarılı."
 
 #. translators: %1$s = Old CName, %2$s = New CName.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:398
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:430
 #, php-format
 msgid "We've updated your RocketCDN CNAME from %1$s to %2$s."
 msgstr "RocketCDN CNAME’inizi %1$s ifadesinden %2$s ifadesine güncelledik."
 
 #. translators: %1$s = New CName.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:400
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:432
 #, php-format
 msgid ""
 "The change is already applied to the plugin settings. If you were using the "
@@ -3117,9 +3129,29 @@ msgstr ""
 "Değişiklik zaten eklenti ayarlarına uygulandı. Eğer kodunuzda CNAME "
 "kullanıyorsanız, bunu şu şekilde güncellediğinizden emin olun: %1$s."
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:409
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:441
 msgid "contact support"
 msgstr "destek ile iletişime geçin"
+
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:483
+msgid "RocketCDN activation incomplete"
+msgstr "RocketCDN etkinleştirmesi tamamlanmadı"
+
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:484
+msgid "RocketCDN isn’t active on this website yet."
+msgstr "RocketCDN henüz bu web sitesinde etkin değil."
+
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:485
+msgid ""
+"Click below to complete the activation. You’ll be redirected to checkout to "
+"confirm your subscription."
+msgstr ""
+"Etkinleştirmeyi tamamlamak için aşağıya tıklayın. Aboneliğinizi onaylamak "
+"için ödeme sayfasına yönlendirileceksiniz."
+
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:497
+msgid "Complete activation"
+msgstr "Etkinleştirmeyi tamamla"
 
 #: inc/Engine/CDN/RocketCDN/RESTSubscriber.php:137
 msgid "RocketCDN enabled"
@@ -3131,49 +3163,64 @@ msgstr "RocketCDN etkisizleştirildi"
 
 #. Translators: %s = date formatted using date_i18n() and get_option(
 #. 'date_format' ).
-#: inc/Engine/CDN/RocketCDN/views/cta-big.php:29
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:31
 #, php-format
 msgid "Valid until %s only!"
 msgstr "Sadece %s tarihine kadar geçerli!"
 
-#: inc/Engine/CDN/RocketCDN/views/cta-big.php:38
-msgid "Speed up your website thanks to:"
-msgstr "Şunlar sayesinde web sitenizi hızlandırın:"
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:42
+msgid "Propel your Content at the Speed of Light!"
+msgstr "İçeriğinizi Işık Hızında İlerletin!"
 
-#. translators: %1$s = opening strong tag, %2$s = closing strong tag.
-#: inc/Engine/CDN/RocketCDN/views/cta-big.php:44
-#, php-format
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:43
 msgid ""
-"High performance Content Delivery Network (CDN) with %1$sunlimited "
-"bandwidth%2$s"
+"RocketCDN delivers your content from servers around the world for a faster "
+"website."
 msgstr ""
-"%1$sSınırsız bant genişliği%2$s ile yüksek performanslı İçerik Dağıtım Ağı "
-"(CDN)"
+"RocketCDN, daha hızlı bir web sitesi için içeriğinizi dünya çapındaki "
+"sunuculardan sunar."
 
-#. translators: %1$s = opening strong tag, %2$s = closing strong tag.
-#: inc/Engine/CDN/RocketCDN/views/cta-big.php:50
-#, php-format
-msgid ""
-"Easy configuration: the %1$sbest CDN settings%2$s are automatically applied"
-msgstr ""
-"Kolay yapılandırma: %1$sen iyi CDN ayarları%2$s otomatik olarak uygulanır"
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:48
+msgid "Unlimited Performance"
+msgstr "Sınırsız Performans"
 
-#. translators: %1$s = opening strong tag, %2$s = closing strong tag.
-#: inc/Engine/CDN/RocketCDN/views/cta-big.php:56
-#, php-format
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:49
 msgid ""
-"WP Rocket integration: the CDN option is %1$sautomatically configured%2$s in"
-" our plugin"
+"Experience blazing-fast content delivery through 120 edge locations with "
+"unlimited bandwidth."
 msgstr ""
-"WP Rocket bütünleştirmesi: CDN seçeneği eklentimizde %1$sotomatik olarak "
-"yapılandırılır%2$s"
+"Sınırsız bant genişliğine sahip 120 uç konum aracılığıyla inanılmaz hızlı "
+"içerik dağıtımını deneyimleyin."
+
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:54
+msgid "Pre-Tuned for Speed"
+msgstr "Hız için Önceden Ayarlanmış"
+
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:55
+msgid ""
+"Enjoy pre-configured settings tailored for maximum speed and performance."
+msgstr ""
+"En fazla hız ve performans için özel olarak hazırlanmış önceden "
+"yapılandırılmış ayarların keyfini çıkarın."
 
 #: inc/Engine/CDN/RocketCDN/views/cta-big.php:60
-msgid "Learn more about RocketCDN"
-msgstr "RocketCDN hakkında daha fazla bilgi edinin"
+msgid "Effortless Setup"
+msgstr "Zahmetsiz Ayarlama"
+
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:61
+msgid ""
+"Benefit from automatic configuration of the CDN option in WP Rocket, making "
+"setup effortless."
+msgstr ""
+"Ayarlamayı zahmetsiz hale getiren WP Rocket’taki CDN seçeneğinin otomatik "
+"yapılandırılmasından yararlanın."
+
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:66
+msgid "You can cancel anytime!"
+msgstr "İstediğiniz zaman iptal edebilirsiniz!"
 
 #. translators: %1$s = discounted price, %2$s = regular price.
-#: inc/Engine/CDN/RocketCDN/views/cta-big.php:67
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:74
 #, php-format
 msgid ""
 "*$%1$s/month for 12 months then $%2$s/month. You can cancel your "
@@ -3182,15 +3229,31 @@ msgstr ""
 "*12 ay için $%1$s/ay ardından $%2$s/ay. Aboneliğinizi istediğiniz zaman "
 "iptal edebilirsiniz."
 
-#: inc/Engine/CDN/RocketCDN/views/cta-big.php:88
-msgid "Billed monthly"
-msgstr "Aylık faturalandırılır"
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:100
+msgid "Yearly"
+msgstr "Yıllık"
 
-#: inc/Engine/CDN/RocketCDN/views/cta-big.php:89
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:102
+msgid "2 Months Free!"
+msgstr "2 Ay Ücretsiz!"
+
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:132
+msgid "Billed Monthly."
+msgstr "Aylık Faturalandırılır."
+
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:133
+msgid "per month, billed yearly"
+msgstr "ay başına, yıllık olarak faturalandırılır"
+
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:135
+msgid "excl. VAT"
+msgstr "KDV hariç"
+
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:139
 msgid "Get Started"
 msgstr "Başlayın"
 
-#: inc/Engine/CDN/RocketCDN/views/cta-big.php:94
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:143
 msgid "Reduce this banner"
 msgstr "Bu afişi küçült"
 
@@ -4624,7 +4687,7 @@ msgstr ""
 "JS’yi geciktir, şu anda %1$s içinde aktif edildi. Eğer WP Rocket’in JS’yi "
 "geciktir’ini kullanmak istiyorsanız, %1$s etkisizleştirin."
 
-#: inc/ThirdParty/Plugins/Smush.php:108 inc/ThirdParty/Plugins/Smush.php:126
+#: inc/ThirdParty/Plugins/Smush.php:110 inc/ThirdParty/Plugins/Smush.php:128
 msgid "Smush"
 msgstr "Smush"
 

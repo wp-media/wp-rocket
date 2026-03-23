@@ -445,7 +445,7 @@ class Rest extends WP_REST_Controller {
 		$payload['html']              = $this->render->get_performance_monitoring_list_row( $row_data );
 		$payload['global_score_data'] = $this->get_global_score_payload();
 		$payload['remaining_urls']    = $this->get_remaining_url_count();
-		$payload['has_credit']        = $this->plan->has_credit();
+		$payload['has_credit']        = true;
 		$payload['can_add_pages']     = $this->context->is_adding_page_allowed();
 
 		// Add disabled button html data to payload.
@@ -542,21 +542,6 @@ class Rest extends WP_REST_Controller {
 			return rest_ensure_response( $error );
 		}
 
-		// Check if adding a page is allowed based on URL limits.
-		if ( ! $this->plan->has_credit() ) {
-			$error = new WP_Error(
-				'rest_forbidden',
-				esc_html__( 'Upgrade your plan to get access to re-test performance or run new tests', 'rocket' ),
-				[
-					'status'         => 403,
-					'remaining_urls' => 0,
-					'can_add_pages'  => false,
-				]
-			);
-
-			return rest_ensure_response( $error );
-		}
-
 		$source = $request->get_param( 'source' );
 
 		$additional_details = [
@@ -595,7 +580,7 @@ class Rest extends WP_REST_Controller {
 			'html'              => $this->render->get_performance_monitoring_list_row( $row ),
 			'global_score_data' => $this->get_global_score_payload(),
 			'remaining_urls'    => $this->get_remaining_url_count(),
-			'has_credit'        => $this->plan->has_credit(),
+			'has_credit'        => true,
 			'can_add_pages'     => $this->context->is_adding_page_allowed(),
 		];
 
@@ -746,7 +731,7 @@ class Rest extends WP_REST_Controller {
 		$payload['success']           = true;
 		$payload['results']           = $results;
 		$payload['global_score_data'] = $this->get_global_score_payload();
-		$payload['has_credit']        = $this->plan->has_credit();
+		$payload['has_credit']        = true;
 		$payload['can_add_pages']     = $this->context->is_adding_page_allowed();
 
 		return rest_ensure_response( $payload );
@@ -887,19 +872,6 @@ class Rest extends WP_REST_Controller {
 	 * @return string The formatted error message.
 	 */
 	private function get_page_limit_error_message(): string {
-		if ( $this->context->is_free_user() ) {
-			$upgrade_url = admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '&rocket_source=notice_free_page_limit_reached#rocket_insights' );
-
-			return sprintf(
-				/* translators: %1$s: opening <strong> tag, %2$s: closing </strong> tag, %3$s: opening link tag, %4$s: closing link tag */
-				__( "You've %1\$sreached your free limit%2\$s. %3\$sUpgrade to continue%4\$s.", 'rocket' ),
-				'<strong>',
-				'</strong>',
-				'<a href="' . esc_url( $upgrade_url ) . '">',
-				'</a>'
-			);
-		}
-
 		return sprintf(
 			/* translators: %1$s: opening <strong> tag, %2$s: closing </strong> tag */
 			__( "You've %1\$sreached the page limit%2\$s. Please remove at least one page to continue.", 'rocket' ),

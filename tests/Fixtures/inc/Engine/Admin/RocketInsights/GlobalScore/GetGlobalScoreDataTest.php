@@ -37,6 +37,12 @@ return [
 				'pages_num' => 3,
 				'status' => 'complete',
 				'is_running' => false,
+				'average_metrics' => [
+					'largest_contentful_paint' => null,
+					'total_blocking_time'      => null,
+					'cumulative_layout_shift'  => null,
+					'time_to_first_byte'       => null,
+				],
 			]
 		]
 	],
@@ -68,6 +74,7 @@ return [
 				'pages_num' => 2,
 				'status' => 'in-progress',
 				'is_running' => true,
+				'average_metrics' => null,
 			]
 		]
 	],
@@ -80,7 +87,8 @@ return [
 				'score' => 0,
 				'pages_num' => 0,
 				'status' => 'no-url',
-				'is_running' => false
+				'is_running' => false,
+				'average_metrics' => null,
 			]
 		]
 	],
