@@ -493,15 +493,15 @@ class Logger {
 	private static function get_current_request_url() {
 		// Sanitize REQUEST_URI without WordPress functions.
 		$request_uri = isset( $_SERVER['REQUEST_URI'] )
-			? strip_tags( stripslashes_deep( $_SERVER['REQUEST_URI'] ) ) // phpcs:ignore WordPress.WP.AlternativeFunctions.strip_tags_strip_tags, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			? strip_tags( stripslashes( $_SERVER['REQUEST_URI'] ) ) // phpcs:ignore WordPress.WP.AlternativeFunctions.strip_tags_strip_tags, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 			: '/';
 
 		// Get host from server variables (portable, no WordPress dependency).
 		$host = '';
 		if ( isset( $_SERVER['HTTP_HOST'] ) ) {
-			$host = strtolower( stripslashes_deep( $_SERVER['HTTP_HOST'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			$host = strtolower( stripslashes( $_SERVER['HTTP_HOST'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 		} elseif ( isset( $_SERVER['SERVER_NAME'] ) ) {
-			$host = strtolower( stripslashes_deep( $_SERVER['SERVER_NAME'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			$host = strtolower( stripslashes( $_SERVER['SERVER_NAME'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 		}
 
 		// Normalize the request URI.
