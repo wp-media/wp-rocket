@@ -290,7 +290,7 @@ class User {
 		$plan = $this->get_rocket_insights_data( $sku );
 
 		if ( ! $plan || ! isset( $plan->limit ) ) {
-			return 3;
+			return 10;
 		}
 
 		return (int) $plan->limit;

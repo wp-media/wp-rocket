@@ -6,13 +6,23 @@
  */
 
 defined( 'ABSPATH' ) || exit;
+
+$rocket_data_array                 = (array) $data;
+$rocket_data_array['is_running']   = $data->is_running();
+$rocket_data_array['is_dashboard'] = false;
+$rocket_ri_blurred                 = '';
+$rocket_img_url                    = esc_url( WP_ROCKET_ASSETS_IMG_URL );
+
+// Get pre-formatted metrics from Render class.
+$rocket_formatted_metrics = $data->formatted_metrics ?? [];
 ?>
-<tr class="wpr-ri-item wpr-ri-item-result" data-rocket-insights-id="<?php echo esc_attr( $data->id ); ?>" >
+<tr class="wpr-ri-item wpr-ri-item-result <?php echo esc_attr( $rocket_data_array['item_classes']['row'] ); ?>" data-rocket-insights-id="<?php echo esc_attr( $data->id ); ?>" >
+	<td class="wpr-ri-item-toggle <?php echo esc_attr( $rocket_data_array['item_classes']['td'] ); ?>">
+		<div class="icon-frame wpr-ri-item-toggle-single <?php echo ! $rocket_data_array['rocket_can_show_advanced_indicators'] ? 'hide' : ''; ?>">
+		</div>
+	</td>
 	<td class="wpr-ri-item-score">
 		<?php
-		$rocket_data_array                 = (array) $data;
-		$rocket_data_array['is_running']   = $data->is_running();
-		$rocket_data_array['is_dashboard'] = false;
 		$this->render_performance_score( $rocket_data_array );
 		?>
 	</td>
@@ -44,7 +54,7 @@ defined( 'ABSPATH' ) || exit;
 			<?php endif; ?>
 		</a>
 	</td>
-	<td class="wpr-ri-item-actions">
+	<td class="wpr-ri-item-actions <?php echo esc_attr( $rocket_data_array['item_classes']['td'] ); ?>">
 		<?php
 		$rocket_insights_retest_button_args = [
 			'label'      => __( 'Re-Test', 'rocket' ),
@@ -77,13 +87,15 @@ defined( 'ABSPATH' ) || exit;
 			'label'      => __( 'See Report', 'rocket' ),
 			'url'        => $data->report_url,
 			'attributes' => [
-				'target' => '_blank',
-				'class'  => 'wpr-icon-report wpr-ri-action wpr-ri-report',
+				'target'                      => '_blank',
+				'class'                       => 'wpr-ri-action wpr-ri-report',
+				'data-rocket-insights-row-id' => $data->id,
 			],
 		];
-
+		$rocket_report_url_icon_state         = '';
 		if ( empty( $data->report_url ) ) {
-			$rocket_insights_show_report_btn_args['attributes']['class'] .= ' wpr-ri-action--disabled';
+			$rocket_report_url_icon_state                                 = 'wpr-ri-action--disabled';
+			$rocket_insights_show_report_btn_args['attributes']['class'] .= ' ' . $rocket_report_url_icon_state;
 			$rocket_insights_show_report_btn_args['attributes']['target'] = '';
 			$rocket_insights_show_report_btn_args['url']                  = '';
 		} elseif ( ! $data->can_access_report() ) {
@@ -92,12 +104,6 @@ defined( 'ABSPATH' ) || exit;
 			$rocket_insights_show_report_btn_args['tooltip']              = __( 'Upgrade your plan to see the report', 'rocket' );
 			$rocket_insights_show_report_btn_args['url']                  = '';
 		}
-
-		$this->render_action_button(
-			'link',
-			'gtmetrix_open',
-			$rocket_insights_show_report_btn_args
-		);
 
 		$this->render_action_button(
 			'link',
@@ -114,3 +120,94 @@ defined( 'ABSPATH' ) || exit;
 		?>
 	</td>
 </tr>
+<?php if ( $rocket_data_array['rocket_can_show_advanced_indicators'] ) : ?>
+<tr class="wpr-ri-details <?php echo esc_attr( $rocket_data_array['details_classes']['row'] ); ?>" id="ri_details_<?php echo $rocket_data_array['id']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>">
+	<td colspan="4" class="details-section-td <?php echo esc_attr( $rocket_data_array['details_classes']['td'] ); ?>">
+		<div class="details-section">
+			<div class="details-header">
+				<div>
+					<div class="metrics-header">
+						<div class="metric-label">
+							<p>LCP</p>
+							<div class="info-icon">
+								<img src="<?php echo $rocket_img_url;// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>ri-info.svg" alt="">
+								<div class="wpr-tooltip">
+									<div class="wpr-tooltip-content">
+										<?php echo esc_html__( 'Time until the largest visible content element renders and the main content becomes visible.', 'rocket' ); ?>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="metric-label">
+							<p>TBT</p>
+							<div class="info-icon">
+								<img src="<?php echo $rocket_img_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>ri-info.svg" alt="">
+								<div class="wpr-tooltip">
+									<div class="wpr-tooltip-content">
+										<?php echo esc_html__( 'Total time the main thread is blocked before the page becomes interactive during loading.', 'rocket' ); ?>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="metric-label">
+							<p>CLS</p>
+							<div class="info-icon">
+								<img src="<?php echo $rocket_img_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>ri-info.svg" alt="">
+								<div class="wpr-tooltip">
+									<div class="wpr-tooltip-content">
+										<?php echo esc_html__( 'Total amount of unexpected layout shifts during page loading, affecting visual stability.', 'rocket' ); ?>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="metric-label">
+							<p>TTFB</p>
+							<div class="info-icon">
+								<img src="<?php echo $rocket_img_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>ri-info.svg" alt="">
+								<div class="wpr-tooltip">
+									<div class="wpr-tooltip-content">
+										<?php echo esc_html__( 'Time from the request until the server responds, determining how soon the page starts loading.', 'rocket' ); ?>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="details-content">
+				<div class="detail-row">
+					<div class="row-right">
+						<div class="metric-values <?php echo esc_attr( $rocket_ri_blurred ); ?>">
+							<?php foreach ( $rocket_formatted_metrics as $rocket_metric ) : ?>
+								<div class="metric-value <?php echo esc_attr( $rocket_metric['class'] ); ?>">
+									<p><?php echo esc_html( $rocket_metric['formatted'] ); ?></p>
+									<?php if ( '' !== $rocket_ri_blurred ) : ?>
+									<div class="wpr-tooltip">
+										<div class="wpr-tooltip-content">
+											<?php echo esc_html__( 'Upgrade your plan to see more details.', 'rocket' ); ?>
+										</div>
+									</div>
+									<?php endif; ?>
+								</div>
+							<?php endforeach; ?>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row-left">
+				<div class="report-link <?php echo esc_attr( $rocket_report_url_icon_state ); ?>">
+					<?php
+					$this->render_action_button(
+						'link',
+						'gtmetrix_open',
+						$rocket_insights_show_report_btn_args
+					);
+					?>
+					<div class="icon-frame"></div>
+				</div>
+			</div>
+		</div>
+	</td>
+</tr>
+<?php endif; ?>

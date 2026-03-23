@@ -94,6 +94,7 @@ function PageManager(aElem) {
 */
 PageManager.prototype.detectID = function() {
     this.pageId = window.location.hash.split('#')[1];
+    this.pageId = this.pageId.includes('=') ? this.pageId.split('=')[0] : this.pageId;
     localStorage.setItem('wpr-hash', this.pageId);
 
     this.$page = document.querySelector('.wpr-Page#' + this.pageId);
@@ -139,7 +140,7 @@ PageManager.prototype.change = function() {
     }
 
     if ( 'on' === localStorage.getItem('wpr-show-sidebar') ) {
-        this.$sidebar.style.display = 'block';
+        this.$sidebar.style.display = 'flex';
     } else if ( 'off' === localStorage.getItem('wpr-show-sidebar') ) {
         this.$sidebar.style.display = 'none';
         document.querySelector('#wpr-js-tips').removeAttribute( 'checked' );

@@ -116,6 +116,11 @@ parameters:
 			path: inc/Engine/CDN/RocketCDN/CDNOptionsManager.php
 
 		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: inc/Engine/CDN/RocketCDN/CDNOptionsManager.php
+
+		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
 			path: inc/Engine/CDN/RocketCDN/DataManagerSubscriber.php
@@ -127,7 +132,7 @@ parameters:
 
 		-
 			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
-			count: 2
+			count: 4
 			path: inc/Engine/CDN/RocketCDN/DataManagerSubscriber.php
 
 		-
@@ -142,7 +147,7 @@ parameters:
 
 		-
 			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
-			count: 2
+			count: 3
 			path: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php
 
 		-
@@ -546,6 +551,11 @@ parameters:
 			path: inc/Engine/Tracking/Tracking.php
 
 		-
+			message: "#^Trait WP_Rocket\\\\Engine\\\\Tracking\\\\TrackingTrait is used zero times and is not analysed\\.$#"
+			count: 1
+			path: inc/Engine/Tracking/TrackingTrait.php
+
+		-
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: inc/ThirdParty/Hostings/Godaddy.php
@@ -577,7 +587,7 @@ parameters:
 
 		-
 			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
-			count: 8
+			count: 7
 			path: inc/ThirdParty/Plugins/CDN/Cloudflare.php
 
 		-
@@ -814,6 +824,46 @@ parameters:
 			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/CDN/RocketCDN/CDNOptionsManager/disable.php
+
+		-
+			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 2
+			path: tests/Integration/inc/Engine/CDN/RocketCDN/DataManagerSubscriber/handleRocketcdnCheckoutParameter.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 3
+			path: tests/Integration/inc/Engine/CDN/RocketCDN/DataManagerSubscriber/handleRocketcdnCheckoutParameter.php
+
+		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/CDN/RocketCDN/DataManagerSubscriber/handleRocketcdnCheckoutParameter.php
+
+		-
+			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 2
+			path: tests/Integration/inc/Engine/CDN/RocketCDN/DataManagerSubscriber/maybeRetryActivation.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 3
+			path: tests/Integration/inc/Engine/CDN/RocketCDN/DataManagerSubscriber/maybeRetryActivation.php
+
+		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 2
+			path: tests/Integration/inc/Engine/CDN/RocketCDN/DataManagerSubscriber/maybeRetryActivation.php
+
+		-
+			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/CDN/RocketCDN/NoticesSubscriber/activationFailedNotice.php
+
+		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/CDN/RocketCDN/NoticesSubscriber/activationFailedNotice.php
 
 		-
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
@@ -1129,3 +1179,13 @@ parameters:
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/functions/rocketIsPluginActive.php
+
+		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 2
+			path: tests/Integration/inc/Engine/Admin/RocketInsights/Recommendations/SettingsSubscriber/MaybeFetchAfterSettingsChangeTest.php
+
+		-
+			message: "#^If condition is always true\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Admin/RocketInsights/Recommendations/SettingsSubscriber/MaybeFetchAfterSettingsChangeTest.php

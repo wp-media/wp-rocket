@@ -5,21 +5,27 @@ namespace WP_Rocket\Engine\Admin\RocketInsights;
 
 use WP_Rocket\Dependencies\League\Container\Argument\Literal\StringArgument;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
-use WP_Rocket\Engine\Admin\RocketInsights\{
-	Database\Tables\RocketInsights as RITable,
+use WP_Rocket\Engine\Admin\RocketInsights\{Database\Tables\RocketInsights as RITable,
 	Database\Queries\RocketInsights as RIQuery,
 	APIHandler\APIClient as RIAPIClient,
 	Context\Context,
 	Context\SaasContext,
+	GlobalMetrics\Calculator,
 	Jobs\Factory as RIFactory,
 	Jobs\Manager as RIManager,
 	Managers\Plan,
 	Queue\Queue as RIQueue,
+	Recommendations\APIClient as RecommendationsAPIClient,
+	Recommendations\DataManager,
+	Recommendations\Render as RecommendationsRender,
+	Recommendations\Subscriber as RecommendationsSubscriber,
+	Recommendations\Rest as RecommendationsRest,
+	Recommendations\SettingsSubscriber as RecommendationsSettingsSubscriber,
 	URLLimit\Subscriber as URLLimitSubscriber,
 	Settings\Controller as SettingsController,
 	Settings\Subscriber as SettingsSubscriber,
 	PostListing\Subscriber as PostListingSubscriber,
-};
+	GlobalMetrics\Subscriber as GlobalMetricsSubscriber};
 use WP_Rocket\Engine\Common\JobManager\Queue\Queue as JobManagerQueue;
 
 class ServiceProvider extends AbstractServiceProvider {
@@ -52,7 +58,16 @@ class ServiceProvider extends AbstractServiceProvider {
 		'ri_settings_subscriber',
 		'ri_plan',
 		'ri_post_listing_subscriber',
+		'ri_metric_formatter',
 		'job_manager_queue',
+		'ri_recommendations_api_client',
+		'ri_global_metrics_calculator',
+		'ri_global_metrics_subscriber',
+		'ri_recommendations_data_manager',
+		'ri_recommendations_render',
+		'ri_recommendations_rest',
+		'ri_recommendations_subscriber',
+		'ri_recommendations_settings_subscriber',
 	];
 
 	/**
@@ -67,7 +82,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	}
 
 	/**
-	 * Registers the classes in the container
+	 * Registers the classes in the container.
 	 *
 	 * @return void
 	 */
@@ -87,17 +102,18 @@ class ServiceProvider extends AbstractServiceProvider {
 				]
 			);
 
-		$this->getContainer()->add( 'ri_saas_context', SaasContext::class )
-			->addArgument( 'ri_context' );
+		$this->getContainer()->add( 'ri_saas_context', SaasContext::class );
+
+		$this->getContainer()->add( 'ri_metric_formatter', MetricFormatter::class );
 
 		$this->getContainer()->add( 'ri_render', Render::class )
 			->addArguments(
 				[
 					new StringArgument( $this->getContainer()->get( 'template_path' ) . '/settings/' ),
-					'ri_plan',
 					'ri_context',
 					'beacon',
 					'ri_query',
+					'ri_metric_formatter',
 				]
 			);
 
@@ -126,6 +142,14 @@ class ServiceProvider extends AbstractServiceProvider {
 				]
 			);
 
+		// Global Metrics Calculator.
+		$this->getContainer()->add( 'ri_global_metrics_calculator', Calculator::class )
+			->addArgument( 'ri_query' );
+
+		// Global Metrics Subscriber.
+		$this->getContainer()->addShared( 'ri_global_metrics_subscriber', GlobalMetricsSubscriber::class )
+			->addArgument( 'ri_global_metrics_calculator' );
+
 		// Global Score layer.
 		$this->getContainer()->add( 'ri_global_score', GlobalScore::class )
 			->addArguments(
@@ -144,6 +168,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'ri_global_score',
 					'user',
 					'options',
+					'tracking',
 				]
 			);
 
@@ -172,6 +197,29 @@ class ServiceProvider extends AbstractServiceProvider {
 					'job_manager_queue',
 				]
 			);
+
+		// Recommendations API Client.
+		$this->getContainer()->add( 'ri_recommendations_api_client', RecommendationsAPIClient::class )
+			->addArgument( 'options' );
+
+		// Recommendations Data Manager.
+		$this->getContainer()->add( 'ri_recommendations_data_manager', DataManager::class )
+			->addArguments(
+				[
+					'ri_recommendations_api_client',
+					'options',
+					'ri_global_score',
+					'ri_metric_formatter',
+				]
+			);
+
+		// Recommendations REST Controller.
+		$this->getContainer()->add( 'ri_recommendations_rest', RecommendationsRest::class );
+
+		// Recommendations Settings Subscriber.
+		$this->getContainer()->addShared( 'ri_recommendations_settings_subscriber', RecommendationsSettingsSubscriber::class )
+			->addArgument( 'ri_recommendations_data_manager' );
+
 		// Subscriber.
 		$this->getContainer()->addShared( 'ri_subscriber', Subscriber::class )
 			->addArguments(
@@ -186,6 +234,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'ri_manager',
 					'ri_plan',
 					'renewal',
+					'ri_recommendations_rest',
 				]
 			);
 
@@ -217,6 +266,25 @@ class ServiceProvider extends AbstractServiceProvider {
 				[
 					'ri_render',
 					'ri_context',
+				]
+			);
+
+		// Recommendations Render.
+		$this->getContainer()->add( 'ri_recommendations_render', RecommendationsRender::class )
+			->addArguments(
+				[
+					new StringArgument( $this->getContainer()->get( 'template_path' ) . '/settings/' ),
+					'ri_recommendations_data_manager',
+				]
+			);
+
+		// Recommendations Subscriber.
+		$this->getContainer()->addShared( 'ri_recommendations_subscriber', RecommendationsSubscriber::class )
+			->addArguments(
+				[
+					'ri_recommendations_render',
+					'ri_context',
+					'ri_recommendations_data_manager',
 				]
 			);
 

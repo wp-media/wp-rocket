@@ -74,8 +74,8 @@ class Context implements ContextInterface {
 		 */
 		$enabled = wpm_apply_filters_typed( 'boolean', 'rocket_rocket_insights_enabled', $enabled );
 
-		// Block for reseller accounts and non-live installations.
-		if ( $enabled && $this->is_reseller_or_non_live() ) {
+		// Block for non-live installations.
+		if ( $enabled && ! rocket_is_live_site() ) {
 			return false;
 		}
 
@@ -101,20 +101,15 @@ class Context implements ContextInterface {
 	}
 
 	/**
-	 * Check if current installation is a reseller account or non-live site.
+	 * Check if current installation is a non-live site.
 	 *
-	 * This will block Rocket Insights functionality for reseller accounts and localhost installations.
+	 * This will block Rocket Insights functionality for localhost installations.
 	 *
 	 * @since 3.20
 	 *
-	 * @return bool True if is reseller account or non-live installation, false otherwise.
+	 * @return bool True if is non-live installation, false otherwise.
 	 */
 	public function is_reseller_or_non_live(): bool {
-		// Hide for reseller accounts.
-		if ( $this->user->is_reseller_account() ) {
-			return true;
-		}
-
 		// Hide for non-live installations.
 		if ( ! rocket_is_live_site() ) {
 			return true;

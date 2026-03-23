@@ -282,4 +282,93 @@ class Tracking extends Abstract_Render {
 			]
 		);
 	}
+
+	/**
+	 * Track when "View Details" is clicked from the Rocket Insights column.
+	 *
+	 * @since 3.20.5
+	 *
+	 * @param int    $row_id  The database row ID of the test.
+	 * @param string $context The context where the button was clicked (e.g., 'post type listing').
+	 *
+	 * @return void
+	 */
+	public function track_rocket_insights_view_details( int $row_id, string $context ): void {
+		if ( ! $this->optin->can_track() ) {
+			return;
+		}
+
+		$this->mixpanel->track(
+			'Rocket Insights View Details',
+			[
+				'context' => 'wp_plugin',
+				'source'  => $context,
+				'test_id' => $row_id,
+			]
+		);
+	}
+
+	/**
+	 * Tracks a Rocket Insights details action event.
+	 *
+	 * @param string     $event_name The name of the event to track.
+	 * @param int|string $row_id     The ID of the test row, or 'all' for global actions.
+	 * @param string     $source     The source of the action (e.g., 'url_expand', 'global_expand', 'post type listing', 'auto_expand_url').
+	 *
+	 * @return void
+	 */
+	public function track_rocket_insights_details_action( $event_name, $row_id, $source ): void {
+		if ( ! $this->optin->can_track() ) {
+			return;
+		}
+
+		$this->mixpanel->track_direct(
+			$event_name,
+			[
+				'context' => 'wp_plugin',
+				'test_id' => $row_id,
+				'source'  => $source,
+			]
+		);
+	}
+
+	/**
+	 * Tracks when the RocketCDN activation failed banner is viewed.
+	 *
+	 * @return void
+	 */
+	public function track_rocketcdn_activation_failed_banner_viewed(): void {
+		if ( ! $this->optin->can_track() ) {
+			return;
+		}
+
+		$this->mixpanel->track(
+			'RocketCDN Activation Failed Banner Viewed',
+			[
+				'context' => 'wp_plugin',
+			]
+		);
+	}
+
+	/**
+	 * Track event dynamically.
+	 *
+	 * @param string $event_name The name of the event to track.
+	 * @param array  $event_data An associative array of event data to send with the event.
+	 * @return void
+	 */
+	public function track_event( $event_name, $event_data = [] ): void {
+		if ( ! $this->optin->can_track() ) {
+			return;
+		}
+
+		$event_data = wp_parse_args(
+			$event_data,
+			[
+				'context' => 'wp_plugin',
+			]
+			);
+
+		$this->mixpanel->track( $event_name, $event_data );
+	}
 }

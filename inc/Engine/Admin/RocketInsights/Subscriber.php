@@ -9,6 +9,7 @@ use WP_Rocket\Engine\Admin\RocketInsights\{
 	Managers\Plan,
 	Jobs\Manager,
 	Queue\Queue,
+	Recommendations\Rest as RecommendationsRest,
 };
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\License\Renewal;
@@ -95,18 +96,26 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	private $renewal;
 
 	/**
+	 * Recommendations REST controller.
+	 *
+	 * @var RecommendationsRest
+	 */
+	private $recommendations_rest;
+
+	/**
 	 * Constructor.
 	 *
-	 * @param Render       $render Render object.
-	 * @param Controller   $controller Controller object.
-	 * @param Rest         $rest Rest object.
-	 * @param Queue        $queue Queue object.
-	 * @param Context      $context Rocket Insights context.
-	 * @param GlobalScore  $global_score GlobalScore instance.
-	 * @param Options_Data $options Options instance.
-	 * @param Manager      $manager Manager instance.
-	 * @param Plan         $plan Plan manager.
-	 * @param Renewal      $renewal Renewal instance.
+	 * @param Render              $render Render object.
+	 * @param Controller          $controller Controller object.
+	 * @param Rest                $rest Rest object.
+	 * @param Queue               $queue Queue object.
+	 * @param Context             $context Rocket Insights context.
+	 * @param GlobalScore         $global_score GlobalScore instance.
+	 * @param Options_Data        $options Options instance.
+	 * @param Manager             $manager Manager instance.
+	 * @param Plan                $plan Plan manager.
+	 * @param Renewal             $renewal Renewal instance.
+	 * @param RecommendationsRest $recommendations_rest Recommendations REST controller.
 	 */
 	public function __construct(
 		Render $render,
@@ -118,18 +127,20 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		Options_Data $options,
 		Manager $manager,
 		Plan $plan,
-		Renewal $renewal
+		Renewal $renewal,
+		RecommendationsRest $recommendations_rest
 	) {
-		$this->render       = $render;
-		$this->controller   = $controller;
-		$this->rest         = $rest;
-		$this->queue        = $queue;
-		$this->context      = $context;
-		$this->global_score = $global_score;
-		$this->options      = $options;
-		$this->manager      = $manager;
-		$this->plan         = $plan;
-		$this->renewal      = $renewal;
+		$this->render               = $render;
+		$this->controller           = $controller;
+		$this->rest                 = $rest;
+		$this->queue                = $queue;
+		$this->context              = $context;
+		$this->global_score         = $global_score;
+		$this->options              = $options;
+		$this->manager              = $manager;
+		$this->plan                 = $plan;
+		$this->renewal              = $renewal;
+		$this->recommendations_rest = $recommendations_rest;
 	}
 
 	/**
@@ -139,49 +150,45 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'wp_rocket_first_install'               => [
-				[ 'reset_credit_monthly', 9 ],
+			'wp_rocket_first_install'                     => [
 				[ 'schedule_homepage_tests' ],
 			],
-			'admin_post_delete_rocket_insights_url' => 'delete_row',
-			'rocket_localize_admin_script'          => 'add_pending_ids',
-			'rocket_insights_credit_reset'          => 'reset_credit_monthly',
-			'rocket_insights_auto_add_homepage'     => 'maybe_add_homepage_automatically',
-			'rocket_rocket_insights_job_completed'  => [
-				[ 'validate_credit' ],
+			'admin_post_delete_rocket_insights_url'       => 'delete_row',
+			'rocket_localize_admin_script'                => 'add_pending_ids',
+			'rocket_insights_auto_add_homepage'           => 'maybe_add_homepage_automatically',
+			'rocket_rocket_insights_job_completed'        => [
 				[ 'reset_global_score' ],
 			],
-			'rocket_rocket_insights_job_failed'     => 'reset_global_score',
-			'rocket_rocket_insights_job_added'      => 'reset_global_score',
-			'rocket_rocket_insights_job_retest'     => 'reset_global_score',
-			'rocket_rocket_insights_job_deleted'    => 'reset_global_score',
-			'rocket_dashboard_sidebar'              => 'render_global_score_widget',
-			'rocket_insights_tab_content'           => [
-				[ 'render_license_banner_section', 10 ],
+			'rocket_rocket_insights_job_failed'           => 'reset_global_score',
+			'rocket_rocket_insights_job_added'            => 'reset_global_score',
+			'rocket_rocket_insights_job_retest'           => 'reset_global_score',
+			'rocket_rocket_insights_job_deleted'          => 'reset_global_score',
+			'rocket_before_sidebar_content'               => 'render_global_score_widget_sidebar',
+			'rocket_dashboard_sidebar'                    => 'render_global_score_widget_dashboard',
+			'rocket_insights_tab_content'                 => [
 				[ 'maybe_show_paid_reach_limits_notice', 17 ],
-				[ 'maybe_show_notice', 18 ],
 				[ 'render_performance_urls_table', 20 ],
 			],
-			'admin_init'                            => [
+			'admin_init'                                  => [
 				[ 'flush_license_cache', 8 ],
 				[ 'check_upgrade' ],
 				[ 'schedule_jobs', 11 ],
 			],
 			'admin_post_rocket_rocket_insights_add_homepage' => 'add_homepage_from_widget',
-			'rocket_deactivation'                   => [
+			'rocket_deactivation'                         => [
 				[ 'cancel_scheduled_jobs' ],
 				[ 'remove_current_plan' ],
 			],
-			'rocket_options_changed'                => 'maybe_cancel_automatic_retest_job',
-			'rocket_insights_retest'                => 'retest_all_pages',
-			'wp_rocket_upgrade'                     => [
+			'rocket_options_changed'                      => 'maybe_cancel_automatic_retest_job',
+			'rocket_insights_retest'                      => 'retest_all_pages',
+			'wp_rocket_upgrade'                           => [
 				[ 'on_update_reset_credit', 10, 2 ],
 				[ 'on_update_cancel_old_as_jobs', 10, 2 ],
 				[ 'on_update_refresh_metric_data', 10, 2 ],
 			],
-			'admin_notices'                         => 'maybe_display_rocket_insights_promotion_notice',
-			'rocket_rocket_insights_enabled'        => 'maybe_disable_for_reseller_or_non_live',
-			'rest_api_init'                         => [ 'register_routes' ],
+			'rocket_rocket_insights_enabled'              => 'maybe_disable_for_reseller_or_non_live',
+			'rest_api_init'                               => [ 'register_routes' ],
+			'wp_ajax_rocket_insight_track_metric_actions' => 'track_metric_actions',
 		];
 	}
 
@@ -210,7 +217,8 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 
 		$data['rocket_insights_ids']               = $this->controller->get_not_finished_ids();
 		$data['rocket_insights_no_credit_tooltip'] = __( 'Upgrade your plan to get access to re-test performance or run new tests', 'rocket' );
-		$data['is_free']                           = (int) $this->context->is_free_user();
+		$data['is_free']                           = false;
+		$data['assets_img_url']                    = WP_ROCKET_ASSETS_IMG_URL;
 
 		$global_score_data                   = $this->controller->get_global_score();
 		$global_score_data['status_color']   = $this->render->get_score_color_status( (int) $global_score_data['score'] );
@@ -221,6 +229,8 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'html'     => $this->render->get_global_score_widget_content( $global_score_data ),
 			'row_html' => $this->render->get_global_score_row( $global_score_data ),
 		];
+
+		$data['assets_img_url'] = WP_ROCKET_ASSETS_IMG_URL;
 
 		return $data;
 	}
@@ -245,31 +255,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		}
 
 		$this->schedule_auto_add_homepage_task();
-
-		if ( ! $this->context->is_free_user() ) {
-			$this->queue->cancel_credit_reset_job();
-			$this->schedule_retest_task();
-
-			return;
-		}
-
-		$this->queue->schedule_credit_reset_task();
-		$this->cancel_retest_job();
-	}
-
-	/**
-	 * Schedule retest task.
-	 *
-	 * @return void
-	 */
-	private function schedule_retest_task() {
-		if ( ! $this->context->is_schedule_allowed() ) {
-			$this->cancel_retest_job();
-			return;
-		}
-
-		$schedule_frequency = $this->options->get( 'performance_monitoring_schedule_frequency', MONTH_IN_SECONDS );
-		$this->queue->schedule_retest_task( $schedule_frequency );
+		$this->schedule_retest_task();
 	}
 
 	/**
@@ -335,6 +321,21 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	}
 
 	/**
+	 * Schedule retest task.
+	 *
+	 * @return void
+	 */
+	private function schedule_retest_task() {
+		if ( ! $this->context->is_schedule_allowed() ) {
+			$this->cancel_retest_job();
+			return;
+		}
+
+		$schedule_frequency = $this->options->get( 'performance_monitoring_schedule_frequency', MONTH_IN_SECONDS );
+		$this->queue->schedule_retest_task( $schedule_frequency );
+	}
+
+	/**
 	 * Callback to reset the credit for the recurring task hook.
 	 *
 	 * @return void
@@ -375,16 +376,32 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	}
 
 	/**
-	 * Render the global performance score widget in the dashboard sidebar.
+	 * Render the global performance score widget in the main sidebar.
 	 *
 	 * @return void
 	 */
-	public function render_global_score_widget(): void {
+	public function render_global_score_widget_sidebar(): void {
 		if ( ! $this->context->is_allowed() ) {
 			return;
 		}
 		$data                   = $this->controller->get_global_score();
 		$data['remaining_urls'] = $this->controller->get_remaining_url_count();
+		$data['context']        = 'sidebar';
+		$this->render->render_global_score_widget( $data );
+	}
+
+	/**
+	 * Render the global performance score widget in the dashboard sidebar.
+	 *
+	 * @return void
+	 */
+	public function render_global_score_widget_dashboard(): void {
+		if ( ! $this->context->is_allowed() ) {
+			return;
+		}
+		$data                   = $this->controller->get_global_score();
+		$data['remaining_urls'] = $this->controller->get_remaining_url_count();
+		$data['context']        = 'dashboard';
 		$this->render->render_global_score_widget( $data );
 	}
 
@@ -418,28 +435,10 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 				'rocket_insights_addon_limit' => $this->controller->get_rocket_insights_addon_limit(),
 				'upgrade_url'                 => $license_data['btn_url'] ?? '',
 				'can_add_pages'               => $this->context->is_adding_page_allowed(),
-				'show_quota_banner'           => $this->should_show_quota_banner(),
-				'is_free'                     => $this->context->is_free_user(),
+				'show_quota_banner'           => false, // No quota banner as Rocket Insights is free for all users.
+				'is_free'                     => false,
 			]
 		);
-	}
-
-	/**
-	 * Determine if the quota banner should be displayed.
-	 *
-	 * Shows banner when free users have reached URL limit OR exhausted credits.
-	 *
-	 * @return bool True if the quota banner should be shown.
-	 */
-	private function should_show_quota_banner(): bool {
-		if ( ! $this->context->is_free_user() ) {
-			return false;
-		}
-
-		$remaining_url_count = $this->controller->get_remaining_url_count();
-
-		// Show banner if URL limit reached OR no credits left.
-		return empty( $remaining_url_count ) || ! $this->controller->has_credit();
 	}
 
 	/**
@@ -621,6 +620,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public function register_routes() {
 		$this->rest->register_routes();
+		$this->recommendations_rest->register_routes();
 	}
 
 	/**
@@ -715,12 +715,12 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @param bool $enabled Whether Rocket Insights is enabled.
 	 * @return bool
 	 */
-	public function maybe_disable_for_reseller_or_non_live( bool $enabled ): bool {
+	public function maybe_disable_for_reseller_or_non_live( $enabled ) {
 		if ( ! $enabled ) {
 			return $enabled;
 		}
 
-		return ! $this->context->is_reseller_or_non_live();
+		return rocket_is_live_site();
 	}
 
 	/**
@@ -746,5 +746,16 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 
 		// Delete the global score transient to refresh the UI state.
 		$this->global_score->reset();
+	}
+
+	/**
+	 * Track user actions in Rocket Insights via AJAX.
+	 *
+	 * Handles tracking for events like expanding metrics or viewing reports.
+	 *
+	 * @return void
+	 */
+	public function track_metric_actions(): void {
+		$this->controller->track_metric_actions();
 	}
 }
