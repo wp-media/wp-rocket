@@ -421,7 +421,32 @@ class Settings {
 			);
 
 			if ( ! $notices ) {
-				add_settings_error( 'general', 'settings_updated', __( 'Settings saved.', 'rocket' ), 'updated' );
+				$message = __( 'Settings saved.', 'rocket' );
+
+				// This filter is documented in inc/Engine/Admin/RocketInsights/Context/Context.php.
+				$rocket_insights_enabled = wpm_apply_filters_typed(
+					'boolean',
+					'rocket_rocket_insights_enabled',
+					true
+				);
+
+				if ( $rocket_insights_enabled ) {
+					$insights_url = add_query_arg(
+						[
+							'page'          => WP_ROCKET_PLUGIN_SLUG,
+							'rocket_source' => 'notice_settings_saved',
+						],
+						admin_url( 'options-general.php' )
+					) . '#rocket_insights';
+					$message      = sprintf(
+						/* translators: %1$s = opening link tag, %2$s = closing link tag */
+						__( 'Settings saved. Your Rocket Insights results aren\'t updated yet. %1$sRun a new test%2$s to get the latest recommendations.', 'rocket' ), // phpcs:ignore Generic.Files.LineLength.TooLong
+						'<a href="' . esc_url( $insights_url ) . '">',
+						'</a>'
+					);
+				}
+
+				add_settings_error( 'general', 'settings_updated', $message, 'updated' );
 			}
 		}
 
