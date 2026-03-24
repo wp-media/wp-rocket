@@ -169,7 +169,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 *
 	 * @return void
 	 */
-	public function clear_recommendations_on_lang_change( $meta_id, $object_id, $meta_key ): void {
+	public function clear_recommendations_on_lang_change( int $meta_id, int $object_id, string $meta_key ): void {
 		if ( 'locale' !== $meta_key ) {
 			return;
 		}
