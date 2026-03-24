@@ -81,7 +81,7 @@ class Test_FetchRecommendations extends TestCase {
 			->with( 'WP_ROCKET_VERSION' )
 			->andReturn( $config['version'] );
 
-		// Mock get_locale.
+		// Mock get_user_locale.
 		Functions\expect( 'get_user_locale' )
 			->andReturn( $config['locale'] );
 
