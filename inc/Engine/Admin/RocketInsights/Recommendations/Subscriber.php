@@ -164,7 +164,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * Clears the recommendations when the user's language (locale) is changed.
 	 *
 	 * @param int    $meta_id   ID of the meta entry.
-	 * @param int    $user_id 	ID of the object the metadata is for (user ID).
+	 * @param int    $user_id   ID of the object the metadata is for (user ID).
 	 * @param string $meta_key  Meta key being updated.
 	 *
 	 * @return void
