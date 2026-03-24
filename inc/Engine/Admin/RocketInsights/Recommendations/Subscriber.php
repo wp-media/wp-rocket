@@ -164,13 +164,20 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * Clears the recommendations when the user's language (locale) is changed.
 	 *
 	 * @param int    $meta_id   ID of the meta entry.
-	 * @param int    $object_id ID of the object the metadata is for (user ID).
+	 * @param int    $user_id 	ID of the object the metadata is for (user ID).
 	 * @param string $meta_key  Meta key being updated.
 	 *
 	 * @return void
 	 */
-	public function clear_recommendations_on_lang_change( $meta_id, $object_id, $meta_key ): void {
+	public function clear_recommendations_on_lang_change( $meta_id, $user_id, $meta_key ): void {
 		if ( 'locale' !== $meta_key ) {
+			return;
+		}
+
+		// Bail out if the user meta being updated doesn't belong to the current user.
+		// In order to avoid unnecessary clearing of recommendations when an admin updates another user's locale.
+		$current_user_id = get_current_user_id();
+		if ( (int) $user_id !== (int) $current_user_id ) {
 			return;
 		}
 
