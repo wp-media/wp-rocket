@@ -84,7 +84,7 @@ $rocket_formatted_metrics = $data->formatted_metrics ?? [];
 		);
 
 		$rocket_insights_show_report_btn_args = [
-			'label'      => __( 'See Report', 'rocket' ),
+			'label'      => __( 'See GTmetrix Report', 'rocket' ),
 			'url'        => $data->report_url,
 			'attributes' => [
 				'target'                      => '_blank',
