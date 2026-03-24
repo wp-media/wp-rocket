@@ -40,6 +40,7 @@ class Test_ClearRecommendationsOnLangChange extends TestCase {
 
 		// Create a test user.
 		$this->user_id = $this->factory->user->create( [ 'role' => 'administrator' ] );
+		wp_set_current_user( $this->user_id );
 
 		$this->unregisterAllCallbacksExcept( 'updated_user_meta', 'clear_recommendations_on_lang_change', 10 );
 	}
@@ -71,7 +72,7 @@ class Test_ClearRecommendationsOnLangChange extends TestCase {
 		}
 
 		// Fire the updated_user_meta hook.
-		do_action( 'updated_user_meta', 1, $this->user_id, $config['meta_key'] );
+		do_action( 'updated_user_meta', 1, isset($config['user_id']) ? $config['user_id'] : $this->user_id, $config['meta_key'] );
 
 		// Check transient status.
 		$transient_after = get_transient( self::RECOMMENDATIONS_TRANSIENT );

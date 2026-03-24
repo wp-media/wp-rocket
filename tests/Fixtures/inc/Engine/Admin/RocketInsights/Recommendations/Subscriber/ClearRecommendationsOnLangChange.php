@@ -38,5 +38,27 @@ return [
 				],
 			],
 		],
+
+		'shouldNotClearTransientWhenUserMetaUpdatedIsNotCurrentUser' => [
+			'config'   => [
+				'meta_key'          => 'locale',
+				'user_id'           => 999,
+				'initial_transient' => [
+					'status'          => 'success',
+					'recommendations' => [ 'some_recommendation' ],
+					'metadata'        => [],
+					'timestamp'       => time(),
+				],
+			],
+			'expected' => [
+				'should_clear'     => false,
+				'transient_after'  => [
+					'status'          => 'success',
+					'recommendations' => [ 'some_recommendation' ],
+					'metadata'        => [],
+					'timestamp'       => time(),
+				],
+			],
+		],
 	],
 ];
