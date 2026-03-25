@@ -121,7 +121,7 @@ return [
 			],
 		],
 
-		'shouldReturnNullWhenOnlyOneTestMetricDataIsNull' => [
+		'shouldHandleNullMetricsGracefullyWhenOnlyOneTestMetricDataIsNull' => [
 			'config'   => [
 				'tests' => [
 					'{"largest_contentful_paint":2000,"time_to_first_byte":500,"cumulative_layout_shift":0.05,"total_blocking_time":200}',
