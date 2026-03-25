@@ -82,7 +82,7 @@ class Calculator {
 
 		// Sum up all metrics.
 		foreach ( $tests as $test ) {
-			if ( null === $test ) {
+			if ( empty( $test ) ) {
 				continue;
 			}
 
