@@ -421,7 +421,7 @@ class Settings {
 			);
 
 			if ( ! $notices ) {
-				$message = __( 'Settings saved.', 'rocket' );
+				$message  = __( 'Settings saved.', 'rocket' );
 				$message .= wpm_apply_filters_typed( 'string', 'rocket_settings_saved_message', '' );
 
 				add_settings_error( 'general', 'settings_updated', $message, 'updated' );
