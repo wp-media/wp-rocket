@@ -609,7 +609,6 @@ class DataManager implements LoggerAwareInterface {
 
 		// Save empty state if metrics not ready (e.g., all tests failed).
 		if ( ! $this->has_required_metrics() ) {
-			$this->set_recommendations_failed( __( 'No advacned indicators have been found', 'rocket' ) );
 			return;
 		}
 
