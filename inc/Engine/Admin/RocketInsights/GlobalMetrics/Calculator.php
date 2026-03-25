@@ -85,7 +85,7 @@ class Calculator {
 			if ( null === $test ) {
 				continue;
 			}
-			
+
 			$metric_data = json_decode( $test, true );
 
 			// Skip if metric_data is empty or not an array.
