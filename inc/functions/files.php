@@ -634,28 +634,28 @@ function rocket_clean_files( $urls, $filesystem = null, $run_actions = true ) {
 
 		$parsed_url = get_rocket_parse_url( $url );
 
-		if ( !empty( $parsed_url['host'] ) ) {
+		if ( ! empty( $parsed_url['host'] ) ) {
 
 			foreach ( _rocket_get_cache_dirs( $parsed_url['host'], $cache_path ) as $dir ) {
 				// Decode url path.
 				$url_chunks = explode( '/', $parsed_url['path'] );
 				$matches    = preg_grep( '/%/', $url_chunks );
-	
+				
 				if ( ! empty( $matches ) ) {
 					$parsed_url['path'] = rawurldecode( $parsed_url['path'] );
 				}
-	
+				
 				// Encode Non-latin characters if found in url path.
 				if ( false !== preg_match_all( '/(?<non_latin>[^\x00-\x7F]+)/', $parsed_url['path'], $matches ) ) {
 					$cb_encode_non_latin = function ( $non_latin ) {
 						return strtolower( rawurlencode( $non_latin ) );
 					};
-	
+
 					$parsed_url['path'] = str_replace( $matches['non_latin'], array_map( $cb_encode_non_latin, $matches['non_latin'] ), $parsed_url['path'] );
 				}
-	
+				
 				$entry = $dir . $parsed_url['path'];
-	
+
 				// For regex we use it for file names only, and it should include the * character.
 				if ( str_contains( $entry, '*' ) ) {
 					$regex_part    = basename( $entry );
@@ -671,17 +671,17 @@ function rocket_clean_files( $urls, $filesystem = null, $run_actions = true ) {
 					$url              = str_replace( $regex_part, '', $url );
 					$urls[ $url_key ] = $url;
 				}
-	
+
 				// Skip if the dir/file does not exist.
 				if ( ! $filesystem->exists( $entry ) ) {
 					continue;
 				}
-	
+
 				if ( ! $filesystem->is_dir( $entry ) ) {
 					$filesystem->delete( $entry );
 					continue;
 				}
-	
+
 				// Check whether the directory contains subfolders (vs only files).
 				$has_subdirs = false;
 				try {
@@ -695,13 +695,13 @@ function rocket_clean_files( $urls, $filesystem = null, $run_actions = true ) {
 					// If we can't inspect the directory, be conservative and only delete files.
 					$has_subdirs = true;
 				}
-	
+
 				if ( ! $has_subdirs ) {
 					// Directory contains only files: remove it entirely.
 					rocket_rrmdir( $entry, [], $filesystem );
 					continue;
 				}
-	
+
 				// Directory contains subfolders: delete only the files in the top-level.
 				foreach ( _rocket_get_dir_files_by_regex( $entry, '#.+#' ) as $child ) {
 					if ( $child->isFile() ) {
