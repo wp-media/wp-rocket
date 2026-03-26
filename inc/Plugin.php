@@ -420,6 +420,7 @@ class Plugin {
 			'logger_subscriber',
 			'optimole_subscriber',
 			'abilities_subscriber',
+			'ri_abilities_subscriber',
 		];
 
 		$host_type = HostResolver::get_host_service();
