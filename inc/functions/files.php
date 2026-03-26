@@ -618,7 +618,6 @@ function rocket_clean_files( $urls, $filesystem = null, $run_actions = true ) {
 	}
 
 	foreach ( $urls as $url_key => $url ) {
-		
 		if ( $run_actions ) {
 			/**
 			 * Fires before the cache file is deleted.
