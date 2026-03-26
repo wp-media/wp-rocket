@@ -151,23 +151,33 @@ if ( ! function_exists( 'rocket_get_purge_urls' ) ) {
 }
 
 /**
- * Recursively retrieves all descendant page IDs for a given parent page ID.
+ * Recursively retrieves all descendant post IDs for a given parent post ID.
  *
- * @param int $parent_id The ID of the parent page.
- * @return int[] A flat array with all descendant page IDs (children, grandchildren, etc.).
+ * @param int $parent_id The ID of the parent post.
+ * @return int[] A flat array with all descendant post IDs (children, grandchildren, etc.).
  */
 function rocket_get_all_descendant( $parent_id ) {
+	$post_type = get_post_type( $parent_id );
+
+	if ( ! $post_type ) {
+		return [];
+	}
+
 	// 'child_of' retrieves all descendants, not just direct children.
 	$all_descendants = get_pages(
-		[ 'child_of' => $parent_id ]
+		[
+			'child_of'  => $parent_id,
+			'post_type' => $post_type,
+			'fields'    => 'ids',
+		]
 	);
 
 	if ( empty( $all_descendants ) ) {
 		return [];
 	}
 
-	// Convert the array of page objects to an array of IDs only.
-	return wp_list_pluck( $all_descendants, 'ID' );
+	// Ensure we return a flat array of integer IDs.
+	return array_map( 'intval', $all_descendants );
 }
 
 
