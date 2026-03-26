@@ -781,7 +781,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		$message = sprintf(
 			/* translators: %1$s = opening link tag, %2$s = closing link tag */
 			__( ' Your Rocket Insights results aren’t updated yet. %1$sRun a new test%2$s to get the latest recommendations.', 'rocket' ),
-			'<a href="' . esc_url( $insights_url ) . '">',
+			'<a href="' . esc_url( $insights_url ) . '" id="rocket_ri_new_test_save_settings_link">',
 			'</a>'
 		);
 
