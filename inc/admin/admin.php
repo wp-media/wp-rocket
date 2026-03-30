@@ -419,7 +419,7 @@ function rocket_handle_settings_import() {
 
 	$settings = json_decode( $settings, true );
 
-	if ( null === $settings ) {
+	if ( ! is_array( $settings ) ) {
 		rocket_settings_import_redirect( __( 'Settings import failed: unexpected file content.', 'rocket' ), 'error' );
 	}
 
