@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\Abilities\GetOptions\Options;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Abilities\Options\GetOptions;
 
 use WP_Rocket\Tests\Integration\TestCase;
 
