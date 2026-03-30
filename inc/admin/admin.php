@@ -387,8 +387,8 @@ function rocket_handle_settings_import() {
 		rocket_settings_import_redirect( __( 'Settings import failed: no file uploaded.', 'rocket' ), 'error' );
 	}
 
-	if ( isset( $_FILES['import']['name'] ) && ! preg_match( '/wp-rocket-settings(?:-.*)?-20\d{2}-\d{2}-\d{2}-[a-f0-9]{13}\.(?:txt|json)/', sanitize_file_name( $_FILES['import']['name'] ) ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash
-		rocket_settings_import_redirect( __( 'Settings import failed: incorrect filename.', 'rocket' ), 'error' );
+	if ( isset( $_FILES['import']['name'] ) && ! preg_match( '/wp-rocket-settings(?:-.*)?-20\d{2}-\d{2}-\d{2}-[a-f0-9]{13}\.json/', sanitize_file_name( $_FILES['import']['name'] ) ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+		rocket_settings_import_redirect( __( 'Settings import failed: incorrect filename. Only JSON format is supported.', 'rocket' ), 'error' );
 	}
 
 	add_filter( 'mime_types', 'rocket_allow_json_mime_type' );
@@ -398,8 +398,8 @@ function rocket_handle_settings_import() {
 	$mimes     = rocket_allow_json_mime_type( $mimes );
 	$file_data = wp_check_filetype_and_ext( $_FILES['import']['tmp_name'], sanitize_file_name( $_FILES['import']['name'] ), $mimes ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotValidated
 
-	if ( 'text/plain' !== $file_data['type'] && 'application/json' !== $file_data['type'] ) {
-		rocket_settings_import_redirect( __( 'Settings import failed: incorrect filetype.', 'rocket' ), 'error' );
+	if ( 'application/json' !== $file_data['type'] ) {
+		rocket_settings_import_redirect( __( 'Settings import failed: only JSON format is supported for security reasons.', 'rocket' ), 'error' );
 	}
 
 	$_post_action       = isset( $_POST['action'] ) ? wp_unslash( sanitize_key( $_POST['action'] ) ) : '';
@@ -417,16 +417,10 @@ function rocket_handle_settings_import() {
 	remove_filter( 'mime_types', 'rocket_allow_json_mime_type' );
 	remove_filter( 'wp_check_filetype_and_ext', 'rocket_check_json_filetype', 10 );
 
-	if ( 'text/plain' === $file_data['type'] ) {
-		$gz       = 'gz' . strrev( 'etalfni' );
-		$settings = $gz( $settings );
-		$settings = maybe_unserialize( $settings );
-	} elseif ( 'application/json' === $file_data['type'] ) {
-		$settings = json_decode( $settings, true );
+	$settings = json_decode( $settings, true );
 
-		if ( null === $settings ) {
-			rocket_settings_import_redirect( __( 'Settings import failed: unexpected file content.', 'rocket' ), 'error' );
-		}
+	if ( null === $settings ) {
+		rocket_settings_import_redirect( __( 'Settings import failed: unexpected file content.', 'rocket' ), 'error' );
 	}
 
 	rocket_put_content( $file['file'], '' );
