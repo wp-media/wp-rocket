@@ -70,7 +70,7 @@ class Subscriber implements Subscriber_Interface {
 	 * Registers the ability to get insights scores.
 	 */
 	public function register_get_insights_scores_ability() {
-		$this->get_insights_score->register();
+		$this->get_insights_score->register_get_insights_scores_ability();
 	}
 
 	/**
