@@ -589,9 +589,22 @@ function rocket_clean_files( $urls, $filesystem = null, $run_actions = true ) {
 		$filesystem = rocket_direct_filesystem();
 	}
 
+	if ( $run_actions ) {
+		/**
+		 * Fires before all cache files are deleted.
+		 *
+		 * @since  3.2.2
+		 *
+		 * @param array $urls The URLs corresponding to the deleted cache files.
+		 */
+		do_action( 'before_rocket_clean_files', $urls ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+	}
+
+	$sorted_urls = $urls;
+
 	// Sort: most segments first (deepest URLs first).
 	usort(
-		$urls,
+		$sorted_urls,
 		static function ( $a, $b ) {
 			$da = rocket_count_path_segments( (string) $a );
 			$db = rocket_count_path_segments( (string) $b );
@@ -606,18 +619,7 @@ function rocket_clean_files( $urls, $filesystem = null, $run_actions = true ) {
 		}
 	);
 
-	if ( $run_actions ) {
-		/**
-		 * Fires before all cache files are deleted.
-		 *
-		 * @since  3.2.2
-		 *
-		 * @param array $urls The URLs corresponding to the deleted cache files.
-		 */
-		do_action( 'before_rocket_clean_files', $urls ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
-	}
-
-	foreach ( $urls as $url_key => $url ) {
+	foreach ( $sorted_urls as $url_key => $url ) {
 		if ( $run_actions ) {
 			/**
 			 * Fires before the cache file is deleted.
