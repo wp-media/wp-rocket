@@ -1,5 +1,6 @@
 <?php
 
+use WP\MCP\Core\McpAdapter;
 use WP_Rocket\Addon\Cloudflare\Cloudflare;
 use WP_Rocket\Dependencies\League\Container\Container;
 use WP_Rocket\Plugin;
@@ -9,6 +10,10 @@ defined( 'ABSPATH' ) || exit;
 // Composer autoload.
 if ( file_exists( WP_ROCKET_PATH . 'vendor/autoload.php' ) ) {
 	require WP_ROCKET_PATH . 'vendor/autoload.php';
+}
+
+if ( class_exists( McpAdapter::class ) ) {
+	McpAdapter::instance();
 }
 
 require_once WP_ROCKET_FUNCTIONS_PATH . 'files.php';
