@@ -82,6 +82,10 @@ class Calculator {
 
 		// Sum up all metrics.
 		foreach ( $tests as $test ) {
+			if ( empty( $test ) ) {
+				continue;
+			}
+
 			$metric_data = json_decode( $test, true );
 
 			// Skip if metric_data is empty or not an array.
