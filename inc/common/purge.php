@@ -176,8 +176,8 @@ function rocket_get_all_descendant( $parent_id ) {
 		return [];
 	}
 
-	// Ensure we return a flat array of integer IDs.
-	return array_map( 'intval', $all_descendants );
+	// Convert the array of page objects to an array of IDs only.
+	return wp_list_pluck( $all_descendants, 'ID' );
 }
 
 
