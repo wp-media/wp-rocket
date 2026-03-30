@@ -127,7 +127,9 @@ class GetInsightsScore implements AbilitiesInterface {
 				'execute_callback'    => [ $this, 'execute' ],
 				'permission_callback' => [ $this, 'check_permissions' ],
 				'meta'                => [
-					'public'       => true,
+					'mcp'          => [
+						'public' => true,
+					],
 					'show_in_rest' => true,
 				],
 			]
