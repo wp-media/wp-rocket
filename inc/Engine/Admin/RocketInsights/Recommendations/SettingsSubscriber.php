@@ -40,8 +40,6 @@ class SettingsSubscriber implements Subscriber_Interface, LoggerAwareInterface {
 		return [
 			'update_option_wp_rocket_settings'           => [ 'maybe_fetch_after_settings_change', 10, 2 ],
 			'rocket_insights_api_recommendations_params' => 'maybe_add_imagify_to_recommendations_api_params',
-			'activated_plugin'                           => 'maybe_clear_recommendations',
-			'deactivated_plugin'                         => 'maybe_clear_recommendations',
 		];
 	}
 
@@ -100,20 +98,6 @@ class SettingsSubscriber implements Subscriber_Interface, LoggerAwareInterface {
 		$params['enabled_options'][] = 'plugin_imagify';
 
 		return $params;
-	}
-
-	/**
-	 * Clear recommendations if relevant plugin(Imagify/RocketCDN) is activated or deactivated.
-	 *
-	 * @param string $plugin The plugin being activated or deactivated.
-	 * @return void
-	 */
-	public function maybe_clear_recommendations( string $plugin ): void {
-		if ( ! in_array( $plugin, [ 'imagify/imagify.php', 'rocketcdn/rocketcdn.php' ], true ) ) {
-			return;
-		}
-
-		$this->data_manager->clear_recommendations();
 	}
 
 	/**
