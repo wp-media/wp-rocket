@@ -21,7 +21,7 @@ defined( 'ABSPATH' ) || exit;
 		<h2 class="wpr-title1 wpr-icon-rocket-insights-hover"><?php echo esc_html( $data['title'] ); ?></h2>
 	</div>
 	<div class="wpr-sectionHeader-description wpr-without-padding">
-			<?php esc_html_e( 'Performance tests are powered by GTmetrix, combining real testing data and key metrics to generate your Rocket Insights results and recommendations.', 'rocket' ); ?>
+			<?php esc_html_e( 'Rocket Insights is powered by GTmetrix to run tests and generate your performance results and recommendations.', 'rocket' ); ?>
 		</div>
 
 	<?php do_action( 'rocket_insights_tab_content' ); ?>
