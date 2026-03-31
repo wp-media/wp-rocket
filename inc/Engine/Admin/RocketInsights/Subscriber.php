@@ -778,13 +778,12 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			admin_url( 'options-general.php' )
 		);
 
-		$message = sprintf(
+		// Moved the space outside the translatable string.
+		return ' ' . sprintf(
 			/* translators: %1$s = opening link tag, %2$s = closing link tag */
-			__( ' Your Rocket Insights results aren’t updated yet. %1$sRun a new test%2$s to get the latest recommendations.', 'rocket' ),
+			esc_html__( 'Your Rocket Insights results aren’t updated yet. %1$sRun a new test%2$s to get the latest recommendations.', 'rocket' ),
 			'<a href="' . esc_url( $insights_url ) . '" id="rocket_ri_new_test_save_settings_link">',
 			'</a>'
 		);
-
-		return $message;
 	}
 }
