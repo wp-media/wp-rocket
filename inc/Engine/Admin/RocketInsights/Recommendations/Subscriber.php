@@ -168,7 +168,12 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return void
 	 */
 	public function maybe_clear_recommendations( string $plugin ): void {
-		if ( ! in_array( $plugin, [ 'imagify/imagify.php', 'rocketcdn/rocketcdn.php' ], true ) ) {
+		$allowed_plugins = [
+			'imagify/imagify.php',
+			'rocketcdn/rocketcdn.php',
+		];
+
+		if ( ! in_array( $plugin, $allowed_plugins, true ) ) {
 			return;
 		}
 
