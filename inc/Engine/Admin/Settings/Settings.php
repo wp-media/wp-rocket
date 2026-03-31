@@ -421,7 +421,7 @@ class Settings {
 			);
 
 			if ( ! $notices ) {
-				$message  = __( 'Settings saved.', 'rocket' );
+				$message = __( 'Settings saved.', 'rocket' );
 
 				/**
 				 * Filters the appended message to the "Settings saved." admin notice.
