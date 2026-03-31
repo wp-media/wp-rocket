@@ -64,11 +64,11 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_dashboard_after_account_data' => 'display_rocketcdn_status',
-			'rocket_cdn_settings_fields'          => 'rocketcdn_field',
-			'admin_post_rocket_purge_rocketcdn'   => 'purge_cdn_cache',
-			'rocket_settings_page_footer'         => 'add_subscription_modal',
-			'http_request_args'                   => [ 'preserve_authorization_token', PHP_INT_MAX, 2 ],
+			'rocket_dashboard_after_account_data'        => 'display_rocketcdn_status',
+			'rocket_cdn_settings_fields'                 => 'rocketcdn_field',
+			'admin_post_rocket_purge_rocketcdn'          => 'purge_cdn_cache',
+			'rocket_settings_page_footer'                => 'add_subscription_modal',
+			'http_request_args'                          => [ 'preserve_authorization_token', PHP_INT_MAX, 2 ],
 			'rocket_insights_api_recommendations_params' => 'maybe_add_rocketcdn_to_recommendations_api_params',
 		];
 	}
@@ -292,7 +292,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	 * @return array The modified API parameters with 'plugin_rocketcdn' added if applicable.
 	 */
 	public function maybe_add_rocketcdn_to_recommendations_api_params( array $params ): array {
-		// Return default params if custom data is not available.
+		// Return default params if customer data is not available.
 		// Transient is exclusive to RocketCDN plugin and only set when the subscription is active.
 		if ( ! get_transient( 'rocketcdn_customer_data' ) ) {
 			return $params;

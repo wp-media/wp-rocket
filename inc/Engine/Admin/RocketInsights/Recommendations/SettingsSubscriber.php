@@ -38,10 +38,10 @@ class SettingsSubscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'update_option_wp_rocket_settings' => [ 'maybe_fetch_after_settings_change', 10, 2 ],
+			'update_option_wp_rocket_settings'           => [ 'maybe_fetch_after_settings_change', 10, 2 ],
 			'rocket_insights_api_recommendations_params' => 'maybe_add_imagify_to_recommendations_api_params',
-			'activated_plugin' => 'maybe_clear_recommendations',
-			'deactivated_plugin' => 'maybe_clear_recommendations',
+			'activated_plugin'                           => 'maybe_clear_recommendations',
+			'deactivated_plugin'                         => 'maybe_clear_recommendations',
 		];
 	}
 
@@ -112,7 +112,7 @@ class SettingsSubscriber implements Subscriber_Interface, LoggerAwareInterface {
 		if ( ! in_array( $plugin, [ 'imagify/imagify.php', 'rocketcdn/rocketcdn.php' ], true ) ) {
 			return;
 		}
-		
+
 		$this->data_manager->clear_recommendations();
 	}
 
