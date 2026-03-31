@@ -69,6 +69,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 			'admin_post_rocket_purge_rocketcdn'   => 'purge_cdn_cache',
 			'rocket_settings_page_footer'         => 'add_subscription_modal',
 			'http_request_args'                   => [ 'preserve_authorization_token', PHP_INT_MAX, 2 ],
+			'rocket_insights_api_recommendations_params' => 'maybe_add_rocketcdn_to_recommendations_api_params',
 		];
 	}
 
@@ -278,6 +279,40 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	 */
 	public function preserve_authorization_token( $args, $url ) {
 		return $this->api_client->preserve_authorization_token( $args, $url );
+	}
+
+	/**
+	 * Adds the 'plugin_rocketcdn' option to the recommendations API parameters if certain conditions are met.
+	 *
+	 * This method checks if the white label account is active, the subscription status is 'running',
+	 * and the 'rocketcdn_customer_data' transient is set. If all conditions are satisfied, it appends
+	 * 'plugin_rocketcdn' to the 'enabled_options' array in the parameters.
+	 *
+	 * @param array $params The existing API parameters.
+	 * @return array The modified API parameters with 'plugin_rocketcdn' added if applicable.
+	 */
+	public function maybe_add_rocketcdn_to_recommendations_api_params( array $params ): array {
+		// Return default params if custom data is not available.
+		// Transient is exclusive to RocketCDN plugin and only set when the subscription is active.
+		if ( ! get_transient( 'rocketcdn_customer_data' ) ) {
+			return $params;
+		}
+
+		$subscription_data = $this->api_client->get_subscription_data();
+
+		// Return default params if subscription is not active.
+		if ( 'running' !== $subscription_data['subscription_status'] ) {
+			return $params;
+		}
+
+		// Return default params if white label is not active.
+		if ( ! $this->is_white_label_account() ) {
+			return $params;
+		}
+
+		$params['enabled_options'][] = 'plugin_rocketcdn';
+
+		return $params;
 	}
 
 	/**
