@@ -88,7 +88,7 @@ class SettingsSubscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public function maybe_add_imagify_to_recommendations_api_params( array $params ): array {
 		// Return default params if Imagify is not active.
-		if ( ! Imagify_Partner::has_imagify_api_key() ) {
+		if ( ! \Imagify_Partner::has_imagify_api_key() ) {
 			return $params;
 		}
 
