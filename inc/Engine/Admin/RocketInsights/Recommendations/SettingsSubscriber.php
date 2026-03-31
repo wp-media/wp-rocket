@@ -39,6 +39,9 @@ class SettingsSubscriber implements Subscriber_Interface, LoggerAwareInterface {
 	public static function get_subscribed_events(): array {
 		return [
 			'update_option_wp_rocket_settings' => [ 'maybe_fetch_after_settings_change', 10, 2 ],
+			'rocket_insights_api_recommendations_params' => 'maybe_add_imagify_to_recommendations_api_params',
+			'activated_plugin' => 'maybe_clear_recommendations',
+			'deactivated_plugin' => 'maybe_clear_recommendations',
 		];
 	}
 
@@ -74,6 +77,43 @@ class SettingsSubscriber implements Subscriber_Interface, LoggerAwareInterface {
 
 		// Fetch new recommendations, we pass new options array here because at this moment options class doesn't have those new options.
 		$this->fetch_recommendations( $new_options );
+	}
+
+	/**
+	 * Adds the 'plugin_imagify' option to the recommendations API parameters if Imagify is active
+	 * and the white label account is enabled.
+	 *
+	 * @param array $params The existing API parameters.
+	 * @return array The modified API parameters with 'plugin_imagify' added if applicable.
+	 */
+	public function maybe_add_imagify_to_recommendations_api_params( array $params ): array {
+		// Return default params if Imagify is not active.
+		if ( ! Imagify_Partner::has_imagify_api_key() ) {
+			return $params;
+		}
+
+		// Return default params if white label is not active.
+		if ( ! (bool) rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) ) {
+			return $params;
+		}
+
+		$params['enabled_options'][] = 'plugin_imagify';
+
+		return $params;
+	}
+
+	/**
+	 * Clear recommendations if relevant plugin(Imagify/RocketCDN) is activated or deactivated.
+	 *
+	 * @param string $plugin The plugin being activated or deactivated.
+	 * @return void
+	 */
+	public function maybe_clear_recommendations( string $plugin ): void {
+		if ( ! in_array( $plugin, [ 'imagify/imagify.php', 'rocketcdn/rocketcdn.php' ], true ) ) {
+			return;
+		}
+		
+		$this->data_manager->clear_recommendations();
 	}
 
 	/**
