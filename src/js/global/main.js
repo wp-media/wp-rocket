@@ -320,4 +320,33 @@ $(document).ready(function(){
 			}
 		}
 	});
+
+	// Track CTA clicks for Rocket Insights in the settings saved notice.
+	$(document).on('click', '#rocket_ri_new_test_save_settings_link', function() {
+		// Track directly with Mixpanel
+		if (typeof mixpanel === 'undefined' || !mixpanel.track) {
+			return;
+		}
+
+		// Check if user has opted in
+		if (typeof rocket_mixpanel_data === 'undefined' || !rocket_mixpanel_data.optin_enabled || rocket_mixpanel_data.optin_enabled === '0') {
+			return;
+		}
+
+		// Identify user if available
+		if (rocket_mixpanel_data.user_id && typeof mixpanel.identify === 'function') {
+			mixpanel.identify(rocket_mixpanel_data.user_id);
+		}
+
+		// Track the Button Clicked event
+		mixpanel.track('Rocket Insights CTA click from settings notice', {
+			'button': 'CTA on save settings notice',
+			'source': 'Settings Saved Notice',
+			'plugin': rocket_mixpanel_data.plugin,
+			'brand': rocket_mixpanel_data.brand,
+			'application': rocket_mixpanel_data.app,
+			'context': rocket_mixpanel_data.context,
+			'path': rocket_mixpanel_data.path
+		});
+	});
 });
