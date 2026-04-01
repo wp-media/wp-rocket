@@ -425,12 +425,12 @@ class Controller implements ControllerInterface {
 
 		// If a previous max-width is found, update the media query and add the LCP source to the sources array and the tag string.
 		if ( null !== $prev_max_width ) {
-			$media     = sprintf( ' media="(min-width: %fpx)"', $prev_max_width + 0.1 );
+			$media     = sprintf( ' media="(min-width: %spx)"', ( $prev_max_width + 0.1 ) );
 			$sources[] = $lcp->src;
 			$tag      .= sprintf(
 				'%shref="%s"%s%s',
 				$start_tag,
-				esc_url( $lcp->src ),
+				esc_attr( $lcp->src ),
 				$media,
 				$end_tag
 			);
