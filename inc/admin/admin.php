@@ -357,6 +357,13 @@ function rocket_analytics_optin() {
 	if ( isset( $_GET['value'] ) && 'yes' === $_GET['value'] ) {
 		update_option( 'rocket_mixpanel_optin', 1 );
 		set_transient( 'rocket_analytics_optin', 1 );
+
+		/**
+		 * Fires when the Mixpanel opt-in status changes to enabled.
+		 *
+		 * @param bool $status The opt-in status.
+		 */
+		do_action( 'rocket_mixpanel_optin_changed', true );
 	}
 
 	update_option( 'rocket_analytics_notice_displayed', 1 );
