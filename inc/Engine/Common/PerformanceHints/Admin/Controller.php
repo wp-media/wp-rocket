@@ -205,4 +205,26 @@ class Controller {
 			$factory->queries()->delete_by_url( untrailingslashit( $url ) );
 		}
 	}
+
+	/**
+	 * Clean performance hints when changing the logo.
+	 *
+	 * @param mixed $value The new value of the theme modification.
+	 * @param mixed $old_value The old value of the theme modification.
+	 *
+	 * @return mixed
+	 */
+	public function clean_on_logo_change( $value, $old_value ) {
+		if ( ! $this->is_allowed() ) {
+			return $value;
+		}
+
+		if ( $value === $old_value ) {
+			return $value;
+		}
+
+		$this->truncate_tables();
+
+		return $value;
+	}
 }
