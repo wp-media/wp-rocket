@@ -19,8 +19,16 @@ use WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\TestCase;
  * @group  RocketCDNAdminPage
  * @group  Recommendations
  */
-class MaybeAddRocketcdnToRecommendationsApiParamsTest extends TestCase {
+class Test_MaybeAddRocketcdnToRecommendationsApiParams extends TestCase {
+	public function set_up() {
+		parent::set_up();
+
+		 $this->unregisterAllCallbacksExcept( 'rocket_insights_api_recommendations_params', 'maybe_add_rocketcdn_to_recommendations_api_params', 10 );
+	}
+
 	public function tear_down() {
+		$this->restoreWpHook( 'rocket_insights_api_recommendations_params' );
+
 		delete_transient( 'rocketcdn_customer_data' );
 		delete_transient( 'rocketcdn_status' );
 		parent::tear_down();
@@ -29,8 +37,8 @@ class MaybeAddRocketcdnToRecommendationsApiParamsTest extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldAddRocketCdnToApiParams( $config, $expected ) {
-		$this->white_label = $config['white_label'] ?? false;
+	public function testShouldDoAsExpected( $config, $expected ) {
+		$this->white_label = $config['white_label'];
 
 		if ( $config['has_customer_data'] ) {
 			set_transient( 'rocketcdn_customer_data', [ 'customer_id' => '123' ], HOUR_IN_SECONDS );
@@ -46,7 +54,7 @@ class MaybeAddRocketcdnToRecommendationsApiParamsTest extends TestCase {
 			);
 		}
 
-		$result = apply_filters( 'rocket_insights_api_recommendations_params', $config['params'] );
+		$result = wpm_apply_filters_typed( 'array', 'rocket_insights_api_recommendations_params', $config['params'] );
 
 		$this->assertSame( $expected['params'], $result );
 	}
