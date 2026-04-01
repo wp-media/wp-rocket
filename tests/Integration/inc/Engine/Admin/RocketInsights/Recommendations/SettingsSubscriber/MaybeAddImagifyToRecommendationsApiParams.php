@@ -31,12 +31,14 @@ class Test_MaybeAddImagifyToRecommendationsApiParams extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 * 
-	 * @runInSeparateProcess Required because Mockery alias mocking creates a real class definition
+	 * @runInSeparateProcess
+	 * Required because Mockery alias mocking creates a real class definition
 	 * for \Imagify_Partner at runtime. If the class is already loaded in the current process,
 	 * PHP will throw a fatal error for redeclaring it. Running in a separate process ensures
 	 * a clean state where the class hasn't been defined yet.
 	
-	 * @preserveGlobalState disabled Prevents PHPUnit from copying the parent process's global
+	 * @preserveGlobalState disabled
+	 * Prevents PHPUnit from copying the parent process's global
  	 * state (loaded classes, constants, globals) into the new process, which would defeat the
  	 * purpose of @runInSeparateProcess and cause the alias mock to fail.
 	 */
