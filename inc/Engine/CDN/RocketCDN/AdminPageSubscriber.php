@@ -284,35 +284,50 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	/**
 	 * Adds the 'plugin_rocketcdn' option to the recommendations API parameters if certain conditions are met.
 	 *
-	 * This method checks if the white label account is active, the subscription status is 'running',
-	 * and the 'rocketcdn_customer_data' transient is set. If all conditions are satisfied, it appends
-	 * 'plugin_rocketcdn' to the 'enabled_options' array in the parameters.
-	 *
 	 * @param array $params The existing API parameters.
 	 * @return array The modified API parameters with 'plugin_rocketcdn' added if applicable.
 	 */
 	public function maybe_add_rocketcdn_to_recommendations_api_params( array $params ): array {
-		// Return default params if customer data is not available.
-		// Transient is exclusive to RocketCDN plugin and only set when the subscription is active.
-		if ( ! get_transient( 'rocketcdn_customer_data' ) ) {
-			return $params;
-		}
-
-		$subscription_data = $this->api_client->get_subscription_data();
-
-		// Return default params if subscription is not active.
-		if ( 'running' !== $subscription_data['subscription_status'] ) {
-			return $params;
-		}
-
-		// Return default params if white label is not active.
-		if ( ! $this->is_white_label_account() ) {
+		if ( ! $this->should_add_to_recommendations_api_params() ) {
 			return $params;
 		}
 
 		$params['enabled_options'][] = 'plugin_rocketcdn';
 
 		return $params;
+	}
+
+	/**
+	 * Determines whether to add the 'plugin_rocketcdn' option to the recommendations API parameters.
+	 *
+	 * This method checks multiple conditions to decide if the user should be included:
+	 * - Returns true if the RocketCDN subscription status is 'running'.
+	 * - Returns true if the 'rocketcdn_customer_data' transient exists (set when subscription is active).
+	 * - Returns true if the account is a white label account.
+	 * - Returns false otherwise.
+	 *
+	 * @return bool True if the user should be added to the recommendations API parameters, false otherwise.
+	 */
+	private function should_add_to_recommendations_api_params() {
+		$subscription_data = $this->api_client->get_subscription_data();
+
+		// Return true if subscription is active.
+		if ( 'running' === $subscription_data['subscription_status'] ) {
+			return true;
+		}
+
+		// Return true if customer data is available.
+		// Transient is exclusive to RocketCDN plugin and only set when the subscription is active.
+		if ( get_transient( 'rocketcdn_customer_data' ) ) {
+			return true;
+		}
+
+		// Return true if white label is true.
+		if ( $this->is_white_label_account() ) {
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
