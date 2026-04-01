@@ -79,6 +79,8 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_dashboard_actions'                  => 'display_dashboard_button',
 			'admin_post_rocket_clean_performance_hints' => 'clean_performance_hints',
 			'admin_post_rocket_clean_performance_hints_url' => 'clean_url_performance_hints',
+			'pre_set_theme_mod_custom_logo'             => [ 'clean_performance_hints_on_logo_change', 10, 2 ],
+			'pre_update_option_site_logo'               => [ 'clean_performance_hints_on_logo_change', 10, 2 ],
 		];
 	}
 
@@ -201,5 +203,17 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function clean_performance_hint_result(): void {
 		$this->notices->clean_performance_hint_result();
+	}
+
+	/**
+	 * Clean performance hints when changing the logo.
+	 *
+	 * @param mixed $value The new value of the theme modification.
+	 * @param mixed $old_value The old value of the theme modification.
+	 *
+	 * @return mixed
+	 */
+	public function clean_performance_hints_on_logo_change( $value, $old_value ) {
+		return $this->controller->clean_on_logo_change( $value, $old_value );
 	}
 }
