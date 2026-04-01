@@ -4,7 +4,6 @@ return [
 	'test_data' => [
 		'shouldReturnDefaultParamsWhenImagifyNotActive' => [
 			'config' => [
-				'has_imagify_api_key'  => false,
 				'white_label_account'  => true,
 				'params'               => [
 					'enabled_options' => [ 'plugin_example' ],
