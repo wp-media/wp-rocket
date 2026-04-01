@@ -85,13 +85,8 @@ class SettingsSubscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return array The modified API parameters with 'plugin_imagify' added if applicable.
 	 */
 	public function maybe_add_imagify_to_recommendations_api_params( array $params ): array {
-		// Return default params if Imagify is not active.
-		if ( ! \Imagify_Partner::has_imagify_api_key() ) {
-			return $params;
-		}
-
-		// Return default params if white label is not active.
-		if ( ! (bool) rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) ) {
+		// Return default params if Imagify is not active or white label is false.
+		if ( ! \Imagify_Partner::has_imagify_api_key() || ! (bool) rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) ) {
 			return $params;
 		}
 
