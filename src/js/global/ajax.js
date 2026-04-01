@@ -798,7 +798,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		handleMetricActionTracking('expand', 'all', 'global_expand');
 	});
 
-	// Track "See Report" clicks in Rocket Insights.
+	// Track "See GTmetrix Report" clicks in Rocket Insights.
 	$(document).on('click', '.wpr-ri-report', function(e) {	// Only track if link is not disabled and mixpanel is available.
 		if ($(this).hasClass('wpr-ri-action--disabled')) {
 			return;
