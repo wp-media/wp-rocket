@@ -32,17 +32,26 @@ return [
 			],
 		],
 
-		'shouldReturnDefaultParamsWithEmptyOptions' => [
+		'shouldAddImagifytoRecommendationsApiParamsWhenImagifyActiveAndWhiteLabelEnabled' => [
 			'config' => [
-				'has_imagify_api_key'  => false,
+				'has_imagify_api_key'  => true,
 				'white_label_account'  => true,
 				'params'               => [
-					'enabled_options' => [],
+					'enabled_options' => [
+						'minify_css',
+						'minify_js',
+						'manual_preload'
+					],
 				],
 			],
 			'expected' => [
 				'params' => [
-					'enabled_options' => [],
+					'enabled_options' => [
+						'minify_css',
+						'minify_js',
+						'manual_preload',
+						'plugin_imagify',
+					],
 				],
 			],
 		],
