@@ -1900,6 +1900,10 @@ div.wpr-upgrade-websites.notstacked {
   margin-right: 24px;
 }
 
+.wpr-without-padding {
+  padding: 0;
+}
+
 /*-----------------------------------------------*\
 
     Header of option group
