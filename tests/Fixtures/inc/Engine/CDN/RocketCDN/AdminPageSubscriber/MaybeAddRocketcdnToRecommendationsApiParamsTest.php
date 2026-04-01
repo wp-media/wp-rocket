@@ -81,9 +81,9 @@ return [
 			],
 		],
 
-		'shouldReturnDefaultParamsWithEmptyOptions' => [
+		'shouldAddRocketCdnToRecommendationsApiParams' => [
 			'config' => [
-				'has_customer_data'     => false,
+				'has_customer_data'     => true,
 				'subscription_status'   => 'running',
 				'white_label'           => true,
 				'params'                => [
@@ -92,7 +92,9 @@ return [
 			],
 			'expected' => [
 				'params' => [
-					'enabled_options' => [],
+					'enabled_options' => [
+						'plugin_rocketcdn',
+					],
 				],
 			],
 		],
