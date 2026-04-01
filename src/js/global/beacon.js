@@ -38,7 +38,7 @@ $(document).ready(function(){
     }
 
 	$( '.wpr-ri-report' ).on( 'click', function() {
-		wprTrackHelpButton( 'rocket insights see report', 'performance summary' );
+		wprTrackHelpButton( 'rocket insights see gtmetrix report', 'performance summary' );
 	} );
 
     // MixPanel tracking function
