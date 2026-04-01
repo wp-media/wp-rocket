@@ -189,6 +189,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'rocket_rocket_insights_enabled'              => 'maybe_disable_for_reseller_or_non_live',
 			'rest_api_init'                               => [ 'register_routes' ],
 			'wp_ajax_rocket_insight_track_metric_actions' => 'track_metric_actions',
+			'rocket_settings_saved_message'               => 'update_settings_saved_message',
 		];
 	}
 
@@ -757,5 +758,32 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public function track_metric_actions(): void {
 		$this->controller->track_metric_actions();
+	}
+
+	/**
+	 * Update the settings saved message to include a note about recommendations needing to be updated.
+	 *
+	 * @param string $message Filtered message to update.
+	 * @return string The additional message to append to the settings saved notice.
+	 */
+	public function update_settings_saved_message( string $message ): string {
+		if ( ! $this->context->is_allowed() ) {
+			return $message;
+		}
+
+		$insights_url = add_query_arg(
+			[
+				'page' => WP_ROCKET_PLUGIN_SLUG . '#rocket_insights',
+			],
+			admin_url( 'options-general.php' )
+		);
+
+		// Moved the space outside the translatable string.
+		return ' ' . sprintf(
+			/* translators: %1$s = opening link tag, %2$s = closing link tag */
+			esc_html__( 'Your Rocket Insights results aren’t updated yet. %1$sRun a new test%2$s to get the latest recommendations.', 'rocket' ),
+			'<a href="' . esc_url( $insights_url ) . '" id="rocket_ri_new_test_save_settings_link">',
+			'</a>'
+		);
 	}
 }
