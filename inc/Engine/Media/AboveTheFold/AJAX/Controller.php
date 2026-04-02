@@ -347,7 +347,7 @@ class Controller implements ControllerInterface {
 
 		// Validate and sanitize srcset.
 		$sanitized_srcset = $this->sanitize_srcset( $source['srcset'] );
-		if ( false === $sanitized_srcset ) {
+		if ( empty( $sanitized_srcset ) ) {
 			return null;
 		}
 
@@ -363,7 +363,7 @@ class Controller implements ControllerInterface {
 
 		// Validate MIME type.
 		$sanitized_type = $this->validate_mime_type( $source['type'] );
-		if ( false === $sanitized_type ) {
+		if ( empty( $sanitized_type ) ) {
 			return null;
 		}
 

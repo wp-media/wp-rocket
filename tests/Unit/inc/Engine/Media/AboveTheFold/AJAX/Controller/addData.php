@@ -99,8 +99,6 @@ class Test_AddBeaconData extends TestCase {
 			->with( $expected['item'] )
 			->willReturn( $expected['result'] );
 
-		Functions\when('wp_check_filetype')->justReturn( $config['filetype'] );
-
 		$this->stubWpParseUrl();
 
 		Filters\expectApplied('rocket_atf_invalid_schemes')->with([ 'chrome-[^:]+://' ])->andReturn([ 'chrome-[^:]+://' ]);
