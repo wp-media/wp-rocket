@@ -14,12 +14,21 @@ class Subscriber implements Subscriber_Interface {
 	private $get_insights_score;
 
 	/**
+	 * AddPageInsights ability instance.
+	 *
+	 * @var AddPageInsights
+	 */
+	private $add_page_insights;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param GetInsightsScore $get_insights_score The ability to get insights scores.
+	 * @param AddPageInsights  $add_page_insights  The ability to add page insights.
 	 */
-	public function __construct( GetInsightsScore $get_insights_score ) {
+	public function __construct( GetInsightsScore $get_insights_score, AddPageInsights $add_page_insights ) {
 		$this->get_insights_score = $get_insights_score;
+		$this->add_page_insights  = $add_page_insights;
 	}
 
 	/**
@@ -29,7 +38,10 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'wp_abilities_api_init'            => 'register_get_insights_scores_ability',
+			'wp_abilities_api_init'            => [
+				[ 'register_get_insights_scores_ability' ],
+				[ 'register_add_page_insights_ability' ],
+			],
 			'wp_abilities_api_categories_init' => 'register_rocket_insights_category',
 		];
 	}
@@ -52,5 +64,12 @@ class Subscriber implements Subscriber_Interface {
 				'description' => __( 'Abilities related to Rocket Insights performance monitoring and scoring.', 'rocket' ),
 			]
 		);
+	}
+
+	/**
+	 * Registers the ability to add page insights.
+	 */
+	public function register_add_page_insights_ability() {
+		$this->add_page_insights->register_add_page_insights_ability();
 	}
 }
