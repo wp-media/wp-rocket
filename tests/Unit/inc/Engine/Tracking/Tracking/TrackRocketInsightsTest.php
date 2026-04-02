@@ -18,25 +18,25 @@ use stdClass;
  * @group Tracking
  * @group RocketInsights
  */
-class TrackRocketInsightsTestTest extends TestCase {
+class TrackRocketInsightsTest extends TestCase {
 	/**
 	 * Optin mock instance.
 	 *
-	 * @var Optin
+	 * @var Mockery\MockInterface
 	 */
 	private $optin;
 
 	/**
 	 * Mixpanel mock instance.
 	 *
-	 * @var MixpanelTracking
+	 * @var Mockery\MockInterface
 	 */
 	private $mixpanel;
 
 	/**
 	 * Options mock instance.
 	 *
-	 * @var Options_Data
+	 * @var Mockery\MockInterface
 	 */
 	private $options;
 
@@ -131,8 +131,7 @@ class TrackRocketInsightsTestTest extends TestCase {
 							}
 
 							// Check ri_page_identifier presence based on expectation.
-							if ( isset( $expected['ri_page_identifier'] ) && null !== $expected['ri_page_identifier'] ) {
-								// Should have ri_page_identifier.
+				if ( isset( $expected['ri_page_identifier'] ) ) {
 								if ( ! isset( $actual_data['ri_page_identifier'] ) || $expected['ri_page_identifier'] !== $actual_data['ri_page_identifier'] ) {
 									return false;
 								}
