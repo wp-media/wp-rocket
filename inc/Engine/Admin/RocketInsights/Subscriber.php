@@ -190,6 +190,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'rest_api_init'                               => [ 'register_routes' ],
 			'wp_ajax_rocket_insight_track_metric_actions' => 'track_metric_actions',
 			'rocket_settings_saved_message'               => 'update_settings_saved_message',
+			'rocket_mixpanel_optin_changed'               => 'track_home_after_analytics_optin',
 		];
 	}
 
@@ -785,5 +786,16 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'<a href="' . esc_url( $insights_url ) . '" id="rocket_ri_new_test_save_settings_link">',
 			'</a>'
 		);
+	}
+
+	/**
+	 * Tracks the home page event after the user opts in to analytics for the first time.
+	 *
+	 * @param bool $status Indicates the current status of the analytics opt-in.
+	 *
+	 * @return void
+	 */
+	public function track_home_after_analytics_optin( bool $status ): void {
+		$this->controller->track_home_after_analytics_optin( $status );
 	}
 }
