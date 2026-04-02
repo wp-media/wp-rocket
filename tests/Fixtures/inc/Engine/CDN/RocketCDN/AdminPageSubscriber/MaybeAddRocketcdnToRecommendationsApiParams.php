@@ -18,36 +18,21 @@ return [
 			],
 		],
 
-		'shouldAddRocketCdnToRecommendationsApiParamsWhenCustomerDataAvailable' => [
+		'shouldAddRocketCdnToRecommendationsApiParamsWhenCDNOptionIsEnabled' => [
 			'config' => [
 				'has_customer_data'     => true,
 				'subscription_status'   => 'cancelled',
 				'white_label'           => false,
 				'params'                => [
-					'enabled_options' => [],
-				],
-			],
-			'expected' => [
-				'params' => [
 					'enabled_options' => [
-						'plugin_rocketcdn',
+						'cdn',
 					],
 				],
 			],
-		],
-
-		'shouldAddRocketCdnToRecommendationsApiParamsWhenSubscriptionIsAvailable' => [
-			'config' => [
-				'has_customer_data'     => false,
-				'subscription_status'   => 'running',
-				'white_label'           => false,
-				'params'                => [
-					'enabled_options' => [],
-				],
-			],
 			'expected' => [
 				'params' => [
 					'enabled_options' => [
+						'cdn',
 						'plugin_rocketcdn',
 					],
 				],
