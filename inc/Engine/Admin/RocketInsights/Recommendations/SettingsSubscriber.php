@@ -6,6 +6,7 @@ namespace WP_Rocket\Engine\Admin\RocketInsights\Recommendations;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
+use Imagify_Partner;
 
 /**
  * Recommendations Settings Subscriber.
@@ -86,10 +87,11 @@ class SettingsSubscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return array The modified API parameters with 'plugin_imagify' added if applicable.
 	 */
 	public function maybe_add_imagify_to_recommendations_api_params( array $params ): array {
-		$has_imagify_api_key   = \Imagify_Partner::has_imagify_api_key();
-		$is_white_label_active = (bool) rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' );
-
-		if ( $is_white_label_active || $has_imagify_api_key ) {
+		if (
+			rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT', false )
+			||
+			Imagify_Partner::has_imagify_api_key()
+		) {
 			$params['enabled_options'][] = 'plugin_imagify';
 		}
 
