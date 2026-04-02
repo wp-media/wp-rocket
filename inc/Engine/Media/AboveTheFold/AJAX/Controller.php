@@ -384,12 +384,12 @@ class Controller implements ControllerInterface {
 	 */
 	private function sanitize_srcset( $srcset ) {
 		// Check for event handlers or malicious content.
-		if ( preg_match( '/\s*on\w+\s*=/i', $srcset ) ) {
+		if ( $this->hasOnAttribute( $srcset ) ) {
 			return '';
 		}
 
 		// Check for quotes, angle brackets, or other HTML-like content.
-		if ( preg_match( '/[<>"\']/i', $srcset ) ) {
+		if ( $this->hasQuotes( $srcset ) ) {
 			return '';
 		}
 
@@ -426,12 +426,12 @@ class Controller implements ControllerInterface {
 	 */
 	private function sanitize_media_query( $media ) {
 		// Check for event handlers or malicious content.
-		if ( preg_match( '/\s*on\w+\s*=/i', $media ) ) {
+		if ( $this->hasOnAttribute( $media ) ) {
 			return '';
 		}
 
 		// Check for quotes or angle brackets.
-		if ( preg_match( '/[<>"\']/i', $media ) ) {
+		if ( $this->hasQuotes( $media ) ) {
 			return '';
 		}
 
@@ -452,12 +452,12 @@ class Controller implements ControllerInterface {
 	 */
 	private function sanitize_sizes( $sizes ) {
 		// Check for event handlers or malicious content.
-		if ( preg_match( '/\s*on\w+\s*=/i', $sizes ) ) {
+		if ( $this->hasOnAttribute( $sizes ) ) {
 			return '';
 		}
 
 		// Check for quotes or angle brackets.
-		if ( preg_match( '/[<>"\']/i', $sizes ) ) {
+		if ( $this->hasQuotes( $sizes ) ) {
 			return '';
 		}
 
@@ -511,5 +511,25 @@ class Controller implements ControllerInterface {
 		}
 
 		return $type;
+	}
+
+	/**
+	 * Check if item has On JS attributes like onload.
+	 *
+	 * @param string $item Item to be checked.
+	 * @return false|int
+	 */
+	private function hasOnAttribute( $item ) {
+		return preg_match( '/\s*on\w+\s*=/i', $item );
+	}
+
+	/**
+	 * Check for quotes, angle brackets, or other HTML-like content.
+	 *
+	 * @param string $item Item to be checked.
+	 * @return false|int
+	 */
+	private function hasQuotes( $item ) {
+		return preg_match( '/[<>"\']/i', $item );
 	}
 }
