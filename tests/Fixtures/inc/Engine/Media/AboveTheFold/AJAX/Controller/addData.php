@@ -25,6 +25,22 @@ for ( $i = 1; $i <= 50; $i++ ) {
 	];
 }
 
+$mime_types = [
+	'jpg|jpeg|jpe' => 'image/jpeg',
+	'gif'          => 'image/gif',
+	'png'          => 'image/png',
+	'bmp'          => 'image/bmp',
+	'tiff|tif'     => 'image/tiff',
+	'webp'         => 'image/webp',
+	'avif'         => 'image/avif',
+	'ico'          => 'image/x-icon',
+	'heic'         => 'image/heic',
+	'heif'         => 'image/heif',
+	'heics'        => 'image/heic-sequence',
+	'heifs'        => 'image/heif-sequence',
+	'asf|asx'      => 'video/x-ms-asf',
+];
+
 return [
 	'testShouldBailWhenNotAllowed' => [
 		'config'   => [
@@ -1293,4 +1309,66 @@ return [
 			],
 		],
 	],
+
+	// ========================================================================
+	// XSS VULNERABILITY TEST CASES - Picture Sources
+	// ========================================================================
+
+	/**
+	 * Test Case: XSS attempt via srcset with onerror event handler
+	 * Should sanitize/reject malicious srcset containing event handlers
+	 */
+	'testXSSInSrcsetOnerror' => [
+		'config' => [
+			'filter'  => true,
+			'url'     => 'http://example.org/test-page/',
+			'is_mobile' => false,
+			'results' => json_encode([
+				'lcp' => [
+					[
+						'type'    => 'picture',
+						'src'     => 'http://example.org/wp-content/uploads/image.jpg',
+						'srcset'  => '',
+						'sizes'   => '',
+						'sources' => [
+							[
+								'srcset' => 'image.avif" onerror="alert(document.domain)',
+								'media'  => '',
+								'type'   => 'image/avif',
+								'sizes'  => '',
+							],
+						],
+						'label'   => 'lcp',
+					],
+				],
+			]),
+			'allowed_mime_types' => $mime_types,
+			'filetype' => [
+				'ext' => 'avif',
+				'type' => 'image/avif',
+			],
+		],
+		'expected' => [
+			'result' => true,
+			'message' => [
+				'url' => 'http://example.org/test-page',
+				'is_mobile' => false,
+				'status' => 'completed',
+				'error_message' => '',
+				'lcp' => '{"type":"picture","src":"http:\/\/example.org\/wp-content\/uploads\/image.jpg","sources":[{"srcset":"","media":"","type":"image\/avif","sizes":""}]}',
+				'viewport' => '[]',
+				'last_accessed' => null,
+			],
+			'item' => [
+				'url' => 'http://example.org/test-page',
+				'is_mobile' => false,
+				'lcp' => '{"type":"picture","src":"http:\/\/example.org\/wp-content\/uploads\/image.jpg","sources":[{"srcset":"","media":"","type":"image\/avif","sizes":""}]}',
+				'viewport' => '[]',
+				'last_accessed' => null,
+				'status' => 'completed',
+				'error_message' => '',
+			],
+		],
+	],
+
 ];
