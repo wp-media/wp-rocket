@@ -7,6 +7,7 @@ use WP_Rocket\Dependencies\League\Container\Argument\Literal\StringArgument;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Engine\Admin\RocketInsights\{
 	Abilities\GetInsightsScore,
+	Abilities\AddPageInsights,
 	Abilities\Subscriber as AbilitiesSubscriber,
 	Database\Tables\RocketInsights as RITable,
 	Database\Queries\RocketInsights as RIQuery,
@@ -72,6 +73,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'ri_recommendations_subscriber',
 		'ri_recommendations_settings_subscriber',
 		'ri_get_insights_scores_ability',
+		'ri_add_page_insights_ability',
 		'ri_abilities_subscriber',
 	];
 
@@ -300,8 +302,26 @@ class ServiceProvider extends AbstractServiceProvider {
 					'ri_global_score',
 				]
 			);
+
+		$this->getContainer()->add( 'ri_add_page_insights_ability', AddPageInsights::class )
+			->addArguments(
+				[
+					'ri_context',
+					'ri_manager',
+					'job_processor',
+					'job_manager_queue',
+					'ri_query',
+					'ri_plan',
+				]
+			);
+
 		$this->getContainer()->addShared( 'ri_abilities_subscriber', AbilitiesSubscriber::class )
-			->addArgument( 'ri_get_insights_scores_ability' );
+			->addArguments(
+				[
+					'ri_get_insights_scores_ability',
+					'ri_add_page_insights_ability',
+				]
+			);
 
 		// Ensure the table is created.
 		$this->getContainer()->get( 'ri_table' );
