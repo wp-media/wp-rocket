@@ -64,6 +64,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'rocket_insights_recommendations_rest_response' => 'output_recommendations_rest_response',
 			'wp_rocket_upgrade'                           => [ 'force_global_metrics_recalculation', 10, 2 ],
 			'rocket_rocket_insights_job_deleted'          => 'maybe_clear_recommendations_on_delete',
+			'updated_user_meta'                           => [ 'clear_recommendations_on_lang_change', 10, 3 ],
 		];
 	}
 
@@ -157,6 +158,31 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		$this->logger->info( 'Rocket Insights: Clear global score to insert average metrics when updating from a WP Rocket version less than 3.21 but not less than 3.20' );
 
 		$this->data_manager->force_global_metrics_recalculation();
+	}
+
+	/**
+	 * Clears the recommendations when the user's language (locale) is changed.
+	 *
+	 * @param int    $meta_id   ID of the meta entry.
+	 * @param int    $user_id   ID of the object the metadata is for (user ID).
+	 * @param string $meta_key  Meta key being updated.
+	 *
+	 * @return void
+	 */
+	public function clear_recommendations_on_lang_change( int $meta_id, int $user_id, string $meta_key ): void {
+		if ( 'locale' !== $meta_key ) {
+			return;
+		}
+
+		// Bail out if the user meta being updated doesn't belong to the current user.
+		// In order to avoid unnecessary clearing of recommendations when an admin updates another user's locale.
+		$current_user_id = get_current_user_id();
+		if ( (int) $user_id !== (int) $current_user_id ) {
+			return;
+		}
+
+		$this->logger->info( 'Rocket Insights: User language changed, clear recommendations to force fetch.' );
+		$this->data_manager->clear_recommendations();
 	}
 
 	/**

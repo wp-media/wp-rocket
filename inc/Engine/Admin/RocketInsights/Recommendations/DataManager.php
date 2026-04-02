@@ -572,7 +572,7 @@ class DataManager implements LoggerAwareInterface {
 	 */
 	private function get_language(): string {
 		// Get WordPress locale (e.g., 'en_US', 'fr_FR').
-		$locale = get_locale();
+		$locale = get_user_locale();
 
 		// Extract language code (first 2 characters).
 		$language = substr( $locale, 0, 2 );
