@@ -94,7 +94,7 @@ class Subscriber implements Subscriber_Interface {
 	 * Registers the ability to add page insights.
 	 */
 	public function register_add_page_insights_ability() {
-		$this->add_page_insights->register();
+		$this->add_page_insights->register_add_page_insights_ability();
 	}
 
 	/**
