@@ -400,7 +400,7 @@ class Controller implements ControllerInterface {
 			// Each source should be: url [width_descriptor].
 			// Example: "image.jpg 1x" or "image.jpg 480w".
 			if ( ! preg_match( '/^([^\s]+)(\s+\d+[wx])?$/i', $source, $matches ) ) {
-				return false;
+				return '';
 			}
 
 			$url        = $matches[1];
