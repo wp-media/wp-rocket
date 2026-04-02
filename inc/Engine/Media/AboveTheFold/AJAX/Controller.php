@@ -334,7 +334,11 @@ class Controller implements ControllerInterface {
 	 * @return array|null Sanitized source object, or null if invalid.
 	 */
 	private function validate_source_object( $source ) {
-		$source = ! is_object( $source ) ? $source : (array) $source;
+		if ( ! is_object( $source ) ) {
+			return null;
+		}
+
+		$source = (array) $source;
 
 		// Validate required fields exist.
 		if ( empty( $source['srcset'] ) || empty( $source['type'] ) ) {
@@ -375,17 +379,17 @@ class Controller implements ControllerInterface {
 	 * Sanitize srcset attribute.
 	 *
 	 * @param string $srcset Raw srcset value.
-	 * @return string|false Sanitized srcset or false if invalid.
+	 * @return string Sanitized srcset or empty string if invalid.
 	 */
 	private function sanitize_srcset( $srcset ) {
 		// Check for event handlers or malicious content.
 		if ( preg_match( '/\s*on\w+\s*=/i', $srcset ) ) {
-			return false;
+			return '';
 		}
 
 		// Check for quotes, angle brackets, or other HTML-like content.
 		if ( preg_match( '/[<>"\']/i', $srcset ) ) {
-			return false;
+			return '';
 		}
 
 		// Validate srcset format: url [descriptor], url [descriptor], ...
@@ -404,7 +408,7 @@ class Controller implements ControllerInterface {
 
 			// Validate URL format (relative or absolute).
 			if ( ! preg_match( '/^(https?:\/\/|\/)[^\s<>"\']+$/i', $url ) ) {
-				return false;
+				return '';
 			}
 
 			$clean_sources[] = $url . ( $descriptor ? ' ' . $descriptor : '' );
@@ -417,23 +421,23 @@ class Controller implements ControllerInterface {
 	 * Sanitize media query attribute.
 	 *
 	 * @param string $media Raw media query value.
-	 * @return string|false Sanitized media query or false if invalid.
+	 * @return string Sanitized media query or empty string if invalid.
 	 */
 	private function sanitize_media_query( $media ) {
 		// Check for event handlers or malicious content.
 		if ( preg_match( '/\s*on\w+\s*=/i', $media ) ) {
-			return false;
+			return '';
 		}
 
 		// Check for quotes or angle brackets.
 		if ( preg_match( '/[<>"\']/i', $media ) ) {
-			return false;
+			return '';
 		}
 
 		// Validate media query contains only allowed characters.
 		// Allow: (, ), and, or, not, min/max-width, spaces, numbers, px, em, rem.
 		if ( ! preg_match( '/^[\w\s\(\)\-:,\.]+$/i', $media ) ) {
-			return false;
+			return '';
 		}
 
 		return sanitize_text_field( $media );
@@ -443,23 +447,23 @@ class Controller implements ControllerInterface {
 	 * Sanitize sizes attribute.
 	 *
 	 * @param string $sizes Raw sizes value.
-	 * @return string|false Sanitized sizes or false if invalid.
+	 * @return string Sanitized sizes or empty string if invalid.
 	 */
 	private function sanitize_sizes( $sizes ) {
 		// Check for event handlers or malicious content.
 		if ( preg_match( '/\s*on\w+\s*=/i', $sizes ) ) {
-			return false;
+			return '';
 		}
 
 		// Check for quotes or angle brackets.
 		if ( preg_match( '/[<>"\']/i', $sizes ) ) {
-			return false;
+			return '';
 		}
 
 		// Validate sizes format: media_query width, media_query width, ...
 		// Example: "(max-width: 600px) 480px, 800px".
 		if ( ! preg_match( '/^[\w\s\(\)\-:,\.vwpxem%]+$/i', $sizes ) ) {
-			return false;
+			return '';
 		}
 
 		return sanitize_text_field( $sizes );
@@ -474,7 +478,7 @@ class Controller implements ControllerInterface {
 	 * - Safe for use in <picture> elements
 	 *
 	 * @param string $type Raw MIME type.
-	 * @return string|false Sanitized MIME type or false if invalid.
+	 * @return string Sanitized MIME type or empty string if invalid.
 	 */
 	private function validate_mime_type( $type ) {
 		// Sanitize input.
@@ -482,13 +486,13 @@ class Controller implements ControllerInterface {
 
 		// Must be an image type.
 		if ( ! str_starts_with( $type, 'image/' ) ) {
-			return false;
+			return '';
 		}
 
 		// Exclude SVG for security (optional - can contain inline scripts).
 		// Remove this check if you want to support SVG.
 		if ( 'image/svg+xml' === $type ) {
-			return false;
+			return '';
 		}
 
 		// Get WordPress allowed image MIME types.
@@ -502,7 +506,7 @@ class Controller implements ControllerInterface {
 
 		// Check if type is in WordPress's allowed list.
 		if ( ! in_array( $type, $image_mimes, true ) ) {
-			return false;
+			return '';
 		}
 
 		return $type;
