@@ -178,6 +178,7 @@ class Controller implements ControllerInterface {
 					},
 					$image->sources
 				);
+				$object->sources = array_filter( $object->sources ); // Remove invalid sources.
 				break;
 			default:
 				// For other types, add the first non-empty key to the object.
