@@ -64,6 +64,8 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'rocket_insights_recommendations_rest_response' => 'output_recommendations_rest_response',
 			'wp_rocket_upgrade'                           => [ 'force_global_metrics_recalculation', 10, 2 ],
 			'rocket_rocket_insights_job_deleted'          => 'maybe_clear_recommendations_on_delete',
+			'activated_plugin'                            => 'maybe_clear_recommendations',
+			'deactivated_plugin'                          => 'maybe_clear_recommendations',
 		];
 	}
 
@@ -157,6 +159,25 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		$this->logger->info( 'Rocket Insights: Clear global score to insert average metrics when updating from a WP Rocket version less than 3.21 but not less than 3.20' );
 
 		$this->data_manager->force_global_metrics_recalculation();
+	}
+
+	/**
+	 * Clear recommendations if relevant plugin(Imagify/RocketCDN) is activated or deactivated.
+	 *
+	 * @param string $plugin The plugin being activated or deactivated.
+	 * @return void
+	 */
+	public function maybe_clear_recommendations( string $plugin ): void {
+		$allowed_plugins = [
+			'imagify/imagify.php',
+			'rocketcdn/rocketcdn.php',
+		];
+
+		if ( ! in_array( $plugin, $allowed_plugins, true ) ) {
+			return;
+		}
+
+		$this->data_manager->clear_recommendations();
 	}
 
 	/**
