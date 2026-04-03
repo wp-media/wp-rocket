@@ -342,7 +342,7 @@ class Controller implements ControllerInterface {
 		$source = (array) $source;
 
 		// Validate required fields exist.
-		if ( empty( $source['srcset'] ) || empty( $source['type'] ) ) {
+		if ( empty( $source['srcset'] ) ) {
 			return null;
 		}
 
@@ -364,10 +364,6 @@ class Controller implements ControllerInterface {
 
 		// Validate MIME type.
 		$sanitized_type = $this->validate_mime_type( $source['type'] );
-		if ( empty( $sanitized_type ) ) {
-			return null;
-		}
-
 		return [
 			'srcset' => $sanitized_srcset,
 			'media'  => $sanitized_media,
