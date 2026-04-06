@@ -393,19 +393,27 @@ class Controller implements ControllerInterface {
 				$media = '(min-width: ' . ( $prev_max_width + 0.1 ) . 'px) and ' . $media;
 			}
 
-			// Add the media attribute to the media string.
-
-			$media = ! empty( $media ) ? ' media="' . $media . '"' : '';
+			// Add the media attribute to the media string with escaping.
+			$media = ! empty( $media ) ? sprintf( ' media="%s"', esc_attr( $media ) ) : '';
 
 			$sources[] = $source->srcset;
-			// Get the sizes attribute of the source, if it exists.
-			$sizes = ! empty( $source->sizes ) ? ' imagesizes="' . $source->sizes . '"' : '';
+
+			// Get the sizes attribute of the source, if it exists, with escaping.
+			$sizes = ! empty( $source->sizes ) ? sprintf( ' imagesizes="%s"', esc_attr( $source->sizes ) ) : '';
 
 			// Determine whether to use 'href' or 'imagesrcset' based on the srcset attribute.
 			$link_attribute = ( substr_count( $source->srcset, ',' ) > 0 ) ? 'imagesrcset' : 'href';
 
-			// Append the source and media query to the tag string.
-			$tag .= $start_tag . $link_attribute . '="' . $source->srcset . '"' . ( $media ) . $sizes . $end_tag;
+			// Append the source and media query to the tag string with escaping.
+			$tag .= sprintf(
+				'%s%s="%s"%s%s%s',
+				$start_tag,
+				$link_attribute,
+				esc_attr( $source->srcset ),
+				$media,
+				$sizes,
+				$end_tag
+			);
 
 			// If a max-width is found in the source's media attribute, update the previous max-width.
 			if ( preg_match( '/\(max-width: (\d+(\.\d+)?)px\)/', $source->media, $matches ) ) {
@@ -417,9 +425,15 @@ class Controller implements ControllerInterface {
 
 		// If a previous max-width is found, update the media query and add the LCP source to the sources array and the tag string.
 		if ( null !== $prev_max_width ) {
-			$media     = ' media="(min-width: ' . ( $prev_max_width + 0.1 ) . 'px)"';
+			$media     = sprintf( ' media="(min-width: %spx)"', ( $prev_max_width + 0.1 ) );
 			$sources[] = $lcp->src;
-			$tag      .= $start_tag . 'href="' . $lcp->src . '"' . $media . $end_tag;
+			$tag      .= sprintf(
+				'%shref="%s"%s%s',
+				$start_tag,
+				esc_attr( $lcp->src ),
+				$media,
+				$end_tag
+			);
 		}
 
 		// Return an associative array containing the sources array and the tag string.
