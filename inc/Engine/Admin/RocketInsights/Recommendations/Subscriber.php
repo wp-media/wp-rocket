@@ -63,6 +63,9 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'rocket_insights_global_score_status_changed' => 'handle_status_change',
 			'rocket_insights_recommendations_rest_response' => 'output_recommendations_rest_response',
 			'wp_rocket_upgrade'                           => [ 'force_global_metrics_recalculation', 10, 2 ],
+			'rocket_rocket_insights_job_deleted'          => 'maybe_clear_recommendations_on_delete',
+			'activated_plugin'                            => 'maybe_clear_recommendations',
+			'deactivated_plugin'                          => 'maybe_clear_recommendations',
 		];
 	}
 
@@ -127,6 +130,19 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	}
 
 	/**
+	 * Update recommendations when a page is deleted.
+	 *
+	 * If no metrics remain after deletion, saves an empty state to prevent
+	 * the widget from showing an infinite loading spinner.
+	 *
+	 * @return void
+	 */
+	public function maybe_clear_recommendations_on_delete(): void {
+		// Trigger recommendations refresh after deletion.
+		$this->data_manager->maybe_fetch_recommendations();
+	}
+
+	/**
 	 * Forces global metrics recalculation when upgrading from a version older than 3.21, but not older than 3.20.
 	 *
 	 * @since 3.21
@@ -143,6 +159,25 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		$this->logger->info( 'Rocket Insights: Clear global score to insert average metrics when updating from a WP Rocket version less than 3.21 but not less than 3.20' );
 
 		$this->data_manager->force_global_metrics_recalculation();
+	}
+
+	/**
+	 * Clear recommendations if relevant plugin(Imagify/RocketCDN) is activated or deactivated.
+	 *
+	 * @param string $plugin The plugin being activated or deactivated.
+	 * @return void
+	 */
+	public function maybe_clear_recommendations( string $plugin ): void {
+		$allowed_plugins = [
+			'imagify/imagify.php',
+			'rocketcdn/rocketcdn.php',
+		];
+
+		if ( ! in_array( $plugin, $allowed_plugins, true ) ) {
+			return;
+		}
+
+		$this->data_manager->clear_recommendations();
 	}
 
 	/**

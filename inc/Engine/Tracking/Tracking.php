@@ -6,6 +6,7 @@ namespace WP_Rocket\Engine\Tracking;
 use WP_Rocket\Abstract_Render;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\RocketInsights\Database\Rows\RocketInsights;
+use WP_Rocket\Engine\Common\Utils;
 use WPMedia\Mixpanel\Optin;
 use WPMedia\Mixpanel\TrackingPlugin as MixpanelTracking;
 
@@ -269,17 +270,23 @@ class Tracking extends Abstract_Render {
 			return;
 		}
 
+		$event_data = [
+			'context'   => 'wp_plugin',
+			'status'    => $row_details->status,
+			'score'     => $row_details->score,
+			'retest'    => $row_details->data['is_retest'],
+			'duration'  => time() - $row_details->data['start_time'],
+			'plan_type' => $plan,
+			'source'    => $row_details->data['source'],
+		];
+
+		if ( Utils::is_home( $row_details->url ) ) {
+			$event_data['ri_page_identifier'] = 'is_home_page';
+		}
+
 		$this->mixpanel->track_direct(
 			'Rocket Insights Performance Test',
-			[
-				'context'   => 'wp_plugin',
-				'status'    => $row_details->status,
-				'score'     => $row_details->score,
-				'retest'    => $row_details->data['is_retest'],
-				'duration'  => time() - $row_details->data['start_time'],
-				'plan_type' => $plan,
-				'source'    => $row_details->data['source'],
-			]
+			$event_data
 		);
 	}
 
