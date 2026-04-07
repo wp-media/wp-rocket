@@ -158,9 +158,14 @@ class RegisterAddPageInsightsAbilityTest extends TestCase {
 		return [
 			'response' => [
 				'code'    => 200,
-				'message' => 'OK',
 			],
-			'body'     => '<html><head><title>Test Page Title</title></head><body>Test content</body></html>',
+			'body'     => json_encode(
+				[
+					'success' => true,
+					'uuid'    => 'test-uuid',
+					'code'    => 200,
+				]
+			),
 		];
 	}
 
