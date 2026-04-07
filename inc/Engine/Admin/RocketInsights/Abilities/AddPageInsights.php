@@ -272,7 +272,8 @@ class AddPageInsights implements AbilitiesInterface {
 
 		// Check if url has not been submited.
 		if ( false !== $this->manager->get_single_job( $url, true ) ) {
-			$payload['error'] = true;
+			$payload['error']   = true;
+			$payload['message'] = 'URL has already been submitted for performance monitoring.';
 
 			return $payload;
 		}
