@@ -21,6 +21,7 @@ tests_add_filter(
 		add_filter( 'rocket_lrc_optimization', '__return_false' );
 		add_filter( 'pre_get_rocket_option_auto_preload_fonts', '__return_false' );
 		add_filter( 'rocket_preconnect_external_domains_optimization', '__return_false' );
+		add_filter( 'mcp_adapter_create_default_server', '__return_false' );
 
 		if ( BootstrapManager::isGroup( 'TranslatePress' ) ) {
 			require WP_ROCKET_TESTS_FIXTURES_DIR . '/classes/TRP_Translate_Press.php';
