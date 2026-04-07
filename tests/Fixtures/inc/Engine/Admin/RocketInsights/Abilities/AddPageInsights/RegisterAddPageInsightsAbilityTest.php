@@ -57,7 +57,7 @@ return [
 		'expected' => [
 			'is_error'   => false,
 			'success'    => false,
-			'error'      => '',
+			'error'      => 'URL has already been submitted for performance monitoring.',
 			'hook_fired' => false,
 		],
 	],
