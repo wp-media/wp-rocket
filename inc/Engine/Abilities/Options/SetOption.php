@@ -306,7 +306,7 @@ class SetOption implements AbilitiesInterface {
 			}
 			return wp_strip_all_tags(
 				str_replace( [ '<style>', '</style>' ], '', $option_value ),
-				[ "\'", '\"' ]
+				true
 			);
 		}
 
