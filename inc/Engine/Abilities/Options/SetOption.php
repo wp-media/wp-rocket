@@ -127,7 +127,7 @@ class SetOption implements AbilitiesInterface {
 		}
 
 		wp_register_ability(
-			'wp-rocket/set-options',
+			'wp-rocket/set-option',
 			[
 				'label'               => __( 'Set a WP Rocket option', 'rocket' ),
 				'description'         => __( 'Set the value for a WP Rocket option', 'rocket' ),
