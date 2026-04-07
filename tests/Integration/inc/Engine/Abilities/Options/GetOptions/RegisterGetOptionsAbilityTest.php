@@ -35,10 +35,6 @@ class RegisterGetOptionsAbilityTest extends TestCase {
 			$this->markTestSkipped( 'WordPress Abilities API requires WordPress ' . self::MIN_WP_VERSION . ' or higher.' );
 		}
 
-		if ( ! function_exists( 'wp_get_ability' ) ) {
-			$this->markTestSkipped( 'WordPress Abilities API is not available.' );
-		}
-
 		add_filter( 'pre_get_rocket_options', [ $this, 'set_settings' ] );
 	}
 
@@ -85,7 +81,7 @@ class RegisterGetOptionsAbilityTest extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function set_settings() {
+	public function set_settings( $value ) {
 		return $this->config['settings'];
 	}
 
