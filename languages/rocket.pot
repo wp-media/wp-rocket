@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the WP Rocket plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.21-alpha2\n"
+"Project-Id-Version: WP Rocket 3.21.1-beta\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
 "Last-Translator: WP Media (http://wp-rocket.me/)\n"
 "Language-Team: WP Media (http://www.transifex.com/projects/p/wp-media/) <contact@wp-media.me>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-03-18T18:49:24+00:00\n"
+"POT-Creation-Date: 2026-04-06T12:07:46+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: rocket\n"
@@ -341,31 +341,31 @@ msgstr ""
 msgid "Clear this cache"
 msgstr ""
 
-#: inc/admin/admin.php:383
+#: inc/admin/admin.php:390
 msgid "Settings import failed: you do not have the permissions to do this."
 msgstr ""
 
-#: inc/admin/admin.php:387
+#: inc/admin/admin.php:394
 msgid "Settings import failed: no file uploaded."
 msgstr ""
 
-#: inc/admin/admin.php:391
-msgid "Settings import failed: incorrect filename."
+#: inc/admin/admin.php:398
+msgid "Settings import failed: incorrect filename. Only JSON format is supported."
 msgstr ""
 
-#: inc/admin/admin.php:402
-msgid "Settings import failed: incorrect filetype."
+#: inc/admin/admin.php:409
+msgid "Settings import failed: only JSON format is supported for security reasons."
 msgstr ""
 
-#: inc/admin/admin.php:412
+#: inc/admin/admin.php:419
 msgid "Settings import failed: "
 msgstr ""
 
-#: inc/admin/admin.php:428
+#: inc/admin/admin.php:430
 msgid "Settings import failed: unexpected file content."
 msgstr ""
 
-#: inc/admin/admin.php:473
+#: inc/admin/admin.php:474
 msgid "Settings imported and saved."
 msgstr ""
 
@@ -1251,22 +1251,22 @@ msgstr ""
 msgid "Wow, you’ve already added %1$s pages! That's the limit for now. Help shape what’s next by %2$ssharing your feedback%3$s."
 msgstr ""
 
-#: inc/Engine/Admin/RocketInsights/GlobalMetrics/Calculator.php:112
+#: inc/Engine/Admin/RocketInsights/GlobalMetrics/Calculator.php:116
 #: views/settings/partials/rocket-insights/table-row.php:136
 msgid "Time until the largest visible content element renders and the main content becomes visible."
 msgstr ""
 
-#: inc/Engine/Admin/RocketInsights/GlobalMetrics/Calculator.php:117
+#: inc/Engine/Admin/RocketInsights/GlobalMetrics/Calculator.php:121
 #: views/settings/partials/rocket-insights/table-row.php:147
 msgid "Total time the main thread is blocked before the page becomes interactive during loading."
 msgstr ""
 
-#: inc/Engine/Admin/RocketInsights/GlobalMetrics/Calculator.php:122
+#: inc/Engine/Admin/RocketInsights/GlobalMetrics/Calculator.php:126
 #: views/settings/partials/rocket-insights/table-row.php:158
 msgid "Total amount of unexpected layout shifts during page loading, affecting visual stability."
 msgstr ""
 
-#: inc/Engine/Admin/RocketInsights/GlobalMetrics/Calculator.php:127
+#: inc/Engine/Admin/RocketInsights/GlobalMetrics/Calculator.php:131
 #: views/settings/partials/rocket-insights/table-row.php:169
 msgid "Time from the request until the server responds, determining how soon the page starts loading."
 msgstr ""
@@ -1350,35 +1350,41 @@ msgid "You are not allowed to access items."
 msgstr ""
 
 #: inc/Engine/Admin/RocketInsights/Settings/Controller.php:57
-#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:112
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:113
 msgid "No Subscription"
 msgstr ""
 
 #: inc/Engine/Admin/RocketInsights/Settings/Controller.php:64
-#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:105
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:106
 msgid "Next Billing Date"
 msgstr ""
 
-#: inc/Engine/Admin/RocketInsights/Subscriber.php:219
+#: inc/Engine/Admin/RocketInsights/Subscriber.php:221
 msgid "Upgrade your plan to get access to re-test performance or run new tests"
 msgstr ""
 
 #. translators: %1$s opening tag, %2$s is WP Rocket plugin name, %3$s closing tag.
-#: inc/Engine/Admin/RocketInsights/Subscriber.php:669
+#: inc/Engine/Admin/RocketInsights/Subscriber.php:671
 #, php-format
 msgid "%1$sNew in %2$s: Meet Rocket Insights, your built-in performance tracking tool!%3$s"
 msgstr ""
 
 #. translators: %1$s opening tag, %2$s is WP Rocket plugin name, %3$s closing tag.
-#: inc/Engine/Admin/RocketInsights/Subscriber.php:680
+#: inc/Engine/Admin/RocketInsights/Subscriber.php:682
 #, php-format
 msgid "%1$sStarting from %2$s 3.20, you can track your key pages’ performance directly from your dashboard and get in-depth insights.%3$s"
 msgstr ""
 
 #. translators: %1$s opening tag, %3$s closing tag.
-#: inc/Engine/Admin/RocketInsights/Subscriber.php:691
+#: inc/Engine/Admin/RocketInsights/Subscriber.php:693
 #, php-format
 msgid "%1$sAdd your first page, run the test, and keep your site fast.%2$s"
+msgstr ""
+
+#. translators: %1$s = opening link tag, %2$s = closing link tag
+#: inc/Engine/Admin/RocketInsights/Subscriber.php:785
+#, php-format
+msgid "Your Rocket Insights results aren’t updated yet. %1$sRun a new test%2$s to get the latest recommendations."
 msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:235
@@ -2094,12 +2100,12 @@ msgid "Enable Content Delivery Network"
 msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:1602
-#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:171
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:172
 msgid "CDN CNAME(s)"
 msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:1603
-#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:172
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:173
 msgid "Specify the CNAME(s) below"
 msgstr ""
 
@@ -2355,7 +2361,7 @@ msgstr ""
 msgid "Sucuri Add-on: The API key for the Sucuri firewall must be in format <code>{32 characters}/{32 characters}</code>."
 msgstr ""
 
-#: inc/Engine/Admin/Settings/Settings.php:537
+#: inc/Engine/Admin/Settings/Settings.php:546
 msgid "Sorry! Adding /(.*) in Advanced Rules > Never Cache URL(s) was not saved because it disables caching and optimizations for every page on your site."
 msgstr ""
 
@@ -2418,18 +2424,18 @@ msgstr ""
 msgid "WP_CACHE is set to false"
 msgstr ""
 
-#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:147
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:148
 msgid "Your RocketCDN subscription is currently active."
 msgstr ""
 
 #. translators: %1$s = opening <code> tag, %2$s = CDN URL, %3$s = closing </code> tag.
-#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:153
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:154
 #, php-format
 msgid "To use RocketCDN, replace your CNAME with %1$s%2$s%3$s."
 msgstr ""
 
 #. translators: %1$is = opening link tag, %2$s = closing link tag.
-#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:164
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:165
 #: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:254
 #: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:361
 #, php-format
@@ -4112,6 +4118,10 @@ msgstr ""
 msgid "Combine our plugins below to build incredible WordPress websites!"
 msgstr ""
 
+#: views/settings/page-sections/rocket-insights.php:24
+msgid "Rocket Insights is powered by GTmetrix to run tests and generate your performance results and recommendations."
+msgstr ""
+
 #: views/settings/page-sections/sucuri.php:46
 msgid "Clear all Sucuri cache files"
 msgstr ""
@@ -4435,7 +4445,7 @@ msgid "You’ve reached your free monthly plan limit. Upgrade now to unlock unli
 msgstr ""
 
 #: views/settings/partials/rocket-insights/table-row.php:87
-msgid "See Report"
+msgid "See GTmetrix Report"
 msgstr ""
 
 #: views/settings/partials/rocket-insights/table-row.php:104

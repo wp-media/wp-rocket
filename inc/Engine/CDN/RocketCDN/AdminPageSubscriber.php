@@ -64,11 +64,12 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_dashboard_after_account_data' => 'display_rocketcdn_status',
-			'rocket_cdn_settings_fields'          => 'rocketcdn_field',
-			'admin_post_rocket_purge_rocketcdn'   => 'purge_cdn_cache',
-			'rocket_settings_page_footer'         => 'add_subscription_modal',
-			'http_request_args'                   => [ 'preserve_authorization_token', PHP_INT_MAX, 2 ],
+			'rocket_dashboard_after_account_data'        => 'display_rocketcdn_status',
+			'rocket_cdn_settings_fields'                 => 'rocketcdn_field',
+			'admin_post_rocket_purge_rocketcdn'          => 'purge_cdn_cache',
+			'rocket_settings_page_footer'                => 'add_subscription_modal',
+			'http_request_args'                          => [ 'preserve_authorization_token', PHP_INT_MAX, 2 ],
+			'rocket_insights_api_recommendations_params' => 'maybe_add_rocketcdn_to_recommendations_api_params',
 		];
 	}
 
@@ -278,6 +279,51 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	 */
 	public function preserve_authorization_token( $args, $url ) {
 		return $this->api_client->preserve_authorization_token( $args, $url );
+	}
+
+	/**
+	 * Adds the 'plugin_rocketcdn' option to the recommendations API parameters if certain conditions are met.
+	 *
+	 * @param array $params The existing API parameters.
+	 * @return array The modified API parameters with 'plugin_rocketcdn' added if applicable.
+	 */
+	public function maybe_add_rocketcdn_to_recommendations_api_params( array $params ): array {
+		if ( ! $this->should_add_to_recommendations_api_params( $params ) ) {
+			return $params;
+		}
+
+		$params['enabled_options'][] = 'plugin_rocketcdn';
+
+		return $params;
+	}
+
+	/**
+	 * Determines whether to add the 'plugin_rocketcdn' option to the recommendations API parameters.
+	 *
+	 * This method checks multiple conditions to decide if the user should be included:
+	 * - Returns true if the account is a white label account.
+	 * - Returns true if the RocketCDN standalone is active.
+	 * - Returns true if CDN option in WP Rocket is enabled.
+	 * - Returns false otherwise.
+	 *
+	 * @param array $params API params.
+	 * @return bool True if the user should be added to the recommendations API parameters, false otherwise.
+	 */
+	private function should_add_to_recommendations_api_params( $params ): bool {
+		// Return true if white label is true.
+		if ( $this->is_white_label_account() ) {
+			return true;
+		}
+
+		if ( ! empty( rocket_get_constant( 'ROCKETCDN_VERSION' ) ) ) {
+			return true;
+		}
+
+		if ( in_array( 'cdn', $params['enabled_options'], true ) ) {
+			return true;
+		}
+
+		return false;
 	}
 
 	/**

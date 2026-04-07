@@ -174,18 +174,11 @@ class Controller implements ControllerInterface {
 							Logger::notice( 'The source type is missing in the image object.', [ 'source' => $source ] );
 						}
 
-						return (object) wp_parse_args(
-							$source,
-							[
-								'media'  => '',
-								'sizes'  => '',
-								'srcset' => '',
-								'type'   => '',
-							]
-						);
+						return $this->validate_source_object( $source );
 					},
 					$image->sources
 				);
+				$object->sources = array_filter( $object->sources ); // Remove invalid sources.
 				break;
 			default:
 				// For other types, add the first non-empty key to the object.
@@ -333,5 +326,206 @@ class Controller implements ControllerInterface {
 		$image_src_filetype_array  = wp_check_filetype( $image_src_path, $allowed_mime_types );
 
 		return ! empty( $image_src_filetype_array['type'] ) && str_starts_with( $image_src_filetype_array['type'], 'image/' );
+	}
+
+	/**
+	 * Validate and sanitize a picture source object
+	 *
+	 * @param object|array $source Raw source data from user input.
+	 * @return array|null Sanitized source object, or null if invalid.
+	 */
+	private function validate_source_object( $source ) {
+		if ( ! is_object( $source ) ) {
+			return null;
+		}
+
+		$source = (array) $source;
+
+		// Validate required fields exist.
+		if ( empty( $source['srcset'] ) ) {
+			return null;
+		}
+
+		// Validate and sanitize srcset.
+		$sanitized_srcset = $this->sanitize_srcset( $source['srcset'] );
+		if ( empty( $sanitized_srcset ) ) {
+			return null;
+		}
+
+		// Validate and sanitize media query.
+		$sanitized_media = ! empty( $source['media'] )
+			? $this->sanitize_media_query( $source['media'] )
+			: '';
+
+		// Validate and sanitize sizes.
+		$sanitized_sizes = ! empty( $source['sizes'] )
+			? $this->sanitize_sizes( $source['sizes'] )
+			: '';
+
+		// Validate MIME type.
+		$sanitized_type = $this->validate_mime_type( $source['type'] );
+		return [
+			'srcset' => $sanitized_srcset,
+			'media'  => $sanitized_media,
+			'type'   => $sanitized_type,
+			'sizes'  => $sanitized_sizes,
+		];
+	}
+
+	/**
+	 * Sanitize srcset attribute.
+	 *
+	 * @param string $srcset Raw srcset value.
+	 * @return string Sanitized srcset or empty string if invalid.
+	 */
+	private function sanitize_srcset( $srcset ) {
+		// Check for event handlers or malicious content.
+		if ( $this->hasOnAttribute( $srcset ) ) {
+			return '';
+		}
+
+		// Check for quotes, angle brackets, or other HTML-like content.
+		if ( $this->hasQuotes( $srcset ) ) {
+			return '';
+		}
+
+		// Validate srcset format: url [descriptor], url [descriptor], ...
+		$sources       = array_map( 'trim', explode( ',', $srcset ) );
+		$clean_sources = [];
+
+		foreach ( $sources as $source ) {
+			// Each source should be: url [width_descriptor].
+			// Example: "image.jpg 1x" or "image.jpg 480w".
+			if ( ! preg_match( '/^([^\s]+)(\s+\d+[wx])?$/i', $source, $matches ) ) {
+				return '';
+			}
+
+			$url        = $matches[1];
+			$descriptor = isset( $matches[2] ) ? trim( $matches[2] ) : '';
+
+			// Validate URL format (relative or absolute).
+			if ( ! preg_match( '/^(https?:\/\/|\/)[^\s<>"\']+$/i', $url ) ) {
+				return '';
+			}
+
+			$clean_sources[] = $url . ( $descriptor ? ' ' . $descriptor : '' );
+		}
+
+		return implode( ', ', $clean_sources );
+	}
+
+	/**
+	 * Sanitize media query attribute.
+	 *
+	 * @param string $media Raw media query value.
+	 * @return string Sanitized media query or empty string if invalid.
+	 */
+	private function sanitize_media_query( $media ) {
+		// Check for event handlers or malicious content.
+		if ( $this->hasOnAttribute( $media ) ) {
+			return '';
+		}
+
+		// Check for quotes or angle brackets.
+		if ( $this->hasQuotes( $media ) ) {
+			return '';
+		}
+
+		// Validate media query contains only allowed characters.
+		// Allow: (, ), and, or, not, min/max-width, spaces, numbers, px, em, rem.
+		if ( ! preg_match( '/^[\w\s\(\)\-:,\.]+$/i', $media ) ) {
+			return '';
+		}
+
+		return sanitize_text_field( $media );
+	}
+
+	/**
+	 * Sanitize sizes attribute.
+	 *
+	 * @param string $sizes Raw sizes value.
+	 * @return string Sanitized sizes or empty string if invalid.
+	 */
+	private function sanitize_sizes( $sizes ) {
+		// Check for event handlers or malicious content.
+		if ( $this->hasOnAttribute( $sizes ) ) {
+			return '';
+		}
+
+		// Check for quotes or angle brackets.
+		if ( $this->hasQuotes( $sizes ) ) {
+			return '';
+		}
+
+		// Validate sizes format: media_query width, media_query width, ...
+		// Example: "(max-width: 600px) 480px, 800px".
+		if ( ! preg_match( '/^[\w\s\(\)\-:,\.vwpxem%]+$/i', $sizes ) ) {
+			return '';
+		}
+
+		return sanitize_text_field( $sizes );
+	}
+
+	/**
+	 * Validate MIME type for picture sources.
+	 *
+	 * Ensures the MIME type is:
+	 * - A valid image type
+	 * - Allowed by WordPress
+	 * - Safe for use in <picture> elements
+	 *
+	 * @param string $type Raw MIME type.
+	 * @return string Sanitized MIME type or empty string if invalid.
+	 */
+	private function validate_mime_type( $type ) {
+		// Sanitize input.
+		$type = strtolower( trim( $type ) );
+
+		// Must be an image type.
+		if ( ! str_starts_with( $type, 'image/' ) ) {
+			return '';
+		}
+
+		// Exclude SVG for security (optional - can contain inline scripts).
+		// Remove this check if you want to support SVG.
+		if ( 'image/svg+xml' === $type ) {
+			return '';
+		}
+
+		// Get WordPress allowed image MIME types.
+		$allowed_mimes = get_allowed_mime_types();
+		$image_mimes   = array_filter(
+			$allowed_mimes,
+			function ( $mime ) {
+				return str_starts_with( $mime, 'image/' );
+			}
+			);
+
+		// Check if type is in WordPress's allowed list.
+		if ( ! in_array( $type, $image_mimes, true ) ) {
+			return '';
+		}
+
+		return $type;
+	}
+
+	/**
+	 * Check if item has On JS attributes like onload.
+	 *
+	 * @param string $item Item to be checked.
+	 * @return false|int
+	 */
+	private function hasOnAttribute( $item ) {
+		return preg_match( '/\s*on\w+\s*=/i', $item );
+	}
+
+	/**
+	 * Check for quotes, angle brackets, or other HTML-like content.
+	 *
+	 * @param string $item Item to be checked.
+	 * @return false|int
+	 */
+	private function hasQuotes( $item ) {
+		return preg_match( '/[<>"\']/i', $item );
 	}
 }
