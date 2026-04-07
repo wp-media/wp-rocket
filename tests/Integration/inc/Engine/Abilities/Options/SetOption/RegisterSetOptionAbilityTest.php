@@ -6,7 +6,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Abilities\Options\SetOption;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * Integration tests for wp-rocket/set-options ability execution.
+ * Integration tests for wp-rocket/set-option ability execution.
  *
  * @group Abilities
  */
@@ -19,7 +19,7 @@ class RegisterSetOptionAbilityTest extends TestCase {
 	/**
 	 * Ability ID.
 	 */
-	private const ABILITY_ID = 'wp-rocket/set-options';
+	private const ABILITY_ID = 'wp-rocket/set-option';
 
 	/**
 	 * Set up the test.
