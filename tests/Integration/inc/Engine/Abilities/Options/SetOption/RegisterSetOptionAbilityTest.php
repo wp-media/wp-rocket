@@ -34,24 +34,6 @@ class RegisterSetOptionAbilityTest extends TestCase {
 		if ( version_compare( $wp_version, self::MIN_WP_VERSION, '<' ) ) {
 			$this->markTestSkipped( 'WordPress Abilities API requires WordPress ' . self::MIN_WP_VERSION . ' or higher.' );
 		}
-
-		if ( ! function_exists( 'wp_get_ability' ) ) {
-			$this->markTestSkipped( 'WordPress Abilities API is not available.' );
-		}
-
-		// Filter for mocking get_rocket_option results.
-		add_filter( 'pre_get_rocket_option', [ $this, 'filter_get_option' ], 10, 3 );
-	}
-
-	/**
-	 * Tear down the test.
-	 *
-	 * @return void
-	 */
-	public function tear_down() {
-		remove_filter( 'pre_get_rocket_option', [ $this, 'filter_get_option' ] );
-
-		parent::tear_down();
 	}
 
 	/**
@@ -90,25 +72,6 @@ class RegisterSetOptionAbilityTest extends TestCase {
 			$this->assertArrayHasKey( 'error', $result, 'Should have error message.' );
 			$this->assertSame( $expected['error'], $result['error'], 'Error message should match.' );
 		}
-	}
-
-	/**
-	 * Filter get_rocket_option to return test settings.
-	 *
-	 * @param mixed  $value   Pre-filter value.
-	 * @param string $option  Option name.
-	 * @param mixed  $default Default value.
-	 *
-	 * @return mixed
-	 */
-	public function filter_get_option( $value, $option, $default ) {
-		$settings = $this->config['settings'];
-
-		if ( isset( $settings[ $option ] ) ) {
-			return $settings[ $option ];
-		}
-
-		return $default;
 	}
 
 	/**
