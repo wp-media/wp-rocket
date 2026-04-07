@@ -121,7 +121,7 @@ return [
 		'expected' => [
 			'result' => [
 				'success' => false,
-				'error'   => '',
+				'error'   => 'URL has already been submitted for performance monitoring.',
 			],
 		],
 	],
