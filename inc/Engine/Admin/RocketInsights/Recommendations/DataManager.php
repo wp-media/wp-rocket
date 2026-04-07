@@ -74,6 +74,9 @@ class DataManager implements LoggerAwareInterface {
 		'database_all_transients'      => 'database',
 		'sucury_waf_cache_sync'        => 'addons',
 		'varnish_auto_purge'           => 'addons',
+
+		'plugin_rocketcdn'             => 'page_cdn',
+		'plugin_imagify'               => 'imagify',
 	];
 
 	/**

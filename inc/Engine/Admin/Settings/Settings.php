@@ -421,7 +421,16 @@ class Settings {
 			);
 
 			if ( ! $notices ) {
-				add_settings_error( 'general', 'settings_updated', __( 'Settings saved.', 'rocket' ), 'updated' );
+				$message = __( 'Settings saved.', 'rocket' );
+
+				/**
+				 * Filters the appended message to the "Settings saved." admin notice.
+				 *
+				 * @param string   $appended_message    The appended message.
+				 */
+				$message .= wpm_apply_filters_typed( 'string', 'rocket_settings_saved_message', '' );
+
+				add_settings_error( 'general', 'settings_updated', $message, 'updated' );
 			}
 		}
 
