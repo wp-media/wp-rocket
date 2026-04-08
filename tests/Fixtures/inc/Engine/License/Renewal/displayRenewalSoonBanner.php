@@ -276,7 +276,7 @@ return [
 			'more_info' => true,
 		],
 	],
-	'testShouldReturnDataWhenLicensePlusAndGrandfathered' => [
+	'testShouldReturnDataWhenLicensePlusAndGrandfatheredWithEuro' => [
 		'config'   => [
 			'user' => [
 				'currency' => 'EUR',

@@ -13,8 +13,8 @@ $rocket_initial_item = 'stacked' === $data['type'] ? reset( $data['item'] ) : $d
 	<?php if ( $data['is_promo_active'] ) { ?>
 		<div class="wpr-upgrade-saving">
 			<?php
-			// translators: %1$s = span opening tag, %2$s = price, %3$s = span closing tag.
-			printf( esc_html__( 'Save %1$s%2$s%3$s', 'rocket' ), esc_html( $rocket_initial_item['currency_symbol'] ) . '<span>', esc_html( $rocket_initial_item['saving'] ), '</span>' );
+			// translators: %1$s = currency symbol, %2$s = span opening tag, %3$s = price, %4$s = span closing tag.
+			printf( esc_html__( 'Save %1$s%2$s%3$s%4$s', 'rocket' ), esc_html( $rocket_initial_item['currency_symbol'] ), '<span>', esc_html( $rocket_initial_item['saving'] ), '</span>' );
 			?>
 		</div>
 	<?php } ?>
