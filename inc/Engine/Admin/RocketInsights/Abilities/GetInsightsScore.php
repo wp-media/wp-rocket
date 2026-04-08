@@ -36,7 +36,7 @@ class GetInsightsScore implements AbilitiesInterface {
 	/**
 	 * Registers the ability to get insights scores.
 	 */
-	public function register_get_insights_scores_ability() {
+	public function register() : void {
 		wp_register_ability(
 			'wp-rocket/get-insights-scores',
 			[

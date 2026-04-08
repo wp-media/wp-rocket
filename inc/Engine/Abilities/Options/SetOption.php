@@ -121,7 +121,7 @@ class SetOption implements AbilitiesInterface {
 	 *
 	 * @return void
 	 */
-	public function register_set_option_ability(): void {
+	public function register(): void {
 		if ( ! function_exists( 'wp_register_ability' ) ) {
 			return;
 		}
