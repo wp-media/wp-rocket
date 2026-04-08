@@ -73,7 +73,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function register_get_options_ability(): void {
-		$this->get_options->register_get_options_ability();
+		$this->get_options->register();
 	}
 
 	/**
@@ -82,6 +82,6 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function register_set_option_ability(): void {
-		$this->set_option->register_set_option_ability();
+		$this->set_option->register();
 	}
 }

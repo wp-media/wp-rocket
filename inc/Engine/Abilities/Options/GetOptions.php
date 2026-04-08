@@ -28,7 +28,7 @@ class GetOptions implements AbilitiesInterface {
 	 *
 	 * @return void
 	 */
-	public function register_get_options_ability(): void {
+	public function register(): void {
 		if ( ! function_exists( 'wp_register_ability' ) ) {
 			return;
 		}
