@@ -8,13 +8,6 @@ namespace WP_Rocket\Engine\License\API;
  */
 class Currency {
 	/**
-	 * Supported currency codes.
-	 *
-	 * @var array
-	 */
-	const SUPPORTED_CURRENCIES = [ 'USD', 'EUR' ];
-
-	/**
 	 * Default currency.
 	 *
 	 * @var string
