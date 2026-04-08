@@ -14,14 +14,14 @@ $rocket_initial_item = 'stacked' === $data['type'] ? reset( $data['item'] ) : $d
 		<div class="wpr-upgrade-saving">
 			<?php
 			// translators: %1$s = span opening tag, %2$s = price, %3$s = span closing tag.
-			printf( esc_html__( 'Save $%1$s%2$s%3$s', 'rocket' ), '<span>', esc_html( $rocket_initial_item['saving'] ), '</span>' );
+			printf( esc_html__( 'Save %1$s%2$s%3$s', 'rocket' ), esc_html( $rocket_initial_item['currency_symbol'] ) . '<span>', esc_html( $rocket_initial_item['saving'] ), '</span>' );
 			?>
 		</div>
 	<?php } ?>
 	<h3 class="wpr-upgrade-title"><?php echo esc_html( $rocket_initial_item['name'] ); ?></h3>
-	<div class="wpr-upgrade-prices"><span class="wpr-upgrade-price-symbol">$</span> <span class="wpr-upgrade-price-value"><?php echo esc_html( $rocket_initial_item['price'] ); ?></span>
+	<div class="wpr-upgrade-prices"><span class="wpr-upgrade-price-symbol"><?php echo esc_html( $rocket_initial_item['currency_symbol'] ); ?></span> <span class="wpr-upgrade-price-value"><?php echo esc_html( $rocket_initial_item['price'] ); ?></span>
 		<?php if ( $data['is_promo_active'] ) { ?>
-			<del class="wpr-upgrade-price-regular">$ <span><?php echo esc_html( $rocket_initial_item['regular_price'] ); ?></span></del>
+			<del class="wpr-upgrade-price-regular"><?php echo esc_html( $rocket_initial_item['currency_symbol'] ); ?> <span><?php echo esc_html( $rocket_initial_item['regular_price'] ); ?></span></del>
 		<?php } ?>
 	</div>
 	<div class="wpr-upgrade-websites

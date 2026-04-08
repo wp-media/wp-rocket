@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\License;
 
 use WP_Rocket\Abstract_Render;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\License\API\Currency;
 use WP_Rocket\Engine\License\API\Pricing;
 use WP_Rocket\Engine\License\API\User;
 
@@ -186,7 +187,7 @@ class Renewal extends Abstract_Render {
 	 * @return array
 	 */
 	private function get_banner_data() {
-		$price = esc_html( '$' . number_format_i18n( $this->get_price(), 2 ) );
+		$price = esc_html( Currency::get_symbol( $this->user->get_currency() ) . number_format_i18n( $this->get_price(), 2 ) );
 
 		$message = sprintf(
 			// translators: %1$s = <strong>, %2$s = </strong>, %3$s = discount price.
