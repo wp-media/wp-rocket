@@ -74,7 +74,6 @@ class Upgrade extends Abstract_Render {
 		$data = [
 			'is_promo_active' => $this->pricing->is_promo_active(),
 			'upgrades'        => $this->get_upgrade_choices(),
-			'currency_symbol' => Currency::get_symbol( $this->user->get_currency() ),
 		];
 
 		echo $this->generate( 'upgrade-popin', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped

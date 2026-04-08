@@ -134,6 +134,9 @@ class DisplayPromoBanner extends TestCase {
 				)
 				->andReturn( '' );
 
+			$this->user->shouldReceive( 'get_currency' )
+				->andReturn( $config['currency'] ?? 'USD' );
+
 			$this->expectOutputString( '' );
 		} else {
 			$this->upgrade->shouldReceive( 'generate' )

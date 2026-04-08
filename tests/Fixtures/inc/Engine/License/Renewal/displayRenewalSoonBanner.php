@@ -117,6 +117,26 @@ return [
 			'more_info' => true
 		],
 	],
+	'testShouldReturnDataWhenLicenseAndSingleAndNotGrandfatheredWithEuro' => [
+		'config'   => [
+			'user' => [
+				'currency' => 'EUR',
+				'licence_account'    => 1,
+				'licence_expired'    => false,
+				'auto_renew'         => false,
+				'licence_expiration' => strtotime( 'next week' ),
+				'renewal_url'        => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+				'creation_date'      => strtotime( 'this year' ),
+			],
+			'pricing'   => $pricing,
+		],
+		'expected' => [
+			'countdown'        => $countdown,
+			'message' => 'Renew before it is too late, you will pay <strong>€34.3</strong>.',
+			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+			'more_info' => true
+		],
+	],
 	'testShouldReturnDataWhenLicenseAndSingleAndGrandmothered' => [
 		'config'   => [
 			'user' => [
@@ -132,6 +152,26 @@ return [
 		'expected' => [
 			'countdown'        => $countdown,
 			'message' => 'Renew before it is too late, you will pay <strong>$34.3</strong>.',
+			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+			'more_info' => true
+		],
+	],
+	'testShouldReturnDataWhenLicenseAndSingleAndGrandmotheredWithEuro' => [
+		'config'   => [
+			'user' => [
+				'currency' => 'EUR',
+				'licence_account'    => 1,
+				'licence_expired'    => false,
+				'auto_renew'         => false,
+				'licence_expiration' => strtotime( 'next week' ),
+				'renewal_url'        => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+				'creation_date'      => strtotime( '2022-05-12' ),
+			],
+			'pricing'   => $pricing,
+		],
+		'expected' => [
+			'countdown'        => $countdown,
+			'message' => 'Renew before it is too late, you will pay <strong>€34.3</strong>.',
 			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
 			'more_info' => true
 		],
@@ -156,6 +196,27 @@ return [
 			'renewal_url' => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
 		],
 	],
+	'testShouldReturnDataWhenLicenseSingleAndGrandfatheredWithEuro' => [
+		'config'   => [
+			'user' => [
+				'currency' => 'EUR',
+				'licence_account'    => 1,
+				'licence_expired'    => false,
+				'auto_renew'         => false,
+				'licence_expiration' => strtotime( 'last week' ),
+				'renewal_url'        => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+				'creation_date'      => strtotime( '2019/08/01' ),
+			],
+			'pricing'   => $pricing,
+		],
+		'expected' => [
+			'message' => 'Renew with a <strong>20% discount</strong> before it is too late, you will only pay <strong>€24.5</strong>!',
+			'more_info' => true,
+			'countdown' => $countdown,
+			'renewal_url' => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+		],
+	],
+
 	'testShouldReturnDataWhenLicensePlusAndNotGrandfathered' => [
 		'config'   => [
 			'user' => [
@@ -175,6 +236,27 @@ return [
 			'renewal_url' => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
 		],
 	],
+	'testShouldReturnDataWhenLicensePlusAndNotGrandfatheredWithEuro' => [
+		'config'   => [
+			'user' => [
+				'currency' => 'EUR',
+				'licence_account'    => 3,
+				'licence_expired'    => false,
+				'auto_renew'         => false,
+				'licence_expiration' => strtotime( 'next week' ),
+				'renewal_url'        => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+				'creation_date'      => strtotime( 'this year' ),
+			],
+			'pricing'   => $pricing,
+		],
+		'expected' => [
+			'more_info' => true,
+			'countdown' => $countdown,
+			'message' => 'Renew before it is too late, you will pay <strong>€69.3</strong>.',
+			'renewal_url' => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+		],
+	],
+
 	'testShouldReturnDataWhenLicensePlusAndGrandfathered' => [
 		'config'   => [
 			'user' => [
@@ -194,6 +276,27 @@ return [
 			'more_info' => true,
 		],
 	],
+	'testShouldReturnDataWhenLicensePlusAndGrandfathered' => [
+		'config'   => [
+			'user' => [
+				'currency' => 'EUR',
+				'licence_account'    => 3,
+				'licence_expired'    => false,
+				'auto_renew'         => false,
+				'licence_expiration' => strtotime( 'next week' ),
+				'renewal_url'        => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+				'creation_date'      => strtotime( '2019/08/01' ),
+			],
+			'pricing'   => $pricing,
+		],
+		'expected' => [
+			'countdown'        => $countdown,
+			'message' => 'Renew with a <strong>20% discount</strong> before it is too late, you will only pay <strong>€49.5</strong>!',
+			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+			'more_info' => true,
+		],
+	],
+
 	'testShouldReturnDataWhenLicenseInfiniteAndGrandmothered' => [
 		'config'   => [
 			'user' => [
@@ -213,6 +316,27 @@ return [
 			'more_info' => false,
 		],
 	],
+	'testShouldReturnDataWhenLicenseInfiniteAndGrandmotheredWithEuro' => [
+		'config'   => [
+			'user' => [
+				'currency' => 'EUR',
+				'licence_account'    => -1,
+				'licence_expired'    => false,
+				'auto_renew'         => false,
+				'licence_expiration' => strtotime( 'next week' ),
+				'renewal_url'        => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+				'creation_date'      => strtotime( '2022-05-12' ),
+			],
+			'pricing'   => $pricing,
+		],
+		'expected' => [
+			'countdown'        => $countdown,
+			'message' => 'Your <strong>WP Rocket license is about to expire</strong>: you will soon lose access to product updates and support.',
+			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+			'more_info' => false,
+		],
+	],
+
 	'testShouldReturnDataWhenLicenseInfiniteAndNotGrandfathered' => [
 		'config'   => [
 			'user' => [
@@ -232,9 +356,50 @@ return [
 			'more_info' => false,
 		],
 	],
+	'testShouldReturnDataWhenLicenseInfiniteAndNotGrandfatheredWithEuro' => [
+		'config'   => [
+			'user' => [
+				'currency' => 'EUR',
+				'licence_account'    => -1,
+				'licence_expired'    => false,
+				'auto_renew'         => false,
+				'licence_expiration' => strtotime( 'next week' ),
+				'renewal_url'        => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+				'creation_date'      => strtotime( 'this year' ),
+			],
+			'pricing'   => $pricing,
+		],
+		'expected' => [
+			'countdown'        => $countdown,
+			'message' => 'Your <strong>WP Rocket license is about to expire</strong>: you will soon lose access to product updates and support.',
+			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+			'more_info' => false,
+		],
+	],
+
 	'testShouldReturnDataWhenLicenseInfiniteAndGrandfathered' => [
 		'config'   => [
 			'user' => [
+				'licence_account'    => -1,
+				'licence_expired'    => false,
+				'auto_renew'         => false,
+				'licence_expiration' => strtotime( 'next week' ),
+				'renewal_url'        => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+				'creation_date'      => strtotime( '2019/08/01' ),
+			],
+			'pricing'   => $pricing,
+		],
+		'expected' => [
+			'countdown'        => $countdown,
+			'message' => 'Your <strong>WP Rocket license is about to expire</strong>: you will soon lose access to product updates and support.',
+			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+			'more_info' => false,
+		],
+	],
+	'testShouldReturnDataWhenLicenseInfiniteAndGrandfatheredWithEuro' => [
+		'config'   => [
+			'user' => [
+				'currency' => 'EUR',
 				'licence_account'    => -1,
 				'licence_expired'    => false,
 				'auto_renew'         => false,
