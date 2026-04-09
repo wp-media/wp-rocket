@@ -39,4 +39,18 @@ class Currency {
 
 		return self::CURRENCY_SYMBOLS[ $currency ];
 	}
+
+	/**
+	 * Format price with currency symbol.
+	 *
+	 * @param string $price Price.
+	 * @param string $currency Currency string.
+	 * @return string
+	 */
+	public static function format_price_with_currency_symbol( string $price, string $currency ): string {
+		if ( 'EUR' === $currency ) {
+			return $price . ' ' . self::get_symbol( $currency );
+		}
+		return self::get_symbol( $currency ) . ' ' . $price;
+	}
 }
