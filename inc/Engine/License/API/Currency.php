@@ -68,9 +68,9 @@ class Currency {
 		}
 
 		if ( 'EUR' === $currency ) {
-			return $price . ' ' . $currency_symbol;
+			return $price . $currency_symbol;
 		}
-		return $currency_symbol . ' ' . $price;
+		return $currency_symbol . $price;
 	}
 
 	/**

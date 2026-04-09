@@ -132,7 +132,7 @@ return [
 		],
 		'expected' => [
 			'countdown'        => $countdown,
-			'message' => 'Renew before it is too late, you will pay <strong>€34.3</strong>.',
+			'message' => 'Renew before it is too late, you will pay <strong>34.3€</strong>.',
 			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
 			'more_info' => true
 		],
@@ -171,7 +171,7 @@ return [
 		],
 		'expected' => [
 			'countdown'        => $countdown,
-			'message' => 'Renew before it is too late, you will pay <strong>€34.3</strong>.',
+			'message' => 'Renew before it is too late, you will pay <strong>34.3€</strong>.',
 			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
 			'more_info' => true
 		],
@@ -210,7 +210,7 @@ return [
 			'pricing'   => $pricing,
 		],
 		'expected' => [
-			'message' => 'Renew with a <strong>20% discount</strong> before it is too late, you will only pay <strong>€24.5</strong>!',
+			'message' => 'Renew with a <strong>20% discount</strong> before it is too late, you will only pay <strong>24.5€</strong>!',
 			'more_info' => true,
 			'countdown' => $countdown,
 			'renewal_url' => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
@@ -252,7 +252,7 @@ return [
 		'expected' => [
 			'more_info' => true,
 			'countdown' => $countdown,
-			'message' => 'Renew before it is too late, you will pay <strong>€69.3</strong>.',
+			'message' => 'Renew before it is too late, you will pay <strong>69.3€</strong>.',
 			'renewal_url' => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
 		],
 	],
@@ -291,7 +291,7 @@ return [
 		],
 		'expected' => [
 			'countdown'        => $countdown,
-			'message' => 'Renew with a <strong>20% discount</strong> before it is too late, you will only pay <strong>€49.5</strong>!',
+			'message' => 'Renew with a <strong>20% discount</strong> before it is too late, you will only pay <strong>49.5€</strong>!',
 			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
 			'more_info' => true,
 		],
