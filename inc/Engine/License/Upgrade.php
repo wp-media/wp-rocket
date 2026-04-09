@@ -369,6 +369,7 @@ class Upgrade extends Abstract_Render {
 			'price'           => $this->pricing->is_promo_active() ? $upgrade_item->saving : $upgrade_item->regular_price,
 			'websites'        => $upgrade_item->websites,
 			'upgrade_url'     => $upgrade_item->upgrade_url,
+			'currency'        => $this->user->get_currency(),
 			'currency_symbol' => Currency::get_symbol( $this->user->get_currency() ),
 		];
 

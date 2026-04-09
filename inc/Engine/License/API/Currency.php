@@ -43,14 +43,43 @@ class Currency {
 	/**
 	 * Format price with currency symbol.
 	 *
-	 * @param string $price Price.
+	 * @param float|string $price Price.
 	 * @param string $currency Currency string.
+	 * @param string $wrap_span Wraps price components in span tags for styling:
+	 * - Empty string: not to wrap.
+	 * - price: wrap price only.
+	 * - currency: wrap currency symbol only.
+	 * - both: wrap both price and currency symbol individually.
+	 *
 	 * @return string
 	 */
-	public static function format_price_with_currency_symbol( string $price, string $currency ): string {
-		if ( 'EUR' === $currency ) {
-			return $price . ' ' . self::get_symbol( $currency );
+	public static function format_price_with_currency_symbol( $price, string $currency, string $wrap_span = '' ): string {
+		$currency_symbol = self::get_symbol( $currency );
+		switch ( $wrap_span ) {
+			case 'both':
+				$price = self::wrap_span( $price );
+				$currency_symbol = self::wrap_span( $currency_symbol );
+				break;
+			case 'price':
+				$price = self::wrap_span( $price );
+				break;
+			case 'currency':
+				$currency_symbol = self::wrap_span( $currency_symbol );
 		}
-		return self::get_symbol( $currency ) . ' ' . $price;
+
+		if ( 'EUR' === $currency ) {
+			return $price . ' ' . $currency_symbol;
+		}
+		return $currency_symbol . ' ' . $price;
+	}
+
+	/**
+	 * Wrap a string in a span tag.
+	 *
+	 * @param int|float|string $item Item can be string, float, or integer.
+	 * @return string
+	 */
+	private static function wrap_span($item ): string {
+		return sprintf( '<span>%s</span>', $item );
 	}
 }

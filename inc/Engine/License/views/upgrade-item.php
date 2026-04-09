@@ -5,6 +5,8 @@
  * @var array $data
  */
 
+use WP_Rocket\Engine\License\API\Currency;
+
 defined( 'ABSPATH' ) || exit;
 
 $rocket_initial_item = 'stacked' === $data['type'] ? reset( $data['item'] ) : $data['item'];
@@ -12,16 +14,18 @@ $rocket_initial_item = 'stacked' === $data['type'] ? reset( $data['item'] ) : $d
 <div class="wpr-upgrade-item wpr-Upgrade-<?php echo esc_attr( $rocket_initial_item['name'] ); ?>">
 	<?php if ( $data['is_promo_active'] ) { ?>
 		<div class="wpr-upgrade-saving">
-			<?php
-			// translators: %1$s = currency symbol, %2$s = span opening tag, %3$s = price, %4$s = span closing tag.
-			printf( esc_html__( 'Save %1$s%2$s%3$s%4$s', 'rocket' ), esc_html( $rocket_initial_item['currency_symbol'] ), '<span>', esc_html( $rocket_initial_item['saving'] ), '</span>' );
-			?>
+			<?php esc_html_e( 'Save', 'rocket' ); ?>
+			<?php echo Currency::format_price_with_currency_symbol( esc_html( $rocket_initial_item['saving'] ), $rocket_initial_item['currency'], 'price' ); ?>
 		</div>
 	<?php } ?>
 	<h3 class="wpr-upgrade-title"><?php echo esc_html( $rocket_initial_item['name'] ); ?></h3>
-	<div class="wpr-upgrade-prices"><span class="wpr-upgrade-price-symbol"><?php echo esc_html( $rocket_initial_item['currency_symbol'] ); ?></span> <span class="wpr-upgrade-price-value"><?php echo esc_html( $rocket_initial_item['price'] ); ?></span>
+	<div class="wpr-upgrade-prices">
+		<span class="wpr-upgrade-price-symbol"><?php echo esc_html( $rocket_initial_item['currency_symbol'] ); ?></span>
+		<span class="wpr-upgrade-price-value"><?php echo esc_html( $rocket_initial_item['price'] ); ?></span>
 		<?php if ( $data['is_promo_active'] ) { ?>
-			<del class="wpr-upgrade-price-regular"><?php echo esc_html( $rocket_initial_item['currency_symbol'] ); ?> <span><?php echo esc_html( $rocket_initial_item['regular_price'] ); ?></span></del>
+			<del class="wpr-upgrade-price-regular">
+				<?php echo Currency::format_price_with_currency_symbol( esc_html( $rocket_initial_item['regular_price'] ), $rocket_initial_item['currency'], 'price' ); ?>
+			</del>
 		<?php } ?>
 	</div>
 	<div class="wpr-upgrade-websites
