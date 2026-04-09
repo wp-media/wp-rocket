@@ -44,12 +44,12 @@ class Currency {
 	 * Format price with currency symbol.
 	 *
 	 * @param float|string $price Price.
-	 * @param string $currency Currency string.
-	 * @param string $wrap_span Wraps price components in span tags for styling:
-	 * - Empty string: not to wrap.
-	 * - price: wrap price only.
-	 * - currency: wrap currency symbol only.
-	 * - both: wrap both price and currency symbol individually.
+	 * @param string       $currency Currency string.
+	 * @param string       $wrap_span Wraps price components in span tags for styling:
+	 *       - Empty string: not to wrap.
+	 *       - price: wrap price only.
+	 *       - currency: wrap currency symbol only.
+	 *       - both: wrap both price and currency symbol individually.
 	 *
 	 * @return string
 	 */
@@ -57,7 +57,7 @@ class Currency {
 		$currency_symbol = self::get_symbol( $currency );
 		switch ( $wrap_span ) {
 			case 'both':
-				$price = self::wrap_span( $price );
+				$price           = self::wrap_span( $price );
 				$currency_symbol = self::wrap_span( $currency_symbol );
 				break;
 			case 'price':
@@ -79,7 +79,7 @@ class Currency {
 	 * @param int|float|string $item Item can be string, float, or integer.
 	 * @return string
 	 */
-	private static function wrap_span($item ): string {
+	private static function wrap_span( $item ): string {
 		return sprintf( '<span>%s</span>', $item );
 	}
 }
