@@ -5290,7 +5290,7 @@ msgid ""
 "Rocket Insights is powered by GTmetrix to run tests and generate your "
 "performance results and recommendations."
 msgstr ""
-"Rocket Insights utiliza GTMetrix para analizar y generar tus resultados y "
+"Rocket Insights utiliza GTmetrix para analizar y generar tus resultados y "
 "recomendaciones de rendimiento."
 
 #: views/settings/page-sections/sucuri.php:46
