@@ -1,0 +1,67 @@
+<?php
+declare(strict_types=1);
+
+namespace WP_Rocket\Engine\CDN\RocketCDN\Database\Tables;
+
+use WP_Rocket\Engine\Common\Database\Tables\AbstractTable;
+
+/**
+ * RocketCDN Table class.
+ */
+class RocketCDN extends AbstractTable {
+	/**
+	 * Table name.
+	 *
+	 * @var string
+	 */
+	protected $name = 'wpr_rocket_cdn';
+
+	/**
+	 * Database version key (saved in _options or _sitemeta).
+	 *
+	 * @var string
+	 */
+	protected $db_version_key = 'wpr_rocket_cdn_version';
+
+	/**
+	 * Database version.
+	 *
+	 * @var int
+	 */
+	protected $version = 20260420;
+
+	/**
+	 * Upgrades array.
+	 * Key => value array of versions => methods.
+	 *
+	 * @var array
+	 */
+	protected $upgrades = [];
+
+	/**
+	 * Table schema data.
+	 *
+	 * @var string
+	 */
+	protected $schema_data = "
+		id               int(11)             NOT NULL AUTO_INCREMENT,
+		title            varchar(255)        NOT NULL default '',
+		url              varchar(100)        DEFAULT NULL,
+		modified         datetime            DEFAULT CURRENT_TIMESTAMP,
+		last_accessed    datetime            DEFAULT NULL,
+		PRIMARY KEY (id),
+		KEY url (url)";
+
+	/**
+	 * Truncate DB table.
+	 *
+	 * @return bool
+	 */
+	public function truncate_table(): bool {
+		if ( ! $this->exists() ) {
+			return false;
+		}
+
+		return $this->truncate();
+	}
+}
