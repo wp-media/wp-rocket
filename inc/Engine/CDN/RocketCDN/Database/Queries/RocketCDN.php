@@ -75,9 +75,11 @@ class RocketCDN extends AbstractQuery {
 	 * @return RocketCDNRow|false
 	 */
 	public function get_by_url( string $url ) {
+		$normalized_url = untrailingslashit( $url );
+
 		$items = $this->query(
 			[
-				'url' => $url,
+				'url' => $normalized_url,
 			]
 		);
 

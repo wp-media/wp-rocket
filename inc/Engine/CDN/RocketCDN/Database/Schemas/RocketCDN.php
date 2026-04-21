@@ -19,9 +19,9 @@ class RocketCDN extends Schema {
 		// ID Column.
 		[
 			'name'     => 'id',
-			'type'     => 'int',
-			'length'   => 11,
-			'unsigned' => false,
+			'type'     => 'bigint',
+			'length'   => 20,
+			'unsigned' => true,
 			'extra'    => 'auto_increment',
 			'primary'  => true,
 			'sortable' => true,
@@ -40,8 +40,8 @@ class RocketCDN extends Schema {
 		[
 			'name'       => 'url',
 			'type'       => 'varchar',
-			'length'     => 100,
-			'default'    => null,
+			'length'     => 2000,
+			'default'    => '',
 			'cache_key'  => true,
 			'searchable' => true,
 			'sortable'   => true,

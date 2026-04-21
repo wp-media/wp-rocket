@@ -44,13 +44,13 @@ class RocketCDN extends AbstractTable {
 	 * @var string
 	 */
 	protected $schema_data = "
-		id               int(11)             NOT NULL AUTO_INCREMENT,
+		id               bigint(20) unsigned NOT NULL AUTO_INCREMENT,
 		title            varchar(255)        NOT NULL default '',
-		url              varchar(100)        DEFAULT NULL,
+		url              varchar(2000)       NOT NULL default '',
 		modified         datetime            DEFAULT CURRENT_TIMESTAMP,
 		last_accessed    datetime            DEFAULT NULL,
 		PRIMARY KEY (id),
-		KEY url (url)";
+        KEY url (url(150))";
 
 	/**
 	 * Truncate DB table.
