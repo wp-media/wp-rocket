@@ -47,9 +47,11 @@ class RocketCDN extends AbstractTable {
 		id               bigint(20) unsigned NOT NULL AUTO_INCREMENT,
 		title            varchar(255)        NOT NULL default '',
 		url              varchar(2000)       NOT NULL default '',
-		modified         datetime            DEFAULT CURRENT_TIMESTAMP,
-		last_accessed    datetime            DEFAULT NULL,
+		modified         timestamp           NOT NULL default '0000-00-00 00:00:00',
+		last_accessed    timestamp           NOT NULL default '0000-00-00 00:00:00',
 		PRIMARY KEY (id),
+		KEY modified (modified),
+		KEY last_accessed (last_accessed),
         KEY url (url(150))";
 
 	/**

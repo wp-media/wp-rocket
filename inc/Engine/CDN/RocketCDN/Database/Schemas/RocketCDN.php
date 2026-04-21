@@ -49,17 +49,17 @@ class RocketCDN extends Schema {
 		// Modified Column.
 		[
 			'name'       => 'modified',
-			'type'       => 'datetime',
-			'default'    => '',
-			'created'    => true,
+			'type'       => 'timestamp',
+			'default'    => '0000-00-00 00:00:00',
+			'modified'   => true,
 			'date_query' => true,
 			'sortable'   => true,
 		],
 		// Last Accessed Column.
 		[
 			'name'       => 'last_accessed',
-			'type'       => 'datetime',
-			'default'    => null,
+			'type'       => 'timestamp',
+			'default'    => '0000-00-00 00:00:00',
 			'date_query' => true,
 			'sortable'   => true,
 		],

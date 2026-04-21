@@ -31,16 +31,16 @@ class RocketCDN extends Row {
 	public $url;
 
 	/**
-	 * Last modified time.
+	 * Last modified time
 	 *
-	 * @var string
+	 * @var int
 	 */
 	public $modified;
 
 	/**
-	 * Last accessed time.
+	 * Last accessed time
 	 *
-	 * @var string
+	 * @var int
 	 */
 	public $last_accessed;
 
@@ -55,7 +55,7 @@ class RocketCDN extends Row {
 		$this->id            = (int) $this->id;
 		$this->title         = (string) $this->title;
 		$this->url           = (string) $this->url;
-		$this->modified      = (string) $this->modified;
-		$this->last_accessed = (string) $this->last_accessed;
+		$this->modified      = empty( $this->modified ) ? 0 : strtotime( (string) $this->modified );
+		$this->last_accessed = empty( $this->last_accessed ) ? 0 : strtotime( (string) $this->last_accessed );
 	}
 }

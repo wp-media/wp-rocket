@@ -115,11 +115,7 @@ class RocketCDN extends AbstractQuery {
 			return false;
 		}
 
-		$prefixed_table_name = $this->table_name;
-
-		if ( property_exists( $db, 'prefix' ) && ! empty( $db->prefix ) ) {
-			$prefixed_table_name = $db->prefix . $this->table_name;
-		}
+		$prefixed_table_name = $db->prefix . $this->table_name;
 
 		$query         = "DELETE FROM `$prefixed_table_name`";
 		$rows_affected = $db->query( $query );
