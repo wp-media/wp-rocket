@@ -5,6 +5,8 @@ namespace WP_Rocket\Engine\CDN\RocketCDN;
 
 use WP_Rocket\Dependencies\League\Container\Argument\Literal\StringArgument;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Engine\CDN\RocketCDN\Database\Queries\RocketCDN as RocketCDNQuery;
+use WP_Rocket\Engine\CDN\RocketCDN\Database\Tables\RocketCDN as RocketCDNTable;
 
 /**
  * Service provider for RocketCDN
@@ -16,6 +18,8 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @var array
 	 */
 	protected $provides = [
+		'rocketcdn_table',
+		'rocketcdn_query',
 		'rocketcdn_api_client',
 		'rocketcdn_options_manager',
 		'rocketcdn_data_manager_subscriber',
@@ -41,6 +45,10 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register(): void {
+		// RocketCDN database layer.
+		$this->getContainer()->addShared( 'rocketcdn_table', RocketCDNTable::class );
+		$this->getContainer()->add( 'rocketcdn_query', RocketCDNQuery::class );
+
 		// RocketCDN API Client.
 		$this->getContainer()->add( 'rocketcdn_api_client', APIClient::class );
 		// RocketCDN CDN options manager.
@@ -92,5 +100,8 @@ class ServiceProvider extends AbstractServiceProvider {
 					new StringArgument( __DIR__ . '/views' ),
 				]
 			);
+
+		// Ensure the table is created and refreshed when needed.
+		$this->getContainer()->get( 'rocketcdn_table' );
 	}
 }
