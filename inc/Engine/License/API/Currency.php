@@ -51,10 +51,11 @@ class Currency {
 	 *       - currency: wrap currency symbol only.
 	 *       - both: wrap both price and currency symbol individually.
 	 * @param array        $span_classes Span classes.
+	 * @param bool         $with_space With space between currency and price or not, default with no space.
 	 *
 	 * @return string
 	 */
-	public static function format_price_with_currency_symbol( $price, string $currency, string $wrap_span = '', array $span_classes = [] ): string {
+	public static function format_price_with_currency_symbol( $price, string $currency, string $wrap_span = '', array $span_classes = [], $with_space = false ): string {
 		$currency_symbol = self::get_symbol( $currency );
 		switch ( $wrap_span ) {
 			case 'both':
@@ -71,7 +72,7 @@ class Currency {
 		if ( 'EUR' === $currency ) {
 			return $price . $currency_symbol;
 		}
-		return $currency_symbol . $price;
+		return $currency_symbol . ( $with_space ? ' ' : '' ) . $price;
 	}
 
 	/**

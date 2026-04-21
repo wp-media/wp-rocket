@@ -28,12 +28,13 @@ $rocket_initial_item = 'stacked' === $data['type'] ? reset( $data['item'] ) : $d
 			[
 				'price'    => 'wpr-upgrade-price-value',
 				'currency' => 'wpr-upgrade-price-symbol',
-			]
-			);
+			],
+			true
+		);
 		?>
 		<?php if ( $data['is_promo_active'] ) { ?>
 			<del class="wpr-upgrade-price-regular">
-				<?php echo Currency::format_price_with_currency_symbol( esc_html( $rocket_initial_item['regular_price'] ), esc_html( $rocket_initial_item['currency'] ), 'price' );// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+				<?php echo Currency::format_price_with_currency_symbol( esc_html( $rocket_initial_item['regular_price'] ), esc_html( $rocket_initial_item['currency'] ), 'price', [], true );// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			</del>
 		<?php } ?>
 	</div>
