@@ -20,8 +20,17 @@ $rocket_initial_item = 'stacked' === $data['type'] ? reset( $data['item'] ) : $d
 	<?php } ?>
 	<h3 class="wpr-upgrade-title"><?php echo esc_html( $rocket_initial_item['name'] ); ?></h3>
 	<div class="wpr-upgrade-prices">
-		<span class="wpr-upgrade-price-symbol"><?php echo esc_html( $rocket_initial_item['currency_symbol'] ); ?></span>
-		<span class="wpr-upgrade-price-value"><?php echo esc_html( $rocket_initial_item['price'] ); ?></span>
+		<?php
+		echo Currency::format_price_with_currency_symbol( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			esc_html( $rocket_initial_item['price'] ),
+			esc_html( $rocket_initial_item['currency'] ),
+			'both',
+			[
+				'price'    => 'wpr-upgrade-price-value',
+				'currency' => 'wpr-upgrade-price-symbol',
+			]
+			);
+		?>
 		<?php if ( $data['is_promo_active'] ) { ?>
 			<del class="wpr-upgrade-price-regular">
 				<?php echo Currency::format_price_with_currency_symbol( esc_html( $rocket_initial_item['regular_price'] ), esc_html( $rocket_initial_item['currency'] ), 'price' );// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>

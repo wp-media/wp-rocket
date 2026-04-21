@@ -50,21 +50,22 @@ class Currency {
 	 *       - price: wrap price only.
 	 *       - currency: wrap currency symbol only.
 	 *       - both: wrap both price and currency symbol individually.
+	 * @param array        $span_classes Span classes.
 	 *
 	 * @return string
 	 */
-	public static function format_price_with_currency_symbol( $price, string $currency, string $wrap_span = '' ): string {
+	public static function format_price_with_currency_symbol( $price, string $currency, string $wrap_span = '', array $span_classes = [] ): string {
 		$currency_symbol = self::get_symbol( $currency );
 		switch ( $wrap_span ) {
 			case 'both':
-				$price           = self::wrap_span( $price );
-				$currency_symbol = self::wrap_span( $currency_symbol );
+				$price           = self::wrap_span( $price, $span_classes['price'] ?? '' );
+				$currency_symbol = self::wrap_span( $currency_symbol, $span_classes['currency'] ?? '' );
 				break;
 			case 'price':
-				$price = self::wrap_span( $price );
+				$price = self::wrap_span( $price, $span_classes['price'] ?? '' );
 				break;
 			case 'currency':
-				$currency_symbol = self::wrap_span( $currency_symbol );
+				$currency_symbol = self::wrap_span( $currency_symbol, $span_classes['currency'] ?? '' );
 		}
 
 		if ( 'EUR' === $currency ) {
@@ -77,9 +78,10 @@ class Currency {
 	 * Wrap a string in a span tag.
 	 *
 	 * @param int|float|string $item Item can be string, float, or integer.
+	 * @param string           $classnames Class attribute.
 	 * @return string
 	 */
-	private static function wrap_span( $item ): string {
-		return sprintf( '<span>%s</span>', $item );
+	private static function wrap_span( $item, $classnames = '' ): string {
+		return sprintf( '<span class="%s">%s</span>', $classnames, $item );
 	}
 }
