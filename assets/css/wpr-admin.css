@@ -1476,6 +1476,10 @@ div.wpr-upgrade-prices {
   line-height: 1;
   font-weight: bold;
   margin: 0 0 16px 0;
+  padding-left: 6%;
+}
+div.wpr-upgrade-prices.wpr-with-euro {
+  padding-left: 25%;
 }
 
 .wpr-upgrade-price-symbol {
@@ -1488,7 +1492,7 @@ div.wpr-upgrade-prices {
   color: #72777C;
   font-size: 1rem;
   line-height: 1;
-  vertical-align: top;
+  vertical-align: bottom;
 }
 
 div.wpr-upgrade-websites {

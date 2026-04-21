@@ -69,10 +69,20 @@ class Currency {
 				$currency_symbol = self::wrap_span( $currency_symbol, $span_classes['currency'] ?? '' );
 		}
 
-		if ( 'EUR' === $currency ) {
-			return $price . $currency_symbol;
+		if ( self::is_euro( $currency ) ) {
+			return $price . ( $with_space ? ' ' : '' ) . $currency_symbol;
 		}
 		return $currency_symbol . ( $with_space ? ' ' : '' ) . $price;
+	}
+
+	/**
+	 * Check if currency is euro or not.
+	 *
+	 * @param string $currency Currency to be tested.
+	 * @return bool
+	 */
+	public static function is_euro( $currency ): bool {
+		return 'EUR' === $currency;
 	}
 
 	/**
