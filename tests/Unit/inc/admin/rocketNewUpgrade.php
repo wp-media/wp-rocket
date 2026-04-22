@@ -46,15 +46,18 @@ class Test_RocketNewUpgrade extends TestCase {
 	}
 
 	public function testShouldSetByocdnWhenLegacyCdnIsEnabled() {
-		$options = [
-			'cdn' => 1,
-		];
 
 		Functions\when( 'rocket_is_ssl_website' )->justReturn( false );
+
+		Functions\expect( 'rocket_get_constant' )
+			->with( 'WP_ROCKET_SLUG' )
+			->andReturn( 'wp_rocket_settings' );
+
 		Functions\expect( 'get_option' )
 			->once()
 			->with( 'wp_rocket_settings', [] )
-			->andReturn( $options );
+			->andReturn( [ 'cdn' => 1 ] );
+
 		Functions\expect( 'update_option' )
 			->once()
 			->with(
@@ -65,6 +68,6 @@ class Test_RocketNewUpgrade extends TestCase {
 				]
 			);
 
-		rocket_new_upgrade( '99.99.99', '99.99.98' );
+		rocket_new_upgrade( '3.22.0', '3.21.1' );
 	}
 }
