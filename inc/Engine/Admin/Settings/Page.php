@@ -2202,6 +2202,7 @@ class Page extends Abstract_Render {
 			'cloudflare_api_key',
 			'cloudflare_zone_id',
 			'dns_prefetch',
+			'cdn_type',
 		];
 
 		$this->settings->add_hidden_settings_fields(

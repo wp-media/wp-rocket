@@ -34,14 +34,37 @@ class Test_RocketNewUpgrade extends TestCase {
 			->with( 'WP_ROCKET_SLUG' )
 			->andReturn( 'wp_rocket_settings' );
 		Functions\expect( 'get_option' )
-			->twice()
+			->times( 3 )
 			->andReturn( [] );
 		Functions\expect( 'update_option' )
-			->once();
+			->twice();
 		Functions\when( 'wp_clear_scheduled_hook' )->justReturn( 1 );
 		Functions\when( 'rocket_rrmdir' )->justReturn( 1 );
 		Functions\expect( 'delete_transient' )
 			->once()->with( 'wp_rocket_pricing' );
 		rocket_new_upgrade( '3.7', '3.4.4' );
+	}
+
+	public function testShouldSetByocdnWhenLegacyCdnIsEnabled() {
+		$options = [
+			'cdn' => 1,
+		];
+
+		Functions\when( 'rocket_is_ssl_website' )->justReturn( false );
+		Functions\expect( 'get_option' )
+			->once()
+			->with( 'wp_rocket_settings', [] )
+			->andReturn( $options );
+		Functions\expect( 'update_option' )
+			->once()
+			->with(
+				'wp_rocket_settings',
+				[
+					'cdn'      => 1,
+					'cdn_type' => 'byocdn',
+				]
+			);
+
+		rocket_new_upgrade( '99.99.99', '99.99.98' );
 	}
 }
