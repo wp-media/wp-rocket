@@ -175,13 +175,14 @@
 	};
 
 	function checkButtonUrlAndOpen( isCTA ) {
+		let iframeVisit = window.rocketcdnButtonUrl && window.rocketcdnButtonUrl === '';
 		// Track CTA click if this is the pricing CTA button.
 		if ( isCTA ) {
-			trackRocketCDNUpsellCTAClicked();
+			trackRocketCDNUpsellCTAClicked(iframeVisit);
 		}
 
 		// Check if button URL was injected by PHP
-		if ( window.rocketcdnButtonUrl && window.rocketcdnButtonUrl !== '' ) {
+		if ( !iframeVisit ) {
 			// Small delay to ensure Mixpanel event is sent before navigation
 			setTimeout( function() {
 				window.location.href = window.rocketcdnButtonUrl;
@@ -496,7 +497,9 @@
 	/**
 	 * Tracks RocketCDN upsell CTA click with Mixpanel.
 	 */
-	function trackRocketCDNUpsellCTAClicked() {
-		trackRocketCDNUpsellMixpanelEvent( 'RocketCDN Upsell CTA Clicked' );
+	function trackRocketCDNUpsellCTAClicked(iframeVisit=false) {
+		trackRocketCDNUpsellMixpanelEvent( 'RocketCDN Upsell CTA Clicked', {
+			destination: iframeVisit ? 'iframe' : 'express-checkout'
+		} );
 	}
 } )( document, window );
