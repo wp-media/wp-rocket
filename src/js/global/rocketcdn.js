@@ -175,7 +175,7 @@
 	};
 
 	function checkButtonUrlAndOpen( isCTA ) {
-		let iframeVisit = window.rocketcdnButtonUrl && window.rocketcdnButtonUrl === '';
+		let iframeVisit = !window.rocketcdnButtonUrl;
 		// Track CTA click if this is the pricing CTA button.
 		if ( isCTA ) {
 			trackRocketCDNUpsellCTAClicked(iframeVisit);
@@ -189,6 +189,8 @@
 			}, 100 );
 		} else {
 			// Show iframe modal as usual
+			const rocketcdnIframe = document.getElementById('rocketcdn-iframe');
+			rocketcdnIframe.src = rocketcdnIframe.dataset.src;
 			MicroModal.show( 'wpr-rocketcdn-modal' );
 		}
 	}
