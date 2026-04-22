@@ -37,11 +37,17 @@ class Test_GetDriver extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpectedDriver( array $config, string $expected ) {
-		$this->options->expects()->get( 'cdn_type', 'rocketcdn' )->andReturn( $config['cdn_type'] );
+        /* @phpstan-ignore-next-line */
+		$this->options->shouldReceive( 'get' )
+			->with( 'cdn_type', 'rocketcdn' )
+			->andReturn( $config['cdn_type'] );
 
 		if ( 'rocketcdn' === $config['cdn_type'] ) {
-			$this->api_client->expects()->get_subscription_data()->andReturn( $config['subscription'] );
+            /* @phpstan-ignore-next-line */
+			$this->api_client->shouldReceive( 'get_subscription_data' )
+				->andReturn( $config['subscription'] );
 		} else {
+            /* @phpstan-ignore-next-line */
 			$this->api_client->shouldNotReceive( 'get_subscription_data' );
 		}
 

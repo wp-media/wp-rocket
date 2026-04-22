@@ -164,7 +164,13 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		$options = get_option( rocket_get_constant( 'WP_ROCKET_SLUG' ), [] );
 
 		if ( ! isset( $options['cdn_type'] ) ) {
-			$options['cdn_type'] = ! empty( $options['cdn'] ) ? 'byocdn' : 'rocketcdn';
+			$is_rocketcdn = ! empty( get_option( 'rocketcdn_user_token' ) ) || ! empty( rocket_get_constant( 'ROCKETCDN_VERSION' ) );
+
+			if ( $is_rocketcdn ) {
+				$options['cdn_type'] = 'rocketcdn';
+			} else {
+				$options['cdn_type'] = ! empty( $options['cdn'] ) ? 'byocdn' : 'rocketcdn';
+			}
 
 			update_option( rocket_get_constant( 'WP_ROCKET_SLUG' ), $options );
 		}
