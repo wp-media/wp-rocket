@@ -140,8 +140,9 @@ class Subscriber implements Subscriber_Interface, PluginFamilyInterface {
 			 * @since 3.7.4
 			 *
 			 * @param string $menu_title The text to be used for the menu.
+			 * @param string $context Filter context.
 			 */
-			apply_filters( 'rocket_menu_title', $this->page->get_title() ),
+			apply_filters( 'rocket_menu_title', $this->page->get_title(), 'adminmenu' ),
 			$this->page->get_capability(),
 			$this->page->get_slug(),
 			[ $this->page, 'render_page' ]

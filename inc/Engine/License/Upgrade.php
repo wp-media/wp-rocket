@@ -82,9 +82,14 @@ class Upgrade extends Abstract_Render {
 	 * Adds the notification bubble to WP Rocket menu item when a promo is active
 	 *
 	 * @param string $menu_title Menu title.
+	 * @param string $context Filter context.
 	 * @return string
 	 */
-	public function add_notification_bubble( $menu_title ) {
+	public function add_notification_bubble( $menu_title, $context ) {
+		if ( 'adminmenu' !== $context ) {
+			return $menu_title;
+		}
+
 		if ( ! $this->can_use_promo() ) {
 			return $menu_title;
 		}
