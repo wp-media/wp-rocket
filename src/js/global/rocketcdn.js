@@ -474,13 +474,15 @@
 
 	/**
 	 * Tracks RocketCDN upsell banner view with Mixpanel.
+	 *
+	 * @param {boolean} [is_collapsed=false] Whether the small banner variant is displayed, Sends `collapsed` when true, otherwise `opened`.
 	 */
-	function trackRocketCDNUpsellBannerViewed( isSmall = false ) {
+	function trackRocketCDNUpsellBannerViewed( is_collapsed = false ) {
 		if ( ! isOnCDNTab() ) {
 			return;
 		}
 		trackRocketCDNUpsellMixpanelEvent( 'RocketCDN Upsell Banner Viewed', {
-			state: isSmall ? 'collapsed' : 'opened'
+			state: is_collapsed ? 'collapsed' : 'opened'
 		} );
 	}
 
