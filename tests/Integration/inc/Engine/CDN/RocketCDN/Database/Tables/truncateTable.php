@@ -11,7 +11,7 @@ use WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\TestCase;
  * @group RocketCDN
  * @group AdminOnly
  */
-class TruncateTableTest extends TestCase {
+class Test_TruncateTable extends TestCase {
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
 
