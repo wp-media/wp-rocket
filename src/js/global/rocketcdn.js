@@ -17,10 +17,11 @@
 			disableScroll: true
 		} );
 
+		maybeOpenModalFromURL();
+
 		// Only auto-open modal if there's no direct button URL
 		if ( ! window.rocketcdnButtonUrl || window.rocketcdnButtonUrl === '' ) {
 			maybeOpenModal();
-			maybeOpenModalFromURL();
 
 			const iframe = document.getElementById('rocketcdn-iframe');
 			const loader = document.getElementById('wpr-rocketcdn-modal-loader');
@@ -174,21 +175,31 @@
 		validateTokenAndCNAME( e.data );
 	};
 
+	function openRocketCDNModal() {
+		const rocketcdnIframe = document.getElementById('rocketcdn-iframe');
+		if ( !rocketcdnIframe || !rocketcdnIframe.dataset || !rocketcdnIframe.dataset.src || rocketcdnIframe.dataset.src === rocketcdnIframe.src ) {
+			return;
+		}
+		rocketcdnIframe.src = rocketcdnIframe.dataset.src;
+		MicroModal.show( 'wpr-rocketcdn-modal' );
+	}
+
 	function checkButtonUrlAndOpen( isCTA ) {
+		let iframeVisit = !window.rocketcdnButtonUrl;
 		// Track CTA click if this is the pricing CTA button.
 		if ( isCTA ) {
-			trackRocketCDNUpsellCTAClicked();
+			trackRocketCDNUpsellCTAClicked(iframeVisit);
 		}
 
 		// Check if button URL was injected by PHP
-		if ( window.rocketcdnButtonUrl && window.rocketcdnButtonUrl !== '' ) {
+		if ( !iframeVisit ) {
 			// Small delay to ensure Mixpanel event is sent before navigation
 			setTimeout( function() {
 				window.location.href = window.rocketcdnButtonUrl;
 			}, 100 );
 		} else {
 			// Show iframe modal as usual
-			MicroModal.show( 'wpr-rocketcdn-modal' );
+			openRocketCDNModal();
 		}
 	}
 
@@ -218,7 +229,7 @@
 				let responseTxt = JSON.parse(request.responseText);
 
 				if ( true === responseTxt.success ) {
-					MicroModal.show( 'wpr-rocketcdn-modal' );
+					openRocketCDNModal();
 				}
 			}
 		};
@@ -231,7 +242,7 @@
 			// Set hash to page_cdn to show CDN tab behind modal
 			window.location.hash = '#page_cdn';
 
-			MicroModal.show( 'wpr-rocketcdn-modal' );
+			openRocketCDNModal();
 
 			// Clean up the URL to prevent re-triggering on refresh
 			urlParams.delete( 'rocketcdn_open_iframe' );
@@ -496,7 +507,9 @@
 	/**
 	 * Tracks RocketCDN upsell CTA click with Mixpanel.
 	 */
-	function trackRocketCDNUpsellCTAClicked() {
-		trackRocketCDNUpsellMixpanelEvent( 'RocketCDN Upsell CTA Clicked' );
+	function trackRocketCDNUpsellCTAClicked( iframeVisit = false ) {
+		trackRocketCDNUpsellMixpanelEvent( 'RocketCDN Upsell CTA Clicked', {
+			destination: iframeVisit ? 'iframe' : 'express-checkout'
+		} );
 	}
 } )( document, window );
