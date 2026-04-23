@@ -3,6 +3,11 @@
 ( ( document, window ) => {
 	'use strict';
 
+	const BANNER_STATE = {
+		OPENED: false,    // Big CTA - opened state
+		COLLAPSED: true   // Small CTA - collapsed state
+	};
+
 	document.addEventListener( 'DOMContentLoaded', () => {
 		document.querySelectorAll( '.wpr-rocketcdn-open' ).forEach( ( el ) => {
 			el.addEventListener( 'click', ( e ) => {
@@ -42,27 +47,15 @@
 		return window.location.hash === '#page_cdn';
 	}
 
-	/**
-	 * Tracks when a visible RocketCDN upsell banner is viewed.
-	 * Only tracks once per page session.
-	 */
-	let bannerViewTracked = false;
-
 	function maybeTrackBannerView() {
-		if ( bannerViewTracked || ! isOnCDNTab() ) {
-			return;
-		}
-
 		const smallCTA = document.querySelector( '#wpr-rocketcdn-cta-small' );
 		const bigCTA = document.querySelector( '#wpr-rocketcdn-cta' );
 
 		// Only track if one of the banners is visible.
 		if ( bigCTA && ! bigCTA.classList.contains( 'wpr-isHidden' ) ) {
-			trackRocketCDNUpsellBannerViewed();
-			bannerViewTracked = true;
+			trackRocketCDNUpsellBannerViewed( BANNER_STATE.OPENED );
 		} else if ( smallCTA && ! smallCTA.classList.contains( 'wpr-isHidden' ) ) {
-			trackRocketCDNUpsellBannerViewed();
-			bannerViewTracked = true;
+			trackRocketCDNUpsellBannerViewed( BANNER_STATE.COLLAPSED );
 		}
 	}
 
@@ -102,11 +95,7 @@
 				smallCTA.classList.add( 'wpr-isHidden' );
 				bigCTA.classList.remove( 'wpr-isHidden' );
 
-				// Track upsell banner view only if on CDN tab.
-				if ( isOnCDNTab() && ! bannerViewTracked ) {
-					trackRocketCDNUpsellBannerViewed();
-					bannerViewTracked = true;
-				}
+				trackRocketCDNUpsellBannerViewed( BANNER_STATE.OPENED );
 
 				sendHTTPRequest( getPostData( 'big' ) );
 			} );
@@ -118,6 +107,8 @@
 
 				smallCTA.classList.remove( 'wpr-isHidden' );
 				bigCTA.classList.add( 'wpr-isHidden' );
+
+				trackRocketCDNUpsellBannerViewed( BANNER_STATE.COLLAPSED );
 
 				sendHTTPRequest( getPostData( 'small' ) );
 			} );
@@ -499,9 +490,16 @@
 
 	/**
 	 * Tracks RocketCDN upsell banner view with Mixpanel.
+	 *
+	 * @param {boolean} [is_collapsed=false] Whether the small banner variant is displayed, Sends `collapsed` when true, otherwise `opened`.
 	 */
-	function trackRocketCDNUpsellBannerViewed() {
-		trackRocketCDNUpsellMixpanelEvent( 'RocketCDN Upsell Banner Viewed' );
+	function trackRocketCDNUpsellBannerViewed( is_collapsed = false ) {
+		if ( ! isOnCDNTab() ) {
+			return;
+		}
+		trackRocketCDNUpsellMixpanelEvent( 'RocketCDN Upsell Banner Viewed', {
+			state: is_collapsed ? 'collapsed' : 'opened'
+		} );
 	}
 
 	/**
