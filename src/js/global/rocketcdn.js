@@ -3,6 +3,11 @@
 ( ( document, window ) => {
 	'use strict';
 
+	const BANNER_STATE = {
+		OPENED: false,    // Big CTA - opened state
+		COLLAPSED: true   // Small CTA - collapsed state
+	};
+
 	document.addEventListener( 'DOMContentLoaded', () => {
 		document.querySelectorAll( '.wpr-rocketcdn-open' ).forEach( ( el ) => {
 			el.addEventListener( 'click', ( e ) => {
@@ -47,9 +52,9 @@
 
 		// Only track if one of the banners is visible.
 		if ( bigCTA && ! bigCTA.classList.contains( 'wpr-isHidden' ) ) {
-			trackRocketCDNUpsellBannerViewed( false );
+			trackRocketCDNUpsellBannerViewed( BANNER_STATE.OPENED );
 		} else if ( smallCTA && ! smallCTA.classList.contains( 'wpr-isHidden' ) ) {
-			trackRocketCDNUpsellBannerViewed( true );
+			trackRocketCDNUpsellBannerViewed( BANNER_STATE.COLLAPSED );
 		}
 	}
 
@@ -89,7 +94,7 @@
 				smallCTA.classList.add( 'wpr-isHidden' );
 				bigCTA.classList.remove( 'wpr-isHidden' );
 
-				trackRocketCDNUpsellBannerViewed( false );
+				trackRocketCDNUpsellBannerViewed( BANNER_STATE.OPENED );
 
 				sendHTTPRequest( getPostData( 'big' ) );
 			} );
@@ -102,7 +107,7 @@
 				smallCTA.classList.remove( 'wpr-isHidden' );
 				bigCTA.classList.add( 'wpr-isHidden' );
 
-				trackRocketCDNUpsellBannerViewed( true );
+				trackRocketCDNUpsellBannerViewed( BANNER_STATE.COLLAPSED );
 
 				sendHTTPRequest( getPostData( 'small' ) );
 			} );
