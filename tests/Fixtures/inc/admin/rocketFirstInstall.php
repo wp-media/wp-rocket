@@ -68,6 +68,7 @@ $default = [
 $integration                                 					 = $default;
 $integration[ 'async_css_mobile' ]           					 = 1;
 $integration[ 'exclude_defer_js' ]           					 = [];
+$integration['cdn_type']                                         = 'rocketcdn';
 $integration[ 'delay_js' ]                   					 = 0;
 $integration[ 'delay_js_exclusions' ]        					 = [];
 $integration[ 'delay_js_execution_safe_mode' ]                   = 0;
@@ -80,7 +81,6 @@ $integration[ 'image_dimensions' ]           	 				 = 0;
 $integration[ 'exclude_lazyload' ]           					 = [];
 $integration['host_fonts_locally']           					 = 0;
 $integration['auto_preload_fonts']  	   					     = 0;
-$integration['cdn_type']                                        = 'rocketcdn';
 return [
 	'test_data' => [
 		'defaultOptionsArray' => [
