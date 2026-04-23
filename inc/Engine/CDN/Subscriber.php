@@ -391,23 +391,35 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @param string $new_version New plugin version.
 	 * @param string $old_version Previously installed plugin version.
+	 *
 	 * @return void
 	 */
 	public function on_update_add_cdn_type_option( string $new_version, string $old_version ) {
-		if ( version_compare( $old_version, '3.22.0', '<' ) ) {
-			$options              = $this->options->get( 'wp_rocket_settings', [] );
-			$rocketcdn_user_token = $this->options->get( 'rocketcdn_user_token' );
-			if ( ! isset( $options['cdn_type'] ) ) {
-				$is_rocketcdn = ! empty( $rocketcdn_user_token ) || ! empty( rocket_get_constant( 'ROCKETCDN_VERSION' ) );
-
-				if ( $is_rocketcdn ) {
-					$options['cdn_type'] = 'rocketcdn';
-				} else {
-					$options['cdn_type'] = ! empty( $options['cdn'] ) ? 'byocdn' : 'rocketcdn';
-				}
-
-				$this->options->set( 'wp_rocket_settings', $options );
-			}
+		// Bail early.
+		if ( version_compare( $old_version, '3.22.0', '>=' ) ) {
+			return;
 		}
+
+		$options = $this->options->get( 'wp_rocket_settings', [] );
+
+		if ( isset( $options['cdn_type'] ) ) {
+			return;
+		}
+
+		$rocketcdn_user_token = $this->options->get( 'rocketcdn_user_token' );
+		$is_rocketcdn         = ! empty( $rocketcdn_user_token ) || ! empty( rocket_get_constant( 'ROCKETCDN_VERSION' ) );
+
+		// Default to rocketcdn for users with no CDN configured at all.
+		$options['cdn_type'] = 'rocketcdn';
+
+		if ( $is_rocketcdn ) {
+			// Active user before the upgrade.
+			$options['cdn_type'] = 'rocketcdn';
+		} elseif ( ! empty( $options['cdn'] ) ) {
+			// CDN enabled but no RocketCDN token.
+			$options['cdn_type'] = 'byocdn';
+		}
+
+		$this->options->set( 'wp_rocket_settings', $options );
 	}
 }

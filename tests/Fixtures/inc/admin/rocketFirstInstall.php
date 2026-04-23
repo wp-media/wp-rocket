@@ -43,7 +43,6 @@ $default = [
 	'schedule_automatic_cleanup'  => 0,
 	'automatic_cleanup_frequency' => 'daily',
 	'cdn'                         => 0,
-	'cdn_type'                    => 'rocketcdn',
 	'cdn_cnames'                  => [],
 	'cdn_zone'                    => [],
 	'cdn_reject_files'            => [],

@@ -67,17 +67,15 @@ class Context {
 			return self::BYOCDN_TYPE;
 		}
 
-		return $this->rocketcdn_resolver( $cdn_type );
+		return $this->rocketcdn_resolver();
 	}
 
 	/**
 	 * Resolves RocketCDN to either free or paid type.
 	 *
-	 * @param string $cdn_type CDN type option value.
-	 *
 	 * @return string
 	 */
-	private function rocketcdn_resolver( string $cdn_type ): string {
+	private function rocketcdn_resolver(): string {
 		$subscription = $this->api_client->get_subscription_data();
 
 		if ( empty( $subscription['is_active'] ) || 'running' !== $subscription['subscription_status'] ) {
