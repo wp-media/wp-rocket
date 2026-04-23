@@ -45,7 +45,6 @@ $default = [
 	'cdn'                         => 0,
 	'cdn_cnames'                  => [],
 	'cdn_zone'                    => [],
-	'cdn_type'                    => 'rocketcdn',
 	'cdn_reject_files'            => [],
 	'do_cloudflare'               => 0,
 	'cloudflare_email'            => '',
@@ -81,7 +80,7 @@ $integration[ 'image_dimensions' ]           	 				 = 0;
 $integration[ 'exclude_lazyload' ]           					 = [];
 $integration['host_fonts_locally']           					 = 0;
 $integration['auto_preload_fonts']  	   					     = 0;
-
+$integration['cdn_type']                                        = 'rocketcdn';
 return [
 	'test_data' => [
 		'defaultOptionsArray' => [
