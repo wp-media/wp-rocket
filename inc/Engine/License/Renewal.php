@@ -589,10 +589,11 @@ class Renewal extends Abstract_Render {
 	 * Adds the notification bubble to WP Rocket menu item when expired
 	 *
 	 * @param string $menu_title Menu title.
+	 * @param string $context Filter context.
 	 *
 	 * @return string
 	 */
-	public function add_expired_bubble( $menu_title ): string {
+	public function add_expired_bubble( $menu_title, $context ): string {
 		if ( rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT', false ) ) {
 			return $menu_title;
 		}
@@ -644,7 +645,11 @@ class Renewal extends Abstract_Render {
 			return $menu_title;
 		}
 
-		return $menu_title . ' <span class="awaiting-mod">!</span>';
+		return $menu_title . ' ' . sprintf(
+			'<span class="%1$s">%2$s</span>',
+			'adminbar' === $context ? 'rocket-revoked-bubble' : 'awaiting-mod',
+				'adminbar' === $context ? '' : '!',
+			);
 	}
 
 	/**

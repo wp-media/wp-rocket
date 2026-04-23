@@ -51,7 +51,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_settings_page_footer'         => 'display_upgrade_popin',
 			'rocket_menu_title'                   => [
 				[ 'add_notification_bubble', 10, 2 ],
-				[ 'add_notification_bubble_expired' ],
+				[ 'add_notification_bubble_expired', 10, 2 ],
 				[ 'maybe_add_revoked_bubble' ],
 			],
 			'admin_footer-settings_page_wprocket' => [
@@ -226,11 +226,12 @@ class Subscriber implements Subscriber_Interface {
 	 * Adds the notification bubble to WP Rocket menu item when expired
 	 *
 	 * @param string $menu_title Menu title.
+	 * @param string $context Filter context.
 	 *
 	 * @return string
 	 */
-	public function add_notification_bubble_expired( $menu_title ) {
-		return $this->renewal->add_expired_bubble( $menu_title );
+	public function add_notification_bubble_expired( $menu_title, $context = 'adminmenu' ) {
+		return $this->renewal->add_expired_bubble( $menu_title, $context );
 	}
 
 	/**
