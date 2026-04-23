@@ -123,7 +123,6 @@ function rocket_first_install() {
 				'schedule_automatic_cleanup'  => 0,
 				'automatic_cleanup_frequency' => 'daily',
 				'cdn'                         => 0,
-				'cdn_type'                    => 'rocketcdn',
 				'cdn_cnames'                  => [],
 				'cdn_zone'                    => [],
 				'cdn_reject_files'            => [],
@@ -160,22 +159,6 @@ add_action( 'wp_rocket_first_install', 'rocket_first_install' );
  * @param string $actual_version Installed WP Rocket version.
  */
 function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
-	if ( version_compare( $actual_version, '3.22.0', '<' ) ) {
-		$options = get_option( rocket_get_constant( 'WP_ROCKET_SLUG' ), [] );
-
-		if ( ! isset( $options['cdn_type'] ) ) {
-			$is_rocketcdn = ! empty( get_option( 'rocketcdn_user_token' ) ) || ! empty( rocket_get_constant( 'ROCKETCDN_VERSION' ) );
-
-			if ( $is_rocketcdn ) {
-				$options['cdn_type'] = 'rocketcdn';
-			} else {
-				$options['cdn_type'] = ! empty( $options['cdn'] ) ? 'byocdn' : 'rocketcdn';
-			}
-
-			update_option( rocket_get_constant( 'WP_ROCKET_SLUG' ), $options );
-		}
-	}
-
 	if ( version_compare( $actual_version, '2.4.1', '<' ) ) {
 		delete_transient( 'rocket_ask_for_update' );
 	}

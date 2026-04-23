@@ -78,10 +78,6 @@ class Context {
 	 * @return string
 	 */
 	private function rocketcdn_resolver( string $cdn_type ): string {
-		if ( self::ROCKETCDN_TYPE !== $cdn_type ) {
-			return self::BYOCDN_TYPE;
-		}
-
 		$subscription = $this->api_client->get_subscription_data();
 
 		if ( empty( $subscription['is_active'] ) || 'running' !== $subscription['subscription_status'] ) {

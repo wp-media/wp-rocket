@@ -350,15 +350,6 @@ class Settings {
 		// Option : CDN.
 		$input['cdn'] = ! empty( $input['cdn'] ) ? 1 : 0;
 
-		$allowed_cdn_types = [
-			'rocketcdn' => 1,
-			'byocdn'    => 1,
-		];
-
-		$input['cdn_type'] = isset( $input['cdn_type'], $allowed_cdn_types[ $input['cdn_type'] ] )
-			? $input['cdn_type']
-			: $this->options->get( 'cdn_type', 'rocketcdn' );
-
 		// Option : CDN Cnames.
 		if ( isset( $input['cdn_cnames'] ) ) {
 			$input['cdn_cnames'] = $this->sanitize_cdn_cnames( $input['cdn_cnames'] );

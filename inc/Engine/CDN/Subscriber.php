@@ -44,20 +44,22 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_buffer'           => [
+			'rocket_buffer'                => [
 				[ 'rewrite', 2 ],
 				[ 'rewrite_srcset', 3 ],
 			],
-			'rocket_css_content'      => 'rewrite_css_properties',
-			'rocket_usedcss_content'  => 'rewrite_css_properties',
-			'rocket_cdn_hosts'        => [ 'get_cdn_hosts', 10, 2 ],
-			'rocket_dns_prefetch'     => 'add_dns_prefetch_cdn',
-			'rocket_facebook_sdk_url' => 'add_cdn_url',
-			'rocket_css_url'          => [ 'add_cdn_url', 10, 2 ],
-			'rocket_js_url'           => [ 'add_cdn_url', 10, 2 ],
-			'rocket_asset_url'        => [ 'maybe_replace_url', 10, 2 ],
-			'wp_resource_hints'       => [ 'add_preconnect_cdn', 10, 2 ],
-			'rocket_font_url'         => [ 'add_cdn_url', 10, 2 ],
+			'rocket_css_content'           => 'rewrite_css_properties',
+			'rocket_usedcss_content'       => 'rewrite_css_properties',
+			'rocket_cdn_hosts'             => [ 'get_cdn_hosts', 10, 2 ],
+			'rocket_dns_prefetch'          => 'add_dns_prefetch_cdn',
+			'rocket_facebook_sdk_url'      => 'add_cdn_url',
+			'rocket_css_url'               => [ 'add_cdn_url', 10, 2 ],
+			'rocket_js_url'                => [ 'add_cdn_url', 10, 2 ],
+			'rocket_asset_url'             => [ 'maybe_replace_url', 10, 2 ],
+			'wp_resource_hints'            => [ 'add_preconnect_cdn', 10, 2 ],
+			'rocket_font_url'              => [ 'add_cdn_url', 10, 2 ],
+			'rocket_first_install_options' => 'add_cdn_type_option',
+			'wp_rocket_upgrade'            => 'on_update_add_cdn_type_option',
 		];
 	}
 
@@ -363,5 +365,49 @@ class Subscriber implements Subscriber_Interface {
 		 * @param bool $can_insert Can cdn insert resource hints or not, default is true.
 		 */
 		return wpm_apply_filters_typed( 'boolean', 'rocket_cdn_insert_resource_hints', true );
+	}
+
+	/**
+	 * Adds cdn_type option to WP Rocket options.
+	 *
+	 * @since 3.22
+	 *
+	 * @param array $options WP Rocket options array.
+	 *
+	 * @return array
+	 */
+	public function add_cdn_type_option( array $options ) {
+		$options = (array) $options;
+
+		$options['cdn_type'] = 'rocketcdn';
+
+		return $options;
+	}
+
+	/**
+	 * Add cdn_type option when upgrading from a version older than 3.21
+	 *
+	 * @since 3.22
+	 *
+	 * @param string $new_version New plugin version.
+	 * @param string $old_version Previously installed plugin version.
+	 * @return void
+	 */
+	public function on_update_add_cdn_type_option( string $new_version, string $old_version ) {
+		if ( version_compare( $old_version, '3.22.0', '<' ) ) {
+			$options              = $this->options->get( 'wp_rocket_settings', [] );
+			$rocketcdn_user_token = $this->options->get( 'rocketcdn_user_token' );
+			if ( ! isset( $options['cdn_type'] ) ) {
+				$is_rocketcdn = ! empty( $rocketcdn_user_token ) || ! empty( rocket_get_constant( 'ROCKETCDN_VERSION' ) );
+
+				if ( $is_rocketcdn ) {
+					$options['cdn_type'] = 'rocketcdn';
+				} else {
+					$options['cdn_type'] = ! empty( $options['cdn'] ) ? 'byocdn' : 'rocketcdn';
+				}
+
+				$this->options->set( 'wp_rocket_settings', $options );
+			}
+		}
 	}
 }
