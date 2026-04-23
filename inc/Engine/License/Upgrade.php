@@ -85,7 +85,7 @@ class Upgrade extends Abstract_Render {
 	 * @param string $context Filter context.
 	 * @return string
 	 */
-	public function add_notification_bubble( $menu_title, $context ) {
+	public function add_notification_bubble( $menu_title, $context = 'adminmenu' ) {
 		if ( 'adminmenu' !== $context ) {
 			return $menu_title;
 		}

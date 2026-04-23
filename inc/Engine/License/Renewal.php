@@ -593,7 +593,7 @@ class Renewal extends Abstract_Render {
 	 *
 	 * @return string
 	 */
-	public function add_expired_bubble( $menu_title, $context ): string {
+	public function add_expired_bubble( $menu_title, $context = 'adminmenu' ): string {
 		if ( rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT', false ) ) {
 			return $menu_title;
 		}
