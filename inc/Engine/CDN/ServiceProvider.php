@@ -53,6 +53,7 @@ class ServiceProvider extends AbstractServiceProvider {
 				[
 					'options',
 					'cdn',
+					'options_api',
 				]
 			);
 		$this->getContainer()->addShared( 'cdn_admin_subscriber', AdminSubscriber::class );

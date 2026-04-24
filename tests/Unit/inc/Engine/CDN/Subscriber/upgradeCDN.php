@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Unit\inc\Engine\CDN\Subscriber;
 
 use Mockery;
+use WP_Rocket\Admin\Options;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 use WP_Rocket\Admin\Options_Data;
@@ -16,16 +17,20 @@ use WP_Rocket\Engine\CDN\Subscriber;
 class Test_UpgradeCDN extends TestCase {
     private $cdn;
 	private $options;
+
+	private $options_api;
 	private $subscriber;
 
     public function setUp() : void {
 		parent::setUp();
 
-        $this->cdn        = Mockery::mock( CDN::class );
-		$this->options    = Mockery::mock( Options_Data::class );
-		$this->subscriber = new Subscriber(
+        $this->cdn         = Mockery::mock( CDN::class );
+		$this->options     = Mockery::mock( Options_Data::class );
+	    $this->options_api = Mockery::mock( Options::class );
+		$this->subscriber  = new Subscriber(
 			$this->options,
-			$this->cdn
+			$this->cdn,
+			$this->options_api
 		);
     }
 
@@ -34,37 +39,25 @@ class Test_UpgradeCDN extends TestCase {
 	 * @dataProvider configTestData
 	 */
     public function testShouldSetExpectedCdnType( array $config, array $expected ) {
-        $this->options
-            ->expects()
-            ->get( 'wp_rocket_settings', [] )
-            ->andReturn( $config['options'] );
+	    $this->options
+		    ->expects()
+		    ->get( 'cdn', 0 )
+		    ->andReturn( $config['cdn_enabled'] );
 
-        if ( isset( $config['rocketcdn_user_token'] ) ) {
-            $this->options
-                ->expects()
-                ->get( 'rocketcdn_user_token' )
-                ->andReturn( $config['rocketcdn_user_token'] );
-        }
+	    if ( $expected['should_update'] ) {
+		    $this->options
+			    ->expects()
+			    ->set( 'cdn_type', $expected['cdn_type'] );
 
-        Functions\expect( 'rocket_get_constant' )
-            ->with( 'ROCKETCDN_VERSION' )
-            ->andReturn( $config['rocketcdn_version'] ?? '' );
+		    $this->options
+			    ->expects()
+			    ->get_options()
+			    ->andReturn( $expected['options'] );
 
-        Functions\when( 'rocket_get_constant' )
-            ->alias( function( $constant ) use ( $config ) {
-                if ( 'ROCKETCDN_VERSION' === $constant ) {
-                    return $config['rocketcdn_version'] ?? '';
-                }
-                return null;
-            } );
-
-        if ( $expected['should_update'] ) {
-            $this->options
-                ->expects()
-                ->set( 'wp_rocket_settings', $expected['options'] );
-        } else {
-            $this->options->shouldNotReceive( 'set' );
-        }
+		    $this->options_api
+			    ->expects()
+			    ->set( 'settings', $expected['options'] );
+	    }
 
         $this->subscriber->on_update_add_cdn_type_option( $config['new_version'], $config['old_version'] );
     }

@@ -1,6 +1,7 @@
 <?php
 namespace WP_Rocket\Engine\CDN;
 
+use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
@@ -18,6 +19,13 @@ class Subscriber implements Subscriber_Interface {
 	private $options;
 
 	/**
+	 * Options instance.
+	 *
+	 * @var Options
+	 */
+	private $options_api;
+
+	/**
 	 * CDN instance
 	 *
 	 * @var CDN
@@ -27,12 +35,14 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Constructor
 	 *
-	 * @param Options_Data $options WP Rocket Options instance.
+	 * @param Options_Data $options WP Rocket Options_Data instance.
 	 * @param CDN          $cdn     CDN instance.
+	 * @param Options      $options_api     Options instance..
 	 */
-	public function __construct( Options_Data $options, CDN $cdn ) {
-		$this->options = $options;
-		$this->cdn     = $cdn;
+	public function __construct( Options_Data $options, CDN $cdn, Options $options_api ) {
+		$this->options     = $options;
+		$this->cdn         = $cdn;
+		$this->options_api = $options_api;
 	}
 
 	/**
@@ -385,7 +395,7 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Add cdn_type option when upgrading from a version older than 3.21
+	 * Add cdn_type option when upgrading from a version older than 3.22
 	 *
 	 * @since 3.22
 	 *
@@ -400,26 +410,16 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$options = $this->options->get( 'wp_rocket_settings', [] );
+		// Check if cdn was enabled in previous version and default to byocdn.
+		if ( (bool) $this->options->get( 'cdn', 0 ) ) {
+			$this->options->set( 'cdn_type', 'byocdn' );
+			$this->options_api->set( 'settings', $this->options->get_options() );
 
-		if ( isset( $options['cdn_type'] ) ) {
 			return;
 		}
 
-		$rocketcdn_user_token = $this->options->get( 'rocketcdn_user_token' );
-		$is_rocketcdn         = ! empty( $rocketcdn_user_token ) || ! empty( rocket_get_constant( 'ROCKETCDN_VERSION' ) );
+		$this->options->set( 'cdn_type', 'rocketcdn' );
 
-		// Default to rocketcdn for users with no CDN configured at all.
-		$options['cdn_type'] = 'rocketcdn';
-
-		if ( $is_rocketcdn ) {
-			// Active user before the upgrade.
-			$options['cdn_type'] = 'rocketcdn';
-		} elseif ( ! empty( $options['cdn'] ) ) {
-			// CDN enabled but no RocketCDN token.
-			$options['cdn_type'] = 'byocdn';
-		}
-
-		$this->options->set( 'wp_rocket_settings', $options );
+		$this->options_api->set( 'settings', $this->options->get_options() );
 	}
 }
