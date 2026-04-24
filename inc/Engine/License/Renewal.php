@@ -589,7 +589,6 @@ class Renewal extends Abstract_Render {
 	 * Adds the notification bubble to WP Rocket menu item when expired
 	 *
 	 * @param string $menu_title Menu title.
-	 * @param string $context Filter context.
 	 *
 	 * @return string
 	 */

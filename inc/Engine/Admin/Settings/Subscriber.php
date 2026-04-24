@@ -140,7 +140,7 @@ class Subscriber implements Subscriber_Interface, PluginFamilyInterface {
 			 * @since 3.7.4
 			 *
 			 * @param string $menu_title The text to be used for the menu.
-			 * @param string $context Filter context.
+			 * @param string $context Filter context, adminmenu or adminbar.
 			 */
 			wpm_apply_filters_typed( 'string', 'rocket_menu_title', $this->page->get_title(), 'adminmenu' ),
 			$this->page->get_capability(),
