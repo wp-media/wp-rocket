@@ -52,19 +52,10 @@ class Test_UpgradeCDN extends TestCase {
 			    return null;
 		    } );
 
-	    Functions\expect( 'get_option' )
-		    ->once()
-		    ->with( 'wp_rocket_settings', [] )
+	    $this->options_api
+		    ->expects()
+		    ->get( 'settings', [] )
 		    ->andReturn( $config['current_options'] );
-
-	    /*$this->options
-		    ->expects()
-		    ->set( 'cdn_type', $expected['cdn_type'] );
-
-	    $this->options
-		    ->expects()
-		    ->get_options()
-		    ->andReturn( $expected['options'] );*/
 
 	    $this->options_api
 		    ->expects()

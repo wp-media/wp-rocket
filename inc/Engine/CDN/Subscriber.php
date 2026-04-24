@@ -415,7 +415,7 @@ class Subscriber implements Subscriber_Interface {
 			$cdn_type = 'byocdn';
 		}
 
-		$current_options             = get_option( rocket_get_constant( 'WP_ROCKET_SLUG' ), [] );
+		$current_options             = $this->options_api->get( 'settings', [] );
 		$current_options['cdn_type'] = $cdn_type;
 
 		$this->options_api->set( 'settings', $current_options );
