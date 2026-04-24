@@ -51,7 +51,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_settings_page_footer'         => 'display_upgrade_popin',
 			'rocket_menu_title'                   => [
 				[ 'add_notification_bubble', 10, 2 ],
-				[ 'add_notification_bubble_expired', 10, 2 ],
+				[ 'add_notification_bubble_expired' ],
 				[ 'maybe_add_revoked_bubble' ],
 			],
 			'admin_footer-settings_page_wprocket' => [
