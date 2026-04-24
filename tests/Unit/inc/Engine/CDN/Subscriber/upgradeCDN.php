@@ -44,20 +44,31 @@ class Test_UpgradeCDN extends TestCase {
 		    ->get( 'cdn', 0 )
 		    ->andReturn( $config['cdn_enabled'] );
 
-	    if ( $expected['should_update'] ) {
-		    $this->options
-			    ->expects()
-			    ->set( 'cdn_type', $expected['cdn_type'] );
+	    Functions\when( 'rocket_get_constant' )
+		    ->alias( function( $constant ) {
+			    if ( 'WP_ROCKET_SLUG' === $constant ) {
+				    return 'wp_rocket_settings';
+			    }
+			    return null;
+		    } );
 
-		    $this->options
-			    ->expects()
-			    ->get_options()
-			    ->andReturn( $expected['options'] );
+	    Functions\expect( 'get_option' )
+		    ->once()
+		    ->with( 'wp_rocket_settings', [] )
+		    ->andReturn( $config['current_options'] );
 
-		    $this->options_api
-			    ->expects()
-			    ->set( 'settings', $expected['options'] );
-	    }
+	    /*$this->options
+		    ->expects()
+		    ->set( 'cdn_type', $expected['cdn_type'] );
+
+	    $this->options
+		    ->expects()
+		    ->get_options()
+		    ->andReturn( $expected['options'] );*/
+
+	    $this->options_api
+		    ->expects()
+		    ->set( 'settings', $expected['options'] );
 
         $this->subscriber->on_update_add_cdn_type_option( $config['new_version'], $config['old_version'] );
     }

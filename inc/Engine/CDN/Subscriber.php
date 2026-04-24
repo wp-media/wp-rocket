@@ -409,17 +409,15 @@ class Subscriber implements Subscriber_Interface {
 		if ( version_compare( $old_version, '3.22.0', '>=' ) ) {
 			return;
 		}
-
+		$cdn_type = 'rocketcdn';
 		// Check if cdn was enabled in previous version and default to byocdn.
 		if ( (bool) $this->options->get( 'cdn', 0 ) ) {
-			$this->options->set( 'cdn_type', 'byocdn' );
-			$this->options_api->set( 'settings', $this->options->get_options() );
-
-			return;
+			$cdn_type = 'byocdn';
 		}
 
-		$this->options->set( 'cdn_type', 'rocketcdn' );
+		$current_options             = get_option( rocket_get_constant( 'WP_ROCKET_SLUG' ), [] );
+		$current_options['cdn_type'] = $cdn_type;
 
-		$this->options_api->set( 'settings', $this->options->get_options() );
+		$this->options_api->set( 'settings', $current_options );
 	}
 }

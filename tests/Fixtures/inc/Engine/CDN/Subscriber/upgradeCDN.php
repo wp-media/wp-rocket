@@ -5,6 +5,9 @@ return [
 			'new_version' => '3.22.0',
 			'old_version' => '3.21.1',
 			'cdn_enabled' => 1,
+			'current_options' => [
+				'cdn' => 1,
+			],
 		],
 		'expected' => [
 			'should_update' => true,
@@ -20,6 +23,7 @@ return [
 			'new_version' => '3.22.0',
 			'old_version' => '3.21.1',
 			'cdn_enabled' => 0,
+			'current_options' => [],
 		],
 		'expected' => [
 			'should_update' => true,
