@@ -644,7 +644,7 @@ class Renewal extends Abstract_Render {
 			return $menu_title;
 		}
 
-		return $menu_title . ' <span class="awaiting-mod">!</span>';
+		return $menu_title . ' <span class="menu-counter">!</span>';
 	}
 
 	/**
