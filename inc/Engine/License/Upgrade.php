@@ -372,7 +372,7 @@ class Upgrade extends Abstract_Render {
 		$currency = $this->user->get_currency();
 
 		$prices_classes = [];
-		if ( Currency::is_euro( esc_html( $currency ) ) ) {
+		if ( Currency::is_euro( $currency ) ) {
 			$prices_classes[] = 'wpr-with-euro';
 		}
 		if ( $this->pricing->is_promo_active() ) {

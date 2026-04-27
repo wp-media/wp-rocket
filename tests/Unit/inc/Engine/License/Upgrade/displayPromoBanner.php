@@ -70,7 +70,7 @@ class DisplayPromoBanner extends TestCase {
 
 		$this->pricing->shouldReceive( 'is_promo_active' )
 			->atMost()
-			->times(3)
+			->times(4)
 			->andReturn( $config['promo_active'] );
 
 		Functions\when( 'get_current_user_id' )->justReturn( 1 );
