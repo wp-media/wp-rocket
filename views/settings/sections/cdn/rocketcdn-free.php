@@ -34,15 +34,22 @@ defined( 'ABSPATH' ) || exit;
 </div>
 
 <div class="wpr-cdn-built-in <?php echo esc_attr( $data['class'] ); ?>">
-	<?php $this->render_parts_with_data( 'cdn/cdn-status-indicator', $data['status_indicator_data'] ); ?>
-
 	<?php
+	/**
+	 * Fires before the CDN status indicator.
+	 *
+	 * @since 3.22
+	 */
+	do_action( 'rocket_cdn_free_before_status_indicator' );
+
+	$this->render_parts_with_data( 'cdn/cdn-status-indicator', $data['status_indicator_data'] );
+
 	/**
 	 * Fires to render the built-in CDN page list table.
 	 *
 	 * @since 3.22
 	 */
-	do_action( 'rocket_cdn_built_in_page_list' );
+	do_action( 'rocket_cdn_free_page_list' );
 	?>
 
 	<div class="wpr-cdn-add-page">
