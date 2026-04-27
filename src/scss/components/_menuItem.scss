@@ -59,6 +59,9 @@
     }
 
     &-title{
+        display: flex;
+        align-items: center;
+        gap: 6px;
         @include font-size(13,19);
         font-weight: bold;
         letter-spacing: -0.08px;
