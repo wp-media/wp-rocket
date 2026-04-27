@@ -5,10 +5,11 @@ use WP_Rocket\Tests\Integration\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * Test class covering \WP_Rocket\ThirdParty\Hostings\OneCom::disable_cdn_change
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\OneCom::disable_cdn_pause_option
+ *
  * @group OneCom
  */
-class Test_DisableCDNChange extends TestCase {
+class Test_DisableCdnPauseOption extends TestCase {
 
 	/**
 	 * @dataProvider providerTestData
@@ -32,11 +33,13 @@ class Test_DisableCDNChange extends TestCase {
 		}
 
 		$this->assertSame(
-			$expected['field_settings'], apply_filters( 'rocket_cdn_settings_fields', $config['field_settings' ]));
+			$expected['sections'],
+			apply_filters( 'rocket_cdn_driver_sections', $config['sections'] )
+		);
 	}
 
 	public function providerTestData() {
-		return $this->getTestData( __DIR__, 'disableCDNChange' );
+		return $this->getTestData( __DIR__, 'disableCdnPauseOption' );
 	}
 }
 
