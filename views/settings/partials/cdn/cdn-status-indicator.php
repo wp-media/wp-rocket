@@ -11,6 +11,7 @@
  *     @type string $status_text Main status text.
  *     @type string $details     Details text (edge locations, pages covered).
  *     @type string $class       CSS class for the status indicator.
+ * 	   @type bool   $is_pause_btn_disabled Whether the pause button should be disabled.
  * }
  */
 
@@ -18,6 +19,7 @@ defined( 'ABSPATH' ) || exit;
 
 $rocket_details = isset( $data['details'] ) ? $data['details'] : '';
 $rocket_class   = isset( $data['class'] ) ? $data['class'] : '';
+$rocket_is_pause_btn_disabled = isset( $data['disable_pause_btn'] ) ? $data['disable_pause_btn'] : false;
 
 if ( ! $data['is_active'] ) {
 	return;
@@ -38,7 +40,9 @@ if ( ! $data['is_active'] ) {
 			<?php endif; ?>
 		</div>
 	</div>
-	<button type="button" class="wpr-cdn-pause" aria-pressed="false">
+	<?php
+	?>
+	<button type="button" class="wpr-cdn-pause" aria-pressed="false" <?php echo $rocket_is_pause_btn_disabled ? 'disabled' : ''; ?>>
 		<span class="wpr-cdn-pause__icon"></span>
 		<span class="wpr-cdn-pause__text"><?php esc_html_e( 'PAUSE CDN', 'rocket' ); ?></span>
 	</button>
