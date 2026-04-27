@@ -1,0 +1,479 @@
+// main: ../main.scss
+
+// CDN driver option header
+.wpr-optionHeader--cdn-driver {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: $space;
+}
+
+.wpr-optionHeader__title-group {
+	display: flex;
+	flex: 1;
+	align-items: center;
+	gap: $space + 4;
+}
+
+.wpr-title2--orange {
+	color: $cOrange;
+	text-transform: capitalize;
+    padding-right: 0;
+}
+
+.wpr-optionHeader .wpr-title2--orange {
+    padding-right: 0;
+}
+
+.wpr-badge {
+	display: inline-flex;
+	align-items: center;
+	padding: 4px $space;
+	border-radius: 2px;
+	@include font-size(14, 18);
+	font-weight: 600;
+	white-space: nowrap;
+
+	&--grey {
+		background: #f6f7f8;
+		color: #738191;
+	}
+
+	&--blue {
+		background: #d4e6fc;
+		color: #0d5ec3;
+	}
+
+	&--new {
+		background: #0d5ec3;
+		color: $cWhite;
+		padding: 2px 4px;
+		border-radius: 4px;
+		@include font-size(9, 12);
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.02em;
+	}
+}
+
+// CDN driver tabs
+.wpr-cdn-tabs {
+	display: flex;
+	gap: $space;
+	align-items: center;
+	padding: $space;
+	border: 1px solid $cGreyLighter1;
+	border-radius: 4px;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+	&__tab {
+		display: flex;
+		align-items: center;
+		padding: 6px $space;
+		border: 0;
+		border-radius: 2px;
+		background: transparent;
+		cursor: pointer;
+		@include font-size(14, 18);
+		font-family: "Roboto", sans-serif;
+		color: $cGreyLighter3;
+
+		&--active {
+			background: $cGreyLight3;
+			color: $cBlack;
+			font-weight: 600;
+		}
+
+		&:hover:not(&--active) {
+			background: $cGreyLight2;
+		}
+	}
+
+	&__divider {
+		width: 1px;
+		align-self: stretch;
+		background: $cGreyLighter1;
+	}
+}
+
+// Section header modifier for CDN page
+.wpr-sectionHeader--cdn {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: $space * 3;
+
+	.wpr-title1 {
+		flex: 1;
+	}
+}
+
+// CDN status area
+.wpr-cdn-status {
+	display: flex;
+	align-items: center;
+	overflow: hidden;
+	width: 100%;
+
+    &.wpr-cdn-status-pronounced{
+        gap: $space + 4;
+        padding: $space * 2;
+        background: $cGreyLight3;
+        border: 1px solid $cGreyLighter1;
+        border-radius: 4px;
+        margin-top: $space * 2;
+    }
+}
+
+// CDN status indicator
+.wpr-cdn-indicator {
+	flex: 1;
+
+	&__content {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	&__status {
+		display: flex;
+		align-items: center;
+		gap: $space;
+	}
+
+	&__dot {
+		width: 8px;
+		height: 8px;
+		border-radius: 50%;
+		background: $cGreenDark1;
+		flex-shrink: 0;
+	}
+
+	&__text {
+		@include font-size(14, 24);
+		font-weight: 700;
+		color: $cBlack;
+	}
+
+	&__details {
+		@include font-size(14, 18);
+		color: #464f59;
+		margin: 0;
+	}
+}
+
+// Pause CDN button
+.wpr-cdn-pause {
+	display: flex;
+	align-items: center;
+	gap: 2px;
+	background: $cWhite;
+	border: 0;
+	border-radius: 4px;
+	cursor: pointer;
+	flex-shrink: 0;
+	padding: 0;
+
+	&__icon {
+		display: inline-block;
+		width: 14px;
+		height: 14px;
+		background-color: currentColor;
+		-webkit-mask-image: url("../img/wpr-pause.svg");
+		mask-image: url("../img/wpr-pause.svg");
+		-webkit-mask-size: contain;
+		mask-size: contain;
+		-webkit-mask-repeat: no-repeat;
+		mask-repeat: no-repeat;
+		-webkit-mask-position: center;
+		mask-position: center;
+	}
+
+	&--paused &__icon {
+		-webkit-mask-image: url("../img/wpr-resume.svg");
+		mask-image: url("../img/wpr-resume.svg");
+	}
+
+	&__text {
+		@include font-size(11, 14);
+		font-weight: 600;
+		color: $cBlack;
+		white-space: nowrap;
+	}
+
+	&--disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+	}
+}
+
+// Built-in CDN page list
+.wpr-cdn-built-in {
+	display: flex;
+	flex-direction: column;
+	gap: $space * 2;
+	width: 100%;
+    margin-top:16px;
+}
+
+.wpr-table-list {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+
+	&__row {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: $space + 2;
+		padding: $space * 2;
+		background: $cGreyLight3;
+		border: 1px solid $cGreyLighter1;
+		@include font-size(14, 18);
+		color: $cBlack;
+
+		&:first-child {
+			border-radius: 4px 4px 0 0;
+		}
+
+		&:last-child {
+			border-radius: 0 0 4px 4px;
+		}
+
+		&:only-child {
+			border-radius: 4px;
+		}
+
+		// Collapse borders between adjacent rows.
+		+ .wpr-table-list__row {
+			border-top: 0;
+		}
+	}
+
+	&__cell {
+		flex: 1;
+		min-width: 0;
+
+		a {
+			@include font-size(14, 18);
+			color: $cBlack;
+			text-decoration: underline;
+
+			&:hover {
+				color: $cBlack;
+			}
+		}
+	}
+
+	&__actions {
+		display: flex;
+		align-items: center;
+		flex-shrink: 0;
+	}
+
+	&__retest {
+		display: flex;
+		align-items: center;
+		gap: 4px;
+		padding: 0 $space * 2;
+		border: 0;
+		border-right: 1px solid $cGreyLighter2;
+		background: none;
+		cursor: pointer;
+		@include font-size(14, 18);
+		font-weight: 600;
+		color: $cBlack;
+		white-space: nowrap;
+
+		&:hover {
+			color: $cGreyDark3;
+		}
+
+		.dashicons {
+			width: 14px;
+			height: 14px;
+			font-size: 14px;
+		}
+	}
+
+	&__delete {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding-left: $space * 2;
+		background: none;
+		border: 0;
+		cursor: pointer;
+		color: $cBlack;
+
+		&:hover {
+			color: $cRed;
+		}
+
+		.dashicons {
+			width: 14px;
+			height: 14px;
+			font-size: 14px;
+		}
+	}
+}
+
+// Add page input row
+.wpr-cdn-add-page {
+	display: flex;
+	gap: $space;
+	align-items: center;
+	border-radius: 4px;
+
+	input[type="text"] {
+		flex: 1;
+		min-width: 0;
+		height: 50px;
+		padding: 6px $space * 2;
+		border: 1px solid $cGreyLighter1;
+		border-radius: 4px;
+		background: $cWhite;
+		@include font-size(14, 18);
+		color: $cBlack;
+		outline: none;
+		box-shadow: none;
+
+		&:focus {
+			border-color: $cGreyLighter2;
+			box-shadow: none;
+			outline: none;
+		}
+
+		&::placeholder {
+			color: $cGreyDark3;
+		}
+	}
+
+	&__button {
+		display: flex;
+		align-items: center;
+		gap: $space;
+		padding: $space + 6;
+		background: $cPurple;
+		color: $cWhite;
+		border: 0;
+		border-radius: 4px;
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+		cursor: pointer;
+		@include font-size(14, 18);
+		font-weight: 600;
+		white-space: nowrap;
+
+		&:hover {
+			background: $cPurpleLight1;
+		}
+
+		[class^="wpr-icon-"] {
+			font-size: 16px;
+		}
+	}
+}
+
+// Upsell banner
+.wpr-cdn-upsell {
+	&__text {
+		@include font-size(14, 18);
+		color: $cBlack;
+		margin: 0;
+	}
+
+	&__link {
+		@include font-size(14, 18);
+		font-weight: 600;
+		color: $jaffa;
+		text-decoration: underline;
+		white-space: nowrap;
+
+		&:hover {
+			color: $cOrange;
+		}
+	}
+}
+
+// Purge CDN cache section
+.wpr-cdn-purge {
+    margin-top: 16px;
+
+	&__description {
+		@include font-size(14, 18);
+		color: $cBlack;
+		margin: 0 0 $space * 2;
+
+		a {
+			color: $cBlack;
+			text-decoration: underline;
+		}
+	}
+
+	&__button {
+		display: inline-flex;
+		align-items: center;
+		gap: $space;
+		padding: $space * 2;
+		border: 1px solid $cGreyLighter1;
+		border-radius: 4px;
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+		background: $cWhite;
+		color: $cBlack;
+		@include font-size(14, 18);
+		font-weight: 600;
+		text-decoration: none;
+		cursor: pointer;
+        text-transform: uppercase;
+
+		&:hover {
+			background: $cGreyLight3;
+			color: $cBlack;
+			text-decoration: none;
+		}
+	}
+}
+
+.wpr-cdn-exclusions .wpr-field-description-label {
+    color: #0C0F1F;
+    font-weight: 600;
+}
+
+.your-own-cdn {
+    .wpr-multiple {
+        gap: $space * 2;
+        margin-top: 9px;
+
+        .wpr-text {
+            top: 0;
+
+            input[type=text] {
+                height: 50px;
+                border-radius: 4px;
+                border: 1px solid #E2E5E9;
+                background: #FFF;
+                margin-top: 0;
+            }
+        }
+
+        select {
+            height: 50px;
+            border-radius: 4px;
+            border: 1px solid #E2E5E9;
+            background: #FFF;
+            font-weight: bold;
+        }
+
+        .wpr-multiple-close::after {
+            content: url(../img/wpr-close.svg);
+        }
+    }
+
+    .wpr-button {
+        padding: 16px;
+        font-size: 14px;
+        font-weight: 600;
+        line-height: normal;
+        margin: 9px 0;
+    }
+}
