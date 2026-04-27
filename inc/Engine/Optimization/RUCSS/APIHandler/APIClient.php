@@ -44,11 +44,6 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 			'timeout' => 5,
 		];
 
-		$this->logger::debug(
-			'Add to queue request arguments',
-			$args
-		);
-
 		$sent = $this->handle_post( $args );
 
 		if ( ! $sent ) {
@@ -73,11 +68,6 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 			],
 		];
 		$result  = json_decode( $this->response_body, true );
-
-		$this->logger::debug(
-			$url . ' - Add to queue response body',
-			$result
-		);
 
 		if ( key_exists( 'code', $result ) && 401 === $result['code'] ) {
 			update_option( 'wp_rocket_no_licence', true );
