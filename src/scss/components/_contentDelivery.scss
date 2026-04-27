@@ -167,12 +167,16 @@
 	display: flex;
 	align-items: center;
 	gap: 2px;
-	background: $cWhite;
 	border: 0;
 	border-radius: 4px;
 	cursor: pointer;
 	flex-shrink: 0;
 	padding: 0;
+
+	&:disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+	}
 
 	&__icon {
 		display: inline-block;

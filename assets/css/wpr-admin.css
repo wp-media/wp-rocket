@@ -4716,6 +4716,10 @@ div.wpr-tutorial-item {
   flex-shrink: 0;
   padding: 0;
 }
+.wpr-cdn-pause:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 .wpr-cdn-pause__icon {
   display: inline-block;
   width: 14px;
