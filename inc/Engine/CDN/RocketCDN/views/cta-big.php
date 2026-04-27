@@ -11,6 +11,10 @@
  *      @type string $nopromo_variant CSS modifier for the no promotion display.
  *      @type string $regular_price RocketCDN regular price.
  *      @type string $current_price RocketCDN current price.
+ *      @type string $regular_price_monthly RocketCDN regular monthly price.
+ *      @type string $regular_price_annual RocketCDN regular annual price.
+ *      @type string $current_price_monthly RocketCDN current monthly price.
+ *      @type string $current_price_annual RocketCDN current annual price.
  * }
  */
 
@@ -86,7 +90,9 @@ $data = isset( $data ) && is_array( $data ) ? $data : []; // phpcs:ignore WordPr
 						</span>
 					</h4>
 					<p class="wpr-rocketcdn-cta-billing-detail"><?php esc_html_e( 'Billed monthly', 'rocket' ); ?></p>
-					<button class="wpr-button wpr-rocketcdn-open" data-micromodal-trigger="wpr-rocketcdn-modal"><?php esc_html_e( 'Get Started', 'rocket' ); ?></button>
+					<button class="wpr-button wpr-rocketcdn-pricing--cta wpr-rocketcdn-open"<?php echo empty( $data['button_url'] ) ? ' data-micromodal-trigger="wpr-rocketcdn-modal"' : ''; ?>>
+						<?php esc_html_e( 'Get Started', 'rocket' ); ?>
+					</button>
 				<?php endif; ?>
 			</div>
 		</div>
