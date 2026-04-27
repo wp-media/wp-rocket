@@ -300,9 +300,10 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 				'current_price_annual'  => $current_price_annual,
 				'button_url'            => $button_url,
 				'regular_price'         => $regular_price_monthly,
-				'current_price'         => [
-					'major' => $current_price_array[0] ?? 0,
-					'minor' => $current_price_array[1] ?? 0,
+				'current_price'         => $current_price_monthly,
+				'current_price_array'         => [
+					'major' => ! empty( $current_price_array[0] ) ? $current_price_array[0] : 0,
+					'minor' => ! empty( $current_price_array[1] ) ? $current_price_array[1] : 0,
 				],
 			];
 		}
