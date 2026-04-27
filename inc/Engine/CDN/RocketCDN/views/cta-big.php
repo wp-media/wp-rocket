@@ -85,8 +85,8 @@ $data = isset( $data ) && is_array( $data ) ? $data : []; // phpcs:ignore WordPr
 					<?php endif; ?>
 					<h4 class="wpr-rocketcdn-pricing-current">
 						<span class="wpr-rocketcdn-cta-currency-minor">$</span>
-						<span class="wpr-rocketcdn-cta-currency-major"><?php echo esc_html( substr( $data['current_price'], 0, strpos( $data['current_price'], '.' ) ) ); ?></span>
-						<span class="wpr-rocketcdn-cta-currency-minor"><?php echo esc_html( substr( $data['current_price'], strpos( $data['current_price'], '.' ) ) ); ?>
+						<span class="wpr-rocketcdn-cta-currency-major"><?php echo esc_html( $data['current_price']['major'] ); ?></span>
+						<span class="wpr-rocketcdn-cta-currency-minor">.<?php echo esc_html( $data['current_price']['minor'] ); ?>
 						</span>
 					</h4>
 					<p class="wpr-rocketcdn-cta-billing-detail"><?php esc_html_e( 'Billed monthly', 'rocket' ); ?></p>
