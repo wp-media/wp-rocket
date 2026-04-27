@@ -226,12 +226,11 @@ class Subscriber implements Subscriber_Interface {
 	 * Adds the notification bubble to WP Rocket menu item when expired
 	 *
 	 * @param string $menu_title Menu title.
-	 * @param string $context Filter context.
 	 *
 	 * @return string
 	 */
-	public function add_notification_bubble_expired( $menu_title, $context = 'adminmenu' ) {
-		return $this->renewal->add_expired_bubble( $menu_title, $context );
+	public function add_notification_bubble_expired( $menu_title ) {
+		return $this->renewal->add_expired_bubble( $menu_title );
 	}
 
 	/**
