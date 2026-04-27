@@ -44,15 +44,19 @@
 	color: #fff;
 	z-index: 26;
 }
-#wp-admin-bar-wp-rocket .menu-counter {
+
+.rocket-red-bubble {
 	background-color: #d63638;
 	color: #fff;
 	display: inline-block;
 	box-sizing: border-box;
 	min-width: 18px;
 	height: 18px;
-	border-radius: 9px;
 	font-size: 13px;
 	text-align: center;
+	border-radius: 9px;
+}
+#wp-admin-bar-wp-rocket .rocket-red-bubble {
 	line-height: 18px;
+	border-radius: 9px;
 }
