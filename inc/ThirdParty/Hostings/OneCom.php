@@ -27,13 +27,13 @@ class OneCom implements Subscriber_Interface {
 			'pre_get_rocket_option_cdn_zone'          => 'maybe_update_cdn_zone',
 			'rocket_cdn_reject_files'                 => 'exclude_from_cdn',
 			'rocket_disable_cdn_option_change'        => 'is_oc_cdn_enabled',
-			'rocket_cdn_settings_fields'              => 'disable_cdn_change',
 			'do_rocket_varnish_http_purge'            => 'is_varnish_active',
 			'rocket_varnish_field_settings'           => 'maybe_set_varnish_addon_title',
 			'rocket_display_input_varnish_auto_purge' => 'should_display_varnish_auto_purge_input',
 			'rocket_display_rocketcdn_cta'            => 'return_false',
 			'rocket_display_rocketcdn_status'         => 'return_false',
 			'rocket_promote_rocketcdn_notice'         => 'return_false',
+			'rocket_cdn_driver_sections'              => [ 'disable_cdn_pause_option', PHP_INT_MAX ],
 		];
 	}
 
@@ -94,20 +94,33 @@ class OneCom implements Subscriber_Interface {
 	}
 
 	/**
-	 * Disable CDN option change.
+	 * Disable CDN pause option.
 	 *
-	 * @param array $settings CDN field settings data.
+	 * @param array $sections CDN sections data.
 	 * @return array
 	 */
-	public function disable_cdn_change( array $settings ): array {
+	public function disable_cdn_pause_option( array $sections ): array {
 		if ( ! $this->is_oc_cdn_enabled() ) {
-			return $settings;
+			return $sections;
 		}
 
-		$settings['cdn']['container_class'][]      = 'wpr-isDisabled';
-		$settings['cdn']['input_attr']['disabled'] = 1;
+		$cdn_sections = [
+			'cdn',
+			'rocketcdn_paid',
+			'rocketcdn_free',
+		];
 
-		return $settings;
+		foreach ( $cdn_sections as $cdn_section ) {
+			$cdn_section_key = $cdn_section . '_section';
+
+			if ( ! isset( $sections[ $cdn_section_key ] ) ) {
+				continue;
+			}
+
+			$sections[ $cdn_section_key ]['status_indicator_data']['disable_pause_btn'] = true;
+		}
+
+		return $sections;
 	}
 
 	/**
