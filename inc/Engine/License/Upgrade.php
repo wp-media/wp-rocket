@@ -364,13 +364,24 @@ class Upgrade extends Abstract_Render {
 	 * @return array
 	 */
 	private function get_generic_upgrade_data( $upgrade_item ) {
+		$currency = $this->user->get_currency();
+
+		$prices_classes = [];
+		if ( Currency::is_euro( esc_html( $currency ) ) ) {
+			$prices_classes[] = 'wpr-with-euro';
+		}
+		if ( $this->pricing->is_promo_active() ) {
+			$prices_classes[] = 'wpr-with-promo';
+		}
+
 		$data = [
 			'name'            => $upgrade_item->name,
 			'price'           => $this->pricing->is_promo_active() ? $upgrade_item->saving : $upgrade_item->regular_price,
 			'websites'        => $upgrade_item->websites,
 			'upgrade_url'     => $upgrade_item->upgrade_url,
-			'currency'        => $this->user->get_currency(),
-			'currency_symbol' => Currency::get_symbol( $this->user->get_currency() ),
+			'currency'        => $currency,
+			'currency_symbol' => Currency::get_symbol( $currency ),
+			'prices_classes'  => ! empty( $prices_classes ) ? ' ' . implode( ' ', $prices_classes ) : '',
 		];
 
 		if ( $this->pricing->is_promo_active() ) {
