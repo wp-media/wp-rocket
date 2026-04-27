@@ -88,13 +88,38 @@
 		document.querySelectorAll( '.wpr-cdn-pause' ).forEach( ( button ) => {
 			button.addEventListener( 'click', () => {
 				const isPaused = button.classList.toggle( 'wpr-cdn-pause--paused' );
-				const textEl = button.querySelector( '.wpr-cdn-pause__text' );
+				button.setAttribute( 'aria-pressed', isPaused ? 'true' : 'false' );
 
-				if ( textEl ) {
-					textEl.textContent = isPaused ? 'RESUME CDN' : 'PAUSE CDN';
+				const statusContainer = button.closest( '.wpr-cdn-status' );
+				if ( ! statusContainer ) {
+					return;
 				}
 
-				button.setAttribute( 'aria-pressed', isPaused ? 'true' : 'false' );
+				statusContainer.classList.toggle( 'wpr-cdn-status--paused', isPaused );
+				statusContainer.classList.toggle(
+					'wpr-cdn-status--long-details',
+					isPaused && '1' === statusContainer.dataset.longDetails
+				);
+
+				const builtIn = statusContainer.closest( '.wpr-cdn-built-in' );
+				if ( builtIn ) {
+					builtIn.classList.toggle( 'wpr-cdn-built-in--paused', isPaused );
+				}
+
+				const textKey = isPaused ? 'pausedText' : 'activeText';
+
+				const statusText = statusContainer.querySelector( '.wpr-cdn-indicator__text' );
+
+				if ( statusText && statusContainer.dataset[ textKey ] ) {
+					statusText.textContent = statusContainer.dataset[ textKey ];
+				}
+
+				const detailsKey = isPaused ? 'pausedDetails' : 'activeDetails';
+				const detailsEl = statusContainer.querySelector( '.wpr-cdn-indicator__details' );
+
+				if ( detailsEl && statusContainer.dataset[ detailsKey ] ) {
+					detailsEl.textContent = statusContainer.dataset[ detailsKey ];
+				}
 			} );
 		} );
 	}
