@@ -50,7 +50,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_dashboard_license_info'       => 'display_upgrade_section',
 			'rocket_settings_page_footer'         => 'display_upgrade_popin',
 			'rocket_menu_title'                   => [
-				[ 'add_notification_bubble' ],
+				[ 'add_notification_bubble', 10, 2 ],
 				[ 'add_notification_bubble_expired' ],
 				[ 'maybe_add_revoked_bubble' ],
 			],
@@ -106,10 +106,11 @@ class Subscriber implements Subscriber_Interface {
 	 * @since 3.7.4
 	 *
 	 * @param string $menu_title The text to be used for the menu.
+	 * @param string $context Filter context.
 	 * @return string
 	 */
-	public function add_notification_bubble( $menu_title ) {
-		return $this->upgrade->add_notification_bubble( $menu_title );
+	public function add_notification_bubble( $menu_title, $context = 'adminmenu' ) {
+		return $this->upgrade->add_notification_bubble( $menu_title, $context );
 	}
 
 	/**

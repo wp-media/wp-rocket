@@ -87,7 +87,6 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 	 * @return string
 	 */
 	public function optimize( $html ) {
-		Logger::info( 'JS COMBINE PROCESS STARTED.', [ 'js combine process' ] );
 
 		$html_nocomments = $this->hide_comments( $html );
 		$scripts         = $this->find( '<script.*<\/script>', $html_nocomments );
@@ -97,28 +96,12 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			return $html;
 		}
 
-		Logger::debug(
-			'Found ' . count( $scripts ) . ' `<script>` tag(s).',
-			[
-				'js combine process',
-				'tags' => $scripts,
-			]
-		);
-
 		$combine_scripts = $this->parse( $scripts );
 
 		if ( empty( $combine_scripts ) ) {
 			Logger::debug( 'No `<script>` tags to optimize.', [ 'js combine process' ] );
 			return $html;
 		}
-
-		Logger::debug(
-			count( $combine_scripts ) . ' `<script>` tag(s) remaining.',
-			[
-				'js combine process',
-				'tags' => $combine_scripts,
-			]
-		);
 
 		$content = $this->get_content();
 
@@ -149,14 +132,6 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 		foreach ( $combine_scripts as $script ) {
 			$html = str_replace( $script[0], '', $html );
 		}
-
-		Logger::info(
-			'Combined JS file successfully added.',
-			[
-				'js combine process',
-				'url' => $minify_url,
-			]
-		);
 
 		return $this->add_meta_comment( 'minify_concatenate_js', $html );
 	}
