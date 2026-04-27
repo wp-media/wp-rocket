@@ -56,10 +56,12 @@ class Controller extends Abstract_Render {
 				'url' => $cdn_beacon['url'],
 			],
 			'status_indicator_data' => [
-				'is_active'   => true,
-				'status_text' => __( 'RocketCDN is active on your website', 'rocket' ),
-				'details'     => __( 'Serving files from 100+ edge locations · Covering 12 pages', 'rocket' ),
-				'class'       => 'wpr-cdn-status-pronounced rocketcdn',
+				'is_active'          => true,
+				'status_text'        => __( 'RocketCDN is active on your website', 'rocket' ),
+				'details'            => __( 'Serving files from 100+ edge locations · Covering 12 pages', 'rocket' ),
+				'paused_status_text' => __( 'RocketCDN is paused', 'rocket' ),
+				'paused_details'     => __( 'RocketCDN is currently paused. Click Resume CDN to re-enable content delivery.', 'rocket' ),
+				'class'              => 'wpr-cdn-status-pronounced rocketcdn',
 			],
 		];
 
@@ -90,9 +92,11 @@ class Controller extends Abstract_Render {
 				'url' => $cdn_beacon['url'],
 			],
 			'status_indicator_data' => [
-				'is_active'   => true,
-				'status_text' => __( 'RocketCDN is active', 'rocket' ),
-				'details'     => __( 'Serving files from 10 edge locations for free · Covering 2 pages', 'rocket' ),
+				'is_active'          => true,
+				'status_text'        => __( 'RocketCDN is active', 'rocket' ),
+				'details'            => __( 'Serving files from 10 edge locations for free · Covering 2 pages', 'rocket' ),
+				'paused_status_text' => __( 'RocketCDN is paused', 'rocket' ),
+				'paused_details'     => __( 'RocketCDN is currently paused due to our fair usage policy. Your recent traffic exceeded the expected usage for the free plan. Upgrade to RocketCDN Pro to extend your bandwidth usage.', 'rocket' ),
 			],
 		];
 
@@ -213,7 +217,7 @@ class Controller extends Abstract_Render {
 	 */
 	public function render_built_in_page_list(): void {
 		$table_data = [
-			'rows_hook' => 'rocket_cdn_built_in_page_rows',
+			'rows_hook' => 'rocket_cdn_free_page_rows',
 		];
 
 		echo $this->generate( 'partials/table-list', $table_data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
@@ -304,5 +308,23 @@ class Controller extends Abstract_Render {
 	 */
 	public function render_upsell_banner(): void {
 		echo $this->generate( 'partials/cdn/rocket-cdn/cdn-upsell-banner' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+	}
+
+	/**
+	 * Renders the fair use policy notice when RocketCDN Free is paused due to fair usage limits.
+	 *
+	 * @since 3.22
+	 *
+	 * @return void
+	 */
+	public function maybe_display_fair_use_notice(): void {
+		$data = [
+			'title'       => __( 'Fair Usage Policy', 'rocket' ),
+			'description' => __( 'Your RocketCDN Free plan has been paused due to exceeding the fair usage limits. We encourage you to upgrade to RocketCDN Pro for extended bandwidth and additional features.', 'rocket' ),
+			'link_url'    => 'https://wp-rocket.me/rocketcdn/',
+			'link_text'   => __( 'Upgrade', 'rocket' ),
+		];
+
+		echo $this->generate( 'partials/cdn/rocket-cdn/fair-use-notice', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 }
