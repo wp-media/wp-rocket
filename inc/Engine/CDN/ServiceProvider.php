@@ -17,6 +17,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	protected $provides = [
 		'cdn',
+		'cdn_context',
 		'cdn_subscriber',
 		'cdn_admin_subscriber',
 	];
@@ -40,11 +41,19 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function register(): void {
 		$this->getContainer()->addShared( 'cdn', CDN::class )
 			->addArgument( 'options' );
+		$this->getContainer()->addShared( 'cdn_context', Context::class )
+			->addArguments(
+				[
+					'options',
+					'rocketcdn_api_client',
+				]
+			);
 		$this->getContainer()->addShared( 'cdn_subscriber', Subscriber::class )
 			->addArguments(
 				[
 					'options',
 					'cdn',
+					'options_api',
 				]
 			);
 		$this->getContainer()->addShared( 'cdn_admin_subscriber', AdminSubscriber::class );

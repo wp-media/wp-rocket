@@ -1,6 +1,7 @@
 <?php
 namespace WP_Rocket\Engine\CDN;
 
+use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
@@ -18,6 +19,13 @@ class Subscriber implements Subscriber_Interface {
 	private $options;
 
 	/**
+	 * Options instance.
+	 *
+	 * @var Options
+	 */
+	private $options_api;
+
+	/**
 	 * CDN instance
 	 *
 	 * @var CDN
@@ -27,12 +35,14 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Constructor
 	 *
-	 * @param Options_Data $options WP Rocket Options instance.
+	 * @param Options_Data $options WP Rocket Options_Data instance.
 	 * @param CDN          $cdn     CDN instance.
+	 * @param Options      $options_api     Options instance..
 	 */
-	public function __construct( Options_Data $options, CDN $cdn ) {
-		$this->options = $options;
-		$this->cdn     = $cdn;
+	public function __construct( Options_Data $options, CDN $cdn, Options $options_api ) {
+		$this->options     = $options;
+		$this->cdn         = $cdn;
+		$this->options_api = $options_api;
 	}
 
 	/**
@@ -44,20 +54,22 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_buffer'           => [
+			'rocket_buffer'                => [
 				[ 'rewrite', 2 ],
 				[ 'rewrite_srcset', 3 ],
 			],
-			'rocket_css_content'      => 'rewrite_css_properties',
-			'rocket_usedcss_content'  => 'rewrite_css_properties',
-			'rocket_cdn_hosts'        => [ 'get_cdn_hosts', 10, 2 ],
-			'rocket_dns_prefetch'     => 'add_dns_prefetch_cdn',
-			'rocket_facebook_sdk_url' => 'add_cdn_url',
-			'rocket_css_url'          => [ 'add_cdn_url', 10, 2 ],
-			'rocket_js_url'           => [ 'add_cdn_url', 10, 2 ],
-			'rocket_asset_url'        => [ 'maybe_replace_url', 10, 2 ],
-			'wp_resource_hints'       => [ 'add_preconnect_cdn', 10, 2 ],
-			'rocket_font_url'         => [ 'add_cdn_url', 10, 2 ],
+			'rocket_css_content'           => 'rewrite_css_properties',
+			'rocket_usedcss_content'       => 'rewrite_css_properties',
+			'rocket_cdn_hosts'             => [ 'get_cdn_hosts', 10, 2 ],
+			'rocket_dns_prefetch'          => 'add_dns_prefetch_cdn',
+			'rocket_facebook_sdk_url'      => 'add_cdn_url',
+			'rocket_css_url'               => [ 'add_cdn_url', 10, 2 ],
+			'rocket_js_url'                => [ 'add_cdn_url', 10, 2 ],
+			'rocket_asset_url'             => [ 'maybe_replace_url', 10, 2 ],
+			'wp_resource_hints'            => [ 'add_preconnect_cdn', 10, 2 ],
+			'rocket_font_url'              => [ 'add_cdn_url', 10, 2 ],
+			'rocket_first_install_options' => 'add_cdn_type_option',
+			'wp_rocket_upgrade'            => [ 'on_update_add_cdn_type_option', 10, 2 ],
 		];
 	}
 
@@ -363,5 +375,49 @@ class Subscriber implements Subscriber_Interface {
 		 * @param bool $can_insert Can cdn insert resource hints or not, default is true.
 		 */
 		return wpm_apply_filters_typed( 'boolean', 'rocket_cdn_insert_resource_hints', true );
+	}
+
+	/**
+	 * Adds cdn_type option to WP Rocket options.
+	 *
+	 * @since 3.22
+	 *
+	 * @param array $options WP Rocket options array.
+	 *
+	 * @return array
+	 */
+	public function add_cdn_type_option( array $options ) {
+		$options = (array) $options;
+
+		$options['cdn_type'] = 'rocketcdn';
+
+		return $options;
+	}
+
+	/**
+	 * Add cdn_type option when upgrading from a version older than 3.22
+	 *
+	 * @since 3.22
+	 *
+	 * @param string $new_version New plugin version.
+	 * @param string $old_version Previously installed plugin version.
+	 *
+	 * @return void
+	 */
+	public function on_update_add_cdn_type_option( string $new_version, string $old_version ) {
+		// Bail early.
+		if ( version_compare( $old_version, '3.22.0', '>=' ) ) {
+			return;
+		}
+		$cdn_type = 'rocketcdn';
+		// Check if cdn was enabled in previous version and default to byocdn.
+		if ( (bool) $this->options->get( 'cdn', 0 ) ) {
+			$cdn_type = 'byocdn';
+		}
+
+		$current_options             = $this->options_api->get( 'settings', [] );
+		$current_options['cdn_type'] = $cdn_type;
+
+		$this->options_api->set( 'settings', $current_options );
 	}
 }

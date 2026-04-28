@@ -4,6 +4,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\CDN\Subscriber;
 
 use Brain\Monkey\Functions;
 use Mockery;
+use WP_Rocket\Admin\Options;
 use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CDN\CDN;
@@ -23,7 +24,8 @@ class Test_GetCdnHosts extends TestCase {
 		$this->cdn        = Mockery::mock( CDN::class );
 		$this->subscriber = new Subscriber(
 			Mockery::mock( Options_Data::class ),
-			$this->cdn
+			$this->cdn,
+			Mockery::mock( Options::class ),
 		);
 
 		Functions\when( 'get_rocket_parse_url' )->alias( function( $url ) {
