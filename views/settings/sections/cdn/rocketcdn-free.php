@@ -53,7 +53,13 @@ defined( 'ABSPATH' ) || exit;
 	?>
 
 	<div class="wpr-cdn-add-page">
-		<input type="text" id="wpr_cdn_add_page_input" placeholder="<?php esc_attr_e( 'Enter a page URL to add to RocketCDN', 'rocket' ); ?>" />
+		<div class="wpr-cdn-add-page__input-wrap">
+			<input type="text" id="wpr_cdn_add_page_input" placeholder="<?php esc_attr_e( 'Enter a page URL to add to RocketCDN', 'rocket' ); ?>" />
+			<button type="button" class="wpr-cdn-add-page__homepage">
+				<span class="wpr-cdn-add-page__icon"></span>
+				<?php esc_html_e( 'ADD HOMEPAGE', 'rocket' ); ?>
+			</button>
+		</div>
 		<button type="button" class="wpr-cdn-add-page__button">
 			<span class="wpr-icon-plus"></span>
 			<?php esc_html_e( 'ADD PAGE', 'rocket' ); ?>

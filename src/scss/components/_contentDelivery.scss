@@ -355,23 +355,31 @@
 	display: flex;
 	gap: $space;
 	align-items: center;
-	border-radius: 4px;
+
+	&__input-wrap {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		flex: 1;
+		min-width: 0;
+		padding: 6px 6px 6px $space * 2;
+		border: 1px solid $cGreyLighter1;
+		border-radius: 4px;
+		background: $cWhite;
+	}
 
 	input[type="text"] {
 		flex: 1;
 		min-width: 0;
-		height: 50px;
-		padding: 6px $space * 2;
-		border: 1px solid $cGreyLighter1;
-		border-radius: 4px;
-		background: $cWhite;
+		border: 0;
+		padding: 0;
+		background: transparent;
 		@include font-size(14, 18);
 		color: $cBlack;
 		outline: none;
 		box-shadow: none;
 
 		&:focus {
-			border-color: $cGreyLighter2;
 			box-shadow: none;
 			outline: none;
 		}
@@ -379,6 +387,41 @@
 		&::placeholder {
 			color: $cGreyDark3;
 		}
+	}
+
+	&__homepage {
+		display: flex;
+		align-items: center;
+		gap: $space;
+		padding: $space 12px;
+		background: $cGreyLight3;
+		color: #050710;
+		border: 1px solid rgba(47, 69, 162, 0.1);
+		border-radius: 2px;
+		cursor: pointer;
+		@include font-size(14, 18);
+		font-weight: 600;
+		white-space: nowrap;
+		flex-shrink: 0;
+
+		&:hover {
+			background: darken($cGreyLight3, 5%);
+		}
+	}
+
+	&__icon {
+		display: inline-block;
+		width: 16px;
+		height: 16px;
+		background-color: currentColor;
+		-webkit-mask-image: url("../img/wpr-add-homepage.svg");
+		mask-image: url("../img/wpr-add-homepage.svg");
+		-webkit-mask-size: contain;
+		mask-size: contain;
+		-webkit-mask-repeat: no-repeat;
+		mask-repeat: no-repeat;
+		-webkit-mask-position: center;
+		mask-position: center;
 	}
 
 	&__button {
