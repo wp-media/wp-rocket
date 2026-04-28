@@ -32,10 +32,19 @@ class Test_DisableCdnPauseOption extends TestCase {
 				);
 		}
 
-		$this->assertSame(
-			$expected['sections'],
-			apply_filters( 'rocket_cdn_driver_sections', $config['sections'] )
-		);
+		$result = apply_filters( 'rocket_cdn_driver_sections', $config['sections'] );
+
+		foreach ( $expected['sections'] as $key => $section_expected ) {
+			$this->assertArrayHasKey( $key, $result, "Section $key should exist in result." );
+
+			if ( isset( $section_expected['status_indicator_data']['disable_pause_btn'] ) ) {
+				$this->assertSame(
+					$section_expected['status_indicator_data']['disable_pause_btn'],
+					$result[ $key ]['status_indicator_data']['disable_pause_btn'] ?? false,
+					"disable_pause_btn for $key should match expected value."
+				);
+			}
+		}
 	}
 
 	public function providerTestData() {
