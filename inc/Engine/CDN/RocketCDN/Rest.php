@@ -189,16 +189,6 @@ class Rest extends WP_REST_Controller {
 			);
 		}
 
-		$api_response = $this->api_client->register_free_page( $url );
-
-		if ( is_wp_error( $api_response ) ) {
-			return new WP_Error(
-				'rocketcdn_api_error',
-				$api_response->get_error_message(),
-				[ 'status' => 502 ]
-			);
-		}
-
 		$inserted = $this->query->add_item(
 			[
 				'url'           => $url,
@@ -239,7 +229,6 @@ class Rest extends WP_REST_Controller {
 			);
 		}
 
-		$this->api_client->unregister_free_page( $item->url );
 		$this->query->delete_item( $id );
 
 		return new WP_REST_Response( $this->get_pages_data(), 200 );

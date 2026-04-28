@@ -27,14 +27,23 @@ class RESTSubscriber implements Subscriber_Interface {
 	private $options;
 
 	/**
+	 * Rest controller instance.
+	 *
+	 * @var Rest
+	 */
+	private $rest;
+
+	/**
 	 * Constructor
 	 *
 	 * @param CDNOptionsManager $cdn_options CDNOptionsManager instance.
 	 * @param Options_Data      $options     WP Rocket Options instance.
+	 * @param Rest              $rest        Rest controller instance.
 	 */
-	public function __construct( CDNOptionsManager $cdn_options, Options_Data $options ) {
+	public function __construct( CDNOptionsManager $cdn_options, Options_Data $options, Rest $rest ) {
 		$this->cdn_options = $cdn_options;
 		$this->options     = $options;
+		$this->rest        = $rest;
 	}
 
 	/**
@@ -45,8 +54,20 @@ class RESTSubscriber implements Subscriber_Interface {
 			'rest_api_init' => [
 				[ 'register_enable_route' ],
 				[ 'register_disable_route' ],
+				[ 'register_routes' ],
 			],
 		];
+	}
+
+	/**
+	 * Registers RocketCDN pages and state REST routes.
+	 *
+	 * @since 3.22
+	 *
+	 * @return void
+	 */
+	public function register_routes(): void {
+		$this->rest->register_routes();
 	}
 
 	/**

@@ -70,6 +70,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 			'rocket_settings_page_footer'                => 'add_subscription_modal',
 			'http_request_args'                          => [ 'preserve_authorization_token', PHP_INT_MAX, 2 ],
 			'rocket_insights_api_recommendations_params' => 'maybe_add_rocketcdn_to_recommendations_api_params',
+			'rocket_cdn_settings_js_data'                => 'add_cdn_settings_js_data',
 		];
 	}
 
@@ -204,6 +205,36 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 
 		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
 		rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
+	}
+
+	/**
+	 * Adds CDN settings JS data to the settings page.
+	 *
+	 * Passes active driver state and subscription info to the frontend so the UI
+	 * can restore the correct tab and display state after a page refresh.
+	 *
+	 * @since 3.22
+	 *
+	 * @param array $data JS data array.
+	 * @return array
+	 */
+	public function add_cdn_settings_js_data( array $data ): array {
+		if ( $this->is_white_label_account() ) {
+			return $data;
+		}
+
+		$subscription_data = $this->api_client->get_subscription_data();
+		$is_unlimited      = 'running' === $subscription_data['subscription_status'] &&
+							! empty( $subscription_data['is_active'] );
+
+		$data['rocketcdn'] = [
+			'active_driver' => $this->options->get( 'wpr_rocketcdn_active_driver', 'rocketcdn' ),
+			'paused'        => (int) $this->options->get( 'wpr_rocketcdn_paused', 0 ),
+			'is_unlimited'  => $is_unlimited,
+			'subscription'  => $subscription_data,
+		];
+
+		return $data;
 	}
 
 	/**
