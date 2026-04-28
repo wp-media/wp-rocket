@@ -50,7 +50,6 @@ class Combine extends AbstractGFOptimization {
 	 */
 	public function optimize( $html ): string {
 		$this->font_urls = [];
-		Logger::info( 'GOOGLE FONTS COMBINE PROCESS STARTED.', [ 'GF combine process' ] );
 
 		$html_nocomments = $this->hide_comments( $html );
 		$fonts           = $this->find( '<link(?:\s+(?:(?!href\s*=\s*)[^>])+)?(?:\s+href\s*=\s*([\'"])(?<url>(?:https?:)?\/\/fonts\.googleapis\.com\/css[^\d](?:(?!\1).)+)\1)(?:\s+[^>]*)?>', $html_nocomments );
@@ -76,14 +75,6 @@ class Combine extends AbstractGFOptimization {
 
 		$num_fonts = count( $filtered_fonts );
 
-		Logger::debug(
-			"Found {$num_fonts} Google Fonts after exclusions.",
-			[
-				'GF combine process',
-				'tags' => $filtered_fonts,
-			]
-		);
-
 		$this->parse( $filtered_fonts );
 
 		if ( empty( $this->fonts ) ) {
@@ -97,14 +88,6 @@ class Combine extends AbstractGFOptimization {
 		foreach ( $filtered_fonts as $font ) {
 			$html = str_replace( $font[0], '', $html );
 		}
-
-		Logger::info(
-			'Google Fonts successfully combined.',
-			[
-				'GF combine process',
-				'url' => $this->fonts . $this->subsets,
-			]
-		);
 
 		return $html;
 	}
