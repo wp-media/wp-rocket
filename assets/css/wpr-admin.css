@@ -4870,16 +4870,24 @@ div.wpr-tutorial-item {
   display: flex;
   gap: 8px;
   align-items: center;
+}
+.wpr-cdn-add-page__input-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: 1;
+  min-width: 0;
+  padding: 6px 6px 6px 16px;
+  border: 1px solid #E2E5E9;
   border-radius: 4px;
+  background: #fff;
 }
 .wpr-cdn-add-page input[type=text] {
   flex: 1;
   min-width: 0;
-  height: 50px;
-  padding: 6px 16px;
-  border: 1px solid #E2E5E9;
-  border-radius: 4px;
-  background: #fff;
+  border: 0;
+  padding: 0;
+  background: transparent;
   font-size: 0.875rem;
   line-height: 1.2857142857;
   color: #121116;
@@ -4887,12 +4895,44 @@ div.wpr-tutorial-item {
   box-shadow: none;
 }
 .wpr-cdn-add-page input[type=text]:focus {
-  border-color: #D4D9DD;
   box-shadow: none;
   outline: none;
 }
 .wpr-cdn-add-page input[type=text]::placeholder {
   color: #72777C;
+}
+.wpr-cdn-add-page__homepage {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: #F9FAFB;
+  color: #050710;
+  border: 1px solid rgba(47, 69, 162, 0.1);
+  border-radius: 2px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  line-height: 1.2857142857;
+  font-weight: 600;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.wpr-cdn-add-page__homepage:hover {
+  background: rgb(233.7, 237.25, 240.8);
+}
+.wpr-cdn-add-page__icon {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background-color: currentColor;
+  -webkit-mask-image: url("../img/wpr-add-homepage.svg");
+  mask-image: url("../img/wpr-add-homepage.svg");
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
 }
 .wpr-cdn-add-page__button {
   display: flex;
