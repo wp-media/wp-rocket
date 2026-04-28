@@ -7,12 +7,12 @@ use WP_Rocket\Engine\Optimization\Minify\CSS\AdminSubscriber;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * Test class covering \WP_Rocket\Engine\Optimization\Minify\CSS\AdminSubscriber::on_update
+ * Test class covering \WP_Rocket\Engine\Optimization\Minify\CSS\AdminSubscriber::clear_cache_on_update_to_3_15
  *
  * @group AdminOnly
  * @group Minify
  */
-class TestOnUpdate extends TestCase {
+class Test_ClearCacheOnUpdateTo3_15 extends TestCase {
 	/**
 	 * @var AdminSubscriber
 	 */
@@ -34,6 +34,6 @@ class TestOnUpdate extends TestCase {
 			Functions\expect( 'rocket_clean_domain' )->never();
 		}
 
-		$this->subscriber->on_update( '3.15', $config['old_version'] );
+		$this->subscriber->clear_cache_on_update_to_3_15( '3.15', $config['old_version'] );
 	}
 }
