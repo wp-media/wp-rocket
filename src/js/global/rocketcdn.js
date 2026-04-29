@@ -63,8 +63,7 @@
 		let openCTA = document.querySelector( '#wpr-rocketcdn-open-cta' ),
 			closeCTA = document.querySelector( '#wpr-rocketcdn-close-cta' ),
 			smallCTA = document.querySelector( '#wpr-rocketcdn-cta-small' ),
-			bigCTA = document.querySelector( '#wpr-rocketcdn-cta' ),
-			inputToggle = document.querySelector('.wpr-rocketcdn-toggle--input');
+			bigCTA = document.querySelector( '#wpr-rocketcdn-cta' );
 
 		// Track banner view on page load if banner is visible and user is on CDN tab.
 		maybeTrackBannerView();
@@ -123,22 +122,6 @@
 
 			return postData;
 		}
-
-		// Display the correct prices on page based on billing cycle toggle state.
-		inputToggle.addEventListener('change', function() {
-			const isYearly = this.checked;
-
-			if (isYearly) {
-				Object.values(prices.monthly).forEach(list => list.forEach(el => el.classList.add('wpr-isHidden')));
-				Object.values(prices.yearly).forEach(list => list.forEach(el => el.classList.remove('wpr-isHidden')));
-			} else {
-				Object.values(prices.monthly).forEach(list => list.forEach(el => el.classList.remove('wpr-isHidden')));
-				Object.values(prices.yearly).forEach(list => list.forEach(el => el.classList.add('wpr-isHidden')));
-			}
-
-			// Update the button URL with the correct is_monthly parameter.
-			updateButtonUrlBillingCycle(isYearly);
-		});
 
 		// Track RocketCDN activation failed CTA click
 		const activationCTA = document.querySelector('#wpr-rocketcdn-activation-cta');
