@@ -286,6 +286,9 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 				$promotion_end_date    = date_i18n( get_option( 'date_format' ), $end_date );
 			}
 
+			global $wp_locale;
+			$current_price_array = explode( $wp_locale->number_format['decimal_point'], $current_price_monthly );
+
 			$big_cta_data = [
 				'container_class'       => $cta_big_class,
 				'promotion_campaign'    => $promotion_campaign,
@@ -296,6 +299,12 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 				'current_price_monthly' => $current_price_monthly,
 				'current_price_annual'  => $current_price_annual,
 				'button_url'            => $button_url,
+				'regular_price'         => $regular_price_monthly,
+				'current_price'         => $current_price_monthly,
+				'current_price_array'   => [
+					'major' => ! empty( $current_price_array[0] ) ? $current_price_array[0] : 0,
+					'minor' => ! empty( $current_price_array[1] ) ? $current_price_array[1] : 0,
+				],
 			];
 		}
 
