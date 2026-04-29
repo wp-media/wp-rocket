@@ -52,14 +52,6 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 			$args
 		);
 
-		$this->logger::debug(
-			'Rocket Insights: Initiating test',
-			[
-				'url'     => $url,
-				'options' => $options,
-			]
-		);
-
 		$sent = $this->handle_post( $args );
 
 		if ( ! $sent ) {
@@ -77,13 +69,6 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 		}
 
 		$response_data = json_decode( $this->response_body, true );
-
-		$this->logger::info(
-			'Rocket Insights: Test initiated successfully',
-			[
-				'job_id' => $response_data['uuid'],
-			]
-		);
 
 		$response_data['code'] = $this->response_code;
 
@@ -106,11 +91,6 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 			],
 			'timeout' => 15,
 		];
-
-		$this->logger::debug(
-			'Rocket Insights: Checking test status',
-			[ 'test_id' => $test_id ]
-		);
 
 		$sent = $this->handle_get( $args );
 
@@ -145,14 +125,6 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 
 			return $error_data;
 		}
-
-		$this->logger::debug(
-			'Rocket Insights: Status check completed',
-			[
-				'test_id' => $test_id,
-				'status'  => $response_data['status'] ?? 'unknown',
-			]
-		);
 
 		switch ( $response_data['status'] ?? 'pending' ) {
 			case 'pending':

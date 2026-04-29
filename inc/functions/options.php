@@ -458,8 +458,6 @@ function rocket_check_key() {
 		return $return;
 	}
 
-	Logger::info( 'LICENSE VALIDATION PROCESS STARTED.', [ 'license validation process' ] );
-
 	$response = wp_remote_get(
 		'https://api.wp-rocket.me/valid_key.php',
 		[
@@ -578,8 +576,6 @@ function rocket_check_key() {
 	if ( ! get_rocket_option( 'license' ) ) {
 		$rocket_options['license'] = '1';
 	}
-
-	Logger::info( 'License validation successful.', [ 'license validation process' ] );
 
 	set_transient( rocket_get_constant( 'WP_ROCKET_SLUG' ), $rocket_options );
 	delete_transient( 'rocket_check_key_errors' );

@@ -159,19 +159,9 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return string
 	 */
 	public function maybe_replace_css_images( string $html ): string {
-
 		if ( ! $this->context->is_allowed() ) {
 			return $html;
 		}
-
-		$this->logger::debug(
-			'Starting lazyload',
-			$this->generate_log_context(
-				[
-					'data' => $html,
-				]
-				)
-			);
 
 		/**
 		 * Generate lazyload CSS for the page.
@@ -187,25 +177,10 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		);
 
 		if ( ! key_exists( 'html', $output ) ) {
-			$this->logger::debug(
-				'Lazyload bailed out',
-				$this->generate_log_context(
-					[
-						'data' => $html,
-					]
-					)
-				);
+			$this->logger::debug( 'Lazyload CSS bailed out' );
+
 			return $html;
 		}
-
-		$this->logger::debug(
-			'Ending lazyload',
-			$this->generate_log_context(
-				[
-					'data' => $html,
-				]
-				)
-			);
 
 		$html = $this->add_meta_comment( 'lazyload_css_bg_img', $output['html'] );
 
@@ -218,10 +193,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return void
 	 */
 	public function clear_generated_css() {
-		$this->logger::debug(
-			'Clear lazy CSS',
-			$this->generate_log_context()
-		);
 		$this->cache->clear();
 	}
 
@@ -302,7 +273,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 
 			if ( $this->is_excluded( $url ) ) {
 				$this->logger::debug(
-					"Excluded lazy css files $url",
+					"Excluded lazy css file $url",
 					$this->generate_log_context()
 				);
 				continue;
@@ -310,15 +281,10 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 
 			$url_key = $this->format_url( $url );
 			if ( ! $this->cache->has( $url_key ) ) {
-				$this->logger::debug(
-					"Generate lazy css files $url",
-					$this->generate_log_context()
-					);
-
 				$file_mapping = $this->generate_css_file( $url );
 				if ( empty( $file_mapping ) ) {
 					$this->logger::debug(
-						"Create lazy css files $url bailed out",
+						"Create lazy css file $url bailed out",
 						$this->generate_log_context()
 						);
 					continue;
@@ -327,10 +293,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 				$mapping = array_merge( $mapping, $file_mapping );
 
 			} else {
-				$this->logger::debug(
-					"Load lazy css files $url",
-					$this->generate_log_context()
-					);
 				$mapping = array_merge( $mapping, $this->load_existing_mapping( $url ) );
 			}
 
@@ -364,7 +326,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return array
 	 */
 	public function add_lazy_tag( array $data ): array {
-
 		if ( ! key_exists( 'html', $data ) || ! key_exists( 'lazyloaded_images', $data ) ) {
 			$this->logger::debug(
 				'Add lazy tag bailed out',
@@ -387,15 +348,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		 */
 		$loaded = apply_filters( 'rocket_css_image_lazyload_images_load', [], $lazyload_images );
 
-		$tags = $this->tag_generator->generate( $lazyload_images, $loaded );
-		$this->logger::debug(
-			'Add lazy tag generated',
-			$this->generate_log_context(
-				[
-					'data' => $tags,
-				]
-				)
-			);
+		$tags         = $this->tag_generator->generate( $lazyload_images, $loaded );
 		$data['html'] = str_replace( '</head>', "$tags</head>", $data['html'] );
 
 		return $data;
@@ -654,15 +607,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		$queries['wpr_t'] = current_time( 'timestamp' ); // phpcs:ignore WordPress.DateTime.CurrentTimeTimestamp.Requested
 
 		$cached_url = $this->cache->generate_url( $this->format_url( $url ) );
-
-		$this->logger::debug(
-			"Generated url lazy css files $url",
-			$this->generate_log_context(
-				[
-					'data' => $cached_url,
-				]
-				)
-		);
 
 		return add_query_arg( $queries, $cached_url );
 	}

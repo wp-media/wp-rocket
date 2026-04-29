@@ -223,7 +223,7 @@ class RUCSSQueueRunner extends ActionScheduler_Abstract_QueueRunner {
 			$this->reset_group();
 			return $processed_actions;
 		} catch ( \Exception $exception ) {
-			Logger::debug( $exception->getMessage() );
+			Logger::error( $exception->getMessage() );
 			$this->reset_group();
 			return 0;
 		}
