@@ -521,17 +521,62 @@
 
 // Purge CDN cache section
 .wpr-cdn-purge {
-    margin-top: 16px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: $space * 2;
+	background: $cGreyLight3;
+	border: 1px solid $cGreyLighter1;
+	border-radius: 4px;
+	margin-top: 16px;
+
+	&__content {
+		display: flex;
+		flex-direction: column;
+		gap: $space * 2;
+		max-width: 342px;
+	}
+
+	&__title {
+		@include font-size(14, 18);
+		font-weight: 600;
+		color: $cBlack;
+		margin: 0;
+	}
 
 	&__description {
 		@include font-size(14, 18);
-		color: $cBlack;
-		margin: 0 0 $space * 2;
+		color: #464f59;
+		margin: 0;
+	}
 
-		a {
+	&__learn-more {
+		display: flex;
+		align-items: center;
+		gap: $space;
+		@include font-size(14, 22);
+		font-weight: 600;
+		color: $cBlack;
+		text-decoration: underline;
+
+		&:hover {
 			color: $cBlack;
-			text-decoration: underline;
 		}
+	}
+
+	&__info-icon {
+		width: 14px;
+		height: 14px;
+		background-color: currentColor;
+		-webkit-mask-image: url("../img/wpr-info-circle.svg");
+		mask-image: url("../img/wpr-info-circle.svg");
+		-webkit-mask-size: contain;
+		mask-size: contain;
+		-webkit-mask-repeat: no-repeat;
+		mask-repeat: no-repeat;
+		-webkit-mask-position: center;
+		mask-position: center;
+		flex-shrink: 0;
 	}
 
 	&__button {
@@ -541,20 +586,37 @@
 		padding: $space * 2;
 		border: 1px solid $cGreyLighter1;
 		border-radius: 4px;
-		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+		box-shadow: 0 1px 1.5px rgba(0, 0, 0, 0.1);
 		background: $cWhite;
 		color: $cBlack;
 		@include font-size(14, 18);
 		font-weight: 600;
 		text-decoration: none;
 		cursor: pointer;
-        text-transform: uppercase;
+		text-transform: uppercase;
+		white-space: nowrap;
+		flex-shrink: 0;
 
 		&:hover {
-			background: $cGreyLight3;
+			background: darken($cGreyLight3, 3%);
 			color: $cBlack;
 			text-decoration: none;
 		}
+	}
+
+	&__button-icon {
+		display: inline-block;
+		width: 16px;
+		height: 16px;
+		background-color: currentColor;
+		-webkit-mask-image: url("../img/wpr-purge.svg");
+		mask-image: url("../img/wpr-purge.svg");
+		-webkit-mask-size: contain;
+		mask-size: contain;
+		-webkit-mask-repeat: no-repeat;
+		mask-repeat: no-repeat;
+		-webkit-mask-position: center;
+		mask-position: center;
 	}
 }
 

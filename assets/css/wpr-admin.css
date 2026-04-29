@@ -4733,17 +4733,60 @@ div.wpr-tutorial-item {
 }
 
 .wpr-cdn-purge {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  background: #F9FAFB;
+  border: 1px solid #E2E5E9;
+  border-radius: 4px;
   margin-top: 16px;
+}
+.wpr-cdn-purge__content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 342px;
+}
+.wpr-cdn-purge__title {
+  font-size: 0.875rem;
+  line-height: 1.2857142857;
+  font-weight: 600;
+  color: #121116;
+  margin: 0;
 }
 .wpr-cdn-purge__description {
   font-size: 0.875rem;
   line-height: 1.2857142857;
-  color: #121116;
-  margin: 0 0 16px;
+  color: #464f59;
+  margin: 0;
 }
-.wpr-cdn-purge__description a {
+.wpr-cdn-purge__learn-more {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.875rem;
+  line-height: 1.5714285714;
+  font-weight: 600;
   color: #121116;
   text-decoration: underline;
+}
+.wpr-cdn-purge__learn-more:hover {
+  color: #121116;
+}
+.wpr-cdn-purge__info-icon {
+  width: 14px;
+  height: 14px;
+  background-color: currentColor;
+  -webkit-mask-image: url("../img/wpr-info-circle.svg");
+  mask-image: url("../img/wpr-info-circle.svg");
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  flex-shrink: 0;
 }
 .wpr-cdn-purge__button {
   display: inline-flex;
@@ -4752,7 +4795,7 @@ div.wpr-tutorial-item {
   padding: 16px;
   border: 1px solid #E2E5E9;
   border-radius: 4px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 1.5px rgba(0, 0, 0, 0.1);
   background: #fff;
   color: #121116;
   font-size: 0.875rem;
@@ -4761,11 +4804,27 @@ div.wpr-tutorial-item {
   text-decoration: none;
   cursor: pointer;
   text-transform: uppercase;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 .wpr-cdn-purge__button:hover {
-  background: #F9FAFB;
+  background: rgb(239.82, 242.35, 244.88);
   color: #121116;
   text-decoration: none;
+}
+.wpr-cdn-purge__button-icon {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background-color: currentColor;
+  -webkit-mask-image: url("../img/wpr-purge.svg");
+  mask-image: url("../img/wpr-purge.svg");
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
 }
 
 .wpr-cdn-exclusions .wpr-field-description-label {
