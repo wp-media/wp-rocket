@@ -8,9 +8,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.21.1-beta\n"
+"Project-Id-Version: WP Rocket 3.21.2-alpha\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2026-04-06T12:07:46+00:00\n"
+"POT-Creation-Date: 2026-04-29T13:11:44+00:00\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Romain • WP Rocket <contact@wp-rocket.me>, 2026\n"
 "Language-Team: Spanish (Spain) (https://app.transifex.com/wp-media/teams/18133/es_ES/)\n"
@@ -1349,7 +1349,7 @@ msgid "Preload"
 msgstr "Precargar"
 
 #: inc/deprecated/deprecated.php:1786
-#: inc/Engine/Admin/Settings/Subscriber.php:201
+#: inc/Engine/Admin/Settings/Subscriber.php:202
 #: views/settings/page-sections/tools.php:33
 msgid "Tools"
 msgstr "Herramientas"
@@ -2642,7 +2642,6 @@ msgstr "Semanal"
 
 #: inc/Engine/Admin/Settings/Page.php:1496
 #: inc/Engine/Admin/Settings/Page.php:1780
-#: inc/Engine/CDN/RocketCDN/views/cta-big.php:99
 msgid "Monthly"
 msgstr "Mensual"
 
@@ -3050,34 +3049,34 @@ msgstr ""
 "caché estos URL(s) porque desactiva el almacenamiento en caché y las "
 "optimizaciones en cada página de tu sitio."
 
-#: inc/Engine/Admin/Settings/Subscriber.php:202
+#: inc/Engine/Admin/Settings/Subscriber.php:203
 msgid "Import, Export, Rollback"
 msgstr "Importar, Exportar, Rollback"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:227
+#: inc/Engine/Admin/Settings/Subscriber.php:228
 #: views/settings/page-sections/imagify.php:14
 msgid "Image Optimization"
 msgstr "Optimización de imágenes"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:228
+#: inc/Engine/Admin/Settings/Subscriber.php:229
 msgid "Compress your images"
 msgstr "Comprimir tus imágenes"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:245
+#: inc/Engine/Admin/Settings/Subscriber.php:246
 #: views/settings/page-sections/tutorials.php:47
 msgid "Tutorials"
 msgstr "Tutoriales"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:246
+#: inc/Engine/Admin/Settings/Subscriber.php:247
 msgid "Getting started and how to videos"
 msgstr "Videos introductorios y de primeros pasos"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:312
+#: inc/Engine/Admin/Settings/Subscriber.php:313
 #: views/settings/page-sections/plugins.php:13
 msgid "Our Plugins"
 msgstr "Nuestros plugins"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:313
+#: inc/Engine/Admin/Settings/Subscriber.php:314
 msgid "Build Better, Faster, Safer"
 msgstr "Crea mejor, más rápido, más seguro"
 
@@ -3127,7 +3126,7 @@ msgstr "Para usar RocketCDN, reemplaza tu CNAME con %1$s%2$s%3$s"
 #. translators: %1$is = opening link tag, %2$s = closing link tag.
 #: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:165
 #: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:254
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:361
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:370
 #, php-format
 msgid "%1$sMore Info%2$s"
 msgstr "%1$sMás información%2$s"
@@ -3196,13 +3195,13 @@ msgid "RocketCDN cache purge successful."
 msgstr "Limpieza de la caché de RocketCDN realizada con éxito."
 
 #. translators: %1$s = Old CName, %2$s = New CName.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:430
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:439
 #, php-format
 msgid "We've updated your RocketCDN CNAME from %1$s to %2$s."
 msgstr "Hemos actualizado tu RocketCDN CNAME de %1$s a %2$s"
 
 #. translators: %1$s = New CName.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:432
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:441
 #, php-format
 msgid ""
 "The change is already applied to the plugin settings. If you were using the "
@@ -3211,19 +3210,19 @@ msgstr ""
 "El cambio ya se aplicó a la configuración del plugin. Si estabas utilizando "
 "el CNAME en tu código, asegúrate de actualizarlo a: %1$s"
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:441
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:450
 msgid "contact support"
 msgstr "contactar al soporte"
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:483
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:492
 msgid "RocketCDN activation incomplete"
 msgstr "Activación de RocketCDN incompleta"
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:484
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:493
 msgid "RocketCDN isn’t active on this website yet."
 msgstr "RocketCDN aún no está activo en este sitio."
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:485
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:494
 msgid ""
 "Click below to complete the activation. You’ll be redirected to checkout to "
 "confirm your subscription."
@@ -3231,7 +3230,7 @@ msgstr ""
 "Haz clic a continuación para completar la activación. Serás redirigido al "
 "proceso de pago para confirmar tu suscripción."
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:497
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:506
 msgid "Complete activation"
 msgstr "Completar la activación"
 
@@ -3245,64 +3244,48 @@ msgstr "RocketCDN desactivado"
 
 #. Translators: %s = date formatted using date_i18n() and get_option(
 #. 'date_format' ).
-#: inc/Engine/CDN/RocketCDN/views/cta-big.php:31
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:33
 #, php-format
 msgid "Valid until %s only!"
 msgstr "¡Válido solo hasta %s!"
 
 #: inc/Engine/CDN/RocketCDN/views/cta-big.php:42
-msgid "Propel your Content at the Speed of Light!"
-msgstr "¡Impulsa tu contenido a la velocidad de la luz!"
+msgid "Speed up your website thanks to:"
+msgstr "Acelera tu sitio web gracias a:"
 
-#: inc/Engine/CDN/RocketCDN/views/cta-big.php:43
-msgid ""
-"RocketCDN delivers your content from servers around the world for a faster "
-"website."
-msgstr ""
-"RocketCDN entrega tu contenido desde servidores de todo el mundo para que tu"
-" sitio sea más rápido."
-
+#. translators: %1$s = opening strong tag, %2$s = closing strong tag.
 #: inc/Engine/CDN/RocketCDN/views/cta-big.php:48
-msgid "Unlimited Performance"
-msgstr "Rendimiento ilimitado"
-
-#: inc/Engine/CDN/RocketCDN/views/cta-big.php:49
+#, php-format
 msgid ""
-"Experience blazing-fast content delivery through 120 edge locations with "
-"unlimited bandwidth."
-msgstr ""
-"Experimenta una entrega de contenido increíblemente rápida a través de 120 "
-"ubicaciones periféricas con ancho de banda ilimitado."
+"High performance Content Delivery Network (CDN) with %1$sunlimited "
+"bandwidth%2$s"
+msgstr "CDN de alto rendimiento con %1$sancho de banda ilimitado%2$s"
 
+#. translators: %1$s = opening strong tag, %2$s = closing strong tag.
 #: inc/Engine/CDN/RocketCDN/views/cta-big.php:54
-msgid "Pre-Tuned for Speed"
-msgstr "Configurado para la mayor velocidad"
-
-#: inc/Engine/CDN/RocketCDN/views/cta-big.php:55
+#, php-format
 msgid ""
-"Enjoy pre-configured settings tailored for maximum speed and performance."
+"Easy configuration: the %1$sbest CDN settings%2$s are automatically applied"
 msgstr ""
-"Disfruta de ajustes preconfigurados diseñados para lograr la máxima "
-"velocidad y rendimiento."
+"Fácil configuración: la %1$smejor configuración de CDN%2$s es aplicada "
+"automáticamente"
 
+#. translators: %1$s = opening strong tag, %2$s = closing strong tag.
 #: inc/Engine/CDN/RocketCDN/views/cta-big.php:60
-msgid "Effortless Setup"
-msgstr "Configuración sin esfuerzo"
-
-#: inc/Engine/CDN/RocketCDN/views/cta-big.php:61
+#, php-format
 msgid ""
-"Benefit from automatic configuration of the CDN option in WP Rocket, making "
-"setup effortless."
+"WP Rocket integration: the CDN option is %1$sautomatically configured%2$s in"
+" our plugin"
 msgstr ""
-"Aprovecha la configuración automática de CDN en WP Rocket y logra una "
-"configuración muy fácil."
+"Integración con WP Rocket: la opción CDN es %1$sautomáticamente "
+"configurada%2$s en nuestro plugin"
 
-#: inc/Engine/CDN/RocketCDN/views/cta-big.php:66
-msgid "You can cancel anytime!"
-msgstr "¡Puedes cancelar en cualquier momento!"
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:64
+msgid "Learn more about RocketCDN"
+msgstr "Saber más acerca de RocketCDN"
 
 #. translators: %1$s = discounted price, %2$s = regular price.
-#: inc/Engine/CDN/RocketCDN/views/cta-big.php:74
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:71
 #, php-format
 msgid ""
 "*$%1$s/month for 12 months then $%2$s/month. You can cancel your "
@@ -3311,31 +3294,15 @@ msgstr ""
 "*$%1$s/mes por 12 meses y luego $%2$s/mes. Puedes cancelar tu suscripción en"
 " cualquier momento."
 
-#: inc/Engine/CDN/RocketCDN/views/cta-big.php:100
-msgid "Yearly"
-msgstr "Anual"
-
-#: inc/Engine/CDN/RocketCDN/views/cta-big.php:102
-msgid "2 Months Free!"
-msgstr "¡2 meses gratis!"
-
-#: inc/Engine/CDN/RocketCDN/views/cta-big.php:132
-msgid "Billed Monthly."
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:92
+msgid "Billed monthly"
 msgstr "Facturado mensualmente."
 
-#: inc/Engine/CDN/RocketCDN/views/cta-big.php:133
-msgid "per month, billed yearly"
-msgstr "por mes, facturado anualmente"
-
-#: inc/Engine/CDN/RocketCDN/views/cta-big.php:135
-msgid "excl. VAT"
-msgstr "excl. VAT"
-
-#: inc/Engine/CDN/RocketCDN/views/cta-big.php:139
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:94
 msgid "Get Started"
 msgstr "Comencemos"
 
-#: inc/Engine/CDN/RocketCDN/views/cta-big.php:143
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:100
 msgid "Reduce this banner"
 msgstr "Minimizar este banner"
 
@@ -3859,7 +3826,7 @@ msgstr ""
 
 #. translators: %1$s = promotion name, %2$s = <br>, %3$s = <strong>, %4$s =
 #. promotion discount percentage, %5$s = </strong>, %6$s = Growth or Multi.
-#: inc/Engine/License/Upgrade.php:257
+#: inc/Engine/License/Upgrade.php:262
 #, php-format
 msgid ""
 "Take advantage of %1$s to speed up more websites:%2$s get a %3$s%4$s off%5$s"
@@ -3868,7 +3835,7 @@ msgstr ""
 "Aprovecha la oportunidad de %1$spara acelerar más sitios web: %2$s obtén un "
 "%3$s%4$s de descuento %5$spor %3$s ¡mejorando tu licencia a %6$s %5$s ! "
 
-#: inc/Engine/License/Upgrade.php:266
+#: inc/Engine/License/Upgrade.php:271
 msgid "or"
 msgstr "o"
 
@@ -4351,7 +4318,7 @@ msgstr "Para solucionarlo, %1$scontacta con el soporte%2$s."
 
 #. Translators: %1$s = opening em tag, %2$s = closing em tag, %3$s = opening
 #. link tag, %4$s closing link tag.
-#: inc/functions/options.php:491 inc/functions/options.php:537
+#: inc/functions/options.php:489 inc/functions/options.php:535
 msgid ""
 "License validation failed. Our server could not resolve the request from "
 "your website."
@@ -4361,7 +4328,7 @@ msgstr ""
 
 #. Translators: %1$s = opening em tag, %2$s = closing em tag, %3$s = opening
 #. link tag, %4$s closing link tag.
-#: inc/functions/options.php:491
+#: inc/functions/options.php:489
 #, php-format
 msgid ""
 "Try clicking %1$sValidate License%2$s below. If the error persists, follow "
@@ -4371,7 +4338,7 @@ msgstr ""
 " sigue %3$sesta guía%4$s."
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
-#: inc/functions/options.php:507
+#: inc/functions/options.php:505
 msgid ""
 "License validation failed. You may be using a nulled version of the plugin. "
 "Please do the following:"
@@ -4380,30 +4347,30 @@ msgstr ""
 "versión pirata del plugin. Haz lo siguiente:"
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
-#: inc/functions/options.php:507 inc/functions/options.php:556
+#: inc/functions/options.php:505 inc/functions/options.php:554
 #, php-format
 msgid "Login to your WP Rocket %1$saccount%2$s"
 msgstr "Inicia sesión en tu %1$scuenta%2$s WP Rocket"
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
-#: inc/functions/options.php:507 inc/functions/options.php:556
+#: inc/functions/options.php:505 inc/functions/options.php:554
 msgid "Download the zip file"
 msgstr "Descarga el archivo zip"
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
-#: inc/functions/options.php:507 inc/functions/options.php:556
+#: inc/functions/options.php:505 inc/functions/options.php:554
 msgid "Reinstall"
 msgstr "Reinstalar"
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
-#: inc/functions/options.php:507
+#: inc/functions/options.php:505
 #, php-format
 msgid ""
 "If you do not have a WP Rocket account, please %1$spurchase a license%2$s."
 msgstr "Si no tienes una cuenta WP Rocket, %1$scompra una licencia%2$s."
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
-#: inc/functions/options.php:515
+#: inc/functions/options.php:513
 msgid ""
 "License validation failed. This user account does not exist in our database."
 msgstr ""
@@ -4411,30 +4378,30 @@ msgstr ""
 "nuestra base de datos."
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
-#: inc/functions/options.php:515
+#: inc/functions/options.php:513
 msgid "To resolve, please contact support."
 msgstr "Para solucionarlo, contacta con el soporte."
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
-#: inc/functions/options.php:523
+#: inc/functions/options.php:521
 msgid "License validation failed. This user account is blocked."
 msgstr ""
 "La validación de la licencia falló. Esta cuenta de usuario está bloqueada."
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
-#: inc/functions/options.php:523 inc/functions/options.php:531
+#: inc/functions/options.php:521 inc/functions/options.php:529
 #, php-format
 msgid "Please see %1$sthis guide%2$s for more info."
 msgstr "Lee %1$sesta guía%2$s para más información."
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
-#: inc/functions/options.php:531
+#: inc/functions/options.php:529
 msgid "License validation failed. This website is revoked."
 msgstr "La validación de la licencia ha fallado. Este sitio está anulado."
 
 #. Translators: %1$s = opening em tag, %2$s = closing em tag, %3$s = opening
 #. link tag, %4$s closing link tag.
-#: inc/functions/options.php:537
+#: inc/functions/options.php:535
 #, php-format
 msgid ""
 "Try clicking %1$sSave Changes%2$s below. If the error persists, follow "
@@ -4444,25 +4411,25 @@ msgstr ""
 "%3$sesta guía%4$s."
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
-#: inc/functions/options.php:550
+#: inc/functions/options.php:548
 msgid "Your license is not valid."
 msgstr "Tu licencia no es válida."
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
-#: inc/functions/options.php:550
+#: inc/functions/options.php:548
 #, php-format
 msgid "Make sure you have an active %1$sWP Rocket license%2$s."
 msgstr "Asegúrate que tienes una %1$slicencia de WP Rocket%2$s activa."
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag, %3$s =
 #. opening link tag.
-#: inc/functions/options.php:552
+#: inc/functions/options.php:550
 msgid "You have added as many sites as your current license allows."
 msgstr "Has añadido tantas web como permite tu licencia. "
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag, %3$s =
 #. opening link tag.
-#: inc/functions/options.php:552
+#: inc/functions/options.php:550
 #, php-format
 msgid ""
 "Upgrade your %1$saccount%2$s or %3$stransfer your license%2$s to this "
@@ -4471,42 +4438,42 @@ msgstr ""
 "Actualiza tu %1$scuenta%2$s o %3$stransfiere tu licencia%2$s a este dominio."
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
-#: inc/functions/options.php:554
+#: inc/functions/options.php:552
 msgid "This website is not allowed."
 msgstr "Este sitio web no está autorizado."
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
-#: inc/functions/options.php:554
+#: inc/functions/options.php:552
 #, php-format
 msgid "Please %1$scontact support%2$s."
 msgstr "Por favor %1$scontacta con el soporte%2$s."
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
-#: inc/functions/options.php:556
+#: inc/functions/options.php:554
 msgid "This license key is not recognized."
 msgstr "La clave de licencia no ha sido reconocida."
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
-#: inc/functions/options.php:556
+#: inc/functions/options.php:554
 #, php-format
 msgid "If the issue persists, please %1$scontact support%2$s."
 msgstr "Si el problema persiste, %1$scontacta con el soporte%2$s."
 
 #. Translators: %s = error message returned.
-#: inc/functions/options.php:562
+#: inc/functions/options.php:560
 #, php-format
 msgid "License validation failed: %s"
 msgstr "La validación de la licencia ha fallado: %s"
 
-#: inc/Logger/Logger.php:227 inc/Logger/Logger.php:257
+#: inc/Logger/Logger.php:233 inc/Logger/Logger.php:263
 msgid "The log file does not exist."
 msgstr "El archivo de registro no existe."
 
-#: inc/Logger/Logger.php:233 inc/Logger/Logger.php:263
+#: inc/Logger/Logger.php:239 inc/Logger/Logger.php:269
 msgid "The log file could not be read."
 msgstr "El archivo de registro no se ha podido leer."
 
-#: inc/Logger/Logger.php:250
+#: inc/Logger/Logger.php:256
 msgid "The logs are not saved into a file."
 msgstr "Los registros no se han guardado en un archivo."
 
