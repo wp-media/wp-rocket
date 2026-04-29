@@ -7,22 +7,27 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * Test class covering \WP_Rocket\Engine\Optimization\Minify\CSS\AdminSubscriber::on_update
+ * Test class covering \WP_Rocket\Engine\Optimization\Minify\CSS\AdminSubscriber::clear_cache_on_update_to_3_15
  *
  * @group AdminOnly
  * @group MinifyAdmin
  */
-class TestOnUpdate extends TestCase {
+class Test_ClearCacheOnUpdateTo3_15 extends TestCase {
+
 	public function set_up() {
+
+
 		parent::set_up();
 
-		remove_filter( 'wp_rocket_upgrade', 'rocket_new_upgrade' );
+		$this->unregisterAllCallbacksExcept( 'wp_rocket_upgrade', 'clear_cache_on_update_to_3_15', 16 );
+
+
 		// Disable ATF optimization to prevent DB request (unrelated to the test).
 		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
 	}
 
 	public function tear_down() {
-		add_filter( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );
+		$this->restoreWpHook( 'wp_rocket_upgrade' );
 		remove_filter( 'rocket_above_the_fold_optimization', '__return_false' );
 
 		parent::tear_down();

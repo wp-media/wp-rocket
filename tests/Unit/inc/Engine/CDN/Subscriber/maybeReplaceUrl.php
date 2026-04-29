@@ -4,6 +4,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\CDN\Subscriber;
 
 use Brain\Monkey\Functions;
 use Mockery;
+use WP_Rocket\Admin\Options;
 use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CDN\CDN;
@@ -43,7 +44,8 @@ class Test_MaybeReplaceUrl extends TestCase {
 		$this->options    = Mockery::mock( Options_Data::class );
 		$this->subscriber = new Subscriber(
 			$this->options,
-			$this->cdn
+			$this->cdn,
+			Mockery::mock( Options::class ),
 		);
 	}
 

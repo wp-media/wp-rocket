@@ -8,9 +8,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.21-alpha2\n"
+"Project-Id-Version: WP Rocket 3.21.1-beta\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2026-03-18T18:49:24+00:00\n"
+"POT-Creation-Date: 2026-04-06T12:07:46+00:00\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: BouRock, 2026\n"
 "Language-Team: Turkish (Turkey) (https://app.transifex.com/wp-media/teams/18133/tr_TR/)\n"
@@ -403,31 +403,37 @@ msgstr "Ayarlar"
 msgid "Clear this cache"
 msgstr "Bu önbelleği temizle"
 
-#: inc/admin/admin.php:383
+#: inc/admin/admin.php:390
 msgid "Settings import failed: you do not have the permissions to do this."
 msgstr "Ayarları içe aktarma başarısız oldu: bunu yapmak için izniniz yok."
 
-#: inc/admin/admin.php:387
+#: inc/admin/admin.php:394
 msgid "Settings import failed: no file uploaded."
 msgstr "Ayarları içe aktarma başarısız oldu: gönderilen dosya yok."
 
-#: inc/admin/admin.php:391
-msgid "Settings import failed: incorrect filename."
-msgstr "Ayarları içe aktarma başarısız oldu: yanlış dosya adı."
+#: inc/admin/admin.php:398
+msgid ""
+"Settings import failed: incorrect filename. Only JSON format is supported."
+msgstr ""
+"Ayarları içe aktarma başarısız oldu: yanlış dosya adı. Sadece JSON biçimi "
+"desteklenir."
 
-#: inc/admin/admin.php:402
-msgid "Settings import failed: incorrect filetype."
-msgstr "Ayarları içe aktarma başarısız oldu: yanlış dosya türü."
+#: inc/admin/admin.php:409
+msgid ""
+"Settings import failed: only JSON format is supported for security reasons."
+msgstr ""
+"Ayarları içe aktarma başarısız oldu: Güvenlik nedeniyle sadece JSON biçimi "
+"desteklenir."
 
-#: inc/admin/admin.php:412
+#: inc/admin/admin.php:419
 msgid "Settings import failed: "
 msgstr "Ayarları içe aktarma başarısız oldu:"
 
-#: inc/admin/admin.php:428
+#: inc/admin/admin.php:430
 msgid "Settings import failed: unexpected file content."
 msgstr "Ayarları içe aktarma başarısız oldu: beklenmeyen dosya içeriği."
 
-#: inc/admin/admin.php:473
+#: inc/admin/admin.php:474
 msgid "Settings imported and saved."
 msgstr "Ayarlar içe aktarıldı ve kaydedildi."
 
@@ -1481,7 +1487,7 @@ msgstr ""
 "Vay canına, zaten %1$s sayfa eklediniz! Şimdilik sınır bu. %2$sGeri "
 "bildiriminizi%3$s paylaşarak sıradakini şekillendirmeye yardımcı olun."
 
-#: inc/Engine/Admin/RocketInsights/GlobalMetrics/Calculator.php:112
+#: inc/Engine/Admin/RocketInsights/GlobalMetrics/Calculator.php:116
 #: views/settings/partials/rocket-insights/table-row.php:136
 msgid ""
 "Time until the largest visible content element renders and the main content "
@@ -1490,7 +1496,7 @@ msgstr ""
 "Görünür en büyük içerik öğesinin oluşturulmasına ve ana içeriğin görünür "
 "hale gelmesine kadar geçen süre."
 
-#: inc/Engine/Admin/RocketInsights/GlobalMetrics/Calculator.php:117
+#: inc/Engine/Admin/RocketInsights/GlobalMetrics/Calculator.php:121
 #: views/settings/partials/rocket-insights/table-row.php:147
 msgid ""
 "Total time the main thread is blocked before the page becomes interactive "
@@ -1499,7 +1505,7 @@ msgstr ""
 "Yükleme sırasında sayfa etkileşimli hale gelmeden önce ana iş parçacığının "
 "engellendiği toplam süre."
 
-#: inc/Engine/Admin/RocketInsights/GlobalMetrics/Calculator.php:122
+#: inc/Engine/Admin/RocketInsights/GlobalMetrics/Calculator.php:126
 #: views/settings/partials/rocket-insights/table-row.php:158
 msgid ""
 "Total amount of unexpected layout shifts during page loading, affecting "
@@ -1508,7 +1514,7 @@ msgstr ""
 "Sayfa yükleme sırasında görsel kararlılığı etkileyen beklenmeyen düzen "
 "değişikliklerinin toplam miktarı."
 
-#: inc/Engine/Admin/RocketInsights/GlobalMetrics/Calculator.php:127
+#: inc/Engine/Admin/RocketInsights/GlobalMetrics/Calculator.php:131
 #: views/settings/partials/rocket-insights/table-row.php:169
 msgid ""
 "Time from the request until the server responds, determining how soon the "
@@ -1600,16 +1606,16 @@ msgid "You are not allowed to access items."
 msgstr "Öğelere erişmenize izin verilmiyor."
 
 #: inc/Engine/Admin/RocketInsights/Settings/Controller.php:57
-#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:112
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:113
 msgid "No Subscription"
 msgstr "Abonelik Yok"
 
 #: inc/Engine/Admin/RocketInsights/Settings/Controller.php:64
-#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:105
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:106
 msgid "Next Billing Date"
 msgstr "Sonraki Fatura Tarihi"
 
-#: inc/Engine/Admin/RocketInsights/Subscriber.php:219
+#: inc/Engine/Admin/RocketInsights/Subscriber.php:221
 msgid ""
 "Upgrade your plan to get access to re-test performance or run new tests"
 msgstr ""
@@ -1618,7 +1624,7 @@ msgstr ""
 
 #. translators: %1$s opening tag, %2$s is WP Rocket plugin name, %3$s closing
 #. tag.
-#: inc/Engine/Admin/RocketInsights/Subscriber.php:669
+#: inc/Engine/Admin/RocketInsights/Subscriber.php:671
 #, php-format
 msgid ""
 "%1$sNew in %2$s: Meet Rocket Insights, your built-in performance tracking "
@@ -1629,7 +1635,7 @@ msgstr ""
 
 #. translators: %1$s opening tag, %2$s is WP Rocket plugin name, %3$s closing
 #. tag.
-#: inc/Engine/Admin/RocketInsights/Subscriber.php:680
+#: inc/Engine/Admin/RocketInsights/Subscriber.php:682
 #, php-format
 msgid ""
 "%1$sStarting from %2$s 3.20, you can track your key pages’ performance "
@@ -1640,11 +1646,21 @@ msgstr ""
 "alabilirsiniz.%3$s"
 
 #. translators: %1$s opening tag, %3$s closing tag.
-#: inc/Engine/Admin/RocketInsights/Subscriber.php:691
+#: inc/Engine/Admin/RocketInsights/Subscriber.php:693
 #, php-format
 msgid "%1$sAdd your first page, run the test, and keep your site fast.%2$s"
 msgstr ""
 "%1$sİlk sayfanızı ekleyin, denemeyi çalıştırın ve sitenizi hızlı tutun.%2$s"
+
+#. translators: %1$s = opening link tag, %2$s = closing link tag
+#: inc/Engine/Admin/RocketInsights/Subscriber.php:785
+#, php-format
+msgid ""
+"Your Rocket Insights results aren’t updated yet. %1$sRun a new test%2$s to "
+"get the latest recommendations."
+msgstr ""
+"Rocket Insights sonuçlarınız henüz güncellenmedi. En son önerileri almak "
+"için %1$syeni bir deneme çalıştırın%2$s."
 
 #: inc/Engine/Admin/Settings/Page.php:235
 msgid "Save Changes"
@@ -2641,12 +2657,12 @@ msgid "Enable Content Delivery Network"
 msgstr "İçerik Dağıtım Ağını (CDN) etkinleştir"
 
 #: inc/Engine/Admin/Settings/Page.php:1602
-#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:171
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:172
 msgid "CDN CNAME(s)"
 msgstr "CDN CNAME(ler)"
 
 #: inc/Engine/Admin/Settings/Page.php:1603
-#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:172
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:173
 msgid "Specify the CNAME(s) below"
 msgstr "Aşağıda CNAME(leri) belirtin"
 
@@ -2988,7 +3004,7 @@ msgstr ""
 "Sucuri Eklentisi: Sucuri güvenlik duvarı için API anahtarı, <code>{32 "
 "karakter}/{32 karakter}</code> biçiminde olmak zorundadır."
 
-#: inc/Engine/Admin/Settings/Settings.php:537
+#: inc/Engine/Admin/Settings/Settings.php:546
 msgid ""
 "Sorry! Adding /(.*) in Advanced Rules > Never Cache URL(s) was not saved "
 "because it disables caching and optimizations for every page on your site."
@@ -3060,19 +3076,19 @@ msgstr "WP_CACHE ayarlı değil"
 msgid "WP_CACHE is set to false"
 msgstr "WP_CACHE, false olarak ayarlı"
 
-#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:147
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:148
 msgid "Your RocketCDN subscription is currently active."
 msgstr "RocketCDN aboneliğiniz şu anda etkin."
 
 #. translators: %1$s = opening <code> tag, %2$s = CDN URL, %3$s = closing
 #. </code> tag.
-#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:153
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:154
 #, php-format
 msgid "To use RocketCDN, replace your CNAME with %1$s%2$s%3$s."
 msgstr "RocketCDN’yi kullanmak için CNAME’nizi %1$s%2$s%3$s ile değiştirin."
 
 #. translators: %1$is = opening link tag, %2$s = closing link tag.
-#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:164
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:165
 #: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:254
 #: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:361
 #, php-format
@@ -5235,6 +5251,14 @@ msgstr ""
 "İnanılmaz WordPress web siteleri oluşturmak için aşağıdaki eklentilerimizi "
 "birleştirin!"
 
+#: views/settings/page-sections/rocket-insights.php:24
+msgid ""
+"Rocket Insights is powered by GTmetrix to run tests and generate your "
+"performance results and recommendations."
+msgstr ""
+"Rocket Insights, denemeleri çalıştırmak ve performans sonuçlarınızı ve "
+"önerilerinizi oluşturmak için GTmetrix tarafından desteklenmektedir."
+
 #: views/settings/page-sections/sucuri.php:46
 msgid "Clear all Sucuri cache files"
 msgstr "Tüm Sucuri önbellek dosyalarını temizle"
@@ -5577,8 +5601,8 @@ msgstr ""
 "kilidini açmak için şimdi yükseltin."
 
 #: views/settings/partials/rocket-insights/table-row.php:87
-msgid "See Report"
-msgstr "Rapora Bak"
+msgid "See GTmetrix Report"
+msgstr "GTmetrix Raporuna Bakın"
 
 #: views/settings/partials/rocket-insights/table-row.php:104
 msgid "Upgrade your plan to see the report"

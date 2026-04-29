@@ -65,8 +65,6 @@ class Cache extends Abstract_Buffer {
 		$this->cache_dir_path = rtrim( $args['cache_dir_path'], '/' ) . '/';
 
 		parent::__construct( $tests );
-
-		$this->log( 'CACHING PROCESS STARTED.', [], 'info' );
 	}
 
 	/** ----------------------------------------------------------------------------------------- */
