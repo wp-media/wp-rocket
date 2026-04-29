@@ -28,16 +28,29 @@ defined( 'ABSPATH' ) || exit;
 	<?php endif; ?>
 </div>
 
-<div class="wpr-cdn-purge <?php echo esc_attr( $data['class'] ); ?>">
-	<?php if ( ! empty( $data['description'] ) ) : ?>
-	<p class="wpr-cdn-purge__description">
-		<?php echo $data['description']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>
-	</p>
-	<?php endif; ?>
+<div class="wpr-cdn-purge <?php echo esc_attr( $data['class'] ?? '' ); ?>">
+	<div class="wpr-cdn-purge__content">
+		<?php if ( ! empty( $data['title'] ) ) : ?>
+		<p class="wpr-cdn-purge__title">
+			<?php echo $data['title']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>
+		</p>
+		<?php endif; ?>
+		<?php if ( ! empty( $data['description'] ) ) : ?>
+		<p class="wpr-cdn-purge__description">
+			<?php echo $data['description']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>
+		</p>
+		<?php endif; ?>
+		<?php if ( ! empty( $data['help'] ) ) : ?>
+		<a href="<?php echo esc_url( $data['help']['url'] ); ?>" class="wpr-cdn-purge__learn-more" target="_blank" rel="noopener noreferrer">
+			<span class="wpr-cdn-purge__info-icon"></span>
+			<?php esc_html_e( 'Learn more about Purge', 'rocket' ); ?>
+		</a>
+		<?php endif; ?>
+	</div>
 
 	<?php if ( ! empty( $data['purge_url'] ) ) : ?>
 	<a href="<?php echo esc_url( $data['purge_url'] ); ?>" class="wpr-cdn-purge__button">
-		<span class="wpr-icon-bold-refresh"></span>
+		<span class="wpr-cdn-purge__button-icon"></span>
 		<span>
 			<?php
 			// translators: %s is the CDN driver, wrapped in a span for JS targeting.
