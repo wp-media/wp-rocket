@@ -32,7 +32,6 @@ class CombineV2 extends AbstractGFOptimization {
 	 */
 	public function optimize( $html ): string {
 		$this->font_urls = [];
-		Logger::info( 'GOOGLE FONTS COMBINE-V2 PROCESS STARTED.', [ 'GF combine process' ] );
 
 		$processed_tags  = [];
 		$html_nocomments = $this->hide_comments( $html );
@@ -59,14 +58,6 @@ class CombineV2 extends AbstractGFOptimization {
 
 		$num_tags = count( $filtered_tags );
 
-		Logger::debug(
-			"Found {$num_tags} v2 Google Fonts after exclusions.",
-			[
-				'GF combine process',
-				'tags' => $filtered_tags,
-			]
-		);
-
 		$families = [];
 		foreach ( $filtered_tags as $tag ) {
 			$parsed_families = $this->parse( $tag );
@@ -88,14 +79,6 @@ class CombineV2 extends AbstractGFOptimization {
 		foreach ( $processed_tags as $font ) {
 			$html = str_replace( $font[0], '', $html );
 		}
-
-		Logger::info(
-			'V2 Google Fonts successfully combined.',
-			[
-				'GF combine process',
-				'url' => $combined_url,
-			]
-		);
 
 		return $html;
 	}
