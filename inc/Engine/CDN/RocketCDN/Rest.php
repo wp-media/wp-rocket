@@ -348,7 +348,7 @@ class Rest extends WP_REST_Controller {
 				},
 				is_array( $pages ) ? $pages : []
 			),
-			'count' => $this->query->get_total_count(),
+			'count' => $this->query->get_total_count( false ),
 			'limit' => self::FREE_PAGE_LIMIT,
 		];
 	}
