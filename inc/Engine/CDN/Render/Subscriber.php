@@ -45,7 +45,6 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_cdn_free_page_list'               => 'render_built_in_page_list',
 			'rocket_cdn_free_page_rows'               => 'render_built_in_page_rows',
 			'rocket_cdn_driver_tabs'                  => 'render_cdn_driver_tabs',
-			'rocket_after_built_in_cdn_list'          => 'render_upsell_banner',
 			'rocket_cdn_settings_fields'              => 'add_exclusions_fields',
 			'rocket_cdn_free_before_status_indicator' => 'maybe_display_fair_use_notice',
 		];
@@ -134,17 +133,6 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function render_cdn_driver_tabs(): void {
 		$this->controller->render_cdn_driver_tabs();
-	}
-
-	/**
-	 * Renders the upsell banner for RocketCDN upgrade.
-	 *
-	 * @since 3.22
-	 *
-	 * @return void
-	 */
-	public function render_upsell_banner(): void {
-		$this->controller->render_upsell_banner();
 	}
 
 	/**

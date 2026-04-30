@@ -298,17 +298,6 @@ class Controller extends Abstract_Render {
 	}
 
 	/**
-	 * Renders the upsell banner for RocketCDN upgrade.
-	 *
-	 * @since 3.22
-	 *
-	 * @return void
-	 */
-	public function render_upsell_banner(): void {
-		echo $this->generate( 'partials/cdn/rocket-cdn/cdn-upsell-banner' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
-	}
-
-	/**
 	 * Renders the fair use policy notice when RocketCDN Free is paused due to fair usage limits.
 	 *
 	 * @since 3.22
