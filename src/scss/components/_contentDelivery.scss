@@ -237,115 +237,24 @@
 	flex-direction: column;
 	gap: $space * 2;
 	width: 100%;
-    margin-top:16px;
+	margin-top: $space * 2;
+	padding: $space * 2;
+	background: $cGreyLight3;
+	border: 1px solid $cGreyLighter1;
+	border-radius: 4px;
+	overflow: hidden;
+
+	&__separator {
+		width: 100%;
+		height: 1px;
+		background: $cGreyLighter1;
+	}
 
 	&--paused {
 		.wpr-table-list,
 		.wpr-cdn-add-page {
 			opacity: 0.5;
 			pointer-events: none;
-		}
-	}
-}
-
-.wpr-table-list {
-	display: flex;
-	flex-direction: column;
-	width: 100%;
-
-	&__row {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		gap: $space + 2;
-		padding: $space * 2;
-		background: $cGreyLight3;
-		border: 1px solid $cGreyLighter1;
-		@include font-size(14, 18);
-		color: $cBlack;
-
-		&:first-child {
-			border-radius: 4px 4px 0 0;
-		}
-
-		&:last-child {
-			border-radius: 0 0 4px 4px;
-		}
-
-		&:only-child {
-			border-radius: 4px;
-		}
-
-		// Collapse borders between adjacent rows.
-		+ .wpr-table-list__row {
-			border-top: 0;
-		}
-	}
-
-	&__cell {
-		flex: 1;
-		min-width: 0;
-
-		a {
-			@include font-size(14, 18);
-			color: $cBlack;
-			text-decoration: underline;
-
-			&:hover {
-				color: $cBlack;
-			}
-		}
-	}
-
-	&__actions {
-		display: flex;
-		align-items: center;
-		flex-shrink: 0;
-	}
-
-	&__retest {
-		display: flex;
-		align-items: center;
-		gap: 4px;
-		padding: 0 $space * 2;
-		border: 0;
-		border-right: 1px solid $cGreyLighter2;
-		background: none;
-		cursor: pointer;
-		@include font-size(14, 18);
-		font-weight: 600;
-		color: $cBlack;
-		white-space: nowrap;
-
-		&:hover {
-			color: $cGreyDark3;
-		}
-
-		.dashicons {
-			width: 14px;
-			height: 14px;
-			font-size: 14px;
-		}
-	}
-
-	&__delete {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		padding-left: $space * 2;
-		background: none;
-		border: 0;
-		cursor: pointer;
-		color: $cBlack;
-
-		&:hover {
-			color: $cRed;
-		}
-
-		.dashicons {
-			width: 14px;
-			height: 14px;
-			font-size: 14px;
 		}
 	}
 }
@@ -534,7 +443,7 @@
 		display: flex;
 		flex-direction: column;
 		gap: $space * 2;
-		max-width: 342px;
+		max-width: 400px;
 	}
 
 	&__title {
