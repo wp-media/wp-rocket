@@ -6,7 +6,7 @@
 	align-items: center;
 	justify-content: space-between;
 	gap: $space;
-	margin-top: $space * 2;
+	margin-bottom: $space * 2;
 }
 
 .wpr-optionHeader__title-group {
@@ -369,7 +369,7 @@
 	padding: $space * 2;
 	background: #fff7e1;
 	border-left: 4px solid #fed055;
-	margin-top: $space * 2;
+	margin-bottom: $space * 2;
 
 	&__content {
 		display: flex;
