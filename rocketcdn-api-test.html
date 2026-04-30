@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RocketCDN REST API Test</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f0f2f5;
+      color: #1a1a2e;
+      margin: 0;
+      padding: 24px;
+      font-size: 14px;
+    }
+
+    h1 { font-size: 20px; margin: 0 0 4px; }
+    h2 { font-size: 15px; margin: 0 0 12px; color: #444; }
+    p.subtitle { margin: 0 0 24px; color: #666; font-size: 13px; }
+
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 800px) { .grid { grid-template-columns: 1fr; } }
+
+    .card {
+      background: #fff;
+      border: 1px solid #e1e4e8;
+      border-radius: 8px;
+      padding: 18px 20px;
+    }
+
+    label { display: block; font-size: 12px; font-weight: 600; color: #555; margin-bottom: 4px; }
+
+    input[type="text"], input[type="url"], input[type="password"], select {
+      width: 100%;
+      padding: 7px 10px;
+      border: 1px solid #d0d5dd;
+      border-radius: 5px;
+      font-size: 13px;
+      outline: none;
+      transition: border-color .15s;
+    }
+    input:focus, select:focus { border-color: #ff6b2b; }
+
+    .row { display: flex; gap: 8px; align-items: flex-end; margin-bottom: 10px; }
+    .row > * { flex: 1; margin: 0; }
+    .row > button { flex: 0 0 auto; }
+
+    button {
+      padding: 7px 14px;
+      border: none;
+      border-radius: 5px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity .15s, background .15s;
+      white-space: nowrap;
+    }
+    button:hover { opacity: .88; }
+
+    .btn-primary { background: #ff6b2b; color: #fff; }
+    .btn-secondary { background: #e8eaf0; color: #333; }
+    .btn-danger { background: #e53e3e; color: #fff; }
+    .btn-success { background: #38a169; color: #fff; }
+    .btn-info { background: #3182ce; color: #fff; }
+    .btn-sm { padding: 4px 10px; font-size: 12px; }
+    button:disabled { opacity: .45; cursor: not-allowed; }
+
+    .section-mb { margin-bottom: 14px; }
+
+    /* Pages list */
+    #pages-list { list-style: none; padding: 0; margin: 0; }
+    #pages-list li {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 10px;
+      border: 1px solid #eee;
+      border-radius: 5px;
+      margin-bottom: 6px;
+      background: #fafafa;
+      gap: 8px;
+    }
+    #pages-list li .page-info { flex: 1; min-width: 0; }
+    #pages-list li .page-title { font-weight: 600; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    #pages-list li .page-url { font-size: 11px; color: #888; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .pages-empty { color: #888; font-style: italic; font-size: 13px; padding: 8px 0; }
+
+    .count-badge {
+      display: inline-block;
+      background: #ff6b2b20;
+      color: #c04a10;
+      border-radius: 12px;
+      padding: 2px 10px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-left: 8px;
+    }
+
+    /* State section */
+    .toggle-group { display: flex; gap: 8px; flex-wrap: wrap; }
+    .toggle-group button {
+      flex: 1;
+      background: #e8eaf0;
+      color: #333;
+    }
+    .toggle-group button.active {
+      background: #ff6b2b;
+      color: #fff;
+    }
+
+    /* Log panel */
+    #log-panel { grid-column: 1 / -1; }
+    #log-output {
+      background: #0d1117;
+      color: #c9d1d9;
+      font-family: "SFMono-Regular", Consolas, monospace;
+      font-size: 12px;
+      border-radius: 6px;
+      padding: 14px 16px;
+      max-height: 300px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      word-break: break-all;
+      border: 1px solid #30363d;
+    }
+    .log-entry { border-bottom: 1px solid #21262d; padding-bottom: 10px; margin-bottom: 10px; }
+    .log-entry:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .log-req { color: #79c0ff; }
+    .log-ok  { color: #56d364; }
+    .log-err { color: #ff7b72; }
+    .log-ts  { color: #6e7681; font-size: 11px; }
+
+    /* Auth section */
+    .auth-hint {
+      font-size: 11px;
+      color: #888;
+      margin-top: 4px;
+      line-height: 1.5;
+    }
+    .auth-hint code {
+      background: #f0f2f5;
+      padding: 1px 4px;
+      border-radius: 3px;
+      font-size: 11px;
+    }
+
+    .flex-end { display: flex; justify-content: flex-end; gap: 8px; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <h1>RocketCDN REST API Test</h1>
+  <p class="subtitle">Dev tool — tests <code>/wp-rocket/v1/rocketcdn/*</code> endpoints locally.</p>
+
+  <div class="grid">
+
+    <!-- Config -->
+    <div class="card">
+      <h2>Configuration</h2>
+
+      <div class="section-mb">
+        <label for="site-url">WordPress Site URL</label>
+        <input type="url" id="site-url" placeholder="http://localhost:8080" />
+      </div>
+
+      <div class="section-mb">
+        <label for="auth-method">Auth Method</label>
+        <select id="auth-method" onchange="toggleAuthFields()">
+          <option value="nonce">WP Nonce (X-WP-Nonce)</option>
+          <option value="apppassword">Application Password (Basic Auth)</option>
+        </select>
+      </div>
+
+      <div id="auth-nonce-fields">
+        <label for="nonce-value">Nonce</label>
+        <input type="text" id="nonce-value" placeholder="Paste nonce here" />
+        <p class="auth-hint">
+          Get it from your browser console while logged into WP:<br/>
+          <code>wp.apiFetch.nonceMiddleware.nonce</code>
+          or from <code>wpApiSettings.nonce</code>
+        </p>
+      </div>
+
+      <div id="auth-app-fields" style="display:none">
+        <div class="section-mb">
+          <label for="wp-user">WP Username</label>
+          <input type="text" id="wp-user" placeholder="admin" />
+        </div>
+        <div>
+          <label for="wp-apppass">Application Password</label>
+          <input type="password" id="wp-apppass" placeholder="xxxx xxxx xxxx xxxx" />
+          <p class="auth-hint">
+            Create one in <strong>WP Admin → Users → Profile → Application Passwords</strong>
+          </p>
+        </div>
+      </div>
+
+      <div class="flex-end">
+        <button class="btn-secondary" onclick="loadFromStorage()">Restore saved</button>
+        <button class="btn-primary" onclick="saveConfig()">Save config</button>
+      </div>
+    </div>
+
+    <!-- State -->
+    <div class="card">
+      <h2>State Persistence <code style="font-size:11px;color:#888">/state</code></h2>
+
+      <div class="section-mb">
+        <label>Active Driver</label>
+        <div class="toggle-group" id="driver-toggle">
+          <button onclick="setDriver('builtin')" data-driver="builtin">Built-in</button>
+          <button onclick="setDriver('byocdn')" data-driver="byocdn">BYO CDN</button>
+          <button onclick="setDriver('rocketcdn')" data-driver="rocketcdn" class="active">RocketCDN</button>
+        </div>
+      </div>
+
+      <div class="section-mb">
+        <label>CDN Paused</label>
+        <div class="toggle-group" id="paused-toggle">
+          <button onclick="setPaused(0)" data-paused="0" class="active">No</button>
+          <button onclick="setPaused(1)" data-paused="1">Yes</button>
+        </div>
+      </div>
+
+      <div class="flex-end">
+        <button class="btn-info" onclick="saveState()">POST /state</button>
+      </div>
+
+      <div id="state-result" style="margin-top:10px;display:none;"></div>
+    </div>
+
+    <!-- Pages -->
+    <div class="card" style="grid-column: 1 / -1;">
+      <h2>
+        Free-Tier Pages
+        <span id="count-badge" class="count-badge" style="display:none">0 / 3</span>
+      </h2>
+
+      <div class="row section-mb">
+        <div>
+          <label for="page-url">Page URL to register</label>
+          <input type="url" id="page-url" placeholder="https://example.com/landing-page" />
+        </div>
+        <button class="btn-primary" onclick="addPage()">POST /pages</button>
+        <button class="btn-success" onclick="addHomepage()">POST /homepage</button>
+        <button class="btn-secondary" onclick="getPages()">GET /pages</button>
+      </div>
+
+      <ul id="pages-list">
+        <li class="pages-empty">Click "GET /pages" to load.</li>
+      </ul>
+    </div>
+
+    <!-- Log -->
+    <div class="card" id="log-panel">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <h2 style="margin:0;">Request Log</h2>
+        <button class="btn-secondary btn-sm" onclick="clearLog()">Clear</button>
+      </div>
+      <div id="log-output"><span style="color:#6e7681">No requests yet.</span></div>
+    </div>
+
+  </div>
+
+  <script>
+    // ---- State ----
+    let selectedDriver = 'rocketcdn';
+    let selectedPaused = 0;
+
+    // ---- Config helpers ----
+    function getConfig() {
+      return {
+        siteUrl: document.getElementById('site-url').value.replace(/\/$/, ''),
+        authMethod: document.getElementById('auth-method').value,
+        nonce: document.getElementById('nonce-value').value,
+        wpUser: document.getElementById('wp-user').value,
+        wpAppPass: document.getElementById('wp-apppass').value,
+      };
+    }
+
+    function saveConfig() {
+      const cfg = getConfig();
+      localStorage.setItem('rocketcdn_test_cfg', JSON.stringify(cfg));
+      log('info', 'Config saved to localStorage.');
+    }
+
+    function loadFromStorage() {
+      const raw = localStorage.getItem('rocketcdn_test_cfg');
+      if (!raw) { log('info', 'No saved config found.'); return; }
+      const cfg = JSON.parse(raw);
+      document.getElementById('site-url').value = cfg.siteUrl || '';
+      document.getElementById('auth-method').value = cfg.authMethod || 'nonce';
+      document.getElementById('nonce-value').value = cfg.nonce || '';
+      document.getElementById('wp-user').value = cfg.wpUser || '';
+      document.getElementById('wp-apppass').value = cfg.wpAppPass || '';
+      toggleAuthFields();
+      log('info', 'Config restored from localStorage.');
+    }
+
+    function toggleAuthFields() {
+      const method = document.getElementById('auth-method').value;
+      document.getElementById('auth-nonce-fields').style.display = method === 'nonce' ? '' : 'none';
+      document.getElementById('auth-app-fields').style.display = method === 'apppassword' ? '' : 'none';
+    }
+
+    function buildHeaders() {
+      const cfg = getConfig();
+      const headers = { 'Content-Type': 'application/json' };
+      if (cfg.authMethod === 'nonce' && cfg.nonce) {
+        headers['X-WP-Nonce'] = cfg.nonce;
+      } else if (cfg.authMethod === 'apppassword' && cfg.wpUser && cfg.wpAppPass) {
+        headers['Authorization'] = 'Basic ' + btoa(cfg.wpUser + ':' + cfg.wpAppPass);
+      }
+      return headers;
+    }
+
+    function apiUrl(path) {
+      const cfg = getConfig();
+      return `${cfg.siteUrl}/wp-json/wp-rocket/v1/rocketcdn${path}`;
+    }
+
+    // ---- Driver / Paused toggles ----
+    function setDriver(driver) {
+      selectedDriver = driver;
+      document.querySelectorAll('#driver-toggle button').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.driver === driver);
+      });
+    }
+
+    function setPaused(val) {
+      selectedPaused = val;
+      document.querySelectorAll('#paused-toggle button').forEach(btn => {
+        btn.classList.toggle('active', parseInt(btn.dataset.paused) === val);
+      });
+    }
+
+    // ---- API calls ----
+    async function request(method, url, body = null) {
+      const headers = buildHeaders();
+      const opts = { method, headers };
+      if (body) opts.body = JSON.stringify(body);
+
+      log('req', `${method} ${url}`, body);
+
+      try {
+        const res = await fetch(url, opts);
+        let data;
+        try { data = await res.json(); } catch (_) { data = null; }
+        log(res.ok ? 'ok' : 'err', `${res.status} ${res.statusText}`, data);
+        return { ok: res.ok, status: res.status, data };
+      } catch (err) {
+        log('err', `Network error: ${err.message}`);
+        return { ok: false, data: null };
+      }
+    }
+
+    async function getPages() {
+      const r = await request('GET', apiUrl('/pages'));
+      if (r.ok && r.data) renderPages(r.data);
+    }
+
+    async function addPage() {
+      const url = document.getElementById('page-url').value.trim();
+      if (!url) { alert('Enter a page URL first.'); return; }
+      const r = await request('POST', apiUrl('/pages'), { url });
+      if (r.ok && r.data) { renderPages(r.data); document.getElementById('page-url').value = ''; }
+    }
+
+    async function addHomepage() {
+      const r = await request('POST', apiUrl('/pages/homepage'));
+      if (r.ok && r.data) renderPages(r.data);
+    }
+
+    async function removePage(id) {
+      const r = await request('DELETE', apiUrl(`/pages/${id}`));
+      if (r.ok && r.data) renderPages(r.data);
+    }
+
+    async function saveState() {
+      const r = await request('POST', apiUrl('/state'), {
+        active_driver: selectedDriver,
+        paused: selectedPaused,
+      });
+      const el = document.getElementById('state-result');
+      if (r.ok && r.data) {
+        el.style.display = '';
+        el.innerHTML = `<code style="font-size:12px;color:#333">driver: <strong>${r.data.active_driver}</strong> &nbsp; paused: <strong>${r.data.paused}</strong></code>`;
+      }
+    }
+
+    // ---- Render helpers ----
+    function renderPages(data) {
+      const list = document.getElementById('pages-list');
+      const badge = document.getElementById('count-badge');
+
+      badge.style.display = '';
+      badge.textContent = `${data.count} / ${data.limit}`;
+
+      if (!data.pages || data.pages.length === 0) {
+        list.innerHTML = '<li class="pages-empty">No pages registered yet.</li>';
+        return;
+      }
+
+      list.innerHTML = data.pages.map(p => `
+        <li>
+          <div class="page-info">
+            <div class="page-title">${escHtml(p.title || '(no title)')}</div>
+            <div class="page-url">${escHtml(p.url)}</div>
+          </div>
+          <button class="btn-danger btn-sm" onclick="removePage(${p.id})">Remove</button>
+        </li>
+      `).join('');
+    }
+
+    function escHtml(s) {
+      return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    // ---- Log ----
+    const logOutput = document.getElementById('log-output');
+    let firstLog = true;
+
+    function log(type, message, payload = null) {
+      if (firstLog) { logOutput.innerHTML = ''; firstLog = false; }
+
+      const ts = new Date().toLocaleTimeString();
+      const cls = { req: 'log-req', ok: 'log-ok', err: 'log-err', info: 'log-ts' }[type] || '';
+      let html = `<div class="log-entry">`;
+      html += `<span class="log-ts">${ts}</span>  <span class="${cls}">${escHtml(message)}</span>`;
+      if (payload !== null) {
+        html += `\n<span style="color:#e3b341">${escHtml(JSON.stringify(payload, null, 2))}</span>`;
+      }
+      html += `</div>`;
+
+      logOutput.insertAdjacentHTML('afterbegin', html);
+    }
+
+    function clearLog() {
+      logOutput.innerHTML = '<span style="color:#6e7681">Log cleared.</span>';
+      firstLog = true;
+    }
+
+    // ---- Init ----
+    loadFromStorage();
+  </script>
+</body>
+</html>
