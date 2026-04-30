@@ -39,8 +39,6 @@ class Test_SaveState extends RESTfulTestCase {
 
 	public function tear_down() {
 		wp_set_current_user( 0 );
-		delete_option( 'wpr_rocketcdn_active_driver' );
-		delete_option( 'wpr_rocketcdn_paused' );
 		parent::tear_down();
 	}
 
