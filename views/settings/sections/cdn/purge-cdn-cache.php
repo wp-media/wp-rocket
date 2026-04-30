@@ -30,16 +30,18 @@ defined( 'ABSPATH' ) || exit;
 
 <div class="wpr-cdn-purge <?php echo esc_attr( $data['class'] ?? '' ); ?>">
 	<div class="wpr-cdn-purge__content">
-		<?php if ( ! empty( $data['title'] ) ) : ?>
-		<p class="wpr-cdn-purge__title">
-			<?php echo $data['title']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>
-		</p>
-		<?php endif; ?>
-		<?php if ( ! empty( $data['description'] ) ) : ?>
-		<p class="wpr-cdn-purge__description">
-			<?php echo $data['description']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>
-		</p>
-		<?php endif; ?>
+		<div>
+			<?php if ( ! empty( $data['title'] ) ) : ?>
+			<p class="wpr-cdn-purge__title">
+				<?php echo $data['title']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>
+			</p>
+			<?php endif; ?>
+			<?php if ( ! empty( $data['description'] ) ) : ?>
+			<p class="wpr-cdn-purge__description">
+				<?php echo $data['description']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>
+			</p>
+			<?php endif; ?>
+		</div>
 		<?php if ( ! empty( $data['help'] ) ) : ?>
 		<a href="<?php echo esc_url( $data['help']['url'] ); ?>" class="wpr-cdn-purge__learn-more" target="_blank" rel="noopener noreferrer">
 			<span class="wpr-cdn-purge__info-icon"></span>
