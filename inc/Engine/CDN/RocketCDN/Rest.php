@@ -25,6 +25,7 @@ class Rest extends WP_REST_Controller {
 	 * APIClient instance.
 	 *
 	 * @var APIClient
+	 * @phpstan-ignore-next-line
 	 */
 	private $api_client;
 
@@ -304,17 +305,17 @@ class Rest extends WP_REST_Controller {
 		$paused        = $request->get_param( 'paused' );
 
 		if ( null !== $active_driver ) {
-			update_option( 'wpr_rocketcdn_active_driver', $active_driver );
+			$this->options->set( 'rocketcdn_active_driver', $active_driver );
 		}
 
 		if ( null !== $paused ) {
-			update_option( 'wpr_rocketcdn_paused', (int) $paused );
+			$this->options->set( 'rocketcdn_paused', (int) $paused );
 		}
 
 		return new WP_REST_Response(
 			[
-				'active_driver' => $this->options->get( 'wpr_rocketcdn_active_driver', 'rocketcdn' ),
-				'paused'        => (int) $this->options->get( 'wpr_rocketcdn_paused', 0 ),
+				'active_driver' => $this->options->get( 'rocketcdn_active_driver', 'rocketcdn' ),
+				'paused'        => (int) $this->options->get( 'rocketcdn_paused', 0 ),
 			],
 			200
 		);

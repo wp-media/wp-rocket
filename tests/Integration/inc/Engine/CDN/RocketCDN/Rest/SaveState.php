@@ -65,9 +65,12 @@ class Test_SaveState extends RESTfulTestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoAsExpected( array $config, array $expected ) {
-		// Pre-set options if configured.
-		foreach ( $config['preset_options'] as $option => $value ) {
-			update_option( $option, $value );
+		if ( ! empty( $config['preset_options'] ) ) {
+			$options = apply_filters( 'rocket_container', null )->get( 'options' );
+
+			foreach ( $config['preset_options'] as $key => $value ) {
+				$options->set( $key, $value );
+			}
 		}
 
 		// Set unauthenticated if configured.
@@ -79,14 +82,11 @@ class Test_SaveState extends RESTfulTestCase {
 
 		foreach ( $expected as $key => $value ) {
 			switch ( $key ) {
-				case 'code':
-					$this->assertSame( $value, $response['code'] );
+				case 'active_driver_response':
+					$this->assertSame( $value, $response['active_driver'] );
 					break;
-				case 'active_driver_option':
-					$this->assertSame( $value, get_option( 'wpr_rocketcdn_active_driver' ) );
-					break;
-				case 'paused_option':
-					$this->assertSame( $value, get_option( 'wpr_rocketcdn_paused' ) );
+				case 'paused_response':
+					$this->assertSame( $value, $response['paused'] );
 					break;
 			}
 		}
