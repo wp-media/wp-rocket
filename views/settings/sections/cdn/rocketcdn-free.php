@@ -62,7 +62,7 @@ do_action( 'rocket_cdn_free_before_status_indicator' );
 	<div class="wpr-cdn-add-page">
 		<div class="wpr-cdn-add-page__input-wrap">
 			<input type="text" id="wpr_cdn_add_page_input" placeholder="<?php esc_attr_e( 'Enter a page URL to add to RocketCDN', 'rocket' ); ?>" />
-			<?php if ( 0 === $data['pages_count'] ) : ?>
+			<?php if ( 0 === $data['status_indicator']['pages_count'] ) : ?>
 			<button type="button" class="wpr-cdn-add-page__homepage">
 				<span class="wpr-cdn-add-page__icon"></span>
 				<?php esc_html_e( 'ADD HOMEPAGE', 'rocket' ); ?>
