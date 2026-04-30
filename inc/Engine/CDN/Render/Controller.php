@@ -97,8 +97,8 @@ class Controller extends Abstract_Render {
 				'details'            => __( 'Serving files from 10 edge locations for free · Covering 2 pages', 'rocket' ),
 				'paused_status_text' => __( 'RocketCDN is paused', 'rocket' ),
 				'paused_details'     => __( 'RocketCDN is currently paused due to our fair usage policy. Your recent traffic exceeded the expected usage for the free plan. Upgrade to RocketCDN Pro to extend your bandwidth usage.', 'rocket' ),
+				'pages_count'       => 0, // RocketCDN Free Tier Todo: Replace with dynamic count of pages added to RocketCDN.
 			],
-			'pages_count'       => 0, // RocketCDN Free Tier Todo: Replace with dynamic count of pages added to RocketCDN.
 		];
 
 		return $sections;
