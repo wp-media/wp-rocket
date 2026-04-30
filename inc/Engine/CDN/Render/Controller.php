@@ -94,8 +94,7 @@ class Controller extends Abstract_Render {
 		}
 
 		// Disable input field and buttons when 3 pages are added.
-		// RFT Todo: Replace hardcoded limit with API data.
-		$classes = $pages_count >= 3 ? [ 'rocketcdn', 'wpr-cdn-built-in--disabled' ] : [ 'rocketcdn' ]; 
+		$classes = $pages_count >= $this->get_limit() ? [ 'rocketcdn', 'wpr-cdn-built-in--disabled' ] : [ 'rocketcdn' ]; 
 
 		$cdn_beacon = $this->beacon->get_suggest( 'cdn' );
 
@@ -343,5 +342,17 @@ class Controller extends Abstract_Render {
 			],
 		];
 		return $pages;
+	}
+
+	/**
+	 * Retrieves the maximum number of pages allowed on the RocketCDN free plan.
+	 *
+	 * @since 3.22
+	 *
+	 * @return int Page limit for RocketCDN free plan.
+	 */
+	private function get_limit(): int {
+		// RFT Todo: Replace hardcoded limit with API data.
+		return 3;
 	}
 }
