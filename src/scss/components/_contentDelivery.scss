@@ -250,7 +250,7 @@
 		background: $cGreyLighter1;
 	}
 
-	&--paused {
+	&--paused, &--disabled {
 		.wpr-cdn-add-page {
 			opacity: 0.5;
 			pointer-events: none;
