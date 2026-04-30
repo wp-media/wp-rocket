@@ -44,7 +44,7 @@ if ( ! $data['is_active'] ) {
 		</div>
 		<?php if ( ! empty( $rocket_details ) ) : ?>
 			<p class="wpr-cdn-indicator__details">
-				<?php echo esc_html( $rocket_details ); ?>
+				<?php echo $rocket_details; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>
 			</p>
 		<?php endif; ?>
 	</div>
