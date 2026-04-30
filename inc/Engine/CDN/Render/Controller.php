@@ -78,7 +78,20 @@ class Controller extends Abstract_Render {
 	 * @return array
 	 */
 	public function add_rocketcdn_free_section( array $sections ): array {
-		// Todo: Add a check for the RocketCDN subscription status and return early if true.
+		// RocketCDN Free Tier Todo: Add a check for the RocketCDN subscription status and return early if true.
+
+		$pages_count = count( $this->get_items() );
+
+		$details = sprintf(
+				// translators: %1$s = opening <strong> tag, %2$s = closing </strong> tag.
+				__( '%1$sStart with your homepage and add up to 2 more key pages.%2$s Includes unlimited traffic across 10 edge locations.', 'rocket' ),
+				'<strong>',
+				'</strong>'
+			);
+
+		if ( $pages_count > 0 ) {
+			$details = __( 'Serving files from 10 edge locations. Covering up to 3 pages.', 'rocket' );
+		}
 
 		$cdn_beacon = $this->beacon->get_suggest( 'cdn' );
 
@@ -94,10 +107,10 @@ class Controller extends Abstract_Render {
 			'status_indicator' => [
 				'is_active'          => true,
 				'status_text'        => __( 'RocketCDN is active', 'rocket' ),
-				'details'            => __( 'Serving files from 10 edge locations for free · Covering 2 pages', 'rocket' ),
+				'details'            => $details,
 				'paused_status_text' => __( 'RocketCDN is paused', 'rocket' ),
 				'paused_details'     => __( 'RocketCDN is currently paused due to our fair usage policy. Your recent traffic exceeded the expected usage for the free plan. Upgrade to RocketCDN Pro to extend your bandwidth usage.', 'rocket' ),
-				'pages_count'       => 0, // RocketCDN Free Tier Todo: Replace with dynamic count of pages added to RocketCDN.
+				'pages_count'       => $pages_count,
 			],
 		];
 
@@ -232,19 +245,7 @@ class Controller extends Abstract_Render {
 	 * @return void
 	 */
 	public function render_built_in_page_rows(): void {
-		// Todo: Replace hardcoded data with DB query, e.g. $pages = $this->query->get_pages().
-		$pages = [
-			(object) [
-				'id'    => 1,
-				'url'   => '#',
-				'title' => __( 'Home page', 'rocket' ),
-			],
-			(object) [
-				'id'    => 2,
-				'url'   => '#',
-				'title' => __( 'Page 2', 'rocket' ),
-			],
-		];
+		$pages = $this->get_items();
 
 		foreach ( $pages as $page ) {
 			echo $this->generate( 'partials/table-list-row', $this->build_page_row( $page ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
@@ -314,5 +315,29 @@ class Controller extends Abstract_Render {
 		];
 
 		echo $this->generate( 'partials/cdn/rocket-cdn/fair-use-notice', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+	}
+
+	/**
+	 * Retrieves the list of pages added to RocketCDN for the free plan.
+	 * 
+	 * @since 3.22
+	 * 
+	 * @return array List of page objects with id, url, and title properties.
+	 */
+	private function get_items(): array {
+		// RocketCDN Free Tier Todo: Replace hardcoded data with DB query.
+		$pages = [
+			(object) [
+				'id'    => 1,
+				'url'   => '#',
+				'title' => __( 'Home page', 'rocket' ),
+			],
+			(object) [
+				'id'    => 2,
+				'url'   => '#',
+				'title' => __( 'Page 2', 'rocket' ),
+			],
+		];
+		return $pages;
 	}
 }
