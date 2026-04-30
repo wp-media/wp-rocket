@@ -78,7 +78,7 @@ class Controller extends Abstract_Render {
 	 * @return array
 	 */
 	public function add_rocketcdn_free_section( array $sections ): array {
-		// RocketCDN Free Tier Todo: Add a check for the RocketCDN subscription status and return early if true.
+		// RFT Todo: Add a check for the RocketCDN subscription status and return early if true.
 
 		$pages_count = count( $this->get_items() );
 
@@ -93,12 +93,16 @@ class Controller extends Abstract_Render {
 			$details = __( 'Serving files from 10 edge locations. Covering up to 3 pages.', 'rocket' );
 		}
 
+		// Disable input field and buttons when 3 pages are added.
+		// RFT Todo: Replace hardcoded limit with API data.
+		$classes = $pages_count >= 3 ? [ 'rocketcdn', 'wpr-cdn-built-in--disabled' ] : [ 'rocketcdn' ]; 
+
 		$cdn_beacon = $this->beacon->get_suggest( 'cdn' );
 
 		$sections['rocketcdn_free_section'] = [
 			'title'                 => __( 'RocketCDN', 'rocket' ),
 			'type'                  => 'rocketcdn_free',
-			'class'                 => [ 'rocketcdn' ],
+			'class'                 => $classes,
 			'page'                  => 'page_cdn',
 			'help'                  => [
 				'id'  => $cdn_beacon,
@@ -325,7 +329,7 @@ class Controller extends Abstract_Render {
 	 * @return array List of page objects with id, url, and title properties.
 	 */
 	private function get_items(): array {
-		// RocketCDN Free Tier Todo: Replace hardcoded data with DB query.
+		// RFT Todo: Replace hardcoded data with DB query.
 		$pages = [
 			(object) [
 				'id'    => 1,
