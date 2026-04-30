@@ -55,7 +55,7 @@ class Controller extends Abstract_Render {
 				'id'  => $cdn_beacon,
 				'url' => $cdn_beacon['url'],
 			],
-			'status_indicator_data' => [
+			'status_indicator' => [
 				'is_active'          => true,
 				'status_text'        => __( 'RocketCDN is active on your website', 'rocket' ),
 				'details'            => __( 'Serving files from 100+ edge locations · Covering 12 pages', 'rocket' ),
@@ -91,7 +91,7 @@ class Controller extends Abstract_Render {
 				'id'  => $cdn_beacon,
 				'url' => $cdn_beacon['url'],
 			],
-			'status_indicator_data' => [
+			'status_indicator' => [
 				'is_active'          => true,
 				'status_text'        => __( 'RocketCDN is active', 'rocket' ),
 				'details'            => __( 'Serving files from 10 edge locations for free · Covering 2 pages', 'rocket' ),
