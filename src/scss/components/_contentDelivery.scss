@@ -6,6 +6,7 @@
 	align-items: center;
 	justify-content: space-between;
 	gap: $space;
+	margin-top: $space * 2;
 }
 
 .wpr-optionHeader__title-group {
@@ -237,7 +238,6 @@
 	flex-direction: column;
 	gap: $space * 2;
 	width: 100%;
-	margin-top: $space * 2;
 	padding: $space * 2;
 	background: $cGreyLight3;
 	border: 1px solid $cGreyLighter1;
@@ -251,7 +251,6 @@
 	}
 
 	&--paused {
-		.wpr-table-list,
 		.wpr-cdn-add-page {
 			opacity: 0.5;
 			pointer-events: none;
@@ -370,6 +369,7 @@
 	padding: $space * 2;
 	background: #fff7e1;
 	border-left: 4px solid #fed055;
+	margin-top: $space * 2;
 
 	&__content {
 		display: flex;
