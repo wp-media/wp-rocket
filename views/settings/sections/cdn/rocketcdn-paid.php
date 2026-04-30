@@ -15,7 +15,7 @@
  *     @type string $class       Section classes.
  *     @type string $help        Data to pass to beacon.
  *     @type string $page        Page section identifier.
- * @type array  $status_indicator_data Data for the CDN status indicator partial.
+ * @type array  $status_indicator Data for the CDN status indicator partial.
  * }
  */
 
@@ -34,5 +34,5 @@ defined( 'ABSPATH' ) || exit;
 </div>
 
 <?php
-$this->render_parts_with_data( 'cdn/cdn-status-indicator', $data['status_indicator_data'] );
+$this->render_parts_with_data( 'cdn/cdn-status-indicator', $data['status_indicator'] );
 ?>

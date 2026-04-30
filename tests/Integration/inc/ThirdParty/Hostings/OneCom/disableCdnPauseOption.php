@@ -37,10 +37,10 @@ class Test_DisableCdnPauseOption extends TestCase {
 		foreach ( $expected['sections'] as $key => $section_expected ) {
 			$this->assertArrayHasKey( $key, $result, "Section $key should exist in result." );
 
-			if ( isset( $section_expected['status_indicator_data']['disable_pause_btn'] ) ) {
+			if ( isset( $section_expected['status_indicator']['disable_pause_btn'] ) ) {
 				$this->assertSame(
-					$section_expected['status_indicator_data']['disable_pause_btn'],
-					$result[ $key ]['status_indicator_data']['disable_pause_btn'] ?? false,
+					$section_expected['status_indicator']['disable_pause_btn'],
+					$result[ $key ]['status_indicator']['disable_pause_btn'] ?? false,
 					"disable_pause_btn for $key should match expected value."
 				);
 			}

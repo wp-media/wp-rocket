@@ -1527,7 +1527,7 @@ class Page extends Abstract_Render {
 				],
 				'page'                  => 'page_cdn',
 				'class'                 => [ 'your-own-cdn' ],
-				'status_indicator_data' => [
+				'status_indicator' => [
 					'is_active'          => true,
 					'status_text'        => __( 'Your CDN is active on your website', 'rocket' ),
 					'paused_status_text' => __( 'RocketCDN is paused', 'rocket' ),

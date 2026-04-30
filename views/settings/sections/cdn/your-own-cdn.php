@@ -32,7 +32,7 @@ defined( 'ABSPATH' ) || exit;
 
 <div class="wpr-fieldsContainer <?php echo esc_attr( $data['class'] ); ?>">
 	<?php
-	$this->render_parts_with_data( 'cdn/cdn-status-indicator', $data['status_indicator_data'] );
+	$this->render_parts_with_data( 'cdn/cdn-status-indicator', $data['status_indicator'] );
 	?>
 
 	<?php if ( ! empty( $data['description'] ) ) : ?>

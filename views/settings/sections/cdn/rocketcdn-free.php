@@ -15,7 +15,7 @@
  *     @type string $class       Section classes.
  *     @type string $help        Data to pass to beacon.
  *     @type string $page        Page section identifier.
- *     @type array  $status_indicator_data Data for the CDN status indicator partial.
+ *     @type array  $status_indicator Data for the CDN status indicator partial.
  *     @type int    $pages_count Number of pages added to RocketCDN.
  * }
  */
@@ -46,7 +46,7 @@ do_action( 'rocket_cdn_free_before_status_indicator' );
 <div class="wpr-cdn-built-in <?php echo esc_attr( $data['class'] ); ?>">
 	<?php
 
-	$this->render_parts_with_data( 'cdn/cdn-status-indicator', $data['status_indicator_data'] );
+	$this->render_parts_with_data( 'cdn/cdn-status-indicator', $data['status_indicator'] );
 
 	?>
 	<div class="wpr-cdn-built-in__separator"></div>

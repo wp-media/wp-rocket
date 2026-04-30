@@ -117,7 +117,7 @@ class OneCom implements Subscriber_Interface {
 				continue;
 			}
 
-			$sections[ $cdn_section_key ]['status_indicator_data']['disable_pause_btn'] = true;
+			$sections[ $cdn_section_key ]['status_indicator']['disable_pause_btn'] = true;
 		}
 
 		return $sections;
