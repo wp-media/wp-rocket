@@ -179,6 +179,14 @@ class Rest extends WP_REST_Controller {
 			);
 		}
 
+		if ( ! $this->check_if_url_is_valid( $url ) ) {
+			return new WP_Error(
+				'rocketcdn_invalid_url',
+				__( 'The specified URL is not a valid page on this site.', 'rocket' ),
+				[ 'status' => 400 ]
+			);
+		}
+
 		$existing = $this->query->get_by_url( $url );
 
 		if ( false !== $existing ) {
@@ -189,10 +197,14 @@ class Rest extends WP_REST_Controller {
 			);
 		}
 
+		$page_title = trailingslashit( $url ) === trailingslashit( home_url() )
+							? get_bloginfo( 'name' )
+							: get_the_title( url_to_postid( $url ) );
+
 		$inserted = $this->query->add_item(
 			[
 				'url'           => $url,
-				'title'         => get_the_title( url_to_postid( $url ) ),
+				'title'         => $page_title,
 				'modified'      => current_time( 'mysql' ),
 				'last_accessed' => current_time( 'mysql' ),
 			]
@@ -207,6 +219,29 @@ class Rest extends WP_REST_Controller {
 		}
 
 		return new WP_REST_Response( $this->get_pages_data(), 201 );
+	}
+
+	/**
+	 * Checks whether the given URL exists as a published page.
+	 *
+	 * Accepts the homepage and any URL that maps to a published post or page.
+	 * External URLs and URLs with no matching WordPress content are rejected.
+	 *
+	 * @param string $url URL to check.
+	 * @return bool
+	 */
+	private function check_if_url_is_valid( string $url ): bool {
+		$home = untrailingslashit( home_url() );
+
+		if ( 0 !== strpos( $url, $home ) ) {
+			return false;
+		}
+
+		if ( $url === $home ) {
+			return true;
+		}
+
+		return url_to_postid( $url ) > 0;
 	}
 
 	/**

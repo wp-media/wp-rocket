@@ -197,6 +197,7 @@
       </div>
 
       <div class="flex-end">
+        <button class="btn-info" onclick="testAuth()">Test auth</button>
         <button class="btn-secondary" onclick="loadFromStorage()">Restore saved</button>
         <button class="btn-primary" onclick="saveConfig()">Save config</button>
       </div>
@@ -309,7 +310,11 @@
       const headers = { 'Content-Type': 'application/json' };
       if (cfg.authMethod === 'nonce' && cfg.nonce) {
         headers['X-WP-Nonce'] = cfg.nonce;
-      } else if (cfg.authMethod === 'apppassword' && cfg.wpUser && cfg.wpAppPass) {
+      }
+
+      // Do not send nonce and basic auth together to avoid ambiguous auth behavior.
+      if (cfg.authMethod === 'apppassword' && cfg.wpUser && cfg.wpAppPass) {
+        delete headers['X-WP-Nonce'];
         headers['Authorization'] = 'Basic ' + btoa(cfg.wpUser + ':' + cfg.wpAppPass);
       }
       return headers;
@@ -338,7 +343,12 @@
     // ---- API calls ----
     async function request(method, url, body = null) {
       const headers = buildHeaders();
-      const opts = { method, headers };
+      const opts = {
+        method,
+        headers,
+        // Required for nonce auth: sends logged-in WP cookies with REST requests.
+        credentials: 'include',
+      };
       if (body) opts.body = JSON.stringify(body);
 
       log('req', `${method} ${url}`, body);
@@ -387,6 +397,25 @@
         el.style.display = '';
         el.innerHTML = `<code style="font-size:12px;color:#333">driver: <strong>${r.data.active_driver}</strong> &nbsp; paused: <strong>${r.data.paused}</strong></code>`;
       }
+    }
+
+    async function testAuth() {
+      const cfg = getConfig();
+      if (!cfg.siteUrl) {
+        alert('Enter WordPress Site URL first.');
+        return;
+      }
+
+      const url = `${cfg.siteUrl}/wp-json/wp/v2/users/me`;
+      const r = await request('GET', url);
+
+      if (r.ok && r.data) {
+        const name = r.data.name || r.data.slug || 'unknown';
+        log('ok', `Auth OK as ${name}`);
+        return;
+      }
+
+      log('err', 'Auth failed. Check nonce/cookies or app password credentials.');
     }
 
     // ---- Render helpers ----
