@@ -155,6 +155,12 @@
 		color: #464f59;
 		margin: 0;
 	}
+
+	.wpr-icon-orange-loader:before {
+		width: 15.238px;
+		height: 16px;
+		aspect-ratio: 20/21;
+	}
 }
 
 .wpr-cdn-status--paused {
