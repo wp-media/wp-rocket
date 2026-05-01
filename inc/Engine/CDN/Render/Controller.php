@@ -42,16 +42,16 @@ class Controller extends Abstract_Render {
 	 * @return array
 	 */
 	public function add_rocketcdn_paid_section( array $sections ): array {
-		// Todo: Add a check for the RocketCDN subscription status and return early if false.
+		// RFT Todo: Add a check for the RocketCDN subscription status and return early if false.
 
 		$cdn_beacon = $this->beacon->get_suggest( 'cdn' );
 
 		$sections['rocketcdn_paid_section'] = [
-			'title'                 => __( 'RocketCDN', 'rocket' ),
-			'type'                  => 'rocketcdn_paid',
-			'class'                 => [ 'rocketcdn' ],
-			'page'                  => 'page_cdn',
-			'help'                  => [
+			'title'            => __( 'RocketCDN', 'rocket' ),
+			'type'             => 'rocketcdn_paid',
+			'class'            => [ 'rocketcdn' ],
+			'page'             => 'page_cdn',
+			'help'             => [
 				'id'  => $cdn_beacon,
 				'url' => $cdn_beacon['url'],
 			],
@@ -88,7 +88,7 @@ class Controller extends Abstract_Render {
 			);
 
 		$status_text = __( 'RocketCDN is active', 'rocket' );
-		$classes = [ 'rocketcdn' ];
+		$classes     = [ 'rocketcdn' ];
 
 		$is_subscription_loading = $this->is_subscription_loading();
 
@@ -100,7 +100,7 @@ class Controller extends Abstract_Render {
 
 		// Update status inidicator details when subscription is processing.
 		if ( $is_subscription_loading ) {
-			$details = __( 'Please wait, RocketCDN will be ready and active shortly.', 'rocket' );
+			$details     = __( 'Please wait, RocketCDN will be ready and active shortly.', 'rocket' );
 			$status_text = __( 'Creating your subscription...', 'rocket' );
 		}
 
@@ -112,21 +112,21 @@ class Controller extends Abstract_Render {
 		$cdn_beacon = $this->beacon->get_suggest( 'cdn' );
 
 		$sections['rocketcdn_free_section'] = [
-			'title'                 => __( 'RocketCDN', 'rocket' ),
-			'type'                  => 'rocketcdn_free',
-			'class'                 => $classes,
-			'page'                  => 'page_cdn',
-			'help'                  => [
+			'title'            => __( 'RocketCDN', 'rocket' ),
+			'type'             => 'rocketcdn_free',
+			'class'            => $classes,
+			'page'             => 'page_cdn',
+			'help'             => [
 				'id'  => $cdn_beacon,
 				'url' => $cdn_beacon['url'],
 			],
 			'status_indicator' => [
-				'is_active'          => true,
-				'status_text'        => $status_text,
-				'details'            => $details,
-				'paused_status_text' => __( 'RocketCDN is paused', 'rocket' ),
-				'paused_details'     => __( 'RocketCDN is currently paused due to our fair usage policy. Your recent traffic exceeded the expected usage for the free plan. Upgrade to RocketCDN Pro to extend your bandwidth usage.', 'rocket' ),
-				'pages_count'       => $pages_count,
+				'is_active'               => true,
+				'status_text'             => $status_text,
+				'details'                 => $details,
+				'paused_status_text'      => __( 'RocketCDN is paused', 'rocket' ),
+				'paused_details'          => __( 'RocketCDN is currently paused due to our fair usage policy. Your recent traffic exceeded the expected usage for the free plan. Upgrade to RocketCDN Pro to extend your bandwidth usage.', 'rocket' ),
+				'pages_count'             => $pages_count,
 				'is_subscription_loading' => $is_subscription_loading,
 			],
 		];
@@ -163,6 +163,10 @@ class Controller extends Abstract_Render {
 			],
 		];
 
+		if ( $this->is_subscription_loading() ) {
+			$sections['purge_cdn_cache_section']['class'] = [ 'wpr-cdn-disabled' ];
+		}
+
 		return $sections;
 	}
 
@@ -189,6 +193,11 @@ class Controller extends Abstract_Render {
 			'page'  => 'page_cdn',
 		];
 
+		// Disable exclusions fields when subscription is processing.
+		if ( $this->is_subscription_loading() ) {
+			$sections['exclude_cdn_section']['class'] = [ 'wpr-cdn-disabled' ];
+		}
+
 		return $sections;
 	}
 
@@ -202,7 +211,7 @@ class Controller extends Abstract_Render {
 	 * @return array Modified fields array with CDN exclusion fields appended.
 	 */
 	public function add_exclusions_fields( array $fields ): array {
-		// Todo: Add a check for the RocketCDN subscription status.
+		// RFT Todo: Add a check for the RocketCDN subscription status.
 		$fields['cdn_reject_pages'] = [
 			'type'              => 'textarea_with_container',
 			'label'             => __( 'Exclude Pages from CDN', 'rocket' ),
@@ -231,6 +240,16 @@ class Controller extends Abstract_Render {
 			'class'             => [ 'wpr-cdn-exclusions' ],
 			'sanitize_callback' => 'sanitize_textarea',
 		];
+
+		// Disable exclusions fields when subscription is processing.
+		foreach ( [ 'cdn_reject_pages', 'cdn_reject_files' ] as $field ) {
+			if ( $this->is_subscription_loading() ) {
+				$fields[ $field ]['class'][]    = 'wpr-cdn-disabled';
+				$fields[ $field ]['attributes'] = [
+					'disabled' => 'disabled',
+				];
+			}
+		}
 
 		return $fields;
 	}
@@ -336,9 +355,9 @@ class Controller extends Abstract_Render {
 
 	/**
 	 * Retrieves the list of pages added to RocketCDN for the free plan.
-	 * 
+	 *
 	 * @since 3.22
-	 * 
+	 *
 	 * @return array List of page objects with id, url, and title properties.
 	 */
 	private function get_items(): array {
@@ -379,6 +398,6 @@ class Controller extends Abstract_Render {
 	 */
 	private function is_subscription_loading(): bool {
 		// RFT Todo: Implement a check for whether the subscription is currently processing.
-		return true;
+		return false;
 	}
 }
