@@ -1519,14 +1519,14 @@ class Page extends Abstract_Render {
 
 		$cdn_sections = [
 			'cdn_section'    => [
-				'title'                 => __( 'Your CDN', 'rocket' ),
-				'type'                  => 'your_own_cdn',
-				'help'                  => [
+				'title'            => __( 'Your CDN', 'rocket' ),
+				'type'             => 'your_own_cdn',
+				'help'             => [
 					'id'  => $this->beacon->get_suggest( 'cdn_section' ),
 					'url' => $cdn_beacon['url'],
 				],
-				'page'                  => 'page_cdn',
-				'class'                 => [ 'your-own-cdn' ],
+				'page'             => 'page_cdn',
+				'class'            => [ 'your-own-cdn' ],
 				'status_indicator' => [
 					'is_active'          => true,
 					'status_text'        => __( 'Your CDN is active on your website', 'rocket' ),
