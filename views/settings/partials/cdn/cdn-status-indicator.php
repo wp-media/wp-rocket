@@ -20,12 +20,12 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$rocket_details               = isset( $data['details'] ) ? $data['details'] : '';
-$rocket_class                 = isset( $data['class'] ) ? $data['class'] : '';
-$rocket_is_pause_btn_disabled = isset( $data['disable_pause_btn'] ) ? $data['disable_pause_btn'] : false;
-$rocket_paused_status_text    = isset( $data['paused_status_text'] ) ? $data['paused_status_text'] : '';
-$rocket_paused_details        = isset( $data['paused_details'] ) ? $data['paused_details'] : '';
-$is_subscription_loading        = isset( $data['is_subscription_loading'] ) ? $data['is_subscription_loading'] : false;
+$rocket_details                 = isset( $data['details'] ) ? $data['details'] : '';
+$rocket_class                   = isset( $data['class'] ) ? $data['class'] : '';
+$rocket_is_pause_btn_disabled   = isset( $data['disable_pause_btn'] ) ? $data['disable_pause_btn'] : false;
+$rocket_paused_status_text      = isset( $data['paused_status_text'] ) ? $data['paused_status_text'] : '';
+$rocket_paused_details          = isset( $data['paused_details'] ) ? $data['paused_details'] : '';
+$rocket_is_subscription_loading = isset( $data['is_subscription_loading'] ) ? $data['is_subscription_loading'] : false;
 
 if ( ! $data['is_active'] ) {
 	return;
@@ -41,9 +41,9 @@ if ( ! $data['is_active'] ) {
 >
 	<div class="wpr-cdn-indicator">
 		<div class="wpr-cdn-indicator__status">
-			<?php if ( $is_subscription_loading ) : ?>
+			<?php if ( $rocket_is_subscription_loading ) : ?>
 				<span class="wpr-icon-orange-loader"></span>
-			<?php else: ?>
+			<?php else : ?>
 				<span class="wpr-cdn-indicator__dot"></span>
 			<?php endif; ?>
 			<span class="wpr-cdn-indicator__text"><?php echo esc_html( $data['status_text'] ); ?></span>
@@ -54,7 +54,7 @@ if ( ! $data['is_active'] ) {
 			</p>
 		<?php endif; ?>
 	</div>
-	<?php if ( ! $is_subscription_loading ) : ?>
+	<?php if ( ! $rocket_is_subscription_loading ) : ?>
 	<button type="button" class="wpr-cdn-pause" aria-pressed="false" <?php echo $rocket_is_pause_btn_disabled ? 'disabled' : ''; ?>>
 		<span class="wpr-cdn-pause__icon"></span>
 		<span class="wpr-cdn-pause__text wpr-cdn-pause__text--pause"><?php esc_html_e( 'PAUSE CDN', 'rocket' ); ?></span>
