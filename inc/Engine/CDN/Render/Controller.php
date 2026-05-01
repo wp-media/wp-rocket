@@ -80,8 +80,6 @@ class Controller extends Abstract_Render {
 	public function add_rocketcdn_free_section( array $sections ): array {
 		// RFT Todo: Add a check for the RocketCDN subscription status and return early if true.
 
-		$pages_count = count( $this->get_items() );
-
 		$details = sprintf(
 				// translators: %1$s = opening <strong> tag, %2$s = closing </strong> tag.
 				__( '%1$sStart with your homepage and add up to 2 more key pages.%2$s Includes unlimited traffic across 10 edge locations.', 'rocket' ),
@@ -89,12 +87,27 @@ class Controller extends Abstract_Render {
 				'</strong>'
 			);
 
+		$status_text = __( 'RocketCDN is active', 'rocket' );
+		$classes = [ 'rocketcdn' ];
+
+		$is_subscription_loading = $this->is_subscription_loading();
+
+		$pages_count = count( $this->get_items() );
+
 		if ( $pages_count > 0 ) {
 			$details = __( 'Serving files from 10 edge locations. Covering up to 3 pages.', 'rocket' );
 		}
 
+		// Update status inidicator details when subscription is processing.
+		if ( $is_subscription_loading ) {
+			$details = __( 'Please wait, RocketCDN will be ready and active shortly.', 'rocket' );
+			$status_text = __( 'Creating your subscription...', 'rocket' );
+		}
+
 		// Disable input field and buttons when 3 pages are added.
-		$classes = $pages_count >= $this->get_limit() ? [ 'rocketcdn', 'wpr-cdn-built-in--disabled' ] : [ 'rocketcdn' ]; 
+		if ( $pages_count >= $this->get_limit() || $is_subscription_loading ) {
+			$classes[] = 'wpr-cdn-built-in--disabled';
+		}
 
 		$cdn_beacon = $this->beacon->get_suggest( 'cdn' );
 
@@ -109,11 +122,12 @@ class Controller extends Abstract_Render {
 			],
 			'status_indicator' => [
 				'is_active'          => true,
-				'status_text'        => __( 'RocketCDN is active', 'rocket' ),
+				'status_text'        => $status_text,
 				'details'            => $details,
 				'paused_status_text' => __( 'RocketCDN is paused', 'rocket' ),
 				'paused_details'     => __( 'RocketCDN is currently paused due to our fair usage policy. Your recent traffic exceeded the expected usage for the free plan. Upgrade to RocketCDN Pro to extend your bandwidth usage.', 'rocket' ),
 				'pages_count'       => $pages_count,
+				'is_subscription_loading' => $is_subscription_loading,
 			],
 		];
 
@@ -354,5 +368,17 @@ class Controller extends Abstract_Render {
 	private function get_limit(): int {
 		// RFT Todo: Replace hardcoded limit with API data.
 		return 3;
+	}
+
+	/**
+	 * Checks if subscription is currently processing.
+	 *
+	 * @since 3.22
+	 *
+	 * @return bool True if the subscription is processing, false otherwise.
+	 */
+	private function is_subscription_loading(): bool {
+		// RFT Todo: Implement a check for whether the subscription is currently processing.
+		return true;
 	}
 }
