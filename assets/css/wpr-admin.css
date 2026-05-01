@@ -414,6 +414,16 @@ a:focus, button:focus {
   background-position: center center;
 }
 
+.wpr-icon-orange-loader:before {
+  display: block;
+  content: "";
+  background: url("../img/orange-loading.svg") no-repeat center center;
+  background-size: contain;
+  width: 22.857px;
+  height: 24px;
+  aspect-ratio: 20/21;
+}
+
 .wpr-title1 {
   font-size: 1.625rem;
   line-height: 1;
@@ -4274,6 +4284,7 @@ div.wpr-tutorial-item {
   align-items: center;
   justify-content: space-between;
   gap: 8px;
+  margin-bottom: 16px;
 }
 
 .wpr-optionHeader__title-group {
@@ -4411,6 +4422,11 @@ div.wpr-tutorial-item {
   color: #464f59;
   margin: 0;
 }
+.wpr-cdn-indicator .wpr-icon-orange-loader:before {
+  width: 15.238px;
+  height: 16px;
+  aspect-ratio: 20/21;
+}
 
 .wpr-cdn-status--paused .wpr-cdn-indicator__dot {
   background: #e5a800;
@@ -4435,7 +4451,7 @@ div.wpr-tutorial-item {
 }
 .wpr-cdn-pause:disabled {
   opacity: 0.5;
-  cursor: not-allowed;
+  pointer-events: none;
 }
 .wpr-cdn-pause__icon {
   display: inline-block;
@@ -4473,7 +4489,7 @@ div.wpr-tutorial-item {
 }
 .wpr-cdn-pause--disabled {
   opacity: 0.5;
-  cursor: not-allowed;
+  pointer-events: none;
 }
 
 .wpr-cdn-built-in {
@@ -4481,101 +4497,23 @@ div.wpr-tutorial-item {
   flex-direction: column;
   gap: 16px;
   width: 100%;
-  margin-top: 16px;
-}
-.wpr-cdn-built-in--paused .wpr-table-list,
-.wpr-cdn-built-in--paused .wpr-cdn-add-page {
-  opacity: 0.5;
-  pointer-events: none;
-}
-
-.wpr-table-list {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-}
-.wpr-table-list__row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
   padding: 16px;
   background: #F9FAFB;
   border: 1px solid #E2E5E9;
-  font-size: 0.875rem;
-  line-height: 1.2857142857;
-  color: #121116;
-}
-.wpr-table-list__row:first-child {
-  border-radius: 4px 4px 0 0;
-}
-.wpr-table-list__row:last-child {
-  border-radius: 0 0 4px 4px;
-}
-.wpr-table-list__row:only-child {
   border-radius: 4px;
+  overflow: hidden;
 }
-.wpr-table-list__row + .wpr-table-list__row {
-  border-top: 0;
+.wpr-cdn-built-in__separator {
+  width: 100%;
+  height: 1px;
+  background: #E2E5E9;
 }
-.wpr-table-list__cell {
-  flex: 1;
-  min-width: 0;
+.wpr-cdn-built-in--paused .wpr-cdn-add-page, .wpr-cdn-built-in--disabled .wpr-cdn-add-page {
+  opacity: 0.5;
+  pointer-events: none;
 }
-.wpr-table-list__cell a {
-  font-size: 0.875rem;
-  line-height: 1.2857142857;
-  color: #121116;
-  text-decoration: underline;
-}
-.wpr-table-list__cell a:hover {
-  color: #121116;
-}
-.wpr-table-list__actions {
-  display: flex;
-  align-items: center;
-  flex-shrink: 0;
-}
-.wpr-table-list__retest {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  padding: 0 16px;
-  border: 0;
-  border-right: 1px solid #D4D9DD;
-  background: none;
-  cursor: pointer;
-  font-size: 0.875rem;
-  line-height: 1.2857142857;
-  font-weight: 600;
-  color: #121116;
-  white-space: nowrap;
-}
-.wpr-table-list__retest:hover {
-  color: #72777C;
-}
-.wpr-table-list__retest .dashicons {
-  width: 14px;
-  height: 14px;
-  font-size: 14px;
-}
-.wpr-table-list__delete {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding-left: 16px;
-  background: none;
-  border: 0;
-  cursor: pointer;
-  color: #121116;
-}
-.wpr-table-list__delete:hover {
-  color: #D33F49;
-}
-.wpr-table-list__delete .dashicons {
-  width: 14px;
-  height: 14px;
-  font-size: 14px;
+.wpr-cdn-built-in .wpr-table-list__row {
+  background: #FFF;
 }
 
 .wpr-cdn-add-page {
@@ -4589,6 +4527,7 @@ div.wpr-tutorial-item {
   justify-content: space-between;
   flex: 1;
   min-width: 0;
+  height: 49.56px;
   padding: 6px 6px 6px 16px;
   border: 1px solid #E2E5E9;
   border-radius: 4px;
@@ -4676,6 +4615,7 @@ div.wpr-tutorial-item {
   padding: 16px;
   background: #fff7e1;
   border-left: 4px solid #fed055;
+  margin-bottom: 16px;
 }
 .wpr-cdn-fair-use__content {
   display: flex;
@@ -4746,7 +4686,7 @@ div.wpr-tutorial-item {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  max-width: 342px;
+  max-width: 400px;
 }
 .wpr-cdn-purge__title {
   font-size: 0.875rem;
@@ -4862,6 +4802,106 @@ div.wpr-tutorial-item {
   font-weight: 600;
   line-height: normal;
   margin: 9px 0;
+}
+
+.wpr-cdn-disabled,
+.wpr-cdn-disabled a {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/*-----------------------------------------------*\
+
+    Table component style.
+
+\*-----------------------------------------------*/
+.wpr-table-list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.wpr-table-list__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 16px;
+  background: #F9FAFB;
+  border: 1px solid #E2E5E9;
+  font-size: 0.875rem;
+  line-height: 1.2857142857;
+  color: #121116;
+}
+.wpr-table-list__row:first-child {
+  border-radius: 4px 4px 0 0;
+}
+.wpr-table-list__row:last-child {
+  border-radius: 0 0 4px 4px;
+}
+.wpr-table-list__row:only-child {
+  border-radius: 4px;
+}
+.wpr-table-list__row + .wpr-table-list__row {
+  border-top: 0;
+}
+.wpr-table-list__cell {
+  flex: 1;
+  min-width: 0;
+}
+.wpr-table-list__cell a {
+  font-size: 0.875rem;
+  line-height: 1.2857142857;
+  color: #121116;
+  text-decoration: underline;
+}
+.wpr-table-list__cell a:hover {
+  color: #121116;
+}
+.wpr-table-list__actions {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+.wpr-table-list__retest {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 16px;
+  border: 0;
+  border-right: 1px solid #D4D9DD;
+  background: none;
+  cursor: pointer;
+  font-size: 0.875rem;
+  line-height: 1.2857142857;
+  font-weight: 600;
+  color: #121116;
+  white-space: nowrap;
+}
+.wpr-table-list__retest:hover {
+  color: #72777C;
+}
+.wpr-table-list__retest .dashicons {
+  width: 14px;
+  height: 14px;
+  font-size: 14px;
+}
+.wpr-table-list__delete {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 16px;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  color: #121116;
+}
+.wpr-table-list__delete:hover {
+  color: #D33F49;
+}
+.wpr-table-list__delete .dashicons {
+  width: 14px;
+  height: 14px;
+  font-size: 14px;
 }
 
 /*-----------------------------------------------*\
