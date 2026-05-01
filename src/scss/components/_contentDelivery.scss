@@ -190,7 +190,7 @@
 
 	&:disabled {
 		opacity: 0.5;
-		cursor: not-allowed;
+		pointer-events: none;
 	}
 
 	&__icon {
@@ -234,7 +234,7 @@
 
 	&--disabled {
 		opacity: 0.5;
-		cursor: not-allowed;
+		pointer-events: none;
 	}
 }
 
@@ -582,4 +582,10 @@
         line-height: normal;
         margin: 9px 0;
     }
+}
+
+.wpr-cdn-disabled,
+.wpr-cdn-disabled a {
+	opacity: 0.5;
+	pointer-events: none;
 }
