@@ -34,7 +34,7 @@ return [
 			'unauthenticated' => false,
 		],
 		'expected' => [
-			'code'   => 'rocketcdn_invalid_url',
+			'code'   => 'rocketcdn_url_not_found',
 			'status' => 400,
 		],
 	],
@@ -46,7 +46,7 @@ return [
 			'unauthenticated' => false,
 		],
 		'expected' => [
-			'code'   => 'rocketcdn_invalid_url',
+			'code'   => 'rocketcdn_url_not_found',
 			'status' => 400,
 		],
 	],

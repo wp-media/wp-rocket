@@ -57,14 +57,44 @@ class Test_AddPage extends RESTfulTestCase {
 		$this->post_id  = $this->factory()->post->create( [ 'post_status' => 'publish', 'post_type' => 'page' ] );
 		$this->post_url = untrailingslashit( get_permalink( $this->post_id ) );
 
+		add_filter( 'pre_http_request', [ $this, 'mock_http_response' ], 10, 3 );
+
 		self::truncateRocketCDNTable();
 	}
 
 	public function tear_down() {
+		remove_filter( 'pre_http_request', [ $this, 'mock_http_response' ], 10 );
 		wp_set_current_user( 0 );
 		wp_delete_post( $this->post_id, true );
 		self::truncateRocketCDNTable();
 		parent::tear_down();
+	}
+
+	public function mock_http_response( $pre, $args, $url ) {
+		if ( strpos( $url, 'this-page-does-not-exist' ) !== false ) {
+			return [
+				'response' => [
+					'code'    => 404,
+					'message' => 'Not Found',
+				],
+				'body' => '',
+			];
+		}
+		if (
+			strpos( $url, 'http://example.org' ) === 0 ||
+			strpos( $url, 'https://example.org' ) === 0 ||
+			strpos( $url, home_url() ) === 0
+		) {
+			return [
+				'response' => [
+					'code'    => 200,
+					'message' => 'OK',
+				],
+				'body' => '<html><head><title>Test Page</title></head><body>Test content</body></html>',
+			];
+		}
+
+		return $pre;
 	}
 
 	/**

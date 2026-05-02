@@ -49,15 +49,32 @@ class Test_AddHomepage extends RESTfulTestCase {
 	public function set_up() {
 		parent::set_up();
 		self::setAdminCap();
-		$this->admin_id = $this->factory->user->create( [ 'role' => 'administrator' ] );
+		$this->admin_id = $this->factory()->user->create( [ 'role' => 'administrator' ] );
 		wp_set_current_user( $this->admin_id );
+		add_filter( 'pre_http_request', [ $this, 'mock_http_response' ], 10, 3 );
 		self::truncateRocketCDNTable();
 	}
 
 	public function tear_down() {
+		remove_filter( 'pre_http_request', [ $this, 'mock_http_response' ], 10 );
 		wp_set_current_user( 0 );
 		self::truncateRocketCDNTable();
 		parent::tear_down();
+	}
+
+	public function mock_http_response( $pre, $args, $url ) {
+		// Mock successful response for URLs on the test domain (example.org)
+		if ( strpos( $url, 'http://example.org' ) === 0 || strpos( $url, 'https://example.org' ) === 0 ) {
+			return [
+				'response' => [
+					'code'    => 200,
+					'message' => 'OK',
+				],
+				'body'     => '<html><head><title>Test Page Title</title></head><body>Test content</body></html>',
+			];
+		}
+
+		return $pre;
 	}
 
 	/**
@@ -100,7 +117,7 @@ class Test_AddHomepage extends RESTfulTestCase {
 					$this->assertSame( untrailingslashit( home_url() ), $response['pages'][0]['url'] );
 					break;
 				case 'title':
-					$this->assertSame( get_bloginfo( 'name' ), $response['pages'][0]['title'] );
+					$this->assertSame( 'Homepage', $response['pages'][0]['title'] );
 					break;
 				case 'code':
 					$this->assertSame( $value, $response['code'] );

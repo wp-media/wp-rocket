@@ -9,8 +9,10 @@ use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
 use WP_Rocket\Admin\Options;
+use WP_Rocket\Engine\Admin\RocketInsights\PageHandlerTrait;
 use WP_Rocket\Engine\CDN\RocketCDN\Database\Queries\RocketCDN as RocketCDNQuery;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Common\Utils;
 
 /**
  * REST API controller for RocketCDN free-tier page management.
@@ -18,6 +20,8 @@ use WP_Rocket\Admin\Options_Data;
  * @since 3.22
  */
 class Rest extends WP_REST_Controller {
+	use PageHandlerTrait;
+
 	const ROUTE_NAMESPACE = 'wp-rocket/v1';
 	const ROUTE_BASE      = 'rocketcdn';
 	const FREE_PAGE_LIMIT = 3;
@@ -190,10 +194,12 @@ class Rest extends WP_REST_Controller {
 			);
 		}
 
-		if ( ! $this->check_if_url_is_valid( $url ) ) {
+		$payload = $this->get_url_validation_payload( $url );
+
+		if ( $payload['error'] ) {
 			return new WP_Error(
-				'rocketcdn_invalid_url',
-				__( 'The specified URL is not a valid page on this site.', 'rocket' ),
+				'rocketcdn_url_not_found',
+				$payload['message'],
 				[ 'status' => 400 ]
 			);
 		}
@@ -208,9 +214,11 @@ class Rest extends WP_REST_Controller {
 			);
 		}
 
-		$page_title = trailingslashit( $url ) === trailingslashit( home_url() )
-							? get_bloginfo( 'name' )
-							: get_the_title( url_to_postid( $url ) );
+		if ( Utils::is_home( $url ) ) {
+			$page_title = __( 'Homepage', 'rocket' );
+		} else {
+			$page_title = $this->get_page_title( $payload['message'] );
+		}
 
 		$inserted = $this->query->add_item(
 			[
@@ -230,29 +238,6 @@ class Rest extends WP_REST_Controller {
 		}
 
 		return new WP_REST_Response( $this->get_pages_data(), 201 );
-	}
-
-	/**
-	 * Checks whether the given URL exists as a published page.
-	 *
-	 * Accepts the homepage and any URL that maps to a published post or page.
-	 * External URLs and URLs with no matching WordPress content are rejected.
-	 *
-	 * @param string $url URL to check.
-	 * @return bool
-	 */
-	private function check_if_url_is_valid( string $url ): bool {
-		$home = untrailingslashit( home_url() );
-
-		if ( 0 !== strpos( $url, $home ) ) {
-			return false;
-		}
-
-		if ( $url === $home ) {
-			return true;
-		}
-
-		return url_to_postid( $url ) > 0;
 	}
 
 	/**
