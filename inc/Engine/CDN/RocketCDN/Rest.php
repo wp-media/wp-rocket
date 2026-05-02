@@ -8,6 +8,7 @@ use WP_REST_Controller;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
+use WP_Rocket\Admin\Options;
 use WP_Rocket\Engine\CDN\RocketCDN\Database\Queries\RocketCDN as RocketCDNQuery;
 use WP_Rocket\Admin\Options_Data;
 
@@ -44,16 +45,25 @@ class Rest extends WP_REST_Controller {
 	private $options;
 
 	/**
+	 * WP Options API instance
+	 *
+	 * @var Options
+	 */
+	private $options_api;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param APIClient      $api_client APIClient instance.
 	 * @param RocketCDNQuery $query      RocketCDNQuery instance.
 	 * @param Options_Data   $options    WP Rocket options instance.
+	 * @param Options        $options_api WP Options API instance.
 	 */
-	public function __construct( APIClient $api_client, RocketCDNQuery $query, Options_Data $options ) {
-		$this->api_client = $api_client;
-		$this->query      = $query;
-		$this->options    = $options;
+	public function __construct( APIClient $api_client, RocketCDNQuery $query, Options_Data $options, Options $options_api ) {
+		$this->api_client  = $api_client;
+		$this->query       = $query;
+		$this->options     = $options;
+		$this->options_api = $options_api;
 	}
 
 	/**
@@ -160,7 +170,7 @@ class Rest extends WP_REST_Controller {
 	/**
 	 * Adds a page URL to RocketCDN free-tier delivery.
 	 *
-	 * Validates the URL, checks the page limit, calls the SaaS API, and saves to DB.
+	 * Validates the URL, checks the page limit, and saves to DB.
 	 *
 	 * @param WP_REST_Request $request REST request.
 	 * @return WP_REST_Response|WP_Error
@@ -248,7 +258,7 @@ class Rest extends WP_REST_Controller {
 	/**
 	 * Removes a page from RocketCDN free-tier delivery by DB record ID.
 	 *
-	 * Deletes the DB record, calls the SaaS to unregister, and returns the updated list.
+	 * Deletes the DB record and returns the updated list.
 	 *
 	 * @param WP_REST_Request $request REST request.
 	 * @return WP_REST_Response|WP_Error
@@ -311,6 +321,8 @@ class Rest extends WP_REST_Controller {
 		if ( null !== $paused ) {
 			$this->options->set( 'rocketcdn_paused', (int) $paused );
 		}
+
+		$this->options_api->set( 'settings', $this->options->get_options() );
 
 		return new WP_REST_Response(
 			[

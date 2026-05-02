@@ -228,8 +228,8 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 							! empty( $subscription_data['is_active'] );
 
 		$data['rocketcdn'] = [
-			'active_driver' => $this->options->get( 'wpr_rocketcdn_active_driver', 'rocketcdn' ),
-			'paused'        => (int) $this->options->get( 'wpr_rocketcdn_paused', 0 ),
+			'active_driver' => $this->options->get( 'rocketcdn_active_driver', 'rocketcdn' ),
+			'paused'        => (int) $this->options->get( 'rocketcdn_paused', 0 ),
 			'is_unlimited'  => $is_unlimited,
 			'subscription'  => $subscription_data,
 		];

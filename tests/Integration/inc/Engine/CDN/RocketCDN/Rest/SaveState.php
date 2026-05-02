@@ -20,6 +20,9 @@ class Test_SaveState extends RESTfulTestCase {
 
 	private $config;
 
+	protected $options_data;
+	protected $options_api;
+
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
 		self::installRocketCDNTable();
@@ -35,10 +38,19 @@ class Test_SaveState extends RESTfulTestCase {
 		self::setAdminCap();
 		$this->admin_id = $this->factory()->user->create( [ 'role' => 'administrator' ] );
 		wp_set_current_user( $this->admin_id );
+
+		$container = apply_filters( 'rocket_container', null );
+
+		$this->options_data = $container->get( 'options' );
+		$this->options_api  = $container->get( 'options_api' );
 	}
 
 	public function tear_down() {
 		wp_set_current_user( 0 );
+
+		$settings = $this->options_api->get( 'settings', [] );
+		unset( $settings['rocketcdn_active_driver'], $settings['rocketcdn_paused'] );
+		$this->options_api->set( 'settings', $settings );
 		parent::tear_down();
 	}
 
@@ -64,11 +76,12 @@ class Test_SaveState extends RESTfulTestCase {
 	 */
 	public function testShouldDoAsExpected( array $config, array $expected ) {
 		if ( ! empty( $config['preset_options'] ) ) {
-			$options = apply_filters( 'rocket_container', null )->get( 'options' );
+			$settings = $this->options_api->get( 'settings', [] );
 
 			foreach ( $config['preset_options'] as $key => $value ) {
-				$options->set( $key, $value );
+				$settings[ $key ] = $value;
 			}
+			$this->options_api->set( 'settings', $settings );
 		}
 
 		// Set unauthenticated if configured.
@@ -81,10 +94,17 @@ class Test_SaveState extends RESTfulTestCase {
 		foreach ( $expected as $key => $value ) {
 			switch ( $key ) {
 				case 'active_driver_response':
+					$settings = $this->options_api->get( 'settings', [] );
 					$this->assertSame( $value, $response['active_driver'] );
+					$this->assertSame( $value, $settings['rocketcdn_active_driver'] );
 					break;
 				case 'paused_response':
+					$settings = $this->options_api->get( 'settings', [] );
 					$this->assertSame( $value, $response['paused'] );
+					$this->assertSame( $value, (int) ( $settings['rocketcdn_paused'] ?? 0 ) );
+					break;
+				case 'code':
+					$this->assertSame( $value, $response['code'] );
 					break;
 			}
 		}

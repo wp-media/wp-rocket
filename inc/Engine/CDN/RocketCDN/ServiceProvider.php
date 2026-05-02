@@ -78,6 +78,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'rocketcdn_api_client',
 					'rocketcdn_query',
 					'options',
+					'options_api',
 				]
 			);
 		// RocketCDN REST API Subscriber.
