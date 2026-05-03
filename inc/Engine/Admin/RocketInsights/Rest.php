@@ -464,10 +464,11 @@ class Rest extends WP_REST_Controller {
 
 	/**
 	 * Validate url
+	 *
 	 * @param string $url The URL to validate.
 	 *
 	 * @return array
-	*/
+	 */
 	private function validate_url( string $url ) {
 		// Validate that performance monitoring is not disabled.
 		if ( ! $this->context->is_allowed() ) {
@@ -483,7 +484,6 @@ class Rest extends WP_REST_Controller {
 
 			return $payload;
 		}
-
 
 		return $this->get_url_validation_payload( $url );
 	}
