@@ -23,7 +23,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 $data = isset( $data ) && is_array( $data ) ? $data : []; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 ?>
 
-<div class="wpr-rocketcdn-cta wpr-rocketcdn-cta--expanded <?php echo esc_attr( $data['container_class'] ); ?>" id="wpr-rocketcdn-cta">
+<div class="wpr-rocketcdn-cta wpr-rocketcdn-cta--collapsed <?php echo esc_attr( $data['container_class'] ); ?>" id="wpr-rocketcdn-cta">
 	<div class="wpr-rocketcdn-cta-toggle" role="button" tabindex="0" aria-controls="wpr-rocketcdn-cta-expandable" aria-expanded="true">
 		<p class="wpr-rocketcdn-cta-toggle__text">
 			<strong><?php esc_html_e( 'Want full-site Content Delivery coverage? ', 'rocket' ); ?></strong><?php esc_html_e( 'Extend RocketCDN to all your pages with unlimited bandwidth.', 'rocket' ); ?>
