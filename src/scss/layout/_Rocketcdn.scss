@@ -74,7 +74,7 @@
 				height: 9px;
 				border-right: 2px solid #121116;
 				border-bottom: 2px solid #121116;
-				transform: rotate(-135deg);
+				transform: rotate(45deg);
 				transition: transform 0.2s ease;
 			}
 		}
@@ -97,7 +97,7 @@
 		}
 
 		.wpr-rocketcdn-cta-toggle__icon:before {
-			transform: rotate(45deg);
+			transform: rotate(-45deg);
 		}
 
 		.wpr-rocketcdn-cta-close {
