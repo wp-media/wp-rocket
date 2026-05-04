@@ -546,6 +546,17 @@
 }
 
 .your-own-cdn {
+	&.wpr-fieldsContainer-fieldset {
+		display: flex;
+		flex-direction: column;
+		gap: $space * 2;
+	}
+
+	.wpr-field {
+		padding: 0;
+		border: 0;
+	}
+
     .wpr-multiple {
         gap: $space * 2;
         margin-top: 9px;

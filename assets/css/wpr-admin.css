@@ -4772,6 +4772,15 @@ div.wpr-tutorial-item {
   font-weight: 600;
 }
 
+.your-own-cdn.wpr-fieldsContainer-fieldset {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.your-own-cdn .wpr-field {
+  padding: 0;
+  border: 0;
+}
 .your-own-cdn .wpr-multiple {
   gap: 16px;
   margin-top: 9px;
