@@ -426,56 +426,6 @@
 	}
 }
 
-// Fair use policy notice
-.wpr-cdn-fair-use {
-	display: flex;
-	align-items: center;
-	gap: $space * 5;
-	padding: $space * 2;
-	background: #fff7e1;
-	border-left: 4px solid #fed055;
-	margin-bottom: $space * 2;
-
-	&__content {
-		display: flex;
-		flex-direction: column;
-		gap: 6px;
-		flex: 1;
-	}
-
-	&__title {
-		@include font-size(14, 18);
-		font-weight: 600;
-		color: $cBlack;
-		margin: 0;
-	}
-
-	&__description {
-		@include font-size(14, 18);
-		color: $cBlack;
-		margin: 0;
-	}
-
-	&__action {
-		display: flex;
-		flex-direction: column;
-		align-items: flex-end;
-		flex-shrink: 0;
-	}
-
-	&__link {
-		@include font-size(14, 18);
-		font-weight: 600;
-		color: $cBlack;
-		text-decoration: none;
-		white-space: nowrap;
-
-		&:hover {
-			text-decoration: underline;
-		}
-	}
-}
-
 // Upsell banner
 .wpr-cdn-upsell {
 	&__text {
