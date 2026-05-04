@@ -22,80 +22,91 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 $data = isset( $data ) && is_array( $data ) ? $data : []; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 ?>
-<div class="wpr-rocketcdn-cta <?php echo esc_attr( $data['container_class'] ); ?>" id="wpr-rocketcdn-cta">
-	<?php if ( ! empty( $data['promotion_campaign'] ) ) : ?>
-		<div class="wpr-flex wpr-rocketcdn-promo">
-			<h3 class="wpr-rocketcdn-promo-title"><?php echo esc_html( $data['promotion_campaign'] ); ?></h3>
-			<p class="wpr-title2 wpr-rocketcdn-promo-date">
-				<?php
-				printf(
-				// Translators: %s = date formatted using date_i18n() and get_option( 'date_format' ).
-					esc_html__( 'Valid until %s only!', 'rocket' ),
-					esc_html( $data['promotion_end_date'] )
-				);
-				?>
-			</p>
-		</div>
-	<?php endif; ?>
-	<section class="wpr-rocketcdn-cta-content<?php echo esc_attr( $data['nopromo_variant'] ); ?>">
-		<h3 class="wpr-title2">RocketCDN</h3>
-		<p class="wpr-rocketcdn-cta-subtitle"><?php esc_html_e( 'Speed up your website thanks to:', 'rocket' ); ?></p>
-		<div class="wpr-flex">
-			<ul class="wpr-rocketcdn-features">
-				<li class="wpr-rocketcdn-feature wpr-rocketcdn-bandwidth">
+
+<div class="wpr-rocketcdn-cta wpr-rocketcdn-cta--expanded <?php echo esc_attr( $data['container_class'] ); ?>" id="wpr-rocketcdn-cta">
+	<div class="wpr-rocketcdn-cta-toggle" role="button" tabindex="0" aria-controls="wpr-rocketcdn-cta-expandable" aria-expanded="true">
+		<p class="wpr-rocketcdn-cta-toggle__text">
+			<strong><?php esc_html_e( 'Want full-site Content Delivery coverage? ', 'rocket' ); ?></strong><?php esc_html_e( 'Extend RocketCDN to all your pages with unlimited bandwidth.', 'rocket' ); ?>
+		</p>
+		<span class="wpr-rocketcdn-cta-toggle__icon" aria-hidden="true"></span>
+	</div>
+
+	<div class="wpr-rocketcdn-cta-separator" aria-hidden="true"></div>
+
+	<div class="wpr-rocketcdn-cta-expandable" id="wpr-rocketcdn-cta-expandable">
+		<?php if ( ! empty( $data['promotion_campaign'] ) ) : ?>
+			<div class="wpr-flex wpr-rocketcdn-promo">
+				<h3 class="wpr-rocketcdn-promo-title"><?php echo esc_html( $data['promotion_campaign'] ); ?></h3>
+				<p class="wpr-title2 wpr-rocketcdn-promo-date">
 					<?php
-					// translators: %1$s = opening strong tag, %2$s = closing strong tag.
-					printf( esc_html__( 'High performance Content Delivery Network (CDN) with %1$sunlimited bandwidth%2$s', 'rocket' ), '<strong>', '</strong>' );
+					printf(
+					// Translators: %s = date formatted using date_i18n() and get_option( 'date_format' ).
+						esc_html__( 'Valid until %s only!', 'rocket' ),
+						esc_html( $data['promotion_end_date'] )
+					);
 					?>
-				</li>
-				<li class="wpr-rocketcdn-feature wpr-rocketcdn-configuration">
-					<?php
-					// translators: %1$s = opening strong tag, %2$s = closing strong tag.
-					printf( esc_html__( 'Easy configuration: the %1$sbest CDN settings%2$s are automatically applied', 'rocket' ), '<strong>', '</strong>' );
-					?>
-				</li>
-				<li class="wpr-rocketcdn-feature wpr-rocketcdn-automatic">
-					<?php
-					// translators: %1$s = opening strong tag, %2$s = closing strong tag.
-					printf( esc_html__( 'WP Rocket integration: the CDN option is %1$sautomatically configured%2$s in our plugin', 'rocket' ), '<strong>', '</strong>' );
-					?>
-				</li>
-				<li class="wpr-rocketcdn-cta-footer">
-					<a href="https://wp-rocket.me/rocketcdn/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Learn more about RocketCDN', 'rocket' ); ?></a>
-				</li>
-				<?php if ( ! empty( $data['promotion_campaign'] ) ) : ?>
-					<li class="wpr-rocketcdn-cta-promo-footer">
+				</p>
+			</div>
+		<?php endif; ?>
+		<section class="wpr-rocketcdn-cta-content<?php echo esc_attr( $data['nopromo_variant'] ); ?>">
+			<h3 class="wpr-title2">RocketCDN</h3>
+			<p class="wpr-rocketcdn-cta-subtitle"><?php esc_html_e( 'Speed up your website thanks to:', 'rocket' ); ?></p>
+			<div class="wpr-flex">
+				<ul class="wpr-rocketcdn-features">
+					<li class="wpr-rocketcdn-feature wpr-rocketcdn-bandwidth">
 						<?php
-						printf(
-						// translators: %1$s = discounted price, %2$s = regular price.
-							esc_html__( '*$%1$s/month for 12 months then $%2$s/month. You can cancel your subscription at any time.', 'rocket' ),
-							esc_html( str_replace( '*', '', $data['current_price'] ) ),
-							esc_html( $data['regular_price'] )
-						);
+						// translators: %1$s = opening strong tag, %2$s = closing strong tag.
+						printf( esc_html__( 'High performance Content Delivery Network (CDN) with %1$sunlimited bandwidth%2$s', 'rocket' ), '<strong>', '</strong>' );
 						?>
 					</li>
-				<?php endif; ?>
-			</ul>
-			<div class="wpr-rocketcdn-pricing">
-				<?php if ( ! empty( $data['error'] ) ) : ?>
-					<p><?php echo $data['message']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
-				<?php else : ?>
-					<?php if ( ! empty( $data['regular_price'] ) ) : ?>
-						<h4 class="wpr-title2 wpr-rocketcdn-pricing-regular"><del>$<?php echo esc_html( $data['regular_price'] ); ?></del></h4>
+					<li class="wpr-rocketcdn-feature wpr-rocketcdn-configuration">
+						<?php
+						// translators: %1$s = opening strong tag, %2$s = closing strong tag.
+						printf( esc_html__( 'Easy configuration: the %1$sbest CDN settings%2$s are automatically applied', 'rocket' ), '<strong>', '</strong>' );
+						?>
+					</li>
+					<li class="wpr-rocketcdn-feature wpr-rocketcdn-automatic">
+						<?php
+						// translators: %1$s = opening strong tag, %2$s = closing strong tag.
+						printf( esc_html__( 'WP Rocket integration: the CDN option is %1$sautomatically configured%2$s in our plugin', 'rocket' ), '<strong>', '</strong>' );
+						?>
+					</li>
+					<li class="wpr-rocketcdn-cta-footer">
+						<a href="https://wp-rocket.me/rocketcdn/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Learn more about RocketCDN', 'rocket' ); ?></a>
+					</li>
+					<?php if ( ! empty( $data['promotion_campaign'] ) ) : ?>
+						<li class="wpr-rocketcdn-cta-promo-footer">
+							<?php
+							printf(
+							// translators: %1$s = discounted price, %2$s = regular price.
+								esc_html__( '*$%1$s/month for 12 months then $%2$s/month. You can cancel your subscription at any time.', 'rocket' ),
+								esc_html( str_replace( '*', '', $data['current_price'] ) ),
+								esc_html( $data['regular_price'] )
+							);
+							?>
+						</li>
 					<?php endif; ?>
-					<h4 class="wpr-rocketcdn-pricing-current">
-						<span class="wpr-rocketcdn-cta-currency-minor">$</span>
-						<span class="wpr-rocketcdn-cta-currency-major"><?php echo esc_html( $data['current_price_array']['major'] ); ?></span>
-						<span class="wpr-rocketcdn-cta-currency-minor">.<?php echo esc_html( $data['current_price_array']['minor'] ); ?>
-						</span>
-					</h4>
-					<p class="wpr-rocketcdn-cta-billing-detail"><?php esc_html_e( 'Billed monthly', 'rocket' ); ?></p>
-					<button class="wpr-button wpr-rocketcdn-pricing--cta wpr-rocketcdn-open"<?php echo empty( $data['button_url'] ) ? ' data-micromodal-trigger="wpr-rocketcdn-modal"' : ''; ?>>
-						<?php esc_html_e( 'Get Started', 'rocket' ); ?>
-					</button>
-				<?php endif; ?>
+				</ul>
+				<div class="wpr-rocketcdn-pricing">
+					<?php if ( ! empty( $data['error'] ) ) : ?>
+						<p><?php echo $data['message']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
+					<?php else : ?>
+						<?php if ( ! empty( $data['regular_price'] ) ) : ?>
+							<h4 class="wpr-title2 wpr-rocketcdn-pricing-regular"><del>$<?php echo esc_html( $data['regular_price'] ); ?></del></h4>
+						<?php endif; ?>
+						<h4 class="wpr-rocketcdn-pricing-current">
+							<span class="wpr-rocketcdn-cta-currency-minor">$</span>
+							<span class="wpr-rocketcdn-cta-currency-major"><?php echo esc_html( $data['current_price_array']['major'] ); ?></span>
+							<span class="wpr-rocketcdn-cta-currency-minor">.<?php echo esc_html( $data['current_price_array']['minor'] ); ?>
+							</span>
+						</h4>
+						<p class="wpr-rocketcdn-cta-billing-detail"><?php esc_html_e( 'Billed monthly', 'rocket' ); ?></p>
+						<button class="wpr-button wpr-rocketcdn-pricing--cta wpr-rocketcdn-open"<?php echo empty( $data['button_url'] ) ? ' data-micromodal-trigger="wpr-rocketcdn-modal"' : ''; ?>>
+							<?php esc_html_e( 'Get Started', 'rocket' ); ?>
+						</button>
+					<?php endif; ?>
+				</div>
 			</div>
-		</div>
-	</section>
-	<button class="wpr-rocketcdn-cta-close<?php echo esc_attr( $data['nopromo_variant'] ); ?>" id="wpr-rocketcdn-close-cta"><span class="screen-reader-text"><?php esc_html_e( 'Reduce this banner', 'rocket' ); ?></span></button>
+		</section>
+	</div>
 </div>
