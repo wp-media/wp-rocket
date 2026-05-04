@@ -64,15 +64,15 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'admin_notices'                    => [
+			'admin_notices'                           => [
 				[ 'promote_rocketcdn_notice' ],
 				[ 'purge_cache_notice' ],
 				[ 'change_cname_notice' ],
 				[ 'activation_failed_notice' ],
 			],
-			'rocket_cdn_free_before_status_indicator'       => 'display_rocketcdn_cta',
-			'wp_ajax_rocketcdn_dismiss_notice' => 'dismiss_notice',
-			'admin_footer'                     => 'add_dismiss_script',
+			'rocket_cdn_free_before_status_indicator' => 'display_rocketcdn_cta',
+			'wp_ajax_rocketcdn_dismiss_notice'        => 'dismiss_notice',
+			'admin_footer'                            => 'add_dismiss_script',
 		];
 	}
 
