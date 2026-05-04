@@ -1518,7 +1518,7 @@ class Page extends Abstract_Render {
 		$cdn_beacon = $this->beacon->get_suggest( 'cdn' );
 
 		$cdn_sections = [
-			'cdn_section'    => [
+			'cdn_section' => [
 				'title'            => __( 'Your CDN', 'rocket' ),
 				'type'             => 'your_own_cdn',
 				'help'             => [
@@ -1531,12 +1531,8 @@ class Page extends Abstract_Render {
 					'is_active'          => true,
 					'status_text'        => __( 'Your CDN is active on your website', 'rocket' ),
 					'paused_status_text' => __( 'RocketCDN is paused', 'rocket' ),
+					'hide_pause_btn'     => true,
 				],
-			],
-			'cnames_section' => [
-				'type'  => 'nocontainer',
-				'class' => [ 'your-own-cdn' ],
-				'page'  => 'page_cdn',
 			],
 		];
 
@@ -1606,7 +1602,7 @@ class Page extends Abstract_Render {
 						'label'           => __( 'CDN CNAME(s)', 'rocket' ),
 						'description'     => __( 'Specify the CNAME(s) below', 'rocket' ),
 						'default'         => [],
-						'section'         => 'cnames_section',
+						'section'         => 'cdn_section',
 						'page'            => 'page_cdn',
 						'container_class' => [ 'your-own-cdn' ],
 					],
