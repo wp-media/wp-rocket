@@ -16,6 +16,6 @@ defined( 'ABSPATH' ) || exit;
 	</button>
 	<span class="wpr-cdn-tabs__divider"></span>
 	<button type="button" class="wpr-cdn-tabs__tab" data-cdn-driver="your-own-cdn" data-title="<?php esc_attr_e( 'Your CDN', 'rocket' ); ?>">
-		<?php esc_html_e( 'Your own CDN', 'rocket' ); ?>
+		<?php esc_html_e( 'Other CDN', 'rocket' ); ?>
 	</button>
 </div>
