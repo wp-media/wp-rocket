@@ -128,6 +128,7 @@ class Controller extends Abstract_Render {
 				'paused_details'          => __( 'RocketCDN is currently paused due to our fair usage policy. Your recent traffic exceeded the expected usage for the free plan. Upgrade to RocketCDN Pro to extend your bandwidth usage.', 'rocket' ),
 				'pages_count'             => $pages_count,
 				'is_subscription_loading' => $is_subscription_loading,
+				'hide_pause_btn'          => $is_subscription_loading,
 			],
 		];
 
@@ -328,10 +329,6 @@ class Controller extends Abstract_Render {
 	 * @return void
 	 */
 	public function render_cdn_driver_tabs(): void {
-		if ( (bool) rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) ) {
-			return;
-		}
-
 		echo $this->generate( 'partials/cdn/cdn-driver-tabs' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 
