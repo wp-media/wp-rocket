@@ -30,10 +30,12 @@ defined( 'ABSPATH' ) || exit;
 	<?php endif; ?>
 </div>
 
-<div class="wpr-fieldsContainer <?php echo esc_attr( $data['class'] ); ?>">
+<div class="wpr-fieldsContainer-fieldset <?php echo esc_attr( $data['class'] ); ?>">
 	<?php
 	$this->render_parts_with_data( 'cdn/cdn-status-indicator', $data['status_indicator'] );
 	?>
+
+	<div class="wpr-cdn-built-in__separator"></div>
 
 	<?php if ( ! empty( $data['description'] ) ) : ?>
 	<div class="wpr-fieldsContainer-description">
