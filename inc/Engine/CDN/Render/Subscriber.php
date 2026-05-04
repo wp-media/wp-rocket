@@ -46,7 +46,6 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_cdn_free_page_rows'               => 'render_built_in_page_rows',
 			'rocket_cdn_driver_tabs'                  => 'render_cdn_driver_tabs',
 			'rocket_cdn_settings_fields'              => 'add_exclusions_fields',
-			'rocket_cdn_free_before_status_indicator' => 'maybe_display_fair_use_notice',
 		];
 	}
 
@@ -146,16 +145,5 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function add_exclusions_fields( array $fields ): array {
 		return $this->controller->add_exclusions_fields( $fields );
-	}
-
-	/**
-	 * Maybe displays the fair use notice for RocketCDN Free.
-	 *
-	 * @since 3.22
-	 *
-	 * @return void
-	 */
-	public function maybe_display_fair_use_notice(): void {
-		$this->controller->maybe_display_fair_use_notice();
 	}
 }
