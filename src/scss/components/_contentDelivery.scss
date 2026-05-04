@@ -88,6 +88,64 @@
 		&:hover:not(&--active) {
 			background: $cGreyLight2;
 		}
+
+		&:disabled {
+			opacity: 0.5;
+			cursor: not-allowed;
+
+			&:hover {
+				background: none;
+				color: $cGreyLighter3;
+				cursor: not-allowed;
+			}
+		}
+	}
+
+	&__tab-wrapper {
+		position: relative;
+		display: flex;
+		align-items: center;
+	}
+
+	&__tooltip {
+		position: absolute;
+		top: calc(100% + -32px);
+    	right: 217px;
+		padding: 8px 12px;
+		background: #0c0f1f;
+		border-radius: 4px;
+		color: $cWhite;
+		@include font-size(14, 18);
+		font-weight: 400;
+		white-space: nowrap;
+		opacity: 0;
+		visibility: hidden;
+		pointer-events: none;
+		transition: opacity 0.2s ease;
+		z-index: 3;
+
+		&::after {
+			content: "";
+			position: absolute;
+			top: 50%;
+			right: -6px;
+			transform: translateY( -50% );
+			width: 0;
+			height: 0;
+			border-top: 6px solid transparent;
+			border-bottom: 6px solid transparent;
+			border-left: 6px solid #0c0f1f;
+		}
+	}
+
+	&__tab-wrapper:hover &__tooltip,
+	&__tab-wrapper:focus-within &__tooltip {
+		opacity: 1;
+		visibility: visible;
+	}
+
+	&.wpr-isHidden {
+		display: none;
 	}
 
 	&__divider {
@@ -543,6 +601,14 @@
 .wpr-cdn-exclusions .wpr-field-description-label {
     color: #0C0F1F;
     font-weight: 600;
+}
+
+.rocketcdn,
+.your-own-cdn,
+.your-own-cdn.wpr-fieldsContainer-fieldset {
+	&.wpr-isHidden {
+		display: none;
+	}
 }
 
 .your-own-cdn {
