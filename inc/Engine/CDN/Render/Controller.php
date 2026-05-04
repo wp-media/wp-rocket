@@ -44,6 +44,10 @@ class Controller extends Abstract_Render {
 	public function add_rocketcdn_paid_section( array $sections ): array {
 		// RFT Todo: Add a check for the RocketCDN subscription status and return early if false.
 
+		if ( 'byocdn' === $this->get_filtered_cdn_type() ) {
+			return $sections;
+		}
+
 		$cdn_beacon = $this->beacon->get_suggest( 'cdn' );
 
 		$sections['rocketcdn_paid_section'] = [
@@ -79,6 +83,10 @@ class Controller extends Abstract_Render {
 	 */
 	public function add_rocketcdn_free_section( array $sections ): array {
 		// RFT Todo: Add a check for the RocketCDN subscription status and return early if true.
+
+		if ( 'byocdn' === $this->get_filtered_cdn_type() ) {
+			return $sections;
+		}
 
 		$details = sprintf(
 				// translators: %1$s = opening <strong> tag, %2$s = closing </strong> tag.
@@ -212,22 +220,24 @@ class Controller extends Abstract_Render {
 	 * @return array Modified fields array with CDN exclusion fields appended.
 	 */
 	public function add_exclusions_fields( array $fields ): array {
-		// RFT Todo: Add a check for the RocketCDN subscription status.
-		$fields['cdn_reject_pages'] = [
-			'type'              => 'textarea_with_container',
-			'label'             => __( 'Exclude Pages from CDN', 'rocket' ),
-			'description'       => __( 'Specify URL(s) of pages that should not get served via CDN (one per line).', 'rocket' ),
-			'helper'            => __( 'Use (.*) wildcards to exclude all files of a given file type located at a specific path.', 'rocket' ),
-			'placeholder'       => '/path/to/page',
-			'section'           => 'exclude_cdn_section',
-			'page'              => 'page_cdn',
-			'default'           => [],
-			'class'             => [
-				'wpr-cdn-exclusions',
-				'rocketcdn',
-			],
-			'sanitize_callback' => 'sanitize_textarea',
-		];
+		// RFT Todo: Add another check to the condition for the RocketCDN subscription status.
+		if ( 'rocketcdn' === $this->get_filtered_cdn_type() ) {
+			$fields['cdn_reject_pages'] = [
+				'type'              => 'textarea_with_container',
+				'label'             => __( 'Exclude Pages from CDN', 'rocket' ),
+				'description'       => __( 'Specify URL(s) of pages that should not get served via CDN (one per line).', 'rocket' ),
+				'helper'            => __( 'Use (.*) wildcards to exclude all files of a given file type located at a specific path.', 'rocket' ),
+				'placeholder'       => '/path/to/page',
+				'section'           => 'exclude_cdn_section',
+				'page'              => 'page_cdn',
+				'default'           => [],
+				'class'             => [
+					'wpr-cdn-exclusions',
+					'rocketcdn',
+				],
+				'sanitize_callback' => 'sanitize_textarea',
+			];
+		}
 
 		$fields['cdn_reject_files'] = [
 			'type'              => 'textarea_with_container',
@@ -329,7 +339,20 @@ class Controller extends Abstract_Render {
 	 * @return void
 	 */
 	public function render_cdn_driver_tabs(): void {
-		echo $this->generate( 'partials/cdn/cdn-driver-tabs' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+
+		$data = [
+			// RFT Todo: Replace with dynamic boolean value which results from a check if RocketCDN Paid is active.
+			'disable_other_cdn' => false,
+
+			/*
+			RFT Todo: Get current CDN driver and pass that for persistent state on page reload.
+			Use the WP_Rocket\Admin\Options_Data class to retrieve the cdn_type. Don't use the Context class since that will resolve to the specific CDN driver for RocketCDN.
+			*/
+			'cdn_type'          => 'rocketcdn',
+			'display_tabs'      => ! $this->is_cdn_type_filtered(),
+		];
+
+		echo $this->generate( 'partials/cdn/cdn-driver-tabs', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 
 	/**
@@ -396,5 +419,47 @@ class Controller extends Abstract_Render {
 	private function is_subscription_loading(): bool {
 		// RFT Todo: Implement a check for whether the subscription is currently processing.
 		return false;
+	}
+
+	/**
+	 * Retrieves the filtered CDN type.
+	 *
+	 * Gets the CDN type from the pre-filter hook with type validation.
+	 * Only allows CDN types that are in the allowed list ('rocketcdn', 'byocdn').
+	 *
+	 * @since 3.22
+	 *
+	 * @return string|null The filtered CDN type if valid and set, null otherwise.
+	 */
+	private function get_filtered_cdn_type() {
+		$allowed_cdn_types = [ 'rocketcdn', 'byocdn' ];
+
+		/**
+		 * Pre-filter cdn_type option.
+		 *
+		 * @since 3.22
+		 *
+		 * @param mixed $cdn_type Filtered CDN type.
+		*/
+		$cdn_type = wpm_apply_filters_typed( 'string|null', 'pre_get_rocket_option_cdn_type', null, '' );
+
+		// RFT Todo: Perform additional checks if a cdn driver is alreaady active and running.
+
+		if ( null !== $cdn_type && ! in_array( $cdn_type, $allowed_cdn_types, true ) ) {
+			return null;
+		}
+
+		return $cdn_type;
+	}
+
+	/**
+	 * Checks if the CDN type is currently filtered.
+	 *
+	 * @since 3.22
+	 *
+	 * @return bool True if the CDN type is filtered, false otherwise.
+	 */
+	private function is_cdn_type_filtered(): bool {
+		return null !== $this->get_filtered_cdn_type();
 	}
 }
