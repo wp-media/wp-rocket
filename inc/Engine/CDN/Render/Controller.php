@@ -356,24 +356,6 @@ class Controller extends Abstract_Render {
 	}
 
 	/**
-	 * Renders the fair use policy notice when RocketCDN Free is paused due to fair usage limits.
-	 *
-	 * @since 3.22
-	 *
-	 * @return void
-	 */
-	public function maybe_display_fair_use_notice(): void {
-		$data = [
-			'title'       => __( 'Fair Usage Policy', 'rocket' ),
-			'description' => __( 'Your RocketCDN Free plan has been paused due to exceeding the fair usage limits. We encourage you to upgrade to RocketCDN Pro for extended bandwidth and additional features.', 'rocket' ),
-			'link_url'    => 'https://wp-rocket.me/rocketcdn/',
-			'link_text'   => __( 'Upgrade', 'rocket' ),
-		];
-
-		echo $this->generate( 'partials/cdn/rocket-cdn/fair-use-notice', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
-	}
-
-	/**
 	 * Retrieves the list of pages added to RocketCDN for the free plan.
 	 *
 	 * @since 3.22
