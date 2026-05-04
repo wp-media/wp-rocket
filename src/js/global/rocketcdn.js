@@ -65,6 +65,33 @@
 			smallCTA = document.querySelector( '#wpr-rocketcdn-cta-small' ),
 			bigCTA = document.querySelector( '#wpr-rocketcdn-cta' );
 
+		const ctaToggle = document.querySelector( '.wpr-rocketcdn-cta-toggle' );
+
+		/**
+		 * Toggles RocketCDN CTA internal collapsed/expanded state.
+		 *
+		 * @return {void}
+		 */
+		function toggleBigCTAState() {
+			if ( ! bigCTA || ! ctaToggle ) {
+				return;
+			}
+
+			const isCollapsed = bigCTA.classList.toggle( 'wpr-rocketcdn-cta--collapsed' );
+			bigCTA.classList.toggle( 'wpr-rocketcdn-cta--expanded', ! isCollapsed );
+			ctaToggle.setAttribute( 'aria-expanded', isCollapsed ? 'false' : 'true' );
+		}
+
+		if ( ctaToggle && bigCTA ) {
+			ctaToggle.addEventListener( 'click', toggleBigCTAState );
+			ctaToggle.addEventListener( 'keydown', ( event ) => {
+				if ( 'Enter' === event.key || ' ' === event.key ) {
+					event.preventDefault();
+					toggleBigCTAState();
+				}
+			} );
+		}
+
 		// Track banner view on page load if banner is visible and user is on CDN tab.
 		maybeTrackBannerView();
 
@@ -85,42 +112,6 @@
 				current: document.querySelectorAll('.wpr-rocketcdn-pricing--annual'),
 				period: document.querySelectorAll('.wpr-rocketcdn-pricing--billing-period--yearly')
 			}
-		}
-
-		if ( null !== openCTA && null !== smallCTA && null !== bigCTA ) {
-			openCTA.addEventListener( 'click', ( e ) => {
-				e.preventDefault();
-
-				smallCTA.classList.add( 'wpr-isHidden' );
-				bigCTA.classList.remove( 'wpr-isHidden' );
-
-				trackRocketCDNUpsellBannerViewed( BANNER_STATE.OPENED );
-
-				sendHTTPRequest( getPostData( 'big' ) );
-			} );
-		}
-
-		if ( null !== closeCTA && null !== smallCTA && null !== bigCTA ) {
-			closeCTA.addEventListener( 'click', ( e ) => {
-				e.preventDefault();
-
-				smallCTA.classList.remove( 'wpr-isHidden' );
-				bigCTA.classList.add( 'wpr-isHidden' );
-
-				trackRocketCDNUpsellBannerViewed( BANNER_STATE.COLLAPSED );
-
-				sendHTTPRequest( getPostData( 'small' ) );
-			} );
-		}
-
-		function getPostData( status ) {
-			let postData = '';
-
-			postData += 'action=toggle_rocketcdn_cta';
-			postData += '&status=' + status;
-			postData += '&nonce=' + rocket_ajax_data.nonce;
-
-			return postData;
 		}
 
 		// Track RocketCDN activation failed CTA click
