@@ -33,6 +33,77 @@
 .wpr-rocketcdn-cta {
 	margin:10px 0;
 	position: relative;
+	background: $cGreyLight3;
+	border: 1px solid $cGreyLighter1;
+	border-radius: 4px;
+	padding: $space * 2;
+	display: flex;
+	flex-direction: column;
+	gap: $space * 2;
+
+	&-toggle {
+		display: flex;
+		align-items: center;
+		gap: $space * 2;
+		width: 100%;
+		cursor: pointer;
+
+		&__text {
+			margin: 0;
+			flex: 1;
+			@include font-size(14, 24);
+			color: #0c0f1f;
+
+			strong {
+				font-weight: 700;
+			}
+		}
+
+		&__icon {
+			position: relative;
+			width: 24px;
+			height: 24px;
+			flex-shrink: 0;
+
+			&:before {
+				content: '';
+				position: absolute;
+				top: 6px;
+				left: 7px;
+				width: 9px;
+				height: 9px;
+				border-right: 2px solid #121116;
+				border-bottom: 2px solid #121116;
+				transform: rotate(-135deg);
+				transition: transform 0.2s ease;
+			}
+		}
+	}
+
+	&-separator {
+		width: 100%;
+		height: 1px;
+		background: $cGreyLighter1;
+	}
+
+	&-expandable {
+		display: block;
+	}
+
+	&--collapsed {
+		.wpr-rocketcdn-cta-separator,
+		.wpr-rocketcdn-cta-expandable {
+			display: none;
+		}
+
+		.wpr-rocketcdn-cta-toggle__icon:before {
+			transform: rotate(45deg);
+		}
+
+		.wpr-rocketcdn-cta-close {
+			display: none;
+		}
+	}
 
 	&.wpr-isHidden{
 		display: none;
@@ -95,18 +166,13 @@
 
 	&-content {
 		background: $cGreyLight3;
-		border-top: 1px solid $cGreyLight1;
-		border-left: 1px solid $cGreyLight1;
-		border-right: 1px solid $cGreyLight1;
+
 		padding: $space * 2;
 
 		&--no-promo {
 			border-top-left-radius: 2px;
 			border-top-right-radius: 2px;
 			background: $cGreyLight3;
-			border-top: 1px solid $cGreyLight1;
-			border-left: 1px solid $cGreyLight1;
-			border-right: 1px solid $cGreyLight1;
 			padding: $space * 2;
 		}
 	}
