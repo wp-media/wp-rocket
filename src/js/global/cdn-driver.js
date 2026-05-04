@@ -14,9 +14,21 @@
 	 */
 	function initCdnDriverTabs() {
 		const tabs = document.querySelectorAll( '.wpr-cdn-tabs__tab' );
+		const driverSections = document.querySelectorAll( '.rocketcdn, .your-own-cdn' );
 
 		if ( ! tabs.length ) {
 			return;
+		}
+
+		/**
+		 * Toggles visibility of CDN driver sections using the hidden utility class.
+		 *
+		 * @param {string} activeDriver Active CDN driver slug.
+		 */
+		function toggleDriverSections( activeDriver ) {
+			driverSections.forEach( ( section ) => {
+				section.classList.toggle( 'wpr-isHidden', ! section.classList.contains( activeDriver ) );
+			} );
 		}
 
 		/**
@@ -52,27 +64,22 @@
 				tab.classList.add( 'wpr-cdn-tabs__tab--active' );
 
 				// Toggle sections: show matching driver, hide others.
-				document.querySelectorAll( '.rocketcdn, .your-own-cdn' ).forEach( ( section ) => {
-					if ( section.classList.contains( driver ) ) {
-						section.style.display = '';
-					} else {
-						section.style.display = 'none';
-					}
-				} );
+				toggleDriverSections( driver );
 
 				// Update dynamic driver label spans.
 				updateDriverLabel( tab );
 			} );
 		} );
 
-		// Set initial state: show rocketcdn, hide your-own-cdn.
-		document.querySelectorAll( '.your-own-cdn' ).forEach( ( section ) => {
-			section.style.display = 'none';
-		} );
+		// Set initial state from active tab, fallback to rocketcdn.
+		const activeTab = document.querySelector( '.wpr-cdn-tabs__tab--active' );
+		const activeDriver = activeTab ? activeTab.getAttribute( 'data-cdn-driver' ) : 'rocketcdn';
+
+		if ( activeDriver ) {
+			toggleDriverSections( activeDriver );
+		}
 
 		// Set initial label from the active tab.
-		const activeTab = document.querySelector( '.wpr-cdn-tabs__tab--active' );
-
 		if ( activeTab ) {
 			updateDriverLabel( activeTab );
 		}
