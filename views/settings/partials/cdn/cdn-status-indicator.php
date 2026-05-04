@@ -15,6 +15,7 @@
  *     @type string $class              CSS class for the status indicator.
  *     @type bool   $disable_pause_btn  Whether the pause button should be disabled.
  *     @type bool   $is_subscription_loading  Whether the subscription is currently loading.
+ *     @type bool   $hide_pause_btn  Whether the pause button should be hidden.
  * }
  */
 
@@ -26,6 +27,7 @@ $rocket_is_pause_btn_disabled   = isset( $data['disable_pause_btn'] ) ? $data['d
 $rocket_paused_status_text      = isset( $data['paused_status_text'] ) ? $data['paused_status_text'] : '';
 $rocket_paused_details          = isset( $data['paused_details'] ) ? $data['paused_details'] : '';
 $rocket_is_subscription_loading = isset( $data['is_subscription_loading'] ) ? $data['is_subscription_loading'] : false;
+$rocket_hide_pause_btn          = isset( $data['hide_pause_btn'] ) ? $data['hide_pause_btn'] : false;
 
 if ( ! $data['is_active'] ) {
 	return;
@@ -54,7 +56,7 @@ if ( ! $data['is_active'] ) {
 			</p>
 		<?php endif; ?>
 	</div>
-	<?php if ( ! $rocket_is_subscription_loading ) : ?>
+	<?php if ( ! $rocket_hide_pause_btn ) : ?>
 	<button type="button" class="wpr-cdn-pause" aria-pressed="false" <?php echo $rocket_is_pause_btn_disabled ? 'disabled' : ''; ?>>
 		<span class="wpr-cdn-pause__icon"></span>
 		<span class="wpr-cdn-pause__text wpr-cdn-pause__text--pause"><?php esc_html_e( 'PAUSE CDN', 'rocket' ); ?></span>
