@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\CDN\Drivers;
 
+use WP_Rocket\Dependencies\Psr\Container\ContainerInterface;
 use WP_Rocket\Engine\CDN\Context;
 
 /**
@@ -13,7 +14,7 @@ class DriverFactory {
 	/**
 	 * Container instance for dependency injection
 	 *
-	 * @var object
+	 * @var ContainerInterface
 	 */
 	private $container;
 
@@ -38,7 +39,7 @@ class DriverFactory {
 	/**
 	 * Create appropriate driver based on current context
 	 *
-	 * @return DriverInterface|null Null if BYOCDN (handled differently)
+	 * @return DriverInterface Driver container ID.
 	 */
 	public function create(): ?DriverInterface {
 		$active_driver = $this->context->get_driver();

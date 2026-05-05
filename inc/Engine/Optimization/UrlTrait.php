@@ -141,7 +141,7 @@ trait UrlTrait {
 	 *
 	 * @return string The current URL.
 	 */
-	protected function get_current_url() {
+	protected function get_current_url(): string {
 		global $wp;
 		$current_url = home_url( add_query_arg( [], $wp->request ?? '' ) );
 		/**
