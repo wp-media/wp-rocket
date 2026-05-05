@@ -26,7 +26,7 @@ class Test_DisplayRocketcdnCta extends TestCase {
 
 	private function getActualHtml() {
 		ob_start();
-		do_action( 'rocket_before_cdn_sections' );
+		do_action( 'rocket_cdn_free_before_status_indicator' );
 		$actual = ob_get_clean();
 
 		return empty( $actual ) ? '' : $this->format_the_html( $actual );
@@ -73,6 +73,16 @@ class Test_DisplayRocketcdnCta extends TestCase {
 			$user_id = $this->factory->user->create( [ 'role' => 'administrator' ] );
 			wp_set_current_user( $user_id );
 			add_user_meta( $user_id, 'rocket_rocketcdn_cta_hidden', true );
+		}
+
+		if ( is_array( $expected['integration'] ) ) {
+			$actual = $this->getActualHtml();
+
+			foreach ( $expected['integration'] as $expected_integration_snippet ) {
+				$this->assertStringContainsString( $this->format_the_html( $expected_integration_snippet ), $actual );
+			}
+
+			return;
 		}
 
 		$this->assertStringContainsString( $this->format_the_html( $expected['integration'] ), $this->getActualHtml() );

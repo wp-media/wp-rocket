@@ -7,7 +7,7 @@ return [
 		'expected' => [
 			'unit'        => null,
 			'integration' => [
-				'assertNotContains' => file_get_contents( __DIR__ . '/HTML/cta_no_promo.html' ),
+				'assertNotContains' => 'id="wpr-rocketcdn-cta"',
 			],
 		],
 
@@ -22,7 +22,7 @@ return [
 		'expected' => [
 			'unit'        => null,
 			'integration' => [
-				'assertNotContains' => file_get_contents( __DIR__ . '/HTML/cta_no_promo.html' ),
+				'assertNotContains' => 'id="wpr-rocketcdn-cta"',
 			],
 		],
 
@@ -48,8 +48,7 @@ return [
 			],
 			'integration' => [
 				'not_expected' => [
-					'<div class="wpr-rocketcdn-cta-small',
-					'<div class="wpr-rocketcdn-cta " id="wpr-rocketcdn-cta">',
+					'id="wpr-rocketcdn-cta"',
 				],
 			],
 		],
@@ -90,7 +89,11 @@ return [
 					'current_price_annual'      => 79.99,
 				],
 			],
-			'integration' => file_get_contents( __DIR__ . '/HTML/cta_no_promo.html' ),
+			'integration' => [
+				'<div class="wpr-rocketcdn-cta wpr-rocketcdn-cta--collapsed " id="wpr-rocketcdn-cta">',
+				'<div class="wpr-rocketcdn-cta-toggle" role="button" tabindex="0" aria-controls="wpr-rocketcdn-cta-expandable" aria-expanded="true">',
+				'Speed up your website thanks to:',
+			],
 		],
 
 		'config' => [
@@ -132,7 +135,11 @@ return [
 					'current_price_annual'      => 6.67,
 				],
 			],
-			'integration' => file_get_contents( __DIR__ . '/HTML/cta_no_promo.html' ),
+			'integration' => [
+				'<div class="wpr-rocketcdn-cta wpr-rocketcdn-cta--collapsed " id="wpr-rocketcdn-cta">',
+				'<div class="wpr-rocketcdn-cta-toggle" role="button" tabindex="0" aria-controls="wpr-rocketcdn-cta-expandable" aria-expanded="true">',
+				'Speed up your website thanks to:',
+			],
 		],
 
 		'config' => [
@@ -174,7 +181,11 @@ return [
 					'current_price_annual'      => 6.67,
 				],
 			],
-			'integration' => file_get_contents( __DIR__ . '/HTML/cta_no_promo.html' ),
+			'integration' => [
+				'<div class="wpr-rocketcdn-cta wpr-rocketcdn-cta--collapsed " id="wpr-rocketcdn-cta">',
+				'<div class="wpr-rocketcdn-cta-toggle" role="button" tabindex="0" aria-controls="wpr-rocketcdn-cta-expandable" aria-expanded="true">',
+				'Speed up your website thanks to:',
+			],
 		],
 
 		'config' => [
@@ -216,7 +227,10 @@ return [
 					'current_price_annual'      => 6.67,
 				],
 			],
-			'integration' => file_get_contents( __DIR__ . '/HTML/cta_no_promo_big_hidden.html' ),
+			'integration' => [
+				'<div class="wpr-rocketcdn-cta wpr-rocketcdn-cta--collapsed wpr-isHidden" id="wpr-rocketcdn-cta">',
+				'<div class="wpr-rocketcdn-cta-toggle" role="button" tabindex="0" aria-controls="wpr-rocketcdn-cta-expandable" aria-expanded="true">',
+			],
 		],
 
 		'config' => [
@@ -257,7 +271,12 @@ return [
 					'current_price_annual'      => 5.00,
 				],
 			],
-			'integration' => str_replace( '**DATE_NOW**', date( 'Y-m-d', strtotime( 'tomorrow', time() ) ), file_get_contents( __DIR__ . '/HTML/cta_promo.html' ) ),
+			'integration' => [
+				'<div class="wpr-rocketcdn-cta wpr-rocketcdn-cta--collapsed " id="wpr-rocketcdn-cta">',
+				'<h3 class="wpr-rocketcdn-promo-title">',
+				'Launch',
+				'Valid until ' . date( 'Y-m-d', strtotime( 'tomorrow', time() ) ) . ' only!',
+			],
 		],
 
 		'config' => [
@@ -287,7 +306,11 @@ return [
 					'message'         => 'RocketCDN is not available at the moment. Please retry later. <a href="" data-beacon-article="" rel="noopener noreferrer" target="_blank">More Info</a>',
 				],
 			],
-				'integration' => file_get_contents( __DIR__ . '/HTML/cta_no_pricing.html' ),
+			'integration' => [
+				'<div class="wpr-rocketcdn-cta wpr-rocketcdn-cta--collapsed " id="wpr-rocketcdn-cta">',
+				'RocketCDN is not available at the moment. Please retry later.',
+				'More Info',
+			],
 		],
 
 		'config' => [
