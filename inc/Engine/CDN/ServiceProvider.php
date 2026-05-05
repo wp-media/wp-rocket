@@ -67,7 +67,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add(
 			'cdn_driver.paid',
 			RocketCDNPaid::class
-		);
+		)->addArgument( 'options' );
 
 		$this->getContainer()->add(
 			'cdn_driver.byocdn',

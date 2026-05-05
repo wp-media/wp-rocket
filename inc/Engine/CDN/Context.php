@@ -61,27 +61,6 @@ class Context {
 	 * @return string
 	 */
 	public function get_driver(): string {
-		$cdn_type = (string) $this->options->get( 'cdn_type', self::ROCKETCDN_TYPE );
-
-		if ( self::ROCKETCDN_TYPE !== $cdn_type ) {
-			return self::BYOCDN_TYPE;
-		}
-
-		return $this->rocketcdn_resolver();
-	}
-
-	/**
-	 * Resolves RocketCDN to either free or paid type.
-	 *
-	 * @return string
-	 */
-	private function rocketcdn_resolver(): string {
-		$subscription = $this->api_client->get_subscription_data();
-
-		if ( empty( $subscription['is_active'] ) || 'running' !== $subscription['subscription_status'] ) {
-			return self::ROCKETCDN_FREE_TYPE;
-		}
-
-		return self::ROCKETCDN_PAID_TYPE;
+		return (string) $this->options->get( 'cdn_type', self::ROCKETCDN_TYPE );
 	}
 }
