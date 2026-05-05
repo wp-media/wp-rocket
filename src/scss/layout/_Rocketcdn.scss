@@ -43,10 +43,20 @@
 
 	&-toggle {
 		display: flex;
-		align-items: center;
-		gap: $space * 2;
+		align-items: flex-start;
+		gap: $space;
 		width: 100%;
 		cursor: pointer;
+
+		&__check {
+			width: 16px;
+			height: 16px;
+			flex-shrink: 0;
+			margin-top: 4px;
+			background-image: url("../img/rocketcdn-check.svg");
+			background-size: contain;
+			background-repeat: no-repeat;
+		}
 
 		&__text {
 			margin: 0;
@@ -57,6 +67,11 @@
 			strong {
 				font-weight: 700;
 			}
+
+            span {
+               font-size: 14px; 
+               color: #464F59;
+            }
 		}
 
 		&__icon {
@@ -64,6 +79,7 @@
 			width: 24px;
 			height: 24px;
 			flex-shrink: 0;
+            align-self: center;
 
 			&:before {
 				content: '';
