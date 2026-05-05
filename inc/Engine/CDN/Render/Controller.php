@@ -62,7 +62,7 @@ class Controller extends Abstract_Render {
 			'status_indicator' => [
 				'is_active'          => true,
 				'status_text'        => __( 'RocketCDN is active on your website', 'rocket' ),
-				'details'            => __( 'Serving files from 100+ edge locations · Covering 12 pages', 'rocket' ),
+				'details'            => __( 'Serving files from 100+ edge locations', 'rocket' ),
 				'paused_status_text' => __( 'RocketCDN is paused', 'rocket' ),
 				'paused_details'     => __( 'RocketCDN is currently paused. Click Resume CDN to re-enable content delivery.', 'rocket' ),
 				'class'              => 'wpr-cdn-status-pronounced rocketcdn',
