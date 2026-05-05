@@ -9,7 +9,7 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CDN\CDN;
 use WP_Rocket\Engine\CDN\Drivers\DriverInterface;
 use WP_Rocket\Engine\CDN\Subscriber;
-use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\Tests\Unit\TestCase;
 
 /**
  * Test class covering \WP_Rocket\Engine\CDN\Subscriber::rewrite_srcset
@@ -25,37 +25,21 @@ class Test_RewriteSrcset extends TestCase {
 		$this->cdn     = Mockery::mock( CDN::class );
 		$this->options = Mockery::mock( Options_Data::class );
 
-		Functions\when( 'rocket_get_constant' )->justReturn( false );
 		Functions\when( 'is_rocket_post_excluded_option' )->justReturn( false );
 		Functions\when( 'home_url' )->justReturn( 'https://example.org' );
 		Functions\when( 'add_query_arg' )->justReturn( '' );
 	}
 
-	public function testShouldReturnOriginalHtmlWhenDriverReturnsFalse() {
-		$driver = Mockery::mock( DriverInterface::class );
-		$driver->shouldReceive( 'should_rewrite_url' )->andReturn( false );
-
-		$subscriber = new Subscriber(
-			$this->options,
-			$this->cdn,
-			Mockery::mock( Options::class ),
-			$driver
-		);
-
-		$this->options->shouldReceive( 'get' )
-			->with( 'cdn', 0 )
-			->andReturn( true );
-
-		$html = '<img srcset="https://example.org/wp-content/uploads/image.jpg 1x, https://example.org/wp-content/uploads/image-2x.jpg 2x">';
-
-		$this->cdn->shouldNotReceive( 'rewrite_srcset' );
-
-		$this->assertSame( $html, $subscriber->rewrite_srcset( $html ) );
+	public function addDataProvider(): array {
+		return $this->getTestData( __DIR__, 'rewriteSrcset-driver-gating' );
 	}
 
-	public function testShouldRewriteSrcsetWhenDriverReturnsTrue() {
+	/**
+	 * @dataProvider addDataProvider
+	 */
+	public function testShouldRewriteSrcsetBasedOnDriver( array $config, array $expected ) {
 		$driver = Mockery::mock( DriverInterface::class );
-		$driver->shouldReceive( 'should_rewrite_url' )->andReturn( true );
+		$driver->shouldReceive( 'should_rewrite_url' )->andReturn( $config['driver_returns'] );
 
 		$subscriber = new Subscriber(
 			$this->options,
@@ -66,16 +50,16 @@ class Test_RewriteSrcset extends TestCase {
 
 		$this->options->shouldReceive( 'get' )
 			->with( 'cdn', 0 )
-			->andReturn( true );
+			->andReturn( $config['cdn_enabled'] );
 
-		$html      = '<img srcset="https://example.org/wp-content/uploads/image.jpg 1x">';
-		$rewritten = '<img srcset="https://cdn.example.org/wp-content/uploads/image.jpg 1x">';
+		if ( $config['driver_returns'] ) {
+			$this->cdn->shouldReceive( 'rewrite_srcset' )
+				->once()
+				->andReturn( $config['rewritten_html'] );
+		} else {
+			$this->cdn->shouldNotReceive( 'rewrite_srcset' );
+		}
 
-		$this->cdn->shouldReceive( 'rewrite_srcset' )
-			->once()
-			->with( $html )
-			->andReturn( $rewritten );
-
-		$this->assertSame( $rewritten, $subscriber->rewrite_srcset( $html ) );
+		$this->assertSame( $expected['html'], $subscriber->rewrite_srcset( $config['html'] ) );
 	}
 }

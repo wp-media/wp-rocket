@@ -9,7 +9,7 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CDN\CDN;
 use WP_Rocket\Engine\CDN\Drivers\DriverInterface;
 use WP_Rocket\Engine\CDN\Subscriber;
-use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\Tests\Unit\TestCase;
 
 /**
  * Test class covering \WP_Rocket\Engine\CDN\Subscriber::rewrite
@@ -25,37 +25,21 @@ class Test_Rewrite extends TestCase {
 		$this->cdn     = Mockery::mock( CDN::class );
 		$this->options = Mockery::mock( Options_Data::class );
 
-		Functions\when( 'rocket_get_constant' )->justReturn( false );
 		Functions\when( 'is_rocket_post_excluded_option' )->justReturn( false );
 		Functions\when( 'home_url' )->justReturn( 'https://example.org' );
 		Functions\when( 'add_query_arg' )->justReturn( '' );
 	}
 
-	public function testShouldReturnOriginalHtmlWhenDriverReturnsFalse() {
-		$driver = Mockery::mock( DriverInterface::class );
-		$driver->shouldReceive( 'should_rewrite_url' )->andReturn( false );
-
-		$subscriber = new Subscriber(
-			$this->options,
-			$this->cdn,
-			Mockery::mock( Options::class ),
-			$driver
-		);
-
-		$this->options->shouldReceive( 'get' )
-			->with( 'cdn', 0 )
-			->andReturn( true );
-
-		$html = '<img src="https://example.org/wp-content/uploads/image.jpg">';
-
-		$this->cdn->shouldNotReceive( 'rewrite' );
-
-		$this->assertSame( $html, $subscriber->rewrite( $html ) );
+	public function addDataProvider(): array {
+		return $this->getTestData( __DIR__, 'rewrite-driver-gating' );
 	}
 
-	public function testShouldRewriteHtmlWhenDriverReturnsTrue() {
+	/**
+	 * @dataProvider addDataProvider
+	 */
+	public function testShouldRewriteBasedOnDriver( array $config, array $expected ) {
 		$driver = Mockery::mock( DriverInterface::class );
-		$driver->shouldReceive( 'should_rewrite_url' )->andReturn( true );
+		$driver->shouldReceive( 'should_rewrite_url' )->andReturn( $config['driver_returns'] );
 
 		$subscriber = new Subscriber(
 			$this->options,
@@ -66,16 +50,16 @@ class Test_Rewrite extends TestCase {
 
 		$this->options->shouldReceive( 'get' )
 			->with( 'cdn', 0 )
-			->andReturn( true );
+			->andReturn( $config['cdn_enabled'] );
 
-		$html      = '<img src="https://example.org/wp-content/uploads/image.jpg">';
-		$rewritten = '<img src="https://cdn.example.org/wp-content/uploads/image.jpg">';
+		if ( $config['driver_returns'] ) {
+			$this->cdn->shouldReceive( 'rewrite' )
+				->once()
+				->andReturn( $config['rewritten_html'] );
+		} else {
+			$this->cdn->shouldNotReceive( 'rewrite' );
+		}
 
-		$this->cdn->shouldReceive( 'rewrite' )
-			->once()
-			->with( $html )
-			->andReturn( $rewritten );
-
-		$this->assertSame( $rewritten, $subscriber->rewrite( $html ) );
+		$this->assertSame( $expected['html'], $subscriber->rewrite( $config['html'] ) );
 	}
 }
