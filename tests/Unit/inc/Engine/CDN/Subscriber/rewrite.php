@@ -24,6 +24,16 @@ class Test_Rewrite extends TestCase {
 
 		$this->cdn     = Mockery::mock( CDN::class );
 		$this->options = Mockery::mock( Options_Data::class );
+
+		Functions\when( 'rocket_get_constant' )->justReturn( false );
+		Functions\when( 'is_rocket_post_excluded_option' )->justReturn( false );
+		Functions\when( 'home_url' )->justReturn( 'https://example.org' );
+		Functions\when( 'add_query_arg' )->justReturn( '' );
+		Functions\when( 'wpm_apply_filters_typed' )->alias(
+			function( $type, $hook, $value ) {
+				return $value;
+			}
+		);
 	}
 
 	public function testShouldReturnOriginalHtmlWhenDriverReturnsFalse() {
@@ -40,11 +50,6 @@ class Test_Rewrite extends TestCase {
 		$this->options->shouldReceive( 'get' )
 			->with( 'cdn', 0 )
 			->andReturn( true );
-
-		Functions\when( 'rocket_get_constant' )->justReturn( false );
-		Functions\when( 'is_rocket_post_excluded_option' )->justReturn( false );
-		Functions\when( 'home_url' )->justReturn( 'https://example.org' );
-		Functions\when( 'add_query_arg' )->justReturn( '' );
 
 		$html = '<img src="https://example.org/wp-content/uploads/image.jpg">';
 
@@ -68,12 +73,7 @@ class Test_Rewrite extends TestCase {
 			->with( 'cdn', 0 )
 			->andReturn( true );
 
-		Functions\when( 'rocket_get_constant' )->justReturn( false );
-		Functions\when( 'is_rocket_post_excluded_option' )->justReturn( false );
-		Functions\when( 'home_url' )->justReturn( 'https://example.org' );
-		Functions\when( 'add_query_arg' )->justReturn( '' );
-
-		$html     = '<img src="https://example.org/wp-content/uploads/image.jpg">';
+		$html      = '<img src="https://example.org/wp-content/uploads/image.jpg">';
 		$rewritten = '<img src="https://cdn.example.org/wp-content/uploads/image.jpg">';
 
 		$this->cdn->shouldReceive( 'rewrite' )
