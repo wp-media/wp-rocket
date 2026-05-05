@@ -29,11 +29,6 @@ class Test_Rewrite extends TestCase {
 		Functions\when( 'is_rocket_post_excluded_option' )->justReturn( false );
 		Functions\when( 'home_url' )->justReturn( 'https://example.org' );
 		Functions\when( 'add_query_arg' )->justReturn( '' );
-		Functions\when( 'wpm_apply_filters_typed' )->alias(
-			function( $type, $hook, $value ) {
-				return $value;
-			}
-		);
 	}
 
 	public function testShouldReturnOriginalHtmlWhenDriverReturnsFalse() {
