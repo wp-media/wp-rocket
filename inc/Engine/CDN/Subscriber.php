@@ -69,7 +69,11 @@ class Subscriber implements Subscriber_Interface {
 			'wp_resource_hints'            => [ 'add_preconnect_cdn', 10, 2 ],
 			'rocket_font_url'              => [ 'add_cdn_url', 10, 2 ],
 			'rocket_first_install_options' => 'add_cdn_type_option',
-			'wp_rocket_upgrade'            => [ 'on_update_add_cdn_type_option', 10, 2 ],
+			'wp_rocket_upgrade'            => [
+				[ 'on_update_add_cdn_type_option', 10, 2 ],
+				[ 'on_update_set_rocketcdn_upgrade_notice_flag', 10, 2 ],
+			],
+			'admin_notices'                => 'maybe_display_rocketcdn_upgrade_notice',
 		];
 	}
 
@@ -419,5 +423,87 @@ class Subscriber implements Subscriber_Interface {
 		$current_options['cdn_type'] = $cdn_type;
 
 		$this->options_api->set( 'settings', $current_options );
+	}
+
+	/**
+	 * Set a flag to display RocketCDN upgrade notice when upgrading to 3.22 without active RocketCDN subscription
+	 *
+	 * @since 3.22
+	 *
+	 * @param string $new_version New plugin version.
+	 * @param string $old_version Previously installed plugin version.
+	 *
+	 * @return void
+	 */
+	public function on_update_set_rocketcdn_upgrade_notice_flag( string $new_version, string $old_version ) {
+		// Bail early if upgrading from 3.22 or later.
+		if ( version_compare( $old_version, '3.22.0', '>=' ) ) {
+			return;
+		}
+
+		// Check if user already has an active RocketCDN subscription.
+		if ( $this->options->get( 'rocketcdn_user_token' ) ) {
+			return;
+		}
+
+		$this->options->set( 'rocket_show_rocketcdn_upgrade_notice', true );
+
+		$this->options_api->set( 'settings', $this->options->get_options() );
+	}
+
+	/**
+	 * Display RocketCDN upgrade notice on admin dashboard if flag is set and notice hasn't been dismissed
+	 *
+	 * @since 3.22
+	 *
+	 * @return void
+	 */
+	public function maybe_display_rocketcdn_upgrade_notice() {
+		// Check if the flag is set.
+		if ( ! $this->options->get( 'rocket_show_rocketcdn_upgrade_notice' ) ) {
+			return;
+		}
+
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			return;
+		}
+
+		$notice_name = 'rocket_rocketcdn_upgrade_notice';
+
+		// Check if notice has been dismissed by the current user.
+		if ( in_array( $notice_name, (array) get_user_meta( get_current_user_id(), 'rocket_boxes', true ), true ) ) {
+			return;
+		}
+
+		$message = sprintf(
+		// translators: %1$s opening <strong> tag, %2$s closing </strong> tag.
+			esc_html__(
+				'%1$sNew in WP Rocket 3.22:%2$s Introducing RocketCDN Free - optimize your website performance with a free content delivery network!',
+				'rocket'
+			),
+			'<strong>',
+			'</strong>'
+		);
+
+		$message .= sprintf(
+		// translators: %1$s opening <p> tag, %2$s closing </p> tag.
+			esc_html__(
+				'%1$sControl exactly how many pages you want to cache and serve through RocketCDN for enhanced speed.%2$s',
+				'rocket'
+			),
+			'<p>',
+			'</p>'
+		);
+
+		rocket_notice_html(
+			[
+				'status'                 => 'success',
+				'message'                => $message,
+				'action'                 => 'rocketcdn_pages',
+				'dismiss_button'         => $notice_name,
+				'dismiss_button_message' => __( 'Will check it later', 'rocket' ),
+				'dismiss_button_class'   => 'button button-secondary',
+			]
+		);
 	}
 }

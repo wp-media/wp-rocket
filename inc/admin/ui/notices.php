@@ -734,6 +734,9 @@ function rocket_notice_html( $args ) {
 		case 'rocket_insights_page':
 			$args['action'] = '<a class="button button-primary" href="' . admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '&rocket_source=notice_insights_promotion_notice#rocket_insights' ) . '">' . __( 'Run the test now!', 'rocket' ) . '</a>';
 			break;
+		case 'rocketcdn_pages':
+			$args['action'] = '<a class="button button-primary" href="' . admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '&rocket_source=notice_rocketcdn_upgrade#rocket_cdn' ) . '">' . __( 'I want to add pages now', 'rocket' ) . '</a>';
+			break;
 	}
 	/**
 	 * Notice arguments.
