@@ -16,7 +16,6 @@
  *     @type string $help        Data to pass to beacon.
  *     @type string $page        Page section identifier.
  *     @type array  $status_indicator Data for the CDN status indicator partial.
- *     @type int    $pages_count Number of pages added to RocketCDN.
  * }
  */
 
@@ -37,11 +36,12 @@ defined( 'ABSPATH' ) || exit;
 <div class="<?php echo esc_attr( $data['class'] ); ?>">
 	<?php
 	/**
-	 * Fires before the CDN status indicator.
+	 * Fires before the RocketCDN free status indicator is displayed.
 	 *
 	 * @since 3.22
+	 * @param bool $is_subscription_loading Whether the subscription is currently loading.
 	 */
-	do_action( 'rocket_cdn_free_before_status_indicator' );
+	do_action( 'rocket_cdn_free_before_status_indicator', $data['status_indicator']['is_subscription_loading'] );
 	?>
 </div>
 
