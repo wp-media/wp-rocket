@@ -16,6 +16,7 @@
  *     @type string $help        Data to pass to beacon.
  *     @type string $page        Page section identifier.
  *     @type array  $status_indicator Data for the CDN status indicator partial.
+ *     @type array  $cta_data    Data for the CTA banner.
  * }
  */
 
@@ -39,9 +40,9 @@ defined( 'ABSPATH' ) || exit;
 	 * Fires before the RocketCDN free status indicator is displayed.
 	 *
 	 * @since 3.22
-	 * @param bool $is_subscription_loading Whether the subscription is currently loading.
+	 * @param array $cta_data CTA banner data.
 	 */
-	do_action( 'rocket_cdn_free_before_status_indicator', $data['status_indicator']['is_subscription_loading'] );
+	do_action( 'rocket_cdn_free_before_status_indicator', $data['cta_data'] );
 	?>
 </div>
 

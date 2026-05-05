@@ -200,13 +200,11 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	 *
 	 * @since 3.5
 	 *
+	 * @param array $cta_data CTA data.
+	 *
 	 * @return void
 	 */
-	public function display_rocketcdn_cta( $is_subscription_loading ) {
-		if (  $is_subscription_loading ) {
-			return;
-		}
-
+	public function display_rocketcdn_cta( array $cta_data ) {
 		/**
 		 * Filters the display of the RocketCDN cta banner.
 		 *
@@ -310,6 +308,8 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 				],
 			];
 		}
+
+		$big_cta_data = array_merge( $big_cta_data, $cta_data );
 
 		echo $this->generate( 'cta-big', $big_cta_data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}

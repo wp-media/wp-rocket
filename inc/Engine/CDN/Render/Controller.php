@@ -112,9 +112,26 @@ class Controller extends Abstract_Render {
 			$status_text = __( 'Creating your subscription...', 'rocket' );
 		}
 
+		$cta_heading = sprintf(
+					// translators: %1$s = opening strong tag, %2$s = closing strong tag.
+					__( '%1$sWant full-site Content Delivery coverage?%2$s Extend RocketCDN to all your pages with unlimited bandwidth.', 'rocket' ),
+					'<strong>',
+					'</strong>'
+				);
+
 		// Disable input field and buttons when 3 pages are added.
 		if ( $pages_count >= $this->get_limit() || $is_subscription_loading ) {
 			$classes[] = 'wpr-cdn-built-in--disabled';
+
+			$cta_heading = sprintf(
+					// translators: %1$s = opening strong tag, %2$s = number of pages allowed, %3$s = closing strong tag.
+					__( '%1$sNice work! You’re using RocketCDN on %2$s key pages!%3$s ', 'rocket' ),
+					'<strong>',
+					$this->get_limit(),
+					'</strong>'
+				);
+
+			$cta_description = __( 'Upgrade to RocketCDN Pro to extend faster content delivery across all your pages from 100+ edge locations worldwide.', 'rocket' );
 		}
 
 		$cdn_beacon = $this->beacon->get_suggest( 'cdn' );
@@ -138,6 +155,11 @@ class Controller extends Abstract_Render {
 				'is_subscription_loading' => $is_subscription_loading,
 				'hide_pause_btn'          => $is_subscription_loading,
 			],
+			'cta_data'         => [
+				'cta_heading'     => $cta_heading,
+				'cta_description' => $cta_description ?? '',
+			],
+			'cta_heading',
 		];
 
 		return $sections;
