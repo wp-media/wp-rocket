@@ -107,7 +107,7 @@ class RocketCDN extends AbstractQuery {
 			]
 		);
 
-		return (int) $counter > 0;
+		return 0 < (int) $counter;
 	}
 
 	/**
