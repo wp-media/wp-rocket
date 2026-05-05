@@ -904,10 +904,19 @@ a:focus, button:focus {
 }
 .wpr-rocketcdn-cta-toggle {
   display: flex;
-  align-items: center;
-  gap: 16px;
+  align-items: flex-start;
+  gap: 8px;
   width: 100%;
   cursor: pointer;
+}
+.wpr-rocketcdn-cta-toggle__check {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  margin-top: 4px;
+  background-image: url("../img/rocketcdn-check.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 .wpr-rocketcdn-cta-toggle__text {
   margin: 0;
@@ -919,11 +928,16 @@ a:focus, button:focus {
 .wpr-rocketcdn-cta-toggle__text strong {
   font-weight: 700;
 }
+.wpr-rocketcdn-cta-toggle__text span {
+  font-size: 14px;
+  color: #464F59;
+}
 .wpr-rocketcdn-cta-toggle__icon {
   position: relative;
   width: 24px;
   height: 24px;
   flex-shrink: 0;
+  align-self: center;
 }
 .wpr-rocketcdn-cta-toggle__icon:before {
   content: "";
