@@ -26,11 +26,6 @@ class Context {
 	public const ROCKETCDN_FREE_TYPE = 'rocketcdn_free';
 
 	/**
-	 * Resolved RocketCDN type for paid users.
-	 */
-	private const ROCKETCDN_PAID_TYPE = 'rocketcdn_paid';
-
-	/**
 	 * WP Rocket options.
 	 *
 	 * @var Options_Data
@@ -38,21 +33,12 @@ class Context {
 	private $options;
 
 	/**
-	 * RocketCDN API client.
-	 *
-	 * @var APIClient
-	 */
-	private $api_client;
-
-	/**
 	 * Constructor.
 	 *
-	 * @param Options_Data $options    WP Rocket options.
-	 * @param APIClient    $api_client RocketCDN API client.
+	 * @param Options_Data $options WP Rocket options.
 	 */
-	public function __construct( Options_Data $options, APIClient $api_client ) {
+	public function __construct( Options_Data $options ) {
 		$this->options    = $options;
-		$this->api_client = $api_client;
 	}
 
 	/**

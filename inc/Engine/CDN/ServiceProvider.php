@@ -54,7 +54,6 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArguments(
 				[
 					'options',
-					'rocketcdn_api_client',
 				]
 			);
 
@@ -72,7 +71,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add(
 			'cdn_driver.byocdn',
 			Custom::class
-		);
+		)->addArgument( 'options' );
 
 		// Register Driver Factory.
 		$this->getContainer()->addShared(
