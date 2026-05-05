@@ -29,7 +29,7 @@ defined( 'ABSPATH' ) || exit;
 		?>
 	</div>
 	<div class="wpr-sectionHeader-description wpr-without-padding">
-		<?php esc_html_e( 'Content delivery speeds up loading time by serving your website’s files faster. This helps pages load quicker and improves Time to First Byte (TTFB), so your pages start loading sooner.', 'rocket' ); ?>
+		<?php esc_html_e( 'Content Delivery speeds up loading time and improves Time to First Byte (TTFB) by serving your website’s files faster.', 'rocket' ); ?>
 	</div>
 	<?php
 	/**
