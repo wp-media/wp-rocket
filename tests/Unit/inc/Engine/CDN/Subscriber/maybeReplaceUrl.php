@@ -8,6 +8,7 @@ use WP_Rocket\Admin\Options;
 use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CDN\CDN;
+use WP_Rocket\Engine\CDN\Drivers\DriverInterface;
 use WP_Rocket\Engine\CDN\Subscriber;
 
 /**
@@ -76,6 +77,37 @@ class Test_MaybeReplaceUrl extends TestCase {
 			->andReturn( true );
 
 		Functions\when( 'is_rocket_post_excluded_option' )->justReturn( true );
+
+		$this->assertSame(
+			'https://123456.rocketcdn.me/wordpress/wp-content/plugins/hello-dolly/style.css',
+			$this->subscriber->maybe_replace_url( 'https://123456.rocketcdn.me/wordpress/wp-content/plugins/hello-dolly/style.css', [ 'all' ] )
+		);
+	}
+
+	public function testShouldReturnOriginalWhenDriverReturnsFalse() {
+		$driver = Mockery::mock( DriverInterface::class );
+		$driver->shouldReceive( 'should_rewrite_url' )->andReturn( false );
+
+		$this->subscriber = new Subscriber(
+			$this->options,
+			$this->cdn,
+			Mockery::mock( Options::class ),
+			$driver
+		);
+
+		$this->options->shouldReceive( 'get' )
+			->with( 'cdn', 0 )
+			->andReturn( true );
+
+		Functions\when( 'rocket_get_constant' )->justReturn( false );
+		Functions\when( 'is_rocket_post_excluded_option' )->justReturn( false );
+		Functions\when( 'home_url' )->justReturn( 'https://example.org' );
+		Functions\when( 'add_query_arg' )->justReturn( '' );
+		Functions\when( 'wpm_apply_filters_typed' )->alias(
+			function( $type, $hook, $value ) {
+				return $value;
+			}
+		);
 
 		$this->assertSame(
 			'https://123456.rocketcdn.me/wordpress/wp-content/plugins/hello-dolly/style.css',

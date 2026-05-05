@@ -15,7 +15,7 @@ class RocketCDNFree implements DriverInterface {
 	private $query;
 
 	/**
-	 * Contructor.
+	 * Constructor.
 	 *
 	 * @param RocketCDN $query Query instance.
 	 */

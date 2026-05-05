@@ -97,7 +97,7 @@ class RocketCDN extends AbstractQuery {
 	 *
 	 * @return bool
 	 */
-	public function is_url_found( string $url ) {
+	public function is_url_found( string $url ): bool {
 		$normalized_url = untrailingslashit( $url );
 
 		$counter = $this->query(
@@ -107,7 +107,7 @@ class RocketCDN extends AbstractQuery {
 			]
 		);
 
-		return ! empty( $counter );
+		return (int) $counter > 0;
 	}
 
 	/**

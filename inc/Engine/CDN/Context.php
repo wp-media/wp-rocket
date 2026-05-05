@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\CDN;
 
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\CDN\RocketCDN\APIClient;
 
 /**
  * Handles the CDN driver context.
