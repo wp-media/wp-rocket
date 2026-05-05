@@ -7,13 +7,29 @@ use WP_Rocket\Engine\CDN\RocketCDN\Database\Queries\RocketCDN;
 
 class RocketCDNFree implements DriverInterface {
 
+	/**
+	 * Query instance.
+	 *
+	 * @var RocketCDN
+	 */
 	private $query;
 
+	/**
+	 * Contructor.
+	 *
+	 * @param RocketCDN $query Query instance.
+	 */
 	public function __construct( RocketCDN $query ) {
 		$this->query = $query;
 	}
 
-	public function should_rewrite_url( $url ) {
-		return true;
+	/**
+	 * Should rewrite url or not.
+	 *
+	 * @param string $url Page Url to check.
+	 * @return bool
+	 */
+	public function should_rewrite_url( string $url ): bool {
+		return $this->query->is_url_found( $url );
 	}
 }

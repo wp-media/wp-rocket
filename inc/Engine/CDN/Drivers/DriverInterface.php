@@ -11,5 +11,5 @@ interface DriverInterface {
 	 *
 	 * @return bool
 	 */
-	public function should_rewrite_url( $url );
+	public function should_rewrite_url( string $url ): bool;
 }

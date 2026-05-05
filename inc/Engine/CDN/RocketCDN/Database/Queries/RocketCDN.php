@@ -91,6 +91,26 @@ class RocketCDN extends AbstractQuery {
 	}
 
 	/**
+	 * Check if the url is found in the database.
+	 *
+	 * @param string $url The URL to search for.
+	 *
+	 * @return bool
+	 */
+	public function is_url_found( string $url ) {
+		$normalized_url = untrailingslashit( $url );
+
+		$counter = $this->query(
+			[
+				'count' => true,
+				'url'   => $normalized_url,
+			]
+		);
+
+		return ! empty( $counter );
+	}
+
+	/**
 	 * Get total count of pages.
 	 *
 	 * @return int
