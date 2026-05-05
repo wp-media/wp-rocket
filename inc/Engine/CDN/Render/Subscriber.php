@@ -153,9 +153,9 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @since 3.22
 	 *
-	 * @return void
+	 * @return bool
 	 */
-	public function maybe_display_rocketcdn_cta(): void {
-		$this->controller->maybe_display_rocketcdn_cta();
+	public function maybe_display_rocketcdn_cta(): bool {
+		return $this->controller->maybe_display_rocketcdn_cta();
 	}
 }
