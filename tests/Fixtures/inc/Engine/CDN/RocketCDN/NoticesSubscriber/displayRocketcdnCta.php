@@ -71,6 +71,10 @@ return [
 				'monthly_price'            => 7.99,
 				'annual_price'             => 79.99,
 			],
+			'cta_data' => [
+				'cta_heading'     => '<strong>Want full-site Content Delivery coverage?</strong> Extend RocketCDN to all your pages with unlimited bandwidth.',
+				'cta_description' => '',
+			],
 		],
 
 		'expected' => [
@@ -92,7 +96,7 @@ return [
 			'integration' => [
 				'<div class="wpr-rocketcdn-cta wpr-rocketcdn-cta--collapsed " id="wpr-rocketcdn-cta">',
 				'<div class="wpr-rocketcdn-cta-toggle" role="button" tabindex="0" aria-controls="wpr-rocketcdn-cta-expandable" aria-expanded="true">',
-				'Speed up your website thanks to:',
+				'<strong>Want full-site Content Delivery coverage?</strong> Extend RocketCDN to all your pages with unlimited bandwidth.',
 			],
 		],
 
@@ -117,6 +121,10 @@ return [
 				'monthly_price'            => 7.99,
 				'annual_price'             => 79.99,
 			],
+			'cta_data' => [
+				'cta_heading'     => '<strong>Want full-site Content Delivery coverage?</strong> Extend RocketCDN to all your pages with unlimited bandwidth.',
+				'cta_description' => '',
+			],
 		],
 
 		'expected' => [
@@ -138,7 +146,7 @@ return [
 			'integration' => [
 				'<div class="wpr-rocketcdn-cta wpr-rocketcdn-cta--collapsed " id="wpr-rocketcdn-cta">',
 				'<div class="wpr-rocketcdn-cta-toggle" role="button" tabindex="0" aria-controls="wpr-rocketcdn-cta-expandable" aria-expanded="true">',
-				'Speed up your website thanks to:',
+				'<strong>Want full-site Content Delivery coverage?</strong> Extend RocketCDN to all your pages with unlimited bandwidth.',
 			],
 		],
 
@@ -163,6 +171,10 @@ return [
 				'monthly_price'            => 7.99,
 				'annual_price'             => 79.99,
 			],
+			'cta_data' => [
+				'cta_heading'     => '<strong>Want full-site Content Delivery coverage?</strong> Extend RocketCDN to all your pages with unlimited bandwidth.',
+				'cta_description' => '',
+			],
 		],
 
 		'expected' => [
@@ -184,7 +196,7 @@ return [
 			'integration' => [
 				'<div class="wpr-rocketcdn-cta wpr-rocketcdn-cta--collapsed " id="wpr-rocketcdn-cta">',
 				'<div class="wpr-rocketcdn-cta-toggle" role="button" tabindex="0" aria-controls="wpr-rocketcdn-cta-expandable" aria-expanded="true">',
-				'Speed up your website thanks to:',
+				'<strong>Want full-site Content Delivery coverage?</strong> Extend RocketCDN to all your pages with unlimited bandwidth.',
 			],
 		],
 
@@ -208,6 +220,10 @@ return [
 				'end_date'                 => '2019-11-03',
 				'monthly_price'            => 7.99,
 				'annual_price'             => 79.99,
+			],
+			'cta_data' => [
+				'cta_heading'     => '<strong>Want full-site Content Delivery coverage?</strong> Extend RocketCDN to all your pages with unlimited bandwidth.',
+				'cta_description' => '',
 			],
 		],
 
@@ -253,6 +269,10 @@ return [
 				'monthly_price'            => 7.99,
 				'annual_price'             => 79.99,
 			],
+			'cta_data' => [
+				'cta_heading'     => '<strong>Want full-site Content Delivery coverage?</strong> Extend RocketCDN to all your pages with unlimited bandwidth.',
+				'cta_description' => '',
+			],
 		],
 
 		'expected' => [
@@ -292,6 +312,10 @@ return [
 				'subscription_status' => 'cancelled',
 			],
 			'rocketcdn_pricing' => 'RocketCDN is not available at the moment. Please retry later.',
+			'cta_data' => [
+				'cta_heading'     => '<strong>Want full-site Content Delivery coverage?</strong> Extend RocketCDN to all your pages with unlimited bandwidth.',
+				'cta_description' => '',
+			],
 		],
 
 		'expected' => [
