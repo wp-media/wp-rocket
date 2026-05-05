@@ -36,16 +36,17 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'rocket_cdn_driver_sections' => [
+			'rocket_cdn_driver_sections'   => [
 				[ 'add_rocketcdn_paid_section' ],
 				[ 'add_rocketcdn_free_section' ],
 				[ 'add_exclude_cdn_section' ],
 				[ 'add_purge_cdn_cache_section' ],
 			],
-			'rocket_cdn_free_page_list'  => 'render_built_in_page_list',
-			'rocket_cdn_free_page_rows'  => 'render_built_in_page_rows',
-			'rocket_cdn_driver_tabs'     => 'render_cdn_driver_tabs',
-			'rocket_cdn_settings_fields' => 'add_exclusions_fields',
+			'rocket_cdn_free_page_list'    => 'render_built_in_page_list',
+			'rocket_cdn_free_page_rows'    => 'render_built_in_page_rows',
+			'rocket_cdn_driver_tabs'       => 'render_cdn_driver_tabs',
+			'rocket_cdn_settings_fields'   => 'add_exclusions_fields',
+			'rocket_display_rocketcdn_cta' => 'maybe_display_rocketcdn_cta',
 		];
 	}
 
@@ -145,5 +146,16 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function add_exclusions_fields( array $fields ): array {
 		return $this->controller->add_exclusions_fields( $fields );
+	}
+
+	/**
+	 * Displays the RocketCDN Call to Action on the CDN tab of WP Rocket settings page.
+	 *
+	 * @since 3.22
+	 *
+	 * @return void
+	 */
+	public function maybe_display_rocketcdn_cta(): void {
+		$this->controller->maybe_display_rocketcdn_cta();
 	}
 }

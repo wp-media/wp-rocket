@@ -300,6 +300,19 @@ class Controller extends Abstract_Render {
 	}
 
 	/**
+	 * Renders the RocketCDN CTA banner.
+	 *
+	 * @since 3.22
+	 */
+	public function maybe_display_rocketcdn_cta(): bool {
+		if ( $this->is_subscription_loading() ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
 	 * Builds a table-list-row data array from a page object.
 	 *
 	 * @since 3.22
