@@ -478,7 +478,7 @@ class Subscriber implements Subscriber_Interface {
 		$message = sprintf(
 		// translators: %1$s opening <strong> tag, %2$s closing </strong> tag.
 			esc_html__(
-				'%1$sNew in WP Rocket 3.22:%2$s Introducing RocketCDN Free - optimize your website performance with a free content delivery network!',
+				'%1$sUse RocketCDN for free to boost up to 3 pages 🚀%2$s',
 				'rocket'
 			),
 			'<strong>',
@@ -488,7 +488,7 @@ class Subscriber implements Subscriber_Interface {
 		$message .= sprintf(
 		// translators: %1$s opening <p> tag, %2$s closing </p> tag.
 			esc_html__(
-				'%1$sControl exactly how many pages you want to cache and serve through RocketCDN for enhanced speed.%2$s',
+				'%1$sAs a WP Rocket user, you can now activate RocketCDN for free on up to 3 pages. Choose your top pages and speed up their performance worldwide!%2$s',
 				'rocket'
 			),
 			'<p>',
