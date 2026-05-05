@@ -99,6 +99,18 @@ class Test_MaybeReplaceUrl extends TestCase {
 			->with( 'cdn', 0 )
 			->andReturn( true );
 
+		$this->setupDriverGatingMocks();
+
+		$this->assertSame(
+			'https://123456.rocketcdn.me/wordpress/wp-content/plugins/hello-dolly/style.css',
+			$this->subscriber->maybe_replace_url( 'https://123456.rocketcdn.me/wordpress/wp-content/plugins/hello-dolly/style.css', [ 'all' ] )
+		);
+	}
+
+	/**
+	 * Sets up common WordPress function mocks needed when testing driver-based gating.
+	 */
+	private function setupDriverGatingMocks(): void {
 		Functions\when( 'rocket_get_constant' )->justReturn( false );
 		Functions\when( 'is_rocket_post_excluded_option' )->justReturn( false );
 		Functions\when( 'home_url' )->justReturn( 'https://example.org' );
@@ -107,11 +119,6 @@ class Test_MaybeReplaceUrl extends TestCase {
 			function( $type, $hook, $value ) {
 				return $value;
 			}
-		);
-
-		$this->assertSame(
-			'https://123456.rocketcdn.me/wordpress/wp-content/plugins/hello-dolly/style.css',
-			$this->subscriber->maybe_replace_url( 'https://123456.rocketcdn.me/wordpress/wp-content/plugins/hello-dolly/style.css', [ 'all' ] )
 		);
 	}
 

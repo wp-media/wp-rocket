@@ -24,6 +24,16 @@ class Test_RewriteSrcset extends TestCase {
 
 		$this->cdn     = Mockery::mock( CDN::class );
 		$this->options = Mockery::mock( Options_Data::class );
+
+		Functions\when( 'rocket_get_constant' )->justReturn( false );
+		Functions\when( 'is_rocket_post_excluded_option' )->justReturn( false );
+		Functions\when( 'home_url' )->justReturn( 'https://example.org' );
+		Functions\when( 'add_query_arg' )->justReturn( '' );
+		Functions\when( 'wpm_apply_filters_typed' )->alias(
+			function( $type, $hook, $value ) {
+				return $value;
+			}
+		);
 	}
 
 	public function testShouldReturnOriginalHtmlWhenDriverReturnsFalse() {
@@ -40,16 +50,6 @@ class Test_RewriteSrcset extends TestCase {
 		$this->options->shouldReceive( 'get' )
 			->with( 'cdn', 0 )
 			->andReturn( true );
-
-		Functions\when( 'rocket_get_constant' )->justReturn( false );
-		Functions\when( 'is_rocket_post_excluded_option' )->justReturn( false );
-		Functions\when( 'home_url' )->justReturn( 'https://example.org' );
-		Functions\when( 'add_query_arg' )->justReturn( '' );
-		Functions\when( 'wpm_apply_filters_typed' )->alias(
-			function( $type, $hook, $value ) {
-				return $value;
-			}
-		);
 
 		$html = '<img srcset="https://example.org/wp-content/uploads/image.jpg 1x, https://example.org/wp-content/uploads/image-2x.jpg 2x">';
 
@@ -73,17 +73,7 @@ class Test_RewriteSrcset extends TestCase {
 			->with( 'cdn', 0 )
 			->andReturn( true );
 
-		Functions\when( 'rocket_get_constant' )->justReturn( false );
-		Functions\when( 'is_rocket_post_excluded_option' )->justReturn( false );
-		Functions\when( 'home_url' )->justReturn( 'https://example.org' );
-		Functions\when( 'add_query_arg' )->justReturn( '' );
-		Functions\when( 'wpm_apply_filters_typed' )->alias(
-			function( $type, $hook, $value ) {
-				return $value;
-			}
-		);
-
-		$html     = '<img srcset="https://example.org/wp-content/uploads/image.jpg 1x">';
+		$html      = '<img srcset="https://example.org/wp-content/uploads/image.jpg 1x">';
 		$rewritten = '<img srcset="https://cdn.example.org/wp-content/uploads/image.jpg 1x">';
 
 		$this->cdn->shouldReceive( 'rewrite_srcset' )
