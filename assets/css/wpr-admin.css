@@ -4874,12 +4874,28 @@ div.wpr-tutorial-item {
   background: #FFF;
   margin-top: 0;
 }
+.your-own-cdn .wpr-multiple .wpr-select::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  width: 10px;
+  height: 6px;
+  transform: translateY(-50%);
+  background-image: url("../img/caret-down.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  pointer-events: none;
+}
 .your-own-cdn .wpr-multiple select {
   height: 50px;
   border-radius: 4px;
   border: 1px solid #E2E5E9;
   background: #FFF;
   font-weight: bold;
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 32px;
 }
 .your-own-cdn .wpr-multiple .wpr-multiple-close::after {
   content: url(../img/wpr-close.svg);
