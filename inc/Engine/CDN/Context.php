@@ -38,7 +38,7 @@ class Context {
 	 * @param Options_Data $options WP Rocket options.
 	 */
 	public function __construct( Options_Data $options ) {
-		$this->options    = $options;
+		$this->options = $options;
 	}
 
 	/**
