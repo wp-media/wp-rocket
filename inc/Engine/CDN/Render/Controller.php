@@ -221,7 +221,7 @@ class Controller extends Abstract_Render {
 	 */
 	public function add_exclusions_fields( array $fields ): array {
 		// RFT Todo: Add another check to the condition for the RocketCDN subscription status.
-		if ( 'rocketcdn' === $this->get_filtered_cdn_type() ) {
+		if ( 'byocdn' !== $this->get_filtered_cdn_type() ) {
 			$fields['cdn_reject_pages'] = [
 				'type'              => 'textarea_with_container',
 				'label'             => __( 'Exclude Pages from CDN', 'rocket' ),
