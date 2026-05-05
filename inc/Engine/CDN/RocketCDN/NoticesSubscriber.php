@@ -202,7 +202,11 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	 *
 	 * @return void
 	 */
-	public function display_rocketcdn_cta() {
+	public function display_rocketcdn_cta( $is_subscription_loading ) {
+		if (  $is_subscription_loading ) {
+			return;
+		}
+
 		/**
 		 * Filters the display of the RocketCDN cta banner.
 		 *
