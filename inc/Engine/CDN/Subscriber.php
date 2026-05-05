@@ -468,6 +468,16 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
+		$screen = get_current_screen();
+
+		if (
+			isset( $screen->id )
+			&&
+			'settings_page_wprocket' !== $screen->id
+		) {
+			return;
+		}
+
 		$notice_name = 'rocket_rocketcdn_upgrade_notice';
 
 		// Check if notice has been dismissed by the current user.
