@@ -135,4 +135,20 @@ trait UrlTrait {
 	protected function is_relative( string $url ): bool {
 		return ! empty( preg_match( '/^\./', $url ) ) || empty( wp_parse_url( $url, PHP_URL_HOST ) );
 	}
+
+	/**
+	 * Retrieves the current URL for validation purposes.
+	 *
+	 * @return string The current URL.
+	 */
+	protected function get_current_url() {
+		global $wp;
+		$current_url = home_url( add_query_arg( [], $wp->request ?? '' ) );
+		/**
+		 * Filters the current URL used for validation.
+		 *
+		 * @param string $current_url The current URL.
+		 */
+		return wpm_apply_filters_typed( 'string', 'rocket_current_url', $current_url );
+	}
 }

@@ -13,17 +13,17 @@ class Context {
 	/**
 	 * CDN type value for RocketCDN.
 	 */
-	private const ROCKETCDN_TYPE = 'rocketcdn';
+	public const ROCKETCDN_TYPE = 'rocketcdn';
 
 	/**
 	 * CDN type value for bring-your-own CDN.
 	 */
-	private const BYOCDN_TYPE = 'byocdn';
+	public const BYOCDN_TYPE = 'byocdn';
 
 	/**
 	 * Resolved RocketCDN type for free users.
 	 */
-	private const ROCKETCDN_FREE_TYPE = 'rocketcdn_free';
+	public const ROCKETCDN_FREE_TYPE = 'rocketcdn_free';
 
 	/**
 	 * Resolved RocketCDN type for paid users.

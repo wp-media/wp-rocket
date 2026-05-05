@@ -1,0 +1,60 @@
+<?php
+declare(strict_types=1);
+
+namespace WP_Rocket\Engine\CDN\Drivers;
+
+use WP_Rocket\Engine\CDN\Context;
+
+/**
+ * Factory for creating CDN drivers based on current context
+ */
+class DriverFactory {
+
+	/**
+	 * Container instance for dependency injection
+	 *
+	 * @var object
+	 */
+	private $container;
+
+	/**
+	 * CDN Context for determining active driver
+	 *
+	 * @var Context
+	 */
+	private $context;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param object  $container Container instance.
+	 * @param Context $context Context instance.
+	 */
+	public function __construct( $container, Context $context ) {
+		$this->container = $container;
+		$this->context   = $context;
+	}
+
+	/**
+	 * Create appropriate driver based on current context
+	 *
+	 * @return DriverInterface|null Null if BYOCDN (handled differently)
+	 */
+	public function create(): ?DriverInterface {
+		$active_driver = $this->context->get_driver();
+
+		switch ( $active_driver ) {
+			case Context::ROCKETCDN_FREE_TYPE:
+				return $this->container->get( 'cdn_driver.free' );
+
+			case Context::ROCKETCDN_TYPE:
+				return $this->container->get( 'cdn_driver.paid' );
+
+			case Context::BYOCDN_TYPE:
+				return $this->container->get( 'cdn_driver.byocdn' );
+
+			default:
+				return null;
+		}
+	}
+}
