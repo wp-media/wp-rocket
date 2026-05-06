@@ -442,7 +442,7 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		// Check if user already has an active RocketCDN subscription.
-		if ( $this->options->get( 'rocketcdn_user_token' ) ) {
+		if ( $this->options_api->get( 'rocketcdn_user_token' ) ) {
 			return;
 		}
 
@@ -461,6 +461,13 @@ class Subscriber implements Subscriber_Interface {
 	public function maybe_display_rocketcdn_upgrade_notice() {
 		// Check if the flag is set.
 		if ( ! $this->options->get( 'rocket_show_rocketcdn_upgrade_notice' ) ) {
+			return;
+		}
+
+		if ( $this->is_cdn_enabled() ) {
+			$this->options->set( 'rocket_show_rocketcdn_upgrade_notice', 0 );
+			$this->options_api->set( 'settings', $this->options->get_options() );
+
 			return;
 		}
 
@@ -491,8 +498,8 @@ class Subscriber implements Subscriber_Interface {
 				'%1$sUse RocketCDN for free to boost up to 3 pages 🚀%2$s',
 				'rocket'
 			),
-			'<strong>',
-			'</strong>'
+			'<p><strong>',
+			'</strong></p>'
 		);
 
 		$message .= sprintf(
