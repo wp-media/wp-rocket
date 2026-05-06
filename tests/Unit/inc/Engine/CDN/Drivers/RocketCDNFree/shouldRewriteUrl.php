@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Tests\Unit\inc\Engine\CDN\Drivers\RocketCDNFree;
 
 use Mockery;
+use PHPUnit\Framework\MockObject\MockObject;
 use WP_Rocket\Engine\CDN\Drivers\RocketCDNFree;
 use WP_Rocket\Engine\CDN\RocketCDN\Database\Queries\RocketCDN;
 use WP_Rocket\Tests\Unit\TestCase;
@@ -15,7 +16,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 class Test_ShouldRewriteUrl extends TestCase {
 
 	/**
-	 * @var RocketCDN|\Mockery\MockInterface
+	 * @var RocketCDN|MockObject
 	 */
 	private $query;
 
