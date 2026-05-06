@@ -8,9 +8,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.21.2-alpha\n"
+"Project-Id-Version: WP Rocket 3.21.3-beta\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2026-04-29T13:11:44+00:00\n"
+"POT-Creation-Date: 2026-05-06T11:38:04+00:00\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: BouRock, 2026\n"
 "Language-Team: Turkish (Turkey) (https://app.transifex.com/wp-media/teams/18133/tr_TR/)\n"
@@ -3709,7 +3709,7 @@ msgid "your website is banned"
 msgstr "web siteniz yasaklandı"
 
 #. translators: %1$s WP Rocket plugin name.
-#: inc/Engine/License/Renewal.php:80
+#: inc/Engine/License/Renewal.php:81
 #, php-format
 msgid ""
 "Your %1$s%2$s license is about to expire%3$s: you will soon lose access to "
@@ -3719,14 +3719,14 @@ msgstr ""
 " ve desteğine erişiminizi kaybedeceksiniz."
 
 #. translators: %1$s = <strong>, %2$s = </strong>, %3$s = discount price.
-#: inc/Engine/License/Renewal.php:193
+#: inc/Engine/License/Renewal.php:194
 #, php-format
 msgid "Renew before it is too late, you will pay %1$s%3$s%2$s."
 msgstr "Çok geç olmadan yenileyin, %1$s%3$s%2$s ödeyeceksiniz."
 
 #. translators: %1$s = <strong>, %2$s = discount percentage, %3$s = </strong>,
 #. %4$s = discount price.
-#: inc/Engine/License/Renewal.php:202
+#: inc/Engine/License/Renewal.php:203
 #, php-format
 msgid ""
 "Renew with a %1$s%2$s discount%3$s before it is too late, you will only pay "
@@ -3736,7 +3736,7 @@ msgstr ""
 "ödeyeceksiniz!"
 
 #. translators: %1$s = <a>, %2$s = </a>.
-#: inc/Engine/License/Renewal.php:526
+#: inc/Engine/License/Renewal.php:527
 #, php-format
 msgid ""
 "You need a valid license to continue using this feature. %1$sRenew now%2$s "
@@ -3746,7 +3746,7 @@ msgstr ""
 " Erişimi kaybetmeden önce %1$sşimdi yenileyin%2$s."
 
 #. translators: %1$s = <a>, %2$s = </a>.
-#: inc/Engine/License/Renewal.php:547
+#: inc/Engine/License/Renewal.php:548
 #, php-format
 msgid "You need an active license to enable this option. %1$sRenew now%2$s."
 msgstr ""
@@ -3754,7 +3754,7 @@ msgstr ""
 " yenile%2$s."
 
 #. translators: %1$s = <a>, %2$s = </a>.
-#: inc/Engine/License/Renewal.php:575
+#: inc/Engine/License/Renewal.php:576
 #, php-format
 msgid "You need an active license to enable this option. %1$sMore info%2$s."
 msgstr ""
@@ -3787,7 +3787,7 @@ msgstr ""
 
 #. translators: %1$s = promotion name, %2$s = <br>, %3$s = <strong>, %4$s =
 #. promotion discount percentage, %5$s = </strong>, %6$s = Growth or Multi.
-#: inc/Engine/License/Upgrade.php:262
+#: inc/Engine/License/Upgrade.php:263
 #, php-format
 msgid ""
 "Take advantage of %1$s to speed up more websites:%2$s get a %3$s%4$s off%5$s"
@@ -3796,7 +3796,7 @@ msgstr ""
 "Daha fazla web sitesini hızlandırmak için %1$s avantajından yararlanın:%2$s "
 "%3$slisansınızı %6$s’ye yükseltmek%5$s için %3$s%4$s indirim%5$s alın!"
 
-#: inc/Engine/License/Upgrade.php:271
+#: inc/Engine/License/Upgrade.php:272
 msgid "or"
 msgstr "veya"
 
@@ -3930,26 +3930,23 @@ msgstr "WP Rocket lisansınız iptal edildi!"
 msgid "GET WP ROCKET AT 20% OFF"
 msgstr "WP ROCKET’I %20 İNDİRİMLİ ALIN"
 
-#. translators: %1$s = span opening tag, %2$s = price, %3$s = span closing
-#. tag.
 #: inc/Engine/License/views/upgrade-item.php:17
-#, php-format
-msgid "Save $%1$s%2$s%3$s"
-msgstr "$%1$s%2$s%3$s tasarruf edin"
+msgid "Save"
+msgstr "Kaydet"
 
-#: inc/Engine/License/views/upgrade-item.php:35
-#: inc/Engine/License/views/upgrade-item.php:50
+#: inc/Engine/License/views/upgrade-item.php:49
+#: inc/Engine/License/views/upgrade-item.php:64
 msgid "Websites"
 msgstr "Web siteleri"
 
 #. translators: %s = number of websites.
-#: inc/Engine/License/views/upgrade-item.php:58
+#: inc/Engine/License/views/upgrade-item.php:72
 #, php-format
 msgid "%s websites"
 msgstr "%s web sitesi"
 
 #. translators: %s = license name.
-#: inc/Engine/License/views/upgrade-item.php:66
+#: inc/Engine/License/views/upgrade-item.php:80
 #, php-format
 msgid "Upgrade to %s"
 msgstr "%s olarak yükselt"
