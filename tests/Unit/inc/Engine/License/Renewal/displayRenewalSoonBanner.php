@@ -105,6 +105,9 @@ class DisplayRenewalSoonBanner extends TestCase {
 				)
 				->andReturn( '' );
 
+			$this->user->shouldReceive( 'get_currency' )
+				->andReturn( $config['user']['currency'] ?? 'USD' );
+
 			$this->expectOutputString( '' );
 		} else {
 			$this->renewal->shouldReceive( 'generate' )
