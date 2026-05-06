@@ -110,6 +110,33 @@ div.wpr-upgrade-prices {
 	@include font-size(48,48);
 	font-weight: bold;
 	margin: 0 0 2 * $space 0;
+	// Default padding
+	padding-right: 8%;
+	padding-left: 0;
+
+	/**
+	 * EUR variant: Symbol on right, swap padding
+	 */
+	&.wpr-with-euro {
+		padding-right: 0;
+		padding-left: 10%;
+	}
+
+	/**
+	 * Promo variant: Active offer adjusts left padding
+	 */
+	&.wpr-with-promo {
+		padding-right: 0;
+		padding-left: 6%;
+	}
+
+	/**
+	 * Both EUR and Promo: Maximum left padding for alignment
+	 */
+	&.wpr-with-euro.wpr-with-promo {
+		padding-right: 0;
+		padding-left: 25%;
+	}
 }
 
 .wpr-upgrade-price-symbol {
@@ -120,7 +147,7 @@ div.wpr-upgrade-prices {
 .wpr-upgrade-price-regular {
 	color: $cGreyDark3;
 	@include font-size(16,16);
-	vertical-align: top;
+	vertical-align: bottom;
 }
 
 div.wpr-upgrade-websites {
