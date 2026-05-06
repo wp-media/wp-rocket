@@ -9,7 +9,7 @@ use WP_Rocket\Tests\Integration\DBTrait;
 use WPMedia\PHPUnit\Integration\RESTfulTestCase;
 
 /**
- * Test class covering \WP_Rocket\Engine\CDN\RocketCDN\Rest::save_state
+ * Test class covering \WP_Rocket\Engine\CDN\RocketCDN\Rest::save_pause_state
  * @group  RocketCDN
  * @group AdminOnly
  */
@@ -39,8 +39,7 @@ class Test_SaveState extends RESTfulTestCase {
 		$this->admin_id = $this->factory()->user->create( [ 'role' => 'administrator' ] );
 		wp_set_current_user( $this->admin_id );
 
-		$container = apply_filters( 'rocket_container', null );
-
+		$container          = apply_filters( 'rocket_container', null );
 		$this->options_data = $container->get( 'options' );
 		$this->options_api  = $container->get( 'options_api' );
 	}
@@ -49,7 +48,7 @@ class Test_SaveState extends RESTfulTestCase {
 		wp_set_current_user( 0 );
 
 		$settings = $this->options_api->get( 'settings', [] );
-		unset( $settings['rocketcdn_active_driver'], $settings['rocketcdn_paused'] );
+		unset( $settings['cdn'] );
 		$this->options_api->set( 'settings', $settings );
 		parent::tear_down();
 	}
@@ -93,15 +92,10 @@ class Test_SaveState extends RESTfulTestCase {
 
 		foreach ( $expected as $key => $value ) {
 			switch ( $key ) {
-				case 'active_driver_response':
-					$settings = $this->options_api->get( 'settings', [] );
-					$this->assertSame( $value, $response['active_driver'] );
-					$this->assertSame( $value, $settings['rocketcdn_active_driver'] );
-					break;
 				case 'paused_response':
 					$settings = $this->options_api->get( 'settings', [] );
 					$this->assertSame( $value, $response['paused'] );
-					$this->assertSame( $value, (int) ( $settings['rocketcdn_paused'] ?? 0 ) );
+					$this->assertSame( $value, (int) ( $settings['cdn'] ?? 0 ) );
 					break;
 				case 'code':
 					$this->assertSame( $value, $response['code'] );
