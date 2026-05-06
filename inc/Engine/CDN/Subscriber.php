@@ -69,10 +69,10 @@ class Subscriber implements Subscriber_Interface {
 			'wp_resource_hints'            => [ 'add_preconnect_cdn', 10, 2 ],
 			'rocket_font_url'              => [ 'add_cdn_url', 10, 2 ],
 			'rocket_first_install_options' => 'add_cdn_type_option',
-			'wp_rocket_upgrade'            => [
+			/*'wp_rocket_upgrade'            => [
 				[ 'on_update_add_cdn_type_option', 10, 2 ],
 				[ 'on_update_set_rocketcdn_upgrade_notice_flag', 10, 2 ],
-			],
+			],*/
 			'admin_notices'                => 'maybe_display_rocketcdn_upgrade_notice',
 		];
 	}
@@ -446,9 +446,10 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$this->options->set( 'rocket_show_rocketcdn_upgrade_notice', true );
+		$current_options = $this->options_api->get( 'settings', [] );
+		$current_options['rocket_show_rocketcdn_upgrade_notice'] = true;
 
-		$this->options_api->set( 'settings', $this->options->get_options() );
+		$this->options_api->set( 'settings', $current_options );
 	}
 
 	/**
