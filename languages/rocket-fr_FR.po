@@ -3979,7 +3979,7 @@ msgstr "OBTENEZ WP ROCKET AVEC 20 % DE RÉDUCTION"
 
 #: inc/Engine/License/views/upgrade-item.php:17
 msgid "Save"
-msgstr "Économies"
+msgstr "Sauvegarder"
 
 #: inc/Engine/License/views/upgrade-item.php:49
 #: inc/Engine/License/views/upgrade-item.php:64
