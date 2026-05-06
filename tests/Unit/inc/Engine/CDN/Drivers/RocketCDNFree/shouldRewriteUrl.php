@@ -26,7 +26,7 @@ class Test_ShouldRewriteUrl extends TestCase {
 
 	public function setUp(): void {
 		parent::setUp();
-		$this->query  = Mockery::mock( RocketCDN::class );
+		$this->query  = $this->createMock( RocketCDN::class );
 		$this->driver = new RocketCDNFree( $this->query );
 	}
 
@@ -34,10 +34,9 @@ class Test_ShouldRewriteUrl extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpectedResult( array $config, bool $expected ) {
-		$this->query->shouldReceive( 'is_url_found' )
-			->once()
+		$this->query->method( 'is_url_found' )
 			->with( $config['url'] )
-			->andReturn( $config['is_found'] );
+			->willReturn( $config['is_found'] );
 
 		$this->assertSame( $expected, $this->driver->should_rewrite_url( $config['url'] ) );
 	}
