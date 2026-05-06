@@ -36,13 +36,11 @@ $rocket_manual_preload = (bool) get_rocket_option( 'manual_preload', false );
 		?>
 	<div class="wpr-notice">
 		<div class="wpr-notice-container">
-			<div class="wpr-notice-supTitle"><?php esc_html_e( 'Congratulations!', 'rocket' ); ?></div>
+			<div class="wpr-notice-supTitle"><?php esc_html_e( 'NEW!', 'rocket' ); ?></div>
 			<h2 class="wpr-notice-title">
-			<?php esc_html_e( 'WP Rocket is now activated and already working for you.', 'rocket' ); ?>
-			<br>
-			<?php esc_html_e( 'Your website should be loading faster now!', 'rocket' ); ?>
+			<?php esc_html_e( 'RocketCDN is now free for up to 3 pages of your choice.', 'rocket' ); ?>
 			</h2>
-		<div class="wpr-notice-description"><?php esc_html_e( 'To guarantee fast websites, WP Rocket automatically applies 80% of web performance best practices.', 'rocket' ); ?><br> <?php esc_html_e( 'We also enable options that provide immediate benefits to your website.', 'rocket' ); ?></div>
+		<div class="wpr-notice-description"><?php esc_html_e( 'RocketCDN serves your content from locations closer to your visitors, helping your top pages load faster around the world. Go to the RocketCDN tab, choose up to 3 pages, and add them to the CDN to improve their performance globally.', 'rocket' ); ?></div>
 			<?php if ( ! empty( $data['rocket_insights_enabled'] ) ) : ?>
 			<div class="wpr-notice-continue">
 				<?php
