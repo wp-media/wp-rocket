@@ -3932,7 +3932,7 @@ msgstr "WP ROCKET’I %20 İNDİRİMLİ ALIN"
 
 #: inc/Engine/License/views/upgrade-item.php:17
 msgid "Save"
-msgstr "Kaydet"
+msgstr "Tasarruf edin"
 
 #: inc/Engine/License/views/upgrade-item.php:49
 #: inc/Engine/License/views/upgrade-item.php:64
