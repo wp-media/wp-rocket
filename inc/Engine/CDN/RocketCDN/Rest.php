@@ -8,11 +8,15 @@ use WP_REST_Controller;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
-use WP_Rocket\Admin\Options;
-use WP_Rocket\Engine\Admin\RocketInsights\PageHandlerTrait;
 use WP_Rocket\Engine\CDN\RocketCDN\Database\Queries\RocketCDN as RocketCDNQuery;
-use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\Common\Utils;
+use WP_Rocket\Admin\{
+	Options_Data,
+	Options
+};
+use WP_Rocket\Engine\Common\{
+	Utils,
+	Page\PageHandlerTrait
+};
 
 /**
  * REST API controller for RocketCDN free-tier page management.
@@ -24,15 +28,6 @@ class Rest extends WP_REST_Controller {
 
 	const ROUTE_NAMESPACE = 'wp-rocket/v1';
 	const ROUTE_BASE      = 'rocketcdn';
-	const FREE_PAGE_LIMIT = 3;
-
-	/**
-	 * APIClient instance.
-	 *
-	 * @var APIClient
-	 * @phpstan-ignore-next-line
-	 */
-	private $api_client;
 
 	/**
 	 * RocketCDNQuery instance.
@@ -58,13 +53,11 @@ class Rest extends WP_REST_Controller {
 	/**
 	 * Constructor.
 	 *
-	 * @param APIClient      $api_client APIClient instance.
 	 * @param RocketCDNQuery $query      RocketCDNQuery instance.
 	 * @param Options_Data   $options    WP Rocket options instance.
 	 * @param Options        $options_api WP Options API instance.
 	 */
-	public function __construct( APIClient $api_client, RocketCDNQuery $query, Options_Data $options, Options $options_api ) {
-		$this->api_client  = $api_client;
+	public function __construct( RocketCDNQuery $query, Options_Data $options, Options $options_api ) {
 		$this->query       = $query;
 		$this->options     = $options;
 		$this->options_api = $options_api;
@@ -138,7 +131,7 @@ class Rest extends WP_REST_Controller {
 			self::ROUTE_BASE . '/state',
 			[
 				'methods'             => WP_REST_Server::CREATABLE,
-				'callback'            => [ $this, 'save_state' ],
+				'callback'            => [ $this, 'save_pause_state' ],
 				'permission_callback' => [ $this, 'check_permission' ],
 				'args'                => [
 					'active_driver' => [
@@ -188,13 +181,13 @@ class Rest extends WP_REST_Controller {
 				sprintf(
 					/* translators: %d: maximum number of free pages */
 					__( 'Page limit of %d has been reached. Remove a page before adding a new one.', 'rocket' ),
-					self::FREE_PAGE_LIMIT
+					$this->get_free_page_limit()
 				),
 				[ 'status' => 400 ]
 			);
 		}
 
-		$payload = $this->get_url_validation_payload( $url );
+		$payload = $this->get_page_url_validation_payload( $url );
 
 		if ( $payload['error'] ) {
 			return new WP_Error(
@@ -295,24 +288,18 @@ class Rest extends WP_REST_Controller {
 	 * @param WP_REST_Request $request REST request.
 	 * @return WP_REST_Response
 	 */
-	public function save_state( WP_REST_Request $request ): WP_REST_Response {
-		$active_driver = $request->get_param( 'active_driver' );
-		$paused        = $request->get_param( 'paused' );
-
-		if ( null !== $active_driver ) {
-			$this->options->set( 'rocketcdn_active_driver', $active_driver );
-		}
+	public function save_pause_state( WP_REST_Request $request ): WP_REST_Response {
+		$paused = $request->get_param( 'paused' );
 
 		if ( null !== $paused ) {
-			$this->options->set( 'rocketcdn_paused', (int) $paused );
+			$this->options->set( 'cdn', (int) $paused );
 		}
 
 		$this->options_api->set( 'settings', $this->options->get_options() );
 
 		return new WP_REST_Response(
 			[
-				'active_driver' => $this->options->get( 'rocketcdn_active_driver', 'rocketcdn' ),
-				'paused'        => (int) $this->options->get( 'rocketcdn_paused', 0 ),
+				'paused' => (int) $this->options->get( 'cdn', 0 ),
 			],
 			200
 		);
@@ -324,7 +311,7 @@ class Rest extends WP_REST_Controller {
 	 * @return bool True if the count is at or above the limit.
 	 */
 	public function is_limit_reached(): bool {
-		return $this->query->get_total_count() >= self::FREE_PAGE_LIMIT;
+		return $this->query->get_total_count() >= $this->get_free_page_limit();
 	}
 
 	/**
@@ -347,7 +334,16 @@ class Rest extends WP_REST_Controller {
 				is_array( $pages ) ? $pages : []
 			),
 			'count' => $this->query->get_total_count( false ),
-			'limit' => self::FREE_PAGE_LIMIT,
+			'limit' => $this->get_free_page_limit(),
 		];
+	}
+
+	/**
+	 * Return the total number of free pages allowed for RocketCDN delivery.
+	 *
+	 * @return int
+	 */
+	protected function get_free_page_limit(): int {
+		return 3;
 	}
 }

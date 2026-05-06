@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace WP_Rocket\Engine\Admin\RocketInsights;
+namespace WP_Rocket\Engine\Common\Page;
 
 trait PageHandlerTrait {
 	/**
@@ -78,7 +78,7 @@ trait PageHandlerTrait {
 	 *     @type string $processed_url The URL with protocol added if validation passes.
 	 * }
 	 */
-	protected function get_url_validation_payload( string $url ): array {
+	protected function get_page_url_validation_payload( string $url ): array {
 		$payload = [
 			'error'         => false,
 			'message'       => '',
@@ -87,13 +87,6 @@ trait PageHandlerTrait {
 				'status' => 400,
 			],
 		];
-
-		if ( 'local' === wp_get_environment_type() ) {
-			$payload['error']   = true;
-			$payload['message'] = 'Performance monitoring is disabled for local environment';
-
-			return $payload;
-		}
 
 		// Validate that url is not empty.
 		if ( '' === $url ) {

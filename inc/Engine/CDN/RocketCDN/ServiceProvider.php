@@ -75,7 +75,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'rocketcdn_rest', Rest::class )
 			->addArguments(
 				[
-					'rocketcdn_api_client',
 					'rocketcdn_query',
 					'options',
 					'options_api',

@@ -17,6 +17,7 @@ use WP_Rocket\Engine\Admin\RocketInsights\{
 use WP_Rocket\Engine\Common\{
 	JobManager\JobProcessor,
 	JobManager\Queue\Queue,
+	Page\PageHandlerTrait,
 	Utils
 };
 use WP_Rocket\Logger\Logger;
@@ -365,7 +366,7 @@ class Rest extends WP_REST_Controller {
 			return rest_ensure_response( $error );
 		}
 
-		$payload = $this->validate_url( $request['page_url'] );
+		$payload = $this->get_url_validation_payload( $request['page_url'] );
 
 		if ( $payload['error'] ) {
 			return rest_ensure_response( $payload );
@@ -469,7 +470,7 @@ class Rest extends WP_REST_Controller {
 	 *
 	 * @return array
 	 */
-	private function validate_url( string $url ) {
+	private function get_url_validation_payload( string $url ) {
 		// Validate that performance monitoring is not disabled.
 		if ( ! $this->context->is_allowed() ) {
 			$payload['error']   = true;
@@ -478,14 +479,28 @@ class Rest extends WP_REST_Controller {
 			return $payload;
 		}
 
-		// Check if url has not been submited.
-		if ( false !== $this->manager->get_single_job( $url, true ) ) {
-			$payload['error'] = true;
+		if ( 'local' === wp_get_environment_type() ) {
+			$payload['error']   = true;
+			$payload['message'] = 'Performance monitoring is disabled for local environment';
 
 			return $payload;
 		}
 
-		return $this->get_url_validation_payload( $url );
+		$payload = $this->get_page_url_validation_payload( $url );
+
+		if ( $payload['error'] ) {
+			return $payload;
+		}
+
+		// Check if url has not been submited.
+		if ( false !== $this->manager->get_single_job( $url, true ) ) {
+			$payload['error']   = true;
+			$payload['message'] = '';
+
+			return $payload;
+		}
+
+		return $payload;
 	}
 
 	/**
