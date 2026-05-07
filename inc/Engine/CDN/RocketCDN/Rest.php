@@ -153,6 +153,25 @@ class Rest extends WP_REST_Controller {
 				],
 			]
 		);
+
+		register_rest_route(
+			self::ROUTE_NAMESPACE,
+			self::ROUTE_BASE . '/save-cdn-driver',
+			[
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => [ $this, 'save_cdn_type' ],
+				'permission_callback' => [ $this, 'check_permission' ],
+				'args'                => [
+					'active_driver' => [
+						'required'          => false,
+						'validate_callback' => function ( $param ) {
+							return in_array( $param, [ 'byocdn', 'rocketcdn' ], true );
+						},
+						'sanitize_callback' => 'sanitize_text_field',
+					],
+				],
+			]
+		);
 	}
 
 	/**
@@ -345,5 +364,29 @@ class Rest extends WP_REST_Controller {
 	 */
 	protected function get_free_page_limit(): int {
 		return 3;
+	}
+
+	public function save_cdn_type( WP_REST_Request $request ) {
+		$cdn_type = $request->get_param( 'driver' );
+
+		if( ! in_array( $cdn_type, [ 'rocketcdn', 'byocdn' ], true ) ) {
+			return new WP_Error(
+				'rocketcdn_invalid_driver',
+				__( 'Invalid CDN driver.', 'rocket' ),
+				[ 'status' => 400 ]
+			);
+		}
+
+		$current_options             = $this->options_api->get( 'settings', [] );
+		$current_options['cdn_type'] = $cdn_type;
+
+		$this->options_api->set( 'settings', $current_options );
+
+		return new WP_REST_Response(
+			[
+				'cdn_type' => $cdn_type,
+			],
+			200
+		);
 	}
 }
