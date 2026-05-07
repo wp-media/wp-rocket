@@ -156,14 +156,14 @@ class Rest extends WP_REST_Controller {
 
 		register_rest_route(
 			self::ROUTE_NAMESPACE,
-			self::ROUTE_BASE . '/save-cdn-driver',
+			self::ROUTE_BASE . '/driver',
 			[
 				'methods'             => WP_REST_Server::CREATABLE,
 				'callback'            => [ $this, 'save_cdn_type' ],
 				'permission_callback' => [ $this, 'check_permission' ],
 				'args'                => [
-					'active_driver' => [
-						'required'          => false,
+					'driver' => [
+						'required'          => true,
 						'validate_callback' => function ( $param ) {
 							return in_array( $param, [ 'byocdn', 'rocketcdn' ], true );
 						},
@@ -366,17 +366,17 @@ class Rest extends WP_REST_Controller {
 		return 3;
 	}
 
+	/**
+	 * Save cdn driver
+	 *
+	 * Persists the active driver tab selection so the UI
+	 *  can restore the correct view after a page refresh.
+	 *
+	 * @param WP_REST_Request $request REST request.
+	 * @return WP_REST_Response
+	 */
 	public function save_cdn_type( WP_REST_Request $request ) {
-		$cdn_type = $request->get_param( 'driver' );
-
-		if( ! in_array( $cdn_type, [ 'rocketcdn', 'byocdn' ], true ) ) {
-			return new WP_Error(
-				'rocketcdn_invalid_driver',
-				__( 'Invalid CDN driver.', 'rocket' ),
-				[ 'status' => 400 ]
-			);
-		}
-
+		$cdn_type                    = $request->get_param( 'driver' );
 		$current_options             = $this->options_api->get( 'settings', [] );
 		$current_options['cdn_type'] = $cdn_type;
 
