@@ -88,7 +88,7 @@ class Test_SaveState extends RESTfulTestCase {
 			wp_set_current_user( 0 );
 		}
 
-		$response = $this->doRestRequest( 'POST', '/wp-rocket/v1/rocketcdn/state', $config['params'] );
+		$response = $this->doRestRequest( 'POST', '/wp-rocket/v1/rocketcdn/pause', $config['params'] );
 
 		foreach ( $expected as $key => $value ) {
 			switch ( $key ) {
