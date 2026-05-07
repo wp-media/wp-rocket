@@ -610,4 +610,13 @@ class User {
 		}
 		return $reasons[ $reason_code ];
 	}
+
+	/**
+	 * Get currency from user data.
+	 *
+	 * @return string
+	 */
+	public function get_currency() {
+		return $this->user->currency ?? 'USD';
+	}
 }

@@ -22,4 +22,12 @@ return [
 		],
 		'expected' => true,
 	],
+	'testShouldSetTransientWhenTransientNotExistsWithEuro' => [
+		'config' => [
+			'currency' => 'EUR',
+			'cap'       => true,
+			'transient' => false,
+		],
+		'expected' => true,
+	],
 ];
