@@ -460,15 +460,16 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function maybe_display_rocketcdn_upgrade_notice() {
-		// Check if the flag is set.
-		if ( ! $this->options->get( 'rocket_show_rocketcdn_upgrade_notice' ) ) {
-			return;
-		}
-
-		if ( $this->is_cdn_enabled() ) {
+		// Don't show notice if user is a paid RocketCDN subscriber.
+		if ( ! empty( $this->options_api->get( 'rocketcdn_user_token' ) ) ) {
 			$this->options->set( 'rocket_show_rocketcdn_upgrade_notice', 0 );
 			$this->options_api->set( 'settings', $this->options->get_options() );
 
+			return;
+		}
+
+		// Check if the flag is set.
+		if ( ! $this->options->get( 'rocket_show_rocketcdn_upgrade_notice' ) ) {
 			return;
 		}
 
