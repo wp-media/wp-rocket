@@ -128,20 +128,13 @@ class Rest extends WP_REST_Controller {
 
 		register_rest_route(
 			self::ROUTE_NAMESPACE,
-			self::ROUTE_BASE . '/state',
+			self::ROUTE_BASE . '/pause',
 			[
 				'methods'             => WP_REST_Server::CREATABLE,
 				'callback'            => [ $this, 'save_pause_state' ],
 				'permission_callback' => [ $this, 'check_permission' ],
 				'args'                => [
-					'active_driver' => [
-						'required'          => false,
-						'validate_callback' => function ( $param ) {
-							return in_array( $param, [ 'builtin', 'byocdn', 'rocketcdn' ], true );
-						},
-						'sanitize_callback' => 'sanitize_text_field',
-					],
-					'paused'        => [
+					'paused' => [
 						'required'          => false,
 						'validate_callback' => function ( $param ) {
 							return is_bool( $param ) || in_array( (string) $param, [ '0', '1' ], true );
@@ -282,8 +275,7 @@ class Rest extends WP_REST_Controller {
 	/**
 	 * Saves CDN driver state options.
 	 *
-	 * Persists the active driver tab selection and/or paused state so the UI
-	 * can restore the correct view after a page refresh.
+	 * Persists the paused state.
 	 *
 	 * @param WP_REST_Request $request REST request.
 	 * @return WP_REST_Response
