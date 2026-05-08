@@ -135,7 +135,7 @@ class Rest extends WP_REST_Controller {
 				'permission_callback' => [ $this, 'check_permission' ],
 				'args'                => [
 					'paused' => [
-						'required'          => false,
+						'required'          => true,
 						'validate_callback' => function ( $param ) {
 							return is_bool( $param ) || in_array( (string) $param, [ '0', '1' ], true );
 						},
@@ -283,10 +283,7 @@ class Rest extends WP_REST_Controller {
 	public function save_pause_state( WP_REST_Request $request ): WP_REST_Response {
 		$paused = $request->get_param( 'paused' );
 
-		if ( null !== $paused ) {
-			$this->options->set( 'cdn', (int) $paused );
-		}
-
+		$this->options->set( 'cdn', (int) $paused );
 		$this->options_api->set( 'settings', $this->options->get_options() );
 
 		return new WP_REST_Response(
@@ -332,6 +329,8 @@ class Rest extends WP_REST_Controller {
 
 	/**
 	 * Return the total number of free pages allowed for RocketCDN delivery.
+	 *
+	 * RFT Todo: Make this dynamic based on the addon team endpoint.
 	 *
 	 * @return int
 	 */
