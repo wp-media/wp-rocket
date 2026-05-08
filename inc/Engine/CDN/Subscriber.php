@@ -71,7 +71,6 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_first_install_options' => 'add_cdn_type_option',
 			'wp_rocket_upgrade'            => [
 				[ 'on_update_add_cdn_type_option', 10, 2 ],
-				[ 'on_update_set_rocketcdn_upgrade_notice_flag', 10, 2 ],
 			],
 		];
 	}
@@ -420,33 +419,6 @@ class Subscriber implements Subscriber_Interface {
 
 		$current_options             = $this->options_api->get( 'settings', [] );
 		$current_options['cdn_type'] = $cdn_type;
-
-		$this->options_api->set( 'settings', $current_options );
-	}
-
-	/**
-	 * Set a flag to display RocketCDN upgrade notice when upgrading to 3.22 without active RocketCDN subscription
-	 *
-	 * @since 3.22
-	 *
-	 * @param string $new_version New plugin version.
-	 * @param string $old_version Previously installed plugin version.
-	 *
-	 * @return void
-	 */
-	public function on_update_set_rocketcdn_upgrade_notice_flag( string $new_version, string $old_version ) {
-		// Bail early if upgrading from 3.22 or later.
-		if ( version_compare( $old_version, '3.22.0', '>=' ) ) {
-			return;
-		}
-
-		// Check if user already has an active RocketCDN subscription.
-		if ( $this->options_api->get( 'rocketcdn_user_token' ) ) {
-			return;
-		}
-
-		$current_options = $this->options_api->get( 'settings', [] );
-		$current_options['rocket_show_rocketcdn_upgrade_notice'] = true;
 
 		$this->options_api->set( 'settings', $current_options );
 	}

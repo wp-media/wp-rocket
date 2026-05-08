@@ -24,7 +24,7 @@ class Notice {
 	/**
 	 * Display an update notice when the plugin is updated.
 	 *
-	 * @param New version $version
+	 * @param string $version New plugin version.
 	 * @return void
 	 */
 	public function display_update_notice( $version ): void {

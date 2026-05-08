@@ -28,7 +28,7 @@ return [
 			'show_upgrade_notice' => true,
 			'role'                => 'administrator',
 			'screen'              => 'settings_page_wprocket',
-			'boxes'               => [ 'rocket_rocketcdn_upgrade_notice' ],
+			'boxes'               => [ 'rocket_update_notice' ],
 		],
 		'expected' => [
 			'display' => false,

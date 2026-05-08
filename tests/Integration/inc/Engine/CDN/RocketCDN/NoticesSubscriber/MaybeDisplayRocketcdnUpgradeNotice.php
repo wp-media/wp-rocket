@@ -47,11 +47,6 @@ class Test_MaybeDisplayRocketcdnUpgradeNotice extends TestCase {
 	public function testShouldDoAsExpected( array $config, array $expected ) {
 		$user_id = 'administrator' === $config['role'] ? self::$admin_user_id : self::$editor_user_id;
 
-		if ( array_key_exists( 'show_upgrade_notice', $config ) ) {
-			$this->show_upgrade_notice = $config['show_upgrade_notice'];
-			add_filter( 'pre_get_rocket_option_rocket_show_rocketcdn_upgrade_notice', [ $this, 'set_show_upgrade_notice' ], 10, 2 );
-		}
-
 		wp_set_current_user( $user_id );
 		set_current_screen( $config['screen'] );
 
