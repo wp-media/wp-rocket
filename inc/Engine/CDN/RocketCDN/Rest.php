@@ -368,11 +368,10 @@ class Rest extends WP_REST_Controller {
 	 * @return WP_REST_Response
 	 */
 	public function save_cdn_type( WP_REST_Request $request ) {
-		$cdn_type                    = $request->get_param( 'driver' );
-		$current_options             = $this->options_api->get( 'settings', [] );
-		$current_options['cdn_type'] = $cdn_type;
+		$cdn_type = $request->get_param( 'driver' );
 
-		$this->options_api->set( 'settings', $current_options );
+		$this->options->set( 'cdn_type', $cdn_type );
+		$this->options_api->set( 'settings', $this->options->get_options() );
 
 		return new WP_REST_Response(
 			[
