@@ -3,7 +3,7 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\Subscriber;
 
 /**
- * Test class covering \WP_Rocket\Engine\CDN\Subscriber::maybe_display_rocketcdn_upgrade_notice
+ * Test class covering \WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber::maybe_display_rocketcdn_upgrade_notice
  *
  * @group RocketCDN
  * @group AdminOnly
@@ -28,13 +28,12 @@ class Test_MaybeDisplayRocketcdnUpgradeNotice extends TestCase {
 			require_once WP_ROCKET_ADMIN_UI_PATH . 'notices.php';
 		}
 
-		$this->unregisterAllCallbacksExcept( 'admin_notices', 'maybe_display_rocketcdn_upgrade_notice' );
+		$this->unregisterAllCallbacksExcept( 'admin_notices', 'maybe_display_rocketcdn_upgrade_notice', 10 );
 	}
 
 	public function tear_down() {
 		delete_user_meta( self::$admin_user_id, 'rocket_boxes' );
 		delete_user_meta( self::$editor_user_id, 'rocket_boxes' );
-		remove_filter( 'pre_get_rocket_option_rocket_show_rocketcdn_upgrade_notice', [ $this, 'set_show_upgrade_notice' ] );
 		set_current_screen( 'front' );
 
 		$this->restoreWpHook( 'admin_notices' );

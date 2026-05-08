@@ -3,6 +3,7 @@ namespace WP_Rocket\Engine\CDN\RocketCDN;
 
 use WP_Rocket\Abstract_Render;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
+use WP_Rocket\Engine\Common\Notice\Notice;
 use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Engine\Tracking\Tracking;
 use WP_Rocket\Event_Management\Subscriber_Interface;
@@ -42,6 +43,13 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	private $tracking;
 
 	/**
+	 * Notice instance
+	 *
+	 * @var Notice
+	 */
+	private $notice;
+
+	/**
 	 * Constructor
 	 *
 	 * @param APIClient  $api_client    RocketCDN API Client instance.
@@ -49,14 +57,23 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	 * @param UserClient $user_client   UserClient instance.
 	 * @param Tracking   $tracking      Tracking instance.
 	 * @param string     $template_path Path to the templates.
+	 * @param Notice     $notice        Notice instance.
 	 */
-	public function __construct( APIClient $api_client, Beacon $beacon, UserClient $user_client, Tracking $tracking, $template_path ) {
+	public function __construct(
+		APIClient $api_client,
+		Beacon $beacon,
+		UserClient $user_client,
+		Tracking $tracking,
+		$template_path,
+		Notice $notice
+	) {
 		parent::__construct( $template_path );
 
 		$this->api_client  = $api_client;
 		$this->beacon      = $beacon;
 		$this->user_client = $user_client;
 		$this->tracking    = $tracking;
+		$this->notice      = $notice;
 	}
 
 	/**
@@ -69,6 +86,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 				[ 'purge_cache_notice' ],
 				[ 'change_cname_notice' ],
 				[ 'activation_failed_notice' ],
+				[ 'maybe_display_rocketcdn_upgrade_notice' ],
 			],
 			'rocket_before_cdn_sections'       => 'display_rocketcdn_cta',
 			'wp_ajax_toggle_rocketcdn_cta'     => 'toggle_cta',
@@ -553,5 +571,16 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 			],
 			esc_url_raw( $user_data->rocketcdn->button->url )
 		);
+	}
+
+	/**
+	 * Display RocketCDN upgrade notice on admin dashboard if flag is set and notice hasn't been dismissed
+	 *
+	 * @since 3.22
+	 *
+	 * @return void
+	 */
+	public function maybe_display_rocketcdn_upgrade_notice() {
+		$this->notice->display_update_notice( '3.22.0' );
 	}
 }

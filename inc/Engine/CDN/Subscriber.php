@@ -73,7 +73,6 @@ class Subscriber implements Subscriber_Interface {
 				[ 'on_update_add_cdn_type_option', 10, 2 ],
 				[ 'on_update_set_rocketcdn_upgrade_notice_flag', 10, 2 ],
 			],
-			'admin_notices'                => 'maybe_display_rocketcdn_upgrade_notice',
 		];
 	}
 
@@ -450,79 +449,5 @@ class Subscriber implements Subscriber_Interface {
 		$current_options['rocket_show_rocketcdn_upgrade_notice'] = true;
 
 		$this->options_api->set( 'settings', $current_options );
-	}
-
-	/**
-	 * Display RocketCDN upgrade notice on admin dashboard if flag is set and notice hasn't been dismissed
-	 *
-	 * @since 3.22
-	 *
-	 * @return void
-	 */
-	public function maybe_display_rocketcdn_upgrade_notice() {
-		// Don't show notice if user is a paid RocketCDN subscriber.
-		if ( ! empty( $this->options_api->get( 'rocketcdn_user_token' ) ) ) {
-			$this->options->set( 'rocket_show_rocketcdn_upgrade_notice', 0 );
-			$this->options_api->set( 'settings', $this->options->get_options() );
-
-			return;
-		}
-
-		// Check if the flag is set.
-		if ( ! $this->options->get( 'rocket_show_rocketcdn_upgrade_notice' ) ) {
-			return;
-		}
-
-		if ( ! current_user_can( 'rocket_manage_options' ) ) {
-			return;
-		}
-
-		$screen = get_current_screen();
-
-		if (
-			isset( $screen->id )
-			&&
-			'settings_page_wprocket' !== $screen->id
-		) {
-			return;
-		}
-
-		$notice_name = 'rocket_rocketcdn_upgrade_notice';
-
-		// Check if notice has been dismissed by the current user.
-		if ( in_array( $notice_name, (array) get_user_meta( get_current_user_id(), 'rocket_boxes', true ), true ) ) {
-			return;
-		}
-
-		$message = sprintf(
-		// translators: %1$s opening <strong> tag, %2$s closing </strong> tag.
-			esc_html__(
-				'%1$sUse RocketCDN for free to boost up to 3 pages 🚀%2$s',
-				'rocket'
-			),
-			'<p><strong>',
-			'</strong></p>'
-		);
-
-		$message .= sprintf(
-		// translators: %1$s opening <p> tag, %2$s closing </p> tag.
-			esc_html__(
-				'%1$sAs a WP Rocket user, you can now activate RocketCDN for free on up to 3 pages. Choose your top pages and speed up their performance worldwide!%2$s',
-				'rocket'
-			),
-			'<p>',
-			'</p>'
-		);
-
-		rocket_notice_html(
-			[
-				'status'                 => 'success',
-				'message'                => $message,
-				'action'                 => 'rocketcdn_pages',
-				'dismiss_button'         => $notice_name,
-				'dismiss_button_message' => __( 'Will check it later', 'rocket' ),
-				'dismiss_button_class'   => 'button button-secondary',
-			]
-		);
 	}
 }
