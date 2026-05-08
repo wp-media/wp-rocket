@@ -293,6 +293,55 @@ composer phpcs:fix      # Auto-fix style issues
 - Support keyboard navigation
 - Use `role` attributes appropriately
 
+### Tabular Data Display
+**Never use `<table>` elements.** For any tabular or grid-like display, use `<div>` elements with flexbox instead.
+
+```scss
+// ✅ PREFERRED: Div-based table with flexbox
+.wpr-table {
+  display: flex;
+  flex-direction: column;
+
+  &__header,
+  &__row {
+    display: flex;
+    align-items: center;
+  }
+
+  &__header {
+    font-weight: 600;
+    border-bottom: 1px solid $cGrey;
+  }
+
+  &__cell {
+    flex: 1;
+    padding: $space;
+  }
+}
+```
+
+```php
+// ✅ PREFERRED: Div-based markup
+<div class="wpr-table">
+    <div class="wpr-table__header">
+        <div class="wpr-table__cell">Name</div>
+        <div class="wpr-table__cell">Status</div>
+    </div>
+    <div class="wpr-table__row">
+        <div class="wpr-table__cell">Item</div>
+        <div class="wpr-table__cell">Active</div>
+    </div>
+</div>
+
+// ❌ NEVER: HTML table elements
+<table>
+    <thead><tr><th>Name</th><th>Status</th></tr></thead>
+    <tbody><tr><td>Item</td><td>Active</td></tr></tbody>
+</table>
+```
+
+Add `role="table"`, `role="row"`, and `role="cell"` attributes when the data is truly tabular to preserve accessibility semantics.
+
 ### Performance Considerations
 - Minimize CSS specificity
 - Avoid deeply nested selectors (max 3 levels)

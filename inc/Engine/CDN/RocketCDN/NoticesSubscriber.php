@@ -64,16 +64,15 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'admin_notices'                    => [
+			'admin_notices'                           => [
 				[ 'promote_rocketcdn_notice' ],
 				[ 'purge_cache_notice' ],
 				[ 'change_cname_notice' ],
 				[ 'activation_failed_notice' ],
 			],
-			'rocket_before_cdn_sections'       => 'display_rocketcdn_cta',
-			'wp_ajax_toggle_rocketcdn_cta'     => 'toggle_cta',
-			'wp_ajax_rocketcdn_dismiss_notice' => 'dismiss_notice',
-			'admin_footer'                     => 'add_dismiss_script',
+			'rocket_cdn_free_before_status_indicator' => 'display_rocketcdn_cta',
+			'wp_ajax_rocketcdn_dismiss_notice'        => 'dismiss_notice',
+			'admin_footer'                            => 'add_dismiss_script',
 		];
 	}
 
@@ -201,9 +200,11 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	 *
 	 * @since 3.5
 	 *
+	 * @param array $cta_data CTA data.
+	 *
 	 * @return void
 	 */
-	public function display_rocketcdn_cta() {
+	public function display_rocketcdn_cta( array $cta_data ) {
 		/**
 		 * Filters the display of the RocketCDN cta banner.
 		 *
@@ -308,35 +309,9 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 			];
 		}
 
-		echo $this->generate( 'cta-small', $small_cta_data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+		$big_cta_data = array_merge( $big_cta_data, $cta_data );
+
 		echo $this->generate( 'cta-big', $big_cta_data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
-	}
-
-	/**
-	 * Toggles display of the RocketCDN CTAs on the settings page
-	 *
-	 * @since 3.5
-	 *
-	 * @return void
-	 */
-	public function toggle_cta() {
-		check_ajax_referer( 'rocket-ajax', 'nonce', true );
-
-		if ( ! current_user_can( 'rocket_manage_options' ) ) {
-			wp_send_json_error( 'no permissions' );
-		}
-
-		if ( ! isset( $_POST['status'] ) ) {
-			wp_send_json_error( 'missing status' );
-		}
-
-		if ( 'big' === $_POST['status'] ) {
-			delete_user_meta( get_current_user_id(), 'rocket_rocketcdn_cta_hidden' );
-		} elseif ( 'small' === $_POST['status'] ) {
-			update_user_meta( get_current_user_id(), 'rocket_rocketcdn_cta_hidden', true );
-		}
-
-		wp_send_json_success();
 	}
 
 	/**

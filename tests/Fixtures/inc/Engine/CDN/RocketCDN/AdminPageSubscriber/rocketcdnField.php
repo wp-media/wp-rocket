@@ -19,13 +19,15 @@ $fields = [
 		'page'        => 'page_cdn',
 	],
 	'cdn_reject_files' => [
-		'type'              => 'textarea',
+		'type'              => 'textarea_with_container',
+		'label'             => 'Exclude Files from CDN',
 		'description'       => 'Specify URL(s) of files that should not get served via CDN (one per line).',
 		'helper'            => 'The domain part of the URL will be stripped automatically.<br>Use (.*) wildcards to exclude all files of a given file type located at a specific path.',
 		'placeholder'       => '/wp-content/plugins/some-plugins/(.*).css',
 		'section'           => 'exclude_cdn_section',
 		'page'              => 'page_cdn',
 		'default'           => [],
+		'class'             => [ 'wpr-cdn-exclusions' ],
 		'sanitize_callback' => 'sanitize_textarea',
 	],
 	'rocketcdn_token'  => [
@@ -39,6 +41,21 @@ $fields = [
 		],
 		'section'         => 'cnames_section',
 		'page'            => 'page_cdn',
+	],
+	'cdn_reject_pages' => [
+		'type'              => 'textarea_with_container',
+		'label'             => 'Exclude Pages from CDN',
+		'description'       => 'Specify URL(s) of pages that should not get served via CDN (one per line).',
+		'helper'            => 'Use (.*) wildcards to exclude all files of a given file type located at a specific path.',
+		'placeholder'       => '/path/to/page',
+		'section'           => 'exclude_cdn_section',
+		'page'              => 'page_cdn',
+		'default'           => [],
+		'class'             => [
+			'wpr-cdn-exclusions',
+			'rocketcdn',
+		],
+		'sanitize_callback' => 'sanitize_textarea',
 	],
 ];
 
