@@ -5,19 +5,19 @@ return [
 		'config'   => [
 			'active_driver' => 'rocketcdn_free',
 		],
-		'expected' => 'cdn_driver.free',
+		'expected' => 'cdn_driver_free',
 	],
 	'testShouldReturnPaidDriverForRocketCDNType'     => [
 		'config'   => [
 			'active_driver' => 'rocketcdn',
 		],
-		'expected' => 'cdn_driver.paid',
+		'expected' => 'cdn_driver_paid',
 	],
 	'testShouldReturnByocdnDriverForByocdnType'      => [
 		'config'   => [
 			'active_driver' => 'byocdn',
 		],
-		'expected' => 'cdn_driver.byocdn',
+		'expected' => 'cdn_driver_byocdn',
 	],
 	'testShouldReturnNullForUnknownDriverType'        => [
 		'config'   => [

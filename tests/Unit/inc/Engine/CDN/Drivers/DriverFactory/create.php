@@ -35,7 +35,7 @@ class Test_Create extends TestCase {
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->container = Mockery::mock( 'container' );
+		$this->container = Mockery::getContainer()->mock( 'WP_Rocket\Dependencies\Psr\Container\ContainerInterface' );
 		$this->context   = Mockery::mock( Context::class );
 		$this->factory   = new DriverFactory( $this->container, $this->context );
 	}
