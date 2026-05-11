@@ -2,8 +2,10 @@
 namespace WP_Rocket\Engine\CDN\RocketCDN;
 
 use WP_Rocket\Abstract_Render;
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\Common\Notice\Notice;
+use WP_Rocket\Engine\Common\Utils;
 use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Engine\Tracking\Tracking;
 use WP_Rocket\Event_Management\Subscriber_Interface;
@@ -43,21 +45,21 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	private $tracking;
 
 	/**
-	 * Notice instance
+	 * WP Rocket options instance
 	 *
-	 * @var Notice
+	 * @var Options_Data
 	 */
-	private $notice;
+	private $options;
 
 	/**
 	 * Constructor
 	 *
-	 * @param APIClient  $api_client    RocketCDN API Client instance.
-	 * @param Beacon     $beacon        Beacon instance.
-	 * @param UserClient $user_client   UserClient instance.
-	 * @param Tracking   $tracking      Tracking instance.
-	 * @param string     $template_path Path to the templates.
-	 * @param Notice     $notice        Notice instance.
+	 * @param APIClient    $api_client    RocketCDN API Client instance.
+	 * @param Beacon       $beacon        Beacon instance.
+	 * @param UserClient   $user_client   UserClient instance.
+	 * @param Tracking     $tracking      Tracking instance.
+	 * @param string       $template_path Path to the templates.
+	 * @param Options_Data $options WP Rocket options instance.
 	 */
 	public function __construct(
 		APIClient $api_client,
@@ -65,7 +67,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 		UserClient $user_client,
 		Tracking $tracking,
 		$template_path,
-		Notice $notice
+		Options_Data $options
 	) {
 		parent::__construct( $template_path );
 
@@ -73,7 +75,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 		$this->beacon      = $beacon;
 		$this->user_client = $user_client;
 		$this->tracking    = $tracking;
-		$this->notice      = $notice;
+		$this->options     = $options;
 	}
 
 	/**
@@ -581,6 +583,8 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	 * @return void
 	 */
 	public function maybe_display_rocketcdn_upgrade_notice() {
+		$previous_version = $this->options->get( 'previous_version' );
+
 		$message = sprintf(
 		// translators: %1$s opening <strong> tag, %2$s closing </strong> tag.
 			esc_html__(
@@ -602,13 +606,14 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 		);
 
 		$notice_info = [
-			'version'         => '3.22.0',
-			'dismiss_button'  => 'rocket_update_notice',
-			'dismiss_message' => __( 'Will check it later', 'rocket' ),
-			'message'         => $message,
-			'action'          => 'rocketcdn_pages',
+			'version'          => '3.22.0',
+			'dismiss_button'   => 'rocket_update_notice',
+			'dismiss_message'  => __( 'Will check it later', 'rocket' ),
+			'message'          => $message,
+			'action'           => 'rocketcdn_pages',
+			'previous_version' => $previous_version,
 		];
 
-		$this->notice->display_update_notice( $notice_info );
+		Utils::display_update_notice( $notice_info );
 	}
 }

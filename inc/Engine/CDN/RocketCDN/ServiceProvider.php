@@ -87,7 +87,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'user_client',
 					'tracking',
 					new StringArgument( __DIR__ . '/views' ),
-					'common_notice',
+					'options',
 				]
 			);
 		// RocketCDN settings page subscriber.

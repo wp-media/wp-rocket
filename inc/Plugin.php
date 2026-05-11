@@ -60,7 +60,6 @@ use WP_Rocket\Engine\Media\PreloadFonts\ServiceProvider as PreloadFontsServicePr
 use WP_Rocket\Engine\Media\PreconnectExternalDomains\ServiceProvider as PreconnectExternalDomainsServiceProvider;
 use WP_Rocket\Engine\Tracking\ServiceProvider as TrackingServiceProvider;
 use WP_Rocket\Engine\Admin\RocketInsights\ServiceProvider as RocketInsightsServiceProvider;
-use WP_Rocket\Engine\Common\Notice\ServiceProvider as CommonNoticeServiceProvider;
 
 /**
  * Plugin Manager.
@@ -311,7 +310,6 @@ class Plugin {
 		$this->container->addServiceProvider( new PreconnectExternalDomainsServiceProvider() );
 		$this->container->addServiceProvider( new RocketInsightsServiceProvider() );
 		$this->container->addServiceProvider( new TrackingServiceProvider() );
-		$this->container->addServiceProvider( new CommonNoticeServiceProvider() );
 
 		$common_subscribers = [
 			'license_subscriber',
