@@ -29,7 +29,7 @@ class DriverFactory {
 	 * Constructor.
 	 *
 	 * @param ContainerInterface $container Container instance.
-	 * @param Context $context Context instance.
+	 * @param Context            $context Context instance.
 	 */
 	public function __construct( ContainerInterface $container, Context $context ) {
 		$this->container = $container;

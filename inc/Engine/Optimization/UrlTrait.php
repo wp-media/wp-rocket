@@ -34,7 +34,7 @@ trait UrlTrait {
 		 * @param array $hosts Allowed hosts.
 		 * @param array $zones Zones to check available hosts.
 		 */
-		$hosts   = (array) wpm_apply_filters_typed( 'string[]' ,'rocket_cdn_hosts', [], [ 'all' ] );
+		$hosts   = (array) wpm_apply_filters_typed( 'string[]', 'rocket_cdn_hosts', [], [ 'all' ] );
 		$hosts[] = $parsed_site_url['host'];
 		$langs   = get_rocket_i18n_uri();
 
