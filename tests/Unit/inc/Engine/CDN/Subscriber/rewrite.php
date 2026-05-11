@@ -31,7 +31,7 @@ class Test_Rewrite extends TestCase {
 	}
 
 	public function addDataProvider(): array {
-		return $this->getTestData( __DIR__, 'rewrite-driver-gating' );
+		return $this->getTestData( __DIR__, 'rewriteUnit' );
 	}
 
 	/**

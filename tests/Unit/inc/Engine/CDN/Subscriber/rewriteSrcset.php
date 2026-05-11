@@ -31,7 +31,7 @@ class Test_RewriteSrcset extends TestCase {
 	}
 
 	public function addDataProvider(): array {
-		return $this->getTestData( __DIR__, 'rewriteSrcset-driver-gating' );
+		return $this->getTestData( __DIR__, 'rewriteSrcsetUnit' );
 	}
 
 	/**
