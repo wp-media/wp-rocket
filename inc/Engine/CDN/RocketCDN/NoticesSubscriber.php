@@ -606,7 +606,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 		);
 
 		$notice_info = [
-			'version'          => '3.22.0',
+			'new_version'      => '3.22.0',
 			'dismiss_button'   => 'rocket_update_notice',
 			'dismiss_message'  => __( 'Will check it later', 'rocket' ),
 			'message'          => $message,
