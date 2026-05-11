@@ -255,7 +255,7 @@ class Rest extends WP_REST_Controller {
 	 * @return void
 	 */
 	private function clean_url_cache( string $url ): void {
-		if(  Utils::is_home( $url ) ) {
+		if ( Utils::is_home( $url ) ) {
 			rocket_clean_home();
 
 			return;
