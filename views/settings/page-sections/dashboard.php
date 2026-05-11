@@ -30,16 +30,15 @@ $rocket_manual_preload = (bool) get_rocket_option( 'manual_preload', false );
 	</div>
 
 	<?php
-	$rocket_boxes     = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
-	$rocket_cdn_token = get_option( 'rocketcdn_user_token', '' );
+	$rocket_boxes = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
 
-	if ( ! in_array( 'rocketcdn_free_notice', (array) $rocket_boxes, true ) || ! empty( $rocket_cdn_token ) ) :
+	if ( ! in_array( 'rocketcdn_free_notice', (array) $rocket_boxes, true ) ) :
 		?>
 	<div class="wpr-notice">
 		<div class="wpr-notice-container">
 			<div class="wpr-notice-supTitle"><?php esc_html_e( 'NEW!', 'rocket' ); ?></div>
 			<h2 class="wpr-notice-title">
-			<?php esc_html_e( 'RocketCDN is now free for up to 3 pages of your choice.', 'rocket' ); ?>
+			<?php esc_html_e( 'You can now enable RocketCDN for free on up to 3 pages of your choice!', 'rocket' ); ?>
 			</h2>
 		<div class="wpr-notice-description"><?php esc_html_e( 'RocketCDN serves your content from locations closer to your visitors, helping your top pages load faster around the world. Go to the RocketCDN tab, choose up to 3 pages, and add them to the CDN to improve their performance globally.', 'rocket' ); ?></div>
 			<?php if ( ! empty( $data['rocket_insights_enabled'] ) ) : ?>
