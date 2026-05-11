@@ -212,12 +212,12 @@ class Page extends Abstract_Render {
 		if ( $rocket_valid_key ) {
 			$this->dashboard_section();
 			$this->rocket_insights_section();
+			$this->cdn_section();
 			$this->assets_section();
 			$this->media_section();
 			$this->preload_section();
 			$this->advanced_cache_section();
 			$this->database_section();
-			$this->cdn_section();
 			$this->heartbeat_section();
 			$this->addons_section();
 			$this->cloudflare_section();
@@ -1509,46 +1509,44 @@ class Page extends Abstract_Render {
 		$this->settings->add_page_section(
 			'page_cdn',
 			[
-				'title'            => __( 'CDN', 'rocket' ),
-				'menu_description' => __( 'Integrate your CDN', 'rocket' ),
+				'title'            => __( 'Content Delivery', 'rocket' ),
+				'menu_description' => __( 'Speed up page delivery', 'rocket' ),
+				'badge'            => __( 'NEW', 'rocket' ),
 			]
 		);
 
-		$cdn_beacon         = $this->beacon->get_suggest( 'cdn' );
-		$cdn_exclude_beacon = $this->beacon->get_suggest( 'exclude_cdn' );
+		$cdn_beacon = $this->beacon->get_suggest( 'cdn' );
 
-		$this->settings->add_settings_sections(
-			[
-				'cdn_section'         => [
-					'title'       => __( 'CDN', 'rocket' ),
-					'type'        => 'fields_container',
-					'description' => __( 'All URLs of static files (CSS, JS, images) will be rewritten to the CNAME(s) you provide.', 'rocket' ) . '<br><em>' . sprintf(
-						// translators: %1$s = opening link tag, %2$s = closing link tag.
-						__( 'Not required for services like Cloudflare and Sucuri. Please see our available %1$sAdd-ons%2$s.', 'rocket' ),
-						'<a href="#addons">',
-						'</a>'
-					) . '</em>',
-					'help'        => [
-						'id'  => $this->beacon->get_suggest( 'cdn_section' ),
-						'url' => $cdn_beacon['url'],
-					],
-					'page'        => 'page_cdn',
+		$cdn_sections = [
+			'cdn_section' => [
+				'title'            => __( 'Your CDN', 'rocket' ),
+				'type'             => 'your_own_cdn',
+				'help'             => [
+					'id'  => $this->beacon->get_suggest( 'cdn_section' ),
+					'url' => $cdn_beacon['url'],
 				],
-				'cnames_section'      => [
-					'type' => 'nocontainer',
-					'page' => 'page_cdn',
+				'page'             => 'page_cdn',
+				'class'            => [ 'your-own-cdn' ],
+				'status_indicator' => [
+					'is_active'          => true,
+					'status_text'        => __( 'Your CDN is active on your website', 'rocket' ),
+					'paused_status_text' => __( 'RocketCDN is paused', 'rocket' ),
+					'hide_pause_btn'     => true,
 				],
-				'exclude_cdn_section' => [
-					'title' => __( 'Exclude files from CDN', 'rocket' ),
-					'type'  => 'fields_container',
-					'help'  => [
-						'id'  => $cdn_exclude_beacon['id'],
-						'url' => $cdn_exclude_beacon['url'],
-					],
-					'page'  => 'page_cdn',
-				],
-			]
-		);
+			],
+		];
+
+		/**
+		 * Filters the CDN driver sections.
+		 *
+		 * Allows adding or modifying sections for different CDN drivers
+		 * (Built-in CDN, RocketCDN Unlimited, Your own CDN).
+		 *
+		 * @param array $cdn_driver_sections CDN driver sections data.
+		 */
+		$cdn_sections = wpm_apply_filters_typed( 'array', 'rocket_cdn_driver_sections', $cdn_sections );
+
+		$this->settings->add_settings_sections( $cdn_sections );
 
 		$maybe_display_cdn_helper = '';
 
@@ -1588,7 +1586,7 @@ class Page extends Abstract_Render {
 			apply_filters(
 				'rocket_cdn_settings_fields',
 				[
-					'cdn'              => [
+					'cdn'        => [
 						'type'              => 'checkbox',
 						'label'             => __( 'Enable Content Delivery Network', 'rocket' ),
 						'helper'            => $maybe_display_cdn_helper,
@@ -1596,24 +1594,17 @@ class Page extends Abstract_Render {
 						'page'              => 'page_cdn',
 						'default'           => 0,
 						'sanitize_callback' => 'sanitize_checkbox',
+						'container_class'   => [ 'wpr-isHidden' ],
+						'input_attr'        => [ 'disabled' => 1 ],
 					],
-					'cdn_cnames'       => [
-						'type'        => 'cnames',
-						'label'       => __( 'CDN CNAME(s)', 'rocket' ),
-						'description' => __( 'Specify the CNAME(s) below', 'rocket' ),
-						'default'     => [],
-						'section'     => 'cnames_section',
-						'page'        => 'page_cdn',
-					],
-					'cdn_reject_files' => [
-						'type'              => 'textarea',
-						'description'       => __( 'Specify URL(s) of files that should not get served via CDN (one per line).', 'rocket' ),
-						'helper'            => __( 'The domain part of the URL will be stripped automatically.<br>Use (.*) wildcards to exclude all files of a given file type located at a specific path.', 'rocket' ),
-						'placeholder'       => '/wp-content/plugins/some-plugins/(.*).css',
-						'section'           => 'exclude_cdn_section',
-						'page'              => 'page_cdn',
-						'default'           => [],
-						'sanitize_callback' => 'sanitize_textarea',
+					'cdn_cnames' => [
+						'type'            => 'cnames',
+						'label'           => __( 'CDN CNAME(s)', 'rocket' ),
+						'description'     => __( 'Specify the CNAME(s) below', 'rocket' ),
+						'default'         => [],
+						'section'         => 'cdn_section',
+						'page'            => 'page_cdn',
+						'container_class' => [ 'your-own-cdn' ],
 					],
 				]
 			)

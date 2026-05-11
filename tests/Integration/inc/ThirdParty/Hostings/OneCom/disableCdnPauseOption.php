@@ -5,10 +5,11 @@ use WP_Rocket\Tests\Integration\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * Test class covering \WP_Rocket\ThirdParty\Hostings\OneCom::disable_cdn_change
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\OneCom::disable_cdn_pause_option
+ *
  * @group OneCom
  */
-class Test_DisableCDNChange extends TestCase {
+class Test_DisableCdnPauseOption extends TestCase {
 
 	/**
 	 * @dataProvider providerTestData
@@ -31,12 +32,23 @@ class Test_DisableCDNChange extends TestCase {
 				);
 		}
 
-		$this->assertSame(
-			$expected['field_settings'], apply_filters( 'rocket_cdn_settings_fields', $config['field_settings' ]));
+		$result = apply_filters( 'rocket_cdn_driver_sections', $config['sections'] );
+
+		foreach ( $expected['sections'] as $key => $section_expected ) {
+			$this->assertArrayHasKey( $key, $result, "Section $key should exist in result." );
+
+			if ( isset( $section_expected['status_indicator']['disable_pause_btn'] ) ) {
+				$this->assertSame(
+					$section_expected['status_indicator']['disable_pause_btn'],
+					$result[ $key ]['status_indicator']['disable_pause_btn'] ?? false,
+					"disable_pause_btn for $key should match expected value."
+				);
+			}
+		}
 	}
 
 	public function providerTestData() {
-		return $this->getTestData( __DIR__, 'disableCDNChange' );
+		return $this->getTestData( __DIR__, 'disableCdnPauseOption' );
 	}
 }
 

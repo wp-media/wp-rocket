@@ -24,9 +24,9 @@ class Test_DisplayRocketcdnCta extends TestCase {
 		update_option( 'date_format', 'Y-m-d' );
 	}
 
-	private function getActualHtml() {
+	private function getActualHtml( array $cta_data = [] ) {
 		ob_start();
-		do_action( 'rocket_before_cdn_sections' );
+		do_action( 'rocket_cdn_free_before_status_indicator', $cta_data );
 		$actual = ob_get_clean();
 
 		return empty( $actual ) ? '' : $this->format_the_html( $actual );
@@ -38,6 +38,8 @@ class Test_DisplayRocketcdnCta extends TestCase {
 	public function testShouldDisplayPerData( $data, $expected, $config ) {
 		$this->white_label = isset( $config['white_label'] ) ? $config['white_label'] : $this->white_label;
 
+		$cta_data = $data['cta_data'] ?? [];
+
 		if ( isset( $config['home_url'] ) ) {
 			$this->home_url = $config['home_url'];
 			add_filter( 'home_url', [ $this, 'home_url_cb' ] );
@@ -48,14 +50,14 @@ class Test_DisplayRocketcdnCta extends TestCase {
 		}
 
 		if ( isset( $expected['integration']['assertNotContains'] ) ) {
-			$this->assertStringNotContainsString( $expected['integration']['assertNotContains'], $this->getActualHtml() );
+			$this->assertStringNotContainsString( $expected['integration']['assertNotContains'], $this->getActualHtml( $cta_data ) );
 
 			return;
 		}
 
 		if ( isset( $expected['integration']['not_expected'] ) ) {
 			foreach ( $expected['integration']['not_expected'] as $not_expected ) {
-				$this->assertStringNotContainsString( $not_expected, $this->getActualHtml() );
+				$this->assertStringNotContainsString( $not_expected, $this->getActualHtml( $cta_data ) );
 			}
 
 			return;
@@ -75,6 +77,16 @@ class Test_DisplayRocketcdnCta extends TestCase {
 			add_user_meta( $user_id, 'rocket_rocketcdn_cta_hidden', true );
 		}
 
-		$this->assertStringContainsString( $this->format_the_html( $expected['integration'] ), $this->getActualHtml() );
+		if ( is_array( $expected['integration'] ) ) {
+			$actual = $this->getActualHtml( $cta_data );
+
+			foreach ( $expected['integration'] as $expected_integration_snippet ) {
+				$this->assertStringContainsString( $this->format_the_html( $expected_integration_snippet ), $actual );
+			}
+
+			return;
+		}
+
+		$this->assertStringContainsString( $this->format_the_html( $expected['integration'] ), $this->getActualHtml( $cta_data ) );
 	}
 }

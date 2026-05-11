@@ -3,12 +3,19 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\CDN;
 
+use WP_Rocket\Dependencies\League\Container\Argument\Literal\StringArgument;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Engine\CDN\Admin\Subscriber as AdminSubscriber;
-use WP_Rocket\Engine\CDN\Drivers\Custom;
-use WP_Rocket\Engine\CDN\Drivers\DriverFactory;
-use WP_Rocket\Engine\CDN\Drivers\RocketCDNFree;
-use WP_Rocket\Engine\CDN\Drivers\RocketCDNPaid;
+use WP_Rocket\Engine\CDN\Drivers\{
+	Custom,
+	DriverFactory,
+	RocketCDNFree,
+	RocketCDNPaid
+};
+use WP_Rocket\Engine\CDN\Render\{
+	Controller as RenderController,
+	Subscriber as RenderSubscriber
+};
 
 /**
  * Service provider for WP Rocket CDN
@@ -24,6 +31,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		'cdn_context',
 		'cdn_subscriber',
 		'cdn_admin_subscriber',
+		'cdn_render_controller',
+		'cdn_render_subscriber',
 		'cdn_driver_factory',
 		'cdn_driver_free',
 		'cdn_driver_paid',
@@ -100,5 +109,18 @@ class ServiceProvider extends AbstractServiceProvider {
 				]
 			);
 		$this->getContainer()->addShared( 'cdn_admin_subscriber', AdminSubscriber::class );
+
+		// CDN Render controller.
+		$this->getContainer()->addShared( 'cdn_render_controller', RenderController::class )
+			->addArguments(
+				[
+					'beacon',
+					new StringArgument( rocket_get_constant( 'WP_ROCKET_PATH', '' ) . 'views/settings/' ),
+				]
+			);
+
+		// CDN Render subscriber.
+		$this->getContainer()->addShared( 'cdn_render_subscriber', RenderSubscriber::class )
+			->addArgument( 'cdn_render_controller' );
 	}
 }

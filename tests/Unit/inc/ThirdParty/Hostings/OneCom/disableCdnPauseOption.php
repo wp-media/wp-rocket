@@ -6,11 +6,11 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * Test class covering \WP_Rocket\ThirdParty\Hostings\OneCom::disable_cdn_change
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\OneCom::disable_cdn_pause_option
  * @group OneCom
  * @group ThirdParty
  */
-class Test_DisableCDNChange extends TestCase {
+class Test_DisableCdnPauseOption extends TestCase {
     private $onecom;
 
 	public function setUp() : void {
@@ -40,8 +40,8 @@ class Test_DisableCDNChange extends TestCase {
 		}
 
 		$this->assertSame(
-			$expected['field_settings'],
-			$this->onecom->disable_cdn_change( $config['field_settings'] )
+			$expected['sections'],
+			$this->onecom->disable_cdn_pause_option( $config['sections'] )
 		);
 	}
 }

@@ -162,15 +162,23 @@ PageManager.prototype.change = function() {
         'plugins',
     ];
 
+    const pagesWithoutSidebarToggle = [
+        'dashboard',
+        'imagify',
+        'page_cdn',
+    ];
+
     // Exception for dashboard
     if(this.pageId == "dashboard"){
         this.$sidebar.style.display = 'none';
-        this.$tips.style.display = 'none';
         this.$content.classList.remove('isNotFull');
     }
 
     if (this.pageId == "imagify") {
         this.$sidebar.style.display = 'none';
+    }
+
+    if (pagesWithoutSidebarToggle.includes(this.pageId)) {
         this.$tips.style.display = 'none';
     }
 

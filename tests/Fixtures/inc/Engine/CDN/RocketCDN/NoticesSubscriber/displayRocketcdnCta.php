@@ -7,7 +7,7 @@ return [
 		'expected' => [
 			'unit'        => null,
 			'integration' => [
-				'assertNotContains' => file_get_contents( __DIR__ . '/HTML/cta_no_promo.html' ),
+				'assertNotContains' => 'id="wpr-rocketcdn-cta"',
 			],
 		],
 
@@ -22,7 +22,7 @@ return [
 		'expected' => [
 			'unit'        => null,
 			'integration' => [
-				'assertNotContains' => file_get_contents( __DIR__ . '/HTML/cta_no_promo.html' ),
+				'assertNotContains' => 'id="wpr-rocketcdn-cta"',
 			],
 		],
 
@@ -48,8 +48,7 @@ return [
 			],
 			'integration' => [
 				'not_expected' => [
-					'<div class="wpr-rocketcdn-cta-small',
-					'<div class="wpr-rocketcdn-cta " id="wpr-rocketcdn-cta">',
+					'id="wpr-rocketcdn-cta"',
 				],
 			],
 		],
@@ -72,6 +71,10 @@ return [
 				'monthly_price'            => 7.99,
 				'annual_price'             => 79.99,
 			],
+			'cta_data' => [
+				'cta_heading'     => '<strong>Want full-site Content Delivery coverage?</strong> Extend RocketCDN to all your pages with unlimited bandwidth.',
+				'cta_description' => '',
+			],
 		],
 
 		'expected' => [
@@ -90,7 +93,11 @@ return [
 					'current_price_annual'      => 79.99,
 				],
 			],
-			'integration' => file_get_contents( __DIR__ . '/HTML/cta_no_promo.html' ),
+			'integration' => [
+				'<div class="wpr-rocketcdn-cta wpr-rocketcdn-cta--collapsed " id="wpr-rocketcdn-cta">',
+				'<div class="wpr-rocketcdn-cta-toggle" role="button" tabindex="0" aria-controls="wpr-rocketcdn-cta-expandable" aria-expanded="true">',
+				'<strong>Want full-site Content Delivery coverage?</strong> Extend RocketCDN to all your pages with unlimited bandwidth.',
+			],
 		],
 
 		'config' => [
@@ -114,6 +121,10 @@ return [
 				'monthly_price'            => 7.99,
 				'annual_price'             => 79.99,
 			],
+			'cta_data' => [
+				'cta_heading'     => '<strong>Want full-site Content Delivery coverage?</strong> Extend RocketCDN to all your pages with unlimited bandwidth.',
+				'cta_description' => '',
+			],
 		],
 
 		'expected' => [
@@ -132,7 +143,11 @@ return [
 					'current_price_annual'      => 6.67,
 				],
 			],
-			'integration' => file_get_contents( __DIR__ . '/HTML/cta_no_promo.html' ),
+			'integration' => [
+				'<div class="wpr-rocketcdn-cta wpr-rocketcdn-cta--collapsed " id="wpr-rocketcdn-cta">',
+				'<div class="wpr-rocketcdn-cta-toggle" role="button" tabindex="0" aria-controls="wpr-rocketcdn-cta-expandable" aria-expanded="true">',
+				'<strong>Want full-site Content Delivery coverage?</strong> Extend RocketCDN to all your pages with unlimited bandwidth.',
+			],
 		],
 
 		'config' => [
@@ -156,6 +171,10 @@ return [
 				'monthly_price'            => 7.99,
 				'annual_price'             => 79.99,
 			],
+			'cta_data' => [
+				'cta_heading'     => '<strong>Want full-site Content Delivery coverage?</strong> Extend RocketCDN to all your pages with unlimited bandwidth.',
+				'cta_description' => '',
+			],
 		],
 
 		'expected' => [
@@ -174,7 +193,11 @@ return [
 					'current_price_annual'      => 6.67,
 				],
 			],
-			'integration' => file_get_contents( __DIR__ . '/HTML/cta_no_promo.html' ),
+			'integration' => [
+				'<div class="wpr-rocketcdn-cta wpr-rocketcdn-cta--collapsed " id="wpr-rocketcdn-cta">',
+				'<div class="wpr-rocketcdn-cta-toggle" role="button" tabindex="0" aria-controls="wpr-rocketcdn-cta-expandable" aria-expanded="true">',
+				'<strong>Want full-site Content Delivery coverage?</strong> Extend RocketCDN to all your pages with unlimited bandwidth.',
+			],
 		],
 
 		'config' => [
@@ -198,6 +221,10 @@ return [
 				'monthly_price'            => 7.99,
 				'annual_price'             => 79.99,
 			],
+			'cta_data' => [
+				'cta_heading'     => '<strong>Want full-site Content Delivery coverage?</strong> Extend RocketCDN to all your pages with unlimited bandwidth.',
+				'cta_description' => '',
+			],
 		],
 
 		'expected' => [
@@ -216,7 +243,10 @@ return [
 					'current_price_annual'      => 6.67,
 				],
 			],
-			'integration' => file_get_contents( __DIR__ . '/HTML/cta_no_promo_big_hidden.html' ),
+			'integration' => [
+				'<div class="wpr-rocketcdn-cta wpr-rocketcdn-cta--collapsed wpr-isHidden" id="wpr-rocketcdn-cta">',
+				'<div class="wpr-rocketcdn-cta-toggle" role="button" tabindex="0" aria-controls="wpr-rocketcdn-cta-expandable" aria-expanded="true">',
+			],
 		],
 
 		'config' => [
@@ -239,6 +269,10 @@ return [
 				'monthly_price'            => 7.99,
 				'annual_price'             => 79.99,
 			],
+			'cta_data' => [
+				'cta_heading'     => '<strong>Want full-site Content Delivery coverage?</strong> Extend RocketCDN to all your pages with unlimited bandwidth.',
+				'cta_description' => '',
+			],
 		],
 
 		'expected' => [
@@ -257,7 +291,12 @@ return [
 					'current_price_annual'      => 5.00,
 				],
 			],
-			'integration' => str_replace( '**DATE_NOW**', date( 'Y-m-d', strtotime( 'tomorrow', time() ) ), file_get_contents( __DIR__ . '/HTML/cta_promo.html' ) ),
+			'integration' => [
+				'<div class="wpr-rocketcdn-cta wpr-rocketcdn-cta--collapsed " id="wpr-rocketcdn-cta">',
+				'<h3 class="wpr-rocketcdn-promo-title">',
+				'Launch',
+				'Valid until ' . date( 'Y-m-d', strtotime( 'tomorrow', time() ) ) . ' only!',
+			],
 		],
 
 		'config' => [
@@ -273,6 +312,10 @@ return [
 				'subscription_status' => 'cancelled',
 			],
 			'rocketcdn_pricing' => 'RocketCDN is not available at the moment. Please retry later.',
+			'cta_data' => [
+				'cta_heading'     => '<strong>Want full-site Content Delivery coverage?</strong> Extend RocketCDN to all your pages with unlimited bandwidth.',
+				'cta_description' => '',
+			],
 		],
 
 		'expected' => [
@@ -287,7 +330,11 @@ return [
 					'message'         => 'RocketCDN is not available at the moment. Please retry later. <a href="" data-beacon-article="" rel="noopener noreferrer" target="_blank">More Info</a>',
 				],
 			],
-				'integration' => file_get_contents( __DIR__ . '/HTML/cta_no_pricing.html' ),
+			'integration' => [
+				'<div class="wpr-rocketcdn-cta wpr-rocketcdn-cta--collapsed " id="wpr-rocketcdn-cta">',
+				'RocketCDN is not available at the moment. Please retry later.',
+				'More Info',
+			],
 		],
 
 		'config' => [

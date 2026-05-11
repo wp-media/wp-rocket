@@ -3,6 +3,7 @@
 namespace WP_Rocket\Engine\License;
 
 use WP_Rocket\Abstract_Render;
+use WP_Rocket\Engine\License\API\Currency;
 use WP_Rocket\Engine\License\API\Pricing;
 use WP_Rocket\Engine\License\API\User;
 
@@ -368,11 +369,24 @@ class Upgrade extends Abstract_Render {
 	 * @return array
 	 */
 	private function get_generic_upgrade_data( $upgrade_item ) {
+		$currency = $this->user->get_currency();
+
+		$prices_classes = [];
+		if ( Currency::is_euro( $currency ) ) {
+			$prices_classes[] = 'wpr-with-euro';
+		}
+		if ( $this->pricing->is_promo_active() ) {
+			$prices_classes[] = 'wpr-with-promo';
+		}
+
 		$data = [
-			'name'        => $upgrade_item->name,
-			'price'       => $this->pricing->is_promo_active() ? $upgrade_item->saving : $upgrade_item->regular_price,
-			'websites'    => $upgrade_item->websites,
-			'upgrade_url' => $upgrade_item->upgrade_url,
+			'name'            => $upgrade_item->name,
+			'price'           => $this->pricing->is_promo_active() ? $upgrade_item->saving : $upgrade_item->regular_price,
+			'websites'        => $upgrade_item->websites,
+			'upgrade_url'     => $upgrade_item->upgrade_url,
+			'currency'        => $currency,
+			'currency_symbol' => Currency::get_symbol( $currency ),
+			'prices_classes'  => ! empty( $prices_classes ) ? ' ' . implode( ' ', $prices_classes ) : '',
 		];
 
 		if ( $this->pricing->is_promo_active() ) {
