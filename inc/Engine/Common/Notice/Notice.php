@@ -24,11 +24,23 @@ class Notice {
 	/**
 	 * Display an update notice when the plugin is updated.
 	 *
-	 * @param string $version New plugin version.
+	 * @param array $notice_info Notice information {.
+	 * @type string $version Version of the plugin.
+	 * @type string $message Notice message.
+	 * @type string $action Notice action.
+	 * @type string $dismiss_message Dismiss message button title.
+	 * @type string $dismiss_button Dismiss button.
+	 *  }
 	 * @return void
 	 */
-	public function display_update_notice( $version ): void {
+	public function display_update_notice( array $notice_info ): void {
 		$previous_version = $this->options->get( 'previous_version' );
+		$version          = $notice_info['version'] ?? '';
+
+		// Bail-out for fresh install.
+		if ( empty( $previous_version ) ) {
+			return;
+		}
 
 		// Bail-out if previous version is greater than or equal to the new version.
 		if ( version_compare( $previous_version, $version, '>=' ) ) {
@@ -45,37 +57,17 @@ class Notice {
 
 		$boxes = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
 
-		if ( in_array( 'rocket_update_notice', (array) $boxes, true ) ) {
+		if ( in_array( $notice_info['dismiss_button'], (array) $boxes, true ) ) {
 			return;
 		}
-
-		$message = sprintf(
-		// translators: %1$s opening <strong> tag, %2$s closing </strong> tag.
-			esc_html__(
-				'%1$sUse RocketCDN for free to boost up to 3 pages 🚀%2$s',
-				'rocket'
-			),
-			'<p><strong>',
-			'</strong></p>'
-		);
-
-		$message .= sprintf(
-		// translators: %1$s opening <p> tag, %2$s closing </p> tag.
-			esc_html__(
-				'%1$sAs a WP Rocket user, you can now activate RocketCDN for free on up to 3 pages. Choose your top pages and speed up their performance worldwide!%2$s',
-				'rocket'
-			),
-			'<p>',
-			'</p>'
-		);
 
 		rocket_notice_html(
 			[
 				'status'                 => 'info',
-				'message'                => $message,
-				'action'                 => 'rocketcdn_pages',
-				'dismiss_button'         => 'rocket_update_notice',
-				'dismiss_button_message' => __( 'Will check it later', 'rocket' ),
+				'message'                => $notice_info['message'],
+				'action'                 => $notice_info['action'],
+				'dismiss_button'         => $notice_info['dismiss_button'],
+				'dismiss_button_message' => $notice_info['dismiss_message'],
 				'dismiss_button_class'   => 'button button-secondary',
 			]
 		);

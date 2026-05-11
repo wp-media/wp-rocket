@@ -581,6 +581,34 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	 * @return void
 	 */
 	public function maybe_display_rocketcdn_upgrade_notice() {
-		$this->notice->display_update_notice( '3.22.0' );
+		$message = sprintf(
+		// translators: %1$s opening <strong> tag, %2$s closing </strong> tag.
+			esc_html__(
+				'%1$sUse RocketCDN for free to boost up to 3 pages 🚀%2$s',
+				'rocket'
+			),
+			'<p><strong>',
+			'</strong></p>'
+		);
+
+		$message .= sprintf(
+		// translators: %1$s opening <p> tag, %2$s closing </p> tag.
+			esc_html__(
+				'%1$sAs a WP Rocket user, you can now activate RocketCDN for free on up to 3 pages. Choose your top pages and speed up their performance worldwide!%2$s',
+				'rocket'
+			),
+			'<p>',
+			'</p>'
+		);
+
+		$notice_info = [
+			'version'         => '3.22.0',
+			'dismiss_button'  => 'rocket_update_notice',
+			'dismiss_message' => __( 'Will check it later', 'rocket' ),
+			'message'         => $message,
+			'action'          => 'rocketcdn_pages',
+		];
+
+		$this->notice->display_update_notice( $notice_info );
 	}
 }
