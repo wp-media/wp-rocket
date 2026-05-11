@@ -223,7 +223,20 @@ class Rest extends WP_REST_Controller {
 			);
 		}
 
+		$this->clean_url_cache( $url );
+
 		return new WP_REST_Response( $this->get_pages_data(), 201 );
+	}
+
+	/**
+	 * Cleans the cache for the provided URL to ensure changes are reflected in RocketCDN delivery.
+	 *
+	 * @param string $url URL to clear.
+	 *
+	 * @return void
+	 */
+	private function clean_url_cache( string $url ): void {
+		rocket_clean_files( [ $url ] );
 	}
 
 	/**
@@ -247,6 +260,8 @@ class Rest extends WP_REST_Controller {
 		}
 
 		$this->query->delete_item( $id );
+
+		$this->clean_url_cache( $item->url );
 
 		return new WP_REST_Response( $this->get_pages_data(), 200 );
 	}
