@@ -146,6 +146,25 @@ class Rest extends WP_REST_Controller {
 				],
 			]
 		);
+
+		register_rest_route(
+			self::ROUTE_NAMESPACE,
+			self::ROUTE_BASE . '/driver',
+			[
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => [ $this, 'save_cdn_type' ],
+				'permission_callback' => [ $this, 'check_permission' ],
+				'args'                => [
+					'driver' => [
+						'required'          => true,
+						'validate_callback' => function ( $param ) {
+							return in_array( $param, [ 'byocdn', 'rocketcdn' ], true );
+						},
+						'sanitize_callback' => 'sanitize_text_field',
+					],
+				],
+			]
+		);
 	}
 
 	/**
@@ -351,5 +370,28 @@ class Rest extends WP_REST_Controller {
 	 */
 	protected function get_free_page_limit(): int {
 		return 3;
+	}
+
+	/**
+	 * Save cdn driver
+	 *
+	 * Persists the active driver tab selection so the UI
+	 *  can restore the correct view after a page refresh.
+	 *
+	 * @param WP_REST_Request $request REST request.
+	 * @return WP_REST_Response
+	 */
+	public function save_cdn_type( WP_REST_Request $request ) {
+		$cdn_type = $request->get_param( 'driver' );
+
+		$this->options->set( 'cdn_type', $cdn_type );
+		$this->options_api->set( 'settings', $this->options->get_options() );
+
+		return new WP_REST_Response(
+			[
+				'cdn_type' => $cdn_type,
+			],
+			200
+		);
 	}
 }
