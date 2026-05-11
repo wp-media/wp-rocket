@@ -23,6 +23,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'rocketcdn_api_client',
 		'rocketcdn_options_manager',
 		'rocketcdn_data_manager_subscriber',
+		'rocketcdn_rest',
 		'rocketcdn_rest_subscriber',
 		'rocketcdn_admin_subscriber',
 		'rocketcdn_notices_subscriber',
@@ -70,12 +71,22 @@ class ServiceProvider extends AbstractServiceProvider {
 					'user_client',
 				]
 			);
+		// RocketCDN REST API pages controller.
+		$this->getContainer()->add( 'rocketcdn_rest', Rest::class )
+			->addArguments(
+				[
+					'rocketcdn_query',
+					'options',
+					'options_api',
+				]
+			);
 		// RocketCDN REST API Subscriber.
 		$this->getContainer()->addShared( 'rocketcdn_rest_subscriber', RESTSubscriber::class )
 			->addArguments(
 				[
 					'rocketcdn_options_manager',
 					'options',
+					'rocketcdn_rest',
 				]
 			);
 		// RocketCDN Notices Subscriber.
