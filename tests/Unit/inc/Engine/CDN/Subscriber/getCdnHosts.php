@@ -5,10 +5,10 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\CDN\Subscriber;
 use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Admin\Options;
-use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CDN\CDN;
 use WP_Rocket\Engine\CDN\Subscriber;
+use WP_Rocket\Tests\Unit\TestCase;
 
 /**
  * Test class covering \WP_Rocket\Engine\CDN\Subscriber::get_cdn_hosts
@@ -63,16 +63,16 @@ class Test_GetCdnHosts extends TestCase {
 	}
 
 	/**
-	 * @dataProvider addDataProvider
+	 * @dataProvider configTestData
 	 */
-	public function testShouldReturnCdnArray( $original, $zones, $cdn_urls, $expected ) {
+	public function testShouldReturnCdnArray( $config, $expected ) {
 		$this->cdn->shouldReceive( 'get_cdn_urls' )
 			->once()
-			->andReturn( $cdn_urls );
+			->andReturn( $config['cdn_urls'] );
 
 		$this->assertSame(
 			$expected,
-			array_values( $this->subscriber->get_cdn_hosts( $original, $zones ) )
+			array_values( $this->subscriber->get_cdn_hosts( $config['original'], $config['zones'] ) )
 		);
 	}
 }

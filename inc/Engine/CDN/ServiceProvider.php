@@ -6,6 +6,12 @@ namespace WP_Rocket\Engine\CDN;
 use WP_Rocket\Dependencies\League\Container\Argument\Literal\StringArgument;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Engine\CDN\Admin\Subscriber as AdminSubscriber;
+use WP_Rocket\Engine\CDN\Drivers\{
+	Custom,
+	DriverFactory,
+	RocketCDNFree,
+	RocketCDNPaid
+};
 use WP_Rocket\Engine\CDN\Render\{
 	Controller as RenderController,
 	Subscriber as RenderSubscriber
@@ -27,6 +33,11 @@ class ServiceProvider extends AbstractServiceProvider {
 		'cdn_admin_subscriber',
 		'cdn_render_controller',
 		'cdn_render_subscriber',
+		'cdn_driver_factory',
+		'cdn_driver_free',
+		'cdn_driver_paid',
+		'cdn_driver_byocdn',
+		'cdn_driver',
 	];
 
 	/**
@@ -52,15 +63,49 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArguments(
 				[
 					'options',
-					'rocketcdn_api_client',
 				]
 			);
+
+		// Register individual drivers.
+		$this->getContainer()->add(
+			'cdn_driver_free',
+			RocketCDNFree::class
+		)->addArgument( 'rocketcdn_query' );
+
+		$this->getContainer()->add(
+			'cdn_driver_paid',
+			RocketCDNPaid::class
+		)->addArgument( 'options' );
+
+		$this->getContainer()->add(
+			'cdn_driver_byocdn',
+			Custom::class
+		);
+
+		// Register Driver Factory.
+		$this->getContainer()->addShared(
+			'cdn_driver_factory',
+			DriverFactory::class
+		)
+			->addArgument( $this->getContainer() )
+			->addArgument( 'cdn_context' );
+
+		// Register current active driver (resolved at runtime).
+		$this->getContainer()->add(
+			'cdn_driver',
+			function () {
+				$factory = $this->getContainer()->get( 'cdn_driver_factory' );
+				return $factory->create();
+			}
+		);
+
 		$this->getContainer()->addShared( 'cdn_subscriber', Subscriber::class )
 			->addArguments(
 				[
 					'options',
 					'cdn',
 					'options_api',
+					'cdn_driver',
 				]
 			);
 		$this->getContainer()->addShared( 'cdn_admin_subscriber', AdminSubscriber::class );
