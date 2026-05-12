@@ -113,13 +113,16 @@ class RocketCDN extends AbstractQuery {
 	/**
 	 * Get total count of pages.
 	 *
+	 * @param bool $bool_cache Use DB cache or not.
+	 *
 	 * @return int
 	 */
-	public function get_total_count(): int {
+	public function get_total_count( bool $bool_cache = true ): int {
 		return (int) $this->query(
 			[
 				'count' => true,
-			]
+			],
+			$bool_cache
 		);
 	}
 

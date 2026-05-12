@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace WP_Rocket\Engine\Admin\RocketInsights;
+namespace WP_Rocket\Engine\Common\Page;
 
 trait PageHandlerTrait {
 	/**
@@ -65,5 +65,61 @@ trait PageHandlerTrait {
 		}
 
 		return wp_remote_retrieve_body( $response );
+	}
+
+	/**
+	 * Validates a given URL for performance monitoring eligibility.
+	 *
+	 * @param string $url The URL to validate.
+	 *
+	 * @return array {
+	 *     @type bool   $error        Whether an error occurred during validation.
+	 *     @type string $message      The error message, or an empty string if no error.
+	 *     @type string $processed_url The URL with protocol added if validation passes.
+	 * }
+	 */
+	protected function get_page_url_validation_payload( string $url ): array {
+		$payload = [
+			'error'         => false,
+			'message'       => '',
+			'processed_url' => '',
+			'data'          => [
+				'status' => 400,
+			],
+		];
+
+		// Validate that url is not empty.
+		if ( '' === $url ) {
+			$payload['error']   = true;
+			$payload['message'] = 'No url provided.';
+
+			return $payload;
+		}
+
+		// Check if URL has protocol, add if needed.
+		$url                      = rocket_add_url_protocol( $url );
+		$payload['processed_url'] = $url;
+
+		$response = $this->get_page_content( $url );
+
+		if ( ! $response ) {
+			$payload['error']   = true;
+			$payload['message'] = 'Url does not resolve to a valid page.';
+
+			return $payload;
+		}
+
+		// check if url is not from admin.
+		if ( strpos( $url, admin_url() ) === 0 ) {
+			$payload['error']   = true;
+			$payload['message'] = 'Url is an admin page.';
+
+			return $payload;
+		}
+
+		// Fetch url body and send to payload.
+		$payload['message'] = $response;
+
+		return $payload;
 	}
 }
