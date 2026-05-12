@@ -40,13 +40,10 @@ class CDNOptionsManager {
 	 *
 	 * @since 3.5
 	 *
-	 * @param string $cdn_url CDN URL.
 	 * @return void
 	 */
-	public function enable( $cdn_url ) {
+	public function enable() {
 		$this->options->set( 'cdn', 1 );
-		$this->options->set( 'cdn_cnames', [ $cdn_url ] );
-		$this->options->set( 'cdn_zone', [ 'all' ] );
 
 		$this->options_api->set( 'settings', $this->options->get_options() );
 
@@ -75,8 +72,6 @@ class CDNOptionsManager {
 	 */
 	public function disable() {
 		$this->options->set( 'cdn', 0 );
-		$this->options->set( 'cdn_cnames', [] );
-		$this->options->set( 'cdn_zone', [] );
 
 		$this->options_api->set( 'settings', $this->options->get_options() );
 

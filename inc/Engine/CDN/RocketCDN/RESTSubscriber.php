@@ -149,9 +149,7 @@ class RESTSubscriber implements Subscriber_Interface {
 	 * @return \WP_REST_Response|\WP_Error
 	 */
 	public function enable( \WP_REST_Request $request ) {
-		$params = $request->get_body_params();
-
-		$this->cdn_options->enable( $params['url'] );
+		$this->cdn_options->enable();
 
 		$response = [
 			'code'    => 'success',

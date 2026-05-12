@@ -86,6 +86,8 @@ class DataManagerSubscriber implements Subscriber_Interface {
 			'wp_ajax_rocketcdn_validate_token_cname' => 'validate_token_cname',
 			self::CRON_EVENT                         => 'maybe_disable_cdn',
 			'wp_rocket_upgrade'                      => [ 'refresh_cdn_cname', 10, 2 ],
+			'pre_get_rocket_option_cdn_cnames'       => [ 'set_cdn_cnames', 9 ],
+			'pre_get_rocket_option_cdn_zone'         => [ 'set_cdn_zone', 9 ],
 		];
 	}
 
@@ -169,7 +171,7 @@ class DataManagerSubscriber implements Subscriber_Interface {
 
 		// Save token and enable CDN.
 		$this->cdn_options->save_token( $token );
-		$this->cdn_options->enable( $cdn_url );
+		$this->cdn_options->enable();
 
 		// Schedule subscription check.
 		$subscription = $this->api_client->get_subscription_data();
@@ -225,7 +227,7 @@ class DataManagerSubscriber implements Subscriber_Interface {
 			wp_send_json_error( $data );
 		}
 
-		$this->cdn_options->enable( esc_url_raw( $cdn_url ) );
+		$this->cdn_options->enable();
 
 		$subscription = $this->api_client->get_subscription_data();
 
@@ -399,7 +401,7 @@ class DataManagerSubscriber implements Subscriber_Interface {
 		}
 
 		update_option( 'rocketcdn_user_token', $token );
-		$this->cdn_options->enable( esc_url_raw( $cdn_url ) );
+		$this->cdn_options->enable();
 
 		$data['message'] = 'token_updated_successfully';
 		wp_send_json_success( $data );
@@ -488,7 +490,7 @@ class DataManagerSubscriber implements Subscriber_Interface {
 		}
 
 		// Enable CDN and schedule check.
-		$this->cdn_options->enable( $subscription['cdn_url'] );
+		$this->cdn_options->enable();
 		$this->schedule_subscription_check( $subscription );
 	}
 
@@ -524,5 +526,60 @@ class DataManagerSubscriber implements Subscriber_Interface {
 		$this->options->set( 'cdn_cnames', $cdn_cnames );
 
 		$this->options_api->set( 'settings', $this->options->get_options() );
+	}
+
+	/**
+	 * Sets the CDN CNAME from the RocketCDN subscription data on the filter level.
+	 *
+	 * @since 3.22
+	 *
+	 * @param mixed $value The current pre-filter value.
+	 *
+	 * @return mixed The CDN CNAME array if RocketCDN is active, or the original value.
+	 */
+	public function set_cdn_cnames( $value ) {
+		$cdn_url = $this->get_rocketcdn_url();
+
+		if ( empty( $cdn_url ) ) {
+			return $value;
+		}
+
+		return [ $cdn_url ];
+	}
+
+	/**
+	 * Sets the CDN zone from the RocketCDN subscription data on the filter level.
+	 *
+	 * @since 3.22
+	 *
+	 * @param mixed $value The current pre-filter value.
+	 *
+	 * @return mixed The CDN zone array if RocketCDN is active, or the original value.
+	 */
+	public function set_cdn_zone( $value ) {
+		$cdn_url = $this->get_rocketcdn_url();
+
+		if ( empty( $cdn_url ) ) {
+			return $value;
+		}
+
+		return [ 'all' ];
+	}
+
+	/**
+	 * Gets the CDN URL from the RocketCDN subscription data.
+	 *
+	 * @since 3.22
+	 *
+	 * @return string The CDN URL if subscription is active, empty string otherwise.
+	 */
+	private function get_rocketcdn_url(): string {
+		$subscription = $this->api_client->get_subscription_data();
+
+		if ( 'running' !== $subscription['subscription_status'] ) {
+			return '';
+		}
+
+		return $subscription['cdn_url'];
 	}
 }
