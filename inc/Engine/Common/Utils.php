@@ -136,29 +136,35 @@ class Utils {
 	 * @type string $action Notice action.
 	 * @type string $dismiss_message Dismiss message button title.
 	 * @type string $dismiss_button Dismiss button.
+	 * @type bool   $fresh_install Whether it's a fresh install or an update.
 	 *  }
+	 *
+	 * @param bool  $display_general Whether to display the notice on all WP or only WPR dashboard.
 	 * @return void
 	 */
-	public static function display_update_notice( array $notice_info ): void {
+	public static function display_update_notice( array $notice_info, $display_general = false ): void {
 		$previous_version = $notice_info['previous_version'] ?? '';
+		$status           = $notice_info['status'] ?? 'info';
+		$version          = $notice_info['new_version'] ?? '';
+		$fresh_install    = $notice_info['fresh_install'] ?? false;
 
-		$version = $notice_info['new_version'] ?? '';
+		if ( ! $fresh_install ) {
+			// Bail-out for fresh install.
+			if ( empty( $previous_version ) ) {
+				return;
+			}
 
-		// Bail-out for fresh install.
-		if ( empty( $previous_version ) ) {
-			return;
-		}
-
-		// Bail-out if previous version is greater than or equal to the new version.
-		if ( version_compare( $previous_version, $version, '>=' ) ) {
-			return;
+			// Bail-out if previous version is greater than or equal to the new version.
+			if ( version_compare( $previous_version, $version, '>=' ) ) {
+				return;
+			}
 		}
 
 		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			return;
 		}
 
-		if ( 'settings_page_wprocket' !== get_current_screen()->id ) {
+		if ( ! $display_general && 'settings_page_wprocket' !== get_current_screen()->id ) {
 			return;
 		}
 
@@ -170,7 +176,7 @@ class Utils {
 
 		rocket_notice_html(
 			[
-				'status'                 => 'info',
+				'status'                 => $status,
 				'message'                => $notice_info['message'],
 				'action'                 => $notice_info['action'],
 				'dismiss_button'         => $notice_info['dismiss_button'],

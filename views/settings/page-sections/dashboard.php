@@ -30,9 +30,10 @@ $rocket_manual_preload = (bool) get_rocket_option( 'manual_preload', false );
 	</div>
 
 	<?php
-	$rocket_boxes = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
+	$rocket_boxes     = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
+	$rocket_cdn_token = get_option( 'rocketcdn_user_token', '' );
 
-	if ( ! in_array( 'rocketcdn_free_notice', (array) $rocket_boxes, true ) ) :
+	if ( ! in_array( 'rocketcdn_free_notice', (array) $rocket_boxes, true ) || ! empty( $rocket_cdn_token ) ) :
 		?>
 	<div class="wpr-notice">
 		<div class="wpr-notice-container">
@@ -40,19 +41,8 @@ $rocket_manual_preload = (bool) get_rocket_option( 'manual_preload', false );
 			<h2 class="wpr-notice-title">
 			<?php esc_html_e( 'You can now enable RocketCDN for free on up to 3 pages of your choice!', 'rocket' ); ?>
 			</h2>
-		<div class="wpr-notice-description"><?php esc_html_e( 'RocketCDN serves your content from locations closer to your visitors, helping your top pages load faster around the world. Go to the RocketCDN tab, choose up to 3 pages, and add them to the CDN to improve their performance globally.', 'rocket' ); ?></div>
-			<?php if ( ! empty( $data['rocket_insights_enabled'] ) ) : ?>
-			<div class="wpr-notice-continue">
-				<?php
-				printf(
-					// translators: %1$s = opening <strong> tag, %2$s = closing </strong> tag.
-					esc_html__( 'Check the %1$sRocket Insights%2$s tab to track your top pages, quickly spot issues, and get in-depth insights to further optimize your website speed.', 'rocket' ),
-					'<strong>',
-					'</strong>'
-				);
-				?>
-			</div>
-			<?php endif; ?>
+		<div class="wpr-notice-description">
+			<?php esc_html_e( 'RocketCDN serves your content from locations closer to your visitors, helping your top pages load faster around the world. Go to the RocketCDN tab, choose up to 3 pages, and add them to the CDN to improve their performance globally.', 'rocket' ); ?></div>
 			<a id="wpr-congratulations-notice" class="wpr-notice-close wpr-icon-close rocket-dismiss" href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box=rocketcdn_free_notice' ), 'rocket_ignore_rocketcdn_free_notice' ) ); ?>"><span class="screen-reader-text"><?php esc_html_e( 'Dismiss this notice', 'rocket' ); ?></span></a>
 		</div>
 	</div>
