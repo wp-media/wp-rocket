@@ -9,7 +9,7 @@ return [
 		],
 		'expected' => [
 			'display' => true,
-			'html'    => '<a class="button button-primary" href="' . admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '&rocket_source=notice_rocketcdn_upgrade#page_cdn' ) . '">I want to add pages now</a>',
+			'html'    => '<a class="button button-primary" href="' . admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '&rocket_source=notice_rocketcdn_upgrade#page_cdn' ) . '">Add your pages now</a>',
 		],
 	],
 	'shouldNotDisplayNoticeWithoutFlag' => [
@@ -42,7 +42,7 @@ return [
 			'screen'              => 'dashboard',
 		],
 		'expected' => [
-			'display' => false,
+			'display' => true,
 			'html'    => 'Use RocketCDN for free to boost up to 3 pages',
 		],
 	],
