@@ -23,6 +23,7 @@ defined( 'ABSPATH' ) || exit;
 		class="wpr-cdn-tabs__tab <?php echo 'rocketcdn' === $data['cdn_type'] ? 'wpr-cdn-tabs__tab--active' : ''; ?>" 
 		data-cdn-driver="rocketcdn" 
 		data-title="<?php esc_attr_e( 'RocketCDN', 'rocket' ); ?>"
+		aria-describedby="wpr-cdn-driver-tooltip"
 	>
 		<?php esc_html_e( 'RocketCDN', 'rocket' ); ?>
 	</button>
@@ -35,15 +36,14 @@ defined( 'ABSPATH' ) || exit;
 			class="wpr-cdn-tabs__tab <?php echo 'byocdn' === $data['cdn_type'] ? 'wpr-cdn-tabs__tab--active' : ''; ?>" 
 			data-cdn-driver="your-own-cdn" 
 			data-title="<?php esc_attr_e( 'Your CDN', 'rocket' ); ?>" 
+			aria-describedby="wpr-cdn-driver-tooltip"
 			<?php echo $data['disable_other_cdn'] ? 'disabled' : ''; ?>
-			<?php echo $data['disable_other_cdn'] ? 'aria-describedby="wpr-cdn-driver-tooltip"' : ''; ?>
 		>
 			<?php esc_html_e( 'Other CDN', 'rocket' ); ?>
 		</button>
-		<?php if ( $data['disable_other_cdn'] ) : ?>
-		<span id="wpr-cdn-driver-tooltip" class="wpr-cdn-tabs__tooltip">
-			<?php esc_html_e( 'You can only use one CDN at a time', 'rocket' ); ?>
-		</span>
-		<?php endif; ?>
 	</div>
+
+	<span id="wpr-cdn-driver-tooltip" class="wpr-cdn-tabs__tooltip" role="tooltip">
+		<?php esc_html_e( 'You can only use one CDN at a time', 'rocket' ); ?>
+	</span>
 </div>
