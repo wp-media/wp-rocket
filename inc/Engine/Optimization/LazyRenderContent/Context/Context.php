@@ -13,10 +13,6 @@ class Context implements ContextInterface {
 	 * @return bool
 	 */
 	public function is_allowed( array $data = [] ): bool {
-		if ( get_option( 'wp_rocket_no_licence' ) ) {
-			return false;
-		}
-
 		/**
 		 * Filters to manage lazy render content optimization
 		 *

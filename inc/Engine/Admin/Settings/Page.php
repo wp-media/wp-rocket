@@ -490,7 +490,7 @@ class Page extends Abstract_Render {
 			]
 		);
 
-		$invalid_license = get_option( 'wp_rocket_no_licence' );
+		$invalid_license = false;
 
 		$this->settings->add_page_section(
 			'file_optimization',

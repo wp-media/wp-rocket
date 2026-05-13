@@ -20,8 +20,6 @@ use WP_Rocket\Event_Management\Event_Manager;
  * @since 3.6.3
  */
 class Activation {
-	const ACTIVATION_ENDPOINT = 'https://api.wp-rocket.me/api/wp-rocket/activate-licence.php';
-
 	/**
 	 * Aliases in the container for each class that needs to call its activate method
 	 *
@@ -104,14 +102,6 @@ class Activation {
 
 		// Create the config folder (wp-rocket-config).
 		rocket_init_config_dir();
-
-		// Update customer key & licence.
-		wp_remote_get(
-			self::ACTIVATION_ENDPOINT,
-			[
-				'blocking' => false,
-			]
-		);
 
 		/**
 		 * Fires after WP Rocket is activated

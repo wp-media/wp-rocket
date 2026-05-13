@@ -1,12 +1,12 @@
 <?php
 
 return [
-	'testShouldReturnFalseWhenNoLicense' => [
+	'testShouldReturnTrueWhenFilterTrueEvenIfNoLicenseFlagExists' => [
 		'config'   => [
 			'licence' => true,
 			'filter'  => true,
 		],
-		'expected' => false,
+		'expected' => true,
 	],
 	'testShouldReturnFalseWhenFilterFalse' => [
 		'config'   => [
@@ -15,7 +15,7 @@ return [
 		],
 		'expected' => false,
 	],
-	'testShouldReturnTrueWhenLicenseAndFilterTrue' => [
+	'testShouldReturnTrueWhenFilterTrue' => [
 		'config'   => [
 			'licence' => false,
 			'filter'  => true,

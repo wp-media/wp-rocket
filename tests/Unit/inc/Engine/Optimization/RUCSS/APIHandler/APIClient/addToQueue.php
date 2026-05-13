@@ -46,8 +46,8 @@ class Test_AddToQueue extends TestCase {
 		if(! $config['is_unauthorized']) {
 			return;
 		}
-		Functions\expect('update_option')->with('wp_rocket_no_licence', true );
-		Functions\expect('update_rocket_option')->with('remove_unused_css', 0);
+		Functions\expect('update_option')->never();
+		Functions\expect('update_rocket_option')->never();
 	}
 
 	protected function configureCheckResponse($config) {

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\LazyRenderContent\Context\Context;
 
-use Brain\Monkey\{Filters, Functions};
+use Brain\Monkey\Filters;
 use WP_Rocket\Engine\Optimization\LazyRenderContent\Context\Context;
 use WP_Rocket\Tests\Unit\TestCase;
 
@@ -23,7 +23,6 @@ class TestIsAllowed extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
-		Functions\when( 'get_option' )->justReturn( $config['licence'] );
 		Filters\expectApplied( 'rocket_lrc_optimization' )
 			->andReturn( $config['filter'] );
 

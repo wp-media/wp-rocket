@@ -6,11 +6,6 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Common\JobManager\APIHandler\AbstractSafeAPIClient;
 
 class UserClient extends AbstractSafeAPIClient {
-	/**
-	 * Use the CustomerDataTrait
-	 */
-	use CustomerDataTrait;
-
 	const USER_ENDPOINT = 'https://api.wp-rocket.me/stat/1.0/wp-rocket/user.php';
 
 	/**
@@ -67,15 +62,40 @@ class UserClient extends AbstractSafeAPIClient {
 			return $cached_data;
 		}
 
-		$data = $this->get_raw_user_data();
-
-		if ( false === $data ) {
-			return false;
-		}
+		$data = $this->get_local_user_data();
 
 		set_transient( 'wp_rocket_customer_data', $data, DAY_IN_SECONDS );
 
 		return $data;
+	}
+
+	/**
+	 * Gets local account data for builds that do not use remote license validation.
+	 *
+	 * @return object
+	 */
+	private function get_local_user_data() {
+		return (object) [
+			'ID'                     => 'local-build',
+			'first_name'             => 'Local',
+			'email'                  => '',
+			'date_created'           => time(),
+			'licence_account'        => 999,
+			'licence_expiration'     => time() + ( 10 * 365 * DAY_IN_SECONDS ),
+			'status'                 => 'active',
+			'is_blacklisted'         => '',
+			'is_blocked'             => '',
+			'has_auto_renew'         => true,
+			'renewal_url'            => '',
+			'upgrade_plus_url'       => '',
+			'upgrade_infinite_url'   => '',
+			'licence'                => (object) [
+				'is_revoked' => false,
+			],
+			'performance_monitoring' => (object) [
+				'expiration' => time() + ( 10 * 365 * DAY_IN_SECONDS ),
+			],
+		];
 	}
 
 	/**
@@ -85,35 +105,5 @@ class UserClient extends AbstractSafeAPIClient {
 	 */
 	public function flush_cache() {
 		delete_transient( 'wp_rocket_customer_data' );
-	}
-
-	/**
-	 * Gets the user data from the user endpoint
-	 *
-	 * @since 3.7.3
-	 *
-	 * @return bool|object
-	 */
-	private function get_raw_user_data() {
-		$customer_data = $this->get_customer_data();
-
-		$response = $this->send_post_request(
-			[
-				'body' => 'user_id=' . rawurlencode( $customer_data['email'] ) . '&consumer_key=' . $customer_data['key'],
-			],
-			true
-		);
-
-		if ( is_wp_error( $response ) ) {
-			return false;
-		}
-
-		$body = wp_remote_retrieve_body( $response );
-
-		if ( empty( $body ) ) {
-			return false;
-		}
-
-		return json_decode( $body );
 	}
 }

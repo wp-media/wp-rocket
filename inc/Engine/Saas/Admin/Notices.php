@@ -212,39 +212,7 @@ class Notices {
 	 * @return void
 	 */
 	public function display_wrong_license_notice() {
-		$transient = get_option( 'wp_rocket_no_licence' );
-
-		if ( ! $transient ) {
-			return;
-		}
-
-		if ( ! $this->can_display_notice() ) {
-			return;
-		}
-
-		$main_message = __( "We couldn't generate the used CSS because you're using a nulled version of WP Rocket. You need an active license to use the Remove Unused CSS feature and further improve your website's performance.", 'rocket' );
-		$cta_message  = sprintf(
-			// translators: %1$s = promo percentage.
-			__( 'Click here to get a WP Rocket single license at %1$s off!', 'rocket' ),
-			'10%%'
-		);
-
-		$message = sprintf(
-		// translators: %1$s = plugin name, %2$s = opening anchor tag, %3$s = closing anchor tag.
-			"%1\$s: <p>$main_message</p>%2\$s$cta_message%3\$s",
-			'<strong>WP Rocket</strong>',
-			'<a href="https://wp-rocket.me/?add-to-cart=191&coupon_code=iamnotapirate10" class="button button-primary" rel="noopener noreferrer" target="_blank">',
-			'</a>'
-		);
-
-		rocket_notice_html(
-			[
-				'status'      => 'error',
-				'dismissible' => '',
-				'message'     => $message,
-				'id'          => 'rocket-notice-rucss-wrong-licence',
-			]
-		);
+		return;
 	}
 
 	/**

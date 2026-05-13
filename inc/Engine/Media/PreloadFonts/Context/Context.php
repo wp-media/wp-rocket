@@ -41,10 +41,6 @@ class Context implements ContextInterface {
 	 * @return bool
 	 */
 	public function is_allowed( array $data = [] ): bool {
-		if ( $this->options->get( 'wp_rocket_no_licence' ) ) {
-			return false;
-		}
-
 		return (bool) $this->options->get( 'auto_preload_fonts', 0 );
 	}
 

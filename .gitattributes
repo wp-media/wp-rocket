@@ -1,5 +1,6 @@
 // directories
 bin export-ignore
+docs export-ignore
 src export-ignore
 tests export-ignore
 
@@ -11,6 +12,7 @@ tests export-ignore
 .gitignore export-ignore
 .travis.yml export-ignore
 .tx export-ignore
+AGENTS.md export-ignore
 
 composer.lock export-ignore
 CONTRIBUTING.md export-ignore

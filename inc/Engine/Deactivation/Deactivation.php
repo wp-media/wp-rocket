@@ -12,8 +12,6 @@ use WP_Rocket\ThirdParty\Hostings\HostResolver;
 use WP_Rocket\ThirdParty\Hostings\ServiceProvider as HostingsServiceProvider;
 
 class Deactivation {
-	const DEACTIVATION_ENDPOINT = 'https://api.wp-rocket.me/api/wp-rocket/deactivate-licence.php';
-
 	/**
 	 * Aliases in the container for each class that needs to call its deactivate method
 	 *
@@ -88,14 +86,6 @@ class Deactivation {
 			// Delete All WP Rocket rules of the .htaccess file.
 			flush_rocket_htaccess( true );
 		}
-
-		// Update customer key & licence.
-		wp_remote_get(
-			self::DEACTIVATION_ENDPOINT,
-			[
-				'blocking' => false,
-			]
-		);
 
 		// Delete transients.
 		delete_transient( 'rocket_check_licence_30' );

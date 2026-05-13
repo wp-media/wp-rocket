@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Media\PreconnectExternalDomains\Context\Context;
 
-use Brain\Monkey\{Filters, Functions};
+use Brain\Monkey\Filters;
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Media\PreconnectExternalDomains\Context\Context;
@@ -28,8 +28,6 @@ class Test_IsAllowed extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
-		$this->options->expects()->get( 'wp_rocket_no_licence', 0 )->andReturn($config['licence']);
-
 		Filters\expectApplied( 'rocket_preconnect_external_domains_optimization' )
 			->andReturn( $config['filter'] );
 

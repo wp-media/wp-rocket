@@ -69,11 +69,6 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 		];
 		$result  = json_decode( $this->response_body, true );
 
-		if ( key_exists( 'code', $result ) && 401 === $result['code'] ) {
-			update_option( 'wp_rocket_no_licence', true );
-			update_rocket_option( 'remove_unused_css', 0 );
-		}
-
 		return wp_parse_args( (array) $result, $default );
 	}
 

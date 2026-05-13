@@ -1,0 +1,64 @@
+name: Build Plugin Zip Release
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - develop
+      - master
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build and Release Plugin Zip
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.merge_commit_sha }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.3'
+          tools: composer:v2
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('composer.json') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Build plugin zip
+        run: bin/build-plugin-zip.sh wp-rocket.zip
+
+      - name: Prepare release metadata
+        id: release
+        run: |
+          short_sha="$(git rev-parse --short HEAD)"
+          branch="${{ github.event.pull_request.base.ref }}"
+          tag="wp-rocket-${branch}-${short_sha}"
+          echo "tag=${tag}" >> "$GITHUB_OUTPUT"
+          echo "name=WP Rocket ${branch} ${short_sha}" >> "$GITHUB_OUTPUT"
+
+      - name: Upload plugin zip to release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.release.outputs.tag }}
+          name: ${{ steps.release.outputs.name }}
+          target_commitish: ${{ github.event.pull_request.merge_commit_sha }}
+          files: build/wp-rocket.zip
+          fail_on_unmatched_files: true
+          generate_release_notes: true

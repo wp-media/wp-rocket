@@ -507,10 +507,6 @@ class Subscriber implements Subscriber_Interface {
 	 * @return null|false
 	 */
 	public function disable_russ_on_wrong_license() {
-		if ( false !== (bool) get_option( 'wp_rocket_no_licence' ) ) {
-			return false;
-		}
-
 		return null;
 	}
 
