@@ -13,6 +13,8 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  * @since  3.5
  */
 class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interface {
+	const CDN_IFRAME_URL = 'https://api.wp-rocket.me/cdn/iframe';
+
 	/**
 	 * RocketCDN API Client instance.
 	 *
@@ -248,7 +250,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 				'callback' => rest_url( 'wp-rocket/v1/rocketcdn/' ),
 				'source'   => 'plugin',
 			],
-			'https://api.wp-rocket.me/cdn/iframe'
+			rocket_get_constant( 'WP_ROCKET_CDN_IFRAME_URL', self::CDN_IFRAME_URL )
 		);
 		?>
 		<script type="text/javascript">

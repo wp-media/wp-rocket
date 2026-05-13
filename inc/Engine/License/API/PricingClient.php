@@ -26,7 +26,7 @@ class PricingClient extends AbstractSafeAPIClient {
 	 * @return string The API URL for plugin updates.
 	 */
 	protected function get_api_url() {
-		return self::PRICING_ENDPOINT;
+		return rocket_get_constant( 'WP_ROCKET_PRICING_API_URL', self::PRICING_ENDPOINT );
 	}
 
 	/**

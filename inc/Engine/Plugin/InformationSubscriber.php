@@ -13,6 +13,15 @@ class InformationSubscriber implements Subscriber_Interface {
 	const INFORMATION_ENDPOINT = 'https://api.wp-rocket.me/plugin_information.php';
 
 	/**
+	 * Gets the plugin information API URL.
+	 *
+	 * @return string
+	 */
+	private function get_information_endpoint(): string {
+		return rocket_get_constant( 'WP_ROCKET_PLUGIN_INFORMATION_API_URL', self::INFORMATION_ENDPOINT );
+	}
+
+	/**
 	 * Plugin slug.
 	 *
 	 * @var string
@@ -118,7 +127,7 @@ class InformationSubscriber implements Subscriber_Interface {
 	 * @return object|WP_Error
 	 */
 	private function get_plugin_information() {
-		$response = wp_remote_get( self::INFORMATION_ENDPOINT );
+		$response = wp_remote_get( $this->get_information_endpoint() );
 
 		if ( is_wp_error( $response ) ) {
 			return $this->get_request_error( $response->get_error_message() );

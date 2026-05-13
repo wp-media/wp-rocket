@@ -13,6 +13,33 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	use UpdaterApiTools;
 
 	const UPDATE_ENDPOINT = 'https://api.wp-rocket.me/check_update.php';
+	const PACKAGE_API_URL = 'https://api.wp-rocket.me/';
+
+	/**
+	 * Gets the plugin update API URL.
+	 *
+	 * @return string
+	 */
+	private function get_update_endpoint(): string {
+		return rocket_get_constant( 'WP_ROCKET_UPDATE_API_URL', self::UPDATE_ENDPOINT );
+	}
+
+	/**
+	 * Gets the package download URL for a plugin version.
+	 *
+	 * @param string $consumer_key Consumer key used in the package path.
+	 * @param string $version      Plugin version.
+	 *
+	 * @return string
+	 */
+	private function get_package_url( $consumer_key, $version ): string {
+		return sprintf(
+			'%s%s/wp-rocket_%s.zip',
+			trailingslashit( rocket_get_constant( 'WP_ROCKET_PACKAGE_API_URL', self::PACKAGE_API_URL ) ),
+			$consumer_key,
+			$version
+		);
+	}
 
 	/**
 	 * Full path to the plugin.
@@ -299,7 +326,7 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 */
 	public function get_latest_version_data() {
 		$request = wp_remote_get(
-			self::UPDATE_ENDPOINT,
+			$this->get_update_endpoint(),
 			[
 				'timeout' => 30,
 			]
@@ -463,7 +490,7 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 			'slug'        => $plugin_folder,
 			'new_version' => WP_ROCKET_LASTVERSION,
 			'url'         => 'https://wp-rocket.me',
-			'package'     => sprintf( 'https://api.wp-rocket.me/%s/wp-rocket_%s.zip', get_rocket_option( 'consumer_key' ), WP_ROCKET_LASTVERSION ),
+			'package'     => $this->get_package_url( get_rocket_option( 'consumer_key' ), WP_ROCKET_LASTVERSION ),
 		];
 
 		$this->event_manager->remove_callback( 'pre_set_site_transient_update_plugins', [ $this, 'maybe_add_rocket_update_data' ] );

@@ -13,6 +13,15 @@ class APIClient {
 	const API_URL = 'https://cpcss.wp-rocket.me/api/job/';
 
 	/**
+	 * Gets the Critical CSS API URL.
+	 *
+	 * @return string
+	 */
+	private function get_api_url(): string {
+		return trailingslashit( rocket_get_constant( 'WP_ROCKET_CPCSS_API_URL', self::API_URL ) );
+	}
+
+	/**
 	 * Sends a generation request to the Critical Path API.
 	 *
 	 * @since 3.6
@@ -26,7 +35,7 @@ class APIClient {
 		$params['url'] = $url;
 		$is_mobile     = isset( $params['mobile'] ) && $params['mobile'];
 		$response      = wp_remote_post(
-			self::API_URL,
+			$this->get_api_url(),
 			[
 				/**
 				 * Filters the parameters sent to the Critical CSS generator API.
@@ -251,7 +260,7 @@ class APIClient {
 	 */
 	public function get_job_details( $job_id, $url, $is_mobile = false, $item_type = 'custom' ) {
 		$response = wp_remote_get(
-			self::API_URL . "{$job_id}/"
+			$this->get_api_url() . "{$job_id}/"
 		);
 
 		return $this->prepare_response( $response, $url, $is_mobile, $item_type );

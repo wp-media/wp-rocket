@@ -8,6 +8,8 @@ defined( 'ABSPATH' ) || exit;
  * @author Remy Perona
  */
 class WP_Rocket_Requirements_Check {
+	const PACKAGE_API_URL = 'https://api.wp-rocket.me/';
+
 	/**
 	 * Plugin Name
 	 *
@@ -186,7 +188,12 @@ class WP_Rocket_Requirements_Check {
 		$plugin_transient = get_site_transient( 'update_plugins' );
 		$plugin_folder    = plugin_basename( dirname( $this->plugin_file ) );
 		$plugin_file      = basename( $this->plugin_file );
-		$url              = sprintf( 'https://api.wp-rocket.me/%s/wp-rocket_%s.zip', $consumer_key, $this->plugin_last_version );
+		$url              = sprintf(
+			'%s%s/wp-rocket_%s.zip',
+			trailingslashit( rocket_get_constant( 'WP_ROCKET_PACKAGE_API_URL', self::PACKAGE_API_URL ) ),
+			$consumer_key,
+			$this->plugin_last_version
+		);
 		$temp_array       = [
 			'slug'        => $plugin_folder,
 			'new_version' => $this->plugin_last_version,

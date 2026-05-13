@@ -57,7 +57,7 @@ class RemoteSettingsClient extends AbstractSafeAPIClient {
 	 * @return string The API URL for remote settings.
 	 */
 	protected function get_api_url(): string {
-		return self::REMOTE_SETTINGS_ENDPOINT;
+		return rocket_get_constant( 'WP_ROCKET_REMOTE_SETTINGS_API_URL', self::REMOTE_SETTINGS_ENDPOINT );
 	}
 
 	/**

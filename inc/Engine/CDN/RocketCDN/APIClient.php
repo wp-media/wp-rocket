@@ -10,6 +10,15 @@ class APIClient {
 	const ROCKETCDN_API = 'https://rocketcdn.me/api/';
 
 	/**
+	 * Gets the RocketCDN API URL.
+	 *
+	 * @return string
+	 */
+	private function get_api_url(): string {
+		return trailingslashit( rocket_get_constant( 'WP_ROCKET_ROCKETCDN_API_URL', self::ROCKETCDN_API ) );
+	}
+
+	/**
 	 * Gets current RocketCDN subscription data from cache if it exists
 	 *
 	 * Else do a request to the API to get fresh data
@@ -57,7 +66,7 @@ class APIClient {
 		];
 
 		$response = wp_remote_get(
-			self::ROCKETCDN_API . 'website/search/?url=' . home_url(),
+			$this->get_api_url() . 'website/search/?url=' . home_url(),
 			$args
 		);
 
@@ -144,7 +153,7 @@ class APIClient {
 		];
 
 		$response = wp_remote_request(
-			self::ROCKETCDN_API . 'website/' . $website_id . '/',
+			$this->get_api_url() . 'website/' . $website_id . '/',
 			$args
 		);
 
@@ -175,7 +184,7 @@ class APIClient {
 	 * @return array|WP_Error
 	 */
 	private function get_remote_pricing_data() {
-		$response = wp_remote_get( self::ROCKETCDN_API . 'pricing' );
+		$response = wp_remote_get( $this->get_api_url() . 'pricing' );
 
 		if ( is_wp_error( $response ) ) {
 			return $response;
@@ -246,7 +255,7 @@ class APIClient {
 		];
 
 		$response = wp_remote_request(
-			self::ROCKETCDN_API . 'website/' . $subscription['id'] . '/purge/',
+			$this->get_api_url() . 'website/' . $subscription['id'] . '/purge/',
 			$args
 		);
 
@@ -310,11 +319,13 @@ class APIClient {
 	 * @return array
 	 */
 	public function preserve_authorization_token( $args, $url ) {
-		if ( strpos( $url, self::ROCKETCDN_API ) === false ) {
+		$api_url = $this->get_api_url();
+
+		if ( strpos( $url, $api_url ) === false ) {
 			return $args;
 		}
 
-		if ( empty( $args['headers']['Authorization'] ) && self::ROCKETCDN_API . 'pricing' === $url ) {
+		if ( empty( $args['headers']['Authorization'] ) && $api_url . 'pricing' === $url ) {
 			return $args;
 		}
 
