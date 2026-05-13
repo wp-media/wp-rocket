@@ -1,8 +1,26 @@
 <?php
 
 return [
+	'shouldReturnOriginalValueWhenCdnTypeIsNotRocketcdn' => [
+		'config'   => [
+			'cdn_type'          => 'other',
+			'subscription_data' => [
+				'id'                            => 12345,
+				'is_active'                     => true,
+				'cdn_url'                       => 'https://abcd1234.delivery.rocketcdn.me',
+				'subscription_next_date_update' => '+30 days',
+				'subscription_status'           => 'running',
+			],
+		],
+		'expected' => [
+			'cdn_cnames' => null,
+		],
+	],
+
 	'shouldReturnOriginalValueWhenNoTransient' => [
-		'config'   => [],
+		'config'   => [
+			'cdn_type' => 'rocketcdn',
+		],
 		'expected' => [
 			'cdn_cnames' => null,
 		],
@@ -10,6 +28,7 @@ return [
 
 	'shouldReturnOriginalValueWhenSubscriptionCancelled' => [
 		'config'   => [
+			'cdn_type'          => 'rocketcdn',
 			'subscription_data' => [
 				'id'                            => 12345,
 				'is_active'                     => false,
@@ -25,6 +44,7 @@ return [
 
 	'shouldReturnOriginalValueWhenSubscriptionRunningButNoCdnUrl' => [
 		'config'   => [
+			'cdn_type'          => 'rocketcdn',
 			'subscription_data' => [
 				'id'                            => 12345,
 				'is_active'                     => true,
@@ -40,6 +60,7 @@ return [
 
 	'shouldReturnCdnUrlWhenSubscriptionRunning' => [
 		'config'   => [
+			'cdn_type'          => 'rocketcdn',
 			'subscription_data' => [
 				'id'                            => 12345,
 				'is_active'                     => true,

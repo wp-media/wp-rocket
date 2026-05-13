@@ -23,6 +23,7 @@ class Test_SetCdnZone extends TestCase {
 
 		delete_transient( 'rocketcdn_status' );
 		remove_all_filters( 'pre_http_request' );
+		remove_all_filters( 'pre_get_rocket_option_cdn_type' );
 
 		parent::tear_down();
 	}
@@ -38,6 +39,12 @@ class Test_SetCdnZone extends TestCase {
 				'body'     => '{}',
 			];
 		} );
+
+		if ( ! empty( $config['cdn_type'] ) ) {
+			add_filter( 'pre_get_rocket_option_cdn_type', function () use ( $config ) {
+				return $config['cdn_type'];
+			} );
+		}
 
 		if ( ! empty( $config['subscription_data'] ) ) {
 			set_transient( 'rocketcdn_status', $config['subscription_data'], MINUTE_IN_SECONDS );
