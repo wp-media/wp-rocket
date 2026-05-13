@@ -2,6 +2,7 @@
 namespace WP_Rocket\Engine\CDN\RocketCDN;
 
 use WP_Rocket\Abstract_Render;
+use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\Common\Notice\Notice;
@@ -52,6 +53,13 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	private $options;
 
 	/**
+	 * WP Options API instance
+	 *
+	 * @var Options
+	 */
+	private $options_api;
+
+	/**
 	 * Constructor
 	 *
 	 * @param APIClient    $api_client    RocketCDN API Client instance.
@@ -60,6 +68,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	 * @param Tracking     $tracking      Tracking instance.
 	 * @param string       $template_path Path to the templates.
 	 * @param Options_Data $options WP Rocket options instance.
+	 * @param Options      $options_api Options API instance.
 	 */
 	public function __construct(
 		APIClient $api_client,
@@ -67,7 +76,8 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 		UserClient $user_client,
 		Tracking $tracking,
 		$template_path,
-		Options_Data $options
+		Options_Data $options,
+		Options $options_api
 	) {
 		parent::__construct( $template_path );
 
@@ -76,6 +86,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 		$this->user_client = $user_client;
 		$this->tracking    = $tracking;
 		$this->options     = $options;
+		$this->options_api = $options_api;
 	}
 
 	/**
@@ -585,7 +596,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	 */
 	public function maybe_display_rocketcdn_upgrade_notice() {
 		$previous_version = $this->options->get( 'previous_version' );
-		$rocket_cdn_token = $this->options->get( 'rocketcdn_user_token' );
+		$rocket_cdn_token = $this->options_api->get( 'rocketcdn_user_token' );
 
 		// Don't show the notice if RocketCDN is already active (token exists).
 		if ( ! empty( $rocket_cdn_token ) ) {
@@ -621,7 +632,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 			'previous_version' => $previous_version,
 		];
 
-		Utils::display_update_notice( $notice_info );
+		Utils::display_update_notice( $notice_info, true );
 	}
 
 

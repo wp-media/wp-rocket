@@ -13,6 +13,8 @@ class Test_MaybeDisplayRocketcdnUpgradeNotice extends TestCase {
 	private static $editor_user_id = 0;
 	private $show_upgrade_notice = null;
 
+	private $options_api;
+
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
 
@@ -28,6 +30,9 @@ class Test_MaybeDisplayRocketcdnUpgradeNotice extends TestCase {
 			require_once WP_ROCKET_ADMIN_UI_PATH . 'notices.php';
 		}
 
+		$container         = apply_filters( 'rocket_container', null );
+		$this->options_api = $container->get( 'options_api' );
+
 		$this->unregisterAllCallbacksExcept( 'admin_notices', 'maybe_display_rocketcdn_upgrade_notice', 10 );
 	}
 
@@ -35,6 +40,7 @@ class Test_MaybeDisplayRocketcdnUpgradeNotice extends TestCase {
 		delete_user_meta( self::$admin_user_id, 'rocket_boxes' );
 		delete_user_meta( self::$editor_user_id, 'rocket_boxes' );
 		set_current_screen( 'front' );
+		$this->options_api->set( 'rocketcdn_user_token', '' );
 
 		$this->restoreWpHook( 'admin_notices' );
 
@@ -55,6 +61,10 @@ class Test_MaybeDisplayRocketcdnUpgradeNotice extends TestCase {
 				10,
 				2
 			);
+		}
+
+		if ( ! empty( $config['rocketcdn_user_token'] ) ) {
+			$this->options_api->set( 'rocketcdn_user_token', $config['rocketcdn_user_token'] );
 		}
 
 		wp_set_current_user( $user_id );

@@ -35,11 +35,11 @@ return [
 			'html'    => 'Use RocketCDN for free to boost up to 3 pages',
 		],
 	],
-	'shouldNotDisplayNoticeOutsideWpRocketSettingsPage' => [
+	'shouldDisplayNoticeOnAnyAdminScreen' => [
 		'config' => [
 			'show_upgrade_notice' => true,
 			'role'                => 'administrator',
-			'screen'              => 'front',
+			'screen'              => 'dashboard',
 		],
 		'expected' => [
 			'display' => false,
@@ -51,6 +51,18 @@ return [
 			'show_upgrade_notice' => true,
 			'role'                => 'editor',
 			'screen'              => 'settings_page_wprocket',
+		],
+		'expected' => [
+			'display' => false,
+			'html'    => 'Use RocketCDN for free to boost up to 3 pages',
+		],
+	],
+	'shouldNotDisplayNoticeWhenRocketCDNIsActive' => [
+		'config' => [
+			'show_upgrade_notice'  => true,
+			'role'                 => 'administrator',
+			'screen'               => 'settings_page_wprocket',
+			'rocketcdn_user_token' => 'random_user_token',
 		],
 		'expected' => [
 			'display' => false,
