@@ -877,17 +877,17 @@ parameters:
 
 		-
 			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
-			count: 1
+			count: 2
 			path: tests/Integration/inc/Engine/CDN/RocketCDN/RESTSubscriber/disable.php
 
 		-
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
-			count: 1
+			count: 2
 			path: tests/Integration/inc/Engine/CDN/RocketCDN/RESTSubscriber/disable.php
 
 		-
 			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
-			count: 1
+			count: 2
 			path: tests/Integration/inc/Engine/CDN/RocketCDN/RESTSubscriber/enable.php
 
 		-
