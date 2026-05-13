@@ -4555,6 +4555,10 @@ div.wpr-tutorial-item {
   align-items: center;
   gap: 8px;
 }
+.wpr-cdn-indicator__info {
+  display: flex;
+  justify-content: space-between;
+}
 .wpr-cdn-indicator__dot {
   width: 8px;
   height: 8px;
@@ -4593,7 +4597,6 @@ div.wpr-tutorial-item {
 }
 .wpr-cdn-status--long-details .wpr-cdn-indicator {
   width: 100%;
-  padding-right: 130px;
 }
 .wpr-cdn-status--long-details .wpr-cdn-indicator__details {
   max-width: none;
