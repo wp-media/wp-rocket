@@ -574,6 +574,7 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	 * @return string The CDN URL if subscription is active, empty string otherwise.
 	 */
 	private function get_rocketcdn_url(): string {
+		// RFT Todo: Might require a different approach during the API integration to check for subscription status.
 		$subscription = $this->api_client->get_subscription_data();
 
 		if ( 'running' !== $subscription['subscription_status'] ) {
