@@ -136,7 +136,6 @@ class Utils {
 	 * @type string $action Notice action.
 	 * @type string $dismiss_message Dismiss message button title.
 	 * @type string $dismiss_button Dismiss button.
-	 * @type bool   $fresh_install Whether it's a fresh install or an update.
 	 *  }
 	 *
 	 * @param bool  $display_general Whether to display the notice on all WP or only WPR dashboard.
@@ -146,15 +145,9 @@ class Utils {
 		$previous_version = $notice_info['previous_version'] ?? '';
 		$status           = $notice_info['status'] ?? 'info';
 		$version          = $notice_info['new_version'] ?? '';
-		$fresh_install    = $notice_info['fresh_install'] ?? false;
 
-		if ( ! $fresh_install ) {
-			// Bail-out for fresh install.
-			if ( empty( $previous_version ) ) {
-				return;
-			}
-
-			// Bail-out if previous version is greater than or equal to the new version.
+		// If previous_version is set, this is an upgrade — check version compatibility before displaying the notice.
+		if ( ! empty( $previous_version ) ) {
 			if ( version_compare( $previous_version, $version, '>=' ) ) {
 				return;
 			}

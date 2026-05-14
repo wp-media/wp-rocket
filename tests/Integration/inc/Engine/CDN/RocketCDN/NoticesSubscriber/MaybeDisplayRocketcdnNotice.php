@@ -3,12 +3,12 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\Subscriber;
 
 /**
- * Test class covering \WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber::maybe_display_rocketcdn_upgrade_notice
+ * Test class covering \WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber::maybe_display_rocketcdn_notice
  *
  * @group RocketCDN
  * @group AdminOnly
  */
-class Test_MaybeDisplayRocketcdnUpgradeNotice extends TestCase {
+class Test_MaybeDisplayRocketcdnNotice extends TestCase {
 	private static $admin_user_id = 0;
 	private static $editor_user_id = 0;
 	private $show_upgrade_notice = null;
@@ -37,10 +37,15 @@ class Test_MaybeDisplayRocketcdnUpgradeNotice extends TestCase {
 	}
 
 	public function tear_down() {
+		remove_filter(
+			'pre_get_rocket_option_previous_version',
+			[ $this, 'set_show_upgrade_notice' ]
+		);
 		delete_user_meta( self::$admin_user_id, 'rocket_boxes' );
 		delete_user_meta( self::$editor_user_id, 'rocket_boxes' );
 		set_current_screen( 'front' );
 		$this->options_api->set( 'rocketcdn_user_token', '' );
+		$this->show_upgrade_notice = null;
 
 		$this->restoreWpHook( 'admin_notices' );
 
@@ -58,6 +63,18 @@ class Test_MaybeDisplayRocketcdnUpgradeNotice extends TestCase {
 			add_filter(
 				'pre_get_rocket_option_previous_version',
 				[ $this, 'set_show_upgrade_notice' ],
+				10,
+				2
+			);
+		}
+
+		if ( array_key_exists( 'previous_version', $config ) ) {
+			$this->show_upgrade_notice = null;
+			add_filter(
+				'pre_get_rocket_option_previous_version',
+				function() use ( $config ) {
+					return $config['previous_version'];
+				},
 				10,
 				2
 			);

@@ -99,8 +99,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 				[ 'purge_cache_notice' ],
 				[ 'change_cname_notice' ],
 				[ 'activation_failed_notice' ],
-				[ 'maybe_display_rocketcdn_upgrade_notice' ],
-				[ 'maybe_display_rocketcdn_new_install_notice' ],
+				[ 'maybe_display_rocketcdn_notice' ],
 			],
 			'rocket_before_cdn_sections'       => 'display_rocketcdn_cta',
 			'wp_ajax_toggle_rocketcdn_cta'     => 'toggle_cta',
@@ -588,18 +587,54 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	}
 
 	/**
-	 * Display RocketCDN upgrade notice on admin dashboard if flag is set and notice hasn't been dismissed
+	 * Display RocketCDN notice on admin dashboard if flag is set and notice hasn't been dismissed
 	 *
 	 * @since 3.22
 	 *
 	 * @return void
 	 */
-	public function maybe_display_rocketcdn_upgrade_notice() {
+	public function maybe_display_rocketcdn_notice() {
 		$previous_version = $this->options->get( 'previous_version' );
 		$rocket_cdn_token = $this->options_api->get( 'rocketcdn_user_token' );
 
 		// Don't show the notice if RocketCDN is already active (token exists).
 		if ( ! empty( $rocket_cdn_token ) ) {
+			return;
+		}
+
+		// Fresh install, show new install notice.
+		if ( empty( $previous_version ) ) {
+			$message = sprintf(
+			// translators: %1$s opening <strong> tag, %2$s closing </strong> tag.
+				esc_html__(
+					'%1$sNew in WP Rocket: Faster loading for your key pages%2$s',
+					'rocket'
+				),
+				'<p><strong>',
+				'</strong></p>'
+			);
+
+			$message .= sprintf(
+			// translators: %1$s opening <p> tag, %2$s closing </p> tag.
+				esc_html__(
+					'%1$sYou can now use Content Delivery, powered by RocketCDN, to speed up your homepage and 2 more pages, at no extra cost.%2$s',
+					'rocket'
+				),
+				'<p>',
+				'</p>'
+			);
+
+			$notice_info = [
+				'new_version'     => '3.22.0',
+				'dismiss_button'  => 'rocketcdn_install_notice',
+				'dismiss_message' => __( 'Dismiss', 'rocket' ),
+				'message'         => $message,
+				'action'          => 'rocketcdn_install_page',
+				'status'          => 'success',
+			];
+
+			Utils::display_update_notice( $notice_info, true );
+
 			return;
 		}
 
@@ -630,48 +665,6 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 			'message'          => $message,
 			'action'           => 'rocketcdn_upgrade_page',
 			'previous_version' => $previous_version,
-		];
-
-		Utils::display_update_notice( $notice_info, true );
-	}
-
-
-	/**
-	 * Display RocketCDN new install notice on WP admin if flag is set and notice hasn't been dismissed
-	 *
-	 * @since 3.22
-	 *
-	 * @return void
-	 */
-	public function maybe_display_rocketcdn_new_install_notice() {
-		$message = sprintf(
-		// translators: %1$s opening <strong> tag, %2$s closing </strong> tag.
-			esc_html__(
-				'%1$sNew in WP Rocket: Faster loading for your key pages%2$s',
-				'rocket'
-			),
-			'<p><strong>',
-			'</strong></p>'
-		);
-
-		$message .= sprintf(
-		// translators: %1$s opening <p> tag, %2$s closing </p> tag.
-			esc_html__(
-				'%1$sYou can now use Content Delivery, powered by RocketCDN, to speed up your homepage and 2 more pages, at no extra cost.%2$s',
-				'rocket'
-			),
-			'<p>',
-			'</p>'
-		);
-
-		$notice_info = [
-			'new_version'     => '3.22.0',
-			'dismiss_button'  => 'rocketcdn_install_notice',
-			'dismiss_message' => __( 'Dismiss', 'rocket' ),
-			'message'         => $message,
-			'action'          => 'rocketcdn_install_page',
-			'fresh_install'   => true,
-			'status'          => 'success',
 		];
 
 		Utils::display_update_notice( $notice_info, true );
