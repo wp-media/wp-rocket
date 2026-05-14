@@ -72,7 +72,7 @@ class Test_MaybeDisplayRocketcdnNotice extends TestCase {
 			$this->show_upgrade_notice = null;
 			add_filter(
 				'pre_get_rocket_option_previous_version',
-				function() use ( $config ) {
+				function( $value, $default ) use ( $config ) {
 					return $config['previous_version'];
 				},
 				10,
