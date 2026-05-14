@@ -72,7 +72,7 @@ defined( 'ABSPATH' ) || exit;
 			</button>
 			<?php endif; ?>
 		</div>
-		<button type="button" class="wpr-cdn-add-page__button">
+		<button type="button" class="wpr-button wpr-cdn-add-page__button">
 			<span class="wpr-icon-plus"></span>
 			<?php esc_html_e( 'ADD PAGE', 'rocket' ); ?>
 		</button>

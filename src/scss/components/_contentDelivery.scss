@@ -437,7 +437,6 @@
 		border: 0;
 		border-radius: 4px;
 		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-		transition: box-shadow 0.2s ease;
 		cursor: pointer;
 		@include font-size(14, 18);
 		font-weight: 600;
@@ -631,6 +630,7 @@
                 border: 1px solid #E2E5E9;
                 background: #FFF;
                 margin-top: 0;
+				font-family: "Roboto", sans-serif;
             }
         }
 
@@ -640,10 +640,10 @@
                 position: absolute;
                 top: 50%;
                 right: 12px;
-                width: 10px;
-                height: 6px;
+                width: 24px;
+                height: 24px;
                 transform: translateY(-50%);
-				background-image: url("../img/ri-caret-down.svg");
+				background-image: url("../img/arrow-down.svg");
                 background-size: contain;
                 background-repeat: no-repeat;
                 pointer-events: none;
