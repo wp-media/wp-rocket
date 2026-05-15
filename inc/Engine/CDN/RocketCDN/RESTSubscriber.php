@@ -95,6 +95,7 @@ class RESTSubscriber implements Subscriber_Interface {
 						'required'          => true,
 						'validate_callback' => [ $this, 'validate_key' ],
 					],
+					// RocketCDN CNAME is no longer required as it's now changed on the filter level not in the settings option.
 					'url'   => [
 						'required'          => true,
 						'validate_callback' => function ( $param ) {
