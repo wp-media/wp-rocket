@@ -179,11 +179,11 @@ class Controller extends Abstract_Render {
 
 		$sections['purge_cdn_cache_section'] = [
 			// translators: %s is the CDN driver, wrapped in a span for JS targeting.
-			'title'       => sprintf( __( 'Purge %s', 'rocket' ), '<span class="rocketcdn-driver-js">RocketCDN</span>' ),
+			'title'       => sprintf( __( 'Purge %s Cache', 'rocket' ), '<span class="rocketcdn-driver-js">RocketCDN</span>' ),
 			'type'        => 'purge_cdn_cache_section',
 			'description' => sprintf(
 				// translators: %s = CDN driver, wrapped in a span for JS targeting.
-				__( 'Purges %s cached resources for you website.', 'rocket' ),
+				__( 'Purges %s cached resources for your website.', 'rocket' ),
 				'<span class="rocketcdn-driver-js">RocketCDN</span>'
 			),
 			'purge_url'   => '#',

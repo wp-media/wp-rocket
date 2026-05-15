@@ -54,6 +54,10 @@
 		font-weight: 600;
 		text-transform: uppercase;
 		letter-spacing: 0.02em;
+		transform: rotate(270deg);
+		left: -17px;
+		position: absolute;
+		top: 26px;
 	}
 }
 
@@ -109,8 +113,9 @@
 
 	&__tooltip {
 		position: absolute;
-		top: calc(100% + -32px);
-    	right: 217px;
+		top: 9px;
+		left: 50%;
+		transform: translateX(-50%);
 		padding: 8px 12px;
 		background: #0c0f1f;
 		border-radius: 4px;
@@ -127,9 +132,9 @@
 		&::after {
 			content: "";
 			position: absolute;
-			top: 50%;
-			right: -6px;
-			transform: translateY( -50% );
+			top: 34%;
+			right: -9px;
+			transform: translateX(-50%);
 			width: 0;
 			height: 0;
 			border-top: 6px solid transparent;
@@ -138,6 +143,8 @@
 		}
 	}
 
+	&:hover &__tooltip,
+	&:focus-within &__tooltip,
 	&__tab-wrapper:hover &__tooltip,
 	&__tab-wrapper:focus-within &__tooltip {
 		opacity: 1;
@@ -193,6 +200,10 @@
 		align-items: center;
 		gap: $space;
 	}
+	&__info{
+		display: flex;
+		justify-content: space-between;
+	}
 
 	&__dot {
 		width: 8px;
@@ -233,6 +244,21 @@
 
 .wpr-cdn-status--long-details {
 	align-items: flex-start;
+	position: relative;
+
+	.wpr-cdn-indicator {
+		width: 100%;
+	}
+
+	.wpr-cdn-indicator__details {
+		max-width: none;
+	}
+
+	.wpr-cdn-pause {
+		position: absolute;
+		top: 2px;
+		right: 0;
+	}
 }
 
 // Pause CDN button
@@ -411,13 +437,24 @@
 		border: 0;
 		border-radius: 4px;
 		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+		transition: box-shadow 0.2s ease;
 		cursor: pointer;
 		@include font-size(14, 18);
 		font-weight: 600;
 		white-space: nowrap;
 
-		&:hover {
-			background: $cPurpleLight1;
+		&:hover,
+		&:focus-visible,
+		&:focus {
+			background: $cPurple;
+			color: $cWhite;
+			box-shadow: 0 6px 18px rgba(45, 22, 86, 0.25);
+		}
+
+		&:active {
+			background: $cPurple;
+			color: $cWhite;
+			box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 		}
 
 		[class^="wpr-icon-"] {
@@ -568,6 +605,14 @@
 		gap: $space * 2;
 	}
 
+	.wpr-field-description-label {
+		color: #0C0F1F;
+	}
+
+	.wpr-field-description {
+		margin-top: 4px;
+	}
+
 	.wpr-field {
 		padding: 0;
 		border: 0;
@@ -575,7 +620,7 @@
 
     .wpr-multiple {
         gap: $space * 2;
-        margin-top: 9px;
+        margin-top: 6px;
 
         .wpr-text {
             top: 0;
@@ -598,7 +643,7 @@
                 width: 10px;
                 height: 6px;
                 transform: translateY(-50%);
-                background-image: url("../img/caret-down.svg");
+				background-image: url("../img/ri-caret-down.svg");
                 background-size: contain;
                 background-repeat: no-repeat;
                 pointer-events: none;
