@@ -41,6 +41,8 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	 */
 	private $user_client;
 
+	private $create_api_client;
+
 	/**
 	 * Constructor
 	 *
@@ -50,13 +52,14 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	 * @param \WP_Rocket\Engine\License\API\UserClient $user_client   UserClient instance.
 	 * @param string                                   $template_path Path to the templates.
 	 */
-	public function __construct( APIClient $api_client, Options_Data $options, Beacon $beacon, $user_client, $template_path ) {
+	public function __construct( APIClient $api_client, Options_Data $options, Beacon $beacon, $user_client, $template_path, CreateAPIClient $create_api_client ) {
 		parent::__construct( $template_path );
 
 		$this->api_client  = $api_client;
 		$this->options     = $options;
 		$this->beacon      = $beacon;
 		$this->user_client = $user_client;
+		$this->create_api_client = $create_api_client;
 	}
 
 	/**
@@ -70,6 +73,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 			'rocket_settings_page_footer'                => 'add_subscription_modal',
 			'http_request_args'                          => [ 'preserve_authorization_token', PHP_INT_MAX, 2 ],
 			'rocket_insights_api_recommendations_params' => 'maybe_add_rocketcdn_to_recommendations_api_params',
+			'rocket_cdnfree_can_add_page'                => 'maybe_create_rocketcdn_free',
 		];
 	}
 
@@ -335,5 +339,10 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	 */
 	private function is_white_label_account() {
 		return (bool) rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' );
+	}
+
+	public function maybe_create_rocketcdn_free( $can_save_page ) {
+
+		return $can_save_page;
 	}
 }

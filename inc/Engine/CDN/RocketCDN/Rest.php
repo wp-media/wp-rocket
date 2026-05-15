@@ -225,6 +225,19 @@ class Rest extends WP_REST_Controller {
 			$page_title = $this->get_page_title( $payload['message'] );
 		}
 
+		/**
+		 * WP Rocket Metabox fields on post edit page.
+		 *
+		 * @param string[] $original_fields Metaboxes fields.
+		 */
+		if ( wpm_apply_filters_typed( 'boolean', 'rocket_cdnfree_can_add_page', true, $url ) ) {
+			return new WP_Error(
+				'rocketcdn_disabled_by_filter',
+				__( 'Adding page is disabled by the filter.', 'rocket' ),
+				[ 'status' => 500 ]
+			);
+		}
+
 		$inserted = $this->query->add_item(
 			[
 				'url'           => $url,
