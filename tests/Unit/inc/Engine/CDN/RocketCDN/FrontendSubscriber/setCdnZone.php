@@ -1,8 +1,13 @@
 <?php
+declare(strict_types=1);
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\FrontendSubscriber;
+namespace WP_Rocket\Tests\Unit\inc\Engine\CDN\RocketCDN\FrontendSubscriber;
 
-use WP_Rocket\Tests\Integration\TestCase;
+use Mockery;
+use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\CDN\RocketCDN\APIClient;
+use WP_Rocket\Engine\CDN\RocketCDN\FrontendSubscriber;
+use WP_Rocket\Tests\Unit\TestCase;
 
 /**
  * Test class covering \WP_Rocket\Engine\CDN\RocketCDN\FrontendSubscriber::set_cdn_zone
@@ -11,45 +16,43 @@ use WP_Rocket\Tests\Integration\TestCase;
  */
 class Test_SetCdnZone extends TestCase {
 
+	/**
+	 * @var Options_Data
+	 */
+	private $options;
+
+	/**
+	 * @var APIClient
+	 */
+	private $api_client;
+
+	/**
+	 * @var FrontendSubscriber
+	 */
+	private $subscriber;
+
 	public function set_up() {
 		parent::set_up();
 
-		$this->unregisterAllCallbacksExcept( 'pre_get_rocket_option_cdn_zone', 'set_cdn_zone', 9 );
-	}
-
-	public function tear_down() {
-		$this->restoreWpHook( 'pre_get_rocket_option_cdn_zone' );
-
-		delete_transient( 'rocketcdn_status' );
-		remove_all_filters( 'pre_http_request' );
-		remove_all_filters( 'pre_get_rocket_option_cdn_type' );
-
-		parent::tear_down();
+		$this->options    = Mockery::mock( Options_Data::class );
+		$this->api_client = Mockery::mock( APIClient::class );
+		$this->subscriber = new FrontendSubscriber( $this->options, $this->api_client );
 	}
 
 	/**
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpectedZone( $config, $expected ) {
-		// Mock HTTP to prevent remote calls when transient is missing.
-		add_filter( 'pre_http_request', function () {
-			return [
-				'response' => [ 'code' => 200 ],
-				'body'     => '{}',
-			];
-		} );
+		$this->options->shouldReceive( 'get' )
+			->with( 'cdn_type' )
+			->andReturn( $config['cdn_type'] );
 
-		if ( ! empty( $config['cdn_type'] ) ) {
-			add_filter( 'pre_get_rocket_option_cdn_type', function () use ( $config ) {
-				return $config['cdn_type'];
-			} );
+		if ( 'rocketcdn' === $config['cdn_type'] ) {
+			$this->api_client->shouldReceive( 'get_subscription_data' )
+				->andReturn( $config['subscription_data'] );
 		}
 
-		if ( ! empty( $config['subscription_data'] ) ) {
-			set_transient( 'rocketcdn_status', $config['subscription_data'], MINUTE_IN_SECONDS );
-		}
-
-		$result = apply_filters( 'pre_get_rocket_option_cdn_zone', null, [] );
+		$result = $this->subscriber->set_cdn_zone( null );
 
 		$this->assertSame( $expected['cdn_zone'], $result );
 	}

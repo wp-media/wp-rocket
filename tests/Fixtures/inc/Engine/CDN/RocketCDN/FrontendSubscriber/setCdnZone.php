@@ -17,9 +17,16 @@ return [
 		],
 	],
 
-	'shouldReturnOriginalValueWhenNoTransient' => [
+	'shouldReturnOriginalValueWhenNoSubscriptionData' => [
 		'config'   => [
-			'cdn_type' => 'rocketcdn',
+			'cdn_type'          => 'rocketcdn',
+			'subscription_data' => [
+				'id'                            => 0,
+				'is_active'                     => false,
+				'cdn_url'                       => '',
+				'subscription_next_date_update' => 0,
+				'subscription_status'           => '',
+			],
 		],
 		'expected' => [
 			'cdn_zone' => null,
