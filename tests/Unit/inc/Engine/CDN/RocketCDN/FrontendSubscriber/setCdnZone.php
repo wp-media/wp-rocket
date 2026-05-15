@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Tests\Unit\inc\Engine\CDN\RocketCDN\FrontendSubscriber;
 
 use Mockery;
+use Mockery\MockInterface;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CDN\RocketCDN\APIClient;
 use WP_Rocket\Engine\CDN\RocketCDN\FrontendSubscriber;
@@ -16,14 +17,7 @@ use WP_Rocket\Tests\Unit\TestCase;
  */
 class Test_SetCdnZone extends TestCase {
 
-	/**
-	 * @var Options_Data
-	 */
 	private $options;
-
-	/**
-	 * @var APIClient
-	 */
 	private $api_client;
 
 	/**
