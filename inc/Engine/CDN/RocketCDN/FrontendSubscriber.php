@@ -30,6 +30,13 @@ class FrontendSubscriber implements Subscriber_Interface {
 	private $api_client;
 
 	/**
+	 * Cached RocketCDN URL to avoid multiple transient calls hits per request.
+	 *
+	 * @var string|null
+	 */
+	private $rocketcdn_url = null;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param Options_Data $options    WP Rocket Options_Data instance.
@@ -98,16 +105,25 @@ class FrontendSubscriber implements Subscriber_Interface {
 	 * @return string The CDN URL if subscription is active, empty string otherwise.
 	 */
 	private function get_rocketcdn_url(): string {
+		// Use memoized value if available.
+		if ( null !== $this->rocketcdn_url ) {
+			return $this->rocketcdn_url;
+		}
+
 		if ( 'rocketcdn' !== $this->options->get( 'cdn_type' ) ) {
+			$this->rocketcdn_url = '';
 			return '';
 		}
 
 		$subscription = $this->api_client->get_subscription_data();
 
 		if ( 'running' !== $subscription['subscription_status'] ) {
+			$this->rocketcdn_url = '';
 			return '';
 		}
 
-		return $subscription['cdn_url'];
+		$this->rocketcdn_url = $subscription['cdn_url'];
+
+		return $this->rocketcdn_url;
 	}
 }
