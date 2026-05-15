@@ -28,9 +28,18 @@ class SubscriptionController {
 		}
 
 		$created = $this->create_api_client->create();
-		if ( ! $created ) {
+		if ( ! $created || ! $created->success ) {
 			return;
 		}
+
+		switch ( $created->data->code ) {
+			case 'cdn_task_enqueued':
+				// Enqueue AS single task after 30 seconds from now to check the status.
+
+			case 'already_free_subscribed':
+		}
+
+		do_action( 'rocket_cdn_subscription_created' );
 
 		return $created->data->task_id ?? null;
 	}

@@ -41,7 +41,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	 */
 	private $user_client;
 
-	private $create_api_client;
+	private $subscription_controller;
 
 	/**
 	 * Constructor
@@ -52,14 +52,14 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	 * @param \WP_Rocket\Engine\License\API\UserClient $user_client   UserClient instance.
 	 * @param string                                   $template_path Path to the templates.
 	 */
-	public function __construct( APIClient $api_client, Options_Data $options, Beacon $beacon, $user_client, $template_path, CreateAPIClient $create_api_client ) {
+	public function __construct( APIClient $api_client, Options_Data $options, Beacon $beacon, $user_client, $template_path, SubscriptionController $subscription_controller ) {
 		parent::__construct( $template_path );
 
 		$this->api_client  = $api_client;
 		$this->options     = $options;
 		$this->beacon      = $beacon;
 		$this->user_client = $user_client;
-		$this->create_api_client = $create_api_client;
+		$this->subscription_controller = $subscription_controller;
 	}
 
 	/**
