@@ -3,44 +3,109 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\CDN\RocketCDN;
 
+use WP_Error;
+use WP_Rocket\Engine\CDN\RocketCDN\APIHandler\CreateAPIClient;
+
 class SubscriptionController {
 
+	/**
+	 * API Client instance.
+	 *
+	 * @var APIClient
+	 */
 	private $api_client;
 
 	/**
+	 * Create API Client instance.
+	 *
 	 * @var CreateAPIClient
 	 */
 	private $create_api_client;
 
-	public function __construct( APIClient $api_client, CreateAPIClient $create_api_client ) {
+	/**
+	 * Options Manager instance.
+	 *
+	 * @var CDNOptionsManager
+	 */
+	private $options_manager;
+
+	/**
+	 * Queue instance.
+	 *
+	 * @var Queue
+	 */
+	private $queue;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param APIClient         $api_client API Client instance.
+	 * @param CreateAPIClient   $create_api_client Create API Client instance.
+	 * @param CDNOptionsManager $options_manager Options Manager instance.
+	 * @param Queue             $queue Queue instance.
+	 */
+	public function __construct( APIClient $api_client, CreateAPIClient $create_api_client, CDNOptionsManager $options_manager, Queue $queue ) {
 		$this->api_client        = $api_client;
 		$this->create_api_client = $create_api_client;
+		$this->options_manager   = $options_manager;
+		$this->queue             = $queue;
 	}
 
-	private function has_active_subscription(): bool{
+	/**
+	 * Check if it has active RocketCDN subscription.
+	 *
+	 * @return bool
+	 */
+	private function has_active_subscription(): bool {
 		$subscription = $this->api_client->get_subscription_data();
 		return ! empty( $subscription['subscription_status'] ) && 'running' === $subscription['subscription_status'];
 	}
 
+	/**
+	 * Create RocketCDN subscription if it doesn't have an active one, and handle the response.
+	 *
+	 * @return bool|WP_Error
+	 */
 	public function create_subscription() {
 		if ( $this->has_active_subscription() ) {
-			return;
+			return false;
 		}
 
 		$created = $this->create_api_client->create();
 		if ( ! $created || ! $created->success ) {
-			return;
+			return new WP_Error( 'rocket_cdn_job_not_created', esc_html__( 'Could not create subscription.', 'rocket' ) );
 		}
 
 		switch ( $created->data->code ) {
 			case 'cdn_task_enqueued':
+				// Save CDN token.
+				$this->options_manager->save_token( $created->data->cdn_token );
+
 				// Enqueue AS single task after 30 seconds from now to check the status.
+				$this->queue->schedule_create_status_job( $created->data->task_id );
+
+				/**
+				 * Fires when rocketcdn subscription is created.
+				 *
+				 * @param string $task_id Enqueued task ID.
+				 * @param string $token CDN Subscription token.
+				 */
+				do_action( 'rocket_cdn_subscription_created', $created->data->task_id, $created->data->cdn_token );
+				break;
 
 			case 'already_free_subscribed':
+				// Clear subscription cache so it can get the final state, and save the token before if it's not saved before.
+				if ( ! $this->options_manager->has_token() ) {
+					$this->options_manager->save_token( $created->data->cdn_token );
+				}
+
+				$this->options_manager->flush_subscription_cache();
+				break;
+			default:
+				// Log this not known code.
+				return false;
 		}
 
-		do_action( 'rocket_cdn_subscription_created' );
-
-		return $created->data->task_id ?? null;
+		return true;
 	}
 }

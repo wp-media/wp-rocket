@@ -93,4 +93,22 @@ class CDNOptionsManager {
 	public function get_cdn_cnames() {
 		return $this->options->get( 'cdn_cnames', [] );
 	}
+
+	/**
+	 * Check if there is saved user token.
+	 *
+	 * @return bool
+	 */
+	public function has_token(): bool {
+		return ! empty( get_option( 'rocketcdn_user_token' ) );
+	}
+
+	/**
+	 * Flush subscription cache.
+	 *
+	 * @return void
+	 */
+	public function flush_subscription_cache() {
+		delete_transient( 'rocketcdn_status' );
+	}
 }

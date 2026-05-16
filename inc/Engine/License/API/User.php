@@ -626,10 +626,10 @@ class User {
 	 * @return string
 	 */
 	public function get_rocketcdn_free_url() {
-		if ( ! isset( $this->user->rocketcdn->button->url ) ) {
+		if ( ! isset( $this->user->rocketcdn->cdn_free_url ) ) {
 			return '';
 		}
 
-		return (string) $this->user->rocketcdn->button->url;
+		return (string) $this->user->rocketcdn->cdn_free_url;
 	}
 }

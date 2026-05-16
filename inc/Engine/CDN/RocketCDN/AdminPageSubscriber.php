@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\CDN\RocketCDN;
 use WP_Rocket\Abstract_Render;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
+use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
@@ -37,28 +38,34 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	/**
 	 * UserClient instance
 	 *
-	 * @var \WP_Rocket\Engine\License\API\UserClient
+	 * @var UserClient
 	 */
 	private $user_client;
 
+	/**
+	 * Subscription controller instance.
+	 *
+	 * @var SubscriptionController
+	 */
 	private $subscription_controller;
 
 	/**
 	 * Constructor
 	 *
-	 * @param APIClient                                $api_client    RocketCDN API Client instance.
-	 * @param Options_Data                             $options       WP Rocket options instance.
-	 * @param Beacon                                   $beacon        Beacon instance.
-	 * @param \WP_Rocket\Engine\License\API\UserClient $user_client   UserClient instance.
-	 * @param string                                   $template_path Path to the templates.
+	 * @param APIClient              $api_client    RocketCDN API Client instance.
+	 * @param Options_Data           $options       WP Rocket options instance.
+	 * @param Beacon                 $beacon        Beacon instance.
+	 * @param UserClient             $user_client   UserClient instance.
+	 * @param string                 $template_path Path to the templates.
+	 * @param SubscriptionController $subscription_controller Subscription controller.
 	 */
 	public function __construct( APIClient $api_client, Options_Data $options, Beacon $beacon, $user_client, $template_path, SubscriptionController $subscription_controller ) {
 		parent::__construct( $template_path );
 
-		$this->api_client  = $api_client;
-		$this->options     = $options;
-		$this->beacon      = $beacon;
-		$this->user_client = $user_client;
+		$this->api_client              = $api_client;
+		$this->options                 = $options;
+		$this->beacon                  = $beacon;
+		$this->user_client             = $user_client;
 		$this->subscription_controller = $subscription_controller;
 	}
 
@@ -341,7 +348,18 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 		return (bool) rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' );
 	}
 
-	public function maybe_create_rocketcdn_free( $can_save_page ) {
+	/**
+	 * Create rocketcdn free account.
+	 *
+	 * @param bool $can_save_page Can save page or not.
+	 * @return bool
+	 */
+	public function maybe_create_rocketcdn_free( bool $can_save_page ) {
+		$created = $this->subscription_controller->create_subscription();
+
+		if ( is_wp_error( $created ) ) {
+			return false;
+		}
 
 		return $can_save_page;
 	}

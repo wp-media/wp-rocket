@@ -230,7 +230,7 @@ class Rest extends WP_REST_Controller {
 		 *
 		 * @param string[] $original_fields Metaboxes fields.
 		 */
-		if ( wpm_apply_filters_typed( 'boolean', 'rocket_cdnfree_can_add_page', true, $url ) ) {
+		if ( ! wpm_apply_filters_typed( 'boolean', 'rocket_cdnfree_can_add_page', true, $url ) ) {
 			return new WP_Error(
 				'rocketcdn_disabled_by_filter',
 				__( 'Adding page is disabled by the filter.', 'rocket' ),
