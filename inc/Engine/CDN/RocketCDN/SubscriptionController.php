@@ -153,13 +153,10 @@ class SubscriptionController implements LoggerAwareInterface {
 			return;
 		}
 
-		if ( ! $status || ! $status['success'] ) {
+		if ( ! $status['success'] ) {
 			$this->logger::error(
 				'RocketCDN: Failed to check creation status.',
-				[
-					'code'    => $created['data']['code'] ?? 'Unknown',
-					'message' => $created['data']['message'] ?? 'Unknown',
-				]
+				$status
 			);
 			return;
 		}
