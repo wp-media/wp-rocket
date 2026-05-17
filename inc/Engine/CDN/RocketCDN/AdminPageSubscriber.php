@@ -43,30 +43,21 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	private $user_client;
 
 	/**
-	 * Subscription controller instance.
-	 *
-	 * @var SubscriptionController
-	 */
-	private $subscription_controller;
-
-	/**
 	 * Constructor
 	 *
-	 * @param APIClient              $api_client    RocketCDN API Client instance.
-	 * @param Options_Data           $options       WP Rocket options instance.
-	 * @param Beacon                 $beacon        Beacon instance.
-	 * @param UserClient             $user_client   UserClient instance.
-	 * @param string                 $template_path Path to the templates.
-	 * @param SubscriptionController $subscription_controller Subscription controller.
+	 * @param APIClient    $api_client    RocketCDN API Client instance.
+	 * @param Options_Data $options       WP Rocket options instance.
+	 * @param Beacon       $beacon        Beacon instance.
+	 * @param UserClient   $user_client   UserClient instance.
+	 * @param string       $template_path Path to the templates.
 	 */
-	public function __construct( APIClient $api_client, Options_Data $options, Beacon $beacon, $user_client, $template_path, SubscriptionController $subscription_controller ) {
+	public function __construct( APIClient $api_client, Options_Data $options, Beacon $beacon, $user_client, $template_path ) {
 		parent::__construct( $template_path );
 
-		$this->api_client              = $api_client;
-		$this->options                 = $options;
-		$this->beacon                  = $beacon;
-		$this->user_client             = $user_client;
-		$this->subscription_controller = $subscription_controller;
+		$this->api_client  = $api_client;
+		$this->options     = $options;
+		$this->beacon      = $beacon;
+		$this->user_client = $user_client;
 	}
 
 	/**
@@ -80,7 +71,6 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 			'rocket_settings_page_footer'                => 'add_subscription_modal',
 			'http_request_args'                          => [ 'preserve_authorization_token', PHP_INT_MAX, 2 ],
 			'rocket_insights_api_recommendations_params' => 'maybe_add_rocketcdn_to_recommendations_api_params',
-			'rocket_cdnfree_can_add_page'                => 'maybe_create_rocketcdn_free',
 		];
 	}
 
@@ -346,21 +336,5 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	 */
 	private function is_white_label_account() {
 		return (bool) rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' );
-	}
-
-	/**
-	 * Create rocketcdn free account.
-	 *
-	 * @param bool $can_save_page Can save page or not.
-	 * @return bool
-	 */
-	public function maybe_create_rocketcdn_free( bool $can_save_page ) {
-		$created = $this->subscription_controller->create_subscription();
-
-		if ( is_wp_error( $created ) ) {
-			return false;
-		}
-
-		return $can_save_page;
 	}
 }

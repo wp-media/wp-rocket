@@ -57,6 +57,11 @@ class CreateAPIClient extends AbstractSafeAPIClient {
 			return false;
 		}
 
-		return $response;
+		$response = wp_remote_retrieve_body( $response );
+		if ( empty( $response ) ) {
+			return false;
+		}
+
+		return json_decode( $response, true );
 	}
 }

@@ -5,8 +5,11 @@ namespace WP_Rocket\Engine\CDN\RocketCDN;
 
 use WP_Error;
 use WP_Rocket\Engine\CDN\RocketCDN\APIHandler\CreateAPIClient;
+use WP_Rocket\Logger\LoggerAware;
+use WP_Rocket\Logger\LoggerAwareInterface;
 
-class SubscriptionController {
+class SubscriptionController implements LoggerAwareInterface {
+	use LoggerAware;
 
 	/**
 	 * API Client instance.
@@ -72,17 +75,24 @@ class SubscriptionController {
 		}
 
 		$created = $this->create_api_client->create();
-		if ( ! $created || ! $created->success ) {
-			return new WP_Error( 'rocket_cdn_job_not_created', esc_html__( 'Could not create subscription.', 'rocket' ) );
+		if ( ! $created || ! $created['success'] ) {
+			$this->logger::error(
+				'RocketCDN: Failed to create subscription.',
+				[
+					'code'    => $created['data']['code'],
+					'message' => $created['data']['message'],
+				]
+			);
+			return new WP_Error( $created['data']['code'], $created['data']['message'] );
 		}
 
-		switch ( $created->data->code ) {
+		switch ( $created['data']['code'] ) {
 			case 'cdn_task_enqueued':
 				// Save CDN token.
-				$this->options_manager->save_token( $created->data->cdn_token );
+				$this->options_manager->save_token( $created['data']['cdn_token'] );
 
 				// Enqueue AS single task after 30 seconds from now to check the status.
-				$this->queue->schedule_create_status_job( $created->data->task_id );
+				$this->queue->schedule_create_status_job( $created['data']['task_id'] );
 
 				/**
 				 * Fires when rocketcdn subscription is created.
@@ -90,19 +100,26 @@ class SubscriptionController {
 				 * @param string $task_id Enqueued task ID.
 				 * @param string $token CDN Subscription token.
 				 */
-				do_action( 'rocket_cdn_subscription_created', $created->data->task_id, $created->data->cdn_token );
+				do_action( 'rocket_cdn_subscription_created', $created['data']['task_id'], $created['data']['cdn_token'] );
 				break;
 
 			case 'already_free_subscribed':
 				// Clear subscription cache so it can get the final state, and save the token before if it's not saved before.
 				if ( ! $this->options_manager->has_token() ) {
-					$this->options_manager->save_token( $created->data->cdn_token );
+					$this->options_manager->save_token( $created['data']['cdn_token'] );
 				}
 
 				$this->options_manager->flush_subscription_cache();
 				break;
 			default:
 				// Log this not known code.
+				$this->logger::error(
+					'RocketCDN: Received not known response code when creating subscription.',
+					[
+						'code'    => $created['data']['code'],
+						'message' => $created['data']['message'],
+					]
+				);
 				return false;
 		}
 

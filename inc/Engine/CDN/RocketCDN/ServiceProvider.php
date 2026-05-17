@@ -91,6 +91,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'rocketcdn_options_manager',
 					'options',
 					'rocketcdn_rest',
+					'rocketcdn_subscription_controller',
 				]
 			);
 		// RocketCDN Notices Subscriber.
@@ -126,7 +127,6 @@ class ServiceProvider extends AbstractServiceProvider {
 					'beacon',
 					'user_client',
 					new StringArgument( __DIR__ . '/views' ),
-					'rocketcdn_subscription_controller',
 				]
 			);
 
