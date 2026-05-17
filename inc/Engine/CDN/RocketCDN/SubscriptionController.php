@@ -79,11 +79,11 @@ class SubscriptionController implements LoggerAwareInterface {
 			$this->logger::error(
 				'RocketCDN: Failed to create subscription.',
 				[
-					'code'    => $created['data']['code'],
-					'message' => $created['data']['message'],
+					'code'    => $created['data']['code'] ?? 'Unknown',
+					'message' => $created['data']['message'] ?? 'Unknown',
 				]
 			);
-			return new WP_Error( $created['data']['code'], $created['data']['message'] );
+			return new WP_Error( $created['data']['code'] ?? 'rocketcdn_account_notcreated', $created['data']['message'] ?? 'Unknown' );
 		}
 
 		switch ( $created['data']['code'] ) {

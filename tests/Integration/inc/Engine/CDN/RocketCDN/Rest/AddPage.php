@@ -58,6 +58,14 @@ class Test_AddPage extends RESTfulTestCase {
 		$this->post_url = untrailingslashit( get_permalink( $this->post_id ) );
 
 		add_filter( 'pre_http_request', [ $this, 'mock_http_response' ], 10, 3 );
+		set_transient(
+			'rocketcdn_status',
+			[
+				'subscription_status' => 'running',
+				'cdn_url'             => 'example1.org',
+			],
+			HOUR_IN_SECONDS
+		);
 
 		self::truncateRocketCDNTable();
 	}
@@ -67,6 +75,7 @@ class Test_AddPage extends RESTfulTestCase {
 		wp_set_current_user( 0 );
 		wp_delete_post( $this->post_id, true );
 		self::truncateRocketCDNTable();
+		delete_transient( 'rocketcdn_status' );
 		parent::tear_down();
 	}
 
