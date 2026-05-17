@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\CDN\RocketCDN;
 use WP_Rocket\Abstract_Render;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
+use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
@@ -37,18 +38,18 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	/**
 	 * UserClient instance
 	 *
-	 * @var \WP_Rocket\Engine\License\API\UserClient
+	 * @var UserClient
 	 */
 	private $user_client;
 
 	/**
 	 * Constructor
 	 *
-	 * @param APIClient                                $api_client    RocketCDN API Client instance.
-	 * @param Options_Data                             $options       WP Rocket options instance.
-	 * @param Beacon                                   $beacon        Beacon instance.
-	 * @param \WP_Rocket\Engine\License\API\UserClient $user_client   UserClient instance.
-	 * @param string                                   $template_path Path to the templates.
+	 * @param APIClient    $api_client    RocketCDN API Client instance.
+	 * @param Options_Data $options       WP Rocket options instance.
+	 * @param Beacon       $beacon        Beacon instance.
+	 * @param UserClient   $user_client   UserClient instance.
+	 * @param string       $template_path Path to the templates.
 	 */
 	public function __construct( APIClient $api_client, Options_Data $options, Beacon $beacon, $user_client, $template_path ) {
 		parent::__construct( $template_path );
