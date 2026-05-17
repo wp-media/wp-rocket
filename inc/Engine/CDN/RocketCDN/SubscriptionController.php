@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\CDN\RocketCDN;
 
 use WP_Error;
+use WP_Rocket\Engine\CDN\RocketCDN\APIHandler\CheckStatusAPIClient;
 use WP_Rocket\Engine\CDN\RocketCDN\APIHandler\CreateAPIClient;
 use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
@@ -40,18 +41,27 @@ class SubscriptionController implements LoggerAwareInterface {
 	private $queue;
 
 	/**
+	 * Check Status API Client instance.
+	 *
+	 * @var CheckStatusAPIClient
+	 */
+	private $check_status_api_client;
+
+	/**
 	 * Constructor.
 	 *
-	 * @param APIClient         $api_client API Client instance.
-	 * @param CreateAPIClient   $create_api_client Create API Client instance.
-	 * @param CDNOptionsManager $options_manager Options Manager instance.
-	 * @param Queue             $queue Queue instance.
+	 * @param APIClient            $api_client API Client instance.
+	 * @param CreateAPIClient      $create_api_client Create API Client instance.
+	 * @param CDNOptionsManager    $options_manager Options Manager instance.
+	 * @param Queue                $queue Queue instance.
+	 * @param CheckStatusAPIClient $check_status_api_client Check Status API Client instance.
 	 */
-	public function __construct( APIClient $api_client, CreateAPIClient $create_api_client, CDNOptionsManager $options_manager, Queue $queue ) {
-		$this->api_client        = $api_client;
-		$this->create_api_client = $create_api_client;
-		$this->options_manager   = $options_manager;
-		$this->queue             = $queue;
+	public function __construct( APIClient $api_client, CreateAPIClient $create_api_client, CDNOptionsManager $options_manager, Queue $queue, CheckStatusAPIClient $check_status_api_client ) {
+		$this->api_client              = $api_client;
+		$this->create_api_client       = $create_api_client;
+		$this->options_manager         = $options_manager;
+		$this->queue                   = $queue;
+		$this->check_status_api_client = $check_status_api_client;
 	}
 
 	/**
@@ -124,5 +134,54 @@ class SubscriptionController implements LoggerAwareInterface {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Check subscription's creation status.
+	 *
+	 * @param string $task_id Task ID.
+	 * @return void
+	 */
+	public function check_status( string $task_id ) {
+		if ( $this->has_active_subscription() ) {
+			return;
+		}
+
+		$this->check_status_api_client->set_task_id( $task_id );
+		$status = $this->check_status_api_client->check();
+		if ( ! $status ) {
+			return;
+		}
+
+		if ( ! $status || ! $status['success'] ) {
+			$this->logger::error(
+				'RocketCDN: Failed to check creation status.',
+				[
+					'code'    => $created['data']['code'] ?? 'Unknown',
+					'message' => $created['data']['message'] ?? 'Unknown',
+				]
+			);
+			return;
+		}
+
+		switch ( $status['status'] ) {
+			case 'PENDING':
+				// Re-add the action scheduler task to check status again after 30 seconds.
+				$this->queue->schedule_create_status_job( $task_id );
+				break;
+			case 'SUCCESS':
+				$this->options_manager->enable( $status['cdn_url'], false );
+
+				/**
+				 * Fires when rocketcdn subscription's creation is finished successfully.
+				 */
+				do_action( 'rocket_cdnfree_website_created' );
+				break;
+			default:
+				$this->logger::error(
+					'RocketCDN: Received not known response code when check subscription\'s status.',
+					$status
+				);
+		}
 	}
 }
