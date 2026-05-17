@@ -67,7 +67,6 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	public static function get_subscribed_events() {
 		return [
 			'rocket_dashboard_after_account_data'        => 'display_rocketcdn_status',
-			'rocket_cdn_settings_fields'                 => 'rocketcdn_field',
 			'admin_post_rocket_purge_rocketcdn'          => 'purge_cdn_cache',
 			'rocket_settings_page_footer'                => 'add_subscription_modal',
 			'http_request_args'                          => [ 'preserve_authorization_token', PHP_INT_MAX, 2 ],
@@ -125,65 +124,6 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 		];
 
 		echo $this->generate( 'dashboard-status', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
-	}
-
-	/**
-	 * Adds the RocketCDN fields to the CDN section
-	 *
-	 * @since  3.5
-	 *
-	 * @param array $fields CDN settings fields.
-	 *
-	 * @return array
-	 */
-	public function rocketcdn_field( $fields ) {
-		if ( $this->is_white_label_account() ) {
-			return $fields;
-		}
-
-		$subscription_data = $this->api_client->get_subscription_data();
-
-		if ( 'running' !== $subscription_data['subscription_status'] ) {
-			return $fields;
-		}
-
-		$helper_text = __( 'Your RocketCDN subscription is currently active.', 'rocket' );
-		$cdn_cnames  = $this->options->get( 'cdn_cnames', [] );
-
-		if ( empty( $cdn_cnames ) || $cdn_cnames[0] !== $subscription_data['cdn_url'] ) {
-			$helper_text = sprintf(
-				// translators: %1$s = opening <code> tag, %2$s = CDN URL, %3$s = closing </code> tag.
-				__( 'To use RocketCDN, replace your CNAME with %1$s%2$s%3$s.', 'rocket' ),
-				'<code>',
-				$subscription_data['cdn_url'],
-				'</code>'
-			);
-		}
-
-		$beacon = $this->beacon->get_suggest( 'rocketcdn' );
-
-		$more_info = sprintf(
-			// translators: %1$is = opening link tag, %2$s = closing link tag.
-			__( '%1$sMore Info%2$s', 'rocket' ),
-			'<a href="' . esc_url( $beacon['url'] ) . '" data-beacon-article="' . esc_attr( $beacon['id'] ) . '" rel="noopener noreferrer" target="_blank">',
-			'</a>'
-		);
-
-		$fields['cdn_cnames'] = [
-			'type'        => 'rocket_cdn',
-			'label'       => __( 'CDN CNAME(s)', 'rocket' ),
-			'description' => __( 'Specify the CNAME(s) below', 'rocket' ),
-			'helper'      => $helper_text . ' ' . $more_info,
-			'default'     => '',
-			'section'     => 'cnames_section',
-			'page'        => 'page_cdn',
-			'beacon'      => [
-				'url' => $beacon['url'],
-				'id'  => $beacon['id'],
-			],
-		];
-
-		return $fields;
 	}
 
 	/**
