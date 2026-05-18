@@ -33,7 +33,7 @@ $rocket_manual_preload = (bool) get_rocket_option( 'manual_preload', false );
 	$rocket_boxes     = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
 	$rocket_cdn_token = get_option( 'rocketcdn_user_token', '' );
 
-	if ( ! in_array( 'rocketcdn_free_notice', (array) $rocket_boxes, true ) || ! empty( $rocket_cdn_token ) ) :
+	if ( ! in_array( 'rocketcdn_free_notice', (array) $rocket_boxes, true ) && empty( $rocket_cdn_token ) ) :
 		?>
 	<div class="wpr-notice">
 		<div class="wpr-notice-container">

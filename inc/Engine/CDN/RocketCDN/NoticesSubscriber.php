@@ -595,7 +595,8 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	 */
 	public function maybe_display_rocketcdn_notice() {
 		$previous_version = $this->options->get( 'previous_version' );
-		$rocket_cdn_token = $this->options_api->get( 'rocketcdn_user_token' );
+		// @phpstan-ignore-next-line
+		$rocket_cdn_token = get_option( 'rocketcdn_user_token', '' );
 
 		// Don't show the notice if RocketCDN is already active (token exists).
 		if ( ! empty( $rocket_cdn_token ) ) {
