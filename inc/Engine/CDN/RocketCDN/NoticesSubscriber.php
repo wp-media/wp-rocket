@@ -42,21 +42,30 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	private $tracking;
 
 	/**
+	 * Subscription controller instance.
+	 *
+	 * @var SubscriptionController
+	 */
+	private $subscription_controller;
+
+	/**
 	 * Constructor
 	 *
-	 * @param APIClient  $api_client    RocketCDN API Client instance.
-	 * @param Beacon     $beacon        Beacon instance.
-	 * @param UserClient $user_client   UserClient instance.
-	 * @param Tracking   $tracking      Tracking instance.
-	 * @param string     $template_path Path to the templates.
+	 * @param APIClient              $api_client    RocketCDN API Client instance.
+	 * @param Beacon                 $beacon        Beacon instance.
+	 * @param UserClient             $user_client   UserClient instance.
+	 * @param Tracking               $tracking      Tracking instance.
+	 * @param string                 $template_path Path to the templates.
+	 * @param SubscriptionController $subscription_controller Subscription controller instance.
 	 */
-	public function __construct( APIClient $api_client, Beacon $beacon, UserClient $user_client, Tracking $tracking, $template_path ) {
+	public function __construct( APIClient $api_client, Beacon $beacon, UserClient $user_client, Tracking $tracking, $template_path, SubscriptionController $subscription_controller ) {
 		parent::__construct( $template_path );
 
-		$this->api_client  = $api_client;
-		$this->beacon      = $beacon;
-		$this->user_client = $user_client;
-		$this->tracking    = $tracking;
+		$this->api_client              = $api_client;
+		$this->beacon                  = $beacon;
+		$this->user_client             = $user_client;
+		$this->tracking                = $tracking;
+		$this->subscription_controller = $subscription_controller;
 	}
 
 	/**
@@ -453,6 +462,12 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 			return;
 		}
 
+		if ( $this->subscription_controller->is_free() ) {
+			// Send the request again (create subscription) to fix what is wrong with this account.
+			$this->subscription_controller->create_subscription( true );
+			return;
+		}
+
 		$express_checkout_url = $this->get_express_checkout_url();
 
 		if ( empty( $express_checkout_url ) ) {
@@ -496,10 +511,8 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 			return false;
 		}
 
-		$subscription_data = $this->api_client->get_subscription_data();
-
-		// Show notice when is_active is false AND cdn_url is empty.
-		return ! $subscription_data['is_active'] && empty( $subscription_data['cdn_url'] );
+		// Show notice when webiste is not attached.
+		return ! $this->subscription_controller->is_website_attached();
 	}
 
 	/**
