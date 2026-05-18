@@ -198,8 +198,4 @@ class Test_MaybeRetryActivation extends AdminTestCase {
 			$this->assertSame( $config['user_data']->rocketcdn->cdn_token, $saved_token );
 		}
 	}
-
-	private function mock_subscription() {
-
-	}
 }
