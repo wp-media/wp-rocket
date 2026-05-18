@@ -181,4 +181,24 @@ class SubscriptionController implements LoggerAwareInterface {
 				);
 		}
 	}
+
+	/**
+	 * If current subscription is free.
+	 *
+	 * @return bool
+	 */
+	public function is_free(): bool {
+		$subscription = $this->api_client->get_subscription_data();
+		return ! empty( $subscription['plan_type'] ) && 'free' === $subscription['plan_type'];
+	}
+
+	/**
+	 * If current subscription is paid.
+	 *
+	 * @return bool
+	 */
+	public function is_paid(): bool {
+		$subscription = $this->api_client->get_subscription_data();
+		return ! empty( $subscription['plan_type'] ) && 'paid' === $subscription['plan_type'];
+	}
 }
