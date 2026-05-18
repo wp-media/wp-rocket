@@ -77,10 +77,12 @@ class SubscriptionController implements LoggerAwareInterface {
 	/**
 	 * Create RocketCDN subscription if it doesn't have an active one, and handle the response.
 	 *
+	 * @param bool $skip_active_check Skip checking if the website has active subscription or not, default is false.
+	 *
 	 * @return bool|WP_Error
 	 */
-	public function create_subscription() {
-		if ( $this->has_active_subscription() ) {
+	public function create_subscription( bool $skip_active_check = false ) {
+		if ( ! $skip_active_check && $this->has_active_subscription() ) {
 			return false;
 		}
 
@@ -200,5 +202,15 @@ class SubscriptionController implements LoggerAwareInterface {
 	public function is_paid(): bool {
 		$subscription = $this->api_client->get_subscription_data();
 		return ! empty( $subscription['plan_type'] ) && 'paid' === $subscription['plan_type'];
+	}
+
+	/**
+	 * Check if website is attached to the subscription correctly or not.
+	 *
+	 * @return bool
+	 */
+	public function is_website_attached(): bool {
+		$subscription = $this->api_client->get_subscription_data();
+		return (bool) $subscription['website_attached'];
 	}
 }
