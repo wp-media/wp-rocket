@@ -60,12 +60,13 @@ class RESTSubscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rest_api_init'               => [
+			'rest_api_init'                        => [
 				[ 'register_enable_route' ],
 				[ 'register_disable_route' ],
 				[ 'register_routes' ],
 			],
-			'rocket_cdnfree_can_add_page' => 'maybe_create_rocketcdn_free',
+			'rocket_cdnfree_can_add_page'          => 'maybe_create_rocketcdn_free',
+			'rocket_cdnfree_website_create_status' => 'check_status',
 		];
 	}
 
@@ -237,5 +238,18 @@ class RESTSubscriber implements Subscriber_Interface {
 		}
 
 		return $can_save_page;
+	}
+
+	/**
+	 * Check subscription creation status.
+	 *
+	 * @param string $task_id Task ID to check.
+	 * @return void
+	 */
+	public function check_status( string $task_id ) {
+		if ( empty( $task_id ) ) {
+			return;
+		}
+		$this->subscription_controller->check_status( $task_id );
 	}
 }

@@ -3,28 +3,30 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\CDN\RocketCDN\APIHandler;
 
+use WP_Rocket\Engine\CDN\RocketCDN\APIClient;
 use WP_Rocket\Engine\Common\JobManager\APIHandler\AbstractSafeAPIClient;
 use WP_Rocket\Engine\License\API\User;
 
 /**
- * Class to Interact with the RocketCDN API
+ * Class to Interact with the RocketCDN API - check creation status.
  */
-class CreateAPIClient extends AbstractSafeAPIClient {
+class CheckStatusAPIClient extends AbstractSafeAPIClient {
 
 	/**
-	 * Free url from user endpoint.
+	 * Task ID to check the status.
 	 *
 	 * @var string
 	 */
-	private $free_url;
+	private $task_id;
 
 	/**
-	 * Constructor to get the rocketcdn free url from user endpoint to be used later.
+	 * Set task ID.
 	 *
-	 * @param User $user User instance.
+	 * @param string $task_id Task ID.
+	 * @return void
 	 */
-	public function __construct( User $user ) {
-		$this->free_url = $user->get_rocketcdn_free_url();
+	public function set_task_id( string $task_id ): void {
+		$this->task_id = $task_id;
 	}
 
 	/**
@@ -33,7 +35,7 @@ class CreateAPIClient extends AbstractSafeAPIClient {
 	 * @return string The transient key for plugin updates.
 	 */
 	protected function get_transient_key() {
-		return 'rocket_cdn_create_request';
+		return 'rocket_cdn_check_status_request';
 	}
 
 	/**
@@ -42,16 +44,19 @@ class CreateAPIClient extends AbstractSafeAPIClient {
 	 * @return string The API URL.
 	 */
 	protected function get_api_url() {
-		return $this->free_url;
+		if ( empty( $this->task_id ) ) {
+			return '';
+		}
+		return sprintf( '%1$swebsite/task/%2$s/', APIClient::ROCKETCDN_API, $this->task_id );
 	}
 
 	/**
-	 * Create RocketCDN free account.
+	 * Check RocketCDN free account creation status.
 	 *
 	 * @return array|false
 	 */
-	public function create() {
-		$response = $this->send_post_request( [], true );
+	public function check() {
+		$response = $this->send_get_request( [], true );
 
 		if ( is_wp_error( $response ) ) {
 			return false;

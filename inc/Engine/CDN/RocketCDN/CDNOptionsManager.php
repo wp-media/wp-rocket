@@ -41,9 +41,10 @@ class CDNOptionsManager {
 	 * @since 3.5
 	 *
 	 * @param string $cdn_url CDN URL.
+	 * @param bool   $clear_cache Clear website whole cache.
 	 * @return void
 	 */
-	public function enable( $cdn_url ) {
+	public function enable( $cdn_url, bool $clear_cache = true ) {
 		$this->options->set( 'cdn', 1 );
 		$this->options->set( 'cdn_cnames', [ $cdn_url ] );
 		$this->options->set( 'cdn_zone', [ 'all' ] );
@@ -51,7 +52,9 @@ class CDNOptionsManager {
 		$this->options_api->set( 'settings', $this->options->get_options() );
 
 		delete_transient( 'rocketcdn_status' );
-		rocket_clean_domain();
+		if ( $clear_cache ) {
+			rocket_clean_domain();
+		}
 	}
 
 	/**
