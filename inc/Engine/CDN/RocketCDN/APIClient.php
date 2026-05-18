@@ -96,7 +96,7 @@ class APIClient {
 			'id'                            => $data['subscription_id'] ?? 0,
 			'is_active'                     => $data['website_activated'] ?? false,
 			'cdn_url'                       => $data['cdn_url'] ?? '',
-			'subscription_next_date_update' => $data['subscription_next_date_update'] ?? 0,
+			'subscription_next_date_update' => $data['next_date_update'] ?? 0,
 			'subscription_status'           => $data['status'] ?? 'cancelled',
 			'website_attached'              => $data['website_attached'] ?? false,
 			'plan_type'                     => $data['plan_type'] ?? 'free',
