@@ -53,13 +53,6 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	private $options;
 
 	/**
-	 * WP Options API instance
-	 *
-	 * @var Options
-	 */
-	private $options_api;
-
-	/**
 	 * Constructor
 	 *
 	 * @param APIClient    $api_client    RocketCDN API Client instance.
@@ -68,7 +61,6 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	 * @param Tracking     $tracking      Tracking instance.
 	 * @param string       $template_path Path to the templates.
 	 * @param Options_Data $options WP Rocket options instance.
-	 * @param Options      $options_api Options API instance.
 	 */
 	public function __construct(
 		APIClient $api_client,
@@ -76,8 +68,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 		UserClient $user_client,
 		Tracking $tracking,
 		$template_path,
-		Options_Data $options,
-		Options $options_api
+		Options_Data $options
 	) {
 		parent::__construct( $template_path );
 
@@ -86,7 +77,6 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 		$this->user_client = $user_client;
 		$this->tracking    = $tracking;
 		$this->options     = $options;
-		$this->options_api = $options_api;
 	}
 
 	/**
