@@ -89,7 +89,10 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function initialize_rucss_queue_runner() {
-		if ( ! $this->job_processor->is_allowed() ) {
+		if ( ! isset( $this->factories['rucss'] ) || ! $this->factories['rucss']->manager()->is_allowed() ) {
+			if ( wp_next_scheduled( RUCSSQueueRunner::WP_CRON_HOOK, [ 'WP Cron' ] ) ) {
+				wp_clear_scheduled_hook( RUCSSQueueRunner::WP_CRON_HOOK, [ 'WP Cron' ] );
+			}
 			return;
 		}
 
