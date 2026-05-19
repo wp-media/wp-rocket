@@ -53,18 +53,12 @@ current_user_can( 'rocket_purge_users' )
 
 Using `manage_options` directly for WP Rocket–specific actions is incorrect and will flag in code review.
 
-## JavaScript
-
-- Do not use jQuery. Use native DOM APIs (`document.querySelector`, `addEventListener`, `fetch`, etc.).
-- jQuery is available in WordPress but its use introduces an unnecessary dependency and conflicts with modern bundling practices.
-
 ## Anti-patterns
 
 - Echoing raw variables
 - Introducing unescaped output
 - Storing sensitive values in plain text
 - Bypassing repository PHPCS configuration
-- Using jQuery in new or modified JS code
 
 ## Related Specs
 

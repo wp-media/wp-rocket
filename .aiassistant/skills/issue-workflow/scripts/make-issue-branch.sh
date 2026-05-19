@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Create a branch name from an issue number and title.
-# Usage: make-issue-branch.sh <issue-number> "<issue-title>" [prefix] [base-ref]
+# Usage: make-issue-branch.sh <issue-number> "<issue-title>" [prefix]
 # prefix: fix (default), enhancement, test
 set -euo pipefail
 
@@ -17,9 +17,6 @@ case "$PREFIX" in
   *) PREFIX="fix" ;;
 esac
 
-# Optional base ref — branch is created from this ref when provided.
-BASE_REF="${4:-}"
-
 # Build a short, URL-safe slug from the title (first 4 words max).
 SLUG="$(printf '%s' "$TITLE" \
   | tr '[:upper:]' '[:lower:]' \
@@ -30,9 +27,5 @@ SLUG="$(printf '%s' "$TITLE" \
 BRANCH="${PREFIX}/${ISSUE_NUMBER}-${SLUG}"
 
 # Create and switch to the branch.
-if [[ -n "$BASE_REF" ]]; then
-  git checkout -b "$BRANCH" "$BASE_REF"
-else
-  git checkout -b "$BRANCH"
-fi
+git checkout -b "$BRANCH"
 echo "$BRANCH"
