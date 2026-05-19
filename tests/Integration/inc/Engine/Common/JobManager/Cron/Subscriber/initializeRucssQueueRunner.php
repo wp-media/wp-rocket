@@ -18,17 +18,28 @@ class Test_InitializeRucssQueueRunner extends TestCase {
 		parent::set_up();
 
 		$this->unregisterAllCallbacksExcept( 'init', 'initialize_rucss_queue_runner' );
+
+		add_filter( 'cron_schedules', [ $this, 'register_every_minute_schedule' ] );
 	}
 
 	public function tear_down() {
 		$this->restoreWpHook( 'init' );
 
 		remove_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
-		remove_filter( 'rocket_rocket_insights_enabled', '__return_false' );
+		remove_filter( 'rocket_rocket_insights_enabled', '__return_true' );
+		remove_filter( 'cron_schedules', [ $this, 'register_every_minute_schedule' ] );
 
 		wp_clear_scheduled_hook( RUCSSQueueRunner::WP_CRON_HOOK, [ 'WP Cron' ] );
 
 		parent::tear_down();
+	}
+
+	public function register_every_minute_schedule( $schedules ) {
+		$schedules['every_minute'] = [
+			'interval' => 60,
+			'display'  => 'Every minute',
+		];
+		return $schedules;
 	}
 
 	/**
