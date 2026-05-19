@@ -294,8 +294,27 @@ document.addEventListener('DOMContentLoaded', function() {
 	const $pageUrlInput = $('#wpr-speed-radar-url-input');
 	const $tableBody = $('.wpr-ri-urls-table tbody');
 	const $table = $('.wpr-ri-urls-table');
+	const $urlErrorMessage = $('#wpr-ri-url-error');
 
 	// ==== Utility Functions ====
+
+	/**
+	 * Show a validation error message below the URL input field.
+	 *
+	 * @param {string} message The error message to display.
+	 */
+	function showUrlError( message ) {
+		$urlErrorMessage.text( message ).show();
+		$pageUrlInput.addClass( 'wpr-ri-input--error' );
+	}
+
+	/**
+	 * Clear the URL input validation error message.
+	 */
+	function clearUrlError() {
+		$urlErrorMessage.text( '' ).hide();
+		$pageUrlInput.removeClass( 'wpr-ri-input--error' );
+	}
 	function isValidUrl(input) {
 		try {
 			const url = new URL(input);
@@ -512,8 +531,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 		const pageUrl = $pageUrlInput.val().trim();
 
+		clearUrlError();
+
 		if (!isValidUrl(pageUrl)) {
-			alert('Please enter a valid URL');
+			showUrlError( window.rocket_ajax_data?.rocket_insights_invalid_url || 'Please enter a valid URL.' );
 			return;
 		}
 
@@ -532,6 +553,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			if (response.success) {
 				if ( ! hasId(response.id) ) {
 					$pageUrlInput.val('');
+					clearUrlError();
 					$tableBody.append(response.html);
 
 					// Custom event when new page is added.
@@ -565,8 +587,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				}
 
 			} else {
-				// Clear the input field on error
-				$pageUrlInput.val('');
+				const errorMessage = response?.message || window.rocket_ajax_data?.rocket_insights_generic_error || 'An error occurred. Please try again.';
 
 				// Handle URL limit reached error
 				if (response?.message && response.message.includes('Maximum number of URLs reached')) {
@@ -574,11 +595,16 @@ document.addEventListener('DOMContentLoaded', function() {
 					disableAddUrlElements();
 					// Show quota banner (can_add_pages = false)
 					updateQuotaBanner(response.can_add_pages !== undefined ? response.can_add_pages : false);
+					$pageUrlInput.val('');
+				} else {
+					showUrlError( errorMessage );
 				}
-
-				console.error(response?.message || response);
 			}
-		});
+		} ).catch( ( error ) => {
+			// wp.apiFetch rejects on WP_Error (non-2xx) responses.
+			const errorMessage = error?.message || window.rocket_ajax_data?.rocket_insights_generic_error || 'An error occurred. Please try again.';
+			showUrlError( errorMessage );
+		} );
 	}
 
 	function handleResetPage(e) {

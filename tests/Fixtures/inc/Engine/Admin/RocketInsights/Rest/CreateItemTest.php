@@ -123,7 +123,28 @@ return [
 		],
 		'expected' => [
 			'code'          => 400,
-			'error_message' => 'Url does not resolve to a valid page',
+			'error_message' => 'This URL could not be reached',
+		],
+	],
+	'testShouldFailWithAlreadyMonitoredUrl'              => [
+		'config'   => [
+			'post_data'     => [
+				'page_url' => 'http://example.org/already-monitored',
+				'source'   => 'dashboard',
+			],
+			'rows'          => [
+				[
+					'url'       => 'http://example.org/already-monitored',
+					'status'    => 'completed',
+					'is_mobile' => 1,
+				],
+			],
+			'customer_data' => ( new UserDataGenerator() ),
+			'mock_http'     => true,
+		],
+		'expected' => [
+			'code'          => 400,
+			'error_message' => 'This URL is already being monitored',
 		],
 	],
 	'testShouldSucceedWithExternalUrl'                   => [
