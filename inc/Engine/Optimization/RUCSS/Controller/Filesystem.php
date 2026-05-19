@@ -78,9 +78,10 @@ class Filesystem extends AbstractFileSystem {
 	 * @return bool
 	 */
 	public function write_used_css( string $hash, string $used_css ): bool {
-		$file = $this->get_usedcss_full_path( $hash );
+		$file   = $this->get_usedcss_full_path( $hash );
+		$subdir = dirname( $file );
 
-		if ( ! rocket_mkdir_p( dirname( $file ) ) ) {
+		if ( ! rocket_mkdir_p( $subdir ) ) {
 			return false;
 		}
 
@@ -91,7 +92,19 @@ class Filesystem extends AbstractFileSystem {
 			return false;
 		}
 
-		return $this->write_file( $file, $css );
+		if ( $this->write_file( $file, $css ) ) {
+			return true;
+		}
+
+		if ( ! $this->filesystem->is_writable( $subdir ) ) {
+			set_transient(
+				'rocket_rucss_subfolder_not_writable',
+				trim( str_replace( rocket_get_constant( 'ABSPATH', '' ), '', $subdir ), '/' ),
+				HOUR_IN_SECONDS
+			);
+		}
+
+		return false;
 	}
 
 	/**
@@ -129,5 +142,22 @@ class Filesystem extends AbstractFileSystem {
 	 */
 	public function is_writable_folder() {
 		return $this->is_folder_writable( $this->path );
+	}
+
+	/**
+	 * Returns the not-writable subfolder path stored in the transient, or an empty string if none.
+	 *
+	 * @return string Relative path to the non-writable subfolder, or empty string.
+	 */
+	public function get_not_writable_subfolder(): string {
+		$path = get_transient( 'rocket_rucss_subfolder_not_writable' );
+
+		if ( false === $path ) {
+			return '';
+		}
+
+		delete_transient( 'rocket_rucss_subfolder_not_writable' );
+
+		return (string) $path;
 	}
 }
