@@ -61,6 +61,11 @@ parameters:
 			path: inc/Engine/Admin/Metaboxes/PostEditOptionsSubscriber.php
 
 		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: inc/Engine/Admin/RocketInsights/Controller.php
+
+		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 12
 			path: inc/Engine/Admin/Settings/Page.php

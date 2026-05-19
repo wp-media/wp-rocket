@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\License;
 
 use WP_Rocket\Abstract_Render;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\License\API\Currency;
 use WP_Rocket\Engine\License\API\Pricing;
 use WP_Rocket\Engine\License\API\User;
 
@@ -186,7 +187,7 @@ class Renewal extends Abstract_Render {
 	 * @return array
 	 */
 	private function get_banner_data() {
-		$price = esc_html( '$' . number_format_i18n( $this->get_price(), 2 ) );
+		$price = Currency::format_price_with_currency_symbol( number_format_i18n( $this->get_price(), 2 ), $this->user->get_currency() );
 
 		$message = sprintf(
 			// translators: %1$s = <strong>, %2$s = </strong>, %3$s = discount price.
@@ -644,7 +645,7 @@ class Renewal extends Abstract_Render {
 			return $menu_title;
 		}
 
-		return $menu_title . ' <span class="awaiting-mod">!</span>';
+		return $menu_title . ' <span class="rocket-red-bubble">!</span>';
 	}
 
 	/**
