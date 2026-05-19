@@ -167,9 +167,13 @@ class Utils {
 			return;
 		}
 
+		$notice_id = 'rocket-notice-' . sanitize_html_class( $notice_info['dismiss_button'] );
+
 		rocket_notice_html(
 			[
+				'id'                     => $notice_id,
 				'status'                 => $status,
+				'dismissible'            => 'is-dismissible',
 				'message'                => $notice_info['message'],
 				'action'                 => $notice_info['action'],
 				'dismiss_button'         => $notice_info['dismiss_button'],
@@ -177,5 +181,29 @@ class Utils {
 				'dismiss_button_class'   => 'button button-secondary',
 			]
 		);
+
+		$nonce = wp_create_nonce( 'rocket_ignore_' . $notice_info['dismiss_button'] );
+		?>
+		<script>
+			window.addEventListener( 'DOMContentLoaded', function() {
+				var notice = document.getElementById( '<?php echo esc_js( $notice_id ); ?>' );
+				if ( ! notice ) {
+					return;
+				}
+
+				notice.addEventListener( 'click', function( event ) {
+					var target = event.target;
+
+					if ( ! target.closest( '.notice-dismiss' ) ) {
+						return;
+					}
+
+					var httpRequest = new XMLHttpRequest();
+					httpRequest.open( 'GET', '<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>?action=rocket_ignore&box=<?php echo esc_js( rawurlencode( $notice_info['dismiss_button'] ) ); ?>&_wpnonce=<?php echo esc_js( $nonce ); ?>' );
+					httpRequest.send();
+				} );
+			} );
+		</script>
+		<?php
 	}
 }
