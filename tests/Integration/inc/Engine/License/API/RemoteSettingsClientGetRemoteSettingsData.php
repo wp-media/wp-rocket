@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\License\API;
 
 use WP_Rocket\Tests\Integration\TestCase;
+use WP_Rocket\Tests\StubTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\License\API\RemoteSettingsClient::get_remote_settings_data
@@ -11,6 +12,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group AdminOnly
  */
 class RemoteSettingsClientGetRemoteSettingsData extends TestCase {
+	use StubTrait;
 	private static $client;
 	private $response;
 
@@ -22,6 +24,7 @@ class RemoteSettingsClientGetRemoteSettingsData extends TestCase {
 	}
 
 	public function set_up() {
+		$this->rocket_version = '3.22';
 		parent::set_up();
 
 		delete_transient( 'wp_rocket_remote_settings' );
