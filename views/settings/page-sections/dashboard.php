@@ -33,7 +33,7 @@ $rocket_manual_preload = (bool) get_rocket_option( 'manual_preload', false );
 	$rocket_boxes     = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
 	$rocket_cdn_token = get_option( 'rocketcdn_user_token', '' );
 
-	if ( ! in_array( 'rocketcdn_free_notice', (array) $rocket_boxes, true ) && empty( $rocket_cdn_token ) ) :
+	if ( ! in_array( 'rocket_activation_notice', (array) $rocket_boxes, true ) && empty( $rocket_cdn_token ) ) :
 		?>
 	<div class="wpr-notice">
 		<div class="wpr-notice-container">
@@ -43,7 +43,7 @@ $rocket_manual_preload = (bool) get_rocket_option( 'manual_preload', false );
 			</h2>
 		<div class="wpr-notice-description">
 			<?php esc_html_e( 'RocketCDN serves your content from locations closer to your visitors, helping your top pages load faster around the world. Go to the RocketCDN tab, choose up to 3 pages, and add them to the CDN to improve their performance globally.', 'rocket' ); ?></div>
-			<a id="wpr-congratulations-notice" class="wpr-notice-close wpr-icon-close rocket-dismiss" href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box=rocketcdn_free_notice' ), 'rocket_ignore_rocketcdn_free_notice' ) ); ?>"><span class="screen-reader-text"><?php esc_html_e( 'Dismiss this notice', 'rocket' ); ?></span></a>
+			<a id="wpr-congratulations-notice" class="wpr-notice-close wpr-icon-close rocket-dismiss" href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box=rocket_activation_notice' ), 'rocket_ignore_rocket_activation_notice' ) ); ?>"><span class="screen-reader-text"><?php esc_html_e( 'Dismiss this notice', 'rocket' ); ?></span></a>
 		</div>
 	</div>
 	<?php endif; ?>
