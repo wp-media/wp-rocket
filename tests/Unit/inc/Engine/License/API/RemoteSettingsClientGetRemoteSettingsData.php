@@ -6,6 +6,7 @@ use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\License\API\RemoteSettingsClient;
+use WP_Rocket\Tests\StubTrait;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
@@ -14,6 +15,7 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @group License
  */
 class RemoteSettingsClientGetRemoteSettingsData extends TestCase {
+	use StubTrait;
 	private $client;
 	private $options;
 
@@ -28,6 +30,7 @@ class RemoteSettingsClientGetRemoteSettingsData extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
+		$this->rocket_version = '3.22';
 		Functions\when( 'wp_remote_retrieve_body' )
 			->justReturn(
 				is_array( $config['response'] )

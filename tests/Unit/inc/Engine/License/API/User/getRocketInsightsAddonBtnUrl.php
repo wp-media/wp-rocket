@@ -4,6 +4,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\License\API\User;
 
 use Brain\Monkey\Functions;
 use WP_Rocket\Engine\License\API\User;
+use WP_Rocket\Tests\StubTrait;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
@@ -12,11 +13,13 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @group License
  */
 class GetRocketInsightsAddonBtnUrl extends TestCase {
+	use StubTrait;
 	/**
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
 		$user = new User( $config['data'] );
+		$this->constants['WP_ROCKET_PLUGIN_SLUG'] = 'wp-rocket';
 
 		if ( $config['has_url'] ) {
 			Functions\when( 'admin_url' )->justReturn( $config['admin_url'] );
