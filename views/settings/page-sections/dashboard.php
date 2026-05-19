@@ -30,10 +30,9 @@ $rocket_manual_preload = (bool) get_rocket_option( 'manual_preload', false );
 	</div>
 
 	<?php
-	$rocket_boxes     = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
-	$rocket_cdn_token = get_option( 'rocketcdn_user_token', '' );
+	$rocket_boxes = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
 
-	if ( ! in_array( 'rocket_activation_notice', (array) $rocket_boxes, true ) && empty( $rocket_cdn_token ) ) :
+	if ( ! in_array( 'rocket_activation_notice', (array) $rocket_boxes, true ) ) :
 		?>
 	<div class="wpr-notice">
 		<div class="wpr-notice-container">
