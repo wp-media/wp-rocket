@@ -85,7 +85,10 @@ class DataManagerSubscriber implements Subscriber_Interface {
 			'wp_ajax_rocketcdn_process_status'       => 'get_process_status',
 			'wp_ajax_rocketcdn_validate_token_cname' => 'validate_token_cname',
 			self::CRON_EVENT                         => 'maybe_disable_cdn',
-			'wp_rocket_upgrade'                      => [ 'refresh_cdn_cname', 10, 2 ],
+			'wp_rocket_upgrade'                      => [
+				[ 'refresh_cdn_cname', 10, 2 ],
+				[ 'refresh_subscription_details_with_update', 10, 2 ],
+			],
 		];
 	}
 
@@ -524,5 +527,20 @@ class DataManagerSubscriber implements Subscriber_Interface {
 		$this->options->set( 'cdn_cnames', $cdn_cnames );
 
 		$this->options_api->set( 'settings', $this->options->get_options() );
+	}
+
+	/**
+	 * Refresh subscription details with update to v3.22.
+	 *
+	 * @param string $new_version Plugin new version.
+	 * @param string $old_version Plugin old version.
+	 * @return void
+	 */
+	public function refresh_subscription_details_with_update( $new_version, $old_version ) {
+		if ( version_compare( $old_version, '3.22', '>=' ) ) {
+			return;
+		}
+
+		$this->cdn_options->flush_subscription_cache();
 	}
 }
