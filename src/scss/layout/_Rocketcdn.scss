@@ -94,7 +94,21 @@
 				transition: transform 0.2s ease;
 			}
 		}
+
+        &--max-limit {
+            display: none;
+        }
 	}
+
+    &.wpr-rocketcdn-cta---max-limit {
+        .wpr-rocketcdn-cta-toggle--default {
+            display: none;
+        }
+
+        .wpr-rocketcdn-cta-toggle--max-limit {
+            display: flex;
+        }
+    }
 
 	&-separator {
 		width: 100%;

@@ -114,7 +114,7 @@
 	&__tooltip {
 		position: absolute;
 		top: 9px;
-		left: 50%;
+		right: 95px;
 		transform: translateX(-50%);
 		padding: 8px 12px;
 		background: #0c0f1f;
@@ -409,6 +409,10 @@
 
 		&:hover {
 			background: darken($cGreyLight3, 5%);
+		}
+
+		&.wpr-isHidden {
+			display: none;
 		}
 	}
 
