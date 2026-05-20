@@ -42,6 +42,9 @@ class APIClient {
 			'cdn_url'                       => '',
 			'subscription_next_date_update' => 0,
 			'subscription_status'           => 'cancelled',
+			'website_attached'              => false,
+			'plan_type'                     => 'free',
+			'plan_page_limit'               => 0,
 		];
 
 		$token = get_option( 'rocketcdn_user_token' );
@@ -56,8 +59,15 @@ class APIClient {
 			],
 		];
 
+		$parsed_home = wp_parse_url( home_url() );
+		if ( empty( $parsed_home['host'] ) ) {
+			$this->set_status_transient( $default, 3 * MINUTE_IN_SECONDS );
+
+			return $default;
+		}
+
 		$response = wp_remote_get(
-			self::ROCKETCDN_API . 'website/search/?url=' . home_url(),
+			sprintf( '%1$ssubscription/%2$s/status', self::ROCKETCDN_API, $parsed_home['host'] ),
 			$args
 		);
 
@@ -76,12 +86,26 @@ class APIClient {
 		}
 
 		$data = json_decode( $data, true );
-		$data = array_intersect_key( (array) $data, $default );
-		$data = array_merge( $default, $data );
+		if ( empty( $data['success'] ) ) {
+			$this->set_status_transient( $default, 3 * MINUTE_IN_SECONDS );
+			return $default;
+		}
 
-		$this->set_status_transient( $data, WEEK_IN_SECONDS );
+		// Map the data.
+		$final_data = [
+			'id'                            => $data['subscription_id'] ?? 0,
+			'is_active'                     => $data['website_activated'] ?? false,
+			'cdn_url'                       => $data['cdn_url'] ?? '',
+			'subscription_next_date_update' => $data['next_date_update'] ?? 0,
+			'subscription_status'           => $data['status'] ?? 'cancelled',
+			'website_attached'              => $data['website_attached'] ?? false,
+			'plan_type'                     => $data['plan_type'] ?? 'free',
+			'plan_page_limit'               => $data['plan_page_limit'] ?? 0,
+		];
 
-		return $data;
+		$this->set_status_transient( $final_data, DAY_IN_SECONDS );
+
+		return $final_data;
 	}
 
 	/**
