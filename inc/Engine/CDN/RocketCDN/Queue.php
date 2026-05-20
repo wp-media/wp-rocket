@@ -6,14 +6,14 @@ namespace WP_Rocket\Engine\CDN\RocketCDN;
 use WP_Rocket\Engine\Common\Queue\AbstractASQueue;
 
 /**
- * Rocket Insights Queue
+ * RocketCDN Queue
  *
- * Manages Action Scheduler jobs for Rocket Insights workflow
+ * Manages Action Scheduler jobs for RocketCDN workflow
  */
 class Queue extends AbstractASQueue {
 
 	/**
-	 * Queue group for Rocket Insights.
+	 * Queue group for RocketCDN.
 	 *
 	 * @var string
 	 */
