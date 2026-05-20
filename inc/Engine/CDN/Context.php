@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\CDN;
 
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\CDN\RocketCDN\SubscriptionController;
 
 /**
  * Handles the CDN driver context.
@@ -37,12 +38,21 @@ class Context {
 	private $options;
 
 	/**
+	 * Subscription controller.
+	 *
+	 * @var SubscriptionController
+	 */
+	private $subscription_controller;
+
+	/**
 	 * Constructor.
 	 *
-	 * @param Options_Data $options WP Rocket options.
+	 * @param Options_Data           $options                 WP Rocket options.
+	 * @param SubscriptionController $subscription_controller Subscription controller.
 	 */
-	public function __construct( Options_Data $options ) {
-		$this->options = $options;
+	public function __construct( Options_Data $options, SubscriptionController $subscription_controller ) {
+		$this->options                 = $options;
+		$this->subscription_controller = $subscription_controller;
 	}
 
 	/**
@@ -51,7 +61,13 @@ class Context {
 	 * @return string
 	 */
 	public function get_driver(): string {
-		return (string) $this->options->get( 'cdn_type', self::ROCKETCDN_TYPE );
+		$cdn_type = (string) $this->options->get( 'cdn_type', self::ROCKETCDN_TYPE );
+
+		if ( self::ROCKETCDN_TYPE !== $cdn_type ) {
+			return self::BYOCDN_TYPE;
+		}
+
+		return $this->rocketcdn_resolver();
 	}
 
 	/**
@@ -61,5 +77,22 @@ class Context {
 	 */
 	public function get_free_page_limit(): int {
 		return 3;
+	}
+
+	/**
+	 * Resolves RocketCDN to either free or paid type.
+	 *
+	 * @return string
+	 */
+	private function rocketcdn_resolver(): string {
+		if ( ! $this->subscription_controller->has_active_subscription() ) {
+			return self::ROCKETCDN_FREE_TYPE;
+		}
+
+		if ( $this->subscription_controller->is_paid() ) {
+			return self::ROCKETCDN_PAID_TYPE;
+		}
+
+		return self::ROCKETCDN_FREE_TYPE;
 	}
 }
