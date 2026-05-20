@@ -62,15 +62,13 @@ defined( 'ABSPATH' ) || exit;
 	do_action( 'rocket_cdn_free_page_list' );
 	?>
 
-	<div class="wpr-cdn-add-page">
+	<div class="wpr-cdn-add-page" id="wpr_add_page_component">
 		<div class="wpr-cdn-add-page__input-wrap">
 			<input type="text" id="wpr_cdn_add_page_input" placeholder="<?php esc_attr_e( 'Enter a page URL to add to RocketCDN', 'rocket' ); ?>" />
-			<?php if ( 0 === $data['status_indicator']['pages_count'] ) : ?>
-			<button type="button" class="wpr-cdn-add-page__homepage">
+			<button type="button" class="wpr-cdn-add-page__homepage<?php echo $data['status_indicator']['pages_count'] > 0 ? ' wpr-isHidden' : ''; ?>">
 				<span class="wpr-cdn-add-page__icon"></span>
 				<?php esc_html_e( 'ADD HOMEPAGE', 'rocket' ); ?>
 			</button>
-			<?php endif; ?>
 		</div>
 		<button type="button" class="wpr-cdn-add-page__button">
 			<span class="wpr-icon-plus"></span>
