@@ -78,6 +78,8 @@ class ServiceProvider extends AbstractServiceProvider {
 					'rocketcdn_query',
 					'options',
 					'options_api',
+					'cdn_render_controller',
+					'cdn_context',
 				]
 			);
 		// RocketCDN REST API Subscriber.
@@ -105,7 +107,6 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArguments(
 				[
 					'rocketcdn_api_client',
-					'options',
 					'beacon',
 					'user_client',
 					new StringArgument( __DIR__ . '/views' ),
