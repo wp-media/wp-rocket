@@ -125,4 +125,85 @@ class Utils {
 
 		return $urls;
 	}
+
+	/**
+	 * Display an update notice when the plugin is updated.
+	 *
+	 * @param array $notice_info Notice information {.
+	 * @type string $new version New Version of the plugin.
+	 * @type string $previous_version Previous version of the plugin.
+	 * @type string $message Notice message.
+	 * @type string $action Notice action.
+	 * @type string $dismiss_message Dismiss message button title.
+	 * @type string $dismiss_button Dismiss button.
+	 *  }
+	 *
+	 * @param bool  $display_general Whether to display the notice on all WP or only WPR dashboard.
+	 * @return void
+	 */
+	public static function display_update_notice( array $notice_info, $display_general = false ): void {
+		$previous_version = $notice_info['previous_version'] ?? '';
+		$status           = $notice_info['status'] ?? 'info';
+		$version          = $notice_info['new_version'] ?? '';
+
+		// If previous_version is set, this is an upgrade — check version compatibility before displaying the notice.
+		if ( ! empty( $previous_version ) ) {
+			if ( version_compare( $previous_version, $version, '>=' ) ) {
+				return;
+			}
+		}
+
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			return;
+		}
+
+		if ( ! $display_general && 'settings_page_wprocket' !== get_current_screen()->id ) {
+			return;
+		}
+
+		$boxes = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
+
+		if ( in_array( $notice_info['dismiss_button'], (array) $boxes, true ) ) {
+			return;
+		}
+
+		$notice_id = 'rocket-notice-' . sanitize_html_class( $notice_info['dismiss_button'] );
+
+		rocket_notice_html(
+			[
+				'id'                     => $notice_id,
+				'status'                 => $status,
+				'dismissible'            => 'is-dismissible',
+				'message'                => $notice_info['message'],
+				'action'                 => $notice_info['action'],
+				'dismiss_button'         => $notice_info['dismiss_button'],
+				'dismiss_button_message' => $notice_info['dismiss_message'],
+				'dismiss_button_class'   => 'button button-secondary',
+			]
+		);
+
+		$nonce = wp_create_nonce( 'rocket_ignore_' . $notice_info['dismiss_button'] );
+		?>
+		<script>
+			window.addEventListener( 'DOMContentLoaded', function() {
+				var notice = document.getElementById( '<?php echo esc_js( $notice_id ); ?>' );
+				if ( ! notice ) {
+					return;
+				}
+
+				notice.addEventListener( 'click', function( event ) {
+					var target = event.target;
+
+					if ( ! target.closest( '.notice-dismiss' ) ) {
+						return;
+					}
+
+					var httpRequest = new XMLHttpRequest();
+					httpRequest.open( 'GET', '<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>?action=rocket_ignore&box=<?php echo esc_js( rawurlencode( $notice_info['dismiss_button'] ) ); ?>&_wpnonce=<?php echo esc_js( $nonce ); ?>' );
+					httpRequest.send();
+				} );
+			} );
+		</script>
+		<?php
+	}
 }
