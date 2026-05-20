@@ -63,6 +63,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArguments(
 				[
 					'options',
+					'rocketcdn_subscription_controller',
 				]
 			);
 
