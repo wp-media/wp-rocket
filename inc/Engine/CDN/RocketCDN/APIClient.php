@@ -2,12 +2,40 @@
 namespace WP_Rocket\Engine\CDN\RocketCDN;
 
 use WP_Error;
+use WP_Rocket\Engine\CDN\RocketCDN\Database\Queries\RocketCDN as RocketCDNQuery;
+use WP_Rocket\Engine\Common\Utils;
 
 /**
  * Class to Interact with the RocketCDN API
  */
 class APIClient {
 	const ROCKETCDN_API = 'https://rocketcdn.me/api/';
+
+	/**
+	 * Option key used to persist last known subscription status.
+	 */
+	private const LAST_KNOWN_STATUS_OPTION = 'rocketcdn_last_known_subscription_status';
+
+	/**
+	 * Option key used to persist last known plan type.
+	 */
+	private const LAST_KNOWN_PLAN_OPTION = 'rocketcdn_last_known_plan_type';
+
+	/**
+	 * RocketCDN pages query.
+	 *
+	 * @var RocketCDNQuery|null
+	 */
+	private $query;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param RocketCDNQuery|null $query RocketCDN pages query.
+	 */
+	public function __construct( ?RocketCDNQuery $query = null ) {
+		$this->query = $query;
+	}
 
 	/**
 	 * Gets current RocketCDN subscription data from cache if it exists
@@ -103,6 +131,8 @@ class APIClient {
 			'plan_page_limit'               => $data['plan_page_limit'] ?? 0,
 		];
 
+		$this->maybe_invalidate_cache_on_status_transition( $final_data );
+
 		$this->set_status_transient( $final_data, DAY_IN_SECONDS );
 
 		return $final_data;
@@ -119,6 +149,62 @@ class APIClient {
 	 */
 	private function set_status_transient( $value, $duration ) {
 		set_transient( 'rocketcdn_status', $value, $duration );
+	}
+
+	/**
+	 * Invalidates cache if subscription status changed.
+	 *
+	 * @param array $fresh_data Fresh subscription data.
+	 * @return void
+	 */
+	private function maybe_invalidate_cache_on_status_transition( array $fresh_data ): void {
+		$current_status = (string) ( $fresh_data['subscription_status'] ?? '' );
+		$current_plan   = (string) ( $fresh_data['plan_type'] ?? '' );
+
+		$previous_status = (string) get_option( self::LAST_KNOWN_STATUS_OPTION, '' );
+
+		if ( ! empty( $previous_status ) && $previous_status !== $current_status ) {
+			if ( 'paid' === $current_plan ) {
+				rocket_clean_domain();
+			}
+
+			if ( 'free' === $current_plan ) {
+				$this->clear_free_plan_selected_pages_cache();
+			}
+		}
+
+		update_option( self::LAST_KNOWN_STATUS_OPTION, $current_status );
+		update_option( self::LAST_KNOWN_PLAN_OPTION, $current_plan );
+	}
+
+	/**
+	 * Clears page cache for all selected pages in free plan.
+	 *
+	 * @return void
+	 */
+	private function clear_free_plan_selected_pages_cache(): void {
+		if ( null === $this->query ) {
+			return;
+		}
+
+		$pages = $this->query->query( [] );
+
+		if ( ! is_array( $pages ) ) {
+			return;
+		}
+
+		foreach ( $pages as $page ) {
+			if ( ! isset( $page->url ) || empty( $page->url ) ) {
+				continue;
+			}
+
+			if ( Utils::is_home( $page->url ) ) {
+				rocket_clean_home();
+				continue;
+			}
+
+			rocket_clean_files( [ $page->url ] );
+		}
 	}
 
 	/**

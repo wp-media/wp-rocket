@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\CDN\Render;
 
 use WP_Rocket\Abstract_Render;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
+use WP_Rocket\Engine\CDN\Context;
 
 /**
  * Handles business logic for CDN driver sections, exclusion fields,
@@ -21,15 +22,24 @@ class Controller extends Abstract_Render {
 	private $beacon;
 
 	/**
+	 * CDN context instance.
+	 *
+	 * @var Context
+	 */
+	private $context;
+
+	/**
 	 * Constructor.
 	 *
-	 * @param Beacon $beacon        Beacon instance.
-	 * @param string $template_path Path to the view templates.
+	 * @param Beacon  $beacon        Beacon instance.
+	 * @param string  $template_path Path to the view templates.
+	 * @param Context $context       CDN context instance.
 	 */
-	public function __construct( Beacon $beacon, string $template_path ) {
+	public function __construct( Beacon $beacon, string $template_path, Context $context ) {
 		parent::__construct( $template_path );
 
-		$this->beacon = $beacon;
+		$this->beacon  = $beacon;
+		$this->context = $context;
 	}
 
 	/**
@@ -49,6 +59,16 @@ class Controller extends Abstract_Render {
 		}
 
 		$cdn_beacon = $this->beacon->get_suggest( 'cdn' );
+		$status     = $this->context->get_subscription_status();
+		$is_active  = $this->context->is_active_status( $status );
+
+		$status_text = __( 'RocketCDN is active on your website', 'rocket' );
+		$details     = __( 'Serving files from 100+ edge locations', 'rocket' );
+
+		if ( ! $is_active ) {
+			$status_text = $this->get_inactive_status_text( $status );
+			$details     = $this->get_inactive_status_details( $status );
+		}
 
 		$sections['rocketcdn_paid_section'] = [
 			'title'            => __( 'RocketCDN', 'rocket' ),
@@ -61,11 +81,12 @@ class Controller extends Abstract_Render {
 			],
 			'status_indicator' => [
 				'is_active'          => true,
-				'status_text'        => __( 'RocketCDN is active on your website', 'rocket' ),
-				'details'            => __( 'Serving files from 100+ edge locations', 'rocket' ),
+				'status_text'        => $status_text,
+				'details'            => $details,
 				'paused_status_text' => __( 'RocketCDN is paused', 'rocket' ),
 				'paused_details'     => __( 'RocketCDN is currently paused. Click Resume CDN to re-enable content delivery.', 'rocket' ),
 				'class'              => 'wpr-cdn-status-pronounced rocketcdn',
+				'hide_pause_btn'     => ! $is_active,
 			],
 		];
 
@@ -97,6 +118,8 @@ class Controller extends Abstract_Render {
 
 		$status_text = __( 'RocketCDN is active', 'rocket' );
 		$classes     = [ 'rocketcdn' ];
+		$status      = $this->context->get_subscription_status();
+		$is_active   = $this->context->is_active_status( $status );
 
 		$is_subscription_loading = $this->is_subscription_loading();
 
@@ -104,6 +127,11 @@ class Controller extends Abstract_Render {
 
 		if ( $pages_count > 0 ) {
 			$details = __( 'Serving files from 10 edge locations. Covering up to 3 pages.', 'rocket' );
+		}
+
+		if ( ! $is_active ) {
+			$details     = $this->get_inactive_status_details( $status );
+			$status_text = $this->get_inactive_status_text( $status );
 		}
 
 		// Update status inidicator details when subscription is processing.
@@ -120,7 +148,7 @@ class Controller extends Abstract_Render {
 				);
 
 		// Disable input field and buttons when 3 pages are added.
-		if ( $pages_count >= $this->get_limit() || $is_subscription_loading ) {
+		if ( $pages_count >= $this->get_limit() || $is_subscription_loading || ! $is_active ) {
 			$classes[] = 'wpr-cdn-built-in--disabled';
 
 			$cta_heading = sprintf(
@@ -153,7 +181,7 @@ class Controller extends Abstract_Render {
 				'paused_details'          => __( 'RocketCDN is currently paused due to our fair usage policy. Your recent traffic exceeded the expected usage for the free plan. Upgrade to RocketCDN Pro to extend your bandwidth usage.', 'rocket' ),
 				'pages_count'             => $pages_count,
 				'is_subscription_loading' => $is_subscription_loading,
-				'hide_pause_btn'          => $is_subscription_loading,
+				'hide_pause_btn'          => $is_subscription_loading || ! $is_active,
 			],
 			'cta_data'         => [
 				'cta_heading'     => $cta_heading,
@@ -478,5 +506,41 @@ class Controller extends Abstract_Render {
 	 */
 	private function is_cdn_type_filtered(): bool {
 		return null !== $this->get_filtered_cdn_type();
+	}
+
+	/**
+	 * Gets status text for non-active subscriptions.
+	 *
+	 * @param string $subscription_status Subscription status.
+	 * @return string
+	 */
+	private function get_inactive_status_text( string $subscription_status ): string {
+		if ( $this->context->is_pending_cancellation_status( $subscription_status ) ) {
+			return __( 'RocketCDN subscription pending cancellation', 'rocket' );
+		}
+
+		if ( $this->context->is_inactive_status( $subscription_status ) ) {
+			return __( 'RocketCDN subscription cancelled', 'rocket' );
+		}
+
+		return __( 'RocketCDN is not active', 'rocket' );
+	}
+
+	/**
+	 * Gets details text for non-active subscriptions.
+	 *
+	 * @param string $subscription_status Subscription status.
+	 * @return string
+	 */
+	private function get_inactive_status_details( string $subscription_status ): string {
+		if ( $this->context->is_pending_cancellation_status( $subscription_status ) ) {
+			return __( 'Your current plan is pending cancellation. CDN rewriting is disabled until the subscription returns to running.', 'rocket' );
+		}
+
+		if ( $this->context->is_inactive_status( $subscription_status ) ) {
+			return __( 'Your subscription is cancelled. CDN rewriting is disabled for all pages.', 'rocket' );
+		}
+
+		return __( 'CDN rewriting is disabled until your subscription is active.', 'rocket' );
 	}
 }

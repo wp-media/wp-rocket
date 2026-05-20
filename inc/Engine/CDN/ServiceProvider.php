@@ -106,6 +106,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'cdn',
 					'options_api',
 					'cdn_driver',
+					'cdn_context',
 				]
 			);
 		$this->getContainer()->addShared( 'cdn_admin_subscriber', AdminSubscriber::class );
@@ -116,6 +117,7 @@ class ServiceProvider extends AbstractServiceProvider {
 				[
 					'beacon',
 					new StringArgument( rocket_get_constant( 'WP_ROCKET_PATH', '' ) . 'views/settings/' ),
+					'cdn_context',
 				]
 			);
 

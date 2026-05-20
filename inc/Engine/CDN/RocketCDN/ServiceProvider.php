@@ -57,7 +57,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'rocketcdn_query', RocketCDNQuery::class );
 
 		// RocketCDN API Client.
-		$this->getContainer()->add( 'rocketcdn_api_client', APIClient::class );
+		$this->getContainer()->add( 'rocketcdn_api_client', APIClient::class )
+			->addArgument( 'rocketcdn_query' );
 		// RocketCDN CDN options manager.
 		$this->getContainer()->add( 'rocketcdn_options_manager', CDNOptionsManager::class )
 			->addArguments(

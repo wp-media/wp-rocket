@@ -7,6 +7,7 @@ use Mockery;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CDN\CDN;
+use WP_Rocket\Engine\CDN\Context;
 use WP_Rocket\Engine\CDN\Drivers\DriverInterface;
 use WP_Rocket\Engine\CDN\Subscriber;
 use WP_Rocket\Tests\Unit\TestCase;
@@ -40,12 +41,15 @@ class Test_RewriteSrcset extends TestCase {
 	public function testShouldRewriteSrcsetBasedOnDriver( array $config, array $expected ) {
 		$driver = Mockery::mock( DriverInterface::class );
 		$driver->shouldReceive( 'should_rewrite_url' )->andReturn( $config['driver_returns'] );
+		$context = Mockery::mock( Context::class );
+		$context->shouldReceive( 'can_apply_cdn' )->andReturn( $config['subscription_eligible'] );
 
 		$subscriber = new Subscriber(
 			$this->options,
 			$this->cdn,
 			Mockery::mock( Options::class ),
-			$driver
+			$driver,
+			$context
 		);
 
 		$this->options->shouldReceive( 'get' )

@@ -44,18 +44,27 @@ class Subscriber implements Subscriber_Interface {
 	private $driver;
 
 	/**
+	 * CDN context.
+	 *
+	 * @var Context|null
+	 */
+	private $context;
+
+	/**
 	 * Constructor
 	 *
 	 * @param Options_Data         $options WP Rocket Options_Data instance.
 	 * @param CDN                  $cdn     CDN instance.
 	 * @param Options              $options_api     Options instance.
 	 * @param DriverInterface|null $driver   CDN Driver instance, optional.
+	 * @param Context|null         $context  CDN context instance, optional.
 	 */
-	public function __construct( Options_Data $options, CDN $cdn, Options $options_api, ?DriverInterface $driver = null ) {
+	public function __construct( Options_Data $options, CDN $cdn, Options $options_api, ?DriverInterface $driver = null, ?Context $context = null ) {
 		$this->options     = $options;
 		$this->cdn         = $cdn;
 		$this->options_api = $options_api;
 		$this->driver      = $driver;
+		$this->context     = $context;
 	}
 
 	/**
@@ -147,6 +156,10 @@ class Subscriber implements Subscriber_Interface {
 			return $content;
 		}
 
+		if ( ! $this->is_subscription_eligible() ) {
+			return $content;
+		}
+
 		return $this->cdn->rewrite_css_properties( $content );
 	}
 
@@ -214,6 +227,10 @@ class Subscriber implements Subscriber_Interface {
 	 * @return string
 	 */
 	public function add_cdn_url( $url, $original_url = '' ) {
+		if ( ! $this->is_subscription_eligible() ) {
+			return $url;
+		}
+
 		if ( ! empty( $original_url ) ) {
 			if ( $this->cdn->is_excluded( $original_url ) ) {
 				return $url;
@@ -352,6 +369,10 @@ class Subscriber implements Subscriber_Interface {
 			return false;
 		}
 
+		if ( ! $this->is_subscription_eligible() ) {
+			return false;
+		}
+
 		if ( ! $this->is_cdn_enabled() ) {
 			return false;
 		}
@@ -365,6 +386,19 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Checks if subscription status allows CDN rewriting.
+	 *
+	 * @return bool
+	 */
+	private function is_subscription_eligible(): bool {
+		if ( null === $this->context ) {
+			return true;
+		}
+
+		return $this->context->can_apply_cdn();
 	}
 
 	/**
