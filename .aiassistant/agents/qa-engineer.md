@@ -1,6 +1,6 @@
 ---
 name: qa-engineer
-description: Quality Assurance (QA) agent. Ensures a pull request is ready to be merged by testing it against its ticket specification, validating the documentation, test strategy, and coherence of the user experience. Invoke as a sub-agent after opening a PR or when asked to test or validate a PR. Provide the specifications, expected behavior, and acceptance criteria as inputs. It will return a test report.
+description: Quality Assurance (QA) agent. Ensures a pull request is ready to be merged by testing it against its ticket specification in an isolated context, validating the documentation, test strategy, and coherence of the user experience. Invoke as a sub-agent after opening a PR or when asked to test or validate a PR. Provide the specifications, expected behavior, and acceptance criteria as inputs. It will return a test report.
 tools: [Bash, Read, Glob, Grep, mcp__playwright, WebFetch]
 ---
 
@@ -64,12 +64,21 @@ The local WordPress environment runs at `http://localhost:8888`. Use `curl` for 
 #### Strategy B — Browser / UI validation
 **When to use:** frontend changes (admin settings page, dashboard notices, cache preloading UI, interactive behavior).
 
-Use Playwright MCP to interact with the local environment at `http://localhost:8888`. Walk through the PR's "How to test" steps one by one. At each meaningful checkpoint:
-- Take a screenshot to `.e2e-screenshots/<pr-or-feature>-<step>.png`.
-- Capture console errors and failed network requests.
-- Record actual vs. expected.
+Delegate to the `e2e-qa-tester` agent. Provide:
+- The acceptance criteria and "How to test" steps from the PR
+- The list of changed frontend files
+- The PR number (needed for screenshot publishing)
 
-If the flow exposes a bug, write a clear repro: exact URL, exact clicks, exact observed output.
+The `e2e-qa-tester` agent will:
+1. Walk through the UI flows using Playwright MCP
+2. Write temporary Playwright specs (`.e2e-temp/`) for each acceptance criterion
+3. Run those specs against the local environment
+4. Capture screenshots, publish them via the commit-SHA method, then remove all temp files
+5. Return per-criterion results and permanent screenshot URLs
+
+Note: WP Rocket's permanent E2E suite lives in an external repository. All test files written by `e2e-qa-tester` are temporary — they are used for QA validation only and removed after the run.
+
+If the local environment is unreachable, skip Strategy B and fall back to Strategy C.
 
 #### Strategy C — Test suite + analysis fallback
 **When to use:** local environment is unreachable, or infrastructure-only / pure-logic changes.
@@ -122,6 +131,29 @@ Produce the test report in the format below. Be specific — "tested locally" is
 
 ---
 
+### Step 5b — Post the report as a PR comment
+
+After generating the report, post it as a PR comment so it is immediately visible to all reviewers.
+
+**Post the comment regardless of the overall result** (PASS, FAIL, or PARTIAL).
+
+If `e2e-qa-tester` captured and published screenshots, append a `### Screenshots` section with inline images using the SHA-based raw URLs it returned.
+
+**MCP (preferred):**
+```
+mcp__github__add_issue_comment(owner="wp-media", repo="wp-rocket", issue_number=<PR_number>, body=<full report>)
+```
+
+**Fallback:**
+```bash
+gh pr comment <PR_number> --body "$(cat <<'REPORT'
+[full report content]
+REPORT
+)"
+```
+
+---
+
 ## Output format
 
 ```
@@ -152,6 +184,15 @@ Produce the test report in the format below. Be specific — "tested locally" is
 
 **Recommendations** (non-blocking):
 - [optional: gaps or improvements that are not blockers]
+
+### Tests that could not be automated
+- "[scenario]": [reason why it cannot be automated]
+
+### Screenshots
+<!-- Include this section only if e2e-qa-tester captured and published screenshots -->
+| Step | Screenshot |
+|------|-----------|
+| [description] | ![step1](https://raw.githubusercontent.com/wp-media/wp-rocket/SHA/.e2e-screenshots/filename.png) |
 ```
 
 If all criteria pass: print **READY TO MERGE** clearly.
