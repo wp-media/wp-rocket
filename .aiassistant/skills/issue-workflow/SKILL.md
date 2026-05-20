@@ -35,7 +35,8 @@ follow this workflow:
    - Enhancement / feature → `enhancement`
    - Test → `test`
    - Default → `fix`
-   Run `.aiassistant/skills/issue-workflow/scripts/make-issue-branch.sh <issue-number> "<issue-title>" <prefix>`.
+   Run `.aiassistant/skills/issue-workflow/scripts/make-issue-branch.sh <issue-number> "<issue-title>" <prefix> origin/develop`.
+   Always pass `origin/develop` as the fourth argument so the branch is always based on the latest remote, regardless of current working branch or worktree state. Use a different base ref only when the user explicitly requests it.
 11. Follow `AGENTS.md`.
 12. Activate the relevant skills:
    - `wp-rocket-architecture`
@@ -57,11 +58,15 @@ follow this workflow:
 16. Run `.aiassistant/skills/issue-workflow/scripts/init-pr-draft.sh <issue-number>`.
 17. Fill every section of the PR draft at `.TemporaryItems/Issues/wp-rocket/pull/<issue-number>.md`. The file was already initialized from `refs/pr-template.md` by the script in step 16. Complete every section with relevant content — do not skip sections or invent a different structure. Replace all placeholder text with real content. Tick the appropriate `Type of change` checkbox.
 18. Run `git push` to publish the branch.
-19. Create the GitHub PR using the **exact content of the filled draft** as the PR body. Do not summarise or rewrite it — copy it verbatim. Set as draft if implementation is still in progress.
+19. Create the GitHub PR using the **exact content of the filled draft** as the PR body. Do not summarise or rewrite it — copy it verbatim. Set as draft if implementation is still in progress. After creating the PR, assign it to yourself:
+    ```bash
+    gh pr edit <PR_number> --add-assignee @me
+    ```
 20. **Invoke the `qa-engineer` sub-agent** — pass it the issue number and PR number. It will:
     - Read the issue spec and PR diff.
     - Select validation strategies (API, Browser, Analysis) based on what changed.
-    - Use Playwright MCP for browser/UI flows against the local environment at `http://localhost:8888`.
+    - For UI changes, delegate browser validation to the `e2e-qa-tester` sub-agent, which writes temporary Playwright specs, runs them, publishes screenshots via commit-SHA, and removes all temp files.
+    - **Post the full QA report as a PR comment** (always, regardless of outcome — PASS, FAIL, or PARTIAL).
     - Return a structured test report (see format in `.aiassistant/agents/qa-engineer.md`).
 21. If `qa-engineer` reports **FAIL** or **PARTIAL**: fix the identified blockers, re-commit, re-push, and re-run the agent before continuing.
 22. If `qa-engineer` reports **READY TO MERGE**:
@@ -97,7 +102,7 @@ If an MCP tool is not available in the current session, fall back to the shell e
 ### PR creation
 | Preferred (MCP) | Fallback |
 |---|---|
-| `mcp_github_github_create_pull_request` | Provide the filled draft manually |
+| `mcp_github_github_create_pull_request` + `mcp__GitKraken__pull_request_create` (`assign_to_me: true`) | `gh pr create` then `gh pr edit <number> --add-assignee @me` |
 
 ### CI monitoring
 | Preferred (MCP) | Fallback |
@@ -119,7 +124,11 @@ Do not amend commits that have already been pushed.
 
 ## QA Pipeline — Sub-Agent Invocation
 
-After the PR is created (step 19), invoke the `qa-engineer` sub-agent. Provide:
+After the PR is created (step 19), QA runs automatically via two sub-agents defined in `.aiassistant/agents/`.
+
+### qa-engineer (orchestrator)
+
+Invoke after every PR. Provide:
 - The issue number (for acceptance criteria)
 - The PR number (for diff and "How to test" section)
 
@@ -130,18 +139,43 @@ Inputs: issue #<N>, PR #<M>
 
 The agent selects strategies automatically:
 - **API/functional** — if backend logic changed (AJAX, hooks, WP-CLI, caching logic, data processing)
-- **Browser/UI** — if admin UI changed; uses Playwright MCP against `http://localhost:8888`
+- **Browser/UI** — if admin UI changed; delegates to `e2e-qa-tester`
 - **Analysis fallback** — if local environment is unavailable
+
+Always posts the full report as a PR comment regardless of outcome.
+
+### e2e-qa-tester (browser specialist)
+
+Invoked by `qa-engineer` automatically for UI changes. Can also be invoked directly:
+
+```
+Invoke sub-agent: e2e-qa-tester
+Inputs: acceptance criteria, changed frontend files, PR number
+```
+
+It will:
+1. Walk through the admin UI flows using Playwright MCP
+2. Write temporary Playwright specs under `.e2e-temp/`
+3. Run those specs against the local environment (`npx playwright test .e2e-temp/`)
+4. Capture screenshots and publish them via the commit-SHA method
+5. Remove all temp files (`.e2e-temp/` and `.e2e-screenshots/`)
+6. Return per-criterion results and permanent screenshot URLs
+
+Note: WP Rocket's permanent E2E suite lives in an external repository. All `.e2e-temp/` files are for QA validation only and are never committed permanently.
 
 ### Decision tree
 
 ```
 PR created
   └─ invoke qa-engineer
-       ├─ backend only   → Strategy A (API/WP-CLI)
-       ├─ UI touched     → Strategy B (Playwright MCP against local env)
+       ├─ backend only    → Strategy A (API/WP-CLI)
+       ├─ UI touched      → Strategy B → delegate to e2e-qa-tester
+       │                       └─ writes .e2e-temp/ specs → runs → screenshots
+       │                       └─ publishes screenshots via commit-SHA → cleans up
+       │                       └─ returns results + permanent URLs to qa-engineer
        └─ env unavailable → Strategy C (Analysis)
 
+qa-engineer always posts full report as PR comment (PASS, FAIL, or PARTIAL)
 qa-engineer returns READY TO MERGE → update PR body with QA findings → mark PR ready for review
 qa-engineer returns FAIL/PARTIAL   → fix blockers → re-run qa-engineer
 ```
