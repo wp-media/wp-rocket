@@ -69,7 +69,7 @@ class SubscriptionController implements LoggerAwareInterface {
 	 *
 	 * @return bool
 	 */
-	private function has_active_subscription(): bool {
+	public function has_active_subscription(): bool {
 		$subscription = $this->api_client->get_subscription_data();
 		return ! empty( $subscription['subscription_status'] ) && 'running' === $subscription['subscription_status'];
 	}
