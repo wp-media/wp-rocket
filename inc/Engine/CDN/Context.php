@@ -25,6 +25,11 @@ class Context {
 	public const ROCKETCDN_FREE_TYPE = 'rocketcdn_free';
 
 	/**
+	 * Resolved RocketCDN type for paid users.
+	 */
+	public const ROCKETCDN_PAID_TYPE = 'rocketcdn_paid';
+
+	/**
 	 * WP Rocket options.
 	 *
 	 * @var Options_Data
@@ -47,5 +52,14 @@ class Context {
 	 */
 	public function get_driver(): string {
 		return (string) $this->options->get( 'cdn_type', self::ROCKETCDN_TYPE );
+	}
+
+	/**
+	 * Gets the free page limit for the RocketCDN free tier.
+	 *
+	 * @return int
+	 */
+	public function get_free_page_limit(): int {
+		return 3;
 	}
 }
