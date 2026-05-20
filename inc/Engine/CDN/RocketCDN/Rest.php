@@ -13,6 +13,8 @@ use WP_Rocket\Admin\{
 	Options_Data,
 	Options
 };
+use WP_Rocket\Engine\CDN\Render\Controller as RenderController;
+use WP_Rocket\Engine\CDN\Context;
 use WP_Rocket\Engine\Common\{
 	Utils,
 	Page\PageHandlerTrait
@@ -51,16 +53,34 @@ class Rest extends WP_REST_Controller {
 	private $options_api;
 
 	/**
+	 * CDN Render Controller instance.
+	 *
+	 * @var RenderController
+	 */
+	private $render_controller;
+
+	/**
+	 * CDN Context instance.
+	 *
+	 * @var Context
+	 */
+	private $context;
+
+	/**
 	 * Constructor.
 	 *
-	 * @param RocketCDNQuery $query      RocketCDNQuery instance.
-	 * @param Options_Data   $options    WP Rocket options instance.
-	 * @param Options        $options_api WP Options API instance.
+	 * @param RocketCDNQuery   $query             RocketCDNQuery instance.
+	 * @param Options_Data     $options           WP Rocket options instance.
+	 * @param Options          $options_api       WP Options API instance.
+	 * @param RenderController $render_controller CDN Render Controller instance.
+	 * @param Context          $context           CDN Context instance.
 	 */
-	public function __construct( RocketCDNQuery $query, Options_Data $options, Options $options_api ) {
-		$this->query       = $query;
-		$this->options     = $options;
-		$this->options_api = $options_api;
+	public function __construct( RocketCDNQuery $query, Options_Data $options, Options $options_api, RenderController $render_controller, Context $context ) {
+		$this->query             = $query;
+		$this->options           = $options;
+		$this->options_api       = $options_api;
+		$this->render_controller = $render_controller;
+		$this->context           = $context;
 	}
 
 	/**
@@ -351,8 +371,10 @@ class Rest extends WP_REST_Controller {
 	private function get_pages_data(): array {
 		$pages = $this->query->query( [] );
 
+		$pages_count = $this->query->get_total_count( false );
+
 		return [
-			'pages' => array_map(
+			'pages'                 => array_map(
 				function ( $page ) {
 					return [
 						'id'    => (int) $page->id,
@@ -362,20 +384,20 @@ class Rest extends WP_REST_Controller {
 				},
 				is_array( $pages ) ? $pages : []
 			),
-			'count' => $this->query->get_total_count( false ),
-			'limit' => $this->get_free_page_limit(),
+			'count'                 => $pages_count,
+			'limit'                 => $this->get_free_page_limit(),
+			'items_html'            => $this->render_controller->get_built_in_page_list(),
+			'status_indicator_html' => $this->render_controller->get_status_indicator_html( $pages_count, true ),
 		];
 	}
 
 	/**
 	 * Return the total number of free pages allowed for RocketCDN delivery.
 	 *
-	 * RFT Todo: Make this dynamic based on the addon team endpoint.
-	 *
 	 * @return int
 	 */
 	protected function get_free_page_limit(): int {
-		return 3;
+		return $this->context->get_free_page_limit();
 	}
 
 	/**
