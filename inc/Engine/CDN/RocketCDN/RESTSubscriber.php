@@ -27,14 +27,32 @@ class RESTSubscriber implements Subscriber_Interface {
 	private $options;
 
 	/**
+	 * Rest controller instance.
+	 *
+	 * @var Rest
+	 */
+	private $rest;
+
+	/**
+	 * Subscription controller instance.
+	 *
+	 * @var SubscriptionController
+	 */
+	private $subscription_controller;
+
+	/**
 	 * Constructor
 	 *
-	 * @param CDNOptionsManager $cdn_options CDNOptionsManager instance.
-	 * @param Options_Data      $options     WP Rocket Options instance.
+	 * @param CDNOptionsManager      $cdn_options CDNOptionsManager instance.
+	 * @param Options_Data           $options     WP Rocket Options instance.
+	 * @param Rest                   $rest        Rest controller instance.
+	 * @param SubscriptionController $subscription_controller Subscription controller.
 	 */
-	public function __construct( CDNOptionsManager $cdn_options, Options_Data $options ) {
-		$this->cdn_options = $cdn_options;
-		$this->options     = $options;
+	public function __construct( CDNOptionsManager $cdn_options, Options_Data $options, Rest $rest, SubscriptionController $subscription_controller ) {
+		$this->cdn_options             = $cdn_options;
+		$this->options                 = $options;
+		$this->rest                    = $rest;
+		$this->subscription_controller = $subscription_controller;
 	}
 
 	/**
@@ -42,11 +60,25 @@ class RESTSubscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rest_api_init' => [
+			'rest_api_init'                        => [
 				[ 'register_enable_route' ],
 				[ 'register_disable_route' ],
+				[ 'register_routes' ],
 			],
+			'rocket_cdnfree_can_add_page'          => 'maybe_create_rocketcdn_free',
+			'rocket_cdnfree_website_create_status' => 'check_status',
 		];
+	}
+
+	/**
+	 * Registers RocketCDN pages and state REST routes.
+	 *
+	 * @since 3.22
+	 *
+	 * @return void
+	 */
+	public function register_routes(): void {
+		$this->rest->register_routes();
 	}
 
 	/**
@@ -190,5 +222,34 @@ class RESTSubscriber implements Subscriber_Interface {
 	 */
 	public function validate_key( $param ) {
 		return ! empty( $param ) && $param === $this->options->get( 'consumer_key' );
+	}
+
+	/**
+	 * Create rocketcdn free account.
+	 *
+	 * @param bool $can_save_page Can save page or not.
+	 * @return bool
+	 */
+	public function maybe_create_rocketcdn_free( bool $can_save_page ) {
+		$created = $this->subscription_controller->create_subscription();
+
+		if ( is_wp_error( $created ) ) {
+			return false;
+		}
+
+		return $can_save_page;
+	}
+
+	/**
+	 * Check subscription creation status.
+	 *
+	 * @param string $task_id Task ID to check.
+	 * @return void
+	 */
+	public function check_status( string $task_id ) {
+		if ( empty( $task_id ) ) {
+			return;
+		}
+		$this->subscription_controller->check_status( $task_id );
 	}
 }

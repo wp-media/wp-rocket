@@ -53,14 +53,22 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	private $options;
 
 	/**
+	 * Subscription controller instance.
+	 *
+	 * @var SubscriptionController
+	 */
+	private $subscription_controller;
+
+	/**
 	 * Constructor
 	 *
-	 * @param APIClient    $api_client    RocketCDN API Client instance.
-	 * @param Beacon       $beacon        Beacon instance.
-	 * @param UserClient   $user_client   UserClient instance.
-	 * @param Tracking     $tracking      Tracking instance.
-	 * @param string       $template_path Path to the templates.
-	 * @param Options_Data $options WP Rocket options instance.
+	 * @param APIClient              $api_client    RocketCDN API Client instance.
+	 * @param Beacon                 $beacon        Beacon instance.
+	 * @param UserClient             $user_client   UserClient instance.
+	 * @param Tracking               $tracking      Tracking instance.
+	 * @param string                 $template_path Path to the templates.
+	 * @param Options_Data           $options WP Rocket options instance.
+	 * @param SubscriptionController $subscription_controller Subscription controller instance.
 	 */
 	public function __construct(
 		APIClient $api_client,
@@ -68,15 +76,17 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 		UserClient $user_client,
 		Tracking $tracking,
 		$template_path,
-		Options_Data $options
+		Options_Data $options,
+		SubscriptionController $subscription_controller
 	) {
 		parent::__construct( $template_path );
 
-		$this->api_client  = $api_client;
-		$this->beacon      = $beacon;
-		$this->user_client = $user_client;
-		$this->tracking    = $tracking;
-		$this->options     = $options;
+		$this->api_client              = $api_client;
+		$this->beacon                  = $beacon;
+		$this->user_client             = $user_client;
+		$this->tracking                = $tracking;
+			$this->options             = $options;
+		$this->subscription_controller = $subscription_controller;
 	}
 
 	/**
@@ -84,17 +94,16 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'admin_notices'                    => [
+			'admin_notices'                           => [
 				[ 'promote_rocketcdn_notice' ],
 				[ 'purge_cache_notice' ],
 				[ 'change_cname_notice' ],
 				[ 'activation_failed_notice' ],
 				[ 'maybe_display_rocketcdn_notice' ],
 			],
-			'rocket_before_cdn_sections'       => 'display_rocketcdn_cta',
-			'wp_ajax_toggle_rocketcdn_cta'     => 'toggle_cta',
-			'wp_ajax_rocketcdn_dismiss_notice' => 'dismiss_notice',
-			'admin_footer'                     => 'add_dismiss_script',
+			'rocket_cdn_free_before_status_indicator' => 'display_rocketcdn_cta',
+			'wp_ajax_rocketcdn_dismiss_notice'        => 'dismiss_notice',
+			'admin_footer'                            => 'add_dismiss_script',
 		];
 	}
 
@@ -222,9 +231,11 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	 *
 	 * @since 3.5
 	 *
+	 * @param array $cta_data CTA data.
+	 *
 	 * @return void
 	 */
-	public function display_rocketcdn_cta() {
+	public function display_rocketcdn_cta( array $cta_data ) {
 		/**
 		 * Filters the display of the RocketCDN cta banner.
 		 *
@@ -329,35 +340,9 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 			];
 		}
 
-		echo $this->generate( 'cta-small', $small_cta_data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+		$big_cta_data = array_merge( $big_cta_data, $cta_data );
+
 		echo $this->generate( 'cta-big', $big_cta_data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
-	}
-
-	/**
-	 * Toggles display of the RocketCDN CTAs on the settings page
-	 *
-	 * @since 3.5
-	 *
-	 * @return void
-	 */
-	public function toggle_cta() {
-		check_ajax_referer( 'rocket-ajax', 'nonce', true );
-
-		if ( ! current_user_can( 'rocket_manage_options' ) ) {
-			wp_send_json_error( 'no permissions' );
-		}
-
-		if ( ! isset( $_POST['status'] ) ) {
-			wp_send_json_error( 'missing status' );
-		}
-
-		if ( 'big' === $_POST['status'] ) {
-			delete_user_meta( get_current_user_id(), 'rocket_rocketcdn_cta_hidden' );
-		} elseif ( 'small' === $_POST['status'] ) {
-			update_user_meta( get_current_user_id(), 'rocket_rocketcdn_cta_hidden', true );
-		}
-
-		wp_send_json_success();
 	}
 
 	/**
@@ -499,6 +484,12 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 			return;
 		}
 
+		if ( $this->subscription_controller->is_free() ) {
+			// Send the request again (create subscription) to fix what is wrong with this account.
+			$this->subscription_controller->create_subscription( true );
+			return;
+		}
+
 		$express_checkout_url = $this->get_express_checkout_url();
 
 		if ( empty( $express_checkout_url ) ) {
@@ -542,10 +533,8 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 			return false;
 		}
 
-		$subscription_data = $this->api_client->get_subscription_data();
-
-		// Show notice when is_active is false AND cdn_url is empty.
-		return ! $subscription_data['is_active'] && empty( $subscription_data['cdn_url'] );
+		// Show notice when webiste is not attached.
+		return ! $this->subscription_controller->is_website_attached();
 	}
 
 	/**

@@ -610,4 +610,26 @@ class User {
 		}
 		return $reasons[ $reason_code ];
 	}
+
+	/**
+	 * Get currency from user data.
+	 *
+	 * @return string
+	 */
+	public function get_currency() {
+		return $this->user->currency ?? 'USD';
+	}
+
+	/**
+	 * Gets the user rocketcdn free url.
+	 *
+	 * @return string
+	 */
+	public function get_rocketcdn_free_url() {
+		if ( ! isset( $this->user->rocketcdn->cdn_free_url ) ) {
+			return '';
+		}
+
+		return (string) $this->user->rocketcdn->cdn_free_url;
+	}
 }

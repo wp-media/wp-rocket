@@ -5,6 +5,8 @@ namespace WP_Rocket\Engine\CDN\RocketCDN;
 
 use WP_Rocket\Dependencies\League\Container\Argument\Literal\StringArgument;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Engine\CDN\RocketCDN\APIHandler\CheckStatusAPIClient;
+use WP_Rocket\Engine\CDN\RocketCDN\APIHandler\CreateAPIClient;
 use WP_Rocket\Engine\CDN\RocketCDN\Database\Queries\RocketCDN as RocketCDNQuery;
 use WP_Rocket\Engine\CDN\RocketCDN\Database\Tables\RocketCDN as RocketCDNTable;
 
@@ -23,9 +25,14 @@ class ServiceProvider extends AbstractServiceProvider {
 		'rocketcdn_api_client',
 		'rocketcdn_options_manager',
 		'rocketcdn_data_manager_subscriber',
+		'rocketcdn_rest',
 		'rocketcdn_rest_subscriber',
 		'rocketcdn_admin_subscriber',
 		'rocketcdn_notices_subscriber',
+		'rocketcdn_subscription_controller',
+		'rocketcdn_create_api_client',
+		'rocketcdn_queue',
+		'rocketcdn_check_status_api_client',
 	];
 
 	/**
@@ -70,12 +77,23 @@ class ServiceProvider extends AbstractServiceProvider {
 					'user_client',
 				]
 			);
+		// RocketCDN REST API pages controller.
+		$this->getContainer()->add( 'rocketcdn_rest', Rest::class )
+			->addArguments(
+				[
+					'rocketcdn_query',
+					'options',
+					'options_api',
+				]
+			);
 		// RocketCDN REST API Subscriber.
 		$this->getContainer()->addShared( 'rocketcdn_rest_subscriber', RESTSubscriber::class )
 			->addArguments(
 				[
 					'rocketcdn_options_manager',
 					'options',
+					'rocketcdn_rest',
+					'rocketcdn_subscription_controller',
 				]
 			);
 		// RocketCDN Notices Subscriber.
@@ -88,8 +106,24 @@ class ServiceProvider extends AbstractServiceProvider {
 					'tracking',
 					new StringArgument( __DIR__ . '/views' ),
 					'options',
+					'rocketcdn_subscription_controller',
 				]
 			);
+
+		$this->getContainer()->add( 'rocketcdn_queue', Queue::class );
+		$this->getContainer()->add( 'rocketcdn_create_api_client', CreateAPIClient::class )->addArgument( 'user' );
+		$this->getContainer()->add( 'rocketcdn_check_status_api_client', CheckStatusAPIClient::class );
+		$this->getContainer()->add( 'rocketcdn_subscription_controller', SubscriptionController::class )
+			->addArguments(
+				[
+					'rocketcdn_api_client',
+					'rocketcdn_create_api_client',
+					'rocketcdn_options_manager',
+					'rocketcdn_queue',
+					'rocketcdn_check_status_api_client',
+				]
+				);
+
 		// RocketCDN settings page subscriber.
 		$this->getContainer()->addShared( 'rocketcdn_admin_subscriber', AdminPageSubscriber::class )
 			->addArguments(

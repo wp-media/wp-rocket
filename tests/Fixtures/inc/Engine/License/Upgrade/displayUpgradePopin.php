@@ -65,10 +65,47 @@ return [
 					'price' => 'x',
 					'websites' => 'x',
 					'upgrade_url' => 'x',
+					'currency' => 'USD',
+					'currency_symbol' => '$',
+					'prices_classes' => '',
 				],
 			],
 		],
 	],
+	'testShouldDisplayPopInWhenLicenseIsSingleAndCurrencyEuro' => [
+		'config'   => [
+			'currency' => 'EUR',
+			'license_account'    => 1,
+			'licence_expiration' => false,
+			'promo_active' => false,
+			'upgrades' => [
+				(object) [
+					'name' => 'Growth',
+					'slug' => 'growth',
+					'saving' => "x",
+					'upgrade_url' => "x",
+					'regular_price' => "x",
+					'websites' => "x",
+					'stacked' => false,
+				]
+			],
+		],
+		'expected' => [
+			'is_promo_active' => false,
+			'upgrades' => [
+				'growth' => [
+					'name' => 'Growth',
+					'price' => 'x',
+					'websites' => 'x',
+					'upgrade_url' => 'x',
+					'currency' => 'EUR',
+					'currency_symbol' => '€',
+					'prices_classes' => ' wpr-with-euro',
+				],
+			],
+		],
+	],
+
 	'testShouldDisplayPopInWithPromoWhenLicenseIsSingle' => [
 		'config'   => [
 			'license_account'    => 1,
@@ -96,10 +133,49 @@ return [
 					'upgrade_url' => 'x',
 					'saving' => '10',
 					'regular_price' => "50",
+					'currency' => 'USD',
+					'currency_symbol' => '$',
+					'prices_classes' => ' wpr-with-promo',
 				],
 			],
 		],
 	],
+	'testShouldDisplayPopInWithPromoWhenLicenseIsSingleWithEuro' => [
+		'config'   => [
+			'currency' => 'EUR',
+			'license_account'    => 1,
+			'licence_expiration' => false,
+			'promo_active' => true,
+			'upgrades' => [
+				(object) [
+					'name' => 'Growth',
+					'slug' => 'growth',
+					'saving' => "40",
+					'upgrade_url' => "x",
+					'regular_price' => "50",
+					'websites' => "x",
+					'stacked' => false,
+				]
+			],
+		],
+		'expected' => [
+			'is_promo_active' => true,
+			'upgrades' => [
+				'growth' => [
+					'name' => 'Growth',
+					'price' => '40',
+					'websites' => 'x',
+					'upgrade_url' => 'x',
+					'saving' => '10',
+					'regular_price' => "50",
+					'currency' => 'EUR',
+					'currency_symbol' => '€',
+					'prices_classes' => ' wpr-with-euro wpr-with-promo',
+				],
+			],
+		],
+	],
+
 	'testShouldDisplayPopInWhenLicenseIsBetweenSingleAndPlus' => [
 		'config'   => [
 			'license_account'    => 2,
@@ -125,10 +201,47 @@ return [
 					'price' => 'x',
 					'websites' => 'x',
 					'upgrade_url' => 'x',
+					'currency' => 'USD',
+					'currency_symbol' => '$',
+					'prices_classes' => '',
 				],
 			],
 		],
 	],
+	'testShouldDisplayPopInWhenLicenseIsBetweenSingleAndPlusWithEuro' => [
+		'config'   => [
+			'currency' => 'EUR',
+			'license_account'    => 2,
+			'licence_expiration' => false,
+			'promo_active' => false,
+			'upgrades' => [
+				(object) [
+					'name' => 'Growth',
+					'slug' => 'growth',
+					'saving' => "x",
+					'upgrade_url' => "x",
+					'regular_price' => "x",
+					'websites' => "x",
+					'stacked' => false,
+				]
+			],
+		],
+		'expected' => [
+			'is_promo_active' => false,
+			'upgrades' => [
+				'growth' => [
+					'name' => 'Growth',
+					'price' => 'x',
+					'websites' => 'x',
+					'upgrade_url' => 'x',
+					'currency' => 'EUR',
+					'currency_symbol' => '€',
+					'prices_classes' => ' wpr-with-euro',
+				],
+			],
+		],
+	],
+
 	'testShouldDisplayPopInWithPromoWhenLicenseIsBetweenSingleAndPlus' => [
 		'config'   => [
 			'license_account'    => 2,
@@ -156,10 +269,49 @@ return [
 					'upgrade_url' => 'x',
 					'saving' => '10',
 					'regular_price' => "50",
+					'currency' => 'USD',
+					'currency_symbol' => '$',
+					'prices_classes' => ' wpr-with-promo',
 				],
 			],
 		],
 	],
+	'testShouldDisplayPopInWithPromoWhenLicenseIsBetweenSingleAndPlusWithEuro' => [
+		'config'   => [
+			'currency' => 'EUR',
+			'license_account'    => 2,
+			'licence_expiration' => false,
+			'promo_active' => true,
+			'upgrades' => [
+				(object) [
+					'name' => 'Growth',
+					'slug' => 'growth',
+					'saving' => "40",
+					'upgrade_url' => "x",
+					'regular_price' => "50",
+					'websites' => "x",
+					'stacked' => false,
+				]
+			],
+		],
+		'expected' => [
+			'is_promo_active' => true,
+			'upgrades' => [
+				'growth' => [
+					'name' => 'Growth',
+					'price' => '40',
+					'websites' => 'x',
+					'upgrade_url' => 'x',
+					'saving' => '10',
+					'regular_price' => "50",
+					'currency' => 'EUR',
+					'currency_symbol' => '€',
+					'prices_classes' => ' wpr-with-euro wpr-with-promo',
+				],
+			],
+		],
+	],
+
 	'testShouldDisplayPopInWhenLicenseIsPlus' => [
 		'config'   => [
 			'license_account'    => 3,
@@ -185,10 +337,47 @@ return [
 					'price' => 'x',
 					'websites' => 'x',
 					'upgrade_url' => 'x',
+					'currency' => 'USD',
+					'currency_symbol' => '$',
+					'prices_classes' => '',
 				],
 			],
 		],
 	],
+	'testShouldDisplayPopInWhenLicenseIsPlusWithEuro' => [
+		'config'   => [
+			'currency' => 'EUR',
+			'license_account'    => 3,
+			'licence_expiration' => false,
+			'promo_active' => false,
+			'upgrades' => [
+				(object) [
+					'name' => 'Growth',
+					'slug' => 'growth',
+					'saving' => "x",
+					'upgrade_url' => "x",
+					'regular_price' => "x",
+					'websites' => "x",
+					'stacked' => false,
+				]
+			],
+		],
+		'expected' => [
+			'is_promo_active' => false,
+			'upgrades' => [
+				'growth' => [
+					'name' => 'Growth',
+					'price' => 'x',
+					'websites' => 'x',
+					'upgrade_url' => 'x',
+					'currency' => 'EUR',
+					'currency_symbol' => '€',
+					'prices_classes' => ' wpr-with-euro',
+				],
+			],
+		],
+	],
+
 	'testShouldDisplayPopInWithPromoWhenLicenseIsPlus' => [
 		'config'   => [
 			'license_account'    => 3,
@@ -216,6 +405,44 @@ return [
 					'upgrade_url' => 'x',
 					'saving' => '10',
 					'regular_price' => "50",
+					'currency' => 'USD',
+					'currency_symbol' => '$',
+					'prices_classes' => ' wpr-with-promo',
+				],
+			],
+		],
+	],
+	'testShouldDisplayPopInWithPromoWhenLicenseIsPlusWithEuro' => [
+		'config'   => [
+			'currency' => 'EUR',
+			'license_account'    => 3,
+			'licence_expiration' => false,
+			'promo_active' => true,
+			'upgrades' => [
+				(object) [
+					'name' => 'Growth',
+					'slug' => 'growth',
+					'saving' => "40",
+					'upgrade_url' => "x",
+					'regular_price' => "50",
+					'websites' => "x",
+					'stacked' => false,
+				]
+			],
+		],
+		'expected' => [
+			'is_promo_active' => true,
+			'upgrades' => [
+				'growth' => [
+					'name' => 'Growth',
+					'price' => '40',
+					'websites' => 'x',
+					'upgrade_url' => 'x',
+					'saving' => '10',
+					'regular_price' => "50",
+					'currency' => 'EUR',
+					'currency_symbol' => '€',
+					'prices_classes' => ' wpr-with-euro wpr-with-promo',
 				],
 			],
 		],

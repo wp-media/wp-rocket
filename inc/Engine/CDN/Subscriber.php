@@ -3,6 +3,8 @@ namespace WP_Rocket\Engine\CDN;
 
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\CDN\Drivers\DriverInterface;
+use WP_Rocket\Engine\Optimization\UrlTrait;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
@@ -11,6 +13,8 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  * @since 3.4
  */
 class Subscriber implements Subscriber_Interface {
+	use UrlTrait;
+
 	/**
 	 * WP Rocket Options instance
 	 *
@@ -33,16 +37,25 @@ class Subscriber implements Subscriber_Interface {
 	private $cdn;
 
 	/**
+	 * CDN Driver (Strategy)
+	 *
+	 * @var DriverInterface|null
+	 */
+	private $driver;
+
+	/**
 	 * Constructor
 	 *
-	 * @param Options_Data $options WP Rocket Options_Data instance.
-	 * @param CDN          $cdn     CDN instance.
-	 * @param Options      $options_api     Options instance..
+	 * @param Options_Data         $options WP Rocket Options_Data instance.
+	 * @param CDN                  $cdn     CDN instance.
+	 * @param Options              $options_api     Options instance.
+	 * @param DriverInterface|null $driver   CDN Driver instance, optional.
 	 */
-	public function __construct( Options_Data $options, CDN $cdn, Options $options_api ) {
+	public function __construct( Options_Data $options, CDN $cdn, Options $options_api, ?DriverInterface $driver = null ) {
 		$this->options     = $options;
 		$this->cdn         = $cdn;
 		$this->options_api = $options_api;
+		$this->driver      = $driver;
 	}
 
 	/**
@@ -346,6 +359,10 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		if ( is_rocket_post_excluded_option( 'cdn' ) ) {
+			return false;
+		}
+
+		if ( $this->driver && ! $this->driver->should_rewrite_url( $this->get_current_url() ) ) {
 			return false;
 		}
 

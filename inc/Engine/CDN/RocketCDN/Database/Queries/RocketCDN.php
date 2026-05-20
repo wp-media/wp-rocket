@@ -91,15 +91,38 @@ class RocketCDN extends AbstractQuery {
 	}
 
 	/**
+	 * Check if the url is found in the database.
+	 *
+	 * @param string $url The URL to search for.
+	 *
+	 * @return bool
+	 */
+	public function is_url_found( string $url ): bool {
+		$normalized_url = untrailingslashit( $url );
+
+		$counter = $this->query(
+			[
+				'count' => true,
+				'url'   => $normalized_url,
+			]
+		);
+
+		return 0 < (int) $counter;
+	}
+
+	/**
 	 * Get total count of pages.
+	 *
+	 * @param bool $bool_cache Use DB cache or not.
 	 *
 	 * @return int
 	 */
-	public function get_total_count(): int {
+	public function get_total_count( bool $bool_cache = true ): int {
 		return (int) $this->query(
 			[
 				'count' => true,
-			]
+			],
+			$bool_cache
 		);
 	}
 

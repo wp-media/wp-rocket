@@ -324,6 +324,54 @@ class Render extends Abstract_render {
 	}
 
 	/**
+	 * Displays the Your Own CDN section template.
+	 *
+	 * This is a section for configuring your own CDN settings.
+	 * It includes the PAUSE CDN button.
+	 *
+	 * @param array $args Array of arguments to populate the template.
+	 */
+	public function your_own_cdn( $args ) {
+		echo $this->generate( 'sections/cdn/your-own-cdn', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+	}
+
+	/**
+	 * Displays the RocketCDN Free section template.
+	 *
+	 * @param array $args Array of arguments to populate the template.
+	 */
+	public function rocketcdn_free( $args ) {
+		echo $this->generate( 'sections/cdn/rocketcdn-free', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+	}
+
+	/**
+	 * Displays the RocketCDN Paid section template.
+	 *
+	 * @param array $args Array of arguments to populate the template.
+	 */
+	public function rocketcdn_paid( $args ) {
+		echo $this->generate( 'sections/cdn/rocketcdn-paid', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+	}
+
+	/**
+	 * Displays the purge CDN cache section template.
+	 *
+	 * @param array $args Array of arguments to populate the template.
+	 */
+	public function purge_cdn_cache_section( $args ) {
+		echo $this->generate( 'sections/cdn/purge-cdn-cache', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+	}
+
+	/**
+	 * Displays the no container with title section template.
+	 *
+	 * @param array $args Array of arguments to populate the template.
+	 */
+	public function nocontainer_with_title( $args ) {
+		echo $this->generate( 'sections/nocontainer-with-title', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+	}
+
+	/**
 	 * Displays the text field template.
 	 *
 	 * @since 3.0
@@ -362,6 +410,23 @@ class Render extends Abstract_render {
 		$args['value'] = empty( $args['value'] ) ? '' : $args['value'];
 
 		echo $this->generate( 'fields/textarea', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+	}
+
+	/**
+	 * Displays the textarea with container field template.
+	 *
+	 * @since 3.22
+	 *
+	 * @param array $args Array of arguments to populate the template.
+	 */
+	public function textarea_with_container( $args ) {
+		if ( is_array( $args['value'] ) ) {
+			$args['value'] = implode( "\n", $args['value'] );
+		}
+
+		$args['value'] = empty( $args['value'] ) ? '' : $args['value'];
+
+		echo $this->generate( 'fields/textarea-with-container', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 
 	/**

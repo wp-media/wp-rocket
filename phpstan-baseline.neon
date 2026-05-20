@@ -92,11 +92,6 @@ parameters:
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: inc/Engine/Admin/Settings/Subscriber.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 6
 			path: inc/Engine/CDN/CDN.php
 
@@ -117,6 +112,11 @@ parameters:
 
 		-
 			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: inc/Engine/CDN/RocketCDN/CDNOptionsManager.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: inc/Engine/CDN/RocketCDN/CDNOptionsManager.php
 
@@ -292,18 +292,13 @@ parameters:
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 3
+			count: 2
 			path: inc/Engine/Media/AboveTheFold/AJAX/Controller.php
 
 		-
 			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: inc/Engine/Media/AboveTheFold/Context/Context.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: inc/Engine/Media/AboveTheFold/Frontend/Controller.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
@@ -322,7 +317,7 @@ parameters:
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 3
+			count: 2
 			path: inc/Engine/Media/Lazyload/CSS/Front/Extractor.php
 
 		-
@@ -334,11 +329,6 @@ parameters:
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 9
 			path: inc/Engine/Media/Lazyload/Subscriber.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: inc/Engine/Media/PreloadFonts/Frontend/Controller.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
@@ -394,11 +384,6 @@ parameters:
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: inc/Engine/Optimization/GoogleFonts/Admin/Settings.php
-
-		-
-			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 1
-			path: inc/Engine/Optimization/LazyRenderContent/AJAX/Controller.php
 
 		-
 			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
@@ -554,11 +539,6 @@ parameters:
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: inc/Engine/Tracking/Tracking.php
-
-		-
-			message: "#^Trait WP_Rocket\\\\Engine\\\\Tracking\\\\TrackingTrait is used zero times and is not analysed\\.$#"
-			count: 1
-			path: inc/Engine/Tracking/TrackingTrait.php
 
 		-
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
@@ -754,6 +734,16 @@ parameters:
 			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/Admin/Deactivation/Subscriber/insertDeactivationIntentForm.php
+
+		-
+			message: "#^If condition is always true\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Admin/RocketInsights/Recommendations/SettingsSubscriber/MaybeFetchAfterSettingsChangeTest.php
+
+		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 2
+			path: tests/Integration/inc/Engine/Admin/RocketInsights/Recommendations/SettingsSubscriber/MaybeFetchAfterSettingsChangeTest.php
 
 		-
 			message: "#^Property WP_Rocket\\\\Tests\\\\Integration\\\\inc\\\\Engine\\\\Admin\\\\RocketInsights\\\\Render\\\\Test_GetRocketInsightsColumn\\:\\:\\$query is never read, only written\\.$#"
@@ -1184,13 +1174,3 @@ parameters:
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/functions/rocketIsPluginActive.php
-
-		-
-			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
-			count: 2
-			path: tests/Integration/inc/Engine/Admin/RocketInsights/Recommendations/SettingsSubscriber/MaybeFetchAfterSettingsChangeTest.php
-
-		-
-			message: "#^If condition is always true\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/Admin/RocketInsights/Recommendations/SettingsSubscriber/MaybeFetchAfterSettingsChangeTest.php

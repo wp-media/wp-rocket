@@ -62,6 +62,9 @@ abstract class AbstractSafeAPIClient {
 	 */
 	private function send_request( $method, $params = [], $safe = false ) {
 		$api_url = $this->get_api_url();
+		if ( empty( $api_url ) ) {
+			return new WP_Error( 404, 'Empty Url.' );
+		}
 
 		$transient_key = $this->get_transient_key();
 		if ( get_transient( $transient_key . '_timeout_active' ) ) {
