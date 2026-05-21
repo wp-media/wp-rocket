@@ -252,7 +252,7 @@ class SubscriptionController implements LoggerAwareInterface {
 	 * @return void
 	 */
 	private function stop_subscription_creation_loader() {
-		//delete_transient( $this->subscription_loading_transient );
+		delete_transient( $this->subscription_loading_transient );
 	}
 
 	/**
@@ -262,5 +262,25 @@ class SubscriptionController implements LoggerAwareInterface {
 	 */
 	public function is_subscription_creation_loading(): bool {
 		return false !== get_transient( $this->subscription_loading_transient );
+	}
+
+	/**
+	 * Get subscription details, mainly for the rest API endpoint.
+	 *
+	 * @return array
+	 */
+	public function get_subscription() {
+		$output = [
+			'is_loading' => $this->is_subscription_creation_loading(),
+		];
+
+		$subscription = $this->api_client->get_subscription_data();
+		if ( empty( $subscription ) ) {
+			return $output;
+		}
+
+		$output['status'] = $subscription['subscription_status'];
+
+		return $output;
 	}
 }

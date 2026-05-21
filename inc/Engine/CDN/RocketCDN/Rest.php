@@ -66,23 +66,29 @@ class Rest extends WP_REST_Controller {
 	 */
 	private $context;
 
+	/**
+	 * Subscription controller.
+	 *
+	 * @var SubscriptionController
+	 */
 	private $subscription_controller;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param RocketCDNQuery   $query             RocketCDNQuery instance.
-	 * @param Options_Data     $options           WP Rocket options instance.
-	 * @param Options          $options_api       WP Options API instance.
-	 * @param RenderController $render_controller CDN Render Controller instance.
-	 * @param Context          $context           CDN Context instance.
+	 * @param RocketCDNQuery         $query             RocketCDNQuery instance.
+	 * @param Options_Data           $options           WP Rocket options instance.
+	 * @param Options                $options_api       WP Options API instance.
+	 * @param RenderController       $render_controller CDN Render Controller instance.
+	 * @param Context                $context           CDN Context instance.
+	 * @param SubscriptionController $subscription_controller Subscription controller instance.
 	 */
 	public function __construct( RocketCDNQuery $query, Options_Data $options, Options $options_api, RenderController $render_controller, Context $context, SubscriptionController $subscription_controller ) {
-		$this->query             = $query;
-		$this->options           = $options;
-		$this->options_api       = $options_api;
-		$this->render_controller = $render_controller;
-		$this->context           = $context;
+		$this->query                   = $query;
+		$this->options                 = $options;
+		$this->options_api             = $options_api;
+		$this->render_controller       = $render_controller;
+		$this->context                 = $context;
 		$this->subscription_controller = $subscription_controller;
 	}
 
@@ -185,6 +191,18 @@ class Rest extends WP_REST_Controller {
 						},
 						'sanitize_callback' => 'sanitize_text_field',
 					],
+				],
+			]
+		);
+
+		register_rest_route(
+			self::ROUTE_NAMESPACE,
+			self::ROUTE_BASE . '/subscription',
+			[
+				[
+					'methods'             => WP_REST_Server::READABLE,
+					'callback'            => [ $this, 'get_subscription' ],
+					'permission_callback' => [ $this, 'check_permission' ],
 				],
 			]
 		);
@@ -390,7 +408,7 @@ class Rest extends WP_REST_Controller {
 		$pages_count = $this->query->get_total_count( false );
 
 		return [
-			'pages'                 => array_map(
+			'pages'                            => array_map(
 				function ( $page ) {
 					return [
 						'id'    => (int) $page->id,
@@ -400,10 +418,10 @@ class Rest extends WP_REST_Controller {
 				},
 				is_array( $pages ) ? $pages : []
 			),
-			'count'                 => $pages_count,
-			'limit'                 => $this->get_free_page_limit(),
-			'items_html'            => $this->render_controller->get_built_in_page_list(),
-			'status_indicator_html' => $this->render_controller->get_status_indicator_html( $pages_count ),
+			'count'                            => $pages_count,
+			'limit'                            => $this->get_free_page_limit(),
+			'items_html'                       => $this->render_controller->get_built_in_page_list(),
+			'status_indicator_html'            => $this->render_controller->get_status_indicator_html( $pages_count ),
 			'is_subscription_creation_loading' => $this->subscription_controller->is_subscription_creation_loading(),
 		];
 	}
@@ -436,6 +454,24 @@ class Rest extends WP_REST_Controller {
 			[
 				'cdn_type' => $cdn_type,
 			],
+			200
+		);
+	}
+
+	/**
+	 * Get subscription details.
+	 *
+	 * @return WP_REST_Response
+	 */
+	public function get_subscription(): WP_REST_Response {
+		$subscription = $this->subscription_controller->get_subscription();
+
+		if ( empty( $subscription ) ) {
+			return new WP_REST_Response( null, 204 );
+		}
+
+		return new WP_REST_Response(
+			$subscription,
 			200
 		);
 	}
