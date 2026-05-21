@@ -65,7 +65,7 @@
 			smallCTA = document.querySelector( '#wpr-rocketcdn-cta-small' ),
 			bigCTA = document.querySelector( '#wpr-rocketcdn-cta' );
 
-		const ctaToggle = document.querySelector( '.wpr-rocketcdn-cta-toggle' );
+		const ctaToggle = document.querySelectorAll( '.wpr-rocketcdn-cta-toggle' );
 
 		/**
 		 * Toggles RocketCDN CTA internal collapsed/expanded state.
@@ -73,22 +73,26 @@
 		 * @return {void}
 		 */
 		function toggleBigCTAState() {
-			if ( ! bigCTA || ! ctaToggle ) {
+			if ( ! bigCTA || ! ctaToggle.length ) {
 				return;
 			}
 
 			const isCollapsed = bigCTA.classList.toggle( 'wpr-rocketcdn-cta--collapsed' );
 			bigCTA.classList.toggle( 'wpr-rocketcdn-cta--expanded', ! isCollapsed );
-			ctaToggle.setAttribute( 'aria-expanded', isCollapsed ? 'false' : 'true' );
+			ctaToggle.forEach( ( el ) => {
+				el.setAttribute( 'aria-expanded', isCollapsed ? 'false' : 'true' );
+			} );
 		}
 
-		if ( ctaToggle && bigCTA ) {
-			ctaToggle.addEventListener( 'click', toggleBigCTAState );
-			ctaToggle.addEventListener( 'keydown', ( event ) => {
-				if ( 'Enter' === event.key || ' ' === event.key ) {
-					event.preventDefault();
-					toggleBigCTAState();
-				}
+		if ( ctaToggle.length && bigCTA ) {
+			ctaToggle.forEach( ( el ) => {
+				el.addEventListener( 'click', toggleBigCTAState );
+				el.addEventListener( 'keydown', ( event ) => {
+					if ( 'Enter' === event.key || ' ' === event.key ) {
+						event.preventDefault();
+						toggleBigCTAState();
+					}
+				} );
 			} );
 		}
 
