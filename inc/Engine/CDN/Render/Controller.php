@@ -568,7 +568,7 @@ class Controller extends Abstract_Render {
 			'is_paused'               => $is_paused,
 			'pages_count'             => $pages_count,
 			'is_subscription_loading' => $is_subscription_loading,
-			'hide_pause_btn'          => $is_subscription_loading || 0 === $pages_count,
+			'hide_pause_btn'          => ( $is_subscription_loading || 0 === $pages_count ) && ! $is_paused,
 		];
 	}
 }
