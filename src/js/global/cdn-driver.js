@@ -45,6 +45,8 @@
 		if ( statusIndicator && statusIndicatorHtml ) {
 			statusIndicator.outerHTML = statusIndicatorHtml;
 		}
+
+		// Create polling mechanism to send a request every 10 seconds to get the subscription status and once the subscription is active, we will refresh the page for now.
 	}
 
 	/**
@@ -217,8 +219,6 @@
 			} ).then( ( response ) => {
 				button.classList.add( 'wpr-isHidden' );
 
-				console.log(response.status_indicator_html);
-
 				if ( response.items_html ) {
 					const existing = document.querySelector( '.wpr-cdn-built-in .wpr-table-list' );
 
@@ -234,7 +234,7 @@
 				}
 
 				// Set subscription loading state when first page is added.
-				if ( 1 === response.count ) {
+				if ( response.is_subscription_creation_loading ) {
 					setSubscriptionLoadingState( response.status_indicator_html );
 				}
 			} ).catch( () => {
@@ -314,7 +314,7 @@
 				}
 
 				// Set subscription loading state when first page is added.
-				if ( 1 === response.count ) {
+				if ( response.is_subscription_creation_loading ) {
 					setSubscriptionLoadingState( response.status_indicator_html );
 				}
 			} ).catch( () => {
@@ -383,7 +383,7 @@
 				if ( 0 === response.count ) {
 					// Remove table list component.
 					document.querySelector( '.wpr-cdn-built-in .wpr-table-list' ).remove();
-					
+
 					const homepageBtn = container.querySelector( '.wpr-cdn-add-page__homepage' );
 
 					if ( homepageBtn ) {

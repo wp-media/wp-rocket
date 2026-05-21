@@ -66,6 +66,8 @@ class Rest extends WP_REST_Controller {
 	 */
 	private $context;
 
+	private $subscription_controller;
+
 	/**
 	 * Constructor.
 	 *
@@ -75,12 +77,13 @@ class Rest extends WP_REST_Controller {
 	 * @param RenderController $render_controller CDN Render Controller instance.
 	 * @param Context          $context           CDN Context instance.
 	 */
-	public function __construct( RocketCDNQuery $query, Options_Data $options, Options $options_api, RenderController $render_controller, Context $context ) {
+	public function __construct( RocketCDNQuery $query, Options_Data $options, Options $options_api, RenderController $render_controller, Context $context, SubscriptionController $subscription_controller ) {
 		$this->query             = $query;
 		$this->options           = $options;
 		$this->options_api       = $options_api;
 		$this->render_controller = $render_controller;
 		$this->context           = $context;
+		$this->subscription_controller = $subscription_controller;
 	}
 
 	/**
@@ -401,6 +404,7 @@ class Rest extends WP_REST_Controller {
 			'limit'                 => $this->get_free_page_limit(),
 			'items_html'            => $this->render_controller->get_built_in_page_list(),
 			'status_indicator_html' => $this->render_controller->get_status_indicator_html( $pages_count ),
+			'is_subscription_creation_loading' => $this->subscription_controller->is_subscription_creation_loading(),
 		];
 	}
 

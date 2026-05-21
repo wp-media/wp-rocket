@@ -252,7 +252,7 @@ class SubscriptionController implements LoggerAwareInterface {
 	 * @return void
 	 */
 	private function stop_subscription_creation_loader() {
-		delete_transient( $this->subscription_loading_transient );
+		//delete_transient( $this->subscription_loading_transient );
 	}
 
 	/**
