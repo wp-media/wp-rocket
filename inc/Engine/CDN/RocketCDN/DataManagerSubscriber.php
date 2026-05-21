@@ -464,12 +464,12 @@ class DataManagerSubscriber implements Subscriber_Interface {
 			return;
 		}
 
-		if ( empty( $subscription_data['id'] ) ) {
+		if ( empty( $subscription_data['website_id'] ) ) {
 			return;
 		}
 
 		// Retry the activation.
-		$activation_result = $this->api_client->activate_subscription( $token, $subscription_data['id'] );
+		$activation_result = $this->api_client->activate_subscription( $token, $subscription_data['website_id'] );
 
 		if ( is_wp_error( $activation_result ) ) {
 			return;
