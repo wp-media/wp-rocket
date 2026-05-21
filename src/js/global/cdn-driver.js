@@ -9,6 +9,8 @@
 		initDeletePage();
 	} );
 
+	const addHomeButton = document.querySelector( '#wpr_add_page_component .wpr-cdn-add-page__homepage' );
+
 	/**
 	 * Updates the status indicator component with new HTML content.
 	 *
@@ -214,21 +216,18 @@
 	 * the site homepage as a free-tier CDN page.
 	 */
 	function initAddHomepage() {
-		const parentComponentSelector = '#wpr_add_page_component';
-		const button = document.querySelector( '#wpr_add_page_component .wpr-cdn-add-page__homepage' );
-
-		if ( ! button ) {
+		if ( ! addHomeButton ) {
 			return;
 		}
 
-		button.addEventListener( 'click', () => {
-			button.disabled = true;
+		addHomeButton.addEventListener( 'click', () => {
+			addHomeButton.disabled = true;
 
 			window.wp.apiFetch( {
 				path: '/wp-rocket/v1/rocketcdn/pages/homepage',
 				method: 'POST',
 			} ).then( ( response ) => {
-				button.classList.add( 'wpr-isHidden' );
+				addHomeButton.classList.add( 'wpr-isHidden' );
 
 				if ( response.items_html ) {
 					const existing = document.querySelector( '.wpr-cdn-built-in .wpr-table-list' );
@@ -249,7 +248,7 @@
 					setSubscriptionLoadingState( response.status_indicator_html );
 				}
 			} ).catch( () => {
-				button.disabled = false;
+				addHomeButton.disabled = false;
 			} );
 		} );
 	}
@@ -279,10 +278,10 @@
 		function submitPage() {
 			const url = input.value.trim();
 
-			// if (!isValidUrl(url)) {
-			// 	alert('Please enter a valid URL');
-			// 	return;
-			// }
+			if (!isValidUrl(url)) {
+				alert('Please enter a valid URL');
+				return;
+			}
 
 			// Prevent duplicate request while request is in flight.
 			input.disabled = true;
@@ -296,8 +295,7 @@
 				input.value = '';
 				input.disabled = false;
 				button.disabled = false;
-
-				console.log(response.status_indicator_html);
+				addHomeButton.classList.add( 'wpr-isHidden' );
 
 				// Update page list with response.
 				if ( response.items_html ) {
