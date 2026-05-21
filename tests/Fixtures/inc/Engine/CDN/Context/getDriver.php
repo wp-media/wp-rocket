@@ -3,19 +3,36 @@
 return [
 	'testShouldReturnByocdnDriver' => [
 		'config'   => [
-			'cdn_type'      => 'byocdn',
+			'cdn_type' => 'byocdn',
 		],
 		'expected' => 'byocdn',
 	],
-	'testShouldReturnrocketcdnPaidDriver' => [
+	'testShouldReturnByocdnWhenUnknownType' => [
 		'config'   => [
-			'cdn_type' => 'rocketcdn',
+			'cdn_type' => 'something_else',
 		],
-		'expected' => 'rocketcdn',
+		'expected' => 'byocdn',
 	],
-	'testShouldReturnRocketcdnFreeDriver' => [
+	'testShouldReturnRocketcdnPaidDriver' => [
 		'config'   => [
-			'cdn_type' => 'rocketcdn_free',
+			'cdn_type'                => 'rocketcdn',
+			'has_active_subscription' => true,
+			'is_paid'                 => true,
+		],
+		'expected' => 'rocketcdn_paid',
+	],
+	'testShouldReturnRocketcdnFreeWhenActiveButNotPaid' => [
+		'config'   => [
+			'cdn_type'                => 'rocketcdn',
+			'has_active_subscription' => true,
+			'is_paid'                 => false,
+		],
+		'expected' => 'rocketcdn_free',
+	],
+	'testShouldReturnRocketcdnFreeWhenNoActiveSubscription' => [
+		'config'   => [
+			'cdn_type'                => 'rocketcdn',
+			'has_active_subscription' => false,
 		],
 		'expected' => 'rocketcdn_free',
 	],

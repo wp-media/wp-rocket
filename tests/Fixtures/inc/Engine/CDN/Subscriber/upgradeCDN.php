@@ -29,6 +29,7 @@ return [
 			'should_update' => true,
 			'cdn_type'      => 'rocketcdn',
 			'options'       => [
+				'cdn'	  => 1,
 				'cdn_type' => 'rocketcdn',
 			],
 		],
