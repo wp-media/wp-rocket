@@ -42,8 +42,9 @@ defined( 'ABSPATH' ) || exit;
 			<?php esc_html_e( 'Other CDN', 'rocket' ); ?>
 		</button>
 	</div>
-
-	<span id="wpr-cdn-driver-tooltip" class="wpr-cdn-tabs__tooltip" role="tooltip">
-		<?php esc_html_e( 'You can only use one CDN at a time', 'rocket' ); ?>
-	</span>
+	<?php if ( $data['disable_other_cdn'] ) : ?>
+		<span id="wpr-cdn-driver-tooltip" class="wpr-cdn-tabs__tooltip" role="tooltip">
+			<?php esc_html_e( 'You can only use one CDN at a time', 'rocket' ); ?>
+		</span>
+	<?php endif; ?>
 </div>

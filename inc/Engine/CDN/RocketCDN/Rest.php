@@ -13,6 +13,8 @@ use WP_Rocket\Admin\{
 	Options_Data,
 	Options
 };
+use WP_Rocket\Engine\CDN\Render\Controller as RenderController;
+use WP_Rocket\Engine\CDN\Context;
 use WP_Rocket\Engine\Common\{
 	Utils,
 	Page\PageHandlerTrait
@@ -51,16 +53,43 @@ class Rest extends WP_REST_Controller {
 	private $options_api;
 
 	/**
+	 * CDN Render Controller instance.
+	 *
+	 * @var RenderController
+	 */
+	private $render_controller;
+
+	/**
+	 * CDN Context instance.
+	 *
+	 * @var Context
+	 */
+	private $context;
+
+	/**
+	 * Subscription controller.
+	 *
+	 * @var SubscriptionController
+	 */
+	private $subscription_controller;
+
+	/**
 	 * Constructor.
 	 *
-	 * @param RocketCDNQuery $query      RocketCDNQuery instance.
-	 * @param Options_Data   $options    WP Rocket options instance.
-	 * @param Options        $options_api WP Options API instance.
+	 * @param RocketCDNQuery         $query             RocketCDNQuery instance.
+	 * @param Options_Data           $options           WP Rocket options instance.
+	 * @param Options                $options_api       WP Options API instance.
+	 * @param RenderController       $render_controller CDN Render Controller instance.
+	 * @param Context                $context           CDN Context instance.
+	 * @param SubscriptionController $subscription_controller Subscription controller instance.
 	 */
-	public function __construct( RocketCDNQuery $query, Options_Data $options, Options $options_api ) {
-		$this->query       = $query;
-		$this->options     = $options;
-		$this->options_api = $options_api;
+	public function __construct( RocketCDNQuery $query, Options_Data $options, Options $options_api, RenderController $render_controller, Context $context, SubscriptionController $subscription_controller ) {
+		$this->query                   = $query;
+		$this->options                 = $options;
+		$this->options_api             = $options_api;
+		$this->render_controller       = $render_controller;
+		$this->context                 = $context;
+		$this->subscription_controller = $subscription_controller;
 	}
 
 	/**
@@ -165,6 +194,18 @@ class Rest extends WP_REST_Controller {
 				],
 			]
 		);
+
+		register_rest_route(
+			self::ROUTE_NAMESPACE,
+			self::ROUTE_BASE . '/subscription',
+			[
+				[
+					'methods'             => WP_REST_Server::READABLE,
+					'callback'            => [ $this, 'get_subscription' ],
+					'permission_callback' => [ $this, 'check_permission' ],
+				],
+			]
+		);
 	}
 
 	/**
@@ -223,6 +264,19 @@ class Rest extends WP_REST_Controller {
 			$page_title = __( 'Homepage', 'rocket' );
 		} else {
 			$page_title = $this->get_page_title( $payload['message'] );
+		}
+
+		/**
+		 * WP Rocket Metabox fields on post edit page.
+		 *
+		 * @param string[] $original_fields Metaboxes fields.
+		 */
+		if ( ! wpm_apply_filters_typed( 'boolean', 'rocket_cdnfree_can_add_page', true, $url ) ) {
+			return new WP_Error(
+				'rocketcdn_disabled_by_filter',
+				__( 'Adding page is disabled by the filter.', 'rocket' ),
+				[ 'status' => 500 ]
+			);
 		}
 
 		$inserted = $this->query->add_item(
@@ -351,8 +405,10 @@ class Rest extends WP_REST_Controller {
 	private function get_pages_data(): array {
 		$pages = $this->query->query( [] );
 
+		$pages_count = $this->query->get_total_count( false );
+
 		return [
-			'pages' => array_map(
+			'pages'                            => array_map(
 				function ( $page ) {
 					return [
 						'id'    => (int) $page->id,
@@ -362,20 +418,21 @@ class Rest extends WP_REST_Controller {
 				},
 				is_array( $pages ) ? $pages : []
 			),
-			'count' => $this->query->get_total_count( false ),
-			'limit' => $this->get_free_page_limit(),
+			'count'                            => $pages_count,
+			'limit'                            => $this->get_free_page_limit(),
+			'items_html'                       => $this->render_controller->get_built_in_page_list(),
+			'status_indicator_html'            => $this->render_controller->get_status_indicator_html( $pages_count ),
+			'is_subscription_creation_loading' => $this->subscription_controller->is_subscription_creation_loading(),
 		];
 	}
 
 	/**
 	 * Return the total number of free pages allowed for RocketCDN delivery.
 	 *
-	 * RFT Todo: Make this dynamic based on the addon team endpoint.
-	 *
 	 * @return int
 	 */
 	protected function get_free_page_limit(): int {
-		return 3;
+		return $this->context->get_free_page_limit();
 	}
 
 	/**
@@ -397,6 +454,24 @@ class Rest extends WP_REST_Controller {
 			[
 				'cdn_type' => $cdn_type,
 			],
+			200
+		);
+	}
+
+	/**
+	 * Get subscription details.
+	 *
+	 * @return WP_REST_Response
+	 */
+	public function get_subscription(): WP_REST_Response {
+		$subscription = $this->subscription_controller->get_subscription();
+
+		if ( empty( $subscription ) ) {
+			return new WP_REST_Response( null, 204 );
+		}
+
+		return new WP_REST_Response(
+			$subscription,
 			200
 		);
 	}

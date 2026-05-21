@@ -25,17 +25,20 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 $data = isset( $data ) && is_array( $data ) ? $data : []; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 ?>
 
-<div class="wpr-rocketcdn-cta wpr-rocketcdn-cta--collapsed <?php echo esc_attr( $data['container_class'] ); ?>" id="wpr-rocketcdn-cta">
-	<div class="wpr-rocketcdn-cta-toggle" role="button" tabindex="0" aria-controls="wpr-rocketcdn-cta-expandable" aria-expanded="true">
-		<?php if ( ! empty( $data['cta_description'] ) ) : ?>
-			<span class="wpr-rocketcdn-cta-toggle__check" aria-hidden="true"></span>
-		<?php endif; ?>
+<div class="wpr-rocketcdn-cta <?php echo ! $data['limit_reached'] ? 'wpr-rocketcdn-cta--collapsed' : ''; ?> <?php echo esc_attr( $data['container_class'] ); ?>" id="wpr-rocketcdn-cta">
+	<div class="wpr-rocketcdn-cta-toggle wpr-rocketcdn-cta-toggle--default" role="button" tabindex="0" aria-controls="wpr-rocketcdn-cta-expandable" aria-expanded="true">
 		<p class="wpr-rocketcdn-cta-toggle__text">
 			<?php echo wp_kses( $data['cta_heading'], [ 'strong' => [] ] ); ?>
-			<?php if ( ! empty( $data['cta_description'] ) ) : ?>
-				<br />
-				<span><?php echo esc_html( $data['cta_description'] ); ?></span>
-			<?php endif; ?>
+		</p>
+		<span class="wpr-rocketcdn-cta-toggle__icon" aria-hidden="true"></span>
+	</div>
+
+	<div class="wpr-rocketcdn-cta-toggle wpr-rocketcdn-cta-toggle--max-limit" role="button" tabindex="0" aria-controls="wpr-rocketcdn-cta-expandable" aria-expanded="true">
+		<span class="wpr-rocketcdn-cta-toggle__check" aria-hidden="true"></span>
+		<p class="wpr-rocketcdn-cta-toggle__text">
+			<?php echo wp_kses( $data['cta_heading_max_limit'], [ 'strong' => [] ] ); ?>
+			<br />
+			<span><?php echo esc_html( $data['cta_description'] ); ?></span>
 		</p>
 		<span class="wpr-rocketcdn-cta-toggle__icon" aria-hidden="true"></span>
 	</div>

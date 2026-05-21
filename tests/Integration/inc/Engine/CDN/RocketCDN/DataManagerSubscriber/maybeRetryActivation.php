@@ -123,8 +123,8 @@ class Test_MaybeRetryActivation extends AdminTestCase {
 						];
 					}
 
-					// Mock subscription endpoint (website/search/).
-					if ( false !== strpos( $url, 'https://rocketcdn.me/api/website/search/' ) ) {
+					// Mock subscription endpoint (subscription/domain/status/).
+					if ( false !== strpos( $url, 'https://rocketcdn.me/api/subscription/example.org/status' ) ) {
 						$test->subscription_api_call_count++;
 
 						// After activation was called, return the post-activation data.

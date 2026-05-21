@@ -4,7 +4,12 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\CDN\Render;
 
 use WP_Rocket\Abstract_Render;
+use WP_Rocket\Engine\CDN\Context;
+use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\CDN\RocketCDN\SubscriptionController;
+use WP_Rocket\Engine\Common\Utils;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
+use WP_Rocket\Engine\CDN\RocketCDN\Database\Queries\RocketCDN as RocketCDNQuery;
 
 /**
  * Handles business logic for CDN driver sections, exclusion fields,
@@ -21,15 +26,65 @@ class Controller extends Abstract_Render {
 	private $beacon;
 
 	/**
+	 * Context instance.
+	 *
+	 * @var Context
+	 */
+	private $context;
+
+	/**
+	 * Options_Data instance.
+	 *
+	 * @var Options_Data
+	 */
+	private $options;
+
+	/**
+	 * RocketCDNQuery instance.
+	 *
+	 * @var RocketCDNQuery
+	 */
+	private $cdn_query;
+
+	/**
+	 * RocketCDN Subscription controller instance.
+	 *
+	 * @var SubscriptionController
+	 */
+	private $subscription_controller;
+
+	/**
+	 * Page count for RocketCDN Free tier.
+	 *
+	 * @var int
+	 */
+	private $page_count = 0;
+
+	/**
 	 * Constructor.
 	 *
-	 * @param Beacon $beacon        Beacon instance.
-	 * @param string $template_path Path to the view templates.
+	 * @param Beacon                 $beacon        Beacon instance.
+	 * @param string                 $template_path Path to the view templates.
+	 * @param Context                $context       Context instance.
+	 * @param Options_Data           $options  Options_Data instance.
+	 * @param RocketCDNQuery         $cdn_query RocketCDNQuery instance.
+	 * @param SubscriptionController $subscription_controller RocketCDN Subscription controller instance.
 	 */
-	public function __construct( Beacon $beacon, string $template_path ) {
+	public function __construct(
+		Beacon $beacon,
+		string $template_path,
+		Context $context,
+		Options_Data $options,
+		RocketCDNQuery $cdn_query,
+		SubscriptionController $subscription_controller
+	) {
 		parent::__construct( $template_path );
 
-		$this->beacon = $beacon;
+		$this->beacon                  = $beacon;
+		$this->context                 = $context;
+		$this->options                 = $options;
+		$this->cdn_query               = $cdn_query;
+		$this->subscription_controller = $subscription_controller;
 	}
 
 	/**
@@ -42,13 +97,14 @@ class Controller extends Abstract_Render {
 	 * @return array
 	 */
 	public function add_rocketcdn_paid_section( array $sections ): array {
-		// RFT Todo: Add a check for the RocketCDN subscription status and return early if false.
-
-		if ( 'byocdn' === $this->get_filtered_cdn_type() ) {
+		if ( Context::ROCKETCDN_PAID_TYPE !== $this->context->get_driver() ) {
 			return $sections;
 		}
 
 		$cdn_beacon = $this->beacon->get_suggest( 'cdn' );
+
+		$status_indicator_data           = $this->get_status_indicator_data( 1, $this->is_subscription_loading(), false );
+		$status_indicator_data['class'] .= ' wpr-cdn-status-pronounced rocketcdn';
 
 		$sections['rocketcdn_paid_section'] = [
 			'title'            => __( 'RocketCDN', 'rocket' ),
@@ -59,14 +115,7 @@ class Controller extends Abstract_Render {
 				'id'  => $cdn_beacon,
 				'url' => $cdn_beacon['url'],
 			],
-			'status_indicator' => [
-				'is_active'          => true,
-				'status_text'        => __( 'RocketCDN is active on your website', 'rocket' ),
-				'details'            => __( 'Serving files from 100+ edge locations', 'rocket' ),
-				'paused_status_text' => __( 'RocketCDN is paused', 'rocket' ),
-				'paused_details'     => __( 'RocketCDN is currently paused. Click Resume CDN to re-enable content delivery.', 'rocket' ),
-				'class'              => 'wpr-cdn-status-pronounced rocketcdn',
-			],
+			'status_indicator' => $status_indicator_data,
 		];
 
 		return $sections;
@@ -82,56 +131,39 @@ class Controller extends Abstract_Render {
 	 * @return array
 	 */
 	public function add_rocketcdn_free_section( array $sections ): array {
-		// RFT Todo: Add a check for the RocketCDN subscription status and return early if true.
-
-		if ( 'byocdn' === $this->get_filtered_cdn_type() ) {
+		if ( Context::ROCKETCDN_PAID_TYPE === $this->context->get_driver() ) {
 			return $sections;
 		}
 
-		$details = sprintf(
-				// translators: %1$s = opening <strong> tag, %2$s = closing </strong> tag.
-				__( '%1$sStart with your homepage and add up to 2 more key pages.%2$s Includes unlimited traffic across 10 edge locations.', 'rocket' ),
-				'<strong>',
-				'</strong>'
-			);
-
-		$status_text = __( 'RocketCDN is active', 'rocket' );
-		$classes     = [ 'rocketcdn' ];
-
+		$classes                 = [ 'rocketcdn' ];
 		$is_subscription_loading = $this->is_subscription_loading();
-
-		$pages_count = count( $this->get_items() );
-
-		if ( $pages_count > 0 ) {
-			$details = __( 'Serving files from 10 edge locations. Covering up to 3 pages.', 'rocket' );
-		}
-
-		// Update status inidicator details when subscription is processing.
-		if ( $is_subscription_loading ) {
-			$details     = __( 'Please wait, RocketCDN will be ready and active shortly.', 'rocket' );
-			$status_text = __( 'Creating your subscription...', 'rocket' );
-		}
-
-		$cta_heading = sprintf(
+		$this->page_count        = count( $this->get_items() );
+		$cta_heading             = sprintf(
 					// translators: %1$s = opening strong tag, %2$s = closing strong tag.
 					__( '%1$sWant full-site Content Delivery coverage?%2$s Extend RocketCDN to all your pages with unlimited bandwidth.', 'rocket' ),
 					'<strong>',
 					'</strong>'
 				);
 
+		$cta_heading_max_limit = sprintf(
+			// translators: %1$s = opening strong tag, %2$s = number of pages allowed, %3$s = closing strong tag.
+			__( '%1$sNice work! You’re using RocketCDN on %2$s key pages!%3$s ', 'rocket' ),
+			'<strong>',
+			$this->context->get_free_page_limit(),
+			'</strong>'
+		);
+
+		$cta_description = __( 'Upgrade to RocketCDN Pro to extend faster content delivery across all your pages from 100+ edge locations worldwide.', 'rocket' );
+
+		$limit_reached = $this->page_count >= $this->context->get_free_page_limit();
+
 		// Disable input field and buttons when 3 pages are added.
-		if ( $pages_count >= $this->get_limit() || $is_subscription_loading ) {
+		if ( $limit_reached || $is_subscription_loading ) {
 			$classes[] = 'wpr-cdn-built-in--disabled';
+		}
 
-			$cta_heading = sprintf(
-					// translators: %1$s = opening strong tag, %2$s = number of pages allowed, %3$s = closing strong tag.
-					__( '%1$sNice work! You’re using RocketCDN on %2$s key pages!%3$s ', 'rocket' ),
-					'<strong>',
-					$this->get_limit(),
-					'</strong>'
-				);
-
-			$cta_description = __( 'Upgrade to RocketCDN Pro to extend faster content delivery across all your pages from 100+ edge locations worldwide.', 'rocket' );
+		if ( ! (bool) $this->options->get( 'cdn' ) ) {
+			$classes[] = 'wpr-cdn-built-in--paused';
 		}
 
 		$cdn_beacon = $this->beacon->get_suggest( 'cdn' );
@@ -145,21 +177,13 @@ class Controller extends Abstract_Render {
 				'id'  => $cdn_beacon,
 				'url' => $cdn_beacon['url'],
 			],
-			'status_indicator' => [
-				'is_active'               => true,
-				'status_text'             => $status_text,
-				'details'                 => $details,
-				'paused_status_text'      => __( 'RocketCDN is paused', 'rocket' ),
-				'paused_details'          => __( 'RocketCDN is currently paused due to our fair usage policy. Your recent traffic exceeded the expected usage for the free plan. Upgrade to RocketCDN Pro to extend your bandwidth usage.', 'rocket' ),
-				'pages_count'             => $pages_count,
-				'is_subscription_loading' => $is_subscription_loading,
-				'hide_pause_btn'          => $is_subscription_loading,
-			],
+			'status_indicator' => $this->get_status_indicator_data( $this->page_count, $is_subscription_loading ),
 			'cta_data'         => [
-				'cta_heading'     => $cta_heading,
-				'cta_description' => $cta_description ?? '',
+				'cta_heading'           => $cta_heading,
+				'cta_heading_max_limit' => $cta_heading_max_limit,
+				'cta_description'       => $cta_description,
+				'limit_reached'         => $limit_reached,
 			],
-			'cta_heading',
 		];
 
 		return $sections;
@@ -177,6 +201,10 @@ class Controller extends Abstract_Render {
 	public function add_purge_cdn_cache_section( array $sections ): array {
 		$cdn_beacon = $this->beacon->get_suggest( 'cdn' );
 
+		if ( ! empty( $_SERVER['REQUEST_URI'] ) ) {
+			$referer_url = filter_var( wp_unslash( $_SERVER['REQUEST_URI'] ), FILTER_SANITIZE_URL );
+		}
+
 		$sections['purge_cdn_cache_section'] = [
 			// translators: %s is the CDN driver, wrapped in a span for JS targeting.
 			'title'       => sprintf( __( 'Purge %s Cache', 'rocket' ), '<span class="rocketcdn-driver-js">RocketCDN</span>' ),
@@ -186,16 +214,17 @@ class Controller extends Abstract_Render {
 				__( 'Purges %s cached resources for your website.', 'rocket' ),
 				'<span class="rocketcdn-driver-js">RocketCDN</span>'
 			),
-			'purge_url'   => '#',
+			'purge_url'   => Utils::get_nonce_post_url( 'rocket_purge_rocketcdn' ),
 			'page'        => 'page_cdn',
 			'help'        => [
 				'id'  => $cdn_beacon,
 				'url' => $cdn_beacon['url'],
 			],
+			'class'       => [ 'rocketcdn' ],
 		];
 
 		if ( $this->is_subscription_loading() ) {
-			$sections['purge_cdn_cache_section']['class'] = [ 'wpr-cdn-disabled' ];
+			$sections['purge_cdn_cache_section']['class'][] = 'wpr-cdn-disabled';
 		}
 
 		return $sections;
@@ -242,9 +271,10 @@ class Controller extends Abstract_Render {
 	 * @return array Modified fields array with CDN exclusion fields appended.
 	 */
 	public function add_exclusions_fields( array $fields ): array {
-		// RFT Todo: Add another check to the condition for the RocketCDN subscription status.
-		if ( 'byocdn' !== $this->get_filtered_cdn_type() ) {
-			$fields['cdn_reject_pages'] = [
+		$exclusion_fields = [];
+
+		if ( Context::ROCKETCDN_PAID_TYPE === $this->context->get_driver() ) {
+			$exclusion_fields['cdn_reject_pages'] = [
 				'type'              => 'textarea_with_container',
 				'label'             => __( 'Exclude Pages from CDN', 'rocket' ),
 				'description'       => __( 'Specify URL(s) of pages that should not get served via CDN (one per line).', 'rocket' ),
@@ -261,7 +291,7 @@ class Controller extends Abstract_Render {
 			];
 		}
 
-		$fields['cdn_reject_files'] = [
+		$exclusion_fields['cdn_reject_files'] = [
 			'type'              => 'textarea_with_container',
 			'label'             => __( 'Exclude Files from CDN', 'rocket' ),
 			'description'       => __( 'Specify URL(s) of files that should not get served via CDN (one per line).', 'rocket' ),
@@ -275,16 +305,16 @@ class Controller extends Abstract_Render {
 		];
 
 		// Disable exclusions fields when subscription is processing.
-		foreach ( [ 'cdn_reject_pages', 'cdn_reject_files' ] as $field ) {
+		foreach ( array_keys( $exclusion_fields ) as $field ) {
 			if ( $this->is_subscription_loading() ) {
-				$fields[ $field ]['class'][]    = 'wpr-cdn-disabled';
-				$fields[ $field ]['attributes'] = [
+				$exclusion_fields[ $field ]['class'][]    = 'wpr-cdn-disabled';
+				$exclusion_fields[ $field ]['attributes'] = [
 					'disabled' => 'disabled',
 				];
 			}
 		}
 
-		return $fields;
+		return array_merge( $fields, $exclusion_fields );
 	}
 
 	/**
@@ -297,11 +327,40 @@ class Controller extends Abstract_Render {
 	 * @return void
 	 */
 	public function render_built_in_page_list(): void {
+		if ( 0 === $this->page_count ) {
+			return;
+		}
+
+		echo $this->get_built_in_page_list(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+	}
+
+	/**
+	 * Gets the status indicator HTML for the RocketCDN free section.
+	 *
+	 * @param int $pages_count            Number of pages currently using RocketCDN.
+	 *
+	 * @return string The rendered status indicator HTML.
+	 */
+	public function get_status_indicator_html( int $pages_count ): string {
+		$data = $this->get_status_indicator_data( $pages_count, $this->is_subscription_loading() );
+
+		return $this->render_parts_with_data( 'cdn/cdn-status-indicator', $data, true );
+	}
+
+	/**
+	 * Gets the built-in page list for the CDN settings.
+	 *
+	 * Generates a partial table list view using the 'rocket_cdn_free_page_rows'
+	 * hook to populate the rows of the table.
+	 *
+	 * @return string The rendered HTML string of the built-in page list table.
+	 */
+	public function get_built_in_page_list(): string {
 		$table_data = [
 			'rows_hook' => 'rocket_cdn_free_page_rows',
 		];
 
-		echo $this->generate( 'partials/table-list', $table_data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+		return $this->generate( 'partials/table-list', $table_data );
 	}
 
 	/**
@@ -335,6 +394,24 @@ class Controller extends Abstract_Render {
 	}
 
 	/**
+	 * Renders the CDN driver tabs.
+	 *
+	 * @since 3.22
+	 *
+	 * @return void
+	 */
+	public function render_cdn_driver_tabs(): void {
+
+		$data = [
+			'disable_other_cdn' => Context::ROCKETCDN_PAID_TYPE === $this->context->get_driver(),
+			'cdn_type'          => $this->options->get( 'cdn_type', Context::ROCKETCDN_TYPE ),
+			'display_tabs'      => ! $this->is_cdn_type_filtered(),
+		];
+
+		echo $this->generate( 'partials/cdn/cdn-driver-tabs', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+	}
+
+	/**
 	 * Builds a table-list-row data array from a page object.
 	 *
 	 * @since 3.22
@@ -344,12 +421,8 @@ class Controller extends Abstract_Render {
 	 * @return array Row data for the table-list-row partial.
 	 */
 	private function build_page_row( object $page ): array {
-		$retest_button = '<button type="button" class="wpr-table-list__retest" data-id="' . esc_attr( $page->id ) . '">'
-			. '<span class="wpr-icon-bold-refresh"></span>'
-			. esc_html__( 'Re-Test Performance', 'rocket' )
-			. '</button>';
-
-		$delete_button = '<button type="button" class="wpr-table-list__delete" data-id="' . esc_attr( $page->id ) . '" aria-label="' . esc_attr__( 'Remove page', 'rocket' ) . '">'
+		$disable_class = $this->is_subscription_loading() ? 'wpr-cdn-disabled' : '';
+		$delete_button = '<button type="button" class="wpr-table-list__delete ' . esc_attr( $disable_class ) . '" data-id="' . esc_attr( $page->id ) . '" aria-label="' . esc_attr__( 'Remove page', 'rocket' ) . '">'
 			. '<span class="wpr-icon-trash"></span>'
 			. '</button>';
 
@@ -360,34 +433,10 @@ class Controller extends Abstract_Render {
 				],
 				[
 					'type'    => 'actions',
-					'content' => $retest_button . $delete_button,
+					'content' => $delete_button,
 				],
 			],
 		];
-	}
-
-	/**
-	 * Renders the CDN driver tabs.
-	 *
-	 * @since 3.22
-	 *
-	 * @return void
-	 */
-	public function render_cdn_driver_tabs(): void {
-
-		$data = [
-			// RFT Todo: Replace with dynamic boolean value which results from a check if RocketCDN Paid is active.
-			'disable_other_cdn' => false,
-
-			/*
-			RFT Todo: Get current CDN driver and pass that for persistent state on page reload.
-			Use the WP_Rocket\Admin\Options_Data class to retrieve the cdn_type. Don't use the Context class since that will resolve to the specific CDN driver for RocketCDN.
-			*/
-			'cdn_type'          => 'rocketcdn',
-			'display_tabs'      => ! $this->is_cdn_type_filtered(),
-		];
-
-		echo $this->generate( 'partials/cdn/cdn-driver-tabs', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 
 	/**
@@ -398,32 +447,13 @@ class Controller extends Abstract_Render {
 	 * @return array List of page objects with id, url, and title properties.
 	 */
 	private function get_items(): array {
-		// RFT Todo: Replace hardcoded data with DB query.
-		$pages = [
-			(object) [
-				'id'    => 1,
-				'url'   => '#',
-				'title' => __( 'Home page', 'rocket' ),
-			],
-			(object) [
-				'id'    => 2,
-				'url'   => '#',
-				'title' => __( 'Page 2', 'rocket' ),
-			],
+		$query_params = [
+			'orderby' => 'modified',
+			'order'   => 'asc',
+			'number'  => 20,
 		];
-		return $pages;
-	}
 
-	/**
-	 * Retrieves the maximum number of pages allowed on the RocketCDN free plan.
-	 *
-	 * @since 3.22
-	 *
-	 * @return int Page limit for RocketCDN free plan.
-	 */
-	private function get_limit(): int {
-		// RFT Todo: Replace hardcoded limit with API data.
-		return 3;
+		return $this->cdn_query->query( $query_params );
 	}
 
 	/**
@@ -434,21 +464,17 @@ class Controller extends Abstract_Render {
 	 * @return bool True if the subscription is processing, false otherwise.
 	 */
 	private function is_subscription_loading(): bool {
-		// RFT Todo: Implement a check for whether the subscription is currently processing.
-		return false;
+		return $this->subscription_controller->is_subscription_creation_loading();
 	}
 
 	/**
-	 * Retrieves the filtered CDN type.
-	 *
-	 * Gets the CDN type from the pre-filter hook with type validation.
-	 * Only allows CDN types that are in the allowed list ('rocketcdn', 'byocdn').
+	 * Checks if the CDN type is currently filtered.
 	 *
 	 * @since 3.22
 	 *
-	 * @return string|null The filtered CDN type if valid and set, null otherwise.
+	 * @return bool True if the CDN type is filtered, false otherwise.
 	 */
-	private function get_filtered_cdn_type() {
+	private function is_cdn_type_filtered(): bool {
 		$allowed_cdn_types = [ 'rocketcdn', 'byocdn' ];
 
 		/**
@@ -460,23 +486,89 @@ class Controller extends Abstract_Render {
 		*/
 		$cdn_type = wpm_apply_filters_typed( 'string|null', 'pre_get_rocket_option_cdn_type', null, '' );
 
-		// RFT Todo: Perform additional checks if a cdn driver is alreaady active and running.
-
-		if ( null !== $cdn_type && ! in_array( $cdn_type, $allowed_cdn_types, true ) ) {
-			return null;
+		if ( null !== $cdn_type && in_array( $cdn_type, $allowed_cdn_types, true ) ) {
+			return true;
 		}
 
-		return $cdn_type;
+		return false;
 	}
 
 	/**
-	 * Checks if the CDN type is currently filtered.
+	 * Get status indicator data for RocketCDN.
 	 *
-	 * @since 3.22
+	 * Retrieves an array of data used to render the RocketCDN status indicator,
+	 * including status text, details, and various flags based on the current
+	 * subscription state.
 	 *
-	 * @return bool True if the CDN type is filtered, false otherwise.
+	 * @param int  $pages_count            Number of pages currently using RocketCDN.
+	 * @param bool $is_subscription_loading Whether the subscription is currently being processed.
+	 * @param bool $free                    Whether this is for the free version of RocketCDN. Default true.
+	 *
+	 * @return array {
+	 *     Array of status indicator data.
+	 *
+	 *     @type string $class                  CSS class to apply to the status indicator. Empty string or ' wpr-cdn-status--paused'.
+	 *     @type bool   $is_active              Whether RocketCDN is active.
+	 *     @type string $status_text            Current status text to display.
+	 *     @type string $details                Details text describing the current status.
+	 *     @type string $active_status_text     Text to display when RocketCDN is active.
+	 *     @type string $paused_status_text     Text to display when RocketCDN is paused.
+	 *     @type string $paused_details         Details text to display when RocketCDN is paused.
+	 *     @type bool   $is_paused              Whether RocketCDN is currently paused.
+	 *     @type int    $pages_count            Number of pages currently using RocketCDN.
+	 *     @type bool   $is_subscription_loading Whether the subscription is currently being processed.
+	 *     @type bool   $hide_pause_btn         Whether to hide the pause button.
+	 * }
 	 */
-	private function is_cdn_type_filtered(): bool {
-		return null !== $this->get_filtered_cdn_type();
+	private function get_status_indicator_data( int $pages_count, bool $is_subscription_loading, bool $free = true ) {
+		$paused_status_text = __( 'RocketCDN is paused', 'rocket' );
+		$active_status_text = __( 'RocketCDN is active', 'rocket' );
+		$paused_details     = __( 'RocketCDN is currently paused. Click Resume CDN to re-enable content delivery.', 'rocket' );
+
+		$status_text = '';
+		$details     = sprintf(
+				// translators: %1$s = opening <strong> tag, %2$s = closing </strong> tag.
+				__( '%1$sStart with your homepage and add up to 2 more key pages.%2$s Includes unlimited traffic across 10 edge locations.', 'rocket' ),
+				'<strong>',
+				'</strong>'
+			);
+
+		if ( $pages_count > 0 ) {
+			$status_text = $active_status_text;
+			$details     = __( 'Serving files from 10 edge locations. Covering up to 3 pages.', 'rocket' );
+		}
+
+		if ( ! $free ) {
+			$details            = __( 'Serving files from 100+ edge locations', 'rocket' );
+			$active_status_text = __( 'RocketCDN is active on your website', 'rocket' );
+			$status_text        = $active_status_text;
+		}
+
+		// Update status inidicator details when subscription is processing.
+		if ( $is_subscription_loading ) {
+			$status_text = __( 'Creating your subscription...', 'rocket' );
+			$details     = __( 'Please wait, RocketCDN will be ready and active shortly.', 'rocket' );
+		}
+
+		$is_paused = ! (bool) $this->options->get( 'cdn' );
+
+		if ( $is_paused ) {
+			$status_text = $paused_status_text;
+			$details     = $paused_details;
+		}
+
+		return [
+			'class'                   => $is_paused ? ' wpr-cdn-status--paused' : '',
+			'is_active'               => true,
+			'status_text'             => $status_text,
+			'details'                 => $details,
+			'active_status_text'      => $active_status_text,
+			'paused_status_text'      => $paused_status_text,
+			'paused_details'          => $paused_details,
+			'is_paused'               => $is_paused,
+			'pages_count'             => $pages_count,
+			'is_subscription_loading' => $is_subscription_loading,
+			'hide_pause_btn'          => ( $is_subscription_loading || 0 === $pages_count ) && ! $is_paused,
+		];
 	}
 }
