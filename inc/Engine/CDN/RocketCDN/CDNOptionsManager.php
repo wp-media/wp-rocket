@@ -40,7 +40,7 @@ class CDNOptionsManager {
 	 *
 	 * @since 3.5
 	 *
-	 * @param bool   $clear_cache Clear website whole cache.
+	 * @param bool $clear_cache Clear website whole cache.
 	 * @return void
 	 */
 	public function enable( bool $clear_cache = true ) {
