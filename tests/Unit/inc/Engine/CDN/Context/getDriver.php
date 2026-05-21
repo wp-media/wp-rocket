@@ -11,12 +11,12 @@ use WP_Rocket\Tests\Unit\TestCase;
 
 class Test_GetDriver extends TestCase {
 	/**
-	 * @var Options_Data
+	 * @var Mockery\MockInterface|Options_Data
 	 */
 	private $options;
 
 	/**
-	 * @var SubscriptionController
+	 * @var Mockery\MockInterface|SubscriptionController
 	 */
 	private $subscription_controller;
 
