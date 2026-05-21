@@ -45,6 +45,7 @@ class APIClient {
 			'website_attached'              => false,
 			'plan_type'                     => 'free',
 			'plan_page_limit'               => 0,
+			'website_id'                    => 0,
 		];
 
 		$token = get_option( 'rocketcdn_user_token' );
@@ -101,6 +102,7 @@ class APIClient {
 			'website_attached'              => $data['website_attached'] ?? false,
 			'plan_type'                     => $data['plan_type'] ?? 'free',
 			'plan_page_limit'               => $data['plan_page_limit'] ?? 0,
+			'website_id'                    => $data['website_id'] ?? 0,
 		];
 
 		$this->set_status_transient( $final_data, DAY_IN_SECONDS );

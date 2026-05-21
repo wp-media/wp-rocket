@@ -321,6 +321,10 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 			global $wp_locale;
 			$current_price_array = explode( $wp_locale->number_format['decimal_point'], $current_price_monthly );
 
+			if ( $cta_data['limit_reached'] ) {
+				$cta_big_class .= 'wpr-rocketcdn-cta---max-limit';
+			}
+
 			$big_cta_data = [
 				'container_class'       => $cta_big_class,
 				'promotion_campaign'    => $promotion_campaign,

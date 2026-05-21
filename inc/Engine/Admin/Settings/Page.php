@@ -1595,7 +1595,6 @@ class Page extends Abstract_Render {
 						'default'           => 0,
 						'sanitize_callback' => 'sanitize_checkbox',
 						'container_class'   => [ 'wpr-isHidden' ],
-						'input_attr'        => [ 'disabled' => 1 ],
 					],
 					'cdn_cnames' => [
 						'type'            => 'cnames',

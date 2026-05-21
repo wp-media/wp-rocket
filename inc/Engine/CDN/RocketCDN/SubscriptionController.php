@@ -48,6 +48,13 @@ class SubscriptionController implements LoggerAwareInterface {
 	private $check_status_api_client;
 
 	/**
+	 * Subscription creation loading state transient name.
+	 *
+	 * @var string
+	 */
+	private $subscription_loading_transient = 'rocket_cdn_subscription_creation_in_progress';
+
+	/**
 	 * Constructor.
 	 *
 	 * @param APIClient            $api_client API Client instance.
@@ -69,7 +76,7 @@ class SubscriptionController implements LoggerAwareInterface {
 	 *
 	 * @return bool
 	 */
-	private function has_active_subscription(): bool {
+	public function has_active_subscription(): bool {
 		$subscription = $this->api_client->get_subscription_data();
 		return ! empty( $subscription['subscription_status'] ) && 'running' === $subscription['subscription_status'];
 	}
@@ -86,6 +93,8 @@ class SubscriptionController implements LoggerAwareInterface {
 			return false;
 		}
 
+		$this->start_subscription_creation_loader();
+
 		$created = $this->create_api_client->create();
 		if ( ! $created || ! $created['success'] ) {
 			$this->logger::error(
@@ -95,6 +104,9 @@ class SubscriptionController implements LoggerAwareInterface {
 					'message' => $created['data']['message'] ?? 'Unknown',
 				]
 			);
+
+			$this->stop_subscription_creation_loader();
+
 			return new WP_Error( $created['data']['code'] ?? 'rocketcdn_account_notcreated', $created['data']['message'] ?? 'Unknown' );
 		}
 
@@ -121,6 +133,8 @@ class SubscriptionController implements LoggerAwareInterface {
 					$this->options_manager->save_token( $created['data']['cdn_token'] );
 				}
 
+				$this->stop_subscription_creation_loader();
+
 				$this->options_manager->flush_subscription_cache();
 				break;
 			default:
@@ -132,6 +146,8 @@ class SubscriptionController implements LoggerAwareInterface {
 						'message' => $created['data']['message'],
 					]
 				);
+				$this->stop_subscription_creation_loader();
+
 				return false;
 		}
 
@@ -146,16 +162,19 @@ class SubscriptionController implements LoggerAwareInterface {
 	 */
 	public function check_status( string $task_id ) {
 		if ( $this->has_active_subscription() ) {
+			$this->stop_subscription_creation_loader();
 			return;
 		}
 
 		$this->check_status_api_client->set_task_id( $task_id );
 		$status = $this->check_status_api_client->check();
 		if ( ! $status ) {
+			$this->stop_subscription_creation_loader();
 			return;
 		}
 
 		if ( ! $status['success'] ) {
+			$this->stop_subscription_creation_loader();
 			$this->logger::error(
 				'RocketCDN: Failed to check creation status.',
 				$status
@@ -171,12 +190,15 @@ class SubscriptionController implements LoggerAwareInterface {
 			case 'SUCCESS':
 				$this->options_manager->enable( $status['cdn_url'], false );
 
+				$this->stop_subscription_creation_loader();
+
 				/**
 				 * Fires when rocketcdn subscription's creation is finished successfully.
 				 */
 				do_action( 'rocket_cdnfree_website_created' );
 				break;
 			default:
+				$this->stop_subscription_creation_loader();
 				$this->logger::error(
 					'RocketCDN: Received not known response code when check subscription\'s status.',
 					$status
@@ -212,5 +234,45 @@ class SubscriptionController implements LoggerAwareInterface {
 	public function is_website_attached(): bool {
 		$subscription = $this->api_client->get_subscription_data();
 		return (bool) $subscription['website_attached'];
+	}
+
+	/**
+	 * Set subscription creation process transient.
+	 * Its value can be used to track creation process time.
+	 *
+	 * @return void
+	 */
+	private function start_subscription_creation_loader() {
+		set_transient( $this->subscription_loading_transient, time(), HOUR_IN_SECONDS );
+	}
+
+	/**
+	 * Delete subscription creation process transient.
+	 *
+	 * @return void
+	 */
+	private function stop_subscription_creation_loader() {
+		delete_transient( $this->subscription_loading_transient );
+	}
+
+	/**
+	 * Check if subscription creation process is in-progress state.
+	 *
+	 * @return bool
+	 */
+	public function is_subscription_creation_loading(): bool {
+		return false !== get_transient( $this->subscription_loading_transient );
+	}
+
+	/**
+	 * Get subscription details, mainly for the rest API endpoint.
+	 *
+	 * @return array
+	 */
+	public function get_subscription() {
+		return [
+			'is_loading'              => $this->is_subscription_creation_loading(),
+			'has_active_subscription' => $this->has_active_subscription(),
+		];
 	}
 }

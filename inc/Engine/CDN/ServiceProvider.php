@@ -63,6 +63,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArguments(
 				[
 					'options',
+					'rocketcdn_subscription_controller',
 				]
 			);
 
@@ -116,6 +117,10 @@ class ServiceProvider extends AbstractServiceProvider {
 				[
 					'beacon',
 					new StringArgument( rocket_get_constant( 'WP_ROCKET_PATH', '' ) . 'views/settings/' ),
+					'cdn_context',
+					'options',
+					'rocketcdn_query',
+					'rocketcdn_subscription_controller',
 				]
 			);
 
