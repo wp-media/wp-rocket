@@ -29,11 +29,11 @@ return [
 		],
 		'expected' => 'rocketcdn_free',
 	],
-	'testShouldReturnRocketcdnFreeWhenNoActiveSubscription' => [
+	'testShouldReturnRocketcdnWhenNoActiveSubscription' => [
 		'config'   => [
 			'cdn_type'                => 'rocketcdn',
 			'has_active_subscription' => false,
 		],
-		'expected' => 'rocketcdn_free',
+		'expected' => 'rocketcdn',
 	],
 ];
