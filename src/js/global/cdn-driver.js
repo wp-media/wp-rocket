@@ -47,6 +47,7 @@
 		}
 
 		// Create polling mechanism to send a request every 10 seconds to get the subscription status and once the subscription is active, we will refresh the page for now.
+		document.dispatchEvent(new CustomEvent('rocketCDNSubscriptionLoading', {}));
 	}
 
 	/**
