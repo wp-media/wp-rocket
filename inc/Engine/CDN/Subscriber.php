@@ -436,6 +436,7 @@ class Subscriber implements Subscriber_Interface {
 
 		$current_options             = $this->options_api->get( 'settings', [] );
 		$current_options['cdn_type'] = $cdn_type;
+		$current_options['cdn'] = 1;
 
 		$this->options_api->set( 'settings', $current_options );
 	}
