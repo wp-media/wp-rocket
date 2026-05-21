@@ -400,7 +400,7 @@ class Rest extends WP_REST_Controller {
 			'count'                 => $pages_count,
 			'limit'                 => $this->get_free_page_limit(),
 			'items_html'            => $this->render_controller->get_built_in_page_list(),
-			'status_indicator_html' => $this->render_controller->get_status_indicator_html( $pages_count, true ),
+			'status_indicator_html' => $this->render_controller->get_status_indicator_html( $pages_count ),
 		];
 	}
 

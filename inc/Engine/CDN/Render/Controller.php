@@ -6,6 +6,7 @@ namespace WP_Rocket\Engine\CDN\Render;
 use WP_Rocket\Abstract_Render;
 use WP_Rocket\Engine\CDN\Context;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\CDN\RocketCDN\SubscriptionController;
 use WP_Rocket\Engine\Common\Utils;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\CDN\RocketCDN\Database\Queries\RocketCDN as RocketCDNQuery;
@@ -46,6 +47,13 @@ class Controller extends Abstract_Render {
 	private $cdn_query;
 
 	/**
+	 * RocketCDN Subscription controller instance.
+	 *
+	 * @var SubscriptionController
+	 */
+	private $subscription_controller;
+
+	/**
 	 * Page count for RocketCDN Free tier.
 	 *
 	 * @var int
@@ -55,25 +63,28 @@ class Controller extends Abstract_Render {
 	/**
 	 * Constructor.
 	 *
-	 * @param Beacon         $beacon        Beacon instance.
-	 * @param string         $template_path Path to the view templates.
-	 * @param Context        $context       Context instance.
-	 * @param Options_Data   $options  Options_Data instance.
-	 * @param RocketCDNQuery $cdn_query RocketCDNQuery instance.
+	 * @param Beacon                 $beacon        Beacon instance.
+	 * @param string                 $template_path Path to the view templates.
+	 * @param Context                $context       Context instance.
+	 * @param Options_Data           $options  Options_Data instance.
+	 * @param RocketCDNQuery         $cdn_query RocketCDNQuery instance.
+	 * @param SubscriptionController $subscription_controller RocketCDN Subscription controller instance.
 	 */
 	public function __construct(
 		Beacon $beacon,
 		string $template_path,
 		Context $context,
 		Options_Data $options,
-		RocketCDNQuery $cdn_query
+		RocketCDNQuery $cdn_query,
+		SubscriptionController $subscription_controller
 	) {
 		parent::__construct( $template_path );
 
-		$this->beacon    = $beacon;
-		$this->context   = $context;
-		$this->options   = $options;
-		$this->cdn_query = $cdn_query;
+		$this->beacon                  = $beacon;
+		$this->context                 = $context;
+		$this->options                 = $options;
+		$this->cdn_query               = $cdn_query;
+		$this->subscription_controller = $subscription_controller;
 	}
 
 	/**
@@ -326,13 +337,12 @@ class Controller extends Abstract_Render {
 	/**
 	 * Gets the status indicator HTML for the RocketCDN free section.
 	 *
-	 * @param int  $pages_count            Number of pages currently using RocketCDN.
-	 * @param bool $is_subscription_loading Whether the subscription is currently being processed.
+	 * @param int $pages_count            Number of pages currently using RocketCDN.
 	 *
 	 * @return string The rendered status indicator HTML.
 	 */
-	public function get_status_indicator_html( int $pages_count, bool $is_subscription_loading ): string {
-		$data = $this->get_status_indicator_data( $pages_count, $is_subscription_loading );
+	public function get_status_indicator_html( int $pages_count ): string {
+		$data = $this->get_status_indicator_data( $pages_count, $this->is_subscription_loading() );
 
 		return $this->render_parts_with_data( 'cdn/cdn-status-indicator', $data, true );
 	}
@@ -454,8 +464,7 @@ class Controller extends Abstract_Render {
 	 * @return bool True if the subscription is processing, false otherwise.
 	 */
 	private function is_subscription_loading(): bool {
-		// RFT Todo: Implement a check for whether the subscription is currently processing.
-		return false;
+		return $this->subscription_controller->is_subscription_creation_loading();
 	}
 
 	/**
