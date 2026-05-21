@@ -10,6 +10,19 @@
 	} );
 
 	/**
+	 * Updates the status indicator component with new HTML content.
+	 *
+	 * @param {string} html - The HTML string to replace the status indicator with.
+	 * @returns {void}
+	 */
+	function updateStatusIndicatorComponent( html ) {
+		const statusIndicator = document.querySelector( '.wpr-cdn-built-in .wpr-cdn-status' );
+		if ( statusIndicator && html ) {
+			statusIndicator.outerHTML = html;
+		}
+	}
+
+	/**
 	 * Sets the subscription loading state on the CDN UI.
 	 *
 	 * Disables the built-in CDN section, purge and exclude sections,
@@ -41,10 +54,7 @@
 		} );
 
 		// Update status indicator to show loading state.
-		const statusIndicator = document.querySelector( '.wpr-cdn-built-in .wpr-cdn-status' );
-		if ( statusIndicator && statusIndicatorHtml ) {
-			statusIndicator.outerHTML = statusIndicatorHtml;
-		}
+		updateStatusIndicatorComponent( statusIndicatorHtml );
 
 		// Create polling mechanism to send a request every 10 seconds to get the subscription status and once the subscription is active, we will refresh the page for now.
 		document.dispatchEvent(new CustomEvent('rocketCDNSubscriptionLoading', {}));
@@ -269,10 +279,10 @@
 		function submitPage() {
 			const url = input.value.trim();
 
-			if (!isValidUrl(url)) {
-				alert('Please enter a valid URL');
-				return;
-			}
+			// if (!isValidUrl(url)) {
+			// 	alert('Please enter a valid URL');
+			// 	return;
+			// }
 
 			// Prevent duplicate request while request is in flight.
 			input.disabled = true;
@@ -380,7 +390,7 @@
 					}
 				}
 
-				// Show ADD HOMEPAGE button when all pages are deleted.
+				// Show re-add HOMEPAGE button when all pages are deleted.
 				if ( 0 === response.count ) {
 					// Remove table list component.
 					document.querySelector( '.wpr-cdn-built-in .wpr-table-list' ).remove();
@@ -401,6 +411,12 @@
 					// Re-enable input and button when page limit is not reached.
 					document.querySelector( '.wpr-cdn-built-in' ).classList.remove( 'wpr-cdn-built-in--disabled' );
 				}
+
+				if ( 0 === response.count ) {
+					// Update status inidicator component
+					updateStatusIndicatorComponent( response.status_indicator_html );
+				}
+
 			} ).catch( () => {
 				button.disabled = false;
 			} );
