@@ -86,7 +86,7 @@ class Context {
 	 */
 	private function rocketcdn_resolver(): string {
 		if ( ! $this->subscription_controller->has_active_subscription() ) {
-			return self::ROCKETCDN_FREE_TYPE;
+			return self::ROCKETCDN_TYPE;
 		}
 
 		if ( $this->subscription_controller->is_paid() ) {
