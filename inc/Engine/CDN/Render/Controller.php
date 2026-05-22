@@ -128,15 +128,15 @@ class Controller extends Abstract_Render {
 		$status_indicator_data['class'] .= ' wpr-cdn-status-pronounced rocketcdn';
 
 		$sections['rocketcdn_paid_section'] = [
-			'title'               => __( 'RocketCDN', 'rocket' ),
-			'type'                => 'rocketcdn_paid',
-			'class'               => [ 'rocketcdn' ],
-			'page'                => 'page_cdn',
-			'help'                => [
+			'title'            => __( 'RocketCDN', 'rocket' ),
+			'type'             => 'rocketcdn_paid',
+			'class'            => [ 'rocketcdn' ],
+			'page'             => 'page_cdn',
+			'help'             => [
 				'id'  => $cdn_beacon,
 				'url' => $cdn_beacon['url'],
 			],
-			'status_indicator'    => $status_indicator_data,
+			'status_indicator' => $status_indicator_data,
 		];
 
 		return $sections;
@@ -183,7 +183,7 @@ class Controller extends Abstract_Render {
 			$classes[] = 'wpr-cdn-built-in--disabled';
 		}
 
-		if ( ! (bool) $this->options->get( 'cdn' ) ) {
+		if ( ! (bool) $this->options->get( 'cdn' ) || ! $this->subscription_controller->has_active_subscription() ) {
 			$classes[] = 'wpr-cdn-built-in--paused';
 		}
 
