@@ -82,8 +82,9 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->addShared( 'rocketcdn_frontend_subscriber', FrontendSubscriber::class )
 			->addArguments(
 				[
-					'options',
+					'cdn_context',
 					'rocketcdn_api_client',
+					'rocketcdn_subscription_controller',
 				]
 			);
 		// RocketCDN REST API pages controller.

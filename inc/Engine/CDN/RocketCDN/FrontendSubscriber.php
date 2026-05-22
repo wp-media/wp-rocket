@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\CDN\RocketCDN;
 
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\CDN\Context;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
@@ -16,11 +17,11 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
 class FrontendSubscriber implements Subscriber_Interface {
 
 	/**
-	 * WP Rocket Options instance.
+	 * CDN context.
 	 *
-	 * @var Options_Data
+	 * @var Context
 	 */
-	private $options;
+	private $context;
 
 	/**
 	 * RocketCDN API Client instance.
@@ -37,14 +38,23 @@ class FrontendSubscriber implements Subscriber_Interface {
 	private $rocketcdn_url = null;
 
 	/**
+	 * Subscription controller.
+	 *
+	 * @var SubscriptionController
+	 */
+	private $subscription_controller;
+
+	/**
 	 * Constructor.
 	 *
-	 * @param Options_Data $options    WP Rocket Options_Data instance.
-	 * @param APIClient    $api_client RocketCDN API Client instance.
+	 * @param Context                $context    CDN context.
+	 * @param APIClient              $api_client RocketCDN API Client instance.
+	 * @param SubscriptionController $subscription_controller Subscription controller.
 	 */
-	public function __construct( Options_Data $options, APIClient $api_client ) {
-		$this->options    = $options;
-		$this->api_client = $api_client;
+	public function __construct( Context $context, APIClient $api_client, SubscriptionController $subscription_controller ) {
+		$this->context                 = $context;
+		$this->api_client              = $api_client;
+		$this->subscription_controller = $subscription_controller;
 	}
 
 	/**
@@ -110,19 +120,17 @@ class FrontendSubscriber implements Subscriber_Interface {
 			return $this->rocketcdn_url;
 		}
 
-		if ( 'rocketcdn' !== $this->options->get( 'cdn_type' ) ) {
+		if ( ! $this->context->is_rocketcdn() ) {
 			$this->rocketcdn_url = '';
 			return '';
 		}
 
-		$subscription = $this->api_client->get_subscription_data();
-
-		if ( 'running' !== $subscription['subscription_status'] ) {
+		if ( ! $this->subscription_controller->has_active_subscription() ) {
 			$this->rocketcdn_url = '';
 			return '';
 		}
 
-		$this->rocketcdn_url = $subscription['cdn_url'];
+		$this->rocketcdn_url = $this->subscription_controller->get_rocketcdn_url();
 
 		return $this->rocketcdn_url;
 	}
