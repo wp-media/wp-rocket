@@ -4,6 +4,7 @@ namespace WP_Rocket\Engine\CDN;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CDN\Drivers\DriverInterface;
+use WP_Rocket\Engine\CDN\RocketCDN\SubscriptionController;
 use WP_Rocket\Engine\Optimization\UrlTrait;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
@@ -36,6 +37,8 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	private $cdn;
 
+	private $subscription_controller;
+
 	/**
 	 * CDN Driver (Strategy)
 	 *
@@ -51,11 +54,13 @@ class Subscriber implements Subscriber_Interface {
 	 * @param Options              $options_api     Options instance.
 	 * @param DriverInterface|null $driver   CDN Driver instance, optional.
 	 */
-	public function __construct( Options_Data $options, CDN $cdn, Options $options_api, ?DriverInterface $driver = null ) {
+	public function __construct( Options_Data $options, CDN $cdn, Options $options_api, SubscriptionController $subscription_controller, ?DriverInterface $driver = null ) {
 		$this->options     = $options;
 		$this->cdn         = $cdn;
 		$this->options_api = $options_api;
 		$this->driver      = $driver;
+		$this->subscription_controller = $subscription_controller;
+
 	}
 
 	/**
@@ -430,7 +435,13 @@ class Subscriber implements Subscriber_Interface {
 		}
 		$cdn_type = 'rocketcdn';
 		// Check if cdn was enabled in previous version and default to byocdn.
-		if ( (bool) $this->options->get( 'cdn', 0 ) ) {
+		if (
+			$this->options->get( 'cdn', 0 )
+			&&
+			! $this->subscription_controller->has_active_subscription()
+			&&
+			! empty( $this->options->get( 'cdn_cnames', [] ) )
+		) {
 			$cdn_type = 'byocdn';
 		}
 
