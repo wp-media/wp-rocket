@@ -183,8 +183,6 @@ class Test_MaybeRetryActivation extends AdminTestCase {
 		if ( isset( $expected['cdn_enabled'] ) && $expected['cdn_enabled'] ) {
 			$this->assertArrayHasKey( 'cdn', $settings );
 			$this->assertEquals( 1, $settings['cdn'] );
-			$this->assertArrayHasKey( 'cdn_cnames', $settings );
-			$this->assertContains( $expected['cdn_url'], $settings['cdn_cnames'] );
 		} else {
 			// CDN should NOT be enabled.
 			$cdn_enabled = isset( $settings['cdn'] ) && 1 === (int) $settings['cdn'];

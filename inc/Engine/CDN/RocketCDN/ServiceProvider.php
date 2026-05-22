@@ -25,6 +25,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'rocketcdn_api_client',
 		'rocketcdn_options_manager',
 		'rocketcdn_data_manager_subscriber',
+		'rocketcdn_frontend_subscriber',
 		'rocketcdn_rest',
 		'rocketcdn_rest_subscriber',
 		'rocketcdn_admin_subscriber',
@@ -75,6 +76,14 @@ class ServiceProvider extends AbstractServiceProvider {
 					'options',
 					'options_api',
 					'user_client',
+				]
+			);
+		// RocketCDN Frontend subscriber.
+		$this->getContainer()->addShared( 'rocketcdn_frontend_subscriber', FrontendSubscriber::class )
+			->addArguments(
+				[
+					'options',
+					'rocketcdn_api_client',
 				]
 			);
 		// RocketCDN REST API pages controller.
