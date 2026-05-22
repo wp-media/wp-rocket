@@ -951,6 +951,15 @@ a:focus, button:focus {
   transform: rotate(45deg);
   transition: transform 0.2s ease;
 }
+.wpr-rocketcdn-cta-toggle--max-limit {
+  display: none;
+}
+.wpr-rocketcdn-cta.wpr-rocketcdn-cta---max-limit .wpr-rocketcdn-cta-toggle--default {
+  display: none;
+}
+.wpr-rocketcdn-cta.wpr-rocketcdn-cta---max-limit .wpr-rocketcdn-cta-toggle--max-limit {
+  display: flex;
+}
 .wpr-rocketcdn-cta-separator {
   width: 100%;
   height: 1px;
@@ -4481,7 +4490,7 @@ div.wpr-tutorial-item {
 .wpr-cdn-tabs__tooltip {
   position: absolute;
   top: 9px;
-  left: 50%;
+  right: 95px;
   transform: translateX(-50%);
   padding: 8px 12px;
   background: #0c0f1f;
@@ -4738,6 +4747,9 @@ div.wpr-tutorial-item {
 }
 .wpr-cdn-add-page__homepage:hover {
   background: rgb(233.7, 237.25, 240.8);
+}
+.wpr-cdn-add-page__homepage.wpr-isHidden {
+  display: none;
 }
 .wpr-cdn-add-page__icon {
   display: inline-block;

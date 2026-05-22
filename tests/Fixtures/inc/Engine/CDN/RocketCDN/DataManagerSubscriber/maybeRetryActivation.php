@@ -25,7 +25,7 @@ return [
 			'user_role'         => 'administrator',
 			'token'             => '1234567890123456789012345678901234567890',
 			'subscription_data' => [
-				'id'                            => 12345,
+				'website_id'                            => 12345,
 				'is_active'                     => true,
 				'cdn_url'                       => 'https://example.rocketcdn.me',
 				'subscription_status'           => 'running',
@@ -42,7 +42,7 @@ return [
 			'user_role'         => 'administrator',
 			'token'             => '1234567890123456789012345678901234567890',
 			'subscription_data' => [
-				'id'                            => 12345,
+				'website_id'                            => 12345,
 				'is_active'                     => false,
 				'cdn_url'                       => '',
 				'subscription_status'           => 'cancelled',
@@ -75,7 +75,7 @@ return [
 			'user_role'          => 'administrator',
 			'token'              => '1234567890123456789012345678901234567890',
 			'subscription_data'  => [
-				'id'                            => 12345,
+				'website_id'                            => 12345,
 				'is_active'                     => false,
 				'cdn_url'                       => 'https://example.rocketcdn.me',
 				'subscription_status'           => 'running',
@@ -94,7 +94,7 @@ return [
 			'token'                             => '1234567890123456789012345678901234567890',
 			'subscription_data'                 => [
 				'success'                       => true,
-				'subscription_id'               => 12345,
+				'website_id'               => 12345,
 				'website_activated'             => false,
 				'cdn_url'                       => 'https://abcd1234.delivery.rocketcdn.me',
 				'status'                        => 'running',
@@ -106,7 +106,7 @@ return [
 			'activation_success'                => true,
 			'subscription_data_after_activation' => [
 				'success'                       => true,
-				'subscription_id'               => 12345,
+				'website_id'               => 12345,
 				'website_activated'             => true,
 				'cdn_url'                       => 'https://abcd1234.delivery.rocketcdn.me',
 				'status'                        => 'running',
@@ -127,7 +127,7 @@ return [
 			'user_role'         => 'administrator',
 			// No token saved.
 			'subscription_data' => [
-				'id'                            => 12345,
+				'website_id'                            => 12345,
 				'is_active'                     => false,
 				'cdn_url'                       => 'https://abcd1234.delivery.rocketcdn.me',
 				'subscription_status'           => 'running',

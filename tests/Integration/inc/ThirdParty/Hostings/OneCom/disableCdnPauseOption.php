@@ -19,9 +19,8 @@ class Test_DisableCdnPauseOption extends TestCase {
         $this->constants['vcaching'] = $config['onecom_performance_plugin_enabled'];
 
 		if ( $config['onecom_performance_plugin_enabled'] ) {
-			Functions\expect( 'rest_sanitize_boolean' )
-				->once()
-				->andReturn( $config['oc_cdn_enabled'] );
+			Functions\when( 'rest_sanitize_boolean' )
+				->justReturn( $config['oc_cdn_enabled'] );
 
 			Functions\when( 'get_option' )
 				->alias( function( $value ) use( $config ) {

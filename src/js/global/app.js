@@ -14,5 +14,6 @@ import '../global/ajax.js';
 import '../global/recommendations-widget.js';
 import '../global/rocketcdn.js';
 import '../global/cdn-driver.js';
+import '../global/rocketcdn-subscription-polling.js';
 import '../global/countdown.js';
 import '../global/mixpanel.js'

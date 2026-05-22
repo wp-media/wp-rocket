@@ -2,7 +2,11 @@
 namespace WP_Rocket\Engine\CDN\RocketCDN;
 
 use WP_Rocket\Abstract_Render;
+use WP_Rocket\Admin\Options;
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
+use WP_Rocket\Engine\Common\Notice\Notice;
+use WP_Rocket\Engine\Common\Utils;
 use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Engine\Tracking\Tracking;
 use WP_Rocket\Event_Management\Subscriber_Interface;
@@ -42,6 +46,13 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	private $tracking;
 
 	/**
+	 * WP Rocket options instance
+	 *
+	 * @var Options_Data
+	 */
+	private $options;
+
+	/**
 	 * Subscription controller instance.
 	 *
 	 * @var SubscriptionController
@@ -56,15 +67,25 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	 * @param UserClient             $user_client   UserClient instance.
 	 * @param Tracking               $tracking      Tracking instance.
 	 * @param string                 $template_path Path to the templates.
+	 * @param Options_Data           $options WP Rocket options instance.
 	 * @param SubscriptionController $subscription_controller Subscription controller instance.
 	 */
-	public function __construct( APIClient $api_client, Beacon $beacon, UserClient $user_client, Tracking $tracking, $template_path, SubscriptionController $subscription_controller ) {
+	public function __construct(
+		APIClient $api_client,
+		Beacon $beacon,
+		UserClient $user_client,
+		Tracking $tracking,
+		$template_path,
+		Options_Data $options,
+		SubscriptionController $subscription_controller
+	) {
 		parent::__construct( $template_path );
 
 		$this->api_client              = $api_client;
 		$this->beacon                  = $beacon;
 		$this->user_client             = $user_client;
 		$this->tracking                = $tracking;
+			$this->options             = $options;
 		$this->subscription_controller = $subscription_controller;
 	}
 
@@ -78,6 +99,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 				[ 'purge_cache_notice' ],
 				[ 'change_cname_notice' ],
 				[ 'activation_failed_notice' ],
+				[ 'maybe_display_rocketcdn_notice' ],
 			],
 			'rocket_cdn_free_before_status_indicator' => 'display_rocketcdn_cta',
 			'wp_ajax_rocketcdn_dismiss_notice'        => 'dismiss_notice',
@@ -298,6 +320,10 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 
 			global $wp_locale;
 			$current_price_array = explode( $wp_locale->number_format['decimal_point'], $current_price_monthly );
+
+			if ( $cta_data['limit_reached'] ) {
+				$cta_big_class .= 'wpr-rocketcdn-cta---max-limit';
+			}
 
 			$big_cta_data = [
 				'container_class'       => $cta_big_class,
@@ -541,5 +567,90 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 			],
 			esc_url_raw( $user_data->rocketcdn->button->url )
 		);
+	}
+
+	/**
+	 * Display RocketCDN notice on admin dashboard if flag is set and notice hasn't been dismissed
+	 *
+	 * @since 3.22
+	 *
+	 * @return void
+	 */
+	public function maybe_display_rocketcdn_notice() {
+		$previous_version = $this->options->get( 'previous_version' );
+		// @phpstan-ignore-next-line
+		$rocket_cdn_token = get_option( 'rocketcdn_user_token', '' );
+
+		// Don't show the notice if RocketCDN is already active (token exists).
+		if ( ! empty( $rocket_cdn_token ) ) {
+			return;
+		}
+
+		// Fresh install, show new install notice.
+		if ( empty( $previous_version ) ) {
+			$message = sprintf(
+			// translators: %1$s opening <strong> tag, %2$s closing </strong> tag.
+				esc_html__(
+					'%1$sNew in WP Rocket: Faster loading for your key pages%2$s',
+					'rocket'
+				),
+				'<p><strong>',
+				'</strong></p>'
+			);
+
+			$message .= sprintf(
+			// translators: %1$s opening <p> tag, %2$s closing </p> tag.
+				esc_html__(
+					'%1$sYou can now use Content Delivery, powered by RocketCDN, to speed up your homepage and 2 more pages, at no extra cost.%2$s',
+					'rocket'
+				),
+				'<p>',
+				'</p>'
+			);
+
+			$notice_info = [
+				'new_version'     => '3.22.0',
+				'dismiss_button'  => 'rocketcdn_install_notice',
+				'dismiss_message' => __( 'Dismiss', 'rocket' ),
+				'message'         => $message,
+				'action'          => 'rocketcdn_install_page',
+				'status'          => 'success',
+			];
+
+			Utils::display_update_notice( $notice_info, true );
+
+			return;
+		}
+
+		$message = sprintf(
+		// translators: %1$s opening <strong> tag, %2$s closing </strong> tag.
+			esc_html__(
+				'%1$sUse RocketCDN for free to boost up to 3 pages 🚀%2$s',
+				'rocket'
+			),
+			'<p><strong>',
+			'</strong></p>'
+		);
+
+		$message .= sprintf(
+		// translators: %1$s opening <p> tag, %2$s closing </p> tag.
+			esc_html__(
+				'%1$sAs a WP Rocket user, you can now activate RocketCDN for free on up to 3 pages. Choose your top pages and speed up their performance worldwide!%2$s',
+				'rocket'
+			),
+			'<p>',
+			'</p>'
+		);
+
+		$notice_info = [
+			'new_version'      => '3.22.0',
+			'dismiss_button'   => 'rocket_update_notice',
+			'dismiss_message'  => __( 'Check it later', 'rocket' ),
+			'message'          => $message,
+			'action'           => 'rocketcdn_upgrade_page',
+			'previous_version' => $previous_version,
+		];
+
+		Utils::display_update_notice( $notice_info, true );
 	}
 }

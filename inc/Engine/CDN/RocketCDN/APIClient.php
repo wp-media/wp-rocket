@@ -73,6 +73,7 @@ class APIClient {
 			'website_attached'              => false,
 			'plan_type'                     => 'free',
 			'plan_page_limit'               => 0,
+			'website_id'                    => 0,
 		];
 
 		$token = get_option( 'rocketcdn_user_token' );
@@ -129,6 +130,7 @@ class APIClient {
 			'website_attached'              => $data['website_attached'] ?? false,
 			'plan_type'                     => $data['plan_type'] ?? 'free',
 			'plan_page_limit'               => $data['plan_page_limit'] ?? 0,
+			'website_id'                    => $data['website_id'] ?? 0,
 		];
 
 		$this->maybe_invalidate_cache_on_status_transition( $final_data );

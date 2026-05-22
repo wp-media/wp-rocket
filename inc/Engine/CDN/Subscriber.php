@@ -91,7 +91,9 @@ class Subscriber implements Subscriber_Interface {
 			'wp_resource_hints'            => [ 'add_preconnect_cdn', 10, 2 ],
 			'rocket_font_url'              => [ 'add_cdn_url', 10, 2 ],
 			'rocket_first_install_options' => 'add_cdn_type_option',
-			'wp_rocket_upgrade'            => [ 'on_update_add_cdn_type_option', 10, 2 ],
+			'wp_rocket_upgrade'            => [
+				[ 'on_update_add_cdn_type_option', 10, 2 ],
+			],
 		];
 	}
 
@@ -468,6 +470,7 @@ class Subscriber implements Subscriber_Interface {
 
 		$current_options             = $this->options_api->get( 'settings', [] );
 		$current_options['cdn_type'] = $cdn_type;
+		$current_options['cdn']      = 1;
 
 		$this->options_api->set( 'settings', $current_options );
 	}
