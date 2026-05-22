@@ -4616,6 +4616,11 @@ div.wpr-tutorial-item {
   right: 0;
 }
 
+.wpr-cdn-status--expired .wpr-cdn-pause {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
 .wpr-cdn-pause {
   display: flex;
   align-items: center;

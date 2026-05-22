@@ -214,6 +214,11 @@ class Controller extends Abstract_Render {
 		if ( ! empty( $_SERVER['REQUEST_URI'] ) ) {
 			$referer_url = filter_var( wp_unslash( $_SERVER['REQUEST_URI'] ), FILTER_SANITIZE_URL );
 		}
+		$classes = [ 'rocketcdn' ];
+
+		if ( ! $this->subscription_controller->has_active_subscription() ) {
+			$classes[] = 'wpr-cdn-disabled';
+		}
 
 		$sections['purge_cdn_cache_section'] = [
 			// translators: %s is the CDN driver, wrapped in a span for JS targeting.
@@ -230,7 +235,7 @@ class Controller extends Abstract_Render {
 				'id'  => $cdn_beacon,
 				'url' => $cdn_beacon['url'],
 			],
-			'class'       => [ 'rocketcdn' ],
+			'class'       => $classes,
 		];
 
 		if ( $this->is_subscription_loading() ) {
@@ -313,6 +318,10 @@ class Controller extends Abstract_Render {
 			'class'             => [ 'wpr-cdn-exclusions' ],
 			'sanitize_callback' => 'sanitize_textarea',
 		];
+
+		if ( ! $this->subscription_controller->has_active_subscription() ) {
+			$exclusion_fields['cdn_reject_files']['class'][] = 'wpr-cdn-disabled';
+		}
 
 		// Disable exclusions fields when subscription is processing.
 		foreach ( array_keys( $exclusion_fields ) as $field ) {
@@ -416,6 +425,7 @@ class Controller extends Abstract_Render {
 			'disable_other_cdn' => Context::ROCKETCDN_PAID_TYPE === $this->context->get_driver(),
 			'cdn_type'          => $this->options->get( 'cdn_type', Context::ROCKETCDN_TYPE ),
 			'display_tabs'      => ! $this->is_cdn_type_filtered(),
+			'active'            => $this->subscription_controller->has_active_subscription(),
 		];
 
 		echo $this->generate( 'partials/cdn/cdn-driver-tabs', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
@@ -560,15 +570,26 @@ class Controller extends Abstract_Render {
 			$details     = __( 'Please wait, RocketCDN will be ready and active shortly.', 'rocket' );
 		}
 
-		$is_paused = ! (bool) $this->options->get( 'cdn' );
+		$is_paused = ! (bool) $this->options->get( 'cdn' ) || ! $this->subscription_controller->has_active_subscription();
+
+		if ( ! $this->subscription_controller->has_active_subscription() ) {
+			$paused_details = __( 'RocketCDN is currently paused because your WPRocket licence has expired.', 'rocket' );
+		}
+
+		$class = '';
+
+		if ( $is_paused ) {
+			$class = ' wpr-cdn-status--paused';
+		}
 
 		if ( $is_paused ) {
 			$status_text = $paused_status_text;
 			$details     = $paused_details;
+			$class      .= ' wpr-cdn-status--expired';
 		}
 
 		return [
-			'class'                   => $is_paused ? ' wpr-cdn-status--paused' : '',
+			'class'                   => $class,
 			'is_active'               => true,
 			'status_text'             => $status_text,
 			'details'                 => $details,

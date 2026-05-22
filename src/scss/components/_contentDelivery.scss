@@ -261,6 +261,13 @@
 	}
 }
 
+.wpr-cdn-status--expired {
+	.wpr-cdn-pause {
+		opacity: 0.5;
+		pointer-events: none;
+	}
+}
+
 // Pause CDN button
 .wpr-cdn-pause {
 	display: flex;
