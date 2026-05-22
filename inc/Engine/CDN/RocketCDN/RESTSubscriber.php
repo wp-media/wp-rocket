@@ -226,22 +226,6 @@ class RESTSubscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Create rocketcdn free account.
-	 *
-	 * @param bool $can_save_page Can save page or not.
-	 * @return bool
-	 */
-	public function maybe_create_rocketcdn_free( bool $can_save_page ) {
-		$created = $this->subscription_controller->create_subscription();
-
-		if ( is_wp_error( $created ) ) {
-			return false;
-		}
-
-		return $can_save_page;
-	}
-
-	/**
 	 * Check subscription creation status.
 	 *
 	 * @param string $task_id Task ID to check.

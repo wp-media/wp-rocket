@@ -266,6 +266,11 @@ class Rest extends WP_REST_Controller {
 			$page_title = $this->get_page_title( $payload['message'] );
 		}
 
+		$created = $this->subscription_controller->create_subscription();
+		if ( is_wp_error( $created ) ) {
+			return $created;
+		}
+
 		/**
 		 * WP Rocket Metabox fields on post edit page.
 		 *
