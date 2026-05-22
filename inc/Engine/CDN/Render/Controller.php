@@ -10,6 +10,7 @@ use WP_Rocket\Engine\CDN\RocketCDN\SubscriptionController;
 use WP_Rocket\Engine\Common\Utils;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\CDN\RocketCDN\Database\Queries\RocketCDN as RocketCDNQuery;
+use WP_Rocket\Engine\License\API\User;
 
 /**
  * Handles business logic for CDN driver sections, exclusion fields,
@@ -61,6 +62,13 @@ class Controller extends Abstract_Render {
 	private $page_count = 0;
 
 	/**
+	 * User instance
+	 *
+	 * @var User
+	 */
+	private $user;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param Beacon                 $beacon        Beacon instance.
@@ -69,6 +77,7 @@ class Controller extends Abstract_Render {
 	 * @param Options_Data           $options  Options_Data instance.
 	 * @param RocketCDNQuery         $cdn_query RocketCDNQuery instance.
 	 * @param SubscriptionController $subscription_controller RocketCDN Subscription controller instance.
+	 * @param User                   $user          User instance.
 	 */
 	public function __construct(
 		Beacon $beacon,
@@ -76,7 +85,8 @@ class Controller extends Abstract_Render {
 		Context $context,
 		Options_Data $options,
 		RocketCDNQuery $cdn_query,
-		SubscriptionController $subscription_controller
+		SubscriptionController $subscription_controller,
+		User $user
 	) {
 		parent::__construct( $template_path );
 
@@ -85,6 +95,7 @@ class Controller extends Abstract_Render {
 		$this->options                 = $options;
 		$this->cdn_query               = $cdn_query;
 		$this->subscription_controller = $subscription_controller;
+		$this->user                    = $user;
 	}
 
 	/**
@@ -117,15 +128,17 @@ class Controller extends Abstract_Render {
 		$status_indicator_data['class'] .= ' wpr-cdn-status-pronounced rocketcdn';
 
 		$sections['rocketcdn_paid_section'] = [
-			'title'            => __( 'RocketCDN', 'rocket' ),
-			'type'             => 'rocketcdn_paid',
-			'class'            => [ 'rocketcdn' ],
-			'page'             => 'page_cdn',
-			'help'             => [
+			'title'               => __( 'RocketCDN', 'rocket' ),
+			'type'                => 'rocketcdn_paid',
+			'class'               => [ 'rocketcdn' ],
+			'page'                => 'page_cdn',
+			'help'                => [
 				'id'  => $cdn_beacon,
 				'url' => $cdn_beacon['url'],
 			],
-			'status_indicator' => $status_indicator_data,
+			'status_indicator'    => $status_indicator_data,
+			'active_subscription' => $this->subscription_controller->has_active_subscription(),
+			'renewal_url'         => $this->user->get_renewal_url(),
 		];
 
 		return $sections;
@@ -179,21 +192,23 @@ class Controller extends Abstract_Render {
 		$cdn_beacon = $this->beacon->get_suggest( 'cdn' );
 
 		$sections['rocketcdn_free_section'] = [
-			'title'            => __( 'RocketCDN', 'rocket' ),
-			'type'             => 'rocketcdn_free',
-			'class'            => $classes,
-			'page'             => 'page_cdn',
-			'help'             => [
+			'title'               => __( 'RocketCDN', 'rocket' ),
+			'type'                => 'rocketcdn_free',
+			'class'               => $classes,
+			'page'                => 'page_cdn',
+			'help'                => [
 				'id'  => $cdn_beacon,
 				'url' => $cdn_beacon['url'],
 			],
-			'status_indicator' => $this->get_status_indicator_data( $this->page_count, $is_subscription_loading ),
-			'cta_data'         => [
+			'status_indicator'    => $this->get_status_indicator_data( $this->page_count, $is_subscription_loading ),
+			'cta_data'            => [
 				'cta_heading'           => $cta_heading,
 				'cta_heading_max_limit' => $cta_heading_max_limit,
 				'cta_description'       => $cta_description,
 				'limit_reached'         => $limit_reached,
 			],
+			'active_subscription' => $this->subscription_controller->has_active_subscription(),
+			'renewal_url'         => $this->user->get_renewal_url(),
 		];
 
 		return $sections;
@@ -425,7 +440,6 @@ class Controller extends Abstract_Render {
 			'disable_other_cdn' => Context::ROCKETCDN_PAID_TYPE === $this->context->get_driver(),
 			'cdn_type'          => $this->options->get( 'cdn_type', Context::ROCKETCDN_TYPE ),
 			'display_tabs'      => ! $this->is_cdn_type_filtered(),
-			'active'            => $this->subscription_controller->has_active_subscription(),
 		];
 
 		echo $this->generate( 'partials/cdn/cdn-driver-tabs', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.

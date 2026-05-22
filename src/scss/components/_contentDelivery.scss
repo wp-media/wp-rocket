@@ -267,6 +267,24 @@
 		pointer-events: none;
 	}
 }
+.wpr-cdn-expired{
+	&__notice{
+		color: #0C0F1F;
+		background: #FFF7E1;
+		border-left: 4px solid #FED055;
+		font-size: 14px;;
+		margin-bottom: 15px;
+		&-title{
+			font-weight: 600;
+			font-size: 14px;
+		}
+		.wpr-notice-close{
+			font-size: 14px;
+			color: #0C0F1F;
+			font-weight: 600;
+		}
+	}
+}
 
 // Pause CDN button
 .wpr-cdn-pause {

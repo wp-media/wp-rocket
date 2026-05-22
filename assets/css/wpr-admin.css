@@ -4621,6 +4621,22 @@ div.wpr-tutorial-item {
   pointer-events: none;
 }
 
+.wpr-cdn-expired__notice {
+  color: #0C0F1F;
+  background: #FFF7E1;
+  border-left: 4px solid #FED055;
+  font-size: 14px;
+}
+.wpr-cdn-expired__notice-title {
+  font-weight: 600;
+  font-size: 14px;
+}
+.wpr-cdn-expired__notice .wpr-notice-close {
+  font-size: 14px;
+  color: #0C0F1F;
+  font-weight: 600;
+}
+
 .wpr-cdn-pause {
   display: flex;
   align-items: center;
