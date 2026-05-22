@@ -137,8 +137,6 @@ class Controller extends Abstract_Render {
 				'url' => $cdn_beacon['url'],
 			],
 			'status_indicator'    => $status_indicator_data,
-			'active_subscription' => $this->subscription_controller->has_active_subscription(),
-			'renewal_url'         => $this->user->get_renewal_url(),
 		];
 
 		return $sections;
