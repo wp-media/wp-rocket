@@ -56,7 +56,9 @@ class RESTSubscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * Return an array of events that this subscriber wants to listen to.
+	 *
+	 * @return array
 	 */
 	public static function get_subscribed_events() {
 		return [
@@ -104,6 +106,7 @@ class RESTSubscriber implements Subscriber_Interface {
 						'required'          => true,
 						'validate_callback' => [ $this, 'validate_key' ],
 					],
+					// RocketCDN CNAME is no longer required as it's now changed on the filter level not in the settings option.
 					'url'   => [
 						'required'          => true,
 						'validate_callback' => function ( $param ) {
@@ -160,9 +163,7 @@ class RESTSubscriber implements Subscriber_Interface {
 	 * @return \WP_REST_Response|\WP_Error
 	 */
 	public function enable( \WP_REST_Request $request ) {
-		$params = $request->get_body_params();
-
-		$this->cdn_options->enable( $params['url'] );
+		$this->cdn_options->enable();
 
 		$response = [
 			'code'    => 'success',

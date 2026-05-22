@@ -188,7 +188,7 @@ class SubscriptionController implements LoggerAwareInterface {
 				$this->queue->schedule_create_status_job( $task_id );
 				break;
 			case 'SUCCESS':
-				$this->options_manager->enable( $status['cdn_url'], false );
+				$this->options_manager->enable( false );
 
 				$this->stop_subscription_creation_loader();
 

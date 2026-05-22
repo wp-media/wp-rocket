@@ -70,7 +70,9 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * Return an array of events that this subscriber wants to listen to.
+	 *
+	 * @return array
 	 */
 	public static function get_subscribed_events() {
 		return [
@@ -172,7 +174,7 @@ class DataManagerSubscriber implements Subscriber_Interface {
 
 		// Save token and enable CDN.
 		$this->cdn_options->save_token( $token );
-		$this->cdn_options->enable( $cdn_url );
+		$this->cdn_options->enable();
 
 		// Schedule subscription check.
 		$subscription = $this->api_client->get_subscription_data();
@@ -228,7 +230,7 @@ class DataManagerSubscriber implements Subscriber_Interface {
 			wp_send_json_error( $data );
 		}
 
-		$this->cdn_options->enable( esc_url_raw( $cdn_url ) );
+		$this->cdn_options->enable();
 
 		$subscription = $this->api_client->get_subscription_data();
 
@@ -402,7 +404,7 @@ class DataManagerSubscriber implements Subscriber_Interface {
 		}
 
 		update_option( 'rocketcdn_user_token', $token );
-		$this->cdn_options->enable( esc_url_raw( $cdn_url ) );
+		$this->cdn_options->enable();
 
 		$data['message'] = 'token_updated_successfully';
 		wp_send_json_success( $data );
@@ -491,7 +493,7 @@ class DataManagerSubscriber implements Subscriber_Interface {
 		}
 
 		// Enable CDN and schedule check.
-		$this->cdn_options->enable( $subscription['cdn_url'] );
+		$this->cdn_options->enable();
 		$this->schedule_subscription_check( $subscription );
 	}
 

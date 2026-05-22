@@ -316,6 +316,7 @@ class Plugin {
 			'cdn_subscriber',
 			'cdn_admin_subscriber',
 			'cdn_render_subscriber',
+			'rocketcdn_frontend_subscriber',
 			'critical_css_subscriber',
 			'sucuri_subscriber',
 			'common_extractcss_subscriber',
