@@ -25,7 +25,12 @@ class Subscriber implements Subscriber_Interface {
 	 * @return string[]
 	 */
 	public function add_meta_box( array $fields ) {
-		$fields['cdn'] = __( 'CDN', 'rocket' );
+		/*
+		 * Hiding the CDN option in the metabox for now.
+		 * We will revisit this when handling CDN status for different pages/posts.
+		 *
+		 * $fields['cdn'] = __( 'CDN', 'rocket' );
+		 */
 
 		return $fields;
 	}
