@@ -37,6 +37,31 @@ return [
 		'rocketcdn_data' => [
 			'rocketcdn_status'  => [
 				'subscription_status' => 'running',
+				'plan_type'           => 'paid',
+			],
+			'rocketcdn_pricing' => [],
+		],
+
+		'expected' => [
+			'unit'        => [
+				'cta-small' => [],
+				'cta-big'   => [],
+			],
+			'integration' => [
+				'not_expected' => [
+					'id="wpr-rocketcdn-cta"',
+				],
+			],
+		],
+
+		'config' => [],
+	],
+
+	'testShouldNotDisplayNoticeWhenPlanIsPaid' => [
+		'rocketcdn_data' => [
+			'rocketcdn_status'  => [
+				'subscription_status' => 'running',
+				'plan_type'           => 'paid',
 			],
 			'rocketcdn_pricing' => [],
 		],
