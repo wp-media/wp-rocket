@@ -9,6 +9,7 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CDN\CDN;
 use WP_Rocket\Engine\CDN\Context;
 use WP_Rocket\Engine\CDN\Drivers\DriverInterface;
+use WP_Rocket\Engine\CDN\RocketCDN\SubscriptionController;
 use WP_Rocket\Engine\CDN\Subscriber;
 use WP_Rocket\Tests\Unit\TestCase;
 
@@ -48,6 +49,7 @@ class Test_Rewrite extends TestCase {
 			$this->options,
 			$this->cdn,
 			Mockery::mock( Options::class ),
+			Mockery::mock( SubscriptionController::class ),
 			$driver,
 			$context
 		);

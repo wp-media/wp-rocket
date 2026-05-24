@@ -106,6 +106,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'options',
 					'cdn',
 					'options_api',
+					'rocketcdn_subscription_controller',
 					'cdn_driver',
 					'cdn_context',
 				]

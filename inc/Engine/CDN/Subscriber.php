@@ -4,6 +4,7 @@ namespace WP_Rocket\Engine\CDN;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CDN\Drivers\DriverInterface;
+use WP_Rocket\Engine\CDN\RocketCDN\SubscriptionController;
 use WP_Rocket\Engine\Optimization\UrlTrait;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
@@ -37,6 +38,13 @@ class Subscriber implements Subscriber_Interface {
 	private $cdn;
 
 	/**
+	 * Subscription controller instance.
+	 *
+	 * @var SubscriptionController
+	 */
+	private $subscription_controller;
+
+	/**
 	 * CDN Driver (Strategy)
 	 *
 	 * @var DriverInterface|null
@@ -53,18 +61,27 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Constructor
 	 *
-	 * @param Options_Data         $options WP Rocket Options_Data instance.
-	 * @param CDN                  $cdn     CDN instance.
-	 * @param Options              $options_api     Options instance.
-	 * @param DriverInterface|null $driver   CDN Driver instance, optional.
-	 * @param Context|null         $context  CDN context instance, optional.
+	 * @param Options_Data           $options WP Rocket Options_Data instance.
+	 * @param CDN                    $cdn     CDN instance.
+	 * @param Options                $options_api     Options instance.
+	 * @param SubscriptionController $subscription_controller Subscription controller instance.
+	 * @param DriverInterface|null   $driver   CDN Driver instance, optional.
+	 * @param Context|null           $context  CDN context instance, optional.
 	 */
-	public function __construct( Options_Data $options, CDN $cdn, Options $options_api, ?DriverInterface $driver = null, ?Context $context = null ) {
-		$this->options     = $options;
-		$this->cdn         = $cdn;
-		$this->options_api = $options_api;
-		$this->driver      = $driver;
-		$this->context     = $context;
+	public function __construct(
+		Options_Data $options,
+		CDN $cdn,
+		Options $options_api,
+		SubscriptionController $subscription_controller,
+		?DriverInterface $driver = null,
+		?Context $context = null
+	) {
+		$this->options                 = $options;
+		$this->cdn                     = $cdn;
+		$this->options_api             = $options_api;
+		$this->driver                  = $driver;
+		$this->subscription_controller = $subscription_controller;
+		$this->context                 = $context;
 	}
 
 	/**
@@ -464,7 +481,13 @@ class Subscriber implements Subscriber_Interface {
 		}
 		$cdn_type = 'rocketcdn';
 		// Check if cdn was enabled in previous version and default to byocdn.
-		if ( (bool) $this->options->get( 'cdn', 0 ) ) {
+		if (
+			$this->options->get( 'cdn', 0 )
+			&&
+			! $this->subscription_controller->has_active_subscription()
+			&&
+			! empty( $this->options->get( 'cdn_cnames', [] ) )
+		) {
 			$cdn_type = 'byocdn';
 		}
 
