@@ -55,12 +55,11 @@ class Subscriber implements Subscriber_Interface {
 	 * @param DriverInterface|null $driver   CDN Driver instance, optional.
 	 */
 	public function __construct( Options_Data $options, CDN $cdn, Options $options_api, SubscriptionController $subscription_controller, ?DriverInterface $driver = null ) {
-		$this->options     = $options;
-		$this->cdn         = $cdn;
-		$this->options_api = $options_api;
-		$this->driver      = $driver;
+		$this->options                 = $options;
+		$this->cdn                     = $cdn;
+		$this->options_api             = $options_api;
+		$this->driver                  = $driver;
 		$this->subscription_controller = $subscription_controller;
-
 	}
 
 	/**

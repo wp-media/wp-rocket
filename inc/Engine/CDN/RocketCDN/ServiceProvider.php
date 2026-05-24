@@ -83,7 +83,6 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArguments(
 				[
 					'cdn_context',
-					'rocketcdn_api_client',
 					'rocketcdn_subscription_controller',
 				]
 			);

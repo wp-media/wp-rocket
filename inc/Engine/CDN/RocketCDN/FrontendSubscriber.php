@@ -24,13 +24,6 @@ class FrontendSubscriber implements Subscriber_Interface {
 	private $context;
 
 	/**
-	 * RocketCDN API Client instance.
-	 *
-	 * @var APIClient
-	 */
-	private $api_client;
-
-	/**
 	 * Cached RocketCDN URL to avoid multiple transient calls hits per request.
 	 *
 	 * @var string|null
@@ -48,12 +41,10 @@ class FrontendSubscriber implements Subscriber_Interface {
 	 * Constructor.
 	 *
 	 * @param Context                $context    CDN context.
-	 * @param APIClient              $api_client RocketCDN API Client instance.
 	 * @param SubscriptionController $subscription_controller Subscription controller.
 	 */
-	public function __construct( Context $context, APIClient $api_client, SubscriptionController $subscription_controller ) {
+	public function __construct( Context $context, SubscriptionController $subscription_controller ) {
 		$this->context                 = $context;
-		$this->api_client              = $api_client;
 		$this->subscription_controller = $subscription_controller;
 	}
 

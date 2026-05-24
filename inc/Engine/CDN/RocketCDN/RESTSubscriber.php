@@ -67,7 +67,6 @@ class RESTSubscriber implements Subscriber_Interface {
 				[ 'register_disable_route' ],
 				[ 'register_routes' ],
 			],
-			'rocket_cdnfree_can_add_page'          => 'maybe_create_rocketcdn_free',
 			'rocket_cdnfree_website_create_status' => 'check_status',
 		];
 	}
