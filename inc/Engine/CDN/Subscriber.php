@@ -37,6 +37,11 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	private $cdn;
 
+	/**
+	 * Subscription controller instance.
+	 *
+	 * @var SubscriptionController
+	 */
 	private $subscription_controller;
 
 	/**
@@ -49,10 +54,11 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Constructor
 	 *
-	 * @param Options_Data         $options WP Rocket Options_Data instance.
-	 * @param CDN                  $cdn     CDN instance.
-	 * @param Options              $options_api     Options instance.
-	 * @param DriverInterface|null $driver   CDN Driver instance, optional.
+	 * @param Options_Data           $options WP Rocket Options_Data instance.
+	 * @param CDN                    $cdn     CDN instance.
+	 * @param Options                $options_api     Options instance.
+	 * @param SubscriptionController $subscription_controller Subscription controller instance.
+	 * @param DriverInterface|null   $driver   CDN Driver instance, optional.
 	 */
 	public function __construct( Options_Data $options, CDN $cdn, Options $options_api, SubscriptionController $subscription_controller, ?DriverInterface $driver = null ) {
 		$this->options                 = $options;
