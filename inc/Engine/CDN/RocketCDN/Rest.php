@@ -228,6 +228,15 @@ class Rest extends WP_REST_Controller {
 	public function add_page( WP_REST_Request $request ) {
 		$url = $request->get_param( 'url' );
 
+		// Check for local environment.
+		if ( 'local' === wp_get_environment_type() ) {
+			return new WP_Error(
+				'rocketcdn_on_local_environment',
+				__( 'Addition of pages to RocketCDN is disabled for local environment.', 'rocket' ),
+				[ 'status' => 400 ]
+			);
+		}
+
 		if ( $this->is_limit_reached() ) {
 			return new WP_Error(
 				'rocketcdn_page_limit_reached',
@@ -240,7 +249,7 @@ class Rest extends WP_REST_Controller {
 			);
 		}
 
-		$payload = $this->get_page_url_validation_payload( $url );
+		$payload = $this->get_url_validation_payload( $url );
 
 		if ( $payload['error'] ) {
 			return new WP_Error(
@@ -248,6 +257,12 @@ class Rest extends WP_REST_Controller {
 				$payload['message'],
 				[ 'status' => 400 ]
 			);
+		}
+
+		$page_title = __( 'Homepage', 'rocket' );
+
+		if ( ! Utils::is_home( $url ) ) {
+			$page_title = $this->get_page_title( $payload['message'] );
 		}
 
 		$existing = $this->query->get_by_url( $url );
@@ -258,12 +273,6 @@ class Rest extends WP_REST_Controller {
 				__( 'This page is already registered for RocketCDN delivery.', 'rocket' ),
 				[ 'status' => 409 ]
 			);
-		}
-
-		if ( Utils::is_home( $url ) ) {
-			$page_title = __( 'Homepage', 'rocket' );
-		} else {
-			$page_title = $this->get_page_title( $payload['message'] );
 		}
 
 		$created = $this->subscription_controller->create_subscription();
@@ -479,5 +488,34 @@ class Rest extends WP_REST_Controller {
 			$subscription,
 			200
 		);
+	}
+
+	/**
+	 * Get URL validation payload.
+	 *
+	 * @param string $url URL to validate.
+	 *
+	 * @return array
+	 */
+	private function get_url_validation_payload( string $url ): array {
+		$payload = $this->get_page_url_validation_payload( $url );
+
+		// Check for same host.
+		$url_host  = wp_parse_url( $url );
+		$site_host = wp_parse_url( home_url() );
+
+		// Check that URL has a valid host component.
+		if ( ! isset( $url_host['host'] ) ) {
+			$payload['error']   = true;
+			$payload['message'] = __( 'Invalid URL provided.', 'rocket' );
+		}
+
+		// Check that URL host matches site host.
+		if ( $url_host['host'] !== $site_host['host'] ) {
+			$payload['error']   = true;
+			$payload['message'] = __( 'URL must be on the same domain as the site.', 'rocket' );
+		}
+
+		return $payload;
 	}
 }
