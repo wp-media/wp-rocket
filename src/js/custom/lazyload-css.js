@@ -63,26 +63,17 @@ function rocket_css_lazyload_launch() {
 
 	lazyload();
 
-	const observe_DOM = (function(){
-		const MutationObserver = window.MutationObserver;
+	function observe_DOM( obj, callback ) {
+		if( !obj || obj.nodeType !== 1 ) return;
 
-		return function( obj, callback ){
-			if( !obj || obj.nodeType !== 1 ) return;
+		// define a new observer
+		const mutationObserver = new MutationObserver(callback);
 
-			// define a new observer
-			const mutationObserver = new MutationObserver(callback);
+		// have the observer observe for changes in children
+		mutationObserver.observe( obj, { attributes: true, childList:true, subtree:true });
+	}
 
-			// have the observer observe for changes in children
-			mutationObserver.observe( obj, { attributes: true, childList:true, subtree:true })
-			return mutationObserver
-
-		}
-
-	})()
-
-	const body = document.querySelector('body');
-
-	observe_DOM(body, lazyload)
+	observe_DOM(document.body, lazyload);
 }
 
 rocket_css_lazyload_launch();
