@@ -37,14 +37,15 @@ class Test_GetDriver extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpectedDriver( array $config, string $expected ) {
+		$cdn_type = $config['cdn_type'] ?? '';
 		$this->options->shouldReceive( 'get' )
 			->with( 'cdn_type', 'rocketcdn' )
-			->andReturn( $config['cdn_type'] );
+			->andReturn( $cdn_type );
 
-		if ( 'rocketcdn' === $config['cdn_type'] ) {
-			$this->subscription_controller->shouldReceive( 'has_active_subscription' )
-				->andReturn( $config['has_active_subscription'] ?? false );
+		$this->subscription_controller->shouldReceive( 'has_active_subscription' )
+			->andReturn( $config['has_active_subscription'] ?? false );
 
+		if ( 'rocketcdn' === $cdn_type ) {
 			if ( ! empty( $config['has_active_subscription'] ) ) {
 				$this->subscription_controller->shouldReceive( 'is_paid' )
 					->andReturn( $config['is_paid'] ?? false );
