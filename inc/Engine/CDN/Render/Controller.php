@@ -150,14 +150,14 @@ class Controller extends Abstract_Render {
 		$is_subscription_loading = $this->is_subscription_loading();
 		$this->page_count        = count( $this->get_items() );
 		$cta_heading             = sprintf(
-					// translators: %1$s = opening strong tag, %2$s = closing strong tag.
-					__( '%1$sWant full-site Content Delivery coverage?%2$s Extend RocketCDN to all your pages with unlimited bandwidth.', 'rocket' ),
-					'<strong>',
-					'</strong>'
-				);
+		// translators: %1$s = opening strong tag, %2$s = closing strong tag.
+			__( '%1$sWant full-site Content Delivery coverage?%2$s Extend RocketCDN to all your pages with unlimited bandwidth.', 'rocket' ),
+			'<strong>',
+			'</strong>'
+		);
 
 		$cta_heading_max_limit = sprintf(
-			// translators: %1$s = opening strong tag, %2$s = number of pages allowed, %3$s = closing strong tag.
+		// translators: %1$s = opening strong tag, %2$s = number of pages allowed, %3$s = closing strong tag.
 			__( '%1$sNice work! You’re using RocketCDN on %2$s key pages!%3$s ', 'rocket' ),
 			'<strong>',
 			$this->context->get_free_page_limit(),
@@ -173,7 +173,7 @@ class Controller extends Abstract_Render {
 			$classes[] = 'wpr-cdn-built-in--disabled';
 		}
 
-		if ( ! (bool) $this->options->get( 'cdn' ) || ! $this->subscription_controller->has_active_subscription() ) {
+		if ( $this->is_cdn_paused() ) {
 			$classes[] = 'wpr-cdn-built-in--paused';
 		}
 
@@ -195,7 +195,7 @@ class Controller extends Abstract_Render {
 				'cta_description'       => $cta_description,
 				'limit_reached'         => $limit_reached,
 			],
-			'active_subscription' => $this->subscription_controller->has_active_subscription(),
+			'active_subscription' => ! $this->is_cdn_expired(),
 			'renewal_url'         => $this->user->get_renewal_url(),
 		];
 
@@ -219,7 +219,7 @@ class Controller extends Abstract_Render {
 		}
 		$classes = [ 'rocketcdn' ];
 
-		if ( ! $this->subscription_controller->has_active_subscription() ) {
+		if ( $this->is_cdn_expired() ) {
 			$classes[] = 'wpr-cdn-disabled';
 		}
 
@@ -228,7 +228,7 @@ class Controller extends Abstract_Render {
 			'title'       => sprintf( __( 'Purge %s Cache', 'rocket' ), '<span class="rocketcdn-driver-js">RocketCDN</span>' ),
 			'type'        => 'purge_cdn_cache_section',
 			'description' => sprintf(
-				// translators: %s = CDN driver, wrapped in a span for JS targeting.
+			// translators: %s = CDN driver, wrapped in a span for JS targeting.
 				__( 'Purges %s cached resources for your website.', 'rocket' ),
 				'<span class="rocketcdn-driver-js">RocketCDN</span>'
 			),
@@ -505,7 +505,7 @@ class Controller extends Abstract_Render {
 		 * @since 3.22
 		 *
 		 * @param mixed $cdn_type Filtered CDN type.
-		*/
+		 */
 		$cdn_type = wpm_apply_filters_typed( 'string|null', 'pre_get_rocket_option_cdn_type', null, '' );
 
 		if ( null !== $cdn_type && in_array( $cdn_type, $allowed_cdn_types, true ) ) {
@@ -549,11 +549,11 @@ class Controller extends Abstract_Render {
 
 		$status_text = '';
 		$details     = sprintf(
-				// translators: %1$s = opening <strong> tag, %2$s = closing </strong> tag.
-				__( '%1$sStart with your homepage and add up to 2 more key pages.%2$s Includes unlimited traffic across 10 edge locations.', 'rocket' ),
-				'<strong>',
-				'</strong>'
-			);
+		// translators: %1$s = opening <strong> tag, %2$s = closing </strong> tag.
+			__( '%1$sStart with your homepage and add up to 2 more key pages.%2$s Includes unlimited traffic across 10 edge locations.', 'rocket' ),
+			'<strong>',
+			'</strong>'
+		);
 
 		if ( $pages_count > 0 ) {
 			$status_text = $active_status_text;
@@ -572,22 +572,19 @@ class Controller extends Abstract_Render {
 			$details     = __( 'Please wait, RocketCDN will be ready and active shortly.', 'rocket' );
 		}
 
-		$is_paused = ! (bool) $this->options->get( 'cdn' ) || ! $this->subscription_controller->has_active_subscription();
-
-		if ( ! $this->subscription_controller->has_active_subscription() ) {
-			$paused_details = __( 'RocketCDN is currently paused because your WPRocket licence has expired.', 'rocket' );
-		}
+		$is_paused = $this->is_cdn_paused();
 
 		$class = '';
+
+		if ( get_transient( 'rocketcdn_status' ) && ! $this->subscription_controller->has_active_subscription() ) {
+			$class         .= ' wpr-cdn-status--expired';
+			$paused_details = __( 'RocketCDN is currently paused because your WPRocket licence has expired.', 'rocket' );
+		}
 
 		if ( $is_paused ) {
 			$status_text = $paused_status_text;
 			$details     = $paused_details;
 			$class      .= ' wpr-cdn-status--paused';
-		}
-
-		if ( ! $this->subscription_controller->has_active_subscription() ) {
-			$class .= ' wpr-cdn-status--expired';
 		}
 
 		return [
@@ -603,5 +600,27 @@ class Controller extends Abstract_Render {
 			'is_subscription_loading' => $is_subscription_loading,
 			'hide_pause_btn'          => ( $is_subscription_loading || 0 === $pages_count ) && ! $is_paused,
 		];
+	}
+
+	/**
+	 * Check if cdn should pause or not.
+	 *
+	 * @return bool
+	 */
+	private function is_cdn_paused(): bool {
+		$transient = get_transient( 'rocketcdn_status' );
+
+		return false !== $transient
+			? ! $this->subscription_controller->has_active_subscription()
+			: ! (bool) $this->options->get( 'cdn' );
+	}
+
+	/**
+	 * Check if cdn has expired
+	 *
+	 * @return bool
+	 */
+	private function is_cdn_expired(): bool {
+		return get_transient( 'rocketcdn_status' ) && ! $this->subscription_controller->has_active_subscription();
 	}
 }
