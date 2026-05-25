@@ -4,6 +4,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\CDN\Subscriber;
 
 use Mockery;
 use WP_Rocket\Admin\Options;
+use WP_Rocket\Engine\CDN\RocketCDN\Database\Queries\RocketCDN;
 use WP_Rocket\Engine\CDN\RocketCDN\SubscriptionController;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
@@ -35,7 +36,8 @@ class Test_UpgradeCDN extends TestCase {
 			$this->options,
 			$this->cdn,
 			$this->options_api,
-			$this->subscription_controller
+			$this->subscription_controller,
+			$this->createMock( RocketCDN::class )
 		);
     }
 

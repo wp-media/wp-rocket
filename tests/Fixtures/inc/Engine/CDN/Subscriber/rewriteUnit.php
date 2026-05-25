@@ -18,6 +18,7 @@ return [
 			'subscription_eligible'  => false,
 			'driver_returns'         => true,
 			'html'                   => '<img src="https://example.org/wp-content/uploads/image.jpg">',
+			'rewritten_html'         => '<img src="https://example.org/wp-content/uploads/image.jpg">',
 		],
 		'expected' => [
 			'html' => '<img src="https://example.org/wp-content/uploads/image.jpg">',

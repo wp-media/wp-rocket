@@ -360,7 +360,7 @@ class DataManagerSubscriber implements Subscriber_Interface {
 		}
 
 		// If subscription is not running and plan type is not free, clear cache.
-		if ( 'running' !== $subscription['subscription_status'] && 'free' === $subscription['plan_type'] ) {
+		if ( 'free' === $subscription['plan_type'] ) {
 			do_action( 'rocketcdn_free_plan_subscription_expired' );
 		}
 

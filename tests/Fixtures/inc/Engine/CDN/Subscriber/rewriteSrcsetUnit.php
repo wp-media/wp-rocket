@@ -18,6 +18,7 @@ return [
 			'subscription_eligible'  => false,
 			'driver_returns'         => true,
 			'html'                   => '<img srcset="https://example.org/wp-content/uploads/image.jpg 1x">',
+			'rewritten_html'         => '<img srcset="https://example.org/wp-content/uploads/image.jpg 1x">',
 		],
 		'expected' => [
 			'html' => '<img srcset="https://example.org/wp-content/uploads/image.jpg 1x">',
