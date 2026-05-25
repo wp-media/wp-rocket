@@ -40,14 +40,7 @@ function rocket_css_lazyload_launch() {
 		rootMargin: threshold + 'px'
 	});
 
-	function lazyload(e = []) {
-
-		const pass = e.length > 0;
-
-		if(! pass ) {
-			return;
-		}
-
+	function lazyload() {
 		usable_pairs.forEach(pair => {
 			try {
 
