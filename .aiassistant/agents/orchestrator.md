@@ -25,11 +25,14 @@ Extract at step 01 from the issue file:
 2. If none: derive from the issue body — "the user should…", "the bug is fixed when…", "expected behavior:"
 3. Store as a numbered list. Pass this list explicitly to `lead-reviewer` and `qa-engineer`.
 
-## Complexity threshold — triggers grooming-reviewer
-Invoke `grooming-reviewer` after grooming if **any** of these is true:
-- The spec contains `Option B` with `Effort: High`
-- The spec mentions **more than 3 files** to change
+## CHALLENGER trigger conditions
+Invoke `challenger` after grooming if **any** of these is true:
+- The spec has `Effort: High` (7+ files) or `Effort: Very High`
+- The spec has `Risk: High` or `Risk: Very High`
 - The spec spans both **backend (PHP)** and **frontend (JS/CSS)** domains
+- The spec has unresolved open questions that could affect the chosen approach
+
+Skip `challenger` for trivial fixes (≤ 2 files, LOW risk, single domain).
 
 ---
 
@@ -44,14 +47,17 @@ Invoke `grooming-agent`:
 
 Spec is written to `.TemporaryItems/Issues/wp-rocket/issues/<N>-spec.md`. Update log.
 
-### 03 — Spec review *(conditional)*
-Evaluate complexity against the threshold. If met, invoke `grooming-reviewer`:
-> Inputs: issue #N, issue file, spec file
+### 03 — Spec challenge *(conditional)*
+Evaluate spec against CHALLENGER trigger conditions. If met, invoke `challenger`:
+> Inputs: issue #N, issue file, spec file, `plan_version` (starts at 1)
 
 - **APPROVED** → proceed
-- **NEEDS REVISION** → re-invoke `grooming-agent` with the reviewer's specific gaps as additional context. Maximum 1 re-groom. If still NEEDS REVISION after the re-groom, escalate to user.
+- **NEEDS_REVISION** → re-invoke `grooming-agent` with the specific findings. Increment `plan_version`. Max 2 rounds. If still NEEDS_REVISION after 2 rounds, escalate to user.
+- **BLOCKED** → re-invoke `grooming-agent` once with the blocker context. If still BLOCKED, escalate immediately with the blocker description and `alternative_suggestions`.
 
-Update log with verdict and rationale. If skipped, log reason (`complexity: low`).
+**NTH dispatch:** Any `COULD_HAVE` or `NICE_TO_HAVE` findings from `challenger` → log them in the decisions strip as follow-up items. Do not block the pipeline on them.
+
+Update log with verdict and rationale. If skipped, log reason (`low complexity`).
 
 ### 04 — Dispatch decision
 Read the final spec. Decide:
@@ -80,14 +86,33 @@ Run backend first, then frontend (sequential).
 
 Update log after each agent with attempt count and outcome.
 
+### 06c — DOD L2 gate *(independent check)*
+
+After both implementation agents have committed, run an independent quality check before invoking `lead-reviewer`:
+
+```bash
+composer test-unit
+composer phpcs-changed
+```
+
+Also verify every commit on the branch includes the `Co-Authored-By: Claude` trailer.
+
+- **PASS** → proceed to lead-reviewer
+- **FAIL** → identify which agent's files caused the failure. Re-invoke that agent with the specific violation. Max 1 loop-back. If still failing after 1 loop, escalate to user with the exact error.
+
+Update log.
+
 ### 07 — Lead review
 Each implementation agent commits its own changes atomically before returning. By this step, commits are already in place.
 
 Invoke `lead-reviewer`:
 > Inputs: issue #N, spec path, base branch, acceptance criteria (numbered list)
 
-- **PASS** → proceed
-- **CHANGES REQUESTED** → address every blocker (by re-invoking the relevant implementation agent, which will re-commit), then re-invoke `lead-reviewer`. Max 3 total lead-reviewer attempts.
+The lead-reviewer returns findings classified by criticality tier. Route based on the highest criticality:
+- **CRITICAL** — security vulnerability or breaking change: escalate to user immediately, do not loop.
+- **HIGH / MEDIUM** — logic bug or missing test coverage: re-invoke the relevant implementation agent (which will re-commit), then re-invoke `lead-reviewer`. Max 3 total lead-reviewer attempts.
+- **LOW** — minor convention issue: log as follow-up, do not block.
+- **PASS** → proceed.
 
 After 3 failed attempts, stop and report all remaining blockers to the user.
 Update log with attempt count and verdict.
@@ -134,12 +159,16 @@ Update log.
 
 ## Escalation rules
 Stop and ask the user when:
-1. grooming-reviewer returns NEEDS REVISION after 1 re-groom
-2. An implementation agent fails after 3 attempts
-3. lead-reviewer returns CHANGES REQUESTED after 3 attempts
-4. qa-engineer returns FAIL/PARTIAL after 3 attempts
-5. An unexpected QA finding is tagged `unclear`
-6. CI fails and the root cause is not clear from the log excerpt
+1. `challenger` returns NEEDS_REVISION after 2 re-grooms, or BLOCKED after 1 re-groom
+2. `lead-reviewer` returns a CRITICAL finding (escalate immediately, no loop)
+3. DOD L2 gate fails after 1 loop-back
+4. An implementation agent fails after 3 attempts
+5. `lead-reviewer` returns CHANGES REQUESTED after 3 attempts
+6. `qa-engineer` returns FAIL/PARTIAL after 3 attempts
+7. An unexpected QA finding is tagged `unclear`
+8. CI fails and the root cause is not clear from the log excerpt
+
+Always state: what happened, what was tried, and what you need from the user (1–2 concrete next steps when possible).
 
 Always state: what happened, what was tried, and what you need from the user.
 
