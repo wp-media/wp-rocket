@@ -257,7 +257,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 
 		$subscription_data = $this->api_client->get_subscription_data();
 
-		if ( 'running' === $subscription_data['subscription_status'] && 'paid' === $subscription_data['plan_type'] ) {
+		if ( $this->subscription_controller->has_active_subscription() && $this->subscription_controller->is_paid() ) {
 			return;
 		}
 
