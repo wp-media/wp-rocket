@@ -47,13 +47,32 @@ Fix all violations before returning. If a step fails and cannot be fixed, report
 
 ---
 
-### Step 4 — Return
+### Step 4 — Commit
+
+Once PHPCS and PHPStan pass, stage and commit **only the PHP files you changed**. Do not stage unrelated files.
+
+```bash
+git add <php-file-1> <php-file-2> ...
+git commit -m "$(cat <<'EOF'
+type(scope): short description
+
+Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>
+EOF
+)"
+```
+
+Use Conventional Commits format (`fix`, `feat`, `refactor`, `test`). One atomic commit covering only your backend changes.
+
+Do not push.
+
+---
+
+### Step 5 — Return
 
 Report:
 - Files modified (list)
 - Tests written or updated
-- PHPCS result: PASS / FAIL
-- PHPStan result: PASS / FAIL
+- PHPCS result: PASS
+- PHPStan result: PASS
+- Commit SHA
 - Any deviation from the spec (with reason)
-
-Do not commit. Do not push.
