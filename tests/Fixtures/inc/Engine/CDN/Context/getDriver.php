@@ -36,4 +36,11 @@ return [
 		],
 		'expected' => 'rocketcdn',
 	],
+	'testShouldReturnRocketcdnWhenSubscriptionCreationInProgress' => [
+		'config'   => [
+			'cdn_type'   => 'rocketcdn',
+			'is_loading' => true,
+		],
+		'expected' => 'rocketcdn',
+	],
 ];
