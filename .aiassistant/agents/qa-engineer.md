@@ -38,14 +38,15 @@ Collect the following before doing anything else:
 
 2. **Changed files**:
    ```bash
-   git diff develop --name-only
+   git diff <base-branch> --name-only
    ```
+   Use the base branch provided as input (e.g. `origin/develop`, `origin/feature/mcp`). If not provided, detect it with `git log --oneline | head -20` or ask before proceeding.
 
 3. **Full file content** — read each changed file in full (not just the diff). Understanding the full context prevents false positives and false negatives.
 
 4. **PR diff** for a compact overview:
    ```bash
-   git diff develop
+   git diff <base-branch>
    ```
 
 Do not skip any of these.
