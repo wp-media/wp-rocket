@@ -4,10 +4,9 @@ declare(strict_types=1);
 namespace WP_Rocket\Tests\Unit\inc\Engine\CDN\RocketCDN\FrontendSubscriber;
 
 use Mockery;
-use Mockery\MockInterface;
-use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\CDN\RocketCDN\APIClient;
+use WP_Rocket\Engine\CDN\Context;
 use WP_Rocket\Engine\CDN\RocketCDN\FrontendSubscriber;
+use WP_Rocket\Engine\CDN\RocketCDN\SubscriptionController;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
@@ -17,8 +16,8 @@ use WP_Rocket\Tests\Unit\TestCase;
  */
 class Test_SetCdnZone extends TestCase {
 
-	private $options;
-	private $api_client;
+	private $context;
+	private $subscription_controller;
 
 	/**
 	 * @var FrontendSubscriber
@@ -28,22 +27,26 @@ class Test_SetCdnZone extends TestCase {
 	public function set_up() {
 		parent::set_up();
 
-		$this->options    = Mockery::mock( Options_Data::class );
-		$this->api_client = Mockery::mock( APIClient::class );
-		$this->subscriber = new FrontendSubscriber( $this->options, $this->api_client );
+		$this->context    = Mockery::mock( Context::class );
+		$this->subscription_controller = Mockery::mock( SubscriptionController::class );
+
+		$this->subscriber = new FrontendSubscriber( $this->context, $this->subscription_controller );
 	}
 
 	/**
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpectedZone( $config, $expected ) {
-		$this->options->shouldReceive( 'get' )
-			->with( 'cdn_type' )
-			->andReturn( $config['cdn_type'] );
+		$this->context->shouldReceive( 'is_rocketcdn' )
+			->andReturn( 'rocketcdn' === $config['cdn_type'] );
 
 		if ( 'rocketcdn' === $config['cdn_type'] ) {
-			$this->api_client->shouldReceive( 'get_subscription_data' )
-				->andReturn( $config['subscription_data'] );
+			$this->subscription_controller->shouldReceive( 'has_active_subscription' )
+				->andReturn( $config['has_active_subscription'] );
+			if ($config['has_active_subscription'] ) {
+				$this->subscription_controller->shouldReceive( 'get_rocketcdn_url' )
+					->andReturn( $config['cdn_url'] );
+			}
 		}
 
 		$result = $this->subscriber->set_cdn_zone( null );
