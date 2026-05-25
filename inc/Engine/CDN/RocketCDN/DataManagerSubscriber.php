@@ -52,6 +52,8 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	 */
 	private $user_client;
 
+	private $subscription_controller;
+
 	/**
 	 * Constructor
 	 *
@@ -61,12 +63,13 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	 * @param Options           $options_api Options API instance.
 	 * @param UserClient        $user_client UserClient instance.
 	 */
-	public function __construct( APIClient $api_client, CDNOptionsManager $cdn_options, Options_Data $options, Options $options_api, UserClient $user_client ) {
+	public function __construct( APIClient $api_client, CDNOptionsManager $cdn_options, Options_Data $options, Options $options_api, UserClient $user_client, SubscriptionController $subscription_controller ) {
 		$this->api_client  = $api_client;
 		$this->cdn_options = $cdn_options;
 		$this->options     = $options;
 		$this->options_api = $options_api;
 		$this->user_client = $user_client;
+		$this->subscription_controller = $subscription_controller;
 	}
 
 	/**
@@ -437,6 +440,10 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	 */
 	public function maybe_retry_activation(): void {
 		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			return;
+		}
+
+		if ( $this->subscription_controller->is_subscription_creation_loading() ) {
 			return;
 		}
 

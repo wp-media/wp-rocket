@@ -103,10 +103,6 @@ class Context {
 	 * @return string
 	 */
 	private function rocketcdn_resolver(): string {
-		if ( $this->subscription_controller->is_subscription_creation_loading() ) {
-			return self::ROCKETCDN_TYPE;
-		}
-
 		if ( ! $this->subscription_controller->has_active_subscription() ) {
 			return self::ROCKETCDN_TYPE;
 		}
