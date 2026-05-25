@@ -57,10 +57,10 @@ class Test_RewriteSrcset extends TestCase {
 			->with( 'cdn', 0 )
 			->andReturn( $config['cdn_enabled'] );
 
-		$subscription_controller->shouldReceive('has_active_subscription')
-			->andReturn( true );
+		$subscription_controller->shouldReceive( 'has_active_subscription' )
+			->andReturn( $config['subscription_eligible'] );
 
-		if ( $config['driver_returns'] ) {
+		if ( $config['subscription_eligible'] && $config['driver_returns'] ) {
 			$this->cdn->shouldReceive( 'rewrite_srcset' )
 				->once()
 				->andReturn( $config['rewritten_html'] );
