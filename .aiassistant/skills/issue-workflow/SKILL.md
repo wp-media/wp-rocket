@@ -23,10 +23,14 @@ follow this workflow:
 7. **Invoke the `grooming-agent` sub-agent** — pass it the issue number and the path to the synced issue file. It will:
    - Read the issue and any parent epic for context.
    - Map the codebase using the knowledge graph (`.aiassistant/graph/dependency-graph.json`): locate target classes, trace dependencies, identify the responsible ServiceProvider and Subscribers.
-   - Determine the architecturally correct layer for the fix and classify the solution as root-cause or workaround.
+   - Surface both a minimal fix and any refactor option where applicable — without deciding between them.
    - Write the implementation spec to `.TemporaryItems/Issues/wp-rocket/issues/<issue-number>-spec.md`.
-   - Return the spec path and a one-paragraph solution summary.
-8. Read the spec produced by `grooming-agent`. Only ask the user if the spec contains an explicitly unresolvable ambiguity. Otherwise proceed with the solution it defines.
+   - Return the spec path.
+8. **Invoke the `manager` sub-agent** — pass it the issue number and the spec path. It will:
+   - Read the spec and make the scope decision (minimal fix vs refactor).
+   - If the decision is ambiguous, it will ask you directly — answer before proceeding.
+   - Determine which domains are affected (backend PHP, frontend JS/CSS, or both).
+   - Return a structured dispatch plan.
 9. Determine the base branch: default to `origin/develop` unless the user specified a different one (e.g. `origin/feature/mcp`). Determine the branch prefix from the issue type:
    - Bug / defect → `fix`
    - Enhancement / feature → `enhancement`
@@ -34,45 +38,36 @@ follow this workflow:
    - Default → `fix`
    Run `.aiassistant/skills/issue-workflow/scripts/make-issue-branch.sh <issue-number> "<issue-title>" <prefix> <base-branch>`. Keep `<base-branch>` in context — it is passed to `lead-reviewer` and `qa-engineer`.
 10. Follow `AGENTS.md`.
-11. Activate the relevant skills:
-   - `wp-rocket-architecture`
-   - `wordpress-compliance`
-12. Implement minimal changes following the spec at `.TemporaryItems/Issues/wp-rocket/issues/<issue-number>-spec.md`. Follow TDD:
-   - Write or update tests **alongside** implementation (unit in `tests/Unit/`, integration in `tests/Integration/`).
-   - Test files mirror source: `inc/Engine/Foo/Bar.php` → `tests/Unit/inc/Engine/Foo/Bar/methodName.php`.
-   - Use `@group FeatureName` on integration tests for targeted runs.
-   - New hooks **must** use `wpm_apply_filters_typed()` — never `apply_filters()`.
-   - Reading plugin options **must** use the injected `Options_Data` instance — never `get_option()`.
-   - All WordPress hooks **must** go through a Subscriber — never `add_action`/`add_filter` directly.
-   - Run `composer test-unit` and confirm no regressions.
-   - If integration tests exist for the module: `vendor/bin/phpunit --configuration tests/Integration/phpunit.xml.dist --group FeatureName` (use the direct phpunit command rather than `composer test-integration` to avoid conflicts with its default `--exclude-group` list).
-14. Run linting and static analysis; fix all new violations before committing:
-   - `composer phpcs-changed` first (fast pass on changed files only).
-   - `composer phpcs` for a full check.
-   - `composer run-stan` — verify all four custom PHPStan rules pass (§2.2 of AGENTS.md).
-15. Commit atomically: one `git commit` per logical change set using Conventional Commits format. Every commit made by AI must include a `Co-Authored-By` trailer identifying the model that authored it (e.g. `Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>` or `Co-Authored-By: GPT-4o <noreply@openai.com>`). Use your own model name and provider.
-16. **Invoke the `lead-reviewer` sub-agent** — pass it the issue number, the spec path, and the base branch. It will:
+11. Based on the manager's dispatch plan, invoke the implementation agents:
+    - If backend work is needed: **invoke `backend-agent`** — pass it the issue number, spec path, and dispatch plan.
+    - If frontend work is needed: **invoke `frontend-agent`** — pass it the issue number, spec path, and dispatch plan.
+    - If both are needed and independent per the dispatch plan: invoke backend first, then frontend.
+    - **Maximum 3 attempts per agent.** If an agent still fails verification after 3 attempts, stop and report the remaining issues to the user.
+12. Commit atomically after all implementation agents complete: one `git commit` per logical change set using Conventional Commits format. Every commit made by AI must include a `Co-Authored-By` trailer identifying the model that authored it (e.g. `Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>` or `Co-Authored-By: GPT-4o <noreply@openai.com>`). Use your own model name and provider.
+13. **Invoke the `lead-reviewer` sub-agent** — pass it the issue number, the spec path, and the base branch. It will:
     - Review the diff against the implementation spec and project standards (architecture, PHP, JS, tests).
     - Return a structured verdict: **PASS** or **CHANGES REQUESTED** with specific blockers.
-17. If `lead-reviewer` returns **CHANGES REQUESTED**: address every blocker, re-run PHPCS and static analysis, commit the fixes, then re-invoke `lead-reviewer`. Repeat until **PASS**.
-18. Run `.aiassistant/skills/issue-workflow/scripts/init-pr-draft.sh <issue-number>`.
-19. Fill every section of the PR draft at `.TemporaryItems/Issues/wp-rocket/pull/<issue-number>.md`. The file was already initialized from `refs/pr-template.md` by the script in step 18. Complete every section with relevant content — do not skip sections or invent a different structure. Replace all placeholder text with real content. Select exactly ONE `Type of change` checkbox that best describes the change; leave all others unchecked.
-20. Run `git push` to publish the branch.
-21. Create the GitHub PR using the **exact content of the filled draft** as the PR body. Do not summarise or rewrite it — copy it verbatim. Set as draft if implementation is still in progress.
+14. If `lead-reviewer` returns **CHANGES REQUESTED**: address every blocker, re-run PHPCS and static analysis, commit the fixes, then re-invoke `lead-reviewer`.
+    **Maximum 3 lead-reviewer attempts.** If still CHANGES REQUESTED after the 3rd attempt, stop and report all remaining blockers to the user.
+15. Run `.aiassistant/skills/issue-workflow/scripts/init-pr-draft.sh <issue-number>`.
+16. Fill every section of the PR draft at `.TemporaryItems/Issues/wp-rocket/pull/<issue-number>.md`. The file was already initialized from `refs/pr-template.md` by the script in step 15. Complete every section with relevant content — do not skip sections or invent a different structure. Replace all placeholder text with real content. Select exactly ONE `Type of change` checkbox that best describes the change; leave all others unchecked.
+17. Run `git push` to publish the branch.
+18. Create the GitHub PR using the **exact content of the filled draft** as the PR body. Do not summarise or rewrite it — copy it verbatim. Set as draft if implementation is still in progress.
     - **PR title format**: `Closes #<issue-number>: <short descriptive title>` (use `Fixes` instead of `Closes` only when the issue should auto-close on merge to a non-default branch).
     - After creating the PR, assign it to yourself and apply the **Made by AI** label if it exists in the repository: `gh pr edit <PR_number> --add-assignee @me --add-label "Made by AI"`.
     - If the `Made by AI` label does not exist, skip the label silently — do not create it.
-22. **Invoke the `qa-engineer` sub-agent** — pass it the issue number, PR number, and base branch. It will:
+19. **Invoke the `qa-engineer` sub-agent** — pass it the issue number, PR number, and base branch. It will:
     - Read the issue spec and PR diff.
     - Select validation strategies (API, Browser, Analysis) based on what changed.
     - For UI changes, delegate browser validation to the `e2e-qa-tester` sub-agent, which writes temporary Playwright specs, runs them, publishes screenshots via commit-SHA, and removes all temp files.
     - **Post the full QA report as a PR comment** (always, regardless of outcome — PASS, FAIL, or PARTIAL).
     - Return a structured test report (see format in `.aiassistant/agents/qa-engineer.md`).
-23. If `qa-engineer` reports **FAIL** or **PARTIAL**: fix the identified blockers, re-commit, re-push, and re-run the agent before continuing.
-24. If `qa-engineer` reports **READY TO MERGE**:
+20. If `qa-engineer` reports **FAIL** or **PARTIAL**: fix the identified blockers, re-commit, re-push, and re-run the agent before continuing.
+    **Maximum 3 qa-engineer attempts.** If still FAIL or PARTIAL after the 3rd attempt, stop and report all remaining blockers to the user.
+21. If `qa-engineer` reports **READY TO MERGE**:
     1. **Update the PR body** — edit the **"What was tested"** section under `## Detailed scenario` to include the full QA report: strategies used, each acceptance criterion with its validation method and result, and smoke-test outcomes. Use `gh pr edit <PR_number> --body "..."` with the updated body. Also update the local draft at `.TemporaryItems/Issues/wp-rocket/pull/<issue-number>.md` to match.
     2. **Convert the PR from draft to ready-for-review**: `gh pr ready <PR_number>`.
-25. Monitor PR CI status checks until all pass. Report any failures with actionable details.
+22. Monitor PR CI status checks until all pass. Report any failures with actionable details.
 
 ## Tooling — Prefer MCPs, Fall Back to Shell
 
