@@ -34,14 +34,18 @@ Core rules (enforced by the skill files):
 
 ---
 
-### Step 3 — Verify
+### Step 3 — DOD L1 (self-check)
+
+Run available quality checks and **self-correct any failures before committing**:
 
 ```bash
 npm run lint    # if configured
 npm run build   # confirm no build errors
 ```
 
-Fix all violations before returning.
+- If a check fails: fix the violation, then re-run until it passes.
+- If `npm run lint` is not configured, skip it and note this in your return report.
+- Only proceed to commit when all available checks pass.
 
 ---
 

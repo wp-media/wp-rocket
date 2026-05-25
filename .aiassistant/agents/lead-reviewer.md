@@ -65,6 +65,15 @@ Verify every changed file complies with all rules defined in those files, then a
 
 ### Step 4 — Produce the review
 
+Classify every finding with a criticality tier:
+
+| Criticality | Meaning | Orchestrator action |
+|---|---|---|
+| `CRITICAL` | Security vulnerability or breaking change | Escalate to user immediately — no loop |
+| `HIGH` | Logic bug or missing test coverage for core behavior | Loop back to implementer |
+| `MEDIUM` | Convention violation that would fail CI or a meaningful logic concern | Loop back to implementer |
+| `LOW` | Minor cosmetic or naming issue | Log as follow-up, does not block |
+
 ```
 ## Code Review — Issue #<N> / Branch: <branch>
 
@@ -76,27 +85,44 @@ Verify every changed file complies with all rules defined in those files, then a
 
 ### Findings
 
-| File | Location | Severity | Finding |
-|------|----------|----------|---------|
-| `path/to/file.php` | `ClassName::methodName()` | 🔴 Blocker / 🟡 Suggestion | <what is wrong and what to do instead> |
+| File | Location | Criticality | Finding | Fix |
+|------|----------|-------------|---------|-----|
+| `path/to/file.php` | `ClassName::methodName()` | CRITICAL / HIGH / MEDIUM / LOW | <what is wrong> | <what to do> |
 
 ### Test Coverage
 PASS / FAIL — <summary>
 
 **Overall: PASS / CHANGES REQUESTED**
 
-**Blockers** (must fix before PR):
-- `File::method`: <what to change and why>
+**Blockers** (by criticality — must fix):
+- [CRITICAL/HIGH/MEDIUM] `File::method`: <what to change and why>
 
-**Suggestions** (non-blocking, apply at discretion):
+**Follow-ups** (LOW — non-blocking, log for backlog):
 - <suggestion>
 ```
 
 ---
 
-### Step 5 — Return
+### Step 5 — Post inline comments to the PR
+
+For every CRITICAL, HIGH, or MEDIUM finding, post an inline comment on the relevant file and line:
+
+```bash
+gh api repos/wp-media/wp-rocket/pulls/<PR_NUMBER>/comments \
+  --method POST \
+  --field body="[CRITICALITY] <finding description>\n\n**Fix:** <what to do>\n\n> 🤖 AI-generated review." \
+  --field commit_id="$(git rev-parse HEAD)" \
+  --field path="<file>" \
+  --field line=<line>
+```
+
+Post all inline comments before returning to the orchestrator.
+
+---
+
+### Step 6 — Return
 
 - If **PASS**: state it clearly. The orchestrator will proceed to push and open the PR.
-- If **CHANGES REQUESTED**: list every blocker. The implementing agent will address them, re-commit, and invoke you again.
+- If **CHANGES REQUESTED**: list every blocker with its criticality. The orchestrator routes based on the highest criticality tier present.
 
 Do not modify any file. Do not commit anything.
