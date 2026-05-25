@@ -55,10 +55,7 @@ This is a separate question from where the fix goes — ask it first.
 - A name/location mismatch is always a signal to investigate before proposing any implementation.
 
 **d. wp-rocket specific checks:**
-- New hooks must use `wpm_apply_filters_typed()` — never `apply_filters()`.
-- Reading plugin options must use the injected `Options_Data` instance — never `get_option()`.
-- All WordPress hooks must go through a Subscriber — never `add_action`/`add_filter` directly.
-- Verify the correct ServiceProvider wires any new dependencies.
+Read `.aiassistant/skills/wp-rocket-architecture/SKILL.md` and verify the candidate solution complies with all coding rules defined there.
 
 **e. Are there edge cases the issue does not mention?**
 List them. The implementation must handle them.

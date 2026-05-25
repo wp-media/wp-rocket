@@ -41,25 +41,15 @@ Flag anything in **Out of Scope** that was implemented anyway.
 
 Check every changed file against:
 
+Load the project rule files using the Read tool:
+- `.aiassistant/skills/wp-rocket-architecture/SKILL.md`
+- `.aiassistant/skills/wordpress-compliance/SKILL.md`
+
+Verify every changed file complies with all rules defined in those files, then also check:
+
 **Architecture**
 - Fix is at the correct layer (not patching a symptom)
 - No new singletons, global state, or static helpers replacing services
-- **wp-rocket specific:**
-  - New hooks use `wpm_apply_filters_typed()`, not `apply_filters()`
-  - Plugin options read via injected `Options_Data`, not `get_option()`
-  - WordPress hooks go through a Subscriber, not direct `add_action`/`add_filter`
-  - ServiceProvider correctly wires any new dependencies
-
-**PHP**
-- Strict types where already present in the file
-- No new raw superglobal access without sanitization
-- Output is escaped for context (`esc_html`, `esc_attr`, `esc_url`, `wp_kses_post`)
-- No forbidden or deprecated WordPress APIs
-- Custom capabilities used (`rocket_manage_options`, etc.) — not `manage_options`
-
-**JavaScript** (if any JS changed)
-- No jQuery — use native DOM APIs only
-- No inline event handlers
 
 **Tests**
 - New or modified logic has test coverage in `tests/Unit/` and/or `tests/Integration/`
