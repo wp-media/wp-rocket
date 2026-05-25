@@ -4,45 +4,16 @@ return [
 	'shouldReturnOriginalValueWhenCdnTypeIsNotRocketcdn' => [
 		'config'   => [
 			'cdn_type'          => 'other',
-			'subscription_data' => [
-				'id'                            => 12345,
-				'is_active'                     => true,
-				'cdn_url'                       => 'https://abcd1234.delivery.rocketcdn.me',
-				'subscription_next_date_update' => '+30 days',
-				'subscription_status'           => 'running',
-			],
 		],
 		'expected' => [
 			'cdn_cnames' => null,
 		],
 	],
 
-	'shouldReturnOriginalValueWhenNoSubscriptionData' => [
+	'shouldReturnOriginalValueWhenNoActiveSubscription' => [
 		'config'   => [
 			'cdn_type'          => 'rocketcdn',
-			'subscription_data' => [
-				'id'                            => 0,
-				'is_active'                     => false,
-				'cdn_url'                       => '',
-				'subscription_next_date_update' => 0,
-				'subscription_status'           => '',
-			],
-		],
-		'expected' => [
-			'cdn_cnames' => null,
-		],
-	],
-
-	'shouldReturnOriginalValueWhenSubscriptionCancelled' => [
-		'config'   => [
-			'cdn_type'          => 'rocketcdn',
-			'subscription_data' => [
-				'id'                            => 12345,
-				'is_active'                     => false,
-				'cdn_url'                       => '',
-				'subscription_next_date_update' => 0,
-				'subscription_status'           => 'cancelled',
-			],
+			'has_active_subscription' => false,
 		],
 		'expected' => [
 			'cdn_cnames' => null,
@@ -52,29 +23,19 @@ return [
 	'shouldReturnOriginalValueWhenSubscriptionRunningButNoCdnUrl' => [
 		'config'   => [
 			'cdn_type'          => 'rocketcdn',
-			'subscription_data' => [
-				'id'                            => 12345,
-				'is_active'                     => true,
-				'cdn_url'                       => '',
-				'subscription_next_date_update' => '+30 days',
-				'subscription_status'           => 'running',
-			],
+			'has_active_subscription' => true,
+			'cdn_url' => '',
 		],
 		'expected' => [
 			'cdn_cnames' => null,
 		],
 	],
 
-	'shouldReturnCdnUrlWhenSubscriptionRunning' => [
+	'shouldReturnAllZoneWhenSubscriptionRunning' => [
 		'config'   => [
 			'cdn_type'          => 'rocketcdn',
-			'subscription_data' => [
-				'id'                            => 12345,
-				'is_active'                     => true,
-				'cdn_url'                       => 'https://abcd1234.delivery.rocketcdn.me',
-				'subscription_next_date_update' => '+30 days',
-				'subscription_status'           => 'running',
-			],
+			'has_active_subscription' => true,
+			'cdn_url' => 'https://abcd1234.delivery.rocketcdn.me',
 		],
 		'expected' => [
 			'cdn_cnames' => [ 'https://abcd1234.delivery.rocketcdn.me' ],

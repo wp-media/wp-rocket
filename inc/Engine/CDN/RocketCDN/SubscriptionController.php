@@ -55,6 +55,13 @@ class SubscriptionController implements LoggerAwareInterface {
 	private $subscription_loading_transient = 'rocket_cdn_subscription_creation_in_progress';
 
 	/**
+	 * Subscription local cache.
+	 *
+	 * @var array
+	 */
+	private $subscription;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param APIClient            $api_client API Client instance.
@@ -72,12 +79,25 @@ class SubscriptionController implements LoggerAwareInterface {
 	}
 
 	/**
+	 * Get subscription data.
+	 *
+	 * @return array
+	 */
+	private function get_subscription_data() {
+		if ( ! empty( $this->subscription ) ) {
+			return $this->subscription;
+		}
+		$this->subscription = $this->api_client->get_subscription_data();
+		return $this->subscription;
+	}
+
+	/**
 	 * Check if it has active RocketCDN subscription.
 	 *
 	 * @return bool
 	 */
 	public function has_active_subscription(): bool {
-		$subscription = $this->api_client->get_subscription_data();
+		$subscription = $this->get_subscription_data();
 		return ! empty( $subscription['subscription_status'] ) && 'running' === $subscription['subscription_status'];
 	}
 
@@ -212,7 +232,7 @@ class SubscriptionController implements LoggerAwareInterface {
 	 * @return bool
 	 */
 	public function is_free(): bool {
-		$subscription = $this->api_client->get_subscription_data();
+		$subscription = $this->get_subscription_data();
 		return ! empty( $subscription['plan_type'] ) && 'free' === $subscription['plan_type'];
 	}
 
@@ -222,7 +242,7 @@ class SubscriptionController implements LoggerAwareInterface {
 	 * @return bool
 	 */
 	public function is_paid(): bool {
-		$subscription = $this->api_client->get_subscription_data();
+		$subscription = $this->get_subscription_data();
 		return ! empty( $subscription['plan_type'] ) && 'paid' === $subscription['plan_type'];
 	}
 
@@ -232,7 +252,7 @@ class SubscriptionController implements LoggerAwareInterface {
 	 * @return bool
 	 */
 	public function is_website_attached(): bool {
-		$subscription = $this->api_client->get_subscription_data();
+		$subscription = $this->get_subscription_data();
 		return (bool) $subscription['website_attached'];
 	}
 
@@ -274,5 +294,15 @@ class SubscriptionController implements LoggerAwareInterface {
 			'is_loading'              => $this->is_subscription_creation_loading(),
 			'has_active_subscription' => $this->has_active_subscription(),
 		];
+	}
+
+	/**
+	 * Get rocketcdn from the subscription.
+	 *
+	 * @return string
+	 */
+	public function get_rocketcdn_url() {
+		$subscription = $this->get_subscription_data();
+		return $subscription['cdn_url'] ?? '';
 	}
 }

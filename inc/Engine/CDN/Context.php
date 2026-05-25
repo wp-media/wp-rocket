@@ -61,13 +61,31 @@ class Context {
 	 * @return string
 	 */
 	public function get_driver(): string {
-		$cdn_type = (string) $this->options->get( 'cdn_type', self::ROCKETCDN_TYPE );
+		$cdn_type = $this->get_cdn_type();
 
 		if ( self::ROCKETCDN_TYPE !== $cdn_type ) {
 			return self::BYOCDN_TYPE;
 		}
 
 		return $this->rocketcdn_resolver();
+	}
+
+	/**
+	 * Get CDN Type.
+	 *
+	 * @return string
+	 */
+	public function get_cdn_type(): string {
+		return (string) $this->options->get( 'cdn_type', self::ROCKETCDN_TYPE );
+	}
+
+	/**
+	 * Is rocketcdn tab is selected.
+	 *
+	 * @return bool
+	 */
+	public function is_rocketcdn() {
+		return self::ROCKETCDN_TYPE === $this->get_cdn_type();
 	}
 
 	/**
