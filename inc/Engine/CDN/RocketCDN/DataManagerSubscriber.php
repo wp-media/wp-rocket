@@ -52,23 +52,29 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	 */
 	private $user_client;
 
+	/**
+	 * Subscription controller instance.
+	 *
+	 * @var SubscriptionController
+	 */
 	private $subscription_controller;
 
 	/**
 	 * Constructor
 	 *
-	 * @param APIClient         $api_client  RocketCDN API Client instance.
-	 * @param CDNOptionsManager $cdn_options CDNOptionsManager instance.
-	 * @param Options_Data      $options Options instance.
-	 * @param Options           $options_api Options API instance.
-	 * @param UserClient        $user_client UserClient instance.
+	 * @param APIClient              $api_client  RocketCDN API Client instance.
+	 * @param CDNOptionsManager      $cdn_options CDNOptionsManager instance.
+	 * @param Options_Data           $options Options instance.
+	 * @param Options                $options_api Options API instance.
+	 * @param UserClient             $user_client UserClient instance.
+	 * @param SubscriptionController $subscription_controller SubscriptionController instance.
 	 */
 	public function __construct( APIClient $api_client, CDNOptionsManager $cdn_options, Options_Data $options, Options $options_api, UserClient $user_client, SubscriptionController $subscription_controller ) {
-		$this->api_client  = $api_client;
-		$this->cdn_options = $cdn_options;
-		$this->options     = $options;
-		$this->options_api = $options_api;
-		$this->user_client = $user_client;
+		$this->api_client              = $api_client;
+		$this->cdn_options             = $cdn_options;
+		$this->options                 = $options;
+		$this->options_api             = $options_api;
+		$this->user_client             = $user_client;
 		$this->subscription_controller = $subscription_controller;
 	}
 
