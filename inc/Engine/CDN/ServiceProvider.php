@@ -107,8 +107,8 @@ class ServiceProvider extends AbstractServiceProvider {
 					'cdn',
 					'options_api',
 					'rocketcdn_subscription_controller',
+					'rocketcdn_query',
 					'cdn_driver',
-					'cdn_context',
 				]
 			);
 		$this->getContainer()->addShared( 'cdn_admin_subscriber', AdminSubscriber::class );

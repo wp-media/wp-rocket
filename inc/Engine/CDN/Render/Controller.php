@@ -113,16 +113,6 @@ class Controller extends Abstract_Render {
 		}
 
 		$cdn_beacon = $this->beacon->get_suggest( 'cdn' );
-		$status     = $this->context->get_subscription_status();
-		$is_active  = $this->context->is_active_status( $status );
-
-		$status_text = __( 'RocketCDN is active on your website', 'rocket' );
-		$details     = __( 'Serving files from 100+ edge locations', 'rocket' );
-
-		if ( ! $is_active ) {
-			$status_text = $this->get_inactive_status_text( $status );
-			$details     = $this->get_inactive_status_details( $status );
-		}
 
 		$status_indicator_data           = $this->get_status_indicator_data( 1, $this->is_subscription_loading(), false );
 		$status_indicator_data['class'] .= ' wpr-cdn-status-pronounced rocketcdn';
@@ -613,41 +603,5 @@ class Controller extends Abstract_Render {
 			'is_subscription_loading' => $is_subscription_loading,
 			'hide_pause_btn'          => ( $is_subscription_loading || 0 === $pages_count ) && ! $is_paused,
 		];
-	}
-
-	/**
-	 * Gets status text for non-active subscriptions.
-	 *
-	 * @param string $subscription_status Subscription status.
-	 * @return string
-	 */
-	private function get_inactive_status_text( string $subscription_status ): string {
-		if ( $this->context->is_pending_cancellation_status( $subscription_status ) ) {
-			return __( 'RocketCDN subscription pending cancellation', 'rocket' );
-		}
-
-		if ( $this->context->is_inactive_status( $subscription_status ) ) {
-			return __( 'RocketCDN subscription cancelled', 'rocket' );
-		}
-
-		return __( 'RocketCDN is not active', 'rocket' );
-	}
-
-	/**
-	 * Gets details text for non-active subscriptions.
-	 *
-	 * @param string $subscription_status Subscription status.
-	 * @return string
-	 */
-	private function get_inactive_status_details( string $subscription_status ): string {
-		if ( $this->context->is_pending_cancellation_status( $subscription_status ) ) {
-			return __( 'Your current plan is pending cancellation. CDN rewriting is disabled until the subscription returns to running.', 'rocket' );
-		}
-
-		if ( $this->context->is_inactive_status( $subscription_status ) ) {
-			return __( 'Your subscription is cancelled. CDN rewriting is disabled for all pages.', 'rocket' );
-		}
-
-		return __( 'CDN rewriting is disabled until your subscription is active.', 'rocket' );
 	}
 }
