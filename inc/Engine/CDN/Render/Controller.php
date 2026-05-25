@@ -591,13 +591,13 @@ class Controller extends Abstract_Render {
 		$class = '';
 
 		if ( $is_paused ) {
-			$class = ' wpr-cdn-status--paused';
-		}
-
-		if ( $is_paused ) {
 			$status_text = $paused_status_text;
 			$details     = $paused_details;
-			$class      .= ' wpr-cdn-status--expired';
+			$class      .= ' wpr-cdn-status--paused';
+		}
+
+		if ( ! $this->subscription_controller->has_active_subscription() ) {
+			$class .= ' wpr-cdn-status--expired';
 		}
 
 		return [

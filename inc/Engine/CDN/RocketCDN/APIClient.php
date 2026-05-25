@@ -160,10 +160,16 @@ class APIClient {
 	 * @return void
 	 */
 	private function maybe_invalidate_cache_on_status_transition( array $fresh_data ): void {
-		$current_status = (string) ( $fresh_data['subscription_status'] ?? '' );
-		$current_plan   = (string) ( $fresh_data['plan_type'] ?? '' );
+		$current_status  = (string) ( $fresh_data['subscription_status'] ?? '' );
+		$current_plan    = (string) ( $fresh_data['plan_type'] ?? '' );
+		$cached_status   = get_transient( 'rocketcdn_status' );
+		$previous_status = '';
 
-		$previous_status = (string) get_option( self::LAST_KNOWN_STATUS_OPTION, '' );
+		if ( is_array( $cached_status ) && ! empty( $cached_status['subscription_status'] ) ) {
+			$previous_status = (string) $cached_status['subscription_status'];
+		} else {
+			$previous_status = (string) get_option( self::LAST_KNOWN_STATUS_OPTION, '' );
+		}
 
 		if ( ! empty( $previous_status ) && $previous_status !== $current_status ) {
 			if ( 'paid' === $current_plan ) {
@@ -177,6 +183,15 @@ class APIClient {
 
 		update_option( self::LAST_KNOWN_STATUS_OPTION, $current_status );
 		update_option( self::LAST_KNOWN_PLAN_OPTION, $current_plan );
+	}
+
+	/**
+	 * Clears selected pages cache for free RocketCDN plan.
+	 *
+	 * @return void
+	 */
+	public function clear_free_plan_pages_cache(): void {
+		$this->clear_free_plan_selected_pages_cache();
 	}
 
 	/**

@@ -359,6 +359,12 @@ class DataManagerSubscriber implements Subscriber_Interface {
 			return;
 		}
 
+		if ( 'running' !== $subscription['subscription_status'] ) {
+			$this->api_client->clear_free_plan_pages_cache();
+
+			return;
+		}
+
 		$this->cdn_options->disable();
 	}
 
