@@ -51,8 +51,10 @@ Consider: is there a more specific class, a better lifecycle hook, or an earlier
 This is a separate question from where the fix goes — ask it first.
 - If a method name contains a feature-specific term but lives in a `Common`, `Shared`, or otherwise generic class, treat this as a likely architectural misplacement.
 - Use the knowledge graph (Step 2) to find all Subscribers for the relevant feature and check whether a more specific class already exists that should own this logic.
-- If a better home exists, the correct fix is to move the method there — not to patch it in place.
 - A name/location mismatch is always a signal to investigate before proposing any implementation.
+- **Do not conclude which option is correct.** If both options are viable, present them in the spec under **Implementation Options** so the manager can decide:
+  - Option A: patch in place — state effort (Low/Medium/High), risk, and what architectural debt this preserves.
+  - Option B: move/refactor — state effort, risk, and the architectural improvement gained.
 
 **d. wp-rocket specific checks:**
 Read `.aiassistant/skills/wp-rocket-architecture/SKILL.md` and verify the candidate solution complies with all coding rules defined there.
@@ -79,6 +81,18 @@ Write the implementation spec to `.TemporaryItems/Issues/wp-rocket/issues/<N>-sp
 
 ### Architectural Decision
 <where the fix belongs and why — be explicit about the layer and the reasoning>
+
+### Implementation Options
+<!-- Include only when multiple implementation approaches exist (e.g. patch in place vs refactor) -->
+**Option A — Minimal fix:** <description>
+- Effort: Low / Medium / High
+- Risk: Low / Medium / High
+- Debt: <what architectural debt this preserves, if any>
+
+**Option B — Refactor:** <description>
+- Effort: Low / Medium / High
+- Risk: Low / Medium / High
+- Benefit: <architectural improvement gained>
 
 ### Solution Type
 Root-cause fix / Workaround (reason: <...>)
