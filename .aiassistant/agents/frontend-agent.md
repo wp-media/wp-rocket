@@ -45,11 +45,31 @@ Fix all violations before returning.
 
 ---
 
-### Step 4 — Return
+### Step 4 — Commit
+
+Once linting and build pass, stage and commit **only the frontend files you changed**. Do not stage PHP or unrelated files.
+
+```bash
+git add <js-file-1> <css-file-2> ...
+git commit -m "$(cat <<'EOF'
+type(scope): short description
+
+Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>
+EOF
+)"
+```
+
+Use Conventional Commits format. One atomic commit covering only your frontend changes.
+
+Do not push.
+
+---
+
+### Step 5 — Return
 
 Report:
 - Files modified (list)
-- Linting result: PASS / FAIL
+- Linting result: PASS
+- Build result: PASS
+- Commit SHA
 - Any deviation from the spec (with reason)
-
-Do not commit. Do not push.
