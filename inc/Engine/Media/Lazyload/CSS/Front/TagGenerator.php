@@ -41,7 +41,7 @@ class TagGenerator {
 		$mapping_json = wp_json_encode( $mapping );
 		$loaded_json  = wp_json_encode( $loaded );
 
-		$script_content = "const rocket_pairs = $mapping_json; const rocket_excluded_pairs = $loaded_json;";
+		$script_content = "window.rocket_pairs = $mapping_json; window.rocket_excluded_pairs = $loaded_json;";
 
 		$script_tag = "<script type=\"application/javascript\">$script_content</script>";
 
