@@ -329,8 +329,10 @@ class SubscriptionController implements LoggerAwareInterface {
 
 	/**
 	 * Get rocketcdn transient status
+	 *
+	 * @return mixed
 	 */
-	public function get_rocketcdn_status(): bool {
+	public function get_rocketcdn_status() {
 		return get_transient( 'rocketcdn_status' );
 	}
 }
