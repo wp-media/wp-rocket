@@ -71,9 +71,25 @@ Do not push.
 
 ### Step 5 — Return
 
-Report:
-- Files modified (list)
-- Linting result: PASS
-- Build result: PASS
-- Commit SHA
-- Any deviation from the spec (with reason)
+Return the following JSON object to the orchestrator. Fill every field — the orchestrator uses these for DOD L2 routing.
+
+```json
+{
+  "ticket_id": "<N>",
+  "branch": "current branch name",
+  "files_changed": ["list of JS/CSS/HTML files modified"],
+  "tests_passing": true,
+  "test_output": "e.g. 'lint: PASS, build: PASS' or 'lint not configured'",
+  "dod_layer1": {
+    "overall": "PASS|WARN",
+    "checks": [
+      { "name": "lint", "status": "PASS|WARN", "evidence": "0 errors" },
+      { "name": "build", "status": "PASS|WARN", "evidence": "compiled successfully" }
+    ]
+  },
+  "co_authored_by": "Claude Sonnet 4.6 <noreply@anthropic.com>",
+  "notes": "any deviations from spec with reason, or empty string"
+}
+```
+
+`dod_layer1.overall` must be `PASS` or `WARN` — never `FAIL`. Self-correct all failures before committing (Step 3).

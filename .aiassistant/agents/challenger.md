@@ -110,4 +110,23 @@ BLOCKED
 - [1–2 concrete paths forward the human can choose between]
 ```
 
-Do not rewrite the spec. Return only the verdict and findings.
+Do not rewrite the spec. Return the verdict and findings AND the following JSON object to the orchestrator:
+
+```json
+{
+  "plan_version": 1,
+  "verdict": "APPROVED|NEEDS_REVISION|BLOCKED",
+  "feedback": [
+    {
+      "description": "string",
+      "severity": "MUST_HAVE|SHOULD_HAVE|COULD_HAVE|NICE_TO_HAVE",
+      "suggestion": "string"
+    }
+  ],
+  "alternative_suggestions": ["required when verdict != APPROVED — 1-2 concrete alternatives"],
+  "revised_risk_level": "LOW|MEDIUM|HIGH",
+  "comment_posted": true
+}
+```
+
+`alternative_suggestions` is **required** when `verdict != APPROVED`. Provide 1–2 concrete, actionable alternatives the orchestrator can present to a human or pass back to grooming.

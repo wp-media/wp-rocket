@@ -198,30 +198,37 @@ REPORT
 
 ## Structured output for the orchestrator
 
-After producing the report, return a machine-readable summary using this exact format at the end of your response:
+After producing the report, return the following JSON object to the orchestrator. The orchestrator routes on `overall` and `blockers` — fill every field accurately.
 
+```json
+{
+  "overall": "PASS|FAIL|PARTIAL",
+  "strategies_used": ["API|BROWSER|VISUAL|ANALYSIS"],
+  "pr_commented": true,
+  "criteria_results": [
+    {
+      "criterion": "acceptance criterion text",
+      "method": "strategy used",
+      "result": "PASS|FAIL|PARTIAL",
+      "evidence": "what was observed"
+    }
+  ],
+  "smoke_tests": [
+    { "area": "Settings page", "result": "PASS|FAIL", "evidence": "loaded without errors" }
+  ],
+  "tests_authored": ["list of new test files written and committed, or empty array"],
+  "pr_comment_url": "URL of the posted QA report comment",
+  "blockers": ["criterion: what failed — what to fix"],
+  "recommendations": [
+    {
+      "description": "suggestion text",
+      "severity": "MUST_HAVE|SHOULD_HAVE|COULD_HAVE|NICE_TO_HAVE"
+    }
+  ]
+}
 ```
-### Orchestrator Summary
 
-**Blockers** (acceptance criteria not met — must fix):
-- [criterion]: [what failed] — [what to fix]
-<!-- or: none -->
-
-**Nice-to-have** (out-of-scope improvements — note, do not fix):
-- [description]
-<!-- or: none -->
-
-**Unexpected findings** (issues found outside acceptance criteria):
-- [description] — suggested classification: blocker | nice-to-have | unclear
-<!-- or: none -->
-
-**Overall: READY TO MERGE | FAIL | PARTIAL**
-```
-
-The orchestrator uses this summary to decide next steps. It will ask the user to classify any finding tagged `unclear` before proceeding.
-
-If all criteria pass: print **READY TO MERGE** clearly.
-If blocked: list each blocker with a suggested fix.
+The orchestrator will ask the user to classify any unexpected finding before routing. COULD_HAVE and NICE_TO_HAVE recommendations are dispatched as non-blocking follow-up tickets.
 
 ---
 

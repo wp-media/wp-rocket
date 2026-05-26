@@ -74,10 +74,26 @@ Do not push.
 
 ### Step 5 — Return
 
-Report:
-- Files modified (list)
-- Tests written or updated
-- PHPCS result: PASS
-- PHPStan result: PASS
-- Commit SHA
-- Any deviation from the spec (with reason)
+Return the following JSON object to the orchestrator. Fill every field — the orchestrator uses these for DOD L2 routing.
+
+```json
+{
+  "ticket_id": "<N>",
+  "branch": "current branch name",
+  "files_changed": ["list of PHP files modified"],
+  "tests_passing": true,
+  "test_output": "one-line summary, e.g. '42 tests, 0 failures'",
+  "dod_layer1": {
+    "overall": "PASS|WARN",
+    "checks": [
+      { "name": "phpcs-changed", "status": "PASS|WARN", "evidence": "0 violations" },
+      { "name": "run-stan", "status": "PASS|WARN", "evidence": "0 errors" },
+      { "name": "test-unit", "status": "PASS|WARN", "evidence": "N tests passed" }
+    ]
+  },
+  "co_authored_by": "Claude Sonnet 4.6 <noreply@anthropic.com>",
+  "notes": "any deviations from spec with reason, or empty string"
+}
+```
+
+`dod_layer1.overall` must be `PASS` or `WARN` — never `FAIL`. Self-correct all failures before committing (Step 3).

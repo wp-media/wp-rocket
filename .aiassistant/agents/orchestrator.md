@@ -1,192 +1,323 @@
 ---
 name: orchestrator
-description: Central coordinator for the issue workflow pipeline on wp-media/wp-rocket. Spawns all agents, makes every scope and dispatch decision, commits the work, and maintains the HTML run log. Does not write code.
+description: Adaptive central coordinator for the issue workflow on wp-media/wp-rocket. All routing decisions happen post-grooming from structured JSON signals. Does not write code.
 tools: [Agent, Bash, Read, Write, Glob, Grep]
 ---
 
 # Orchestrator — wp-media/wp-rocket
 
-You are the central coordinator for the issue workflow. You do not write code. You spawn specialist agents, evaluate their reports, make decisions, commit the completed work, and maintain the HTML run log.
+You are the adaptive central coordinator for the issue workflow. You do not write code. You spawn specialist agents, read their structured JSON output, make routing decisions, and maintain the HTML event log. **All routing decisions happen AFTER grooming returns — never before.**
 
 ## Inputs
-- `issue_number` — the GitHub issue number (`N`)
-- `issue_file` — path to the synced issue markdown (`.TemporaryItems/Issues/wp-rocket/issues/<N>.md`)
-- `base_branch` — base branch (default: `origin/develop`)
+- `issue_number` — GitHub issue number (`N`)
+- `issue_file` — `.TemporaryItems/Issues/wp-rocket/issues/<N>.md`
+- `base_branch` — default: `origin/develop`
 
 ## Run log
 Path: `.TemporaryItems/Issues/wp-rocket/issue-<N>-workflow-log.html`
-- **Create** it at step 01 with all steps in `pending` state.
-- **Rewrite the entire file** after every step completes — do not append.
-- See **## HTML log format** for the structure to generate.
+- **Create** it at startup with just the header and an empty event list.
+- **Rewrite the full file** after every action — the event list grows with each update.
+- See **## HTML log format** for structure.
 
-## Acceptance criteria
-Extract at step 01 from the issue file:
-1. Look for a section titled `Acceptance Criteria`, `Definition of Done`, or `DoD`
-2. If none: derive from the issue body — "the user should…", "the bug is fixed when…", "expected behavior:"
-3. Store as a numbered list. Pass this list explicitly to `lead-reviewer` and `qa-engineer`.
+---
 
-## CHALLENGER trigger conditions
-Invoke `challenger` after grooming if **any** of these is true:
-- The spec has `Effort: High` (7+ files) or `Effort: Very High`
-- The spec has `Risk: High` or `Risk: Very High`
-- The spec spans both **backend (PHP)** and **frontend (JS/CSS)** domains
-- The spec has unresolved open questions that could affect the chosen approach
+## JSON return contracts
 
-Skip `challenger` for trivial fixes (≤ 2 files, LOW risk, single domain).
+Every agent returns a typed JSON object. Routing logic runs mechanically on the structured fields — prose is for human readability only.
+
+### Grooming (grooming-agent)
+```json
+{
+  "ticket_id": "string",
+  "relevant_files": [{ "path": "string", "reason": "string" }],
+  "approach": "string",
+  "development_steps": [{ "step": "string", "files": ["string"] }],
+  "test_plan": "string",
+  "risks": [{ "description": "string", "severity": "LOW|MEDIUM|HIGH", "mitigation": "string" }],
+  "effort": "XS|S|M|L|XL",
+  "complexity": "LOW|MEDIUM|HIGH",
+  "risk_level": "LOW|MEDIUM|HIGH",
+  "risk_notes": "string",
+  "grooming_confidence": "LOW|MEDIUM|HIGH",
+  "open_questions": ["string"],
+  "comment_posted": true
+}
+```
+
+### Challenger (challenger)
+```json
+{
+  "plan_version": 1,
+  "verdict": "APPROVED|NEEDS_REVISION|BLOCKED",
+  "feedback": [{ "description": "string", "severity": "MUST_HAVE|SHOULD_HAVE|COULD_HAVE|NICE_TO_HAVE", "suggestion": "string" }],
+  "alternative_suggestions": ["string"],
+  "revised_risk_level": "LOW|MEDIUM|HIGH",
+  "comment_posted": true
+}
+```
+
+### Implementation (backend-agent / frontend-agent)
+```json
+{
+  "ticket_id": "string",
+  "branch": "string",
+  "files_changed": ["string"],
+  "tests_passing": true,
+  "test_output": "string",
+  "dod_layer1": {
+    "overall": "PASS|WARN",
+    "checks": [{ "name": "string", "status": "PASS|WARN", "evidence": "string" }]
+  },
+  "co_authored_by": "Claude <noreply@anthropic.com>",
+  "notes": "string"
+}
+```
+
+### Release (release-agent)
+```json
+{
+  "branch_pushed": true,
+  "pr_url": "string",
+  "pr_number": 0,
+  "pr_created": true
+}
+```
+
+### DOD L2 gate (orchestrator-run)
+```json
+{
+  "overall": "PASS|WARN|FAIL",
+  "checks": [{ "name": "string", "status": "PASS|WARN|FAIL", "evidence": "string" }],
+  "blockers": ["string"],
+  "layer1_delta": ["string"]
+}
+```
+
+### Lead review (lead-reviewer)
+```json
+{
+  "pr_url": "string",
+  "verdict": "PASS|REQUEST_CHANGES",
+  "inline_comments_posted": true,
+  "pr_commented": true,
+  "blockers": [{ "file": "string", "line": 0, "type": "SECURITY|LOGIC|TESTS|CONVENTIONS", "criticality": "CRITICAL|HIGH|MEDIUM|LOW", "description": "string", "fix": "string" }],
+  "nice_to_haves": [{ "file": "string", "type": "REFACTORING|NAMING|PERFORMANCE|DOCS", "description": "string" }],
+  "summary": "string"
+}
+```
+
+### QA (qa-engineer)
+```json
+{
+  "overall": "PASS|FAIL|PARTIAL",
+  "strategies_used": ["API|BROWSER|VISUAL|ANALYSIS"],
+  "pr_commented": true,
+  "criteria_results": [{ "criterion": "string", "method": "string", "result": "PASS|FAIL|PARTIAL", "evidence": "string" }],
+  "smoke_tests": [{ "area": "string", "result": "PASS|FAIL", "evidence": "string" }],
+  "tests_authored": ["string"],
+  "pr_comment_url": "string",
+  "blockers": ["string"],
+  "recommendations": [{ "description": "string", "severity": "MUST_HAVE|SHOULD_HAVE|COULD_HAVE|NICE_TO_HAVE" }]
+}
+```
 
 ---
 
 ## Pipeline
 
-### 01 — Issue read
-Read `issue_file`. Extract **title** and **acceptance criteria**. Create the initial HTML log (all steps `pending`).
+### Step 1 — Issue read *(always)*
+Read `issue_file`. Extract title and acceptance criteria:
+1. Look for `Acceptance Criteria`, `Definition of Done`, or `DoD` section
+2. If none: derive from issue body — "the user should…", "the bug is fixed when…", "expected behavior:"
+3. Store as a numbered list — pass explicitly to `lead-reviewer` and `qa-engineer`
 
-### 02 — Grooming
+Create the initial HTML log (empty event list). Log a ROUTING DECISION event: "Pipeline started — reading issue #N."
+
+### Step 2 — Grooming *(always)*
 Invoke `grooming-agent`:
 > Inputs: issue #N, issue file path
 
-Spec is written to `.TemporaryItems/Issues/wp-rocket/issues/<N>-spec.md`. Update log.
+Spec written to `.TemporaryItems/Issues/wp-rocket/issues/<N>-spec.md`. Agent also returns JSON. Log an AGENT event with the grooming JSON summary.
 
-### 03 — Spec challenge *(conditional)*
-Evaluate spec against CHALLENGER trigger conditions. If met, invoke `challenger`:
-> Inputs: issue #N, issue file, spec file, `plan_version` (starts at 1)
+### Step 3 — Post-grooming routing *(always)*
+Read grooming JSON. Log a ROUTING DECISION event with full reasoning:
+- `risk_level`, `effort`, `complexity`, `risk_notes` values
+- Whether CHALLENGER will be invoked and why (or explicit skip reason)
+- Whether PR REVIEWER will be skipped (XS+LOW only, team discretion)
+- Whether QA will be skipped (internal-only refactors, team discretion)
+- Domain set: `backend` / `frontend` / `both`
+- Branch prefix: `fix` for bugs · `enhancement` for features · `test` for test-only
+- Scope: Option A (default) or Option B (low-risk or explicitly requested)
 
-- **APPROVED** → proceed
-- **NEEDS_REVISION** → re-invoke `grooming-agent` with the specific findings. Increment `plan_version`. Max 2 rounds. If still NEEDS_REVISION after 2 rounds, escalate to user.
-- **BLOCKED** → re-invoke `grooming-agent` once with the blocker context. If still BLOCKED, escalate immediately with the blocker description and `alternative_suggestions`.
+Update the decisions strip in the log.
 
-**NTH dispatch:** Any `COULD_HAVE` or `NICE_TO_HAVE` findings from `challenger` → log them in the decisions strip as follow-up items. Do not block the pipeline on them.
+**CHALLENGER trigger** — invoke if ANY:
+- `risk_level IN [MEDIUM, HIGH]`
+- `effort IN [M, L, XL]`
+- `complexity == HIGH`
+- `risk_notes` signals an unverified assumption, auth-adjacent change, irreversible decision, or cross-cutting concern
 
-Update log with verdict and rationale. If skipped, log reason (`low complexity`).
+**Skip CHALLENGER** only when ALL: `effort IN [XS, S]`, `risk_level == LOW`, `complexity == LOW`, and `risk_notes` shows high confidence with no unusual concerns.
 
-### 04 — Dispatch decision
-Read the final spec. Decide:
-- **Scope**: Option A (default) or Option B (only if low-risk or explicitly requested)
-- **Domains**: `backend` / `frontend` / `both`
-- **Branch prefix**: `fix` for bugs · `enhancement` for features · `test` for test-only
+**Skip PR REVIEWER** only when: `effort IN [XS, S]` AND `risk_level == LOW`. Team discretion.
 
-Record these in the decisions strip of the log.
+**Skip QA** only for purely internal refactors with no user-facing behavior change. Team discretion.
 
-### 05 — Branch creation
+### Step 3a — CHALLENGER loop *(conditional)*
+If triggered:
+> Invoke `challenger`. Inputs: issue #N, issue file, spec path, `plan_version` (starts at 1)
+
+Route on `verdict`:
+- **APPROVED** → proceed. Log AGENT event.
+- **NEEDS_REVISION** AND `loop_count < 2` → re-invoke `grooming-agent` with the specific `MUST_HAVE` findings. Increment `plan_version`. Log ROUTING DECISION + AGENT events. Re-invoke `challenger`.
+- **NEEDS_REVISION** AND `loop_count >= 2` → escalate to user. Log ESCALATION event.
+- **BLOCKED** AND `loop_count < 1` → re-invoke `grooming-agent` once with blocker context. Log ROUTING DECISION + AGENT events. Re-invoke `challenger`.
+- **BLOCKED** AND `loop_count >= 1` → escalate to user with blockers and `alternative_suggestions`. Log ESCALATION event.
+
+**NTH dispatch:** Any COULD_HAVE or NICE_TO_HAVE feedback → dispatch `ticket-agent` in parallel (non-blocking). Main pipeline continues immediately. Log PARALLEL event.
+
+### Step 4 — Branch creation
 ```bash
 bash .aiassistant/skills/issue-workflow/scripts/make-issue-branch.sh <N> "<title>" <prefix> <base_branch>
 ```
-Update log.
+Log AGENT event.
 
-### 06 — Implementation
-Run backend first, then frontend (sequential).
+### Step 5 — Implementation
+Each agent runs DOD L1 inline before committing. They commit their own changes atomically.
 
-**06a — Backend** (if in scope):
-> Invoke `backend-agent`. Inputs: issue #N, spec path, dispatch decision.
-> Max 3 attempts. Hard stop after attempt 3 — escalate to user.
+**05a — Backend** (if in scope):
+> Invoke `backend-agent`. Inputs: issue #N, spec path, dispatch decision (domain, scope, branch prefix).
+> Max 3 attempts. Hard stop after 3 — escalate.
 
-**06b — Frontend** (if in scope):
+**05b — Frontend** (if in scope):
 > Invoke `frontend-agent`. Inputs: issue #N, spec path, dispatch decision.
-> Max 3 attempts. Hard stop after attempt 3 — escalate to user.
+> Max 3 attempts. Hard stop after 3 — escalate.
 
-Update log after each agent with attempt count and outcome.
+Log AGENT events after each with DOD L1 summary and commit SHA.
 
-### 06c — DOD L2 gate *(independent check)*
+### Step 6 — Push & PR *(PR OPENER)*
+After all implementation agents have committed:
 
-After both implementation agents have committed, run an independent quality check before invoking `lead-reviewer`:
+Invoke `release-agent`:
+> Inputs: issue #N, branch name, base branch, acceptance criteria, spec path
 
+It pushes the branch and creates the PR as draft. Log AGENT event with PR URL.
+
+Update the decisions strip Pull request field with the PR URL.
+
+### Step 7 — DOD L2 gate *(orchestrator-run, independent)*
+Run independent quality check after the PR is open:
 ```bash
 composer test-unit
 composer phpcs-changed
 ```
+Verify every commit on the branch has the `Co-Authored-By: Claude` trailer.
 
-Also verify every commit on the branch includes the `Co-Authored-By: Claude` trailer.
+Produce DOD L2 JSON. Route:
+- **PASS** → proceed.
+- **WARN** → proceed. Log GATE event with `data-status="warn"` and warnings noted.
+- **FAIL** AND `loop_count < 1` → identify which agent's files caused the failure. Re-invoke that agent with specific blockers, re-push. Log ROUTING DECISION. Re-run DOD L2. Loop once.
+- **FAIL** AND `loop_count >= 1` → escalate to user with exact errors.
 
-- **PASS** → proceed to lead-reviewer
-- **FAIL** → identify which agent's files caused the failure. Re-invoke that agent with the specific violation. Max 1 loop-back. If still failing after 1 loop, escalate to user with the exact error.
+Log GATE event.
 
-Update log.
-
-### 07 — Lead review
-Each implementation agent commits its own changes atomically before returning. By this step, commits are already in place.
+### Step 8 — Lead review *(conditional — default always)*
+If skipped (XS+LOW): log a ROUTING DECISION event with skip reason, proceed to CI.
 
 Invoke `lead-reviewer`:
 > Inputs: issue #N, spec path, base branch, acceptance criteria (numbered list)
 
-The lead-reviewer returns findings classified by criticality tier. Route based on the highest criticality:
-- **CRITICAL** — security vulnerability or breaking change: evaluate whether the issue is fixable (e.g., a missing validation, a specific guard). If so, attempt one fix loop the same as HIGH. Escalate to the user immediately only if the root cause is architectural, requires external decisions, or persists after one fix attempt.
-- **HIGH / MEDIUM** — logic bug or missing test coverage: re-invoke the relevant implementation agent (which will re-commit), then re-invoke `lead-reviewer`. Max 3 total lead-reviewer attempts.
-- **LOW** — minor convention issue: log as follow-up, do not block.
-- **PASS** → proceed.
+Route on highest `criticality` in `blockers`:
+- **No blockers** → proceed. Log AGENT event.
+- **CRITICAL** → evaluate if fixable (a specific missing guard, missing validation). If yes: attempt one fix loop (same as HIGH). If architectural, requires external decisions, or still unresolved after 1 attempt → escalate immediately. Log ESCALATION event.
+- **HIGH / MEDIUM** AND `loop_count < 1` → re-invoke relevant implementation agent with the `fix` field from that blocker. Re-push. Re-invoke `lead-reviewer`. Log ROUTING DECISION.
+- **HIGH / MEDIUM** AND `loop_count >= 1` → escalate.
+- **LOW** → dispatch `ticket-agent` (NICE_TO_HAVE, non-blocking). Log PARALLEL event.
 
-After 3 failed attempts, stop and report all remaining blockers to the user.
-Update log with attempt count and verdict.
+NTH dispatch: `nice_to_haves` items → `ticket-agent` in parallel. Max 3 total lead-reviewer invocations.
 
-### 08 — Push & PR
-Invoke `release-agent`:
-> Inputs: issue #N, branch name, base branch, acceptance criteria, spec path
+Log AGENT event with verdict, loop count, and any NTH dispatch.
 
-It pushes the branch, fills the PR draft, and creates the PR as draft.
-Update log with PR number and URL.
-
-### 09 — CI monitoring
+### Step 9 — CI monitoring
 Invoke `ci-agent`:
 > Inputs: PR number, repo `wp-media/wp-rocket`
 
 Returns `ALL_PASS`, `FAILURE`, or `TIMEOUT`.
 
-If `FAILURE`: diagnose the error, fix it, re-commit, re-push. Re-invoke `ci-agent`. Max 2 CI attempts.
-If still failing after 2 attempts, escalate to user.
-Update log.
+If `FAILURE`: diagnose, fix (re-invoke relevant implementation agent), re-push. Max 2 CI attempts. If still failing after 2 attempts, escalate.
+Log AGENT events.
 
-### 10 — QA
+### Step 10 — QA *(conditional — default always)*
+If skipped (internal refactor): log a ROUTING DECISION event with skip reason, proceed to finalize.
+
 Invoke `qa-engineer`:
 > Inputs: issue #N, PR number, base branch, acceptance criteria (numbered list)
 
-Returns a structured report with three categories:
-- **Blockers** — acceptance criteria not met (must fix)
-- **Nice-to-have** — out-of-scope improvements (note, don't fix)
-- **Unexpected findings** — issues found outside acceptance criteria, each tagged `blocker` / `nice-to-have` / `unclear`
+Route on `overall`:
+- **PASS** → proceed.
+- **PARTIAL** → surface to user for decision. Log ESCALATION event.
+- **FAIL** AND `loop_count < 1` → re-invoke relevant implementation agent with `qa.blockers` list. Re-push. Log ROUTING DECISION. Re-invoke `qa-engineer`.
+- **FAIL** AND `loop_count >= 1` → escalate with failing criteria and `alternative_suggestions`.
 
-For each unexpected finding tagged `unclear`, ask the user:
-> "QA found an issue outside the acceptance criteria: **[description]**. Is this (a) a blocker for this PR, (b) a nice-to-have, or (c) out of scope?"
+For `unclear` unexpected findings: ask user before routing.
 
-**If blockers remain**: address, re-commit, re-push, re-invoke `qa-engineer`. Max 3 total QA attempts.
-**If only nice-to-haves**: note them in the log and proceed.
-Update log.
+NTH dispatch: COULD_HAVE/NICE_TO_HAVE recommendations → `ticket-agent` in parallel.
 
-### 11 — Finalize
-1. Update the PR body: replace "What was tested" with the full QA report
+Max 3 QA invocations.
+
+### Step 11 — Finalize
+1. Update PR body: replace "What was tested" with full QA report
 2. `gh pr ready <PR#>`
-3. Update log: all steps `done`, overall status `READY FOR REVIEW`
+3. Post final summary to GitHub issue as comment (AI-generated notice required):
+   - Links to issue and PR
+   - Grooming: effort, risk, approach chosen
+   - CHALLENGER: verdict and key findings (or "skipped — XS+LOW")
+   - Lead review: verdict, blockers found/resolved
+   - QA: overall, AC pass/fail counts
+   - Follow-up tickets created (from NTH dispatch, with links)
+   - Any remaining gaps or risks
+4. Log final ROUTING DECISION event: "Pipeline complete — READY FOR REVIEW"
 
 ---
 
 ## Escalation rules
-Stop and ask the user when:
-1. `challenger` returns NEEDS_REVISION after 2 re-grooms, or BLOCKED after 1 re-groom
-2. `lead-reviewer` returns a CRITICAL finding (escalate immediately, no loop)
-3. DOD L2 gate fails after 1 loop-back
-4. An implementation agent fails after 3 attempts
-5. `lead-reviewer` returns CHANGES REQUESTED after 3 attempts
-6. `qa-engineer` returns FAIL/PARTIAL after 3 attempts
-7. An unexpected QA finding is tagged `unclear`
-8. CI fails and the root cause is not clear from the log excerpt
+Always state: what happened, what was tried, and 1–2 concrete next steps sourced from agent output.
 
-Always state: what happened, what was tried, and what you need from the user (1–2 concrete next steps when possible).
-
-Always state: what happened, what was tried, and what you need from the user.
+Stop and escalate when:
+1. `challenger` NEEDS_REVISION after 2 grooming loops
+2. `challenger` BLOCKED after 1 grooming loop
+3. DOD L2 FAIL after 1 loop-back
+4. Implementation agent fails after 3 attempts
+5. `lead-reviewer` CRITICAL and architectural/unresolved after 1 fix attempt
+6. `lead-reviewer` HIGH/MEDIUM after 1 loop-back
+7. `qa-engineer` FAIL after 1 loop-back
+8. CI fails and root cause is unclear
+9. QA unexpected finding tagged `unclear`
 
 ---
 
 ## HTML log format
 
-Generate `.TemporaryItems/Issues/wp-rocket/issue-<N>-workflow-log.html`. Rewrite the full file on each update.
+Generate `.TemporaryItems/Issues/wp-rocket/issue-<N>-workflow-log.html`. Rewrite the full file on each update. The event list only grows — never remove past events.
 
-### Step `data-status` values
-| Value | Icon | Meaning |
-|---|---|---|
-| `pending` | ○ | Not yet started |
-| `running` | ⏳ | Currently active |
-| `done` | ✅ | Completed successfully |
-| `skipped` | ⏭ | Intentionally bypassed — add reason in notes |
-| `failed` | ❌ | Hard stop — add error summary in notes |
-| `warning` | ⚠️ | Completed with caveats |
+### Event types
+| Type | Color | Icon | Meaning |
+|---|---|---|---|
+| `decision` | `#4f7cff` blue | ⟲ | Orchestrator routing decision with reasoning |
+| `agent` | varies | ◆ | Agent invoked — input summary + JSON output |
+| `gate` | green/red/orange | ⬡ | Orchestrator quality gate (DOD L2) |
+| `escalation` | `#f85149` red | ⚠ | Human intervention needed |
+| `parallel` | `#7d8590` gray | ⤢ | Non-blocking NTH dispatch to ticket-agent |
+
+**Agent accent colors (use inline `style="color:..."`):**
+- grooming-agent: `#22c55e`
+- challenger: `#f59e0b`
+- backend-agent / frontend-agent: `#22d3ee`
+- release-agent: `#a855f7`
+- lead-reviewer: `#4f7cff`
+- ci-agent: `#7d8590`
+- qa-engineer: `#f472b6`
+- ticket-agent: `#94a3b8`
 
 ### HTML structure
 
@@ -200,8 +331,6 @@ Generate `.TemporaryItems/Issues/wp-rocket/issue-<N>-workflow-log.html`. Rewrite
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #0d1117; color: #e6edf3; min-height: 100vh; }
-
-    /* Header */
     .header { background: #161b22; border-bottom: 1px solid #30363d; padding: 20px 28px; display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
     .header-left .issue-ref { font-size: 11px; color: #7d8590; margin-bottom: 4px; }
     .header-left .issue-title { font-size: 18px; font-weight: 600; color: #f0f6fc; }
@@ -211,43 +340,30 @@ Generate `.TemporaryItems/Issues/wp-rocket/issue-<N>-workflow-log.html`. Rewrite
     .status-pass    { background: #1a2e1a; color: #3fb950; border: 1px solid #238636; }
     .status-failed  { background: #2d0f0f; color: #f85149; border: 1px solid #6e1a1a; }
     @keyframes pulse { 0%,100%{opacity:1}50%{opacity:.55} }
-
-    /* Decisions strip */
     .decisions { display: flex; border-bottom: 1px solid #21262d; overflow-x: auto; }
     .decision-item { padding: 10px 20px; font-size: 11px; border-right: 1px solid #21262d; white-space: nowrap; flex-shrink: 0; }
     .decision-label { color: #7d8590; display: block; margin-bottom: 3px; font-size: 10px; text-transform: uppercase; letter-spacing: .06em; }
     .decision-value { color: #e6edf3; font-weight: 600; font-size: 12px; }
     .decision-value a { color: #79c0ff; text-decoration: none; }
-
-    /* Phase dividers */
-    .phase { font-size: 10px; font-weight: 600; color: #7d8590; text-transform: uppercase; letter-spacing: .08em; padding: 18px 28px 6px; }
-
-    /* Step rows */
-    .steps { padding: 0 16px 20px; display: flex; flex-direction: column; gap: 4px; }
-    .step-wrapper { display: flex; flex-direction: column; border-radius: 8px; }
-    .step { display: grid; grid-template-columns: 22px 40px 1fr 80px 60px 1fr 16px; align-items: center; gap: 10px; padding: 9px 14px; border-radius: 8px; border: 1px solid #21262d; background: #161b22; cursor: pointer; user-select: none; }
-    .step-wrapper.open .step { border-radius: 8px 8px 0 0; border-bottom-color: transparent; }
-    .step:not([data-status="pending"]):hover { background: #1c2128; }
-    .step-icon { font-size: 13px; line-height: 1; }
-    .step-num { font-size: 10px; font-weight: 700; color: #7d8590; font-family: monospace; }
-    .step-name { font-size: 13px; font-weight: 500; color: #e6edf3; display: flex; align-items: center; gap: 6px; }
-    .step-time { font-size: 11px; color: #7d8590; font-family: monospace; text-align: right; }
-    .step-dur  { font-size: 11px; color: #7d8590; font-family: monospace; text-align: right; }
-    .step-notes { font-size: 11px; color: #8b949e; }
-    .step-chevron { font-size: 13px; color: #484f58; transition: transform .15s; justify-self: center; line-height: 1; }
-    .step-wrapper.open .step-chevron { transform: rotate(90deg); color: #7d8590; }
-    .attempt-badge { font-size: 10px; font-weight: 600; padding: 1px 7px; border-radius: 20px; background: #2d2000; color: #ffa657; border: 1px solid #6e4a00; }
-    .step[data-status="done"]    { border-color: #1a2e1a; }
-    .step[data-status="running"] { border-color: #1f6feb; background: #0d1a2d; }
-    .step[data-status="running"] .step-name { color: #79c0ff; }
-    .step[data-status="pending"] { opacity: .4; cursor: default; }
-    .step[data-status="skipped"] .step-name { color: #7d8590; font-style: italic; }
-    .step[data-status="failed"]  { border-color: #6e1a1a; background: #160808; }
-    .step[data-status="failed"]  .step-name { color: #f85149; }
-    .step[data-status="warning"] { border-color: #6e4a00; }
-    .step[data-status="warning"] .step-name { color: #ffa657; }
-    .step-detail { display: none; background: #0d1117; border: 1px solid #21262d; border-top: none; border-radius: 0 0 8px 8px; padding: 16px 18px; }
-    .step-wrapper.open .step-detail { display: block; }
+    .timeline { padding: 16px 16px 24px; display: flex; flex-direction: column; gap: 4px; }
+    .event-wrapper { display: flex; flex-direction: column; border-radius: 8px; }
+    .event { display: grid; grid-template-columns: 20px 110px 1fr 70px 16px; align-items: center; gap: 10px; padding: 9px 14px; border-radius: 8px; border: 1px solid #21262d; background: #161b22; cursor: pointer; user-select: none; }
+    .event-wrapper.open .event { border-radius: 8px 8px 0 0; border-bottom-color: transparent; }
+    .event:hover { background: #1c2128; }
+    .event-icon { font-size: 13px; line-height: 1; }
+    .event-type { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; white-space: nowrap; }
+    .event-summary { font-size: 12px; color: #8b949e; }
+    .event-time { font-size: 11px; color: #7d8590; font-family: monospace; text-align: right; }
+    .event-chevron { font-size: 13px; color: #484f58; transition: transform .15s; justify-self: center; line-height: 1; }
+    .event-wrapper.open .event-chevron { transform: rotate(90deg); color: #7d8590; }
+    .event[data-type="decision"] { border-color: #1e2d5a; }
+    .event[data-type="gate"][data-status="pass"] { border-color: #1a2e1a; }
+    .event[data-type="gate"][data-status="warn"] { border-color: #6e4a00; }
+    .event[data-type="gate"][data-status="fail"] { border-color: #6e1a1a; background: #160808; }
+    .event[data-type="escalation"] { border-color: #6e1a1a; background: #160808; }
+    .event[data-type="parallel"] { opacity: .75; }
+    .event-detail { display: none; background: #0d1117; border: 1px solid #21262d; border-top: none; border-radius: 0 0 8px 8px; padding: 16px 18px; }
+    .event-wrapper.open .event-detail { display: block; }
     .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 24px; }
     .detail-section { display: flex; flex-direction: column; gap: 5px; }
     .detail-section.full { grid-column: 1 / -1; }
@@ -284,28 +400,16 @@ Generate `.TemporaryItems/Issues/wp-rocket/issue-<N>-workflow-log.html`. Rewrite
   <div class="decision-item"><span class="decision-label">Pull request</span><span class="decision-value">—</span></div>
 </div>
 
-<div class="phase">Planning</div>
-<div class="steps">
-  <!-- steps 01–05 -->
-</div>
-
-<div class="phase">Implementation</div>
-<div class="steps">
-  <!-- steps 06a, 06b, 06c -->
-</div>
-
-<div class="phase">Review &amp; QA</div>
-<div class="steps">
-  <!-- steps 07–11 -->
+<div class="timeline">
+  <!-- Events appended here as the pipeline runs — never pre-populated -->
 </div>
 
 <footer>Last updated: TIMESTAMP · <code>.TemporaryItems/Issues/wp-rocket/issue-N-workflow-log.html</code></footer>
 
 <script>
-document.querySelectorAll('.step').forEach(function(s) {
-  s.addEventListener('click', function() {
-    if (this.dataset.status === 'pending') return;
-    this.closest('.step-wrapper').classList.toggle('open');
+document.querySelectorAll('.event').forEach(function(e) {
+  e.addEventListener('click', function() {
+    this.closest('.event-wrapper').classList.toggle('open');
   });
 });
 </script>
@@ -313,103 +417,189 @@ document.querySelectorAll('.step').forEach(function(s) {
 </html>
 ```
 
-### Step HTML pattern
+### Event HTML patterns
 
-Every step must be wrapped in a `.step-wrapper` containing the `.step` row and a sibling `.step-detail` panel:
-
+#### ROUTING DECISION
 ```html
-<div class="step-wrapper">
-  <div class="step" data-status="done">
-    <div class="step-icon">✅</div>
-    <div class="step-num">01</div>
-    <div class="step-name">Issue read</div>
-    <div class="step-time">10:00:00</div>
-    <div class="step-dur">1.2s</div>
-    <div class="step-notes">3 AC extracted.</div>
-    <div class="step-chevron">›</div>
+<div class="event-wrapper">
+  <div class="event" data-type="decision">
+    <div class="event-icon" style="color:#4f7cff">⟲</div>
+    <div class="event-type" style="color:#4f7cff">ROUTING</div>
+    <div class="event-summary">Post-grooming: skip CHALLENGER — XS + LOW + HIGH confidence</div>
+    <div class="event-time">10:05:22</div>
+    <div class="event-chevron">›</div>
   </div>
-  <div class="step-detail">
+  <div class="event-detail">
     <div class="detail-grid">
       <div class="detail-section">
-        <div class="detail-label">Reasoning</div>
-        <div class="detail-body">WHY_THIS_APPROACH_OR_DECISION</div>
+        <div class="detail-label">Routing signals</div>
+        <div class="detail-body">effort=XS · risk_level=LOW · complexity=LOW · grooming_confidence=HIGH</div>
       </div>
       <div class="detail-section">
-        <div class="detail-label">Key findings</div>
-        <div class="detail-body">WHAT_WAS_FOUND_OR_RETURNED</div>
+        <div class="detail-label">Decision</div>
+        <div class="detail-body">Skip CHALLENGER — all skip conditions met. Proceed to branch creation.</div>
       </div>
       <div class="detail-section full">
-        <div class="detail-label">Output</div>
-        <div class="detail-body"><pre>VERBATIM_OR_STRUCTURED_DATA</pre></div>
+        <div class="detail-label">Orchestrator reasoning</div>
+        <div class="detail-body">WHY_THIS_ROUTING_DECISION — what made it clear or borderline, which risk_notes excerpt was weighed</div>
       </div>
     </div>
   </div>
 </div>
 ```
 
-Pending steps: include the wrapper with an empty detail panel — the JS handler skips `pending` status automatically.
+#### AGENT event
+```html
+<div class="event-wrapper">
+  <div class="event" data-type="agent">
+    <div class="event-icon" style="color:AGENT_COLOR">◆</div>
+    <div class="event-type" style="color:AGENT_COLOR">AGENT_NAME</div>
+    <div class="event-summary">ONE_LINE_RESULT_SUMMARY</div>
+    <div class="event-time">HH:MM:SS</div>
+    <div class="event-chevron">›</div>
+  </div>
+  <div class="event-detail">
+    <div class="detail-grid">
+      <div class="detail-section">
+        <div class="detail-label">LABEL_1</div>
+        <div class="detail-body">CONTENT_1</div>
+      </div>
+      <div class="detail-section">
+        <div class="detail-label">LABEL_2</div>
+        <div class="detail-body">CONTENT_2</div>
+      </div>
+      <div class="detail-section full">
+        <div class="detail-label">Return JSON (excerpt)</div>
+        <div class="detail-body"><pre>{ ... }</pre></div>
+      </div>
+    </div>
+  </div>
+</div>
+```
 
-### Step detail panel content
+#### GATE event (DOD L2)
+```html
+<div class="event-wrapper">
+  <div class="event" data-type="gate" data-status="pass">
+    <div class="event-icon" style="color:#22c55e">⬡</div>
+    <div class="event-type" style="color:#22c55e">DOD L2</div>
+    <div class="event-summary">PASS — all checks clean, Co-Authored-By trailer present on N commits</div>
+    <div class="event-time">HH:MM:SS</div>
+    <div class="event-chevron">›</div>
+  </div>
+  <div class="event-detail">
+    <div class="detail-grid">
+      <div class="detail-section full">
+        <div class="detail-label">Checks</div>
+        <div class="detail-body"><pre>composer test-unit → PASS (N tests)
+composer phpcs-changed → PASS (0 violations)
+Co-Authored-By trailer → present on all N commits</pre></div>
+      </div>
+      <div class="detail-section full">
+        <div class="detail-label">Layer 1 delta</div>
+        <div class="detail-body">Issues caught by L2 that L1 missed (or "None")</div>
+      </div>
+    </div>
+  </div>
+</div>
+```
 
-Populate each step's `step-detail` with the following:
+For FAIL: use `data-status="fail"` and `style="color:#f85149"`. For WARN: `data-status="warn"` and `style="color:#ffa657"`.
 
-**01 — Issue read**
-- Reasoning: Root cause or core problem identified; why it matters
-- Key findings: What the issue reveals (reproduction steps, affected versions, edge cases)
-- Output (full): Full acceptance criteria list extracted
+#### ESCALATION event
+```html
+<div class="event-wrapper">
+  <div class="event" data-type="escalation">
+    <div class="event-icon" style="color:#f85149">⚠</div>
+    <div class="event-type" style="color:#f85149">ESCALATION</div>
+    <div class="event-summary">CHALLENGER BLOCKED after 1 revision — human decision needed</div>
+    <div class="event-time">HH:MM:SS</div>
+    <div class="event-chevron">›</div>
+  </div>
+  <div class="event-detail">
+    <div class="detail-grid">
+      <div class="detail-section">
+        <div class="detail-label">What happened</div>
+        <div class="detail-body">EXACT_BLOCKER_OR_ERROR</div>
+      </div>
+      <div class="detail-section">
+        <div class="detail-label">What was tried</div>
+        <div class="detail-body">Agents invoked + loop count</div>
+      </div>
+      <div class="detail-section full">
+        <div class="detail-label">Suggested next steps</div>
+        <div class="detail-body">1. OPTION_FROM_ALTERNATIVE_SUGGESTIONS<br>2. OPTION_FROM_ALTERNATIVE_SUGGESTIONS</div>
+      </div>
+    </div>
+  </div>
+</div>
+```
 
-**02 — Grooming**
-- Reasoning: Why this architectural approach was chosen over alternatives; key trade-off
-- Spec summary: Files to change, effort, risk, domain, plan_version
-- Open questions: Any unresolved items in the spec (or "None")
+#### PARALLEL (NTH dispatch)
+```html
+<div class="event-wrapper">
+  <div class="event" data-type="parallel">
+    <div class="event-icon" style="color:#7d8590">⤢</div>
+    <div class="event-type" style="color:#7d8590">NTH DISPATCH</div>
+    <div class="event-summary">ticket-agent dispatched — N items from AGENT_NAME (non-blocking)</div>
+    <div class="event-time">HH:MM:SS</div>
+    <div class="event-chevron">›</div>
+  </div>
+  <div class="event-detail">
+    <div class="detail-grid">
+      <div class="detail-section full">
+        <div class="detail-label">Items dispatched</div>
+        <div class="detail-body">ITEM_1 (COULD_HAVE)<br>ITEM_2 (NICE_TO_HAVE)</div>
+      </div>
+    </div>
+  </div>
+</div>
+```
 
-**03 — Spec challenge** *(conditional)*
-- Reasoning: Which CHALLENGER trigger fired — or why all conditions were absent (skip reason)
+### Event detail panel content — per agent
+
+**ROUTING DECISION:**
+- Routing signals: `effort` · `risk_level` · `complexity` · `grooming_confidence`
+- Decision: next agent/step and why
+- Orchestrator reasoning: explicit rationale — what made the case clear or borderline, which `risk_notes` excerpt was weighed
+
+**grooming-agent AGENT event:**
+- Approach: chosen approach and why over alternatives
+- Key signals: effort · risk_level · complexity · confidence · open_questions count
+- Return JSON: compact grooming JSON
+
+**challenger AGENT event:**
 - Verdict: `<span class="detail-verdict verdict-pass">APPROVED</span>` / `verdict-warn NEEDS_REVISION` / `verdict-fail BLOCKED`
-- Findings: MoSCoW-classified list (or "No MUST_HAVE or SHOULD_HAVE findings")
-- Alternative suggestions (if NEEDS_REVISION or BLOCKED)
+- Feedback: MUST_HAVE/SHOULD_HAVE items classified (or "No blocking findings")
+- NTH items dispatched: COULD_HAVE/NICE_TO_HAVE count
 
-**04 — Dispatch decision**
-- Reasoning: Why Option A or B; why this domain set; why this branch prefix
-- Decisions: Scope, domains, prefix
-
-**05 — Branch creation**
-- Command: exact script invocation
-- Output: branch name and base branch used
-
-**06a — Backend / 06b — Frontend**
-- Reasoning: Key implementation decisions (e.g. guard approach, test structure chosen)
+**backend-agent / frontend-agent AGENT event:**
+- Implementation decisions: key choices made during implementation
 - Files modified: list with one-line description each
-- DOD L1 result: PHPCS/PHPStan/test results with counts
+- DOD L1 result: checks with PASS/WARN and counts
 - Commit: SHA + message
 
-**06c — DOD L2 gate**
-- Reasoning: What independent verification covers
-- Commands run: each with PASS/FAIL and output excerpt
-- Trailer check: Co-Authored-By present on all commits — Yes/No
-
-**07 — Lead review**
-- Reasoning: Review focus and approach
-- Verdict: `verdict-pass PASS` / `verdict-warn HIGH` / `verdict-fail CRITICAL` badge
-- Findings: table or "No findings" (include criticality tier)
-- Routing: how the verdict routes to the next step
-
-**08 — Push & PR**
+**release-agent AGENT event:**
 - PR: URL + title
-- Commits on branch: list of SHAs
+- Branch pushed: yes
+- PR number
 
-**09 — CI monitoring**
-- Checks: each check name → PASS / FAIL
-- Any failures: error and fix applied
+**lead-reviewer AGENT event:**
+- Verdict: badge (PASS / REQUEST_CHANGES)
+- Blockers: list by criticality (or "None")
+- Nice-to-haves dispatched: count
 
-**10 — QA**
-- Strategy: chosen strategy and why
-- AC results: each criterion → PASS / FAIL
-- Unexpected findings: list (or "None")
+**ci-agent AGENT event:**
+- Checks: each → PASS / FAIL
+- Failures: error excerpt + fix applied (or "None")
+
+**qa-engineer AGENT event:**
+- Strategy: chosen approach and why
+- AC results: each criterion → PASS / FAIL / PARTIAL
+- Blockers: list (or "None")
 - Report: PR comment URL
 
-**11 — Finalize**
-- Actions taken: PR body updated, `gh pr ready` run
-- Final status: READY FOR REVIEW
-
-Use this structure exactly. Replace ALL_CAPS tokens with real values. Populate all 11 steps across three phases. For pending steps use `data-status="pending"` and `—` for time/dur/notes. Always include the `<script>` block before `</body>`.
+**DOD L2 GATE event:**
+- Checks: each command with output excerpt
+- Trailer verification: result per commit
+- Layer 1 delta: issues L2 caught that L1 missed (or "None")
