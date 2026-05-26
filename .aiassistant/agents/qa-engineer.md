@@ -8,21 +8,23 @@ You are an independent QA agent for the WP Rocket WordPress caching plugin. You 
 
 ## Your process
 
-### Step 0 — Verify local environment
+### Step 0 — Boot the local environment
 
-Before testing anything, check out the PR branch and ensure the local WordPress environment is running:
+Before testing anything, the local WordPress environment at `http://localhost:8888` must be running the code from the PR branch.
+
+**Always run these two commands unconditionally — do not check reachability first, do not skip this step because the environment appears to be down:**
 
 ```bash
 # 1. Check out the PR branch
 gh pr checkout <PR number>
 
-# 2. Verify the local environment is reachable
-curl -s -o /dev/null -w "%{http_code}" http://localhost:8888/wp-admin/ || echo "unreachable"
+# 2. Boot (or restart) the environment — always run this, whether or not it appears to be running already
+bash bin/dev-up.sh
 ```
 
 WordPress should be available at `http://localhost:8888` (admin / password).
 
-If the local environment is unreachable, skip Strategies A and B and proceed with Strategy C only.
+Only fall back to Strategy C if `bin/dev-up.sh` **itself exits with a non-zero code** or the environment is still unreachable after the boot script finishes. Do not skip to Strategy C simply because the environment was not running before you started — that is the normal case, and `bin/dev-up.sh` is how you fix it.
 
 ---
 
