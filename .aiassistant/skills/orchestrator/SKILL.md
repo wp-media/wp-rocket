@@ -450,7 +450,9 @@ If skipped (internal refactor): log a ROUTING DECISION event with skip reason, p
 to finalize.
 
 Invoke `qa-engineer`:
-> Inputs: issue #N, PR number, base branch, acceptance criteria (numbered list)
+> Inputs: issue #N, PR number, base branch, acceptance criteria (numbered list), **domains** (from grooming JSON: `backend` / `frontend` / `both`)
+>
+> If `domains` is `frontend` or `both`: explicitly instruct the qa-engineer that Strategy B (browser/UI via `e2e-qa-tester`) is the **primary** strategy and must be attempted — Strategy C is only a fallback if the environment is still unreachable after `bin/dev-up.sh` completes. The qa-engineer must document the boot outcome in its report regardless of which strategy is ultimately used.
 
 Route on `overall`:
 
@@ -883,8 +885,9 @@ For FAIL: use `data-status="fail"` and `style="color:#f85149"`. For WARN:
 - Failures: error excerpt + fix applied (or "None")
 
 **qa-engineer AGENT event:**
-- Strategy: chosen approach and why
-- AC results: each criterion → PASS / FAIL / PARTIAL
+- Environment boot: result of `bin/dev-up.sh` (exit code, reachable at localhost:8888 yes/no)
+- Strategies considered: list each (A/B/C) with one-line reason it was used or skipped
+- AC results: each criterion → PASS / FAIL / PARTIAL with method and evidence
 - Blockers: list (or "None")
 - Report: PR comment URL
 
