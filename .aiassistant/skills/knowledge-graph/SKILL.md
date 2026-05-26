@@ -1,13 +1,27 @@
 ---
 name: knowledge-graph
-description: Use this skill to understand repository structure, trace class dependencies, find a symbol's file, or explore module relationships — without re-scanning the codebase from scratch.
+description: >
+  Read and refresh wp-rocket's pre-built dependency graph at .aiassistant/graph/dependency-graph.json.
+  Use to locate a class file, trace dependencies, find the ServiceProvider that wires a service,
+  or enumerate Subscribers in a module — without re-scanning the codebase from scratch. This
+  skill is primarily a reader: the graph is built (and incrementally refreshed) by
+  `node bin/build-knowledge-graph.js`. Invoke this skill at session start (to refresh if stale)
+  and before grep/glob searches for class relationships.
 ---
 
 # Knowledge Graph
 
-A pre-built dependency graph lives at `.aiassistant/graph/dependency-graph.json`.
+A pre-built dependency graph lives at `.aiassistant/graph/dependency-graph.json`. The
+builder is `node bin/build-knowledge-graph.js` (incremental by default, `--full` to force
+rebuild).
 
-**Read it before** running grep/glob searches for class relationships, namespace exploration, or dependency tracing. It eliminates redundant file scans and speeds up the first useful response in any session.
+This skill has two responsibilities:
+1. **Refresh** the graph at session start if it is stale (`base_commit` ≠ `git rev-parse HEAD`).
+2. **Read** the graph to answer dependency, namespace, and structure questions instantly.
+
+**Read it before** running grep/glob searches for class relationships, namespace
+exploration, or dependency tracing. It eliminates redundant file scans and speeds up the
+first useful response in any session.
 
 ---
 

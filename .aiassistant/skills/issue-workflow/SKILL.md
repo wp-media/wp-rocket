@@ -1,6 +1,6 @@
 ---
 name: issue-workflow
-description: Work on a GitHub issue by number for wp-media/wp-rocket. Fetches the issue and hands control to the orchestrator agent, which manages grooming, spec review, implementation, lead review, CI, and QA end-to-end.
+description: Work on a GitHub issue by number for wp-media/wp-rocket. Fetches the issue and hands control to the orchestrator skill (running inline in this conversation), which manages grooming, spec review, implementation, lead review, CI, and QA end-to-end.
 ---
 
 # Issue Workflow
@@ -12,7 +12,9 @@ When the user asks to work on an issue by number, such as:
 - `issue 123`
 - `#123`
 
-follow this workflow:
+follow this workflow. The orchestrator runs **inline in this conversation** — read the
+user's opening message before kicking it off, since it uses that for escalation
+calibration (high autonomy / standard / high oversight).
 
 ## Tooling — Prefer MCPs, Fall Back to Shell
 
@@ -37,9 +39,9 @@ follow this workflow:
 
 5. **Determine base branch** — default is `origin/develop` unless the user specified otherwise.
 
-6. **Spawn the `orchestrator` agent**:
+6. **Invoke the `orchestrator` skill inline** (do not spawn it as a sub-agent — it runs in this conversation context so it can read the user's intent for escalation calibration):
    > Inputs: issue number `N`, issue file `.TemporaryItems/Issues/wp-rocket/issues/<N>.md`, base branch
 
-The orchestrator manages everything from here: grooming → spec review → dispatch → implementation → lead review → push & PR → CI → QA → finalize.
+The orchestrator skill manages everything from here: calibration → grooming → spec review → dispatch → implementation → lead review → push & PR → CI → QA → finalize. It spawns the specialist agents (`grooming-agent`, `challenger`, `backend-agent`, `frontend-agent`, `release-agent`, `lead-reviewer`, `ci-agent`, `qa-engineer`, `ticket-writer`) as isolated sub-agents, but the orchestrator itself stays inline so it can surface decisions back to the user naturally.
 
 Monitor progress at `.TemporaryItems/Issues/wp-rocket/issue-<N>-workflow-log.html`.
