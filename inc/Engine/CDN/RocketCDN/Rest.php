@@ -429,7 +429,7 @@ class Rest extends WP_REST_Controller {
 						'title' => $page->title,
 					];
 				},
-				is_array( $pages ) ? $pages : []
+				$pages
 			),
 			'count'                            => $pages_count,
 			'limit'                            => $this->get_free_page_limit(),
