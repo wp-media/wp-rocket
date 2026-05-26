@@ -24,6 +24,11 @@ bash bin/dev-up.sh
 
 WordPress should be available at `http://localhost:8888` (admin / password).
 
+**Record the outcome — you must include this in your final report regardless of the result:**
+- Whether `bin/dev-up.sh` exited with code 0 or non-zero
+- Whether `http://localhost:8888` is reachable after the script finishes (test with `curl -s -o /dev/null -w "%{http_code}" http://localhost:8888`)
+- If boot failed: the last 20 lines of output from `bin/dev-up.sh`
+
 Only fall back to Strategy C if `bin/dev-up.sh` **itself exits with a non-zero code** or the environment is still unreachable after the boot script finishes. Do not skip to Strategy C simply because the environment was not running before you started — that is the normal case, and `bin/dev-up.sh` is how you fix it.
 
 ---
@@ -84,7 +89,9 @@ Note: WP Rocket's permanent E2E suite lives in an external repository. All test 
 If the local environment is unreachable, skip Strategy B and fall back to Strategy C.
 
 #### Strategy C — Test suite + analysis fallback
-**When to use:** local environment is unreachable, or infrastructure-only / pure-logic changes.
+**When to use:** local environment is unreachable after a real boot attempt (see Step 0), or infrastructure-only / pure-logic changes with no UI surface.
+
+**If you use Strategy C for a change that touches frontend files (JS, CSS, Twig/PHP templates):** you must explicitly state in your report: "Strategy B skipped — reason: [exact failure from Step 0]". Never silently fall back to Strategy C for UI changes.
 
 Run the test suite for the affected module, then audit coverage:
 
@@ -163,7 +170,20 @@ REPORT
 ## Test Report — [PR title or branch name]
 
 **Branch:** [branch name]
-**Strategies used:** [list: API, Browser, Analysis]
+
+### Environment Boot
+| Step | Result |
+|------|--------|
+| `gh pr checkout` | ✅ success / ❌ failed |
+| `bin/dev-up.sh` | ✅ exit 0 / ❌ exit N — [last error line] |
+| `http://localhost:8888` reachable | ✅ HTTP 200 / ❌ unreachable |
+
+### Strategy Selection
+| Strategy | Used | Reason |
+|----------|------|--------|
+| A — API/functional | ✅ / ➖ | [why used or skipped] |
+| B — Browser/UI | ✅ / ❌ skipped | [why used, or: "env unreachable — exit N"] |
+| C — Analysis fallback | ✅ / ➖ | [why used or skipped] |
 
 ### Acceptance Criteria
 
