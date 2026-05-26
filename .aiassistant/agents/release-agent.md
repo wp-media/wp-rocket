@@ -35,6 +35,7 @@ This creates `.TemporaryItems/Issues/wp-rocket/pull/<N>.md` from the template.
 Read the spec and the initialized draft. Fill **every section** — no placeholder text left behind.
 
 - Title line in the draft: `Closes #<N>: <short descriptive title>`
+  **Never** use conventional commit prefix format (`fix(xxx):`, `feat(xxx):`, etc.) in the PR title — that format is for git commits only.
 - "What was done": summarize the implementation from the spec
 - "How to test": derive from the acceptance criteria
 - "Type of change": select exactly one checkbox matching the change type
