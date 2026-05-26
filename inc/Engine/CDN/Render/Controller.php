@@ -112,7 +112,7 @@ class Controller extends Abstract_Render {
 			'class'            => [ 'rocketcdn' ],
 			'page'             => 'page_cdn',
 			'help'             => [
-				'id'  => $cdn_beacon,
+				'id'  => $cdn_beacon['id'],
 				'url' => $cdn_beacon['url'],
 			],
 			'status_indicator' => $status_indicator_data,
@@ -174,7 +174,7 @@ class Controller extends Abstract_Render {
 			'class'            => $classes,
 			'page'             => 'page_cdn',
 			'help'             => [
-				'id'  => $cdn_beacon,
+				'id'  => $cdn_beacon['id'],
 				'url' => $cdn_beacon['url'],
 			],
 			'status_indicator' => $this->get_status_indicator_data( $this->page_count, $is_subscription_loading ),
@@ -217,7 +217,7 @@ class Controller extends Abstract_Render {
 			'purge_url'   => Utils::get_nonce_post_url( 'rocket_purge_rocketcdn' ),
 			'page'        => 'page_cdn',
 			'help'        => [
-				'id'  => $cdn_beacon,
+				'id'  => $cdn_beacon['id'],
 				'url' => $cdn_beacon['url'],
 			],
 			'class'       => [ 'rocketcdn' ],
