@@ -502,18 +502,60 @@ document.addEventListener('DOMContentLoaded', function() {
 		} );
 	}
 
+	/**
+	 * Show a validation error message below the URL input.
+	 *
+	 * @param {string} message The error message to display.
+	 */
+	function showUrlError( message ) {
+		const errorEl = document.getElementById( 'wpr-ri-url-error' );
+		if ( ! errorEl ) {
+			return;
+		}
+		errorEl.textContent = message;
+		errorEl.style.display = 'block';
+	}
+
+	/**
+	 * Clear and hide the URL validation error message.
+	 */
+	function clearUrlError() {
+		const errorEl = document.getElementById( 'wpr-ri-url-error' );
+		if ( ! errorEl ) {
+			return;
+		}
+		errorEl.textContent = '';
+		errorEl.style.display = 'none';
+	}
+
+	/**
+	 * Disable the URL input and add-page button when the URL limit is reached.
+	 */
+	function disableAddUrlElements() {
+		const btn = document.getElementById( 'wpr-action-add_page_speed_radar' );
+		if ( btn ) {
+			btn.setAttribute( 'disabled', 'true' );
+		}
+		const input = document.getElementById( 'wpr-speed-radar-url-input' );
+		if ( input ) {
+			input.setAttribute( 'disabled', 'true' );
+		}
+	}
+
 	function handleAddPage(e) {
 		e.preventDefault();
 
-		// check if has attr disabled
+		// Check if has attr disabled.
 		if ($(this).attr('disabled')) {
 			return;
 		}
 
+		clearUrlError();
+
 		const pageUrl = $pageUrlInput.val().trim();
 
 		if (!isValidUrl(pageUrl)) {
-			alert('Please enter a valid URL');
+			showUrlError( window.rocket_ajax_data?.rocket_insights_invalid_url_message || 'Please enter a valid URL starting with https://' );
 			return;
 		}
 
@@ -532,6 +574,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			if (response.success) {
 				if ( ! hasId(response.id) ) {
 					$pageUrlInput.val('');
+					clearUrlError();
 					$tableBody.append(response.html);
 
 					// Custom event when new page is added.
@@ -565,18 +608,17 @@ document.addEventListener('DOMContentLoaded', function() {
 				}
 
 			} else {
-				// Clear the input field on error
-				$pageUrlInput.val('');
+				// Extract message from payload (custom payload or WP_Error shape).
+				const errorMsg = response?.message || window.rocket_ajax_data?.rocket_insights_generic_url_error || 'An error occurred. Please try again.';
 
-				// Handle URL limit reached error
-				if (response?.message && response.message.includes('Maximum number of URLs reached')) {
-					// Update UI state to reflect URL limit has been reached
+				// URL limit reached: clear input + update quota UI.
+				if ( response?.data?.can_add_pages === false || ( response?.message && response.message.includes('Maximum number of URLs reached') ) ) {
+					$pageUrlInput.val('');
 					disableAddUrlElements();
-					// Show quota banner (can_add_pages = false)
-					updateQuotaBanner(response.can_add_pages !== undefined ? response.can_add_pages : false);
+					updateQuotaBanner(false);
 				}
 
-				console.error(response?.message || response);
+				showUrlError( errorMsg );
 			}
 		});
 	}
@@ -637,6 +679,8 @@ document.addEventListener('DOMContentLoaded', function() {
 	// Bind event
 	$(document).on( 'click', '#wpr-action-add_page_speed_radar', handleAddPage );
 	$(document).on( 'click', '.wpr-action-speed_radar_refresh', handleResetPage );
+	// Clear validation error when user modifies the URL input.
+	$(document).on( 'input', '#wpr-speed-radar-url-input', clearUrlError );
 	// Handle Enter key press on page url input.
 	$(document).on( 'keypress', '#wpr-speed-radar-url-input', function(e) {
 		if (e.key === 'Enter') {
