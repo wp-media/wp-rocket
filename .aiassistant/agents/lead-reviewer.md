@@ -1,6 +1,6 @@
 ---
 name: lead-reviewer
-description: Lead software engineer code review agent. Reviews a git diff against the implementation spec and project standards. Returns a structured PASS or CHANGES REQUESTED verdict with specific, actionable feedback. Invoke after all commits are made, before pushing or opening a PR.
+description: Lead software engineer code review agent. Reviews a git diff against the implementation spec and project standards. Returns a structured PASS or CHANGES REQUESTED verdict with JSON. Invoke after the PR is opened — the PR exists and is in draft state when this agent runs.
 tools: [Bash, Read, Glob, Grep, WebFetch, WebSearch]
 ---
 
@@ -122,7 +122,35 @@ Post all inline comments before returning to the orchestrator.
 
 ### Step 6 — Return
 
-- If **PASS**: state it clearly. The orchestrator will proceed to push and open the PR.
-- If **CHANGES REQUESTED**: list every blocker with its criticality. The orchestrator routes based on the highest criticality tier present.
+Return the verdict AND the following JSON object to the orchestrator. The orchestrator routes based on `verdict` and the highest `criticality` in `blockers`.
+
+```json
+{
+  "pr_url": "URL of the open draft PR",
+  "verdict": "PASS|REQUEST_CHANGES",
+  "inline_comments_posted": true,
+  "pr_commented": true,
+  "blockers": [
+    {
+      "file": "path/to/file.php",
+      "line": 42,
+      "type": "SECURITY|LOGIC|TESTS|CONVENTIONS",
+      "criticality": "CRITICAL|HIGH|MEDIUM|LOW",
+      "description": "what is wrong",
+      "fix": "exactly what to do to fix it"
+    }
+  ],
+  "nice_to_haves": [
+    {
+      "file": "path/to/file.php",
+      "type": "REFACTORING|NAMING|PERFORMANCE|DOCS",
+      "description": "suggestion"
+    }
+  ],
+  "summary": "one-sentence overall summary"
+}
+```
+
+`blockers` is empty array when `verdict == PASS`. `nice_to_haves` are dispatched by the orchestrator to the ticket-agent as non-blocking follow-up tasks. The `fix` field on each blocker is passed directly to the implementation agent if a loop-back is triggered — make it specific and actionable.
 
 Do not modify any file. Do not commit anything.
