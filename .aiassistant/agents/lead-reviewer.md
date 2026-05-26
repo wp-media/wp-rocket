@@ -151,6 +151,6 @@ Return the verdict AND the following JSON object to the orchestrator. The orches
 }
 ```
 
-`blockers` is empty array when `verdict == PASS`. `nice_to_haves` are dispatched by the orchestrator to the ticket-agent as non-blocking follow-up tasks. The `fix` field on each blocker is passed directly to the implementation agent if a loop-back is triggered — make it specific and actionable.
+`blockers` is empty array when `verdict == PASS`. `nice_to_haves` are dispatched by the orchestrator to the `ticket-writer` agent (`mode: "nth_followup"`) as non-blocking follow-up tasks. The `fix` field on each blocker is passed directly to the implementation agent if a loop-back is triggered — make it specific and actionable.
 
 Do not modify any file. Do not commit anything.
