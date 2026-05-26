@@ -1,6 +1,6 @@
 ---
 name: backend-agent
-description: Backend implementation agent. Implements PHP changes for WP Rocket following the spec and the manager's dispatch plan. Writes or updates unit and integration tests. Runs PHPCS and PHPStan. Invoked by the issue-workflow orchestrator after the manager has produced a dispatch plan.
+description: Backend implementation agent. Implements PHP changes for WP Rocket following the spec and the manager's dispatch plan. Writes or updates unit and integration tests. Runs the docs skill, e2e skill (basic tier), and dod skill (layer 1) inline before committing. Invoked by the orchestrator after the manager has produced a dispatch plan.
 tools: [Bash, Read, Edit, Write, Glob, Grep, WebFetch, WebSearch]
 ---
 
@@ -35,29 +35,56 @@ Follow the spec's **Implementation Plan** for backend files only. Do not touch J
 
 ---
 
-### Step 3 — DOD L1 (self-check)
+### Step 2.5 — Documentation update
 
-Run quality checks and **self-correct any failures before committing**:
+Invoke the `docs` skill inline (`.aiassistant/skills/docs/SKILL.md`).
 
-```bash
-composer test-unit
-composer phpcs-changed
-composer run-stan
-```
+Pass the explicit list of PHP files you changed in Step 2 — the skill needs this rather than inferring from git.
 
-- If a check fails: fix the violation, then re-run until it passes.
-- Do not suppress violations or skip a check.
-- Only proceed to commit when all checks pass.
-- If a failure cannot be fixed after reasonable effort, report it clearly before stopping.
+The skill is a no-op if no public API surface changed (no new hooks, AJAX actions, REST routes, config keys, capabilities, or BerlinDB schemas). If it returns `status: "SKIP"`, that is expected and not a problem.
+
+If it returns `status: "DONE"`, the files in `files_updated` / `files_created` will be committed together with your PHP changes in Step 4.
+
+Record: `docs.status`, `docs.files_updated`, `docs.files_created`.
+
+---
+
+### Step 3 — E2E smoke test (basic tier)
+
+Invoke the `e2e` skill inline (`.aiassistant/skills/e2e/SKILL.md`) with `tier: "basic"`.
+
+Run the primary happy path scenario from the spec's `test_plan` to confirm your changes don't break the main flow. Use curl, WP-CLI, or Playwright MCP as appropriate for what you changed.
+
+If the dev environment (`bash bin/dev-up.sh`) cannot start, set `e2e_smoke.status: "SKIP"` and note the reason. Do not block on environment issues — flag them and proceed.
+
+Record: `e2e_smoke.status`, `e2e_smoke.scenarios_tested`, `e2e_smoke.details`.
+
+---
+
+### Step 3b — DOD L1 (self-check)
+
+Invoke the `dod` skill inline (`.aiassistant/skills/dod/SKILL.md`) with `layer: "1"`.
+
+The skill runs the 5 checks: manual validation, automated tests, documentation, PR description, CI (local commands at this layer). It returns `overall: "PASS" | "WARN"` plus per-check evidence.
+
+**Self-correct any FAIL before committing.** Common fixes:
+- `automated-tests` FAIL → write the missing test, fix the failing assertion
+- `ci` FAIL (PHPCS/PHPStan) → fix the violations
+- `documentation` FAIL → re-run the docs skill, ensure the public-API change is documented
+- `pr-description` FAIL → not applicable at L1 (no PR yet)
+
+Re-run `dod` until `overall` is `PASS` or `WARN`. Never hand off with `FAIL` at layer 1 — that is the orchestrator's layer 2 job.
+
+Record: `dod_layer1.overall`, `dod_layer1.checks`.
 
 ---
 
 ### Step 4 — Commit
 
-Once PHPCS and PHPStan pass, stage and commit **only the PHP files you changed**. Do not stage unrelated files.
+Once DOD L1 returns `PASS` or `WARN`, stage and commit **only the files you changed in Step 2, Step 2.5 (docs), and any test files you wrote**. Do not stage unrelated files.
 
 ```bash
-git add <php-file-1> <php-file-2> ...
+git add <php-file-1> <php-file-2> <test-file-1> <docs-file-if-any> ...
 git commit -m "$(cat <<'EOF'
 type(scope): short description
 
@@ -66,9 +93,9 @@ EOF
 )"
 ```
 
-Use Conventional Commits format (`fix`, `feat`, `refactor`, `test`). One atomic commit covering only your backend changes.
+Use Conventional Commits format (`fix`, `feat`, `refactor`, `test`, `docs`). One atomic commit covering only your backend + docs changes.
 
-Do not push.
+Do not push. The `release-agent` handles push and PR creation after both implementation agents have committed.
 
 ---
 
@@ -80,15 +107,27 @@ Return the following JSON object to the orchestrator. Fill every field — the o
 {
   "ticket_id": "<N>",
   "branch": "current branch name",
-  "files_changed": ["list of PHP files modified"],
+  "files_changed": ["list of PHP + docs files modified"],
   "tests_passing": true,
   "test_output": "one-line summary, e.g. '42 tests, 0 failures'",
+  "e2e_smoke": {
+    "status": "PASS|FAIL|SKIP",
+    "scenarios_tested": ["Primary happy path: cache header returned on /sample-page"],
+    "details": "curl http://localhost:8888/ returned X-Rocket-Cached: 1"
+  },
+  "docs": {
+    "status": "DONE|SKIP",
+    "files_updated": ["docs/api/<file>.md"],
+    "files_created": []
+  },
   "dod_layer1": {
     "overall": "PASS|WARN",
     "checks": [
-      { "name": "phpcs-changed", "status": "PASS|WARN", "evidence": "0 violations" },
-      { "name": "run-stan", "status": "PASS|WARN", "evidence": "0 errors" },
-      { "name": "test-unit", "status": "PASS|WARN", "evidence": "N tests passed" }
+      { "name": "manual-validation", "status": "PASS|WARN", "evidence": "..." },
+      { "name": "automated-tests", "status": "PASS|WARN", "evidence": "N tests passed" },
+      { "name": "documentation", "status": "PASS|WARN", "evidence": "docs/... updated, or SKIP if no public API change" },
+      { "name": "pr-description", "status": "PASS|WARN", "evidence": "draft filled" },
+      { "name": "ci", "status": "PASS|WARN", "evidence": "phpcs-changed: 0 violations · run-stan: 0 errors · test-unit: 42 passed" }
     ]
   },
   "co_authored_by": "Claude Sonnet 4.6 <noreply@anthropic.com>",
@@ -96,4 +135,4 @@ Return the following JSON object to the orchestrator. Fill every field — the o
 }
 ```
 
-`dod_layer1.overall` must be `PASS` or `WARN` — never `FAIL`. Self-correct all failures before committing (Step 3).
+`dod_layer1.overall` must be `PASS` or `WARN` — never `FAIL`. Self-correct all failures before committing (Step 3b).

@@ -36,6 +36,25 @@ Use the knowledge graph first, then read files.
 
 ---
 
+### Step 2b — (Optional) Probe the running system with E2E basic tier
+
+If the issue describes a current behavior that you want to verify *before* writing the
+spec — for example, "the cache header is missing on logged-in users" — invoke the `e2e`
+skill (`.aiassistant/skills/e2e/SKILL.md`) with `tier: "basic"` to reproduce against the
+local environment at `http://localhost:8888`.
+
+Use this only when an assumption needs verification. Skip it for changes where the
+behavior is already clear from reading the code. Examples:
+
+- ✅ Useful: confirm the current API response shape before designing a change to it
+- ✅ Useful: reproduce a bug to capture the exact failure mode before planning the fix
+- 🚫 Wasteful: probing for a feature you can fully understand from the source
+- 🚫 Wasteful: running E2E when the issue is purely refactoring or test-only
+
+Record what you observed in the spec's `Problem` or `Edge Cases` section if relevant.
+
+---
+
 ### Step 3 — Architectural analysis
 
 Answer these questions explicitly:
