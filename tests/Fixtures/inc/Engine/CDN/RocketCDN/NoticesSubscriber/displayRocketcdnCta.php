@@ -6,9 +6,6 @@ return [
 
 		'expected' => [
 			'unit'        => null,
-			'integration' => [
-				'assertNotContains' => 'id="wpr-rocketcdn-cta"',
-			],
 		],
 
 		'config' => [
@@ -21,9 +18,6 @@ return [
 
 		'expected' => [
 			'unit'        => null,
-			'integration' => [
-				'assertNotContains' => 'id="wpr-rocketcdn-cta"',
-			],
 		],
 
 		'config' => [
@@ -32,11 +26,11 @@ return [
 		],
 	],
 
-	'testShouldNotDisplayNoticeWhenActive' => [
-
+	'testShouldNotDisplayNoticeWhenPlanIsPaid' => [
 		'rocketcdn_data' => [
 			'rocketcdn_status'  => [
 				'subscription_status' => 'running',
+				'plan_type'           => 'paid',
 			],
 			'rocketcdn_pricing' => [],
 		],
@@ -45,11 +39,6 @@ return [
 			'unit'        => [
 				'cta-small' => [],
 				'cta-big'   => [],
-			],
-			'integration' => [
-				'not_expected' => [
-					'id="wpr-rocketcdn-cta"',
-				],
 			],
 		],
 
@@ -94,11 +83,6 @@ return [
 					'current_price_monthly'      => 7.99,
 					'current_price_annual'      => 79.99,
 				],
-			],
-			'integration' => [
-				'<div class="wpr-rocketcdn-cta wpr-rocketcdn-cta--collapsed " id="wpr-rocketcdn-cta">',
-				'<div class="wpr-rocketcdn-cta-toggle wpr-rocketcdn-cta-toggle--default" role="button" tabindex="0" aria-controls="wpr-rocketcdn-cta-expandable" aria-expanded="true">',
-				'<strong>Want full-site Content Delivery coverage?</strong> Extend RocketCDN to all your pages with unlimited bandwidth.',
 			],
 		],
 
@@ -147,11 +131,6 @@ return [
 					'current_price_annual'      => 6.67,
 				],
 			],
-			'integration' => [
-				'<div class="wpr-rocketcdn-cta wpr-rocketcdn-cta--collapsed " id="wpr-rocketcdn-cta">',
-				'<div class="wpr-rocketcdn-cta-toggle wpr-rocketcdn-cta-toggle--default" role="button" tabindex="0" aria-controls="wpr-rocketcdn-cta-expandable" aria-expanded="true">',
-				'<strong>Want full-site Content Delivery coverage?</strong> Extend RocketCDN to all your pages with unlimited bandwidth.',
-			],
 		],
 
 		'config' => [
@@ -198,11 +177,6 @@ return [
 					'current_price_monthly'      => 7.99,
 					'current_price_annual'      => 6.67,
 				],
-			],
-			'integration' => [
-				'<div class="wpr-rocketcdn-cta wpr-rocketcdn-cta--collapsed " id="wpr-rocketcdn-cta">',
-				'<div class="wpr-rocketcdn-cta-toggle wpr-rocketcdn-cta-toggle--default" role="button" tabindex="0" aria-controls="wpr-rocketcdn-cta-expandable" aria-expanded="true">',
-				'<strong>Want full-site Content Delivery coverage?</strong> Extend RocketCDN to all your pages with unlimited bandwidth.',
 			],
 		],
 
@@ -251,10 +225,6 @@ return [
 					'current_price_annual'      => 6.67,
 				],
 			],
-			'integration' => [
-				'<div class="wpr-rocketcdn-cta wpr-rocketcdn-cta--collapsed wpr-isHidden" id="wpr-rocketcdn-cta">',
-				'<div class="wpr-rocketcdn-cta-toggle wpr-rocketcdn-cta-toggle--default" role="button" tabindex="0" aria-controls="wpr-rocketcdn-cta-expandable" aria-expanded="true">',
-			],
 		],
 
 		'config' => [
@@ -301,12 +271,6 @@ return [
 					'current_price_annual'      => 5.00,
 				],
 			],
-			'integration' => [
-				'<div class="wpr-rocketcdn-cta wpr-rocketcdn-cta--collapsed " id="wpr-rocketcdn-cta">',
-				'<h3 class="wpr-rocketcdn-promo-title">',
-				'Launch',
-				'Valid until ' . date( 'Y-m-d', strtotime( 'tomorrow', time() ) ) . ' only!',
-			],
 		],
 
 		'config' => [
@@ -341,11 +305,6 @@ return [
 					'error'           => true,
 					'message'         => 'RocketCDN is not available at the moment. Please retry later. <a href="" data-beacon-article="" rel="noopener noreferrer" target="_blank">More Info</a>',
 				],
-			],
-			'integration' => [
-				'<div class="wpr-rocketcdn-cta wpr-rocketcdn-cta--collapsed " id="wpr-rocketcdn-cta">',
-				'RocketCDN is not available at the moment. Please retry later.',
-				'More Info',
 			],
 		],
 

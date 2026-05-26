@@ -68,6 +68,15 @@ class RocketCDN extends AbstractQuery {
 	protected $item_shape = RocketCDNRow::class;
 
 	/**
+	 * Get all pages from the database.
+	 *
+	 * @return RocketCDNRow[]
+	 */
+	public function get_all(): array {
+		return $this->query( [] );
+	}
+
+	/**
 	 * Get a page by URL.
 	 *
 	 * @param string $url The URL to search for.

@@ -123,7 +123,7 @@ class Controller extends Abstract_Render {
 			'class'            => [ 'rocketcdn' ],
 			'page'             => 'page_cdn',
 			'help'             => [
-				'id'  => $cdn_beacon,
+				'id'  => $cdn_beacon['id'],
 				'url' => $cdn_beacon['url'],
 			],
 			'status_indicator' => $status_indicator_data,
@@ -185,7 +185,7 @@ class Controller extends Abstract_Render {
 			'class'               => $classes,
 			'page'                => 'page_cdn',
 			'help'                => [
-				'id'  => $cdn_beacon,
+				'id'  => $cdn_beacon['id'],
 				'url' => $cdn_beacon['url'],
 			],
 			'status_indicator'    => $this->get_status_indicator_data( $this->page_count, $is_subscription_loading ),
@@ -195,7 +195,7 @@ class Controller extends Abstract_Render {
 				'cta_description'       => $cta_description,
 				'limit_reached'         => $limit_reached,
 			],
-			'active_subscription' => ! $this->is_cdn_expired(),
+			'active_subscription' => ! $this->subscription_controller->has_inactive_subscription(),
 			'renewal_url'         => $this->user->get_renewal_url(),
 		];
 
@@ -219,7 +219,7 @@ class Controller extends Abstract_Render {
 		}
 		$classes = [ 'rocketcdn' ];
 
-		if ( $this->is_cdn_expired() ) {
+		if ( $this->subscription_controller->has_inactive_subscription() ) {
 			$classes[] = 'wpr-cdn-disabled';
 		}
 
@@ -235,7 +235,7 @@ class Controller extends Abstract_Render {
 			'purge_url'   => Utils::get_nonce_post_url( 'rocket_purge_rocketcdn' ),
 			'page'        => 'page_cdn',
 			'help'        => [
-				'id'  => $cdn_beacon,
+				'id'  => $cdn_beacon['id'],
 				'url' => $cdn_beacon['url'],
 			],
 			'class'       => $classes,
@@ -576,7 +576,7 @@ class Controller extends Abstract_Render {
 
 		$class = '';
 
-		if ( get_transient( 'rocketcdn_status' ) && ! $this->subscription_controller->has_active_subscription() ) {
+		if ( $this->subscription_controller->has_inactive_subscription() ) {
 			$class         .= ' wpr-cdn-status--expired';
 			$paused_details = __( 'RocketCDN is currently paused because your WPRocket licence has expired.', 'rocket' );
 		}
@@ -608,19 +608,10 @@ class Controller extends Abstract_Render {
 	 * @return bool
 	 */
 	private function is_cdn_paused(): bool {
-		$transient = get_transient( 'rocketcdn_status' );
+		$transient = $this->subscription_controller->get_rocketcdn_status();
 
 		return false !== $transient
 			? ! $this->subscription_controller->has_active_subscription()
 			: ! (bool) $this->options->get( 'cdn' );
-	}
-
-	/**
-	 * Check if cdn has expired
-	 *
-	 * @return bool
-	 */
-	private function is_cdn_expired(): bool {
-		return get_transient( 'rocketcdn_status' ) && ! $this->subscription_controller->has_active_subscription();
 	}
 }

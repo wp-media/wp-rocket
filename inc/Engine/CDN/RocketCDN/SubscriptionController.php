@@ -106,6 +106,22 @@ class SubscriptionController implements LoggerAwareInterface {
 		return ! empty( $subscription['subscription_status'] ) && 'running' === $subscription['subscription_status'];
 	}
 
+
+	/**
+	 * Check if it has inactive RocketCDN subscription.
+	 * We are checking the transient since the get_subscription_data will return default value until we add a page to rocketcdn.
+	 *
+	 * @return bool
+	 */
+	public function has_inactive_subscription() {
+		$transient = get_transient( 'rocketcdn_status' );
+		if ( false === $transient ) {
+			return false;
+		}
+
+		return ! $this->has_active_subscription();
+	}
+
 	/**
 	 * Create RocketCDN subscription if it doesn't have an active one, and handle the response.
 	 *
@@ -309,5 +325,12 @@ class SubscriptionController implements LoggerAwareInterface {
 	public function get_rocketcdn_url() {
 		$subscription = $this->get_subscription_data();
 		return $subscription['cdn_url'] ?? '';
+	}
+
+	/**
+	 * Get rocketcdn transient status
+	 */
+	public function get_rocketcdn_status(): bool {
+		return get_transient( 'rocketcdn_status' );
 	}
 }

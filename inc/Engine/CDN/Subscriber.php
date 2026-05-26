@@ -161,6 +161,10 @@ class Subscriber implements Subscriber_Interface {
 	 * @return string
 	 */
 	public function rewrite_css_properties( $content ) {
+		if ( ! $this->cdn_driver_should_rewrite_url() ) {
+			return $content;
+		}
+
 		/**
 		 * Filters the application of the CDN on CSS properties
 		 *
@@ -249,6 +253,10 @@ class Subscriber implements Subscriber_Interface {
 	 * @return string
 	 */
 	public function add_cdn_url( $url, $original_url = '' ) {
+		if ( ! $this->is_allowed() ) {
+			return $url;
+		}
+
 		if ( ! empty( $original_url ) ) {
 			if ( $this->cdn->is_excluded( $original_url ) ) {
 				return $url;
@@ -399,7 +407,7 @@ class Subscriber implements Subscriber_Interface {
 			return false;
 		}
 
-		if ( $this->driver && ! $this->driver->should_rewrite_url( $this->get_current_url() ) ) {
+		if ( ! $this->cdn_driver_should_rewrite_url() ) {
 			return false;
 		}
 
@@ -494,14 +502,10 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$pages = $this->query->query( [] );
-
-		if ( ! is_array( $pages ) ) {
-			return;
-		}
+		$pages = $this->query->get_all();
 
 		foreach ( $pages as $page ) {
-			if ( ! isset( $page->url ) || empty( $page->url ) ) {
+			if ( empty( $page->url ) ) {
 				continue;
 			}
 
@@ -512,5 +516,20 @@ class Subscriber implements Subscriber_Interface {
 
 			rocket_clean_files( [ $page->url ] );
 		}
+	}
+
+	/**
+	 * Determines if the CDN driver should rewrite the current URL.
+	 *
+	 * Checks if a CDN driver is set and whether it allows rewriting of the current URL.
+	 *
+	 * @return bool True if the URL should be rewritten by the CDN driver, false otherwise.
+	 */
+	private function cdn_driver_should_rewrite_url(): bool {
+		if ( $this->driver && ! $this->driver->should_rewrite_url( $this->get_current_url() ) ) {
+			return false;
+		}
+
+		return true;
 	}
 }

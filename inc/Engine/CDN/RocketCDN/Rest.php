@@ -228,7 +228,7 @@ class Rest extends WP_REST_Controller {
 	public function add_page( WP_REST_Request $request ) {
 		$url = $request->get_param( 'url' );
 
-		if ( get_transient( 'rocketcdn_status' ) && ! $this->subscription_controller->has_active_subscription() ) {
+		if ( $this->subscription_controller->has_inactive_subscription() ) {
 			return new WP_Error(
 				'rocketcdn_no_active_subscription',
 				__( 'You do not have an active RocketCDN subscription.', 'rocket' ),
@@ -416,7 +416,7 @@ class Rest extends WP_REST_Controller {
 	 * @return array
 	 */
 	private function get_pages_data(): array {
-		$pages = $this->query->query( [] );
+		$pages = $this->query->get_all();
 
 		$pages_count = $this->query->get_total_count( false );
 

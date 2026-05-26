@@ -34,8 +34,8 @@ $rocket_disable_input_alt = apply_filters( 'rocket_disable_cdn_option_change', f
 			?>
 				<div class="wpr-multiple">
 					<div class="wpr-text">
-						
-					</div>
+							<input type="text" name="wp_rocket_settings[cdn_cnames][<?php echo esc_attr( $key ); ?>]" value="<?php echo esc_attr( $url ); ?>" placeholder="cdn.example.com" <?php echo $rocket_disable_input_alt ? 'disabled' : ''; ?> />
+						</div>
 					<div class="wpr-select">
 						<select name="wp_rocket_settings[cdn_zone][<?php echo esc_attr( $key ); ?>]" <?php echo $rocket_disable_input_alt ? 'disabled' : ''; ?> >
 							<option value="all" <?php selected( $rocket_cnames_zone[ $key ], 'all' ); ?>><?php esc_html_e( 'For All Files', 'rocket' ); ?></option>
