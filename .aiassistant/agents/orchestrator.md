@@ -109,7 +109,7 @@ Invoke `lead-reviewer`:
 > Inputs: issue #N, spec path, base branch, acceptance criteria (numbered list)
 
 The lead-reviewer returns findings classified by criticality tier. Route based on the highest criticality:
-- **CRITICAL** — security vulnerability or breaking change: escalate to user immediately, do not loop.
+- **CRITICAL** — security vulnerability or breaking change: evaluate whether the issue is fixable (e.g., a missing validation, a specific guard). If so, attempt one fix loop the same as HIGH. Escalate to the user immediately only if the root cause is architectural, requires external decisions, or persists after one fix attempt.
 - **HIGH / MEDIUM** — logic bug or missing test coverage: re-invoke the relevant implementation agent (which will re-commit), then re-invoke `lead-reviewer`. Max 3 total lead-reviewer attempts.
 - **LOW** — minor convention issue: log as follow-up, do not block.
 - **PASS** → proceed.
@@ -224,26 +224,43 @@ Generate `.TemporaryItems/Issues/wp-rocket/issue-<N>-workflow-log.html`. Rewrite
 
     /* Step rows */
     .steps { padding: 0 16px 20px; display: flex; flex-direction: column; gap: 4px; }
-    .step { display: grid; grid-template-columns: 22px 40px 1fr 80px 60px 1fr; align-items: center; gap: 10px; padding: 9px 14px; border-radius: 8px; border: 1px solid #21262d; background: #161b22; }
+    .step-wrapper { display: flex; flex-direction: column; border-radius: 8px; }
+    .step { display: grid; grid-template-columns: 22px 40px 1fr 80px 60px 1fr 16px; align-items: center; gap: 10px; padding: 9px 14px; border-radius: 8px; border: 1px solid #21262d; background: #161b22; cursor: pointer; user-select: none; }
+    .step-wrapper.open .step { border-radius: 8px 8px 0 0; border-bottom-color: transparent; }
+    .step:not([data-status="pending"]):hover { background: #1c2128; }
     .step-icon { font-size: 13px; line-height: 1; }
     .step-num { font-size: 10px; font-weight: 700; color: #7d8590; font-family: monospace; }
     .step-name { font-size: 13px; font-weight: 500; color: #e6edf3; display: flex; align-items: center; gap: 6px; }
     .step-time { font-size: 11px; color: #7d8590; font-family: monospace; text-align: right; }
     .step-dur  { font-size: 11px; color: #7d8590; font-family: monospace; text-align: right; }
     .step-notes { font-size: 11px; color: #8b949e; }
+    .step-chevron { font-size: 13px; color: #484f58; transition: transform .15s; justify-self: center; line-height: 1; }
+    .step-wrapper.open .step-chevron { transform: rotate(90deg); color: #7d8590; }
     .attempt-badge { font-size: 10px; font-weight: 600; padding: 1px 7px; border-radius: 20px; background: #2d2000; color: #ffa657; border: 1px solid #6e4a00; }
-
-    /* Status variants */
     .step[data-status="done"]    { border-color: #1a2e1a; }
     .step[data-status="running"] { border-color: #1f6feb; background: #0d1a2d; }
     .step[data-status="running"] .step-name { color: #79c0ff; }
-    .step[data-status="pending"] { opacity: .4; }
+    .step[data-status="pending"] { opacity: .4; cursor: default; }
     .step[data-status="skipped"] .step-name { color: #7d8590; font-style: italic; }
     .step[data-status="failed"]  { border-color: #6e1a1a; background: #160808; }
     .step[data-status="failed"]  .step-name { color: #f85149; }
     .step[data-status="warning"] { border-color: #6e4a00; }
     .step[data-status="warning"] .step-name { color: #ffa657; }
-
+    .step-detail { display: none; background: #0d1117; border: 1px solid #21262d; border-top: none; border-radius: 0 0 8px 8px; padding: 16px 18px; }
+    .step-wrapper.open .step-detail { display: block; }
+    .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 24px; }
+    .detail-section { display: flex; flex-direction: column; gap: 5px; }
+    .detail-section.full { grid-column: 1 / -1; }
+    .detail-label { font-size: 10px; font-weight: 700; color: #7d8590; text-transform: uppercase; letter-spacing: .07em; }
+    .detail-body { font-size: 12px; color: #8b949e; line-height: 1.6; }
+    .detail-body strong { color: #c9d1d9; }
+    .detail-body pre { background: #161b22; border: 1px solid #30363d; border-radius: 6px; padding: 10px 12px; font-family: monospace; font-size: 11px; color: #e6edf3; overflow-x: auto; white-space: pre-wrap; word-break: break-word; margin-top: 4px; }
+    .detail-body code { background: #161b22; padding: 1px 5px; border-radius: 3px; font-family: monospace; font-size: 11px; color: #79c0ff; }
+    .detail-verdict { display: inline-block; font-size: 11px; font-weight: 700; padding: 2px 10px; border-radius: 20px; }
+    .verdict-pass { background: #1a2e1a; color: #3fb950; border: 1px solid #238636; }
+    .verdict-skip { background: #1c2128; color: #7d8590; border: 1px solid #30363d; }
+    .verdict-warn { background: #2d2000; color: #ffa657; border: 1px solid #6e4a00; }
+    .verdict-fail { background: #2d0f0f; color: #f85149; border: 1px solid #6e1a1a; }
     footer { font-size: 11px; color: #484f58; padding: 16px 28px; border-top: 1px solid #21262d; }
     code { font-family: monospace; font-size: 11px; }
   </style>
@@ -269,61 +286,130 @@ Generate `.TemporaryItems/Issues/wp-rocket/issue-<N>-workflow-log.html`. Rewrite
 
 <div class="phase">Planning</div>
 <div class="steps">
-  <div class="step" data-status="done">
-    <div class="step-icon">✅</div>
-    <div class="step-num">01</div>
-    <div class="step-name">Issue read</div>
-    <div class="step-time">HH:MM:SS</div>
-    <div class="step-dur">X.Xs</div>
-    <div class="step-notes">N AC extracted</div>
-  </div>
-  <div class="step" data-status="running">
-    <div class="step-icon">⏳</div>
-    <div class="step-num">02</div>
-    <div class="step-name">Grooming</div>
-    <div class="step-time">HH:MM:SS</div>
-    <div class="step-dur">—</div>
-    <div class="step-notes"></div>
-  </div>
-  <div class="step" data-status="pending">
-    <div class="step-icon">○</div>
-    <div class="step-num">03</div>
-    <div class="step-name">Spec review <span class="attempt-badge">1/1</span></div>
-    <div class="step-time">—</div>
-    <div class="step-dur">—</div>
-    <div class="step-notes"></div>
-  </div>
-  <div class="step" data-status="skipped">
-    <div class="step-icon">⏭</div>
-    <div class="step-num">04</div>
-    <div class="step-name">Dispatch</div>
-    <div class="step-time">—</div>
-    <div class="step-dur">—</div>
-    <div class="step-notes">complexity: low — skipped</div>
-  </div>
-  <div class="step" data-status="failed">
-    <div class="step-icon">❌</div>
-    <div class="step-num">05</div>
-    <div class="step-name">Branch creation</div>
-    <div class="step-time">HH:MM:SS</div>
-    <div class="step-dur">X.Xs</div>
-    <div class="step-notes">script returned exit 1: branch already exists</div>
-  </div>
+  <!-- steps 01–05 -->
 </div>
 
 <div class="phase">Implementation</div>
 <div class="steps">
-  <!-- steps 05–07 -->
+  <!-- steps 06a, 06b, 06c -->
 </div>
 
 <div class="phase">Review &amp; QA</div>
 <div class="steps">
-  <!-- steps 08–12 -->
+  <!-- steps 07–11 -->
 </div>
 
 <footer>Last updated: TIMESTAMP · <code>.TemporaryItems/Issues/wp-rocket/issue-N-workflow-log.html</code></footer>
+
+<script>
+document.querySelectorAll('.step').forEach(function(s) {
+  s.addEventListener('click', function() {
+    if (this.dataset.status === 'pending') return;
+    this.closest('.step-wrapper').classList.toggle('open');
+  });
+});
+</script>
 </body>
 </html>
 ```
 
-Use this structure exactly. Replace placeholder text (ALL_CAPS tokens) with real values on each update. Populate all 12 steps across the three phases. For steps not yet started use `data-status="pending"` and `—` for time/dur/notes.
+### Step HTML pattern
+
+Every step must be wrapped in a `.step-wrapper` containing the `.step` row and a sibling `.step-detail` panel:
+
+```html
+<div class="step-wrapper">
+  <div class="step" data-status="done">
+    <div class="step-icon">✅</div>
+    <div class="step-num">01</div>
+    <div class="step-name">Issue read</div>
+    <div class="step-time">10:00:00</div>
+    <div class="step-dur">1.2s</div>
+    <div class="step-notes">3 AC extracted.</div>
+    <div class="step-chevron">›</div>
+  </div>
+  <div class="step-detail">
+    <div class="detail-grid">
+      <div class="detail-section">
+        <div class="detail-label">Reasoning</div>
+        <div class="detail-body">WHY_THIS_APPROACH_OR_DECISION</div>
+      </div>
+      <div class="detail-section">
+        <div class="detail-label">Key findings</div>
+        <div class="detail-body">WHAT_WAS_FOUND_OR_RETURNED</div>
+      </div>
+      <div class="detail-section full">
+        <div class="detail-label">Output</div>
+        <div class="detail-body"><pre>VERBATIM_OR_STRUCTURED_DATA</pre></div>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+Pending steps: include the wrapper with an empty detail panel — the JS handler skips `pending` status automatically.
+
+### Step detail panel content
+
+Populate each step's `step-detail` with the following:
+
+**01 — Issue read**
+- Reasoning: Root cause or core problem identified; why it matters
+- Key findings: What the issue reveals (reproduction steps, affected versions, edge cases)
+- Output (full): Full acceptance criteria list extracted
+
+**02 — Grooming**
+- Reasoning: Why this architectural approach was chosen over alternatives; key trade-off
+- Spec summary: Files to change, effort, risk, domain, plan_version
+- Open questions: Any unresolved items in the spec (or "None")
+
+**03 — Spec challenge** *(conditional)*
+- Reasoning: Which CHALLENGER trigger fired — or why all conditions were absent (skip reason)
+- Verdict: `<span class="detail-verdict verdict-pass">APPROVED</span>` / `verdict-warn NEEDS_REVISION` / `verdict-fail BLOCKED`
+- Findings: MoSCoW-classified list (or "No MUST_HAVE or SHOULD_HAVE findings")
+- Alternative suggestions (if NEEDS_REVISION or BLOCKED)
+
+**04 — Dispatch decision**
+- Reasoning: Why Option A or B; why this domain set; why this branch prefix
+- Decisions: Scope, domains, prefix
+
+**05 — Branch creation**
+- Command: exact script invocation
+- Output: branch name and base branch used
+
+**06a — Backend / 06b — Frontend**
+- Reasoning: Key implementation decisions (e.g. guard approach, test structure chosen)
+- Files modified: list with one-line description each
+- DOD L1 result: PHPCS/PHPStan/test results with counts
+- Commit: SHA + message
+
+**06c — DOD L2 gate**
+- Reasoning: What independent verification covers
+- Commands run: each with PASS/FAIL and output excerpt
+- Trailer check: Co-Authored-By present on all commits — Yes/No
+
+**07 — Lead review**
+- Reasoning: Review focus and approach
+- Verdict: `verdict-pass PASS` / `verdict-warn HIGH` / `verdict-fail CRITICAL` badge
+- Findings: table or "No findings" (include criticality tier)
+- Routing: how the verdict routes to the next step
+
+**08 — Push & PR**
+- PR: URL + title
+- Commits on branch: list of SHAs
+
+**09 — CI monitoring**
+- Checks: each check name → PASS / FAIL
+- Any failures: error and fix applied
+
+**10 — QA**
+- Strategy: chosen strategy and why
+- AC results: each criterion → PASS / FAIL
+- Unexpected findings: list (or "None")
+- Report: PR comment URL
+
+**11 — Finalize**
+- Actions taken: PR body updated, `gh pr ready` run
+- Final status: READY FOR REVIEW
+
+Use this structure exactly. Replace ALL_CAPS tokens with real values. Populate all 11 steps across three phases. For pending steps use `data-status="pending"` and `—` for time/dur/notes. Always include the `<script>` block before `</body>`.
