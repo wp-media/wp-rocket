@@ -100,6 +100,25 @@ trait PageHandlerTrait {
 		$url                      = rocket_add_url_protocol( $url );
 		$payload['processed_url'] = $url;
 
+		$url_host  = wp_parse_url( $url );
+		$site_host = wp_parse_url( home_url() );
+
+		// Check that URL has a valid host component.
+		if ( ! isset( $url_host['host'] ) ) {
+			$payload['error']   = true;
+			$payload['message'] = __( 'Invalid URL provided.', 'rocket' );
+
+			return $payload;
+		}
+
+		// Check that URL host matches site host.
+		if ( $url_host['host'] !== $site_host['host'] ) {
+			$payload['error']   = true;
+			$payload['message'] = __( 'URL must be on the same domain as the site.', 'rocket' );
+
+			return $payload;
+		}
+
 		$response = $this->get_page_content( $url );
 
 		if ( ! $response ) {
