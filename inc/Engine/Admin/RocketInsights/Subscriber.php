@@ -217,10 +217,12 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			return $data;
 		}
 
-		$data['rocket_insights_ids']               = $this->controller->get_not_finished_ids();
-		$data['rocket_insights_no_credit_tooltip'] = __( 'Upgrade your plan to get access to re-test performance or run new tests', 'rocket' );
-		$data['is_free']                           = false;
-		$data['assets_img_url']                    = WP_ROCKET_ASSETS_IMG_URL;
+		$data['rocket_insights_ids']                 = $this->controller->get_not_finished_ids();
+		$data['rocket_insights_no_credit_tooltip']   = __( 'Upgrade your plan to get access to re-test performance or run new tests', 'rocket' );
+		$data['rocket_insights_invalid_url_message'] = __( 'Please enter a valid URL starting with https://', 'rocket' );
+		$data['rocket_insights_generic_url_error']   = __( 'An error occurred. Please try again.', 'rocket' );
+		$data['is_free']                             = false;
+		$data['assets_img_url']                      = WP_ROCKET_ASSETS_IMG_URL;
 
 		$global_score_data                   = $this->controller->get_global_score();
 		$global_score_data['status_color']   = $this->render->get_score_color_status( (int) $global_score_data['score'] );

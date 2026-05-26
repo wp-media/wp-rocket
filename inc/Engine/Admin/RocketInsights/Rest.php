@@ -816,9 +816,10 @@ class Rest extends WP_REST_Controller {
 			return $payload;
 		}
 
-		// Check if url has not been submited.
+		// Check if url has not been submitted.
 		if ( false !== $this->manager->get_single_job( $url, true ) ) {
-			$payload['error'] = true;
+			$payload['error']   = true;
+			$payload['message'] = 'This URL is already being monitored.';
 
 			return $payload;
 		}
