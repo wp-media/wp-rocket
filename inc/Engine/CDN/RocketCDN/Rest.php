@@ -249,7 +249,7 @@ class Rest extends WP_REST_Controller {
 			);
 		}
 
-		$payload = $this->get_page_url_validation_payload( $url );
+		$payload = $this->get_url_validation_payload( $url );
 
 		if ( $payload['error'] ) {
 			return new WP_Error(
@@ -488,5 +488,34 @@ class Rest extends WP_REST_Controller {
 			$subscription,
 			200
 		);
+	}
+
+	/**
+	 * Get URL validation payload.
+	 *
+	 * @param string $url URL to validate.
+	 *
+	 * @return array
+	 */
+	private function get_url_validation_payload( string $url ): array {
+		$payload = $this->get_page_url_validation_payload( $url );
+
+		// Check for same host.
+		$url_host  = wp_parse_url( $url );
+		$site_host = wp_parse_url( home_url() );
+
+		// Check that URL has a valid host component.
+		if ( ! isset( $url_host['host'] ) ) {
+			$payload['error']   = true;
+			$payload['message'] = __( 'Invalid URL provided.', 'rocket' );
+		}
+
+		// Check that URL host matches site host.
+		if ( $url_host['host'] !== $site_host['host'] ) {
+			$payload['error']   = true;
+			$payload['message'] = __( 'URL must be on the same domain as the site.', 'rocket' );
+		}
+
+		return $payload;
 	}
 }
