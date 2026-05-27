@@ -112,6 +112,25 @@ module.exports = (function () {
 	}
 
 	/**
+	 * Show an error message inside a column element and re-enable the test button.
+	 *
+	 * @param {jQuery} column  The column element.
+	 * @param {string} message The error message to display.
+	 */
+	function showErrorInColumn(column, message) {
+		column.find('.wpr-ri-test-page').prop('disabled', false);
+		if (message) {
+			const $msg = column.find('.wpr-ri-message');
+			if ($msg.length) {
+				$msg.text(message).show();
+				setTimeout(function() {
+					$msg.fadeOut();
+				}, 5000);
+			}
+		}
+	}
+
+	/**
 	 * Add a new page for testing.
 	 *
 	 * @param {string} url    The URL to test.
@@ -137,7 +156,6 @@ module.exports = (function () {
 			const success = response?.success === true;
 			const id = response?.id ?? response?.data?.id ?? null;
 			const canAdd = (response?.can_add_pages ?? response?.data?.can_add_pages);
-			const message = response?.message ?? response?.data?.message;
 
 			if (success && id) {
 				// Update column with the row ID and start polling
@@ -151,13 +169,14 @@ module.exports = (function () {
 				return;
 			}
 
-			// If backend says we cannot add pages or other errors, restore original state
-			// Reload the column HTML from server to restore the button
-			reloadColumnFromServer(column, url);
-		}).catch((error) => {
-			// wp.apiFetch throws on WP_Error; reload column to restore button
-			console.error(error);
-			reloadColumnFromServer(column, url);
+			// Show localized error message in the column instead of reloading from server.
+			const messages = window.rocket_insights_i18n?.error_messages || {};
+			const msg = messages[response?.error_code] || messages.generic_error || response?.message || '';
+			showErrorInColumn(column, msg);
+		}).catch(() => {
+			// wp.apiFetch throws on WP_Error; show generic error in column.
+			const msg = (window.rocket_insights_i18n?.error_messages || {}).generic_error || '';
+			showErrorInColumn(column, msg);
 		});
 	}
 

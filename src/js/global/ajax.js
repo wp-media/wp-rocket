@@ -502,6 +502,17 @@ document.addEventListener('DOMContentLoaded', function() {
 		} );
 	}
 
+	function showUrlErrorMessage(message) {
+		const $errorDiv = $('#wpr-ri-url-error-message');
+		if ($errorDiv.length === 0) {
+			return;
+		}
+		$errorDiv.text(message).show();
+		setTimeout(function() {
+			$errorDiv.fadeOut();
+		}, 5000);
+	}
+
 	function handleAddPage(e) {
 		e.preventDefault();
 
@@ -509,6 +520,9 @@ document.addEventListener('DOMContentLoaded', function() {
 		if ($(this).attr('disabled')) {
 			return;
 		}
+
+		// Clear any previous inline error message before the API call fires.
+		$('#wpr-ri-url-error-message').hide().text('');
 
 		const pageUrl = $pageUrlInput.val().trim();
 
@@ -532,6 +546,10 @@ document.addEventListener('DOMContentLoaded', function() {
 			if (response.success) {
 				if ( ! hasId(response.id) ) {
 					$pageUrlInput.val('');
+
+					// Clear error message on successful submission.
+					$('#wpr-ri-url-error-message').hide().text('');
+
 					$tableBody.append(response.html);
 
 					// Custom event when new page is added.
@@ -568,15 +586,22 @@ document.addEventListener('DOMContentLoaded', function() {
 				// Clear the input field on error
 				$pageUrlInput.val('');
 
-				// Handle URL limit reached error
-				if (response?.message && response.message.includes('Maximum number of URLs reached')) {
+				// Handle URL limit reached error (special case — updates UI state)
+				if (response?.data?.can_add_pages === false || (response?.message && response.message.includes('Maximum number of URLs reached'))) {
 					// Update UI state to reflect URL limit has been reached
 					disableAddUrlElements();
 					// Show quota banner (can_add_pages = false)
 					updateQuotaBanner(response.can_add_pages !== undefined ? response.can_add_pages : false);
 				}
 
-				console.error(response?.message || response);
+				// Show inline error message to user
+				const errorCode = response?.error_code || '';
+				const messages  = window.rocket_ajax_data?.rocket_insights_error_messages || {};
+				const msg = messages[errorCode] || messages['generic_error'] || response?.message || '';
+
+				if (msg) {
+					showUrlErrorMessage(msg);
+				}
 			}
 		});
 	}
