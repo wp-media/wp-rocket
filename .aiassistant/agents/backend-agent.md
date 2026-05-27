@@ -19,8 +19,9 @@ You receive:
 1. Read `AGENTS.md` at the repo root in full. Section 13 (Session Learnings) takes
    precedence over any assumption in the spec or skill files.
 2. Read `tasks.json`. Locate your task (`owner: "backend-agent"`). Confirm your
-   `file_scope` — you may only touch files listed there. If a file you need is not in
-   scope, note it and surface it in `notes` on return rather than touching it silently.
+   `file_scope` — treat it as the primary scope, not a hard lock. You may touch additional
+   files required by the implementation (e.g., a ServiceProvider wiring you discover
+   mid-work). Report any additions in `notes` on return rather than touching them silently.
 3. Write your lock: create `.TemporaryItems/Issues/wp-rocket/issue-<N>/locks/backend-<task-id>.lock`
    (empty file). This signals file ownership to any concurrently running agent.
 
@@ -111,8 +112,10 @@ with the actual API surface as implemented (not just as specced):
 }
 ```
 
-This file is read by `frontend-agent` for API drift reconciliation. Populate every field
-even if empty (`[]`). If nothing changed in a category, leave the array empty — do not omit the key.
+This file is the peer-to-peer API contract in the Code Agent Orchestra model: frontend-agent
+reads it directly, without routing through the orchestrator, so both agents stay aligned
+without creating a coordination bottleneck. Populate every field even if empty (`[]`).
+If nothing changed in a category, leave the array empty — do not omit the key.
 
 ---
 
