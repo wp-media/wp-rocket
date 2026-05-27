@@ -31,5 +31,19 @@
       "Bash(bash .aiassistant/skills/issue-workflow/scripts/issue-sync.sh *)",
       "Bash(curl -s http://localhost:8888/*)"
     ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \".aiassistant/skills/issue-workflow/scripts/slack-notify.js\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
   }
 }
