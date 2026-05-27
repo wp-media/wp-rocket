@@ -28,22 +28,33 @@ async function run(raw) {
   const command = data.tool_input?.command || '';
   if (!command.includes('gh issue comment')) return;
 
-  // Extract issue number (first arg after "gh issue comment")
   const issueMatch = command.match(/gh issue comment\s+([^\s"'\\]+)/);
   if (!issueMatch) return;
   const issueRef = issueMatch[1];
   const issueNum = issueRef.match(/\d+/)?.[0] || issueRef;
   const issueUrl = `https://github.com/wp-media/wp-rocket/issues/${issueNum}`;
 
-  // Require a valid comment URL in tool output — no URL means the command failed
+  // Require a valid comment URL — no URL means the command failed
   const output = getOutput(data);
   const commentUrlMatch = output.match(/https:\/\/github\.com\/[^\s]+#issuecomment-\d+/);
   if (!commentUrlMatch) return;
   const commentUrl = commentUrlMatch[0];
 
   const body = extractBody(command);
-  await postToSlack(issueNum, issueUrl, commentUrl, body);
+  const blocks = buildBlocks(body, issueNum, issueUrl, commentUrl);
+  const headingMatch = body.match(/^#{1,3}\s+(.+)$/m);
+  const title = headingMatch?.[1]?.trim() || 'Comment Posted';
+
+  await postToSlack({
+    channel: CHANNEL_ID,
+    text: `AI Pipeline · ${title} on Issue #${issueNum}`,
+    blocks
+  });
 }
+
+// ---------------------------------------------------------------------------
+// Tool output extraction
+// ---------------------------------------------------------------------------
 
 function getOutput(data) {
   const content = data.tool_response?.content;
@@ -51,12 +62,16 @@ function getOutput(data) {
   return data.tool_response?.output || data.tool_result?.output || '';
 }
 
+// ---------------------------------------------------------------------------
+// Body extraction from raw bash command
+// ---------------------------------------------------------------------------
+
 function extractBody(command) {
-  // HEREDOC: --body "$(cat <<'DELIMITER'\n...\nDELIMITER\n)"  (any word delimiter)
+  // HEREDOC: --body "$(cat <<'ANY_DELIMITER'\n...\nANY_DELIMITER\n)"
   let m = command.match(/(?:--body|-b)\s+"?\$\(cat\s+<<['"]?(\w+)['"]?\n([\s\S]*?)\n\1/);
   if (m) return m[2].trim();
 
-  // Double-quoted (skip if value starts with $( — that means heredoc failed to match above)
+  // Double-quoted (skip if it starts with $( — unmatched heredoc)
   m = command.match(/(?:--body|-b)\s+"((?:[^"\\]|\\.)*)"/s);
   if (m && !m[1].trimStart().startsWith('$(')) {
     return m[1].replace(/\\n/g, '\n').replace(/\\"/g, '"').trim();
@@ -69,49 +84,116 @@ function extractBody(command) {
   return '';
 }
 
-function buildPreview(bodyText) {
-  if (!bodyText) return null;
+// ---------------------------------------------------------------------------
+// Block Kit builders
+// ---------------------------------------------------------------------------
 
-  // Strip GitHub callout blocks: > [!NOTE]\n> ...
-  let text = bodyText.replace(/^>\s*\[!(?:NOTE|WARNING|INFO|TIP|IMPORTANT)\]\s*\n(>\s*.+\n)*/gm, '');
-  // Collapse leading "> " from remaining blockquotes
-  text = text.replace(/^>\s?/gm, '');
-  // Collapse 3+ blank lines to 2
-  text = text.replace(/\n{3,}/g, '\n\n').trim();
-
-  const MAX = 600;
-  return text.length > MAX ? text.slice(0, MAX) + '…' : text;
+function buildBlocks(body, issueNum, issueUrl, commentUrl) {
+  if (body.includes('| Stage |') || body.includes('|Stage|')) {
+    return buildPipelineSummaryBlocks(body, issueNum, issueUrl, commentUrl);
+  }
+  return buildGenericBlocks(body, issueNum, issueUrl, commentUrl);
 }
 
-async function postToSlack(issueNum, issueUrl, commentUrl, bodyText) {
-  // Extract first ## heading as the "step title"
-  const headingMatch = bodyText.match(/^#{1,3}\s+(.+)$/m);
-  const stepTitle = headingMatch ? headingMatch[1].trim() : 'Comment Posted';
+function buildPipelineSummaryBlocks(body, issueNum, issueUrl, commentUrl) {
+  const headingMatch = body.match(/^#{1,3}\s+(.+)$/m);
+  const title = headingMatch?.[1]?.trim() || 'Delivery Pipeline — Complete';
 
-  const preview = buildPreview(bodyText);
-
-  const viewButton = {
-    type: 'button',
-    text: { type: 'plain_text', text: 'View Comment', emoji: false },
-    url: commentUrl
-  };
+  const prMatch   = body.match(/\*\*PR:\*\*\s*\[#(\d+)\]\(([^)]+)\)/);
+  const statusMatch = body.match(/\*\*Status:\*\*\s*([^\n|]+)/);
+  const prNum  = prMatch?.[1];
+  const prUrl  = prMatch?.[2];
+  const status = statusMatch?.[1]?.trim() || '';
+  const isReady = status.includes('READY');
 
   const blocks = [
     {
       type: 'section',
       text: {
         type: 'mrkdwn',
-        text: `🤖 *${stepTitle}*\n<${issueUrl}|Issue #${issueNum}> · \`wp-media/wp-rocket\``
+        text: `${isReady ? '✅' : '🔄'} *${title}*\n<${issueUrl}|Issue #${issueNum}> · \`wp-media/wp-rocket\``
       },
-      accessory: viewButton
+      accessory: {
+        type: 'button',
+        text: { type: 'plain_text', text: 'View Comment', emoji: false },
+        url: commentUrl,
+        style: 'primary'
+      }
+    }
+  ];
+
+  // PR + Status context bar
+  const metaParts = [];
+  if (prNum) metaParts.push(`*PR:* <${prUrl}|#${prNum}>`);
+  if (status) metaParts.push(`*Status:* ${status}`);
+  if (metaParts.length) {
+    blocks.push({
+      type: 'context',
+      elements: [{ type: 'mrkdwn', text: metaParts.join('  ·  ') }]
+    });
+  }
+
+  blocks.push({ type: 'divider' });
+
+  // Stage results as 2-column fields grid
+  const tableRows = parseMarkdownTable(body);
+  if (tableRows.length) {
+    const fields = tableRows.map(([stage = '', result = '', notes = '']) => {
+      const noteText = notes && notes !== '—' ? `\n_${notes}_` : '';
+      return { type: 'mrkdwn', text: `*${stage}*\n${result}${noteText}` };
+    });
+    // Slack max: 10 fields per section
+    for (let i = 0; i < fields.length; i += 10) {
+      blocks.push({ type: 'section', fields: fields.slice(i, i + 10) });
+    }
+  }
+
+  // Footer: follow-up tickets + GitHub link
+  const followupMatch = body.match(/\*\*Follow-up tickets:\*\*\s*(.+)/);
+  const followup = followupMatch?.[1]?.trim();
+  const footerParts = [];
+  if (followup) footerParts.push(`*Follow-up:* ${followup}`);
+  footerParts.push(`<${commentUrl}|View on GitHub>`);
+
+  blocks.push({ type: 'divider' });
+  blocks.push({
+    type: 'context',
+    elements: [{ type: 'mrkdwn', text: footerParts.join('  ·  ') }]
+  });
+
+  return blocks;
+}
+
+function buildGenericBlocks(body, issueNum, issueUrl, commentUrl) {
+  const headingMatch = body.match(/^#{1,3}\s+(.+)$/m);
+  const title = headingMatch?.[1]?.trim() || 'Comment Posted';
+
+  // Clean preview: strip GitHub callouts, collapse whitespace, truncate
+  let preview = body
+    .replace(/^>\s*\[!(?:NOTE|WARNING|TIP|IMPORTANT|CAUTION)\]\s*\n(>\s*.+\n)*/gm, '')
+    .replace(/^>\s?/gm, '')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+  if (preview.length > 600) preview = preview.slice(0, 600) + '…';
+
+  const blocks = [
+    {
+      type: 'section',
+      text: {
+        type: 'mrkdwn',
+        text: `🤖 *${title}*\n<${issueUrl}|Issue #${issueNum}> · \`wp-media/wp-rocket\``
+      },
+      accessory: {
+        type: 'button',
+        text: { type: 'plain_text', text: 'View Comment', emoji: false },
+        url: commentUrl,
+        style: 'primary'
+      }
     }
   ];
 
   if (preview) {
-    blocks.push({
-      type: 'section',
-      text: { type: 'mrkdwn', text: preview }
-    });
+    blocks.push({ type: 'section', text: { type: 'mrkdwn', text: preview } });
   }
 
   blocks.push({
@@ -119,12 +201,32 @@ async function postToSlack(issueNum, issueUrl, commentUrl, bodyText) {
     elements: [{ type: 'mrkdwn', text: `<${commentUrl}|View on GitHub>` }]
   });
 
-  const payload = JSON.stringify({
-    channel: CHANNEL_ID,
-    text: `AI Pipeline · ${stepTitle} on Issue #${issueNum}`,
-    blocks
-  });
+  return blocks;
+}
 
+// ---------------------------------------------------------------------------
+// Markdown table parser
+// ---------------------------------------------------------------------------
+
+function parseMarkdownTable(body) {
+  const rows = [];
+  for (const line of body.split('\n')) {
+    if (!line.startsWith('|')) continue;
+    if (/^\|[\s\-:|]+\|$/.test(line)) continue; // separator row
+    const cells = line.split('|').slice(1, -1).map(c => c.trim());
+    // Skip header row
+    if (cells[0]?.toLowerCase() === 'stage') continue;
+    if (cells.length >= 2) rows.push(cells);
+  }
+  return rows;
+}
+
+// ---------------------------------------------------------------------------
+// Slack API
+// ---------------------------------------------------------------------------
+
+async function postToSlack(payload) {
+  const body = JSON.stringify(payload);
   return new Promise(resolve => {
     const req = https.request(
       {
@@ -134,14 +236,14 @@ async function postToSlack(issueNum, issueUrl, commentUrl, bodyText) {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${SLACK_TOKEN}`,
-          'Content-Length': Buffer.byteLength(payload)
+          'Content-Length': Buffer.byteLength(body)
         }
       },
       res => { res.resume(); res.on('end', resolve); }
     );
     req.on('error', resolve);
     req.setTimeout(7000, () => { req.destroy(); resolve(); });
-    req.write(payload);
+    req.write(body);
     req.end();
   });
 }
