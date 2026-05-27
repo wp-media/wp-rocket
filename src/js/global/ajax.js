@@ -443,6 +443,31 @@ document.addEventListener('DOMContentLoaded', function() {
 		$('.wpr-global-score-widget .wpr-global-score-widget-btn-wrapper').html(globalScoreData.disabled_btn_html.global_score_widget);
 	}
 
+	/**
+	 * Show a validation error message below the URL input field.
+	 * Automatically hides after 5 seconds.
+	 *
+	 * @param {string} message The error message to display.
+	 */
+	function showValidationError(message) {
+		const $errorDiv = $('#wpr-ri-url-error-message');
+		if (!$errorDiv.length) {
+			return;
+		}
+		$errorDiv.text(message).removeClass('hidden');
+		// Auto-dismiss after 5 seconds.
+		setTimeout(function() {
+			$errorDiv.addClass('hidden').text('');
+		}, 5000);
+	}
+
+	/**
+	 * Hide the validation error message.
+	 */
+	function hideValidationError() {
+		$('#wpr-ri-url-error-message').addClass('hidden').text('');
+	}
+
 	// ==== AJAX Handlers ====
 	function getResults() {
 		if (rocketInsightsIds.length === 0) {
@@ -513,7 +538,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		const pageUrl = $pageUrlInput.val().trim();
 
 		if (!isValidUrl(pageUrl)) {
-			alert('Please enter a valid URL');
+			showValidationError(window.rocket_ajax_data?.rocket_insights_invalid_url || 'Please enter a valid URL.');
 			return;
 		}
 
@@ -530,6 +555,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			}
 		).then( ( response ) => {
 			if (response.success) {
+				hideValidationError();
 				if ( ! hasId(response.id) ) {
 					$pageUrlInput.val('');
 					$tableBody.append(response.html);
@@ -574,6 +600,11 @@ document.addEventListener('DOMContentLoaded', function() {
 					disableAddUrlElements();
 					// Show quota banner (can_add_pages = false)
 					updateQuotaBanner(response.can_add_pages !== undefined ? response.can_add_pages : false);
+				}
+
+				// Show error message if backend returned one.
+				if (response?.message) {
+					showValidationError(response.message);
 				}
 
 				console.error(response?.message || response);
