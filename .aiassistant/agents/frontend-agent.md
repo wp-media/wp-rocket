@@ -10,8 +10,20 @@ You receive:
 - The issue number
 - The spec path (`.TemporaryItems/Issues/wp-rocket/issues/<N>-spec.md`)
 - The dispatch plan (which files you are responsible for and any constraints)
+- The tasks.json path (`.TemporaryItems/Issues/wp-rocket/issue-<N>/tasks.json`)
 
 ## Your process
+
+### Step 0 — Load shared context
+
+1. Read `AGENTS.md` at the repo root in full. Section 13 (Session Learnings) takes
+   precedence over any assumption in the spec or skill files.
+2. Read `tasks.json`. Locate your task (`owner: "frontend-agent"`). Confirm your
+   `file_scope` — you may only touch files listed there.
+3. Write your lock: create `.TemporaryItems/Issues/wp-rocket/issue-<N>/locks/frontend-<task-id>.lock`
+   (empty file).
+
+---
 
 ### Step 1 — Load context
 
@@ -19,6 +31,20 @@ You receive:
 2. Read the dispatch plan — note exactly which files you own and any constraints.
 3. Read `.aiassistant/skills/wp-rocket-frontend-architecture/SKILL.md` and `.aiassistant/skills/wordpress-compliance/SKILL.md`.
 4. Read each JS/CSS/HTML file you are responsible for in full.
+
+---
+
+### Step 1b — API contract reconciliation
+
+Check if `.TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/backend-result.json` exists.
+
+- **If it exists:** read it. Compare `option_keys`, `hooks`, and `rest_endpoints` against
+  what the spec says. If they differ, use the contract file as the source of truth (it
+  reflects what was actually implemented). Note any drift in your `notes` on return.
+- **If it does not exist** (parallel execution, backend not done yet, or backend not in
+  scope): proceed from spec. Note "API contract not available — using spec" in `notes`.
+
+Do not block or wait for the contract file. This is a one-time opportunistic read.
 
 ---
 
@@ -95,9 +121,16 @@ Do not push. The `release-agent` handles push and PR creation after both impleme
 
 ---
 
-### Step 5 — Return
+### Step 5 — Finalize and return
 
-Return the following JSON object to the orchestrator. Fill every field — the orchestrator uses these for DOD L2 routing.
+Before returning:
+
+1. Update your task entry in `tasks.json`: set `status: "completed"` and `completed_at` to
+   the current ISO timestamp.
+2. Remove your lock file: `.TemporaryItems/Issues/wp-rocket/issue-<N>/locks/frontend-<task-id>.lock`
+
+Then return the following JSON object to the orchestrator. The orchestrator reads this from
+`result_path` in `tasks.json` — write it there, then also return it inline.
 
 ```json
 {
