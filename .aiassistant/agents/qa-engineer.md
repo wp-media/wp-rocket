@@ -24,7 +24,12 @@ bash bin/dev-up.sh
 
 WordPress should be available at `http://localhost:8888` (admin / password).
 
-**Record the outcome — you must include this in your final report regardless of the result:**
+**Record the outcome internally.** Boot results go into your PR comment only when Strategy B
+was used **or** when boot failed (as a failure explanation). For backend-only runs where boot
+succeeds and Strategy B is not used, omit the Environment Boot table from the PR comment —
+`gh pr checkout`, `bin/dev-up.sh exit 0`, and `localhost:8888 HTTP 200` are setup noise, not
+QA findings.
+
 - Whether `bin/dev-up.sh` exited with code 0 or non-zero
 - Whether `http://localhost:8888` is reachable after the script finishes (test with `curl -s -o /dev/null -w "%{http_code}" http://localhost:8888`)
 - If boot failed: the last 20 lines of output from `bin/dev-up.sh`
@@ -71,7 +76,15 @@ The local WordPress environment runs at `http://localhost:8888`. Use `curl` for 
 
 #### Strategy B — Browser / UI validation
 **Mandatory** when the PR touches any JS, CSS, HTML, or Twig template file.
-Optional (but preferred) for PHP-only changes that have a visible admin UI surface.
+
+**Also mandatory** when the diff contains PHP that renders visible admin output — even if
+no JS/CSS/Twig files were modified. This includes: calls to `rocket_notice_html()`,
+`rocket_notice_writing_permissions()`, `wp_admin_notice()`, `add_settings_error()`,
+`add_action('admin_notices', ...)`, or any PHP that echoes or returns HTML intended for
+the browser. An admin notice is a browser-visible UI change regardless of which file type
+implements it.
+
+Optional (but preferred) for other PHP-only changes that have a visible admin UI surface.
 
 **Never skip Strategy B citing "CI-only environment."** This is a local environment, not a
 CI pipeline. If `bin/dev-up.sh` exits 0 and `localhost:8888` is reachable, you must run
@@ -98,11 +111,16 @@ Only fall back to Strategy C if `bin/dev-up.sh` itself fails (non-zero exit) or 
 
 **If you use Strategy C for a change that touches frontend files (JS, CSS, Twig/PHP templates):** you must explicitly state in your report: "Strategy B skipped — reason: [exact failure from Step 0]". Never silently fall back to Strategy C for UI changes.
 
-Run the test suite for the affected module, then audit coverage:
+**Never re-run PHPCS, PHPStan, or Codacy as part of Strategy C.** These are already
+tracked in GitHub Actions and reviewed by the Lead Reviewer. Re-running them is redundant
+and wastes tokens. Your job is behavioral validation, not CI re-execution.
+
+Run the test suite for the affected module **only to validate acceptance criteria** — not as a
+CI check:
 
 ```bash
-# Run unit tests
-composer test-unit
+# Run unit tests for a specific group
+composer test-unit -- --filter="GroupOrClassName"
 
 # Run integration tests for a specific group — use direct phpunit to avoid
 # conflicts with the default --exclude-group list in composer test-integration
@@ -189,10 +207,12 @@ REPORT
 
 **Branch:** [branch name]
 
+<!-- Environment Boot: include this section ONLY when Strategy B was used OR when boot
+failed (as a failure explanation). Omit entirely for backend-only runs where boot
+succeeded and Strategy B was not used. -->
 ### Environment Boot
 | Step | Result |
 |------|--------|
-| `gh pr checkout` | ✅ success / ❌ failed |
 | `bin/dev-up.sh` | ✅ exit 0 / ❌ exit N — [last error line] |
 | `http://localhost:8888` reachable | ✅ HTTP 200 / ❌ unreachable |
 
