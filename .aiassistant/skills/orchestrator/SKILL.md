@@ -103,6 +103,76 @@ Maintain in your context tracking:
 - Escalation reason if stopped
 - Calibration mode chosen
 
+**Synthesis rule:** Read routing-relevant fields from each agent's `result_path` (in
+`tasks.json`) rather than holding full agent JSONs in this context. This keeps the
+orchestrator context lean across long pipeline runs. Full JSONs are written to the HTML log
+from the contract files.
+
+---
+
+## Runtime Coordination Layer
+
+Each pipeline run creates an isolated working directory for coordination artifacts:
+
+**Run root:** `.TemporaryItems/Issues/wp-rocket/issue-<N>/`
+
+```
+issue-<N>/
+├── tasks.json               # shared task ledger — read/written by all agents
+├── contracts/
+│   ├── backend-result.json  # written by backend-agent on completion
+│   └── frontend-result.json # written by frontend-agent on completion
+└── locks/
+    └── <agent>-<task-id>.lock  # file ownership — removed when agent finishes
+```
+
+### `tasks.json` structure
+
+```json
+{
+  "run_id": "issue-<N>-<unix-timestamp>",
+  "issue_id": "<N>",
+  "branch": "<branch-name>",
+  "base_branch": "origin/develop",
+  "worktrees": {},
+  "tasks": [
+    {
+      "id": "impl-backend",
+      "type": "implementation",
+      "owner": "backend-agent",
+      "status": "pending | in-progress | completed | blocked",
+      "depends_on": [],
+      "file_scope": ["inc/Engine/...", "tests/Unit/..."],
+      "worktree": null,
+      "result_path": ".TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/backend-result.json",
+      "started_at": null,
+      "completed_at": null,
+      "blocked_reason": null
+    },
+    {
+      "id": "impl-frontend",
+      "type": "implementation",
+      "owner": "frontend-agent",
+      "status": "pending | in-progress | completed | blocked",
+      "depends_on": [],
+      "file_scope": ["assets/src/...", "views/..."],
+      "worktree": null,
+      "result_path": ".TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/frontend-result.json",
+      "started_at": null,
+      "completed_at": null,
+      "blocked_reason": null
+    }
+  ]
+}
+```
+
+### Peer-to-peer contract
+
+`contracts/backend-result.json` contains the actual hooks created, option keys used, and
+REST endpoint shapes **as implemented** (not just as specced). `frontend-agent` reads this
+file if it exists before finalizing any UI that depends on backend API surface. It does not
+block if the file is absent — it proceeds from spec and notes the drift-check was skipped.
+
 ---
 
 ## JSON return contracts
@@ -355,18 +425,66 @@ Log AGENT event.
 
 ---
 
+### Step 4b — Task graph initialization
+
+Create the run directory and write the initial `tasks.json`:
+
+```bash
+mkdir -p .TemporaryItems/Issues/wp-rocket/issue-<N>/contracts
+mkdir -p .TemporaryItems/Issues/wp-rocket/issue-<N>/locks
+```
+
+Populate `file_scope` for each task from `grooming.development_steps[*].files`:
+- **backend scope**: `.php` files in `inc/`, `src/`, `tests/`
+- **frontend scope**: `.js`, `.css`, `.twig`, `.html` files in `assets/`, `views/`
+
+If a file appears in both (e.g., a ServiceProvider registering both PHP services and JS
+localizations), assign it to the domain owning the majority of changes; note the shared
+file in `blocked_reason` for the other task so it doesn't touch it.
+
+**Parallel eligibility:** scopes are disjoint when no single file path appears in both
+`impl-backend.file_scope` and `impl-frontend.file_scope`.
+
+Log a ROUTING DECISION event: "Task graph initialized — N backend files, M frontend files,
+parallel: YES | NO" (with explicit reason if NO: overlapping files, or effort too small).
+
+---
+
 ### Step 5 — Implementation
 
-Each agent runs the `docs` skill, runs the `e2e` skill (basic tier), runs the `dod` skill
-(layer 1) inline before committing, then commits their own changes atomically.
+Each agent runs the `docs` skill, `e2e` skill (basic tier), and `dod` skill (layer 1)
+inline before committing, then commits atomically.
 
-**05a — Backend** (if in scope):
-> Invoke `backend-agent`. Inputs: issue #N, spec path, dispatch decision (domain, scope, branch prefix).
-> Max 3 attempts. Hard stop after 3 — escalate.
+Before spawning, mark each in-scope task `in-progress` in `tasks.json` and record
+`started_at`. If `effort >= M` and scopes are disjoint, create git worktrees:
 
-**05b — Frontend** (if in scope):
-> Invoke `frontend-agent`. Inputs: issue #N, spec path, dispatch decision.
-> Max 3 attempts. Hard stop after 3 — escalate.
+```bash
+git worktree add .TemporaryItems/Issues/wp-rocket/issue-<N>/worktrees/backend <branch>
+git worktree add .TemporaryItems/Issues/wp-rocket/issue-<N>/worktrees/frontend <branch>
+```
+
+Update each task's `worktree` field in `tasks.json`.
+
+**05a/b — Parallel** (scopes disjoint AND `effort >= M`):
+> Spawn `backend-agent` and `frontend-agent` simultaneously.
+> Each agent receives: issue #N, spec path, dispatch plan, their task entry from `tasks.json`
+> (including `file_scope` and `worktree` path).
+>
+> Agents coordinate directly via `contracts/` — not through the orchestrator.
+> Backend writes `contracts/backend-result.json` on completion.
+> Frontend reads it if present before finalizing any backend-dependent UI.
+>
+> Orchestrator proceeds when both tasks show `completed` in `tasks.json`
+> (or either shows `blocked`).
+
+**05a/b — Sequential fallback** (scopes overlap OR `effort IN [XS, S]`):
+> Invoke `backend-agent` first (if in scope), then `frontend-agent` (if in scope).
+> Max 3 attempts each. Hard stop after 3 — escalate.
+
+**Synthesis:** Read `tests_passing`, `dod_layer1.overall`, `e2e_smoke.status`, and
+`files_changed` from each agent's `result_path` in `tasks.json`. Full implementation
+JSONs go to the HTML log directly from contract files — do not accumulate them in
+orchestrator context.
 
 Log AGENT events after each with `docs` status, `e2e_smoke` status, DOD L1 summary, and
 commit SHA.
@@ -519,6 +637,28 @@ None.
 ### Run log
 [View full pipeline run log](.TemporaryItems/Issues/wp-rocket/issue-<N>-workflow-log.html)
 ```
+
+---
+
+## WIP limits and kill criteria
+
+| Effort | Agent timeout |
+|---|---|
+| XS | 5 min |
+| S | 10 min |
+| M | 20 min |
+| L | 30 min |
+| XL | 45 min |
+
+If any agent's task remains `in-progress` past its timeout:
+1. Mark it `blocked` in `tasks.json` with `blocked_reason: "timeout"`.
+2. Remove any worktree created for it: `git worktree remove <path>`.
+3. Log an ESCALATION event — do not silently retry with the same scope.
+4. Offer the human two options: (a) re-spawn with a narrower `file_scope` (split the task
+   entry in `tasks.json`), or (b) hand off to manual implementation.
+
+Reassign rather than retry when the same agent has failed 3 times with the same error —
+that pattern signals a spec ambiguity, not a transient failure.
 
 ---
 

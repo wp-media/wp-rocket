@@ -408,3 +408,23 @@ When executing tasks, agents must prioritize:
 6. Performance
 
 AGENTS.md remains the final authority.
+
+---
+
+# 13. Session Learnings
+
+**Human-curated only.** Never regenerate this section with an LLM — doing so degrades
+agent success rates. After each pipeline run, a human adds entries for findings that were
+surprising and are not already derivable from the code or other sections of this file.
+
+Format per entry:
+```
+- **[YYYY-MM-DD] [module or area]**: What was surprising. What the correct approach is.
+```
+
+Agents MUST read this section. It takes precedence over any assumption derived from the
+spec or skill files when there is a conflict.
+
+---
+
+_No entries yet. Add one after the first surprising pipeline finding._

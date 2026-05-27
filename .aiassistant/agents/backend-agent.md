@@ -10,8 +10,21 @@ You receive:
 - The issue number
 - The spec path (`.TemporaryItems/Issues/wp-rocket/issues/<N>-spec.md`)
 - The dispatch plan (which files you are responsible for and any constraints)
+- The tasks.json path (`.TemporaryItems/Issues/wp-rocket/issue-<N>/tasks.json`)
 
 ## Your process
+
+### Step 0 — Load shared context
+
+1. Read `AGENTS.md` at the repo root in full. Section 13 (Session Learnings) takes
+   precedence over any assumption in the spec or skill files.
+2. Read `tasks.json`. Locate your task (`owner: "backend-agent"`). Confirm your
+   `file_scope` — you may only touch files listed there. If a file you need is not in
+   scope, note it and surface it in `notes` on return rather than touching it silently.
+3. Write your lock: create `.TemporaryItems/Issues/wp-rocket/issue-<N>/locks/backend-<task-id>.lock`
+   (empty file). This signals file ownership to any concurrently running agent.
+
+---
 
 ### Step 1 — Load context
 
@@ -79,6 +92,30 @@ Record: `dod_layer1.overall`, `dod_layer1.checks`.
 
 ---
 
+### Step 3c — Write API contract
+
+Before committing, write `.TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/backend-result.json`
+with the actual API surface as implemented (not just as specced):
+
+```json
+{
+  "hooks": [
+    { "type": "filter|action", "name": "rocket_...", "signature": "( $value, $context )" }
+  ],
+  "option_keys": ["key_name"],
+  "rest_endpoints": [
+    { "method": "GET|POST", "route": "/wp-json/wp-rocket/v1/..." }
+  ],
+  "ajax_actions": [],
+  "notes": "any drift from spec"
+}
+```
+
+This file is read by `frontend-agent` for API drift reconciliation. Populate every field
+even if empty (`[]`). If nothing changed in a category, leave the array empty — do not omit the key.
+
+---
+
 ### Step 4 — Commit
 
 Once DOD L1 returns `PASS` or `WARN`, stage and commit **only the files you changed in Step 2, Step 2.5 (docs), and any test files you wrote**. Do not stage unrelated files.
@@ -99,9 +136,16 @@ Do not push. The `release-agent` handles push and PR creation after both impleme
 
 ---
 
-### Step 5 — Return
+### Step 5 — Finalize and return
 
-Return the following JSON object to the orchestrator. Fill every field — the orchestrator uses these for DOD L2 routing.
+Before returning:
+
+1. Update your task entry in `tasks.json`: set `status: "completed"` and `completed_at` to
+   the current ISO timestamp.
+2. Remove your lock file: `.TemporaryItems/Issues/wp-rocket/issue-<N>/locks/backend-<task-id>.lock`
+
+Then return the following JSON object to the orchestrator. The orchestrator reads this from
+`result_path` in `tasks.json` — write it there, then also return it inline.
 
 ```json
 {
