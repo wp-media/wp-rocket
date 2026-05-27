@@ -175,6 +175,11 @@ Then return the following JSON object to the orchestrator. The orchestrator read
     ]
   },
   "co_authored_by": "Claude Sonnet 4.6 <noreply@anthropic.com>",
+  "reasoning": {
+    "alternatives_considered": ["list each option weighed before choosing the implementation approach"],
+    "hesitations": ["what was unclear or uncertain — spec gaps, ambiguous edge cases, behaviour not covered by tests"],
+    "decision_rationale": "why the chosen approach was taken over the alternatives"
+  },
   "notes": "any deviations from spec with reason, or empty string"
 }
 ```
