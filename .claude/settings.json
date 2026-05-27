@@ -27,7 +27,7 @@
       "Bash(bin/dev-up.sh *)",
       "Bash(bin/dev-up.sh)",
       "Bash(docker exec *)",
-      "Bash(mkdir -p .TemporaryItems/Issues/wp-rocket/*)",
+      "Bash(mkdir -p *)",
       "Bash(bash .aiassistant/skills/issue-workflow/scripts/issue-sync.sh *)",
       "Bash(curl -s http://localhost:8888/*)"
     ]
