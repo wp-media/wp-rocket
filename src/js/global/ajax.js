@@ -454,10 +454,11 @@ document.addEventListener('DOMContentLoaded', function() {
 		if (!$errorDiv.length) {
 			return;
 		}
-		$errorDiv.text(message).removeClass('hidden');
+		$errorDiv.find('p').text(message);
+		$errorDiv.removeClass('hidden');
 		// Auto-dismiss after 5 seconds.
 		setTimeout(function() {
-			$errorDiv.addClass('hidden').text('');
+			$errorDiv.addClass('hidden').find('p').text('');
 		}, 5000);
 	}
 
@@ -465,7 +466,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	 * Hide the validation error message.
 	 */
 	function hideValidationError() {
-		$('#wpr-ri-url-error-message').addClass('hidden').text('');
+		$('#wpr-ri-url-error-message').addClass('hidden').find('p').text('');
 	}
 
 	// ==== AJAX Handlers ====
