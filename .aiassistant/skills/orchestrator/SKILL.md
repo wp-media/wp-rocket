@@ -366,6 +366,14 @@ suggests low actual risk), confirm with the user before deciding.
 
 **Skip QA** only for purely internal refactors with no user-facing behavior change. Team discretion.
 
+**Domain detection — `frontend` / `both` includes PHP-rendered UI:**
+A domain is `frontend` or `both` not only when JS/CSS/Twig files change, but also when
+PHP files render visible admin output: calls to `rocket_notice_html()`,
+`rocket_notice_writing_permissions()`, `wp_admin_notice()`, `add_action('admin_notices', ...)`,
+`add_settings_error()`, or any PHP that echoes or returns HTML intended for the browser.
+Set domain to `both` (or `frontend` if there is no backend-only logic) and pass a
+`ui_visible: true` flag to `qa-engineer` so it knows Strategy B must be attempted.
+
 ---
 
 ### Step 3a — Handle open_questions and NTH items from grooming
@@ -511,71 +519,85 @@ Update the decisions strip Pull request field with the PR URL.
 
 ---
 
-### Step 7 — DOD L2 gate *(orchestrator-run, independent)*
+### Steps 7–10 — Parallel quality gates
 
-Invoke the `dod` skill with `layer: "2"` in your context (fresh perspective, independent
-of any implementation agent's self-correction context).
+After the PR is created (Step 6), GitHub Actions CI starts automatically. Spawn all four
+quality gates simultaneously — do not wait for one before starting another:
 
-Input: branch name from implementation, base branch, PR URL.
+```
+DOD L2  ──────────────────┐
+Lead Review  ─────────────┤  all in parallel
+QA  ──────────────────────┤
+CI monitoring  ───────────┘
+```
+
+**Spawning:**
+- **DOD L2** — invoke the `dod` skill with `layer: "2"` in your context.
+- **Lead Review** — spawn `lead-reviewer` (skip if `effort IN [XS, S]` AND `risk_level == LOW`).
+- **QA** — spawn `qa-engineer` (skip only for purely internal refactors). If `domains` is
+  `frontend` or `both`, **or** if `ui_visible: true` (PHP renders visible admin output) —
+  explicitly instruct the qa-engineer that Strategy B is the **primary** strategy.
+- **CI monitoring** — spawn `ci-agent` (PR number, repo `wp-media/wp-rocket`).
+
+**Inputs for each:**
+- DOD L2: branch name, base branch, PR URL
+- Lead Review: issue #N, spec path, base branch, acceptance criteria (numbered list)
+- QA: issue #N, PR number, base branch, acceptance criteria (numbered list), domains, ui_visible flag
+- CI: PR number, repo
+
+---
+
+#### Step 7 — DOD L2 result
 
 Route on `dod_l2.overall`:
 
 | Result | Loop count | Action |
 |---|---|---|
-| `PASS` | any | Proceed to Step 8 |
-| `WARN` | any | Proceed with warning. Log GATE event with `data-status="warn"`. In high-oversight mode, surface for confirmation before continuing. |
-| `FAIL` | `dod_loop < 1` | Increment `dod_loop`. Identify which agent's files caused the failure. Re-invoke that agent with specific blockers, re-push. Log ROUTING DECISION. Re-run DOD L2. |
+| `PASS` | any | No action — parallel gates continue. |
+| `WARN` | any | No action — parallel gates continue. Log GATE event `data-status="warn"`. In high-oversight mode, surface for confirmation. |
+| `FAIL` | `dod_loop < 1` | **Abort any in-flight Lead Review and QA.** Increment `dod_loop`. Identify which agent's files caused the failure. Re-invoke that agent with specific blockers, re-push. Re-run DOD L2 + Lead Review + QA in parallel again. Log ROUTING DECISION. |
 | `FAIL` | `dod_loop >= 1` | Escalate to user with exact errors. |
 
 Log GATE event.
 
 ---
 
-### Step 8 — Lead review *(conditional — default always)*
-
-If skipped (XS+LOW): log a ROUTING DECISION event with skip reason, proceed to CI.
-
-Invoke `lead-reviewer`:
-> Inputs: issue #N, spec path, base branch, acceptance criteria (numbered list)
+#### Step 8 — Lead Review result
 
 Route on highest `criticality` in `blockers`:
 
 | Criticality | Loop count | Action |
 |---|---|---|
-| No blockers | any | Proceed to CI. Log AGENT event. |
-| `CRITICAL` | any | Evaluate if fixable. If yes (specific missing guard, missing validation): attempt one fix loop (same as HIGH). If architectural, requires external decisions, or still unresolved after 1 attempt → escalate immediately. Log ESCALATION event. |
-| `HIGH` / `MEDIUM` | `review_loop < 1` | Re-invoke relevant implementation agent with the `fix` field from that blocker. Re-push. Re-invoke `lead-reviewer`. Log ROUTING DECISION. |
+| No blockers | any | No action — parallel gates continue. Log AGENT event. |
+| `CRITICAL` | any | **Abort any in-flight QA.** Evaluate if fixable. If yes (specific missing guard, missing validation): attempt one fix loop (same as HIGH). If architectural, requires external decisions, or still unresolved after 1 attempt → escalate immediately. Log ESCALATION event. |
+| `HIGH` / `MEDIUM` | `review_loop < 1` | **Abort any in-flight QA.** Re-invoke relevant implementation agent with the `fix` field from that blocker. Re-push. Re-invoke Lead Review + QA in parallel. Log ROUTING DECISION. |
 | `HIGH` / `MEDIUM` | `review_loop >= 1` | Escalate. |
-| `LOW` only | any | Dispatch `ticket-writer` (NICE_TO_HAVE, non-blocking). Proceed. Log PARALLEL event. |
+| `LOW` only | any | Dispatch `ticket-writer` (NICE_TO_HAVE, non-blocking). Parallel gates continue. Log PARALLEL event. |
 
-**NTH dispatch:** `nice_to_haves` items → `ticket-writer` in parallel. Max 3 total
-lead-reviewer invocations.
+**NTH dispatch:** `nice_to_haves` items → `ticket-writer` in parallel (non-blocking). Max 3
+total lead-reviewer invocations.
 
 Log AGENT event with verdict, loop count, and any NTH dispatch.
 
 ---
 
-### Step 9 — CI monitoring
+#### Step 9 — CI result
 
-Invoke `ci-agent`:
-> Inputs: PR number, repo `wp-media/wp-rocket`
+Route on `ci-agent` return:
 
-Returns `ALL_PASS`, `FAILURE`, or `TIMEOUT`.
-
-If `FAILURE`: diagnose, fix (re-invoke relevant implementation agent), re-push. Max 2 CI
-attempts. If still failing after 2 attempts, escalate. Log AGENT events.
+| Result | Loop count | Action |
+|---|---|---|
+| `ALL_PASS` | any | No action — parallel gates continue. |
+| `FAILURE` | `ci_attempts < 2` | Diagnose, fix (re-invoke relevant implementation agent), re-push. Increment `ci_attempts`. Log AGENT events. |
+| `FAILURE` | `ci_attempts >= 2` | Escalate. |
+| `TIMEOUT` | any | Log AGENT event. Proceed — do not block on CI timeout. |
 
 ---
 
-### Step 10 — QA *(conditional — default always)*
+#### Step 10 — QA result
 
 If skipped (internal refactor): log a ROUTING DECISION event with skip reason, proceed
 to finalize.
-
-Invoke `qa-engineer`:
-> Inputs: issue #N, PR number, base branch, acceptance criteria (numbered list), **domains** (from grooming JSON: `backend` / `frontend` / `both`)
->
-> If `domains` is `frontend` or `both`: explicitly instruct the qa-engineer that Strategy B (browser/UI via `e2e-qa-tester`) is the **primary** strategy and must be attempted — Strategy C is only a fallback if the environment is still unreachable after `bin/dev-up.sh` completes. The qa-engineer must document the boot outcome in its report regardless of which strategy is ultimately used.
 
 Route on `overall`:
 
@@ -594,14 +616,23 @@ Max 3 QA invocations.
 
 ---
 
+**Proceed to Step 11 when:** DOD L2 is PASS or WARN, Lead Review has no HIGH/CRITICAL
+blockers (or is skipped), QA is PASS (or skipped), CI is ALL_PASS or TIMEOUT.
+
+---
+
 ### Step 11 — Finalize
 
-1. Update PR body: replace "What was tested" with the full QA report
-2. `gh pr ready <PR#>` (move out of draft)
-3. Post final summary to the GitHub issue as a comment.
+1. **Collect all NTH ticket URLs** — gather every URL returned by `ticket-writer` throughout
+   the run (from grooming, challenger, lead review, and QA dispatches). Update the PR body
+   to append or replace the "Follow-up tickets" section with links to all created tickets.
+   If no NTH tickets were created, write "None".
+2. Update PR body: replace "What was tested" with the full QA report
+3. `gh pr ready <PR#>` (move out of draft)
+4. Post final summary to the GitHub issue as a comment.
    Keep it short — do not repeat content already visible in individual agent comments or the PR itself.
    Rule: Lead Review and QA details live on the PR; the issue comment links to them, never repeats them.
-4. Log final ROUTING DECISION event: "Pipeline complete — READY FOR REVIEW"
+5. Log final ROUTING DECISION event: "Pipeline complete — READY FOR REVIEW"
 
 Final summary template:
 ```markdown
@@ -1032,7 +1063,7 @@ trivial.
 - Failures: error excerpt + fix applied (or "None")
 
 **qa-engineer AGENT event:**
-- Environment boot: result of `bin/dev-up.sh` (exit code, reachable at localhost:8888 yes/no)
+- Environment boot: only include when Strategy B was used **or** when boot failed (as a failure explanation). Omit entirely for backend-only runs where boot succeeded and Strategy B was not used — `gh pr checkout`, `bin/dev-up.sh exit 0`, and `localhost:8888 HTTP 200` are setup noise, not QA findings.
 - Reasoning: why each strategy was selected or skipped; what made any criterion borderline; what was uncertain in the evidence
 - Strategies considered: list each (A/B/C) with one-line reason it was used or skipped
 - AC results: each criterion → PASS / FAIL / PARTIAL with method and evidence
