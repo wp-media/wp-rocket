@@ -219,6 +219,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 
 		$data['rocket_insights_ids']               = $this->controller->get_not_finished_ids();
 		$data['rocket_insights_no_credit_tooltip'] = __( 'Upgrade your plan to get access to re-test performance or run new tests', 'rocket' );
+		$data['rocket_insights_invalid_url']       = __( 'Please enter a valid URL (e.g. https://example.com/page).', 'rocket' );
 		$data['is_free']                           = false;
 		$data['assets_img_url']                    = WP_ROCKET_ASSETS_IMG_URL;
 
