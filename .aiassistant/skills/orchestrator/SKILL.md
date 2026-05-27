@@ -459,7 +459,7 @@ file in `blocked_reason` for the other task so it doesn't touch it.
 `impl-backend.file_scope` and `impl-frontend.file_scope`.
 
 Log a ROUTING DECISION event: "Task graph initialized — N backend files, M frontend files,
-parallel: YES | NO" (with explicit reason if NO: overlapping files, or effort too small).
+parallel: YES | NO" (with explicit reason if NO: overlapping files).
 
 ---
 
@@ -469,7 +469,7 @@ Each agent runs the `docs` skill, `e2e` skill (basic tier), and `dod` skill (lay
 inline before committing, then commits atomically.
 
 Before spawning, mark each in-scope task `in-progress` in `tasks.json` and record
-`started_at`. If `effort >= M` and scopes are disjoint, create git worktrees:
+`started_at`. If scopes are disjoint, create git worktrees:
 
 ```bash
 git worktree add .TemporaryItems/Issues/wp-rocket/issue-<N>/worktrees/backend <branch>
@@ -478,7 +478,7 @@ git worktree add .TemporaryItems/Issues/wp-rocket/issue-<N>/worktrees/frontend <
 
 Update each task's `worktree` field in `tasks.json`.
 
-**05a/b — Parallel** (scopes disjoint AND `effort >= M`):
+**05a/b — Parallel** (scopes disjoint):
 > Spawn `backend-agent` and `frontend-agent` simultaneously.
 > Each agent receives: issue #N, spec path, dispatch plan, their task entry from `tasks.json`
 > (including `file_scope` and `worktree` path).
@@ -490,7 +490,7 @@ Update each task's `worktree` field in `tasks.json`.
 > Orchestrator proceeds when both tasks show `completed` in `tasks.json`
 > (or either shows `blocked`).
 
-**05a/b — Sequential fallback** (scopes overlap OR `effort IN [XS, S]`):
+**05a/b — Sequential fallback** (scopes overlap):
 > Invoke `backend-agent` first (if in scope), then `frontend-agent` (if in scope).
 > Max 3 attempts each. Hard stop after 3 — escalate.
 
