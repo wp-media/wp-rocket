@@ -185,4 +185,12 @@ PageManager.prototype.change = function() {
     if (pagesWithoutSubmit.includes(this.pageId)) {
         this.$submitButton.style.display = 'none';
     }
+
+    // Dispatch custom event after page navigation for other scripts to hook into.
+    document.dispatchEvent(new CustomEvent('rocketJsAfterPageNavigation', {
+        detail: {
+            pageId: this.pageId,
+            submitButton: this.$submitButton,
+        }   
+    } ) );
 };
