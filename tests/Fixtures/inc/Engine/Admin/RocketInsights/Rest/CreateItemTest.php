@@ -123,7 +123,32 @@ return [
 		],
 		'expected' => [
 			'code'          => 400,
-			'error_message' => 'Url does not resolve to a valid page',
+			'error'         => true,
+			'error_code'    => 'url_unreachable',
+			'error_message' => 'This URL could not be reached',
+		],
+	],
+	'testShouldFailWithDuplicateUrl'                     => [
+		'config'   => [
+			'post_data'     => [
+				'page_url' => 'http://example.org',
+				'source'   => 'dashboard',
+			],
+			'rows'          => [
+				[
+					'url'       => 'http://example.org',
+					'status'    => 'completed',
+					'is_mobile' => 1,
+				],
+			],
+			'customer_data' => ( new UserDataGenerator() ),
+			'mock_http'     => true,
+		],
+		'expected' => [
+			'code'          => 400,
+			'error'         => true,
+			'error_code'    => 'duplicate_url',
+			'error_message' => 'already being monitored',
 		],
 	],
 	'testShouldSucceedWithExternalUrl'                   => [

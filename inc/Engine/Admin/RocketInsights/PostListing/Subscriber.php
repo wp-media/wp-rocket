@@ -223,6 +223,11 @@ class Subscriber implements Subscriber_Interface {
 				'limit_reached'       => $this->render->get_page_limit_error_message(),
 				'url_limit_reached'   => __( 'Maximum number of URLs reached for your license.', 'rocket' ),
 				'estimated_time_text' => __( 'Analyzing your page (~1 min).', 'rocket' ),
+				'error_messages'      => [
+					'duplicate_url'   => __( 'This URL is already being monitored.', 'rocket' ),
+					'url_unreachable' => __( 'This URL could not be reached. Please check it is publicly accessible and try again.', 'rocket' ),
+					'generic_error'   => __( 'This URL could not be added. Please try again.', 'rocket' ),
+				],
 			]
 		);
 		wp_localize_script(

@@ -181,6 +181,16 @@ class CreateItemTest extends RESTfulTestCase {
 	private function assertErrorResponse( $response, $expected ) {
 		$this->assertSame( $response['data']['status'], $expected['code'] );
 
+		// Check error flag if provided
+		if ( isset( $expected['error'] ) ) {
+			$this->assertSame( $expected['error'], $response['error'] );
+		}
+
+		// Check error_code if provided
+		if ( isset( $expected['error_code'] ) ) {
+			$this->assertSame( $expected['error_code'], $response['error_code'] );
+		}
+
 		// Check error message if provided
 		if ( isset( $expected['error_message'] ) ) {
 			$this->assertStringContainsString( $expected['error_message'], $response['message'] );
