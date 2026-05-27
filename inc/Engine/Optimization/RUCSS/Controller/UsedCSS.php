@@ -673,19 +673,32 @@ class UsedCSS {
 			return;
 		}
 
-		if ( $this->filesystem->is_writable_folder() ) {
+		if ( ! $this->filesystem->is_writable_folder() ) {
+			$message = rocket_notice_writing_permissions( trim( str_replace( rocket_get_constant( 'ABSPATH', '' ), '', rocket_get_constant( 'WP_ROCKET_USED_CSS_PATH', '' ) ), '/' ) );
+
+			rocket_notice_html(
+				[
+					'status'      => 'error',
+					'dismissible' => '',
+					'message'     => $message,
+				]
+			);
 			return;
 		}
 
-		$message = rocket_notice_writing_permissions( trim( str_replace( rocket_get_constant( 'ABSPATH', '' ), '', rocket_get_constant( 'WP_ROCKET_USED_CSS_PATH', '' ) ), '/' ) );
+		$failing_url = get_transient( 'rocket_rucss_subfolder_permission_error_' . get_current_blog_id() );
+		if ( false !== $failing_url ) {
+			$path    = trim( str_replace( rocket_get_constant( 'ABSPATH', '' ), '', rocket_get_constant( 'WP_ROCKET_USED_CSS_PATH', '' ) ), '/' );
+			$message = rocket_notice_writing_permissions( $path . '/<subdirectory>' );
 
-		rocket_notice_html(
-			[
-				'status'      => 'error',
-				'dismissible' => '',
-				'message'     => $message,
-			]
-		);
+			rocket_notice_html(
+				[
+					'status'      => 'error',
+					'dismissible' => '',
+					'message'     => $message,
+				]
+			);
+		}
 	}
 
 	/**

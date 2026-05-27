@@ -84,6 +84,10 @@ class Filesystem extends AbstractFileSystem {
 			return false;
 		}
 
+		if ( ! $this->filesystem->is_writable( dirname( $file ) ) ) {
+			return false;
+		}
+
 		// This filter is documented in inc/classes/Buffer/class-cache.php.
 		$css = function_exists( 'gzencode' ) ? gzencode( $used_css, apply_filters( 'rocket_gzencode_level_compression', 6 ) ) : $used_css;
 

@@ -162,7 +162,8 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 		if ( ! $this->filesystem->write_used_css( $hash, $css ) ) {
 			$message = 'RUCSS: Could not write used CSS to the filesystem: ' . $row_details->url;
 			$this->logger::error( $message );
-			$this->query->make_status_failed( $row_details->url, $row_details->is_mobile, '', $job_details['message'] );
+			$this->query->make_status_failed( $row_details->url, $row_details->is_mobile, '', $message );
+			set_transient( 'rocket_rucss_subfolder_permission_error_' . get_current_blog_id(), $row_details->url, DAY_IN_SECONDS );
 
 			return;
 		}
