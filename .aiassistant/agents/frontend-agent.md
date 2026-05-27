@@ -38,9 +38,10 @@ You receive:
 
 Check if `.TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/backend-result.json` exists.
 
-- **If it exists:** read it. Compare `option_keys`, `hooks`, and `rest_endpoints` against
-  what the spec says. If they differ, use the contract file as the source of truth (it
-  reflects what was actually implemented). Note any drift in your `notes` on return.
+- **If it exists:** read it. This is the reconciliation step — if the contract and the spec
+  diverge, the contract wins (it reflects what was actually implemented, not what was
+  planned). Compare `option_keys`, `hooks`, and `rest_endpoints`; note any drift in your
+  `notes` on return.
 - **If it does not exist** (parallel execution, backend not done yet, or backend not in
   scope): proceed from spec. Note "API contract not available — using spec" in `notes`.
 
