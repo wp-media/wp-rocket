@@ -23,21 +23,21 @@ class Test_NoticeWritePermissions extends TestCase {
 	/**
 	 * Options mock.
 	 *
-	 * @var Options_Data
+	 * @var Options_Data&\Mockery\MockInterface
 	 */
 	protected $options;
 
 	/**
 	 * Filesystem mock.
 	 *
-	 * @var Filesystem
+	 * @var Filesystem&\Mockery\MockInterface
 	 */
 	protected $filesystem;
 
 	/**
 	 * Context mock.
 	 *
-	 * @var ContextInterface
+	 * @var ContextInterface&\Mockery\MockInterface
 	 */
 	protected $context;
 
@@ -116,10 +116,12 @@ class Test_NoticeWritePermissions extends TestCase {
 
 			Functions\expect( 'rocket_notice_html' )
 				->once()
-				->withArgs(
-					function ( $args ) {
-						return isset( $args['status'] ) && 'error' === $args['status'];
-					}
+				->with(
+					Mockery::on(
+						function ( $args ) {
+							return isset( $args['status'] ) && 'error' === $args['status'];
+						}
+					)
 				);
 		} else {
 			Functions\expect( 'rocket_notice_writing_permissions' )->never();

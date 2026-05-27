@@ -30,23 +30,30 @@ class Test_Process extends TestCase {
 	protected $manager;
 
 	/**
+	 * Logger mock (overrides HasLoggerTrait declaration to allow Mockery calls).
+	 *
+	 * @var \WP_Rocket\Logger\Logger&\Mockery\MockInterface
+	 */
+	protected $logger;
+
+	/**
 	 * UsedCSS query mock.
 	 *
-	 * @var UsedCSS
+	 * @var UsedCSS&\PHPUnit\Framework\MockObject\MockObject
 	 */
 	protected $query;
 
 	/**
 	 * Filesystem mock.
 	 *
-	 * @var Filesystem
+	 * @var Filesystem&\Mockery\MockInterface
 	 */
 	protected $filesystem;
 
 	/**
 	 * Context mock.
 	 *
-	 * @var ContextInterface
+	 * @var ContextInterface&\Mockery\MockInterface
 	 */
 	protected $context;
 
@@ -125,12 +132,22 @@ class Test_Process extends TestCase {
 
 			Functions\expect( 'set_transient' )
 				->once()
-				->withArgs(
-					function ( $transient_key, $url, $expiry ) use ( $row_details ) {
-						return 'rocket_rucss_subfolder_permission_error_1' === $transient_key
-							&& $url === $row_details->url
-							&& DAY_IN_SECONDS === $expiry;
-					}
+				->with(
+					Mockery::on(
+						function ( $transient_key ) {
+							return 'rocket_rucss_subfolder_permission_error_1' === $transient_key;
+						}
+					),
+					Mockery::on(
+						function ( $url ) use ( $row_details ) {
+							return $url === $row_details->url;
+						}
+					),
+					Mockery::on(
+						function ( $expiry ) {
+							return DAY_IN_SECONDS === $expiry;
+						}
+					)
 				);
 		}
 
