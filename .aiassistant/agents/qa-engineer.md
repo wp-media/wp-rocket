@@ -70,7 +70,12 @@ Select all strategies that apply.
 The local WordPress environment runs at `http://localhost:8888`. Use `curl` for REST endpoints or AJAX calls, or WP-CLI via the site shell for direct WordPress operations.
 
 #### Strategy B — Browser / UI validation
-**When to use:** frontend changes (admin settings page, dashboard notices, cache preloading UI, interactive behavior).
+**Mandatory** when the PR touches any JS, CSS, HTML, or Twig template file.
+Optional (but preferred) for PHP-only changes that have a visible admin UI surface.
+
+**Never skip Strategy B citing "CI-only environment."** This is a local environment, not a
+CI pipeline. If `bin/dev-up.sh` exits 0 and `localhost:8888` is reachable, you must run
+Strategy B. The only valid reason to skip it is a documented boot failure from Step 0.
 
 Delegate to the `e2e-qa-tester` agent. Provide:
 - The acceptance criteria and "How to test" steps from the PR
@@ -86,7 +91,7 @@ The `e2e-qa-tester` agent will:
 
 Note: WP Rocket's permanent E2E suite lives in an external repository. All test files written by `e2e-qa-tester` are temporary — they are used for QA validation only and removed after the run.
 
-If the local environment is unreachable, skip Strategy B and fall back to Strategy C.
+Only fall back to Strategy C if `bin/dev-up.sh` itself fails (non-zero exit) or `localhost:8888` is still unreachable after the boot script finishes. Document the exact failure.
 
 #### Strategy C — Test suite + analysis fallback
 **When to use:** local environment is unreachable after a real boot attempt (see Step 0), or infrastructure-only / pure-logic changes with no UI surface.
@@ -133,6 +138,12 @@ After validating the acceptance criteria, do a brief smoke test of the main happ
 
 Skip any smoke test that is unrelated to the changed files.
 
+**Never include CI-level checks in smoke tests.** PHP unit test runs, PHPCS, PHPStan,
+and CodeSniffer are already tracked in GitHub Actions and visible there. Including them in
+the QA report is noise. Smoke tests are behavioral — UI navigation, page loads, feature
+interactions. If you used Strategy C and ran unit tests to validate an AC, those results
+belong in the Acceptance Criteria table, not in Smoke Tests.
+
 ---
 
 ### Step 4 — Report
@@ -147,7 +158,11 @@ After generating the report, post it as a PR comment so it is immediately visibl
 
 **Post the comment regardless of the overall result** (PASS, FAIL, or PARTIAL).
 
-If `e2e-qa-tester` captured and published screenshots, append a `### Screenshots` section with inline images using the SHA-based raw URLs it returned.
+**For any PR that touches frontend files (JS, CSS, HTML, Twig templates): screenshots are
+required, not optional.** If Strategy B ran, `e2e-qa-tester` will have returned screenshot
+URLs — always include them in the `### Screenshots` section. If no screenshots exist for a
+frontend PR, the report is incomplete; state the reason explicitly (e.g. "boot failed —
+exit 1, see Environment Boot table").
 
 **MCP (preferred):**
 ```
@@ -215,7 +230,7 @@ REPORT
 - "[scenario]": [reason why it cannot be automated]
 
 ### Screenshots
-<!-- Include this section only if e2e-qa-tester captured and published screenshots -->
+<!-- Required for any PR touching JS, CSS, HTML, or Twig files. Omit only if Strategy B was skipped due to a documented boot failure. -->
 | Step | Screenshot |
 |------|-----------|
 | [description] | ![step1](https://raw.githubusercontent.com/wp-media/wp-rocket/SHA/.e2e-screenshots/filename.png) |
