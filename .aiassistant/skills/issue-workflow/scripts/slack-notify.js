@@ -21,7 +21,7 @@ process.stdin.on('end', async () => {
 });
 
 // ---------------------------------------------------------------------------
-// Triggers — catches issue comments, PR comments, and PR-ready transitions
+// Triggers — issue comments, PR comments, PR-ready transitions
 // ---------------------------------------------------------------------------
 
 const TRIGGERS = [
@@ -48,12 +48,12 @@ async function run(raw) {
     return;
   }
 
-  // Require a GitHub URL in the output confirming the comment posted successfully
+  // Require a GitHub URL in the output confirming the comment was posted
   const commentUrlMatch =
     output.match(/https:\/\/github\.com\/[^\s<>]+#issuecomment-\d+/) ||
     output.match(/https:\/\/github\.com\/[^\s<>]+#discussion_r\d+/);
   if (!commentUrlMatch) {
-    process.stderr.write('slack-notify: no comment URL found in output — gh command may have failed\n');
+    process.stderr.write('slack-notify: no comment URL in gh output — command may have failed\n');
     return;
   }
   const commentUrl = commentUrlMatch[0];
@@ -61,26 +61,24 @@ async function run(raw) {
   const isIssue  = trigger.type === 'issue_comment';
   const refMatch = command.match(/gh (?:issue|pr) comment\s+([^\s"'\\]+)/);
   const refNum   = refMatch?.[1]?.match(/\d+/)?.[0] || '';
-
-  const body        = extractBody(command);
-  const commentType = detectCommentType(body);
-
-  // For PR comments, try to extract the associated issue number from body text for threading
-  const issueNum = isIssue ? refNum : (extractIssueFromBody(body) || '');
   const ghUrl    = isIssue
     ? `https://github.com/wp-media/wp-rocket/issues/${refNum}`
     : `https://github.com/wp-media/wp-rocket/pull/${refNum}`;
 
-  const { text, attachments } = buildMessage(commentType, body, refNum, ghUrl, commentUrl, isIssue);
+  const body        = extractBody(command);
+  const commentType = detectCommentType(body);
 
-  // Thread all events for the same issue together in a single Slack thread
+  // For PR comments, try to extract the associated issue number for threading
+  const issueNum = isIssue ? refNum : (extractIssueFromBody(body) || '');
+
+  const { text, blocks } = buildMessage(commentType, body, refNum, ghUrl, commentUrl, isIssue);
+
+  // Thread all events for the same issue together
   const threadTs = issueNum ? getThreadTs(issueNum) : null;
-  const payload  = { channel: CHANNEL_ID, text, attachments };
+  const payload  = { channel: CHANNEL_ID, text, blocks };
   if (threadTs) payload.thread_ts = threadTs;
 
   const postedTs = await postToSlack(payload);
-
-  // Save the thread ts on first message so follow-up events can thread under it
   if (!threadTs && issueNum && postedTs) saveThreadTs(issueNum, postedTs);
 }
 
@@ -97,30 +95,20 @@ async function handlePrReady(command, output) {
 
   await postToSlack({
     channel: CHANNEL_ID,
-    text:    `PR #${prNum} is now ready for review`,
-    attachments: [{
-      color: '#22c55e',
-      blocks: [
-        {
-          type: 'section',
-          text: { type: 'mrkdwn', text: `*PR #${prNum} — Ready for Review* 🎉\n\`wp-media/wp-rocket\`` },
-          accessory: {
-            type: 'button',
-            text: { type: 'plain_text', text: 'Open PR', emoji: true },
-            url: prUrl, style: 'primary'
-          }
-        },
-        {
-          type: 'context',
-          elements: [{ type: 'mrkdwn', text: 'The AI delivery pipeline has finished — this PR is ready for human review.' }]
-        }
-      ]
-    }]
+    text:    `PR #${prNum} is ready for review`,
+    blocks: [
+      {
+        type: 'section',
+        text: { type: 'mrkdwn', text: `🎉  *PR #${prNum} — Ready for Review*\nThe AI delivery pipeline is done. This PR is open for human review.` },
+        accessory: { type: 'button', text: { type: 'plain_text', text: 'Open PR' }, url: prUrl, style: 'primary' }
+      },
+      { type: 'context', elements: [{ type: 'mrkdwn', text: '`wp-media/wp-rocket`' }] }
+    ]
   });
 }
 
 // ---------------------------------------------------------------------------
-// Comment type detection — maps heading keywords to card type
+// Comment type detection
 // ---------------------------------------------------------------------------
 
 function detectCommentType(body) {
@@ -135,28 +123,27 @@ function detectCommentType(body) {
 }
 
 // ---------------------------------------------------------------------------
-// Message builder — routes to the right card design
+// Message builder
 // ---------------------------------------------------------------------------
 
 function buildMessage(commentType, body, num, ghUrl, commentUrl, isIssue) {
   switch (commentType) {
     case 'pipeline_summary': return buildPipelineSummary(body, num, ghUrl, commentUrl);
-    case 'grooming':         return buildStageCard('🔍', 'Grooming',        '#22c55e', body, num, ghUrl, commentUrl, isIssue);
-    case 'challenger':       return buildStageCard('⚔️',  'Spec Review',     '#f59e0b', body, num, ghUrl, commentUrl, isIssue);
-    case 'implementation':   return buildStageCard('⚙️',  'Implementation',  '#22d3ee', body, num, ghUrl, commentUrl, isIssue);
-    case 'lead_review':      return buildStageCard('👀', 'Lead Review',      '#4f7cff', body, num, ghUrl, commentUrl, isIssue);
-    case 'qa':               return buildStageCard('🧪', 'QA Report',        '#f472b6', body, num, ghUrl, commentUrl, isIssue);
+    case 'grooming':         return buildStageCard('🔍', 'Grooming complete',   body, num, ghUrl, commentUrl, isIssue, buildGroomingDetail);
+    case 'challenger':       return buildStageCard('⚔️',  'Spec Review',         body, num, ghUrl, commentUrl, isIssue, buildChallengerDetail);
+    case 'implementation':   return buildStageCard('⚙️',  'Implementation',      body, num, ghUrl, commentUrl, isIssue, null);
+    case 'lead_review':      return buildStageCard('👀', 'Lead Review',          body, num, ghUrl, commentUrl, isIssue, buildReviewDetail);
+    case 'qa':               return buildStageCard('🧪', 'QA Report',            body, num, ghUrl, commentUrl, isIssue, buildQADetail);
     default:                 return buildGenericCard(body, num, ghUrl, commentUrl, isIssue);
   }
 }
 
 // ---------------------------------------------------------------------------
-// Pipeline summary card — final orchestrator comment with full stage table
+// Pipeline summary — header + markdown table of stages
 // ---------------------------------------------------------------------------
 
 function buildPipelineSummary(body, issueNum, issueUrl, commentUrl) {
-  const headingMatch = body.match(/^#{1,3}\s+(.+)$/m);
-  const title = headingMatch?.[1]?.trim() || 'Delivery Pipeline — Complete';
+  const title = body.match(/^#{1,3}\s+(.+)$/m)?.[1]?.trim() || 'Delivery Pipeline — Complete';
 
   const prMatch     = body.match(/\*\*PR:\*\*\s*\[#(\d+)\]\(([^)]+)\)/);
   const statusMatch = body.match(/\*\*Status:\*\*\s*([^\n|*]+)/);
@@ -164,154 +151,168 @@ function buildPipelineSummary(body, issueNum, issueUrl, commentUrl) {
   const prUrl   = prMatch?.[2];
   const status  = statusMatch?.[1]?.trim() || 'READY FOR REVIEW';
   const isReady = status.includes('READY');
-  const color   = isReady ? '#22c55e' : '#ffa657';
-  const headerIcon = isReady ? '✅' : '🔄';
 
-  // Stage table → vertical readable list
-  const tableRows = parseMarkdownTable(body);
-  const stageText = tableRows.map(formatStageLine).join('\n');
+  // Build the markdown table from the stage table in the comment body
+  const tableRows  = parseMarkdownTable(body);
+  const tableLines = [
+    '| Stage | Status | Notes |',
+    '|---|---|---|',
+    ...tableRows.map(([stage = '', result = '', notes = '']) => {
+      const notesClean = (notes && notes !== '—') ? notes.trim() : '—';
+      return `| ${stage.trim()} | ${result.trim()} | ${notesClean} |`;
+    })
+  ];
 
   // Follow-up tickets
   const followupMatch = body.match(/\*\*Follow-up[^:]*:\*\*\s*(.+)/);
   const followup = followupMatch?.[1]?.trim() || 'None';
 
+  const statusEmoji = isReady ? '✅' : '🔄';
   const metaLine = [
     issueNum ? `<${issueUrl}|Issue #${issueNum}>` : null,
     prNum    ? `<${prUrl}|PR #${prNum}>` : null,
-    `*Status:* ${status}`,
+    `*${status}*`,
   ].filter(Boolean).join('  ·  ');
 
   const blocks = [
-    { type: 'header', text: { type: 'plain_text', text: `${headerIcon} ${title}`, emoji: true } },
+    { type: 'header', text: { type: 'plain_text', text: `${statusEmoji} ${title}`, emoji: true } },
     {
       type: 'section',
       text: { type: 'mrkdwn', text: `${metaLine}\n\`wp-media/wp-rocket\`` },
-      accessory: {
-        type: 'button',
-        text: { type: 'plain_text', text: 'View Comment', emoji: true },
-        url: commentUrl
-      }
+      accessory: { type: 'button', text: { type: 'plain_text', text: 'View Comment' }, url: commentUrl }
     },
-    { type: 'divider' },
-    ...(stageText ? [{ type: 'section', text: { type: 'mrkdwn', text: stageText } }] : []),
     { type: 'divider' },
     {
-      type: 'context',
-      elements: [{ type: 'mrkdwn', text: `*Follow-up:* ${followup}  ·  <${commentUrl}|View on GitHub>` }]
+      type: 'markdown',
+      text: tableLines.join('\n') + `\n\n**Follow-up:** ${followup}`
     },
+    { type: 'divider' },
   ];
 
   const actions = [];
-  if (issueNum) actions.push({ type: 'button', text: { type: 'plain_text', text: 'Issue', emoji: true }, url: issueUrl });
-  if (prNum)    actions.push({ type: 'button', text: { type: 'plain_text', text: 'Pull Request', emoji: true }, url: prUrl, style: 'primary' });
+  if (issueNum) actions.push({ type: 'button', text: { type: 'plain_text', text: `Issue #${issueNum}` }, url: issueUrl });
+  if (prNum)    actions.push({ type: 'button', text: { type: 'plain_text', text: `Pull Request #${prNum}` }, url: prUrl, style: 'primary' });
   if (actions.length) blocks.push({ type: 'actions', elements: actions });
 
   return {
-    text: `AI Pipeline · ${title} on Issue #${issueNum}`,
-    attachments: [{ color, blocks }]
+    text: `${statusEmoji} ${title} · Issue #${issueNum}`,
+    blocks
   };
 }
 
-function formatStageLine([stage = '', result = '', notes = '']) {
-  const icon       = getStageIcon(result);
-  const resultText = stripEmoji(result);
-  const notesText  = (notes && notes.trim() !== '—') ? notes.trim() : '';
-  const detail     = [resultText, notesText].filter(Boolean).join(' · ');
-  return `${icon}  *${stage.trim()}*${detail ? `  —  ${detail}` : ''}`;
-}
-
-function getStageIcon(result) {
-  if (result.includes('✅')) return '✅';
-  if (result.includes('⏭')) return '⏭';
-  if (result.includes('❌')) return '❌';
-  if (result.includes('⚠')) return '⚠️';
-  if (result.includes('🔄')) return '🔄';
-  const r = result.toLowerCase();
-  if (r.includes('pass') || r.includes('approved') || r.includes('all pass')) return '✅';
-  if (r.includes('skip'))                                                       return '⏭';
-  if (r.includes('fail') || r.includes('error'))                               return '❌';
-  if (r.includes('warn'))                                                       return '⚠️';
-  return '•';
-}
-
-// Strip common emoji characters from result text
-const EMOJI_RE = /[\u{2600}-\u{27FF}\u{1F300}-\u{1F9FF}\u{FE00}-\u{FEFF}]|⏭|✅|❌/gu;
-function stripEmoji(str) { return str.replace(EMOJI_RE, '').trim(); }
-
 // ---------------------------------------------------------------------------
-// Stage card — intermediate pipeline events (grooming, QA, etc.)
+// Stage card — compact header + optional detail block
 // ---------------------------------------------------------------------------
 
-function buildStageCard(icon, stageName, color, body, num, ghUrl, commentUrl, isIssue) {
-  const refType      = isIssue ? 'Issue' : 'PR';
-  const headingMatch = body.match(/^#{1,3}\s+(.+)$/m);
-  const subtitle     = headingMatch?.[1]?.trim() || `${stageName} Update`;
-
-  // Clean preview: strip GitHub callouts, headings, and excess blank lines
-  let preview = body
-    .replace(/^>\s*\[!(?:NOTE|WARNING|TIP|IMPORTANT|CAUTION)\][^\n]*(\n>\s*[^\n]*)*/gm, '')
-    .replace(/^>\s?/gm, '')
-    .replace(/^#{1,3}\s+.+$/gm, '')
-    .replace(/\n{3,}/g, '\n\n')
-    .trim();
-  if (preview.length > 380) preview = preview.slice(0, 380) + '…';
+function buildStageCard(icon, label, body, num, ghUrl, commentUrl, isIssue, detailFn) {
+  const refType = isIssue ? 'Issue' : 'PR';
+  const subtitle = body.match(/^#{1,3}\s+(.+)$/m)?.[1]?.trim() || label;
 
   const blocks = [
     {
       type: 'section',
-      text: { type: 'mrkdwn', text: `${icon}  *${stageName}*  ·  ${refType} #${num}\n_${subtitle}_` },
-      accessory: {
-        type: 'button',
-        text: { type: 'plain_text', text: 'View Comment', emoji: true },
-        url: commentUrl
-      }
-    },
-    ...(preview ? [{ type: 'section', text: { type: 'mrkdwn', text: preview } }] : []),
-    {
-      type: 'context',
-      elements: [{ type: 'mrkdwn', text: `\`wp-media/wp-rocket\`  ·  <${ghUrl}|${refType} #${num}>  ·  <${commentUrl}|Open in GitHub>` }]
+      text: { type: 'mrkdwn', text: `${icon}  *${label}*  ·  <${ghUrl}|${refType} #${num}>\n_${subtitle}_` },
+      accessory: { type: 'button', text: { type: 'plain_text', text: 'View Comment' }, url: commentUrl }
     }
   ];
 
-  return {
-    text: `${stageName} — ${refType} #${num}`,
-    attachments: [{ color, blocks }]
-  };
+  // Add a rich detail block if we know how to extract meaningful structure from this comment type
+  const detail = detailFn ? detailFn(body) : null;
+  if (detail) blocks.push({ type: 'markdown', text: detail });
+
+  blocks.push({
+    type: 'context',
+    elements: [{ type: 'mrkdwn', text: `\`wp-media/wp-rocket\`  ·  <${ghUrl}|${refType} #${num}>  ·  <${commentUrl}|Open in GitHub>` }]
+  });
+
+  return { text: `${label} — ${refType} #${num}`, blocks };
 }
 
 // ---------------------------------------------------------------------------
-// Generic card — fallback for unrecognized comment types
+// Detail extractors — pull 3-4 structured facts from each comment type
+// ---------------------------------------------------------------------------
+
+function buildGroomingDetail(body) {
+  const effort     = body.match(/\*\*[Ee]ffort[^:]*:\*\*\s*([^\n,|]+)/)?.[1]?.trim()
+                  || body.match(/effort[:\s]+([XxSsMmLl]+)/)?.[1]?.trim() || null;
+  const risk       = body.match(/\*\*[Rr]isk[^:]*:\*\*\s*([^\n,|]+)/)?.[1]?.trim()
+                  || body.match(/risk[_\s]*level[:\s]+([A-Z]+)/i)?.[1]?.trim() || null;
+  const confidence = body.match(/\*\*[Cc]onfidence[^:]*:\*\*\s*([^\n,|]+)/)?.[1]?.trim()
+                  || body.match(/confidence[:\s]+([A-Z]+)/i)?.[1]?.trim() || null;
+  const openQ      = (body.match(/open[_ ]questions?/gi) || []).length > 0
+                  ? (body.match(/^\d+\.\s+/gm) || []).length || null
+                  : null;
+
+  const parts = [];
+  if (effort)     parts.push(`**Effort:** ${effort}`);
+  if (risk)       parts.push(`**Risk:** ${risk}`);
+  if (confidence) parts.push(`**Confidence:** ${confidence}`);
+  const meta = parts.join('  ·  ');
+
+  const lines = [meta].filter(Boolean);
+  if (openQ) lines.push(`**Open questions:** ${openQ} documented, proceeding with assumptions`);
+
+  return lines.length ? lines.join('\n') : null;
+}
+
+function buildChallengerDetail(body) {
+  const verdict = body.match(/\*\*(APPROVED|NEEDS_REVISION|BLOCKED)\*\*/)?.[1]
+               || (body.toLowerCase().includes('approved') ? 'APPROVED' : null);
+  const must = (body.match(/MUST_HAVE/g) || []).length;
+  const should = (body.match(/SHOULD_HAVE/g) || []).length;
+
+  const lines = [];
+  if (verdict) lines.push(`**Verdict:** ${verdict}`);
+  if (must)    lines.push(`**Must-have findings:** ${must}`);
+  if (should)  lines.push(`**Should-have findings:** ${should}`);
+  return lines.length ? lines.join('  ·  ') : null;
+}
+
+function buildReviewDetail(body) {
+  const verdict  = body.match(/\*\*(PASS|REQUEST_CHANGES|APPROVED)\*\*/)?.[1]
+                || (body.toLowerCase().includes('approved') ? 'APPROVED'
+                  : body.toLowerCase().includes('request') ? 'REQUEST_CHANGES' : null);
+  const critical = (body.match(/CRITICAL/g) || []).length;
+  const high     = (body.match(/\bHIGH\b/g) || []).length;
+
+  const lines = [];
+  if (verdict)  lines.push(`**Verdict:** ${verdict}`);
+  if (critical) lines.push(`**Critical blockers:** ${critical}`);
+  if (high)     lines.push(`**High blockers:** ${high}`);
+  return lines.length ? lines.join('  ·  ') : null;
+}
+
+function buildQADetail(body) {
+  // Try to extract AC results as a task list
+  const acLines = [];
+  for (const line of body.split('\n')) {
+    const m = line.match(/AC\d+[^—–-]*[—–-]\s*(.+)/);
+    if (!m) continue;
+    const passed = line.includes('PASS') || line.includes('✅');
+    acLines.push(`- [${passed ? 'x' : ' '}] ${m[1].trim()}`);
+    if (acLines.length >= 8) break; // cap at 8 items
+  }
+  return acLines.length ? acLines.join('\n') : null;
+}
+
+// ---------------------------------------------------------------------------
+// Generic card — fallback
 // ---------------------------------------------------------------------------
 
 function buildGenericCard(body, num, ghUrl, commentUrl, isIssue) {
   const refType = isIssue ? 'Issue' : 'PR';
   const title   = body.match(/^#{1,3}\s+(.+)$/m)?.[1]?.trim() || 'Pipeline Comment';
 
-  let preview = body
-    .replace(/^>\s*\[!(?:NOTE|WARNING|TIP|IMPORTANT|CAUTION)\][^\n]*(\n>\s*[^\n]*)*/gm, '')
-    .replace(/^>\s?/gm, '')
-    .replace(/\n{3,}/g, '\n\n')
-    .trim();
-  if (preview.length > 480) preview = preview.slice(0, 480) + '…';
-
   return {
     text: `AI Pipeline · ${refType} #${num}`,
-    attachments: [{
-      color: '#7d8590',
-      blocks: [
-        {
-          type: 'section',
-          text: { type: 'mrkdwn', text: `🤖  *${title}*\n<${ghUrl}|${refType} #${num}> · \`wp-media/wp-rocket\`` },
-          accessory: {
-            type: 'button',
-            text: { type: 'plain_text', text: 'View Comment', emoji: true },
-            url: commentUrl
-          }
-        },
-        ...(preview ? [{ type: 'section', text: { type: 'mrkdwn', text: preview } }] : []),
-        { type: 'context', elements: [{ type: 'mrkdwn', text: `<${commentUrl}|View on GitHub>` }] }
-      ]
-    }]
+    blocks: [
+      {
+        type: 'section',
+        text: { type: 'mrkdwn', text: `🤖  *${title}*\n<${ghUrl}|${refType} #${num}> · \`wp-media/wp-rocket\`` },
+        accessory: { type: 'button', text: { type: 'plain_text', text: 'View Comment' }, url: commentUrl }
+      },
+      { type: 'context', elements: [{ type: 'mrkdwn', text: `<${commentUrl}|View on GitHub>` }] }
+    ]
   };
 }
 
@@ -323,16 +324,16 @@ function parseMarkdownTable(body) {
   const rows = [];
   for (const line of body.split('\n')) {
     if (!line.startsWith('|')) continue;
-    if (/^\|[\s\-:|]+\|$/.test(line)) continue; // separator row
+    if (/^\|[\s\-:|]+\|$/.test(line)) continue;
     const cells = line.split('|').slice(1, -1).map(c => c.trim());
-    if (cells[0]?.toLowerCase() === 'stage') continue; // header row
+    if (cells[0]?.toLowerCase() === 'stage') continue;
     if (cells.length >= 2) rows.push(cells);
   }
   return rows;
 }
 
 // ---------------------------------------------------------------------------
-// Extract issue number from PR comment body text (e.g. "Issue #8229")
+// Extract issue number from PR comment body text
 // ---------------------------------------------------------------------------
 
 function extractIssueFromBody(body) {
@@ -368,21 +369,18 @@ function getOutput(data) {
 }
 
 // ---------------------------------------------------------------------------
-// Body extraction from raw bash command (heredoc, double-quoted, single-quoted)
+// Body extraction from raw bash command (heredoc / double-quoted / single-quoted)
 // ---------------------------------------------------------------------------
 
 function extractBody(command) {
-  // HEREDOC: --body "$(cat <<'DELIM'\n...\nDELIM\n)"
   let m = command.match(/(?:--body|-b)\s+"?\$\(cat\s+<<['"]?(\w+)['"]?\n([\s\S]*?)\n\1/);
   if (m) return m[2].trim();
 
-  // Double-quoted (skip if it starts with heredoc)
   m = command.match(/(?:--body|-b)\s+"((?:[^"\\]|\\.)*)"/s);
   if (m && !m[1].trimStart().startsWith('$(')) {
     return m[1].replace(/\\n/g, '\n').replace(/\\"/g, '"').trim();
   }
 
-  // Single-quoted
   m = command.match(/(?:--body|-b)\s+'((?:[^'\\]|\\.)*)'/s);
   if (m) return m[1].trim();
 
@@ -390,7 +388,7 @@ function extractBody(command) {
 }
 
 // ---------------------------------------------------------------------------
-// Slack API — returns the message ts on success (used for threading)
+// Slack API — returns ts on success (used for threading)
 // ---------------------------------------------------------------------------
 
 async function postToSlack(payload) {
