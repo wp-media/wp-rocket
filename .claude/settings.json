@@ -40,7 +40,7 @@
           {
             "type": "command",
             "command": "node \".aiassistant/skills/issue-workflow/scripts/slack-notify.js\"",
-            "timeout": 10
+            "timeout": 12
           }
         ]
       }
