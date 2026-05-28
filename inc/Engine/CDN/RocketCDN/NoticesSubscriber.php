@@ -2,6 +2,7 @@
 namespace WP_Rocket\Engine\CDN\RocketCDN;
 
 use WP_Rocket\Abstract_Render;
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Engine\Tracking\Tracking;
@@ -42,21 +43,30 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	private $tracking;
 
 	/**
+	 * WP Rocket options instance.
+	 *
+	 * @var Options_Data
+	 */
+	private $options;
+
+	/**
 	 * Constructor
 	 *
-	 * @param APIClient  $api_client    RocketCDN API Client instance.
-	 * @param Beacon     $beacon        Beacon instance.
-	 * @param UserClient $user_client   UserClient instance.
-	 * @param Tracking   $tracking      Tracking instance.
-	 * @param string     $template_path Path to the templates.
+	 * @param APIClient    $api_client    RocketCDN API Client instance.
+	 * @param Beacon       $beacon        Beacon instance.
+	 * @param UserClient   $user_client   UserClient instance.
+	 * @param Tracking     $tracking      Tracking instance.
+	 * @param string       $template_path Path to the templates.
+	 * @param Options_Data $options       WP Rocket options instance.
 	 */
-	public function __construct( APIClient $api_client, Beacon $beacon, UserClient $user_client, Tracking $tracking, $template_path ) {
+	public function __construct( APIClient $api_client, Beacon $beacon, UserClient $user_client, Tracking $tracking, $template_path, Options_Data $options ) {
 		parent::__construct( $template_path );
 
 		$this->api_client  = $api_client;
 		$this->beacon      = $beacon;
 		$this->user_client = $user_client;
 		$this->tracking    = $tracking;
+		$this->options     = $options;
 	}
 
 	/**
@@ -74,6 +84,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 			'wp_ajax_toggle_rocketcdn_cta'     => 'toggle_cta',
 			'wp_ajax_rocketcdn_dismiss_notice' => 'dismiss_notice',
 			'admin_footer'                     => 'add_dismiss_script',
+			'wp_rocket_upgrade'                => [ 'on_upgrade', 10, 2 ],
 		];
 	}
 
@@ -553,5 +564,22 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 			],
 			esc_url_raw( $user_data->rocketcdn->button->url )
 		);
+	}
+
+	/**
+	 * Syncs in-memory previous_version when the plugin is upgraded.
+	 *
+	 * Fired by `rocket_upgrader()` on admin_init, before admin_notices.
+	 * Ensures maybe_display_rocketcdn_notice() reads the correct version
+	 * on the same request the upgrade runs (e.g., plugins.php after update).
+	 *
+	 * @since 3.22
+	 *
+	 * @param string $new_version New WP Rocket version.
+	 * @param string $old_version Previous WP Rocket version.
+	 * @return void
+	 */
+	public function on_upgrade( string $new_version, string $old_version ): void {
+		$this->options->set( 'previous_version', $old_version );
 	}
 }
