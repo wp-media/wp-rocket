@@ -81,6 +81,10 @@ class Test_MaybeDisplayRocketcdnNotice extends TestCase {
 	 * @return void
 	 */
 	public function testShouldSyncPreviousVersionOnUpgrade( $config, $expected ) {
+		if ( ! empty( $config['screen'] ) ) {
+			set_current_screen( $config['screen'] );
+		}
+
 		// Simulate pre-upgrade state: in-memory previous_version starts at initial value.
 		$this->subscriber_options->set( 'previous_version', $config['initial_previous_version'] );
 
