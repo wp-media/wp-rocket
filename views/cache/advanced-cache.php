@@ -91,6 +91,17 @@ if ( ! class_exists( '\WP_Rocket\Buffer\Cache' ) ) {
 	return;
 }
 
+// Allow site-specific early cache header hooks.
+// Create wp-content/rocket-early-cache-hooks.php to register add_filter( 'rocket_cache_http_headers', ... ) callbacks.
+$rocket_early_hooks = WP_CONTENT_DIR . '/rocket-early-cache-hooks.php';
+if ( file_exists( $rocket_early_hooks ) ) {
+	$rocket_early_hooks = realpath( $rocket_early_hooks );
+	if ( $rocket_early_hooks && 0 === strpos( $rocket_early_hooks, realpath( WP_CONTENT_DIR ) ) ) {
+		include_once $rocket_early_hooks;
+	}
+}
+unset( $rocket_early_hooks );
+
 $rocket_config_class = new Config(
 	[
 		'config_dir_path' => $rocket_config_path,

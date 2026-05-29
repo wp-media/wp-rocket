@@ -163,7 +163,11 @@ class Cache extends Abstract_Buffer {
 	 * @param string $cache_filepath Path to the cache file.
 	 */
 	private function serve_cache_file( $cache_filepath ) {
-		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s', filemtime( $cache_filepath ) ) . ' GMT' );
+		$this->send_headers(
+			[
+				'Last-Modified' => gmdate( 'D, d M Y H:i:s', filemtime( $cache_filepath ) ) . ' GMT',
+			]
+			);
 
 		$if_modified_since = $this->get_if_modified_since();
 
@@ -171,8 +175,12 @@ class Cache extends Abstract_Buffer {
 		if ( $if_modified_since && ( strtotime( $if_modified_since ) === @filemtime( $cache_filepath ) ) ) {
 			// Client's cache is current, so we just respond '304 Not Modified'.
 			header( $this->config->get_server_input( 'SERVER_PROTOCOL', '' ) . ' 304 Not Modified', true, 304 );
-			header( 'Expires: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
-			header( 'Cache-Control: no-cache, must-revalidate' );
+			$this->send_headers(
+				[
+					'Expires'       => gmdate( 'D, d M Y H:i:s' ) . ' GMT',
+					'Cache-Control' => 'no-cache, must-revalidate',
+				]
+				);
 
 			$this->log(
 				'Serving `304` cache file.',
@@ -207,7 +215,11 @@ class Cache extends Abstract_Buffer {
 	 * @param string $cache_filepath Path to the gzip cache file.
 	 */
 	private function serve_gzip_cache_file( $cache_filepath ) {
-		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s', filemtime( $cache_filepath ) ) . ' GMT' );
+		$this->send_headers(
+			[
+				'Last-Modified' => gmdate( 'D, d M Y H:i:s', filemtime( $cache_filepath ) ) . ' GMT',
+			]
+			);
 
 		$if_modified_since = $this->get_if_modified_since();
 
@@ -215,8 +227,12 @@ class Cache extends Abstract_Buffer {
 		if ( $if_modified_since && ( strtotime( $if_modified_since ) === @filemtime( $cache_filepath ) ) ) {
 			// Client's cache is current, so we just respond '304 Not Modified'.
 			header( $this->config->get_server_input( 'SERVER_PROTOCOL', '' ) . ' 304 Not Modified', true, 304 );
-			header( 'Expires: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
-			header( 'Cache-Control: no-cache, must-revalidate' );
+			$this->send_headers(
+				[
+					'Expires'       => gmdate( 'D, d M Y H:i:s' ) . ' GMT',
+					'Cache-Control' => 'no-cache, must-revalidate',
+				]
+				);
 
 			$this->log(
 				'Serving `304` gzip cache file.',
@@ -241,6 +257,36 @@ class Cache extends Abstract_Buffer {
 			'info'
 		);
 		exit;
+	}
+
+	/**
+	 * Sends HTTP headers, applying the rocket_cache_http_headers filter.
+	 *
+	 * Fires the `rocket_cache_http_headers` filter so developers can add, modify,
+	 * or remove HTTP response headers before they are sent while serving from cache.
+	 * Callbacks must be registered before `advanced-cache.php` executes (e.g. inside
+	 * `wp-content/rocket-early-cache-hooks.php`).
+	 *
+	 * @since 3.x.x
+	 *
+	 * @param array<string,string> $headers Associative array of header name => value.
+	 * @return void
+	 */
+	private function send_headers( array $headers ): void {
+		/**
+		 * Filters the HTTP headers sent when serving a page from WP Rocket's cache.
+		 *
+		 * @since 3.x.x
+		 *
+		 * @param array<string,string> $headers Associative array of header name => value.
+		 */
+		$headers = (array) apply_filters( 'rocket_cache_http_headers', $headers ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+
+		foreach ( $headers as $name => $value ) {
+			if ( is_string( $name ) && is_string( $value ) ) {
+				header( $name . ': ' . $value );
+			}
+		}
 	}
 
 	/**
