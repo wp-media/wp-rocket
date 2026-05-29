@@ -4,7 +4,7 @@ description: >
   User-facing entry point for the wp-rocket issue workflow. Invoke directly to start a
   delivery run from a GitHub issue number, URL, or raw description. Runs inline in your
   conversation context; spawns specialist agents (ticket-writer, grooming-agent,
-  challenger, backend-agent, frontend-agent, release-agent, lead-reviewer, ci-agent,
+  challenger, backend-agent, frontend-agent, release-agent, lead-reviewer,
   qa-engineer) as isolated sub-agents; invokes supporting skills (knowledge-graph, dod,
   docs, e2e, issue-workflow) inline. Routes based on structured JSON outputs from each
   agent, manages loop counters, handles escalations, and maintains a live HTML run log.
@@ -107,7 +107,7 @@ Path: `.TemporaryItems/Issues/wp-rocket/issue-<N>-workflow-log.html`
 
 Maintain in your context tracking:
 - Which agents have been invoked and their return JSON
-- Loop counters per decision point (`grooming_loop`, `dod_loop`, `review_loop`, `qa_loop`, `ci_attempts`)
+- Loop counters per decision point (`grooming_loop`, `dod_loop`, `review_loop`, `qa_loop`)
 - Non-blocking NTH tasks dispatched (log ticket URLs when created)
 - Escalation reason if stopped
 - Calibration mode chosen
@@ -308,19 +308,6 @@ fields — prose is for human readability only.
   "pr_comment_url": "string",
   "blockers": ["string"],
   "recommendations": [{ "description": "string", "severity": "MUST_HAVE|SHOULD_HAVE|COULD_HAVE|NICE_TO_HAVE" }]
-}
-```
-
-### CI (`ci-agent`)
-```json
-{
-  "overall": "ALL_PASS|FAILURE|TIMEOUT",
-  "checks": [
-    { "name": "string", "status": "PASS|FAIL|PENDING|SKIP", "duration": "string" }
-  ],
-  "failures": [
-    { "check": "string", "error_excerpt": "string", "suggested_fix": "string" }
-  ]
 }
 ```
 
@@ -576,35 +563,39 @@ Update the decisions strip Pull request field with the PR URL.
 
 ---
 
-### Steps 7–10 — Parallel quality gates
+### Steps 7–9 — Parallel quality gates
 
-After the PR is created (Step 6), GitHub Actions CI starts automatically. Spawn all four
+After the PR is created (Step 6), GitHub Actions CI starts automatically. Spawn three
 quality gates simultaneously — do not wait for one before starting another:
 
 ```
-DOD L2  ──────────────────┐
-Lead Review  ─────────────┤  all in parallel
-QA  ──────────────────────┤
-CI monitoring  ───────────┘
+DOD L2       ──────────────────┐
+Lead Review  ─────────────────┤  all in parallel
+QA           ──────────────────┘
 ```
 
+CI is monitored by DOD L2 Check 5 — no separate ci-agent spawn.
+
 **Spawning:**
-- **DOD L2** — invoke the `dod` skill with `layer: "2"` in your context.
+- **DOD L2** — invoke the `dod` skill with `layer: "2"` in your context. DOD L2 polls
+  `gh pr checks` and extracts failure excerpts; it fully replaces the former ci-agent.
 - **Lead Review** — spawn `lead-reviewer` (skip if `effort IN [XS, S]` AND `risk_level == LOW`).
 - **QA** — spawn `qa-engineer` (skip only for purely internal refactors). If `domains` is
   `frontend` or `both`, **or** if `ui_visible: true` (PHP renders visible admin output) —
   explicitly instruct the qa-engineer that Strategy B is the **primary** strategy.
-- **CI monitoring** — spawn `ci-agent` (PR number, repo `wp-media/wp-rocket`).
 
 **Inputs for each:**
 - DOD L2: branch name, base branch, PR URL
 - Lead Review: issue #N, spec path, base branch, acceptance criteria (numbered list)
 - QA: issue #N, PR number, base branch, acceptance criteria (numbered list), domains, ui_visible flag
-- CI: PR number, repo
 
 ---
 
 #### Step 7 — DOD L2 result
+
+DOD L2 covers both code quality checks (checks 1, 4) and CI (check 5). A FAIL can originate
+from either. Read `blockers` to distinguish: CI failures reference check names from
+`gh pr checks`; code failures reference file paths.
 
 Route on `dod_l2.overall`:
 
@@ -612,8 +603,10 @@ Route on `dod_l2.overall`:
 |---|---|---|
 | `PASS` | any | No action — parallel gates continue. |
 | `WARN` | any | No action — parallel gates continue. Log GATE event `data-status="warn"`. In high-oversight mode, surface for confirmation. |
-| `FAIL` | `dod_loop < 1` | **Abort any in-flight Lead Review and QA.** Increment `dod_loop`. Identify which agent's files caused the failure. Re-invoke that agent with specific blockers, re-push. Re-run DOD L2 + Lead Review + QA in parallel again. Log ROUTING DECISION. |
-| `FAIL` | `dod_loop >= 1` | Escalate to user with exact errors. |
+| `FAIL` (CI) | `dod_loop < 2` | Diagnose the CI failure from `blockers[*].error_excerpt`. Re-invoke the relevant implementation agent with the suggested fix. Re-push. Increment `dod_loop`. Re-run DOD L2 + Lead Review + QA in parallel. Log ROUTING DECISION. |
+| `FAIL` (CI) | `dod_loop >= 2` | Escalate with the exact error excerpt and suggested fix. |
+| `FAIL` (code) | `dod_loop < 1` | **Abort any in-flight Lead Review and QA.** Increment `dod_loop`. Re-invoke the relevant implementation agent with specific blockers, re-push. Re-run DOD L2 + Lead Review + QA in parallel. Log ROUTING DECISION. |
+| `FAIL` (code) | `dod_loop >= 1` | Escalate to user with exact errors. |
 
 Log GATE event.
 
@@ -626,8 +619,8 @@ Route on highest `criticality` in `blockers`:
 | Criticality | Loop count | Action |
 |---|---|---|
 | No blockers | any | No action — parallel gates continue. Log AGENT event. |
-| `CRITICAL` | any | **Abort any in-flight QA.** Evaluate if fixable. If yes (specific missing guard, missing validation): attempt one fix loop (same as HIGH). If architectural, requires external decisions, or still unresolved after 1 attempt → escalate immediately. Log ESCALATION event. |
-| `HIGH` / `MEDIUM` | `review_loop < 1` | **Abort any in-flight QA.** Re-invoke relevant implementation agent with the `fix` field from that blocker. Re-push. Re-invoke Lead Review + QA in parallel. Log ROUTING DECISION. |
+| `CRITICAL` | any | **Abort any in-flight QA.** Evaluate if fixable. If yes (specific missing guard, missing validation): attempt one fix loop (same as HIGH). Re-invoke QA only if at least one blocker has `type == "LOGIC"` — otherwise carry the existing QA verdict forward. If architectural/unresolved after 1 attempt → escalate immediately. Log ESCALATION event. |
+| `HIGH` / `MEDIUM` | `review_loop < 1` | **Abort any in-flight QA.** Re-invoke relevant implementation agent with the `fix` field from that blocker. Re-push. Re-invoke Lead Review in parallel. **Re-invoke QA only if at least one blocker has `type == "LOGIC"`** — if all blockers are `SECURITY`, `TESTS`, or `CONVENTIONS`, behavior did not change; carry the existing QA verdict forward. Log ROUTING DECISION. |
 | `HIGH` / `MEDIUM` | `review_loop >= 1` | Escalate. |
 | `LOW` only | any | Dispatch `ticket-writer` (NICE_TO_HAVE, non-blocking). Parallel gates continue. Log PARALLEL event. |
 
@@ -638,20 +631,7 @@ Log AGENT event with verdict, loop count, and any NTH dispatch.
 
 ---
 
-#### Step 9 — CI result
-
-Route on `ci-agent` return:
-
-| Result | Loop count | Action |
-|---|---|---|
-| `ALL_PASS` | any | No action — parallel gates continue. |
-| `FAILURE` | `ci_attempts < 2` | Diagnose, fix (re-invoke relevant implementation agent), re-push. Increment `ci_attempts`. Log AGENT events. |
-| `FAILURE` | `ci_attempts >= 2` | Escalate. |
-| `TIMEOUT` | any | Log AGENT event. Proceed — do not block on CI timeout. |
-
----
-
-#### Step 10 — QA result
+#### Step 9 — QA result
 
 If skipped (internal refactor): log a ROUTING DECISION event with skip reason, proceed
 to finalize.
@@ -673,8 +653,8 @@ Max 3 QA invocations.
 
 ---
 
-**Proceed to Step 11 when:** DOD L2 is PASS or WARN, Lead Review has no HIGH/CRITICAL
-blockers (or is skipped), QA is PASS (or skipped), CI is ALL_PASS or TIMEOUT.
+**Proceed to Step 11 when:** DOD L2 is PASS or WARN (CI included in check 5), Lead Review
+has no HIGH/CRITICAL blockers (or is skipped), QA is PASS (or skipped or carried forward).
 
 ---
 
@@ -773,7 +753,6 @@ All agents also receive `CURRENT_MODEL` and `session_learnings` (section 13 of `
 | `frontend-agent` | Issue object + spec path + dispatch plan + backend API contract (sequential mode only) |
 | `release-agent` | Issue #, branch name, base branch, acceptance criteria, spec path |
 | `lead-reviewer` | PR URL + spec path + acceptance criteria + `session_learnings` |
-| `ci-agent` | PR number + repo |
 | `qa-engineer` | PR number + acceptance criteria + base branch |
 | `ticket-writer` (nth_followup) | Single NTH feedback item (not full context) |
 
