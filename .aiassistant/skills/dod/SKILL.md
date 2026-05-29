@@ -51,6 +51,12 @@ designed to independently test a PR and share feedback.
 
 ### Check 2 — Automated tests in place
 
+> **Layer 2 only:** Skip this check. Layer 1 already ran the full test suite and must have
+> passed before the implementation agent handed off. Re-running in L2 adds latency with no
+> new signal. Mark as **SKIP** in the output table and move on.
+
+**Layer 1 only:**
+
 Identify changed source files:
 ```bash
 git diff origin/develop --name-only
@@ -75,6 +81,11 @@ vendor/bin/phpunit --configuration tests/Integration/phpunit.xml.dist --group <F
 ---
 
 ### Check 3 — Documentation updated
+
+> **Layer 2 only:** Skip this check. Layer 1 already verified the docs surface and must have
+> passed before handoff. Mark as **SKIP** in the output table and move on.
+
+**Layer 1 only:**
 
 Run `git diff origin/develop --name-only` and look for changes to the public API surface:
 - New or changed WordPress hooks (`apply_filters`, `do_action`, `wpm_apply_filters_typed`)
@@ -133,20 +144,39 @@ composer test-unit       # full unit suite
 ```
 
 **Layer 2 (PR exists — remote CI status):**
-Poll GitHub Actions status:
+
+First, read the GitHub Actions workflow files to enumerate which checks are expected:
 ```bash
-# Poll until complete or timeout (5 min, 30s polling)
+ls .github/workflows/
+```
+Note the check names (e.g. `lint / PHP CodeSniffer`, `lint / PHPStan`, `task-check`).
+
+Poll GitHub Actions status until all checks complete or 5-minute timeout:
+```bash
 for i in $(seq 1 10); do
   STATUS=$(gh pr checks "$PR_URL" 2>/dev/null)
-  echo "$STATUS" | grep -qE "^(pending|in_progress)" || break
+  echo "$STATUS" | grep -qE "(pending|in_progress)" || break
   sleep 30
 done
 gh pr checks "$PR_URL"
 ```
 
+For any check that shows `fail`, fetch its log URL and extract the relevant error excerpt:
+```bash
+# Get the run ID for the failing check
+gh pr checks "$PR_URL" --json name,state,detailsUrl
+# Fetch last ~30 lines of the failing job log
+gh run view <run_id> --log-failed 2>/dev/null | tail -30
+```
+
+Include each failure as a separate blocker in the return JSON with:
+- `check`: the check name
+- `error_excerpt`: the relevant log lines
+- `suggested_fix`: one sentence on what likely caused it
+
 Also verify the `Co-Authored-By: Claude` trailer is present on every commit on the branch:
 ```bash
-git log origin/develop..HEAD --format="%H %s" | while read sha msg; do
+git log <base_branch>..HEAD --format="%H %s" | while read sha msg; do
   git show $sha --format="%b" -s | grep -q "Co-Authored-By: Claude" \
     || echo "MISSING Co-Authored-By on $sha"
 done
@@ -164,8 +194,8 @@ done
 | Check | Status | Evidence |
 |-------|--------|----------|
 | 1. Manual validation | PASS | "What was tested" covers 3 concrete scenarios |
-| 2. Automated tests   | WARN | inc/Engine/Foo/Bar.php has no test file |
-| 3. Documentation     | PASS | docs/api.md updated |
+| 2. Automated tests   | SKIP (L2) | Verified by L1 |
+| 3. Documentation     | SKIP (L2) | Verified by L1 |
 | 4. PR description    | PASS | All sections filled |
 | 5. CI                | FAIL | run-stan failing: DiscourageApplyFilters in inc/Engine/Cache/Subscriber.php:142 |
 
@@ -192,8 +222,8 @@ Always return this JSON object in addition to the human-readable output above:
   "overall": "PASS|WARN|FAIL",
   "checks": [
     { "name": "manual-validation", "status": "PASS|WARN|FAIL", "evidence": "string" },
-    { "name": "automated-tests", "status": "PASS|WARN|FAIL", "evidence": "string" },
-    { "name": "documentation", "status": "PASS|WARN|FAIL", "evidence": "string" },
+    { "name": "automated-tests", "status": "PASS|WARN|FAIL|SKIP", "evidence": "string" },
+    { "name": "documentation", "status": "PASS|WARN|FAIL|SKIP", "evidence": "string" },
     { "name": "pr-description", "status": "PASS|WARN|FAIL", "evidence": "string" },
     { "name": "ci", "status": "PASS|WARN|FAIL", "evidence": "string" }
   ],
