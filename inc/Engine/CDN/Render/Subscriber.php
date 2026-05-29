@@ -151,11 +151,13 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Displays the RocketCDN Call to Action on the CDN tab of WP Rocket settings page.
 	 *
+	 * @param bool $display Whether to display the CTA. Default true.
+	 *
 	 * @since 3.22
 	 *
 	 * @return bool
 	 */
-	public function maybe_display_rocketcdn_cta(): bool {
-		return $this->controller->maybe_display_rocketcdn_cta();
+	public function maybe_display_rocketcdn_cta( bool $display = true ): bool {
+		return $this->controller->maybe_display_rocketcdn_cta( $display );
 	}
 }

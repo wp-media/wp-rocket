@@ -25,6 +25,29 @@
 	}
 
 	/**
+	 * Updates the RocketCDN CTA visibility and expansion state.
+	 *
+	 * @param {number} count Current number of free-tier pages.
+	 * @param {number} limit Free-tier page limit.
+	 * @returns {void}
+	 */
+	function updateRocketCtaState( count, limit ) {
+		const cta = document.getElementById( 'wpr-rocketcdn-cta' );
+
+		if ( ! cta ) {
+			return;
+		}
+
+		const isVisible = count > 0;
+		const isExpanded = count >= limit;
+
+		cta.classList.toggle( 'wpr-isHidden', ! isVisible );
+		cta.classList.toggle( 'wpr-rocketcdn-cta--collapsed', isVisible && ! isExpanded );
+		cta.classList.toggle( 'wpr-rocketcdn-cta--expanded', isVisible && isExpanded );
+		cta.classList.toggle( 'wpr-rocketcdn-cta---max-limit', isVisible && isExpanded );
+	}
+
+	/**
 	 * Sets the subscription loading state on the CDN UI.
 	 *
 	 * Disables the built-in CDN section, purge and exclude sections,
@@ -238,6 +261,7 @@
 				method: 'POST',
 			} ).then( ( response ) => {
 				addHomeButton.classList.add( 'wpr-isHidden' );
+				updateRocketCtaState( response.count, response.limit );
 
 				if ( response.items_html ) {
 					const existing = document.querySelector( '.wpr-cdn-built-in .wpr-table-list' );
@@ -306,6 +330,7 @@
 				input.disabled = false;
 				button.disabled = false;
 				addHomeButton.classList.add( 'wpr-isHidden' );
+				updateRocketCtaState( response.count, response.limit );
 
 				// Update page list with response.
 				if ( response.items_html ) {
@@ -323,11 +348,6 @@
 				}
 
 				if ( response.limit === response.count ) {
-					// Expand CTA banner if page limit reached and add max limit text.
-					const cta = document.getElementById( 'wpr-rocketcdn-cta' );
-					cta.classList.add( 'wpr-rocketcdn-cta--expanded', 'wpr-rocketcdn-cta---max-limit' );
-					cta.classList.remove( 'wpr-rocketcdn-cta--collapsed' );
-
 					// Disable input and button when page limit is reached.
 					document.querySelector( '.wpr-cdn-built-in' ).classList.add( 'wpr-cdn-built-in--disabled' );
 				}
@@ -384,6 +404,8 @@
 				path: `/wp-rocket/v1/rocketcdn/pages/${ id }`,
 				method: 'DELETE',
 			} ).then( ( response ) => {
+				updateRocketCtaState( response.count, response.limit );
+
 				if ( response.items_html ) {
 					const existing = container.parentElement.querySelector( '.wpr-cdn-built-in .wpr-table-list' );
 
@@ -411,11 +433,6 @@
 				}
 
 				if ( response.limit > response.count ) {
-					// Collapse CTA banner when page limit is not reached and remove max limit text.
-					const cta = document.getElementById( 'wpr-rocketcdn-cta' );
-					cta.classList.add( 'wpr-rocketcdn-cta--collapsed' );
-					cta.classList.remove( 'wpr-rocketcdn-cta--expanded', 'wpr-rocketcdn-cta---max-limit' );
-
 					// Re-enable input and button when page limit is not reached.
 					document.querySelector( '.wpr-cdn-built-in' ).classList.remove( 'wpr-cdn-built-in--disabled' );
 				}

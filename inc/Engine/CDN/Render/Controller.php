@@ -10,6 +10,8 @@ use WP_Rocket\Engine\CDN\RocketCDN\SubscriptionController;
 use WP_Rocket\Engine\Common\Utils;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\CDN\RocketCDN\Database\Queries\RocketCDN as RocketCDNQuery;
+use WP_Rocket\Engine\License\API\User;
+use WP_Rocket\Engine\License\API\UserClient;
 
 /**
  * Handles business logic for CDN driver sections, exclusion fields,
@@ -54,6 +56,13 @@ class Controller extends Abstract_Render {
 	private $subscription_controller;
 
 	/**
+	 * User client instance.
+	 *
+	 * @var UserClient
+	 */
+	private $user_client;
+
+	/**
 	 * Page count for RocketCDN Free tier.
 	 *
 	 * @var int
@@ -69,6 +78,7 @@ class Controller extends Abstract_Render {
 	 * @param Options_Data           $options  Options_Data instance.
 	 * @param RocketCDNQuery         $cdn_query RocketCDNQuery instance.
 	 * @param SubscriptionController $subscription_controller RocketCDN Subscription controller instance.
+	 * @param UserClient             $user_client User client instance.
 	 */
 	public function __construct(
 		Beacon $beacon,
@@ -76,7 +86,8 @@ class Controller extends Abstract_Render {
 		Context $context,
 		Options_Data $options,
 		RocketCDNQuery $cdn_query,
-		SubscriptionController $subscription_controller
+		SubscriptionController $subscription_controller,
+		UserClient $user_client
 	) {
 		parent::__construct( $template_path );
 
@@ -85,6 +96,7 @@ class Controller extends Abstract_Render {
 		$this->options                 = $options;
 		$this->cdn_query               = $cdn_query;
 		$this->subscription_controller = $subscription_controller;
+		$this->user_client             = $user_client;
 	}
 
 	/**
@@ -182,6 +194,8 @@ class Controller extends Abstract_Render {
 				'cta_heading'           => $cta_heading,
 				'cta_heading_max_limit' => $cta_heading_max_limit,
 				'cta_description'       => $cta_description,
+				'is_visible'            => $this->page_count > 0,
+				'is_expanded'           => $limit_reached,
 				'limit_reached'         => $limit_reached,
 			],
 		];
@@ -385,12 +399,35 @@ class Controller extends Abstract_Render {
 	 *
 	 * @since 3.22
 	 */
-	public function maybe_display_rocketcdn_cta(): bool {
+	public function maybe_display_rocketcdn_cta( bool $display = true ): bool {
+		if ( ! $display ) {
+			return false;
+		}
+
 		if ( $this->is_subscription_loading() ) {
 			return false;
 		}
 
-		return true;
+		$user = new User( $this->user_client->get_user_data() );
+
+		if ( $user->is_reseller_account() ) {
+			return false;
+		}
+
+		return (bool) apply_filters( 'rocket_display_rocketcdn_cta_for_agencies', true, $this->get_page_count() );
+	}
+
+	/**
+	 * Gets the current number of RocketCDN free-tier pages.
+	 *
+	 * @return int
+	 */
+	private function get_page_count(): int {
+		if ( 0 !== $this->page_count ) {
+			return $this->page_count;
+		}
+
+		return (int) $this->cdn_query->get_total_count( false );
 	}
 
 	/**

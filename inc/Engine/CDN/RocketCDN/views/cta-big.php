@@ -23,9 +23,29 @@
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 $data = isset( $data ) && is_array( $data ) ? $data : []; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
+
+$rocketcdn_container_classes = [ 'wpr-rocketcdn-cta' ];
+
+if ( empty( $data['is_visible'] ) ) {
+	$rocketcdn_container_classes[] = 'wpr-isHidden';
+}
+
+if ( ! empty( $data['is_visible'] ) && ! empty( $data['is_expanded'] ) ) {
+	$rocketcdn_container_classes[] = 'wpr-rocketcdn-cta--expanded';
+	$rocketcdn_container_classes[] = 'wpr-rocketcdn-cta---max-limit';
+}
+
+if ( ! empty( $data['is_visible'] ) && empty( $data['is_expanded'] ) ) {
+	$rocketcdn_container_classes[] = 'wpr-rocketcdn-cta--collapsed';
+}
+
+if ( ! empty( $data['container_class'] ) ) {
+	$rocketcdn_container_classes[] = $data['container_class'];
+}
+
 ?>
 
-<div class="wpr-rocketcdn-cta <?php echo ! $data['limit_reached'] ? 'wpr-rocketcdn-cta--collapsed' : ''; ?> <?php echo esc_attr( $data['container_class'] ); ?>" id="wpr-rocketcdn-cta">
+<div class="<?php echo esc_attr( implode( ' ', $rocketcdn_container_classes ) ); ?>" id="wpr-rocketcdn-cta">
 	<div class="wpr-rocketcdn-cta-toggle wpr-rocketcdn-cta-toggle--default" role="button" tabindex="0" aria-controls="wpr-rocketcdn-cta-expandable" aria-expanded="true">
 		<p class="wpr-rocketcdn-cta-toggle__text">
 			<?php echo wp_kses( $data['cta_heading'], [ 'strong' => [] ] ); ?>
@@ -60,27 +80,29 @@ $data = isset( $data ) && is_array( $data ) ? $data : []; // phpcs:ignore WordPr
 				</p>
 			</div>
 		<?php endif; ?>
-		<section class="wpr-rocketcdn-cta-content<?php echo esc_attr( $data['nopromo_variant'] ); ?>">
-			<h3 class="wpr-title2">RocketCDN</h3>
-			<p class="wpr-rocketcdn-cta-subtitle"><?php esc_html_e( 'Speed up your website thanks to:', 'rocket' ); ?></p>
-			<div class="wpr-flex">
+		<section class="wpr-rocketcdn-cta-content<?php echo esc_attr( $data['nopromo_variant'] ); ?> wpr-flex">
+			<div class="wpr-rocketcdn-content">
+				<h3 class="wpr-title2">
+					<?php echo esc_html( 'RocketCDN' ); ?>
+					<span class="wpr-badge wpr-badge--blue"><?php esc_html_e( 'Pro', 'rocket' ); ?></span>
+				</h3>
 				<ul class="wpr-rocketcdn-features">
 					<li class="wpr-rocketcdn-feature wpr-rocketcdn-bandwidth">
 						<?php
 						// translators: %1$s = opening strong tag, %2$s = closing strong tag.
-						printf( esc_html__( 'High performance Content Delivery Network (CDN) with %1$sunlimited bandwidth%2$s', 'rocket' ), '<strong>', '</strong>' );
+						printf( esc_html__( 'Faster content delivery across %1$syour entire website%2$s', 'rocket' ), '<strong>', '</strong>' );
 						?>
 					</li>
 					<li class="wpr-rocketcdn-feature wpr-rocketcdn-configuration">
 						<?php
 						// translators: %1$s = opening strong tag, %2$s = closing strong tag.
-						printf( esc_html__( 'Easy configuration: the %1$sbest CDN settings%2$s are automatically applied', 'rocket' ), '<strong>', '</strong>' );
+						printf( esc_html__( '%1$sNo bandwidth limits%2$s, no hidden costs', 'rocket' ), '<strong>', '</strong>' );
 						?>
 					</li>
 					<li class="wpr-rocketcdn-feature wpr-rocketcdn-automatic">
 						<?php
 						// translators: %1$s = opening strong tag, %2$s = closing strong tag.
-						printf( esc_html__( 'WP Rocket integration: the CDN option is %1$sautomatically configured%2$s in our plugin', 'rocket' ), '<strong>', '</strong>' );
+						printf( esc_html__( '%1$s100+ edge locations%2$s for wider global coverage', 'rocket' ), '<strong>', '</strong>' );
 						?>
 					</li>
 					<li class="wpr-rocketcdn-cta-footer">
@@ -99,7 +121,8 @@ $data = isset( $data ) && is_array( $data ) ? $data : []; // phpcs:ignore WordPr
 						</li>
 					<?php endif; ?>
 				</ul>
-				<div class="wpr-rocketcdn-pricing">
+			</div>
+			<div class="wpr-rocketcdn-pricing">
 					<?php if ( ! empty( $data['error'] ) ) : ?>
 						<p><?php echo $data['message']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
 					<?php else : ?>
@@ -118,7 +141,6 @@ $data = isset( $data ) && is_array( $data ) ? $data : []; // phpcs:ignore WordPr
 						</button>
 					<?php endif; ?>
 				</div>
-			</div>
 		</section>
 	</div>
 </div>
