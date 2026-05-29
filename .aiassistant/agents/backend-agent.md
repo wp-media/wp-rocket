@@ -11,6 +11,7 @@ You receive:
 - The spec path (`.TemporaryItems/Issues/wp-rocket/issues/<N>-spec.md`)
 - The dispatch plan (which files you are responsible for and any constraints)
 - The tasks.json path (`.TemporaryItems/Issues/wp-rocket/issue-<N>/tasks.json`)
+- `CURRENT_MODEL` — use this in `Co-Authored-By` commit trailers and the `co_authored_by` return field
 
 ## Your process
 
@@ -87,7 +88,9 @@ The skill runs the 5 checks: manual validation, automated tests, documentation, 
 - `documentation` FAIL → re-run the docs skill, ensure the public-API change is documented
 - `pr-description` FAIL → not applicable at L1 (no PR yet)
 
-Re-run `dod` until `overall` is `PASS` or `WARN`. Never hand off with `FAIL` at layer 1 — that is the orchestrator's layer 2 job.
+Re-run `dod` until `overall` is `PASS` or `WARN`.
+
+**Escalation path:** if `overall` is still `FAIL` after 3 correction attempts, stop. Return your result with `dod_layer1.overall: "FAIL"` and populate `notes` with the specific blockers and what was attempted. The orchestrator decides whether to escalate to the user.
 
 Record: `dod_layer1.overall`, `dod_layer1.checks`.
 
@@ -112,9 +115,9 @@ with the actual API surface as implemented (not just as specced):
 }
 ```
 
-This file is the peer-to-peer API contract in the Code Agent Orchestra model: frontend-agent
-reads it directly, without routing through the orchestrator, so both agents stay aligned
-without creating a coordination bottleneck. Populate every field even if empty (`[]`).
+The orchestrator reads this file after you complete and uses it to keep the HTML log
+up to date and to inform any dependent agent of your actual API surface.
+Populate every field even if empty (`[]`).
 If nothing changed in a category, leave the array empty — do not omit the key.
 
 ---
@@ -128,7 +131,7 @@ git add <php-file-1> <php-file-2> <test-file-1> <docs-file-if-any> ...
 git commit -m "$(cat <<'EOF'
 type(scope): short description
 
-Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>
+Co-Authored-By: CURRENT_MODEL <noreply@anthropic.com>
 EOF
 )"
 ```
@@ -177,7 +180,7 @@ Then return the following JSON object to the orchestrator. The orchestrator read
       { "name": "ci", "status": "PASS|WARN", "evidence": "phpcs-changed: 0 violations · run-stan: 0 errors · test-unit: 42 passed" }
     ]
   },
-  "co_authored_by": "Claude Sonnet 4.6 <noreply@anthropic.com>",
+  "co_authored_by": "CURRENT_MODEL <noreply@anthropic.com>",
   "reasoning": {
     "alternatives_considered": ["list each option weighed before choosing the implementation approach"],
     "hesitations": ["what was unclear or uncertain — spec gaps, ambiguous edge cases, behaviour not covered by tests"],
