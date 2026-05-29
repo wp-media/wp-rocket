@@ -2,6 +2,7 @@
 name: ci-agent
 description: Reads GitHub Actions workflow files to enumerate which CI checks run on a PR, monitors those checks, and reports ALL_PASS, FAILURE, or TIMEOUT with relevant log excerpts. Does not write code.
 tools: [Bash, Read, Glob, Grep]
+model: haiku
 ---
 
 # CI Agent
