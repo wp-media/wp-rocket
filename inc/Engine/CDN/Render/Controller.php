@@ -173,7 +173,7 @@ class Controller extends Abstract_Render {
 			$classes[] = 'wpr-cdn-built-in--disabled';
 		}
 
-		if ( $this->is_cdn_paused() ) {
+		if ( $this->is_cdn_paused_or_invalid() ) {
 			$classes[] = 'wpr-cdn-built-in--paused';
 		}
 
@@ -195,7 +195,7 @@ class Controller extends Abstract_Render {
 				'cta_description'       => $cta_description,
 				'limit_reached'         => $limit_reached,
 			],
-			'active_subscription' => ! $this->subscription_controller->has_inactive_subscription(),
+			'active_subscription' => $this->has_active_valid_subscription(),
 			'renewal_url'         => $this->user->get_renewal_url(),
 		];
 
@@ -241,7 +241,7 @@ class Controller extends Abstract_Render {
 			'class'       => $classes,
 		];
 
-		if ( $this->is_subscription_loading() ) {
+		if ( $this->is_subscription_loading() || $this->is_cdn_paused_or_invalid() ) {
 			$sections['purge_cdn_cache_section']['class'][] = 'wpr-cdn-disabled';
 		}
 
@@ -272,7 +272,7 @@ class Controller extends Abstract_Render {
 		];
 
 		// Disable exclusions fields when subscription is processing.
-		if ( $this->is_subscription_loading() ) {
+		if ( $this->is_subscription_loading() || $this->is_cdn_paused_or_invalid() ) {
 			$sections['exclude_cdn_section']['class'] = [ 'wpr-cdn-disabled' ];
 		}
 
@@ -322,7 +322,7 @@ class Controller extends Abstract_Render {
 			'sanitize_callback' => 'sanitize_textarea',
 		];
 
-		if ( ! $this->subscription_controller->has_active_subscription() ) {
+		if ( ! $this->has_active_valid_subscription() ) {
 			$exclusion_fields['cdn_reject_files']['class'][] = 'wpr-cdn-disabled';
 		}
 
@@ -490,6 +490,36 @@ class Controller extends Abstract_Render {
 	}
 
 	/**
+	 * Checks if the current subscription is active and the license is valid.
+	 *
+	 * @return bool True when the subscription can be used.
+	 */
+	private function has_active_valid_subscription(): bool {
+		return $this->subscription_controller->has_active_subscription()
+			&& ! $this->subscription_controller->is_license_invalid();
+	}
+
+	/**
+	 * Checks if the current subscription is inactive or the license is invalid.
+	 *
+	 * @return bool True when the subscription is expired or unusable.
+	 */
+	private function has_inactive_or_invalid_subscription(): bool {
+		return $this->subscription_controller->has_inactive_subscription()
+			|| $this->subscription_controller->is_license_invalid();
+	}
+
+	/**
+	 * Checks if the CDN should be treated as paused.
+	 *
+	 * @return bool True when the CDN is paused or the license is invalid.
+	 */
+	private function is_cdn_paused_or_invalid(): bool {
+		return $this->is_cdn_paused()
+			|| $this->subscription_controller->is_license_invalid();
+	}
+
+	/**
 	 * Checks if the CDN type is currently filtered.
 	 *
 	 * @since 3.22
@@ -576,12 +606,12 @@ class Controller extends Abstract_Render {
 
 		$class = '';
 
-		if ( $this->subscription_controller->has_inactive_subscription() ) {
+		if ( $this->has_inactive_or_invalid_subscription() ) {
 			$class         .= ' wpr-cdn-status--expired';
 			$paused_details = __( 'RocketCDN is currently paused because your WPRocket licence has expired.', 'rocket' );
 		}
 
-		if ( $is_paused ) {
+		if ( $this->is_cdn_paused_or_invalid() ) {
 			$status_text = $paused_status_text;
 			$details     = $paused_details;
 			$class      .= ' wpr-cdn-status--paused';
