@@ -6,6 +6,7 @@ description: >
   NTH item from the orchestrator and create a follow-up ticket non-blocking). Invoked as a
   sub-agent by the orchestrator. Returns a structured ticket object.
 tools: [Bash, Read, Write, Glob, Grep]
+model: haiku
 ---
 
 # TICKET WRITER AGENT
