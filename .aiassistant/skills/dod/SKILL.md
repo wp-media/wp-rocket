@@ -51,12 +51,6 @@ designed to independently test a PR and share feedback.
 
 ### Check 2 — Automated tests in place
 
-> **Layer 2 only:** Skip this check. Layer 1 already ran the full test suite and must have
-> passed before the implementation agent handed off. Re-running in L2 adds latency with no
-> new signal. Mark as **SKIP** in the output table and move on.
-
-**Layer 1 only:**
-
 Identify changed source files:
 ```bash
 git diff origin/develop --name-only
@@ -81,11 +75,6 @@ vendor/bin/phpunit --configuration tests/Integration/phpunit.xml.dist --group <F
 ---
 
 ### Check 3 — Documentation updated
-
-> **Layer 2 only:** Skip this check. Layer 1 already verified the docs surface and must have
-> passed before handoff. Mark as **SKIP** in the output table and move on.
-
-**Layer 1 only:**
 
 Run `git diff origin/develop --name-only` and look for changes to the public API surface:
 - New or changed WordPress hooks (`apply_filters`, `do_action`, `wpm_apply_filters_typed`)
@@ -194,8 +183,8 @@ done
 | Check | Status | Evidence |
 |-------|--------|----------|
 | 1. Manual validation | PASS | "What was tested" covers 3 concrete scenarios |
-| 2. Automated tests   | SKIP (L2) | Verified by L1 |
-| 3. Documentation     | SKIP (L2) | Verified by L1 |
+| 2. Automated tests   | WARN | inc/Engine/Foo/Bar.php has no test file |
+| 3. Documentation     | PASS | docs/api.md updated |
 | 4. PR description    | PASS | All sections filled |
 | 5. CI                | FAIL | run-stan failing: DiscourageApplyFilters in inc/Engine/Cache/Subscriber.php:142 |
 
@@ -222,8 +211,8 @@ Always return this JSON object in addition to the human-readable output above:
   "overall": "PASS|WARN|FAIL",
   "checks": [
     { "name": "manual-validation", "status": "PASS|WARN|FAIL", "evidence": "string" },
-    { "name": "automated-tests", "status": "PASS|WARN|FAIL|SKIP", "evidence": "string" },
-    { "name": "documentation", "status": "PASS|WARN|FAIL|SKIP", "evidence": "string" },
+    { "name": "automated-tests", "status": "PASS|WARN|FAIL", "evidence": "string" },
+    { "name": "documentation", "status": "PASS|WARN|FAIL", "evidence": "string" },
     { "name": "pr-description", "status": "PASS|WARN|FAIL", "evidence": "string" },
     { "name": "ci", "status": "PASS|WARN|FAIL", "evidence": "string" }
   ],
