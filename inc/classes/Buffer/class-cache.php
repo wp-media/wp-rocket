@@ -167,7 +167,7 @@ class Cache extends Abstract_Buffer {
 			[
 				'Last-Modified' => gmdate( 'D, d M Y H:i:s', filemtime( $cache_filepath ) ) . ' GMT',
 			]
-			);
+		);
 
 		$if_modified_since = $this->get_if_modified_since();
 
@@ -180,7 +180,7 @@ class Cache extends Abstract_Buffer {
 					'Expires'       => gmdate( 'D, d M Y H:i:s' ) . ' GMT',
 					'Cache-Control' => 'no-cache, must-revalidate',
 				]
-				);
+			);
 
 			$this->log(
 				'Serving `304` cache file.',
@@ -219,7 +219,7 @@ class Cache extends Abstract_Buffer {
 			[
 				'Last-Modified' => gmdate( 'D, d M Y H:i:s', filemtime( $cache_filepath ) ) . ' GMT',
 			]
-			);
+		);
 
 		$if_modified_since = $this->get_if_modified_since();
 
@@ -232,7 +232,7 @@ class Cache extends Abstract_Buffer {
 					'Expires'       => gmdate( 'D, d M Y H:i:s' ) . ' GMT',
 					'Cache-Control' => 'no-cache, must-revalidate',
 				]
-				);
+			);
 
 			$this->log(
 				'Serving `304` gzip cache file.',
@@ -283,7 +283,11 @@ class Cache extends Abstract_Buffer {
 		$headers = (array) apply_filters( 'rocket_cache_http_headers', $headers ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 
 		foreach ( $headers as $name => $value ) {
-			if ( is_string( $name ) && is_string( $value ) ) {
+			if (
+				is_string( $name ) && is_string( $value ) &&
+				false === strpos( $name, "\r" ) && false === strpos( $name, "\n" ) &&
+				false === strpos( $value, "\r" ) && false === strpos( $value, "\n" )
+			) {
 				header( $name . ': ' . $value );
 			}
 		}

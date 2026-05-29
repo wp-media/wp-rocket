@@ -35,7 +35,13 @@ The HTTP status line (e.g. `HTTP/1.1 304 Not Modified`) is sent directly via `he
 
 ### Security
 
-Entries with non-string keys or non-string values are silently skipped. If the filter returns a non-array value, it is cast to `array` before iteration. This prevents a badly-written callback from causing a fatal error or injecting unexpected output.
+`send_headers()` applies three layers of defence before calling `header()`:
+
+1. **Type guard** — entries where the key or value is not a string are silently skipped. This prevents PHP type-juggling from passing unexpected values to `header()`.
+2. **CRLF guard** — entries where the header name or value contains a carriage-return (`\r`, `0x0D`) or line-feed (`\n`, `0x0A`) character are silently dropped. This prevents HTTP response-splitting on PHP versions that do not block CRLF in `header()` natively (PHP < 7.4).
+3. **Non-array return cast** — if the filter returns a non-array value it is cast to `array` before iteration, preventing a fatal error from a badly-written callback.
+
+**What is not prevented:** The CRLF guard does not validate that the header name is a legitimate RFC 7230 token. Unusual but technically valid characters (e.g. `!`, `#`, `~`) in header names are passed through unchanged. Callers are responsible for ensuring header names are well-formed.
 
 ### Registering callbacks
 
@@ -60,13 +66,13 @@ via `plugins_loaded` or `init`. There are two supported registration points:
 
 ### Early-hook drop-in security
 
-The inclusion of `rocket-early-cache-hooks.php` uses `realpath()` with a path-containment check to prevent directory traversal:
+The inclusion of `rocket-early-cache-hooks.php` uses `realpath()` with a strict path-containment check to prevent directory traversal. A trailing `DIRECTORY_SEPARATOR` is appended to the content-directory prefix so that a sibling directory (e.g. `wp-content_evil/`) cannot pass the check by sharing a common prefix:
 
 ```php
 $rocket_early_hooks = WP_CONTENT_DIR . '/rocket-early-cache-hooks.php';
 if ( file_exists( $rocket_early_hooks ) ) {
     $rocket_early_hooks = realpath( $rocket_early_hooks );
-    if ( $rocket_early_hooks && 0 === strpos( $rocket_early_hooks, realpath( WP_CONTENT_DIR ) ) ) {
+    if ( $rocket_early_hooks && 0 === strpos( $rocket_early_hooks, rtrim( realpath( WP_CONTENT_DIR ), DIRECTORY_SEPARATOR ) . DIRECTORY_SEPARATOR ) ) {
         include_once $rocket_early_hooks;
     }
 }

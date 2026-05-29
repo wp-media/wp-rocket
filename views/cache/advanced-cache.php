@@ -96,7 +96,7 @@ if ( ! class_exists( '\WP_Rocket\Buffer\Cache' ) ) {
 $rocket_early_hooks = WP_CONTENT_DIR . '/rocket-early-cache-hooks.php';
 if ( file_exists( $rocket_early_hooks ) ) {
 	$rocket_early_hooks = realpath( $rocket_early_hooks );
-	if ( $rocket_early_hooks && 0 === strpos( $rocket_early_hooks, realpath( WP_CONTENT_DIR ) ) ) {
+	if ( $rocket_early_hooks && 0 === strpos( $rocket_early_hooks, rtrim( realpath( WP_CONTENT_DIR ), DIRECTORY_SEPARATOR ) . DIRECTORY_SEPARATOR ) ) {
 		include_once $rocket_early_hooks;
 	}
 }

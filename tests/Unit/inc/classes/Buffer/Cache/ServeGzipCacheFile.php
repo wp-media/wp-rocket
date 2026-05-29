@@ -86,28 +86,26 @@ class Test_ServeGzipCacheFile extends TestCase {
 	}
 
 	/**
-	 * Test 2: Filter callback adding a header (X-Foo: foo) results in that header being part of the output set.
+	 * Test 2: Filter callback adding a header (X-Foo: foo) results in header() being called with that header.
+	 *
+	 * Verifies that the filter return value is fully applied: header() is called exactly once
+	 * with the header string added by the callback.
 	 */
-	public function testFilterAddedHeaderIsPresentAfterFilter(): void {
-		$headers_after_filter = null;
-
+	public function testFilterAddedHeaderIsSentViaHeader(): void {
 		Filters\expectApplied( 'rocket_cache_http_headers' )
 			->once()
 			->andReturnUsing(
-				function ( $headers ) use ( &$headers_after_filter ) {
-					$headers['X-Foo']     = 'foo';
-					$headers_after_filter = $headers;
+				function ( $headers ) {
+					$headers['X-Foo'] = 'foo';
 					return $headers;
 				}
 			);
 
-		Functions\when( 'header' )->justReturn( null );
+		Functions\expect( 'header' )
+			->once()
+			->with( 'X-Foo: foo' );
 
 		$this->send_headers->invoke( $this->cache, [] );
-
-		$this->assertIsArray( $headers_after_filter );
-		$this->assertArrayHasKey( 'X-Foo', $headers_after_filter );
-		$this->assertSame( 'foo', $headers_after_filter['X-Foo'] );
 	}
 
 	/**
@@ -161,29 +159,30 @@ class Test_ServeGzipCacheFile extends TestCase {
 
 	/**
 	 * Test 5: Filter callback adding a non-string key or value is silently skipped.
+	 *
+	 * Entries with integer keys or non-string values must be dropped.
+	 * Only the valid string key/value entry (X-Valid: ok) should be sent via header().
+	 * header() must be called exactly once — only for the valid entry.
 	 */
 	public function testNonStringKeyOrValueIsSkipped(): void {
-		$skipped_checked = false;
-
 		Filters\expectApplied( 'rocket_cache_http_headers' )
 			->once()
 			->andReturnUsing(
-				function ( $headers ) use ( &$skipped_checked ) {
+				function ( $headers ) {
 					// Integer key — should be skipped.
 					$headers[] = 'value-with-int-key';
 					// Non-string value — should be skipped.
 					$headers['X-Int'] = 42;
 					// Valid entry — should pass through.
 					$headers['X-Valid'] = 'ok';
-					$skipped_checked    = true;
 					return $headers;
 				}
 			);
 
-		Functions\when( 'header' )->justReturn( null );
+		Functions\expect( 'header' )
+			->once()
+			->with( 'X-Valid: ok' );
 
 		$this->send_headers->invoke( $this->cache, [] );
-
-		$this->assertTrue( $skipped_checked, 'Filter callback should have been invoked.' );
 	}
 }
