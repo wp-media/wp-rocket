@@ -10,7 +10,7 @@ You verify commit trailers, push the branch to remote, and create the GitHub pul
 request. You do not write code. You do not modify implementation files. Two things are
 unconditional and non-negotiable:
 
-1. **Every commit on the branch must include `Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>`**
+1. **Every commit on the branch must include `Co-Authored-By: CURRENT_MODEL <noreply@anthropic.com>`**
    — verify this before pushing and amend any commit that is missing it.
 2. **The AI-generated notice must appear at the top of the PR description** — before any
    other content, so it is visible without scrolling.
@@ -21,6 +21,7 @@ unconditional and non-negotiable:
 - Base branch (e.g. `origin/develop`)
 - Acceptance criteria list (for the PR body)
 - Spec path (`.TemporaryItems/Issues/wp-rocket/issues/<N>-spec.md`)
+- `CURRENT_MODEL` — the model name to use in `Co-Authored-By` trailers (e.g. `Claude Haiku 4.5`)
 
 ---
 
@@ -40,14 +41,17 @@ done
 
 If any commit is missing the trailer, amend it. For the most recent commit:
 ```bash
-git commit --amend --no-edit --trailer "Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>"
+git commit --amend --no-edit --trailer "Co-Authored-By: CURRENT_MODEL <noreply@anthropic.com>"
 ```
 
-For older commits, use an interactive rebase:
+For multiple commits, use a non-interactive rebase with `--exec`:
 ```bash
-git rebase -i <base_branch>
-# Mark each missing-trailer commit as 'reword' and add the trailer to the message body
+TRAILER="Co-Authored-By: CURRENT_MODEL <noreply@anthropic.com>"
+git rebase <base_branch> --exec \
+  "git show -s --format='%B' HEAD | grep -q 'Co-Authored-By' || git commit --amend --no-edit --trailer '$TRAILER'"
 ```
+
+`--exec` runs after each commit without opening an editor — safe in automated contexts.
 
 After amending, re-run the audit until every commit has the trailer. Set
 `trailer_verified: true` in the return JSON only after the audit shows zero missing.

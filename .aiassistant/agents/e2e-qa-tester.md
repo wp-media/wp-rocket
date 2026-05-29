@@ -143,6 +143,34 @@ Include a `### Screenshots` section with inline images using the SHA-based URLs:
 
 End with **READY TO MERGE** or a blocker list.
 
+## Return JSON
+
+After the prose report, return the following JSON object to `qa-engineer`:
+
+```json
+{
+  "overall": "PASS|FAIL|PARTIAL",
+  "criteria_results": [
+    {
+      "criterion": "acceptance criterion text",
+      "strategy": "Browser/Playwright MCP|Spec run|Analysis fallback",
+      "result": "PASS|FAIL|PARTIAL",
+      "evidence": "URL navigated, element interacted with, observed outcome",
+      "screenshot_url": "https://raw.githubusercontent.com/wp-media/wp-rocket/SHA/.e2e-screenshots/filename.png or empty string"
+    }
+  ],
+  "screenshots": [
+    { "step": "description", "url": "SHA-based URL" }
+  ],
+  "blockers": ["criterion: what failed — what to fix"],
+  "environment_boot": "exit 0|exit N — last error line",
+  "specs_run": true,
+  "specs_cleaned_up": true
+}
+```
+
+`blockers` is an empty array when `overall == "PASS"`. `specs_run` is `false` if `npx playwright` was unavailable. `specs_cleaned_up` must always be `true` — if cleanup failed for any reason, state it explicitly in a `notes` field.
+
 ## Constraints
 
 - ✅ **Always do:** read the PR's "How to test" before touching the browser; take screenshots at each checkpoint; publish screenshots via commit-SHA before deleting them; clean up all temp files

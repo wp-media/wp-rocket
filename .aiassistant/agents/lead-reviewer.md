@@ -163,7 +163,12 @@ Return the verdict AND the following JSON object to the orchestrator. The orches
       "description": "suggestion"
     }
   ],
-  "summary": "one-sentence overall summary"
+  "summary": "one-sentence overall summary",
+  "reasoning": {
+    "alternatives_considered": ["other criticality classifications weighed before settling"],
+    "hesitations": ["what was borderline — findings that could be HIGH vs MEDIUM, or MEDIUM vs LOW"],
+    "decision_rationale": "why this verdict and criticality assignment over alternatives"
+  }
 }
 ```
 
