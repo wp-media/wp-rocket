@@ -216,7 +216,14 @@ Always return this JSON object in addition to the human-readable output above:
     { "name": "pr-description", "status": "PASS|WARN|FAIL", "evidence": "string" },
     { "name": "ci", "status": "PASS|WARN|FAIL", "evidence": "string" }
   ],
-  "blockers": ["Check 5: PHPStan failing — DiscourageApplyFilters in inc/Engine/Cache/Subscriber.php:142"],
+  "blockers": [
+    {
+      "check": "ci|manual-validation|pr-description",
+      "description": "Check 5: PHPStan failing — DiscourageApplyFilters in inc/Engine/Cache/Subscriber.php:142",
+      "error_excerpt": "relevant log lines for CI failures — empty string for non-CI blockers",
+      "suggested_fix": "replace apply_filters() with wpm_apply_filters_typed() — empty string if unknown"
+    }
+  ],
   "warnings": ["Check 2: inc/Engine/Foo/Bar.php has no test file"],
   "layer1_delta": ["Issues found in L2 that L1 did not catch — populated by orchestrator in layer 2 only"]
 }

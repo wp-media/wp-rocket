@@ -129,7 +129,8 @@ Each pipeline run creates an isolated working directory for coordination artifac
 issue-<N>/
 ├── tasks.json               # shared task ledger — read/written by all agents
 ├── contracts/
-│   ├── backend-result.json  # written by backend-agent on completion
+│   ├── backend-api.json     # written by backend-agent (Step 3c): hooks, option_keys, rest_endpoints
+│   ├── backend-result.json  # written by backend-agent (Step 5): full implementation result
 │   └── frontend-result.json # written by frontend-agent on completion
 └── locks/
     └── <agent>-<task-id>.lock  # file ownership — removed when agent finishes
@@ -177,19 +178,14 @@ issue-<N>/
 
 ### Backend API contract
 
-`contracts/backend-result.json` is an **orchestrator-owned artifact**. Backend-agent writes
-it on completion; the orchestrator reads it, logs the API surface to the HTML log, and
-updates `tasks.json`.
+Two separate files, two separate purposes:
 
-**Sequential mode:** when backend finishes before frontend starts, the orchestrator extracts
-the relevant `hooks`, `option_keys`, and `rest_endpoints` from the contract and includes them
-explicitly in the frontend agent's dispatch plan input. The frontend agent never reads the
-file itself.
+- **`contracts/backend-api.json`** — API surface only (`hooks`, `option_keys`, `rest_endpoints`, `ajax_actions`). Written by backend-agent in Step 3c, before committing. The orchestrator reads this to share the actual API surface with frontend-agent.
+- **`contracts/backend-result.json`** — Full implementation result (`ticket_id`, `branch`, `files_changed`, `dod_layer1`, etc.). Written by backend-agent in Step 5. The orchestrator reads this for routing decisions. `result_path` in `tasks.json` points here.
 
-**Parallel mode:** since a running agent cannot receive mid-run updates, the frontend agent
-may read `contracts/backend-result.json` as a fallback — but only as orchestrator-managed
-shared state, not as direct agent-to-agent communication. If the file is absent (backend
-not yet complete or not in scope), frontend proceeds from spec and notes the skip.
+**Sequential mode:** when backend finishes before frontend starts, the orchestrator reads `backend-api.json`, extracts `hooks`, `option_keys`, and `rest_endpoints`, and includes them explicitly in the frontend agent's dispatch plan. The frontend agent never reads the file itself.
+
+**Parallel mode:** the frontend agent may read `contracts/backend-api.json` as a fallback — orchestrator-managed shared state only. If absent, frontend proceeds from spec and notes the skip.
 
 ---
 
@@ -525,10 +521,10 @@ Update each task's `worktree` field in `tasks.json`.
 > (including `file_scope` and `worktree` path).
 >
 > The orchestrator is the coordination hub — agents do not communicate with each other.
-> Backend writes `contracts/backend-result.json` on completion and returns its result.
-> When backend completes, orchestrator reads `contracts/backend-result.json`, logs its API
-> surface to the HTML log, and updates `tasks.json`.
-> Frontend reads `contracts/backend-result.json` opportunistically if it exists — this is
+> Backend writes `contracts/backend-api.json` (API surface) and `contracts/backend-result.json` (full result) on completion.
+> When backend completes, orchestrator reads `backend-api.json`, logs the API surface to the HTML log,
+> and updates `tasks.json`. Routing decisions use `backend-result.json` (via `result_path`).
+> Frontend reads `contracts/backend-api.json` opportunistically if it exists — this is
 > orchestrator-managed shared state, not direct agent-to-agent communication.
 >
 > Orchestrator proceeds when both tasks show `completed` in `tasks.json`
