@@ -1,49 +1,5 @@
 {
-  "permissions": {
-    "allow": [
-      "Bash(git add *)",
-      "Bash(git commit *)",
-      "Bash(git push *)",
-      "Bash(git checkout *)",
-      "Bash(git revert *)",
-      "Bash(git stash *)",
-      "Bash(git merge *)",
-      "Bash(git restore *)",
-      "Bash(git worktree add *)",
-      "Bash(git worktree remove *)",
-      "Bash(git worktree list)",
-      "Bash(gh pr *)",
-      "Bash(gh api *)",
-      "Bash(gh run *)",
-      "Bash(gh issue *)",
-      "Bash(gulp *)",
-      "Bash(npx gulp *)",
-      "Bash(composer *)",
-      "Bash(vendor/bin/phpunit *)",
-      "Bash(vendor/bin/phpcs *)",
-      "Bash(vendor/bin/phpcbf *)",
-      "Bash(npx wp-env *)",
-      "Bash(wp-env *)",
-      "Bash(bin/dev-up.sh *)",
-      "Bash(bin/dev-up.sh)",
-      "Bash(docker exec *)",
-      "Bash(mkdir -p *)",
-      "Bash(bash .aiassistant/skills/issue-workflow/scripts/issue-sync.sh *)",
-      "Bash(curl -s http://localhost:8888/*)"
-    ]
-  },
   "hooks": {
-    "PostToolUse": [
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node \".aiassistant/skills/issue-workflow/scripts/slack-notify.js\"",
-            "timeout": 12
-          }
-        ]
-      }
-    ]
+    "PostToolUse": []
   }
 }
