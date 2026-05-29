@@ -98,8 +98,9 @@ Record: `dod_layer1.overall`, `dod_layer1.checks`.
 
 ### Step 3c — Write API contract
 
-Before committing, write `.TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/backend-result.json`
-with the actual API surface as implemented (not just as specced):
+Before committing, write `.TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/backend-api.json`
+with the actual API surface as implemented (not just as specced). This is a **separate file**
+from the full result JSON you write in Step 5 — do not conflate them.
 
 ```json
 {
@@ -115,8 +116,8 @@ with the actual API surface as implemented (not just as specced):
 }
 ```
 
-The orchestrator reads this file after you complete and uses it to keep the HTML log
-up to date and to inform any dependent agent of your actual API surface.
+The orchestrator reads this file after you complete and passes the relevant fields
+(`hooks`, `option_keys`, `rest_endpoints`) to the frontend-agent in sequential mode.
 Populate every field even if empty (`[]`).
 If nothing changed in a category, leave the array empty — do not omit the key.
 

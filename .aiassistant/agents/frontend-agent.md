@@ -41,11 +41,11 @@ All coordination goes through the orchestrator. How you receive the backend API 
 depends on which execution mode the orchestrator used:
 
 **Sequential mode (preferred):** the orchestrator already extracted the backend API surface
-from `contracts/backend-result.json` and included it in your dispatch plan. Use that — do
+from `contracts/backend-api.json` and included it in your dispatch plan. Use that — do
 not read the contract file yourself.
 
 **Parallel mode (fallback):** if your dispatch plan does not include the API surface, check
-whether `contracts/backend-result.json` exists. If it does, read it as orchestrator-managed
+whether `contracts/backend-api.json` exists. If it does, read it as orchestrator-managed
 shared state (the orchestrator owns this file — backend wrote it, orchestrator logged it).
 If it does not exist, proceed from spec and note "API contract not available — using spec"
 in `notes`.
