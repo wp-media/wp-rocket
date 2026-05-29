@@ -125,6 +125,10 @@
 				// Update dynamic driver label spans.
 				updateDriverLabel( tab );
 
+				// Initial value of the hidden input is set on page load by PHP based on the active driver.
+				const cdnTypeInput = document.getElementById('cdn_type');
+				let currentValue = cdnTypeInput.value;
+
 				// Persist the active driver selection.
 				const driverValue = 'your-own-cdn' === driver ? 'byocdn' : 'rocketcdn';
 
@@ -132,6 +136,12 @@
 					path: '/wp-rocket/v1/rocketcdn/driver',
 					method: 'POST',
 					data: { driver: driverValue },
+				} ).then(() => {
+					// Updated hidden input value on success.
+					cdnTypeInput.value = driverValue;
+				} ).catch(() => {
+					// Revert active tab and sections on failure.
+					cdnTypeInput.value = currentValue;
 				} );
 			} );
 		} );
