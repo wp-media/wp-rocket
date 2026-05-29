@@ -11,6 +11,7 @@ You receive:
 - The spec path (`.TemporaryItems/Issues/wp-rocket/issues/<N>-spec.md`)
 - The dispatch plan (which files you are responsible for and any constraints)
 - The tasks.json path (`.TemporaryItems/Issues/wp-rocket/issue-<N>/tasks.json`)
+- `CURRENT_MODEL` — use this in `Co-Authored-By` commit trailers and the `co_authored_by` return field
 
 ## Your process
 
@@ -36,16 +37,22 @@ You receive:
 
 ### Step 1b — API contract reconciliation
 
-Check if `.TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/backend-result.json` exists.
+All coordination goes through the orchestrator. How you receive the backend API surface
+depends on which execution mode the orchestrator used:
 
-- **If it exists:** read it. This is the reconciliation step — if the contract and the spec
-  diverge, the contract wins (it reflects what was actually implemented, not what was
-  planned). Compare `option_keys`, `hooks`, and `rest_endpoints`; note any drift in your
-  `notes` on return.
-- **If it does not exist** (parallel execution, backend not done yet, or backend not in
-  scope): proceed from spec. Note "API contract not available — using spec" in `notes`.
+**Sequential mode (preferred):** the orchestrator already extracted the backend API surface
+from `contracts/backend-result.json` and included it in your dispatch plan. Use that — do
+not read the contract file yourself.
 
-Do not block or wait for the contract file. This is a one-time opportunistic read.
+**Parallel mode (fallback):** if your dispatch plan does not include the API surface, check
+whether `contracts/backend-result.json` exists. If it does, read it as orchestrator-managed
+shared state (the orchestrator owns this file — backend wrote it, orchestrator logged it).
+If it does not exist, proceed from spec and note "API contract not available — using spec"
+in `notes`.
+
+In both cases: if the contract and the spec diverge, the contract wins (it reflects what
+was actually implemented). Compare `option_keys`, `hooks`, and `rest_endpoints`; note any
+drift in your `notes` on return. Do not block or wait for the contract.
 
 ---
 
@@ -92,11 +99,13 @@ Record: `e2e_smoke.status`, `e2e_smoke.scenarios_tested`, `e2e_smoke.details`.
 Invoke the `dod` skill inline (`.aiassistant/skills/dod/SKILL.md`) with `layer: "1"`.
 
 For frontend changes, the relevant checks are:
-- `automated-tests` → JS unit tests if present
+- `automated-tests` → Jest is not yet set up in wp-rocket — mark as `N/A`
 - `documentation` → did the docs skill update anything for new admin flows or events
 - `ci` → `npm run lint` + `npm run build` (skip `lint` cleanly if not configured)
 
-**Self-correct any FAIL before committing.** Re-run `dod` until `overall` is `PASS` or `WARN`. Never hand off with `FAIL` at layer 1.
+**Self-correct any FAIL before committing.** Re-run `dod` until `overall` is `PASS` or `WARN`.
+
+**Escalation path:** if `overall` is still `FAIL` after 3 correction attempts, stop. Return your result with `dod_layer1.overall: "FAIL"` and populate `notes` with the specific blockers and what was attempted. The orchestrator decides whether to escalate to the user.
 
 Record: `dod_layer1.overall`, `dod_layer1.checks`.
 
@@ -111,7 +120,7 @@ git add <js-file-1> <css-file-2> <docs-file-if-any> ...
 git commit -m "$(cat <<'EOF'
 type(scope): short description
 
-Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>
+Co-Authored-By: CURRENT_MODEL <noreply@anthropic.com>
 EOF
 )"
 ```
@@ -160,7 +169,7 @@ Then return the following JSON object to the orchestrator. The orchestrator read
       { "name": "ci", "status": "PASS|WARN", "evidence": "lint: PASS, build: PASS" }
     ]
   },
-  "co_authored_by": "Claude Sonnet 4.6 <noreply@anthropic.com>",
+  "co_authored_by": "CURRENT_MODEL <noreply@anthropic.com>",
   "reasoning": {
     "alternatives_considered": ["list each option weighed before choosing the implementation approach"],
     "hesitations": ["what was unclear or uncertain — spec gaps, ambiguous edge cases, API contract drift from backend"],
