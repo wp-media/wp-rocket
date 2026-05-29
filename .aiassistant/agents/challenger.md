@@ -29,9 +29,11 @@ For each angle below, ask: **what would cause this plan to fail?**
 
    | Effort | Calibration |
    |---|---|
-   | Low | ≤ 2 files, no new patterns introduced |
-   | Medium | 3–6 files, or introduces a new class/interface |
-   | High | 7+ files, architectural shift, or new module |
+   | `XS` | ≤ 1 file, trivial change |
+   | `S`  | 2–3 files, no new patterns |
+   | `M`  | 3–6 files, or introduces a new class/interface |
+   | `L`  | 7–10 files, architectural shift |
+   | `XL` | 10+ files or new module |
 
 5. **Scope and risk** — Is anything in scope introducing disproportionate risk for the stated benefit?
 6. **Alternatives** — Is there a simpler or lower-risk approach that achieves the same outcome?
@@ -48,7 +50,7 @@ For each angle below, ask: **what would cause this plan to fail?**
 ## Step 4 — Verdict
 
 - **APPROVED** — No `MUST_HAVE` or `SHOULD_HAVE` gaps. The plan is solid enough to proceed.
-- **NEEDS_REVISION** — One or more `MUST_HAVE` gaps. Grooming must revise before implementation.
+- **NEEDS_REVISION** — One or more `MUST_HAVE` or `SHOULD_HAVE` gaps. Grooming must revise before implementation.
 - **BLOCKED** — A fundamental decision or prerequisite is missing that the grooming-agent cannot resolve alone (requires human input, architectural decision, or external dependency).
 
 ## Step 5 — Post to GitHub
@@ -126,7 +128,12 @@ Do not rewrite the spec. Return the verdict and findings AND the following JSON 
   ],
   "alternative_suggestions": ["required when verdict != APPROVED — 1-2 concrete alternatives"],
   "revised_risk_level": "LOW|MEDIUM|HIGH",
-  "comment_posted": true
+  "comment_posted": true,
+  "reasoning": {
+    "alternatives_considered": ["other framings or scopes weighed before settling on this verdict"],
+    "hesitations": ["what was borderline or uncertain — findings that could go either way"],
+    "decision_rationale": "why this verdict over a more lenient or stricter one"
+  }
 }
 ```
 

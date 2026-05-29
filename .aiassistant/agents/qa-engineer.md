@@ -77,9 +77,9 @@ The local WordPress environment runs at `http://localhost:8888`. Use `curl` for 
 #### Strategy B — Browser / UI validation
 **Mandatory** when the PR touches any JS, CSS, HTML, or Twig template file.
 
-**Exception:** pure utility/AJAX JS with no DOM side-effects may be validated with Jest
-alone, provided existing Jest tests cover the changed code and the diff contains no
-`document.`, `window.`, or DOM API calls. If in doubt, use Strategy B.
+**Note:** Jest is not yet set up in wp-rocket. Do not attempt to run Jest tests.
+For pure utility/AJAX JS with no DOM side-effects and no browser environment available,
+use Strategy C (analysis + manual scripts) as the fallback. If in doubt, use Strategy B.
 
 **Also mandatory** when the diff contains PHP that renders visible admin output — even if
 no JS/CSS/Twig files were modified. This includes: calls to `rocket_notice_html()`,
@@ -186,12 +186,6 @@ URLs — always include them in the `### Screenshots` section. If no screenshots
 frontend PR, the report is incomplete; state the reason explicitly (e.g. "boot failed —
 exit 1, see Environment Boot table").
 
-**MCP (preferred):**
-```
-mcp__github__add_issue_comment(owner="wp-media", repo="wp-rocket", issue_number=<PR_number>, body=<full report>)
-```
-
-**Fallback:**
 ```bash
 gh pr comment <PR_number> --body "$(cat <<'REPORT'
 [full report content]

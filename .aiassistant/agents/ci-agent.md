@@ -95,6 +95,30 @@ Checks still pending after 20 minutes on PR #<N>:
 
 ---
 
+## Return JSON
+
+After producing the text report above, return the following JSON object to the orchestrator:
+
+```json
+{
+  "overall": "ALL_PASS|FAILURE|TIMEOUT",
+  "checks": [
+    { "name": "lint / PHP CodeSniffer", "status": "PASS|FAIL|PENDING|SKIP", "duration": "55s" }
+  ],
+  "failures": [
+    {
+      "check": "lint / PHPStan",
+      "error_excerpt": "relevant error lines — max 30 lines",
+      "suggested_fix": "if the cause is clear from the log, otherwise empty string"
+    }
+  ]
+}
+```
+
+`failures` is an empty array when `overall == "ALL_PASS"`. `suggested_fix` is a best-effort diagnosis — the orchestrator decides whether to act on it.
+
+---
+
 ## Boundaries
 - Do not modify any file
 - Do not commit anything
