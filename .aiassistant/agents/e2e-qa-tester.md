@@ -57,6 +57,31 @@ bash bin/dev-up.sh
 
 Confirm WordPress is reachable at `http://localhost:8888`. If it is not, abort and report the environment as a blocker to `qa-engineer`.
 
+### Step 2b — Install required third-party plugins
+
+Read the PR's "How to test" section and the linked issue for any mention of a third-party
+plugin that must be present. If one is required:
+
+**For plugins available on wordpress.org (free plugins):**
+```bash
+bin/wp plugin install <slug> --activate
+```
+Record every plugin slug you install in a local list — you will need it for teardown.
+
+**For premium or non-public plugins:**
+Check whether the zip is already present in the environment:
+```bash
+bin/wp plugin list
+ls wp-content/plugins/
+```
+If the plugin is not installed and cannot be installed via `wp plugin install`, report it
+as a setup blocker to `qa-engineer` and stop. Do not attempt to proceed without the
+required plugin — results would be invalid.
+
+**Never install plugins that are not explicitly required by the issue or "How to test".**
+
+---
+
 ### Step 3 — Drive the flow manually with Playwright MCP
 
 Walk through the PR's "How to test" steps one by one in the browser. At each meaningful checkpoint:
@@ -111,8 +136,15 @@ If a spec fails:
 
 ### Step 6 — Clean up
 
-Remove all temporary files. Specs were never committed, so only a local delete is needed:
+**6a — Remove installed plugins** (teardown for anything installed in Step 2b):
+```bash
+# For each plugin installed in Step 2b:
+bin/wp plugin deactivate <slug>
+bin/wp plugin uninstall <slug>
+```
+Leave the environment in the same state it was in before the run.
 
+**6b — Remove temporary files:**
 ```bash
 # Screenshots were temporarily committed — remove them from the branch
 git rm --cached .e2e-screenshots/*.png 2>/dev/null || true
@@ -173,6 +205,6 @@ After the prose report, return the following JSON object to `qa-engineer`:
 
 ## Constraints
 
-- ✅ **Always do:** read the PR's "How to test" before touching the browser; take screenshots at each checkpoint; publish screenshots via commit-SHA before deleting them; clean up all temp files
-- ⚠️ **Ask first:** if `bin/dev-up.sh` is missing; if a "How to test" step is ambiguous
-- 🚫 **Never do:** commit `.e2e-temp/` spec files to the repository (not even temporarily); modify plugin source code; use `setTimeout`/`waitForTimeout` in specs; report PASS without screenshot or log evidence; leave `.e2e-screenshots/` or `.e2e-temp/` on the branch after the run
+- ✅ **Always do:** read the PR's "How to test" before touching the browser; take screenshots at each checkpoint; publish screenshots via commit-SHA before deleting them; clean up all temp files; uninstall any plugins you installed in Step 2b
+- ⚠️ **Ask first (report as blocker):** if `bin/dev-up.sh` is missing; if a "How to test" step is ambiguous; if a required premium plugin is not present and cannot be installed via `wp plugin install`
+- 🚫 **Never do:** commit `.e2e-temp/` spec files to the repository (not even temporarily); modify plugin source code; use `setTimeout`/`waitForTimeout` in specs; report PASS without screenshot or log evidence; leave `.e2e-screenshots/` or `.e2e-temp/` on the branch after the run; install plugins not explicitly required by the issue
