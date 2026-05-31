@@ -14,6 +14,11 @@ function rocket_add_admin_css_js() {
 	wp_enqueue_script( 'micromodal', WP_ROCKET_ASSETS_JS_URL . 'micromodal.min.js', null, '0.4.10', true );
 	wp_enqueue_script( 'wpr-admin', WP_ROCKET_ASSETS_JS_URL . 'wpr-admin' . $suffix . '.js', [ 'micromodal', 'wp-api-fetch', 'wp-polyfill', 'wp-url' ], WP_ROCKET_VERSION, true );
 
+	$reset_sidebar = (bool) get_transient( 'rocket_reset_sidebar' );
+	if ( $reset_sidebar ) {
+		delete_transient( 'rocket_reset_sidebar' );
+	}
+
 	wp_localize_script(
 		'wpr-admin',
 		'rocket_ajax_data',
@@ -27,8 +32,9 @@ function rocket_add_admin_css_js() {
 		apply_filters(
 			'rocket_localize_admin_script',
 			[
-				'nonce'      => wp_create_nonce( 'rocket-ajax' ),
-				'origin_url' => 'https://api.wp-rocket.me',
+				'nonce'         => wp_create_nonce( 'rocket-ajax' ),
+				'origin_url'    => 'https://api.wp-rocket.me',
+				'reset_sidebar' => $reset_sidebar,
 			]
 		)
 	);

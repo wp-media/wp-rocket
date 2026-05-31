@@ -41,6 +41,9 @@ class Test_RocketFirstInstall extends TestCase {
 		Functions\expect( 'rocket_dismiss_box' )
 			->once()
 			->with( 'rocket_warning_plugin_modification' );
+		Functions\expect( 'set_transient' )
+			->once()
+			->with( 'rocket_reset_sidebar', true, MINUTE_IN_SECONDS * 5 );
 
 		rocket_first_install();
 

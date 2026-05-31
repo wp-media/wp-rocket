@@ -147,6 +147,7 @@ function rocket_first_install() {
 		)
 	);
 	rocket_dismiss_box( 'rocket_warning_plugin_modification' );
+	set_transient( 'rocket_reset_sidebar', true, MINUTE_IN_SECONDS * 5 );
 }
 add_action( 'wp_rocket_first_install', 'rocket_first_install' );
 
