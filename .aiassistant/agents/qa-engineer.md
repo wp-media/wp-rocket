@@ -24,7 +24,12 @@ bash bin/dev-up.sh
 
 WordPress should be available at `http://localhost:8888` (admin / password).
 
-**Record the outcome — you must include this in your final report regardless of the result:**
+**Record the outcome internally.** Boot results go into your PR comment only when Strategy B
+was used **or** when boot failed (as a failure explanation). For backend-only runs where boot
+succeeds and Strategy B is not used, omit the Environment Boot table from the PR comment —
+`gh pr checkout`, `bin/dev-up.sh exit 0`, and `localhost:8888 HTTP 200` are setup noise, not
+QA findings.
+
 - Whether `bin/dev-up.sh` exited with code 0 or non-zero
 - Whether `http://localhost:8888` is reachable after the script finishes (test with `curl -s -o /dev/null -w "%{http_code}" http://localhost:8888`)
 - If boot failed: the last 20 lines of output from `bin/dev-up.sh`
@@ -70,7 +75,24 @@ Select all strategies that apply.
 The local WordPress environment runs at `http://localhost:8888`. Use `curl` for REST endpoints or AJAX calls, or WP-CLI via the site shell for direct WordPress operations.
 
 #### Strategy B — Browser / UI validation
-**When to use:** frontend changes (admin settings page, dashboard notices, cache preloading UI, interactive behavior).
+**Mandatory** when the PR touches any JS, CSS, HTML, or Twig template file.
+
+**Note:** Jest is not yet set up in wp-rocket. Do not attempt to run Jest tests.
+For pure utility/AJAX JS with no DOM side-effects and no browser environment available,
+use Strategy C (analysis + manual scripts) as the fallback. If in doubt, use Strategy B.
+
+**Also mandatory** when the diff contains PHP that renders visible admin output — even if
+no JS/CSS/Twig files were modified. This includes: calls to `rocket_notice_html()`,
+`rocket_notice_writing_permissions()`, `wp_admin_notice()`, `add_settings_error()`,
+`add_action('admin_notices', ...)`, or any PHP that echoes or returns HTML intended for
+the browser. An admin notice is a browser-visible UI change regardless of which file type
+implements it.
+
+Optional (but preferred) for other PHP-only changes that have a visible admin UI surface.
+
+**Never skip Strategy B citing "CI-only environment."** This is a local environment, not a
+CI pipeline. If `bin/dev-up.sh` exits 0 and `localhost:8888` is reachable, you must run
+Strategy B. The only valid reason to skip it is a documented boot failure from Step 0.
 
 Delegate to the `e2e-qa-tester` agent. Provide:
 - The acceptance criteria and "How to test" steps from the PR
@@ -86,18 +108,23 @@ The `e2e-qa-tester` agent will:
 
 Note: WP Rocket's permanent E2E suite lives in an external repository. All test files written by `e2e-qa-tester` are temporary — they are used for QA validation only and removed after the run.
 
-If the local environment is unreachable, skip Strategy B and fall back to Strategy C.
+Only fall back to Strategy C if `bin/dev-up.sh` itself fails (non-zero exit) or `localhost:8888` is still unreachable after the boot script finishes. Document the exact failure.
 
 #### Strategy C — Test suite + analysis fallback
 **When to use:** local environment is unreachable after a real boot attempt (see Step 0), or infrastructure-only / pure-logic changes with no UI surface.
 
 **If you use Strategy C for a change that touches frontend files (JS, CSS, Twig/PHP templates):** you must explicitly state in your report: "Strategy B skipped — reason: [exact failure from Step 0]". Never silently fall back to Strategy C for UI changes.
 
-Run the test suite for the affected module, then audit coverage:
+**Never re-run PHPCS, PHPStan, or Codacy as part of Strategy C.** These are already
+tracked in GitHub Actions and reviewed by the Lead Reviewer. Re-running them is redundant
+and wastes tokens. Your job is behavioral validation, not CI re-execution.
+
+Run the test suite for the affected module **only to validate acceptance criteria** — not as a
+CI check:
 
 ```bash
-# Run unit tests
-composer test-unit
+# Run unit tests for a specific group
+composer test-unit -- --filter="GroupOrClassName"
 
 # Run integration tests for a specific group — use direct phpunit to avoid
 # conflicts with the default --exclude-group list in composer test-integration
@@ -133,6 +160,12 @@ After validating the acceptance criteria, do a brief smoke test of the main happ
 
 Skip any smoke test that is unrelated to the changed files.
 
+**Never include CI-level checks in smoke tests.** PHP unit test runs, PHPCS, PHPStan,
+and CodeSniffer are already tracked in GitHub Actions and visible there. Including them in
+the QA report is noise. Smoke tests are behavioral — UI navigation, page loads, feature
+interactions. If you used Strategy C and ran unit tests to validate an AC, those results
+belong in the Acceptance Criteria table, not in Smoke Tests.
+
 ---
 
 ### Step 4 — Report
@@ -147,14 +180,12 @@ After generating the report, post it as a PR comment so it is immediately visibl
 
 **Post the comment regardless of the overall result** (PASS, FAIL, or PARTIAL).
 
-If `e2e-qa-tester` captured and published screenshots, append a `### Screenshots` section with inline images using the SHA-based raw URLs it returned.
+**For any PR that touches frontend files (JS, CSS, HTML, Twig templates): screenshots are
+required, not optional.** If Strategy B ran, `e2e-qa-tester` will have returned screenshot
+URLs — always include them in the `### Screenshots` section. If no screenshots exist for a
+frontend PR, the report is incomplete; state the reason explicitly (e.g. "boot failed —
+exit 1, see Environment Boot table").
 
-**MCP (preferred):**
-```
-mcp__github__add_issue_comment(owner="wp-media", repo="wp-rocket", issue_number=<PR_number>, body=<full report>)
-```
-
-**Fallback:**
 ```bash
 gh pr comment <PR_number> --body "$(cat <<'REPORT'
 [full report content]
@@ -166,57 +197,40 @@ REPORT
 
 ## Output format
 
+Keep the PR comment short. Reviewers can see the diff and CI output themselves — only surface what they cannot see.
+
+**If overall is PASS:**
 ```
-## Test Report — [PR title or branch name]
+> [!NOTE]
+> Generated by the AI delivery pipeline (qa-engineer · <current-model>).
 
-**Branch:** [branch name]
+**QA: ✅ PASS**
 
-### Environment Boot
-| Step | Result |
-|------|--------|
-| `gh pr checkout` | ✅ success / ❌ failed |
-| `bin/dev-up.sh` | ✅ exit 0 / ❌ exit N — [last error line] |
-| `http://localhost:8888` reachable | ✅ HTTP 200 / ❌ unreachable |
-
-### Strategy Selection
-| Strategy | Used | Reason |
-|----------|------|--------|
-| A — API/functional | ✅ / ➖ | [why used or skipped] |
-| B — Browser/UI | ✅ / ❌ skipped | [why used, or: "env unreachable — exit N"] |
-| C — Analysis fallback | ✅ / ➖ | [why used or skipped] |
-
-### Acceptance Criteria
-
-| Acceptance Criterion | Validation Method | Result | Evidence |
-|----------------------|-------------------|--------|----------|
-| [criterion 1] | API call | ✅ PASS | curl returned expected cache header |
-| [criterion 2] | Browser (Playwright) | ❌ FAIL | Error message not rendered after invalid input |
-| [criterion 3] | Analysis | ⚠️ PARTIAL | Test covers happy path only |
-
-### Smoke Tests
-
-| Area | Action | Result | Evidence |
-|------|--------|--------|----------|
-| Settings page | Navigated to options-general.php?page=wprocket | ✅ PASS | Page loaded, no errors |
-| Plugin activation | wp plugin deactivate/activate wp-rocket | ✅ PASS | No fatal errors |
-
-**Overall: PASS / FAIL / PARTIAL**
-
-**Blockers** (must fix before merge):
-- "[criterion]": [what failed] — [what to fix]
-
-**Recommendations** (non-blocking):
-- [optional: gaps or improvements that are not blockers]
-
-### Tests that could not be automated
-- "[scenario]": [reason why it cannot be automated]
-
-### Screenshots
-<!-- Include this section only if e2e-qa-tester captured and published screenshots -->
-| Step | Screenshot |
-|------|-----------|
-| [description] | ![step1](https://raw.githubusercontent.com/wp-media/wp-rocket/SHA/.e2e-screenshots/filename.png) |
+| Acceptance Criterion | Method | Result |
+|---|---|---|
+| [criterion 1] | API / Browser / Analysis | ✅ |
+| [criterion 2] | API / Browser / Analysis | ✅ |
 ```
+
+**If overall is FAIL or PARTIAL:**
+```
+> [!NOTE]
+> Generated by the AI delivery pipeline (qa-engineer · <current-model>).
+
+**QA: ❌ FAIL / ⚠️ PARTIAL**
+
+| Acceptance Criterion | Method | Result | Why it failed |
+|---|---|---|---|
+| [criterion 1] | API | ✅ | — |
+| [criterion 2] | Browser | ❌ | [one sentence: what was tested, what was observed] |
+
+**Blockers:**
+- [criterion]: [what to fix]
+```
+
+**Screenshots** (frontend PRs only — omit for backend-only): include only if Strategy B ran. One screenshot per key step, inline.
+
+No strategy selection table, no smoke test table, no recommendations prose — those go in the JSON return object only.
 
 ## Structured output for the orchestrator
 

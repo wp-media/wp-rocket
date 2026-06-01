@@ -133,20 +133,39 @@ composer test-unit       # full unit suite
 ```
 
 **Layer 2 (PR exists — remote CI status):**
-Poll GitHub Actions status:
+
+First, read the GitHub Actions workflow files to enumerate which checks are expected:
 ```bash
-# Poll until complete or timeout (5 min, 30s polling)
+ls .github/workflows/
+```
+Note the check names (e.g. `lint / PHP CodeSniffer`, `lint / PHPStan`, `task-check`).
+
+Poll GitHub Actions status until all checks complete or 5-minute timeout:
+```bash
 for i in $(seq 1 10); do
   STATUS=$(gh pr checks "$PR_URL" 2>/dev/null)
-  echo "$STATUS" | grep -qE "^(pending|in_progress)" || break
+  echo "$STATUS" | grep -qE "(pending|in_progress)" || break
   sleep 30
 done
 gh pr checks "$PR_URL"
 ```
 
+For any check that shows `fail`, fetch its log URL and extract the relevant error excerpt:
+```bash
+# Get the run ID for the failing check
+gh pr checks "$PR_URL" --json name,state,detailsUrl
+# Fetch last ~30 lines of the failing job log
+gh run view <run_id> --log-failed 2>/dev/null | tail -30
+```
+
+Include each failure as a separate blocker in the return JSON with:
+- `check`: the check name
+- `error_excerpt`: the relevant log lines
+- `suggested_fix`: one sentence on what likely caused it
+
 Also verify the `Co-Authored-By: Claude` trailer is present on every commit on the branch:
 ```bash
-git log origin/develop..HEAD --format="%H %s" | while read sha msg; do
+git log <base_branch>..HEAD --format="%H %s" | while read sha msg; do
   git show $sha --format="%b" -s | grep -q "Co-Authored-By: Claude" \
     || echo "MISSING Co-Authored-By on $sha"
 done
@@ -197,7 +216,14 @@ Always return this JSON object in addition to the human-readable output above:
     { "name": "pr-description", "status": "PASS|WARN|FAIL", "evidence": "string" },
     { "name": "ci", "status": "PASS|WARN|FAIL", "evidence": "string" }
   ],
-  "blockers": ["Check 5: PHPStan failing — DiscourageApplyFilters in inc/Engine/Cache/Subscriber.php:142"],
+  "blockers": [
+    {
+      "check": "ci|manual-validation|pr-description",
+      "description": "Check 5: PHPStan failing — DiscourageApplyFilters in inc/Engine/Cache/Subscriber.php:142",
+      "error_excerpt": "relevant log lines for CI failures — empty string for non-CI blockers",
+      "suggested_fix": "replace apply_filters() with wpm_apply_filters_typed() — empty string if unknown"
+    }
+  ],
   "warnings": ["Check 2: inc/Engine/Foo/Bar.php has no test file"],
   "layer1_delta": ["Issues found in L2 that L1 did not catch — populated by orchestrator in layer 2 only"]
 }
