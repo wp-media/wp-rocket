@@ -4,7 +4,7 @@ description: >
   User-facing entry point for the wp-rocket issue workflow. Invoke directly to start a
   delivery run from a GitHub issue number, URL, or raw description. Runs inline in your
   conversation context; spawns specialist agents (ticket-writer, grooming-agent,
-  challenger, backend-agent, frontend-agent, release-agent, lead-reviewer,
+  challenger, backend-agent, frontend-agent, github-manager, lead-reviewer,
   qa-engineer) as isolated sub-agents; invokes supporting skills (knowledge-graph, dod,
   docs, e2e, issue-workflow) inline. Routes based on structured JSON outputs from each
   agent, manages loop counters, handles escalations, and maintains a live HTML run log.
@@ -126,9 +126,9 @@ user can see what mode you picked.
 
 Path: `.TemporaryItems/Issues/wp-rocket/issue-<N>-workflow-log.html`
 
-- **Create** the log at startup with just the header and an empty event list.
-- **Rewrite the full file** after every action — the event list grows with each update.
-- See **## HTML log format** for structure.
+The log-coordinator creates and maintains this file in real time by polling the event queue.
+You do not write HTML directly. The orchestrator's job is routing; the log-coordinator
+handles all visibility.
 
 Maintain in your context tracking:
 - Which agents have been invoked and their return JSON
@@ -282,14 +282,16 @@ fields — prose is for human readability only.
 }
 ```
 
-### Release (`release-agent`)
+### GitHub operations (`github-manager`)
 ```json
 {
+  "operation": "pr_create|push|comment|label|status_update",
   "branch_pushed": true,
   "trailer_verified": true,
   "pr_url": "string",
   "pr_number": 0,
-  "pr_created": true
+  "pr_created": true,
+  "success": true
 }
 ```
 
@@ -625,12 +627,12 @@ The log-coordinator reads these events and updates the HTML log in real time.
 
 After all implementation agents have committed:
 
-Invoke `release-agent`:
+Invoke `github-manager`:
 > Inputs: issue #N, branch name, base branch, acceptance criteria, spec path
 
-It verifies the `Co-Authored-By: Claude Sonnet 4.6` trailer on every commit on the branch,
+It verifies the `Co-Authored-By: CURRENT_MODEL` trailer on every commit on the branch,
 pushes the branch, and creates the PR as draft with the AI-generated notice prepended to
-the description. Log AGENT event with PR URL.
+the description. Emit AGENT event with PR URL.
 
 Update the decisions strip Pull request field with the PR URL.
 
@@ -862,7 +864,7 @@ All agents also receive `CURRENT_MODEL` and `session_learnings` (section 13 of `
 | `challenger` | Issue object + grooming object + `session_learnings` |
 | `backend-agent` | Issue object + spec path + dispatch plan |
 | `frontend-agent` | Issue object + spec path + dispatch plan + backend API contract (sequential mode only) |
-| `release-agent` | Issue #, branch name, base branch, acceptance criteria, spec path |
+| `github-manager` | Issue #, branch name, base branch, acceptance criteria, spec path |
 | `lead-reviewer` | PR URL + spec path + acceptance criteria + `session_learnings` |
 | `qa-engineer` | PR number + acceptance criteria + base branch |
 | `ticket-writer` (nth_followup) | Single NTH feedback item (not full context) |
@@ -879,17 +881,4 @@ verifying that downstream agents comply:
 - Verify `review.inline_comments_posted == true` before routing on review verdict
 - Verify `qa.pr_commented == true` before reading QA result
 - The final summary you post to the GitHub issue (Step 11) must open with the `[!NOTE]` callout
-
----
-
-## HTML log format
-
-> **Load on demand.** Read `.aiassistant/skills/orchestrator/html-log-format.md` only
-> when you are about to write or update a log event. Do not load it at session start —
-> it is static reference material, not routing logic, and loading it upfront wastes
-> ~300 tokens of context on every pipeline run where no log event is being written yet.
-
-The file contains: full HTML page template, CSS, event type definitions, agent accent
-colors, HTML patterns for each event type (ROUTING DECISION, AGENT, GATE, ESCALATION,
-PARALLEL), and per-agent detail panel content guidelines.
 
