@@ -88,3 +88,9 @@ if ( ! isset( $data['show_quota_banner'] ) || ! $data['show_quota_banner'] ) {
 		?>
 	</div>
 </div>
+
+<div id="wpr-ri-url-error-notice" class="wpr-notice wpr-ri-notice wpr-error-notice" role="alert" aria-live="polite" hidden>
+	<div class="wpr-notice-container">
+		<p class="wpr-notice-description" id="wpr-ri-url-error-msg"></p>
+	</div>
+</div>

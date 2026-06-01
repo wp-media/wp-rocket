@@ -305,6 +305,35 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 	}
 
+	function showUrlErrorNotice(message) {
+		const notice = document.getElementById('wpr-ri-url-error-notice');
+		if ( ! notice ) {
+			return;
+		}
+		const msg = document.getElementById('wpr-ri-url-error-msg');
+		if ( msg ) {
+			msg.textContent = message;
+		}
+		notice.removeAttribute('hidden');
+	}
+
+	function clearUrlErrorNotice() {
+		const notice = document.getElementById('wpr-ri-url-error-notice');
+		if ( ! notice ) {
+			return;
+		}
+		const msg = document.getElementById('wpr-ri-url-error-msg');
+		if ( msg ) {
+			msg.textContent = '';
+		}
+		notice.setAttribute('hidden', '');
+	}
+
+	function disableAddUrlElements() {
+		$pageUrlInput.prop('disabled', true);
+		$('#wpr-action-add_page_speed_radar').prop('disabled', true).addClass('disabled');
+	}
+
 	function addIds(newId) {
 		if (!rocketInsightsIds.includes(newId)) {
 			rocketInsightsIds.push(newId);
@@ -513,11 +542,13 @@ document.addEventListener('DOMContentLoaded', function() {
 		const pageUrl = $pageUrlInput.val().trim();
 
 		if (!isValidUrl(pageUrl)) {
-			alert('Please enter a valid URL');
+			showUrlErrorNotice(window.rocket_ajax_data?.rocket_insights_url_invalid || 'Please enter a valid URL starting with https://.');
 			return;
 		}
 
 		const source = $(this).data('source');
+
+		clearUrlErrorNotice();
 
 		window.wp.apiFetch(
 			{
@@ -531,6 +562,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		).then( ( response ) => {
 			if (response.success) {
 				if ( ! hasId(response.id) ) {
+					clearUrlErrorNotice();
 					$pageUrlInput.val('');
 					$tableBody.append(response.html);
 
@@ -574,9 +606,15 @@ document.addEventListener('DOMContentLoaded', function() {
 					disableAddUrlElements();
 					// Show quota banner (can_add_pages = false)
 					updateQuotaBanner(response.can_add_pages !== undefined ? response.can_add_pages : false);
+				} else {
+					const errorCode = response?.error_code || '';
+					const localizedKey = errorCode ? 'rocket_insights_' + errorCode : '';
+					const errorMsg = response?.message
+						|| ( localizedKey && window.rocket_ajax_data?.[ localizedKey ] )
+						|| window.rocket_ajax_data?.rocket_insights_url_invalid
+						|| 'An error occurred. Please try again.';
+					showUrlErrorNotice(errorMsg);
 				}
-
-				console.error(response?.message || response);
 			}
 		});
 	}
@@ -628,7 +666,8 @@ document.addEventListener('DOMContentLoaded', function() {
 				}
 				schedulePolling();
 			} else {
-				console.error(response?.message || response);
+				const errorMsg = response?.message || 'Unable to retest. Please try again.';
+				showUrlErrorNotice(errorMsg);
 			}
 		});
 	}
