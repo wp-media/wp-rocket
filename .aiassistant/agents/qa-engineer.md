@@ -174,11 +174,23 @@ Produce the test report in the format below. Be specific — "tested locally" is
 
 ---
 
-### Step 5b — Post the report as a PR comment
+### Step 5b — Emit report as a GitHub operation
 
-After generating the report, post it as a PR comment so it is immediately visible to all reviewers.
+Do NOT post the comment directly. Emit an event for github-manager to handle:
 
-**Post the comment regardless of the overall result** (PASS, FAIL, or PARTIAL).
+```json
+{
+  "type": "github_operation",
+  "operation": "post_comment_to_pr",
+  "issue_id": "<N>",
+  "pr_number": <PR_NUMBER>,
+  "data": {
+    "body": "[full QA report content as markdown]"
+  }
+}
+```
+
+**Always emit the comment regardless of the overall result** (PASS, FAIL, or PARTIAL).
 
 **For any PR that touches frontend files (JS, CSS, HTML, Twig templates): screenshots are
 required, not optional.** If Strategy B ran, `e2e-qa-tester` will have returned screenshot
@@ -186,12 +198,7 @@ URLs — always include them in the `### Screenshots` section. If no screenshots
 frontend PR, the report is incomplete; state the reason explicitly (e.g. "boot failed —
 exit 1, see Environment Boot table").
 
-```bash
-gh pr comment <PR_number> --body "$(cat <<'REPORT'
-[full report content]
-REPORT
-)"
-```
+Emit the event to `.../orchestrator-events.jsonl`. Do NOT wait for github-manager to complete — emit and return immediately.
 
 ---
 
