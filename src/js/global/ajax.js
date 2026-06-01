@@ -295,6 +295,16 @@ document.addEventListener('DOMContentLoaded', function() {
 	const $tableBody = $('.wpr-ri-urls-table tbody');
 	const $table = $('.wpr-ri-urls-table');
 
+	// ==== Error Notice Helpers ====
+	function showUrlErrorNotice( message ) {
+		const $notice = $( '#wpr-ri-url-error-notice' );
+		$notice.text( message ).show();
+	}
+
+	function clearUrlErrorNotice() {
+		$( '#wpr-ri-url-error-notice' ).text( '' ).hide();
+	}
+
 	// ==== Utility Functions ====
 	function isValidUrl(input) {
 		try {
@@ -513,7 +523,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		const pageUrl = $pageUrlInput.val().trim();
 
 		if (!isValidUrl(pageUrl)) {
-			alert('Please enter a valid URL');
+			showUrlErrorNotice( rocket_ajax_data.rocket_insights_errors?.invalid_url || 'Please enter a valid URL starting with https://.' );
 			return;
 		}
 
@@ -530,6 +540,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			}
 		).then( ( response ) => {
 			if (response.success) {
+				clearUrlErrorNotice();
 				if ( ! hasId(response.id) ) {
 					$pageUrlInput.val('');
 					$tableBody.append(response.html);
@@ -565,18 +576,19 @@ document.addEventListener('DOMContentLoaded', function() {
 				}
 
 			} else {
-				// Clear the input field on error
-				$pageUrlInput.val('');
-
-				// Handle URL limit reached error
-				if (response?.message && response.message.includes('Maximum number of URLs reached')) {
-					// Update UI state to reflect URL limit has been reached
+				// Handle URL limit reached: special-case — clear input and update quota banner.
+				if ( response?.message && response.message.includes( 'Maximum number of URLs reached' ) ) {
+					$pageUrlInput.val( '' );
 					disableAddUrlElements();
-					// Show quota banner (can_add_pages = false)
-					updateQuotaBanner(response.can_add_pages !== undefined ? response.can_add_pages : false);
+					updateQuotaBanner( response.can_add_pages !== undefined ? response.can_add_pages : false );
+					return;
 				}
 
-				console.error(response?.message || response);
+				// Show error message to the user.
+				const errorMsg = response?.message
+					|| rocket_ajax_data.rocket_insights_errors?.generic_error
+					|| 'An error occurred. Please try again.';
+				showUrlErrorNotice( errorMsg );
 			}
 		});
 	}
