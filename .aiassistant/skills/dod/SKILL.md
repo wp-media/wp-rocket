@@ -147,6 +147,12 @@ composer run-stan        # PHPStan including the 4 wp-rocket custom rules
 composer test-unit       # full unit suite
 ```
 
+If `phpcs-changed` reports violations, auto-fix then re-check in two calls — never run phpcs/phpcbf file-by-file:
+```bash
+composer phpcs:fix       # phpcbf auto-fix on all files
+composer phpcs-changed   # confirm 0 remaining violations
+```
+
 **Layer 2 (PR exists — remote CI status):**
 
 First, read the GitHub Actions workflow files to enumerate which checks are expected:
