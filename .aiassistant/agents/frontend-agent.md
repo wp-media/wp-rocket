@@ -127,7 +127,7 @@ EOF
 
 Use Conventional Commits format. One atomic commit covering only your frontend + docs changes.
 
-Do not push. The `release-agent` handles push and PR creation after both implementation agents have committed.
+Do not push. The `github-manager` handles push and PR creation after both implementation agents have committed.
 
 ---
 

@@ -42,6 +42,6 @@ calibration (high autonomy / standard / high oversight).
 6. **Invoke the `orchestrator` skill inline** (do not spawn it as a sub-agent — it runs in this conversation context so it can read the user's intent for escalation calibration):
    > Inputs: issue number `N`, issue file `.TemporaryItems/Issues/wp-rocket/issues/<N>.md`, base branch
 
-The orchestrator skill manages everything from here: calibration → grooming → spec review → dispatch → implementation → lead review → push & PR → CI → QA → finalize. It spawns the specialist agents (`grooming-agent`, `challenger`, `backend-agent`, `frontend-agent`, `release-agent`, `lead-reviewer`, `ci-agent`, `qa-engineer`, `ticket-writer`) as isolated sub-agents, but the orchestrator itself stays inline so it can surface decisions back to the user naturally.
+The orchestrator skill manages everything from here: calibration → grooming → spec review → dispatch → implementation → lead review → push & PR → CI → QA → finalize. It spawns the specialist agents (`grooming-agent`, `challenger`, `backend-agent`, `frontend-agent`, `github-manager`, `lead-reviewer`, `qa-engineer`, `ticket-writer`) as isolated sub-agents, but the orchestrator itself stays inline so it can surface decisions back to the user naturally.
 
 Monitor progress at `.TemporaryItems/Issues/wp-rocket/issue-<N>-workflow-log.html`.

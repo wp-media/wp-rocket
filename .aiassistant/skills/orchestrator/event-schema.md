@@ -15,7 +15,7 @@ All events follow this base schema:
 ```json
 {
   "timestamp": "2026-06-01T14:32:15Z",
-  "source": "orchestrator|grooming-agent|challenger|backend-agent|frontend-agent|dod-skill|lead-reviewer|qa-engineer|release-agent",
+  "source": "orchestrator|grooming-agent|challenger|backend-agent|frontend-agent|dod-skill|lead-reviewer|qa-engineer|github-manager",
   "type": "routing_decision|agent_start|agent_complete|gate_complete|implementation_complete|escalation|nth_dispatch",
   "issue_id": "N",
   "data": { ... }
