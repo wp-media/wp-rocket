@@ -803,7 +803,7 @@ class Rest extends WP_REST_Controller {
 
 		if ( ! $response ) {
 			$payload['error']   = true;
-			$payload['message'] = 'Url does not resolve to a valid page.';
+			$payload['message'] = __( 'Url does not resolve to a valid page.', 'rocket' );
 
 			return $payload;
 		}
@@ -811,14 +811,15 @@ class Rest extends WP_REST_Controller {
 		// check if url is not from admin.
 		if ( strpos( $url, admin_url() ) === 0 ) {
 			$payload['error']   = true;
-			$payload['message'] = 'Url is an admin page.';
+			$payload['message'] = __( 'Url is an admin page.', 'rocket' );
 
 			return $payload;
 		}
 
-		// Check if url has not been submited.
+		// Check if url has not been submitted.
 		if ( false !== $this->manager->get_single_job( $url, true ) ) {
-			$payload['error'] = true;
+			$payload['error']   = true;
+			$payload['message'] = __( 'This URL is already being monitored.', 'rocket' );
 
 			return $payload;
 		}
