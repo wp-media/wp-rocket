@@ -315,8 +315,8 @@ document.addEventListener('DOMContentLoaded', function() {
 		$notice.find( '.wpr-ri-url-error-text' ).text( message );
 		$notice.removeClass( 'hidden' );
 
-		// Auto-dismiss when the user edits the input.
-		$pageUrlInput.one( 'input.ri-error', function () {
+		// Auto-dismiss when the user edits the input. Remove previous listener first to avoid stacking.
+		$pageUrlInput.off( 'input.ri-error' ).one( 'input.ri-error', function () {
 			clearUrlErrorNotice();
 		} );
 	}
