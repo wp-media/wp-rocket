@@ -137,7 +137,29 @@ Step-by-step instructions the implementing agent must follow. Be specific: class
 
 ### Out of Scope
 <anything the issue mentions or implies that should NOT be done in this PR>
+
+### PR Splitting Plan
+<!-- Required when effort is L or XL. Omit for XS / S / M. -->
+<!-- Big PRs don't get reviewed — they get rubber-stamped. Split into vertical slices: -->
+<!-- each slice delivers one complete behavior (data layer + logic + test), not a horizontal layer. -->
+| Slice | Scope | Deliverable |
+|-------|-------|-------------|
+| PR 1 | `<files>` | `<what behavior this slice completes>` |
+| PR 2 | `<files>` | `<what behavior this slice completes>` |
 ```
+
+---
+
+### Step 4b — PR splitting plan (required for L and XL efforts)
+
+If `effort` is `L` or `XL`, the spec must include a **PR Splitting Plan** section before implementation starts. Big PRs are rubber-stamped, not reviewed.
+
+Rules for splitting:
+- Split into **vertical slices**, not horizontal layers. Each slice delivers one complete behavior: its own data layer change, business logic, and tests. Never "all backend in PR 1, all frontend in PR 2" — that produces a PR that cannot be reviewed in isolation.
+- Each slice must be independently mergeable without breaking the codebase (use feature flags or interface stubs if needed).
+- Aim for slices that touch ≤ 6 source files each.
+
+If you cannot split the work into independent slices (strong coupling, single atomic migration), document why splitting is not feasible. That is an acceptable outcome — but it must be explicit, not assumed.
 
 ---
 
@@ -180,8 +202,16 @@ Return the spec file path AND the following JSON object to the orchestrator. The
   "risk_notes": "prose: confidence level, key concerns, anything unusual the orchestrator should weight",
   "grooming_confidence": "LOW|MEDIUM|HIGH",
   "open_questions": ["unresolved items requiring human input, or empty array"],
+  "pr_splitting_plan": [
+    { "slice": 1, "scope": ["file1.php", "file2.php"], "deliverable": "what complete behavior this slice ships" }
+  ],
   "comment_posted": true
 }
+```
+
+`pr_splitting_plan` is **required when `effort` is `L` or `XL`**. Set to `null` for XS / S / M. If the work cannot be split, set to `[{ "slice": 1, "scope": ["all files"], "deliverable": "unsplittable — reason: <explicit explanation>" }]`.
+
+```json
 ```
 
 **Effort calibration:**
