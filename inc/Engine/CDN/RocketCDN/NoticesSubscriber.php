@@ -252,7 +252,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 		}
 
 		if ( ! rocket_is_live_site() ) {
-			// return;
+			return;
 		}
 
 		$subscription_data = $this->api_client->get_subscription_data();

@@ -126,19 +126,53 @@ if ( ! empty( $data['container_class'] ) ) {
 					<?php if ( ! empty( $data['error'] ) ) : ?>
 						<p><?php echo $data['message']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
 					<?php else : ?>
-						<?php if ( ! empty( $data['regular_price'] ) ) : ?>
-							<h4 class="wpr-title2 wpr-rocketcdn-pricing-regular"><del>$<?php echo esc_html( $data['regular_price'] ); ?></del></h4>
-						<?php endif; ?>
-						<h4 class="wpr-rocketcdn-pricing-current">
-							<span class="wpr-rocketcdn-cta-currency-minor">$</span>
-							<span class="wpr-rocketcdn-cta-currency-major"><?php echo esc_html( $data['current_price_array']['major'] ); ?></span>
-							<span class="wpr-rocketcdn-cta-currency-minor">.<?php echo esc_html( $data['current_price_array']['minor'] ); ?>
-							</span>
-						</h4>
-						<p class="wpr-rocketcdn-cta-billing-detail"><?php esc_html_e( 'Billed monthly', 'rocket' ); ?></p>
-						<button class="wpr-button wpr-rocketcdn-pricing--cta wpr-rocketcdn-open"<?php echo empty( $data['button_url'] ) ? ' data-micromodal-trigger="wpr-rocketcdn-modal"' : ''; ?>>
-							<?php esc_html_e( 'Get Started', 'rocket' ); ?>
-						</button>
+						<div class="wpr-rocketcdn-pricing--content">
+							<div class="wpr-rocketcdn-pricing--toggle">
+								<input type="checkbox" class="wpr-rocketcdn-toggle--input" id="wpr-rocketcdn-toggle-input">
+								<label class="wpr-rocketcdn-toggle" for="wpr-rocketcdn-toggle-input">
+									<span class="wpr-rocketcdn-toggle--slider"></span>
+									<span class="wpr-rocketcdn-pricing--toggle-label wpr-rocketcdn-pricing--toggle-label--inactive"><?php esc_html_e( 'Monthly', 'rocket' ); ?></span>
+									<span class="wpr-rocketcdn-pricing--toggle-label wpr-rocketcdn-pricing--toggle-label--active"><?php esc_html_e( 'Yearly', 'rocket' ); ?></span>
+								</label>
+								<div class="wpr-rocketcdn-pricing--badge"><?php esc_html_e( '2 Months Free!', 'rocket' ); ?></div>
+							</div>
+							<div class="wpr-rocketcdn-pricing--price-container">
+								<?php if ( ! empty( $data['regular_price_monthly'] ) ) : ?>
+								<h4 class="wpr-title2 wpr-rocketcdn-pricing-regular">
+									<del>
+										<span class="wpr-rocketcdn-pricing-regular-price wpr-rocketcdn-pricing-regular-price--monthly">$<?php echo esc_html( $data['regular_price_monthly'] ); ?></span>
+										<span class="wpr-rocketcdn-pricing-regular-price wpr-rocketcdn-pricing-regular-price--yearly wpr-isHidden">$<?php echo esc_html( $data['regular_price_annual'] ); ?></span>
+									</del>
+								</h4>
+								<?php endif; ?>
+
+								<div class="wpr-rocketcdn-pricing--price">
+									<span class="wpr-rocketcdn-pricing--currency">$</span>
+									<?php
+									// Handle both period and comma as decimal separators for i18n.
+									// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- Template variable, not a global.
+									$monthly_decimal_pos = max( (int) strpos( $data['current_price_monthly'], '.' ), (int) strpos( $data['current_price_monthly'], ',' ) );
+									// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- Template variable, not a global.
+									$annual_decimal_pos = max( (int) strpos( $data['current_price_annual'], '.' ), (int) strpos( $data['current_price_annual'], ',' ) );
+									?>
+									<span class="wpr-rocketcdn-pricing--amount wpr-rocketcdn-pricing--monthly"><?php echo esc_html( substr( $data['current_price_monthly'], 0, $monthly_decimal_pos ) ); ?></span>
+									<span class="wpr-rocketcdn-pricing--cents wpr-rocketcdn-pricing--monthly"><?php echo esc_html( substr( $data['current_price_monthly'], $monthly_decimal_pos ) ); ?></span>
+
+									<span class="wpr-rocketcdn-pricing--amount wpr-rocketcdn-pricing--annual wpr-isHidden"><?php echo esc_html( substr( $data['current_price_annual'], 0, $annual_decimal_pos ) ); ?></span>
+									<span class="wpr-rocketcdn-pricing--cents wpr-rocketcdn-pricing--annual wpr-isHidden"><?php echo esc_html( substr( $data['current_price_annual'], $annual_decimal_pos ) ); ?></span>
+								</div>
+								<div class="wpr-rocketcdn-pricing--billing">
+									<div class="wpr-rocketcdn-pricing--billing-period">
+										<span class="wpr-rocketcdn-pricing--billing-period--monthly"><?php esc_html_e( 'Billed Monthly.', 'rocket' ); ?></span>
+										<span class="wpr-rocketcdn-pricing--billing-period--yearly wpr-isHidden"><?php esc_html_e( 'per month, billed yearly', 'rocket' ); ?></span>
+									</div>
+									<span class="wpr-rocketcdn-pricing--billing-vat">(<?php esc_html_e( 'excl. VAT', 'rocket' ); ?>)</span>
+								</div>
+							</div>
+
+							<button class="wpr-button wpr-rocketcdn-pricing--cta wpr-rocketcdn-open"<?php echo empty( $data['button_url'] ) ? ' data-micromodal-trigger="wpr-rocketcdn-modal"' : ''; ?>><?php esc_html_e( 'Upgrade Now', 'rocket' ); ?></button>
+						</div>
+						
 					<?php endif; ?>
 				</div>
 		</section>

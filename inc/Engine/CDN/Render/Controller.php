@@ -397,6 +397,9 @@ class Controller extends Abstract_Render {
 	/**
 	 * Renders the RocketCDN CTA banner.
 	 *
+	 * @param bool $display Whether to display the CTA. Default true.
+	 *
+	 * @return bool
 	 * @since 3.22
 	 */
 	public function maybe_display_rocketcdn_cta( bool $display = true ): bool {
