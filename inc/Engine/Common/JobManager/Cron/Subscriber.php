@@ -89,7 +89,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function initialize_rucss_queue_runner() {
-		if ( ! $this->job_processor->is_allowed() ) {
+		if ( ! isset( $this->factories['rucss'] ) || ! $this->factories['rucss']->manager()->is_allowed() ) {
 			return;
 		}
 
