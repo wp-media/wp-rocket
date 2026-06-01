@@ -290,7 +290,7 @@ any issues that were not flagged in layer 1.
 ```
 .TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/dod-l2-result.json
 ```
-This file is monitored by the log-coordinator agent, which reads it and appends an HTML log event when it appears. The file MUST be written before the skill returns.
+This file is monitored by the orchestrator. The file MUST be written before the skill returns.
 
 ---
 
@@ -299,7 +299,7 @@ This file is monitored by the log-coordinator agent, which reads it and appends 
 - Base branch defaults to `origin/develop`. If the issue branched off something else (e.g. `origin/feature/mcp`), the orchestrator passes the right base.
 - PHPStan must pass the four custom rules: `DiscourageApplyFilters`, `DiscourageWPOptionUsage`, `EnsureCallbackMethodsExistsInSubscribedEvents`, `NoHooksInORM`. These are part of `composer run-stan`.
 - The "public API surface" for Check 3 includes WordPress hooks and capabilities defined in the `wordpress-compliance` skill.
-- The `Co-Authored-By` trailer uses the model-versioned form: `Claude Sonnet 4.6 <noreply@anthropic.com>`. Match exactly.
+- The `Co-Authored-By` trailer uses the model-versioned form: `<MODEL> <noreply@anthropic.com>`. Match exactly.
 
 ## Result file write (Layer 2 only)
 
@@ -316,6 +316,4 @@ cat > ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_ID}/contracts/dod-l2-resul
 EOF
 ```
 
-This file is monitored by the log-coordinator agent. Once it detects the file, it reads the result and appends an HTML log event to the workflow log. The orchestrator will then read this file to make routing decisions.
-
-The file MUST exist before the skill returns. If writing fails, log the error and still return the JSON object to the orchestrator.
+This file is monitored by the orchestrator. The file MUST be written before the skill returns.

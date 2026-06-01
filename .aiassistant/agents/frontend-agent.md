@@ -127,8 +127,7 @@ EOF
 
 Use Conventional Commits format. One atomic commit covering only your frontend + docs changes.
 
-Do not push. The `github-manager` handles push and PR creation after both implementation agents have committed.
-
+Do not push. The `release-agent` handles push and PR creation after both implementation agents have committed.
 ---
 
 ### Step 5 — Finalize and return
@@ -219,7 +218,5 @@ cat >> ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_ID}/contracts/orchestrato
 {"timestamp":"$(date -u +'%Y-%m-%dT%H:%M:%SZ')","source":"frontend-agent","type":"implementation_complete","issue_id":"${ISSUE_ID}","data":{"domain":"frontend","tests_passing":true/false,"dod_l1_overall":"PASS|WARN","files_changed":N,"commit_sha":"..."}}
 EOF
 ```
-
-The log-coordinator reads these events and updates the HTML log in real time.
 
 Do not commit these events or result files — they are coordination infrastructure, not code.

@@ -393,17 +393,6 @@ Canonical GitHub repository: `wp-media/wp-rocket`
 Unless explicitly instructed otherwise, all GitHub issue, PR, and branch workflows must
 assume this repository.
 
-## GitHub write boundary
-
-**`github-manager` is the sole agent authorised to write to GitHub** (issue comments,
-PR creation, inline review comments, PR comments, labels, PR ready). All other agents —
-grooming-agent, challenger, lead-reviewer, qa-engineer — MUST NOT call `gh` or any
-GitHub API directly. They return their publishable content to the orchestrator, which
-routes it to github-manager via `SendMessage`.
-
-This boundary exists so the GitHub integration can be swapped (e.g. GitLab, Linear) by
-changing only github-manager, without touching any specialist agent.
-
 ---
 
 # 12. Repository Specs
