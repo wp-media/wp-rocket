@@ -299,6 +299,9 @@ document.addEventListener('DOMContentLoaded', function() {
 	function showUrlErrorNotice( message ) {
 		const $notice = $( '#wpr-ri-url-error-notice' );
 		$notice.text( message ).show();
+		$pageUrlInput.one( 'input.ri-error', function() {
+			clearUrlErrorNotice();
+		} );
 	}
 
 	function clearUrlErrorNotice() {
@@ -589,6 +592,9 @@ document.addEventListener('DOMContentLoaded', function() {
 					|| rocket_ajax_data.rocket_insights_errors?.generic_error
 					|| 'An error occurred. Please try again.';
 				showUrlErrorNotice( errorMsg );
+				if ( response?.message && response.message.toLowerCase().includes( 'already' ) ) {
+					$pageUrlInput.val( '' );
+				}
 			}
 		});
 	}
