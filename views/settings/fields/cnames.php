@@ -7,7 +7,14 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$rocket_cnames      = get_rocket_option( 'cdn_cnames' );
+/**
+ * Filters the CDN CNAME URLs displayed in the settings field.
+ *
+ * @since 3.22
+ *
+ * @param array $cdn_cnames Array of CDN CNAME URLs.
+ */
+$rocket_cnames      = wpm_apply_filters_typed( 'array', 'rocket_field_cdn_cnames', get_rocket_option( 'cdn_cnames' ) ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 $rocket_cnames_zone = get_rocket_option( 'cdn_zone' );
 /**
  * Filters the fields to be disabled for the CDN section.
@@ -16,7 +23,7 @@ $rocket_cnames_zone = get_rocket_option( 'cdn_zone' );
  *
  * @param bool $alter Input should be altered.
  */
-$rocket_disable_input_alt = apply_filters( 'rocket_disable_cdn_option_change', false );
+$rocket_disable_input_alt = wpm_apply_filters_typed( 'boolean', 'rocket_disable_cdn_option_change', false );
 ?>
 <div class="wpr-field <?php echo $rocket_disable_input_alt ? 'wpr-isDisabled' : ''; ?>">
 	<div class="wpr-field-description-label">
