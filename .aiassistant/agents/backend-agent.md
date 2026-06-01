@@ -192,3 +192,46 @@ Then return the following JSON object to the orchestrator. The orchestrator read
 ```
 
 `dod_layer1.overall` must be `PASS` or `WARN` — never `FAIL`. Self-correct all failures before committing (Step 3b).
+
+---
+
+## Result file and event emission
+
+Before returning the JSON object, perform these final steps:
+
+### Write result file
+
+```bash
+mkdir -p ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_ID}/contracts"
+cat > ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_ID}/contracts/backend-result.json" <<'EOF'
+{
+  "ticket_id": "...",
+  "branch": "...",
+  ...
+}
+EOF
+```
+
+This file is read by the orchestrator for routing decisions.
+
+### Emit start and complete events
+
+**At the beginning of Step 1 (after you receive inputs):**
+
+```bash
+cat >> ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_ID}/contracts/orchestrator-events.jsonl" <<'EOF'
+{"timestamp":"$(date -u +'%Y-%m-%dT%H:%M:%SZ')","source":"backend-agent","type":"agent_start","issue_id":"${ISSUE_ID}","data":{"step":5,"domain":"backend"}}
+EOF
+```
+
+**Before returning this JSON object (after Step 3b is done and commit succeeds):**
+
+```bash
+cat >> ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_ID}/contracts/orchestrator-events.jsonl" <<'EOF'
+{"timestamp":"$(date -u +'%Y-%m-%dT%H:%M:%SZ')","source":"backend-agent","type":"implementation_complete","issue_id":"${ISSUE_ID}","data":{"domain":"backend","tests_passing":true/false,"dod_l1_overall":"PASS|WARN","files_changed":N,"commit_sha":"..."}}
+EOF
+```
+
+The log-coordinator reads these events and updates the HTML log in real time.
+
+Do not commit these events or result files — they are coordination infrastructure, not code.
