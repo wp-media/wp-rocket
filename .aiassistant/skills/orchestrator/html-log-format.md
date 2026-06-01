@@ -19,7 +19,7 @@ full file on each update. The event list only grows — never remove past events
 - grooming-agent: `#22c55e`
 - challenger: `#f59e0b`
 - backend-agent / frontend-agent: `#22d3ee`
-- github-manager: `#a855f7`
+- release-manager: `#a855f7`
 - lead-reviewer: `#4f7cff`
 - qa-engineer: `#f472b6`
 - ticket-writer: `#94a3b8`
@@ -343,7 +343,7 @@ trivial.
 - DOD L1 result: checks with PASS/WARN and counts
 - Commit: SHA + message
 
-**github-manager AGENT event:**
+**release-manager AGENT event:**
 - PR: URL + title
 - Trailer verified: yes (N commits)
 - Branch pushed: yes

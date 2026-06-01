@@ -211,9 +211,6 @@ Return the spec file path AND the following JSON object to the orchestrator. The
 
 `pr_splitting_plan` is **required when `effort` is `L` or `XL`**. Set to `null` for XS / S / M. If the work cannot be split, set to `[{ "slice": 1, "scope": ["all files"], "deliverable": "unsplittable — reason: <explicit explanation>" }]`.
 
-```json
-```
-
 **Effort calibration:**
 - `XS`: ≤ 1 file, trivial change
 - `S`: 2–3 files, no new patterns

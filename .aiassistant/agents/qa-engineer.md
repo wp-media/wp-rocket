@@ -174,10 +174,12 @@ Produce the test report in the format below. Be specific — "tested locally" is
 
 ---
 
-### Step 5b — Emit report as a GitHub operation
+### Step 5b — Post and Emit report as a PR comment and a GitHub operation
 
-Do NOT post the comment directly. Emit an event for github-manager to handle:
+After generating the report, post it as a PR comment so it is immediately visible to all reviewers.
+**Post the comment regardless of the overall result** (PASS, FAIL, or PARTIAL).
 
+Emit an event to handle:
 ```json
 {
   "type": "github_operation",
@@ -190,15 +192,22 @@ Do NOT post the comment directly. Emit an event for github-manager to handle:
 }
 ```
 
-**Always emit the comment regardless of the overall result** (PASS, FAIL, or PARTIAL).
-
 **For any PR that touches frontend files (JS, CSS, HTML, Twig templates): screenshots are
 required, not optional.** If Strategy B ran, `e2e-qa-tester` will have returned screenshot
 URLs — always include them in the `### Screenshots` section. If no screenshots exist for a
 frontend PR, the report is incomplete; state the reason explicitly (e.g. "boot failed —
 exit 1, see Environment Boot table").
 
-Emit the event to `.../orchestrator-events.jsonl`. Do NOT wait for github-manager to complete — emit and return immediately.
+Emit the event to `.../orchestrator-events.jsonl`. 
+
+Post the comment using:
+
+```bash
+gh pr comment <PR_number> --body "$(cat <<'REPORT'
+[full report content]
+REPORT
+)"
+```
 
 ---
 
@@ -298,6 +307,6 @@ cat > ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_ID}/contracts/qa-result.js
 EOF
 ```
 
-This file is monitored by the log-coordinator agent. Once it detects the file, it reads the result and appends an HTML log event to the workflow log. The orchestrator will then read this file to make routing decisions.
+The orchestrator will then read this file to make routing decisions.
 
 The file MUST exist before the agent returns. If writing fails, log the error and still return the JSON object to the orchestrator.

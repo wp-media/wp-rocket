@@ -62,7 +62,7 @@ WP Rocket lives on GitHub. Always use `gh` for issue operations. The canonical r
    - **EPIC**: create the EPIC with label `epics` first, then create sub-tickets referencing it.
    - **Single**: create directly.
 
-7. Emit a GitHub operation event for github-manager to create the issue:
+7. Emit a GitHub operation event before creating the issue:
    ```json
    {
      "type": "github_operation",
@@ -75,7 +75,33 @@ WP Rocket lives on GitHub. Always use `gh` for issue operations. The canonical r
    }
    ```
 
-   Emit to `.../orchestrator-events.jsonl`. Do NOT wait for github-manager — emit and continue.
+   Emit to `.../orchestrator-events.jsonl`. Emit and continue.
+
+7a. Create the issue with the AI-generated notice at the top of the body:
+   ```bash
+   gh issue create --repo wp-media/wp-rocket \
+     --title "Short imperative title under 70 chars" \
+     --body "$(cat <<'EOF'
+   > ⚠️ AI-generated — created by an automated pipeline. Review before acting on this.
+
+   **Context**
+   [Why this work is needed.]
+
+   **Acceptance Criteria**
+   - [ ] [Specific, verifiable criterion]
+   - [ ] [Specific, verifiable criterion]
+
+   **Development steps**
+   - [ ] [Concrete implementation step]
+
+   **Effort estimation**
+   XS / S / M / L / XL
+   EOF
+   )" \
+     --label "Made by AI" \
+     --label "<additional labels>"
+   ```
+
 
 8. Return the ticket object to the orchestrator (see schema below).
 
@@ -97,7 +123,7 @@ Receive a single NTH feedback item from the orchestrator:
 
 For NTH items:
 - **Do not ask clarifying questions.** The orchestrator has already classified these.
-- Emit a GitHub operation event for github-manager to create the follow-up ticket.
+- Create a follow-up ticket immediately with label `enhancement` (or `tech-debt` for refactoring items). Always add the `Made by AI` label too.
 - Title format: short imperative statement derived from the `description` field.
 - Body: include the `source_agent`, `source_pr_or_ticket`, and `suggestion` as context.
 - Always include the AI-generated notice at the top.
@@ -115,7 +141,29 @@ Example:
 }
 ```
 
-Emit to the event queue. Do NOT wait for github-manager — emit and return immediately.
+```bash
+gh issue create --repo wp-media/wp-rocket \
+  --title "Add index on post_id to cache_flush table" \
+  --body "$(cat <<'EOF'
+> ⚠️ AI-generated — created by an automated pipeline. Review before acting on this.
+
+**Source:** Follow-up from lead-reviewer on PR #42 (NICE_TO_HAVE)
+
+**Context**
+The cache-flush path has no index on post_id — at scale this will cause full-table scans.
+
+**Suggestion**
+Add an index on post_id in a follow-up migration.
+
+**Acceptance Criteria**
+- [ ] Index exists on cache_flush.post_id
+- [ ] Migration version bumped per BerlinDB convention
+EOF
+)" \
+  --label "Made by AI" --label "enhancement"
+```
+
+Emit to the event queue and create the issue. Do NOT wait for a response — emit, create and return immediately.
 
 ---
 
