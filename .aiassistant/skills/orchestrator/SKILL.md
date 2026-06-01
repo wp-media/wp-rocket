@@ -391,6 +391,24 @@ task_id_log = spawn_agent(
 
 The log-coordinator will initialize the HTML log file and begin polling the event queue. All agents and the orchestrator will emit events to this queue, and the log-coordinator will render them in real time.
 
+### Spawn github-manager
+
+Spawn the github-manager as a **background agent** that will run for the entire pipeline:
+
+```bash
+task_id_github = spawn_agent(
+  github-manager,
+  issue_id: N,
+  branch_name: <branch>,
+  base_branch: <base_branch>,
+  CURRENT_MODEL: <model>,
+  run_in_background: true
+)
+# Orchestrator returns IMMEDIATELY — github-manager runs in background
+```
+
+The github-manager will poll the event queue for GitHub operations and handle them on-demand: pushing, creating PRs, posting comments, managing labels. It does not block — the orchestrator proceeds immediately.
+
 ### Emit initial event
 
 ```bash
@@ -627,14 +645,28 @@ The log-coordinator reads these events and updates the HTML log in real time.
 
 After all implementation agents have committed:
 
-Invoke `github-manager`:
-> Inputs: issue #N, branch name, base branch, acceptance criteria, spec path
+Emit an event to signal github-manager to push and create the PR:
 
-It verifies the `Co-Authored-By: CURRENT_MODEL` trailer on every commit on the branch,
-pushes the branch, and creates the PR as draft with the AI-generated notice prepended to
-the description. Emit AGENT event with PR URL.
+```json
+{
+  "type": "github_operation",
+  "operation": "push_and_create_pr",
+  "issue_id": "<N>",
+  "pr_details": {
+    "acceptance_criteria": [...],
+    "spec_path": "..."
+  }
+}
+```
 
-Update the decisions strip Pull request field with the PR URL.
+The github-manager (already running in the background) will:
+1. Verify `Co-Authored-By: CURRENT_MODEL` trailer on every commit
+2. Push the branch
+3. Create the PR as draft with AI-generated notice prepended
+4. Emit a `github_operation_complete` event with the PR URL
+
+Do NOT wait for github-manager to complete. Proceed immediately to Step 7.
+When you need the PR URL for the decisions strip, poll for the `github_operation_complete` event.
 
 ---
 
