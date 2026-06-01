@@ -112,6 +112,20 @@ Human decision required; pipeline paused.
 }
 ```
 
+### retry_loop_start
+A gate (DOD L2, lead review, QA) failed and the orchestrator is retrying.
+
+```json
+{
+  "type": "retry_loop_start",
+  "step": "7|8|9",
+  "gate": "dod-l2|lead-review|qa",
+  "reason": "CI failure|code quality blocker|review blocker|QA criteria failed",
+  "attempt": 1,
+  "max_attempts": 2
+}
+```
+
 ### nth_dispatch
 Non-blocking follow-up tickets created.
 
