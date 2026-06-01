@@ -658,7 +658,7 @@ class UsedCSS {
 	}
 
 	/**
-	 * Displays a notice if the used CSS folder is not writable
+	 * Displays a notice if the used CSS folder or a subfolder is not writable
 	 *
 	 * @since 3.11.4
 	 *
@@ -673,17 +673,31 @@ class UsedCSS {
 			return;
 		}
 
-		if ( $this->filesystem->is_writable_folder() ) {
+		if ( ! $this->filesystem->is_writable_folder() ) {
+			$message = rocket_notice_writing_permissions( trim( str_replace( rocket_get_constant( 'ABSPATH', '' ), '', rocket_get_constant( 'WP_ROCKET_USED_CSS_PATH', '' ) ), '/' ) );
+
+			rocket_notice_html(
+				[
+					'status'      => 'error',
+					'dismissible' => '',
+					'message'     => $message,
+				]
+			);
+
 			return;
 		}
 
-		$message = rocket_notice_writing_permissions( trim( str_replace( rocket_get_constant( 'ABSPATH', '' ), '', rocket_get_constant( 'WP_ROCKET_USED_CSS_PATH', '' ) ), '/' ) );
+		$subfolder = $this->filesystem->get_not_writable_subfolder();
+
+		if ( '' === $subfolder ) {
+			return;
+		}
 
 		rocket_notice_html(
 			[
 				'status'      => 'error',
 				'dismissible' => '',
-				'message'     => $message,
+				'message'     => rocket_notice_writing_permissions( $subfolder ),
 			]
 		);
 	}
