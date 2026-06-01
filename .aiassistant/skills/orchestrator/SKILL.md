@@ -41,6 +41,20 @@ return JSON `co_authored_by` fields, and GitHub comments.
 
 ---
 
+## Event-driven logging architecture
+
+**Important:** This orchestrator no longer writes to the HTML log directly. Instead:
+
+1. **All agents emit structured JSON events** to `.../orchestrator-events.jsonl` as they work
+2. **The log-coordinator** (spawned in Step 1) reads this event queue and transforms events to HTML in real time
+3. **"Log X event" instructions** in the orchestrator refer to: either agents have already emitted the event, or the orchestrator emits to the queue
+
+This separation decouples routing logic (orchestrator) from visibility logic (log-coordinator). Future enhancements (Slack notifications, metrics, webhooks) add to log-coordinator without touching the orchestrator.
+
+**Reference:** Read `.aiassistant/skills/orchestrator/event-schema.md` for the complete event format.
+
+---
+
 ## Core principle
 
 **TICKET and GROOMING always run.** All routing decisions happen *after* GROOMING returns.
@@ -337,8 +351,40 @@ Read the issue file at `.TemporaryItems/Issues/wp-rocket/issues/<N>.md` (produce
 If the entry was raw input rather than an issue number, invoke `ticket-writer` in `create`
 mode first to formalize the issue, then read the resulting file.
 
-Create the initial HTML log (empty event list). Log a ROUTING DECISION event:
-"Pipeline started — reading issue #N. Calibration: <mode>."
+### Initialize logging subsystem
+
+Create the run directory and event queue:
+
+```bash
+mkdir -p ".TemporaryItems/Issues/wp-rocket/issue-<N>/contracts"
+touch ".TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/orchestrator-events.jsonl"
+```
+
+### Spawn log-coordinator
+
+Spawn the log-coordinator as a **background agent** that will run for the entire pipeline:
+
+```bash
+task_id_log = spawn_agent(
+  log-coordinator,
+  issue_id: N,
+  log_file_path: ".TemporaryItems/Issues/wp-rocket/issue-<N>-workflow-log.html",
+  event_queue_path: ".TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/orchestrator-events.jsonl",
+  timeout_seconds: 3600,
+  run_in_background: true
+)
+# Orchestrator returns IMMEDIATELY — log-coordinator runs in background
+```
+
+The log-coordinator will initialize the HTML log file and begin polling the event queue. All agents and the orchestrator will emit events to this queue, and the log-coordinator will render them in real time.
+
+### Emit initial event
+
+```bash
+cat >> ".TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/orchestrator-events.jsonl" <<'EOF'
+{"timestamp":"$(date -u +'%Y-%m-%dT%H:%M:%SZ')","source":"orchestrator","type":"routing_decision","issue_id":"<N>","data":{"step":"1","decision":"pipeline-started","calibration":"<mode>"}}
+EOF
+```
 
 ---
 
