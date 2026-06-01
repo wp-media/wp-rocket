@@ -826,13 +826,26 @@ Additionally, emit events to the event queue:
 
 ### Step 6 — Push & PR
 
-After all implementation agents have committed, resume github-manager to push and open the PR:
+**Before sending to github-manager, extract and sanitize the PR title from the spec:**
+
+```bash
+# Read spec file and extract the first-level heading (## Implementation Spec — ...)
+SPEC_HEADING=$(head -20 ".TemporaryItems/Issues/wp-rocket/issues/<N>-spec.md" | grep "^## " | head -1)
+
+# Extract just the title part (everything after "## Implementation Spec — Issue #<N>: ")
+PR_TITLE=$(echo "$SPEC_HEADING" | sed 's/^## Implementation Spec — Issue #[0-9]\+: //' | sed 's/^# //' | sed 's/^## //')
+
+# Ensure format is "Closes #<N>: <title>"
+FINAL_PR_TITLE="Closes #<N>: $PR_TITLE"
+```
+
+Then send to github-manager:
 
 ```bash
 SendMessage(
   to: github_manager_id,
   message: "Push branch fix/<N>-... to origin, then create a draft PR against <base_branch>.
-  PR title: <derived from spec>
+  PR title: $FINAL_PR_TITLE
   Spec path: .TemporaryItems/Issues/wp-rocket/issues/<N>-spec.md
   Acceptance criteria: <numbered list>
   Verify Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com> trailer on every commit before pushing."

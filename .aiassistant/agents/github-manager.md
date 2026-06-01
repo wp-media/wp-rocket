@@ -66,6 +66,11 @@ Action:
 Message: "Create PR with title: '...' and body from file: .../pull/<N>.md"
 ```
 Action:
+- **Sanitize title** — strip leading markdown if present (defensive check):
+  ```bash
+  title="${title#\# }"    # remove "# " if present
+  title="${title#\#\# }"  # remove "## " if present
+  ```
 - Read PR body from file
 - Prepend notice: `> ⚠️ AI-generated — created by an automated pipeline. Review before acting on this.\n\n`
 - Create as draft: `gh pr create --title "..." --body "..." --base origin/develop --draft`
@@ -133,6 +138,6 @@ After every operation, emit to `.TemporaryItems/Issues/wp-rocket/issue-<N>/contr
 
 ## Boundaries
 
-- ✅ **Always do**: verify trailers before push, prepend AI-generated notice to PR, create PR as draft, label as `Made by AI`, emit operation_complete events
+- ✅ **Always do**: verify trailers before push, sanitize PR title (strip markdown), prepend AI-generated notice to PR, create PR as draft, label as `Made by AI`, emit operation_complete events
 - ⚠️ **Ask first**: if push fails for non-trivial reasons (auth, conflict, protected branch)
 - 🚫 **Never do**: force-push without instruction, modify implementation files, omit the AI-generated notice, block the orchestrator
