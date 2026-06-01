@@ -390,10 +390,10 @@ suggests low actual risk), confirm with the user before deciding.
 | `frontend-agent` | `sonnet` | `opus` if user confirmed |
 | `lead-reviewer` | `sonnet` | — |
 | `qa-engineer` | `sonnet` | `haiku` when `effort=XS AND risk=LOW AND complexity=LOW` |
-| `release-agent` | `haiku` | — |
-| `ci-agent` | `haiku` | — |
+| `github-manager` | `haiku` | — |
 | `ticket-writer` | `haiku` | — |
 | `e2e-qa-tester` | `sonnet` | — |
+| `log-coordinator` | `haiku` | — |
 
 Pass the resolved model as the `model` parameter on every Agent tool spawn. For agents with frontmatter `model: haiku`, this is redundant but harmless — always pass it explicitly so the intent is clear in the orchestrator context.
 
@@ -570,7 +570,7 @@ Lead Review  ─────────────────┤  all in para
 QA           ──────────────────┘
 ```
 
-CI is monitored by DOD L2 Check 5 — no separate ci-agent spawn.
+CI is monitored by DOD L2 Check 5
 
 **Spawning:**
 - **DOD L2** — invoke the `dod` skill with `layer: "2"` in your context. DOD L2 polls
