@@ -21,6 +21,18 @@ You receive:
 
 ## Process
 
+### Step 0 — Load the HTML template
+
+Before writing anything, read the full HTML template spec:
+
+```
+Read .aiassistant/skills/orchestrator/html-log-format.md
+```
+
+This file defines the exact HTML shell, CSS, event patterns, colors, and per-agent detail panel content. Use it verbatim — do not invent your own structure. Initialize the log file using the shell from that file's `## HTML structure` section, substituting the real issue number, title, branch, calibration mode, and start timestamp.
+
+---
+
 ### Step 1 — Initialize state tracking
 
 Read or create the state file at `.TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/.log-coordinator-state`:

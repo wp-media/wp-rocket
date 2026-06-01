@@ -485,8 +485,11 @@ task_id_log = spawn_agent(
 > Do NOT exit between iterations. Sleep 10s, check again. Only exit on `pipeline-complete`
 > or after 3600 seconds total. An empty queue is normal — the pipeline is still running.
 
-The log-coordinator renders each JSONL event to a styled HTML block appended to the
-workflow log. See `html-log-format.md` for the expected structure.
+**CRITICAL — do NOT describe the HTML format in this prompt.** The log-coordinator reads
+`.aiassistant/skills/orchestrator/html-log-format.md` for the exact HTML shell, CSS,
+event patterns, and per-agent content. Any HTML description you include in the spawning
+prompt will override that template and produce the wrong output. Pass only the parameters
+above and the polling loop instruction — nothing else about HTML structure or styling.
 
 ### Spawn github-manager
 
