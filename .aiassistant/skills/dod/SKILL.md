@@ -280,6 +280,12 @@ Always return this JSON object in addition to the human-readable output above:
 **Layer 2:** `overall` can be `PASS`, `WARN`, or `FAIL`. Populate `layer1_delta` with
 any issues that were not flagged in layer 1.
 
+**Result file (L2 only):** When running Layer 2 (orchestrator gate), write the JSON result to:
+```
+.TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/dod-l2-result.json
+```
+This file is monitored by the log-coordinator agent, which reads it and appends an HTML log event when it appears. The file MUST be written before the skill returns.
+
 ---
 
 ## wp-rocket-specific notes
@@ -288,3 +294,22 @@ any issues that were not flagged in layer 1.
 - PHPStan must pass the four custom rules: `DiscourageApplyFilters`, `DiscourageWPOptionUsage`, `EnsureCallbackMethodsExistsInSubscribedEvents`, `NoHooksInORM`. These are part of `composer run-stan`.
 - The "public API surface" for Check 3 includes WordPress hooks and capabilities defined in the `wordpress-compliance` skill.
 - The `Co-Authored-By` trailer uses the model-versioned form: `Claude Sonnet 4.6 <noreply@anthropic.com>`. Match exactly.
+
+## Result file write (Layer 2 only)
+
+Before returning, if you are running Layer 2 (the orchestrator gate), you MUST write the JSON result to disk:
+
+```bash
+mkdir -p ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_ID}/contracts"
+cat > ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_ID}/contracts/dod-l2-result.json" <<'EOF'
+{
+  "overall": "PASS|WARN|FAIL",
+  "checks": [...],
+  ...
+}
+EOF
+```
+
+This file is monitored by the log-coordinator agent. Once it detects the file, it reads the result and appends an HTML log event to the workflow log. The orchestrator will then read this file to make routing decisions.
+
+The file MUST exist before the skill returns. If writing fails, log the error and still return the JSON object to the orchestrator.
