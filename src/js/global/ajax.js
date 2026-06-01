@@ -305,6 +305,31 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 	}
 
+	/**
+	 * Show an inline error notice below the URL input field.
+	 *
+	 * @param {string} message The error message to display.
+	 */
+	function showUrlErrorNotice( message ) {
+		const $notice = $( '#wpr-ri-url-error-notice' );
+		$notice.find( '.wpr-ri-url-error-text' ).text( message );
+		$notice.removeClass( 'hidden' );
+
+		// Auto-dismiss when the user edits the input.
+		$pageUrlInput.one( 'input.ri-error', function () {
+			clearUrlErrorNotice();
+		} );
+	}
+
+	/**
+	 * Hide and clear the inline URL error notice.
+	 */
+	function clearUrlErrorNotice() {
+		const $notice = $( '#wpr-ri-url-error-notice' );
+		$notice.find( '.wpr-ri-url-error-text' ).text( '' );
+		$notice.addClass( 'hidden' );
+	}
+
 	function addIds(newId) {
 		if (!rocketInsightsIds.includes(newId)) {
 			rocketInsightsIds.push(newId);
@@ -512,8 +537,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
 		const pageUrl = $pageUrlInput.val().trim();
 
-		if (!isValidUrl(pageUrl)) {
-			alert('Please enter a valid URL');
+		if ( ! isValidUrl( pageUrl ) ) {
+			const errors = window.rocket_ajax_data?.rocket_insights_errors || {};
+			showUrlErrorNotice( errors.invalid_url || 'Please enter a valid URL.' );
 			return;
 		}
 
@@ -530,6 +556,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			}
 		).then( ( response ) => {
 			if (response.success) {
+				clearUrlErrorNotice();
 				if ( ! hasId(response.id) ) {
 					$pageUrlInput.val('');
 					$tableBody.append(response.html);
@@ -565,18 +592,23 @@ document.addEventListener('DOMContentLoaded', function() {
 				}
 
 			} else {
-				// Clear the input field on error
-				$pageUrlInput.val('');
-
-				// Handle URL limit reached error
-				if (response?.message && response.message.includes('Maximum number of URLs reached')) {
-					// Update UI state to reflect URL limit has been reached
+				// Handle URL limit reached: special-case — clear input and update quota banner.
+				if ( response?.message && response.message.includes( 'Maximum number of URLs reached' ) ) {
+					$pageUrlInput.val( '' );
 					disableAddUrlElements();
-					// Show quota banner (can_add_pages = false)
-					updateQuotaBanner(response.can_add_pages !== undefined ? response.can_add_pages : false);
+					updateQuotaBanner( response.can_add_pages !== undefined ? response.can_add_pages : false );
+					return;
 				}
 
-				console.error(response?.message || response);
+				// Show error message to the user.
+				const errors = window.rocket_ajax_data?.rocket_insights_errors || {};
+				const message = response?.message || errors.generic_error || 'The URL could not be added.';
+				showUrlErrorNotice( message );
+
+				// Clear the input only when the URL is already monitored (re-entering is pointless).
+				if ( response?.message && response.message.toLowerCase().includes( 'already' ) ) {
+					$pageUrlInput.val( '' );
+				}
 			}
 		});
 	}
