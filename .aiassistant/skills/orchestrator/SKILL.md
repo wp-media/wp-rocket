@@ -78,6 +78,51 @@ not following the letter.
 
 ---
 
+## Resume mode (auto-recovery from interruption)
+
+If the session ends mid-pipeline (credits exhausted, connection loss, etc.), you can resume:
+
+**At startup, detect if this is a resume:**
+
+1. Check if the issue run directory exists: `.TemporaryItems/Issues/wp-rocket/issue-<N>/`
+2. If it does, read the event queue: `.../orchestrator-events.jsonl`
+3. Scan for completed agents by checking result files:
+   - `grooming-result.json` → grooming done
+   - `backend-result.json` → backend implementation done
+   - `frontend-result.json` → frontend implementation done
+   - `dod-l2-result.json` → DOD L2 done
+   - `lead-review-result.json` → lead review done
+   - `qa-result.json` → QA done
+
+**Resume logic:**
+
+- **If grooming result exists but no implementation results:** Skip grooming, re-spawn implementation agents (they may have failed or been interrupted mid-work).
+- **If implementation results exist but no gates:** Skip implementation, proceed directly to Step 7 (parallel quality gates).
+- **If some gates complete but not all:** Skip completed gates, re-spawn missing ones.
+- **If all gates done:** Proceed to Step 11 (finalization).
+
+**State file for orchestrator:**
+
+Create/update `.TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/.orchestrator-state`:
+```json
+{
+  "issue_id": "<N>",
+  "step": 7,
+  "last_completed_step": 6,
+  "grooming_done": true,
+  "implementation_done": true,
+  "gates_done": { "dod_l2": true, "lead_review": false, "qa": true },
+  "pr_number": 123,
+  "pr_url": "https://..."
+}
+```
+
+Update this file after each major step. On resume, read it to jump directly to the next incomplete step.
+
+**Important:** The event queue and result files are the source of truth. Use them to detect state, not conversation history.
+
+---
+
 ## Calibrating escalation threshold
 
 Before starting the pipeline, read the user's opening message and infer how much oversight
@@ -364,6 +409,25 @@ Read the issue file at `.TemporaryItems/Issues/wp-rocket/issues/<N>.md` (produce
 If the entry was raw input rather than an issue number, invoke `ticket-writer` in `create`
 mode first to formalize the issue, then read the resulting file.
 
+### Detect resume mode
+
+Check if this is a resumed workflow:
+
+```bash
+if [ -f ".TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/.orchestrator-state" ]; then
+  # Resume mode detected
+  RESUME=true
+  STATE=$(cat ".TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/.orchestrator-state")
+  LAST_STEP=$(echo $STATE | jq .last_completed_step)
+else
+  # Fresh start
+  RESUME=false
+  LAST_STEP=0
+fi
+```
+
+If `RESUME=true`, skip to the step after `last_completed_step`. Otherwise, proceed with fresh initialization.
+
 ### Initialize logging subsystem
 
 Create the run directory and event queue:
@@ -416,6 +480,35 @@ cat >> ".TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/orchestrator-events
 {"timestamp":"$(date -u +'%Y-%m-%dT%H:%M:%SZ')","source":"orchestrator","type":"routing_decision","issue_id":"<N>","data":{"step":"1","decision":"pipeline-started","calibration":"<mode>"}}
 EOF
 ```
+
+### Initialize or resume state file
+
+If fresh start, create:
+```bash
+cat > ".TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/.orchestrator-state" <<'EOF'
+{
+  "issue_id": "<N>",
+  "step": 1,
+  "last_completed_step": 0,
+  "grooming_done": false,
+  "implementation_done": false,
+  "gates_done": { "dod_l2": false, "lead_review": false, "qa": false },
+  "pr_number": null,
+  "pr_url": null
+}
+EOF
+```
+
+If resuming, the file already exists. Read it to get `last_completed_step` and jump to the next step.
+
+**Update this file after each major checkpoint:**
+- After grooming: `grooming_done: true, step: 3`
+- After implementation: `implementation_done: true, step: 7`
+- After PR created: add `pr_number` and `pr_url`
+- After each gate completes: `gates_done.{dod_l2|lead_review|qa}: true`
+- Before returning: `step: 11`
+
+This file is your resume marker. If the session dies, restart with the same issue number and it will skip completed work.
 
 ---
 
