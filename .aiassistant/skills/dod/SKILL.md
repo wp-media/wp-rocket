@@ -192,16 +192,47 @@ done
 
 ---
 
+---
+
+### Check 6 — File scope compliance
+
+**Layer 1 only** (in Layer 2, file scope is not tracked — this check is skipped with status `N/A`).
+
+The orchestrator writes `file_scope` for each implementation task in `.TemporaryItems/Issues/wp-rocket/issue-<N>/tasks.json`. Read your task entry and extract the declared scope.
+
+List every file changed on the branch:
+```bash
+git diff <base_branch>..HEAD --name-only
+```
+
+Compare against `file_scope`. Flag any file that appears in the diff but not in `file_scope`.
+
+Exceptions that do not count as violations:
+- Auto-generated files (`*.min.js`, `*.min.css`, lock files)
+- Files in `tests/` that directly correspond to a changed source file (mirrored test files)
+- Files the orchestrator explicitly added to scope via a `blocked_reason` note
+
+If no `tasks.json` exists (e.g., the orchestrator was not used), skip this check with status `N/A`.
+
+- **PASS**: All modified files are within declared scope (or no scope was declared)
+- **WARN**: One file outside scope was modified — name it and explain why
+- **FAIL**: Two or more files outside scope were modified without explanation
+
+A FAIL here does not block hand-off automatically, but the orchestrator must acknowledge it before proceeding. Log the out-of-scope files in the implementation result under `notes`.
+
+---
+
 ## Output format
 
 ```
 | Check | Status | Evidence |
 |-------|--------|----------|
-| 1. Manual validation | PASS | "What was tested" covers 3 concrete scenarios |
-| 2. Automated tests   | WARN | inc/Engine/Foo/Bar.php has no test file |
-| 3. Documentation     | PASS | docs/api.md updated |
-| 4. PR description    | PASS | All sections filled |
-| 5. CI                | FAIL | run-stan failing: DiscourageApplyFilters in inc/Engine/Cache/Subscriber.php:142 |
+| 1. Manual validation  | PASS | "What was tested" covers 3 concrete scenarios |
+| 2. Automated tests    | WARN | inc/Engine/Foo/Bar.php has no test file |
+| 3. Documentation      | PASS | docs/api.md updated |
+| 4. PR description     | PASS | All sections filled |
+| 5. CI                 | FAIL | run-stan failing: DiscourageApplyFilters in inc/Engine/Cache/Subscriber.php:142 |
+| 6. File scope         | PASS | All 4 changed files within declared scope |
 
 Overall: BLOCKED
 
@@ -229,7 +260,8 @@ Always return this JSON object in addition to the human-readable output above:
     { "name": "automated-tests", "status": "PASS|WARN|FAIL", "evidence": "string" },
     { "name": "documentation", "status": "PASS|WARN|FAIL", "evidence": "string" },
     { "name": "pr-description", "status": "PASS|WARN|FAIL", "evidence": "string" },
-    { "name": "ci", "status": "PASS|WARN|FAIL", "evidence": "string" }
+    { "name": "ci", "status": "PASS|WARN|FAIL", "evidence": "string" },
+    { "name": "file-scope", "status": "PASS|WARN|FAIL|N/A", "evidence": "string" }
   ],
   "blockers": [
     {
