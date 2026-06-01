@@ -26,6 +26,21 @@ implementation handoff and the PR is open. Provides an unbiased second opinion. 
 
 ---
 
+## Anti-rationalization table
+
+Before running the checks, acknowledge these. Agents are good at producing plausible reasons to skip steps — this table preempts them.
+
+| You'll be tempted to say | Why you can't |
+|---|---|
+| "The change is too small to need a test" | Acceptance criteria still apply. A one-line fix to a Subscriber still needs a test on that Subscriber. |
+| "Tests pass, DOD L1 is fine" | Passing tests are evidence, not proof. L1 self-reports; L2 is the independent read. |
+| "No public API change, skipping docs" | Check for hook additions, `option_keys`, REST routes. Those count as public API. |
+| "I'll skip e2e because the environment might not boot" | Boot it. If it fails, `SKIP` is a valid status — but you must attempt it first. |
+| "The PR description section is present" | Present is not the same as filled. Thin is a WARN — name it explicitly. |
+| "I'll add tests in a follow-up ticket" | "Later" is the load-bearing word. There is no later. See Check 2. |
+
+---
+
 ## The 5 checks
 
 Run each check in order. Report **PASS**, **WARN**, or **FAIL** with specific evidence for each.

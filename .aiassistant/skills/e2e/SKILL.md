@@ -31,6 +31,15 @@ or implementation agent's execution window.
 - `backend-agent` / `frontend-agent` (post-implementation) — confirm the primary happy
   path works with the new code before handing off to lead-reviewer.
 
+### Anti-rationalization table
+
+| You'll be tempted to say | Why you can't |
+|---|---|
+| "The environment probably isn't up, I'll skip" | Run `bin/dev-up.sh`. It's idempotent. If it fails, log `SKIP` with the reason — do not silently omit the step. |
+| "The change is backend-only, no need to smoke it" | The primary happy path must be verified. A backend change with no observable behavior change still needs a confirming assertion. |
+| "I already read the code, I know it works" | "Seems right" never closes a task. Run the scenario. |
+| "One scenario is too slow for this stage" | Basic tier is exactly one primary scenario. The cost is acceptable. |
+
 ### Basic tier process
 
 1. Boot the environment (idempotent — safe to run if already up):
