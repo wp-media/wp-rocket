@@ -101,7 +101,7 @@ return [
 			'mock_http'     => false,
 		],
 		'expected' => [
-			'code' => 403,
+			'code'          => 403,
 			'error_message' => 'reached the page limit',
 		],
 	],
@@ -123,7 +123,43 @@ return [
 		],
 		'expected' => [
 			'code'          => 400,
-			'error_message' => 'Url does not resolve to a valid page',
+			'error_message' => 'publicly accessible',
+		],
+	],
+	'testShouldReturnErrorForAlreadyAnalyzedUrl'         => [
+		'config'   => [
+			'post_data'     => [
+				'page_url' => 'http://example.org/already-monitored',
+				'source'   => 'dashboard',
+			],
+			'rows'          => [
+				[
+					'url'       => 'http://example.org/already-monitored',
+					'status'    => 'completed',
+					'is_mobile' => 1,
+				],
+			],
+			'customer_data' => ( new UserDataGenerator() ),
+			'mock_http'     => true,
+		],
+		'expected' => [
+			'code'          => 400,
+			'error_message' => 'already being monitored',
+		],
+	],
+	'testShouldReturnErrorForAdminUrl'                   => [
+		'config'   => [
+			'post_data'     => [
+				'page_url' => 'http://example.org/wp-admin/edit.php',
+				'source'   => 'dashboard',
+			],
+			'rows'          => [],
+			'customer_data' => ( new UserDataGenerator() ),
+			'mock_http'     => true,
+		],
+		'expected' => [
+			'code'          => 400,
+			'error_message' => 'Admin pages cannot be monitored',
 		],
 	],
 	'testShouldSucceedWithExternalUrl'                   => [

@@ -775,7 +775,7 @@ class Rest extends WP_REST_Controller {
 
 		if ( 'local' === wp_get_environment_type() ) {
 			$payload['error']   = true;
-			$payload['message'] = 'Performance monitoring is disabled for local environment';
+			$payload['message'] = __( 'Performance monitoring is not available for local environments.', 'rocket' );
 
 			return $payload;
 		}
@@ -783,14 +783,14 @@ class Rest extends WP_REST_Controller {
 		// Validate that performance monitoring is not disabled.
 		if ( ! $this->context->is_allowed() ) {
 			$payload['error']   = true;
-			$payload['message'] = 'Performance monitoring is disabled.';
+			$payload['message'] = __( 'Performance monitoring is currently disabled.', 'rocket' );
 
 			return $payload;
 		}
 		// Validate that url is not empty.
 		if ( '' === $url ) {
 			$payload['error']   = true;
-			$payload['message'] = 'No url provided.';
+			$payload['message'] = __( 'Please enter a URL.', 'rocket' );
 
 			return $payload;
 		}
@@ -803,7 +803,7 @@ class Rest extends WP_REST_Controller {
 
 		if ( ! $response ) {
 			$payload['error']   = true;
-			$payload['message'] = 'Url does not resolve to a valid page.';
+			$payload['message'] = __( 'This URL could not be reached. Please make sure the page is publicly accessible.', 'rocket' );
 
 			return $payload;
 		}
@@ -811,14 +811,15 @@ class Rest extends WP_REST_Controller {
 		// check if url is not from admin.
 		if ( strpos( $url, admin_url() ) === 0 ) {
 			$payload['error']   = true;
-			$payload['message'] = 'Url is an admin page.';
+			$payload['message'] = __( 'Admin pages cannot be monitored.', 'rocket' );
 
 			return $payload;
 		}
 
 		// Check if url has not been submited.
 		if ( false !== $this->manager->get_single_job( $url, true ) ) {
-			$payload['error'] = true;
+			$payload['error']   = true;
+			$payload['message'] = __( 'This URL is already being monitored.', 'rocket' );
 
 			return $payload;
 		}
