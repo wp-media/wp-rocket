@@ -517,6 +517,10 @@ document.addEventListener('DOMContentLoaded', function() {
 			return;
 		}
 
+		// Clear any previous error notice on new submission attempt.
+		const $notice = $( '#wpr-ri-add-url-notice' );
+		$notice.text( '' ).addClass( 'hidden' );
+
 		const source = $(this).data('source');
 
 		window.wp.apiFetch(
@@ -530,6 +534,9 @@ document.addEventListener('DOMContentLoaded', function() {
 			}
 		).then( ( response ) => {
 			if (response.success) {
+				// Clear any previous error notice on success.
+				$notice.text( '' ).addClass( 'hidden' );
+
 				if ( ! hasId(response.id) ) {
 					$pageUrlInput.val('');
 					$tableBody.append(response.html);
@@ -565,20 +572,31 @@ document.addEventListener('DOMContentLoaded', function() {
 				}
 
 			} else {
-				// Clear the input field on error
-				$pageUrlInput.val('');
+				const errorMessage = response?.message || '';
 
-				// Handle URL limit reached error
-				if (response?.message && response.message.includes('Maximum number of URLs reached')) {
-					// Update UI state to reflect URL limit has been reached
+				// Handle URL limit reached error.
+				if ( response?.message && response.message.includes( 'Maximum number of URLs reached' ) ) {
+					$pageUrlInput.val( '' );
+					// Update UI state to reflect URL limit has been reached.
 					disableAddUrlElements();
-					// Show quota banner (can_add_pages = false)
-					updateQuotaBanner(response.can_add_pages !== undefined ? response.can_add_pages : false);
+					// Show quota banner (can_add_pages = false).
+					updateQuotaBanner( response.can_add_pages !== undefined ? response.can_add_pages : false );
+				} else if ( errorMessage ) {
+					// Show the error message in the inline notice without clearing the input,
+					// so the user can correct the URL.
+					$notice.text( errorMessage ).removeClass( 'hidden' );
+				} else {
+					// Fallback: clear the input when no message is available.
+					$pageUrlInput.val( '' );
 				}
-
-				console.error(response?.message || response);
 			}
-		});
+		} ).catch( ( error ) => {
+			const errorMessage = error?.message || '';
+			if ( errorMessage ) {
+				$notice.text( errorMessage ).removeClass( 'hidden' );
+			}
+			console.error( error );
+		} );
 	}
 
 	function handleResetPage(e) {

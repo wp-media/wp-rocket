@@ -465,6 +465,7 @@
 .wpr-ri-add-section{
 	margin: 2*$space 0;
 	display: flex;
+	flex-wrap: wrap;
 	.wpr-speed-radar-input{
 		display: flex;
 		width: 80%;
@@ -477,6 +478,22 @@
 		justify-content: center;
 		padding: $space;
 		width: 20%;
+	}
+}
+
+.wpr-ri-add-url-notice {
+	width: 100%;
+	margin-top: $space;
+	padding: $space 2*$space;
+	background-color: #FDE0D9;
+	border-left: 4px solid #F56640;
+	color: #AC2B15;
+	font-size: 14px;
+	line-height: 1.3;
+	border-radius: 0;
+
+	&.hidden {
+		display: none;
 	}
 }
 

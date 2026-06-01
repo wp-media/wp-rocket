@@ -3739,6 +3739,7 @@ div.wpr-tutorial-item {
 .wpr-ri-add-section {
   margin: 16px 0;
   display: flex;
+  flex-wrap: wrap;
 }
 .wpr-ri-add-section .wpr-speed-radar-input {
   display: flex;
@@ -3752,6 +3753,21 @@ div.wpr-tutorial-item {
   justify-content: center;
   padding: 8px;
   width: 20%;
+}
+
+.wpr-ri-add-url-notice {
+  width: 100%;
+  margin-top: 8px;
+  padding: 8px 16px;
+  background-color: #FDE0D9;
+  border-left: 4px solid #F56640;
+  color: #AC2B15;
+  font-size: 14px;
+  line-height: 1.3;
+  border-radius: 0;
+}
+.wpr-ri-add-url-notice.hidden {
+  display: none;
 }
 
 .wpr-ri-add-url-button {

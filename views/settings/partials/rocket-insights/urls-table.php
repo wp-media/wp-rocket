@@ -81,6 +81,7 @@ if ( ! isset( $data['show_quota_banner'] ) || ! $data['show_quota_banner'] ) {
 			class="wpr-speed-radar-input"
 			placeholder="<?php esc_attr_e( 'Enter a page URL to monitor', 'rocket' ); ?>"
 			id="wpr-speed-radar-url-input" />
+	<div id="wpr-ri-add-url-notice" class="wpr-ri-add-url-notice hidden" role="alert" aria-live="polite"></div>
 
 	<div id="wpr_rocket_insights_add_page_btn_wrapper">
 		<?php
