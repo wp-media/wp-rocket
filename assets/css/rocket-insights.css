@@ -643,3 +643,9 @@
   color: #C01B1B;
   text-decoration: underline;
 }
+
+.wpr-ri-url-error {
+  color: #d63638;
+  font-size: 13px;
+  margin-top: 4px;
+}
