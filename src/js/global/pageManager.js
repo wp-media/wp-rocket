@@ -120,6 +120,10 @@ PageManager.prototype.getBodyTop = function() {
 */
 PageManager.prototype.change = function() {
 
+    if ( typeof rocket_ajax_data !== 'undefined' && rocket_ajax_data.reset_sidebar ) {
+        localStorage.removeItem( 'wpr-show-sidebar' );
+    }
+
     var refThis = this;
     document.documentElement.scrollTop = refThis.bodyTop;
 
