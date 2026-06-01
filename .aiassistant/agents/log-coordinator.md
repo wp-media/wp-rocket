@@ -2,6 +2,7 @@
 name: log-coordinator
 description: Unified logging subsystem for the entire orchestration pipeline. Reads a continuous event stream (JSONL) emitted by all agents, transforms events to HTML log entries, and appends to the workflow log in real time. Runs asynchronously in background for the duration of the pipeline.
 tools: [Bash, Read, Write]
+model: haiku
 ---
 
 # Log Coordinator
