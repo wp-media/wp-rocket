@@ -24,8 +24,16 @@ use Brain\Monkey\Functions;
  * @group RocketInsights
  */
 class AddPendingIdsTest extends TestCase {
-	private Subscriber $subscriber;
+	/**
+	 * Instance under test.
+	 *
+	 * @var Subscriber
+	 */
+	private $subscriber;
 
+	/**
+	 * Set up the test.
+	 */
 	public function set_up() {
 		parent::set_up();
 
@@ -74,6 +82,11 @@ class AddPendingIdsTest extends TestCase {
 		);
 	}
 
+	/**
+	 * Test that rocket_insights_errors key is present in the result.
+	 *
+	 * @covers \WP_Rocket\Engine\Admin\RocketInsights\Subscriber::add_pending_ids
+	 */
 	public function testShouldIncludeRocketInsightsErrorsKey() {
 		Functions\when( '__' )->returnArg( 1 );
 
@@ -82,6 +95,11 @@ class AddPendingIdsTest extends TestCase {
 		$this->assertArrayHasKey( 'rocket_insights_errors', $result );
 	}
 
+	/**
+	 * Test that invalid_url error string is present in rocket_insights_errors.
+	 *
+	 * @covers \WP_Rocket\Engine\Admin\RocketInsights\Subscriber::add_pending_ids
+	 */
 	public function testShouldIncludeInvalidUrlErrorString() {
 		Functions\when( '__' )->returnArg( 1 );
 
@@ -91,6 +109,11 @@ class AddPendingIdsTest extends TestCase {
 		$this->assertNotEmpty( $result['rocket_insights_errors']['invalid_url'] );
 	}
 
+	/**
+	 * Test that generic_error string is present in rocket_insights_errors.
+	 *
+	 * @covers \WP_Rocket\Engine\Admin\RocketInsights\Subscriber::add_pending_ids
+	 */
 	public function testShouldIncludeGenericErrorString() {
 		Functions\when( '__' )->returnArg( 1 );
 
@@ -100,6 +123,11 @@ class AddPendingIdsTest extends TestCase {
 		$this->assertNotEmpty( $result['rocket_insights_errors']['generic_error'] );
 	}
 
+	/**
+	 * Test that add_pending_ids returns early when context is not allowed.
+	 *
+	 * @covers \WP_Rocket\Engine\Admin\RocketInsights\Subscriber::add_pending_ids
+	 */
 	public function testShouldReturnEarlyWhenContextNotAllowed() {
 		$render               = $this->createMock( Render::class );
 		$controller           = $this->createMock( Controller::class );

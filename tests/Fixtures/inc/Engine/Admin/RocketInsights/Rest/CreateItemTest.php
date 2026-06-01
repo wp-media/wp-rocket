@@ -24,10 +24,10 @@ return [
 			'database_entries' => 2,
 			'hook_fired'       => true,
 			'response_data'    => [
-				'id'                => null, // Will be generated
-				'html'              => null, // Will be generated
-				'global_score_data' => null, // Will be generated
-				'remaining_urls'    => null, // Will be generated
+				'id'                => null, // Will be generated.
+				'html'              => null, // Will be generated.
+				'global_score_data' => null, // Will be generated.
+				'remaining_urls'    => null, // Will be generated.
 				'can_add_pages'     => true,
 			],
 		],
@@ -101,7 +101,7 @@ return [
 			'mock_http'     => false,
 		],
 		'expected' => [
-			'code' => 403,
+			'code'          => 403,
 			'error_message' => 'reached the page limit',
 		],
 	],
@@ -142,10 +142,10 @@ return [
 			'database_entries' => 1,
 			'hook_fired'       => true,
 			'response_data'    => [
-				'id'                => null, // Will be generated
-				'html'              => null, // Will be generated
-				'global_score_data' => null, // Will be generated
-				'remaining_urls'    => null, // Will be generated
+				'id'                => null, // Will be generated.
+				'html'              => null, // Will be generated.
+				'global_score_data' => null, // Will be generated.
+				'remaining_urls'    => null, // Will be generated.
 				'can_add_pages'     => true,
 			],
 		],
@@ -304,7 +304,7 @@ return [
 		'expected' => [
 			'code'             => 403,
 			'error_message'    => 'reached the page limit',
-			'database_entries' => 3, // Should stay at 3, the 4th should be deleted
+			'database_entries' => 3, // Should stay at 3, the 4th should be deleted.
 		],
 	],
 	'testShouldAllowAddingUrlAtExactLimit'               => [
@@ -331,14 +331,14 @@ return [
 		'expected' => [
 			'code'             => 200,
 			'success'          => true,
-			'database_entries' => 3, // Should successfully add the 3rd URL (at the limit)
+			'database_entries' => 3, // Should successfully add the 3rd URL (at the limit).
 			'hook_fired'       => true,
 			'response_data'    => [
 				'id'                => null,
 				'html'              => null,
 				'global_score_data' => null,
-				'remaining_urls'    => 0, // Should be 0 remaining after adding 3rd of 3
-				'can_add_pages'     => false, // Can't add more pages after reaching limit
+				'remaining_urls'    => 0, // Should be 0 remaining after adding 3rd of 3.
+				'can_add_pages'     => false, // Can't add more pages after reaching limit.
 			],
 		],
 	],
@@ -357,12 +357,12 @@ return [
 			],
 			'customer_data'      => ( new UserDataGenerator() )->with_custom_limit( 2 ),
 			'mock_http'          => true,
-			'add_concurrent_url' => true, // Will add another URL mid-request to simulate race condition
+			'add_concurrent_url' => true, // Will add another URL mid-request to simulate race condition.
 		],
 		'expected' => [
 			'code'             => 403,
 			'error_message'    => 'reached the page limit',
-			'database_entries' => 2, // Should rollback to 2 (the concurrent one + original, not the failed one)
+			'database_entries' => 2, // Should rollback to 2 (the concurrent one + original, not the failed one).
 		],
 	],
 ];
