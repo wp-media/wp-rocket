@@ -151,9 +151,9 @@ module.exports = (function () {
 				return;
 			}
 
-			// If backend says we cannot add pages or other errors, restore original state
-			// Reload the column HTML from server to restore the button
-			reloadColumnFromServer(column, url);
+			// Handle error response - display the error message instead of reloading immediately.
+			const errorMessage = response?.message ?? response?.data?.message ?? 'An unknown error occurred.';
+			showErrorMessage(column, errorMessage, button);
 		}).catch((error) => {
 			// wp.apiFetch throws on WP_Error; reload column to restore button
 			console.error(error);
@@ -236,6 +236,29 @@ module.exports = (function () {
 			clickedEl.prop('disabled', true);
 			setTimeout(function() {
 				clickedEl.prop('disabled', false);
+			}, 3000);
+		}
+	}
+
+	/**
+	 * Display an error message in the column and re-enable the button after a timeout.
+	 * Does not reload the column, allowing the user to see the error message and take action.
+	 *
+	 * @param {jQuery} column The column element.
+	 * @param {string} errorMessage The error message to display.
+	 * @param {jQuery} button The button element to re-enable.
+	 */
+	function showErrorMessage(column, errorMessage, button) {
+		const messageDiv = column.find('.wpr-ri-message');
+
+		// Escape the error message to prevent XSS and set it as text content.
+		const escapedMessage = document.createTextNode(errorMessage).textContent;
+		messageDiv.text(escapedMessage).show();
+
+		// Re-enable the button after 3 seconds, allowing the user to retry if needed.
+		if (button && button.prop) {
+			setTimeout(function() {
+				button.prop('disabled', false);
 			}, 3000);
 		}
 	}
