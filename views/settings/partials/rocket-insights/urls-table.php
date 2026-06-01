@@ -87,4 +87,5 @@ if ( ! isset( $data['show_quota_banner'] ) || ! $data['show_quota_banner'] ) {
 		$this->render_add_page_btn( 'rocket-insights', $data );
 		?>
 	</div>
+	<p id="wpr-ri-url-error" class="wpr-ri-url-error" role="alert" aria-live="polite" style="display:none;"></p>
 </div>

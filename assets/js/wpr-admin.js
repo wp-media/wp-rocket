@@ -497,6 +497,13 @@ document.addEventListener('DOMContentLoaded', function () {
     if ($(this).attr('disabled')) {
       return;
     }
+
+    // Clear any existing error message at the start of each submission.
+    const errorContainer = document.getElementById('wpr-ri-url-error');
+    if (errorContainer) {
+      errorContainer.textContent = '';
+      errorContainer.style.display = 'none';
+    }
     const pageUrl = $pageUrlInput.val().trim();
     if (!isValidUrl(pageUrl)) {
       alert('Please enter a valid URL');
@@ -552,6 +559,11 @@ document.addEventListener('DOMContentLoaded', function () {
           disableAddUrlElements();
           // Show quota banner (can_add_pages = false)
           updateQuotaBanner(response.can_add_pages !== undefined ? response.can_add_pages : false);
+        }
+        // Display the server error message in the UI.
+        if (errorContainer && response?.message) {
+          errorContainer.textContent = response.message;
+          errorContainer.style.display = '';
         }
         console.error(response?.message || response);
       }
