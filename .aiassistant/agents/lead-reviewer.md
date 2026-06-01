@@ -189,4 +189,21 @@ Return the verdict AND the following JSON object to the orchestrator. The orches
 
 `blockers` is empty array when `verdict == PASS`. `nice_to_haves` are dispatched by the orchestrator to the `ticket-writer` agent (`mode: "nth_followup"`) as non-blocking follow-up tasks. The `fix` field on each blocker is passed directly to the implementation agent if a loop-back is triggered — make it specific and actionable.
 
-Do not modify any file. Do not commit anything.
+Before returning, you MUST write the JSON result to disk:
+
+```bash
+mkdir -p ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_ID}/contracts"
+cat > ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_ID}/contracts/lead-review-result.json" <<'EOF'
+{
+  "pr_url": "...",
+  "verdict": "...",
+  ...
+}
+EOF
+```
+
+This file is monitored by the log-coordinator agent. Once it detects the file, it reads the result and appends an HTML log event to the workflow log. The orchestrator will then read this file to make routing decisions.
+
+The file MUST exist before the agent returns. If writing fails, log the error and still return the JSON object to the orchestrator.
+
+Do not modify any implementation file. Do not commit anything.
