@@ -41,12 +41,26 @@ return JSON `co_authored_by` fields, and GitHub comments.
 
 ---
 
+## Runtime capabilities
+
+Detect your runtime's capabilities **at startup** (before Step 1):
+
+- **PARALLEL mode** — `runSubagent` supports `run_in_background: true` in your context.  
+  Use the parallel spawn patterns throughout these instructions.
+- **SEQUENTIAL mode** — `runSubagent` is synchronous only (e.g. VS Code Copilot).  
+  Use the **[SEQUENTIAL FALLBACK]** paths defined in each step.
+
+VS Code Copilot is currently SEQUENTIAL mode. All `run_in_background: true` calls block
+until the agent returns.
+
+---
+
 ## Event-driven logging architecture
 
 **Important:** This orchestrator no longer writes to the HTML log directly. Instead:
 
 1. **All agents emit structured JSON events** to `.../orchestrator-events.jsonl` as they work
-2. **The log-coordinator** (spawned in Step 1) reads this event queue and transforms events to HTML in real time
+2. **The log-coordinator** reads this event queue and transforms events to HTML in real time
 3. **"Log X event" instructions** in the orchestrator refer to: either agents have already emitted the event, or the orchestrator emits to the queue
 
 This separation decouples routing logic (orchestrator) from visibility logic (log-coordinator). Future enhancements (Slack notifications, metrics, webhooks) add to log-coordinator without touching the orchestrator.
@@ -451,45 +465,46 @@ touch ".TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/orchestrator-events.
 
 ### Spawn log-coordinator
 
-Spawn the log-coordinator as a **background agent**. Its primary job is a Bash polling
-loop — it must not exit between polls just because the queue has no new events.
+**PARALLEL mode** — Spawn once as a background agent. It monitors the event queue for the
+entire pipeline and exits on `pipeline-complete`. No further interaction needed.
 
 ```bash
-task_id_log = spawn_agent(
+spawn_agent(
   log-coordinator,
+  run_in_background: true,
   issue_id: N,
   log_file_path: ".TemporaryItems/Issues/wp-rocket/issue-<N>-workflow-log.html",
   event_queue_path: ".TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/orchestrator-events.jsonl",
-  timeout_seconds: 3600,
-  run_in_background: true
+  issue_title: "<issue title>"
 )
-# Orchestrator returns IMMEDIATELY — log-coordinator runs in background
+# No return value — runs in background for entire pipeline
 ```
 
-**The log-coordinator prompt MUST include this explicit polling loop instruction:**
+**[SEQUENTIAL FALLBACK]** — Do NOT spawn in background. Instead, call log-coordinator in
+**sync mode** (`sync: true`) after each of these checkpoints:
 
-> Your main body is a Bash polling loop. Execute it as a single long-running Bash command:
-> ```bash
-> TIMEOUT=3600; START=$(date +%s); LAST=0
-> while true; do
->   NOW=$(date +%s); [ $((NOW-START)) -ge $TIMEOUT ] && break
->   CUR=$(wc -l < <queue_path> 2>/dev/null || echo 0)
->   if [ "$CUR" -gt "$LAST" ]; then
->     # process new lines $((LAST+1))..$CUR — render each to HTML log
->     LAST=$CUR
->   fi
->   grep -q '"type":"pipeline-complete"' <queue_path> 2>/dev/null && break
->   sleep 10
-> done
-> ```
-> Do NOT exit between iterations. Sleep 10s, check again. Only exit on `pipeline-complete`
-> or after 3600 seconds total. An empty queue is normal — the pipeline is still running.
+| When to call | Purpose |
+|---|---|
+| After Step 2b (state file created) | Initialize HTML shell |
+| After Step 4 (grooming complete) | Flush grooming events |
+| After Step 5 (implementation complete) | Flush impl events |
+| After Step 6 (PR created) | Flush push/PR events |
+| After Steps 7–9 complete | Flush quality gate events |
+| After emitting `pipeline-complete` | Final update + badge flip |
 
-**CRITICAL — do NOT describe the HTML format in this prompt.** The log-coordinator reads
-`.aiassistant/skills/orchestrator/html-log-format.md` for the exact HTML shell, CSS,
-event patterns, and per-agent content. Any HTML description you include in the spawning
-prompt will override that template and produce the wrong output. Pass only the parameters
-above and the polling loop instruction — nothing else about HTML structure or styling.
+Each call renders all pending events from `last_line` to EOF, updates the state file, and
+exits immediately. Events are never double-rendered.
+
+```bash
+spawn_agent(
+  log-coordinator,
+  sync: true,
+  issue_id: N,
+  log_file_path: ".TemporaryItems/Issues/wp-rocket/issue-<N>-workflow-log.html",
+  event_queue_path: ".TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/orchestrator-events.jsonl",
+  issue_title: "<issue title>"
+)
+```
 
 ### Spawn github-manager
 
@@ -571,9 +586,25 @@ Invoke `grooming-agent`:
 Spec written to `.TemporaryItems/Issues/wp-rocket/issues/<N>-spec.md`. Agent returns JSON
 including `github_comment_content`. Log an AGENT event with the grooming JSON summary.
 
-**After grooming returns**, post the grooming comment via github-manager:
+**Step 2a — Post grooming comment (NON-OPTIONAL):**
+
+After grooming returns, you MUST post the comment via github-manager. This is not optional.
+Do not skip this step even if the grooming output seems complete.
+
 ```bash
-SendMessage(to: github_manager_id, message: "Post this comment on GitHub issue #<N>:\n\n<grooming.github_comment_content>")
+SendMessage(
+  to: github_manager_id,
+  message: "Post this comment on GitHub issue #<N> (repo: wp-media/wp-rocket):\n\n<grooming.github_comment_content>"
+)
+```
+
+Wait for github-manager to confirm the comment was posted before proceeding.
+
+**Step 2b — Update state:**
+
+```bash
+# Update state
+grooming_done: true, step: 3
 ```
 
 ---
@@ -766,14 +797,14 @@ Update each task's `worktree` field in `tasks.json`.
 >
 > **Orchestrator polling:**
 > After spawning, poll the task IDs every 10 seconds until both show status = "completed" (or either shows "blocked").
-> While polling, the log-coordinator is updating the HTML log in real time from the event queue.
 >
 > Orchestrator proceeds when both tasks show `completed` in `tasks.json`
 > (or either shows `blocked`).
 
-**05a/b — Sequential fallback** (scopes overlap):
+**05a/b — Sequential fallback** (scopes overlap, **or SEQUENTIAL runtime mode**):
 > Invoke `backend-agent` first (if in scope), then `frontend-agent` (if in scope).
 > Max 3 attempts each. Hard stop after 3 — escalate.
+> After both complete, call log-coordinator in sync mode to flush implementation events.
 
 **Synthesis:** After polling completes, read results from contract files:
 - Backend: `.../contracts/backend-result.json`
@@ -790,8 +821,6 @@ Additionally, emit events to the event queue:
 ```json
 {"timestamp":"...","source":"backend-agent","type":"implementation_complete","issue_id":"N","data":{"domain":"backend","tests_passing":true,"dod_l1_overall":"PASS",...}}
 ```
-
-The log-coordinator reads these events and updates the HTML log in real time.
 
 ---
 
@@ -818,7 +847,7 @@ github-manager will:
 
 **Wait for github-manager to return** before proceeding to quality gates — the PR URL
 is required by lead-reviewer and QA. Store `pr_url` and `pr_number` in the orchestrator
-state file and update the decisions strip in the HTML log.
+state file.
 
 ---
 
@@ -853,34 +882,35 @@ Spawn all three quality gates as **background agents**. Do NOT wait for them to 
    - If `domains` is `frontend` or `both`, **or** if `ui_visible: true` — explicitly instruct that Strategy B is the **primary** strategy
    - Writes result to: `.TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/qa-result.json`
 
-4. **Log Coordinator** — Spawn `log-coordinator`, **`run_in_background: true`**
-   - Receives: issue_id, log_file_path, result_files dict, timeout_seconds (2700 for 45 min)
-   - Monitors the three contract files above
-   - As each result file appears, reads it and appends an HTML log event to the workflow log
-   - Exit when all three are logged or timeout is reached
-
-**Spawning pattern:**
+**PARALLEL mode — spawning pattern:**
 ```bash
 task_id_dod = spawn_agent(dod, layer: 2, run_in_background: true)
 task_id_lead = spawn_agent(lead-reviewer, ..., run_in_background: true) if not skipped
 task_id_qa = spawn_agent(qa-engineer, ..., run_in_background: true) if not skipped
-task_id_log = spawn_agent(log-coordinator, ..., run_in_background: true)
 # Orchestrator returns IMMEDIATELY — does not wait
 ```
 
-**Polling for completion:**
-After spawning, poll the task IDs every 10 seconds until all non-skipped agents show status = "completed":
+Then poll task IDs every 10 seconds until all complete. Proceed to Step 7 when done.
+
+**[SEQUENTIAL FALLBACK]** — Run quality gates one by one (same agents, same contract files,
+same result routing — just sequential instead of parallel):
+
 ```bash
-while [ $polling_elapsed -lt $overall_timeout ]; do
-  if all_tasks_completed; then
-    break
-  fi
-  sleep(10)
-  polling_elapsed += 10
-done
+# 1. DOD L2 (always)
+spawn_agent(dod, layer: 2)  # blocks until complete
+
+# 2. Lead Review (unless skipped)
+spawn_agent(lead-reviewer, ...)  # blocks until complete
+
+# 3. QA (unless skipped)
+spawn_agent(qa-engineer, ...)  # blocks until complete
 ```
 
-Then proceed to Step 7 and read results from the contract files (they are guaranteed to exist by this point).
+After all three complete, call log-coordinator in sync mode to flush quality gate events,
+then proceed to Step 7 and read results from contract files.
+
+> **Note:** Each agent writes its result to a contract file on completion.
+> Contract file locations are the same regardless of parallel vs. sequential execution.
 
 ---
 
@@ -993,6 +1023,9 @@ has no HIGH/CRITICAL blockers (or is skipped), QA is PASS (or skipped or carried
    ```
 
 3. Log final ROUTING DECISION event: "Pipeline complete — READY FOR REVIEW"
+
+4. Emit a `pipeline-complete` event to the event queue — this signals the background
+   log-coordinator to do its final HTML update and exit.
 
 Final summary template:
 ```markdown

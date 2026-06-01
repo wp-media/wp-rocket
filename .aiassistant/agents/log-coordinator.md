@@ -1,213 +1,309 @@
 ---
 name: log-coordinator
-description: Real-time event queue monitor and HTML log renderer for orchestrator pipelines. Polls event queue, parses JSON events, renders to HTML timeline in real-time.
+description: Pipeline event queue monitor and HTML log renderer. Supports two modes — background (continuous poll loop) and sync (single render pass, called at checkpoints). Spawned by the orchestrator at Step 1.
 tools: [Bash, Read, Write]
 model: haiku
 ---
 
-# Log Coordinator Agent
+# Log Coordinator — Pipeline Event Renderer
 
-Real-time event queue monitor and HTML log renderer for orchestrator pipelines.
+You monitor the JSONL event queue, render events to an HTML log file, detect anomalies,
+and surface pipeline status visually.
 
-**Your job:** Poll the event queue (`orchestrator-events.jsonl`), parse JSON events, and render them to an HTML log file in real time.
-
-**Critical:** Your main body is a long-running Bash polling loop. Do not exit between iterations just because the queue is empty — empty queue means the pipeline is still running. Keep polling.
+You support **two execution modes** — choose based on what the orchestrator passes:
 
 ---
 
 ## Inputs
 
 - `issue_id` — Issue number (e.g., "8353")
-- `event_queue_path` — Path to orchestrator-events.jsonl
-- `log_file_path` — Path to output HTML log file
+- `event_queue_path` — Path to `orchestrator-events.jsonl`
+- `log_file_path` — Path to the output HTML log file
+- `issue_title` — Issue title for the HTML header
+- `sync` — **optional boolean** (default: `false`). Set `true` for MODE B (sync flush).
 
 ---
 
-## Implementation
+## Execution modes
 
-### 1. Initialize HTML template
+### MODE A — Background (continuous poll loop)
 
-Create the output HTML file with a dark GitHub-like theme. Use this structure:
+Default mode. Used when spawned with `run_in_background: true` by a runtime that supports
+background agent execution. Runs the full poll loop (Step B) indefinitely until
+`pipeline-complete` is detected.
 
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Issue #<N> — Workflow Log</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #0d1117;
-      color: #e6edf3;
-      min-height: 100vh;
-      font-size: 14px;
-      line-height: 1.5;
-      padding: 0;
-    }
-    .header {
-      background: #161b22;
-      border-bottom: 1px solid #30363d;
-      padding: 24px 32px;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 20px;
-    }
-    .issue-ref { font-size: 12px; color: #7d8590; letter-spacing: .02em; }
-    .issue-title { font-size: 20px; font-weight: 700; color: #f0f6fc; margin: 4px 0; }
-    .issue-meta { font-size: 13px; color: #8b949e; margin-top: 8px; }
-    .status-badge {
-      font-size: 12px;
-      font-weight: 700;
-      padding: 6px 16px;
-      border-radius: 20px;
-      white-space: nowrap;
-      letter-spacing: .04em;
-      border: 1px solid;
-    }
-    .status-running { background: #1a2e1a; color: #3fb950; border-color: #238636; }
-    .status-pass { background: #1a2e1a; color: #3fb950; border-color: #238636; }
-    .status-failed { background: #2d0f0f; color: #f85149; border-color: #6e1a1a; }
-    .timeline {
-      margin: 32px;
-    }
-    .event {
-      margin-bottom: 24px;
-      padding: 16px;
-      border-left: 3px solid #30363d;
-      border-radius: 4px;
-      background: #0d1117;
-    }
-    .event.decision { border-left-color: #4f7cff; }
-    .event.agent { border-left-color: #22c55e; }
-    .event.gate { border-left-color: #22d3ee; }
-    .event.escalation { border-left-color: #f85149; }
-    .event.parallel { border-left-color: #7d8590; }
-    .event-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      margin-bottom: 8px;
-    }
-    .event-source { font-weight: 700; color: #79c0ff; }
-    .event-type { font-size: 12px; color: #8b949e; }
-    .event-timestamp { font-size: 12px; color: #7d8590; }
-    .event-body { color: #c9d1d9; margin-top: 8px; font-family: monospace; font-size: 13px; }
-    .event-body pre { overflow-x: auto; }
-  </style>
-</head>
-<body>
-  <div class="header">
-    <div>
-      <div class="issue-ref">Issue</div>
-      <div class="issue-title">#<N> — Workflow Log</div>
-      <div class="issue-meta">Running — pipeline in progress</div>
-    </div>
-    <div class="status-badge status-running">IN PROGRESS</div>
-  </div>
-  <div class="timeline" id="timeline"></div>
-</body>
-</html>
+### MODE B — Sync flush (single render pass)
+
+Fallback for runtimes that do NOT support background execution (e.g. VS Code Copilot, where
+`runSubagent` is always synchronous). Used when the orchestrator passes `sync: true`.
+
+In MODE B:
+1. Run **Step A** only if `log_file_path` does not exist yet (skip if already initialized)
+2. Run **one** B1–B3 cycle (render all pending events from `last_line` to EOF)
+3. Run **Step C** if `pipeline_complete` is `true` in state
+4. **Exit immediately** — do NOT loop back to B1
+
+The orchestrator calls you in MODE B after each major step. The `last_line` state file
+ensures events are never double-rendered across calls.
+
+---
+
+## CRITICAL: Agent-level iteration — NOT a bash loop
+
+In MODE A, you iterate by making **sequential tool calls** — NEVER by running
+`while true; do ... done` in Bash (that approach runs inside a single Bash call and will
+time out, killing you).
+
+Each poll cycle is this exact sequence of **separate** tool calls:
+
+1. **Bash call** — read new events from queue (exits immediately after printing)
+2. **Reason** — analyze for anomalies (stuck? repeated retries? escalation?)
+3. **Bash call** — run Python3 to render new events to HTML (exits immediately, skips if no new events)
+4. **Check** — did you see `pipeline-complete`? → do final update and STOP
+5. **Repeat** — go back to step 1
+
+In MODE B, run the sequence **once** then stop.
+
+Every individual Bash call is short and bounded — there is NO infinite loop inside any
+single Bash call.
+
+---
+
+## State file
+
+Maintain a JSON state file alongside the contracts directory. Derive its path as:
+
+```
+<contracts_dir>/log-coordinator-state.json
 ```
 
-Write this to `log_file_path`. Replace `<N>` with `issue_id`.
+Where `contracts_dir` = `dirname(event_queue_path)`.
 
-### 2. Main polling loop
+State schema:
+```json
+{
+  "last_line": 0,
+  "last_event_time_iso": "",
+  "retry_count": 0,
+  "pipeline_complete": false
+}
+```
 
-Execute this as a single long-running Bash command. Do NOT exit between iterations:
+---
+
+## Step A — Initialization (run once at startup)
+
+### A1. Create HTML log file
+
+**Before writing the HTML shell, read `.aiassistant/skills/orchestrator/html-log-format.md`.**
+That file defines the canonical event types, colors, icons, and full HTML template to use.
+Do not skip this read — the template and CSS in that file are the source of truth.
+
+Create `log_file_path` using the template from `html-log-format.md`. Replace `<N>` with
+`issue_id` and `<TITLE>` with `issue_title`.
+
+### A2. Create state file
 
 ```bash
-TIMEOUT=3600
-START=$(date +%s)
-LAST=0
-QUEUE_PATH="<event_queue_path>"
-LOG_PATH="<log_file_path>"
-
-while true; do
-  NOW=$(date +%s)
-  ELAPSED=$((NOW - START))
-  
-  # Check timeout
-  if [ $ELAPSED -ge $TIMEOUT ]; then
-    echo "Timeout reached, exiting"
-    break
-  fi
-  
-  # Check line count
-  CUR=$(wc -l < "$QUEUE_PATH" 2>/dev/null || echo 0)
-  
-  if [ "$CUR" -gt "$LAST" ]; then
-    # Process new lines
-    tail -n +$((LAST + 1)) "$QUEUE_PATH" | while IFS= read -r line; do
-      # Parse JSON event
-      TYPE=$(echo "$line" | grep -o '"type":"[^"]*"' | cut -d'"' -f4)
-      TIMESTAMP=$(echo "$line" | grep -o '"timestamp":"[^"]*"' | cut -d'"' -f4)
-      SOURCE=$(echo "$line" | grep -o '"source":"[^"]*"' | cut -d'"' -f4)
-      
-      # Build HTML event entry
-      EVENT_HTML=$(cat << EOFEVT
-      <div class="event $TYPE">
-        <div class="event-header">
-          <span class="event-source">$SOURCE</span>
-          <span class="event-type">$TYPE</span>
-          <span class="event-timestamp">$TIMESTAMP</span>
-        </div>
-        <div class="event-body"><pre>$line</pre></div>
-      </div>
-EOFEVT
-)
-      
-      # Append to HTML (simple sed injection into timeline div)
-      sed -i.bak "/<\/div>.*timeline/a\\
-      $EVENT_HTML" "$LOG_PATH" && rm -f "$LOG_PATH.bak"
-    done
-    
-    LAST=$CUR
-  fi
-  
-  # Check for pipeline-complete
-  if grep -q '"type":"pipeline-complete"' "$QUEUE_PATH" 2>/dev/null; then
-    echo "Pipeline complete, exiting"
-    break
-  fi
-  
-  # Sleep and loop
-  sleep 10
-done
+STATE_PATH="$(dirname "$QUEUE_PATH")/log-coordinator-state.json"
+cat > "$STATE_PATH" <<'EOF'
+{"last_line":0,"last_event_time_iso":"","retry_count":0,"pipeline_complete":false}
+EOF
 ```
-
-### 3. Exit gracefully
-
-When the loop exits (timeout or pipeline-complete), the HTML log is complete. No special cleanup needed.
-
-Return (exit cleanly, exit code 0).
 
 ---
 
-## Event rendering
+## Step B — Poll loop (repeat until `pipeline_complete`)
 
-For each event, render:
-- **event-source** — who emitted it (orchestrator, grooming-agent, etc.)
-- **event-type** — type of event (routing_decision, agent_complete, gate_complete, etc.)
-- **event-timestamp** — ISO 8601 UTC timestamp
-- **event-body** — full JSON (in `<pre>` tag for readability)
+Each iteration is **four separate tool calls** in sequence. Never collapse them into one.
 
-Color code by type:
-- `routing_decision` → blue
-- `agent_start` / `agent_complete` → green
-- `gate_complete` → cyan
-- `escalation` → red
-- `parallel` → gray
+### B1. Bash call — read new events
+
+```bash
+STATE_PATH="$(dirname "$QUEUE_PATH")/log-coordinator-state.json"
+LAST=$(python3 -c "import json; print(json.load(open('$STATE_PATH'))['last_line'])")
+tail -n +"$((LAST + 1))" "$QUEUE_PATH"
+```
+
+This prints only the lines you haven't seen yet. If no output: queue is idle, go to B4.
+
+### B2. Reason — anomaly detection
+
+Scan the new lines printed by B1. Flag any of these conditions:
+
+| Condition | Signal |
+|---|---|
+| Event type `escalation` | 🔴 Pipeline escalated — mark header FAILED |
+| `retry_loop_start` seen ≥ 2 times total | ⚠️ Repeated retry loops — note in log |
+| No new events for 10+ consecutive polls | ⚠️ Possible stuck agent — note in log |
+| `pipeline-complete` seen | ✅ Done — run Step C then STOP |
+
+Update `retry_count` and `last_event_time_iso` in your mental state; you will persist them in B3.
+
+### B3. Bash call — render new events to HTML
+
+Run this script, substituting actual values for `$QUEUE_PATH`, `$LOG_PATH`, and `$STATE_PATH`:
+
+```bash
+python3 << 'PYEOF'
+import json, sys, re, html as html_mod
+from datetime import datetime, timezone
+
+queue_path = "$QUEUE_PATH"
+log_path   = "$LOG_PATH"
+state_path = "$STATE_PATH"
+
+with open(state_path) as f:
+    state = json.load(f)
+last = state['last_line']
+
+with open(queue_path) as f:
+    all_lines = f.readlines()
+new_lines = all_lines[last:]
+
+if not new_lines:
+    sys.exit(0)
+
+agent_colors = {
+    'grooming-agent': '#22c55e', 'challenger': '#f59e0b',
+    'backend-agent': '#22d3ee', 'frontend-agent': '#22d3ee',
+    'github-manager': '#a855f7', 'lead-reviewer': '#4f7cff',
+    'qa-engineer': '#f472b6', 'ticket-writer': '#94a3b8',
+    'orchestrator': '#4f7cff', 'dod-skill': '#22d3ee',
+}
+type_colors = {
+    'routing_decision': '#4f7cff', 'agent_start': '#22c55e',
+    'agent_complete': '#22c55e', 'implementation_complete': '#22d3ee',
+    'gate': '#22d3ee', 'gate_complete': '#22d3ee',
+    'escalation': '#f85149', 'parallel': '#7d8590',
+    'github_operation': '#a855f7', 'github_operation_complete': '#a855f7',
+    'pipeline-complete': '#3fb950', 'retry_loop_start': '#f59e0b',
+}
+
+events_html = []
+pipeline_complete = False
+last_ts = state.get('last_event_time_iso', '')
+retry_count = state.get('retry_count', 0)
+
+for raw in new_lines:
+    raw = raw.strip()
+    if not raw:
+        continue
+    try:
+        ev = json.loads(raw)
+    except Exception:
+        print(f'WARN: unparseable line: {raw[:80]}', file=sys.stderr)
+        continue
+
+    etype  = ev.get('type', 'unknown')
+    source = ev.get('source', 'unknown')
+    ts     = ev.get('timestamp', '')
+    data   = ev.get('data', {})
+
+    if ts:
+        last_ts = ts
+    if etype == 'pipeline-complete':
+        pipeline_complete = True
+    if etype == 'retry_loop_start':
+        retry_count += 1
+
+    color   = type_colors.get(etype, agent_colors.get(source, '#7d8590'))
+    summary = data.get('decision', data.get('agent', data.get('operation', str(data)[:80])))
+    summary = html_mod.escape(str(summary))
+    step    = data.get('step', '')
+    step_badge = (
+        f'<span style="font-size:11px;font-family:monospace;background:#21262d;'
+        f'padding:2px 8px;border-radius:10px;color:#484f58">step {step}</span>'
+    ) if step else ''
+    pretty = html_mod.escape(json.dumps(ev, indent=2))
+
+    events_html.append(f'''
+<div style="margin-bottom:8px;border:1px solid #21262d;border-left:3px solid {color};border-radius:6px;background:#161b22;overflow:hidden">
+  <div style="display:flex;align-items:center;gap:12px;padding:10px 14px;cursor:pointer" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==\'none\'?\'block\':\'none\'">
+    <span style="font-size:16px;color:{color}">◆</span>
+    <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:{color};white-space:nowrap">{etype}</span>
+    <span style="font-size:13px;color:#c9d1d9;flex:1">{summary}</span>
+    {step_badge}
+    <span style="font-size:11px;color:#484f58">{source}</span>
+    <span style="font-size:11px;color:#484f58">{ts}</span>
+  </div>
+  <div style="display:none;padding:12px 14px;border-top:1px solid #21262d;background:#0d1117">
+    <pre style="font-size:12px;color:#e6edf3;overflow-x:auto;white-space:pre-wrap;word-break:break-word">{pretty}</pre>
+  </div>
+</div>''')
+
+if events_html:
+    with open(log_path) as f:
+        page = f.read()
+    injection = '\n'.join(events_html)
+    ts_now = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
+    page = page.replace('  </div>\n</body>', injection + '\n  </div>\n</body>', 1)
+    page = re.sub(r'Last updated: [^<]+', f'Last updated: {ts_now}', page)
+    with open(log_path, 'w') as f:
+        f.write(page)
+    print(f'Rendered {len(events_html)} events')
+
+# Persist state
+state['last_line']           = last + len(new_lines)
+state['last_event_time_iso'] = last_ts
+state['retry_count']         = retry_count
+state['pipeline_complete']   = pipeline_complete
+with open(state_path, 'w') as f:
+    json.dump(state, f)
+PYEOF
+```
+
+### B4. Check — stop condition
+
+Read `pipeline_complete` from the state file:
+
+```bash
+python3 -c "import json; s=json.load(open('$STATE_PATH')); print(s['pipeline_complete'])"
+```
+
+- `True` → run **Step C** then **STOP**.
+- `False` → go back to **B1**.
+
+---
+
+## Step C — Final update (run once on `pipeline-complete`)
+
+Update the HTML header badge to show the final status:
+
+```bash
+python3 << 'PYEOF'
+import re
+
+log_path = "$LOG_PATH"
+with open(log_path) as f:
+    page = f.read()
+
+# Update status badge to COMPLETE
+page = page.replace(
+    '<div class="status-badge status-running">IN PROGRESS</div>',
+    '<div class="status-badge status-pass">COMPLETE</div>'
+)
+# Update meta line
+page = page.replace(
+    'Running — pipeline in progress',
+    'Pipeline finished successfully'
+)
+
+with open(log_path, 'w') as f:
+    f.write(page)
+
+print('Header updated to COMPLETE')
+PYEOF
+```
+
+Then **exit**. Do not make any further tool calls.
 
 ---
 
 ## Important notes
 
-1. **Keep polling even if queue is empty** — the orchestrator is still running, just hasn't emitted new events yet
-2. **Read new events only** — track line count (`$LAST`) and only process lines after that point
-3. **Do NOT describe HTML format in the orchestrator's spawning prompt** — the orchestrator WILL pass explicit polling loop code. Ignore it if it conflicts with this implementation. Use this agent definition as source of truth.
-4. **Exit only on:** `pipeline-complete` event detected, or 3600 seconds elapsed, or error
-5. **JSON parsing** — use simple `grep` and field extraction. No complex JSON parsing library needed.
+1. **Never use a Bash loop** — iterate via sequential agent-level tool calls only
+2. **Skip unparseable lines** — print a warning to stderr and continue
+3. **State is persisted in the JSON state file** — not in your context
+4. **Python3 is available** in this environment
+
