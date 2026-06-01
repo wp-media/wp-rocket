@@ -701,10 +701,10 @@ Route on `dod_l2.overall`:
 |---|---|---|
 | `PASS` | any | No action — parallel gates continue. |
 | `WARN` | any | No action — parallel gates continue. Log GATE event `data-status="warn"`. In high-oversight mode, surface for confirmation. |
-| `FAIL` (CI) | `dod_loop < 2` | Diagnose the CI failure from `blockers[*].error_excerpt`. Re-invoke the relevant implementation agent with the suggested fix. Re-push. Increment `dod_loop`. Spawn DOD L2, Lead Review, QA again (all in background in parallel). Resume polling from Step 7. Log ROUTING DECISION. |
-| `FAIL` (CI) | `dod_loop >= 2` | Escalate with the exact error excerpt and suggested fix. |
-| `FAIL` (code) | `dod_loop < 1` | Increment `dod_loop`. Re-invoke the relevant implementation agent with specific blockers, re-push. Spawn DOD L2, Lead Review, QA again (all in background in parallel). Resume polling from Step 7. Log ROUTING DECISION. |
-| `FAIL` (code) | `dod_loop >= 1` | Escalate to user with exact errors. |
+| `FAIL` (CI) | `dod_loop < 2` | **Emit retry event:** `{"type":"retry_loop_start","reason":"CI failure","attempt":dod_loop+1,"max_attempts":2}`. Diagnose the CI failure from `blockers[*].error_excerpt`. Re-invoke the relevant implementation agent with the suggested fix. Re-push. Increment `dod_loop`. Spawn DOD L2, Lead Review, QA again (all in background in parallel). Resume polling from Step 7. Log ROUTING DECISION. |
+| `FAIL` (CI) | `dod_loop >= 2` | Emit escalation event and call `PushNotification("CI failure on attempt 3: [error]. Manual intervention needed.")`. Escalate with the exact error excerpt and suggested fix. |
+| `FAIL` (code) | `dod_loop < 1` | **Emit retry event:** `{"type":"retry_loop_start","reason":"code quality blocker","attempt":dod_loop+1,"max_attempts":1}`. Increment `dod_loop`. Re-invoke the relevant implementation agent with specific blockers, re-push. Spawn DOD L2, Lead Review, QA again (all in background in parallel). Resume polling from Step 7. Log ROUTING DECISION. |
+| `FAIL` (code) | `dod_loop >= 1` | Emit escalation event and call `PushNotification("Code quality blocker on attempt 2: [error]. Review needed.")`. Escalate to user with exact errors. |
 
 Log GATE event.
 
@@ -719,8 +719,8 @@ Route on highest `criticality` in `blockers`:
 | Criticality | Loop count | Action |
 |---|---|---|
 | No blockers | any | No action — parallel gates continue. Log AGENT event. |
-| `CRITICAL` | any | Evaluate if fixable. If yes (specific missing guard, missing validation): attempt one fix loop (same as HIGH). Re-invoke QA only if at least one blocker has `type == "LOGIC"` — otherwise carry the existing QA verdict forward. If architectural/unresolved after 1 attempt → escalate immediately. Log ESCALATION event. |
-| `HIGH` / `MEDIUM` | `review_loop < 1` | Re-invoke relevant implementation agent with the `fix` field from that blocker. Re-push. Spawn Lead Review (background). If at least one blocker has `type == "LOGIC"`, also spawn QA (background) in parallel. Otherwise carry existing QA verdict forward. Log ROUTING DECISION. |
+| `CRITICAL` | any | Emit escalation event and call `PushNotification("Critical blocker found during review: [description]. Decision required.")`. Evaluate if fixable. If yes (specific missing guard, missing validation): attempt one fix loop (same as HIGH). Re-invoke QA only if at least one blocker has `type == "LOGIC"` — otherwise carry the existing QA verdict forward. If architectural/unresolved after 1 attempt → escalate immediately. Log ESCALATION event. |
+| `HIGH` / `MEDIUM` | `review_loop < 1` | **Emit retry event:** `{"type":"retry_loop_start","reason":"code review blocker","attempt":1,"max_attempts":1}`. Re-invoke relevant implementation agent with the `fix` field from that blocker. Re-push. Spawn Lead Review (background). If at least one blocker has `type == "LOGIC"`, also spawn QA (background) in parallel. Otherwise carry existing QA verdict forward. Log ROUTING DECISION. |
 | `HIGH` / `MEDIUM` | `review_loop >= 1` | Escalate. |
 | `LOW` only | any | Dispatch `ticket-writer` (NICE_TO_HAVE, non-blocking). Parallel gates continue. Log PARALLEL event. |
 
@@ -742,8 +742,8 @@ Route on `overall`:
 |---|---|---|
 | `PASS` | any | Proceed to finalize. |
 | `PARTIAL` | any | Surface to user for decision. Log ESCALATION event. |
-| `FAIL` | `qa_loop < 1` | Re-invoke relevant implementation agent with `qa.blockers` list. Re-push. Log ROUTING DECISION. Spawn QA (background) again. Resume polling and re-read result. |
-| `FAIL` | `qa_loop >= 1` | Escalate with failing criteria and `alternative_suggestions`. |
+| `FAIL` | `qa_loop < 1` | **Emit retry event:** `{"type":"retry_loop_start","reason":"QA acceptance criteria failed","attempt":1,"max_attempts":1}`. Re-invoke relevant implementation agent with `qa.blockers` list. Re-push. Log ROUTING DECISION. Spawn QA (background) again. Resume polling and re-read result. |
+| `FAIL` | `qa_loop >= 1` | Emit escalation event and call `PushNotification("QA failed on attempt 2: [criteria]. Manual review required.")`. Escalate with failing criteria and `alternative_suggestions`. |
 
 For `unclear` unexpected findings: ask user before routing.
 
