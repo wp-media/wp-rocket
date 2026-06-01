@@ -417,7 +417,12 @@ class Controller extends Abstract_Render {
 			return false;
 		}
 
-		return (bool) apply_filters( 'rocket_display_rocketcdn_cta_for_agencies', true, $this->get_page_count() );
+		/**
+		 * Filter to control visibility for agencies.
+		 *
+		 * @since 3.22.0
+		 */
+		return wpm_apply_filters_typed( 'boolean', 'rocket_display_rocketcdn_cta_for_agencies', true, $this->get_page_count() );
 	}
 
 	/**
