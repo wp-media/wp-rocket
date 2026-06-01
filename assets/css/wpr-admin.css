@@ -1920,9 +1920,10 @@ div.wpr-upgrade-websites.notstacked {
   transform: translateY(-2px);
   box-shadow: 0 7px 14px rgba(50, 50, 93, 0.25), 0 3px 6px rgba(0, 0, 0, 0.2);
 }
-.wpr-button--disabled {
+.wpr-button--disabled, .wpr-button:disabled {
   opacity: 0.5;
   pointer-events: none;
+  background: #F56640;
 }
 .wpr-button--small {
   padding: 5px 0;
@@ -4626,6 +4627,7 @@ div.wpr-tutorial-item {
   background: #FFF7E1;
   border-left: 4px solid #FED055;
   font-size: 14px;
+  margin-bottom: 15px;
 }
 .wpr-cdn-expired__notice-title {
   font-weight: 600;

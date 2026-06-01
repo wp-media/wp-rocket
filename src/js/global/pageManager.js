@@ -86,6 +86,10 @@ function PageManager(aElem) {
         };
     }
 
+    document.addEventListener( 'wpr-cdn-state-change', function() {
+        refThis.updateSubmitDisabledState();
+    } );
+
 }
 
 
@@ -185,4 +189,23 @@ PageManager.prototype.change = function() {
     if (pagesWithoutSubmit.includes(this.pageId)) {
         this.$submitButton.style.display = 'none';
     }
+
+    this.updateSubmitDisabledState();
+};
+
+
+/*
+* Update submit button disabled state
+*/
+PageManager.prototype.updateSubmitDisabledState = function() {
+    if ( ! this.$submitButton || 'none' === this.$submitButton.style.display ) {
+        return;
+    }
+
+    var isCdnPage = 'page_cdn' === this.pageId;
+    var pausedRocketCdnBlock = document.querySelector(
+        '.wpr-Page#page_cdn .wpr-notice.wpr-ri-notice.wpr-cdn-expired__notice'
+    );
+
+    this.$submitButton.disabled = isCdnPage && !! pausedRocketCdnBlock;
 };
