@@ -112,6 +112,31 @@ Read the associated result file (path from event data), extract key fields, rend
 </div>
 ```
 
+**retry_loop_start:**
+```html
+<div class="event-wrapper">
+  <div class="event" data-type="decision">
+    <div class="event-icon" style="color:#f59e0b">🔄</div>
+    <div class="event-type" style="color:#f59e0b">Retry</div>
+    <div class="event-summary">{gate} retry attempt {attempt}/{max_attempts} — {reason}</div>
+    <div class="event-step">step {step}</div>
+    <div class="event-chevron">›</div>
+  </div>
+  <div class="event-detail">
+    <div class="detail-sections">
+      <div class="detail-section">
+        <div class="detail-label">Gate</div>
+        <div class="detail-body">{gate} (attempt {attempt} of {max_attempts})</div>
+      </div>
+      <div class="detail-section">
+        <div class="detail-label">Reason</div>
+        <div class="detail-body">{reason}</div>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
 **nth_dispatch:**
 ```html
 <div class="event" data-type="parallel">
@@ -159,6 +184,68 @@ Log any errors to stderr.
 This agent does not return JSON. It runs asynchronously in the background for the entire pipeline duration. The orchestrator reads the HTML log directly when it needs it.
 
 Exit cleanly when done. The log-coordinator's job is purely visibility; the orchestrator makes all routing decisions.
+
+---
+
+## Metrics Aggregation and Summary Block
+
+As you process events, aggregate metrics:
+
+```json
+{
+  "pipeline_start_time": "timestamp from first event",
+  "pipeline_end_time": "timestamp from last event",
+  "total_duration_minutes": calculated,
+  "retry_count": count of retry_loop_start events,
+  "gate_results": {
+    "dod_l2": { "pass": N, "warn": N, "fail": N },
+    "lead_review": { "pass": N, "fail": N },
+    "qa": { "pass": N, "fail": N, "partial": N }
+  },
+  "files_changed": count of unique files from implementation_complete events,
+  "domains": ["backend", "frontend"] or subset
+}
+```
+
+When timeout is reached (all events processed or pipeline timeout), render a summary block and append it to the HTML log BEFORE the footer:
+
+```html
+<div class="phase-label">Summary</div>
+<div class="event-wrapper">
+  <div class="event" data-type="gate" data-status="pass">
+    <div class="event-icon">📊</div>
+    <div class="event-type">Pipeline Summary</div>
+    <div class="event-summary">Completed in 45 minutes · 2 retries · 12 files across 2 domains</div>
+    <div class="event-chevron">›</div>
+  </div>
+  <div class="event-detail">
+    <div class="detail-sections">
+      <div class="detail-section two-col">
+        <div>
+          <div class="detail-label">Duration</div>
+          <div class="detail-body">45 minutes</div>
+        </div>
+        <div>
+          <div class="detail-label">Retries</div>
+          <div class="detail-body">2 (gates: 1 DOD L2 CI, 1 QA)</div>
+        </div>
+      </div>
+      <div class="detail-section two-col">
+        <div>
+          <div class="detail-label">Files Changed</div>
+          <div class="detail-body">12 (backend: 8, frontend: 4)</div>
+        </div>
+        <div>
+          <div class="detail-label">Quality Gates</div>
+          <div class="detail-body">DOD L2: PASS · Review: PASS · QA: PASS</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+The summary block appears at the end of the event timeline, giving the viewer a quick glance at the pipeline's overall performance and what changed.
 
 ---
 
