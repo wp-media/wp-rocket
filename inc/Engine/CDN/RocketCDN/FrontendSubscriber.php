@@ -57,7 +57,6 @@ class FrontendSubscriber implements Subscriber_Interface {
 		return [
 			'pre_get_rocket_option_cdn_cnames' => [ 'set_cdn_cnames', 9 ],
 			'pre_get_rocket_option_cdn_zone'   => [ 'set_cdn_zone', 9 ],
-			'rocket_field_cdn_cnames'          => 'remove_rocketcdn_cnames',
 		];
 	}
 
@@ -97,26 +96,6 @@ class FrontendSubscriber implements Subscriber_Interface {
 		}
 
 		return [ 'all' ];
-	}
-
-	/**
-	 * Remove RocketCDN URL from the list of CNAMEs in 'Other CDN' settings field.
-	 *
-	 * Filters out the RocketCDN URL from the provided list of CNAMEs
-	 * to prevent it from being displayed in 'Other CDN' settings field.
-	 *
-	 * @param array $cnames List of CNAME URLs to filter.
-	 * @return array Filtered array of CNAMEs with RocketCDN URL removed.
-	 */
-	public function remove_rocketcdn_cnames( $cnames ) {
-		// Remove RocketCDN URL from the list of CNAMEs to display in the 'Other CDN' settings field.
-		$rocketcdn_url = $this->subscription_controller->get_rocketcdn_url();
-
-		if ( empty( $rocketcdn_url ) ) {
-			return $cnames;
-		}
-
-		return array_diff( $cnames, [ $rocketcdn_url ] );
 	}
 
 	/**
