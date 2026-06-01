@@ -186,6 +186,17 @@ class CreateItemTest extends RESTfulTestCase {
 			$this->assertStringContainsString( $expected['error_message'], $response['message'] );
 		}
 
+		// Check error_code if provided
+		if ( isset( $expected['error_code'] ) ) {
+			$this->assertArrayHasKey( 'error_code', $response );
+			$this->assertSame( $expected['error_code'], $response['error_code'] );
+		}
+
+		// Check that message is non-empty if expected
+		if ( isset( $expected['message_non_empty'] ) && $expected['message_non_empty'] ) {
+			$this->assertNotEmpty( $response['message'] );
+		}
+
 		// Check database entries if provided (to verify rollback behavior)
 		if ( isset( $expected['database_entries'] ) ) {
 			$items = $this->container->get( 'ri_query' )->query( [] );

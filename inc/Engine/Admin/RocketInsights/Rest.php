@@ -758,14 +758,18 @@ class Rest extends WP_REST_Controller {
 	 * @param string $url The URL to validate.
 	 *
 	 * @return array {
-	 *     @type bool   $error        Whether an error occurred during validation.
-	 *     @type string $message      The error message, or an empty string if no error.
+	 *     @type bool   $error         Whether an error occurred during validation.
+	 *     @type string $error_code    Machine-readable error code, empty string on success.
+	 *                                 One of: 'local_environment', 'url_not_accessible',
+	 *                                 'admin_url', 'url_already_analyzed'.
+	 *     @type string $message       The error message, or an empty string if no error.
 	 *     @type string $processed_url The URL with protocol added if validation passes.
 	 * }
 	 */
 	protected function get_url_validation_payload( string $url ): array {
 		$payload = [
 			'error'         => false,
+			'error_code'    => '',
 			'message'       => '',
 			'processed_url' => '',
 			'data'          => [
@@ -774,8 +778,9 @@ class Rest extends WP_REST_Controller {
 		];
 
 		if ( 'local' === wp_get_environment_type() ) {
-			$payload['error']   = true;
-			$payload['message'] = 'Performance monitoring is disabled for local environment';
+			$payload['error']      = true;
+			$payload['error_code'] = 'local_environment';
+			$payload['message']    = __( 'This URL is not publicly accessible and cannot be analyzed.', 'rocket' );
 
 			return $payload;
 		}
@@ -802,23 +807,27 @@ class Rest extends WP_REST_Controller {
 		$response = $this->get_page_content( $url );
 
 		if ( ! $response ) {
-			$payload['error']   = true;
-			$payload['message'] = 'Url does not resolve to a valid page.';
+			$payload['error']      = true;
+			$payload['error_code'] = 'url_not_accessible';
+			$payload['message']    = __( 'This URL is not publicly accessible and cannot be analyzed.', 'rocket' );
 
 			return $payload;
 		}
 
 		// check if url is not from admin.
 		if ( strpos( $url, admin_url() ) === 0 ) {
-			$payload['error']   = true;
-			$payload['message'] = 'Url is an admin page.';
+			$payload['error']      = true;
+			$payload['error_code'] = 'admin_url';
+			$payload['message']    = __( 'This URL is an admin URL and cannot be analyzed.', 'rocket' );
 
 			return $payload;
 		}
 
 		// Check if url has not been submited.
 		if ( false !== $this->manager->get_single_job( $url, true ) ) {
-			$payload['error'] = true;
+			$payload['error']      = true;
+			$payload['error_code'] = 'url_already_analyzed';
+			$payload['message']    = __( 'This URL has already been analyzed.', 'rocket' );
 
 			return $payload;
 		}
