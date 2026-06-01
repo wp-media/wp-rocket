@@ -516,16 +516,26 @@ git worktree add .TemporaryItems/Issues/wp-rocket/issue-<N>/worktrees/frontend <
 Update each task's `worktree` field in `tasks.json`.
 
 **05a/b — Parallel** (scopes disjoint):
-> Spawn `backend-agent` and `frontend-agent` simultaneously.
-> Each agent receives: issue #N, spec path, dispatch plan, their task entry from `tasks.json`
+> Spawn `backend-agent` and `frontend-agent` **in parallel as background tasks**.
+> Both receive: issue #N, spec path, dispatch plan, their task entry from `tasks.json`
 > (including `file_scope` and `worktree` path).
 >
-> The orchestrator is the coordination hub — agents do not communicate with each other.
-> Backend writes `contracts/backend-api.json` (API surface) and `contracts/backend-result.json` (full result) on completion.
-> When backend completes, orchestrator reads `backend-api.json`, logs the API surface to the HTML log,
-> and updates `tasks.json`. Routing decisions use `backend-result.json` (via `result_path`).
-> Frontend reads `contracts/backend-api.json` opportunistically if it exists — this is
-> orchestrator-managed shared state, not direct agent-to-agent communication.
+> **Spawning pattern:**
+> ```bash
+> task_id_backend = spawn_agent(backend-agent, ..., run_in_background: true)
+> task_id_frontend = spawn_agent(frontend-agent, ..., run_in_background: true)
+> # Orchestrator returns IMMEDIATELY — does not block
+> ```
+>
+> **Agent coordination:**
+> - Backend writes `contracts/backend-api.json` (API surface) and `contracts/backend-result.json` (full result) on completion
+> - Frontend reads `contracts/backend-api.json` opportunistically if it exists (orchestrator-managed shared state, not direct agent-to-agent communication)
+> - Both agents emit events to the event queue when they start and complete
+> - The orchestrator is the coordination hub — agents do not communicate with each other
+>
+> **Orchestrator polling:**
+> After spawning, poll the task IDs every 10 seconds until both show status = "completed" (or either shows "blocked").
+> While polling, the log-coordinator is updating the HTML log in real time from the event queue.
 >
 > Orchestrator proceeds when both tasks show `completed` in `tasks.json`
 > (or either shows `blocked`).
@@ -534,13 +544,23 @@ Update each task's `worktree` field in `tasks.json`.
 > Invoke `backend-agent` first (if in scope), then `frontend-agent` (if in scope).
 > Max 3 attempts each. Hard stop after 3 — escalate.
 
-**Synthesis:** Read `tests_passing`, `dod_layer1.overall`, `e2e_smoke.status`, and
-`files_changed` from each agent's `result_path` in `tasks.json`. Full implementation
-JSONs go to the HTML log directly from contract files — do not accumulate them in
-orchestrator context.
+**Synthesis:** After polling completes, read results from contract files:
+- Backend: `.../contracts/backend-result.json`
+- Frontend: `.../contracts/frontend-result.json`
 
-Log AGENT events after each with `docs` status, `e2e_smoke` status, DOD L1 summary, and
-commit SHA.
+Extract: `tests_passing`, `dod_layer1.overall`, `e2e_smoke.status`, `files_changed`. Do not accumulate full JSONs in orchestrator context — read from files.
+
+**Result file writes (required):**
+Before returning, each implementation agent MUST write its result JSON:
+- Backend: `.../contracts/backend-result.json`
+- Frontend: `.../contracts/frontend-result.json`
+
+Additionally, emit events to the event queue:
+```json
+{"timestamp":"...","source":"backend-agent","type":"implementation_complete","issue_id":"N","data":{"domain":"backend","tests_passing":true,"dod_l1_overall":"PASS",...}}
+```
+
+The log-coordinator reads these events and updates the HTML log in real time.
 
 ---
 
