@@ -221,6 +221,10 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		$data['rocket_insights_no_credit_tooltip'] = __( 'Upgrade your plan to get access to re-test performance or run new tests', 'rocket' );
 		$data['is_free']                           = false;
 		$data['assets_img_url']                    = WP_ROCKET_ASSETS_IMG_URL;
+		$data['rocket_insights_errors']            = [
+			'invalid_url'   => __( 'Please enter a valid URL (e.g. https://example.com).', 'rocket' ),
+			'generic_error' => __( 'This URL could not be added. Please try a different URL.', 'rocket' ),
+		];
 
 		$global_score_data                   = $this->controller->get_global_score();
 		$global_score_data['status_color']   = $this->render->get_score_color_status( (int) $global_score_data['score'] );
