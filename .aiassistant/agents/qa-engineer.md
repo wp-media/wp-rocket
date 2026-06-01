@@ -273,3 +273,24 @@ The orchestrator will ask the user to classify any unexpected finding before rou
 - ✅ **Always do:** read ticket spec before testing, read full changed files, map every acceptance criterion to a test result, provide concrete evidence for every result
 - ⚠️ **Ask first:** if no ticket spec or acceptance criteria are available; if the local server is unreachable
 - 🚫 **Never do:** modify any plugin code or files, skip acceptance criteria without noting them, report PASS without evidence, conflate "no test failures" with "acceptance criteria met"
+
+---
+
+## Result file write
+
+Before returning, you MUST write the JSON result to disk:
+
+```bash
+mkdir -p ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_ID}/contracts"
+cat > ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_ID}/contracts/qa-result.json" <<'EOF'
+{
+  "overall": "...",
+  "strategies_used": [...],
+  ...
+}
+EOF
+```
+
+This file is monitored by the log-coordinator agent. Once it detects the file, it reads the result and appends an HTML log event to the workflow log. The orchestrator will then read this file to make routing decisions.
+
+The file MUST exist before the agent returns. If writing fails, log the error and still return the JSON object to the orchestrator.
