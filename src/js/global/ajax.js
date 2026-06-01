@@ -576,6 +576,10 @@ document.addEventListener('DOMContentLoaded', function() {
 					updateQuotaBanner(response.can_add_pages !== undefined ? response.can_add_pages : false);
 				}
 
+				// Display error message to the user
+				const errorMessage = response?.message || 'An error occurred while adding the page. Please try again.';
+				alert(errorMessage);
+
 				console.error(response?.message || response);
 			}
 		});
