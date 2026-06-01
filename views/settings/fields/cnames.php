@@ -7,15 +7,10 @@
 
 defined( 'ABSPATH' ) || exit;
 
-/**
- * Filters the CDN CNAME URLs displayed in the settings field.
- *
- * @since 3.22
- *
- * @param array $cdn_cnames Array of CDN CNAME URLs.
- */
-$rocket_cnames      = wpm_apply_filters_typed( 'array', 'rocket_field_cdn_cnames', get_rocket_option( 'cdn_cnames' ) ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
-$rocket_cnames_zone = get_rocket_option( 'cdn_zone' );
+$rocket_options = get_option( rocket_get_constant( 'WP_ROCKET_SLUG' ) );
+
+$rocket_cnames = $rocket_options['cdn_cnames'] ?? []; 
+$rocket_cnames_zone = $rocket_options['cdn_zone'] ?? [];
 /**
  * Filters the fields to be disabled for the CDN section.
  *
@@ -55,7 +50,7 @@ $rocket_disable_input_alt = wpm_apply_filters_typed( 'boolean', 'rocket_disable_
 							 *
 							 * @param bool $allow true to add the option, false otherwise.
 							 */
-							if ( apply_filters( 'rocket_allow_cdn_images', true ) ) :
+							if ( wpm_apply_filters_typed( 'boolean', 'rocket_allow_cdn_images', true ) ) :
 								?>
 								<option value="images" <?php selected( $rocket_cnames_zone[ $key ], 'images' ); ?>><?php esc_html_e( 'For Images', 'rocket' ); ?></option>
 							<?php endif; ?>
@@ -88,7 +83,7 @@ $rocket_disable_input_alt = wpm_apply_filters_typed( 'boolean', 'rocket_disable_
 					 *
 					 * @param bool $allow true to add the option, false otherwise.
 					 */
-					if ( apply_filters( 'rocket_allow_cdn_images', true ) ) :
+					if ( wpm_apply_filters_typed( 'boolean', 'rocket_allow_cdn_images', true ) ) :
 						?>
 					<option value="images"><?php esc_html_e( 'For Images', 'rocket' ); ?></option>
 					<?php endif; ?>
@@ -117,7 +112,7 @@ $rocket_disable_input_alt = wpm_apply_filters_typed( 'boolean', 'rocket_disable_
 					 *
 					 * @param bool $allow true to add the option, false otherwise.
 					 */
-					if ( apply_filters( 'rocket_allow_cdn_images', true ) ) :
+					if ( wpm_apply_filters_typed( 'boolean', 'rocket_allow_cdn_images', true ) ) :
 						?>
 					<option value="images"><?php esc_html_e( 'For Images', 'rocket' ); ?></option>
 					<?php endif; ?>
