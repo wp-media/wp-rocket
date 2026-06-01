@@ -11,6 +11,7 @@
 		initAddHomepage();
 		initAddPage();
 		initDeletePage();
+		updateSubmitButtonStateOnSubscriptionLoading();
 	} );
 
 	const addHomeButton = document.querySelector( '#wpr_add_page_component .wpr-cdn-add-page__homepage' );
@@ -26,6 +27,47 @@
 		if ( statusIndicator && html ) {
 			statusIndicator.outerHTML = html;
 		}
+	}
+
+	/**
+	 * Listens for custom 'rocketJsAfterPageNavigation' event to update the state of the submit button
+	 * based on the presence of a CDN subscription loading indicator on the CDN settings page.
+	 *
+	 * Disables the submit button when navigating to the CDN page if a subscription loading indicator is present,
+	 * and re-enables it when navigating away from the CDN page.
+	 */
+	function updateSubmitButtonStateOnSubscriptionLoading() {
+		document.addEventListener( 'rocketJsAfterPageNavigation', ( e ) => {
+					console.log('hello world');
+			// Bail out if submit button is not visible for the current page.
+			if (getComputedStyle( e.detail.submitButton ).display === 'none') {
+				return;
+			}
+
+			const classes = [
+				'.wpr-icon-orange-loader',
+				'.wpr-cdn-built-in--disabled',
+			];
+
+			const allPresent = classes.every( cls => document.querySelector( cls ) !== null );
+
+			// Re-enable submit button when page is not cdn and bail out.
+			if (e.detail.pageId !== 'page_cdn') {
+				if (e.detail.submitButton.classList.contains( 'wpr-cdn-disabled' )) {
+					e.detail.submitButton.classList.remove( 'wpr-cdn-disabled' );
+				}
+
+				return;
+			}
+
+			// Bail out if no cdn subscription loader is present.
+			if ( ! allPresent ) {
+				return;
+			}
+			
+			// Disable submit button when on cdn page and subscription loader is present.
+			e.detail.submitButton.classList.add( 'wpr-cdn-disabled' );
+		} );
 	}
 
 	/**
@@ -61,6 +103,11 @@
 
 		// Update status indicator to show loading state.
 		updateStatusIndicatorComponent( statusIndicatorHtml );
+
+		const submitButton = document.querySelector( '#wpr-options-submit' );
+		if ( submitButton ) {
+			submitButton.classList.add( 'wpr-cdn-disabled' );
+		}
 
 		// Create polling mechanism to send a request every 10 seconds to get the subscription status and once the subscription is active, we will refresh the page for now.
 		document.dispatchEvent(new CustomEvent('rocketCDNSubscriptionLoading', {}));

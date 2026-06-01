@@ -249,7 +249,7 @@ class APIClient {
 		$subscription = $this->get_subscription_data();
 		$status       = 'error';
 
-		if ( ! isset( $subscription['id'] ) || 0 === $subscription['id'] ) {
+		if ( ! isset( $subscription['website_id'] ) || 0 === $subscription['website_id'] ) {
 			return [
 				'status'  => $status,
 				'message' => __( 'RocketCDN cache purge failed: Missing identifier parameter.', 'rocket' ),
@@ -273,7 +273,7 @@ class APIClient {
 		];
 
 		$response = wp_remote_request(
-			self::ROCKETCDN_API . 'website/' . $subscription['id'] . '/purge/',
+			self::ROCKETCDN_API . 'website/' . $subscription['website_id'] . '/purge/',
 			$args
 		);
 
