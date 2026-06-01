@@ -84,8 +84,8 @@ vendor/bin/phpunit --configuration tests/Integration/phpunit.xml.dist --group <F
 ```
 
 - **PASS**: All changed PHP source files have tests AND tests pass
-- **WARN**: A changed file has no corresponding test (flag it explicitly by filename)
-- **FAIL**: Tests fail or error out
+- **WARN**: A changed file has no corresponding test. When reporting this, you MUST include an explicit written statement in `evidence`: the filename, the reason a test does not exist (not "too small" or "follow-up ticket" — those are rationalizations), and whether the missing test represents a real gap. "Later" is the load-bearing word — there is no later. If the only honest reason is "I didn't write it", that is a FAIL, not a WARN.
+- **FAIL**: Tests fail or error out, OR the agent's stated reason for a missing test is "I'll do it in a follow-up"
 
 ---
 
