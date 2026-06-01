@@ -279,9 +279,13 @@ fields — prose is for human readability only.
   "risk_notes": "string",
   "grooming_confidence": "LOW|MEDIUM|HIGH",
   "open_questions": ["string"],
-  "comment_posted": true
+  "github_comment_content": "string"
 }
 ```
+
+> `github_comment_content` is the full markdown body of the comment to post on the GitHub issue.
+> The grooming-agent MUST NOT post it directly — it returns the content and the orchestrator
+> posts it via github-manager.
 
 ### Challenger (`challenger`)
 ```json
@@ -291,9 +295,11 @@ fields — prose is for human readability only.
   "feedback": [{ "description": "string", "severity": "MUST_HAVE|SHOULD_HAVE|COULD_HAVE|NICE_TO_HAVE", "suggestion": "string" }],
   "alternative_suggestions": ["string"],
   "revised_risk_level": "LOW|MEDIUM|HIGH",
-  "comment_posted": true
+  "github_comment_content": "string"
 }
 ```
+
+> Same rule: challenger returns content, orchestrator posts via github-manager.
 
 ### Implementation (`backend-agent` / `frontend-agent`)
 ```json
@@ -356,28 +362,34 @@ fields — prose is for human readability only.
 {
   "pr_url": "string",
   "verdict": "PASS|REQUEST_CHANGES",
-  "inline_comments_posted": true,
-  "pr_commented": true,
   "blockers": [{ "file": "string", "line": 0, "type": "SECURITY|LOGIC|TESTS|CONVENTIONS", "criticality": "CRITICAL|HIGH|MEDIUM|LOW", "description": "string", "fix": "string" }],
   "nice_to_haves": [{ "file": "string", "type": "REFACTORING|NAMING|PERFORMANCE|DOCS", "description": "string" }],
-  "summary": "string"
+  "summary": "string",
+  "inline_comment_payloads": [{ "path": "string", "line": 0, "body": "string" }],
+  "pr_comment_content": "string"
 }
 ```
+
+> lead-reviewer MUST NOT post to GitHub directly. It returns `inline_comment_payloads`
+> (one entry per inline comment) and `pr_comment_content` (top-level PR comment body).
+> The orchestrator posts both via github-manager.
 
 ### QA (`qa-engineer`)
 ```json
 {
   "overall": "PASS|FAIL|PARTIAL",
   "strategies_used": ["API|BROWSER|VISUAL|ANALYSIS"],
-  "pr_commented": true,
   "criteria_results": [{ "criterion": "string", "method": "string", "result": "PASS|FAIL|PARTIAL", "evidence": "string" }],
   "smoke_tests": [{ "area": "string", "result": "PASS|FAIL", "evidence": "string" }],
   "tests_authored": ["string"],
-  "pr_comment_url": "string",
+  "pr_comment_content": "string",
   "blockers": ["string"],
   "recommendations": [{ "description": "string", "severity": "MUST_HAVE|SHOULD_HAVE|COULD_HAVE|NICE_TO_HAVE" }]
 }
 ```
+
+> qa-engineer MUST NOT post to GitHub directly. It returns `pr_comment_content` and the
+> orchestrator posts it via github-manager.
 
 ### Ticket writer (`ticket-writer`)
 ```json
@@ -439,7 +451,8 @@ touch ".TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/orchestrator-events.
 
 ### Spawn log-coordinator
 
-Spawn the log-coordinator as a **background agent** that will run for the entire pipeline:
+Spawn the log-coordinator as a **background agent**. Its primary job is a Bash polling
+loop — it must not exit between polls just because the queue has no new events.
 
 ```bash
 task_id_log = spawn_agent(
@@ -453,25 +466,60 @@ task_id_log = spawn_agent(
 # Orchestrator returns IMMEDIATELY — log-coordinator runs in background
 ```
 
-The log-coordinator will initialize the HTML log file and begin polling the event queue. All agents and the orchestrator will emit events to this queue, and the log-coordinator will render them in real time.
+**The log-coordinator prompt MUST include this explicit polling loop instruction:**
+
+> Your main body is a Bash polling loop. Execute it as a single long-running Bash command:
+> ```bash
+> TIMEOUT=3600; START=$(date +%s); LAST=0
+> while true; do
+>   NOW=$(date +%s); [ $((NOW-START)) -ge $TIMEOUT ] && break
+>   CUR=$(wc -l < <queue_path> 2>/dev/null || echo 0)
+>   if [ "$CUR" -gt "$LAST" ]; then
+>     # process new lines $((LAST+1))..$CUR — render each to HTML log
+>     LAST=$CUR
+>   fi
+>   grep -q '"type":"pipeline-complete"' <queue_path> 2>/dev/null && break
+>   sleep 10
+> done
+> ```
+> Do NOT exit between iterations. Sleep 10s, check again. Only exit on `pipeline-complete`
+> or after 3600 seconds total. An empty queue is normal — the pipeline is still running.
+
+The log-coordinator renders each JSONL event to a styled HTML block appended to the
+workflow log. See `html-log-format.md` for the expected structure.
 
 ### Spawn github-manager
 
-Spawn the github-manager as a **background agent** that will run for the entire pipeline:
+Spawn github-manager **once** to initialize its context. It returns immediately. The
+orchestrator resumes it via `SendMessage` whenever a GitHub operation is needed.
 
 ```bash
-task_id_github = spawn_agent(
+github_manager_id = spawn_agent(
   github-manager,
   issue_id: N,
   branch_name: <branch>,
   base_branch: <base_branch>,
-  CURRENT_MODEL: <model>,
-  run_in_background: true
+  repo: "wp-media/wp-rocket",
+  CURRENT_MODEL: <model>
+  # NOT run_in_background — let it initialize and return
 )
-# Orchestrator returns IMMEDIATELY — github-manager runs in background
+# Store github_manager_id for all subsequent SendMessage calls
 ```
 
-The github-manager will poll the event queue for GitHub operations and handle them on-demand: pushing, creating PRs, posting comments, managing labels. It does not block — the orchestrator proceeds immediately.
+github-manager is the **sole gateway to GitHub** for the entire pipeline. No other agent
+may call `gh` or any GitHub API directly. All GitHub writes — issue comments, PR creation,
+inline review comments, PR comments, labels, PR ready — are routed through github-manager.
+
+**Resuming github-manager for an operation:**
+```bash
+SendMessage(to: github_manager_id, message: "<operation instruction with full content>")
+# github-manager wakes with full prior context, performs the operation, returns
+# The orchestrator reads its response for success/failure and the PR URL/number
+```
+
+This pattern works because `SendMessage` resumes the agent with its full conversation
+context intact. github-manager accumulates state across resumes (PR number, labels applied,
+comments posted) without any polling or long-lived process.
 
 ### Emit initial event
 
@@ -517,8 +565,13 @@ This file is your resume marker. If the session dies, restart with the same issu
 Invoke `grooming-agent`:
 > Inputs: issue `#N`, issue file path, base branch
 
-Spec written to `.TemporaryItems/Issues/wp-rocket/issues/<N>-spec.md`. Agent also returns
-JSON. Log an AGENT event with the grooming JSON summary.
+Spec written to `.TemporaryItems/Issues/wp-rocket/issues/<N>-spec.md`. Agent returns JSON
+including `github_comment_content`. Log an AGENT event with the grooming JSON summary.
+
+**After grooming returns**, post the grooming comment via github-manager:
+```bash
+SendMessage(to: github_manager_id, message: "Post this comment on GitHub issue #<N>:\n\n<grooming.github_comment_content>")
+```
 
 ---
 
@@ -595,7 +648,7 @@ policy decisions, irreversible architectural choices, ambiguous acceptance crite
 are not new work — they are gaps in the specification that block correct implementation.
 
 Handling:
-1. grooming-agent has already posted them as a comment on the GitHub issue (`comment_posted` covers this).
+1. The grooming comment (including open_questions) has been posted to the GitHub issue via github-manager in Step 2.
 2. Surface them to the user in chat. Frame each question with its stakes and the default assumption you would make if proceeding autonomously.
 3. **When to pause vs. proceed:**
    - In **high-oversight mode**: always pause and wait for human input before continuing.
@@ -622,6 +675,11 @@ In all other modes, suppress mid-flow surfacing — save for the final report.
 
 If triggered:
 > Invoke `challenger`. Inputs: issue #N, issue file, spec path, `plan_version` (starts at 1)
+
+After challenger returns, post its comment via github-manager:
+```bash
+SendMessage(to: github_manager_id, message: "Post this comment on GitHub issue #<N>:\n\n<challenger.github_comment_content>")
+```
 
 Route on `verdict`:
 - **APPROVED** → proceed. Log AGENT event.
@@ -736,30 +794,28 @@ The log-coordinator reads these events and updates the HTML log in real time.
 
 ### Step 6 — Push & PR
 
-After all implementation agents have committed:
+After all implementation agents have committed, resume github-manager to push and open the PR:
 
-Emit an event to signal github-manager to push and create the PR:
-
-```json
-{
-  "type": "github_operation",
-  "operation": "push_and_create_pr",
-  "issue_id": "<N>",
-  "pr_details": {
-    "acceptance_criteria": [...],
-    "spec_path": "..."
-  }
-}
+```bash
+SendMessage(
+  to: github_manager_id,
+  message: "Push branch fix/<N>-... to origin, then create a draft PR against <base_branch>.
+  PR title: <derived from spec>
+  Spec path: .TemporaryItems/Issues/wp-rocket/issues/<N>-spec.md
+  Acceptance criteria: <numbered list>
+  Verify Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com> trailer on every commit before pushing."
+)
 ```
 
-The github-manager (already running in the background) will:
+github-manager will:
 1. Verify `Co-Authored-By: CURRENT_MODEL` trailer on every commit
 2. Push the branch
 3. Create the PR as draft with AI-generated notice prepended
-4. Emit a `github_operation_complete` event with the PR URL
+4. Return the PR URL and PR number
 
-Do NOT wait for github-manager to complete. Proceed immediately to Step 7.
-When you need the PR URL for the decisions strip, poll for the `github_operation_complete` event.
+**Wait for github-manager to return** before proceeding to quality gates — the PR URL
+is required by lead-reviewer and QA. Store `pr_url` and `pr_number` in the orchestrator
+state file and update the decisions strip in the HTML log.
 
 ---
 
@@ -852,6 +908,15 @@ Log GATE event.
 
 If the lead-reviewer agent was skipped (effort XS/S + LOW risk), this step is N/A — proceed directly to Step 9. Otherwise, read the result from `.TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/lead-review-result.json`.
 
+**Post review findings via github-manager** (always, regardless of verdict):
+```bash
+SendMessage(
+  to: github_manager_id,
+  message: "Post inline review comments on PR #<pr_number>: <lead_review.inline_comment_payloads as JSON>.
+  Then post this PR comment: <lead_review.pr_comment_content>"
+)
+```
+
 Route on highest `criticality` in `blockers`:
 
 | Criticality | Loop count | Action |
@@ -873,6 +938,14 @@ Log AGENT event with verdict, loop count, and any NTH dispatch.
 
 If skipped (internal refactor): log a ROUTING DECISION event with skip reason, proceed
 to finalize. Otherwise, read the result from `.TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/qa-result.json`.
+
+**Post QA findings via github-manager** (always, regardless of overall result):
+```bash
+SendMessage(
+  to: github_manager_id,
+  message: "Post this comment on PR #<pr_number>: <qa.pr_comment_content>"
+)
+```
 
 Route on `overall`:
 
@@ -899,13 +972,24 @@ has no HIGH/CRITICAL blockers (or is skipped), QA is PASS (or skipped or carried
 ### Step 11 — Finalize
 
 1. **Collect all NTH ticket URLs** — gather every URL returned by `ticket-writer` throughout
-   the run (from grooming, challenger, lead review, and QA dispatches). Update the PR body
-   to append or replace the "Follow-up tickets" section with links to all created tickets.
-   If no NTH tickets were created, write "None".
-2. Update PR body: replace "What was tested" with the full QA report
-3. `gh pr ready <PR#>` (move out of draft)
-4. Post final summary to the GitHub issue as a comment. The table is the entire body — no prose before or after it. Lead Review and QA details live on the PR; the issue comment must not repeat them.
-5. Log final ROUTING DECISION event: "Pipeline complete — READY FOR REVIEW"
+   the run (from grooming, challenger, lead review, and QA dispatches).
+
+2. **Resume github-manager** for finalization:
+   ```bash
+   SendMessage(
+     to: github_manager_id,
+     message: "Finalize the pipeline:
+     1. Update PR #<pr_number> body: replace 'Follow-up tickets' section with: <nth_ticket_urls or 'None'>
+     2. Update PR body: replace 'What was tested' with the full QA report (see below)
+     3. Mark PR ready: gh pr ready <pr_number>
+     4. Post this comment on GitHub issue #<N>: <final_summary_markdown>
+
+     QA report: <qa.pr_comment_content>
+     Final summary: <rendered table below>"
+   )
+   ```
+
+3. Log final ROUTING DECISION event: "Pipeline complete — READY FOR REVIEW"
 
 Final summary template:
 ```markdown
@@ -982,17 +1066,21 @@ You act as a context editor, not a context relay. Each agent receives only what 
 
 All agents also receive `CURRENT_MODEL` and `session_learnings` (section 13 of `AGENTS.md`).
 
-| Agent | Receives |
-|---|---|
-| `ticket-writer` (create) | Raw input only |
-| `grooming-agent` | Issue object + repo access |
-| `challenger` | Issue object + grooming object + `session_learnings` |
-| `backend-agent` | Issue object + spec path + dispatch plan |
-| `frontend-agent` | Issue object + spec path + dispatch plan + backend API contract (sequential mode only) |
-| `github-manager` | Issue #, branch name, base branch, acceptance criteria, spec path |
-| `lead-reviewer` | PR URL + spec path + acceptance criteria + `session_learnings` |
-| `qa-engineer` | PR number + acceptance criteria + base branch |
-| `ticket-writer` (nth_followup) | Single NTH feedback item (not full context) |
+| Agent | Receives | GitHub writes? |
+|---|---|---|
+| `ticket-writer` (create) | Raw input only | No |
+| `grooming-agent` | Issue object + repo access | **No** — returns `github_comment_content` |
+| `challenger` | Issue object + grooming object + `session_learnings` | **No** — returns `github_comment_content` |
+| `backend-agent` | Issue object + spec path + dispatch plan | No |
+| `frontend-agent` | Issue object + spec path + dispatch plan + backend API contract (sequential mode only) | No |
+| `github-manager` | Issue #, branch name, base branch, repo, CURRENT_MODEL; receives operation instructions via `SendMessage` | **Yes — sole gateway** |
+| `lead-reviewer` | PR URL + spec path + acceptance criteria + `session_learnings` | **No** — returns `inline_comment_payloads` + `pr_comment_content` |
+| `qa-engineer` | PR number + acceptance criteria + base branch | **No** — returns `pr_comment_content` |
+| `ticket-writer` (nth_followup) | Single NTH feedback item (not full context) | No |
+
+**github-manager is the only agent that may call `gh` or any GitHub API.** All other
+agents return content to the orchestrator, which routes it to github-manager via
+`SendMessage`. This keeps the GitHub integration boundary clean and swappable.
 
 ---
 
@@ -1002,8 +1090,8 @@ You do not produce AI-generated artifacts directly. However, you are responsible
 verifying that downstream agents comply:
 
 - Verify `implementation.co_authored_by` is present on every commit before proceeding to DOD L2
-- Verify `release.trailer_verified == true` before proceeding to DOD L2
-- Verify `review.inline_comments_posted == true` before routing on review verdict
-- Verify `qa.pr_commented == true` before reading QA result
-- The final summary you post to the GitHub issue (Step 11) must open with the `[!NOTE]` callout
+- Verify github-manager confirmed trailer before proceeding to DOD L2 (it reports this during Step 6 push)
+- Verify github-manager confirmed inline comments posted before routing on lead review verdict
+- Verify github-manager confirmed QA comment posted before finalizing
+- The final summary posted to the GitHub issue (Step 11 via github-manager) must open with the `[!NOTE]` callout
 
