@@ -86,6 +86,7 @@ class Test_RocketCDNCta extends BaseTestCase {
 		$this->assertFalse( $cta_data['is_expanded'] );
 
 		$this->add_page( 'http://example.org/page-1', 'Page 1' );
+		wp_cache_flush();
 		$sections = $this->controller->add_rocketcdn_free_section( [] );
 		$cta_data = $sections['rocketcdn_free_section']['cta_data'];
 
