@@ -139,7 +139,7 @@ EOF
 
 Use Conventional Commits format (`fix`, `feat`, `refactor`, `test`, `docs`). One atomic commit covering only your backend + docs changes.
 
-Do not push. The `release-agent` handles push and PR creation after both implementation agents have committed.
+Do not push. The `github-manager` handles push and PR creation after both implementation agents have committed.
 
 ---
 
