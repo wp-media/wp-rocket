@@ -572,22 +572,58 @@ QA           ──────────────────┘
 
 CI is monitored by DOD L2 Check 5
 
-**Spawning:**
-- **DOD L2** — invoke the `dod` skill with `layer: "2"` in your context. DOD L2 polls
-  `gh pr checks` and extracts failure excerpts; it fully replaces the former ci-agent.
-- **Lead Review** — spawn `lead-reviewer` (skip if `effort IN [XS, S]` AND `risk_level == LOW`).
-- **QA** — spawn `qa-engineer` (skip only for purely internal refactors). If `domains` is
-  `frontend` or `both`, **or** if `ui_visible: true` (PHP renders visible admin output) —
-  explicitly instruct the qa-engineer that Strategy B is the **primary** strategy.
+**Parallel spawning (true asynchrony):**
 
-**Inputs for each:**
-- DOD L2: branch name, base branch, PR URL
-- Lead Review: issue #N, spec path, base branch, acceptance criteria (numbered list)
-- QA: issue #N, PR number, base branch, acceptance criteria (numbered list), domains, ui_visible flag
+Spawn all three quality gates as **background agents**. Do NOT wait for them to complete. Each agent writes its result to a contract file as it finishes. The orchestrator polls those files and continues orchestrating while they run in parallel.
+
+1. **DOD L2** — Spawn `dod` skill with `layer: "2"`, **`run_in_background: true`**
+   - Receives: branch name, base branch, PR URL
+   - Writes result to: `.TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/dod-l2-result.json`
+   - Skip if: not applicable (DOD L2 always runs)
+
+2. **Lead Review** — Spawn `lead-reviewer`, **`run_in_background: true`** (skip agent entirely if `effort IN [XS, S]` AND `risk_level == LOW`)
+   - Receives: issue #N, spec path, base branch, acceptance criteria (numbered list)
+   - Writes result to: `.TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/lead-review-result.json`
+
+3. **QA** — Spawn `qa-engineer`, **`run_in_background: true`** (skip agent entirely only for purely internal refactors)
+   - Receives: issue #N, PR number, base branch, acceptance criteria (numbered list), domains, ui_visible flag
+   - If `domains` is `frontend` or `both`, **or** if `ui_visible: true` — explicitly instruct that Strategy B is the **primary** strategy
+   - Writes result to: `.TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/qa-result.json`
+
+4. **Log Coordinator** — Spawn `log-coordinator`, **`run_in_background: true`**
+   - Receives: issue_id, log_file_path, result_files dict, timeout_seconds (2700 for 45 min)
+   - Monitors the three contract files above
+   - As each result file appears, reads it and appends an HTML log event to the workflow log
+   - Exit when all three are logged or timeout is reached
+
+**Spawning pattern:**
+```bash
+task_id_dod = spawn_agent(dod, layer: 2, run_in_background: true)
+task_id_lead = spawn_agent(lead-reviewer, ..., run_in_background: true) if not skipped
+task_id_qa = spawn_agent(qa-engineer, ..., run_in_background: true) if not skipped
+task_id_log = spawn_agent(log-coordinator, ..., run_in_background: true)
+# Orchestrator returns IMMEDIATELY — does not wait
+```
+
+**Polling for completion:**
+After spawning, poll the task IDs every 10 seconds until all non-skipped agents show status = "completed":
+```bash
+while [ $polling_elapsed -lt $overall_timeout ]; do
+  if all_tasks_completed; then
+    break
+  fi
+  sleep(10)
+  polling_elapsed += 10
+done
+```
+
+Then proceed to Step 7 and read results from the contract files (they are guaranteed to exist by this point).
 
 ---
 
 #### Step 7 — DOD L2 result
+
+All three quality gates have now completed (polling finished above). Read the DOD L2 result from `.TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/dod-l2-result.json`.
 
 DOD L2 covers both code quality checks (checks 1, 4) and CI (check 5). A FAIL can originate
 from either. Read `blockers` to distinguish: CI failures reference check names from
@@ -599,9 +635,9 @@ Route on `dod_l2.overall`:
 |---|---|---|
 | `PASS` | any | No action — parallel gates continue. |
 | `WARN` | any | No action — parallel gates continue. Log GATE event `data-status="warn"`. In high-oversight mode, surface for confirmation. |
-| `FAIL` (CI) | `dod_loop < 2` | Diagnose the CI failure from `blockers[*].error_excerpt`. Re-invoke the relevant implementation agent with the suggested fix. Re-push. Increment `dod_loop`. Re-run DOD L2 + Lead Review + QA in parallel. Log ROUTING DECISION. |
+| `FAIL` (CI) | `dod_loop < 2` | Diagnose the CI failure from `blockers[*].error_excerpt`. Re-invoke the relevant implementation agent with the suggested fix. Re-push. Increment `dod_loop`. Spawn DOD L2, Lead Review, QA again (all in background in parallel). Resume polling from Step 7. Log ROUTING DECISION. |
 | `FAIL` (CI) | `dod_loop >= 2` | Escalate with the exact error excerpt and suggested fix. |
-| `FAIL` (code) | `dod_loop < 1` | **Abort any in-flight Lead Review and QA.** Increment `dod_loop`. Re-invoke the relevant implementation agent with specific blockers, re-push. Re-run DOD L2 + Lead Review + QA in parallel. Log ROUTING DECISION. |
+| `FAIL` (code) | `dod_loop < 1` | Increment `dod_loop`. Re-invoke the relevant implementation agent with specific blockers, re-push. Spawn DOD L2, Lead Review, QA again (all in background in parallel). Resume polling from Step 7. Log ROUTING DECISION. |
 | `FAIL` (code) | `dod_loop >= 1` | Escalate to user with exact errors. |
 
 Log GATE event.
@@ -610,13 +646,15 @@ Log GATE event.
 
 #### Step 8 — Lead Review result
 
+If the lead-reviewer agent was skipped (effort XS/S + LOW risk), this step is N/A — proceed directly to Step 9. Otherwise, read the result from `.TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/lead-review-result.json`.
+
 Route on highest `criticality` in `blockers`:
 
 | Criticality | Loop count | Action |
 |---|---|---|
 | No blockers | any | No action — parallel gates continue. Log AGENT event. |
-| `CRITICAL` | any | **Abort any in-flight QA.** Evaluate if fixable. If yes (specific missing guard, missing validation): attempt one fix loop (same as HIGH). Re-invoke QA only if at least one blocker has `type == "LOGIC"` — otherwise carry the existing QA verdict forward. If architectural/unresolved after 1 attempt → escalate immediately. Log ESCALATION event. |
-| `HIGH` / `MEDIUM` | `review_loop < 1` | **Abort any in-flight QA.** Re-invoke relevant implementation agent with the `fix` field from that blocker. Re-push. Re-invoke Lead Review in parallel. **Re-invoke QA only if at least one blocker has `type == "LOGIC"`** — if all blockers are `SECURITY`, `TESTS`, or `CONVENTIONS`, behavior did not change; carry the existing QA verdict forward. Log ROUTING DECISION. |
+| `CRITICAL` | any | Evaluate if fixable. If yes (specific missing guard, missing validation): attempt one fix loop (same as HIGH). Re-invoke QA only if at least one blocker has `type == "LOGIC"` — otherwise carry the existing QA verdict forward. If architectural/unresolved after 1 attempt → escalate immediately. Log ESCALATION event. |
+| `HIGH` / `MEDIUM` | `review_loop < 1` | Re-invoke relevant implementation agent with the `fix` field from that blocker. Re-push. Spawn Lead Review (background). If at least one blocker has `type == "LOGIC"`, also spawn QA (background) in parallel. Otherwise carry existing QA verdict forward. Log ROUTING DECISION. |
 | `HIGH` / `MEDIUM` | `review_loop >= 1` | Escalate. |
 | `LOW` only | any | Dispatch `ticket-writer` (NICE_TO_HAVE, non-blocking). Parallel gates continue. Log PARALLEL event. |
 
@@ -630,7 +668,7 @@ Log AGENT event with verdict, loop count, and any NTH dispatch.
 #### Step 9 — QA result
 
 If skipped (internal refactor): log a ROUTING DECISION event with skip reason, proceed
-to finalize.
+to finalize. Otherwise, read the result from `.TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/qa-result.json`.
 
 Route on `overall`:
 
@@ -638,7 +676,7 @@ Route on `overall`:
 |---|---|---|
 | `PASS` | any | Proceed to finalize. |
 | `PARTIAL` | any | Surface to user for decision. Log ESCALATION event. |
-| `FAIL` | `qa_loop < 1` | Re-invoke relevant implementation agent with `qa.blockers` list. Re-push. Log ROUTING DECISION. Re-invoke `qa-engineer`. |
+| `FAIL` | `qa_loop < 1` | Re-invoke relevant implementation agent with `qa.blockers` list. Re-push. Log ROUTING DECISION. Spawn QA (background) again. Resume polling and re-read result. |
 | `FAIL` | `qa_loop >= 1` | Escalate with failing criteria and `alternative_suggestions`. |
 
 For `unclear` unexpected findings: ask user before routing.
