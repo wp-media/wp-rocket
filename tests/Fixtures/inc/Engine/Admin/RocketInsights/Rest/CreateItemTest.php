@@ -123,7 +123,7 @@ return [
 		],
 		'expected' => [
 			'code'          => 400,
-			'error_message' => 'Url does not resolve to a valid page',
+			'error_message' => 'This URL is not publicly accessible',
 		],
 	],
 	'testShouldSucceedWithExternalUrl'                   => [
