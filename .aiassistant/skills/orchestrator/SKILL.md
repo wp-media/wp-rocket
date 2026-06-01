@@ -53,6 +53,17 @@ This separation decouples routing logic (orchestrator) from visibility logic (lo
 
 **Reference:** Read `.aiassistant/skills/orchestrator/event-schema.md` for the complete event format.
 
+**Escalation notifications (PushNotification):** When the orchestrator decides to escalate (human decision required), it MUST immediately call:
+```
+PushNotification("Pipeline paused for decision: [gate] — [specific blocker]. [action needed].")
+```
+
+This wakes the user mid-pipeline instead of them discovering it later. Examples:
+- `"Pipeline paused for decision: DOD L2 CI failure after 2 retries — [error]. Manual intervention needed."`
+- `"Pipeline paused for decision: Code review blocker — architectural issue. Immediate decision required."`
+
+The notification is NOT optional for escalations — if a gate fails after retries are exhausted, the user is interrupted.
+
 ---
 
 ## Core principle
