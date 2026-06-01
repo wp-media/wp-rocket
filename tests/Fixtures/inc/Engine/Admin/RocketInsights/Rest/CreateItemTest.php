@@ -344,4 +344,25 @@ return [
 			'database_entries' => 2, // Should rollback to 2 (the concurrent one + original, not the failed one)
 		],
 	],
+	'testShouldReturnMessageWhenUrlAlreadySubmitted'     => [
+		'config'   => [
+			'post_data'     => [
+				'page_url' => 'http://example.org/already-monitored',
+				'source'   => 'dashboard',
+			],
+			'rows'          => [
+				[
+					'url'       => 'http://example.org/already-monitored',
+					'status'    => 'completed',
+					'is_mobile' => 1,
+				],
+			],
+			'customer_data' => ( new UserDataGenerator() ),
+			'mock_http'     => true,
+		],
+		'expected' => [
+			'code'          => 400,
+			'error_message' => 'This URL is already being monitored.',
+		],
+	],
 ];
