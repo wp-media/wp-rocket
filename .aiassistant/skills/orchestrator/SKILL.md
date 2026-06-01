@@ -4,7 +4,7 @@ description: >
   User-facing entry point for the wp-rocket issue workflow. Invoke directly to start a
   delivery run from a GitHub issue number, URL, or raw description. Runs inline in your
   conversation context; spawns specialist agents (ticket-writer, grooming-agent,
-  challenger, backend-agent, frontend-agent, github-manager, lead-reviewer,
+  challenger, backend-agent, frontend-agent, release-agent, lead-reviewer,
   qa-engineer) as isolated sub-agents; invokes supporting skills (knowledge-graph, dod,
   docs, e2e, issue-workflow) inline. Routes based on structured JSON outputs from each
   agent, manages loop counters, handles escalations, and maintains a live HTML run log.
@@ -41,45 +41,6 @@ return JSON `co_authored_by` fields, and GitHub comments.
 
 ---
 
-## Runtime capabilities
-
-Detect your runtime's capabilities **at startup** (before Step 1):
-
-- **PARALLEL mode** — `runSubagent` supports `run_in_background: true` in your context.  
-  Use the parallel spawn patterns throughout these instructions.
-- **SEQUENTIAL mode** — `runSubagent` is synchronous only (e.g. VS Code Copilot).  
-  Use the **[SEQUENTIAL FALLBACK]** paths defined in each step.
-
-VS Code Copilot is currently SEQUENTIAL mode. All `run_in_background: true` calls block
-until the agent returns.
-
----
-
-## Event-driven logging architecture
-
-**Important:** This orchestrator no longer writes to the HTML log directly. Instead:
-
-1. **All agents emit structured JSON events** to `.../orchestrator-events.jsonl` as they work
-2. **The log-coordinator** reads this event queue and transforms events to HTML in real time
-3. **"Log X event" instructions** in the orchestrator refer to: either agents have already emitted the event, or the orchestrator emits to the queue
-
-This separation decouples routing logic (orchestrator) from visibility logic (log-coordinator). Future enhancements (Slack notifications, metrics, webhooks) add to log-coordinator without touching the orchestrator.
-
-**Reference:** Read `.aiassistant/skills/orchestrator/event-schema.md` for the complete event format.
-
-**Escalation notifications (PushNotification):** When the orchestrator decides to escalate (human decision required), it MUST immediately call:
-```
-PushNotification("Pipeline paused for decision: [gate] — [specific blocker]. [action needed].")
-```
-
-This wakes the user mid-pipeline instead of them discovering it later. Examples:
-- `"Pipeline paused for decision: DOD L2 CI failure after 2 retries — [error]. Manual intervention needed."`
-- `"Pipeline paused for decision: Code review blocker — architectural issue. Immediate decision required."`
-
-The notification is NOT optional for escalations — if a gate fails after retries are exhausted, the user is interrupted.
-
----
-
 ## Core principle
 
 **TICKET and GROOMING always run.** All routing decisions happen *after* GROOMING returns.
@@ -89,51 +50,6 @@ The instructions below are guidelines. Cases you face may not fit any single des
 case. Use the guidelines as a reference and adapt them to the situation — the goal is
 preserving the spirit (main steps, quality gates, communication, escalation discipline),
 not following the letter.
-
----
-
-## Resume mode (auto-recovery from interruption)
-
-If the session ends mid-pipeline (credits exhausted, connection loss, etc.), you can resume:
-
-**At startup, detect if this is a resume:**
-
-1. Check if the issue run directory exists: `.TemporaryItems/Issues/wp-rocket/issue-<N>/`
-2. If it does, read the event queue: `.../orchestrator-events.jsonl`
-3. Scan for completed agents by checking result files:
-   - `grooming-result.json` → grooming done
-   - `backend-result.json` → backend implementation done
-   - `frontend-result.json` → frontend implementation done
-   - `dod-l2-result.json` → DOD L2 done
-   - `lead-review-result.json` → lead review done
-   - `qa-result.json` → QA done
-
-**Resume logic:**
-
-- **If grooming result exists but no implementation results:** Skip grooming, re-spawn implementation agents (they may have failed or been interrupted mid-work).
-- **If implementation results exist but no gates:** Skip implementation, proceed directly to Step 7 (parallel quality gates).
-- **If some gates complete but not all:** Skip completed gates, re-spawn missing ones.
-- **If all gates done:** Proceed to Step 11 (finalization).
-
-**State file for orchestrator:**
-
-Create/update `.TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/.orchestrator-state`:
-```json
-{
-  "issue_id": "<N>",
-  "step": 7,
-  "last_completed_step": 6,
-  "grooming_done": true,
-  "implementation_done": true,
-  "gates_done": { "dod_l2": true, "lead_review": false, "qa": true },
-  "pr_number": 123,
-  "pr_url": "https://..."
-}
-```
-
-Update this file after each major step. On resume, read it to jump directly to the next incomplete step.
-
-**Important:** The event queue and result files are the source of truth. Use them to detect state, not conversation history.
 
 ---
 
@@ -185,9 +101,9 @@ user can see what mode you picked.
 
 Path: `.TemporaryItems/Issues/wp-rocket/issue-<N>-workflow-log.html`
 
-The log-coordinator creates and maintains this file in real time by polling the event queue.
-You do not write HTML directly. The orchestrator's job is routing; the log-coordinator
-handles all visibility.
+- **Create** the log at startup with just the header and an empty event list.
+- **Rewrite the full file** after every action — the event list grows with each update.
+- See `.aiassistant/skills/orchestrator/html-log-format.md` for the full HTML structure and event patterns. Load it on demand (not at session start) to keep context lean.
 
 Maintain in your context tracking:
 - Which agents have been invoked and their return JSON
@@ -293,13 +209,9 @@ fields — prose is for human readability only.
   "risk_notes": "string",
   "grooming_confidence": "LOW|MEDIUM|HIGH",
   "open_questions": ["string"],
-  "github_comment_content": "string"
+  "comment_posted": true
 }
 ```
-
-> `github_comment_content` is the full markdown body of the comment to post on the GitHub issue.
-> The grooming-agent MUST NOT post it directly — it returns the content and the orchestrator
-> posts it via github-manager.
 
 ### Challenger (`challenger`)
 ```json
@@ -309,11 +221,9 @@ fields — prose is for human readability only.
   "feedback": [{ "description": "string", "severity": "MUST_HAVE|SHOULD_HAVE|COULD_HAVE|NICE_TO_HAVE", "suggestion": "string" }],
   "alternative_suggestions": ["string"],
   "revised_risk_level": "LOW|MEDIUM|HIGH",
-  "github_comment_content": "string"
+  "comment_posted": true
 }
 ```
-
-> Same rule: challenger returns content, orchestrator posts via github-manager.
 
 ### Implementation (`backend-agent` / `frontend-agent`)
 ```json
@@ -347,16 +257,14 @@ fields — prose is for human readability only.
 }
 ```
 
-### GitHub operations (`github-manager`)
+### Release (`release-agent`)
 ```json
 {
-  "operation": "pr_create|push|comment|label|status_update",
   "branch_pushed": true,
   "trailer_verified": true,
   "pr_url": "string",
   "pr_number": 0,
-  "pr_created": true,
-  "success": true
+  "pr_created": true
 }
 ```
 
@@ -376,34 +284,28 @@ fields — prose is for human readability only.
 {
   "pr_url": "string",
   "verdict": "PASS|REQUEST_CHANGES",
+  "inline_comments_posted": true,
+  "pr_commented": true,
   "blockers": [{ "file": "string", "line": 0, "type": "SECURITY|LOGIC|TESTS|CONVENTIONS", "criticality": "CRITICAL|HIGH|MEDIUM|LOW", "description": "string", "fix": "string" }],
   "nice_to_haves": [{ "file": "string", "type": "REFACTORING|NAMING|PERFORMANCE|DOCS", "description": "string" }],
-  "summary": "string",
-  "inline_comment_payloads": [{ "path": "string", "line": 0, "body": "string" }],
-  "pr_comment_content": "string"
+  "summary": "string"
 }
 ```
-
-> lead-reviewer MUST NOT post to GitHub directly. It returns `inline_comment_payloads`
-> (one entry per inline comment) and `pr_comment_content` (top-level PR comment body).
-> The orchestrator posts both via github-manager.
 
 ### QA (`qa-engineer`)
 ```json
 {
   "overall": "PASS|FAIL|PARTIAL",
   "strategies_used": ["API|BROWSER|VISUAL|ANALYSIS"],
+  "pr_commented": true,
   "criteria_results": [{ "criterion": "string", "method": "string", "result": "PASS|FAIL|PARTIAL", "evidence": "string" }],
   "smoke_tests": [{ "area": "string", "result": "PASS|FAIL", "evidence": "string" }],
   "tests_authored": ["string"],
-  "pr_comment_content": "string",
+  "pr_comment_url": "string",
   "blockers": ["string"],
   "recommendations": [{ "description": "string", "severity": "MUST_HAVE|SHOULD_HAVE|COULD_HAVE|NICE_TO_HAVE" }]
 }
 ```
-
-> qa-engineer MUST NOT post to GitHub directly. It returns `pr_comment_content` and the
-> orchestrator posts it via github-manager.
 
 ### Ticket writer (`ticket-writer`)
 ```json
@@ -435,146 +337,8 @@ Read the issue file at `.TemporaryItems/Issues/wp-rocket/issues/<N>.md` (produce
 If the entry was raw input rather than an issue number, invoke `ticket-writer` in `create`
 mode first to formalize the issue, then read the resulting file.
 
-### Detect resume mode
-
-Check if this is a resumed workflow:
-
-```bash
-if [ -f ".TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/.orchestrator-state" ]; then
-  # Resume mode detected
-  RESUME=true
-  STATE=$(cat ".TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/.orchestrator-state")
-  LAST_STEP=$(echo $STATE | jq .last_completed_step)
-else
-  # Fresh start
-  RESUME=false
-  LAST_STEP=0
-fi
-```
-
-If `RESUME=true`, skip to the step after `last_completed_step`. Otherwise, proceed with fresh initialization.
-
-### Initialize logging subsystem
-
-Create the run directory and event queue:
-
-```bash
-mkdir -p ".TemporaryItems/Issues/wp-rocket/issue-<N>/contracts"
-touch ".TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/orchestrator-events.jsonl"
-```
-
-### Spawn log-coordinator
-
-**PARALLEL mode** — Spawn once as a background agent. It monitors the event queue for the
-entire pipeline and exits on `pipeline-complete`. No further interaction needed.
-
-```bash
-spawn_agent(
-  log-coordinator,
-  run_in_background: true,
-  issue_id: N,
-  log_file_path: ".TemporaryItems/Issues/wp-rocket/issue-<N>-workflow-log.html",
-  event_queue_path: ".TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/orchestrator-events.jsonl",
-  issue_title: "<issue title>"
-)
-# No return value — runs in background for entire pipeline
-```
-
-**[SEQUENTIAL FALLBACK]** — Do NOT spawn in background. Instead, call log-coordinator in
-**sync mode** (`sync: true`) after each of these checkpoints:
-
-| When to call | Purpose |
-|---|---|
-| After Step 2b (state file created) | Initialize HTML shell |
-| After Step 4 (grooming complete) | Flush grooming events |
-| After Step 5 (implementation complete) | Flush impl events |
-| After Step 6 (PR created) | Flush push/PR events |
-| After Steps 7–9 complete | Flush quality gate events |
-| After emitting `pipeline-complete` | Final update + badge flip |
-
-Each call renders all pending events from `last_line` to EOF, updates the state file, and
-exits immediately. Events are never double-rendered.
-
-```bash
-spawn_agent(
-  log-coordinator,
-  sync: true,
-  issue_id: N,
-  log_file_path: ".TemporaryItems/Issues/wp-rocket/issue-<N>-workflow-log.html",
-  event_queue_path: ".TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/orchestrator-events.jsonl",
-  issue_title: "<issue title>"
-)
-```
-
-### Spawn github-manager
-
-Spawn github-manager **once** to initialize its context. It returns immediately. The
-orchestrator resumes it via `SendMessage` whenever a GitHub operation is needed.
-
-```bash
-github_manager_id = spawn_agent(
-  github-manager,
-  issue_id: N,
-  branch_name: <branch>,
-  base_branch: <base_branch>,
-  repo: "wp-media/wp-rocket",
-  CURRENT_MODEL: <model>
-  # NOT run_in_background — let it initialize and return
-)
-# Store github_manager_id for all subsequent SendMessage calls
-```
-
-github-manager is the **sole gateway to GitHub** for the entire pipeline. No other agent
-may call `gh` or any GitHub API directly. All GitHub writes — issue comments, PR creation,
-inline review comments, PR comments, labels, PR ready — are routed through github-manager.
-
-**Resuming github-manager for an operation:**
-```bash
-SendMessage(to: github_manager_id, message: "<operation instruction with full content>")
-# github-manager wakes with full prior context, performs the operation, returns
-# The orchestrator reads its response for success/failure and the PR URL/number
-```
-
-This pattern works because `SendMessage` resumes the agent with its full conversation
-context intact. github-manager accumulates state across resumes (PR number, labels applied,
-comments posted) without any polling or long-lived process.
-
-### Emit initial event
-
-```bash
-cat >> ".TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/orchestrator-events.jsonl" <<'EOF'
-{"timestamp":"$(date -u +'%Y-%m-%dT%H:%M:%SZ')","source":"orchestrator","type":"routing_decision","issue_id":"<N>","data":{"step":"1","decision":"pipeline-started","calibration":"<mode>"}}
-EOF
-```
-
-### Initialize or resume state file
-
-If fresh start, create:
-```bash
-cat > ".TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/.orchestrator-state" <<'EOF'
-{
-  "issue_id": "<N>",
-  "step": 1,
-  "last_completed_step": 0,
-  "grooming_done": false,
-  "implementation_done": false,
-  "gates_done": { "dod_l2": false, "lead_review": false, "qa": false },
-  "pr_number": null,
-  "pr_url": null
-}
-EOF
-```
-
-If resuming, the file already exists. Read it to get `last_completed_step` and jump to the next step.
-
-**Update this file after each major checkpoint:**
-- After grooming: `grooming_done: true, step: 3`
-- After implementation: `implementation_done: true, step: 7`
-- After PR created: add `pr_number` and `pr_url`
-- After each gate completes: `gates_done.{dod_l2|lead_review|qa}: true`
-- Before returning: `step: 11`
-
-This file is your resume marker. If the session dies, restart with the same issue number and it will skip completed work.
+Create the initial HTML log (empty event list). Log a ROUTING DECISION event:
+"Pipeline started — reading issue #N. Calibration: <mode>."
 
 ---
 
@@ -583,29 +347,8 @@ This file is your resume marker. If the session dies, restart with the same issu
 Invoke `grooming-agent`:
 > Inputs: issue `#N`, issue file path, base branch
 
-Spec written to `.TemporaryItems/Issues/wp-rocket/issues/<N>-spec.md`. Agent returns JSON
-including `github_comment_content`. Log an AGENT event with the grooming JSON summary.
-
-**Step 2a — Post grooming comment (NON-OPTIONAL):**
-
-After grooming returns, you MUST post the comment via github-manager. This is not optional.
-Do not skip this step even if the grooming output seems complete.
-
-```bash
-SendMessage(
-  to: github_manager_id,
-  message: "Post this comment on GitHub issue #<N> (repo: wp-media/wp-rocket):\n\n<grooming.github_comment_content>"
-)
-```
-
-Wait for github-manager to confirm the comment was posted before proceeding.
-
-**Step 2b — Update state:**
-
-```bash
-# Update state
-grooming_done: true, step: 3
-```
+Spec written to `.TemporaryItems/Issues/wp-rocket/issues/<N>-spec.md`. Agent also returns
+JSON. Log an AGENT event with the grooming JSON summary.
 
 ---
 
@@ -647,10 +390,9 @@ suggests low actual risk), confirm with the user before deciding.
 | `frontend-agent` | `sonnet` | `opus` if user confirmed |
 | `lead-reviewer` | `sonnet` | — |
 | `qa-engineer` | `sonnet` | `haiku` when `effort=XS AND risk=LOW AND complexity=LOW` |
-| `github-manager` | `haiku` | — |
+| `release-agent` | `haiku` | — |
 | `ticket-writer` | `haiku` | — |
 | `e2e-qa-tester` | `sonnet` | — |
-| `log-coordinator` | `haiku` | — |
 
 Pass the resolved model as the `model` parameter on every Agent tool spawn. For agents with frontmatter `model: haiku`, this is redundant but harmless — always pass it explicitly so the intent is clear in the orchestrator context.
 
@@ -682,7 +424,7 @@ policy decisions, irreversible architectural choices, ambiguous acceptance crite
 are not new work — they are gaps in the specification that block correct implementation.
 
 Handling:
-1. The grooming comment (including open_questions) has been posted to the GitHub issue via github-manager in Step 2.
+1. grooming-agent has already posted them as a comment on the GitHub issue (`comment_posted` covers this).
 2. Surface them to the user in chat. Frame each question with its stakes and the default assumption you would make if proceeding autonomously.
 3. **When to pause vs. proceed:**
    - In **high-oversight mode**: always pause and wait for human input before continuing.
@@ -709,11 +451,6 @@ In all other modes, suppress mid-flow surfacing — save for the final report.
 
 If triggered:
 > Invoke `challenger`. Inputs: issue #N, issue file, spec path, `plan_version` (starts at 1)
-
-After challenger returns, post its comment via github-manager:
-```bash
-SendMessage(to: github_manager_id, message: "Post this comment on GitHub issue #<N>:\n\n<challenger.github_comment_content>")
-```
 
 Route on `verdict`:
 - **APPROVED** → proceed. Log AGENT event.
@@ -778,89 +515,46 @@ git worktree add .TemporaryItems/Issues/wp-rocket/issue-<N>/worktrees/frontend <
 Update each task's `worktree` field in `tasks.json`.
 
 **05a/b — Parallel** (scopes disjoint):
-> Spawn `backend-agent` and `frontend-agent` **in parallel as background tasks**.
-> Both receive: issue #N, spec path, dispatch plan, their task entry from `tasks.json`
+> Spawn `backend-agent` and `frontend-agent` simultaneously.
+> Each agent receives: issue #N, spec path, dispatch plan, their task entry from `tasks.json`
 > (including `file_scope` and `worktree` path).
 >
-> **Spawning pattern:**
-> ```bash
-> task_id_backend = spawn_agent(backend-agent, ..., run_in_background: true)
-> task_id_frontend = spawn_agent(frontend-agent, ..., run_in_background: true)
-> # Orchestrator returns IMMEDIATELY — does not block
-> ```
->
-> **Agent coordination:**
-> - Backend writes `contracts/backend-api.json` (API surface) and `contracts/backend-result.json` (full result) on completion
-> - Frontend reads `contracts/backend-api.json` opportunistically if it exists (orchestrator-managed shared state, not direct agent-to-agent communication)
-> - Both agents emit events to the event queue when they start and complete
-> - The orchestrator is the coordination hub — agents do not communicate with each other
->
-> **Orchestrator polling:**
-> After spawning, poll the task IDs every 10 seconds until both show status = "completed" (or either shows "blocked").
+> The orchestrator is the coordination hub — agents do not communicate with each other.
+> Backend writes `contracts/backend-api.json` (API surface) and `contracts/backend-result.json` (full result) on completion.
+> When backend completes, orchestrator reads `backend-api.json`, logs the API surface to the HTML log,
+> and updates `tasks.json`. Routing decisions use `backend-result.json` (via `result_path`).
+> Frontend reads `contracts/backend-api.json` opportunistically if it exists — this is
+> orchestrator-managed shared state, not direct agent-to-agent communication.
 >
 > Orchestrator proceeds when both tasks show `completed` in `tasks.json`
 > (or either shows `blocked`).
 
-**05a/b — Sequential fallback** (scopes overlap, **or SEQUENTIAL runtime mode**):
+**05a/b — Sequential fallback** (scopes overlap):
 > Invoke `backend-agent` first (if in scope), then `frontend-agent` (if in scope).
 > Max 3 attempts each. Hard stop after 3 — escalate.
-> After both complete, call log-coordinator in sync mode to flush implementation events.
 
-**Synthesis:** After polling completes, read results from contract files:
-- Backend: `.../contracts/backend-result.json`
-- Frontend: `.../contracts/frontend-result.json`
+**Synthesis:** Read `tests_passing`, `dod_layer1.overall`, `e2e_smoke.status`, and
+`files_changed` from each agent's `result_path` in `tasks.json`. Full implementation
+JSONs go to the HTML log directly from contract files — do not accumulate them in
+orchestrator context.
 
-Extract: `tests_passing`, `dod_layer1.overall`, `e2e_smoke.status`, `files_changed`. Do not accumulate full JSONs in orchestrator context — read from files.
-
-**Result file writes (required):**
-Before returning, each implementation agent MUST write its result JSON:
-- Backend: `.../contracts/backend-result.json`
-- Frontend: `.../contracts/frontend-result.json`
-
-Additionally, emit events to the event queue:
-```json
-{"timestamp":"...","source":"backend-agent","type":"implementation_complete","issue_id":"N","data":{"domain":"backend","tests_passing":true,"dod_l1_overall":"PASS",...}}
-```
+Log AGENT events after each with `docs` status, `e2e_smoke` status, DOD L1 summary, and
+commit SHA.
 
 ---
 
 ### Step 6 — Push & PR
 
-**Before sending to github-manager, extract and sanitize the PR title from the spec:**
+After all implementation agents have committed:
 
-```bash
-# Read spec file and extract the first-level heading (## Implementation Spec — ...)
-SPEC_HEADING=$(head -20 ".TemporaryItems/Issues/wp-rocket/issues/<N>-spec.md" | grep "^## " | head -1)
+Invoke `release-agent`:
+> Inputs: issue #N, branch name, base branch, acceptance criteria, spec path
 
-# Extract just the title part (everything after "## Implementation Spec — Issue #<N>: ")
-PR_TITLE=$(echo "$SPEC_HEADING" | sed 's/^## Implementation Spec — Issue #[0-9]\+: //' | sed 's/^# //' | sed 's/^## //')
+It verifies the `Co-Authored-By: Claude Sonnet 4.6` trailer on every commit on the branch,
+pushes the branch, and creates the PR as draft with the AI-generated notice prepended to
+the description. Log AGENT event with PR URL.
 
-# Ensure format is "Closes #<N>: <title>"
-FINAL_PR_TITLE="Closes #<N>: $PR_TITLE"
-```
-
-Then send to github-manager:
-
-```bash
-SendMessage(
-  to: github_manager_id,
-  message: "Push branch fix/<N>-... to origin, then create a draft PR against <base_branch>.
-  PR title: $FINAL_PR_TITLE
-  Spec path: .TemporaryItems/Issues/wp-rocket/issues/<N>-spec.md
-  Acceptance criteria: <numbered list>
-  Verify Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com> trailer on every commit before pushing."
-)
-```
-
-github-manager will:
-1. Verify `Co-Authored-By: CURRENT_MODEL` trailer on every commit
-2. Push the branch
-3. Create the PR as draft with AI-generated notice prepended
-4. Return the PR URL and PR number
-
-**Wait for github-manager to return** before proceeding to quality gates — the PR URL
-is required by lead-reviewer and QA. Store `pr_url` and `pr_number` in the orchestrator
-state file.
+Update the decisions strip Pull request field with the PR URL.
 
 ---
 
@@ -877,59 +571,22 @@ QA           ──────────────────┘
 
 CI is monitored by DOD L2 Check 5
 
-**Parallel spawning (true asynchrony):**
+**Spawning:**
+- **DOD L2** — invoke the `dod` skill with `layer: "2"` in your context. DOD L2 polls
+  `gh pr checks` and extracts failure excerpts; it fully replaces the former ci-agent.
+- **Lead Review** — spawn `lead-reviewer` (skip if `effort IN [XS, S]` AND `risk_level == LOW`).
+- **QA** — spawn `qa-engineer` (skip only for purely internal refactors). If `domains` is
+  `frontend` or `both`, **or** if `ui_visible: true` (PHP renders visible admin output) —
+  explicitly instruct the qa-engineer that Strategy B is the **primary** strategy.
 
-Spawn all three quality gates as **background agents**. Do NOT wait for them to complete. Each agent writes its result to a contract file as it finishes. The orchestrator polls those files and continues orchestrating while they run in parallel.
-
-1. **DOD L2** — Spawn `dod` skill with `layer: "2"`, **`run_in_background: true`**
-   - Receives: branch name, base branch, PR URL
-   - Writes result to: `.TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/dod-l2-result.json`
-   - Skip if: not applicable (DOD L2 always runs)
-
-2. **Lead Review** — Spawn `lead-reviewer`, **`run_in_background: true`** (skip agent entirely if `effort IN [XS, S]` AND `risk_level == LOW`)
-   - Receives: issue #N, spec path, base branch, acceptance criteria (numbered list)
-   - Writes result to: `.TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/lead-review-result.json`
-
-3. **QA** — Spawn `qa-engineer`, **`run_in_background: true`** (skip agent entirely only for purely internal refactors)
-   - Receives: issue #N, PR number, base branch, acceptance criteria (numbered list), domains, ui_visible flag
-   - If `domains` is `frontend` or `both`, **or** if `ui_visible: true` — explicitly instruct that Strategy B is the **primary** strategy
-   - Writes result to: `.TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/qa-result.json`
-
-**PARALLEL mode — spawning pattern:**
-```bash
-task_id_dod = spawn_agent(dod, layer: 2, run_in_background: true)
-task_id_lead = spawn_agent(lead-reviewer, ..., run_in_background: true) if not skipped
-task_id_qa = spawn_agent(qa-engineer, ..., run_in_background: true) if not skipped
-# Orchestrator returns IMMEDIATELY — does not wait
-```
-
-Then poll task IDs every 10 seconds until all complete. Proceed to Step 7 when done.
-
-**[SEQUENTIAL FALLBACK]** — Run quality gates one by one (same agents, same contract files,
-same result routing — just sequential instead of parallel):
-
-```bash
-# 1. DOD L2 (always)
-spawn_agent(dod, layer: 2)  # blocks until complete
-
-# 2. Lead Review (unless skipped)
-spawn_agent(lead-reviewer, ...)  # blocks until complete
-
-# 3. QA (unless skipped)
-spawn_agent(qa-engineer, ...)  # blocks until complete
-```
-
-After all three complete, call log-coordinator in sync mode to flush quality gate events,
-then proceed to Step 7 and read results from contract files.
-
-> **Note:** Each agent writes its result to a contract file on completion.
-> Contract file locations are the same regardless of parallel vs. sequential execution.
+**Inputs for each:**
+- DOD L2: branch name, base branch, PR URL
+- Lead Review: issue #N, spec path, base branch, acceptance criteria (numbered list)
+- QA: issue #N, PR number, base branch, acceptance criteria (numbered list), domains, ui_visible flag
 
 ---
 
 #### Step 7 — DOD L2 result
-
-All three quality gates have now completed (polling finished above). Read the DOD L2 result from `.TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/dod-l2-result.json`.
 
 DOD L2 covers both code quality checks (checks 1, 4) and CI (check 5). A FAIL can originate
 from either. Read `blockers` to distinguish: CI failures reference check names from
@@ -941,10 +598,10 @@ Route on `dod_l2.overall`:
 |---|---|---|
 | `PASS` | any | No action — parallel gates continue. |
 | `WARN` | any | No action — parallel gates continue. Log GATE event `data-status="warn"`. In high-oversight mode, surface for confirmation. |
-| `FAIL` (CI) | `dod_loop < 2` | **Emit retry event:** `{"type":"retry_loop_start","reason":"CI failure","attempt":dod_loop+1,"max_attempts":2}`. Diagnose the CI failure from `blockers[*].error_excerpt`. Re-invoke the relevant implementation agent with the suggested fix. Re-push. Increment `dod_loop`. Spawn DOD L2, Lead Review, QA again (all in background in parallel). Resume polling from Step 7. Log ROUTING DECISION. |
-| `FAIL` (CI) | `dod_loop >= 2` | Emit escalation event and call `PushNotification("CI failure on attempt 3: [error]. Manual intervention needed.")`. Escalate with the exact error excerpt and suggested fix. |
-| `FAIL` (code) | `dod_loop < 1` | **Emit retry event:** `{"type":"retry_loop_start","reason":"code quality blocker","attempt":dod_loop+1,"max_attempts":1}`. Increment `dod_loop`. Re-invoke the relevant implementation agent with specific blockers, re-push. Spawn DOD L2, Lead Review, QA again (all in background in parallel). Resume polling from Step 7. Log ROUTING DECISION. |
-| `FAIL` (code) | `dod_loop >= 1` | Emit escalation event and call `PushNotification("Code quality blocker on attempt 2: [error]. Review needed.")`. Escalate to user with exact errors. |
+| `FAIL` (CI) | `dod_loop < 2` | Diagnose the CI failure from `blockers[*].error_excerpt`. Re-invoke the relevant implementation agent with the suggested fix. Re-push. Increment `dod_loop`. Re-run DOD L2 + Lead Review + QA in parallel. Log ROUTING DECISION. |
+| `FAIL` (CI) | `dod_loop >= 2` | Escalate with the exact error excerpt and suggested fix. |
+| `FAIL` (code) | `dod_loop < 1` | **Abort any in-flight Lead Review and QA.** Increment `dod_loop`. Re-invoke the relevant implementation agent with specific blockers, re-push. Re-run DOD L2 + Lead Review + QA in parallel. Log ROUTING DECISION. |
+| `FAIL` (code) | `dod_loop >= 1` | Escalate to user with exact errors. |
 
 Log GATE event.
 
@@ -952,24 +609,13 @@ Log GATE event.
 
 #### Step 8 — Lead Review result
 
-If the lead-reviewer agent was skipped (effort XS/S + LOW risk), this step is N/A — proceed directly to Step 9. Otherwise, read the result from `.TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/lead-review-result.json`.
-
-**Post review findings via github-manager** (always, regardless of verdict):
-```bash
-SendMessage(
-  to: github_manager_id,
-  message: "Post inline review comments on PR #<pr_number>: <lead_review.inline_comment_payloads as JSON>.
-  Then post this PR comment: <lead_review.pr_comment_content>"
-)
-```
-
 Route on highest `criticality` in `blockers`:
 
 | Criticality | Loop count | Action |
 |---|---|---|
 | No blockers | any | No action — parallel gates continue. Log AGENT event. |
-| `CRITICAL` | any | Emit escalation event and call `PushNotification("Critical blocker found during review: [description]. Decision required.")`. Evaluate if fixable. If yes (specific missing guard, missing validation): attempt one fix loop (same as HIGH). Re-invoke QA only if at least one blocker has `type == "LOGIC"` — otherwise carry the existing QA verdict forward. If architectural/unresolved after 1 attempt → escalate immediately. Log ESCALATION event. |
-| `HIGH` / `MEDIUM` | `review_loop < 1` | **Emit retry event:** `{"type":"retry_loop_start","reason":"code review blocker","attempt":1,"max_attempts":1}`. Re-invoke relevant implementation agent with the `fix` field from that blocker. Re-push. Spawn Lead Review (background). If at least one blocker has `type == "LOGIC"`, also spawn QA (background) in parallel. Otherwise carry existing QA verdict forward. Log ROUTING DECISION. |
+| `CRITICAL` | any | **Abort any in-flight QA.** Evaluate if fixable. If yes (specific missing guard, missing validation): attempt one fix loop (same as HIGH). Re-invoke QA only if at least one blocker has `type == "LOGIC"` — otherwise carry the existing QA verdict forward. If architectural/unresolved after 1 attempt → escalate immediately. Log ESCALATION event. |
+| `HIGH` / `MEDIUM` | `review_loop < 1` | **Abort any in-flight QA.** Re-invoke relevant implementation agent with the `fix` field from that blocker. Re-push. Re-invoke Lead Review in parallel. **Re-invoke QA only if at least one blocker has `type == "LOGIC"`** — if all blockers are `SECURITY`, `TESTS`, or `CONVENTIONS`, behavior did not change; carry the existing QA verdict forward. Log ROUTING DECISION. |
 | `HIGH` / `MEDIUM` | `review_loop >= 1` | Escalate. |
 | `LOW` only | any | Dispatch `ticket-writer` (NICE_TO_HAVE, non-blocking). Parallel gates continue. Log PARALLEL event. |
 
@@ -983,15 +629,7 @@ Log AGENT event with verdict, loop count, and any NTH dispatch.
 #### Step 9 — QA result
 
 If skipped (internal refactor): log a ROUTING DECISION event with skip reason, proceed
-to finalize. Otherwise, read the result from `.TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/qa-result.json`.
-
-**Post QA findings via github-manager** (always, regardless of overall result):
-```bash
-SendMessage(
-  to: github_manager_id,
-  message: "Post this comment on PR #<pr_number>: <qa.pr_comment_content>"
-)
-```
+to finalize.
 
 Route on `overall`:
 
@@ -999,8 +637,8 @@ Route on `overall`:
 |---|---|---|
 | `PASS` | any | Proceed to finalize. |
 | `PARTIAL` | any | Surface to user for decision. Log ESCALATION event. |
-| `FAIL` | `qa_loop < 1` | **Emit retry event:** `{"type":"retry_loop_start","reason":"QA acceptance criteria failed","attempt":1,"max_attempts":1}`. Re-invoke relevant implementation agent with `qa.blockers` list. Re-push. Log ROUTING DECISION. Spawn QA (background) again. Resume polling and re-read result. |
-| `FAIL` | `qa_loop >= 1` | Emit escalation event and call `PushNotification("QA failed on attempt 2: [criteria]. Manual review required.")`. Escalate with failing criteria and `alternative_suggestions`. |
+| `FAIL` | `qa_loop < 1` | Re-invoke relevant implementation agent with `qa.blockers` list. Re-push. Log ROUTING DECISION. Re-invoke `qa-engineer`. |
+| `FAIL` | `qa_loop >= 1` | Escalate with failing criteria and `alternative_suggestions`. |
 
 For `unclear` unexpected findings: ask user before routing.
 
@@ -1018,27 +656,13 @@ has no HIGH/CRITICAL blockers (or is skipped), QA is PASS (or skipped or carried
 ### Step 11 — Finalize
 
 1. **Collect all NTH ticket URLs** — gather every URL returned by `ticket-writer` throughout
-   the run (from grooming, challenger, lead review, and QA dispatches).
-
-2. **Resume github-manager** for finalization:
-   ```bash
-   SendMessage(
-     to: github_manager_id,
-     message: "Finalize the pipeline:
-     1. Update PR #<pr_number> body: replace 'Follow-up tickets' section with: <nth_ticket_urls or 'None'>
-     2. Update PR body: replace 'What was tested' with the full QA report (see below)
-     3. Mark PR ready: gh pr ready <pr_number>
-     4. Post this comment on GitHub issue #<N>: <final_summary_markdown>
-
-     QA report: <qa.pr_comment_content>
-     Final summary: <rendered table below>"
-   )
-   ```
-
-3. Log final ROUTING DECISION event: "Pipeline complete — READY FOR REVIEW"
-
-4. Emit a `pipeline-complete` event to the event queue — this signals the background
-   log-coordinator to do its final HTML update and exit.
+   the run (from grooming, challenger, lead review, and QA dispatches). Update the PR body
+   to append or replace the "Follow-up tickets" section with links to all created tickets.
+   If no NTH tickets were created, write "None".
+2. Update PR body: replace "What was tested" with the full QA report
+3. `gh pr ready <PR#>` (move out of draft)
+4. Post final summary to the GitHub issue as a comment. The table is the entire body — no prose before or after it. Lead Review and QA details live on the PR; the issue comment must not repeat them.
+5. Log final ROUTING DECISION event: "Pipeline complete — READY FOR REVIEW"
 
 Final summary template:
 ```markdown
@@ -1115,21 +739,17 @@ You act as a context editor, not a context relay. Each agent receives only what 
 
 All agents also receive `CURRENT_MODEL` and `session_learnings` (section 13 of `AGENTS.md`).
 
-| Agent | Receives | GitHub writes? |
-|---|---|---|
-| `ticket-writer` (create) | Raw input only | No |
-| `grooming-agent` | Issue object + repo access | **No** — returns `github_comment_content` |
-| `challenger` | Issue object + grooming object + `session_learnings` | **No** — returns `github_comment_content` |
-| `backend-agent` | Issue object + spec path + dispatch plan | No |
-| `frontend-agent` | Issue object + spec path + dispatch plan + backend API contract (sequential mode only) | No |
-| `github-manager` | Issue #, branch name, base branch, repo, CURRENT_MODEL; receives operation instructions via `SendMessage` | **Yes — sole gateway** |
-| `lead-reviewer` | PR URL + spec path + acceptance criteria + `session_learnings` | **No** — returns `inline_comment_payloads` + `pr_comment_content` |
-| `qa-engineer` | PR number + acceptance criteria + base branch | **No** — returns `pr_comment_content` |
-| `ticket-writer` (nth_followup) | Single NTH feedback item (not full context) | No |
-
-**github-manager is the only agent that may call `gh` or any GitHub API.** All other
-agents return content to the orchestrator, which routes it to github-manager via
-`SendMessage`. This keeps the GitHub integration boundary clean and swappable.
+| Agent | Receives |
+|---|---|
+| `ticket-writer` (create) | Raw input only |
+| `grooming-agent` | Issue object + repo access |
+| `challenger` | Issue object + grooming object + `session_learnings` |
+| `backend-agent` | Issue object + spec path + dispatch plan |
+| `frontend-agent` | Issue object + spec path + dispatch plan + backend API contract (sequential mode only) |
+| `release-agent` | Issue #, branch name, base branch, acceptance criteria, spec path |
+| `lead-reviewer` | PR URL + spec path + acceptance criteria + `session_learnings` |
+| `qa-engineer` | PR number + acceptance criteria + base branch |
+| `ticket-writer` (nth_followup) | Single NTH feedback item (not full context) |
 
 ---
 
@@ -1139,8 +759,16 @@ You do not produce AI-generated artifacts directly. However, you are responsible
 verifying that downstream agents comply:
 
 - Verify `implementation.co_authored_by` is present on every commit before proceeding to DOD L2
-- Verify github-manager confirmed trailer before proceeding to DOD L2 (it reports this during Step 6 push)
-- Verify github-manager confirmed inline comments posted before routing on lead review verdict
-- Verify github-manager confirmed QA comment posted before finalizing
-- The final summary posted to the GitHub issue (Step 11 via github-manager) must open with the `[!NOTE]` callout
+- Verify `release.trailer_verified == true` before proceeding to DOD L2
+- Verify `review.inline_comments_posted == true` before routing on review verdict
+- Verify `qa.pr_commented == true` before reading QA result
+- The final summary you post to the GitHub issue (Step 11) must open with the `[!NOTE]` callout
+
+---
+
+## HTML log format
+
+See `.aiassistant/skills/orchestrator/html-log-format.md` for the complete HTML structure,
+CSS, event type patterns, and per-agent detail panel guidelines. Load it on demand when
+you need to write or update a log event — not at session start.
 
