@@ -47,6 +47,7 @@ parameters:
 	scanFiles:
 		- %currentWorkingDirectory%/inc/admin/upgrader.php
 		- %currentWorkingDirectory%/inc/admin/options.php
+		- %currentWorkingDirectory%/inc/admin/ui/enqueue.php
 		- %currentWorkingDirectory%/vendor/php-stubs/wordpress-stubs/wordpress-stubs.php
 		- %currentWorkingDirectory%/vendor/php-stubs/wordpress-tests-stubs/wordpress-tests-stubs.php
 		- %currentWorkingDirectory%/wp-rocket.php
