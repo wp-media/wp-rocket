@@ -12,3 +12,6 @@ package-lock.json
 
 # Claude Code user-local settings
 .claude/settings.local.json
+
+# Claude Code transient agent worktrees (runtime, never committed)
+.claude/worktrees/
