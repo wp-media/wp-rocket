@@ -13,12 +13,18 @@ use WP_Rocket\Tests\Unit\TestCase;
  */
 class Test_RocketImportAnalyticsPreference extends TestCase {
 	/**
-	 * Load tested functions file.
+	 * Load tested file and bootstrap expected constants/functions.
 	 *
 	 * @return void
 	 */
-	public static function setUpBeforeClass(): void {
-		parent::setUpBeforeClass();
+	protected function setUp(): void {
+		parent::setUp();
+
+		if ( ! defined( 'WP_ROCKET_FILE' ) ) {
+			define( 'WP_ROCKET_FILE', '/tmp/wp-rocket/wp-rocket.php' );
+		}
+
+		Functions\when( 'plugin_basename' )->justReturn( 'wp-rocket/wp-rocket.php' );
 
 		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/admin/admin.php';
 	}
@@ -37,6 +43,7 @@ class Test_RocketImportAnalyticsPreference extends TestCase {
 		Functions\expect( 'update_option' )->never();
 		Functions\expect( 'do_action' )->never();
 
+		// @phpstan-ignore-next-line
 		$this->assertSame( $settings, rocket_import_analytics_preference( $settings ) );
 	}
 
@@ -70,6 +77,7 @@ class Test_RocketImportAnalyticsPreference extends TestCase {
 			Functions\expect( 'do_action' )->never();
 		}
 
+		// @phpstan-ignore-next-line
 		$result = rocket_import_analytics_preference( $settings );
 
 		$this->assertArrayNotHasKey( 'analytics_enabled', $result );
