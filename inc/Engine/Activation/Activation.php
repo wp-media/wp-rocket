@@ -105,6 +105,9 @@ class Activation {
 		// Create the config folder (wp-rocket-config).
 		rocket_init_config_dir();
 
+		// Mark that sidebar should be reset on first admin page load (fresh install scenario).
+		set_transient( 'wpr_sidebar_reset_needed', 1, HOUR_IN_SECONDS );
+
 		// Update customer key & licence.
 		wp_remote_get(
 			self::ACTIVATION_ENDPOINT,

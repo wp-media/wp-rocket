@@ -326,6 +326,8 @@ class Subscriber implements Subscriber_Interface, PluginFamilyInterface {
 	 */
 	public function add_sidebar_data( $data ) {
 		$data['show_sidebar'] = $this->page->get_sidebar_show_option();
+		// Pass a one-time flag to indicate if sidebar should be reset (fresh install).
+		$data['is_fresh_sidebar_install'] = (bool) get_transient( 'wpr_sidebar_reset_needed' );
 		return $data;
 	}
 

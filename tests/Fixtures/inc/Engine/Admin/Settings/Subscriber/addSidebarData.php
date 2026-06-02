@@ -1,42 +1,50 @@
 <?php
 
 return [
-	'shouldAddShowSidebarOneToEmptyData'         => [
-		'sidebar_value' => 1,
-		'input_data'    => [],
-		'expected'      => [
-			'show_sidebar' => 1,
+	'shouldAddDataWithFreshInstall'                 => [
+		'sidebar_value'      => 1,
+		'has_fresh_install'  => true,
+		'input_data'         => [],
+		'expected'           => [
+			'show_sidebar'                => 1,
+			'is_fresh_sidebar_install'    => true,
 		],
 	],
-	'shouldAddShowSidebarZeroToEmptyData'        => [
-		'sidebar_value' => 0,
-		'input_data'    => [],
-		'expected'      => [
-			'show_sidebar' => 0,
+	'shouldAddDataWithoutFreshInstall'             => [
+		'sidebar_value'      => 1,
+		'has_fresh_install'  => false,
+		'input_data'         => [],
+		'expected'           => [
+			'show_sidebar'                => 1,
+			'is_fresh_sidebar_install'    => false,
 		],
 	],
-	'shouldMergeShowSidebarIntoExistingData'     => [
-		'sidebar_value' => 1,
-		'input_data'    => [
+	'shouldMergeDataWithFreshInstall'              => [
+		'sidebar_value'      => 0,
+		'has_fresh_install'  => true,
+		'input_data'         => [
 			'nonce'   => 'abc123',
 			'is_free' => '0',
 		],
-		'expected'      => [
-			'nonce'        => 'abc123',
-			'is_free'      => '0',
-			'show_sidebar' => 1,
+		'expected'           => [
+			'nonce'                       => 'abc123',
+			'is_free'                     => '0',
+			'show_sidebar'                => 0,
+			'is_fresh_sidebar_install'    => true,
 		],
 	],
-	'shouldMergeShowSidebarZeroIntoExistingData' => [
-		'sidebar_value' => 0,
-		'input_data'    => [
+	'shouldMergeDataWithoutFreshInstall'           => [
+		'sidebar_value'      => 1,
+		'has_fresh_install'  => false,
+		'input_data'         => [
 			'nonce'   => 'abc123',
 			'is_free' => '0',
 		],
-		'expected'      => [
-			'nonce'        => 'abc123',
-			'is_free'      => '0',
-			'show_sidebar' => 0,
+		'expected'           => [
+			'nonce'                       => 'abc123',
+			'is_free'                     => '0',
+			'show_sidebar'                => 1,
+			'is_fresh_sidebar_install'    => false,
 		],
 	],
 ];
