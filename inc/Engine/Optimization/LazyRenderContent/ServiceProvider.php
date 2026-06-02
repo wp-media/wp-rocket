@@ -49,7 +49,8 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register(): void {
-		$this->getContainer()->add( 'lrc_context', Context::class );
+		$this->getContainer()->add( 'lrc_context', Context::class )
+			->addArgument( 'options' );
 		$this->getContainer()->addShared( 'lrc_table', LRCTable::class );
 		$this->getContainer()->add( 'lrc_query', LRCQuery::class );
 
