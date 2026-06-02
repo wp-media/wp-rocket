@@ -68,6 +68,9 @@ function rocket_first_install() {
 	$minify_css_key = create_rocket_uniqid();
 	$minify_js_key  = create_rocket_uniqid();
 
+	// Generate a unique key for sidebar settings to detect reinstalls.
+	$sidebar_settings_key = wp_generate_uuid4();
+
 	// Create Option.
 	add_option(
 		rocket_get_constant( 'WP_ROCKET_SLUG' ),
@@ -82,6 +85,7 @@ function rocket_first_install() {
 			'rocket_first_install_options',
 			[
 				'secret_cache_key'            => $secret_cache_key,
+				'sidebar_settings_key'        => $sidebar_settings_key,
 				'cache_mobile'                => 1,
 				'do_caching_mobile_files'     => 1,
 				'cache_webp'                  => 0,
