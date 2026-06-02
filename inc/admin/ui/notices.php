@@ -660,102 +660,103 @@ function rocket_clear_cache_notice() {
 }
 add_action( 'admin_notices', 'rocket_clear_cache_notice' );
 
-/**
- * Outputs notice HTML
- *
- * @since 2.11
- * @author Remy Perona
- *
- * @param array $args An array of arguments used to determine the notice output.
- * @return void
- */
-function rocket_notice_html( $args ) {
-	$defaults = [
-		'status'                 => 'success',
-		'dismissible'            => 'is-dismissible',
-		'message'                => '',
-		'action'                 => '',
-		'dismiss_button'         => false,
-		'dismiss_button_message' => __( 'Dismiss this notice', 'rocket' ),
-		'readonly_content'       => '',
-		'id'                     => '',
-		'class_prefix'           => '',
-	];
-
-	$args = wp_parse_args( $args, $defaults );
-
-	switch ( $args['action'] ) {
-		case 'clear_cache':
-			$args['action'] = '<a class="wp-core-ui button" href="' . wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=all' ), 'purge_cache_all' ) . '">' . __( 'Clear cache', 'rocket' ) . '</a>';
-			break;
-		case 'clear_used_css':
-			$params = [
-				'action' => 'rocket_clean_saas',
-			];
-
-			if ( ! empty( $_SERVER['REQUEST_URI'] ) ) {
-				$referer_url                = filter_var( wp_unslash( $_SERVER['REQUEST_URI'] ), FILTER_SANITIZE_URL );
-				$params['_wp_http_referer'] = rawurlencode( $referer_url );
-			}
-			$args['action'] = '<a class="wp-core-ui button" href="' . add_query_arg( $params, wp_nonce_url( admin_url( 'admin-post.php' ), $params['action'] ) ) . '">' . __( 'Clear Used CSS', 'rocket' ) . '</a>';
-			break;
-		case 'stop_preload':
-			$args['action'] = '<a class="wp-core-ui button" href="' . wp_nonce_url( admin_url( 'admin-post.php?action=rocket_stop_preload&type=all' ), 'rocket_stop_preload' ) . '">' . __( 'Stop Preload', 'rocket' ) . '</a>';
-			break;
-		case 'switch_to_rucss':
-			$params         = [
-				'action' => 'switch_to_rucss',
-			];
-			$args['action'] = '<a class="wp-core-ui button" href="' . add_query_arg( $params, wp_nonce_url( admin_url( 'admin-post.php' ), 'rucss_switch' ) ) . '">' . __( 'Turn on Remove Unused CSS', 'rocket' ) . '</a>';
-			break;
-		case 'enable_separate_mobile_cache':
-			$params         = [
-				'action' => 'rocket_enable_separate_mobile_cache',
-			];
-			$args['action'] = '<a class="wp-core-ui button" href="' . add_query_arg( $params, wp_nonce_url( admin_url( 'admin-post.php' ), 'rocket_enable_separate_mobile_cache' ) ) . '">' . __( 'Enable “Separate Cache Files for Mobile Devices” now', 'rocket' ) . '</a>';
-			break;
-		case 'force_deactivation':
-			/**
-			 * Allow a "force deactivation" link to be printed, use at your own risks
-			 *
-			 * @since 2.0.0
-			 *
-			 * @param bool $permit_force_deactivation true will print the link.
-			 */
-			$permit_force_deactivation = apply_filters( 'rocket_permit_force_deactivation', true );
-
-			// We add a link to permit "force deactivation", use at your own risks.
-			if ( $permit_force_deactivation ) {
-				global $status, $page, $s;
-				$plugin_file  = 'wp-rocket/wp-rocket.php';
-				$rocket_nonce = wp_create_nonce( 'force_deactivation' );
-
-				$args['action'] = '<a href="' . wp_nonce_url( 'plugins.php?action=deactivate&amp;rocket_nonce=' . $rocket_nonce . '&amp;plugin=' . $plugin_file . '&amp;plugin_status=' . $status . '&amp;paged=' . $page . '&amp;s=' . $s, 'deactivate-plugin_' . $plugin_file ) . '">' . __( 'Force deactivation ', 'rocket' ) . '</a>';
-			}
-			break;
-		case 'rocket_insights_page':
-			$args['action'] = '<a class="button button-primary" href="' . admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '&rocket_source=notice_insights_promotion_notice#rocket_insights' ) . '">' . __( 'Run the test now!', 'rocket' ) . '</a>';
-			break;
-	}
+if ( ! function_exists( 'rocket_notice_html' ) ) :
 	/**
-	 * Notice arguments.
+	 * Outputs notice HTML
 	 *
-	 * @param array $args arguments from the notice.
-	 * @return array
+	 * @since 2.11
+	 * @author Remy Perona
+	 *
+	 * @param array $args An array of arguments used to determine the notice output.
+	 * @return void
 	 */
-	$filtered_args = apply_filters( 'rocket_notice_args', $args );
+	function rocket_notice_html( $args ) {
+		$defaults = [
+			'status'                 => 'success',
+			'dismissible'            => 'is-dismissible',
+			'message'                => '',
+			'action'                 => '',
+			'dismiss_button'         => false,
+			'dismiss_button_message' => __( 'Dismiss this notice', 'rocket' ),
+			'readonly_content'       => '',
+			'id'                     => '',
+			'class_prefix'           => '',
+		];
 
-	if ( is_array( $filtered_args ) ) {
-		$args = wp_parse_args( $filtered_args, $defaults );
-	}
+		$args = wp_parse_args( $args, $defaults );
 
-	$notice_id = '';
+		switch ( $args['action'] ) {
+			case 'clear_cache':
+				$args['action'] = '<a class="wp-core-ui button" href="' . wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=all' ), 'purge_cache_all' ) . '">' . __( 'Clear cache', 'rocket' ) . '</a>';
+				break;
+			case 'clear_used_css':
+				$params = [
+					'action' => 'rocket_clean_saas',
+				];
 
-	if ( ! empty( $args['id'] ) ) {
-		$notice_id = ' id="' . esc_attr( $args['id'] ) . '"';
-	}
+				if ( ! empty( $_SERVER['REQUEST_URI'] ) ) {
+					$referer_url                = filter_var( wp_unslash( $_SERVER['REQUEST_URI'] ), FILTER_SANITIZE_URL );
+					$params['_wp_http_referer'] = rawurlencode( $referer_url );
+				}
+				$args['action'] = '<a class="wp-core-ui button" href="' . add_query_arg( $params, wp_nonce_url( admin_url( 'admin-post.php' ), $params['action'] ) ) . '">' . __( 'Clear Used CSS', 'rocket' ) . '</a>';
+				break;
+			case 'stop_preload':
+				$args['action'] = '<a class="wp-core-ui button" href="' . wp_nonce_url( admin_url( 'admin-post.php?action=rocket_stop_preload&type=all' ), 'rocket_stop_preload' ) . '">' . __( 'Stop Preload', 'rocket' ) . '</a>';
+				break;
+			case 'switch_to_rucss':
+				$params         = [
+					'action' => 'switch_to_rucss',
+				];
+				$args['action'] = '<a class="wp-core-ui button" href="' . add_query_arg( $params, wp_nonce_url( admin_url( 'admin-post.php' ), 'rucss_switch' ) ) . '">' . __( 'Turn on Remove Unused CSS', 'rocket' ) . '</a>';
+				break;
+			case 'enable_separate_mobile_cache':
+				$params         = [
+					'action' => 'rocket_enable_separate_mobile_cache',
+				];
+				$args['action'] = '<a class="wp-core-ui button" href="' . add_query_arg( $params, wp_nonce_url( admin_url( 'admin-post.php' ), 'rocket_enable_separate_mobile_cache' ) ) . '">' . __( 'Enable “Separate Cache Files for Mobile Devices” now', 'rocket' ) . '</a>';
+				break;
+			case 'force_deactivation':
+				/**
+				 * Allow a "force deactivation" link to be printed, use at your own risks
+				 *
+				 * @since 2.0.0
+				 *
+				 * @param bool $permit_force_deactivation true will print the link.
+				 */
+				$permit_force_deactivation = apply_filters( 'rocket_permit_force_deactivation', true );
 
-	?>
+				// We add a link to permit "force deactivation", use at your own risks.
+				if ( $permit_force_deactivation ) {
+					global $status, $page, $s;
+					$plugin_file  = 'wp-rocket/wp-rocket.php';
+					$rocket_nonce = wp_create_nonce( 'force_deactivation' );
+
+					$args['action'] = '<a href="' . wp_nonce_url( 'plugins.php?action=deactivate&amp;rocket_nonce=' . $rocket_nonce . '&amp;plugin=' . $plugin_file . '&amp;plugin_status=' . $status . '&amp;paged=' . $page . '&amp;s=' . $s, 'deactivate-plugin_' . $plugin_file ) . '">' . __( 'Force deactivation ', 'rocket' ) . '</a>';
+				}
+				break;
+			case 'rocket_insights_page':
+				$args['action'] = '<a class="button button-primary" href="' . admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '&rocket_source=notice_insights_promotion_notice#rocket_insights' ) . '">' . __( 'Run the test now!', 'rocket' ) . '</a>';
+				break;
+		}
+		/**
+		 * Notice arguments.
+		 *
+		 * @param array $args arguments from the notice.
+		 * @return array
+		 */
+		$filtered_args = apply_filters( 'rocket_notice_args', $args );
+
+		if ( is_array( $filtered_args ) ) {
+			$args = wp_parse_args( $filtered_args, $defaults );
+		}
+
+		$notice_id = '';
+
+		if ( ! empty( $args['id'] ) ) {
+			$notice_id = ' id="' . esc_attr( $args['id'] ) . '"';
+		}
+
+		?>
 	<div class="<?php echo esc_attr( $args['class_prefix'] ); ?>notice notice-<?php echo esc_attr( $args['status'] ); ?> <?php echo esc_attr( $args['dismissible'] ); ?>"<?php echo $notice_id; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
 		<?php
 			$tag = 0 !== strpos( $args['message'], '<p' ) && 0 !== strpos( $args['message'], '<ul' );
@@ -767,7 +768,7 @@ function rocket_notice_html( $args ) {
 			<br><textarea readonly="readonly" id="rules" name="rules" class="large-text readonly" rows="6"><?php echo esc_textarea( $args['readonly_content'] ); ?></textarea>
 		</p>
 			<?php
-		endif;
+			endif;
 		if ( $args['action'] || $args['dismiss_button'] ) :
 			?>
 		<p>
@@ -778,40 +779,43 @@ function rocket_notice_html( $args ) {
 		</p>
 		<?php endif; ?>
 	</div>
-	<?php
-}
+			<?php
+	}
+endif;
 
-/**
- * Outputs formatted notice about issues with writing permissions
- *
- * @since  2.11
- * @author Caspar Hübinger
- *
- * @param  string $file File or folder name.
- * @return string       Message HTML
- */
-function rocket_notice_writing_permissions( $file ) {
+if ( ! function_exists( 'rocket_notice_writing_permissions' ) ) :
+	/**
+	 * Outputs formatted notice about issues with writing permissions
+	 *
+	 * @since  2.11
+	 * @author Caspar Hübinger
+	 *
+	 * @param  string $file File or folder name.
+	 * @return string       Message HTML
+	 */
+	function rocket_notice_writing_permissions( $file ) {
 
-	$message = sprintf(
+		$message = sprintf(
 		// translators: %s = plugin name.
 		__( '%s cannot configure itself due to missing writing permissions.', 'rocket' ),
 		'<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>'
-	);
+		);
 
-	$message .= '<br>' . sprintf(
-		/* translators: %s = file/folder name */
-		__( 'Affected file/folder: %s', 'rocket' ),
-		'<code>' . $file . '</code>'
-	);
+		$message .= '<br>' . sprintf(
+			/* translators: %s = file/folder name */
+			__( 'Affected file/folder: %s', 'rocket' ),
+			'<code>' . $file . '</code>'
+		);
 
-	$message .= '<br>' . sprintf(
-		/* translators: This is a doc title! %1$s = opening link; %2$s = closing link */
-		__( 'Troubleshoot: %1$sHow to make system files writeable%2$s', 'rocket' ),
-		/* translators: Documentation exists in EN, DE, FR, ES, IT; use loaclised URL if applicable */
-		'<a href="' . __( 'https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket', 'rocket' ) . '" target="_blank">',
-		'</a>'
-	);
+		$message .= '<br>' . sprintf(
+			/* translators: This is a doc title! %1$s = opening link; %2$s = closing link */
+			__( 'Troubleshoot: %1$sHow to make system files writeable%2$s', 'rocket' ),
+			/* translators: Documentation exists in EN, DE, FR, ES, IT; use loaclised URL if applicable */
+			'<a href="' . __( 'https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket', 'rocket' ) . '" target="_blank">',
+			'</a>'
+		);
 
-	return $message;
-}
+		return $message;
+	}
+endif;
 
