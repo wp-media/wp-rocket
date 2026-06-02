@@ -1920,9 +1920,10 @@ div.wpr-upgrade-websites.notstacked {
   transform: translateY(-2px);
   box-shadow: 0 7px 14px rgba(50, 50, 93, 0.25), 0 3px 6px rgba(0, 0, 0, 0.2);
 }
-.wpr-button--disabled {
+.wpr-button--disabled, .wpr-button:disabled {
   opacity: 0.5;
   pointer-events: none;
+  background: #F56640;
 }
 .wpr-button--small {
   padding: 5px 0;
@@ -4614,6 +4615,28 @@ div.wpr-tutorial-item {
   position: absolute;
   top: 2px;
   right: 0;
+}
+
+.wpr-cdn-status--expired .wpr-cdn-pause {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.wpr-cdn-expired__notice {
+  color: #0C0F1F;
+  background: #FFF7E1;
+  border-left: 4px solid #FED055;
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+.wpr-cdn-expired__notice-title {
+  font-weight: 600;
+  font-size: 14px;
+}
+.wpr-cdn-expired__notice .wpr-notice-close {
+  font-size: 14px;
+  color: #0C0F1F;
+  font-weight: 600;
 }
 
 .wpr-cdn-pause {

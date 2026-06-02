@@ -17,6 +17,8 @@
  *     @type string $page        Page section identifier.
  *     @type array  $status_indicator Data for the CDN status indicator partial.
  *     @type array  $cta_data    Data for the CTA banner.
+ *     @type string $renewal_url    URL for renewing the license.
+ *     @type bool   $active_subscription Whether the user has an active subscription or not.
  * }
  */
 
@@ -34,6 +36,21 @@ defined( 'ABSPATH' ) || exit;
 	<?php endif; ?>
 </div>
 
+<?php if ( ! $data['active_subscription'] ) : ?>
+<div class="wpr-notice wpr-ri-notice wpr-cdn-expired__notice" id="wpr-cdn-licence-banner">
+	<div class="wpr-notice-container">
+		<div class="wpr-notice-description wpr-notice-70">
+			<h3 class="wpr-cdn-expired__notice-title">
+				<?php esc_html_e( 'Your WPRocket license has expired', 'rocket' ); ?>
+			</h3>
+			<p><?php esc_html_e( 'Please renew it to keep using RocketCDN.', 'rocket' ); ?></p>
+		</div>
+		<a target="_blank" rel="noopener noreferrer" class="wpr-notice-close" href="<?php echo esc_url( $data['renewal_url'] ); ?>">
+			<?php esc_html_e( 'Renew Licence', 'rocket' ); ?>
+		</a>
+	</div>
+</div>
+<?php endif; ?>
 <div class="<?php echo esc_attr( $data['class'] ); ?>">
 	<?php
 	/**

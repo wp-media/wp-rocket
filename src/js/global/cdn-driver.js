@@ -1,6 +1,10 @@
 ( ( document ) => {
 	'use strict';
 
+	function notifyCdnStateChange() {
+		document.dispatchEvent( new CustomEvent( 'wpr-cdn-state-change' ) );
+	}
+
 	document.addEventListener( 'DOMContentLoaded', () => {
 		initCdnDriverTabs();
 		initCdnPauseToggle();
@@ -171,6 +175,7 @@
 
 				// Update dynamic driver label spans.
 				updateDriverLabel( tab );
+				notifyCdnStateChange();
 
 				// Initial value of the hidden input is set on page load by PHP based on the active driver.
 				const cdnTypeInput = document.getElementById('cdn_type');
@@ -199,6 +204,7 @@
 
 		if ( activeDriver ) {
 			toggleDriverSections( activeDriver );
+			notifyCdnStateChange();
 		}
 
 		// Set initial label from the active tab.
@@ -242,6 +248,8 @@
 					if ( builtIn ) {
 						builtIn.classList.toggle( 'wpr-cdn-built-in--paused', isPaused );
 					}
+
+					notifyCdnStateChange();
 
 					const textKey = isPaused ? 'pausedText' : 'activeText';
 

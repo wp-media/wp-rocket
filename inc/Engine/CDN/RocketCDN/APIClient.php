@@ -123,6 +123,7 @@ class APIClient {
 		set_transient( 'rocketcdn_status', $value, $duration );
 	}
 
+
 	/**
 	 * Gets pricing & promotion data for RocketCDN from cache if it exists
 	 *
