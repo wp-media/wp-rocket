@@ -3,6 +3,7 @@ namespace WP_Rocket\Engine\Admin\Settings;
 
 use WP_Rocket\Engine\Admin\Database\Optimization;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
+use WP_Rocket\Engine\CDN\RocketCDN\SubscriptionController;
 use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Engine\Optimization\DelayJS\Admin\SiteList;
@@ -110,20 +111,27 @@ class Page extends Abstract_Render {
 	private $ri_context;
 
 	/**
+	 * Subscription controller instance.
+	 *
+	 * @var SubscriptionController
+	 */
+	private $subscription_controller;
+
+	/**
 	 * Creates an instance of the Page object.
 	 *
+	 * @param array                  $args        Array of required arguments to add the admin page.
+	 * @param Settings               $settings    Instance of Settings class.
+	 * @param Render                 $render      Render instance.
+	 * @param Beacon                 $beacon      Beacon instance.
+	 * @param Optimization           $optimize    Database optimization instance.
+	 * @param UserClient             $user_client User client instance.
+	 * @param SiteList               $delayjs_sitelist User client instance.
+	 * @param string                 $template_path Path to views.
+	 * @param Options_Data           $options       WP Rocket options instance.
+	 * @param Context                $ri_context   Rocket Insights context instance.
+	 * @param SubscriptionController $subscription_controller Subscription controller instance.
 	 * @since 3.0
-	 *
-	 * @param array        $args        Array of required arguments to add the admin page.
-	 * @param Settings     $settings    Instance of Settings class.
-	 * @param Render       $render      Render instance.
-	 * @param Beacon       $beacon      Beacon instance.
-	 * @param Optimization $optimize    Database optimization instance.
-	 * @param UserClient   $user_client User client instance.
-	 * @param SiteList     $delayjs_sitelist User client instance.
-	 * @param string       $template_path Path to views.
-	 * @param Options_Data $options       WP Rocket options instance.
-	 * @param Context      $ri_context   Rocket Insights context instance.
 	 */
 	public function __construct(
 		array $args,
@@ -135,7 +143,8 @@ class Page extends Abstract_Render {
 		SiteList $delayjs_sitelist,
 		$template_path,
 		Options_Data $options,
-		Context $ri_context
+		Context $ri_context,
+		SubscriptionController $subscription_controller
 	) {
 		parent::__construct( $template_path );
 		$args = array_merge(
@@ -147,17 +156,18 @@ class Page extends Abstract_Render {
 			$args
 		);
 
-		$this->slug             = $args['slug'];
-		$this->title            = $args['title'];
-		$this->capability       = $args['capability'];
-		$this->settings         = $settings;
-		$this->render           = $render;
-		$this->beacon           = $beacon;
-		$this->optimize         = $optimize;
-		$this->user_client      = $user_client;
-		$this->delayjs_sitelist = $delayjs_sitelist;
-		$this->options          = $options;
-		$this->ri_context       = $ri_context;
+		$this->slug                    = $args['slug'];
+		$this->title                   = $args['title'];
+		$this->capability              = $args['capability'];
+		$this->settings                = $settings;
+		$this->render                  = $render;
+		$this->beacon                  = $beacon;
+		$this->optimize                = $optimize;
+		$this->user_client             = $user_client;
+		$this->delayjs_sitelist        = $delayjs_sitelist;
+		$this->options                 = $options;
+		$this->ri_context              = $ri_context;
+		$this->subscription_controller = $subscription_controller;
 	}
 
 	/**
@@ -450,6 +460,7 @@ class Page extends Abstract_Render {
 				'faq'                     => $this->beacon->get_suggest( 'faq' ),
 				'customer_data'           => $this->customer_data(),
 				'rocket_insights_enabled' => $this->ri_context->is_allowed(),
+				'is_rocketcdn_paid_user'  => $this->subscription_controller->is_paid(),
 			]
 		);
 	}
