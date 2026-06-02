@@ -2313,6 +2313,15 @@ class Page extends Abstract_Render {
 	}
 
 	/**
+	 * Returns the stored sidebar visibility preference (1 = show, 0 = hide).
+	 *
+	 * @return int
+	 */
+	public function get_sidebar_show_option(): int {
+		return (int) $this->options->get( 'wpr-js-tips', 1 );
+	}
+
+	/**
 	 * Enable Separate cache files option on upgrade.
 	 *
 	 * @return void
