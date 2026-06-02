@@ -47,6 +47,13 @@ class Subscriber implements Subscriber_Interface {
 	private $subscription_controller;
 
 	/**
+	 * Cache instance.
+	 *
+	 * @var Cache
+	 */
+	private $cache;
+
+	/**
 	 * CDN Driver (Strategy)
 	 *
 	 * @var DriverInterface|null
@@ -67,6 +74,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @param CDN                    $cdn     CDN instance.
 	 * @param Options                $options_api     Options instance.
 	 * @param SubscriptionController $subscription_controller Subscription controller instance.
+	 * @param Cache                  $cache   Cache instance.
 	 * @param RocketCDNQuery         $query RocketCDN pages query.
 	 * @param DriverInterface|null   $driver   CDN Driver instance, optional.
 	 */
@@ -75,6 +83,7 @@ class Subscriber implements Subscriber_Interface {
 		CDN $cdn,
 		Options $options_api,
 		SubscriptionController $subscription_controller,
+		Cache $cache,
 		RocketCDNQuery $query,
 		?DriverInterface $driver = null
 	) {
@@ -83,6 +92,7 @@ class Subscriber implements Subscriber_Interface {
 		$this->options_api             = $options_api;
 		$this->driver                  = $driver;
 		$this->subscription_controller = $subscription_controller;
+		$this->cache                   = $cache;
 		$this->query                   = $query;
 	}
 
@@ -114,6 +124,7 @@ class Subscriber implements Subscriber_Interface {
 				[ 'on_update_add_cdn_type_option', 10, 2 ],
 			],
 			'rocketcdn_free_plan_subscription_expired' => [ 'clear_free_plan_pages_cache' ],
+			'update_option_wp_rocket_settings'         => [ 'maybe_clear_cache', 10, 2 ],
 		];
 	}
 
@@ -395,11 +406,11 @@ class Subscriber implements Subscriber_Interface {
 			return false;
 		}
 
-		if ( ! $this->subscription_controller->has_active_subscription() ) {
+		if ( ! $this->is_cdn_enabled() ) {
 			return false;
 		}
 
-		if ( ! $this->is_cdn_enabled() ) {
+		if ( ! $this->subscription_controller->has_active_subscription() ) {
 			return false;
 		}
 
@@ -531,5 +542,41 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Clear cache when cdn_type (driver) is changed.
+	 *
+	 * @param mixed $old_value Old option value.
+	 * @param mixed $value     New option value.
+	 *
+	 * @return void
+	 */
+	public function maybe_clear_cache( $old_value, $value ) {
+		$cdn_changed      = Utils::did_setting_change( 'cdn', $old_value, $value );
+		$cdn_type_changed = Utils::did_setting_change( 'cdn_type', $old_value, $value );
+
+		// Detect cdn status for pause/resume and cdn_type change.
+		if ( ! $cdn_changed && ! $cdn_type_changed ) {
+			return;
+		}
+
+		// Clear cache if cdn is paused/resumed or cdn_type is changed.
+
+		// CDN is paused/resumed.
+		if ( $cdn_changed ) {
+			// Clear specific pages' cache only when it's free rocketcdn.
+			if ( $this->subscription_controller->is_free() ) {
+				$this->cache->clear_rocketcdn_free_pages_cache();
+				return;
+			}
+
+			// Clear whole cache in case of paid rocketcdn.
+			$this->cache->clear_all_cache();
+			return;
+		}
+
+		// CDN type is changed, Clear whole cache.
+		$this->cache->clear_all_cache();
 	}
 }

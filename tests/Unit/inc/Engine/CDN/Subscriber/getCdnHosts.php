@@ -6,6 +6,7 @@ use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\CDN\Cache;
 use WP_Rocket\Engine\CDN\CDN;
 use WP_Rocket\Engine\CDN\RocketCDN\Database\Queries\RocketCDN;
 use WP_Rocket\Engine\CDN\RocketCDN\SubscriptionController;
@@ -34,6 +35,7 @@ class Test_GetCdnHosts extends TestCase {
 			$this->cdn,
 			Mockery::mock( Options::class ),
 			$this->subscription_controller,
+			Mockery::mock( Cache::class ),
 			$query
 		);
 
