@@ -83,7 +83,7 @@ return [
 </div>
 <div id="cpcss_response_notice" class="components-notice is-notice is-warning">
 	<div class="components-notice__content">
-		<p>Publish the post, Enable Load CSS asynchronously in WP Rocket settings, and Enable Load CSS asynchronously in the options above to use this feature.</p>
+		<p>Publish the post and Enable Load CSS asynchronously in the options above to use this feature.</p>
 	</div>
 </div>
 HTML
