@@ -406,11 +406,11 @@ class Subscriber implements Subscriber_Interface {
 			return false;
 		}
 
-		if ( ! $this->subscription_controller->has_active_subscription() ) {
+		if ( ! $this->is_cdn_enabled() ) {
 			return false;
 		}
 
-		if ( ! $this->is_cdn_enabled() ) {
+		if ( ! $this->subscription_controller->has_active_subscription() ) {
 			return false;
 		}
 
