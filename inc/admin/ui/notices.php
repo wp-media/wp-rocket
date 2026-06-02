@@ -539,10 +539,12 @@ function rocket_analytics_optin_notice() {
 	);
 
 	// Status should be as neutral as possible; nothing has happened yet.
+	// Remove the native dismiss (X) button so the user must make an explicit accept/refuse decision.
 	rocket_notice_html(
 		[
-			'status'  => 'info',
-			'message' => $analytics_notice,
+			'status'      => 'info',
+			'dismissible' => '',
+			'message'     => $analytics_notice,
 		]
 	);
 }
