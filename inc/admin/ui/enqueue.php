@@ -40,6 +40,27 @@ function rocket_add_admin_css_js() {
 add_action( 'admin_print_styles-settings_page_' . WP_ROCKET_PLUGIN_SLUG, 'rocket_add_admin_css_js' );
 
 /**
+ * Add sidebar settings key to localized script data.
+ *
+ * This key is used to detect plugin reinstalls and reset localStorage sidebar preferences.
+ *
+ * @since 3.21.4
+ *
+ * @param array $data Localize script data.
+ * @return array
+ */
+function rocket_add_sidebar_settings_key( $data ) {
+	$options = get_option( 'wp_rocket_settings', [] );
+
+	$data['sidebar_settings_key'] = isset( $options['sidebar_settings_key'] )
+		? $options['sidebar_settings_key']
+		: '';
+
+	return $data;
+}
+add_filter( 'rocket_localize_admin_script', 'rocket_add_sidebar_settings_key' );
+
+/**
  * Add the CSS and JS files needed by WP Rocket everywhere on admin pages
  *
  * @since 2.1

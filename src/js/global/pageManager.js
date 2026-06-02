@@ -135,6 +135,16 @@ PageManager.prototype.change = function() {
     this.$page.style.display = 'block';
     this.$submitButton.style.display = 'block';
 
+    // Check if plugin was reinstalled by comparing install keys.
+    // If keys differ, reset sidebar preference to default (visible).
+    var currentInstallKey = window.rocket_ajax_data && window.rocket_ajax_data.sidebar_settings_key || '';
+    var storedInstallKey = localStorage.getItem( 'wpr-sidebar-install-key' );
+
+    if ( currentInstallKey && currentInstallKey !== storedInstallKey ) {
+        localStorage.setItem( 'wpr-show-sidebar', 'on' );
+        localStorage.setItem( 'wpr-sidebar-install-key', currentInstallKey );
+    }
+
     if ( null === localStorage.getItem( 'wpr-show-sidebar' ) ) {
         localStorage.setItem( 'wpr-show-sidebar', 'on' );
     }
