@@ -416,6 +416,26 @@ class Controller extends Abstract_Render {
 	}
 
 	/**
+	 * Removes the "NEW" badge from the Content Delivery tab for existing paid RocketCDN subscribers.
+	 *
+	 * Paid users already know RocketCDN — the badge is only relevant for users
+	 * discovering the service for the first time via the free tier.
+	 *
+	 * @since 3.22
+	 *
+	 * @param string $badge Current badge label.
+	 *
+	 * @return string Empty string for paid subscribers, original badge otherwise.
+	 */
+	public function maybe_hide_cdn_tab_badge( string $badge ): string {
+		if ( $this->subscription_controller->is_paid() ) {
+			return '';
+		}
+
+		return $badge;
+	}
+
+	/**
 	 * Renders the CDN driver tabs.
 	 *
 	 * @since 3.22

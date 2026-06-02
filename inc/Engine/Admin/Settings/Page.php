@@ -1511,7 +1511,15 @@ class Page extends Abstract_Render {
 			[
 				'title'            => __( 'Content Delivery', 'rocket' ),
 				'menu_description' => __( 'Speed up page delivery', 'rocket' ),
-				'badge'            => __( 'NEW', 'rocket' ),
+				/**
+				 * Filters the badge label displayed on the Content Delivery settings tab.
+				 *
+				 * Return an empty string to suppress the badge (e.g. for existing paid subscribers).
+				 *
+				 * @param string $badge Badge label. Default 'NEW'.
+				 * @return string
+				 */
+				'badge'            => wpm_apply_filters_typed( 'string', 'rocket_cdn_tab_badge', __( 'NEW', 'rocket' ) ),
 			]
 		);
 
