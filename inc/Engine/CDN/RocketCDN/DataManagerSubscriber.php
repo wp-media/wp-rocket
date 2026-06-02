@@ -368,6 +368,14 @@ class DataManagerSubscriber implements Subscriber_Interface {
 			return;
 		}
 
+		// If subscription is not running and plan type is not free, clear cache.
+		if ( $this->subscription_controller->is_free() ) {
+			/**
+			 * Fires when the rocketcdn subscription is not running.
+			 */
+			do_action( 'rocketcdn_free_plan_subscription_expired' );
+		}
+
 		$this->cdn_options->disable();
 	}
 

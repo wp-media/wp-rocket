@@ -86,6 +86,10 @@ function PageManager(aElem) {
         };
     }
 
+    document.addEventListener( 'wpr-cdn-state-change', function() {
+        refThis.updateSubmitDisabledState();
+    } );
+
 }
 
 
@@ -186,11 +190,30 @@ PageManager.prototype.change = function() {
         this.$submitButton.style.display = 'none';
     }
 
-    // Dispatch custom event after page navigation for other scripts to hook into.
-    document.dispatchEvent(new CustomEvent('rocketJsAfterPageNavigation', {
-        detail: {
-            pageId: this.pageId,
-            submitButton: this.$submitButton,
-        }   
-    } ) );
+    this.updateSubmitDisabledState();
+
+	// Dispatch custom event after page navigation for other scripts to hook into.
+	document.dispatchEvent(new CustomEvent('rocketJsAfterPageNavigation', {
+		detail: {
+			pageId: this.pageId,
+			submitButton: this.$submitButton,
+		}
+	} ) );
+};
+
+
+/*
+* Update submit button disabled state
+*/
+PageManager.prototype.updateSubmitDisabledState = function() {
+	if (!this.$submitButton || 'none' === this.$submitButton.style.display) {
+		return;
+	}
+
+	var isCdnPage = 'page_cdn' === this.pageId;
+	var pausedRocketCdnBlock = document.querySelector(
+		'.wpr-Page#page_cdn .wpr-notice.wpr-ri-notice.wpr-cdn-expired__notice'
+	);
+
+	this.$submitButton.disabled = isCdnPage && !!pausedRocketCdnBlock;
 };

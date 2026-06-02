@@ -237,6 +237,14 @@ class Rest extends WP_REST_Controller {
 			);
 		}
 
+		if ( $this->subscription_controller->has_inactive_subscription() ) {
+			return new WP_Error(
+				'rocketcdn_no_active_subscription',
+				__( 'You do not have an active RocketCDN subscription.', 'rocket' ),
+				[ 'status' => 403 ]
+			);
+		}
+
 		if ( $this->is_limit_reached() ) {
 			return new WP_Error(
 				'rocketcdn_page_limit_reached',
@@ -417,7 +425,7 @@ class Rest extends WP_REST_Controller {
 	 * @return array
 	 */
 	private function get_pages_data(): array {
-		$pages = $this->query->query( [] );
+		$pages = $this->query->get_all();
 
 		$pages_count = $this->query->get_total_count( false );
 
@@ -430,7 +438,7 @@ class Rest extends WP_REST_Controller {
 						'title' => $page->title,
 					];
 				},
-				is_array( $pages ) ? $pages : []
+				$pages
 			),
 			'count'                            => $pages_count,
 			'limit'                            => $this->get_free_page_limit(),

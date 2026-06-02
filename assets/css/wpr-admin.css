@@ -835,7 +835,7 @@ a:focus, button:focus {
   color: #121116;
   padding: 8px 0;
   padding-left: 4px;
-  border-bottom: 1px solid rgb(194.1698113208, 202.0188679245, 211.8301886792);
+  border-bottom: 1px solid #c2cad4;
 }
 .wpr-Popin .wp-rocket-data-table td:not(.column-primary) {
   font-family: "Monaco";
@@ -1454,24 +1454,20 @@ div.wpr-upgrade-prices {
   /**
    * EUR variant: Symbol on right, swap padding
    */
+  /**
+   * Promo variant: Active offer adjusts left padding
+   */
+  /**
+   * Both EUR and Promo: Maximum left padding for alignment
+   */
 }
 div.wpr-upgrade-prices.wpr-with-euro {
   padding-right: 0;
   padding-left: 10%;
 }
-div.wpr-upgrade-prices {
-  /**
-   * Promo variant: Active offer adjusts left padding
-   */
-}
 div.wpr-upgrade-prices.wpr-with-promo {
   padding-right: 0;
   padding-left: 6%;
-}
-div.wpr-upgrade-prices {
-  /**
-   * Both EUR and Promo: Maximum left padding for alignment
-   */
 }
 div.wpr-upgrade-prices.wpr-with-euro.wpr-with-promo {
   padding-right: 0;
@@ -1555,14 +1551,12 @@ div.wpr-upgrade-websites.notstacked {
 .rocket-promo-banner > div {
   display: flex;
   flex-flow: column;
+  width: 50%;
 }
 @media (max-width: 783px) {
   .rocket-promo-banner > div {
     width: 100%;
   }
-}
-.rocket-promo-banner > div {
-  width: 50%;
 }
 
 .rocket-promo-title {
@@ -1662,14 +1656,12 @@ div.wpr-upgrade-websites.notstacked {
 .rocket-renewal-expired-banner-container > div {
   display: flex;
   flex-flow: column;
+  width: 70%;
 }
 @media (max-width: 783px) {
   .rocket-renewal-expired-banner-container > div {
     width: 100%;
   }
-}
-.rocket-renewal-expired-banner-container > div {
-  width: 70%;
 }
 
 .rocket-renew-message {
@@ -2094,9 +2086,10 @@ div.wpr-upgrade-websites.notstacked {
   transform: translateY(-2px);
   box-shadow: 0 7px 14px rgba(50, 50, 93, 0.25), 0 3px 6px rgba(0, 0, 0, 0.2);
 }
-.wpr-button--disabled {
+.wpr-button--disabled, .wpr-button:disabled {
   opacity: 0.5;
   pointer-events: none;
+  background: #F56640;
 }
 .wpr-button--small {
   padding: 5px 0;
@@ -3613,7 +3606,7 @@ div.wpr-tutorial-item {
   backface-visibility: hidden;
 }
 .wpr-ri-license-banner .wpr-ri-cta-button:hover {
-  background-color: rgb(244.725, 102.0166666667, 59.775);
+  background-color: #f5663c;
   transform: translateY(-2px);
   box-shadow: 0 7px 14px rgba(50, 50, 93, 0.25), 0 3px 6px rgba(0, 0, 0, 0.2);
 }
@@ -3919,7 +3912,7 @@ div.wpr-tutorial-item {
   margin-right: 6px;
 }
 .wpr-ri-urls-table .wpr-ri-item-actions .wpr-ri-action--disabled, .wpr-ri-urls-table .wpr-ri-item-actions .wpr-ri-action:disabled {
-  color: rgb(134.5094339623, 150.0566037736, 169.4905660377) !important;
+  color: #8796a9 !important;
   cursor: not-allowed;
   box-shadow: none;
 }
@@ -3992,7 +3985,7 @@ div.wpr-tutorial-item {
   border-top: 0;
 }
 .wpr-ri-urls-table .details-section .report-link.wpr-ri-action--disabled, .wpr-ri-urls-table .details-section .report-link .wpr-ri-action--disabled {
-  color: rgb(134.5094339623, 150.0566037736, 169.4905660377) !important;
+  color: #8796a9 !important;
   cursor: not-allowed;
   box-shadow: none;
 }
@@ -4790,6 +4783,28 @@ div.wpr-tutorial-item {
   right: 0;
 }
 
+.wpr-cdn-status--expired .wpr-cdn-pause {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.wpr-cdn-expired__notice {
+  color: #0C0F1F;
+  background: #FFF7E1;
+  border-left: 4px solid #FED055;
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+.wpr-cdn-expired__notice-title {
+  font-weight: 600;
+  font-size: 14px;
+}
+.wpr-cdn-expired__notice .wpr-notice-close {
+  font-size: 14px;
+  color: #0C0F1F;
+  font-weight: 600;
+}
+
 .wpr-cdn-pause {
   display: flex;
   align-items: center;
@@ -4920,7 +4935,7 @@ div.wpr-tutorial-item {
   flex-shrink: 0;
 }
 .wpr-cdn-add-page__homepage:hover {
-  background: rgb(233.7, 237.25, 240.8);
+  background: #eaedf1;
 }
 .wpr-cdn-add-page__homepage.wpr-isHidden {
   display: none;
@@ -5064,7 +5079,7 @@ div.wpr-tutorial-item {
   flex-shrink: 0;
 }
 .wpr-cdn-purge__button:hover {
-  background: rgb(239.82, 242.35, 244.88);
+  background: #f0f2f5;
   color: #121116;
   text-decoration: none;
 }
@@ -5521,7 +5536,7 @@ div.wpr-tutorial-item {
   font-family: Monaco;
   color: #121116;
   background: #fff;
-  border: 2px solid rgb(194.1698113208, 202.0188679245, 211.8301886792);
+  border: 2px solid #c2cad4;
   border-radius: 3px;
   font-size: 0.8125rem;
   line-height: 1.2307692308;
@@ -5553,7 +5568,7 @@ div.wpr-tutorial-item {
   height: 32px;
   color: #121116;
   background: #fff;
-  border: 2px solid rgb(194.1698113208, 202.0188679245, 211.8301886792);
+  border: 2px solid #c2cad4;
   border-radius: 3px;
   font-family: Monaco;
   font-size: 0.75rem;
@@ -5695,6 +5710,10 @@ div.wpr-tutorial-item {
   padding: 10px;
   margin: 8px 0;
 }
+.wpr-multiple-select .wpr-list .wpr-list-header {
+  display: flex;
+  justify-content: space-between;
+}
 .wpr-multiple-select .wpr-list .wpr-list-header .wpr-multiple-select-exclude_js_ads:before {
   font-family: "wpr-icomoon";
   content: "\e9b7";
@@ -5709,10 +5728,6 @@ div.wpr-tutorial-item {
   font-family: "wpr-icomoon";
   content: "\e927";
   padding-right: 8px;
-}
-.wpr-multiple-select .wpr-list .wpr-list-header {
-  display: flex;
-  justify-content: space-between;
 }
 .wpr-multiple-select .wpr-list .wpr-list-header .wpr-list-header-arrow {
   width: 15px;

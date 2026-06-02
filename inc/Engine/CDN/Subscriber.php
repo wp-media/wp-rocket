@@ -4,7 +4,9 @@ namespace WP_Rocket\Engine\CDN;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CDN\Drivers\DriverInterface;
+use WP_Rocket\Engine\CDN\RocketCDN\Database\Queries\RocketCDN as RocketCDNQuery;
 use WP_Rocket\Engine\CDN\RocketCDN\SubscriptionController;
+use WP_Rocket\Engine\Common\Utils;
 use WP_Rocket\Engine\Optimization\UrlTrait;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
@@ -52,20 +54,36 @@ class Subscriber implements Subscriber_Interface {
 	private $driver;
 
 	/**
+	 * RocketCDN pages query.
+	 *
+	 * @var RocketCDNQuery
+	 */
+	private $query;
+
+	/**
 	 * Constructor
 	 *
 	 * @param Options_Data           $options WP Rocket Options_Data instance.
 	 * @param CDN                    $cdn     CDN instance.
 	 * @param Options                $options_api     Options instance.
 	 * @param SubscriptionController $subscription_controller Subscription controller instance.
+	 * @param RocketCDNQuery         $query RocketCDN pages query.
 	 * @param DriverInterface|null   $driver   CDN Driver instance, optional.
 	 */
-	public function __construct( Options_Data $options, CDN $cdn, Options $options_api, SubscriptionController $subscription_controller, ?DriverInterface $driver = null ) {
+	public function __construct(
+		Options_Data $options,
+		CDN $cdn,
+		Options $options_api,
+		SubscriptionController $subscription_controller,
+		RocketCDNQuery $query,
+		?DriverInterface $driver = null
+	) {
 		$this->options                 = $options;
 		$this->cdn                     = $cdn;
 		$this->options_api             = $options_api;
 		$this->driver                  = $driver;
 		$this->subscription_controller = $subscription_controller;
+		$this->query                   = $query;
 	}
 
 	/**
@@ -77,24 +95,25 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_buffer'                => [
+			'rocket_buffer'                            => [
 				[ 'rewrite', 2 ],
 				[ 'rewrite_srcset', 3 ],
 			],
-			'rocket_css_content'           => 'rewrite_css_properties',
-			'rocket_usedcss_content'       => 'rewrite_css_properties',
-			'rocket_cdn_hosts'             => [ 'get_cdn_hosts', 10, 2 ],
-			'rocket_dns_prefetch'          => 'add_dns_prefetch_cdn',
-			'rocket_facebook_sdk_url'      => 'add_cdn_url',
-			'rocket_css_url'               => [ 'add_cdn_url', 10, 2 ],
-			'rocket_js_url'                => [ 'add_cdn_url', 10, 2 ],
-			'rocket_asset_url'             => [ 'maybe_replace_url', 10, 2 ],
-			'wp_resource_hints'            => [ 'add_preconnect_cdn', 10, 2 ],
-			'rocket_font_url'              => [ 'add_cdn_url', 10, 2 ],
-			'rocket_first_install_options' => 'add_cdn_type_option',
-			'wp_rocket_upgrade'            => [
+			'rocket_css_content'                       => 'rewrite_css_properties',
+			'rocket_usedcss_content'                   => 'rewrite_css_properties',
+			'rocket_cdn_hosts'                         => [ 'get_cdn_hosts', 10, 2 ],
+			'rocket_dns_prefetch'                      => 'add_dns_prefetch_cdn',
+			'rocket_facebook_sdk_url'                  => 'add_cdn_url',
+			'rocket_css_url'                           => [ 'add_cdn_url', 10, 2 ],
+			'rocket_js_url'                            => [ 'add_cdn_url', 10, 2 ],
+			'rocket_asset_url'                         => [ 'maybe_replace_url', 10, 2 ],
+			'wp_resource_hints'                        => [ 'add_preconnect_cdn', 10, 2 ],
+			'rocket_font_url'                          => [ 'add_cdn_url', 10, 2 ],
+			'rocket_first_install_options'             => 'add_cdn_type_option',
+			'wp_rocket_upgrade'                        => [
 				[ 'on_update_add_cdn_type_option', 10, 2 ],
 			],
+			'rocketcdn_free_plan_subscription_expired' => [ 'clear_free_plan_pages_cache' ],
 		];
 	}
 
@@ -160,6 +179,10 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		if ( ! $this->is_cdn_enabled() ) {
+			return $content;
+		}
+
+		if ( ! $this->subscription_controller->has_active_subscription() ) {
 			return $content;
 		}
 
@@ -372,6 +395,10 @@ class Subscriber implements Subscriber_Interface {
 			return false;
 		}
 
+		if ( ! $this->subscription_controller->has_active_subscription() ) {
+			return false;
+		}
+
 		if ( ! $this->is_cdn_enabled() ) {
 			return false;
 		}
@@ -463,6 +490,32 @@ class Subscriber implements Subscriber_Interface {
 		$current_options['cdn']      = 1;
 
 		$this->options_api->set( 'settings', $current_options );
+	}
+
+	/**
+	 * Clear cached pages from free plan when subscription expired.
+	 *
+	 * @return void
+	 */
+	public function clear_free_plan_pages_cache(): void {
+		if ( null === $this->query ) {
+			return;
+		}
+
+		$pages = $this->query->get_all();
+
+		foreach ( $pages as $page ) {
+			if ( empty( $page->url ) ) {
+				continue;
+			}
+
+			if ( Utils::is_home( $page->url ) ) {
+				rocket_clean_home();
+				continue;
+			}
+
+			rocket_clean_files( [ $page->url ] );
+		}
 	}
 
 	/**

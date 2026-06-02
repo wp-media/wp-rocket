@@ -15,7 +15,7 @@
  *     @type string $class       Section classes.
  *     @type string $help        Data to pass to beacon.
  *     @type string $page        Page section identifier.
- * @type array  $status_indicator Data for the CDN status indicator partial.
+ *     @type array  $status_indicator Data for the CDN status indicator partial.
  * }
  */
 

@@ -6,6 +6,7 @@ namespace WP_Rocket\Engine\CDN\RocketCDN;
 use WP_Error;
 use WP_Rocket\Engine\CDN\RocketCDN\APIHandler\CheckStatusAPIClient;
 use WP_Rocket\Engine\CDN\RocketCDN\APIHandler\CreateAPIClient;
+use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
 
@@ -48,6 +49,13 @@ class SubscriptionController implements LoggerAwareInterface {
 	private $check_status_api_client;
 
 	/**
+	 * License User instance.
+	 *
+	 * @var User
+	 */
+	private $user;
+
+	/**
 	 * Subscription creation loading state transient name.
 	 *
 	 * @var string
@@ -69,13 +77,15 @@ class SubscriptionController implements LoggerAwareInterface {
 	 * @param CDNOptionsManager    $options_manager Options Manager instance.
 	 * @param Queue                $queue Queue instance.
 	 * @param CheckStatusAPIClient $check_status_api_client Check Status API Client instance.
+	 * @param User                 $user  License User instance.
 	 */
-	public function __construct( APIClient $api_client, CreateAPIClient $create_api_client, CDNOptionsManager $options_manager, Queue $queue, CheckStatusAPIClient $check_status_api_client ) {
+	public function __construct( APIClient $api_client, CreateAPIClient $create_api_client, CDNOptionsManager $options_manager, Queue $queue, CheckStatusAPIClient $check_status_api_client, User $user ) {
 		$this->api_client              = $api_client;
 		$this->create_api_client       = $create_api_client;
 		$this->options_manager         = $options_manager;
 		$this->queue                   = $queue;
 		$this->check_status_api_client = $check_status_api_client;
+		$this->user                    = $user;
 	}
 
 	/**
@@ -104,6 +114,31 @@ class SubscriptionController implements LoggerAwareInterface {
 	public function has_active_subscription(): bool {
 		$subscription = $this->get_subscription_data();
 		return ! empty( $subscription['subscription_status'] ) && 'running' === $subscription['subscription_status'];
+	}
+
+	/**
+	 * Check if it has WP Rocket license is expired or revoked, regardless of RocketCDN subscription status.
+	 *
+	 * @return bool
+	 */
+	public function is_license_invalid(): bool {
+		return $this->user->is_license_expired() || $this->user->is_revoked();
+	}
+
+
+	/**
+	 * Check if it has inactive RocketCDN subscription.
+	 * We are checking the transient since the get_subscription_data will return default value until we add a page to rocketcdn.
+	 *
+	 * @return bool
+	 */
+	public function has_inactive_subscription() {
+		$transient = get_transient( 'rocketcdn_status' );
+		if ( false === $transient ) {
+			return false;
+		}
+
+		return ! $this->has_active_subscription();
 	}
 
 	/**
@@ -309,5 +344,14 @@ class SubscriptionController implements LoggerAwareInterface {
 	public function get_rocketcdn_url() {
 		$subscription = $this->get_subscription_data();
 		return $subscription['cdn_url'] ?? '';
+	}
+
+	/**
+	 * Get rocketcdn transient status
+	 *
+	 * @return mixed
+	 */
+	public function get_rocketcdn_status() {
+		return get_transient( 'rocketcdn_status' );
 	}
 }
